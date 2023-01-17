@@ -15,896 +15,895 @@ using StatisticsAnalysisTool.Properties;
 using StatisticsAnalysisTool.Models;
 using System.Windows.Threading;
 
-namespace StatisticsAnalysisTool.Network.Notification
+namespace StatisticsAnalysisTool.Network.Notification;
+
+public class DungeonNotificationFragment : LineFragment, INotifyPropertyChanged
 {
-    public class DungeonNotificationFragment : LineFragment, INotifyPropertyChanged
+    private bool _diedInDungeon;
+    private string _diedName;
+    private string _killedBy;
+    private ObservableCollection<DungeonEventObjectFragment> _dungeonChestsFragments = new ();
+    private ObservableCollection<DungeonLootFragment> _dungeonLootFragments = new ();
+    private DateTime _enterDungeonFirstTime;
+    private Faction _faction = Faction.Unknown;
+    private double _fame;
+    private double _famePerHour;
+    private bool _isBestFame;
+    private bool _isBestFamePerHour;
+    private bool _isBestReSpec;
+    private bool _isBestReSpecPerHour;
+    private bool _isBestSilver;
+    private bool _isBestSilverPerHour;
+    private bool _isBestTime;
+    private string _mainMapIndex;
+    private string _mainMapName;
+    private List<Guid> _guidList;
+    private DungeonMode _mode = DungeonMode.Unknown;
+    private double _reSpec;
+    private double _reSpecPerHour;
+    private string _runTimeString;
+    private double _silver;
+    private double _silverPerHour;
+    private DungeonStatus _status;
+    private int _totalRunTimeInSeconds;
+    private int _dungeonNumber;
+    private double _factionCoinsPerHour;
+    private double _factionFlagsPerHour;
+    private double _factionFlags;
+    private double _factionCoins;
+    private Visibility _isFactionWarfareVisible = Visibility.Collapsed;
+    private bool _isBestFactionCoinsPerHour;
+    private bool _isBestFactionFlagsPerHour;
+    private bool _isBestFactionFlags;
+    private bool _isBestFactionCoins;
+    private CityFaction _cityFaction;
+    private int _numberOfDungeonFloors;
+    private string _diedMessage;
+    private bool? _isSelectedForDeletion = false;
+    private Visibility _visibility;
+    private Tier _tier = Tier.Unknown;
+    private int _level;
+    private double _might;
+    private double _favor;
+    private double _mightPerHour;
+    private double _favorPerHour;
+    private Visibility _isMightFavorVisible = Visibility.Collapsed;
+    private bool _isBestMight;
+    private bool _isBestFavor;
+    private bool _isBestMightPerHour;
+    private bool _isBestFavorPerHour;
+    private long _totalLootValue;
+    private long _bestLootedItemValue;
+    private string _bestLootedItemName;
+    private string _tierString = "?";
+    private string _levelString = "?";
+
+    public string DungeonHash => $"{EnterDungeonFirstTime.Ticks}{string.Join(",", GuidList)}";
+
+    public DungeonNotificationFragment(int dungeonNumber, List<Guid> guidList, string mainMapIndex, DateTime enterDungeonFirstTime)
     {
-        private bool _diedInDungeon;
-        private string _diedName;
-        private string _killedBy;
-        private ObservableCollection<DungeonEventObjectFragment> _dungeonChestsFragments = new ();
-        private ObservableCollection<DungeonLootFragment> _dungeonLootFragments = new ();
-        private DateTime _enterDungeonFirstTime;
-        private Faction _faction = Faction.Unknown;
-        private double _fame;
-        private double _famePerHour;
-        private bool _isBestFame;
-        private bool _isBestFamePerHour;
-        private bool _isBestReSpec;
-        private bool _isBestReSpecPerHour;
-        private bool _isBestSilver;
-        private bool _isBestSilverPerHour;
-        private bool _isBestTime;
-        private string _mainMapIndex;
-        private string _mainMapName;
-        private List<Guid> _guidList;
-        private DungeonMode _mode = DungeonMode.Unknown;
-        private double _reSpec;
-        private double _reSpecPerHour;
-        private string _runTimeString;
-        private double _silver;
-        private double _silverPerHour;
-        private DungeonStatus _status;
-        private int _totalRunTimeInSeconds;
-        private int _dungeonNumber;
-        private double _factionCoinsPerHour;
-        private double _factionFlagsPerHour;
-        private double _factionFlags;
-        private double _factionCoins;
-        private Visibility _isFactionWarfareVisible = Visibility.Collapsed;
-        private bool _isBestFactionCoinsPerHour;
-        private bool _isBestFactionFlagsPerHour;
-        private bool _isBestFactionFlags;
-        private bool _isBestFactionCoins;
-        private CityFaction _cityFaction;
-        private int _numberOfDungeonFloors;
-        private string _diedMessage;
-        private bool? _isSelectedForDeletion = false;
-        private Visibility _visibility;
-        private Tier _tier = Tier.Unknown;
-        private int _level;
-        private double _might;
-        private double _favor;
-        private double _mightPerHour;
-        private double _favorPerHour;
-        private Visibility _isMightFavorVisible = Visibility.Collapsed;
-        private bool _isBestMight;
-        private bool _isBestFavor;
-        private bool _isBestMightPerHour;
-        private bool _isBestFavorPerHour;
-        private long _totalLootValue;
-        private long _bestLootedItemValue;
-        private string _bestLootedItemName;
-        private string _tierString = "?";
-        private string _levelString = "?";
+        DungeonNumber = dungeonNumber;
+        MainMapIndex = mainMapIndex;
+        GuidList = guidList;
+        EnterDungeonFirstTime = enterDungeonFirstTime;
+        Faction = Faction.Unknown;
+    }
 
-        public string DungeonHash => $"{EnterDungeonFirstTime.Ticks}{string.Join(",", GuidList)}";
+    public void SetValues(DungeonObject dungeonObject)
+    {
+        TotalRunTimeInSeconds = dungeonObject.TotalRunTimeInSeconds;
+        DiedInDungeon = dungeonObject.DiedInDungeon;
+        DiedName = dungeonObject.DiedName;
+        KilledBy = dungeonObject.KilledBy;
+        Faction = dungeonObject.Faction;
+        Fame = dungeonObject.Fame;
+        ReSpec = dungeonObject.ReSpec;
+        Silver = dungeonObject.Silver;
+        CityFaction = dungeonObject.CityFaction;
+        FactionCoins = dungeonObject.FactionCoins;
+        FactionFlags = dungeonObject.FactionFlags;
+        Might = dungeonObject.Might;
+        Favor = dungeonObject.Favor;
+        Mode = dungeonObject.Mode;
+        Status = dungeonObject.Status;
+        Tier = dungeonObject.Tier;
+        Level = dungeonObject.Level;
 
-        public DungeonNotificationFragment(int dungeonNumber, List<Guid> guidList, string mainMapIndex, DateTime enterDungeonFirstTime)
+        UpdateChests(dungeonObject.DungeonEventObjects.ToList());
+        _ = UpdateDungeonLootAsync(dungeonObject.DungeonLoot.ToAsyncEnumerable());
+    }
+
+    private void UpdateChests(IEnumerable<DungeonEventObject> dungeonEventObjects)
+    {
+        foreach (var dungeonEventObject in dungeonEventObjects.ToList())
         {
-            DungeonNumber = dungeonNumber;
-            MainMapIndex = mainMapIndex;
-            GuidList = guidList;
-            EnterDungeonFirstTime = enterDungeonFirstTime;
-            Faction = Faction.Unknown;
-        }
+            var dungeon = DungeonChestsFragments?.FirstOrDefault(x => x.Hash == dungeonEventObject.Hash);
 
-        public void SetValues(DungeonObject dungeonObject)
-        {
-            TotalRunTimeInSeconds = dungeonObject.TotalRunTimeInSeconds;
-            DiedInDungeon = dungeonObject.DiedInDungeon;
-            DiedName = dungeonObject.DiedName;
-            KilledBy = dungeonObject.KilledBy;
-            Faction = dungeonObject.Faction;
-            Fame = dungeonObject.Fame;
-            ReSpec = dungeonObject.ReSpec;
-            Silver = dungeonObject.Silver;
-            CityFaction = dungeonObject.CityFaction;
-            FactionCoins = dungeonObject.FactionCoins;
-            FactionFlags = dungeonObject.FactionFlags;
-            Might = dungeonObject.Might;
-            Favor = dungeonObject.Favor;
-            Mode = dungeonObject.Mode;
-            Status = dungeonObject.Status;
-            Tier = dungeonObject.Tier;
-            Level = dungeonObject.Level;
-
-            UpdateChests(dungeonObject.DungeonEventObjects.ToList());
-            _ = UpdateDungeonLootAsync(dungeonObject.DungeonLoot.ToAsyncEnumerable());
-        }
-
-        private void UpdateChests(IEnumerable<DungeonEventObject> dungeonEventObjects)
-        {
-            foreach (var dungeonEventObject in dungeonEventObjects.ToList())
+            if (dungeon != null)
             {
-                var dungeon = DungeonChestsFragments?.FirstOrDefault(x => x.Hash == dungeonEventObject.Hash);
-
-                if (dungeon != null)
+                dungeon.IsBossChest = dungeonEventObject.IsBossChest;
+                dungeon.IsChestOpen = dungeonEventObject.IsOpen;
+                dungeon.Opened = dungeonEventObject.Opened;
+                dungeon.Rarity = dungeonEventObject.Rarity;
+                dungeon.Type = dungeonEventObject.ObjectType;
+                dungeon.UniqueName = dungeonEventObject.UniqueName;
+                dungeon.ShrineType = dungeonEventObject.ShrineType;
+                dungeon.ShrineBuff = dungeonEventObject.ShrineBuff;
+            }
+            else
+            {
+                Application.Current.Dispatcher.Invoke(DispatcherPriority.DataBind, () =>
                 {
-                    dungeon.IsBossChest = dungeonEventObject.IsBossChest;
-                    dungeon.IsChestOpen = dungeonEventObject.IsOpen;
-                    dungeon.Opened = dungeonEventObject.Opened;
-                    dungeon.Rarity = dungeonEventObject.Rarity;
-                    dungeon.Type = dungeonEventObject.ObjectType;
-                    dungeon.UniqueName = dungeonEventObject.UniqueName;
-                    dungeon.ShrineType = dungeonEventObject.ShrineType;
-                    dungeon.ShrineBuff = dungeonEventObject.ShrineBuff;
-                }
-                else
-                {
-                    Application.Current.Dispatcher.Invoke(DispatcherPriority.DataBind, () =>
+                    DungeonChestsFragments?.Add(new DungeonEventObjectFragment()
                     {
-                        DungeonChestsFragments?.Add(new DungeonEventObjectFragment()
-                        {
-                            Id = dungeonEventObject.Id,
-                            IsBossChest = dungeonEventObject.IsBossChest,
-                            IsChestOpen = dungeonEventObject.IsOpen,
-                            Opened = dungeonEventObject.Opened,
-                            Rarity = dungeonEventObject.Rarity,
-                            Type = dungeonEventObject.ObjectType,
-                            UniqueName = dungeonEventObject.UniqueName,
-                            ShrineType = dungeonEventObject.ShrineType,
-                            ShrineBuff = dungeonEventObject.ShrineBuff
-                        });
+                        Id = dungeonEventObject.Id,
+                        IsBossChest = dungeonEventObject.IsBossChest,
+                        IsChestOpen = dungeonEventObject.IsOpen,
+                        Opened = dungeonEventObject.Opened,
+                        Rarity = dungeonEventObject.Rarity,
+                        Type = dungeonEventObject.ObjectType,
+                        UniqueName = dungeonEventObject.UniqueName,
+                        ShrineType = dungeonEventObject.ShrineType,
+                        ShrineBuff = dungeonEventObject.ShrineBuff
                     });
-                }
+                });
             }
         }
+    }
 
-        public async Task UpdateDungeonLootAsync(IAsyncEnumerable<DungeonLoot> dungeonLoot)
+    public async Task UpdateDungeonLootAsync(IAsyncEnumerable<DungeonLoot> dungeonLoot)
+    {
+        foreach (var loot in await dungeonLoot.ToListAsync().ConfigureAwait(false))
         {
-            foreach (var loot in await dungeonLoot.ToListAsync().ConfigureAwait(false))
-            {
-                var dunLootFragment = DungeonLootFragments?.FirstOrDefault(x => x.Hash == loot.Hash);
+            var dunLootFragment = DungeonLootFragments?.FirstOrDefault(x => x.Hash == loot.Hash);
 
-                if (dunLootFragment != null)
+            if (dunLootFragment != null)
+            {
+                dunLootFragment.UniqueName = loot.UniqueName;
+                dunLootFragment.Quantity = loot.Quantity;
+                dunLootFragment.UtcDiscoveryTime = loot.UtcDiscoveryTime;
+                dunLootFragment.EstimatedMarketValue = loot.EstimatedMarketValue;
+            }
+            else
+            {
+                Application.Current.Dispatcher.Invoke(DispatcherPriority.DataBind, () =>
                 {
-                    dunLootFragment.UniqueName = loot.UniqueName;
-                    dunLootFragment.Quantity = loot.Quantity;
-                    dunLootFragment.UtcDiscoveryTime = loot.UtcDiscoveryTime;
-                    dunLootFragment.EstimatedMarketValue = loot.EstimatedMarketValue;
-                }
-                else
-                {
-                    Application.Current.Dispatcher.Invoke(DispatcherPriority.DataBind, () =>
+                    DungeonLootFragments?.Add(new DungeonLootFragment()
                     {
-                        DungeonLootFragments?.Add(new DungeonLootFragment()
-                        {
-                            UniqueName = loot.UniqueName,
-                            Quantity = loot.Quantity,
-                            UtcDiscoveryTime = loot.UtcDiscoveryTime,
-                            EstimatedMarketValue = loot.EstimatedMarketValue
-                        });
+                        UniqueName = loot.UniqueName,
+                        Quantity = loot.Quantity,
+                        UtcDiscoveryTime = loot.UtcDiscoveryTime,
+                        EstimatedMarketValue = loot.EstimatedMarketValue
                     });
-                }
-            }
-
-            TotalLootValue = DungeonLootFragments?.Sum(x => x.TotalEstimatedMarketValue.IntegerValue) ?? 0;
-
-            var bestItem = DungeonLootFragments?.MaxBy(x => x.TotalEstimatedMarketValue.IntegerValue);
-
-            if (bestItem != null)
-            {
-                var itemName = ItemController.GetItemByUniqueName(bestItem.UniqueName)?.LocalizedName;
-                BestLootedItemName = (string.IsNullOrEmpty(itemName)) ? "-" : itemName;
-                BestLootedItemValue = bestItem.EstimatedMarketValue.IntegerValue;
+                });
             }
         }
 
-        private static string SetTierString(Tier tier)
+        TotalLootValue = DungeonLootFragments?.Sum(x => x.TotalEstimatedMarketValue.IntegerValue) ?? 0;
+
+        var bestItem = DungeonLootFragments?.MaxBy(x => x.TotalEstimatedMarketValue.IntegerValue);
+
+        if (bestItem != null)
         {
-            var tierString = tier switch
-            {
-                Tier.T1 => "T1",
-                Tier.T2 => "T2",
-                Tier.T3 => "T3",
-                Tier.T4 => "T4",
-                Tier.T5 => "T5",
-                Tier.T6 => "T6",
-                Tier.T7 => "T7",
-                Tier.T8 => "T8",
-                _ => "T?"
-            };
-
-            return tierString;
+            var itemName = ItemController.GetItemByUniqueName(bestItem.UniqueName)?.LocalizedName;
+            BestLootedItemName = (string.IsNullOrEmpty(itemName)) ? "-" : itemName;
+            BestLootedItemValue = bestItem.EstimatedMarketValue.IntegerValue;
         }
-        // Flat-Map: 16% (green), .1-Map 36% (blue), .2-Map 58% (purple), .3-Map 84% (gold)
-        private static string SetLevelString(int level)
+    }
+
+    private static string SetTierString(Tier tier)
+    {
+        var tierString = tier switch
         {
-            var levelString = level switch
-            {
-                0 => "",
-                1 => ".0",
-                2 => ".1",
-                3 => ".2",
-                4 => ".3",
-                _ => ".?"
-            };
+            Tier.T1 => "T1",
+            Tier.T2 => "T2",
+            Tier.T3 => "T3",
+            Tier.T4 => "T4",
+            Tier.T5 => "T5",
+            Tier.T6 => "T6",
+            Tier.T7 => "T7",
+            Tier.T8 => "T8",
+            _ => "T?"
+        };
 
-            return levelString;
-        }
-
-        public string TierString {
-            get => _tierString;
-            set
-            {
-                _tierString = value;
-                OnPropertyChanged();
-            }
-        }
-
-        public string LevelString
+        return tierString;
+    }
+    // Flat-Map: 16% (green), .1-Map 36% (blue), .2-Map 58% (purple), .3-Map 84% (gold)
+    private static string SetLevelString(int level)
+    {
+        var levelString = level switch
         {
-            get => _levelString;
-            set
-            {
-                _levelString = value;
-                OnPropertyChanged();
-            }
-        }
+            0 => "",
+            1 => ".0",
+            2 => ".1",
+            3 => ".2",
+            4 => ".3",
+            _ => ".?"
+        };
 
-        public ObservableCollection<DungeonEventObjectFragment> DungeonChestsFragments
+        return levelString;
+    }
+
+    public string TierString {
+        get => _tierString;
+        set
         {
-            get => _dungeonChestsFragments;
-            set
-            {
-                _dungeonChestsFragments = value;
-                OnPropertyChanged();
-            }
+            _tierString = value;
+            OnPropertyChanged();
         }
+    }
 
-        public ObservableCollection<DungeonLootFragment> DungeonLootFragments
+    public string LevelString
+    {
+        get => _levelString;
+        set
         {
-            get => _dungeonLootFragments;
-            set
-            {
-                _dungeonLootFragments = value;
-                OnPropertyChanged();
-            }
+            _levelString = value;
+            OnPropertyChanged();
         }
+    }
 
-        public int DungeonNumber {
-            get => _dungeonNumber;
-            set
-            {
-                _dungeonNumber = value;
-                OnPropertyChanged();
-            }
-        }
-
-        public Visibility Visibility {
-            get => _visibility;
-            set {
-                _visibility = value;
-                OnPropertyChanged();
-            }
-        }
-
-        public Faction Faction
+    public ObservableCollection<DungeonEventObjectFragment> DungeonChestsFragments
+    {
+        get => _dungeonChestsFragments;
+        set
         {
-            get => _faction;
-            set
-            {
-                _faction = value;
-                OnPropertyChanged();
-            }
+            _dungeonChestsFragments = value;
+            OnPropertyChanged();
         }
+    }
 
-        public DungeonMode Mode
+    public ObservableCollection<DungeonLootFragment> DungeonLootFragments
+    {
+        get => _dungeonLootFragments;
+        set
         {
-            get => _mode;
-            set
-            {
-                _mode = value;
-                OnPropertyChanged();
-            }
+            _dungeonLootFragments = value;
+            OnPropertyChanged();
         }
+    }
 
-        public CityFaction CityFaction {
-            get => _cityFaction;
-            set
-            {
-                _cityFaction = value;
-                OnPropertyChanged();
-            }
+    public int DungeonNumber {
+        get => _dungeonNumber;
+        set
+        {
+            _dungeonNumber = value;
+            OnPropertyChanged();
         }
+    }
 
-        public Tier Tier {
-            get => _tier;
-            set
-            {
-                _tier = value;
-                TierString = SetTierString(_tier);
-                OnPropertyChanged();
-            }
+    public Visibility Visibility {
+        get => _visibility;
+        set {
+            _visibility = value;
+            OnPropertyChanged();
         }
+    }
+
+    public Faction Faction
+    {
+        get => _faction;
+        set
+        {
+            _faction = value;
+            OnPropertyChanged();
+        }
+    }
+
+    public DungeonMode Mode
+    {
+        get => _mode;
+        set
+        {
+            _mode = value;
+            OnPropertyChanged();
+        }
+    }
+
+    public CityFaction CityFaction {
+        get => _cityFaction;
+        set
+        {
+            _cityFaction = value;
+            OnPropertyChanged();
+        }
+    }
+
+    public Tier Tier {
+        get => _tier;
+        set
+        {
+            _tier = value;
+            TierString = SetTierString(_tier);
+            OnPropertyChanged();
+        }
+    }
         
-        public int Level
+    public int Level
+    {
+        get => _level;
+        set
         {
-            get => _level;
-            set
-            {
-                _level = value;
-                LevelString = SetLevelString(_level);
-                OnPropertyChanged();
-            }
+            _level = value;
+            LevelString = SetLevelString(_level);
+            OnPropertyChanged();
         }
+    }
         
-        public string MainMapIndex
+    public string MainMapIndex
+    {
+        get => _mainMapIndex;
+        set
         {
-            get => _mainMapIndex;
-            set
-            {
-                _mainMapIndex = value;
-                MainMapName = WorldData.GetUniqueNameOrDefault(value);
-                OnPropertyChanged();
-            }
+            _mainMapIndex = value;
+            MainMapName = WorldData.GetUniqueNameOrDefault(value);
+            OnPropertyChanged();
         }
+    }
 
-        public string MainMapName
+    public string MainMapName
+    {
+        get => _mainMapName;
+        set
         {
-            get => _mainMapName;
-            set
-            {
-                _mainMapName = value;
-                OnPropertyChanged();
-            }
+            _mainMapName = value;
+            OnPropertyChanged();
         }
+    }
 
-        public bool DiedInDungeon
+    public bool DiedInDungeon
+    {
+        get => _diedInDungeon;
+        set
         {
-            get => _diedInDungeon;
-            set
-            {
-                _diedInDungeon = value;
-                DiedMessage = $"{DiedName} {LanguageController.Translation("KILLED_BY")} {KilledBy}";
-                OnPropertyChanged();
-            }
+            _diedInDungeon = value;
+            DiedMessage = $"{DiedName} {LanguageController.Translation("KILLED_BY")} {KilledBy}";
+            OnPropertyChanged();
         }
+    }
 
-        public string DiedMessage 
-        {
-            get => _diedMessage;
-            set {
-                _diedMessage = value;
-                OnPropertyChanged();
-            }
+    public string DiedMessage 
+    {
+        get => _diedMessage;
+        set {
+            _diedMessage = value;
+            OnPropertyChanged();
         }
+    }
 
-        public string DiedName
+    public string DiedName
+    {
+        get => _diedName;
+        set
         {
-            get => _diedName;
-            set
-            {
-                _diedName = value;
-                OnPropertyChanged();
-            }
+            _diedName = value;
+            OnPropertyChanged();
         }
+    }
 
-        public string KilledBy
+    public string KilledBy
+    {
+        get => _killedBy;
+        set
         {
-            get => _killedBy;
-            set
-            {
-                _killedBy = value;
-                OnPropertyChanged();
-            }
+            _killedBy = value;
+            OnPropertyChanged();
         }
+    }
 
-        public DateTime EnterDungeonFirstTime
+    public DateTime EnterDungeonFirstTime
+    {
+        get => _enterDungeonFirstTime;
+        set
         {
-            get => _enterDungeonFirstTime;
-            set
-            {
-                _enterDungeonFirstTime = value;
-                OnPropertyChanged();
-            }
+            _enterDungeonFirstTime = value;
+            OnPropertyChanged();
         }
+    }
 
-        public string RunTimeString
+    public string RunTimeString
+    {
+        get => _runTimeString;
+        set
         {
-            get => _runTimeString;
-            set
-            {
-                _runTimeString = value;
-                OnPropertyChanged();
-            }
+            _runTimeString = value;
+            OnPropertyChanged();
         }
+    }
 
-        public int TotalRunTimeInSeconds
+    public int TotalRunTimeInSeconds
+    {
+        get => _totalRunTimeInSeconds;
+        set
         {
-            get => _totalRunTimeInSeconds;
-            set
-            {
-                _totalRunTimeInSeconds = value;
-                RunTimeString = value.ToTimerString() ?? "0";
-                NumberOfDungeonFloors = GuidList?.Count ?? 0;
-                OnPropertyChanged();
-            }
+            _totalRunTimeInSeconds = value;
+            RunTimeString = value.ToTimerString() ?? "0";
+            NumberOfDungeonFloors = GuidList?.Count ?? 0;
+            OnPropertyChanged();
         }
+    }
 
-        public List<Guid> GuidList
+    public List<Guid> GuidList
+    {
+        get => _guidList;
+        set
         {
-            get => _guidList;
-            set
-            {
-                _guidList = value;
-                NumberOfDungeonFloors = value?.Count ?? 0;
-                OnPropertyChanged();
-            }
+            _guidList = value;
+            NumberOfDungeonFloors = value?.Count ?? 0;
+            OnPropertyChanged();
         }
+    }
         
-        public int NumberOfDungeonFloors 
+    public int NumberOfDungeonFloors 
+    {
+        get => _numberOfDungeonFloors;
+        set
         {
-            get => _numberOfDungeonFloors;
-            set
-            {
-                _numberOfDungeonFloors = value;
-                OnPropertyChanged();
-            }
+            _numberOfDungeonFloors = value;
+            OnPropertyChanged();
         }
+    }
 
-        public long TotalLootValue
+    public long TotalLootValue
+    {
+        get => _totalLootValue;
+        set
         {
-            get => _totalLootValue;
-            set
-            {
-                _totalLootValue = value;
-                OnPropertyChanged();
-            }
+            _totalLootValue = value;
+            OnPropertyChanged();
         }
+    }
 
-        public long BestLootedItemValue
+    public long BestLootedItemValue
+    {
+        get => _bestLootedItemValue;
+        set
         {
-            get => _bestLootedItemValue;
-            set
-            {
-                _bestLootedItemValue = value;
-                OnPropertyChanged();
-            }
+            _bestLootedItemValue = value;
+            OnPropertyChanged();
         }
+    }
 
-        public string BestLootedItemName
+    public string BestLootedItemName
+    {
+        get => _bestLootedItemName;
+        set
         {
-            get => _bestLootedItemName;
-            set
-            {
-                _bestLootedItemName = value;
-                OnPropertyChanged();
-            }
+            _bestLootedItemName = value;
+            OnPropertyChanged();
         }
+    }
 
-        public double Fame
+    public double Fame
+    {
+        get => _fame;
+        private set
         {
-            get => _fame;
-            private set
-            {
-                _fame = value;
-                FamePerHour = Utilities.GetValuePerHourToDouble(Fame, TotalRunTimeInSeconds <= 0 ? (DateTime.UtcNow - EnterDungeonFirstTime).Seconds : TotalRunTimeInSeconds);
-                OnPropertyChanged();
-            }
+            _fame = value;
+            FamePerHour = Utilities.GetValuePerHourToDouble(Fame, TotalRunTimeInSeconds <= 0 ? (DateTime.UtcNow - EnterDungeonFirstTime).Seconds : TotalRunTimeInSeconds);
+            OnPropertyChanged();
         }
+    }
 
-        public double ReSpec
+    public double ReSpec
+    {
+        get => _reSpec;
+        private set
         {
-            get => _reSpec;
-            private set
-            {
-                _reSpec = value;
-                ReSpecPerHour = Utilities.GetValuePerHourToDouble(ReSpec, TotalRunTimeInSeconds <= 0 ? (DateTime.UtcNow - EnterDungeonFirstTime).Seconds : TotalRunTimeInSeconds);
-                OnPropertyChanged();
-            }
+            _reSpec = value;
+            ReSpecPerHour = Utilities.GetValuePerHourToDouble(ReSpec, TotalRunTimeInSeconds <= 0 ? (DateTime.UtcNow - EnterDungeonFirstTime).Seconds : TotalRunTimeInSeconds);
+            OnPropertyChanged();
         }
+    }
 
-        public double Silver
+    public double Silver
+    {
+        get => _silver;
+        private set
         {
-            get => _silver;
-            private set
-            {
-                _silver = value;
-                SilverPerHour = Utilities.GetValuePerHourToDouble(Silver, TotalRunTimeInSeconds <= 0 ? (DateTime.UtcNow - EnterDungeonFirstTime).Seconds : TotalRunTimeInSeconds);
-                OnPropertyChanged();
-            }
+            _silver = value;
+            SilverPerHour = Utilities.GetValuePerHourToDouble(Silver, TotalRunTimeInSeconds <= 0 ? (DateTime.UtcNow - EnterDungeonFirstTime).Seconds : TotalRunTimeInSeconds);
+            OnPropertyChanged();
         }
+    }
 
-        public double FactionFlags {
-            get => _factionFlags;
-            private set
-            {
-                _factionFlags = value;
-                FactionFlagsPerHour = Utilities.GetValuePerHourToDouble(FactionFlags, TotalRunTimeInSeconds <= 0 ? (DateTime.UtcNow - EnterDungeonFirstTime).Seconds : TotalRunTimeInSeconds);
-                OnPropertyChanged();
-            }
+    public double FactionFlags {
+        get => _factionFlags;
+        private set
+        {
+            _factionFlags = value;
+            FactionFlagsPerHour = Utilities.GetValuePerHourToDouble(FactionFlags, TotalRunTimeInSeconds <= 0 ? (DateTime.UtcNow - EnterDungeonFirstTime).Seconds : TotalRunTimeInSeconds);
+            OnPropertyChanged();
         }
+    }
 
-        public double FactionCoins {
-            get => _factionCoins;
-            private set
+    public double FactionCoins {
+        get => _factionCoins;
+        private set
+        {
+            _factionCoins = value;
+            FactionCoinsPerHour = Utilities.GetValuePerHourToDouble(FactionCoins, TotalRunTimeInSeconds <= 0 ? (DateTime.UtcNow - EnterDungeonFirstTime).Seconds : TotalRunTimeInSeconds);
+
+            if (FactionCoins > 0 && IsFactionWarfareVisible == Visibility.Collapsed && IsMightFavorVisible == Visibility.Collapsed)
             {
-                _factionCoins = value;
-                FactionCoinsPerHour = Utilities.GetValuePerHourToDouble(FactionCoins, TotalRunTimeInSeconds <= 0 ? (DateTime.UtcNow - EnterDungeonFirstTime).Seconds : TotalRunTimeInSeconds);
-
-                if (FactionCoins > 0 && IsFactionWarfareVisible == Visibility.Collapsed && IsMightFavorVisible == Visibility.Collapsed)
-                {
-                    IsFactionWarfareVisible = Visibility.Visible;
-                }
-                OnPropertyChanged();
+                IsFactionWarfareVisible = Visibility.Visible;
             }
+            OnPropertyChanged();
         }
+    }
         
-        public double FactionFlagsPerHour {
-            get
-            {
-                if (double.IsNaN(_factionFlagsPerHour))
-                {
-                    return 0;
-                }
-
-                return _factionFlagsPerHour;
-            }
-            private set
-            {
-                _factionFlagsPerHour = value;
-                OnPropertyChanged();
-            }
-        }
-
-        public double FactionCoinsPerHour {
-            get
-            {
-                if (double.IsNaN(_factionCoinsPerHour))
-                {
-                    return 0;
-                }
-
-                return _factionCoinsPerHour;
-            }
-            private set
-            {
-                _factionCoinsPerHour = value;
-                OnPropertyChanged();
-            }
-        }
-
-        public double Might
+    public double FactionFlagsPerHour {
+        get
         {
-            get => _might;
-            // ReSharper disable once UnusedMember.Local
-            private set
+            if (double.IsNaN(_factionFlagsPerHour))
             {
-                _might = value;
-                MightPerHour = Utilities.GetValuePerHourToDouble(Might, TotalRunTimeInSeconds <= 0 ? (DateTime.UtcNow - EnterDungeonFirstTime).Seconds : TotalRunTimeInSeconds);
-
-                if (Might > 0 && IsMightFavorVisible != Visibility.Visible)
-                {
-                    IsMightFavorVisible = Visibility.Visible;
-                    IsFactionWarfareVisible = Visibility.Collapsed;
-                }
-                OnPropertyChanged();
+                return 0;
             }
-        }
 
-        public double Favor
+            return _factionFlagsPerHour;
+        }
+        private set
         {
-            get => _favor;
-            // ReSharper disable once UnusedMember.Local
-            private set
-            {
-                _favor = value;
-                FavorPerHour = Utilities.GetValuePerHourToDouble(Favor, TotalRunTimeInSeconds <= 0 ? (DateTime.UtcNow - EnterDungeonFirstTime).Seconds : TotalRunTimeInSeconds);
-
-                if (Favor > 0 && IsMightFavorVisible != Visibility.Visible)
-                {
-                    IsMightFavorVisible = Visibility.Visible;
-                    IsFactionWarfareVisible = Visibility.Collapsed;
-                }
-                OnPropertyChanged();
-            }
+            _factionFlagsPerHour = value;
+            OnPropertyChanged();
         }
+    }
 
-        public double MightPerHour
+    public double FactionCoinsPerHour {
+        get
         {
-            get
+            if (double.IsNaN(_factionCoinsPerHour))
             {
-                if (double.IsNaN(_mightPerHour))
-                {
-                    return 0;
-                }
+                return 0;
+            }
 
-                return _mightPerHour;
-            }
-            private set
-            {
-                _mightPerHour = value;
-                OnPropertyChanged();
-            }
+            return _factionCoinsPerHour;
         }
-
-        public double FavorPerHour
+        private set
         {
-            get
-            {
-                if (double.IsNaN(_favorPerHour))
-                {
-                    return 0;
-                }
-
-                return _favorPerHour;
-            }
-            private set
-            {
-                _favorPerHour = value;
-                OnPropertyChanged();
-            }
+            _factionCoinsPerHour = value;
+            OnPropertyChanged();
         }
+    }
 
-        public double FamePerHour
+    public double Might
+    {
+        get => _might;
+        // ReSharper disable once UnusedMember.Local
+        private set
         {
-            get
-            {
-                if (double.IsNaN(_famePerHour))
-                {
-                    return 0;
-                }
+            _might = value;
+            MightPerHour = Utilities.GetValuePerHourToDouble(Might, TotalRunTimeInSeconds <= 0 ? (DateTime.UtcNow - EnterDungeonFirstTime).Seconds : TotalRunTimeInSeconds);
 
-                return _famePerHour;
-            }
-            private set
+            if (Might > 0 && IsMightFavorVisible != Visibility.Visible)
             {
-                _famePerHour = value;
-                OnPropertyChanged();
+                IsMightFavorVisible = Visibility.Visible;
+                IsFactionWarfareVisible = Visibility.Collapsed;
             }
+            OnPropertyChanged();
         }
+    }
 
-        public double ReSpecPerHour
+    public double Favor
+    {
+        get => _favor;
+        // ReSharper disable once UnusedMember.Local
+        private set
         {
-            get {
-                if (double.IsNaN(_reSpecPerHour))
-                {
-                    return 0;
-                }
+            _favor = value;
+            FavorPerHour = Utilities.GetValuePerHourToDouble(Favor, TotalRunTimeInSeconds <= 0 ? (DateTime.UtcNow - EnterDungeonFirstTime).Seconds : TotalRunTimeInSeconds);
 
-                return _reSpecPerHour;
-            }
-            private set
+            if (Favor > 0 && IsMightFavorVisible != Visibility.Visible)
             {
-                _reSpecPerHour = value;
-                OnPropertyChanged();
+                IsMightFavorVisible = Visibility.Visible;
+                IsFactionWarfareVisible = Visibility.Collapsed;
             }
+            OnPropertyChanged();
         }
+    }
 
-        public double SilverPerHour
+    public double MightPerHour
+    {
+        get
         {
-            get {
-                if (double.IsNaN(_silverPerHour))
-                {
-                    return 0;
-                }
-
-                return _silverPerHour;
-            }
-            private set
+            if (double.IsNaN(_mightPerHour))
             {
-                _silverPerHour = value;
-                OnPropertyChanged();
+                return 0;
             }
-        }
 
-        public DungeonStatus Status
+            return _mightPerHour;
+        }
+        private set
         {
-            get => _status;
-            set
-            {
-                _status = value;
-                OnPropertyChanged();
-            }
+            _mightPerHour = value;
+            OnPropertyChanged();
         }
+    }
 
-        public Visibility IsFactionWarfareVisible {
-            get => _isFactionWarfareVisible;
-            set
-            {
-                _isFactionWarfareVisible = value;
-                OnPropertyChanged();
-            }
-        }
-
-        public Visibility IsMightFavorVisible {
-            get => _isMightFavorVisible;
-            set
-            {
-                _isMightFavorVisible = value;
-                OnPropertyChanged();
-            }
-        }
-
-        public bool IsBestTime
+    public double FavorPerHour
+    {
+        get
         {
-            get => _isBestTime;
-            set
+            if (double.IsNaN(_favorPerHour))
             {
-                _isBestTime = value;
-                OnPropertyChanged();
+                return 0;
             }
-        }
 
-        public bool IsBestFame
+            return _favorPerHour;
+        }
+        private set
         {
-            get => _isBestFame;
-            set
-            {
-                _isBestFame = value;
-                OnPropertyChanged();
-            }
+            _favorPerHour = value;
+            OnPropertyChanged();
         }
+    }
 
-        public bool IsBestReSpec
+    public double FamePerHour
+    {
+        get
         {
-            get => _isBestReSpec;
-            set
+            if (double.IsNaN(_famePerHour))
             {
-                _isBestReSpec = value;
-                OnPropertyChanged();
+                return 0;
             }
-        }
 
-        public bool IsBestSilver
+            return _famePerHour;
+        }
+        private set
         {
-            get => _isBestSilver;
-            set
-            {
-                _isBestSilver = value;
-                OnPropertyChanged();
-            }
+            _famePerHour = value;
+            OnPropertyChanged();
         }
+    }
 
-        public bool IsBestFactionCoins {
-            get => _isBestFactionCoins;
-            set
+    public double ReSpecPerHour
+    {
+        get {
+            if (double.IsNaN(_reSpecPerHour))
             {
-                _isBestFactionCoins = value;
-                OnPropertyChanged();
+                return 0;
             }
-        }
 
-        public bool IsBestFactionFlags {
-            get => _isBestFactionFlags;
-            set
-            {
-                _isBestFactionFlags = value;
-                OnPropertyChanged();
-            }
+            return _reSpecPerHour;
         }
-
-        public bool IsBestFactionFlagsPerHour {
-            get => _isBestFactionFlagsPerHour;
-            set
-            {
-                _isBestFactionFlagsPerHour = value;
-                OnPropertyChanged();
-            }
-        }
-
-        public bool IsBestFactionCoinsPerHour {
-            get => _isBestFactionCoinsPerHour;
-            set
-            {
-                _isBestFactionCoinsPerHour = value;
-                OnPropertyChanged();
-            }
-        }
-
-        public bool IsBestMight
+        private set
         {
-            get => _isBestMight;
-            set
-            {
-                _isBestMight = value;
-                OnPropertyChanged();
-            }
+            _reSpecPerHour = value;
+            OnPropertyChanged();
         }
+    }
 
-        public bool IsBestFavor
+    public double SilverPerHour
+    {
+        get {
+            if (double.IsNaN(_silverPerHour))
+            {
+                return 0;
+            }
+
+            return _silverPerHour;
+        }
+        private set
         {
-            get => _isBestFavor;
-            set
-            {
-                _isBestFavor = value;
-                OnPropertyChanged();
-            }
+            _silverPerHour = value;
+            OnPropertyChanged();
         }
+    }
 
-        public bool IsBestMightPerHour
+    public DungeonStatus Status
+    {
+        get => _status;
+        set
         {
-            get => _isBestMightPerHour;
-            set
-            {
-                _isBestMightPerHour = value;
-                OnPropertyChanged();
-            }
+            _status = value;
+            OnPropertyChanged();
         }
+    }
 
-        public bool IsBestFavorPerHour
+    public Visibility IsFactionWarfareVisible {
+        get => _isFactionWarfareVisible;
+        set
         {
-            get => _isBestFavorPerHour;
-            set
-            {
-                _isBestFavorPerHour = value;
-                OnPropertyChanged();
-            }
+            _isFactionWarfareVisible = value;
+            OnPropertyChanged();
         }
+    }
 
-        public bool IsBestFamePerHour
+    public Visibility IsMightFavorVisible {
+        get => _isMightFavorVisible;
+        set
         {
-            get => _isBestFamePerHour;
-            set
-            {
-                _isBestFamePerHour = value;
-                OnPropertyChanged();
-            }
+            _isMightFavorVisible = value;
+            OnPropertyChanged();
         }
+    }
 
-        public bool IsBestReSpecPerHour
+    public bool IsBestTime
+    {
+        get => _isBestTime;
+        set
         {
-            get => _isBestReSpecPerHour;
-            set
-            {
-                _isBestReSpecPerHour = value;
-                OnPropertyChanged();
-            }
+            _isBestTime = value;
+            OnPropertyChanged();
         }
+    }
 
-        public bool IsBestSilverPerHour
+    public bool IsBestFame
+    {
+        get => _isBestFame;
+        set
         {
-            get => _isBestSilverPerHour;
-            set
-            {
-                _isBestSilverPerHour = value;
-                OnPropertyChanged();
-            }
+            _isBestFame = value;
+            OnPropertyChanged();
         }
+    }
 
-        public bool? IsSelectedForDeletion 
+    public bool IsBestReSpec
+    {
+        get => _isBestReSpec;
+        set
         {
-            get => _isSelectedForDeletion;
-            set
-            {
-                _isSelectedForDeletion = value;
-                OnPropertyChanged();
-            }
+            _isBestReSpec = value;
+            OnPropertyChanged();
         }
+    }
 
-        [JsonIgnore] public static string TranslationSelectToDelete => LanguageController.Translation("SELECT_TO_DELETE");
-        [JsonIgnore] public static string TranslationDungeonFame => LanguageController.Translation("DUNGEON_FAME");
-        [JsonIgnore] public static string TranslationDungeonReSpec => LanguageController.Translation("DUNGEON_RESPEC");
-        [JsonIgnore] public static string TranslationDungeonSilver => LanguageController.Translation("DUNGEON_SILVER");
-        [JsonIgnore] public static string TranslationDungeonFamePerHour => LanguageController.Translation("DUNGEON_FAME_PER_HOUR");
-        [JsonIgnore] public static string TranslationDungeonReSpecPerHour => LanguageController.Translation("DUNGEON_RESPEC_PER_HOUR");
-        [JsonIgnore] public static string TranslationDungeonSilverPerHour => LanguageController.Translation("DUNGEON_SILVER_PER_HOUR");
-        [JsonIgnore] public static string TranslationDungeonRunTime => LanguageController.Translation("DUNGEON_RUN_TIME");
-        [JsonIgnore] public static string TranslationNumberOfDungeonFloors => LanguageController.Translation("NUMBER_OF_DUNGEON_FLOORS");
-        [JsonIgnore] public static string TranslationExpedition => LanguageController.Translation("EXPEDITION");
-        [JsonIgnore] public static string TranslationSolo => LanguageController.Translation("SOLO");
-        [JsonIgnore] public static string TranslationStandard => LanguageController.Translation("STANDARD");
-        [JsonIgnore] public static string TranslationAvalon => LanguageController.Translation("AVALON");
-        [JsonIgnore] public static string TranslationUnknown => LanguageController.Translation("UNKNOWN");
-        [JsonIgnore] public static string TranslationFactionFlags => LanguageController.Translation("FACTION_FLAGS");
-        [JsonIgnore] public static string TranslationFactionFlagsPerHour => LanguageController.Translation("FACTION_FLAGS_PER_HOUR");
-        [JsonIgnore] public static string TranslationFactionCoins => LanguageController.Translation("FACTION_COINS");
-        [JsonIgnore] public static string TranslationFactionCoinsPerHour => LanguageController.Translation("FACTION_COINS_PER_HOUR");
-        [JsonIgnore] public static string TranslationMight => LanguageController.Translation("MIGHT");
-        [JsonIgnore] public static string TranslationMightPerHour => LanguageController.Translation("MIGHT_PER_HOUR");
-        [JsonIgnore] public static string TranslationFavor => LanguageController.Translation("FAVOR");
-        [JsonIgnore] public static string TranslationFavorPerHour => LanguageController.Translation("FAVOR_PER_HOUR");
-        [JsonIgnore] public static string TranslationBestLootedItem => LanguageController.Translation("BEST_LOOTED_ITEM");
-        [JsonIgnore] public static string TranslationTotalLootedValue => LanguageController.Translation("TOTAL_LOOT_VALUE");
+    public bool IsBestSilver
+    {
+        get => _isBestSilver;
+        set
+        {
+            _isBestSilver = value;
+            OnPropertyChanged();
+        }
+    }
 
-        public event PropertyChangedEventHandler PropertyChanged;
+    public bool IsBestFactionCoins {
+        get => _isBestFactionCoins;
+        set
+        {
+            _isBestFactionCoins = value;
+            OnPropertyChanged();
+        }
+    }
+
+    public bool IsBestFactionFlags {
+        get => _isBestFactionFlags;
+        set
+        {
+            _isBestFactionFlags = value;
+            OnPropertyChanged();
+        }
+    }
+
+    public bool IsBestFactionFlagsPerHour {
+        get => _isBestFactionFlagsPerHour;
+        set
+        {
+            _isBestFactionFlagsPerHour = value;
+            OnPropertyChanged();
+        }
+    }
+
+    public bool IsBestFactionCoinsPerHour {
+        get => _isBestFactionCoinsPerHour;
+        set
+        {
+            _isBestFactionCoinsPerHour = value;
+            OnPropertyChanged();
+        }
+    }
+
+    public bool IsBestMight
+    {
+        get => _isBestMight;
+        set
+        {
+            _isBestMight = value;
+            OnPropertyChanged();
+        }
+    }
+
+    public bool IsBestFavor
+    {
+        get => _isBestFavor;
+        set
+        {
+            _isBestFavor = value;
+            OnPropertyChanged();
+        }
+    }
+
+    public bool IsBestMightPerHour
+    {
+        get => _isBestMightPerHour;
+        set
+        {
+            _isBestMightPerHour = value;
+            OnPropertyChanged();
+        }
+    }
+
+    public bool IsBestFavorPerHour
+    {
+        get => _isBestFavorPerHour;
+        set
+        {
+            _isBestFavorPerHour = value;
+            OnPropertyChanged();
+        }
+    }
+
+    public bool IsBestFamePerHour
+    {
+        get => _isBestFamePerHour;
+        set
+        {
+            _isBestFamePerHour = value;
+            OnPropertyChanged();
+        }
+    }
+
+    public bool IsBestReSpecPerHour
+    {
+        get => _isBestReSpecPerHour;
+        set
+        {
+            _isBestReSpecPerHour = value;
+            OnPropertyChanged();
+        }
+    }
+
+    public bool IsBestSilverPerHour
+    {
+        get => _isBestSilverPerHour;
+        set
+        {
+            _isBestSilverPerHour = value;
+            OnPropertyChanged();
+        }
+    }
+
+    public bool? IsSelectedForDeletion 
+    {
+        get => _isSelectedForDeletion;
+        set
+        {
+            _isSelectedForDeletion = value;
+            OnPropertyChanged();
+        }
+    }
+
+    [JsonIgnore] public static string TranslationSelectToDelete => LanguageController.Translation("SELECT_TO_DELETE");
+    [JsonIgnore] public static string TranslationDungeonFame => LanguageController.Translation("DUNGEON_FAME");
+    [JsonIgnore] public static string TranslationDungeonReSpec => LanguageController.Translation("DUNGEON_RESPEC");
+    [JsonIgnore] public static string TranslationDungeonSilver => LanguageController.Translation("DUNGEON_SILVER");
+    [JsonIgnore] public static string TranslationDungeonFamePerHour => LanguageController.Translation("DUNGEON_FAME_PER_HOUR");
+    [JsonIgnore] public static string TranslationDungeonReSpecPerHour => LanguageController.Translation("DUNGEON_RESPEC_PER_HOUR");
+    [JsonIgnore] public static string TranslationDungeonSilverPerHour => LanguageController.Translation("DUNGEON_SILVER_PER_HOUR");
+    [JsonIgnore] public static string TranslationDungeonRunTime => LanguageController.Translation("DUNGEON_RUN_TIME");
+    [JsonIgnore] public static string TranslationNumberOfDungeonFloors => LanguageController.Translation("NUMBER_OF_DUNGEON_FLOORS");
+    [JsonIgnore] public static string TranslationExpedition => LanguageController.Translation("EXPEDITION");
+    [JsonIgnore] public static string TranslationSolo => LanguageController.Translation("SOLO");
+    [JsonIgnore] public static string TranslationStandard => LanguageController.Translation("STANDARD");
+    [JsonIgnore] public static string TranslationAvalon => LanguageController.Translation("AVALON");
+    [JsonIgnore] public static string TranslationUnknown => LanguageController.Translation("UNKNOWN");
+    [JsonIgnore] public static string TranslationFactionFlags => LanguageController.Translation("FACTION_FLAGS");
+    [JsonIgnore] public static string TranslationFactionFlagsPerHour => LanguageController.Translation("FACTION_FLAGS_PER_HOUR");
+    [JsonIgnore] public static string TranslationFactionCoins => LanguageController.Translation("FACTION_COINS");
+    [JsonIgnore] public static string TranslationFactionCoinsPerHour => LanguageController.Translation("FACTION_COINS_PER_HOUR");
+    [JsonIgnore] public static string TranslationMight => LanguageController.Translation("MIGHT");
+    [JsonIgnore] public static string TranslationMightPerHour => LanguageController.Translation("MIGHT_PER_HOUR");
+    [JsonIgnore] public static string TranslationFavor => LanguageController.Translation("FAVOR");
+    [JsonIgnore] public static string TranslationFavorPerHour => LanguageController.Translation("FAVOR_PER_HOUR");
+    [JsonIgnore] public static string TranslationBestLootedItem => LanguageController.Translation("BEST_LOOTED_ITEM");
+    [JsonIgnore] public static string TranslationTotalLootedValue => LanguageController.Translation("TOTAL_LOOT_VALUE");
+
+    public event PropertyChangedEventHandler PropertyChanged;
         
-        [NotifyPropertyChangedInvocator]
-        protected virtual void OnPropertyChanged([CallerMemberName] string propertyName = null)
-        {
-            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
-        }
+    [NotifyPropertyChangedInvocator]
+    protected virtual void OnPropertyChanged([CallerMemberName] string propertyName = null)
+    {
+        PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
     }
 }

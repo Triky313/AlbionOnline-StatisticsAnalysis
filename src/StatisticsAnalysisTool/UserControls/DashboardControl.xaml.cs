@@ -8,56 +8,55 @@ using System.Reflection;
 using System.Windows;
 using System.Windows.Input;
 
-namespace StatisticsAnalysisTool.UserControls
+namespace StatisticsAnalysisTool.UserControls;
+
+/// <summary>
+/// Interaction logic for DashboardControl.xaml
+/// </summary>
+public partial class DashboardControl
 {
-    /// <summary>
-    /// Interaction logic for DashboardControl.xaml
-    /// </summary>
-    public partial class DashboardControl
+    private static readonly ILog Log = LogManager.GetLogger(MethodBase.GetCurrentMethod()?.DeclaringType);
+
+    public DashboardControl()
     {
-        private static readonly ILog Log = LogManager.GetLogger(MethodBase.GetCurrentMethod()?.DeclaringType);
-
-        public DashboardControl()
-        {
-            InitializeComponent();
-        }
-
-        private void OpenDashboardWindow()
-        {
-            try
-            {
-                if (Utilities.IsWindowOpen<DashboardWindow>())
-                {
-                    var existItemWindow = Application.Current.Windows.OfType<DashboardWindow>().FirstOrDefault();
-                    existItemWindow?.Activate();
-                }
-                else
-                {
-                    var vm = (MainWindowViewModel)DataContext;
-                    var itemWindow = new DashboardWindow(vm?.DashboardBindings, vm?.FactionPointStats);
-                    itemWindow.Show();
-                }
-            }
-            catch (Exception e)
-            {
-                ConsoleManager.WriteLineForError(MethodBase.GetCurrentMethod()?.DeclaringType, e);
-                Log.Error(MethodBase.GetCurrentMethod()?.DeclaringType, e);
-            }
-        }
-
-        #region Ui events
-
-        private void BtnTrackingReset_Click(object sender, RoutedEventArgs e)
-        {
-            var vm = (MainWindowViewModel)DataContext;
-            vm?.TrackingController?.LiveStatsTracker?.Reset();
-        }
-
-        private void OpenDashboardWindow_MouseUp(object sender, MouseButtonEventArgs e)
-        {
-            OpenDashboardWindow();
-        }
-
-        #endregion
+        InitializeComponent();
     }
+
+    private void OpenDashboardWindow()
+    {
+        try
+        {
+            if (Utilities.IsWindowOpen<DashboardWindow>())
+            {
+                var existItemWindow = Application.Current.Windows.OfType<DashboardWindow>().FirstOrDefault();
+                existItemWindow?.Activate();
+            }
+            else
+            {
+                var vm = (MainWindowViewModel)DataContext;
+                var itemWindow = new DashboardWindow(vm?.DashboardBindings, vm?.FactionPointStats);
+                itemWindow.Show();
+            }
+        }
+        catch (Exception e)
+        {
+            ConsoleManager.WriteLineForError(MethodBase.GetCurrentMethod()?.DeclaringType, e);
+            Log.Error(MethodBase.GetCurrentMethod()?.DeclaringType, e);
+        }
+    }
+
+    #region Ui events
+
+    private void BtnTrackingReset_Click(object sender, RoutedEventArgs e)
+    {
+        var vm = (MainWindowViewModel)DataContext;
+        vm?.TrackingController?.LiveStatsTracker?.Reset();
+    }
+
+    private void OpenDashboardWindow_MouseUp(object sender, MouseButtonEventArgs e)
+    {
+        OpenDashboardWindow();
+    }
+
+    #endregion
 }

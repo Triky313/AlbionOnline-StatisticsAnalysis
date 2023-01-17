@@ -2,20 +2,19 @@
 using StatisticsAnalysisTool.Network.Manager;
 using System.Threading.Tasks;
 
-namespace StatisticsAnalysisTool.Network.Handler
+namespace StatisticsAnalysisTool.Network.Handler;
+
+public class InventoryPutItemEventHandler
 {
-    public class InventoryPutItemEventHandler
+    private readonly TrackingController _trackingController;
+
+    public InventoryPutItemEventHandler(TrackingController trackingController)
     {
-        private readonly TrackingController _trackingController;
+        _trackingController = trackingController;
+    }
 
-        public InventoryPutItemEventHandler(TrackingController trackingController)
-        {
-            _trackingController = trackingController;
-        }
-
-        public async Task OnActionAsync(InventoryPutItemEvent value)
-        {
-            await Task.CompletedTask;
-        }
+    public async Task OnActionAsync(InventoryPutItemEvent value)
+    {
+        await Task.CompletedTask;
     }
 }

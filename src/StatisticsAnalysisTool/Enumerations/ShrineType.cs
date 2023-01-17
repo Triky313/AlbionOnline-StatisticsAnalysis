@@ -1,9 +1,8 @@
-﻿namespace StatisticsAnalysisTool.Enumerations
+﻿namespace StatisticsAnalysisTool.Enumerations;
+
+public enum ShrineType
 {
-    public enum ShrineType
-    {
-        Unknown,
-        Combat,
-        Standard
-    }
+    Unknown,
+    Combat,
+    Standard
 }

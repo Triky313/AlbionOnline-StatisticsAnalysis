@@ -3,30 +3,29 @@ using StatisticsAnalysisTool.Network.Events;
 using StatisticsAnalysisTool.Network.Manager;
 using System.Threading.Tasks;
 
-namespace StatisticsAnalysisTool.Network.Handler
+namespace StatisticsAnalysisTool.Network.Handler;
+
+public class UpdateReSpecPointsEventHandler
 {
-    public class UpdateReSpecPointsEventHandler
+    private readonly TrackingController _trackingController;
+    private readonly LiveStatsTracker _liveStatsTracker;
+
+    public UpdateReSpecPointsEventHandler(TrackingController trackingController)
     {
-        private readonly TrackingController _trackingController;
-        private readonly LiveStatsTracker _liveStatsTracker;
+        _trackingController = trackingController;
+        _liveStatsTracker = _trackingController?.LiveStatsTracker;
+    }
 
-        public UpdateReSpecPointsEventHandler(TrackingController trackingController)
+    public async Task OnActionAsync(UpdateReSpecPointsEvent value)
+    {
+        if (value?.CurrentTotalReSpecPoints != null)
         {
-            _trackingController = trackingController;
-            _liveStatsTracker = _trackingController?.LiveStatsTracker;
+            _liveStatsTracker.Add(ValueType.ReSpec, value.GainedReSpecPoints.DoubleValue);
+            _liveStatsTracker.Add(ValueType.PaidSilverForReSpec, value.PaidSilver.DoubleValue);
+            _trackingController.DungeonController?.AddValueToDungeon(value.GainedReSpecPoints.DoubleValue, ValueType.ReSpec);
+            _trackingController.StatisticController?.AddValue(ValueType.ReSpec, value.GainedReSpecPoints.DoubleValue);
         }
 
-        public async Task OnActionAsync(UpdateReSpecPointsEvent value)
-        {
-            if (value?.CurrentTotalReSpecPoints != null)
-            {
-                _liveStatsTracker.Add(ValueType.ReSpec, value.GainedReSpecPoints.DoubleValue);
-                _liveStatsTracker.Add(ValueType.PaidSilverForReSpec, value.PaidSilver.DoubleValue);
-                _trackingController.DungeonController?.AddValueToDungeon(value.GainedReSpecPoints.DoubleValue, ValueType.ReSpec);
-                _trackingController.StatisticController?.AddValue(ValueType.ReSpec, value.GainedReSpecPoints.DoubleValue);
-            }
-
-            await Task.CompletedTask;
-        }
+        await Task.CompletedTask;
     }
 }

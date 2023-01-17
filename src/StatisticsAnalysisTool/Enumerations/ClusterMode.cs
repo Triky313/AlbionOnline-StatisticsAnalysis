@@ -1,14 +1,13 @@
-﻿namespace StatisticsAnalysisTool.Enumerations
+﻿namespace StatisticsAnalysisTool.Enumerations;
+
+public enum ClusterMode
 {
-    public enum ClusterMode
-    {
-        Unknown,
-        SafeArea,
-        Yellow,
-        Red,
-        Black,
-        AvalonTunnel,
-        Island,
-        Mists
-    }
+    Unknown,
+    SafeArea,
+    Yellow,
+    Red,
+    Black,
+    AvalonTunnel,
+    Island,
+    Mists
 }

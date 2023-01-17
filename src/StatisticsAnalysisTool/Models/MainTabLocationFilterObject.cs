@@ -4,51 +4,50 @@ using StatisticsAnalysisTool.Properties;
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
 
-namespace StatisticsAnalysisTool.Models
+namespace StatisticsAnalysisTool.Models;
+
+public class MainTabLocationFilterObject : INotifyPropertyChanged
 {
-    public class MainTabLocationFilterObject : INotifyPropertyChanged
+    private bool? _isChecked;
+    private string _name;
+
+    public event Action OnCheckedChanged;
+
+    public MainTabLocationFilterObject(MarketLocation location, string name, bool isChecked)
     {
-        private bool? _isChecked;
-        private string _name;
+        Location = location;
+        Name = name;
+        IsChecked = isChecked;
+    }
 
-        public event Action OnCheckedChanged;
+    public MarketLocation Location { get; }
 
-        public MainTabLocationFilterObject(MarketLocation location, string name, bool isChecked)
+    public bool? IsChecked
+    {
+        get => _isChecked;
+        set
         {
-            Location = location;
-            Name = name;
-            IsChecked = isChecked;
+            _isChecked = value;
+            OnCheckedChanged?.Invoke();
+            OnPropertyChanged();
         }
+    }
 
-        public MarketLocation Location { get; }
-
-        public bool? IsChecked
+    public string Name
+    {
+        get => _name;
+        set
         {
-            get => _isChecked;
-            set
-            {
-                _isChecked = value;
-                OnCheckedChanged?.Invoke();
-                OnPropertyChanged();
-            }
+            _name = value;
+            OnPropertyChanged();
         }
+    }
 
-        public string Name
-        {
-            get => _name;
-            set
-            {
-                _name = value;
-                OnPropertyChanged();
-            }
-        }
+    public event PropertyChangedEventHandler PropertyChanged;
 
-        public event PropertyChangedEventHandler PropertyChanged;
-
-        [NotifyPropertyChangedInvocator]
-        protected virtual void OnPropertyChanged([CallerMemberName] string propertyName = null)
-        {
-            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
-        }
+    [NotifyPropertyChangedInvocator]
+    protected virtual void OnPropertyChanged([CallerMemberName] string propertyName = null)
+    {
+        PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
     }
 }

@@ -3,23 +3,22 @@ using System;
 using System.Threading.Tasks;
 using StatisticsAnalysisTool.Network.Events;
 
-namespace StatisticsAnalysisTool.Network.Handler
+namespace StatisticsAnalysisTool.Network.Handler;
+
+public class PartyPlayerJoinedEventHandler
 {
-    public class PartyPlayerJoinedEventHandler
+    private readonly TrackingController _trackingController;
+
+    public PartyPlayerJoinedEventHandler(TrackingController trackingController)
     {
-        private readonly TrackingController _trackingController;
+        _trackingController = trackingController;
+    }
 
-        public PartyPlayerJoinedEventHandler(TrackingController trackingController)
+    public async Task OnActionAsync(PartyPlayerJoinedEvent value)
+    {
+        if (value?.UserGuid != null)
         {
-            _trackingController = trackingController;
-        }
-
-        public async Task OnActionAsync(PartyPlayerJoinedEvent value)
-        {
-            if (value?.UserGuid != null)
-            {
-                await _trackingController.EntityController.AddToPartyAsync((Guid)value.UserGuid, value.Username);
-            }
+            await _trackingController.EntityController.AddToPartyAsync((Guid)value.UserGuid, value.Username);
         }
     }
 }

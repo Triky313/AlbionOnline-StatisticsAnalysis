@@ -1,14 +1,13 @@
-﻿namespace StatisticsAnalysisTool.Enumerations
+﻿namespace StatisticsAnalysisTool.Enumerations;
+
+public enum Faction
 {
-    public enum Faction
-    {
-        Unknown,
-        Keeper,
-        Undead,
-        Morgana,
-        Heretic,
-        Avalon,
-        HellGate,
-        Corrupted
-    }
+    Unknown,
+    Keeper,
+    Undead,
+    Morgana,
+    Heretic,
+    Avalon,
+    HellGate,
+    Corrupted
 }

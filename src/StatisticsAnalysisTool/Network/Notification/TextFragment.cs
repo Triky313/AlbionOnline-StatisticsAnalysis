@@ -1,12 +1,11 @@
-﻿namespace StatisticsAnalysisTool.Network.Notification
-{
-    public class TextFragment : LineFragment
-    {
-        public TextFragment(string text)
-        {
-            Text = text;
-        }
+﻿namespace StatisticsAnalysisTool.Network.Notification;
 
-        public string Text { get; }
+public class TextFragment : LineFragment
+{
+    public TextFragment(string text)
+    {
+        Text = text;
     }
+
+    public string Text { get; }
 }

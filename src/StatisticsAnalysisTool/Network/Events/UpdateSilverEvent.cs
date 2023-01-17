@@ -4,30 +4,29 @@ using System;
 using System.Collections.Generic;
 using System.Reflection;
 
-namespace StatisticsAnalysisTool.Network
+namespace StatisticsAnalysisTool.Network;
+
+public class UpdateSilverEvent
 {
-    public class UpdateSilverEvent
+    private static readonly ILog Log = LogManager.GetLogger(MethodBase.GetCurrentMethod()?.DeclaringType);
+
+    public UpdateSilverEvent(Dictionary<byte, object> parameters)
     {
-        private static readonly ILog Log = LogManager.GetLogger(MethodBase.GetCurrentMethod()?.DeclaringType);
+        ConsoleManager.WriteLineForNetworkHandler(GetType().Name, parameters);
 
-        public UpdateSilverEvent(Dictionary<byte, object> parameters)
+        try
         {
-            ConsoleManager.WriteLineForNetworkHandler(GetType().Name, parameters);
-
-            try
+            if (parameters.ContainsKey(1))
             {
-                if (parameters.ContainsKey(1))
-                {
-                    CurrentPlayerSilver = FixPoint.FromInternalValue(parameters[1].ObjectToLong() ?? 0);
-                }
-            }
-            catch (ArgumentNullException e)
-            {
-                ConsoleManager.WriteLineForError(MethodBase.GetCurrentMethod()?.DeclaringType, e);
-                Log.Error(MethodBase.GetCurrentMethod()?.DeclaringType, e);
+                CurrentPlayerSilver = FixPoint.FromInternalValue(parameters[1].ObjectToLong() ?? 0);
             }
         }
-
-        public FixPoint CurrentPlayerSilver { get; }
+        catch (ArgumentNullException e)
+        {
+            ConsoleManager.WriteLineForError(MethodBase.GetCurrentMethod()?.DeclaringType, e);
+            Log.Error(MethodBase.GetCurrentMethod()?.DeclaringType, e);
+        }
     }
+
+    public FixPoint CurrentPlayerSilver { get; }
 }

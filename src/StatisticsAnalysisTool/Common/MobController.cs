@@ -1,10 +1,9 @@
-﻿namespace StatisticsAnalysisTool.Common
+﻿namespace StatisticsAnalysisTool.Common;
+
+public static class MobController
 {
-    public static class MobController
+    public static bool IsMob(string uniqueName)
     {
-        public static bool IsMob(string uniqueName)
-        {
-            return !string.IsNullOrEmpty(uniqueName) && uniqueName.Contains("@MOB");
-        }
+        return !string.IsNullOrEmpty(uniqueName) && uniqueName.Contains("@MOB");
     }
 }

@@ -10,214 +10,213 @@ using System.Runtime.CompilerServices;
 using System.Threading.Tasks;
 using System.Windows;
 
-namespace StatisticsAnalysisTool.ViewModels
+namespace StatisticsAnalysisTool.ViewModels;
+
+public class DonationViewModel : INotifyPropertyChanged
 {
-    public class DonationViewModel : INotifyPropertyChanged
+    private DonationTranslation _translation;
+    private List<Donation> _topDonationsAllTime;
+    private List<Donation> _topDonationsThisMonth;
+    private Visibility _donationsAllTimeVisibility = Visibility.Collapsed;
+    private Visibility _noTopDonationsVisibility = Visibility.Visible;
+    private Visibility _donationsThisMonthVisibility = Visibility.Collapsed;
+    private Visibility _noDonationsThisMonthVisibility = Visibility.Visible;
+    private List<Donation> _donations = new();
+    private List<Donation> _topRealMoneyDonations;
+    private Visibility _topRealMoneyDonationsVisibility = Visibility.Collapsed;
+    private Visibility _noTopRealMoneyDonationsVisibility = Visibility.Visible;
+
+    public DonationViewModel()
     {
-        private DonationTranslation _translation;
-        private List<Donation> _topDonationsAllTime;
-        private List<Donation> _topDonationsThisMonth;
-        private Visibility _donationsAllTimeVisibility = Visibility.Collapsed;
-        private Visibility _noTopDonationsVisibility = Visibility.Visible;
-        private Visibility _donationsThisMonthVisibility = Visibility.Collapsed;
-        private Visibility _noDonationsThisMonthVisibility = Visibility.Visible;
-        private List<Donation> _donations = new();
-        private List<Donation> _topRealMoneyDonations;
-        private Visibility _topRealMoneyDonationsVisibility = Visibility.Collapsed;
-        private Visibility _noTopRealMoneyDonationsVisibility = Visibility.Visible;
+        Translation = new DonationTranslation();
+        GetDonations();
+        SetDonationsUi();
+    }
 
-        public DonationViewModel()
-        {
-            Translation = new DonationTranslation();
-            GetDonations();
-            SetDonationsUi();
-        }
+    public void GetDonations()
+    {
+        var apiResult = Task.Run(async () => await ApiController.GetDonationsFromJsonAsync()).ConfigureAwait(false);
+        _donations = apiResult.GetAwaiter().GetResult();
+    }
 
-        public void GetDonations()
-        {
-            var apiResult = Task.Run(async () => await ApiController.GetDonationsFromJsonAsync()).ConfigureAwait(false);
-            _donations = apiResult.GetAwaiter().GetResult();
-        }
+    public void SetDonationsUi()
+    {
+        var currentUtc = DateTime.UtcNow;
 
-        public void SetDonationsUi()
-        {
-            var currentUtc = DateTime.UtcNow;
-
-            TopDonationsAllTime = _donations?
-                .Where(x => x.IsDonationRealMoney == false)
-                // ReSharper disable once ConstantConditionalAccessQualifier
-                .GroupBy(x => x?.Contributor)
-                .Select(arg => new Donation
-                {
-                    Contributor = arg?.Key,
-                    IsDonationRealMoney = arg?.FirstOrDefault()?.IsDonationRealMoney ?? false,
-                    Timestamp = arg?.FirstOrDefault()?.Timestamp ?? new DateTime(),
-                    Amount = arg?.Sum(x => x?.Amount ?? 0L) is not null ? arg.Sum(x => x?.Amount ?? 0L) : 0L
-                })
-                .OrderByDescending(x => x.Amount)
-                .ToList();
-
-            TopDonationsThisMonth = _donations?
-                .Where(x => x?.IsDonationRealMoney == false && x.Timestamp.Year == currentUtc.Year && x.Timestamp.Month == currentUtc.Month)
-                // ReSharper disable once ConstantConditionalAccessQualifier
-                .GroupBy(x => x?.Contributor)
-                .Select(arg => new Donation
-                {
-                    Contributor = arg?.Key,
-                    IsDonationRealMoney = arg?.FirstOrDefault()?.IsDonationRealMoney ?? false,
-                    Timestamp = arg?.FirstOrDefault()?.Timestamp ?? new DateTime(),
-                    Amount = arg?.Sum(x => x?.Amount ?? 0L) is not null ? arg.Sum(x => x?.Amount ?? 0L) : 0L
-                })
-                .OrderByDescending(x => x.Amount)
-                .ToList();
-
-            TopRealMoneyDonations = _donations?
-                .Where(x => x.IsDonationRealMoney)
-                // ReSharper disable once ConstantConditionalAccessQualifier
-                .GroupBy(x => x?.Contributor)
-                .Select(arg => new Donation
-                {
-                    Contributor = arg?.Key,
-                    IsDonationRealMoney = arg?.FirstOrDefault()?.IsDonationRealMoney ?? false,
-                    Timestamp = arg?.FirstOrDefault()?.Timestamp ?? new DateTime(),
-                    RealMoneyAmount = arg?.Sum(x => x?.RealMoneyAmount ?? 0d) is not null ? arg.Sum(x => x?.RealMoneyAmount ?? 0d) : 0d
-                })
-                .OrderByDescending(x => x.RealMoneyAmount)
-                .ToList();
-
-            SetDonationListVisibility();
-        }
-
-        private void SetDonationListVisibility()
-        {
-            if (TopDonationsAllTime?.Count > 0)
+        TopDonationsAllTime = _donations?
+            .Where(x => x.IsDonationRealMoney == false)
+            // ReSharper disable once ConstantConditionalAccessQualifier
+            .GroupBy(x => x?.Contributor)
+            .Select(arg => new Donation
             {
-                DonationsAllTimeVisibility = Visibility.Visible;
-                NoTopDonationsVisibility = Visibility.Collapsed;
-            }
+                Contributor = arg?.Key,
+                IsDonationRealMoney = arg?.FirstOrDefault()?.IsDonationRealMoney ?? false,
+                Timestamp = arg?.FirstOrDefault()?.Timestamp ?? new DateTime(),
+                Amount = arg?.Sum(x => x?.Amount ?? 0L) is not null ? arg.Sum(x => x?.Amount ?? 0L) : 0L
+            })
+            .OrderByDescending(x => x.Amount)
+            .ToList();
 
-            if (TopDonationsThisMonth?.Count > 0)
+        TopDonationsThisMonth = _donations?
+            .Where(x => x?.IsDonationRealMoney == false && x.Timestamp.Year == currentUtc.Year && x.Timestamp.Month == currentUtc.Month)
+            // ReSharper disable once ConstantConditionalAccessQualifier
+            .GroupBy(x => x?.Contributor)
+            .Select(arg => new Donation
             {
-                DonationsThisMonthVisibility = Visibility.Visible;
-                NoDonationsThisMonthVisibility = Visibility.Collapsed;
-            }
+                Contributor = arg?.Key,
+                IsDonationRealMoney = arg?.FirstOrDefault()?.IsDonationRealMoney ?? false,
+                Timestamp = arg?.FirstOrDefault()?.Timestamp ?? new DateTime(),
+                Amount = arg?.Sum(x => x?.Amount ?? 0L) is not null ? arg.Sum(x => x?.Amount ?? 0L) : 0L
+            })
+            .OrderByDescending(x => x.Amount)
+            .ToList();
 
-            if (TopRealMoneyDonations?.Count > 0)
+        TopRealMoneyDonations = _donations?
+            .Where(x => x.IsDonationRealMoney)
+            // ReSharper disable once ConstantConditionalAccessQualifier
+            .GroupBy(x => x?.Contributor)
+            .Select(arg => new Donation
             {
-                TopRealMoneyDonationsVisibility = Visibility.Visible;
-                NoTopRealMoneyDonationsVisibility = Visibility.Collapsed;
-            }
-        }
+                Contributor = arg?.Key,
+                IsDonationRealMoney = arg?.FirstOrDefault()?.IsDonationRealMoney ?? false,
+                Timestamp = arg?.FirstOrDefault()?.Timestamp ?? new DateTime(),
+                RealMoneyAmount = arg?.Sum(x => x?.RealMoneyAmount ?? 0d) is not null ? arg.Sum(x => x?.RealMoneyAmount ?? 0d) : 0d
+            })
+            .OrderByDescending(x => x.RealMoneyAmount)
+            .ToList();
 
-        public List<Donation> TopDonationsAllTime
+        SetDonationListVisibility();
+    }
+
+    private void SetDonationListVisibility()
+    {
+        if (TopDonationsAllTime?.Count > 0)
         {
-            get => _topDonationsAllTime;
-            set
-            {
-                _topDonationsAllTime = value;
-                OnPropertyChanged();
-            }
+            DonationsAllTimeVisibility = Visibility.Visible;
+            NoTopDonationsVisibility = Visibility.Collapsed;
         }
 
-        public List<Donation> TopDonationsThisMonth
+        if (TopDonationsThisMonth?.Count > 0)
         {
-            get => _topDonationsThisMonth;
-            set
-            {
-                _topDonationsThisMonth = value;
-                OnPropertyChanged();
-            }
+            DonationsThisMonthVisibility = Visibility.Visible;
+            NoDonationsThisMonthVisibility = Visibility.Collapsed;
         }
 
-        public List<Donation> TopRealMoneyDonations
+        if (TopRealMoneyDonations?.Count > 0)
         {
-            get => _topRealMoneyDonations;
-            set
-            {
-                _topRealMoneyDonations = value;
-                OnPropertyChanged();
-            }
+            TopRealMoneyDonationsVisibility = Visibility.Visible;
+            NoTopRealMoneyDonationsVisibility = Visibility.Collapsed;
         }
+    }
 
-        public Visibility DonationsAllTimeVisibility
+    public List<Donation> TopDonationsAllTime
+    {
+        get => _topDonationsAllTime;
+        set
         {
-            get => _donationsAllTimeVisibility;
-            set
-            {
-                _donationsAllTimeVisibility = value;
-                OnPropertyChanged();
-            }
+            _topDonationsAllTime = value;
+            OnPropertyChanged();
         }
+    }
 
-        public Visibility NoTopDonationsVisibility
+    public List<Donation> TopDonationsThisMonth
+    {
+        get => _topDonationsThisMonth;
+        set
         {
-            get => _noTopDonationsVisibility;
-            set
-            {
-                _noTopDonationsVisibility = value;
-                OnPropertyChanged();
-            }
+            _topDonationsThisMonth = value;
+            OnPropertyChanged();
         }
+    }
 
-        public Visibility DonationsThisMonthVisibility
+    public List<Donation> TopRealMoneyDonations
+    {
+        get => _topRealMoneyDonations;
+        set
         {
-            get => _donationsThisMonthVisibility;
-            set
-            {
-                _donationsThisMonthVisibility = value;
-                OnPropertyChanged();
-            }
+            _topRealMoneyDonations = value;
+            OnPropertyChanged();
         }
+    }
 
-        public Visibility NoDonationsThisMonthVisibility
+    public Visibility DonationsAllTimeVisibility
+    {
+        get => _donationsAllTimeVisibility;
+        set
         {
-            get => _noDonationsThisMonthVisibility;
-            set
-            {
-                _noDonationsThisMonthVisibility = value;
-                OnPropertyChanged();
-            }
+            _donationsAllTimeVisibility = value;
+            OnPropertyChanged();
         }
+    }
 
-        public Visibility TopRealMoneyDonationsVisibility
+    public Visibility NoTopDonationsVisibility
+    {
+        get => _noTopDonationsVisibility;
+        set
         {
-            get => _topRealMoneyDonationsVisibility;
-            set
-            {
-                _topRealMoneyDonationsVisibility = value;
-                OnPropertyChanged();
-            }
+            _noTopDonationsVisibility = value;
+            OnPropertyChanged();
         }
+    }
 
-        public Visibility NoTopRealMoneyDonationsVisibility
+    public Visibility DonationsThisMonthVisibility
+    {
+        get => _donationsThisMonthVisibility;
+        set
         {
-            get => _noTopRealMoneyDonationsVisibility;
-            set
-            {
-                _noTopRealMoneyDonationsVisibility = value;
-                OnPropertyChanged();
-            }
+            _donationsThisMonthVisibility = value;
+            OnPropertyChanged();
         }
+    }
 
-        public DonationTranslation Translation
+    public Visibility NoDonationsThisMonthVisibility
+    {
+        get => _noDonationsThisMonthVisibility;
+        set
         {
-            get => _translation;
-            set
-            {
-                _translation = value;
-                OnPropertyChanged();
-            }
+            _noDonationsThisMonthVisibility = value;
+            OnPropertyChanged();
         }
+    }
 
-        public static string PatreonUrl => Settings.Default.PatreonUrl;
-        public static string DonateUrl => Settings.Default.DonateUrl;
-
-        public event PropertyChangedEventHandler PropertyChanged;
-
-        [NotifyPropertyChangedInvocator]
-        protected virtual void OnPropertyChanged([CallerMemberName] string propertyName = null)
+    public Visibility TopRealMoneyDonationsVisibility
+    {
+        get => _topRealMoneyDonationsVisibility;
+        set
         {
-            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
+            _topRealMoneyDonationsVisibility = value;
+            OnPropertyChanged();
         }
+    }
+
+    public Visibility NoTopRealMoneyDonationsVisibility
+    {
+        get => _noTopRealMoneyDonationsVisibility;
+        set
+        {
+            _noTopRealMoneyDonationsVisibility = value;
+            OnPropertyChanged();
+        }
+    }
+
+    public DonationTranslation Translation
+    {
+        get => _translation;
+        set
+        {
+            _translation = value;
+            OnPropertyChanged();
+        }
+    }
+
+    public static string PatreonUrl => Settings.Default.PatreonUrl;
+    public static string DonateUrl => Settings.Default.DonateUrl;
+
+    public event PropertyChangedEventHandler PropertyChanged;
+
+    [NotifyPropertyChangedInvocator]
+    protected virtual void OnPropertyChanged([CallerMemberName] string propertyName = null)
+    {
+        PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
     }
 }

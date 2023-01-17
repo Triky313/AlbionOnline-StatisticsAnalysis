@@ -1,13 +1,12 @@
-﻿namespace StatisticsAnalysisTool.Enumerations
+﻿namespace StatisticsAnalysisTool.Enumerations;
+
+public enum DungeonMode
 {
-    public enum DungeonMode
-    {
-        Unknown,
-        Solo,
-        Standard,
-        Avalon,
-        HellGate,
-        Corrupted,
-        Expedition
-    }
+    Unknown,
+    Solo,
+    Standard,
+    Avalon,
+    HellGate,
+    Corrupted,
+    Expedition
 }

@@ -2,20 +2,19 @@
 using StatisticsAnalysisTool.Network.Manager;
 using System.Threading.Tasks;
 
-namespace StatisticsAnalysisTool.Network.Handler
+namespace StatisticsAnalysisTool.Network.Handler;
+
+public class GuildVaultInfoEventHandler
 {
-    public class GuildVaultInfoEventHandler
+    private readonly TrackingController _trackingController;
+
+    public GuildVaultInfoEventHandler(TrackingController trackingController)
     {
-        private readonly TrackingController _trackingController;
+        _trackingController = trackingController;
+    }
 
-        public GuildVaultInfoEventHandler(TrackingController trackingController)
-        {
-            _trackingController = trackingController;
-        }
-
-        public async Task OnActionAsync(GuildVaultInfoEvent value)
-        {
-            await Task.CompletedTask;
-        }
+    public async Task OnActionAsync(GuildVaultInfoEvent value)
+    {
+        await Task.CompletedTask;
     }
 }

@@ -2,21 +2,20 @@
 using StatisticsAnalysisTool.Network.Manager;
 using System.Threading.Tasks;
 
-namespace StatisticsAnalysisTool.Network.Handler
+namespace StatisticsAnalysisTool.Network.Handler;
+
+public class PartyDisbandedEventHandler
 {
-    public class PartyDisbandedEventHandler
+    private readonly TrackingController _trackingController;
+
+    public PartyDisbandedEventHandler(TrackingController trackingController)
     {
-        private readonly TrackingController _trackingController;
+        _trackingController = trackingController;
+    }
 
-        public PartyDisbandedEventHandler(TrackingController trackingController)
-        {
-            _trackingController = trackingController;
-        }
-
-        public async Task OnActionAsync(PartyDisbandedEvent value)
-        {
-            await _trackingController.EntityController.ResetPartyMemberAsync();
-            await _trackingController.EntityController.AddLocalEntityToPartyAsync();
-        }
+    public async Task OnActionAsync(PartyDisbandedEvent value)
+    {
+        await _trackingController.EntityController.ResetPartyMemberAsync();
+        await _trackingController.EntityController.AddLocalEntityToPartyAsync();
     }
 }

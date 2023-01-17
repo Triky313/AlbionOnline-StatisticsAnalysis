@@ -3,27 +3,26 @@ using System;
 using System.Collections.Generic;
 using System.Reflection;
 
-namespace StatisticsAnalysisTool.Network.Handler
+namespace StatisticsAnalysisTool.Network.Handler;
+
+public class ReceivedSeasonPointsEvent
 {
-    public class ReceivedSeasonPointsEvent
+    public int SeasonPoints;
+
+    public ReceivedSeasonPointsEvent(Dictionary<byte, object> parameters)
     {
-        public int SeasonPoints;
+        ConsoleManager.WriteLineForNetworkHandler(GetType().Name, parameters);
 
-        public ReceivedSeasonPointsEvent(Dictionary<byte, object> parameters)
+        try
         {
-            ConsoleManager.WriteLineForNetworkHandler(GetType().Name, parameters);
-
-            try
+            if (parameters.ContainsKey(1))
             {
-                if (parameters.ContainsKey(1))
-                {
-                    SeasonPoints = parameters[1].ObjectToInt();
-                }
+                SeasonPoints = parameters[1].ObjectToInt();
             }
-            catch (Exception e)
-            {
-                ConsoleManager.WriteLineForError(MethodBase.GetCurrentMethod()?.DeclaringType, e);
-            }
+        }
+        catch (Exception e)
+        {
+            ConsoleManager.WriteLineForError(MethodBase.GetCurrentMethod()?.DeclaringType, e);
         }
     }
 }
