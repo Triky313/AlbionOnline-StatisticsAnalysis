@@ -2,14 +2,14 @@ name: 🛠️ Build + Unit tests
 
 on:
   push:
-    branches: [ main2 ]
+    branches: [ main ]
     paths-ignore:
       - '**/*.md'
       - '**/*.gitignore'
       - '**/*.gitattributes'
       - '**/donations.json'
   pull_request:
-    branches: [ main2 ]
+    branches: [ main ]
 
 jobs:
 

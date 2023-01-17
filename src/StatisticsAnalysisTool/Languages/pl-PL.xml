@@ -675,4 +675,8 @@
 	<translation name="THANK_YOU">Dziękuję tobie</translation>
 	<translation name="DUNGEON_CLOSED_SOUND_ACTIVE">Dzwięk zamykania lochu</translation>
 	<translation name="TOTAL_PRICE_WITH_DEDUCTED_TAXES">Cena całkowita z odliczonym podatkiem</translation>
+	<translation name="UPDATE_MOBS_JSON_BY_DAYS">Aktualizuj plik mobs.json według dni</translation>
+	<translation name="MOBS_JSON_SOURCE_URL">adres URL źródła mobs.json</translation>
+	<translation name="GET_MOBS_JSON">Pobierz plik mobs.json</translation>
+	<translation name="MOBS_JSON_CAN_NOT_BE_LOADED">nie można załadować pliku mobs.json</translation>
 </translations>
