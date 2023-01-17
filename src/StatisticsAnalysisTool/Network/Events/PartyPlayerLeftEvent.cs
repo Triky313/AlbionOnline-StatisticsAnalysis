@@ -3,27 +3,26 @@ using System.Collections.Generic;
 using System.Reflection;
 using StatisticsAnalysisTool.Common;
 
-namespace StatisticsAnalysisTool.Network.Events
+namespace StatisticsAnalysisTool.Network.Events;
+
+public class PartyPlayerLeftEvent
 {
-    public class PartyPlayerLeftEvent
+    public Guid? UserGuid;
+
+    public PartyPlayerLeftEvent(Dictionary<byte, object> parameters)
     {
-        public Guid? UserGuid;
+        ConsoleManager.WriteLineForNetworkHandler(GetType().Name, parameters);
 
-        public PartyPlayerLeftEvent(Dictionary<byte, object> parameters)
+        try
         {
-            ConsoleManager.WriteLineForNetworkHandler(GetType().Name, parameters);
-
-            try
+            if (parameters.ContainsKey(1))
             {
-                if (parameters.ContainsKey(1))
-                {
-                    UserGuid = parameters[1].ObjectToGuid();
-                }
+                UserGuid = parameters[1].ObjectToGuid();
             }
-            catch (Exception e)
-            {
-                ConsoleManager.WriteLineForError(MethodBase.GetCurrentMethod()?.DeclaringType, e);
-            }
+        }
+        catch (Exception e)
+        {
+            ConsoleManager.WriteLineForError(MethodBase.GetCurrentMethod()?.DeclaringType, e);
         }
     }
 }

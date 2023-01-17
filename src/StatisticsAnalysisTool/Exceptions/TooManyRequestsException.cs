@@ -1,8 +1,7 @@
 ﻿using System;
 
-namespace StatisticsAnalysisTool.Exceptions
+namespace StatisticsAnalysisTool.Exceptions;
+
+public class TooManyRequestsException : Exception
 {
-    public class TooManyRequestsException : Exception
-    {
-    }
 }

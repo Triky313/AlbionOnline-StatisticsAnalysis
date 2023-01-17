@@ -1,12 +1,11 @@
-﻿namespace StatisticsAnalysisTool.Enumerations
+﻿namespace StatisticsAnalysisTool.Enumerations;
+
+public enum DungeonEventObjectType
 {
-    public enum DungeonEventObjectType
-    {
-        Unknown,
-        Chest,
-        BookChest,
-        CombatShrine,
-        SilverShrine,
-        FameShrine
-    }
+    Unknown,
+    Chest,
+    BookChest,
+    CombatShrine,
+    SilverShrine,
+    FameShrine
 }

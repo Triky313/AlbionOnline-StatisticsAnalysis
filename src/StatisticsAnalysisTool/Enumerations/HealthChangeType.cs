@@ -1,8 +1,7 @@
-﻿namespace StatisticsAnalysisTool.Enumerations
+﻿namespace StatisticsAnalysisTool.Enumerations;
+
+public enum HealthChangeType
 {
-    public enum HealthChangeType
-    {
-        Damage,
-        Heal
-    }
+    Damage,
+    Heal
 }

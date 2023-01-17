@@ -2,24 +2,23 @@
 using StatisticsAnalysisTool.Network.Manager;
 using System.Threading.Tasks;
 
-namespace StatisticsAnalysisTool.Network.Handler
+namespace StatisticsAnalysisTool.Network.Handler;
+
+public class CharacterEquipmentChangedEventHandler
 {
-    public class CharacterEquipmentChangedEventHandler
+    private readonly TrackingController _trackingController;
+
+    public CharacterEquipmentChangedEventHandler(TrackingController trackingController)
     {
-        private readonly TrackingController _trackingController;
+        _trackingController = trackingController;
+    }
 
-        public CharacterEquipmentChangedEventHandler(TrackingController trackingController)
+    public async Task OnActionAsync(CharacterEquipmentChangedEvent value)
+    {
+        if (value.ObjectId != null)
         {
-            _trackingController = trackingController;
+            _trackingController.EntityController.SetCharacterEquipment((long)value.ObjectId, value.CharacterEquipment);
         }
-
-        public async Task OnActionAsync(CharacterEquipmentChangedEvent value)
-        {
-            if (value.ObjectId != null)
-            {
-                _trackingController.EntityController.SetCharacterEquipment((long)value.ObjectId, value.CharacterEquipment);
-            }
-            await Task.CompletedTask;
-        }
+        await Task.CompletedTask;
     }
 }

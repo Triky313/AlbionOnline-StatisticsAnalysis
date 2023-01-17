@@ -1,6 +1,5 @@
-﻿namespace StatisticsAnalysisTool.Network.Notification
+﻿namespace StatisticsAnalysisTool.Network.Notification;
+
+public abstract class LineFragment
 {
-    public abstract class LineFragment
-    {
-    }
 }

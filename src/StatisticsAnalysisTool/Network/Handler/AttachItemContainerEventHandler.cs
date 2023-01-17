@@ -2,27 +2,26 @@
 using StatisticsAnalysisTool.Network.Manager;
 using System.Threading.Tasks;
 
-namespace StatisticsAnalysisTool.Network.Handler
+namespace StatisticsAnalysisTool.Network.Handler;
+
+public class AttachItemContainerEventHandler
 {
-    public class AttachItemContainerEventHandler
+    private readonly TrackingController _trackingController;
+
+    public AttachItemContainerEventHandler(TrackingController trackingController)
     {
-        private readonly TrackingController _trackingController;
+        _trackingController = trackingController;
+    }
 
-        public AttachItemContainerEventHandler(TrackingController trackingController)
+    public async Task OnActionAsync(AttachItemContainerEvent value)
+    {
+        if (_trackingController.IsTrackingAllowedByMainCharacter())
         {
-            _trackingController = trackingController;
+            _trackingController.VaultController.AddContainer(value.ItemContainerObject);
         }
 
-        public async Task OnActionAsync(AttachItemContainerEvent value)
-        {
-            if (_trackingController.IsTrackingAllowedByMainCharacter())
-            {
-                _trackingController.VaultController.AddContainer(value.ItemContainerObject);
-            }
-
-            _trackingController.LootController.SetCurrentItemContainer(value.ItemContainerObject);
-            _trackingController.DungeonController.SetCurrentItemContainer(value.ItemContainerObject);
-            await Task.CompletedTask;
-        }
+        _trackingController.LootController.SetCurrentItemContainer(value.ItemContainerObject);
+        _trackingController.DungeonController.SetCurrentItemContainer(value.ItemContainerObject);
+        await Task.CompletedTask;
     }
 }

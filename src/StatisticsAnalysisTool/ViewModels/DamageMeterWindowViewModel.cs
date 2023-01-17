@@ -4,49 +4,48 @@ using System.ComponentModel;
 using System.Runtime.CompilerServices;
 using StatisticsAnalysisTool.Network.Notification;
 
-namespace StatisticsAnalysisTool.ViewModels
+namespace StatisticsAnalysisTool.ViewModels;
+
+public class DamageMeterWindowViewModel : INotifyPropertyChanged
 {
-    public class DamageMeterWindowViewModel : INotifyPropertyChanged
+    private ObservableCollection<DamageMeterFragment> _damageMeter;
+    private DamageMeterWindowTranslation _translation;
+
+    public DamageMeterWindowViewModel(ObservableCollection<DamageMeterFragment> damageMeter)
     {
-        private ObservableCollection<DamageMeterFragment> _damageMeter;
-        private DamageMeterWindowTranslation _translation;
+        DamageMeter = damageMeter;
+        Init();
+    }
 
-        public DamageMeterWindowViewModel(ObservableCollection<DamageMeterFragment> damageMeter)
+    private void Init()
+    {
+        Translation = new DamageMeterWindowTranslation();
+    }
+
+    public ObservableCollection<DamageMeterFragment> DamageMeter
+    {
+        get => _damageMeter;
+        set
         {
-            DamageMeter = damageMeter;
-            Init();
+            _damageMeter = value;
+            OnPropertyChanged();
         }
+    }
 
-        private void Init()
+    public DamageMeterWindowTranslation Translation
+    {
+        get => _translation;
+        set
         {
-            Translation = new DamageMeterWindowTranslation();
+            _translation = value;
+            OnPropertyChanged();
         }
+    }
 
-        public ObservableCollection<DamageMeterFragment> DamageMeter
-        {
-            get => _damageMeter;
-            set
-            {
-                _damageMeter = value;
-                OnPropertyChanged();
-            }
-        }
+    public event PropertyChangedEventHandler PropertyChanged;
 
-        public DamageMeterWindowTranslation Translation
-        {
-            get => _translation;
-            set
-            {
-                _translation = value;
-                OnPropertyChanged();
-            }
-        }
-
-        public event PropertyChangedEventHandler PropertyChanged;
-
-        protected virtual void OnPropertyChanged([CallerMemberName] string propertyName = null)
-        {
-            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
-        }
+    protected virtual void OnPropertyChanged([CallerMemberName] string propertyName = null)
+    {
+        PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
     }
 }

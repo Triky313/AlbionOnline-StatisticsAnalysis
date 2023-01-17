@@ -2,24 +2,23 @@
 using System.Threading.Tasks;
 using StatisticsAnalysisTool.Network.Events;
 
-namespace StatisticsAnalysisTool.Network.Handler
+namespace StatisticsAnalysisTool.Network.Handler;
+
+public class NewLootEventHandler
 {
-    public class NewLootEventHandler
+    private readonly TrackingController _trackingController;
+
+    public NewLootEventHandler(TrackingController trackingController)
     {
-        private readonly TrackingController _trackingController;
+        _trackingController = trackingController;
+    }
 
-        public NewLootEventHandler(TrackingController trackingController)
+    public async Task OnActionAsync(NewLootEvent value)
+    {
+        if (value?.ObjectId != null)
         {
-            _trackingController = trackingController;
+            _trackingController.LootController.SetIdentifiedBody((long)value.ObjectId, value.LootBody);
         }
-
-        public async Task OnActionAsync(NewLootEvent value)
-        {
-            if (value?.ObjectId != null)
-            {
-                _trackingController.LootController.SetIdentifiedBody((long)value.ObjectId, value.LootBody);
-            }
-            await Task.CompletedTask;
-        }
+        await Task.CompletedTask;
     }
 }

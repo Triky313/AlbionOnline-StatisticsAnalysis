@@ -2,21 +2,20 @@
 using StatisticsAnalysisTool.Network.Operations.Responses;
 using System.Threading.Tasks;
 
-namespace StatisticsAnalysisTool.Network.Handler
+namespace StatisticsAnalysisTool.Network.Handler;
+
+public class GetMailInfosResponseHandler
 {
-    public class GetMailInfosResponseHandler
+    private readonly TrackingController _trackingController;
+
+    public GetMailInfosResponseHandler(TrackingController trackingController)
     {
-        private readonly TrackingController _trackingController;
+        _trackingController = trackingController;
+    }
 
-        public GetMailInfosResponseHandler(TrackingController trackingController)
-        {
-            _trackingController = trackingController;
-        }
-
-        public async Task OnActionAsync(GetMailInfosResponse value)
-        {
-            _trackingController.MailController.SetMailInfos(value.MailInfos);
-            await Task.CompletedTask;
-        }
+    public async Task OnActionAsync(GetMailInfosResponse value)
+    {
+        _trackingController.MailController.SetMailInfos(value.MailInfos);
+        await Task.CompletedTask;
     }
 }

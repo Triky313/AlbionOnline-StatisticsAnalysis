@@ -3,21 +3,20 @@ using StatisticsAnalysisTool.Network.Operations.Responses;
 using System.Diagnostics;
 using System.Threading.Tasks;
 
-namespace StatisticsAnalysisTool.Network.Handler
+namespace StatisticsAnalysisTool.Network.Handler;
+
+public class UseLootChestEventHandler
 {
-    public class UseLootChestEventHandler
+    private readonly TrackingController _trackingController;
+
+    public UseLootChestEventHandler(TrackingController trackingController)
     {
-        private readonly TrackingController _trackingController;
+        _trackingController = trackingController;
+    }
 
-        public UseLootChestEventHandler(TrackingController trackingController)
-        {
-            _trackingController = trackingController;
-        }
-
-        public async Task OnActionAsync(UseLootChestResponse value)
-        {
-            Debug.Print($"Loot: {value.Item.LooterName}");
-            await Task.CompletedTask;
-        }
+    public async Task OnActionAsync(UseLootChestResponse value)
+    {
+        Debug.Print($"Loot: {value.Item.LooterName}");
+        await Task.CompletedTask;
     }
 }

@@ -1,11 +1,10 @@
-﻿namespace StatisticsAnalysisTool.Enumerations
+﻿namespace StatisticsAnalysisTool.Enumerations;
+
+public enum TreasureRarity
 {
-    public enum TreasureRarity
-    {
-        Unknown,
-        Standard,
-        Uncommon,
-        Rare,
-        Legendary
-    }
+    Unknown,
+    Standard,
+    Uncommon,
+    Rare,
+    Legendary
 }

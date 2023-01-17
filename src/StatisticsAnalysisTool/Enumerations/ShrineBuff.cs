@@ -1,10 +1,9 @@
-﻿namespace StatisticsAnalysisTool.Enumerations
+﻿namespace StatisticsAnalysisTool.Enumerations;
+
+public enum ShrineBuff
 {
-    public enum ShrineBuff
-    {
-        Unknown,
-        Fame,
-        Silver,
-        Combat
-    }
+    Unknown,
+    Fame,
+    Silver,
+    Combat
 }

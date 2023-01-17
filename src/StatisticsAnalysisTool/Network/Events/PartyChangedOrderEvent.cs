@@ -3,38 +3,37 @@ using System.Collections.Generic;
 using System.Reflection;
 using StatisticsAnalysisTool.Common;
 
-namespace StatisticsAnalysisTool.Network.Events
+namespace StatisticsAnalysisTool.Network.Events;
+
+public class PartyChangedOrderEvent
 {
-    public class PartyChangedOrderEvent
+    public Dictionary<Guid, string> PartyUsersGuid = new();
+
+    public PartyChangedOrderEvent(Dictionary<byte, object> parameters)
     {
-        public Dictionary<Guid, string> PartyUsersGuid = new();
+        ConsoleManager.WriteLineForNetworkHandler(GetType().Name, parameters);
 
-        public PartyChangedOrderEvent(Dictionary<byte, object> parameters)
+        try
         {
-            ConsoleManager.WriteLineForNetworkHandler(GetType().Name, parameters);
-
-            try
+            if (parameters.ContainsKey(0) && parameters[0] != null)
             {
-                if (parameters.ContainsKey(0) && parameters[0] != null)
-                {
-                    var partyUsersByteArrays = ((object[])parameters[4]).ToDictionary();
-                    var partyUserNameArray = ((string[])parameters[5]).ToDictionary();
+                var partyUsersByteArrays = ((object[])parameters[4]).ToDictionary();
+                var partyUserNameArray = ((string[])parameters[5]).ToDictionary();
 
-                    for (var i = 0; i < partyUsersByteArrays.Count; i++)
+                for (var i = 0; i < partyUsersByteArrays.Count; i++)
+                {
+                    var guid = partyUsersByteArrays[i].ObjectToGuid();
+                    var name = partyUserNameArray[i];
+                    if (guid != null && !string.IsNullOrEmpty(name))
                     {
-                        var guid = partyUsersByteArrays[i].ObjectToGuid();
-                        var name = partyUserNameArray[i];
-                        if (guid != null && !string.IsNullOrEmpty(name))
-                        {
-                            PartyUsersGuid.Add((Guid)guid, name);
-                        }
+                        PartyUsersGuid.Add((Guid)guid, name);
                     }
                 }
             }
-            catch (Exception e)
-            {
-                ConsoleManager.WriteLineForError(MethodBase.GetCurrentMethod()?.DeclaringType, e);
-            }
+        }
+        catch (Exception e)
+        {
+            ConsoleManager.WriteLineForError(MethodBase.GetCurrentMethod()?.DeclaringType, e);
         }
     }
 }

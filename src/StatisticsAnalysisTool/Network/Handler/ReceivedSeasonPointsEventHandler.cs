@@ -5,26 +5,25 @@ using StatisticsAnalysisTool.Network.Notification;
 using System;
 using System.Threading.Tasks;
 
-namespace StatisticsAnalysisTool.Network.Handler
+namespace StatisticsAnalysisTool.Network.Handler;
+
+public class ReceivedSeasonPointsEventHandler
 {
-    public class ReceivedSeasonPointsEventHandler
+    private readonly TrackingController _trackingController;
+
+    public ReceivedSeasonPointsEventHandler(TrackingController trackingController)
     {
-        private readonly TrackingController _trackingController;
+        _trackingController = trackingController;
+    }
 
-        public ReceivedSeasonPointsEventHandler(TrackingController trackingController)
-        {
-            _trackingController = trackingController;
-        }
+    public async Task OnActionAsync(ReceivedSeasonPointsEvent value)
+    {
+        await Task.CompletedTask;
+    }
 
-        public async Task OnActionAsync(ReceivedSeasonPointsEvent value)
-        {
-            await Task.CompletedTask;
-        }
-
-        private TrackingNotification SetSeasonPointsNotification(int seasonPoints)
-        {
-            return new TrackingNotification(DateTime.Now, new SeasonPointsNotificationFragment(LanguageController.Translation("YOU_HAVE"), AttributeStatOperator.Plus, seasonPoints,
-                LanguageController.Translation("SEASON_POINTS"), LanguageController.Translation("GAINED")), NotificationType.SeasonPoints);
-        }
+    private TrackingNotification SetSeasonPointsNotification(int seasonPoints)
+    {
+        return new TrackingNotification(DateTime.Now, new SeasonPointsNotificationFragment(LanguageController.Translation("YOU_HAVE"), AttributeStatOperator.Plus, seasonPoints,
+            LanguageController.Translation("SEASON_POINTS"), LanguageController.Translation("GAINED")), NotificationType.SeasonPoints);
     }
 }

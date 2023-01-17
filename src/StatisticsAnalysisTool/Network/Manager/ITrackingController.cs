@@ -2,26 +2,25 @@ using StatisticsAnalysisTool.Enumerations;
 using StatisticsAnalysisTool.Network.Notification;
 using System.Threading.Tasks;
 
-namespace StatisticsAnalysisTool.Network.Manager
+namespace StatisticsAnalysisTool.Network.Manager;
+
+public interface ITrackingController
 {
-    public interface ITrackingController
-    {
-        bool ExistIndispensableInfos { get; }
+    bool ExistIndispensableInfos { get; }
 
-        bool IsMainWindowNull();
+    bool IsMainWindowNull();
 
-        Task AddNotificationAsync(TrackingNotification item);
+    Task AddNotificationAsync(TrackingNotification item);
 
-        void RemovesUnnecessaryNotifications() { }
+    void RemovesUnnecessaryNotifications() { }
 
-        void ClearNotifications() { }
+    void ClearNotifications() { }
 
-        void NotificationUiFilteringAsync() { }
+    void NotificationUiFilteringAsync() { }
 
-        void AddFilterType(NotificationType notificationType) { }
+    void AddFilterType(NotificationType notificationType) { }
 
-        void RemoveFilterType(NotificationType notificationType) { }
+    void RemoveFilterType(NotificationType notificationType) { }
 
-        void IsTrackingAllowedByMainCharacter() { }
-    }
+    void IsTrackingAllowedByMainCharacter() { }
 }

@@ -4,7 +4,6 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.Diagnostics;
 using System.Globalization;
 using System.IO;
 using System.Linq;
@@ -130,7 +129,7 @@ public static class ExtensionMethod
             return "0";
         }
 
-        return double.IsInfinity(d) ? double.MaxValue.ToString(CultureInfo.InvariantCulture) : GetShortNumber((decimal)d);
+        return double.IsInfinity(d) ? double.MaxValue.ToString(CultureInfo.InvariantCulture) : GetShortNumber((decimal) d);
 
     }
 
@@ -154,7 +153,7 @@ public static class ExtensionMethod
     public static string GetShortNumber(this decimal num, CultureInfo culture = null)
     {
         culture ??= CultureInfo.CurrentCulture;
-        
+
         if (num < -10000000)
         {
             num /= 10000;
@@ -209,7 +208,7 @@ public static class ExtensionMethod
     {
         return healthChange >= 0d ? 0d : healthChange.ToPositive();
     }
-    
+
     #endregion
 
     #region Player Objects

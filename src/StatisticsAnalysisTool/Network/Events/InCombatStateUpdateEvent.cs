@@ -4,42 +4,41 @@ using System.Reflection;
 using log4net;
 using StatisticsAnalysisTool.Common;
 
-namespace StatisticsAnalysisTool.Network.Events
+namespace StatisticsAnalysisTool.Network.Events;
+
+public class InCombatStateUpdateEvent
 {
-    public class InCombatStateUpdateEvent
+    private static readonly ILog Log = LogManager.GetLogger(MethodBase.GetCurrentMethod()?.DeclaringType);
+    public bool InActiveCombat;
+    public bool InPassiveCombat;
+
+    public long? ObjectId;
+
+    public InCombatStateUpdateEvent(Dictionary<byte, object> parameters)
     {
-        private static readonly ILog Log = LogManager.GetLogger(MethodBase.GetCurrentMethod()?.DeclaringType);
-        public bool InActiveCombat;
-        public bool InPassiveCombat;
+        ConsoleManager.WriteLineForNetworkHandler(GetType().Name, parameters);
 
-        public long? ObjectId;
-
-        public InCombatStateUpdateEvent(Dictionary<byte, object> parameters)
+        try
         {
-            ConsoleManager.WriteLineForNetworkHandler(GetType().Name, parameters);
-
-            try
+            if (parameters.ContainsKey(0))
             {
-                if (parameters.ContainsKey(0))
-                {
-                    ObjectId = parameters[0].ObjectToLong();
-                }
-
-                if (parameters.ContainsKey(1))
-                {
-                    InActiveCombat = parameters[1] as bool? ?? false;
-                }
-
-                if (parameters.ContainsKey(2))
-                {
-                    InPassiveCombat = parameters[2] as bool? ?? false;
-                }
+                ObjectId = parameters[0].ObjectToLong();
             }
-            catch (Exception e)
+
+            if (parameters.ContainsKey(1))
             {
-                ConsoleManager.WriteLineForError(MethodBase.GetCurrentMethod()?.DeclaringType, e);
-                Log.Error(MethodBase.GetCurrentMethod()?.DeclaringType, e);
+                InActiveCombat = parameters[1] as bool? ?? false;
             }
+
+            if (parameters.ContainsKey(2))
+            {
+                InPassiveCombat = parameters[2] as bool? ?? false;
+            }
+        }
+        catch (Exception e)
+        {
+            ConsoleManager.WriteLineForError(MethodBase.GetCurrentMethod()?.DeclaringType, e);
+            Log.Error(MethodBase.GetCurrentMethod()?.DeclaringType, e);
         }
     }
 }

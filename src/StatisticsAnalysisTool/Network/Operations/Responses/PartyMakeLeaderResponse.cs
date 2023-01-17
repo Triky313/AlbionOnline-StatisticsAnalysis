@@ -6,29 +6,28 @@ using System.Reflection;
 using StatisticsAnalysisTool.Enumerations;
 using StatisticsAnalysisTool.Models;
 
-namespace StatisticsAnalysisTool.Network.Operations.Responses
+namespace StatisticsAnalysisTool.Network.Operations.Responses;
+
+public class PartyMakeLeaderResponse
 {
-    public class PartyMakeLeaderResponse
+    private static readonly ILog Log = LogManager.GetLogger(MethodBase.GetCurrentMethod()?.DeclaringType);
+
+    public string Username;
+
+    public PartyMakeLeaderResponse(Dictionary<byte, object> parameters)
     {
-        private static readonly ILog Log = LogManager.GetLogger(MethodBase.GetCurrentMethod()?.DeclaringType);
+        ConsoleManager.WriteLine(new ConsoleFragment(GetType().Name, parameters, ConsoleColorType.EventColor));
 
-        public string Username;
-
-        public PartyMakeLeaderResponse(Dictionary<byte, object> parameters)
+        try
         {
-            ConsoleManager.WriteLine(new ConsoleFragment(GetType().Name, parameters, ConsoleColorType.EventColor));
-
-            try
+            if (parameters.ContainsKey(0))
             {
-                if (parameters.ContainsKey(0))
-                {
-                    Username = string.IsNullOrEmpty(parameters[0].ToString()) ? string.Empty : parameters[0].ToString();
-                }
+                Username = string.IsNullOrEmpty(parameters[0].ToString()) ? string.Empty : parameters[0].ToString();
             }
-            catch (Exception e)
-            {
-                Log.Error(nameof(PartyMakeLeaderResponse), e);
-            }
+        }
+        catch (Exception e)
+        {
+            Log.Error(nameof(PartyMakeLeaderResponse), e);
         }
     }
 }
