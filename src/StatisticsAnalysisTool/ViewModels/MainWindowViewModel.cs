@@ -180,8 +180,8 @@ namespace StatisticsAnalysisTool.ViewModels
 
             try
             {
-                var imageAwesome = (ImageAwesome)sender;
-                var item = (Item)imageAwesome.DataContext;
+                var imageAwesome = (ImageAwesome) sender;
+                var item = (Item) imageAwesome.DataContext;
 
                 if (item.AlertModeMinSellPriceIsUndercutPrice <= 0)
                 {
@@ -228,7 +228,7 @@ namespace StatisticsAnalysisTool.ViewModels
         {
             try
             {
-                Log.Fatal(nameof(OnUnhandledException), (Exception)e.ExceptionObject);
+                Log.Fatal(nameof(OnUnhandledException), (Exception) e.ExceptionObject);
             }
             catch (Exception ex)
             {
@@ -670,8 +670,8 @@ namespace StatisticsAnalysisTool.ViewModels
                     return (item?.LocalizedNameAndEnglish?.ToLower().Contains(SearchText?.ToLower() ?? string.Empty) ?? false)
                            && (item.ShopCategory == SelectedItemShopCategory || SelectedItemShopCategory == ShopCategory.Unknown)
                            && (item.ShopShopSubCategory1 == SelectedItemShopSubCategory || SelectedItemShopSubCategory == ShopSubCategory.Unknown)
-                           && ((ItemTier)item.Tier == SelectedItemTier || SelectedItemTier == ItemTier.Unknown)
-                           && ((ItemLevel)item.Level == SelectedItemLevel || SelectedItemLevel == ItemLevel.Unknown)
+                           && ((ItemTier) item.Tier == SelectedItemTier || SelectedItemTier == ItemTier.Unknown)
+                           && ((ItemLevel) item.Level == SelectedItemLevel || SelectedItemLevel == ItemLevel.Unknown)
                            && item.IsAlertActive;
                 }
 
@@ -680,16 +680,16 @@ namespace StatisticsAnalysisTool.ViewModels
                     return (item?.LocalizedNameAndEnglish?.ToLower().Contains(SearchText?.ToLower() ?? string.Empty) ?? false)
                            && (item.ShopCategory == SelectedItemShopCategory || SelectedItemShopCategory == ShopCategory.Unknown)
                            && (item.ShopShopSubCategory1 == SelectedItemShopSubCategory || SelectedItemShopSubCategory == ShopSubCategory.Unknown)
-                           && ((ItemTier)item.Tier == SelectedItemTier || SelectedItemTier == ItemTier.Unknown)
-                           && ((ItemLevel)item.Level == SelectedItemLevel || SelectedItemLevel == ItemLevel.Unknown)
+                           && ((ItemTier) item.Tier == SelectedItemTier || SelectedItemTier == ItemTier.Unknown)
+                           && ((ItemLevel) item.Level == SelectedItemLevel || SelectedItemLevel == ItemLevel.Unknown)
                            && item.IsFavorite;
                 }
 
                 return (item?.LocalizedNameAndEnglish?.ToLower().Contains(SearchText?.ToLower() ?? string.Empty) ?? false)
                        && (item.ShopCategory == SelectedItemShopCategory || SelectedItemShopCategory == ShopCategory.Unknown)
                        && (item.ShopShopSubCategory1 == SelectedItemShopSubCategory || SelectedItemShopSubCategory == ShopSubCategory.Unknown)
-                       && ((ItemTier)item.Tier == SelectedItemTier || SelectedItemTier == ItemTier.Unknown)
-                       && ((ItemLevel)item.Level == SelectedItemLevel || SelectedItemLevel == ItemLevel.Unknown);
+                       && ((ItemTier) item.Tier == SelectedItemTier || SelectedItemTier == ItemTier.Unknown)
+                       && ((ItemLevel) item.Level == SelectedItemLevel || SelectedItemLevel == ItemLevel.Unknown);
             };
 
             SetItemCounterAsync();
@@ -700,7 +700,7 @@ namespace StatisticsAnalysisTool.ViewModels
             try
             {
                 LocalImageCounter = await ImageController.LocalImagesCounterAsync();
-                ItemCounterString = $"{((ListCollectionView)ItemsView)?.Count ?? 0}/{ItemController.Items?.Count ?? 0}";
+                ItemCounterString = $"{((ListCollectionView) ItemsView)?.Count ?? 0}/{ItemController.Items?.Count ?? 0}";
             }
             catch (Exception e)
             {
@@ -935,8 +935,8 @@ namespace StatisticsAnalysisTool.ViewModels
 
                 DamageMeterBindings.DamageMeterActivationToggleIcon = _isDamageMeterTrackingActive ? EFontAwesomeIcon.Solid_ToggleOn : EFontAwesomeIcon.Solid_ToggleOff;
 
-                var colorOn = new SolidColorBrush((Color)Application.Current.Resources["Color.Accent.Blue.2"]);
-                var colorOff = new SolidColorBrush((Color)Application.Current.Resources["Color.Text.1"]);
+                var colorOn = new SolidColorBrush((Color) Application.Current.Resources["Color.Accent.Blue.2"]);
+                var colorOff = new SolidColorBrush((Color) Application.Current.Resources["Color.Text.1"]);
                 DamageMeterBindings.DamageMeterActivationToggleColor = _isDamageMeterTrackingActive ? colorOn : colorOff;
 
                 SettingsController.CurrentSettings.IsDamageMeterTrackingActive = _isDamageMeterTrackingActive;

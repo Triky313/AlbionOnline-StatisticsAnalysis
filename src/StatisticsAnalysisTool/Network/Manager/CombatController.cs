@@ -25,7 +25,7 @@ namespace StatisticsAnalysisTool.Network.Manager
         private readonly TrackingController _trackingController;
         private bool _combatModeWasCombatOver;
 
-        public bool IsDamageMeterActive { get; set; } = false;
+        public bool IsDamageMeterActive { get; set; }
 
         public CombatController(TrackingController trackingController, MainWindow mainWindow, MainWindowViewModel mainWindowViewModel)
         {
