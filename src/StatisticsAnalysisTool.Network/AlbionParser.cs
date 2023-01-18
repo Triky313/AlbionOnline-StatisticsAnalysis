@@ -1,4 +1,5 @@
-﻿using PhotonPackageParser;
+﻿using System.Diagnostics;
+using PhotonPackageParser;
 
 namespace StatisticsAnalysisTool.Network;
 
@@ -19,6 +20,12 @@ internal sealed class AlbionParser : PhotonParser, IPhotonReceiver
     protected override void OnEvent(byte code, Dictionary<byte, object> parameters)
     {
         short eventCode = ParseEventCode(parameters);
+
+        if (eventCode <= -1)
+        {
+            return;
+        }
+
         var eventPacket = new EventPacket(eventCode, parameters);
 
         _ = _handlers.HandleAsync(eventPacket);
@@ -27,14 +34,26 @@ internal sealed class AlbionParser : PhotonParser, IPhotonReceiver
     protected override void OnRequest(byte operationCodeByte, Dictionary<byte, object> parameters)
     {
         short operationCode = ParseOperationCode(parameters);
-        var requestPacket = new RequestPacket(operationCode, parameters);
 
+        if (operationCode <= -1)
+        {
+            return;
+        }
+
+        var requestPacket = new RequestPacket(operationCode, parameters);
+        
         _ = _handlers.HandleAsync(requestPacket);
     }
 
     protected override void OnResponse(byte operationCodeByte, short returnCode, string debugMessage, Dictionary<byte, object> parameters)
     {
         short operationCode = ParseOperationCode(parameters);
+
+        if (operationCode <= -1)
+        {
+            return;
+        }
+
         var responsePacket = new ResponsePacket(operationCode, parameters);
 
         _ = _handlers.HandleAsync(responsePacket);
