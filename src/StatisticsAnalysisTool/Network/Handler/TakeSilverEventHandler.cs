@@ -9,16 +9,16 @@ using ValueType = StatisticsAnalysisTool.Enumerations.ValueType;
 
 namespace StatisticsAnalysisTool.Network.Handler;
 
-public class TakeSilverEventHandler
+public class TakeSilverEventHandler : EventPacketHandler<TakeSilverEvent>
 {
     private readonly TrackingController _trackingController;
 
-    public TakeSilverEventHandler(TrackingController trackingController)
+    public TakeSilverEventHandler(TrackingController trackingController) : base((int) EventCodes.TakeSilver)
     {
         _trackingController = trackingController;
     }
 
-    public async Task OnActionAsync(TakeSilverEvent value)
+    protected override async Task OnActionAsync(TakeSilverEvent value)
     {
         var localEntity = _trackingController.EntityController.GetLocalEntity()?.Value;
 

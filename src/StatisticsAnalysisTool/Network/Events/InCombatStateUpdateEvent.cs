@@ -9,8 +9,8 @@ namespace StatisticsAnalysisTool.Network.Events;
 public class InCombatStateUpdateEvent
 {
     private static readonly ILog Log = LogManager.GetLogger(MethodBase.GetCurrentMethod()?.DeclaringType);
-    public bool InActiveCombat;
-    public bool InPassiveCombat;
+    public readonly bool InActiveCombat;
+    public readonly bool InPassiveCombat;
 
     public long? ObjectId;
 

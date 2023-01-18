@@ -1,19 +1,20 @@
-﻿using StatisticsAnalysisTool.Network.Events;
+﻿using StatisticsAnalysisTool.Enumerations;
+using StatisticsAnalysisTool.Network.Events;
 using StatisticsAnalysisTool.Network.Manager;
 using System.Threading.Tasks;
 
 namespace StatisticsAnalysisTool.Network.Handler;
 
-public class AttachItemContainerEventHandler
+public class AttachItemContainerEventHandler : EventPacketHandler<AttachItemContainerEvent>
 {
     private readonly TrackingController _trackingController;
 
-    public AttachItemContainerEventHandler(TrackingController trackingController)
+    public AttachItemContainerEventHandler(TrackingController trackingController) : base((int) EventCodes.AttachItemContainer)
     {
         _trackingController = trackingController;
     }
 
-    public async Task OnActionAsync(AttachItemContainerEvent value)
+    protected override async Task OnActionAsync(AttachItemContainerEvent value)
     {
         if (_trackingController.IsTrackingAllowedByMainCharacter())
         {

@@ -12,7 +12,7 @@ public class RegisterToObjectRequest
 {
     private static readonly ILog Log = LogManager.GetLogger(MethodBase.GetCurrentMethod()?.DeclaringType);
 
-    public long BuildingObjectId;
+    public readonly long BuildingObjectId;
 
     public RegisterToObjectRequest(Dictionary<byte, object> parameters)
     {

@@ -10,7 +10,7 @@ namespace StatisticsAnalysisTool.Network.Events;
 public class GrabbedLootEvent
 {
     private static readonly ILog Log = LogManager.GetLogger(MethodBase.GetCurrentMethod()?.DeclaringType);
-    public Loot Loot;
+    public readonly Loot Loot;
 
     private readonly string _lootedFromName;
     private readonly string _looterByName;

@@ -1,10 +1,10 @@
-﻿using StatisticsAnalysisTool.Common;
-using StatisticsAnalysisTool.Enumerations;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Reflection;
+using StatisticsAnalysisTool.Common;
+using StatisticsAnalysisTool.Enumerations;
 
-namespace StatisticsAnalysisTool.Network.Handler;
+namespace StatisticsAnalysisTool.Network.Events;
 
 public class UpdateCurrencyEvent
 {

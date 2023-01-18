@@ -9,16 +9,16 @@ using StatisticsAnalysisTool.Network.Notification;
 
 namespace StatisticsAnalysisTool.Network.Handler;
 
-public class DiedEventHandler
+public class DiedEventHandler : EventPacketHandler<DiedEvent>
 {
     private readonly TrackingController _trackingController;
 
-    public DiedEventHandler(TrackingController trackingController)
+    public DiedEventHandler(TrackingController trackingController) : base((int) EventCodes.Died)
     {
         _trackingController = trackingController;
     }
 
-    public async Task OnActionAsync(DiedEvent value)
+    protected override async Task OnActionAsync(DiedEvent value)
     {
         _trackingController.DungeonController?.SetDiedIfInDungeon(new DiedObject(value.Died, value.KilledBy, value.KilledByGuild));
         await _trackingController.AddNotificationAsync(SetKillNotification(value.Died, value.KilledBy, value.KilledByGuild));

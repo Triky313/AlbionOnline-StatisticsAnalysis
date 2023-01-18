@@ -5,18 +5,18 @@ using System.Threading.Tasks;
 
 namespace StatisticsAnalysisTool.Network.Handler;
 
-public class UpdateReSpecPointsEventHandler
+public class UpdateReSpecPointsEventHandler : EventPacketHandler<UpdateReSpecPointsEvent>
 {
     private readonly TrackingController _trackingController;
     private readonly LiveStatsTracker _liveStatsTracker;
 
-    public UpdateReSpecPointsEventHandler(TrackingController trackingController)
+    public UpdateReSpecPointsEventHandler(TrackingController trackingController) : base((int) EventCodes.UpdateReSpecPoints)
     {
         _trackingController = trackingController;
         _liveStatsTracker = _trackingController?.LiveStatsTracker;
     }
 
-    public async Task OnActionAsync(UpdateReSpecPointsEvent value)
+    protected override async Task OnActionAsync(UpdateReSpecPointsEvent value)
     {
         if (value?.CurrentTotalReSpecPoints != null)
         {

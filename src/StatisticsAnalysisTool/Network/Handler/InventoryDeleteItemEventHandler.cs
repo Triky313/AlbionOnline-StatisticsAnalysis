@@ -5,16 +5,16 @@ using System.Threading.Tasks;
 
 namespace StatisticsAnalysisTool.Network.Handler;
 
-public class InventoryDeleteItemEventHandler
+public class InventoryDeleteItemEventHandler : EventPacketHandler<InventoryDeleteItemEvent>
 {
     private readonly TrackingController _trackingController;
 
-    public InventoryDeleteItemEventHandler(TrackingController trackingController)
+    public InventoryDeleteItemEventHandler(TrackingController trackingController) : base((int) EventCodes.InventoryDeleteItem)
     {
         _trackingController = trackingController;
     }
 
-    public async Task OnActionAsync(InventoryDeleteItemEvent value)
+    protected override async Task OnActionAsync(InventoryDeleteItemEvent value)
     {
         await Task.CompletedTask;
     }

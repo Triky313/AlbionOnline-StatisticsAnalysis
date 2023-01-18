@@ -11,10 +11,10 @@ public class InventoryMoveItemRequest
 {
     private static readonly ILog Log = LogManager.GetLogger(MethodBase.GetCurrentMethod()?.DeclaringType);
 
-    public int ContainerSlot;
-    public Guid? ContainerGuid;
-    public int InventorySlot;
-    public Guid? UserInteractGuid;
+    public readonly int ContainerSlot;
+    public readonly Guid? ContainerGuid;
+    public readonly int InventorySlot;
+    public readonly Guid? UserInteractGuid;
 
     public InventoryMoveItemRequest(Dictionary<byte, object> parameters)
     {

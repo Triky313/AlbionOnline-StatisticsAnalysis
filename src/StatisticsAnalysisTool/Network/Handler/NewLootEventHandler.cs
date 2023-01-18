@@ -1,19 +1,20 @@
 ﻿using StatisticsAnalysisTool.Network.Manager;
 using System.Threading.Tasks;
 using StatisticsAnalysisTool.Network.Events;
+using StatisticsAnalysisTool.Enumerations;
 
 namespace StatisticsAnalysisTool.Network.Handler;
 
-public class NewLootEventHandler
+public class NewLootEventHandler : EventPacketHandler<NewLootEvent>
 {
     private readonly TrackingController _trackingController;
 
-    public NewLootEventHandler(TrackingController trackingController)
+    public NewLootEventHandler(TrackingController trackingController) : base((int) EventCodes.NewLoot)
     {
         _trackingController = trackingController;
     }
 
-    public async Task OnActionAsync(NewLootEvent value)
+    protected override async Task OnActionAsync(NewLootEvent value)
     {
         if (value?.ObjectId != null)
         {

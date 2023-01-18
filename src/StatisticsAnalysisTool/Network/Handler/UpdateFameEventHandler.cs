@@ -9,18 +9,18 @@ using ValueType = StatisticsAnalysisTool.Enumerations.ValueType;
 
 namespace StatisticsAnalysisTool.Network.Handler;
 
-public class UpdateFameEventHandler
+public class UpdateFameEventHandler : EventPacketHandler<UpdateFameEvent>
 {
     private readonly LiveStatsTracker _liveStatsTracker;
     private readonly TrackingController _trackingController;
 
-    public UpdateFameEventHandler(TrackingController trackingController)
+    public UpdateFameEventHandler(TrackingController trackingController) : base((int) EventCodes.UpdateFame)
     {
         _trackingController = trackingController;
         _liveStatsTracker = _trackingController?.LiveStatsTracker;
     }
 
-    public async Task OnActionAsync(UpdateFameEvent value)
+    protected override async Task OnActionAsync(UpdateFameEvent value)
     {
         await _trackingController.AddNotificationAsync(SetPveFameNotification(value.TotalPlayerFame.DoubleValue, value.TotalGainedFame,
             value.ZoneFame.DoubleValue, value.PremiumFame, value.SatchelFame.DoubleValue, value.IsBonusFactorActive, value.BonusFactorInPercent));

@@ -8,7 +8,7 @@ namespace StatisticsAnalysisTool.Network.Events;
 public class PartyPlayerJoinedEvent
 {
     public Guid? UserGuid;
-    public string Username;
+    public readonly string Username;
 
     public PartyPlayerJoinedEvent(Dictionary<byte, object> parameters)
     {

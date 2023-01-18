@@ -12,7 +12,7 @@ public class GetMailInfosResponse
 {
     private static readonly ILog Log = LogManager.GetLogger(MethodBase.GetCurrentMethod()?.DeclaringType);
 
-    public List<MailInfoObject> MailInfos = new();
+    public readonly List<MailInfoObject> MailInfos = new();
 
     public GetMailInfosResponse(Dictionary<byte, object> parameters)
     {

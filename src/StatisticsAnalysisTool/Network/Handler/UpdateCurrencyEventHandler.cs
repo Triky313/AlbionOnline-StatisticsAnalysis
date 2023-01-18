@@ -4,22 +4,23 @@ using StatisticsAnalysisTool.Network.Manager;
 using StatisticsAnalysisTool.Network.Notification;
 using System;
 using System.Threading.Tasks;
+using StatisticsAnalysisTool.Network.Events;
 using ValueType = StatisticsAnalysisTool.Enumerations.ValueType;
 
 namespace StatisticsAnalysisTool.Network.Handler;
 
-public class UpdateCurrencyEventHandler
+public class UpdateCurrencyEventHandler : EventPacketHandler<UpdateCurrencyEvent>
 {
     private readonly TrackingController _trackingController;
     private readonly LiveStatsTracker _liveStatsTracker;
 
-    public UpdateCurrencyEventHandler(TrackingController trackingController)
+    public UpdateCurrencyEventHandler(TrackingController trackingController) : base((int) EventCodes.UpdateCurrency)
     {
         _trackingController = trackingController;
         _liveStatsTracker = _trackingController?.LiveStatsTracker;
     }
 
-    public async Task OnActionAsync(UpdateCurrencyEvent value)
+    protected override async Task OnActionAsync(UpdateCurrencyEvent value)
     {
         if (value.CityFaction != CityFaction.Unknown)
         {
@@ -31,9 +32,9 @@ public class UpdateCurrencyEventHandler
         _trackingController.StatisticController?.AddValue(ValueType.FactionPoints, value.GainedFactionCoins.DoubleValue);
     }
 
-    private TrackingNotification SetFactionPointsNotification(CityFaction cityFaction, double GainedFractionPoints, double BonusPremiumGainedFractionPoints)
+    private TrackingNotification SetFactionPointsNotification(CityFaction cityFaction, double gainedFractionPoints, double bonusPremiumGainedFractionPoints)
     {
-        return new TrackingNotification(DateTime.Now, new FactionPointsNotificationFragment(LanguageController.Translation("YOU_HAVE"), AttributeStatOperator.Plus, cityFaction, GainedFractionPoints,
-            BonusPremiumGainedFractionPoints, LanguageController.Translation("FACTION_POINTS"), LanguageController.Translation("GAINED")), NotificationType.Faction);
+        return new TrackingNotification(DateTime.Now, new FactionPointsNotificationFragment(LanguageController.Translation("YOU_HAVE"), AttributeStatOperator.Plus, cityFaction, gainedFractionPoints,
+            bonusPremiumGainedFractionPoints, LanguageController.Translation("FACTION_POINTS"), LanguageController.Translation("GAINED")), NotificationType.Faction);
     }
 }

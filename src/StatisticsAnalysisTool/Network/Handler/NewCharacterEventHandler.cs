@@ -6,16 +6,16 @@ using System.Threading.Tasks;
 
 namespace StatisticsAnalysisTool.Network.Handler;
 
-public class NewCharacterEventHandler
+public class NewCharacterEventHandler : EventPacketHandler<NewCharacterEvent>
 {
     private readonly TrackingController _trackingController;
 
-    public NewCharacterEventHandler(TrackingController trackingController)
+    public NewCharacterEventHandler(TrackingController trackingController) : base((int) EventCodes.NewCharacter)
     {
         _trackingController = trackingController;
     }
 
-    public async Task OnActionAsync(NewCharacterEvent value)
+    protected override async Task OnActionAsync(NewCharacterEvent value)
     {
         if (value.Guid != null && value.ObjectId != null)
         {

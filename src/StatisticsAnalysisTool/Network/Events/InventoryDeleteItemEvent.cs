@@ -7,7 +7,8 @@ namespace StatisticsAnalysisTool.Network.Events;
 
 public class InventoryDeleteItemEvent
 {
-    public long? ObjectId { get; set; }
+    public long? ObjectId { get; }
+
     public InventoryDeleteItemEvent(Dictionary<byte, object> parameters)
     {
         ConsoleManager.WriteLineForNetworkHandler(GetType().Name, parameters);

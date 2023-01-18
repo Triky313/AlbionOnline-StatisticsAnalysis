@@ -8,7 +8,7 @@ namespace StatisticsAnalysisTool.Network.Events;
 
 public class NewJournalItemEvent
 {
-    public DiscoveredItem Item;
+    public readonly DiscoveredItem Item;
 
     private readonly long? _objectId;
     private readonly int _itemId;

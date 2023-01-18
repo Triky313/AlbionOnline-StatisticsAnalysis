@@ -1,19 +1,20 @@
 ﻿using StatisticsAnalysisTool.Network.Manager;
 using System.Threading.Tasks;
 using StatisticsAnalysisTool.Network.Events;
+using StatisticsAnalysisTool.Enumerations;
 
 namespace StatisticsAnalysisTool.Network.Handler;
 
-public class InCombatStateUpdateEventHandler
+public class InCombatStateUpdateEventHandler : EventPacketHandler<InCombatStateUpdateEvent>
 {
     private readonly TrackingController _trackingController;
 
-    public InCombatStateUpdateEventHandler(TrackingController trackingController)
+    public InCombatStateUpdateEventHandler(TrackingController trackingController) : base((int) EventCodes.InCombatStateUpdate)
     {
         _trackingController = trackingController;
     }
 
-    public async Task OnActionAsync(InCombatStateUpdateEvent value)
+    protected override async Task OnActionAsync(InCombatStateUpdateEvent value)
     {
         if (value.ObjectId != null)
         {

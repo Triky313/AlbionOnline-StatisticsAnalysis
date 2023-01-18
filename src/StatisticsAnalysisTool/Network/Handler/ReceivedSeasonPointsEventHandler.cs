@@ -4,19 +4,20 @@ using StatisticsAnalysisTool.Network.Manager;
 using StatisticsAnalysisTool.Network.Notification;
 using System;
 using System.Threading.Tasks;
+using StatisticsAnalysisTool.Network.Events;
 
 namespace StatisticsAnalysisTool.Network.Handler;
 
-public class ReceivedSeasonPointsEventHandler
+public class ReceivedSeasonPointsEventHandler : EventPacketHandler<ReceivedSeasonPointsEvent>
 {
     private readonly TrackingController _trackingController;
 
-    public ReceivedSeasonPointsEventHandler(TrackingController trackingController)
+    public ReceivedSeasonPointsEventHandler(TrackingController trackingController) : base((int) EventCodes.ReceivedSeasonPoints)
     {
         _trackingController = trackingController;
     }
 
-    public async Task OnActionAsync(ReceivedSeasonPointsEvent value)
+    protected override async Task OnActionAsync(ReceivedSeasonPointsEvent value)
     {
         await Task.CompletedTask;
     }

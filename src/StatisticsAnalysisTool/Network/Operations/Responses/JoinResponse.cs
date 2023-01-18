@@ -32,7 +32,7 @@ public class JoinResponse
     public string AllianceName { get; }
     public bool IsReSpecActive { get; }
 
-    public JoinResponse(Dictionary<byte, object> parameters)
+    public JoinResponse(IReadOnlyDictionary<byte, object> parameters)
     {
         try
         {
