@@ -19,17 +19,17 @@ public class ReceiverBuilder
         _parser.AddHandler(handler);
     }
 
-    public void AddEventHandler<TEvent>(EventPacketHandler<TEvent> handler) where TEvent : BaseEvent
+    public void AddEventHandler<TEvent>(EventPacketHandler<TEvent> handler)
     {
         AddHandler(handler);
     }
 
-    public void AddRequestHandler<TOperation>(RequestPacketHandler<TOperation> handler) where TOperation : BaseOperation
+    public void AddRequestHandler<TOperation>(RequestPacketHandler<TOperation> handler)
     {
         AddHandler(handler);
     }
 
-    public void AddResponseHandler<TOperation>(ResponsePacketHandler<TOperation> handler) where TOperation : BaseOperation
+    public void AddResponseHandler<TOperation>(ResponsePacketHandler<TOperation> handler)
     {
         AddHandler(handler);
     }

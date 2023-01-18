@@ -5,9 +5,9 @@ using System.Reflection;
 
 namespace StatisticsAnalysisTool.Network.Events;
 
-public class NewMobEvent : BaseEvent
+public class NewMobEvent
 {
-    public NewMobEvent(Dictionary<byte, object> parameters) : base(parameters)
+    public NewMobEvent(Dictionary<byte, object> parameters)
     {
         ConsoleManager.WriteLineForNetworkHandler(GetType().Name, parameters);
             

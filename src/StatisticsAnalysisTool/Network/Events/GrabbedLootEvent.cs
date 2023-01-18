@@ -7,7 +7,7 @@ using System.Reflection;
 
 namespace StatisticsAnalysisTool.Network.Events;
 
-public class GrabbedLootEvent : BaseEvent
+public class GrabbedLootEvent
 {
     private static readonly ILog Log = LogManager.GetLogger(MethodBase.GetCurrentMethod()?.DeclaringType);
     public readonly Loot Loot;
@@ -18,7 +18,7 @@ public class GrabbedLootEvent : BaseEvent
     private readonly int _itemIndex;
     private readonly int _quantity;
 
-    public GrabbedLootEvent(Dictionary<byte, object> parameters) : base(parameters)
+    public GrabbedLootEvent(Dictionary<byte, object> parameters)
     {
         ConsoleManager.WriteLineForNetworkHandler(GetType().Name, parameters);
 

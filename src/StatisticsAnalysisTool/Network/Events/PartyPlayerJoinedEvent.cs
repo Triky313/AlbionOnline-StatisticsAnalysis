@@ -5,12 +5,12 @@ using StatisticsAnalysisTool.Common;
 
 namespace StatisticsAnalysisTool.Network.Events;
 
-public class PartyPlayerJoinedEvent : BaseEvent
+public class PartyPlayerJoinedEvent
 {
     public Guid? UserGuid;
     public readonly string Username;
 
-    public PartyPlayerJoinedEvent(Dictionary<byte, object> parameters) : base(parameters)
+    public PartyPlayerJoinedEvent(Dictionary<byte, object> parameters)
     {
         ConsoleManager.WriteLineForNetworkHandler(GetType().Name, parameters);
 

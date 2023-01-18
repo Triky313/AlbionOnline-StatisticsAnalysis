@@ -1,6 +1,6 @@
 ﻿namespace StatisticsAnalysisTool.Network;
 
-public abstract class EventPacketHandler<TEvent> : PacketHandler<EventPacket> where TEvent : BaseEvent
+public abstract class EventPacketHandler<TEvent> : PacketHandler<EventPacket>
 {
     private readonly int _eventCode;
 

@@ -4,11 +4,9 @@ public abstract class PacketHandler<TPacket> : IPacketHandler
 {
     private IPacketHandler _nextHandler;
 
-    public IPacketHandler SetNext(IPacketHandler handler)
+    public void SetNext(IPacketHandler handler)
     {
         _nextHandler = handler;
-
-        return handler;
     }
 
     public Task HandleAsync(object request)

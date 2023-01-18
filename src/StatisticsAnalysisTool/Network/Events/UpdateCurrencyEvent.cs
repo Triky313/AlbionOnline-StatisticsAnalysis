@@ -6,7 +6,7 @@ using StatisticsAnalysisTool.Enumerations;
 
 namespace StatisticsAnalysisTool.Network.Events;
 
-public class UpdateCurrencyEvent : BaseEvent
+public class UpdateCurrencyEvent
 {
     public CityFaction CityFaction;
     public FixPoint GainedFactionCoins;
@@ -16,7 +16,7 @@ public class UpdateCurrencyEvent : BaseEvent
     public FixPoint FactionRankPointsPremiumBonus;
     public FixPoint TotalPlayerFactionPoints;
 
-    public UpdateCurrencyEvent(Dictionary<byte, object> parameters) : base(parameters)
+    public UpdateCurrencyEvent(Dictionary<byte, object> parameters)
     {
         ConsoleManager.WriteLineForNetworkHandler(GetType().Name, parameters);
             

@@ -6,13 +6,13 @@ using StatisticsAnalysisTool.Enumerations;
 
 namespace StatisticsAnalysisTool.Network.Events;
 
-public class ActionOnBuildingFinishedEvent : BaseEvent
+public class ActionOnBuildingFinishedEvent
 {
     public long? UserObjectId;
     public readonly long BuildingObjectId;
     public readonly ActionOnBuildingType ActionType;
 
-    public ActionOnBuildingFinishedEvent(Dictionary<byte, object> parameters) : base(parameters)
+    public ActionOnBuildingFinishedEvent(Dictionary<byte, object> parameters)
     {
         ConsoleManager.WriteLineForNetworkHandler(GetType().Name, parameters);
 

@@ -6,7 +6,7 @@ using StatisticsAnalysisTool.Common;
 
 namespace StatisticsAnalysisTool.Network.Events;
 
-public class InCombatStateUpdateEvent : BaseEvent
+public class InCombatStateUpdateEvent
 {
     private static readonly ILog Log = LogManager.GetLogger(MethodBase.GetCurrentMethod()?.DeclaringType);
     public readonly bool InActiveCombat;
@@ -14,7 +14,7 @@ public class InCombatStateUpdateEvent : BaseEvent
 
     public long? ObjectId;
 
-    public InCombatStateUpdateEvent(Dictionary<byte, object> parameters) : base(parameters)
+    public InCombatStateUpdateEvent(Dictionary<byte, object> parameters)
     {
         ConsoleManager.WriteLineForNetworkHandler(GetType().Name, parameters);
 

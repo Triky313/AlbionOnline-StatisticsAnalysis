@@ -1,6 +1,6 @@
 ﻿namespace StatisticsAnalysisTool.Network;
 
-public abstract class ResponsePacketHandler<TOperation> : PacketHandler<ResponsePacket> where TOperation : BaseOperation
+public abstract class ResponsePacketHandler<TOperation> : PacketHandler<ResponsePacket>
 {
     private readonly int _operationCode;
 

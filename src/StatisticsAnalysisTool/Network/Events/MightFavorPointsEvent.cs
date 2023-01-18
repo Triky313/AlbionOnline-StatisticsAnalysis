@@ -3,9 +3,9 @@ using System;
 using System.Collections.Generic;
 using System.Reflection;
 
-namespace StatisticsAnalysisTool.Network.Handler;
+namespace StatisticsAnalysisTool.Network.Events;
 
-public class MightFavorPointsEvent: BaseEvent
+public class MightFavorPointsEvent
 {
     public FixPoint Might;
     public FixPoint PremiumOfMight;
@@ -13,7 +13,7 @@ public class MightFavorPointsEvent: BaseEvent
     public FixPoint PremiumOfFavor;
     public FixPoint TotalFavor;
 
-    public MightFavorPointsEvent(Dictionary<byte, object> parameters) : base(parameters)
+    public MightFavorPointsEvent(Dictionary<byte, object> parameters)
     {
         ConsoleManager.WriteLineForNetworkHandler(GetType().Name, parameters);
         try

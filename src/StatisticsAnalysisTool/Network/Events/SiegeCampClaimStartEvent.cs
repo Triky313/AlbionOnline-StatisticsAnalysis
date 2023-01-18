@@ -5,11 +5,11 @@ using System;
 
 namespace StatisticsAnalysisTool.Network.Events;
 
-public class SiegeCampClaimStartEvent : BaseEvent
+public class SiegeCampClaimStartEvent
 {
     public string Username;
 
-    public SiegeCampClaimStartEvent(Dictionary<byte, object> parameters) : base(parameters)
+    public SiegeCampClaimStartEvent(Dictionary<byte, object> parameters)
     {
         ConsoleManager.WriteLineForNetworkHandler(GetType().Name, parameters);
 

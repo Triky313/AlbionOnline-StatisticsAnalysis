@@ -5,11 +5,11 @@ using System.Reflection;
 
 namespace StatisticsAnalysisTool.Network.Events;
 
-public class InventoryDeleteItemEvent : BaseEvent
+public class InventoryDeleteItemEvent
 {
     public long? ObjectId { get; }
 
-    public InventoryDeleteItemEvent(Dictionary<byte, object> parameters) : base(parameters)
+    public InventoryDeleteItemEvent(Dictionary<byte, object> parameters)
     {
         ConsoleManager.WriteLineForNetworkHandler(GetType().Name, parameters);
 

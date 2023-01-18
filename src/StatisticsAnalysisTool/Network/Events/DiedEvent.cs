@@ -5,9 +5,9 @@ using System.Reflection;
 
 namespace StatisticsAnalysisTool.Network.Events;
 
-public class DiedEvent : BaseEvent
+public class DiedEvent
 {
-    public DiedEvent(Dictionary<byte, object> parameters) : base(parameters)
+    public DiedEvent(Dictionary<byte, object> parameters)
     {
         ConsoleManager.WriteLineForNetworkHandler(GetType().Name, parameters);
 

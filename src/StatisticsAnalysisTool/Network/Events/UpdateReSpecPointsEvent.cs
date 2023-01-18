@@ -8,7 +8,7 @@ using StatisticsAnalysisTool.Models;
 
 namespace StatisticsAnalysisTool.Network.Events;
 
-public class UpdateReSpecPointsEvent : BaseEvent
+public class UpdateReSpecPointsEvent
 {
     public FixPoint? CurrentTotalReSpecPoints { get; }
     public FixPoint GainedReSpecPoints { get; }
@@ -16,7 +16,7 @@ public class UpdateReSpecPointsEvent : BaseEvent
 
     private static readonly ILog Log = LogManager.GetLogger(MethodBase.GetCurrentMethod()?.DeclaringType);
 
-    public UpdateReSpecPointsEvent(Dictionary<byte, object> parameters) : base(parameters)
+    public UpdateReSpecPointsEvent(Dictionary<byte, object> parameters)
     {
         ConsoleManager.WriteLine(new ConsoleFragment(GetType().Name, parameters, ConsoleColorType.EventColor));
 

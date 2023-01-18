@@ -8,7 +8,7 @@ using StatisticsAnalysisTool.Network.Time;
 
 namespace StatisticsAnalysisTool.Network.Events;
 
-public class HealthUpdateEvent : BaseEvent
+public class HealthUpdateEvent
 {
     private static readonly ILog Log = LogManager.GetLogger(MethodBase.GetCurrentMethod()?.DeclaringType);
     public long CauserId;
@@ -21,7 +21,7 @@ public class HealthUpdateEvent : BaseEvent
     public long ObjectId;
     public GameTimeStamp TimeStamp;
 
-    public HealthUpdateEvent(Dictionary<byte, object> parameters) : base(parameters)
+    public HealthUpdateEvent(Dictionary<byte, object> parameters)
     {
         ConsoleManager.WriteLineForNetworkHandler(GetType().Name, parameters);
 

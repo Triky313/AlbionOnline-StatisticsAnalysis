@@ -8,14 +8,14 @@ using StatisticsAnalysisTool.Models;
 
 namespace StatisticsAnalysisTool.Network.Operations.Responses;
 
-public class ReadMailResponse : BaseOperation
+public class ReadMailResponse
 {
     private static readonly ILog Log = LogManager.GetLogger(MethodBase.GetCurrentMethod()?.DeclaringType);
 
     public long MailId;
     public string Content;
 
-    public ReadMailResponse(Dictionary<byte, object> parameters) : base(parameters)
+    public ReadMailResponse(Dictionary<byte, object> parameters)
     {
         ConsoleManager.WriteLine(new ConsoleFragment(GetType().Name, parameters, ConsoleColorType.EventColor));
 

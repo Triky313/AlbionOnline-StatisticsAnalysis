@@ -6,14 +6,14 @@ using StatisticsAnalysisTool.Enumerations;
 
 namespace StatisticsAnalysisTool.Network.Events;
 
-public class UpdateFactionStandingEvent : BaseEvent
+public class UpdateFactionStandingEvent
 {
     public CityFaction CityFaction;
     public FixPoint GainedFactionFlagPoints;
     public FixPoint BonusPremiumGainedFractionFlagPoints;
     public FixPoint TotalPlayerFactionFlagPoints;
 
-    public UpdateFactionStandingEvent(Dictionary<byte, object> parameters) : base(parameters)
+    public UpdateFactionStandingEvent(Dictionary<byte, object> parameters)
     {
         ConsoleManager.WriteLineForNetworkHandler(GetType().Name, parameters);
 

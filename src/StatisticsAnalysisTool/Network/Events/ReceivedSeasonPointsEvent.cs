@@ -5,11 +5,11 @@ using StatisticsAnalysisTool.Common;
 
 namespace StatisticsAnalysisTool.Network.Events;
 
-public class ReceivedSeasonPointsEvent : BaseEvent
+public class ReceivedSeasonPointsEvent
 {
     public int SeasonPoints;
 
-    public ReceivedSeasonPointsEvent(Dictionary<byte, object> parameters) : base(parameters)
+    public ReceivedSeasonPointsEvent(Dictionary<byte, object> parameters)
     {
         ConsoleManager.WriteLineForNetworkHandler(GetType().Name, parameters);
 

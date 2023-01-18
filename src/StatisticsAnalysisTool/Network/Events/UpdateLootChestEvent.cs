@@ -5,13 +5,13 @@ using System.Reflection;
 
 namespace StatisticsAnalysisTool.Network.Events;
 
-public class UpdateLootChestEvent : BaseEvent
+public class UpdateLootChestEvent
 {
     public int ObjectId { get; set; }
     public List<Guid> PlayerGuid { get; set; } = new();
     public List<Guid> PlayerGuid2 { get; set; } = new();
 
-    public UpdateLootChestEvent(Dictionary<byte, object> parameters) : base(parameters)
+    public UpdateLootChestEvent(Dictionary<byte, object> parameters)
     {
         ConsoleManager.WriteLineForNetworkHandler(GetType().Name, parameters);
 

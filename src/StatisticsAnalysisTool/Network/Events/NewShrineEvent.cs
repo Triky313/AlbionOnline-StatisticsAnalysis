@@ -6,11 +6,11 @@ using StatisticsAnalysisTool.Common;
 
 namespace StatisticsAnalysisTool.Network.Events;
 
-public class NewShrineEvent : BaseEvent
+public class NewShrineEvent
 {
     private static readonly ILog Log = LogManager.GetLogger(MethodBase.GetCurrentMethod()?.DeclaringType);
         
-    public NewShrineEvent(Dictionary<byte, object> parameters) : base(parameters)
+    public NewShrineEvent(Dictionary<byte, object> parameters)
     {
         ConsoleManager.WriteLineForNetworkHandler(GetType().Name, parameters);
 

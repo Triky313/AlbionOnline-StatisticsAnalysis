@@ -6,11 +6,11 @@ using System.Reflection;
 
 namespace StatisticsAnalysisTool.Network.Operations.Responses;
 
-public class UseShrineRequest : BaseOperation
+public class UseShrineRequest
 {
     private static readonly ILog Log = LogManager.GetLogger(MethodBase.GetCurrentMethod()?.DeclaringType);
 
-    public UseShrineRequest(Dictionary<byte, object> parameters) : base(parameters)
+    public UseShrineRequest(Dictionary<byte, object> parameters)
     {
         ConsoleManager.WriteLineForNetworkHandler(GetType().Name, parameters);
 

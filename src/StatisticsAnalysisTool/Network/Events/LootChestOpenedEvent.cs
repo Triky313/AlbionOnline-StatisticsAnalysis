@@ -5,9 +5,9 @@ using System.Reflection;
 
 namespace StatisticsAnalysisTool.Network.Events;
 
-public class LootChestOpenedEvent : BaseEvent
+public class LootChestOpenedEvent
 {
-    public LootChestOpenedEvent(Dictionary<byte, object> parameters) : base(parameters)
+    public LootChestOpenedEvent(Dictionary<byte, object> parameters)
     {
         ConsoleManager.WriteLineForNetworkHandler(GetType().Name, parameters);
 

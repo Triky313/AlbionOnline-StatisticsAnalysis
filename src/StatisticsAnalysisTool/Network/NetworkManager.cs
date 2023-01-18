@@ -27,7 +27,7 @@ public class NetworkManager
         _mainWindowViewModel = mainWindowViewModel;
 
         ReceiverBuilder builder = ReceiverBuilder.Create();
-        
+
         builder.AddEventHandler(new NewEquipmentItemEventHandler(trackingController));
         builder.AddEventHandler(new NewSimpleItemEventHandler(trackingController));
         builder.AddEventHandler(new NewFurnitureItemEventHandler(trackingController));

@@ -9,7 +9,7 @@ using StatisticsAnalysisTool.GameData;
 
 namespace StatisticsAnalysisTool.Network.Operations.Responses;
 
-public class ChangeClusterResponse : BaseOperation
+public class ChangeClusterResponse
 {
     private static readonly ILog Log = LogManager.GetLogger(MethodBase.GetCurrentMethod()?.DeclaringType);
 
@@ -21,7 +21,7 @@ public class ChangeClusterResponse : BaseOperation
     public byte[] DungeonInformation;
     public string MainClusterIndex;
 
-    public ChangeClusterResponse(Dictionary<byte, object> parameters) : base(parameters)
+    public ChangeClusterResponse(Dictionary<byte, object> parameters)
     {
         ConsoleManager.WriteLineForMessage(GetType().Name, parameters, ConsoleColorType.EventMapChangeColor);
 

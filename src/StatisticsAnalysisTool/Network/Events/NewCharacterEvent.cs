@@ -6,7 +6,7 @@ using StatisticsAnalysisTool.Models.NetworkModel;
 
 namespace StatisticsAnalysisTool.Network.Events;
 
-public class NewCharacterEvent : BaseEvent
+public class NewCharacterEvent
 {
     public long? ObjectId { get; }
     public Guid? Guid { get; }
@@ -15,7 +15,7 @@ public class NewCharacterEvent : BaseEvent
     public float[] Position { get; }
     public CharacterEquipment CharacterEquipment { get; } = new();
 
-    public NewCharacterEvent(Dictionary<byte, object> parameters) : base(parameters)
+    public NewCharacterEvent(Dictionary<byte, object> parameters)
     {
         ConsoleManager.WriteLineForNetworkHandler(GetType().Name, parameters);
 

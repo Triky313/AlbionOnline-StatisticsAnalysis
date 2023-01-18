@@ -6,7 +6,7 @@ using System.Reflection;
 
 namespace StatisticsAnalysisTool.Network.Events;
 
-public class NewJournalItemEvent : BaseEvent
+public class NewJournalItemEvent
 {
     public readonly DiscoveredItem Item;
 
@@ -16,7 +16,7 @@ public class NewJournalItemEvent : BaseEvent
     private readonly long _estimatedMarketValue;
     private readonly FixPoint _durability;
 
-    public NewJournalItemEvent(Dictionary<byte, object> parameters) : base(parameters)
+    public NewJournalItemEvent(Dictionary<byte, object> parameters)
     {
         ConsoleManager.WriteLineForNetworkHandler(GetType().Name, parameters);
 

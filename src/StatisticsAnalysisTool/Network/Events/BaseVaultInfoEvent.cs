@@ -5,7 +5,7 @@ using System.Reflection;
 
 namespace StatisticsAnalysisTool.Network.Events;
 
-public class BaseVaultInfoEvent : BaseEvent
+public class BaseVaultInfoEvent
 {
     public long? ObjectId;
     public string LocationGuidString;
@@ -13,7 +13,7 @@ public class BaseVaultInfoEvent : BaseEvent
     public List<string> VaultNames = new();
     public List<string> IconTags = new();
 
-    public BaseVaultInfoEvent(Dictionary<byte, object> parameters): base(parameters)
+    public BaseVaultInfoEvent(Dictionary<byte, object> parameters)
     {
         ConsoleManager.WriteLineForNetworkHandler(GetType().Name, parameters);
 

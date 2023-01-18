@@ -8,13 +8,13 @@ using StatisticsAnalysisTool.Models;
 
 namespace StatisticsAnalysisTool.Network.Operations.Responses;
 
-public class PartyMakeLeaderResponse : BaseOperation
+public class PartyMakeLeaderResponse
 {
     private static readonly ILog Log = LogManager.GetLogger(MethodBase.GetCurrentMethod()?.DeclaringType);
 
     public string Username;
 
-    public PartyMakeLeaderResponse(Dictionary<byte, object> parameters) : base(parameters)
+    public PartyMakeLeaderResponse(Dictionary<byte, object> parameters)
     {
         ConsoleManager.WriteLine(new ConsoleFragment(GetType().Name, parameters, ConsoleColorType.EventColor));
 

@@ -5,7 +5,7 @@ using System.Reflection;
 
 namespace StatisticsAnalysisTool.Network.Events;
 
-public class UpdateFameEvent : BaseEvent
+public class UpdateFameEvent
 {
     public double BonusFactor = 1;
     public double BonusFactorInPercent;
@@ -22,7 +22,7 @@ public class UpdateFameEvent : BaseEvent
     public FixPoint ZoneFame { get; }
     public double TotalGainedFame { get; }
 
-    public UpdateFameEvent(Dictionary<byte, object> parameters) : base(parameters)
+    public UpdateFameEvent(Dictionary<byte, object> parameters)
     {
         ConsoleManager.WriteLineForNetworkHandler(GetType().Name, parameters);
 

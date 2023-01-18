@@ -5,11 +5,11 @@ using StatisticsAnalysisTool.Common;
 
 namespace StatisticsAnalysisTool.Network.Events;
 
-public class PartyPlayerLeftEvent : BaseEvent
+public class PartyPlayerLeftEvent
 {
     public Guid? UserGuid;
 
-    public PartyPlayerLeftEvent(Dictionary<byte, object> parameters) : base(parameters)
+    public PartyPlayerLeftEvent(Dictionary<byte, object> parameters)
     {
         ConsoleManager.WriteLineForNetworkHandler(GetType().Name, parameters);
 

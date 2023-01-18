@@ -6,7 +6,7 @@ using System.Reflection;
 
 namespace StatisticsAnalysisTool.Network.Events;
 
-public class NewEquipmentItemEvent : BaseEvent
+public class NewEquipmentItemEvent
 {
     public readonly DiscoveredItem Item;
 
@@ -17,7 +17,7 @@ public class NewEquipmentItemEvent : BaseEvent
     private readonly FixPoint _durability;
     private Dictionary<int, int> SpellDictionary { get; } = new ();
 
-    public NewEquipmentItemEvent(Dictionary<byte, object> parameters) : base(parameters)
+    public NewEquipmentItemEvent(Dictionary<byte, object> parameters)
     {
         ConsoleManager.WriteLineForNetworkHandler(GetType().Name, parameters);
 

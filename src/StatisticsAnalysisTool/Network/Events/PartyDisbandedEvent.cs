@@ -3,9 +3,9 @@ using System.Collections.Generic;
 
 namespace StatisticsAnalysisTool.Network.Events;
 
-public class PartyDisbandedEvent : BaseEvent
+public class PartyDisbandedEvent
 {
-    public PartyDisbandedEvent(Dictionary<byte, object> parameters) : base(parameters)
+    public PartyDisbandedEvent(Dictionary<byte, object> parameters)
     {
         ConsoleManager.WriteLineForNetworkHandler(GetType().Name, parameters);
     }

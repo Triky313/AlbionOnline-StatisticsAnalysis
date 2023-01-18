@@ -8,13 +8,13 @@ using System.Reflection;
 
 namespace StatisticsAnalysisTool.Network.Operations.Responses;
 
-public class RegisterToObjectRequest : BaseOperation
+public class RegisterToObjectRequest
 {
     private static readonly ILog Log = LogManager.GetLogger(MethodBase.GetCurrentMethod()?.DeclaringType);
 
     public readonly long BuildingObjectId;
 
-    public RegisterToObjectRequest(Dictionary<byte, object> parameters) : base(parameters)
+    public RegisterToObjectRequest(Dictionary<byte, object> parameters)
     {
         ConsoleManager.WriteLine(new ConsoleFragment(GetType().Name, parameters, ConsoleColorType.EventColor));
 
