@@ -39,8 +39,8 @@ internal sealed class AlbionParser : PhotonParser, IPhotonReceiver
 
         _ = _handlers.HandleAsync(responsePacket);
     }
-
-    private static short ParseOperationCode(IReadOnlyDictionary<byte, object> parameters)
+    
+    private static short ParseOperationCode(Dictionary<byte, object> parameters)
     {
         if (!parameters.TryGetValue(253, out object value))
         {
@@ -52,9 +52,9 @@ internal sealed class AlbionParser : PhotonParser, IPhotonReceiver
         return (short) value;
     }
 
-    private static short ParseEventCode(IReadOnlyDictionary<byte, object> parameters)
+    private static short ParseEventCode(Dictionary<byte, object> parameters)
     {
-        if (!parameters.TryGetValue(253, out object value))
+        if (!parameters.TryGetValue(252, out object value))
         {
             // Other values are returned as -1 code.
             //throw new InvalidOperationException();
