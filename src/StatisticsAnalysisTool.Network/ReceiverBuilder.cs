@@ -14,32 +14,24 @@ public class ReceiverBuilder
         return new ReceiverBuilder();
     }
 
-    public ReceiverBuilder AddHandler<TPacket>(PacketHandler<TPacket> handler)
+    public void AddHandler<TPacket>(PacketHandler<TPacket> handler)
     {
         _parser.AddHandler(handler);
-
-        return this;
     }
 
-    public ReceiverBuilder AddEventHandler<TEvent>(EventPacketHandler<TEvent> handler) where TEvent : BaseEvent
+    public void AddEventHandler<TEvent>(EventPacketHandler<TEvent> handler) where TEvent : BaseEvent
     {
         AddHandler(handler);
-
-        return this;
     }
 
-    public ReceiverBuilder AddRequestHandler<TOperation>(RequestPacketHandler<TOperation> handler) where TOperation : BaseOperation
+    public void AddRequestHandler<TOperation>(RequestPacketHandler<TOperation> handler) where TOperation : BaseOperation
     {
         AddHandler(handler);
-
-        return this;
     }
 
-    public ReceiverBuilder AddResponseHandler<TOperation>(ResponsePacketHandler<TOperation> handler) where TOperation : BaseOperation
+    public void AddResponseHandler<TOperation>(ResponsePacketHandler<TOperation> handler) where TOperation : BaseOperation
     {
         AddHandler(handler);
-
-        return this;
     }
 
     public IPhotonReceiver Build()

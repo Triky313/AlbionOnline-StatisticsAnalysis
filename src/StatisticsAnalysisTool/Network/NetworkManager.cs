@@ -1,6 +1,5 @@
 using log4net;
 using PacketDotNet;
-using PhotonPackageParser;
 using SharpPcap;
 using StatisticsAnalysisTool.Common;
 using StatisticsAnalysisTool.Network.Handler;
@@ -22,13 +21,13 @@ public class NetworkManager
     private static readonly ILog Log = LogManager.GetLogger(MethodBase.GetCurrentMethod()?.DeclaringType);
 
     public static bool IsNetworkCaptureRunning => CapturedDevices.Where(device => device.Started).Any(device => device.Started);
-    
+
     public static bool StartNetworkCapture(MainWindowViewModel mainWindowViewModel, TrackingController trackingController)
     {
         _mainWindowViewModel = mainWindowViewModel;
 
         ReceiverBuilder builder = ReceiverBuilder.Create();
-
+        
         builder.AddEventHandler(new NewEquipmentItemEventHandler(trackingController));
         builder.AddEventHandler(new NewSimpleItemEventHandler(trackingController));
         builder.AddEventHandler(new NewFurnitureItemEventHandler(trackingController));
@@ -79,9 +78,9 @@ public class NetworkManager
         builder.AddResponseHandler(new JoinResponseHandler(trackingController, mainWindowViewModel));
         builder.AddResponseHandler(new GetMailInfosResponseHandler(trackingController));
         builder.AddResponseHandler(new ReadMailResponseHandler(trackingController));
-        
+
         _receiver = builder.Build();
-        
+
         try
         {
             CapturedDevices.AddRange(CaptureDeviceList.Instance);
