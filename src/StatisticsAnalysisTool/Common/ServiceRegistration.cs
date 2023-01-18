@@ -1,5 +1,4 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
-using StatisticsAnalysisTool.Common.Crafting;
 using System;
 
 namespace StatisticsAnalysisTool.Common;
@@ -10,10 +9,10 @@ public static class ServiceRegistration
     {
         var services = new ServiceCollection();
 
-        services.AddTransient<ICraftingResources, CraftingResources>();
-        services.AddTransient<ICraftingJournal, CraftingJournal>();
-        services.AddTransient<ICraftingBaseValues, CraftingBaseValues>();
-        services.AddTransient<ICraftingCalculations, CraftingCalculations>();
+        //services.AddTransient<ICraftingResources, CraftingResources>();
+        //services.AddTransient<ICraftingJournal, CraftingJournal>();
+        //services.AddTransient<ICraftingBaseValues, CraftingBaseValues>();
+        //services.AddTransient<ICraftingCalculations, CraftingCalculations>();
 
         return services.BuildServiceProvider();
     }
