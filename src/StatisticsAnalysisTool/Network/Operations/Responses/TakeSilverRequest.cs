@@ -8,14 +8,14 @@ using System.Reflection;
 
 namespace StatisticsAnalysisTool.Network.Operations.Responses;
 
-public class TakeSilverRequest
+public class TakeSilverRequest : BaseOperation
 {
     private static readonly ILog Log = LogManager.GetLogger(MethodBase.GetCurrentMethod()?.DeclaringType);
 
     public long BuildingObjectId;
     public long Costs;
 
-    public TakeSilverRequest(Dictionary<byte, object> parameters)
+    public TakeSilverRequest(Dictionary<byte, object> parameters) : base(parameters)
     {
         ConsoleManager.WriteLine(new ConsoleFragment(GetType().Name, parameters, ConsoleColorType.EventColor));
 

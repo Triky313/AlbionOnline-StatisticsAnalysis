@@ -1,16 +1,16 @@
-﻿using log4net;
-using StatisticsAnalysisTool.Common;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Reflection;
+using log4net;
+using StatisticsAnalysisTool.Common;
 
-namespace StatisticsAnalysisTool.Network;
+namespace StatisticsAnalysisTool.Network.Events;
 
-public class UpdateSilverEvent
+public class UpdateSilverEvent : BaseEvent
 {
     private static readonly ILog Log = LogManager.GetLogger(MethodBase.GetCurrentMethod()?.DeclaringType);
 
-    public UpdateSilverEvent(Dictionary<byte, object> parameters)
+    public UpdateSilverEvent(Dictionary<byte, object> parameters) : base(parameters)
     {
         ConsoleManager.WriteLineForNetworkHandler(GetType().Name, parameters);
 

@@ -5,12 +5,12 @@ using System.Reflection;
 
 namespace StatisticsAnalysisTool.Network.Events;
 
-public class NewLootEvent
+public class NewLootEvent : BaseEvent
 {
     public readonly long? ObjectId;
     public readonly string LootBody;
 
-    public NewLootEvent(Dictionary<byte, object> parameters)
+    public NewLootEvent(Dictionary<byte, object> parameters) :base(parameters)
     {
         ConsoleManager.WriteLineForNetworkHandler(GetType().Name, parameters);
 

@@ -6,15 +6,15 @@ using StatisticsAnalysisTool.Common;
 
 namespace StatisticsAnalysisTool.Network.Events;
 
-public class InCombatStateUpdateEvent
+public class InCombatStateUpdateEvent : BaseEvent
 {
     private static readonly ILog Log = LogManager.GetLogger(MethodBase.GetCurrentMethod()?.DeclaringType);
-    public bool InActiveCombat;
-    public bool InPassiveCombat;
+    public readonly bool InActiveCombat;
+    public readonly bool InPassiveCombat;
 
     public long? ObjectId;
 
-    public InCombatStateUpdateEvent(Dictionary<byte, object> parameters)
+    public InCombatStateUpdateEvent(Dictionary<byte, object> parameters) : base(parameters)
     {
         ConsoleManager.WriteLineForNetworkHandler(GetType().Name, parameters);
 

@@ -5,9 +5,9 @@ using System.Reflection;
 
 namespace StatisticsAnalysisTool.Network.Events;
 
-public class ActiveSpellEffectsUpdateEvent
+public class ActiveSpellEffectsUpdateEvent : BaseEvent
 {
-    public ActiveSpellEffectsUpdateEvent(Dictionary<byte, object> parameters)
+    public ActiveSpellEffectsUpdateEvent(Dictionary<byte, object> parameters) : base(parameters)
     {
         ConsoleManager.WriteLineForNetworkHandler(GetType().Name, parameters);
 

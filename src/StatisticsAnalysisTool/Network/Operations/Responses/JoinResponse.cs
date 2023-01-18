@@ -9,7 +9,7 @@ using StatisticsAnalysisTool.Enumerations;
 
 namespace StatisticsAnalysisTool.Network.Operations.Responses;
 
-public class JoinResponse
+public class JoinResponse : BaseOperation
 {
     private static readonly ILog Log = LogManager.GetLogger(MethodBase.GetCurrentMethod()?.DeclaringType);
     public long? UserObjectId;
@@ -32,7 +32,7 @@ public class JoinResponse
     public string AllianceName { get; }
     public bool IsReSpecActive { get; }
 
-    public JoinResponse(Dictionary<byte, object> parameters)
+    public JoinResponse(IReadOnlyDictionary<byte, object> parameters) : base(parameters)
     {
         try
         {

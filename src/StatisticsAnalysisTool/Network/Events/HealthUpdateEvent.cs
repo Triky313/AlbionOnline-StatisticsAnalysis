@@ -1,14 +1,14 @@
-﻿using log4net;
+﻿using System;
+using System.Collections.Generic;
+using System.Reflection;
+using log4net;
 using StatisticsAnalysisTool.Common;
 using StatisticsAnalysisTool.Enumerations;
 using StatisticsAnalysisTool.Network.Time;
-using System;
-using System.Collections.Generic;
-using System.Reflection;
 
-namespace StatisticsAnalysisTool.Network.Handler;
+namespace StatisticsAnalysisTool.Network.Events;
 
-public class HealthUpdateEvent
+public class HealthUpdateEvent : BaseEvent
 {
     private static readonly ILog Log = LogManager.GetLogger(MethodBase.GetCurrentMethod()?.DeclaringType);
     public long CauserId;
@@ -21,7 +21,7 @@ public class HealthUpdateEvent
     public long ObjectId;
     public GameTimeStamp TimeStamp;
 
-    public HealthUpdateEvent(Dictionary<byte, object> parameters)
+    public HealthUpdateEvent(Dictionary<byte, object> parameters) : base(parameters)
     {
         ConsoleManager.WriteLineForNetworkHandler(GetType().Name, parameters);
 

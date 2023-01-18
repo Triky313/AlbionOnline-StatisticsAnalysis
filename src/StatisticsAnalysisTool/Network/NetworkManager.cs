@@ -3,6 +3,7 @@ using PacketDotNet;
 using PhotonPackageParser;
 using SharpPcap;
 using StatisticsAnalysisTool.Common;
+using StatisticsAnalysisTool.Network.Handler;
 using StatisticsAnalysisTool.Network.Manager;
 using StatisticsAnalysisTool.ViewModels;
 using System;
@@ -13,20 +14,74 @@ using System.Windows;
 
 namespace StatisticsAnalysisTool.Network;
 
-public static class NetworkManager
+public class NetworkManager
 {
-    private static PhotonParser _receiver;
+    private static IPhotonReceiver _receiver;
     private static MainWindowViewModel _mainWindowViewModel;
     private static readonly List<ICaptureDevice> CapturedDevices = new();
     private static readonly ILog Log = LogManager.GetLogger(MethodBase.GetCurrentMethod()?.DeclaringType);
 
     public static bool IsNetworkCaptureRunning => CapturedDevices.Where(device => device.Started).Any(device => device.Started);
-
+    
     public static bool StartNetworkCapture(MainWindowViewModel mainWindowViewModel, TrackingController trackingController)
     {
         _mainWindowViewModel = mainWindowViewModel;
-        _receiver = new AlbionPackageParser(trackingController, mainWindowViewModel);
 
+        ReceiverBuilder builder = ReceiverBuilder.Create();
+
+        builder.AddEventHandler(new NewEquipmentItemEventHandler(trackingController));
+        builder.AddEventHandler(new NewSimpleItemEventHandler(trackingController));
+        builder.AddEventHandler(new NewFurnitureItemEventHandler(trackingController));
+        builder.AddEventHandler(new NewJournalItemEventHandler(trackingController));
+        builder.AddEventHandler(new NewLaborerItemEventHandler(trackingController));
+        builder.AddEventHandler(new OtherGrabbedLootEventHandler(trackingController));
+        builder.AddEventHandler(new InventoryDeleteItemEventHandler(trackingController));
+        builder.AddEventHandler(new InventoryPutItemEventHandler(trackingController));
+        builder.AddEventHandler(new TakeSilverEventHandler(trackingController));
+        builder.AddEventHandler(new ActionOnBuildingFinishedEventHandler(trackingController));
+        builder.AddEventHandler(new UpdateFameEventHandler(trackingController));
+        builder.AddEventHandler(new UpdateSilverEventHandler(trackingController));
+        builder.AddEventHandler(new UpdateReSpecPointsEventHandler(trackingController));
+        builder.AddEventHandler(new UpdateCurrencyEventHandler(trackingController));
+        builder.AddEventHandler(new DiedEventHandler(trackingController));
+        builder.AddEventHandler(new NewLootChestEventHandler(trackingController));
+        builder.AddEventHandler(new UpdateLootChestEventHandler(trackingController));
+        builder.AddEventHandler(new LootChestOpenedEventHandler(trackingController));
+        builder.AddEventHandler(new InCombatStateUpdateEventHandler(trackingController));
+        builder.AddEventHandler(new NewShrineEventHandler(trackingController));
+        builder.AddEventHandler(new HealthUpdateEventHandler(trackingController));
+        builder.AddEventHandler(new PartyDisbandedEventHandler(trackingController));
+        builder.AddEventHandler(new PartyPlayerJoinedEventHandler(trackingController));
+        builder.AddEventHandler(new PartyPlayerLeftEventHandler(trackingController));
+        builder.AddEventHandler(new PartyChangedOrderEventHandler(trackingController));
+        builder.AddEventHandler(new NewCharacterEventHandler(trackingController));
+        builder.AddEventHandler(new SiegeCampClaimStartEventHandler(trackingController));
+        builder.AddEventHandler(new CharacterEquipmentChangedEventHandler(trackingController));
+        builder.AddEventHandler(new NewMobEventHandler(trackingController));
+        builder.AddEventHandler(new ActiveSpellEffectsUpdateEventHandler(trackingController));
+        builder.AddEventHandler(new UpdateFactionStandingEventHandler(trackingController));
+        builder.AddEventHandler(new ReceivedSeasonPointsEventHandler(trackingController));
+        builder.AddEventHandler(new MightFavorPointsEventHandler(trackingController));
+        builder.AddEventHandler(new BaseVaultInfoEventHandler(trackingController));
+        builder.AddEventHandler(new GuildVaultInfoEventHandler(trackingController));
+        builder.AddEventHandler(new NewLootEventHandler(trackingController));
+        builder.AddEventHandler(new AttachItemContainerEventHandler(trackingController));
+
+        builder.AddRequestHandler(new InventoryMoveItemRequestHandler(trackingController));
+        builder.AddRequestHandler(new UseShrineRequestHandler(trackingController));
+        builder.AddRequestHandler(new ReSpecBoostRequestHandler(trackingController));
+        builder.AddRequestHandler(new TakeSilverRequestHandler(trackingController));
+        builder.AddRequestHandler(new RegisterToObjectRequestHandler(trackingController));
+        builder.AddRequestHandler(new UnRegisterFromObjectRequestHandler(trackingController));
+
+        builder.AddResponseHandler(new ChangeClusterResponseHandler(trackingController));
+        builder.AddResponseHandler(new PartyMakeLeaderResponseHandler(trackingController));
+        builder.AddResponseHandler(new JoinResponseHandler(trackingController, mainWindowViewModel));
+        builder.AddResponseHandler(new GetMailInfosResponseHandler(trackingController));
+        builder.AddResponseHandler(new ReadMailResponseHandler(trackingController));
+        
+        _receiver = builder.Build();
+        
         try
         {
             CapturedDevices.AddRange(CaptureDeviceList.Instance);

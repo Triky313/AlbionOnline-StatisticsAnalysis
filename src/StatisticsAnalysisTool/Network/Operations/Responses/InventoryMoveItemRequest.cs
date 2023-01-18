@@ -7,7 +7,7 @@ using System.Reflection;
 
 namespace StatisticsAnalysisTool.Network.Operations.Responses;
 
-public class InventoryMoveItemRequest
+public class InventoryMoveItemRequest : BaseOperation
 {
     private static readonly ILog Log = LogManager.GetLogger(MethodBase.GetCurrentMethod()?.DeclaringType);
 
@@ -16,7 +16,7 @@ public class InventoryMoveItemRequest
     public int InventorySlot;
     public Guid? UserInteractGuid;
 
-    public InventoryMoveItemRequest(Dictionary<byte, object> parameters)
+    public InventoryMoveItemRequest(Dictionary<byte, object> parameters) : base(parameters)
     {
         ConsoleManager.WriteLineForMessage(GetType().Name, parameters, ConsoleColorType.EventMapChangeColor);
 

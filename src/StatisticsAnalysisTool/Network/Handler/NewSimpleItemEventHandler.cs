@@ -1,19 +1,20 @@
-﻿using StatisticsAnalysisTool.Network.Events;
+﻿using StatisticsAnalysisTool.Enumerations;
+using StatisticsAnalysisTool.Network.Events;
 using StatisticsAnalysisTool.Network.Manager;
 using System.Threading.Tasks;
 
 namespace StatisticsAnalysisTool.Network.Handler;
 
-public class NewSimpleItemEventHandler
+public class NewSimpleItemEventHandler : EventPacketHandler<NewSimpleItemEvent>
 {
     private readonly TrackingController _trackingController;
 
-    public NewSimpleItemEventHandler(TrackingController trackingController)
+    public NewSimpleItemEventHandler(TrackingController trackingController) : base((int) EventCodes.NewSimpleItem)
     {
         _trackingController = trackingController;
     }
 
-    public async Task OnActionAsync(NewSimpleItemEvent value)
+    protected override async Task OnActionAsync(NewSimpleItemEvent value)
     {
         if (_trackingController.IsTrackingAllowedByMainCharacter())
         {

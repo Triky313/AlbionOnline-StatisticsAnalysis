@@ -6,9 +6,9 @@ using System.Reflection;
 
 namespace StatisticsAnalysisTool.Network.Events;
 
-public class CharacterEquipmentChangedEvent
+public class CharacterEquipmentChangedEvent : BaseEvent
 {
-    public CharacterEquipmentChangedEvent(Dictionary<byte, object> parameters)
+    public CharacterEquipmentChangedEvent(Dictionary<byte, object> parameters) : base(parameters)
     {
         ConsoleManager.WriteLineForNetworkHandler(GetType().Name, parameters);
 

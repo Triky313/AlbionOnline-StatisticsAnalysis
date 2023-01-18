@@ -5,13 +5,13 @@ using System.Reflection;
 
 namespace StatisticsAnalysisTool.Network.Events;
 
-public class NewLootChestEvent
+public class NewLootChestEvent : BaseEvent
 {
     public int ObjectId { get; set; }
     public string UniqueName { get; set; }
     public string UniqueNameWithLocation { get; set; }
 
-    public NewLootChestEvent(Dictionary<byte, object> parameters)
+    public NewLootChestEvent(Dictionary<byte, object> parameters) : base(parameters)
     {
         ConsoleManager.WriteLineForNetworkHandler(GetType().Name, parameters);
 

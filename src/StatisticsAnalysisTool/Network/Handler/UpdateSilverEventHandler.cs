@@ -1,18 +1,20 @@
 ﻿using StatisticsAnalysisTool.Network.Manager;
 using System.Threading.Tasks;
+using StatisticsAnalysisTool.Network.Events;
+using StatisticsAnalysisTool.Enumerations;
 
 namespace StatisticsAnalysisTool.Network.Handler;
 
-public class UpdateSilverEventHandler
+public class UpdateSilverEventHandler : EventPacketHandler<UpdateSilverEvent>
 {
     private readonly LiveStatsTracker _liveStatsTracker;
 
-    public UpdateSilverEventHandler(TrackingController trackingController)
+    public UpdateSilverEventHandler(TrackingController trackingController) : base((int) EventCodes.UpdateSilver)
     {
         _liveStatsTracker = trackingController?.LiveStatsTracker;
     }
 
-    public async Task OnActionAsync(UpdateSilverEvent value)
+    protected override async Task OnActionAsync(UpdateSilverEvent value)
     {
         await Task.CompletedTask;
     }

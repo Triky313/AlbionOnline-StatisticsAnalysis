@@ -1,18 +1,20 @@
 ﻿using StatisticsAnalysisTool.Network.Manager;
 using System.Threading.Tasks;
+using StatisticsAnalysisTool.Network.Events;
+using StatisticsAnalysisTool.Enumerations;
 
 namespace StatisticsAnalysisTool.Network.Handler;
 
-public class HealthUpdateEventHandler
+public class HealthUpdateEventHandler : EventPacketHandler<HealthUpdateEvent>
 {
     private readonly TrackingController _trackingController;
 
-    public HealthUpdateEventHandler(TrackingController trackingController)
+    public HealthUpdateEventHandler(TrackingController trackingController) : base((int) EventCodes.HealthUpdate)
     {
         _trackingController = trackingController;
     }
 
-    public async Task OnActionAsync(HealthUpdateEvent value)
+    protected override async Task OnActionAsync(HealthUpdateEvent value)
     {
         await _trackingController.CombatController.AddDamage(value.ObjectId, value.CauserId, value.HealthChange, value.NewHealthValue);
     }

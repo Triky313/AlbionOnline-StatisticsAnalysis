@@ -5,11 +5,11 @@ using StatisticsAnalysisTool.Common;
 
 namespace StatisticsAnalysisTool.Network.Events;
 
-public class PartyChangedOrderEvent
+public class PartyChangedOrderEvent : BaseEvent
 {
-    public Dictionary<Guid, string> PartyUsersGuid = new();
+    public readonly Dictionary<Guid, string> PartyUsersGuid = new();
 
-    public PartyChangedOrderEvent(Dictionary<byte, object> parameters)
+    public PartyChangedOrderEvent(Dictionary<byte, object> parameters) : base(parameters)
     {
         ConsoleManager.WriteLineForNetworkHandler(GetType().Name, parameters);
 

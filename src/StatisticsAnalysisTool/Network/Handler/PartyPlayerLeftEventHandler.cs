@@ -2,19 +2,20 @@
 using System;
 using System.Threading.Tasks;
 using StatisticsAnalysisTool.Network.Events;
+using StatisticsAnalysisTool.Enumerations;
 
 namespace StatisticsAnalysisTool.Network.Handler;
 
-public class PartyPlayerLeftEventHandler
+public class PartyPlayerLeftEventHandler : EventPacketHandler<PartyPlayerLeftEvent>
 {
     private readonly TrackingController _trackingController;
 
-    public PartyPlayerLeftEventHandler(TrackingController trackingController)
+    public PartyPlayerLeftEventHandler(TrackingController trackingController) : base((int) EventCodes.PartyPlayerLeft)
     {
         _trackingController = trackingController;
     }
 
-    public async Task OnActionAsync(PartyPlayerLeftEvent value)
+    protected override async Task OnActionAsync(PartyPlayerLeftEvent value)
     {
         await _trackingController.EntityController.RemoveFromPartyAsync(value.UserGuid);
     }

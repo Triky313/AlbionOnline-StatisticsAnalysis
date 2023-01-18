@@ -5,13 +5,13 @@ using System.Reflection;
 
 namespace StatisticsAnalysisTool.Network.Events;
 
-public class InventoryPutItemEvent
+public class InventoryPutItemEvent : BaseEvent
 {
     public long? ObjectId { get; }
     public int InventorySlot { get; }
     public Guid? InteractGuid { get; }
 
-    public InventoryPutItemEvent(Dictionary<byte, object> parameters)
+    public InventoryPutItemEvent(Dictionary<byte, object> parameters) : base(parameters)
     {
         ConsoleManager.WriteLineForNetworkHandler(GetType().Name, parameters);
 

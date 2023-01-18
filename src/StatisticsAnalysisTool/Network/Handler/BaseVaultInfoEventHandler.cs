@@ -2,19 +2,20 @@
 using StatisticsAnalysisTool.Network.Manager;
 using System.Threading.Tasks;
 using StatisticsAnalysisTool.Models.NetworkModel;
+using StatisticsAnalysisTool.Enumerations;
 
 namespace StatisticsAnalysisTool.Network.Handler;
 
-public class BaseVaultInfoEventHandler
+public class BaseVaultInfoEventHandler : EventPacketHandler<BaseVaultInfoEvent>
 {
     private readonly TrackingController _trackingController;
 
-    public BaseVaultInfoEventHandler(TrackingController trackingController)
+    public BaseVaultInfoEventHandler(TrackingController trackingController) : base((int) EventCodes.BaseVaultInfo)
     {
         _trackingController = trackingController;
     }
 
-    public async Task OnActionAsync(BaseVaultInfoEvent value)
+    protected override async Task OnActionAsync(BaseVaultInfoEvent value)
     {
         if (_trackingController.IsTrackingAllowedByMainCharacter())
         {

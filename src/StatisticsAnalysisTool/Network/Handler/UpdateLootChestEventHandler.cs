@@ -1,19 +1,20 @@
 ﻿using StatisticsAnalysisTool.Network.Manager;
 using System.Threading.Tasks;
 using StatisticsAnalysisTool.Network.Events;
+using StatisticsAnalysisTool.Enumerations;
 
 namespace StatisticsAnalysisTool.Network.Handler;
 
-public class UpdateLootChestEventHandler
+public class UpdateLootChestEventHandler : EventPacketHandler<UpdateLootChestEvent>
 {
     private readonly TrackingController _trackingController;
 
-    public UpdateLootChestEventHandler(TrackingController trackingController)
+    public UpdateLootChestEventHandler(TrackingController trackingController) : base((int) EventCodes.UpdateLootChest)
     {
         _trackingController = trackingController;
     }
 
-    public async Task OnActionAsync(UpdateLootChestEvent value)
+    protected override async Task OnActionAsync(UpdateLootChestEvent value)
     {
         _trackingController?.TreasureController?.UpdateTreasure(value.ObjectId, value.PlayerGuid);
         await Task.CompletedTask;

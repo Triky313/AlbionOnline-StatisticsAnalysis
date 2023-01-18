@@ -8,13 +8,13 @@ using System.Reflection;
 
 namespace StatisticsAnalysisTool.Network.Operations.Responses;
 
-public class GetMailInfosResponse
+public class GetMailInfosResponse : BaseOperation
 {
     private static readonly ILog Log = LogManager.GetLogger(MethodBase.GetCurrentMethod()?.DeclaringType);
 
-    public List<MailInfoObject> MailInfos = new();
+    public readonly List<MailInfoObject> MailInfos = new();
 
-    public GetMailInfosResponse(Dictionary<byte, object> parameters)
+    public GetMailInfosResponse(Dictionary<byte, object> parameters) : base(parameters)
     {
         ConsoleManager.WriteLineForNetworkHandler(GetType().Name, parameters);
 

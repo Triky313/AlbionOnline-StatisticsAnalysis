@@ -6,7 +6,7 @@ using System.Reflection;
 
 namespace StatisticsAnalysisTool.Network.Events;
 
-public class AttachItemContainerEvent
+public class AttachItemContainerEvent : BaseEvent
 {
     public ItemContainerObject ItemContainerObject;
     private readonly long? _objectId;
@@ -14,7 +14,7 @@ public class AttachItemContainerEvent
     private readonly Guid _containerGuid;
     private readonly List<long> _containerSlots = new();
 
-    public AttachItemContainerEvent(Dictionary<byte, object> parameters)
+    public AttachItemContainerEvent(Dictionary<byte, object> parameters) : base(parameters)
     {
         ConsoleManager.WriteLineForNetworkHandler(GetType().Name, parameters);
 

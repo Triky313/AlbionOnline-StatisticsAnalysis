@@ -5,7 +5,7 @@ using StatisticsAnalysisTool.Common;
 
 namespace StatisticsAnalysisTool.Network.Events;
 
-public class TakeSilverEvent
+public class TakeSilverEvent : BaseEvent
 {
     public long? ObjectId;
     public FixPoint ClusterTax;
@@ -21,7 +21,7 @@ public class TakeSilverEvent
     public FixPoint PremiumAfterTax;
     public FixPoint ClusterYieldAfterTax;
 
-    public TakeSilverEvent(Dictionary<byte, object> parameters)
+    public TakeSilverEvent(Dictionary<byte, object> parameters) : base(parameters)
     {
         ConsoleManager.WriteLineForNetworkHandler(GetType().Name, parameters);
 

@@ -1,4 +1,5 @@
 ﻿using StatisticsAnalysisTool.Common;
+using StatisticsAnalysisTool.Enumerations;
 using StatisticsAnalysisTool.Models;
 using StatisticsAnalysisTool.Network.Events;
 using StatisticsAnalysisTool.Network.Manager;
@@ -6,16 +7,16 @@ using System.Threading.Tasks;
 
 namespace StatisticsAnalysisTool.Network.Handler;
 
-public class ActiveSpellEffectsUpdateEventHandler
+public class ActiveSpellEffectsUpdateEventHandler : EventPacketHandler<ActiveSpellEffectsUpdateEvent>
 {
     private readonly TrackingController _trackingController;
 
-    public ActiveSpellEffectsUpdateEventHandler(TrackingController trackingController)
+    public ActiveSpellEffectsUpdateEventHandler(TrackingController trackingController) : base((int) EventCodes.ActiveSpellEffectsUpdate)
     {
         _trackingController = trackingController;
     }
 
-    public async Task OnActionAsync(ActiveSpellEffectsUpdateEvent value)
+    protected override async Task OnActionAsync(ActiveSpellEffectsUpdateEvent value)
     {
         if (value.CauserId != null)
         {
