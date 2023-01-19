@@ -7,9 +7,9 @@ namespace StatisticsAnalysisTool.Network.Events;
 
 public class UpdateLootChestEvent
 {
-    public int ObjectId { get; set; }
-    public List<Guid> PlayerGuid { get; set; } = new();
-    public List<Guid> PlayerGuid2 { get; set; } = new();
+    public int ObjectId { get; }
+    public List<Guid> PlayerGuid { get; } = new();
+    public List<Guid> PlayerGuid2 { get; } = new();
 
     public UpdateLootChestEvent(Dictionary<byte, object> parameters)
     {

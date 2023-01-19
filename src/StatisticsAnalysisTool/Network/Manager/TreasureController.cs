@@ -7,6 +7,7 @@ using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Collections.Specialized;
+using System.Diagnostics;
 using System.Linq;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
@@ -213,17 +214,44 @@ public class TreasureController
 
     private static TreasureType GetTreasureType(string input)
     {
-        if (input == "TREASURE") return TreasureType.OpenWorld;
-        if (input == "STATIC") return TreasureType.StaticDungeon;
-        if (input == "AVALON") return TreasureType.Avalon;
-        if (input == "CORRUPTED") return TreasureType.Corrupted;
-        if (input == "HELL") return TreasureType.HellGate;
+        var inputArray = input.Split("_");
 
+        if (inputArray.Any(x => x == "TREASURE"))
+        {
+            return TreasureType.OpenWorld;
+        }
+
+        if (inputArray.Any(x => x == "STATIC"))
+        {
+            return TreasureType.StaticDungeon;
+        }
+
+        if (inputArray.Any(x => x == "AVALON"))
+        {
+            return TreasureType.Avalon;
+        }
+
+        if (inputArray.Any(x => x == "CORRUPTED"))
+        {
+            return TreasureType.Corrupted;
+        }
+
+        if (inputArray.Any(x => x == "HELL"))
+        {
+            return TreasureType.HellGate;
+        }
+        
         var pattern = "_VETERAN_CHEST_|[^SOLO]_CHEST_BOSS_HALLOWEEN_";
-        if (Regex.IsMatch(input, pattern)) return TreasureType.RandomGroupDungeon;
+        if (Regex.IsMatch(input, pattern))
+        {
+            return TreasureType.RandomGroupDungeon;
+        }
 
         pattern = "_SOLO_BOOKCHEST_|_SOLO_CHEST_";
-        if (Regex.IsMatch(input, pattern)) return TreasureType.RandomSoloDungeon;
+        if (Regex.IsMatch(input, pattern))
+        {
+            return TreasureType.RandomSoloDungeon;
+        }
 
         return TreasureType.Unknown;
     }
