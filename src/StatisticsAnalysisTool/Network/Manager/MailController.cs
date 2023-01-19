@@ -51,16 +51,10 @@ public class MailController
             return;
         }
 
-        lock (_mainWindowViewModel.MailMonitoringBindings.Mails)
+        var mailArray = _mainWindowViewModel.MailMonitoringBindings.Mails.ToArray();
+        if (mailArray.Any(mailObject => mailObject.MailId == mailId))
         {
-            var list = _mainWindowViewModel.MailMonitoringBindings.Mails.ToList();
-            for (var i = 0; i < list.Count; i++)
-            {
-                if (list[i].MailId == mailId)
-                {
-                    return;
-                }
-            }
+            return;
         }
 
         if (_mainWindowViewModel.MailMonitoringBindings.Mails.ToArray().Any(x => x.MailId == mailId))
