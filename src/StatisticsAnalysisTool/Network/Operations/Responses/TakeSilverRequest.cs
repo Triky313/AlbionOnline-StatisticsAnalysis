@@ -12,8 +12,8 @@ public class TakeSilverRequest
 {
     private static readonly ILog Log = LogManager.GetLogger(MethodBase.GetCurrentMethod()?.DeclaringType);
 
-    public long BuildingObjectId;
-    public long Costs;
+    public readonly long BuildingObjectId;
+    public readonly long Costs;
 
     public TakeSilverRequest(Dictionary<byte, object> parameters)
     {

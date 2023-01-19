@@ -1,9 +1,8 @@
-﻿namespace StatisticsAnalysisTool.Enumerations
+﻿namespace StatisticsAnalysisTool.Enumerations;
+
+public enum EffectType : byte
 {
-    public enum EffectType : byte
-    {
-        None,
-        Physical,
-        Magic
-    }
+    None,
+    Physical,
+    Magic
 }

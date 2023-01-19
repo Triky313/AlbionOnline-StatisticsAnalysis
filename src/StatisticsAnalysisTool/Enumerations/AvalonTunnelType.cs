@@ -1,16 +1,15 @@
-﻿namespace StatisticsAnalysisTool.Enumerations
+﻿namespace StatisticsAnalysisTool.Enumerations;
+
+public enum AvalonTunnelType
 {
-    public enum AvalonTunnelType
-    {
-        Unknown,
-        TunnelBlackLow,
-        TunnelBlackMedium,
-        TunnelBlackHigh,
-        TunnelLow,
-        TunnelMedium,
-        TunnelHigh,
-        TunnelDeep,
-        TunnelRoyal,
-        TunnelHideout
-    }
+    Unknown,
+    TunnelBlackLow,
+    TunnelBlackMedium,
+    TunnelBlackHigh,
+    TunnelLow,
+    TunnelMedium,
+    TunnelHigh,
+    TunnelDeep,
+    TunnelRoyal,
+    TunnelHideout
 }

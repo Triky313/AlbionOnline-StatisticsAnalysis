@@ -3,33 +3,32 @@ using System;
 using System.Collections.Generic;
 using System.Reflection;
 
-namespace StatisticsAnalysisTool.Network.Events
+namespace StatisticsAnalysisTool.Network.Events;
+
+public class NewLootEvent
 {
-    public class NewLootEvent
+    public readonly long? ObjectId;
+    public readonly string LootBody;
+
+    public NewLootEvent(Dictionary<byte, object> parameters)
     {
-        public readonly long? ObjectId;
-        public readonly string LootBody;
+        ConsoleManager.WriteLineForNetworkHandler(GetType().Name, parameters);
 
-        public NewLootEvent(Dictionary<byte, object> parameters)
+        try
         {
-            ConsoleManager.WriteLineForNetworkHandler(GetType().Name, parameters);
-
-            try
+            if (parameters.ContainsKey(0))
             {
-                if (parameters.ContainsKey(0))
-                {
-                    ObjectId = parameters[0].ObjectToLong();
-                }
+                ObjectId = parameters[0].ObjectToLong();
+            }
 
-                if (parameters.ContainsKey(3))
-                {
-                    LootBody = string.IsNullOrEmpty(parameters[3].ToString()) ? string.Empty : parameters[3].ToString();
-                }
-            }
-            catch (Exception e)
+            if (parameters.ContainsKey(3))
             {
-                ConsoleManager.WriteLineForError(MethodBase.GetCurrentMethod()?.DeclaringType, e);
+                LootBody = string.IsNullOrEmpty(parameters[3].ToString()) ? string.Empty : parameters[3].ToString();
             }
+        }
+        catch (Exception e)
+        {
+            ConsoleManager.WriteLineForError(MethodBase.GetCurrentMethod()?.DeclaringType, e);
         }
     }
 }

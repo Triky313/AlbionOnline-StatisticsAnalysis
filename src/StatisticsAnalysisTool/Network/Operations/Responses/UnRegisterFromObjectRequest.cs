@@ -12,7 +12,7 @@ public class UnRegisterFromObjectRequest
 {
     private static readonly ILog Log = LogManager.GetLogger(MethodBase.GetCurrentMethod()?.DeclaringType);
 
-    public long BuildingObjectId;
+    public readonly long BuildingObjectId;
 
     public UnRegisterFromObjectRequest(Dictionary<byte, object> parameters)
     {

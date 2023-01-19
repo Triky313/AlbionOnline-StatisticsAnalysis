@@ -2,24 +2,24 @@
 using System;
 using System.Threading.Tasks;
 using StatisticsAnalysisTool.Network.Events;
+using StatisticsAnalysisTool.Enumerations;
 
-namespace StatisticsAnalysisTool.Network.Handler
+namespace StatisticsAnalysisTool.Network.Handler;
+
+public class PartyPlayerJoinedEventHandler : EventPacketHandler<PartyPlayerJoinedEvent>
 {
-    public class PartyPlayerJoinedEventHandler
+    private readonly TrackingController _trackingController;
+
+    public PartyPlayerJoinedEventHandler(TrackingController trackingController) : base((int) EventCodes.PartyPlayerJoined)
     {
-        private readonly TrackingController _trackingController;
+        _trackingController = trackingController;
+    }
 
-        public PartyPlayerJoinedEventHandler(TrackingController trackingController)
+    protected override async Task OnActionAsync(PartyPlayerJoinedEvent value)
+    {
+        if (value?.UserGuid != null)
         {
-            _trackingController = trackingController;
-        }
-
-        public async Task OnActionAsync(PartyPlayerJoinedEvent value)
-        {
-            if (value?.UserGuid != null)
-            {
-                await _trackingController.EntityController.AddToPartyAsync((Guid)value.UserGuid, value.Username);
-            }
+            await _trackingController.EntityController.AddToPartyAsync((Guid)value.UserGuid, value.Username);
         }
     }
 }

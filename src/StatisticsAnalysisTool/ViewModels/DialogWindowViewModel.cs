@@ -3,62 +3,61 @@ using StatisticsAnalysisTool.Properties;
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
 
-namespace StatisticsAnalysisTool.ViewModels
+namespace StatisticsAnalysisTool.ViewModels;
+
+public class DialogWindowViewModel : INotifyPropertyChanged
 {
-    public class DialogWindowViewModel : INotifyPropertyChanged
+    private string _title;
+    private string _message;
+    private DialogWindowTranslation _dialogWindowTranslation = new();
+
+    public DialogWindowViewModel(string title, string message)
     {
-        private string _title;
-        private string _message;
-        private DialogWindowTranslation _dialogWindowTranslation = new();
+        Title = title;
+        Message = message;
+    }
 
-        public DialogWindowViewModel(string title, string message)
+    public bool Canceled { get; set; }
+
+    #region Binding
+
+    public string Title
+    {
+        get => _title;
+        set
         {
-            Title = title;
-            Message = message;
+            _title = value;
+            OnPropertyChanged();
         }
+    }
 
-        public bool Canceled { get; set; }
-
-        #region Binding
-
-        public string Title
+    public string Message
+    {
+        get => _message;
+        set
         {
-            get => _title;
-            set
-            {
-                _title = value;
-                OnPropertyChanged();
-            }
+            _message = value;
+            OnPropertyChanged();
         }
+    }
 
-        public string Message
+    public DialogWindowTranslation Translation
+    {
+        get => _dialogWindowTranslation;
+        set
         {
-            get => _message;
-            set
-            {
-                _message = value;
-                OnPropertyChanged();
-            }
+            _dialogWindowTranslation = value;
+            OnPropertyChanged();
         }
+    }
 
-        public DialogWindowTranslation Translation
-        {
-            get => _dialogWindowTranslation;
-            set
-            {
-                _dialogWindowTranslation = value;
-                OnPropertyChanged();
-            }
-        }
+    #endregion
 
-        #endregion
+    public event PropertyChangedEventHandler PropertyChanged;
 
-        public event PropertyChangedEventHandler PropertyChanged;
-
-        [NotifyPropertyChangedInvocator]
-        protected virtual void OnPropertyChanged([CallerMemberName] string propertyName = null)
-        {
-            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
-        }
+    [NotifyPropertyChangedInvocator]
+    protected virtual void OnPropertyChanged([CallerMemberName] string propertyName = null)
+    {
+        PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
     }
 }

@@ -1,11 +1,10 @@
-﻿namespace StatisticsAnalysisTool.Enumerations
+﻿namespace StatisticsAnalysisTool.Enumerations;
+
+public enum CraftingJournalType
 {
-    public enum CraftingJournalType
-    {
-        Unknown,
-        JournalMage,
-        JournalHunter,
-        JournalWarrior,
-        JournalToolMaker
-    }
+    Unknown,
+    JournalMage,
+    JournalHunter,
+    JournalWarrior,
+    JournalToolMaker
 }

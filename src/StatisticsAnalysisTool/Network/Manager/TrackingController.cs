@@ -22,16 +22,16 @@ public class TrackingController : ITrackingController
     private static readonly ILog Log = LogManager.GetLogger(MethodBase.GetCurrentMethod()?.DeclaringType);
     private readonly MainWindow _mainWindow;
     private readonly MainWindowViewModel _mainWindowViewModel;
-    public LiveStatsTracker LiveStatsTracker;
-    public CombatController CombatController;
-    public DungeonController DungeonController;
-    public ClusterController ClusterController;
-    public EntityController EntityController;
-    public LootController LootController;
-    public StatisticController StatisticController;
-    public TreasureController TreasureController;
-    public MailController MailController;
-    public VaultController VaultController;
+    public readonly LiveStatsTracker LiveStatsTracker;
+    public readonly CombatController CombatController;
+    public readonly DungeonController DungeonController;
+    public readonly ClusterController ClusterController;
+    public readonly EntityController EntityController;
+    public readonly LootController LootController;
+    public readonly StatisticController StatisticController;
+    public readonly TreasureController TreasureController;
+    public readonly MailController MailController;
+    public readonly VaultController VaultController;
     private readonly List<NotificationType> _notificationTypesFilters = new();
 
     public TrackingController(MainWindowViewModel mainWindowViewModel, MainWindow mainWindow)
@@ -109,7 +109,7 @@ public class TrackingController : ITrackingController
         await SetNotificationTypesAsync();
     }
 
-    public async Task RemovesUnnecessaryNotificationsAsync()
+    private async Task RemovesUnnecessaryNotificationsAsync()
     {
         if (!IsRemovesUnnecessaryNotificationsActiveAllowed())
         {
@@ -118,7 +118,7 @@ public class TrackingController : ITrackingController
 
         _isRemovesUnnecessaryNotificationsActive = true;
 
-        var numberToBeRemoved = _mainWindowViewModel?.LoggingBindings?.TrackingNotifications?.Count - MaxNotifications;
+        int? numberToBeRemoved = _mainWindowViewModel?.LoggingBindings?.TrackingNotifications?.Count - MaxNotifications;
         if (numberToBeRemoved is > 0)
         {
             var notifications = _mainWindowViewModel?.LoggingBindings?.TrackingNotifications?.ToList().OrderBy(x => x?.DateTime).Take((int)numberToBeRemoved).ToAsyncEnumerable();
@@ -198,12 +198,12 @@ public class TrackingController : ITrackingController
         }
     }
 
-    public void SetNotificationFilteredVisibility(TrackingNotification trackingNotification)
+    private void SetNotificationFilteredVisibility(TrackingNotification trackingNotification)
     {
         trackingNotification.Visibility = IsNotificationFiltered(trackingNotification) ? Visibility.Collapsed : Visibility.Visible;
     }
 
-    public bool IsNotificationFiltered(TrackingNotification trackingNotification)
+    private bool IsNotificationFiltered(TrackingNotification trackingNotification)
     {
         return !_notificationTypesFilters?.Exists(x => x == trackingNotification.Type) ?? false;
     }
@@ -226,7 +226,7 @@ public class TrackingController : ITrackingController
 
     public bool IsLootFromMobShown { get; set; }
 
-    public async Task SetNotificationTypesAsync()
+    private async Task SetNotificationTypesAsync()
     {
         await Application.Current.Dispatcher.InvokeAsync(async () =>
         {

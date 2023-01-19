@@ -9,107 +9,106 @@ using System.Windows.Threading;
 using StatisticsAnalysisTool.Common.UserSettings;
 using StatisticsAnalysisTool.Properties;
 
-namespace StatisticsAnalysisTool.Models.NetworkModel
+namespace StatisticsAnalysisTool.Models.NetworkModel;
+
+public class DungeonCloseTimer : INotifyPropertyChanged
 {
-    public class DungeonCloseTimer : INotifyPropertyChanged
+    private string _timerString;
+    private bool _isDungeonClosed;
+    private DateTime _endTime;
+    private Visibility _visibility = Visibility.Collapsed;
+    private readonly DispatcherTimer _dispatcherTimer = new();
+
+    public DungeonCloseTimer()
     {
-        private string _timerString;
-        private bool _isDungeonClosed;
-        private DateTime _endTime;
-        private Visibility _visibility = Visibility.Collapsed;
-        private readonly DispatcherTimer _dispatcherTimer = new();
+        _dispatcherTimer.Interval = TimeSpan.FromSeconds(1);
+        _dispatcherTimer.Tick += UpdateTimer;
+    }
 
-        public DungeonCloseTimer()
+    public bool IsDungeonClosed
+    {
+        get => _isDungeonClosed;
+        private set
         {
-            _dispatcherTimer.Interval = TimeSpan.FromSeconds(1);
-            _dispatcherTimer.Tick += UpdateTimer;
+            _isDungeonClosed = value;
+            OnPropertyChanged();
         }
+    }
 
-        public bool IsDungeonClosed
+    public string TimerString
+    {
+        get => _timerString;
+        set
         {
-            get => _isDungeonClosed;
-            private set
-            {
-                _isDungeonClosed = value;
-                OnPropertyChanged();
-            }
+            _timerString = value;
+            OnPropertyChanged();
         }
-
-        public string TimerString
-        {
-            get => _timerString;
-            set
-            {
-                _timerString = value;
-                OnPropertyChanged();
-            }
-        }
+    }
         
-        public Visibility Visibility {
-            get => _visibility;
-            set
-            {
-                _visibility = value;
-
-                switch (_visibility)
-                {
-                    case Visibility.Visible when !_dispatcherTimer.IsEnabled:
-                        _endTime = DateTime.UtcNow.AddSeconds(90);
-                        IsDungeonClosed = false;
-                        _dispatcherTimer.Start();
-                        break;
-                    case Visibility.Collapsed or Visibility.Hidden when _dispatcherTimer.IsEnabled:
-                        _dispatcherTimer.Stop();
-                        break;
-                }
-
-                OnPropertyChanged();
-            }
-        }
-
-        public void UpdateTimer(object sender, EventArgs e)
+    public Visibility Visibility {
+        get => _visibility;
+        set
         {
-            var duration = _endTime - DateTime.UtcNow;
-            TimerString = duration.ToString("hh\\:mm\\:ss");
+            _visibility = value;
+
+            switch (_visibility)
+            {
+                case Visibility.Visible when !_dispatcherTimer.IsEnabled:
+                    _endTime = DateTime.UtcNow.AddSeconds(90);
+                    IsDungeonClosed = false;
+                    _dispatcherTimer.Start();
+                    break;
+                case Visibility.Collapsed or Visibility.Hidden when _dispatcherTimer.IsEnabled:
+                    _dispatcherTimer.Stop();
+                    break;
+            }
+
+            OnPropertyChanged();
+        }
+    }
+
+    public void UpdateTimer(object sender, EventArgs e)
+    {
+        var duration = _endTime - DateTime.UtcNow;
+        TimerString = duration.ToString("hh\\:mm\\:ss");
             
-            if (duration.TotalSeconds <= 0)
-            {
-                IsDungeonClosed = true;
-
-                if (SettingsController.CurrentSettings.IsDungeonClosedSoundActive)
-                {
-                    SoundController.PlayAlertSound(Path.Combine(AppDomain.CurrentDomain.BaseDirectory, Settings.Default.SoundDirectoryName, Settings.Default.DungeonClosedSoundFileName));
-                }
-
-                _dispatcherTimer.Stop();
-            }
-        }
-
-        private void PerformRefreshDungeonTimer(object value)
+        if (duration.TotalSeconds <= 0)
         {
-            _endTime = DateTime.UtcNow.AddSeconds(90);
+            IsDungeonClosed = true;
 
-            if (!_dispatcherTimer.IsEnabled)
+            if (SettingsController.CurrentSettings.IsDungeonClosedSoundActive)
             {
-                IsDungeonClosed = false;
-                _dispatcherTimer.Start();
+                SoundController.PlayAlertSound(Path.Combine(AppDomain.CurrentDomain.BaseDirectory, Settings.Default.SoundDirectoryName, Settings.Default.DungeonClosedSoundFileName));
             }
+
+            _dispatcherTimer.Stop();
         }
+    }
 
-        private ICommand _refreshDungeonTimer;
+    private void PerformRefreshDungeonTimer(object value)
+    {
+        _endTime = DateTime.UtcNow.AddSeconds(90);
 
-        public ICommand RefreshDungeonTimer => _refreshDungeonTimer ??= new CommandHandler(PerformRefreshDungeonTimer, true);
-
-        public static string TranslationSafe => LanguageController.Translation("SAFE");
-        public static string TranslationDungeonTimer => LanguageController.Translation("DUNGEON_TIMER");
-        public static string TranslationResetDungeonTimer => LanguageController.Translation("RESET_DUNGEON_TIMER");
-
-        public event PropertyChangedEventHandler PropertyChanged;
-
-        [NotifyPropertyChangedInvocator]
-        protected virtual void OnPropertyChanged([CallerMemberName] string propertyName = null)
+        if (!_dispatcherTimer.IsEnabled)
         {
-            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
+            IsDungeonClosed = false;
+            _dispatcherTimer.Start();
         }
+    }
+
+    private ICommand _refreshDungeonTimer;
+
+    public ICommand RefreshDungeonTimer => _refreshDungeonTimer ??= new CommandHandler(PerformRefreshDungeonTimer, true);
+
+    public static string TranslationSafe => LanguageController.Translation("SAFE");
+    public static string TranslationDungeonTimer => LanguageController.Translation("DUNGEON_TIMER");
+    public static string TranslationResetDungeonTimer => LanguageController.Translation("RESET_DUNGEON_TIMER");
+
+    public event PropertyChangedEventHandler PropertyChanged;
+
+    [NotifyPropertyChangedInvocator]
+    protected virtual void OnPropertyChanged([CallerMemberName] string propertyName = null)
+    {
+        PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
     }
 }

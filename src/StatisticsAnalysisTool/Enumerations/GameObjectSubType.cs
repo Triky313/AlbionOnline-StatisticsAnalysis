@@ -1,12 +1,11 @@
-﻿namespace StatisticsAnalysisTool.Enumerations
+﻿namespace StatisticsAnalysisTool.Enumerations;
+
+public enum GameObjectSubType
 {
-    public enum GameObjectSubType
-    {
-        Unknown,
-        LocalPlayer,
-        Player,
-        PvpPlayer,
-        Mob,
-        Boss
-    }
+    Unknown,
+    LocalPlayer,
+    Player,
+    PvpPlayer,
+    Mob,
+    Boss
 }

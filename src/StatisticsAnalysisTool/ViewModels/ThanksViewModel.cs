@@ -3,33 +3,32 @@ using StatisticsAnalysisTool.Properties;
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
 
-namespace StatisticsAnalysisTool.ViewModels
+namespace StatisticsAnalysisTool.ViewModels;
+
+public class ThanksViewModel : INotifyPropertyChanged
 {
-    public class ThanksViewModel : INotifyPropertyChanged
+    private ThanksTranslation _translation;
+
+    public ThanksViewModel()
     {
-        private ThanksTranslation _translation;
+        Translation = new ThanksTranslation();
+    }
 
-        public ThanksViewModel()
+    public ThanksTranslation Translation
+    {
+        get => _translation;
+        set
         {
-            Translation = new ThanksTranslation();
+            _translation = value;
+            OnPropertyChanged();
         }
+    }
 
-        public ThanksTranslation Translation
-        {
-            get => _translation;
-            set
-            {
-                _translation = value;
-                OnPropertyChanged();
-            }
-        }
+    public event PropertyChangedEventHandler PropertyChanged;
 
-        public event PropertyChangedEventHandler PropertyChanged;
-
-        [NotifyPropertyChangedInvocator]
-        protected virtual void OnPropertyChanged([CallerMemberName] string propertyName = null)
-        {
-            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
-        }
+    [NotifyPropertyChangedInvocator]
+    protected virtual void OnPropertyChanged([CallerMemberName] string propertyName = null)
+    {
+        PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
     }
 }

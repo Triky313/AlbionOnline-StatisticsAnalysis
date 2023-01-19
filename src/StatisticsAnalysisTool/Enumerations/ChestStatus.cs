@@ -1,15 +1,14 @@
-﻿namespace StatisticsAnalysisTool.Enumerations
+﻿namespace StatisticsAnalysisTool.Enumerations;
+
+public enum ChestStatus
 {
-    public enum ChestStatus
-    {
-        Unknown,
-        StandardChestClose,
-        StandardChestOpen,
-        UncommonChestClose,
-        UncommonChestOpen,
-        RareChestClose,
-        RareChestOpen,
-        LegendaryChestClose,
-        LegendaryChestOpen
-    }
+    Unknown,
+    StandardChestClose,
+    StandardChestOpen,
+    UncommonChestClose,
+    UncommonChestOpen,
+    RareChestClose,
+    RareChestOpen,
+    LegendaryChestClose,
+    LegendaryChestOpen
 }

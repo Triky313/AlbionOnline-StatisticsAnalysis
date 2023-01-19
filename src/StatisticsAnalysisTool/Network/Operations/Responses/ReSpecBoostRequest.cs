@@ -12,7 +12,7 @@ public class ReSpecBoostRequest
 {
     private static readonly ILog Log = LogManager.GetLogger(MethodBase.GetCurrentMethod()?.DeclaringType);
 
-    public bool IsReSpecBoostActive;
+    public readonly bool IsReSpecBoostActive;
 
     public ReSpecBoostRequest(Dictionary<byte, object> parameters)
     {

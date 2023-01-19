@@ -1,22 +1,22 @@
-﻿using StatisticsAnalysisTool.Network.Manager;
+﻿using StatisticsAnalysisTool.Enumerations;
+using StatisticsAnalysisTool.Network.Manager;
 using StatisticsAnalysisTool.Network.Operations.Responses;
 using System.Threading.Tasks;
 
-namespace StatisticsAnalysisTool.Network.Handler
+namespace StatisticsAnalysisTool.Network.Handler;
+
+public class UnRegisterFromObjectRequestHandler : RequestPacketHandler<UnRegisterFromObjectRequest>
 {
-    public class UnRegisterFromObjectRequestHandler
+    private readonly TrackingController _trackingController;
+
+    public UnRegisterFromObjectRequestHandler(TrackingController trackingController) : base((int) OperationCodes.UnRegisterFromObject)
     {
-        private readonly TrackingController _trackingController;
+        _trackingController = trackingController;
+    }
 
-        public UnRegisterFromObjectRequestHandler(TrackingController trackingController)
-        {
-            _trackingController = trackingController;
-        }
-
-        public async Task OnActionAsync(UnRegisterFromObjectRequest value)
-        {
-            _trackingController.UnregisterBuilding(value.BuildingObjectId);
-            await Task.CompletedTask;
-        }
+    protected override async Task OnActionAsync(UnRegisterFromObjectRequest value)
+    {
+        _trackingController.UnregisterBuilding(value.BuildingObjectId);
+        await Task.CompletedTask;
     }
 }
