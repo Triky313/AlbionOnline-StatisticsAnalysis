@@ -7,7 +7,6 @@ using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Collections.Specialized;
-using System.Diagnostics;
 using System.Linq;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
@@ -240,7 +239,7 @@ public class TreasureController
         {
             return TreasureType.HellGate;
         }
-        
+
         var pattern = "_VETERAN_CHEST_|[^SOLO]_CHEST_BOSS_HALLOWEEN_";
         if (Regex.IsMatch(input, pattern))
         {
@@ -255,7 +254,7 @@ public class TreasureController
 
         return TreasureType.Unknown;
     }
-    
+
     #endregion
 
     #region Load / Save local file data
