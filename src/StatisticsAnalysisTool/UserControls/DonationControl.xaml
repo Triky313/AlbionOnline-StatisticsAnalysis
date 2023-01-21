@@ -66,6 +66,8 @@
                                Foreground="{StaticResource SolidColorBrush.Accent.Yellow.1}" VerticalAlignment="Center" />
                     <TextBlock Text="PayPal" FontSize="16" FontWeight="Light" Width="200"
                                Foreground="{StaticResource SolidColorBrush.Accent.Yellow.1}" VerticalAlignment="Center" />
+                    <TextBlock Text="GitHub Sponsors" FontSize="16" FontWeight="Light" Width="200"
+                               Foreground="{StaticResource SolidColorBrush.Accent.Yellow.1}" VerticalAlignment="Center" />
                 </StackPanel>
                 <StackPanel Orientation="Horizontal">
                     <Grid Margin="0" HorizontalAlignment="Left" VerticalAlignment="Center" Width="200" Height="72">
@@ -82,6 +84,13 @@
                             </Hyperlink>
                         </TextBlock>
                         <Image Source="../Assets/paypal-QR-Code.png" Height="72" Width="72" Margin="20,0,0,0" />
+                    </Grid>
+                    <Grid Margin="0" HorizontalAlignment="Left" Width="200" Height="72" VerticalAlignment="Bottom">
+                        <TextBlock>
+                            <Hyperlink NavigateUri="{Binding GitHubSponsorsUrl}" RequestNavigate="Hyperlink_RequestNavigate" TextDecorations="{x:Null}">
+                                <fa5:ImageAwesome Icon="Regular_Heart" Foreground="{StaticResource Solid.Color.GitHubSponsors}" />
+                            </Hyperlink>
+                        </TextBlock>
                     </Grid>
                 </StackPanel>
             </StackPanel>

@@ -449,5 +449,17 @@ namespace StatisticsAnalysisTool.Properties {
                 return ((string)(this["TempDirecoryName"]));
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("https://github.com/sponsors/Triky313")]
+        public string GitHubSponsorsUrl {
+            get {
+                return ((string)(this["GitHubSponsorsUrl"]));
+            }
+            set {
+                this["GitHubSponsorsUrl"] = value;
+            }
+        }
     }
 }

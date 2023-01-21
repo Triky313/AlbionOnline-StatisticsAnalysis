@@ -211,6 +211,7 @@ public class DonationViewModel : INotifyPropertyChanged
 
     public static string PatreonUrl => Settings.Default.PatreonUrl;
     public static string DonateUrl => Settings.Default.DonateUrl;
+    public static string GitHubSponsorsUrl => Settings.Default.GitHubSponsorsUrl;
 
     public event PropertyChangedEventHandler PropertyChanged;
 

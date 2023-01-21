@@ -125,5 +125,8 @@
     <Setting Name="TempDirecoryName" Type="System.String" Scope="Application">
       <Value Profile="(Default)">temp</Value>
     </Setting>
+    <Setting Name="GitHubSponsorsUrl" Type="System.String" Scope="User">
+      <Value Profile="(Default)">https://github.com/sponsors/Triky313</Value>
+    </Setting>
   </Settings>
 </SettingsFile>

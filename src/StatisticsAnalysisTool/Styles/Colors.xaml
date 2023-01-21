@@ -156,6 +156,7 @@
 
     <!-- Donation -->
     <Color x:Key="Color.Patreon">#FFFF424D</Color>
+    <Color x:Key="Color.GitHubSponsors">#FFcc6ca0</Color>
 
     <!-- Console values -->
     <Color x:Key="Color.Console.Error">#ca3431</Color>
@@ -293,6 +294,7 @@
     <SolidColorBrush x:Key="Solid.Color.Text.NoValue" Color="{StaticResource Color.Text.NoValue}"/>
 
     <SolidColorBrush x:Key="Solid.Color.Patreon" Color="{StaticResource Color.Patreon}"/>
+    <SolidColorBrush x:Key="Solid.Color.GitHubSponsors" Color="{StaticResource Color.GitHubSponsors}"/>
 
     <SolidColorBrush x:Key="SolidColorBrush.Console.Error" Color="{StaticResource Color.Console.Error}"/>
     <SolidColorBrush x:Key="SolidColorBrush.Console.Warning" Color="{StaticResource Color.Console.Warning}"/>
