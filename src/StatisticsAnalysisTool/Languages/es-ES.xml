@@ -678,4 +678,8 @@
 	<translation name="THANK_YOU">Gracias</translation>
 	<translation name="DUNGEON_CLOSED_SOUND_ACTIVE">Sonido de mazmorra cerrada activado</translation>
 	<translation name="TOTAL_PRICE_WITH_DEDUCTED_TAXES">Precio total con tasas deducidas</translation>	
+	<translation name="UPDATE_MOBS_JSON_BY_DAYS">Actualizar mobs.json por días</translation>
+	<translation name="MOBS_JSON_SOURCE_URL">URL de origen de mobs.json</translation>
+	<translation name="GET_MOBS_JSON">Obtener mobs.json</translation>
+	<translation name="MOBS_JSON_CAN_NOT_BE_LOADED">mobs.json no pudo ser cargado.</translation>
 </translations>
