@@ -150,7 +150,7 @@ public class MainWindowViewModel : INotifyPropertyChanged, IAsyncInitialization
         UserTrackingBindings.UsernameInformationVisibility = Visibility.Hidden;
         UserTrackingBindings.GuildInformationVisibility = Visibility.Hidden;
         UserTrackingBindings.AllianceInformationVisibility = Visibility.Hidden;
-        UserTrackingBindings.CurrentMapInformationVisibility = Visibility.Hidden;
+        UserTrackingBindings.CurrentMapInfoBinding.CurrentMapInformationVisibility = Visibility.Hidden;
 
         IsTrackingResetByMapChangeActive = SettingsController.CurrentSettings.IsTrackingResetByMapChangeActive;
 

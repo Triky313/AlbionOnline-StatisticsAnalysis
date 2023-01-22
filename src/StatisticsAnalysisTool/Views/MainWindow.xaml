@@ -78,11 +78,9 @@
                                 <Label Style="{StaticResource HeaderStyle.Tracking.Content}" Content="{Binding UserTrackingBindings.AllianceName, FallbackValue=ALLIANCE__NAME}" />
                                 <Label Content=" | "/>
                             </StackPanel>
-                            <StackPanel Orientation="Horizontal" Visibility="{Binding UserTrackingBindings.CurrentMapInformationVisibility, FallbackValue=Collapsed}">
+                            <StackPanel Orientation="Horizontal" Visibility="{Binding UserTrackingBindings.CurrentMapInfoBinding.CurrentMapInformationVisibility, FallbackValue=Collapsed}">
                                 <Label Style="{StaticResource HeaderStyle.Tracking.Title}" Content="{Binding Translation.CurrentMap, FallbackValue=CURRENT__MAP}" ContentStringFormat="{}{0}: " />
-                                <Label Style="{StaticResource HeaderStyle.Tracking.Content}" Content="{Binding UserTrackingBindings.CurrentMapName, FallbackValue=CURRENT__MAP__NAME}" />
-                                <Label Style="{StaticResource HeaderStyle.Tracking.Content}" Visibility="{Binding UserTrackingBindings.IslandNameVisibility, FallbackValue=Collapsed}" 
-                                       Content="{Binding UserTrackingBindings.IslandName, FallbackValue=ISLAND_NAME}" ContentStringFormat="{}({0})" />
+                                <ContentControl Content="{Binding UserTrackingBindings.CurrentMapInfoBinding}" ContentTemplate="{StaticResource CurrentMapInfoTemplate}" />
                             </StackPanel>
                         </StackPanel>
                     </Grid>

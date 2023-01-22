@@ -104,14 +104,9 @@ public class ClusterController
 
     public void UpdateUserInfoUi(ClusterInfo currentCluster)
     {
-        _mainWindowViewModel.UserTrackingBindings.CurrentMapName = WorldData.GetUniqueNameOrDefault(currentCluster.Index);
-
-        if (string.IsNullOrEmpty(_mainWindowViewModel.UserTrackingBindings.CurrentMapName))
-        {
-            _mainWindowViewModel.UserTrackingBindings.CurrentMapName = WorldData.GetMapNameByMapType(currentCluster.MapType);
-        }
-
-        _mainWindowViewModel.UserTrackingBindings.IslandName = currentCluster.InstanceName;
+        _mainWindowViewModel.UserTrackingBindings.CurrentMapInfoBinding.Tier = currentCluster.TierString;
+        _mainWindowViewModel.UserTrackingBindings.CurrentMapInfoBinding.ClusterMode = currentCluster.ClusterMode;
+        _mainWindowViewModel.UserTrackingBindings.CurrentMapInfoBinding.ComposingMapInfoString(currentCluster);
     }
 
     #endregion
