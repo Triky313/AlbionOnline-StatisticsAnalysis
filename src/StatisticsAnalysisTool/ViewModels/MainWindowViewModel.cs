@@ -122,7 +122,7 @@ public class MainWindowViewModel : INotifyPropertyChanged, IAsyncInitialization
         Initialization = InitTrackingAsync();
     }
 
-    public Task Initialization { get; init; }
+    public Task Initialization { get; }
 
     public void SetUiElements()
     {
