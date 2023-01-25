@@ -5,16 +5,16 @@ using StatisticsAnalysisTool.Network.Operations.Responses;
 
 namespace StatisticsAnalysisTool.Network.Handler;
 
-public class AuctionSellSpecificItemResponseHandler : ResponsePacketHandler<AuctionSellSpecificItemResponse>
+public class AuctionSellSpecificItemRequestHandler : RequestPacketHandler<AuctionSellSpecificItemRequest>
 {
     private readonly TrackingController _trackingController;
 
-    public AuctionSellSpecificItemResponseHandler(TrackingController trackingController) : base((int) OperationCodes.AuctionSellSpecificItemRequest)
+    public AuctionSellSpecificItemRequestHandler(TrackingController trackingController) : base((int) OperationCodes.AuctionSellSpecificItemRequest)
     {
         _trackingController = trackingController;
     }
 
-    protected override async Task OnActionAsync(AuctionSellSpecificItemResponse value)
+    protected override async Task OnActionAsync(AuctionSellSpecificItemRequest value)
     {
         await _trackingController.MarketController.AddSaleAsync(value.Sale);
     }

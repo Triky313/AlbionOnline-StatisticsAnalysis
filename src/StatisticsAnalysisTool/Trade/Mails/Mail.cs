@@ -1,5 +1,6 @@
 ﻿using StatisticsAnalysisTool.Common;
 using StatisticsAnalysisTool.Enumerations;
+using StatisticsAnalysisTool.GameData;
 using StatisticsAnalysisTool.Models;
 using StatisticsAnalysisTool.Models.NetworkModel;
 using StatisticsAnalysisTool.ViewModels;
@@ -11,13 +12,48 @@ namespace StatisticsAnalysisTool.Trade.Mails;
 
 public class Mail : Trade, IComparable<Mail>
 {
+    private bool? _isSelectedForDeletion = false;
+
     public Guid Guid { get; init; }
     public string MailTypeText { get; init; }
+
+    [JsonIgnore]
+    protected MarketLocation Location => Locations.GetMarketLocationByIndex(ClusterIndex);
+
+    [JsonIgnore]
+    public bool? IsSelectedForDeletion
+    {
+        get => _isSelectedForDeletion;
+        set
+        {
+            _isSelectedForDeletion = value;
+            OnPropertyChanged();
+        }
+    }
+
+    [JsonIgnore]
+    public string LocationName
+    {
+        get
+        {
+            if (Location == MarketLocation.Unknown && ClusterIndex.Contains("HIDEOUT"))
+            {
+                return $"{ClusterIndex.Split("_")[1]} ({LanguageController.Translation("HIDEOUT")})";
+            }
+
+            if (Location == MarketLocation.BlackMarket)
+            {
+                return "Black Market";
+            }
+
+            return WorldData.GetUniqueNameOrDefault((int) Location) ?? LanguageController.Translation("UNKNOWN");
+        }
+    }
     [JsonIgnore]
     public MailType MailType => MailController.ConvertToMailType(MailTypeText);
     public MailContent MailContent { get; init; }
     [JsonIgnore]
-    public Item Item => ItemController.GetItemByUniqueName(MailContent.UniqueItemName);
+    public Item Item => ItemController.GetItemByUniqueName(MailContent?.UniqueItemName);
     [JsonIgnore]
     public string MailTypeDescription
     {

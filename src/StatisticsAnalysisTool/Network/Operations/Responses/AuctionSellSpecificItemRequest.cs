@@ -9,13 +9,13 @@ using System.Reflection;
 
 namespace StatisticsAnalysisTool.Network.Operations.Responses;
 
-public class AuctionSellSpecificItemResponse
+public class AuctionSellSpecificItemRequest
 {
     private static readonly ILog Log = LogManager.GetLogger(MethodBase.GetCurrentMethod()?.DeclaringType);
 
     public readonly Sale Sale;
 
-    public AuctionSellSpecificItemResponse(Dictionary<byte, object> parameters)
+    public AuctionSellSpecificItemRequest(Dictionary<byte, object> parameters)
     {
         ConsoleManager.WriteLine(new ConsoleFragment(GetType().Name, parameters, ConsoleColorType.EventColor));
 

@@ -75,7 +75,7 @@ public class MailController
             return;
         }
 
-        var mail = new Mails.Mail()
+        var mail = new Mail()
         {
             Ticks = mailInfo.Tick,
             Guid = mailInfo.Guid ?? default,
@@ -94,7 +94,7 @@ public class MailController
         await SaveInFileAfterExceedingLimit(10);
     }
 
-    public async void AddMailToListAndSort(Mails.Mail mail)
+    public async void AddMailToListAndSort(Mail mail)
     {
         await Application.Current.Dispatcher.InvokeAsync(() =>
         {
@@ -280,38 +280,41 @@ public class MailController
 
     #endregion
 
-    public async Task SetMailsAsync(List<Mail> mails)
+    public async Task SetMailsAsync(List<Trade> trades)
     {
         await Dispatcher.CurrentDispatcher.InvokeAsync(() =>
         {
-            foreach (var item in mails)
+            foreach (var item in trades)
             {
-                // The if block convert data from old versions to new version
-                if (item.MailType is MailType.MarketplaceSellOrderFinished or MailType.MarketplaceBuyOrderFinished && item.MailContent.UsedQuantity != item.MailContent.Quantity)
+                if (item is Mail mail)
                 {
-                    item.MailContent.UsedQuantity = item.MailContent.Quantity;
-                }
+                    // The if block convert data from old versions to new version
+                    if (mail.MailType is MailType.MarketplaceSellOrderFinished or MailType.MarketplaceBuyOrderFinished && mail.MailContent.UsedQuantity != mail.MailContent.Quantity)
+                    {
+                        mail.MailContent.UsedQuantity = mail.MailContent.Quantity;
+                    }
 
-                // The if block convert data from old versions to new version
-                if (item.MailType is MailType.MarketplaceSellOrderFinished or MailType.MarketplaceSellOrderExpired
-                    && item.MailContent?.TaxRate != null && item.Timestamp < new DateTime(2022, 12, 1))
-                {
-                    item.MailContent.TaxRate = item.Timestamp < new DateTime(2022, 9, 14) ? 3 : 4; // Into the Fray Patch 6 tax increase
-                }
+                    // The if block convert data from old versions to new version
+                    if (mail.MailType is MailType.MarketplaceSellOrderFinished or MailType.MarketplaceSellOrderExpired
+                        && mail.MailContent?.TaxRate != null && mail.Timestamp < new DateTime(2022, 12, 1))
+                    {
+                        mail.MailContent.TaxRate = mail.Timestamp < new DateTime(2022, 9, 14) ? 3 : 4; // Into the Fray Patch 6 tax increase
+                    }
 
-                // The if block convert data from old versions to new version
-                if (item.MailContent?.TaxSetupRate != null && item.Timestamp < new DateTime(2022, 12, 1))
-                {
-                    item.MailContent.TaxSetupRate = item.Timestamp < new DateTime(2022, 9, 14) ? 1.5 : 2.5; // Into the Fray Patch 6 tax increase
+                    // The if block convert data from old versions to new version
+                    if (mail.MailContent?.TaxSetupRate != null && mail.Timestamp < new DateTime(2022, 12, 1))
+                    {
+                        mail.MailContent.TaxSetupRate = mail.Timestamp < new DateTime(2022, 9, 14) ? 1.5 : 2.5; // Into the Fray Patch 6 tax increase
+                    }
                 }
             }
 
-            _mainWindowViewModel?.TradeMonitoringBindings?.Trade?.AddRange(mails.AsEnumerable());
+            _mainWindowViewModel?.TradeMonitoringBindings?.Trade?.AddRange(trades.AsEnumerable());
             _mainWindowViewModel?.TradeMonitoringBindings?.TradeCollectionView?.Refresh();
 
-            var collectionMails = new ObservableRangeCollection<Trade>();
-            collectionMails.AddRange(mails);
-            _mainWindowViewModel?.TradeMonitoringBindings?.TradeStatsObject?.SetMailStats(collectionMails);
+            var collectionTrades = new ObservableRangeCollection<Trade>();
+            collectionTrades.AddRange(trades);
+            _mainWindowViewModel?.TradeMonitoringBindings?.TradeStatsObject?.SetMailStats(collectionTrades);
         }, DispatcherPriority.Background, CancellationToken.None);
     }
 
@@ -336,7 +339,8 @@ public class MailController
 
     public async Task LoadFromFileAsync()
     {
-        await SetMailsAsync(await FileController.LoadAsync<List<Mails.Mail>>($"{AppDomain.CurrentDomain.BaseDirectory}{Settings.Default.MailsFileName}"));
+        // TODO: If Mail file exist, load and delete. Save file in new Trades file.
+        await SetMailsAsync(await FileController.LoadAsync<List<Trade>>($"{AppDomain.CurrentDomain.BaseDirectory}{Settings.Default.MailsFileName}"));
     }
 
     private async Task SaveInFileAfterExceedingLimit(int limit)

@@ -1,9 +1,9 @@
-﻿using System.Collections.Generic;
+﻿using StatisticsAnalysisTool.ViewModels;
+using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Windows;
-using StatisticsAnalysisTool.ViewModels;
 
 namespace StatisticsAnalysisTool.Trade.Market;
 
@@ -27,12 +27,19 @@ public class MarketController
 
     public async Task AddBuyAsync(Purchase purchase)
     {
-        if (_tempOffers.Any(x => x.Id == purchase.AuctionId))
+        var tempOffer = _tempOffers.FirstOrDefault(x => x.Id == purchase.AuctionId);
+        if (tempOffer != null)
         {
-            var trade = new InstantBuy();
+            var instantBuy = new InstantBuy()
+            {
+                Id = purchase.AuctionId,
+                Amount = purchase.Amount,
+                AuctionEntry = tempOffer
+            };
+            
             await Application.Current.Dispatcher.InvokeAsync(() =>
             {
-                _mainWindowViewModel?.TradeMonitoringBindings?.Trade.Add(trade);
+                _mainWindowViewModel?.TradeMonitoringBindings?.Trade.Add(instantBuy);
                 _mainWindowViewModel?.TradeMonitoringBindings?.TradeCollectionView?.Refresh();
             });
         }
@@ -54,12 +61,19 @@ public class MarketController
 
     public async Task AddSaleAsync(Sale sale)
     {
-        if (_tempBuyOrders.Any(x => x.Id == sale.AuctionId))
+        var tempBuyOrder = _tempBuyOrders.FirstOrDefault(x => x.Id == sale.AuctionId);
+        if (tempBuyOrder != null)
         {
-            var trade = new InstantSell();
+            var instantSell = new InstantSell()
+            {
+                Id = sale.AuctionId,
+                Amount = sale.Amount,
+                AuctionEntry = tempBuyOrder
+            };
+
             await Application.Current.Dispatcher.InvokeAsync(() =>
             {
-                _mainWindowViewModel?.TradeMonitoringBindings?.Trade.Add(trade);
+                _mainWindowViewModel?.TradeMonitoringBindings?.Trade.Add(instantSell);
                 _mainWindowViewModel?.TradeMonitoringBindings?.TradeCollectionView?.Refresh();
             });
         }

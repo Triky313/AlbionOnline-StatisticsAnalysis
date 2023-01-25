@@ -6,6 +6,7 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Data;
 using System.Windows.Input;
+using StatisticsAnalysisTool.Trade.Mails;
 
 namespace StatisticsAnalysisTool.UserControls;
 
@@ -62,9 +63,13 @@ public partial class TradeMonitoringControl
             return;
         }
 
-        foreach (var mail in mainWindowViewModel.TradeMonitoringBindings.Trade)
+        foreach (var trade in mainWindowViewModel.TradeMonitoringBindings.Trade)
         {
-            mail.IsSelectedForDeletion = !_isSelectAllActive;
+            // TODO: Erweitern um InstantSell und Buy
+            if (trade is Mail mail)
+            {
+                mail.IsSelectedForDeletion = !_isSelectAllActive;
+            }
         }
 
         _isSelectAllActive = !_isSelectAllActive;

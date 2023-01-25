@@ -6,10 +6,16 @@
              xmlns:fa5="http://schemas.fontawesome.com/icons/"
              xmlns:viewModels="clr-namespace:StatisticsAnalysisTool.ViewModels"
              xmlns:vwp="clr-namespace:WpfToolkit.Controls;assembly=VirtualizingWrapPanel"
+             xmlns:trade="clr-namespace:StatisticsAnalysisTool.Trade"
              mc:Ignorable="d" 
              d:DesignHeight="1250" d:DesignWidth="800"
              d:DataContext="{d:DesignInstance Type=viewModels:MainWindowViewModel}">
-
+    <UserControl.Resources>
+        <trade:TradeDataTemplateSelector x:Key="TradeDataTemplateSelector"
+                                         MailTemplate="{StaticResource MailTemplate}"
+                                         InstantSellTemplate="{StaticResource InstantSellTemplate}" 
+                                         InstantBuyTemplate="{StaticResource InstantBuyTemplate}" />
+    </UserControl.Resources>
     <Grid>
         <Grid Margin="0,0,0,0" Height="60" VerticalAlignment="Top">
             <StackPanel Orientation="Horizontal" MaxWidth="400" Height="30" HorizontalAlignment="Left" VerticalAlignment="Top">
@@ -72,13 +78,14 @@
             </Grid>
 
             <Grid Row="2">
-                <vwp:VirtualizingItemsControl ItemsSource="{Binding TradeMonitoringBindings.TradeCollectionView, IsAsync=True, Mode=OneWay}" ItemTemplate="{StaticResource MailTemplate}"              
-                    VirtualizingPanel.CacheLengthUnit="Item"
-                    VirtualizingPanel.CacheLength="10,10"
-                    VirtualizingPanel.ScrollUnit="Pixel"
-                    VirtualizingPanel.VirtualizationMode="Recycling"
-                    ScrollViewer.HorizontalScrollBarVisibility="Disabled"
-                    ScrollViewer.VerticalScrollBarVisibility="Visible" />
+                <vwp:VirtualizingItemsControl ItemsSource="{Binding TradeMonitoringBindings.TradeCollectionView, IsAsync=True, Mode=OneWay}" 
+                                              ItemTemplateSelector="{StaticResource TradeDataTemplateSelector}"
+                                              VirtualizingPanel.CacheLengthUnit="Item"
+                                              VirtualizingPanel.CacheLength="10,10"
+                                              VirtualizingPanel.ScrollUnit="Pixel"
+                                              VirtualizingPanel.VirtualizationMode="Recycling"
+                                              ScrollViewer.HorizontalScrollBarVisibility="Disabled"
+                                              ScrollViewer.VerticalScrollBarVisibility="Visible" />
             </Grid>
         </Grid>
 

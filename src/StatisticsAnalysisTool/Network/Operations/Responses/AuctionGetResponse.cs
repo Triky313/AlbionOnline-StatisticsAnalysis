@@ -10,13 +10,13 @@ using System.Text.Json;
 
 namespace StatisticsAnalysisTool.Network.Operations.Responses;
 
-public class AuctionGetRequests
+public class AuctionGetResponse
 {
     private static readonly ILog Log = LogManager.GetLogger(MethodBase.GetCurrentMethod()?.DeclaringType);
 
     public readonly List<AuctionEntry> AuctionEntries = new();
 
-    public AuctionGetRequests(Dictionary<byte, object> parameters)
+    public AuctionGetResponse(Dictionary<byte, object> parameters)
     {
         ConsoleManager.WriteLine(new ConsoleFragment(GetType().Name, parameters, ConsoleColorType.EventColor));
 

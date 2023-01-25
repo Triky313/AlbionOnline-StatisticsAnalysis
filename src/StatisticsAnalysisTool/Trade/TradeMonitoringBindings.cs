@@ -185,15 +185,17 @@ public class TradeMonitoringBindings : INotifyPropertyChanged
 
     private bool Filter(object obj)
     {
-        return obj is Mails.Mail mail
-               && mail.Timestamp.Date >= DatePickerTradeFrom.Date
-               && mail.Timestamp.Date <= DatePickerTradeTo.Date && (
-                   mail.LocationName != null && mail.LocationName.ToLower().Contains(TradesSearchText?.ToLower() ?? string.Empty)
-                   || $"T{mail.Item.Tier}.{mail.Item.Level}".ToLower().Contains(TradesSearchText?.ToLower() ?? string.Empty)
-                   || mail.MailTypeDescription.ToLower().Contains(TradesSearchText?.ToLower() ?? string.Empty)
-                   || mail.Item != null && mail.Item.LocalizedName.ToLower().Contains(TradesSearchText?.ToLower() ?? string.Empty)
-                   || mail.MailContent.ActualUnitPrice.ToString().Contains(TradesSearchText?.ToLower() ?? string.Empty)
-                   || mail.MailContent.TotalPrice.ToString().Contains(TradesSearchText?.ToLower() ?? string.Empty));
+        return true;
+        // TODO: Filter erweitern
+        //return obj is Mails.Mail mail
+        //       && mail.Timestamp.Date >= DatePickerTradeFrom.Date
+        //       && mail.Timestamp.Date <= DatePickerTradeTo.Date && (
+        //           mail.LocationName != null && mail.LocationName.ToLower().Contains(TradesSearchText?.ToLower() ?? string.Empty)
+        //           || $"T{mail.Item.Tier}.{mail.Item.Level}".ToLower().Contains(TradesSearchText?.ToLower() ?? string.Empty)
+        //           || mail.MailTypeDescription.ToLower().Contains(TradesSearchText?.ToLower() ?? string.Empty)
+        //           || mail.Item != null && mail.Item.LocalizedName.ToLower().Contains(TradesSearchText?.ToLower() ?? string.Empty)
+        //           || mail.MailContent.ActualUnitPrice.ToString().Contains(TradesSearchText?.ToLower() ?? string.Empty)
+        //           || mail.MailContent.TotalPrice.ToString().Contains(TradesSearchText?.ToLower() ?? string.Empty));
     }
 
     #endregion
