@@ -1,7 +1,6 @@
 ﻿using StatisticsAnalysisTool.Common;
 using StatisticsAnalysisTool.Common.UserSettings;
 using StatisticsAnalysisTool.Enumerations;
-using StatisticsAnalysisTool.Models;
 using StatisticsAnalysisTool.Models.NetworkModel;
 using StatisticsAnalysisTool.Properties;
 using StatisticsAnalysisTool.ViewModels;
@@ -14,31 +13,31 @@ using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Threading;
 
-namespace StatisticsAnalysisTool.Network.Manager;
+namespace StatisticsAnalysisTool.Trade.Mails;
 
 public class MailController
 {
     private readonly MainWindowViewModel _mainWindowViewModel;
     private int _addMailCounter;
 
-    public List<MailInfoObject> CurrentMailInfos = new();
+    public readonly List<MailNetworkObject> CurrentMailInfos = new();
 
     public MailController(MainWindowViewModel mainWindowViewModel)
     {
         _mainWindowViewModel = mainWindowViewModel;
 
-        if (_mainWindowViewModel?.MailMonitoringBindings?.Mails != null)
+        if (_mainWindowViewModel?.TradeMonitoringBindings?.Trade != null)
         {
-            _mainWindowViewModel.MailMonitoringBindings.Mails.CollectionChanged += OnCollectionChanged;
+            _mainWindowViewModel.TradeMonitoringBindings.Trade.CollectionChanged += OnCollectionChanged;
         }
     }
 
     private void OnCollectionChanged(object sender, NotifyCollectionChangedEventArgs e)
     {
-        _mainWindowViewModel?.MailMonitoringBindings?.MailStatsObject.SetMailStats(_mainWindowViewModel?.MailMonitoringBindings?.Mails);
+        _mainWindowViewModel?.TradeMonitoringBindings?.TradeStatsObject.SetMailStats(_mainWindowViewModel?.TradeMonitoringBindings?.Trade);
     }
 
-    public void SetMailInfos(List<MailInfoObject> currentMailInfos)
+    public void SetMailInfos(List<MailNetworkObject> currentMailInfos)
     {
         CurrentMailInfos.Clear();
         CurrentMailInfos.AddRange(currentMailInfos);
@@ -51,13 +50,13 @@ public class MailController
             return;
         }
 
-        var mailArray = _mainWindowViewModel.MailMonitoringBindings.Mails.ToArray();
-        if (mailArray.Any(mailObject => mailObject.MailId == mailId))
+        var mailArray = _mainWindowViewModel.TradeMonitoringBindings.Trade.ToArray();
+        if (mailArray.Any(mailObject => mailObject.Id == mailId))
         {
             return;
         }
 
-        if (_mainWindowViewModel.MailMonitoringBindings.Mails.ToArray().Any(x => x.MailId == mailId))
+        if (_mainWindowViewModel.TradeMonitoringBindings.Trade.ToArray().Any(x => x.Id == mailId))
         {
             return;
         }
@@ -76,11 +75,11 @@ public class MailController
             return;
         }
 
-        var mail = new Mail()
+        var mail = new Mails.Mail()
         {
-            Tick = mailInfo.Tick,
+            Ticks = mailInfo.Tick,
             Guid = mailInfo.Guid ?? default,
-            MailId = mailId,
+            Id = mailId,
             ClusterIndex = mailInfo.Subject,
             MailTypeText = mailInfo.MailTypeText,
             MailContent = mailContent
@@ -95,12 +94,12 @@ public class MailController
         await SaveInFileAfterExceedingLimit(10);
     }
 
-    public async void AddMailToListAndSort(Mail mail)
+    public async void AddMailToListAndSort(Mails.Mail mail)
     {
         await Application.Current.Dispatcher.InvokeAsync(() =>
         {
-            _mainWindowViewModel?.MailMonitoringBindings?.Mails.Add(mail);
-            _mainWindowViewModel?.MailMonitoringBindings?.MailCollectionView?.Refresh();
+            _mainWindowViewModel?.TradeMonitoringBindings?.Trade.Add(mail);
+            _mainWindowViewModel?.TradeMonitoringBindings?.TradeCollectionView?.Refresh();
         });
     }
 
@@ -108,14 +107,14 @@ public class MailController
     {
         await Application.Current.Dispatcher.InvokeAsync(() =>
         {
-            foreach (var mail in _mainWindowViewModel?.MailMonitoringBindings?.Mails?.ToList().Where(x => mailIds.Contains(x.MailId)) ?? new List<Mail>())
+            foreach (var mail in _mainWindowViewModel?.TradeMonitoringBindings?.Trade?.ToList().Where(x => mailIds.Contains(x.Id)) ?? new List<Mail>())
             {
-                _mainWindowViewModel?.MailMonitoringBindings?.Mails?.Remove(mail);
+                _mainWindowViewModel?.TradeMonitoringBindings?.Trade?.Remove(mail);
             }
-            _mainWindowViewModel?.MailMonitoringBindings?.MailStatsObject?.SetMailStats(_mainWindowViewModel?.MailMonitoringBindings?.MailCollectionView?.Cast<Mail>().ToList());
+            _mainWindowViewModel?.TradeMonitoringBindings?.TradeStatsObject?.SetMailStats(_mainWindowViewModel?.TradeMonitoringBindings?.TradeCollectionView?.Cast<Trade>().ToList());
 
-            _mainWindowViewModel?.MailMonitoringBindings?.UpdateTotalMailsUi(null, null);
-            _mainWindowViewModel?.MailMonitoringBindings?.UpdateCurrentMailsUi(null, null);
+            _mainWindowViewModel?.TradeMonitoringBindings?.UpdateTotalMailsUi(null, null);
+            _mainWindowViewModel?.TradeMonitoringBindings?.UpdateCurrentMailsUi(null, null);
         });
     }
 
@@ -129,15 +128,15 @@ public class MailController
 
         await Application.Current.Dispatcher.InvokeAsync(() =>
         {
-            foreach (var mail in _mainWindowViewModel?.MailMonitoringBindings?.Mails?.ToList()
+            foreach (var mail in _mainWindowViewModel?.TradeMonitoringBindings?.Trade?.ToList()
                          .Where(x => x?.Timestamp.AddDays(deleteAfterDays) < DateTime.UtcNow)!)
             {
-                _mainWindowViewModel?.MailMonitoringBindings?.Mails?.Remove(mail);
+                _mainWindowViewModel?.TradeMonitoringBindings?.Trade?.Remove(mail);
             }
-            _mainWindowViewModel?.MailMonitoringBindings?.MailStatsObject?.SetMailStats(_mainWindowViewModel?.MailMonitoringBindings?.MailCollectionView?.Cast<Mail>().ToList());
+            _mainWindowViewModel?.TradeMonitoringBindings?.TradeStatsObject?.SetMailStats(_mainWindowViewModel?.TradeMonitoringBindings?.TradeCollectionView?.Cast<Trade>().ToList());
 
-            _mainWindowViewModel?.MailMonitoringBindings?.UpdateTotalMailsUi(null, null);
-            _mainWindowViewModel?.MailMonitoringBindings?.UpdateCurrentMailsUi(null, null);
+            _mainWindowViewModel?.TradeMonitoringBindings?.UpdateTotalMailsUi(null, null);
+            _mainWindowViewModel?.TradeMonitoringBindings?.UpdateCurrentMailsUi(null, null);
         });
     }
 
@@ -182,8 +181,8 @@ public class MailController
         {
             UsedQuantity = quantity,
             Quantity = quantity,
-            InternalTotalPrice = FixPoint.FromFloatingPointValue((totalPrice.DoubleValue / 100 * taxSetupRate) + totalPrice.DoubleValue).InternalValue,
-            InternalUnitPrice = FixPoint.FromFloatingPointValue((unitPrice.DoubleValue / 100 * taxSetupRate) + unitPrice.DoubleValue).InternalValue,
+            InternalTotalPrice = FixPoint.FromFloatingPointValue(totalPrice.DoubleValue / 100 * taxSetupRate + totalPrice.DoubleValue).InternalValue,
+            InternalUnitPrice = FixPoint.FromFloatingPointValue(unitPrice.DoubleValue / 100 * taxSetupRate + unitPrice.DoubleValue).InternalValue,
             UniqueItemName = uniqueItemName,
             TaxSetupRate = taxSetupRate
         };
@@ -272,8 +271,8 @@ public class MailController
         {
             UsedQuantity = usedExpiredQuantity,
             Quantity = expiredQuantity,
-            InternalTotalPrice = FixPoint.FromFloatingPointValue((totalPrice.DoubleValue / 100 * taxSetupRate) + totalPrice.DoubleValue).InternalValue,
-            InternalUnitPrice = FixPoint.FromFloatingPointValue((unitPrice.DoubleValue / 100 * taxSetupRate) + unitPrice.DoubleValue).InternalValue,
+            InternalTotalPrice = FixPoint.FromFloatingPointValue(totalPrice.DoubleValue / 100 * taxSetupRate + totalPrice.DoubleValue).InternalValue,
+            InternalUnitPrice = FixPoint.FromFloatingPointValue(unitPrice.DoubleValue / 100 * taxSetupRate + unitPrice.DoubleValue).InternalValue,
             UniqueItemName = uniqueItemExpiredName,
             TaxSetupRate = taxSetupRate
         };
@@ -307,9 +306,12 @@ public class MailController
                 }
             }
 
-            _mainWindowViewModel?.MailMonitoringBindings?.Mails?.AddRange(mails.AsEnumerable());
-            _mainWindowViewModel?.MailMonitoringBindings?.MailCollectionView?.Refresh();
-            _mainWindowViewModel?.MailMonitoringBindings?.MailStatsObject?.SetMailStats(mails);
+            _mainWindowViewModel?.TradeMonitoringBindings?.Trade?.AddRange(mails.AsEnumerable());
+            _mainWindowViewModel?.TradeMonitoringBindings?.TradeCollectionView?.Refresh();
+
+            var collectionMails = new ObservableRangeCollection<Trade>();
+            collectionMails.AddRange(mails);
+            _mainWindowViewModel?.TradeMonitoringBindings?.TradeStatsObject?.SetMailStats(collectionMails);
         }, DispatcherPriority.Background, CancellationToken.None);
     }
 
@@ -334,7 +336,7 @@ public class MailController
 
     public async Task LoadFromFileAsync()
     {
-        await SetMailsAsync(await FileController.LoadAsync<List<Mail>>($"{AppDomain.CurrentDomain.BaseDirectory}{Settings.Default.MailsFileName}"));
+        await SetMailsAsync(await FileController.LoadAsync<List<Mails.Mail>>($"{AppDomain.CurrentDomain.BaseDirectory}{Settings.Default.MailsFileName}"));
     }
 
     private async Task SaveInFileAfterExceedingLimit(int limit)
@@ -344,15 +346,15 @@ public class MailController
             return;
         }
 
-        if (_mainWindowViewModel?.MailMonitoringBindings?.Mails == null)
+        if (_mainWindowViewModel?.TradeMonitoringBindings?.Trade == null)
         {
             return;
         }
 
-        List<Mail> mails;
-        lock (_mainWindowViewModel.MailMonitoringBindings.Mails)
+        List<Trade> mails;
+        lock (_mainWindowViewModel.TradeMonitoringBindings.Trade)
         {
-            mails = _mainWindowViewModel?.MailMonitoringBindings?.Mails?.ToList();
+            mails = _mainWindowViewModel?.TradeMonitoringBindings?.Trade?.ToList();
         }
 
         if (mails == null)

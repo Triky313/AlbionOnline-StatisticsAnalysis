@@ -156,7 +156,7 @@
             </TabItem>
             <TabItem Header="{Binding Translation.MailMonitoring, FallbackValue=MAIL__MONITORING}">
                 <Grid Style="{StaticResource TabItemGridStyle}">
-                    <userControls:MailMonitoringControl DataContext="{Binding RelativeSource={RelativeSource AncestorType=Window}, Path=DataContext}" />
+                    <userControls:TradeMonitoringControl DataContext="{Binding RelativeSource={RelativeSource AncestorType=Window}, Path=DataContext}" />
                 </Grid>
             </TabItem>
             <TabItem Header="{Binding Translation.StorageHistory, FallbackValue=STORAGE_HISTORY}">

@@ -10,16 +10,16 @@ using System.Windows.Input;
 namespace StatisticsAnalysisTool.UserControls;
 
 /// <summary>
-/// Interaction logic for MailMonitoringControl.xaml
+/// Interaction logic for TradeMonitoringControl.xaml
 /// </summary>
-public partial class MailMonitoringControl
+public partial class TradeMonitoringControl
 {
-    public MailMonitoringControl()
+    public TradeMonitoringControl()
     {
         InitializeComponent();
     }
 
-    public void DeleteSelectedMails()
+    public void DeleteSelectedTrades()
     {
         var dialog = new DialogWindow(LanguageController.Translation("DELETE_SELECTED_MAILS"), LanguageController.Translation("SURE_YOU_WANT_TO_DELETE_SELECTED_MAIL"));
         var dialogResult = dialog.ShowDialog();
@@ -28,8 +28,9 @@ public partial class MailMonitoringControl
 
         if (dialogResult is true)
         {
-            var selectedMails = vm?.MailMonitoringBindings?.Mails?.Where(x => x?.IsSelectedForDeletion ?? false).Select(x => x.MailId);
-            vm?.TrackingController.MailController.RemoveMailsByIdsAsync(selectedMails);
+            // TODO: In TradeController einbinden und auf alle Trades anwenden.
+            //var selectedMails = vm?.TradeMonitoringBindings?.Trade?.Where(x => x?.IsSelectedForDeletion ?? false).Select(x => x.Id);
+            //vm?.TrackingController.MailController.RemoveMailsByIdsAsync(selectedMails);
         }
     }
 
@@ -38,30 +39,30 @@ public partial class MailMonitoringControl
     private void OpenMailMonitoringPopup_MouseEnter(object sender, MouseEventArgs e)
     {
         var vm = (MainWindowViewModel)DataContext;
-        vm.MailMonitoringBindings.IsMailMonitoringPopupVisible = Visibility.Visible;
+        vm.TradeMonitoringBindings.IsMailMonitoringPopupVisible = Visibility.Visible;
     }
 
     private void CloseMailMonitoringPopup_MouseLeave(object sender, MouseEventArgs e)
     {
         var vm = (MainWindowViewModel)DataContext;
-        vm.MailMonitoringBindings.IsMailMonitoringPopupVisible = Visibility.Collapsed;
+        vm.TradeMonitoringBindings.IsMailMonitoringPopupVisible = Visibility.Collapsed;
     }
 
     private void BtnDeleteSelectedMails_Click(object sender, RoutedEventArgs e)
     {
-        DeleteSelectedMails();
+        DeleteSelectedTrades();
     }
 
     private bool _isSelectAllActive;
 
     private void BtnSelectSwitchAllMails_Click(object sender, RoutedEventArgs e)
     {
-        if ((MainWindowViewModel)DataContext is not { MailMonitoringBindings.Mails: { } } mainWindowViewModel)
+        if ((MainWindowViewModel)DataContext is not { TradeMonitoringBindings.Trade: { } } mainWindowViewModel)
         {
             return;
         }
 
-        foreach (var mail in mainWindowViewModel.MailMonitoringBindings.Mails)
+        foreach (var mail in mainWindowViewModel.TradeMonitoringBindings.Trade)
         {
             mail.IsSelectedForDeletion = !_isSelectAllActive;
         }
@@ -72,13 +73,13 @@ public partial class MailMonitoringControl
     private void SearchText_TextChanged(object sender, TextChangedEventArgs e)
     {
         var vm = (MainWindowViewModel)DataContext;
-        CollectionViewSource.GetDefaultView(vm.MailMonitoringBindings.Mails).Refresh();
+        CollectionViewSource.GetDefaultView(vm.TradeMonitoringBindings.Trade).Refresh();
     }
 
     private void DatePicker_OnSelectedDateChanged(object sender, SelectionChangedEventArgs e)
     {
         var vm = (MainWindowViewModel)DataContext;
-        CollectionViewSource.GetDefaultView(vm.MailMonitoringBindings.Mails).Refresh();
+        CollectionViewSource.GetDefaultView(vm.TradeMonitoringBindings.Trade).Refresh();
     }
 
     #endregion

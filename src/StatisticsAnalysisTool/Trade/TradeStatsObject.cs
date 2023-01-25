@@ -7,10 +7,12 @@ using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Linq;
 using System.Runtime.CompilerServices;
+using StatisticsAnalysisTool.Trade.Mails;
+using StatisticsAnalysisTool.Trade.Market;
 
-namespace StatisticsAnalysisTool.Models;
+namespace StatisticsAnalysisTool.Trade;
 
-public class MailStatsObject : INotifyPropertyChanged
+public class TradeStatsObject : INotifyPropertyChanged
 {
     private long _soldToday;
     private long _soldMonth;
@@ -41,45 +43,91 @@ public class MailStatsObject : INotifyPropertyChanged
 
     #region Stat calculations
 
-    public void SetMailStats(ObservableCollection<Mail> mails)
+    public void SetMailStats(ObservableCollection<Trade> trades)
     {
-        SetMailStats(mails.ToList());
+        SetMailStats(trades.ToList());
     }
-
-    public void SetMailStats(List<Mail> mails)
+    
+    public void SetMailStats(List<Trade> trades)
     {
-        var currentUtc = DateTime.UtcNow;
-        SoldToday = mails.Where(x => x.Timestamp.Date == DateTime.UtcNow.Date && x.MailType is MailType.MarketplaceSellOrderFinished or MailType.MarketplaceSellOrderExpired).Sum(x => x.MailContent.TotalPrice.IntegerValue);
-        SoldThisWeek = mails.Where(x => x.Timestamp.IsDateInWeekOfYear(currentUtc) && x.MailType is MailType.MarketplaceSellOrderFinished or MailType.MarketplaceSellOrderExpired).Sum(x => x.MailContent.TotalPrice.IntegerValue);
-        SoldLastWeek = mails.Where(x => x.Timestamp.IsDateInWeekOfYear(currentUtc.AddDays(-7)) && x.MailType is MailType.MarketplaceSellOrderFinished or MailType.MarketplaceSellOrderExpired).Sum(x => x.MailContent.TotalPrice.IntegerValue);
-        SoldMonth = mails.Where(x => x.Timestamp.Year == currentUtc.Year && x.Timestamp.Month == currentUtc.Month && x.MailType is MailType.MarketplaceSellOrderFinished or MailType.MarketplaceSellOrderExpired).Sum(x => x.MailContent.TotalPrice.IntegerValue);
-        SoldYear = mails.Where(x => x.Timestamp.Year == currentUtc.Year && x.MailType is MailType.MarketplaceSellOrderFinished or MailType.MarketplaceSellOrderExpired).Sum(x => x.MailContent.TotalPrice.IntegerValue);
+        SoldToday = trades
+            .Where(trade =>
+            {
+                if (trade.Timestamp.Date != DateTime.UtcNow.Date)
+                {
+                    return false;
+                } 
 
-        BoughtToday = mails.Where(x => x.Timestamp.Date == DateTime.UtcNow.Date && x.MailType is MailType.MarketplaceBuyOrderFinished or MailType.MarketplaceBuyOrderExpired).Sum(x => x.MailContent.TotalPriceWithDeductedTaxes.IntegerValue);
-        BoughtThisWeek = mails.Where(x => x.Timestamp.IsDateInWeekOfYear(currentUtc) && x.MailType is MailType.MarketplaceBuyOrderFinished or MailType.MarketplaceBuyOrderExpired).Sum(x => x.MailContent.TotalPriceWithDeductedTaxes.IntegerValue);
-        BoughtLastWeek = mails.Where(x => x.Timestamp.IsDateInWeekOfYear(currentUtc.AddDays(-7)) && x.MailType is MailType.MarketplaceBuyOrderFinished or MailType.MarketplaceBuyOrderExpired).Sum(x => x.MailContent.TotalPriceWithDeductedTaxes.IntegerValue);
-        BoughtMonth = mails.Where(x => x.Timestamp.Year == currentUtc.Year && x.Timestamp.Month == currentUtc.Month && x.MailType is MailType.MarketplaceBuyOrderFinished or MailType.MarketplaceBuyOrderExpired).Sum(x => x.MailContent.TotalPriceWithDeductedTaxes.IntegerValue);
-        BoughtYear = mails.Where(x => x.Timestamp.Year == currentUtc.Year && x.MailType is MailType.MarketplaceBuyOrderFinished or MailType.MarketplaceBuyOrderExpired).Sum(x => x.MailContent.TotalPriceWithDeductedTaxes.IntegerValue);
+                if (trade is Mail { MailType: MailType.MarketplaceSellOrderFinished or MailType.MarketplaceSellOrderExpired })
+                {
+                    return true;
+                }
 
-        TaxesToday = mails.Where(x => x.Timestamp.Date == DateTime.UtcNow.Date).Sum(x => x.MailContent.TaxSetupPrice.IntegerValue + x.MailContent.TaxPrice.IntegerValue);
-        TaxesThisWeek = mails.Where(x => x.Timestamp.IsDateInWeekOfYear(currentUtc)).Sum(x => x.MailContent.TaxSetupPrice.IntegerValue + x.MailContent.TaxPrice.IntegerValue);
-        TaxesLastWeek = mails.Where(x => x.Timestamp.IsDateInWeekOfYear(currentUtc.AddDays(-7))).Sum(x => x.MailContent.TaxSetupPrice.IntegerValue + x.MailContent.TaxPrice.IntegerValue);
-        TaxesMonth = mails.Where(x => x.Timestamp.Year == currentUtc.Year && x.Timestamp.Month == currentUtc.Month).Sum(x => x.MailContent.TaxSetupPrice.IntegerValue + x.MailContent.TaxPrice.IntegerValue);
-        TaxesYear = mails.Where(x => x.Timestamp.Year == currentUtc.Year).Sum(x => x.MailContent.TaxSetupPrice.IntegerValue + x.MailContent.TaxPrice.IntegerValue);
+                if (trade is InstantBuy instantBuy)
+                {
+                    return true;
+                }
 
-        SoldTotal = mails.Where(x => x.MailType is MailType.MarketplaceSellOrderFinished or MailType.MarketplaceSellOrderExpired).Sum(x => x.MailContent.TotalPrice.IntegerValue);
-        BoughtTotal = mails.Where(x => x.MailType is MailType.MarketplaceBuyOrderFinished or MailType.MarketplaceBuyOrderExpired).Sum(x => x.MailContent.TotalPrice.IntegerValue);
-        TaxesTotal = mails.Sum(x => x.MailContent.TaxSetupPrice.IntegerValue + x.MailContent.TaxPrice.IntegerValue);
+                if (trade is InstantSell instantSell)
+                {
+                    return true;
+                }
 
-        SalesToday = SoldToday - (BoughtToday + TaxesToday);
-        SalesThisWeek = SoldThisWeek - (BoughtThisWeek + TaxesThisWeek);
-        SalesLastWeek = SoldLastWeek - (BoughtLastWeek + TaxesLastWeek);
-        SalesMonth = SoldMonth - (BoughtMonth + TaxesMonth);
-        SalesYear = SoldYear - (BoughtYear + TaxesYear);
-        SalesTotal = SoldTotal - (BoughtTotal + TaxesTotal);
+                return false;
+            })
+            .Sum(trade =>
+            {
+                if (trade is Mail mail)
+                {
+                    return mail.MailContent.TotalPrice.IntegerValue;
+                }
 
-        MostExpensiveSaleItem = mails.Where(x => x.MailType is MailType.MarketplaceSellOrderFinished or MailType.MarketplaceSellOrderExpired).MaxBy(x => x.MailContent.TotalPrice.IntegerValue);
-        MostExpensivePurchasedItem = mails.Where(x => x.MailType is MailType.MarketplaceBuyOrderFinished or MailType.MarketplaceBuyOrderExpired).MaxBy(x => x.MailContent.TotalPrice.IntegerValue);
+                if (trade is InstantBuy instantBuy)
+                {
+                    return instantBuy.Id;
+                }
+
+                if (trade is InstantSell instantSell)
+                {
+                    return instantSell.Id;
+                }
+
+                return 0;
+            });
+
+
+        //var currentUtc = DateTime.UtcNow;
+        //SoldToday = trades.Where(x => x.Timestamp.Date == DateTime.UtcNow.Date && x.MailType is MailType.MarketplaceSellOrderFinished or MailType.MarketplaceSellOrderExpired).Sum(x => x.MailContent.TotalPrice.IntegerValue);
+        //SoldThisWeek = trades.Where(x => x.Timestamp.IsDateInWeekOfYear(currentUtc) && x.MailType is MailType.MarketplaceSellOrderFinished or MailType.MarketplaceSellOrderExpired).Sum(x => x.MailContent.TotalPrice.IntegerValue);
+        //SoldLastWeek = trades.Where(x => x.Timestamp.IsDateInWeekOfYear(currentUtc.AddDays(-7)) && x.MailType is MailType.MarketplaceSellOrderFinished or MailType.MarketplaceSellOrderExpired).Sum(x => x.MailContent.TotalPrice.IntegerValue);
+        //SoldMonth = trades.Where(x => x.Timestamp.Year == currentUtc.Year && x.Timestamp.Month == currentUtc.Month && x.MailType is MailType.MarketplaceSellOrderFinished or MailType.MarketplaceSellOrderExpired).Sum(x => x.MailContent.TotalPrice.IntegerValue);
+        //SoldYear = trades.Where(x => x.Timestamp.Year == currentUtc.Year && x.MailType is MailType.MarketplaceSellOrderFinished or MailType.MarketplaceSellOrderExpired).Sum(x => x.MailContent.TotalPrice.IntegerValue);
+
+        //BoughtToday = trades.Where(x => x.Timestamp.Date == DateTime.UtcNow.Date && x.MailType is MailType.MarketplaceBuyOrderFinished or MailType.MarketplaceBuyOrderExpired).Sum(x => x.MailContent.TotalPriceWithDeductedTaxes.IntegerValue);
+        //BoughtThisWeek = trades.Where(x => x.Timestamp.IsDateInWeekOfYear(currentUtc) && x.MailType is MailType.MarketplaceBuyOrderFinished or MailType.MarketplaceBuyOrderExpired).Sum(x => x.MailContent.TotalPriceWithDeductedTaxes.IntegerValue);
+        //BoughtLastWeek = trades.Where(x => x.Timestamp.IsDateInWeekOfYear(currentUtc.AddDays(-7)) && x.MailType is MailType.MarketplaceBuyOrderFinished or MailType.MarketplaceBuyOrderExpired).Sum(x => x.MailContent.TotalPriceWithDeductedTaxes.IntegerValue);
+        //BoughtMonth = trades.Where(x => x.Timestamp.Year == currentUtc.Year && x.Timestamp.Month == currentUtc.Month && x.MailType is MailType.MarketplaceBuyOrderFinished or MailType.MarketplaceBuyOrderExpired).Sum(x => x.MailContent.TotalPriceWithDeductedTaxes.IntegerValue);
+        //BoughtYear = trades.Where(x => x.Timestamp.Year == currentUtc.Year && x.MailType is MailType.MarketplaceBuyOrderFinished or MailType.MarketplaceBuyOrderExpired).Sum(x => x.MailContent.TotalPriceWithDeductedTaxes.IntegerValue);
+
+        //TaxesToday = trades.Where(x => x.Timestamp.Date == DateTime.UtcNow.Date).Sum(x => x.MailContent.TaxSetupPrice.IntegerValue + x.MailContent.TaxPrice.IntegerValue);
+        //TaxesThisWeek = trades.Where(x => x.Timestamp.IsDateInWeekOfYear(currentUtc)).Sum(x => x.MailContent.TaxSetupPrice.IntegerValue + x.MailContent.TaxPrice.IntegerValue);
+        //TaxesLastWeek = trades.Where(x => x.Timestamp.IsDateInWeekOfYear(currentUtc.AddDays(-7))).Sum(x => x.MailContent.TaxSetupPrice.IntegerValue + x.MailContent.TaxPrice.IntegerValue);
+        //TaxesMonth = trades.Where(x => x.Timestamp.Year == currentUtc.Year && x.Timestamp.Month == currentUtc.Month).Sum(x => x.MailContent.TaxSetupPrice.IntegerValue + x.MailContent.TaxPrice.IntegerValue);
+        //TaxesYear = trades.Where(x => x.Timestamp.Year == currentUtc.Year).Sum(x => x.MailContent.TaxSetupPrice.IntegerValue + x.MailContent.TaxPrice.IntegerValue);
+
+        //SoldTotal = trades.Where(x => x.MailType is MailType.MarketplaceSellOrderFinished or MailType.MarketplaceSellOrderExpired).Sum(x => x.MailContent.TotalPrice.IntegerValue);
+        //BoughtTotal = trades.Where(x => x.MailType is MailType.MarketplaceBuyOrderFinished or MailType.MarketplaceBuyOrderExpired).Sum(x => x.MailContent.TotalPrice.IntegerValue);
+        //TaxesTotal = trades.Sum(x => x.MailContent.TaxSetupPrice.IntegerValue + x.MailContent.TaxPrice.IntegerValue);
+
+        //SalesToday = SoldToday - (BoughtToday + TaxesToday);
+        //SalesThisWeek = SoldThisWeek - (BoughtThisWeek + TaxesThisWeek);
+        //SalesLastWeek = SoldLastWeek - (BoughtLastWeek + TaxesLastWeek);
+        //SalesMonth = SoldMonth - (BoughtMonth + TaxesMonth);
+        //SalesYear = SoldYear - (BoughtYear + TaxesYear);
+        //SalesTotal = SoldTotal - (BoughtTotal + TaxesTotal);
+
+        //MostExpensiveSaleItem = trades.Where(x => x.MailType is MailType.MarketplaceSellOrderFinished or MailType.MarketplaceSellOrderExpired).MaxBy(x => x.MailContent.TotalPrice.IntegerValue);
+        //MostExpensivePurchasedItem = trades.Where(x => x.MailType is MailType.MarketplaceBuyOrderFinished or MailType.MarketplaceBuyOrderExpired).MaxBy(x => x.MailContent.TotalPrice.IntegerValue);
     }
 
     #endregion
@@ -323,8 +371,8 @@ public class MailStatsObject : INotifyPropertyChanged
             OnPropertyChanged();
         }
     }
-    
-    public Mail MostExpensiveSaleItem
+
+    public Mails.Mail MostExpensiveSaleItem
     {
         get => _mostExpensiveSaleItem;
         set
@@ -334,7 +382,7 @@ public class MailStatsObject : INotifyPropertyChanged
         }
     }
 
-    public Mail MostExpensivePurchasedItem
+    public Mails.Mail MostExpensivePurchasedItem
     {
         get => _mostExpensivePurchasedItem;
         set
