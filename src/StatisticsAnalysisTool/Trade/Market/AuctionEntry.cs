@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Text.Json.Serialization;
 
 namespace StatisticsAnalysisTool.Trade.Market;
 
@@ -23,4 +24,18 @@ public class AuctionEntry
     public int QualityLevel { get; set; }
     public DateTime Expires { get; set; }
     public string ReferenceId { get; set; }
+
+    [JsonIgnore]
+    public AuctionEntryType AuctionEntryType
+    {
+        get
+        {
+            return AuctionType switch
+            {
+                "offer" => AuctionEntryType.Offer,
+                "request" => AuctionEntryType.Request,
+                _ => AuctionEntryType.Unknown
+            };
+        }
+    }
 }

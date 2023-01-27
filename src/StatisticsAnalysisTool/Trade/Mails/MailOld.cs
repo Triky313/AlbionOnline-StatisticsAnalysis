@@ -3,6 +3,7 @@ using System;
 
 namespace StatisticsAnalysisTool.Trade.Mails;
 
+[Obsolete]
 public class MailOld
 {
     public long Tick { get; set; }

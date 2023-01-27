@@ -1,7 +1,9 @@
-﻿using StatisticsAnalysisTool.Common.UserSettings;
+﻿using System;
+using StatisticsAnalysisTool.Common.UserSettings;
 using StatisticsAnalysisTool.Network.Manager;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Dynamic;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -32,6 +34,7 @@ public class MarketController
         {
             var instantBuy = new InstantBuy()
             {
+                Ticks = DateTime.UtcNow.Ticks,
                 Id = purchase.AuctionId,
                 Amount = purchase.Amount,
                 AuctionEntry = tempOffer,
@@ -64,6 +67,7 @@ public class MarketController
         {
             var instantSell = new InstantSell()
             {
+                Ticks = DateTime.UtcNow.Ticks,
                 Id = sale.AuctionId,
                 Amount = sale.Amount,
                 AuctionEntry = tempBuyOrder,

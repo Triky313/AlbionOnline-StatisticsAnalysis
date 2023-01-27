@@ -6,12 +6,12 @@
                     xmlns:mails="clr-namespace:StatisticsAnalysisTool.Trade.Mails"
                     xmlns:market="clr-namespace:StatisticsAnalysisTool.Trade.Market">
 
-    <Style TargetType="Image" x:Key="Mail.Icon">
+    <Style TargetType="Image" x:Key="Trade.Icon">
         <Setter Property="Height" Value="50"/>
         <Setter Property="Width" Value="50"/>
     </Style>
 
-    <Style TargetType="TextBlock" x:Key="Mail.City.Text">
+    <Style TargetType="TextBlock" x:Key="Trade.City.Text">
         <Setter Property="HorizontalAlignment" Value="Right" />
         <Setter Property="Text" Value="{Binding LocationName, IsAsync=True}" />
         <Setter Property="Foreground" Value="{StaticResource SolidColorBrush.City.Default}" />
@@ -106,7 +106,34 @@
         </Style.Triggers>
     </Style>
 
-    <Style TargetType="TextBlock" x:Key="Mail.Text.Tier">
+    <Style TargetType="Grid" x:Key="Instant.Type.Colors">
+        <Setter Property="Width" Value="3" />
+        <Setter Property="HorizontalAlignment" Value="Left" />
+        <Setter Property="Background" Value="{StaticResource SolidColorBrush.Text.4}" />
+        <Style.Triggers>
+            <DataTrigger Binding="{Binding AuctionEntry.AuctionEntryType, IsAsync=True}" Value="{x:Static market:AuctionEntryType.Request}">
+                <Setter Property="Background" Value="{StaticResource SolidColorBrush.Accent.Green.3}" />
+            </DataTrigger>
+            <DataTrigger Binding="{Binding AuctionEntry.AuctionEntryType, IsAsync=True}" Value="{x:Static market:AuctionEntryType.Offer}">
+                <Setter Property="Background" Value="{StaticResource SolidColorBrush.Accent.Red.3}" />
+            </DataTrigger>
+        </Style.Triggers>
+    </Style>
+
+    <Style TargetType="TextBlock" x:Key="Instant.Text.Colors">
+        <Setter Property="HorizontalAlignment" Value="Left" />
+        <Setter Property="Foreground" Value="{StaticResource SolidColorBrush.Text.4}" />
+        <Style.Triggers>
+            <DataTrigger Binding="{Binding AuctionEntry.AuctionEntryType, IsAsync=True}" Value="{x:Static market:AuctionEntryType.Request}">
+                <Setter Property="Foreground" Value="{StaticResource SolidColorBrush.Accent.Green.3}" />
+            </DataTrigger>
+            <DataTrigger Binding="{Binding AuctionEntry.AuctionEntryType, IsAsync=True}" Value="{x:Static market:AuctionEntryType.Offer}">
+                <Setter Property="Foreground" Value="{StaticResource SolidColorBrush.Accent.Red.3}" />
+            </DataTrigger>
+        </Style.Triggers>
+    </Style>
+
+    <Style TargetType="TextBlock" x:Key="Trade.Text.Tier">
         <Setter Property="Foreground" Value="{StaticResource SolidColorBrush.Text.1}" />
         <Setter Property="Margin" Value="0,0,3,0" />
         <Setter Property="Text" Value="{Binding Item.TierLevelString, IsAsync=True, StringFormat='{}{0}', FallbackValue='T?'}" />
@@ -123,7 +150,7 @@
     <DataTemplate x:Key="MailStatsObjectTemplate"  DataType="{x:Type trade:TradeStatsObject}">
         <Grid>
             <StackPanel Orientation="Vertical">
-                <StackPanel Orientation="Vertical" HorizontalAlignment="Center">
+                <!--<StackPanel Orientation="Vertical" HorizontalAlignment="Center">
                     <StackPanel Orientation="Horizontal" Margin="0,10">
                         <StackPanel Orientation="Vertical" Margin="5,0,5,0">
                             <TextBlock Text="{Binding TranslationSoldToday, IsAsync=True, FallbackValue=SOLD_TODAY}" MinWidth="100" FontSize="14" FontWeight="Light" 
@@ -308,7 +335,7 @@
                                        Foreground="{StaticResource SolidColorBrush.Text.2}" VerticalAlignment="Center" />
                             <StackPanel Orientation="Horizontal">
                                 <Grid Margin="0,0, 5, 0" HorizontalAlignment="Center" VerticalAlignment="Center">
-                                    <Image Source="{Binding MostExpensiveSaleItem.Item.Icon, IsAsync=True, Mode=OneWay}" Style="{StaticResource Mail.Icon}" />
+                                    <Image Source="{Binding MostExpensiveSaleItem.Item.Icon, IsAsync=True, Mode=OneWay}" Style="{StaticResource Trade.Icon}" />
                                 </Grid>
                                 <StackPanel Orientation="Vertical">
                                     <StackPanel Orientation="Horizontal">
@@ -330,7 +357,7 @@
                                        Foreground="{StaticResource SolidColorBrush.Text.2}" VerticalAlignment="Center" />
                             <StackPanel Orientation="Horizontal">
                                 <Grid Margin="0,0, 5, 0" HorizontalAlignment="Center" VerticalAlignment="Center">
-                                    <Image Source="{Binding MostExpensivePurchasedItem.Item.Icon, IsAsync=True, Mode=OneWay}" Style="{StaticResource Mail.Icon}" />
+                                    <Image Source="{Binding MostExpensivePurchasedItem.Item.Icon, IsAsync=True, Mode=OneWay}" Style="{StaticResource Trade.Icon}" />
                                 </Grid>
                                 <StackPanel Orientation="Vertical">
                                     <StackPanel Orientation="Horizontal">
@@ -348,7 +375,7 @@
                             </StackPanel>
                         </StackPanel>
                     </StackPanel>
-                </StackPanel>
+                </StackPanel>-->
             </StackPanel>
         </Grid>
     </DataTemplate>
@@ -389,7 +416,7 @@
     </DataTemplate>
 
     <DataTemplate x:Key="MailTemplate" DataType="{x:Type mails:Mail}">
-        <Grid Height="50" Background="Chocolate">
+        <Grid Height="50">
             <Grid.InputBindings>
                 <MouseBinding MouseAction="LeftDoubleClick" Command="{Binding OpenItemWindowCommand}" />
             </Grid.InputBindings>
@@ -397,7 +424,7 @@
             <Border Style="{StaticResource Container.Border}">
                 <DockPanel VerticalAlignment="Top" HorizontalAlignment="Stretch" Margin="5,0,10,0">
                     <Grid Margin="0,0, 5, 0" HorizontalAlignment="Center" VerticalAlignment="Center">
-                        <Image Source="{Binding Item.Icon, IsAsync=True, Mode=OneWay}" Style="{StaticResource Mail.Icon}" />
+                        <Image Source="{Binding Item.Icon, IsAsync=True, Mode=OneWay}" Style="{StaticResource Trade.Icon}" />
                     </Grid>
                     <StackPanel Orientation="Vertical">
                         <DockPanel>
@@ -417,7 +444,7 @@
                                 </StackPanel.Style>
                                 <TextBlock Text="{Binding MailTypeDescription, IsAsync=True, StringFormat='{}{0}: ', FallbackValue=MAIL}" Style="{StaticResource Mail.Text.Colors}" />
                                 <TextBlock Text="{Binding MailContent.Quantity, IsAsync=True, StringFormat='{}{0}x', FallbackValue=0}" FontWeight="Bold" Margin="0,0,3,0" Foreground="{StaticResource SolidColorBrush.Text.1}" />
-                                <TextBlock Style="{StaticResource Mail.Text.Tier}" />
+                                <TextBlock Style="{StaticResource Trade.Text.Tier}" />
                                 <TextBlock Text="{Binding Item.LocalizedName, IsAsync=True}" Foreground="{StaticResource SolidColorBrush.Text.1}" />
                             </StackPanel>
                             <StackPanel Orientation="Horizontal">
@@ -438,7 +465,7 @@
                                 <TextBlock Text="{Binding MailContent.UsedQuantity, IsAsync=True, StringFormat='{}{0}', FallbackValue=0}" FontWeight="Bold" Margin="0,0,3,0" Foreground="{StaticResource SolidColorBrush.Text.1}" />
                                 <TextBlock Text="{Binding TranslationFrom, IsAsync=True, FallbackValue=FROM}" Foreground="{StaticResource SolidColorBrush.Text.1}" />
                                 <TextBlock Text="{Binding MailContent.Quantity, IsAsync=True, StringFormat='{} {0}', FallbackValue=0}" FontWeight="Bold" Margin="0,0,3,0" Foreground="{StaticResource SolidColorBrush.Text.1}" />
-                                <TextBlock Style="{StaticResource Mail.Text.Tier}" />
+                                <TextBlock Style="{StaticResource Trade.Text.Tier}" />
                                 <TextBlock Text="{Binding Item.LocalizedName, IsAsync=True}" Foreground="{StaticResource SolidColorBrush.Text.1}" />
                             </StackPanel>
                             <TextBlock Text="{Binding Timestamp, IsAsync=True, StringFormat='{}{0}'}" TextAlignment="Right" Foreground="{StaticResource SolidColorBrush.Text.1}"/>
@@ -518,7 +545,7 @@
                                     </TextBlock.Text>
                                 </TextBlock>
                             </StackPanel>
-                            <TextBlock Style="{StaticResource Mail.City.Text}" />
+                            <TextBlock Style="{StaticResource Trade.City.Text}" />
                         </DockPanel>
                         <DockPanel>
                             <StackPanel Orientation="Horizontal">
@@ -578,22 +605,22 @@
     </DataTemplate>
 
     <DataTemplate x:Key="InstantSellTemplate" DataType="{x:Type market:InstantSell}">
-        <Grid Height="50" Background="Brown">
+        <Grid Height="50">
             <Grid.InputBindings>
                 <MouseBinding MouseAction="LeftDoubleClick" Command="{Binding OpenItemWindowCommand}" />
             </Grid.InputBindings>
-            <Grid Style="{StaticResource Mail.Type.Colors}" />
+            <Grid Style="{StaticResource Instant.Type.Colors}" />
             <Border Style="{StaticResource Container.Border}">
                 <DockPanel VerticalAlignment="Top" HorizontalAlignment="Stretch" Margin="5,0,10,0">
                     <Grid Margin="0,0, 5, 0" HorizontalAlignment="Center" VerticalAlignment="Center">
-                        <Image Source="{Binding Item.Icon, IsAsync=True, Mode=OneWay}" Style="{StaticResource Mail.Icon}" />
+                        <Image Source="{Binding Item.Icon, IsAsync=True, Mode=OneWay}" Style="{StaticResource Trade.Icon}" />
                     </Grid>
                     <StackPanel Orientation="Vertical">
                         <DockPanel>
                             <StackPanel Orientation="Horizontal">
-                                <TextBlock Text="{Binding AuctionEntry.ItemTypeId, IsAsync=True, StringFormat='{}{0}: ', FallbackValue=MAIL}" Style="{StaticResource Mail.Text.Colors}" />
+                                <TextBlock Text="{Binding TypeDescription, IsAsync=True, StringFormat='{}{0}: ', FallbackValue=INSTANT_SELL}" Style="{StaticResource Instant.Text.Colors}" />
                                 <TextBlock Text="{Binding Amount, IsAsync=True, StringFormat='{}{0}x', FallbackValue=0}" FontWeight="Bold" Margin="0,0,3,0" Foreground="{StaticResource SolidColorBrush.Text.1}" />
-                                <TextBlock Style="{StaticResource Mail.Text.Tier}" />
+                                <TextBlock Style="{StaticResource Trade.Text.Tier}" />
                                 <TextBlock Text="{Binding Item.LocalizedName, IsAsync=True}" Foreground="{StaticResource SolidColorBrush.Text.1}" />
                             </StackPanel>
                             <!--<StackPanel Orientation="Horizontal">
@@ -754,22 +781,22 @@
     </DataTemplate>
 
     <DataTemplate x:Key="InstantBuyTemplate" DataType="{x:Type market:InstantBuy}">
-        <Grid Height="50" Background="BlueViolet">
+        <Grid Height="50">
             <Grid.InputBindings>
                 <MouseBinding MouseAction="LeftDoubleClick" Command="{Binding OpenItemWindowCommand}" />
             </Grid.InputBindings>
-            <Grid Style="{StaticResource Mail.Type.Colors}" />
+            <Grid Style="{StaticResource Instant.Type.Colors}" />
             <Border Style="{StaticResource Container.Border}">
                 <DockPanel VerticalAlignment="Top" HorizontalAlignment="Stretch" Margin="5,0,10,0">
                     <Grid Margin="0,0, 5, 0" HorizontalAlignment="Center" VerticalAlignment="Center">
-                        <Image Source="{Binding Item.Icon, IsAsync=True, Mode=OneWay}" Style="{StaticResource Mail.Icon}" />
+                        <Image Source="{Binding Item.Icon, IsAsync=True, Mode=OneWay}" Style="{StaticResource Trade.Icon}" />
                     </Grid>
                     <StackPanel Orientation="Vertical">
                         <DockPanel>
                             <StackPanel Orientation="Horizontal">
-                                <TextBlock Text="{Binding AuctionEntry.ItemTypeId, IsAsync=True, StringFormat='{}{0}: ', FallbackValue=MAIL}" Style="{StaticResource Mail.Text.Colors}" />
+                                <TextBlock Text="{Binding TypeDescription, IsAsync=True, StringFormat='{}{0}: ', FallbackValue=INSTANT_BUY}" Style="{StaticResource Instant.Text.Colors}" />
                                 <TextBlock Text="{Binding Amount, IsAsync=True, StringFormat='{}{0}x', FallbackValue=0}" FontWeight="Bold" Margin="0,0,3,0" Foreground="{StaticResource SolidColorBrush.Text.1}" />
-                                <TextBlock Style="{StaticResource Mail.Text.Tier}" />
+                                <TextBlock Style="{StaticResource Trade.Text.Tier}" />
                                 <TextBlock Text="{Binding Item.LocalizedName, IsAsync=True}" Foreground="{StaticResource SolidColorBrush.Text.1}" />
                             </StackPanel>
                             <!--<StackPanel Orientation="Horizontal">

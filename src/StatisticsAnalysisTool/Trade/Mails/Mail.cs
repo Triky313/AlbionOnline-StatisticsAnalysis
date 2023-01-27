@@ -16,7 +16,7 @@ public class Mail : Trade, IComparable<Mail>
     public string MailTypeText { get; init; }
 
     [JsonIgnore]
-    protected MarketLocation Location => Locations.GetMarketLocationByIndex(ClusterIndex);
+    public MarketLocation Location => Locations.GetMarketLocationByIndex(ClusterIndex);
 
     [JsonIgnore]
     public string LocationName

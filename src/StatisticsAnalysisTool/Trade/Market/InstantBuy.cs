@@ -1,9 +1,9 @@
 ﻿using StatisticsAnalysisTool.Common;
+using StatisticsAnalysisTool.Models;
 using StatisticsAnalysisTool.ViewModels;
 using System;
 using System.Text.Json.Serialization;
 using System.Windows.Input;
-using StatisticsAnalysisTool.Models;
 
 namespace StatisticsAnalysisTool.Trade.Market;
 
@@ -15,6 +15,9 @@ public class InstantBuy : Trade, IComparable<InstantBuy>
 
     [JsonIgnore]
     public Item Item => ItemController.GetItemByUniqueName(AuctionEntry.ItemTypeId);
+
+    [JsonIgnore]
+    public string TypeDescription => LanguageController.Translation("INSTANT_BUY");
 
     public int CompareTo(InstantBuy other)
     {
