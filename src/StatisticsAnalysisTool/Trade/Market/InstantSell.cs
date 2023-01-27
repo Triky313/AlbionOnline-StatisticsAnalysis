@@ -11,6 +11,7 @@ public class InstantSell : Trade, IComparable<InstantSell>
 {
     public int Amount { get; init; }
     public AuctionEntry AuctionEntry { get; init; }
+    public double TaxRate { get; set; }
 
     [JsonIgnore]
     public Item Item => ItemController.GetItemByUniqueName(AuctionEntry.ItemTypeId);

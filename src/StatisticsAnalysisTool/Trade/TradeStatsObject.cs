@@ -1,14 +1,13 @@
 ﻿using StatisticsAnalysisTool.Common;
 using StatisticsAnalysisTool.Enumerations;
 using StatisticsAnalysisTool.Properties;
+using StatisticsAnalysisTool.Trade.Mails;
+using StatisticsAnalysisTool.Trade.Market;
 using System;
 using System.Collections.Generic;
-using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Linq;
 using System.Runtime.CompilerServices;
-using StatisticsAnalysisTool.Trade.Mails;
-using StatisticsAnalysisTool.Trade.Market;
 
 namespace StatisticsAnalysisTool.Trade;
 
@@ -43,12 +42,12 @@ public class TradeStatsObject : INotifyPropertyChanged
 
     #region Stat calculations
 
-    public void SetMailStats(ObservableCollection<Trade> trades)
+    public void SetTradeStats(IEnumerable<Trade> trades)
     {
-        SetMailStats(trades.ToList());
+        SetTradeStats(trades.ToList());
     }
-    
-    public void SetMailStats(List<Trade> trades)
+
+    public void SetTradeStats(List<Trade> trades)
     {
         SoldToday = trades
             .Where(trade =>
@@ -56,7 +55,7 @@ public class TradeStatsObject : INotifyPropertyChanged
                 if (trade.Timestamp.Date != DateTime.UtcNow.Date)
                 {
                     return false;
-                } 
+                }
 
                 if (trade is Mail { MailType: MailType.MarketplaceSellOrderFinished or MailType.MarketplaceSellOrderExpired })
                 {

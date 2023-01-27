@@ -353,7 +353,7 @@
         </Grid>
     </DataTemplate>
 
-    <DataTemplate x:Key="MailOptionsObjectTemplate" DataType="{x:Type models:MailOptionsObject}">
+    <DataTemplate x:Key="MailOptionsObjectTemplate" DataType="{x:Type models:TradeOptionsObject}">
         <Grid>
             <StackPanel Orientation="Vertical" Margin="0,0,0,0">
                 <Separator Background="{StaticResource SolidColorBrush.Background.2}" Height="4" Margin="0,0,0,0" VerticalAlignment="Top"/>
@@ -361,7 +361,7 @@
                     <Label Content="{Binding TranslationSettings, FallbackValue=SETTINGS}" Style="{StaticResource HeaderStyle.Tracking.Title}" Margin="2,5,0,0"
                            Foreground="{StaticResource SolidColorBrush.Accent.Blue.2}" />
 
-                    <CheckBox IsChecked="{Binding IsMailMonitoringActive}" 
+                    <CheckBox IsChecked="{Binding IsTradeMonitoringActive}" 
                               Content="{Binding TranslationMailMonitoringActive, FallbackValue=MAIL__MONITORING__ACTIVE}" 
                               HorizontalContentAlignment="Left" Margin="0,2,10,0" VerticalAlignment="Top" HorizontalAlignment="Left" Width="auto" MaxWidth="250"/>
 
@@ -379,8 +379,8 @@
                         <Label Content="{Binding TranslationMarketTaxSetupRate, FallbackValue=MARKET__TAX__SETUP__RATE}" MinWidth="300" VerticalAlignment="Top" />
                     </StackPanel>
 
-                    <ComboBox Width="200" Height="26" Margin="0,5,0,5" ItemsSource="{Binding DeleteMailsOlderThanSpecifiedDays}" 
-                              SelectedItem="{Binding DeleteMailsOlderThanSpecifiedDaysSelection, IsAsync=true}" 
+                    <ComboBox Width="200" Height="26" Margin="0,5,0,5" ItemsSource="{Binding DeleteTradesOlderThanSpecifiedDays}" 
+                              SelectedItem="{Binding DeleteTradesOlderThanSpecifiedDaysSelection, IsAsync=true}" 
                               HorizontalAlignment="Left" DisplayMemberPath="Name" SelectedValuePath="Days" />
                     <Grid Height="25"/>
                 </StackPanel>

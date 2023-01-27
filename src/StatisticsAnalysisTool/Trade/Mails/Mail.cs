@@ -12,24 +12,11 @@ namespace StatisticsAnalysisTool.Trade.Mails;
 
 public class Mail : Trade, IComparable<Mail>
 {
-    private bool? _isSelectedForDeletion = false;
-
     public Guid Guid { get; init; }
     public string MailTypeText { get; init; }
 
     [JsonIgnore]
     protected MarketLocation Location => Locations.GetMarketLocationByIndex(ClusterIndex);
-
-    [JsonIgnore]
-    public bool? IsSelectedForDeletion
-    {
-        get => _isSelectedForDeletion;
-        set
-        {
-            _isSelectedForDeletion = value;
-            OnPropertyChanged();
-        }
-    }
 
     [JsonIgnore]
     public string LocationName
@@ -49,6 +36,7 @@ public class Mail : Trade, IComparable<Mail>
             return WorldData.GetUniqueNameOrDefault((int) Location) ?? LanguageController.Translation("UNKNOWN");
         }
     }
+
     [JsonIgnore]
     public MailType MailType => MailController.ConvertToMailType(MailTypeText);
     public MailContent MailContent { get; init; }

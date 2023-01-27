@@ -1,21 +1,21 @@
-﻿using StatisticsAnalysisTool.ViewModels;
+﻿using StatisticsAnalysisTool.Common.UserSettings;
+using StatisticsAnalysisTool.Network.Manager;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
 using System.Threading.Tasks;
-using System.Windows;
 
 namespace StatisticsAnalysisTool.Trade.Market;
 
 public class MarketController
 {
-    private readonly MainWindowViewModel _mainWindowViewModel;
+    private readonly TrackingController _trackingController;
     private ObservableCollection<AuctionEntry> _tempOffers = new();
     private ObservableCollection<AuctionEntry> _tempBuyOrders = new();
 
-    public MarketController(MainWindowViewModel mainWindowViewModel)
+    public MarketController(TrackingController trackingController)
     {
-        _mainWindowViewModel = mainWindowViewModel;
+        _trackingController = trackingController;
     }
 
     #region Buy from market
@@ -34,14 +34,12 @@ public class MarketController
             {
                 Id = purchase.AuctionId,
                 Amount = purchase.Amount,
-                AuctionEntry = tempOffer
+                AuctionEntry = tempOffer,
+                TaxRate = SettingsController.CurrentSettings.TradeMonitoringMarketTaxRate
             };
-            
-            await Application.Current.Dispatcher.InvokeAsync(() =>
-            {
-                _mainWindowViewModel?.TradeMonitoringBindings?.Trade.Add(instantBuy);
-                _mainWindowViewModel?.TradeMonitoringBindings?.TradeCollectionView?.Refresh();
-            });
+
+            _trackingController.TradeController.AddTradeToBindingCollection(instantBuy);
+            await _trackingController.TradeController.SaveInFileAfterExceedingLimit(10);
         }
     }
 
@@ -68,14 +66,12 @@ public class MarketController
             {
                 Id = sale.AuctionId,
                 Amount = sale.Amount,
-                AuctionEntry = tempBuyOrder
+                AuctionEntry = tempBuyOrder,
+                TaxRate = SettingsController.CurrentSettings.TradeMonitoringMarketTaxRate
             };
 
-            await Application.Current.Dispatcher.InvokeAsync(() =>
-            {
-                _mainWindowViewModel?.TradeMonitoringBindings?.Trade.Add(instantSell);
-                _mainWindowViewModel?.TradeMonitoringBindings?.TradeCollectionView?.Refresh();
-            });
+            _trackingController.TradeController.AddTradeToBindingCollection(instantSell);
+            await _trackingController.TradeController.SaveInFileAfterExceedingLimit(10);
         }
     }
 

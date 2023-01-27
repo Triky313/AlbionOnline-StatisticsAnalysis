@@ -3,6 +3,7 @@ using StatisticsAnalysisTool.Properties;
 using System;
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
+using System.Text.Json.Serialization;
 
 namespace StatisticsAnalysisTool.Trade;
 
@@ -13,6 +14,19 @@ public abstract class Trade : INotifyPropertyChanged
     public string ClusterIndex { get; init; }
     public string UniqueClusterName => WorldData.GetUniqueNameOrDefault(ClusterIndex);
     public DateTime Timestamp => new(Ticks);
+
+    private bool? _isSelectedForDeletion = false;
+
+    [JsonIgnore]
+    public bool? IsSelectedForDeletion
+    {
+        get => _isSelectedForDeletion;
+        set
+        {
+            _isSelectedForDeletion = value;
+            OnPropertyChanged();
+        }
+    }
 
     public event PropertyChangedEventHandler PropertyChanged;
 

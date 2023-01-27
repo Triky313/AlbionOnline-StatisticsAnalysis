@@ -15,25 +15,25 @@ namespace StatisticsAnalysisTool.Trade;
 public class TradeMonitoringBindings : INotifyPropertyChanged
 {
     private readonly ListCollectionView _tradeCollectionView;
-    private ObservableRangeCollection<Trade> _trade = new();
+    private ObservableRangeCollection<Trade> _trades = new();
     private string _tradesSearchText;
     private DateTime _datePickerTradeFrom = new(2017, 1, 1);
     private DateTime _datePickerTradeTo = DateTime.UtcNow.AddDays(1);
     private TradeStatsObject _tradeStatsObject = new();
-    private MailOptionsObject _mailOptionsObject = new();
-    private Visibility _isMailMonitoringPopupVisible = Visibility.Collapsed;
+    private TradeOptionsObject _tradeOptionsObject = new();
+    private Visibility _isTradeMonitoringPopupVisible = Visibility.Collapsed;
     private GridLength _gridSplitterPosition = GridLength.Auto;
-    private int _totalTrades;
-    private int _currentMails;
+    private int _totalTradeCounts;
+    private int _currentTradeCounts;
 
     public TradeMonitoringBindings()
     {
-        TradeCollectionView = CollectionViewSource.GetDefaultView(Trade) as ListCollectionView;
+        TradeCollectionView = CollectionViewSource.GetDefaultView(Trades) as ListCollectionView;
 
         if (TradeCollectionView != null)
         {
-            TradeCollectionView.CurrentChanged += UpdateCurrentMailsUi;
-            Trade.CollectionChanged += UpdateTotalMailsUi;
+            TradeCollectionView.CurrentChanged += UpdateCurrentTradesUi;
+            Trades.CollectionChanged += UpdateTotalTradesUi;
 
             TradeCollectionView.IsLiveSorting = true;
             TradeCollectionView.IsLiveFiltering = true;
@@ -54,12 +54,12 @@ public class TradeMonitoringBindings : INotifyPropertyChanged
         }
     }
 
-    public ObservableRangeCollection<Trade> Trade
+    public ObservableRangeCollection<Trade> Trades
     {
-        get => _trade;
+        get => _trades;
         set
         {
-            _trade = value;
+            _trades = value;
             OnPropertyChanged();
         }
     }
@@ -71,7 +71,7 @@ public class TradeMonitoringBindings : INotifyPropertyChanged
         {
             _tradesSearchText = value;
             TradeCollectionView?.Refresh();
-            TradeStatsObject.SetMailStats(TradeCollectionView?.Cast<Trade>().ToList());
+            TradeStatsObject.SetTradeStats(TradeCollectionView?.Cast<Trade>().ToList());
             OnPropertyChanged();
         }
     }
@@ -83,7 +83,7 @@ public class TradeMonitoringBindings : INotifyPropertyChanged
         {
             _datePickerTradeFrom = value;
             TradeCollectionView?.Refresh();
-            TradeStatsObject.SetMailStats(TradeCollectionView?.Cast<Trade>().ToList());
+            TradeStatsObject.SetTradeStats(TradeCollectionView?.Cast<Trade>().ToList());
             OnPropertyChanged();
         }
     }
@@ -95,7 +95,7 @@ public class TradeMonitoringBindings : INotifyPropertyChanged
         {
             _datePickerTradeTo = value;
             TradeCollectionView?.Refresh();
-            TradeStatsObject.SetMailStats(TradeCollectionView?.Cast<Trade>().ToList());
+            TradeStatsObject.SetTradeStats(TradeCollectionView?.Cast<Trade>().ToList());
             OnPropertyChanged();
         }
     }
@@ -110,42 +110,42 @@ public class TradeMonitoringBindings : INotifyPropertyChanged
         }
     }
 
-    public MailOptionsObject MailOptionsObject
+    public TradeOptionsObject TradeOptionsObject
     {
-        get => _mailOptionsObject;
+        get => _tradeOptionsObject;
         set
         {
-            _mailOptionsObject = value;
+            _tradeOptionsObject = value;
             OnPropertyChanged();
         }
     }
 
-    public int TotalTrades
+    public int TotalTradeCounts
     {
-        get => _totalTrades;
+        get => _totalTradeCounts;
         set
         {
-            _totalTrades = value;
+            _totalTradeCounts = value;
             OnPropertyChanged();
         }
     }
 
-    public int CurrentMails
+    public int CurrentTradeCounts
     {
-        get => _currentMails;
+        get => _currentTradeCounts;
         set
         {
-            _currentMails = value;
+            _currentTradeCounts = value;
             OnPropertyChanged();
         }
     }
 
-    public Visibility IsMailMonitoringPopupVisible
+    public Visibility IsTradeMonitoringPopupVisible
     {
-        get => _isMailMonitoringPopupVisible;
+        get => _isTradeMonitoringPopupVisible;
         set
         {
-            _isMailMonitoringPopupVisible = value;
+            _isTradeMonitoringPopupVisible = value;
             OnPropertyChanged();
         }
     }
@@ -163,19 +163,19 @@ public class TradeMonitoringBindings : INotifyPropertyChanged
 
     #region Update ui
 
-    public void UpdateTotalMailsUi(object sender, NotifyCollectionChangedEventArgs e)
+    public void UpdateTotalTradesUi(object sender, NotifyCollectionChangedEventArgs e)
     {
         Application.Current.Dispatcher.InvokeAsync(() =>
         {
-            TotalTrades = Trade.Count;
+            TotalTradeCounts = Trades.Count;
         });
     }
 
-    public void UpdateCurrentMailsUi(object sender, EventArgs e)
+    public void UpdateCurrentTradesUi(object sender, EventArgs e)
     {
         Application.Current.Dispatcher.InvokeAsync(() =>
         {
-            CurrentMails = TradeCollectionView.Count;
+            CurrentTradeCounts = TradeCollectionView.Count;
         });
     }
 

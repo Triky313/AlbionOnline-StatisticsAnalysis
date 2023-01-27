@@ -2,39 +2,25 @@
 using StatisticsAnalysisTool.Common.UserSettings;
 using StatisticsAnalysisTool.Enumerations;
 using StatisticsAnalysisTool.Models.NetworkModel;
-using StatisticsAnalysisTool.Properties;
+using StatisticsAnalysisTool.Network.Manager;
 using StatisticsAnalysisTool.ViewModels;
-using System;
 using System.Collections.Generic;
-using System.Collections.Specialized;
 using System.Linq;
-using System.Threading;
 using System.Threading.Tasks;
-using System.Windows;
-using System.Windows.Threading;
 
 namespace StatisticsAnalysisTool.Trade.Mails;
 
 public class MailController
 {
+    private readonly TrackingController _trackingController;
     private readonly MainWindowViewModel _mainWindowViewModel;
-    private int _addMailCounter;
 
     public readonly List<MailNetworkObject> CurrentMailInfos = new();
 
-    public MailController(MainWindowViewModel mainWindowViewModel)
+    public MailController(TrackingController trackingController, MainWindowViewModel mainWindowViewModel)
     {
+        _trackingController = trackingController;
         _mainWindowViewModel = mainWindowViewModel;
-
-        if (_mainWindowViewModel?.TradeMonitoringBindings?.Trade != null)
-        {
-            _mainWindowViewModel.TradeMonitoringBindings.Trade.CollectionChanged += OnCollectionChanged;
-        }
-    }
-
-    private void OnCollectionChanged(object sender, NotifyCollectionChangedEventArgs e)
-    {
-        _mainWindowViewModel?.TradeMonitoringBindings?.TradeStatsObject.SetMailStats(_mainWindowViewModel?.TradeMonitoringBindings?.Trade);
     }
 
     public void SetMailInfos(List<MailNetworkObject> currentMailInfos)
@@ -45,18 +31,18 @@ public class MailController
 
     public async Task AddMailAsync(long mailId, string content)
     {
-        if (!SettingsController.CurrentSettings.IsMailMonitoringActive)
+        if (!SettingsController.CurrentSettings.IsTradeMonitoringActive)
         {
             return;
         }
 
-        var mailArray = _mainWindowViewModel.TradeMonitoringBindings.Trade.ToArray();
+        var mailArray = _mainWindowViewModel.TradeMonitoringBindings.Trades.ToArray();
         if (mailArray.Any(mailObject => mailObject.Id == mailId))
         {
             return;
         }
 
-        if (_mainWindowViewModel.TradeMonitoringBindings.Trade.ToArray().Any(x => x.Id == mailId))
+        if (_mainWindowViewModel.TradeMonitoringBindings.Trades.ToArray().Any(x => x.Id == mailId))
         {
             return;
         }
@@ -68,7 +54,7 @@ public class MailController
             return;
         }
 
-        var mailContent = ContentToObject(mailInfo.MailType, content, SettingsController.CurrentSettings.MailMonitoringMarketTaxRate, SettingsController.CurrentSettings.MailMonitoringMarketTaxSetupRate);
+        var mailContent = ContentToObject(mailInfo.MailType, content, SettingsController.CurrentSettings.TradeMonitoringMarketTaxRate, SettingsController.CurrentSettings.TradeMonitoringMarketTaxSetupRate);
 
         if (SettingsController.CurrentSettings.IgnoreMailsWithZeroValues && mailContent.IsMailWithoutValues)
         {
@@ -90,54 +76,8 @@ public class MailController
             return;
         }
 
-        AddMailToListAndSort(mail);
-        await SaveInFileAfterExceedingLimit(10);
-    }
-
-    public async void AddMailToListAndSort(Mail mail)
-    {
-        await Application.Current.Dispatcher.InvokeAsync(() =>
-        {
-            _mainWindowViewModel?.TradeMonitoringBindings?.Trade.Add(mail);
-            _mainWindowViewModel?.TradeMonitoringBindings?.TradeCollectionView?.Refresh();
-        });
-    }
-
-    public async Task RemoveMailsByIdsAsync(IEnumerable<long> mailIds)
-    {
-        await Application.Current.Dispatcher.InvokeAsync(() =>
-        {
-            foreach (var mail in _mainWindowViewModel?.TradeMonitoringBindings?.Trade?.ToList().Where(x => mailIds.Contains(x.Id)) ?? new List<Mail>())
-            {
-                _mainWindowViewModel?.TradeMonitoringBindings?.Trade?.Remove(mail);
-            }
-            _mainWindowViewModel?.TradeMonitoringBindings?.TradeStatsObject?.SetMailStats(_mainWindowViewModel?.TradeMonitoringBindings?.TradeCollectionView?.Cast<Trade>().ToList());
-
-            _mainWindowViewModel?.TradeMonitoringBindings?.UpdateTotalMailsUi(null, null);
-            _mainWindowViewModel?.TradeMonitoringBindings?.UpdateCurrentMailsUi(null, null);
-        });
-    }
-
-    public async Task RemoveMailsByDaysInSettingsAsync()
-    {
-        var deleteAfterDays = SettingsController.CurrentSettings?.DeleteMailsOlderThanSpecifiedDays ?? 0;
-        if (deleteAfterDays <= 0)
-        {
-            return;
-        }
-
-        await Application.Current.Dispatcher.InvokeAsync(() =>
-        {
-            foreach (var mail in _mainWindowViewModel?.TradeMonitoringBindings?.Trade?.ToList()
-                         .Where(x => x?.Timestamp.AddDays(deleteAfterDays) < DateTime.UtcNow)!)
-            {
-                _mainWindowViewModel?.TradeMonitoringBindings?.Trade?.Remove(mail);
-            }
-            _mainWindowViewModel?.TradeMonitoringBindings?.TradeStatsObject?.SetMailStats(_mainWindowViewModel?.TradeMonitoringBindings?.TradeCollectionView?.Cast<Trade>().ToList());
-
-            _mainWindowViewModel?.TradeMonitoringBindings?.UpdateTotalMailsUi(null, null);
-            _mainWindowViewModel?.TradeMonitoringBindings?.UpdateCurrentMailsUi(null, null);
-        });
+        _trackingController.TradeController.AddTradeToBindingCollection(mail);
+        await _trackingController.TradeController.SaveInFileAfterExceedingLimit(10);
     }
 
     private static MailContent ContentToObject(MailType type, string content, double taxRate, double taxSetupRate)
@@ -278,46 +218,6 @@ public class MailController
         };
     }
 
-    #endregion
-
-    public async Task SetMailsAsync(List<Trade> trades)
-    {
-        await Dispatcher.CurrentDispatcher.InvokeAsync(() =>
-        {
-            foreach (var item in trades)
-            {
-                if (item is Mail mail)
-                {
-                    // The if block convert data from old versions to new version
-                    if (mail.MailType is MailType.MarketplaceSellOrderFinished or MailType.MarketplaceBuyOrderFinished && mail.MailContent.UsedQuantity != mail.MailContent.Quantity)
-                    {
-                        mail.MailContent.UsedQuantity = mail.MailContent.Quantity;
-                    }
-
-                    // The if block convert data from old versions to new version
-                    if (mail.MailType is MailType.MarketplaceSellOrderFinished or MailType.MarketplaceSellOrderExpired
-                        && mail.MailContent?.TaxRate != null && mail.Timestamp < new DateTime(2022, 12, 1))
-                    {
-                        mail.MailContent.TaxRate = mail.Timestamp < new DateTime(2022, 9, 14) ? 3 : 4; // Into the Fray Patch 6 tax increase
-                    }
-
-                    // The if block convert data from old versions to new version
-                    if (mail.MailContent?.TaxSetupRate != null && mail.Timestamp < new DateTime(2022, 12, 1))
-                    {
-                        mail.MailContent.TaxSetupRate = mail.Timestamp < new DateTime(2022, 9, 14) ? 1.5 : 2.5; // Into the Fray Patch 6 tax increase
-                    }
-                }
-            }
-
-            _mainWindowViewModel?.TradeMonitoringBindings?.Trade?.AddRange(trades.AsEnumerable());
-            _mainWindowViewModel?.TradeMonitoringBindings?.TradeCollectionView?.Refresh();
-
-            var collectionTrades = new ObservableRangeCollection<Trade>();
-            collectionTrades.AddRange(trades);
-            _mainWindowViewModel?.TradeMonitoringBindings?.TradeStatsObject?.SetMailStats(collectionTrades);
-        }, DispatcherPriority.Background, CancellationToken.None);
-    }
-
     /// <summary>
     /// Converted a string to MailType.
     /// </summary>
@@ -333,41 +233,6 @@ public class MailController
             "MARKETPLACE_BUYORDER_EXPIRED_SUMMARY" => MailType.MarketplaceBuyOrderExpired,
             _ => MailType.Unknown
         };
-    }
-
-    #region Load / Save local file data
-
-    public async Task LoadFromFileAsync()
-    {
-        // TODO: If Mail file exist, load and delete. Save file in new Trades file.
-        await SetMailsAsync(await FileController.LoadAsync<List<Trade>>($"{AppDomain.CurrentDomain.BaseDirectory}{Settings.Default.MailsFileName}"));
-    }
-
-    private async Task SaveInFileAfterExceedingLimit(int limit)
-    {
-        if (++_addMailCounter < limit)
-        {
-            return;
-        }
-
-        if (_mainWindowViewModel?.TradeMonitoringBindings?.Trade == null)
-        {
-            return;
-        }
-
-        List<Trade> mails;
-        lock (_mainWindowViewModel.TradeMonitoringBindings.Trade)
-        {
-            mails = _mainWindowViewModel?.TradeMonitoringBindings?.Trade?.ToList();
-        }
-
-        if (mails == null)
-        {
-            return;
-        }
-
-        await FileController.SaveAsync(mails, $"{AppDomain.CurrentDomain.BaseDirectory}{Settings.Default.MailsFileName}");
-        _addMailCounter = 0;
     }
 
     #endregion

@@ -567,7 +567,7 @@ public class MainWindowViewModel : INotifyPropertyChanged, IAsyncInitialization
         }
 
         await TrackingController?.StatisticController?.LoadFromFileAsync()!;
-        await TrackingController?.MailController?.LoadFromFileAsync()!;
+        await TrackingController?.TradeController?.LoadFromFileAsync()!;
         await TrackingController?.TreasureController?.LoadFromFileAsync()!;
         await TrackingController?.DungeonController?.LoadDungeonFromFileAsync()!;
         await TrackingController?.VaultController?.LoadFromFileAsync()!;
@@ -604,8 +604,8 @@ public class MainWindowViewModel : INotifyPropertyChanged, IAsyncInitialization
         await TrackingController?.TreasureController?.SaveInFileAsync()!;
         await TrackingController?.StatisticController?.SaveInFileAsync()!;
         await TrackingController?.LootController?.SaveInFileAsync()!;
+        await TrackingController?.TradeController?.SaveInFileAsync()!;
 
-        await FileController.SaveAsync(TradeMonitoringBindings?.Trade?.ToList(), $"{AppDomain.CurrentDomain.BaseDirectory}{Settings.Default.MailsFileName}");
         await FileController.SaveAsync(DamageMeterBindings?.DamageMeterSnapshots, $"{AppDomain.CurrentDomain.BaseDirectory}{Settings.Default.DamageMeterSnapshotsFileName}");
 
         IsTrackingActive = false;

@@ -461,5 +461,29 @@ namespace StatisticsAnalysisTool.Properties {
                 this["GitHubSponsorsUrl"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("Trades.json")]
+        public string TradesFileName {
+            get {
+                return ((string)(this["TradesFileName"]));
+            }
+            set {
+                this["TradesFileName"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("UserData")]
+        public string UserDataDirectoryName {
+            get {
+                return ((string)(this["UserDataDirectoryName"]));
+            }
+            set {
+                this["UserDataDirectoryName"] = value;
+            }
+        }
     }
 }

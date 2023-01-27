@@ -9,7 +9,7 @@ public class TradeComparer : IComparer
     {
         if (x is not Trade mailA || y is not Trade mailB)
         {
-            throw new ArgumentException("Not a Trade object");
+            throw new ArgumentException("Not a Trades object");
         }
 
         if (mailA.Ticks > mailB.Ticks)

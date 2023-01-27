@@ -50,9 +50,9 @@ public class TrackingController : ITrackingController
         LootController = new LootController(this, mainWindowViewModel);
         StatisticController = new StatisticController(this, mainWindowViewModel);
         TreasureController = new TreasureController(this, mainWindowViewModel);
-        MailController = new MailController(mainWindowViewModel);
-        MarketController = new MarketController(mainWindowViewModel);
-        TradeController = new TradeController(this, mainWindowViewModel);
+        MailController = new MailController(this, mainWindowViewModel);
+        MarketController = new MarketController(this);
+        TradeController = new TradeController(mainWindowViewModel);
         VaultController = new VaultController(mainWindowViewModel);
         LiveStatsTracker = new LiveStatsTracker(this, mainWindowViewModel);
     }
