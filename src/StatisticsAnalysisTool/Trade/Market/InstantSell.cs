@@ -21,7 +21,15 @@ public class InstantSell : Trade, IComparable<InstantSell>
 
     public int CompareTo(InstantSell other)
     {
-        throw new NotImplementedException();
+        if (ReferenceEquals(this, other)) 
+            return 0;
+        if (ReferenceEquals(null, other)) 
+            return 1;
+        var tickComparison = Ticks.CompareTo(other.Ticks);
+        if (tickComparison != 0) 
+            return tickComparison;
+
+        return Id.CompareTo(other.Id);
     }
 
     #region Commands

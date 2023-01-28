@@ -106,31 +106,26 @@
         </Style.Triggers>
     </Style>
 
-    <Style TargetType="Grid" x:Key="Instant.Type.Colors">
+    <Style TargetType="Grid" x:Key="InstantSell.Type.Colors">
         <Setter Property="Width" Value="3" />
         <Setter Property="HorizontalAlignment" Value="Left" />
-        <Setter Property="Background" Value="{StaticResource SolidColorBrush.Text.4}" />
-        <Style.Triggers>
-            <DataTrigger Binding="{Binding AuctionEntry.AuctionEntryType, IsAsync=True}" Value="{x:Static market:AuctionEntryType.Request}">
-                <Setter Property="Background" Value="{StaticResource SolidColorBrush.Accent.Green.3}" />
-            </DataTrigger>
-            <DataTrigger Binding="{Binding AuctionEntry.AuctionEntryType, IsAsync=True}" Value="{x:Static market:AuctionEntryType.Offer}">
-                <Setter Property="Background" Value="{StaticResource SolidColorBrush.Accent.Red.3}" />
-            </DataTrigger>
-        </Style.Triggers>
+        <Setter Property="Background" Value="{StaticResource SolidColorBrush.Accent.Green.3}" />
     </Style>
 
-    <Style TargetType="TextBlock" x:Key="Instant.Text.Colors">
+    <Style TargetType="Grid" x:Key="InstantBuy.Type.Colors">
+        <Setter Property="Width" Value="3" />
         <Setter Property="HorizontalAlignment" Value="Left" />
-        <Setter Property="Foreground" Value="{StaticResource SolidColorBrush.Text.4}" />
-        <Style.Triggers>
-            <DataTrigger Binding="{Binding AuctionEntry.AuctionEntryType, IsAsync=True}" Value="{x:Static market:AuctionEntryType.Request}">
-                <Setter Property="Foreground" Value="{StaticResource SolidColorBrush.Accent.Green.3}" />
-            </DataTrigger>
-            <DataTrigger Binding="{Binding AuctionEntry.AuctionEntryType, IsAsync=True}" Value="{x:Static market:AuctionEntryType.Offer}">
-                <Setter Property="Foreground" Value="{StaticResource SolidColorBrush.Accent.Red.3}" />
-            </DataTrigger>
-        </Style.Triggers>
+        <Setter Property="Background" Value="{StaticResource SolidColorBrush.Accent.Red.3}" />
+    </Style>
+
+    <Style TargetType="TextBlock" x:Key="InstantSell.Text.Colors">
+        <Setter Property="HorizontalAlignment" Value="Left" />
+        <Setter Property="Foreground" Value="{StaticResource SolidColorBrush.Accent.Green.3}" />
+    </Style>
+
+    <Style TargetType="TextBlock" x:Key="InstantBuy.Text.Colors">
+        <Setter Property="HorizontalAlignment" Value="Left" />
+        <Setter Property="Foreground" Value="{StaticResource SolidColorBrush.Accent.Red.3}" />
     </Style>
 
     <Style TargetType="TextBlock" x:Key="Trade.Text.Tier">
@@ -427,7 +422,7 @@
                         <Image Source="{Binding Item.Icon, IsAsync=True, Mode=OneWay}" Style="{StaticResource Trade.Icon}" />
                     </Grid>
                     <StackPanel Orientation="Vertical">
-                        <DockPanel>
+                        <!--<DockPanel>
                             <StackPanel Orientation="Horizontal">
                                 <StackPanel.Style>
                                     <Style TargetType="{x:Type StackPanel}">
@@ -469,8 +464,8 @@
                                 <TextBlock Text="{Binding Item.LocalizedName, IsAsync=True}" Foreground="{StaticResource SolidColorBrush.Text.1}" />
                             </StackPanel>
                             <TextBlock Text="{Binding Timestamp, IsAsync=True, StringFormat='{}{0}'}" TextAlignment="Right" Foreground="{StaticResource SolidColorBrush.Text.1}"/>
-                        </DockPanel>
-                        <DockPanel>
+                        </DockPanel>-->
+                        <!--<DockPanel>
                             <StackPanel Orientation="Horizontal">
                                 <TextBlock Text="{Binding TranslationCostPerItem, IsAsync=True}" Width="160" Foreground="{StaticResource SolidColorBrush.Text.4}" />
                                 <TextBlock Text="{Binding TranslationTotalCost, IsAsync=True, FallbackValue=TOTAL_COST}" Width="160" Foreground="{StaticResource SolidColorBrush.Text.4}">
@@ -546,8 +541,8 @@
                                 </TextBlock>
                             </StackPanel>
                             <TextBlock Style="{StaticResource Trade.City.Text}" />
-                        </DockPanel>
-                        <DockPanel>
+                        </DockPanel>-->
+                        <!--<DockPanel>
                             <StackPanel Orientation="Horizontal">
                                 <Grid Width="160">
                                     <Image Style="{StaticResource Mail.Image.Style}" ToolTip="{Binding TranslationSilver, IsAsync=True}" />
@@ -597,7 +592,7 @@
                             <Grid Margin="0 -2 0 0" Height="18" Width="18" HorizontalAlignment="Right">
                                 <CheckBox Width="auto" Height="auto" IsChecked="{Binding IsSelectedForDeletion, IsAsync=True, FallbackValue=false}" ToolTip="{Binding TranslationSelectToDelete, IsAsync=True}" />
                             </Grid>
-                        </DockPanel>
+                        </DockPanel>-->
                     </StackPanel>
                 </DockPanel>
             </Border>
@@ -609,7 +604,7 @@
             <Grid.InputBindings>
                 <MouseBinding MouseAction="LeftDoubleClick" Command="{Binding OpenItemWindowCommand}" />
             </Grid.InputBindings>
-            <Grid Style="{StaticResource Instant.Type.Colors}" />
+            <Grid Style="{StaticResource InstantSell.Type.Colors}" />
             <Border Style="{StaticResource Container.Border}">
                 <DockPanel VerticalAlignment="Top" HorizontalAlignment="Stretch" Margin="5,0,10,0">
                     <Grid Margin="0,0, 5, 0" HorizontalAlignment="Center" VerticalAlignment="Center">
@@ -617,12 +612,12 @@
                     </Grid>
                     <StackPanel Orientation="Vertical">
                         <DockPanel>
-                            <StackPanel Orientation="Horizontal">
+                            <!--<StackPanel Orientation="Horizontal">
                                 <TextBlock Text="{Binding TypeDescription, IsAsync=True, StringFormat='{}{0}: ', FallbackValue=INSTANT_SELL}" Style="{StaticResource Instant.Text.Colors}" />
                                 <TextBlock Text="{Binding Amount, IsAsync=True, StringFormat='{}{0}x', FallbackValue=0}" FontWeight="Bold" Margin="0,0,3,0" Foreground="{StaticResource SolidColorBrush.Text.1}" />
                                 <TextBlock Style="{StaticResource Trade.Text.Tier}" />
                                 <TextBlock Text="{Binding Item.LocalizedName, IsAsync=True}" Foreground="{StaticResource SolidColorBrush.Text.1}" />
-                            </StackPanel>
+                            </StackPanel>-->
                             <!--<StackPanel Orientation="Horizontal">
                                 <StackPanel.Style>
                                     <Style TargetType="{x:Type StackPanel}">
@@ -785,7 +780,7 @@
             <Grid.InputBindings>
                 <MouseBinding MouseAction="LeftDoubleClick" Command="{Binding OpenItemWindowCommand}" />
             </Grid.InputBindings>
-            <Grid Style="{StaticResource Instant.Type.Colors}" />
+            <Grid Style="{StaticResource InstantBuy.Type.Colors}" />
             <Border Style="{StaticResource Container.Border}">
                 <DockPanel VerticalAlignment="Top" HorizontalAlignment="Stretch" Margin="5,0,10,0">
                     <Grid Margin="0,0, 5, 0" HorizontalAlignment="Center" VerticalAlignment="Center">
@@ -793,12 +788,12 @@
                     </Grid>
                     <StackPanel Orientation="Vertical">
                         <DockPanel>
-                            <StackPanel Orientation="Horizontal">
+                            <!--<StackPanel Orientation="Horizontal">
                                 <TextBlock Text="{Binding TypeDescription, IsAsync=True, StringFormat='{}{0}: ', FallbackValue=INSTANT_BUY}" Style="{StaticResource Instant.Text.Colors}" />
                                 <TextBlock Text="{Binding Amount, IsAsync=True, StringFormat='{}{0}x', FallbackValue=0}" FontWeight="Bold" Margin="0,0,3,0" Foreground="{StaticResource SolidColorBrush.Text.1}" />
                                 <TextBlock Style="{StaticResource Trade.Text.Tier}" />
                                 <TextBlock Text="{Binding Item.LocalizedName, IsAsync=True}" Foreground="{StaticResource SolidColorBrush.Text.1}" />
-                            </StackPanel>
+                            </StackPanel>-->
                             <!--<StackPanel Orientation="Horizontal">
                                 <StackPanel.Style>
                                     <Style TargetType="{x:Type StackPanel}">

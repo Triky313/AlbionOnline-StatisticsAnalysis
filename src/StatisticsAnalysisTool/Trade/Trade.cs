@@ -12,6 +12,7 @@ public abstract class Trade : INotifyPropertyChanged
     public long Id { get; init; }
     public long Ticks { get; init; }
     public string ClusterIndex { get; init; }
+    public TradeType Type { get; init; }
     public string UniqueClusterName => WorldData.GetUniqueNameOrDefault(ClusterIndex);
     public DateTime Timestamp => new(Ticks);
 

@@ -30,7 +30,7 @@ public static class TradeMapping
             },
             InstantSell instantSell => new TradeDto()
             {
-                Type = TradeType.InstantBuy,
+                Type = TradeType.InstantSell,
                 Id = instantSell.Id,
                 Ticks = instantSell.Ticks,
                 ClusterIndex = instantSell.ClusterIndex,
@@ -48,6 +48,7 @@ public static class TradeMapping
             TradeType.Mail => new Mail()
             {
                 Id = trade.Id,
+                Type = trade.Type,
                 Ticks = trade.Ticks,
                 ClusterIndex = trade.ClusterIndex,
                 MailTypeText = trade.MailTypeText,
@@ -57,6 +58,7 @@ public static class TradeMapping
             TradeType.InstantBuy => new InstantBuy()
             {
                 Id = trade.Id,
+                Type = trade.Type,
                 Ticks = trade.Ticks,
                 ClusterIndex = trade.ClusterIndex,
                 Amount = trade.Amount,
@@ -65,6 +67,7 @@ public static class TradeMapping
             TradeType.InstantSell => new InstantSell()
             {
                 Id = trade.Id,
+                Type = trade.Type,
                 Ticks = trade.Ticks,
                 ClusterIndex = trade.ClusterIndex,
                 Amount = trade.Amount,
