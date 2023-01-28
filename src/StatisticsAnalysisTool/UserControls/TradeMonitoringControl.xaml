@@ -78,7 +78,7 @@
             </Grid>
 
             <Grid Row="2">
-                <vwp:VirtualizingItemsControl ItemsSource="{Binding TradeMonitoringBindings.TradeCollectionView, IsAsync=True, Mode=OneWay}" 
+                <vwp:VirtualizingItemsControl ItemsSource="{Binding TradeMonitoringBindings.TradeCollectionView, IsAsync=True, Mode=OneWay}"
                                               ItemTemplateSelector="{StaticResource TradeDataTemplateSelector}"
                                               VirtualizingPanel.CacheLengthUnit="Item"
                                               VirtualizingPanel.CacheLength="10,10"

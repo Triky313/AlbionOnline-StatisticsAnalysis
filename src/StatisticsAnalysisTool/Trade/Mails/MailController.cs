@@ -23,7 +23,7 @@ public class MailController
         _mainWindowViewModel = mainWindowViewModel;
     }
 
-    public void SetMailInfos(List<MailNetworkObject> currentMailInfos)
+    public void SetMailInfos(IEnumerable<MailNetworkObject> currentMailInfos)
     {
         CurrentMailInfos.Clear();
         CurrentMailInfos.AddRange(currentMailInfos);
@@ -61,9 +61,10 @@ public class MailController
             return;
         }
 
-        var mail = new Mail()
+        var trade = new Trade()
         {
             Ticks = mailInfo.Tick,
+            Type = TradeType.Mail,
             Guid = mailInfo.Guid ?? default,
             Id = mailId,
             ClusterIndex = mailInfo.Subject,
@@ -71,12 +72,12 @@ public class MailController
             MailContent = mailContent
         };
 
-        if (mail.MailType == MailType.Unknown)
+        if (trade.MailType == MailType.Unknown)
         {
             return;
         }
 
-        _trackingController.TradeController.AddTradeToBindingCollection(mail);
+        _trackingController.TradeController.AddTradeToBindingCollection(trade);
         await _trackingController.TradeController.SaveInFileAfterExceedingLimit(10);
     }
 

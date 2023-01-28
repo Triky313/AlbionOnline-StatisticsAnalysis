@@ -1,8 +1,6 @@
 ﻿using StatisticsAnalysisTool.Common;
 using StatisticsAnalysisTool.Enumerations;
 using StatisticsAnalysisTool.Properties;
-using StatisticsAnalysisTool.Trade.Mails;
-using StatisticsAnalysisTool.Trade.Market;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -37,8 +35,8 @@ public class TradeStatsObject : INotifyPropertyChanged
     private long _taxesMonth;
     private long _taxesYear;
     private long _taxesTotal;
-    private Mail _mostExpensiveSaleItem;
-    private Mail _mostExpensivePurchasedItem;
+    private Trade _mostExpensiveSaleItem;
+    private Trade _mostExpensivePurchasedItem;
 
     #region Stat calculations
 
@@ -57,17 +55,12 @@ public class TradeStatsObject : INotifyPropertyChanged
                     return false;
                 }
 
-                if (trade is Mail { MailType: MailType.MarketplaceSellOrderFinished or MailType.MarketplaceSellOrderExpired })
+                if (trade.Type == TradeType.Mail && trade.MailType == MailType.MarketplaceSellOrderFinished && trade.MailType == MailType.MarketplaceSellOrderExpired)
                 {
                     return true;
                 }
 
-                if (trade is InstantBuy instantBuy)
-                {
-                    return true;
-                }
-
-                if (trade is InstantSell instantSell)
+                if (trade.Type == TradeType.InstantSell)
                 {
                     return true;
                 }
@@ -76,19 +69,14 @@ public class TradeStatsObject : INotifyPropertyChanged
             })
             .Sum(trade =>
             {
-                if (trade is Mail mail)
+                if (trade.Type == TradeType.Mail)
                 {
-                    return mail.MailContent.TotalPrice.IntegerValue;
+                    return trade.MailContent.TotalPrice.IntegerValue;
                 }
 
-                if (trade is InstantBuy instantBuy)
+                if (trade.Type == TradeType.InstantSell)
                 {
-                    return instantBuy.Id;
-                }
-
-                if (trade is InstantSell instantSell)
-                {
-                    return instantSell.Id;
+                    return trade.InstantBuySellContent.UnitPrice.IntegerValue * trade.InstantBuySellContent.Quantity;
                 }
 
                 return 0;
@@ -371,7 +359,7 @@ public class TradeStatsObject : INotifyPropertyChanged
         }
     }
 
-    public Mails.Mail MostExpensiveSaleItem
+    public Trade MostExpensiveSaleItem
     {
         get => _mostExpensiveSaleItem;
         set
@@ -381,7 +369,7 @@ public class TradeStatsObject : INotifyPropertyChanged
         }
     }
 
-    public Mails.Mail MostExpensivePurchasedItem
+    public Trade MostExpensivePurchasedItem
     {
         get => _mostExpensivePurchasedItem;
         set

@@ -1,13 +1,12 @@
 ﻿using System;
-using System.Text.Json.Serialization;
 
 namespace StatisticsAnalysisTool.Trade.Market;
 
 public class AuctionEntry
 {
     public long Id { get; set; }
-    public int UnitPriceSilver { get; set; }
-    public int TotalPriceSilver { get; set; }
+    public long UnitPriceSilver { get; set; }
+    public long TotalPriceSilver { get; set; }
     public int Amount { get; set; }
     public int Tier { get; set; }
     public bool IsFinished { get; set; }

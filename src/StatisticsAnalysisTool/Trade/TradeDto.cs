@@ -10,6 +10,7 @@ public class TradeDto
     public long Ticks { get; init; }
     public string ClusterIndex { get; init; }
     public TradeType Type { get; init; }
+    public double TaxRate { get; set; }
 
     #region Mail
 
@@ -23,7 +24,6 @@ public class TradeDto
 
     public int Amount { get; init; }
     public AuctionEntry AuctionEntry { get; init; }
-    public double TaxRate { get; set; }
-
+    public InstantBuySellContent InstantBuySellContent { get; init; }
     #endregion
 }

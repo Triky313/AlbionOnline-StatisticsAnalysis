@@ -52,7 +52,7 @@ public class TradeController
     {
         await Application.Current.Dispatcher.InvokeAsync(() =>
         {
-            foreach (var trade in _mainWindowViewModel?.TradeMonitoringBindings?.Trades?.ToList().Where(x => ids.Contains(x.Id)) ?? new List<Mail>())
+            foreach (var trade in _mainWindowViewModel?.TradeMonitoringBindings?.Trades?.ToList().Where(x => ids.Contains(x.Id)) ?? new List<Trade>())
             {
                 _mainWindowViewModel?.TradeMonitoringBindings?.Trades?.Remove(trade);
             }
@@ -170,18 +170,19 @@ public class TradeController
         }
     }
 
+    [Obsolete("Can be deleted after july 2023")]
     private static IEnumerable<Trade> ConvertOldMailsToTrade(IEnumerable<MailOld> mails)
     {
-        return mails.Select(mail => new Mail()
+        return mails.Select(mail => new Trade()
         {
             Id = mail.MailId,
+            Type = TradeType.Mail,
             Ticks = mail.Tick,
             ClusterIndex = mail.ClusterIndex,
             MailContent = mail.MailContent,
             MailTypeText = mail.MailTypeText,
             Guid = mail.Guid
         })
-            .Cast<Trade>()
             .ToList();
     }
 

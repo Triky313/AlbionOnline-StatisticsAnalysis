@@ -1,4 +1,5 @@
-﻿using StatisticsAnalysisTool.Trade.Mails;
+﻿using System;
+using StatisticsAnalysisTool.Models.NetworkModel;
 using StatisticsAnalysisTool.Trade.Market;
 
 namespace StatisticsAnalysisTool.Trade;
@@ -7,37 +8,37 @@ public static class TradeMapping
 {
     public static TradeDto Mapping(Trade trade)
     {
-        return trade switch
+        return trade.Type switch
         {
-            Mail mail => new TradeDto()
+            TradeType.Mail => new TradeDto()
             {
                 Type = TradeType.Mail,
-                Id = mail.Id,
-                Ticks = mail.Ticks,
-                ClusterIndex = mail.ClusterIndex,
-                MailTypeText = mail.MailTypeText,
-                Guid = mail.Guid,
-                MailContent = mail.MailContent
+                Id = trade.Id,
+                Ticks = trade.Ticks,
+                ClusterIndex = trade.ClusterIndex,
+                MailTypeText = trade.MailTypeText,
+                Guid = trade.Guid,
+                MailContent = trade.MailContent
             },
-            InstantBuy instantBuy => new TradeDto()
+            TradeType.InstantBuy => new TradeDto()
             {
                 Type = TradeType.InstantBuy,
-                Id = instantBuy.Id,
-                Ticks = instantBuy.Ticks,
-                ClusterIndex = instantBuy.ClusterIndex,
-                Amount = instantBuy.Amount,
-                AuctionEntry = instantBuy.AuctionEntry
+                Id = trade.Id,
+                Ticks = trade.Ticks,
+                ClusterIndex = trade.ClusterIndex,
+                InstantBuySellContent = trade.InstantBuySellContent,
+                AuctionEntry = trade.AuctionEntry
             },
-            InstantSell instantSell => new TradeDto()
+            TradeType.InstantSell => new TradeDto()
             {
                 Type = TradeType.InstantSell,
-                Id = instantSell.Id,
-                Ticks = instantSell.Ticks,
-                ClusterIndex = instantSell.ClusterIndex,
-                Amount = instantSell.Amount,
-                AuctionEntry = instantSell.AuctionEntry
+                Id = trade.Id,
+                Ticks = trade.Ticks,
+                ClusterIndex = trade.ClusterIndex,
+                InstantBuySellContent = trade.InstantBuySellContent,
+                AuctionEntry = trade.AuctionEntry
             },
-            _ => new TradeDto()
+            _ => throw new ArgumentOutOfRangeException()
         };
     }
 
@@ -45,7 +46,7 @@ public static class TradeMapping
     {
         return trade.Type switch
         {
-            TradeType.Mail => new Mail()
+            TradeType.Mail => new Trade()
             {
                 Id = trade.Id,
                 Type = trade.Type,
@@ -53,25 +54,25 @@ public static class TradeMapping
                 ClusterIndex = trade.ClusterIndex,
                 MailTypeText = trade.MailTypeText,
                 Guid = trade.Guid,
-                MailContent = trade.MailContent
+                MailContent = trade.MailContent ?? new MailContent()
             },
-            TradeType.InstantBuy => new InstantBuy()
+            TradeType.InstantBuy => new Trade()
             {
                 Id = trade.Id,
                 Type = trade.Type,
                 Ticks = trade.Ticks,
                 ClusterIndex = trade.ClusterIndex,
-                Amount = trade.Amount,
-                AuctionEntry = trade.AuctionEntry
+                AuctionEntry = trade.AuctionEntry,
+                InstantBuySellContent = trade.InstantBuySellContent ?? new InstantBuySellContent()
             },
-            TradeType.InstantSell => new InstantSell()
+            TradeType.InstantSell => new Trade()
             {
                 Id = trade.Id,
                 Type = trade.Type,
                 Ticks = trade.Ticks,
                 ClusterIndex = trade.ClusterIndex,
-                Amount = trade.Amount,
-                AuctionEntry = trade.AuctionEntry
+                AuctionEntry = trade.AuctionEntry,
+                InstantBuySellContent = trade.InstantBuySellContent ?? new InstantBuySellContent()
             },
             TradeType.Unknown => null,
             _ => null

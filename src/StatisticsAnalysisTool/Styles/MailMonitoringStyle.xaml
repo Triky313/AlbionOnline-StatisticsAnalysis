@@ -2,9 +2,7 @@
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
                     xmlns:models="clr-namespace:StatisticsAnalysisTool.Models"
                     xmlns:common="clr-namespace:StatisticsAnalysisTool.Common"
-                    xmlns:trade="clr-namespace:StatisticsAnalysisTool.Trade"
-                    xmlns:mails="clr-namespace:StatisticsAnalysisTool.Trade.Mails"
-                    xmlns:market="clr-namespace:StatisticsAnalysisTool.Trade.Market">
+                    xmlns:trade="clr-namespace:StatisticsAnalysisTool.Trade">
 
     <Style TargetType="Image" x:Key="Trade.Icon">
         <Setter Property="Height" Value="50"/>
@@ -134,7 +132,7 @@
         <Setter Property="Text" Value="{Binding Item.TierLevelString, IsAsync=True, StringFormat='{}{0}', FallbackValue='T?'}" />
     </Style>
 
-    <Style TargetType="Image" x:Key="Mail.Image.Style">
+    <Style TargetType="Image" x:Key="Trade.Silver.Image.Style">
         <Setter Property="Source" Value="../Resources/silver.png" />
         <Setter Property="HorizontalAlignment" Value="Left" />
         <Setter Property="Margin" Value="5,0,5,0" />
@@ -151,42 +149,42 @@
                             <TextBlock Text="{Binding TranslationSoldToday, IsAsync=True, FallbackValue=SOLD_TODAY}" MinWidth="100" FontSize="14" FontWeight="Light" 
                                Foreground="{StaticResource SolidColorBrush.Text.2}" VerticalAlignment="Center" />
                             <StackPanel Orientation="Horizontal" Margin="0,0,0,5">
-                                <Image Style="{StaticResource Mail.Image.Style}" ToolTip="{Binding TranslationSilver, IsAsync=True}" />
+                                <Image Style="{StaticResource Trade.Silver.Image.Style}" ToolTip="{Binding TranslationSilver, IsAsync=True}" />
                                 <TextBlock Text="{Binding SoldToday, IsAsync=True, StringFormat='{} {0:N0}', FallbackValue=0}" 
                                FontSize="14" FontWeight="Light" Foreground="{StaticResource SolidColorBrush.Accent.Green.3}" VerticalAlignment="Center" />
                             </StackPanel>
                             <TextBlock Text="{Binding TranslationSoldThisWeek, IsAsync=True, FallbackValue=SOLD_THIS_WEEK}" MinWidth="100" FontSize="14" FontWeight="Light" 
                                    Foreground="{StaticResource SolidColorBrush.Text.2}" VerticalAlignment="Center" />
                             <StackPanel Orientation="Horizontal" Margin="0,0,0,5">
-                                <Image Style="{StaticResource Mail.Image.Style}" ToolTip="{Binding TranslationSilver, IsAsync=True}" />
+                                <Image Style="{StaticResource Trade.Silver.Image.Style}" ToolTip="{Binding TranslationSilver, IsAsync=True}" />
                                 <TextBlock Text="{Binding SoldThisWeek, IsAsync=True, StringFormat='{} {0:N0}', FallbackValue=0}" 
                                        FontSize="14" FontWeight="Light" Foreground="{StaticResource SolidColorBrush.Accent.Green.3}" VerticalAlignment="Center" />
                             </StackPanel>
                             <TextBlock Text="{Binding TranslationSoldLastWeek, IsAsync=True, FallbackValue=SOLD_LAST_WEEK}" MinWidth="100" FontSize="14" FontWeight="Light" 
                                    Foreground="{StaticResource SolidColorBrush.Text.2}" VerticalAlignment="Center" />
                             <StackPanel Orientation="Horizontal" Margin="0,0,0,5">
-                                <Image Style="{StaticResource Mail.Image.Style}" ToolTip="{Binding TranslationSilver, IsAsync=True}" />
+                                <Image Style="{StaticResource Trade.Silver.Image.Style}" ToolTip="{Binding TranslationSilver, IsAsync=True}" />
                                 <TextBlock Text="{Binding SoldLastWeek, IsAsync=True, StringFormat='{} {0:N0}', FallbackValue=0}" 
                                        FontSize="14" FontWeight="Light" Foreground="{StaticResource SolidColorBrush.Accent.Green.3}" VerticalAlignment="Center" />
                             </StackPanel>
                             <TextBlock Text="{Binding TranslationSoldMonth, IsAsync=True, FallbackValue=SOLD_MONTH}" MinWidth="100" FontSize="14" FontWeight="Light" 
                                    Foreground="{StaticResource SolidColorBrush.Text.2}" VerticalAlignment="Center" />
                             <StackPanel Orientation="Horizontal" Margin="0,0,0,5">
-                                <Image Style="{StaticResource Mail.Image.Style}" ToolTip="{Binding TranslationSilver, IsAsync=True}" />
+                                <Image Style="{StaticResource Trade.Silver.Image.Style}" ToolTip="{Binding TranslationSilver, IsAsync=True}" />
                                 <TextBlock Text="{Binding SoldMonth, IsAsync=True, StringFormat='{} {0:N0}', FallbackValue=0}" 
                                FontSize="14" FontWeight="Light" Foreground="{StaticResource SolidColorBrush.Accent.Green.3}" VerticalAlignment="Center" />
                             </StackPanel>
                             <TextBlock Text="{Binding TranslationSoldYear, IsAsync=True, FallbackValue=SOLD_YEAR}" MinWidth="100" FontSize="14" FontWeight="Light" 
                                    Foreground="{StaticResource SolidColorBrush.Text.2}" VerticalAlignment="Center" />
                             <StackPanel Orientation="Horizontal" Margin="0,0,0,5">
-                                <Image Style="{StaticResource Mail.Image.Style}" ToolTip="{Binding TranslationSilver, IsAsync=True}" />
+                                <Image Style="{StaticResource Trade.Silver.Image.Style}" ToolTip="{Binding TranslationSilver, IsAsync=True}" />
                                 <TextBlock Text="{Binding SoldYear, IsAsync=True, StringFormat='{} {0:N0}', FallbackValue=0}" 
                                FontSize="14" FontWeight="Light" Foreground="{StaticResource SolidColorBrush.Accent.Green.3}" VerticalAlignment="Center" />
                             </StackPanel>
                             <TextBlock Text="{Binding TranslationSoldTotal, IsAsync=True, FallbackValue=SOLD_TOTAL}" MinWidth="100" FontSize="14" FontWeight="Light" 
                                Foreground="{StaticResource SolidColorBrush.Text.2}" VerticalAlignment="Center" />
                             <StackPanel Orientation="Horizontal" Margin="0,0,0,5">
-                                <Image Style="{StaticResource Mail.Image.Style}" ToolTip="{Binding TranslationSilver, IsAsync=True}" />
+                                <Image Style="{StaticResource Trade.Silver.Image.Style}" ToolTip="{Binding TranslationSilver, IsAsync=True}" />
                                 <TextBlock Text="{Binding SoldTotal, IsAsync=True, StringFormat='{} {0:N0}', FallbackValue=0}" 
                                FontSize="14" FontWeight="Light" Foreground="{StaticResource SolidColorBrush.Accent.Green.3}" VerticalAlignment="Center" />
                             </StackPanel>
@@ -195,42 +193,42 @@
                             <TextBlock Text="{Binding TranslationBoughtToday, IsAsync=True, FallbackValue=BOUGHT_TODAY}" MinWidth="100" FontSize="14" FontWeight="Light" 
                                Foreground="{StaticResource SolidColorBrush.Text.2}" VerticalAlignment="Center" />
                             <StackPanel Orientation="Horizontal" Margin="0,0,0,5">
-                                <Image Style="{StaticResource Mail.Image.Style}" ToolTip="{Binding TranslationSilver, IsAsync=True}" />
+                                <Image Style="{StaticResource Trade.Silver.Image.Style}" ToolTip="{Binding TranslationSilver, IsAsync=True}" />
                                 <TextBlock Text="{Binding BoughtToday, IsAsync=True, StringFormat='{} {0:N0}', FallbackValue=0}" 
                                FontSize="14" FontWeight="Light" Foreground="{StaticResource SolidColorBrush.Accent.Red.3}" VerticalAlignment="Center" />
                             </StackPanel>
                             <TextBlock Text="{Binding TranslationBoughtThisWeek, IsAsync=True, FallbackValue=BOUGHT_THIS_WEEK}" MinWidth="100" FontSize="14" FontWeight="Light" 
                                Foreground="{StaticResource SolidColorBrush.Text.2}" VerticalAlignment="Center" />
                             <StackPanel Orientation="Horizontal" Margin="0,0,0,5">
-                                <Image Style="{StaticResource Mail.Image.Style}" ToolTip="{Binding TranslationSilver, IsAsync=True}" />
+                                <Image Style="{StaticResource Trade.Silver.Image.Style}" ToolTip="{Binding TranslationSilver, IsAsync=True}" />
                                 <TextBlock Text="{Binding BoughtThisWeek, IsAsync=True, StringFormat='{} {0:N0}', FallbackValue=0}" 
                                FontSize="14" FontWeight="Light" Foreground="{StaticResource SolidColorBrush.Accent.Red.3}" VerticalAlignment="Center" />
                             </StackPanel>
                             <TextBlock Text="{Binding TranslationBoughtLastWeek, IsAsync=True, FallbackValue=BOUGHT_LAST_WEEK}" MinWidth="100" FontSize="14" FontWeight="Light" 
                                Foreground="{StaticResource SolidColorBrush.Text.2}" VerticalAlignment="Center" />
                             <StackPanel Orientation="Horizontal" Margin="0,0,0,5">
-                                <Image Style="{StaticResource Mail.Image.Style}" ToolTip="{Binding TranslationSilver, IsAsync=True}" />
+                                <Image Style="{StaticResource Trade.Silver.Image.Style}" ToolTip="{Binding TranslationSilver, IsAsync=True}" />
                                 <TextBlock Text="{Binding BoughtLastWeek, IsAsync=True, StringFormat='{} {0:N0}', FallbackValue=0}" 
                                FontSize="14" FontWeight="Light" Foreground="{StaticResource SolidColorBrush.Accent.Red.3}" VerticalAlignment="Center" />
                             </StackPanel>
                             <TextBlock Text="{Binding TranslationBoughtMonth, IsAsync=True, FallbackValue=BOUGHT_MONTH}" MinWidth="100" FontSize="14" FontWeight="Light" 
                                Foreground="{StaticResource SolidColorBrush.Text.2}" VerticalAlignment="Center" />
                             <StackPanel Orientation="Horizontal" Margin="0,0,0,5">
-                                <Image Style="{StaticResource Mail.Image.Style}" ToolTip="{Binding TranslationSilver, IsAsync=True}" />
+                                <Image Style="{StaticResource Trade.Silver.Image.Style}" ToolTip="{Binding TranslationSilver, IsAsync=True}" />
                                 <TextBlock Text="{Binding BoughtMonth, IsAsync=True, StringFormat='{} {0:N0}', FallbackValue=0}" 
                                FontSize="14" FontWeight="Light" Foreground="{StaticResource SolidColorBrush.Accent.Red.3}" VerticalAlignment="Center" />
                             </StackPanel>
                             <TextBlock Text="{Binding TranslationBoughtYear, IsAsync=True, FallbackValue=BOUGHT_YEAR}" MinWidth="100" FontSize="14" FontWeight="Light" 
                                Foreground="{StaticResource SolidColorBrush.Text.2}" VerticalAlignment="Center" />
                             <StackPanel Orientation="Horizontal" Margin="0,0,0,5">
-                                <Image Style="{StaticResource Mail.Image.Style}" ToolTip="{Binding TranslationSilver, IsAsync=True}" />
+                                <Image Style="{StaticResource Trade.Silver.Image.Style}" ToolTip="{Binding TranslationSilver, IsAsync=True}" />
                                 <TextBlock Text="{Binding BoughtYear, IsAsync=True, StringFormat='{} {0:N0}', FallbackValue=0}" 
                                FontSize="14" FontWeight="Light" Foreground="{StaticResource SolidColorBrush.Accent.Red.3}" VerticalAlignment="Center" />
                             </StackPanel>
                             <TextBlock Text="{Binding TranslationBoughtTotal, IsAsync=True, FallbackValue=BOUGHT_TOTAL}" MinWidth="100" FontSize="14" FontWeight="Light" 
                                Foreground="{StaticResource SolidColorBrush.Text.2}" VerticalAlignment="Center" />
                             <StackPanel Orientation="Horizontal" Margin="0,0,0,5">
-                                <Image Style="{StaticResource Mail.Image.Style}" ToolTip="{Binding TranslationSilver, IsAsync=True}" />
+                                <Image Style="{StaticResource Trade.Silver.Image.Style}" ToolTip="{Binding TranslationSilver, IsAsync=True}" />
                                 <TextBlock Text="{Binding BoughtTotal, IsAsync=True, StringFormat='{} {0:N0}', FallbackValue=0}" 
                                    FontSize="14" FontWeight="Light" Foreground="{StaticResource SolidColorBrush.Accent.Red.3}" VerticalAlignment="Center" />
                             </StackPanel>
@@ -239,42 +237,42 @@
                             <TextBlock Text="{Binding TranslationTaxesToday, IsAsync=True, FallbackValue=TAX_TODAY}" MinWidth="100" FontSize="14" FontWeight="Light" 
                                Foreground="{StaticResource SolidColorBrush.Text.2}" VerticalAlignment="Center" />
                             <StackPanel Orientation="Horizontal" Margin="0,0,0,5">
-                                <Image Style="{StaticResource Mail.Image.Style}" ToolTip="{Binding TranslationSilver, IsAsync=True}" />
+                                <Image Style="{StaticResource Trade.Silver.Image.Style}" ToolTip="{Binding TranslationSilver, IsAsync=True}" />
                                 <TextBlock Text="{Binding TaxesToday, IsAsync=True, StringFormat='{} {0:N0}', FallbackValue=0}" 
                                FontSize="14" FontWeight="Light" Foreground="{StaticResource SolidColorBrush.Accent.Red.3}" VerticalAlignment="Center" />
                             </StackPanel>
                             <TextBlock Text="{Binding TranslationTaxesThisWeek, IsAsync=True, FallbackValue=TAX_THIS_WEEK}" MinWidth="100" FontSize="14" FontWeight="Light" 
                                Foreground="{StaticResource SolidColorBrush.Text.2}" VerticalAlignment="Center" />
                             <StackPanel Orientation="Horizontal" Margin="0,0,0,5">
-                                <Image Style="{StaticResource Mail.Image.Style}" ToolTip="{Binding TranslationSilver, IsAsync=True}" />
+                                <Image Style="{StaticResource Trade.Silver.Image.Style}" ToolTip="{Binding TranslationSilver, IsAsync=True}" />
                                 <TextBlock Text="{Binding TaxesThisWeek, IsAsync=True, StringFormat='{} {0:N0}', FallbackValue=0}" 
                                FontSize="14" FontWeight="Light" Foreground="{StaticResource SolidColorBrush.Accent.Red.3}" VerticalAlignment="Center" />
                             </StackPanel>
                             <TextBlock Text="{Binding TranslationTaxesLastWeek, IsAsync=True, FallbackValue=TAX_LAST_WEEK}" MinWidth="100" FontSize="14" FontWeight="Light" 
                                Foreground="{StaticResource SolidColorBrush.Text.2}" VerticalAlignment="Center" />
                             <StackPanel Orientation="Horizontal" Margin="0,0,0,5">
-                                <Image Style="{StaticResource Mail.Image.Style}" ToolTip="{Binding TranslationSilver, IsAsync=True}" />
+                                <Image Style="{StaticResource Trade.Silver.Image.Style}" ToolTip="{Binding TranslationSilver, IsAsync=True}" />
                                 <TextBlock Text="{Binding TaxesLastWeek, IsAsync=True, StringFormat='{} {0:N0}', FallbackValue=0}" 
                                FontSize="14" FontWeight="Light" Foreground="{StaticResource SolidColorBrush.Accent.Red.3}" VerticalAlignment="Center" />
                             </StackPanel>
                             <TextBlock Text="{Binding TranslationTaxesMonth, IsAsync=True, FallbackValue=TAX_MONTH}" MinWidth="100" FontSize="14" FontWeight="Light" 
                                Foreground="{StaticResource SolidColorBrush.Text.2}" VerticalAlignment="Center" />
                             <StackPanel Orientation="Horizontal" Margin="0,0,0,5">
-                                <Image Style="{StaticResource Mail.Image.Style}" ToolTip="{Binding TranslationSilver, IsAsync=True}" />
+                                <Image Style="{StaticResource Trade.Silver.Image.Style}" ToolTip="{Binding TranslationSilver, IsAsync=True}" />
                                 <TextBlock Text="{Binding TaxesMonth, IsAsync=True, StringFormat='{} {0:N0}', FallbackValue=0}" 
                                FontSize="14" FontWeight="Light" Foreground="{StaticResource SolidColorBrush.Accent.Red.3}" VerticalAlignment="Center" />
                             </StackPanel>
                             <TextBlock Text="{Binding TranslationTaxesYear, IsAsync=True, FallbackValue=TAX_YEAR}" MinWidth="100" FontSize="14" FontWeight="Light" 
                                Foreground="{StaticResource SolidColorBrush.Text.2}" VerticalAlignment="Center" />
                             <StackPanel Orientation="Horizontal" Margin="0,0,0,5">
-                                <Image Style="{StaticResource Mail.Image.Style}" ToolTip="{Binding TranslationSilver, IsAsync=True}" />
+                                <Image Style="{StaticResource Trade.Silver.Image.Style}" ToolTip="{Binding TranslationSilver, IsAsync=True}" />
                                 <TextBlock Text="{Binding TaxesYear, IsAsync=True, StringFormat='{} {0:N0}', FallbackValue=0}" 
                                FontSize="14" FontWeight="Light" Foreground="{StaticResource SolidColorBrush.Accent.Red.3}" VerticalAlignment="Center" />
                             </StackPanel>
                             <TextBlock Text="{Binding TranslationTaxesTotal, IsAsync=True, FallbackValue=TAX_TOTAL}" MinWidth="100" FontSize="14" FontWeight="Light" 
                                Foreground="{StaticResource SolidColorBrush.Text.2}" VerticalAlignment="Center" />
                             <StackPanel Orientation="Horizontal" Margin="0,0,0,5">
-                                <Image Style="{StaticResource Mail.Image.Style}" ToolTip="{Binding TranslationSilver, IsAsync=True}" />
+                                <Image Style="{StaticResource Trade.Silver.Image.Style}" ToolTip="{Binding TranslationSilver, IsAsync=True}" />
                                 <TextBlock Text="{Binding TaxesTotal, IsAsync=True, StringFormat='{} {0:N0}', FallbackValue=0}" 
                                    FontSize="14" FontWeight="Light" Foreground="{StaticResource SolidColorBrush.Accent.Red.3}" VerticalAlignment="Center" />
                             </StackPanel>
@@ -283,42 +281,42 @@
                             <TextBlock Text="{Binding TranslationNetProfitToday, IsAsync=True, FallbackValue=NET_PROFIT_TODAY}" MinWidth="100" FontSize="14" FontWeight="Light" 
                                Foreground="{StaticResource SolidColorBrush.Text.2}" VerticalAlignment="Center" />
                             <StackPanel Orientation="Horizontal" Margin="0,0,0,5">
-                                <Image Style="{StaticResource Mail.Image.Style}" ToolTip="{Binding TranslationSilver, IsAsync=True}" />
+                                <Image Style="{StaticResource Trade.Silver.Image.Style}" ToolTip="{Binding TranslationSilver, IsAsync=True}" />
                                 <TextBlock Text="{Binding SalesToday, IsAsync=True, StringFormat='{} {0:N0}', FallbackValue=0}" 
                                FontSize="14" FontWeight="Light" Foreground="{StaticResource SolidColorBrush.Accent.Blue.2}" VerticalAlignment="Center" />
                             </StackPanel>
                             <TextBlock Text="{Binding TranslationNetProfitThisWeek, IsAsync=True, FallbackValue=NET_PROFIT_THIS_WEEK}" MinWidth="100" FontSize="14" FontWeight="Light" 
                                Foreground="{StaticResource SolidColorBrush.Text.2}" VerticalAlignment="Center" />
                             <StackPanel Orientation="Horizontal" Margin="0,0,0,5">
-                                <Image Style="{StaticResource Mail.Image.Style}" ToolTip="{Binding TranslationSilver, IsAsync=True}" />
+                                <Image Style="{StaticResource Trade.Silver.Image.Style}" ToolTip="{Binding TranslationSilver, IsAsync=True}" />
                                 <TextBlock Text="{Binding SalesThisWeek, IsAsync=True, StringFormat='{} {0:N0}', FallbackValue=0}" 
                                FontSize="14" FontWeight="Light" Foreground="{StaticResource SolidColorBrush.Accent.Blue.2}" VerticalAlignment="Center" />
                             </StackPanel>
                             <TextBlock Text="{Binding TranslationNetProfitLastWeek, IsAsync=True, FallbackValue=NET_PROFIT_LAST_WEEK}" MinWidth="100" FontSize="14" FontWeight="Light" 
                                Foreground="{StaticResource SolidColorBrush.Text.2}" VerticalAlignment="Center" />
                             <StackPanel Orientation="Horizontal" Margin="0,0,0,5">
-                                <Image Style="{StaticResource Mail.Image.Style}" ToolTip="{Binding TranslationSilver, IsAsync=True}" />
+                                <Image Style="{StaticResource Trade.Silver.Image.Style}" ToolTip="{Binding TranslationSilver, IsAsync=True}" />
                                 <TextBlock Text="{Binding SalesLastWeek, IsAsync=True, StringFormat='{} {0:N0}', FallbackValue=0}" 
                                FontSize="14" FontWeight="Light" Foreground="{StaticResource SolidColorBrush.Accent.Blue.2}" VerticalAlignment="Center" />
                             </StackPanel>
                             <TextBlock Text="{Binding TranslationNetProfitMonth, IsAsync=True, FallbackValue=NET_PROFIT_MONTH}" MinWidth="100" FontSize="14" FontWeight="Light" 
                                Foreground="{StaticResource SolidColorBrush.Text.2}" VerticalAlignment="Center" />
                             <StackPanel Orientation="Horizontal" Margin="0,0,0,5">
-                                <Image Style="{StaticResource Mail.Image.Style}" ToolTip="{Binding TranslationSilver, IsAsync=True}" />
+                                <Image Style="{StaticResource Trade.Silver.Image.Style}" ToolTip="{Binding TranslationSilver, IsAsync=True}" />
                                 <TextBlock Text="{Binding SalesMonth, IsAsync=True, StringFormat='{} {0:N0}', FallbackValue=0}" 
                                FontSize="14" FontWeight="Light" Foreground="{StaticResource SolidColorBrush.Accent.Blue.2}" VerticalAlignment="Center" />
                             </StackPanel>
                             <TextBlock Text="{Binding TranslationNetProfitYear, IsAsync=True, FallbackValue=NET_PROFIT_YEAR}" MinWidth="100" FontSize="14" FontWeight="Light" 
                                Foreground="{StaticResource SolidColorBrush.Text.2}" VerticalAlignment="Center" />
                             <StackPanel Orientation="Horizontal" Margin="0,0,0,5">
-                                <Image Style="{StaticResource Mail.Image.Style}" ToolTip="{Binding TranslationSilver, IsAsync=True}" />
+                                <Image Style="{StaticResource Trade.Silver.Image.Style}" ToolTip="{Binding TranslationSilver, IsAsync=True}" />
                                 <TextBlock Text="{Binding SalesYear, IsAsync=True, StringFormat='{} {0:N0}', FallbackValue=0}" 
                                FontSize="14" FontWeight="Light" Foreground="{StaticResource SolidColorBrush.Accent.Blue.2}" VerticalAlignment="Center" />
                             </StackPanel>
                             <TextBlock Text="{Binding TranslationNetProfitTotal, IsAsync=True, FallbackValue=NET_PROFIT_TOTAL}" MinWidth="100" FontSize="14" FontWeight="Light" 
                                Foreground="{StaticResource SolidColorBrush.Text.2}" VerticalAlignment="Center" />
                             <StackPanel Orientation="Horizontal" Margin="0,0,0,5">
-                                <Image Style="{StaticResource Mail.Image.Style}" ToolTip="{Binding TranslationSilver, IsAsync=True}" />
+                                <Image Style="{StaticResource Trade.Silver.Image.Style}" ToolTip="{Binding TranslationSilver, IsAsync=True}" />
                                 <TextBlock Text="{Binding SalesTotal, IsAsync=True, StringFormat='{} {0:N0}', FallbackValue=0}" 
                                    FontSize="14" FontWeight="Light" Foreground="{StaticResource SolidColorBrush.Accent.Blue.2}" VerticalAlignment="Center" />
                             </StackPanel>
@@ -340,7 +338,7 @@
                                                    Foreground="{StaticResource SolidColorBrush.Text.1}" />
                                     </StackPanel>
                                     <StackPanel Orientation="Horizontal" Margin="0,0,0,5">
-                                        <Image Style="{StaticResource Mail.Image.Style}" ToolTip="{Binding TranslationSilver, IsAsync=True}" />
+                                        <Image Style="{StaticResource Trade.Silver.Image.Style}" ToolTip="{Binding TranslationSilver, IsAsync=True}" />
                                         <TextBlock Text="{Binding MostExpensiveSaleItem.MailContent.TotalPrice.IntegerValue, IsAsync=True, StringFormat='{} {0:N0}', FallbackValue=0}" 
                                                    FontSize="14" FontWeight="Light" Foreground="{StaticResource SolidColorBrush.Accent.Green.3}" VerticalAlignment="Center" />
                                     </StackPanel>
@@ -362,7 +360,7 @@
                                                    Foreground="{StaticResource SolidColorBrush.Text.1}" />
                                     </StackPanel>
                                     <StackPanel Orientation="Horizontal" Margin="0,0,0,5">
-                                        <Image Style="{StaticResource Mail.Image.Style}" ToolTip="{Binding TranslationSilver, IsAsync=True}" />
+                                        <Image Style="{StaticResource Trade.Silver.Image.Style}" ToolTip="{Binding TranslationSilver, IsAsync=True}" />
                                         <TextBlock Text="{Binding MostExpensivePurchasedItem.MailContent.TotalPrice.IntegerValue, IsAsync=True, StringFormat='{} {0:N0}', FallbackValue=0}" 
                                                    FontSize="14" FontWeight="Light" Foreground="{StaticResource SolidColorBrush.Accent.Red.3}" VerticalAlignment="Center" />
                                     </StackPanel>
@@ -410,7 +408,7 @@
         </Grid>
     </DataTemplate>
 
-    <DataTemplate x:Key="MailTemplate" DataType="{x:Type mails:Mail}">
+    <DataTemplate x:Key="MailTemplate" DataType="{x:Type trade:Trade}">
         <Grid Height="50">
             <Grid.InputBindings>
                 <MouseBinding MouseAction="LeftDoubleClick" Command="{Binding OpenItemWindowCommand}" />
@@ -422,7 +420,7 @@
                         <Image Source="{Binding Item.Icon, IsAsync=True, Mode=OneWay}" Style="{StaticResource Trade.Icon}" />
                     </Grid>
                     <StackPanel Orientation="Vertical">
-                        <!--<DockPanel>
+                        <DockPanel>
                             <StackPanel Orientation="Horizontal">
                                 <StackPanel.Style>
                                     <Style TargetType="{x:Type StackPanel}">
@@ -464,8 +462,8 @@
                                 <TextBlock Text="{Binding Item.LocalizedName, IsAsync=True}" Foreground="{StaticResource SolidColorBrush.Text.1}" />
                             </StackPanel>
                             <TextBlock Text="{Binding Timestamp, IsAsync=True, StringFormat='{}{0}'}" TextAlignment="Right" Foreground="{StaticResource SolidColorBrush.Text.1}"/>
-                        </DockPanel>-->
-                        <!--<DockPanel>
+                        </DockPanel>
+                        <DockPanel>
                             <StackPanel Orientation="Horizontal">
                                 <TextBlock Text="{Binding TranslationCostPerItem, IsAsync=True}" Width="160" Foreground="{StaticResource SolidColorBrush.Text.4}" />
                                 <TextBlock Text="{Binding TranslationTotalCost, IsAsync=True, FallbackValue=TOTAL_COST}" Width="160" Foreground="{StaticResource SolidColorBrush.Text.4}">
@@ -541,16 +539,16 @@
                                 </TextBlock>
                             </StackPanel>
                             <TextBlock Style="{StaticResource Trade.City.Text}" />
-                        </DockPanel>-->
-                        <!--<DockPanel>
+                        </DockPanel>
+                        <DockPanel>
                             <StackPanel Orientation="Horizontal">
                                 <Grid Width="160">
-                                    <Image Style="{StaticResource Mail.Image.Style}" ToolTip="{Binding TranslationSilver, IsAsync=True}" />
+                                    <Image Style="{StaticResource Trade.Silver.Image.Style}" ToolTip="{Binding TranslationSilver, IsAsync=True}" />
                                     <TextBlock Text="{common:CultureAwareBinding MailContent.ActualUnitPrice.DoubleValue, IsAsync=True, StringFormat='{}{0:N0}', FallbackValue=0}" 
                                            Style="{StaticResource Mail.Text.Colors}" Margin="25,0,0,0" />
                                 </Grid>
                                 <Grid Width="160">
-                                    <Image Style="{StaticResource Mail.Image.Style}" ToolTip="{Binding TranslationSilver, IsAsync=True}" />
+                                    <Image Style="{StaticResource Trade.Silver.Image.Style}" ToolTip="{Binding TranslationSilver, IsAsync=True}" />
                                     <TextBlock Text="{common:CultureAwareBinding MailContent.TotalPrice.DoubleValue, IsAsync=True, StringFormat='{}{0:N0}', FallbackValue=0}" 
                                            Style="{StaticResource Mail.Text.Colors}" Margin="25,0,0,0">
                                         <TextBlock.ToolTip>
@@ -566,7 +564,7 @@
                                     </TextBlock>
                                 </Grid>
                                 <Grid Width="160">
-                                    <Image Style="{StaticResource Mail.Image.Style}" ToolTip="{Binding TranslationSilver, IsAsync=True}" />
+                                    <Image Style="{StaticResource Trade.Silver.Image.Style}" ToolTip="{Binding TranslationSilver, IsAsync=True}" />
                                     <TextBlock Text="{common:CultureAwareBinding MailContent.TaxSetupPrice.DoubleValue, IsAsync=True, StringFormat='{}{0:N0}', FallbackValue=0}" 
                                                HorizontalAlignment="Left" Foreground="{StaticResource SolidColorBrush.Accent.Red.3}" Margin="25,0,0,0" />
                                 </Grid>
@@ -584,7 +582,7 @@
                                             </Style.Triggers>
                                         </Style>
                                     </Grid.Style>
-                                    <Image Style="{StaticResource Mail.Image.Style}" ToolTip="{Binding TranslationSilver, IsAsync=True}" />
+                                    <Image Style="{StaticResource Trade.Silver.Image.Style}" ToolTip="{Binding TranslationSilver, IsAsync=True}" />
                                     <TextBlock Text="{common:CultureAwareBinding MailContent.TaxPrice.DoubleValue, IsAsync=True, StringFormat='{}{0:N0}', FallbackValue=0}" 
                                                HorizontalAlignment="Left" Foreground="{StaticResource SolidColorBrush.Accent.Red.3}" Margin="25,0,0,0" />
                                 </Grid>
@@ -592,14 +590,14 @@
                             <Grid Margin="0 -2 0 0" Height="18" Width="18" HorizontalAlignment="Right">
                                 <CheckBox Width="auto" Height="auto" IsChecked="{Binding IsSelectedForDeletion, IsAsync=True, FallbackValue=false}" ToolTip="{Binding TranslationSelectToDelete, IsAsync=True}" />
                             </Grid>
-                        </DockPanel>-->
+                        </DockPanel>
                     </StackPanel>
                 </DockPanel>
             </Border>
         </Grid>
     </DataTemplate>
 
-    <DataTemplate x:Key="InstantSellTemplate" DataType="{x:Type market:InstantSell}">
+    <DataTemplate x:Key="InstantSellTemplate" DataType="{x:Type trade:Trade}">
         <Grid Height="50">
             <Grid.InputBindings>
                 <MouseBinding MouseAction="LeftDoubleClick" Command="{Binding OpenItemWindowCommand}" />
@@ -612,170 +610,69 @@
                     </Grid>
                     <StackPanel Orientation="Vertical">
                         <DockPanel>
-                            <!--<StackPanel Orientation="Horizontal">
-                                <TextBlock Text="{Binding TypeDescription, IsAsync=True, StringFormat='{}{0}: ', FallbackValue=INSTANT_SELL}" Style="{StaticResource Instant.Text.Colors}" />
-                                <TextBlock Text="{Binding Amount, IsAsync=True, StringFormat='{}{0}x', FallbackValue=0}" FontWeight="Bold" Margin="0,0,3,0" Foreground="{StaticResource SolidColorBrush.Text.1}" />
+                            <StackPanel Orientation="Horizontal">
+                                <TextBlock Text="{Binding TypeDescription, IsAsync=True, StringFormat='{}{0}: ', FallbackValue=INSTANT_SELL}" Style="{StaticResource InstantSell.Text.Colors}" />
+                                <TextBlock Text="{Binding InstantBuySellContent.Quantity, IsAsync=True, StringFormat='{}{0}x', FallbackValue=0}" FontWeight="Bold" Margin="0,0,3,0" Foreground="{StaticResource SolidColorBrush.Text.1}" />
                                 <TextBlock Style="{StaticResource Trade.Text.Tier}" />
                                 <TextBlock Text="{Binding Item.LocalizedName, IsAsync=True}" Foreground="{StaticResource SolidColorBrush.Text.1}" />
-                            </StackPanel>-->
-                            <!--<StackPanel Orientation="Horizontal">
-                                <StackPanel.Style>
-                                    <Style TargetType="{x:Type StackPanel}">
-                                        <Setter Property="Visibility" Value="Collapsed"/>
-                                        <Style.Triggers>
-                                            <DataTrigger Binding="{Binding MailType, IsAsync=True}" Value="MarketplaceSellOrderExpired">
-                                                <Setter Property="Visibility" Value="Visible"/>
-                                            </DataTrigger>
-                                            <DataTrigger Binding="{Binding MailType, IsAsync=True}" Value="MarketplaceBuyOrderExpired">
-                                                <Setter Property="Visibility" Value="Visible"/>
-                                            </DataTrigger>
-                                        </Style.Triggers>
-                                    </Style>
-                                </StackPanel.Style>
-                                <TextBlock Text="{Binding MailTypeDescription, IsAsync=True, StringFormat='{}{0}: ', FallbackValue=MAIL}" Style="{StaticResource Mail.Text.Colors}" />
-                                <TextBlock Text="{Binding MailContent.UsedQuantity, IsAsync=True, StringFormat='{}{0}', FallbackValue=0}" FontWeight="Bold" Margin="0,0,3,0" Foreground="{StaticResource SolidColorBrush.Text.1}" />
-                                <TextBlock Text="{Binding TranslationFrom, IsAsync=True, FallbackValue=FROM}" Foreground="{StaticResource SolidColorBrush.Text.1}" />
-                                <TextBlock Text="{Binding MailContent.Quantity, IsAsync=True, StringFormat='{} {0}', FallbackValue=0}" FontWeight="Bold" Margin="0,0,3,0" Foreground="{StaticResource SolidColorBrush.Text.1}" />
-                                <TextBlock Style="{StaticResource Mail.Text.Tier}" />
-                                <TextBlock Text="{Binding Item.LocalizedName, IsAsync=True}" Foreground="{StaticResource SolidColorBrush.Text.1}" />
-                            </StackPanel>-->
+                            </StackPanel>
                             <TextBlock Text="{Binding Timestamp, IsAsync=True, StringFormat='{}{0}'}" TextAlignment="Right" Foreground="{StaticResource SolidColorBrush.Text.1}"/>
                         </DockPanel>
-                        <!--<DockPanel>
+                        <DockPanel>
                             <StackPanel Orientation="Horizontal">
                                 <TextBlock Text="{Binding TranslationCostPerItem, IsAsync=True}" Width="160" Foreground="{StaticResource SolidColorBrush.Text.4}" />
-                                <TextBlock Text="{Binding TranslationTotalCost, IsAsync=True, FallbackValue=TOTAL_COST}" Width="160" Foreground="{StaticResource SolidColorBrush.Text.4}">
-                                    <TextBlock.Style>
-                                        <Style TargetType="{x:Type TextBlock}">
-                                            <Setter Property="Visibility" Value="Collapsed"/>
-                                            <Style.Triggers>
-                                                <DataTrigger Binding="{Binding MailType, IsAsync=True}" Value="MarketplaceSellOrderExpired">
-                                                    <Setter Property="Visibility" Value="Collapsed"/>
-                                                </DataTrigger>
-                                                <DataTrigger Binding="{Binding MailType, IsAsync=True}" Value="MarketplaceBuyOrderExpired">
-                                                    <Setter Property="Visibility" Value="Visible"/>
-                                                </DataTrigger>
-                                                <DataTrigger Binding="{Binding MailType, IsAsync=True}" Value="MarketplaceSellOrderFinished">
-                                                    <Setter Property="Visibility" Value="Collapsed"/>
-                                                </DataTrigger>
-                                                <DataTrigger Binding="{Binding MailType, IsAsync=True}" Value="MarketplaceBuyOrderFinished">
-                                                    <Setter Property="Visibility" Value="Visible"/>
-                                                </DataTrigger>
-                                            </Style.Triggers>
-                                        </Style>
-                                    </TextBlock.Style>
-                                </TextBlock>
-                                <TextBlock Text="{Binding TranslationTotalRevenue, IsAsync=True, FallbackValue=TOTAL_REVENUE}" Width="160" Foreground="{StaticResource SolidColorBrush.Text.4}">
-                                    <TextBlock.Style>
-                                        <Style TargetType="{x:Type TextBlock}">
-                                            <Setter Property="Visibility" Value="Collapsed"/>
-                                            <Style.Triggers>
-                                                <DataTrigger Binding="{Binding MailType, IsAsync=True}" Value="MarketplaceSellOrderExpired">
-                                                    <Setter Property="Visibility" Value="Visible"/>
-                                                </DataTrigger>
-                                                <DataTrigger Binding="{Binding MailType, IsAsync=True}" Value="MarketplaceBuyOrderExpired">
-                                                    <Setter Property="Visibility" Value="Collapsed"/>
-                                                </DataTrigger>
-                                                <DataTrigger Binding="{Binding MailType, IsAsync=True}" Value="MarketplaceSellOrderFinished">
-                                                    <Setter Property="Visibility" Value="Visible"/>
-                                                </DataTrigger>
-                                                <DataTrigger Binding="{Binding MailType, IsAsync=True}" Value="MarketplaceBuyOrderFinished">
-                                                    <Setter Property="Visibility" Value="Collapsed"/>
-                                                </DataTrigger>
-                                            </Style.Triggers>
-                                        </Style>
-                                    </TextBlock.Style>
-                                </TextBlock>
-                                <TextBlock Width="160" Foreground="{StaticResource SolidColorBrush.Text.4}">
-                                    <TextBlock.Text>
-                                        <MultiBinding StringFormat="{}{0} ({1}%)">
-                                            <Binding Path="TranslationSetupTax" IsAsync="True" />
-                                            <Binding Path="MailContent.TaxSetupRate" IsAsync="True" />
-                                        </MultiBinding>
-                                    </TextBlock.Text>
-                                </TextBlock>
+                                <TextBlock Text="{Binding TranslationTotalRevenue, IsAsync=True, FallbackValue=TOTAL_REVENUE}" Width="160" Foreground="{StaticResource SolidColorBrush.Text.4}" />
                                 <TextBlock Width="110" Foreground="{StaticResource SolidColorBrush.Text.4}">
-                                    <TextBlock.Style>
-                                        <Style TargetType="{x:Type TextBlock}">
-                                            <Setter Property="Visibility" Value="Collapsed"/>
-                                            <Style.Triggers>
-                                                <DataTrigger Binding="{Binding MailContent.IsTaxesStated, IsAsync=True}" Value="true">
-                                                    <Setter Property="Visibility" Value="Visible"/>
-                                                </DataTrigger>
-                                                <DataTrigger Binding="{Binding MailContent.IsTaxesStated, IsAsync=True}" Value="false">
-                                                    <Setter Property="Visibility" Value="Collapsed"/>
-                                                </DataTrigger>
-                                            </Style.Triggers>
-                                        </Style>
-                                    </TextBlock.Style>
                                     <TextBlock.Text>
                                         <MultiBinding StringFormat="{}{0} ({1}%)">
                                             <Binding Path="TranslationTax" IsAsync="True" />
-                                            <Binding Path="MailContent.TaxRate" IsAsync="True" />
+                                            <Binding Path="InstantBuySellContent.TaxRate" IsAsync="True" />
                                         </MultiBinding>
                                     </TextBlock.Text>
                                 </TextBlock>
                             </StackPanel>
-                            <TextBlock Style="{StaticResource Mail.City.Text}" />
+                            <TextBlock Style="{StaticResource Trade.City.Text}" />
                         </DockPanel>
                         <DockPanel>
                             <StackPanel Orientation="Horizontal">
                                 <Grid Width="160">
-                                    <Image Style="{StaticResource Mail.Image.Style}" ToolTip="{Binding TranslationSilver, IsAsync=True}" />
-                                    <TextBlock Text="{common:CultureAwareBinding MailContent.ActualUnitPrice.DoubleValue, IsAsync=True, StringFormat='{}{0:N0}', FallbackValue=0}" 
+                                    <Image Style="{StaticResource Trade.Silver.Image.Style}" ToolTip="{Binding TranslationSilver, IsAsync=True}" />
+                                    <TextBlock Text="{common:CultureAwareBinding InstantBuySellContent.UnitPrice.DoubleValue, IsAsync=True, StringFormat='{}{0:N0}', FallbackValue=0}" 
                                            Style="{StaticResource Mail.Text.Colors}" Margin="25,0,0,0" />
                                 </Grid>
                                 <Grid Width="160">
-                                    <Image Style="{StaticResource Mail.Image.Style}" ToolTip="{Binding TranslationSilver, IsAsync=True}" />
-                                    <TextBlock Text="{common:CultureAwareBinding MailContent.TotalPrice.DoubleValue, IsAsync=True, StringFormat='{}{0:N0}', FallbackValue=0}" 
-                                           Style="{StaticResource Mail.Text.Colors}" Margin="25,0,0,0">
+                                    <Image Style="{StaticResource Trade.Silver.Image.Style}" ToolTip="{Binding TranslationSilver, IsAsync=True}" />
+                                    <TextBlock Text="{common:CultureAwareBinding InstantBuySellContent.TotalPrice.DoubleValue, IsAsync=True, StringFormat='{}{0:N0}', FallbackValue=0}" 
+                                           Style="{StaticResource Mail.Text.Colors}" Margin="25,0,0,0" />
+                                </Grid>
+                                <Grid Width="160">
+                                    <Image Style="{StaticResource Trade.Silver.Image.Style}" ToolTip="{Binding TranslationSilver, IsAsync=True}" />
+                                    <TextBlock Text="{common:CultureAwareBinding InstantBuySellContent.TaxPrice.DoubleValue, IsAsync=True, StringFormat='{}{0:N0}', FallbackValue=0}" 
+                                               Style="{StaticResource Mail.Text.Colors}" Margin="25,0,0,0">
                                         <TextBlock.ToolTip>
                                             <TextBlock>
                                                 <TextBlock.Text>
                                                     <MultiBinding StringFormat="{}{0}: {1:N0}">
                                                         <Binding Path="TranslationTotalPriceWithDeductedTaxes" IsAsync="True" />
-                                                        <Binding Path="MailContent.TotalPriceWithDeductedTaxes.DoubleValue" IsAsync="True" />
+                                                        <Binding Path="InstantBuySellContent.TotalPriceWithDeductedTaxes.IntegerValue" IsAsync="True" />
                                                     </MultiBinding>
                                                 </TextBlock.Text>
                                             </TextBlock>
                                         </TextBlock.ToolTip>
                                     </TextBlock>
                                 </Grid>
-                                <Grid Width="160">
-                                    <Image Style="{StaticResource Mail.Image.Style}" ToolTip="{Binding TranslationSilver, IsAsync=True}" />
-                                    <TextBlock Text="{common:CultureAwareBinding MailContent.TaxSetupPrice.DoubleValue, IsAsync=True, StringFormat='{}{0:N0}', FallbackValue=0}" 
-                                               HorizontalAlignment="Left" Foreground="{StaticResource SolidColorBrush.Accent.Red.3}" Margin="25,0,0,0" />
-                                </Grid>
-                                <Grid Width="110">
-                                    <Grid.Style>
-                                        <Style TargetType="{x:Type Grid}">
-                                            <Setter Property="Visibility" Value="Collapsed"/>
-                                            <Style.Triggers>
-                                                <DataTrigger Binding="{Binding MailContent.IsTaxesStated, IsAsync=True}" Value="true">
-                                                    <Setter Property="Visibility" Value="Visible"/>
-                                                </DataTrigger>
-                                                <DataTrigger Binding="{Binding MailContent.IsTaxesStated, IsAsync=True}" Value="false">
-                                                    <Setter Property="Visibility" Value="Collapsed"/>
-                                                </DataTrigger>
-                                            </Style.Triggers>
-                                        </Style>
-                                    </Grid.Style>
-                                    <Image Style="{StaticResource Mail.Image.Style}" ToolTip="{Binding TranslationSilver, IsAsync=True}" />
-                                    <TextBlock Text="{common:CultureAwareBinding MailContent.TaxPrice.DoubleValue, IsAsync=True, StringFormat='{}{0:N0}', FallbackValue=0}" 
-                                               HorizontalAlignment="Left" Foreground="{StaticResource SolidColorBrush.Accent.Red.3}" Margin="25,0,0,0" />
-                                </Grid>
                             </StackPanel>
                             <Grid Margin="0 -2 0 0" Height="18" Width="18" HorizontalAlignment="Right">
                                 <CheckBox Width="auto" Height="auto" IsChecked="{Binding IsSelectedForDeletion, IsAsync=True, FallbackValue=false}" ToolTip="{Binding TranslationSelectToDelete, IsAsync=True}" />
                             </Grid>
-                        </DockPanel>-->
+                        </DockPanel>
                     </StackPanel>
                 </DockPanel>
             </Border>
         </Grid>
     </DataTemplate>
 
-    <DataTemplate x:Key="InstantBuyTemplate" DataType="{x:Type market:InstantBuy}">
+    <DataTemplate x:Key="InstantBuyTemplate" DataType="{x:Type trade:Trade}">
         <Grid Height="50">
             <Grid.InputBindings>
                 <MouseBinding MouseAction="LeftDoubleClick" Command="{Binding OpenItemWindowCommand}" />
@@ -788,80 +685,19 @@
                     </Grid>
                     <StackPanel Orientation="Vertical">
                         <DockPanel>
-                            <!--<StackPanel Orientation="Horizontal">
-                                <TextBlock Text="{Binding TypeDescription, IsAsync=True, StringFormat='{}{0}: ', FallbackValue=INSTANT_BUY}" Style="{StaticResource Instant.Text.Colors}" />
-                                <TextBlock Text="{Binding Amount, IsAsync=True, StringFormat='{}{0}x', FallbackValue=0}" FontWeight="Bold" Margin="0,0,3,0" Foreground="{StaticResource SolidColorBrush.Text.1}" />
+                            <StackPanel Orientation="Horizontal">
+                                <TextBlock Text="{Binding TypeDescription, IsAsync=True, StringFormat='{}{0}: ', FallbackValue=INSTANT_BUY}" Style="{StaticResource InstantBuy.Text.Colors}" />
+                                <TextBlock Text="{Binding InstantBuySellContent.Quantity, IsAsync=True, StringFormat='{}{0}x', FallbackValue=0}" FontWeight="Bold" Margin="0,0,3,0" Foreground="{StaticResource SolidColorBrush.Text.1}" />
                                 <TextBlock Style="{StaticResource Trade.Text.Tier}" />
                                 <TextBlock Text="{Binding Item.LocalizedName, IsAsync=True}" Foreground="{StaticResource SolidColorBrush.Text.1}" />
-                            </StackPanel>-->
-                            <!--<StackPanel Orientation="Horizontal">
-                                <StackPanel.Style>
-                                    <Style TargetType="{x:Type StackPanel}">
-                                        <Setter Property="Visibility" Value="Collapsed"/>
-                                        <Style.Triggers>
-                                            <DataTrigger Binding="{Binding MailType, IsAsync=True}" Value="MarketplaceSellOrderExpired">
-                                                <Setter Property="Visibility" Value="Visible"/>
-                                            </DataTrigger>
-                                            <DataTrigger Binding="{Binding MailType, IsAsync=True}" Value="MarketplaceBuyOrderExpired">
-                                                <Setter Property="Visibility" Value="Visible"/>
-                                            </DataTrigger>
-                                        </Style.Triggers>
-                                    </Style>
-                                </StackPanel.Style>
-                                <TextBlock Text="{Binding MailTypeDescription, IsAsync=True, StringFormat='{}{0}: ', FallbackValue=MAIL}" Style="{StaticResource Mail.Text.Colors}" />
-                                <TextBlock Text="{Binding MailContent.UsedQuantity, IsAsync=True, StringFormat='{}{0}', FallbackValue=0}" FontWeight="Bold" Margin="0,0,3,0" Foreground="{StaticResource SolidColorBrush.Text.1}" />
-                                <TextBlock Text="{Binding TranslationFrom, IsAsync=True, FallbackValue=FROM}" Foreground="{StaticResource SolidColorBrush.Text.1}" />
-                                <TextBlock Text="{Binding MailContent.Quantity, IsAsync=True, StringFormat='{} {0}', FallbackValue=0}" FontWeight="Bold" Margin="0,0,3,0" Foreground="{StaticResource SolidColorBrush.Text.1}" />
-                                <TextBlock Style="{StaticResource Mail.Text.Tier}" />
-                                <TextBlock Text="{Binding Item.LocalizedName, IsAsync=True}" Foreground="{StaticResource SolidColorBrush.Text.1}" />
-                            </StackPanel>-->
+                            </StackPanel>
                             <TextBlock Text="{Binding Timestamp, IsAsync=True, StringFormat='{}{0}'}" TextAlignment="Right" Foreground="{StaticResource SolidColorBrush.Text.1}"/>
                         </DockPanel>
-                        <!--<DockPanel>
+                        <DockPanel>
                             <StackPanel Orientation="Horizontal">
                                 <TextBlock Text="{Binding TranslationCostPerItem, IsAsync=True}" Width="160" Foreground="{StaticResource SolidColorBrush.Text.4}" />
-                                <TextBlock Text="{Binding TranslationTotalCost, IsAsync=True, FallbackValue=TOTAL_COST}" Width="160" Foreground="{StaticResource SolidColorBrush.Text.4}">
-                                    <TextBlock.Style>
-                                        <Style TargetType="{x:Type TextBlock}">
-                                            <Setter Property="Visibility" Value="Collapsed"/>
-                                            <Style.Triggers>
-                                                <DataTrigger Binding="{Binding MailType, IsAsync=True}" Value="MarketplaceSellOrderExpired">
-                                                    <Setter Property="Visibility" Value="Collapsed"/>
-                                                </DataTrigger>
-                                                <DataTrigger Binding="{Binding MailType, IsAsync=True}" Value="MarketplaceBuyOrderExpired">
-                                                    <Setter Property="Visibility" Value="Visible"/>
-                                                </DataTrigger>
-                                                <DataTrigger Binding="{Binding MailType, IsAsync=True}" Value="MarketplaceSellOrderFinished">
-                                                    <Setter Property="Visibility" Value="Collapsed"/>
-                                                </DataTrigger>
-                                                <DataTrigger Binding="{Binding MailType, IsAsync=True}" Value="MarketplaceBuyOrderFinished">
-                                                    <Setter Property="Visibility" Value="Visible"/>
-                                                </DataTrigger>
-                                            </Style.Triggers>
-                                        </Style>
-                                    </TextBlock.Style>
-                                </TextBlock>
-                                <TextBlock Text="{Binding TranslationTotalRevenue, IsAsync=True, FallbackValue=TOTAL_REVENUE}" Width="160" Foreground="{StaticResource SolidColorBrush.Text.4}">
-                                    <TextBlock.Style>
-                                        <Style TargetType="{x:Type TextBlock}">
-                                            <Setter Property="Visibility" Value="Collapsed"/>
-                                            <Style.Triggers>
-                                                <DataTrigger Binding="{Binding MailType, IsAsync=True}" Value="MarketplaceSellOrderExpired">
-                                                    <Setter Property="Visibility" Value="Visible"/>
-                                                </DataTrigger>
-                                                <DataTrigger Binding="{Binding MailType, IsAsync=True}" Value="MarketplaceBuyOrderExpired">
-                                                    <Setter Property="Visibility" Value="Collapsed"/>
-                                                </DataTrigger>
-                                                <DataTrigger Binding="{Binding MailType, IsAsync=True}" Value="MarketplaceSellOrderFinished">
-                                                    <Setter Property="Visibility" Value="Visible"/>
-                                                </DataTrigger>
-                                                <DataTrigger Binding="{Binding MailType, IsAsync=True}" Value="MarketplaceBuyOrderFinished">
-                                                    <Setter Property="Visibility" Value="Collapsed"/>
-                                                </DataTrigger>
-                                            </Style.Triggers>
-                                        </Style>
-                                    </TextBlock.Style>
-                                </TextBlock>
+                                <TextBlock Text="{Binding TranslationTotalCost, IsAsync=True, FallbackValue=TOTAL_COST}" Width="160" Foreground="{StaticResource SolidColorBrush.Text.4}" />
+                                <TextBlock Text="{Binding TranslationTotalRevenue, IsAsync=True, FallbackValue=TOTAL_REVENUE}" Width="160" Foreground="{StaticResource SolidColorBrush.Text.4}" />
                                 <TextBlock Width="160" Foreground="{StaticResource SolidColorBrush.Text.4}">
                                     <TextBlock.Text>
                                         <MultiBinding StringFormat="{}{0} ({1}%)">
@@ -892,17 +728,17 @@
                                     </TextBlock.Text>
                                 </TextBlock>
                             </StackPanel>
-                            <TextBlock Style="{StaticResource Mail.City.Text}" />
+                            <TextBlock Style="{StaticResource Trade.City.Text}" />
                         </DockPanel>
                         <DockPanel>
                             <StackPanel Orientation="Horizontal">
                                 <Grid Width="160">
-                                    <Image Style="{StaticResource Mail.Image.Style}" ToolTip="{Binding TranslationSilver, IsAsync=True}" />
-                                    <TextBlock Text="{common:CultureAwareBinding MailContent.ActualUnitPrice.DoubleValue, IsAsync=True, StringFormat='{}{0:N0}', FallbackValue=0}" 
+                                    <Image Style="{StaticResource Trade.Silver.Image.Style}" ToolTip="{Binding TranslationSilver, IsAsync=True}" />
+                                    <TextBlock Text="{common:CultureAwareBinding InstantBuySellContent.UnitPrice.IntegerValue, IsAsync=True, StringFormat='{}{0:N0}', FallbackValue=0}" 
                                            Style="{StaticResource Mail.Text.Colors}" Margin="25,0,0,0" />
                                 </Grid>
                                 <Grid Width="160">
-                                    <Image Style="{StaticResource Mail.Image.Style}" ToolTip="{Binding TranslationSilver, IsAsync=True}" />
+                                    <Image Style="{StaticResource Trade.Silver.Image.Style}" ToolTip="{Binding TranslationSilver, IsAsync=True}" />
                                     <TextBlock Text="{common:CultureAwareBinding MailContent.TotalPrice.DoubleValue, IsAsync=True, StringFormat='{}{0:N0}', FallbackValue=0}" 
                                            Style="{StaticResource Mail.Text.Colors}" Margin="25,0,0,0">
                                         <TextBlock.ToolTip>
@@ -918,7 +754,7 @@
                                     </TextBlock>
                                 </Grid>
                                 <Grid Width="160">
-                                    <Image Style="{StaticResource Mail.Image.Style}" ToolTip="{Binding TranslationSilver, IsAsync=True}" />
+                                    <Image Style="{StaticResource Trade.Silver.Image.Style}" ToolTip="{Binding TranslationSilver, IsAsync=True}" />
                                     <TextBlock Text="{common:CultureAwareBinding MailContent.TaxSetupPrice.DoubleValue, IsAsync=True, StringFormat='{}{0:N0}', FallbackValue=0}" 
                                                HorizontalAlignment="Left" Foreground="{StaticResource SolidColorBrush.Accent.Red.3}" Margin="25,0,0,0" />
                                 </Grid>
@@ -936,7 +772,7 @@
                                             </Style.Triggers>
                                         </Style>
                                     </Grid.Style>
-                                    <Image Style="{StaticResource Mail.Image.Style}" ToolTip="{Binding TranslationSilver, IsAsync=True}" />
+                                    <Image Style="{StaticResource Trade.Silver.Image.Style}" ToolTip="{Binding TranslationSilver, IsAsync=True}" />
                                     <TextBlock Text="{common:CultureAwareBinding MailContent.TaxPrice.DoubleValue, IsAsync=True, StringFormat='{}{0:N0}', FallbackValue=0}" 
                                                HorizontalAlignment="Left" Foreground="{StaticResource SolidColorBrush.Accent.Red.3}" Margin="25,0,0,0" />
                                 </Grid>
@@ -944,7 +780,7 @@
                             <Grid Margin="0 -2 0 0" Height="18" Width="18" HorizontalAlignment="Right">
                                 <CheckBox Width="auto" Height="auto" IsChecked="{Binding IsSelectedForDeletion, IsAsync=True, FallbackValue=false}" ToolTip="{Binding TranslationSelectToDelete, IsAsync=True}" />
                             </Grid>
-                        </DockPanel>-->
+                        </DockPanel>
                     </StackPanel>
                 </DockPanel>
             </Border>

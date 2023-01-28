@@ -1,9 +1,8 @@
-﻿using System;
-using StatisticsAnalysisTool.Common.UserSettings;
+﻿using StatisticsAnalysisTool.Common.UserSettings;
 using StatisticsAnalysisTool.Network.Manager;
+using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.Dynamic;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -32,16 +31,23 @@ public class MarketController
         var tempOffer = _tempOffers.FirstOrDefault(x => x.Id == purchase.AuctionId);
         if (tempOffer != null)
         {
-            var instantBuy = new InstantBuy()
+            var instantBuySellContent = new InstantBuySellContent()
             {
-                Ticks = DateTime.UtcNow.Ticks,
-                Id = purchase.AuctionId,
-                Amount = purchase.Amount,
-                AuctionEntry = tempOffer,
+                Quantity = purchase.Amount,
+                InternalUnitPrice = tempOffer.UnitPriceSilver,
                 TaxRate = SettingsController.CurrentSettings.TradeMonitoringMarketTaxRate
             };
 
-            _trackingController.TradeController.AddTradeToBindingCollection(instantBuy);
+            var trade = new Trade()
+            {
+                Ticks = DateTime.UtcNow.Ticks,
+                Type = TradeType.InstantBuy,
+                Id = purchase.AuctionId,
+                AuctionEntry = tempOffer,
+                InstantBuySellContent = instantBuySellContent
+            };
+
+            _trackingController.TradeController.AddTradeToBindingCollection(trade);
             await _trackingController.TradeController.SaveInFileAfterExceedingLimit(10);
         }
     }
@@ -65,16 +71,23 @@ public class MarketController
         var tempBuyOrder = _tempBuyOrders.FirstOrDefault(x => x.Id == sale.AuctionId);
         if (tempBuyOrder != null)
         {
-            var instantSell = new InstantSell()
+            var instantBuySellContent = new InstantBuySellContent()
             {
-                Ticks = DateTime.UtcNow.Ticks,
-                Id = sale.AuctionId,
-                Amount = sale.Amount,
-                AuctionEntry = tempBuyOrder,
+                Quantity = sale.Amount,
+                InternalUnitPrice = tempBuyOrder.UnitPriceSilver,
                 TaxRate = SettingsController.CurrentSettings.TradeMonitoringMarketTaxRate
             };
 
-            _trackingController.TradeController.AddTradeToBindingCollection(instantSell);
+            var trade = new Trade()
+            {
+                Ticks = DateTime.UtcNow.Ticks,
+                Type = TradeType.InstantSell,
+                Id = sale.AuctionId,
+                AuctionEntry = tempBuyOrder,
+                InstantBuySellContent = instantBuySellContent
+            };
+
+            _trackingController.TradeController.AddTradeToBindingCollection(trade);
             await _trackingController.TradeController.SaveInFileAfterExceedingLimit(10);
         }
     }
