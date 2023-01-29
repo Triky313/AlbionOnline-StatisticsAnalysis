@@ -619,6 +619,7 @@
 	<translation name="RANDOM_SOLO_DUNGEONS">Losowe lochy solo</translation>
 	<translation name="RANDOM_GROUP_DUNGEONS">Losowe lochy grupowe</translation>
 	<translation name="SNAPSHOT_AFTER_MAP_CHANGE">Zrzut ekranu po zmianie mapy</translation>
+	<translation name="IGNORE_MAILS_WITH_ZERO_VALUES">Ignoruj wiadomości z wartościami 0</translation>
 	<translation name="CHECK_FOR_UPDATE">Sprawdź dostępność aktualizacji</translation>
 	<translation name="PAID_SILVER_FOR_RESPEC_THIS_SESSION">Opłata za ponowienie specializacji w tej sesji</translation>
 	<translation name="PAID_SILVER_FOR_RESPEC_PER_HOUR">Opłata za ponowienie specializacji na godzinę</translation>
@@ -665,9 +666,9 @@
 	<translation name="MOBS_JSON_SOURCE_URL">adres URL źródła mobs.json</translation>
 	<translation name="GET_MOBS_JSON">Pobierz plik mobs.json</translation>
 	<translation name="MOBS_JSON_CAN_NOT_BE_LOADED">nie można załadować pliku mobs.json</translation>
-	<translation name="TRADE_MONITORING_ACTIVE">Monitorowanie transakcji aktywne</translation>
 	<translation name="INSTANT_SELL">Natychmiastowa sprzedaż</translation>
 	<translation name="INSTANT_BUY">Natychmiastowy zakup</translation>
+	<translation name="TRADE_MONITORING_ACTIVE">Monitorowanie transakcji aktywne</translation>
 	<translation name="DELETE_TRADES_NEVER">Nigdy nie usuwaj transakcji</translation>
 	<translation name="DELETE_TRADES_AFTER_7_DAYS">Usuń transakcje po 7 dniach</translation>
 	<translation name="DELETE_TRADES_AFTER_30_DAYS">Usuń transakcje po 30 dniach</translation>
@@ -681,5 +682,5 @@
 	<translation name="Trade">Handel</translation>
 	<translation name="TRADE_MONITORING_DESCRIPTION1">Aby rozpoznać nowe wiadomości e-mail, należy otworzyć skrzynkę odbiorczą w grze i dodatkowo każdą wiadomość raz.</translation>
 	<translation name="UNKNOWN TRADE">Nieznana transakcja</translation>
-	<translation name="EMAIL">Poczta</translation>
+	<translation name="MAIL">Poczta</translation>
 </translations>
