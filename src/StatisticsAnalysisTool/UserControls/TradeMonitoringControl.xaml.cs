@@ -21,7 +21,7 @@ public partial class TradeMonitoringControl
 
     public void DeleteSelectedTrades()
     {
-        var dialog = new DialogWindow(LanguageController.Translation("DELETE_SELECTED_MAILS"), LanguageController.Translation("SURE_YOU_WANT_TO_DELETE_SELECTED_MAIL"));
+        var dialog = new DialogWindow(LanguageController.Translation("DELETE_SELECTED_TRADES"), LanguageController.Translation("SURE_YOU_WANT_TO_DELETE_SELECTED_TRADES"));
         var dialogResult = dialog.ShowDialog();
 
         var vm = (MainWindowViewModel) DataContext;

@@ -64,7 +64,7 @@ public class Trade : INotifyPropertyChanged
     }
 
     public MailType MailType => MailController.ConvertToMailType(MailTypeText);
-    public MailContent MailContent { get; init; }
+    public MailContent MailContent { get; init; } = new();
     public string MailTypeDescription
     {
         get
@@ -90,6 +90,7 @@ public class Trade : INotifyPropertyChanged
     {
         TradeType.InstantSell => LanguageController.Translation("INSTANT_SELL"),
         TradeType.InstantBuy => LanguageController.Translation("INSTANT_BUY"),
+        TradeType.Mail => LanguageController.Translation("MAIL"),
         _ => LanguageController.Translation("UNKNOWN_TRADE")
     };
 

@@ -24,7 +24,7 @@
             </StackPanel>
             <StackPanel Orientation="Vertical" Height="60" HorizontalAlignment="Right" VerticalAlignment="Top">
                 <StackPanel Orientation="Horizontal" MaxWidth="300" Height="30" HorizontalAlignment="Right" VerticalAlignment="Top">
-                    <Button Content="{Binding Translation.DeleteSelectedTrades, FallbackValue=DELETE__SELECTED__MAILS}" Margin="5,0,0,0"
+                    <Button Content="{Binding Translation.DeleteSelectedTrades, FallbackValue=DELETE__SELECTED__TRADES}" Margin="5,0,0,0"
                             Height="24" Width="200" MaxWidth="300" MinWidth="200" Click="BtnDeleteSelectedMails_Click" />
                     <Grid Height="20" Width="20" Margin="5,0,0,0" VerticalAlignment="Center"
                           MouseEnter="OpenMailMonitoringPopup_MouseEnter" MouseLeave="CloseMailMonitoringPopup_MouseLeave">

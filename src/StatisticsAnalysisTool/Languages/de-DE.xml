@@ -681,4 +681,6 @@
 	<translation name="TRADE_MONITORING">Handelsüberwachung</translation>
 	<translation name="TRADE">Handel</translation>
 	<translation name="TRADE_MONITORING_DESCRIPTION1">Um neue Post-Nachrichten zu erkennen, muss im Spiel das Postfach geöffnet werden und zusätzlich jede Nachricht einmalig.</translation>
+	<translation name="UNKNOWN_TRADE">Unbekannter Handel</translation>
+	<translation name="MAIL">Nachricht</translation>
 </translations>
