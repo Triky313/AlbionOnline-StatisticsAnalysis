@@ -1,55 +1,70 @@
 ﻿using StatisticsAnalysisTool.Common;
 using StatisticsAnalysisTool.Enumerations;
 using StatisticsAnalysisTool.GameData;
+using StatisticsAnalysisTool.Models;
 using StatisticsAnalysisTool.Models.NetworkModel;
-using StatisticsAnalysisTool.Network.Manager;
 using StatisticsAnalysisTool.Properties;
+using StatisticsAnalysisTool.Trade.Mails;
+using StatisticsAnalysisTool.Trade.Market;
 using StatisticsAnalysisTool.ViewModels;
 using System;
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
-using System.Text.Json.Serialization;
 using System.Windows.Input;
 
-namespace StatisticsAnalysisTool.Models;
+namespace StatisticsAnalysisTool.Trade;
 
-public class Mail : IComparable<Mail>, INotifyPropertyChanged
+public class Trade : INotifyPropertyChanged
 {
+    public long Id { get; init; }
+    public long Ticks { get; init; }
+    public DateTime Timestamp => new(Ticks);
+    public string ClusterIndex { get; init; }
+    public TradeType Type { get; init; }
+    public string UniqueClusterName => WorldData.GetUniqueNameOrDefault(ClusterIndex);
+
     private bool? _isSelectedForDeletion = false;
 
-    public long Tick { get; set; }
-    [JsonIgnore]
-    public DateTime Timestamp => new(Tick);
-    public Guid Guid { get; set; }
-    public long MailId { get; set; }
-    public string ClusterIndex { get; set; }
-    [JsonIgnore]
+    public bool? IsSelectedForDeletion
+    {
+        get => _isSelectedForDeletion;
+        set
+        {
+            _isSelectedForDeletion = value;
+            OnPropertyChanged();
+        }
+    }
+
+    public Item Item => ItemController.GetItemByUniqueName(MailContent?.UniqueItemName) ?? ItemController.GetItemByUniqueName(AuctionEntry?.ItemTypeId);
+
+    #region Mail
+
+    public Guid Guid { get; init; }
+
+    public string MailTypeText { get; init; }
+
     public MarketLocation Location => Locations.GetMarketLocationByIndex(ClusterIndex);
-    [JsonIgnore]
+
     public string LocationName
     {
         get
         {
-            if (Location == MarketLocation.Unknown && ClusterIndex.Contains("HIDEOUT"))
+            if (Location == MarketLocation.Unknown && ClusterIndex != null && ClusterIndex.Contains("HIDEOUT"))
             {
                 return $"{ClusterIndex.Split("_")[1]} ({LanguageController.Translation("HIDEOUT")})";
             }
 
-            if (Location == MarketLocation.BlackMarket)
+            return Location switch
             {
-                return "Black Market";
-            }
-
-            return WorldData.GetUniqueNameOrDefault((int)Location) ?? LanguageController.Translation("UNKNOWN");
+                MarketLocation.BlackMarket => "Black Market",
+                MarketLocation.Unknown => LanguageController.Translation("UNKNOWN"),
+                _ => WorldData.GetUniqueNameOrDefault((int) Location)
+            };
         }
     }
-    public string MailTypeText { get; set; }
-    [JsonIgnore]
+
     public MailType MailType => MailController.ConvertToMailType(MailTypeText);
-    public MailContent MailContent { get; set; }
-    [JsonIgnore]
-    public Item Item => ItemController.GetItemByUniqueName(MailContent.UniqueItemName);
-    [JsonIgnore]
+    public MailContent MailContent { get; init; } = new();
     public string MailTypeDescription
     {
         get
@@ -64,50 +79,45 @@ public class Mail : IComparable<Mail>, INotifyPropertyChanged
             };
         }
     }
-    [JsonIgnore]
-    public bool? IsSelectedForDeletion
-    {
-        get => _isSelectedForDeletion;
-        set
-        {
-            _isSelectedForDeletion = value;
-            OnPropertyChanged();
-        }
-    }
-
-    #region Translations
-
-    [JsonIgnore]
-    public static string TranslationSilver => LanguageController.Translation("SILVER");
-    [JsonIgnore]
-    public static string TranslationCostPerItem => LanguageController.Translation("COST_PER_ITEM");
-    [JsonIgnore]
-    public static string TranslationTotalCost => LanguageController.Translation("TOTAL_COST");
-    [JsonIgnore]
-    public static string TranslationTotalRevenue => LanguageController.Translation("TOTAL_REVENUE");
-    [JsonIgnore]
-    public static string TranslationTax => LanguageController.Translation("TAX");
-    [JsonIgnore]
-    public static string TranslationSetupTax => LanguageController.Translation("SETUP_TAX");
-    [JsonIgnore]
-    public static string TranslationSelectToDelete => LanguageController.Translation("SELECT_TO_DELETE");
-    [JsonIgnore]
-    public static string TranslationFrom => LanguageController.Translation("FROM");
-    [JsonIgnore]
-    public static string TranslationTotalPriceWithDeductedTaxes => LanguageController.Translation("TOTAL_PRICE_WITH_DEDUCTED_TAXES");
 
     #endregion
 
-    public int CompareTo(Mail other)
+    #region Instant buy / sell
+
+    public AuctionEntry AuctionEntry { get; init; }
+    public InstantBuySellContent InstantBuySellContent { get; init; } = new();
+    public string TypeDescription => Type switch
     {
-        if (ReferenceEquals(this, other)) return 0;
-        if (ReferenceEquals(null, other)) return 1;
-        var tickComparison = Tick.CompareTo(other.Tick);
-        if (tickComparison != 0) return tickComparison;
-        var guidComparison = Guid.CompareTo(other.Guid);
-        if (guidComparison != 0) return guidComparison;
-        return MailId.CompareTo(other.MailId);
+        TradeType.InstantSell => LanguageController.Translation("INSTANT_SELL"),
+        TradeType.InstantBuy => LanguageController.Translation("INSTANT_BUY"),
+        TradeType.Mail => LanguageController.Translation("MAIL"),
+        _ => LanguageController.Translation("UNKNOWN_TRADE")
+    };
+
+    #endregion
+
+    public int CompareTo(Trade other)
+    {
+        if (ReferenceEquals(this, other))
+            return 0;
+        if (ReferenceEquals(null, other))
+            return 1;
+        var tickComparison = Ticks.CompareTo(other.Ticks);
+        if (tickComparison != 0)
+            return tickComparison;
+
+        return Id.CompareTo(other.Id);
     }
+
+    public static string TranslationSilver => LanguageController.Translation("SILVER");
+    public static string TranslationCostPerItem => LanguageController.Translation("COST_PER_ITEM");
+    public static string TranslationTotalCost => LanguageController.Translation("TOTAL_COST");
+    public static string TranslationTotalRevenue => LanguageController.Translation("TOTAL_REVENUE");
+    public static string TranslationTax => LanguageController.Translation("TAX");
+    public static string TranslationSetupTax => LanguageController.Translation("SETUP_TAX");
+    public static string TranslationSelectToDelete => LanguageController.Translation("SELECT_TO_DELETE");
+    public static string TranslationFrom => LanguageController.Translation("FROM");
+    public static string TranslationTotalPriceWithDeductedTaxes => LanguageController.Translation("TOTAL_PRICE_WITH_DEDUCTED_TAXES");
 
     #region Commands
 
@@ -125,7 +135,7 @@ public class Mail : IComparable<Mail>, INotifyPropertyChanged
     public event PropertyChangedEventHandler PropertyChanged;
 
     [NotifyPropertyChangedInvocator]
-    protected virtual void OnPropertyChanged([CallerMemberName] string propertyName = null)
+    protected void OnPropertyChanged([CallerMemberName] string propertyName = null)
     {
         PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
     }

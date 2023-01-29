@@ -55,7 +55,7 @@
       <AutoGen>True</AutoGen>
       <DependentUpon>Settings.settings</DependentUpon>
     </Compile>
-    <Compile Update="UserControls\MailMonitoringControl.xaml.cs">
+    <Compile Update="UserControls\TradeMonitoringControl.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
     <Compile Update="UserControls\DashboardControl.xaml.cs">
@@ -735,7 +735,7 @@
     <Page Update="Styles\DonationStyles.xaml">
       <XamlRuntime>$(DefaultXamlRuntime)</XamlRuntime>
     </Page>
-    <Page Update="UserControls\MailMonitoringControl.xaml">
+    <Page Update="UserControls\TradeMonitoringControl.xaml">
       <XamlRuntime>$(DefaultXamlRuntime)</XamlRuntime>
       <SubType>Designer</SubType>
     </Page>

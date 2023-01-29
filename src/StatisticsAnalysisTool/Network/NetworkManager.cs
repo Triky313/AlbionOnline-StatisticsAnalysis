@@ -72,12 +72,16 @@ public class NetworkManager
         builder.AddRequestHandler(new TakeSilverRequestHandler(trackingController));
         builder.AddRequestHandler(new RegisterToObjectRequestHandler(trackingController));
         builder.AddRequestHandler(new UnRegisterFromObjectRequestHandler(trackingController));
+        builder.AddRequestHandler(new AuctionBuyOfferRequestHandler(trackingController));
+        builder.AddRequestHandler(new AuctionSellSpecificItemRequestHandler(trackingController));
 
         builder.AddResponseHandler(new ChangeClusterResponseHandler(trackingController));
         builder.AddResponseHandler(new PartyMakeLeaderResponseHandler(trackingController));
         builder.AddResponseHandler(new JoinResponseHandler(trackingController, mainWindowViewModel));
         builder.AddResponseHandler(new GetMailInfosResponseHandler(trackingController));
         builder.AddResponseHandler(new ReadMailResponseHandler(trackingController));
+        builder.AddResponseHandler(new AuctionGetOffersResponseHandler(trackingController));
+        builder.AddResponseHandler(new AuctionGetResponseHandler(trackingController));
 
         _receiver = builder.Build();
 

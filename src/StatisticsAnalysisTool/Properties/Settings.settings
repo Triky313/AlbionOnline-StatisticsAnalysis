@@ -128,5 +128,11 @@
     <Setting Name="GitHubSponsorsUrl" Type="System.String" Scope="User">
       <Value Profile="(Default)">https://github.com/sponsors/Triky313</Value>
     </Setting>
+    <Setting Name="TradesFileName" Type="System.String" Scope="User">
+      <Value Profile="(Default)">Trades.json</Value>
+    </Setting>
+    <Setting Name="UserDataDirectoryName" Type="System.String" Scope="User">
+      <Value Profile="(Default)">UserData</Value>
+    </Setting>
   </Settings>
 </SettingsFile>
