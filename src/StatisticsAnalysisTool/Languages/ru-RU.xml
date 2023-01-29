@@ -646,4 +646,25 @@
 	<translation name="THANK_YOU">Спасибо вам!</translation>
 	<translation name="DUNGEON_CLOSED_SOUND_ACTIVE">Звук при закрытии подземелья</translation>
 	<translation name="TOTAL_PRICE_WITH_DEDUCTED_TAXES">Общая цена с налогами</translation>
+	<translation name="UPDATE_MOBS_JSON_BY_DAYS">Обновлять mobs.json через n дней</translation>
+	<translation name="MOBS_JSON_SOURCE_URL">ссылка на mobs.json</translation>
+	<translation name="GET_MOBS_JSON">Получить mobs.json</translation>
+	<translation name="MOBS_JSON_CAN_NOT_BE_LOADED">mobs.json не может быть загружена.</translation>
+	<translation name="INSTANT_SELL">Продажа</translation>
+	<translation name="INSTANT_BUY">Покупка</translation>
+	<translation name="TRADE_MONITORING_ACTIVE">Мониторинг активности трейдинга</translation>
+	<translation name="DELETE_TRADES_NEVER">Не удалять трейды</translation>
+	<translation name="DELETE_TRADES_AFTER_7_DAYS">Удалять трейд спустя 7 дней</translation>
+	<translation name="DELETE_TRADES_AFTER_30_DAYS">Удалять трейд спустя 30 дней</translation>
+	<translation name="DELETE_TRADES_AFTER_60_DAYS">Удалять трейд спустя 60 дней</translation>
+	<translation name="DELETE_TRADES_AFTER_90_DAYS">Удалять трейд спустя 90 дней</translation>
+	<translation name="DELETE_TRADES_AFTER_180_DAYS">Удалять трейд спустя 180 дней</translation>
+	<translation name="DELETE_TRADES_AFTER_365_DAYS">Удалять трейд спустя 365 дней</translation>
+	<translation name="DELETE_SELECTED_TRADES">Удалить выбранные трейды</translation>
+	<translation name="SURE_YOU_WANT_TO_DELETE_SELECTED_TRADES">Вы уверены, что хотите удалить выбранные трейды?</translation>
+	<translation name="TRADE_MONITORING">Торговля</translation>
+	<translation name="Trade">Трейд</translation>
+	<translation name="TRADE_MONITORING_DESCRIPTION1">Чтобы добавить запись о трейдах вы должны открыть соответсвующее сообщение в игре.</translation>
+	<translation name="UNKNOWN_TRADE">Неизвестно</translation>
+	<translation name="MAIL">Почта</translation>
 </translations>
