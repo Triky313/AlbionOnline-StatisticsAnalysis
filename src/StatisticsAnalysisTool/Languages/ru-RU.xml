@@ -351,11 +351,9 @@
 	<translation name="SILVER_SHRINE">Серебряная чаша</translation>
 	<translation name="FAME_SHRINE">Чаша Опыта</translation>
 	<translation name="COMBAT_BUFF">Боевой бафф</translation>
-
 	<translation name="CITY_PRICES_API_URL">Ссылка на API городских цен</translation>
 	<translation name="CITY_PRICES_HISTORY_API_URL">Ссылка на API истории цен</translation>
 	<translation name="GOLD_STATS_API_URL">Ссылка на API цен на золото</translation>
-
 	<translation name="SAFE">Безопасно</translation>
 	<translation name="DUNGEON_TIMER">Таймер подземелья</translation>
 	<translation name="SURE_YOU_WANT_TO_RESET_DAMAGE_METER">Вы уверены, что хотите сбросить счетчик урона?</translation>
@@ -504,15 +502,10 @@
 	<translation name="AVERAGE_ITEM_POWER_WHEN_KILLING">Средний IP при убийствах</translation>
 	<translation name="AVERAGE_ITEM_POWER_OF_THE_KILLED_ENEMIES">Средний IP убийц</translation>
 	<translation name="AVERAGE_ITEM_POWER_WHEN_DYING">Средний IP при смертях</translation>
-	<translation name="MAIL_MONITORING">Почта</translation>
-	<translation name="MAIL">Письмо</translation>
 	<translation name="BOUGHT">Куплено</translation>
 	<translation name="SOLD">Продано</translation>
 	<translation name="COST_PER_ITEM">Цена за предмет</translation>
 	<translation name="TOTAL_COST">Всего продано</translation>
-	<translation name="DELETE_SELECTED_MAILS">Удалить выбранные письма</translation>
-	<translation name="SURE_YOU_WANT_TO_DELETE_SELECTED_MAIL">Вы уверены что хотите удалить выбранные письма?</translation>
-	<translation name="MAIL_MONITORING_DESCRIPTION1">Для отображения финансов, вы должны открыть почту и нажать на каждое письмо отдельно.</translation>
 	<translation name="SOLD_TODAY">Продано за сегодня</translation>
 	<translation name="SOLD_MONTH">Продано за месяц</translation>
 	<translation name="SOLD_YEAR">Продано за год</translation>
@@ -595,15 +588,6 @@
 	<translation name="RANDOM_SOLO_DUNGEONS">Рандомные сольники</translation>
 	<translation name="RANDOM_GROUP_DUNGEONS">Рандомные групповые данжи</translation>
 	<translation name="SNAPSHOT_AFTER_MAP_CHANGE">Скриншот после смены локации</translation>
-	<translation name="MAIL_MONITORING_ACTIVE">Включить мониторинг писем</translation>
-	<translation name="DELETE_MAILS_NEVER">Не удалять письма</translation>
-	<translation name="DELETE_MAILS_AFTER_7_DAYS">Удалять письма после 7 дней</translation>
-	<translation name="DELETE_MAILS_AFTER_30_DAYS">Удалять письма после 30 дней</translation>
-	<translation name="DELETE_MAILS_AFTER_60_DAYS">Удалять письма после 60 дней</translation>
-	<translation name="DELETE_MAILS_AFTER_90_DAYS">Удалять письма после 90 дней</translation>
-	<translation name="DELETE_MAILS_AFTER_180_DAYS">Удалять письма после 180 дней</translation>
-	<translation name="DELETE_MAILS_AFTER_365_DAYS">Удалять письма после 365 дней</translation>
-	<translation name="IGNORE_MAILS_WITH_ZERO_VALUES">Игнорировать пустые письма</translation>
 	<translation name="CHECK_FOR_UPDATE">Проверить обновления</translation>
 	<translation name="PAID_SILVER_FOR_RESPEC_THIS_SESSION">Потрачено серебра на выкачку за сеанс</translation>
 	<translation name="PAID_SILVER_FOR_RESPEC_PER_HOUR">Потрачено серебра на выкачку за час</translation>
@@ -647,7 +631,7 @@
 	<translation name="DUNGEON_CLOSED_SOUND_ACTIVE">Звук при закрытии подземелья</translation>
 	<translation name="TOTAL_PRICE_WITH_DEDUCTED_TAXES">Общая цена с налогами</translation>
 	<translation name="UPDATE_MOBS_JSON_BY_DAYS">Обновлять mobs.json через n дней</translation>
-	<translation name="MOBS_JSON_SOURCE_URL">ссылка на mobs.json</translation>
+	<translation name="MOBS_JSON_SOURCE_URL">Ссылка на mobs.json</translation>
 	<translation name="GET_MOBS_JSON">Получить mobs.json</translation>
 	<translation name="MOBS_JSON_CAN_NOT_BE_LOADED">mobs.json не может быть загружена.</translation>
 	<translation name="INSTANT_SELL">Продажа</translation>
