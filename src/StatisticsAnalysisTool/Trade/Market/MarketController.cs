@@ -23,11 +23,21 @@ public class MarketController
 
     public void AddOffers(IEnumerable<AuctionEntry> auctionOffers)
     {
+        if (!SettingsController.CurrentSettings.IsTradeMonitoringActive)
+        {
+            return;
+        }
+
         _tempOffers = new ObservableCollection<AuctionEntry>(auctionOffers);
     }
 
     public async Task AddBuyAsync(Purchase purchase)
     {
+        if (!SettingsController.CurrentSettings.IsTradeMonitoringActive)
+        {
+            return;
+        }
+
         var tempOffer = _tempOffers.FirstOrDefault(x => x.Id == purchase.AuctionId);
         if (tempOffer != null)
         {
@@ -64,11 +74,21 @@ public class MarketController
 
     public void AddBuyOrders(IEnumerable<AuctionEntry> auctionOrders)
     {
+        if (!SettingsController.CurrentSettings.IsTradeMonitoringActive)
+        {
+            return;
+        }
+
         _tempBuyOrders = new ObservableCollection<AuctionEntry>(auctionOrders);
     }
 
     public async Task AddSaleAsync(Sale sale)
     {
+        if (!SettingsController.CurrentSettings.IsTradeMonitoringActive)
+        {
+            return;
+        }
+
         var tempBuyOrder = _tempBuyOrders.FirstOrDefault(x => x.Id == sale.AuctionId);
         if (tempBuyOrder != null)
         {

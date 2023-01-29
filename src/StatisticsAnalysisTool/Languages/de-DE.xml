@@ -537,14 +537,9 @@
 	<translation name="AVERAGE_ITEM_POWER_WHEN_KILLING">Durchschnittliche Gegenstandsstärke beim Töten</translation>
 	<translation name="AVERAGE_ITEM_POWER_OF_THE_KILLED_ENEMIES">Durchschnittliche Gegenstandsstärke der getöteten Feinde</translation>
 	<translation name="AVERAGE_ITEM_POWER_WHEN_DYING">Durchschnittliche Gegenstandsstärke beim Sterben</translation>
-	<translation name="MAIL_MONITORING">Post Überwachung</translation>
-	<translation name="MAIL">Nachricht</translation>
 	<translation name="BOUGHT">Gekauft</translation>
 	<translation name="SOLD">Verkauft</translation>
 	<translation name="COST_PER_ITEM">Kosten pro Item</translation>
-	<translation name="DELETE_SELECTED_MAILS">Ausgewählte Nachrichten löschen</translation>
-	<translation name="SURE_YOU_WANT_TO_DELETE_SELECTED_MAIL">Ausgewählte Nachrichten wirklich löschen?</translation>
-	<translation name="MAIL_MONITORING_DESCRIPTION1">Um neue Nachrichten zu erkennen, muss im Spiel das Postfach geöffnet werden und zusätzlich jede Nachricht einmalig.</translation>
 	<translation name="SOLD_TODAY">Verkauft heute</translation>
 	<translation name="SOLD_MONTH">Verkauft Monat</translation>
 	<translation name="SOLD_YEAR">Verkauft Jahr</translation>
@@ -624,14 +619,6 @@
 	<translation name="RANDOM_SOLO_DUNGEONS">Zufällige Solo Dungeons</translation>
 	<translation name="RANDOM_GROUP_DUNGEONS">Zufällige Gruppen Dungeons</translation>
 	<translation name="SNAPSHOT_AFTER_MAP_CHANGE">Schnappschuss nach Map wechsel</translation>
-	<translation name="MAIL_MONITORING_ACTIVE">Nachrichten Überwachung aktiv</translation>
-	<translation name="DELETE_MAILS_NEVER">Lösche Nachricht nie</translation>
-	<translation name="DELETE_MAILS_AFTER_7_DAYS">Lösche Nachricht nach 7 Tagen</translation>
-	<translation name="DELETE_MAILS_AFTER_30_DAYS">Lösche Nachricht nach 30 Tagen</translation>
-	<translation name="DELETE_MAILS_AFTER_60_DAYS">Lösche Nachricht nach 60 Tagen</translation>
-	<translation name="DELETE_MAILS_AFTER_90_DAYS">Lösche Nachricht nach 90 Tagen</translation>
-	<translation name="DELETE_MAILS_AFTER_180_DAYS">Lösche Nachricht nach 180 Tagen</translation>
-	<translation name="DELETE_MAILS_AFTER_365_DAYS">Lösche Nachricht nach 365 Tagen</translation>
 	<translation name="IGNORE_MAILS_WITH_ZERO_VALUES">Mails mit 0 Werten nicht berücksichtigen</translation>
 	<translation name="CHECK_FOR_UPDATE">Suche nach Update</translation>
 	<translation name="PAID_SILVER_FOR_RESPEC_THIS_SESSION">Bezahltes Silber für ReSpec diese Sitzung</translation>
@@ -681,4 +668,17 @@
 	<translation name="MOBS_JSON_CAN_NOT_BE_LOADED">mobs.json kann nicht geladen werden.</translation>
 	<translation name="INSTANT_SELL">Sofortverkauf</translation>
 	<translation name="INSTANT_BUY">Sofortkauf</translation>
+	<translation name="TRADE_MONITORING_ACTIVE">Handel Überwachung aktiv</translation>
+	<translation name="DELETE_TRADES_NEVER">Lösche Handel nie</translation>
+	<translation name="DELETE_TRADES_AFTER_7_DAYS">Lösche Handel nach 7 Tagen</translation>
+	<translation name="DELETE_TRADES_AFTER_30_DAYS">Lösche Handel nach 30 Tagen</translation>
+	<translation name="DELETE_TRADES_AFTER_60_DAYS">Lösche Handel nach 60 Tagen</translation>
+	<translation name="DELETE_TRADES_AFTER_90_DAYS">Lösche Handel nach 90 Tagen</translation>
+	<translation name="DELETE_TRADES_AFTER_180_DAYS">Lösche Handel nach 180 Tagen</translation>
+	<translation name="DELETE_TRADES_AFTER_365_DAYS">Lösche Handel nach 365 Tagen</translation>
+	<translation name="DELETE_SELECTED_TRADES">Ausgewählte Handel löschen</translation>
+	<translation name="SURE_YOU_WANT_TO_DELETE_SELECTED_TRADES">Ausgewählte Handel wirklich löschen?</translation>
+	<translation name="TRADE_MONITORING">Handelsüberwachung</translation>
+	<translation name="TRADE">Handel</translation>
+	<translation name="TRADE_MONITORING_DESCRIPTION1">Um neue Post-Nachrichten zu erkennen, muss im Spiel das Postfach geöffnet werden und zusätzlich jede Nachricht einmalig.</translation>
 </translations>

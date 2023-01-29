@@ -382,7 +382,7 @@
                            Foreground="{StaticResource SolidColorBrush.Accent.Blue.2}" />
 
                     <CheckBox IsChecked="{Binding IsTradeMonitoringActive}" 
-                              Content="{Binding TranslationMailMonitoringActive, FallbackValue=MAIL__MONITORING__ACTIVE}" 
+                              Content="{Binding TranslationTradeMonitoringActive, FallbackValue=MAIL__MONITORING__ACTIVE}" 
                               HorizontalContentAlignment="Left" Margin="0,2,10,0" VerticalAlignment="Top" HorizontalAlignment="Left" Width="auto" MaxWidth="250"/>
 
                     <CheckBox IsChecked="{Binding IgnoreMailsWithZeroValues}" 

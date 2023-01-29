@@ -19,20 +19,19 @@ public class TradeOptionsObject : INotifyPropertyChanged
 
     public TradeOptionsObject()
     {
-        // TODO: Translations adjustments
-        var neverDeleteObject = new DeleteTradesAfterDaysStruct() {Days = 0, Name = LanguageController.Translation("DELETE_MAILS_NEVER")};
+        var neverDeleteObject = new DeleteTradesAfterDaysStruct() {Days = 0, Name = LanguageController.Translation("DELETE_TRADES_NEVER")};
 
         DeleteTradesOlderThanSpecifiedDays.Clear();
         DeleteTradesOlderThanSpecifiedDays.Add(neverDeleteObject);
-        DeleteTradesOlderThanSpecifiedDays.Add(new DeleteTradesAfterDaysStruct() { Days = 7, Name = LanguageController.Translation("DELETE_MAILS_AFTER_7_DAYS") });
-        DeleteTradesOlderThanSpecifiedDays.Add(new DeleteTradesAfterDaysStruct() { Days = 30, Name = LanguageController.Translation("DELETE_MAILS_AFTER_30_DAYS") });
-        DeleteTradesOlderThanSpecifiedDays.Add(new DeleteTradesAfterDaysStruct() { Days = 60, Name = LanguageController.Translation("DELETE_MAILS_AFTER_60_DAYS") });
-        DeleteTradesOlderThanSpecifiedDays.Add(new DeleteTradesAfterDaysStruct() { Days = 90, Name = LanguageController.Translation("DELETE_MAILS_AFTER_90_DAYS") });
-        DeleteTradesOlderThanSpecifiedDays.Add(new DeleteTradesAfterDaysStruct() { Days = 180, Name = LanguageController.Translation("DELETE_MAILS_AFTER_180_DAYS") });
-        DeleteTradesOlderThanSpecifiedDays.Add(new DeleteTradesAfterDaysStruct() { Days = 365, Name = LanguageController.Translation("DELETE_MAILS_AFTER_365_DAYS") });
+        DeleteTradesOlderThanSpecifiedDays.Add(new DeleteTradesAfterDaysStruct() { Days = 7, Name = LanguageController.Translation("DELETE_TRADES_AFTER_7_DAYS") });
+        DeleteTradesOlderThanSpecifiedDays.Add(new DeleteTradesAfterDaysStruct() { Days = 30, Name = LanguageController.Translation("DELETE_TRADES_AFTER_30_DAYS") });
+        DeleteTradesOlderThanSpecifiedDays.Add(new DeleteTradesAfterDaysStruct() { Days = 60, Name = LanguageController.Translation("DELETE_TRADES_AFTER_60_DAYS") });
+        DeleteTradesOlderThanSpecifiedDays.Add(new DeleteTradesAfterDaysStruct() { Days = 90, Name = LanguageController.Translation("DELETE_TRADES_AFTER_90_DAYS") });
+        DeleteTradesOlderThanSpecifiedDays.Add(new DeleteTradesAfterDaysStruct() { Days = 180, Name = LanguageController.Translation("DELETE_TRADES_AFTER_180_DAYS") });
+        DeleteTradesOlderThanSpecifiedDays.Add(new DeleteTradesAfterDaysStruct() { Days = 365, Name = LanguageController.Translation("DELETE_TRADES_AFTER_365_DAYS") });
         
-        var deleteMailsAfterDaysSelection = DeleteTradesOlderThanSpecifiedDays.FirstOrDefault(x => x.Days == SettingsController.CurrentSettings.DeleteTradesOlderThanSpecifiedDays);
-        DeleteTradesOlderThanSpecifiedDaysSelection = deleteMailsAfterDaysSelection.Name == null ? neverDeleteObject : deleteMailsAfterDaysSelection;
+        var deleteTradesAfterDaysSelection = DeleteTradesOlderThanSpecifiedDays.FirstOrDefault(x => x.Days == SettingsController.CurrentSettings.DeleteTradesOlderThanSpecifiedDays);
+        DeleteTradesOlderThanSpecifiedDaysSelection = deleteTradesAfterDaysSelection.Name == null ? neverDeleteObject : deleteTradesAfterDaysSelection;
 
         IsTradeMonitoringActive = SettingsController.CurrentSettings.IsTradeMonitoringActive;
         IgnoreMailsWithZeroValues = SettingsController.CurrentSettings.IgnoreMailsWithZeroValues;
@@ -104,7 +103,7 @@ public class TradeOptionsObject : INotifyPropertyChanged
         }
     }
 
-    public static string TranslationMailMonitoringActive => LanguageController.Translation("MAIL_MONITORING_ACTIVE");
+    public static string TranslationTradeMonitoringActive => LanguageController.Translation("TRADE_MONITORING_ACTIVE");
     public static string TranslationIgnoreMailsWithZeroValues => LanguageController.Translation("IGNORE_MAILS_WITH_ZERO_VALUES");
     public static string TranslationMarketTaxRate => LanguageController.Translation("MARKET_TAX_RATE");
     public static string TranslationMarketTaxSetupRate => LanguageController.Translation("MARKET_TAX_SETUP_RATE");
