@@ -64,25 +64,14 @@ public static class Locations
     {
         return DisplayNames.TryGetValue(location, out var name) ? name : null;
     }
-
-    [Obsolete]
-    public static Location GetLocationByIndex(string index)
-    {
-        if (index.Equals("@BLACK_MARKET"))
-        {
-            return Location.BlackMarket;
-        }
-
-        if (index.Equals("3013-Auction2"))
-        {
-            return Location.Caerleon;
-        }
-
-        return Enum.TryParse(index, true, out Location location) ? location : Location.Unknown;
-    }
-
+    
     public static MarketLocation GetMarketLocationByIndex(string index)
     {
+        if (string.IsNullOrEmpty(index))
+        {
+            return MarketLocation.Unknown;
+        }
+
         if (index.Equals("@BLACK_MARKET"))
         {
             return MarketLocation.BlackMarket;

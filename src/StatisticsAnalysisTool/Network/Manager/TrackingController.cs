@@ -3,6 +3,7 @@ using StatisticsAnalysisTool.Common;
 using StatisticsAnalysisTool.Common.UserSettings;
 using StatisticsAnalysisTool.Enumerations;
 using StatisticsAnalysisTool.Network.Notification;
+using StatisticsAnalysisTool.Trade;
 using StatisticsAnalysisTool.ViewModels;
 using StatisticsAnalysisTool.Views;
 using System;
@@ -11,6 +12,8 @@ using System.Linq;
 using System.Reflection;
 using System.Threading.Tasks;
 using System.Windows;
+using StatisticsAnalysisTool.Trade.Mails;
+using StatisticsAnalysisTool.Trade.Market;
 using ValueType = StatisticsAnalysisTool.Enumerations.ValueType;
 
 namespace StatisticsAnalysisTool.Network.Manager;
@@ -31,6 +34,8 @@ public class TrackingController : ITrackingController
     public readonly StatisticController StatisticController;
     public readonly TreasureController TreasureController;
     public readonly MailController MailController;
+    public readonly MarketController MarketController;
+    public readonly TradeController TradeController;
     public readonly VaultController VaultController;
     private readonly List<NotificationType> _notificationTypesFilters = new();
 
@@ -45,7 +50,9 @@ public class TrackingController : ITrackingController
         LootController = new LootController(this, mainWindowViewModel);
         StatisticController = new StatisticController(this, mainWindowViewModel);
         TreasureController = new TreasureController(this, mainWindowViewModel);
-        MailController = new MailController(mainWindowViewModel);
+        MailController = new MailController(this, mainWindowViewModel);
+        MarketController = new MarketController(this);
+        TradeController = new TradeController(mainWindowViewModel);
         VaultController = new VaultController(mainWindowViewModel);
         LiveStatsTracker = new LiveStatsTracker(this, mainWindowViewModel);
     }

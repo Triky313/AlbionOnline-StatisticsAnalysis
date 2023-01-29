@@ -14,6 +14,7 @@ using StatisticsAnalysisTool.Models.TranslationModel;
 using StatisticsAnalysisTool.Network;
 using StatisticsAnalysisTool.Network.Manager;
 using StatisticsAnalysisTool.Properties;
+using StatisticsAnalysisTool.Trade;
 using StatisticsAnalysisTool.Views;
 using System;
 using System.Collections.Generic;
@@ -94,7 +95,7 @@ public class MainWindowViewModel : INotifyPropertyChanged, IAsyncInitialization
     private UserTrackingBindings _userTrackingBindings = new();
     private Visibility _debugModeVisibility = Visibility.Collapsed;
     private TrackingActivityBindings _trackingActivityBindings = new();
-    private MailMonitoringBindings _mailMonitoringBindings = new();
+    private TradeMonitoringBindings _tradeMonitoringBindings = new();
     private DungeonBindings _dungeonBindings = new();
     private DamageMeterBindings _damageMeterBindings = new();
     private Visibility _unsupportedOsVisibility = Visibility.Collapsed;
@@ -122,7 +123,7 @@ public class MainWindowViewModel : INotifyPropertyChanged, IAsyncInitialization
         Initialization = InitTrackingAsync();
     }
 
-    public Task Initialization { get; init; }
+    public Task Initialization { get; }
 
     public void SetUiElements()
     {
@@ -150,7 +151,7 @@ public class MainWindowViewModel : INotifyPropertyChanged, IAsyncInitialization
         UserTrackingBindings.UsernameInformationVisibility = Visibility.Hidden;
         UserTrackingBindings.GuildInformationVisibility = Visibility.Hidden;
         UserTrackingBindings.AllianceInformationVisibility = Visibility.Hidden;
-        UserTrackingBindings.CurrentMapInformationVisibility = Visibility.Hidden;
+        UserTrackingBindings.CurrentMapInfoBinding.CurrentMapInformationVisibility = Visibility.Hidden;
 
         IsTrackingResetByMapChangeActive = SettingsController.CurrentSettings.IsTrackingResetByMapChangeActive;
 
@@ -158,7 +159,7 @@ public class MainWindowViewModel : INotifyPropertyChanged, IAsyncInitialization
         DungeonBindings.GridSplitterPosition = new GridLength(SettingsController.CurrentSettings.DungeonsGridSplitterPosition);
 
         // Mail Monitoring
-        MailMonitoringBindings.GridSplitterPosition = new GridLength(SettingsController.CurrentSettings.MailMonitoringGridSplitterPosition);
+        TradeMonitoringBindings.GridSplitterPosition = new GridLength(SettingsController.CurrentSettings.MailMonitoringGridSplitterPosition);
 
         // Vault
         VaultBindings.GridSplitterPosition = new GridLength(SettingsController.CurrentSettings.StorageHistoryGridSplitterPosition);
@@ -566,7 +567,7 @@ public class MainWindowViewModel : INotifyPropertyChanged, IAsyncInitialization
         }
 
         await TrackingController?.StatisticController?.LoadFromFileAsync()!;
-        await TrackingController?.MailController?.LoadFromFileAsync()!;
+        await TrackingController?.TradeController?.LoadFromFileAsync()!;
         await TrackingController?.TreasureController?.LoadFromFileAsync()!;
         await TrackingController?.DungeonController?.LoadDungeonFromFileAsync()!;
         await TrackingController?.VaultController?.LoadFromFileAsync()!;
@@ -603,8 +604,8 @@ public class MainWindowViewModel : INotifyPropertyChanged, IAsyncInitialization
         await TrackingController?.TreasureController?.SaveInFileAsync()!;
         await TrackingController?.StatisticController?.SaveInFileAsync()!;
         await TrackingController?.LootController?.SaveInFileAsync()!;
+        await TrackingController?.TradeController?.SaveInFileAsync()!;
 
-        await FileController.SaveAsync(MailMonitoringBindings?.Mails?.ToList(), $"{AppDomain.CurrentDomain.BaseDirectory}{Settings.Default.MailsFileName}");
         await FileController.SaveAsync(DamageMeterBindings?.DamageMeterSnapshots, $"{AppDomain.CurrentDomain.BaseDirectory}{Settings.Default.DamageMeterSnapshotsFileName}");
 
         IsTrackingActive = false;
@@ -1323,12 +1324,12 @@ public class MainWindowViewModel : INotifyPropertyChanged, IAsyncInitialization
         }
     }
 
-    public MailMonitoringBindings MailMonitoringBindings
+    public TradeMonitoringBindings TradeMonitoringBindings
     {
-        get => _mailMonitoringBindings;
+        get => _tradeMonitoringBindings;
         set
         {
-            _mailMonitoringBindings = value;
+            _tradeMonitoringBindings = value;
             OnPropertyChanged();
         }
     }

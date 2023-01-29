@@ -5,13 +5,13 @@ namespace StatisticsAnalysisTool.Models.NetworkModel;
 
 public class MailContent
 {
-    public int UsedQuantity { get; set; }
-    public int Quantity { get; set; }
-    public string UniqueItemName { get; set; }
-    public long InternalTotalPrice { get; set; }
-    public long InternalUnitPrice { get; set; }
-    public double TaxRate { get; set; } = 0;
-    public double TaxSetupRate { get; set; } = 0;
+    public int UsedQuantity { get; init; }
+    public int Quantity { get; init; }
+    public string UniqueItemName { get; init; }
+    public long InternalTotalPrice { get; init; }
+    public long InternalUnitPrice { get; init; }
+    public double TaxRate { get; set; }
+    public double TaxSetupRate { get; set; }
     [JsonIgnore]
     public bool IsTaxesStated => TaxRate > 0;
     [JsonIgnore]

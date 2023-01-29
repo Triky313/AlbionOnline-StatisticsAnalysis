@@ -1,10 +1,10 @@
 ﻿using log4net;
 using StatisticsAnalysisTool.Common;
-using StatisticsAnalysisTool.Models.NetworkModel;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
+using StatisticsAnalysisTool.Trade.Mails;
 
 namespace StatisticsAnalysisTool.Network.Operations.Responses;
 
@@ -12,7 +12,7 @@ public class GetMailInfosResponse
 {
     private static readonly ILog Log = LogManager.GetLogger(MethodBase.GetCurrentMethod()?.DeclaringType);
 
-    public readonly List<MailInfoObject> MailInfos = new();
+    public readonly List<MailNetworkObject> MailInfos = new();
 
     public GetMailInfosResponse(Dictionary<byte, object> parameters)
     {
@@ -33,16 +33,16 @@ public class GetMailInfosResponse
             }
 
             var guid = parameters[0].ObjectToGuid();
-            var mailIdArray = ((long[])parameters[3]).ToArray();
+            var mailIdArray = ((long[]) parameters[3]).ToArray();
 
-            if (mailIdArray is not {Length: > 0})
+            if (mailIdArray is not { Length: > 0 })
             {
                 return;
             }
 
-            var subjectArray = ((string[])parameters[6]).ToArray();
-            var mailTypeTextArray = ((string[])parameters[10]).ToArray();
-            var timeStampArray = ((long[])parameters[11]).ToArray();
+            var subjectArray = ((string[]) parameters[6]).ToArray();
+            var mailTypeTextArray = ((string[]) parameters[10]).ToArray();
+            var timeStampArray = ((long[]) parameters[11]).ToArray();
 
             var length = Utilities.GetHighestLength(mailIdArray, subjectArray, mailTypeTextArray);
 
@@ -53,7 +53,7 @@ public class GetMailInfosResponse
                 var mailTypeText = mailTypeTextArray[i];
                 var timeStamp = timeStampArray[i];
 
-                MailInfos.Add(new MailInfoObject(guid, mailId, subject, mailTypeText, timeStamp));
+                MailInfos.Add(new MailNetworkObject(guid, mailId, subject, mailTypeText, timeStamp));
             }
         }
         catch (Exception e)

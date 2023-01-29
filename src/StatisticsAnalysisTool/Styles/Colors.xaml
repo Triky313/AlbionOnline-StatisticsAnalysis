@@ -156,6 +156,7 @@
 
     <!-- Donation -->
     <Color x:Key="Color.Patreon">#FFFF424D</Color>
+    <Color x:Key="Color.GitHubSponsors">#FFcc6ca0</Color>
 
     <!-- Console values -->
     <Color x:Key="Color.Console.Error">#ca3431</Color>
@@ -292,7 +293,16 @@
     <SolidColorBrush x:Key="Solid.Color.Text.ToOldThird" Color="{StaticResource Color.Text.ToOldThird}"/>
     <SolidColorBrush x:Key="Solid.Color.Text.NoValue" Color="{StaticResource Color.Text.NoValue}"/>
 
+    <SolidColorBrush x:Key="Solid.Color.Cluster.Island" Color="{StaticResource Cluster.Island}"/>
+    <SolidColorBrush x:Key="Solid.Color.Cluster.SafeArea" Color="{StaticResource Cluster.SafeArea}"/>
+    <SolidColorBrush x:Key="Solid.Color.Cluster.Yellow" Color="{StaticResource Cluster.Yellow}"/>
+    <SolidColorBrush x:Key="Solid.Color.Cluster.Red" Color="{StaticResource Cluster.Red}"/>
+    <SolidColorBrush x:Key="Solid.Color.Cluster.Black" Color="{StaticResource Cluster.Black}"/>
+    <SolidColorBrush x:Key="Solid.Color.Cluster.Avalon" Color="{StaticResource Cluster.Avalon}"/>
+    <SolidColorBrush x:Key="Solid.Color.Cluster.Mists" Color="{StaticResource Cluster.Mists}"/>
+
     <SolidColorBrush x:Key="Solid.Color.Patreon" Color="{StaticResource Color.Patreon}"/>
+    <SolidColorBrush x:Key="Solid.Color.GitHubSponsors" Color="{StaticResource Color.GitHubSponsors}"/>
 
     <SolidColorBrush x:Key="SolidColorBrush.Console.Error" Color="{StaticResource Color.Console.Error}"/>
     <SolidColorBrush x:Key="SolidColorBrush.Console.Warning" Color="{StaticResource Color.Console.Warning}"/>

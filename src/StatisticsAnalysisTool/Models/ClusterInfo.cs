@@ -126,7 +126,7 @@ public class ClusterInfo
         }
     }
 
-    public string TierString
+    public string TierRomanString
     {
         get
         {
@@ -145,7 +145,27 @@ public class ClusterInfo
             };
         }
     }
-
+    
+    public string TierString
+    {
+        get
+        {
+            return Tier switch
+            {
+                Tier.T1 => "T1",
+                Tier.T2 => "T2",
+                Tier.T3 => "T3",
+                Tier.T4 => "T4",
+                Tier.T5 => "T5",
+                Tier.T6 => "T6",
+                Tier.T7 => "T7",
+                Tier.T8 => "T8",
+                Tier.Unknown => "T?",
+                _ => "T?"
+            };
+        }
+    }
+    
     private static string ClusterModeString(ClusterMode clusterMode)
     {
         return clusterMode switch

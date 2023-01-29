@@ -37,6 +37,7 @@ public class RequiredJournal : INotifyPropertyChanged
         new (Location.Lymhurst, WorldData.GetUniqueNameOrDefault((int)Location.Lymhurst)),
         new (Location.Bridgewatch, WorldData.GetUniqueNameOrDefault((int)Location.Bridgewatch)),
         new (Location.Caerleon, WorldData.GetUniqueNameOrDefault((int)Location.Caerleon)),
+        new (Location.Brecilien, WorldData.GetUniqueNameOrDefault((int)Location.Brecilien)),
         new (Location.MerlynsRest, WorldData.GetUniqueNameOrDefault((int)Location.MerlynsRest)),
         new (Location.MorganasRest, WorldData.GetUniqueNameOrDefault((int)Location.MorganasRest)),
         new (Location.ArthursRest, WorldData.GetUniqueNameOrDefault((int)Location.ArthursRest))
