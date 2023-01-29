@@ -43,6 +43,7 @@ public class MarketController
                 Ticks = DateTime.UtcNow.Ticks,
                 Type = TradeType.InstantBuy,
                 Id = purchase.AuctionId,
+                ClusterIndex = ClusterController.CurrentCluster.MainClusterIndex ?? ClusterController.CurrentCluster.Index,
                 AuctionEntry = tempOffer,
                 InstantBuySellContent = instantBuySellContent
             };
@@ -83,6 +84,7 @@ public class MarketController
                 Ticks = DateTime.UtcNow.Ticks,
                 Type = TradeType.InstantSell,
                 Id = sale.AuctionId,
+                ClusterIndex = ClusterController.CurrentCluster.MainClusterIndex ?? ClusterController.CurrentCluster.Index,
                 AuctionEntry = tempBuyOrder,
                 InstantBuySellContent = instantBuySellContent
             };

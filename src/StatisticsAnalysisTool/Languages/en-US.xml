@@ -679,4 +679,6 @@
 	<translation name="MOBS_JSON_SOURCE_URL">mobs.json source url</translation>
 	<translation name="GET_MOBS_JSON">Get mobs.json</translation>
 	<translation name="MOBS_JSON_CAN_NOT_BE_LOADED">mobs.json can not be loaded.</translation>
+	<translation name="INSTANT_SELL">Instant sell</translation>
+	<translation name="INSTANT_BUY">Instant buy</translation>
 </translations>

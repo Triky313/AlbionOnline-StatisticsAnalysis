@@ -54,12 +54,12 @@ public class Trade : INotifyPropertyChanged
                 return $"{ClusterIndex.Split("_")[1]} ({LanguageController.Translation("HIDEOUT")})";
             }
 
-            if (Location == MarketLocation.BlackMarket)
+            return Location switch
             {
-                return "Black Market";
-            }
-
-            return WorldData.GetUniqueNameOrDefault((int) Location) ?? LanguageController.Translation("UNKNOWN");
+                MarketLocation.BlackMarket => "Black Market",
+                MarketLocation.Unknown => LanguageController.Translation("UNKNOWN"),
+                _ => WorldData.GetUniqueNameOrDefault((int) Location)
+            };
         }
     }
 
@@ -83,9 +83,9 @@ public class Trade : INotifyPropertyChanged
     #endregion
 
     #region Instant buy / sell
-    
+
     public AuctionEntry AuctionEntry { get; init; }
-    public InstantBuySellContent InstantBuySellContent { get; init; } = new ();
+    public InstantBuySellContent InstantBuySellContent { get; init; } = new();
     public string TypeDescription => Type switch
     {
         TradeType.InstantSell => LanguageController.Translation("INSTANT_SELL"),
