@@ -16,5 +16,8 @@ public enum TradeStatType
     TaxesThisWeek,
     TaxesLastWeek,
     TaxesMonth,
-    TaxesYear
+    TaxesYear,
+    SoldTotal,
+    BoughtTotal,
+    TaxesTotal
 }

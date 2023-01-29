@@ -67,19 +67,40 @@ public class TradeStatsObject : INotifyPropertyChanged
         TaxesMonth = GetStatByType(trades, currentUtc, TradeStatType.TaxesMonth);
         TaxesYear = GetStatByType(trades, currentUtc, TradeStatType.TaxesYear);
 
-        //SoldTotal = trades.Where(x => x.MailType is MailType.MarketplaceSellOrderFinished or MailType.MarketplaceSellOrderExpired).Sum(x => x.MailContent.TotalPrice.IntegerValue);
-        //BoughtTotal = trades.Where(x => x.MailType is MailType.MarketplaceBuyOrderFinished or MailType.MarketplaceBuyOrderExpired).Sum(x => x.MailContent.TotalPrice.IntegerValue);
-        //TaxesTotal = trades.Sum(x => x.MailContent.TaxSetupPrice.IntegerValue + x.MailContent.TaxPrice.IntegerValue);
+        SoldTotal = GetStatByType(trades, currentUtc, TradeStatType.SoldTotal);
+        BoughtTotal = GetStatByType(trades, currentUtc, TradeStatType.BoughtTotal);
+        TaxesTotal = GetStatByType(trades, currentUtc, TradeStatType.TaxesTotal);
+        
+        SalesToday = SoldToday - (BoughtToday + TaxesToday);
+        SalesThisWeek = SoldThisWeek - (BoughtThisWeek + TaxesThisWeek);
+        SalesLastWeek = SoldLastWeek - (BoughtLastWeek + TaxesLastWeek);
+        SalesMonth = SoldMonth - (BoughtMonth + TaxesMonth);
+        SalesYear = SoldYear - (BoughtYear + TaxesYear);
+        SalesTotal = SoldTotal - (BoughtTotal + TaxesTotal);
+        
+        MostExpensiveSaleItem = trades
+            .Where(x => x.MailType is MailType.MarketplaceSellOrderFinished or MailType.MarketplaceSellOrderExpired || x.Type == TradeType.InstantSell)
+            .MaxBy(x =>
+            {
+                return x.Type switch
+                {
+                    TradeType.Mail => x.MailContent.TotalPrice.IntegerValue,
+                    TradeType.InstantSell => x.InstantBuySellContent.TotalPrice.IntegerValue,
+                    _ => 0
+                };
+            });
 
-        //SalesToday = SoldToday - (BoughtToday + TaxesToday);
-        //SalesThisWeek = SoldThisWeek - (BoughtThisWeek + TaxesThisWeek);
-        //SalesLastWeek = SoldLastWeek - (BoughtLastWeek + TaxesLastWeek);
-        //SalesMonth = SoldMonth - (BoughtMonth + TaxesMonth);
-        //SalesYear = SoldYear - (BoughtYear + TaxesYear);
-        //SalesTotal = SoldTotal - (BoughtTotal + TaxesTotal);
-
-        //MostExpensiveSaleItem = trades.Where(x => x.MailType is MailType.MarketplaceSellOrderFinished or MailType.MarketplaceSellOrderExpired).MaxBy(x => x.MailContent.TotalPrice.IntegerValue);
-        //MostExpensivePurchasedItem = trades.Where(x => x.MailType is MailType.MarketplaceBuyOrderFinished or MailType.MarketplaceBuyOrderExpired).MaxBy(x => x.MailContent.TotalPrice.IntegerValue);
+        MostExpensivePurchasedItem = trades
+            .Where(x => x.MailType is MailType.MarketplaceBuyOrderFinished or MailType.MarketplaceBuyOrderExpired || x.Type == TradeType.InstantBuy)
+            .MaxBy(x => 
+            {
+                return x.Type switch
+                {
+                    TradeType.Mail => x.MailContent.TotalPrice.IntegerValue,
+                    TradeType.InstantSell => x.InstantBuySellContent.TotalPrice.IntegerValue,
+                    _ => 0
+                };
+            });
     }
 
     private static long GetStatByType(IEnumerable<Trade> trades, DateTime datetime, TradeStatType type)
@@ -108,7 +129,8 @@ public class TradeStatsObject : INotifyPropertyChanged
 
                 switch (type)
                 {
-                    case TradeStatType.SoldToday or TradeStatType.SoldThisWeek or TradeStatType.SoldLastWeek or TradeStatType.SoldMonth or TradeStatType.SoldYear:
+                    case TradeStatType.SoldToday or TradeStatType.SoldThisWeek or TradeStatType.SoldLastWeek or TradeStatType.SoldMonth or TradeStatType.SoldYear 
+                        or TradeStatType.SoldTotal:
                         switch (trade.Type)
                         {
                             case TradeType.Mail when trade.MailType is MailType.MarketplaceSellOrderFinished or MailType.MarketplaceSellOrderExpired:
@@ -116,7 +138,8 @@ public class TradeStatsObject : INotifyPropertyChanged
                                 return true;
                         }
                         break;
-                    case TradeStatType.BoughtToday or TradeStatType.BoughtThisWeek or TradeStatType.BoughtLastWeek or TradeStatType.BoughtMonth or TradeStatType.BoughtYear:
+                    case TradeStatType.BoughtToday or TradeStatType.BoughtThisWeek or TradeStatType.BoughtLastWeek or TradeStatType.BoughtMonth or TradeStatType.BoughtYear 
+                        or TradeStatType.BoughtTotal:
                         switch (trade.Type)
                         {
                             case TradeType.Mail when trade.MailType is MailType.MarketplaceBuyOrderFinished or MailType.MarketplaceBuyOrderExpired:
@@ -124,7 +147,8 @@ public class TradeStatsObject : INotifyPropertyChanged
                                 return true;
                         }
                         break;
-                    case TradeStatType.TaxesToday or TradeStatType.TaxesThisWeek or TradeStatType.TaxesLastWeek or TradeStatType.TaxesMonth or TradeStatType.TaxesYear:
+                    case TradeStatType.TaxesToday or TradeStatType.TaxesThisWeek or TradeStatType.TaxesLastWeek or TradeStatType.TaxesMonth or TradeStatType.TaxesYear 
+                        or TradeStatType.TaxesTotal:
                         switch (trade.Type)
                         {
                             case TradeType.Mail when trade.MailType
@@ -154,10 +178,17 @@ public class TradeStatsObject : INotifyPropertyChanged
                         TradeType.InstantBuy => trade.InstantBuySellContent.TotalPrice.IntegerValue,
                         _ => 0
                     },
-                    TradeStatType.TaxesToday or TradeStatType.TaxesThisWeek or TradeStatType.TaxesLastWeek or TradeStatType.TaxesMonth or TradeStatType.TaxesYear => trade.Type switch
+                    TradeStatType.TaxesToday or TradeStatType.TaxesThisWeek or TradeStatType.TaxesLastWeek or TradeStatType.TaxesMonth or TradeStatType.TaxesYear 
+                        or TradeStatType.TaxesTotal => trade.Type switch
                     {
                         TradeType.Mail => trade.MailContent.TaxSetupPrice.IntegerValue + trade.MailContent.TaxPrice.IntegerValue,
                         TradeType.InstantSell => trade.InstantBuySellContent.TaxPrice.IntegerValue,
+                        _ => 0
+                    },
+                    TradeStatType.SoldTotal => trade.Type switch
+                    {
+                        TradeType.Mail => trade.MailContent.TotalPrice.IntegerValue,
+                        TradeType.InstantSell => trade.InstantBuySellContent.TotalPrice.IntegerValue,
                         _ => 0
                     },
                     _ => 0
