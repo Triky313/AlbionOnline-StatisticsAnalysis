@@ -47,60 +47,25 @@ public class TradeStatsObject : INotifyPropertyChanged
 
     public void SetTradeStats(List<Trade> trades)
     {
-        SoldToday = trades
-            .Where(trade =>
-            {
-                if (trade.Timestamp.Date != DateTime.UtcNow.Date)
-                {
-                    return false;
-                }
+        var currentUtc = DateTime.UtcNow;
 
-                if (trade.Type == TradeType.Mail && trade.MailType == MailType.MarketplaceSellOrderFinished && trade.MailType == MailType.MarketplaceSellOrderExpired)
-                {
-                    return true;
-                }
+        SoldToday = GetStatByType(trades, currentUtc, TradeStatType.SoldToday);
+        SoldThisWeek = GetStatByType(trades, currentUtc, TradeStatType.SoldThisWeek);
+        SoldLastWeek = GetStatByType(trades, currentUtc, TradeStatType.SoldLastWeek);
+        SoldMonth = GetStatByType(trades, currentUtc, TradeStatType.SoldMonth);
+        SoldYear = GetStatByType(trades, currentUtc, TradeStatType.SoldYear);
 
-                if (trade.Type == TradeType.InstantSell)
-                {
-                    return true;
-                }
+        BoughtToday = GetStatByType(trades, currentUtc, TradeStatType.BoughtToday);
+        BoughtThisWeek = GetStatByType(trades, currentUtc, TradeStatType.BoughtThisWeek);
+        BoughtLastWeek = GetStatByType(trades, currentUtc, TradeStatType.BoughtLastWeek);
+        BoughtMonth = GetStatByType(trades, currentUtc, TradeStatType.BoughtMonth);
+        BoughtYear = GetStatByType(trades, currentUtc, TradeStatType.BoughtYear);
 
-                return false;
-            })
-            .Sum(trade =>
-            {
-                if (trade.Type == TradeType.Mail)
-                {
-                    return trade.MailContent.TotalPrice.IntegerValue;
-                }
-
-                if (trade.Type == TradeType.InstantSell)
-                {
-                    return trade.InstantBuySellContent.UnitPrice.IntegerValue * trade.InstantBuySellContent.Quantity;
-                }
-
-                return 0;
-            });
-
-
-        //var currentUtc = DateTime.UtcNow;
-        //SoldToday = trades.Where(x => x.Timestamp.Date == DateTime.UtcNow.Date && x.MailType is MailType.MarketplaceSellOrderFinished or MailType.MarketplaceSellOrderExpired).Sum(x => x.MailContent.TotalPrice.IntegerValue);
-        //SoldThisWeek = trades.Where(x => x.Timestamp.IsDateInWeekOfYear(currentUtc) && x.MailType is MailType.MarketplaceSellOrderFinished or MailType.MarketplaceSellOrderExpired).Sum(x => x.MailContent.TotalPrice.IntegerValue);
-        //SoldLastWeek = trades.Where(x => x.Timestamp.IsDateInWeekOfYear(currentUtc.AddDays(-7)) && x.MailType is MailType.MarketplaceSellOrderFinished or MailType.MarketplaceSellOrderExpired).Sum(x => x.MailContent.TotalPrice.IntegerValue);
-        //SoldMonth = trades.Where(x => x.Timestamp.Year == currentUtc.Year && x.Timestamp.Month == currentUtc.Month && x.MailType is MailType.MarketplaceSellOrderFinished or MailType.MarketplaceSellOrderExpired).Sum(x => x.MailContent.TotalPrice.IntegerValue);
-        //SoldYear = trades.Where(x => x.Timestamp.Year == currentUtc.Year && x.MailType is MailType.MarketplaceSellOrderFinished or MailType.MarketplaceSellOrderExpired).Sum(x => x.MailContent.TotalPrice.IntegerValue);
-
-        //BoughtToday = trades.Where(x => x.Timestamp.Date == DateTime.UtcNow.Date && x.MailType is MailType.MarketplaceBuyOrderFinished or MailType.MarketplaceBuyOrderExpired).Sum(x => x.MailContent.TotalPriceWithDeductedTaxes.IntegerValue);
-        //BoughtThisWeek = trades.Where(x => x.Timestamp.IsDateInWeekOfYear(currentUtc) && x.MailType is MailType.MarketplaceBuyOrderFinished or MailType.MarketplaceBuyOrderExpired).Sum(x => x.MailContent.TotalPriceWithDeductedTaxes.IntegerValue);
-        //BoughtLastWeek = trades.Where(x => x.Timestamp.IsDateInWeekOfYear(currentUtc.AddDays(-7)) && x.MailType is MailType.MarketplaceBuyOrderFinished or MailType.MarketplaceBuyOrderExpired).Sum(x => x.MailContent.TotalPriceWithDeductedTaxes.IntegerValue);
-        //BoughtMonth = trades.Where(x => x.Timestamp.Year == currentUtc.Year && x.Timestamp.Month == currentUtc.Month && x.MailType is MailType.MarketplaceBuyOrderFinished or MailType.MarketplaceBuyOrderExpired).Sum(x => x.MailContent.TotalPriceWithDeductedTaxes.IntegerValue);
-        //BoughtYear = trades.Where(x => x.Timestamp.Year == currentUtc.Year && x.MailType is MailType.MarketplaceBuyOrderFinished or MailType.MarketplaceBuyOrderExpired).Sum(x => x.MailContent.TotalPriceWithDeductedTaxes.IntegerValue);
-
-        //TaxesToday = trades.Where(x => x.Timestamp.Date == DateTime.UtcNow.Date).Sum(x => x.MailContent.TaxSetupPrice.IntegerValue + x.MailContent.TaxPrice.IntegerValue);
-        //TaxesThisWeek = trades.Where(x => x.Timestamp.IsDateInWeekOfYear(currentUtc)).Sum(x => x.MailContent.TaxSetupPrice.IntegerValue + x.MailContent.TaxPrice.IntegerValue);
-        //TaxesLastWeek = trades.Where(x => x.Timestamp.IsDateInWeekOfYear(currentUtc.AddDays(-7))).Sum(x => x.MailContent.TaxSetupPrice.IntegerValue + x.MailContent.TaxPrice.IntegerValue);
-        //TaxesMonth = trades.Where(x => x.Timestamp.Year == currentUtc.Year && x.Timestamp.Month == currentUtc.Month).Sum(x => x.MailContent.TaxSetupPrice.IntegerValue + x.MailContent.TaxPrice.IntegerValue);
-        //TaxesYear = trades.Where(x => x.Timestamp.Year == currentUtc.Year).Sum(x => x.MailContent.TaxSetupPrice.IntegerValue + x.MailContent.TaxPrice.IntegerValue);
+        TaxesToday = GetStatByType(trades, currentUtc, TradeStatType.TaxesToday);
+        TaxesThisWeek = GetStatByType(trades, currentUtc, TradeStatType.TaxesThisWeek);
+        TaxesLastWeek = GetStatByType(trades, currentUtc, TradeStatType.TaxesLastWeek);
+        TaxesMonth = GetStatByType(trades, currentUtc, TradeStatType.TaxesMonth);
+        TaxesYear = GetStatByType(trades, currentUtc, TradeStatType.TaxesYear);
 
         //SoldTotal = trades.Where(x => x.MailType is MailType.MarketplaceSellOrderFinished or MailType.MarketplaceSellOrderExpired).Sum(x => x.MailContent.TotalPrice.IntegerValue);
         //BoughtTotal = trades.Where(x => x.MailType is MailType.MarketplaceBuyOrderFinished or MailType.MarketplaceBuyOrderExpired).Sum(x => x.MailContent.TotalPrice.IntegerValue);
@@ -115,6 +80,89 @@ public class TradeStatsObject : INotifyPropertyChanged
 
         //MostExpensiveSaleItem = trades.Where(x => x.MailType is MailType.MarketplaceSellOrderFinished or MailType.MarketplaceSellOrderExpired).MaxBy(x => x.MailContent.TotalPrice.IntegerValue);
         //MostExpensivePurchasedItem = trades.Where(x => x.MailType is MailType.MarketplaceBuyOrderFinished or MailType.MarketplaceBuyOrderExpired).MaxBy(x => x.MailContent.TotalPrice.IntegerValue);
+    }
+
+    private static long GetStatByType(IEnumerable<Trade> trades, DateTime datetime, TradeStatType type)
+    {
+        return trades.Where(trade =>
+            {
+                switch (type)
+                {
+                    case TradeStatType.SoldToday when trade.Timestamp.Date != DateTime.UtcNow.Date:
+                    case TradeStatType.BoughtToday when trade.Timestamp.Date != DateTime.UtcNow.Date:
+                    case TradeStatType.TaxesToday when trade.Timestamp.Date != DateTime.UtcNow.Date:
+                    case TradeStatType.SoldThisWeek when !trade.Timestamp.Date.IsDateInWeekOfYear(datetime):
+                    case TradeStatType.BoughtThisWeek when !trade.Timestamp.Date.IsDateInWeekOfYear(datetime):
+                    case TradeStatType.TaxesThisWeek when !trade.Timestamp.Date.IsDateInWeekOfYear(datetime):
+                    case TradeStatType.SoldLastWeek when !trade.Timestamp.Date.IsDateInWeekOfYear(datetime.AddDays(-7)):
+                    case TradeStatType.BoughtLastWeek when !trade.Timestamp.Date.IsDateInWeekOfYear(datetime.AddDays(-7)):
+                    case TradeStatType.TaxesLastWeek when !trade.Timestamp.Date.IsDateInWeekOfYear(datetime.AddDays(-7)):
+                    case TradeStatType.SoldMonth when trade.Timestamp.Year != datetime.Year || trade.Timestamp.Month != datetime.Month:
+                    case TradeStatType.BoughtMonth when trade.Timestamp.Year != datetime.Year || trade.Timestamp.Month != datetime.Month:
+                    case TradeStatType.TaxesMonth when trade.Timestamp.Year != datetime.Year || trade.Timestamp.Month != datetime.Month:
+                    case TradeStatType.SoldYear when trade.Timestamp.Year != datetime.Year:
+                    case TradeStatType.BoughtYear when trade.Timestamp.Year != datetime.Year:
+                    case TradeStatType.TaxesYear when trade.Timestamp.Year != datetime.Year:
+                        return false;
+                }
+
+                switch (type)
+                {
+                    case TradeStatType.SoldToday or TradeStatType.SoldThisWeek or TradeStatType.SoldLastWeek or TradeStatType.SoldMonth or TradeStatType.SoldYear:
+                        switch (trade.Type)
+                        {
+                            case TradeType.Mail when trade.MailType is MailType.MarketplaceSellOrderFinished or MailType.MarketplaceSellOrderExpired:
+                            case TradeType.InstantSell:
+                                return true;
+                        }
+                        break;
+                    case TradeStatType.BoughtToday or TradeStatType.BoughtThisWeek or TradeStatType.BoughtLastWeek or TradeStatType.BoughtMonth or TradeStatType.BoughtYear:
+                        switch (trade.Type)
+                        {
+                            case TradeType.Mail when trade.MailType is MailType.MarketplaceBuyOrderFinished or MailType.MarketplaceBuyOrderExpired:
+                            case TradeType.InstantBuy:
+                                return true;
+                        }
+                        break;
+                    case TradeStatType.TaxesToday or TradeStatType.TaxesThisWeek or TradeStatType.TaxesLastWeek or TradeStatType.TaxesMonth or TradeStatType.TaxesYear:
+                        switch (trade.Type)
+                        {
+                            case TradeType.Mail when trade.MailType
+                                is MailType.MarketplaceBuyOrderFinished or MailType.MarketplaceBuyOrderExpired
+                                or MailType.MarketplaceSellOrderFinished or MailType.MarketplaceSellOrderExpired:
+                            case TradeType.InstantSell:
+                                return true;
+                        }
+                        break;
+                }
+
+                return false;
+            })
+            .Sum(trade =>
+            {
+                return type switch
+                {
+                    TradeStatType.SoldToday or TradeStatType.SoldThisWeek or TradeStatType.SoldLastWeek or TradeStatType.SoldMonth or TradeStatType.SoldYear => trade.Type switch
+                    {
+                        TradeType.Mail => trade.MailContent.TotalPrice.IntegerValue,
+                        TradeType.InstantSell => trade.InstantBuySellContent.TotalPrice.IntegerValue,
+                        _ => 0
+                    },
+                    TradeStatType.BoughtToday or TradeStatType.BoughtThisWeek or TradeStatType.BoughtLastWeek or TradeStatType.BoughtMonth or TradeStatType.BoughtYear => trade.Type switch
+                    {
+                        TradeType.Mail => trade.MailContent.TotalPriceWithDeductedTaxes.IntegerValue,
+                        TradeType.InstantBuy => trade.InstantBuySellContent.TotalPrice.IntegerValue,
+                        _ => 0
+                    },
+                    TradeStatType.TaxesToday or TradeStatType.TaxesThisWeek or TradeStatType.TaxesLastWeek or TradeStatType.TaxesMonth or TradeStatType.TaxesYear => trade.Type switch
+                    {
+                        TradeType.Mail => trade.MailContent.TaxSetupPrice.IntegerValue + trade.MailContent.TaxPrice.IntegerValue,
+                        TradeType.InstantSell => trade.InstantBuySellContent.TaxPrice.IntegerValue,
+                        _ => 0
+                    },
+                    _ => 0
+                };
+            });
     }
 
     #endregion
