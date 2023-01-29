@@ -37,6 +37,8 @@ public class TradeStatsObject : INotifyPropertyChanged
     private long _taxesTotal;
     private Trade _mostExpensiveSaleItem;
     private Trade _mostExpensivePurchasedItem;
+    private bool _isMostExpensivePurchasedItemFromMail;
+    private bool _isMostExpensiveSaleItemFromMail;
 
     #region Stat calculations
 
@@ -82,24 +84,34 @@ public class TradeStatsObject : INotifyPropertyChanged
             .Where(x => x.MailType is MailType.MarketplaceSellOrderFinished or MailType.MarketplaceSellOrderExpired || x.Type == TradeType.InstantSell)
             .MaxBy(x =>
             {
-                return x.Type switch
+                switch (x.Type)
                 {
-                    TradeType.Mail => x.MailContent.TotalPrice.IntegerValue,
-                    TradeType.InstantSell => x.InstantBuySellContent.TotalPrice.IntegerValue,
-                    _ => 0
-                };
+                    case TradeType.Mail:
+                        IsMostExpensiveSaleItemFromMail = true;
+                        return x.MailContent.TotalPrice.IntegerValue;
+                    case TradeType.InstantBuy:
+                        IsMostExpensiveSaleItemFromMail = false;
+                        return x.InstantBuySellContent.TotalPrice.IntegerValue;
+                    default:
+                        return 0;
+                }
             });
 
         MostExpensivePurchasedItem = trades
             .Where(x => x.MailType is MailType.MarketplaceBuyOrderFinished or MailType.MarketplaceBuyOrderExpired || x.Type == TradeType.InstantBuy)
             .MaxBy(x => 
             {
-                return x.Type switch
+                switch (x.Type)
                 {
-                    TradeType.Mail => x.MailContent.TotalPrice.IntegerValue,
-                    TradeType.InstantSell => x.InstantBuySellContent.TotalPrice.IntegerValue,
-                    _ => 0
-                };
+                    case TradeType.Mail:
+                        IsMostExpensivePurchasedItemFromMail = true;
+                        return x.MailContent.TotalPrice.IntegerValue;
+                    case TradeType.InstantBuy:
+                        IsMostExpensivePurchasedItemFromMail = false;
+                        return x.InstantBuySellContent.TotalPrice.IntegerValue;
+                    default:
+                        return 0;
+                }
             });
     }
 
@@ -197,6 +209,26 @@ public class TradeStatsObject : INotifyPropertyChanged
     }
 
     #endregion
+
+    public bool IsMostExpensiveSaleItemFromMail
+    {
+        get => _isMostExpensiveSaleItemFromMail;
+        set
+        {
+            _isMostExpensiveSaleItemFromMail = value;
+            OnPropertyChanged();
+        }
+    }
+
+    public bool IsMostExpensivePurchasedItemFromMail
+    {
+        get => _isMostExpensivePurchasedItemFromMail;
+        set
+        {
+            _isMostExpensivePurchasedItemFromMail = value;
+            OnPropertyChanged();
+        }
+    }
 
     public long SoldToday
     {
