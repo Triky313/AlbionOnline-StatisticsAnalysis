@@ -1,5 +1,4 @@
-﻿using StatisticsAnalysisTool.Models.NetworkModel;
-using System;
+﻿using System;
 
 namespace StatisticsAnalysisTool.Trade.Mails;
 

@@ -1,4 +1,4 @@
-﻿using StatisticsAnalysisTool.Models.NetworkModel;
+﻿using StatisticsAnalysisTool.Trade.Mails;
 using StatisticsAnalysisTool.Trade.Market;
 using System;
 
