@@ -683,4 +683,5 @@
 	<translation name="TRADE_MONITORING_DESCRIPTION1">Aby rozpoznać nowe wiadomości e-mail, należy otworzyć skrzynkę odbiorczą w grze i dodatkowo każdą wiadomość raz.</translation>
 	<translation name="UNKNOWN TRADE">Nieznana transakcja</translation>
 	<translation name="MAIL">Poczta</translation>
+	<translation name="DELETE_TRADES_AFTER_14_DAYS">Usuń transakcje po 14 dniach</translation>
 </translations>
