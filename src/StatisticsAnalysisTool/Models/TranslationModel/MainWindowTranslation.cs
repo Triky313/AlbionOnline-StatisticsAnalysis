@@ -109,4 +109,5 @@ public class MainWindowTranslation
     public static string ThenRestartTheTool => LanguageController.Translation("THEN_RESTART_THE_TOOL");
     public static string Or => LanguageController.Translation("OR");
     public static string SelectDeselectAll => LanguageController.Translation("SELECT_DESELECT_ALL");
+    public static string Gathering => LanguageController.Translation("GATHERING");
 }

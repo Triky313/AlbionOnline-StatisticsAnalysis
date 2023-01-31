@@ -101,6 +101,7 @@ public class MainWindowViewModel : INotifyPropertyChanged, IAsyncInitialization
     private Visibility _unsupportedOsVisibility = Visibility.Collapsed;
     private LoggingBindings _loggingBindings = new();
     private PlayerInformationBindings _playerInformationBindings = new();
+    private GatheringBindings _gatheringBindings;
 
     public MainWindowViewModel(MainWindow mainWindow)
     {
@@ -788,6 +789,16 @@ public class MainWindowViewModel : INotifyPropertyChanged, IAsyncInitialization
         set
         {
             _dungeonBindings = value;
+            OnPropertyChanged();
+        }
+    }
+
+    public GatheringBindings GatheringBindings
+    {
+        get => _gatheringBindings;
+        set
+        {
+            _gatheringBindings = value;
             OnPropertyChanged();
         }
     }
