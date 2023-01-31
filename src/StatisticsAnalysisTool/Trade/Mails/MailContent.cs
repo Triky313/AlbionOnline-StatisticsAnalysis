@@ -1,17 +1,17 @@
 ﻿using StatisticsAnalysisTool.Common;
 using System.Text.Json.Serialization;
 
-namespace StatisticsAnalysisTool.Models.NetworkModel;
+namespace StatisticsAnalysisTool.Trade.Mails;
 
 public class MailContent
 {
-    public int UsedQuantity { get; set; }
-    public int Quantity { get; set; }
-    public string UniqueItemName { get; set; }
-    public long InternalTotalPrice { get; set; }
-    public long InternalUnitPrice { get; set; }
-    public double TaxRate { get; set; } = 0;
-    public double TaxSetupRate { get; set; } = 0;
+    public int UsedQuantity { get; init; }
+    public int Quantity { get; init; }
+    public string UniqueItemName { get; init; }
+    public long InternalTotalPrice { get; init; }
+    public long InternalUnitPrice { get; init; }
+    public double TaxRate { get; set; }
+    public double TaxSetupRate { get; set; }
     [JsonIgnore]
     public bool IsTaxesStated => TaxRate > 0;
     [JsonIgnore]
@@ -19,7 +19,7 @@ public class MailContent
     [JsonIgnore]
     public FixPoint UnitPrice => FixPoint.FromInternalValue(InternalUnitPrice);
     [JsonIgnore]
-    public FixPoint ActualUnitPrice => (FixPoint.FromInternalValue(InternalTotalPrice).DoubleValue <= 0 || UsedQuantity <= 0) 
+    public FixPoint ActualUnitPrice => FixPoint.FromInternalValue(InternalTotalPrice).DoubleValue <= 0 || UsedQuantity <= 0
         ? FixPoint.FromFloatingPointValue(0)
         : FixPoint.FromFloatingPointValue(FixPoint.FromInternalValue(InternalTotalPrice).DoubleValue / UsedQuantity);
     [JsonIgnore]

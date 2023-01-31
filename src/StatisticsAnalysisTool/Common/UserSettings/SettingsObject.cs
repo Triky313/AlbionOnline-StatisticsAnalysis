@@ -46,15 +46,15 @@ public class SettingsObject
     public double StorageHistoryGridSplitterPosition { get; set; } = 125;
     public double DamageMeterGridSplitterPosition { get; set; } = 125;
     public bool ShortDamageMeterToClipboard { get; set; }
-    public bool IsMailMonitoringActive { get; set; } = true;
-    public bool IgnoreMailsWithZeroValues { get; set; } = false;
-    public int DeleteMailsOlderThanSpecifiedDays { get; set; } = 0;
-    public bool IsSnapshotAfterMapChangeActive { get; set; } = false;
-    public bool IsDamageMeterResetByMapChangeActive { get; set; } = false;
-    public bool IsDamageMeterResetBeforeCombatActive { get; set; } = false;
-    public double MailMonitoringMarketTaxRate { get; set; } = 4;
-    public double MailMonitoringMarketTaxSetupRate { get; set; } = 2.5;
-    public bool IsDungeonClosedSoundActive { get; set; } = false;
+    public bool IsTradeMonitoringActive { get; set; } = true;
+    public bool IgnoreMailsWithZeroValues { get; set; }
+    public int DeleteTradesOlderThanSpecifiedDays { get; set; }
+    public bool IsSnapshotAfterMapChangeActive { get; set; }
+    public bool IsDamageMeterResetByMapChangeActive { get; set; }
+    public bool IsDamageMeterResetBeforeCombatActive { get; set; }
+    public double TradeMonitoringMarketTaxRate { get; set; } = 4;
+    public double TradeMonitoringMarketTaxSetupRate { get; set; } = 2.5;
+    public bool IsDungeonClosedSoundActive { get; set; }
     public int ItemWindowMainTabQualitySelection { get; set; }
     public int ItemWindowHistoryTabQualitySelection { get; set; }
     public List<MainTabLocationFilterSettingsObject> ItemWindowMainTabLocationFilters { get; set; } = new();

@@ -75,7 +75,7 @@ public class ClusterController
         _trackingController.VaultController.ResetCurrentVaultInfo();
         _trackingController.TreasureController.RemoveTemporaryTreasures();
         _trackingController.TreasureController.UpdateLootedChestsDashboardUi();
-        _ = _trackingController.MailController.RemoveMailsByDaysInSettingsAsync();
+        _ = _trackingController.TradeController.RemoveTradesByDaysInSettingsAsync();
     }
 
     #region Cluster history
@@ -104,14 +104,9 @@ public class ClusterController
 
     public void UpdateUserInfoUi(ClusterInfo currentCluster)
     {
-        _mainWindowViewModel.UserTrackingBindings.CurrentMapName = WorldData.GetUniqueNameOrDefault(currentCluster.Index);
-
-        if (string.IsNullOrEmpty(_mainWindowViewModel.UserTrackingBindings.CurrentMapName))
-        {
-            _mainWindowViewModel.UserTrackingBindings.CurrentMapName = WorldData.GetMapNameByMapType(currentCluster.MapType);
-        }
-
-        _mainWindowViewModel.UserTrackingBindings.IslandName = currentCluster.InstanceName;
+        _mainWindowViewModel.UserTrackingBindings.CurrentMapInfoBinding.Tier = currentCluster.TierString;
+        _mainWindowViewModel.UserTrackingBindings.CurrentMapInfoBinding.ClusterMode = currentCluster.ClusterMode;
+        _mainWindowViewModel.UserTrackingBindings.CurrentMapInfoBinding.ComposingMapInfoString(currentCluster);
     }
 
     #endregion

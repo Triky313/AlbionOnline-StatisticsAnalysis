@@ -2,8 +2,8 @@
 
 public class TemporaryTreasure
 {
-    public int ObjectId { get; set; }
-    public string UniqueName { get; set; }
+    public int ObjectId { get; init; }
+    public string UniqueName { get; init; }
     public string UniqueNameWithLocation { get; set; }
     public bool AlreadyScanned { get; set; }
 }

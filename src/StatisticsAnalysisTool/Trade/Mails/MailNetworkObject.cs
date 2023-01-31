@@ -1,12 +1,11 @@
 ﻿using System;
 using StatisticsAnalysisTool.Enumerations;
-using StatisticsAnalysisTool.Network.Manager;
 
-namespace StatisticsAnalysisTool.Models.NetworkModel;
+namespace StatisticsAnalysisTool.Trade.Mails;
 
-public class MailInfoObject
+public class MailNetworkObject
 {
-    public MailInfoObject(Guid? guid, long mailId, string subject, string mailTypeText, long tick)
+    public MailNetworkObject(Guid? guid, long mailId, string subject, string mailTypeText, long tick)
     {
         Guid = guid;
         MailId = mailId;

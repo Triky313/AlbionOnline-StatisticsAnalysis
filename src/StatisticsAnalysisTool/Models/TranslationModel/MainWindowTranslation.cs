@@ -70,7 +70,7 @@ public class MainWindowTranslation
     public static string ItemSearch => LanguageController.Translation("ITEM_SEARCH");
     public static string Dungeons => LanguageController.Translation("DUNGEONS");
     public static string PlayerInformation => LanguageController.Translation("PLAYER_INFORMATION");
-    public static string MailMonitoring => LanguageController.Translation("MAIL_MONITORING");
+    public static string TradeMonitoring => LanguageController.Translation("TRADE_MONITORING");
     public static string StorageHistory => LanguageController.Translation("STORAGE_HISTORY");
     public static string Logging => LanguageController.Translation("LOGGING");
     public static string TrackingIsActive => LanguageController.Translation("TRACKING_IS_ACTIVE");
@@ -94,8 +94,8 @@ public class MainWindowTranslation
     public static string AverageItemPowerWhenKilling => LanguageController.Translation("AVERAGE_ITEM_POWER_WHEN_KILLING");
     public static string AverageItemPowerOfTheKilledEnemies => LanguageController.Translation("AVERAGE_ITEM_POWER_OF_THE_KILLED_ENEMIES");
     public static string AverageItemPowerWhenDying => LanguageController.Translation("AVERAGE_ITEM_POWER_WHEN_DYING");
-    public static string DeleteSelectedMails => LanguageController.Translation("DELETE_SELECTED_MAILS");
-    public static string MailMonitoringDescription1 => LanguageController.Translation("MAIL_MONITORING_DESCRIPTION1");
+    public static string DeleteSelectedTrades => LanguageController.Translation("DELETE_SELECTED_TRADES");
+    public static string TradeMonitoringDescription1 => LanguageController.Translation("TRADE_MONITORING_DESCRIPTION1");
     public static string To => LanguageController.Translation("TO");
     public static string DeleteCurrentStorage => LanguageController.Translation("DELETE_SELECTED_STORAGE");
     public static string Donations => LanguageController.Translation("DONATIONS");
