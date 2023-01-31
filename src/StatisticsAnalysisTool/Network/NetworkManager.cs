@@ -65,6 +65,7 @@ public class NetworkManager
         builder.AddEventHandler(new GuildVaultInfoEventHandler(trackingController));
         builder.AddEventHandler(new NewLootEventHandler(trackingController));
         builder.AddEventHandler(new AttachItemContainerEventHandler(trackingController));
+        builder.AddEventHandler(new HarvestFinishedEventHandler(trackingController));
 
         builder.AddRequestHandler(new InventoryMoveItemRequestHandler(trackingController));
         builder.AddRequestHandler(new UseShrineRequestHandler(trackingController));

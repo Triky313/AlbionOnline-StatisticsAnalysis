@@ -781,4 +781,7 @@
       <XamlRuntime>$(DefaultXamlRuntime)</XamlRuntime>
     </Page>
   </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Gathering\" />
+  </ItemGroup>
 </Project>
