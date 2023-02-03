@@ -76,6 +76,7 @@ public class ClusterController
         _trackingController.TreasureController.RemoveTemporaryTreasures();
         _trackingController.TreasureController.UpdateLootedChestsDashboardUi();
         _ = _trackingController.TradeController.RemoveTradesByDaysInSettingsAsync();
+        _ = _trackingController.GatheringController.SetGatheredResourcesClosedAsync();
     }
 
     #region Cluster history

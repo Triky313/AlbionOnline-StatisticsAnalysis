@@ -803,9 +803,6 @@
     </Page>
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="Gathering\" />
-  </ItemGroup>
-  <ItemGroup>
     <EmbeddedResource Update="Properties\Resources.resx">
       <Generator>PublicResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>

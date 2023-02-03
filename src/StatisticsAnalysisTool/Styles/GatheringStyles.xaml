@@ -1,73 +1,53 @@
 <ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-                    xmlns:bindingModel="clr-namespace:StatisticsAnalysisTool.Models.BindingModel">
+                    xmlns:bindingModel="clr-namespace:StatisticsAnalysisTool.Models.BindingModel"
+                    xmlns:models="clr-namespace:StatisticsAnalysisTool.Gathering">
 
     <BitmapImage x:Key="OriginalImage" UriSource="../Assets/resources.png"/>
-    <CroppedBitmap x:Key="Image.Resource.Ore.Level0">
-        <CroppedBitmap.Source>
-            <StaticResource ResourceKey="OriginalImage"/>
-        </CroppedBitmap.Source>
-        <CroppedBitmap.SourceRect>
-            <Int32Rect X="0" Y="0" Width="155" Height="145"/>
-        </CroppedBitmap.SourceRect>
-    </CroppedBitmap>
 
-    <CroppedBitmap x:Key="Image.Resource.Ore.Level1">
-        <CroppedBitmap.Source>
-            <StaticResource ResourceKey="OriginalImage"/>
-        </CroppedBitmap.Source>
-        <CroppedBitmap.SourceRect>
-            <Int32Rect X="155" Y="0" Width="155" Height="145"/>
-        </CroppedBitmap.SourceRect>
-    </CroppedBitmap>
-
-    <CroppedBitmap x:Key="Image.Resource.Ore.Level2">
-        <CroppedBitmap.Source>
-            <StaticResource ResourceKey="OriginalImage"/>
-        </CroppedBitmap.Source>
-        <CroppedBitmap.SourceRect>
-            <Int32Rect X="310" Y="0" Width="155" Height="145"/>
-        </CroppedBitmap.SourceRect>
-    </CroppedBitmap>
-
-    <CroppedBitmap x:Key="Image.Resource.Ore.Level3">
-        <CroppedBitmap.Source>
-            <StaticResource ResourceKey="OriginalImage"/>
-        </CroppedBitmap.Source>
-        <CroppedBitmap.SourceRect>
-            <Int32Rect X="465" Y="0" Width="155" Height="145"/>
-        </CroppedBitmap.SourceRect>
-    </CroppedBitmap>
-
-    <CroppedBitmap x:Key="Image.Resource.Ore.Level4">
-        <CroppedBitmap.Source>
-            <StaticResource ResourceKey="OriginalImage"/>
-        </CroppedBitmap.Source>
-        <CroppedBitmap.SourceRect>
-            <Int32Rect X="620" Y="0" Width="155" Height="145"/>
-        </CroppedBitmap.SourceRect>
-    </CroppedBitmap>
-
-    <Style x:Key="Style.Image.Resource" TargetType="Image">
+    <Style x:Key="Gathering.Image.Item.Icon" TargetType="Image">
         <Setter Property="Width" Value="50" />
         <Setter Property="Height" Value="50" />
-        <!--<Setter Property="RenderOptions.BitmapScalingMode" Value="HighQuality" />
-        <Setter Property="Source">
-            <Setter.Value>
-                <CroppedBitmap Source="../Assets/resources.png" SourceRect="0,0,100,100" />
-            </Setter.Value>
-        </Setter>
-        <Setter Property="Source" Value="../Assets/resources.png" />-->
     </Style>
 
-    <DataTemplate x:Key="GatheringStatsTemplate" DataType="bindingModel:GatheringBindings">
-        <StackPanel Orientation="Horizontal">
-            <Image Style="{StaticResource Style.Image.Resource}" Source="{StaticResource Image.Resource.Ore.Level0}" />
-            <Image Style="{StaticResource Style.Image.Resource}" Source="{StaticResource Image.Resource.Ore.Level1}" />
-            <Image Style="{StaticResource Style.Image.Resource}" Source="{StaticResource Image.Resource.Ore.Level2}" />
-            <Image Style="{StaticResource Style.Image.Resource}" Source="{StaticResource Image.Resource.Ore.Level3}" />
-            <Image Style="{StaticResource Style.Image.Resource}" Source="{StaticResource Image.Resource.Ore.Level4}" />
-        </StackPanel>
+    <!--<Style x:Key="StackPanel.Inner.Content" TargetType="StackPanel">
+        <Setter Property="Orientation" Value="Vertical" />
+        <Setter Property="Width" Value="60" />
+        <Setter Property="HorizontalAlignment" Value="Center" />
+        <Setter Property="VerticalAlignment" Value="Bottom" />
+    </Style>-->
+
+    <DataTemplate x:Key="GatheredTemplate" DataType="{x:Type models:Gathered}">
+        <Grid Height="50">
+            <Border Style="{StaticResource Container.Border}">
+                <DockPanel VerticalAlignment="Top" HorizontalAlignment="Stretch" Margin="0,0,10,0">
+                    <Grid Margin="0,0, 5, 0" HorizontalAlignment="Center" VerticalAlignment="Center">
+                        <Image Source="{Binding Item.Icon, IsAsync=True, Mode=OneWay}" Style="{StaticResource Gathering.Image.Item.Icon}" />
+                    </Grid>
+                    <StackPanel Orientation="Vertical">
+                        <DockPanel>
+                            <StackPanel Orientation="Horizontal">
+                                <TextBlock Text="{Binding ClusterUniqueName, IsAsync=True, FallbackValue=0}" FontWeight="Bold" Margin="0,0,3,0" Foreground="{StaticResource SolidColorBrush.Text.1}" />
+                            </StackPanel>
+                        </DockPanel>
+                       <DockPanel>
+                            <StackPanel Orientation="Horizontal">
+                                <TextBlock Text="GainedStandardAmount" Width="200" Foreground="{StaticResource SolidColorBrush.Accent.Blue.2}" />
+                                <TextBlock Text="GainedBonusAmount" Width="200" Foreground="{StaticResource SolidColorBrush.Accent.Blue.2}" />
+                                <TextBlock Text="GainedPremiumBonusAmount" Width="200" Foreground="{StaticResource SolidColorBrush.Accent.Blue.2}" />
+                            </StackPanel>
+                        </DockPanel>
+                        <DockPanel>
+                            <StackPanel Orientation="Horizontal">
+                                <TextBlock Text="{Binding GainedStandardAmount, IsAsync=True}" Width="200" Foreground="{StaticResource SolidColorBrush.Accent.Blue.2}" />
+                                <TextBlock Text="{Binding GainedBonusAmount, IsAsync=True}" Width="200" Foreground="{StaticResource SolidColorBrush.Accent.Blue.2}" />
+                                <TextBlock Text="{Binding GainedPremiumBonusAmount, IsAsync=True}" Width="200" Foreground="{StaticResource SolidColorBrush.Accent.Blue.2}" />
+                            </StackPanel>
+                        </DockPanel>
+                    </StackPanel>
+                </DockPanel>
+            </Border>
+        </Grid>
     </DataTemplate>
 
 </ResourceDictionary>

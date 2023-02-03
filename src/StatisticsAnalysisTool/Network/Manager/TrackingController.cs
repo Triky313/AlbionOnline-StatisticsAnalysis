@@ -56,7 +56,7 @@ public class TrackingController : ITrackingController
         MarketController = new MarketController(this);
         TradeController = new TradeController(mainWindowViewModel);
         VaultController = new VaultController(mainWindowViewModel);
-        GatheringController = new GatheringController(mainWindowViewModel);
+        GatheringController = new GatheringController(this, mainWindowViewModel);
         LiveStatsTracker = new LiveStatsTracker(this, mainWindowViewModel);
     }
 

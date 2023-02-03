@@ -16,7 +16,6 @@ public class HarvestFinishedEventHandler : EventPacketHandler<HarvestFinishedEve
 
     protected override async Task OnActionAsync(HarvestFinishedEvent value)
     {
-
-        await Task.CompletedTask;
+        await _trackingController.GatheringController.AddOrUpdateAsync(value.HarvestFinishedObject);
     }
 }

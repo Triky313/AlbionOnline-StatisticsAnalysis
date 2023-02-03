@@ -101,7 +101,7 @@ public class MainWindowViewModel : INotifyPropertyChanged, IAsyncInitialization
     private Visibility _unsupportedOsVisibility = Visibility.Collapsed;
     private LoggingBindings _loggingBindings = new();
     private PlayerInformationBindings _playerInformationBindings = new();
-    private GatheringBindings _gatheringBindings;
+    private GatheringBindings _gatheringBindings = new ();
 
     public MainWindowViewModel(MainWindow mainWindow)
     {
@@ -167,6 +167,9 @@ public class MainWindowViewModel : INotifyPropertyChanged, IAsyncInitialization
 
         // Damage Meter
         DamageMeterBindings.GridSplitterPosition = new GridLength(SettingsController.CurrentSettings.DamageMeterGridSplitterPosition);
+
+        // Gathering
+        GatheringBindings.GridSplitterPosition = new GridLength(SettingsController.CurrentSettings.GatheringGridSplitterPosition);
 
         #endregion
     }
