@@ -1,7 +1,7 @@
-﻿using StatisticsAnalysisTool.Annotations;
-using StatisticsAnalysisTool.Common;
+﻿using StatisticsAnalysisTool.Common;
 using StatisticsAnalysisTool.GameData;
 using StatisticsAnalysisTool.Models;
+using StatisticsAnalysisTool.Properties;
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
 
@@ -17,8 +17,9 @@ public class Gathered : INotifyPropertyChanged
 
     public long Timestamp { get; init; }
     public long ObjectId { get; init; }
-    public int ItemId { get; init; }
-    public Item Item => ItemController.GetItemByIndex(ItemId);
+    public long UserObjectId { get; init; }
+    public string UniqueName { get; init; }
+    public Item Item => ItemController.GetItemByUniqueName(UniqueName);
 
     public int GainedStandardAmount
     {

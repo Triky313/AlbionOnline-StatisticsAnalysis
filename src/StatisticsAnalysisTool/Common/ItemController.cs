@@ -266,6 +266,11 @@ public static class ItemController
         return index == null ? null : Items?.FirstOrDefault(i => i.Index == index);
     }
 
+    public static string GetItemUniqueNameByIndex(int? index)
+    {
+        return index == null ? null : Items?.FirstOrDefault(i => i.Index == index)?.UniqueName ?? string.Empty;
+    }
+
     public static Item GetItemByUniqueName(string uniqueName)
     {
         return Items?.FirstOrDefault(i => i.UniqueName == uniqueName) ?? Items?.FirstOrDefault(i => GetCleanUniqueName(i.UniqueName) == uniqueName);
@@ -750,6 +755,13 @@ public static class ItemController
         }
 
         return resultUniqueName;
+    }
+
+    public static IEnumerable<string> GetResourcesShopSubCategories()
+    {
+        return _itemsJson?.Items?.ShopCategories?.ShopCategory?.ToList()
+            .FirstOrDefault(x => x?.Id == "resources")?.ShopSubCategory
+            .Select(x => x.Id) ?? new List<string>();
     }
 
     #endregion

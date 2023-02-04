@@ -1,12 +1,17 @@
-﻿using StatisticsAnalysisTool.Common.UserSettings;
+﻿using StatisticsAnalysisTool.Common;
+using StatisticsAnalysisTool.Common.UserSettings;
 using StatisticsAnalysisTool.Models.NetworkModel;
 using StatisticsAnalysisTool.Network.Manager;
+using StatisticsAnalysisTool.Properties;
 using StatisticsAnalysisTool.ViewModels;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
+using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
+using System.Windows.Threading;
 
 namespace StatisticsAnalysisTool.Gathering;
 
@@ -14,6 +19,7 @@ public class GatheringController
 {
     private readonly TrackingController _trackingController;
     private readonly MainWindowViewModel _mainWindowViewModel;
+    private int _gatheredCounter;
 
     public GatheringController(TrackingController trackingController, MainWindowViewModel mainWindowViewModel)
     {
@@ -45,7 +51,8 @@ public class GatheringController
             var gathered = new Gathered()
             {
                 Timestamp = DateTime.UtcNow.Ticks,
-                ItemId = harvestFinishedObject.ItemId,
+                UniqueName = ItemController.GetItemUniqueNameByIndex(harvestFinishedObject.ItemId),
+                UserObjectId = harvestFinishedObject.UserObjectId,
                 ObjectId = harvestFinishedObject.ObjectId,
                 GainedStandardAmount = harvestFinishedObject.StandardAmount,
                 GainedBonusAmount = harvestFinishedObject.CollectorBonusAmount,
@@ -56,7 +63,7 @@ public class GatheringController
             AddGatheredToBindingCollection(gathered);
         }
 
-        //await _trackingController.TradeController.SaveInFileAfterExceedingLimit(10);
+        await SaveInFileAfterExceedingLimit(10);
     }
 
     public async void AddGatheredToBindingCollection(Gathered gathered)
@@ -79,4 +86,57 @@ public class GatheringController
             }
         });
     }
+
+    #region Save / Load data
+
+    public async Task LoadFromFileAsync()
+    {
+        var gatheredDtos = await FileController.LoadAsync<List<GatheredDto>>($"{AppDomain.CurrentDomain.BaseDirectory}{Settings.Default.GatheringFileName}");
+        var gathered = gatheredDtos.Select(GatheringMapping.Mapping).ToList();
+        await SetGatheredToBindings(gathered);
+    }
+
+    public async Task SaveInFileAsync()
+    {
+        DirectoryController.CreateDirectoryWhenNotExists(Path.Combine(AppDomain.CurrentDomain.BaseDirectory, Settings.Default.UserDataDirectoryName));
+        await FileController.SaveAsync(_mainWindowViewModel.GatheringBindings?.GatheredCollection
+            ?.Select(GatheringMapping.Mapping), Path.Combine(AppDomain.CurrentDomain.BaseDirectory, Settings.Default.UserDataDirectoryName, Settings.Default.GatheringFileName));
+    }
+
+    public async Task SaveInFileAfterExceedingLimit(int limit)
+    {
+        if (++_gatheredCounter < limit)
+        {
+            return;
+        }
+
+        if (_mainWindowViewModel?.TradeMonitoringBindings?.Trades == null)
+        {
+            return;
+        }
+
+        var gatheredCollection = _mainWindowViewModel.GatheringBindings.GatheredCollection;
+        var gatheredDtos = gatheredCollection?.Select(GatheringMapping.Mapping).ToList();
+
+        if (gatheredDtos == null)
+        {
+            return;
+        }
+
+        DirectoryController.CreateDirectoryWhenNotExists(Path.Combine(AppDomain.CurrentDomain.BaseDirectory, Settings.Default.UserDataDirectoryName));
+        await FileController.SaveAsync(gatheredDtos, Path.Combine(AppDomain.CurrentDomain.BaseDirectory, Settings.Default.UserDataDirectoryName, Settings.Default.GatheringFileName));
+        _gatheredCounter = 0;
+    }
+
+    private async Task SetGatheredToBindings(IEnumerable<Gathered> gathered)
+    {
+        await Dispatcher.CurrentDispatcher.InvokeAsync(() =>
+        {
+            var enumerable = gathered as Gathered[] ?? gathered.ToArray();
+            _mainWindowViewModel?.GatheringBindings?.GatheredCollection?.AddRange(enumerable.AsEnumerable());
+            _mainWindowViewModel?.GatheringBindings?.GatheredCollectionView?.Refresh();
+        }, DispatcherPriority.Background, CancellationToken.None);
+    }
+
+    #endregion
 }

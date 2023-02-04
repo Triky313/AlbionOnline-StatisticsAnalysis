@@ -1,7 +1,6 @@
 <ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-                    xmlns:bindingModel="clr-namespace:StatisticsAnalysisTool.Models.BindingModel"
-                    xmlns:models="clr-namespace:StatisticsAnalysisTool.Gathering">
+                    xmlns:gathering="clr-namespace:StatisticsAnalysisTool.Gathering">
 
     <BitmapImage x:Key="OriginalImage" UriSource="../Assets/resources.png"/>
 
@@ -17,7 +16,43 @@
         <Setter Property="VerticalAlignment" Value="Bottom" />
     </Style>-->
 
-    <DataTemplate x:Key="GatheredTemplate" DataType="{x:Type models:Gathered}">
+    <DataTemplate x:Key="GenerallyTemplate" DataType="{x:Type gathering:GatheringStats}">
+        <Grid>
+            <Label Content="GENERALLY" />
+        </Grid>
+    </DataTemplate>
+
+    <DataTemplate x:Key="HideTemplate" DataType="{x:Type gathering:GatheringStats}">
+        <Grid>
+            <Label Content="HIDE" />
+        </Grid>
+    </DataTemplate>
+
+    <DataTemplate x:Key="OreTemplate" DataType="{x:Type gathering:GatheringStats}">
+        <Grid>
+            <Label Content="ORE" />
+        </Grid>
+    </DataTemplate>
+
+    <DataTemplate x:Key="RockTemplate" DataType="{x:Type gathering:GatheringStats}">
+        <Grid>
+            <Label Content="ROCK" />
+        </Grid>
+    </DataTemplate>
+
+    <DataTemplate x:Key="FiberTemplate" DataType="{x:Type gathering:GatheringStats}">
+        <Grid>
+            <Label Content="FIBER" />
+        </Grid>
+    </DataTemplate>
+
+    <DataTemplate x:Key="WoodTemplate" DataType="{x:Type gathering:GatheringStats}">
+        <Grid>
+            <Label Content="WOOD" />
+        </Grid>
+    </DataTemplate>
+
+    <DataTemplate x:Key="GatheredItemTemplate" DataType="{x:Type gathering:Gathered}">
         <Grid Height="50">
             <Border Style="{StaticResource Container.Border}">
                 <DockPanel VerticalAlignment="Top" HorizontalAlignment="Stretch" Margin="0,0,10,0">

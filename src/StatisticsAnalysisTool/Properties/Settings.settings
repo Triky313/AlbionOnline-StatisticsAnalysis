@@ -134,5 +134,8 @@
     <Setting Name="UserDataDirectoryName" Type="System.String" Scope="User">
       <Value Profile="(Default)">UserData</Value>
     </Setting>
+    <Setting Name="GatheringFileName" Type="System.String" Scope="User">
+      <Value Profile="(Default)">Gathering.json</Value>
+    </Setting>
   </Settings>
 </SettingsFile>

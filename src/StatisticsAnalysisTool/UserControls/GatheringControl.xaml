@@ -5,18 +5,28 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:viewModels="clr-namespace:StatisticsAnalysisTool.ViewModels"
              xmlns:controls="clr-namespace:WpfToolkit.Controls;assembly=VirtualizingWrapPanel"
+             xmlns:gathering="clr-namespace:StatisticsAnalysisTool.Gathering"
              mc:Ignorable="d" 
              d:DesignHeight="800" d:DesignWidth="800"
              d:DataContext="{d:DesignInstance Type=viewModels:MainWindowViewModel}">
+    <UserControl.Resources>
+        <gathering:GatheringDataTemplateSelector x:Key="GatheringDataTemplateSelector"
+                                                 GenerallyTemplate="{StaticResource GenerallyTemplate}"
+                                                 HideTemplate="{StaticResource InstantSellTemplate}" 
+                                                 OreTemplate="{StaticResource InstantBuyTemplate}" 
+                                                 RockTemplate="{StaticResource InstantBuyTemplate}" 
+                                                 FiberTemplate="{StaticResource InstantBuyTemplate}" 
+                                                 WoodTemplate="{StaticResource InstantBuyTemplate}" />
+    </UserControl.Resources>
     <Grid>
         <StackPanel Orientation="Vertical">
             <StackPanel Orientation="Horizontal">
                 <ComboBox Width="200" Height="26" Margin="5,5" HorizontalAlignment="Left" VerticalAlignment="Top"
-                          ItemsSource="{Binding }" 
-                          SelectedItem="" 
+                          ItemsSource="{Binding GatheringBindings.GatheringFilter}" 
+                          SelectedItem="{Binding GatheringBindings.SelectedGatheringFilter}" 
                           IsSynchronizedWithCurrentItem="True" DisplayMemberPath="Name" SelectedValuePath="DungeonStatTimeType" />
-                <ComboBox ItemsSource="{Binding }" SelectedValue="" Margin="5,5" Height="26"
-                          SelectedValuePath="Key" DisplayMemberPath="Value" HorizontalAlignment="Left" VerticalAlignment="Top" Width="44" MinWidth="80" />
+                <ComboBox ItemsSource="{Binding GatheringBindings.TierFilter}" SelectedValue="{Binding GatheringBindings.SelectedTierFilter}" 
+                          Margin="5,5" Height="26" SelectedValuePath="Key" DisplayMemberPath="Value" HorizontalAlignment="Left" VerticalAlignment="Top" Width="44" MinWidth="80" />
             </StackPanel>
             <StackPanel Orientation="Horizontal">
                 <CheckBox IsChecked="{Binding GatheringBindings.IsGatheringActive}" Content="{Binding GatheringBindings.TranslationGatheringActive, FallbackValue=GATHERING__ACTIVE}"  
@@ -40,16 +50,13 @@
 
             <Grid Row="0" Margin="0,5,0,6" Grid.RowSpan="2">
                 <ScrollViewer>
-                    <StackPanel Orientation="Vertical">
-                        <!--<ContentControl Margin="0,0,0,0" ContentTemplate="{StaticResource MailStatsObjectTemplate}" Content="{Binding TradeMonitoringBindings.TradeStatsObject}" />-->
-                        <!--<ContentControl Margin="0,0,0,0" ContentTemplate="{StaticResource MailOptionsObjectTemplate}" Content="{Binding TradeMonitoringBindings.TradeOptionsObject}" />-->
-                    </StackPanel>
+                    <ContentControl Content="{Binding GatheringBindings.GatheringStats}" ContentTemplateSelector="{StaticResource GatheringDataTemplateSelector}"/>
                 </ScrollViewer>
             </Grid>
 
             <Grid Row="2">
                 <controls:VirtualizingItemsControl ItemsSource="{Binding GatheringBindings.GatheredCollectionView, IsAsync=True, Mode=OneWay}"
-                                                   ItemTemplate="{StaticResource GatheredTemplate}" 
+                                                   ItemTemplate="{StaticResource GatheredItemTemplate}" 
                                                    VirtualizingPanel.CacheLengthUnit="Item"
                                                    VirtualizingPanel.CacheLength="10,10"
                                                    VirtualizingPanel.ScrollUnit="Pixel"

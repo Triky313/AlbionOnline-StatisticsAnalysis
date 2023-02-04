@@ -3,7 +3,6 @@ using StatisticsAnalysisTool.Common.UserSettings;
 using StatisticsAnalysisTool.Gathering;
 using StatisticsAnalysisTool.Properties;
 using System.Collections.Generic;
-using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
 using System.Windows;
@@ -14,11 +13,22 @@ namespace StatisticsAnalysisTool.Models.BindingModel;
 public class GatheringBindings : INotifyPropertyChanged
 {
     private bool _isGatheringActive = true;
-    private ObservableCollection<ResourcesContent> _currentResourcesContent = new();
-    private List<ResourcesContent> _resourcesContent = new();
-    private ObservableCollection<Gathered> _gatheredCollection = new ();
+    private GatheringStats _gatheringStats = new();
+    private ObservableRangeCollection<Gathered> _gatheredCollection = new();
     private readonly ListCollectionView _gatheredCollectionView;
     private GridLength _gridSplitterPosition = GridLength.Auto;
+    private Dictionary<ItemTier, string> _tierFilter = FrequentlyValues.ItemTiers;
+    private ItemTier _selectedTierFilter = ItemTier.T8;
+    private Dictionary<GatheringFilterType, string> _gatheringFilter = new()
+    {
+        { GatheringFilterType.Generally, LanguageController.Translation("GENERALLY") },
+        { GatheringFilterType.Wood, LanguageController.Translation("WOOD") },
+        { GatheringFilterType.Fiber, LanguageController.Translation("FIBER") },
+        { GatheringFilterType.Hide, LanguageController.Translation("HIDE") },
+        { GatheringFilterType.Ore, LanguageController.Translation("ORE") },
+        { GatheringFilterType.Rock, LanguageController.Translation("ROCK") }
+    };
+    private GatheringFilterType _selectedGatheringFilter = GatheringFilterType.Generally;
 
     public GatheringBindings()
     {
@@ -48,7 +58,7 @@ public class GatheringBindings : INotifyPropertyChanged
         }
     }
 
-    public ObservableCollection<Gathered> GatheredCollection
+    public ObservableRangeCollection<Gathered> GatheredCollection
     {
         get => _gatheredCollection;
         set
@@ -69,22 +79,12 @@ public class GatheringBindings : INotifyPropertyChanged
         }
     }
 
-    public ObservableCollection<ResourcesContent> CurrentResourcesContent
+    public GatheringStats GatheringStats
     {
-        get => _currentResourcesContent;
+        get => _gatheringStats;
         set
         {
-            _currentResourcesContent = value;
-            OnPropertyChanged();
-        }
-    }
-
-    public List<ResourcesContent> ResourcesContent
-    {
-        get => _resourcesContent;
-        set
-        {
-            _resourcesContent = value;
+            _gatheringStats = value;
             OnPropertyChanged();
         }
     }
@@ -96,6 +96,46 @@ public class GatheringBindings : INotifyPropertyChanged
         {
             _isGatheringActive = value;
             SettingsController.CurrentSettings.IsGatheringActive = _isGatheringActive;
+            OnPropertyChanged();
+        }
+    }
+
+    public Dictionary<ItemTier, string> TierFilter
+    {
+        get => _tierFilter;
+        set
+        {
+            _tierFilter = value;
+            OnPropertyChanged();
+        }
+    }
+
+    public ItemTier SelectedTierFilter
+    {
+        get => _selectedTierFilter;
+        set
+        {
+            _selectedTierFilter = value;
+            OnPropertyChanged();
+        }
+    }
+
+    public Dictionary<GatheringFilterType, string> GatheringFilter
+    {
+        get => _gatheringFilter;
+        set
+        {
+            _gatheringFilter = value;
+            OnPropertyChanged();
+        }
+    }
+
+    public GatheringFilterType SelectedGatheringFilter
+    {
+        get => _selectedGatheringFilter;
+        set
+        {
+            _selectedGatheringFilter = value;
             OnPropertyChanged();
         }
     }
