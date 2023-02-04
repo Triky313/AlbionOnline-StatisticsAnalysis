@@ -757,13 +757,6 @@ public static class ItemController
         return resultUniqueName;
     }
 
-    public static IEnumerable<string> GetResourcesShopSubCategories()
-    {
-        return _itemsJson?.Items?.ShopCategories?.ShopCategory?.ToList()
-            .FirstOrDefault(x => x?.Id == "resources")?.ShopSubCategory
-            .Select(x => x.Id) ?? new List<string>();
-    }
-
     #endregion
 
     #region Estimated market value
