@@ -679,7 +679,7 @@
 	<translation name="DELETE_SELECTED_TRADES">Usuń wybrane transakcje</translation>
 	<translation name="SURE_YOU_WANT_TO_DELETE_SELECTED_TRADES">Czy na pewno chcesz usunąć wybrane transakcje?</translation>
 	<translation name="TRADE_MONITORING">Monitorowanie handlu</translation>
-	<translation name="Trade">Handel</translation>
+	<translation name="TRADE">Handel</translation>
 	<translation name="TRADE_MONITORING_DESCRIPTION1">Aby rozpoznać nowe wiadomości e-mail, należy otworzyć skrzynkę odbiorczą w grze i dodatkowo każdą wiadomość raz.</translation>
 	<translation name="UNKNOWN TRADE">Nieznana transakcja</translation>
 	<translation name="MAIL">Poczta</translation>
