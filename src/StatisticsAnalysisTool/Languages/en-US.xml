@@ -679,7 +679,7 @@
 	<translation name="DELETE_SELECTED_TRADES">Delete selected trades</translation>
 	<translation name="SURE_YOU_WANT_TO_DELETE_SELECTED_TRADES">Are you sure you want to delete selected trades?</translation>
 	<translation name="TRADE_MONITORING">Trade Monitoring</translation>
-	<translation name="Trade">Trade</translation>
+	<translation name="TRADE">Trade</translation>
 	<translation name="TRADE_MONITORING_DESCRIPTION1">In order to recognize new mail messages, the inbox must be opened in game and additionally each message once.</translation>
 	<translation name="UNKNOWN_TRADE">Unknown trade</translation>
 	<translation name="MAIL">Mail</translation>
