@@ -3,7 +3,7 @@
 	<translations>
 	<translation name="LANGUAGE">语言：</translation>
 	<translation name="REFRESH_RATE">数据更新频率：</translation>
-	<translation name="UPDATE_ITEM_LIST_BY_DAYS">物品清单更新频率：</translation>
+	<translation name="UPDATE_ITEM_LIST_BY_DAYS">ItemList.json 更新频率：</translation>
 	<translation name="SETTINGS">设置</translation>
 	<translation name="SAVE">保存</translation>
 	<translation name="CITY">城市</translation>
@@ -55,11 +55,11 @@
 	<translation name="5_MINUTES">5分钟</translation>
 	<translation name="MIN_PROFIT_TOOLTIP">指定一个物品应该产生的最低利润。</translation>
 	<translation name="REMOVE">删除</translation>
-	<translation name="ITEM_LIST_SOURCE_URL">物品列表源地址：</translation>
-	<translation name="ITEM_LIST_CAN_NOT_BE_LOADED">物品列表无法加载。</translation>
+	<translation name="ITEM_LIST_SOURCE_URL">ItemList.json 源地址：</translation>
+	<translation name="ITEM_LIST_CAN_NOT_BE_LOADED">ItemList.json 无法加载。</translation>
 	<translation name="ERROR">错误</translation>
 	<translation name="NOTE">注意事项</translation>
-	<translation name="DEFAULT_ITEMLIST_HAS_BEEN_LOADED">默认的物品表已经加载。</translation>
+	<translation name="DEFAULT_ITEMLIST_HAS_BEEN_LOADED">默认的ItemList.json已经加载。</translation>
 	<translation name="SHOW_BLACKZONE_OUTPOSTS">显示黑区安全城</translation>
 	<translation name="ID">编号</translation>
 	<translation name="AVERAGE_ITEM_POWER">平均IP</translation>
@@ -379,7 +379,7 @@
 	<translation name="NUMBER_OF_DUNGEON_FLOORS">副本层数</translation>
 	<translation name="TOOL_DIRECTORY">工具目录</translation>
 	<translation name="OPEN_TOOL_DIRECTORY">打开工具目录</translation>
-	<translation name="OPEN_OR_CLOSE_DEBUG_CONSOLE">打开或关闭调试控制台</translation>
+	<translation name="OPEN_DEBUG_CONSOLE">打开debug控制台</translation>
 	<translation name="CREATE_DESKTOP_SHORTCUT">创建桌面快捷方式</translation>
 	<translation name="FAVORITE">收藏</translation>
 	<translation name="SILVER_SHRINE">银币祭坛</translation>
@@ -537,14 +537,9 @@
 	<translation name="AVERAGE_ITEM_POWER_WHEN_KILLING">平均的物品强度（你杀人时）</translation>
 	<translation name="AVERAGE_ITEM_POWER_OF_THE_KILLED_ENEMIES">平均的物品强度（被杀的人）</translation>
 	<translation name="AVERAGE_ITEM_POWER_WHEN_DYING">平均的物品强度（你死亡时）</translation>
-	<translation name="MAIL_MONITORING">邮件统计</translation>
-	<translation name="MAIL">邮件</translation>
 	<translation name="BOUGHT">已购买</translation>
 	<translation name="SOLD">已出售</translation>
 	<translation name="COST_PER_ITEM">每件成本</translation>
-	<translation name="DELETE_SELECTED_MAILS">删除所选邮件</translation>
-	<translation name="SURE_YOU_WANT_TO_DELETE_SELECTED_MAIL">您确定要删除所选的邮件吗？</translation>
-	<translation name="MAIL_MONITORING_DESCRIPTION1">为了读取新消息，必须在游戏中打开收件箱，并且每条消息都打开一次。</translation>
 	<translation name="SOLD_TODAY">今日出售</translation>
 	<translation name="SOLD_MONTH">本月出售</translation>
 	<translation name="SOLD_YEAR">年度出售</translation>
@@ -616,22 +611,14 @@
 	<translation name="LAST_7_DAYS">一周内</translation>
 	<translation name="LAST_30_DAYS">一月内</translation>
 	<translation name="LAST_365_DAYS">一年内</translation>
-	<translation name="MOST_EXPENSIVE_SALE">售卖的最值钱物品</translation>
-	<translation name="MOST_EXPENSIVE_PURCHASE">购买的最值钱物品</translation>
+	<translation name="MOST_EXPENSIVE_SALE">最贵售卖</translation>
+	<translation name="MOST_EXPENSIVE_PURCHASE">最贵购买</translation>
 	<translation name="SNAPSHOTS">简报</translation>
 	<translation name="DELETE_SELECTED_SNAPSHOT">删除所选简报</translation>
 	<translation name="TAKE_A_SNAPSHOT_OF_DAMAGE_METER_DESCRIPTION">截取一次简报，你就可以在“简报”标签找到</translation>
 	<translation name="RANDOM_SOLO_DUNGEONS">随机单人地下城</translation>
 	<translation name="RANDOM_GROUP_DUNGEONS">随机团队地下城</translation>
 	<translation name="SNAPSHOT_AFTER_MAP_CHANGE">过图后截取简报</translation>
-	<translation name="MAIL_MONITORING_ACTIVE">启动邮件监控</translation>
-	<translation name="DELETE_MAILS_NEVER">永不删除邮件</translation>
-	<translation name="DELETE_MAILS_AFTER_7_DAYS">一周后删除邮件</translation>
-	<translation name="DELETE_MAILS_AFTER_30_DAYS">一月后删除邮件</translation>
-	<translation name="DELETE_MAILS_AFTER_60_DAYS">两月后删除邮件</translation>
-	<translation name="DELETE_MAILS_AFTER_90_DAYS">三月后删除邮件</translation>
-	<translation name="DELETE_MAILS_AFTER_180_DAYS">半年后删除邮件</translation>
-	<translation name="DELETE_MAILS_AFTER_365_DAYS">一年后删除邮件</translation>
 	<translation name="IGNORE_MAILS_WITH_ZERO_VALUES">忽略价值为0的邮件</translation>
 	<translation name="CHECK_FOR_UPDATE">检查更新</translation>
 	<translation name="PAID_SILVER_FOR_RESPEC_THIS_SESSION">此阶段自动重新专攻所花费的银币</translation>
@@ -643,9 +630,9 @@
 	<translation name="CHEST_STATS">宝箱状态</translation>
 	<translation name="EST_MARKET_VALUE">市场估价</translation>
 	<translation name="LAST_ESTIMATED_VALUE_UPDATE">上次市场估价更新</translation>
-	<translation name="BOOK_CHEST_STATS">书箱状态</translation>
+	<translation name="BOOK_CHEST_STATS">书箱数据</translation>
 	<translation name="BEST_LOOTED_ITEM">最贵战利品</translation>
-	<translation name="TOTAL_LOOT_VALUE">战利品价值</translation>
+	<translation name="TOTAL_LOOT_VALUE">战利品总价值</translation>
 	<translation name="FILTER">过滤器</translation>
 	<translation name="LOOT_IN_SILVER">战利品银币价值</translation>
 	<translation name="COMBAT_TIME">战斗时间</translation>
@@ -675,7 +662,25 @@
 	<translation name="THANK_YOU">感谢你们~</translation>
 	<translation name="DUNGEON_CLOSED_SOUND_ACTIVE">开启地下城入口消失提示声</translation>
 	<translation name="TOTAL_PRICE_WITH_DEDUCTED_TAXES">扣税后总价</translation>
-
-	<translation name="OPEN_DEBUG_CONSOLE">打开debug日志</translation>
-
+	<translation name="UPDATE_MOBS_JSON_BY_DAYS">mobs.json 更新频率：</translation>
+	<translation name="MOBS_JSON_SOURCE_URL">mobs.json 源地址：</translation>
+	<translation name="GET_MOBS_JSON">加载 mobs.json</translation>
+	<translation name="MOBS_JSON_CAN_NOT_BE_LOADED">mobs.json 无法加载。</translation>
+	<translation name="INSTANT_SELL">直接出售</translation>
+	<translation name="INSTANT_BUY">直接购买</translation>
+	<translation name="TRADE_MONITORING_ACTIVE">开启交易追踪</translation>
+	<translation name="DELETE_TRADES_NEVER">不删除交易记录</translation>
+	<translation name="DELETE_TRADES_AFTER_7_DAYS">一周后删除交易记录</translation>
+	<translation name="DELETE_TRADES_AFTER_30_DAYS">一月后删除交易记录</translation>
+	<translation name="DELETE_TRADES_AFTER_60_DAYS">两月后删除交易记录</translation>
+	<translation name="DELETE_TRADES_AFTER_90_DAYS">三月后删除交易记录</translation>
+	<translation name="DELETE_TRADES_AFTER_180_DAYS">半年后删除交易记录</translation>
+	<translation name="DELETE_TRADES_AFTER_365_DAYS">一年后删除交易记录</translation>
+	<translation name="DELETE_SELECTED_TRADES">删除所选交易记录</translation>
+	<translation name="SURE_YOU_WANT_TO_DELETE_SELECTED_TRADES">你确定要删除所选的交易记录？</translation>
+	<translation name="TRADE_MONITORING">交易追踪</translation>
+	<translation name="Trade">交易</translation>
+	<translation name="TRADE_MONITORING_DESCRIPTION1">为了识别新的交易邮件信息，你必须将每一封邮件都打开一次。</translation>
+	<translation name="UNKNOWN_TRADE">未知交易</translation>
+	<translation name="MAIL">邮件</translation>
 </translations>
