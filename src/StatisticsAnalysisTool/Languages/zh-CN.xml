@@ -679,7 +679,7 @@
 	<translation name="DELETE_SELECTED_TRADES">删除所选交易记录</translation>
 	<translation name="SURE_YOU_WANT_TO_DELETE_SELECTED_TRADES">你确定要删除所选的交易记录？</translation>
 	<translation name="TRADE_MONITORING">交易追踪</translation>
-	<translation name="Trade">交易</translation>
+	<translation name="TRADE">交易</translation>
 	<translation name="TRADE_MONITORING_DESCRIPTION1">为了识别新的交易邮件信息，你必须将每一封邮件都打开一次。</translation>
 	<translation name="UNKNOWN_TRADE">未知交易</translation>
 	<translation name="MAIL">邮件</translation>
