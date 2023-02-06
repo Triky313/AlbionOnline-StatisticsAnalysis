@@ -139,15 +139,15 @@ public class CraftingRequirementsToCraftingRequirementsList : JsonConverter<List
                 {
                     case "@silver":
                         reader.Read();
-                        craftingRequirement.Silver = reader.GetString();
+                        craftingRequirement.Silver = reader.GetString() ?? string.Empty;
                         break;
                     case "@time":
                         reader.Read();
-                        craftingRequirement.Time = reader.GetString();
+                        craftingRequirement.Time = reader.GetString() ?? string.Empty;
                         break;
                     case "@craftingfocus":
                         reader.Read();
-                        craftingRequirement.CraftingFocus = reader.GetString();
+                        craftingRequirement.CraftingFocus = reader.GetString() ?? string.Empty;
                         break;
                     case "craftresource":
                         reader.Read();
@@ -160,23 +160,23 @@ public class CraftingRequirementsToCraftingRequirementsList : JsonConverter<List
                         break;
                     case "@swaptransaction":
                         reader.Read();
-                        craftingRequirement.SwapTransaction = reader.GetString();
+                        craftingRequirement.SwapTransaction = reader.GetString() ?? string.Empty;
                         break;
                     case "playerfactionstanding":
                         reader.Read();
-                        craftingRequirement.PlayerFactionStanding = SetPlayerFactionStanding(ref reader);
+                        craftingRequirement.PlayerFactionStanding = SetPlayerFactionStanding(ref reader) ?? new PlayerFactionStanding();
                         break;
                     case "currency":
                         reader.Read();
-                        craftingRequirement.Currency = SetCurrency(ref reader);
+                        craftingRequirement.Currency = SetCurrency(ref reader) ?? new Currency();
                         break;
                     case "@amountcrafted":
                         reader.Read();
-                        craftingRequirement.AmountCrafted = reader.GetString();
+                        craftingRequirement.AmountCrafted = reader.GetString() ?? string.Empty;
                         break;
                     case "@forcesinglecraft":
                         reader.Read();
-                        craftingRequirement.ForceSingleCraft = reader.GetString();
+                        craftingRequirement.ForceSingleCraft = reader.GetString() ?? string.Empty;
                         break;
                 }
             }
