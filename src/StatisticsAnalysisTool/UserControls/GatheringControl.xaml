@@ -12,19 +12,20 @@
     <UserControl.Resources>
         <gathering:GatheringDataTemplateSelector x:Key="GatheringDataTemplateSelector"
                                                  GenerallyTemplate="{StaticResource GenerallyTemplate}"
-                                                 HideTemplate="{StaticResource InstantSellTemplate}" 
-                                                 OreTemplate="{StaticResource InstantBuyTemplate}" 
-                                                 RockTemplate="{StaticResource InstantBuyTemplate}" 
-                                                 FiberTemplate="{StaticResource InstantBuyTemplate}" 
-                                                 WoodTemplate="{StaticResource InstantBuyTemplate}" />
+                                                 HideTemplate="{StaticResource HideTemplate}" 
+                                                 OreTemplate="{StaticResource OreTemplate}" 
+                                                 RockTemplate="{StaticResource RockTemplate}" 
+                                                 FiberTemplate="{StaticResource FiberTemplate}" 
+                                                 WoodTemplate="{StaticResource WoodTemplate}" />
     </UserControl.Resources>
     <Grid>
         <StackPanel Orientation="Vertical">
             <StackPanel Orientation="Horizontal">
                 <ComboBox Width="200" Height="26" Margin="5,5" HorizontalAlignment="Left" VerticalAlignment="Top"
                           ItemsSource="{Binding GatheringBindings.GatheringFilter}" 
-                          SelectedItem="{Binding GatheringBindings.SelectedGatheringFilter}" 
-                          IsSynchronizedWithCurrentItem="True" DisplayMemberPath="Name" SelectedValuePath="DungeonStatTimeType" />
+                          SelectedValue="{Binding GatheringBindings.SelectedGatheringFilter}"
+                          IsSynchronizedWithCurrentItem="True" SelectedValuePath="Key" DisplayMemberPath="Value" />
+
                 <ComboBox ItemsSource="{Binding GatheringBindings.TierFilter}" SelectedValue="{Binding GatheringBindings.SelectedTierFilter}" 
                           Margin="5,5" Height="26" SelectedValuePath="Key" DisplayMemberPath="Value" HorizontalAlignment="Left" VerticalAlignment="Top" Width="44" MinWidth="80" />
             </StackPanel>
@@ -50,7 +51,7 @@
 
             <Grid Row="0" Margin="0,5,0,6" Grid.RowSpan="2">
                 <ScrollViewer>
-                    <ContentControl Content="{Binding GatheringBindings.GatheringStats}" ContentTemplateSelector="{StaticResource GatheringDataTemplateSelector}"/>
+                    <ContentControl Content="{Binding GatheringBindings.SelectedGatheringFilter}" ContentTemplateSelector="{StaticResource GatheringDataTemplateSelector}"/>
                 </ScrollViewer>
             </Grid>
 

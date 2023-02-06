@@ -1,4 +1,4 @@
-﻿namespace StatisticsAnalysisTool.Models.BindingModel;
+﻿namespace StatisticsAnalysisTool.Gathering;
 
 public enum GatheringFilterType
 {

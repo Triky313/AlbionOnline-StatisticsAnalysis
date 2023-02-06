@@ -1,6 +1,6 @@
-﻿using StatisticsAnalysisTool.Models.BindingModel;
-using System.Windows;
+﻿using System.Windows;
 using System.Windows.Controls;
+using StatisticsAnalysisTool.Models.BindingModel;
 
 namespace StatisticsAnalysisTool.Gathering;
 
@@ -20,22 +20,15 @@ public class GatheringDataTemplateSelector : DataTemplateSelector
             return base.SelectTemplate(item, container);
         }
 
-        switch (gatheringStats.GatheringFilterType)
+        return gatheringStats.GatheringFilterType switch
         {
-            case GatheringFilterType.Generally:
-                return GenerallyTemplate;
-            case GatheringFilterType.Hide:
-                return HideTemplate;
-            case GatheringFilterType.Wood:
-                return WoodTemplate;
-            case GatheringFilterType.Fiber:
-                return FiberTemplate;
-            case GatheringFilterType.Ore:
-                return OreTemplate;
-            case GatheringFilterType.Rock:
-                return RockTemplate;
-            default:
-                return base.SelectTemplate(item, container);
-        }
+            GatheringFilterType.Generally => GenerallyTemplate,
+            GatheringFilterType.Hide => HideTemplate,
+            GatheringFilterType.Wood => WoodTemplate,
+            GatheringFilterType.Fiber => FiberTemplate,
+            GatheringFilterType.Ore => OreTemplate,
+            GatheringFilterType.Rock => RockTemplate,
+            _ => GenerallyTemplate
+        };
     }
 }
