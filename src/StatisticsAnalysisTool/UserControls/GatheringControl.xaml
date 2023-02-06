@@ -30,14 +30,11 @@
                           Margin="5,5" Height="26" SelectedValuePath="Key" DisplayMemberPath="Value" HorizontalAlignment="Left" VerticalAlignment="Top" Width="44" MinWidth="80" />
             </StackPanel>
             <StackPanel Orientation="Horizontal">
-                <CheckBox IsChecked="{Binding GatheringBindings.IsGatheringActive}" Content="{Binding GatheringBindings.TranslationGatheringActive, FallbackValue=GATHERING__ACTIVE}"  
+                <CheckBox IsChecked="{Binding GatheringBindings.IsGatheringActive, FallbackValue=true}" Content="{Binding GatheringBindings.TranslationGatheringActive, FallbackValue=GATHERING__ACTIVE}"  
                           HorizontalAlignment="Left" VerticalAlignment="Top" Width="150" />
             </StackPanel>
 
             <Separator Background="{StaticResource SolidColorBrush.Background.3}" Height="4" Margin="0,2,0,2" />
-
-            <!--<ContentPresenter ContentTemplate="" Content="{Binding}" Margin="0,0,0,0"/>-->
-
         </StackPanel>
 
         <Grid Margin="0,60,0,0">

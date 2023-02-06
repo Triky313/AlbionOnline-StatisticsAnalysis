@@ -3,7 +3,9 @@ using StatisticsAnalysisTool.GameData;
 using StatisticsAnalysisTool.Models;
 using StatisticsAnalysisTool.Properties;
 using System.ComponentModel;
+using System.Globalization;
 using System.Runtime.CompilerServices;
+using StatisticsAnalysisTool.Models.ItemsJsonModel;
 
 namespace StatisticsAnalysisTool.Gathering;
 
@@ -14,12 +16,27 @@ public class Gathered : INotifyPropertyChanged
     private int _gainedPremiumBonusAmount;
     private int _gainedFame;
     private bool _isClosed;
+    private string _uniqueName;
 
     public long Timestamp { get; init; }
     public long ObjectId { get; init; }
     public long UserObjectId { get; init; }
-    public string UniqueName { get; init; }
-    public Item Item => ItemController.GetItemByUniqueName(UniqueName);
+
+    public string UniqueName
+    {
+        get => _uniqueName;
+        set
+        {
+            _uniqueName = value;
+            Item = ItemController.GetItemByUniqueName(_uniqueName);
+            if (Item.FullItemInformation is SimpleItem simpleItem && int.TryParse(simpleItem.FameValue, NumberStyles.Any, CultureInfo.CurrentCulture, out var gainedFame))
+            {
+                GainedFame = gainedFame;
+            }
+        }
+    }
+
+    public Item Item { get; set; }
 
     public int GainedStandardAmount
     {
