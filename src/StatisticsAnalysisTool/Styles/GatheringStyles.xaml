@@ -11,23 +11,27 @@
     </Style>
 
     <DataTemplate x:Key="GatheredItemTemplate" DataType="{x:Type gathering:Gathered}">
-        <Grid Height="50">
+        <Grid Height="82">
             <Border Style="{StaticResource Container.Border}">
                 <DockPanel VerticalAlignment="Top" HorizontalAlignment="Stretch" Margin="0,0,10,0">
-                    <Grid Margin="0,0, 5, 0" HorizontalAlignment="Center" VerticalAlignment="Center">
+                    <Grid Margin="0,17,5,0" HorizontalAlignment="Center" VerticalAlignment="Top">
                         <Image Source="{Binding Item.Icon, IsAsync=True, Mode=OneWay}" Style="{StaticResource Gathering.Image.Item.Icon}" />
                     </Grid>
                     <StackPanel Orientation="Vertical">
                         <DockPanel>
-                            <StackPanel Orientation="Horizontal">
-                                <TextBlock Text="{Binding ClusterUniqueName, IsAsync=True, FallbackValue=0}" FontWeight="Bold" Margin="0,0,3,0" Foreground="{StaticResource SolidColorBrush.Text.1}" />
+                            <StackPanel Orientation="Horizontal" Margin="-55,0,0,0" MinWidth="600">
+                                <TextBlock Text="{Binding Item.TierLevelString, IsAsync=True, FallbackValue=0}" FontWeight="Bold" Margin="0,0,3,0" Foreground="{StaticResource SolidColorBrush.Text.1}" />
+                                <TextBlock Text="{Binding Item.LocalizedName, IsAsync=True, FallbackValue=0}" FontWeight="Bold" Margin="0,0,3,0" Foreground="{StaticResource SolidColorBrush.Accent.Blue.2}" />
+                                <TextBlock Text="{Binding TranslationIn, FallbackValue=0}" FontWeight="Bold" Margin="0,0,3,0" Foreground="{StaticResource SolidColorBrush.Text.1}" />
+                                <TextBlock Text="{Binding ClusterUniqueName, IsAsync=True, FallbackValue=0}" FontWeight="Bold" Margin="0,0,3,0" Foreground="{StaticResource SolidColorBrush.Accent.Blue.2}" />
                             </StackPanel>
+                            <TextBlock Text="{Binding TimestampDateTime, IsAsync=True, StringFormat='{}{0}'}" TextAlignment="Right" Foreground="{StaticResource SolidColorBrush.Text.1}"/>
                         </DockPanel>
                         <DockPanel>
                             <StackPanel Orientation="Horizontal">
-                                <TextBlock Text="GainedStandardAmount" Width="200" Foreground="{StaticResource SolidColorBrush.Accent.Blue.2}" />
-                                <TextBlock Text="GainedBonusAmount" Width="200" Foreground="{StaticResource SolidColorBrush.Accent.Blue.2}" />
-                                <TextBlock Text="GainedPremiumBonusAmount" Width="200" Foreground="{StaticResource SolidColorBrush.Accent.Blue.2}" />
+                                <TextBlock Text="GainedStandardAmount" Width="200" Foreground="{StaticResource SolidColorBrush.Text.4}" />
+                                <TextBlock Text="GainedBonusAmount" Width="200" Foreground="{StaticResource SolidColorBrush.Text.4}" />
+                                <TextBlock Text="GainedPremiumBonusAmount" Width="200" Foreground="{StaticResource SolidColorBrush.Text.4}" />
                             </StackPanel>
                         </DockPanel>
                         <DockPanel>
@@ -35,6 +39,20 @@
                                 <TextBlock Text="{Binding GainedStandardAmount, IsAsync=True}" Width="200" Foreground="{StaticResource SolidColorBrush.Accent.Blue.2}" />
                                 <TextBlock Text="{Binding GainedBonusAmount, IsAsync=True}" Width="200" Foreground="{StaticResource SolidColorBrush.Accent.Blue.2}" />
                                 <TextBlock Text="{Binding GainedPremiumBonusAmount, IsAsync=True}" Width="200" Foreground="{StaticResource SolidColorBrush.Accent.Blue.2}" />
+                            </StackPanel>
+                        </DockPanel>
+                        <DockPanel>
+                            <StackPanel Orientation="Horizontal">
+                                <TextBlock Text="MiningProcesses" Width="200" Foreground="{StaticResource SolidColorBrush.Text.4}" />
+                                <TextBlock Text="GainedBonusAmount" Width="200" Foreground="{StaticResource SolidColorBrush.Text.4}" />
+                                <TextBlock Text="GainedPremiumBonusAmount" Width="200" Foreground="{StaticResource SolidColorBrush.Text.4}" />
+                            </StackPanel>
+                        </DockPanel>
+                        <DockPanel>
+                            <StackPanel Orientation="Horizontal">
+                                <TextBlock Text="{Binding MiningProcesses, IsAsync=True}" Width="200" Foreground="{StaticResource SolidColorBrush.Accent.Blue.2}" />
+                                <TextBlock Text="" Width="200" Foreground="{StaticResource SolidColorBrush.Accent.Blue.2}" />
+                                <TextBlock Text="" Width="200" Foreground="{StaticResource SolidColorBrush.Accent.Blue.2}" />
                             </StackPanel>
                         </DockPanel>
                     </StackPanel>

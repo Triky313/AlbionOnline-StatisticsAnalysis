@@ -1,4 +1,5 @@
-﻿using StatisticsAnalysisTool.Common;
+﻿using System;
+using StatisticsAnalysisTool.Common;
 using StatisticsAnalysisTool.GameData;
 using StatisticsAnalysisTool.Models;
 using StatisticsAnalysisTool.Properties;
@@ -17,8 +18,10 @@ public class Gathered : INotifyPropertyChanged
     private int _gainedFame;
     private bool _isClosed;
     private string _uniqueName;
+    private int _miningProcesses;
 
     public long Timestamp { get; init; }
+    public DateTime TimestampDateTime => new(Timestamp);
     public long ObjectId { get; init; }
     public long UserObjectId { get; init; }
 
@@ -78,8 +81,19 @@ public class Gathered : INotifyPropertyChanged
         }
     }
 
+    public int MiningProcesses
+    {
+        get => _miningProcesses;
+        set
+        {
+            _miningProcesses = value;
+            OnPropertyChanged();
+        }
+    }
+
     public string ClusterIndex { get; init; }
     public string ClusterUniqueName => WorldData.GetUniqueNameOrDefault(ClusterIndex);
+    public string TranslationIn => LanguageController.Translation("IN");
     public bool IsClosed
     {
         get => _isClosed;

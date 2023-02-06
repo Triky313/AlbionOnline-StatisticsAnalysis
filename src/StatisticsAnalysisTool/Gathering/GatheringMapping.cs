@@ -12,7 +12,8 @@ public static class GatheringMapping
             GainedBonusAmount = gathered.GainedBonusAmount,
             GainedPremiumBonusAmount = gathered.GainedPremiumBonusAmount,
             GainedFame = gathered.GainedFame,
-            ClusterIndex = gathered.ClusterIndex
+            ClusterIndex = gathered.ClusterIndex,
+            MiningProcesses = gathered.MiningProcesses
         };
     }
 
@@ -26,7 +27,8 @@ public static class GatheringMapping
             GainedBonusAmount = gathered.GainedBonusAmount,
             GainedPremiumBonusAmount = gathered.GainedPremiumBonusAmount,
             GainedFame = gathered.GainedFame,
-            ClusterIndex = gathered.ClusterIndex
+            ClusterIndex = gathered.ClusterIndex,
+            MiningProcesses = gathered.MiningProcesses
         };
     }
 }

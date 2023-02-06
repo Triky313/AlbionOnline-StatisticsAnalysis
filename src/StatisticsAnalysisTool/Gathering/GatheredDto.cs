@@ -9,5 +9,6 @@ public class GatheredDto
     public int GainedBonusAmount { get; init; }
     public int GainedPremiumBonusAmount { get; init; }
     public int GainedFame { get; init; }
+    public int MiningProcesses { get; init; }
     public string ClusterIndex { get; init; }
 }

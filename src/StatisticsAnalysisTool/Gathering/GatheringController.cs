@@ -45,6 +45,7 @@ public class GatheringController
             existingGatheredObject.GainedStandardAmount += harvestFinishedObject.StandardAmount;
             existingGatheredObject.GainedBonusAmount += harvestFinishedObject.CollectorBonusAmount;
             existingGatheredObject.GainedPremiumBonusAmount += harvestFinishedObject.PremiumBonusAmount;
+            existingGatheredObject.MiningProcesses++;
         }
         else
         {
@@ -57,7 +58,8 @@ public class GatheringController
                 GainedStandardAmount = harvestFinishedObject.StandardAmount,
                 GainedBonusAmount = harvestFinishedObject.CollectorBonusAmount,
                 GainedPremiumBonusAmount = harvestFinishedObject.PremiumBonusAmount,
-                ClusterIndex = ClusterController.CurrentCluster.Index
+                ClusterIndex = ClusterController.CurrentCluster.Index,
+                MiningProcesses = 1,
             };
 
             AddGatheredToBindingCollection(gathered);
@@ -91,7 +93,7 @@ public class GatheringController
 
     public async Task LoadFromFileAsync()
     {
-        var gatheredDtos = await FileController.LoadAsync<List<GatheredDto>>($"{AppDomain.CurrentDomain.BaseDirectory}{Settings.Default.GatheringFileName}");
+        var gatheredDtos = await FileController.LoadAsync<List<GatheredDto>>(Path.Combine(AppDomain.CurrentDomain.BaseDirectory, Settings.Default.UserDataDirectoryName, Settings.Default.GatheringFileName));
         var gathered = gatheredDtos.Select(GatheringMapping.Mapping).ToList();
         await SetGatheredToBindings(gathered);
     }
@@ -99,8 +101,10 @@ public class GatheringController
     public async Task SaveInFileAsync()
     {
         DirectoryController.CreateDirectoryWhenNotExists(Path.Combine(AppDomain.CurrentDomain.BaseDirectory, Settings.Default.UserDataDirectoryName));
-        await FileController.SaveAsync(_mainWindowViewModel.GatheringBindings?.GatheredCollection
-            ?.Select(GatheringMapping.Mapping), Path.Combine(AppDomain.CurrentDomain.BaseDirectory, Settings.Default.UserDataDirectoryName, Settings.Default.GatheringFileName));
+
+        var gatheredToSave = _mainWindowViewModel.GatheringBindings?.GatheredCollection.ToList().Select(GatheringMapping.Mapping);
+        await FileController.SaveAsync(gatheredToSave,
+            Path.Combine(AppDomain.CurrentDomain.BaseDirectory, Settings.Default.UserDataDirectoryName, Settings.Default.GatheringFileName));
     }
 
     public async Task SaveInFileAfterExceedingLimit(int limit)
