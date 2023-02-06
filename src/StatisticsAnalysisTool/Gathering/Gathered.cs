@@ -93,7 +93,12 @@ public class Gathered : INotifyPropertyChanged
 
     public string ClusterIndex { get; init; }
     public string ClusterUniqueName => WorldData.GetUniqueNameOrDefault(ClusterIndex);
-    public string TranslationIn => LanguageController.Translation("IN");
+    public static string TranslationIn => LanguageController.Translation("IN");
+    public static string TranslationAmountOfMiningProcesses => LanguageController.Translation("AMOUNT_OF_MINING_PROCESSES");
+    public static string TranslationStandard => LanguageController.Translation("STANDARD");
+    public static string TranslationBonus => LanguageController.Translation("BONUS");
+    public static string TranslationPremium => LanguageController.Translation("PREMIUM");
+
     public bool IsClosed
     {
         get => _isClosed;

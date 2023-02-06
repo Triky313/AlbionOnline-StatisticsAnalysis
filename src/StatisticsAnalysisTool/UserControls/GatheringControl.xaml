@@ -9,15 +9,6 @@
              mc:Ignorable="d" 
              d:DesignHeight="800" d:DesignWidth="800"
              d:DataContext="{d:DesignInstance Type=viewModels:MainWindowViewModel}">
-    <UserControl.Resources>
-        <gathering:GatheringDataTemplateSelector x:Key="GatheringDataTemplateSelector"
-                                                 GenerallyTemplate="{StaticResource GenerallyTemplate}"
-                                                 HideTemplate="{StaticResource HideTemplate}" 
-                                                 OreTemplate="{StaticResource OreTemplate}" 
-                                                 RockTemplate="{StaticResource RockTemplate}" 
-                                                 FiberTemplate="{StaticResource FiberTemplate}" 
-                                                 WoodTemplate="{StaticResource WoodTemplate}" />
-    </UserControl.Resources>
     <Grid>
         <StackPanel Orientation="Vertical">
             <StackPanel Orientation="Horizontal">
@@ -48,7 +39,80 @@
 
             <Grid Row="0" Margin="0,5,0,6" Grid.RowSpan="2">
                 <ScrollViewer>
-                    <ContentControl Content="{Binding GatheringBindings.SelectedGatheringFilter}" ContentTemplateSelector="{StaticResource GatheringDataTemplateSelector}"/>
+                    <Grid>
+                        <ContentControl Content="{Binding GatheringBindings.GatheringStats}" ContentTemplate="{StaticResource GenerallyTemplate}">
+                            <ContentControl.Style>
+                                <Style TargetType="{x:Type ContentControl}">
+                                    <Setter Property="Visibility" Value="Collapsed"/>
+                                    <Style.Triggers>
+                                        <DataTrigger Binding="{Binding GatheringBindings.SelectedGatheringFilter}" Value="{x:Static gathering:GatheringFilterType.Generally}">
+                                            <Setter Property="Visibility" Value="Visible"/>
+                                        </DataTrigger>
+                                    </Style.Triggers>
+                                </Style>
+                            </ContentControl.Style>
+                        </ContentControl>
+                        <ContentControl Content="{Binding GatheringBindings.GatheringStats}" ContentTemplate="{StaticResource WoodTemplate}">
+                            <ContentControl.Style>
+                                <Style TargetType="{x:Type ContentControl}">
+                                    <Setter Property="Visibility" Value="Collapsed"/>
+                                    <Style.Triggers>
+                                        <DataTrigger Binding="{Binding GatheringBindings.SelectedGatheringFilter}" Value="{x:Static gathering:GatheringFilterType.Wood}">
+                                            <Setter Property="Visibility" Value="Visible"/>
+                                        </DataTrigger>
+                                    </Style.Triggers>
+                                </Style>
+                            </ContentControl.Style>
+                        </ContentControl>
+                        <ContentControl Content="{Binding GatheringBindings.GatheringStats}" ContentTemplate="{StaticResource FiberTemplate}">
+                            <ContentControl.Style>
+                                <Style TargetType="{x:Type ContentControl}">
+                                    <Setter Property="Visibility" Value="Collapsed"/>
+                                    <Style.Triggers>
+                                        <DataTrigger Binding="{Binding GatheringBindings.SelectedGatheringFilter}" Value="{x:Static gathering:GatheringFilterType.Fiber}">
+                                            <Setter Property="Visibility" Value="Visible"/>
+                                        </DataTrigger>
+                                    </Style.Triggers>
+                                </Style>
+                            </ContentControl.Style>
+                        </ContentControl>
+                        <ContentControl Content="{Binding GatheringBindings.GatheringStats}" ContentTemplate="{StaticResource OreTemplate}">
+                            <ContentControl.Style>
+                                <Style TargetType="{x:Type ContentControl}">
+                                    <Setter Property="Visibility" Value="Collapsed"/>
+                                    <Style.Triggers>
+                                        <DataTrigger Binding="{Binding GatheringBindings.SelectedGatheringFilter}" Value="{x:Static gathering:GatheringFilterType.Ore}">
+                                            <Setter Property="Visibility" Value="Visible"/>
+                                        </DataTrigger>
+                                    </Style.Triggers>
+                                </Style>
+                            </ContentControl.Style>
+                        </ContentControl>
+                        <ContentControl Content="{Binding GatheringBindings.GatheringStats}" ContentTemplate="{StaticResource HideTemplate}">
+                            <ContentControl.Style>
+                                <Style TargetType="{x:Type ContentControl}">
+                                    <Setter Property="Visibility" Value="Collapsed"/>
+                                    <Style.Triggers>
+                                        <DataTrigger Binding="{Binding GatheringBindings.SelectedGatheringFilter}" Value="{x:Static gathering:GatheringFilterType.Hide}">
+                                            <Setter Property="Visibility" Value="Visible"/>
+                                        </DataTrigger>
+                                    </Style.Triggers>
+                                </Style>
+                            </ContentControl.Style>
+                        </ContentControl>
+                        <ContentControl Content="{Binding GatheringBindings.GatheringStats}" ContentTemplate="{StaticResource RockTemplate}">
+                            <ContentControl.Style>
+                                <Style TargetType="{x:Type ContentControl}">
+                                    <Setter Property="Visibility" Value="Collapsed"/>
+                                    <Style.Triggers>
+                                        <DataTrigger Binding="{Binding GatheringBindings.SelectedGatheringFilter}" Value="{x:Static gathering:GatheringFilterType.Rock}">
+                                            <Setter Property="Visibility" Value="Visible"/>
+                                        </DataTrigger>
+                                    </Style.Triggers>
+                                </Style>
+                            </ContentControl.Style>
+                        </ContentControl>
+                    </Grid>
                 </ScrollViewer>
             </Grid>
 

@@ -6,12 +6,14 @@ using StatisticsAnalysisTool.Properties;
 using StatisticsAnalysisTool.ViewModels;
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.IO;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Threading;
+using StatisticsAnalysisTool.Models.ItemsJsonModel;
 
 namespace StatisticsAnalysisTool.Gathering;
 
@@ -59,7 +61,7 @@ public class GatheringController
                 GainedBonusAmount = harvestFinishedObject.CollectorBonusAmount,
                 GainedPremiumBonusAmount = harvestFinishedObject.PremiumBonusAmount,
                 ClusterIndex = ClusterController.CurrentCluster.Index,
-                MiningProcesses = 1,
+                MiningProcesses = 1
             };
 
             AddGatheredToBindingCollection(gathered);

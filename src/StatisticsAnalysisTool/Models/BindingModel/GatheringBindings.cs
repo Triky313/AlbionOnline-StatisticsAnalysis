@@ -2,8 +2,11 @@
 using StatisticsAnalysisTool.Common.UserSettings;
 using StatisticsAnalysisTool.Gathering;
 using StatisticsAnalysisTool.Properties;
+using StatisticsAnalysisTool.ViewModels;
 using System.Collections.Generic;
+using System.Collections.Specialized;
 using System.ComponentModel;
+using System.Linq;
 using System.Runtime.CompilerServices;
 using System.Windows;
 using System.Windows.Data;
@@ -44,6 +47,14 @@ public class GatheringBindings : INotifyPropertyChanged
 
             GatheredCollectionView?.Refresh();
         }
+
+        GatheredCollection.CollectionChanged += UpdateStats;
+    }
+    
+    public void UpdateStats(object sender, NotifyCollectionChangedEventArgs e)
+    {
+        var hide = GatheredCollection?.Where(x => x?.Item?.ShopShopSubCategory1 == ShopSubCategory.Hide) ?? new List<Gathered>();
+        GatheringStats.GatheredHide = new ObservableRangeCollection<Gathered>(hide);
     }
 
     #region Bindings

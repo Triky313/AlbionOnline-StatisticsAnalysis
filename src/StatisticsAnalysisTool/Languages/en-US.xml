@@ -684,4 +684,6 @@
 	<translation name="UNKNOWN_TRADE">Unknown trade</translation>
 	<translation name="MAIL">Mail</translation>
 	<translation name="DELETE_TRADES_AFTER_14_DAYS">Delete trades after 14 days</translation>
+	<translation name="BONUS">Bonus</translation>
+	<translation name="PREMIUM">Premium</translation>
 </translations>
