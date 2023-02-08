@@ -684,4 +684,14 @@
 	<translation name="UNKNOWN TRADE">Nieznana transakcja</translation>
 	<translation name="MAIL">Poczta</translation>
 	<translation name="DELETE_TRADES_AFTER_14_DAYS">Usuń transakcje po 14 dniach</translation>
+	<translation name="BONUS">Premia</translation>
+	<translation name="PREMIUM">Premium</translation>
+	<translation name="GATHERING_ACTIVE">Zbieranie aktywne</translation>
+	<translation name="THIS_WEEK">W tym tygodniu</translation>
+	<translation name="LAST_WEEK">Ostatni tydzień</translation>
+	<translation name="GENERALLY">Ogólnie</translation>
+	<translation name="MOST_GATHERED_RESOURCE">Najczęściej zbierane zasoby</translation>
+	<translation name="MOST_GATHERED_ON_MAP">Najbardziej zebrane na mapie</translation>
+	<translation name="TOTAL_RESOURCES">Całkowite zasoby</translation>
+	<translation name="TOTAL_MINING_PROCESSES">Całkowite procesy wydobywcze</translation>
 </translations>
