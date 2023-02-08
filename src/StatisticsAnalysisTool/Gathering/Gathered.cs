@@ -105,7 +105,7 @@ public class Gathered : INotifyPropertyChanged
         }
     }
 
-    private int GetTotalAmountResources()
+    public int GetTotalAmountResources()
     {
         return GainedStandardAmount + GainedBonusAmount + GainedPremiumBonusAmount;
     }

@@ -74,6 +74,38 @@ public class GatheringBindings : INotifyPropertyChanged
 
             var rock = GroupAndFilterAndSum(GatheredCollection, x => x?.Item?.ShopShopSubCategory1 == ShopSubCategory.Rock, GatheringStatsTimeTypeSelection);
             await UpdateObservableRangeCollectionAsync(GatheringStats.GatheredRock, rock);
+
+            // Most gathered resource
+            var mostGatheredResource = GatheredCollection
+                .Where(x => IsTimestampOkayByGatheringStatsTimeType(x.TimestampDateTime, GatheringStatsTimeTypeSelection))
+                .GroupBy(x => x.UniqueName)
+                .Select(g => new Gathered
+                {
+                    UniqueName = g.Key,
+                    GainedStandardAmount = g.Sum(x => x.GainedStandardAmount),
+                    GainedBonusAmount = g.Sum(x => x.GainedBonusAmount),
+                    GainedPremiumBonusAmount = g.Sum(x => x.GainedPremiumBonusAmount),
+                    GainedTotalAmount = g.Sum(x => x.GainedTotalAmount),
+                    MiningProcesses = g.Sum(x => x.MiningProcesses)
+                }).MaxBy(x => x.GainedTotalAmount);
+
+            GatheringStats.MostGatheredResource = mostGatheredResource;
+
+            // Most gathered cluster
+            var mostGatheredCluster = GatheredCollection
+                .Where(x => IsTimestampOkayByGatheringStatsTimeType(x.TimestampDateTime, GatheringStatsTimeTypeSelection))
+                .GroupBy(x => x.ClusterIndex)
+                .Select(g => new Gathered
+                {
+                    ClusterIndex = g.Key,
+                    GainedStandardAmount = g.Sum(x => x.GainedStandardAmount),
+                    GainedBonusAmount = g.Sum(x => x.GainedBonusAmount),
+                    GainedPremiumBonusAmount = g.Sum(x => x.GainedPremiumBonusAmount),
+                    GainedTotalAmount = g.Sum(x => x.GainedTotalAmount),
+                    MiningProcesses = g.Sum(x => x.MiningProcesses)
+                }).MaxBy(x => x.MiningProcesses);
+
+            GatheringStats.MostGatheredCluster = mostGatheredCluster;
         });
     }
 

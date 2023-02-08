@@ -27,7 +27,7 @@
             <Separator Background="{StaticResource SolidColorBrush.Background.3}" Height="4" Margin="0,2,0,2" />
         </StackPanel>
 
-        <Grid Margin="0,60,0,0">
+        <Grid Margin="0,40,0,0">
             <Grid.RowDefinitions>
                 <RowDefinition Height="*"/>
                 <RowDefinition Height="5"/>
@@ -36,7 +36,7 @@
 
             <GridSplitter Grid.Row="1" ResizeDirection="Rows" ResizeBehavior="PreviousAndNext" HorizontalAlignment="Stretch" Margin="0,0,1,1" Background="{StaticResource SolidColorBrush.Accent.Blue.4}" />
 
-            <Grid Row="0" Margin="0,5,0,6" Grid.RowSpan="2">
+            <Grid Row="0" Margin="0,0,0,6" Grid.RowSpan="2">
                 <ScrollViewer>
                     <Grid>
                         <ContentControl Content="{Binding GatheringBindings.GatheringStats}" ContentTemplate="{StaticResource GenerallyTemplate}">

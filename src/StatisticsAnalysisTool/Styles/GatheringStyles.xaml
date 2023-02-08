@@ -96,6 +96,13 @@
         <Setter Property="Foreground" Value="{StaticResource SolidColorBrush.Accent.Blue.2}" />
     </Style>
 
+    <Style TargetType="TextBlock" x:Key="Gathering.Stats.TitleText">
+        <Setter Property="FontSize" Value="18"/>
+        <Setter Property="FontWeight" Value="Light"/>
+        <Setter Property="Foreground" Value="{StaticResource SolidColorBrush.Accent.Blue.3}"/>
+        <Setter Property="HorizontalAlignment" Value="Left"/>
+    </Style>
+
     <DataTemplate x:Key="GatheredItemTemplate" DataType="{x:Type gathering:Gathered}">
         <Grid Height="50">
             <Border Style="{StaticResource Container.Border}">
@@ -189,9 +196,95 @@
         </Grid>
     </DataTemplate>
 
+    <DataTemplate x:Key="MostGatheredResourceTemplate" DataType="{x:Type gathering:Gathered}">
+        <Grid Height="50">
+            <DockPanel VerticalAlignment="Top" HorizontalAlignment="Stretch" Margin="0,0,10,0">
+                <StackPanel Orientation="Vertical" Margin="0,0,5,0" HorizontalAlignment="Center" VerticalAlignment="Top">
+                    <Image Source="{Binding Item.Icon, IsAsync=True, Mode=OneWay}" Style="{StaticResource Gathering.Image.Item.Icon}" />
+                </StackPanel>
+                <StackPanel Orientation="Vertical">
+                    <DockPanel>
+                        <StackPanel Orientation="Horizontal" Margin="0,0,0,0" MinWidth="600">
+                            <TextBlock Text="{Binding Item.TierLevelString, IsAsync=True, FallbackValue=0}" FontWeight="Bold" Margin="0,0,3,0" Foreground="{StaticResource SolidColorBrush.Text.1}" />
+                            <TextBlock Text="{Binding Item.LocalizedName, IsAsync=True, FallbackValue=0}" FontWeight="Bold" Margin="0,0,3,0" Foreground="{StaticResource SolidColorBrush.Accent.Blue.2}" />
+                        </StackPanel>
+                    </DockPanel>
+                    <DockPanel>
+                        <StackPanel Orientation="Horizontal">
+                            <StackPanel Orientation="Horizontal" Width="90">
+                                <Image Style="{StaticResource Gathering.Image.Pickaxe.Box}" ToolTip="{Binding TranslationTotal, FallbackValue='TOTAL'}" />
+                                <TextBlock Text="{Binding GainedTotalAmount, IsAsync=True}" Style="{StaticResource Gathering.TextBlock.CollectionFragment.Numbers}" />
+                            </StackPanel>
+                            <StackPanel Orientation="Horizontal" Width="90">
+                                <Image Style="{StaticResource Gathering.Image.Pickaxe}" ToolTip="{Binding TranslationStandard, FallbackValue='STANDARD'}" />
+                                <TextBlock Text="{Binding GainedStandardAmount, IsAsync=True}" Style="{StaticResource Gathering.TextBlock.CollectionFragment.Numbers}" />
+                            </StackPanel>
+                            <StackPanel Orientation="Horizontal" Width="100">
+                                <Image Style="{StaticResource Gathering.Image.Pickaxe.Bonus}" ToolTip="{Binding TranslationBonus, FallbackValue='BONUS'}" />
+                                <TextBlock Text="{Binding GainedBonusAmount, IsAsync=True}" Style="{StaticResource Gathering.TextBlock.CollectionFragment.Numbers}" />
+                            </StackPanel>
+                            <StackPanel Orientation="Horizontal" Width="100">
+                                <Image Style="{StaticResource Gathering.Image.Pickaxe.Premium}" ToolTip="{Binding TranslationPremium, FallbackValue='PREMIUM'}" />
+                                <TextBlock Text="{Binding GainedPremiumBonusAmount, IsAsync=True}" Style="{StaticResource Gathering.TextBlock.CollectionFragment.Numbers}" />
+                            </StackPanel>
+                            <StackPanel Orientation="Horizontal" Width="100">
+                                <Image Style="{StaticResource Gathering.Image.Pickaxe.Repeat}" ToolTip="{Binding TranslationAmountOfMiningProcesses, FallbackValue='AMOUNT__OF__MINING__PROCESSES'}" />
+                                <TextBlock Text="{Binding MiningProcesses, IsAsync=True}" Style="{StaticResource Gathering.TextBlock.CollectionFragment.Numbers}" />
+                            </StackPanel>
+                        </StackPanel>
+                    </DockPanel>
+                </StackPanel>
+            </DockPanel>
+        </Grid>
+    </DataTemplate>
+
+    <DataTemplate x:Key="MostGatheredClusterTemplate" DataType="{x:Type gathering:Gathered}">
+        <Grid Height="50">
+            <DockPanel VerticalAlignment="Top" HorizontalAlignment="Stretch" Margin="0,0,10,0">
+                <StackPanel Orientation="Vertical">
+                    <DockPanel>
+                        <StackPanel Orientation="Horizontal" Margin="0,0,0,0" MinWidth="600">
+                            <TextBlock Text="{Binding ClusterUniqueName, IsAsync=True, FallbackValue=0}" FontSize="16" FontWeight="Bold" Margin="0,0,3,0" Foreground="{StaticResource SolidColorBrush.Text.2}" />
+                        </StackPanel>
+                    </DockPanel>
+                    <DockPanel>
+                        <StackPanel Orientation="Horizontal">
+                            <StackPanel Orientation="Horizontal" Width="90">
+                                <Image Style="{StaticResource Gathering.Image.Pickaxe.Box}" ToolTip="{Binding TranslationTotal, FallbackValue='TOTAL'}" />
+                                <TextBlock Text="{Binding GainedTotalAmount, IsAsync=True}" Style="{StaticResource Gathering.TextBlock.CollectionFragment.Numbers}" />
+                            </StackPanel>
+                            <StackPanel Orientation="Horizontal" Width="90">
+                                <Image Style="{StaticResource Gathering.Image.Pickaxe}" ToolTip="{Binding TranslationStandard, FallbackValue='STANDARD'}" />
+                                <TextBlock Text="{Binding GainedStandardAmount, IsAsync=True}" Style="{StaticResource Gathering.TextBlock.CollectionFragment.Numbers}" />
+                            </StackPanel>
+                            <StackPanel Orientation="Horizontal" Width="100">
+                                <Image Style="{StaticResource Gathering.Image.Pickaxe.Bonus}" ToolTip="{Binding TranslationBonus, FallbackValue='BONUS'}" />
+                                <TextBlock Text="{Binding GainedBonusAmount, IsAsync=True}" Style="{StaticResource Gathering.TextBlock.CollectionFragment.Numbers}" />
+                            </StackPanel>
+                            <StackPanel Orientation="Horizontal" Width="100">
+                                <Image Style="{StaticResource Gathering.Image.Pickaxe.Premium}" ToolTip="{Binding TranslationPremium, FallbackValue='PREMIUM'}" />
+                                <TextBlock Text="{Binding GainedPremiumBonusAmount, IsAsync=True}" Style="{StaticResource Gathering.TextBlock.CollectionFragment.Numbers}" />
+                            </StackPanel>
+                            <StackPanel Orientation="Horizontal" Width="100">
+                                <Image Style="{StaticResource Gathering.Image.Pickaxe.Repeat}" ToolTip="{Binding TranslationAmountOfMiningProcesses, FallbackValue='AMOUNT__OF__MINING__PROCESSES'}" />
+                                <TextBlock Text="{Binding MiningProcesses, IsAsync=True}" Style="{StaticResource Gathering.TextBlock.CollectionFragment.Numbers}" />
+                            </StackPanel>
+                        </StackPanel>
+                    </DockPanel>
+                </StackPanel>
+            </DockPanel>
+        </Grid>
+    </DataTemplate>
+
     <DataTemplate x:Key="GenerallyTemplate" DataType="{x:Type gathering:GatheringStats}">
         <Grid>
-            <Label Content="GENERALLY" />
+            <StackPanel Orientation="Vertical">
+                <TextBlock Visibility="{Binding MostGatheredResourceVisibility}" Style="{StaticResource Gathering.Stats.TitleText}" Text="Most gathered resource" />
+                <ContentControl Visibility="{Binding MostGatheredResourceVisibility}" Content="{Binding MostGatheredResource}" ContentTemplate="{StaticResource MostGatheredResourceTemplate}" />
+
+                <TextBlock Visibility="{Binding MostGatheredClusterVisibility}" Style="{StaticResource Gathering.Stats.TitleText}" Text="Most gathered cluster" />
+                <ContentControl Visibility="{Binding MostGatheredClusterVisibility}" Content="{Binding MostGatheredCluster}" ContentTemplate="{StaticResource MostGatheredClusterTemplate}" />
+            </StackPanel>
         </Grid>
     </DataTemplate>
 
