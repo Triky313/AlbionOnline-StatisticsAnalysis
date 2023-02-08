@@ -161,6 +161,11 @@ public class GatheringStats : INotifyPropertyChanged
         }
     }
 
+    public static string TranslationMostGatheredResource => LanguageController.Translation("MOST_GATHERED_RESOURCE");
+    public static string TranslationMostGatheredOnMap => LanguageController.Translation("MOST_GATHERED_ON_MAP");
+    public static string TranslationTotalResources => LanguageController.Translation("TOTAL_RESOURCES");
+    public static string TranslationTotalMiningProcesses => LanguageController.Translation("TOTAL_MINING_PROCESSES");
+
     public event PropertyChangedEventHandler PropertyChanged;
 
     [NotifyPropertyChangedInvocator]

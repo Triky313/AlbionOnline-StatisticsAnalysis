@@ -690,4 +690,8 @@
 	<translation name="THIS_WEEK">Diese Woche</translation>
 	<translation name="LAST_WEEK">Letzte Woche</translation>
 	<translation name="GENERALLY">Allgemein</translation>
+	<translation name="MOST_GATHERED_RESOURCE">Am meisten gesammelte Ressource</translation>
+	<translation name="MOST_GATHERED_ON_MAP">Am meisten gesammelte auf Map</translation>
+	<translation name="TOTAL_RESOURCES">Gesamtressourcen</translation>
+	<translation name="TOTAL_MINING_PROCESSES">Gesamte Abbau-Prozesse</translation>
 </translations>

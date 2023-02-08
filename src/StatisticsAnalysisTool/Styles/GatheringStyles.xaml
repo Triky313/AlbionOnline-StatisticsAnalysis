@@ -101,6 +101,7 @@
         <Setter Property="FontWeight" Value="Light"/>
         <Setter Property="Foreground" Value="{StaticResource SolidColorBrush.Accent.Blue.3}"/>
         <Setter Property="HorizontalAlignment" Value="Left"/>
+        <Setter Property="Margin" Value="0,5,0,0"/>
     </Style>
 
     <DataTemplate x:Key="GatheredItemTemplate" DataType="{x:Type gathering:Gathered}">
@@ -279,11 +280,17 @@
     <DataTemplate x:Key="GenerallyTemplate" DataType="{x:Type gathering:GatheringStats}">
         <Grid>
             <StackPanel Orientation="Vertical">
-                <TextBlock Visibility="{Binding MostGatheredResourceVisibility}" Style="{StaticResource Gathering.Stats.TitleText}" Text="Most gathered resource" />
+                <TextBlock Visibility="{Binding MostGatheredResourceVisibility}" Style="{StaticResource Gathering.Stats.TitleText}" Text="{Binding TranslationMostGatheredResource}" />
                 <ContentControl Visibility="{Binding MostGatheredResourceVisibility}" Content="{Binding MostGatheredResource}" ContentTemplate="{StaticResource MostGatheredResourceTemplate}" />
 
-                <TextBlock Visibility="{Binding MostGatheredClusterVisibility}" Style="{StaticResource Gathering.Stats.TitleText}" Text="Most gathered cluster" />
+                <TextBlock Visibility="{Binding MostGatheredClusterVisibility}" Style="{StaticResource Gathering.Stats.TitleText}" Text="{Binding TranslationMostGatheredOnMap}" />
                 <ContentControl Visibility="{Binding MostGatheredClusterVisibility}" Content="{Binding MostGatheredCluster}" ContentTemplate="{StaticResource MostGatheredClusterTemplate}" />
+
+                <TextBlock Style="{StaticResource Gathering.Stats.TitleText}" Text="{Binding TranslationTotalResources}" />
+                <TextBlock Text="{Binding TotalResources, IsAsync=True}" Style="{StaticResource Gathering.TextBlock.CollectionFragment.Numbers}" />
+
+                <TextBlock Style="{StaticResource Gathering.Stats.TitleText}" Text="{Binding TranslationTotalMiningProcesses}" />
+                <TextBlock Text="{Binding TotalMiningProcesses, IsAsync=True}" Style="{StaticResource Gathering.TextBlock.CollectionFragment.Numbers}" />
             </StackPanel>
         </Grid>
     </DataTemplate>

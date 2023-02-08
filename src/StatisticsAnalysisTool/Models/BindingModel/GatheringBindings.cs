@@ -106,6 +106,20 @@ public class GatheringBindings : INotifyPropertyChanged
                 }).MaxBy(x => x.MiningProcesses);
 
             GatheringStats.MostGatheredCluster = mostGatheredCluster;
+
+            // Most total resources
+            var totalResources = GatheredCollection
+                .Where(x => IsTimestampOkayByGatheringStatsTimeType(x.TimestampDateTime, GatheringStatsTimeTypeSelection))
+                .Sum(x => x.GainedTotalAmount);
+
+            GatheringStats.TotalResources = totalResources;
+
+            // Most total mining processes
+            var totalMiningProcesses = GatheredCollection
+                .Where(x => IsTimestampOkayByGatheringStatsTimeType(x.TimestampDateTime, GatheringStatsTimeTypeSelection))
+                .Sum(x => x.MiningProcesses);
+
+            GatheringStats.TotalMiningProcesses = totalMiningProcesses;
         });
     }
 
