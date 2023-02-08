@@ -2,6 +2,7 @@
 using StatisticsAnalysisTool.Properties;
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
+using System.Windows.Data;
 
 namespace StatisticsAnalysisTool.Gathering;
 
@@ -14,7 +15,8 @@ public class GatheringStats : INotifyPropertyChanged
     private ObservableRangeCollection<Gathered> _gatheredOre = new();
     private ObservableRangeCollection<Gathered> _gatheredRock = new();
     private ObservableRangeCollection<Gathered> _gatheredFiber = new();
-
+    private readonly ListCollectionView _gatheredHideCollectionView;
+    
     public GatheringFilterType GatheringFilterType
     {
         get => _gatheringFilterType;
@@ -34,7 +36,7 @@ public class GatheringStats : INotifyPropertyChanged
             OnPropertyChanged();
         }
     }
-
+    
     public ObservableRangeCollection<Gathered> GatheredHide
     {
         get => _gatheredHide;

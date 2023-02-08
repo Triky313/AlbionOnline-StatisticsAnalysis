@@ -19,6 +19,7 @@ public class Gathered : INotifyPropertyChanged
     private bool _isClosed;
     private string _uniqueName;
     private int _miningProcesses;
+    private int _gainedTotalAmount;
 
     public long Timestamp { get; init; }
     public DateTime TimestampDateTime => new(Timestamp);
@@ -32,7 +33,7 @@ public class Gathered : INotifyPropertyChanged
         {
             _uniqueName = value;
             Item = ItemController.GetItemByUniqueName(_uniqueName);
-            if (Item.FullItemInformation is SimpleItem simpleItem && int.TryParse(simpleItem.FameValue, NumberStyles.Any, CultureInfo.CurrentCulture, out var gainedFame))
+            if (Item?.FullItemInformation is SimpleItem simpleItem && int.TryParse(simpleItem.FameValue, NumberStyles.Any, CultureInfo.CurrentCulture, out var gainedFame))
             {
                 GainedFame = gainedFame;
             }
@@ -47,6 +48,7 @@ public class Gathered : INotifyPropertyChanged
         set
         {
             _gainedStandardAmount = value;
+            GainedTotalAmount = GetTotalAmountResources();
             OnPropertyChanged();
         }
     }
@@ -57,6 +59,7 @@ public class Gathered : INotifyPropertyChanged
         set
         {
             _gainedBonusAmount = value;
+            GainedTotalAmount = GetTotalAmountResources();
             OnPropertyChanged();
         }
     }
@@ -67,6 +70,17 @@ public class Gathered : INotifyPropertyChanged
         set
         {
             _gainedPremiumBonusAmount = value;
+            GainedTotalAmount = GetTotalAmountResources();
+            OnPropertyChanged();
+        }
+    }
+
+    public int GainedTotalAmount
+    {
+        get => _gainedTotalAmount;
+        set
+        {
+            _gainedTotalAmount = value;
             OnPropertyChanged();
         }
     }
@@ -91,6 +105,11 @@ public class Gathered : INotifyPropertyChanged
         }
     }
 
+    private int GetTotalAmountResources()
+    {
+        return GainedStandardAmount + GainedBonusAmount + GainedPremiumBonusAmount;
+    }
+
     public string ClusterIndex { get; init; }
     public string ClusterUniqueName => WorldData.GetUniqueNameOrDefault(ClusterIndex);
     public static string TranslationIn => LanguageController.Translation("IN");
@@ -98,6 +117,7 @@ public class Gathered : INotifyPropertyChanged
     public static string TranslationStandard => LanguageController.Translation("STANDARD");
     public static string TranslationBonus => LanguageController.Translation("BONUS");
     public static string TranslationPremium => LanguageController.Translation("PREMIUM");
+    public static string TranslationTotal => LanguageController.Translation("TOTAL");
 
     public bool IsClosed
     {

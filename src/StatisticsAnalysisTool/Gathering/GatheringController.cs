@@ -6,14 +6,12 @@ using StatisticsAnalysisTool.Properties;
 using StatisticsAnalysisTool.ViewModels;
 using System;
 using System.Collections.Generic;
-using System.Collections.ObjectModel;
 using System.IO;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Threading;
-using StatisticsAnalysisTool.Models.ItemsJsonModel;
 
 namespace StatisticsAnalysisTool.Gathering;
 
@@ -68,6 +66,7 @@ public class GatheringController
         }
 
         await SaveInFileAfterExceedingLimit(10);
+        _mainWindowViewModel.GatheringBindings.UpdateStats();
     }
 
     public async void AddGatheredToBindingCollection(Gathered gathered)
@@ -75,7 +74,7 @@ public class GatheringController
         await Application.Current.Dispatcher.InvokeAsync(() =>
         {
             _mainWindowViewModel?.GatheringBindings?.GatheredCollection.Add(gathered);
-            _mainWindowViewModel?.GatheringBindings?.GatheredCollectionView?.Refresh();
+            //_mainWindowViewModel?.GatheringBindings?.GatheredCollectionView?.Refresh();
         });
     }
 
@@ -100,11 +99,15 @@ public class GatheringController
         await SetGatheredToBindings(gathered);
     }
 
-    public async Task SaveInFileAsync()
+    public async Task SaveInFileAsync(bool safeMoreThan356Days = false)
     {
         DirectoryController.CreateDirectoryWhenNotExists(Path.Combine(AppDomain.CurrentDomain.BaseDirectory, Settings.Default.UserDataDirectoryName));
+        
+        var gatheredToSave = _mainWindowViewModel.GatheringBindings?.GatheredCollection
+            .Where(x => safeMoreThan356Days && x.TimestampDateTime > DateTime.UtcNow.AddDays(-365) || !safeMoreThan356Days)
+            .ToList()
+            .Select(GatheringMapping.Mapping);
 
-        var gatheredToSave = _mainWindowViewModel.GatheringBindings?.GatheredCollection.ToList().Select(GatheringMapping.Mapping);
         await FileController.SaveAsync(gatheredToSave,
             Path.Combine(AppDomain.CurrentDomain.BaseDirectory, Settings.Default.UserDataDirectoryName, Settings.Default.GatheringFileName));
     }

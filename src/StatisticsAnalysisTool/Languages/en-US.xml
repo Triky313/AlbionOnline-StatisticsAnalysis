@@ -686,4 +686,8 @@
 	<translation name="DELETE_TRADES_AFTER_14_DAYS">Delete trades after 14 days</translation>
 	<translation name="BONUS">Bonus</translation>
 	<translation name="PREMIUM">Premium</translation>
+	<translation name="GATHERING_ACTIVE">Gathering active</translation>
+	<translation name="THIS_WEEK">This week</translation>
+	<translation name="LAST_WEEK">Last week</translation>
+	<translation name="GENERALLY">Generally</translation>
 </translations>

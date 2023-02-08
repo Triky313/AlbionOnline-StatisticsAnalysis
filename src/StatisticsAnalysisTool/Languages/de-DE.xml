@@ -686,4 +686,8 @@
 	<translation name="DELETE_TRADES_AFTER_14_DAYS">Lösche Handel nach 14 Tagen</translation>
 	<translation name="BONUS">Bonus</translation>
 	<translation name="PREMIUM">Premium</translation>
+	<translation name="GATHERING_ACTIVE">Gathering aktiv</translation>
+	<translation name="THIS_WEEK">Diese Woche</translation>
+	<translation name="LAST_WEEK">Letzte Woche</translation>
+	<translation name="GENERALLY">Allgemein</translation>
 </translations>

@@ -16,15 +16,14 @@
                           ItemsSource="{Binding GatheringBindings.GatheringFilter}" 
                           SelectedValue="{Binding GatheringBindings.SelectedGatheringFilter}"
                           IsSynchronizedWithCurrentItem="True" SelectedValuePath="Key" DisplayMemberPath="Value" />
-
-                <ComboBox ItemsSource="{Binding GatheringBindings.TierFilter}" SelectedValue="{Binding GatheringBindings.SelectedTierFilter}" 
-                          Margin="5,5" Height="26" SelectedValuePath="Key" DisplayMemberPath="Value" HorizontalAlignment="Left" VerticalAlignment="Top" Width="44" MinWidth="80" />
+                <ComboBox Width="200" Height="26" Margin="5,5" HorizontalAlignment="Left" VerticalAlignment="Top"
+                          ItemsSource="{Binding GatheringBindings.GatheringStatsTimeTypes}" 
+                          SelectedValue="{Binding GatheringBindings.GatheringStatsTimeTypeSelection}" 
+                          IsSynchronizedWithCurrentItem="True" DisplayMemberPath="Name" SelectedValuePath="GatheringStatsTimeType" />
+                <CheckBox IsChecked="{Binding GatheringBindings.IsGatheringActive, FallbackValue=true}" 
+                          Content="{Binding GatheringBindings.TranslationGatheringActive, FallbackValue=GATHERING__ACTIVE}"  
+                          HorizontalAlignment="Left" VerticalAlignment="Center" Width="150" />
             </StackPanel>
-            <StackPanel Orientation="Horizontal">
-                <CheckBox IsChecked="{Binding GatheringBindings.IsGatheringActive, FallbackValue=true}" Content="{Binding GatheringBindings.TranslationGatheringActive, FallbackValue=GATHERING__ACTIVE}"  
-                          HorizontalAlignment="Left" VerticalAlignment="Top" Width="150" />
-            </StackPanel>
-
             <Separator Background="{StaticResource SolidColorBrush.Background.3}" Height="4" Margin="0,2,0,2" />
         </StackPanel>
 

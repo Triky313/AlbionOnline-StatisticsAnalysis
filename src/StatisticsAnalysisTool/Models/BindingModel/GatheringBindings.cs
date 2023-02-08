@@ -2,12 +2,13 @@
 using StatisticsAnalysisTool.Common.UserSettings;
 using StatisticsAnalysisTool.Gathering;
 using StatisticsAnalysisTool.Properties;
-using StatisticsAnalysisTool.ViewModels;
+using System;
 using System.Collections.Generic;
 using System.Collections.Specialized;
 using System.ComponentModel;
 using System.Linq;
 using System.Runtime.CompilerServices;
+using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Data;
 
@@ -20,8 +21,6 @@ public class GatheringBindings : INotifyPropertyChanged
     private ObservableRangeCollection<Gathered> _gatheredCollection = new();
     private readonly ListCollectionView _gatheredCollectionView;
     private GridLength _gridSplitterPosition = GridLength.Auto;
-    private Dictionary<ItemTier, string> _tierFilter = FrequentlyValues.ItemTiers;
-    private ItemTier _selectedTierFilter = ItemTier.T8;
     private Dictionary<GatheringFilterType, string> _gatheringFilter = new()
     {
         { GatheringFilterType.Generally, LanguageController.Translation("GENERALLY") },
@@ -32,6 +31,7 @@ public class GatheringBindings : INotifyPropertyChanged
         { GatheringFilterType.Rock, LanguageController.Translation("ROCK") }
     };
     private GatheringFilterType _selectedGatheringFilter = GatheringFilterType.Generally;
+    private GatheringStatsTimeType _gatheringStatsTimeTypeSelection = GatheringStatsTimeType.Today;
 
     public GatheringBindings()
     {
@@ -48,13 +48,80 @@ public class GatheringBindings : INotifyPropertyChanged
             GatheredCollectionView?.Refresh();
         }
 
-        GatheredCollection.CollectionChanged += UpdateStats;
+        GatheredCollection.CollectionChanged += UpdateStatsAsync;
     }
-    
-    public void UpdateStats(object sender, NotifyCollectionChangedEventArgs e)
+
+    public void UpdateStats()
     {
-        var hide = GatheredCollection?.Where(x => x?.Item?.ShopShopSubCategory1 == ShopSubCategory.Hide) ?? new List<Gathered>();
-        GatheringStats.GatheredHide = new ObservableRangeCollection<Gathered>(hide);
+        UpdateStatsAsync(null, null);
+    }
+
+    public async void UpdateStatsAsync(object sender, NotifyCollectionChangedEventArgs e)
+    {
+        await Task.Run(async () =>
+        {
+            var hide = GroupAndFilterAndSum(GatheredCollection, x => x?.Item?.ShopShopSubCategory1 == ShopSubCategory.Hide, GatheringStatsTimeTypeSelection);
+            await UpdateObservableRangeCollectionAsync(GatheringStats.GatheredHide, hide);
+
+            var ore = GroupAndFilterAndSum(GatheredCollection, x => x?.Item?.ShopShopSubCategory1 == ShopSubCategory.Ore, GatheringStatsTimeTypeSelection);
+            await UpdateObservableRangeCollectionAsync(GatheringStats.GatheredOre, ore);
+
+            var fiber = GroupAndFilterAndSum(GatheredCollection, x => x?.Item?.ShopShopSubCategory1 == ShopSubCategory.Fiber, GatheringStatsTimeTypeSelection);
+            await UpdateObservableRangeCollectionAsync(GatheringStats.GatheredFiber, fiber);
+
+            var wood = GroupAndFilterAndSum(GatheredCollection, x => x?.Item?.ShopShopSubCategory1 == ShopSubCategory.Wood, GatheringStatsTimeTypeSelection);
+            await UpdateObservableRangeCollectionAsync(GatheringStats.GatheredWood, wood);
+
+            var rock = GroupAndFilterAndSum(GatheredCollection, x => x?.Item?.ShopShopSubCategory1 == ShopSubCategory.Rock, GatheringStatsTimeTypeSelection);
+            await UpdateObservableRangeCollectionAsync(GatheringStats.GatheredRock, rock);
+        });
+    }
+
+    private static IAsyncEnumerable<Gathered> GroupAndFilterAndSum(IEnumerable<Gathered> gatheredData, Func<Gathered, bool> filter, GatheringStatsTimeType gatheringStatsTimeType)
+    {
+        var filteredData = gatheredData?.Where(filter).Where(x => IsTimestampOkayByGatheringStatsTimeType(x.TimestampDateTime, gatheringStatsTimeType));
+        var groupedData = filteredData?.GroupBy(x => x.UniqueName)
+            .Select(g => new Gathered()
+            {
+                UniqueName = g.Key,
+                GainedStandardAmount = g.Sum(x => x.GainedStandardAmount),
+                GainedBonusAmount = g.Sum(x => x.GainedBonusAmount),
+                GainedPremiumBonusAmount = g.Sum(x => x.GainedPremiumBonusAmount),
+                GainedFame = g.Sum(x => x.GainedFame),
+                MiningProcesses = g.Sum(x => x.MiningProcesses)
+            }).ToAsyncEnumerable();
+
+        return groupedData;
+    }
+
+    private static async Task UpdateObservableRangeCollectionAsync(ObservableRangeCollection<Gathered> target, IAsyncEnumerable<Gathered> source)
+    {
+        var sourceSorted = source.OrderByDescending(x => x.UniqueName);
+        await Application.Current.Dispatcher.InvokeAsync(async () =>
+        {
+            target.Clear();
+            target.AddRange(await sourceSorted.ToListAsync());
+        });
+    }
+
+    public static bool IsTimestampOkayByGatheringStatsTimeType(DateTime dateTime, GatheringStatsTimeType gatheringStatsTimeType)
+    {
+        var dateTimeUtcNow = DateTime.UtcNow;
+        return gatheringStatsTimeType switch
+        {
+            GatheringStatsTimeType.Today
+                when dateTime.Year != dateTimeUtcNow.Year || dateTime.Date.DayOfYear != dateTimeUtcNow.DayOfYear => false,
+            GatheringStatsTimeType.ThisWeek
+                when dateTime.Year != dateTimeUtcNow.Year || !dateTime.Date.IsDateInWeekOfYear(dateTimeUtcNow) => false,
+            GatheringStatsTimeType.LastWeek
+                when dateTime.Year != dateTimeUtcNow.Year || !dateTime.Date.IsDateInWeekOfYear(dateTimeUtcNow.AddDays(-7)) => false,
+            GatheringStatsTimeType.Month
+                when dateTime.Year != dateTimeUtcNow.Year || dateTime.Month != dateTimeUtcNow.Month => false,
+            GatheringStatsTimeType.Year
+                when dateTime.Year != dateTimeUtcNow.Year => false,
+            GatheringStatsTimeType.Unknown => false,
+            _ => true
+        };
     }
 
     #region Bindings
@@ -111,26 +178,6 @@ public class GatheringBindings : INotifyPropertyChanged
         }
     }
 
-    public Dictionary<ItemTier, string> TierFilter
-    {
-        get => _tierFilter;
-        set
-        {
-            _tierFilter = value;
-            OnPropertyChanged();
-        }
-    }
-
-    public ItemTier SelectedTierFilter
-    {
-        get => _selectedTierFilter;
-        set
-        {
-            _selectedTierFilter = value;
-            OnPropertyChanged();
-        }
-    }
-
     public Dictionary<GatheringFilterType, string> GatheringFilter
     {
         get => _gatheringFilter;
@@ -147,6 +194,48 @@ public class GatheringBindings : INotifyPropertyChanged
         set
         {
             _selectedGatheringFilter = value;
+            GatheringStats.GatheringFilterType = value;
+            UpdateStats();
+            OnPropertyChanged();
+        }
+    }
+
+    public List<GatheringStatsFilterStruct> GatheringStatsTimeTypes { get; } = new()
+    {
+        new GatheringStatsFilterStruct
+        {
+            Name = LanguageController.Translation("TODAY"),
+            GatheringStatsTimeType = GatheringStatsTimeType.Today
+        },
+        new GatheringStatsFilterStruct
+        {
+            Name = LanguageController.Translation("THIS_WEEK"),
+            GatheringStatsTimeType = GatheringStatsTimeType.ThisWeek
+        },
+        new GatheringStatsFilterStruct
+        {
+            Name = LanguageController.Translation("LAST_WEEK"),
+            GatheringStatsTimeType = GatheringStatsTimeType.LastWeek
+        },
+        new GatheringStatsFilterStruct
+        {
+            Name = LanguageController.Translation("LAST_30_DAYS"),
+            GatheringStatsTimeType = GatheringStatsTimeType.Month
+        },
+        new GatheringStatsFilterStruct
+        {
+            Name = LanguageController.Translation("LAST_365_DAYS"),
+            GatheringStatsTimeType = GatheringStatsTimeType.Year
+        }
+    };
+
+    public GatheringStatsTimeType GatheringStatsTimeTypeSelection
+    {
+        get => _gatheringStatsTimeTypeSelection;
+        set
+        {
+            _gatheringStatsTimeTypeSelection = value;
+            UpdateStats();
             OnPropertyChanged();
         }
     }

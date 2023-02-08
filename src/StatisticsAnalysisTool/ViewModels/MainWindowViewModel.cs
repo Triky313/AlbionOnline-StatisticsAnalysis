@@ -609,7 +609,7 @@ public class MainWindowViewModel : INotifyPropertyChanged, IAsyncInitialization
         await TrackingController?.TreasureController?.SaveInFileAsync()!;
         await TrackingController?.StatisticController?.SaveInFileAsync()!;
         await TrackingController?.LootController?.SaveInFileAsync()!;
-        await TrackingController?.GatheringController?.SaveInFileAsync()!;
+        await TrackingController?.GatheringController?.SaveInFileAsync(true)!;
         await TrackingController?.TradeController?.SaveInFileAsync()!;
 
         await FileController.SaveAsync(DamageMeterBindings?.DamageMeterSnapshots, $"{AppDomain.CurrentDomain.BaseDirectory}{Settings.Default.DamageMeterSnapshotsFileName}");

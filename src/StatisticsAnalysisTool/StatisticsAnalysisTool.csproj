@@ -246,6 +246,18 @@
     <Resource Include="Assets\pickaxe.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Resource>
+    <Resource Include="Assets\pickaxe_bonus.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Assets\pickaxe_box.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Assets\pickaxe_premium.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Assets\pickaxe_repeat.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Resource>
     <Resource Include="Assets\purple_glow.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Resource>
@@ -617,6 +629,10 @@
     <None Remove="Assets\outpost_chest.png" />
     <None Remove="Assets\paypal-QR-Code.png" />
     <None Remove="Assets\pickaxe.png" />
+    <None Remove="Assets\pickaxe_bonus.png" />
+    <None Remove="Assets\pickaxe_box.png" />
+    <None Remove="Assets\pickaxe_premium.png" />
+    <None Remove="Assets\pickaxe_repeat.png" />
     <None Remove="Assets\purple_glow.png" />
     <None Remove="Assets\repair_cross.png" />
     <None Remove="Assets\resources.png" />
