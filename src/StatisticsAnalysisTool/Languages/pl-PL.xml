@@ -684,4 +684,10 @@
 	<translation name="UNKNOWN TRADE">Nieznana transakcja</translation>
 	<translation name="MAIL">Poczta</translation>
 	<translation name="DELETE_TRADES_AFTER_14_DAYS">Usuń transakcje po 14 dniach</translation>
+	<translation name="BONUS">Premia</translation>
+	<translation name="PREMIUM">Premium</translation>
+	<translation name="GATHERING_ACTIVE">Zbieranie aktywne</translation>
+	<translation name="THIS_WEEK">W tym tygodniu</translation>
+	<translation name="LAST_WEEK">Ostatni tydzień</translation>
+	<translation name="GENERALLY">Ogólnie</translation>
 </translations>
