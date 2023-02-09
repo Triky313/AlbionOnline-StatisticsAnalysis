@@ -355,7 +355,7 @@ public enum EventCodes
     PartyFinderJoinRequestDeclined,
     NewUnlockedPersonalSeasonRewards,
     PersonalSeasonPointsGained,
-    ChallengePoints = 353, // map[0:1578596 252:352]
+    ChallengePoints,
     EasyAntiCheatMessageToClient,
     MatchLootChestOpeningStart,
     MatchLootChestOpeningFinished,
@@ -370,12 +370,12 @@ public enum EventCodes
     TutorialUpdate,
     TriggerHintBox,
     RandomDungeonPositionInfo,
-    NewLootChest = 375, // map[0:23 1:[20.5 177.5] 2:423 3:KEEPER_SOLO_BOOKCHEST_STANDARD 4:FOREST_GREEN_LOOTCHEST_KEEPER_SOLO_BOOKCHEST_STANDARD 5:4 6:637734315213820408 7:[] 8:[] 13:true 252:367] // map[0:4399 1:[165 -263] 3:TREASURE_SOLO_UNCOMMON 4:SWAMP_DEAD_LOOTCHEST_TREASURE_SOLO_UNCOMMON 5:4 6:637926439332719127 7:[] 8:[] 13:true 14:SWAMP_DEAD_TREASURE_SOLO 16:31ff503a-ded6-53d6-974a-7e32e3126457 252:370]
-    UpdateLootChest = 376, // 0=ObjectId, 3=PlayerGuid, 4=PlayerGuid, 7=Free4All map[0:4769 1:5 2:637927794424868192 3:[[-45 -35 124 14 -23 103 -41 74 -71 66 67 20 -12 60 44 -101]] 4:[[-45 -35 124 14 -23 103 -41 74 -71 66 67 20 -12 60 44 -101]] 6:true 7:true 8:2.6 9:true 252:371]
-    LootChestOpened = 377, // map[0:23 252:369]
-    EventCode378,
-    NewShrine = 379, // map[0:19 1:[-89 90] 2:180 3:GENERAL_SHRINE_COMBAT_BUFF 4:SHRINE_NON_COMBAT_BUFF 5:1 6:637734312344532502 252:371]
-    UpdateShrine = 380, // map[0:19 1:2 2:637734313445294913 252:372]
+    NewLootChest = 376, // map[0:23 1:[20.5 177.5] 2:423 3:KEEPER_SOLO_BOOKCHEST_STANDARD 4:FOREST_GREEN_LOOTCHEST_KEEPER_SOLO_BOOKCHEST_STANDARD 5:4 6:637734315213820408 7:[] 8:[] 13:true 252:367] // map[0:4399 1:[165 -263] 3:TREASURE_SOLO_UNCOMMON 4:SWAMP_DEAD_LOOTCHEST_TREASURE_SOLO_UNCOMMON 5:4 6:637926439332719127 7:[] 8:[] 13:true 14:SWAMP_DEAD_TREASURE_SOLO 16:31ff503a-ded6-53d6-974a-7e32e3126457 252:370]
+    UpdateLootChest = 377, // 0=ObjectId, 3=PlayerGuid, 4=PlayerGuid, 7=Free4All map[0:4769 1:5 2:637927794424868192 3:[[-45 -35 124 14 -23 103 -41 74 -71 66 67 20 -12 60 44 -101]] 4:[[-45 -35 124 14 -23 103 -41 74 -71 66 67 20 -12 60 44 -101]] 6:true 7:true 8:2.6 9:true 252:371]
+    LootChestOpened = 378, // map[0:23 252:369]
+    EventCode379,
+    NewShrine = 380, // map[0:19 1:[-89 90] 2:180 3:GENERAL_SHRINE_COMBAT_BUFF 4:SHRINE_NON_COMBAT_BUFF 5:1 6:637734312344532502 252:371]
+    UpdateShrine = 381, // map[0:19 1:2 2:637734313445294913 252:372]
     MutePlayerUpdate,
     ShopTileUpdate,
     ShopUpdate,
@@ -383,10 +383,10 @@ public enum EventCodes
     UnlockVanityUnlock,
     AvatarUnlocked,
     CustomizationChanged,
-    GuildVaultInfo = 393,
-    BaseVaultInfo = 394,
+    GuildVaultInfo = 394,
+    BaseVaultInfo = 395,
     BankVaultInfo, // map[0:6 1:6466931c-65a1-4c5d-870b-8724cf2611dc@3007 2:[] 3:[] 4:[] 5:[] 6:[] 7:[] 8:[] 252:390]
-    RecoveryVaultPlayerInfo = 396,
+    RecoveryVaultPlayerInfo = 397,
     RecoveryVaultGuildInfo,
     UpdateWardrobe,
     CastlePhaseChanged,
@@ -403,7 +403,7 @@ public enum EventCodes
     SmartClusterQueueActiveInfo,
     SmartClusterQueueKickWarning,
     SmartClusterQueueInvite,
-    ReceivedSeasonPoints = 400,
+    ReceivedSeasonPoints = 401,
     TerritoryBonusLevelUpdate,
     OpenWorldAttackScheduleStart,
     OpenWorldAttackScheduleFinished,
@@ -433,5 +433,5 @@ public enum EventCodes
     Unknown420,
     Unknown421,
     Unknown422,
-    MightFavorPoints = 475 // map[0:63063 2:21021 3:16617 5:5539 6:349680 8:0 252:470] (0: Might, 2: Premium of might, 3: Favor, 5: Premium of favor, 6: Total favor, 8: ???) 
+    MightFavorPoints = 476 // map[0:63063 2:21021 3:16617 5:5539 6:349680 8:0 252:470] (0: Might, 2: Premium of might, 3: Favor, 5: Premium of favor, 6: Total favor, 8: ???) 
 }
