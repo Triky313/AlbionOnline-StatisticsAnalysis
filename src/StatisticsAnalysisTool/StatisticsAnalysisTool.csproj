@@ -661,9 +661,6 @@
     <None Remove="Sounds\dungeon_closed.wav" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="..\.editorconfig" Link=".editorconfig" />
-  </ItemGroup>
-  <ItemGroup>
     <ProjectReference Include="..\StatisticsAnalysisTool.Network\StatisticsAnalysisTool.Network.csproj" />
   </ItemGroup>
   <ItemGroup>
