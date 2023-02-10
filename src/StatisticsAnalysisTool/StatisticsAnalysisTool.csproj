@@ -264,37 +264,10 @@
     <Resource Include="Assets\repair_cross.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Resource>
-    <Resource Include="Assets\resources.png">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Resource>
     <Resource Include="Assets\sat-icon.png">
       <CopyToOutputDirectory>Never</CopyToOutputDirectory>
     </Resource>
     <Resource Include="Assets\static_chest.png">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Resource>
-    <Resource Include="Assets\t1_circle.png">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Resource>
-    <Resource Include="Assets\t2_circle.png">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Resource>
-    <Resource Include="Assets\t3_circle.png">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Resource>
-    <Resource Include="Assets\t4_circle.png">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Resource>
-    <Resource Include="Assets\t5_circle.png">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Resource>
-    <Resource Include="Assets\t6_circle.png">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Resource>
-    <Resource Include="Assets\t7_circle.png">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Resource>
-    <Resource Include="Assets\t8_circle.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Resource>
     <Resource Include="Resources\alert_window_background.jpg">
@@ -635,17 +608,8 @@
     <None Remove="Assets\pickaxe_repeat.png" />
     <None Remove="Assets\purple_glow.png" />
     <None Remove="Assets\repair_cross.png" />
-    <None Remove="Assets\resources.png" />
     <None Remove="Assets\sat-icon.png" />
     <None Remove="Assets\static_chest.png" />
-    <None Remove="Assets\t1_circle.png" />
-    <None Remove="Assets\t2_circle.png" />
-    <None Remove="Assets\t3_circle.png" />
-    <None Remove="Assets\t4_circle.png" />
-    <None Remove="Assets\t5_circle.png" />
-    <None Remove="Assets\t6_circle.png" />
-    <None Remove="Assets\t7_circle.png" />
-    <None Remove="Assets\t8_circle.png" />
     <None Remove="GameFiles\lootchests.json" />
     <None Remove="GameFiles\world.json" />
     <None Remove="Languages\de-DE.xml" />
