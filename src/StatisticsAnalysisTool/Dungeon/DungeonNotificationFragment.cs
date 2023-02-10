@@ -14,16 +14,17 @@ using System.Windows;
 using StatisticsAnalysisTool.Properties;
 using StatisticsAnalysisTool.Models;
 using System.Windows.Threading;
+using StatisticsAnalysisTool.Network.Notification;
 
-namespace StatisticsAnalysisTool.Network.Notification;
+namespace StatisticsAnalysisTool.Dungeon;
 
 public class DungeonNotificationFragment : LineFragment, INotifyPropertyChanged
 {
     private bool _diedInDungeon;
     private string _diedName;
     private string _killedBy;
-    private ObservableCollection<DungeonEventObjectFragment> _dungeonChestsFragments = new ();
-    private ObservableCollection<DungeonLootFragment> _dungeonLootFragments = new ();
+    private ObservableCollection<DungeonEventObjectFragment> _dungeonChestsFragments = new();
+    private ObservableCollection<DungeonLootFragment> _dungeonLootFragments = new();
     private DateTime _enterDungeonFirstTime;
     private Faction _faction = Faction.Unknown;
     private double _fame;
@@ -186,7 +187,7 @@ public class DungeonNotificationFragment : LineFragment, INotifyPropertyChanged
         if (bestItem != null)
         {
             var itemName = ItemController.GetItemByUniqueName(bestItem.UniqueName)?.LocalizedName;
-            BestLootedItemName = (string.IsNullOrEmpty(itemName)) ? "-" : itemName;
+            BestLootedItemName = string.IsNullOrEmpty(itemName) ? "-" : itemName;
             BestLootedItemValue = bestItem.EstimatedMarketValue.IntegerValue;
         }
     }
@@ -224,7 +225,8 @@ public class DungeonNotificationFragment : LineFragment, INotifyPropertyChanged
         return levelString;
     }
 
-    public string TierString {
+    public string TierString
+    {
         get => _tierString;
         set
         {
@@ -263,7 +265,8 @@ public class DungeonNotificationFragment : LineFragment, INotifyPropertyChanged
         }
     }
 
-    public int DungeonNumber {
+    public int DungeonNumber
+    {
         get => _dungeonNumber;
         set
         {
@@ -272,9 +275,11 @@ public class DungeonNotificationFragment : LineFragment, INotifyPropertyChanged
         }
     }
 
-    public Visibility Visibility {
+    public Visibility Visibility
+    {
         get => _visibility;
-        set {
+        set
+        {
             _visibility = value;
             OnPropertyChanged();
         }
@@ -300,7 +305,8 @@ public class DungeonNotificationFragment : LineFragment, INotifyPropertyChanged
         }
     }
 
-    public CityFaction CityFaction {
+    public CityFaction CityFaction
+    {
         get => _cityFaction;
         set
         {
@@ -309,7 +315,8 @@ public class DungeonNotificationFragment : LineFragment, INotifyPropertyChanged
         }
     }
 
-    public Tier Tier {
+    public Tier Tier
+    {
         get => _tier;
         set
         {
@@ -318,7 +325,7 @@ public class DungeonNotificationFragment : LineFragment, INotifyPropertyChanged
             OnPropertyChanged();
         }
     }
-        
+
     public int Level
     {
         get => _level;
@@ -329,7 +336,7 @@ public class DungeonNotificationFragment : LineFragment, INotifyPropertyChanged
             OnPropertyChanged();
         }
     }
-        
+
     public string MainMapIndex
     {
         get => _mainMapIndex;
@@ -362,10 +369,11 @@ public class DungeonNotificationFragment : LineFragment, INotifyPropertyChanged
         }
     }
 
-    public string DiedMessage 
+    public string DiedMessage
     {
         get => _diedMessage;
-        set {
+        set
+        {
             _diedMessage = value;
             OnPropertyChanged();
         }
@@ -433,8 +441,8 @@ public class DungeonNotificationFragment : LineFragment, INotifyPropertyChanged
             OnPropertyChanged();
         }
     }
-        
-    public int NumberOfDungeonFloors 
+
+    public int NumberOfDungeonFloors
     {
         get => _numberOfDungeonFloors;
         set
@@ -507,7 +515,8 @@ public class DungeonNotificationFragment : LineFragment, INotifyPropertyChanged
         }
     }
 
-    public double FactionFlags {
+    public double FactionFlags
+    {
         get => _factionFlags;
         private set
         {
@@ -517,7 +526,8 @@ public class DungeonNotificationFragment : LineFragment, INotifyPropertyChanged
         }
     }
 
-    public double FactionCoins {
+    public double FactionCoins
+    {
         get => _factionCoins;
         private set
         {
@@ -531,8 +541,9 @@ public class DungeonNotificationFragment : LineFragment, INotifyPropertyChanged
             OnPropertyChanged();
         }
     }
-        
-    public double FactionFlagsPerHour {
+
+    public double FactionFlagsPerHour
+    {
         get
         {
             if (double.IsNaN(_factionFlagsPerHour))
@@ -549,7 +560,8 @@ public class DungeonNotificationFragment : LineFragment, INotifyPropertyChanged
         }
     }
 
-    public double FactionCoinsPerHour {
+    public double FactionCoinsPerHour
+    {
         get
         {
             if (double.IsNaN(_factionCoinsPerHour))
@@ -658,7 +670,8 @@ public class DungeonNotificationFragment : LineFragment, INotifyPropertyChanged
 
     public double ReSpecPerHour
     {
-        get {
+        get
+        {
             if (double.IsNaN(_reSpecPerHour))
             {
                 return 0;
@@ -675,7 +688,8 @@ public class DungeonNotificationFragment : LineFragment, INotifyPropertyChanged
 
     public double SilverPerHour
     {
-        get {
+        get
+        {
             if (double.IsNaN(_silverPerHour))
             {
                 return 0;
@@ -700,7 +714,8 @@ public class DungeonNotificationFragment : LineFragment, INotifyPropertyChanged
         }
     }
 
-    public Visibility IsFactionWarfareVisible {
+    public Visibility IsFactionWarfareVisible
+    {
         get => _isFactionWarfareVisible;
         set
         {
@@ -709,7 +724,8 @@ public class DungeonNotificationFragment : LineFragment, INotifyPropertyChanged
         }
     }
 
-    public Visibility IsMightFavorVisible {
+    public Visibility IsMightFavorVisible
+    {
         get => _isMightFavorVisible;
         set
         {
@@ -758,7 +774,8 @@ public class DungeonNotificationFragment : LineFragment, INotifyPropertyChanged
         }
     }
 
-    public bool IsBestFactionCoins {
+    public bool IsBestFactionCoins
+    {
         get => _isBestFactionCoins;
         set
         {
@@ -767,7 +784,8 @@ public class DungeonNotificationFragment : LineFragment, INotifyPropertyChanged
         }
     }
 
-    public bool IsBestFactionFlags {
+    public bool IsBestFactionFlags
+    {
         get => _isBestFactionFlags;
         set
         {
@@ -776,7 +794,8 @@ public class DungeonNotificationFragment : LineFragment, INotifyPropertyChanged
         }
     }
 
-    public bool IsBestFactionFlagsPerHour {
+    public bool IsBestFactionFlagsPerHour
+    {
         get => _isBestFactionFlagsPerHour;
         set
         {
@@ -785,7 +804,8 @@ public class DungeonNotificationFragment : LineFragment, INotifyPropertyChanged
         }
     }
 
-    public bool IsBestFactionCoinsPerHour {
+    public bool IsBestFactionCoinsPerHour
+    {
         get => _isBestFactionCoinsPerHour;
         set
         {
@@ -864,7 +884,7 @@ public class DungeonNotificationFragment : LineFragment, INotifyPropertyChanged
         }
     }
 
-    public bool? IsSelectedForDeletion 
+    public bool? IsSelectedForDeletion
     {
         get => _isSelectedForDeletion;
         set
@@ -900,7 +920,7 @@ public class DungeonNotificationFragment : LineFragment, INotifyPropertyChanged
     [JsonIgnore] public static string TranslationTotalLootedValue => LanguageController.Translation("TOTAL_LOOT_VALUE");
 
     public event PropertyChangedEventHandler PropertyChanged;
-        
+
     [NotifyPropertyChangedInvocator]
     protected virtual void OnPropertyChanged([CallerMemberName] string propertyName = null)
     {

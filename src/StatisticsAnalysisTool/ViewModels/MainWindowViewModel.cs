@@ -6,6 +6,7 @@ using Microsoft.Win32;
 using StatisticsAnalysisTool.Cluster;
 using StatisticsAnalysisTool.Common;
 using StatisticsAnalysisTool.Common.UserSettings;
+using StatisticsAnalysisTool.Dungeon;
 using StatisticsAnalysisTool.Enumerations;
 using StatisticsAnalysisTool.GameData;
 using StatisticsAnalysisTool.Models;

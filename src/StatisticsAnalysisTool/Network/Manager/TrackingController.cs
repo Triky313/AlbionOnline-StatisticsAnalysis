@@ -17,6 +17,7 @@ using StatisticsAnalysisTool.Trade.Market;
 using ValueType = StatisticsAnalysisTool.Enumerations.ValueType;
 using StatisticsAnalysisTool.Gathering;
 using StatisticsAnalysisTool.Cluster;
+using StatisticsAnalysisTool.Dungeon;
 
 namespace StatisticsAnalysisTool.Network.Manager;
 

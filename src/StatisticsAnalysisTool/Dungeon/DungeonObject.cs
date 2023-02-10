@@ -1,13 +1,13 @@
 ﻿using StatisticsAnalysisTool.Enumerations;
-using StatisticsAnalysisTool.GameData;
+using StatisticsAnalysisTool.Models;
+using StatisticsAnalysisTool.Models.NetworkModel;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text.Json.Serialization;
-using StatisticsAnalysisTool.Common;
 using ValueType = StatisticsAnalysisTool.Enumerations.ValueType;
 
-namespace StatisticsAnalysisTool.Models.NetworkModel;
+namespace StatisticsAnalysisTool.Dungeon;
 
 public class DungeonObject
 {
@@ -53,7 +53,7 @@ public class DungeonObject
         GuidList.Add(guid);
         Status = status;
         AddTimer(DateTime.UtcNow);
-        Mode = (Mode == DungeonMode.Unknown) ? DungeonObjectData.GetDungeonMode(mainMapIndex) : Mode;
+        Mode = Mode == DungeonMode.Unknown ? DungeonObjectData.GetDungeonMode(mainMapIndex) : Mode;
     }
 
     public void Add(double value, ValueType type, CityFaction cityFaction = CityFaction.Unknown)
@@ -146,7 +146,7 @@ public class DungeonObject
     {
         foreach (var time in DungeonRunTimes.Where(x => x.EndTime != null).ToList())
         {
-            TotalRunTimeInSeconds += (int)time.TimeSpan.TotalSeconds;
+            TotalRunTimeInSeconds += (int) time.TimeSpan.TotalSeconds;
             DungeonRunTimes.Remove(time);
         }
     }
