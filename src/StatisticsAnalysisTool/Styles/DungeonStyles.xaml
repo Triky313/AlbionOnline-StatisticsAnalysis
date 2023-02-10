@@ -8,7 +8,8 @@
                     xmlns:networkModel="clr-namespace:StatisticsAnalysisTool.Models.NetworkModel"
                     xmlns:bindingModel="clr-namespace:StatisticsAnalysisTool.Models.BindingModel"
                     xmlns:converters="clr-namespace:StatisticsAnalysisTool.Common.Converters" 
-                    xmlns:glob="clr-namespace:System.Globalization;assembly=mscorlib">
+                    xmlns:glob="clr-namespace:System.Globalization;assembly=mscorlib"
+                    xmlns:dungeon="clr-namespace:StatisticsAnalysisTool.Dungeon">
 
     <converters:ValuePerHourConverter x:Key="ValuePerHourConverter" />
     <converters:ValueAvgConverter x:Key="ValueAvgConverter" />
@@ -330,7 +331,7 @@
     <Style x:Key="DungeonNotificationFragment.Grid.DungeonMode" TargetType="Grid">
         <Setter Property="Width" Value="5"/>
         <Style.Triggers>
-            <DataTrigger Binding="{Binding Mode, IsAsync=True}" Value="{x:Static enumerations:DungeonMode.Expedition}">
+            <DataTrigger Binding="{Binding Mode, IsAsync=True}" Value="{x:Static dungeon:DungeonMode.Expedition}">
                 <Setter Property="ToolTip" Value="{Binding TranslationExpedition, IsAsync=True}"/>
                 <Setter Property="Background">
                     <Setter.Value>
@@ -341,7 +342,7 @@
                     </Setter.Value>
                 </Setter>
             </DataTrigger>
-            <DataTrigger Binding="{Binding Mode, IsAsync=True}" Value="{x:Static enumerations:DungeonMode.HellGate}">
+            <DataTrigger Binding="{Binding Mode, IsAsync=True}" Value="{x:Static dungeon:DungeonMode.HellGate}">
                 <Setter Property="ToolTip" Value="{Binding TranslationSolo, IsAsync=True}"/>
                 <Setter Property="Background">
                     <Setter.Value>
@@ -352,7 +353,7 @@
                     </Setter.Value>
                 </Setter>
             </DataTrigger>
-            <DataTrigger Binding="{Binding Mode, IsAsync=True}" Value="{x:Static enumerations:DungeonMode.Corrupted}">
+            <DataTrigger Binding="{Binding Mode, IsAsync=True}" Value="{x:Static dungeon:DungeonMode.Corrupted}">
                 <Setter Property="ToolTip" Value="{Binding TranslationSolo, IsAsync=True}"/>
                 <Setter Property="Background">
                     <Setter.Value>
@@ -363,7 +364,7 @@
                     </Setter.Value>
                 </Setter>
             </DataTrigger>
-            <DataTrigger Binding="{Binding Mode, IsAsync=True}" Value="{x:Static enumerations:DungeonMode.Solo}">
+            <DataTrigger Binding="{Binding Mode, IsAsync=True}" Value="{x:Static dungeon:DungeonMode.Solo}">
                 <Setter Property="ToolTip" Value="{Binding TranslationSolo, IsAsync=True}"/>
                 <Setter Property="Background">
                     <Setter.Value>
@@ -374,7 +375,7 @@
                     </Setter.Value>
                 </Setter>
             </DataTrigger>
-            <DataTrigger Binding="{Binding Mode, IsAsync=True}" Value="{x:Static enumerations:DungeonMode.Standard}">
+            <DataTrigger Binding="{Binding Mode, IsAsync=True}" Value="{x:Static dungeon:DungeonMode.Standard}">
                 <Setter Property="ToolTip" Value="{Binding TranslationStandard, IsAsync=True}"/>
                 <Setter Property="Background">
                     <Setter.Value>
@@ -385,7 +386,7 @@
                     </Setter.Value>
                 </Setter>
             </DataTrigger>
-            <DataTrigger Binding="{Binding Mode, IsAsync=True}" Value="{x:Static enumerations:DungeonMode.Avalon}">
+            <DataTrigger Binding="{Binding Mode, IsAsync=True}" Value="{x:Static dungeon:DungeonMode.Avalon}">
                 <Setter Property="ToolTip" Value="{Binding TranslationAvalon, IsAsync=True}"/>
                 <Setter Property="Background">
                     <Setter.Value>
@@ -396,7 +397,7 @@
                     </Setter.Value>
                 </Setter>
             </DataTrigger>
-            <DataTrigger Binding="{Binding Mode, IsAsync=True}" Value="{x:Static enumerations:DungeonMode.Unknown}">
+            <DataTrigger Binding="{Binding Mode, IsAsync=True}" Value="{x:Static dungeon:DungeonMode.Unknown}">
                 <Setter Property="ToolTip" Value="{Binding TranslationUnknown}"/>
                 <Setter Property="Background" Value="{StaticResource SolidColorBrush.Dungeon.Mode.Unknown}" />
             </DataTrigger>
@@ -412,31 +413,31 @@
         <Setter Property="HorizontalContentAlignment" Value="Center"/>
         <Setter Property="VerticalContentAlignment" Value="Center"/>
         <Style.Triggers>
-            <DataTrigger Binding="{Binding Mode, IsAsync=True}" Value="{x:Static enumerations:DungeonMode.Expedition}">
+            <DataTrigger Binding="{Binding Mode, IsAsync=True}" Value="{x:Static dungeon:DungeonMode.Expedition}">
                 <Setter Property="ToolTip" Value="{Binding TranslationExpedition, IsAsync=True}"/>
                 <Setter Property="Foreground" Value="{StaticResource SolidColorBrush.Dungeon.Mode.Expedition.1}" />
             </DataTrigger>
-            <DataTrigger Binding="{Binding Mode, IsAsync=True}" Value="{x:Static enumerations:DungeonMode.HellGate}">
+            <DataTrigger Binding="{Binding Mode, IsAsync=True}" Value="{x:Static dungeon:DungeonMode.HellGate}">
                 <Setter Property="ToolTip" Value="{Binding TranslationSolo, IsAsync=True}"/>
                 <Setter Property="Foreground" Value="{StaticResource SolidColorBrush.Dungeon.Mode.HellGate.1}" />
             </DataTrigger>
-            <DataTrigger Binding="{Binding Mode, IsAsync=True}" Value="{x:Static enumerations:DungeonMode.Corrupted}">
+            <DataTrigger Binding="{Binding Mode, IsAsync=True}" Value="{x:Static dungeon:DungeonMode.Corrupted}">
                 <Setter Property="ToolTip" Value="{Binding TranslationSolo, IsAsync=True}"/>
                 <Setter Property="Foreground" Value="{StaticResource SolidColorBrush.Dungeon.Mode.Corrupted.1}" />
             </DataTrigger>
-            <DataTrigger Binding="{Binding Mode, IsAsync=True}" Value="{x:Static enumerations:DungeonMode.Solo}">
+            <DataTrigger Binding="{Binding Mode, IsAsync=True}" Value="{x:Static dungeon:DungeonMode.Solo}">
                 <Setter Property="ToolTip" Value="{Binding TranslationSolo, IsAsync=True}"/>
                 <Setter Property="Foreground" Value="{StaticResource SolidColorBrush.Dungeon.Mode.Solo.1}" />
             </DataTrigger>
-            <DataTrigger Binding="{Binding Mode, IsAsync=True}" Value="{x:Static enumerations:DungeonMode.Standard}">
+            <DataTrigger Binding="{Binding Mode, IsAsync=True}" Value="{x:Static dungeon:DungeonMode.Standard}">
                 <Setter Property="ToolTip" Value="{Binding TranslationStandard, IsAsync=True}"/>
                 <Setter Property="Foreground" Value="{StaticResource SolidColorBrush.Dungeon.Mode.Standard.1}" />
             </DataTrigger>
-            <DataTrigger Binding="{Binding Mode, IsAsync=True}" Value="{x:Static enumerations:DungeonMode.Avalon}">
+            <DataTrigger Binding="{Binding Mode, IsAsync=True}" Value="{x:Static dungeon:DungeonMode.Avalon}">
                 <Setter Property="ToolTip" Value="{Binding TranslationAvalon, IsAsync=True}"/>
                 <Setter Property="Foreground" Value="{StaticResource SolidColorBrush.Dungeon.Mode.Avalon.1}" />
             </DataTrigger>
-            <DataTrigger Binding="{Binding Mode, IsAsync=True}" Value="{x:Static enumerations:DungeonMode.Unknown}">
+            <DataTrigger Binding="{Binding Mode, IsAsync=True}" Value="{x:Static dungeon:DungeonMode.Unknown}">
                 <Setter Property="ToolTip" Value="{Binding TranslationUnknown}"/>
                 <Setter Property="Foreground" Value="{StaticResource SolidColorBrush.Dungeon.Mode.Unknown}" />
             </DataTrigger>
@@ -866,7 +867,7 @@
         </Grid>
     </DataTemplate>
 
-    <DataTemplate x:Key="DungeonNotificationFragment.MapTypeIcon.Template" DataType="{x:Type notification:DungeonNotificationFragment}">
+    <DataTemplate x:Key="DungeonNotificationFragment.MapTypeIcon.Template" DataType="{x:Type dungeon:DungeonNotificationFragment}">
         <StackPanel Orientation="Horizontal" VerticalAlignment="Center" HorizontalAlignment="Center">
             <Image Source="../Assets/gem_level1.png" Height="11" Width="11" Margin="0,0,-5,0">
                 <Image.Style>
@@ -994,7 +995,7 @@
         </StackPanel>
     </DataTemplate>
 
-    <DataTemplate x:Key="DungeonNotificationFragment" DataType="{x:Type notification:DungeonNotificationFragment}">
+    <DataTemplate x:Key="DungeonNotificationFragment" DataType="{x:Type dungeon:DungeonNotificationFragment}">
         <Border BorderBrush="{StaticResource SolidColorBrush.Background.2}" BorderThickness="0,0,0,1" Visibility="{Binding Visibility}">
             <Grid Height="96" Margin="0">
                 <Grid.Style>
