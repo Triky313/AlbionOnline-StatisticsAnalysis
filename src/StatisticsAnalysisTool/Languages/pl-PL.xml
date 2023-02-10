@@ -693,5 +693,8 @@
 	<translation name="MOST_GATHERED_RESOURCE">Najczęściej zbierane zasoby</translation>
 	<translation name="MOST_GATHERED_ON_MAP">Najbardziej zebrane na mapie</translation>
 	<translation name="TOTAL_RESOURCES">Całkowite zasoby</translation>
-	<translation name="TOTAL_MINING_PROCESSES">Całkowite procesy wydobywcze</translation>
+	<translation name="TOTAL_MINING_PROCESSES">Całkowite wydobycie</translation>
+	<translation name="AMOUNT_OF_MINING_PROCESSES">Liczba wydobycia</translation>
+	<translation name="SURE_YOU_WANT_TO_DELETE_SELECTED_RESOURCES">Czy na pewno chcesz usunąć wybrane zasoby?</translation>
+	<translation name="DELETE_SELECTED_RESOURCES">Usuń wybrane zasoby</translation>
 </translations>
