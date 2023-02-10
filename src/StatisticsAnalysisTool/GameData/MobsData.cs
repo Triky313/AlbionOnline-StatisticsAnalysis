@@ -82,7 +82,7 @@ public static class MobsData
 
         _mobs = GetSpecificDataFromJsonFileLocal(regularDataFilePath);
         DeleteFileFromTempDir();
-
+        
         return _mobs?.Count() > 0;
     }
 
@@ -134,7 +134,7 @@ public static class MobsData
     {
         using var client = new HttpClient
         {
-            Timeout = TimeSpan.FromSeconds(1200)
+            Timeout = TimeSpan.FromSeconds(3600)
         };
 
         return await client.DownloadFileAsync(SettingsController.CurrentSettings.MobsJsonSourceUrl, tempFilePath);
