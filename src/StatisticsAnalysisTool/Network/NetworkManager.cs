@@ -35,7 +35,7 @@ public class NetworkManager
         builder.AddEventHandler(new NewLaborerItemEventHandler(trackingController));
         builder.AddEventHandler(new OtherGrabbedLootEventHandler(trackingController));
         builder.AddEventHandler(new InventoryDeleteItemEventHandler(trackingController));
-        builder.AddEventHandler(new InventoryPutItemEventHandler(trackingController));
+        //builder.AddEventHandler(new InventoryPutItemEventHandler(trackingController));
         builder.AddEventHandler(new TakeSilverEventHandler(trackingController));
         builder.AddEventHandler(new ActionOnBuildingFinishedEventHandler(trackingController));
         builder.AddEventHandler(new UpdateFameEventHandler(trackingController));

@@ -75,6 +75,8 @@ public class ClusterController
         _trackingController.VaultController.ResetCurrentVaultInfo();
         _trackingController.TreasureController.RemoveTemporaryTreasures();
         _trackingController.TreasureController.UpdateLootedChestsDashboardUi();
+        _trackingController.LootController.ResetLocalPlayerDiscoveredLoot();
+        _trackingController.LootController.ResetIdentifiedBodies();
         _ = _trackingController.TradeController.RemoveTradesByDaysInSettingsAsync();
         _ = _trackingController.GatheringController.SetGatheredResourcesClosedAsync();
     }

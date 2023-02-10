@@ -146,7 +146,7 @@ public class LootController : ILootController
 
     #region Lokal player loot tracking
 
-    private IdentifiedBody _currentIdentifiedBody;
+    private readonly ObservableCollection<IdentifiedBody> _identifiedBodies = new ();
 
     public struct IdentifiedBody
     {
@@ -156,11 +156,16 @@ public class LootController : ILootController
 
     public void SetIdentifiedBody(long objectId, string lootBody)
     {
-        _currentIdentifiedBody = new IdentifiedBody()
+        if (_identifiedBodies.Any(x => x.ObjectId == objectId))
+        {
+            return;
+        }
+
+        _identifiedBodies.Add(new IdentifiedBody()
         {
             ObjectId = objectId,
             Name = lootBody
-        };
+        });
     }
 
     public void SetCurrentItemContainer(ItemContainerObject itemContainerObject)
@@ -185,12 +190,13 @@ public class LootController : ILootController
             return;
         }
 
-        if (_currentItemContainer?.ContainerGuid != containerGuid || _currentItemContainer?.ObjectId != _currentIdentifiedBody.ObjectId)
+        var identifiedBody = _identifiedBodies.FirstOrDefault(x => x.ObjectId == _currentItemContainer?.ObjectId);
+        if (_currentItemContainer?.ContainerGuid != containerGuid || _currentItemContainer?.ObjectId != identifiedBody.ObjectId)
         {
             return;
         }
 
-        if (string.IsNullOrEmpty(_trackingController?.EntityController?.LocalUserData?.Username) || string.IsNullOrEmpty(_currentIdentifiedBody.Name))
+        if (string.IsNullOrEmpty(_trackingController?.EntityController?.LocalUserData?.Username) || string.IsNullOrEmpty(identifiedBody.Name))
         {
             return;
         }
@@ -209,7 +215,7 @@ public class LootController : ILootController
             IsTrash = false,
             ItemIndex = lootedItem.ItemIndex,
             LootedByName = _trackingController?.EntityController?.LocalUserData?.Username,
-            LootedFromName = MobController.IsMob(_currentIdentifiedBody.Name) ? LanguageController.Translation("MOB") : _currentIdentifiedBody.Name,
+            LootedFromName = MobController.IsMob(identifiedBody.Name) ? LanguageController.Translation("MOB") : identifiedBody.Name,
             Quantity = lootedItem.Quantity
         });
     }
@@ -227,6 +233,11 @@ public class LootController : ILootController
     public void ResetLocalPlayerDiscoveredLoot()
     {
         _discoveredLoot.Clear();
+    }
+
+    public void ResetIdentifiedBodies()
+    {
+        _identifiedBodies.Clear();
     }
 
     #endregion
