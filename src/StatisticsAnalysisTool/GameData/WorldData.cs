@@ -11,6 +11,7 @@ using System.Reflection;
 using System.Text;
 using System.Text.Json;
 using StatisticsAnalysisTool.Enumerations;
+using StatisticsAnalysisTool.Cluster;
 
 namespace StatisticsAnalysisTool.GameData;
 
@@ -206,17 +207,4 @@ public static class WorldData
             return new ObservableCollection<WorldJsonObject>();
         }
     }
-}
-
-public enum MapType
-{
-    Unknown,
-    RandomDungeon,
-    HellGate,
-    CorruptedDungeon,
-    Island,
-    Hideout,
-    Expedition,
-    Arena,
-    Mists
 }

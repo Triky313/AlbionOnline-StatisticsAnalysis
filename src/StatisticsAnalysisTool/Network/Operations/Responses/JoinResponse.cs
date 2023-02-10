@@ -6,6 +6,7 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Reflection;
 using StatisticsAnalysisTool.Enumerations;
+using StatisticsAnalysisTool.Cluster;
 
 namespace StatisticsAnalysisTool.Network.Operations.Responses;
 

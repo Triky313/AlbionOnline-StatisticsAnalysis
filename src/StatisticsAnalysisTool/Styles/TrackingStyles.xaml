@@ -9,6 +9,7 @@
                     xmlns:models="clr-namespace:StatisticsAnalysisTool.Models"
                     xmlns:enumerations="clr-namespace:StatisticsAnalysisTool.Enumerations"
                     xmlns:converters="clr-namespace:StatisticsAnalysisTool.Common.Converters"
+                    xmlns:cluster="clr-namespace:StatisticsAnalysisTool.Cluster"
                     mc:Ignorable="d">
 
     <converters:ValuePerHourConverter x:Key="ValuePerHourConverter" />
@@ -594,7 +595,7 @@
     </DataTemplate>
 
     <!-- ClusterInfo -->
-    <DataTemplate x:Key="ClusterInfoTemplate" DataType="{x:Type models:ClusterInfo}">
+    <DataTemplate x:Key="ClusterInfoTemplate" DataType="{x:Type cluster:ClusterInfo}">
         <Grid Margin="0,0,0,1">
             <Grid.Style>
                 <Style TargetType="{x:Type Grid}">

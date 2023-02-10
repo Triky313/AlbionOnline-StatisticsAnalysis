@@ -1,4 +1,4 @@
-﻿using StatisticsAnalysisTool.GameData;
+﻿using StatisticsAnalysisTool.Cluster;
 
 namespace StatisticsAnalysisTool.Gathering;
 

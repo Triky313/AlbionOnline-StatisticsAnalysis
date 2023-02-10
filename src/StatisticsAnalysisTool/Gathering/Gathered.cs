@@ -1,8 +1,7 @@
-﻿using StatisticsAnalysisTool.Common;
-using StatisticsAnalysisTool.GameData;
+﻿using StatisticsAnalysisTool.Cluster;
+using StatisticsAnalysisTool.Common;
 using StatisticsAnalysisTool.Models;
 using StatisticsAnalysisTool.Models.ItemsJsonModel;
-using StatisticsAnalysisTool.Network.Manager;
 using StatisticsAnalysisTool.Properties;
 using System;
 using System.ComponentModel;

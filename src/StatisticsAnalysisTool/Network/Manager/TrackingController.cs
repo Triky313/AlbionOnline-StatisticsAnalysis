@@ -16,6 +16,7 @@ using StatisticsAnalysisTool.Trade.Mails;
 using StatisticsAnalysisTool.Trade.Market;
 using ValueType = StatisticsAnalysisTool.Enumerations.ValueType;
 using StatisticsAnalysisTool.Gathering;
+using StatisticsAnalysisTool.Cluster;
 
 namespace StatisticsAnalysisTool.Network.Manager;
 
