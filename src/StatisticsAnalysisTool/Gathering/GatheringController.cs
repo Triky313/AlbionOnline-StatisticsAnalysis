@@ -103,7 +103,7 @@ public class GatheringController
         DirectoryController.CreateDirectoryWhenNotExists(Path.Combine(AppDomain.CurrentDomain.BaseDirectory, Settings.Default.UserDataDirectoryName));
         
         var gatheredToSave = _mainWindowViewModel.GatheringBindings?.GatheredCollection
-            .Where(x => safeMoreThan356Days && x.TimestampDateTime > DateTime.UtcNow.AddDays(-365) || !safeMoreThan356Days)
+            .Where(x => !safeMoreThan356Days && x.TimestampDateTime > DateTime.UtcNow.AddDays(-365) || safeMoreThan356Days)
             .ToList()
             .Select(GatheringMapping.Mapping);
 

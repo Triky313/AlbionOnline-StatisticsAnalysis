@@ -2,6 +2,8 @@
 using StatisticsAnalysisTool.Common.UserSettings;
 using StatisticsAnalysisTool.Gathering;
 using StatisticsAnalysisTool.Properties;
+using StatisticsAnalysisTool.Trade;
+using StatisticsAnalysisTool.ViewModels;
 using System;
 using System.Collections.Generic;
 using System.Collections.Specialized;
@@ -168,6 +170,19 @@ public class GatheringBindings : INotifyPropertyChanged
             GatheringStatsTimeType.Unknown => false,
             _ => true
         };
+    }
+
+    public async Task RemoveResourcesByIdsAsync(IEnumerable<Guid> guids)
+    {
+        await Application.Current.Dispatcher.InvokeAsync(() =>
+        {
+            foreach (var gathered in GatheredCollection?.ToList().Where(x => guids.Contains(x.Guid)) ?? new List<Gathered>())
+            {
+                GatheredCollection?.Remove(gathered);
+            }
+
+            UpdateStats();
+        });
     }
 
     #region Bindings

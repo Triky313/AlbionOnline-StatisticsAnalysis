@@ -6,24 +6,39 @@
              xmlns:viewModels="clr-namespace:StatisticsAnalysisTool.ViewModels"
              xmlns:controls="clr-namespace:WpfToolkit.Controls;assembly=VirtualizingWrapPanel"
              xmlns:gathering="clr-namespace:StatisticsAnalysisTool.Gathering"
+             xmlns:fa5="http://schemas.fontawesome.com/icons/"
              mc:Ignorable="d" 
              d:DesignHeight="800" d:DesignWidth="800"
              d:DataContext="{d:DesignInstance Type=viewModels:MainWindowViewModel}">
     <Grid>
         <StackPanel Orientation="Vertical">
-            <StackPanel Orientation="Horizontal">
-                <ComboBox Width="200" Height="26" Margin="5,5" HorizontalAlignment="Left" VerticalAlignment="Top"
-                          ItemsSource="{Binding GatheringBindings.GatheringFilter}" 
-                          SelectedValue="{Binding GatheringBindings.SelectedGatheringFilter}"
-                          IsSynchronizedWithCurrentItem="True" SelectedValuePath="Key" DisplayMemberPath="Value" />
-                <ComboBox Width="200" Height="26" Margin="5,5" HorizontalAlignment="Left" VerticalAlignment="Top"
-                          ItemsSource="{Binding GatheringBindings.GatheringStatsTimeTypes}" 
-                          SelectedValue="{Binding GatheringBindings.GatheringStatsTimeTypeSelection}" 
-                          IsSynchronizedWithCurrentItem="True" DisplayMemberPath="Name" SelectedValuePath="GatheringStatsTimeType" />
-                <CheckBox IsChecked="{Binding GatheringBindings.IsGatheringActive, FallbackValue=true}" 
-                          Content="{Binding GatheringBindings.TranslationGatheringActive, FallbackValue=GATHERING__ACTIVE}"  
-                          HorizontalAlignment="Left" VerticalAlignment="Center" Width="150" />
-            </StackPanel>
+            <Grid>
+                <StackPanel Orientation="Horizontal" HorizontalAlignment="Left" MaxWidth="500">
+                    <StackPanel Orientation="Vertical">
+                        <ComboBox Width="200" Height="26" Margin="5,5" HorizontalAlignment="Left" VerticalAlignment="Top"
+                              ItemsSource="{Binding GatheringBindings.GatheringFilter}" 
+                              SelectedValue="{Binding GatheringBindings.SelectedGatheringFilter}"
+                              IsSynchronizedWithCurrentItem="True" SelectedValuePath="Key" DisplayMemberPath="Value" />
+                        <CheckBox IsChecked="{Binding GatheringBindings.IsGatheringActive, FallbackValue=true}" 
+                              Content="{Binding GatheringBindings.TranslationGatheringActive, FallbackValue=GATHERING__ACTIVE}"  
+                              HorizontalAlignment="Left" VerticalAlignment="Top" Width="150" Margin="5,0,0,0" />
+                    </StackPanel>
+                    <ComboBox Width="200" Height="26" Margin="5,5" HorizontalAlignment="Left" VerticalAlignment="Top"
+                              ItemsSource="{Binding GatheringBindings.GatheringStatsTimeTypes}" 
+                              SelectedValue="{Binding GatheringBindings.GatheringStatsTimeTypeSelection}" 
+                              IsSynchronizedWithCurrentItem="True" DisplayMemberPath="Name" SelectedValuePath="GatheringStatsTimeType" />
+                </StackPanel>
+                <StackPanel Orientation="Vertical" Height="60" HorizontalAlignment="Right" VerticalAlignment="Top" MaxWidth="280" Margin="0,0,5,0">
+                    <StackPanel Orientation="Horizontal" MaxWidth="300" Height="30" HorizontalAlignment="Right" VerticalAlignment="Top">
+                        <Button Content="{Binding Translation.DeleteSelectedTrades, FallbackValue=DELETE__SELECTED__TRADES}" Margin="5,0,0,0"
+                            Height="24" Width="200" MaxWidth="300" MinWidth="200" Click="BtnDeleteSelectedGathered_Click" />
+                    </StackPanel>
+                    <StackPanel Orientation="Horizontal" Height="30" HorizontalAlignment="Right" VerticalAlignment="Top">
+                        <Button Content="{Binding Translation.SelectDeselectAll, FallbackValue=SELECT__DESELECT__ALL}" Margin="5,0,0,0"
+                            Height="24" Width="200" MaxWidth="300" MinWidth="200" Click="BtnSelectSwitchAllGathered_Click" />
+                    </StackPanel>
+                </StackPanel>
+            </Grid>
             <Separator Background="{StaticResource SolidColorBrush.Background.3}" Height="4" Margin="0,2,0,2" />
         </StackPanel>
 
@@ -36,7 +51,7 @@
 
             <GridSplitter Grid.Row="1" ResizeDirection="Rows" ResizeBehavior="PreviousAndNext" HorizontalAlignment="Stretch" Margin="0,0,1,1" Background="{StaticResource SolidColorBrush.Accent.Blue.4}" />
 
-            <Grid Row="0" Margin="0,0,0,6" Grid.RowSpan="2">
+            <Grid Row="0" Margin="0,22,0,6" Grid.RowSpan="2">
                 <ScrollViewer>
                     <Grid>
                         <ContentControl Content="{Binding GatheringBindings.GatheringStats}" ContentTemplate="{StaticResource GenerallyTemplate}">

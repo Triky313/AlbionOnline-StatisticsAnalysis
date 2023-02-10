@@ -101,7 +101,7 @@ public class MainWindowViewModel : INotifyPropertyChanged, IAsyncInitialization
     private Visibility _unsupportedOsVisibility = Visibility.Collapsed;
     private LoggingBindings _loggingBindings = new();
     private PlayerInformationBindings _playerInformationBindings = new();
-    private GatheringBindings _gatheringBindings = new ();
+    private GatheringBindings _gatheringBindings = new();
 
     public MainWindowViewModel(MainWindow mainWindow)
     {

@@ -20,7 +20,14 @@ public class Gathered : INotifyPropertyChanged
     private string _uniqueName;
     private int _miningProcesses;
     private int _gainedTotalAmount;
+    private bool _isSelectedForDeletion;
 
+    public Gathered()
+    {
+        Guid = Guid.NewGuid();
+    }
+
+    public Guid Guid { get; init; }
     public long Timestamp { get; init; }
     public DateTime TimestampDateTime => new(Timestamp);
     public long ObjectId { get; init; }
@@ -118,6 +125,7 @@ public class Gathered : INotifyPropertyChanged
     public static string TranslationBonus => LanguageController.Translation("BONUS");
     public static string TranslationPremium => LanguageController.Translation("PREMIUM");
     public static string TranslationTotal => LanguageController.Translation("TOTAL");
+    public static string TranslationSelectToDelete => LanguageController.Translation("SELECTED_TO_DELETE");
 
     public bool IsClosed
     {
@@ -128,6 +136,17 @@ public class Gathered : INotifyPropertyChanged
             OnPropertyChanged();
         }
     }
+
+    public bool IsSelectedForDeletion
+    {
+        get => _isSelectedForDeletion;
+        set
+        {
+            _isSelectedForDeletion = value;
+            OnPropertyChanged();
+        }
+    }
+
 
     public event PropertyChangedEventHandler PropertyChanged;
 
