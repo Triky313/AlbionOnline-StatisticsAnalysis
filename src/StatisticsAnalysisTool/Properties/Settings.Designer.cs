@@ -485,5 +485,17 @@ namespace StatisticsAnalysisTool.Properties {
                 this["UserDataDirectoryName"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("Gathering.json")]
+        public string GatheringFileName {
+            get {
+                return ((string)(this["GatheringFileName"]));
+            }
+            set {
+                this["GatheringFileName"] = value;
+            }
+        }
     }
 }

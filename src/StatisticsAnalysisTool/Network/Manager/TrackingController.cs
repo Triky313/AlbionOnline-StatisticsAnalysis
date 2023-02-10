@@ -15,6 +15,9 @@ using System.Windows;
 using StatisticsAnalysisTool.Trade.Mails;
 using StatisticsAnalysisTool.Trade.Market;
 using ValueType = StatisticsAnalysisTool.Enumerations.ValueType;
+using StatisticsAnalysisTool.Gathering;
+using StatisticsAnalysisTool.Cluster;
+using StatisticsAnalysisTool.Dungeon;
 
 namespace StatisticsAnalysisTool.Network.Manager;
 
@@ -37,6 +40,7 @@ public class TrackingController : ITrackingController
     public readonly MarketController MarketController;
     public readonly TradeController TradeController;
     public readonly VaultController VaultController;
+    public readonly GatheringController GatheringController;
     private readonly List<NotificationType> _notificationTypesFilters = new();
 
     public TrackingController(MainWindowViewModel mainWindowViewModel, MainWindow mainWindow)
@@ -54,6 +58,7 @@ public class TrackingController : ITrackingController
         MarketController = new MarketController(this);
         TradeController = new TradeController(mainWindowViewModel);
         VaultController = new VaultController(mainWindowViewModel);
+        GatheringController = new GatheringController(this, mainWindowViewModel);
         LiveStatsTracker = new LiveStatsTracker(this, mainWindowViewModel);
     }
 

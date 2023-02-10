@@ -6,6 +6,7 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Reflection;
 using StatisticsAnalysisTool.Enumerations;
+using StatisticsAnalysisTool.Cluster;
 
 namespace StatisticsAnalysisTool.Network.Operations.Responses;
 
@@ -83,35 +84,35 @@ public class JoinResponse
                 ReSpecPoints = FixPoint.FromInternalValue(reSpecArray[1]);
             }
 
-            if (parameters.ContainsKey(47))
+            if (parameters.ContainsKey(48))
             {
-                InteractGuid = parameters[47].ObjectToGuid();
+                InteractGuid = parameters[48].ObjectToGuid();
                 ConsoleManager.WriteLineForMessage(MethodBase.GetCurrentMethod()?.DeclaringType, $"Local interact object Guid: {InteractGuid}", ConsoleColorType.EventMapChangeColor);
             }
 
-            if (parameters.ContainsKey(51))
+            if (parameters.ContainsKey(52))
             {
-                GuildName = string.IsNullOrEmpty(parameters[51].ToString()) ? string.Empty : parameters[51].ToString();
+                GuildName = string.IsNullOrEmpty(parameters[52].ToString()) ? string.Empty : parameters[52].ToString();
             }
 
-            if (parameters.ContainsKey(58))
+            if (parameters.ContainsKey(59))
             {
-                MainMapIndex = string.IsNullOrEmpty(parameters[58].ToString()) ? string.Empty : parameters[58].ToString();
+                MainMapIndex = string.IsNullOrEmpty(parameters[59].ToString()) ? string.Empty : parameters[59].ToString();
             }
 
-            if (parameters.ContainsKey(61))
+            if (parameters.ContainsKey(62))
             {
-                PlayTimeInSeconds = parameters[61].ObjectToInt();
+                PlayTimeInSeconds = parameters[62].ObjectToInt();
             }
 
-            if (parameters.ContainsKey(71))
+            if (parameters.ContainsKey(72))
             {
-                AllianceName = string.IsNullOrEmpty(parameters[71].ToString()) ? string.Empty : parameters[71].ToString();
+                AllianceName = string.IsNullOrEmpty(parameters[72].ToString()) ? string.Empty : parameters[72].ToString();
             }
 
-            if (parameters.ContainsKey(88))
+            if (parameters.ContainsKey(89))
             {
-                IsReSpecActive = parameters[88].ObjectToBool();
+                IsReSpecActive = parameters[89].ObjectToBool();
             }
         }
         catch (Exception e)

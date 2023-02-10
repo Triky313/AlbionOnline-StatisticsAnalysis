@@ -6,6 +6,7 @@ using System.Linq;
 using System.Reflection;
 using StatisticsAnalysisTool.Enumerations;
 using StatisticsAnalysisTool.GameData;
+using StatisticsAnalysisTool.Cluster;
 
 namespace StatisticsAnalysisTool.Network.Operations.Responses;
 

@@ -10,7 +10,7 @@ using System.Reflection;
 using System.Text;
 using System.Text.Json;
 
-namespace StatisticsAnalysisTool.GameData;
+namespace StatisticsAnalysisTool.Dungeon;
 
 public static class DungeonObjectData
 {
@@ -159,7 +159,7 @@ public static class DungeonObjectData
             || value.Contains("CHEST_STANDARD")
             || value.Contains("NORMAL_STANDARD")
             || value.Contains("CHEST_BOSS_HALLOWEEN_STANDARD")
-            || (value.Contains("AVALON") && value.Contains("STANDARD")))
+            || value.Contains("AVALON") && value.Contains("STANDARD"))
         {
             return TreasureRarity.Standard;
         }
@@ -169,7 +169,7 @@ public static class DungeonObjectData
             || value.Contains("NORMAL_UNCOMMON")
             || value.Contains("CHEST_BOSS_UNCOMMON")
             || value.Contains("CHEST_BOSS_HALLOWEEN_UNCOMMON")
-            || (value.Contains("AVALON") && value.Contains("UNCOMMON")))
+            || value.Contains("AVALON") && value.Contains("UNCOMMON"))
         {
             return TreasureRarity.Uncommon;
         }
@@ -179,7 +179,7 @@ public static class DungeonObjectData
             || value.Contains("NORMAL_RARE")
             || value.Contains("CHEST_BOSS_RARE")
             || value.Contains("CHEST_BOSS_HALLOWEEN_RARE")
-            || (value.Contains("AVALON") && value.Contains("RARE")))
+            || value.Contains("AVALON") && value.Contains("RARE"))
         {
             return TreasureRarity.Rare;
         }
@@ -189,7 +189,7 @@ public static class DungeonObjectData
             || value.Contains("NORMAL_LEGENDARY")
             || value.Contains("CHEST_BOSS_LEGENDARY")
             || value.Contains("CHEST_BOSS_HALLOWEEN_LEGENDARY")
-            || (value.Contains("AVALON") && value.Contains("LEGENDARY")))
+            || value.Contains("AVALON") && value.Contains("LEGENDARY"))
         {
             return TreasureRarity.Legendary;
         }

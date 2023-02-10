@@ -29,7 +29,7 @@ public class NewCharacterEvent
 
             if (parameters.ContainsKey(8)) GuildName = parameters[8].ToString();
 
-            if (parameters.ContainsKey(12)) Position = (float[]) parameters[12];
+            if (parameters.ContainsKey(13)) Position = (float[]) parameters[13];
                 
             if (parameters.ContainsKey(33))
             {

@@ -1,5 +1,5 @@
-﻿using StatisticsAnalysisTool.Enumerations;
-using StatisticsAnalysisTool.GameData;
+﻿using StatisticsAnalysisTool.Dungeon;
+using StatisticsAnalysisTool.Enumerations;
 using System;
 
 namespace StatisticsAnalysisTool.Models.NetworkModel;

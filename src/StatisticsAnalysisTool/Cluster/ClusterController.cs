@@ -1,14 +1,14 @@
 using StatisticsAnalysisTool.Common;
+using StatisticsAnalysisTool.Enumerations;
 using StatisticsAnalysisTool.GameData;
-using StatisticsAnalysisTool.Models;
+using StatisticsAnalysisTool.Network.Manager;
 using StatisticsAnalysisTool.ViewModels;
 using System;
 using System.Diagnostics;
 using System.Reflection;
 using System.Windows;
-using StatisticsAnalysisTool.Enumerations;
 
-namespace StatisticsAnalysisTool.Network.Manager;
+namespace StatisticsAnalysisTool.Cluster;
 
 public class ClusterController
 {
@@ -61,7 +61,7 @@ public class ClusterController
 
         Debug.Print($"[StateHandler] Changed cluster to: Index: '{CurrentCluster.Index}' UniqueName: '{CurrentCluster.UniqueName}' ClusterType: '{CurrentCluster.ClusterMode}' MapType: '{CurrentCluster.MapType}'");
         ConsoleManager.WriteLineForMessage(MethodBase.GetCurrentMethod()?.DeclaringType,
-            $"[StateHandler] Changed cluster to: Index: '{CurrentCluster.Index}' UniqueName: '{CurrentCluster.UniqueName}' ClusterType: '{CurrentCluster.ClusterMode}' MapType: '{CurrentCluster.MapType}'", 
+            $"[StateHandler] Changed cluster to: Index: '{CurrentCluster.Index}' UniqueName: '{CurrentCluster.UniqueName}' ClusterType: '{CurrentCluster.ClusterMode}' MapType: '{CurrentCluster.MapType}'",
             ConsoleColorType.EventMapChangeColor);
     }
 
@@ -75,7 +75,24 @@ public class ClusterController
         _trackingController.VaultController.ResetCurrentVaultInfo();
         _trackingController.TreasureController.RemoveTemporaryTreasures();
         _trackingController.TreasureController.UpdateLootedChestsDashboardUi();
+        _trackingController.LootController.ResetLocalPlayerDiscoveredLoot();
+        _trackingController.LootController.ResetIdentifiedBodies();
         _ = _trackingController.TradeController.RemoveTradesByDaysInSettingsAsync();
+        _ = _trackingController.GatheringController.SetGatheredResourcesClosedAsync();
+    }
+
+    public static string ComposingMapInfoString(string index, MapType mapType, string instanceName)
+    {
+        var currentMapName = WorldData.GetUniqueNameOrDefault(index);
+
+        if (string.IsNullOrEmpty(currentMapName))
+        {
+            currentMapName = WorldData.GetMapNameByMapType(mapType);
+        }
+
+        string islandName = !string.IsNullOrEmpty(instanceName) ? $"({instanceName})" : string.Empty;
+
+        return $"{currentMapName} {islandName}";
     }
 
     #region Cluster history
@@ -110,15 +127,15 @@ public class ClusterController
     }
 
     #endregion
-        
+
     #region Test methods
 
-    private static readonly Random Random = new ();
+    private static readonly Random Random = new();
 
     private static T RandomEnumValue<T>()
     {
         var v = Enum.GetValues(typeof(T));
-        return (T)v.GetValue(Random.Next(v.Length));
+        return (T) v.GetValue(Random.Next(v.Length));
     }
 
     private void CreateRandomClusterInfosForTracking(int runs)

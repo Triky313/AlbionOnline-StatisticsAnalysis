@@ -58,4 +58,6 @@ public class SettingsObject
     public int ItemWindowMainTabQualitySelection { get; set; }
     public int ItemWindowHistoryTabQualitySelection { get; set; }
     public List<MainTabLocationFilterSettingsObject> ItemWindowMainTabLocationFilters { get; set; } = new();
+    public double GatheringGridSplitterPosition { get; set; } = 125;
+    public bool IsGatheringActive { get; set; }
 }

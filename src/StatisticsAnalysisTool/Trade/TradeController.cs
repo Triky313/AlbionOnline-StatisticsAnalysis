@@ -22,7 +22,7 @@ public class TradeController
     private static readonly ILog Log = LogManager.GetLogger(MethodBase.GetCurrentMethod()?.DeclaringType);
 
     private readonly MainWindowViewModel _mainWindowViewModel;
-    private int _addTradeCounter;
+    private int _tradeCounter;
 
     public TradeController(MainWindowViewModel mainWindowViewModel)
     {
@@ -101,13 +101,14 @@ public class TradeController
 
     public async Task SaveInFileAsync()
     {
+        // TODO: Save file in userData dir: await FileController.SaveAsync(tradeDtos, Path.Combine(AppDomain.CurrentDomain.BaseDirectory, Settings.Default.UserDataDirectoryName, Settings.Default.TradesFileName));
         await FileController.SaveAsync(_mainWindowViewModel.TradeMonitoringBindings?.Trades?.Select(TradeMapping.Mapping), $"{AppDomain.CurrentDomain.BaseDirectory}{Settings.Default.TradesFileName}");
         DeleteMailsJson();
     }
 
     public async Task SaveInFileAfterExceedingLimit(int limit)
     {
-        if (++_addTradeCounter < limit)
+        if (++_tradeCounter < limit)
         {
             return;
         }
@@ -125,9 +126,10 @@ public class TradeController
             return;
         }
 
+        // TODO: Save file in userData dir: await FileController.SaveAsync(tradeDtos, Path.Combine(AppDomain.CurrentDomain.BaseDirectory, Settings.Default.UserDataDirectoryName, Settings.Default.TradesFileName));
         DirectoryController.CreateDirectoryWhenNotExists(Path.Combine(AppDomain.CurrentDomain.BaseDirectory, Settings.Default.UserDataDirectoryName));
-        await FileController.SaveAsync(tradeDtos, Path.Combine(AppDomain.CurrentDomain.BaseDirectory, Settings.Default.UserDataDirectoryName, Settings.Default.TradesFileName));
-        _addTradeCounter = 0;
+        await FileController.SaveAsync(tradeDtos, Path.Combine(AppDomain.CurrentDomain.BaseDirectory, Settings.Default.TradesFileName));
+        _tradeCounter = 0;
 
         DeleteMailsJson();
     }

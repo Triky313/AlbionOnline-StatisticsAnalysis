@@ -3,8 +3,10 @@ using LiveChartsCore;
 using LiveChartsCore.SkiaSharpView;
 using log4net;
 using Microsoft.Win32;
+using StatisticsAnalysisTool.Cluster;
 using StatisticsAnalysisTool.Common;
 using StatisticsAnalysisTool.Common.UserSettings;
+using StatisticsAnalysisTool.Dungeon;
 using StatisticsAnalysisTool.Enumerations;
 using StatisticsAnalysisTool.GameData;
 using StatisticsAnalysisTool.Models;
@@ -101,6 +103,7 @@ public class MainWindowViewModel : INotifyPropertyChanged, IAsyncInitialization
     private Visibility _unsupportedOsVisibility = Visibility.Collapsed;
     private LoggingBindings _loggingBindings = new();
     private PlayerInformationBindings _playerInformationBindings = new();
+    private GatheringBindings _gatheringBindings = new();
 
     public MainWindowViewModel(MainWindow mainWindow)
     {
@@ -166,6 +169,9 @@ public class MainWindowViewModel : INotifyPropertyChanged, IAsyncInitialization
 
         // Damage Meter
         DamageMeterBindings.GridSplitterPosition = new GridLength(SettingsController.CurrentSettings.DamageMeterGridSplitterPosition);
+
+        // Gathering
+        GatheringBindings.GridSplitterPosition = new GridLength(SettingsController.CurrentSettings.GatheringGridSplitterPosition);
 
         #endregion
     }
@@ -568,6 +574,7 @@ public class MainWindowViewModel : INotifyPropertyChanged, IAsyncInitialization
 
         await TrackingController?.StatisticController?.LoadFromFileAsync()!;
         await TrackingController?.TradeController?.LoadFromFileAsync()!;
+        await TrackingController?.GatheringController?.LoadFromFileAsync()!;
         await TrackingController?.TreasureController?.LoadFromFileAsync()!;
         await TrackingController?.DungeonController?.LoadDungeonFromFileAsync()!;
         await TrackingController?.VaultController?.LoadFromFileAsync()!;
@@ -604,6 +611,7 @@ public class MainWindowViewModel : INotifyPropertyChanged, IAsyncInitialization
         await TrackingController?.TreasureController?.SaveInFileAsync()!;
         await TrackingController?.StatisticController?.SaveInFileAsync()!;
         await TrackingController?.LootController?.SaveInFileAsync()!;
+        await TrackingController?.GatheringController?.SaveInFileAsync(true)!;
         await TrackingController?.TradeController?.SaveInFileAsync()!;
 
         await FileController.SaveAsync(DamageMeterBindings?.DamageMeterSnapshots, $"{AppDomain.CurrentDomain.BaseDirectory}{Settings.Default.DamageMeterSnapshotsFileName}");
@@ -788,6 +796,16 @@ public class MainWindowViewModel : INotifyPropertyChanged, IAsyncInitialization
         set
         {
             _dungeonBindings = value;
+            OnPropertyChanged();
+        }
+    }
+
+    public GatheringBindings GatheringBindings
+    {
+        get => _gatheringBindings;
+        set
+        {
+            _gatheringBindings = value;
             OnPropertyChanged();
         }
     }

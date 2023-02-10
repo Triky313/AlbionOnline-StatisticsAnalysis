@@ -1,4 +1,5 @@
-﻿using StatisticsAnalysisTool.GameData;
+﻿using StatisticsAnalysisTool.Cluster;
+using StatisticsAnalysisTool.GameData;
 using System;
 using System.Collections.Generic;
 

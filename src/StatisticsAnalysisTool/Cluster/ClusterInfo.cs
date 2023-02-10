@@ -4,7 +4,7 @@ using StatisticsAnalysisTool.GameData;
 using System;
 using System.Collections.Generic;
 
-namespace StatisticsAnalysisTool.Models;
+namespace StatisticsAnalysisTool.Cluster;
 
 public class ClusterInfo
 {
@@ -91,10 +91,10 @@ public class ClusterInfo
         AvalonTunnelType = GetTunnelType(WorldJsonType);
         ClusterHistoryString();
     }
-        
+
     public void ClusterHistoryString()
     {
-        if (ClusterMode is ClusterMode.Black or ClusterMode.Red or ClusterMode.Yellow  or ClusterMode.SafeArea && MapType is MapType.Unknown)
+        if (ClusterMode is ClusterMode.Black or ClusterMode.Red or ClusterMode.Yellow or ClusterMode.SafeArea && MapType is MapType.Unknown)
         {
             ClusterHistoryString1 = ClusterModeString(ClusterMode);
             ClusterHistoryString2 = UniqueName;
@@ -145,7 +145,7 @@ public class ClusterInfo
             };
         }
     }
-    
+
     public string TierString
     {
         get
@@ -165,7 +165,7 @@ public class ClusterInfo
             };
         }
     }
-    
+
     private static string ClusterModeString(ClusterMode clusterMode)
     {
         return clusterMode switch
@@ -262,7 +262,7 @@ public class ClusterInfo
             return ClusterMode.AvalonTunnel;
         }
 
-        if (type.ToUpper().Contains("SAFEAREA") || type.ToUpper().Equals("HIDEOUT") || type.ToUpper().Contains("PLAYERCITY") )
+        if (type.ToUpper().Contains("SAFEAREA") || type.ToUpper().Equals("HIDEOUT") || type.ToUpper().Contains("PLAYERCITY"))
         {
             return ClusterMode.SafeArea;
         }

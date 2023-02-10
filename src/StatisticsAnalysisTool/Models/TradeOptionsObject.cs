@@ -19,11 +19,12 @@ public class TradeOptionsObject : INotifyPropertyChanged
 
     public TradeOptionsObject()
     {
-        var neverDeleteObject = new DeleteTradesAfterDaysStruct() {Days = 0, Name = LanguageController.Translation("DELETE_TRADES_NEVER")};
+        var neverDeleteObject = new DeleteTradesAfterDaysStruct() { Days = 0, Name = LanguageController.Translation("DELETE_TRADES_NEVER") };
 
         DeleteTradesOlderThanSpecifiedDays.Clear();
         DeleteTradesOlderThanSpecifiedDays.Add(neverDeleteObject);
         DeleteTradesOlderThanSpecifiedDays.Add(new DeleteTradesAfterDaysStruct() { Days = 7, Name = LanguageController.Translation("DELETE_TRADES_AFTER_7_DAYS") });
+        DeleteTradesOlderThanSpecifiedDays.Add(new DeleteTradesAfterDaysStruct() { Days = 14, Name = LanguageController.Translation("DELETE_TRADES_AFTER_14_DAYS") });
         DeleteTradesOlderThanSpecifiedDays.Add(new DeleteTradesAfterDaysStruct() { Days = 30, Name = LanguageController.Translation("DELETE_TRADES_AFTER_30_DAYS") });
         DeleteTradesOlderThanSpecifiedDays.Add(new DeleteTradesAfterDaysStruct() { Days = 60, Name = LanguageController.Translation("DELETE_TRADES_AFTER_60_DAYS") });
         DeleteTradesOlderThanSpecifiedDays.Add(new DeleteTradesAfterDaysStruct() { Days = 90, Name = LanguageController.Translation("DELETE_TRADES_AFTER_90_DAYS") });
@@ -38,7 +39,7 @@ public class TradeOptionsObject : INotifyPropertyChanged
         MarketTaxRate = SettingsController.CurrentSettings.TradeMonitoringMarketTaxRate;
         MarketTaxSetupRate = SettingsController.CurrentSettings.TradeMonitoringMarketTaxSetupRate;
     }
-
+    
     public bool IsTradeMonitoringActive
     {
         get => _isTradeMonitoringActive;

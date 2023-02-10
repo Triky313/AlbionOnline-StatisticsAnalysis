@@ -203,6 +203,12 @@ public class TradeStatsObject : INotifyPropertyChanged
                         TradeType.InstantSell => trade.InstantBuySellContent.TotalPrice.IntegerValue,
                         _ => 0
                     },
+                    TradeStatType.BoughtTotal => trade.Type switch
+                    {
+                        TradeType.Mail => trade.MailContent.TotalPrice.IntegerValue,
+                        TradeType.InstantBuy => trade.InstantBuySellContent.TotalPrice.IntegerValue,
+                        _ => 0
+                    },
                     _ => 0
                 };
             });

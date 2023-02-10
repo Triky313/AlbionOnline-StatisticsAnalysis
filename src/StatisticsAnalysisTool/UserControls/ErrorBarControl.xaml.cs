@@ -23,9 +23,12 @@ public partial class ErrorBarControl
 
     private void BtnErrorBar_Click(object sender, RoutedEventArgs e)
     {
-        var mainWindowViewModel = (MainWindowViewModel)DataContext;
+        Application.Current.Dispatcher.Invoke(() =>
+        {
+            var mainWindowViewModel = (MainWindowViewModel) DataContext;
 
-        mainWindowViewModel.ErrorBarText = string.Empty;
-        mainWindowViewModel.ErrorBarVisibility = Visibility.Collapsed;
+            mainWindowViewModel.ErrorBarText = string.Empty;
+            mainWindowViewModel.ErrorBarVisibility = Visibility.Collapsed;
+        });
     }
 }

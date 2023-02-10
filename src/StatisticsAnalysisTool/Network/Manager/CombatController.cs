@@ -13,6 +13,7 @@ using System.Linq;
 using System.Reflection;
 using System.Threading.Tasks;
 using System.Windows;
+using StatisticsAnalysisTool.Models.ItemsJsonModel;
 
 namespace StatisticsAnalysisTool.Network.Manager;
 
@@ -150,7 +151,7 @@ public class CombatController
         if (healthChangeObjectValue?.CharacterEquipment?.MainHand != null)
         {
             var item = ItemController.GetItemByIndex(healthChangeObjectValue.CharacterEquipment?.MainHand);
-            fragment.CauserMainHand = item?.FullItemInformation?.ItemType == ItemType.Weapon ? item : null;
+            fragment.CauserMainHand = ((ItemJsonObject)item?.FullItemInformation)?.ItemType == ItemType.Weapon ? item : null;
         }
 
         // Damage

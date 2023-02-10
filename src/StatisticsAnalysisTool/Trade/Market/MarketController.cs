@@ -1,4 +1,5 @@
-﻿using StatisticsAnalysisTool.Common.UserSettings;
+﻿using StatisticsAnalysisTool.Cluster;
+using StatisticsAnalysisTool.Common.UserSettings;
 using StatisticsAnalysisTool.Network.Manager;
 using System;
 using System.Collections.Generic;
