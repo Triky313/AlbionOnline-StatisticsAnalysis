@@ -2,8 +2,6 @@
 using StatisticsAnalysisTool.Common.UserSettings;
 using StatisticsAnalysisTool.Gathering;
 using StatisticsAnalysisTool.Properties;
-using StatisticsAnalysisTool.Trade;
-using StatisticsAnalysisTool.ViewModels;
 using System;
 using System.Collections.Generic;
 using System.Collections.Specialized;

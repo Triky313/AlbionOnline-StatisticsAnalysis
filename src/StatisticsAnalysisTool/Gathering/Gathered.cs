@@ -1,12 +1,13 @@
-﻿using System;
-using StatisticsAnalysisTool.Common;
+﻿using StatisticsAnalysisTool.Common;
 using StatisticsAnalysisTool.GameData;
 using StatisticsAnalysisTool.Models;
+using StatisticsAnalysisTool.Models.ItemsJsonModel;
+using StatisticsAnalysisTool.Network.Manager;
 using StatisticsAnalysisTool.Properties;
+using System;
 using System.ComponentModel;
 using System.Globalization;
 using System.Runtime.CompilerServices;
-using StatisticsAnalysisTool.Models.ItemsJsonModel;
 
 namespace StatisticsAnalysisTool.Gathering;
 
@@ -112,13 +113,17 @@ public class Gathered : INotifyPropertyChanged
         }
     }
 
+    public string ClusterIndex { get; init; }
+    public MapType MapType { get; init; }
+    public string InstanceName { get; init; }
+
     public int GetTotalAmountResources()
     {
         return GainedStandardAmount + GainedBonusAmount + GainedPremiumBonusAmount;
     }
 
-    public string ClusterIndex { get; init; }
-    public string ClusterUniqueName => WorldData.GetUniqueNameOrDefault(ClusterIndex);
+    public string ClusterUniqueName => ClusterController.ComposingMapInfoString(ClusterIndex, MapType, InstanceName);
+
     public static string TranslationIn => LanguageController.Translation("IN");
     public static string TranslationAmountOfMiningProcesses => LanguageController.Translation("AMOUNT_OF_MINING_PROCESSES");
     public static string TranslationStandard => LanguageController.Translation("STANDARD");

@@ -81,6 +81,20 @@ public class ClusterController
         _ = _trackingController.GatheringController.SetGatheredResourcesClosedAsync();
     }
 
+    public static string ComposingMapInfoString(string index, MapType mapType, string instanceName)
+    {
+        var currentMapName = WorldData.GetUniqueNameOrDefault(index);
+
+        if (string.IsNullOrEmpty(currentMapName))
+        {
+            currentMapName = WorldData.GetMapNameByMapType(mapType);
+        }
+
+        string islandName = !string.IsNullOrEmpty(instanceName) ? $"({instanceName})" : string.Empty;
+
+        return $"{currentMapName} {islandName}";
+    }
+
     #region Cluster history
 
     private async void UpdateClusterTracking(ClusterInfo currentCluster)

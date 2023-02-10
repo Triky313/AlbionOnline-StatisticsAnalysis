@@ -59,6 +59,8 @@ public class GatheringController
                 GainedBonusAmount = harvestFinishedObject.CollectorBonusAmount,
                 GainedPremiumBonusAmount = harvestFinishedObject.PremiumBonusAmount,
                 ClusterIndex = ClusterController.CurrentCluster.Index,
+                MapType = ClusterController.CurrentCluster.MapType,
+                InstanceName = ClusterController.CurrentCluster.InstanceName,
                 MiningProcesses = 1
             };
 

@@ -1,4 +1,6 @@
-﻿namespace StatisticsAnalysisTool.Gathering;
+﻿using StatisticsAnalysisTool.GameData;
+
+namespace StatisticsAnalysisTool.Gathering;
 
 public class GatheredDto
 {
@@ -11,4 +13,6 @@ public class GatheredDto
     public int GainedFame { get; init; }
     public int MiningProcesses { get; init; }
     public string ClusterIndex { get; init; }
+    public MapType MapType { get; init; }
+    public string InstanceName { get; init; }
 }
