@@ -74,7 +74,6 @@ public class GatheringController
         await Application.Current.Dispatcher.InvokeAsync(() =>
         {
             _mainWindowViewModel?.GatheringBindings?.GatheredCollection.Add(gathered);
-            //_mainWindowViewModel?.GatheringBindings?.GatheredCollectionView?.Refresh();
         });
     }
 
