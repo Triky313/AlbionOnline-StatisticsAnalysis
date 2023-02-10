@@ -684,4 +684,17 @@
 	<translation name="UNKNOWN_TRADE">Unknown trade</translation>
 	<translation name="MAIL">Mail</translation>
 	<translation name="DELETE_TRADES_AFTER_14_DAYS">Delete trades after 14 days</translation>
+	<translation name="BONUS">Bonus</translation>
+	<translation name="PREMIUM">Premium</translation>
+	<translation name="GATHERING_ACTIVE">Gathering active</translation>
+	<translation name="THIS_WEEK">This week</translation>
+	<translation name="LAST_WEEK">Last week</translation>
+	<translation name="GENERALLY">Generally</translation>
+	<translation name="MOST_GATHERED_RESOURCE">Most gathered resource</translation>
+	<translation name="MOST_GATHERED_ON_MAP">Most gathered on map</translation>
+	<translation name="TOTAL_RESOURCES">Total resources</translation>
+	<translation name="TOTAL_MINING_PROCESSES">Total mining processes</translation>
+	<translation name="AMOUNT_OF_MINING_PROCESSES">Amount of mining processes</translation>
+	<translation name="SURE_YOU_WANT_TO_DELETE_SELECTED_RESOURCES">Are you sure you want to delete selected resources?</translation>
+	<translation name="DELETE_SELECTED_RESOURCES">Delete selected resources</translation>
 </translations>

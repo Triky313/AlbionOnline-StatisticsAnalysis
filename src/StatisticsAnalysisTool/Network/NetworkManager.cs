@@ -35,7 +35,7 @@ public class NetworkManager
         builder.AddEventHandler(new NewLaborerItemEventHandler(trackingController));
         builder.AddEventHandler(new OtherGrabbedLootEventHandler(trackingController));
         builder.AddEventHandler(new InventoryDeleteItemEventHandler(trackingController));
-        builder.AddEventHandler(new InventoryPutItemEventHandler(trackingController));
+        //builder.AddEventHandler(new InventoryPutItemEventHandler(trackingController));
         builder.AddEventHandler(new TakeSilverEventHandler(trackingController));
         builder.AddEventHandler(new ActionOnBuildingFinishedEventHandler(trackingController));
         builder.AddEventHandler(new UpdateFameEventHandler(trackingController));
@@ -59,12 +59,13 @@ public class NetworkManager
         builder.AddEventHandler(new NewMobEventHandler(trackingController));
         builder.AddEventHandler(new ActiveSpellEffectsUpdateEventHandler(trackingController));
         builder.AddEventHandler(new UpdateFactionStandingEventHandler(trackingController));
-        builder.AddEventHandler(new ReceivedSeasonPointsEventHandler(trackingController));
+        //builder.AddEventHandler(new ReceivedSeasonPointsEventHandler(trackingController));
         builder.AddEventHandler(new MightFavorPointsEventHandler(trackingController));
         builder.AddEventHandler(new BaseVaultInfoEventHandler(trackingController));
         builder.AddEventHandler(new GuildVaultInfoEventHandler(trackingController));
         builder.AddEventHandler(new NewLootEventHandler(trackingController));
         builder.AddEventHandler(new AttachItemContainerEventHandler(trackingController));
+        builder.AddEventHandler(new HarvestFinishedEventHandler(trackingController));
 
         builder.AddRequestHandler(new InventoryMoveItemRequestHandler(trackingController));
         builder.AddRequestHandler(new UseShrineRequestHandler(trackingController));

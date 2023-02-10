@@ -82,7 +82,7 @@ public static class ItemController
 
     #region Item value
 
-    public static double GetItemValue(ItemJsonObject itemJsonObject, int level)
+    public static double GetItemValue(object itemJsonObject, int level)
     {
         var resultItemValue = 0d;
 
@@ -134,9 +134,9 @@ public static class ItemController
         foreach (var craftResource in craftingRequirements?.CraftResource ?? new List<CraftResource>())
         {
             var itemObject = GetItemByUniqueName(craftResource.UniqueName)?.FullItemInformation;
-            var itemValue = ItemValueFromGroundItem(itemObject);
+            var itemValue = ItemValueFromGroundItem((ItemJsonObject) itemObject);
 
-            if (itemValue <= 0 && ExistMoreCraftingRequirements(itemObject) && itemObject is SimpleItem simpleItem)
+            if (itemValue <= 0 && itemObject is SimpleItem simpleItem && ExistMoreCraftingRequirements(simpleItem))
             {
                 itemValue = GetItemValue(simpleItem, level);
             }
@@ -183,7 +183,7 @@ public static class ItemController
 
     #region Durability
 
-    public static double GetDurability(ItemJsonObject itemJsonObject, int level)
+    public static double GetDurability(object itemJsonObject, int level)
     {
         switch (itemJsonObject)
         {
@@ -264,6 +264,11 @@ public static class ItemController
     public static Item GetItemByIndex(int? index)
     {
         return index == null ? null : Items?.FirstOrDefault(i => i.Index == index);
+    }
+
+    public static string GetItemUniqueNameByIndex(int? index)
+    {
+        return index == null ? null : Items?.FirstOrDefault(i => i.Index == index)?.UniqueName ?? string.Empty;
     }
 
     public static Item GetItemByUniqueName(string uniqueName)
@@ -429,7 +434,7 @@ public static class ItemController
         await Task.WhenAll(tasks);
     }
 
-    private static ItemJsonObject GetSpecificItemInfo(string uniqueName)
+    private static object GetSpecificItemInfo(string uniqueName)
     {
         var cleanUniqueName = GetCleanUniqueName(uniqueName);
 
@@ -438,92 +443,92 @@ public static class ItemController
             return null;
         }
 
-        var hideoutItem = GetItemJsonObject(cleanUniqueName, new List<HideoutItem> { _itemsJson.Items.HideoutItem });
-        if (hideoutItem != null)
+        var hideoutItemObject = GetItemJsonObject(cleanUniqueName, new List<HideoutItem> { _itemsJson.Items.HideoutItem });
+        if (hideoutItemObject is HideoutItem hideoutItem)
         {
             hideoutItem.ItemType = ItemType.Hideout;
             return hideoutItem;
         }
 
-        var farmableItem = GetItemJsonObject(cleanUniqueName, _itemsJson.Items.FarmableItem);
-        if (farmableItem != null)
+        var farmableItemObject = GetItemJsonObject(cleanUniqueName, _itemsJson.Items.FarmableItem);
+        if (farmableItemObject is FarmableItem farmableItem)
         {
             farmableItem.ItemType = ItemType.Farmable;
             return farmableItem;
         }
 
-        var simpleItem = GetItemJsonObject(cleanUniqueName, _itemsJson.Items.SimpleItem);
-        if (simpleItem != null)
+        var simpleItemObject = GetItemJsonObject(cleanUniqueName, _itemsJson.Items.SimpleItem);
+        if (simpleItemObject is SimpleItem simpleItem)
         {
             simpleItem.ItemType = ItemType.Simple;
             return simpleItem;
         }
 
-        var consumableItem = GetItemJsonObject(cleanUniqueName, _itemsJson.Items.ConsumableItem);
-        if (consumableItem != null)
+        var consumableItemObject = GetItemJsonObject(cleanUniqueName, _itemsJson.Items.ConsumableItem);
+        if (consumableItemObject is ConsumableItem consumableItem)
         {
             consumableItem.ItemType = ItemType.Consumable;
             return consumableItem;
         }
 
-        var consumableFromInventoryItem = GetItemJsonObject(cleanUniqueName, _itemsJson.Items.ConsumableFromInventoryItem);
-        if (consumableFromInventoryItem != null)
+        var consumableFromInventoryItemObject = GetItemJsonObject(cleanUniqueName, _itemsJson.Items.ConsumableFromInventoryItem);
+        if (consumableFromInventoryItemObject is ConsumableFromInventoryItem consumableFromInventoryItem)
         {
             consumableFromInventoryItem.ItemType = ItemType.ConsumableFromInventory;
             return consumableFromInventoryItem;
         }
 
-        var equipmentItem = GetItemJsonObject(cleanUniqueName, _itemsJson.Items.EquipmentItem);
-        if (equipmentItem != null)
+        var equipmentItemObject = GetItemJsonObject(cleanUniqueName, _itemsJson.Items.EquipmentItem);
+        if (equipmentItemObject is EquipmentItem equipmentItem)
         {
             equipmentItem.ItemType = ItemType.Equipment;
             return equipmentItem;
         }
 
-        var weapon = GetItemJsonObject(cleanUniqueName, _itemsJson.Items.Weapon);
-        if (weapon != null)
+        var weaponObject = GetItemJsonObject(cleanUniqueName, _itemsJson.Items.Weapon);
+        if (weaponObject is Weapon weapon)
         {
             weapon.ItemType = ItemType.Weapon;
             return weapon;
         }
 
-        var mount = GetItemJsonObject(cleanUniqueName, _itemsJson.Items.Mount);
-        if (mount != null)
+        var mountObject = GetItemJsonObject(cleanUniqueName, _itemsJson.Items.Mount);
+        if (mountObject is Mount mount)
         {
             mount.ItemType = ItemType.Mount;
             return mount;
         }
 
-        var furnitureItem = GetItemJsonObject(cleanUniqueName, _itemsJson.Items.FurnitureItem);
-        if (furnitureItem != null)
+        var furnitureItemObject = GetItemJsonObject(cleanUniqueName, _itemsJson.Items.FurnitureItem);
+        if (furnitureItemObject is FurnitureItem furnitureItem)
         {
             furnitureItem.ItemType = ItemType.Furniture;
             return furnitureItem;
         }
 
-        var journalItem = GetItemJsonObject(cleanUniqueName, _itemsJson.Items.JournalItem);
-        if (journalItem != null)
+        var journalItemObject = GetItemJsonObject(cleanUniqueName, _itemsJson.Items.JournalItem);
+        if (journalItemObject is JournalItem journalItem)
         {
             journalItem.ItemType = ItemType.Journal;
             return journalItem;
         }
 
-        var labourerContract = GetItemJsonObject(cleanUniqueName, _itemsJson.Items.LabourerContract);
-        if (labourerContract != null)
+        var labourerContractObject = GetItemJsonObject(cleanUniqueName, _itemsJson.Items.LabourerContract);
+        if (labourerContractObject is LabourerContract labourerContract)
         {
             labourerContract.ItemType = ItemType.LabourerContract;
             return labourerContract;
         }
 
-        var mountSkin = GetItemJsonObject(cleanUniqueName, _itemsJson.Items.MountSkin);
-        if (mountSkin != null)
+        var mountSkinObject = GetItemJsonObject(cleanUniqueName, _itemsJson.Items.MountSkin);
+        if (mountSkinObject is MountSkin mountSkin)
         {
             mountSkin.ItemType = ItemType.MountSkin;
             return mountSkin;
         }
 
-        var crystalLeagueItem = GetItemJsonObject(cleanUniqueName, _itemsJson.Items.CrystalLeagueItem);
-        if (crystalLeagueItem != null)
+        var crystalLeagueItemObject = GetItemJsonObject(cleanUniqueName, _itemsJson.Items.CrystalLeagueItem);
+        if (crystalLeagueItemObject is CrystalLeagueItem crystalLeagueItem)
         {
             crystalLeagueItem.ItemType = ItemType.CrystalLeague;
             return crystalLeagueItem;
@@ -532,7 +537,7 @@ public static class ItemController
         return null;
     }
 
-    private static ItemJsonObject GetItemJsonObject<T>(string uniqueName, List<T> itemJsonObjects)
+    private static object GetItemJsonObject<T>(string uniqueName, List<T> itemJsonObjects)
     {
         var itemAsSpan = CollectionsMarshal.AsSpan(itemJsonObjects);
         // ReSharper disable once ForCanBeConvertedToForeach
@@ -708,7 +713,7 @@ public static class ItemController
         return _itemsJson?.Items != null;
     }
 
-    public static double GetWeight(ItemJsonObject itemJsonObject)
+    public static double GetWeight(object itemJsonObject)
     {
         double weight;
         switch (itemJsonObject)

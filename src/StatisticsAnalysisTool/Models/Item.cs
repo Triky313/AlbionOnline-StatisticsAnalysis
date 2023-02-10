@@ -39,7 +39,7 @@ public class Item
     [JsonIgnore]
     public BitmapImage Icon => Application.Current.Dispatcher.Invoke(() => _icon ??= ImageController.GetItemImage(UniqueName));
 
-    public ItemJsonObject FullItemInformation { get; set; }
+    public object FullItemInformation { get; set; }
     public ShopCategory ShopCategory { get; set; }
     public ShopSubCategory ShopShopSubCategory1 { get; set; }
     public int AlertModeMinSellPriceIsUndercutPrice { get; set; }
