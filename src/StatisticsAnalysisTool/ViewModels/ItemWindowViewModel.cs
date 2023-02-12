@@ -402,10 +402,10 @@ public class ItemWindowViewModel : INotifyPropertyChanged
 
         switch (Item?.FullItemInformation)
         {
-            case Weapon weapon when weapon.CraftingRequirements?.FirstOrDefault()?.CraftResource?.Count > 0:
-            case EquipmentItem equipmentItem when equipmentItem.CraftingRequirements?.FirstOrDefault()?.CraftResource?.Count > 0:
-            case Mount mount when mount.CraftingRequirements?.FirstOrDefault()?.CraftResource?.Count > 0:
-            case ConsumableItem consumableItem when consumableItem.CraftingRequirements?.FirstOrDefault()?.CraftResource?.Count > 0:
+            case Weapon weapon when weapon.CraftingRequirements?.FirstOrDefault()?.CraftResource.Count > 0:
+            case EquipmentItem equipmentItem when equipmentItem.CraftingRequirements?.FirstOrDefault()?.CraftResource.Count > 0:
+            case Mount mount when mount.CraftingRequirements?.FirstOrDefault()?.CraftResource.Count > 0:
+            case ConsumableItem consumableItem when consumableItem.CraftingRequirements?.FirstOrDefault()?.CraftResource.Count > 0:
                 areResourcesAvailable = true;
                 break;
         }
