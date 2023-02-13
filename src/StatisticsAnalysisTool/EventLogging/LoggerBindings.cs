@@ -1,6 +1,5 @@
 ﻿using StatisticsAnalysisTool.Common.UserSettings;
 using StatisticsAnalysisTool.EventLogging.Notification;
-using StatisticsAnalysisTool.Models;
 using StatisticsAnalysisTool.Properties;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
