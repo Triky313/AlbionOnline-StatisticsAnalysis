@@ -1,7 +1,6 @@
 using log4net;
 using StatisticsAnalysisTool.Common;
 using StatisticsAnalysisTool.Common.UserSettings;
-using StatisticsAnalysisTool.Enumerations;
 using StatisticsAnalysisTool.Network.Notification;
 using StatisticsAnalysisTool.Trade;
 using StatisticsAnalysisTool.ViewModels;
@@ -18,6 +17,8 @@ using ValueType = StatisticsAnalysisTool.Enumerations.ValueType;
 using StatisticsAnalysisTool.Gathering;
 using StatisticsAnalysisTool.Cluster;
 using StatisticsAnalysisTool.Dungeon;
+using StatisticsAnalysisTool.EventLogging;
+using StatisticsAnalysisTool.EventLogging.Notification;
 
 namespace StatisticsAnalysisTool.Network.Manager;
 

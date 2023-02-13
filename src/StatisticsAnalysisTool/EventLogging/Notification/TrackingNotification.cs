@@ -1,12 +1,12 @@
-﻿using StatisticsAnalysisTool.Common;
-using StatisticsAnalysisTool.Enumerations;
-using System;
+﻿using System;
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
 using System.Windows;
+using StatisticsAnalysisTool.Common;
+using StatisticsAnalysisTool.Enumerations;
 using StatisticsAnalysisTool.Properties;
 
-namespace StatisticsAnalysisTool.Network.Notification;
+namespace StatisticsAnalysisTool.EventLogging.Notification;
 
 public class TrackingNotification : INotifyPropertyChanged
 {

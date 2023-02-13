@@ -1,8 +1,9 @@
 using log4net;
 using StatisticsAnalysisTool.Common;
+using StatisticsAnalysisTool.EventLogging;
+using StatisticsAnalysisTool.EventLogging.Notification;
 using StatisticsAnalysisTool.Models;
 using StatisticsAnalysisTool.Models.NetworkModel;
-using StatisticsAnalysisTool.Network.Notification;
 using StatisticsAnalysisTool.Properties;
 using StatisticsAnalysisTool.ViewModels;
 using System;
@@ -146,7 +147,7 @@ public class LootController : ILootController
 
     #region Lokal player loot tracking
 
-    private readonly ObservableCollection<IdentifiedBody> _identifiedBodies = new ();
+    private readonly ObservableCollection<IdentifiedBody> _identifiedBodies = new();
 
     public struct IdentifiedBody
     {

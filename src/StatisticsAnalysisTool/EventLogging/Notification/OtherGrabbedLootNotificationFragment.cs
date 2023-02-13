@@ -2,7 +2,7 @@
 using StatisticsAnalysisTool.Models;
 using System.Windows.Media.Imaging;
 
-namespace StatisticsAnalysisTool.Network.Notification;
+namespace StatisticsAnalysisTool.EventLogging.Notification;
 
 public class OtherGrabbedLootNotificationFragment : LineFragment
 {
@@ -16,7 +16,7 @@ public class OtherGrabbedLootNotificationFragment : LineFragment
         Icon = item.Icon;
         Quantity = quantity;
     }
-        
+
     public string LootedByName { get; }
     public string LootedByGuild { get; }
     public bool IsLootedByGuildEmpty => string.IsNullOrEmpty(LootedByGuild);

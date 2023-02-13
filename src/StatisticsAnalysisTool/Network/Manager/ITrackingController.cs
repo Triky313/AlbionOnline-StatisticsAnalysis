@@ -1,5 +1,5 @@
-using StatisticsAnalysisTool.Enumerations;
-using StatisticsAnalysisTool.Network.Notification;
+using StatisticsAnalysisTool.EventLogging;
+using StatisticsAnalysisTool.EventLogging.Notification;
 using System.Threading.Tasks;
 
 namespace StatisticsAnalysisTool.Network.Manager;

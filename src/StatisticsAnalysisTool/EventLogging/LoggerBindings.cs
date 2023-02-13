@@ -1,13 +1,13 @@
-﻿using StatisticsAnalysisTool.Common.Comparer;
-using StatisticsAnalysisTool.Common.UserSettings;
-using StatisticsAnalysisTool.Network.Notification;
+﻿using StatisticsAnalysisTool.Common.UserSettings;
+using StatisticsAnalysisTool.EventLogging.Notification;
+using StatisticsAnalysisTool.Models;
 using StatisticsAnalysisTool.Properties;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
 using System.Windows.Data;
 
-namespace StatisticsAnalysisTool.Models.BindingModel;
+namespace StatisticsAnalysisTool.EventLogging;
 
 public class LoggingBindings : INotifyPropertyChanged
 {

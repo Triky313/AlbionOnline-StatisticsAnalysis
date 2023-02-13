@@ -1,6 +1,6 @@
 ﻿using StatisticsAnalysisTool.Enumerations;
 
-namespace StatisticsAnalysisTool.Network.Notification;
+namespace StatisticsAnalysisTool.EventLogging.Notification;
 
 public class FactionPointsNotificationFragment : LineFragment
 {

@@ -1,6 +1,6 @@
 ﻿using System.Text.Json.Serialization;
 
-namespace StatisticsAnalysisTool.Network.Notification;
+namespace StatisticsAnalysisTool.EventLogging.Notification;
 
 public class KillNotificationFragment : LineFragment
 {
@@ -15,7 +15,7 @@ public class KillNotificationFragment : LineFragment
     public string Died { get; }
     public string KilledBy { get; }
     public string KilledByGuild { get; }
-    [JsonIgnore] 
+    [JsonIgnore]
     public bool IsKilledByGuildEmpty => string.IsNullOrEmpty(KilledByGuild);
     public string ValueText { get; }
 }

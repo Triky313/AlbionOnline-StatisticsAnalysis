@@ -1,7 +1,11 @@
 ﻿using StatisticsAnalysisTool.Common;
 using StatisticsAnalysisTool.Enumerations;
+using StatisticsAnalysisTool.EventLogging.Notification;
 using StatisticsAnalysisTool.GameData;
+using StatisticsAnalysisTool.Models;
 using StatisticsAnalysisTool.Models.NetworkModel;
+using StatisticsAnalysisTool.Network.Notification;
+using StatisticsAnalysisTool.Properties;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -11,10 +15,7 @@ using System.Runtime.CompilerServices;
 using System.Text.Json.Serialization;
 using System.Threading.Tasks;
 using System.Windows;
-using StatisticsAnalysisTool.Properties;
-using StatisticsAnalysisTool.Models;
 using System.Windows.Threading;
-using StatisticsAnalysisTool.Network.Notification;
 
 namespace StatisticsAnalysisTool.Dungeon;
 

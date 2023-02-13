@@ -1,12 +1,11 @@
 ﻿using StatisticsAnalysisTool.Common.UserSettings;
-using StatisticsAnalysisTool.Enumerations;
 using StatisticsAnalysisTool.Network.Manager;
-using System.ComponentModel;
-using System.Runtime.CompilerServices;
 using StatisticsAnalysisTool.Properties;
 using StatisticsAnalysisTool.ViewModels;
+using System.ComponentModel;
+using System.Runtime.CompilerServices;
 
-namespace StatisticsAnalysisTool.Models;
+namespace StatisticsAnalysisTool.EventLogging;
 
 public class LoggingFilterObject : INotifyPropertyChanged
 {
@@ -141,7 +140,7 @@ public class LoggingFilterObject : INotifyPropertyChanged
                 SettingsController.CurrentSettings.IsLootFromMobShown = IsSelected ?? false;
                 break;
         }
-            
+
         _trackingController?.NotificationUiFilteringAsync(searchText);
     }
 
