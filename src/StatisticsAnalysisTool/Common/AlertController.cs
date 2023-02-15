@@ -1,7 +1,6 @@
 ﻿using log4net;
 using StatisticsAnalysisTool.Models;
 using StatisticsAnalysisTool.Properties;
-using StatisticsAnalysisTool.Views;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -12,21 +11,20 @@ using System.Linq;
 using System.Reflection;
 using System.Text;
 using System.Text.Json;
+using System.Windows;
 
 namespace StatisticsAnalysisTool.Common;
 
 public class AlertController
 {
     private static readonly ILog Log = LogManager.GetLogger(MethodBase.GetCurrentMethod()?.DeclaringType);
-    private readonly ObservableCollection<Alert> _alerts = new ();
+    private readonly ObservableCollection<Alert> _alerts = new();
     private readonly ICollectionView _itemsView;
-    private readonly MainWindow _mainWindow;
 
-    private readonly int _maxAlertsAtSameTime = 10;
+    private const int TicksMaxAlertsAtSameTime = 10;
 
-    public AlertController(MainWindow mainWindow, ICollectionView itemsView)
+    public AlertController(ICollectionView itemsView)
     {
-        _mainWindow = mainWindow;
         _itemsView = itemsView;
 
         SetActiveAlertsFromLocalFile();
@@ -36,20 +34,20 @@ public class AlertController
     {
         if (IsAlertInCollection(item.UniqueName) || !IsSpaceInAlertsCollection()) return;
 
-        _alerts.CollectionChanged += delegate(object _, NotifyCollectionChangedEventArgs e)
+        _alerts.CollectionChanged += delegate (object _, NotifyCollectionChangedEventArgs e)
         {
             if (e.Action == NotifyCollectionChangedAction.Add) SaveActiveAlertsToLocalFile();
         };
 
         var alertController = this;
-        var alert = new Alert(_mainWindow, alertController, item, alertModeMinSellPriceIsUndercutPrice);
+        var alert = new Alert(alertController, item, alertModeMinSellPriceIsUndercutPrice);
         alert.StartEvent();
         _alerts.Add(alert);
     }
 
     private void Remove(string uniqueName)
     {
-        _alerts.CollectionChanged += delegate(object _, NotifyCollectionChangedEventArgs e)
+        _alerts.CollectionChanged += delegate (object _, NotifyCollectionChangedEventArgs e)
         {
             if (e.Action == NotifyCollectionChangedAction.Remove) SaveActiveAlertsToLocalFile();
         };
@@ -97,7 +95,7 @@ public class AlertController
             item.IsAlertActive = false;
             Remove(item.UniqueName);
 
-            _mainWindow.Dispatcher?.Invoke(() => { _itemsView.Refresh(); });
+            Application.Current.MainWindow?.Dispatcher?.Invoke(() => { _itemsView.Refresh(); });
         }
         catch (Exception e)
         {
@@ -119,7 +117,7 @@ public class AlertController
             item.AlertModeMinSellPriceIsUndercutPrice = minSellUndercutPrice;
             Add(item, item.AlertModeMinSellPriceIsUndercutPrice);
 
-            _mainWindow.Dispatcher?.Invoke(() => { _itemsView.Refresh(); });
+            Application.Current.MainWindow?.Dispatcher?.Invoke(() => { _itemsView.Refresh(); });
         }
         catch (Exception e)
         {
@@ -140,7 +138,7 @@ public class AlertController
 
     public bool IsSpaceInAlertsCollection()
     {
-        return _alerts.Count < _maxAlertsAtSameTime;
+        return _alerts.Count < TicksMaxAlertsAtSameTime;
     }
 
     #region Alert file controls
@@ -174,7 +172,7 @@ public class AlertController
     {
         var localFilePath = $"{AppDomain.CurrentDomain.BaseDirectory}{Settings.Default.ActiveAlertsFileName}";
         var activeItemAlerts = _alerts.Select(alert => new AlertSaveObject
-            {UniqueName = alert.Item.UniqueName, MinSellUndercutPrice = alert.AlertModeMinSellPriceIsUndercutPrice}).ToList();
+        { UniqueName = alert.Item.UniqueName, MinSellUndercutPrice = alert.AlertModeMinSellPriceIsUndercutPrice }).ToList();
         var fileString = JsonSerializer.Serialize(activeItemAlerts);
 
         try

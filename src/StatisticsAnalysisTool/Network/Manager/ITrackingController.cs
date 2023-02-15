@@ -7,9 +7,7 @@ namespace StatisticsAnalysisTool.Network.Manager;
 public interface ITrackingController
 {
     bool ExistIndispensableInfos { get; }
-
-    bool IsMainWindowNull();
-
+    
     Task AddNotificationAsync(TrackingNotification item);
 
     void RemovesUnnecessaryNotifications() { }

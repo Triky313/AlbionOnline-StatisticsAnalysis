@@ -8,6 +8,7 @@ using StatisticsAnalysisTool.Common;
 using StatisticsAnalysisTool.Common.UserSettings;
 using StatisticsAnalysisTool.Dungeon;
 using StatisticsAnalysisTool.Enumerations;
+using StatisticsAnalysisTool.EventLogging;
 using StatisticsAnalysisTool.GameData;
 using StatisticsAnalysisTool.Models;
 using StatisticsAnalysisTool.Models.BindingModel;
@@ -30,7 +31,6 @@ using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Data;
 using System.Windows.Media;
-using StatisticsAnalysisTool.EventLogging;
 
 // ReSharper disable UnusedMember.Global
 
@@ -38,7 +38,6 @@ namespace StatisticsAnalysisTool.ViewModels;
 
 public class MainWindowViewModel : INotifyPropertyChanged, IAsyncInitialization
 {
-    private static MainWindow _mainWindow;
     private static readonly ILog Log = LogManager.GetLogger(MethodBase.GetCurrentMethod()?.DeclaringType);
 
     private double _allianceInfoWidth;
@@ -106,9 +105,8 @@ public class MainWindowViewModel : INotifyPropertyChanged, IAsyncInitialization
     private PlayerInformationBindings _playerInformationBindings = new();
     private GatheringBindings _gatheringBindings = new();
 
-    public MainWindowViewModel(MainWindow mainWindow)
+    public MainWindowViewModel()
     {
-        _mainWindow = mainWindow;
         AppDomain.CurrentDomain.UnhandledException += OnUnhandledException;
 
         SettingsController.LoadSettings();
@@ -120,7 +118,7 @@ public class MainWindowViewModel : INotifyPropertyChanged, IAsyncInitialization
 
         if (!LanguageController.InitializeLanguage())
         {
-            _mainWindow.Close();
+            Application.Current.MainWindow?.Close();
         }
 
         Initialization = InitMainWindowDataAsync();
@@ -247,7 +245,7 @@ public class MainWindowViewModel : INotifyPropertyChanged, IAsyncInitialization
     private void InitAlerts()
     {
         SoundController.InitializeSoundFilesFromDirectory();
-        AlertManager = new AlertController(_mainWindow, ItemsView);
+        AlertManager = new AlertController(ItemsView);
     }
 
     private static void UpgradeSettings()
@@ -264,16 +262,18 @@ public class MainWindowViewModel : INotifyPropertyChanged, IAsyncInitialization
 
     private static void InitWindowSettings()
     {
-        _mainWindow.Dispatcher?.Invoke(() =>
+        var mainWindow = Application.Current.MainWindow;
+
+        mainWindow?.Dispatcher?.Invoke(() =>
         {
-            _mainWindow.Height = SettingsController.CurrentSettings.MainWindowHeight;
-            _mainWindow.Width = SettingsController.CurrentSettings.MainWindowWidth;
+            mainWindow.Height = SettingsController.CurrentSettings.MainWindowHeight;
+            mainWindow.Width = SettingsController.CurrentSettings.MainWindowWidth;
             if (SettingsController.CurrentSettings.MainWindowMaximized)
             {
-                _mainWindow.WindowState = WindowState.Maximized;
+                mainWindow.WindowState = WindowState.Maximized;
             }
 
-            Utilities.CenterWindowOnScreen(_mainWindow);
+            Utilities.CenterWindowOnScreen(mainWindow);
         });
     }
 
@@ -376,7 +376,7 @@ public class MainWindowViewModel : INotifyPropertyChanged, IAsyncInitialization
         WorldData.GetDataListFromJson();
         DungeonObjectData.GetDataListFromJson();
 
-        TrackingController ??= new TrackingController(this, _mainWindow);
+        TrackingController ??= new TrackingController(this);
 
         await StartTrackingAsync();
 

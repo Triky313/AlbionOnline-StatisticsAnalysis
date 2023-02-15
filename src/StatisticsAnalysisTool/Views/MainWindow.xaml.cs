@@ -1,14 +1,13 @@
-﻿using StatisticsAnalysisTool.ViewModels;
+﻿using log4net;
+using StatisticsAnalysisTool.Common;
+using StatisticsAnalysisTool.Common.UserSettings;
+using StatisticsAnalysisTool.ViewModels;
 using System;
 using System.Diagnostics;
 using System.Reflection;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Input;
-using System.Windows.Navigation;
-using log4net;
-using StatisticsAnalysisTool.Common;
-using StatisticsAnalysisTool.Common.UserSettings;
 
 namespace StatisticsAnalysisTool.Views;
 
@@ -25,7 +24,7 @@ public partial class MainWindow
     public MainWindow()
     {
         InitializeComponent();
-        _mainWindowViewModel = new MainWindowViewModel(this);
+        _mainWindowViewModel = new MainWindowViewModel();
         DataContext = _mainWindowViewModel;
     }
 
@@ -144,11 +143,6 @@ public partial class MainWindow
     private void ToolTasksOpenClose_PreviewMouseDown(object sender, RoutedEventArgs e)
     {
         _mainWindowViewModel?.SwitchToolTasksState();
-    }
-
-    private void Hyperlink_RequestNavigate(object sender, RequestNavigateEventArgs e)
-    {
-        Process.Start(new ProcessStartInfo { FileName = e.Uri.AbsoluteUri, UseShellExecute = true });
     }
 
     private void OpenToolDirectory_Click(object sender, RoutedEventArgs e)

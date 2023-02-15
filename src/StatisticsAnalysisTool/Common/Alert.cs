@@ -1,6 +1,7 @@
 using log4net;
 using StatisticsAnalysisTool.Exceptions;
 using StatisticsAnalysisTool.Models;
+using StatisticsAnalysisTool.Properties;
 using StatisticsAnalysisTool.Views;
 using System;
 using System.Collections.Generic;
@@ -10,21 +11,18 @@ using System.Reflection;
 using System.Runtime.CompilerServices;
 using System.Threading.Tasks;
 using System.Windows;
-using StatisticsAnalysisTool.Properties;
 
 namespace StatisticsAnalysisTool.Common;
 
 public class Alert
 {
     private static readonly ILog Log = LogManager.GetLogger(MethodBase.GetCurrentMethod()?.DeclaringType);
-    private readonly MainWindow _mainWindow;
     private int _alertModeMinSellPriceIsUndercutPrice;
     private bool _isEventActive;
     private Item _item;
 
-    public Alert(MainWindow mainWindow, AlertController alertController, Item item, int alertModeMinSellPriceIsUndercutPrice)
+    public Alert(AlertController alertController, Item item, int alertModeMinSellPriceIsUndercutPrice)
     {
-        _mainWindow = mainWindow;
         AlertController = alertController;
         Item = item;
         AlertModeMinSellPriceIsUndercutPrice = alertModeMinSellPriceIsUndercutPrice;
@@ -63,12 +61,16 @@ public class Alert
     public void StopEvent()
     {
         _isEventActive = false;
-        _mainWindow.FlashWindow(12);
+        Application.Current.Dispatcher.Invoke(() =>
+        {
+            Application.Current.MainWindow.FlashWindow(12);
+        });
     }
 
     private async void AlertEventAsync(string uniqueName)
     {
         while (_isEventActive)
+        {
             try
             {
                 var cityPrices = await ApiController.GetCityItemPricesFromJsonAsync(uniqueName, null, null).ConfigureAwait(false);
@@ -77,7 +79,7 @@ public class Alert
                 {
                     if (marketResponse.City.GetMarketLocationByLocationNameOrId() != MarketLocation.BlackMarket
                         && marketResponse.SellPriceMinDate >= DateTime.UtcNow.AddMinutes(-5)
-                        && marketResponse.SellPriceMin <= (ulong)AlertModeMinSellPriceIsUndercutPrice
+                        && marketResponse.SellPriceMin <= (ulong) AlertModeMinSellPriceIsUndercutPrice
                         && AlertModeMinSellPriceIsUndercutPrice > 0)
                     {
                         SoundController.PlayAlertSound(SoundController.GetCurrentSoundPath());
@@ -107,6 +109,7 @@ public class Alert
                 Log.Warn(MethodBase.GetCurrentMethod()?.DeclaringType, e);
                 return;
             }
+        }
     }
 
     public event PropertyChangedEventHandler PropertyChanged;

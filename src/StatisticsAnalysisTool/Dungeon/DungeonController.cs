@@ -31,7 +31,7 @@ public class DungeonController
     private readonly TrackingController _trackingController;
     private Guid? _currentGuid;
     private Guid? _lastMapGuid;
-    private List<DungeonObject> _dungeons = new();
+    private ObservableRangeCollection<DungeonObject> _dungeons = new();
     private int _addDungeonCounter;
     private readonly List<DiscoveredItem> _discoveredLoot = new();
     private List<Guid> _lastGuidWithRecognizedLevel = new();
@@ -167,13 +167,8 @@ public class DungeonController
         await SetOrUpdateDungeonsDataUiAsync().ConfigureAwait(false);
     }
 
-    private void RemoveDungeonsAfterCertainNumber(List<DungeonObject> dungeons, int dungeonLimit)
+    private void RemoveDungeonsAfterCertainNumber(ObservableRangeCollection<DungeonObject> dungeons, int dungeonLimit)
     {
-        if (_trackingController.IsMainWindowNull())
-        {
-            return;
-        }
-
         try
         {
             var toDelete = dungeons?.Count - dungeonLimit;
@@ -236,7 +231,13 @@ public class DungeonController
 
     public async Task RemoveDungeonByHashAsync(IEnumerable<string> dungeonHash)
     {
-        _ = _dungeons.RemoveAll(x => dungeonHash.Contains(x.DungeonHash));
+        foreach (var dungeons in _dungeons)
+        {
+            if (dungeonHash.Contains(dungeons.DungeonHash))
+            {
+                _dungeons.Remove(dungeons);
+            }
+        }
 
         foreach (var dungeonFragment in _mainWindowViewModel?.DungeonBindings?.TrackingDungeons?.ToList() ?? new List<DungeonNotificationFragment>())
         {
@@ -249,7 +250,7 @@ public class DungeonController
         await SetOrUpdateDungeonsDataUiAsync().ConfigureAwait(false);
     }
 
-    private static bool AddClusterToExistDungeon(List<DungeonObject> dungeons, Guid? currentGuid, Guid? lastGuid, out DungeonObject dungeon)
+    private static bool AddClusterToExistDungeon(IEnumerable<DungeonObject> dungeons, Guid? currentGuid, Guid? lastGuid, out DungeonObject dungeon)
     {
         if (currentGuid != null && lastGuid != null && dungeons?.Any(x => x.GuidList.Contains((Guid) currentGuid)) != true)
         {
@@ -265,9 +266,9 @@ public class DungeonController
         return false;
     }
 
-    public static DateTime? GetLowestDate(List<DungeonObject> items)
+    public static DateTime? GetLowestDate(IEnumerable<DungeonObject> items)
     {
-        if (items?.Count <= 0)
+        if (items?.Count() <= 0)
         {
             return null;
         }
@@ -1177,7 +1178,7 @@ public class DungeonController
 
     public async Task LoadDungeonFromFileAsync()
     {
-        _dungeons = await FileController.LoadAsync<List<DungeonObject>>($"{AppDomain.CurrentDomain.BaseDirectory}{Settings.Default.DungeonRunsFileName}");
+        _dungeons = await FileController.LoadAsync<ObservableRangeCollection<DungeonObject>>($"{AppDomain.CurrentDomain.BaseDirectory}{Settings.Default.DungeonRunsFileName}");
     }
 
     public async Task SaveInFileAsync()
