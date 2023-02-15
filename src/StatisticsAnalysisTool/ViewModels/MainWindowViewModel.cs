@@ -577,7 +577,8 @@ public class MainWindowViewModel : INotifyPropertyChanged, IAsyncInitialization
         await TrackingController?.GatheringController?.SaveInFileAsync(true)!;
         await TrackingController?.TradeController?.SaveInFileAsync()!;
 
-        await FileController.SaveAsync(DamageMeterBindings?.DamageMeterSnapshots, $"{AppDomain.CurrentDomain.BaseDirectory}{Settings.Default.DamageMeterSnapshotsFileName}");
+        await FileController.SaveAsync(DamageMeterBindings?.DamageMeterSnapshots, 
+            Path.Combine(AppDomain.CurrentDomain.BaseDirectory, Settings.Default.UserDataDirectoryName, Settings.Default.DamageMeterSnapshotsFileName));
 
         IsTrackingActive = false;
         Console.WriteLine(@"### Stop Tracking");

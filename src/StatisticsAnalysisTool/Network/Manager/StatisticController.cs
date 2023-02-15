@@ -267,33 +267,15 @@ public class StatisticController
 
     public async Task LoadFromFileAsync()
     {
-        var localFilePath = $"{AppDomain.CurrentDomain.BaseDirectory}{Settings.Default.StatsFileName}";
-
-        if (File.Exists(localFilePath))
-        {
-            try
-            {
-                var localFileString = await File.ReadAllTextAsync(localFilePath, Encoding.UTF8);
-                var stats = JsonSerializer.Deserialize<DashboardStatistics>(localFileString) ?? new DashboardStatistics();
-                _dashboardStatistics = stats;
-                UpdateRepairCostsUi();
-                return;
-            }
-            catch (Exception e)
-            {
-                ConsoleManager.WriteLineForError(MethodBase.GetCurrentMethod()?.DeclaringType, e);
-                Log.Error(MethodBase.GetCurrentMethod()?.DeclaringType, e);
-                _dashboardStatistics = new DashboardStatistics();
-                return;
-            }
-        }
-
-        _dashboardStatistics = new DashboardStatistics();
+        FileController.TransferFileIfExistFromOldPathToUserDataDirectory(Path.Combine(AppDomain.CurrentDomain.BaseDirectory, Settings.Default.StatsFileName));
+        _dashboardStatistics = await FileController.LoadAsync<DashboardStatistics>(
+            Path.Combine(AppDomain.CurrentDomain.BaseDirectory, Settings.Default.UserDataDirectoryName, Settings.Default.StatsFileName));
+        UpdateRepairCostsUi();
     }
 
     public async Task SaveInFileAsync()
     {
-        await FileController.SaveAsync(_dashboardStatistics, $"{AppDomain.CurrentDomain.BaseDirectory}{Settings.Default.StatsFileName}");
+        await FileController.SaveAsync(_dashboardStatistics, Path.Combine(AppDomain.CurrentDomain.BaseDirectory, Settings.Default.UserDataDirectoryName, Settings.Default.StatsFileName));
     }
 
     #endregion

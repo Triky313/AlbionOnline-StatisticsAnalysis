@@ -11,6 +11,7 @@ using StatisticsAnalysisTool.ViewModels;
 using StatisticsAnalysisTool.Views;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Reflection;
 using System.Runtime.CompilerServices;
@@ -1178,13 +1179,16 @@ public class DungeonController
 
     public async Task LoadDungeonFromFileAsync()
     {
-        _dungeons = await FileController.LoadAsync<ObservableRangeCollection<DungeonObject>>($"{AppDomain.CurrentDomain.BaseDirectory}{Settings.Default.DungeonRunsFileName}");
+        FileController.TransferFileIfExistFromOldPathToUserDataDirectory(Path.Combine(AppDomain.CurrentDomain.BaseDirectory, Settings.Default.DungeonRunsFileName));
+        _dungeons = await FileController.LoadAsync<ObservableRangeCollection<DungeonObject>>(
+            Path.Combine(AppDomain.CurrentDomain.BaseDirectory, Settings.Default.UserDataDirectoryName, Settings.Default.DungeonRunsFileName));
     }
 
     public async Task SaveInFileAsync()
     {
+        DirectoryController.CreateDirectoryWhenNotExists(Path.Combine(AppDomain.CurrentDomain.BaseDirectory, Settings.Default.UserDataDirectoryName));
         var toSaveDungeons = _dungeons.Where(x => x is { Status: DungeonStatus.Done }).ToList();
-        await FileController.SaveAsync(toSaveDungeons, $"{AppDomain.CurrentDomain.BaseDirectory}{Settings.Default.DungeonRunsFileName}");
+        await FileController.SaveAsync(toSaveDungeons, Path.Combine(AppDomain.CurrentDomain.BaseDirectory, Settings.Default.UserDataDirectoryName, Settings.Default.DungeonRunsFileName));
     }
 
     private async Task SaveInFileAfterExceedingLimit(int limit)

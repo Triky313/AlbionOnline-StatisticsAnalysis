@@ -17,7 +17,7 @@ namespace StatisticsAnalysisTool.Models.NetworkModel;
 public class LocalUserData
 {
     private static readonly ILog Log = LogManager.GetLogger(MethodBase.GetCurrentMethod()?.DeclaringType);
-        
+
     public long? UserObjectId { get; set; }
     public Guid? Guid { get; set; }
     public Guid? InteractGuid { get; set; }
@@ -36,8 +36,8 @@ public class LocalUserData
     public DateTime? LastUpdate;
     public ObservableCollection<GameInfoPlayerKillsDeathsWithType> PlayerKillsDeaths { get; private set; }
 
-    public int SoloKillsToday => PlayerKillsDeaths?.ToArray().Count(x => x.TimeStamp.Date == DateTime.UtcNow.Date 
-                                                                         && x.Killer?.Name == Username 
+    public int SoloKillsToday => PlayerKillsDeaths?.ToArray().Count(x => x.TimeStamp.Date == DateTime.UtcNow.Date
+                                                                         && x.Killer?.Name == Username
                                                                          && x.ObjectType == GameInfoPlayerKillsDeathsType.SoloKill) ?? 0;
     public int SoloKillsWeek => PlayerKillsDeaths?.ToArray().Count(x => x.TimeStamp.Date > DateTime.UtcNow.Date.AddDays(-7)
                                                                         && x.Killer?.Name == Username
@@ -100,7 +100,7 @@ public class LocalUserData
             await AddPlayerKillsDeathsToListAsync(await ApiController.GetGameInfoPlayerKillsDeathsFromJsonAsync(WebApiUserId, GameInfoPlayersType.Deaths), GameInfoPlayerKillsDeathsType.Death);
             await AddPlayerKillsDeathsToListAsync(await ApiController.GetGameInfoPlayerTopKillsFromJsonAsync(WebApiUserId, UnitOfTime.Month), GameInfoPlayerKillsDeathsType.Kill);
             await AddPlayerKillsDeathsToListAsync(await ApiController.GetGameInfoPlayerSoloKillsFromJsonAsync(WebApiUserId, UnitOfTime.Month), GameInfoPlayerKillsDeathsType.SoloKill);
-            await SaveDungeonsInFileAsync();
+            await SaveInFileAsync();
 
             LastUpdate = DateTime.UtcNow;
         }
@@ -108,7 +108,7 @@ public class LocalUserData
 
     private async Task AddPlayerKillsDeathsToListAsync(IEnumerable<GameInfoPlayerKillsDeaths> items, GameInfoPlayerKillsDeathsType type = GameInfoPlayerKillsDeathsType.Unknown)
     {
-        PlayerKillsDeaths ??= await LoadDungeonFromFileAsync();
+        PlayerKillsDeaths ??= await LoadFromFileAsync();
 
         var playerData = items?.Select(x => new GameInfoPlayerKillsDeathsWithType()
         {
@@ -145,30 +145,16 @@ public class LocalUserData
         }
     }
 
-    private async Task<ObservableCollection<GameInfoPlayerKillsDeathsWithType>> LoadDungeonFromFileAsync()
+    private async Task<ObservableCollection<GameInfoPlayerKillsDeathsWithType>> LoadFromFileAsync()
     {
-        var localFilePath = $"{AppDomain.CurrentDomain.BaseDirectory}{Settings.Default.PlayerKillsDeathsFileName}";
-
-        if (File.Exists(localFilePath))
-        {
-            try
-            {
-                var localItemString = await File.ReadAllTextAsync(localFilePath);
-                return JsonSerializer.Deserialize<ObservableCollection<GameInfoPlayerKillsDeathsWithType>>(localItemString) ?? new ObservableCollection<GameInfoPlayerKillsDeathsWithType>();
-            }
-            catch (Exception e)
-            {
-                ConsoleManager.WriteLineForError(MethodBase.GetCurrentMethod()?.DeclaringType, e);
-                Log.Error(MethodBase.GetCurrentMethod()?.DeclaringType, e);
-            }
-        }
-
-        return new ObservableCollection<GameInfoPlayerKillsDeathsWithType>();
+        FileController.TransferFileIfExistFromOldPathToUserDataDirectory(Path.Combine(AppDomain.CurrentDomain.BaseDirectory, Settings.Default.PlayerKillsDeathsFileName));
+        return await FileController.LoadAsync<ObservableCollection<GameInfoPlayerKillsDeathsWithType>>(
+            Path.Combine(AppDomain.CurrentDomain.BaseDirectory, Settings.Default.UserDataDirectoryName, Settings.Default.PlayerKillsDeathsFileName));
     }
 
-    private async Task SaveDungeonsInFileAsync()
+    private async Task SaveInFileAsync()
     {
-        var localFilePath = $"{AppDomain.CurrentDomain.BaseDirectory}{Settings.Default.PlayerKillsDeathsFileName}";
+        var localFilePath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, Settings.Default.UserDataDirectoryName, Settings.Default.PlayerKillsDeathsFileName);
 
         try
         {

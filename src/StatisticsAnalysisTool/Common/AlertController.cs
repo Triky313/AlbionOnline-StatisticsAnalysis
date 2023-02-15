@@ -11,6 +11,7 @@ using System.Linq;
 using System.Reflection;
 using System.Text;
 using System.Text.Json;
+using System.Threading.Tasks;
 using System.Windows;
 
 namespace StatisticsAnalysisTool.Common;
@@ -27,7 +28,7 @@ public class AlertController
     {
         _itemsView = itemsView;
 
-        SetActiveAlertsFromLocalFile();
+        _ = LoadFromFileAsync();
     }
 
     private void Add(Item item, int alertModeMinSellPriceIsUndercutPrice)
@@ -141,36 +142,26 @@ public class AlertController
         return _alerts.Count < TicksMaxAlertsAtSameTime;
     }
 
-    #region Alert file controls
+    #region Load / Save local file data
 
-    private void SetActiveAlertsFromLocalFile()
+    private async Task LoadFromFileAsync()
     {
-        var localFilePath = $"{AppDomain.CurrentDomain.BaseDirectory}{Settings.Default.ActiveAlertsFileName}";
+        FileController.TransferFileIfExistFromOldPathToUserDataDirectory(Path.Combine(AppDomain.CurrentDomain.BaseDirectory, Settings.Default.ActiveAlertsFileName));
+        var alertSaveObjectList = await FileController.LoadAsync<List<AlertSaveObject>>(
+            Path.Combine(AppDomain.CurrentDomain.BaseDirectory, Settings.Default.UserDataDirectoryName, Settings.Default.ActiveAlertsFileName));
 
-        if (File.Exists(localFilePath))
-            try
+        if (alertSaveObjectList != null)
+        {
+            foreach (var alert in alertSaveObjectList)
             {
-                var localItemString = File.ReadAllText(localFilePath, Encoding.UTF8);
-                var alertSaveObjectList = JsonSerializer.Deserialize<List<AlertSaveObject>>(localItemString);
-
-                if (alertSaveObjectList != null)
-                {
-                    foreach (var alert in alertSaveObjectList)
-                    {
-                        ActivateAlert(alert.UniqueName, alert.MinSellUndercutPrice);
-                    }
-                }
+                ActivateAlert(alert.UniqueName, alert.MinSellUndercutPrice);
             }
-            catch (Exception e)
-            {
-                ConsoleManager.WriteLineForError(MethodBase.GetCurrentMethod()?.DeclaringType, e);
-                Log.Error(MethodBase.GetCurrentMethod()?.DeclaringType, e);
-            }
+        }
     }
 
     private void SaveActiveAlertsToLocalFile()
     {
-        var localFilePath = $"{AppDomain.CurrentDomain.BaseDirectory}{Settings.Default.ActiveAlertsFileName}";
+        var localFilePath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, Settings.Default.UserDataDirectoryName, Settings.Default.ActiveAlertsFileName);
         var activeItemAlerts = _alerts.Select(alert => new AlertSaveObject
         { UniqueName = alert.Item.UniqueName, MinSellUndercutPrice = alert.AlertModeMinSellPriceIsUndercutPrice }).ToList();
         var fileString = JsonSerializer.Serialize(activeItemAlerts);

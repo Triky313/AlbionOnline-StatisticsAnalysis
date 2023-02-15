@@ -417,7 +417,7 @@ public class ItemWindowViewModel : INotifyPropertyChanged
             EssentialCraftingValues = new EssentialCraftingValuesTemplate(this, CurrentItemPrices, Item.UniqueName);
             SetJournalInfo();
             await SetRequiredResourcesAsync();
-            CraftingNotes = CraftingTabController.GetNote(Item.UniqueName);
+            CraftingNotes = await CraftingTabController.GetNoteAsync(Item.UniqueName);
         }
     }
 

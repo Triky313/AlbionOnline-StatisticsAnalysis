@@ -365,38 +365,25 @@ public static class ItemController
 
     public static async Task SetFavoriteItemsFromLocalFileAsync()
     {
-        var localFilePath = $"{AppDomain.CurrentDomain.BaseDirectory}{Settings.Default.FavoriteItemsFileName}";
-        if (File.Exists(localFilePath))
+        FileController.TransferFileIfExistFromOldPathToUserDataDirectory(Path.Combine(AppDomain.CurrentDomain.BaseDirectory, Settings.Default.FavoriteItemsFileName));
+        var favoriteItemList = await FileController.LoadAsync<List<string>>(
+            Path.Combine(AppDomain.CurrentDomain.BaseDirectory, Settings.Default.UserDataDirectoryName, Settings.Default.FavoriteItemsFileName));
+
+        if (favoriteItemList != null)
         {
-            try
+            foreach (Item item in favoriteItemList
+                         .Select(uniqueName => 
+                             Items.FirstOrDefault(i => i.UniqueName == uniqueName))
+                         .Where(item => item != null))
             {
-                var localItemString = await File.ReadAllTextAsync(localFilePath, Encoding.UTF8);
-
-                var favoriteItemList = JsonSerializer.Deserialize<List<string>>(localItemString);
-
-                if (favoriteItemList != null)
-                {
-                    foreach (var uniqueName in favoriteItemList)
-                    {
-                        var item = Items.FirstOrDefault(i => i.UniqueName == uniqueName);
-                        if (item != null)
-                        {
-                            item.IsFavorite = true;
-                        }
-                    }
-                }
-            }
-            catch (Exception e)
-            {
-                ConsoleManager.WriteLineForError(MethodBase.GetCurrentMethod()?.DeclaringType, e);
-                Log.Error(MethodBase.GetCurrentMethod()?.Name, e);
+                item.IsFavorite = true;
             }
         }
     }
 
     public static void SaveFavoriteItemsToLocalFile()
     {
-        var localFilePath = $"{AppDomain.CurrentDomain.BaseDirectory}{Settings.Default.FavoriteItemsFileName}";
+        var localFilePath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, Settings.Default.UserDataDirectoryName, Settings.Default.FavoriteItemsFileName);
         var favoriteItems = Items?.Where(x => x.IsFavorite);
         var toSaveFavoriteItems = favoriteItems?.Select(x => x.UniqueName);
         var fileString = JsonSerializer.Serialize(toSaveFavoriteItems);
