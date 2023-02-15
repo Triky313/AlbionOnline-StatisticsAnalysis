@@ -107,20 +107,11 @@ public class MainWindowViewModel : INotifyPropertyChanged, IAsyncInitialization
 
     public MainWindowViewModel()
     {
-        AppDomain.CurrentDomain.UnhandledException += OnUnhandledException;
-
-        SettingsController.LoadSettings();
         UpgradeSettings();
-        InitWindowSettings();
 
         AutoUpdateController.RemoveUpdateFiles();
         AutoUpdateController.AutoUpdate();
-
-        if (!LanguageController.InitializeLanguage())
-        {
-            Application.Current.MainWindow?.Close();
-        }
-
+        
         Initialization = InitMainWindowDataAsync();
         Initialization = InitTrackingAsync();
     }
@@ -230,18 +221,6 @@ public class MainWindowViewModel : INotifyPropertyChanged, IAsyncInitialization
 
     #region Inits
 
-    private void OnUnhandledException(object sender, UnhandledExceptionEventArgs e)
-    {
-        try
-        {
-            Log.Fatal(nameof(OnUnhandledException), (Exception) e.ExceptionObject);
-        }
-        catch (Exception ex)
-        {
-            Log.Fatal(nameof(OnUnhandledException), ex);
-        }
-    }
-
     private void InitAlerts()
     {
         SoundController.InitializeSoundFilesFromDirectory();
@@ -258,23 +237,6 @@ public class MainWindowViewModel : INotifyPropertyChanged, IAsyncInitialization
         Settings.Default.Upgrade();
         Settings.Default.UpgradeRequired = false;
         Settings.Default.Save();
-    }
-
-    private static void InitWindowSettings()
-    {
-        var mainWindow = Application.Current.MainWindow;
-
-        mainWindow?.Dispatcher?.Invoke(() =>
-        {
-            mainWindow.Height = SettingsController.CurrentSettings.MainWindowHeight;
-            mainWindow.Width = SettingsController.CurrentSettings.MainWindowWidth;
-            if (SettingsController.CurrentSettings.MainWindowMaximized)
-            {
-                mainWindow.WindowState = WindowState.Maximized;
-            }
-
-            Utilities.CenterWindowOnScreen(mainWindow);
-        });
     }
 
     private async Task InitMainWindowDataAsync()
@@ -594,7 +556,7 @@ public class MainWindowViewModel : INotifyPropertyChanged, IAsyncInitialization
 
         DungeonBindings.DungeonStatsFilter = new DungeonStatsFilter(TrackingController);
 
-        IsTrackingActive = NetworkManager.StartNetworkCapture(this, TrackingController);
+        IsTrackingActive = NetworkManager.StartNetworkCapture(TrackingController);
         Console.WriteLine(@"### Start Tracking...");
     }
 

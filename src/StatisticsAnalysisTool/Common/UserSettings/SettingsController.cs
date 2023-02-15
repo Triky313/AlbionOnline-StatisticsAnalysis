@@ -18,8 +18,6 @@ public static class SettingsController
 
     public static void SaveSettings(WindowState windowState, double height, double width)
     {
-        #region Window
-
         if (windowState != WindowState.Maximized)
         {
             CurrentSettings.MainWindowHeight = double.IsNegativeInfinity(height) || double.IsPositiveInfinity(height) ? 0 : height;
@@ -27,8 +25,6 @@ public static class SettingsController
         }
 
         CurrentSettings.MainWindowMaximized = windowState == WindowState.Maximized;
-
-        #endregion
 
         SaveToLocalFile();
 
@@ -74,5 +70,30 @@ public static class SettingsController
             ConsoleManager.WriteLineForError(MethodBase.GetCurrentMethod()?.DeclaringType, e);
             Log.Error(MethodBase.GetCurrentMethod()?.DeclaringType, e);
         }
+    }
+
+    public static bool SetMainWindowSettings()
+    {
+        var mainWindow = Application.Current.MainWindow;
+
+        if (mainWindow == null)
+        {
+            Log.Warn(MethodBase.GetCurrentMethod()?.DeclaringType);
+            return false;
+        }
+
+        mainWindow.Dispatcher?.Invoke(() =>
+        {
+            mainWindow.Height = CurrentSettings.MainWindowHeight;
+            mainWindow.Width = CurrentSettings.MainWindowWidth;
+            if (CurrentSettings.MainWindowMaximized)
+            {
+                mainWindow.WindowState = WindowState.Maximized;
+            }
+
+            Utilities.CenterWindowOnScreen(mainWindow);
+        });
+
+        return true;
     }
 }

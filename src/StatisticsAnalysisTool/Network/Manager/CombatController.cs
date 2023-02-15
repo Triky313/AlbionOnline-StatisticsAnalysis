@@ -114,7 +114,7 @@ public class CombatController
 
         foreach (var healthChangeObject in entities)
         {
-            if (Application.Current.MainWindow?.Dispatcher == null || healthChangeObject.Value?.UserGuid == null)
+            if (healthChangeObject.Value?.UserGuid == null)
             {
                 continue;
             }

@@ -24,8 +24,10 @@ public partial class MainWindow
     public MainWindow()
     {
         InitializeComponent();
-        _mainWindowViewModel = new MainWindowViewModel();
+        _mainWindowViewModel = ServiceLocator.Resolve<MainWindowViewModel>();
         DataContext = _mainWindowViewModel;
+
+        _ = SettingsController.SetMainWindowSettings();
     }
 
     private void Hotbar_MouseDown(object sender, MouseButtonEventArgs e)
