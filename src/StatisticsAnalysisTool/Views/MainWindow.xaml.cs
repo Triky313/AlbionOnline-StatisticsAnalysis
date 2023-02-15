@@ -21,10 +21,10 @@ public partial class MainWindow
     private readonly MainWindowViewModel _mainWindowViewModel;
     private static bool _isWindowMaximized;
 
-    public MainWindow()
+    public MainWindow(MainWindowViewModel mainWindowViewModel)
     {
         InitializeComponent();
-        _mainWindowViewModel = ServiceLocator.Resolve<MainWindowViewModel>();
+        _mainWindowViewModel = mainWindowViewModel;
         DataContext = _mainWindowViewModel;
 
         _ = SettingsController.SetMainWindowSettings();

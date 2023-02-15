@@ -14,7 +14,7 @@ using System.Windows.Markup;
 using System.Xml;
 
 namespace StatisticsAnalysisTool.Common;
-
+// TODO: Change language controller - one language file for all and refactoring
 public static class LanguageController
 {
     private static readonly Dictionary<string, string> Translations = new();

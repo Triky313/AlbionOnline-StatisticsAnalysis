@@ -25,10 +25,10 @@ public partial class App
         SettingsController.LoadSettings();
         InitializeLanguage();
 
-        var viewModel = new MainWindowViewModel();
-        ServiceLocator.Register<MainWindowViewModel>(viewModel);
+        var mainWindowViewModel = new MainWindowViewModel();
+        ServiceLocator.Register<MainWindowViewModel>(mainWindowViewModel);
 
-        var mainWindow = new MainWindow();
+        var mainWindow = new MainWindow(mainWindowViewModel);
         mainWindow.Show();
     }
 
