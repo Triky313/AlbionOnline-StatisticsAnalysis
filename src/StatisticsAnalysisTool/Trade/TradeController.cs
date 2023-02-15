@@ -89,9 +89,12 @@ public class TradeController
 
     public async Task LoadFromFileAsync()
     {
+        FileController.TransferFileIfExistFromOldPathToUserDataDirectory(Path.Combine(AppDomain.CurrentDomain.BaseDirectory, Settings.Default.TradesFileName));
+
         var tradesFromOldMails = GetOldMails();
 
-        var tradeDtos = await FileController.LoadAsync<List<TradeDto>>($"{AppDomain.CurrentDomain.BaseDirectory}{Settings.Default.TradesFileName}");
+        var tradeDtos = await FileController.LoadAsync<List<TradeDto>>(
+            Path.Combine(AppDomain.CurrentDomain.BaseDirectory, Settings.Default.UserDataDirectoryName, Settings.Default.TradesFileName));
         var trades = tradeDtos.Select(TradeMapping.Mapping).ToList();
 
         trades.AddRange(await tradesFromOldMails);
@@ -101,8 +104,9 @@ public class TradeController
 
     public async Task SaveInFileAsync()
     {
-        // TODO: Save file in userData dir: await FileController.SaveAsync(tradeDtos, Path.Combine(AppDomain.CurrentDomain.BaseDirectory, Settings.Default.UserDataDirectoryName, Settings.Default.TradesFileName));
-        await FileController.SaveAsync(_mainWindowViewModel.TradeMonitoringBindings?.Trades?.Select(TradeMapping.Mapping), $"{AppDomain.CurrentDomain.BaseDirectory}{Settings.Default.TradesFileName}");
+        DirectoryController.CreateDirectoryWhenNotExists(Path.Combine(AppDomain.CurrentDomain.BaseDirectory, Settings.Default.UserDataDirectoryName));
+        await FileController.SaveAsync(_mainWindowViewModel.TradeMonitoringBindings?.Trades?.Select(TradeMapping.Mapping),
+            Path.Combine(AppDomain.CurrentDomain.BaseDirectory, Settings.Default.UserDataDirectoryName, Settings.Default.TradesFileName));
         DeleteMailsJson();
     }
 
@@ -126,12 +130,10 @@ public class TradeController
             return;
         }
 
-        // TODO: Save file in userData dir: await FileController.SaveAsync(tradeDtos, Path.Combine(AppDomain.CurrentDomain.BaseDirectory, Settings.Default.UserDataDirectoryName, Settings.Default.TradesFileName));
         DirectoryController.CreateDirectoryWhenNotExists(Path.Combine(AppDomain.CurrentDomain.BaseDirectory, Settings.Default.UserDataDirectoryName));
-        await FileController.SaveAsync(tradeDtos, Path.Combine(AppDomain.CurrentDomain.BaseDirectory, Settings.Default.TradesFileName));
+        await FileController.SaveAsync(tradeDtos,
+            Path.Combine(AppDomain.CurrentDomain.BaseDirectory, Settings.Default.UserDataDirectoryName, Settings.Default.TradesFileName));
         _tradeCounter = 0;
-
-        DeleteMailsJson();
     }
 
     private async Task SetTradesToBindings(IEnumerable<Trade> trades)

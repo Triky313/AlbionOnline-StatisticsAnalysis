@@ -1,8 +1,8 @@
-﻿using System.ComponentModel;
+﻿using StatisticsAnalysisTool.Properties;
+using System.ComponentModel;
 using System.Runtime.CompilerServices;
-using StatisticsAnalysisTool.Properties;
 
-namespace StatisticsAnalysisTool.Models;
+namespace StatisticsAnalysisTool.EventLogging;
 
 public class TopLooterObject : INotifyPropertyChanged
 {
@@ -46,7 +46,7 @@ public class TopLooterObject : INotifyPropertyChanged
             OnPropertyChanged();
         }
     }
-        
+
     public event PropertyChangedEventHandler PropertyChanged;
 
     [NotifyPropertyChangedInvocator]

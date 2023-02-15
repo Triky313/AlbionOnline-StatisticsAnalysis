@@ -1,10 +1,12 @@
-﻿using System;
-using System.Collections.Generic;
-using log4net;
+﻿using log4net;
 using StatisticsAnalysisTool.Common;
 using StatisticsAnalysisTool.Common.UserSettings;
 using StatisticsAnalysisTool.Models;
+using StatisticsAnalysisTool.Models.TranslationModel;
 using StatisticsAnalysisTool.Properties;
+using StatisticsAnalysisTool.Views;
+using System;
+using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Globalization;
@@ -12,8 +14,6 @@ using System.Linq;
 using System.Reflection;
 using System.Runtime.CompilerServices;
 using System.Windows;
-using StatisticsAnalysisTool.Models.TranslationModel;
-using StatisticsAnalysisTool.Views;
 
 namespace StatisticsAnalysisTool.ViewModels;
 
@@ -54,120 +54,47 @@ public class SettingsWindowViewModel : INotifyPropertyChanged
 
     private void InitializeSettings()
     {
-        #region Language
-
-        SettingsController.LoadSettings();
-
-        Languages.Clear();
-        LanguageController.InitializeLanguage();
-
-        foreach (var langInfo in LanguageController.LanguageFiles)
-        {
-            try
-            {
-                var cultureInfo = CultureInfo.CreateSpecificCulture(langInfo.FileName);
-                Languages.Add(new FileInformation(langInfo.FileName, string.Empty)
-                {
-                    EnglishName = cultureInfo.EnglishName,
-                    NativeName = cultureInfo.NativeName
-                });
-            }
-            catch (CultureNotFoundException e)
-            {
-                ConsoleManager.WriteLineForError(MethodBase.GetCurrentMethod()?.DeclaringType, e);
-                Log.Error(MethodBase.GetCurrentMethod()?.DeclaringType, e);
-            }
-        }
-
-        LanguagesSelection = Languages.FirstOrDefault(x => x.FileName == LanguageController.CurrentCultureInfo.TextInfo.CultureName);
-
-        #endregion
-
-        #region Refrash rate
-
-        RefreshRates.Clear();
-        RefreshRates.Add(new FileSettingInformation { Name = SettingsWindowTranslation.FiveSeconds, Value = 5000 });
-        RefreshRates.Add(new FileSettingInformation { Name = SettingsWindowTranslation.TenSeconds, Value = 10000 });
-        RefreshRates.Add(new FileSettingInformation { Name = SettingsWindowTranslation.ThirtySeconds, Value = 30000 });
-        RefreshRates.Add(new FileSettingInformation { Name = SettingsWindowTranslation.SixtySeconds, Value = 60000 });
-        RefreshRates.Add(new FileSettingInformation { Name = SettingsWindowTranslation.FiveMinutes, Value = 300000 });
-        RefreshRatesSelection = RefreshRates.FirstOrDefault(x => x.Value == SettingsController.CurrentSettings.RefreshRate);
-
-        #endregion
-
-        #region MainTrackingCharacterName
+        InitLanguageFiles();
+        InitRefreshRate();
 
         MainTrackingCharacterName = SettingsController.CurrentSettings.MainTrackingCharacterName;
 
-        #endregion
-
-        #region Update item list by days
-
+        // Update item list by days
         InitDropDownDownByDays(UpdateItemListByDays);
         UpdateItemListByDaysSelection = UpdateItemListByDays.FirstOrDefault(x => x.Value == SettingsController.CurrentSettings.UpdateItemListByDays);
-
         ItemListSourceUrl = SettingsController.CurrentSettings.ItemListSourceUrl;
 
-        #endregion
-
-        #region Update items.json by days
-            
+        // Update items.json by days
         InitDropDownDownByDays(UpdateItemsJsonByDays);
         UpdateItemsJsonByDaysSelection = UpdateItemsJsonByDays.FirstOrDefault(x => x.Value == SettingsController.CurrentSettings.UpdateItemsJsonByDays);
-
         ItemsJsonSourceUrl = SettingsController.CurrentSettings.ItemsJsonSourceUrl;
 
-        #endregion
-
-        #region Update mobs.json by days
-
+        // Update mobs.json by days
         InitDropDownDownByDays(UpdateMobsJsonByDays);
         UpdateMobsJsonByDaysSelection = UpdateMobsJsonByDays.FirstOrDefault(x => x.Value == SettingsController.CurrentSettings.UpdateMobsJsonByDays);
-
         MobsJsonSourceUrl = SettingsController.CurrentSettings.MobsJsonSourceUrl;
-            
-        #endregion
 
-        #region Alert Sounds
+        // Alert sounds
+        InitAlertSounds();
 
-        AlertSounds.Clear();
-        SoundController.InitializeSoundFilesFromDirectory();
-        foreach (var sound in SoundController.AlertSounds)
-        {
-            AlertSounds.Add(new FileInformation(sound.FileName, sound.FilePath));
-        }
-
-        AlertSoundSelection = AlertSounds.FirstOrDefault(x => x.FileName == SettingsController.CurrentSettings.SelectedAlertSound);
-
-        #endregion
-
-        #region Api urls
-
+        // Api urls
         CityPricesApiUrl = SettingsController.CurrentSettings.CityPricesApiUrl;
         CityPricesHistoryApiUrl = SettingsController.CurrentSettings.CityPricesHistoryApiUrl;
         GoldStatsApiUrl = SettingsController.CurrentSettings.GoldStatsApiUrl;
 
-        #endregion
-
-        #region Loot logger
-
+        // Loot logger
         IsLootLoggerSaveReminderActive = SettingsController.CurrentSettings.IsLootLoggerSaveReminderActive;
 
-        #endregion
-
-        #region Auto update
-
+        // Auto update
         IsSuggestPreReleaseUpdatesActive = SettingsController.CurrentSettings.IsSuggestPreReleaseUpdatesActive;
 
-        #endregion
-
-        #region Damage Meter
-
+        // Damage Meter
         ShortDamageMeterToClipboard = SettingsController.CurrentSettings.ShortDamageMeterToClipboard;
 
-        #endregion
-            
+        // Item window
         IsOpenItemWindowInNewWindowChecked = SettingsController.CurrentSettings.IsOpenItemWindowInNewWindowChecked;
+
+        // Info window
         ShowInfoWindowOnStartChecked = SettingsController.CurrentSettings.IsInfoWindowShownOnStart;
     }
 
@@ -208,15 +135,6 @@ public class SettingsWindowViewModel : INotifyPropertyChanged
         Translation = new SettingsWindowTranslation();
     }
 
-    private void InitDropDownDownByDays(ICollection<FileSettingInformation> updateJsonByDays)
-    {
-        updateJsonByDays.Clear();
-        updateJsonByDays.Add(new FileSettingInformation { Name = LanguageController.Translation("EVERY_DAY"), Value = 1 });
-        updateJsonByDays.Add(new FileSettingInformation { Name = LanguageController.Translation("EVERY_3_DAYS"), Value = 3 });
-        updateJsonByDays.Add(new FileSettingInformation { Name = LanguageController.Translation("EVERY_7_DAYS"), Value = 7 });
-        updateJsonByDays.Add(new FileSettingInformation { Name = LanguageController.Translation("EVERY_14_DAYS"), Value = 14 });
-        updateJsonByDays.Add(new FileSettingInformation { Name = LanguageController.Translation("EVERY_28_DAYS"), Value = 28 });
-    }
 
     public struct FileSettingInformation
     {
@@ -224,7 +142,7 @@ public class SettingsWindowViewModel : INotifyPropertyChanged
         public int Value { get; set; }
     }
 
-    public void OpenConsoleWindow()
+    public static void OpenConsoleWindow()
     {
         try
         {
@@ -245,6 +163,68 @@ public class SettingsWindowViewModel : INotifyPropertyChanged
             Log.Error(MethodBase.GetCurrentMethod()?.DeclaringType, e);
         }
     }
+
+    #region Inits
+
+    private void InitLanguageFiles()
+    {
+        Languages.Clear();
+
+        foreach (var langInfo in LanguageController.LanguageFiles)
+        {
+            try
+            {
+                var cultureInfo = CultureInfo.CreateSpecificCulture(langInfo.FileName);
+                Languages.Add(new FileInformation(langInfo.FileName, string.Empty)
+                {
+                    EnglishName = cultureInfo.EnglishName,
+                    NativeName = cultureInfo.NativeName
+                });
+            }
+            catch (CultureNotFoundException e)
+            {
+                ConsoleManager.WriteLineForError(MethodBase.GetCurrentMethod()?.DeclaringType, e);
+                Log.Error(MethodBase.GetCurrentMethod()?.DeclaringType, e);
+            }
+        }
+
+        LanguagesSelection = Languages.FirstOrDefault(x => x.FileName == LanguageController.CurrentCultureInfo.TextInfo.CultureName);
+    }
+
+    private void InitRefreshRate()
+    {
+        RefreshRates.Clear();
+        RefreshRates.Add(new FileSettingInformation { Name = SettingsWindowTranslation.FiveSeconds, Value = 5000 });
+        RefreshRates.Add(new FileSettingInformation { Name = SettingsWindowTranslation.TenSeconds, Value = 10000 });
+        RefreshRates.Add(new FileSettingInformation { Name = SettingsWindowTranslation.ThirtySeconds, Value = 30000 });
+        RefreshRates.Add(new FileSettingInformation { Name = SettingsWindowTranslation.SixtySeconds, Value = 60000 });
+        RefreshRates.Add(new FileSettingInformation { Name = SettingsWindowTranslation.FiveMinutes, Value = 300000 });
+        RefreshRatesSelection = RefreshRates.FirstOrDefault(x => x.Value == SettingsController.CurrentSettings.RefreshRate);
+    }
+
+    private void InitDropDownDownByDays(ICollection<FileSettingInformation> updateJsonByDays)
+    {
+        updateJsonByDays.Clear();
+        updateJsonByDays.Add(new FileSettingInformation { Name = LanguageController.Translation("EVERY_DAY"), Value = 1 });
+        updateJsonByDays.Add(new FileSettingInformation { Name = LanguageController.Translation("EVERY_3_DAYS"), Value = 3 });
+        updateJsonByDays.Add(new FileSettingInformation { Name = LanguageController.Translation("EVERY_7_DAYS"), Value = 7 });
+        updateJsonByDays.Add(new FileSettingInformation { Name = LanguageController.Translation("EVERY_14_DAYS"), Value = 14 });
+        updateJsonByDays.Add(new FileSettingInformation { Name = LanguageController.Translation("EVERY_28_DAYS"), Value = 28 });
+    }
+
+    private void InitAlertSounds()
+    {
+        AlertSounds.Clear();
+        SoundController.InitializeSoundFilesFromDirectory();
+        foreach (var sound in SoundController.AlertSounds)
+        {
+            AlertSounds.Add(new FileInformation(sound.FileName, sound.FilePath));
+        }
+
+        AlertSoundSelection = AlertSounds.FirstOrDefault(x => x.FileName == SettingsController.CurrentSettings.SelectedAlertSound);
+    }
+
+    #endregion
 
     #region Bindings
 
@@ -267,7 +247,7 @@ public class SettingsWindowViewModel : INotifyPropertyChanged
             OnPropertyChanged();
         }
     }
-        
+
     public FileSettingInformation UpdateItemListByDaysSelection
     {
         get => _updateItemListByDaysSelection;
@@ -477,7 +457,7 @@ public class SettingsWindowViewModel : INotifyPropertyChanged
             OnPropertyChanged();
         }
     }
-        
+
     public bool ShortDamageMeterToClipboard
     {
         get => _shortDamageMeterToClipboard;
@@ -487,7 +467,7 @@ public class SettingsWindowViewModel : INotifyPropertyChanged
             OnPropertyChanged();
         }
     }
-        
+
     public bool IsSuggestPreReleaseUpdatesActive
     {
         get => _isSuggestPreReleaseUpdatesActive;
@@ -497,7 +477,7 @@ public class SettingsWindowViewModel : INotifyPropertyChanged
             OnPropertyChanged();
         }
     }
-        
+
     public string ToolDirectory => AppDomain.CurrentDomain.BaseDirectory;
 
     public event PropertyChangedEventHandler PropertyChanged;

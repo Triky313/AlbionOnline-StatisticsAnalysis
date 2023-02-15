@@ -1,5 +1,5 @@
-using StatisticsAnalysisTool.Enumerations;
-using StatisticsAnalysisTool.Network.Notification;
+using StatisticsAnalysisTool.EventLogging;
+using StatisticsAnalysisTool.EventLogging.Notification;
 using System.Threading.Tasks;
 
 namespace StatisticsAnalysisTool.Network.Manager;
@@ -7,9 +7,7 @@ namespace StatisticsAnalysisTool.Network.Manager;
 public interface ITrackingController
 {
     bool ExistIndispensableInfos { get; }
-
-    bool IsMainWindowNull();
-
+    
     Task AddNotificationAsync(TrackingNotification item);
 
     void RemovesUnnecessaryNotifications() { }

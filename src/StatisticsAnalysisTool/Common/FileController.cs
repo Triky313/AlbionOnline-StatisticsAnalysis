@@ -1,4 +1,5 @@
 ﻿using log4net;
+using StatisticsAnalysisTool.Properties;
 using System;
 using System.IO;
 using System.Reflection;
@@ -47,6 +48,36 @@ public static class FileController
             var fileString = await value.SerializeJsonStringAsync(option);
             var task = File.WriteAllTextAsync(localFilePath, fileString, Encoding.UTF8);
             task.Wait();
+        }
+        catch (Exception e)
+        {
+            ConsoleManager.WriteLineForError(MethodBase.GetCurrentMethod()?.DeclaringType, e);
+            Log.Error(MethodBase.GetCurrentMethod()?.DeclaringType, e);
+        }
+    }
+
+    public static void TransferFileIfExistFromOldPathToUserDataDirectory(string oldFilePath)
+    {
+        var newFilePath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, Settings.Default.UserDataDirectoryName, Path.GetFileName(oldFilePath));
+        
+        try
+        {
+            FileInfo oldFileInfo = new FileInfo(oldFilePath);
+            FileInfo newFileInfo = new FileInfo(newFilePath);
+
+            if (!oldFileInfo.Exists)
+            {
+                return;
+            }
+
+            if (newFileInfo.Exists && oldFileInfo.Exists && newFileInfo.LastWriteTimeUtc > oldFileInfo.LastWriteTimeUtc)
+            {
+                File.Delete(oldFilePath);
+                return;
+            }
+
+            File.Copy(oldFilePath, newFilePath, true);
+            File.Delete(oldFilePath);
         }
         catch (Exception e)
         {

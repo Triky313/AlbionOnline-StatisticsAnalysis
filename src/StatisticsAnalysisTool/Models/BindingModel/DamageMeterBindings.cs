@@ -7,6 +7,7 @@ using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
+using System.IO;
 using System.Linq;
 using System.Runtime.CompilerServices;
 using System.Threading.Tasks;
@@ -375,7 +376,9 @@ public class DamageMeterBindings : INotifyPropertyChanged, IAsyncInitialization
 
     private async Task LoadLocalFileAsync()
     {
-        DamageMeterSnapshots = await FileController.LoadAsync<List<DamageMeterSnapshot>>($"{AppDomain.CurrentDomain.BaseDirectory}{Settings.Default.DamageMeterSnapshotsFileName}");
+        FileController.TransferFileIfExistFromOldPathToUserDataDirectory(Path.Combine(AppDomain.CurrentDomain.BaseDirectory, Settings.Default.DamageMeterSnapshotsFileName));
+        DamageMeterSnapshots = await FileController.LoadAsync<List<DamageMeterSnapshot>>(
+            Path.Combine(AppDomain.CurrentDomain.BaseDirectory, Settings.Default.UserDataDirectoryName, Settings.Default.DamageMeterSnapshotsFileName));
     }
 
     #endregion

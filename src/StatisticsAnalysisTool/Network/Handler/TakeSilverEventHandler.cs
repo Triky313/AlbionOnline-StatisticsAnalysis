@@ -1,10 +1,12 @@
 ﻿using StatisticsAnalysisTool.Common;
 using StatisticsAnalysisTool.Enumerations;
+using StatisticsAnalysisTool.EventLogging;
+using StatisticsAnalysisTool.EventLogging.Notification;
+using StatisticsAnalysisTool.Network.Events;
 using StatisticsAnalysisTool.Network.Manager;
 using StatisticsAnalysisTool.Network.Notification;
 using System;
 using System.Threading.Tasks;
-using StatisticsAnalysisTool.Network.Events;
 using ValueType = StatisticsAnalysisTool.Enumerations.ValueType;
 
 namespace StatisticsAnalysisTool.Network.Handler;
@@ -23,7 +25,7 @@ public class TakeSilverEventHandler : EventPacketHandler<TakeSilverEvent>
         var localEntity = _trackingController.EntityController.GetLocalEntity()?.Value;
 
         var isObjectLocalEntity = value.ObjectId != null && localEntity?.ObjectId == value.ObjectId;
-        var isObjectPartyEntityAndNotTargetEntity = value.ObjectId != null && _trackingController.EntityController.IsEntityInParty((long)value.ObjectId) && value.ObjectId != value.TargetEntityId;
+        var isObjectPartyEntityAndNotTargetEntity = value.ObjectId != null && _trackingController.EntityController.IsEntityInParty((long) value.ObjectId) && value.ObjectId != value.TargetEntityId;
         var isObjectLocalEntityAndTargetEntity = value.ObjectId != null && localEntity?.ObjectId == value.ObjectId && value.ObjectId == value.TargetEntityId;
 
         if (isObjectLocalEntity || isObjectPartyEntityAndNotTargetEntity || isObjectLocalEntityAndTargetEntity)
