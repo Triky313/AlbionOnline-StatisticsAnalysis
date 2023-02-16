@@ -1,4 +1,6 @@
-﻿using System;
+﻿using StatisticsAnalysisTool.EstimatedMarketValue;
+using System;
+using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
 using System.Runtime.InteropServices;
@@ -40,8 +42,8 @@ public static class Utilities
             ? Application.Current.Windows.OfType<T>().Any()
             : Application.Current.Windows.OfType<T>().Any(w => w.Name.Equals(name));
     }
-        
-    public static string LongMarketPriceToString(long value)
+
+    public static string MarketPriceWithCulture(long value)
     {
         return value.ToString("N0", new CultureInfo(LanguageController.CurrentCultureInfo.TextInfo.CultureName));
     }
@@ -65,7 +67,7 @@ public static class Utilities
 
         if (time.Ticks <= 1 && combatStart != null)
         {
-            var startTimeSpan = DateTime.UtcNow - (DateTime)combatStart;
+            var startTimeSpan = DateTime.UtcNow - (DateTime) combatStart;
             var calculation = value / startTimeSpan.TotalSeconds;
             return calculation > maxValue ? maxValue : calculation;
         }

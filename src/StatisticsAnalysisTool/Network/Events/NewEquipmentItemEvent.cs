@@ -14,6 +14,7 @@ public class NewEquipmentItemEvent
     private readonly int _itemId;
     private readonly int _quantity;
     private readonly long _estimatedMarketValue;
+    private readonly short _qualityLevel = 1;
     private readonly FixPoint _durability;
     private Dictionary<int, int> SpellDictionary { get; } = new ();
 
@@ -41,6 +42,11 @@ public class NewEquipmentItemEvent
             if (parameters.ContainsKey(4))
             {
                 _estimatedMarketValue = parameters[4].ObjectToLong() ?? 0;
+            }
+                
+            if (parameters.ContainsKey(6))
+            {
+                _qualityLevel = parameters[6].ObjectToShort();
             }
                 
             if (parameters.ContainsKey(7))
@@ -87,6 +93,7 @@ public class NewEquipmentItemEvent
                     Quantity = _quantity,
                     SpellDictionary = SpellDictionary,
                     CurrentDurability = _durability,
+                    Quality = ItemQualityMapper(_qualityLevel),
                     EstimatedMarketValueInternal = _estimatedMarketValue
                 };
             }
@@ -99,5 +106,19 @@ public class NewEquipmentItemEvent
         {
             ConsoleManager.WriteLineForError(MethodBase.GetCurrentMethod()?.DeclaringType, e);
         }
+    }
+
+    private ItemQuality ItemQualityMapper(short quality)
+    {
+        return quality switch
+        {
+            0 => ItemQuality.Unknown,
+            1 => ItemQuality.Normal,
+            2 => ItemQuality.Good,
+            3 => ItemQuality.Outstanding,
+            4 => ItemQuality.Excellent,
+            5 => ItemQuality.Masterpiece,
+            _ => ItemQuality.Unknown
+        };
     }
 }

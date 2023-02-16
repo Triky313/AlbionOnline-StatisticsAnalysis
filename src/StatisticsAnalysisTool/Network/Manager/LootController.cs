@@ -4,7 +4,6 @@ using StatisticsAnalysisTool.EventLogging;
 using StatisticsAnalysisTool.EventLogging.Notification;
 using StatisticsAnalysisTool.Models;
 using StatisticsAnalysisTool.Models.NetworkModel;
-using StatisticsAnalysisTool.Properties;
 using StatisticsAnalysisTool.ViewModels;
 using System;
 using System.Collections.Generic;
@@ -22,7 +21,6 @@ public class LootController : ILootController
     private readonly TrackingController _trackingController;
     private readonly MainWindowViewModel _mainWindowViewModel;
     private readonly List<LootLoggerObject> _lootLoggerObjects = new();
-    private ObservableCollection<EstimatedMarketValueObject> _estimatedMarketValues = new();
     private ItemContainerObject _currentItemContainer;
     private readonly List<DiscoveredItem> _discoveredLoot = new();
 
@@ -144,7 +142,7 @@ public class LootController : ILootController
         return new TrackingNotification(DateTime.Now,
             new OtherGrabbedLootNotificationFragment(lootedByName, lootedFromName, lootedByGuild, lootedFromGuild, item, quantity), item.Index);
     }
-
+    
     #region Lokal player loot tracking
 
     private readonly ObservableCollection<IdentifiedBody> _identifiedBodies = new();
@@ -243,50 +241,6 @@ public class LootController : ILootController
 
     #endregion
 
-    #region Estimated market value
-
-    public void AddEstimatedMarketValue(int itemId, long estimatedMarketValueInternal)
-    {
-        if (itemId <= 0 || estimatedMarketValueInternal <= 0)
-        {
-            return;
-        }
-
-        var item = ItemController.GetItemByIndex(itemId);
-
-        if (item == null)
-        {
-            return;
-        }
-
-        var estMarketValueObject = _estimatedMarketValues?.FirstOrDefault(x => x.UniqueItemName == item.UniqueName);
-
-        if (estMarketValueObject != null)
-        {
-            _estimatedMarketValues.Remove(estMarketValueObject);
-        }
-
-        var timestamp = DateTime.UtcNow;
-        _estimatedMarketValues?.Add(new EstimatedMarketValueObject()
-        {
-            UniqueItemName = item.UniqueName,
-            EstimatedMarketValueInternal = estimatedMarketValueInternal,
-            Timestamp = timestamp
-        });
-
-        ItemController.SetEstimatedMarketValue(item.UniqueName, estimatedMarketValueInternal, timestamp);
-    }
-
-    private async Task SetAllEstimatedMarketValuesToItemsAsync()
-    {
-        await foreach (var estMarketValue in _estimatedMarketValues.ToAsyncEnumerable())
-        {
-            ItemController.SetEstimatedMarketValue(estMarketValue.UniqueItemName, estMarketValue.EstimatedMarketValueInternal, estMarketValue.Timestamp);
-        }
-    }
-
-    #endregion
-
     #region Top looters
 
     private void AddTopLooter(string name, int quantity)
@@ -335,21 +289,6 @@ public class LootController : ILootController
             });
             await Task.Delay(100);
         }
-    }
-
-    #endregion
-
-    #region Load / Save local file data
-
-    public async Task LoadFromFileAsync()
-    {
-        _estimatedMarketValues = await FileController.LoadAsync<ObservableCollection<EstimatedMarketValueObject>>($"{AppDomain.CurrentDomain.BaseDirectory}{Settings.Default.EstimatedMarketValueFileName}");
-        await SetAllEstimatedMarketValuesToItemsAsync();
-    }
-
-    public async Task SaveInFileAsync()
-    {
-        await FileController.SaveAsync(_estimatedMarketValues, $"{AppDomain.CurrentDomain.BaseDirectory}{Settings.Default.EstimatedMarketValueFileName}");
     }
 
     #endregion
