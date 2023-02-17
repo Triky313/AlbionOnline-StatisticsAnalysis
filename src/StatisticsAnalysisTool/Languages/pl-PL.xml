@@ -697,5 +697,6 @@
 	<translation name="AMOUNT_OF_MINING_PROCESSES">Liczba wydobycia</translation>
 	<translation name="SURE_YOU_WANT_TO_DELETE_SELECTED_RESOURCES">Czy na pewno chcesz usunąć wybrane zasoby?</translation>
 	<translation name="DELETE_SELECTED_RESOURCES">Usuń wybrane zasoby</translation>
-	<translation name="RESOURCE_VALUE">Wartość surowca</translation>
+	<translation name="RESOURCE_VALUE">Cena surowca</translation>
+	<translation name="TOTAL_MARKET_VALUE">Całkowita cena surowców</translation>
 </translations>
