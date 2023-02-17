@@ -2,6 +2,7 @@ using log4net;
 using StatisticsAnalysisTool.Common.Converters;
 using StatisticsAnalysisTool.Common.UserSettings;
 using StatisticsAnalysisTool.Enumerations;
+using StatisticsAnalysisTool.EstimatedMarketValue;
 using StatisticsAnalysisTool.Models;
 using StatisticsAnalysisTool.Models.ItemsJsonModel;
 using StatisticsAnalysisTool.Properties;
@@ -748,7 +749,7 @@ public static class ItemController
 
     #region Estimated market value
 
-    public static void SetEstimatedMarketValue(string uniqueName, long estimatedMarketValueInternal, DateTime timestamp)
+    public static void SetEstimatedMarketValue(string uniqueName, List<EstQualityValue> estimatedMarketValues)
     {
         var item = GetItemByUniqueName(uniqueName);
         if (item == null)
@@ -756,8 +757,7 @@ public static class ItemController
             return;
         }
 
-        item.LastEstimatedMarketValueUpdate = timestamp;
-        item.EstimatedMarketValue = FixPoint.FromInternalValue(estimatedMarketValueInternal);
+        item.EstimatedMarketValues = estimatedMarketValues;
     }
 
     #endregion

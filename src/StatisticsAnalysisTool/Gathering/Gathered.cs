@@ -21,6 +21,8 @@ public class Gathered : INotifyPropertyChanged
     private int _miningProcesses;
     private int _gainedTotalAmount;
     private bool _isSelectedForDeletion;
+    private FixPoint _estimatedMarketValue;
+    private FixPoint _totalMarketValue;
 
     public Gathered()
     {
@@ -112,6 +114,23 @@ public class Gathered : INotifyPropertyChanged
         }
     }
 
+    public FixPoint EstimatedMarketValue
+    {
+        get => _estimatedMarketValue;
+        set
+        {
+            _estimatedMarketValue = value;
+            OnPropertyChanged();
+        }
+    }
+
+    public FixPoint TotalMarketValue
+    {
+        get => FixPoint.FromFloatingPointValue(GainedTotalAmount * EstimatedMarketValue.IntegerValue);
+    }
+
+    public string TotalMarketValueWithCulture => Utilities.LongWithCulture(TotalMarketValue.IntegerValue);
+
     public string ClusterIndex { get; init; }
     public MapType MapType { get; init; }
     public string InstanceName { get; init; }
@@ -130,6 +149,7 @@ public class Gathered : INotifyPropertyChanged
     public static string TranslationPremium => LanguageController.Translation("PREMIUM");
     public static string TranslationTotal => LanguageController.Translation("TOTAL");
     public static string TranslationSelectToDelete => LanguageController.Translation("SELECTED_TO_DELETE");
+    public static string TranslationTotalMarketValue => LanguageController.Translation("TOTAL_MARKET_VALUE");
 
     public bool IsClosed
     {

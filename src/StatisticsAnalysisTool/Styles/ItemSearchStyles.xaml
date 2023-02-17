@@ -25,7 +25,8 @@
                 <TextBlock TextWrapping="Wrap" Text="{Binding LocalizedNameAndEnglish}" />
                 <StackPanel Orientation="Horizontal">
                     <Image Source="../Resources/silver.png" Width="12" Height="12" ToolTip="{Binding TranslationEstMarketValue, IsAsync=True, Mode=OneWay}" />
-                    <Label Content="{Binding EstimatedMarketValueString, IsAsync=True, Mode=OneWay}" ToolTip="{Binding LastEstimatedUpdateTimeString, IsAsync=True, Mode=OneWay}">
+                    <Label Content="{Binding AverageEstQualityValueString, StringFormat='{}{0:N0}', IsAsync=True, Mode=OneWay}" 
+                           ToolTip="{Binding LastEstimatedUpdateTimeString, IsAsync=True, Mode=OneWay}">
                         <Label.Style>
                             <Style TargetType="{x:Type Label}">
                                 <Setter Property="Foreground" Value="{StaticResource SolidColorBrush.Text.6}"/>

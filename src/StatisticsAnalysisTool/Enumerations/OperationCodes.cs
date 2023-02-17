@@ -23,7 +23,7 @@ public enum OperationCodes
     GetReferralLink,
     GetAvailableTrialKeys,
     GetShopTilesForCategory,
-    Move = 22,
+    Move = 21,
     AttackStart,
     CastStart,
     CastCancel,

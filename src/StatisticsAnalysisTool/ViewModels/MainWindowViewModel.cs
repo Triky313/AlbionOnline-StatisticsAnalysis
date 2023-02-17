@@ -31,6 +31,7 @@ using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Data;
 using System.Windows.Media;
+using StatisticsAnalysisTool.EstimatedMarketValue;
 
 // ReSharper disable UnusedMember.Global
 
@@ -325,6 +326,7 @@ public class MainWindowViewModel : INotifyPropertyChanged, IAsyncInitialization
 
         ItemsView = new ListCollectionView(ItemController.Items);
         InitAlerts();
+        await EstimatedMarketValueController.SetAllEstimatedMarketValuesToItemsAsync();
 
         LoadIconVisibility = Visibility.Hidden;
         IsFilterResetEnabled = true;
@@ -535,13 +537,14 @@ public class MainWindowViewModel : INotifyPropertyChanged, IAsyncInitialization
             return;
         }
 
+        await EstimatedMarketValueController.LoadFromFileAsync();
+
         await TrackingController?.StatisticController?.LoadFromFileAsync()!;
         await TrackingController?.TradeController?.LoadFromFileAsync()!;
         await TrackingController?.GatheringController?.LoadFromFileAsync()!;
         await TrackingController?.TreasureController?.LoadFromFileAsync()!;
         await TrackingController?.DungeonController?.LoadDungeonFromFileAsync()!;
         await TrackingController?.VaultController?.LoadFromFileAsync()!;
-        await TrackingController?.LootController?.LoadFromFileAsync()!;
 
         TrackingController?.DungeonController?.UpdateDungeonStatsUi();
         TrackingController?.DungeonController?.SetDungeonStatsUi();
@@ -573,12 +576,13 @@ public class MainWindowViewModel : INotifyPropertyChanged, IAsyncInitialization
         await TrackingController?.VaultController?.SaveInFileAsync()!;
         await TrackingController?.TreasureController?.SaveInFileAsync()!;
         await TrackingController?.StatisticController?.SaveInFileAsync()!;
-        await TrackingController?.LootController?.SaveInFileAsync()!;
         await TrackingController?.GatheringController?.SaveInFileAsync(true)!;
         await TrackingController?.TradeController?.SaveInFileAsync()!;
-
+        
         await FileController.SaveAsync(DamageMeterBindings?.DamageMeterSnapshots, 
             Path.Combine(AppDomain.CurrentDomain.BaseDirectory, Settings.Default.UserDataDirectoryName, Settings.Default.DamageMeterSnapshotsFileName));
+
+        await EstimatedMarketValueController.SaveInFileAsync();
 
         IsTrackingActive = false;
         Console.WriteLine(@"### Stop Tracking");

@@ -288,37 +288,39 @@ public static class ExtensionMethod
 
     public static PastTime GetPastTimeEnumByDateTime(this DateTime dateTime)
     {
+        var currentDateTime = DateTime.UtcNow;
+
         if (dateTime.Date <= DateTime.MinValue.Date)
         {
             return PastTime.Unknown;
         }
 
-        if (dateTime.AddDays(30) <= DateTime.UtcNow)
+        if (dateTime.AddDays(30) <= currentDateTime)
         {
             return PastTime.VeryVeryOld;
         }
 
-        if (dateTime.AddDays(7) <= DateTime.UtcNow)
+        if (dateTime.AddDays(7) <= currentDateTime)
         {
             return PastTime.VeryOld;
         }
 
-        if (dateTime.AddHours(24) <= DateTime.UtcNow)
+        if (dateTime.AddHours(24) <= currentDateTime)
         {
             return PastTime.Old;
         }
 
-        if (dateTime.AddHours(8) <= DateTime.UtcNow)
+        if (dateTime.AddHours(8) <= currentDateTime)
         {
             return PastTime.BitOld;
         }
 
-        if (dateTime.AddHours(4) <= DateTime.UtcNow)
+        if (dateTime.AddHours(4) <= currentDateTime)
         {
             return PastTime.LittleNew;
         }
 
-        if (dateTime.AddHours(2) <= DateTime.UtcNow)
+        if (dateTime.AddHours(2) <= currentDateTime)
         {
             return PastTime.AlmostNew;
         }

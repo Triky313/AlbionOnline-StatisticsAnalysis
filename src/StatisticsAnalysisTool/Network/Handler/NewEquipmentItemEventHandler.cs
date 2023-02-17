@@ -1,4 +1,5 @@
 ﻿using StatisticsAnalysisTool.Enumerations;
+using StatisticsAnalysisTool.EstimatedMarketValue;
 using StatisticsAnalysisTool.Models;
 using StatisticsAnalysisTool.Network.Events;
 using StatisticsAnalysisTool.Network.Manager;
@@ -9,7 +10,7 @@ namespace StatisticsAnalysisTool.Network.Handler;
 public class NewEquipmentItemEventHandler : EventPacketHandler<NewEquipmentItemEvent>
 {
     private readonly TrackingController _trackingController;
-    
+
     public NewEquipmentItemEventHandler(TrackingController trackingController) : base((int) EventCodes.NewEquipmentItem)
     {
         _trackingController = trackingController;
@@ -28,7 +29,8 @@ public class NewEquipmentItemEventHandler : EventPacketHandler<NewEquipmentItemE
             SpellDictionary = value.Item.SpellDictionary
         });
 
-        _trackingController.LootController.AddEstimatedMarketValue(value.Item.ItemIndex, value.Item.EstimatedMarketValueInternal);
+        EstimatedMarketValueController.Add(value.Item.ItemIndex, value.Item.EstimatedMarketValueInternal, value.Item.Quality);
+
         _trackingController.LootController.AddDiscoveredItem(value.Item);
         _trackingController.DungeonController.AddDiscoveredItem(value.Item);
         await Task.CompletedTask;
