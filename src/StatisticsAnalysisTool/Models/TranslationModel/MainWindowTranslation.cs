@@ -95,6 +95,7 @@ public class MainWindowTranslation
     public static string AverageItemPowerOfTheKilledEnemies => LanguageController.Translation("AVERAGE_ITEM_POWER_OF_THE_KILLED_ENEMIES");
     public static string AverageItemPowerWhenDying => LanguageController.Translation("AVERAGE_ITEM_POWER_WHEN_DYING");
     public static string DeleteSelectedTrades => LanguageController.Translation("DELETE_SELECTED_TRADES");
+    public static string DeleteSelectedResources => LanguageController.Translation("DELETE_SELECTED_RESOURCES");
     public static string TradeMonitoringDescription1 => LanguageController.Translation("TRADE_MONITORING_DESCRIPTION1");
     public static string To => LanguageController.Translation("TO");
     public static string DeleteCurrentStorage => LanguageController.Translation("DELETE_SELECTED_STORAGE");

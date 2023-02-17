@@ -26,6 +26,7 @@ public class GatheringStats : INotifyPropertyChanged
     private string _gainedSilverByRock;
     private string _gainedSilverByFiber;
     private string _gainedSilverByWood;
+    private string _totalGainedSilverString;
 
     public GatheringFilterType GatheringFilterType
     {
@@ -212,6 +213,16 @@ public class GatheringStats : INotifyPropertyChanged
         set
         {
             _gainedSilverByWood = value;
+            OnPropertyChanged();
+        }
+    }
+
+    public string TotalGainedSilverString
+    {
+        get => _totalGainedSilverString;
+        set
+        {
+            _totalGainedSilverString = value;
             OnPropertyChanged();
         }
     }

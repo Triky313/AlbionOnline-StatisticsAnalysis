@@ -99,6 +99,10 @@
                                     <Image Style="{StaticResource Gathering.Image.Pickaxe.Repeat}" ToolTip="{Binding TranslationAmountOfMiningProcesses, FallbackValue='AMOUNT__OF__MINING__PROCESSES'}" />
                                     <TextBlock Text="{Binding MiningProcesses, IsAsync=True}" Style="{StaticResource Gathering.TextBlock.CollectionFragment.Numbers}" />
                                 </StackPanel>
+                                <StackPanel Orientation="Horizontal" Width="130">
+                                    <Image Style="{StaticResource Icon.Silver}" ToolTip="{Binding TranslationTotalMarketValue, FallbackValue='TOTAL__MARKET__VALUE'}" />
+                                    <TextBlock Text="{Binding TotalMarketValueWithCulture, IsAsync=True}" Style="{StaticResource Gathering.TextBlock.CollectionFragment.Numbers}" />
+                                </StackPanel>
                             </StackPanel>
                             <Grid Margin="0 -2 0 0" Height="18" Width="18" HorizontalAlignment="Right">
                                 <CheckBox Width="auto" Height="auto" IsChecked="{Binding IsSelectedForDeletion, IsAsync=True, FallbackValue=false}" ToolTip="{Binding TranslationSelectToDelete, IsAsync=True}" />
@@ -237,6 +241,12 @@
     <DataTemplate x:Key="GenerallyTemplate" DataType="{x:Type gathering:GatheringStats}">
         <Grid>
             <StackPanel Orientation="Vertical">
+                <TextBlock Style="{StaticResource Gathering.Stats.TitleText}" Text="{Binding TranslationResourceValue}" />
+                <StackPanel Orientation="Horizontal">
+                    <Image Style="{StaticResource Icon.Silver}" Margin="0,0,0,2" />
+                    <TextBlock Text="{Binding TotalGainedSilverString, IsAsync=True}" Style="{StaticResource Gathering.TextBlock.CollectionFragment.Numbers}" />
+                </StackPanel>
+
                 <TextBlock Visibility="{Binding MostGatheredResourceVisibility}" Style="{StaticResource Gathering.Stats.TitleText}" Text="{Binding TranslationMostGatheredResource}" />
                 <ContentControl Visibility="{Binding MostGatheredResourceVisibility}" Content="{Binding MostGatheredResource}" ContentTemplate="{StaticResource MostGatheredResourceTemplate}" />
 

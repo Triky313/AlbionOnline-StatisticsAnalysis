@@ -43,7 +43,7 @@ public static class Utilities
             : Application.Current.Windows.OfType<T>().Any(w => w.Name.Equals(name));
     }
 
-    public static string MarketPriceWithCulture(long value)
+    public static string LongWithCulture(long value)
     {
         return value.ToString("N0", new CultureInfo(LanguageController.CurrentCultureInfo.TextInfo.CultureName));
     }

@@ -90,7 +90,6 @@ public class Gathered : INotifyPropertyChanged
         set
         {
             _gainedTotalAmount = value;
-            TotalMarketValue = FixPoint.FromFloatingPointValue(value * EstimatedMarketValue.IntegerValue);
             OnPropertyChanged();
         }
     }
@@ -127,13 +126,10 @@ public class Gathered : INotifyPropertyChanged
 
     public FixPoint TotalMarketValue
     {
-        get => _totalMarketValue;
-        private set
-        {
-            _totalMarketValue = value;
-            OnPropertyChanged();
-        }
+        get => FixPoint.FromFloatingPointValue(GainedTotalAmount * EstimatedMarketValue.IntegerValue);
     }
+
+    public string TotalMarketValueWithCulture => Utilities.LongWithCulture(TotalMarketValue.IntegerValue);
 
     public string ClusterIndex { get; init; }
     public MapType MapType { get; init; }
@@ -153,6 +149,7 @@ public class Gathered : INotifyPropertyChanged
     public static string TranslationPremium => LanguageController.Translation("PREMIUM");
     public static string TranslationTotal => LanguageController.Translation("TOTAL");
     public static string TranslationSelectToDelete => LanguageController.Translation("SELECTED_TO_DELETE");
+    public static string TranslationTotalMarketValue => LanguageController.Translation("TOTAL_MARKET_VALUE");
 
     public bool IsClosed
     {
