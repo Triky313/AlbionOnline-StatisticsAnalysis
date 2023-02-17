@@ -21,6 +21,8 @@ public class Gathered : INotifyPropertyChanged
     private int _miningProcesses;
     private int _gainedTotalAmount;
     private bool _isSelectedForDeletion;
+    private FixPoint _estimatedMarketValue;
+    private FixPoint _totalMarketValue;
 
     public Gathered()
     {
@@ -88,6 +90,7 @@ public class Gathered : INotifyPropertyChanged
         set
         {
             _gainedTotalAmount = value;
+            TotalMarketValue = FixPoint.FromFloatingPointValue(value * EstimatedMarketValue.IntegerValue);
             OnPropertyChanged();
         }
     }
@@ -108,6 +111,26 @@ public class Gathered : INotifyPropertyChanged
         set
         {
             _miningProcesses = value;
+            OnPropertyChanged();
+        }
+    }
+
+    public FixPoint EstimatedMarketValue
+    {
+        get => _estimatedMarketValue;
+        set
+        {
+            _estimatedMarketValue = value;
+            OnPropertyChanged();
+        }
+    }
+
+    public FixPoint TotalMarketValue
+    {
+        get => _totalMarketValue;
+        private set
+        {
+            _totalMarketValue = value;
             OnPropertyChanged();
         }
     }

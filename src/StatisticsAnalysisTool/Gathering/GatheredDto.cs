@@ -15,4 +15,5 @@ public class GatheredDto
     public string ClusterIndex { get; init; }
     public MapType MapType { get; init; }
     public string InstanceName { get; init; }
+    public long EstimatedMarketValueInternal { get; init; }
 }

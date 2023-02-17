@@ -1,4 +1,6 @@
-﻿namespace StatisticsAnalysisTool.Gathering;
+﻿using StatisticsAnalysisTool.Common;
+
+namespace StatisticsAnalysisTool.Gathering;
 
 public static class GatheringMapping
 {
@@ -15,7 +17,8 @@ public static class GatheringMapping
             ClusterIndex = gathered.ClusterIndex,
             MapType = gathered.MapType,
             InstanceName = gathered.InstanceName,
-            MiningProcesses = gathered.MiningProcesses
+            MiningProcesses = gathered.MiningProcesses,
+            EstimatedMarketValueInternal = gathered.EstimatedMarketValue.InternalValue
         };
     }
 
@@ -32,7 +35,8 @@ public static class GatheringMapping
             ClusterIndex = gathered.ClusterIndex,
             MapType = gathered.MapType,
             InstanceName = gathered.InstanceName,
-            MiningProcesses = gathered.MiningProcesses
+            MiningProcesses = gathered.MiningProcesses,
+            EstimatedMarketValue = FixPoint.FromInternalValue(gathered.EstimatedMarketValueInternal)
         };
     }
 }
