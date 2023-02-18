@@ -105,6 +105,7 @@ public class SettingsWindowViewModel : INotifyPropertyChanged
     {
         SettingsController.CurrentSettings.ItemListSourceUrl = ItemListSourceUrl;
         SettingsController.CurrentSettings.ItemsJsonSourceUrl = ItemsJsonSourceUrl;
+        SettingsController.CurrentSettings.MobsJsonSourceUrl = MobsJsonSourceUrl;
         SettingsController.CurrentSettings.RefreshRate = RefreshRatesSelection.Value;
         SettingsController.CurrentSettings.MainTrackingCharacterName = MainTrackingCharacterName;
         SettingsController.CurrentSettings.UpdateItemListByDays = UpdateItemListByDaysSelection.Value;
