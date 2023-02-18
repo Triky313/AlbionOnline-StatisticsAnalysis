@@ -351,7 +351,8 @@
             </StackPanel>
             <StackPanel Orientation="Vertical" Margin="0,0,0,5">
                 <Label Content="{Binding TranslationCraftingBonusPercent, FallbackValue=CRAFTING__BONUS__%}" Style="{StaticResource Label.Crafting}" />
-                <TextBox Text="{Binding CraftingBonus}" Style="{StaticResource TextBox.Crafting}" Margin="0,-2,0,0" common:TextBoxHelper.OnlyNumeric="Int" />
+                <TextBox IsEnabled="{Binding IsCraftingBonusEnabled, FallbackValue=true, Mode=OneWay, IsAsync=True}" Text="{Binding CraftingBonus}" 
+                         Style="{StaticResource TextBox.Crafting}" Margin="0,-2,0,0" common:TextBoxHelper.OnlyNumeric="Int" />
             </StackPanel>
             <StackPanel Orientation="Vertical" Margin="0,0,0,5">
                 <Label Content="{Binding TranslationOtherCosts, FallbackValue=OTHER__COSTS}" Style="{StaticResource Label.Crafting}" />
@@ -359,7 +360,8 @@
             </StackPanel>
             <StackPanel Orientation="Vertical" Margin="0,0,0,5">
                 <Label Content="{Binding TranslationCraftingWithFocus, FallbackValue=CRAFTING__WITH__FOCUS}" Style="{StaticResource Label.Crafting}" />
-                <CheckBox IsChecked="{Binding IsCraftingWithFocus}" Margin="0,-2,0,0" />
+                <CheckBox IsEnabled="{Binding IsCraftingWithFocusCheckboxEnabled, FallbackValue=true, Mode=OneWay, IsAsync=True}" 
+                          IsChecked="{Binding IsCraftingWithFocus}" Margin="0,-2,0,0" />
             </StackPanel>
         </StackPanel>
     </DataTemplate>

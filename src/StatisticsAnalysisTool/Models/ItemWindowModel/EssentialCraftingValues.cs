@@ -30,6 +30,8 @@ public class EssentialCraftingValuesTemplate : INotifyPropertyChanged
     private List<MarketResponse> _marketResponse = new();
     private Location _itemPricesLocationSelected;
     private DateTime _lastUpdate = DateTime.UtcNow.AddDays(-100);
+    private bool _isCraftingWithFocusCheckboxEnabled;
+    private bool _isCraftingBonusEnabled;
 
     public EssentialCraftingValuesTemplate(ItemWindowViewModel itemWindowViewModel, List<MarketResponse> currentCityPrices, string uniqueName)
     {
@@ -180,6 +182,16 @@ public class EssentialCraftingValuesTemplate : INotifyPropertyChanged
         }
     }
 
+    public bool IsCraftingBonusEnabled
+    {
+        get => _isCraftingBonusEnabled;
+        set
+        {
+            _isCraftingBonusEnabled = value;
+            OnPropertyChanged();
+        }
+    }
+
     public int OtherCosts
     {
         get => _otherCosts;
@@ -198,6 +210,16 @@ public class EssentialCraftingValuesTemplate : INotifyPropertyChanged
         {
             _isCraftingWithFocus = value;
             _itemWindowViewModel.UpdateCraftingCalculationTab();
+            OnPropertyChanged();
+        }
+    }
+
+    public bool IsCraftingWithFocusCheckboxEnabled
+    {
+        get => _isCraftingWithFocusCheckboxEnabled;
+        set
+        {
+            _isCraftingWithFocusCheckboxEnabled = value;
             OnPropertyChanged();
         }
     }
