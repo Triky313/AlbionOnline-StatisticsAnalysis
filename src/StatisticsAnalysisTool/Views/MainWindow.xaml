@@ -129,47 +129,47 @@
         </Grid>
 
         <TabControl Style="{DynamicResource TabControlStyle}">
-            <TabItem Header="{Binding Translation.Dashboard, FallbackValue=DASHBOARD}">
+            <TabItem Visibility="{Binding DashboardTabVisibility, Mode=OneWay}" Header="{Binding Translation.Dashboard, FallbackValue=DASHBOARD}">
                 <Grid Style="{StaticResource TabItemGridStyle}">
                     <userControls:DashboardControl DataContext="{Binding RelativeSource={RelativeSource AncestorType=Window}, Path=DataContext}" />
                 </Grid>
             </TabItem>
-            <TabItem Header="{Binding Translation.ItemSearch, FallbackValue=ITEM__SEARCH}">
+            <TabItem Visibility="{Binding ItemSearchTabVisibility, Mode=OneWay}" Header="{Binding Translation.ItemSearch, FallbackValue=ITEM__SEARCH}">
                 <Grid Style="{StaticResource TabItemGridStyle}">
                     <userControls:ItemSearchControl DataContext="{Binding RelativeSource={RelativeSource AncestorType=Window}, Path=DataContext}" />
                 </Grid>
             </TabItem>
-            <TabItem Header="{Binding Translation.Logging, FallbackValue=LOGGING}">
+            <TabItem Visibility="{Binding LoggingTabVisibility, Mode=OneWay}" Header="{Binding Translation.Logging, FallbackValue=LOGGING}">
                 <Grid Style="{StaticResource TabItemGridStyle}">
                     <userControls:LoggingControl DataContext="{Binding RelativeSource={RelativeSource AncestorType=Window}, Path=DataContext}" />
                 </Grid>
             </TabItem>
-            <TabItem Header="{Binding Translation.Dungeons, FallbackValue=DUNGEONS}">
+            <TabItem Visibility="{Binding DungeonsTabVisibility, Mode=OneWay}" Header="{Binding Translation.Dungeons, FallbackValue=DUNGEONS}">
                 <Grid Style="{StaticResource TabItemGridStyle}">
                     <userControls:DungeonControl DataContext="{Binding RelativeSource={RelativeSource AncestorType=Window}, Path=DataContext}" />
                 </Grid>
             </TabItem>
-            <TabItem Header="{Binding Translation.DamageMeter, FallbackValue=DAMAGE__METER}">
+            <TabItem Visibility="{Binding DamageMeterTabVisibility, Mode=OneWay}" Header="{Binding Translation.DamageMeter, FallbackValue=DAMAGE__METER}">
                 <Grid Style="{StaticResource TabItemGridStyle}">
                     <userControls:DamageMeterControl DataContext="{Binding RelativeSource={RelativeSource AncestorType=Window}, Path=DataContext}" />
                 </Grid>
             </TabItem>
-            <TabItem Header="{Binding Translation.TradeMonitoring, FallbackValue=TRADE__MONITORING}">
+            <TabItem Visibility="{Binding TradeMonitoringTabVisibility, Mode=OneWay}" Header="{Binding Translation.TradeMonitoring, FallbackValue=TRADE__MONITORING}">
                 <Grid Style="{StaticResource TabItemGridStyle}">
                     <userControls:TradeMonitoringControl DataContext="{Binding RelativeSource={RelativeSource AncestorType=Window}, Path=DataContext}" />
                 </Grid>
             </TabItem>
-            <TabItem Header="{Binding Translation.Gathering, FallbackValue=GATHERING}">
+            <TabItem Visibility="{Binding GatheringTabVisibility, Mode=OneWay}" Header="{Binding Translation.Gathering, FallbackValue=GATHERING}">
                 <Grid Style="{StaticResource TabItemGridStyle}">
                     <userControls:GatheringControl DataContext="{Binding RelativeSource={RelativeSource AncestorType=Window}, Path=DataContext}" />
                 </Grid>
             </TabItem>
-            <TabItem Header="{Binding Translation.StorageHistory, FallbackValue=STORAGE_HISTORY}">
+            <TabItem Visibility="{Binding StorageHistoryTabVisibility, Mode=OneWay}" Header="{Binding Translation.StorageHistory, FallbackValue=STORAGE_HISTORY}">
                 <Grid Style="{StaticResource TabItemGridStyle}">
                     <userControls:StorageHistoryControl DataContext="{Binding RelativeSource={RelativeSource AncestorType=Window}, Path=DataContext}" />
                 </Grid>
             </TabItem>
-            <TabItem Header="{Binding Translation.MapHistory, FallbackValue=MAP__HISTORY}">
+            <TabItem Visibility="{Binding MapHistoryTabVisibility, Mode=OneWay}" Header="{Binding Translation.MapHistory, FallbackValue=MAP__HISTORY}">
                 <Grid Style="{StaticResource TabItemGridStyle}">
                     <vwp:VirtualizingItemsControl ItemsSource="{Binding EnteredCluster, IsAsync=True, Mode=OneWay}" ItemTemplate="{StaticResource ClusterInfoTemplate}"              
                                                   VirtualizingPanel.CacheLengthUnit="Item"
@@ -180,7 +180,7 @@
                                                   ScrollViewer.VerticalScrollBarVisibility="Visible" />
                 </Grid>
             </TabItem>
-            <TabItem Header="{Binding Translation.PlayerInformation, FallbackValue=PLAYER__INFORMATION}">
+            <TabItem Visibility="{Binding PlayerInformationTabVisibility, Mode=OneWay}" Header="{Binding Translation.PlayerInformation, FallbackValue=PLAYER__INFORMATION}">
                 <Grid Style="{StaticResource TabItemGridStyle}">
                     <userControls:PlayerInformationControl />
                 </Grid>

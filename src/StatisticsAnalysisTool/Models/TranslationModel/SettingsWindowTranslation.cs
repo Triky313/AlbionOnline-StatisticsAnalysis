@@ -36,4 +36,5 @@ public class SettingsWindowTranslation
     public static string AttentionTheseVersionsAreStillBeingTested => LanguageController.Translation("ATTENTION_THESE_VERSION_ARE_STILL_BEING_TESTED");
     public static string CharacterNameToTrack => LanguageController.Translation("CHARACTER_NAME_TO_TRACK");
     public static string CopyShortDamageMeterToTheClipboard => LanguageController.Translation("COPY_SHORT_DAMAGE_METER_TO_THE_CLIPBOARD");
+    public static string NavigationTabVisibility => LanguageController.Translation("NAVIGATION_TAB_VISIBILITY");
 }

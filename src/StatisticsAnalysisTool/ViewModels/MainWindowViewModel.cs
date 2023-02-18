@@ -105,6 +105,16 @@ public class MainWindowViewModel : INotifyPropertyChanged, IAsyncInitialization
     private LoggingBindings _loggingBindings = new();
     private PlayerInformationBindings _playerInformationBindings = new();
     private GatheringBindings _gatheringBindings = new();
+    private Visibility _dashboardTabVisibility = Visibility.Visible;
+    private Visibility _itemSearchTabVisibility = Visibility.Visible;
+    private Visibility _loggingTabVisibility = Visibility.Visible;
+    private Visibility _dungeonsTabVisibility = Visibility.Visible;
+    private Visibility _damageMeterTabVisibility = Visibility.Visible;
+    private Visibility _tradeMonitoringTabVisibility = Visibility.Visible;
+    private Visibility _gatheringTabVisibility = Visibility.Visible;
+    private Visibility _storageHistoryTabVisibility = Visibility.Visible;
+    private Visibility _mapHistoryTabVisibility = Visibility.Visible;
+    private Visibility _playerInformationTabVisibility = Visibility.Visible;
 
     public MainWindowViewModel()
     {
@@ -1296,6 +1306,106 @@ public class MainWindowViewModel : INotifyPropertyChanged, IAsyncInitialization
         set
         {
             _unsupportedOsVisibility = value;
+            OnPropertyChanged();
+        }
+    }
+
+    public Visibility DashboardTabVisibility
+    {
+        get => _dashboardTabVisibility;
+        set
+        {
+            _dashboardTabVisibility = value;
+            OnPropertyChanged();
+        }
+    }
+
+    public Visibility ItemSearchTabVisibility
+    {
+        get => _itemSearchTabVisibility;
+        set
+        {
+            _itemSearchTabVisibility = value;
+            OnPropertyChanged();
+        }
+    }
+
+    public Visibility LoggingTabVisibility
+    {
+        get => _loggingTabVisibility;
+        set
+        {
+            _loggingTabVisibility = value;
+            OnPropertyChanged();
+        }
+    }
+
+    public Visibility DungeonsTabVisibility
+    {
+        get => _dungeonsTabVisibility;
+        set
+        {
+            _dungeonsTabVisibility = value;
+            OnPropertyChanged();
+        }
+    }
+
+    public Visibility DamageMeterTabVisibility
+    {
+        get => _damageMeterTabVisibility;
+        set
+        {
+            _damageMeterTabVisibility = value;
+            OnPropertyChanged();
+        }
+    }
+
+    public Visibility TradeMonitoringTabVisibility
+    {
+        get => _tradeMonitoringTabVisibility;
+        set
+        {
+            _tradeMonitoringTabVisibility = value;
+            OnPropertyChanged();
+        }
+    }
+
+    public Visibility GatheringTabVisibility
+    {
+        get => _gatheringTabVisibility;
+        set
+        {
+            _gatheringTabVisibility = value;
+            OnPropertyChanged();
+        }
+    }
+
+    public Visibility StorageHistoryTabVisibility
+    {
+        get => _storageHistoryTabVisibility;
+        set
+        {
+            _storageHistoryTabVisibility = value;
+            OnPropertyChanged();
+        }
+    }
+
+    public Visibility MapHistoryTabVisibility
+    {
+        get => _mapHistoryTabVisibility;
+        set
+        {
+            _mapHistoryTabVisibility = value;
+            OnPropertyChanged();
+        }
+    }
+
+    public Visibility PlayerInformationTabVisibility
+    {
+        get => _playerInformationTabVisibility;
+        set
+        {
+            _playerInformationTabVisibility = value;
             OnPropertyChanged();
         }
     }

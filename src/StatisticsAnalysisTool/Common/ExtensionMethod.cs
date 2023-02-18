@@ -9,6 +9,7 @@ using System.IO;
 using System.Linq;
 using System.Text.Json;
 using System.Threading.Tasks;
+using System.Windows;
 
 namespace StatisticsAnalysisTool.Common;
 
@@ -46,6 +47,16 @@ public static class ExtensionMethod
     {
         var span = new TimeSpan(0, 0, 0, seconds);
         return $"{span.Hours:00}:{span.Minutes:00}:{span.Seconds:00}";
+    }
+
+    public static Visibility BoolToVisibility(this bool status)
+    {
+        return (status) ? Visibility.Visible : Visibility.Collapsed;
+    }
+
+    public static Visibility BoolToVisibility(this bool? status)
+    {
+        return (status ?? false).BoolToVisibility();
     }
 
     #region Object to

@@ -1,6 +1,7 @@
 ﻿using log4net;
 using StatisticsAnalysisTool.Common;
 using StatisticsAnalysisTool.Common.UserSettings;
+using StatisticsAnalysisTool.Enumerations;
 using StatisticsAnalysisTool.Models;
 using StatisticsAnalysisTool.Models.TranslationModel;
 using StatisticsAnalysisTool.Properties;
@@ -45,6 +46,7 @@ public class SettingsWindowViewModel : INotifyPropertyChanged
     private bool _isSuggestPreReleaseUpdatesActive;
     private string _mainTrackingCharacterName;
     private bool _shortDamageMeterToClipboard;
+    private ObservableCollection<TabVisibilityFilter> _tabVisibilities = new();
 
     public SettingsWindowViewModel()
     {
@@ -55,6 +57,7 @@ public class SettingsWindowViewModel : INotifyPropertyChanged
     private void InitializeSettings()
     {
         InitLanguageFiles();
+        InitNaviTabVisibilities();
         InitRefreshRate();
 
         MainTrackingCharacterName = SettingsController.CurrentSettings.MainTrackingCharacterName;
@@ -123,6 +126,7 @@ public class SettingsWindowViewModel : INotifyPropertyChanged
         SettingsController.CurrentSettings.ShortDamageMeterToClipboard = ShortDamageMeterToClipboard;
 
         SetAppSettingsAndTranslations();
+        SetNaviTabVisibilities();
     }
 
     public void ReloadSettings()
@@ -135,6 +139,19 @@ public class SettingsWindowViewModel : INotifyPropertyChanged
         Translation = new SettingsWindowTranslation();
     }
 
+    private void SetNaviTabVisibilities()
+    {
+        SettingsController.CurrentSettings.IsDashboardNaviTabActive = TabVisibilities?.FirstOrDefault(x => x?.NavigationTabFilterType == NavigationTabFilterType.Dashboard)?.IsSelected ?? true;
+        SettingsController.CurrentSettings.IsItemSearchNaviTabActive = TabVisibilities?.FirstOrDefault(x => x?.NavigationTabFilterType == NavigationTabFilterType.ItemSearch)?.IsSelected ?? true;
+        SettingsController.CurrentSettings.IsLoggingNaviTabActive = TabVisibilities?.FirstOrDefault(x => x?.NavigationTabFilterType == NavigationTabFilterType.Logging)?.IsSelected ?? true;
+        SettingsController.CurrentSettings.IsDungeonsNaviTabActive = TabVisibilities?.FirstOrDefault(x => x?.NavigationTabFilterType == NavigationTabFilterType.Dungeons)?.IsSelected ?? true;
+        SettingsController.CurrentSettings.IsDamageMeterNaviTabActive = TabVisibilities?.FirstOrDefault(x => x?.NavigationTabFilterType == NavigationTabFilterType.DamageMeter)?.IsSelected ?? true;
+        SettingsController.CurrentSettings.IsTradeMonitoringNaviTabActive = TabVisibilities?.FirstOrDefault(x => x?.NavigationTabFilterType == NavigationTabFilterType.TradeMonitoring)?.IsSelected ?? true;
+        SettingsController.CurrentSettings.IsGatheringNaviTabActive = TabVisibilities?.FirstOrDefault(x => x?.NavigationTabFilterType == NavigationTabFilterType.Gathering)?.IsSelected ?? true;
+        SettingsController.CurrentSettings.IsStorageHistoryNaviTabActive = TabVisibilities?.FirstOrDefault(x => x?.NavigationTabFilterType == NavigationTabFilterType.StorageHistory)?.IsSelected ?? true;
+        SettingsController.CurrentSettings.IsMapHistoryNaviTabActive = TabVisibilities?.FirstOrDefault(x => x?.NavigationTabFilterType == NavigationTabFilterType.MapHistory)?.IsSelected ?? true;
+        SettingsController.CurrentSettings.IsPlayerInformationNaviTabActive = TabVisibilities?.FirstOrDefault(x => x?.NavigationTabFilterType == NavigationTabFilterType.PlayerInformation)?.IsSelected ?? true;
+    }
 
     public struct FileSettingInformation
     {
@@ -191,6 +208,60 @@ public class SettingsWindowViewModel : INotifyPropertyChanged
         LanguagesSelection = Languages.FirstOrDefault(x => x.FileName == LanguageController.CurrentCultureInfo.TextInfo.CultureName);
     }
 
+    private void InitNaviTabVisibilities()
+    {
+        TabVisibilities.Add(new TabVisibilityFilter(NavigationTabFilterType.Dashboard)
+        {
+            IsSelected = SettingsController.CurrentSettings.IsDashboardNaviTabActive,
+            Name = MainWindowTranslation.Dashboard
+        });
+        TabVisibilities.Add(new TabVisibilityFilter(NavigationTabFilterType.ItemSearch)
+        {
+            IsSelected = SettingsController.CurrentSettings.IsItemSearchNaviTabActive,
+            Name = MainWindowTranslation.ItemSearch
+        });
+        TabVisibilities.Add(new TabVisibilityFilter(NavigationTabFilterType.Logging)
+        {
+            IsSelected = SettingsController.CurrentSettings.IsLoggingNaviTabActive,
+            Name = MainWindowTranslation.Logging
+        });
+        TabVisibilities.Add(new TabVisibilityFilter(NavigationTabFilterType.Dungeons)
+        {
+            IsSelected = SettingsController.CurrentSettings.IsDungeonsNaviTabActive,
+            Name = MainWindowTranslation.Dungeons
+        });
+        TabVisibilities.Add(new TabVisibilityFilter(NavigationTabFilterType.DamageMeter)
+        {
+            IsSelected = SettingsController.CurrentSettings.IsDamageMeterNaviTabActive,
+            Name = MainWindowTranslation.DamageMeter
+        });
+        TabVisibilities.Add(new TabVisibilityFilter(NavigationTabFilterType.TradeMonitoring)
+        {
+            IsSelected = SettingsController.CurrentSettings.IsTradeMonitoringNaviTabActive,
+            Name = MainWindowTranslation.TradeMonitoring
+        });
+        TabVisibilities.Add(new TabVisibilityFilter(NavigationTabFilterType.Gathering)
+        {
+            IsSelected = SettingsController.CurrentSettings.IsGatheringNaviTabActive,
+            Name = MainWindowTranslation.Gathering
+        });
+        TabVisibilities.Add(new TabVisibilityFilter(NavigationTabFilterType.StorageHistory)
+        {
+            IsSelected = SettingsController.CurrentSettings.IsStorageHistoryNaviTabActive,
+            Name = MainWindowTranslation.StorageHistory
+        });
+        TabVisibilities.Add(new TabVisibilityFilter(NavigationTabFilterType.MapHistory)
+        {
+            IsSelected = SettingsController.CurrentSettings.IsMapHistoryNaviTabActive,
+            Name = MainWindowTranslation.MapHistory
+        });
+        TabVisibilities.Add(new TabVisibilityFilter(NavigationTabFilterType.PlayerInformation)
+        {
+            IsSelected = SettingsController.CurrentSettings.IsPlayerInformationNaviTabActive,
+            Name = MainWindowTranslation.PlayerInformation
+        });
+    }
+
     private void InitRefreshRate()
     {
         RefreshRates.Clear();
@@ -227,6 +298,16 @@ public class SettingsWindowViewModel : INotifyPropertyChanged
     #endregion
 
     #region Bindings
+
+    public ObservableCollection<TabVisibilityFilter> TabVisibilities
+    {
+        get => _tabVisibilities;
+        set
+        {
+            _tabVisibilities = value;
+            OnPropertyChanged();
+        }
+    }
 
     public ObservableCollection<FileInformation> AlertSounds
     {

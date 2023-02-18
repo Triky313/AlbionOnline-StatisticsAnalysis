@@ -60,4 +60,16 @@ public class SettingsObject
     public List<MainTabLocationFilterSettingsObject> ItemWindowMainTabLocationFilters { get; set; } = new();
     public double GatheringGridSplitterPosition { get; set; } = 125;
     public bool IsGatheringActive { get; set; }
+
+    // Navi tab 
+    public bool IsDashboardNaviTabActive { get; set; } = true;
+    public bool IsItemSearchNaviTabActive { get; set; } = true;
+    public bool IsLoggingNaviTabActive { get; set; } = true;
+    public bool IsDungeonsNaviTabActive { get; set; } = true;
+    public bool IsDamageMeterNaviTabActive { get; set; } = true;
+    public bool IsTradeMonitoringNaviTabActive { get; set; } = true;
+    public bool IsGatheringNaviTabActive { get; set; } = true;
+    public bool IsStorageHistoryNaviTabActive { get; set; } = true;
+    public bool IsMapHistoryNaviTabActive { get; set; } = true;
+    public bool IsPlayerInformationNaviTabActive { get; set; } = true;
 }
