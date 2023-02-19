@@ -692,9 +692,12 @@
 	<translation name="GENERALLY">Ogólnie</translation>
 	<translation name="MOST_GATHERED_RESOURCE">Najczęściej zbierany surowiec</translation>
 	<translation name="MOST_GATHERED_ON_MAP">Na jakiej mapie najcześciej zbieramy</translation>
-	<translation name="TOTAL_RESOURCES">Całkowita liczba zebranych zasobów</translation>
+	<translation name="TOTAL_RESOURCES">Całkowita liczba zebranych surowców</translation>
 	<translation name="TOTAL_MINING_PROCESSES">Całkowita liczba wydobyć surowca</translation>
-	<translation name="AMOUNT_OF_MINING_PROCESSES">Liczba wydobycia</translation>
+	<translation name="AMOUNT_OF_MINING_PROCESSES">Liczba wydobyć surowca</translation>
 	<translation name="SURE_YOU_WANT_TO_DELETE_SELECTED_RESOURCES">Czy na pewno chcesz usunąć wybrane zasoby?</translation>
 	<translation name="DELETE_SELECTED_RESOURCES">Usuń wybrane zasoby</translation>
+	<translation name="RESOURCE_VALUE">Cena surowca</translation>
+	<translation name="TOTAL_MARKET_VALUE">Całkowita cena surowców</translation>
+	<translation name="NAVIGATION_TAB_VISIBILITY">Dostosowanie zakładek</translation>
 </translations>
