@@ -1,11 +1,13 @@
-﻿using System;
-using StatisticsAnalysisTool.Models.NetworkModel;
-using StatisticsAnalysisTool.Network.Manager;
-using StatisticsAnalysisTool.Network.Events;
-using System.Threading.Tasks;
-using StatisticsAnalysisTool.Common;
+﻿using StatisticsAnalysisTool.Common;
 using StatisticsAnalysisTool.Enumerations;
+using StatisticsAnalysisTool.EventLogging;
+using StatisticsAnalysisTool.EventLogging.Notification;
+using StatisticsAnalysisTool.Models.NetworkModel;
+using StatisticsAnalysisTool.Network.Events;
+using StatisticsAnalysisTool.Network.Manager;
 using StatisticsAnalysisTool.Network.Notification;
+using System;
+using System.Threading.Tasks;
 
 namespace StatisticsAnalysisTool.Network.Handler;
 

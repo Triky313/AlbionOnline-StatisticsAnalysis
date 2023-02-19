@@ -1,4 +1,5 @@
 ﻿
+using StatisticsAnalysisTool.Common;
 using StatisticsAnalysisTool.Common.UserSettings;
 using StatisticsAnalysisTool.Enumerations;
 using StatisticsAnalysisTool.Models.NetworkModel;
@@ -17,11 +18,10 @@ public class JoinResponseHandler : ResponsePacketHandler<JoinResponse>
     private readonly MainWindowViewModel _mainWindowViewModel;
     private readonly TrackingController _trackingController;
 
-    public JoinResponseHandler(TrackingController trackingController, MainWindowViewModel mainWindowViewModel)
-        : base((int) OperationCodes.Join)
+    public JoinResponseHandler(TrackingController trackingController) : base((int) OperationCodes.Join)
     {
         _trackingController = trackingController;
-        _mainWindowViewModel = mainWindowViewModel;
+        _mainWindowViewModel = ServiceLocator.Resolve<MainWindowViewModel>();
     }
 
     protected override async Task OnActionAsync(JoinResponse value)
@@ -48,7 +48,7 @@ public class JoinResponseHandler : ResponsePacketHandler<JoinResponse>
 
         await _mainWindowViewModel?.PlayerInformationBindings?.LoadLocalPlayerDataAsync(value.Username)!;
     }
-    
+
     private async Task SetLocalUserData(JoinResponse value)
     {
         await _trackingController.EntityController.LocalUserData.SetValuesAsync(new LocalUserData

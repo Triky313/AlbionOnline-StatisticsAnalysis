@@ -50,7 +50,7 @@ public partial class SettingsControl
 
     private void OpenDebugConsole_Click(object sender, RoutedEventArgs e)
     {
-        _settingsWindowViewModel.OpenConsoleWindow();
+        SettingsWindowViewModel.OpenConsoleWindow();
     }
 
     private void ReloadSettings_OnIsVisibleChanged(object sender, DependencyPropertyChangedEventArgs e)

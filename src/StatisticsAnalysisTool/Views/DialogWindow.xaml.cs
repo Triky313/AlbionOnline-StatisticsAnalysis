@@ -1,6 +1,7 @@
 ﻿using StatisticsAnalysisTool.ViewModels;
 using System.Windows;
 using System.Windows.Input;
+using StatisticsAnalysisTool.Enumerations;
 
 namespace StatisticsAnalysisTool.Views;
 
@@ -11,11 +12,11 @@ public partial class DialogWindow
 {
     public readonly DialogWindowViewModel DialogWindowViewModel;
 
-    public DialogWindow(string title, string message)
+    public DialogWindow(string title, string message, DialogType type = DialogType.YesNo)
     {
         InitializeComponent();
 
-        DialogWindowViewModel = new DialogWindowViewModel(title, message);
+        DialogWindowViewModel = new DialogWindowViewModel(title, message, type);
         DataContext = DialogWindowViewModel;
     }
 

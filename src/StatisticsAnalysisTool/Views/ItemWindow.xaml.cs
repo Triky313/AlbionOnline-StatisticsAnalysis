@@ -76,6 +76,6 @@ public partial class ItemWindow
         }
 
         var vm = (ItemWindowViewModel)DataContext;
-        CraftingTabController.AddNote(vm?.Item.UniqueName, textBox.Text);
+        _ = CraftingTabController.AddNoteAsync(vm?.Item.UniqueName, textBox.Text);
     }
 }

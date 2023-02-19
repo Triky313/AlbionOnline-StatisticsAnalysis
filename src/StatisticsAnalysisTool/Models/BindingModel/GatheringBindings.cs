@@ -60,20 +60,35 @@ public class GatheringBindings : INotifyPropertyChanged
     {
         await Task.Run(async () =>
         {
-            var hide = GroupAndFilterAndSum(GatheredCollection, x => x?.Item?.ShopShopSubCategory1 == ShopSubCategory.Hide, GatheringStatsTimeTypeSelection);
+            // Hide
+            var hide = await GroupAndFilterAndSumAsync(GatheredCollection, x => x?.Item?.ShopShopSubCategory1 == ShopSubCategory.Hide, GatheringStatsTimeTypeSelection);
             await UpdateObservableRangeCollectionAsync(GatheringStats.GatheredHide, hide);
 
-            var ore = GroupAndFilterAndSum(GatheredCollection, x => x?.Item?.ShopShopSubCategory1 == ShopSubCategory.Ore, GatheringStatsTimeTypeSelection);
+            GatheringStats.GainedSilverByHide = Utilities.LongWithCulture(hide.Sum(x => x.TotalMarketValue.IntegerValue));
+
+            // Ore
+            var ore = await GroupAndFilterAndSumAsync(GatheredCollection, x => x?.Item?.ShopShopSubCategory1 == ShopSubCategory.Ore, GatheringStatsTimeTypeSelection);
             await UpdateObservableRangeCollectionAsync(GatheringStats.GatheredOre, ore);
 
-            var fiber = GroupAndFilterAndSum(GatheredCollection, x => x?.Item?.ShopShopSubCategory1 == ShopSubCategory.Fiber, GatheringStatsTimeTypeSelection);
+            GatheringStats.GainedSilverByOre = Utilities.LongWithCulture(ore.Sum(x => x.TotalMarketValue.IntegerValue));
+
+            // Fiber
+            var fiber = await GroupAndFilterAndSumAsync(GatheredCollection, x => x?.Item?.ShopShopSubCategory1 == ShopSubCategory.Fiber, GatheringStatsTimeTypeSelection);
             await UpdateObservableRangeCollectionAsync(GatheringStats.GatheredFiber, fiber);
 
-            var wood = GroupAndFilterAndSum(GatheredCollection, x => x?.Item?.ShopShopSubCategory1 == ShopSubCategory.Wood, GatheringStatsTimeTypeSelection);
+            GatheringStats.GainedSilverByFiber = Utilities.LongWithCulture(fiber.Sum(x => x.TotalMarketValue.IntegerValue));
+
+            // Wood
+            var wood = await GroupAndFilterAndSumAsync(GatheredCollection, x => x?.Item?.ShopShopSubCategory1 == ShopSubCategory.Wood, GatheringStatsTimeTypeSelection);
             await UpdateObservableRangeCollectionAsync(GatheringStats.GatheredWood, wood);
 
-            var rock = GroupAndFilterAndSum(GatheredCollection, x => x?.Item?.ShopShopSubCategory1 == ShopSubCategory.Rock, GatheringStatsTimeTypeSelection);
+            GatheringStats.GainedSilverByWood = Utilities.LongWithCulture(wood.Sum(x => x.TotalMarketValue.IntegerValue));
+
+            // Rock
+            var rock = await GroupAndFilterAndSumAsync(GatheredCollection, x => x?.Item?.ShopShopSubCategory1 == ShopSubCategory.Rock, GatheringStatsTimeTypeSelection);
             await UpdateObservableRangeCollectionAsync(GatheringStats.GatheredRock, rock);
+
+            GatheringStats.GainedSilverByRock = Utilities.LongWithCulture(rock.Sum(x => x.TotalMarketValue.IntegerValue));
 
             // Most gathered resource
             var mostGatheredResource = GatheredCollection
@@ -120,33 +135,44 @@ public class GatheringBindings : INotifyPropertyChanged
                 .Sum(x => x.MiningProcesses);
 
             GatheringStats.TotalMiningProcesses = totalMiningProcesses;
+
+            // Total gained silver
+            var totalGainedSilver = GatheredCollection
+                .Where(x => IsTimestampOkayByGatheringStatsTimeType(x.TimestampDateTime, GatheringStatsTimeTypeSelection))
+                .Sum(x => x.TotalMarketValue.IntegerValue);
+
+            GatheringStats.TotalGainedSilverString = Utilities.LongWithCulture(totalGainedSilver);
         });
     }
 
-    private static IAsyncEnumerable<Gathered> GroupAndFilterAndSum(IEnumerable<Gathered> gatheredData, Func<Gathered, bool> filter, GatheringStatsTimeType gatheringStatsTimeType)
+    private static async Task<List<Gathered>> GroupAndFilterAndSumAsync(IEnumerable<Gathered> gatheredData, Func<Gathered, bool> filter, GatheringStatsTimeType gatheringStatsTimeType)
     {
-        var filteredData = gatheredData?.Where(filter).Where(x => IsTimestampOkayByGatheringStatsTimeType(x.TimestampDateTime, gatheringStatsTimeType));
-        var groupedData = filteredData?.GroupBy(x => x.UniqueName)
-            .Select(g => new Gathered()
-            {
-                UniqueName = g.Key,
-                GainedStandardAmount = g.Sum(x => x.GainedStandardAmount),
-                GainedBonusAmount = g.Sum(x => x.GainedBonusAmount),
-                GainedPremiumBonusAmount = g.Sum(x => x.GainedPremiumBonusAmount),
-                GainedFame = g.Sum(x => x.GainedFame),
-                MiningProcesses = g.Sum(x => x.MiningProcesses)
-            }).ToAsyncEnumerable();
+        return await Task.Run(() =>
+        {
+            var filteredData = gatheredData?.ToList().Where(filter).Where(x => IsTimestampOkayByGatheringStatsTimeType(x.TimestampDateTime, gatheringStatsTimeType));
+            var groupedData = filteredData?.ToList().GroupBy(x => x.UniqueName)
+                .Select(g => new Gathered()
+                {
+                    UniqueName = g.Key,
+                    EstimatedMarketValue = FixPoint.FromInternalValue(g.Sum(x => x.EstimatedMarketValue.InternalValue)),
+                    GainedStandardAmount = g.Sum(x => x.GainedStandardAmount),
+                    GainedBonusAmount = g.Sum(x => x.GainedBonusAmount),
+                    GainedPremiumBonusAmount = g.Sum(x => x.GainedPremiumBonusAmount),
+                    GainedFame = g.Sum(x => x.GainedFame),
+                    MiningProcesses = g.Sum(x => x.MiningProcesses)
+                }).ToList();
 
-        return groupedData;
+            return groupedData;
+        }) ?? new List<Gathered>();
     }
 
-    private static async Task UpdateObservableRangeCollectionAsync(ObservableRangeCollection<Gathered> target, IAsyncEnumerable<Gathered> source)
+    private static async Task UpdateObservableRangeCollectionAsync(ObservableRangeCollection<Gathered> target, IEnumerable<Gathered> source)
     {
         var sourceSorted = source.OrderByDescending(x => x.UniqueName);
-        await Application.Current.Dispatcher.InvokeAsync(async () =>
+        await Application.Current.Dispatcher.InvokeAsync(() =>
         {
             target.Clear();
-            target.AddRange(await sourceSorted.ToListAsync());
+            target.AddRange(sourceSorted.ToList());
         });
     }
 

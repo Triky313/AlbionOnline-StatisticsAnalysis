@@ -8,6 +8,7 @@ using StatisticsAnalysisTool.Common;
 using StatisticsAnalysisTool.Common.UserSettings;
 using StatisticsAnalysisTool.Dungeon;
 using StatisticsAnalysisTool.Enumerations;
+using StatisticsAnalysisTool.EventLogging;
 using StatisticsAnalysisTool.GameData;
 using StatisticsAnalysisTool.Models;
 using StatisticsAnalysisTool.Models.BindingModel;
@@ -30,6 +31,7 @@ using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Data;
 using System.Windows.Media;
+using StatisticsAnalysisTool.EstimatedMarketValue;
 
 // ReSharper disable UnusedMember.Global
 
@@ -37,7 +39,6 @@ namespace StatisticsAnalysisTool.ViewModels;
 
 public class MainWindowViewModel : INotifyPropertyChanged, IAsyncInitialization
 {
-    private static MainWindow _mainWindow;
     private static readonly ILog Log = LogManager.GetLogger(MethodBase.GetCurrentMethod()?.DeclaringType);
 
     private double _allianceInfoWidth;
@@ -104,24 +105,24 @@ public class MainWindowViewModel : INotifyPropertyChanged, IAsyncInitialization
     private LoggingBindings _loggingBindings = new();
     private PlayerInformationBindings _playerInformationBindings = new();
     private GatheringBindings _gatheringBindings = new();
+    private Visibility _dashboardTabVisibility = Visibility.Visible;
+    private Visibility _itemSearchTabVisibility = Visibility.Visible;
+    private Visibility _loggingTabVisibility = Visibility.Visible;
+    private Visibility _dungeonsTabVisibility = Visibility.Visible;
+    private Visibility _damageMeterTabVisibility = Visibility.Visible;
+    private Visibility _tradeMonitoringTabVisibility = Visibility.Visible;
+    private Visibility _gatheringTabVisibility = Visibility.Visible;
+    private Visibility _storageHistoryTabVisibility = Visibility.Visible;
+    private Visibility _mapHistoryTabVisibility = Visibility.Visible;
+    private Visibility _playerInformationTabVisibility = Visibility.Visible;
 
-    public MainWindowViewModel(MainWindow mainWindow)
+    public MainWindowViewModel()
     {
-        _mainWindow = mainWindow;
-        AppDomain.CurrentDomain.UnhandledException += OnUnhandledException;
-
-        SettingsController.LoadSettings();
         UpgradeSettings();
-        InitWindowSettings();
 
         AutoUpdateController.RemoveUpdateFiles();
         AutoUpdateController.AutoUpdate();
-
-        if (!LanguageController.InitializeLanguage())
-        {
-            _mainWindow.Close();
-        }
-
+        
         Initialization = InitMainWindowDataAsync();
         Initialization = InitTrackingAsync();
     }
@@ -231,22 +232,10 @@ public class MainWindowViewModel : INotifyPropertyChanged, IAsyncInitialization
 
     #region Inits
 
-    private void OnUnhandledException(object sender, UnhandledExceptionEventArgs e)
-    {
-        try
-        {
-            Log.Fatal(nameof(OnUnhandledException), (Exception) e.ExceptionObject);
-        }
-        catch (Exception ex)
-        {
-            Log.Fatal(nameof(OnUnhandledException), ex);
-        }
-    }
-
     private void InitAlerts()
     {
         SoundController.InitializeSoundFilesFromDirectory();
-        AlertManager = new AlertController(_mainWindow, ItemsView);
+        AlertManager = new AlertController(ItemsView);
     }
 
     private static void UpgradeSettings()
@@ -259,21 +248,6 @@ public class MainWindowViewModel : INotifyPropertyChanged, IAsyncInitialization
         Settings.Default.Upgrade();
         Settings.Default.UpgradeRequired = false;
         Settings.Default.Save();
-    }
-
-    private static void InitWindowSettings()
-    {
-        _mainWindow.Dispatcher?.Invoke(() =>
-        {
-            _mainWindow.Height = SettingsController.CurrentSettings.MainWindowHeight;
-            _mainWindow.Width = SettingsController.CurrentSettings.MainWindowWidth;
-            if (SettingsController.CurrentSettings.MainWindowMaximized)
-            {
-                _mainWindow.WindowState = WindowState.Maximized;
-            }
-
-            Utilities.CenterWindowOnScreen(_mainWindow);
-        });
     }
 
     private async Task InitMainWindowDataAsync()
@@ -362,6 +336,7 @@ public class MainWindowViewModel : INotifyPropertyChanged, IAsyncInitialization
 
         ItemsView = new ListCollectionView(ItemController.Items);
         InitAlerts();
+        await EstimatedMarketValueController.SetAllEstimatedMarketValuesToItemsAsync();
 
         LoadIconVisibility = Visibility.Hidden;
         IsFilterResetEnabled = true;
@@ -375,7 +350,7 @@ public class MainWindowViewModel : INotifyPropertyChanged, IAsyncInitialization
         WorldData.GetDataListFromJson();
         DungeonObjectData.GetDataListFromJson();
 
-        TrackingController ??= new TrackingController(this, _mainWindow);
+        TrackingController ??= new TrackingController(this);
 
         await StartTrackingAsync();
 
@@ -572,13 +547,14 @@ public class MainWindowViewModel : INotifyPropertyChanged, IAsyncInitialization
             return;
         }
 
+        await EstimatedMarketValueController.LoadFromFileAsync();
+
         await TrackingController?.StatisticController?.LoadFromFileAsync()!;
         await TrackingController?.TradeController?.LoadFromFileAsync()!;
         await TrackingController?.GatheringController?.LoadFromFileAsync()!;
         await TrackingController?.TreasureController?.LoadFromFileAsync()!;
         await TrackingController?.DungeonController?.LoadDungeonFromFileAsync()!;
         await TrackingController?.VaultController?.LoadFromFileAsync()!;
-        await TrackingController?.LootController?.LoadFromFileAsync()!;
 
         TrackingController?.DungeonController?.UpdateDungeonStatsUi();
         TrackingController?.DungeonController?.SetDungeonStatsUi();
@@ -593,7 +569,7 @@ public class MainWindowViewModel : INotifyPropertyChanged, IAsyncInitialization
 
         DungeonBindings.DungeonStatsFilter = new DungeonStatsFilter(TrackingController);
 
-        IsTrackingActive = NetworkManager.StartNetworkCapture(this, TrackingController);
+        IsTrackingActive = NetworkManager.StartNetworkCapture(TrackingController);
         Console.WriteLine(@"### Start Tracking...");
     }
 
@@ -610,11 +586,13 @@ public class MainWindowViewModel : INotifyPropertyChanged, IAsyncInitialization
         await TrackingController?.VaultController?.SaveInFileAsync()!;
         await TrackingController?.TreasureController?.SaveInFileAsync()!;
         await TrackingController?.StatisticController?.SaveInFileAsync()!;
-        await TrackingController?.LootController?.SaveInFileAsync()!;
         await TrackingController?.GatheringController?.SaveInFileAsync(true)!;
         await TrackingController?.TradeController?.SaveInFileAsync()!;
+        
+        await FileController.SaveAsync(DamageMeterBindings?.DamageMeterSnapshots, 
+            Path.Combine(AppDomain.CurrentDomain.BaseDirectory, Settings.Default.UserDataDirectoryName, Settings.Default.DamageMeterSnapshotsFileName));
 
-        await FileController.SaveAsync(DamageMeterBindings?.DamageMeterSnapshots, $"{AppDomain.CurrentDomain.BaseDirectory}{Settings.Default.DamageMeterSnapshotsFileName}");
+        await EstimatedMarketValueController.SaveInFileAsync();
 
         IsTrackingActive = false;
         Console.WriteLine(@"### Stop Tracking");
@@ -1328,6 +1306,106 @@ public class MainWindowViewModel : INotifyPropertyChanged, IAsyncInitialization
         set
         {
             _unsupportedOsVisibility = value;
+            OnPropertyChanged();
+        }
+    }
+
+    public Visibility DashboardTabVisibility
+    {
+        get => _dashboardTabVisibility;
+        set
+        {
+            _dashboardTabVisibility = value;
+            OnPropertyChanged();
+        }
+    }
+
+    public Visibility ItemSearchTabVisibility
+    {
+        get => _itemSearchTabVisibility;
+        set
+        {
+            _itemSearchTabVisibility = value;
+            OnPropertyChanged();
+        }
+    }
+
+    public Visibility LoggingTabVisibility
+    {
+        get => _loggingTabVisibility;
+        set
+        {
+            _loggingTabVisibility = value;
+            OnPropertyChanged();
+        }
+    }
+
+    public Visibility DungeonsTabVisibility
+    {
+        get => _dungeonsTabVisibility;
+        set
+        {
+            _dungeonsTabVisibility = value;
+            OnPropertyChanged();
+        }
+    }
+
+    public Visibility DamageMeterTabVisibility
+    {
+        get => _damageMeterTabVisibility;
+        set
+        {
+            _damageMeterTabVisibility = value;
+            OnPropertyChanged();
+        }
+    }
+
+    public Visibility TradeMonitoringTabVisibility
+    {
+        get => _tradeMonitoringTabVisibility;
+        set
+        {
+            _tradeMonitoringTabVisibility = value;
+            OnPropertyChanged();
+        }
+    }
+
+    public Visibility GatheringTabVisibility
+    {
+        get => _gatheringTabVisibility;
+        set
+        {
+            _gatheringTabVisibility = value;
+            OnPropertyChanged();
+        }
+    }
+
+    public Visibility StorageHistoryTabVisibility
+    {
+        get => _storageHistoryTabVisibility;
+        set
+        {
+            _storageHistoryTabVisibility = value;
+            OnPropertyChanged();
+        }
+    }
+
+    public Visibility MapHistoryTabVisibility
+    {
+        get => _mapHistoryTabVisibility;
+        set
+        {
+            _mapHistoryTabVisibility = value;
+            OnPropertyChanged();
+        }
+    }
+
+    public Visibility PlayerInformationTabVisibility
+    {
+        get => _playerInformationTabVisibility;
+        set
+        {
+            _playerInformationTabVisibility = value;
             OnPropertyChanged();
         }
     }

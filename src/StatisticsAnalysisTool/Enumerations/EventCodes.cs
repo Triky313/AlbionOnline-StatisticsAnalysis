@@ -83,7 +83,7 @@ public enum EventCodes
     UpdateBrecilienStanding, // map[0:11575080 1:3858360 2:970279167 252:81] 0: StandingPoints
     Respawn,
     ServerDebugLog,
-    CharacterEquipmentChanged = 85,
+    CharacterEquipmentChanged = 85, // map[0:297 1:26283117 2:[0 1721 0 0 0 2330 2301 2468 0 0] 5:[-1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 3168] 252:85]
     RegenerationHealthChanged,
     RegenerationEnergyChanged,
     RegenerationMountHealthChanged,

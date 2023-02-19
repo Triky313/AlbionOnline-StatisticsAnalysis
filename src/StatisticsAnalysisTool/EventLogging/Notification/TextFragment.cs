@@ -1,4 +1,4 @@
-﻿namespace StatisticsAnalysisTool.Network.Notification;
+﻿namespace StatisticsAnalysisTool.EventLogging.Notification;
 
 public class TextFragment : LineFragment
 {

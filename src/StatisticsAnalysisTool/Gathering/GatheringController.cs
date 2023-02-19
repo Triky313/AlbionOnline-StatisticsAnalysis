@@ -1,6 +1,7 @@
 ﻿using StatisticsAnalysisTool.Cluster;
 using StatisticsAnalysisTool.Common;
 using StatisticsAnalysisTool.Common.UserSettings;
+using StatisticsAnalysisTool.EstimatedMarketValue;
 using StatisticsAnalysisTool.Models.NetworkModel;
 using StatisticsAnalysisTool.Network.Manager;
 using StatisticsAnalysisTool.Properties;
@@ -43,6 +44,11 @@ public class GatheringController
         var existingGatheredObject = _mainWindowViewModel.GatheringBindings.GatheredCollection.FirstOrDefault(x => !x.IsClosed && x.ObjectId == harvestFinishedObject.ObjectId);
         if (existingGatheredObject != null)
         {
+            if (existingGatheredObject.EstimatedMarketValue.IntegerValue <= 0)
+            {
+                var item = ItemController.GetItemByUniqueName(existingGatheredObject.UniqueName);
+                existingGatheredObject.EstimatedMarketValue = EstimatedMarketValueController.CalculateNearestToAverage(item.EstimatedMarketValues).MarketValue;
+            }
             existingGatheredObject.GainedStandardAmount += harvestFinishedObject.StandardAmount;
             existingGatheredObject.GainedBonusAmount += harvestFinishedObject.CollectorBonusAmount;
             existingGatheredObject.GainedPremiumBonusAmount += harvestFinishedObject.PremiumBonusAmount;
@@ -50,12 +56,14 @@ public class GatheringController
         }
         else
         {
+            var item = ItemController.GetItemByIndex(harvestFinishedObject.ItemId);
             var gathered = new Gathered()
             {
                 Timestamp = DateTime.UtcNow.Ticks,
-                UniqueName = ItemController.GetItemUniqueNameByIndex(harvestFinishedObject.ItemId),
+                UniqueName = item.UniqueName,
                 UserObjectId = harvestFinishedObject.UserObjectId,
                 ObjectId = harvestFinishedObject.ObjectId,
+                EstimatedMarketValue = EstimatedMarketValueController.CalculateNearestToAverage(item.EstimatedMarketValues).MarketValue,
                 GainedStandardAmount = harvestFinishedObject.StandardAmount,
                 GainedBonusAmount = harvestFinishedObject.CollectorBonusAmount,
                 GainedPremiumBonusAmount = harvestFinishedObject.PremiumBonusAmount,

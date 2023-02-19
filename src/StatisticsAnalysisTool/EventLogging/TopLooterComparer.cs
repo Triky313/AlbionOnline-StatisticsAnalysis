@@ -2,7 +2,7 @@
 using System.Collections;
 using StatisticsAnalysisTool.Models;
 
-namespace StatisticsAnalysisTool.Common.Comparer;
+namespace StatisticsAnalysisTool.EventLogging;
 
 public class TopLooterComparer : IComparer
 {
@@ -32,7 +32,7 @@ public class TopLooterComparer : IComparer
 
             return 0;
         }
-            
+
         return 1;
     }
 }

@@ -28,8 +28,14 @@
                         </CheckBox>
                     </DockPanel>
                     <DockPanel Margin="0,5,0,0">
+                        <Label Content="{Binding Translation.NavigationTabVisibility, FallbackValue=NAVIGATION__TAB__VISIBILITY}" MinWidth="300" VerticalAlignment="Top" />
+                        <ComboBox ItemsSource="{Binding TabVisibilities}" ItemTemplate="{StaticResource TabVisibilityFilter}" 
+                                  HorizontalAlignment="Left" VerticalAlignment="Top" Width="200" Height="26" />
+                    </DockPanel>
+                    <DockPanel Margin="0,5,0,0">
                         <Label Content="{Binding Translation.RefreshRate, FallbackValue=REFRESH__RATE}" MinWidth="300" VerticalAlignment="Top" />
-                        <ComboBox ItemsSource="{Binding RefreshRates}" SelectedItem="{Binding RefreshRatesSelection}" IsSynchronizedWithCurrentItem="True" DisplayMemberPath="Name" SelectedValuePath="Value" HorizontalAlignment="Left" VerticalAlignment="Top" Width="200" Height="26" />
+                        <ComboBox ItemsSource="{Binding RefreshRates}" SelectedItem="{Binding RefreshRatesSelection}" IsSynchronizedWithCurrentItem="True" DisplayMemberPath="Name" 
+                                  SelectedValuePath="Value" HorizontalAlignment="Left" VerticalAlignment="Top" Width="200" Height="26" />
                     </DockPanel>
                     <DockPanel Margin="0,5,0,0">
                         <Label Content="{Binding Translation.CharacterNameToTrack, FallbackValue=CHARACTER_NAME_TO_TRACK}" MinWidth="300" VerticalAlignment="Top" />

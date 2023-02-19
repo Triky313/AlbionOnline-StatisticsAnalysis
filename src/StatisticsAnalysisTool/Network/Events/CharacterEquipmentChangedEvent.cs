@@ -14,7 +14,10 @@ public class CharacterEquipmentChangedEvent
 
         try
         {
-            if (parameters.ContainsKey(0)) ObjectId = parameters[0].ObjectToLong();
+            if (parameters.ContainsKey(0))
+            {
+                ObjectId = parameters[0].ObjectToLong();
+            }
 
             if (parameters.ContainsKey(2))
             {

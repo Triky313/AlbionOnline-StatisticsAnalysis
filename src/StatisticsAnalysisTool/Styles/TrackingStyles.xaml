@@ -1,6 +1,5 @@
 <ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-                    xmlns:notification="clr-namespace:StatisticsAnalysisTool.Network.Notification"
                     xmlns:com="clr-namespace:StatisticsAnalysisTool.Common"
                     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
                     xmlns:networkModel="clr-namespace:StatisticsAnalysisTool.Models.NetworkModel"
@@ -10,6 +9,8 @@
                     xmlns:enumerations="clr-namespace:StatisticsAnalysisTool.Enumerations"
                     xmlns:converters="clr-namespace:StatisticsAnalysisTool.Common.Converters"
                     xmlns:cluster="clr-namespace:StatisticsAnalysisTool.Cluster"
+                    xmlns:notification1="clr-namespace:StatisticsAnalysisTool.EventLogging.Notification"
+                    xmlns:eventLogging="clr-namespace:StatisticsAnalysisTool.EventLogging"
                     mc:Ignorable="d">
 
     <converters:ValuePerHourConverter x:Key="ValuePerHourConverter" />
@@ -176,7 +177,7 @@
         <Setter Property="Source" Value="../Resources/icon_daily_season_points.png"/>
     </Style>
 
-    <DataTemplate x:Key="NotificationTemplate" DataType="{x:Type notification:TrackingNotification}">
+    <DataTemplate x:Key="NotificationTemplate" DataType="{x:Type notification1:TrackingNotification}">
         <Grid Visibility="{Binding Visibility}">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="Auto" />
@@ -187,11 +188,11 @@
         </Grid>
     </DataTemplate>
 
-    <DataTemplate DataType="{x:Type notification:TextFragment}">
+    <DataTemplate DataType="{x:Type notification1:TextFragment}">
         <TextBlock Text="{Binding Text, StringFormat='{}{0} '}" TextWrapping="Wrap" Foreground="{StaticResource SolidColorBrush.Text.1}" />
     </DataTemplate>
 
-    <DataTemplate DataType="{x:Type notification:FameNotificationFragment}">
+    <DataTemplate DataType="{x:Type notification1:FameNotificationFragment}">
         <VirtualizingStackPanel VirtualizationMode="Recycling" Orientation="Horizontal">
             <TextBlock Text="{Binding StartText, StringFormat='{}{0} '}" Foreground="{StaticResource SolidColorBrush.Text.1}"/>
             <TextBlock DataContext="{Binding Operator}" Style="{StaticResource OperatorTextBlockStyle}" />
@@ -249,7 +250,7 @@
         </VirtualizingStackPanel>
     </DataTemplate>
 
-    <DataTemplate DataType="{x:Type notification:SilverNotificationFragment}">
+    <DataTemplate DataType="{x:Type notification1:SilverNotificationFragment}">
         <VirtualizingStackPanel VirtualizationMode="Recycling" Orientation="Horizontal">
             <TextBlock Text="{Binding StartText, StringFormat='{}{0} '}" Foreground="{StaticResource SolidColorBrush.Text.1}"/>
             <TextBlock DataContext="{Binding Operator}" Style="{StaticResource OperatorTextBlockStyle}" />
@@ -282,7 +283,7 @@
         </VirtualizingStackPanel>
     </DataTemplate>
 
-    <DataTemplate DataType="{x:Type notification:FactionPointsNotificationFragment}">
+    <DataTemplate DataType="{x:Type notification1:FactionPointsNotificationFragment}">
         <VirtualizingStackPanel VirtualizationMode="Recycling" Orientation="Horizontal">
             <TextBlock Text="{Binding StartText, StringFormat='{}{0} '}" Foreground="{StaticResource SolidColorBrush.Text.1}"/>
             <TextBlock DataContext="{Binding Operator}" Style="{StaticResource OperatorTextBlockStyle}" />
@@ -302,7 +303,7 @@
         </VirtualizingStackPanel>
     </DataTemplate>
 
-    <DataTemplate DataType="{x:Type notification:FactionFlagPointsNotificationFragment}">
+    <DataTemplate DataType="{x:Type notification1:FactionFlagPointsNotificationFragment}">
         <VirtualizingStackPanel VirtualizationMode="Recycling" Orientation="Horizontal">
             <TextBlock Text="{Binding StartText, StringFormat='{}{0} '}" Foreground="{StaticResource SolidColorBrush.Text.1}"/>
             <TextBlock DataContext="{Binding Operator}" Style="{StaticResource OperatorTextBlockStyle}" />
@@ -322,7 +323,7 @@
         </VirtualizingStackPanel>
     </DataTemplate>
 
-    <DataTemplate DataType="{x:Type notification:SeasonPointsNotificationFragment}">
+    <DataTemplate DataType="{x:Type notification1:SeasonPointsNotificationFragment}">
         <VirtualizingStackPanel VirtualizationMode="Recycling" Orientation="Horizontal">
             <TextBlock Text="{Binding StartText, StringFormat='{}{0} '}" Foreground="{StaticResource SolidColorBrush.Text.1}"/>
             <TextBlock DataContext="{Binding Operator}" Style="{StaticResource OperatorTextBlockStyle}" />
@@ -342,7 +343,7 @@
         </VirtualizingStackPanel>
     </DataTemplate>
 
-    <DataTemplate DataType="{x:Type notification:CombatNotificationFragment}">
+    <DataTemplate DataType="{x:Type notification1:CombatNotificationFragment}">
         <VirtualizingStackPanel VirtualizationMode="Recycling" Orientation="Horizontal">
             <TextBlock Text="{Binding CauserName, IsAsync=True, StringFormat='{}{0} '}" Foreground="{StaticResource SolidColorBrush.Text.1}"/>
             <TextBlock Text="{Binding Damage, IsAsync=True, StringFormat='{}{0:N0} '}" Foreground="{StaticResource SolidColorBrush.Accent.Blue.2}"/>
@@ -350,7 +351,7 @@
         </VirtualizingStackPanel>
     </DataTemplate>
 
-    <DataTemplate DataType="{x:Type notification:OtherGrabbedLootNotificationFragment}">
+    <DataTemplate DataType="{x:Type notification1:OtherGrabbedLootNotificationFragment}">
         <VirtualizingStackPanel VirtualizationMode="Recycling" Orientation="Horizontal">
             <TextBlock Text="{Binding LootedByName, IsAsync=True, StringFormat='{}{0} '}" Foreground="{StaticResource SolidColorBrush.Accent.Blue.3}"/>
             <TextBlock Text="{Binding LootedByGuild, IsAsync=True, StringFormat='{}({0}) '}" Foreground="{StaticResource SolidColorBrush.Accent.Blue.3}"
@@ -396,7 +397,7 @@
         </VirtualizingStackPanel>
     </DataTemplate>
 
-    <DataTemplate DataType="{x:Type notification:KillNotificationFragment}">
+    <DataTemplate DataType="{x:Type notification1:KillNotificationFragment}">
         <StackPanel Orientation="Horizontal" Height="24">
             <TextBlock Text="{Binding Died, IsAsync=True, StringFormat='{}{0} '}" Foreground="{StaticResource SolidColorBrush.Accent.Red.3}"/>
             <TextBlock Text="{Binding ValueText, IsAsync=True, StringFormat='{}{0} '}" Foreground="{StaticResource SolidColorBrush.Text.1}"/>
@@ -537,7 +538,7 @@
         </Grid>
     </DataTemplate>
 
-    <DataTemplate x:Key="LoggingFilterObject" DataType="{x:Type models:LoggingFilterObject}">
+    <DataTemplate x:Key="LoggingFilterObject" DataType="{x:Type eventLogging:LoggingFilterObject}">
         <StackPanel Orientation="Horizontal">
             <CheckBox IsChecked="{Binding IsSelected}" Width="20" VerticalAlignment="Top" />
             <TextBlock Text="{Binding Name}" Width="100" TextWrapping="Wrap" />
@@ -730,7 +731,7 @@
     </Style>
 
     <!-- Loot logger styles -->
-    <DataTemplate x:Key="TopLooterObjectTemplate" DataType="{x:Type models:TopLooterObject}">
+    <DataTemplate x:Key="TopLooterObjectTemplate" DataType="{x:Type eventLogging:TopLooterObject}">
         <StackPanel Orientation="Horizontal" Margin="5,-5,5,0" Height="20">
             <Label Content="{Binding PlayerName}" ContentStringFormat="{}{0:N0}" Padding="0,5,0,0"/>
             <Label Content="{Binding LootActions}" ContentStringFormat="{}({0:N0})" Padding="0,5,0,0"/>

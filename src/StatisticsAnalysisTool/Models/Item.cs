@@ -1,11 +1,11 @@
-﻿using System.Text.Json.Serialization;
-using StatisticsAnalysisTool.Common;
-using StatisticsAnalysisTool.Models.ItemsJsonModel;
+﻿using StatisticsAnalysisTool.Common;
+using StatisticsAnalysisTool.Enumerations;
+using StatisticsAnalysisTool.EstimatedMarketValue;
+using System.Collections.Generic;
+using System.Text.Json.Serialization;
 using System.Windows;
 using System.Windows.Media.Imaging;
 using ShopCategory = StatisticsAnalysisTool.Common.ShopCategory;
-using System;
-using StatisticsAnalysisTool.Enumerations;
 
 namespace StatisticsAnalysisTool.Models;
 
@@ -45,16 +45,17 @@ public class Item
     public int AlertModeMinSellPriceIsUndercutPrice { get; set; }
     public bool IsAlertActive { get; set; }
     public bool IsFavorite { get; set; }
+
     [JsonIgnore]
-    public DateTime LastEstimatedMarketValueUpdate { get; set; }
+    public List<EstQualityValue> EstimatedMarketValues { get; set; }
+
     [JsonIgnore]
-    public string LastEstimatedUpdateTimeString => $"{LanguageController.Translation("LAST_ESTIMATED_VALUE_UPDATE")}: {LastEstimatedMarketValueUpdate.DateTimeToLastUpdateTime()}";
+    public string AverageEstQualityValueString => Utilities.LongWithCulture(EstimatedMarketValueController.CalculateNearestToAverage(EstimatedMarketValues).MarketValue.IntegerValue);
     [JsonIgnore]
-    public PastTime EstimatedMarketValueStatus => LastEstimatedMarketValueUpdate.GetPastTimeEnumByDateTime();
+    public string LastEstimatedUpdateTimeString =>
+        $"{LanguageController.Translation("LAST_ESTIMATED_VALUE_UPDATE")}: {EstimatedMarketValueController.CalculateNearestToAverage(EstimatedMarketValues).Timestamp.DateTimeToLastUpdateTime()}";
     [JsonIgnore]
-    public FixPoint EstimatedMarketValue { get; set; }
-    [JsonIgnore]
-    public string EstimatedMarketValueString => Utilities.LongMarketPriceToString(EstimatedMarketValue.IntegerValue);
+    public PastTime EstimatedMarketValueStatus => EstimatedMarketValueController.CalculateNearestToAverage(EstimatedMarketValues).Timestamp.GetPastTimeEnumByDateTime();
     [JsonIgnore]
     public string TranslationEstMarketValue => LanguageController.Translation("EST_MARKET_VALUE");
     private string GetUniqueNameIfDebug()

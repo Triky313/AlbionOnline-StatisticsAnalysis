@@ -21,6 +21,12 @@ public class GatheringStats : INotifyPropertyChanged
     private long _totalResources;
     private Visibility _mostGatheredResourceVisibility = Visibility.Collapsed;
     private Visibility _mostGatheredClusterVisibility = Visibility.Collapsed;
+    private string _gainedSilverByHide;
+    private string _gainedSilverByOre;
+    private string _gainedSilverByRock;
+    private string _gainedSilverByFiber;
+    private string _gainedSilverByWood;
+    private string _totalGainedSilverString;
 
     public GatheringFilterType GatheringFilterType
     {
@@ -161,10 +167,71 @@ public class GatheringStats : INotifyPropertyChanged
         }
     }
 
+    public string GainedSilverByHide
+    {
+        get => _gainedSilverByHide;
+        set
+        {
+            _gainedSilverByHide = value;
+            OnPropertyChanged();
+        }
+    }
+
+    public string GainedSilverByOre
+    {
+        get => _gainedSilverByOre;
+        set
+        {
+            _gainedSilverByOre = value;
+            OnPropertyChanged();
+        }
+    }
+
+    public string GainedSilverByRock
+    {
+        get => _gainedSilverByRock;
+        set
+        {
+            _gainedSilverByRock = value;
+            OnPropertyChanged();
+        }
+    }
+
+    public string GainedSilverByFiber
+    {
+        get => _gainedSilverByFiber;
+        set
+        {
+            _gainedSilverByFiber = value;
+            OnPropertyChanged();
+        }
+    }
+
+    public string GainedSilverByWood
+    {
+        get => _gainedSilverByWood;
+        set
+        {
+            _gainedSilverByWood = value;
+            OnPropertyChanged();
+        }
+    }
+
+    public string TotalGainedSilverString
+    {
+        get => _totalGainedSilverString;
+        set
+        {
+            _totalGainedSilverString = value;
+            OnPropertyChanged();
+        }
+    }
+
     public static string TranslationMostGatheredResource => LanguageController.Translation("MOST_GATHERED_RESOURCE");
     public static string TranslationMostGatheredOnMap => LanguageController.Translation("MOST_GATHERED_ON_MAP");
     public static string TranslationTotalResources => LanguageController.Translation("TOTAL_RESOURCES");
     public static string TranslationTotalMiningProcesses => LanguageController.Translation("TOTAL_MINING_PROCESSES");
+    public static string TranslationResourceValue => LanguageController.Translation("RESOURCE_VALUE");
 
     public event PropertyChangedEventHandler PropertyChanged;
 

@@ -31,26 +31,26 @@ public class NewCharacterEvent
 
             if (parameters.ContainsKey(13)) Position = (float[]) parameters[13];
                 
-            if (parameters.ContainsKey(33))
+            if (parameters.ContainsKey(34))
             {
-                var valueType = parameters[33].GetType();
+                var valueType = parameters[34].GetType();
                 switch (valueType.IsArray)
                 {
                     case true when typeof(byte[]).Name == valueType.Name:
                     {
-                        var values = ((byte[])parameters[33]).ToDictionary();
+                        var values = ((byte[])parameters[34]).ToDictionary();
                         CharacterEquipment = GetEquipment(values);
                         break;
                     }
                     case true when typeof(short[]).Name == valueType.Name:
                     {
-                        var values = ((short[])parameters[33]).ToDictionary();
+                        var values = ((short[])parameters[34]).ToDictionary();
                         CharacterEquipment = GetEquipment(values);
                         break;
                     }
                     case true when typeof(int[]).Name == valueType.Name:
                     {
-                        var values = ((int[])parameters[33]).ToDictionary();
+                        var values = ((int[])parameters[34]).ToDictionary();
                         CharacterEquipment = GetEquipment(values);
                         break;
                     }

@@ -164,7 +164,8 @@
                                         <ItemsControl ItemsSource="{Binding RequiredResources, IsAsync=True}" ItemTemplate="{StaticResource RequiredResourceTemplate}" />
                                     </StackPanel>
                                     <Separator Style="{StaticResource {x:Static ToolBar.SeparatorStyleKey}}" />
-                                    <ContentControl Visibility="{Binding RequiredJournalVisibility}" ContentTemplate="{StaticResource RequiredJournalTemplate}" Content="{Binding RequiredJournal}" />
+                                    <ContentControl Visibility="{Binding RequiredJournalVisibility}" 
+                                                    ContentTemplate="{StaticResource RequiredJournalTemplate}" Content="{Binding RequiredJournal}" />
                                     <Separator Style="{StaticResource {x:Static ToolBar.SeparatorStyleKey}}" />
                                     <ContentControl ContentTemplate="{StaticResource CraftingCalculationTemplate}" Content="{Binding CraftingCalculation}" />
                                 </StackPanel>

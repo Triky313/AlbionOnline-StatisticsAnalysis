@@ -1,10 +1,10 @@
 using log4net;
 using StatisticsAnalysisTool.Common;
 using StatisticsAnalysisTool.Enumerations;
+using StatisticsAnalysisTool.Models.ItemsJsonModel;
 using StatisticsAnalysisTool.Models.NetworkModel;
 using StatisticsAnalysisTool.Network.Notification;
 using StatisticsAnalysisTool.ViewModels;
-using StatisticsAnalysisTool.Views;
 using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
@@ -13,7 +13,6 @@ using System.Linq;
 using System.Reflection;
 using System.Threading.Tasks;
 using System.Windows;
-using StatisticsAnalysisTool.Models.ItemsJsonModel;
 
 namespace StatisticsAnalysisTool.Network.Manager;
 
@@ -21,17 +20,15 @@ public class CombatController
 {
     private static readonly ILog Log = LogManager.GetLogger(MethodBase.GetCurrentMethod()?.DeclaringType);
 
-    private readonly MainWindow _mainWindow;
     private readonly MainWindowViewModel _mainWindowViewModel;
     private readonly TrackingController _trackingController;
     private bool _combatModeWasCombatOver;
 
     public bool IsDamageMeterActive { get; set; }
 
-    public CombatController(TrackingController trackingController, MainWindow mainWindow, MainWindowViewModel mainWindowViewModel)
+    public CombatController(TrackingController trackingController, MainWindowViewModel mainWindowViewModel)
     {
         _trackingController = trackingController;
-        _mainWindow = mainWindow;
         _mainWindowViewModel = mainWindowViewModel;
 
         OnChangeCombatMode += AddCombatTime;
@@ -117,7 +114,7 @@ public class CombatController
 
         foreach (var healthChangeObject in entities)
         {
-            if (_mainWindow?.Dispatcher == null || healthChangeObject.Value?.UserGuid == null)
+            if (healthChangeObject.Value?.UserGuid == null)
             {
                 continue;
             }
@@ -151,7 +148,7 @@ public class CombatController
         if (healthChangeObjectValue?.CharacterEquipment?.MainHand != null)
         {
             var item = ItemController.GetItemByIndex(healthChangeObjectValue.CharacterEquipment?.MainHand);
-            fragment.CauserMainHand = ((ItemJsonObject)item?.FullItemInformation)?.ItemType == ItemType.Weapon ? item : null;
+            fragment.CauserMainHand = ((ItemJsonObject) item?.FullItemInformation)?.ItemType == ItemType.Weapon ? item : null;
         }
 
         // Damage

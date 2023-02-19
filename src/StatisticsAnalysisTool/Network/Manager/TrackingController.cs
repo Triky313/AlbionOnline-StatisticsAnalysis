@@ -1,23 +1,21 @@
-using log4net;
+using StatisticsAnalysisTool.Cluster;
 using StatisticsAnalysisTool.Common;
 using StatisticsAnalysisTool.Common.UserSettings;
-using StatisticsAnalysisTool.Enumerations;
-using StatisticsAnalysisTool.Network.Notification;
+using StatisticsAnalysisTool.Dungeon;
+using StatisticsAnalysisTool.EstimatedMarketValue;
+using StatisticsAnalysisTool.EventLogging;
+using StatisticsAnalysisTool.EventLogging.Notification;
+using StatisticsAnalysisTool.Gathering;
 using StatisticsAnalysisTool.Trade;
+using StatisticsAnalysisTool.Trade.Mails;
+using StatisticsAnalysisTool.Trade.Market;
 using StatisticsAnalysisTool.ViewModels;
-using StatisticsAnalysisTool.Views;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Reflection;
 using System.Threading.Tasks;
 using System.Windows;
-using StatisticsAnalysisTool.Trade.Mails;
-using StatisticsAnalysisTool.Trade.Market;
 using ValueType = StatisticsAnalysisTool.Enumerations.ValueType;
-using StatisticsAnalysisTool.Gathering;
-using StatisticsAnalysisTool.Cluster;
-using StatisticsAnalysisTool.Dungeon;
 
 namespace StatisticsAnalysisTool.Network.Manager;
 
@@ -25,8 +23,6 @@ public class TrackingController : ITrackingController
 {
     private const int MaxNotifications = 4000;
 
-    private static readonly ILog Log = LogManager.GetLogger(MethodBase.GetCurrentMethod()?.DeclaringType);
-    private readonly MainWindow _mainWindow;
     private readonly MainWindowViewModel _mainWindowViewModel;
     public readonly LiveStatsTracker LiveStatsTracker;
     public readonly CombatController CombatController;
@@ -43,14 +39,13 @@ public class TrackingController : ITrackingController
     public readonly GatheringController GatheringController;
     private readonly List<NotificationType> _notificationTypesFilters = new();
 
-    public TrackingController(MainWindowViewModel mainWindowViewModel, MainWindow mainWindow)
+    public TrackingController(MainWindowViewModel mainWindowViewModel)
     {
         _mainWindowViewModel = mainWindowViewModel;
-        _mainWindow = mainWindow;
         ClusterController = new ClusterController(this, mainWindowViewModel);
         EntityController = new EntityController(mainWindowViewModel);
         DungeonController = new DungeonController(this, mainWindowViewModel);
-        CombatController = new CombatController(this, _mainWindow, mainWindowViewModel);
+        CombatController = new CombatController(this, mainWindowViewModel);
         LootController = new LootController(this, mainWindowViewModel);
         StatisticController = new StatisticController(this, mainWindowViewModel);
         TreasureController = new TreasureController(this, mainWindowViewModel);
@@ -63,21 +58,6 @@ public class TrackingController : ITrackingController
     }
 
     public bool ExistIndispensableInfos => ClusterController.CurrentCluster != null && EntityController.ExistLocalEntity();
-
-    #region Tracking Controller Helper
-
-    public bool IsMainWindowNull()
-    {
-        if (_mainWindow != null)
-        {
-            return false;
-        }
-
-        Log.Error($"{MethodBase.GetCurrentMethod()?.DeclaringType}: _mainWindow is null.");
-        return true;
-    }
-
-    #endregion
 
     #region Notifications
 
@@ -133,7 +113,7 @@ public class TrackingController : ITrackingController
         int? numberToBeRemoved = _mainWindowViewModel?.LoggingBindings?.TrackingNotifications?.Count - MaxNotifications;
         if (numberToBeRemoved is > 0)
         {
-            var notifications = _mainWindowViewModel?.LoggingBindings?.TrackingNotifications?.ToList().OrderBy(x => x?.DateTime).Take((int)numberToBeRemoved).ToAsyncEnumerable();
+            var notifications = _mainWindowViewModel?.LoggingBindings?.TrackingNotifications?.ToList().OrderBy(x => x?.DateTime).Take((int) numberToBeRemoved).ToAsyncEnumerable();
             if (notifications != null)
             {
                 await foreach (var notification in notifications)

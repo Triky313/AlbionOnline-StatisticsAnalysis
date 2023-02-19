@@ -7,6 +7,7 @@ using StatisticsAnalysisTool.ViewModels;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.IO;
 using System.Linq;
 using System.Reflection;
 using System.Threading.Tasks;
@@ -308,12 +309,14 @@ public class VaultController
 
     public async Task LoadFromFileAsync()
     {
-        Vaults = await FileController.LoadAsync<ObservableCollection<Vault>>($"{AppDomain.CurrentDomain.BaseDirectory}{Settings.Default.VaultsFileName}");
+        FileController.TransferFileIfExistFromOldPathToUserDataDirectory(Path.Combine(AppDomain.CurrentDomain.BaseDirectory, Settings.Default.VaultsFileName));
+        Vaults = await FileController.LoadAsync<ObservableRangeCollection<Vault>>(
+            Path.Combine(AppDomain.CurrentDomain.BaseDirectory, Settings.Default.UserDataDirectoryName, Settings.Default.VaultsFileName));
     }
 
     public async Task SaveInFileAsync()
     {
-        await FileController.SaveAsync(Vaults, $"{AppDomain.CurrentDomain.BaseDirectory}{Settings.Default.VaultsFileName}");
+        await FileController.SaveAsync(Vaults, Path.Combine(AppDomain.CurrentDomain.BaseDirectory, Settings.Default.UserDataDirectoryName, Settings.Default.VaultsFileName));
     }
 
     #endregion

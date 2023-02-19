@@ -97,4 +97,11 @@
         </StackPanel>
     </DataTemplate>
 
+    <DataTemplate x:Key="TabVisibilityFilter" DataType="{x:Type models:TabVisibilityFilter}">
+        <StackPanel Orientation="Horizontal">
+            <CheckBox IsChecked="{Binding IsSelected}" Width="20" VerticalAlignment="Top" />
+            <TextBlock Text="{Binding Name}" Width="100" TextWrapping="Wrap" />
+        </StackPanel>
+    </DataTemplate>
+
 </ResourceDictionary>

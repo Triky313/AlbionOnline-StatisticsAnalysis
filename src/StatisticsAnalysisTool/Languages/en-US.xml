@@ -697,4 +697,7 @@
 	<translation name="AMOUNT_OF_MINING_PROCESSES">Amount of mining processes</translation>
 	<translation name="SURE_YOU_WANT_TO_DELETE_SELECTED_RESOURCES">Are you sure you want to delete selected resources?</translation>
 	<translation name="DELETE_SELECTED_RESOURCES">Delete selected resources</translation>
+	<translation name="RESOURCE_VALUE">Resource value</translation>
+	<translation name="TOTAL_MARKET_VALUE">Total market value</translation>
+	<translation name="NAVIGATION_TAB_VISIBILITY">Navigation tab visibility</translation>
 </translations>

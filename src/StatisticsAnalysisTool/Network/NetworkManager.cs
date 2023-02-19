@@ -16,16 +16,13 @@ namespace StatisticsAnalysisTool.Network;
 public class NetworkManager
 {
     private static IPhotonReceiver _receiver;
-    private static MainWindowViewModel _mainWindowViewModel;
     private static readonly List<ICaptureDevice> CapturedDevices = new();
     private static readonly ILog Log = LogManager.GetLogger(MethodBase.GetCurrentMethod()?.DeclaringType);
 
     public static bool IsNetworkCaptureRunning => CapturedDevices.Where(device => device.Started).Any(device => device.Started);
-
-    public static bool StartNetworkCapture(MainWindowViewModel mainWindowViewModel, TrackingController trackingController)
+    
+    public static bool StartNetworkCapture(TrackingController trackingController)
     {
-        _mainWindowViewModel = mainWindowViewModel;
-
         ReceiverBuilder builder = ReceiverBuilder.Create();
 
         builder.AddEventHandler(new NewEquipmentItemEventHandler(trackingController));
@@ -78,14 +75,14 @@ public class NetworkManager
 
         builder.AddResponseHandler(new ChangeClusterResponseHandler(trackingController));
         builder.AddResponseHandler(new PartyMakeLeaderResponseHandler(trackingController));
-        builder.AddResponseHandler(new JoinResponseHandler(trackingController, mainWindowViewModel));
+        builder.AddResponseHandler(new JoinResponseHandler(trackingController));
         builder.AddResponseHandler(new GetMailInfosResponseHandler(trackingController));
         builder.AddResponseHandler(new ReadMailResponseHandler(trackingController));
         builder.AddResponseHandler(new AuctionGetOffersResponseHandler(trackingController));
         builder.AddResponseHandler(new AuctionGetResponseHandler(trackingController));
 
         _receiver = builder.Build();
-
+        
         try
         {
             CapturedDevices.AddRange(CaptureDeviceList.Instance);
@@ -95,12 +92,22 @@ public class NetworkManager
         {
             ConsoleManager.WriteLineForError(MethodBase.GetCurrentMethod()?.DeclaringType, e);
             Log.Error(MethodBase.GetCurrentMethod()?.DeclaringType, e);
-            _mainWindowViewModel.SetErrorBar(Visibility.Visible, LanguageController.Translation("PACKET_HANDLER_ERROR_MESSAGE"));
-            _ = _mainWindowViewModel.StopTrackingAsync();
+
+            var mainWindowViewModel = ServiceLocator.Resolve<MainWindowViewModel>();
+            if (mainWindowViewModel != null)
+            {
+                mainWindowViewModel.SetErrorBar(Visibility.Visible, LanguageController.Translation("PACKET_HANDLER_ERROR_MESSAGE"));
+                _ = mainWindowViewModel.StopTrackingAsync();
+            }
+            else
+            {
+                Log.Error(MethodBase.GetCurrentMethod()?.DeclaringType + " - MainWindowViewModel is null.");
+            }
+
             return false;
         }
     }
-
+    
     private static bool StartDeviceCapture()
     {
         if (CapturedDevices.Count <= 0)
@@ -119,8 +126,18 @@ public class NetworkManager
         {
             ConsoleManager.WriteLineForError(MethodBase.GetCurrentMethod()?.DeclaringType, e);
             Log.Error(MethodBase.GetCurrentMethod()?.DeclaringType, e);
-            _mainWindowViewModel.SetErrorBar(Visibility.Visible, LanguageController.Translation("PACKET_HANDLER_ERROR_MESSAGE"));
-            _ = _mainWindowViewModel.StopTrackingAsync();
+
+            var mainWindowViewModel = ServiceLocator.Resolve<MainWindowViewModel>();
+            if (mainWindowViewModel != null)
+            {
+                mainWindowViewModel.SetErrorBar(Visibility.Visible, LanguageController.Translation("PACKET_HANDLER_ERROR_MESSAGE"));
+                _ = mainWindowViewModel.StopTrackingAsync();
+            }
+            else
+            {
+                Log.Error(MethodBase.GetCurrentMethod()?.DeclaringType + " - MainWindowViewModel is null.");
+            }
+            
             return false;
         }
 

@@ -402,10 +402,10 @@ public class ItemWindowViewModel : INotifyPropertyChanged
 
         switch (Item?.FullItemInformation)
         {
-            case Weapon weapon when weapon.CraftingRequirements?.FirstOrDefault()?.CraftResource?.Count > 0:
-            case EquipmentItem equipmentItem when equipmentItem.CraftingRequirements?.FirstOrDefault()?.CraftResource?.Count > 0:
-            case Mount mount when mount.CraftingRequirements?.FirstOrDefault()?.CraftResource?.Count > 0:
-            case ConsumableItem consumableItem when consumableItem.CraftingRequirements?.FirstOrDefault()?.CraftResource?.Count > 0:
+            case Weapon weapon when weapon.CraftingRequirements?.FirstOrDefault()?.CraftResource.Count > 0:
+            case EquipmentItem equipmentItem when equipmentItem.CraftingRequirements?.FirstOrDefault()?.CraftResource.Count > 0:
+            case Mount mount when mount.CraftingRequirements?.FirstOrDefault()?.CraftResource.Count > 0:
+            case ConsumableItem consumableItem when consumableItem.CraftingRequirements?.FirstOrDefault()?.CraftResource.Count > 0:
                 areResourcesAvailable = true;
                 break;
         }
@@ -414,10 +414,36 @@ public class ItemWindowViewModel : INotifyPropertyChanged
         {
             CraftingTabVisibility = Visibility.Visible;
 
-            EssentialCraftingValues = new EssentialCraftingValuesTemplate(this, CurrentItemPrices, Item.UniqueName);
+            EssentialCraftingValues = new EssentialCraftingValuesTemplate(this, CurrentItemPrices, Item?.UniqueName);
             SetJournalInfo();
             await SetRequiredResourcesAsync();
-            CraftingNotes = CraftingTabController.GetNote(Item.UniqueName);
+            CraftingNotes = await CraftingTabController.GetNoteAsync(Item?.UniqueName);
+            IsFocusCheckboxEnabled(Item?.FullItemInformation);
+        }
+    }
+
+    private void IsFocusCheckboxEnabled(object fullItemInfo)
+    {
+        if (fullItemInfo is EquipmentItem equipmentItem)
+        {
+            if (int.TryParse(equipmentItem.CraftingRequirements?.FirstOrDefault()?.CraftingFocus, NumberStyles.Any, 
+                    CultureInfo.InvariantCulture, out int craftingFocusNumber) && (craftingFocusNumber <= 0))
+            {
+                EssentialCraftingValues.IsCraftingWithFocusCheckboxEnabled = false;
+                EssentialCraftingValues.IsCraftingBonusEnabled = false;
+                EssentialCraftingValues.CraftingBonus = 100;
+            }
+            else
+            {
+                EssentialCraftingValues.IsCraftingWithFocusCheckboxEnabled = true;
+                EssentialCraftingValues.IsCraftingBonusEnabled = true;
+            }
+        }
+        else
+        {
+            EssentialCraftingValues.IsCraftingWithFocusCheckboxEnabled = true;
+            EssentialCraftingValues.IsCraftingBonusEnabled = true;
+            EssentialCraftingValues.CraftingBonus = 133;
         }
     }
 
@@ -496,7 +522,7 @@ public class ItemWindowViewModel : INotifyPropertyChanged
                            .SelectMany(x => x.CraftResource).ToList().GroupBy(x => x.UniqueName).Select(grp => grp.FirstOrDefault()).ToAsyncEnumerable().ConfigureAwait(false))
         {
             var item = GetSuitableResourceItem(craftResource.UniqueName);
-            var craftingQuantity = (long)Math.Round(item?.UniqueName?.ToUpper().Contains("ARTEFACT") ?? false
+            var craftingQuantity = (long) Math.Round(item?.UniqueName?.ToUpper().Contains("ARTEFACT") ?? false
             ? CraftingCalculation.PossibleItemCrafting
                 : EssentialCraftingValues.CraftingItemQuantity, MidpointRounding.ToPositiveInfinity);
 
@@ -540,7 +566,7 @@ public class ItemWindowViewModel : INotifyPropertyChanged
             {
                 if (requiredResource.IsArtifactResource || requiredResource.IsTomeOfInsightResource || requiredResource.IsAvalonianEnergy)
                 {
-                    requiredResource.CraftingQuantity = (long)Math.Round(possibleItemCrafting, MidpointRounding.ToNegativeInfinity);
+                    requiredResource.CraftingQuantity = (long) Math.Round(possibleItemCrafting, MidpointRounding.ToNegativeInfinity);
                     continue;
                 }
 
@@ -955,7 +981,7 @@ public class ItemWindowViewModel : INotifyPropertyChanged
         {
             LabelsRotation = 15,
             Labels = date,
-            Labeler = value => new DateTime((long)value).ToString(CultureInfo.CurrentCulture),
+            Labeler = value => new DateTime((long) value).ToString(CultureInfo.CurrentCulture),
             UnitWidth = TimeSpan.FromDays(1).Ticks
         });
 
@@ -1306,7 +1332,7 @@ public class ItemWindowViewModel : INotifyPropertyChanged
         if (values.Length == 0) return 0;
 
         var sum = Sum(values);
-        var result = sum / (ulong)values.Length;
+        var result = sum / (ulong) values.Length;
         return result;
     }
 

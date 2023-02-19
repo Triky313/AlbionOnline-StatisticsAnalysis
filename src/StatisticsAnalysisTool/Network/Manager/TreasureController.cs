@@ -1,12 +1,14 @@
 using StatisticsAnalysisTool.Common;
 using StatisticsAnalysisTool.Enumerations;
 using StatisticsAnalysisTool.Models;
+using StatisticsAnalysisTool.Models.NetworkModel;
 using StatisticsAnalysisTool.Properties;
 using StatisticsAnalysisTool.ViewModels;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Collections.Specialized;
+using System.IO;
 using System.Linq;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
@@ -261,12 +263,14 @@ public class TreasureController
 
     public async Task LoadFromFileAsync()
     {
-        _treasures = await FileController.LoadAsync<ObservableCollection<Treasure>>($"{AppDomain.CurrentDomain.BaseDirectory}{Settings.Default.TreasureStatsFileName}");
+        FileController.TransferFileIfExistFromOldPathToUserDataDirectory(Path.Combine(AppDomain.CurrentDomain.BaseDirectory, Settings.Default.TreasureStatsFileName));
+        _treasures = await FileController.LoadAsync<ObservableRangeCollection<Treasure>>(
+            Path.Combine(AppDomain.CurrentDomain.BaseDirectory, Settings.Default.UserDataDirectoryName, Settings.Default.TreasureStatsFileName));
     }
 
     public async Task SaveInFileAsync()
     {
-        await FileController.SaveAsync(_treasures, $"{AppDomain.CurrentDomain.BaseDirectory}{Settings.Default.TreasureStatsFileName}");
+        await FileController.SaveAsync(_treasures, Path.Combine(AppDomain.CurrentDomain.BaseDirectory, Settings.Default.UserDataDirectoryName, Settings.Default.TreasureStatsFileName));
     }
 
     #endregion

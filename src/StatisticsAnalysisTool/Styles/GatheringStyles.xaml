@@ -2,53 +2,7 @@
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
                     xmlns:gathering="clr-namespace:StatisticsAnalysisTool.Gathering"
                     xmlns:controls="clr-namespace:WpfToolkit.Controls;assembly=VirtualizingWrapPanel">
-
-    <BitmapImage x:Key="OriginalImage" UriSource="../Assets/resources.png"/>
-    <CroppedBitmap x:Key="Image.Resource.Ore.Level0">
-        <CroppedBitmap.Source>
-            <StaticResource ResourceKey="OriginalImage"/>
-        </CroppedBitmap.Source>
-        <CroppedBitmap.SourceRect>
-            <Int32Rect X="0" Y="0" Width="155" Height="145"/>
-        </CroppedBitmap.SourceRect>
-    </CroppedBitmap>
-
-    <CroppedBitmap x:Key="Image.Resource.Ore.Level1">
-        <CroppedBitmap.Source>
-            <StaticResource ResourceKey="OriginalImage"/>
-        </CroppedBitmap.Source>
-        <CroppedBitmap.SourceRect>
-            <Int32Rect X="155" Y="0" Width="155" Height="145"/>
-        </CroppedBitmap.SourceRect>
-    </CroppedBitmap>
-
-    <CroppedBitmap x:Key="Image.Resource.Ore.Level2">
-        <CroppedBitmap.Source>
-            <StaticResource ResourceKey="OriginalImage"/>
-        </CroppedBitmap.Source>
-        <CroppedBitmap.SourceRect>
-            <Int32Rect X="310" Y="0" Width="155" Height="145"/>
-        </CroppedBitmap.SourceRect>
-    </CroppedBitmap>
-
-    <CroppedBitmap x:Key="Image.Resource.Ore.Level3">
-        <CroppedBitmap.Source>
-            <StaticResource ResourceKey="OriginalImage"/>
-        </CroppedBitmap.Source>
-        <CroppedBitmap.SourceRect>
-            <Int32Rect X="465" Y="0" Width="155" Height="145"/>
-        </CroppedBitmap.SourceRect>
-    </CroppedBitmap>
-
-    <CroppedBitmap x:Key="Image.Resource.Ore.Level4">
-        <CroppedBitmap.Source>
-            <StaticResource ResourceKey="OriginalImage"/>
-        </CroppedBitmap.Source>
-        <CroppedBitmap.SourceRect>
-            <Int32Rect X="620" Y="0" Width="155" Height="145"/>
-        </CroppedBitmap.SourceRect>
-    </CroppedBitmap>
-
+    
     <Style x:Key="Style.Image.Resource" TargetType="Image">
         <Setter Property="Width" Value="50" />
         <Setter Property="Height" Value="50" />
@@ -144,6 +98,10 @@
                                 <StackPanel Orientation="Horizontal" Width="100">
                                     <Image Style="{StaticResource Gathering.Image.Pickaxe.Repeat}" ToolTip="{Binding TranslationAmountOfMiningProcesses, FallbackValue='AMOUNT__OF__MINING__PROCESSES'}" />
                                     <TextBlock Text="{Binding MiningProcesses, IsAsync=True}" Style="{StaticResource Gathering.TextBlock.CollectionFragment.Numbers}" />
+                                </StackPanel>
+                                <StackPanel Orientation="Horizontal" Width="130">
+                                    <Image Style="{StaticResource Icon.Silver}" ToolTip="{Binding TranslationTotalMarketValue, FallbackValue='TOTAL__MARKET__VALUE'}" />
+                                    <TextBlock Text="{Binding TotalMarketValueWithCulture, IsAsync=True}" Style="{StaticResource Gathering.TextBlock.CollectionFragment.Numbers}" />
                                 </StackPanel>
                             </StackPanel>
                             <Grid Margin="0 -2 0 0" Height="18" Width="18" HorizontalAlignment="Right">
@@ -283,6 +241,12 @@
     <DataTemplate x:Key="GenerallyTemplate" DataType="{x:Type gathering:GatheringStats}">
         <Grid>
             <StackPanel Orientation="Vertical">
+                <TextBlock Style="{StaticResource Gathering.Stats.TitleText}" Text="{Binding TranslationResourceValue}" />
+                <StackPanel Orientation="Horizontal">
+                    <Image Style="{StaticResource Icon.Silver}" Margin="0,0,0,2" />
+                    <TextBlock Text="{Binding TotalGainedSilverString, IsAsync=True}" Style="{StaticResource Gathering.TextBlock.CollectionFragment.Numbers}" />
+                </StackPanel>
+
                 <TextBlock Visibility="{Binding MostGatheredResourceVisibility}" Style="{StaticResource Gathering.Stats.TitleText}" Text="{Binding TranslationMostGatheredResource}" />
                 <ContentControl Visibility="{Binding MostGatheredResourceVisibility}" Content="{Binding MostGatheredResource}" ContentTemplate="{StaticResource MostGatheredResourceTemplate}" />
 
@@ -299,7 +263,12 @@
     </DataTemplate>
 
     <DataTemplate x:Key="HideTemplate" DataType="{x:Type gathering:GatheringStats}">
-        <Grid>
+        <StackPanel Orientation="Vertical">
+            <TextBlock Style="{StaticResource Gathering.Stats.TitleText}" Text="{Binding TranslationResourceValue}" />
+            <StackPanel Orientation="Horizontal">
+                <Image Style="{StaticResource Icon.Silver}" Margin="0,0,0,2" />
+                <TextBlock Text="{Binding GainedSilverByHide, IsAsync=True}" Style="{StaticResource Gathering.TextBlock.CollectionFragment.Numbers}" />
+            </StackPanel>
             <StackPanel Orientation="Vertical">
                 <controls:VirtualizingItemsControl ItemsSource="{Binding GatheredHide, IsAsync=True, Mode=OneWay}"
                                                    ItemTemplate="{StaticResource GatheredItemStatsTemplate}" 
@@ -310,11 +279,16 @@
                                                    ScrollViewer.HorizontalScrollBarVisibility="Disabled"
                                                    ScrollViewer.VerticalScrollBarVisibility="Disabled" />
             </StackPanel>
-        </Grid>
+        </StackPanel>
     </DataTemplate>
 
     <DataTemplate x:Key="OreTemplate" DataType="{x:Type gathering:GatheringStats}">
-        <Grid>
+        <StackPanel Orientation="Vertical">
+            <TextBlock Style="{StaticResource Gathering.Stats.TitleText}" Text="{Binding TranslationResourceValue}" />
+            <StackPanel Orientation="Horizontal">
+                <Image Style="{StaticResource Icon.Silver}" Margin="0,0,0,2" />
+                <TextBlock Text="{Binding GainedSilverByOre, IsAsync=True}" Style="{StaticResource Gathering.TextBlock.CollectionFragment.Numbers}" />
+            </StackPanel>
             <StackPanel Orientation="Vertical">
                 <controls:VirtualizingItemsControl ItemsSource="{Binding GatheredOre, IsAsync=True, Mode=OneWay}"
                                                    ItemTemplate="{StaticResource GatheredItemStatsTemplate}" 
@@ -325,75 +299,18 @@
                                                    ScrollViewer.HorizontalScrollBarVisibility="Disabled"
                                                    ScrollViewer.VerticalScrollBarVisibility="Disabled" />
             </StackPanel>
-        </Grid>
-        <!--<Grid HorizontalAlignment="Center">
-            <StackPanel Orientation="Vertical" HorizontalAlignment="Left" Margin="0,50,0,0">
-                <StackPanel Orientation="Horizontal">
-                    <Image Style="{StaticResource Style.Image.Resource}" Source="{StaticResource Image.Resource.Ore.Level0}" Margin="0,0,0,0" />
-                    <TextBlock Text="999" VerticalAlignment="Center" Foreground="{StaticResource SolidColorBrush.Text.1}" Width="50" TextAlignment="Center" Margin="3,0,2,0" />
-                    <TextBlock Text="999" VerticalAlignment="Center" Foreground="{StaticResource SolidColorBrush.Text.1}" Width="50" TextAlignment="Center" Margin="3,0,2,0" />
-                    <TextBlock Text="999" VerticalAlignment="Center" Foreground="{StaticResource SolidColorBrush.Text.1}" Width="50" TextAlignment="Center" Margin="3,0,2,0" />
-                    <TextBlock Text="999" VerticalAlignment="Center" Foreground="{StaticResource SolidColorBrush.Text.1}" Width="50" TextAlignment="Center" Margin="3,0,2,0" />
-                    <TextBlock Text="999" VerticalAlignment="Center" Foreground="{StaticResource SolidColorBrush.Text.1}" Width="50" TextAlignment="Center" Margin="3,0,2,0" />
-                    <TextBlock Text="999" VerticalAlignment="Center" Foreground="{StaticResource SolidColorBrush.Text.1}" Width="50" TextAlignment="Center" Margin="3,0,2,0" />
-                    <TextBlock Text="999" VerticalAlignment="Center" Foreground="{StaticResource SolidColorBrush.Text.1}" Width="50" TextAlignment="Center" Margin="3,0,2,0" />
-                    <TextBlock Text="999" VerticalAlignment="Center" Foreground="{StaticResource SolidColorBrush.Text.1}" Width="50" TextAlignment="Center" Margin="3,0,2,0" />
-                </StackPanel>
-                <StackPanel Orientation="Horizontal">
-                    <Image Style="{StaticResource Style.Image.Resource}" Source="{StaticResource Image.Resource.Ore.Level1}" />
-                    <TextBlock Text="" VerticalAlignment="Center" Foreground="{StaticResource SolidColorBrush.Text.1}" Width="165" TextAlignment="Center" />
-                    <TextBlock Text="999" VerticalAlignment="Center" Foreground="{StaticResource SolidColorBrush.Text.1}" Width="50" TextAlignment="Center" Margin="3,0,2,0" />
-                    <TextBlock Text="999" VerticalAlignment="Center" Foreground="{StaticResource SolidColorBrush.Text.1}" Width="50" TextAlignment="Center" Margin="3,0,2,0" />
-                    <TextBlock Text="999" VerticalAlignment="Center" Foreground="{StaticResource SolidColorBrush.Text.1}" Width="50" TextAlignment="Center" Margin="3,0,2,0" />
-                    <TextBlock Text="999" VerticalAlignment="Center" Foreground="{StaticResource SolidColorBrush.Text.1}" Width="50" TextAlignment="Center" Margin="3,0,2,0" />
-                    <TextBlock Text="999" VerticalAlignment="Center" Foreground="{StaticResource SolidColorBrush.Text.1}" Width="50" TextAlignment="Center" Margin="3,0,2,0" />
-                </StackPanel>
-                <StackPanel Orientation="Horizontal">
-                    <Image Style="{StaticResource Style.Image.Resource}" Source="{StaticResource Image.Resource.Ore.Level2}" />
-                    <TextBlock Text="" VerticalAlignment="Center" Foreground="{StaticResource SolidColorBrush.Text.1}" Width="165" TextAlignment="Center" />
-                    <TextBlock Text="999" VerticalAlignment="Center" Foreground="{StaticResource SolidColorBrush.Text.1}" Width="50" TextAlignment="Center" Margin="3,0,2,0" />
-                    <TextBlock Text="999" VerticalAlignment="Center" Foreground="{StaticResource SolidColorBrush.Text.1}" Width="50" TextAlignment="Center" Margin="3,0,2,0" />
-                    <TextBlock Text="999" VerticalAlignment="Center" Foreground="{StaticResource SolidColorBrush.Text.1}" Width="50" TextAlignment="Center" Margin="3,0,2,0" />
-                    <TextBlock Text="999" VerticalAlignment="Center" Foreground="{StaticResource SolidColorBrush.Text.1}" Width="50" TextAlignment="Center" Margin="3,0,2,0" />
-                    <TextBlock Text="999" VerticalAlignment="Center" Foreground="{StaticResource SolidColorBrush.Text.1}" Width="50" TextAlignment="Center" Margin="3,0,2,0" />
-                </StackPanel>
-                <StackPanel Orientation="Horizontal">
-                    <Image Style="{StaticResource Style.Image.Resource}" Source="{StaticResource Image.Resource.Ore.Level3}" />
-                    <TextBlock Text="" VerticalAlignment="Center" Foreground="{StaticResource SolidColorBrush.Text.1}" Width="165" TextAlignment="Center" />
-                    <TextBlock Text="999" VerticalAlignment="Center" Foreground="{StaticResource SolidColorBrush.Text.1}" Width="50" TextAlignment="Center" Margin="3,0,2,0" />
-                    <TextBlock Text="999" VerticalAlignment="Center" Foreground="{StaticResource SolidColorBrush.Text.1}" Width="50" TextAlignment="Center" Margin="3,0,2,0" />
-                    <TextBlock Text="999" VerticalAlignment="Center" Foreground="{StaticResource SolidColorBrush.Text.1}" Width="50" TextAlignment="Center" Margin="3,0,2,0" />
-                    <TextBlock Text="999" VerticalAlignment="Center" Foreground="{StaticResource SolidColorBrush.Text.1}" Width="50" TextAlignment="Center" Margin="3,0,2,0" />
-                    <TextBlock Text="999" VerticalAlignment="Center" Foreground="{StaticResource SolidColorBrush.Text.1}" Width="50" TextAlignment="Center" Margin="3,0,2,0" />
-                </StackPanel>
-                <StackPanel Orientation="Horizontal">
-                    <Image Style="{StaticResource Style.Image.Resource}" Source="{StaticResource Image.Resource.Ore.Level4}" />
-                    <TextBlock Text="" VerticalAlignment="Center" Foreground="{StaticResource SolidColorBrush.Text.1}" Width="165" TextAlignment="Center" />
-                    <TextBlock Text="999" VerticalAlignment="Center" Foreground="{StaticResource SolidColorBrush.Text.1}" Width="50" TextAlignment="Center" Margin="3,0,2,0" />
-                    <TextBlock Text="999" VerticalAlignment="Center" Foreground="{StaticResource SolidColorBrush.Text.1}" Width="50" TextAlignment="Center" Margin="3,0,2,0" />
-                    <TextBlock Text="999" VerticalAlignment="Center" Foreground="{StaticResource SolidColorBrush.Text.1}" Width="50" TextAlignment="Center" Margin="3,0,2,0" />
-                    <TextBlock Text="999" VerticalAlignment="Center" Foreground="{StaticResource SolidColorBrush.Text.1}" Width="50" TextAlignment="Center" Margin="3,0,2,0" />
-                    <TextBlock Text="999" VerticalAlignment="Center" Foreground="{StaticResource SolidColorBrush.Text.1}" Width="50" TextAlignment="Center" Margin="3,0,2,0" />
-                </StackPanel>
-            </StackPanel>
-            <StackPanel Orientation="Horizontal" VerticalAlignment="Top" Margin="50,0,0,0">
-                <Image Height="50" Width="55" Source="../Assets/t1_circle.png" />
-                <Image Height="50" Width="55" Source="../Assets/t2_circle.png" />
-                <Image Height="50" Width="55" Source="../Assets/t3_circle.png" />
-                <Image Height="50" Width="55" Source="../Assets/t4_circle.png" />
-                <Image Height="50" Width="55" Source="../Assets/t5_circle.png" />
-                <Image Height="50" Width="55" Source="../Assets/t6_circle.png" />
-                <Image Height="50" Width="55" Source="../Assets/t7_circle.png" />
-                <Image Height="50" Width="55" Source="../Assets/t8_circle.png" />
-            </StackPanel>
-        </Grid>-->
+        </StackPanel>
     </DataTemplate>
 
     <DataTemplate x:Key="RockTemplate" DataType="{x:Type gathering:GatheringStats}">
-        <Grid>
-            <Grid>
-                <StackPanel Orientation="Vertical">
-                    <controls:VirtualizingItemsControl ItemsSource="{Binding GatheredRock, IsAsync=True, Mode=OneWay}"
+        <StackPanel Orientation="Vertical">
+            <TextBlock Style="{StaticResource Gathering.Stats.TitleText}" Text="{Binding TranslationResourceValue}" />
+            <StackPanel Orientation="Horizontal">
+                <Image Style="{StaticResource Icon.Silver}" Margin="0,0,0,2" />
+                <TextBlock Text="{Binding GainedSilverByRock, IsAsync=True}" Style="{StaticResource Gathering.TextBlock.CollectionFragment.Numbers}" />
+            </StackPanel>
+            <StackPanel Orientation="Vertical">
+                <controls:VirtualizingItemsControl ItemsSource="{Binding GatheredRock, IsAsync=True, Mode=OneWay}"
                                                        ItemTemplate="{StaticResource GatheredItemStatsTemplate}" 
                                                        VirtualizingPanel.CacheLengthUnit="Item"
                                                        VirtualizingPanel.CacheLength="10,10"
@@ -401,16 +318,19 @@
                                                        VirtualizingPanel.VirtualizationMode="Recycling"
                                                        ScrollViewer.HorizontalScrollBarVisibility="Disabled"
                                                        ScrollViewer.VerticalScrollBarVisibility="Disabled" />
-                </StackPanel>
-            </Grid>
-        </Grid>
+            </StackPanel>
+        </StackPanel>
     </DataTemplate>
 
     <DataTemplate x:Key="FiberTemplate" DataType="{x:Type gathering:GatheringStats}">
-        <Grid>
-            <Grid>
-                <StackPanel Orientation="Vertical">
-                    <controls:VirtualizingItemsControl ItemsSource="{Binding GatheredFiber, IsAsync=True, Mode=OneWay}"
+        <StackPanel Orientation="Vertical">
+            <TextBlock Style="{StaticResource Gathering.Stats.TitleText}" Text="{Binding TranslationResourceValue}" />
+            <StackPanel Orientation="Horizontal">
+                <Image Style="{StaticResource Icon.Silver}" Margin="0,0,0,2" />
+                <TextBlock Text="{Binding GainedSilverByFiber, IsAsync=True}" Style="{StaticResource Gathering.TextBlock.CollectionFragment.Numbers}" />
+            </StackPanel>
+            <StackPanel Orientation="Vertical">
+                <controls:VirtualizingItemsControl ItemsSource="{Binding GatheredFiber, IsAsync=True, Mode=OneWay}"
                                                        ItemTemplate="{StaticResource GatheredItemStatsTemplate}" 
                                                        VirtualizingPanel.CacheLengthUnit="Item"
                                                        VirtualizingPanel.CacheLength="10,10"
@@ -418,13 +338,17 @@
                                                        VirtualizingPanel.VirtualizationMode="Recycling"
                                                        ScrollViewer.HorizontalScrollBarVisibility="Disabled"
                                                        ScrollViewer.VerticalScrollBarVisibility="Disabled" />
-                </StackPanel>
-            </Grid>
-        </Grid>
+            </StackPanel>
+        </StackPanel>
     </DataTemplate>
 
     <DataTemplate x:Key="WoodTemplate" DataType="{x:Type gathering:GatheringStats}">
-        <Grid>
+        <StackPanel Orientation="Vertical">
+            <TextBlock Style="{StaticResource Gathering.Stats.TitleText}" Text="{Binding TranslationResourceValue}" />
+            <StackPanel Orientation="Horizontal">
+                <Image Style="{StaticResource Icon.Silver}" Margin="0,0,0,2" />
+                <TextBlock Text="{Binding GainedSilverByWood, IsAsync=True}" Style="{StaticResource Gathering.TextBlock.CollectionFragment.Numbers}" />
+            </StackPanel>
             <StackPanel Orientation="Vertical">
                 <controls:VirtualizingItemsControl ItemsSource="{Binding GatheredWood, IsAsync=True, Mode=OneWay}"
                                                    ItemTemplate="{StaticResource GatheredItemStatsTemplate}" 
@@ -435,7 +359,7 @@
                                                    ScrollViewer.HorizontalScrollBarVisibility="Disabled"
                                                    ScrollViewer.VerticalScrollBarVisibility="Disabled" />
             </StackPanel>
-        </Grid>
+        </StackPanel>
     </DataTemplate>
 
 </ResourceDictionary>
