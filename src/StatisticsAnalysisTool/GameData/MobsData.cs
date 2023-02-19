@@ -33,7 +33,6 @@ public static class MobsData
         var mob = GetMobJsonObjectByIndex(index);
 
         var mobHpInPercentOverMaxValue = 100 / mob.HitPointsMax * currentInGameMobHp;
-
         return mobHpInPercentOverMaxValue switch
         {
             >= 99 and <= 101 => 0,
@@ -52,6 +51,19 @@ public static class MobsData
 
     private static MobJsonObject GetMobJsonObjectByIndex(int index)
     {
+        // From February 13, 2023, the list was changed so that the index ID in the game is always two higher.
+        // The ID's were decreased by 2 from ID 11
+        if (index > 10)
+        {
+            index -= 2;
+        }
+
+        if (index < 0)
+        {
+            uint unsignedIndex = Convert.ToUInt32(index);
+            index = (int) unsignedIndex;
+        }
+
         return _mobs.IsInBounds(index) ? _mobs?.ElementAt(index) : new MobJsonObject();
     }
 
@@ -68,7 +80,7 @@ public static class MobsData
 
         var regularFileDateTime = File.GetLastWriteTime(regularDataFilePath);
         var tempFileDateTime = File.GetLastWriteTime(tempFilePath);
-        
+
         if (!File.Exists(regularDataFilePath) || regularFileDateTime.AddDays(SettingsController.CurrentSettings.UpdateMobsJsonByDays) < DateTime.Now)
         {
             if (!File.Exists(tempFilePath) || tempFileDateTime.AddDays(SettingsController.CurrentSettings.UpdateMobsJsonByDays) < DateTime.Now)
@@ -82,7 +94,7 @@ public static class MobsData
 
         _mobs = GetSpecificDataFromJsonFileLocal(regularDataFilePath);
         DeleteFileFromTempDir();
-        
+
         return _mobs?.Count() > 0;
     }
 
@@ -106,7 +118,7 @@ public static class MobsData
             return new ObservableCollection<MobJsonObject>();
         }
     }
-    
+
     private static IEnumerable<MobJsonObject> GetDataFromFullJsonFileLocal(string localFilePath)
     {
         try
