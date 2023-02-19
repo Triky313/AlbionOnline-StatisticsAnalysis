@@ -51,12 +51,9 @@ public static class MobsData
 
     private static MobJsonObject GetMobJsonObjectByIndex(int index)
     {
-        // From February 13, 2023, the list was changed so that the index ID in the game is always two higher.
+        // From February 13, 2023, the in-game index will start counting from 2. The character data that was previously in the file is now in a separate file.
         // The ID's were decreased by 2 from ID 11
-        if (index > 10)
-        {
-            index -= 2;
-        }
+        index -= 2;
 
         if (index < 0)
         {
