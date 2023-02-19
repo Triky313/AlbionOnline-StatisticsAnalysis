@@ -606,8 +606,8 @@
 	<translation name="LOOTED_CHESTS">开过的箱子</translation>
 	<translation name="STATIC_DUNGEONS">固定地下城</translation>
 	<translation name="AVALONIAN_ROADS">阿瓦隆之路</translation>
-	<translation name="OPEN_WORLD">开放世界</translation>
 	<translation name="HELLGATES">地狱之门</translation>
+	<translation name="OPEN_WORLD">开放世界</translation>
 	<translation name="LAST_7_DAYS">一周内</translation>
 	<translation name="LAST_30_DAYS">一月内</translation>
 	<translation name="LAST_365_DAYS">一年内</translation>
@@ -683,4 +683,18 @@
 	<translation name="TRADE_MONITORING_DESCRIPTION1">为了识别新的交易邮件信息，你必须将每一封邮件都打开一次。</translation>
 	<translation name="UNKNOWN_TRADE">未知交易</translation>
 	<translation name="MAIL">邮件</translation>
+	<translation name="DELETE_TRADES_AFTER_14_DAYS">两周后删除交易记录</translation>
+	<translation name="BONUS">加成</translation>
+	<translation name="PREMIUM">会员加成</translation>
+	<translation name="GATHERING_ACTIVE">追踪采集</translation>
+	<translation name="THIS_WEEK">这个星期</translation>
+	<translation name="LAST_WEEK">上个星期</translation>
+	<translation name="GENERALLY">总览</translation>
+	<translation name="MOST_GATHERED_RESOURCE">采集最多的资源</translation>
+	<translation name="MOST_GATHERED_ON_MAP">地图上采集最多的资源</translation>
+	<translation name="TOTAL_RESOURCES">资源总计</translation>
+	<translation name="TOTAL_MINING_PROCESSES">采集次数总计</translation>
+	<translation name="AMOUNT_OF_MINING_PROCESSES">采集次数</translation>
+	<translation name="SURE_YOU_WANT_TO_DELETE_SELECTED_RESOURCES">你确定要删除选中的资源吗？</translation>
+	<translation name="DELETE_SELECTED_RESOURCES">删除选中的资源</translation>
 </translations>
