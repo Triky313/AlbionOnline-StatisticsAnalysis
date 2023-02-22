@@ -312,7 +312,7 @@ public static class ItemController
 
             if (fileDateTime.AddDays(SettingsController.CurrentSettings.UpdateItemListByDays) < DateTime.Now)
             {
-                if (await client.DownloadFileAsync(url, localFilePath))
+                if (await client.DownloadFileAsync(url, localFilePath, LanguageController.Translation("GET_ITEM_LIST_JSON")))
                 {
                     Items = await GetItemListFromLocal();
                 }
@@ -323,7 +323,7 @@ public static class ItemController
             return Items?.Count > 0;
         }
 
-        if (await client.DownloadFileAsync(url, localFilePath))
+        if (await client.DownloadFileAsync(url, localFilePath, LanguageController.Translation("GET_ITEM_LIST_JSON")))
         {
             Items = await GetItemListFromLocal();
         }
@@ -373,7 +373,7 @@ public static class ItemController
         if (favoriteItemList != null)
         {
             foreach (Item item in favoriteItemList
-                         .Select(uniqueName => 
+                         .Select(uniqueName =>
                              Items.FirstOrDefault(i => i.UniqueName == uniqueName))
                          .Where(item => item != null))
             {
@@ -644,7 +644,7 @@ public static class ItemController
 
             if (fileDateTime.AddDays(SettingsController.CurrentSettings.UpdateItemsJsonByDays) < DateTime.Now)
             {
-                if (await client.DownloadFileAsync(url, localFilePath))
+                if (await client.DownloadFileAsync(url, localFilePath, LanguageController.Translation("GET_ITEM_LIST_JSON")))
                 {
                     _itemsJson = await GetItemsJsonFromLocal();
                     await SetFullItemInfoToItems();
@@ -659,7 +659,7 @@ public static class ItemController
             return _itemsJson?.Items != null;
         }
 
-        if (await client.DownloadFileAsync(url, localFilePath))
+        if (await client.DownloadFileAsync(url, localFilePath, LanguageController.Translation("GET_ITEM_LIST_JSON")))
         {
             _itemsJson = await GetItemsJsonFromLocal();
             await SetFullItemInfoToItems();

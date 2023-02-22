@@ -134,7 +134,7 @@ public partial class MainWindow
 
     private void BtnTryToLoadItemJsonAgain_Click(object sender, RoutedEventArgs e)
     {
-        _mainWindowViewModel?.InitItemsAsync().ConfigureAwait(false);
+        _mainWindowViewModel?.InitGameDataAsync().ConfigureAwait(false);
     }
 
     private void ToolTasksCloseButton_OnClick(object sender, RoutedEventArgs e)

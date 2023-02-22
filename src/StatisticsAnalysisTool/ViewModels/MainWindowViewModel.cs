@@ -8,6 +8,7 @@ using StatisticsAnalysisTool.Common;
 using StatisticsAnalysisTool.Common.UserSettings;
 using StatisticsAnalysisTool.Dungeon;
 using StatisticsAnalysisTool.Enumerations;
+using StatisticsAnalysisTool.EstimatedMarketValue;
 using StatisticsAnalysisTool.EventLogging;
 using StatisticsAnalysisTool.GameData;
 using StatisticsAnalysisTool.Models;
@@ -31,20 +32,19 @@ using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Data;
 using System.Windows.Media;
-using StatisticsAnalysisTool.EstimatedMarketValue;
 
 // ReSharper disable UnusedMember.Global
 
 namespace StatisticsAnalysisTool.ViewModels;
 
-public class MainWindowViewModel : INotifyPropertyChanged, IAsyncInitialization
+public class MainWindowViewModel : INotifyPropertyChanged
 {
     private static readonly ILog Log = LogManager.GetLogger(MethodBase.GetCurrentMethod()?.DeclaringType);
 
     private double _allianceInfoWidth;
     private double _currentMapInfoWidth;
     private string _errorBarText;
-    private Visibility _errorBarVisibility;
+    private Visibility _errorBarVisibility = Visibility.Collapsed;
     private double _guildInfoWidth;
     private Visibility _isDamageMeterPopupVisible = Visibility.Hidden;
     private bool _isShowOnlyItemsWithAlertOnActive;
@@ -57,7 +57,7 @@ public class MainWindowViewModel : INotifyPropertyChanged, IAsyncInitialization
     private Dictionary<ShopCategory, string> _itemCategories = new();
     private ICollectionView _itemsView;
     private Dictionary<ItemTier, string> _itemTiers = new();
-    private Visibility _loadIconVisibility;
+    private Visibility _loadIconVisibility = Visibility.Collapsed;
     private string _loadTranslation;
     private int _localImageCounter;
     private string _numberOfValuesTranslation;
@@ -78,15 +78,15 @@ public class MainWindowViewModel : INotifyPropertyChanged, IAsyncInitialization
     private int _partyMemberNumber;
     private bool _isItemSearchCheckboxesEnabled;
     private bool _isFilterResetEnabled;
-    private Visibility _gridTryToLoadTheItemListAgainVisibility;
+    private Visibility _gridTryToLoadTheItemListAgainVisibility = Visibility.Collapsed;
     private bool _isDamageMeterTrackingActive;
     private bool _isTrackingPartyLootOnly;
     private Axis[] _xAxesDashboardHourValues;
     private ObservableCollection<ISeries> _seriesDashboardHourValues;
     private DashboardBindings _dashboardBindings = new();
     private string _loggingSearchText;
-    private Visibility _gridTryToLoadTheItemJsonAgainVisibility;
-    private Visibility _gridTryToLoadTheMobsJsonAgainVisibility;
+    private Visibility _gridTryToLoadTheItemJsonAgainVisibility = Visibility.Collapsed;
+    private Visibility _gridTryToLoadTheMobsJsonAgainVisibility = Visibility.Collapsed;
     private Visibility _toolTasksVisibility = Visibility.Collapsed;
     private ObservableCollection<TaskTextObject> _toolTaskObjects = new();
     private double _taskProgressbarMinimum;
@@ -115,30 +115,28 @@ public class MainWindowViewModel : INotifyPropertyChanged, IAsyncInitialization
     private Visibility _storageHistoryTabVisibility = Visibility.Visible;
     private Visibility _mapHistoryTabVisibility = Visibility.Visible;
     private Visibility _playerInformationTabVisibility = Visibility.Visible;
+    private Visibility _toolTaskFrontViewVisibility = Visibility.Collapsed;
+    private double? _toolTaskProgressBarValue;
+    private string _toolTaskCurrentTaskName;
 
     public MainWindowViewModel()
     {
         UpgradeSettings();
+        SetUiElements();
 
         AutoUpdateController.RemoveUpdateFiles();
         AutoUpdateController.AutoUpdate();
-        
-        Initialization = InitMainWindowDataAsync();
-        Initialization = InitTrackingAsync();
     }
-
-    public Task Initialization { get; }
 
     public void SetUiElements()
     {
-        #region Error bar
+        // Error bar
+        ErrorBarVisibility = Visibility.Collapsed;
 
-        ErrorBarVisibility = Visibility.Hidden;
+        // Unsupported OS
+        UnsupportedOsVisibility = Environment.OSVersion.Version.Major < 10 ? Visibility.Visible : Visibility.Collapsed;
 
-        #endregion
-
-        #region Full Item Info elements
-
+        // Item search
         ItemCategories = CategoryController.CategoryNames;
         SelectedItemShopCategory = ShopCategory.Unknown;
 
@@ -147,11 +145,8 @@ public class MainWindowViewModel : INotifyPropertyChanged, IAsyncInitialization
 
         ItemLevels = FrequentlyValues.ItemLevels;
         SelectedItemLevel = ItemLevel.Unknown;
-
-        #endregion Full Item Info elements
-
-        #region Tracking
-
+        
+        // Tracking
         UserTrackingBindings.UsernameInformationVisibility = Visibility.Hidden;
         UserTrackingBindings.GuildInformationVisibility = Visibility.Hidden;
         UserTrackingBindings.AllianceInformationVisibility = Visibility.Hidden;
@@ -173,8 +168,6 @@ public class MainWindowViewModel : INotifyPropertyChanged, IAsyncInitialization
 
         // Gathering
         GatheringBindings.GridSplitterPosition = new GridLength(SettingsController.CurrentSettings.GatheringGridSplitterPosition);
-
-        #endregion
     }
 
     #region Alert
@@ -250,7 +243,7 @@ public class MainWindowViewModel : INotifyPropertyChanged, IAsyncInitialization
         Settings.Default.Save();
     }
 
-    private async Task InitMainWindowDataAsync()
+    public void InitMainWindowData()
     {
 #if DEBUG
         DebugModeVisibility = Visibility.Visible;
@@ -258,25 +251,17 @@ public class MainWindowViewModel : INotifyPropertyChanged, IAsyncInitialization
 
         Translation = new MainWindowTranslation();
         ToolTaskController.SetToolTaskController(this);
-        SetUiElements();
-        UnsupportedOsVisibility = Environment.OSVersion.Version.Major < 10 ? Visibility.Visible : Visibility.Collapsed;
 
-        // TODO: Info window temporarily disabled
-        //ShowInfoWindow();
-
-        await InitItemsAsync().ConfigureAwait(false);
+        _ = InitGameDataAsync();
+        _ = InitTrackingAsync();
     }
 
-    public async Task InitItemsAsync()
+    public async Task InitGameDataAsync()
     {
         IsTaskProgressbarIndeterminate = true;
         IsTxtSearchEnabled = false;
         IsItemSearchCheckboxesEnabled = false;
         IsFilterResetEnabled = false;
-        LoadIconVisibility = Visibility.Visible;
-        GridTryToLoadTheItemListAgainVisibility = Visibility.Collapsed;
-        GridTryToLoadTheItemJsonAgainVisibility = Visibility.Collapsed;
-        GridTryToLoadTheMobsJsonAgainVisibility = Visibility.Collapsed;
 
         if (!ItemController.IsItemsLoaded())
         {
@@ -345,7 +330,7 @@ public class MainWindowViewModel : INotifyPropertyChanged, IAsyncInitialization
         IsTaskProgressbarIndeterminate = false;
     }
 
-    private async Task InitTrackingAsync()
+    public async Task InitTrackingAsync()
     {
         WorldData.GetDataListFromJson();
         DungeonObjectData.GetDataListFromJson();
@@ -474,16 +459,7 @@ public class MainWindowViewModel : INotifyPropertyChanged, IAsyncInitialization
     #endregion
 
     #region Ui utility methods
-
-    //private static void ShowInfoWindow()
-    //{
-    //    if (SettingsController.CurrentSettings.IsInfoWindowShownOnStart)
-    //    {
-    //        var infoWindow = new InfoWindow();
-    //        infoWindow.Show();
-    //    }
-    //}
-
+    
     public static void OpenItemWindow(Item item)
     {
         if (string.IsNullOrEmpty(item?.UniqueName))
@@ -588,8 +564,8 @@ public class MainWindowViewModel : INotifyPropertyChanged, IAsyncInitialization
         await TrackingController?.StatisticController?.SaveInFileAsync()!;
         await TrackingController?.GatheringController?.SaveInFileAsync(true)!;
         await TrackingController?.TradeController?.SaveInFileAsync()!;
-        
-        await FileController.SaveAsync(DamageMeterBindings?.DamageMeterSnapshots, 
+
+        await FileController.SaveAsync(DamageMeterBindings?.DamageMeterSnapshots,
             Path.Combine(AppDomain.CurrentDomain.BaseDirectory, Settings.Default.UserDataDirectoryName, Settings.Default.DamageMeterSnapshotsFileName));
 
         await EstimatedMarketValueController.SaveInFileAsync();
@@ -1406,6 +1382,36 @@ public class MainWindowViewModel : INotifyPropertyChanged, IAsyncInitialization
         set
         {
             _playerInformationTabVisibility = value;
+            OnPropertyChanged();
+        }
+    }
+
+    public double? ToolTaskProgressBarValue
+    {
+        get => _toolTaskProgressBarValue;
+        set
+        {
+            _toolTaskProgressBarValue = value;
+            OnPropertyChanged();
+        }
+    }
+
+    public string ToolTaskCurrentTaskName
+    {
+        get => _toolTaskCurrentTaskName;
+        set
+        {
+            _toolTaskCurrentTaskName = value;
+            OnPropertyChanged();
+        }
+    }
+
+    public Visibility ToolTaskFrontViewVisibility
+    {
+        get => _toolTaskFrontViewVisibility;
+        set
+        {
+            _toolTaskFrontViewVisibility = value;
             OnPropertyChanged();
         }
     }
