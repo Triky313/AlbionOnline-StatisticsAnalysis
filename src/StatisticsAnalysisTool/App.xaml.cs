@@ -5,7 +5,6 @@ using StatisticsAnalysisTool.Enumerations;
 using StatisticsAnalysisTool.ViewModels;
 using StatisticsAnalysisTool.Views;
 using System;
-using System.Diagnostics;
 using System.Reflection;
 using System.Runtime.InteropServices;
 using System.Windows;
