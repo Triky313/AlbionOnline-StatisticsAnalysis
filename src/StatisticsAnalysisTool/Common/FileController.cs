@@ -85,4 +85,22 @@ public static class FileController
             Log.Error(MethodBase.GetCurrentMethod()?.DeclaringType, e);
         }
     }
+
+    public static void DeleteFile(string filePath)
+    {
+        try
+        {
+            if (!File.Exists(filePath))
+            {
+                return;
+            }
+
+            File.Delete(filePath);
+        }
+        catch (Exception e)
+        {
+            ConsoleManager.WriteLineForError(MethodBase.GetCurrentMethod()?.DeclaringType, e);
+            Log.Error(MethodBase.GetCurrentMethod()?.DeclaringType, e);
+        }
+    }
 }

@@ -497,5 +497,14 @@ namespace StatisticsAnalysisTool.Properties {
                 this["GatheringFileName"] = value;
             }
         }
+        
+        [global::System.Configuration.ApplicationScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("mobs-modified.json")]
+        public string ModifiedMobDataFileName {
+            get {
+                return ((string)(this["ModifiedMobDataFileName"]));
+            }
+        }
     }
 }

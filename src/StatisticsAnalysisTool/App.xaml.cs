@@ -30,6 +30,7 @@ public partial class App
 
         var mainWindow = new MainWindow(mainWindowViewModel);
         mainWindow.Show();
+        mainWindowViewModel.InitMainWindowData();
     }
 
     private static void InitializeLanguage()

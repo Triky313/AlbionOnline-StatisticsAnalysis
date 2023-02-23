@@ -22,7 +22,6 @@ public class Gathered : INotifyPropertyChanged
     private int _gainedTotalAmount;
     private bool _isSelectedForDeletion;
     private FixPoint _estimatedMarketValue;
-    private FixPoint _totalMarketValue;
 
     public Gathered()
     {

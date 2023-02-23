@@ -68,7 +68,7 @@ public static class MobsData
     {
         var tempDirPath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, Settings.Default.TempDirecoryName);
         var tempFilePath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, Settings.Default.TempDirecoryName, Settings.Default.MobDataFileName);
-        var regularDataFilePath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, Settings.Default.GameFilesDirectoryName, Settings.Default.MobDataFileName);
+        var regularDataFilePath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, Settings.Default.GameFilesDirectoryName, Settings.Default.ModifiedMobDataFileName);
 
         if (!DirectoryController.CreateDirectoryWhenNotExists(tempDirPath))
         {
@@ -82,15 +82,20 @@ public static class MobsData
         {
             if (!File.Exists(tempFilePath) || tempFileDateTime.AddDays(SettingsController.CurrentSettings.UpdateMobsJsonByDays) < DateTime.Now)
             {
-                await DownloadFullJsonAsync(tempFilePath);
+                using var client = new HttpClient
+                {
+                    Timeout = TimeSpan.FromSeconds(3600)
+                };
+
+                await client.DownloadFileAsync(SettingsController.CurrentSettings.MobsJsonSourceUrl, tempFilePath, LanguageController.Translation("GET_MOBS_JSON"));
             }
 
             var fullMobsJson = GetDataFromFullJsonFileLocal(tempFilePath);
-            await FileController.SaveAsync(fullMobsJson, Path.Combine(AppDomain.CurrentDomain.BaseDirectory, Settings.Default.GameFilesDirectoryName, Settings.Default.MobDataFileName));
+            await FileController.SaveAsync(fullMobsJson, regularDataFilePath);
         }
 
         _mobs = GetSpecificDataFromJsonFileLocal(regularDataFilePath);
-        DeleteFileFromTempDir();
+        FileController.DeleteFile(Path.Combine(AppDomain.CurrentDomain.BaseDirectory, Settings.Default.TempDirecoryName, Settings.Default.MobDataFileName));
 
         return _mobs?.Count() > 0;
     }
@@ -135,36 +140,6 @@ public static class MobsData
             ConsoleManager.WriteLineForError(MethodBase.GetCurrentMethod()?.DeclaringType, e);
             Log.Error(MethodBase.GetCurrentMethod()?.DeclaringType, e);
             return new ObservableCollection<MobJsonObject>();
-        }
-    }
-
-
-    public static async Task<bool> DownloadFullJsonAsync(string tempFilePath)
-    {
-        using var client = new HttpClient
-        {
-            Timeout = TimeSpan.FromSeconds(3600)
-        };
-
-        return await client.DownloadFileAsync(SettingsController.CurrentSettings.MobsJsonSourceUrl, tempFilePath);
-    }
-
-    private static void DeleteFileFromTempDir()
-    {
-        var tempFilePath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, Settings.Default.TempDirecoryName, Settings.Default.MobDataFileName);
-        try
-        {
-            if (!File.Exists(tempFilePath))
-            {
-                return;
-            }
-
-            File.Delete(tempFilePath);
-        }
-        catch (Exception e)
-        {
-            ConsoleManager.WriteLineForError(MethodBase.GetCurrentMethod()?.DeclaringType, e);
-            Log.Error(MethodBase.GetCurrentMethod()?.DeclaringType, e);
         }
     }
 }
