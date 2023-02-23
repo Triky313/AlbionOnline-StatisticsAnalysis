@@ -6,7 +6,6 @@ using System;
 using System.Collections.Generic;
 using System.Collections.Specialized;
 using System.ComponentModel;
-using System.Diagnostics;
 using System.Linq;
 using System.Runtime.CompilerServices;
 using System.Threading.Tasks;
@@ -159,7 +158,7 @@ public class GatheringBindings : INotifyPropertyChanged
                     GainedStandardAmount = g.Sum(x => x.GainedStandardAmount),
                     GainedBonusAmount = g.Sum(x => x.GainedBonusAmount),
                     GainedPremiumBonusAmount = g.Sum(x => x.GainedPremiumBonusAmount),
-                    GainedTotalAmount = g.Sum(x => x.GainedTotalAmount), 
+                    GainedTotalAmount = g.Sum(x => x.GainedTotalAmount),
                     GainedFame = g.Sum(x => x.GainedFame),
                     MiningProcesses = g.Sum(x => x.MiningProcesses)
                 }).ToList();
