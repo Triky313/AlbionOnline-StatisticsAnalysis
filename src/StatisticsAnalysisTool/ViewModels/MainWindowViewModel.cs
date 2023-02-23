@@ -262,6 +262,9 @@ public class MainWindowViewModel : INotifyPropertyChanged
         IsTxtSearchEnabled = false;
         IsItemSearchCheckboxesEnabled = false;
         IsFilterResetEnabled = false;
+        GridTryToLoadTheItemListAgainVisibility = Visibility.Collapsed;
+        GridTryToLoadTheItemJsonAgainVisibility = Visibility.Collapsed;
+        GridTryToLoadTheMobsJsonAgainVisibility = Visibility.Collapsed;
 
         if (!ItemController.IsItemsLoaded())
         {
