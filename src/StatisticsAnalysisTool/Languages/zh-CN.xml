@@ -697,4 +697,7 @@
 	<translation name="AMOUNT_OF_MINING_PROCESSES">采集次数</translation>
 	<translation name="SURE_YOU_WANT_TO_DELETE_SELECTED_RESOURCES">你确定要删除选中的资源吗？</translation>
 	<translation name="DELETE_SELECTED_RESOURCES">删除选中的资源</translation>
+	<translation name="RESOURCE_VALUE">资源价值</translation>
+	<translation name="TOTAL_MARKET_VALUE">市场价值总计</translation>
+	<translation name="NAVIGATION_TAB_VISIBILITY">设置显示的统计标签</translation>
 </translations>
