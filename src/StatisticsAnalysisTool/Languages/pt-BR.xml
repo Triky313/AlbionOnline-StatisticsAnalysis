@@ -354,7 +354,6 @@
 	<translation name="DUNGEON_RUN_TIME">Tempo de execução da Masmorra</translation>
 	<translation name="DAMAGE_METER">Medidor de Dano</translation>
 	<translation name="RESET_DAMAGE_METER">Resetar Medidor de Dano</translation>
-	
 	<translation name="STANDARD">Comum</translation>
 	<translation name="UNCOMMON">Incomum</translation>
 	<translation name="RARE">Raro</translation>
@@ -368,7 +367,19 @@
 	<translation name="OPENED_LEGENDARY_CHESTS">Baús lendários abertos</translation>
 	
 	<translation name="DAMAGE_METER_DESCRIPTION_1">Para aparecer o dano de outros jogadores ser reconhecido, o StatisticsAnalysisTool primeiro precisa ser ativada e então você deve sair e entrar do grupo.</translation>
-	
+
+											
+													  
+														  
+															
+																	 
+																			  
+																				
+																		 
+																				   
+ 
+																																																						 
+ 
 	<translation name="SORT_BY_DAMAGE">Filtrar por dano</translation>
 	<translation name="SORT_BY_DPS">Filtrar por Dano por Segundo</translation>
 	<translation name="SORT_BY_NAME">Filtrar por Nome</translation>
@@ -537,14 +548,14 @@
 	<translation name="AVERAGE_ITEM_POWER_WHEN_KILLING">Poder médio do seus itens ao matar</translation>
 	<translation name="AVERAGE_ITEM_POWER_OF_THE_KILLED_ENEMIES">Poder médio dos itens dos inimigos mortos</translation>
 	<translation name="AVERAGE_ITEM_POWER_WHEN_DYING">Poder médio dos seus itens ao morrer</translation>
-	<translation name="MAIL_MONITORING">Monitoramento de Correio</translation>
-	<translation name="MAIL">Correio</translation>
+																		   
+										
 	<translation name="BOUGHT">Comprou</translation>
 	<translation name="SOLD">Vendeu</translation>
 	<translation name="COST_PER_ITEM">Custo por item</translation>
-	<translation name="DELETE_SELECTED_MAILS">Excluir mensagens selecionadas</translation>
-	<translation name="SURE_YOU_WANT_TO_DELETE_SELECTED_MAIL">Você tem certeza que deseja excluir as mensagens selecionadas?</translation>
-	<translation name="MAIL_MONITORING_DESCRIPTION1">Para reconhecer novas mensagens, a caixa de entrada deve ser aberta no jogo e, adicionalmente, uma mensagem de cada vez.</translation>
+																					   
+																																		
+																															<translation name="MAIL_MONITORING_DESCRIPTION1">Para reconhecer novas mensagens, a caixa de entrada deve ser aberta no jogo e, adicionalmente, uma mensagem de cada vez.</translation>
 	<translation name="SOLD_TODAY">Vendido hoje</translation>
 	<translation name="SOLD_MONTH">Vendido neste mês</translation>
 	<translation name="SOLD_YEAR">Vendido neste ano</translation>
@@ -602,9 +613,9 @@
 	<translation name="NOTES">Notas</translation>
 	<translation name="UNSUPPORTED_OS">SO não suportado: podem ocorrer erros.</translation>
 	<translation name="FILE_DOWNLOAD_FAILED_TEXT1">Se sua internet estiver muito lenta ou você tiver outros problemas, você também pode baixar o arquivo manualmente.</translation>
-	<translation name="FILE_DOWNLOAD_FAILED_TEXT2">Faça o download do arquivo no link abaixo</translation>
-	<translation name="FILE_DOWNLOAD_FAILED_TEXT3">Renomeie o arquivo para ItemList.json e coloque o arquivo no diretório do StatisticsAnalysisTool.</translation>
-	<translation name="FILE_DOWNLOAD_FAILED_TEXT4">Coloque o arquivo no diretório do StatisticsAnalysisTool.</translation>
+																										
+																																								
+																														
 	<translation name="THEN_RESTART_THE_TOOL">Em seguida, reinicie o StatisticsAnalysisTool.</translation>
 	<translation name="OR">OU</translation>
 	<translation name="COPY_SHORT_DAMAGE_METER_TO_THE_CLIPBOARD">Copiar medidor de dano curto para a área de transferência</translation>
@@ -627,14 +638,14 @@
 	<translation name="RANDOM_SOLO_DUNGEONS">Masmorras individuais aleatórias</translation>
 	<translation name="RANDOM_GROUP_DUNGEONS">Masmorras de grupo aleatório</translation>
 	<translation name="SNAPSHOT_AFTER_MAP_CHANGE">Captura de tela após mudança de mapa</translation>
-	<translation name="MAIL_MONITORING_ACTIVE">Monitoramento de e-mail ativo</translation>
-	<translation name="DELETE_MAILS_NEVER">Nunca excluir e-mails</translation>
-	<translation name="DELETE_MAILS_AFTER_7_DAYS">Excluir e-mails após 7 dias</translation>
-	<translation name="DELETE_MAILS_AFTER_30_DAYS">Excluir e-mails após 30 dias</translation>
-	<translation name="DELETE_MAILS_AFTER_60_DAYS">Excluir e-mails após 60 dias</translation>
-	<translation name="DELETE_MAILS_AFTER_90_DAYS">Excluir e-mails após 90 dias</translation>
-	<translation name="DELETE_MAILS_AFTER_180_DAYS">Excluir e-mails após 180 dias</translation>
-	<translation name="DELETE_MAILS_AFTER_365_DAYS">Excluir e-mails após 365 dias</translation>
+																					   
+																		   
+																						 
+																						   
+																						   
+																						   
+																							 
+																							 
 	<translation name="IGNORE_MAILS_WITH_ZERO_VALUES">Ignorar e-mails com 0 valores</translation>
 	<translation name="CHECK_FOR_UPDATE">Verificar atualização</translation>
 	<translation name="PAID_SILVER_FOR_RESPEC_THIS_SESSION">Prata paga em ReSpec nesta sessão</translation>
@@ -678,4 +689,42 @@
 	<translation name="THANK_YOU">Obrigado</translation>
 	<translation name="DUNGEON_CLOSED_SOUND_ACTIVE">Som de calabouço fechado ativo</translation>
 	<translation name="TOTAL_PRICE_WITH_DEDUCTED_TAXES">Preço total com impostos deduzidos</translation>
+	<translation name="UPDATE_MOBS_JSON_BY_DAYS">Atualizar mobs.json por dias</translation>
+	<translation name="MOBS_JSON_SOURCE_URL">url de origem mobs.json</translation>
+	<translation name="GET_MOBS_JSON">Obter mobs.json</translation>
+	<translation name="MOBS_JSON_CAN_NOT_BE_LOADED">mobs.json não pode ser carregado.</translation>
+	<translation name="INSTANT_SELL">Venda instantânea</translation>
+	<translation name="INSTANT_BUY">Compra instantânea</translation>
+	<translation name="TRADE_MONITORING_ACTIVE">Monitoramento de negociação ativo</translation>
+	<translation name="DELETE_TRADES_NEVER">Nuca excluir transações</translation>
+	<translation name="DELETE_TRADES_AFTER_7_DAYS">Excluir negociações após 7 dias</translation>
+	<translation name="DELETE_TRADES_AFTER_30_DAYS">Excluir transações após 30 dias</translation>
+	<translation name="DELETE_TRADES_AFTER_60_DAYS">Excluir negociações após 60 dias</translation>
+	<translation name="DELETE_TRADES_AFTER_90_DAYS">Excluir transações após 90 dias</translation>
+	<translation name="DELETE_TRADES_AFTER_180_DAYS">Excluir negociações após 180 dias</translation>
+	<translation name="DELETE_TRADES_AFTER_365_DAYS">Excluir transações após 365 dias</translation>
+	<translation name="DELETE_SELECTED_TRADES">Excluir negociações selecionadas</translation>
+	<translation name="SURE_YOU_WANT_TO_DELETE_SELECTED_TRADES">Tem certeza de que deseja excluir as negociações selecionadas?</translation>
+	<translation name="TRADE_MONITORING">Monitoramento de negociações</translation>
+	<translation name="TRADE">Comércio</translation>
+	<translation name="TRADE_MONITORING_DESCRIPTION1">Para reconhecer novas mensagens de e-mail, a caixa de entrada deve ser aberta no jogo, e adicionalmente, cada mensagem uma vez.</translation>
+	<translation name="UNKNOWN_TRADE">Comércio desconhecido</translation>
+	<translation name="MAIL">E-mail</translation>
+	<translation name="DELETE_TRADES_AFTER_14_DAYS">Excluir negociações após 14 dias</translation>
+	<translation name="BONUS">Bônus</translation>
+	<translation name="PREMIUM">Premium</translation>
+	<translation name="GATHERING_ACTIVE">Reunião ativa</translation>
+	<translation name="THIS_WEEK">Esta semana</translation>
+	<translation name="LAST_WEEK">Semana passada</translation>
+	<translation name="GENERALLY">Geralmente</translation>
+	<translation name="MOST_GATHERED_RESOURCE">Recurso mais coletado</translation>
+	<translation name="MOST_GATHERED_ON_MAP">Mais reunidos no mapa</translation>
+	<translation name="TOTAL_RESOURCES">Recursos totais</translation>
+	<translation name="TOTAL_MINING_PROCESSES">Total de processos de mineração</translation>
+	<translation name="AMOUNT_OF_MINING_PROCESSES">Quantidade de processos de mineração</translation>
+	<translation name="SURE_YOU_WANT_TO_DELETE_SELECTED_RESOURCES">Tem certeza de que deseja excluir os recursos selecionados?</translation>
+	<translation name="DELETE_SELECTED_RESOURCES">Excluir recursos selecionados</translation>
+	<translation name="RESOURCE_VALUE">Valor do recurso</translation>
+	<translation name="TOTAL_MARKET_VALUE">Valor total de mercado</translation>
+	<translation name="NAVIGATION_TAB_VISIBILITY">Visibilidade da guia de navegação</translation>
 </translations>
