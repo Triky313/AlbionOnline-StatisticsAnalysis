@@ -43,7 +43,7 @@ public static class HttpClientUtils
                 var percentage = bytesProcessed * 100.0 / totalBytes;
                 if (mainWindowViewModel != null)
                 {
-                    mainWindowViewModel.ToolTaskProgressBarValue = percentage;
+                    mainWindowViewModel.ToolTaskProgressBarValue = percentage ?? 0;
                 }
             }
 

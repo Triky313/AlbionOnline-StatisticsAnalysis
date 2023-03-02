@@ -13,7 +13,21 @@
                 <StackPanel>
                     <DockPanel Margin="0,5,0,0">
                         <Label Content="{Binding Translation.Language, FallbackValue=LANGUAGE}" MinWidth="300" VerticalAlignment="Top" />
-                        <ComboBox ItemsSource="{Binding Languages}" SelectedItem="{Binding LanguagesSelection}" IsSynchronizedWithCurrentItem="True" DisplayMemberPath="EnglishName" SelectedValuePath="FileName" VerticalAlignment="Top" Height="26" HorizontalAlignment="Left" Width="200" />
+                        <ComboBox ItemsSource="{Binding Languages}" SelectedItem="{Binding LanguagesSelection}" 
+                                  IsSynchronizedWithCurrentItem="True" SelectedValuePath="FileName" VerticalAlignment="Top" Height="26" HorizontalAlignment="Left" Width="200">
+                            <ComboBox.ItemTemplate>
+                                <DataTemplate>
+                                    <TextBlock>
+                                        <TextBlock.Text>
+                                            <MultiBinding StringFormat="{}{0} ({1:N2}%)">
+                                                <Binding Path="EnglishName" />
+                                                <Binding Path="PercentageTranslations" />
+                                            </MultiBinding>
+                                        </TextBlock.Text>
+                                    </TextBlock>
+                                </DataTemplate>
+                            </ComboBox.ItemTemplate>
+                        </ComboBox>
                     </DockPanel>
                     <DockPanel Margin="0,5,5,0">
                         <Label MinWidth="300"/>

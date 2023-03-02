@@ -116,13 +116,14 @@ public class MainWindowViewModel : INotifyPropertyChanged
     private Visibility _mapHistoryTabVisibility = Visibility.Visible;
     private Visibility _playerInformationTabVisibility = Visibility.Visible;
     private Visibility _toolTaskFrontViewVisibility = Visibility.Collapsed;
-    private double? _toolTaskProgressBarValue;
+    private double _toolTaskProgressBarValue;
     private string _toolTaskCurrentTaskName;
 
     public MainWindowViewModel()
     {
         UpgradeSettings();
         SetUiElements();
+        Translation = new MainWindowTranslation();
 
         AutoUpdateController.RemoveUpdateFiles();
         AutoUpdateController.AutoUpdate();
@@ -249,7 +250,6 @@ public class MainWindowViewModel : INotifyPropertyChanged
         DebugModeVisibility = Visibility.Visible;
 #endif
 
-        Translation = new MainWindowTranslation();
         ToolTaskController.SetToolTaskController(this);
 
         _ = InitGameDataAsync();
@@ -1389,7 +1389,7 @@ public class MainWindowViewModel : INotifyPropertyChanged
         }
     }
 
-    public double? ToolTaskProgressBarValue
+    public double ToolTaskProgressBarValue
     {
         get => _toolTaskProgressBarValue;
         set

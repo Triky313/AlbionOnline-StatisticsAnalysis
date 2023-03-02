@@ -188,6 +188,8 @@ public class SettingsWindowViewModel : INotifyPropertyChanged
     {
         Languages.Clear();
 
+        LanguageController.GetPercentageTranslationValues();
+
         foreach (var langInfo in LanguageController.LanguageFiles)
         {
             try
@@ -196,7 +198,8 @@ public class SettingsWindowViewModel : INotifyPropertyChanged
                 Languages.Add(new FileInformation(langInfo.FileName, string.Empty)
                 {
                     EnglishName = cultureInfo.EnglishName,
-                    NativeName = cultureInfo.NativeName
+                    NativeName = cultureInfo.NativeName,
+                    PercentageTranslations = langInfo.PercentageTranslations
                 });
             }
             catch (CultureNotFoundException e)

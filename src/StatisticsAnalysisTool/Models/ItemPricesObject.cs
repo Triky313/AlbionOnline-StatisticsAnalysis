@@ -236,6 +236,9 @@ public class ItemPricesObject : INotifyPropertyChanged
         set
         {
             _buyPriceMaxDate = value;
+            BuyPriceMaxDateStatus = value.GetValueTimeStatus();
+            BuyPriceMaxDateString = value.CurrentDateTimeFormat();
+            BuyPriceMaxDateLastUpdateTime = value.DateTimeToLastUpdateTime();
             OnPropertyChanged();
         }
     }

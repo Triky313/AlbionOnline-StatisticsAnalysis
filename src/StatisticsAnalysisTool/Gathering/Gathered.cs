@@ -22,6 +22,7 @@ public class Gathered : INotifyPropertyChanged
     private int _gainedTotalAmount;
     private bool _isSelectedForDeletion;
     private FixPoint _estimatedMarketValue;
+    private string _totalMarketValueWithCulture;
 
     public Gathered()
     {
@@ -89,6 +90,8 @@ public class Gathered : INotifyPropertyChanged
         set
         {
             _gainedTotalAmount = value;
+
+            TotalMarketValueWithCulture = Utilities.LongWithCulture(FixPoint.FromFloatingPointValue(_gainedTotalAmount * EstimatedMarketValue.IntegerValue).IntegerValue);
             OnPropertyChanged();
         }
     }
@@ -128,7 +131,15 @@ public class Gathered : INotifyPropertyChanged
         get => FixPoint.FromFloatingPointValue(GainedTotalAmount * EstimatedMarketValue.IntegerValue);
     }
 
-    public string TotalMarketValueWithCulture => Utilities.LongWithCulture(TotalMarketValue.IntegerValue);
+    public string TotalMarketValueWithCulture
+    {
+        get => _totalMarketValueWithCulture;
+        set
+        {
+            _totalMarketValueWithCulture = value;
+            OnPropertyChanged();
+        }
+    }
 
     public string ClusterIndex { get; init; }
     public MapType MapType { get; init; }

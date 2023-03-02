@@ -109,6 +109,7 @@ public class ItemWindowViewModel : INotifyPropertyChanged
         Icon = null;
         TitleName = "-";
         ItemTierLevel = string.Empty;
+        TabControlSelectedIndex = 0;
 
         Item = item;
 

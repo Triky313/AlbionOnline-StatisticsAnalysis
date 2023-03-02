@@ -12,9 +12,10 @@ using System.Threading;
 using System.Windows;
 using System.Windows.Markup;
 using System.Xml;
+using System.Xml.Linq;
 
 namespace StatisticsAnalysisTool.Common;
-// TODO: Change language controller - one language file for all and refactoring
+
 public static class LanguageController
 {
     private static readonly Dictionary<string, string> Translations = new();
@@ -121,8 +122,8 @@ public static class LanguageController
             }
 
             var fileInfos = (from file in LanguageFiles
-                where file.FileName.ToUpper() == CurrentCultureInfo?.TextInfo.CultureName.ToUpper()
-                select new FileInformation(file.FileName, file.FilePath)).FirstOrDefault();
+                             where file.FileName.ToUpper() == CurrentCultureInfo?.TextInfo.CultureName.ToUpper()
+                             select new FileInformation(file.FileName, file.FilePath)).FirstOrDefault();
 
             if (fileInfos == null)
             {
@@ -157,10 +158,27 @@ public static class LanguageController
         try
         {
             Translations.Clear();
-            var xmlReader = XmlReader.Create(filePath);
+            var xmlReader = XmlReader.Create(filePath, new XmlReaderSettings()
+            {
+                Async = true
+            });
+
             while (xmlReader.Read())
-                if (xmlReader.Name == "translation" && xmlReader.HasAttributes)
-                    AddTranslationsToDictionary(xmlReader);
+            {
+                if (xmlReader.Name != "translation" || !xmlReader.HasAttributes)
+                {
+                    continue;
+                }
+
+                var translationLine = GetTranslationLine(xmlReader);
+
+                if (string.IsNullOrEmpty(translationLine.Item1) || string.IsNullOrEmpty(translationLine.Item2))
+                {
+                    continue;
+                }
+
+                Translations.Add(translationLine.Item1, translationLine.Item2);
+            }
         }
         catch (Exception e)
         {
@@ -173,19 +191,23 @@ public static class LanguageController
         return true;
     }
 
-    private static void AddTranslationsToDictionary(XmlReader xmlReader)
+    private static Tuple<string, string> GetTranslationLine(XmlReader xmlReader)
     {
-        while (xmlReader.MoveToNextAttribute())
+        var name = xmlReader.GetAttribute("name");
+        var value = xmlReader.ReadString();
+
+        if (name == null || string.IsNullOrEmpty(value))
         {
-            if (Translations.ContainsKey(xmlReader.Value))
-            {
-                Log.Warn($"{nameof(AddTranslationsToDictionary)}: {Translation("DOUBLE_VALUE_EXISTS_IN_THE_LANGUAGE_FILE")}: {xmlReader.Value}");
-            }
-            else if (xmlReader.Name == "name")
-            {
-                Translations.Add(xmlReader.Value, xmlReader.ReadString());
-            }
+            return new Tuple<string, string>(string.Empty, string.Empty);
         }
+
+        if (Translations.ContainsKey(name))
+        {
+            Log.Warn($"{nameof(GetTranslationLine)}: {Translation("DOUBLE_VALUE_EXISTS_IN_THE_LANGUAGE_FILE")}: {name}");
+            return new Tuple<string, string>(string.Empty, string.Empty);
+        }
+
+        return new Tuple<string, string>(name, value);
     }
 
     private static void InitializeLanguageFilesFromDirectory()
@@ -214,5 +236,35 @@ public static class LanguageController
             var fileInfo = new FileInformation(Path.GetFileNameWithoutExtension(file), file);
             LanguageFiles.Add(fileInfo);
         }
+    }
+
+    public static void GetPercentageTranslationValues(string mainLanguageFileName = "en-US")
+    {
+        var mainLanguageFile = LanguageFiles.FirstOrDefault(x => string.Equals(x.FileName, mainLanguageFileName, StringComparison.CurrentCultureIgnoreCase));
+        if (mainLanguageFile == null)
+        {
+            return;
+        }
+
+        var mainLanguageFileCount = CountTranslations(mainLanguageFile.FilePath);
+        mainLanguageFile.PercentageTranslations = 100;
+
+        foreach (FileInformation fileInformation in LanguageFiles.Where(x => x.FileName != mainLanguageFileName).ToList())
+        {
+            var countTranslations = CountTranslations(fileInformation.FilePath);
+            double percentageValue = 100d / mainLanguageFileCount * countTranslations;
+
+            var fileInfo = LanguageFiles.FirstOrDefault(x => x.FileName == fileInformation.FileName);
+            if (fileInfo != null)
+            {
+                fileInfo.PercentageTranslations = (percentageValue > 100d) ? 100 : percentageValue;
+            }
+        }
+    }
+
+    private static int CountTranslations(string filePath)
+    {
+        var xml = XDocument.Load(filePath);
+        return xml.Descendants("translation").Count();
     }
 }

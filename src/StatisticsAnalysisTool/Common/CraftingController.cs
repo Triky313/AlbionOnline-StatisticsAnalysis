@@ -194,7 +194,7 @@ public static class CraftingController
             return 0;
         }
     }
-        
+
     public static double GetSetupFeePerFoodConsumed(int foodValue, int numberOfMaterials, ItemTier tier, ItemLevel level, IEnumerable<CraftResource> craftResource)
     {
         var tierFactor = (tier, level) switch
@@ -205,27 +205,32 @@ public static class CraftingController
             (ItemTier.T4, ItemLevel.Level1) => 3.6f,
             (ItemTier.T4, ItemLevel.Level2) => 7.2f,
             (ItemTier.T4, ItemLevel.Level3) => 14.4f,
+            (ItemTier.T4, ItemLevel.Level4) => 28.8f,
             (ItemTier.T5, ItemLevel.Level0) => 3.6f,
             (ItemTier.T5, ItemLevel.Level1) => 7.2f,
             (ItemTier.T5, ItemLevel.Level2) => 14.4f,
             (ItemTier.T5, ItemLevel.Level3) => 28.8f,
+            (ItemTier.T5, ItemLevel.Level4) => 57.6f,
             (ItemTier.T6, ItemLevel.Level0) => 7.2f,
             (ItemTier.T6, ItemLevel.Level1) => 14.4f,
             (ItemTier.T6, ItemLevel.Level2) => 28.8f,
             (ItemTier.T6, ItemLevel.Level3) => 57.6f,
+            (ItemTier.T6, ItemLevel.Level4) => 115.2f,
             (ItemTier.T7, ItemLevel.Level0) => 14.4f,
             (ItemTier.T7, ItemLevel.Level1) => 28.8f,
             (ItemTier.T7, ItemLevel.Level2) => 57.6f,
             (ItemTier.T7, ItemLevel.Level3) => 115.2f,
+            (ItemTier.T7, ItemLevel.Level4) => 230.4f,
             (ItemTier.T8, ItemLevel.Level0) => 28.8f,
             (ItemTier.T8, ItemLevel.Level1) => 57.6f,
             (ItemTier.T8, ItemLevel.Level2) => 115.2f,
             (ItemTier.T8, ItemLevel.Level3) => 230.4f,
+            (ItemTier.T8, ItemLevel.Level4) => 460.8f,
             _ => 1
         };
 
         var safeFoodValue = (foodValue <= 0) ? 1d : foodValue;
-        return safeFoodValue / 100d * numberOfMaterials * (tierFactor + GetArtifactFactor(craftResource));
+        return Math.Round(safeFoodValue / 100d * numberOfMaterials * (tierFactor + GetArtifactFactor(craftResource)));
     }
 
     private static double GetArtifactFactor(IEnumerable<CraftResource> requiredResources, double craftingTaxDefault = 0.0d)
