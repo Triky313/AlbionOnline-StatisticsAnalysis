@@ -16,4 +16,5 @@ public class FileInformation
     public string FilePath { get; set; }
     public string EnglishName { get; set; }
     public string NativeName { get; set; }
+    public double PercentageTranslations { get; set; }
 }
