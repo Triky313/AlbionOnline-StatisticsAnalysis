@@ -101,7 +101,7 @@
                                 </StackPanel>
                                 <StackPanel Orientation="Horizontal" Width="130">
                                     <Image Style="{StaticResource Icon.Silver}" ToolTip="{Binding TranslationTotalMarketValue, FallbackValue='TOTAL__MARKET__VALUE'}" />
-                                    <TextBlock Text="{Binding TotalMarketValueWithCulture, IsAsync=True}" Style="{StaticResource Gathering.TextBlock.CollectionFragment.Numbers}" />
+                                    <TextBlock Text="{Binding TotalMarketValueWithCulture, IsAsync=True, Mode=OneWay}" Style="{StaticResource Gathering.TextBlock.CollectionFragment.Numbers}" />
                                 </StackPanel>
                             </StackPanel>
                             <Grid Margin="0 -2 0 0" Height="18" Width="18" HorizontalAlignment="Right">
