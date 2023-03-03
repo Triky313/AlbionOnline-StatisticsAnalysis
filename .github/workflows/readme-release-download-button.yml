@@ -1,4 +1,4 @@
-name: "Download Button Action"
+name: "📥 Release Download Button Action"
 
 on:
   release:
