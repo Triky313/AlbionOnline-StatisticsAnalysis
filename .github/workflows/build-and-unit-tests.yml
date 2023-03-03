@@ -31,6 +31,7 @@ jobs:
         fetch-depth: 0
 
     - name: Check for build errors
+      if: ${{ matrix.configuration == 'Debug' }}
       run: dotnet build src\StatisticsAnalysisTool
 
     - name: Install dependencies
