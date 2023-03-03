@@ -42,7 +42,6 @@ jobs:
       uses: actions/setup-dotnet@v1
       with:
         dotnet-version: '6.0.x' # SDK Version to use; x will use the latest version of the 6.0 channel. Force 101 for global.json compatibility.
-      if: ${{ matrix.configuration == 'Debug' }}
     - run: dotnet build src\StatisticsAnalysisTool
 
     - name: Setup MSBuild.exe
