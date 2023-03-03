@@ -42,7 +42,7 @@
 	<translation name="REVENUE_WITHOUT_FEE">Przychody bez opłat</translation>
 	<translation name="PROFIT">Zysk</translation>
 	<translation name="PURCHASE_CITY">Kup miasto</translation>
-	<translation name="DOUBLE_VALUE_EXISTS_IN_THE_LANGUAGE_FILE">W pliku językowym istnieje podwójna wartość</translation>
+	<translation name="DOUBLE_VALUE_EXISTS_IN_THE_LANGUAGE_FILE">Wartość podwójna istnieje w pliku językowym</translation>
 	<translation name="EVERY_DAY">Codziennie</translation>
 	<translation name="EVERY_3_DAYS">Co 3 dni</translation>
 	<translation name="EVERY_7_DAYS">Co 7 dni</translation>
@@ -53,7 +53,7 @@
 	<translation name="30_SECONDS">30 sekund</translation>
 	<translation name="60_SECONDS">60 sekund</translation>
 	<translation name="5_MINUTES">5 minut</translation>
-	<translation name="MIN_PROFIT_TOOLTIP">Określa minimalny zysk, jaki powinien generować przedmiot.</translation>
+	<translation name="MIN_PROFIT_TOOLTIP">Określa minimalny zysk, jaki powinien wygenerować przedmiot.</translation>
 	<translation name="REMOVE">Usuń</translation>
 	<translation name="ITEM_LIST_SOURCE_URL">Źródłowy URL listy produktów</translation>
 	<translation name="ITEM_LIST_CAN_NOT_BE_LOADED">Nie można załadować listy przedmiotów.</translation>
@@ -95,7 +95,7 @@
 	<translation name="UPDATE">Aktualizuj</translation>
 	<translation name="NUMBER_OF_VALUES">Liczba wartości</translation>
 	<translation name="GOLD">Złoto</translation>
-	<translation name="OPEN_ITEM_WINDOW_IN_NEW_WINDOW">Otwórz przedmiot w nowym oknie</translation>
+	<translation name="OPEN_ITEM_WINDOW_IN_NEW_WINDOW">Otwórz okno przedmiotu w nowym oknie</translation>
 	<translation name="TAB_ALL_QUALITY_TOOLTIP_DESCRIPTION">Pokazuje wszystkie ceny jakości przedmiotu</translation>
 	<translation name="MAIN">Główne</translation>
 	<translation name="HISTORY">Historia</translation>
@@ -112,11 +112,11 @@
 	<translation name="NO">Nie</translation>
 	<translation name="CATEGORY_NAME">Nazwa kategorii</translation>
 	<translation name="FULL_ITEM_INFORMATION_EXIST_LOCAL">Pełne informacje o przedmiocie istnieją lokalnie</translation>
-	<translation name="LAST_FULL_INFORMATION_UPDATE">Ostatnia pełna aktualizacja informacji</translation>
+	<translation name="LAST_FULL_INFORMATION_UPDATE">Ostatnia aktualizacja pełnych informacji</translation>
 	<translation name="CATEGORY">Kategoria</translation>
 	<translation name="PARENT_CATEGORY">Kategoria nadrzędna</translation>
-	<translation name="FULL_ITEM_INFO_SEARCH">Pełne wyszukiwanie informacji o przedmiocie</translation>
-	<translation name="FULL_ITEM_INFO_UPDATE_CYCLE_DAYS">Pełne dni cyklu aktualizacji informacji o przedmiocie</translation>
+	<translation name="FULL_ITEM_INFO_SEARCH">Wyszukiwanie pełnych informacji o przedmiocie</translation>
+	<translation name="FULL_ITEM_INFO_UPDATE_CYCLE_DAYS">Liczba dni między aktualizacjami pełnych informacji o przedmiocie</translation>
 	<translation name="LOAD_FULL_ITEM_INFO">Wczytaj pełne informacje o przedmiocie</translation>
 	<translation name="UNKNOWN">Nieznane</translation>
 
@@ -305,7 +305,7 @@
 	<translation name="ITEM_POWER">Moc przedmiotu</translation>
 	<translation name="DURABILITY">Trwałość</translation>
 	<translation name="REAL_MONEY_PRICE">Cena realna</translation>
-	<translation name="TOO_MANY_REQUESTS_CLOSE_WINDOWS_OR_WAIT">Zbyt wiele próśb, zamknij kilka okien lub poczekaj kilka minut.</translation>
+	<translation name="TOO_MANY_REQUESTS_CLOSE_WINDOWS_OR_WAIT">Zbyt wiele żądań, zamknij kilka okien lub poczekaj kilka minut.</translation>
 	
 	<translation name="ALARM_SOUND_USED">Użyto dźwięku alarmu</translation>
 	<translation name="ITEM_PRICE_UNDERCUT">Podcięcie ceny przedmiotu</translation>
@@ -316,8 +316,8 @@
 	<translation name="HAS_BEEN_UNDERCUT">Cena MIN. została przebita</translation>
 	<translation name="IS_ALERT_ACTIVATE">Alert</translation>
 	<translation name="UNDERCUTTING_PRICE">MIN. Cena</translation>
-	<translation name="AVERAGE_PRICES">Średnie ceny</translation>
-	<translation name="AVERAGE_PRICES_TOOLTIP">Cena sprzedaży min | Cena sprzedaży maks. | Kup cenę min | Kup maksymalną cenę</translation>
+	<translation name="AVERAGE_PRICES">Średnie Ceny</translation>
+	<translation name="AVERAGE_PRICES_TOOLTIP">Cena sprzedaży min. | Cena sprzedaży maks. | Kup cenę min. | Kup maksymalną cenę</translation>
 	
 	<translation name="TRACKING">Śledzenie</translation>
 	<translation name="IS_TRACKING_ACTIVE">Czy śledzenie jest aktywne (zielony – włączony | żółty – częściowo | szary – wyłączony)</translation>
@@ -326,7 +326,7 @@
 	<translation name="ALLIANCE">Sojusz</translation>
 	<translation name="RESET_TRACKING_COUNTER">Zresetuj obecna sesje</translation>
 	<translation name="MAKE_SURE_YOU_HAVE_INSTALLED_NPCAP">Upewnij się, że zainstalowałeś Npcap. https://nmap.org/npcap</translation>
-	<translation name="PACKET_HANDLER_ERROR_MESSAGE">Wystąpił błąd śledzenia. Czy zainstalowano Npcap? https://nmap.org/npcap</translation>
+	<translation name="PACKET_HANDLER_ERROR_MESSAGE">Wystąpił błąd śledzenia. Czy jest zainstalowany Npcap? https://nmap.org/npcap</translation>
 	<translation name="YOU_HAVE">Masz</translation>
 	<translation name="FAME">Sława</translation>
 	<translation name="GAINED">zyskał.</translation>
@@ -386,9 +386,9 @@
 	<translation name="FAME_SHRINE">Sanktuarium Sławy</translation>
 	<translation name="COMBAT_BUFF">Wzmocnienie walki</translation>
 	
-	<translation name="CITY_PRICES_API_URL">Adres URL interfejsu API cen miast</translation>
-	<translation name="CITY_PRICES_HISTORY_API_URL">URL interfejsu API historii cen w mieście</translation>
-	<translation name="GOLD_STATS_API_URL">Adres URL interfejsu Złotych statystyk</translation>
+	<translation name="CITY_PRICES_API_URL">Adres URL API cen miasta</translation>
+	<translation name="CITY_PRICES_HISTORY_API_URL">Adres URL historii cen miasta</translation>
+	<translation name="GOLD_STATS_API_URL">Adres URL statystyk złota</translation>
 	
 	<translation name="SAFE">Bezpieczne</translation>
 	<translation name="DUNGEON_TIMER">Ile do bezpiecznej strefy:</translation>
