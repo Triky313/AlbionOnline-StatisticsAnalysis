@@ -10,6 +10,7 @@ public static class GatheringMapping
         {
             Timestamp = gathered.Timestamp,
             UniqueItemName = gathered.UniqueName,
+            EstimatedMarketValueInternal = gathered.EstimatedMarketValue.InternalValue,
             GainedStandardAmount = gathered.GainedStandardAmount,
             GainedBonusAmount = gathered.GainedBonusAmount,
             GainedPremiumBonusAmount = gathered.GainedPremiumBonusAmount,
@@ -17,8 +18,7 @@ public static class GatheringMapping
             ClusterIndex = gathered.ClusterIndex,
             MapType = gathered.MapType,
             InstanceName = gathered.InstanceName,
-            MiningProcesses = gathered.MiningProcesses,
-            EstimatedMarketValueInternal = gathered.EstimatedMarketValue.InternalValue
+            MiningProcesses = gathered.MiningProcesses
         };
     }
 
@@ -28,6 +28,7 @@ public static class GatheringMapping
         {
             Timestamp = gathered.Timestamp,
             UniqueName = gathered.UniqueItemName,
+            EstimatedMarketValue = FixPoint.FromInternalValue(gathered.EstimatedMarketValueInternal),
             GainedStandardAmount = gathered.GainedStandardAmount,
             GainedBonusAmount = gathered.GainedBonusAmount,
             GainedPremiumBonusAmount = gathered.GainedPremiumBonusAmount,
@@ -35,8 +36,7 @@ public static class GatheringMapping
             ClusterIndex = gathered.ClusterIndex,
             MapType = gathered.MapType,
             InstanceName = gathered.InstanceName,
-            MiningProcesses = gathered.MiningProcesses,
-            EstimatedMarketValue = FixPoint.FromInternalValue(gathered.EstimatedMarketValueInternal)
+            MiningProcesses = gathered.MiningProcesses
         };
     }
 }
