@@ -232,7 +232,7 @@ public class DungeonController
 
     public async Task RemoveDungeonByHashAsync(IEnumerable<string> dungeonHash)
     {
-        foreach (var dungeons in _dungeons)
+        await foreach (var dungeons in _dungeons.ToList().ToAsyncEnumerable())
         {
             if (dungeonHash.Contains(dungeons.DungeonHash))
             {
@@ -240,15 +240,20 @@ public class DungeonController
             }
         }
 
-        foreach (var dungeonFragment in _mainWindowViewModel?.DungeonBindings?.TrackingDungeons?.ToList() ?? new List<DungeonNotificationFragment>())
+        await foreach (var dungeonFragment in _mainWindowViewModel?.DungeonBindings?.TrackingDungeons?.ToList().ToAsyncEnumerable() 
+                                              ?? new List<DungeonNotificationFragment>().ToAsyncEnumerable())
         {
-            Application.Current.Dispatcher.Invoke(() =>
+            await Application.Current.Dispatcher.InvokeAsync(() =>
             {
-                _mainWindowViewModel?.DungeonBindings?.TrackingDungeons?.Remove(dungeonFragment);
+                if (dungeonHash.Contains(dungeonFragment.DungeonHash))
+                {
+                    _mainWindowViewModel?.DungeonBindings?.TrackingDungeons?.Remove(dungeonFragment);
+                }
             });
         }
 
-        await SetOrUpdateDungeonsDataUiAsync().ConfigureAwait(false);
+        await SetOrUpdateDungeonsDataUiAsync();
+        await SaveInFileAsync();
     }
 
     private static bool AddClusterToExistDungeon(IEnumerable<DungeonObject> dungeons, Guid? currentGuid, Guid? lastGuid, out DungeonObject dungeon)

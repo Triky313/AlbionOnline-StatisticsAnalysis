@@ -3,6 +3,7 @@ using StatisticsAnalysisTool.Common;
 using StatisticsAnalysisTool.ViewModels;
 using StatisticsAnalysisTool.Views;
 using System.Linq;
+using System.Threading.Tasks;
 using System.Windows;
 
 namespace StatisticsAnalysisTool.UserControls;
@@ -45,7 +46,7 @@ public partial class DungeonControl
         }
     }
 
-    public void DeleteSelectedDungeons()
+    public async Task DeleteSelectedDungeonsAsync()
     {
         var dialog = new DialogWindow(LanguageController.Translation("DELETE_SELECTED_DUNGEONS"), LanguageController.Translation("SURE_YOU_WANT_TO_DELETE_SELECTED_DUNGEONS"));
         var dialogResult = dialog.ShowDialog();
@@ -55,7 +56,10 @@ public partial class DungeonControl
         if (dialogResult is true)
         {
             var selectedDungeons = vm?.DungeonBindings?.TrackingDungeons.Where(x => x.IsSelectedForDeletion ?? false).Select(x => x.DungeonHash);
-            _ = vm?.TrackingController.DungeonController.RemoveDungeonByHashAsync(selectedDungeons);
+            if (selectedDungeons != null)
+            {
+                await vm.TrackingController.DungeonController.RemoveDungeonByHashAsync(selectedDungeons);
+            }
         }
     }
 
@@ -92,7 +96,7 @@ public partial class DungeonControl
 
     private void BtnDeleteSelectedDungeons_Click(object sender, RoutedEventArgs e)
     {
-        DeleteSelectedDungeons();
+        _ = DeleteSelectedDungeonsAsync();
     }
 
     #endregion

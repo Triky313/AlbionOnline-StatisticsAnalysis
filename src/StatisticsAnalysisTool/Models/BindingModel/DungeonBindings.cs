@@ -18,7 +18,7 @@ namespace StatisticsAnalysisTool.Models.BindingModel;
 public class DungeonBindings : INotifyPropertyChanged
 {
     private ObservableCollection<DungeonNotificationFragment> _trackingDungeons = new();
-    private ListCollectionView _trackingDungeonsCollectionView;
+    private ListCollectionView _dungeonsCollectionView;
     private DungeonCloseTimer _dungeonCloseTimer = new();
     private DungeonStatsFilter _dungeonStatsFilter;
     private DungeonStats _dungeonStatsDay = new();
@@ -34,14 +34,14 @@ public class DungeonBindings : INotifyPropertyChanged
 
     public DungeonBindings()
     {
-        TrackingDungeonsCollectionView = CollectionViewSource.GetDefaultView(TrackingDungeons) as ListCollectionView;
-        if (TrackingDungeonsCollectionView != null)
+        DungeonsCollectionView = CollectionViewSource.GetDefaultView(TrackingDungeons) as ListCollectionView;
+        if (DungeonsCollectionView != null)
         {
-            TrackingDungeonsCollectionView.IsLiveSorting = true;
-            TrackingDungeonsCollectionView.CustomSort = new DungeonTrackingNumberComparer();
+            DungeonsCollectionView.IsLiveSorting = true;
+            DungeonsCollectionView.CustomSort = new DungeonTrackingNumberComparer();
         }
     }
-
+    
     public ObservableCollection<DungeonNotificationFragment> TrackingDungeons
     {
         get => _trackingDungeons;
@@ -52,12 +52,12 @@ public class DungeonBindings : INotifyPropertyChanged
         }
     }
 
-    public ListCollectionView TrackingDungeonsCollectionView
+    public ListCollectionView DungeonsCollectionView
     {
-        get => _trackingDungeonsCollectionView;
+        get => _dungeonsCollectionView;
         set
         {
-            _trackingDungeonsCollectionView = value;
+            _dungeonsCollectionView = value;
             OnPropertyChanged();
         }
     }
