@@ -31,15 +31,17 @@ jobs:
         fetch-depth: 0
 
     - name: Check for build errors
+      if: ${{ matrix.configuration == 'Debug' }}
       run: dotnet build src\StatisticsAnalysisTool
 
     - name: Install dependencies
       run: dotnet restore src\StatisticsAnalysisTool
 
-    - name: Install .NET
+    - name: Install .NET (Debug)
+      if: ${{ matrix.configuration == 'Debug' }}
       uses: actions/setup-dotnet@v1
       with:
-        dotnet-version: '6.0.100' # SDK Version to use; x will use the latest version of the 6.0 channel. Force 101 for global.json compatibility.
+        dotnet-version: '6.0.x' # SDK Version to use; x will use the latest version of the 6.0 channel. Force 101 for global.json compatibility.
     - run: dotnet build src\StatisticsAnalysisTool
 
     - name: Setup MSBuild.exe
@@ -49,4 +51,5 @@ jobs:
         msbuild-architecture: x64
 
     - name: Execute unit tests
+      if: ${{ matrix.configuration == 'Debug' }}
       run: dotnet test $env:Test_Project_Path
