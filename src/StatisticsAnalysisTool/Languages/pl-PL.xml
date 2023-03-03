@@ -42,7 +42,7 @@
 	<translation name="REVENUE_WITHOUT_FEE">Przychody bez opłat</translation>
 	<translation name="PROFIT">Zysk</translation>
 	<translation name="PURCHASE_CITY">Kup miasto</translation>
-	<translation name="DOUBLE_VALUE_EXISTS_IN_THE_LANGUAGE_FILE">W pliku językowym istnieje podwójna wartość</translation>
+	<translation name="DOUBLE_VALUE_EXISTS_IN_THE_LANGUAGE_FILE">Wartość podwójna istnieje w pliku językowym</translation>
 	<translation name="EVERY_DAY">Codziennie</translation>
 	<translation name="EVERY_3_DAYS">Co 3 dni</translation>
 	<translation name="EVERY_7_DAYS">Co 7 dni</translation>
@@ -53,7 +53,7 @@
 	<translation name="30_SECONDS">30 sekund</translation>
 	<translation name="60_SECONDS">60 sekund</translation>
 	<translation name="5_MINUTES">5 minut</translation>
-	<translation name="MIN_PROFIT_TOOLTIP">Określa minimalny zysk, jaki powinien generować przedmiot.</translation>
+	<translation name="MIN_PROFIT_TOOLTIP">Określa minimalny zysk, jaki powinien wygenerować przedmiot.</translation>
 	<translation name="REMOVE">Usuń</translation>
 	<translation name="ITEM_LIST_SOURCE_URL">Źródłowy URL listy produktów</translation>
 	<translation name="ITEM_LIST_CAN_NOT_BE_LOADED">Nie można załadować listy przedmiotów.</translation>
@@ -77,7 +77,7 @@
 	<translation name="TOTAL">Łącznie</translation>
 	<translation name="ROYAL">Królewskie Mapy</translation>
 	<translation name="OUTLANDS">Czarne Mapy</translation>
-	<translation name="HELLGATE">Hellgate</translation>
+	<translation name="HELLGATE">Bramy Piekieł</translation>
 	<translation name="EXPEDITION">Ekspedycja</translation>
 	<translation name="CRAFTING">Tworzenie</translation>
 	<translation name="GATHERING">Zbieranie</translation>
@@ -95,7 +95,7 @@
 	<translation name="UPDATE">Aktualizuj</translation>
 	<translation name="NUMBER_OF_VALUES">Liczba wartości</translation>
 	<translation name="GOLD">Złoto</translation>
-	<translation name="OPEN_ITEM_WINDOW_IN_NEW_WINDOW">Otwórz przedmiot w nowym oknie</translation>
+	<translation name="OPEN_ITEM_WINDOW_IN_NEW_WINDOW">Otwórz okno przedmiotu w nowym oknie</translation>
 	<translation name="TAB_ALL_QUALITY_TOOLTIP_DESCRIPTION">Pokazuje wszystkie ceny jakości przedmiotu</translation>
 	<translation name="MAIN">Główne</translation>
 	<translation name="HISTORY">Historia</translation>
@@ -112,11 +112,11 @@
 	<translation name="NO">Nie</translation>
 	<translation name="CATEGORY_NAME">Nazwa kategorii</translation>
 	<translation name="FULL_ITEM_INFORMATION_EXIST_LOCAL">Pełne informacje o przedmiocie istnieją lokalnie</translation>
-	<translation name="LAST_FULL_INFORMATION_UPDATE">Ostatnia pełna aktualizacja informacji</translation>
+	<translation name="LAST_FULL_INFORMATION_UPDATE">Ostatnia aktualizacja pełnych informacji</translation>
 	<translation name="CATEGORY">Kategoria</translation>
 	<translation name="PARENT_CATEGORY">Kategoria nadrzędna</translation>
-	<translation name="FULL_ITEM_INFO_SEARCH">Pełne wyszukiwanie informacji o przedmiocie</translation>
-	<translation name="FULL_ITEM_INFO_UPDATE_CYCLE_DAYS">Pełne dni cyklu aktualizacji informacji o przedmiocie</translation>
+	<translation name="FULL_ITEM_INFO_SEARCH">Wyszukiwanie pełnych informacji o przedmiocie</translation>
+	<translation name="FULL_ITEM_INFO_UPDATE_CYCLE_DAYS">Liczba dni między aktualizacjami pełnych informacji o przedmiocie</translation>
 	<translation name="LOAD_FULL_ITEM_INFO">Wczytaj pełne informacje o przedmiocie</translation>
 	<translation name="UNKNOWN">Nieznane</translation>
 
@@ -305,7 +305,7 @@
 	<translation name="ITEM_POWER">Moc przedmiotu</translation>
 	<translation name="DURABILITY">Trwałość</translation>
 	<translation name="REAL_MONEY_PRICE">Cena realna</translation>
-	<translation name="TOO_MANY_REQUESTS_CLOSE_WINDOWS_OR_WAIT">Zbyt wiele próśb, zamknij kilka okien lub poczekaj kilka minut.</translation>
+	<translation name="TOO_MANY_REQUESTS_CLOSE_WINDOWS_OR_WAIT">Zbyt wiele żądań, zamknij kilka okien lub poczekaj kilka minut.</translation>
 	
 	<translation name="ALARM_SOUND_USED">Użyto dźwięku alarmu</translation>
 	<translation name="ITEM_PRICE_UNDERCUT">Podcięcie ceny przedmiotu</translation>
@@ -316,8 +316,8 @@
 	<translation name="HAS_BEEN_UNDERCUT">Cena MIN. została przebita</translation>
 	<translation name="IS_ALERT_ACTIVATE">Alert</translation>
 	<translation name="UNDERCUTTING_PRICE">MIN. Cena</translation>
-	<translation name="AVERAGE_PRICES">Średnie ceny</translation>
-	<translation name="AVERAGE_PRICES_TOOLTIP">Cena sprzedaży min | Cena sprzedaży maks. | Kup cenę min | Kup maksymalną cenę</translation>
+	<translation name="AVERAGE_PRICES">Średnie Ceny</translation>
+	<translation name="AVERAGE_PRICES_TOOLTIP">Cena sprzedaży min. | Cena sprzedaży maks. | Kup cenę min. | Kup maksymalną cenę</translation>
 	
 	<translation name="TRACKING">Śledzenie</translation>
 	<translation name="IS_TRACKING_ACTIVE">Czy śledzenie jest aktywne (zielony – włączony | żółty – częściowo | szary – wyłączony)</translation>
@@ -326,7 +326,7 @@
 	<translation name="ALLIANCE">Sojusz</translation>
 	<translation name="RESET_TRACKING_COUNTER">Zresetuj obecna sesje</translation>
 	<translation name="MAKE_SURE_YOU_HAVE_INSTALLED_NPCAP">Upewnij się, że zainstalowałeś Npcap. https://nmap.org/npcap</translation>
-	<translation name="PACKET_HANDLER_ERROR_MESSAGE">Wystąpił błąd śledzenia. Czy zainstalowano Npcap? https://nmap.org/npcap</translation>
+	<translation name="PACKET_HANDLER_ERROR_MESSAGE">Wystąpił błąd śledzenia. Czy jest zainstalowany Npcap? https://nmap.org/npcap</translation>
 	<translation name="YOU_HAVE">Masz</translation>
 	<translation name="FAME">Sława</translation>
 	<translation name="GAINED">zyskał.</translation>
@@ -367,7 +367,7 @@
 	<translation name="OPENED_RARE_CHESTS">Otwarte rzadkie skrzynie</translation>
 	<translation name="OPENED_LEGENDARY_CHESTS">Otwarte legendarne skrzynie</translation>
 	
-	<translation name="DAMAGE_METER_DESCRIPTION_1">Aby rozpoznać obrażenia od innych graczy w drużynie, najpierw należy aktywować narzędzie, a następnie gracz musi opuścić drużynę lub do niej dołączyć.</translation>
+	<translation name="DAMAGE_METER_DESCRIPTION_1">Aby obrażenia od innych graczy w drużynie zostały rozpoznane, narzędzie musi być najpierw aktywowane, a następnie gracz musi opuścić lub dołączyć do drużyny.</translation>
 
 	<translation name="SORT_BY_DAMAGE">Sortuj według obrażeń</translation>
 	<translation name="SORT_BY_DPS">Sortuj według DPS</translation>
@@ -386,9 +386,9 @@
 	<translation name="FAME_SHRINE">Sanktuarium Sławy</translation>
 	<translation name="COMBAT_BUFF">Wzmocnienie walki</translation>
 	
-	<translation name="CITY_PRICES_API_URL">Adres URL interfejsu API cen miast</translation>
-	<translation name="CITY_PRICES_HISTORY_API_URL">URL interfejsu API historii cen w mieście</translation>
-	<translation name="GOLD_STATS_API_URL">Adres URL interfejsu Złotych statystyk</translation>
+	<translation name="CITY_PRICES_API_URL">Adres URL API cen miasta</translation>
+	<translation name="CITY_PRICES_HISTORY_API_URL">Adres URL historii cen miasta</translation>
+	<translation name="GOLD_STATS_API_URL">Adres URL statystyk złota</translation>
 	
 	<translation name="SAFE">Bezpieczne</translation>
 	<translation name="DUNGEON_TIMER">Ile do bezpiecznej strefy:</translation>
@@ -431,17 +431,17 @@
 	<translation name="SELECT_TO_DELETE">Wybierz, aby usunąć</translation>
 	<translation name="SURE_YOU_WANT_TO_DELETE_SELECTED_DUNGEONS">Czy na pewno chcesz usunąć wybrane lochy?</translation>
 	<translation name="FIRST_STEPS">Pierwsze kroki</translation>
-	<translation name="DESCRIPTION_TRACK_MY_GAME">Co muszę zrobić, aby móc śledzić moją grę?</translation>
+	<translation name="DESCRIPTION_TRACK_MY_GAME">Co muszę zrobić, aby śledzić swoją grę?</translation>
 	<translation name="DESCRIPTION_TRACK_MY_GAME_DETAILS_1">1. Potrzebujesz systemu Windows 10 lub nowszego!</translation>
-	<translation name="DESCRIPTION_TRACK_MY_GAME_DETAILS_2">2. Pobierz i zainstaluj instalator Npcap: </translation>
-	<translation name="DESCRIPTION_TRACK_MY_GAME_DETAILS_3">3. Uruchom narzędzie analiz statystycznych (uruchom ponownie raz)</translation>
-	<translation name="DESCRIPTION_TRACK_MY_GAME_DETAILS_4">4. Rozpocznij grę</translation>
-	<translation name="DESCRIPTION_TRACK_MY_GAME_DETAILS_5">5. Wybierz Śledzenie z menu rozwijanego</translation>
-	<translation name="DESCRIPTION_TRACK_MY_GAME_DETAILS_6">6. Kliknij duży przycisk WŁ./WYŁ., aby rozpocząć śledzenie. Jeśli przycisk jest niebieski, a kółko po prawej, śledzenie jest włączone.</translation>
-	<translation name="DESCRIPTION_TRACK_MY_GAME_DETAILS_7">7. Jeśli tracker nie ma jeszcze wszystkich ważnych informacji, ikona Wi-Fi jest żółta. Aby zmienił kolor na zielony, twoja postać musi raz w grze zmienić mapę. (np. Martlock do Eldon Hill)</translation>
-	<translation name="DESCRIPTION_TRACK_MY_GAME_DETAILS_8">8. Jeśli ikona Wi-Fi jest zielona i widać nazwę Twojej postaci, tracker jest w pełni funkcjonalny – gotowe!</translation>
-	<translation name="DESC_UPDATE_MARKET_PRICES_TITLE">Jak samodzielnie zaktualizować ceny produktów?</translation>
-	<translation name="DESC_UPDATE_MARKET_PRICES_1">Aby móc samodzielnie aktualizować ceny przedmiotu, musisz zainstalować projekt danych Albion Online: </translation>
+	<translation name="DESCRIPTION_TRACK_MY_GAME_DETAILS_2">2. Pobierz i zainstaluj program instalacyjny Npcap: </translation>
+	<translation name="DESCRIPTION_TRACK_MY_GAME_DETAILS_3">3. Uruchom narzędzie do analizy statystyk (restartuj raz)</translation>
+	<translation name="DESCRIPTION_TRACK_MY_GAME_DETAILS_4">4. Uruchom grę</translation>
+	<translation name="DESCRIPTION_TRACK_MY_GAME_DETAILS_5">5. Wybierz opcję śledzenia z menu rozwijanego</translation>
+	<translation name="DESCRIPTION_TRACK_MY_GAME_DETAILS_6">6. Kliknij na dużym przycisku WŁ./WYŁ., aby rozpocząć śledzenie. Jeśli przycisk jest niebieski, a kółko znajduje się po prawej stronie, śledzenie jest aktywne.</translation>
+	<translation name="DESCRIPTION_TRACK_MY_GAME_DETAILS_7">7. Jeśli śledzący nie ma jeszcze wszystkich ważnych informacji, ikona wifi jest żółta. Aby zmieniła kolor na zielony, twój bohater musi zmienić mapę w grze co najmniej raz. (np. z Martlock do Eldon Hill)</translation>
+	<translation name="DESCRIPTION_TRACK_MY_GAME_DETAILS_8">8. Jeśli ikona wifi jest zielona, a widoczne jest twoje imię postaci, śledzący działa w pełni - gotowe!</translation>
+	<translation name="DESC_UPDATE_MARKET_PRICES_TITLE">Jak samodzielnie aktualizować ceny przedmiotów?</translation>
+	<translation name="DESC_UPDATE_MARKET_PRICES_1">Aby móc samodzielnie aktualizować ceny przedmiotów, musisz zainstalować projekt danych Albion Online: </translation>
 	<translation name="SEASON_POINTS">Punkty sezonu</translation>
 	<translation name="EXPORT_LOOT_TO_FILE">Eksportuj łupy do pliku</translation>
 	<translation name="TRACK_PARTY_LOOT_ONLY">Tylko łupy z ekipy śledzącej</translation>
@@ -570,15 +570,15 @@
 	<translation name="DELETE_SELECTED_STORAGE">Usuń wybraną skrytkę</translation>
 	<translation name="SURE_YOU_WANT_TO_DELETE_SELECTED_STORAGE">Czy na pewno chcesz usunąć wybrane miejsce?</translation>
 	<translation name="DONATIONS">Darowizny</translation>
-	<translation name="HOW_CAN_I_DONATE">Jak mogę przekazać darowiznę?</translation>
-	<translation name="TOP_DONATIONS_ALL_TIME">Największe darowizny w historii</translation>
-	<translation name="TOP_DONATIONS_THIS_MONTH">Największe darowizny w tym miesiącu</translation>
-	<translation name="DONATION_DESCRIPTION">Bardzo proste, piszesz wiadomość do Triky313 w grze, że chcesz coś podarować, a otrzymasz wiadomość, gdy zostaniesz odblokowany na wyspie. Następnie możesz umieścić przedmioty, które chcesz przekazać w zakładce SAT Donation Tab. Podaj również, czy darowizna zostanie przekazana anonimowo, czy z Twoim imieniem i nazwiskiem.</translation>
-	<translation name="NO_DONATION_YET">Nie ma jeszcze darowizny! :(</translation>
-	<translation name="WHY_DONATE">Dlaczego darowizna?</translation>
+	<translation name="HOW_CAN_I_DONATE">Jak mogę przekazać datek?</translation>
+	<translation name="TOP_DONATIONS_ALL_TIME">Najwyższe datki wszech czasów</translation>
+	<translation name="TOP_DONATIONS_THIS_MONTH">Najwyższe datki w tym miesiącu</translation>
+	<translation name="DONATION_DESCRIPTION">To bardzo proste. Napisz wiadomość do użytkownika Triky313 w grze, że chcesz przekazać datek. Otrzymasz wiadomość zwrotną, gdy odblokujemy dla ciebie wyspę. Następnie możesz umieścić przedmioty, które chcesz przekazać, w zakładce SAT Donation. Prosimy także o podanie, czy datek ma być anonimowy czy z nazwiskiem.</translation>
+	<translation name="NO_DONATION_YET">Jeszcze nie przekazano datków! :(</translation>
+	<translation name="WHY_DONATE">Dlaczego warto przekazać darowiznę?</translation>
 	<translation name="TOP_REAL_MONEY_DONATIONS">Najwyższe wplaty w realnej gotówce</translation>
-	<translation name="WHY_DONATE_DESCRIPTION">Ten projekt istnieje od czerwca 2019 r. Prawie co tydzień poświęcam na ten projekt +10 godzin i uwielbiam go. Dlatego często nie mam czasu na granie w Albion Online. Więc jeśli chcesz mnie uszczęśliwić i wesprzeć ten projekt, po prostu przekaż kilka rzeczy.</translation>
-	<translation name="ITEMS_ARE_CONVERTED_TO_SILVER">Przedmioty są konwertowane na srebro</translation>
+	<translation name="WHY_DONATE_DESCRIPTION">Ten projekt istnieje od czerwca 2019 roku. Prawie co tydzień poświęcam na niego +10 godzin i bardzo go kocham. Dlatego często nie mam czasu na grę w Albion Online. Jeśli chcesz mnie uszczęśliwić i wesprzeć ten projekt, po prostu przekaż kilka przedmiotów jako darowiznę.</translation>
+	<translation name="ITEMS_ARE_CONVERTED_TO_SILVER">Przedmioty są przeliczane na srebro</translation>
 	<translation name="AVALON_ROAD">Ścieżka Avalonu</translation>
 	<translation name="BLACK_ZONE">Czarna Mapa</translation>
 	<translation name="RED_ZONE">Czerwona Mapa</translation>
@@ -615,7 +615,7 @@
 	<translation name="MOST_EXPENSIVE_PURCHASE">Najdroższy Zakup:</translation>
 	<translation name="SNAPSHOTS">Zrzut Ekranu</translation>
 	<translation name="DELETE_SELECTED_SNAPSHOT">Usuń wybrany zrzut</translation>
-	<translation name="TAKE_A_SNAPSHOT_OF_DAMAGE_METER_DESCRIPTION">Zrób zrzut ekranu zadanych obrażeń i wyświetl ją na karcie zrzut ekranu</translation>
+	<translation name="TAKE_A_SNAPSHOT_OF_DAMAGE_METER_DESCRIPTION">Zrób zrzut ekranu z miernikiem obrażeń i przeglądaj go w zakładce zrzutów ekranu</translation>
 	<translation name="RANDOM_SOLO_DUNGEONS">Losowe lochy solo</translation>
 	<translation name="RANDOM_GROUP_DUNGEONS">Losowe lochy grupowe</translation>
 	<translation name="SNAPSHOT_AFTER_MAP_CHANGE">Zrzut ekranu po zmianie mapy</translation>
@@ -646,11 +646,11 @@
 	<translation name="MARKET_TAX_RATE">Podatek w sklepie ( PREMIUM / NOPREMIUM }</translation>
 	<translation name="MARKET_TAX_SETUP_RATE">Opłata za ustawienie zlecenia</translation>
 	<translation name="SETUP_TAX">Ustawienie zlecenia</translation>
-	<translation name="CRAFTING_INFO_DESCRIPTION_1">Premia za wytwarzanie to premia za miasto lub kryjówkę, w której wytwarzasz.</translation>
-	<translation name="CRAFTING_INFO_DESCRIPTION_2">Aby znaleźć numer, musisz otworzyć mini-mapę i najechać na prawy górny róg, gdzie możesz zobaczyć, jaki bonus daje to miasto/HO.</translation>
-	<translation name="CRAFTING_INFO_DESCRIPTION_3">W mieście takim jak Lymhurst jest to 118%. Jeśli miasto daje premię do przedmiotu, który ma zostać wytworzony, wynosi 133%. W Kryjówkach może być wyższy, może być również dzienny bonus, który może wynosić 10% lub 20%.</translation>
-	<translation name="CRAFTING_INFO_DESCRIPTION_4">Opłatę za założenie domu aukcyjnego i podatki można znaleźć w grze, gdy chcesz sprzedać przedmiot na rynku.</translation>
-	<translation name="CRAFTING_INFO_DESCRIPTION_5">Jeśli masz Premium, możesz pozostawić te dwie wartości bez zmian. Jeśli chcesz sprzedać coś ręcznie, ustaw oba na 0. Jeśli nie masz premii, wartości są zwykle dwa razy wyższe.</translation>
+	<translation name="CRAFTING_INFO_DESCRIPTION_1">Bonus rzemieślniczy to bonus miasta lub kryjówki, w którym wytwarzasz przedmioty.</translation>
+	<translation name="CRAFTING_INFO_DESCRIPTION_2">Aby poznać wartość bonusu, musisz otworzyć minimapę i najechać na prawy górny róg, gdzie zobaczysz, jaki bonus daje to miasto/kryjówka.</translation>
+	<translation name="CRAFTING_INFO_DESCRIPTION_3">W mieście takim jak Lymhurst wynosi on 118%. Jeśli miasto daje bonus do przedmiotu, który ma być wytwarzany, wynosi on 133%. W kryjówkach może być wyższy, a także może być dzienny bonus wynoszący 10% lub 20%.</translation>
+	<translation name="CRAFTING_INFO_DESCRIPTION_4">Opłatę za ustawienie aukcji i podatki można znaleźć w grze, gdy chcesz sprzedać przedmiot na rynku.</translation>
+	<translation name="CRAFTING_INFO_DESCRIPTION_5">Jeśli posiadasz konto Premium, możesz pozostawić te dwie wartości bez zmian. Jeśli chcesz coś sprzedać ręcznie, ustaw obie wartości na 0. Jeśli nie masz konta Premium, wartości zazwyczaj są dwukrotnie wyższe.</translation>
 	<translation name="MISTS">Mgły</translation>
 	<translation name="REPAIR_COSTS_TODAY">Koszty naprawy dziś</translation>
 	<translation name="REPAIR_COSTS_LAST_7_DAYS">Koszty naprawy z ostatnich 7 dni</translation>
@@ -680,7 +680,7 @@
 	<translation name="SURE_YOU_WANT_TO_DELETE_SELECTED_TRADES">Czy na pewno chcesz usunąć wybrane transakcje?</translation>
 	<translation name="TRADE_MONITORING">Monitorowanie handlu</translation>
 	<translation name="TRADE">Handel</translation>
-	<translation name="TRADE_MONITORING_DESCRIPTION1">Aby rozpoznać nowe wiadomości e-mail, należy otworzyć skrzynkę odbiorczą w grze i dodatkowo każdą wiadomość raz.</translation>
+	<translation name="TRADE_MONITORING_DESCRIPTION1">Aby rozpoznać nowe wiadomości e-mail, skrzynkę odbiorczą należy otworzyć w grze i dodatkowo raz otworzyć każdą wiadomość.</translation>
 	<translation name="UNKNOWN TRADE">Nieznana transakcja</translation>
 	<translation name="MAIL">Poczta</translation>
 	<translation name="DELETE_TRADES_AFTER_14_DAYS">Usuń transakcje po 14 dniach</translation>
