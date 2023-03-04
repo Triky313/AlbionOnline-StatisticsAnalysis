@@ -63,7 +63,7 @@
             <Border Style="{StaticResource Container.Border}">
                 <DockPanel VerticalAlignment="Top" HorizontalAlignment="Stretch" Margin="0,0,10,0">
                     <StackPanel Orientation="Vertical" Margin="0,0,5,0" HorizontalAlignment="Center" VerticalAlignment="Top">
-                        <Image Source="{Binding Item.Icon, IsAsync=True, Mode=OneWay}" Style="{StaticResource Gathering.Image.Item.Icon}" />
+                        <Image Source="{Binding Item.Icon, IsAsync=True}" Style="{StaticResource Gathering.Image.Item.Icon}" />
                     </StackPanel>
                     <StackPanel Orientation="Vertical">
                         <DockPanel>
