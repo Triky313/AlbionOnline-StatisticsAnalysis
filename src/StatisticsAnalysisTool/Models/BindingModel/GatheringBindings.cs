@@ -149,8 +149,11 @@ public class GatheringBindings : INotifyPropertyChanged
     {
         return await Task.Run(() =>
         {
-            var filteredData = gatheredData?.ToList().Where(filter).Where(x => IsTimestampOkayByGatheringStatsTimeType(x.TimestampDateTime, gatheringStatsTimeType));
-            var groupedData = filteredData?.ToList().GroupBy(x => x.UniqueName)
+            var filteredData = gatheredData?.ToArray()
+                .Where(filter)
+                .Where(x => IsTimestampOkayByGatheringStatsTimeType(x.TimestampDateTime, gatheringStatsTimeType))
+                .ToArray();
+            var groupedData = filteredData?.ToArray().GroupBy(x => x.UniqueName)
                 .Select(g => new Gathered()
                 {
                     UniqueName = g.Key,
