@@ -267,7 +267,6 @@
 	<translation name="SKINNING_KNIFE">Faca de Esfolar</translation>
 	<translation name="STONE_HAMMER">Martelo de Pedra</translation>
 	<translation name="WOOD_AXE">Machado de Madeira</translation>
-	
 	<translation name="FIBER_TROPHY">Troféu de Fibra</translation>
 	<translation name="FISH_TROPHY">Troféu de Pesca</translation>
 	<translation name="GENERAL_TROPHY">Troféu do Generalista</translation>
@@ -276,19 +275,16 @@
 	<translation name="ORE_TROPHY">Troféu de Minerador</translation>
 	<translation name="ROCK_TROPHY">Troféu de Canteiro</translation>
 	<translation name="WOOD_TROPHY">Troféu de Lenhador</translation>
-	
 	<translation name="ACCESSORIES">Acessório</translation>
 	<translation name="ARMOR">Armadura</translation>
 	<translation name="ARTEFACT">Artefato</translation>
 	<translation name="CITY_RESOURCES">Recursos da Cidade</translation>
 	<translation name="CONSUMABLE">Consumíveis</translation>
-	
 	<translation name="FARMABLE">Cultivável</translation>
 	<translation name="FURNITURE">Mobilia</translation>
 	<translation name="GATHERING_GEAR">Equipamento de Coleta</translation>
 	<translation name="LUXURY_GOODS">Produto de Luxo</translation>
 	<translation name="MAGIC">Magia</translation>
-	
 	<translation name="MATERIALS">Materiais</translation>
 	<translation name="MELEE">Corpo a Corpo</translation>
 	<translation name="MOUNT">Montaria</translation>
@@ -300,13 +296,11 @@
 	<translation name="TOKEN">Tomo</translation>
 	<translation name="TOOL">Ferramentas</translation>
 	<translation name="TROPHIES">Troféus</translation>
-	
 	<translation name="WEIGHT">Peso</translation>
 	<translation name="ITEM_POWER">Poder do Item</translation>
 	<translation name="DURABILITY">Durabilidade</translation>
 	<translation name="REAL_MONEY_PRICE">Preço real em dinheiro</translation>
 	<translation name="TOO_MANY_REQUESTS_CLOSE_WINDOWS_OR_WAIT">Muitas requisições, feche algumas janelas ou espere alguns minutos.</translation>
-	
 	<translation name="ALARM_SOUND_USED">Alarme de Som Usado</translation>
 	<translation name="ITEM_PRICE_UNDERCUT">Corte do Preço do Item</translation>
 	<translation name="THE_PRICE_OF">O preço de</translation>
@@ -335,7 +329,6 @@
 	<translation name="TOTAL_SILVER">Prata Total</translation>
 	<translation name="TOTAL_RESPEC">Fama Amarela Total</translation>
 	<translation name="SILVER">Prata</translation>
-	
 	<translation name="MINUTES">Minutos</translation>
 	<translation name="HOURS">Horas</translation>
 	<translation name="DAYS">Dias</translation>
@@ -367,19 +360,6 @@
 	<translation name="OPENED_LEGENDARY_CHESTS">Baús lendários abertos</translation>
 	
 	<translation name="DAMAGE_METER_DESCRIPTION_1">Para aparecer o dano de outros jogadores ser reconhecido, o StatisticsAnalysisTool primeiro precisa ser ativada e então você deve sair e entrar do grupo.</translation>
-
-											
-													  
-														  
-															
-																	 
-																			  
-																				
-																		 
-																				   
- 
-																																																						 
- 
 	<translation name="SORT_BY_DAMAGE">Filtrar por dano</translation>
 	<translation name="SORT_BY_DPS">Filtrar por Dano por Segundo</translation>
 	<translation name="SORT_BY_NAME">Filtrar por Nome</translation>
@@ -396,11 +376,9 @@
 	<translation name="SILVER_SHRINE">Santuário de Prata</translation>
 	<translation name="FAME_SHRINE">Santuário de Fama</translation>
 	<translation name="COMBAT_BUFF">Buff de Combate</translation>
-	
 	<translation name="CITY_PRICES_API_URL">URL da API do Preço das Cidades</translation>
 	<translation name="CITY_PRICES_HISTORY_API_URL">URL da API do Histórico de Preços</translation>
 	<translation name="GOLD_STATS_API_URL">URL da API do Status de Ouro</translation>
-	
 	<translation name="SAFE">Seguro</translation>
 	<translation name="DUNGEON_TIMER">Temporizador da Masmorra</translation>
 	<translation name="SURE_YOU_WANT_TO_RESET_DAMAGE_METER">Você tem certeza que deseja dar reset no medidor de dano?</translation>
@@ -548,14 +526,9 @@
 	<translation name="AVERAGE_ITEM_POWER_WHEN_KILLING">Poder médio do seus itens ao matar</translation>
 	<translation name="AVERAGE_ITEM_POWER_OF_THE_KILLED_ENEMIES">Poder médio dos itens dos inimigos mortos</translation>
 	<translation name="AVERAGE_ITEM_POWER_WHEN_DYING">Poder médio dos seus itens ao morrer</translation>
-																		   
-										
 	<translation name="BOUGHT">Comprou</translation>
 	<translation name="SOLD">Vendeu</translation>
-	<translation name="COST_PER_ITEM">Custo por item</translation>
-																					   
-																																		
-																															<translation name="MAIL_MONITORING_DESCRIPTION1">Para reconhecer novas mensagens, a caixa de entrada deve ser aberta no jogo e, adicionalmente, uma mensagem de cada vez.</translation>
+	<translation name="COST_PER_ITEM">Custo por item</translation>																						<translation name="MAIL_MONITORING_DESCRIPTION1">Para reconhecer novas mensagens, a caixa de entrada deve ser aberta no jogo e, adicionalmente, uma mensagem de cada vez.</translation>
 	<translation name="SOLD_TODAY">Vendido hoje</translation>
 	<translation name="SOLD_MONTH">Vendido neste mês</translation>
 	<translation name="SOLD_YEAR">Vendido neste ano</translation>
@@ -612,10 +585,7 @@
 	<translation name="TAXES_TOTAL">Total de impostos</translation>
 	<translation name="NOTES">Notas</translation>
 	<translation name="UNSUPPORTED_OS">SO não suportado: podem ocorrer erros.</translation>
-	<translation name="FILE_DOWNLOAD_FAILED_TEXT1">Se sua internet estiver muito lenta ou você tiver outros problemas, você também pode baixar o arquivo manualmente.</translation>
-																										
-																																								
-																														
+	<translation name="FILE_DOWNLOAD_FAILED_TEXT1">Se sua internet estiver muito lenta ou você tiver outros problemas, você também pode baixar o arquivo manualmente.</translation>																								
 	<translation name="THEN_RESTART_THE_TOOL">Em seguida, reinicie o StatisticsAnalysisTool.</translation>
 	<translation name="OR">OU</translation>
 	<translation name="COPY_SHORT_DAMAGE_METER_TO_THE_CLIPBOARD">Copiar medidor de dano curto para a área de transferência</translation>
@@ -637,15 +607,7 @@
 	<translation name="TAKE_A_SNAPSHOT_OF_DAMAGE_METER_DESCRIPTION">Faz uma captura de tela do medidor de danos e visualize-o na guia captura de tela</translation>
 	<translation name="RANDOM_SOLO_DUNGEONS">Masmorras individuais aleatórias</translation>
 	<translation name="RANDOM_GROUP_DUNGEONS">Masmorras de grupo aleatório</translation>
-	<translation name="SNAPSHOT_AFTER_MAP_CHANGE">Captura de tela após mudança de mapa</translation>
-																					   
-																		   
-																						 
-																						   
-																						   
-																						   
-																							 
-																							 
+	<translation name="SNAPSHOT_AFTER_MAP_CHANGE">Captura de tela após mudança de mapa</translation>									 
 	<translation name="IGNORE_MAILS_WITH_ZERO_VALUES">Ignorar e-mails com 0 valores</translation>
 	<translation name="CHECK_FOR_UPDATE">Verificar atualização</translation>
 	<translation name="PAID_SILVER_FOR_RESPEC_THIS_SESSION">Prata paga em ReSpec nesta sessão</translation>
