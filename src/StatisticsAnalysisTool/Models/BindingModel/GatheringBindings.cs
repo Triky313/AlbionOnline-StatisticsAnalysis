@@ -163,7 +163,7 @@ public class GatheringBindings : INotifyPropertyChanged
                         .Where(x => IsTimestampOkayByGatheringStatsTimeType(x.TimestampDateTime, gatheringStatsTimeType))
                         .ToArray();
 
-                    var groupedData = filteredData?.ToArray().GroupBy(x => x.UniqueName)
+                    var groupedData = filteredData.ToArray().GroupBy(x => x.UniqueName)
                         .Select(g => new Gathered()
                         {
                             UniqueName = g.Key,
