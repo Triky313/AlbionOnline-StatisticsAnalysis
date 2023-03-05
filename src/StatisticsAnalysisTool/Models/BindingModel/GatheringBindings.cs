@@ -62,91 +62,133 @@ public class GatheringBindings : INotifyPropertyChanged
 
     public async void UpdateStatsAsync(object sender, NotifyCollectionChangedEventArgs e)
     {
-        await Task.Run(async () =>
+        try
         {
-            // Hide
-            var hide = await GroupAndFilterAndSumAsync(GatheredCollection.ToArray(), x => x?.Item?.ShopShopSubCategory1 == ShopSubCategory.Hide, GatheringStatsTimeTypeSelection);
-            await UpdateObservableRangeCollectionAsync(GatheringStats.GatheredHide, hide);
+            await Task.Run(async () =>
+            {
+                var gatherCollection = GatheredCollection.ToList();
 
-            GatheringStats.GainedSilverByHide = Utilities.LongWithCulture(hide.Sum(x => x.TotalMarketValue.IntegerValue));
-
-            // Ore
-            var ore = await GroupAndFilterAndSumAsync(GatheredCollection.ToArray(), x => x?.Item?.ShopShopSubCategory1 == ShopSubCategory.Ore, GatheringStatsTimeTypeSelection);
-            await UpdateObservableRangeCollectionAsync(GatheringStats.GatheredOre, ore);
-
-            GatheringStats.GainedSilverByOre = Utilities.LongWithCulture(ore.Sum(x => x.TotalMarketValue.IntegerValue));
-
-            // Fiber
-            var fiber = await GroupAndFilterAndSumAsync(GatheredCollection.ToArray(), x => x?.Item?.ShopShopSubCategory1 == ShopSubCategory.Fiber, GatheringStatsTimeTypeSelection);
-            await UpdateObservableRangeCollectionAsync(GatheringStats.GatheredFiber, fiber);
-
-            GatheringStats.GainedSilverByFiber = Utilities.LongWithCulture(fiber.Sum(x => x.TotalMarketValue.IntegerValue));
-
-            // Wood
-            var wood = await GroupAndFilterAndSumAsync(GatheredCollection.ToArray(), x => x?.Item?.ShopShopSubCategory1 == ShopSubCategory.Wood, GatheringStatsTimeTypeSelection);
-            await UpdateObservableRangeCollectionAsync(GatheringStats.GatheredWood, wood);
-
-            GatheringStats.GainedSilverByWood = Utilities.LongWithCulture(wood.Sum(x => x.TotalMarketValue.IntegerValue));
-
-            // Rock
-            var rock = await GroupAndFilterAndSumAsync(GatheredCollection.ToArray(), x => x?.Item?.ShopShopSubCategory1 == ShopSubCategory.Rock, GatheringStatsTimeTypeSelection);
-            await UpdateObservableRangeCollectionAsync(GatheringStats.GatheredRock, rock);
-
-            GatheringStats.GainedSilverByRock = Utilities.LongWithCulture(rock.Sum(x => x.TotalMarketValue.IntegerValue));
-
-            // Most gathered resource
-            var mostGatheredResource = GatheredCollection
-                .Where(x => IsTimestampOkayByGatheringStatsTimeType(x.TimestampDateTime, GatheringStatsTimeTypeSelection))
-                .GroupBy(x => x.UniqueName)
-                .Select(g => new Gathered
+                // Hide
+                var hide = await GroupAndFilterAndSumAsync(gatherCollection, x => x?.Item?.ShopShopSubCategory1 == ShopSubCategory.Hide, GatheringStatsTimeTypeSelection);
+                await UpdateObservableRangeCollectionAsync(GatheringStats.GatheredHide, hide);
+                Application.Current.Dispatcher.InvokeAsync(() =>
                 {
-                    UniqueName = g.Key,
-                    GainedStandardAmount = g.Sum(x => x.GainedStandardAmount),
-                    GainedBonusAmount = g.Sum(x => x.GainedBonusAmount),
-                    GainedPremiumBonusAmount = g.Sum(x => x.GainedPremiumBonusAmount),
-                    GainedTotalAmount = g.Sum(x => x.GainedTotalAmount),
-                    MiningProcesses = g.Sum(x => x.MiningProcesses)
-                }).MaxBy(x => x.GainedTotalAmount);
+                    GatheringStats.GainedSilverByHide = Utilities.LongWithCulture(hide.Sum(x => x.TotalMarketValue.IntegerValue));
+                });
 
-            GatheringStats.MostGatheredResource = mostGatheredResource;
-
-            // Most gathered cluster
-            var mostGatheredCluster = GatheredCollection
-                .Where(x => IsTimestampOkayByGatheringStatsTimeType(x.TimestampDateTime, GatheringStatsTimeTypeSelection))
-                .GroupBy(x => x.ClusterIndex)
-                .Select(g => new Gathered
+                // Ore
+                var ore = await GroupAndFilterAndSumAsync(gatherCollection, x => x?.Item?.ShopShopSubCategory1 == ShopSubCategory.Ore, GatheringStatsTimeTypeSelection);
+                await UpdateObservableRangeCollectionAsync(GatheringStats.GatheredOre, ore);
+                Application.Current.Dispatcher.InvokeAsync(() =>
                 {
-                    ClusterIndex = g.Key,
-                    GainedStandardAmount = g.Sum(x => x.GainedStandardAmount),
-                    GainedBonusAmount = g.Sum(x => x.GainedBonusAmount),
-                    GainedPremiumBonusAmount = g.Sum(x => x.GainedPremiumBonusAmount),
-                    GainedTotalAmount = g.Sum(x => x.GainedTotalAmount),
-                    MiningProcesses = g.Sum(x => x.MiningProcesses)
-                }).MaxBy(x => x.MiningProcesses);
+                    GatheringStats.GainedSilverByOre = Utilities.LongWithCulture(ore.Sum(x => x.TotalMarketValue.IntegerValue));
+                });
 
-            GatheringStats.MostGatheredCluster = mostGatheredCluster;
+                // Fiber
+                var fiber = await GroupAndFilterAndSumAsync(gatherCollection, x => x?.Item?.ShopShopSubCategory1 == ShopSubCategory.Fiber, GatheringStatsTimeTypeSelection);
+                await UpdateObservableRangeCollectionAsync(GatheringStats.GatheredFiber, fiber);
+                Application.Current.Dispatcher.InvokeAsync(() =>
+                {
+                    GatheringStats.GainedSilverByFiber = Utilities.LongWithCulture(fiber.Sum(x => x.TotalMarketValue.IntegerValue));
+                });
 
-            // Most total resources
-            var totalResources = GatheredCollection
-                .Where(x => IsTimestampOkayByGatheringStatsTimeType(x.TimestampDateTime, GatheringStatsTimeTypeSelection))
-                .Sum(x => x.GainedTotalAmount);
+                // Wood
+                var wood = await GroupAndFilterAndSumAsync(gatherCollection, x => x?.Item?.ShopShopSubCategory1 == ShopSubCategory.Wood, GatheringStatsTimeTypeSelection);
+                await UpdateObservableRangeCollectionAsync(GatheringStats.GatheredWood, wood);
 
-            GatheringStats.TotalResources = totalResources;
+                Application.Current.Dispatcher.InvokeAsync(() =>
+                {
+                    GatheringStats.GainedSilverByWood = Utilities.LongWithCulture(wood.Sum(x => x.TotalMarketValue.IntegerValue));
+                });
 
-            // Most total mining processes
-            var totalMiningProcesses = GatheredCollection
-                .Where(x => IsTimestampOkayByGatheringStatsTimeType(x.TimestampDateTime, GatheringStatsTimeTypeSelection))
-                .Sum(x => x.MiningProcesses);
+                // Rock
+                var rock = await GroupAndFilterAndSumAsync(gatherCollection, x => x?.Item?.ShopShopSubCategory1 == ShopSubCategory.Rock, GatheringStatsTimeTypeSelection);
+                await UpdateObservableRangeCollectionAsync(GatheringStats.GatheredRock, rock);
 
-            GatheringStats.TotalMiningProcesses = totalMiningProcesses;
+                Application.Current.Dispatcher.InvokeAsync(() =>
+                {
+                    GatheringStats.GainedSilverByRock = Utilities.LongWithCulture(rock.Sum(x => x.TotalMarketValue.IntegerValue));
+                });
 
-            // Total gained silver
-            var totalGainedSilver = GatheredCollection
-                .Where(x => IsTimestampOkayByGatheringStatsTimeType(x.TimestampDateTime, GatheringStatsTimeTypeSelection))
-                .Sum(x => x.TotalMarketValue.IntegerValue);
+                // Most gathered resource
+                var mostGatheredResource = gatherCollection
+                    .ToList()
+                    .Where(x => IsTimestampOkayByGatheringStatsTimeType(x.TimestampDateTime, GatheringStatsTimeTypeSelection))
+                    .GroupBy(x => x.UniqueName)
+                    .Select(g => new Gathered
+                    {
+                        UniqueName = g.Key,
+                        GainedStandardAmount = g.Sum(x => x.GainedStandardAmount),
+                        GainedBonusAmount = g.Sum(x => x.GainedBonusAmount),
+                        GainedPremiumBonusAmount = g.Sum(x => x.GainedPremiumBonusAmount),
+                        GainedTotalAmount = g.Sum(x => x.GainedTotalAmount),
+                        MiningProcesses = g.Sum(x => x.MiningProcesses)
+                    }).MaxBy(x => x.GainedTotalAmount);
+                
+                Application.Current.Dispatcher.InvokeAsync(() =>
+                {
+                    GatheringStats.MostGatheredResource = mostGatheredResource;
+                });
 
-            GatheringStats.TotalGainedSilverString = Utilities.LongWithCulture(totalGainedSilver);
-        });
+                // Most gathered cluster
+                var mostGatheredCluster = gatherCollection
+                    .ToList()
+                    .Where(x => IsTimestampOkayByGatheringStatsTimeType(x.TimestampDateTime, GatheringStatsTimeTypeSelection))
+                    .GroupBy(x => x.ClusterIndex)
+                    .Select(g => new Gathered
+                    {
+                        ClusterIndex = g.Key,
+                        GainedStandardAmount = g.Sum(x => x.GainedStandardAmount),
+                        GainedBonusAmount = g.Sum(x => x.GainedBonusAmount),
+                        GainedPremiumBonusAmount = g.Sum(x => x.GainedPremiumBonusAmount),
+                        GainedTotalAmount = g.Sum(x => x.GainedTotalAmount),
+                        MiningProcesses = g.Sum(x => x.MiningProcesses)
+                    }).MaxBy(x => x.MiningProcesses);
+
+                Application.Current.Dispatcher.InvokeAsync(() =>
+                {
+                    GatheringStats.MostGatheredCluster = mostGatheredCluster;
+                });
+
+                // Most total resources
+                var totalResources = gatherCollection
+                    .ToList()
+                    .Where(x => IsTimestampOkayByGatheringStatsTimeType(x.TimestampDateTime, GatheringStatsTimeTypeSelection))
+                    .Sum(x => x.GainedTotalAmount);
+
+                Application.Current.Dispatcher.InvokeAsync(() =>
+                {
+                    GatheringStats.TotalResources = totalResources;
+                });
+
+                // Most total mining processes
+                var totalMiningProcesses = gatherCollection
+                    .ToList()
+                    .Where(x => IsTimestampOkayByGatheringStatsTimeType(x.TimestampDateTime, GatheringStatsTimeTypeSelection))
+                    .Sum(x => x.MiningProcesses);
+
+                Application.Current.Dispatcher.InvokeAsync(() =>
+                {
+                    GatheringStats.TotalMiningProcesses = totalMiningProcesses;
+                });
+
+                // Total gained silver
+                var totalGainedSilver = gatherCollection
+                    .ToList()
+                    .Where(x => IsTimestampOkayByGatheringStatsTimeType(x.TimestampDateTime, GatheringStatsTimeTypeSelection))
+                    .Sum(x => x.TotalMarketValue.IntegerValue);
+
+                Application.Current.Dispatcher.InvokeAsync(() =>
+                {
+                    GatheringStats.TotalGainedSilverString = Utilities.LongWithCulture(totalGainedSilver);
+                });
+            });
+        }
+        catch (Exception ex)
+        {
+            ConsoleManager.WriteLineForError(MethodBase.GetCurrentMethod()?.DeclaringType, ex);
+            Log.Error(MethodBase.GetCurrentMethod()?.DeclaringType, ex);
+        }
     }
 
     private static async Task<List<Gathered>> GroupAndFilterAndSumAsync(IEnumerable<Gathered> gatheredData, Func<Gathered, bool> filter, GatheringStatsTimeType gatheringStatsTimeType)
