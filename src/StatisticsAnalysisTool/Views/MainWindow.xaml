@@ -127,7 +127,7 @@
                         <Separator Background="{StaticResource SolidColorBrush.Text.3}" />
                     </StackPanel>
                     <ScrollViewer VerticalAlignment="Top" Margin="0,25,0,0" HorizontalScrollBarVisibility="Hidden">
-                        <ItemsControl ItemsSource="{Binding ToolTaskObjects}" d:ItemsSource="{d:SampleData ItemCount=3}"
+                        <ItemsControl ItemsSource="{Binding ToolTaskBindings.ToolTaskObjects}" d:ItemsSource="{d:SampleData ItemCount=3}"
                                       ItemTemplate="{StaticResource TaskTextObjectDataTemplate}" />
                     </ScrollViewer>
                 </Grid>
