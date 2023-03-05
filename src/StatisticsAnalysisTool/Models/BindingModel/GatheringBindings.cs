@@ -1,4 +1,5 @@
-﻿using StatisticsAnalysisTool.Common;
+﻿using log4net;
+using StatisticsAnalysisTool.Common;
 using StatisticsAnalysisTool.Common.UserSettings;
 using StatisticsAnalysisTool.Gathering;
 using StatisticsAnalysisTool.Properties;
@@ -7,6 +8,7 @@ using System.Collections.Generic;
 using System.Collections.Specialized;
 using System.ComponentModel;
 using System.Linq;
+using System.Reflection;
 using System.Runtime.CompilerServices;
 using System.Threading.Tasks;
 using System.Windows;
@@ -16,6 +18,8 @@ namespace StatisticsAnalysisTool.Models.BindingModel;
 
 public class GatheringBindings : INotifyPropertyChanged
 {
+    private static readonly ILog Log = LogManager.GetLogger(MethodBase.GetCurrentMethod()?.DeclaringType);
+
     private bool _isGatheringActive = true;
     private GatheringStats _gatheringStats = new();
     private ObservableRangeCollection<Gathered> _gatheredCollection = new();
@@ -61,31 +65,31 @@ public class GatheringBindings : INotifyPropertyChanged
         await Task.Run(async () =>
         {
             // Hide
-            var hide = await GroupAndFilterAndSumAsync(GatheredCollection, x => x?.Item?.ShopShopSubCategory1 == ShopSubCategory.Hide, GatheringStatsTimeTypeSelection);
+            var hide = await GroupAndFilterAndSumAsync(GatheredCollection.ToArray(), x => x?.Item?.ShopShopSubCategory1 == ShopSubCategory.Hide, GatheringStatsTimeTypeSelection);
             await UpdateObservableRangeCollectionAsync(GatheringStats.GatheredHide, hide);
 
             GatheringStats.GainedSilverByHide = Utilities.LongWithCulture(hide.Sum(x => x.TotalMarketValue.IntegerValue));
 
             // Ore
-            var ore = await GroupAndFilterAndSumAsync(GatheredCollection, x => x?.Item?.ShopShopSubCategory1 == ShopSubCategory.Ore, GatheringStatsTimeTypeSelection);
+            var ore = await GroupAndFilterAndSumAsync(GatheredCollection.ToArray(), x => x?.Item?.ShopShopSubCategory1 == ShopSubCategory.Ore, GatheringStatsTimeTypeSelection);
             await UpdateObservableRangeCollectionAsync(GatheringStats.GatheredOre, ore);
 
             GatheringStats.GainedSilverByOre = Utilities.LongWithCulture(ore.Sum(x => x.TotalMarketValue.IntegerValue));
 
             // Fiber
-            var fiber = await GroupAndFilterAndSumAsync(GatheredCollection, x => x?.Item?.ShopShopSubCategory1 == ShopSubCategory.Fiber, GatheringStatsTimeTypeSelection);
+            var fiber = await GroupAndFilterAndSumAsync(GatheredCollection.ToArray(), x => x?.Item?.ShopShopSubCategory1 == ShopSubCategory.Fiber, GatheringStatsTimeTypeSelection);
             await UpdateObservableRangeCollectionAsync(GatheringStats.GatheredFiber, fiber);
 
             GatheringStats.GainedSilverByFiber = Utilities.LongWithCulture(fiber.Sum(x => x.TotalMarketValue.IntegerValue));
 
             // Wood
-            var wood = await GroupAndFilterAndSumAsync(GatheredCollection, x => x?.Item?.ShopShopSubCategory1 == ShopSubCategory.Wood, GatheringStatsTimeTypeSelection);
+            var wood = await GroupAndFilterAndSumAsync(GatheredCollection.ToArray(), x => x?.Item?.ShopShopSubCategory1 == ShopSubCategory.Wood, GatheringStatsTimeTypeSelection);
             await UpdateObservableRangeCollectionAsync(GatheringStats.GatheredWood, wood);
 
             GatheringStats.GainedSilverByWood = Utilities.LongWithCulture(wood.Sum(x => x.TotalMarketValue.IntegerValue));
 
             // Rock
-            var rock = await GroupAndFilterAndSumAsync(GatheredCollection, x => x?.Item?.ShopShopSubCategory1 == ShopSubCategory.Rock, GatheringStatsTimeTypeSelection);
+            var rock = await GroupAndFilterAndSumAsync(GatheredCollection.ToArray(), x => x?.Item?.ShopShopSubCategory1 == ShopSubCategory.Rock, GatheringStatsTimeTypeSelection);
             await UpdateObservableRangeCollectionAsync(GatheringStats.GatheredRock, rock);
 
             GatheringStats.GainedSilverByRock = Utilities.LongWithCulture(rock.Sum(x => x.TotalMarketValue.IntegerValue));
@@ -147,28 +151,41 @@ public class GatheringBindings : INotifyPropertyChanged
 
     private static async Task<List<Gathered>> GroupAndFilterAndSumAsync(IEnumerable<Gathered> gatheredData, Func<Gathered, bool> filter, GatheringStatsTimeType gatheringStatsTimeType)
     {
-        return await Task.Run(() =>
+        try
         {
-            var filteredData = gatheredData?.ToArray()
-                .Where(filter)
-                .Where(x => IsTimestampOkayByGatheringStatsTimeType(x.TimestampDateTime, gatheringStatsTimeType))
-                .ToArray();
-
-            var groupedData = filteredData?.ToArray().GroupBy(x => x.UniqueName)
-                .Select(g => new Gathered()
+            return await Task.Run(() =>
+            {
+                var gatheredDataArray = gatheredData as Gathered[] ?? gatheredData.ToArray();
+                lock (gatheredDataArray)
                 {
-                    UniqueName = g.Key,
-                    EstimatedMarketValue = FixPoint.FromInternalValue(g.FirstOrDefault()?.EstimatedMarketValue.InternalValue ?? 0),
-                    GainedStandardAmount = g.Sum(x => x.GainedStandardAmount),
-                    GainedBonusAmount = g.Sum(x => x.GainedBonusAmount),
-                    GainedPremiumBonusAmount = g.Sum(x => x.GainedPremiumBonusAmount),
-                    GainedTotalAmount = g.Sum(x => x.GainedTotalAmount),
-                    GainedFame = g.Sum(x => x.GainedFame),
-                    MiningProcesses = g.Sum(x => x.MiningProcesses)
-                }).ToList();
+                    var filteredData = gatheredDataArray
+                        .Where(filter)
+                        .Where(x => IsTimestampOkayByGatheringStatsTimeType(x.TimestampDateTime, gatheringStatsTimeType))
+                        .ToArray();
 
-            return groupedData;
-        }) ?? new List<Gathered>();
+                    var groupedData = filteredData?.ToArray().GroupBy(x => x.UniqueName)
+                        .Select(g => new Gathered()
+                        {
+                            UniqueName = g.Key,
+                            EstimatedMarketValue = FixPoint.FromInternalValue(g.FirstOrDefault()?.EstimatedMarketValue.InternalValue ?? 0),
+                            GainedStandardAmount = g.Sum(x => x.GainedStandardAmount),
+                            GainedBonusAmount = g.Sum(x => x.GainedBonusAmount),
+                            GainedPremiumBonusAmount = g.Sum(x => x.GainedPremiumBonusAmount),
+                            GainedTotalAmount = g.Sum(x => x.GainedTotalAmount),
+                            GainedFame = g.Sum(x => x.GainedFame),
+                            MiningProcesses = g.Sum(x => x.MiningProcesses)
+                        }).ToList();
+
+                    return groupedData;
+                }
+            }) ?? new List<Gathered>();
+        }
+        catch (Exception e)
+        {
+            ConsoleManager.WriteLineForError(MethodBase.GetCurrentMethod()?.DeclaringType, e);
+            Log.Error(MethodBase.GetCurrentMethod()?.DeclaringType, e);
+            return new List<Gathered>();
+        }
     }
 
     private static async Task UpdateObservableRangeCollectionAsync(ObservableRangeCollection<Gathered> target, IEnumerable<Gathered> source)
