@@ -1,5 +1,6 @@
 AlbionOnline - Statistics Analysis
-This txt file has been translated by DemonHarion
+
+## This txt file has been translated by DemonHarion
 ===================
 [![Github All Releases](https://img.shields.io/github/v/release/Triky313/AlbionOnline-StatisticsAnalysis)](https://github.com/Triky313/AlbionOnline-StatisticsAnalysis/releases)
 [![Github All Releases](https://img.shields.io/github/downloads/Triky313/AlbionOnline-StatisticsAnalysis/total.svg)](https://github.com/Triky313/AlbionOnline-StatisticsAnalysis/releases) 
