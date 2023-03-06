@@ -188,12 +188,16 @@ public class EntityController
         await Application.Current.Dispatcher.InvokeAsync(() =>
         {
             _mainWindowViewModel.PartyMemberCircles.Clear();
-            foreach (var member in _knownPartyEntities) _mainWindowViewModel.PartyMemberCircles.Add(new PartyMemberCircle
+            
+            foreach (var member in _knownPartyEntities)
             {
-                Name = member.Value,
-                UserGuid = member.Key
-            });
-            _mainWindowViewModel.PartyMemberNumber = _knownPartyEntities.Count;
+                _mainWindowViewModel.PartyMemberCircles.Add(new PartyMemberCircle
+                {
+                    Name = member.Value,
+                    UserGuid = member.Key
+                });
+                _mainWindowViewModel.PartyMemberNumber = _knownPartyEntities.Count;
+            }
         });
     }
 

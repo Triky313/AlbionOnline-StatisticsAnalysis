@@ -443,52 +443,6 @@
         <Setter Property="Foreground" Value="{StaticResource SolidColorBrush.Text.2}" />
         <Setter Property="Icon" Value="Solid_UserCircle" />
         <Style.Triggers>
-            <DataTrigger Binding="{Binding WeaponCategoryId}" Value="sword">
-                <Setter Property="Foreground" Value="{StaticResource SolidColorBrush.Weapon.Sword}" />
-            </DataTrigger>
-            <DataTrigger Binding="{Binding WeaponCategoryId}" Value="spear">
-                <Setter Property="Foreground" Value="{StaticResource SolidColorBrush.Weapon.Spear}" />
-            </DataTrigger>
-            <DataTrigger Binding="{Binding WeaponCategoryId}" Value="quarterstaff">
-                <Setter Property="Foreground" Value="{StaticResource SolidColorBrush.Weapon.Quarterstaff}" />
-            </DataTrigger>
-            <DataTrigger Binding="{Binding WeaponCategoryId}" Value="naturestaff">
-                <Setter Property="Foreground" Value="{StaticResource SolidColorBrush.Weapon.NatureStaff}" />
-            </DataTrigger>
-            <DataTrigger Binding="{Binding WeaponCategoryId}" Value="mace">
-                <Setter Property="Foreground" Value="{StaticResource SolidColorBrush.Weapon.Mace}" />
-            </DataTrigger>
-            <DataTrigger Binding="{Binding WeaponCategoryId}" Value="holystaff">
-                <Setter Property="Foreground" Value="{StaticResource SolidColorBrush.Weapon.HolyStaff}" />
-            </DataTrigger>
-            <DataTrigger Binding="{Binding WeaponCategoryId}" Value="hammer">
-                <Setter Property="Foreground" Value="{StaticResource SolidColorBrush.Weapon.Hammer}" />
-            </DataTrigger>
-            <DataTrigger Binding="{Binding WeaponCategoryId}" Value="froststaff">
-                <Setter Property="Foreground" Value="{StaticResource SolidColorBrush.Weapon.FrostStaff}" />
-            </DataTrigger>
-            <DataTrigger Binding="{Binding WeaponCategoryId}" Value="firestaff">
-                <Setter Property="Foreground" Value="{StaticResource SolidColorBrush.Weapon.FireStaff}" />
-            </DataTrigger>
-            <DataTrigger Binding="{Binding WeaponCategoryId}" Value="dagger">
-                <Setter Property="Foreground" Value="{StaticResource SolidColorBrush.Weapon.Dagger}" />
-            </DataTrigger>
-            <DataTrigger Binding="{Binding WeaponCategoryId}" Value="cursestaff">
-                <Setter Property="Foreground" Value="{StaticResource SolidColorBrush.Weapon.CursedStaff}" />
-            </DataTrigger>
-            <DataTrigger Binding="{Binding WeaponCategoryId}" Value="crossbow">
-                <Setter Property="Foreground" Value="{StaticResource SolidColorBrush.Weapon.Crossbow}" />
-            </DataTrigger>
-            <DataTrigger Binding="{Binding WeaponCategoryId}" Value="bow">
-                <Setter Property="Foreground" Value="{StaticResource SolidColorBrush.Weapon.Bow}" />
-            </DataTrigger>
-            <DataTrigger Binding="{Binding WeaponCategoryId}" Value="axe">
-                <Setter Property="Foreground" Value="{StaticResource SolidColorBrush.Weapon.Axe}" />
-            </DataTrigger>
-            <DataTrigger Binding="{Binding WeaponCategoryId}" Value="arcanestaff">
-                <Setter Property="Foreground" Value="{StaticResource SolidColorBrush.Weapon.ArcaneStaff}" />
-            </DataTrigger>
-
             <DataTrigger Binding="{Binding Name}" Value="krissixoxoalex">
                 <Setter Property="Margin" Value="0,0,0,1" />
                 <Setter Property="ToolTip" Value="Krissi - My love and life" />
@@ -508,14 +462,18 @@
                 </Setter>
             </DataTrigger>
 
+            <DataTrigger Binding="{Binding Name}" Value="Dicky">
+                <Setter Property="Margin" Value="0,0,0,1" />
+                <Setter Property="ToolTip" Value="Dicky - Most luckiest bastard in game!" />
+                <Setter Property="Icon" Value="Solid_PiggyBank" />
+                <Setter Property="Foreground" Value="{StaticResource SolidColorBrush.Accent.Yellow.1}" />
+            </DataTrigger>
+
             <DataTrigger Binding="{Binding Name}" Value="Triky313">
                 <Setter Property="Margin" Value="0,0,0,1" />
+                <Setter Property="ToolTip" Value="Aaron - Dev of this tool!" />
                 <Setter Property="Icon" Value="Solid_Font" />
-                <Setter Property="Effect">
-                    <Setter.Value>
-                        <DropShadowEffect BlurRadius="5" ShadowDepth="0" Opacity="0.5" Color="{StaticResource Color.Accent.Red.3}"/>
-                    </Setter.Value>
-                </Setter>
+                <Setter Property="Foreground" Value="{StaticResource SolidColorBrush.Accent.Red.2}" />
             </DataTrigger>
 
             <DataTrigger Binding="{Binding Name}" Value="Rhaegaryn">
