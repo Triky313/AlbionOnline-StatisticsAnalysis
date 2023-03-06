@@ -489,9 +489,9 @@
                 <Setter Property="Foreground" Value="{StaticResource SolidColorBrush.Weapon.ArcaneStaff}" />
             </DataTrigger>
 
-            <DataTrigger Binding="{Binding Name}" Value="Rakaaria">
+            <DataTrigger Binding="{Binding Name}" Value="krissixoxoalex">
                 <Setter Property="Margin" Value="0,0,0,1" />
-                <Setter Property="ToolTip" Value="Rakaaria - Much love for the best girl in the world!" />
+                <Setter Property="ToolTip" Value="Krissi - My love and life" />
                 <Setter Property="Icon" Value="Solid_Heart" />
                 <Setter Property="Foreground">
                     <Setter.Value>
