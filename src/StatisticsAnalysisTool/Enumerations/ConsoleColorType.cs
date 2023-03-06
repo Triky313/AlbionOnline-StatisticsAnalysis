@@ -7,4 +7,5 @@ public enum ConsoleColorType
     ErrorColor,
     EventColor,
     EventMapChangeColor,
+    EventDebugColor
 }

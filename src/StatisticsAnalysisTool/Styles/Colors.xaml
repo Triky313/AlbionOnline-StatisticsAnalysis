@@ -163,6 +163,7 @@
     <Color x:Key="Color.Console.Warning">#faa627</Color>
     <Color x:Key="Color.Console.Event">#248A84</Color>
     <Color x:Key="Color.Console.MapChange">#0279be</Color>
+    <Color x:Key="Color.Console.Debug">#f279be</Color>
 
     <SolidColorBrush x:Key="SolidColorBrush.Text.1" Color="{StaticResource Color.Text.1}"/>
     <SolidColorBrush x:Key="SolidColorBrush.Text.2" Color="{StaticResource Color.Text.2}"/>
@@ -308,6 +309,7 @@
     <SolidColorBrush x:Key="SolidColorBrush.Console.Warning" Color="{StaticResource Color.Console.Warning}"/>
     <SolidColorBrush x:Key="SolidColorBrush.Console.Event" Color="{StaticResource Color.Console.Event}"/>
     <SolidColorBrush x:Key="SolidColorBrush.Console.MapChange" Color="{StaticResource Color.Console.MapChange}"/>
+    <SolidColorBrush x:Key="SolidColorBrush.Console.Debug" Color="{StaticResource Color.Console.Debug}"/>
 
     <SolidColorBrush x:Key="SolidColorBrush.TimeValue.PastTime.1" Color="{StaticResource TimeValue.PastTime.1}"/>
     <SolidColorBrush x:Key="SolidColorBrush.TimeValue.PastTime.2" Color="{StaticResource TimeValue.PastTime.2}"/>
