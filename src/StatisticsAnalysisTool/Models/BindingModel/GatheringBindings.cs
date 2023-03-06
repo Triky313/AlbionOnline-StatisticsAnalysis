@@ -70,43 +70,41 @@ public class GatheringBindings : INotifyPropertyChanged
 
                 // Hide
                 var hide = await GroupAndFilterAndSumAsync(gatherCollection, x => x?.Item?.ShopShopSubCategory1 == ShopSubCategory.Hide, GatheringStatsTimeTypeSelection);
-                await UpdateObservableRangeCollectionAsync(GatheringStats.GatheredHide, hide);
-                Application.Current.Dispatcher.InvokeAsync(() =>
+                _ = Application.Current.Dispatcher.InvokeAsync(() =>
                 {
+                    UpdateObservableRangeCollection(GatheringStats.GatheredHide, hide);
                     GatheringStats.GainedSilverByHide = Utilities.LongWithCulture(hide.Sum(x => x.TotalMarketValue.IntegerValue));
                 });
 
                 // Ore
                 var ore = await GroupAndFilterAndSumAsync(gatherCollection, x => x?.Item?.ShopShopSubCategory1 == ShopSubCategory.Ore, GatheringStatsTimeTypeSelection);
-                await UpdateObservableRangeCollectionAsync(GatheringStats.GatheredOre, ore);
-                Application.Current.Dispatcher.InvokeAsync(() =>
+                _ = Application.Current.Dispatcher.InvokeAsync(() =>
                 {
+                    UpdateObservableRangeCollection(GatheringStats.GatheredOre, ore);
                     GatheringStats.GainedSilverByOre = Utilities.LongWithCulture(ore.Sum(x => x.TotalMarketValue.IntegerValue));
                 });
 
                 // Fiber
                 var fiber = await GroupAndFilterAndSumAsync(gatherCollection, x => x?.Item?.ShopShopSubCategory1 == ShopSubCategory.Fiber, GatheringStatsTimeTypeSelection);
-                await UpdateObservableRangeCollectionAsync(GatheringStats.GatheredFiber, fiber);
-                Application.Current.Dispatcher.InvokeAsync(() =>
+                _ = Application.Current.Dispatcher.InvokeAsync(() =>
                 {
+                    UpdateObservableRangeCollection(GatheringStats.GatheredFiber, fiber);
                     GatheringStats.GainedSilverByFiber = Utilities.LongWithCulture(fiber.Sum(x => x.TotalMarketValue.IntegerValue));
                 });
 
                 // Wood
                 var wood = await GroupAndFilterAndSumAsync(gatherCollection, x => x?.Item?.ShopShopSubCategory1 == ShopSubCategory.Wood, GatheringStatsTimeTypeSelection);
-                await UpdateObservableRangeCollectionAsync(GatheringStats.GatheredWood, wood);
-
-                Application.Current.Dispatcher.InvokeAsync(() =>
+                _ = Application.Current.Dispatcher.InvokeAsync(() =>
                 {
+                    UpdateObservableRangeCollection(GatheringStats.GatheredWood, wood);
                     GatheringStats.GainedSilverByWood = Utilities.LongWithCulture(wood.Sum(x => x.TotalMarketValue.IntegerValue));
                 });
 
                 // Rock
                 var rock = await GroupAndFilterAndSumAsync(gatherCollection, x => x?.Item?.ShopShopSubCategory1 == ShopSubCategory.Rock, GatheringStatsTimeTypeSelection);
-                await UpdateObservableRangeCollectionAsync(GatheringStats.GatheredRock, rock);
-
-                Application.Current.Dispatcher.InvokeAsync(() =>
+                _ = Application.Current.Dispatcher.InvokeAsync(() =>
                 {
+                    UpdateObservableRangeCollection(GatheringStats.GatheredRock, rock);
                     GatheringStats.GainedSilverByRock = Utilities.LongWithCulture(rock.Sum(x => x.TotalMarketValue.IntegerValue));
                 });
 
@@ -124,8 +122,8 @@ public class GatheringBindings : INotifyPropertyChanged
                         GainedTotalAmount = g.Sum(x => x.GainedTotalAmount),
                         MiningProcesses = g.Sum(x => x.MiningProcesses)
                     }).MaxBy(x => x.GainedTotalAmount);
-                
-                Application.Current.Dispatcher.InvokeAsync(() =>
+
+                await Application.Current.Dispatcher.InvokeAsync(() =>
                 {
                     GatheringStats.MostGatheredResource = mostGatheredResource;
                 });
@@ -145,7 +143,7 @@ public class GatheringBindings : INotifyPropertyChanged
                         MiningProcesses = g.Sum(x => x.MiningProcesses)
                     }).MaxBy(x => x.MiningProcesses);
 
-                Application.Current.Dispatcher.InvokeAsync(() =>
+                await Application.Current.Dispatcher.InvokeAsync(() =>
                 {
                     GatheringStats.MostGatheredCluster = mostGatheredCluster;
                 });
@@ -156,7 +154,7 @@ public class GatheringBindings : INotifyPropertyChanged
                     .Where(x => IsTimestampOkayByGatheringStatsTimeType(x.TimestampDateTime, GatheringStatsTimeTypeSelection))
                     .Sum(x => x.GainedTotalAmount);
 
-                Application.Current.Dispatcher.InvokeAsync(() =>
+                await Application.Current.Dispatcher.InvokeAsync(() =>
                 {
                     GatheringStats.TotalResources = totalResources;
                 });
@@ -167,7 +165,7 @@ public class GatheringBindings : INotifyPropertyChanged
                     .Where(x => IsTimestampOkayByGatheringStatsTimeType(x.TimestampDateTime, GatheringStatsTimeTypeSelection))
                     .Sum(x => x.MiningProcesses);
 
-                Application.Current.Dispatcher.InvokeAsync(() =>
+                await Application.Current.Dispatcher.InvokeAsync(() =>
                 {
                     GatheringStats.TotalMiningProcesses = totalMiningProcesses;
                 });
@@ -178,7 +176,7 @@ public class GatheringBindings : INotifyPropertyChanged
                     .Where(x => IsTimestampOkayByGatheringStatsTimeType(x.TimestampDateTime, GatheringStatsTimeTypeSelection))
                     .Sum(x => x.TotalMarketValue.IntegerValue);
 
-                Application.Current.Dispatcher.InvokeAsync(() =>
+                _ = Application.Current.Dispatcher.InvokeAsync(() =>
                 {
                     GatheringStats.TotalGainedSilverString = Utilities.LongWithCulture(totalGainedSilver);
                 });
@@ -230,14 +228,11 @@ public class GatheringBindings : INotifyPropertyChanged
         }
     }
 
-    private static async Task UpdateObservableRangeCollectionAsync(ObservableRangeCollection<Gathered> target, IEnumerable<Gathered> source)
+    private static void UpdateObservableRangeCollection(ObservableRangeCollection<Gathered> target, IEnumerable<Gathered> source)
     {
         var sourceSorted = source.OrderByDescending(x => x.UniqueName);
-        await Application.Current.Dispatcher.InvokeAsync(() =>
-        {
-            target.Clear();
-            target.AddRange(sourceSorted.ToList());
-        });
+        target.Clear();
+        target.AddRange(sourceSorted.ToList());
     }
 
     public static bool IsTimestampOkayByGatheringStatsTimeType(DateTime dateTime, GatheringStatsTimeType gatheringStatsTimeType)
