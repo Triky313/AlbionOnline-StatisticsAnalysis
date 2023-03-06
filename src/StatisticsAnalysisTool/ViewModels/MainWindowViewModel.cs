@@ -124,9 +124,6 @@ public class MainWindowViewModel : INotifyPropertyChanged
         UpgradeSettings();
         SetUiElements();
         Translation = new MainWindowTranslation();
-
-        AutoUpdateController.RemoveUpdateFiles();
-        AutoUpdateController.AutoUpdate();
     }
 
     public void SetUiElements()
