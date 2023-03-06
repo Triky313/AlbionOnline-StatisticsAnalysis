@@ -25,6 +25,9 @@ public partial class App
         SettingsController.LoadSettings();
         InitializeLanguage();
 
+        AutoUpdateController.RemoveUpdateFiles();
+        AutoUpdateController.AutoUpdate();
+
         var mainWindowViewModel = new MainWindowViewModel();
         ServiceLocator.Register<MainWindowViewModel>(mainWindowViewModel);
 

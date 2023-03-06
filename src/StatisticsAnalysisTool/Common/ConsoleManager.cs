@@ -59,6 +59,11 @@ public static class ConsoleManager
         });
     }
 
+    public static void WriteLineForDebug(string name, Dictionary<byte, object> parameters)
+    {
+        WriteLine(new ConsoleFragment(name, parameters, ConsoleColorType.EventDebugColor));
+    }
+
     public static void WriteLineForNetworkHandler(string name, Dictionary<byte, object> parameters)
     {
         WriteLine(new ConsoleFragment(name, parameters, ConsoleColorType.EventColor));

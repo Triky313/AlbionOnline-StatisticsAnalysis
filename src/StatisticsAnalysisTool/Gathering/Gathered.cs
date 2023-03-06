@@ -23,6 +23,7 @@ public class Gathered : INotifyPropertyChanged
     private bool _isSelectedForDeletion;
     private FixPoint _estimatedMarketValue;
     private string _totalMarketValueWithCulture;
+    private Item _item;
 
     public Gathered()
     {
@@ -49,7 +50,14 @@ public class Gathered : INotifyPropertyChanged
         }
     }
 
-    public Item Item { get; set; }
+    public Item Item {
+        get => _item;
+        set
+        {
+            _item = value;
+            OnPropertyChanged();
+        }
+    }
 
     public int GainedStandardAmount
     {

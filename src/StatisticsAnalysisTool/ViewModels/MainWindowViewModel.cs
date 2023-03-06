@@ -88,7 +88,6 @@ public class MainWindowViewModel : INotifyPropertyChanged
     private Visibility _gridTryToLoadTheItemJsonAgainVisibility = Visibility.Collapsed;
     private Visibility _gridTryToLoadTheMobsJsonAgainVisibility = Visibility.Collapsed;
     private Visibility _toolTasksVisibility = Visibility.Collapsed;
-    private ObservableCollection<TaskTextObject> _toolTaskObjects = new();
     private double _taskProgressbarMinimum;
     private double _taskProgressbarMaximum = 100;
     private double _taskProgressbarValue;
@@ -118,15 +117,13 @@ public class MainWindowViewModel : INotifyPropertyChanged
     private Visibility _toolTaskFrontViewVisibility = Visibility.Collapsed;
     private double _toolTaskProgressBarValue;
     private string _toolTaskCurrentTaskName;
+    private ToolTaskBindings _toolTaskBindings = new();
 
     public MainWindowViewModel()
     {
         UpgradeSettings();
         SetUiElements();
         Translation = new MainWindowTranslation();
-
-        AutoUpdateController.RemoveUpdateFiles();
-        AutoUpdateController.AutoUpdate();
     }
 
     public void SetUiElements()
@@ -146,7 +143,7 @@ public class MainWindowViewModel : INotifyPropertyChanged
 
         ItemLevels = FrequentlyValues.ItemLevels;
         SelectedItemLevel = ItemLevel.Unknown;
-        
+
         // Tracking
         UserTrackingBindings.UsernameInformationVisibility = Visibility.Hidden;
         UserTrackingBindings.GuildInformationVisibility = Visibility.Hidden;
@@ -250,13 +247,10 @@ public class MainWindowViewModel : INotifyPropertyChanged
         DebugModeVisibility = Visibility.Visible;
 #endif
 
-        ToolTaskController.SetToolTaskController(this);
-
-        _ = InitGameDataAsync();
-        _ = InitTrackingAsync();
+        _ = InitAsync();
     }
 
-    public async Task InitGameDataAsync()
+    public async Task InitAsync()
     {
         IsTaskProgressbarIndeterminate = true;
         IsTxtSearchEnabled = false;
@@ -269,7 +263,7 @@ public class MainWindowViewModel : INotifyPropertyChanged
         if (!ItemController.IsItemsLoaded())
         {
             var itemListTaskTextObject = new TaskTextObject(LanguageController.Translation("GET_ITEM_LIST_JSON"));
-            ToolTaskController.Add(itemListTaskTextObject);
+            ToolTaskBindings.Add(itemListTaskTextObject);
             var isItemListLoaded = await ItemController.GetItemListFromJsonAsync().ConfigureAwait(true);
             if (!isItemListLoaded)
             {
@@ -287,7 +281,7 @@ public class MainWindowViewModel : INotifyPropertyChanged
         if (!ItemController.IsItemsJsonLoaded())
         {
             var itemsTaskTextObject = new TaskTextObject(LanguageController.Translation("GET_ITEMS_JSON"));
-            ToolTaskController.Add(itemsTaskTextObject);
+            ToolTaskBindings.Add(itemsTaskTextObject);
             var isItemsJsonLoaded = await ItemController.GetItemsJsonAsync().ConfigureAwait(true);
             if (!isItemsJsonLoaded)
             {
@@ -305,7 +299,7 @@ public class MainWindowViewModel : INotifyPropertyChanged
         if (!MobsData.IsDataLoaded())
         {
             var itemsTaskTextObject = new TaskTextObject(LanguageController.Translation("GET_MOBS_JSON"));
-            ToolTaskController.Add(itemsTaskTextObject);
+            ToolTaskBindings.Add(itemsTaskTextObject);
             var isMobsJsonLoaded = await MobsData.LoadMobsDataAsync().ConfigureAwait(true);
             if (!isMobsJsonLoaded)
             {
@@ -325,6 +319,7 @@ public class MainWindowViewModel : INotifyPropertyChanged
         ItemsView = new ListCollectionView(ItemController.Items);
         InitAlerts();
         await EstimatedMarketValueController.SetAllEstimatedMarketValuesToItemsAsync();
+        await InitTrackingAsync();
 
         LoadIconVisibility = Visibility.Hidden;
         IsFilterResetEnabled = true;
@@ -462,7 +457,7 @@ public class MainWindowViewModel : INotifyPropertyChanged
     #endregion
 
     #region Ui utility methods
-    
+
     public static void OpenItemWindow(Item item)
     {
         if (string.IsNullOrEmpty(item?.UniqueName))
@@ -1139,6 +1134,16 @@ public class MainWindowViewModel : INotifyPropertyChanged
         }
     }
 
+    public ToolTaskBindings ToolTaskBindings
+    {
+        get => _toolTaskBindings;
+        set
+        {
+            _toolTaskBindings = value;
+            OnPropertyChanged();
+        }
+    }
+
     public string LoadTranslation
     {
         get => _loadTranslation;
@@ -1415,16 +1420,6 @@ public class MainWindowViewModel : INotifyPropertyChanged
         set
         {
             _toolTaskFrontViewVisibility = value;
-            OnPropertyChanged();
-        }
-    }
-
-    public ObservableCollection<TaskTextObject> ToolTaskObjects
-    {
-        get => _toolTaskObjects;
-        set
-        {
-            _toolTaskObjects = value;
             OnPropertyChanged();
         }
     }

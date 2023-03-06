@@ -179,22 +179,26 @@ public class NetworkManager
                 _receiver.ReceivePacket(packet.PayloadData);
             }
         }
-        catch (IndexOutOfRangeException ioore)
+        catch (IndexOutOfRangeException ex)
         {
-            ConsoleManager.WriteLineForError(MethodBase.GetCurrentMethod()?.DeclaringType, ioore);
+            ConsoleManager.WriteLineForWarning(MethodBase.GetCurrentMethod()?.DeclaringType, ex);
         }
-        catch (InvalidOperationException ioe)
+        catch (InvalidOperationException ex)
         {
-            ConsoleManager.WriteLineForError(MethodBase.GetCurrentMethod()?.DeclaringType, ioe);
+            ConsoleManager.WriteLineForError(MethodBase.GetCurrentMethod()?.DeclaringType, ex);
         }
         catch (OverflowException ex)
         {
             ConsoleManager.WriteLineForError(MethodBase.GetCurrentMethod()?.DeclaringType, ex);
         }
-        catch (Exception exc)
+        catch (ArgumentException ex)
         {
-            ConsoleManager.WriteLineForError(MethodBase.GetCurrentMethod()?.DeclaringType, exc);
-            Log.Error(nameof(Device_OnPacketArrival), exc);
+            ConsoleManager.WriteLineForWarning(MethodBase.GetCurrentMethod()?.DeclaringType, ex);
+        }
+        catch (Exception ex)
+        {
+            ConsoleManager.WriteLineForError(MethodBase.GetCurrentMethod()?.DeclaringType, ex);
+            Log.Error(nameof(Device_OnPacketArrival), ex);
         }
     }
 }

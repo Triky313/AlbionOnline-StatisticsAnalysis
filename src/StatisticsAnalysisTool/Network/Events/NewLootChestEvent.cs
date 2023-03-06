@@ -1,4 +1,5 @@
 ﻿using StatisticsAnalysisTool.Common;
+using StatisticsAnalysisTool.Properties;
 using System;
 using System.Collections.Generic;
 using System.Reflection;
@@ -13,7 +14,14 @@ public class NewLootChestEvent
 
     public NewLootChestEvent(Dictionary<byte, object> parameters)
     {
-        ConsoleManager.WriteLineForNetworkHandler(GetType().Name, parameters);
+        if (Settings.Default.IsDebugMode)
+        {
+            ConsoleManager.WriteLineForDebug(GetType().Name, parameters);
+        }
+        else
+        {
+            ConsoleManager.WriteLineForNetworkHandler(GetType().Name, parameters);
+        }
 
         try
         {
