@@ -507,12 +507,15 @@ namespace StatisticsAnalysisTool.Properties {
             }
         }
         
-        [global::System.Configuration.ApplicationScopedSettingAttribute()]
+        [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.DefaultSettingValueAttribute("False")]
         public bool IsDebugMode {
             get {
                 return ((bool)(this["IsDebugMode"]));
+            }
+            set {
+                this["IsDebugMode"] = value;
             }
         }
     }

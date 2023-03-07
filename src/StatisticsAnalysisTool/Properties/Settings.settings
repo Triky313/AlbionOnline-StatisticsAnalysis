@@ -140,7 +140,7 @@
     <Setting Name="ModifiedMobDataFileName" Type="System.String" Scope="Application">
       <Value Profile="(Default)">mobs-modified.json</Value>
     </Setting>
-    <Setting Name="IsDebugMode" Type="System.Boolean" Scope="Application">
+    <Setting Name="IsDebugMode" Type="System.Boolean" Scope="User">
       <Value Profile="(Default)">False</Value>
     </Setting>
   </Settings>
