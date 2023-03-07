@@ -219,19 +219,19 @@ public enum EventCodes
     Cloak,
     PartyInvitation,
     PartyJoined,
-    PartyChangedOrder = 219, // map[0:14368 2:1 3:[-45 -35 124 14 -23 103 -41 74 -71 66 67 20 -12 60 44 -101] 4:[[-45 -35 124 14 -23 103 -41 74 -71 66 67 20 -12 60 44 -101] [-118 61 -70 72 17 -107 121 72 -102 110 20 -25 64 20 106 2]] 5:[Triky313 Bruno313] 6:[0 0] 7:[18 0] 8:[35 0] 9:[-1 -1] 10:[true true] 252:212]
-    PartyDisbanded = 220, // map[1:14184 252:213]
-    PartyPlayerJoined = 221, // map[0:11925 1:[-63 -19 39 16 26 35 -25 67 -111 60 -87 -58 -31 -100 -124 -44] 2:Mitch77 3:1 4:20 5:12 6:-1 7:true 252:214]
-    PartyPlayerLeft = 223, // map[0:14368 1:[-45 -35 124 14 -23 103 -41 74 -71 66 67 20 -12 60 44 -101] 252:216]
-    PartyLeaderChanged = 224, // map[0:14595 1:[-45 -35 124 14 -23 103 -41 74 -71 66 67 20 -12 60 44 -101] 252:217]
-    PartyLootSettingChangedPlayer = 225, // map[0:14368 1:1 252:218]
+    PartyChangedOrder = 220, // map[0:14368 2:1 3:[-45 -35 124 14 -23 103 -41 74 -71 66 67 20 -12 60 44 -101] 4:[[-45 -35 124 14 -23 103 -41 74 -71 66 67 20 -12 60 44 -101] [-118 61 -70 72 17 -107 121 72 -102 110 20 -25 64 20 106 2]] 5:[Triky313 Bruno313] 6:[0 0] 7:[18 0] 8:[35 0] 9:[-1 -1] 10:[true true] 252:212]
+    PartyDisbanded = 221, // map[1:14184 252:213]
+    PartyPlayerJoined = 222, // map[0:11925 1:[-63 -19 39 16 26 35 -25 67 -111 60 -87 -58 -31 -100 -124 -44] 2:Mitch77 3:1 4:20 5:12 6:-1 7:true 252:214]
+    PartyPlayerLeft = 224, // map[0:14368 1:[-45 -35 124 14 -23 103 -41 74 -71 66 67 20 -12 60 44 -101] 252:216]
+    PartyLeaderChanged = 225, // map[0:14595 1:[-45 -35 124 14 -23 103 -41 74 -71 66 67 20 -12 60 44 -101] 252:217]
+    PartyLootSettingChangedPlayer = 226, // map[0:14368 1:1 252:218]
     PartySilverGained,
-    PartyPlayerUpdated = 228, // map[0:Bruno313 1:true 3:5 252:221]
+    PartyPlayerUpdated = 229, // map[0:Bruno313 1:true 3:5 252:221]
     PartyInvitationPlayerBusy,
     PartyMarkedObjectsUpdated,
     PartyOnClusterPartyJoined,
     PartySetRoleFlag, // map[0:8 1:[-118 61 -70 72 17 -107 121 72 -102 110 20 -25 64 20 106 2] 252:225] (0: FlagType, 1: ObjectId)
-    PartyJoinRequest = 233,
+    PartyJoinRequest = 234,
     SpellCooldownUpdate,
     NewHellgate,
     NewHellgateExit,
@@ -260,9 +260,9 @@ public enum EventCodes
     InvitedToArenaMatch,
     PlayerCounts,
     OtherGrabbedLoot,
-    InCombatStateUpdate = 262, // map[0:671362 1:true 2:true 252:257] | 1 = true; player hits enemy | 2 = true; enemy hits player
-    GrabbedLoot = 263, // LOOT: map[0:424 1:Triky313 2:Bruno313 4:1841 5:1 252:256] | SILVER: map[0:6436 2:Triky313 3:true 5:1550115 252:256] (0: ObjectId, 1: LootedBody, 2: Looter, 4: ItemId, 5: Quantity) 
-    SiegeCampClaimStart = 264,
+    InCombatStateUpdate = 263, // map[0:671362 1:true 2:true 252:257] | 1 = true; player hits enemy | 2 = true; enemy hits player
+    GrabbedLoot = 264, // LOOT: map[0:424 1:Triky313 2:Bruno313 4:1841 5:1 252:256] | SILVER: map[0:6436 2:Triky313 3:true 5:1550115 252:256] (0: ObjectId, 1: LootedBody, 2: Looter, 4: ItemId, 5: Quantity) 
+    SiegeCampClaimStart = 265,
     SiegeCampClaimCancel,
     SiegeCampClaimFinished,
     SiegeCampScheduleResult,
