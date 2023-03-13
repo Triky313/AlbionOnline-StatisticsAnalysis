@@ -63,14 +63,7 @@ Unfortunately, **ExitLag is not supported**, but there are other VPN services th
 An internet connection with at least 1M/bit (256KB/s) download rate.
 
 ### The tool cannot download the ItemList.json or Item.json, what to do?
-If a button like the one in the screenshot appears and the automatic download of the files repeatedly does not work, the following can be done:
-
-![try-download-again-button](https://user-images.githubusercontent.com/14247773/170475039-3739e5cd-5d02-41bf-a77d-f58290de75a3.png)
-
-Download the file https://raw.githubusercontent.com/broderickhyman/ao-bin-dumps/master/formatted/items.json and rename it to ItemList.json.
-and
-Download this file https://raw.githubusercontent.com/broderickhyman/ao-bin-dumps/master/items.json 
-Then put both files in the tools folder.
+Double click on the **DownloadItemJsonFilesManually.bat** file in the tool directory!
 
 Then restart the tool and everything should work.
 
