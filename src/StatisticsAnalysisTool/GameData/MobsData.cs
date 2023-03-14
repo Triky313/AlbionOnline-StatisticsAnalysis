@@ -91,7 +91,10 @@ public static class MobsData
             }
 
             var fullMobsJson = GetDataFromFullJsonFileLocal(tempFilePath);
-            await FileController.SaveAsync(fullMobsJson, regularDataFilePath);
+            if(fullMobsJson.Count() > 1)
+            {
+                await FileController.SaveAsync(fullMobsJson, regularDataFilePath);
+            }
         }
 
         _mobs = GetSpecificDataFromJsonFileLocal(regularDataFilePath);
