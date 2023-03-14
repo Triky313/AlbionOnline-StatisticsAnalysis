@@ -1,4 +1,4 @@
-﻿using log4net;
+using log4net;
 using StatisticsAnalysisTool.Common;
 using StatisticsAnalysisTool.Common.UserSettings;
 using StatisticsAnalysisTool.Models;
@@ -124,7 +124,7 @@ public static class MobsData
         }
     }
 
-    private static IEnumerable<MobJsonObject> GetDataFromFullJsonFileLocal(string localFilePath)
+    private static List<MobJsonObject> GetDataFromFullJsonFileLocal(string localFilePath)
     {
         try
         {
@@ -142,7 +142,7 @@ public static class MobsData
         {
             ConsoleManager.WriteLineForError(MethodBase.GetCurrentMethod()?.DeclaringType, e);
             Log.Error(MethodBase.GetCurrentMethod()?.DeclaringType, e);
-            return new ObservableCollection<MobJsonObject>();
+            return new List<MobJsonObject>();
         }
     }
 }
