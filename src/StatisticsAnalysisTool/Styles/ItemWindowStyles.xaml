@@ -116,7 +116,7 @@
     <Style x:Key="ListView.City.Color.Style" TargetType="Label">
         <Setter Property="Margin" Value="0" />
         <Setter Property="Height" Value="28" />
-        <Setter Property="Width" Value="150" />
+        <Setter Property="Width" Value="112" />
         <Setter Property="HorizontalAlignment" Value="Left" />
         <Setter Property="VerticalAlignment" Value="Top" />
         <Setter Property="Foreground" Value="{StaticResource SolidColorBrush.Text.1}" />
@@ -575,20 +575,18 @@
                     </Label.InputBindings>
                     <Label.Style>
                         <Style TargetType="{x:Type Label}">
+                            <Setter Property="HorizontalContentAlignment" Value="Left"/>
+                            <Setter Property="Width" Value="Auto"/>
+                            <Setter Property="MinWidth" Value="75"/>
+                            <Setter Property="FontWeight" Value="Normal"/>
                             <Style.Triggers>
                                 <DataTrigger Binding="{Binding IsBestSellMinPrice}" Value="true">
                                     <Setter Property="Foreground" Value="{StaticResource SolidColorBrush.Accent.Green.4}"/>
-                                    <Setter Property="HorizontalContentAlignment" Value="Left"/>
                                     <Setter Property="FontWeight" Value="Bold"/>
-                                    <Setter Property="Width" Value="Auto"/>
-                                    <Setter Property="MinWidth" Value="80"/>
                                 </DataTrigger>
                                 <DataTrigger Binding="{Binding IsBestSellMinPrice}" Value="false">
                                     <Setter Property="Foreground" Value="{StaticResource SolidColorBrush.Text.1}"/>
                                     <Setter Property="Margin" Value="0"/>
-                                    <Setter Property="HorizontalContentAlignment" Value="Left"/>
-                                    <Setter Property="Width" Value="Auto"/>
-                                    <Setter Property="MinWidth" Value="80"/>
                                 </DataTrigger>
                             </Style.Triggers>
                         </Style>
@@ -654,20 +652,18 @@
                     </Label.InputBindings>
                     <Label.Style>
                         <Style TargetType="{x:Type Label}">
+                            <Setter Property="HorizontalContentAlignment" Value="Left"/>
+                            <Setter Property="Width" Value="Auto"/>
+                            <Setter Property="MinWidth" Value="75"/>
+                            <Setter Property="FontWeight" Value="Normal"/>
                             <Style.Triggers>
                                 <DataTrigger Binding="{Binding IsBestSellMaxPrice}" Value="true">
                                     <Setter Property="Foreground" Value="{StaticResource SolidColorBrush.Accent.Green.4}"/>
-                                    <Setter Property="HorizontalContentAlignment" Value="Left"/>
                                     <Setter Property="FontWeight" Value="Bold"/>
-                                    <Setter Property="Width" Value="Auto"/>
-                                    <Setter Property="MinWidth" Value="80"/>
                                 </DataTrigger>
                                 <DataTrigger Binding="{Binding IsBestSellMaxPrice}" Value="false">
                                     <Setter Property="Foreground" Value="{StaticResource SolidColorBrush.Text.1}"/>
                                     <Setter Property="Margin" Value="0"/>
-                                    <Setter Property="HorizontalContentAlignment" Value="Left"/>
-                                    <Setter Property="Width" Value="Auto"/>
-                                    <Setter Property="MinWidth" Value="80"/>
                                 </DataTrigger>
                             </Style.Triggers>
                         </Style>
@@ -734,20 +730,18 @@
                     </Label.InputBindings>
                     <Label.Style>
                         <Style TargetType="{x:Type Label}">
+                            <Setter Property="HorizontalContentAlignment" Value="Left"/>
+                            <Setter Property="Width" Value="Auto"/>
+                            <Setter Property="MinWidth" Value="75"/>
+                            <Setter Property="FontWeight" Value="Normal"/>
                             <Style.Triggers>
                                 <DataTrigger Binding="{Binding IsBestBuyMinPrice}" Value="true">
                                     <Setter Property="Foreground" Value="{StaticResource SolidColorBrush.Accent.Green.4}"/>
-                                    <Setter Property="HorizontalContentAlignment" Value="Left"/>
                                     <Setter Property="FontWeight" Value="Bold"/>
-                                    <Setter Property="Width" Value="Auto"/>
-                                    <Setter Property="MinWidth" Value="80"/>
                                 </DataTrigger>
                                 <DataTrigger Binding="{Binding IsBestBuyMinPrice}" Value="false">
                                     <Setter Property="Foreground" Value="{StaticResource SolidColorBrush.Text.1}"/>
                                     <Setter Property="Margin" Value="0"/>
-                                    <Setter Property="HorizontalContentAlignment" Value="Left"/>
-                                    <Setter Property="Width" Value="Auto"/>
-                                    <Setter Property="MinWidth" Value="80"/>
                                 </DataTrigger>
                             </Style.Triggers>
                         </Style>
@@ -814,20 +808,18 @@
                     </Label.InputBindings>
                     <Label.Style>
                         <Style TargetType="{x:Type Label}">
+                            <Setter Property="HorizontalContentAlignment" Value="Left"/>
+                            <Setter Property="Width" Value="Auto"/>
+                            <Setter Property="MinWidth" Value="75"/>
+                            <Setter Property="FontWeight" Value="Normal"/>
                             <Style.Triggers>
                                 <DataTrigger Binding="{Binding IsBestBuyMaxPrice}" Value="true">
                                     <Setter Property="Foreground" Value="{StaticResource SolidColorBrush.Accent.Green.4}"/>
-                                    <Setter Property="HorizontalContentAlignment" Value="Left"/>
                                     <Setter Property="FontWeight" Value="Bold"/>
-                                    <Setter Property="Width" Value="Auto"/>
-                                    <Setter Property="MinWidth" Value="80"/>
                                 </DataTrigger>
                                 <DataTrigger Binding="{Binding IsBestBuyMaxPrice}" Value="false">
                                     <Setter Property="Foreground" Value="{StaticResource SolidColorBrush.Text.1}"/>
                                     <Setter Property="Margin" Value="0"/>
-                                    <Setter Property="HorizontalContentAlignment" Value="Left"/>
-                                    <Setter Property="Width" Value="Auto"/>
-                                    <Setter Property="MinWidth" Value="80"/>
                                 </DataTrigger>
                             </Style.Triggers>
                         </Style>
