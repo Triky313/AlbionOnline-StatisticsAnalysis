@@ -9,5 +9,6 @@ public enum TreasureType
     HellGate,
     Corrupted,
     StaticDungeon,
-    Avalon
+    Avalon,
+    Mist
 }
