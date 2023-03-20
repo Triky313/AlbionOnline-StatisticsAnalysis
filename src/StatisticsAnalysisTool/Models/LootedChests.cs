@@ -1,7 +1,7 @@
-﻿using System.ComponentModel;
-using System.Runtime.CompilerServices;
-using StatisticsAnalysisTool.Common;
+﻿using StatisticsAnalysisTool.Common;
 using StatisticsAnalysisTool.Properties;
+using System.ComponentModel;
+using System.Runtime.CompilerServices;
 
 namespace StatisticsAnalysisTool.Models;
 
@@ -39,6 +39,14 @@ public class LootedChests : INotifyPropertyChanged
     private int _hellGatesEpicMonth;
     private int _hellGatesLegendaryWeek;
     private int _hellGatesLegendaryMonth;
+    private int _mistCommonWeek;
+    private int _mistCommonMonth;
+    private int _mistUncommonWeek;
+    private int _mistUncommonMonth;
+    private int _mistEpicWeek;
+    private int _mistEpicMonth;
+    private int _mistLegendaryWeek;
+    private int _mistLegendaryMonth;
     private int _outlandsCommonYear;
     private int _outlandsUncommonYear;
     private int _outlandsEpicYear;
@@ -55,6 +63,10 @@ public class LootedChests : INotifyPropertyChanged
     private int _hellGatesUncommonYear;
     private int _hellGatesEpicYear;
     private int _hellGatesLegendaryYear;
+    private int _mistCommonYear;
+    private int _mistUncommonYear;
+    private int _mistEpicYear;
+    private int _mistLegendaryYear;
     private int _randomSoloDungeonCommonWeek;
     private int _randomSoloDungeonCommonMonth;
     private int _randomSoloDungeonCommonYear;
@@ -437,7 +449,7 @@ public class LootedChests : INotifyPropertyChanged
             OnPropertyChanged();
         }
     }
-    
+
     #endregion
 
     #region Avalonian Road bindings
@@ -688,6 +700,130 @@ public class LootedChests : INotifyPropertyChanged
 
     #endregion
 
+    #region Mist bindings
+
+    public int MistCommonWeek
+    {
+        get => _mistCommonWeek;
+        set
+        {
+            _mistCommonWeek = value;
+            OnPropertyChanged();
+        }
+    }
+
+    public int MistCommonMonth
+    {
+        get => _mistCommonMonth;
+        set
+        {
+            _mistCommonMonth = value;
+            OnPropertyChanged();
+        }
+    }
+
+    public int MistCommonYear
+    {
+        get => _mistCommonYear;
+        set
+        {
+            _mistCommonYear = value;
+            OnPropertyChanged();
+        }
+    }
+
+    public int MistUncommonWeek
+    {
+        get => _mistUncommonWeek;
+        set
+        {
+            _mistUncommonWeek = value;
+            OnPropertyChanged();
+        }
+    }
+
+    public int MistUncommonMonth
+    {
+        get => _mistUncommonMonth;
+        set
+        {
+            _mistUncommonMonth = value;
+            OnPropertyChanged();
+        }
+    }
+
+    public int MistUncommonYear
+    {
+        get => _mistUncommonYear;
+        set
+        {
+            _mistUncommonYear = value;
+            OnPropertyChanged();
+        }
+    }
+
+    public int MistEpicWeek
+    {
+        get => _mistEpicWeek;
+        set
+        {
+            _mistEpicWeek = value;
+            OnPropertyChanged();
+        }
+    }
+
+    public int MistEpicMonth
+    {
+        get => _mistEpicMonth;
+        set
+        {
+            _mistEpicMonth = value;
+            OnPropertyChanged();
+        }
+    }
+
+    public int MistEpicYear
+    {
+        get => _mistEpicYear;
+        set
+        {
+            _mistEpicYear = value;
+            OnPropertyChanged();
+        }
+    }
+
+    public int MistLegendaryWeek
+    {
+        get => _mistLegendaryWeek;
+        set
+        {
+            _mistLegendaryWeek = value;
+            OnPropertyChanged();
+        }
+    }
+
+    public int MistLegendaryMonth
+    {
+        get => _mistLegendaryMonth;
+        set
+        {
+            _mistLegendaryMonth = value;
+            OnPropertyChanged();
+        }
+    }
+
+    public int MistLegendaryYear
+    {
+        get => _mistLegendaryYear;
+        set
+        {
+            _mistLegendaryYear = value;
+            OnPropertyChanged();
+        }
+    }
+
+    #endregion
+
     public static string TranslationLootedChests => LanguageController.Translation("LOOTED_CHESTS");
     public static string TranslationOpenWorld => LanguageController.Translation("OPEN_WORLD");
     public static string TranslationStaticDungeons => LanguageController.Translation("STATIC_DUNGEONS");
@@ -695,6 +831,7 @@ public class LootedChests : INotifyPropertyChanged
     public static string TranslationRandomSoloDungeons => LanguageController.Translation("RANDOM_SOLO_DUNGEONS");
     public static string TranslationRandomGroupDungeons => LanguageController.Translation("RANDOM_GROUP_DUNGEONS");
     public static string TranslationHellGates => LanguageController.Translation("HELLGATES");
+    public static string TranslationMists => LanguageController.Translation("MISTS");
     public static string TranslationLast7Days => LanguageController.Translation("LAST_7_DAYS");
     public static string TranslationLast30Days => LanguageController.Translation("LAST_30_DAYS");
     public static string TranslationLast365Days => LanguageController.Translation("LAST_365_DAYS");
