@@ -233,6 +233,11 @@ public class TreasureController
     {
         var inputArray = input.Split("_");
 
+        if (inputArray.Any(x => x == "MISTS"))
+        {
+            return TreasureType.Mist;
+        }
+
         if (inputArray.Any(x => x == "TREASURE"))
         {
             return TreasureType.OpenWorld;
@@ -256,11 +261,6 @@ public class TreasureController
         if (inputArray.Any(x => x == "HELL"))
         {
             return TreasureType.HellGate;
-        }
-
-        if (inputArray.Any(x => x == "MISTS"))
-        {
-            return TreasureType.Mist;
         }
 
         var pattern = "_VETERAN_CHEST_|[^SOLO]_CHEST_BOSS_HALLOWEEN_";
