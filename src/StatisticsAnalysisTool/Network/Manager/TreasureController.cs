@@ -1,7 +1,6 @@
 using StatisticsAnalysisTool.Common;
 using StatisticsAnalysisTool.Enumerations;
 using StatisticsAnalysisTool.Models;
-using StatisticsAnalysisTool.Models.NetworkModel;
 using StatisticsAnalysisTool.Properties;
 using StatisticsAnalysisTool.ViewModels;
 using System;
@@ -166,6 +165,23 @@ public class TreasureController
         _mainWindowViewModel.DashboardBindings.LootedChests.HellGateLegendaryYear = GetStats(TreasureRarity.Legendary, TreasureType.HellGate, -365);
 
         #endregion
+
+        #region Mist
+
+        _mainWindowViewModel.DashboardBindings.LootedChests.MistCommonWeek = GetStats(TreasureRarity.Standard, TreasureType.Mist, -7);
+        _mainWindowViewModel.DashboardBindings.LootedChests.MistCommonMonth = GetStats(TreasureRarity.Standard, TreasureType.Mist, -30);
+        _mainWindowViewModel.DashboardBindings.LootedChests.MistCommonYear = GetStats(TreasureRarity.Standard, TreasureType.Mist, -365);
+        _mainWindowViewModel.DashboardBindings.LootedChests.MistUncommonWeek = GetStats(TreasureRarity.Uncommon, TreasureType.Mist, -7);
+        _mainWindowViewModel.DashboardBindings.LootedChests.MistUncommonMonth = GetStats(TreasureRarity.Uncommon, TreasureType.Mist, -30);
+        _mainWindowViewModel.DashboardBindings.LootedChests.MistUncommonYear = GetStats(TreasureRarity.Uncommon, TreasureType.Mist, -365);
+        _mainWindowViewModel.DashboardBindings.LootedChests.MistEpicWeek = GetStats(TreasureRarity.Rare, TreasureType.Mist, -7);
+        _mainWindowViewModel.DashboardBindings.LootedChests.MistEpicMonth = GetStats(TreasureRarity.Rare, TreasureType.Mist, -30);
+        _mainWindowViewModel.DashboardBindings.LootedChests.MistEpicYear = GetStats(TreasureRarity.Rare, TreasureType.Mist, -365);
+        _mainWindowViewModel.DashboardBindings.LootedChests.MistLegendaryWeek = GetStats(TreasureRarity.Legendary, TreasureType.Mist, -7);
+        _mainWindowViewModel.DashboardBindings.LootedChests.MistLegendaryMonth = GetStats(TreasureRarity.Legendary, TreasureType.Mist, -30);
+        _mainWindowViewModel.DashboardBindings.LootedChests.MistLegendaryYear = GetStats(TreasureRarity.Legendary, TreasureType.Mist, -365);
+
+        #endregion
     }
 
     #region Helper methods
@@ -216,6 +232,11 @@ public class TreasureController
     private static TreasureType GetTreasureType(string input)
     {
         var inputArray = input.Split("_");
+
+        if (inputArray.Any(x => x == "MISTS"))
+        {
+            return TreasureType.Mist;
+        }
 
         if (inputArray.Any(x => x == "TREASURE"))
         {

@@ -4,7 +4,6 @@ using StatisticsAnalysisTool.Common.UserSettings;
 using StatisticsAnalysisTool.Enumerations;
 using StatisticsAnalysisTool.Models;
 using StatisticsAnalysisTool.Models.TranslationModel;
-using StatisticsAnalysisTool.Properties;
 using StatisticsAnalysisTool.Views;
 using System;
 using System.Collections.Generic;
@@ -34,8 +33,8 @@ public class SettingsWindowViewModel : INotifyPropertyChanged
     private bool _isOpenItemWindowInNewWindowChecked;
     private bool _showInfoWindowOnStartChecked;
     private SettingsWindowTranslation _translation;
-    private string _cityPricesApiUrl;
-    private string _cityPricesHistoryApiUrl;
+    private string _albionDataProjectBaseUrlWest;
+    private string _albionDataProjectBaseUrlEast;
     private string _goldStatsApiUrl;
     private bool _isLootLoggerSaveReminderActive;
     private string _itemsJsonSourceUrl;
@@ -81,9 +80,8 @@ public class SettingsWindowViewModel : INotifyPropertyChanged
         InitAlertSounds();
 
         // Api urls
-        CityPricesApiUrl = SettingsController.CurrentSettings.CityPricesApiUrl;
-        CityPricesHistoryApiUrl = SettingsController.CurrentSettings.CityPricesHistoryApiUrl;
-        GoldStatsApiUrl = SettingsController.CurrentSettings.GoldStatsApiUrl;
+        AlbionDataProjectBaseUrlWest = SettingsController.CurrentSettings.AlbionDataProjectBaseUrlWest;
+        AlbionDataProjectBaseUrlEast = SettingsController.CurrentSettings.AlbionDataProjectBaseUrlEast;
 
         // Loot logger
         IsLootLoggerSaveReminderActive = SettingsController.CurrentSettings.IsLootLoggerSaveReminderActive;
@@ -118,9 +116,8 @@ public class SettingsWindowViewModel : INotifyPropertyChanged
         LanguageController.CurrentCultureInfo = new CultureInfo(LanguagesSelection.FileName);
         LanguageController.SetLanguage();
 
-        SettingsController.CurrentSettings.CityPricesApiUrl = string.IsNullOrEmpty(CityPricesApiUrl) ? Settings.Default.CityPricesApiUrlDefault : CityPricesApiUrl;
-        SettingsController.CurrentSettings.CityPricesHistoryApiUrl = string.IsNullOrEmpty(CityPricesHistoryApiUrl) ? Settings.Default.CityPricesHistoryApiUrlDefault : CityPricesHistoryApiUrl;
-        SettingsController.CurrentSettings.GoldStatsApiUrl = string.IsNullOrEmpty(GoldStatsApiUrl) ? Settings.Default.GoldStatsApiUrlDefault : GoldStatsApiUrl;
+        SettingsController.CurrentSettings.AlbionDataProjectBaseUrlWest = AlbionDataProjectBaseUrlWest;
+        SettingsController.CurrentSettings.AlbionDataProjectBaseUrlEast = AlbionDataProjectBaseUrlEast;
 
         SettingsController.CurrentSettings.IsLootLoggerSaveReminderActive = IsLootLoggerSaveReminderActive;
         SettingsController.CurrentSettings.IsSuggestPreReleaseUpdatesActive = IsSuggestPreReleaseUpdatesActive;
@@ -503,22 +500,22 @@ public class SettingsWindowViewModel : INotifyPropertyChanged
         }
     }
 
-    public string CityPricesApiUrl
+    public string AlbionDataProjectBaseUrlWest
     {
-        get => _cityPricesApiUrl;
+        get => _albionDataProjectBaseUrlWest;
         set
         {
-            _cityPricesApiUrl = value;
+            _albionDataProjectBaseUrlWest = value;
             OnPropertyChanged();
         }
     }
 
-    public string CityPricesHistoryApiUrl
+    public string AlbionDataProjectBaseUrlEast
     {
-        get => _cityPricesHistoryApiUrl;
+        get => _albionDataProjectBaseUrlEast;
         set
         {
-            _cityPricesHistoryApiUrl = value;
+            _albionDataProjectBaseUrlEast = value;
             OnPropertyChanged();
         }
     }

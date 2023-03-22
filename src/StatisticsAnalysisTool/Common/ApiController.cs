@@ -7,12 +7,14 @@ using StatisticsAnalysisTool.Models.ApiModel;
 using StatisticsAnalysisTool.Properties;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Net;
 using System.Net.Http;
 using System.Reflection;
 using System.Text.Json;
 using System.Threading.Tasks;
+using StatisticsAnalysisTool.Network;
 
 namespace StatisticsAnalysisTool.Common;
 
@@ -41,13 +43,13 @@ public static class ApiController
             return new List<MarketResponse>();
         }
 
-        var url = SettingsController.CurrentSettings.CityPricesApiUrl ?? Settings.Default.CityPricesApiUrlDefault;
+        var url = Path.Combine(GetServerBaseUrlByCurrentServer(), "stats/prices/");
         url += uniqueName;
 
         if (marketLocations?.Count >= 1)
         {
             url += "?locations=";
-            url = marketLocations.Aggregate(url, (current, location) => current + $"{(int)location},");
+            url = marketLocations.Aggregate(url, (current, location) => current + $"{(int) location},");
         }
 
         if (qualities?.Count >= 1)
@@ -65,7 +67,7 @@ public static class ApiController
 
             ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls12 | SecurityProtocolType.Tls11 | SecurityProtocolType.Tls;
             using var response = await client.GetAsync(url);
-            if (response.StatusCode == (HttpStatusCode)429)
+            if (response.StatusCode == (HttpStatusCode) 429)
             {
                 throw new TooManyRequestsException();
             }
@@ -93,12 +95,12 @@ public static class ApiController
 
         if (locations?.Count > 0)
         {
-            locationsString = string.Join(",", locations.Select(x => ((int)x).ToString()));
+            locationsString = string.Join(",", locations.Select(x => ((int) x).ToString()));
         }
 
         var qualitiesString = quality.ToString();
 
-        var url = SettingsController.CurrentSettings.CityPricesHistoryApiUrl ?? Settings.Default.CityPricesHistoryApiUrlDefault;
+        var url = Path.Combine(GetServerBaseUrlByCurrentServer(), "stats/history/");
         url += uniqueName;
         url += $"?locations={locationsString}";
         url += $"&date={date:M-d-yy}";
@@ -115,7 +117,7 @@ public static class ApiController
             ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls12 | SecurityProtocolType.Tls11 | SecurityProtocolType.Tls;
             using var response = await client.GetAsync(url);
             using var content = response.Content;
-            if (response.StatusCode == (HttpStatusCode)429)
+            if (response.StatusCode == (HttpStatusCode) 429)
             {
                 throw new TooManyRequestsException();
             }
@@ -326,7 +328,9 @@ public static class ApiController
     public static async Task<List<GoldResponseModel>> GetGoldPricesFromJsonAsync(DateTime? dateTime, int count, int timeout = 300)
     {
         var dateString = dateTime != null ? $"{dateTime:yyyy-MM-dd'T'HH:mm:ss}" : string.Empty;
-        var url = $"{SettingsController.CurrentSettings.GoldStatsApiUrl ?? Settings.Default.GoldStatsApiUrlDefault}?date={dateString}&count={count}";
+        
+        var url = Path.Combine(GetServerBaseUrlByCurrentServer(), "stats/Gold/");
+        url += $"?date={dateString}&count={count}";
 
         using var clientHandler = new HttpClientHandler();
         clientHandler.ServerCertificateCustomValidationCallback = (_, _, _, _) => true;
@@ -552,6 +556,16 @@ public static class ApiController
     }
 
     #endregion
+
+    private static string GetServerBaseUrlByCurrentServer()
+    {
+        return NetworkManager.AlbionServer switch
+        {
+            AlbionServer.West => SettingsController.CurrentSettings.AlbionDataProjectBaseUrlWest,
+            AlbionServer.East => SettingsController.CurrentSettings.AlbionDataProjectBaseUrlEast,
+            _ => SettingsController.CurrentSettings.AlbionDataProjectBaseUrlWest
+        };
+    }
 
     #endregion
 }
