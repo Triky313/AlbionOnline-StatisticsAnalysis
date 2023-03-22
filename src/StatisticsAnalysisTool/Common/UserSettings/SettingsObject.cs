@@ -17,9 +17,8 @@ public class SettingsObject
     public bool IsOpenItemWindowInNewWindowChecked { get; set; } = true;
     public bool IsInfoWindowShownOnStart { get; set; } = true;
     public string SelectedAlertSound { get; set; }
-    public string CityPricesApiUrl { get; set; } = "https://www.albion-online-data.com/api/v2/stats/prices/";
-    public string CityPricesHistoryApiUrl { get; set; } = "https://www.albion-online-data.com/api/v2/stats/history/";
-    public string GoldStatsApiUrl { get; set; } = "https://www.albion-online-data.com/api/v2/stats/Gold";
+    public string AlbionDataProjectBaseUrlWest { get; set; } = "https://albion-online-data.com/api/v2/";
+    public string AlbionDataProjectBaseUrlEast { get; set; } = "https://east.albion-online-data.com/api/v2/";
     public double MainWindowHeight { get; set; } = 100;
     public double MainWindowWidth { get; set; } = 100;
     public bool MainWindowMaximized { get; set; }

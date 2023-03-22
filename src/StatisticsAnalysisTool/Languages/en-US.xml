@@ -704,4 +704,6 @@
 	<translation name="UNKNOWN_SERVER">Unknown Server</translation>
 	<translation name="WEST_SERVER">West Server</translation>
 	<translation name="EAST_SERVER">East Server</translation>
+	<translation name="ALBION_DATA_PROJECT_BASE_URL_WEST">Albion data project base url WEST</translation>
+	<translation name="ALBION_DATA_PROJECT_BASE_URL_EAST">Albion data project base url EAST</translation>
 </translations>
