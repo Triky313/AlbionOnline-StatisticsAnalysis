@@ -700,4 +700,10 @@
 	<translation name="RESOURCE_VALUE">Całkowita cena zebranych surowców</translation>
 	<translation name="TOTAL_MARKET_VALUE">Cena zebranego surowca</translation>
 	<translation name="NAVIGATION_TAB_VISIBILITY">Dostosowanie zakładek</translation>
+	<translation name="SERVER">Serwer</translation>
+	<translation name="UNKNOWN_SERVER">Nieznany serwer</translation>
+	<translation name="WEST_SERVER">Serwer Zachodni</translation>
+	<translation name="EAST_SERVER">Serwer Wschodni</translation>
+	<translation name="ALBION_DATA_PROJECT_BASE_URL_WEST">Baza danych projektu Albion URL Zachód</translation>
+	<translation name="ALBION_DATA_PROJECT_BASE_URL_EAST">Baza danych projektu Albion URL Wschód</translation>
 </translations>
