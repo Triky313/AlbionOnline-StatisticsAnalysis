@@ -118,6 +118,7 @@ public class MainWindowViewModel : INotifyPropertyChanged
     private double _toolTaskProgressBarValue;
     private string _toolTaskCurrentTaskName;
     private ToolTaskBindings _toolTaskBindings = new();
+    private string _serverTypeText;
 
     public MainWindowViewModel()
     {
@@ -259,6 +260,8 @@ public class MainWindowViewModel : INotifyPropertyChanged
         GridTryToLoadTheItemListAgainVisibility = Visibility.Collapsed;
         GridTryToLoadTheItemJsonAgainVisibility = Visibility.Collapsed;
         GridTryToLoadTheMobsJsonAgainVisibility = Visibility.Collapsed;
+
+        ServerTypeText = LanguageController.Translation("UNKNOWN_SERVER");
 
         if (!ItemController.IsItemsLoaded())
         {
@@ -1454,13 +1457,22 @@ public class MainWindowViewModel : INotifyPropertyChanged
         }
     }
 
-
     public Visibility ErrorBarVisibility
     {
         get => _errorBarVisibility;
         set
         {
             _errorBarVisibility = value;
+            OnPropertyChanged();
+        }
+    }
+
+    public string ServerTypeText
+    {
+        get => _serverTypeText;
+        set
+        {
+            _serverTypeText = value;
             OnPropertyChanged();
         }
     }

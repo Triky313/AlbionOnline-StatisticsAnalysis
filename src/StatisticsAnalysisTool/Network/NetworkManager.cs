@@ -2,6 +2,7 @@ using log4net;
 using PacketDotNet;
 using SharpPcap;
 using StatisticsAnalysisTool.Common;
+using StatisticsAnalysisTool.Enumerations;
 using StatisticsAnalysisTool.Network.Handler;
 using StatisticsAnalysisTool.Network.Manager;
 using StatisticsAnalysisTool.ViewModels;
@@ -9,6 +10,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
+using System.Threading.Tasks;
 using System.Windows;
 
 namespace StatisticsAnalysisTool.Network;
@@ -18,9 +20,13 @@ public class NetworkManager
     private static IPhotonReceiver _receiver;
     private static readonly List<ICaptureDevice> CapturedDevices = new();
     private static readonly ILog Log = LogManager.GetLogger(MethodBase.GetCurrentMethod()?.DeclaringType);
+    private static DateTime _lastGetCurrentServerByIpTime = DateTime.MinValue;
+    private static int _serverEventCounter;
+    private static AlbionServer _lastServerType;
 
+    public static AlbionServer AlbionServer { get; private set; } = AlbionServer.Unknown;
     public static bool IsNetworkCaptureRunning => CapturedDevices.Where(device => device.Started).Any(device => device.Started);
-    
+
     public static bool StartNetworkCapture(TrackingController trackingController)
     {
         ReceiverBuilder builder = ReceiverBuilder.Create();
@@ -82,7 +88,7 @@ public class NetworkManager
         builder.AddResponseHandler(new AuctionGetResponseHandler(trackingController));
 
         _receiver = builder.Build();
-        
+
         try
         {
             CapturedDevices.AddRange(CaptureDeviceList.Instance);
@@ -107,7 +113,7 @@ public class NetworkManager
             return false;
         }
     }
-    
+
     private static bool StartDeviceCapture()
     {
         if (CapturedDevices.Count <= 0)
@@ -137,7 +143,7 @@ public class NetworkManager
             {
                 Log.Error(MethodBase.GetCurrentMethod()?.DeclaringType + " - MainWindowViewModel is null.");
             }
-            
+
             return false;
         }
 
@@ -173,6 +179,14 @@ public class NetworkManager
     {
         try
         {
+            var server = GetCurrentServerByIp(e);
+            _ = UpdateMainWindowServerTypeAsync(server);
+            AlbionServer = server;
+            if (server == AlbionServer.Unknown)
+            {
+                return;
+            }
+
             var packet = Packet.ParsePacket(e.GetPacket().LinkLayerType, e.GetPacket().Data).Extract<UdpPacket>();
             if (packet != null && (packet.SourcePort == 5056 || packet.DestinationPort == 5056))
             {
@@ -200,5 +214,70 @@ public class NetworkManager
             ConsoleManager.WriteLineForError(MethodBase.GetCurrentMethod()?.DeclaringType, ex);
             Log.Error(nameof(Device_OnPacketArrival), ex);
         }
+    }
+
+    private static AlbionServer GetCurrentServerByIp(PacketCapture e)
+    {
+        var packet = Packet.ParsePacket(e.GetPacket().LinkLayerType, e.GetPacket().Data);
+        var ipPacket = packet.Extract<IPPacket>();
+        var srcIp = ipPacket?.SourceAddress?.ToString();
+        var albionServer = AlbionServer.Unknown;
+
+        if (srcIp == null || string.IsNullOrEmpty(srcIp))
+        {
+            albionServer = AlbionServer.Unknown;
+        }
+        else if (srcIp.Contains("5.188.125."))
+        {
+            albionServer = AlbionServer.West;
+        }
+        else if (srcIp!.Contains("5.45.187."))
+        {
+            albionServer = AlbionServer.East;
+        }
+
+        return GetActiveAlbionServer(albionServer);
+    }
+
+    private static AlbionServer GetActiveAlbionServer(AlbionServer albionServer)
+    {
+        if (albionServer != AlbionServer.Unknown && _lastServerType == albionServer)
+        {
+            _serverEventCounter++;
+        }
+        else if (albionServer != AlbionServer.Unknown)
+        {
+            _serverEventCounter = 1;
+            _lastServerType = albionServer;
+        }
+
+        if (_serverEventCounter < 20 || albionServer == AlbionServer.Unknown)
+        {
+            return _lastServerType;
+        }
+
+        _serverEventCounter = 20;
+        return albionServer;
+    }
+
+    private static async Task UpdateMainWindowServerTypeAsync(AlbionServer albionServer)
+    {
+        if ((DateTime.Now - _lastGetCurrentServerByIpTime).TotalSeconds < 10)
+        {
+            return;
+        }
+
+        await Task.Run(() =>
+        {
+            var mainWindowViewModel = ServiceLocator.Resolve<MainWindowViewModel>();
+            mainWindowViewModel.ServerTypeText = albionServer switch
+            {
+                AlbionServer.East => LanguageController.Translation("EAST_SERVER"),
+                AlbionServer.West => LanguageController.Translation("WEST_SERVER"),
+                _ => LanguageController.Translation("UNKNOWN_SERVER")
+            };
+        });
+
+        _lastGetCurrentServerByIpTime = DateTime.Now;
     }
 }

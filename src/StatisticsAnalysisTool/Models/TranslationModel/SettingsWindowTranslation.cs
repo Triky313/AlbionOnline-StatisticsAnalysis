@@ -22,8 +22,8 @@ public class SettingsWindowTranslation
     public static string OpenToolDirectory => LanguageController.Translation("OPEN_TOOL_DIRECTORY");
     public static string OpenDebugConsole => LanguageController.Translation("OPEN_DEBUG_CONSOLE");
     public static string CreateDesktopShortcut => LanguageController.Translation("CREATE_DESKTOP_SHORTCUT");
-    public static string CityPricesApiUrl => LanguageController.Translation("CITY_PRICES_API_URL");
-    public static string CityPricesHistoryApiUrl => LanguageController.Translation("CITY_PRICES_HISTORY_API_URL");
+    public static string AlbionDataProjectBaseUrlWest => LanguageController.Translation("ALBION_DATA_PROJECT_BASE_URL_WEST");
+    public static string AlbionDataProjectBaseUrlEast => LanguageController.Translation("ALBION_DATA_PROJECT_BASE_URL_EAST");
     public static string GoldStatsApiUrl => LanguageController.Translation("GOLD_STATS_API_URL");
     public static string IsLootLoggerSaveReminderActive => LanguageController.Translation("IS_LOOT_LOGGER_SAVE_REMINDER_ACTIVE");
     public static string ExportLootLoggingFileWithRealItemName => LanguageController.Translation("EXPORT_LOOT_LOGGING_FILE_WITH_REAL_ITEM_NAME");

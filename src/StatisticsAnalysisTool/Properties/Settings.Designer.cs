@@ -204,33 +204,6 @@ namespace StatisticsAnalysisTool.Properties {
         
         [global::System.Configuration.ApplicationScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("https://www.albion-online-data.com/api/v2/stats/prices/")]
-        public string CityPricesApiUrlDefault {
-            get {
-                return ((string)(this["CityPricesApiUrlDefault"]));
-            }
-        }
-        
-        [global::System.Configuration.ApplicationScopedSettingAttribute()]
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("https://www.albion-online-data.com/api/v2/stats/history/")]
-        public string CityPricesHistoryApiUrlDefault {
-            get {
-                return ((string)(this["CityPricesHistoryApiUrlDefault"]));
-            }
-        }
-        
-        [global::System.Configuration.ApplicationScopedSettingAttribute()]
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("https://www.albion-online-data.com/api/v2/stats/Gold")]
-        public string GoldStatsApiUrlDefault {
-            get {
-                return ((string)(this["GoldStatsApiUrlDefault"]));
-            }
-        }
-        
-        [global::System.Configuration.ApplicationScopedSettingAttribute()]
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.DefaultSettingValueAttribute("GameFiles")]
         public string GameFilesDirectoryName {
             get {
