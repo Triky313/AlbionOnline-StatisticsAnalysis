@@ -34,6 +34,8 @@
                         </Grid>
                         <Label Content="- DEBUG -" Style="{StaticResource MainWindow.Title}" Foreground="{StaticResource SolidColorBrush.Accent.Red.3}" 
                                Visibility="{Binding DebugModeVisibility}" />
+                        <Label Content="{Binding ServerTypeText, FallbackValue=(SEVER__TYPE)}" Style="{StaticResource HeaderStyle.Tracking.Content}" 
+                               ContentStringFormat="{}({0})" Foreground="{StaticResource SolidColorBrush.Accent.Blue.4}" />
                         <Label Content="{Binding TrackingActivityBindings.TrackingActiveText, FallbackValue=TRACKING__IS__NOT__ACTIVE}" VerticalAlignment="Center">
                             <Label.Style>
                                 <Style TargetType="{x:Type Label}">

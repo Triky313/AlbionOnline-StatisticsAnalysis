@@ -700,4 +700,8 @@
 	<translation name="RESOURCE_VALUE">Resource value</translation>
 	<translation name="TOTAL_MARKET_VALUE">Total market value</translation>
 	<translation name="NAVIGATION_TAB_VISIBILITY">Navigation tab visibility</translation>
+	<translation name="SERVER">Server</translation>
+	<translation name="UNKNOWN_SERVER">Unknown Server</translation>
+	<translation name="WEST_SERVER">West Server</translation>
+	<translation name="EAST_SERVER">East Server</translation>
 </translations>
