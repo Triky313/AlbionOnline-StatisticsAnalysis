@@ -2,6 +2,7 @@
 using StatisticsAnalysisTool.Common;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Reflection;
 using StatisticsAnalysisTool.Trade.Mails;
@@ -27,13 +28,24 @@ public class GetMailInfosResponse
                 !parameters.ContainsKey(6) || parameters[6] == null ||
                 !parameters.ContainsKey(10) || parameters[10] == null ||
                 !parameters[3].GetType().IsArray ||
-                typeof(long[]).Name != parameters[3].GetType().Name)
+                (typeof(long[]).Name != parameters[3].GetType().Name &&
+                 typeof(int[]).Name != parameters[3].GetType().Name))
             {
                 return;
             }
-
+            
             var guid = parameters[0].ObjectToGuid();
-            var mailIdArray = ((long[]) parameters[3]).ToArray();
+
+            long[] mailIdArray = {};
+            // If the mails are ever below 32.767, an error will appear here, but this should not happen on the current west and east servers, since the mail ID is above it and can never come below it again.
+            if (typeof(int[]).Name == parameters[3].GetType().Name)
+            {
+                mailIdArray = Array.ConvertAll((int[]) parameters[3], x => (long) x);
+            } 
+            else if (typeof(long[]).Name == parameters[3].GetType().Name)
+            {
+                mailIdArray = ((long[]) parameters[3]).ToArray();
+            }
 
             if (mailIdArray is not { Length: > 0 })
             {
