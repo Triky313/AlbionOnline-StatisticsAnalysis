@@ -37,7 +37,8 @@ public class GetMailInfosResponse
             var guid = parameters[0].ObjectToGuid();
 
             long[] mailIdArray = {};
-            // If the mails are ever below 32.767, an error will appear here, but this should not happen on the current west and east servers, since the mail ID is above it and can never come below it again.
+
+            // If the mails ID's are ever below 32.767, an error will appear here, but this should not happen on the current west and east servers, since the mail ID is above it and can never come below it again.
             if (typeof(int[]).Name == parameters[3].GetType().Name)
             {
                 mailIdArray = Array.ConvertAll((int[]) parameters[3], x => (long) x);
