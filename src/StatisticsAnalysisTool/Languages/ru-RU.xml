@@ -588,6 +588,7 @@
 	<translation name="RANDOM_SOLO_DUNGEONS">Рандомные сольники</translation>
 	<translation name="RANDOM_GROUP_DUNGEONS">Рандомные групповые данжи</translation>
 	<translation name="SNAPSHOT_AFTER_MAP_CHANGE">Скриншот после смены локации</translation>
+	<translation name="IGNORE_MAILS_WITH_ZERO_VALUES">Игнорировать пустые сообщения</translation>
 	<translation name="CHECK_FOR_UPDATE">Проверить обновления</translation>
 	<translation name="PAID_SILVER_FOR_RESPEC_THIS_SESSION">Потрачено серебра на выкачку за сеанс</translation>
 	<translation name="PAID_SILVER_FOR_RESPEC_PER_HOUR">Потрачено серебра на выкачку за час</translation>
@@ -665,4 +666,13 @@
 	<translation name="AMOUNT_OF_MINING_PROCESSES">Количество вскапываний</translation>
 	<translation name="SURE_YOU_WANT_TO_DELETE_SELECTED_RESOURCES">Вы уверены, что хотите удалить выбранные записи?</translation>
 	<translation name="DELETE_SELECTED_RESOURCES">Удалить выбранные записи</translation>
+	<translation name="RESOURCE_VALUE">Количество ресурса</translation>
+	<translation name="TOTAL_MARKET_VALUE">Рыночная цена</translation>
+	<translation name="NAVIGATION_TAB_VISIBILITY">Видимость вкладок</translation>
+	<translation name="SERVER">Сервер</translation>
+	<translation name="UNKNOWN_SERVER">Неизвестный сервер</translation>
+	<translation name="WEST_SERVER">West</translation>
+	<translation name="EAST_SERVER">East</translation>
+	<translation name="ALBION_DATA_PROJECT_BASE_URL_WEST">Ссылка на Albion data project WEST</translation>
+	<translation name="ALBION_DATA_PROJECT_BASE_URL_EAST">Ссылка на Albion data project EAST</translation>
 </translations>
