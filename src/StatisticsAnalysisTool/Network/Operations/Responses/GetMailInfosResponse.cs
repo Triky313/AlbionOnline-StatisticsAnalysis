@@ -1,11 +1,10 @@
 ﻿using log4net;
 using StatisticsAnalysisTool.Common;
+using StatisticsAnalysisTool.Trade.Mails;
 using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.Linq;
 using System.Reflection;
-using StatisticsAnalysisTool.Trade.Mails;
 
 namespace StatisticsAnalysisTool.Network.Operations.Responses;
 
@@ -33,16 +32,16 @@ public class GetMailInfosResponse
             {
                 return;
             }
-            
+
             var guid = parameters[0].ObjectToGuid();
 
-            long[] mailIdArray = {};
+            long[] mailIdArray = { };
 
             // If the mails ID's are ever below 32.767, an error will appear here, but this should not happen on the current west and east servers, since the mail ID is above it and can never come below it again.
             if (typeof(int[]).Name == parameters[3].GetType().Name)
             {
                 mailIdArray = Array.ConvertAll((int[]) parameters[3], x => (long) x);
-            } 
+            }
             else if (typeof(long[]).Name == parameters[3].GetType().Name)
             {
                 mailIdArray = ((long[]) parameters[3]).ToArray();
