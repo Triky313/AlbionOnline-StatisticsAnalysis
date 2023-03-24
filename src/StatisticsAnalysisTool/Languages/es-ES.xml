@@ -700,4 +700,13 @@
 	<translation name="AMOUNT_OF_MINING_PROCESSES">Cantidad de picadas</translation>
     <translation name="SURE_YOU_WANT_TO_DELETE_SELECTED_RESOURCES">¿Estás seguro de que quieres eliminar los recursos seleccionados?</translation>
     <translation name="DELETE_SELECTED_RESOURCES">Eliminar los recursos seleccionados</translation>
+	<translation name="RESOURCE_VALUE">Valor del recurso</translation>
+	<translation name="TOTAL_MARKET_VALUE">Valor total de mercado</translation>
+	<translation name="NAVIGATION_TAB_VISIBILITY">Visibilidad de las pestaña de navegación</translation>
+    <translation name="SERVER">Servidor</translation>
+    <translation name="UNKNOWN_SERVER">Servidor desonocido</translation>
+    <translation name="WEST_SERVER">Servidor Oeste</translation>
+    <translation name="EAST_SERVER">Servidor Este</translation>
+	<translation name="ALBION_DATA_PROJECT_BASE_URL_WEST">URL base de Albion Data Project OESTE</translation>
+    <translation name="ALBION_DATA_PROJECT_BASE_URL_EAST">URL base de Albion Data Project ESTE</translation>
 </translations>
