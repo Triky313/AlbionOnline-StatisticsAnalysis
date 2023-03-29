@@ -16,7 +16,7 @@ public static class SettingsController
     private static readonly ILog Log = LogManager.GetLogger(MethodBase.GetCurrentMethod()?.DeclaringType);
     private static bool _haveSettingsAlreadyBeenLoaded;
 
-    public static void SaveSettings(WindowState windowState, double height, double width)
+    public static void SetWindowSettings(WindowState windowState, double height, double width)
     {
         if (windowState != WindowState.Maximized)
         {
@@ -25,9 +25,11 @@ public static class SettingsController
         }
 
         CurrentSettings.MainWindowMaximized = windowState == WindowState.Maximized;
+    }
 
+    public static void SaveSettings()
+    {
         SaveToLocalFile();
-
         ItemController.SaveFavoriteItemsToLocalFile();
     }
 

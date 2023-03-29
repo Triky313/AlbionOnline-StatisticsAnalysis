@@ -96,13 +96,7 @@ public partial class MainWindow
 
     private void MainWindow_OnClosed(object sender, EventArgs eventArgs)
     {
-        _mainWindowViewModel.SaveLootLogger();
-        SettingsController.SaveSettings(WindowState, Height, Width);
-
-        if (_mainWindowViewModel.IsTrackingActive)
-        {
-            _ = _mainWindowViewModel.StopTrackingAsync();
-        }
+        SettingsController.SetWindowSettings(WindowState, Height, Width);
     }
 
     private void Grid_MouseMove(object sender, MouseEventArgs e)
