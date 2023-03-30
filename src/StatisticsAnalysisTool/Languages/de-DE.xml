@@ -706,4 +706,6 @@
 	<translation name="EAST_SERVER">Ost Server</translation>
 	<translation name="ALBION_DATA_PROJECT_BASE_URL_WEST">Albion data project base url WEST</translation>
 	<translation name="ALBION_DATA_PROJECT_BASE_URL_EAST">Albion data project base url OST</translation>
+	<translation name="DELETE_ALL_SNAPSHOTS">Alle Snapshots löschen</translation>
+	<translation name="SURE_YOU_WANT_TO_DELETE_ALL_SNAPSHOTS">Wirklich alle Snapshots löschen?</translation>
 </translations>
