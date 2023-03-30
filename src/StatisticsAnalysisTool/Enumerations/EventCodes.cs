@@ -157,7 +157,7 @@ public enum EventCodes
     ChangeMountSkin,
     GameEvent,
     KilledPlayer,
-    Died = 155,
+    Died = 156,
     KnockedDown,
     MatchPlayerJoinedEvent,
     MatchPlayerStatsEvent,

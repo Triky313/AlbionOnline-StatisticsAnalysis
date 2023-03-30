@@ -5,7 +5,6 @@ using StatisticsAnalysisTool.EventLogging.Notification;
 using StatisticsAnalysisTool.Models.NetworkModel;
 using StatisticsAnalysisTool.Network.Events;
 using StatisticsAnalysisTool.Network.Manager;
-using StatisticsAnalysisTool.Network.Notification;
 using System;
 using System.Threading.Tasks;
 
