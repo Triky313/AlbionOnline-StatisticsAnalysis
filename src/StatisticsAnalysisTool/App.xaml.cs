@@ -8,6 +8,7 @@ using System;
 using System.Reflection;
 using System.Runtime.InteropServices;
 using System.Windows;
+using System.Windows.Media.Media3D;
 using System.Windows.Threading;
 
 namespace StatisticsAnalysisTool;
@@ -15,6 +16,7 @@ namespace StatisticsAnalysisTool;
 public partial class App
 {
     private static readonly ILog Log = LogManager.GetLogger(MethodBase.GetCurrentMethod()?.DeclaringType);
+    private MainWindowViewModel _mainWindowViewModel;
 
     protected override void OnStartup(StartupEventArgs e)
     {
@@ -28,12 +30,12 @@ public partial class App
         AutoUpdateController.RemoveUpdateFiles();
         AutoUpdateController.AutoUpdate();
 
-        var mainWindowViewModel = new MainWindowViewModel();
-        ServiceLocator.Register<MainWindowViewModel>(mainWindowViewModel);
+        _mainWindowViewModel = new MainWindowViewModel();
+        ServiceLocator.Register<MainWindowViewModel>(_mainWindowViewModel);
 
-        var mainWindow = new MainWindow(mainWindowViewModel);
+        var mainWindow = new MainWindow(_mainWindowViewModel);
         mainWindow.Show();
-        mainWindowViewModel.InitMainWindowData();
+        _mainWindowViewModel.InitMainWindowData();
     }
 
     private static void InitializeLanguage()
@@ -74,6 +76,28 @@ public partial class App
         if (e.Exception is COMException { ErrorCode: -2147221040 })
         {
             e.Handled = true;
+        }
+    }
+
+    private void Application_SessionEnding(object sender, SessionEndingCancelEventArgs e)
+    {
+        _mainWindowViewModel.SaveLootLogger();
+        SettingsController.SaveSettings();
+
+        if (_mainWindowViewModel.IsTrackingActive)
+        {
+            _ = _mainWindowViewModel.StopTrackingAsync();
+        }
+    }
+
+    private void Application_Exit(object sender, ExitEventArgs e)
+    {
+        _mainWindowViewModel.SaveLootLogger();
+        SettingsController.SaveSettings();
+
+        if (_mainWindowViewModel.IsTrackingActive)
+        {
+            _ = _mainWindowViewModel.StopTrackingAsync();
         }
     }
 }

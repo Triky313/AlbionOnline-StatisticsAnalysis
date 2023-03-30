@@ -700,4 +700,10 @@
 	<translation name="RESOURCE_VALUE">资源价值</translation>
 	<translation name="TOTAL_MARKET_VALUE">市场价值总计</translation>
 	<translation name="NAVIGATION_TAB_VISIBILITY">设置显示的统计标签</translation>
+	<translation name="SERVER">服务器</translation>
+	<translation name="UNKNOWN_SERVER">未知服务器</translation>
+	<translation name="WEST_SERVER">西方服务器</translation>
+	<translation name="EAST_SERVER">东方服务器</translation>
+	<translation name="ALBION_DATA_PROJECT_BASE_URL_WEST">Albion Data Project 源地址 (西方)</translation>
+	<translation name="ALBION_DATA_PROJECT_BASE_URL_EAST">Albion Data Project 源地址 (东方)</translation>
 </translations>

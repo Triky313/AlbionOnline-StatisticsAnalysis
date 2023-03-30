@@ -176,6 +176,12 @@ public partial class DamageMeterControl
         CopyDamageMeterToClipboard(true);
     }
 
+    private void DeleteAllDamageMeterSnapshots_MouseUp(object sender, MouseButtonEventArgs e)
+    {
+        var vm = (MainWindowViewModel) DataContext;
+        vm?.DamageMeterBindings?.DeleteAllSnapshots();
+    }
+
     private void TakeASnapShot_MouseUp(object sender, MouseButtonEventArgs e)
     {
         var vm = (MainWindowViewModel)DataContext;
@@ -185,7 +191,7 @@ public partial class DamageMeterControl
     private void BtnDeleteSelectedSnapshot_Click(object sender, RoutedEventArgs e)
     {
         var vm = (MainWindowViewModel)DataContext;
-        vm?.DamageMeterBindings?.DeleteSnapshot();
+        vm?.DamageMeterBindings?.DeleteSelectedSnapshot();
     }
 
     #endregion
