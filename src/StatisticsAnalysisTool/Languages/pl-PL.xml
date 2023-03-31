@@ -706,4 +706,6 @@
 	<translation name="EAST_SERVER">Serwer Wschodni</translation>
 	<translation name="ALBION_DATA_PROJECT_BASE_URL_WEST">Baza danych projektu Albion URL Zachód</translation>
 	<translation name="ALBION_DATA_PROJECT_BASE_URL_EAST">Baza danych projektu Albion URL Wschód</translation>
+	<translation name="DELETE_ALL_SNAPSHOTS">Usuń wszystkie zrzuty ekranu</translation>
+	<translation name="SURE_YOU_WANT_TO_DELETE_ALL_SNAPSHOTS">Czy na pewno chcesz usunąć wszystkie zrzuty ekranu?</translation>
 </translations>
