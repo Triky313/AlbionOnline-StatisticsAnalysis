@@ -706,4 +706,6 @@
 	<translation name="EAST_SERVER">东方服务器</translation>
 	<translation name="ALBION_DATA_PROJECT_BASE_URL_WEST">Albion Data Project 源地址 (西方)</translation>
 	<translation name="ALBION_DATA_PROJECT_BASE_URL_EAST">Albion Data Project 源地址 (东方)</translation>
+	<translation name="DELETE_ALL_SNAPSHOTS">删除所有快照</translation>
+ 	<translation name="SURE_YOU_WANT_TO_DELETE_ALL_SNAPSHOTS">你确定要删除所有快照嘛？</translation>
 </translations>
