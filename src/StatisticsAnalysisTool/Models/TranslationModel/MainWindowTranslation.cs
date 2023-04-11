@@ -111,4 +111,6 @@ public class MainWindowTranslation
     public static string Or => LanguageController.Translation("OR");
     public static string SelectDeselectAll => LanguageController.Translation("SELECT_DESELECT_ALL");
     public static string Gathering => LanguageController.Translation("GATHERING");
+    public static string LoggingDescription1 => LanguageController.Translation("LOGGING_DESCRIPTION_1");
+    public static string LoggingDescription2 => LanguageController.Translation("LOGGING_DESCRIPTION_2");
 }

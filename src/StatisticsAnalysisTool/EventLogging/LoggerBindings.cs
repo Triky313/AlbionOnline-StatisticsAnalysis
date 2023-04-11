@@ -4,6 +4,7 @@ using StatisticsAnalysisTool.Properties;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
+using System.Windows;
 using System.Windows.Data;
 
 namespace StatisticsAnalysisTool.EventLogging;
@@ -18,6 +19,7 @@ public class LoggingBindings : INotifyPropertyChanged
     private bool _isTrackingMobLoot;
     private ObservableCollection<LoggingFilterObject> _filters = new();
     private ListCollectionView _topLootersCollectionView;
+    private Visibility _isLoggingPopupVisible = Visibility.Hidden;
 
     public LoggingBindings()
     {
@@ -113,6 +115,16 @@ public class LoggingBindings : INotifyPropertyChanged
         set
         {
             _filters = value;
+            OnPropertyChanged();
+        }
+    }
+
+    public Visibility IsLoggingPopupVisible
+    {
+        get => _isLoggingPopupVisible;
+        set
+        {
+            _isLoggingPopupVisible = value;
             OnPropertyChanged();
         }
     }
