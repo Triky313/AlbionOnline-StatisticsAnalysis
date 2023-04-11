@@ -708,4 +708,6 @@
 	<translation name="ALBION_DATA_PROJECT_BASE_URL_EAST">Albion Data Project 源地址 (东方)</translation>
 	<translation name="DELETE_ALL_SNAPSHOTS">删除所有快照</translation>
  	<translation name="SURE_YOU_WANT_TO_DELETE_ALL_SNAPSHOTS">你确定要删除所有快照嘛？</translation>
+	<translation name="LOGGING_DESCRIPTION_1">如果追踪到了不正确的物品，可能是因为项目列表没有更新。请在设置中调整URL。</translation>
+	<translation name="LOGGING_DESCRIPTION_2">只有在你屏幕内，以及屏幕外一个屏幕的距离内的玩家，才会记录他们的拾取。</translation>
 </translations>
