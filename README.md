@@ -3,7 +3,7 @@ AlbionOnline - Statistics Analysis
 [![Github All Releases](https://img.shields.io/github/v/release/Triky313/AlbionOnline-StatisticsAnalysis)](https://github.com/Triky313/AlbionOnline-StatisticsAnalysis/releases)
 [![Github All Releases](https://img.shields.io/github/downloads/Triky313/AlbionOnline-StatisticsAnalysis/total.svg)](https://github.com/Triky313/AlbionOnline-StatisticsAnalysis/releases) 
 [![CodeFactor](https://www.codefactor.io/repository/github/triky313/albiononline-statisticsanalysis/badge/main)](https://www.codefactor.io/repository/github/triky313/albiononline-statisticsanalysis/overview/main)
-[![Build + Tests](https://github.com/Triky313/AlbionOnline-StatisticsAnalysis/actions/workflows/build-and-unit-tests.yml/badge.svg)](https://github.com/Triky313/AlbionOnline-StatisticsAnalysis/actions/workflows/dotnet-desktop.yml)
+[![Build + Tests](https://github.com/Triky313/AlbionOnline-StatisticsAnalysis/actions/workflows/pr-build-and-unit-tests.yml/badge.svg)](https://github.com/Triky313/AlbionOnline-StatisticsAnalysis/actions/workflows/dotnet-desktop.yml)
 ![GitHub commits since latest release (by date)](https://img.shields.io/github/commits-since/Triky313/AlbionOnline-StatisticsAnalysis/latest?color=AF3B7F)
 [![GitHub issues](https://img.shields.io/github/issues/Triky313/AlbionOnline-StatisticsAnalysis)](https://github.com/Triky313/AlbionOnline-StatisticsAnalysis/issues)
 [![Discord](https://img.shields.io/discord/772406813438115891?color=%237289da&label=Discord&logo=discord&logoColor=%237289da&style=flat)](https://discord.gg/Wv5RWehbrU)
