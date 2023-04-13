@@ -1,4 +1,4 @@
-name: 🛠️ Build + Unit tests
+name: 🛠️ PR - Build + Unit tests
 
 on:
   push:
@@ -9,6 +9,7 @@ on:
       - '**/*.gitattributes'
       - '**/donations.json'
   pull_request:
+    types: [review_requested, opened, reopened]
     branches: [ main ]
 
 jobs:
