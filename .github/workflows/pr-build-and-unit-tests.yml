@@ -1,13 +1,10 @@
-name: 🛠️ Build + Unit tests
+name: 🛠️ PR - Build + Unit tests
 
 on:
-  push:
-    branches: [ main ]
-    paths-ignore:
-      - '**/*.md'
-      - '**/*.gitignore'
-      - '**/*.gitattributes'
-      - '**/donations.json'
+  pull_request:
+    types: [review_requested, opened, reopened, synchronize]
+    branches:
+      - dev
 
 jobs:
 
