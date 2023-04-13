@@ -708,4 +708,6 @@
 	<translation name="ALBION_DATA_PROJECT_BASE_URL_EAST">Baza danych projektu Albion URL Wschód</translation>
 	<translation name="DELETE_ALL_SNAPSHOTS">Usuń wszystkie zrzuty ekranu</translation>
 	<translation name="SURE_YOU_WANT_TO_DELETE_ALL_SNAPSHOTS">Czy na pewno chcesz usunąć wszystkie zrzuty ekranu?</translation>
+	<translation name="LOGGING_DESCRIPTION_1">Jeśli śledzone są błędne elementy, może to być spowodowane nieaktualnymi listami elementów. Ich adresy URL można dostosować w ustawieniach.</translation>
+        <translation name="LOGGING_DESCRIPTION_2">Tylko gracze znajdujący się na ekranie oraz na ekranie poza twoim polem widzenia są śledzeni podczas zdobywania łupów.</translation>
 </translations>
