@@ -8,9 +8,10 @@ on:
       - '**/*.gitignore'
       - '**/*.gitattributes'
       - '**/donations.json'
-  pull_request:
-    types: [review_requested, opened, reopened]
-    branches: [ main ]
+    pull_request:
+        types: [review_requested, opened, reopened, synchronize]
+        branches:
+          - dev
 
 jobs:
 
