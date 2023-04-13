@@ -114,6 +114,9 @@
     <Content Include="Languages\fr-FR.xml">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
+    <Content Include="Languages\ko-KR.xml">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
     <Content Include="Languages\pl-PL.xml">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
@@ -610,6 +613,7 @@
     <None Remove="Languages\en-US.xml" />
     <None Remove="Languages\es-ES.xml" />
     <None Remove="Languages\fr-FR.xml" />
+    <None Remove="Languages\ko-KR.xml" />
     <None Remove="Languages\pl-PL.xml" />
     <None Remove="Languages\pt-BR.xml" />
     <None Remove="Languages\ru-RU.xml" />
