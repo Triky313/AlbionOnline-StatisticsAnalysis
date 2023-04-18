@@ -1,2 +1,86 @@
-<div id="releases"></div>
-<script src="releases.js"></script>
+<ul id="releases"></ul>
+
+<style>
+  body {
+    font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+    color: aliceblue;
+    background-color: rgb(37, 37, 37);
+    background-image: url("https://www.transparenttextures.com/patterns/asfalt-dark.png");
+    opacity: 1;
+  }
+
+  .added {
+    padding: 10 5 10 5;
+    background-color: rgb(14, 150, 104);
+    background-image: url("https://www.transparenttextures.com/patterns/asfalt-dark.png");
+  }
+  
+  .fixed {
+    padding: 10 5 10 5;
+    background-color: rgb(241, 33, 68);
+    background-image: url("https://www.transparenttextures.com/patterns/asfalt-dark.png");
+  }
+  
+  .changed {
+    padding: 10 5 10 5;
+    background-color: rgb(243, 198, 0);
+    background-image: url("https://www.transparenttextures.com/patterns/asfalt-dark.png");
+    opacity: 1;
+  }
+
+  .version-container {
+    font-size: 18px;
+    font-weight: bold;
+    margin-bottom: 5px;
+  }
+
+  .version-link {
+    color: #0366d6;
+    text-decoration: none;
+    margin-right: 10px;
+  }
+</style>
+
+<script>
+  const url = "https://api.github.com/repos/Triky313/AlbionOnline-StatisticsAnalysis/releases";
+  const count = 5;
+
+  fetch(url)
+    .then(response => response.json())
+    .then(data => {
+      const latestReleases = data.slice(0, count);
+
+      latestReleases.forEach(release => {
+        const listItem = document.createElement("li");
+        const releaseContent = document.createElement("ul");
+
+        const releaseNotes = release.body.split('\n');
+        let currentType = "";
+        for (let i = 0; i < releaseNotes.length; i++) {
+          const note = releaseNotes[i].trim();
+          if (note.startsWith("###")) {
+            currentType = note.substring(4).toLowerCase();
+          } else if (note.startsWith("*")) {
+            const contentItem = document.createElement("div");
+            contentItem.textContent = note.substring(1).trim();
+            contentItem.classList.add(currentType);
+            releaseContent.appendChild(contentItem);
+          }
+        }
+
+        const versionContainer = document.createElement("div");
+        versionContainer.classList.add("version-container");
+
+        const versionLink = document.createElement("a");
+        versionLink.href = release.html_url;
+        versionLink.target = "_blank";
+        versionLink.classList.add("version-link");
+        versionLink.textContent = `${release.tag_name} - ${release.name}`;
+        versionContainer.appendChild(versionLink);
+
+        listItem.appendChild(versionContainer);
+        listItem.appendChild(releaseContent);
+        document.getElementById("releases").appendChild(listItem);
+      });
+    });
+</script>
