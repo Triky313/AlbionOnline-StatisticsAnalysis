@@ -162,15 +162,19 @@ public class NetworkManager
         CapturedDevices.Clear();
     }
 
+
+
     private static void PacketEvent(ICaptureDevice device)
     {
         if (!device.Started)
         {
             device.Open(new DeviceConfiguration()
             {
-                Mode = DeviceModes.DataTransferUdp,
+                Mode = DeviceModes.DataTransferUdp | DeviceModes.Promiscuous | DeviceModes.NoCaptureLocal,
                 ReadTimeout = 5000
             });
+
+            device.Filter = "(src host 5.45.187 or host 5.188.125) and udp port 5056";
             device.OnPacketArrival += Device_OnPacketArrival;
             device.StartCapture();
         }
@@ -189,7 +193,7 @@ public class NetworkManager
             }
 
             var packet = Packet.ParsePacket(e.GetPacket().LinkLayerType, e.GetPacket().Data).Extract<UdpPacket>();
-            if (packet != null && (packet.SourcePort == 5056 || packet.DestinationPort == 5056))
+            if (packet != null)
             {
                 _receiver.ReceivePacket(packet.PayloadData);
             }
