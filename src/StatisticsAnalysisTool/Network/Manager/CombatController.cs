@@ -37,7 +37,7 @@ public class CombatController
         OnDamageUpdate += UpdateDamageMeterUiAsync;
 
 #if DEBUG
-        RunDamageMeterDebugAsync(0, 0);
+        RunDamageMeterDebugAsync(10, 10);
 #endif
     }
 
