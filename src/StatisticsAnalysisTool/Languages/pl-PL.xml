@@ -350,20 +350,20 @@
 	<translation name="RESET_DUNGEON_TRACKING">Zresetuj śledzenie lochów</translation>
 	<translation name="SOLO">Solo</translation>
 	<translation name="KILLED_BY">zabity przez</translation>
-	<translation name="DUNGEON_FAME">Sława lochów</translation>
-	<translation name="DUNGEON_RUN_TIME">Czas uruchamiania lochów</translation>
+	<translation name="DUNGEON_FAME">Sława</translation>
+	<translation name="DUNGEON_RUN_TIME">Czas przejścia lochu</translation>
 	<translation name="DAMAGE_METER">Zadane Obrażenia</translation>
 	<translation name="RESET_DAMAGE_METER">Zresetuj Zadane Obrażenia</translation>
 	
 	<translation name="STANDARD">Standardowy</translation>
-	<translation name="UNCOMMON">Niezwykłe</translation>
-	<translation name="RARE">Rzadkie</translation>
+	<translation name="UNCOMMON">Niezwykły</translation>
+	<translation name="RARE">Rzadki</translation>
 	<translation name="LEGENDARY">Legendarny</translation>
-	<translation name="BOSS_CHEST">Skrzynia szefa</translation>
-	<translation name="BOOK_CHEST">Książka-skrzynia</translation>
-	<translation name="ENTERED_DUNGEON">Wszedł do lochu</translation>
+	<translation name="BOSS_CHEST">Skrzynia bossa</translation>
+	<translation name="BOOK_CHEST">Skrzynia z książkami</translation>
+	<translation name="ENTERED_DUNGEON">Wejście do lochu</translation>
 	<translation name="OPENED_STANDARD_CHESTS">Otwarte standardowe skrzynie</translation>
-	<translation name="OPENED_UNCOMMON_CHESTS">Otwarte nietypowe skrzynie</translation>
+	<translation name="OPENED_UNCOMMON_CHESTS">Otwarte niezwykłe skrzynie</translation>
 	<translation name="OPENED_RARE_CHESTS">Otwarte rzadkie skrzynie</translation>
 	<translation name="OPENED_LEGENDARY_CHESTS">Otwarte legendarne skrzynie</translation>
 	
@@ -376,7 +376,7 @@
 	<translation name="SORT_BY_HPS">Sortuj według HPS</translation>
 	<translation name="FACTION_FLAG_POINTS">Punkty flag frakcji</translation>
 	<translation name="FACTION_POINTS">Punkty frakcji</translation>
-	<translation name="NUMBER_OF_DUNGEON_FLOORS">Liczba pięter lochów</translation>
+	<translation name="NUMBER_OF_DUNGEON_FLOORS">Liczba pięter</translation>
 	<translation name="TOOL_DIRECTORY">Katalog narzędzi</translation>
 	<translation name="OPEN_TOOL_DIRECTORY">Otwórz katalog narzędzi</translation>
 	<translation name="OPEN_DEBUG_CONSOLE">Otwórz konsolę debugowania</translation>
@@ -506,19 +506,19 @@
 	<translation name="ITEM_JSON_CAN_NOT_BE_LOADED">Nie można załadować Item.json.</translation>
 	<translation name="SUGGEST_PRE_RELEASE_UPDATES">Zaproponuj przedpremierowe aktualizacje</translation>
 	<translation name="ATTENTION_THESE_VERSION_ARE_STILL_BEING_TESTED">UWAGA! Te wersje są nadal testowane</translation>
-	<translation name="DUNGEON_RESPEC">Przegląd lochów</translation>
-	<translation name="DUNGEON_SILVER">Srebrny loch</translation>
-	<translation name="DUNGEON_FAME_PER_HOUR">Sława lochów na godzinę</translation>
-	<translation name="DUNGEON_RESPEC_PER_HOUR">Przegląd lochów na godzinę</translation>
-	<translation name="DUNGEON_SILVER_PER_HOUR">Srebro lochu na godzinę</translation>
+	<translation name="DUNGEON_RESPEC">Bitewne kredyty</translation>
+	<translation name="DUNGEON_SILVER">Srebro zdobyte</translation>
+	<translation name="DUNGEON_FAME_PER_HOUR">Sławy na godzinę</translation>
+	<translation name="DUNGEON_RESPEC_PER_HOUR">Bitewne kredyty na godzinę</translation>
+	<translation name="DUNGEON_SILVER_PER_HOUR">Srebro zdobyte na godzinę</translation>
 	<translation name="GET_PRICE">Uzyskaj cenę</translation>
 	<translation name="FACTION_FLAGS">Flagi frakcji</translation>
 	<translation name="FACTION_FLAGS_PER_HOUR">Flagi frakcji na godzinę</translation>
 	<translation name="FACTION_COINS">Monety frakcji</translation>
 	<translation name="FACTION_COINS_PER_HOUR">Monety frakcji na godzinę</translation>
 	<translation name="EXPORT_LOOT_LOGGING_FILE_WITH_REAL_ITEM_NAME">Eksportuj plik dziennika łupów z prawdziwą nazwą przedmiotu</translation>
-	<translation name="MIGHT_PER_HOUR">Możliwość na godzinę</translation>
-	<translation name="FAVOR_PER_HOUR">Przysługa na godzinę</translation>
+	<translation name="MIGHT_PER_HOUR">Potęga na godzinę</translation>
+	<translation name="FAVOR_PER_HOUR">Łaska na godzinę</translation>
 	<translation name="TOP_LOOTERS">Najlepsi szabrownicy</translation>
 	<translation name="WAS_KILLED_BY">został zabity przez</translation>
 	<translation name="SHOW_KILLS">Pokaż zabójstwa</translation>
@@ -630,7 +630,7 @@
 	<translation name="CHEST_STATS">Rodzaje Skrzynek</translation>
 	<translation name="EST_MARKET_VALUE">Szac. wartość rynkowa</translation>
 	<translation name="LAST_ESTIMATED_VALUE_UPDATE">Ostatnia aktualizacja szacunkowej wartości</translation>
-	<translation name="BOOK_CHEST_STATS">Rodzaje Skrzynek z Książkami</translation>
+	<translation name="BOOK_CHEST_STATS">Rodzaje Skrzynek z Sławą</translation>
 	<translation name="BEST_LOOTED_ITEM">Najlepszy zdobyty przedmiot</translation>
 	<translation name="TOTAL_LOOT_VALUE">Łączna wartość zrabowanych</translation>
 	<translation name="FILTER">Filter</translation>
@@ -709,5 +709,5 @@
 	<translation name="DELETE_ALL_SNAPSHOTS">Usuń wszystkie zrzuty ekranu</translation>
 	<translation name="SURE_YOU_WANT_TO_DELETE_ALL_SNAPSHOTS">Czy na pewno chcesz usunąć wszystkie zrzuty ekranu?</translation>
 	<translation name="LOGGING_DESCRIPTION_1">Jeśli śledzone są błędne elementy, może to być spowodowane nieaktualnymi listami elementów. Ich adresy URL można dostosować w ustawieniach.</translation>
-        <translation name="LOGGING_DESCRIPTION_2">Tylko gracze znajdujący się na ekranie oraz na ekranie poza twoim polem widzenia są śledzeni podczas zdobywania łupów.</translation>
+    <translation name="LOGGING_DESCRIPTION_2">Tylko gracze znajdujący się na ekranie oraz na ekranie poza twoim polem widzenia są śledzeni podczas zdobywania łupów.</translation>
 </translations>

@@ -708,4 +708,8 @@
 	<translation name="ALBION_DATA_PROJECT_BASE_URL_EAST">Albion data project base url OST</translation>
 	<translation name="DELETE_ALL_SNAPSHOTS">Alle Snapshots löschen</translation>
 	<translation name="SURE_YOU_WANT_TO_DELETE_ALL_SNAPSHOTS">Wirklich alle Snapshots löschen?</translation>
+	<translation name="LOGGING_DESCRIPTION_1">Wenn falsche Items getrackt werden, kann das daran liegen, dass die Item listen nicht aktuell sind. Die URL's dafür können in den Settings angepasst werden.</translation>
+	<translation name="LOGGING_DESCRIPTION_2">Getrackt werden nur Spieler beim looten, die innerhalb des eigenen Bildschirmes und ca. einen weiteren Bildschirm außerhalb deines Sichfeldes sind.</translation>
+	<translation name="SET_SERVER_MANUALLY">Server manuell setzen</translation>
+	<translation name="AUTOMATICALLY">Automatisch</translation>
 </translations>
