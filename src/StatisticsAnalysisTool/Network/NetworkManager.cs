@@ -2,6 +2,7 @@ using log4net;
 using PacketDotNet;
 using SharpPcap;
 using StatisticsAnalysisTool.Common;
+using StatisticsAnalysisTool.Common.UserSettings;
 using StatisticsAnalysisTool.Enumerations;
 using StatisticsAnalysisTool.Network.Handler;
 using StatisticsAnalysisTool.Network.Manager;
@@ -218,6 +219,16 @@ public class NetworkManager
 
     private static AlbionServer GetCurrentServerByIp(PacketCapture e)
     {
+        if (SettingsController.CurrentSettings.Server == 1)
+        {
+            return AlbionServer.West;
+        }
+
+        if (SettingsController.CurrentSettings.Server == 2)
+        {
+            return AlbionServer.East;
+        }
+
         var packet = Packet.ParsePacket(e.GetPacket().LinkLayerType, e.GetPacket().Data);
         var ipPacket = packet.Extract<IPPacket>();
         var srcIp = ipPacket?.SourceAddress?.ToString();
