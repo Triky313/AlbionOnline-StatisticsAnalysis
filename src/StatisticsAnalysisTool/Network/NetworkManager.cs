@@ -174,7 +174,7 @@ public class NetworkManager
                 ReadTimeout = 5000
             });
 
-            device.Filter = "(src host 5.45.187 or host 5.188.125) and udp port 5056";
+            device.Filter = "(host 5.45.187 or host 5.188.125) and udp port 5056";
             device.OnPacketArrival += Device_OnPacketArrival;
             device.StartCapture();
         }
