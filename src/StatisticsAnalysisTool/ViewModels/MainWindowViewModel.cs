@@ -614,7 +614,7 @@ public class MainWindowViewModel : INotifyPropertyChanged
     {
         IsDamageMeterTrackingActive = !IsDamageMeterTrackingActive;
     }
-
+    
     #endregion
 
     #region Item View Filters

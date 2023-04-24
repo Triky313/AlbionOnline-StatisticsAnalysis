@@ -25,7 +25,7 @@ public class NetworkManager
     private static int _serverEventCounter;
     private static AlbionServer _lastServerType;
 
-    public static AlbionServer AlbionServer { get; private set; } = AlbionServer.Unknown;
+    public static AlbionServer AlbionServer { get; set; } = AlbionServer.Unknown;
     public static bool IsNetworkCaptureRunning => CapturedDevices.Where(device => device.Started).Any(device => device.Started);
 
     public static bool StartNetworkCapture(TrackingController trackingController)
@@ -184,9 +184,8 @@ public class NetworkManager
     {
         try
         {
-            var server = GetCurrentServerByIp(e);
-            _ = UpdateMainWindowServerTypeAsync(server);
-            AlbionServer = server;
+            var server = GetCurrentServerByIpOrSettings(e);
+            SetCurrentServer(server);
             if (server == AlbionServer.Unknown)
             {
                 return;
@@ -221,7 +220,27 @@ public class NetworkManager
         }
     }
 
-    private static AlbionServer GetCurrentServerByIp(PacketCapture e)
+    public static void SetCurrentServer(AlbionServer server, bool directUpdateWithoutCounter = false)
+    {
+        if (directUpdateWithoutCounter)
+        {
+            AlbionServer = server;
+            _ = UpdateMainWindowServerTypeLabelAsync(server);
+            return;
+        }
+
+        if ((DateTime.Now - _lastGetCurrentServerByIpTime).TotalSeconds < 10)
+        {
+            return;
+        }
+
+        AlbionServer = server;
+        _ = UpdateMainWindowServerTypeLabelAsync(server);
+
+        _lastGetCurrentServerByIpTime = DateTime.Now;
+    }
+
+    private static AlbionServer GetCurrentServerByIpOrSettings(PacketCapture e)
     {
         if (SettingsController.CurrentSettings.Server == 1)
         {
@@ -275,13 +294,8 @@ public class NetworkManager
         return albionServer;
     }
 
-    private static async Task UpdateMainWindowServerTypeAsync(AlbionServer albionServer)
+    private static async Task UpdateMainWindowServerTypeLabelAsync(AlbionServer albionServer)
     {
-        if ((DateTime.Now - _lastGetCurrentServerByIpTime).TotalSeconds < 10)
-        {
-            return;
-        }
-
         await Task.Run(() =>
         {
             var mainWindowViewModel = ServiceLocator.Resolve<MainWindowViewModel>();
@@ -292,7 +306,5 @@ public class NetworkManager
                 _ => LanguageController.Translation("UNKNOWN_SERVER")
             };
         });
-
-        _lastGetCurrentServerByIpTime = DateTime.Now;
     }
 }
