@@ -20,6 +20,8 @@ public class SettingsObject
     public string SelectedAlertSound { get; set; }
     public string AlbionDataProjectBaseUrlWest { get; set; } = "https://albion-online-data.com/api/v2/";
     public string AlbionDataProjectBaseUrlEast { get; set; } = "https://east.albion-online-data.com/api/v2/";
+    public string AlbionOnlineApiBaseUrlWest { get; set; } = "https://gameinfo.albiononline.com";
+    public string AlbionOnlineApiBaseUrlEast { get; set; } = "https://gameinfo-sgp.albiononline.com";
     public double MainWindowHeight { get; set; } = 100;
     public double MainWindowWidth { get; set; } = 100;
     public bool MainWindowMaximized { get; set; }

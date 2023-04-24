@@ -44,3 +44,6 @@ https://gameinfo.albiononline.com/api/gameinfo/spells/{spell_id}
 
 albiondata-bin-dumper
 https://github.com/broderickhyman/albiondata-bin-dumper
+
+East / West base URL
+https://gameinfo-sgp / https://gameinfo
