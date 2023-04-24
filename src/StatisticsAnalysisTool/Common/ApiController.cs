@@ -43,7 +43,7 @@ public static class ApiController
             return new List<MarketResponse>();
         }
 
-        var url = Path.Combine(GetServerBaseUrlByCurrentServer(), "stats/prices/");
+        var url = Path.Combine(GetAoDataProjectServerBaseUrlByCurrentServer(), "stats/prices/");
         url += uniqueName;
 
         if (marketLocations?.Count >= 1)
@@ -100,7 +100,7 @@ public static class ApiController
 
         var qualitiesString = quality.ToString();
 
-        var url = Path.Combine(GetServerBaseUrlByCurrentServer(), "stats/history/");
+        var url = Path.Combine(GetAoDataProjectServerBaseUrlByCurrentServer(), "stats/history/");
         url += uniqueName;
         url += $"?locations={locationsString}";
         url += $"&date={date:M-d-yy}";
@@ -136,7 +136,7 @@ public static class ApiController
     public static async Task<GameInfoSearchResponse> GetGameInfoSearchFromJsonAsync(string username)
     {
         var gameInfoSearchResponse = new GameInfoSearchResponse();
-        var url = $"https://gameinfo.albiononline.com/api/gameinfo/search?q={username}";
+        var url = $"{GetServerBaseUrlByCurrentServer()}/api/gameinfo/search?q={username}";
 
         using var clientHandler = new HttpClientHandler();
         clientHandler.ServerCertificateCustomValidationCallback = (_, _, _, _) => true;
@@ -166,7 +166,7 @@ public static class ApiController
     public static async Task<GameInfoPlayersResponse> GetGameInfoPlayersFromJsonAsync(string userid)
     {
         var gameInfoPlayerResponse = new GameInfoPlayersResponse();
-        var url = $"https://gameinfo.albiononline.com/api/gameinfo/players/{userid}";
+        var url = $"{GetServerBaseUrlByCurrentServer()}/api/gameinfo/players/{userid}";
 
         using var clientHandler = new HttpClientHandler();
         clientHandler.ServerCertificateCustomValidationCallback = (_, _, _, _) => true;
@@ -198,7 +198,7 @@ public static class ApiController
         }
 
         var killsDeathsExtensionString = gameInfoPlayersType == GameInfoPlayersType.Kills ? "kills" : "deaths";
-        var url = $"https://gameinfo.albiononline.com/api/gameinfo/players/{userid}/{killsDeathsExtensionString}";
+        var url = $"{GetServerBaseUrlByCurrentServer()}/api/gameinfo/players/{userid}/{killsDeathsExtensionString}";
 
         using var clientHandler = new HttpClientHandler();
         clientHandler.ServerCertificateCustomValidationCallback = (_, _, _, _) => true;
@@ -238,7 +238,7 @@ public static class ApiController
             _ => ""
         };
 
-        var url = $"https://gameinfo.albiononline.com/api/gameinfo/players/{userid}/topkills?range={unitOfTimeString}&offset=0";
+        var url = $"{GetServerBaseUrlByCurrentServer()}/api/gameinfo/players/{userid}/topkills?range={unitOfTimeString}&offset=0";
 
         using var clientHandler = new HttpClientHandler();
         clientHandler.ServerCertificateCustomValidationCallback = (_, _, _, _) => true;
@@ -278,7 +278,7 @@ public static class ApiController
             _ => ""
         };
 
-        var url = $"https://gameinfo.albiononline.com/api/gameinfo/players/{userid}/solokills?range={unitOfTimeString}&offset=0";
+        var url = $"{GetServerBaseUrlByCurrentServer()}/api/gameinfo/players/{userid}/solokills?range={unitOfTimeString}&offset=0";
 
         using var clientHandler = new HttpClientHandler();
         clientHandler.ServerCertificateCustomValidationCallback = (_, _, _, _) => true;
@@ -301,7 +301,7 @@ public static class ApiController
 
     //public static async Task<GameInfoGuildsResponse> GetGameInfoGuildsFromJsonAsync(string guildId)
     //{
-    //    var url = $"https://gameinfo.albiononline.com/api/gameinfo/guilds/{guildId}";
+    //    var url = $"{GetServerBaseUrlByCurrentServer()}/api/gameinfo/guilds/{guildId}";
 
     //    using (var client = new HttpClient())
     //    {
@@ -329,7 +329,7 @@ public static class ApiController
     {
         var dateString = dateTime != null ? $"{dateTime:yyyy-MM-dd'T'HH:mm:ss}" : string.Empty;
         
-        var url = Path.Combine(GetServerBaseUrlByCurrentServer(), "stats/Gold/");
+        var url = Path.Combine(GetAoDataProjectServerBaseUrlByCurrentServer(), "stats/Gold/");
         url += $"?date={dateString}&count={count}";
 
         using var clientHandler = new HttpClientHandler();
@@ -557,13 +557,23 @@ public static class ApiController
 
     #endregion
 
-    private static string GetServerBaseUrlByCurrentServer()
+    private static string GetAoDataProjectServerBaseUrlByCurrentServer()
     {
         return NetworkManager.AlbionServer switch
         {
             AlbionServer.West => SettingsController.CurrentSettings.AlbionDataProjectBaseUrlWest,
             AlbionServer.East => SettingsController.CurrentSettings.AlbionDataProjectBaseUrlEast,
             _ => SettingsController.CurrentSettings.AlbionDataProjectBaseUrlWest
+        };
+    }
+
+    private static string GetServerBaseUrlByCurrentServer()
+    {
+        return NetworkManager.AlbionServer switch
+        {
+            AlbionServer.West => SettingsController.CurrentSettings.AlbionOnlineApiBaseUrlWest,
+            AlbionServer.East => SettingsController.CurrentSettings.AlbionOnlineApiBaseUrlEast,
+            _ => SettingsController.CurrentSettings.AlbionOnlineApiBaseUrlWest
         };
     }
 
