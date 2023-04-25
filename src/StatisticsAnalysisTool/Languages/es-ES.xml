@@ -709,4 +709,6 @@
     <translation name="EAST_SERVER">Servidor Este</translation>
 	<translation name="ALBION_DATA_PROJECT_BASE_URL_WEST">URL base de Albion Data Project OESTE</translation>
     <translation name="ALBION_DATA_PROJECT_BASE_URL_EAST">URL base de Albion Data Project ESTE</translation>
+	<translation name="DELETE_ALL_SNAPSHOTS">Eliminar todas las capturas</translation>
+    <translation name="SURE_YOU_WANT_TO_DELETE_ALL_SNAPSHOTS">¿Estás seguro de que quieres eliminar todas las capturas?</translation>
 </translations>
