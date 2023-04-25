@@ -709,4 +709,10 @@
     <translation name="EAST_SERVER">Servidor Este</translation>
 	<translation name="ALBION_DATA_PROJECT_BASE_URL_WEST">URL base de Albion Data Project OESTE</translation>
     <translation name="ALBION_DATA_PROJECT_BASE_URL_EAST">URL base de Albion Data Project ESTE</translation>
+	<translation name="DELETE_ALL_SNAPSHOTS">Eliminar todas las capturas</translation>
+    <translation name="SURE_YOU_WANT_TO_DELETE_ALL_SNAPSHOTS">¿Estás seguro de que quieres eliminar todas las capturas?</translation>
+	<translation name="LOGGING_DESCRIPTION_1">Si se ha registrado un objeto incorrecto, es posible que sea porque las lista de objetos (ItemsList.json) no está actualizada. Las URLs pueden ser modificadas en los ajustes.</translation>
+	<translation name="LOGGING_DESCRIPTION_2">Solo los jugadores que estén dentro de tu pantalla y hasta una pantalla fuera de tu campo de visión son registrados al lootear.</translation>
+	<translation name="SET_SERVER_MANUALLY">Establecer servidor manualmente</translation>
+    <translation name="AUTOMATICALLY">Automáticamente</translation>
 </translations>
