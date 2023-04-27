@@ -712,4 +712,7 @@
 	<translation name="LOGGING_DESCRIPTION_2">Getrackt werden nur Spieler beim looten, die innerhalb des eigenen Bildschirmes und ca. einen weiteren Bildschirm außerhalb deines Sichfeldes sind.</translation>
 	<translation name="SET_SERVER_MANUALLY">Server manuell setzen</translation>
 	<translation name="AUTOMATICALLY">Automatisch</translation>
+	<translation name="NETWORK_FILTERING">Netzwerk Filterung</translation>
+	<translation name="ACTIVATED">Aktiviert</translation>
+	<translation name="DISABLED">Deaktiviert</translation>
 </translations>

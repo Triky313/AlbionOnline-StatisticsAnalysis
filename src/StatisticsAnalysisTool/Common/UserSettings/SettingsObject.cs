@@ -8,6 +8,7 @@ public class SettingsObject
     public string CurrentLanguageCultureName { get; set; } = "en-US";
     public int RefreshRate { get; set; } = 10000;
     public int Server { get; set; } = 0; // 0: auto, 1: west, 2: east
+    public int NetworkFiltering { get; set; } = 1; // 0: false, 1: true
     public string MainTrackingCharacterName { get; set; }
     public int UpdateItemListByDays { get; set; } = 7;
     public int UpdateItemsJsonByDays { get; set; } = 7;
