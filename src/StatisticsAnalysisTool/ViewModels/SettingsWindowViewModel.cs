@@ -49,6 +49,8 @@ public class SettingsWindowViewModel : INotifyPropertyChanged
     private ObservableCollection<TabVisibilityFilter> _tabVisibilities = new();
     private SettingDataInformation _serverSelection;
     private ObservableCollection<SettingDataInformation> _server = new();
+    private ObservableCollection<SettingDataInformation> _networkFiltering = new();
+    private SettingDataInformation _networkFilteringSelection;
 
     public SettingsWindowViewModel()
     {
@@ -62,6 +64,7 @@ public class SettingsWindowViewModel : INotifyPropertyChanged
         InitNaviTabVisibilities();
         InitRefreshRate();
         InitServer();
+        InitNetworkFiltering();
 
         MainTrackingCharacterName = SettingsController.CurrentSettings.MainTrackingCharacterName;
 
@@ -111,6 +114,7 @@ public class SettingsWindowViewModel : INotifyPropertyChanged
         SettingsController.CurrentSettings.RefreshRate = RefreshRatesSelection.Value;
         SettingsController.CurrentSettings.Server = ServerSelection.Value;
         NetworkManager.SetCurrentServer(ServerSelection.Value >= 2 ? AlbionServer.East : AlbionServer.West, true);
+        SetNetworkFiltering();
         SettingsController.CurrentSettings.MainTrackingCharacterName = MainTrackingCharacterName;
         SettingsController.CurrentSettings.UpdateItemListByDays = UpdateItemListByDaysSelection.Value;
         SettingsController.CurrentSettings.UpdateItemsJsonByDays = UpdateItemsJsonByDaysSelection.Value;
@@ -141,6 +145,17 @@ public class SettingsWindowViewModel : INotifyPropertyChanged
     private void SetAppSettingsAndTranslations()
     {
         Translation = new SettingsWindowTranslation();
+    }
+
+    private void SetNetworkFiltering()
+    {
+        if (SettingsController.CurrentSettings.NetworkFiltering == NetworkFilteringSelection.Value)
+        {
+            return;
+        }
+
+        SettingsController.CurrentSettings.NetworkFiltering = NetworkFilteringSelection.Value;
+        NetworkManager.RestartNetworkCapture();
     }
 
     private void SetNaviTabVisibilities()
@@ -289,6 +304,14 @@ public class SettingsWindowViewModel : INotifyPropertyChanged
         ServerSelection = Server.FirstOrDefault(x => x.Value == SettingsController.CurrentSettings.Server);
     }
 
+    private void InitNetworkFiltering()
+    {
+        NetworkFiltering.Clear();
+        NetworkFiltering.Add(new SettingDataInformation { Name = SettingsWindowTranslation.Disabled, Value = 0 });
+        NetworkFiltering.Add(new SettingDataInformation { Name = SettingsWindowTranslation.Activated, Value = 1 });
+        ServerSelection = NetworkFiltering.FirstOrDefault(x => x.Value == SettingsController.CurrentSettings.NetworkFiltering);
+    }
+
     private void InitDropDownDownByDays(ICollection<SettingDataInformation> updateJsonByDays)
     {
         updateJsonByDays.Clear();
@@ -425,6 +448,16 @@ public class SettingsWindowViewModel : INotifyPropertyChanged
         }
     }
 
+    public SettingDataInformation NetworkFilteringSelection
+    {
+        get => _networkFilteringSelection;
+        set
+        {
+            _networkFilteringSelection = value;
+            OnPropertyChanged();
+        }
+    }
+
     public ObservableCollection<SettingDataInformation> RefreshRates
     {
         get => _refreshRates;
@@ -441,6 +474,16 @@ public class SettingsWindowViewModel : INotifyPropertyChanged
         set
         {
             _server = value;
+            OnPropertyChanged();
+        }
+    }
+
+    public ObservableCollection<SettingDataInformation> NetworkFiltering
+    {
+        get => _networkFiltering;
+        set
+        {
+            _networkFiltering = value;
             OnPropertyChanged();
         }
     }

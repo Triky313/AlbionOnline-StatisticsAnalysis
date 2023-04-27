@@ -9,6 +9,7 @@ public class SettingsWindowTranslation
     public static string CheckForUpdate => LanguageController.Translation("CHECK_FOR_UPDATE");
     public static string RefreshRate => LanguageController.Translation("REFRESH_RATE");
     public static string SetServerManually => LanguageController.Translation("SET_SERVER_MANUALLY");
+    public static string NetworkFiltering => LanguageController.Translation("NETWORK_FILTERING");
     public static string UpdateItemListByDays => LanguageController.Translation("UPDATE_ITEM_LIST_BY_DAYS");
     public static string UpdateItemsJsonByDays => LanguageController.Translation("UPDATE_ITEMS_JSON_BY_DAYS");
     public static string UpdateMobsJsonByDays => LanguageController.Translation("UPDATE_MOBS_JSON_BY_DAYS");
@@ -41,4 +42,6 @@ public class SettingsWindowTranslation
     public static string Automatically => LanguageController.Translation("AUTOMATICALLY");
     public static string WestServer => LanguageController.Translation("WEST_SERVER");
     public static string EastServer => LanguageController.Translation("EAST_SERVER");
+    public static string Activated => LanguageController.Translation("ACTIVATED");
+    public static string Disabled => LanguageController.Translation("DISABLED");
 }

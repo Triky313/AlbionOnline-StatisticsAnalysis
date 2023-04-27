@@ -92,7 +92,6 @@ public class NetworkManager
 
         try
         {
-            CapturedDevices.AddRange(CaptureDeviceList.Instance);
             return StartDeviceCapture();
         }
         catch (Exception e)
@@ -115,17 +114,24 @@ public class NetworkManager
         }
     }
 
-    private static bool StartDeviceCapture()
+    public static bool StartDeviceCapture()
     {
+        ConsoleManager.WriteLineForMessage("Start Device Capture");
+
+        CapturedDevices.AddRange(CaptureDeviceList.Instance);
+
         if (CapturedDevices.Count <= 0)
         {
+            ConsoleManager.WriteLineForMessage(MethodBase.GetCurrentMethod()?.DeclaringType, "No CapturedDevices");
             return false;
         }
 
         try
         {
+            ConsoleManager.WriteLineForMessage(MethodBase.GetCurrentMethod()?.DeclaringType, "CapturedDevices:");
             foreach (var device in CapturedDevices)
             {
+                ConsoleManager.WriteLineForMessage($"- {device.Description}");
                 PacketEvent(device);
             }
         }
@@ -153,6 +159,8 @@ public class NetworkManager
 
     public static void StopNetworkCapture()
     {
+        ConsoleManager.WriteLineForMessage("Stop Device Capture");
+
         foreach (var device in CapturedDevices.Where(device => device.Started))
         {
             device.StopCapture();
@@ -162,22 +170,25 @@ public class NetworkManager
         CapturedDevices.Clear();
     }
 
-
-
     private static void PacketEvent(ICaptureDevice device)
     {
-        if (!device.Started)
+        if (device.Started)
         {
-            device.Open(new DeviceConfiguration()
-            {
-                Mode = DeviceModes.DataTransferUdp | DeviceModes.Promiscuous | DeviceModes.NoCaptureLocal,
-                ReadTimeout = 5000
-            });
-
-            device.Filter = "(host 5.45.187 or host 5.188.125) and udp port 5056";
-            device.OnPacketArrival += Device_OnPacketArrival;
-            device.StartCapture();
+            return;
         }
+
+        device.Open(new DeviceConfiguration()
+        {
+            Mode = DeviceModes.DataTransferUdp | DeviceModes.Promiscuous | DeviceModes.NoCaptureLocal,
+            ReadTimeout = 5000
+        });
+
+        if (SettingsController.CurrentSettings.NetworkFiltering == 1)
+        {
+            device.Filter = "(host 5.45.187 or host 5.188.125) and udp port 5056";
+        }
+        device.OnPacketArrival += Device_OnPacketArrival;
+        device.StartCapture();
     }
 
     private static void Device_OnPacketArrival(object sender, PacketCapture e)
@@ -306,5 +317,15 @@ public class NetworkManager
                 _ => LanguageController.Translation("UNKNOWN_SERVER")
             };
         });
+    }
+
+    public static void RestartNetworkCapture()
+    {
+        if (IsNetworkCaptureRunning)
+        {
+            StopNetworkCapture();
+        }
+
+        StartDeviceCapture();
     }
 }
