@@ -712,4 +712,7 @@
     <translation name="LOGGING_DESCRIPTION_2">Tylko gracze znajdujący się na ekranie oraz na ekranie poza twoim polem widzenia są śledzeni podczas zdobywania łupów.</translation>
 	<translation name="SET_SERVER_MANUALLY">Ustaw serwer ręcznie</translation>
 	<translation name="AUTOMATICALLY">Automatycznie</translation>
+	<translation name="NETWORK_FILTERING">Filtrowanie sieciowe</translation>
+	<translation name="ACTIVATED">Aktywowane</translation>
+	<translation name="DISABLED">Wyłączone</translation>
 </translations>
