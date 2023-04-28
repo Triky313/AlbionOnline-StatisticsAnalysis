@@ -309,7 +309,7 @@ public class SettingsWindowViewModel : INotifyPropertyChanged
         NetworkFiltering.Clear();
         NetworkFiltering.Add(new SettingDataInformation { Name = SettingsWindowTranslation.Disabled, Value = 0 });
         NetworkFiltering.Add(new SettingDataInformation { Name = SettingsWindowTranslation.Activated, Value = 1 });
-        ServerSelection = NetworkFiltering.FirstOrDefault(x => x.Value == SettingsController.CurrentSettings.NetworkFiltering);
+        NetworkFilteringSelection = NetworkFiltering.FirstOrDefault(x => x.Value == SettingsController.CurrentSettings.NetworkFiltering);
     }
 
     private void InitDropDownDownByDays(ICollection<SettingDataInformation> updateJsonByDays)
