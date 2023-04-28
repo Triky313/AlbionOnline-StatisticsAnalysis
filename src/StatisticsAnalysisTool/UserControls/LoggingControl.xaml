@@ -14,15 +14,10 @@
             <StackPanel VerticalAlignment="Top" HorizontalAlignment="Right" Orientation="Vertical" Margin="0,0,2,0">
                 <Button Content="{Binding Translation.ResetTrackingNotifications, FallbackValue=RESET__TRACKING__NOTIFICATIONS}" Height="26" MaxWidth="500" MinWidth="250" 
                                         Margin="0,2,0,5" Width="auto" VerticalAlignment="Top" Click="BtnTrackingNotificationsReset_Click"  />
-                <StackPanel Orientation="Horizontal" VerticalAlignment="Center" HorizontalAlignment="Right">
-                    <Grid Height="26" Width="26">
-                        <fa5:ImageAwesome Icon="Solid_FileCsv" ToolTip="{Binding Translation.ExportLootToFile}" 
-                                          Foreground="{StaticResource  SolidColorBrush.Accent.Green.4}" MouseUp="BtnExportLootToFile_MouseUp" />
-                    </Grid>
-                    <Grid Height="20" Width="20" Margin="5,0,0,0" MouseEnter="OpenLoggingInfoPopup_MouseEnter" MouseLeave="CloseLoggingInfoPopup_MouseLeave">
-                        <fa5:ImageAwesome Icon="Solid_InfoCircle" Foreground="{StaticResource SolidColorBrush.Text.1}" />
-                    </Grid>
-                </StackPanel>
+                <Grid Height="26" Width="26" VerticalAlignment="Center" HorizontalAlignment="Right">
+                    <fa5:ImageAwesome Icon="Solid_FileCsv" ToolTip="{Binding Translation.ExportLootToFile}" 
+                                                      Foreground="{StaticResource  SolidColorBrush.Accent.Green.4}" MouseUp="BtnExportLootToFile_MouseUp" />
+                </Grid>
                 <TextBlock HorizontalAlignment="Right" TextDecorations="Underline" Foreground="{StaticResource SolidColorBrush.Accent.Blue.2}" FontSize="16" FontWeight="Bold">
                     <Hyperlink NavigateUri="{Binding LootLoggerViewer}" RequestNavigate="Hyperlink_RequestNavigate" TextDecorations="{x:Null}" 
                                Foreground="{StaticResource SolidColorBrush.Accent.Blue.2}">
@@ -80,21 +75,5 @@
                                       VirtualizingPanel.VirtualizationMode="Recycling"
                                       ScrollViewer.HorizontalScrollBarVisibility="Disabled"
                                       ScrollViewer.VerticalScrollBarVisibility="Visible" />
-        <Grid Visibility="{Binding LoggingBindings.IsLoggingPopupVisible, FallbackValue=Visible}" Margin="-1,64,0,0" Background="{StaticResource SolidColorBrush.Background.2}">
-            <StackPanel CanHorizontallyScroll="False" CanVerticallyScroll="True" Margin="10,10">
-                <DockPanel Margin="0,0,0,16">
-                    <Grid Height="16" Width="16" Margin="0,3,10,0" VerticalAlignment="Top">
-                        <fa5:ImageAwesome Icon="Regular_DotCircle" Foreground="{StaticResource SolidColorBrush.Accent.Blue.3}" />
-                    </Grid>
-                    <TextBlock Text="{Binding Translation.LoggingDescription1}" Foreground="{StaticResource SolidColorBrush.Text.1}" FontSize="16" TextWrapping="Wrap" Width="auto" />
-                </DockPanel>
-                <DockPanel Margin="0,0,0,16">
-                    <Grid Height="16" Width="16" Margin="0,3,10,0" VerticalAlignment="Top">
-                        <fa5:ImageAwesome Icon="Regular_DotCircle" Foreground="{StaticResource SolidColorBrush.Accent.Blue.3}" />
-                    </Grid>
-                    <TextBlock Text="{Binding Translation.LoggingDescription2}" Foreground="{StaticResource SolidColorBrush.Text.1}" FontSize="16" TextWrapping="Wrap" Width="auto" />
-                </DockPanel>
-            </StackPanel>
-        </Grid>
     </Grid>
 </UserControl>

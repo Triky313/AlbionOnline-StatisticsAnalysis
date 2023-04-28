@@ -34,7 +34,7 @@ public class LootController : ILootController
         _mainWindowViewModel = mainWindowViewModel;
 
 #if DEBUG
-        _ = AddTestLootNotificationsAsync(5);
+        _ = AddTestLootNotificationsAsync(30);
 #endif
     }
 

@@ -35,17 +35,5 @@ public partial class LoggingControl
         Process.Start(new ProcessStartInfo { FileName = e.Uri.AbsoluteUri, UseShellExecute = true });
     }
 
-    private void OpenLoggingInfoPopup_MouseEnter(object sender, MouseEventArgs e)
-    {
-        var vm = (MainWindowViewModel) DataContext;
-        vm.LoggingBindings.IsLoggingPopupVisible = Visibility.Visible;
-    }
-
-    private void CloseLoggingInfoPopup_MouseLeave(object sender, MouseEventArgs e)
-    {
-        var vm = (MainWindowViewModel) DataContext;
-        vm.LoggingBindings.IsLoggingPopupVisible = Visibility.Hidden;
-    }
-
     #endregion
 }

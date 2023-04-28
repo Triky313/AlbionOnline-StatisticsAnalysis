@@ -89,4 +89,9 @@ public static class ConsoleManager
     {
         WriteLine(new ConsoleFragment(name, parameters, consoleColorType));
     }
+
+    public static void WriteLineForMessage(string message, ConsoleColorType consoleColorType = ConsoleColorType.Default)
+    {
+        WriteLine(new ConsoleFragment(string.Empty, message, consoleColorType));
+    }
 }

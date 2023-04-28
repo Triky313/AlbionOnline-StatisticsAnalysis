@@ -710,4 +710,9 @@
 	<translation name="SURE_YOU_WANT_TO_DELETE_ALL_SNAPSHOTS">Are you sure you want to delete all snapshots?</translation>
 	<translation name="LOGGING_DESCRIPTION_1">If incorrect items are tracked, it may be because the item lists are not up to date. The URLs for this can be adjusted in the settings.</translation>
 	<translation name="LOGGING_DESCRIPTION_2">Only players who are within your own screen and about one more screen outside of your field of vision are tracked when looting.</translation>
+	<translation name="SET_SERVER_MANUALLY">Set server manually</translation>
+	<translation name="AUTOMATICALLY">Automatically</translation>
+	<translation name="NETWORK_FILTERING">Network Filtering</translation>
+	<translation name="ACTIVATED">Activated</translation>
+	<translation name="DISABLED">Disabled</translation>
 </translations>

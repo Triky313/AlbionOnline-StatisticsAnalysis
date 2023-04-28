@@ -14,6 +14,7 @@ using System.Linq;
 using System.Reflection;
 using System.Runtime.CompilerServices;
 using System.Windows;
+using StatisticsAnalysisTool.Network;
 
 namespace StatisticsAnalysisTool.ViewModels;
 
@@ -23,10 +24,10 @@ public class SettingsWindowViewModel : INotifyPropertyChanged
     private static string _mobsJsonSourceUrl;
     private static ObservableCollection<FileInformation> _languages = new();
     private static FileInformation _languagesSelection;
-    private static ObservableCollection<FileSettingInformation> _refreshRates = new();
-    private static FileSettingInformation _refreshRatesSelection;
-    private static ObservableCollection<FileSettingInformation> _updateItemListByDays = new();
-    private static FileSettingInformation _updateItemListByDaysSelection;
+    private static ObservableCollection<SettingDataInformation> _refreshRates = new();
+    private static SettingDataInformation _refreshRatesSelection;
+    private static ObservableCollection<SettingDataInformation> _updateItemListByDays = new();
+    private static SettingDataInformation _updateItemListByDaysSelection;
     private static readonly ILog Log = LogManager.GetLogger(MethodBase.GetCurrentMethod()?.DeclaringType);
     private ObservableCollection<FileInformation> _alertSounds = new();
     private FileInformation _alertSoundSelection;
@@ -38,14 +39,18 @@ public class SettingsWindowViewModel : INotifyPropertyChanged
     private string _goldStatsApiUrl;
     private bool _isLootLoggerSaveReminderActive;
     private string _itemsJsonSourceUrl;
-    private ObservableCollection<FileSettingInformation> _updateItemsJsonByDays = new();
-    private ObservableCollection<FileSettingInformation> _updateMobsJsonByDays = new();
-    private FileSettingInformation _updateItemsJsonByDaysSelection;
-    private FileSettingInformation _updateMobsJsonByDaysSelection;
+    private ObservableCollection<SettingDataInformation> _updateItemsJsonByDays = new();
+    private ObservableCollection<SettingDataInformation> _updateMobsJsonByDays = new();
+    private SettingDataInformation _updateItemsJsonByDaysSelection;
+    private SettingDataInformation _updateMobsJsonByDaysSelection;
     private bool _isSuggestPreReleaseUpdatesActive;
     private string _mainTrackingCharacterName;
     private bool _shortDamageMeterToClipboard;
     private ObservableCollection<TabVisibilityFilter> _tabVisibilities = new();
+    private SettingDataInformation _serverSelection;
+    private ObservableCollection<SettingDataInformation> _server = new();
+    private ObservableCollection<SettingDataInformation> _networkFiltering = new();
+    private SettingDataInformation _networkFilteringSelection;
 
     public SettingsWindowViewModel()
     {
@@ -58,6 +63,8 @@ public class SettingsWindowViewModel : INotifyPropertyChanged
         InitLanguageFiles();
         InitNaviTabVisibilities();
         InitRefreshRate();
+        InitServer();
+        InitNetworkFiltering();
 
         MainTrackingCharacterName = SettingsController.CurrentSettings.MainTrackingCharacterName;
 
@@ -105,6 +112,9 @@ public class SettingsWindowViewModel : INotifyPropertyChanged
         SettingsController.CurrentSettings.ItemsJsonSourceUrl = ItemsJsonSourceUrl;
         SettingsController.CurrentSettings.MobsJsonSourceUrl = MobsJsonSourceUrl;
         SettingsController.CurrentSettings.RefreshRate = RefreshRatesSelection.Value;
+        SettingsController.CurrentSettings.Server = ServerSelection.Value;
+        NetworkManager.SetCurrentServer(ServerSelection.Value >= 2 ? AlbionServer.East : AlbionServer.West, true);
+        SetNetworkFiltering();
         SettingsController.CurrentSettings.MainTrackingCharacterName = MainTrackingCharacterName;
         SettingsController.CurrentSettings.UpdateItemListByDays = UpdateItemListByDaysSelection.Value;
         SettingsController.CurrentSettings.UpdateItemsJsonByDays = UpdateItemsJsonByDaysSelection.Value;
@@ -137,6 +147,17 @@ public class SettingsWindowViewModel : INotifyPropertyChanged
         Translation = new SettingsWindowTranslation();
     }
 
+    private void SetNetworkFiltering()
+    {
+        if (SettingsController.CurrentSettings.NetworkFiltering == NetworkFilteringSelection.Value)
+        {
+            return;
+        }
+
+        SettingsController.CurrentSettings.NetworkFiltering = NetworkFilteringSelection.Value;
+        NetworkManager.RestartNetworkCapture();
+    }
+
     private void SetNaviTabVisibilities()
     {
         SettingsController.CurrentSettings.IsDashboardNaviTabActive = TabVisibilities?.FirstOrDefault(x => x?.NavigationTabFilterType == NavigationTabFilterType.Dashboard)?.IsSelected ?? true;
@@ -151,7 +172,7 @@ public class SettingsWindowViewModel : INotifyPropertyChanged
         SettingsController.CurrentSettings.IsPlayerInformationNaviTabActive = TabVisibilities?.FirstOrDefault(x => x?.NavigationTabFilterType == NavigationTabFilterType.PlayerInformation)?.IsSelected ?? true;
     }
 
-    public struct FileSettingInformation
+    public struct SettingDataInformation
     {
         public string Name { get; set; }
         public int Value { get; set; }
@@ -266,22 +287,39 @@ public class SettingsWindowViewModel : INotifyPropertyChanged
     private void InitRefreshRate()
     {
         RefreshRates.Clear();
-        RefreshRates.Add(new FileSettingInformation { Name = SettingsWindowTranslation.FiveSeconds, Value = 5000 });
-        RefreshRates.Add(new FileSettingInformation { Name = SettingsWindowTranslation.TenSeconds, Value = 10000 });
-        RefreshRates.Add(new FileSettingInformation { Name = SettingsWindowTranslation.ThirtySeconds, Value = 30000 });
-        RefreshRates.Add(new FileSettingInformation { Name = SettingsWindowTranslation.SixtySeconds, Value = 60000 });
-        RefreshRates.Add(new FileSettingInformation { Name = SettingsWindowTranslation.FiveMinutes, Value = 300000 });
+        RefreshRates.Add(new SettingDataInformation { Name = SettingsWindowTranslation.FiveSeconds, Value = 5000 });
+        RefreshRates.Add(new SettingDataInformation { Name = SettingsWindowTranslation.TenSeconds, Value = 10000 });
+        RefreshRates.Add(new SettingDataInformation { Name = SettingsWindowTranslation.ThirtySeconds, Value = 30000 });
+        RefreshRates.Add(new SettingDataInformation { Name = SettingsWindowTranslation.SixtySeconds, Value = 60000 });
+        RefreshRates.Add(new SettingDataInformation { Name = SettingsWindowTranslation.FiveMinutes, Value = 300000 });
         RefreshRatesSelection = RefreshRates.FirstOrDefault(x => x.Value == SettingsController.CurrentSettings.RefreshRate);
     }
 
-    private void InitDropDownDownByDays(ICollection<FileSettingInformation> updateJsonByDays)
+    private void InitServer()
+    {
+        Server.Clear();
+        Server.Add(new SettingDataInformation { Name = SettingsWindowTranslation.Automatically, Value = 0 });
+        Server.Add(new SettingDataInformation { Name = SettingsWindowTranslation.WestServer, Value = 1 });
+        Server.Add(new SettingDataInformation { Name = SettingsWindowTranslation.EastServer, Value = 2 });
+        ServerSelection = Server.FirstOrDefault(x => x.Value == SettingsController.CurrentSettings.Server);
+    }
+
+    private void InitNetworkFiltering()
+    {
+        NetworkFiltering.Clear();
+        NetworkFiltering.Add(new SettingDataInformation { Name = SettingsWindowTranslation.Disabled, Value = 0 });
+        NetworkFiltering.Add(new SettingDataInformation { Name = SettingsWindowTranslation.Activated, Value = 1 });
+        ServerSelection = NetworkFiltering.FirstOrDefault(x => x.Value == SettingsController.CurrentSettings.NetworkFiltering);
+    }
+
+    private void InitDropDownDownByDays(ICollection<SettingDataInformation> updateJsonByDays)
     {
         updateJsonByDays.Clear();
-        updateJsonByDays.Add(new FileSettingInformation { Name = LanguageController.Translation("EVERY_DAY"), Value = 1 });
-        updateJsonByDays.Add(new FileSettingInformation { Name = LanguageController.Translation("EVERY_3_DAYS"), Value = 3 });
-        updateJsonByDays.Add(new FileSettingInformation { Name = LanguageController.Translation("EVERY_7_DAYS"), Value = 7 });
-        updateJsonByDays.Add(new FileSettingInformation { Name = LanguageController.Translation("EVERY_14_DAYS"), Value = 14 });
-        updateJsonByDays.Add(new FileSettingInformation { Name = LanguageController.Translation("EVERY_28_DAYS"), Value = 28 });
+        updateJsonByDays.Add(new SettingDataInformation { Name = LanguageController.Translation("EVERY_DAY"), Value = 1 });
+        updateJsonByDays.Add(new SettingDataInformation { Name = LanguageController.Translation("EVERY_3_DAYS"), Value = 3 });
+        updateJsonByDays.Add(new SettingDataInformation { Name = LanguageController.Translation("EVERY_7_DAYS"), Value = 7 });
+        updateJsonByDays.Add(new SettingDataInformation { Name = LanguageController.Translation("EVERY_14_DAYS"), Value = 14 });
+        updateJsonByDays.Add(new SettingDataInformation { Name = LanguageController.Translation("EVERY_28_DAYS"), Value = 28 });
     }
 
     private void InitAlertSounds()
@@ -330,7 +368,7 @@ public class SettingsWindowViewModel : INotifyPropertyChanged
         }
     }
 
-    public FileSettingInformation UpdateItemListByDaysSelection
+    public SettingDataInformation UpdateItemListByDaysSelection
     {
         get => _updateItemListByDaysSelection;
         set
@@ -340,7 +378,7 @@ public class SettingsWindowViewModel : INotifyPropertyChanged
         }
     }
 
-    public FileSettingInformation UpdateItemsJsonByDaysSelection
+    public SettingDataInformation UpdateItemsJsonByDaysSelection
     {
         get => _updateItemsJsonByDaysSelection;
         set
@@ -350,7 +388,7 @@ public class SettingsWindowViewModel : INotifyPropertyChanged
         }
     }
 
-    public FileSettingInformation UpdateMobsJsonByDaysSelection
+    public SettingDataInformation UpdateMobsJsonByDaysSelection
     {
         get => _updateMobsJsonByDaysSelection;
         set
@@ -360,7 +398,7 @@ public class SettingsWindowViewModel : INotifyPropertyChanged
         }
     }
 
-    public ObservableCollection<FileSettingInformation> UpdateItemListByDays
+    public ObservableCollection<SettingDataInformation> UpdateItemListByDays
     {
         get => _updateItemListByDays;
         set
@@ -370,7 +408,7 @@ public class SettingsWindowViewModel : INotifyPropertyChanged
         }
     }
 
-    public ObservableCollection<FileSettingInformation> UpdateItemsJsonByDays
+    public ObservableCollection<SettingDataInformation> UpdateItemsJsonByDays
     {
         get => _updateItemsJsonByDays;
         set
@@ -380,7 +418,7 @@ public class SettingsWindowViewModel : INotifyPropertyChanged
         }
     }
 
-    public ObservableCollection<FileSettingInformation> UpdateMobsJsonByDays
+    public ObservableCollection<SettingDataInformation> UpdateMobsJsonByDays
     {
         get => _updateMobsJsonByDays;
         set
@@ -390,7 +428,7 @@ public class SettingsWindowViewModel : INotifyPropertyChanged
         }
     }
 
-    public FileSettingInformation RefreshRatesSelection
+    public SettingDataInformation RefreshRatesSelection
     {
         get => _refreshRatesSelection;
         set
@@ -400,12 +438,52 @@ public class SettingsWindowViewModel : INotifyPropertyChanged
         }
     }
 
-    public ObservableCollection<FileSettingInformation> RefreshRates
+    public SettingDataInformation ServerSelection
+    {
+        get => _serverSelection;
+        set
+        {
+            _serverSelection = value;
+            OnPropertyChanged();
+        }
+    }
+
+    public SettingDataInformation NetworkFilteringSelection
+    {
+        get => _networkFilteringSelection;
+        set
+        {
+            _networkFilteringSelection = value;
+            OnPropertyChanged();
+        }
+    }
+
+    public ObservableCollection<SettingDataInformation> RefreshRates
     {
         get => _refreshRates;
         set
         {
             _refreshRates = value;
+            OnPropertyChanged();
+        }
+    }
+
+    public ObservableCollection<SettingDataInformation> Server
+    {
+        get => _server;
+        set
+        {
+            _server = value;
+            OnPropertyChanged();
+        }
+    }
+
+    public ObservableCollection<SettingDataInformation> NetworkFiltering
+    {
+        get => _networkFiltering;
+        set
+        {
+            _networkFiltering = value;
             OnPropertyChanged();
         }
     }

@@ -2,6 +2,7 @@ using log4net;
 using PacketDotNet;
 using SharpPcap;
 using StatisticsAnalysisTool.Common;
+using StatisticsAnalysisTool.Common.UserSettings;
 using StatisticsAnalysisTool.Enumerations;
 using StatisticsAnalysisTool.Network.Handler;
 using StatisticsAnalysisTool.Network.Manager;
@@ -24,7 +25,7 @@ public class NetworkManager
     private static int _serverEventCounter;
     private static AlbionServer _lastServerType;
 
-    public static AlbionServer AlbionServer { get; private set; } = AlbionServer.Unknown;
+    public static AlbionServer AlbionServer { get; set; } = AlbionServer.Unknown;
     public static bool IsNetworkCaptureRunning => CapturedDevices.Where(device => device.Started).Any(device => device.Started);
 
     public static bool StartNetworkCapture(TrackingController trackingController)
@@ -91,7 +92,6 @@ public class NetworkManager
 
         try
         {
-            CapturedDevices.AddRange(CaptureDeviceList.Instance);
             return StartDeviceCapture();
         }
         catch (Exception e)
@@ -114,17 +114,24 @@ public class NetworkManager
         }
     }
 
-    private static bool StartDeviceCapture()
+    public static bool StartDeviceCapture()
     {
+        ConsoleManager.WriteLineForMessage("Start Device Capture");
+
+        CapturedDevices.AddRange(CaptureDeviceList.Instance);
+
         if (CapturedDevices.Count <= 0)
         {
+            ConsoleManager.WriteLineForMessage(MethodBase.GetCurrentMethod()?.DeclaringType, "No CapturedDevices");
             return false;
         }
 
         try
         {
+            ConsoleManager.WriteLineForMessage(MethodBase.GetCurrentMethod()?.DeclaringType, "CapturedDevices:");
             foreach (var device in CapturedDevices)
             {
+                ConsoleManager.WriteLineForMessage($"- {device.Description}");
                 PacketEvent(device);
             }
         }
@@ -152,6 +159,8 @@ public class NetworkManager
 
     public static void StopNetworkCapture()
     {
+        ConsoleManager.WriteLineForMessage("Stop Device Capture");
+
         foreach (var device in CapturedDevices.Where(device => device.Started))
         {
             device.StopCapture();
@@ -163,32 +172,38 @@ public class NetworkManager
 
     private static void PacketEvent(ICaptureDevice device)
     {
-        if (!device.Started)
+        if (device.Started)
         {
-            device.Open(new DeviceConfiguration()
-            {
-                Mode = DeviceModes.DataTransferUdp,
-                ReadTimeout = 5000
-            });
-            device.OnPacketArrival += Device_OnPacketArrival;
-            device.StartCapture();
+            return;
         }
+
+        device.Open(new DeviceConfiguration()
+        {
+            Mode = DeviceModes.DataTransferUdp | DeviceModes.Promiscuous | DeviceModes.NoCaptureLocal,
+            ReadTimeout = 5000
+        });
+
+        if (SettingsController.CurrentSettings.NetworkFiltering == 1)
+        {
+            device.Filter = "(host 5.45.187 or host 5.188.125) and udp port 5056";
+        }
+        device.OnPacketArrival += Device_OnPacketArrival;
+        device.StartCapture();
     }
 
     private static void Device_OnPacketArrival(object sender, PacketCapture e)
     {
         try
         {
-            var server = GetCurrentServerByIp(e);
-            _ = UpdateMainWindowServerTypeAsync(server);
-            AlbionServer = server;
+            var server = GetCurrentServerByIpOrSettings(e);
+            SetCurrentServer(server);
             if (server == AlbionServer.Unknown)
             {
                 return;
             }
 
             var packet = Packet.ParsePacket(e.GetPacket().LinkLayerType, e.GetPacket().Data).Extract<UdpPacket>();
-            if (packet != null && (packet.SourcePort == 5056 || packet.DestinationPort == 5056))
+            if (packet != null)
             {
                 _receiver.ReceivePacket(packet.PayloadData);
             }
@@ -216,8 +231,38 @@ public class NetworkManager
         }
     }
 
-    private static AlbionServer GetCurrentServerByIp(PacketCapture e)
+    public static void SetCurrentServer(AlbionServer server, bool directUpdateWithoutCounter = false)
     {
+        if (directUpdateWithoutCounter)
+        {
+            AlbionServer = server;
+            _ = UpdateMainWindowServerTypeLabelAsync(server);
+            return;
+        }
+
+        if ((DateTime.Now - _lastGetCurrentServerByIpTime).TotalSeconds < 10)
+        {
+            return;
+        }
+
+        AlbionServer = server;
+        _ = UpdateMainWindowServerTypeLabelAsync(server);
+
+        _lastGetCurrentServerByIpTime = DateTime.Now;
+    }
+
+    private static AlbionServer GetCurrentServerByIpOrSettings(PacketCapture e)
+    {
+        if (SettingsController.CurrentSettings.Server == 1)
+        {
+            return AlbionServer.West;
+        }
+
+        if (SettingsController.CurrentSettings.Server == 2)
+        {
+            return AlbionServer.East;
+        }
+
         var packet = Packet.ParsePacket(e.GetPacket().LinkLayerType, e.GetPacket().Data);
         var ipPacket = packet.Extract<IPPacket>();
         var srcIp = ipPacket?.SourceAddress?.ToString();
@@ -260,13 +305,8 @@ public class NetworkManager
         return albionServer;
     }
 
-    private static async Task UpdateMainWindowServerTypeAsync(AlbionServer albionServer)
+    private static async Task UpdateMainWindowServerTypeLabelAsync(AlbionServer albionServer)
     {
-        if ((DateTime.Now - _lastGetCurrentServerByIpTime).TotalSeconds < 10)
-        {
-            return;
-        }
-
         await Task.Run(() =>
         {
             var mainWindowViewModel = ServiceLocator.Resolve<MainWindowViewModel>();
@@ -277,7 +317,15 @@ public class NetworkManager
                 _ => LanguageController.Translation("UNKNOWN_SERVER")
             };
         });
+    }
 
-        _lastGetCurrentServerByIpTime = DateTime.Now;
+    public static void RestartNetworkCapture()
+    {
+        if (IsNetworkCaptureRunning)
+        {
+            StopNetworkCapture();
+        }
+
+        StartDeviceCapture();
     }
 }

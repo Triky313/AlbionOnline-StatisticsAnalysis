@@ -710,4 +710,9 @@
 	<translation name="SURE_YOU_WANT_TO_DELETE_ALL_SNAPSHOTS">Czy na pewno chcesz usunąć wszystkie zrzuty ekranu?</translation>
 	<translation name="LOGGING_DESCRIPTION_1">Jeśli śledzone są błędne elementy, może to być spowodowane nieaktualnymi listami elementów. Ich adresy URL można dostosować w ustawieniach.</translation>
     <translation name="LOGGING_DESCRIPTION_2">Tylko gracze znajdujący się na ekranie oraz na ekranie poza twoim polem widzenia są śledzeni podczas zdobywania łupów.</translation>
+	<translation name="SET_SERVER_MANUALLY">Ustaw serwer ręcznie</translation>
+	<translation name="AUTOMATICALLY">Automatycznie</translation>
+	<translation name="NETWORK_FILTERING">Filtrowanie sieciowe</translation>
+	<translation name="ACTIVATED">Aktywowane</translation>
+	<translation name="DISABLED">Wyłączone</translation>
 </translations>

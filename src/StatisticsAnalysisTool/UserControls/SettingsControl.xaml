@@ -47,6 +47,16 @@
                                   HorizontalAlignment="Left" VerticalAlignment="Top" Width="200" Height="26" />
                     </DockPanel>
                     <DockPanel Margin="0,5,0,0">
+                        <Label Content="{Binding Translation.SetServerManually, FallbackValue=SET_SERVER_MANUALLY}" MinWidth="300" VerticalAlignment="Top" />
+                        <ComboBox ItemsSource="{Binding Server}" SelectedItem="{Binding ServerSelection}" IsSynchronizedWithCurrentItem="True" DisplayMemberPath="Name" 
+                                  SelectedValuePath="Value" HorizontalAlignment="Left" VerticalAlignment="Top" Width="200" Height="26" />
+                    </DockPanel>
+                    <DockPanel Margin="0,5,0,0">
+                        <Label Content="{Binding Translation.NetworkFiltering, FallbackValue=NETWORK_FILTERING}" MinWidth="300" VerticalAlignment="Top" />
+                        <ComboBox ItemsSource="{Binding NetworkFiltering}" SelectedItem="{Binding NetworkFilteringSelection}" IsSynchronizedWithCurrentItem="True" DisplayMemberPath="Name" 
+                                  SelectedValuePath="Value" HorizontalAlignment="Left" VerticalAlignment="Top" Width="200" Height="26" />
+                    </DockPanel>
+                    <DockPanel Margin="0,5,0,0">
                         <Label Content="{Binding Translation.RefreshRate, FallbackValue=REFRESH__RATE}" MinWidth="300" VerticalAlignment="Top" />
                         <ComboBox ItemsSource="{Binding RefreshRates}" SelectedItem="{Binding RefreshRatesSelection}" IsSynchronizedWithCurrentItem="True" DisplayMemberPath="Name" 
                                   SelectedValuePath="Value" HorizontalAlignment="Left" VerticalAlignment="Top" Width="200" Height="26" />

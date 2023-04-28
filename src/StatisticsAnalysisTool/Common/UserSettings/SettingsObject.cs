@@ -7,6 +7,8 @@ public class SettingsObject
 {
     public string CurrentLanguageCultureName { get; set; } = "en-US";
     public int RefreshRate { get; set; } = 10000;
+    public int Server { get; set; } = 0; // 0: auto, 1: west, 2: east
+    public int NetworkFiltering { get; set; } = 1; // 0: false, 1: true
     public string MainTrackingCharacterName { get; set; }
     public int UpdateItemListByDays { get; set; } = 7;
     public int UpdateItemsJsonByDays { get; set; } = 7;
@@ -19,6 +21,8 @@ public class SettingsObject
     public string SelectedAlertSound { get; set; }
     public string AlbionDataProjectBaseUrlWest { get; set; } = "https://albion-online-data.com/api/v2/";
     public string AlbionDataProjectBaseUrlEast { get; set; } = "https://east.albion-online-data.com/api/v2/";
+    public string AlbionOnlineApiBaseUrlWest { get; set; } = "https://gameinfo.albiononline.com";
+    public string AlbionOnlineApiBaseUrlEast { get; set; } = "https://gameinfo-sgp.albiononline.com";
     public double MainWindowHeight { get; set; } = 100;
     public double MainWindowWidth { get; set; } = 100;
     public bool MainWindowMaximized { get; set; }

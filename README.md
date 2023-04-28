@@ -3,7 +3,7 @@ AlbionOnline - Statistics Analysis
 [![Github All Releases](https://img.shields.io/github/v/release/Triky313/AlbionOnline-StatisticsAnalysis)](https://github.com/Triky313/AlbionOnline-StatisticsAnalysis/releases)
 [![Github All Releases](https://img.shields.io/github/downloads/Triky313/AlbionOnline-StatisticsAnalysis/total.svg)](https://github.com/Triky313/AlbionOnline-StatisticsAnalysis/releases) 
 [![CodeFactor](https://www.codefactor.io/repository/github/triky313/albiononline-statisticsanalysis/badge/main)](https://www.codefactor.io/repository/github/triky313/albiononline-statisticsanalysis/overview/main)
-[![Build + Tests](https://github.com/Triky313/AlbionOnline-StatisticsAnalysis/actions/workflows/build-and-unit-tests.yml/badge.svg)](https://github.com/Triky313/AlbionOnline-StatisticsAnalysis/actions/workflows/dotnet-desktop.yml)
+[![Build + Tests](https://github.com/Triky313/AlbionOnline-StatisticsAnalysis/actions/workflows/pr-build-and-unit-tests.yml/badge.svg)](https://github.com/Triky313/AlbionOnline-StatisticsAnalysis/actions/workflows/dotnet-desktop.yml)
 ![GitHub commits since latest release (by date)](https://img.shields.io/github/commits-since/Triky313/AlbionOnline-StatisticsAnalysis/latest?color=AF3B7F)
 [![GitHub issues](https://img.shields.io/github/issues/Triky313/AlbionOnline-StatisticsAnalysis)](https://github.com/Triky313/AlbionOnline-StatisticsAnalysis/issues)
 [![Discord](https://img.shields.io/discord/772406813438115891?color=%237289da&label=Discord&logo=discord&logoColor=%237289da&style=flat)](https://discord.gg/Wv5RWehbrU)
@@ -24,7 +24,7 @@ A tool to easily read auction house data with a loot logger, damage meter, dunge
 - Installing **Npcap** Free Edition (v1.6 or higher) [here](https://npcap.com/#download) (For Game tracking)
 
 **Download the Statistics Analysis Tool**
-- [**DOWNLOAD**](https://github.com/Triky313/AlbionOnline-StatisticsAnalysis/releases/download/v5.17.3/StatisticsAnalysis-AlbionOnline-v5.17.3-x64.zip)
+- [**DOWNLOAD**](https://github.com/Triky313/AlbionOnline-StatisticsAnalysis/releases/download/v5.18.2/StatisticsAnalysis-AlbionOnline-v5.18.2-x64.zip)
 Unzip the `.zip` file and start `StatisticsAnalysisTool.exe` with a double click. You may not be able to see the `.exe`. Don't worry, usually it's the file with the icon.
 
 ![tool_dir](https://user-images.githubusercontent.com/14247773/170473306-4dcc629e-384e-41b2-ada8-657cabe1b472.png)
@@ -63,14 +63,7 @@ Unfortunately, **ExitLag is not supported**, but there are other VPN services th
 An internet connection with at least 1M/bit (256KB/s) download rate.
 
 ### The tool cannot download the ItemList.json or Item.json, what to do?
-If a button like the one in the screenshot appears and the automatic download of the files repeatedly does not work, the following can be done:
-
-![try-download-again-button](https://user-images.githubusercontent.com/14247773/170475039-3739e5cd-5d02-41bf-a77d-f58290de75a3.png)
-
-Download the file https://raw.githubusercontent.com/broderickhyman/ao-bin-dumps/master/formatted/items.json and rename it to ItemList.json.
-and
-Download this file https://raw.githubusercontent.com/broderickhyman/ao-bin-dumps/master/items.json 
-Then put both files in the tools folder.
+Double click on the **DownloadItemJsonFilesManually.bat** file in the tool directory!
 
 Then restart the tool and everything should work.
 

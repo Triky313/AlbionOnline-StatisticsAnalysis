@@ -1,10 +1,17 @@
 name: 🛠️ PR - Build + Unit tests
 
 on:
-  pull_request:
-    types: [review_requested, opened, reopened, synchronize]
-    branches:
-      - dev
+  push:
+    branches: [ main ]
+    paths-ignore:
+      - '**/*.md'
+      - '**/*.gitignore'
+      - '**/*.gitattributes'
+      - '**/donations.json'
+    pull_request:
+        types: [review_requested, opened, reopened, synchronize]
+        branches:
+          - dev
 
 jobs:
 
