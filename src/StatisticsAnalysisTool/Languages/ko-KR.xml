@@ -709,4 +709,11 @@
 	<translation name="DELETE_ALL_SNAPSHOTS">전체 스냅샷 삭제</translation>
 	<translation name="SURE_YOU_WANT_TO_DELETE_ALL_SNAPSHOTS">모든 스냅샷을 삭제하시겠습니까?</translation>
 	<translation name="TOTAL_FACTION_POINT">파벌 포인트</translation>
-</translations>
+	<translation name="LOGGING_DESCRIPTION_1">잘못된 항목이 추적되면 항목 목록이 최신 상태가 아닐 수 있습니다. 이에 대한 URL은 설정에서 조정할 수 있습니다.</translation>
+	<translation name="LOGGING_DESCRIPTION_2">약탈 시에는 자신의 화면 내에 있고, 시야 밖에 하나 이상의 화면이 있는 플레이어만 추적됩니다.</translation>
+	<translation name="SET_SERVER_MANUALLY">수동으로 서버 설정</translation>
+	<translation name="AUTOMATICALLY">자동</translation>
+	<translation name="NETWORK_FILTERING">네트워크 필터링</translation>
+	<translation name="ACTIVATED">활성화</translation>
+	<translation name="DISABLED">비활성화</translation>	
+</translations>	
