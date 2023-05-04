@@ -1,4 +1,5 @@
 ﻿using log4net;
+using Notification.Wpf;
 using StatisticsAnalysisTool.Common;
 using StatisticsAnalysisTool.Common.UserSettings;
 using StatisticsAnalysisTool.Enumerations;
@@ -8,8 +9,8 @@ using System;
 using System.Reflection;
 using System.Runtime.InteropServices;
 using System.Windows;
-using System.Windows.Media.Media3D;
 using System.Windows.Threading;
+using StatisticsAnalysisTool.Notification;
 
 namespace StatisticsAnalysisTool;
 
@@ -32,6 +33,9 @@ public partial class App
 
         _mainWindowViewModel = new MainWindowViewModel();
         ServiceLocator.Register<MainWindowViewModel>(_mainWindowViewModel);
+
+        var satNotifications = new SatNotifications(new NotificationManager(Current.Dispatcher));
+        ServiceLocator.Register<SatNotifications>(satNotifications);
 
         var mainWindow = new MainWindow(_mainWindowViewModel);
         mainWindow.Show();
