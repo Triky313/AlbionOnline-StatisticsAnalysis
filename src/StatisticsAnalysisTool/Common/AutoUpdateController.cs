@@ -26,6 +26,7 @@ public static class AutoUpdateController
             AutoUpdater.DownloadPath = Environment.CurrentDirectory;
             AutoUpdater.RunUpdateAsAdmin = false;
             AutoUpdater.ReportErrors = reportErrors;
+            AutoUpdater.ShowSkipButton = false;
             AutoUpdater.ApplicationExitEvent += AutoUpdaterApplicationExit;
         }
         catch (Exception e)
