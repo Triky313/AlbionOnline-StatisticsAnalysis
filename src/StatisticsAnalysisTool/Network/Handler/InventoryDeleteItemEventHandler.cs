@@ -3,20 +3,19 @@ using StatisticsAnalysisTool.Network.Manager;
 using StatisticsAnalysisTool.Network.Events;
 using System.Threading.Tasks;
 
-namespace StatisticsAnalysisTool.Network.Handler
+namespace StatisticsAnalysisTool.Network.Handler;
+
+public class InventoryDeleteItemEventHandler : EventPacketHandler<InventoryDeleteItemEvent>
 {
-    public class InventoryDeleteItemEventHandler
+    private readonly TrackingController _trackingController;
+
+    public InventoryDeleteItemEventHandler(TrackingController trackingController) : base((int) EventCodes.InventoryDeleteItem)
     {
-        private readonly TrackingController _trackingController;
+        _trackingController = trackingController;
+    }
 
-        public InventoryDeleteItemEventHandler(TrackingController trackingController)
-        {
-            _trackingController = trackingController;
-        }
-
-        public async Task OnActionAsync(InventoryDeleteItemEvent value)
-        {
-            await Task.CompletedTask;
-        }
+    protected override async Task OnActionAsync(InventoryDeleteItemEvent value)
+    {
+        await Task.CompletedTask;
     }
 }

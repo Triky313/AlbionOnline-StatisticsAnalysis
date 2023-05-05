@@ -1,21 +1,21 @@
 ﻿using StatisticsAnalysisTool.Network.Manager;
 using System.Threading.Tasks;
 using StatisticsAnalysisTool.Network.Events;
+using StatisticsAnalysisTool.Enumerations;
 
-namespace StatisticsAnalysisTool.Network.Handler
+namespace StatisticsAnalysisTool.Network.Handler;
+
+public class PartyChangedOrderEventHandler : EventPacketHandler<PartyChangedOrderEvent>
 {
-    public class PartyChangedOrderEventHandler
+    private readonly TrackingController _trackingController;
+
+    public PartyChangedOrderEventHandler(TrackingController trackingController) : base((int) EventCodes.PartyChangedOrder)
     {
-        private readonly TrackingController _trackingController;
+        _trackingController = trackingController;
+    }
 
-        public PartyChangedOrderEventHandler(TrackingController trackingController)
-        {
-            _trackingController = trackingController;
-        }
-
-        public async Task OnActionAsync(PartyChangedOrderEvent value)
-        {
-            await _trackingController.EntityController.SetPartyAsync(value.PartyUsersGuid, true);
-        }
+    protected override async Task OnActionAsync(PartyChangedOrderEvent value)
+    {
+        await _trackingController.EntityController.SetPartyAsync(value.PartyUsersGuid, true);
     }
 }

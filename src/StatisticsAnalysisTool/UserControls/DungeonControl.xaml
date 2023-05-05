@@ -47,7 +47,9 @@
                                     </StackPanel>
                                 </StackPanel>
                             </StackPanel>
+                            <ContentControl Margin="0,0,0,0" ContentTemplate="{StaticResource DungeonOptionsObjectTemplate}" Content="{Binding DungeonBindings.DungeonOptionsObject}" />
                         </StackPanel>
+
                     </StackPanel>
 
                     <StackPanel HorizontalAlignment="Right" Width="250" Height="auto" VerticalAlignment="Top">
@@ -60,7 +62,7 @@
         </Grid>
 
         <Grid Row="2">
-            <vwp:VirtualizingItemsControl ItemsSource="{Binding DungeonBindings.TrackingDungeonsCollectionView, IsAsync=True, Mode=OneWay}" 
+            <vwp:VirtualizingItemsControl ItemsSource="{Binding DungeonBindings.DungeonsCollectionView, IsAsync=True, Mode=OneWay}" 
                                           ItemTemplate="{StaticResource DungeonNotificationFragment}" 
                                           d:ItemsSource="{d:SampleData ItemCount=5}"
                                           VirtualizingPanel.CacheLengthUnit="Item"

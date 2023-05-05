@@ -1,6 +1,5 @@
 <ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-                    xmlns:notification="clr-namespace:StatisticsAnalysisTool.Network.Notification"
                     xmlns:com="clr-namespace:StatisticsAnalysisTool.Common"
                     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
                     xmlns:networkModel="clr-namespace:StatisticsAnalysisTool.Models.NetworkModel"
@@ -9,6 +8,9 @@
                     xmlns:models="clr-namespace:StatisticsAnalysisTool.Models"
                     xmlns:enumerations="clr-namespace:StatisticsAnalysisTool.Enumerations"
                     xmlns:converters="clr-namespace:StatisticsAnalysisTool.Common.Converters"
+                    xmlns:cluster="clr-namespace:StatisticsAnalysisTool.Cluster"
+                    xmlns:notification1="clr-namespace:StatisticsAnalysisTool.EventLogging.Notification"
+                    xmlns:eventLogging="clr-namespace:StatisticsAnalysisTool.EventLogging"
                     mc:Ignorable="d">
 
     <converters:ValuePerHourConverter x:Key="ValuePerHourConverter" />
@@ -175,7 +177,7 @@
         <Setter Property="Source" Value="../Resources/icon_daily_season_points.png"/>
     </Style>
 
-    <DataTemplate x:Key="NotificationTemplate" DataType="{x:Type notification:TrackingNotification}">
+    <DataTemplate x:Key="NotificationTemplate" DataType="{x:Type notification1:TrackingNotification}">
         <Grid Visibility="{Binding Visibility}">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="Auto" />
@@ -186,11 +188,11 @@
         </Grid>
     </DataTemplate>
 
-    <DataTemplate DataType="{x:Type notification:TextFragment}">
+    <DataTemplate DataType="{x:Type notification1:TextFragment}">
         <TextBlock Text="{Binding Text, StringFormat='{}{0} '}" TextWrapping="Wrap" Foreground="{StaticResource SolidColorBrush.Text.1}" />
     </DataTemplate>
 
-    <DataTemplate DataType="{x:Type notification:FameNotificationFragment}">
+    <DataTemplate DataType="{x:Type notification1:FameNotificationFragment}">
         <VirtualizingStackPanel VirtualizationMode="Recycling" Orientation="Horizontal">
             <TextBlock Text="{Binding StartText, StringFormat='{}{0} '}" Foreground="{StaticResource SolidColorBrush.Text.1}"/>
             <TextBlock DataContext="{Binding Operator}" Style="{StaticResource OperatorTextBlockStyle}" />
@@ -248,7 +250,7 @@
         </VirtualizingStackPanel>
     </DataTemplate>
 
-    <DataTemplate DataType="{x:Type notification:SilverNotificationFragment}">
+    <DataTemplate DataType="{x:Type notification1:SilverNotificationFragment}">
         <VirtualizingStackPanel VirtualizationMode="Recycling" Orientation="Horizontal">
             <TextBlock Text="{Binding StartText, StringFormat='{}{0} '}" Foreground="{StaticResource SolidColorBrush.Text.1}"/>
             <TextBlock DataContext="{Binding Operator}" Style="{StaticResource OperatorTextBlockStyle}" />
@@ -281,7 +283,7 @@
         </VirtualizingStackPanel>
     </DataTemplate>
 
-    <DataTemplate DataType="{x:Type notification:FactionPointsNotificationFragment}">
+    <DataTemplate DataType="{x:Type notification1:FactionPointsNotificationFragment}">
         <VirtualizingStackPanel VirtualizationMode="Recycling" Orientation="Horizontal">
             <TextBlock Text="{Binding StartText, StringFormat='{}{0} '}" Foreground="{StaticResource SolidColorBrush.Text.1}"/>
             <TextBlock DataContext="{Binding Operator}" Style="{StaticResource OperatorTextBlockStyle}" />
@@ -301,7 +303,7 @@
         </VirtualizingStackPanel>
     </DataTemplate>
 
-    <DataTemplate DataType="{x:Type notification:FactionFlagPointsNotificationFragment}">
+    <DataTemplate DataType="{x:Type notification1:FactionFlagPointsNotificationFragment}">
         <VirtualizingStackPanel VirtualizationMode="Recycling" Orientation="Horizontal">
             <TextBlock Text="{Binding StartText, StringFormat='{}{0} '}" Foreground="{StaticResource SolidColorBrush.Text.1}"/>
             <TextBlock DataContext="{Binding Operator}" Style="{StaticResource OperatorTextBlockStyle}" />
@@ -321,7 +323,7 @@
         </VirtualizingStackPanel>
     </DataTemplate>
 
-    <DataTemplate DataType="{x:Type notification:SeasonPointsNotificationFragment}">
+    <DataTemplate DataType="{x:Type notification1:SeasonPointsNotificationFragment}">
         <VirtualizingStackPanel VirtualizationMode="Recycling" Orientation="Horizontal">
             <TextBlock Text="{Binding StartText, StringFormat='{}{0} '}" Foreground="{StaticResource SolidColorBrush.Text.1}"/>
             <TextBlock DataContext="{Binding Operator}" Style="{StaticResource OperatorTextBlockStyle}" />
@@ -341,7 +343,7 @@
         </VirtualizingStackPanel>
     </DataTemplate>
 
-    <DataTemplate DataType="{x:Type notification:CombatNotificationFragment}">
+    <DataTemplate DataType="{x:Type notification1:CombatNotificationFragment}">
         <VirtualizingStackPanel VirtualizationMode="Recycling" Orientation="Horizontal">
             <TextBlock Text="{Binding CauserName, IsAsync=True, StringFormat='{}{0} '}" Foreground="{StaticResource SolidColorBrush.Text.1}"/>
             <TextBlock Text="{Binding Damage, IsAsync=True, StringFormat='{}{0:N0} '}" Foreground="{StaticResource SolidColorBrush.Accent.Blue.2}"/>
@@ -349,7 +351,7 @@
         </VirtualizingStackPanel>
     </DataTemplate>
 
-    <DataTemplate DataType="{x:Type notification:OtherGrabbedLootNotificationFragment}">
+    <DataTemplate DataType="{x:Type notification1:OtherGrabbedLootNotificationFragment}">
         <VirtualizingStackPanel VirtualizationMode="Recycling" Orientation="Horizontal">
             <TextBlock Text="{Binding LootedByName, IsAsync=True, StringFormat='{}{0} '}" Foreground="{StaticResource SolidColorBrush.Accent.Blue.3}"/>
             <TextBlock Text="{Binding LootedByGuild, IsAsync=True, StringFormat='{}({0}) '}" Foreground="{StaticResource SolidColorBrush.Accent.Blue.3}"
@@ -395,7 +397,7 @@
         </VirtualizingStackPanel>
     </DataTemplate>
 
-    <DataTemplate DataType="{x:Type notification:KillNotificationFragment}">
+    <DataTemplate DataType="{x:Type notification1:KillNotificationFragment}">
         <StackPanel Orientation="Horizontal" Height="24">
             <TextBlock Text="{Binding Died, IsAsync=True, StringFormat='{}{0} '}" Foreground="{StaticResource SolidColorBrush.Accent.Red.3}"/>
             <TextBlock Text="{Binding ValueText, IsAsync=True, StringFormat='{}{0} '}" Foreground="{StaticResource SolidColorBrush.Text.1}"/>
@@ -441,55 +443,9 @@
         <Setter Property="Foreground" Value="{StaticResource SolidColorBrush.Text.2}" />
         <Setter Property="Icon" Value="Solid_UserCircle" />
         <Style.Triggers>
-            <DataTrigger Binding="{Binding WeaponCategoryId}" Value="sword">
-                <Setter Property="Foreground" Value="{StaticResource SolidColorBrush.Weapon.Sword}" />
-            </DataTrigger>
-            <DataTrigger Binding="{Binding WeaponCategoryId}" Value="spear">
-                <Setter Property="Foreground" Value="{StaticResource SolidColorBrush.Weapon.Spear}" />
-            </DataTrigger>
-            <DataTrigger Binding="{Binding WeaponCategoryId}" Value="quarterstaff">
-                <Setter Property="Foreground" Value="{StaticResource SolidColorBrush.Weapon.Quarterstaff}" />
-            </DataTrigger>
-            <DataTrigger Binding="{Binding WeaponCategoryId}" Value="naturestaff">
-                <Setter Property="Foreground" Value="{StaticResource SolidColorBrush.Weapon.NatureStaff}" />
-            </DataTrigger>
-            <DataTrigger Binding="{Binding WeaponCategoryId}" Value="mace">
-                <Setter Property="Foreground" Value="{StaticResource SolidColorBrush.Weapon.Mace}" />
-            </DataTrigger>
-            <DataTrigger Binding="{Binding WeaponCategoryId}" Value="holystaff">
-                <Setter Property="Foreground" Value="{StaticResource SolidColorBrush.Weapon.HolyStaff}" />
-            </DataTrigger>
-            <DataTrigger Binding="{Binding WeaponCategoryId}" Value="hammer">
-                <Setter Property="Foreground" Value="{StaticResource SolidColorBrush.Weapon.Hammer}" />
-            </DataTrigger>
-            <DataTrigger Binding="{Binding WeaponCategoryId}" Value="froststaff">
-                <Setter Property="Foreground" Value="{StaticResource SolidColorBrush.Weapon.FrostStaff}" />
-            </DataTrigger>
-            <DataTrigger Binding="{Binding WeaponCategoryId}" Value="firestaff">
-                <Setter Property="Foreground" Value="{StaticResource SolidColorBrush.Weapon.FireStaff}" />
-            </DataTrigger>
-            <DataTrigger Binding="{Binding WeaponCategoryId}" Value="dagger">
-                <Setter Property="Foreground" Value="{StaticResource SolidColorBrush.Weapon.Dagger}" />
-            </DataTrigger>
-            <DataTrigger Binding="{Binding WeaponCategoryId}" Value="cursestaff">
-                <Setter Property="Foreground" Value="{StaticResource SolidColorBrush.Weapon.CursedStaff}" />
-            </DataTrigger>
-            <DataTrigger Binding="{Binding WeaponCategoryId}" Value="crossbow">
-                <Setter Property="Foreground" Value="{StaticResource SolidColorBrush.Weapon.Crossbow}" />
-            </DataTrigger>
-            <DataTrigger Binding="{Binding WeaponCategoryId}" Value="bow">
-                <Setter Property="Foreground" Value="{StaticResource SolidColorBrush.Weapon.Bow}" />
-            </DataTrigger>
-            <DataTrigger Binding="{Binding WeaponCategoryId}" Value="axe">
-                <Setter Property="Foreground" Value="{StaticResource SolidColorBrush.Weapon.Axe}" />
-            </DataTrigger>
-            <DataTrigger Binding="{Binding WeaponCategoryId}" Value="arcanestaff">
-                <Setter Property="Foreground" Value="{StaticResource SolidColorBrush.Weapon.ArcaneStaff}" />
-            </DataTrigger>
-
-            <DataTrigger Binding="{Binding Name}" Value="Rakaaria">
+            <DataTrigger Binding="{Binding Name}" Value="krissixoxoalex">
                 <Setter Property="Margin" Value="0,0,0,1" />
-                <Setter Property="ToolTip" Value="Rakaaria - Much love for the best girl in the world!" />
+                <Setter Property="ToolTip" Value="Krissi - My love and life" />
                 <Setter Property="Icon" Value="Solid_Heart" />
                 <Setter Property="Foreground">
                     <Setter.Value>
@@ -506,14 +462,18 @@
                 </Setter>
             </DataTrigger>
 
+            <DataTrigger Binding="{Binding Name}" Value="Dicky">
+                <Setter Property="Margin" Value="0,0,0,1" />
+                <Setter Property="ToolTip" Value="Dicky - Most luckiest bastard in game!" />
+                <Setter Property="Icon" Value="Solid_PiggyBank" />
+                <Setter Property="Foreground" Value="{StaticResource SolidColorBrush.Accent.Yellow.1}" />
+            </DataTrigger>
+
             <DataTrigger Binding="{Binding Name}" Value="Triky313">
                 <Setter Property="Margin" Value="0,0,0,1" />
+                <Setter Property="ToolTip" Value="Aaron - Dev of this tool!" />
                 <Setter Property="Icon" Value="Solid_Font" />
-                <Setter Property="Effect">
-                    <Setter.Value>
-                        <DropShadowEffect BlurRadius="5" ShadowDepth="0" Opacity="0.5" Color="{StaticResource Color.Accent.Red.3}"/>
-                    </Setter.Value>
-                </Setter>
+                <Setter Property="Foreground" Value="{StaticResource SolidColorBrush.Accent.Red.2}" />
             </DataTrigger>
 
             <DataTrigger Binding="{Binding Name}" Value="Rhaegaryn">
@@ -536,7 +496,7 @@
         </Grid>
     </DataTemplate>
 
-    <DataTemplate x:Key="LoggingFilterObject" DataType="{x:Type models:LoggingFilterObject}">
+    <DataTemplate x:Key="LoggingFilterObject" DataType="{x:Type eventLogging:LoggingFilterObject}">
         <StackPanel Orientation="Horizontal">
             <CheckBox IsChecked="{Binding IsSelected}" Width="20" VerticalAlignment="Top" />
             <TextBlock Text="{Binding Name}" Width="100" TextWrapping="Wrap" />
@@ -594,7 +554,7 @@
     </DataTemplate>
 
     <!-- ClusterInfo -->
-    <DataTemplate x:Key="ClusterInfoTemplate" DataType="{x:Type models:ClusterInfo}">
+    <DataTemplate x:Key="ClusterInfoTemplate" DataType="{x:Type cluster:ClusterInfo}">
         <Grid Margin="0,0,0,1">
             <Grid.Style>
                 <Style TargetType="{x:Type Grid}">
@@ -659,6 +619,16 @@
                                 </Setter.Value>
                             </Setter>
                         </DataTrigger>
+                        <DataTrigger Binding="{Binding ClusterMode}" Value="{x:Static enumerations:ClusterMode.Mists}">
+                            <Setter Property="Background">
+                                <Setter.Value>
+                                    <LinearGradientBrush StartPoint="0,1" EndPoint="0.9,0">
+                                        <GradientStop Color="{StaticResource Cluster.Mists}" Offset="0.0" />
+                                        <GradientStop Color="{StaticResource Color.Background.1}" Offset="1.0" />
+                                    </LinearGradientBrush>
+                                </Setter.Value>
+                            </Setter>
+                        </DataTrigger>
                         <DataTrigger Binding="{Binding ClusterMode}" Value="{x:Static enumerations:ClusterMode.Unknown}">
                             <Setter Property="Background">
                                 <Setter.Value>
@@ -685,7 +655,7 @@
                             </TextBlock>
                         </Label.Content>
                     </Label>
-                    <Label Content="{Binding TierString}" FontSize="12" Foreground="{StaticResource SolidColorBrush.Text.1}" 
+                    <Label Content="{Binding TierRomanString}" FontSize="12" Foreground="{StaticResource SolidColorBrush.Text.1}" 
                                MinWidth="30" MaxWidth="30" Margin="5,0, 0, 0" />
                     <Label Content="{Binding  ClusterHistoryString1}" FontSize="12" Foreground="{StaticResource SolidColorBrush.Text.1}" 
                                MinWidth="150" MaxWidth="200" Margin="5,0, 0, 0" />
@@ -719,11 +689,51 @@
     </Style>
 
     <!-- Loot logger styles -->
-    <DataTemplate x:Key="TopLooterObjectTemplate" DataType="{x:Type models:TopLooterObject}">
+    <DataTemplate x:Key="TopLooterObjectTemplate" DataType="{x:Type eventLogging:TopLooterObject}">
         <StackPanel Orientation="Horizontal" Margin="5,-5,5,0" Height="20">
             <Label Content="{Binding PlayerName}" ContentStringFormat="{}{0:N0}" Padding="0,5,0,0"/>
             <Label Content="{Binding LootActions}" ContentStringFormat="{}({0:N0})" Padding="0,5,0,0"/>
         </StackPanel>
+    </DataTemplate>
+
+    <DataTemplate x:Key="CurrentMapInfoTemplate" DataType="{x:Type models:CurrentMapInfoBinding}">
+        <Grid Margin="0,0,0,1">
+            <StackPanel Orientation="Horizontal">
+                <Label Content="{Binding Tier}" FontSize="14" FontWeight="Bold" Height="20" Padding="0" Margin="0,0,5,0">
+                    <Label.Style>
+                        <Style TargetType="{x:Type Label}">
+                            <Style.Triggers>
+                                <DataTrigger Binding="{Binding ClusterMode}" Value="{x:Static enumerations:ClusterMode.SafeArea}">
+                                    <Setter Property="Foreground" Value="{StaticResource Solid.Color.Cluster.SafeArea}" />
+                                </DataTrigger>
+                                <DataTrigger Binding="{Binding ClusterMode}" Value="{x:Static enumerations:ClusterMode.Island}">
+                                    <Setter Property="Foreground" Value="{StaticResource Solid.Color.Cluster.Island}" />
+                                </DataTrigger>
+                                <DataTrigger Binding="{Binding ClusterMode}" Value="{x:Static enumerations:ClusterMode.Yellow}">
+                                    <Setter Property="Foreground" Value="{StaticResource Solid.Color.Cluster.Yellow}" />
+                                </DataTrigger>
+                                <DataTrigger Binding="{Binding ClusterMode}" Value="{x:Static enumerations:ClusterMode.Red}">
+                                    <Setter Property="Foreground" Value="{StaticResource Solid.Color.Cluster.Red}" />
+                                </DataTrigger>
+                                <DataTrigger Binding="{Binding ClusterMode}" Value="{x:Static enumerations:ClusterMode.Black}">
+                                    <Setter Property="Foreground" Value="{StaticResource Solid.Color.Cluster.Black}" />
+                                </DataTrigger>
+                                <DataTrigger Binding="{Binding ClusterMode}" Value="{x:Static enumerations:ClusterMode.AvalonTunnel}">
+                                    <Setter Property="Foreground" Value="{StaticResource Solid.Color.Cluster.Avalon}" />
+                                </DataTrigger>
+                                <DataTrigger Binding="{Binding ClusterMode}" Value="{x:Static enumerations:ClusterMode.Mists}">
+                                    <Setter Property="Foreground" Value="{StaticResource Solid.Color.Cluster.Mists}" />
+                                </DataTrigger>
+                                <DataTrigger Binding="{Binding ClusterMode}" Value="{x:Static enumerations:ClusterMode.Unknown}">
+                                    <Setter Property="Foreground" Value="{StaticResource Solid.Color.Cluster.Black}" />
+                                </DataTrigger>
+                            </Style.Triggers>
+                        </Style>
+                    </Label.Style>
+                </Label>
+                <Label Content="{Binding DisplayedClusterName, FallbackValue='DISPLAYED_CLUSTER_NAME', Mode='OneWay'}" FontSize="14" FontWeight="Bold" Height="20" Padding="0" Margin="0" />
+            </StackPanel>
+        </Grid>
     </DataTemplate>
 
 </ResourceDictionary>

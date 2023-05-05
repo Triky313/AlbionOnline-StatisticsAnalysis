@@ -5,7 +5,6 @@ using StatisticsAnalysisTool.Properties;
 using System;
 using System.IO;
 using System.Reflection;
-using System.Threading.Tasks;
 using Application = System.Windows.Application;
 
 namespace StatisticsAnalysisTool.Common;
@@ -16,24 +15,29 @@ public static class AutoUpdateController
 
     public static void AutoUpdate(bool reportErrors = false)
     {
-#pragma warning disable CA1416 // Validate platform compatibility
+        try
+        {
+            AutoUpdater.ApplicationExitEvent -= AutoUpdaterApplicationExit;
 
-        AutoUpdater.ApplicationExitEvent -= AutoUpdaterApplicationExitAsync;
+            AutoUpdater.Start(SettingsController.CurrentSettings.IsSuggestPreReleaseUpdatesActive
+                ? Settings.Default.AutoUpdatePreReleaseConfigUrl
+                : Settings.Default.AutoUpdateConfigUrl);
 
-        AutoUpdater.Start(SettingsController.CurrentSettings.IsSuggestPreReleaseUpdatesActive
-            ? Settings.Default.AutoUpdatePreReleaseConfigUrl
-            : Settings.Default.AutoUpdateConfigUrl);
-
-        AutoUpdater.DownloadPath = Environment.CurrentDirectory;
-        AutoUpdater.RunUpdateAsAdmin = false;
-        AutoUpdater.ReportErrors = reportErrors;
-        AutoUpdater.ApplicationExitEvent += AutoUpdaterApplicationExitAsync;
-#pragma warning restore CA1416 // Validate platform compatibility
+            AutoUpdater.DownloadPath = Environment.CurrentDirectory;
+            AutoUpdater.RunUpdateAsAdmin = false;
+            AutoUpdater.ReportErrors = reportErrors;
+            AutoUpdater.ShowSkipButton = false;
+            AutoUpdater.ApplicationExitEvent += AutoUpdaterApplicationExit;
+        }
+        catch (Exception e)
+        {
+            ConsoleManager.WriteLineForError(MethodBase.GetCurrentMethod()?.DeclaringType, e);
+            Log.Warn($"{MethodBase.GetCurrentMethod()?.DeclaringType}: {e.Message}");
+        }
     }
 
-    private static async void AutoUpdaterApplicationExitAsync()
+    private static void AutoUpdaterApplicationExit()
     {
-        await Task.Delay(1000);
         Application.Current.Shutdown();
     }
 

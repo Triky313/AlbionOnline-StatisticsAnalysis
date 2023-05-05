@@ -1,64 +1,122 @@
-﻿using StatisticsAnalysisTool.Models.TranslationModel;
+﻿using StatisticsAnalysisTool.Enumerations;
+using StatisticsAnalysisTool.Models.TranslationModel;
 using StatisticsAnalysisTool.Properties;
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
+using System.Windows;
 
-namespace StatisticsAnalysisTool.ViewModels
+namespace StatisticsAnalysisTool.ViewModels;
+
+public class DialogWindowViewModel : INotifyPropertyChanged
 {
-    public class DialogWindowViewModel : INotifyPropertyChanged
+    private string _title;
+    private string _message;
+    private DialogWindowTranslation _dialogWindowTranslation = new();
+    private DialogType _type;
+    private Visibility _yesNoVisibility = Visibility.Collapsed;
+    private Visibility _errorTypeVisibility = Visibility.Collapsed;
+    private string _okButtonText = "Ok";
+
+    public DialogWindowViewModel(string title, string message, DialogType type)
     {
-        private string _title;
-        private string _message;
-        private DialogWindowTranslation _dialogWindowTranslation = new();
+        Title = title;
+        Message = message;
+        Type = type;
+    }
 
-        public DialogWindowViewModel(string title, string message)
+    public bool Canceled { get; set; }
+
+    #region Binding
+
+    public string Title
+    {
+        get => _title;
+        set
         {
-            Title = title;
-            Message = message;
+            _title = value;
+            OnPropertyChanged();
         }
+    }
 
-        public bool Canceled { get; set; }
-
-        #region Binding
-
-        public string Title
+    public string Message
+    {
+        get => _message;
+        set
         {
-            get => _title;
-            set
+            _message = value;
+            OnPropertyChanged();
+        }
+    }
+
+    public DialogType Type
+    {
+        get => _type;
+        set
+        {
+            _type = value;
+            switch (_type)
             {
-                _title = value;
-                OnPropertyChanged();
+                case DialogType.YesNo:
+                    ErrorTypeVisibility = Visibility.Collapsed;
+                    YesNoVisibility = Visibility.Visible;
+                    break;
+                case DialogType.Error:
+                    YesNoVisibility = Visibility.Collapsed;
+                    ErrorTypeVisibility = Visibility.Visible;
+                    OkButtonText = "Ok";
+                    break;
             }
+            OnPropertyChanged();
         }
+    }
 
-        public string Message
+    public Visibility YesNoVisibility
+    {
+        get => _yesNoVisibility;
+        set
         {
-            get => _message;
-            set
-            {
-                _message = value;
-                OnPropertyChanged();
-            }
+            _yesNoVisibility = value;
+            OnPropertyChanged();
         }
+    }
 
-        public DialogWindowTranslation Translation
+    public Visibility ErrorTypeVisibility
+    {
+        get => _errorTypeVisibility;
+        set
         {
-            get => _dialogWindowTranslation;
-            set
-            {
-                _dialogWindowTranslation = value;
-                OnPropertyChanged();
-            }
+            _errorTypeVisibility = value;
+            OnPropertyChanged();
         }
+    }
 
-        #endregion
-
-        public event PropertyChangedEventHandler PropertyChanged;
-
-        [NotifyPropertyChangedInvocator]
-        protected virtual void OnPropertyChanged([CallerMemberName] string propertyName = null)
+    public string OkButtonText
+    {
+        get => _okButtonText;
+        set
         {
-            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
+            _okButtonText = value;
+            OnPropertyChanged();
         }
+    }
+
+    public DialogWindowTranslation Translation
+    {
+        get => _dialogWindowTranslation;
+        set
+        {
+            _dialogWindowTranslation = value;
+            OnPropertyChanged();
+        }
+    }
+
+    #endregion
+
+    public event PropertyChangedEventHandler PropertyChanged;
+
+    [NotifyPropertyChangedInvocator]
+    protected virtual void OnPropertyChanged([CallerMemberName] string propertyName = null)
+    {
+        PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
     }
 }

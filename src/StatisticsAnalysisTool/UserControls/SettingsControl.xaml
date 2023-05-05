@@ -5,7 +5,7 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:viewModels="clr-namespace:StatisticsAnalysisTool.ViewModels"
              mc:Ignorable="d" 
-             d:DesignHeight="700" d:DesignWidth="800"
+             d:DesignHeight="800" d:DesignWidth="800"
              d:DataContext="{d:DesignInstance Type=viewModels:SettingsWindowViewModel}">
     <Grid IsVisibleChanged="ReloadSettings_OnIsVisibleChanged">
         <Grid Margin="0,0,0,44">
@@ -13,7 +13,21 @@
                 <StackPanel>
                     <DockPanel Margin="0,5,0,0">
                         <Label Content="{Binding Translation.Language, FallbackValue=LANGUAGE}" MinWidth="300" VerticalAlignment="Top" />
-                        <ComboBox ItemsSource="{Binding Languages}" SelectedItem="{Binding LanguagesSelection}" IsSynchronizedWithCurrentItem="True" DisplayMemberPath="EnglishName" SelectedValuePath="FileName" VerticalAlignment="Top" Height="26" HorizontalAlignment="Left" Width="200" />
+                        <ComboBox ItemsSource="{Binding Languages}" SelectedItem="{Binding LanguagesSelection}" 
+                                  IsSynchronizedWithCurrentItem="True" SelectedValuePath="FileName" VerticalAlignment="Top" Height="26" HorizontalAlignment="Left" Width="200">
+                            <ComboBox.ItemTemplate>
+                                <DataTemplate>
+                                    <TextBlock>
+                                        <TextBlock.Text>
+                                            <MultiBinding StringFormat="{}{0} ({1:N2}%)">
+                                                <Binding Path="EnglishName" />
+                                                <Binding Path="PercentageTranslations" />
+                                            </MultiBinding>
+                                        </TextBlock.Text>
+                                    </TextBlock>
+                                </DataTemplate>
+                            </ComboBox.ItemTemplate>
+                        </ComboBox>
                     </DockPanel>
                     <DockPanel Margin="0,5,5,0">
                         <Label MinWidth="300"/>
@@ -28,8 +42,29 @@
                         </CheckBox>
                     </DockPanel>
                     <DockPanel Margin="0,5,0,0">
+                        <Label Content="{Binding Translation.NavigationTabVisibility, FallbackValue=NAVIGATION__TAB__VISIBILITY}" MinWidth="300" VerticalAlignment="Top" />
+                        <ComboBox ItemsSource="{Binding TabVisibilities}" ItemTemplate="{StaticResource TabVisibilityFilter}" 
+                                  HorizontalAlignment="Left" VerticalAlignment="Top" Width="200" Height="26" />
+                    </DockPanel>
+                    <DockPanel Margin="0,5,0,0">
+                        <Label Content="{Binding Translation.SetServerManually, FallbackValue=SET_SERVER_MANUALLY}" MinWidth="300" VerticalAlignment="Top" />
+                        <ComboBox ItemsSource="{Binding Server}" SelectedItem="{Binding ServerSelection}" IsSynchronizedWithCurrentItem="True" DisplayMemberPath="Name" 
+                                  SelectedValuePath="Value" HorizontalAlignment="Left" VerticalAlignment="Top" Width="200" Height="26" />
+                    </DockPanel>
+                    <DockPanel Margin="0,5,0,0">
+                        <Label Content="{Binding Translation.NetworkFiltering, FallbackValue=NETWORK_FILTERING}" MinWidth="300" VerticalAlignment="Top" />
+                        <ComboBox ItemsSource="{Binding NetworkFiltering}" SelectedItem="{Binding NetworkFilteringSelection}" IsSynchronizedWithCurrentItem="True" DisplayMemberPath="Name" 
+                                  SelectedValuePath="Value" HorizontalAlignment="Left" VerticalAlignment="Top" Width="200" Height="26" />
+                    </DockPanel>
+                    <DockPanel Margin="0,5,0,0">
+                        <Label Content="{Binding Translation.Notifications, FallbackValue=NOTIFICATIONS}" MinWidth="300" VerticalAlignment="Top" />
+                        <ComboBox ItemsSource="{Binding NotificationFilters}" ItemTemplate="{StaticResource NotificationFilter}" 
+                                  HorizontalAlignment="Left" VerticalAlignment="Top" Width="200" Height="26" />
+                    </DockPanel>
+                    <DockPanel Margin="0,5,0,0">
                         <Label Content="{Binding Translation.RefreshRate, FallbackValue=REFRESH__RATE}" MinWidth="300" VerticalAlignment="Top" />
-                        <ComboBox ItemsSource="{Binding RefreshRates}" SelectedItem="{Binding RefreshRatesSelection}" IsSynchronizedWithCurrentItem="True" DisplayMemberPath="Name" SelectedValuePath="Value" HorizontalAlignment="Left" VerticalAlignment="Top" Width="200" Height="26" />
+                        <ComboBox ItemsSource="{Binding RefreshRates}" SelectedItem="{Binding RefreshRatesSelection}" IsSynchronizedWithCurrentItem="True" DisplayMemberPath="Name" 
+                                  SelectedValuePath="Value" HorizontalAlignment="Left" VerticalAlignment="Top" Width="200" Height="26" />
                     </DockPanel>
                     <DockPanel Margin="0,5,0,0">
                         <Label Content="{Binding Translation.CharacterNameToTrack, FallbackValue=CHARACTER_NAME_TO_TRACK}" MinWidth="300" VerticalAlignment="Top" />
@@ -45,11 +80,21 @@
                     </DockPanel>
                     <DockPanel Margin="0,5,0,0">
                         <Label Content="{Binding Translation.UpdateItemsJsonByDays, FallbackValue=UPDATE__ITEMS_JSON__BY__DAYS}" MinWidth="300" VerticalAlignment="Top" />
-                        <ComboBox ItemsSource="{Binding UpdateItemsJsonByDays}" SelectedItem="{Binding UpdateItemsJsonByDaysSelection}" IsSynchronizedWithCurrentItem="True" DisplayMemberPath="Name" SelectedValuePath="Value" HorizontalAlignment="Left" VerticalAlignment="Top" Width="200" Height="26" />
+                        <ComboBox ItemsSource="{Binding UpdateItemsJsonByDays}" SelectedItem="{Binding UpdateItemsJsonByDaysSelection}" 
+                                  IsSynchronizedWithCurrentItem="True" DisplayMemberPath="Name" SelectedValuePath="Value" HorizontalAlignment="Left" VerticalAlignment="Top" Width="200" Height="26" />
                     </DockPanel>
                     <DockPanel Margin="0,5,0,0">
                         <Label Content="{Binding Translation.ItemsJsonSourceUrl, FallbackValue=ITEMS_JSON_SOURCE_URL}" MinWidth="300" VerticalAlignment="Top" />
                         <TextBox Text="{Binding ItemsJsonSourceUrl}" Height="40" TextWrapping="Wrap" VerticalAlignment="Top" Margin="0,0,5,0" />
+                    </DockPanel>
+                    <DockPanel Margin="0,5,0,0">
+                        <Label Content="{Binding Translation.UpdateMobsJsonByDays, FallbackValue=UPDATE__MOBS_JSON__BY__DAYS}" MinWidth="300" VerticalAlignment="Top" />
+                        <ComboBox ItemsSource="{Binding UpdateMobsJsonByDays}" SelectedItem="{Binding UpdateMobsJsonByDaysSelection}" 
+                                  IsSynchronizedWithCurrentItem="True" DisplayMemberPath="Name" SelectedValuePath="Value" HorizontalAlignment="Left" VerticalAlignment="Top" Width="200" Height="26" />
+                    </DockPanel>
+                    <DockPanel Margin="0,5,0,0">
+                        <Label Content="{Binding Translation.MobsJsonSourceUrl, FallbackValue=MOBS__JSON__SOURCE__URL}" MinWidth="300" VerticalAlignment="Top" />
+                        <TextBox Text="{Binding MobsJsonSourceUrl}" Height="40" TextWrapping="Wrap" VerticalAlignment="Top" Margin="0,0,5,0" />
                     </DockPanel>
                     <DockPanel Margin="0,5,0,0">
                         <Label Content="{Binding Translation.OpenItemWindowInNewWindow, FallbackValue=OPEN__ITEM__WINDOW__IN__NEW__WINDOW}" MinWidth="300" VerticalAlignment="Top" />
@@ -78,17 +123,13 @@
                                 VerticalAlignment="Bottom" Click="OpenDebugConsole_Click" />
                     </DockPanel>
                     <DockPanel Margin="0,5,0,0">
-                        <Label Content="{Binding Translation.CityPricesApiUrl, FallbackValue=CITY__PRICES__API__URL}" MinWidth="300" VerticalAlignment="Top" />
-                        <TextBox Text="{Binding CityPricesApiUrl}" Height="40" TextWrapping="Wrap" VerticalAlignment="Top" Margin="0,0,5,0" />
+                        <Label Content="{Binding Translation.AlbionDataProjectBaseUrlWest, FallbackValue=ALBION_DATA_PROJECT_BASE_URL_WEST}" MinWidth="300" VerticalAlignment="Top" />
+                        <TextBox Text="{Binding AlbionDataProjectBaseUrlWest}" Height="40" TextWrapping="Wrap" VerticalAlignment="Top" Margin="0,0,5,0" />
                     </DockPanel>
                     <DockPanel Margin="0,5,0,0">
-                        <Label Content="{Binding Translation.CityPricesHistoryApiUrl, FallbackValue=CITY__PRICES__HISTORY__API__URL}" MinWidth="300" VerticalAlignment="Top" />
-                        <TextBox Text="{Binding CityPricesHistoryApiUrl}" Height="40" TextWrapping="Wrap" VerticalAlignment="Top" Margin="0,0,5,0" />
+                        <Label Content="{Binding Translation.AlbionDataProjectBaseUrlEast, FallbackValue=ALBION_DATA_PROJECT_BASE_URL_EAST}" MinWidth="300" VerticalAlignment="Top" />
+                        <TextBox Text="{Binding AlbionDataProjectBaseUrlEast}" Height="40" TextWrapping="Wrap" VerticalAlignment="Top" Margin="0,0,5,0" />
                     </DockPanel>
-                    <!--<DockPanel Margin="0,5,0,0">
-                        <Label Content="{Binding Translation.GoldStatsApiUrl, FallbackValue=GOLD__STATS__API__URL}" MinWidth="300" VerticalAlignment="Top" />
-                        <TextBox Text="{Binding GoldStatsApiUrl}" Height="40" TextWrapping="Wrap" VerticalAlignment="Top" Margin="0,0,5,0" />
-                    </DockPanel>-->
 
                     <DockPanel Margin="0,5,0,0">
                         <Label Content="{Binding Translation.IsLootLoggerSaveReminderActive, FallbackValue=IS__LOOT__LOGGER__SAVE__REMINDER__ACTIVE}" MinWidth="300" VerticalAlignment="Top" />

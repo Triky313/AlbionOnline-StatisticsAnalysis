@@ -21,6 +21,9 @@ public class Enchantment
     [JsonPropertyName("@consumespell")]
     public string ConsumeSpell { get; set; }
 
+    [JsonPropertyName("@durability")]
+    public double Durability { get; set; }
+
     [JsonConverter(typeof(CraftingRequirementsToCraftingRequirementsList))]
     [JsonPropertyName("craftingrequirements")]
     public List<CraftingRequirements> CraftingRequirements { get; set; }

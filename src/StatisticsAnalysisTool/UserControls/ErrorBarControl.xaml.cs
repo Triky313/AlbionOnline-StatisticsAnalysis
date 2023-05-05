@@ -1,32 +1,34 @@
 ﻿using StatisticsAnalysisTool.ViewModels;
 using System.Windows;
 
-namespace StatisticsAnalysisTool.UserControls
+namespace StatisticsAnalysisTool.UserControls;
+
+/// <summary>
+/// Interaction logic for ErrorBarControl.xaml
+/// </summary>
+public partial class ErrorBarControl
 {
-    /// <summary>
-    /// Interaction logic for ErrorBarControl.xaml
-    /// </summary>
-    public partial class ErrorBarControl
+    public ErrorBarControl()
     {
-        public ErrorBarControl()
-        {
-            InitializeComponent();
-        }
+        InitializeComponent();
+    }
         
-        public string ErrorBarText
-        {
-            get => (string)GetValue(ErrorBarTextProperty);
-            set => SetValue(ErrorBarTextProperty, value);
-        }
+    public string ErrorBarText
+    {
+        get => (string)GetValue(ErrorBarTextProperty);
+        set => SetValue(ErrorBarTextProperty, value);
+    }
 
-        public static readonly DependencyProperty ErrorBarTextProperty = DependencyProperty.Register("ErrorBarText", typeof(string), typeof(ErrorBarControl));
+    public static readonly DependencyProperty ErrorBarTextProperty = DependencyProperty.Register("ErrorBarText", typeof(string), typeof(ErrorBarControl));
 
-        private void BtnErrorBar_Click(object sender, RoutedEventArgs e)
+    private void BtnErrorBar_Click(object sender, RoutedEventArgs e)
+    {
+        Application.Current.Dispatcher.Invoke(() =>
         {
-            var mainWindowViewModel = (MainWindowViewModel)DataContext;
+            var mainWindowViewModel = (MainWindowViewModel) DataContext;
 
             mainWindowViewModel.ErrorBarText = string.Empty;
             mainWindowViewModel.ErrorBarVisibility = Visibility.Collapsed;
-        }
+        });
     }
 }

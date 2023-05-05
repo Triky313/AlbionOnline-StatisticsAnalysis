@@ -7,10 +7,13 @@
                     xmlns:models="clr-namespace:StatisticsAnalysisTool.Models"
                     xmlns:networkModel="clr-namespace:StatisticsAnalysisTool.Models.NetworkModel"
                     xmlns:bindingModel="clr-namespace:StatisticsAnalysisTool.Models.BindingModel"
-                    xmlns:converters="clr-namespace:StatisticsAnalysisTool.Common.Converters">
+                    xmlns:converters="clr-namespace:StatisticsAnalysisTool.Common.Converters" 
+                    xmlns:glob="clr-namespace:System.Globalization;assembly=mscorlib"
+                    xmlns:dungeon="clr-namespace:StatisticsAnalysisTool.Dungeon">
 
     <converters:ValuePerHourConverter x:Key="ValuePerHourConverter" />
     <converters:ValueAvgConverter x:Key="ValueAvgConverter" />
+    <converters:ShortNumberConverter x:Key="ShortNumberConverter" />
 
     <Style x:Key="DungeonNotificationFragment.Faction" TargetType="StackPanel">
         <Setter Property="VerticalAlignment" Value="Top"/>
@@ -328,7 +331,7 @@
     <Style x:Key="DungeonNotificationFragment.Grid.DungeonMode" TargetType="Grid">
         <Setter Property="Width" Value="5"/>
         <Style.Triggers>
-            <DataTrigger Binding="{Binding Mode, IsAsync=True}" Value="{x:Static enumerations:DungeonMode.Expedition}">
+            <DataTrigger Binding="{Binding Mode, IsAsync=True}" Value="{x:Static dungeon:DungeonMode.Expedition}">
                 <Setter Property="ToolTip" Value="{Binding TranslationExpedition, IsAsync=True}"/>
                 <Setter Property="Background">
                     <Setter.Value>
@@ -339,7 +342,7 @@
                     </Setter.Value>
                 </Setter>
             </DataTrigger>
-            <DataTrigger Binding="{Binding Mode, IsAsync=True}" Value="{x:Static enumerations:DungeonMode.HellGate}">
+            <DataTrigger Binding="{Binding Mode, IsAsync=True}" Value="{x:Static dungeon:DungeonMode.HellGate}">
                 <Setter Property="ToolTip" Value="{Binding TranslationSolo, IsAsync=True}"/>
                 <Setter Property="Background">
                     <Setter.Value>
@@ -350,7 +353,7 @@
                     </Setter.Value>
                 </Setter>
             </DataTrigger>
-            <DataTrigger Binding="{Binding Mode, IsAsync=True}" Value="{x:Static enumerations:DungeonMode.Corrupted}">
+            <DataTrigger Binding="{Binding Mode, IsAsync=True}" Value="{x:Static dungeon:DungeonMode.Corrupted}">
                 <Setter Property="ToolTip" Value="{Binding TranslationSolo, IsAsync=True}"/>
                 <Setter Property="Background">
                     <Setter.Value>
@@ -361,7 +364,7 @@
                     </Setter.Value>
                 </Setter>
             </DataTrigger>
-            <DataTrigger Binding="{Binding Mode, IsAsync=True}" Value="{x:Static enumerations:DungeonMode.Solo}">
+            <DataTrigger Binding="{Binding Mode, IsAsync=True}" Value="{x:Static dungeon:DungeonMode.Solo}">
                 <Setter Property="ToolTip" Value="{Binding TranslationSolo, IsAsync=True}"/>
                 <Setter Property="Background">
                     <Setter.Value>
@@ -372,7 +375,7 @@
                     </Setter.Value>
                 </Setter>
             </DataTrigger>
-            <DataTrigger Binding="{Binding Mode, IsAsync=True}" Value="{x:Static enumerations:DungeonMode.Standard}">
+            <DataTrigger Binding="{Binding Mode, IsAsync=True}" Value="{x:Static dungeon:DungeonMode.Standard}">
                 <Setter Property="ToolTip" Value="{Binding TranslationStandard, IsAsync=True}"/>
                 <Setter Property="Background">
                     <Setter.Value>
@@ -383,7 +386,7 @@
                     </Setter.Value>
                 </Setter>
             </DataTrigger>
-            <DataTrigger Binding="{Binding Mode, IsAsync=True}" Value="{x:Static enumerations:DungeonMode.Avalon}">
+            <DataTrigger Binding="{Binding Mode, IsAsync=True}" Value="{x:Static dungeon:DungeonMode.Avalon}">
                 <Setter Property="ToolTip" Value="{Binding TranslationAvalon, IsAsync=True}"/>
                 <Setter Property="Background">
                     <Setter.Value>
@@ -394,7 +397,7 @@
                     </Setter.Value>
                 </Setter>
             </DataTrigger>
-            <DataTrigger Binding="{Binding Mode, IsAsync=True}" Value="{x:Static enumerations:DungeonMode.Unknown}">
+            <DataTrigger Binding="{Binding Mode, IsAsync=True}" Value="{x:Static dungeon:DungeonMode.Unknown}">
                 <Setter Property="ToolTip" Value="{Binding TranslationUnknown}"/>
                 <Setter Property="Background" Value="{StaticResource SolidColorBrush.Dungeon.Mode.Unknown}" />
             </DataTrigger>
@@ -410,31 +413,31 @@
         <Setter Property="HorizontalContentAlignment" Value="Center"/>
         <Setter Property="VerticalContentAlignment" Value="Center"/>
         <Style.Triggers>
-            <DataTrigger Binding="{Binding Mode, IsAsync=True}" Value="{x:Static enumerations:DungeonMode.Expedition}">
+            <DataTrigger Binding="{Binding Mode, IsAsync=True}" Value="{x:Static dungeon:DungeonMode.Expedition}">
                 <Setter Property="ToolTip" Value="{Binding TranslationExpedition, IsAsync=True}"/>
                 <Setter Property="Foreground" Value="{StaticResource SolidColorBrush.Dungeon.Mode.Expedition.1}" />
             </DataTrigger>
-            <DataTrigger Binding="{Binding Mode, IsAsync=True}" Value="{x:Static enumerations:DungeonMode.HellGate}">
+            <DataTrigger Binding="{Binding Mode, IsAsync=True}" Value="{x:Static dungeon:DungeonMode.HellGate}">
                 <Setter Property="ToolTip" Value="{Binding TranslationSolo, IsAsync=True}"/>
                 <Setter Property="Foreground" Value="{StaticResource SolidColorBrush.Dungeon.Mode.HellGate.1}" />
             </DataTrigger>
-            <DataTrigger Binding="{Binding Mode, IsAsync=True}" Value="{x:Static enumerations:DungeonMode.Corrupted}">
+            <DataTrigger Binding="{Binding Mode, IsAsync=True}" Value="{x:Static dungeon:DungeonMode.Corrupted}">
                 <Setter Property="ToolTip" Value="{Binding TranslationSolo, IsAsync=True}"/>
                 <Setter Property="Foreground" Value="{StaticResource SolidColorBrush.Dungeon.Mode.Corrupted.1}" />
             </DataTrigger>
-            <DataTrigger Binding="{Binding Mode, IsAsync=True}" Value="{x:Static enumerations:DungeonMode.Solo}">
+            <DataTrigger Binding="{Binding Mode, IsAsync=True}" Value="{x:Static dungeon:DungeonMode.Solo}">
                 <Setter Property="ToolTip" Value="{Binding TranslationSolo, IsAsync=True}"/>
                 <Setter Property="Foreground" Value="{StaticResource SolidColorBrush.Dungeon.Mode.Solo.1}" />
             </DataTrigger>
-            <DataTrigger Binding="{Binding Mode, IsAsync=True}" Value="{x:Static enumerations:DungeonMode.Standard}">
+            <DataTrigger Binding="{Binding Mode, IsAsync=True}" Value="{x:Static dungeon:DungeonMode.Standard}">
                 <Setter Property="ToolTip" Value="{Binding TranslationStandard, IsAsync=True}"/>
                 <Setter Property="Foreground" Value="{StaticResource SolidColorBrush.Dungeon.Mode.Standard.1}" />
             </DataTrigger>
-            <DataTrigger Binding="{Binding Mode, IsAsync=True}" Value="{x:Static enumerations:DungeonMode.Avalon}">
+            <DataTrigger Binding="{Binding Mode, IsAsync=True}" Value="{x:Static dungeon:DungeonMode.Avalon}">
                 <Setter Property="ToolTip" Value="{Binding TranslationAvalon, IsAsync=True}"/>
                 <Setter Property="Foreground" Value="{StaticResource SolidColorBrush.Dungeon.Mode.Avalon.1}" />
             </DataTrigger>
-            <DataTrigger Binding="{Binding Mode, IsAsync=True}" Value="{x:Static enumerations:DungeonMode.Unknown}">
+            <DataTrigger Binding="{Binding Mode, IsAsync=True}" Value="{x:Static dungeon:DungeonMode.Unknown}">
                 <Setter Property="ToolTip" Value="{Binding TranslationUnknown}"/>
                 <Setter Property="Foreground" Value="{StaticResource SolidColorBrush.Dungeon.Mode.Unknown}" />
             </DataTrigger>
@@ -513,37 +516,37 @@
                     <DockPanel HorizontalAlignment="Left" VerticalAlignment="Top" Margin="10">
                         <StackPanel Orientation="Vertical" Margin="10,0,10,0">
                             <Image Source="../Resources/fame.png" Width="22" Height="22" ToolTip="{Binding DungeonStatsSelection.TranslationFame, FallbackValue=FAME}" />
-                            <TextBlock Text="{Binding DungeonStatsSelection.Fame, StringFormat='{}{0:N0}', FallbackValue=0}" Style="{StaticResource Dungeons.Stats.Value}" />
+                            <TextBlock Text="{Binding DungeonStatsSelection.Fame, Converter={StaticResource ShortNumberConverter}, ConverterCulture={x:Static glob:CultureInfo.CurrentCulture}, FallbackValue=0}" Style="{StaticResource Dungeons.Stats.Value}"/>
                             <TextBlock Text="{Binding DungeonStatsSelection.FamePerHour, Converter={StaticResource ValuePerHourConverter}, FallbackValue=0 /h}" Style="{StaticResource Dungeons.Stats.Value}" />
                             <TextBlock Text="{Binding DungeonStatsSelection.FameAverage, Converter={StaticResource ValueAvgConverter}, FallbackValue=0 .Avg}" Style="{StaticResource Dungeons.Stats.Value}" Margin="0,0,0,5" />
                         </StackPanel>
                         <StackPanel Orientation="Vertical" Margin="10,0,10,0">
                             <Image Source="../Resources/silver.png" Width="22" Height="22" ToolTip="{Binding DungeonStatsSelection.TranslationSilver, FallbackValue=SILVER}" />
-                            <TextBlock Text="{Binding DungeonStatsSelection.Silver, StringFormat='{}{0:N0}', FallbackValue=0}" Style="{StaticResource Dungeons.Stats.Value}" />
+                            <TextBlock Text="{Binding DungeonStatsSelection.Silver, Converter={StaticResource ShortNumberConverter}, ConverterCulture={x:Static glob:CultureInfo.CurrentCulture}, FallbackValue=0}" Style="{StaticResource Dungeons.Stats.Value}" />
                             <TextBlock Text="{Binding DungeonStatsSelection.SilverPerHour, Converter={StaticResource ValuePerHourConverter}, FallbackValue=0 /h}" Style="{StaticResource Dungeons.Stats.Value}" />
                             <TextBlock Text="{Binding DungeonStatsSelection.SilverAverage, Converter={StaticResource ValueAvgConverter}, FallbackValue=0 .Avg}" Style="{StaticResource Dungeons.Stats.Value}" Margin="0,0,0,5" />
                         </StackPanel>
                         <StackPanel Orientation="Vertical" Margin="10,0,10,0">
                             <Image Source="../Resources/respec.png" Width="22" Height="22" ToolTip="{Binding DungeonStatsSelection.TranslationReSpec, FallbackValue=RESPEC}" />
-                            <TextBlock Text="{Binding DungeonStatsSelection.ReSpec, StringFormat='{}{0:N0}', FallbackValue=0}" Style="{StaticResource Dungeons.Stats.Value}" />
+                            <TextBlock Text="{Binding DungeonStatsSelection.ReSpec, Converter={StaticResource ShortNumberConverter}, ConverterCulture={x:Static glob:CultureInfo.CurrentCulture}, FallbackValue=0}" Style="{StaticResource Dungeons.Stats.Value}" />
                             <TextBlock Text="{Binding DungeonStatsSelection.ReSpecPerHour, Converter={StaticResource ValuePerHourConverter}, FallbackValue=0 /h}" Style="{StaticResource Dungeons.Stats.Value}" />
                             <TextBlock Text="{Binding DungeonStatsSelection.ReSpecAverage, Converter={StaticResource ValueAvgConverter}, FallbackValue=0 .Avg}" Style="{StaticResource Dungeons.Stats.Value}" Margin="0,0,0,5" />
                         </StackPanel>
                         <StackPanel Orientation="Vertical" Margin="10,0,10,0">
                             <Image Source="../Resources/might.png" Width="22" Height="22" ToolTip="{Binding DungeonStatsSelection.TranslationMight, FallbackValue=MIGHT}" />
-                            <TextBlock Text="{Binding DungeonStatsSelection.Might, StringFormat='{}{0:N0}', FallbackValue=0}" Style="{StaticResource Dungeons.Stats.Value}" />
+                            <TextBlock Text="{Binding DungeonStatsSelection.Might, Converter={StaticResource ShortNumberConverter}, ConverterCulture={x:Static glob:CultureInfo.CurrentCulture}, FallbackValue=0}" Style="{StaticResource Dungeons.Stats.Value}" />
                             <TextBlock Text="{Binding DungeonStatsSelection.MightPerHour, Converter={StaticResource ValuePerHourConverter}, FallbackValue=0 /h}" Style="{StaticResource Dungeons.Stats.Value}" />
                             <TextBlock Text="{Binding DungeonStatsSelection.MightAverage, Converter={StaticResource ValueAvgConverter}, FallbackValue=0 .Avg}" Style="{StaticResource Dungeons.Stats.Value}" Margin="0,0,0,5" />
                         </StackPanel>
                         <StackPanel Orientation="Vertical" Margin="10,0,10,0">
                             <Image Source="../Resources/favor.png" Width="22" Height="22" ToolTip="{Binding DungeonStatsSelection.TranslationFavor, FallbackValue=FAVOR}" />
-                            <TextBlock Text="{Binding DungeonStatsSelection.Favor, StringFormat='{}{0:N0}', FallbackValue=0}" Style="{StaticResource Dungeons.Stats.Value}" />
+                            <TextBlock Text="{Binding DungeonStatsSelection.Favor, Converter={StaticResource ShortNumberConverter}, ConverterCulture={x:Static glob:CultureInfo.CurrentCulture}, FallbackValue=0}" Style="{StaticResource Dungeons.Stats.Value}" />
                             <TextBlock Text="{Binding DungeonStatsSelection.FavorPerHour, Converter={StaticResource ValuePerHourConverter}, FallbackValue=0 /h}" Style="{StaticResource Dungeons.Stats.Value}" />
                             <TextBlock Text="{Binding DungeonStatsSelection.FavorAverage, Converter={StaticResource ValueAvgConverter}, FallbackValue=0 .Avg}" Style="{StaticResource Dungeons.Stats.Value}" Margin="0,0,0,5" />
                         </StackPanel>
                         <StackPanel Orientation="Vertical" Margin="10,0,10,0">
                             <Image Source="../Assets/bag.png" Width="22" Height="22" ToolTip="{Binding DungeonStatsSelection.TranslationLootInSilver, FallbackValue='LOOT_IN_SILVER'}" />
-                            <TextBlock Text="{Binding DungeonStatsSelection.LootInSilver, StringFormat='{}{0:N0}', FallbackValue=0}" Style="{StaticResource Dungeons.Stats.Value}" />
+                            <TextBlock Text="{Binding DungeonStatsSelection.LootInSilver, Converter={StaticResource ShortNumberConverter}, ConverterCulture={x:Static glob:CultureInfo.CurrentCulture}, FallbackValue=0}" Style="{StaticResource Dungeons.Stats.Value}" />
                             <TextBlock Text="{Binding DungeonStatsSelection.LootInSilverPerHour, Converter={StaticResource ValuePerHourConverter}, FallbackValue=0 /h}" Style="{StaticResource Dungeons.Stats.Value}" />
                             <TextBlock Text="{Binding DungeonStatsSelection.LootInSilverAverage, Converter={StaticResource ValueAvgConverter}, FallbackValue=0 .Avg}" Style="{StaticResource Dungeons.Stats.Value}" Margin="0,0,0,5" />
                         </StackPanel>
@@ -644,7 +647,7 @@
                                Foreground="{StaticResource SolidColorBrush.Text.1}" HorizontalAlignment="Center" Margin="0,0,0,5" />
                     <StackPanel Orientation="Horizontal">
                         <StackPanel Orientation="Horizontal" Margin="5,0">
-                            <Image Source="{Binding DungeonStatsSelection.BestLootedItem.Item.Icon, IsAsync=True, FallbackValue='../Resources/Trash.png'}" Height="40" Width="40" Margin="0,0,5,0" />
+                            <Image Source="{Binding DungeonStatsSelection.BestLootedItem.Item.Icon, IsAsync=True}" Height="40" Width="40" Margin="0,0,5,0" />
                             <StackPanel Orientation="Vertical">
                                 <TextBlock Text="{Binding DungeonStatsSelection.BestLootedItem.Item.LocalizedName, FallbackValue='-'}" 
                                            Style="{StaticResource Dungeons.Stats.TitleText}" />
@@ -667,20 +670,76 @@
         <StackPanel Orientation="Vertical" HorizontalAlignment="Left" Width="auto" Margin="10,10,0,0">
             <Label Style="{StaticResource Tracking.Information.Title}" Content="{Binding TranslationFilter, FallbackValue=FILTER}" FontWeight="Bold"/>
             <DockPanel Margin="0,0,0,0" Height="30" VerticalAlignment="Top">
-                <CheckBox Content="{Binding TranslationSolo}" ToolTip="{Binding TranslationSoloDungeon}"
+                <CheckBox Content="{Binding TranslationSolo, FallbackValue='SOLO'}" ToolTip="{Binding TranslationSoloDungeon}"
                           Margin="5,0,5,0" IsChecked="{Binding SoloCheckbox}"/>
-                <CheckBox Content="{Binding TranslationStandard}" ToolTip="{Binding TranslationStandardDungeon}"
+                <CheckBox Content="{Binding TranslationStandard, FallbackValue='STANDARD'}" ToolTip="{Binding TranslationStandardDungeon}"
                           Margin="5,0,5,0" IsChecked="{Binding StandardCheckbox}"/>
-                <CheckBox Content="{Binding TranslationAva}" ToolTip="{Binding TranslationAvalonianDungeon}"
+                <CheckBox Content="{Binding TranslationAva, FallbackValue='AVA'}" ToolTip="{Binding TranslationAvalonianDungeon}"
                           Margin="5,0,5,0" IsChecked="{Binding AvaCheckbox}"/>
-                <CheckBox Content="{Binding TranslationHg}" ToolTip="{Binding TranslationHellGate}"
+                <CheckBox Content="{Binding TranslationHg, FallbackValue='HG'}" ToolTip="{Binding TranslationHellGate}"
                           Margin="5,0,5,0" IsChecked="{Binding HgCheckbox}"/>
-                <CheckBox Content="{Binding TranslationCorrupted}" ToolTip="{Binding TranslationCorruptedDungeon}"
+                <CheckBox Content="{Binding TranslationCorrupted, FallbackValue='CORRUPTED'}" ToolTip="{Binding TranslationCorruptedDungeon}"
                           Margin="5,0,5,0" IsChecked="{Binding CorruptedCheckbox}"/>
-                <CheckBox Content="{Binding TranslationExped}" ToolTip="{Binding TranslationExpedition}"
+                <CheckBox Content="{Binding TranslationExped, FallbackValue='EXPEDITION'}" ToolTip="{Binding TranslationExpedition}"
                           Margin="5,0,5,0" IsChecked="{Binding ExpeditionCheckbox}"/>
-                <CheckBox Content="{Binding TranslationUnknown}" 
+                <CheckBox Content="{Binding TranslationUnknown, FallbackValue='UNKNOWN'}" 
                           Margin="5,0,5,0" IsChecked="{Binding UnknownCheckbox}"/>
+            </DockPanel>
+            <DockPanel Margin="0,0,0,0" Height="30" VerticalAlignment="Top" Width="auto" HorizontalAlignment="Left">
+                <CheckBox Content="T?" Margin="5,0,5,0" IsChecked="{Binding IsTierUnknown}"/>
+                <CheckBox Content="{Binding TranslationT4, FallbackValue='T4'}" Margin="5,0,5,0" IsChecked="{Binding IsT4}"/>
+                <CheckBox Content="{Binding TranslationT5, FallbackValue='T5'}" Margin="5,0,5,0" IsChecked="{Binding IsT5}"/>
+                <CheckBox Content="{Binding TranslationT6, FallbackValue='T6'}" Margin="5,0,5,0" IsChecked="{Binding IsT6}"/>
+                <CheckBox Content="{Binding TranslationT7, FallbackValue='T7'}" Margin="5,0,5,0" IsChecked="{Binding IsT7}"/>
+                <CheckBox Content="{Binding TranslationT8, FallbackValue='T8'}" Margin="5,0,5,0" IsChecked="{Binding IsT8}"/>
+            </DockPanel>
+            <DockPanel Margin="0,0,0,0" Height="30" VerticalAlignment="Top" Width="auto" HorizontalAlignment="Left">
+                <CheckBox ToolTip="{Binding TranslationUnknown}" Margin="5,0,5,0" IsChecked="{Binding IsLevelUnknown}">
+                    <CheckBox.Content>
+                        <Label>?</Label>
+                    </CheckBox.Content>
+                </CheckBox>
+                <CheckBox ToolTip="{Binding TranslationFlat}" Margin="5,0,5,0" IsChecked="{Binding IsLevel0}">
+                    <CheckBox.Content>
+                        <StackPanel Orientation="Horizontal">
+                            <Image Source="../Assets/gem_level0.png" Height="11" Width="11" Margin="0,2,0,0" />
+                        </StackPanel>
+                    </CheckBox.Content>
+                </CheckBox>
+                <CheckBox ToolTip=".0" Margin="5,0,5,0" IsChecked="{Binding IsLevel1}">
+                    <CheckBox.Content>
+                        <StackPanel Orientation="Horizontal">
+                            <Image Source="../Assets/gem_level1.png" Height="11" Width="11" Margin="0,2,0,0" />
+                        </StackPanel>
+                    </CheckBox.Content>
+                </CheckBox>
+                <CheckBox ToolTip=".1" Margin="5,0,5,0" IsChecked="{Binding IsLevel2}">
+                    <CheckBox.Content>
+                        <StackPanel Orientation="Horizontal">
+                            <Image Source="../Assets/gem_level2.png" Height="11" Width="11" Margin="0,2,0,0" />
+                            <Image Source="../Assets/gem_level2.png" Height="11" Width="11" Margin="-5,2,0,0" />
+                        </StackPanel>
+                    </CheckBox.Content>
+                </CheckBox>
+                <CheckBox ToolTip=".2" Margin="5,0,5,0" IsChecked="{Binding IsLevel3}">
+                    <CheckBox.Content>
+                        <StackPanel Orientation="Horizontal">
+                            <Image Source="../Assets/gem_level3.png" Height="11" Width="11" Margin="0,2,0,0" />
+                            <Image Source="../Assets/gem_level3.png" Height="11" Width="11" Margin="-5,2,0,0" />
+                            <Image Source="../Assets/gem_level3.png" Height="11" Width="11" Margin="-5,2,0,0" />
+                        </StackPanel>
+                    </CheckBox.Content>
+                </CheckBox>
+                <CheckBox ToolTip=".3" Margin="5,0,5,0" IsChecked="{Binding IsLevel4}">
+                    <CheckBox.Content>
+                        <StackPanel Orientation="Horizontal">
+                            <Image Source="../Assets/gem_level4.png" Height="11" Width="11" Margin="0,2,0,0" />
+                            <Image Source="../Assets/gem_level4.png" Height="11" Width="11" Margin="-5,2,0,0" />
+                            <Image Source="../Assets/gem_level4.png" Height="11" Width="11" Margin="-5,2,0,0" />
+                            <Image Source="../Assets/gem_level4.png" Height="11" Width="11" Margin="-5,2,0,0" />
+                        </StackPanel>
+                    </CheckBox.Content>
+                </CheckBox>
             </DockPanel>
         </StackPanel>
     </DataTemplate>
@@ -808,7 +867,135 @@
         </Grid>
     </DataTemplate>
 
-    <DataTemplate x:Key="DungeonNotificationFragment" DataType="{x:Type notification:DungeonNotificationFragment}">
+    <DataTemplate x:Key="DungeonNotificationFragment.MapTypeIcon.Template" DataType="{x:Type dungeon:DungeonNotificationFragment}">
+        <StackPanel Orientation="Horizontal" VerticalAlignment="Center" HorizontalAlignment="Center">
+            <Image Source="../Assets/gem_level1.png" Height="11" Width="11" Margin="0,0,-5,0">
+                <Image.Style>
+                    <Style TargetType="Image">
+                        <Setter Property="Visibility" Value="Collapsed"/>
+                        <Style.Triggers>
+                            <DataTrigger Binding="{Binding Level}" Value="1">
+                                <Setter Property="Visibility" Value="Visible" />
+                            </DataTrigger>
+                        </Style.Triggers>
+                    </Style>
+                </Image.Style>
+            </Image>
+
+            <Image Source="../Assets/gem_level2.png" Height="11" Width="11" Margin="0,0,-5,0">
+                <Image.Style>
+                    <Style TargetType="Image">
+                        <Setter Property="Visibility" Value="Collapsed"/>
+                        <Style.Triggers>
+                            <DataTrigger Binding="{Binding Level}" Value="2">
+                                <Setter Property="Visibility" Value="Visible" />
+                            </DataTrigger>
+                        </Style.Triggers>
+                    </Style>
+                </Image.Style>
+            </Image>
+            <Image Source="../Assets/gem_level2.png" Height="11" Width="11" Margin="0,0,-5,0">
+                <Image.Style>
+                    <Style TargetType="Image">
+                        <Setter Property="Visibility" Value="Collapsed"/>
+                        <Style.Triggers>
+                            <DataTrigger Binding="{Binding Level}" Value="2">
+                                <Setter Property="Visibility" Value="Visible" />
+                            </DataTrigger>
+                        </Style.Triggers>
+                    </Style>
+                </Image.Style>
+            </Image>
+
+            <Image Source="../Assets/gem_level3.png" Height="11" Width="11" Margin="0,0,-5,0">
+                <Image.Style>
+                    <Style TargetType="Image">
+                        <Setter Property="Visibility" Value="Collapsed"/>
+                        <Style.Triggers>
+                            <DataTrigger Binding="{Binding Level}" Value="3">
+                                <Setter Property="Visibility" Value="Visible" />
+                            </DataTrigger>
+                        </Style.Triggers>
+                    </Style>
+                </Image.Style>
+            </Image>
+            <Image Source="../Assets/gem_level3.png" Height="11" Width="11" Margin="0,0,-5,0">
+                <Image.Style>
+                    <Style TargetType="Image">
+                        <Setter Property="Visibility" Value="Collapsed"/>
+                        <Style.Triggers>
+                            <DataTrigger Binding="{Binding Level}" Value="3">
+                                <Setter Property="Visibility" Value="Visible" />
+                            </DataTrigger>
+                        </Style.Triggers>
+                    </Style>
+                </Image.Style>
+            </Image>
+            <Image Source="../Assets/gem_level3.png" Height="11" Width="11" Margin="0,0,-5,0">
+                <Image.Style>
+                    <Style TargetType="Image">
+                        <Setter Property="Visibility" Value="Collapsed"/>
+                        <Style.Triggers>
+                            <DataTrigger Binding="{Binding Level}" Value="3">
+                                <Setter Property="Visibility" Value="Visible" />
+                            </DataTrigger>
+                        </Style.Triggers>
+                    </Style>
+                </Image.Style>
+            </Image>
+
+            <Image Source="../Assets/gem_level4.png" Height="11" Width="11" Margin="0,0,-5,0">
+                <Image.Style>
+                    <Style TargetType="Image">
+                        <Setter Property="Visibility" Value="Collapsed"/>
+                        <Style.Triggers>
+                            <DataTrigger Binding="{Binding Level}" Value="4">
+                                <Setter Property="Visibility" Value="Visible" />
+                            </DataTrigger>
+                        </Style.Triggers>
+                    </Style>
+                </Image.Style>
+            </Image>
+            <Image Source="../Assets/gem_level4.png" Height="11" Width="11" Margin="0,0,-5,0">
+                <Image.Style>
+                    <Style TargetType="Image">
+                        <Setter Property="Visibility" Value="Collapsed"/>
+                        <Style.Triggers>
+                            <DataTrigger Binding="{Binding Level}" Value="4">
+                                <Setter Property="Visibility" Value="Visible" />
+                            </DataTrigger>
+                        </Style.Triggers>
+                    </Style>
+                </Image.Style>
+            </Image>
+            <Image Source="../Assets/gem_level4.png" Height="11" Width="11" Margin="0,0,-5,0">
+                <Image.Style>
+                    <Style TargetType="Image">
+                        <Setter Property="Visibility" Value="Collapsed"/>
+                        <Style.Triggers>
+                            <DataTrigger Binding="{Binding Level}" Value="4">
+                                <Setter Property="Visibility" Value="Visible" />
+                            </DataTrigger>
+                        </Style.Triggers>
+                    </Style>
+                </Image.Style>
+            </Image>
+            <Image Source="../Assets/gem_level4.png" Height="11" Width="11" Margin="0,0,-5,0">
+                <Image.Style>
+                    <Style TargetType="Image">
+                        <Setter Property="Visibility" Value="Collapsed"/>
+                        <Style.Triggers>
+                            <DataTrigger Binding="{Binding Level}" Value="4">
+                                <Setter Property="Visibility" Value="Visible" />
+                            </DataTrigger>
+                        </Style.Triggers>
+                    </Style>
+                </Image.Style>
+            </Image>
+        </StackPanel>
+    </DataTemplate>
+
+    <DataTemplate x:Key="DungeonNotificationFragment" DataType="{x:Type dungeon:DungeonNotificationFragment}">
         <Border BorderBrush="{StaticResource SolidColorBrush.Background.2}" BorderThickness="0,0,0,1" Visibility="{Binding Visibility}">
             <Grid Height="96" Margin="0">
                 <Grid.Style>
@@ -840,7 +1027,45 @@
                 <StackPanel Orientation="Vertical" Style="{StaticResource DungeonNotificationFragment.Faction}">
                     <DockPanel>
                         <Grid HorizontalAlignment="Left" Style="{StaticResource DungeonNotificationFragment.Grid.DungeonMode}" />
-                        <Label Style="{StaticResource DungeonNotificationFragment.Label.DungeonMode}" Content="{Binding TierString}"/>
+                        <StackPanel Orientation="Vertical" VerticalAlignment="Center" HorizontalAlignment="Center">
+                            <TextBlock>
+                                <TextBlock.Style>
+                                    <Style TargetType="TextBlock">
+                                        <Setter Property="VerticalAlignment" Value="Center"/>
+                                        <Setter Property="HorizontalAlignment" Value="Center"/>
+                                        <Setter Property="TextAlignment" Value="Center"/>
+                                        <Setter Property="FontWeight" Value="Bold"/>
+                                        <Setter Property="Width" Value="35"/>
+                                        <Setter Property="Margin" Value="5,0,0,0"/>
+                                        <Setter Property="Foreground" Value="{StaticResource SolidColorBrush.Text.5}" />
+                                        <Style.Triggers>
+                                            <DataTrigger Binding="{Binding Level}" Value="0">
+                                                <Setter Property="Foreground" Value="{StaticResource SolidColorBrush.Text.3}" />
+                                            </DataTrigger>
+                                            <DataTrigger Binding="{Binding Level}" Value="1">
+                                                <Setter Property="Foreground" Value="{StaticResource SolidColorBrush.Text.2}" />
+                                            </DataTrigger>
+                                            <DataTrigger Binding="{Binding Level}" Value="2">
+                                                <Setter Property="Foreground" Value="{StaticResource SolidColorBrush.Item.Level.Color.1}" />
+                                            </DataTrigger>
+                                            <DataTrigger Binding="{Binding Level}" Value="3">
+                                                <Setter Property="Foreground" Value="{StaticResource SolidColorBrush.Item.Level.Color.2}" />
+                                            </DataTrigger>
+                                            <DataTrigger Binding="{Binding Level}" Value="4">
+                                                <Setter Property="Foreground" Value="{StaticResource SolidColorBrush.Item.Level.Color.3}" />
+                                            </DataTrigger>
+                                        </Style.Triggers>
+                                    </Style>
+                                </TextBlock.Style>
+                                <TextBlock.Text>
+                                    <MultiBinding StringFormat="{}{0}{1}">
+                                        <Binding Path="TierString" FallbackValue="?" />
+                                        <Binding Path="LevelString" FallbackValue="?" />
+                                    </MultiBinding>
+                                </TextBlock.Text>
+                            </TextBlock>
+                            <ContentPresenter ContentTemplate="{StaticResource DungeonNotificationFragment.MapTypeIcon.Template}" Content="{Binding}"/>
+                        </StackPanel>
                         <Grid Height="96">
                             <StackPanel Orientation="Vertical">
                                 <StackPanel Orientation="Horizontal" Height="24" Margin="0">
@@ -903,49 +1128,88 @@
                                           ToolTip="{Binding TranslationDungeonFame, FallbackValue=DUNGEON__FAME}">
                                         <Image Source="../Resources/fame.png" Style="{StaticResource LineFragmentImageStyle}" />
                                     </Grid>
-                                    <Label Content="{Binding Fame, IsAsync=True, FallbackValue=-}" 
-                                       ContentStringFormat="{}{0:N0}" Style="{StaticResource DungeonNotificationFragment.BestFame}" VerticalAlignment="Center" 
-                                       Margin="0 0 10 0" MinWidth="75" />
+                                    <Label Content="{Binding Fame, Converter={StaticResource ShortNumberConverter}, ConverterCulture={x:Static glob:CultureInfo.CurrentCulture}, IsAsync=True, FallbackValue=-}" 
+                                           Style="{StaticResource DungeonNotificationFragment.BestFame}" VerticalAlignment="Center" 
+                                           Margin="0 0 10 0" MinWidth="75">
+                                        <Label.ToolTip>
+                                            <ToolTip 
+                                                Content="{Binding Fame}"
+                                                ContentStringFormat="{}{0:N0}"
+                                            />
+                                        </Label.ToolTip>
+                                    </Label>
 
                                     <Grid HorizontalAlignment="Center" VerticalAlignment="Center" 
                                           ToolTip="{Binding TranslationDungeonReSpec, FallbackValue=DUNGEON__RESPEC}">
                                         <Image Source="../Resources/respec.png" Style="{StaticResource LineFragmentImageStyle}" />
                                     </Grid>
-                                    <Label Content="{Binding ReSpec, IsAsync=True, FallbackValue=-}" 
-                                   ContentStringFormat="{}{0:N0}" Style="{StaticResource DungeonNotificationFragment.BestReSpec}" VerticalAlignment="Center" 
-                                   Margin="0 0 10 0" MinWidth="75" />
+                                    <Label Content="{Binding ReSpec, Converter={StaticResource ShortNumberConverter}, ConverterCulture={x:Static glob:CultureInfo.CurrentCulture}, IsAsync=True, FallbackValue=-}" 
+                                           Style="{StaticResource DungeonNotificationFragment.BestReSpec}" VerticalAlignment="Center" 
+                                           Margin="0 0 10 0" MinWidth="75">
+                                        <Label.ToolTip>
+                                            <ToolTip 
+                                                Content="{Binding ReSpec}"
+                                                ContentStringFormat="{}{0:N0}"
+                                            />
+                                        </Label.ToolTip>
+                                    </Label>
 
                                     <Grid HorizontalAlignment="Center" VerticalAlignment="Center" 
                                           ToolTip="{Binding TranslationDungeonSilver, FallbackValue=DUNGEON__SILVER}">
                                         <Image Source="../Resources/silver.png" Style="{StaticResource LineFragmentImageStyle}" />
                                     </Grid>
-                                    <Label Content="{Binding Silver, IsAsync=True, FallbackValue=-}" 
-                                   ContentStringFormat="{}{0:N0}" Style="{StaticResource DungeonNotificationFragment.BestSilver}" VerticalAlignment="Center" 
-                                   Margin="0 0 10 0" MinWidth="75" />
+                                    <Label Content="{Binding Silver, Converter={StaticResource ShortNumberConverter}, ConverterCulture={x:Static glob:CultureInfo.CurrentCulture}, IsAsync=True, FallbackValue=-}" 
+                                           Style="{StaticResource DungeonNotificationFragment.BestSilver}" VerticalAlignment="Center" 
+                                           Margin="0 0 10 0" MinWidth="75">
+                                        <Label.ToolTip>
+                                            <ToolTip 
+                                                Content="{Binding Silver}"
+                                                ContentStringFormat="{}{0:N0}"
+                                            />
+                                        </Label.ToolTip>
+                                    </Label>
 
                                     <Grid HorizontalAlignment="Center" VerticalAlignment="Center" 
                                           ToolTip="{Binding TranslationDungeonFamePerHour, FallbackValue=DUNGEON__FAME__PER__HOUR}">
                                         <Image Source="../Resources/fame.png" Style="{StaticResource LineFragmentImageStyle}" />
                                     </Grid>
-                                    <Label Content="{Binding FamePerHour, IsAsync=True, FallbackValue=-}" 
-                                   ContentStringFormat="{}{0:N0}/h" Style="{StaticResource DungeonNotificationFragment.BestFamePerHour}" VerticalAlignment="Center" 
-                                   Margin="0 0 10 0" MinWidth="85" />
+                                    <Label Content="{Binding FamePerHour, Converter={StaticResource ShortNumberConverter}, ConverterCulture={x:Static glob:CultureInfo.CurrentCulture}, IsAsync=True, FallbackValue=-}" 
+                                           ContentStringFormat="{}{0:N0}/h" Style="{StaticResource DungeonNotificationFragment.BestFamePerHour}" VerticalAlignment="Center" Margin="0 0 10 0" MinWidth="85">
+                                        <Label.ToolTip>
+                                            <ToolTip 
+                                                Content="{Binding FamePerHour}"
+                                                ContentStringFormat="{}{0:N0}/h"
+                                            />
+                                        </Label.ToolTip>
+                                    </Label>
 
                                     <Grid HorizontalAlignment="Center" VerticalAlignment="Center" 
                                           ToolTip="{Binding TranslationDungeonReSpecPerHour, FallbackValue=DUNGEON__RESPEC__PER__HOUR}">
                                         <Image Source="../Resources/respec.png" Style="{StaticResource LineFragmentImageStyle}" />
                                     </Grid>
-                                    <Label Content="{Binding ReSpecPerHour, IsAsync=True, FallbackValue=-}" 
-                                   ContentStringFormat="{}{0:N0}/h" Style="{StaticResource DungeonNotificationFragment.BestReSpecPerHour}" VerticalAlignment="Center" 
-                                   Margin="0 0 10 0" MinWidth="85" />
+                                    <Label Content="{Binding ReSpecPerHour, Converter={StaticResource ShortNumberConverter}, ConverterCulture={x:Static glob:CultureInfo.CurrentCulture}, IsAsync=True, FallbackValue=-}" 
+                                           ContentStringFormat="{}{0:N0}/h" Style="{StaticResource DungeonNotificationFragment.BestReSpecPerHour}" VerticalAlignment="Center" Margin="0 0 10 0" MinWidth="85">
+                                        <Label.ToolTip>
+                                            <ToolTip 
+                                                Content="{Binding ReSpecPerHour}"
+                                                ContentStringFormat="{}{0:N0}/h"
+                                            />
+                                        </Label.ToolTip>
+                                    </Label>
 
                                     <Grid HorizontalAlignment="Center" VerticalAlignment="Center" 
                                           ToolTip="{Binding TranslationDungeonSilverPerHour, FallbackValue=DUNGEON__SILVER__PER__HOUR}">
                                         <Image Source="../Resources/silver.png" Style="{StaticResource LineFragmentImageStyle}" />
                                     </Grid>
-                                    <Label Content="{Binding SilverPerHour, IsAsync=True, FallbackValue=-}" 
-                                   ContentStringFormat="{}{0:N0}/h" Style="{StaticResource DungeonNotificationFragment.BestSilverPerHour}" VerticalAlignment="Center" 
-                                   Margin="0 0 10 0" MinWidth="85" />
+                                    <Label Content="{Binding SilverPerHour, Converter={StaticResource ShortNumberConverter}, ConverterCulture={x:Static glob:CultureInfo.CurrentCulture}, IsAsync=True, FallbackValue=-}" 
+                                   ContentStringFormat="{}{0:N0}/h" Style="{StaticResource DungeonNotificationFragment.BestSilverPerHour}" VerticalAlignment="Center" Margin="0 0 10 0" MinWidth="85">
+                                        <Label.ToolTip>
+                                            <ToolTip 
+                                                Content="{Binding SilverPerHour}"
+                                                ContentStringFormat="{}{0:N0}/h"
+                                            />
+                                        </Label.ToolTip>
+                                    </Label>
                                 </StackPanel>
 
                                 <!-- Faction points and coins -->
@@ -953,26 +1217,54 @@
                                     <Grid HorizontalAlignment="Center" VerticalAlignment="Center" Margin="8,0,2,0">
                                         <Image Style="{StaticResource Tracker.Fraction.Flag.Icon}" ToolTip="{Binding TranslationFactionFlags, FallbackValue=FACTION__FLAGS}"/>
                                     </Grid>
-                                    <Label Content="{Binding FactionFlags, IsAsync=True, FallbackValue=-}" 
-                                       ContentStringFormat="{}{0:N0}" Style="{StaticResource DungeonNotificationFragment.BestFactionFlags}" VerticalAlignment="Center" Margin="0 0 5 0" MinWidth="82"/>
+                                    <Label Content="{Binding FactionFlags, Converter={StaticResource ShortNumberConverter}, ConverterCulture={x:Static glob:CultureInfo.CurrentCulture}, IsAsync=True, FallbackValue=-}" 
+                                       ContentStringFormat="{}{0:N0}" Style="{StaticResource DungeonNotificationFragment.BestFactionFlags}" VerticalAlignment="Center" Margin="0 0 5 0" MinWidth="82">
+                                        <Label.ToolTip>
+                                            <ToolTip 
+                                                Content="{Binding FactionFlags}"
+                                                ContentStringFormat="{}{0:N0}"
+                                            />
+                                        </Label.ToolTip>
+                                    </Label>
 
                                     <Grid HorizontalAlignment="Center" VerticalAlignment="Center">
                                         <Image Style="{StaticResource Tracker.Fraction.Flag.Icon}" ToolTip="{Binding TranslationFactionFlagsPerHour, FallbackValue=FACTION__FLAGS__PER__HOUR}"/>
                                     </Grid>
-                                    <Label Content="{Binding FactionFlagsPerHour, IsAsync=True, FallbackValue=-}" 
-                                       ContentStringFormat="{}{0:N0}/h" Style="{StaticResource DungeonNotificationFragment.BestFactionFlagsPerHour}" VerticalAlignment="Center" Margin="0 0 5 0" MinWidth="80"/>
+                                    <Label Content="{Binding FactionFlagsPerHour, Converter={StaticResource ShortNumberConverter}, ConverterCulture={x:Static glob:CultureInfo.CurrentCulture}, IsAsync=True, FallbackValue=-}" 
+                                       ContentStringFormat="{}{0:N0}/h" Style="{StaticResource DungeonNotificationFragment.BestFactionFlagsPerHour}" VerticalAlignment="Center" Margin="0 0 5 0" MinWidth="80">
+                                        <Label.ToolTip>
+                                            <ToolTip 
+                                                Content="{Binding FactionFlagsPerHour}"
+                                                ContentStringFormat="{}{0:N0}/h"
+                                            />
+                                        </Label.ToolTip>
+                                    </Label>
 
                                     <Grid HorizontalAlignment="Center" VerticalAlignment="Center" Margin="5,0,0,0">
                                         <Image Style="{StaticResource Tracker.Fraction.Coin.Icon}" ToolTip="{Binding TranslationFactionCoins, FallbackValue=FACTION__COINS}"/>
                                     </Grid>
-                                    <Label Content="{Binding FactionCoins, IsAsync=True, FallbackValue=-}" 
-                                       ContentStringFormat="{}{0:N0}" Style="{StaticResource DungeonNotificationFragment.BestFactionCoins}" VerticalAlignment="Center" Margin="0 0 5 0" MinWidth="85" />
+                                    <Label Content="{Binding FactionCoins, Converter={StaticResource ShortNumberConverter}, ConverterCulture={x:Static glob:CultureInfo.CurrentCulture}, IsAsync=True, FallbackValue=-}" 
+                                       ContentStringFormat="{}{0:N0}" Style="{StaticResource DungeonNotificationFragment.BestFactionCoins}" VerticalAlignment="Center" Margin="0 0 5 0" MinWidth="85">
+                                        <Label.ToolTip>
+                                            <ToolTip 
+                                                Content="{Binding FactionCoins}"
+                                                ContentStringFormat="{}{0:N0}"
+                                            />
+                                        </Label.ToolTip>
+                                    </Label>
 
                                     <Grid HorizontalAlignment="Center" VerticalAlignment="Center" Visibility="{Binding IsFactionWarfareVisible, FallbackValue=Collapsed}">
                                         <Image Style="{StaticResource Tracker.Fraction.Coin.Icon}" ToolTip="{Binding TranslationFactionCoinsPerHour, FallbackValue=FACTION__COINS__PER__HOUR}"/>
                                     </Grid>
-                                    <Label Content="{Binding FactionCoinsPerHour, IsAsync=True, FallbackValue=-}" 
-                                       ContentStringFormat="{}{0:N0}/h" Style="{StaticResource DungeonNotificationFragment.BestFactionCoinsPerHour}" VerticalAlignment="Center" Margin="1 0 5 0" MinWidth="205" />
+                                    <Label Content="{Binding FactionCoinsPerHour, Converter={StaticResource ShortNumberConverter}, ConverterCulture={x:Static glob:CultureInfo.CurrentCulture}, IsAsync=True, FallbackValue=-}" 
+                                       ContentStringFormat="{}{0:N0}/h" Style="{StaticResource DungeonNotificationFragment.BestFactionCoinsPerHour}" VerticalAlignment="Center" Margin="1 0 5 0" MinWidth="205">
+                                        <Label.ToolTip>
+                                            <ToolTip 
+                                                Content="{Binding FactionCoinsPerHour}"
+                                                ContentStringFormat="{}{0:N0}/h"
+                                            />
+                                        </Label.ToolTip>
+                                    </Label>
                                 </StackPanel>
 
                                 <!-- Might - Favor -->
@@ -980,26 +1272,54 @@
                                     <Grid HorizontalAlignment="Center" VerticalAlignment="Center" Margin="8,2,2,0">
                                         <Image Height="16" Width="16" Source="../Resources/might.png" ToolTip="{Binding TranslationMight, FallbackValue=MIGHT}" />
                                     </Grid>
-                                    <Label Content="{Binding Might, IsAsync=True, FallbackValue=-}" ContentStringFormat="{}{0:N0}" 
-                                           Style="{StaticResource DungeonNotificationFragment.BestMight}" VerticalAlignment="Center" Margin="0 0 5 0" MinWidth="82" />
+                                    <Label Content="{Binding Might, Converter={StaticResource ShortNumberConverter}, ConverterCulture={x:Static glob:CultureInfo.CurrentCulture}, IsAsync=True, FallbackValue=-}" ContentStringFormat="{}{0:N0}" 
+                                           Style="{StaticResource DungeonNotificationFragment.BestMight}" VerticalAlignment="Center" Margin="0 0 5 0" MinWidth="82">
+                                        <Label.ToolTip>
+                                            <ToolTip 
+                                                Content="{Binding Might}"
+                                                ContentStringFormat="{}{0:N0}"
+                                            />
+                                        </Label.ToolTip>
+                                    </Label>
 
                                     <Grid HorizontalAlignment="Center" VerticalAlignment="Center" Margin="0,2,0,0">
                                         <Image Height="16" Width="16" Source="../Resources/might.png" ToolTip="{Binding TranslationMightPerHour, FallbackValue=MIGHT__PER__HOUR}" />
                                     </Grid>
-                                    <Label Content="{Binding MightPerHour, IsAsync=True, FallbackValue=-}" 
-                                       ContentStringFormat="{}{0:N0}/h" Style="{StaticResource DungeonNotificationFragment.BestMightPerHour}" VerticalAlignment="Center" Margin="0 0 5 0" MinWidth="80" />
+                                    <Label Content="{Binding MightPerHour, Converter={StaticResource ShortNumberConverter}, ConverterCulture={x:Static glob:CultureInfo.CurrentCulture}, IsAsync=True, FallbackValue=-}" 
+                                       ContentStringFormat="{}{0:N0}/h" Style="{StaticResource DungeonNotificationFragment.BestMightPerHour}" VerticalAlignment="Center" Margin="0 0 5 0" MinWidth="80">
+                                        <Label.ToolTip>
+                                            <ToolTip 
+                                                Content="{Binding MightPerHour}"
+                                                ContentStringFormat="{}{0:N0}/h"
+                                            />
+                                        </Label.ToolTip>
+                                    </Label>
 
                                     <Grid HorizontalAlignment="Center" VerticalAlignment="Center" Margin="5,2,0,0">
                                         <Image Height="16" Width="16" Source="../Resources/favor.png" ToolTip="{Binding TranslationFavor, FallbackValue=Favor}" />
                                     </Grid>
-                                    <Label Content="{Binding Favor, IsAsync=True, FallbackValue=-}" 
-                                       ContentStringFormat="{}{0:N0}" Style="{StaticResource DungeonNotificationFragment.BestFavor}" VerticalAlignment="Center" Margin="0 0 5 0" MinWidth="85" />
+                                    <Label Content="{Binding Favor, Converter={StaticResource ShortNumberConverter}, ConverterCulture={x:Static glob:CultureInfo.CurrentCulture}, IsAsync=True, FallbackValue=-}" 
+                                       ContentStringFormat="{}{0:N0}" Style="{StaticResource DungeonNotificationFragment.BestFavor}" VerticalAlignment="Center" Margin="0 0 5 0" MinWidth="85">
+                                        <Label.ToolTip>
+                                            <ToolTip 
+                                                Content="{Binding Favor}"
+                                                ContentStringFormat="{}{0:N0}"
+                                            />
+                                        </Label.ToolTip>
+                                    </Label>
 
                                     <Grid HorizontalAlignment="Center" VerticalAlignment="Center" Margin="0,2,0,0">
                                         <Image Height="16" Width="16" Source="../Resources/favor.png" ToolTip="{Binding TranslationFavorPerHour, FallbackValue=FAVOR__PER__HOUR}" />
                                     </Grid>
-                                    <Label Content="{Binding FavorPerHour, IsAsync=True, FallbackValue=-}" 
-                                       ContentStringFormat="{}{0:N0}/h" Style="{StaticResource DungeonNotificationFragment.BestFavorPerHour}" VerticalAlignment="Center" Margin="1 0 5 0" MinWidth="205" />
+                                    <Label Content="{Binding FavorPerHour, Converter={StaticResource ShortNumberConverter}, ConverterCulture={x:Static glob:CultureInfo.CurrentCulture}, IsAsync=True, FallbackValue=-}" 
+                                       ContentStringFormat="{}{0:N0}/h" Style="{StaticResource DungeonNotificationFragment.BestFavorPerHour}" VerticalAlignment="Center" Margin="1 0 5 0" MinWidth="205">
+                                        <Label.ToolTip>
+                                            <ToolTip 
+                                                Content="{Binding FavorPerHour}"
+                                                ContentStringFormat="{}{0:N0}/h"
+                                            />
+                                        </Label.ToolTip>
+                                    </Label>
                                 </StackPanel>
 
                                 <!-- Loot -->
@@ -1084,6 +1404,23 @@
                 </StackPanel>
             </StackPanel>
         </Border>
+    </DataTemplate>
+
+    <DataTemplate x:Key="DungeonOptionsObjectTemplate" DataType="{x:Type models:DungeonOptionsObject}">
+        <Grid>
+            <StackPanel Orientation="Vertical" Margin="0,0,0,0">
+                <Separator Background="{StaticResource SolidColorBrush.Background.2}" Height="4" Margin="0,0,0,0" VerticalAlignment="Top"/>
+                <StackPanel>
+                    <Label Content="{Binding TranslationSettings, FallbackValue=SETTINGS}" Style="{StaticResource HeaderStyle.Tracking.Title}" Margin="2,5,0,0"
+                           Foreground="{StaticResource SolidColorBrush.Accent.Blue.2}" />
+
+                    <CheckBox IsChecked="{Binding IsDungeonClosedSoundActive}" 
+                              Content="{Binding TranslationDungeonClosedSoundActive, FallbackValue=DUNGEON__CLOSED__SOUND__ACTIVE}" 
+                              HorizontalContentAlignment="Left" Margin="0,2,10,0" VerticalAlignment="Top" HorizontalAlignment="Left" Width="auto" MaxWidth="250"/>
+                    <Grid Height="25"/>
+                </StackPanel>
+            </StackPanel>
+        </Grid>
     </DataTemplate>
 
 </ResourceDictionary>

@@ -1,9 +1,8 @@
-﻿namespace StatisticsAnalysisTool.Enumerations
+﻿namespace StatisticsAnalysisTool.Enumerations;
+
+public enum GameObjectType
 {
-    public enum GameObjectType
-    {
-        Unknown,
-        Player,
-        Mob
-    }
+    Unknown,
+    Player,
+    Mob
 }

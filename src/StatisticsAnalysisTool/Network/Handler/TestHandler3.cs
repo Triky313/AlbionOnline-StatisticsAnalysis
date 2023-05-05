@@ -2,17 +2,16 @@
 using StatisticsAnalysisTool.Enumerations;
 using StatisticsAnalysisTool.Network.Events;
 
-namespace StatisticsAnalysisTool.Network.Handler
-{
-    public class TestHandler3
-    {
-        public TestHandler3()
-        {
-        }
+namespace StatisticsAnalysisTool.Network.Handler;
 
-        public async Task OnActionAsync(TestEvent3 value)
-        {
-            await Task.CompletedTask;
-        }
+public class TestHandler3
+{
+    public TestHandler3()
+    {
+    }
+
+    public async Task OnActionAsync(TestEvent3 value)
+    {
+        await Task.CompletedTask;
     }
 }

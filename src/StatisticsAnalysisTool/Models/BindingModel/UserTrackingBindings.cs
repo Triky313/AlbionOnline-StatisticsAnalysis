@@ -10,13 +10,10 @@ public class UserTrackingBindings : INotifyPropertyChanged
     private string _username;
     private string _guildName;
     private string _allianceName;
-    private string _currentMapName;
     private Visibility _usernameInformationVisibility;
     private Visibility _guildInformationVisibility;
     private Visibility _allianceInformationVisibility;
-    private Visibility _currentMapInformationVisibility;
-    private string _islandName;
-    private Visibility _islandNameVisibility;
+    private CurrentMapInfoBinding _currentMapInfoBinding = new ();
 
     public string Username
     {
@@ -51,28 +48,16 @@ public class UserTrackingBindings : INotifyPropertyChanged
         }
     }
 
-    public string CurrentMapName
+    public CurrentMapInfoBinding CurrentMapInfoBinding
     {
-        get => _currentMapName;
+        get => _currentMapInfoBinding;
         set
         {
-            _currentMapName = value;
-            CurrentMapInformationVisibility = !string.IsNullOrEmpty(_currentMapName) ? Visibility.Visible : Visibility.Collapsed;
+            _currentMapInfoBinding = value;
             OnPropertyChanged();
         }
     }
 
-    public string IslandName
-    {
-        get => _islandName;
-        set
-        {
-            _islandName = value;
-            IslandNameVisibility = !string.IsNullOrEmpty(_islandName) ? Visibility.Visible : Visibility.Collapsed;
-            OnPropertyChanged();
-        }
-    }
-    
     public Visibility UsernameInformationVisibility
     {
         get => _usernameInformationVisibility;
@@ -102,27 +87,6 @@ public class UserTrackingBindings : INotifyPropertyChanged
             OnPropertyChanged();
         }
     }
-
-    public Visibility CurrentMapInformationVisibility
-    {
-        get => _currentMapInformationVisibility;
-        set
-        {
-            _currentMapInformationVisibility = value;
-            OnPropertyChanged();
-        }
-    }
-
-    public Visibility IslandNameVisibility
-    {
-        get => _islandNameVisibility;
-        set
-        {
-            _islandNameVisibility = value;
-            OnPropertyChanged();
-        }
-    }
-
 
     public event PropertyChangedEventHandler PropertyChanged;
 

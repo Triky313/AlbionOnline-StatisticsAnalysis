@@ -1,26 +1,26 @@
 ﻿using StatisticsAnalysisTool.Network.Manager;
 using System.Threading.Tasks;
 using StatisticsAnalysisTool.Network.Events;
+using StatisticsAnalysisTool.Enumerations;
 
-namespace StatisticsAnalysisTool.Network.Handler
+namespace StatisticsAnalysisTool.Network.Handler;
+
+public class InCombatStateUpdateEventHandler : EventPacketHandler<InCombatStateUpdateEvent>
 {
-    public class InCombatStateUpdateEventHandler
+    private readonly TrackingController _trackingController;
+
+    public InCombatStateUpdateEventHandler(TrackingController trackingController) : base((int) EventCodes.InCombatStateUpdate)
     {
-        private readonly TrackingController _trackingController;
+        _trackingController = trackingController;
+    }
 
-        public InCombatStateUpdateEventHandler(TrackingController trackingController)
+    protected override async Task OnActionAsync(InCombatStateUpdateEvent value)
+    {
+        if (value.ObjectId != null)
         {
-            _trackingController = trackingController;
+            _trackingController.CombatController.UpdateCombatMode((long)value.ObjectId, value.InActiveCombat, value.InPassiveCombat);
         }
 
-        public async Task OnActionAsync(InCombatStateUpdateEvent value)
-        {
-            if (value.ObjectId != null)
-            {
-                _trackingController.CombatController.UpdateCombatMode((long)value.ObjectId, value.InActiveCombat, value.InPassiveCombat);
-            }
-
-            await Task.CompletedTask;
-        }
+        await Task.CompletedTask;
     }
 }

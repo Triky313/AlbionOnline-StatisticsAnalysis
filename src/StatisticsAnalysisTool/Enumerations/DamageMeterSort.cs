@@ -1,11 +1,10 @@
-﻿namespace StatisticsAnalysisTool.Enumerations
+﻿namespace StatisticsAnalysisTool.Enumerations;
+
+public enum DamageMeterSortType
 {
-    public enum DamageMeterSortType
-    {
-        Damage,
-        Dps,
-        Name, 
-        Heal,
-        Hps
-    }
+    Damage,
+    Dps,
+    Name, 
+    Heal,
+    Hps
 }

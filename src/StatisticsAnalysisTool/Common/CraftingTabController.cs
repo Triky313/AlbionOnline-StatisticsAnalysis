@@ -8,6 +8,7 @@ using System.Linq;
 using System.Reflection;
 using System.Text;
 using System.Text.Json;
+using System.Threading.Tasks;
 
 namespace StatisticsAnalysisTool.Common;
 
@@ -19,7 +20,7 @@ public static class CraftingTabController
     private static bool _isLoading;
     private static bool _isSaving;
 
-    public static void Add(string uniqueItemName, string text)
+    public static async Task AddNoteAsync(string uniqueItemName, string text)
     {
         if (string.IsNullOrEmpty(text))
         {
@@ -28,7 +29,7 @@ public static class CraftingTabController
 
         if (CraftingNotes == null || CraftingNotes?.Count <= 0)
         {
-            LoadFromFile();
+            await LoadFromFileAsync();
         }
 
         var note = CraftingNotes?.FirstOrDefault(x => x.UniqueItemName.Equals(uniqueItemName));
@@ -42,11 +43,11 @@ public static class CraftingTabController
         }
     }
 
-    public static string GetNote(string uniqueItemName)
+    public static async Task<string> GetNoteAsync(string uniqueItemName)
     {
         if (CraftingNotes == null || CraftingNotes?.Count <= 0)
         {
-            LoadFromFile();
+            await LoadFromFileAsync();
         }
 
         var note = CraftingNotes?.FirstOrDefault(x => x.UniqueItemName.Equals(uniqueItemName));
@@ -55,7 +56,7 @@ public static class CraftingTabController
 
     #region Load / Save local file data
 
-    private static void LoadFromFile()
+    private static async Task LoadFromFileAsync()
     {
         if (_isLoading)
         {
@@ -63,27 +64,11 @@ public static class CraftingTabController
         }
 
         _isLoading = true;
-        var localFilePath = $"{AppDomain.CurrentDomain.BaseDirectory}{Settings.Default.CraftingNotesFileName}";
 
-        if (File.Exists(localFilePath))
-        {
-            try
-            {
-                var localFileString = File.ReadAllText(localFilePath, Encoding.UTF8);
-                var result = JsonSerializer.Deserialize<List<CraftingNote>>(localFileString) ?? new List<CraftingNote>();
-                CraftingNotes = new List<CraftingNote>(result);
-                return;
-            }
-            catch (Exception e)
-            {
-                ConsoleManager.WriteLineForError(MethodBase.GetCurrentMethod()?.DeclaringType, e);
-                Log.Error(MethodBase.GetCurrentMethod()?.DeclaringType, e);
-                CraftingNotes = new List<CraftingNote>();
-                return;
-            }
-        }
+        FileController.TransferFileIfExistFromOldPathToUserDataDirectory(Path.Combine(AppDomain.CurrentDomain.BaseDirectory, Settings.Default.CraftingNotesFileName));
+        CraftingNotes = await FileController.LoadAsync<List<CraftingNote>>(
+            Path.Combine(AppDomain.CurrentDomain.BaseDirectory, Settings.Default.UserDataDirectoryName, Settings.Default.CraftingNotesFileName));
 
-        CraftingNotes = new List<CraftingNote>();
         _isLoading = false;
     }
 
@@ -95,7 +80,8 @@ public static class CraftingTabController
         }
 
         _isSaving = true;
-        var localFilePath = $"{AppDomain.CurrentDomain.BaseDirectory}{Settings.Default.CraftingNotesFileName}";
+
+        var localFilePath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, Settings.Default.UserDataDirectoryName, Settings.Default.CraftingNotesFileName);
 
         try
         {

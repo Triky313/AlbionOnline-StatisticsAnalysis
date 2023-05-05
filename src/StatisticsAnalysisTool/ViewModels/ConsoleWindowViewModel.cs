@@ -4,55 +4,54 @@ using System.ComponentModel;
 using System.Runtime.CompilerServices;
 using System.Windows.Data;
 
-namespace StatisticsAnalysisTool.ViewModels
+namespace StatisticsAnalysisTool.ViewModels;
+
+public class ConsoleWindowViewModel : INotifyPropertyChanged
 {
-    public class ConsoleWindowViewModel : INotifyPropertyChanged
+    private ConsoleWindowTranslation _translation;
+    private ListCollectionView _consoleCollectionView;
+
+    public ConsoleWindowViewModel()
     {
-        private ConsoleWindowTranslation _translation;
-        private ListCollectionView _consoleCollectionView;
+        Init();
+    }
 
-        public ConsoleWindowViewModel()
+    private void Init()
+    {
+        Translation = new ConsoleWindowTranslation();
+
+        ConsoleCollectionView = CollectionViewSource.GetDefaultView(ConsoleManager.Console) as ListCollectionView;
+        if (ConsoleCollectionView != null)
         {
-            Init();
+            ConsoleCollectionView.IsLiveSorting = true;
+            ConsoleCollectionView.IsLiveFiltering = true;
         }
-
-        private void Init()
-        {
-            Translation = new ConsoleWindowTranslation();
-
-            ConsoleCollectionView = CollectionViewSource.GetDefaultView(ConsoleManager.Console) as ListCollectionView;
-            if (ConsoleCollectionView != null)
-            {
-                ConsoleCollectionView.IsLiveSorting = true;
-                ConsoleCollectionView.IsLiveFiltering = true;
-            }
-        }
+    }
         
-        public ListCollectionView ConsoleCollectionView
+    public ListCollectionView ConsoleCollectionView
+    {
+        get => _consoleCollectionView;
+        set
         {
-            get => _consoleCollectionView;
-            set
-            {
-                _consoleCollectionView = value;
-                OnPropertyChanged();
-            }
+            _consoleCollectionView = value;
+            OnPropertyChanged();
         }
+    }
         
-        public ConsoleWindowTranslation Translation
+    public ConsoleWindowTranslation Translation
+    {
+        get => _translation;
+        set
         {
-            get => _translation;
-            set
-            {
-                _translation = value;
-                OnPropertyChanged();
-            }
+            _translation = value;
+            OnPropertyChanged();
         }
+    }
 
-        public event PropertyChangedEventHandler PropertyChanged;
+    public event PropertyChangedEventHandler PropertyChanged;
 
-        protected virtual void OnPropertyChanged([CallerMemberName] string propertyName = null)
-        {
-            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
-        }
+    protected virtual void OnPropertyChanged([CallerMemberName] string propertyName = null)
+    {
+        PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
     }
 }

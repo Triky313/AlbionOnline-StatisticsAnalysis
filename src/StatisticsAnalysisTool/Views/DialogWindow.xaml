@@ -4,7 +4,10 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:fa5="http://schemas.fontawesome.com/icons/"
+        xmlns:enumerations="clr-namespace:StatisticsAnalysisTool.Enumerations"
+        xmlns:viewModels="clr-namespace:StatisticsAnalysisTool.ViewModels"
         mc:Ignorable="d"
+        d:DataContext="{d:DesignInstance Type=viewModels:DialogWindowViewModel}"
         Title="{Binding Title, FallbackValue=TITLE}" Height="200" Width="500" AllowsTransparency="True" WindowStartupLocation="CenterScreen" 
         Background="{StaticResource SolidColorBrush.Background.1}" FontSize="{StaticResource BaseFontSize}" 
         WindowStyle="None" Topmost="True" ShowInTaskbar="False" ResizeMode="NoResize">
@@ -17,8 +20,13 @@
             <Border BorderThickness="1,0,0,0" BorderBrush="{StaticResource SolidColorBrush.Accent.Blue.2}" />
             <Border BorderThickness="0,1,0,0" BorderBrush="{StaticResource SolidColorBrush.Accent.Blue.2}" />
             <Border BorderThickness="0,0,1,0" BorderBrush="{StaticResource SolidColorBrush.Accent.Blue.2}" />
-            <Grid Margin="10,3,0,0" Width="26" Height="26" VerticalAlignment="Top" HorizontalAlignment="Left">
+            <Grid Margin="10,3,0,0" Width="26" Height="26" VerticalAlignment="Top" HorizontalAlignment="Left" 
+                  Visibility="{Binding YesNoVisibility}">
                 <fa5:ImageAwesome Icon="Solid_ExclamationTriangle" Foreground="{StaticResource SolidColorBrush.Accent.Blue.3}" />
+            </Grid>
+            <Grid Margin="10,3,0,0" Width="26" Height="26" VerticalAlignment="Top" HorizontalAlignment="Left" 
+                  Visibility="{Binding ErrorTypeVisibility, FallbackValue=Collapsed}">
+                <fa5:ImageAwesome Icon="Solid_ExclamationTriangle" Foreground="{StaticResource SolidColorBrush.Accent.Red.3}" />
             </Grid>
             <Label Content="{Binding Title, FallbackValue=TITLE}" Margin="41,0,61,0" VerticalAlignment="Top" Height="33" FontSize="16" 
                    Foreground="{StaticResource SolidColorBrush.Text.1}" FontWeight="Bold" />
@@ -28,9 +36,15 @@
             <TextBlock Text="{Binding Message, FallbackValue=MESSAGE}" FontSize="20" TextAlignment="Center" HorizontalAlignment="Center" VerticalAlignment="Center" 
                        TextWrapping="Wrap" Foreground="{StaticResource SolidColorBrush.Text.1}" />
         </Grid>
-        <Button Content="{Binding Translation.Yes, FallbackValue=YES}" FontSize="18" FontWeight="Bold" Height="34" Width="200" VerticalAlignment="Bottom" 
-                Margin="10,0,0,10" HorizontalAlignment="Left" Style="{StaticResource Style.Button.Attention}" Click="BtnOk_Click" />
-        <Button Content="{Binding Translation.No, FallbackValue=NO}" FontSize="18" FontWeight="Bold" Height="34" Width="200" VerticalAlignment="Bottom" 
-                Margin="0,0,10,10" HorizontalAlignment="Right" Click="BtnCancel_Click" />
+        <Grid Visibility="{Binding YesNoVisibility}">
+            <Button Content="{Binding Translation.Yes, FallbackValue=YES}" FontSize="18" FontWeight="Bold" Height="34" Width="200" VerticalAlignment="Bottom" 
+                    Margin="10,0,0,10" HorizontalAlignment="Left" Style="{StaticResource Style.Button.Attention}" Click="BtnOk_Click" />
+            <Button Content="{Binding Translation.No, FallbackValue=NO}" FontSize="18" FontWeight="Bold" Height="34" Width="200" VerticalAlignment="Bottom" 
+                    Margin="0,0,10,10" HorizontalAlignment="Right" Click="BtnCancel_Click" />
+        </Grid>
+        <Grid Visibility="{Binding ErrorTypeVisibility, FallbackValue=Collapsed}">
+            <Button Content="{Binding OkButtonText, FallbackValue=OK}" Style="{StaticResource Style.Button.Attention}" 
+                    FontSize="18" FontWeight="Bold" Height="34" Width="200" VerticalAlignment="Bottom" Margin="0,0,10,10" HorizontalAlignment="Center" Click="BtnOk_Click" />
+        </Grid>
     </Grid>
 </Window>

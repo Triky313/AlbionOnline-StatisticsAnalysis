@@ -1,21 +1,21 @@
-﻿using StatisticsAnalysisTool.Network.Events;
+﻿using StatisticsAnalysisTool.Enumerations;
+using StatisticsAnalysisTool.Network.Events;
 using StatisticsAnalysisTool.Network.Manager;
 using System.Threading.Tasks;
 
-namespace StatisticsAnalysisTool.Network.Handler
+namespace StatisticsAnalysisTool.Network.Handler;
+
+public class InventoryPutItemEventHandler : EventPacketHandler<InventoryPutItemEvent>
 {
-    public class InventoryPutItemEventHandler
+    private readonly TrackingController _trackingController;
+
+    public InventoryPutItemEventHandler(TrackingController trackingController) : base((int) EventCodes.InventoryPutItem)
     {
-        private readonly TrackingController _trackingController;
+        _trackingController = trackingController;
+    }
 
-        public InventoryPutItemEventHandler(TrackingController trackingController)
-        {
-            _trackingController = trackingController;
-        }
-
-        public async Task OnActionAsync(InventoryPutItemEvent value)
-        {
-            await Task.CompletedTask;
-        }
+    protected override async Task OnActionAsync(InventoryPutItemEvent value)
+    {
+        await Task.CompletedTask;
     }
 }

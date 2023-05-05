@@ -1,24 +1,24 @@
 ﻿using StatisticsAnalysisTool.Network.Manager;
 using System.Threading.Tasks;
 using StatisticsAnalysisTool.Network.Events;
+using StatisticsAnalysisTool.Enumerations;
 
-namespace StatisticsAnalysisTool.Network.Handler
+namespace StatisticsAnalysisTool.Network.Handler;
+
+/// <summary>
+///     Triggered when silver is picked up. Each party member gets their own event.
+/// </summary>
+public class SiegeCampClaimStartEventHandler : EventPacketHandler<SiegeCampClaimStartEvent>
 {
-    /// <summary>
-    ///     Triggered when silver is picked up. Each party member gets their own event.
-    /// </summary>
-    public class SiegeCampClaimStartEventHandler
+    private readonly TrackingController _trackingController;
+
+    public SiegeCampClaimStartEventHandler(TrackingController trackingController) : base((int) EventCodes.SiegeCampClaimStart)
     {
-        private readonly TrackingController _trackingController;
+        _trackingController = trackingController;
+    }
 
-        public SiegeCampClaimStartEventHandler(TrackingController trackingController)
-        {
-            _trackingController = trackingController;
-        }
-
-        public async Task OnActionAsync(SiegeCampClaimStartEvent value)
-        {
-            await Task.CompletedTask;
-        }
+    protected override async Task OnActionAsync(SiegeCampClaimStartEvent value)
+    {
+        await Task.CompletedTask;
     }
 }

@@ -1,9 +1,8 @@
-﻿namespace StatisticsAnalysisTool.Enumerations
+﻿namespace StatisticsAnalysisTool.Enumerations;
+
+public enum TrackingIconType
 {
-    public enum TrackingIconType
-    {
-        Off,
-        On,
-        Partially
-    }
+    Off,
+    On,
+    Partially
 }

@@ -1,4 +1,5 @@
-﻿using StatisticsAnalysisTool.Common;
+﻿using StatisticsAnalysisTool.Cluster;
+using StatisticsAnalysisTool.Common;
 using StatisticsAnalysisTool.Models;
 using StatisticsAnalysisTool.Models.NetworkModel;
 using StatisticsAnalysisTool.Properties;
@@ -6,6 +7,7 @@ using StatisticsAnalysisTool.ViewModels;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.IO;
 using System.Linq;
 using System.Reflection;
 using System.Threading.Tasks;
@@ -77,8 +79,8 @@ public class VaultController
         }
 
         _vaultContainer.Add(newContainerObject);
-
         ParseVault();
+        GetRepairCostsOfContainer(newContainerObject);
     }
 
     public void Add(DiscoveredItem item)
@@ -240,16 +242,81 @@ public class VaultController
 
     #endregion
 
+    #region Repair costs calculation
+
+    private const double RepairCostModifier = 6.0606d;
+
+    private void GetRepairCostsOfContainer(ItemContainerObject newContainerObject)
+    {
+        var discoveredItems = new List<DiscoveredItem>();
+        foreach (var slotItemId in newContainerObject.SlotItemIds)
+        {
+            var slotItem = _discoveredItems.FirstOrDefault(x => x.ObjectId == slotItemId);
+            if (slotItem == null)
+            {
+                continue;
+            }
+            discoveredItems.Add(slotItem);
+        }
+
+        var totalCosts = 0d;
+
+        foreach (var discoveredItem in discoveredItems)
+        {
+            var item = ItemController.GetItemByIndex(discoveredItem.ItemIndex);
+
+            if (item == null)
+            {
+                return;
+            }
+
+            var itemValue = ItemController.GetItemValue(item.FullItemInformation, item.Level);
+
+            double lostDurability;
+            if (discoveredItem.CurrentDurability.IntegerValue <= 0)
+            {
+                lostDurability = 0;
+            }
+            else
+            {
+                var fullDurability = ItemController.GetDurability(item.FullItemInformation, item.Level);
+                lostDurability = (fullDurability - discoveredItem.CurrentDurability.IntegerValue) / fullDurability * 100;
+            }
+
+            if (lostDurability <= 1)
+            {
+                continue;
+            }
+
+            var repairCosts = Math.Round((itemValue / RepairCostModifier * lostDurability), MidpointRounding.ToPositiveInfinity);
+
+            totalCosts += repairCosts * discoveredItem.Quantity;
+        }
+
+        try
+        {
+            _mainWindowViewModel.DashboardBindings.RepairCostsChest = Convert.ToInt32(totalCosts);
+        }
+        catch
+        {
+            // ignore
+        }
+    }
+
+    #endregion
+
     #region Load / Save local file data
 
     public async Task LoadFromFileAsync()
     {
-        Vaults = await FileController.LoadAsync<ObservableCollection<Vault>>($"{AppDomain.CurrentDomain.BaseDirectory}{Settings.Default.VaultsFileName}");
+        FileController.TransferFileIfExistFromOldPathToUserDataDirectory(Path.Combine(AppDomain.CurrentDomain.BaseDirectory, Settings.Default.VaultsFileName));
+        Vaults = await FileController.LoadAsync<ObservableRangeCollection<Vault>>(
+            Path.Combine(AppDomain.CurrentDomain.BaseDirectory, Settings.Default.UserDataDirectoryName, Settings.Default.VaultsFileName));
     }
 
     public async Task SaveInFileAsync()
     {
-        await FileController.SaveAsync(Vaults, $"{AppDomain.CurrentDomain.BaseDirectory}{Settings.Default.VaultsFileName}");
+        await FileController.SaveAsync(Vaults, Path.Combine(AppDomain.CurrentDomain.BaseDirectory, Settings.Default.UserDataDirectoryName, Settings.Default.VaultsFileName));
     }
 
     #endregion

@@ -1,21 +1,21 @@
-﻿using StatisticsAnalysisTool.Network.Events;
+﻿using StatisticsAnalysisTool.Enumerations;
+using StatisticsAnalysisTool.Network.Events;
 using StatisticsAnalysisTool.Network.Manager;
 using System.Threading.Tasks;
 
-namespace StatisticsAnalysisTool.Network.Handler
+namespace StatisticsAnalysisTool.Network.Handler;
+
+public class OtherGrabbedLootEventHandler : EventPacketHandler<GrabbedLootEvent>
 {
-    public class OtherGrabbedLootEventHandler
+    private readonly TrackingController _trackingController;
+
+    public OtherGrabbedLootEventHandler(TrackingController trackingController) : base((int) EventCodes.GrabbedLoot)
     {
-        private readonly TrackingController _trackingController;
+        _trackingController = trackingController;
+    }
 
-        public OtherGrabbedLootEventHandler(TrackingController trackingController)
-        {
-            _trackingController = trackingController;
-        }
-
-        public async Task OnActionAsync(GrabbedLootEvent value)
-        {
-            await _trackingController.LootController.AddLootAsync(value.Loot);
-        }
+    protected override async Task OnActionAsync(GrabbedLootEvent value)
+    {
+        await _trackingController.LootController.AddLootAsync(value.Loot);
     }
 }

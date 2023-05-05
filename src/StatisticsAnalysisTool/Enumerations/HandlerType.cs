@@ -1,4 +1,3 @@
-﻿namespace StatisticsAnalysisTool.Network.Notification
-{
-    public enum HandlerType { Event, Operation }
-}
+﻿namespace StatisticsAnalysisTool.Network.Notification;
+
+public enum HandlerType { Event, Operation }
