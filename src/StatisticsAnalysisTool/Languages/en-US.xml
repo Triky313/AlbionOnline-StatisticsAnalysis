@@ -722,5 +722,6 @@
 	<translation name="ADDED_SELL_ORDER">Added sell order</translation>
 	<translation name="ADDED_EXPIRED_BUY_ORDER">Added expired buy order</translation>
 	<translation name="ADDED_EXPIRED_SELL_ORDER">Added expired sell order</translation>
+	<translation name="ADDED_TRADES">Added trades</translation>
 	<translation name="NOTIFICATIONS">Notifications</translation>
 </translations>

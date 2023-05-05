@@ -722,5 +722,6 @@
 	<translation name="ADDED_SELL_ORDER">Verkaufsauftrag hinzugefügt</translation>
 	<translation name="ADDED_EXPIRED_BUY_ORDER">Abgelaufener Kaufauftrag hinzugefügt</translation>
 	<translation name="ADDED_EXPIRED_SELL_ORDER">Abgelaufener Verkaufsauftrag hinzugefügt</translation>
+	<translation name="ADDED_TRADES">Hinzugefügte Handel</translation>
 	<translation name="NOTIFICATIONS">Benachrichtigungen</translation>
 </translations>

@@ -43,6 +43,7 @@
 
     <Color x:Key="Color.Accent.Yellow.1">#FFf2b83b</Color>
     <Color x:Key="Color.Accent.Yellow.2">#55f2b83b</Color>
+    <Color x:Key="Color.Accent.Yellow.3">#FFEBA50F</Color>
 
     <!-- Accent colors transparent -->
     <Color x:Key="Color.Accent.Blue.Transparent.1">#3397CAED</Color>
@@ -155,20 +156,10 @@
     <Color x:Key="TimeValue.PastTime.7">#FF9E212A</Color>
 
     <!-- Notification colors -->
-    <Color x:Key="Notification.Background.Blue">#FF086D99</Color>
-    <Color x:Key="Notification.Background.Green">#FF08997A</Color>
-    <Color x:Key="Notification.Background.Yellow">#FFF2AA18</Color>
-    <Color x:Key="Notification.Background.Red">#FFD93641</Color>
-
-    <Color x:Key="Notification.Background.Dark.Blue">#FF064C6B</Color>
-    <Color x:Key="Notification.Background.Dark.Green">#FF066B55</Color>
-    <Color x:Key="Notification.Background.Dark.Yellow">#FFB5670B</Color>
-    <Color x:Key="Notification.Background.Dark.Red">#FFB4222C</Color>
-
-    <Color x:Key="Notification.Background.Light.Blue">#FF0B95D0</Color>
-    <Color x:Key="Notification.Background.Light.Green">#FF0BCBA2</Color>
-    <Color x:Key="Notification.Background.Light.Yellow">#FFF4BB48</Color>
-    <Color x:Key="Notification.Background.Light.Red">#FFE16069</Color>
+    <Color x:Key="Notification.Background.Blue">#FF2280BF</Color>
+    <Color x:Key="Notification.Background.Green">#FF188C3F</Color>
+    <Color x:Key="Notification.Background.Yellow">#FFEBA50F</Color>
+    <Color x:Key="Notification.Background.Red">#FFCD3638</Color>
 
     <!-- Donation -->
     <Color x:Key="Color.Patreon">#FFFF424D</Color>
@@ -339,13 +330,5 @@
     <SolidColorBrush x:Key="SolidColorBrush.Notification.Background.Green" Color="{StaticResource Notification.Background.Green}"/>
     <SolidColorBrush x:Key="SolidColorBrush.Notification.Background.Yellow" Color="{StaticResource Notification.Background.Yellow}"/>
     <SolidColorBrush x:Key="SolidColorBrush.Notification.Background.Red" Color="{StaticResource Notification.Background.Red}"/>
-    <SolidColorBrush x:Key="SolidColorBrush.Notification.Background.Dark.Blue" Color="{StaticResource Notification.Background.Dark.Blue}"/>
-    <SolidColorBrush x:Key="SolidColorBrush.Notification.Background.Dark.Green" Color="{StaticResource Notification.Background.Dark.Green}"/>
-    <SolidColorBrush x:Key="SolidColorBrush.Notification.Background.Dark.Yellow" Color="{StaticResource Notification.Background.Dark.Yellow}"/>
-    <SolidColorBrush x:Key="SolidColorBrush.Notification.Background.Dark.Red" Color="{StaticResource Notification.Background.Dark.Red}"/>
-    <SolidColorBrush x:Key="SolidColorBrush.Notification.Background.Light.Blue" Color="{StaticResource Notification.Background.Light.Blue}"/>
-    <SolidColorBrush x:Key="SolidColorBrush.Notification.Background.Light.Green" Color="{StaticResource Notification.Background.Light.Green}"/>
-    <SolidColorBrush x:Key="SolidColorBrush.Notification.Background.Light.Yellow" Color="{StaticResource Notification.Background.Light.Yellow}"/>
-    <SolidColorBrush x:Key="SolidColorBrush.Notification.Background.Light.Red" Color="{StaticResource Notification.Background.Light.Red}"/>
 
 </ResourceDictionary>

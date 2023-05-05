@@ -310,7 +310,7 @@ public class SettingsWindowViewModel : INotifyPropertyChanged
         NotificationFilters.Add(new NotificationFilter(NotificationFilterType.Trade)
         {
             IsSelected = SettingsController.CurrentSettings.IsNotificationFilterTradeActive,
-            Name = LanguageController.Translation("TRADE")
+            Name = LanguageController.Translation("ADDED_TRADES")
         });
     }
 
