@@ -43,6 +43,7 @@
 
     <Color x:Key="Color.Accent.Yellow.1">#FFf2b83b</Color>
     <Color x:Key="Color.Accent.Yellow.2">#55f2b83b</Color>
+    <Color x:Key="Color.Accent.Yellow.3">#FFEBA50F</Color>
 
     <!-- Accent colors transparent -->
     <Color x:Key="Color.Accent.Blue.Transparent.1">#3397CAED</Color>
@@ -153,6 +154,12 @@
     <Color x:Key="TimeValue.PastTime.5">#FFE66322</Color>
     <Color x:Key="TimeValue.PastTime.6">#FFD93641</Color>
     <Color x:Key="TimeValue.PastTime.7">#FF9E212A</Color>
+
+    <!-- Notification colors -->
+    <Color x:Key="Notification.Background.Blue">#FF2280BF</Color>
+    <Color x:Key="Notification.Background.Green">#FF188C3F</Color>
+    <Color x:Key="Notification.Background.Yellow">#FFEBA50F</Color>
+    <Color x:Key="Notification.Background.Red">#FFCD3638</Color>
 
     <!-- Donation -->
     <Color x:Key="Color.Patreon">#FFFF424D</Color>
@@ -318,5 +325,10 @@
     <SolidColorBrush x:Key="SolidColorBrush.TimeValue.PastTime.5" Color="{StaticResource TimeValue.PastTime.5}"/>
     <SolidColorBrush x:Key="SolidColorBrush.TimeValue.PastTime.6" Color="{StaticResource TimeValue.PastTime.6}"/>
     <SolidColorBrush x:Key="SolidColorBrush.TimeValue.PastTime.7" Color="{StaticResource TimeValue.PastTime.7}"/>
+
+    <SolidColorBrush x:Key="SolidColorBrush.Notification.Background.Blue" Color="{StaticResource Notification.Background.Blue}"/>
+    <SolidColorBrush x:Key="SolidColorBrush.Notification.Background.Green" Color="{StaticResource Notification.Background.Green}"/>
+    <SolidColorBrush x:Key="SolidColorBrush.Notification.Background.Yellow" Color="{StaticResource Notification.Background.Yellow}"/>
+    <SolidColorBrush x:Key="SolidColorBrush.Notification.Background.Red" Color="{StaticResource Notification.Background.Red}"/>
 
 </ResourceDictionary>
