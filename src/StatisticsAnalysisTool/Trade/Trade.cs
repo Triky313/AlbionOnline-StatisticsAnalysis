@@ -79,6 +79,32 @@ public class Trade : INotifyPropertyChanged
         }
     }
 
+    public string TradeNotificationTitleText
+    {
+        get
+        {
+            switch (Type)
+            {
+                case TradeType.InstantBuy:
+                    return LanguageController.Translation("ADDED_PURCHASE");
+                case TradeType.InstantSell:
+                    return LanguageController.Translation("ADDED_SALE");
+                case TradeType.Mail:
+                    return MailType switch
+                    {
+                        MailType.MarketplaceBuyOrderFinished => LanguageController.Translation("ADDED_BUY_ORDER"),
+                        MailType.MarketplaceSellOrderFinished => LanguageController.Translation("ADDED_SELL_ORDER"),
+                        MailType.MarketplaceSellOrderExpired => LanguageController.Translation("ADDED_EXPIRED_SELL_ORDER"),
+                        MailType.MarketplaceBuyOrderExpired => LanguageController.Translation("ADDED_EXPIRED_BUY_ORDER"),
+                        _ => LanguageController.Translation("ADDED_UNKNOWN_TRADE")
+                    };
+                case TradeType.Unknown:
+                default:
+                    return LanguageController.Translation("ADDED_UNKNOWN_TRADE");
+            };
+        }
+    }
+
     #endregion
 
     #region Instant buy / sell

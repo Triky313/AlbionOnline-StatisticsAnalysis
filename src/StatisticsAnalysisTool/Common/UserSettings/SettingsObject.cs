@@ -1,4 +1,5 @@
 ﻿using StatisticsAnalysisTool.Models;
+using StatisticsAnalysisTool.Notification;
 using System.Collections.Generic;
 
 namespace StatisticsAnalysisTool.Common.UserSettings;
@@ -63,8 +64,6 @@ public class SettingsObject
     public List<MainTabLocationFilterSettingsObject> ItemWindowMainTabLocationFilters { get; set; } = new();
     public double GatheringGridSplitterPosition { get; set; } = 125;
     public bool IsGatheringActive { get; set; }
-
-    // Navi tab 
     public bool IsDashboardNaviTabActive { get; set; } = true;
     public bool IsItemSearchNaviTabActive { get; set; } = true;
     public bool IsLoggingNaviTabActive { get; set; } = true;
@@ -75,4 +74,5 @@ public class SettingsObject
     public bool IsStorageHistoryNaviTabActive { get; set; } = true;
     public bool IsMapHistoryNaviTabActive { get; set; } = true;
     public bool IsPlayerInformationNaviTabActive { get; set; } = true;
+    public bool IsNotificationFilterTradeActive { get; set; } = true;
 }

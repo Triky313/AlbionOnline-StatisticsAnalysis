@@ -34,8 +34,8 @@ public partial class App
         _mainWindowViewModel = new MainWindowViewModel();
         ServiceLocator.Register<MainWindowViewModel>(_mainWindowViewModel);
 
-        var satNotifications = new SatNotifications(new NotificationManager(Current.Dispatcher));
-        ServiceLocator.Register<SatNotifications>(satNotifications);
+        var satNotifications = new SatNotificationManager(new NotificationManager(Current.Dispatcher));
+        ServiceLocator.Register<SatNotificationManager>(satNotifications);
 
         var mainWindow = new MainWindow(_mainWindowViewModel);
         mainWindow.Show();

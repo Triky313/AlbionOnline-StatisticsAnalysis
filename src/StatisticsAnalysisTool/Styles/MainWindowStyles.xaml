@@ -1,7 +1,8 @@
 <ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
                     xmlns:fa5="http://schemas.fontawesome.com/icons/"
-                    xmlns:models="clr-namespace:StatisticsAnalysisTool.Models">
+                    xmlns:models="clr-namespace:StatisticsAnalysisTool.Models"
+                    xmlns:notification="clr-namespace:StatisticsAnalysisTool.Notification">
 
     <Style x:Key="MainWindowStyle" TargetType="{x:Type Window}">
         <Setter Property="BorderThickness" Value="1,1,1,1" />
@@ -98,6 +99,13 @@
     </DataTemplate>
 
     <DataTemplate x:Key="TabVisibilityFilter" DataType="{x:Type models:TabVisibilityFilter}">
+        <StackPanel Orientation="Horizontal">
+            <CheckBox IsChecked="{Binding IsSelected}" Width="20" VerticalAlignment="Top" />
+            <TextBlock Text="{Binding Name}" Width="100" TextWrapping="Wrap" />
+        </StackPanel>
+    </DataTemplate>
+
+    <DataTemplate x:Key="NotificationFilter" DataType="{x:Type notification:NotificationFilter}">
         <StackPanel Orientation="Horizontal">
             <CheckBox IsChecked="{Binding IsSelected}" Width="20" VerticalAlignment="Top" />
             <TextBlock Text="{Binding Name}" Width="100" TextWrapping="Wrap" />

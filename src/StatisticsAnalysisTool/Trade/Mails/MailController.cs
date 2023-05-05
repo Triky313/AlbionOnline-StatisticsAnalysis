@@ -77,7 +77,7 @@ public class MailController
             return;
         }
 
-        await ServiceLocator.Resolve<SatNotifications>().ShowTradeAsync(trade);
+        await ServiceLocator.Resolve<SatNotificationManager>().ShowTradeAsync(trade);
         _ = _trackingController.TradeController.AddTradeToBindingCollection(trade);
         await _trackingController.TradeController.SaveInFileAfterExceedingLimit(10);
     }

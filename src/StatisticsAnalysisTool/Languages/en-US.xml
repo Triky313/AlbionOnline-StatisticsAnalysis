@@ -715,4 +715,12 @@
 	<translation name="NETWORK_FILTERING">Network Filtering</translation>
 	<translation name="ACTIVATED">Activated</translation>
 	<translation name="DISABLED">Disabled</translation>
+	<translation name="ADDED_PURCHASE">Added purchase</translation>
+	<translation name="ADDED_SALE">Added sale</translation>
+	<translation name="ADDED_UNKNOWN_TRADE">Added unknown trade</translation>
+	<translation name="ADDED_BUY_ORDER">Added buy order</translation>
+	<translation name="ADDED_SELL_ORDER">Added sell order</translation>
+	<translation name="ADDED_EXPIRED_BUY_ORDER">Added expired buy order</translation>
+	<translation name="ADDED_EXPIRED_SELL_ORDER">Added expired sell order</translation>
+	<translation name="NOTIFICATIONS">Notifications</translation>
 </translations>

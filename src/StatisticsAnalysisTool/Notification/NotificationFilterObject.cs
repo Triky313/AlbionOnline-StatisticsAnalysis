@@ -1,24 +1,21 @@
-﻿using StatisticsAnalysisTool.Common;
-using StatisticsAnalysisTool.Enumerations;
-using StatisticsAnalysisTool.Properties;
-using StatisticsAnalysisTool.ViewModels;
+﻿using Notifications.Wpf.Annotations;
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
 
-namespace StatisticsAnalysisTool.Models;
+namespace StatisticsAnalysisTool.Notification;
 
-public class TabVisibilityFilter : INotifyPropertyChanged
+public class NotificationFilter : INotifyPropertyChanged
 {
     private bool? _isSelected;
     private string _name;
 
-    public TabVisibilityFilter(NavigationTabFilterType navigationTabFilterType)
+    public NotificationFilter(NotificationFilterType notificationFilterType)
     {
-        NavigationTabFilterType = navigationTabFilterType;
+        NotificationFilterType = notificationFilterType;
     }
 
-    public NavigationTabFilterType NavigationTabFilterType { get; }
-    
+    public NotificationFilterType NotificationFilterType { get; }
+
     public bool? IsSelected
     {
         get => _isSelected;
