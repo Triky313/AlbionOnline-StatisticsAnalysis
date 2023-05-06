@@ -44,4 +44,5 @@ public class SettingsWindowTranslation
     public static string EastServer => LanguageController.Translation("EAST_SERVER");
     public static string Activated => LanguageController.Translation("ACTIVATED");
     public static string Disabled => LanguageController.Translation("DISABLED");
+    public static string Notifications => LanguageController.Translation("NOTIFICATIONS");
 }

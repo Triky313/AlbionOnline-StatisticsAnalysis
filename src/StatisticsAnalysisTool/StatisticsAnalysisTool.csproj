@@ -105,6 +105,9 @@
     <Content Include="Languages\de-DE.xml">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
+    <Content Include="Languages\zh-TW.xml">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
     <Content Include="Languages\en-US.xml">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
@@ -549,11 +552,12 @@
   <ItemGroup>
     <PackageReference Include="LiveChartsCore.SkiaSharpView.WPF" Version="2.0.0-beta.700" />
     <PackageReference Include="Microsoft.CSharp" Version="4.7.0" />
-    <PackageReference Include="Microsoft.Web.WebView2" Version="1.0.1518.46" />
-    <PackageReference Include="Microsoft.Windows.Compatibility" Version="7.0.0" />
-    <PackageReference Include="Autoupdater.NET.Official" Version="1.7.6" />
+    <PackageReference Include="Microsoft.Web.WebView2" Version="1.0.1722.45" />
+    <PackageReference Include="Microsoft.Windows.Compatibility" Version="7.0.1" />
+    <PackageReference Include="Autoupdater.NET.Official" Version="1.8.1" />
     <PackageReference Include="FontAwesome5" Version="2.1.6" />
     <PackageReference Include="log4net" Version="2.0.15" />
+    <PackageReference Include="Notification.Wpf" Version="7.0.0" />
     <PackageReference Include="PhotonPackageParser" Version="4.1.0" />
     <PackageReference Include="SharpPcap" Version="6.2.5" />
     <PackageReference Include="System.Linq.Async" Version="6.0.1" />
@@ -619,6 +623,7 @@
     <None Remove="Languages\ru-RU.xml" />
     <None Remove="Languages\tr-TR.xml" />
     <None Remove="Languages\zh-CN.xml" />
+    <None Remove="Languages\zh-TW.xml" />
     <None Remove="Resources\DonationIcon\ALLIGATOR1.png" />
     <None Remove="Resources\DonationIcon\ANCIENTMAMMOTH1.png" />
     <None Remove="Resources\DonationIcon\BEAR.png" />

@@ -700,4 +700,19 @@
 	<translation name="RESOURCE_VALUE">Valor do recurso</translation>
 	<translation name="TOTAL_MARKET_VALUE">Valor total de mercado</translation>
 	<translation name="NAVIGATION_TAB_VISIBILITY">Visibilidade da guia de navegação</translation>
+	<translation name="SERVER">Servidor</translation>
+	<translation name="UNKNOWN_SERVER">Servidor desconhecido</translation>
+	<translation name="WEST_SERVER">Servidor Oeste</translation>
+	<translation name="EAST_SERVER">Servidor Leste</translation>
+	<translation name="ALBION_DATA_PROJECT_BASE_URL_WEST">URL da base do projeto de dados Albion WEST</translation>
+	<translation name="ALBION_DATA_PROJECT_BASE_URL_EAST">URL da base do projeto de dados Albion EAST</translation>
+	<translation name="DELETE_ALL_SNAPSHOTS">Excluir todos os instantâneos</translation>
+	<translation name="SURE_YOU_WANT_TO_DELETE_ALL_SNAPSHOTS">Tem certeza de que deseja excluir todos os instantâneos?</translation>
+	<translation name="LOGGING_DESCRIPTION_1">Se itens incorretos forem rastreados, pode ser porque as listas de itens não estão atualizadas. Os URLs para isso podem ser ajustados nas configurações.</translation>
+	<translation name="LOGGING_DESCRIPTION_2">Apenas os jogadores que estão dentro da sua própria tela e cerca de uma tela a mais fora do seu campo de visão são rastreados durante o saque.</translation>
+	<translation name="SET_SERVER_MANUALLY">Definir servidor manualmente</translation>
+	<translation name="AUTOMATICALLY">Automaticamente</translation>
+	<translation name="NETWORK_FILTERING">Filtragem de rede</translation>
+	<translation name="ACTIVATED">Ativado</translation>
+	<translation name="DISABLED">Desativado</translation>
 </translations>

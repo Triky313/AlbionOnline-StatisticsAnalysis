@@ -712,4 +712,16 @@
 	<translation name="LOGGING_DESCRIPTION_2">只有在你屏幕内，以及屏幕外一个屏幕的距离内的玩家，才会记录他们的拾取。</translation>
 	<translation name="SET_SERVER_MANUALLY">手动设置服务器</translation>
  	<translation name="AUTOMATICALLY">自动</translation>
+	<translation name="NETWORK_FILTERING">网络过滤器</translation>
+	<translation name="ACTIVATED">启用</translation>
+	<translation name="DISABLED">禁用</translation>
+	<translation name="ADDED_PURCHASE">新的买入</translation>
+	<translation name="ADDED_SALE">新的卖出</translation>
+	<translation name="ADDED_UNKNOWN_TRADE">新的未知交易</translation>
+	<translation name="ADDED_BUY_ORDER">新的买入订单</translation>
+	<translation name="ADDED_SELL_ORDER">新的卖出订单</translation>
+	<translation name="ADDED_EXPIRED_BUY_ORDER">买入订单到期</translation>
+	<translation name="ADDED_EXPIRED_SELL_ORDER">卖出订单到期</translation>
+	<translation name="ADDED_TRADES">新的交易</translation>
+	<translation name="NOTIFICATIONS">通知</translation>
 </translations>
