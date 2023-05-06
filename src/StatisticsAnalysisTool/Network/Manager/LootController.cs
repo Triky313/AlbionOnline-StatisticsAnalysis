@@ -99,8 +99,8 @@ public class LootController : ILootController
             {
                 return;
             }
-
-            var itemsToBeRemoved = (from loot in _lootLoggerObjects orderby loot.UtcPickupTime select loot).Take(numberOfItemsToBeDeleted);
+            
+            var itemsToBeRemoved = (from loot in _lootLoggerObjects orderby loot?.UtcPickupTime select loot).Take(numberOfItemsToBeDeleted);
             await foreach (var item in itemsToBeRemoved.ToAsyncEnumerable())
             {
                 _lootLoggerObjects.Remove(item);

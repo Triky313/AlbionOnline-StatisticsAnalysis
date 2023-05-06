@@ -59,7 +59,7 @@ public class MarketController
                 InstantBuySellContent = instantBuySellContent
             };
 
-            _trackingController.TradeController.AddTradeToBindingCollection(trade);
+            _ = _trackingController.TradeController.AddTradeToBindingCollection(trade);
             await _trackingController.TradeController.SaveInFileAfterExceedingLimit(10);
         }
     }
@@ -110,7 +110,7 @@ public class MarketController
                 InstantBuySellContent = instantBuySellContent
             };
 
-            _trackingController.TradeController.AddTradeToBindingCollection(trade);
+            _ = _trackingController.TradeController.AddTradeToBindingCollection(trade);
             await _trackingController.TradeController.SaveInFileAfterExceedingLimit(10);
         }
     }

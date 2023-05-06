@@ -4,6 +4,8 @@ using StatisticsAnalysisTool.Common.UserSettings;
 using StatisticsAnalysisTool.Enumerations;
 using StatisticsAnalysisTool.Models;
 using StatisticsAnalysisTool.Models.TranslationModel;
+using StatisticsAnalysisTool.Network;
+using StatisticsAnalysisTool.Notification;
 using StatisticsAnalysisTool.Views;
 using System;
 using System.Collections.Generic;
@@ -14,7 +16,6 @@ using System.Linq;
 using System.Reflection;
 using System.Runtime.CompilerServices;
 using System.Windows;
-using StatisticsAnalysisTool.Network;
 
 namespace StatisticsAnalysisTool.ViewModels;
 
@@ -51,6 +52,7 @@ public class SettingsWindowViewModel : INotifyPropertyChanged
     private ObservableCollection<SettingDataInformation> _server = new();
     private ObservableCollection<SettingDataInformation> _networkFiltering = new();
     private SettingDataInformation _networkFilteringSelection;
+    private ObservableCollection<NotificationFilter> _notificationFilters = new();
 
     public SettingsWindowViewModel()
     {
@@ -62,6 +64,7 @@ public class SettingsWindowViewModel : INotifyPropertyChanged
     {
         InitLanguageFiles();
         InitNaviTabVisibilities();
+        InitNotificationAreas();
         InitRefreshRate();
         InitServer();
         InitNetworkFiltering();
@@ -135,6 +138,7 @@ public class SettingsWindowViewModel : INotifyPropertyChanged
 
         SetAppSettingsAndTranslations();
         SetNaviTabVisibilities();
+        SetNotificationFilters();
     }
 
     public void ReloadSettings()
@@ -170,6 +174,23 @@ public class SettingsWindowViewModel : INotifyPropertyChanged
         SettingsController.CurrentSettings.IsStorageHistoryNaviTabActive = TabVisibilities?.FirstOrDefault(x => x?.NavigationTabFilterType == NavigationTabFilterType.StorageHistory)?.IsSelected ?? true;
         SettingsController.CurrentSettings.IsMapHistoryNaviTabActive = TabVisibilities?.FirstOrDefault(x => x?.NavigationTabFilterType == NavigationTabFilterType.MapHistory)?.IsSelected ?? true;
         SettingsController.CurrentSettings.IsPlayerInformationNaviTabActive = TabVisibilities?.FirstOrDefault(x => x?.NavigationTabFilterType == NavigationTabFilterType.PlayerInformation)?.IsSelected ?? true;
+
+        var mainWindowViewModel = ServiceLocator.Resolve<MainWindowViewModel>();
+        mainWindowViewModel.DashboardTabVisibility = SettingsController.CurrentSettings.IsDashboardNaviTabActive.BoolToVisibility();
+        mainWindowViewModel.ItemSearchTabVisibility = SettingsController.CurrentSettings.IsItemSearchNaviTabActive.BoolToVisibility();
+        mainWindowViewModel.LoggingTabVisibility = SettingsController.CurrentSettings.IsLoggingNaviTabActive.BoolToVisibility();
+        mainWindowViewModel.DungeonsTabVisibility = SettingsController.CurrentSettings.IsDungeonsNaviTabActive.BoolToVisibility();
+        mainWindowViewModel.DamageMeterTabVisibility = SettingsController.CurrentSettings.IsDamageMeterNaviTabActive.BoolToVisibility();
+        mainWindowViewModel.TradeMonitoringTabVisibility = SettingsController.CurrentSettings.IsTradeMonitoringNaviTabActive.BoolToVisibility();
+        mainWindowViewModel.GatheringTabVisibility = SettingsController.CurrentSettings.IsGatheringNaviTabActive.BoolToVisibility();
+        mainWindowViewModel.StorageHistoryTabVisibility = SettingsController.CurrentSettings.IsStorageHistoryNaviTabActive.BoolToVisibility();
+        mainWindowViewModel.MapHistoryTabVisibility = SettingsController.CurrentSettings.IsMapHistoryNaviTabActive.BoolToVisibility();
+        mainWindowViewModel.PlayerInformationTabVisibility = SettingsController.CurrentSettings.IsPlayerInformationNaviTabActive.BoolToVisibility();
+    }
+
+    private void SetNotificationFilters()
+    {
+        SettingsController.CurrentSettings.IsNotificationFilterTradeActive = NotificationFilters?.FirstOrDefault(x => x?.NotificationFilterType == NotificationFilterType.Trade)?.IsSelected ?? true;
     }
 
     public struct SettingDataInformation
@@ -284,6 +305,15 @@ public class SettingsWindowViewModel : INotifyPropertyChanged
         });
     }
 
+    private void InitNotificationAreas()
+    {
+        NotificationFilters.Add(new NotificationFilter(NotificationFilterType.Trade)
+        {
+            IsSelected = SettingsController.CurrentSettings.IsNotificationFilterTradeActive,
+            Name = LanguageController.Translation("ADDED_TRADES")
+        });
+    }
+
     private void InitRefreshRate()
     {
         RefreshRates.Clear();
@@ -309,7 +339,7 @@ public class SettingsWindowViewModel : INotifyPropertyChanged
         NetworkFiltering.Clear();
         NetworkFiltering.Add(new SettingDataInformation { Name = SettingsWindowTranslation.Disabled, Value = 0 });
         NetworkFiltering.Add(new SettingDataInformation { Name = SettingsWindowTranslation.Activated, Value = 1 });
-        ServerSelection = NetworkFiltering.FirstOrDefault(x => x.Value == SettingsController.CurrentSettings.NetworkFiltering);
+        NetworkFilteringSelection = NetworkFiltering.FirstOrDefault(x => x.Value == SettingsController.CurrentSettings.NetworkFiltering);
     }
 
     private void InitDropDownDownByDays(ICollection<SettingDataInformation> updateJsonByDays)
@@ -337,6 +367,16 @@ public class SettingsWindowViewModel : INotifyPropertyChanged
     #endregion
 
     #region Bindings
+
+    public ObservableCollection<NotificationFilter> NotificationFilters
+    {
+        get => _notificationFilters;
+        set
+        {
+            _notificationFilters = value;
+            OnPropertyChanged();
+        }
+    }
 
     public ObservableCollection<TabVisibilityFilter> TabVisibilities
     {
