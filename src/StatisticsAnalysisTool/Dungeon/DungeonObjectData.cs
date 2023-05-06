@@ -144,7 +144,7 @@ public static class DungeonObjectData
             return DungeonEventObjectType.BookChest;
         }
 
-        if (value.Contains("CHEST") || value.Contains("AVALON") || value.Contains("HELL_STD_PVP") || value.Contains("HELL_HRD_PVP"))
+        if (value.Contains("CHEST") || value.Contains("AVALON") || value.Contains("HELL_STD_PVP") || value.Contains("HELL_HRD_PVP")|| value.Contains("HELL_STD_PVE") || value.Contains("HELL_HRD_PVE"))
         {
             return DungeonEventObjectType.Chest;
         }
