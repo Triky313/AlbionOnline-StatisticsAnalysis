@@ -715,4 +715,13 @@
 	<translation name="NETWORK_FILTERING">Filtrowanie sieciowe</translation>
 	<translation name="ACTIVATED">Aktywowane</translation>
 	<translation name="DISABLED">Wyłączone</translation>
+	<translation name="ADDED_PURCHASE">Dodano zakup</translation>
+	<translation name="ADDED_SALE">Dodano sprzedaż</translation>
+	<translation name="ADDED_UNKNOWN_TRADE">Dodano nieznany handel</translation>
+	<translation name="ADDED_BUY_ORDER">Dodano zlecenie kupna</translation>
+	<translation name="ADDED_SELL_ORDER">Dodano zlecenie sprzedaży</translation>
+	<translation name="ADDED_EXPIRED_BUY_ORDER">Dodano wygasłe zlecenie kupna</translation>
+	<translation name="ADDED_EXPIRED_SELL_ORDER">Dodano wygasłe zlecenie sprzedaży</translation>
+	<translation name="ADDED_TRADES">Dodano transakcje</translation>
+	<translation name="NOTIFICATIONS">Powiadomienia</translation>
 </translations>
