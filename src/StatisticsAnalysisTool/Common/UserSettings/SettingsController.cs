@@ -9,7 +9,7 @@ using System.Windows;
 
 namespace StatisticsAnalysisTool.Common.UserSettings;
 
-public static class SettingsController
+public class SettingsController
 {
     public static SettingsObject CurrentSettings = new();
 

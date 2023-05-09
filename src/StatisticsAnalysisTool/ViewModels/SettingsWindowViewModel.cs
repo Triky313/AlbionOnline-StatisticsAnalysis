@@ -53,6 +53,7 @@ public class SettingsWindowViewModel : INotifyPropertyChanged
     private ObservableCollection<SettingDataInformation> _networkFiltering = new();
     private SettingDataInformation _networkFilteringSelection;
     private ObservableCollection<NotificationFilter> _notificationFilters = new();
+    private string _packetFilter;
 
     public SettingsWindowViewModel()
     {
@@ -107,6 +108,9 @@ public class SettingsWindowViewModel : INotifyPropertyChanged
 
         // Info window
         ShowInfoWindowOnStartChecked = SettingsController.CurrentSettings.IsInfoWindowShownOnStart;
+
+        // Packet Filter
+        PacketFilter = SettingsController.CurrentSettings.PacketFilter;
     }
 
     public void SaveSettings()
@@ -118,6 +122,7 @@ public class SettingsWindowViewModel : INotifyPropertyChanged
         SettingsController.CurrentSettings.Server = ServerSelection.Value;
         NetworkManager.SetCurrentServer(ServerSelection.Value >= 2 ? AlbionServer.East : AlbionServer.West, true);
         SetNetworkFiltering();
+        SetPacketFilter();
         SettingsController.CurrentSettings.MainTrackingCharacterName = MainTrackingCharacterName;
         SettingsController.CurrentSettings.UpdateItemListByDays = UpdateItemListByDaysSelection.Value;
         SettingsController.CurrentSettings.UpdateItemsJsonByDays = UpdateItemsJsonByDaysSelection.Value;
@@ -138,7 +143,7 @@ public class SettingsWindowViewModel : INotifyPropertyChanged
 
         SetAppSettingsAndTranslations();
         SetNaviTabVisibilities();
-        SetNotificationFilters();
+        SetNotificationFilter();
     }
 
     public void ReloadSettings()
@@ -188,15 +193,44 @@ public class SettingsWindowViewModel : INotifyPropertyChanged
         mainWindowViewModel.PlayerInformationTabVisibility = SettingsController.CurrentSettings.IsPlayerInformationNaviTabActive.BoolToVisibility();
     }
 
-    private void SetNotificationFilters()
+    private void SetNotificationFilter()
     {
         SettingsController.CurrentSettings.IsNotificationFilterTradeActive = NotificationFilters?.FirstOrDefault(x => x?.NotificationFilterType == NotificationFilterType.Trade)?.IsSelected ?? true;
+    }
+
+    private void SetPacketFilter()
+    {
+        if (SettingsController.CurrentSettings.PacketFilter == PacketFilter)
+        {
+            return;
+        }
+
+        SettingsController.CurrentSettings.PacketFilter = PacketFilter ?? string.Empty;
+        NetworkManager.RestartNetworkCapture();
+    }
+
+    public void ResetPacketFilter()
+    {
+        const string defaultFilter = "(host 5.45.187 or host 5.188.125) and udp port 5056";
+
+        if (PacketFilter == defaultFilter)
+        {
+            return;
+        }
+        
+        PacketFilter = defaultFilter;
     }
 
     public struct SettingDataInformation
     {
         public string Name { get; set; }
         public int Value { get; set; }
+    }
+
+    public struct SettingDataStringInformation
+    {
+        public string Name { get; set; }
+        public string Value { get; set; }
     }
 
     public static void OpenConsoleWindow()
@@ -354,7 +388,7 @@ public class SettingsWindowViewModel : INotifyPropertyChanged
         NetworkFilteringSelection = NetworkFiltering.FirstOrDefault(x => x.Value == SettingsController.CurrentSettings.NetworkFiltering);
     }
 
-    private void InitDropDownDownByDays(ICollection<SettingDataInformation> updateJsonByDays)
+    private static void InitDropDownDownByDays(ICollection<SettingDataInformation> updateJsonByDays)
     {
         updateJsonByDays.Clear();
         updateJsonByDays.Add(new SettingDataInformation { Name = LanguageController.Translation("EVERY_DAY"), Value = 1 });
@@ -536,6 +570,16 @@ public class SettingsWindowViewModel : INotifyPropertyChanged
         set
         {
             _networkFiltering = value;
+            OnPropertyChanged();
+        }
+    }
+
+    public string PacketFilter
+    {
+        get => _packetFilter;
+        set
+        {
+            _packetFilter = value;
             OnPropertyChanged();
         }
     }
