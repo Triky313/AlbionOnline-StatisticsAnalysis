@@ -9,7 +9,6 @@ public class SettingsObject
     public int RefreshRate { get; set; } = 10000;
     public int Server { get; set; } = 0; // 0: auto, 1: west, 2: east
     public string PacketFilter { get; set; } = "(host 5.45.187 or host 5.188.125) and udp port 5056";
-    public int NetworkFiltering { get; set; } = 1; // 0: false, 1: true
     public string MainTrackingCharacterName { get; set; }
     public int UpdateItemListByDays { get; set; } = 7;
     public int UpdateItemsJsonByDays { get; set; } = 7;
