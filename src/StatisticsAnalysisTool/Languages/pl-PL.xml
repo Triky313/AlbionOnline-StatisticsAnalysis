@@ -727,4 +727,9 @@
 	<translation name="NO_LISTENING_ADAPTERS">Brak nasłuchujących adapterów</translation>
 	<translation name="PACKET_FILTER">Filtr pakietów</translation>
 	<translation name="RESET">Resetuj</translation>
+	<translation name="START_TRACKING">Rozpocznij śledzenie</translation>
+	<translation name="STOP_TRACKING">Zatrzymaj śledzenie</translation>
+	<translation name="GAME_TRACKING_IS_STARTED">Rozpoczęto śledzenie gry</translation>
+	<translation name="GAME_TRACKING_IS_STOPPED">Zatrzymano śledzenie gry</translation>
+	<translation name="TRACKING_STATUS">Status śledzenia</translation>
 </translations>
