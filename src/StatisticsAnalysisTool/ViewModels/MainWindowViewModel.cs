@@ -552,7 +552,7 @@ public class MainWindowViewModel : INotifyPropertyChanged
 
     public async Task StopTrackingAsync()
     {
-        NetworkManager.StopNetworkCapture();
+        NetworkManager.StopDeviceCapture();
 
         TrackingController?.LiveStatsTracker?.Stop();
 

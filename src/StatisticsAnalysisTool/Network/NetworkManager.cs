@@ -9,14 +9,11 @@ using StatisticsAnalysisTool.Network.Manager;
 using StatisticsAnalysisTool.ViewModels;
 using System;
 using System.Collections.Generic;
-using System.Collections.ObjectModel;
-using System.Diagnostics;
 using System.Linq;
 using System.Reflection;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
-using StatisticsAnalysisTool.Properties;
 using Packet = PcapDotNet.Packets.Packet;
 
 namespace StatisticsAnalysisTool.Network;
@@ -24,12 +21,12 @@ namespace StatisticsAnalysisTool.Network;
 public class NetworkManager
 {
     private static IPhotonReceiver _receiver;
-    private static ReadOnlyCollection<LivePacketDevice> _capturedDevices;
     private static readonly ILog Log = LogManager.GetLogger(MethodBase.GetCurrentMethod()?.DeclaringType);
-    private static readonly List<Thread> CaptureThreads = new();
     private static DateTime _lastGetCurrentServerByIpTime = DateTime.MinValue;
     private static int _serverEventCounter;
     private static AlbionServer _lastServerType;
+    private static readonly List<Task> PacketEventTasks = new();
+    private static CancellationTokenSource _cancellationTokenSource;
 
     public static AlbionServer AlbionServer { get; set; } = AlbionServer.Unknown;
 
@@ -121,29 +118,27 @@ public class NetworkManager
 
     public static bool StartDeviceCapture()
     {
-        ConsoleManager.WriteLineForMessage("Start Device Capture");
-
-        _capturedDevices = LivePacketDevice.AllLocalMachine;
-
-        if (_capturedDevices.Count <= 0)
-        {
-            ConsoleManager.WriteLineForMessage(MethodBase.GetCurrentMethod()?.DeclaringType, "Error!\nThere are no listening adapters available!");
-            return false;
-        }
-
         try
         {
-            ConsoleManager.WriteLineForMessage(MethodBase.GetCurrentMethod()?.DeclaringType, "CapturedDevices:");
+            ConsoleManager.WriteLineForMessage("Start Device Capture");
 
-            foreach (LivePacketDevice selectedDevice in _capturedDevices)
+            var capturedDevices = LivePacketDevice.AllLocalMachine;
+            if (capturedDevices.Count <= 0)
             {
-                ConsoleManager.WriteLineForMessage($"- {selectedDevice.Description}");
-                PacketEvent(selectedDevice);
+                ConsoleManager.WriteLineForMessage(MethodBase.GetCurrentMethod()?.DeclaringType, "Error!\nThere are no listening adapters available!");
+                return false;
             }
 
-            foreach (Thread captureThread in CaptureThreads)
+            ConsoleManager.WriteLineForMessage(MethodBase.GetCurrentMethod()?.DeclaringType, "CapturedDevices:");
+
+            _cancellationTokenSource = new CancellationTokenSource();
+
+            foreach (LivePacketDevice selectedDevice in capturedDevices)
             {
-                captureThread.Start();
+                ConsoleManager.WriteLineForMessage($"- {selectedDevice.Description}");
+
+                var task = Task.Run(() => PacketEvent(selectedDevice, _cancellationTokenSource.Token));
+                PacketEventTasks.Add(task);
             }
         }
         catch (Exception e)
@@ -169,41 +164,37 @@ public class NetworkManager
         return true;
     }
 
-    public static void StopNetworkCapture()
+    public static void StopDeviceCapture()
     {
-        ConsoleManager.WriteLineForMessage("Stop Device Capture");
-
-        foreach (Thread captureThread in CaptureThreads.Where(thread => thread.IsAlive).ToList())
+        if (_cancellationTokenSource == null)
         {
-            captureThread.Interrupt();
-            Debug.Print($"CaptureThreads Interrupt: {captureThread.Name}");
+            return;
         }
 
-        CaptureThreads.Clear();
+        ConsoleManager.WriteLineForMessage("Stop Device Capture");
+        _cancellationTokenSource.Cancel();
+        _cancellationTokenSource.Dispose();
+        _cancellationTokenSource = null;
+
+        PacketEventTasks.Clear();
     }
 
-    private static void PacketEvent(IPacketDevice device)
+    private static void PacketEvent(IPacketDevice device, CancellationToken cancellationToken)
     {
-        CaptureThreads.Add(new Thread(() =>
-        {
-            using PacketCommunicator communicator = device.Open(
-                65536,
-                PacketDeviceOpenAttributes.Promiscuous |
-                PacketDeviceOpenAttributes.DataTransferUdpRemote |
-                PacketDeviceOpenAttributes.NoCaptureLocal,
-                5000);
+        using PacketCommunicator communicator = device.Open(
+            65536,
+            PacketDeviceOpenAttributes.Promiscuous |
+            PacketDeviceOpenAttributes.DataTransferUdpRemote |
+            PacketDeviceOpenAttributes.NoCaptureLocal,
+            5000);
 
-            if (SettingsController.CurrentSettings.NetworkFiltering == 1)
-            {
-                using BerkeleyPacketFilter filter = communicator.CreateFilter(SettingsController.CurrentSettings.PacketFilter);
-                communicator.SetFilter(filter);
-            }
+        using BerkeleyPacketFilter packetFilter = communicator.CreateFilter(SettingsController.CurrentSettings.PacketFilter);
+        communicator.SetFilter(packetFilter);
 
-            communicator.ReceivePackets(0, PacketHandler);
-        })
+        while (!cancellationToken.IsCancellationRequested)
         {
-            IsBackground = false
-        });
+            communicator.ReceivePackets(1, PacketHandler);
+        }
     }
 
     private static void PacketHandler(Packet packet)
@@ -224,22 +215,14 @@ public class NetworkManager
                 _receiver.ReceivePacket(ipV4.Udp.Payload.ToArray());
             }
         }
-        catch (IndexOutOfRangeException ex)
+        catch (Exception ex) when (ex is IndexOutOfRangeException or InvalidOperationException or ArgumentException)
         {
             ConsoleManager.WriteLineForWarning(MethodBase.GetCurrentMethod()?.DeclaringType, ex);
-        }
-        catch (InvalidOperationException ex)
-        {
-            ConsoleManager.WriteLineForError(MethodBase.GetCurrentMethod()?.DeclaringType, ex);
         }
         catch (OverflowException ex)
         {
             ConsoleManager.WriteLineForError(MethodBase.GetCurrentMethod()?.DeclaringType, ex);
-            StopNetworkCapture();
-        }
-        catch (ArgumentException ex)
-        {
-            ConsoleManager.WriteLineForWarning(MethodBase.GetCurrentMethod()?.DeclaringType, ex);
+            StopDeviceCapture();
         }
         catch (Exception ex)
         {
@@ -336,12 +319,12 @@ public class NetworkManager
 
     public static void RestartNetworkCapture()
     {
-        StopNetworkCapture();
+        StopDeviceCapture();
         StartDeviceCapture();
     }
 
     public static bool IsNetworkCaptureRunning()
     {
-        return _capturedDevices?.Any() ?? false;
+        return PacketEventTasks?.Any() ?? false;
     }
 }
