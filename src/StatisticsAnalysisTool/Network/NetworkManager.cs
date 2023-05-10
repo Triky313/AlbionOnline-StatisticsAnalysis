@@ -1,6 +1,6 @@
 using log4net;
-using PcapDotNet.Core;
-using PcapDotNet.Packets.IpV4;
+using PacketDotNet;
+using SharpPcap;
 using StatisticsAnalysisTool.Common;
 using StatisticsAnalysisTool.Common.UserSettings;
 using StatisticsAnalysisTool.Enumerations;
@@ -11,10 +11,8 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
-using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
-using Packet = PcapDotNet.Packets.Packet;
 
 namespace StatisticsAnalysisTool.Network;
 
@@ -25,8 +23,7 @@ public class NetworkManager
     private static DateTime _lastGetCurrentServerByIpTime = DateTime.MinValue;
     private static int _serverEventCounter;
     private static AlbionServer _lastServerType;
-    private static readonly List<Task> PacketEventTasks = new();
-    private static CancellationTokenSource _cancellationTokenSource;
+    private static readonly List<ICaptureDevice> CapturedDevices = new();
 
     public static AlbionServer AlbionServer { get; set; } = AlbionServer.Unknown;
 
@@ -122,8 +119,9 @@ public class NetworkManager
         {
             ConsoleManager.WriteLineForMessage("Start Device Capture");
 
-            var capturedDevices = LivePacketDevice.AllLocalMachine;
-            if (capturedDevices.Count <= 0)
+            CapturedDevices.Clear();
+            CapturedDevices.AddRange(CaptureDeviceList.Instance);
+            if (CapturedDevices.Count <= 0)
             {
                 ConsoleManager.WriteLineForMessage(MethodBase.GetCurrentMethod()?.DeclaringType, "Error!\nThere are no listening adapters available!");
                 return false;
@@ -131,14 +129,10 @@ public class NetworkManager
 
             ConsoleManager.WriteLineForMessage(MethodBase.GetCurrentMethod()?.DeclaringType, "CapturedDevices:");
 
-            _cancellationTokenSource = new CancellationTokenSource();
-
-            foreach (LivePacketDevice selectedDevice in capturedDevices)
+            foreach (ICaptureDevice captureDevice in CapturedDevices)
             {
-                ConsoleManager.WriteLineForMessage($"- {selectedDevice.Description}");
-
-                var task = Task.Run(() => PacketEvent(selectedDevice, _cancellationTokenSource.Token));
-                PacketEventTasks.Add(task);
+                ConsoleManager.WriteLineForMessage($"- {captureDevice.Description}");
+                PacketEvent(captureDevice);
             }
         }
         catch (Exception e)
@@ -166,53 +160,56 @@ public class NetworkManager
 
     public static void StopDeviceCapture()
     {
-        if (_cancellationTokenSource == null)
+        if (CapturedDevices is not { Count: > 0 })
         {
             return;
         }
 
         ConsoleManager.WriteLineForMessage("Stop Device Capture");
-        _cancellationTokenSource.Cancel();
-        _cancellationTokenSource.Dispose();
-        _cancellationTokenSource = null;
 
-        PacketEventTasks.Clear();
-    }
-
-    private static void PacketEvent(IPacketDevice device, CancellationToken cancellationToken)
-    {
-        using PacketCommunicator communicator = device.Open(
-            65536,
-            PacketDeviceOpenAttributes.Promiscuous |
-            PacketDeviceOpenAttributes.DataTransferUdpRemote |
-            PacketDeviceOpenAttributes.NoCaptureLocal,
-            5000);
-
-        using BerkeleyPacketFilter packetFilter = communicator.CreateFilter(SettingsController.CurrentSettings.PacketFilter);
-        communicator.SetFilter(packetFilter);
-
-        while (!cancellationToken.IsCancellationRequested)
+        foreach (ICaptureDevice capturedDevice in CapturedDevices)
         {
-            communicator.ReceivePackets(1, PacketHandler);
+            capturedDevice.StopCapture();
+            capturedDevice.OnPacketArrival -= Device_OnPacketArrival;
+            capturedDevice.Close();
         }
+
+        CapturedDevices.Clear();
     }
 
-    private static void PacketHandler(Packet packet)
+    private static void PacketEvent(ICaptureDevice device)
     {
-        IpV4Datagram ipV4 = packet.Ethernet.IpV4;
-
-        var server = GetCurrentServerByIpOrSettings(ipV4);
-        SetCurrentServer(server);
-        if (server == AlbionServer.Unknown)
+        if (device.Started)
         {
             return;
         }
 
+        device.Open(new DeviceConfiguration()
+        {
+            Mode = DeviceModes.DataTransferUdp | DeviceModes.Promiscuous | DeviceModes.NoCaptureLocal,
+            ReadTimeout = 5000
+        });
+
+        device.Filter = SettingsController.CurrentSettings.PacketFilter;
+        device.OnPacketArrival += Device_OnPacketArrival;
+        device.StartCapture();
+    }
+
+    private static void Device_OnPacketArrival(object sender, PacketCapture e)
+    {
         try
         {
-            if (ipV4 != null)
+            var server = GetCurrentServerByIpOrSettings(e);
+            SetCurrentServer(server);
+            if (server == AlbionServer.Unknown)
             {
-                _receiver.ReceivePacket(ipV4.Udp.Payload.ToArray());
+                return;
+            }
+
+            var packet = Packet.ParsePacket(e.GetPacket().LinkLayerType, e.GetPacket().Data).Extract<UdpPacket>();
+            if (packet != null)
+            {
+                _receiver.ReceivePacket(packet.PayloadData);
             }
         }
         catch (Exception ex) when (ex is IndexOutOfRangeException or InvalidOperationException or ArgumentException)
@@ -227,7 +224,7 @@ public class NetworkManager
         catch (Exception ex)
         {
             ConsoleManager.WriteLineForError(MethodBase.GetCurrentMethod()?.DeclaringType, ex);
-            Log.Error(nameof(PacketHandler), ex);
+            Log.Error(nameof(Device_OnPacketArrival), ex);
         }
     }
 
@@ -251,7 +248,7 @@ public class NetworkManager
         _lastGetCurrentServerByIpTime = DateTime.Now;
     }
 
-    private static AlbionServer GetCurrentServerByIpOrSettings(IpV4Datagram ip)
+    private static AlbionServer GetCurrentServerByIpOrSettings(PacketCapture e)
     {
         if (SettingsController.CurrentSettings.Server == 1)
         {
@@ -263,7 +260,9 @@ public class NetworkManager
             return AlbionServer.East;
         }
 
-        var srcIp = ip?.CurrentDestination.ToString();
+        var packet = Packet.ParsePacket(e.GetPacket().LinkLayerType, e.GetPacket().Data);
+        var ipPacket = packet.Extract<IPPacket>();
+        var srcIp = ipPacket?.SourceAddress?.ToString();
         var albionServer = AlbionServer.Unknown;
 
         if (srcIp == null || string.IsNullOrEmpty(srcIp))
@@ -325,6 +324,6 @@ public class NetworkManager
 
     public static bool IsNetworkCaptureRunning()
     {
-        return PacketEventTasks?.Any() ?? false;
+        return CapturedDevices?.Any(x => x.Started) ?? false;
     }
 }
