@@ -3,7 +3,6 @@ using LiveChartsCore;
 using LiveChartsCore.SkiaSharpView;
 using log4net;
 using Microsoft.Win32;
-using Notification.Wpf;
 using StatisticsAnalysisTool.Cluster;
 using StatisticsAnalysisTool.Common;
 using StatisticsAnalysisTool.Common.UserSettings;
@@ -18,7 +17,6 @@ using StatisticsAnalysisTool.Models.NetworkModel;
 using StatisticsAnalysisTool.Models.TranslationModel;
 using StatisticsAnalysisTool.Network;
 using StatisticsAnalysisTool.Network.Manager;
-using StatisticsAnalysisTool.Notification;
 using StatisticsAnalysisTool.Properties;
 using StatisticsAnalysisTool.Trade;
 using StatisticsAnalysisTool.Views;
@@ -521,7 +519,7 @@ public class MainWindowViewModel : INotifyPropertyChanged
 
     public async Task StartTrackingAsync()
     {
-        if (NetworkManager.IsNetworkCaptureRunning)
+        if (NetworkManager.IsNetworkCaptureRunning())
         {
             return;
         }
@@ -554,7 +552,7 @@ public class MainWindowViewModel : INotifyPropertyChanged
 
     public async Task StopTrackingAsync()
     {
-        NetworkManager.StopNetworkCapture();
+        NetworkManager.StopDeviceCapture();
 
         TrackingController?.LiveStatsTracker?.Stop();
 
@@ -616,7 +614,7 @@ public class MainWindowViewModel : INotifyPropertyChanged
     {
         IsDamageMeterTrackingActive = !IsDamageMeterTrackingActive;
     }
-    
+
     #endregion
 
     #region Item View Filters

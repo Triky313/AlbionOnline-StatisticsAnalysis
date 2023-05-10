@@ -218,18 +218,32 @@ public class VaultController
 
         await foreach (var vault in Vaults.ToAsyncEnumerable())
         {
-            vaultSearchItem.AddRange(from vaultContainer in vault.VaultContainer
-                                     from item in vaultContainer.Items
-                                     where item?.Quantity > 0
-                                     select new VaultSearchItem()
-                                     {
-                                         Item = item.Item,
-                                         Location = vault.Location,
-                                         MainLocationIndex = vault.MainLocationIndex,
-                                         MapType = vault.MapType,
-                                         Quantity = item.Quantity,
-                                         VaultContainerName = vaultContainer.Name
-                                     });
+            var tempItems = new List<VaultSearchItem>();
+
+            foreach (var vaultContainer in vault.VaultContainer)
+            {
+                foreach (var item in vaultContainer.Items)
+                {
+                    if (!(item?.Quantity > 0))
+                    {
+                        continue;
+                    }
+
+                    var searchItem = new VaultSearchItem()
+                    {
+                        Item = item.Item,
+                        Location = vault.Location,
+                        MainLocationIndex = vault.MainLocationIndex,
+                        MapType = vault.MapType,
+                        Quantity = item.Quantity,
+                        VaultContainerName = vaultContainer.Name
+                    };
+
+                    tempItems.Add(searchItem);
+                }
+            }
+
+            vaultSearchItem.AddRange(tempItems);
         }
 
         Application.Current.Dispatcher.Invoke(() =>

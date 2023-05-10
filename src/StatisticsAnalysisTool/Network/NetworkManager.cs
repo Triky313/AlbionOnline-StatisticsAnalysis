@@ -19,14 +19,13 @@ namespace StatisticsAnalysisTool.Network;
 public class NetworkManager
 {
     private static IPhotonReceiver _receiver;
-    private static readonly List<ICaptureDevice> CapturedDevices = new();
     private static readonly ILog Log = LogManager.GetLogger(MethodBase.GetCurrentMethod()?.DeclaringType);
     private static DateTime _lastGetCurrentServerByIpTime = DateTime.MinValue;
     private static int _serverEventCounter;
     private static AlbionServer _lastServerType;
+    private static readonly List<ICaptureDevice> CapturedDevices = new();
 
     public static AlbionServer AlbionServer { get; set; } = AlbionServer.Unknown;
-    public static bool IsNetworkCaptureRunning => CapturedDevices.Where(device => device.Started).Any(device => device.Started);
 
     public static bool StartNetworkCapture(TrackingController trackingController)
     {
@@ -116,23 +115,24 @@ public class NetworkManager
 
     public static bool StartDeviceCapture()
     {
-        ConsoleManager.WriteLineForMessage("Start Device Capture");
-
-        CapturedDevices.AddRange(CaptureDeviceList.Instance);
-
-        if (CapturedDevices.Count <= 0)
-        {
-            ConsoleManager.WriteLineForMessage(MethodBase.GetCurrentMethod()?.DeclaringType, "No CapturedDevices");
-            return false;
-        }
-
         try
         {
-            ConsoleManager.WriteLineForMessage(MethodBase.GetCurrentMethod()?.DeclaringType, "CapturedDevices:");
-            foreach (var device in CapturedDevices)
+            ConsoleManager.WriteLineForMessage("Start Device Capture");
+
+            CapturedDevices.Clear();
+            CapturedDevices.AddRange(CaptureDeviceList.Instance);
+            if (CapturedDevices.Count <= 0)
             {
-                ConsoleManager.WriteLineForMessage($"- {device.Description}");
-                PacketEvent(device);
+                ConsoleManager.WriteLineForMessage(MethodBase.GetCurrentMethod()?.DeclaringType, "Error!\nThere are no listening adapters available!");
+                return false;
+            }
+
+            ConsoleManager.WriteLineForMessage(MethodBase.GetCurrentMethod()?.DeclaringType, "CapturedDevices:");
+
+            foreach (ICaptureDevice captureDevice in CapturedDevices)
+            {
+                ConsoleManager.WriteLineForMessage($"- {captureDevice.Description}");
+                PacketEvent(captureDevice);
             }
         }
         catch (Exception e)
@@ -140,6 +140,7 @@ public class NetworkManager
             ConsoleManager.WriteLineForError(MethodBase.GetCurrentMethod()?.DeclaringType, e);
             Log.Error(MethodBase.GetCurrentMethod()?.DeclaringType, e);
 
+            // TODO: Rework with ServiceLocator.Register
             var mainWindowViewModel = ServiceLocator.Resolve<MainWindowViewModel>();
             if (mainWindowViewModel != null)
             {
@@ -157,14 +158,20 @@ public class NetworkManager
         return true;
     }
 
-    public static void StopNetworkCapture()
+    public static void StopDeviceCapture()
     {
+        if (CapturedDevices is not { Count: > 0 })
+        {
+            return;
+        }
+
         ConsoleManager.WriteLineForMessage("Stop Device Capture");
 
-        foreach (var device in CapturedDevices.Where(device => device.Started))
+        foreach (ICaptureDevice capturedDevice in CapturedDevices)
         {
-            device.StopCapture();
-            device.Close();
+            capturedDevice.StopCapture();
+            capturedDevice.OnPacketArrival -= Device_OnPacketArrival;
+            capturedDevice.Close();
         }
 
         CapturedDevices.Clear();
@@ -183,10 +190,7 @@ public class NetworkManager
             ReadTimeout = 5000
         });
 
-        if (SettingsController.CurrentSettings.NetworkFiltering == 1)
-        {
-            device.Filter = "(host 5.45.187 or host 5.188.125) and udp port 5056";
-        }
+        device.Filter = SettingsController.CurrentSettings.PacketFilter;
         device.OnPacketArrival += Device_OnPacketArrival;
         device.StartCapture();
     }
@@ -208,21 +212,14 @@ public class NetworkManager
                 _receiver.ReceivePacket(packet.PayloadData);
             }
         }
-        catch (IndexOutOfRangeException ex)
+        catch (Exception ex) when (ex is IndexOutOfRangeException or InvalidOperationException or ArgumentException)
         {
             ConsoleManager.WriteLineForWarning(MethodBase.GetCurrentMethod()?.DeclaringType, ex);
-        }
-        catch (InvalidOperationException ex)
-        {
-            ConsoleManager.WriteLineForError(MethodBase.GetCurrentMethod()?.DeclaringType, ex);
         }
         catch (OverflowException ex)
         {
             ConsoleManager.WriteLineForError(MethodBase.GetCurrentMethod()?.DeclaringType, ex);
-        }
-        catch (ArgumentException ex)
-        {
-            ConsoleManager.WriteLineForWarning(MethodBase.GetCurrentMethod()?.DeclaringType, ex);
+            StopDeviceCapture();
         }
         catch (Exception ex)
         {
@@ -321,11 +318,12 @@ public class NetworkManager
 
     public static void RestartNetworkCapture()
     {
-        if (IsNetworkCaptureRunning)
-        {
-            StopNetworkCapture();
-        }
-
+        StopDeviceCapture();
         StartDeviceCapture();
+    }
+
+    public static bool IsNetworkCaptureRunning()
+    {
+        return CapturedDevices?.Any(x => x.Started) ?? false;
     }
 }
