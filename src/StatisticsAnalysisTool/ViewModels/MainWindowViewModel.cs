@@ -3,7 +3,6 @@ using LiveChartsCore;
 using LiveChartsCore.SkiaSharpView;
 using log4net;
 using Microsoft.Win32;
-using Notification.Wpf;
 using StatisticsAnalysisTool.Cluster;
 using StatisticsAnalysisTool.Common;
 using StatisticsAnalysisTool.Common.UserSettings;
@@ -11,6 +10,7 @@ using StatisticsAnalysisTool.Dungeon;
 using StatisticsAnalysisTool.Enumerations;
 using StatisticsAnalysisTool.EstimatedMarketValue;
 using StatisticsAnalysisTool.EventLogging;
+using StatisticsAnalysisTool.Exceptions;
 using StatisticsAnalysisTool.GameData;
 using StatisticsAnalysisTool.Models;
 using StatisticsAnalysisTool.Models.BindingModel;
@@ -18,7 +18,6 @@ using StatisticsAnalysisTool.Models.NetworkModel;
 using StatisticsAnalysisTool.Models.TranslationModel;
 using StatisticsAnalysisTool.Network;
 using StatisticsAnalysisTool.Network.Manager;
-using StatisticsAnalysisTool.Notification;
 using StatisticsAnalysisTool.Properties;
 using StatisticsAnalysisTool.Trade;
 using StatisticsAnalysisTool.Views;
@@ -521,7 +520,7 @@ public class MainWindowViewModel : INotifyPropertyChanged
 
     public async Task StartTrackingAsync()
     {
-        if (NetworkManager.IsNetworkCaptureRunning)
+        if (NetworkManager.IsNetworkCaptureRunning())
         {
             return;
         }
@@ -548,13 +547,30 @@ public class MainWindowViewModel : INotifyPropertyChanged
 
         DungeonBindings.DungeonStatsFilter = new DungeonStatsFilter(TrackingController);
 
-        IsTrackingActive = NetworkManager.StartNetworkCapture(TrackingController);
-        Console.WriteLine(@"### Start Tracking...");
+        try
+        {
+            NetworkManager.StartNetworkCapture(TrackingController);
+            IsTrackingActive = true;
+        }
+        catch (NoListeningAdaptersException aEx)
+        {
+            ConsoleManager.WriteLineForError(MethodBase.GetCurrentMethod()?.DeclaringType, aEx);
+            Log.Error(MethodBase.GetCurrentMethod()?.DeclaringType, aEx);
+            SetErrorBar(Visibility.Visible, LanguageController.Translation("NO_LISTENING_ADAPTERS"));
+        }
+        catch (Exception e)
+        {
+            ConsoleManager.WriteLineForError(MethodBase.GetCurrentMethod()?.DeclaringType, e);
+            Log.Error(MethodBase.GetCurrentMethod()?.DeclaringType, e);
+            SetErrorBar(Visibility.Visible, LanguageController.Translation("PACKET_HANDLER_ERROR_MESSAGE"));
+
+            await StopTrackingAsync();
+        }
     }
 
     public async Task StopTrackingAsync()
     {
-        NetworkManager.StopNetworkCapture();
+        NetworkManager.StopDeviceCapture();
 
         TrackingController?.LiveStatsTracker?.Stop();
 
@@ -574,7 +590,6 @@ public class MainWindowViewModel : INotifyPropertyChanged
         await EstimatedMarketValueController.SaveInFileAsync();
 
         IsTrackingActive = false;
-        Console.WriteLine(@"### Stop Tracking");
     }
 
     public void ResetDamageMeter()
@@ -616,7 +631,7 @@ public class MainWindowViewModel : INotifyPropertyChanged
     {
         IsDamageMeterTrackingActive = !IsDamageMeterTrackingActive;
     }
-    
+
     #endregion
 
     #region Item View Filters

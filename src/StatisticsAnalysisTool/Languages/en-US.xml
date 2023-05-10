@@ -724,4 +724,12 @@
 	<translation name="ADDED_EXPIRED_SELL_ORDER">Added expired sell order</translation>
 	<translation name="ADDED_TRADES">Added trades</translation>
 	<translation name="NOTIFICATIONS">Notifications</translation>
+	<translation name="NO_LISTENING_ADAPTERS">No listening adapters</translation>
+	<translation name="PACKET_FILTER">Packet Filter</translation>
+	<translation name="RESET">Reset</translation>
+	<translation name="START_TRACKING">Start tracking</translation>
+	<translation name="STOP_TRACKING">Stop tracking</translation>
+	<translation name="GAME_TRACKING_IS_STARTED">Game tracking is started</translation>
+	<translation name="GAME_TRACKING_IS_STOPPED">Game tracking is stopped</translation>
+	<translation name="TRACKING_STATUS">Tracking status</translation>
 </translations>

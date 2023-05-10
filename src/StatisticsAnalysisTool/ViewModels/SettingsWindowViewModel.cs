@@ -50,9 +50,8 @@ public class SettingsWindowViewModel : INotifyPropertyChanged
     private ObservableCollection<TabVisibilityFilter> _tabVisibilities = new();
     private SettingDataInformation _serverSelection;
     private ObservableCollection<SettingDataInformation> _server = new();
-    private ObservableCollection<SettingDataInformation> _networkFiltering = new();
-    private SettingDataInformation _networkFilteringSelection;
     private ObservableCollection<NotificationFilter> _notificationFilters = new();
+    private string _packetFilter;
 
     public SettingsWindowViewModel()
     {
@@ -67,7 +66,6 @@ public class SettingsWindowViewModel : INotifyPropertyChanged
         InitNotificationAreas();
         InitRefreshRate();
         InitServer();
-        InitNetworkFiltering();
 
         MainTrackingCharacterName = SettingsController.CurrentSettings.MainTrackingCharacterName;
 
@@ -107,6 +105,9 @@ public class SettingsWindowViewModel : INotifyPropertyChanged
 
         // Info window
         ShowInfoWindowOnStartChecked = SettingsController.CurrentSettings.IsInfoWindowShownOnStart;
+
+        // Packet Filter
+        PacketFilter = SettingsController.CurrentSettings.PacketFilter;
     }
 
     public void SaveSettings()
@@ -117,7 +118,7 @@ public class SettingsWindowViewModel : INotifyPropertyChanged
         SettingsController.CurrentSettings.RefreshRate = RefreshRatesSelection.Value;
         SettingsController.CurrentSettings.Server = ServerSelection.Value;
         NetworkManager.SetCurrentServer(ServerSelection.Value >= 2 ? AlbionServer.East : AlbionServer.West, true);
-        SetNetworkFiltering();
+        SetPacketFilter();
         SettingsController.CurrentSettings.MainTrackingCharacterName = MainTrackingCharacterName;
         SettingsController.CurrentSettings.UpdateItemListByDays = UpdateItemListByDaysSelection.Value;
         SettingsController.CurrentSettings.UpdateItemsJsonByDays = UpdateItemsJsonByDaysSelection.Value;
@@ -138,7 +139,7 @@ public class SettingsWindowViewModel : INotifyPropertyChanged
 
         SetAppSettingsAndTranslations();
         SetNaviTabVisibilities();
-        SetNotificationFilters();
+        SetNotificationFilter();
     }
 
     public void ReloadSettings()
@@ -149,17 +150,6 @@ public class SettingsWindowViewModel : INotifyPropertyChanged
     private void SetAppSettingsAndTranslations()
     {
         Translation = new SettingsWindowTranslation();
-    }
-
-    private void SetNetworkFiltering()
-    {
-        if (SettingsController.CurrentSettings.NetworkFiltering == NetworkFilteringSelection.Value)
-        {
-            return;
-        }
-
-        SettingsController.CurrentSettings.NetworkFiltering = NetworkFilteringSelection.Value;
-        NetworkManager.RestartNetworkCapture();
     }
 
     private void SetNaviTabVisibilities()
@@ -188,15 +178,45 @@ public class SettingsWindowViewModel : INotifyPropertyChanged
         mainWindowViewModel.PlayerInformationTabVisibility = SettingsController.CurrentSettings.IsPlayerInformationNaviTabActive.BoolToVisibility();
     }
 
-    private void SetNotificationFilters()
+    private void SetNotificationFilter()
     {
         SettingsController.CurrentSettings.IsNotificationFilterTradeActive = NotificationFilters?.FirstOrDefault(x => x?.NotificationFilterType == NotificationFilterType.Trade)?.IsSelected ?? true;
+        SettingsController.CurrentSettings.IsNotificationTrackingStatusActive = NotificationFilters?.FirstOrDefault(x => x?.NotificationFilterType == NotificationFilterType.TrackingStatus)?.IsSelected ?? true;
+    }
+
+    private void SetPacketFilter()
+    {
+        if (SettingsController.CurrentSettings.PacketFilter == PacketFilter)
+        {
+            return;
+        }
+
+        SettingsController.CurrentSettings.PacketFilter = PacketFilter ?? string.Empty;
+        NetworkManager.RestartNetworkCapture();
+    }
+
+    public void ResetPacketFilter()
+    {
+        const string defaultFilter = "(host 5.45.187 or host 5.188.125) and udp port 5056";
+
+        if (PacketFilter == defaultFilter)
+        {
+            return;
+        }
+
+        PacketFilter = defaultFilter;
     }
 
     public struct SettingDataInformation
     {
         public string Name { get; set; }
         public int Value { get; set; }
+    }
+
+    public struct SettingDataStringInformation
+    {
+        public string Name { get; set; }
+        public string Value { get; set; }
     }
 
     public static void OpenConsoleWindow()
@@ -303,6 +323,18 @@ public class SettingsWindowViewModel : INotifyPropertyChanged
             IsSelected = SettingsController.CurrentSettings.IsPlayerInformationNaviTabActive,
             Name = MainWindowTranslation.PlayerInformation
         });
+
+        var mainWindowViewModel = ServiceLocator.Resolve<MainWindowViewModel>();
+        mainWindowViewModel.DashboardTabVisibility = SettingsController.CurrentSettings.IsDashboardNaviTabActive.BoolToVisibility();
+        mainWindowViewModel.ItemSearchTabVisibility = SettingsController.CurrentSettings.IsItemSearchNaviTabActive.BoolToVisibility();
+        mainWindowViewModel.LoggingTabVisibility = SettingsController.CurrentSettings.IsLoggingNaviTabActive.BoolToVisibility();
+        mainWindowViewModel.DungeonsTabVisibility = SettingsController.CurrentSettings.IsDungeonsNaviTabActive.BoolToVisibility();
+        mainWindowViewModel.DamageMeterTabVisibility = SettingsController.CurrentSettings.IsDamageMeterNaviTabActive.BoolToVisibility();
+        mainWindowViewModel.TradeMonitoringTabVisibility = SettingsController.CurrentSettings.IsTradeMonitoringNaviTabActive.BoolToVisibility();
+        mainWindowViewModel.GatheringTabVisibility = SettingsController.CurrentSettings.IsGatheringNaviTabActive.BoolToVisibility();
+        mainWindowViewModel.StorageHistoryTabVisibility = SettingsController.CurrentSettings.IsStorageHistoryNaviTabActive.BoolToVisibility();
+        mainWindowViewModel.MapHistoryTabVisibility = SettingsController.CurrentSettings.IsMapHistoryNaviTabActive.BoolToVisibility();
+        mainWindowViewModel.PlayerInformationTabVisibility = SettingsController.CurrentSettings.IsPlayerInformationNaviTabActive.BoolToVisibility();
     }
 
     private void InitNotificationAreas()
@@ -311,6 +343,12 @@ public class SettingsWindowViewModel : INotifyPropertyChanged
         {
             IsSelected = SettingsController.CurrentSettings.IsNotificationFilterTradeActive,
             Name = LanguageController.Translation("ADDED_TRADES")
+        });
+
+        NotificationFilters.Add(new NotificationFilter(NotificationFilterType.TrackingStatus)
+        {
+            IsSelected = SettingsController.CurrentSettings.IsNotificationTrackingStatusActive,
+            Name = LanguageController.Translation("TRACKING_STATUS")
         });
     }
 
@@ -334,15 +372,7 @@ public class SettingsWindowViewModel : INotifyPropertyChanged
         ServerSelection = Server.FirstOrDefault(x => x.Value == SettingsController.CurrentSettings.Server);
     }
 
-    private void InitNetworkFiltering()
-    {
-        NetworkFiltering.Clear();
-        NetworkFiltering.Add(new SettingDataInformation { Name = SettingsWindowTranslation.Disabled, Value = 0 });
-        NetworkFiltering.Add(new SettingDataInformation { Name = SettingsWindowTranslation.Activated, Value = 1 });
-        NetworkFilteringSelection = NetworkFiltering.FirstOrDefault(x => x.Value == SettingsController.CurrentSettings.NetworkFiltering);
-    }
-
-    private void InitDropDownDownByDays(ICollection<SettingDataInformation> updateJsonByDays)
+    private static void InitDropDownDownByDays(ICollection<SettingDataInformation> updateJsonByDays)
     {
         updateJsonByDays.Clear();
         updateJsonByDays.Add(new SettingDataInformation { Name = LanguageController.Translation("EVERY_DAY"), Value = 1 });
@@ -488,16 +518,6 @@ public class SettingsWindowViewModel : INotifyPropertyChanged
         }
     }
 
-    public SettingDataInformation NetworkFilteringSelection
-    {
-        get => _networkFilteringSelection;
-        set
-        {
-            _networkFilteringSelection = value;
-            OnPropertyChanged();
-        }
-    }
-
     public ObservableCollection<SettingDataInformation> RefreshRates
     {
         get => _refreshRates;
@@ -518,12 +538,12 @@ public class SettingsWindowViewModel : INotifyPropertyChanged
         }
     }
 
-    public ObservableCollection<SettingDataInformation> NetworkFiltering
+    public string PacketFilter
     {
-        get => _networkFiltering;
+        get => _packetFilter;
         set
         {
-            _networkFiltering = value;
+            _packetFilter = value;
             OnPropertyChanged();
         }
     }

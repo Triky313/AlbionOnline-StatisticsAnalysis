@@ -45,4 +45,6 @@ public class SettingsWindowTranslation
     public static string Activated => LanguageController.Translation("ACTIVATED");
     public static string Disabled => LanguageController.Translation("DISABLED");
     public static string Notifications => LanguageController.Translation("NOTIFICATIONS");
+    public static string PacketFilter => LanguageController.Translation("PACKET_FILTER");
+    public static string Reset => LanguageController.Translation("RESET");
 }

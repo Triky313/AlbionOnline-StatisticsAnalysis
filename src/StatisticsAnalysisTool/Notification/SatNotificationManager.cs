@@ -23,18 +23,38 @@ public class SatNotificationManager
 #endif
     }
 
+    public async Task ShowTrackingStatusAsync(string title, string message)
+    {
+        if (!SettingsController.CurrentSettings.IsNotificationTrackingStatusActive)
+        {
+            return;
+        }
+
+        await Application.Current.Dispatcher.InvokeAsync(() =>
+        {
+            var content = new NotificationContent
+            {
+                Title = title,
+                Message = message,
+                Type = NotificationType.Information,
+                TrimType = NotificationTextTrimType.AttachIfMoreRows,
+                RowsCount = 1,
+                CloseOnClick = true,
+                Foreground = ForegroundText1,
+                Background = BackgroundBlue
+            };
+
+            _notificationManager.Show(content);
+        });
+    }
+
     public async Task ShowTradeAsync(Trade.Trade trade)
     {
-        if (!SettingsController.CurrentSettings.IsNotificationFilterTradeActive)
+        if (!SettingsController.CurrentSettings.IsNotificationFilterTradeActive || trade == null)
         {
             return;
         }
-
-        if (trade == null)
-        {
-            return;
-        }
-
+        
         await Application.Current.Dispatcher.InvokeAsync(() =>
         {
             var content = new NotificationContent

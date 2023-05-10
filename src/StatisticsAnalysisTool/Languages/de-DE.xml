@@ -724,4 +724,12 @@
 	<translation name="ADDED_EXPIRED_SELL_ORDER">Abgelaufener Verkaufsauftrag hinzugefügt</translation>
 	<translation name="ADDED_TRADES">Hinzugefügte Handel</translation>
 	<translation name="NOTIFICATIONS">Benachrichtigungen</translation>
+	<translation name="NO_LISTENING_ADAPTERS">Keine trackbaren Adapter</translation>
+	<translation name="PACKET_FILTER">Packet Filter</translation>
+	<translation name="RESET">Zurücksetzen</translation>
+	<translation name="START_TRACKING">Starte tracking</translation>
+	<translation name="STOP_TRACKING">Stoppe tracking</translation>
+	<translation name="GAME_TRACKING_IS_STARTED">Spiel-Tracking ist gestartet</translation>
+	<translation name="GAME_TRACKING_IS_STOPPED">Spiel-Tracking ist gestoppt</translation>
+	<translation name="TRACKING_STATUS">Tracking Status</translation>
 </translations>

@@ -52,9 +52,11 @@
                                   SelectedValuePath="Value" HorizontalAlignment="Left" VerticalAlignment="Top" Width="200" Height="26" />
                     </DockPanel>
                     <DockPanel Margin="0,5,0,0">
-                        <Label Content="{Binding Translation.NetworkFiltering, FallbackValue=NETWORK_FILTERING}" MinWidth="300" VerticalAlignment="Top" />
-                        <ComboBox ItemsSource="{Binding NetworkFiltering}" SelectedItem="{Binding NetworkFilteringSelection}" IsSynchronizedWithCurrentItem="True" DisplayMemberPath="Name" 
-                                  SelectedValuePath="Value" HorizontalAlignment="Left" VerticalAlignment="Top" Width="200" Height="26" />
+                        <Label Content="{Binding Translation.PacketFilter, FallbackValue=PACKET__FILTER}" MinWidth="300" VerticalAlignment="Top" />
+                        <StackPanel Orientation="Horizontal">
+                            <TextBox Text="{Binding PacketFilter}" Height="26" MinWidth="350" TextWrapping="NoWrap" VerticalAlignment="Center" Margin="0,0,5,0" />
+                            <Button Content="{Binding Translation.Reset, FallbackValue=RESET}" Height="24" MaxWidth="120" VerticalAlignment="Center" Click="ResetPacketFilter_Click" />
+                        </StackPanel>
                     </DockPanel>
                     <DockPanel Margin="0,5,0,0">
                         <Label Content="{Binding Translation.Notifications, FallbackValue=NOTIFICATIONS}" MinWidth="300" VerticalAlignment="Top" />
