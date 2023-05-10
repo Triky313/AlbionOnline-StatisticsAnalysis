@@ -19,7 +19,7 @@ public class FurnitureItem : ItemJsonObject
     public string Tier { get; set; }
 
     [JsonPropertyName("@durability")]
-    public string Durability { get; set; }
+    public double Durability { get; set; }
 
     [JsonPropertyName("@durabilitylossperdayfactor")]
     public string Durabilitylossperdayfactor { get; set; }

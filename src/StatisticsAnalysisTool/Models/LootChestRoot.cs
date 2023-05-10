@@ -1,7 +1,6 @@
-﻿namespace StatisticsAnalysisTool.Models
+﻿namespace StatisticsAnalysisTool.Models;
+
+public class LootChestRoot
 {
-    public class LootChestRoot
-    {
-        public LootChests LootChests { get; set; }
-    }
+    public LootChests LootChests { get; set; }
 }

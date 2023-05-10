@@ -1,36 +1,38 @@
-﻿using System.Windows;
-using StatisticsAnalysisTool.ViewModels;
-using System.Windows.Input;
+﻿using StatisticsAnalysisTool.ViewModels;
+using System.Linq;
+using System.Windows.Controls;
+using StatisticsAnalysisTool.Models.BindingModel;
 
-namespace StatisticsAnalysisTool.UserControls
+namespace StatisticsAnalysisTool.UserControls;
+
+/// <summary>
+/// Interaction logic for PlayerInformationControl.xaml
+/// </summary>
+public partial class PlayerInformationControl
 {
-    /// <summary>
-    /// Interaction logic for PlayerInformationControl.xaml
-    /// </summary>
-    public partial class PlayerInformationControl
+    public PlayerInformationControl()
     {
-        private readonly PlayerInformationViewModel _playerInformationViewModel;
+        InitializeComponent();
+    }
 
-        public PlayerInformationControl()
+    private async void ListBoxUserSearch_OnSelectionChanged(object sender, SelectionChangedEventArgs e)
+    {
+        var selectedItem = e?.AddedItems?.OfType<PlayerInformationBindings.PlayerSearchStruct>().FirstOrDefault();
+        if (selectedItem?.Value?.Name == null)
         {
-            InitializeComponent();
-            _playerInformationViewModel = new PlayerInformationViewModel();
-            DataContext = _playerInformationViewModel;
+            return;
         }
 
-        private async void BtnPlayerModeSave_Click(object sender, RoutedEventArgs e)
-        {
-            await _playerInformationViewModel.SetComparedPlayerModeInfoValues();
-        }
+        var vm = (MainWindowViewModel)DataContext;
+        await vm?.PlayerInformationBindings?.LoadPlayerDataAsync(selectedItem.Value.Value?.Name)!;
+    }
 
-        private async void TxtBoxPlayerModeUsername_KeyDown(object sender, KeyEventArgs e)
+    private async void TextBoxPlayerSearch_OnTextChanged(object sender, TextChangedEventArgs e)
+    {
+        if (sender is TextBox textBox)
         {
-            if (e.Key != Key.Enter)
-            {
-                return;
-            }
-
-            await _playerInformationViewModel.SetComparedPlayerModeInfoValues();
+            var vm = (MainWindowViewModel)DataContext;
+            await vm?.PlayerInformationBindings?.UpdateUsernameListBoxAsync(textBox.Text)!;
         }
     }
 }

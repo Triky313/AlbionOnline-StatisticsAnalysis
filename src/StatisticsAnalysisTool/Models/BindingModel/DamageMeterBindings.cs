@@ -1,18 +1,20 @@
 ﻿using FontAwesome5;
 using StatisticsAnalysisTool.Common;
+using StatisticsAnalysisTool.Common.UserSettings;
 using StatisticsAnalysisTool.Enumerations;
 using StatisticsAnalysisTool.Network.Notification;
 using StatisticsAnalysisTool.Properties;
+using StatisticsAnalysisTool.Views;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
+using System.IO;
 using System.Linq;
 using System.Runtime.CompilerServices;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Media;
-using StatisticsAnalysisTool.Common.UserSettings;
 
 namespace StatisticsAnalysisTool.Models.BindingModel;
 
@@ -30,6 +32,7 @@ public class DamageMeterBindings : INotifyPropertyChanged, IAsyncInitialization
     private bool _isDamageMeterResetByMapChangeActive;
     private bool _isSnapshotAfterMapChangeActive;
     private GridLength _gridSplitterPosition;
+    private bool _isDamageMeterResetBeforeCombatActive;
     public Task Initialization { get; init; }
 
     public DamageMeterBindings()
@@ -78,6 +81,7 @@ public class DamageMeterBindings : INotifyPropertyChanged, IAsyncInitialization
 
         IsSnapshotAfterMapChangeActive = SettingsController.CurrentSettings.IsSnapshotAfterMapChangeActive;
         IsDamageMeterResetByMapChangeActive = SettingsController.CurrentSettings.IsDamageMeterResetByMapChangeActive;
+        IsDamageMeterResetBeforeCombatActive = SettingsController.CurrentSettings.IsDamageMeterResetBeforeCombatActive;
 
         Initialization = LoadLocalFileAsync();
     }
@@ -120,7 +124,7 @@ public class DamageMeterBindings : INotifyPropertyChanged, IAsyncInitialization
 
     public Brush DamageMeterActivationToggleColor
     {
-        get => _damageMeterActivationToggleColor ?? new SolidColorBrush((Color)Application.Current.Resources["Color.Text.1"]);
+        get => _damageMeterActivationToggleColor ?? new SolidColorBrush((Color) Application.Current.Resources["Color.Text.1"]);
         set
         {
             _damageMeterActivationToggleColor = value;
@@ -192,6 +196,17 @@ public class DamageMeterBindings : INotifyPropertyChanged, IAsyncInitialization
         {
             _isDamageMeterResetByMapChangeActive = value;
             SettingsController.CurrentSettings.IsDamageMeterResetByMapChangeActive = _isDamageMeterResetByMapChangeActive;
+            OnPropertyChanged();
+        }
+    }
+
+    public bool IsDamageMeterResetBeforeCombatActive
+    {
+        get => _isDamageMeterResetBeforeCombatActive;
+        set
+        {
+            _isDamageMeterResetBeforeCombatActive = value;
+            SettingsController.CurrentSettings.IsDamageMeterResetBeforeCombatActive = _isDamageMeterResetBeforeCombatActive;
             OnPropertyChanged();
         }
     }
@@ -282,7 +297,7 @@ public class DamageMeterBindings : INotifyPropertyChanged, IAsyncInitialization
         }
     }
 
-    public void DeleteSnapshot()
+    public void DeleteSelectedSnapshot()
     {
         var damageMeterSnapshotSelection = DamageMeterSnapshotSelection;
         if (damageMeterSnapshotSelection != null)
@@ -291,6 +306,22 @@ public class DamageMeterBindings : INotifyPropertyChanged, IAsyncInitialization
         }
 
         DamageMeterSnapshots = DamageMeterSnapshots?.ToList();
+    }
+
+    public void DeleteAllSnapshots()
+    {
+        if (DamageMeterSnapshots?.Count <= 0)
+        {
+            return;
+        }
+
+        var dialog = new DialogWindow(LanguageController.Translation("DELETE_ALL_SNAPSHOTS"), LanguageController.Translation("SURE_YOU_WANT_TO_DELETE_ALL_SNAPSHOTS"));
+        var dialogResult = dialog.ShowDialog();
+
+        if (dialogResult is true)
+        {
+            DamageMeterSnapshots = new List<DamageMeterSnapshot>();
+        }
     }
 
     public void SetDamageMeterSnapshotSort()
@@ -354,6 +385,7 @@ public class DamageMeterBindings : INotifyPropertyChanged, IAsyncInitialization
     public static string TranslationSortByHps => LanguageController.Translation("SORT_BY_HPS");
     public static string TranslationSnapshots => LanguageController.Translation("SNAPSHOTS");
     public static string TranslationDeleteSelectedSnapshot => LanguageController.Translation("DELETE_SELECTED_SNAPSHOT");
+    public static string TranslationDeleteAllSnapshots => LanguageController.Translation("DELETE_ALL_SNAPSHOTS");
     public static string TranslationTakeASnapshotOfDamageMeterDescription => LanguageController.Translation("TAKE_A_SNAPSHOT_OF_DAMAGE_METER_DESCRIPTION");
 
     #endregion
@@ -362,7 +394,9 @@ public class DamageMeterBindings : INotifyPropertyChanged, IAsyncInitialization
 
     private async Task LoadLocalFileAsync()
     {
-        DamageMeterSnapshots = await FileController.LoadAsync<List<DamageMeterSnapshot>>($"{AppDomain.CurrentDomain.BaseDirectory}{Settings.Default.DamageMeterSnapshotsFileName}");
+        FileController.TransferFileIfExistFromOldPathToUserDataDirectory(Path.Combine(AppDomain.CurrentDomain.BaseDirectory, Settings.Default.DamageMeterSnapshotsFileName));
+        DamageMeterSnapshots = await FileController.LoadAsync<List<DamageMeterSnapshot>>(
+            Path.Combine(AppDomain.CurrentDomain.BaseDirectory, Settings.Default.UserDataDirectoryName, Settings.Default.DamageMeterSnapshotsFileName));
     }
 
     #endregion

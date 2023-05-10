@@ -27,6 +27,9 @@
                             <DataTrigger Binding="{Binding  ConsoleColorType}" Value="EventMapChangeColor">
                                 <Setter Property="Foreground" Value="{StaticResource SolidColorBrush.Console.MapChange}"/>
                             </DataTrigger>
+                            <DataTrigger Binding="{Binding  ConsoleColorType}" Value="EventDebugColor">
+                                <Setter Property="Foreground" Value="{StaticResource SolidColorBrush.Console.Debug}"/>
+                            </DataTrigger>
                         </Style.Triggers>
                     </Style>
                 </TextBlock.Style>

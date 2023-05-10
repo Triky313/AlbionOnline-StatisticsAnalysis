@@ -9,6 +9,9 @@ public class ConsumableItem : ItemJsonObject
     [JsonPropertyName("@uniquename")]
     public override string UniqueName { get; set; }
 
+    [JsonPropertyName("@itemvalue")]
+    public string ItemValue { get; set; }
+
     [JsonPropertyName("@fishingfame")]
     public string FishingFame { get; set; }
 

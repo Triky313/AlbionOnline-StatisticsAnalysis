@@ -1,8 +1,7 @@
-﻿namespace StatisticsAnalysisTool.Enumerations
+﻿namespace StatisticsAnalysisTool.Enumerations;
+
+public enum DungeonStatus
 {
-    public enum DungeonStatus
-    {
-        Active,
-        Done
-    }
+    Active,
+    Done
 }

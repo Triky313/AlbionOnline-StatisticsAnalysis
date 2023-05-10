@@ -50,12 +50,17 @@
     <CheckForOverflowUnderflow>true</CheckForOverflowUnderflow>
   </PropertyGroup>
   <ItemGroup>
+    <Compile Update="Properties\Resources.Designer.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Resources.resx</DependentUpon>
+    </Compile>
     <Compile Update="Properties\Settings.Designer.cs">
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
       <AutoGen>True</AutoGen>
       <DependentUpon>Settings.settings</DependentUpon>
     </Compile>
-    <Compile Update="UserControls\MailMonitoringControl.xaml.cs">
+    <Compile Update="UserControls\TradeMonitoringControl.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
     <Compile Update="UserControls\DashboardControl.xaml.cs">
@@ -98,31 +103,37 @@
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="Languages\de-DE.xml">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Languages\zh-TW.xml">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="Languages\en-US.xml">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="Languages\es-ES.xml">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="Languages\fr-FR.xml">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Languages\ko-KR.xml">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="Languages\pl-PL.xml">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="Languages\pt-BR.xml">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="Languages\ru-RU.xml">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="Languages\tr-TR.xml">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="Languages\zh-CN.xml">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="sat-icon.ico">
       <CopyToOutputDirectory>Never</CopyToOutputDirectory>
@@ -137,6 +148,9 @@
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="Sounds\alert4.wav">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Sounds\dungeon_closed.wav">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Resource Include="Assets\ava_chest.png">
@@ -157,16 +171,40 @@
     <Resource Include="Assets\book_oblique.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Resource>
+    <Resource Include="Assets\crafting_description_image001.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Assets\crafting_description_image002.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Resource>
     <Resource Include="Assets\dungeon.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Resource>
     <Resource Include="Assets\empty_icon.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Resource>
+    <Resource Include="Assets\gem_level0.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Assets\gem_level1.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Assets\gem_level2.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Assets\gem_level3.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Assets\gem_level4.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Resource>
     <Resource Include="Assets\gold_glow.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Resource>
     <Resource Include="Assets\green_glow.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Assets\heart.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Resource>
     <Resource Include="Assets\MiniMapMarker\group_dungeon.png">
@@ -208,7 +246,28 @@
     <Resource Include="Assets\outpost_chest.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Resource>
+    <Resource Include="Assets\paypal-QR-Code.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Assets\pickaxe.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Assets\pickaxe_bonus.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Assets\pickaxe_box.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Assets\pickaxe_premium.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Assets\pickaxe_repeat.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Resource>
     <Resource Include="Assets\purple_glow.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Assets\repair_cross.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Resource>
     <Resource Include="Assets\sat-icon.png">
@@ -479,12 +538,6 @@
     </BootstrapperPackage>
   </ItemGroup>
   <ItemGroup>
-    <Resource Include="Resources\outdated.png">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Resource>
-    <Resource Include="Resources\check.png">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Resource>
     <Resource Include="Resources\goldchest.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Resource>
@@ -495,55 +548,20 @@
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Resource>
     <Resource Include="ao-update-check.xml" />
-    <Resource Include="Resources\level3.png">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Resource>
-    <Resource Include="Resources\level2.png">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Resource>
-    <Resource Include="Resources\level1.png">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Resource>
-    <Resource Include="Resources\level0.png">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Resource>
-    <Resource Include="Resources\t8.png">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Resource>
-    <Resource Include="Resources\t7.png">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Resource>
-    <Resource Include="Resources\t6.png">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Resource>
-    <Resource Include="Resources\t5.png">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Resource>
-    <Resource Include="Resources\t4.png">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Resource>
-    <Resource Include="Resources\t3.png">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Resource>
-    <Resource Include="Resources\t2.png">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Resource>
-    <Resource Include="Resources\t1.png">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Resource>
   </ItemGroup>
   <ItemGroup>
-    <PackageReference Include="LiveChartsCore.SkiaSharpView.WPF" Version="2.0.0-beta.220" />
+    <PackageReference Include="LiveChartsCore.SkiaSharpView.WPF" Version="2.0.0-beta.700" />
     <PackageReference Include="Microsoft.CSharp" Version="4.7.0" />
-    <PackageReference Include="Microsoft.Web.WebView2" Version="1.0.1293.44" />
-    <PackageReference Include="Microsoft.Windows.Compatibility" Version="7.0.0-preview.3.22175.4" />
-    <PackageReference Include="Autoupdater.NET.Official" Version="1.7.4" />
+    <PackageReference Include="Microsoft.Web.WebView2" Version="1.0.1722.45" />
+    <PackageReference Include="Microsoft.Windows.Compatibility" Version="7.0.1" />
+    <PackageReference Include="Autoupdater.NET.Official" Version="1.8.1" />
     <PackageReference Include="FontAwesome5" Version="2.1.6" />
-    <PackageReference Include="log4net" Version="2.0.14" />
+    <PackageReference Include="log4net" Version="2.0.15" />
+    <PackageReference Include="Notification.Wpf" Version="7.0.0" />
     <PackageReference Include="PhotonPackageParser" Version="4.1.0" />
-    <PackageReference Include="SharpPcap" Version="6.2.2" />
+    <PackageReference Include="SharpPcap" Version="6.2.5" />
     <PackageReference Include="System.Linq.Async" Version="6.0.1" />
-    <PackageReference Include="System.Runtime.CompilerServices.Unsafe" Version="7.0.0-preview.2.22152.2" />
+    <PackageReference Include="System.Runtime.CompilerServices.Unsafe" Version="6.0.0" />
     <PackageReference Include="VirtualizingWrapPanel" Version="1.5.7" />
   </ItemGroup>
   <ItemGroup>
@@ -558,10 +576,18 @@
     <None Remove="Assets\blue_glow.png" />
     <None Remove="Assets\book.png" />
     <None Remove="Assets\book_oblique.png" />
+    <None Remove="Assets\crafting_description_image001.png" />
+    <None Remove="Assets\crafting_description_image002.png" />
     <None Remove="Assets\dungeon.png" />
     <None Remove="Assets\empty_icon.png" />
+    <None Remove="Assets\gem_level0.png" />
+    <None Remove="Assets\gem_level1.png" />
+    <None Remove="Assets\gem_level2.png" />
+    <None Remove="Assets\gem_level3.png" />
+    <None Remove="Assets\gem_level4.png" />
     <None Remove="Assets\gold_glow.png" />
     <None Remove="Assets\green_glow.png" />
+    <None Remove="Assets\heart.png" />
     <None Remove="Assets\MiniMapMarker\group_dungeon.png" />
     <None Remove="Assets\MiniMapMarker\minimapmarker_fiber.png" />
     <None Remove="Assets\MiniMapMarker\minimapmarker_hide.png" />
@@ -575,7 +601,14 @@
     <None Remove="Assets\MiniMapMarker\solo_dungeon.png" />
     <None Remove="Assets\openworld_chests.png" />
     <None Remove="Assets\outpost_chest.png" />
+    <None Remove="Assets\paypal-QR-Code.png" />
+    <None Remove="Assets\pickaxe.png" />
+    <None Remove="Assets\pickaxe_bonus.png" />
+    <None Remove="Assets\pickaxe_box.png" />
+    <None Remove="Assets\pickaxe_premium.png" />
+    <None Remove="Assets\pickaxe_repeat.png" />
     <None Remove="Assets\purple_glow.png" />
+    <None Remove="Assets\repair_cross.png" />
     <None Remove="Assets\sat-icon.png" />
     <None Remove="Assets\static_chest.png" />
     <None Remove="GameFiles\lootchests.json" />
@@ -584,11 +617,13 @@
     <None Remove="Languages\en-US.xml" />
     <None Remove="Languages\es-ES.xml" />
     <None Remove="Languages\fr-FR.xml" />
+    <None Remove="Languages\ko-KR.xml" />
     <None Remove="Languages\pl-PL.xml" />
     <None Remove="Languages\pt-BR.xml" />
     <None Remove="Languages\ru-RU.xml" />
     <None Remove="Languages\tr-TR.xml" />
     <None Remove="Languages\zh-CN.xml" />
+    <None Remove="Languages\zh-TW.xml" />
     <None Remove="Resources\DonationIcon\ALLIGATOR1.png" />
     <None Remove="Resources\DonationIcon\ANCIENTMAMMOTH1.png" />
     <None Remove="Resources\DonationIcon\BEAR.png" />
@@ -632,9 +667,10 @@
     <None Remove="Sounds\alert2.wav" />
     <None Remove="Sounds\alert3.wav" />
     <None Remove="Sounds\alert4.wav" />
+    <None Remove="Sounds\dungeon_closed.wav" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="..\.editorconfig" Link=".editorconfig" />
+    <ProjectReference Include="..\StatisticsAnalysisTool.Network\StatisticsAnalysisTool.Network.csproj" />
   </ItemGroup>
   <ItemGroup>
     <Page Update="Styles\ConsoleStyles.xaml">
@@ -642,6 +678,14 @@
       <SubType>Designer</SubType>
     </Page>
     <Page Update="Styles\DashboardStyles.xaml">
+      <XamlRuntime>$(DefaultXamlRuntime)</XamlRuntime>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Update="Styles\GatheringStyles.xaml">
+      <XamlRuntime>$(DefaultXamlRuntime)</XamlRuntime>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Update="Styles\ThanksStyle.xaml">
       <XamlRuntime>$(DefaultXamlRuntime)</XamlRuntime>
       <SubType>Designer</SubType>
     </Page>
@@ -696,7 +740,7 @@
     <Page Update="Styles\DonationStyles.xaml">
       <XamlRuntime>$(DefaultXamlRuntime)</XamlRuntime>
     </Page>
-    <Page Update="UserControls\MailMonitoringControl.xaml">
+    <Page Update="UserControls\TradeMonitoringControl.xaml">
       <XamlRuntime>$(DefaultXamlRuntime)</XamlRuntime>
       <SubType>Designer</SubType>
     </Page>
@@ -741,5 +785,11 @@
     <Page Update="Views\DashboardWindow.xaml">
       <XamlRuntime>$(DefaultXamlRuntime)</XamlRuntime>
     </Page>
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Update="Properties\Resources.resx">
+      <Generator>PublicResXFileCodeGenerator</Generator>
+      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
   </ItemGroup>
 </Project>

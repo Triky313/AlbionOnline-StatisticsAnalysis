@@ -13,6 +13,18 @@
         <Setter Property="Width" Value="220" />
     </Style>
 
+    <Style TargetType="Label" x:Key="PlayerMode.Label.Value.LastBlue">
+        <Setter Property="Foreground" Value="{StaticResource SolidColorBrush.Accent.Blue.3}" />
+        <Setter Property="HorizontalAlignment" Value="Left" />
+        <Setter Property="Width" Value="220" />
+    </Style>
+
+    <Style TargetType="Label" x:Key="PlayerMode.Label.Value.CurrentBlue">
+        <Setter Property="Foreground" Value="{StaticResource SolidColorBrush.Accent.Blue.3}" />
+        <Setter Property="HorizontalAlignment" Value="Left" />
+        <Setter Property="Width" Value="220" />
+    </Style>
+
     <Style TargetType="Label" x:Key="PlayerMode.Label.Title">
         <Setter Property="Foreground" Value="{StaticResource SolidColorBrush.Text.1}" />
         <Setter Property="HorizontalAlignment" Value="Left" />
@@ -21,6 +33,13 @@
 
     <Style TargetType="Label" x:Key="PlayerMode.Title">
         <Setter Property="Foreground" Value="{StaticResource SolidColorBrush.Text.1}" />
+        <Setter Property="FontWeight" Value="Bold" />
+    </Style>
+
+    <Style TargetType="Label" x:Key="PlayerMode.TitleBlue">
+        <Setter Property="Foreground" Value="{StaticResource SolidColorBrush.Accent.Blue.3}" />
+        <Setter Property="HorizontalAlignment" Value="Left" />
+        <Setter Property="Width" Value="220" />
         <Setter Property="FontWeight" Value="Bold" />
     </Style>
 

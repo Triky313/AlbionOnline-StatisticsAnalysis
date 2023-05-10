@@ -2,7 +2,6 @@
 // world.clusters.cluster[*].{"Index": "@id", "UniqueName": "@displayname", "Type": "@type", "File": "@file", "MiniMapMarkers":"minimapmarkers".{ "Marker":"marker"[*].{"Type":"@type"}}}
 // INFO: Original world.json is in the folder cluster if you extract from game files
 // https://github.com/broderickhyman/ao-bin-dumps/blob/master/formatted/world.json
-
 [
   {
     "Index": "Debug",
@@ -4754,7 +4753,7 @@
     "MiniMapMarkers": {
       "Marker": [
         {
-          "Type": "dungeon_solo"
+          "Type": "dungeon_group"
         },
         {
           "Type": "Wood"
@@ -4785,10 +4784,10 @@
     "MiniMapMarkers": {
       "Marker": [
         {
-          "Type": "roads_of_avalon_group_pve"
+          "Type": "roads_of_avalon_solo_pve"
         },
         {
-          "Type": "roads_of_avalon_group_pve"
+          "Type": "roads_of_avalon_solo_pve"
         },
         {
           "Type": "roads_of_avalon_solo_pve"
@@ -4878,10 +4877,10 @@
           "Type": "Fiber"
         },
         {
-          "Type": "roads_of_avalon_group_pve"
+          "Type": "roads_of_avalon_solo_pve"
         },
         {
-          "Type": "roads_of_avalon_solo_pve"
+          "Type": "roads_of_avalon_group_pve"
         },
         {
           "Type": "Fiber"
@@ -4900,7 +4899,7 @@
     "MiniMapMarkers": {
       "Marker": [
         {
-          "Type": "roads_of_avalon_group_pve"
+          "Type": "roads_of_avalon_solo_pve"
         },
         {
           "Type": "roads_of_avalon_solo_pve"
@@ -4943,10 +4942,10 @@
           "Type": "Wood"
         },
         {
-          "Type": "dungeon_solo"
+          "Type": "dungeon_group"
         },
         {
-          "Type": "dungeon_solo"
+          "Type": "dungeon_group"
         },
         {
           "Type": "Wood"
@@ -4965,22 +4964,22 @@
           "Type": "roads_of_avalon_solo_pve"
         },
         {
+          "Type": "roads_of_avalon_solo_pve"
+        },
+        {
+          "Type": "roads_of_avalon_group_pve"
+        },
+        {
           "Type": "roads_of_avalon_group_pve"
         },
         {
           "Type": "roads_of_avalon_solo_pve"
         },
         {
-          "Type": "roads_of_avalon_solo_pve"
+          "Type": "dungeon_group"
         },
         {
-          "Type": "roads_of_avalon_solo_pve"
-        },
-        {
-          "Type": "dungeon_solo"
-        },
-        {
-          "Type": "dungeon_solo"
+          "Type": "dungeon_group"
         }
       ]
     }
@@ -4993,7 +4992,7 @@
     "MiniMapMarkers": {
       "Marker": [
         {
-          "Type": "dungeon_solo"
+          "Type": "dungeon_group"
         },
         {
           "Type": "Fiber"
@@ -5027,13 +5026,13 @@
           "Type": "roads_of_avalon_solo_pve"
         },
         {
-          "Type": "dungeon_solo"
+          "Type": "dungeon_group"
         },
         {
           "Type": "roads_of_avalon_solo_pve"
         },
         {
-          "Type": "roads_of_avalon_group_pve"
+          "Type": "roads_of_avalon_solo_pve"
         },
         {
           "Type": "roads_of_avalon_solo_pve"
@@ -5042,7 +5041,7 @@
           "Type": "Stone"
         },
         {
-          "Type": "roads_of_avalon_group_pve"
+          "Type": "roads_of_avalon_solo_pve"
         },
         {
           "Type": "Hide"
@@ -5086,16 +5085,16 @@
     "MiniMapMarkers": {
       "Marker": [
         {
-          "Type": "dungeon_solo"
+          "Type": "dungeon_group"
         },
         {
-          "Type": "roads_of_avalon_group_pve"
+          "Type": "roads_of_avalon_solo_pve"
         },
         {
           "Type": "Wood"
         },
         {
-          "Type": "roads_of_avalon_group_pve"
+          "Type": "roads_of_avalon_solo_pve"
         },
         {
           "Type": "dungeon_group"
@@ -5154,19 +5153,19 @@
           "Type": "roads_of_avalon_solo_pve"
         },
         {
-          "Type": "roads_of_avalon_group_pve"
-        },
-        {
-          "Type": "roads_of_avalon_group_pve"
-        },
-        {
-          "Type": "dungeon_solo"
-        },
-        {
           "Type": "roads_of_avalon_solo_pve"
         },
         {
-          "Type": "roads_of_avalon_solo_pve"
+          "Type": "roads_of_avalon_group_pve"
+        },
+        {
+          "Type": "dungeon_group"
+        },
+        {
+          "Type": "roads_of_avalon_group_pve"
+        },
+        {
+          "Type": "roads_of_avalon_raid_pve"
         }
       ]
     }
@@ -5213,22 +5212,22 @@
     "MiniMapMarkers": {
       "Marker": [
         {
-          "Type": "roads_of_avalon_group_pve"
+          "Type": "roads_of_avalon_solo_pve"
         },
         {
-          "Type": "roads_of_avalon_group_pve"
+          "Type": "roads_of_avalon_solo_pve"
         },
         {
           "Type": "dungeon_group"
         },
         {
-          "Type": "roads_of_avalon_group_pve"
+          "Type": "roads_of_avalon_solo_pve"
         },
         {
-          "Type": "roads_of_avalon_group_pve"
+          "Type": "roads_of_avalon_raid_pve"
         },
         {
-          "Type": "dungeon_solo"
+          "Type": "dungeon_group"
         }
       ]
     }
@@ -5281,10 +5280,10 @@
           "Type": "Hide"
         },
         {
-          "Type": "roads_of_avalon_group_pve"
+          "Type": "roads_of_avalon_raid_pve"
         },
         {
-          "Type": "dungeon_solo"
+          "Type": "dungeon_group"
         },
         {
           "Type": "Hide"
@@ -5300,16 +5299,16 @@
     "MiniMapMarkers": {
       "Marker": [
         {
-          "Type": "roads_of_avalon_group_pve"
+          "Type": "roads_of_avalon_solo_pve"
         },
         {
-          "Type": "dungeon_solo"
+          "Type": "dungeon_group"
         },
         {
           "Type": "Wood"
         },
         {
-          "Type": "roads_of_avalon_solo_pve"
+          "Type": "roads_of_avalon_group_pve"
         },
         {
           "Type": "Ore"
@@ -5334,19 +5333,19 @@
     "MiniMapMarkers": {
       "Marker": [
         {
-          "Type": "roads_of_avalon_group_pve"
+          "Type": "roads_of_avalon_solo_pve"
         },
         {
-          "Type": "dungeon_solo"
+          "Type": "dungeon_group"
         },
         {
-          "Type": "dungeon_solo"
+          "Type": "dungeon_group"
         },
         {
           "Type": "Wood"
         },
         {
-          "Type": "dungeon_solo"
+          "Type": "dungeon_group"
         },
         {
           "Type": "roads_of_avalon_solo_pve"
@@ -5380,13 +5379,13 @@
           "Type": "roads_of_avalon_solo_pve"
         },
         {
-          "Type": "dungeon_solo"
+          "Type": "dungeon_group"
         },
         {
           "Type": "Stone"
         },
         {
-          "Type": "roads_of_avalon_group_pve"
+          "Type": "roads_of_avalon_solo_pve"
         },
         {
           "Type": "dungeon_group"
@@ -5414,10 +5413,10 @@
           "Type": "roads_of_avalon_solo_pve"
         },
         {
-          "Type": "roads_of_avalon_group_pve"
+          "Type": "roads_of_avalon_solo_pve"
         },
         {
-          "Type": "roads_of_avalon_group_pve"
+          "Type": "roads_of_avalon_solo_pve"
         },
         {
           "Type": "roads_of_avalon_group_pve"
@@ -5436,19 +5435,19 @@
     "MiniMapMarkers": {
       "Marker": [
         {
-          "Type": "roads_of_avalon_group_pve"
+          "Type": "roads_of_avalon_solo_pve"
         },
         {
-          "Type": "roads_of_avalon_group_pve"
+          "Type": "roads_of_avalon_solo_pve"
         },
         {
-          "Type": "roads_of_avalon_group_pve"
+          "Type": "roads_of_avalon_solo_pve"
         },
         {
-          "Type": "roads_of_avalon_group_pve"
+          "Type": "roads_of_avalon_solo_pve"
         },
         {
-          "Type": "roads_of_avalon_group_pve"
+          "Type": "roads_of_avalon_solo_pve"
         },
         {
           "Type": "roads_of_avalon_solo_pve"
@@ -5457,7 +5456,7 @@
           "Type": "roads_of_avalon_group_pve"
         },
         {
-          "Type": "dungeon_solo"
+          "Type": "dungeon_group"
         }
       ]
     }
@@ -5476,7 +5475,7 @@
           "Type": "Ore"
         },
         {
-          "Type": "roads_of_avalon_group_pve"
+          "Type": "roads_of_avalon_solo_pve"
         },
         {
           "Type": "Hide"
@@ -5504,10 +5503,10 @@
     "MiniMapMarkers": {
       "Marker": [
         {
-          "Type": "roads_of_avalon_group_pve"
+          "Type": "roads_of_avalon_solo_pve"
         },
         {
-          "Type": "roads_of_avalon_group_pve"
+          "Type": "roads_of_avalon_solo_pve"
         },
         {
           "Type": "Wood"
@@ -5532,13 +5531,13 @@
     "MiniMapMarkers": {
       "Marker": [
         {
-          "Type": "roads_of_avalon_group_pve"
-        },
-        {
-          "Type": "roads_of_avalon_group_pve"
+          "Type": "roads_of_avalon_solo_pve"
         },
         {
           "Type": "roads_of_avalon_solo_pve"
+        },
+        {
+          "Type": "roads_of_avalon_group_pve"
         },
         {
           "Type": "Wood"
@@ -5563,25 +5562,25 @@
     "MiniMapMarkers": {
       "Marker": [
         {
-          "Type": "roads_of_avalon_group_pve"
-        },
-        {
-          "Type": "roads_of_avalon_group_pve"
+          "Type": "roads_of_avalon_solo_pve"
         },
         {
           "Type": "roads_of_avalon_solo_pve"
         },
         {
+          "Type": "roads_of_avalon_raid_pve"
+        },
+        {
           "Type": "Ore"
         },
         {
-          "Type": "roads_of_avalon_group_pve"
+          "Type": "roads_of_avalon_solo_pve"
         },
         {
           "Type": "Wood"
         },
         {
-          "Type": "roads_of_avalon_group_pve"
+          "Type": "roads_of_avalon_solo_pve"
         }
       ]
     }
@@ -5625,13 +5624,13 @@
           "Type": "Fiber"
         },
         {
-          "Type": "roads_of_avalon_group_pve"
+          "Type": "roads_of_avalon_solo_pve"
         },
         {
           "Type": "Fiber"
         },
         {
-          "Type": "roads_of_avalon_group_pve"
+          "Type": "roads_of_avalon_solo_pve"
         },
         {
           "Type": "Fiber"
@@ -5640,7 +5639,7 @@
           "Type": "Fiber"
         },
         {
-          "Type": "roads_of_avalon_group_pve"
+          "Type": "roads_of_avalon_solo_pve"
         },
         {
           "Type": "Fiber"
@@ -5665,10 +5664,10 @@
           "Type": "roads_of_avalon_solo_pve"
         },
         {
-          "Type": "roads_of_avalon_group_pve"
+          "Type": "roads_of_avalon_solo_pve"
         },
         {
-          "Type": "roads_of_avalon_group_pve"
+          "Type": "roads_of_avalon_solo_pve"
         },
         {
           "Type": "roads_of_avalon_solo_pve"
@@ -5677,7 +5676,7 @@
           "Type": "Hide"
         },
         {
-          "Type": "roads_of_avalon_group_pve"
+          "Type": "roads_of_avalon_solo_pve"
         }
       ]
     }
@@ -5696,10 +5695,10 @@
           "Type": "Hide"
         },
         {
-          "Type": "dungeon_solo"
+          "Type": "dungeon_group"
         },
         {
-          "Type": "roads_of_avalon_group_pve"
+          "Type": "roads_of_avalon_solo_pve"
         },
         {
           "Type": "Fiber"
@@ -5727,16 +5726,16 @@
           "Type": "Stone"
         },
         {
-          "Type": "roads_of_avalon_group_pve"
+          "Type": "roads_of_avalon_solo_pve"
         },
         {
-          "Type": "roads_of_avalon_solo_pve"
+          "Type": "roads_of_avalon_group_pve"
         },
         {
           "Type": "Fiber"
         },
         {
-          "Type": "dungeon_solo"
+          "Type": "dungeon_group"
         },
         {
           "Type": "Hide"
@@ -5752,10 +5751,10 @@
     "MiniMapMarkers": {
       "Marker": [
         {
-          "Type": "roads_of_avalon_group_pve"
+          "Type": "roads_of_avalon_solo_pve"
         },
         {
-          "Type": "dungeon_solo"
+          "Type": "dungeon_group"
         },
         {
           "Type": "Hide"
@@ -5786,7 +5785,7 @@
           "Type": "Wood"
         },
         {
-          "Type": "roads_of_avalon_group_pve"
+          "Type": "roads_of_avalon_solo_pve"
         },
         {
           "Type": "roads_of_avalon_solo_pve"
@@ -5808,13 +5807,13 @@
     "MiniMapMarkers": {
       "Marker": [
         {
-          "Type": "dungeon_solo"
-        },
-        {
-          "Type": "roads_of_avalon_group_pve"
+          "Type": "dungeon_group"
         },
         {
           "Type": "roads_of_avalon_solo_pve"
+        },
+        {
+          "Type": "roads_of_avalon_group_pve"
         },
         {
           "Type": "roads_of_avalon_solo_pve"
@@ -5845,16 +5844,16 @@
           "Type": "Hide"
         },
         {
-          "Type": "dungeon_solo"
-        },
-        {
-          "Type": "roads_of_avalon_group_pve"
-        },
-        {
-          "Type": "roads_of_avalon_group_pve"
+          "Type": "dungeon_group"
         },
         {
           "Type": "roads_of_avalon_solo_pve"
+        },
+        {
+          "Type": "roads_of_avalon_solo_pve"
+        },
+        {
+          "Type": "roads_of_avalon_group_pve"
         },
         {
           "Type": "Wood"
@@ -5873,7 +5872,7 @@
     "MiniMapMarkers": {
       "Marker": [
         {
-          "Type": "roads_of_avalon_group_pve"
+          "Type": "roads_of_avalon_solo_pve"
         },
         {
           "Type": "Ore"
@@ -5891,7 +5890,7 @@
           "Type": "Ore"
         },
         {
-          "Type": "dungeon_solo"
+          "Type": "dungeon_group"
         }
       ]
     }
@@ -5907,16 +5906,16 @@
           "Type": "Hide"
         },
         {
-          "Type": "roads_of_avalon_solo_pve"
+          "Type": "roads_of_avalon_group_pve"
         },
         {
           "Type": "Fiber"
         },
         {
-          "Type": "dungeon_solo"
+          "Type": "dungeon_group"
         },
         {
-          "Type": "roads_of_avalon_group_pve"
+          "Type": "roads_of_avalon_solo_pve"
         },
         {
           "Type": "Hide"
@@ -5935,13 +5934,13 @@
           "Type": "Fiber"
         },
         {
-          "Type": "roads_of_avalon_solo_pve"
+          "Type": "roads_of_avalon_group_pve"
         },
         {
           "Type": "Ore"
         },
         {
-          "Type": "roads_of_avalon_group_pve"
+          "Type": "roads_of_avalon_solo_pve"
         },
         {
           "Type": "roads_of_avalon_solo_pve"
@@ -5960,22 +5959,22 @@
     "MiniMapMarkers": {
       "Marker": [
         {
+          "Type": "roads_of_avalon_solo_pve"
+        },
+        {
+          "Type": "roads_of_avalon_solo_pve"
+        },
+        {
+          "Type": "Wood"
+        },
+        {
+          "Type": "Wood"
+        },
+        {
+          "Type": "Wood"
+        },
+        {
           "Type": "roads_of_avalon_group_pve"
-        },
-        {
-          "Type": "roads_of_avalon_solo_pve"
-        },
-        {
-          "Type": "Wood"
-        },
-        {
-          "Type": "Wood"
-        },
-        {
-          "Type": "Wood"
-        },
-        {
-          "Type": "roads_of_avalon_solo_pve"
         }
       ]
     }
@@ -5988,10 +5987,10 @@
     "MiniMapMarkers": {
       "Marker": [
         {
-          "Type": "roads_of_avalon_group_pve"
+          "Type": "roads_of_avalon_solo_pve"
         },
         {
-          "Type": "dungeon_solo"
+          "Type": "dungeon_group"
         },
         {
           "Type": "Stone"
@@ -6000,7 +5999,7 @@
           "Type": "roads_of_avalon_solo_pve"
         },
         {
-          "Type": "roads_of_avalon_solo_pve"
+          "Type": "roads_of_avalon_group_pve"
         },
         {
           "Type": "Stone"
@@ -6022,13 +6021,13 @@
     "MiniMapMarkers": {
       "Marker": [
         {
+          "Type": "roads_of_avalon_solo_pve"
+        },
+        {
+          "Type": "roads_of_avalon_solo_pve"
+        },
+        {
           "Type": "roads_of_avalon_group_pve"
-        },
-        {
-          "Type": "roads_of_avalon_solo_pve"
-        },
-        {
-          "Type": "roads_of_avalon_solo_pve"
         },
         {
           "Type": "Stone"
@@ -6037,7 +6036,7 @@
           "Type": "roads_of_avalon_solo_pve"
         },
         {
-          "Type": "dungeon_solo"
+          "Type": "dungeon_group"
         },
         {
           "Type": "Fiber"
@@ -6065,13 +6064,13 @@
           "Type": "Stone"
         },
         {
-          "Type": "roads_of_avalon_solo_pve"
+          "Type": "roads_of_avalon_group_pve"
         },
         {
           "Type": "Stone"
         },
         {
-          "Type": "dungeon_solo"
+          "Type": "dungeon_group"
         }
       ]
     }
@@ -6121,7 +6120,7 @@
           "Type": "Hide"
         },
         {
-          "Type": "roads_of_avalon_solo_pve"
+          "Type": "roads_of_avalon_group_pve"
         },
         {
           "Type": "Hide"
@@ -6149,13 +6148,7 @@
           "Type": "dungeon_group"
         },
         {
-          "Type": "dungeon_solo"
-        },
-        {
-          "Type": "Hide"
-        },
-        {
-          "Type": "roads_of_avalon_group_pve"
+          "Type": "dungeon_group"
         },
         {
           "Type": "Hide"
@@ -6164,7 +6157,13 @@
           "Type": "roads_of_avalon_solo_pve"
         },
         {
-          "Type": "dungeon_solo"
+          "Type": "Hide"
+        },
+        {
+          "Type": "roads_of_avalon_group_pve"
+        },
+        {
+          "Type": "dungeon_group"
         },
         {
           "Type": "Hide"
@@ -6183,7 +6182,7 @@
           "Type": "dungeon_group"
         },
         {
-          "Type": "dungeon_solo"
+          "Type": "dungeon_group"
         },
         {
           "Type": "roads_of_avalon_solo_pve"
@@ -6198,7 +6197,7 @@
           "Type": "roads_of_avalon_solo_pve"
         },
         {
-          "Type": "dungeon_solo"
+          "Type": "dungeon_group"
         },
         {
           "Type": "dungeon_group"
@@ -6248,13 +6247,13 @@
           "Type": "Ore"
         },
         {
-          "Type": "dungeon_solo"
+          "Type": "dungeon_group"
         },
         {
-          "Type": "dungeon_solo"
+          "Type": "dungeon_group"
         },
         {
-          "Type": "roads_of_avalon_group_pve"
+          "Type": "roads_of_avalon_solo_pve"
         },
         {
           "Type": "Hide"
@@ -6285,7 +6284,7 @@
           "Type": "Hide"
         },
         {
-          "Type": "roads_of_avalon_raid_pve"
+          "Type": "roads_of_avalon_solo_pve"
         },
         {
           "Type": "roads_of_avalon_group_pve"
@@ -6319,7 +6318,7 @@
           "Type": "Stone"
         },
         {
-          "Type": "roads_of_avalon_solo_pve"
+          "Type": "roads_of_avalon_group_pve"
         },
         {
           "Type": "Fiber"
@@ -6384,7 +6383,7 @@
           "Type": "Ore"
         },
         {
-          "Type": "roads_of_avalon_solo_pve"
+          "Type": "roads_of_avalon_group_pve"
         }
       ]
     }
@@ -6431,25 +6430,25 @@
     "MiniMapMarkers": {
       "Marker": [
         {
+          "Type": "roads_of_avalon_solo_pve"
+        },
+        {
+          "Type": "Wood"
+        },
+        {
+          "Type": "Wood"
+        },
+        {
+          "Type": "Wood"
+        },
+        {
           "Type": "roads_of_avalon_group_pve"
-        },
-        {
-          "Type": "Wood"
-        },
-        {
-          "Type": "Wood"
-        },
-        {
-          "Type": "Wood"
         },
         {
           "Type": "roads_of_avalon_solo_pve"
         },
         {
-          "Type": "roads_of_avalon_group_pve"
-        },
-        {
-          "Type": "roads_of_avalon_raid_pve"
+          "Type": "roads_of_avalon_solo_pve"
         },
         {
           "Type": "Stone"
@@ -6465,22 +6464,22 @@
     "MiniMapMarkers": {
       "Marker": [
         {
-          "Type": "dungeon_solo"
-        },
-        {
-          "Type": "roads_of_avalon_group_pve"
-        },
-        {
-          "Type": "Ore"
-        },
-        {
-          "Type": "Ore"
-        },
-        {
-          "Type": "Ore"
+          "Type": "dungeon_group"
         },
         {
           "Type": "roads_of_avalon_solo_pve"
+        },
+        {
+          "Type": "Ore"
+        },
+        {
+          "Type": "Ore"
+        },
+        {
+          "Type": "Ore"
+        },
+        {
+          "Type": "roads_of_avalon_raid_pve"
         },
         {
           "Type": "Ore"
@@ -6499,7 +6498,7 @@
           "Type": "Stone"
         },
         {
-          "Type": "roads_of_avalon_group_pve"
+          "Type": "roads_of_avalon_solo_pve"
         },
         {
           "Type": "dungeon_group"
@@ -6514,7 +6513,7 @@
           "Type": "Ore"
         },
         {
-          "Type": "roads_of_avalon_solo_pve"
+          "Type": "roads_of_avalon_group_pve"
         },
         {
           "Type": "roads_of_avalon_group_pve"
@@ -6539,7 +6538,7 @@
           "Type": "Hide"
         },
         {
-          "Type": "roads_of_avalon_group_pve"
+          "Type": "roads_of_avalon_solo_pve"
         },
         {
           "Type": "dungeon_group"
@@ -6561,7 +6560,7 @@
           "Type": "dungeon_group"
         },
         {
-          "Type": "roads_of_avalon_raid_pve"
+          "Type": "roads_of_avalon_solo_pve"
         },
         {
           "Type": "roads_of_avalon_group_pve"
@@ -6570,13 +6569,13 @@
           "Type": "roads_of_avalon_solo_pve"
         },
         {
+          "Type": "roads_of_avalon_solo_pve"
+        },
+        {
           "Type": "roads_of_avalon_raid_pve"
         },
         {
-          "Type": "roads_of_avalon_solo_pve"
-        },
-        {
-          "Type": "roads_of_avalon_solo_pve"
+          "Type": "roads_of_avalon_group_pve"
         }
       ]
     }
@@ -6651,7 +6650,7 @@
           "Type": "Ore"
         },
         {
-          "Type": "roads_of_avalon_raid_pve"
+          "Type": "roads_of_avalon_solo_pve"
         },
         {
           "Type": "Ore"
@@ -6682,7 +6681,7 @@
           "Type": "Fiber"
         },
         {
-          "Type": "roads_of_avalon_group_pve"
+          "Type": "roads_of_avalon_raid_pve"
         },
         {
           "Type": "Fiber"
@@ -6713,7 +6712,7 @@
           "Type": "roads_of_avalon_solo_pve"
         },
         {
-          "Type": "dungeon_solo"
+          "Type": "dungeon_group"
         },
         {
           "Type": "roads_of_avalon_group_pve"
@@ -6725,7 +6724,7 @@
           "Type": "roads_of_avalon_group_pve"
         },
         {
-          "Type": "roads_of_avalon_group_pve"
+          "Type": "roads_of_avalon_raid_pve"
         }
       ]
     }
@@ -6772,12 +6771,6 @@
     "MiniMapMarkers": {
       "Marker": [
         {
-          "Type": "roads_of_avalon_group_pve"
-        },
-        {
-          "Type": "dungeon_group"
-        },
-        {
           "Type": "roads_of_avalon_solo_pve"
         },
         {
@@ -6787,13 +6780,19 @@
           "Type": "roads_of_avalon_solo_pve"
         },
         {
+          "Type": "dungeon_group"
+        },
+        {
+          "Type": "roads_of_avalon_group_pve"
+        },
+        {
           "Type": "roads_of_avalon_group_pve"
         },
         {
           "Type": "roads_of_avalon_solo_pve"
         },
         {
-          "Type": "roads_of_avalon_group_pve"
+          "Type": "roads_of_avalon_solo_pve"
         }
       ]
     }
@@ -6930,7 +6929,7 @@
     "MiniMapMarkers": {
       "Marker": [
         {
-          "Type": "roads_of_avalon_group_pve"
+          "Type": "roads_of_avalon_solo_pve"
         },
         {
           "Type": "Fiber"
@@ -6945,7 +6944,7 @@
           "Type": "roads_of_avalon_group_pve"
         },
         {
-          "Type": "dungeon_solo"
+          "Type": "dungeon_group"
         },
         {
           "Type": "Fiber"
@@ -6979,7 +6978,7 @@
           "Type": "Fiber"
         },
         {
-          "Type": "roads_of_avalon_solo_pve"
+          "Type": "roads_of_avalon_raid_pve"
         }
       ]
     }
@@ -7035,7 +7034,7 @@
           "Type": "dungeon_group"
         },
         {
-          "Type": "roads_of_avalon_raid_pve"
+          "Type": "roads_of_avalon_solo_pve"
         },
         {
           "Type": "dungeon_group"
@@ -7047,7 +7046,7 @@
           "Type": "dungeon_group"
         },
         {
-          "Type": "roads_of_avalon_group_pve"
+          "Type": "roads_of_avalon_solo_pve"
         }
       ]
     }
@@ -7066,7 +7065,7 @@
           "Type": "Hide"
         },
         {
-          "Type": "roads_of_avalon_group_pve"
+          "Type": "roads_of_avalon_solo_pve"
         },
         {
           "Type": "roads_of_avalon_solo_pve"
@@ -7094,7 +7093,7 @@
           "Type": "Ore"
         },
         {
-          "Type": "dungeon_solo"
+          "Type": "dungeon_group"
         },
         {
           "Type": "Ore"
@@ -7119,10 +7118,10 @@
     "MiniMapMarkers": {
       "Marker": [
         {
-          "Type": "roads_of_avalon_group_pve"
+          "Type": "roads_of_avalon_solo_pve"
         },
         {
-          "Type": "roads_of_avalon_group_pve"
+          "Type": "roads_of_avalon_solo_pve"
         },
         {
           "Type": "Fiber"
@@ -7274,16 +7273,16 @@
     "MiniMapMarkers": {
       "Marker": [
         {
-          "Type": "dungeon_solo"
+          "Type": "dungeon_group"
         },
         {
-          "Type": "roads_of_avalon_group_pve"
+          "Type": "roads_of_avalon_solo_pve"
         },
         {
           "Type": "Hide"
         },
         {
-          "Type": "dungeon_solo"
+          "Type": "dungeon_group"
         },
         {
           "Type": "Stone"
@@ -7292,7 +7291,7 @@
           "Type": "roads_of_avalon_group_pve"
         },
         {
-          "Type": "roads_of_avalon_group_pve"
+          "Type": "roads_of_avalon_solo_pve"
         }
       ]
     }
@@ -7317,7 +7316,7 @@
           "Type": "Ore"
         },
         {
-          "Type": "roads_of_avalon_solo_pve"
+          "Type": "roads_of_avalon_raid_pve"
         },
         {
           "Type": "Wood"
@@ -7336,7 +7335,7 @@
     "MiniMapMarkers": {
       "Marker": [
         {
-          "Type": "roads_of_avalon_group_pve"
+          "Type": "roads_of_avalon_solo_pve"
         },
         {
           "Type": "Hide"
@@ -7351,10 +7350,10 @@
           "Type": "roads_of_avalon_group_pve"
         },
         {
-          "Type": "roads_of_avalon_group_pve"
+          "Type": "roads_of_avalon_solo_pve"
         },
         {
-          "Type": "dungeon_solo"
+          "Type": "dungeon_group"
         },
         {
           "Type": "Stone"
@@ -7373,19 +7372,19 @@
           "Type": "Ore"
         },
         {
-          "Type": "roads_of_avalon_group_pve"
+          "Type": "roads_of_avalon_raid_pve"
         },
         {
           "Type": "Fiber"
         },
         {
-          "Type": "roads_of_avalon_solo_pve"
+          "Type": "roads_of_avalon_raid_pve"
         },
         {
           "Type": "Hide"
         },
         {
-          "Type": "roads_of_avalon_solo_pve"
+          "Type": "roads_of_avalon_raid_pve"
         }
       ]
     }
@@ -7426,7 +7425,7 @@
     "MiniMapMarkers": {
       "Marker": [
         {
-          "Type": "roads_of_avalon_group_pve"
+          "Type": "roads_of_avalon_solo_pve"
         },
         {
           "Type": "roads_of_avalon_solo_pve"
@@ -7466,7 +7465,7 @@
           "Type": "Fiber"
         },
         {
-          "Type": "roads_of_avalon_group_pve"
+          "Type": "roads_of_avalon_raid_pve"
         },
         {
           "Type": "Fiber"
@@ -7497,10 +7496,10 @@
           "Type": "roads_of_avalon_group_pve"
         },
         {
-          "Type": "roads_of_avalon_group_pve"
+          "Type": "roads_of_avalon_solo_pve"
         },
         {
-          "Type": "dungeon_solo"
+          "Type": "dungeon_group"
         },
         {
           "Type": "Stone"
@@ -7553,13 +7552,13 @@
           "Type": "Wood"
         },
         {
-          "Type": "dungeon_solo"
+          "Type": "dungeon_group"
         },
         {
-          "Type": "roads_of_avalon_solo_pve"
+          "Type": "roads_of_avalon_raid_pve"
         },
         {
-          "Type": "roads_of_avalon_solo_pve"
+          "Type": "roads_of_avalon_raid_pve"
         },
         {
           "Type": "Wood"
@@ -7581,7 +7580,7 @@
     "MiniMapMarkers": {
       "Marker": [
         {
-          "Type": "roads_of_avalon_group_pve"
+          "Type": "roads_of_avalon_solo_pve"
         },
         {
           "Type": "roads_of_avalon_solo_pve"
@@ -7599,7 +7598,7 @@
           "Type": "Stone"
         },
         {
-          "Type": "dungeon_solo"
+          "Type": "dungeon_group"
         },
         {
           "Type": "roads_of_avalon_solo_pve"
@@ -7615,22 +7614,22 @@
     "MiniMapMarkers": {
       "Marker": [
         {
+          "Type": "roads_of_avalon_solo_pve"
+        },
+        {
+          "Type": "roads_of_avalon_solo_pve"
+        },
+        {
+          "Type": "roads_of_avalon_raid_pve"
+        },
+        {
           "Type": "roads_of_avalon_group_pve"
         },
         {
           "Type": "roads_of_avalon_solo_pve"
         },
         {
-          "Type": "roads_of_avalon_solo_pve"
-        },
-        {
-          "Type": "roads_of_avalon_solo_pve"
-        },
-        {
-          "Type": "roads_of_avalon_solo_pve"
-        },
-        {
-          "Type": "dungeon_solo"
+          "Type": "dungeon_group"
         },
         {
           "Type": "dungeon_group"
@@ -7689,7 +7688,7 @@
           "Type": "Stone"
         },
         {
-          "Type": "roads_of_avalon_raid_pve"
+          "Type": "roads_of_avalon_solo_pve"
         },
         {
           "Type": "Ore"
@@ -7711,13 +7710,13 @@
           "Type": "Stone"
         },
         {
-          "Type": "roads_of_avalon_raid_pve"
+          "Type": "roads_of_avalon_solo_pve"
         },
         {
           "Type": "roads_of_avalon_group_pve"
         },
         {
-          "Type": "roads_of_avalon_solo_pve"
+          "Type": "roads_of_avalon_raid_pve"
         },
         {
           "Type": "Ore"
@@ -7745,7 +7744,7 @@
           "Type": "Fiber"
         },
         {
-          "Type": "roads_of_avalon_group_pve"
+          "Type": "roads_of_avalon_raid_pve"
         },
         {
           "Type": "Stone"
@@ -7795,19 +7794,19 @@
     "MiniMapMarkers": {
       "Marker": [
         {
-          "Type": "roads_of_avalon_raid_pve"
+          "Type": "roads_of_avalon_solo_pve"
         },
         {
           "Type": "Fiber"
         },
         {
-          "Type": "roads_of_avalon_raid_pve"
+          "Type": "roads_of_avalon_solo_pve"
         },
         {
-          "Type": "roads_of_avalon_group_pve"
+          "Type": "roads_of_avalon_solo_pve"
         },
         {
-          "Type": "roads_of_avalon_group_pve"
+          "Type": "roads_of_avalon_solo_pve"
         },
         {
           "Type": "Hide"
@@ -7816,7 +7815,7 @@
           "Type": "Fiber"
         },
         {
-          "Type": "roads_of_avalon_group_pve"
+          "Type": "roads_of_avalon_solo_pve"
         }
       ]
     }
@@ -7824,7 +7823,7 @@
   {
     "Index": "TNL-100",
     "UniqueName": "Hynes-Ieatun",
-    "Type": "TUNNEL_DEEP",
+    "Type": "TUNNEL_DEEP_RAID",
     "File": "TNL-100_RDS_RO_AUTO_T6_AVA_AVA.cluster.xml",
     "MiniMapMarkers": {
       "Marker": [
@@ -7857,13 +7856,13 @@
           "Type": "Wood"
         },
         {
-          "Type": "roads_of_avalon_raid_pve"
+          "Type": "roads_of_avalon_group_pve"
         },
         {
           "Type": "Wood"
         },
         {
-          "Type": "dungeon_elite"
+          "Type": "dungeon_group"
         },
         {
           "Type": "Wood"
@@ -7888,10 +7887,10 @@
           "Type": "Stone"
         },
         {
-          "Type": "dungeon_solo"
+          "Type": "dungeon_group"
         },
         {
-          "Type": "roads_of_avalon_solo_pve"
+          "Type": "roads_of_avalon_group_pve"
         },
         {
           "Type": "Fiber"
@@ -7907,25 +7906,25 @@
     "MiniMapMarkers": {
       "Marker": [
         {
-          "Type": "roads_of_avalon_group_pve"
-        },
-        {
-          "Type": "roads_of_avalon_group_pve"
+          "Type": "roads_of_avalon_solo_pve"
         },
         {
           "Type": "roads_of_avalon_solo_pve"
         },
         {
-          "Type": "dungeon_solo"
-        },
-        {
-          "Type": "dungeon_solo"
-        },
-        {
           "Type": "roads_of_avalon_solo_pve"
         },
         {
-          "Type": "dungeon_solo"
+          "Type": "dungeon_group"
+        },
+        {
+          "Type": "dungeon_group"
+        },
+        {
+          "Type": "roads_of_avalon_raid_pve"
+        },
+        {
+          "Type": "dungeon_group"
         },
         {
           "Type": "roads_of_avalon_solo_pve"
@@ -7947,7 +7946,7 @@
           "Type": "Hide"
         },
         {
-          "Type": "roads_of_avalon_solo_pve"
+          "Type": "roads_of_avalon_raid_pve"
         },
         {
           "Type": "Fiber"
@@ -7956,7 +7955,7 @@
           "Type": "Wood"
         },
         {
-          "Type": "roads_of_avalon_solo_pve"
+          "Type": "roads_of_avalon_group_pve"
         },
         {
           "Type": "Ore"
@@ -7972,28 +7971,28 @@
     "MiniMapMarkers": {
       "Marker": [
         {
-          "Type": "dungeon_solo"
+          "Type": "dungeon_group"
         },
         {
-          "Type": "dungeon_solo"
+          "Type": "dungeon_group"
         },
         {
-          "Type": "roads_of_avalon_group_pve"
+          "Type": "roads_of_avalon_solo_pve"
         },
         {
-          "Type": "dungeon_solo"
+          "Type": "dungeon_group"
         },
         {
-          "Type": "roads_of_avalon_group_pve"
+          "Type": "roads_of_avalon_solo_pve"
         },
         {
-          "Type": "roads_of_avalon_group_pve"
+          "Type": "roads_of_avalon_raid_pve"
         },
         {
-          "Type": "dungeon_solo"
+          "Type": "dungeon_group"
         },
         {
-          "Type": "roads_of_avalon_group_pve"
+          "Type": "roads_of_avalon_solo_pve"
         }
       ]
     }
@@ -8015,7 +8014,7 @@
           "Type": "roads_of_avalon_solo_pve"
         },
         {
-          "Type": "roads_of_avalon_solo_pve"
+          "Type": "roads_of_avalon_raid_pve"
         },
         {
           "Type": "Hide"
@@ -8040,7 +8039,7 @@
           "Type": "roads_of_avalon_group_pve"
         },
         {
-          "Type": "roads_of_avalon_group_pve"
+          "Type": "roads_of_avalon_raid_pve"
         },
         {
           "Type": "Hide"
@@ -8062,7 +8061,7 @@
     "MiniMapMarkers": {
       "Marker": [
         {
-          "Type": "roads_of_avalon_group_pve"
+          "Type": "roads_of_avalon_solo_pve"
         },
         {
           "Type": "Hide"
@@ -8074,13 +8073,13 @@
           "Type": "roads_of_avalon_solo_pve"
         },
         {
-          "Type": "roads_of_avalon_solo_pve"
+          "Type": "roads_of_avalon_raid_pve"
         },
         {
           "Type": "Hide"
         },
         {
-          "Type": "roads_of_avalon_group_pve"
+          "Type": "roads_of_avalon_solo_pve"
         }
       ]
     }
@@ -8121,16 +8120,16 @@
     "MiniMapMarkers": {
       "Marker": [
         {
-          "Type": "roads_of_avalon_group_pve"
+          "Type": "roads_of_avalon_solo_pve"
         },
         {
-          "Type": "dungeon_solo"
+          "Type": "dungeon_group"
         },
         {
           "Type": "Stone"
         },
         {
-          "Type": "roads_of_avalon_raid_pve"
+          "Type": "roads_of_avalon_solo_pve"
         },
         {
           "Type": "Wood"
@@ -8155,10 +8154,10 @@
     "MiniMapMarkers": {
       "Marker": [
         {
-          "Type": "roads_of_avalon_group_pve"
+          "Type": "roads_of_avalon_solo_pve"
         },
         {
-          "Type": "roads_of_avalon_group_pve"
+          "Type": "roads_of_avalon_solo_pve"
         },
         {
           "Type": "roads_of_avalon_solo_pve"
@@ -8173,7 +8172,7 @@
           "Type": "Stone"
         },
         {
-          "Type": "dungeon_solo"
+          "Type": "dungeon_group"
         },
         {
           "Type": "roads_of_avalon_solo_pve"
@@ -8189,13 +8188,7 @@
     "MiniMapMarkers": {
       "Marker": [
         {
-          "Type": "dungeon_solo"
-        },
-        {
-          "Type": "roads_of_avalon_group_pve"
-        },
-        {
-          "Type": "Hide"
+          "Type": "dungeon_group"
         },
         {
           "Type": "roads_of_avalon_solo_pve"
@@ -8205,6 +8198,12 @@
         },
         {
           "Type": "roads_of_avalon_solo_pve"
+        },
+        {
+          "Type": "Hide"
+        },
+        {
+          "Type": "roads_of_avalon_raid_pve"
         },
         {
           "Type": "Wood"
@@ -8232,7 +8231,7 @@
           "Type": "Wood"
         },
         {
-          "Type": "roads_of_avalon_group_pve"
+          "Type": "roads_of_avalon_raid_pve"
         },
         {
           "Type": "Hide"
@@ -8254,7 +8253,7 @@
           "Type": "Ore"
         },
         {
-          "Type": "roads_of_avalon_solo_pve"
+          "Type": "roads_of_avalon_raid_pve"
         },
         {
           "Type": "Ore"
@@ -8263,7 +8262,7 @@
           "Type": "Ore"
         },
         {
-          "Type": "roads_of_avalon_solo_pve"
+          "Type": "roads_of_avalon_group_pve"
         },
         {
           "Type": "Ore"
@@ -8279,10 +8278,10 @@
     "MiniMapMarkers": {
       "Marker": [
         {
-          "Type": "roads_of_avalon_raid_pve"
+          "Type": "roads_of_avalon_solo_pve"
         },
         {
-          "Type": "roads_of_avalon_group_pve"
+          "Type": "roads_of_avalon_solo_pve"
         },
         {
           "Type": "Fiber"
@@ -8291,13 +8290,13 @@
           "Type": "Stone"
         },
         {
+          "Type": "roads_of_avalon_solo_pve"
+        },
+        {
+          "Type": "roads_of_avalon_group_pve"
+        },
+        {
           "Type": "roads_of_avalon_raid_pve"
-        },
-        {
-          "Type": "roads_of_avalon_solo_pve"
-        },
-        {
-          "Type": "roads_of_avalon_solo_pve"
         }
       ]
     }
@@ -8322,13 +8321,13 @@
           "Type": "Ore"
         },
         {
-          "Type": "roads_of_avalon_group_pve"
+          "Type": "roads_of_avalon_solo_pve"
         },
         {
           "Type": "Ore"
         },
         {
-          "Type": "dungeon_solo"
+          "Type": "dungeon_group"
         },
         {
           "Type": "Ore"
@@ -8344,10 +8343,10 @@
     "MiniMapMarkers": {
       "Marker": [
         {
-          "Type": "roads_of_avalon_group_pve"
+          "Type": "roads_of_avalon_solo_pve"
         },
         {
-          "Type": "roads_of_avalon_group_pve"
+          "Type": "roads_of_avalon_solo_pve"
         },
         {
           "Type": "roads_of_avalon_solo_pve"
@@ -8378,19 +8377,19 @@
           "Type": "dungeon_group"
         },
         {
-          "Type": "roads_of_avalon_raid_pve"
+          "Type": "roads_of_avalon_solo_pve"
         },
         {
-          "Type": "roads_of_avalon_raid_pve"
+          "Type": "roads_of_avalon_solo_pve"
         },
         {
-          "Type": "roads_of_avalon_raid_pve"
+          "Type": "roads_of_avalon_solo_pve"
         },
         {
           "Type": "dungeon_group"
         },
         {
-          "Type": "roads_of_avalon_solo_pve"
+          "Type": "roads_of_avalon_raid_pve"
         },
         {
           "Type": "roads_of_avalon_group_pve"
@@ -8409,7 +8408,7 @@
     "MiniMapMarkers": {
       "Marker": [
         {
-          "Type": "roads_of_avalon_solo_pve"
+          "Type": "roads_of_avalon_raid_pve"
         },
         {
           "Type": "Fiber"
@@ -8443,7 +8442,7 @@
           "Type": "Wood"
         },
         {
-          "Type": "roads_of_avalon_solo_pve"
+          "Type": "roads_of_avalon_group_pve"
         },
         {
           "Type": "dungeon_group"
@@ -8477,7 +8476,7 @@
           "Type": "Stone"
         },
         {
-          "Type": "roads_of_avalon_group_pve"
+          "Type": "roads_of_avalon_solo_pve"
         },
         {
           "Type": "Wood"
@@ -8489,7 +8488,7 @@
           "Type": "Ore"
         },
         {
-          "Type": "roads_of_avalon_raid_pve"
+          "Type": "roads_of_avalon_solo_pve"
         }
       ]
     }
@@ -8517,7 +8516,7 @@
           "Type": "Stone"
         },
         {
-          "Type": "roads_of_avalon_group_pve"
+          "Type": "roads_of_avalon_raid_pve"
         }
       ]
     }
@@ -8533,19 +8532,19 @@
           "Type": "Wood"
         },
         {
-          "Type": "roads_of_avalon_raid_pve"
+          "Type": "roads_of_avalon_solo_pve"
         },
         {
           "Type": "Fiber"
         },
         {
-          "Type": "roads_of_avalon_raid_pve"
+          "Type": "roads_of_avalon_group_pve"
         },
         {
           "Type": "Stone"
         },
         {
-          "Type": "roads_of_avalon_raid_pve"
+          "Type": "roads_of_avalon_solo_pve"
         }
       ]
     }
@@ -8598,13 +8597,13 @@
           "Type": "Wood"
         },
         {
-          "Type": "roads_of_avalon_group_pve"
+          "Type": "roads_of_avalon_raid_pve"
         },
         {
-          "Type": "roads_of_avalon_group_pve"
+          "Type": "roads_of_avalon_solo_pve"
         },
         {
-          "Type": "roads_of_avalon_group_pve"
+          "Type": "roads_of_avalon_solo_pve"
         },
         {
           "Type": "Wood"
@@ -8626,7 +8625,7 @@
           "Type": "Ore"
         },
         {
-          "Type": "roads_of_avalon_raid_pve"
+          "Type": "roads_of_avalon_solo_pve"
         },
         {
           "Type": "roads_of_avalon_group_pve"
@@ -8641,7 +8640,7 @@
           "Type": "Wood"
         },
         {
-          "Type": "roads_of_avalon_group_pve"
+          "Type": "roads_of_avalon_solo_pve"
         }
       ]
     }
@@ -8654,16 +8653,16 @@
     "MiniMapMarkers": {
       "Marker": [
         {
-          "Type": "dungeon_elite"
+          "Type": "dungeon_group"
         },
         {
-          "Type": "roads_of_avalon_raid_pve"
+          "Type": "roads_of_avalon_solo_pve"
         },
         {
           "Type": "Stone"
         },
         {
-          "Type": "roads_of_avalon_group_pve"
+          "Type": "roads_of_avalon_solo_pve"
         },
         {
           "Type": "Ore"
@@ -8672,7 +8671,7 @@
           "Type": "Stone"
         },
         {
-          "Type": "roads_of_avalon_group_pve"
+          "Type": "roads_of_avalon_solo_pve"
         }
       ]
     }
@@ -8711,7 +8710,7 @@
   {
     "Index": "TNL-129",
     "UniqueName": "Sasos-Abizaum",
-    "Type": "TUNNEL_DEEP",
+    "Type": "TUNNEL_DEEP_RAID",
     "File": "TNL-129_RDS_RO_AUTO_T7_AVA_AVA.cluster.xml",
     "MiniMapMarkers": {
       "Marker": [
@@ -8722,19 +8721,19 @@
           "Type": "roads_of_avalon_raid_pve"
         },
         {
-          "Type": "Wood"
-        },
-        {
-          "Type": "Wood"
-        },
-        {
-          "Type": "Wood"
+          "Type": "Hide"
         },
         {
           "Type": "roads_of_avalon_raid_pve"
         },
         {
-          "Type": "dungeon_elite"
+          "Type": "Fiber"
+        },
+        {
+          "Type": "roads_of_avalon_raid_pve"
+        },
+        {
+          "Type": "Hide"
         }
       ]
     }
@@ -8742,12 +8741,12 @@
   {
     "Index": "TNL-130",
     "UniqueName": "Fones-Opavun",
-    "Type": "TUNNEL_DEEP",
+    "Type": "TUNNEL_DEEP_RAID",
     "File": "TNL-130_RDS_RO_AUTO_T7_AVA_AVA.cluster.xml",
     "MiniMapMarkers": {
       "Marker": [
         {
-          "Type": "dungeon_group"
+          "Type": "dungeon_elite"
         },
         {
           "Type": "roads_of_avalon_raid_pve"
@@ -8756,19 +8755,19 @@
           "Type": "Ore"
         },
         {
-          "Type": "roads_of_avalon_group_pve"
-        },
-        {
-          "Type": "Ore"
+          "Type": "roads_of_avalon_raid_pve"
         },
         {
           "Type": "roads_of_avalon_raid_pve"
         },
         {
-          "Type": "roads_of_avalon_group_pve"
+          "Type": "roads_of_avalon_raid_pve"
         },
         {
-          "Type": "Ore"
+          "Type": "roads_of_avalon_raid_pve"
+        },
+        {
+          "Type": "Stone"
         }
       ]
     }
@@ -8781,10 +8780,10 @@
     "MiniMapMarkers": {
       "Marker": [
         {
-          "Type": "dungeon_elite"
+          "Type": "dungeon_group"
         },
         {
-          "Type": "dungeon_elite"
+          "Type": "dungeon_group"
         },
         {
           "Type": "Hide"
@@ -8818,16 +8817,16 @@
           "Type": "Fiber"
         },
         {
-          "Type": "dungeon_solo"
+          "Type": "dungeon_group"
         },
         {
-          "Type": "roads_of_avalon_solo_pve"
+          "Type": "roads_of_avalon_raid_pve"
         },
         {
           "Type": "Fiber"
         },
         {
-          "Type": "roads_of_avalon_group_pve"
+          "Type": "roads_of_avalon_raid_pve"
         }
       ]
     }
@@ -8840,28 +8839,28 @@
     "MiniMapMarkers": {
       "Marker": [
         {
-          "Type": "roads_of_avalon_group_pve"
+          "Type": "roads_of_avalon_solo_pve"
         },
         {
           "Type": "roads_of_avalon_solo_pve"
         },
         {
-          "Type": "roads_of_avalon_group_pve"
+          "Type": "roads_of_avalon_solo_pve"
         },
         {
           "Type": "roads_of_avalon_solo_pve"
         },
         {
-          "Type": "dungeon_solo"
+          "Type": "dungeon_group"
         },
         {
-          "Type": "roads_of_avalon_group_pve"
+          "Type": "roads_of_avalon_raid_pve"
         },
         {
-          "Type": "roads_of_avalon_group_pve"
+          "Type": "roads_of_avalon_solo_pve"
         },
         {
-          "Type": "dungeon_solo"
+          "Type": "dungeon_group"
         }
       ]
     }
@@ -8886,7 +8885,7 @@
           "Type": "Stone"
         },
         {
-          "Type": "roads_of_avalon_group_pve"
+          "Type": "roads_of_avalon_raid_pve"
         },
         {
           "Type": "roads_of_avalon_group_pve"
@@ -8902,7 +8901,7 @@
     "MiniMapMarkers": {
       "Marker": [
         {
-          "Type": "dungeon_solo"
+          "Type": "dungeon_group"
         },
         {
           "Type": "roads_of_avalon_solo_pve"
@@ -8917,7 +8916,7 @@
           "Type": "Ore"
         },
         {
-          "Type": "roads_of_avalon_group_pve"
+          "Type": "roads_of_avalon_raid_pve"
         },
         {
           "Type": "Fiber"
@@ -8939,13 +8938,13 @@
           "Type": "Ore"
         },
         {
-          "Type": "roads_of_avalon_solo_pve"
+          "Type": "roads_of_avalon_raid_pve"
         },
         {
           "Type": "Wood"
         },
         {
-          "Type": "roads_of_avalon_solo_pve"
+          "Type": "roads_of_avalon_raid_pve"
         },
         {
           "Type": "Ore"
@@ -8976,7 +8975,7 @@
           "Type": "Hide"
         },
         {
-          "Type": "roads_of_avalon_solo_pve"
+          "Type": "roads_of_avalon_raid_pve"
         },
         {
           "Type": "Hide"
@@ -8995,25 +8994,25 @@
     "MiniMapMarkers": {
       "Marker": [
         {
-          "Type": "roads_of_avalon_group_pve"
+          "Type": "roads_of_avalon_solo_pve"
         },
         {
-          "Type": "dungeon_elite"
-        },
-        {
-          "Type": "roads_of_avalon_raid_pve"
-        },
-        {
-          "Type": "roads_of_avalon_group_pve"
-        },
-        {
-          "Type": "roads_of_avalon_raid_pve"
+          "Type": "dungeon_group"
         },
         {
           "Type": "roads_of_avalon_solo_pve"
         },
         {
+          "Type": "roads_of_avalon_raid_pve"
+        },
+        {
           "Type": "roads_of_avalon_group_pve"
+        },
+        {
+          "Type": "roads_of_avalon_solo_pve"
+        },
+        {
+          "Type": "roads_of_avalon_solo_pve"
         }
       ]
     }
@@ -9032,7 +9031,7 @@
           "Type": "Ore"
         },
         {
-          "Type": "roads_of_avalon_solo_pve"
+          "Type": "roads_of_avalon_raid_pve"
         },
         {
           "Type": "Wood"
@@ -9057,7 +9056,7 @@
           "Type": "Wood"
         },
         {
-          "Type": "dungeon_elite"
+          "Type": "dungeon_group"
         },
         {
           "Type": "roads_of_avalon_raid_pve"
@@ -9066,13 +9065,13 @@
           "Type": "Ore"
         },
         {
-          "Type": "roads_of_avalon_raid_pve"
+          "Type": "roads_of_avalon_group_pve"
         },
         {
           "Type": "Fiber"
         },
         {
-          "Type": "roads_of_avalon_group_pve"
+          "Type": "roads_of_avalon_raid_pve"
         }
       ]
     }
@@ -9150,13 +9149,13 @@
     "MiniMapMarkers": {
       "Marker": [
         {
-          "Type": "roads_of_avalon_group_pve"
+          "Type": "roads_of_avalon_solo_pve"
         },
         {
-          "Type": "roads_of_avalon_raid_pve"
+          "Type": "roads_of_avalon_solo_pve"
         },
         {
-          "Type": "roads_of_avalon_group_pve"
+          "Type": "roads_of_avalon_solo_pve"
         },
         {
           "Type": "Stone"
@@ -9171,7 +9170,7 @@
           "Type": "dungeon_group"
         },
         {
-          "Type": "roads_of_avalon_group_pve"
+          "Type": "roads_of_avalon_solo_pve"
         }
       ]
     }
@@ -9224,16 +9223,16 @@
           "Type": "Ore"
         },
         {
-          "Type": "roads_of_avalon_group_pve"
+          "Type": "roads_of_avalon_raid_pve"
         },
         {
           "Type": "dungeon_group"
         },
         {
-          "Type": "roads_of_avalon_raid_pve"
+          "Type": "roads_of_avalon_solo_pve"
         },
         {
-          "Type": "roads_of_avalon_raid_pve"
+          "Type": "roads_of_avalon_solo_pve"
         }
       ]
     }
@@ -9246,7 +9245,7 @@
     "MiniMapMarkers": {
       "Marker": [
         {
-          "Type": "roads_of_avalon_raid_pve"
+          "Type": "roads_of_avalon_solo_pve"
         },
         {
           "Type": "Hide"
@@ -9255,16 +9254,16 @@
           "Type": "dungeon_group"
         },
         {
-          "Type": "roads_of_avalon_raid_pve"
+          "Type": "roads_of_avalon_solo_pve"
         },
         {
-          "Type": "roads_of_avalon_raid_pve"
+          "Type": "roads_of_avalon_solo_pve"
         },
         {
           "Type": "Hide"
         },
         {
-          "Type": "roads_of_avalon_raid_pve"
+          "Type": "roads_of_avalon_group_pve"
         },
         {
           "Type": "Ore"
@@ -9275,18 +9274,18 @@
   {
     "Index": "TNL-147",
     "UniqueName": "Tonos-Aboysum",
-    "Type": "TUNNEL_DEEP",
+    "Type": "TUNNEL_DEEP_RAID",
     "File": "TNL-147_RDS_RO_AUTO_T8_AVA_AVA.cluster.xml",
     "MiniMapMarkers": {
       "Marker": [
         {
-          "Type": "dungeon_group"
+          "Type": "Stone"
         },
         {
           "Type": "roads_of_avalon_raid_pve"
         },
         {
-          "Type": "Fiber"
+          "Type": "roads_of_avalon_raid_pve"
         },
         {
           "Type": "Ore"
@@ -9295,10 +9294,10 @@
           "Type": "roads_of_avalon_raid_pve"
         },
         {
-          "Type": "Hide"
+          "Type": "Ore"
         },
         {
-          "Type": "Ore"
+          "Type": "Stone"
         }
       ]
     }
@@ -9337,7 +9336,7 @@
   {
     "Index": "TNL-149",
     "UniqueName": "Sebos-Oyohun",
-    "Type": "TUNNEL_DEEP",
+    "Type": "TUNNEL_DEEP_RAID",
     "File": "TNL-149_RDS_RO_AUTO_T8_AVA_AVA.cluster.xml",
     "MiniMapMarkers": {
       "Marker": [
@@ -9345,13 +9344,13 @@
           "Type": "Fiber"
         },
         {
-          "Type": "dungeon_elite"
+          "Type": "roads_of_avalon_raid_pve"
         },
         {
           "Type": "Fiber"
         },
         {
-          "Type": "dungeon_group"
+          "Type": "dungeon_elite"
         },
         {
           "Type": "Fiber"
@@ -9360,10 +9359,10 @@
           "Type": "roads_of_avalon_raid_pve"
         },
         {
-          "Type": "dungeon_elite"
+          "Type": "roads_of_avalon_raid_pve"
         },
         {
-          "Type": "Fiber"
+          "Type": "Wood"
         }
       ]
     }
@@ -9391,9 +9390,6 @@
           "Type": "Stone"
         },
         {
-          "Type": "dungeon_elite"
-        },
-        {
           "Type": "roads_of_avalon_raid_pve"
         },
         {
@@ -9410,7 +9406,7 @@
     "MiniMapMarkers": {
       "Marker": [
         {
-          "Type": "dungeon_solo"
+          "Type": "dungeon_group"
         },
         {
           "Type": "Wood"
@@ -9441,10 +9437,10 @@
     "MiniMapMarkers": {
       "Marker": [
         {
-          "Type": "roads_of_avalon_group_pve"
+          "Type": "roads_of_avalon_solo_pve"
         },
         {
-          "Type": "roads_of_avalon_group_pve"
+          "Type": "roads_of_avalon_solo_pve"
         },
         {
           "Type": "roads_of_avalon_solo_pve"
@@ -9534,10 +9530,10 @@
           "Type": "Fiber"
         },
         {
-          "Type": "roads_of_avalon_group_pve"
+          "Type": "roads_of_avalon_solo_pve"
         },
         {
-          "Type": "roads_of_avalon_solo_pve"
+          "Type": "roads_of_avalon_group_pve"
         },
         {
           "Type": "Fiber"
@@ -9556,7 +9552,7 @@
     "MiniMapMarkers": {
       "Marker": [
         {
-          "Type": "roads_of_avalon_group_pve"
+          "Type": "roads_of_avalon_solo_pve"
         },
         {
           "Type": "roads_of_avalon_solo_pve"
@@ -9599,10 +9595,10 @@
           "Type": "Wood"
         },
         {
-          "Type": "dungeon_solo"
+          "Type": "dungeon_group"
         },
         {
-          "Type": "dungeon_solo"
+          "Type": "dungeon_group"
         },
         {
           "Type": "Wood"
@@ -9621,22 +9617,22 @@
           "Type": "roads_of_avalon_solo_pve"
         },
         {
+          "Type": "roads_of_avalon_solo_pve"
+        },
+        {
+          "Type": "roads_of_avalon_group_pve"
+        },
+        {
           "Type": "roads_of_avalon_group_pve"
         },
         {
           "Type": "roads_of_avalon_solo_pve"
         },
         {
-          "Type": "roads_of_avalon_solo_pve"
+          "Type": "dungeon_group"
         },
         {
-          "Type": "roads_of_avalon_solo_pve"
-        },
-        {
-          "Type": "dungeon_solo"
-        },
-        {
-          "Type": "dungeon_solo"
+          "Type": "dungeon_group"
         }
       ]
     }
@@ -9649,7 +9645,7 @@
     "MiniMapMarkers": {
       "Marker": [
         {
-          "Type": "dungeon_solo"
+          "Type": "dungeon_group"
         },
         {
           "Type": "Fiber"
@@ -9683,13 +9679,13 @@
           "Type": "roads_of_avalon_solo_pve"
         },
         {
-          "Type": "dungeon_solo"
+          "Type": "dungeon_group"
         },
         {
           "Type": "roads_of_avalon_solo_pve"
         },
         {
-          "Type": "roads_of_avalon_group_pve"
+          "Type": "roads_of_avalon_solo_pve"
         },
         {
           "Type": "roads_of_avalon_solo_pve"
@@ -9698,7 +9694,7 @@
           "Type": "Stone"
         },
         {
-          "Type": "roads_of_avalon_group_pve"
+          "Type": "roads_of_avalon_solo_pve"
         },
         {
           "Type": "Hide"
@@ -9742,16 +9738,16 @@
     "MiniMapMarkers": {
       "Marker": [
         {
-          "Type": "dungeon_solo"
+          "Type": "dungeon_group"
         },
         {
-          "Type": "roads_of_avalon_group_pve"
+          "Type": "roads_of_avalon_solo_pve"
         },
         {
           "Type": "Wood"
         },
         {
-          "Type": "roads_of_avalon_group_pve"
+          "Type": "roads_of_avalon_solo_pve"
         },
         {
           "Type": "dungeon_group"
@@ -9810,19 +9806,19 @@
           "Type": "roads_of_avalon_solo_pve"
         },
         {
-          "Type": "roads_of_avalon_group_pve"
-        },
-        {
-          "Type": "roads_of_avalon_group_pve"
-        },
-        {
-          "Type": "dungeon_solo"
-        },
-        {
           "Type": "roads_of_avalon_solo_pve"
         },
         {
-          "Type": "roads_of_avalon_solo_pve"
+          "Type": "roads_of_avalon_group_pve"
+        },
+        {
+          "Type": "dungeon_group"
+        },
+        {
+          "Type": "roads_of_avalon_group_pve"
+        },
+        {
+          "Type": "roads_of_avalon_raid_pve"
         }
       ]
     }
@@ -9869,22 +9865,22 @@
     "MiniMapMarkers": {
       "Marker": [
         {
-          "Type": "roads_of_avalon_group_pve"
+          "Type": "roads_of_avalon_solo_pve"
         },
         {
-          "Type": "roads_of_avalon_group_pve"
+          "Type": "roads_of_avalon_solo_pve"
         },
         {
           "Type": "dungeon_group"
         },
         {
-          "Type": "roads_of_avalon_group_pve"
+          "Type": "roads_of_avalon_solo_pve"
         },
         {
-          "Type": "roads_of_avalon_group_pve"
+          "Type": "roads_of_avalon_raid_pve"
         },
         {
-          "Type": "dungeon_solo"
+          "Type": "dungeon_group"
         }
       ]
     }
@@ -9937,10 +9933,10 @@
           "Type": "Hide"
         },
         {
-          "Type": "roads_of_avalon_group_pve"
+          "Type": "roads_of_avalon_raid_pve"
         },
         {
-          "Type": "dungeon_solo"
+          "Type": "dungeon_group"
         },
         {
           "Type": "Hide"
@@ -9956,16 +9952,16 @@
     "MiniMapMarkers": {
       "Marker": [
         {
-          "Type": "roads_of_avalon_group_pve"
+          "Type": "roads_of_avalon_solo_pve"
         },
         {
-          "Type": "dungeon_solo"
+          "Type": "dungeon_group"
         },
         {
           "Type": "Wood"
         },
         {
-          "Type": "roads_of_avalon_solo_pve"
+          "Type": "roads_of_avalon_group_pve"
         },
         {
           "Type": "Ore"
@@ -9990,19 +9986,19 @@
     "MiniMapMarkers": {
       "Marker": [
         {
-          "Type": "roads_of_avalon_group_pve"
+          "Type": "roads_of_avalon_solo_pve"
         },
         {
-          "Type": "dungeon_solo"
+          "Type": "dungeon_group"
         },
         {
-          "Type": "dungeon_solo"
+          "Type": "dungeon_group"
         },
         {
           "Type": "Wood"
         },
         {
-          "Type": "dungeon_solo"
+          "Type": "dungeon_group"
         },
         {
           "Type": "roads_of_avalon_solo_pve"
@@ -10036,13 +10032,13 @@
           "Type": "roads_of_avalon_solo_pve"
         },
         {
-          "Type": "dungeon_solo"
+          "Type": "dungeon_group"
         },
         {
           "Type": "Stone"
         },
         {
-          "Type": "roads_of_avalon_group_pve"
+          "Type": "roads_of_avalon_solo_pve"
         },
         {
           "Type": "dungeon_group"
@@ -10070,10 +10066,10 @@
           "Type": "roads_of_avalon_solo_pve"
         },
         {
-          "Type": "roads_of_avalon_group_pve"
+          "Type": "roads_of_avalon_solo_pve"
         },
         {
-          "Type": "roads_of_avalon_group_pve"
+          "Type": "roads_of_avalon_solo_pve"
         },
         {
           "Type": "roads_of_avalon_group_pve"
@@ -10092,19 +10088,19 @@
     "MiniMapMarkers": {
       "Marker": [
         {
-          "Type": "roads_of_avalon_group_pve"
+          "Type": "roads_of_avalon_solo_pve"
         },
         {
-          "Type": "roads_of_avalon_group_pve"
+          "Type": "roads_of_avalon_solo_pve"
         },
         {
-          "Type": "roads_of_avalon_group_pve"
+          "Type": "roads_of_avalon_solo_pve"
         },
         {
-          "Type": "roads_of_avalon_group_pve"
+          "Type": "roads_of_avalon_solo_pve"
         },
         {
-          "Type": "roads_of_avalon_group_pve"
+          "Type": "roads_of_avalon_solo_pve"
         },
         {
           "Type": "roads_of_avalon_solo_pve"
@@ -10113,7 +10109,7 @@
           "Type": "roads_of_avalon_group_pve"
         },
         {
-          "Type": "dungeon_solo"
+          "Type": "dungeon_group"
         }
       ]
     }
@@ -10132,7 +10128,7 @@
           "Type": "Ore"
         },
         {
-          "Type": "roads_of_avalon_group_pve"
+          "Type": "roads_of_avalon_solo_pve"
         },
         {
           "Type": "Hide"
@@ -10160,10 +10156,10 @@
     "MiniMapMarkers": {
       "Marker": [
         {
-          "Type": "roads_of_avalon_group_pve"
+          "Type": "roads_of_avalon_solo_pve"
         },
         {
-          "Type": "roads_of_avalon_group_pve"
+          "Type": "roads_of_avalon_solo_pve"
         },
         {
           "Type": "Wood"
@@ -10188,13 +10184,13 @@
     "MiniMapMarkers": {
       "Marker": [
         {
-          "Type": "roads_of_avalon_group_pve"
-        },
-        {
-          "Type": "roads_of_avalon_group_pve"
+          "Type": "roads_of_avalon_solo_pve"
         },
         {
           "Type": "roads_of_avalon_solo_pve"
+        },
+        {
+          "Type": "roads_of_avalon_group_pve"
         },
         {
           "Type": "Wood"
@@ -10219,25 +10215,25 @@
     "MiniMapMarkers": {
       "Marker": [
         {
-          "Type": "roads_of_avalon_group_pve"
-        },
-        {
-          "Type": "roads_of_avalon_group_pve"
+          "Type": "roads_of_avalon_solo_pve"
         },
         {
           "Type": "roads_of_avalon_solo_pve"
         },
         {
+          "Type": "roads_of_avalon_raid_pve"
+        },
+        {
           "Type": "Ore"
         },
         {
-          "Type": "roads_of_avalon_group_pve"
+          "Type": "roads_of_avalon_solo_pve"
         },
         {
           "Type": "Wood"
         },
         {
-          "Type": "roads_of_avalon_group_pve"
+          "Type": "roads_of_avalon_solo_pve"
         }
       ]
     }
@@ -10281,13 +10277,13 @@
           "Type": "Fiber"
         },
         {
-          "Type": "roads_of_avalon_group_pve"
+          "Type": "roads_of_avalon_solo_pve"
         },
         {
           "Type": "Fiber"
         },
         {
-          "Type": "roads_of_avalon_group_pve"
+          "Type": "roads_of_avalon_solo_pve"
         },
         {
           "Type": "Fiber"
@@ -10296,7 +10292,7 @@
           "Type": "Fiber"
         },
         {
-          "Type": "roads_of_avalon_group_pve"
+          "Type": "roads_of_avalon_solo_pve"
         },
         {
           "Type": "Fiber"
@@ -10321,10 +10317,10 @@
           "Type": "roads_of_avalon_solo_pve"
         },
         {
-          "Type": "roads_of_avalon_group_pve"
+          "Type": "roads_of_avalon_solo_pve"
         },
         {
-          "Type": "roads_of_avalon_group_pve"
+          "Type": "roads_of_avalon_solo_pve"
         },
         {
           "Type": "roads_of_avalon_solo_pve"
@@ -10333,7 +10329,7 @@
           "Type": "Hide"
         },
         {
-          "Type": "roads_of_avalon_group_pve"
+          "Type": "roads_of_avalon_solo_pve"
         }
       ]
     }
@@ -10352,10 +10348,10 @@
           "Type": "Hide"
         },
         {
-          "Type": "dungeon_solo"
+          "Type": "dungeon_group"
         },
         {
-          "Type": "roads_of_avalon_group_pve"
+          "Type": "roads_of_avalon_solo_pve"
         },
         {
           "Type": "Fiber"
@@ -10383,16 +10379,16 @@
           "Type": "Stone"
         },
         {
-          "Type": "roads_of_avalon_group_pve"
+          "Type": "roads_of_avalon_solo_pve"
         },
         {
-          "Type": "roads_of_avalon_solo_pve"
+          "Type": "roads_of_avalon_group_pve"
         },
         {
           "Type": "Fiber"
         },
         {
-          "Type": "dungeon_solo"
+          "Type": "dungeon_group"
         },
         {
           "Type": "Hide"
@@ -10408,10 +10404,10 @@
     "MiniMapMarkers": {
       "Marker": [
         {
-          "Type": "roads_of_avalon_group_pve"
+          "Type": "roads_of_avalon_solo_pve"
         },
         {
-          "Type": "dungeon_solo"
+          "Type": "dungeon_group"
         },
         {
           "Type": "Hide"
@@ -10442,7 +10438,7 @@
           "Type": "Wood"
         },
         {
-          "Type": "roads_of_avalon_group_pve"
+          "Type": "roads_of_avalon_solo_pve"
         },
         {
           "Type": "roads_of_avalon_solo_pve"
@@ -10464,13 +10460,13 @@
     "MiniMapMarkers": {
       "Marker": [
         {
-          "Type": "dungeon_solo"
-        },
-        {
-          "Type": "roads_of_avalon_group_pve"
+          "Type": "dungeon_group"
         },
         {
           "Type": "roads_of_avalon_solo_pve"
+        },
+        {
+          "Type": "roads_of_avalon_group_pve"
         },
         {
           "Type": "roads_of_avalon_solo_pve"
@@ -10501,16 +10497,16 @@
           "Type": "Hide"
         },
         {
-          "Type": "dungeon_solo"
-        },
-        {
-          "Type": "roads_of_avalon_group_pve"
-        },
-        {
-          "Type": "roads_of_avalon_group_pve"
+          "Type": "dungeon_group"
         },
         {
           "Type": "roads_of_avalon_solo_pve"
+        },
+        {
+          "Type": "roads_of_avalon_solo_pve"
+        },
+        {
+          "Type": "roads_of_avalon_group_pve"
         },
         {
           "Type": "Wood"
@@ -10529,7 +10525,7 @@
     "MiniMapMarkers": {
       "Marker": [
         {
-          "Type": "roads_of_avalon_group_pve"
+          "Type": "roads_of_avalon_solo_pve"
         },
         {
           "Type": "Ore"
@@ -10547,7 +10543,7 @@
           "Type": "Ore"
         },
         {
-          "Type": "dungeon_solo"
+          "Type": "dungeon_group"
         }
       ]
     }
@@ -10563,16 +10559,16 @@
           "Type": "Hide"
         },
         {
-          "Type": "roads_of_avalon_solo_pve"
+          "Type": "roads_of_avalon_group_pve"
         },
         {
           "Type": "Fiber"
         },
         {
-          "Type": "dungeon_solo"
+          "Type": "dungeon_group"
         },
         {
-          "Type": "roads_of_avalon_group_pve"
+          "Type": "roads_of_avalon_solo_pve"
         },
         {
           "Type": "Hide"
@@ -10591,13 +10587,13 @@
           "Type": "Fiber"
         },
         {
-          "Type": "roads_of_avalon_solo_pve"
+          "Type": "roads_of_avalon_group_pve"
         },
         {
           "Type": "Ore"
         },
         {
-          "Type": "roads_of_avalon_group_pve"
+          "Type": "roads_of_avalon_solo_pve"
         },
         {
           "Type": "roads_of_avalon_solo_pve"
@@ -10616,22 +10612,22 @@
     "MiniMapMarkers": {
       "Marker": [
         {
+          "Type": "roads_of_avalon_solo_pve"
+        },
+        {
+          "Type": "roads_of_avalon_solo_pve"
+        },
+        {
+          "Type": "Wood"
+        },
+        {
+          "Type": "Wood"
+        },
+        {
+          "Type": "Wood"
+        },
+        {
           "Type": "roads_of_avalon_group_pve"
-        },
-        {
-          "Type": "roads_of_avalon_solo_pve"
-        },
-        {
-          "Type": "Wood"
-        },
-        {
-          "Type": "Wood"
-        },
-        {
-          "Type": "Wood"
-        },
-        {
-          "Type": "roads_of_avalon_solo_pve"
         }
       ]
     }
@@ -10644,10 +10640,10 @@
     "MiniMapMarkers": {
       "Marker": [
         {
-          "Type": "roads_of_avalon_group_pve"
+          "Type": "roads_of_avalon_solo_pve"
         },
         {
-          "Type": "dungeon_solo"
+          "Type": "dungeon_group"
         },
         {
           "Type": "Stone"
@@ -10656,7 +10652,7 @@
           "Type": "roads_of_avalon_solo_pve"
         },
         {
-          "Type": "roads_of_avalon_solo_pve"
+          "Type": "roads_of_avalon_group_pve"
         },
         {
           "Type": "Stone"
@@ -10678,13 +10674,13 @@
     "MiniMapMarkers": {
       "Marker": [
         {
+          "Type": "roads_of_avalon_solo_pve"
+        },
+        {
+          "Type": "roads_of_avalon_solo_pve"
+        },
+        {
           "Type": "roads_of_avalon_group_pve"
-        },
-        {
-          "Type": "roads_of_avalon_solo_pve"
-        },
-        {
-          "Type": "roads_of_avalon_solo_pve"
         },
         {
           "Type": "Stone"
@@ -10693,7 +10689,7 @@
           "Type": "roads_of_avalon_solo_pve"
         },
         {
-          "Type": "dungeon_solo"
+          "Type": "dungeon_group"
         },
         {
           "Type": "Fiber"
@@ -10721,13 +10717,13 @@
           "Type": "Stone"
         },
         {
-          "Type": "roads_of_avalon_solo_pve"
+          "Type": "roads_of_avalon_group_pve"
         },
         {
           "Type": "Stone"
         },
         {
-          "Type": "dungeon_solo"
+          "Type": "dungeon_group"
         }
       ]
     }
@@ -10777,7 +10773,7 @@
           "Type": "Hide"
         },
         {
-          "Type": "roads_of_avalon_solo_pve"
+          "Type": "roads_of_avalon_group_pve"
         },
         {
           "Type": "Hide"
@@ -10805,13 +10801,7 @@
           "Type": "dungeon_group"
         },
         {
-          "Type": "dungeon_solo"
-        },
-        {
-          "Type": "Hide"
-        },
-        {
-          "Type": "roads_of_avalon_group_pve"
+          "Type": "dungeon_group"
         },
         {
           "Type": "Hide"
@@ -10820,7 +10810,13 @@
           "Type": "roads_of_avalon_solo_pve"
         },
         {
-          "Type": "dungeon_solo"
+          "Type": "Hide"
+        },
+        {
+          "Type": "roads_of_avalon_group_pve"
+        },
+        {
+          "Type": "dungeon_group"
         },
         {
           "Type": "Hide"
@@ -10839,7 +10835,7 @@
           "Type": "dungeon_group"
         },
         {
-          "Type": "dungeon_solo"
+          "Type": "dungeon_group"
         },
         {
           "Type": "roads_of_avalon_solo_pve"
@@ -10854,7 +10850,7 @@
           "Type": "roads_of_avalon_solo_pve"
         },
         {
-          "Type": "dungeon_solo"
+          "Type": "dungeon_group"
         },
         {
           "Type": "dungeon_group"
@@ -10904,13 +10900,13 @@
           "Type": "Ore"
         },
         {
-          "Type": "dungeon_solo"
+          "Type": "dungeon_group"
         },
         {
-          "Type": "dungeon_solo"
+          "Type": "dungeon_group"
         },
         {
-          "Type": "roads_of_avalon_group_pve"
+          "Type": "roads_of_avalon_solo_pve"
         },
         {
           "Type": "Hide"
@@ -10941,7 +10937,7 @@
           "Type": "Hide"
         },
         {
-          "Type": "roads_of_avalon_raid_pve"
+          "Type": "roads_of_avalon_solo_pve"
         },
         {
           "Type": "roads_of_avalon_group_pve"
@@ -10975,7 +10971,7 @@
           "Type": "Stone"
         },
         {
-          "Type": "roads_of_avalon_solo_pve"
+          "Type": "roads_of_avalon_group_pve"
         },
         {
           "Type": "Fiber"
@@ -11040,7 +11036,7 @@
           "Type": "Ore"
         },
         {
-          "Type": "roads_of_avalon_solo_pve"
+          "Type": "roads_of_avalon_group_pve"
         }
       ]
     }
@@ -11087,25 +11083,25 @@
     "MiniMapMarkers": {
       "Marker": [
         {
+          "Type": "roads_of_avalon_solo_pve"
+        },
+        {
+          "Type": "Wood"
+        },
+        {
+          "Type": "Wood"
+        },
+        {
+          "Type": "Wood"
+        },
+        {
           "Type": "roads_of_avalon_group_pve"
-        },
-        {
-          "Type": "Wood"
-        },
-        {
-          "Type": "Wood"
-        },
-        {
-          "Type": "Wood"
         },
         {
           "Type": "roads_of_avalon_solo_pve"
         },
         {
-          "Type": "roads_of_avalon_group_pve"
-        },
-        {
-          "Type": "roads_of_avalon_raid_pve"
+          "Type": "roads_of_avalon_solo_pve"
         },
         {
           "Type": "Stone"
@@ -11121,22 +11117,22 @@
     "MiniMapMarkers": {
       "Marker": [
         {
-          "Type": "dungeon_solo"
-        },
-        {
-          "Type": "roads_of_avalon_group_pve"
-        },
-        {
-          "Type": "Ore"
-        },
-        {
-          "Type": "Ore"
-        },
-        {
-          "Type": "Ore"
+          "Type": "dungeon_group"
         },
         {
           "Type": "roads_of_avalon_solo_pve"
+        },
+        {
+          "Type": "Ore"
+        },
+        {
+          "Type": "Ore"
+        },
+        {
+          "Type": "Ore"
+        },
+        {
+          "Type": "roads_of_avalon_raid_pve"
         },
         {
           "Type": "Ore"
@@ -11155,7 +11151,7 @@
           "Type": "Stone"
         },
         {
-          "Type": "roads_of_avalon_group_pve"
+          "Type": "roads_of_avalon_solo_pve"
         },
         {
           "Type": "dungeon_group"
@@ -11170,7 +11166,7 @@
           "Type": "Ore"
         },
         {
-          "Type": "roads_of_avalon_solo_pve"
+          "Type": "roads_of_avalon_group_pve"
         },
         {
           "Type": "roads_of_avalon_group_pve"
@@ -11195,7 +11191,7 @@
           "Type": "Hide"
         },
         {
-          "Type": "roads_of_avalon_group_pve"
+          "Type": "roads_of_avalon_solo_pve"
         },
         {
           "Type": "dungeon_group"
@@ -11217,7 +11213,7 @@
           "Type": "dungeon_group"
         },
         {
-          "Type": "roads_of_avalon_raid_pve"
+          "Type": "roads_of_avalon_solo_pve"
         },
         {
           "Type": "roads_of_avalon_group_pve"
@@ -11226,13 +11222,13 @@
           "Type": "roads_of_avalon_solo_pve"
         },
         {
+          "Type": "roads_of_avalon_solo_pve"
+        },
+        {
           "Type": "roads_of_avalon_raid_pve"
         },
         {
-          "Type": "roads_of_avalon_solo_pve"
-        },
-        {
-          "Type": "roads_of_avalon_solo_pve"
+          "Type": "roads_of_avalon_group_pve"
         }
       ]
     }
@@ -11307,7 +11303,7 @@
           "Type": "Ore"
         },
         {
-          "Type": "roads_of_avalon_raid_pve"
+          "Type": "roads_of_avalon_solo_pve"
         },
         {
           "Type": "Ore"
@@ -11338,7 +11334,7 @@
           "Type": "Fiber"
         },
         {
-          "Type": "roads_of_avalon_group_pve"
+          "Type": "roads_of_avalon_raid_pve"
         },
         {
           "Type": "Fiber"
@@ -11369,7 +11365,7 @@
           "Type": "roads_of_avalon_solo_pve"
         },
         {
-          "Type": "dungeon_solo"
+          "Type": "dungeon_group"
         },
         {
           "Type": "roads_of_avalon_group_pve"
@@ -11381,7 +11377,7 @@
           "Type": "roads_of_avalon_group_pve"
         },
         {
-          "Type": "roads_of_avalon_group_pve"
+          "Type": "roads_of_avalon_raid_pve"
         }
       ]
     }
@@ -11428,12 +11424,6 @@
     "MiniMapMarkers": {
       "Marker": [
         {
-          "Type": "roads_of_avalon_group_pve"
-        },
-        {
-          "Type": "dungeon_group"
-        },
-        {
           "Type": "roads_of_avalon_solo_pve"
         },
         {
@@ -11443,13 +11433,19 @@
           "Type": "roads_of_avalon_solo_pve"
         },
         {
+          "Type": "dungeon_group"
+        },
+        {
+          "Type": "roads_of_avalon_group_pve"
+        },
+        {
           "Type": "roads_of_avalon_group_pve"
         },
         {
           "Type": "roads_of_avalon_solo_pve"
         },
         {
-          "Type": "roads_of_avalon_group_pve"
+          "Type": "roads_of_avalon_solo_pve"
         }
       ]
     }
@@ -11586,7 +11582,7 @@
     "MiniMapMarkers": {
       "Marker": [
         {
-          "Type": "roads_of_avalon_group_pve"
+          "Type": "roads_of_avalon_solo_pve"
         },
         {
           "Type": "Fiber"
@@ -11601,7 +11597,7 @@
           "Type": "roads_of_avalon_group_pve"
         },
         {
-          "Type": "dungeon_solo"
+          "Type": "dungeon_group"
         },
         {
           "Type": "Fiber"
@@ -11635,7 +11631,7 @@
           "Type": "Fiber"
         },
         {
-          "Type": "roads_of_avalon_solo_pve"
+          "Type": "roads_of_avalon_raid_pve"
         }
       ]
     }
@@ -11691,7 +11687,7 @@
           "Type": "dungeon_group"
         },
         {
-          "Type": "roads_of_avalon_raid_pve"
+          "Type": "roads_of_avalon_solo_pve"
         },
         {
           "Type": "dungeon_group"
@@ -11703,7 +11699,7 @@
           "Type": "dungeon_group"
         },
         {
-          "Type": "roads_of_avalon_group_pve"
+          "Type": "roads_of_avalon_solo_pve"
         }
       ]
     }
@@ -11722,7 +11718,7 @@
           "Type": "Hide"
         },
         {
-          "Type": "roads_of_avalon_group_pve"
+          "Type": "roads_of_avalon_solo_pve"
         },
         {
           "Type": "roads_of_avalon_solo_pve"
@@ -11750,7 +11746,7 @@
           "Type": "Ore"
         },
         {
-          "Type": "dungeon_solo"
+          "Type": "dungeon_group"
         },
         {
           "Type": "Ore"
@@ -11775,10 +11771,10 @@
     "MiniMapMarkers": {
       "Marker": [
         {
-          "Type": "roads_of_avalon_group_pve"
+          "Type": "roads_of_avalon_solo_pve"
         },
         {
-          "Type": "roads_of_avalon_group_pve"
+          "Type": "roads_of_avalon_solo_pve"
         },
         {
           "Type": "Fiber"
@@ -11930,16 +11926,16 @@
     "MiniMapMarkers": {
       "Marker": [
         {
-          "Type": "dungeon_solo"
+          "Type": "dungeon_group"
         },
         {
-          "Type": "roads_of_avalon_group_pve"
+          "Type": "roads_of_avalon_solo_pve"
         },
         {
           "Type": "Hide"
         },
         {
-          "Type": "dungeon_solo"
+          "Type": "dungeon_group"
         },
         {
           "Type": "Stone"
@@ -11948,7 +11944,7 @@
           "Type": "roads_of_avalon_group_pve"
         },
         {
-          "Type": "roads_of_avalon_group_pve"
+          "Type": "roads_of_avalon_solo_pve"
         }
       ]
     }
@@ -11973,7 +11969,7 @@
           "Type": "Ore"
         },
         {
-          "Type": "roads_of_avalon_solo_pve"
+          "Type": "roads_of_avalon_raid_pve"
         },
         {
           "Type": "Wood"
@@ -11992,7 +11988,7 @@
     "MiniMapMarkers": {
       "Marker": [
         {
-          "Type": "roads_of_avalon_group_pve"
+          "Type": "roads_of_avalon_solo_pve"
         },
         {
           "Type": "Hide"
@@ -12007,10 +12003,10 @@
           "Type": "roads_of_avalon_group_pve"
         },
         {
-          "Type": "roads_of_avalon_group_pve"
+          "Type": "roads_of_avalon_solo_pve"
         },
         {
-          "Type": "dungeon_solo"
+          "Type": "dungeon_group"
         },
         {
           "Type": "Stone"
@@ -12029,19 +12025,19 @@
           "Type": "Ore"
         },
         {
-          "Type": "roads_of_avalon_group_pve"
+          "Type": "roads_of_avalon_raid_pve"
         },
         {
           "Type": "Fiber"
         },
         {
-          "Type": "roads_of_avalon_solo_pve"
+          "Type": "roads_of_avalon_raid_pve"
         },
         {
           "Type": "Hide"
         },
         {
-          "Type": "roads_of_avalon_solo_pve"
+          "Type": "roads_of_avalon_raid_pve"
         }
       ]
     }
@@ -12082,7 +12078,7 @@
     "MiniMapMarkers": {
       "Marker": [
         {
-          "Type": "roads_of_avalon_group_pve"
+          "Type": "roads_of_avalon_solo_pve"
         },
         {
           "Type": "roads_of_avalon_solo_pve"
@@ -12122,7 +12118,7 @@
           "Type": "Fiber"
         },
         {
-          "Type": "roads_of_avalon_group_pve"
+          "Type": "roads_of_avalon_raid_pve"
         },
         {
           "Type": "Fiber"
@@ -12153,10 +12149,10 @@
           "Type": "roads_of_avalon_group_pve"
         },
         {
-          "Type": "roads_of_avalon_group_pve"
+          "Type": "roads_of_avalon_solo_pve"
         },
         {
-          "Type": "dungeon_solo"
+          "Type": "dungeon_group"
         },
         {
           "Type": "Stone"
@@ -12209,13 +12205,13 @@
           "Type": "Wood"
         },
         {
-          "Type": "dungeon_solo"
+          "Type": "dungeon_group"
         },
         {
-          "Type": "roads_of_avalon_solo_pve"
+          "Type": "roads_of_avalon_raid_pve"
         },
         {
-          "Type": "roads_of_avalon_solo_pve"
+          "Type": "roads_of_avalon_raid_pve"
         },
         {
           "Type": "Wood"
@@ -12237,7 +12233,7 @@
     "MiniMapMarkers": {
       "Marker": [
         {
-          "Type": "roads_of_avalon_group_pve"
+          "Type": "roads_of_avalon_solo_pve"
         },
         {
           "Type": "roads_of_avalon_solo_pve"
@@ -12255,7 +12251,7 @@
           "Type": "Stone"
         },
         {
-          "Type": "dungeon_solo"
+          "Type": "dungeon_group"
         },
         {
           "Type": "roads_of_avalon_solo_pve"
@@ -12271,22 +12267,22 @@
     "MiniMapMarkers": {
       "Marker": [
         {
+          "Type": "roads_of_avalon_solo_pve"
+        },
+        {
+          "Type": "roads_of_avalon_solo_pve"
+        },
+        {
+          "Type": "roads_of_avalon_raid_pve"
+        },
+        {
           "Type": "roads_of_avalon_group_pve"
         },
         {
           "Type": "roads_of_avalon_solo_pve"
         },
         {
-          "Type": "roads_of_avalon_solo_pve"
-        },
-        {
-          "Type": "roads_of_avalon_solo_pve"
-        },
-        {
-          "Type": "roads_of_avalon_solo_pve"
-        },
-        {
-          "Type": "dungeon_solo"
+          "Type": "dungeon_group"
         },
         {
           "Type": "dungeon_group"
@@ -12345,7 +12341,7 @@
           "Type": "Stone"
         },
         {
-          "Type": "roads_of_avalon_raid_pve"
+          "Type": "roads_of_avalon_solo_pve"
         },
         {
           "Type": "Ore"
@@ -12367,13 +12363,13 @@
           "Type": "Stone"
         },
         {
-          "Type": "roads_of_avalon_raid_pve"
+          "Type": "roads_of_avalon_solo_pve"
         },
         {
           "Type": "roads_of_avalon_group_pve"
         },
         {
-          "Type": "roads_of_avalon_solo_pve"
+          "Type": "roads_of_avalon_raid_pve"
         },
         {
           "Type": "Ore"
@@ -12401,7 +12397,7 @@
           "Type": "Fiber"
         },
         {
-          "Type": "roads_of_avalon_group_pve"
+          "Type": "roads_of_avalon_raid_pve"
         },
         {
           "Type": "Stone"
@@ -12451,19 +12447,19 @@
     "MiniMapMarkers": {
       "Marker": [
         {
-          "Type": "roads_of_avalon_raid_pve"
+          "Type": "roads_of_avalon_solo_pve"
         },
         {
           "Type": "Fiber"
         },
         {
-          "Type": "roads_of_avalon_raid_pve"
+          "Type": "roads_of_avalon_solo_pve"
         },
         {
-          "Type": "roads_of_avalon_group_pve"
+          "Type": "roads_of_avalon_solo_pve"
         },
         {
-          "Type": "roads_of_avalon_group_pve"
+          "Type": "roads_of_avalon_solo_pve"
         },
         {
           "Type": "Hide"
@@ -12472,7 +12468,7 @@
           "Type": "Fiber"
         },
         {
-          "Type": "roads_of_avalon_group_pve"
+          "Type": "roads_of_avalon_solo_pve"
         }
       ]
     }
@@ -12480,7 +12476,7 @@
   {
     "Index": "TNL-300",
     "UniqueName": "Hurites-Ieatun",
-    "Type": "TUNNEL_DEEP",
+    "Type": "TUNNEL_DEEP_RAID",
     "File": "TNL-100_RDS_RO_AUTO_T6_AVA_AVA.cluster.xml",
     "MiniMapMarkers": {
       "Marker": [
@@ -12513,13 +12509,13 @@
           "Type": "Wood"
         },
         {
-          "Type": "roads_of_avalon_raid_pve"
+          "Type": "roads_of_avalon_group_pve"
         },
         {
           "Type": "Wood"
         },
         {
-          "Type": "dungeon_elite"
+          "Type": "dungeon_group"
         },
         {
           "Type": "Wood"
@@ -12544,10 +12540,10 @@
           "Type": "Stone"
         },
         {
-          "Type": "dungeon_solo"
+          "Type": "dungeon_group"
         },
         {
-          "Type": "roads_of_avalon_solo_pve"
+          "Type": "roads_of_avalon_group_pve"
         },
         {
           "Type": "Fiber"
@@ -12563,25 +12559,25 @@
     "MiniMapMarkers": {
       "Marker": [
         {
-          "Type": "roads_of_avalon_group_pve"
-        },
-        {
-          "Type": "roads_of_avalon_group_pve"
+          "Type": "roads_of_avalon_solo_pve"
         },
         {
           "Type": "roads_of_avalon_solo_pve"
         },
         {
-          "Type": "dungeon_solo"
-        },
-        {
-          "Type": "dungeon_solo"
-        },
-        {
           "Type": "roads_of_avalon_solo_pve"
         },
         {
-          "Type": "dungeon_solo"
+          "Type": "dungeon_group"
+        },
+        {
+          "Type": "dungeon_group"
+        },
+        {
+          "Type": "roads_of_avalon_raid_pve"
+        },
+        {
+          "Type": "dungeon_group"
         },
         {
           "Type": "roads_of_avalon_solo_pve"
@@ -12603,7 +12599,7 @@
           "Type": "Hide"
         },
         {
-          "Type": "roads_of_avalon_solo_pve"
+          "Type": "roads_of_avalon_raid_pve"
         },
         {
           "Type": "Fiber"
@@ -12612,7 +12608,7 @@
           "Type": "Wood"
         },
         {
-          "Type": "roads_of_avalon_solo_pve"
+          "Type": "roads_of_avalon_group_pve"
         },
         {
           "Type": "Ore"
@@ -12628,28 +12624,28 @@
     "MiniMapMarkers": {
       "Marker": [
         {
-          "Type": "dungeon_solo"
+          "Type": "dungeon_group"
         },
         {
-          "Type": "dungeon_solo"
+          "Type": "dungeon_group"
         },
         {
-          "Type": "roads_of_avalon_group_pve"
+          "Type": "roads_of_avalon_solo_pve"
         },
         {
-          "Type": "dungeon_solo"
+          "Type": "dungeon_group"
         },
         {
-          "Type": "roads_of_avalon_group_pve"
+          "Type": "roads_of_avalon_solo_pve"
         },
         {
-          "Type": "roads_of_avalon_group_pve"
+          "Type": "roads_of_avalon_raid_pve"
         },
         {
-          "Type": "dungeon_solo"
+          "Type": "dungeon_group"
         },
         {
-          "Type": "roads_of_avalon_group_pve"
+          "Type": "roads_of_avalon_solo_pve"
         }
       ]
     }
@@ -12671,7 +12667,7 @@
           "Type": "roads_of_avalon_solo_pve"
         },
         {
-          "Type": "roads_of_avalon_solo_pve"
+          "Type": "roads_of_avalon_raid_pve"
         },
         {
           "Type": "Hide"
@@ -12696,7 +12692,7 @@
           "Type": "roads_of_avalon_group_pve"
         },
         {
-          "Type": "roads_of_avalon_group_pve"
+          "Type": "roads_of_avalon_raid_pve"
         },
         {
           "Type": "Hide"
@@ -12718,7 +12714,7 @@
     "MiniMapMarkers": {
       "Marker": [
         {
-          "Type": "roads_of_avalon_group_pve"
+          "Type": "roads_of_avalon_solo_pve"
         },
         {
           "Type": "Hide"
@@ -12730,13 +12726,13 @@
           "Type": "roads_of_avalon_solo_pve"
         },
         {
-          "Type": "roads_of_avalon_solo_pve"
+          "Type": "roads_of_avalon_raid_pve"
         },
         {
           "Type": "Hide"
         },
         {
-          "Type": "roads_of_avalon_group_pve"
+          "Type": "roads_of_avalon_solo_pve"
         }
       ]
     }
@@ -12777,16 +12773,16 @@
     "MiniMapMarkers": {
       "Marker": [
         {
-          "Type": "roads_of_avalon_group_pve"
+          "Type": "roads_of_avalon_solo_pve"
         },
         {
-          "Type": "dungeon_solo"
+          "Type": "dungeon_group"
         },
         {
           "Type": "Stone"
         },
         {
-          "Type": "roads_of_avalon_raid_pve"
+          "Type": "roads_of_avalon_solo_pve"
         },
         {
           "Type": "Wood"
@@ -12811,10 +12807,10 @@
     "MiniMapMarkers": {
       "Marker": [
         {
-          "Type": "roads_of_avalon_group_pve"
+          "Type": "roads_of_avalon_solo_pve"
         },
         {
-          "Type": "roads_of_avalon_group_pve"
+          "Type": "roads_of_avalon_solo_pve"
         },
         {
           "Type": "roads_of_avalon_solo_pve"
@@ -12829,7 +12825,7 @@
           "Type": "Stone"
         },
         {
-          "Type": "dungeon_solo"
+          "Type": "dungeon_group"
         },
         {
           "Type": "roads_of_avalon_solo_pve"
@@ -12845,13 +12841,7 @@
     "MiniMapMarkers": {
       "Marker": [
         {
-          "Type": "dungeon_solo"
-        },
-        {
-          "Type": "roads_of_avalon_group_pve"
-        },
-        {
-          "Type": "Hide"
+          "Type": "dungeon_group"
         },
         {
           "Type": "roads_of_avalon_solo_pve"
@@ -12861,6 +12851,12 @@
         },
         {
           "Type": "roads_of_avalon_solo_pve"
+        },
+        {
+          "Type": "Hide"
+        },
+        {
+          "Type": "roads_of_avalon_raid_pve"
         },
         {
           "Type": "Wood"
@@ -12888,7 +12884,7 @@
           "Type": "Wood"
         },
         {
-          "Type": "roads_of_avalon_group_pve"
+          "Type": "roads_of_avalon_raid_pve"
         },
         {
           "Type": "Hide"
@@ -12910,7 +12906,7 @@
           "Type": "Ore"
         },
         {
-          "Type": "roads_of_avalon_solo_pve"
+          "Type": "roads_of_avalon_raid_pve"
         },
         {
           "Type": "Ore"
@@ -12919,7 +12915,7 @@
           "Type": "Ore"
         },
         {
-          "Type": "roads_of_avalon_solo_pve"
+          "Type": "roads_of_avalon_group_pve"
         },
         {
           "Type": "Ore"
@@ -12935,10 +12931,10 @@
     "MiniMapMarkers": {
       "Marker": [
         {
-          "Type": "roads_of_avalon_raid_pve"
+          "Type": "roads_of_avalon_solo_pve"
         },
         {
-          "Type": "roads_of_avalon_group_pve"
+          "Type": "roads_of_avalon_solo_pve"
         },
         {
           "Type": "Fiber"
@@ -12947,13 +12943,13 @@
           "Type": "Stone"
         },
         {
+          "Type": "roads_of_avalon_solo_pve"
+        },
+        {
+          "Type": "roads_of_avalon_group_pve"
+        },
+        {
           "Type": "roads_of_avalon_raid_pve"
-        },
-        {
-          "Type": "roads_of_avalon_solo_pve"
-        },
-        {
-          "Type": "roads_of_avalon_solo_pve"
         }
       ]
     }
@@ -12978,13 +12974,13 @@
           "Type": "Ore"
         },
         {
-          "Type": "roads_of_avalon_group_pve"
+          "Type": "roads_of_avalon_solo_pve"
         },
         {
           "Type": "Ore"
         },
         {
-          "Type": "dungeon_solo"
+          "Type": "dungeon_group"
         },
         {
           "Type": "Ore"
@@ -13000,10 +12996,10 @@
     "MiniMapMarkers": {
       "Marker": [
         {
-          "Type": "roads_of_avalon_group_pve"
+          "Type": "roads_of_avalon_solo_pve"
         },
         {
-          "Type": "roads_of_avalon_group_pve"
+          "Type": "roads_of_avalon_solo_pve"
         },
         {
           "Type": "roads_of_avalon_solo_pve"
@@ -13034,19 +13030,19 @@
           "Type": "dungeon_group"
         },
         {
-          "Type": "roads_of_avalon_raid_pve"
+          "Type": "roads_of_avalon_solo_pve"
         },
         {
-          "Type": "roads_of_avalon_raid_pve"
+          "Type": "roads_of_avalon_solo_pve"
         },
         {
-          "Type": "roads_of_avalon_raid_pve"
+          "Type": "roads_of_avalon_solo_pve"
         },
         {
           "Type": "dungeon_group"
         },
         {
-          "Type": "roads_of_avalon_solo_pve"
+          "Type": "roads_of_avalon_raid_pve"
         },
         {
           "Type": "roads_of_avalon_group_pve"
@@ -13065,7 +13061,7 @@
     "MiniMapMarkers": {
       "Marker": [
         {
-          "Type": "roads_of_avalon_solo_pve"
+          "Type": "roads_of_avalon_raid_pve"
         },
         {
           "Type": "Fiber"
@@ -13099,7 +13095,7 @@
           "Type": "Wood"
         },
         {
-          "Type": "roads_of_avalon_solo_pve"
+          "Type": "roads_of_avalon_group_pve"
         },
         {
           "Type": "dungeon_group"
@@ -13133,7 +13129,7 @@
           "Type": "Stone"
         },
         {
-          "Type": "roads_of_avalon_group_pve"
+          "Type": "roads_of_avalon_solo_pve"
         },
         {
           "Type": "Wood"
@@ -13145,7 +13141,7 @@
           "Type": "Ore"
         },
         {
-          "Type": "roads_of_avalon_raid_pve"
+          "Type": "roads_of_avalon_solo_pve"
         }
       ]
     }
@@ -13173,7 +13169,7 @@
           "Type": "Stone"
         },
         {
-          "Type": "roads_of_avalon_group_pve"
+          "Type": "roads_of_avalon_raid_pve"
         }
       ]
     }
@@ -13189,19 +13185,19 @@
           "Type": "Wood"
         },
         {
-          "Type": "roads_of_avalon_raid_pve"
+          "Type": "roads_of_avalon_solo_pve"
         },
         {
           "Type": "Fiber"
         },
         {
-          "Type": "roads_of_avalon_raid_pve"
+          "Type": "roads_of_avalon_group_pve"
         },
         {
           "Type": "Stone"
         },
         {
-          "Type": "roads_of_avalon_raid_pve"
+          "Type": "roads_of_avalon_solo_pve"
         }
       ]
     }
@@ -13254,13 +13250,13 @@
           "Type": "Wood"
         },
         {
-          "Type": "roads_of_avalon_group_pve"
+          "Type": "roads_of_avalon_raid_pve"
         },
         {
-          "Type": "roads_of_avalon_group_pve"
+          "Type": "roads_of_avalon_solo_pve"
         },
         {
-          "Type": "roads_of_avalon_group_pve"
+          "Type": "roads_of_avalon_solo_pve"
         },
         {
           "Type": "Wood"
@@ -13282,7 +13278,7 @@
           "Type": "Ore"
         },
         {
-          "Type": "roads_of_avalon_raid_pve"
+          "Type": "roads_of_avalon_solo_pve"
         },
         {
           "Type": "roads_of_avalon_group_pve"
@@ -13297,7 +13293,7 @@
           "Type": "Wood"
         },
         {
-          "Type": "roads_of_avalon_group_pve"
+          "Type": "roads_of_avalon_solo_pve"
         }
       ]
     }
@@ -13310,16 +13306,16 @@
     "MiniMapMarkers": {
       "Marker": [
         {
-          "Type": "dungeon_elite"
+          "Type": "dungeon_group"
         },
         {
-          "Type": "roads_of_avalon_raid_pve"
+          "Type": "roads_of_avalon_solo_pve"
         },
         {
           "Type": "Stone"
         },
         {
-          "Type": "roads_of_avalon_group_pve"
+          "Type": "roads_of_avalon_solo_pve"
         },
         {
           "Type": "Ore"
@@ -13328,7 +13324,7 @@
           "Type": "Stone"
         },
         {
-          "Type": "roads_of_avalon_group_pve"
+          "Type": "roads_of_avalon_solo_pve"
         }
       ]
     }
@@ -13367,7 +13363,7 @@
   {
     "Index": "TNL-329",
     "UniqueName": "Silitos-Abizaum",
-    "Type": "TUNNEL_DEEP",
+    "Type": "TUNNEL_DEEP_RAID",
     "File": "TNL-129_RDS_RO_AUTO_T7_AVA_AVA.cluster.xml",
     "MiniMapMarkers": {
       "Marker": [
@@ -13378,19 +13374,19 @@
           "Type": "roads_of_avalon_raid_pve"
         },
         {
-          "Type": "Wood"
-        },
-        {
-          "Type": "Wood"
-        },
-        {
-          "Type": "Wood"
+          "Type": "Hide"
         },
         {
           "Type": "roads_of_avalon_raid_pve"
         },
         {
-          "Type": "dungeon_elite"
+          "Type": "Fiber"
+        },
+        {
+          "Type": "roads_of_avalon_raid_pve"
+        },
+        {
+          "Type": "Hide"
         }
       ]
     }
@@ -13398,12 +13394,12 @@
   {
     "Index": "TNL-330",
     "UniqueName": "Febites-Opavun",
-    "Type": "TUNNEL_DEEP",
+    "Type": "TUNNEL_DEEP_RAID",
     "File": "TNL-130_RDS_RO_AUTO_T7_AVA_AVA.cluster.xml",
     "MiniMapMarkers": {
       "Marker": [
         {
-          "Type": "dungeon_group"
+          "Type": "dungeon_elite"
         },
         {
           "Type": "roads_of_avalon_raid_pve"
@@ -13412,19 +13408,19 @@
           "Type": "Ore"
         },
         {
-          "Type": "roads_of_avalon_group_pve"
-        },
-        {
-          "Type": "Ore"
+          "Type": "roads_of_avalon_raid_pve"
         },
         {
           "Type": "roads_of_avalon_raid_pve"
         },
         {
-          "Type": "roads_of_avalon_group_pve"
+          "Type": "roads_of_avalon_raid_pve"
         },
         {
-          "Type": "Ore"
+          "Type": "roads_of_avalon_raid_pve"
+        },
+        {
+          "Type": "Stone"
         }
       ]
     }
@@ -13437,10 +13433,10 @@
     "MiniMapMarkers": {
       "Marker": [
         {
-          "Type": "dungeon_elite"
+          "Type": "dungeon_group"
         },
         {
-          "Type": "dungeon_elite"
+          "Type": "dungeon_group"
         },
         {
           "Type": "Hide"
@@ -13474,16 +13470,16 @@
           "Type": "Fiber"
         },
         {
-          "Type": "dungeon_solo"
+          "Type": "dungeon_group"
         },
         {
-          "Type": "roads_of_avalon_solo_pve"
+          "Type": "roads_of_avalon_raid_pve"
         },
         {
           "Type": "Fiber"
         },
         {
-          "Type": "roads_of_avalon_group_pve"
+          "Type": "roads_of_avalon_raid_pve"
         }
       ]
     }
@@ -13496,28 +13492,28 @@
     "MiniMapMarkers": {
       "Marker": [
         {
-          "Type": "roads_of_avalon_group_pve"
+          "Type": "roads_of_avalon_solo_pve"
         },
         {
           "Type": "roads_of_avalon_solo_pve"
         },
         {
-          "Type": "roads_of_avalon_group_pve"
+          "Type": "roads_of_avalon_solo_pve"
         },
         {
           "Type": "roads_of_avalon_solo_pve"
         },
         {
-          "Type": "dungeon_solo"
+          "Type": "dungeon_group"
         },
         {
-          "Type": "roads_of_avalon_group_pve"
+          "Type": "roads_of_avalon_raid_pve"
         },
         {
-          "Type": "roads_of_avalon_group_pve"
+          "Type": "roads_of_avalon_solo_pve"
         },
         {
-          "Type": "dungeon_solo"
+          "Type": "dungeon_group"
         }
       ]
     }
@@ -13542,7 +13538,7 @@
           "Type": "Stone"
         },
         {
-          "Type": "roads_of_avalon_group_pve"
+          "Type": "roads_of_avalon_raid_pve"
         },
         {
           "Type": "roads_of_avalon_group_pve"
@@ -13558,7 +13554,7 @@
     "MiniMapMarkers": {
       "Marker": [
         {
-          "Type": "dungeon_solo"
+          "Type": "dungeon_group"
         },
         {
           "Type": "roads_of_avalon_solo_pve"
@@ -13573,7 +13569,7 @@
           "Type": "Ore"
         },
         {
-          "Type": "roads_of_avalon_group_pve"
+          "Type": "roads_of_avalon_raid_pve"
         },
         {
           "Type": "Fiber"
@@ -13595,13 +13591,13 @@
           "Type": "Ore"
         },
         {
-          "Type": "roads_of_avalon_solo_pve"
+          "Type": "roads_of_avalon_raid_pve"
         },
         {
           "Type": "Wood"
         },
         {
-          "Type": "roads_of_avalon_solo_pve"
+          "Type": "roads_of_avalon_raid_pve"
         },
         {
           "Type": "Ore"
@@ -13632,7 +13628,7 @@
           "Type": "Hide"
         },
         {
-          "Type": "roads_of_avalon_solo_pve"
+          "Type": "roads_of_avalon_raid_pve"
         },
         {
           "Type": "Hide"
@@ -13651,25 +13647,25 @@
     "MiniMapMarkers": {
       "Marker": [
         {
-          "Type": "roads_of_avalon_group_pve"
+          "Type": "roads_of_avalon_solo_pve"
         },
         {
-          "Type": "dungeon_elite"
-        },
-        {
-          "Type": "roads_of_avalon_raid_pve"
-        },
-        {
-          "Type": "roads_of_avalon_group_pve"
-        },
-        {
-          "Type": "roads_of_avalon_raid_pve"
+          "Type": "dungeon_group"
         },
         {
           "Type": "roads_of_avalon_solo_pve"
         },
         {
+          "Type": "roads_of_avalon_raid_pve"
+        },
+        {
           "Type": "roads_of_avalon_group_pve"
+        },
+        {
+          "Type": "roads_of_avalon_solo_pve"
+        },
+        {
+          "Type": "roads_of_avalon_solo_pve"
         }
       ]
     }
@@ -13688,7 +13684,7 @@
           "Type": "Ore"
         },
         {
-          "Type": "roads_of_avalon_solo_pve"
+          "Type": "roads_of_avalon_raid_pve"
         },
         {
           "Type": "Wood"
@@ -13713,7 +13709,7 @@
           "Type": "Wood"
         },
         {
-          "Type": "dungeon_elite"
+          "Type": "dungeon_group"
         },
         {
           "Type": "roads_of_avalon_raid_pve"
@@ -13722,13 +13718,13 @@
           "Type": "Ore"
         },
         {
-          "Type": "roads_of_avalon_raid_pve"
+          "Type": "roads_of_avalon_group_pve"
         },
         {
           "Type": "Fiber"
         },
         {
-          "Type": "roads_of_avalon_group_pve"
+          "Type": "roads_of_avalon_raid_pve"
         }
       ]
     }
@@ -13806,13 +13802,13 @@
     "MiniMapMarkers": {
       "Marker": [
         {
-          "Type": "roads_of_avalon_group_pve"
+          "Type": "roads_of_avalon_solo_pve"
         },
         {
-          "Type": "roads_of_avalon_raid_pve"
+          "Type": "roads_of_avalon_solo_pve"
         },
         {
-          "Type": "roads_of_avalon_group_pve"
+          "Type": "roads_of_avalon_solo_pve"
         },
         {
           "Type": "Stone"
@@ -13827,7 +13823,7 @@
           "Type": "dungeon_group"
         },
         {
-          "Type": "roads_of_avalon_group_pve"
+          "Type": "roads_of_avalon_solo_pve"
         }
       ]
     }
@@ -13880,16 +13876,16 @@
           "Type": "Ore"
         },
         {
-          "Type": "roads_of_avalon_group_pve"
+          "Type": "roads_of_avalon_raid_pve"
         },
         {
           "Type": "dungeon_group"
         },
         {
-          "Type": "roads_of_avalon_raid_pve"
+          "Type": "roads_of_avalon_solo_pve"
         },
         {
-          "Type": "roads_of_avalon_raid_pve"
+          "Type": "roads_of_avalon_solo_pve"
         }
       ]
     }
@@ -13902,7 +13898,7 @@
     "MiniMapMarkers": {
       "Marker": [
         {
-          "Type": "roads_of_avalon_raid_pve"
+          "Type": "roads_of_avalon_solo_pve"
         },
         {
           "Type": "Hide"
@@ -13911,16 +13907,16 @@
           "Type": "dungeon_group"
         },
         {
-          "Type": "roads_of_avalon_raid_pve"
+          "Type": "roads_of_avalon_solo_pve"
         },
         {
-          "Type": "roads_of_avalon_raid_pve"
+          "Type": "roads_of_avalon_solo_pve"
         },
         {
           "Type": "Hide"
         },
         {
-          "Type": "roads_of_avalon_raid_pve"
+          "Type": "roads_of_avalon_group_pve"
         },
         {
           "Type": "Ore"
@@ -13931,18 +13927,18 @@
   {
     "Index": "TNL-347",
     "UniqueName": "Tuyitos-Aboysum",
-    "Type": "TUNNEL_DEEP",
+    "Type": "TUNNEL_DEEP_RAID",
     "File": "TNL-147_RDS_RO_AUTO_T8_AVA_AVA.cluster.xml",
     "MiniMapMarkers": {
       "Marker": [
         {
-          "Type": "dungeon_group"
+          "Type": "Stone"
         },
         {
           "Type": "roads_of_avalon_raid_pve"
         },
         {
-          "Type": "Fiber"
+          "Type": "roads_of_avalon_raid_pve"
         },
         {
           "Type": "Ore"
@@ -13951,10 +13947,10 @@
           "Type": "roads_of_avalon_raid_pve"
         },
         {
-          "Type": "Hide"
+          "Type": "Ore"
         },
         {
-          "Type": "Ore"
+          "Type": "Stone"
         }
       ]
     }
@@ -13993,7 +13989,7 @@
   {
     "Index": "TNL-349",
     "UniqueName": "Siritos-Oyohun",
-    "Type": "TUNNEL_DEEP",
+    "Type": "TUNNEL_DEEP_RAID",
     "File": "TNL-149_RDS_RO_AUTO_T8_AVA_AVA.cluster.xml",
     "MiniMapMarkers": {
       "Marker": [
@@ -14001,13 +13997,13 @@
           "Type": "Fiber"
         },
         {
-          "Type": "dungeon_elite"
+          "Type": "roads_of_avalon_raid_pve"
         },
         {
           "Type": "Fiber"
         },
         {
-          "Type": "dungeon_group"
+          "Type": "dungeon_elite"
         },
         {
           "Type": "Fiber"
@@ -14016,10 +14012,10 @@
           "Type": "roads_of_avalon_raid_pve"
         },
         {
-          "Type": "dungeon_elite"
+          "Type": "roads_of_avalon_raid_pve"
         },
         {
-          "Type": "Fiber"
+          "Type": "Wood"
         }
       ]
     }
@@ -14045,9 +14041,6 @@
         },
         {
           "Type": "Stone"
-        },
-        {
-          "Type": "dungeon_elite"
         },
         {
           "Type": "roads_of_avalon_raid_pve"
@@ -14491,7 +14484,7 @@
           "Type": "Fiber"
         },
         {
-          "Type": "roads_of_avalon_solo_pve"
+          "Type": "roads_of_avalon_group_pve"
         },
         {
           "Type": "Hide"
@@ -14513,7 +14506,7 @@
           "Type": "Fiber"
         },
         {
-          "Type": "roads_of_avalon_solo_pve"
+          "Type": "roads_of_avalon_group_pve"
         },
         {
           "Type": "Hide"
@@ -14670,7 +14663,7 @@
           "Type": "Hide"
         },
         {
-          "Type": "roads_of_avalon_solo_pve"
+          "Type": "roads_of_avalon_group_pve"
         },
         {
           "Type": "Ore"
@@ -14692,7 +14685,7 @@
           "Type": "Hide"
         },
         {
-          "Type": "roads_of_avalon_solo_pve"
+          "Type": "roads_of_avalon_group_pve"
         },
         {
           "Type": "Ore"
@@ -14755,7 +14748,7 @@
           "Type": "Ore"
         },
         {
-          "Type": "roads_of_avalon_solo_pve"
+          "Type": "roads_of_avalon_group_pve"
         },
         {
           "Type": "Ore"
@@ -14777,7 +14770,7 @@
           "Type": "Ore"
         },
         {
-          "Type": "roads_of_avalon_solo_pve"
+          "Type": "roads_of_avalon_group_pve"
         },
         {
           "Type": "Ore"
@@ -14802,7 +14795,7 @@
           "Type": "roads_of_avalon_group_pve"
         },
         {
-          "Type": "roads_of_avalon_solo_pve"
+          "Type": "roads_of_avalon_group_pve"
         },
         {
           "Type": "Stone"
@@ -14824,7 +14817,7 @@
           "Type": "roads_of_avalon_group_pve"
         },
         {
-          "Type": "roads_of_avalon_solo_pve"
+          "Type": "roads_of_avalon_group_pve"
         },
         {
           "Type": "Stone"
@@ -14846,7 +14839,7 @@
           "Type": "Fiber"
         },
         {
-          "Type": "roads_of_avalon_solo_pve"
+          "Type": "roads_of_avalon_group_pve"
         },
         {
           "Type": "Hide"
@@ -14868,7 +14861,7 @@
           "Type": "Fiber"
         },
         {
-          "Type": "roads_of_avalon_solo_pve"
+          "Type": "roads_of_avalon_group_pve"
         },
         {
           "Type": "Hide"
@@ -15022,7 +15015,7 @@
           "Type": "roads_of_avalon_group_pve"
         },
         {
-          "Type": "roads_of_avalon_solo_pve"
+          "Type": "roads_of_avalon_group_pve"
         },
         {
           "Type": "roads_of_avalon_solo_pve"
@@ -15044,7 +15037,7 @@
           "Type": "roads_of_avalon_group_pve"
         },
         {
-          "Type": "roads_of_avalon_solo_pve"
+          "Type": "roads_of_avalon_group_pve"
         },
         {
           "Type": "roads_of_avalon_solo_pve"
@@ -15110,7 +15103,7 @@
           "Type": "Wood"
         },
         {
-          "Type": "roads_of_avalon_solo_pve"
+          "Type": "roads_of_avalon_group_pve"
         },
         {
           "Type": "Wood"
@@ -15132,7 +15125,7 @@
           "Type": "Wood"
         },
         {
-          "Type": "roads_of_avalon_solo_pve"
+          "Type": "roads_of_avalon_group_pve"
         },
         {
           "Type": "Wood"
@@ -15286,7 +15279,7 @@
           "Type": "Stone"
         },
         {
-          "Type": "roads_of_avalon_solo_pve"
+          "Type": "roads_of_avalon_group_pve"
         },
         {
           "Type": "Hide"
@@ -15308,7 +15301,7 @@
           "Type": "Stone"
         },
         {
-          "Type": "roads_of_avalon_solo_pve"
+          "Type": "roads_of_avalon_group_pve"
         },
         {
           "Type": "Hide"
@@ -15330,7 +15323,7 @@
           "Type": "roads_of_avalon_group_pve"
         },
         {
-          "Type": "roads_of_avalon_solo_pve"
+          "Type": "roads_of_avalon_group_pve"
         },
         {
           "Type": "Stone"
@@ -15352,7 +15345,7 @@
           "Type": "roads_of_avalon_group_pve"
         },
         {
-          "Type": "roads_of_avalon_solo_pve"
+          "Type": "roads_of_avalon_group_pve"
         },
         {
           "Type": "Stone"
@@ -15506,7 +15499,7 @@
           "Type": "roads_of_avalon_group_pve"
         },
         {
-          "Type": "roads_of_avalon_solo_pve"
+          "Type": "roads_of_avalon_group_pve"
         },
         {
           "Type": "Ore"
@@ -15528,7 +15521,7 @@
           "Type": "roads_of_avalon_group_pve"
         },
         {
-          "Type": "roads_of_avalon_solo_pve"
+          "Type": "roads_of_avalon_group_pve"
         },
         {
           "Type": "Ore"
@@ -15547,7 +15540,7 @@
           "Type": "roads_of_avalon_solo_pve"
         },
         {
-          "Type": "roads_of_avalon_solo_pve"
+          "Type": "roads_of_avalon_group_pve"
         },
         {
           "Type": "Hide"
@@ -15569,7 +15562,7 @@
           "Type": "roads_of_avalon_solo_pve"
         },
         {
-          "Type": "roads_of_avalon_solo_pve"
+          "Type": "roads_of_avalon_group_pve"
         },
         {
           "Type": "Hide"
@@ -15723,7 +15716,7 @@
           "Type": "roads_of_avalon_solo_pve"
         },
         {
-          "Type": "roads_of_avalon_solo_pve"
+          "Type": "roads_of_avalon_group_pve"
         },
         {
           "Type": "Fiber"
@@ -15745,7 +15738,7 @@
           "Type": "roads_of_avalon_solo_pve"
         },
         {
-          "Type": "roads_of_avalon_solo_pve"
+          "Type": "roads_of_avalon_group_pve"
         },
         {
           "Type": "Fiber"
@@ -15855,7 +15848,7 @@
           "Type": "Fiber"
         },
         {
-          "Type": "roads_of_avalon_solo_pve"
+          "Type": "roads_of_avalon_group_pve"
         },
         {
           "Type": "roads_of_avalon_group_pve"
@@ -15877,7 +15870,7 @@
           "Type": "Fiber"
         },
         {
-          "Type": "roads_of_avalon_solo_pve"
+          "Type": "roads_of_avalon_group_pve"
         },
         {
           "Type": "roads_of_avalon_group_pve"
@@ -15990,7 +15983,7 @@
           "Type": "Stone"
         },
         {
-          "Type": "roads_of_avalon_solo_pve"
+          "Type": "roads_of_avalon_group_pve"
         },
         {
           "Type": "Ore"
@@ -16012,7 +16005,7 @@
           "Type": "Stone"
         },
         {
-          "Type": "roads_of_avalon_solo_pve"
+          "Type": "roads_of_avalon_group_pve"
         },
         {
           "Type": "Ore"
@@ -16028,13 +16021,13 @@
     "MiniMapMarkers": {
       "Marker": [
         {
-          "Type": "roads_of_avalon_group_pve"
-        },
-        {
-          "Type": "roads_of_avalon_group_pve"
-        },
-        {
           "Type": "roads_of_avalon_solo_pve"
+        },
+        {
+          "Type": "roads_of_avalon_group_pve"
+        },
+        {
+          "Type": "roads_of_avalon_group_pve"
         },
         {
           "Type": "Hide"
@@ -16050,13 +16043,13 @@
     "MiniMapMarkers": {
       "Marker": [
         {
-          "Type": "roads_of_avalon_group_pve"
-        },
-        {
-          "Type": "roads_of_avalon_group_pve"
-        },
-        {
           "Type": "roads_of_avalon_solo_pve"
+        },
+        {
+          "Type": "roads_of_avalon_group_pve"
+        },
+        {
+          "Type": "roads_of_avalon_group_pve"
         },
         {
           "Type": "Hide"
@@ -16072,13 +16065,13 @@
     "MiniMapMarkers": {
       "Marker": [
         {
-          "Type": "roads_of_avalon_group_pve"
+          "Type": "roads_of_avalon_solo_pve"
         },
         {
           "Type": "Stone"
         },
         {
-          "Type": "roads_of_avalon_solo_pve"
+          "Type": "roads_of_avalon_group_pve"
         },
         {
           "Type": "Hide"
@@ -16094,13 +16087,13 @@
     "MiniMapMarkers": {
       "Marker": [
         {
-          "Type": "roads_of_avalon_group_pve"
+          "Type": "roads_of_avalon_solo_pve"
         },
         {
           "Type": "Stone"
         },
         {
-          "Type": "roads_of_avalon_solo_pve"
+          "Type": "roads_of_avalon_group_pve"
         },
         {
           "Type": "Hide"
@@ -16116,7 +16109,7 @@
     "MiniMapMarkers": {
       "Marker": [
         {
-          "Type": "roads_of_avalon_group_pve"
+          "Type": "roads_of_avalon_solo_pve"
         },
         {
           "Type": "Wood"
@@ -16138,7 +16131,7 @@
     "MiniMapMarkers": {
       "Marker": [
         {
-          "Type": "roads_of_avalon_group_pve"
+          "Type": "roads_of_avalon_solo_pve"
         },
         {
           "Type": "Wood"
@@ -16160,7 +16153,7 @@
     "MiniMapMarkers": {
       "Marker": [
         {
-          "Type": "roads_of_avalon_group_pve"
+          "Type": "roads_of_avalon_solo_pve"
         },
         {
           "Type": "roads_of_avalon_solo_pve"
@@ -16182,7 +16175,7 @@
     "MiniMapMarkers": {
       "Marker": [
         {
-          "Type": "roads_of_avalon_group_pve"
+          "Type": "roads_of_avalon_solo_pve"
         },
         {
           "Type": "roads_of_avalon_solo_pve"
@@ -16204,13 +16197,13 @@
     "MiniMapMarkers": {
       "Marker": [
         {
-          "Type": "roads_of_avalon_group_pve"
+          "Type": "roads_of_avalon_solo_pve"
         },
         {
           "Type": "roads_of_avalon_group_pve"
         },
         {
-          "Type": "roads_of_avalon_raid_pve"
+          "Type": "roads_of_avalon_group_pve"
         },
         {
           "Type": "Hide"
@@ -16226,13 +16219,13 @@
     "MiniMapMarkers": {
       "Marker": [
         {
-          "Type": "roads_of_avalon_group_pve"
+          "Type": "roads_of_avalon_solo_pve"
         },
         {
           "Type": "roads_of_avalon_group_pve"
         },
         {
-          "Type": "roads_of_avalon_raid_pve"
+          "Type": "roads_of_avalon_group_pve"
         },
         {
           "Type": "Hide"
@@ -16257,7 +16250,7 @@
           "Type": "roads_of_avalon_solo_pve"
         },
         {
-          "Type": "roads_of_avalon_group_pve"
+          "Type": "roads_of_avalon_solo_pve"
         }
       ]
     }
@@ -16279,7 +16272,7 @@
           "Type": "roads_of_avalon_solo_pve"
         },
         {
-          "Type": "roads_of_avalon_group_pve"
+          "Type": "roads_of_avalon_solo_pve"
         }
       ]
     }
@@ -16292,7 +16285,7 @@
     "MiniMapMarkers": {
       "Marker": [
         {
-          "Type": "roads_of_avalon_group_pve"
+          "Type": "roads_of_avalon_solo_pve"
         },
         {
           "Type": "Hide"
@@ -16314,7 +16307,7 @@
     "MiniMapMarkers": {
       "Marker": [
         {
-          "Type": "roads_of_avalon_group_pve"
+          "Type": "roads_of_avalon_solo_pve"
         },
         {
           "Type": "Hide"
@@ -16336,13 +16329,13 @@
     "MiniMapMarkers": {
       "Marker": [
         {
-          "Type": "roads_of_avalon_group_pve"
+          "Type": "roads_of_avalon_solo_pve"
         },
         {
           "Type": "Fiber"
         },
         {
-          "Type": "roads_of_avalon_solo_pve"
+          "Type": "roads_of_avalon_group_pve"
         },
         {
           "Type": "Ore"
@@ -16358,13 +16351,13 @@
     "MiniMapMarkers": {
       "Marker": [
         {
-          "Type": "roads_of_avalon_group_pve"
+          "Type": "roads_of_avalon_solo_pve"
         },
         {
           "Type": "Fiber"
         },
         {
-          "Type": "roads_of_avalon_solo_pve"
+          "Type": "roads_of_avalon_group_pve"
         },
         {
           "Type": "Ore"
@@ -16380,13 +16373,13 @@
     "MiniMapMarkers": {
       "Marker": [
         {
-          "Type": "roads_of_avalon_group_pve"
+          "Type": "roads_of_avalon_solo_pve"
         },
         {
           "Type": "roads_of_avalon_group_pve"
         },
         {
-          "Type": "roads_of_avalon_raid_pve"
+          "Type": "roads_of_avalon_group_pve"
         },
         {
           "Type": "Hide"
@@ -16402,13 +16395,13 @@
     "MiniMapMarkers": {
       "Marker": [
         {
-          "Type": "roads_of_avalon_group_pve"
+          "Type": "roads_of_avalon_solo_pve"
         },
         {
           "Type": "roads_of_avalon_group_pve"
         },
         {
-          "Type": "roads_of_avalon_raid_pve"
+          "Type": "roads_of_avalon_group_pve"
         },
         {
           "Type": "Hide"
@@ -16424,13 +16417,13 @@
     "MiniMapMarkers": {
       "Marker": [
         {
-          "Type": "roads_of_avalon_group_pve"
+          "Type": "roads_of_avalon_solo_pve"
         },
         {
           "Type": "Wood"
         },
         {
-          "Type": "roads_of_avalon_solo_pve"
+          "Type": "roads_of_avalon_group_pve"
         },
         {
           "Type": "Fiber"
@@ -16446,13 +16439,13 @@
     "MiniMapMarkers": {
       "Marker": [
         {
-          "Type": "roads_of_avalon_group_pve"
+          "Type": "roads_of_avalon_solo_pve"
         },
         {
           "Type": "Wood"
         },
         {
-          "Type": "roads_of_avalon_solo_pve"
+          "Type": "roads_of_avalon_group_pve"
         },
         {
           "Type": "Fiber"
@@ -16468,7 +16461,7 @@
     "MiniMapMarkers": {
       "Marker": [
         {
-          "Type": "roads_of_avalon_group_pve"
+          "Type": "roads_of_avalon_solo_pve"
         },
         {
           "Type": "Ore"
@@ -16490,7 +16483,7 @@
     "MiniMapMarkers": {
       "Marker": [
         {
-          "Type": "roads_of_avalon_group_pve"
+          "Type": "roads_of_avalon_solo_pve"
         },
         {
           "Type": "Ore"
@@ -16518,10 +16511,10 @@
           "Type": "Hide"
         },
         {
-          "Type": "roads_of_avalon_solo_pve"
+          "Type": "roads_of_avalon_group_pve"
         },
         {
-          "Type": "roads_of_avalon_group_pve"
+          "Type": "roads_of_avalon_solo_pve"
         }
       ]
     }
@@ -16540,10 +16533,10 @@
           "Type": "Hide"
         },
         {
-          "Type": "roads_of_avalon_solo_pve"
+          "Type": "roads_of_avalon_group_pve"
         },
         {
-          "Type": "roads_of_avalon_group_pve"
+          "Type": "roads_of_avalon_solo_pve"
         }
       ]
     }
@@ -16556,10 +16549,10 @@
     "MiniMapMarkers": {
       "Marker": [
         {
-          "Type": "roads_of_avalon_raid_pve"
+          "Type": "roads_of_avalon_solo_pve"
         },
         {
-          "Type": "roads_of_avalon_solo_pve"
+          "Type": "roads_of_avalon_group_pve"
         },
         {
           "Type": "Hide"
@@ -16578,10 +16571,10 @@
     "MiniMapMarkers": {
       "Marker": [
         {
-          "Type": "roads_of_avalon_raid_pve"
+          "Type": "roads_of_avalon_solo_pve"
         },
         {
-          "Type": "roads_of_avalon_solo_pve"
+          "Type": "roads_of_avalon_group_pve"
         },
         {
           "Type": "Hide"
@@ -16600,13 +16593,13 @@
     "MiniMapMarkers": {
       "Marker": [
         {
-          "Type": "roads_of_avalon_raid_pve"
+          "Type": "roads_of_avalon_solo_pve"
         },
         {
           "Type": "Stone"
         },
         {
-          "Type": "roads_of_avalon_solo_pve"
+          "Type": "roads_of_avalon_group_pve"
         },
         {
           "Type": "Hide"
@@ -16622,13 +16615,13 @@
     "MiniMapMarkers": {
       "Marker": [
         {
-          "Type": "roads_of_avalon_raid_pve"
+          "Type": "roads_of_avalon_solo_pve"
         },
         {
           "Type": "Stone"
         },
         {
-          "Type": "roads_of_avalon_solo_pve"
+          "Type": "roads_of_avalon_group_pve"
         },
         {
           "Type": "Hide"
@@ -16750,7 +16743,7 @@
   },
   {
     "Index": "2012-HALL-1-4",
-    "UniqueName": "Conquerors' Hall Lvl. 4",
+    "UniqueName": "Conquerors' Hall Lvl. 3",
     "Type": "PLAYERCITY_BLACK_ROYAL_NOFURNITURE_HALL_OF_FAME",
     "File": "2012-HALL-1-4_CTY_HL_AUTO_T1_NON.cluster.xml",
     "MiniMapMarkers": null
@@ -17557,31 +17550,6 @@
     "Type": "STARTAREA",
     "File": "3010_CTY_HL_AUTO_T1_NON.cluster.xml",
     "MiniMapMarkers": null
-  },
-  {
-    "Index": "4299",
-    "UniqueName": "4299",
-    "Type": "STARTAREA",
-    "File": "4299_CTY_MN_AUTO_T1_MOR_OUT_Q3.cluster.xml",
-    "MiniMapMarkers": {
-      "Marker": [
-        {
-          "Type": "Marketplace"
-        },
-        {
-          "Type": "Bank"
-        },
-        {
-          "Type": "Harbor"
-        },
-        {
-          "Type": "Expedition"
-        },
-        {
-          "Type": "Icon_Gvg_Seasons"
-        }
-      ]
-    }
   },
   {
     "Index": "DNG-KPR-02-MAIN-010",
@@ -19033,5 +19001,140 @@
     "Type": "ARENA_CRYSTAL",
     "File": "CrystalRealm02-Nonlethal_ARE_CL_AUTO_T4_NON_ROY.cluster.xml",
     "MiniMapMarkers": null
+  },
+  {
+    "Index": "5000",
+    "UniqueName": "Brecilien",
+    "Type": "PLAYERCITY_BLACK",
+    "File": "5000_CTY_MI_AUTO_T1_NON.cluster.xml",
+    "MiniMapMarkers": {
+      "Marker": [
+        {
+          "Type": "IslandMerchant"
+        },
+        {
+          "Type": "Harbor"
+        }
+      ]
+    }
+  },
+  {
+    "Index": "5001",
+    "UniqueName": "Brecilien",
+    "Type": "PLAYERCITY_BLACK_NOFURNITURE",
+    "File": "5001_CTY_MI_AUTO_T1_NON.cluster.xml",
+    "MiniMapMarkers": {
+      "Marker": [
+        {
+          "Type": "Icon_Gvg_Seasons"
+        },
+        {
+          "Type": "Expedition"
+        },
+        {
+          "Type": "Arena"
+        }
+      ]
+    }
+  },
+  {
+    "Index": "5002",
+    "UniqueName": "Brecilien Bank",
+    "Type": "PLAYERCITY_BLACK_NOFURNITURE",
+    "File": "5002_CTY_MI_AUTO_T1_NON.cluster.xml",
+    "MiniMapMarkers": {
+      "Marker": null
+    }
+  },
+  {
+    "Index": "5003",
+    "UniqueName": "Brecilien Market",
+    "Type": "PLAYERCITY_BLACK_NOFURNITURE",
+    "File": "5003_CTY_MI_AUTO_T1_NON.cluster.xml",
+    "MiniMapMarkers": {
+      "Marker": null
+    }
+  },
+  {
+    "Index": "ISLAND-PLAYER-MISTS-0001f",
+    "UniqueName": "ISLAND-PLAYER-MISTS-0001f",
+    "Type": "PLAYERISLAND",
+    "File": "ISLAND-PLAYER-MISTS-0001f_ISL_MI_AUTO_T1_NON.cluster.xml",
+    "MiniMapMarkers": {
+      "Marker": null
+    }
+  },
+  {
+    "Index": "5100",
+    "UniqueName": "Brecilien Weald",
+    "Type": "OPENPVP_RED",
+    "File": "5100_WRL_MI_GREEN_T6_UND_MIS.cluster.xml",
+    "MiniMapMarkers": null
+  },
+  {
+    "Index": "5101",
+    "UniqueName": "Brecilien Copse",
+    "Type": "OPENPVP_RED",
+    "File": "5101_WRL_MI_GREEN_T6_UND_MIS.cluster.xml",
+    "MiniMapMarkers": null
+  },
+  {
+    "Index": "5102",
+    "UniqueName": "Brecilien Grove",
+    "Type": "OPENPVP_YELLOW",
+    "File": "5102_WRL_MI_GREEN_T5_UND_MIS.cluster.xml",
+    "MiniMapMarkers": null
+  },
+  {
+    "Index": "5103",
+    "UniqueName": "Brecilien Thicket",
+    "Type": "OPENPVP_RED",
+    "File": "5103_WRL_MI_GREEN_T6_UND_MIS.cluster.xml",
+    "MiniMapMarkers": null
+  },
+  {
+    "Index": "ISLAND-PLAYER-MISTS-0001a",
+    "UniqueName": "ISLAND-PLAYER-MISTS-0001a",
+    "Type": "PLAYERISLAND",
+    "File": "ISLAND-PLAYER-MISTS-0001a_ISL_MI_AUTO_T1_NON.cluster.xml",
+    "MiniMapMarkers": {
+      "Marker": null
+    }
+  },
+  {
+    "Index": "ISLAND-PLAYER-MISTS-0001b",
+    "UniqueName": "ISLAND-PLAYER-MISTS-0001b",
+    "Type": "PLAYERISLAND",
+    "File": "ISLAND-PLAYER-MISTS-0001b_ISL_MI_AUTO_T1_NON.cluster.xml",
+    "MiniMapMarkers": {
+      "Marker": null
+    }
+  },
+  {
+    "Index": "ISLAND-PLAYER-MISTS-0001c",
+    "UniqueName": "ISLAND-PLAYER-MISTS-0001c",
+    "Type": "PLAYERISLAND",
+    "File": "ISLAND-PLAYER-MISTS-0001c_ISL_MI_AUTO_T1_NON.cluster.xml",
+    "MiniMapMarkers": {
+      "Marker": null
+    }
+  },
+  {
+    "Index": "ISLAND-PLAYER-MISTS-0001d",
+    "UniqueName": "ISLAND-PLAYER-MISTS-0001d",
+    "Type": "PLAYERISLAND",
+    "File": "ISLAND-PLAYER-MISTS-0001d_ISL_MI_AUTO_T1_NON.cluster.xml",
+    "MiniMapMarkers": {
+      "Marker": null
+    }
+  },
+  {
+    "Index": "ISLAND-PLAYER-MISTS-0001e",
+    "UniqueName": "ISLAND-PLAYER-MISTS-0001e",
+    "Type": "PLAYERISLAND",
+    "File": "ISLAND-PLAYER-MISTS-0001e_ISL_MI_AUTO_T1_NON.cluster.xml",
+    "MiniMapMarkers": {
+      "Marker": null
+    }
   }
 ]

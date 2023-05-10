@@ -58,6 +58,9 @@ public class ConsumableFromInventoryItem : ItemJsonObject
     [JsonPropertyName("craftingrequirements")]
     public List<CraftingRequirements> CraftingRequirements { get; set; }
 
+    [JsonPropertyName("enchantments")]
+    public Enchantments Enchantments { get; set; }
+
     [JsonPropertyName("@allowfullstackusage")]
     public string AllowFullStackUsage { get; set; }
 

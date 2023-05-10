@@ -12,7 +12,7 @@ namespace StatisticsAnalysisTool.Properties {
     
     
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
-    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.VisualStudio.Editors.SettingsDesigner.SettingsSingleFileGenerator", "17.3.0.0")]
+    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.VisualStudio.Editors.SettingsDesigner.SettingsSingleFileGenerator", "17.5.0.0")]
     internal sealed partial class Settings : global::System.Configuration.ApplicationSettingsBase {
         
         private static Settings defaultInstance = ((Settings)(global::System.Configuration.ApplicationSettingsBase.Synchronized(new Settings())));
@@ -52,8 +52,7 @@ namespace StatisticsAnalysisTool.Properties {
         
         [global::System.Configuration.ApplicationScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=LEM458PZ4FV4" +
-            "C&source=url")]
+        [global::System.Configuration.DefaultSettingValueAttribute("https://www.paypal.com/donate/?hosted_button_id=N6T3CWXYNGHKC")]
         public string DonateUrl {
             get {
                 return ((string)(this["DonateUrl"]));
@@ -62,8 +61,8 @@ namespace StatisticsAnalysisTool.Properties {
         
         [global::System.Configuration.ApplicationScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("https://raw.githubusercontent.com/broderickhyman/ao-bin-dumps/master/formatted/it" +
-            "ems.json")]
+        [global::System.Configuration.DefaultSettingValueAttribute("https://raw.githubusercontent.com/ao-data/ao-bin-dumps/master/formatted/items.jso" +
+            "n")]
         public string DefaultItemListSourceUrl {
             get {
                 return ((string)(this["DefaultItemListSourceUrl"]));
@@ -205,33 +204,6 @@ namespace StatisticsAnalysisTool.Properties {
         
         [global::System.Configuration.ApplicationScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("https://www.albion-online-data.com/api/v2/stats/prices/")]
-        public string CityPricesApiUrlDefault {
-            get {
-                return ((string)(this["CityPricesApiUrlDefault"]));
-            }
-        }
-        
-        [global::System.Configuration.ApplicationScopedSettingAttribute()]
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("https://www.albion-online-data.com/api/v2/stats/history/")]
-        public string CityPricesHistoryApiUrlDefault {
-            get {
-                return ((string)(this["CityPricesHistoryApiUrlDefault"]));
-            }
-        }
-        
-        [global::System.Configuration.ApplicationScopedSettingAttribute()]
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("https://www.albion-online-data.com/api/v2/stats/Gold")]
-        public string GoldStatsApiUrlDefault {
-            get {
-                return ((string)(this["GoldStatsApiUrlDefault"]));
-            }
-        }
-        
-        [global::System.Configuration.ApplicationScopedSettingAttribute()]
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.DefaultSettingValueAttribute("GameFiles")]
         public string GameFilesDirectoryName {
             get {
@@ -262,7 +234,7 @@ namespace StatisticsAnalysisTool.Properties {
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("https://raw.githubusercontent.com/broderickhyman/ao-bin-dumps/master/items.json")]
+        [global::System.Configuration.DefaultSettingValueAttribute("https://raw.githubusercontent.com/ao-data/ao-bin-dumps/master/items.json")]
         public string DefaultItemsJsonSourceUrl {
             get {
                 return ((string)(this["DefaultItemsJsonSourceUrl"]));
@@ -412,6 +384,111 @@ namespace StatisticsAnalysisTool.Properties {
         public string EstimatedMarketValueFileName {
             get {
                 return ((string)(this["EstimatedMarketValueFileName"]));
+            }
+        }
+        
+        [global::System.Configuration.ApplicationScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("mobs.json")]
+        public string MobDataFileName {
+            get {
+                return ((string)(this["MobDataFileName"]));
+            }
+        }
+        
+        [global::System.Configuration.ApplicationScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("dungeon_closed.wav")]
+        public string DungeonClosedSoundFileName {
+            get {
+                return ((string)(this["DungeonClosedSoundFileName"]));
+            }
+        }
+        
+        [global::System.Configuration.ApplicationScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("False")]
+        public bool IsContainerRepairCostsVisible {
+            get {
+                return ((bool)(this["IsContainerRepairCostsVisible"]));
+            }
+        }
+        
+        [global::System.Configuration.ApplicationScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("temp")]
+        public string TempDirecoryName {
+            get {
+                return ((string)(this["TempDirecoryName"]));
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("https://github.com/sponsors/Triky313")]
+        public string GitHubSponsorsUrl {
+            get {
+                return ((string)(this["GitHubSponsorsUrl"]));
+            }
+            set {
+                this["GitHubSponsorsUrl"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("Trades.json")]
+        public string TradesFileName {
+            get {
+                return ((string)(this["TradesFileName"]));
+            }
+            set {
+                this["TradesFileName"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("UserData")]
+        public string UserDataDirectoryName {
+            get {
+                return ((string)(this["UserDataDirectoryName"]));
+            }
+            set {
+                this["UserDataDirectoryName"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("Gathering.json")]
+        public string GatheringFileName {
+            get {
+                return ((string)(this["GatheringFileName"]));
+            }
+            set {
+                this["GatheringFileName"] = value;
+            }
+        }
+        
+        [global::System.Configuration.ApplicationScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("mobs-modified.json")]
+        public string ModifiedMobDataFileName {
+            get {
+                return ((string)(this["ModifiedMobDataFileName"]));
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("False")]
+        public bool IsDebugMode {
+            get {
+                return ((bool)(this["IsDebugMode"]));
+            }
+            set {
+                this["IsDebugMode"] = value;
             }
         }
     }

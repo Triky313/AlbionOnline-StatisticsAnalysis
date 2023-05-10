@@ -3,24 +3,23 @@ using System;
 using System.Collections.Generic;
 using System.Reflection;
 
-namespace StatisticsAnalysisTool.Network.Events
+namespace StatisticsAnalysisTool.Network.Events;
+
+public class LeaveEvent
 {
-    public class LeaveEvent
+    public LeaveEvent(Dictionary<byte, object> parameters)
     {
-        public LeaveEvent(Dictionary<byte, object> parameters)
+        ConsoleManager.WriteLineForNetworkHandler(GetType().Name, parameters);
+
+        try
         {
-            ConsoleManager.WriteLineForNetworkHandler(GetType().Name, parameters);
-
-            try
-            {
-                if (parameters.ContainsKey(0)) ObjectId = parameters[0].ObjectToLong();
-            }
-            catch (Exception e)
-            {
-                ConsoleManager.WriteLineForError(MethodBase.GetCurrentMethod()?.DeclaringType, e);
-            }
+            if (parameters.ContainsKey(0)) ObjectId = parameters[0].ObjectToLong();
         }
-
-        public long? ObjectId { get; }
+        catch (Exception e)
+        {
+            ConsoleManager.WriteLineForError(MethodBase.GetCurrentMethod()?.DeclaringType, e);
+        }
     }
+
+    public long? ObjectId { get; }
 }

@@ -2,26 +2,26 @@
 using StatisticsAnalysisTool.Network.Manager;
 using System.Threading.Tasks;
 using StatisticsAnalysisTool.Models.NetworkModel;
+using StatisticsAnalysisTool.Enumerations;
 
-namespace StatisticsAnalysisTool.Network.Handler
+namespace StatisticsAnalysisTool.Network.Handler;
+
+public class BaseVaultInfoEventHandler : EventPacketHandler<BaseVaultInfoEvent>
 {
-    public class BaseVaultInfoEventHandler
+    private readonly TrackingController _trackingController;
+
+    public BaseVaultInfoEventHandler(TrackingController trackingController) : base((int) EventCodes.BaseVaultInfo)
     {
-        private readonly TrackingController _trackingController;
+        _trackingController = trackingController;
+    }
 
-        public BaseVaultInfoEventHandler(TrackingController trackingController)
+    protected override async Task OnActionAsync(BaseVaultInfoEvent value)
+    {
+        if (_trackingController.IsTrackingAllowedByMainCharacter())
         {
-            _trackingController = trackingController;
+            _trackingController.VaultController.SetCurrentVault(new VaultInfo(value.ObjectId, value.LocationGuidString, value.VaultGuidList, value.VaultNames, value.IconTags));
         }
 
-        public async Task OnActionAsync(BaseVaultInfoEvent value)
-        {
-            if (_trackingController.IsTrackingAllowedByMainCharacter())
-            {
-                _trackingController.VaultController.SetCurrentVault(new VaultInfo(value.ObjectId, value.LocationGuidString, value.VaultGuidList, value.VaultNames, value.IconTags));
-            }
-
-            await Task.CompletedTask;
-        }
+        await Task.CompletedTask;
     }
 }

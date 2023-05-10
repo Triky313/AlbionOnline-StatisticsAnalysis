@@ -32,6 +32,7 @@
     <Color x:Key="Color.Accent.Red.4">#FFE23B3E</Color>
     <Color x:Key="Color.Accent.Red.5">#FFCD3638</Color>
     <Color x:Key="Color.Accent.Red.6">#FFB52F31</Color>
+    <Color x:Key="Color.Accent.Red.7">#55FF8082</Color>
 
     <Color x:Key="Color.Accent.Green.1">#FF98EDB4</Color>
     <Color x:Key="Color.Accent.Green.2">#FF64E38E</Color>
@@ -42,6 +43,7 @@
 
     <Color x:Key="Color.Accent.Yellow.1">#FFf2b83b</Color>
     <Color x:Key="Color.Accent.Yellow.2">#55f2b83b</Color>
+    <Color x:Key="Color.Accent.Yellow.3">#FFEBA50F</Color>
 
     <!-- Accent colors transparent -->
     <Color x:Key="Color.Accent.Blue.Transparent.1">#3397CAED</Color>
@@ -63,6 +65,7 @@
     <Color x:Key="Color.City.Martlock">#FF5066CC</Color>
     <Color x:Key="Color.City.Lymhurst">#FF18A170</Color>
     <Color x:Key="Color.City.FortSterling">#FFE1F7FA</Color>
+    <Color x:Key="Color.City.Brecilien">#FFEE68BB</Color>
     <Color x:Key="Color.City.ArthursRest">#FFF75656</Color>
     <Color x:Key="Color.City.MerlynsRest">#FF3A9DC7</Color>
     <Color x:Key="Color.City.MorganasRest">#FF83AF00</Color>
@@ -75,6 +78,7 @@
     <Color x:Key="Color.City.Martlock.Transparent">#335066CC</Color>
     <Color x:Key="Color.City.Lymhurst.Transparent">#3318A170</Color>
     <Color x:Key="Color.City.FortSterling.Transparent">#33E1F7FA</Color>
+    <Color x:Key="Color.City.Brecilien.Transparent">#33EE68BB</Color>
     <Color x:Key="Color.City.ArthursRest.Transparent">#33F75656</Color>
     <Color x:Key="Color.City.MerlynsRest.Transparent">#333A9DC7</Color>
     <Color x:Key="Color.City.MorganasRest.Transparent">#3383AF00</Color>
@@ -105,6 +109,7 @@
     <Color x:Key="Item.Level.Color.1">#FF6bff91</Color>
     <Color x:Key="Item.Level.Color.2">#FF4ff0fd</Color>
     <Color x:Key="Item.Level.Color.3">#FFb866fe</Color>
+    <Color x:Key="Item.Level.Color.4">#FFf3dc59</Color>
 
     <!-- Pvp/Pve colors -->
     <Color x:Key="Text.Color.Pvp">#ffe05761</Color>
@@ -122,6 +127,7 @@
     <Color x:Key="Cluster.Red">#FFD81320</Color>
     <Color x:Key="Cluster.Black">#FF323B43</Color>
     <Color x:Key="Cluster.Avalon">#ffE9C86D</Color>
+    <Color x:Key="Cluster.Mists">#ff705BCF</Color>
 
     <!-- Value colors -->
     <Color x:Key="Color.Value.Fame">#FFCF2026</Color>
@@ -149,14 +155,22 @@
     <Color x:Key="TimeValue.PastTime.6">#FFD93641</Color>
     <Color x:Key="TimeValue.PastTime.7">#FF9E212A</Color>
 
+    <!-- Notification colors -->
+    <Color x:Key="Notification.Background.Blue">#FF2280BF</Color>
+    <Color x:Key="Notification.Background.Green">#FF188C3F</Color>
+    <Color x:Key="Notification.Background.Yellow">#FFEBA50F</Color>
+    <Color x:Key="Notification.Background.Red">#FFCD3638</Color>
+
     <!-- Donation -->
     <Color x:Key="Color.Patreon">#FFFF424D</Color>
+    <Color x:Key="Color.GitHubSponsors">#FFcc6ca0</Color>
 
     <!-- Console values -->
     <Color x:Key="Color.Console.Error">#ca3431</Color>
     <Color x:Key="Color.Console.Warning">#faa627</Color>
     <Color x:Key="Color.Console.Event">#248A84</Color>
     <Color x:Key="Color.Console.MapChange">#0279be</Color>
+    <Color x:Key="Color.Console.Debug">#f279be</Color>
 
     <SolidColorBrush x:Key="SolidColorBrush.Text.1" Color="{StaticResource Color.Text.1}"/>
     <SolidColorBrush x:Key="SolidColorBrush.Text.2" Color="{StaticResource Color.Text.2}"/>
@@ -186,6 +200,7 @@
     <SolidColorBrush x:Key="SolidColorBrush.Accent.Red.4" Color="{StaticResource Color.Accent.Red.4}"/>
     <SolidColorBrush x:Key="SolidColorBrush.Accent.Red.5" Color="{StaticResource Color.Accent.Red.5}"/>
     <SolidColorBrush x:Key="SolidColorBrush.Accent.Red.6" Color="{StaticResource Color.Accent.Red.6}"/>
+    <SolidColorBrush x:Key="SolidColorBrush.Accent.Red.7" Color="{StaticResource Color.Accent.Red.7}"/>
 
     <SolidColorBrush x:Key="SolidColorBrush.Accent.Green.1" Color="{StaticResource Color.Accent.Green.1}"/>
     <SolidColorBrush x:Key="SolidColorBrush.Accent.Green.2" Color="{StaticResource Color.Accent.Green.2}"/>
@@ -210,6 +225,7 @@
     <SolidColorBrush x:Key="SolidColorBrush.City.Martlock" Color="{StaticResource Color.City.Martlock}"/>
     <SolidColorBrush x:Key="SolidColorBrush.City.Lymhurst" Color="{StaticResource Color.City.Lymhurst}"/>
     <SolidColorBrush x:Key="SolidColorBrush.City.FortSterling" Color="{StaticResource Color.City.FortSterling}"/>
+    <SolidColorBrush x:Key="SolidColorBrush.City.Brecilien" Color="{StaticResource Color.City.Brecilien}"/>
     <SolidColorBrush x:Key="SolidColorBrush.City.ArthursRest" Color="{StaticResource Color.City.ArthursRest}"/>
     <SolidColorBrush x:Key="SolidColorBrush.City.MerlynsRest" Color="{StaticResource Color.City.MerlynsRest}"/>
     <SolidColorBrush x:Key="SolidColorBrush.City.MorganasRest" Color="{StaticResource Color.City.MorganasRest}"/>
@@ -222,6 +238,7 @@
     <SolidColorBrush x:Key="SolidColorBrush.City.Martlock.Transparent" Color="{StaticResource Color.City.Martlock.Transparent}"/>
     <SolidColorBrush x:Key="SolidColorBrush.City.Lymhurst.Transparent" Color="{StaticResource Color.City.Lymhurst.Transparent}"/>
     <SolidColorBrush x:Key="SolidColorBrush.City.FortSterling.Transparent" Color="{StaticResource Color.City.FortSterling.Transparent}"/>
+    <SolidColorBrush x:Key="SolidColorBrush.City.Brecilien.Transparent" Color="{StaticResource Color.City.Brecilien.Transparent}"/>
     <SolidColorBrush x:Key="SolidColorBrush.City.ArthursRest.Transparent" Color="{StaticResource Color.City.ArthursRest.Transparent}"/>
     <SolidColorBrush x:Key="SolidColorBrush.City.MerlynsRest.Transparent" Color="{StaticResource Color.City.MerlynsRest.Transparent}"/>
     <SolidColorBrush x:Key="SolidColorBrush.City.MorganasRest.Transparent" Color="{StaticResource Color.City.MorganasRest.Transparent}"/>
@@ -238,6 +255,7 @@
     <SolidColorBrush x:Key="SolidColorBrush.Item.Level.Color.1" Color="{StaticResource Item.Level.Color.1}"/>
     <SolidColorBrush x:Key="SolidColorBrush.Item.Level.Color.2" Color="{StaticResource Item.Level.Color.2}"/>
     <SolidColorBrush x:Key="SolidColorBrush.Item.Level.Color.3" Color="{StaticResource Item.Level.Color.3}"/>
+    <SolidColorBrush x:Key="SolidColorBrush.Item.Level.Color.4" Color="{StaticResource Item.Level.Color.4}"/>
 
     <SolidColorBrush x:Key="SolidColorBrush.Text.Color.Pvp" Color="{StaticResource Text.Color.Pvp}"/>
     <SolidColorBrush x:Key="SolidColorBrush.Text.Color.Pve" Color="{StaticResource Text.Color.Pve}"/>
@@ -283,12 +301,22 @@
     <SolidColorBrush x:Key="Solid.Color.Text.ToOldThird" Color="{StaticResource Color.Text.ToOldThird}"/>
     <SolidColorBrush x:Key="Solid.Color.Text.NoValue" Color="{StaticResource Color.Text.NoValue}"/>
 
+    <SolidColorBrush x:Key="Solid.Color.Cluster.Island" Color="{StaticResource Cluster.Island}"/>
+    <SolidColorBrush x:Key="Solid.Color.Cluster.SafeArea" Color="{StaticResource Cluster.SafeArea}"/>
+    <SolidColorBrush x:Key="Solid.Color.Cluster.Yellow" Color="{StaticResource Cluster.Yellow}"/>
+    <SolidColorBrush x:Key="Solid.Color.Cluster.Red" Color="{StaticResource Cluster.Red}"/>
+    <SolidColorBrush x:Key="Solid.Color.Cluster.Black" Color="{StaticResource Cluster.Black}"/>
+    <SolidColorBrush x:Key="Solid.Color.Cluster.Avalon" Color="{StaticResource Cluster.Avalon}"/>
+    <SolidColorBrush x:Key="Solid.Color.Cluster.Mists" Color="{StaticResource Cluster.Mists}"/>
+
     <SolidColorBrush x:Key="Solid.Color.Patreon" Color="{StaticResource Color.Patreon}"/>
+    <SolidColorBrush x:Key="Solid.Color.GitHubSponsors" Color="{StaticResource Color.GitHubSponsors}"/>
 
     <SolidColorBrush x:Key="SolidColorBrush.Console.Error" Color="{StaticResource Color.Console.Error}"/>
     <SolidColorBrush x:Key="SolidColorBrush.Console.Warning" Color="{StaticResource Color.Console.Warning}"/>
     <SolidColorBrush x:Key="SolidColorBrush.Console.Event" Color="{StaticResource Color.Console.Event}"/>
     <SolidColorBrush x:Key="SolidColorBrush.Console.MapChange" Color="{StaticResource Color.Console.MapChange}"/>
+    <SolidColorBrush x:Key="SolidColorBrush.Console.Debug" Color="{StaticResource Color.Console.Debug}"/>
 
     <SolidColorBrush x:Key="SolidColorBrush.TimeValue.PastTime.1" Color="{StaticResource TimeValue.PastTime.1}"/>
     <SolidColorBrush x:Key="SolidColorBrush.TimeValue.PastTime.2" Color="{StaticResource TimeValue.PastTime.2}"/>
@@ -297,5 +325,10 @@
     <SolidColorBrush x:Key="SolidColorBrush.TimeValue.PastTime.5" Color="{StaticResource TimeValue.PastTime.5}"/>
     <SolidColorBrush x:Key="SolidColorBrush.TimeValue.PastTime.6" Color="{StaticResource TimeValue.PastTime.6}"/>
     <SolidColorBrush x:Key="SolidColorBrush.TimeValue.PastTime.7" Color="{StaticResource TimeValue.PastTime.7}"/>
+
+    <SolidColorBrush x:Key="SolidColorBrush.Notification.Background.Blue" Color="{StaticResource Notification.Background.Blue}"/>
+    <SolidColorBrush x:Key="SolidColorBrush.Notification.Background.Green" Color="{StaticResource Notification.Background.Green}"/>
+    <SolidColorBrush x:Key="SolidColorBrush.Notification.Background.Yellow" Color="{StaticResource Notification.Background.Yellow}"/>
+    <SolidColorBrush x:Key="SolidColorBrush.Notification.Background.Red" Color="{StaticResource Notification.Background.Red}"/>
 
 </ResourceDictionary>

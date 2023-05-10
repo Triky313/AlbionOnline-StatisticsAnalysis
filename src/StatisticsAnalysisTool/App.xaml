@@ -2,8 +2,9 @@
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              DispatcherUnhandledException="Application_DispatcherUnhandledException"
-             StartupUri="Views/MainWindow.xaml"
-             ShutdownMode="OnMainWindowClose">
+             ShutdownMode="OnMainWindowClose" 
+             SessionEnding="Application_SessionEnding"
+             Exit="Application_Exit">
     <Application.Resources>
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>
@@ -25,8 +26,10 @@
                 <ResourceDictionary Source="Styles/DungeonStyles.xaml" />
                 <ResourceDictionary Source="Styles/DamageMeterStyles.xaml" />
                 <ResourceDictionary Source="Styles/MailMonitoringStyle.xaml" />
+                <ResourceDictionary Source="Styles/GatheringStyles.xaml" />
                 <ResourceDictionary Source="Styles/StorageHistoryStyle.xaml" />
                 <ResourceDictionary Source="Styles/DonationStyles.xaml" />
+                <ResourceDictionary Source="Styles/ThanksStyle.xaml" />
             </ResourceDictionary.MergedDictionaries>
         </ResourceDictionary>
     </Application.Resources>

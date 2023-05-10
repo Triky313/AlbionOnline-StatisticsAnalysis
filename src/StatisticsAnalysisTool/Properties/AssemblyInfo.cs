@@ -10,9 +10,9 @@ using System.Windows;
 [assembly: AssemblyTitle("Statistics Analysis Tool")]
 [assembly: AssemblyDescription("")]
 [assembly: AssemblyConfiguration("")]
-[assembly: AssemblyCompany("")]
+[assembly: AssemblyCompany("Aaron Schultz")]
 [assembly: AssemblyProduct("StatisticsAnalysisTool")]
-[assembly: AssemblyCopyright("Copyright ©  2022")]
+[assembly: AssemblyCopyright("Copyright ©  2023")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 [assembly: SupportedOSPlatform("windows")]
@@ -53,5 +53,5 @@ using System.Windows;
 // Sie können alle Werte angeben oder Standardwerte für die Build- und Revisionsnummern verwenden,
 // indem Sie "*" wie unten gezeigt eingeben:
 // [assembly: AssemblyVersion("1.0.*")]
-[assembly: AssemblyVersion("5.14.2.*")]
-[assembly: AssemblyFileVersion("5.14.2.0")]
+[assembly: AssemblyVersion("5.20.0.*")]
+[assembly: AssemblyFileVersion("5.20.0.0")]

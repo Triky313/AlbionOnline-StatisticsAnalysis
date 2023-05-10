@@ -8,7 +8,6 @@
              mc:Ignorable="d" 
              d:DesignHeight="400" d:DesignWidth="800"
              d:DataContext="{d:DesignInstance Type=viewModels:MainWindowViewModel}">
-
     <Grid>
         <TabControl Background="Transparent" BorderThickness="0">
             <TabItem Header="{Binding Translation.DamageMeter, FallbackValue=DAMAGE_METER}">
@@ -71,6 +70,9 @@
                                 <StackPanel HorizontalAlignment="Left" VerticalAlignment="Top" Orientation="Vertical">
                                     <CheckBox IsChecked="{Binding DamageMeterBindings.IsDamageMeterResetByMapChangeActive}" 
                                           Content="{Binding Translation.MapChangeReset, FallbackValue=MAP__CHANGE__RESET}" 
+                                          HorizontalContentAlignment="Left" Margin="5,2,10,0" VerticalAlignment="Top" HorizontalAlignment="Left" Width="auto" MaxWidth="250"/>
+                                    <CheckBox IsChecked="{Binding DamageMeterBindings.IsDamageMeterResetBeforeCombatActive}" 
+                                          Content="{Binding Translation.ResetBeforeCombat, FallbackValue=RESET__BEFORE__COMBAT}" 
                                           HorizontalContentAlignment="Left" Margin="5,2,10,0" VerticalAlignment="Top" HorizontalAlignment="Left" Width="auto" MaxWidth="250"/>
                                     <CheckBox IsChecked="{Binding DamageMeterBindings.IsSnapshotAfterMapChangeActive}" 
                                           Content="{Binding Translation.SnapshotAfterMapChange, FallbackValue=SNAPSHOT__AFTER__MAP__CHANGE}" 
@@ -140,8 +142,12 @@
                         <ComboBox Width="200" Height="26" ItemsSource="{Binding DamageMeterBindings.DamageMeterSnapshotSort}" 
                                   SelectedItem="{Binding DamageMeterBindings.DamageMeterSnapshotSortSelection}" 
                                   IsSynchronizedWithCurrentItem="True" DisplayMemberPath="Name" SelectedValuePath="DamageMeterSortType" />
-                        <Button Content="{Binding DamageMeterBindings.TranslationDeleteSelectedSnapshot, FallbackValue=DELETE__SELECTED__SNAPSHOT}" Height="26" MaxWidth="500" MinWidth="200" 
-                                Margin="5,0,5,0" Click="BtnDeleteSelectedSnapshot_Click" />
+                        <Button Content="{Binding DamageMeterBindings.TranslationDeleteSelectedSnapshot, FallbackValue=DELETE__SELECTED__SNAPSHOT}" Height="26" 
+                                MaxWidth="500" MinWidth="200" Margin="5,0,5,0" Click="BtnDeleteSelectedSnapshot_Click" />
+                        <Grid Height="20" Width="20" Margin="5,0,5,0" HorizontalAlignment="Right" VerticalAlignment="Center" 
+                              ToolTip="{Binding DamageMeterBindings.TranslationDeleteAllSnapshots, FallbackValue=DELETE__ALL__SNAPSHOTS}" MouseUp="DeleteAllDamageMeterSnapshots_MouseUp">
+                            <fa5:ImageAwesome Icon="Regular_TrashAlt" Foreground="{StaticResource SolidColorBrush.Accent.Red.5}" />
+                        </Grid>
                         <Grid Height="20" Width="20" Margin="5,0,5,0" HorizontalAlignment="Right" VerticalAlignment="Center" 
                               ToolTip="{Binding Translation.CopyToClipboard, FallbackValue=COPY__TO__CLIPBOARD}" MouseUp="CopyDamageMeterSnapshotToClipboard_MouseUp">
                             <fa5:ImageAwesome Icon="Regular_Copy" Foreground="{StaticResource SolidColorBrush.Text.1}" />

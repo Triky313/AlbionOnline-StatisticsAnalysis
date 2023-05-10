@@ -1,21 +1,21 @@
-﻿using StatisticsAnalysisTool.Network.Events;
+﻿using StatisticsAnalysisTool.Enumerations;
+using StatisticsAnalysisTool.Network.Events;
 using StatisticsAnalysisTool.Network.Manager;
 using System.Threading.Tasks;
 
-namespace StatisticsAnalysisTool.Network.Handler
+namespace StatisticsAnalysisTool.Network.Handler;
+
+public class GuildVaultInfoEventHandler : EventPacketHandler<GuildVaultInfoEvent>
 {
-    public class GuildVaultInfoEventHandler
+    private readonly TrackingController _trackingController;
+
+    public GuildVaultInfoEventHandler(TrackingController trackingController) : base((int) EventCodes.RecoveryVaultPlayerInfo)
     {
-        private readonly TrackingController _trackingController;
+        _trackingController = trackingController;
+    }
 
-        public GuildVaultInfoEventHandler(TrackingController trackingController)
-        {
-            _trackingController = trackingController;
-        }
-
-        public async Task OnActionAsync(GuildVaultInfoEvent value)
-        {
-            await Task.CompletedTask;
-        }
+    protected override async Task OnActionAsync(GuildVaultInfoEvent value)
+    {
+        await Task.CompletedTask;
     }
 }

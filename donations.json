@@ -1,5 +1,47 @@
 [ 
     {
+	"Timestamp": "2023-05-05T00:00:00",
+	"Amount": 25000000,
+	"RealMoneyAmount": 0,
+	"Contributor": "zc",
+	"IsDonationRealMoney": false
+    },
+    {
+	"Timestamp": "2023-02-19T00:00:00",
+	"Amount": 16500000,
+	"RealMoneyAmount": 0,
+	"Contributor": "arabinos",
+	"IsDonationRealMoney": false
+    },
+    {
+	"Timestamp": "2023-02-17T00:00:00",
+	"Amount": 15500000,
+	"RealMoneyAmount": 0,
+	"Contributor": "arabinos",
+	"IsDonationRealMoney": false
+    },
+    {
+	"Timestamp": "2022-11-24T00:00:00",
+	"Amount": 18000000,
+	"RealMoneyAmount": 0,
+	"Contributor": "arabinos",
+	"IsDonationRealMoney": false
+    },
+    {
+	"Timestamp": "2022-11-19T00:00:00",
+	"Amount": 2550000,
+	"RealMoneyAmount": 0,
+	"Contributor": "HepatitisB",
+	"IsDonationRealMoney": false
+    },
+    {
+	"Timestamp": "2022-11-18T00:00:00",
+	"Amount": 0,
+	"RealMoneyAmount": 5.49,
+	"Contributor": "Giankvothe",
+	"IsDonationRealMoney": true
+    },
+    {
 	"Timestamp": "2022-09-30T00:00:00",
 	"Amount": 0,
 	"RealMoneyAmount": 10,

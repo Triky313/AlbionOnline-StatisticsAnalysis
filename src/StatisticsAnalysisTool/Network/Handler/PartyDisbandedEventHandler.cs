@@ -1,22 +1,22 @@
-﻿using StatisticsAnalysisTool.Network.Events;
+﻿using StatisticsAnalysisTool.Enumerations;
+using StatisticsAnalysisTool.Network.Events;
 using StatisticsAnalysisTool.Network.Manager;
 using System.Threading.Tasks;
 
-namespace StatisticsAnalysisTool.Network.Handler
+namespace StatisticsAnalysisTool.Network.Handler;
+
+public class PartyDisbandedEventHandler : EventPacketHandler<PartyDisbandedEvent>
 {
-    public class PartyDisbandedEventHandler
+    private readonly TrackingController _trackingController;
+
+    public PartyDisbandedEventHandler(TrackingController trackingController) : base((int) EventCodes.PartyDisbanded)
     {
-        private readonly TrackingController _trackingController;
+        _trackingController = trackingController;
+    }
 
-        public PartyDisbandedEventHandler(TrackingController trackingController)
-        {
-            _trackingController = trackingController;
-        }
-
-        public async Task OnActionAsync(PartyDisbandedEvent value)
-        {
-            await _trackingController.EntityController.ResetPartyMemberAsync();
-            await _trackingController.EntityController.AddLocalEntityToPartyAsync();
-        }
+    protected override async Task OnActionAsync(PartyDisbandedEvent value)
+    {
+        await _trackingController.EntityController.ResetPartyMemberAsync();
+        await _trackingController.EntityController.AddLocalEntityToPartyAsync();
     }
 }

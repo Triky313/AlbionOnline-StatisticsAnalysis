@@ -119,7 +119,7 @@
 	<translation name="FULL_ITEM_INFO_UPDATE_CYCLE_DAYS">Atualização do ciclo de dias de info do item </translation>
 	<translation name="LOAD_FULL_ITEM_INFO">Carregar info completa do item</translation>
 	<translation name="UNKNOWN">Desconhecido</translation>
-	
+
 	<translation name="CLOTH_ARMOR">Armadura de Pano</translation>
 	<translation name="CLOTH_HELMET">Elmo de Pano</translation>
 	<translation name="CLOTH_SHOES">Sapato de Pano</translation>
@@ -132,19 +132,19 @@
 	<translation name="UNIQUE_ARMOR">Armadura Única</translation>
 	<translation name="UNIQUE_HELMET">Elmo Único</translation>
 	<translation name="UNIQUE_SHOES">Sapato Único</translation>
-	
+
 	<translation name="ARMOR_ARTEFACT">Artefato de Armadura</translation>
 	<translation name="MAGIC_ARTEFACT">Artefato Mágico</translation>
 	<translation name="MELEE_ARTEFACT">Artefato Corpo a Corpo</translation>
 	<translation name="OFFHAND_ARTEFACT">Artefato OffHand</translation>
 	<translation name="RANGED_ARTEFACT">Artefato a distância</translation>
-	
+
 	<translation name="BEASTHEART">Coração Bestial</translation>	
 	<translation name="MOUNTAINHEART">Coração Montanhoso</translation>
 	<translation name="ROCKHEART">Coração Empedrado</translation>
 	<translation name="TREEHEART">Coração Arbóreo</translation>
 	<translation name="VINEHEART">Coração Videira</translation>
-	
+
 	<translation name="COOKED">Cozinhado</translation>
 	<translation name="FISH">Peixe</translation>
 	<translation name="FISHING_BAIT">Isca de pesca</translation>
@@ -153,10 +153,10 @@
 	<translation name="POTION">Poção</translation>
 	<translation name="SKILL_BOOK">Livro de Habilidades</translation>
 	<translation name="VANITY">Vaidade</translation>
-	
+
 	<translation name="ANIMALS">Animais</translation>
 	<translation name="SEED">Semente</translation>
-	
+
 	<translation name="BANNER">Banner</translation>
 	<translation name="BED">Cama</translation>
 	<translation name="CHEST">Baú</translation>
@@ -168,56 +168,56 @@
 	<translation name="TABLE">Mesa</translation>
 	<translation name="REPAIR_KIT">KitDeReparação</translation>
 	<translation name="UNIQUE">Único</translation>
-	
+
 	<translation name="FIBERGATHERER_ARMOR">Traje do Ceifeiro</translation>
 	<translation name="FIBERGATHERER_HELMET">Chapéu do Ceifeiro</translation>
 	<translation name="FIBERGATHERER_SHOES">Botas do Ceifeiro</translation>
 	<translation name="FIBERGATHERER_BACKPACK">Mochila de Ceifeiro</translation>
-	
+
 	<translation name="FISHGATHERER_ARMOR">Traje de Pescador</translation>
 	<translation name="FISHGATHERER_HELMET">Chapéu de Pescador</translation>
 	<translation name="FISHGATHERER_SHOES">Botas de Pescador</translation>
 	<translation name="FISHGATHERER_BACKPACK">Mochila de Pescador</translation>
-	
+
 	<translation name="HIDEGATHERER_ARMOR">Traje do Esfolador</translation>
 	<translation name="HIDEGATHERER_HELMET">Chapéu do Esfolador</translation>
 	<translation name="HIDEGATHERER_SHOES">Botas de Esfolador</translation>
 	<translation name="HIDEGATHERERR_BACKPACK">Mochila de Esfolador</translation>
-	
+
 	<translation name="OREGATHERER_ARMOR">Traje de Minerador</translation>
 	<translation name="OREGATHERER_HELMET">Chapéu de Minerador</translation>
 	<translation name="OREGATHERER_SHOES">Botas de Minerador</translation>
 	<translation name="OREGATHERER_BACKPACK">Mochila de Minerador</translation>
-	
+
 	<translation name="ROCKGATHERER_ARMOR">Traje do Cavouqueiro</translation>
 	<translation name="ROCKGATHERER_HELMET">Chapéu do Cavouqueiro</translation>
 	<translation name="ROCKGATHERER_SHOES">Botas do Cavouqueiro</translation>
 	<translation name="ROCKGATHERER_BACKPACK">Mochila do Cavouqueiro</translation>
-	
+
 	<translation name="WOODGATHERER_ARMOR">Traje de Lenhador</translation>
 	<translation name="WOODGATHERER_HELMET">Chapéu de Lenhador</translation>
 	<translation name="WOODGATHERER_SHOES">Botas de Lenhador</translation>
 	<translation name="WOODGATHERER_BACKPACK">Mochila de Lenhador</translation>
-	
+
 	<translation name="BRIDGEWATCH">Bridgewatch</translation>
 	<translation name="CAERLEON">Caerleon</translation>
 	<translation name="FORT_STERLING">Fort Sterling</translation>
 	<translation name="LYMHURST">Lymhurst</translation>
 	<translation name="MARTLOCK">Martlock</translation>
 	<translation name="THETFORD">Thetford</translation>
-	
+
 	<translation name="ARCANE_STAFF">Cajado Arcano</translation>
 	<translation name="CURSE_STAFF">Cajado Amaldiçoado</translation>
 	<translation name="FIRE_STAFF">Cajado de Fogo</translation>
 	<translation name="FROST_STAFF">Cajado de Gelo</translation>
 	<translation name="HOLY_STAFF">Cajado Divino</translation>
 	<translation name="NATURE_STAFF">Cajado da Natureza</translation>
-	
+
 	<translation name="ESSENCE">Essência</translation>
 	<translation name="RELIC">Reliquia</translation>
 	<translation name="RUNE">Runa</translation>
 	<translation name="SOUL">Alma</translation>
-	
+
 	<translation name="AXE">Machado</translation>
 	<translation name="DAGGER">Adaga</translation>
 	<translation name="HAMMER">Martelo</translation>
@@ -225,12 +225,12 @@
 	<translation name="QUARTER_STAFF">Bastão</translation>
 	<translation name="SPEAR">Lança</translation>
 	<translation name="SWORD">Espada</translation>
-	
+
 	<translation name="ARMORED_HORSE">Cavalo blindado</translation>
 	<translation name="OX">Boi</translation>
 	<translation name="RARE_MOUNT">Montaria Rara</translation>
 	<translation name="RIDING_HORSE">Cavalo de Montar</translation>
-	
+
 	<translation name="BOOK">Livro</translation>
 	<translation name="HORN">Brumário</translation>
 	<translation name="ORB">Olho dos Segredos</translation>
@@ -238,13 +238,13 @@
 	<translation name="TORCH">Tocha</translation>
 	<translation name="TOTEM">Raiz Mestra</translation>
 	<translation name="TRASH">Lixo</translation>
-	
+
 	<translation name="FARMING">Agricultura</translation>
 	<translation name="JOURNAL">Diário</translation>
-	
+
 	<translation name="BOW">Arco</translation>
 	<translation name="CROSSBOW">Besta</translation>
-	
+
 	<translation name="CLOTH">Tecido</translation>
 	<translation name="FIBER">Fibra</translation>
 	<translation name="HIDE">Pele</translation>
@@ -255,11 +255,11 @@
 	<translation name="PLANKS">Tábua</translation>
 	<translation name="ROCK">Pedra</translation>
 	<translation name="STONEBLOCK">Bloco de Pedra</translation>
-	
+
 	<translation name="ARENA_SIGILS">Selo de Arena</translation>
 	<translation name="EVENT">Evento</translation>
 	<translation name="ROYAL_SIGILS">Selo Real</translation>
-	
+
 	<translation name="DEMOLITION_HAMMER">Martelo de Demolição</translation>
 	<translation name="FISHING">Pescaria</translation>
 	<translation name="PICKAXE">Picareta</translation>
@@ -267,7 +267,7 @@
 	<translation name="SKINNING_KNIFE">Faca de Esfolar</translation>
 	<translation name="STONE_HAMMER">Martelo de Pedra</translation>
 	<translation name="WOOD_AXE">Machado de Madeira</translation>
-	
+
 	<translation name="FIBER_TROPHY">Troféu de Fibra</translation>
 	<translation name="FISH_TROPHY">Troféu de Pesca</translation>
 	<translation name="GENERAL_TROPHY">Troféu do Generalista</translation>
@@ -276,37 +276,37 @@
 	<translation name="ORE_TROPHY">Troféu de Minerador</translation>
 	<translation name="ROCK_TROPHY">Troféu de Canteiro</translation>
 	<translation name="WOOD_TROPHY">Troféu de Lenhador</translation>
-	
+
 	<translation name="ACCESSORIES">Acessório</translation>
 	<translation name="ARMOR">Armadura</translation>
 	<translation name="ARTEFACT">Artefato</translation>
 	<translation name="CITY_RESOURCES">Recursos da Cidade</translation>
 	<translation name="CONSUMABLE">Consumíveis</translation>
-	
+
 	<translation name="FARMABLE">Cultivável</translation>
 	<translation name="FURNITURE">Mobilia</translation>
 	<translation name="GATHERING_GEAR">Equipamento de Coleta</translation>
 	<translation name="LUXURY_GOODS">Produto de Luxo</translation>
 	<translation name="MAGIC">Magia</translation>
-	
+
 	<translation name="MATERIALS">Materiais</translation>
 	<translation name="MELEE">Corpo a Corpo</translation>
 	<translation name="MOUNT">Montaria</translation>
 	<translation name="OFFHAND">Mão Secundária</translation>
 	<translation name="PRODUCT">Produto</translation>
-	
+
 	<translation name="RANGED">Á distância</translation>
 	<translation name="RESOURCE">Recursos</translation>
 	<translation name="TOKEN">Tomo</translation>
 	<translation name="TOOL">Ferramentas</translation>
 	<translation name="TROPHIES">Troféus</translation>
-	
+
 	<translation name="WEIGHT">Peso</translation>
 	<translation name="ITEM_POWER">Poder do Item</translation>
 	<translation name="DURABILITY">Durabilidade</translation>
 	<translation name="REAL_MONEY_PRICE">Preço real em dinheiro</translation>
 	<translation name="TOO_MANY_REQUESTS_CLOSE_WINDOWS_OR_WAIT">Muitas requisições, feche algumas janelas ou espere alguns minutos.</translation>
-	
+
 	<translation name="ALARM_SOUND_USED">Alarme de Som Usado</translation>
 	<translation name="ITEM_PRICE_UNDERCUT">Corte do Preço do Item</translation>
 	<translation name="THE_PRICE_OF">O preço de</translation>
@@ -318,7 +318,7 @@
 	<translation name="UNDERCUTTING_PRICE">Preço de Corte</translation>
 	<translation name="AVERAGE_PRICES">Preço Médio</translation>
 	<translation name="AVERAGE_PRICES_TOOLTIP">Preço de Venda Min | Preço de Venda Max | Preço de Compra Min | Preço de Compra Max</translation>
-	
+
 	<translation name="TRACKING">Rastreando</translation>
 	<translation name="IS_TRACKING_ACTIVE">O rastreamento esta ativado? (Verde - ON | Amarelo - Parcialmente | Cinza - OFF)</translation>
 	<translation name="USERNAME">Nome de Usuário</translation>
@@ -335,7 +335,7 @@
 	<translation name="TOTAL_SILVER">Prata Total</translation>
 	<translation name="TOTAL_RESPEC">Fama Amarela Total</translation>
 	<translation name="SILVER">Prata</translation>
-	
+
 	<translation name="MINUTES">Minutos</translation>
 	<translation name="HOURS">Horas</translation>
 	<translation name="DAYS">Dias</translation>
@@ -366,9 +366,9 @@
 	<translation name="OPENED_UNCOMMON_CHESTS">Baús incomuns abertos</translation>
 	<translation name="OPENED_RARE_CHESTS">Baús raros abertos</translation>
 	<translation name="OPENED_LEGENDARY_CHESTS">Baús lendários abertos</translation>
-	
+
 	<translation name="DAMAGE_METER_DESCRIPTION_1">Para aparecer o dano de outros jogadores ser reconhecido, o StatisticsAnalysisTool primeiro precisa ser ativada e então você deve sair e entrar do grupo.</translation>
-	
+
 	<translation name="SORT_BY_DAMAGE">Filtrar por dano</translation>
 	<translation name="SORT_BY_DPS">Filtrar por Dano por Segundo</translation>
 	<translation name="SORT_BY_NAME">Filtrar por Nome</translation>
@@ -385,11 +385,11 @@
 	<translation name="SILVER_SHRINE">Santuário de Prata</translation>
 	<translation name="FAME_SHRINE">Santuário de Fama</translation>
 	<translation name="COMBAT_BUFF">Buff de Combate</translation>
-	
+
 	<translation name="CITY_PRICES_API_URL">URL da API do Preço das Cidades</translation>
 	<translation name="CITY_PRICES_HISTORY_API_URL">URL da API do Histórico de Preços</translation>
 	<translation name="GOLD_STATS_API_URL">URL da API do Status de Ouro</translation>
-	
+
 	<translation name="SAFE">Seguro</translation>
 	<translation name="DUNGEON_TIMER">Temporizador da Masmorra</translation>
 	<translation name="SURE_YOU_WANT_TO_RESET_DAMAGE_METER">Você tem certeza que deseja dar reset no medidor de dano?</translation>
@@ -537,14 +537,9 @@
 	<translation name="AVERAGE_ITEM_POWER_WHEN_KILLING">Poder médio do seus itens ao matar</translation>
 	<translation name="AVERAGE_ITEM_POWER_OF_THE_KILLED_ENEMIES">Poder médio dos itens dos inimigos mortos</translation>
 	<translation name="AVERAGE_ITEM_POWER_WHEN_DYING">Poder médio dos seus itens ao morrer</translation>
-	<translation name="MAIL_MONITORING">Monitoramento de Correio</translation>
-	<translation name="MAIL">Correio</translation>
 	<translation name="BOUGHT">Comprou</translation>
 	<translation name="SOLD">Vendeu</translation>
 	<translation name="COST_PER_ITEM">Custo por item</translation>
-	<translation name="DELETE_SELECTED_MAILS">Excluir mensagens selecionadas</translation>
-	<translation name="SURE_YOU_WANT_TO_DELETE_SELECTED_MAIL">Você tem certeza que deseja excluir as mensagens selecionadas?</translation>
-	<translation name="MAIL_MONITORING_DESCRIPTION1">Para reconhecer novas mensagens, a caixa de entrada deve ser aberta no jogo e, adicionalmente, uma mensagem de cada vez.</translation>
 	<translation name="SOLD_TODAY">Vendido hoje</translation>
 	<translation name="SOLD_MONTH">Vendido neste mês</translation>
 	<translation name="SOLD_YEAR">Vendido neste ano</translation>
@@ -602,9 +597,6 @@
 	<translation name="NOTES">Notas</translation>
 	<translation name="UNSUPPORTED_OS">SO não suportado: podem ocorrer erros.</translation>
 	<translation name="FILE_DOWNLOAD_FAILED_TEXT1">Se sua internet estiver muito lenta ou você tiver outros problemas, você também pode baixar o arquivo manualmente.</translation>
-	<translation name="FILE_DOWNLOAD_FAILED_TEXT2">Faça o download do arquivo no link abaixo</translation>
-	<translation name="FILE_DOWNLOAD_FAILED_TEXT3">Renomeie o arquivo para ItemList.json e coloque o arquivo no diretório do StatisticsAnalysisTool.</translation>
-	<translation name="FILE_DOWNLOAD_FAILED_TEXT4">Coloque o arquivo no diretório do StatisticsAnalysisTool.</translation>
 	<translation name="THEN_RESTART_THE_TOOL">Em seguida, reinicie o StatisticsAnalysisTool.</translation>
 	<translation name="OR">OU</translation>
 	<translation name="COPY_SHORT_DAMAGE_METER_TO_THE_CLIPBOARD">Copiar medidor de dano curto para a área de transferência</translation>
@@ -627,14 +619,6 @@
 	<translation name="RANDOM_SOLO_DUNGEONS">Masmorras individuais aleatórias</translation>
 	<translation name="RANDOM_GROUP_DUNGEONS">Masmorras de grupo aleatório</translation>
 	<translation name="SNAPSHOT_AFTER_MAP_CHANGE">Captura de tela após mudança de mapa</translation>
-	<translation name="MAIL_MONITORING_ACTIVE">Monitoramento de e-mail ativo</translation>
-	<translation name="DELETE_MAILS_NEVER">Nunca excluir e-mails</translation>
-	<translation name="DELETE_MAILS_AFTER_7_DAYS">Excluir e-mails após 7 dias</translation>
-	<translation name="DELETE_MAILS_AFTER_30_DAYS">Excluir e-mails após 30 dias</translation>
-	<translation name="DELETE_MAILS_AFTER_60_DAYS">Excluir e-mails após 60 dias</translation>
-	<translation name="DELETE_MAILS_AFTER_90_DAYS">Excluir e-mails após 90 dias</translation>
-	<translation name="DELETE_MAILS_AFTER_180_DAYS">Excluir e-mails após 180 dias</translation>
-	<translation name="DELETE_MAILS_AFTER_365_DAYS">Excluir e-mails após 365 dias</translation>
 	<translation name="IGNORE_MAILS_WITH_ZERO_VALUES">Ignorar e-mails com 0 valores</translation>
 	<translation name="CHECK_FOR_UPDATE">Verificar atualização</translation>
 	<translation name="PAID_SILVER_FOR_RESPEC_THIS_SESSION">Prata paga em ReSpec nesta sessão</translation>
@@ -654,4 +638,81 @@
 	<translation name="COMBAT_TIME">Tempo de combate</translation>
 	<translation name="DELETE_ZERO_FAME_DUNGEONS">Excluir masmorras com 0 de fama</translation>
 	<translation name="SURE_YOU_WANT_TO_DELETE_ZERO_FAME_DUNGEONS">Tem certeza de que deseja excluir masmorras com 0 de fama?</translation>
+	<translation name="TOTAL_RESOURCES_WEIGHT">Peso total dos recursos</translation>
+	<translation name="TOTAL_JOURNAL_WEIGHT">Peso total do diário</translation>
+	<translation name="TOTAL_CRAFTED_WEIGHT">Peso total trabalhado</translation>
+	<translation name="TOTAL_UNFINISHED_CRAFTING_WEIGHT">Peso total de fabricação inacabada</translation>
+	<translation name="TOTAL_FINISHED_CRAFTING_WEIGHT">Peso total da criação finalizada</translation>
+	<translation name="MARKET_TAX_RATE">Taxa de imposto de mercado</translation>
+	<translation name="MARKET_TAX_SETUP_RATE">Taxa de configuração do imposto de mercado</translation>
+	<translation name="SETUP_TAX">Configurar imposto</translation>
+	<translation name="CRAFTING_INFO_DESCRIPTION_1">O bônus de fabricação é o bônus da cidade ou esconderijo em que você está criando.</translation>
+	<translation name="CRAFTING_INFO_DESCRIPTION_2">Para encontrar o número, você precisa abrir o minimapa e passar o mouse sobre o canto superior direito, onde você pode ver o bônus que esta cidade/HO oferece.</translation>
+	<translation name="CRAFTING_INFO_DESCRIPTION_3">Em uma cidade como Lymhurst, é 118%. Se a cidade der um bônus para o item a ser fabricado, é de 133%. Nos Refúgios pode ser maior, também pode haver um Bônus Diário que pode ser de 10% ou 20%.</translation>
+	<translation name="CRAFTING_INFO_DESCRIPTION_4">A taxa de configuração e os impostos da casa de leilões podem ser encontrados no jogo quando você deseja vender um item no mercado.</translation>
+	<translation name="CRAFTING_INFO_DESCRIPTION_5">Se você for Premium, pode deixar os dois valores como estão. Se você quiser vender algo manualmente, defina ambos como 0. Se você não tiver um prêmio, os valores geralmente são duas vezes maiores.</translation>
+	<translation name="MISTS">Névoas</translation>
+	<translation name="REPAIR_COSTS_TODAY">Custos de reembolso hoje</translation>
+	<translation name="REPAIR_COSTS_LAST_7_DAYS">Os custos de reembolso duram 7 dias</translation>
+	<translation name="REPAIR_COSTS_LAST_30_DAYS">Os custos de reembolso duram 30 dias</translation>
+	<translation name="RESET_BEFORE_COMBAT">Reiniciar antes do combate</translation>
+	<translation name="SEARCHED_PLAYER">Jogador pesquisado</translation>
+	<translation name="LOCAL_PLAYER">Jogador local</translation>
+	<translation name="THANKS">Agradecimentos</translation>
+	<translation name="THANK_YOU">Obrigado</translation>
+	<translation name="DUNGEON_CLOSED_SOUND_ACTIVE">Som de calabouço fechado ativo</translation>
+	<translation name="TOTAL_PRICE_WITH_DEDUCTED_TAXES">Preço total com impostos deduzidos</translation>
+	<translation name="UPDATE_MOBS_JSON_BY_DAYS">Atualizar mobs.json por dias</translation>
+	<translation name="MOBS_JSON_SOURCE_URL">url de origem mobs.json</translation>
+	<translation name="GET_MOBS_JSON">Obter mobs.json</translation>
+	<translation name="MOBS_JSON_CAN_NOT_BE_LOADED">mobs.json não pode ser carregado.</translation>
+	<translation name="INSTANT_SELL">Venda instantânea</translation>
+	<translation name="INSTANT_BUY">Compra instantânea</translation>
+	<translation name="TRADE_MONITORING_ACTIVE">Monitoramento de negociação ativo</translation>
+	<translation name="DELETE_TRADES_NEVER">Nuca excluir transações</translation>
+	<translation name="DELETE_TRADES_AFTER_7_DAYS">Excluir negociações após 7 dias</translation>
+	<translation name="DELETE_TRADES_AFTER_30_DAYS">Excluir transações após 30 dias</translation>
+	<translation name="DELETE_TRADES_AFTER_60_DAYS">Excluir negociações após 60 dias</translation>
+	<translation name="DELETE_TRADES_AFTER_90_DAYS">Excluir transações após 90 dias</translation>
+	<translation name="DELETE_TRADES_AFTER_180_DAYS">Excluir negociações após 180 dias</translation>
+	<translation name="DELETE_TRADES_AFTER_365_DAYS">Excluir transações após 365 dias</translation>
+	<translation name="DELETE_SELECTED_TRADES">Excluir negociações selecionadas</translation>
+	<translation name="SURE_YOU_WANT_TO_DELETE_SELECTED_TRADES">Tem certeza de que deseja excluir as negociações selecionadas?</translation>
+	<translation name="TRADE_MONITORING">Monitoramento de negociações</translation>
+	<translation name="TRADE">Comércio</translation>
+	<translation name="TRADE_MONITORING_DESCRIPTION1">Para reconhecer novas mensagens de e-mail, a caixa de entrada deve ser aberta no jogo, e adicionalmente, cada mensagem uma vez.</translation>
+	<translation name="UNKNOWN_TRADE">Comércio desconhecido</translation>
+	<translation name="MAIL">E-mail</translation>
+	<translation name="DELETE_TRADES_AFTER_14_DAYS">Excluir negociações após 14 dias</translation>
+	<translation name="BONUS">Bônus</translation>
+	<translation name="PREMIUM">Premium</translation>
+	<translation name="GATHERING_ACTIVE">Reunião ativa</translation>
+	<translation name="THIS_WEEK">Esta semana</translation>
+	<translation name="LAST_WEEK">Semana passada</translation>
+	<translation name="GENERALLY">Geralmente</translation>
+	<translation name="MOST_GATHERED_RESOURCE">Recurso mais coletado</translation>
+	<translation name="MOST_GATHERED_ON_MAP">Mais reunidos no mapa</translation>
+	<translation name="TOTAL_RESOURCES">Recursos totais</translation>
+	<translation name="TOTAL_MINING_PROCESSES">Total de processos de mineração</translation>
+	<translation name="AMOUNT_OF_MINING_PROCESSES">Quantidade de processos de mineração</translation>
+	<translation name="SURE_YOU_WANT_TO_DELETE_SELECTED_RESOURCES">Tem certeza de que deseja excluir os recursos selecionados?</translation>
+	<translation name="DELETE_SELECTED_RESOURCES">Excluir recursos selecionados</translation>
+	<translation name="RESOURCE_VALUE">Valor do recurso</translation>
+	<translation name="TOTAL_MARKET_VALUE">Valor total de mercado</translation>
+	<translation name="NAVIGATION_TAB_VISIBILITY">Visibilidade da guia de navegação</translation>
+	<translation name="SERVER">Servidor</translation>
+	<translation name="UNKNOWN_SERVER">Servidor desconhecido</translation>
+	<translation name="WEST_SERVER">Servidor Oeste</translation>
+	<translation name="EAST_SERVER">Servidor Leste</translation>
+	<translation name="ALBION_DATA_PROJECT_BASE_URL_WEST">URL da base do projeto de dados Albion WEST</translation>
+	<translation name="ALBION_DATA_PROJECT_BASE_URL_EAST">URL da base do projeto de dados Albion EAST</translation>
+	<translation name="DELETE_ALL_SNAPSHOTS">Excluir todos os instantâneos</translation>
+	<translation name="SURE_YOU_WANT_TO_DELETE_ALL_SNAPSHOTS">Tem certeza de que deseja excluir todos os instantâneos?</translation>
+	<translation name="LOGGING_DESCRIPTION_1">Se itens incorretos forem rastreados, pode ser porque as listas de itens não estão atualizadas. Os URLs para isso podem ser ajustados nas configurações.</translation>
+	<translation name="LOGGING_DESCRIPTION_2">Apenas os jogadores que estão dentro da sua própria tela e cerca de uma tela a mais fora do seu campo de visão são rastreados durante o saque.</translation>
+	<translation name="SET_SERVER_MANUALLY">Definir servidor manualmente</translation>
+	<translation name="AUTOMATICALLY">Automaticamente</translation>
+	<translation name="NETWORK_FILTERING">Filtragem de rede</translation>
+	<translation name="ACTIVATED">Ativado</translation>
+	<translation name="DISABLED">Desativado</translation>
 </translations>

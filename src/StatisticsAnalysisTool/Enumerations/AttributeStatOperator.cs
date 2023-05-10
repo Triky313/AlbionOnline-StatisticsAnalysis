@@ -1,8 +1,7 @@
-﻿namespace StatisticsAnalysisTool.Enumerations
+﻿namespace StatisticsAnalysisTool.Enumerations;
+
+public enum AttributeStatOperator
 {
-    public enum AttributeStatOperator
-    {
-        Plus,
-        Minus
-    }
+    Plus,
+    Minus
 }

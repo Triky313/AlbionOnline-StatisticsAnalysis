@@ -1,5 +1,5 @@
 ﻿<?xml version='1.0' encoding='utf-8'?>
-<SettingsFile xmlns="http://schemas.microsoft.com/VisualStudio/2004/01/settings" CurrentProfile="(Default)" GeneratedClassNamespace="Properties" GeneratedClassName="Settings">
+<SettingsFile xmlns="http://schemas.microsoft.com/VisualStudio/2004/01/settings" CurrentProfile="(Default)" GeneratedClassNamespace="StatisticsAnalysisTool.Properties" GeneratedClassName="Settings">
   <Profiles />
   <Settings>
     <Setting Name="LanguageDirectoryName" Type="System.String" Scope="Application">
@@ -12,10 +12,10 @@
       <Value Profile="(Default)">ItemList.json</Value>
     </Setting>
     <Setting Name="DonateUrl" Type="System.String" Scope="Application">
-      <Value Profile="(Default)">https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&amp;hosted_button_id=LEM458PZ4FV4C&amp;source=url</Value>
+      <Value Profile="(Default)">https://www.paypal.com/donate/?hosted_button_id=N6T3CWXYNGHKC</Value>
     </Setting>
     <Setting Name="DefaultItemListSourceUrl" Type="System.String" Scope="Application">
-      <Value Profile="(Default)">https://raw.githubusercontent.com/broderickhyman/ao-bin-dumps/master/formatted/items.json</Value>
+      <Value Profile="(Default)">https://raw.githubusercontent.com/ao-data/ao-bin-dumps/master/formatted/items.json</Value>
     </Setting>
     <Setting Name="AutoUpdateConfigUrl" Type="System.String" Scope="Application">
       <Value Profile="(Default)">https://raw.githubusercontent.com/Triky313/AlbionOnline-StatisticsAnalysis/main/src/StatisticsAnalysisTool/ao-update-check.xml</Value>
@@ -53,15 +53,6 @@
     <Setting Name="FavoriteItemsFileName" Type="System.String" Scope="User">
       <Value Profile="(Default)">FavoriteItems.json</Value>
     </Setting>
-    <Setting Name="CityPricesApiUrlDefault" Type="System.String" Scope="Application">
-      <Value Profile="(Default)">https://www.albion-online-data.com/api/v2/stats/prices/</Value>
-    </Setting>
-    <Setting Name="CityPricesHistoryApiUrlDefault" Type="System.String" Scope="Application">
-      <Value Profile="(Default)">https://www.albion-online-data.com/api/v2/stats/history/</Value>
-    </Setting>
-    <Setting Name="GoldStatsApiUrlDefault" Type="System.String" Scope="Application">
-      <Value Profile="(Default)">https://www.albion-online-data.com/api/v2/stats/Gold</Value>
-    </Setting>
     <Setting Name="GameFilesDirectoryName" Type="System.String" Scope="Application">
       <Value Profile="(Default)">GameFiles</Value>
     </Setting>
@@ -72,7 +63,7 @@
       <Value Profile="(Default)">ItemSpriteToJournal.json</Value>
     </Setting>
     <Setting Name="DefaultItemsJsonSourceUrl" Type="System.String" Scope="User">
-      <Value Profile="(Default)">https://raw.githubusercontent.com/broderickhyman/ao-bin-dumps/master/items.json</Value>
+      <Value Profile="(Default)">https://raw.githubusercontent.com/ao-data/ao-bin-dumps/master/items.json</Value>
     </Setting>
     <Setting Name="ItemsJsonFileName" Type="System.String" Scope="User">
       <Value Profile="(Default)">Items.json</Value>
@@ -112,6 +103,36 @@
     </Setting>
     <Setting Name="EstimatedMarketValueFileName" Type="System.String" Scope="Application">
       <Value Profile="(Default)">EstimatedMarketValues.json</Value>
+    </Setting>
+    <Setting Name="MobDataFileName" Type="System.String" Scope="Application">
+      <Value Profile="(Default)">mobs.json</Value>
+    </Setting>
+    <Setting Name="DungeonClosedSoundFileName" Type="System.String" Scope="Application">
+      <Value Profile="(Default)">dungeon_closed.wav</Value>
+    </Setting>
+    <Setting Name="IsContainerRepairCostsVisible" Type="System.Boolean" Scope="Application">
+      <Value Profile="(Default)">False</Value>
+    </Setting>
+    <Setting Name="TempDirecoryName" Type="System.String" Scope="Application">
+      <Value Profile="(Default)">temp</Value>
+    </Setting>
+    <Setting Name="GitHubSponsorsUrl" Type="System.String" Scope="User">
+      <Value Profile="(Default)">https://github.com/sponsors/Triky313</Value>
+    </Setting>
+    <Setting Name="TradesFileName" Type="System.String" Scope="User">
+      <Value Profile="(Default)">Trades.json</Value>
+    </Setting>
+    <Setting Name="UserDataDirectoryName" Type="System.String" Scope="User">
+      <Value Profile="(Default)">UserData</Value>
+    </Setting>
+    <Setting Name="GatheringFileName" Type="System.String" Scope="User">
+      <Value Profile="(Default)">Gathering.json</Value>
+    </Setting>
+    <Setting Name="ModifiedMobDataFileName" Type="System.String" Scope="Application">
+      <Value Profile="(Default)">mobs-modified.json</Value>
+    </Setting>
+    <Setting Name="IsDebugMode" Type="System.Boolean" Scope="User">
+      <Value Profile="(Default)">False</Value>
     </Setting>
   </Settings>
 </SettingsFile>
