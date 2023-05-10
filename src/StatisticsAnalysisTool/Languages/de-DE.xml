@@ -724,4 +724,7 @@
 	<translation name="ADDED_EXPIRED_SELL_ORDER">Abgelaufener Verkaufsauftrag hinzugefügt</translation>
 	<translation name="ADDED_TRADES">Hinzugefügte Handel</translation>
 	<translation name="NOTIFICATIONS">Benachrichtigungen</translation>
+	<translation name="NO_LISTENING_ADAPTERS">Keine trackbaren Adapter</translation>
+	<translation name="PACKET_FILTER">Packet Filter</translation>
+	<translation name="RESET">Zurücksetzen</translation>
 </translations>

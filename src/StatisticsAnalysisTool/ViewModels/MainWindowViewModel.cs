@@ -10,6 +10,7 @@ using StatisticsAnalysisTool.Dungeon;
 using StatisticsAnalysisTool.Enumerations;
 using StatisticsAnalysisTool.EstimatedMarketValue;
 using StatisticsAnalysisTool.EventLogging;
+using StatisticsAnalysisTool.Exceptions;
 using StatisticsAnalysisTool.GameData;
 using StatisticsAnalysisTool.Models;
 using StatisticsAnalysisTool.Models.BindingModel;
@@ -546,8 +547,25 @@ public class MainWindowViewModel : INotifyPropertyChanged
 
         DungeonBindings.DungeonStatsFilter = new DungeonStatsFilter(TrackingController);
 
-        IsTrackingActive = NetworkManager.StartNetworkCapture(TrackingController);
-        Console.WriteLine(@"### Start Tracking...");
+        try
+        {
+            NetworkManager.StartNetworkCapture(TrackingController);
+            IsTrackingActive = true;
+        }
+        catch (NoListeningAdaptersException aEx)
+        {
+            ConsoleManager.WriteLineForError(MethodBase.GetCurrentMethod()?.DeclaringType, aEx);
+            Log.Error(MethodBase.GetCurrentMethod()?.DeclaringType, aEx);
+            SetErrorBar(Visibility.Visible, LanguageController.Translation("NO_LISTENING_ADAPTERS"));
+        }
+        catch (Exception e)
+        {
+            ConsoleManager.WriteLineForError(MethodBase.GetCurrentMethod()?.DeclaringType, e);
+            Log.Error(MethodBase.GetCurrentMethod()?.DeclaringType, e);
+            SetErrorBar(Visibility.Visible, LanguageController.Translation("PACKET_HANDLER_ERROR_MESSAGE"));
+
+            await StopTrackingAsync();
+        }
     }
 
     public async Task StopTrackingAsync()
@@ -572,7 +590,6 @@ public class MainWindowViewModel : INotifyPropertyChanged
         await EstimatedMarketValueController.SaveInFileAsync();
 
         IsTrackingActive = false;
-        Console.WriteLine(@"### Stop Tracking");
     }
 
     public void ResetDamageMeter()

@@ -4,6 +4,7 @@ using SharpPcap;
 using StatisticsAnalysisTool.Common;
 using StatisticsAnalysisTool.Common.UserSettings;
 using StatisticsAnalysisTool.Enumerations;
+using StatisticsAnalysisTool.Exceptions;
 using StatisticsAnalysisTool.Network.Handler;
 using StatisticsAnalysisTool.Network.Manager;
 using StatisticsAnalysisTool.ViewModels;
@@ -12,7 +13,6 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 using System.Threading.Tasks;
-using System.Windows;
 
 namespace StatisticsAnalysisTool.Network;
 
@@ -27,7 +27,7 @@ public class NetworkManager
 
     public static AlbionServer AlbionServer { get; set; } = AlbionServer.Unknown;
 
-    public static bool StartNetworkCapture(TrackingController trackingController)
+    public static void StartNetworkCapture(TrackingController trackingController)
     {
         ReceiverBuilder builder = ReceiverBuilder.Create();
 
@@ -88,74 +88,28 @@ public class NetworkManager
         builder.AddResponseHandler(new AuctionGetResponseHandler(trackingController));
 
         _receiver = builder.Build();
-
-        try
-        {
-            return StartDeviceCapture();
-        }
-        catch (Exception e)
-        {
-            ConsoleManager.WriteLineForError(MethodBase.GetCurrentMethod()?.DeclaringType, e);
-            Log.Error(MethodBase.GetCurrentMethod()?.DeclaringType, e);
-
-            var mainWindowViewModel = ServiceLocator.Resolve<MainWindowViewModel>();
-            if (mainWindowViewModel != null)
-            {
-                mainWindowViewModel.SetErrorBar(Visibility.Visible, LanguageController.Translation("PACKET_HANDLER_ERROR_MESSAGE"));
-                _ = mainWindowViewModel.StopTrackingAsync();
-            }
-            else
-            {
-                Log.Error(MethodBase.GetCurrentMethod()?.DeclaringType + " - MainWindowViewModel is null.");
-            }
-
-            return false;
-        }
+        StartDeviceCapture();
     }
 
-    public static bool StartDeviceCapture()
+    public static void StartDeviceCapture()
     {
-        try
+        ConsoleManager.WriteLineForMessage("Start Device Capture");
+
+        CapturedDevices.Clear();
+        CapturedDevices.AddRange(CaptureDeviceList.Instance);
+
+        if (CapturedDevices.Count <= 0)
         {
-            ConsoleManager.WriteLineForMessage("Start Device Capture");
-
-            CapturedDevices.Clear();
-            CapturedDevices.AddRange(CaptureDeviceList.Instance);
-            if (CapturedDevices.Count <= 0)
-            {
-                ConsoleManager.WriteLineForMessage(MethodBase.GetCurrentMethod()?.DeclaringType, "Error!\nThere are no listening adapters available!");
-                return false;
-            }
-
-            ConsoleManager.WriteLineForMessage(MethodBase.GetCurrentMethod()?.DeclaringType, "CapturedDevices:");
-
-            foreach (ICaptureDevice captureDevice in CapturedDevices)
-            {
-                ConsoleManager.WriteLineForMessage($"- {captureDevice.Description}");
-                PacketEvent(captureDevice);
-            }
-        }
-        catch (Exception e)
-        {
-            ConsoleManager.WriteLineForError(MethodBase.GetCurrentMethod()?.DeclaringType, e);
-            Log.Error(MethodBase.GetCurrentMethod()?.DeclaringType, e);
-
-            // TODO: Rework with ServiceLocator.Register
-            var mainWindowViewModel = ServiceLocator.Resolve<MainWindowViewModel>();
-            if (mainWindowViewModel != null)
-            {
-                mainWindowViewModel.SetErrorBar(Visibility.Visible, LanguageController.Translation("PACKET_HANDLER_ERROR_MESSAGE"));
-                _ = mainWindowViewModel.StopTrackingAsync();
-            }
-            else
-            {
-                Log.Error(MethodBase.GetCurrentMethod()?.DeclaringType + " - MainWindowViewModel is null.");
-            }
-
-            return false;
+            throw new NoListeningAdaptersException();
         }
 
-        return true;
+        ConsoleManager.WriteLineForMessage(MethodBase.GetCurrentMethod()?.DeclaringType, "CapturedDevices:");
+
+        foreach (ICaptureDevice captureDevice in CapturedDevices)
+        {
+            ConsoleManager.WriteLineForMessage($"- {captureDevice.Description}");
+            PacketEvent(captureDevice);
+        }
     }
 
     public static void StopDeviceCapture()

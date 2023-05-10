@@ -724,4 +724,7 @@
 	<translation name="ADDED_EXPIRED_SELL_ORDER">Added expired sell order</translation>
 	<translation name="ADDED_TRADES">Added trades</translation>
 	<translation name="NOTIFICATIONS">Notifications</translation>
+	<translation name="NO_LISTENING_ADAPTERS">No listening adapters</translation>
+	<translation name="PACKET_FILTER">Packet Filter</translation>
+	<translation name="RESET">Reset</translation>
 </translations>
