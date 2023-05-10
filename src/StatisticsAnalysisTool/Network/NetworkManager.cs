@@ -7,6 +7,7 @@ using StatisticsAnalysisTool.Enumerations;
 using StatisticsAnalysisTool.Exceptions;
 using StatisticsAnalysisTool.Network.Handler;
 using StatisticsAnalysisTool.Network.Manager;
+using StatisticsAnalysisTool.Notification;
 using StatisticsAnalysisTool.ViewModels;
 using System;
 using System.Collections.Generic;
@@ -110,6 +111,8 @@ public class NetworkManager
             ConsoleManager.WriteLineForMessage($"- {captureDevice.Description}");
             PacketEvent(captureDevice);
         }
+
+        _ = ServiceLocator.Resolve<SatNotificationManager>().ShowTrackingStatusAsync(LanguageController.Translation("START_TRACKING"), LanguageController.Translation("GAME_TRACKING_IS_STARTED"));
     }
 
     public static void StopDeviceCapture()
@@ -129,6 +132,8 @@ public class NetworkManager
         }
 
         CapturedDevices.Clear();
+
+        _ = ServiceLocator.Resolve<SatNotificationManager>().ShowTrackingStatusAsync(LanguageController.Translation("STOP_TRACKING"), LanguageController.Translation("GAME_TRACKING_IS_STOPPED"));
     }
 
     private static void PacketEvent(ICaptureDevice device)

@@ -181,6 +181,7 @@ public class SettingsWindowViewModel : INotifyPropertyChanged
     private void SetNotificationFilter()
     {
         SettingsController.CurrentSettings.IsNotificationFilterTradeActive = NotificationFilters?.FirstOrDefault(x => x?.NotificationFilterType == NotificationFilterType.Trade)?.IsSelected ?? true;
+        SettingsController.CurrentSettings.IsNotificationTrackingStatusActive = NotificationFilters?.FirstOrDefault(x => x?.NotificationFilterType == NotificationFilterType.TrackingStatus)?.IsSelected ?? true;
     }
 
     private void SetPacketFilter()
@@ -342,6 +343,12 @@ public class SettingsWindowViewModel : INotifyPropertyChanged
         {
             IsSelected = SettingsController.CurrentSettings.IsNotificationFilterTradeActive,
             Name = LanguageController.Translation("ADDED_TRADES")
+        });
+
+        NotificationFilters.Add(new NotificationFilter(NotificationFilterType.TrackingStatus)
+        {
+            IsSelected = SettingsController.CurrentSettings.IsNotificationTrackingStatusActive,
+            Name = LanguageController.Translation("TRACKING_STATUS")
         });
     }
 
