@@ -24,6 +24,7 @@ public partial class App
         base.OnStartup(e);
 
         AppDomain.CurrentDomain.UnhandledException += OnUnhandledException;
+        Log.InfoFormat(LanguageController.CurrentCultureInfo, $"Tool started with v{Assembly.GetExecutingAssembly().GetName().Version}");
 
         SettingsController.LoadSettings();
         InitializeLanguage();
