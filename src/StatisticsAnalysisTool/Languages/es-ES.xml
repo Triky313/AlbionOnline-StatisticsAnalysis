@@ -735,4 +735,8 @@
     <translation name="GAME_TRACKING_IS_STARTED">El seguimiento del juego se ha iniciado</translation>
     <translation name="GAME_TRACKING_IS_STOPPED">El seguimiento del juego se ha parado</translation>
     <translation name="TRACKING_STATUS">Estado del seguimiento</translation>
+	<translation name="ADD_TRADE_MANUALLY">Añadir intercambio manualmente</translation>
+    <translation name="DESCRIPTION">Descripción</translation>
+    <translation name="VALUE">Valor</translation>
+    <translation name="ADD_TRADE">Añadir intercambio</translation>
 </translations>
