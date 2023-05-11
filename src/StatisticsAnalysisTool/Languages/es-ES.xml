@@ -715,4 +715,7 @@
 	<translation name="LOGGING_DESCRIPTION_2">Solo los jugadores que estén dentro de tu pantalla y hasta una pantalla fuera de tu campo de visión son registrados al lootear.</translation>
 	<translation name="SET_SERVER_MANUALLY">Establecer servidor manualmente</translation>
     <translation name="AUTOMATICALLY">Automáticamente</translation>
+	<translation name="NETWORK_FILTERING">Filtrado de red</translation>
+    <translation name="ACTIVATED">Activado</translation>
+    <translation name="DISABLED">Desactivado</translation>
 </translations>
