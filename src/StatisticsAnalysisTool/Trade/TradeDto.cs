@@ -9,6 +9,7 @@ public class TradeDto
     public long Id { get; init; }
     public long Ticks { get; init; }
     public string ClusterIndex { get; init; }
+    public string Description { get; init; }
     public TradeType Type { get; init; }
     public double TaxRate { get; set; }
 

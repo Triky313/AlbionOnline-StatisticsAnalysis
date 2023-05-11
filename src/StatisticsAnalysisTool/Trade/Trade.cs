@@ -20,6 +20,7 @@ public class Trade : INotifyPropertyChanged
     public DateTime Timestamp => new(Ticks);
     public string ClusterIndex { get; init; }
     public TradeType Type { get; init; }
+    public string Description { get; init; } = string.Empty;
     public string UniqueClusterName => WorldData.GetUniqueNameOrDefault(ClusterIndex);
 
     private bool? _isSelectedForDeletion = false;
@@ -101,7 +102,7 @@ public class Trade : INotifyPropertyChanged
                 case TradeType.Unknown:
                 default:
                     return LanguageController.Translation("ADDED_UNKNOWN_TRADE");
-            };
+            }
         }
     }
 

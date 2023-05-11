@@ -60,8 +60,7 @@ public class MarketController
                 AuctionEntry = tempOffer,
                 InstantBuySellContent = instantBuySellContent
             };
-
-            await ServiceLocator.Resolve<SatNotificationManager>().ShowTradeAsync(trade);
+            
             _ = _trackingController.TradeController.AddTradeToBindingCollection(trade);
             await _trackingController.TradeController.SaveInFileAfterExceedingLimit(10);
         }
@@ -112,8 +111,7 @@ public class MarketController
                 AuctionEntry = tempBuyOrder,
                 InstantBuySellContent = instantBuySellContent
             };
-
-            await ServiceLocator.Resolve<SatNotificationManager>().ShowTradeAsync(trade);
+            
             _ = _trackingController.TradeController.AddTradeToBindingCollection(trade);
             await _trackingController.TradeController.SaveInFileAfterExceedingLimit(10);
         }

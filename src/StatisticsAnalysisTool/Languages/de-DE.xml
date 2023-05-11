@@ -732,4 +732,8 @@
 	<translation name="GAME_TRACKING_IS_STARTED">Spiel-Tracking ist gestartet</translation>
 	<translation name="GAME_TRACKING_IS_STOPPED">Spiel-Tracking ist gestoppt</translation>
 	<translation name="TRACKING_STATUS">Tracking Status</translation>
+	<translation name="ADD_TRADE_MANUALLY">Handel manuell hinzufügen</translation>
+	<translation name="DESCRIPTION">Beschreibung</translation>
+	<translation name="VALUE">Wert</translation>
+	<translation name="ADD_TRADE">Handel hinzufügen</translation>
 </translations>

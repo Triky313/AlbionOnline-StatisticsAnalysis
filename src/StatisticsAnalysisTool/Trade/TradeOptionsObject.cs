@@ -1,12 +1,12 @@
 ﻿using StatisticsAnalysisTool.Common;
+using StatisticsAnalysisTool.Common.UserSettings;
 using StatisticsAnalysisTool.Properties;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
 using System.Runtime.CompilerServices;
-using StatisticsAnalysisTool.Common.UserSettings;
 
-namespace StatisticsAnalysisTool.Models;
+namespace StatisticsAnalysisTool.Trade;
 
 public class TradeOptionsObject : INotifyPropertyChanged
 {
@@ -30,7 +30,7 @@ public class TradeOptionsObject : INotifyPropertyChanged
         DeleteTradesOlderThanSpecifiedDays.Add(new DeleteTradesAfterDaysStruct() { Days = 90, Name = LanguageController.Translation("DELETE_TRADES_AFTER_90_DAYS") });
         DeleteTradesOlderThanSpecifiedDays.Add(new DeleteTradesAfterDaysStruct() { Days = 180, Name = LanguageController.Translation("DELETE_TRADES_AFTER_180_DAYS") });
         DeleteTradesOlderThanSpecifiedDays.Add(new DeleteTradesAfterDaysStruct() { Days = 365, Name = LanguageController.Translation("DELETE_TRADES_AFTER_365_DAYS") });
-        
+
         var deleteTradesAfterDaysSelection = DeleteTradesOlderThanSpecifiedDays.FirstOrDefault(x => x.Days == SettingsController.CurrentSettings.DeleteTradesOlderThanSpecifiedDays);
         DeleteTradesOlderThanSpecifiedDaysSelection = deleteTradesAfterDaysSelection.Name == null ? neverDeleteObject : deleteTradesAfterDaysSelection;
 
@@ -39,7 +39,7 @@ public class TradeOptionsObject : INotifyPropertyChanged
         MarketTaxRate = SettingsController.CurrentSettings.TradeMonitoringMarketTaxRate;
         MarketTaxSetupRate = SettingsController.CurrentSettings.TradeMonitoringMarketTaxSetupRate;
     }
-    
+
     public bool IsTradeMonitoringActive
     {
         get => _isTradeMonitoringActive;

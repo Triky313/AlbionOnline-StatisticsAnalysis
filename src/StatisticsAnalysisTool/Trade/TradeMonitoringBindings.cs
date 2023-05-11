@@ -1,6 +1,5 @@
 ﻿using StatisticsAnalysisTool.Common;
 using StatisticsAnalysisTool.Common.UserSettings;
-using StatisticsAnalysisTool.Models;
 using StatisticsAnalysisTool.Properties;
 using System;
 using System.Collections.Specialized;
@@ -25,6 +24,7 @@ public class TradeMonitoringBindings : INotifyPropertyChanged
     private GridLength _gridSplitterPosition = GridLength.Auto;
     private int _totalTradeCounts;
     private int _currentTradeCounts;
+    private ManuallyTradeMenuObject _tradeManuallyMenuObject = new ();
 
     public TradeMonitoringBindings()
     {
@@ -106,6 +106,16 @@ public class TradeMonitoringBindings : INotifyPropertyChanged
         set
         {
             _tradeStatsObject = value;
+            OnPropertyChanged();
+        }
+    }
+
+    public ManuallyTradeMenuObject ManuallyTradeMenuObject
+    {
+        get => _tradeManuallyMenuObject;
+        set
+        {
+            _tradeManuallyMenuObject = value;
             OnPropertyChanged();
         }
     }

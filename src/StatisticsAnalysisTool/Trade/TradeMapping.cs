@@ -18,7 +18,8 @@ public static class TradeMapping
                 ClusterIndex = trade.ClusterIndex,
                 MailTypeText = trade.MailTypeText,
                 Guid = trade.Guid,
-                MailContent = trade.MailContent
+                MailContent = trade.MailContent,
+                Description = trade.Description
             },
             TradeType.InstantBuy => new TradeDto()
             {
@@ -27,7 +28,8 @@ public static class TradeMapping
                 Ticks = trade.Ticks,
                 ClusterIndex = trade.ClusterIndex,
                 InstantBuySellContent = trade.InstantBuySellContent,
-                AuctionEntry = trade.AuctionEntry
+                AuctionEntry = trade.AuctionEntry,
+                Description = trade.Description
             },
             TradeType.InstantSell => new TradeDto()
             {
@@ -36,7 +38,8 @@ public static class TradeMapping
                 Ticks = trade.Ticks,
                 ClusterIndex = trade.ClusterIndex,
                 InstantBuySellContent = trade.InstantBuySellContent,
-                AuctionEntry = trade.AuctionEntry
+                AuctionEntry = trade.AuctionEntry,
+                Description = trade.Description
             },
             _ => throw new ArgumentOutOfRangeException()
         };
@@ -54,7 +57,8 @@ public static class TradeMapping
                 ClusterIndex = trade.ClusterIndex,
                 MailTypeText = trade.MailTypeText,
                 Guid = trade.Guid,
-                MailContent = trade.MailContent ?? new MailContent()
+                MailContent = trade.MailContent ?? new MailContent(),
+                Description = trade.Description
             },
             TradeType.InstantBuy => new Trade()
             {
@@ -63,7 +67,8 @@ public static class TradeMapping
                 Ticks = trade.Ticks,
                 ClusterIndex = trade.ClusterIndex,
                 AuctionEntry = trade.AuctionEntry,
-                InstantBuySellContent = trade.InstantBuySellContent ?? new InstantBuySellContent()
+                InstantBuySellContent = trade.InstantBuySellContent ?? new InstantBuySellContent(),
+                Description = trade.Description
             },
             TradeType.InstantSell => new Trade()
             {
@@ -72,7 +77,8 @@ public static class TradeMapping
                 Ticks = trade.Ticks,
                 ClusterIndex = trade.ClusterIndex,
                 AuctionEntry = trade.AuctionEntry,
-                InstantBuySellContent = trade.InstantBuySellContent ?? new InstantBuySellContent()
+                InstantBuySellContent = trade.InstantBuySellContent ?? new InstantBuySellContent(),
+                Description = trade.Description
             },
             TradeType.Unknown => null,
             _ => null

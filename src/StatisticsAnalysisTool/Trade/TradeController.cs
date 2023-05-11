@@ -1,6 +1,7 @@
 ﻿using log4net;
 using StatisticsAnalysisTool.Common;
 using StatisticsAnalysisTool.Common.UserSettings;
+using StatisticsAnalysisTool.Notification;
 using StatisticsAnalysisTool.Properties;
 using StatisticsAnalysisTool.Trade.Mails;
 using StatisticsAnalysisTool.ViewModels;
@@ -46,6 +47,8 @@ public class TradeController
             _mainWindowViewModel?.TradeMonitoringBindings?.Trades.Add(trade);
             _mainWindowViewModel?.TradeMonitoringBindings?.TradeCollectionView?.Refresh();
         });
+
+        await ServiceLocator.Resolve<SatNotificationManager>().ShowTradeAsync(trade);
     }
 
     public async Task RemoveTradesByIdsAsync(IEnumerable<long> ids)

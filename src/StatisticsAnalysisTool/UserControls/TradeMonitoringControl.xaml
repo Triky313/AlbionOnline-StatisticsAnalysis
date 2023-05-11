@@ -8,7 +8,7 @@
              xmlns:vwp="clr-namespace:WpfToolkit.Controls;assembly=VirtualizingWrapPanel"
              xmlns:trade="clr-namespace:StatisticsAnalysisTool.Trade"
              mc:Ignorable="d" 
-             d:DesignHeight="1250" d:DesignWidth="800"
+             d:DesignHeight="1750" d:DesignWidth="800"
              d:DataContext="{d:DesignInstance Type=viewModels:MainWindowViewModel}">
     <UserControl.Resources>
         <trade:TradeDataTemplateSelector x:Key="TradeDataTemplateSelector"
@@ -60,6 +60,7 @@
                     <StackPanel Orientation="Vertical">
                         <ContentControl Margin="0,0,0,0" ContentTemplate="{StaticResource MailStatsObjectTemplate}" Content="{Binding TradeMonitoringBindings.TradeStatsObject}" />
                         <ContentControl Margin="0,0,0,0" ContentTemplate="{StaticResource MailOptionsObjectTemplate}" Content="{Binding TradeMonitoringBindings.TradeOptionsObject}" />
+                        <ContentControl Margin="0,0,0,0" ContentTemplate="{StaticResource ManuallyMailMenuTemplate}" Content="{Binding TradeMonitoringBindings.ManuallyTradeMenuObject}" />
                     </StackPanel>
                 </ScrollViewer>
                 <StackPanel Orientation="Horizontal" Height="28" VerticalAlignment="Bottom">

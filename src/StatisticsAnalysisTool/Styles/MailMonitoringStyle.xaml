@@ -1,6 +1,5 @@
 ﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-                    xmlns:models="clr-namespace:StatisticsAnalysisTool.Models"
                     xmlns:common="clr-namespace:StatisticsAnalysisTool.Common"
                     xmlns:trade="clr-namespace:StatisticsAnalysisTool.Trade">
 
@@ -397,7 +396,7 @@
         </Grid>
     </DataTemplate>
 
-    <DataTemplate x:Key="MailOptionsObjectTemplate" DataType="{x:Type models:TradeOptionsObject}">
+    <DataTemplate x:Key="MailOptionsObjectTemplate" DataType="{x:Type trade:TradeOptionsObject}">
         <Grid>
             <StackPanel Orientation="Vertical" Margin="0,0,0,0">
                 <Separator Background="{StaticResource SolidColorBrush.Background.2}" Height="4" Margin="0,0,0,0" VerticalAlignment="Top"/>
@@ -432,6 +431,43 @@
         </Grid>
     </DataTemplate>
 
+    <DataTemplate x:Key="ManuallyMailMenuTemplate" DataType="{x:Type trade:ManuallyTradeMenuObject}">
+        <Grid>
+            <StackPanel Orientation="Vertical" Margin="0,0,0,0">
+                <Separator Background="{StaticResource SolidColorBrush.Background.2}" Height="4" Margin="0,0,0,0" VerticalAlignment="Top"/>
+                <StackPanel>
+                    <Label Content="{Binding TranslationAddTradeManually, FallbackValue=ADD_TRADE_MANUALLY}" Style="{StaticResource HeaderStyle.Tracking.Title}" Margin="2,5,0,0"
+                           Foreground="{StaticResource SolidColorBrush.Accent.Blue.2}" />
+
+                    <ComboBox Width="200" Height="26" Margin="0,5,0,5" ItemsSource="{Binding ManuallyTradeTypes}" 
+                              SelectedItem="{Binding ManuallyTradeTypeSelection, IsAsync=true}" 
+                              HorizontalAlignment="Left" DisplayMemberPath="Name" SelectedValuePath="Type" />
+
+                    <StackPanel Orientation="Horizontal">
+                        <StackPanel Orientation="Vertical" Width="300" Margin="0,0,5,0">
+                            <Label Content="{Binding TranslationDescription, FallbackValue=DESCRIPTION}" Width="auto" VerticalAlignment="Top" />
+                            <TextBox Text="{Binding Description, UpdateSourceTrigger=PropertyChanged}" Width="auto" Height="40" VerticalContentAlignment="Top" TextWrapping="Wrap" />
+                        </StackPanel>
+
+                        <StackPanel Orientation="Vertical" Width="120" Margin="5,0">
+                            <Label Content="{Binding TranslationValue, FallbackValue=VALUE}" Width="auto" VerticalAlignment="Top" />
+                            <TextBox Text="{Binding Value, UpdateSourceTrigger=PropertyChanged}" common:TextBoxHelper.OnlyNumeric="Double" />
+                        </StackPanel>
+                    </StackPanel>
+
+                    <Button Content="{Binding TranslationAddTrade, FallbackValue=ADD__TRADE}" HorizontalAlignment="Left" 
+                            Margin="0,10" Height="24" Width="200" MaxWidth="300" MinWidth="200">
+                        <Button.InputBindings>
+                            <MouseBinding MouseAction="LeftClick" Command="{Binding AddTradeCommand}" />
+                        </Button.InputBindings>
+                    </Button>
+
+                    <Grid Height="25"/>
+                </StackPanel>
+            </StackPanel>
+        </Grid>
+    </DataTemplate>
+
     <DataTemplate x:Key="MailTemplate" DataType="{x:Type trade:Trade}">
         <Grid Height="50">
             <Grid.InputBindings>
@@ -460,6 +496,7 @@
                                     </Style>
                                 </StackPanel.Style>
                                 <TextBlock Text="{Binding MailTypeDescription, IsAsync=True, StringFormat='{}{0}: ', FallbackValue=MAIL}" Style="{StaticResource Mail.Text.Colors}" />
+
                                 <TextBlock Text="{Binding MailContent.Quantity, IsAsync=True, StringFormat='{}{0}x', FallbackValue=0}" FontWeight="Bold" Margin="0,0,3,0" Foreground="{StaticResource SolidColorBrush.Text.1}" />
                                 <TextBlock Style="{StaticResource Trade.Text.Tier}" />
                                 <TextBlock Text="{Binding Item.LocalizedName, IsAsync=True}" Foreground="{StaticResource SolidColorBrush.Text.1}" />
@@ -636,9 +673,40 @@
                         <DockPanel>
                             <StackPanel Orientation="Horizontal">
                                 <TextBlock Text="{Binding TypeDescription, IsAsync=True, StringFormat='{}{0}: ', FallbackValue=INSTANT_SELL}" Style="{StaticResource Instant.Text.Color.Green}" />
-                                <TextBlock Text="{Binding InstantBuySellContent.Quantity, IsAsync=True, StringFormat='{}{0}x', FallbackValue=0}" FontWeight="Bold" Margin="0,0,3,0" Foreground="{StaticResource SolidColorBrush.Text.1}" />
-                                <TextBlock Style="{StaticResource Trade.Text.Tier}" />
-                                <TextBlock Text="{Binding Item.LocalizedName, IsAsync=True}" Foreground="{StaticResource SolidColorBrush.Text.1}" />
+                                <StackPanel Orientation="Horizontal">
+                                    <StackPanel.Style>
+                                        <Style TargetType="{x:Type StackPanel}">
+                                            <Setter Property="Visibility" Value="Visible"/>
+                                            <Style.Triggers>
+                                                <DataTrigger Binding="{Binding Description, IsAsync=True}" Value="">
+                                                    <Setter Property="Visibility" Value="Collapsed"/>
+                                                </DataTrigger>
+                                                <DataTrigger Binding="{Binding Description}" Value="{x:Null}">
+                                                    <Setter Property="Visibility" Value="Collapsed"/>
+                                                </DataTrigger>
+                                            </Style.Triggers>
+                                        </Style>
+                                    </StackPanel.Style>
+                                    <TextBlock Text="{Binding Description, IsAsync=True}" Foreground="{StaticResource SolidColorBrush.Accent.Blue.1}" />
+                                </StackPanel>
+                                <StackPanel Orientation="Horizontal">
+                                    <StackPanel.Style>
+                                        <Style TargetType="{x:Type StackPanel}">
+                                            <Setter Property="Visibility" Value="Collapsed"/>
+                                            <Style.Triggers>
+                                                <DataTrigger Binding="{Binding Description, IsAsync=True}" Value="">
+                                                    <Setter Property="Visibility" Value="Visible"/>
+                                                </DataTrigger>
+                                                <DataTrigger Binding="{Binding Description}" Value="{x:Null}">
+                                                    <Setter Property="Visibility" Value="Visible"/>
+                                                </DataTrigger>
+                                            </Style.Triggers>
+                                        </Style>
+                                    </StackPanel.Style>
+                                    <TextBlock Text="{Binding InstantBuySellContent.Quantity, IsAsync=True, StringFormat='{}{0}x', FallbackValue=0}" FontWeight="Bold" Margin="0,0,3,0" Foreground="{StaticResource SolidColorBrush.Text.1}" />
+                                    <TextBlock Style="{StaticResource Trade.Text.Tier}" />
+                                    <TextBlock Text="{Binding Item.LocalizedName, IsAsync=True}" Foreground="{StaticResource SolidColorBrush.Text.1}" />
+                                </StackPanel>
                             </StackPanel>
                             <TextBlock Text="{Binding Timestamp, IsAsync=True, StringFormat='{}{0}'}" TextAlignment="Right" Foreground="{StaticResource SolidColorBrush.Text.1}"/>
                         </DockPanel>
@@ -711,9 +779,40 @@
                         <DockPanel>
                             <StackPanel Orientation="Horizontal">
                                 <TextBlock Text="{Binding TypeDescription, IsAsync=True, StringFormat='{}{0}: ', FallbackValue=INSTANT_BUY}" Style="{StaticResource Instant.Text.Color.Red}" />
-                                <TextBlock Text="{Binding InstantBuySellContent.Quantity, IsAsync=True, StringFormat='{}{0}x', FallbackValue=0}" FontWeight="Bold" Margin="0,0,3,0" Foreground="{StaticResource SolidColorBrush.Text.1}" />
-                                <TextBlock Style="{StaticResource Trade.Text.Tier}" />
-                                <TextBlock Text="{Binding Item.LocalizedName, IsAsync=True}" Foreground="{StaticResource SolidColorBrush.Text.1}" />
+                                <StackPanel Orientation="Horizontal">
+                                    <StackPanel.Style>
+                                        <Style TargetType="{x:Type StackPanel}">
+                                            <Setter Property="Visibility" Value="Visible"/>
+                                            <Style.Triggers>
+                                                <DataTrigger Binding="{Binding Description, IsAsync=True}" Value="">
+                                                    <Setter Property="Visibility" Value="Collapsed"/>
+                                                </DataTrigger>
+                                                <DataTrigger Binding="{Binding Description}" Value="{x:Null}">
+                                                    <Setter Property="Visibility" Value="Collapsed"/>
+                                                </DataTrigger>
+                                            </Style.Triggers>
+                                        </Style>
+                                    </StackPanel.Style>
+                                    <TextBlock Text="{Binding Description, IsAsync=True}" Foreground="{StaticResource SolidColorBrush.Accent.Blue.1}" />
+                                </StackPanel>
+                                <StackPanel Orientation="Horizontal">
+                                    <StackPanel.Style>
+                                        <Style TargetType="{x:Type StackPanel}">
+                                            <Setter Property="Visibility" Value="Collapsed"/>
+                                            <Style.Triggers>
+                                                <DataTrigger Binding="{Binding Description, IsAsync=True}" Value="">
+                                                    <Setter Property="Visibility" Value="Visible"/>
+                                                </DataTrigger>
+                                                <DataTrigger Binding="{Binding Description}" Value="{x:Null}">
+                                                    <Setter Property="Visibility" Value="Visible"/>
+                                                </DataTrigger>
+                                            </Style.Triggers>
+                                        </Style>
+                                    </StackPanel.Style>
+                                    <TextBlock Text="{Binding InstantBuySellContent.Quantity, IsAsync=True, StringFormat='{}{0}x', FallbackValue=0}" FontWeight="Bold" Margin="0,0,3,0" Foreground="{StaticResource SolidColorBrush.Text.1}" />
+                                    <TextBlock Style="{StaticResource Trade.Text.Tier}" />
+                                    <TextBlock Text="{Binding Item.LocalizedName, IsAsync=True}" Foreground="{StaticResource SolidColorBrush.Text.1}" />
+                                </StackPanel>
                             </StackPanel>
                             <TextBlock Text="{Binding Timestamp, IsAsync=True, StringFormat='{}{0}'}" TextAlignment="Right" Foreground="{StaticResource SolidColorBrush.Text.1}"/>
                         </DockPanel>
