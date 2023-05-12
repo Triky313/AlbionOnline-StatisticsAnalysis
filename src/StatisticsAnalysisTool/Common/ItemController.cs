@@ -381,9 +381,10 @@ public static class ItemController
             }
         }
     }
-
+    
     public static void SaveFavoriteItemsToLocalFile()
     {
+        DirectoryController.CreateDirectoryWhenNotExists(Path.Combine(AppDomain.CurrentDomain.BaseDirectory, Settings.Default.UserDataDirectoryName));
         var localFilePath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, Settings.Default.UserDataDirectoryName, Settings.Default.FavoriteItemsFileName);
         var favoriteItems = Items?.Where(x => x.IsFavorite);
         var toSaveFavoriteItems = favoriteItems?.Select(x => x.UniqueName);
