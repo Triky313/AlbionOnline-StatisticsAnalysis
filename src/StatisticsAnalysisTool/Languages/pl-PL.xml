@@ -732,4 +732,10 @@
 	<translation name="GAME_TRACKING_IS_STARTED">Rozpoczęto śledzenie gry</translation>
 	<translation name="GAME_TRACKING_IS_STOPPED">Zatrzymano śledzenie gry</translation>
 	<translation name="TRACKING_STATUS">Status śledzenia</translation>
+	<translation name="ADD_TRADE_MANUALLY">Dodaj ręcznie transakcję</translation>
+	<translation name="DESCRIPTION">Opis</translation>
+	<translation name="VALUE">Wartość</translation>
+	<translation name="ADD_TRADE">Dodaj transakcję</translation>
+	<translation name="MANUAL_SELL">Ręczna sprzedaż</translation>
+	<translation name="MANUAL_BUY">Ręczny zakup</translation>
 </translations>
