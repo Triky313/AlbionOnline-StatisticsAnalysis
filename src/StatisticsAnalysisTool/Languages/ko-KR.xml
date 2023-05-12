@@ -716,4 +716,25 @@
 	<translation name="NETWORK_FILTERING">네트워크 필터링</translation>
 	<translation name="ACTIVATED">활성화</translation>
 	<translation name="DISABLED">비활성화</translation>	
+	<translation name="ADDED_PURCHASE">구매 정보</translation>
+	<translation name="ADDED_SALE">판매 정보</translation>
+	<translation name="ADDED_UNKNOWN_TRADE">알 수 없는 거래</translation>
+	<translation name="ADDED_BUY_ORDER">구매 요청서</translation>
+	<translation name="ADDED_SELL_ORDER">판매 요청서</translation>
+	<translation name="ADDED_EXPIRED_BUY_ORDER">만료된 구매 요청서</translation>
+	<translation name="ADDED_EXPIRED_SELL_ORDER">만료된 판매 요청서</translation>
+	<translation name="ADDED_TRADES">거래 등록</translation>
+	<translation name="NOTIFICATIONS">알림</translation>
+	<translation name="NO_LISTENING_ADAPTERS">No listening adapters</translation>
+	<translation name="PACKET_FILTER">패킷 필터</translation>
+	<translation name="RESET">초기화</translation>
+	<translation name="START_TRACKING">추적 시작</translation>
+	<translation name="STOP_TRACKING">추적 중단</translation>
+	<translation name="GAME_TRACKING_IS_STARTED">게임 추적 시작</translation>
+	<translation name="GAME_TRACKING_IS_STOPPED">게임 추적 중단</translation>
+	<translation name="TRACKING_STATUS">추적 상태</translation>
+	<translation name="ADD_TRADE_MANUALLY">거래 수동 등록</translation>
+	<translation name="DESCRIPTION">설명</translation>
+	<translation name="VALUE">값</translation>
+	<translation name="ADD_TRADE">거래 등록</translation>
 </translations>	
