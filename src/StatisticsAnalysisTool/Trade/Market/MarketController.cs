@@ -1,8 +1,6 @@
 ﻿using StatisticsAnalysisTool.Cluster;
-using StatisticsAnalysisTool.Common;
 using StatisticsAnalysisTool.Common.UserSettings;
 using StatisticsAnalysisTool.Network.Manager;
-using StatisticsAnalysisTool.Notification;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -61,7 +59,6 @@ public class MarketController
                 InstantBuySellContent = instantBuySellContent
             };
 
-            await ServiceLocator.Resolve<SatNotificationManager>().ShowTradeAsync(trade);
             _ = _trackingController.TradeController.AddTradeToBindingCollection(trade);
             await _trackingController.TradeController.SaveInFileAfterExceedingLimit(10);
         }
@@ -113,7 +110,6 @@ public class MarketController
                 InstantBuySellContent = instantBuySellContent
             };
 
-            await ServiceLocator.Resolve<SatNotificationManager>().ShowTradeAsync(trade);
             _ = _trackingController.TradeController.AddTradeToBindingCollection(trade);
             await _trackingController.TradeController.SaveInFileAfterExceedingLimit(10);
         }

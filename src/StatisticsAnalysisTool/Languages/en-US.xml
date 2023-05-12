@@ -732,4 +732,10 @@
 	<translation name="GAME_TRACKING_IS_STARTED">Game tracking is started</translation>
 	<translation name="GAME_TRACKING_IS_STOPPED">Game tracking is stopped</translation>
 	<translation name="TRACKING_STATUS">Tracking status</translation>
+	<translation name="ADD_TRADE_MANUALLY">Add trade manually</translation>
+	<translation name="DESCRIPTION">Description</translation>
+	<translation name="VALUE">Value</translation>
+	<translation name="ADD_TRADE">Add trade</translation>
+	<translation name="MANUAL_SELL">Manual sell</translation>
+	<translation name="MANUAL_BUY">Manual buy</translation>
 </translations>

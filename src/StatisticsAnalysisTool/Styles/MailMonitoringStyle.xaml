@@ -1,6 +1,5 @@
 ﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-                    xmlns:models="clr-namespace:StatisticsAnalysisTool.Models"
                     xmlns:common="clr-namespace:StatisticsAnalysisTool.Common"
                     xmlns:trade="clr-namespace:StatisticsAnalysisTool.Trade">
 
@@ -397,7 +396,7 @@
         </Grid>
     </DataTemplate>
 
-    <DataTemplate x:Key="MailOptionsObjectTemplate" DataType="{x:Type models:TradeOptionsObject}">
+    <DataTemplate x:Key="MailOptionsObjectTemplate" DataType="{x:Type trade:TradeOptionsObject}">
         <Grid>
             <StackPanel Orientation="Vertical" Margin="0,0,0,0">
                 <Separator Background="{StaticResource SolidColorBrush.Background.2}" Height="4" Margin="0,0,0,0" VerticalAlignment="Top"/>
@@ -432,6 +431,43 @@
         </Grid>
     </DataTemplate>
 
+    <DataTemplate x:Key="ManuallyMailMenuTemplate" DataType="{x:Type trade:ManuallyTradeMenuObject}">
+        <Grid>
+            <StackPanel Orientation="Vertical" Margin="0,0,0,0">
+                <Separator Background="{StaticResource SolidColorBrush.Background.2}" Height="4" Margin="0,0,0,0" VerticalAlignment="Top"/>
+                <StackPanel>
+                    <Label Content="{Binding TranslationAddTradeManually, FallbackValue=ADD_TRADE_MANUALLY}" Style="{StaticResource HeaderStyle.Tracking.Title}" Margin="2,5,0,0"
+                           Foreground="{StaticResource SolidColorBrush.Accent.Blue.2}" />
+
+                    <ComboBox Width="200" Height="26" Margin="0,5,0,5" ItemsSource="{Binding ManuallyTradeTypes}" 
+                              SelectedItem="{Binding ManuallyTradeTypeSelection, IsAsync=true}" 
+                              HorizontalAlignment="Left" DisplayMemberPath="Name" SelectedValuePath="Type" />
+
+                    <StackPanel Orientation="Horizontal">
+                        <StackPanel Orientation="Vertical" Width="300" Margin="0,0,5,0">
+                            <Label Content="{Binding TranslationDescription, FallbackValue=DESCRIPTION}" Width="auto" VerticalAlignment="Top" />
+                            <TextBox Text="{Binding Description, UpdateSourceTrigger=PropertyChanged}" Width="auto" Height="40" VerticalContentAlignment="Top" TextWrapping="Wrap" />
+                        </StackPanel>
+
+                        <StackPanel Orientation="Vertical" Width="120" Margin="5,0">
+                            <Label Content="{Binding TranslationValue, FallbackValue=VALUE}" Width="auto" VerticalAlignment="Top" />
+                            <TextBox Text="{Binding Value, UpdateSourceTrigger=PropertyChanged}" common:TextBoxHelper.OnlyNumeric="Double" />
+                        </StackPanel>
+                    </StackPanel>
+
+                    <Button Content="{Binding TranslationAddTrade, FallbackValue=ADD__TRADE}" HorizontalAlignment="Left" 
+                            Margin="0,10" Height="24" Width="200" MaxWidth="300" MinWidth="200">
+                        <Button.InputBindings>
+                            <MouseBinding MouseAction="LeftClick" Command="{Binding AddTradeCommand}" />
+                        </Button.InputBindings>
+                    </Button>
+
+                    <Grid Height="25"/>
+                </StackPanel>
+            </StackPanel>
+        </Grid>
+    </DataTemplate>
+
     <DataTemplate x:Key="MailTemplate" DataType="{x:Type trade:Trade}">
         <Grid Height="50">
             <Grid.InputBindings>
@@ -460,6 +496,7 @@
                                     </Style>
                                 </StackPanel.Style>
                                 <TextBlock Text="{Binding MailTypeDescription, IsAsync=True, StringFormat='{}{0}: ', FallbackValue=MAIL}" Style="{StaticResource Mail.Text.Colors}" />
+
                                 <TextBlock Text="{Binding MailContent.Quantity, IsAsync=True, StringFormat='{}{0}x', FallbackValue=0}" FontWeight="Bold" Margin="0,0,3,0" Foreground="{StaticResource SolidColorBrush.Text.1}" />
                                 <TextBlock Style="{StaticResource Trade.Text.Tier}" />
                                 <TextBlock Text="{Binding Item.LocalizedName, IsAsync=True}" Foreground="{StaticResource SolidColorBrush.Text.1}" />
@@ -714,6 +751,139 @@
                                 <TextBlock Text="{Binding InstantBuySellContent.Quantity, IsAsync=True, StringFormat='{}{0}x', FallbackValue=0}" FontWeight="Bold" Margin="0,0,3,0" Foreground="{StaticResource SolidColorBrush.Text.1}" />
                                 <TextBlock Style="{StaticResource Trade.Text.Tier}" />
                                 <TextBlock Text="{Binding Item.LocalizedName, IsAsync=True}" Foreground="{StaticResource SolidColorBrush.Text.1}" />
+                            </StackPanel>
+                            <TextBlock Text="{Binding Timestamp, IsAsync=True, StringFormat='{}{0}'}" TextAlignment="Right" Foreground="{StaticResource SolidColorBrush.Text.1}"/>
+                        </DockPanel>
+                        <DockPanel>
+                            <StackPanel Orientation="Horizontal">
+                                <TextBlock Text="{Binding TranslationCostPerItem, IsAsync=True}" Width="160" Foreground="{StaticResource SolidColorBrush.Text.4}" />
+                                <TextBlock Text="{Binding TranslationTotalCost, IsAsync=True, FallbackValue=TOTAL_COST}" Width="160" Foreground="{StaticResource SolidColorBrush.Text.4}" />
+                            </StackPanel>
+                            <TextBlock Style="{StaticResource Trade.City.Text}" />
+                        </DockPanel>
+                        <DockPanel>
+                            <StackPanel Orientation="Horizontal">
+                                <Grid Width="160">
+                                    <Image Style="{StaticResource Trade.Silver.Image.Style}" ToolTip="{Binding TranslationSilver, IsAsync=True}" />
+                                    <TextBlock Text="{common:CultureAwareBinding InstantBuySellContent.UnitPrice.IntegerValue, IsAsync=True, StringFormat='{}{0:N0}', FallbackValue=0}" 
+                                           Style="{StaticResource Instant.Text.Color.Red}" Margin="25,0,0,0" />
+                                </Grid>
+                                <Grid Width="160">
+                                    <Image Style="{StaticResource Trade.Silver.Image.Style}" ToolTip="{Binding TranslationSilver, IsAsync=True}" />
+                                    <TextBlock Text="{common:CultureAwareBinding InstantBuySellContent.TotalPrice.DoubleValue, IsAsync=True, StringFormat='{}{0:N0}', FallbackValue=0}" 
+                                           Style="{StaticResource Instant.Text.Color.Red}" Margin="25,0,0,0">
+                                        <TextBlock.ToolTip>
+                                            <TextBlock>
+                                                <TextBlock.Text>
+                                                    <MultiBinding StringFormat="{}{0}: {1:N0}">
+                                                        <Binding Path="TranslationTotalPriceWithDeductedTaxes" IsAsync="True" />
+                                                        <Binding Path="MailContent.TotalPriceWithDeductedTaxes.DoubleValue" IsAsync="True" />
+                                                    </MultiBinding>
+                                                </TextBlock.Text>
+                                            </TextBlock>
+                                        </TextBlock.ToolTip>
+                                    </TextBlock>
+                                </Grid>
+                            </StackPanel>
+                            <Grid Margin="0 -2 0 0" Height="18" Width="18" HorizontalAlignment="Right">
+                                <CheckBox Width="auto" Height="auto" IsChecked="{Binding IsSelectedForDeletion, IsAsync=True, FallbackValue=false}" ToolTip="{Binding TranslationSelectToDelete, IsAsync=True}" />
+                            </Grid>
+                        </DockPanel>
+                    </StackPanel>
+                </DockPanel>
+            </Border>
+        </Grid>
+    </DataTemplate>
+
+    <DataTemplate x:Key="ManualSellTemplate" DataType="{x:Type trade:Trade}">
+        <Grid Height="50">
+            <Grid.InputBindings>
+                <MouseBinding MouseAction="LeftDoubleClick" Command="{Binding OpenItemWindowCommand}" />
+            </Grid.InputBindings>
+            <Grid Style="{StaticResource InstantSell.Type.Colors}" />
+            <Border Style="{StaticResource Container.Border}">
+                <DockPanel VerticalAlignment="Top" HorizontalAlignment="Stretch" Margin="5,0,10,0">
+                    <Grid Margin="0,0, 5, 0" HorizontalAlignment="Center" VerticalAlignment="Center">
+                        <Image Source="{Binding Item.Icon, IsAsync=True, Mode=OneWay}" Style="{StaticResource Trade.Icon}" />
+                    </Grid>
+                    <StackPanel Orientation="Vertical">
+                        <DockPanel>
+                            <StackPanel Orientation="Horizontal">
+                                <TextBlock Text="{Binding TypeDescription, IsAsync=True, StringFormat='{}{0}: ', FallbackValue=INSTANT_SELL}" Style="{StaticResource Instant.Text.Color.Green}" />
+                                <TextBlock Text="{Binding Description, IsAsync=True}" Foreground="{StaticResource SolidColorBrush.Accent.Blue.1}" />
+                            </StackPanel>
+                            <TextBlock Text="{Binding Timestamp, IsAsync=True, StringFormat='{}{0}'}" TextAlignment="Right" Foreground="{StaticResource SolidColorBrush.Text.1}"/>
+                        </DockPanel>
+                        <DockPanel>
+                            <StackPanel Orientation="Horizontal">
+                                <TextBlock Text="{Binding TranslationCostPerItem, IsAsync=True}" Width="160" Foreground="{StaticResource SolidColorBrush.Text.4}" />
+                                <TextBlock Text="{Binding TranslationTotalRevenue, IsAsync=True, FallbackValue=TOTAL_REVENUE}" Width="160" Foreground="{StaticResource SolidColorBrush.Text.4}" />
+                                <TextBlock Width="110" Foreground="{StaticResource SolidColorBrush.Text.4}">
+                                    <TextBlock.Text>
+                                        <MultiBinding StringFormat="{}{0} ({1}%)">
+                                            <Binding Path="TranslationTax" IsAsync="True" />
+                                            <Binding Path="InstantBuySellContent.TaxRate" IsAsync="True" />
+                                        </MultiBinding>
+                                    </TextBlock.Text>
+                                </TextBlock>
+                            </StackPanel>
+                            <TextBlock Style="{StaticResource Trade.City.Text}" />
+                        </DockPanel>
+                        <DockPanel>
+                            <StackPanel Orientation="Horizontal">
+                                <Grid Width="160">
+                                    <Image Style="{StaticResource Trade.Silver.Image.Style}" ToolTip="{Binding TranslationSilver, IsAsync=True}" />
+                                    <TextBlock Text="{common:CultureAwareBinding InstantBuySellContent.UnitPrice.DoubleValue, IsAsync=True, StringFormat='{}{0:N0}', FallbackValue=0}" 
+                                           Style="{StaticResource Instant.Text.Color.Green}" Margin="25,0,0,0" />
+                                </Grid>
+                                <Grid Width="160">
+                                    <Image Style="{StaticResource Trade.Silver.Image.Style}" ToolTip="{Binding TranslationSilver, IsAsync=True}" />
+                                    <TextBlock Text="{common:CultureAwareBinding InstantBuySellContent.TotalPrice.DoubleValue, IsAsync=True, StringFormat='{}{0:N0}', FallbackValue=0}" 
+                                           Style="{StaticResource Instant.Text.Color.Green}" Margin="25,0,0,0" />
+                                </Grid>
+                                <Grid Width="160">
+                                    <Image Style="{StaticResource Trade.Silver.Image.Style}" ToolTip="{Binding TranslationSilver, IsAsync=True}" />
+                                    <TextBlock Text="{common:CultureAwareBinding InstantBuySellContent.TaxPrice.DoubleValue, IsAsync=True, StringFormat='{}{0:N0}', FallbackValue=0}" 
+                                               Style="{StaticResource Instant.Text.Color.Red}" Margin="25,0,0,0">
+                                        <TextBlock.ToolTip>
+                                            <TextBlock>
+                                                <TextBlock.Text>
+                                                    <MultiBinding StringFormat="{}{0}: {1:N0}">
+                                                        <Binding Path="TranslationTotalPriceWithDeductedTaxes" IsAsync="True" />
+                                                        <Binding Path="InstantBuySellContent.TotalPriceWithDeductedTaxes.IntegerValue" IsAsync="True" />
+                                                    </MultiBinding>
+                                                </TextBlock.Text>
+                                            </TextBlock>
+                                        </TextBlock.ToolTip>
+                                    </TextBlock>
+                                </Grid>
+                            </StackPanel>
+                            <Grid Margin="0 -2 0 0" Height="18" Width="18" HorizontalAlignment="Right">
+                                <CheckBox Width="auto" Height="auto" IsChecked="{Binding IsSelectedForDeletion, IsAsync=True, FallbackValue=false}" ToolTip="{Binding TranslationSelectToDelete, IsAsync=True}" />
+                            </Grid>
+                        </DockPanel>
+                    </StackPanel>
+                </DockPanel>
+            </Border>
+        </Grid>
+    </DataTemplate>
+
+    <DataTemplate x:Key="ManualBuyTemplate" DataType="{x:Type trade:Trade}">
+        <Grid Height="50">
+            <Grid.InputBindings>
+                <MouseBinding MouseAction="LeftDoubleClick" Command="{Binding OpenItemWindowCommand}" />
+            </Grid.InputBindings>
+            <Grid Style="{StaticResource InstantBuy.Type.Colors}" />
+            <Border Style="{StaticResource Container.Border}">
+                <DockPanel VerticalAlignment="Top" HorizontalAlignment="Stretch" Margin="5,0,10,0">
+                    <Grid Margin="0,0, 5, 0" HorizontalAlignment="Center" VerticalAlignment="Center">
+                        <Image Source="{Binding Item.Icon, IsAsync=True, Mode=OneWay}" Style="{StaticResource Trade.Icon}" />
+                    </Grid>
+                    <StackPanel Orientation="Vertical">
+                        <DockPanel>
+                            <StackPanel Orientation="Horizontal">
+                                <TextBlock Text="{Binding TypeDescription, IsAsync=True, StringFormat='{}{0}: ', FallbackValue=INSTANT_BUY}" Style="{StaticResource Instant.Text.Color.Red}" />
+                                <TextBlock Text="{Binding Description, IsAsync=True}" Foreground="{StaticResource SolidColorBrush.Accent.Blue.1}" />
                             </StackPanel>
                             <TextBlock Text="{Binding Timestamp, IsAsync=True, StringFormat='{}{0}'}" TextAlignment="Right" Foreground="{StaticResource SolidColorBrush.Text.1}"/>
                         </DockPanel>

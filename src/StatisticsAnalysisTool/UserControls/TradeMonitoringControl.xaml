@@ -8,24 +8,27 @@
              xmlns:vwp="clr-namespace:WpfToolkit.Controls;assembly=VirtualizingWrapPanel"
              xmlns:trade="clr-namespace:StatisticsAnalysisTool.Trade"
              mc:Ignorable="d" 
-             d:DesignHeight="1250" d:DesignWidth="800"
+             d:DesignHeight="1750" d:DesignWidth="800"
              d:DataContext="{d:DesignInstance Type=viewModels:MainWindowViewModel}">
     <UserControl.Resources>
         <trade:TradeDataTemplateSelector x:Key="TradeDataTemplateSelector"
                                          MailTemplate="{StaticResource MailTemplate}"
                                          InstantSellTemplate="{StaticResource InstantSellTemplate}" 
-                                         InstantBuyTemplate="{StaticResource InstantBuyTemplate}" />
+                                         InstantBuyTemplate="{StaticResource InstantBuyTemplate}"
+                                         ManualSellTemplate="{StaticResource ManualSellTemplate}" 
+                                         ManualBuyTemplate="{StaticResource ManualBuyTemplate}" />
     </UserControl.Resources>
     <Grid>
         <Grid Margin="0,0,0,0" Height="60" VerticalAlignment="Top">
             <StackPanel Orientation="Horizontal" MaxWidth="400" Height="30" HorizontalAlignment="Left" VerticalAlignment="Top">
                 <fa5:ImageAwesome Icon="Solid_Filter" Foreground="{StaticResource SolidColorBrush.Text.1}" Width="20" Height="20" Margin="0,0,5,0" />
-                <TextBox Text="{Binding TradeMonitoringBindings.TradesSearchText, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" TextChanged="SearchText_TextChanged" Width="200" Height="24" HorizontalAlignment="Left" />
+                <TextBox Text="{Binding TradeMonitoringBindings.TradesSearchText, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" TextChanged="SearchText_TextChanged" 
+                         Width="200" Height="24" HorizontalAlignment="Left" />
             </StackPanel>
             <StackPanel Orientation="Vertical" Height="60" HorizontalAlignment="Right" VerticalAlignment="Top">
                 <StackPanel Orientation="Horizontal" MaxWidth="300" Height="30" HorizontalAlignment="Right" VerticalAlignment="Top">
                     <Button Content="{Binding Translation.DeleteSelectedTrades, FallbackValue=DELETE__SELECTED__TRADES}" Margin="5,0,0,0"
-                            Height="24" Width="200" MaxWidth="300" MinWidth="200" Click="BtnDeleteSelectedMails_Click" />
+                            Height="24" Width="200" MaxWidth="300" MinWidth="200" IsEnabled="{Binding TradeMonitoringBindings.IsDeleteTradesButtonEnabled}" Click="BtnDeleteSelectedMails_Click" />
                     <Grid Height="20" Width="20" Margin="5,0,0,0" VerticalAlignment="Center"
                           MouseEnter="OpenMailMonitoringPopup_MouseEnter" MouseLeave="CloseMailMonitoringPopup_MouseLeave">
                         <fa5:ImageAwesome Icon="Solid_InfoCircle" Foreground="{StaticResource SolidColorBrush.Text.1}" />
@@ -60,6 +63,7 @@
                     <StackPanel Orientation="Vertical">
                         <ContentControl Margin="0,0,0,0" ContentTemplate="{StaticResource MailStatsObjectTemplate}" Content="{Binding TradeMonitoringBindings.TradeStatsObject}" />
                         <ContentControl Margin="0,0,0,0" ContentTemplate="{StaticResource MailOptionsObjectTemplate}" Content="{Binding TradeMonitoringBindings.TradeOptionsObject}" />
+                        <ContentControl Margin="0,0,0,0" ContentTemplate="{StaticResource ManuallyMailMenuTemplate}" Content="{Binding TradeMonitoringBindings.ManuallyTradeMenuObject}" />
                     </StackPanel>
                 </ScrollViewer>
                 <StackPanel Orientation="Horizontal" Height="28" VerticalAlignment="Bottom">

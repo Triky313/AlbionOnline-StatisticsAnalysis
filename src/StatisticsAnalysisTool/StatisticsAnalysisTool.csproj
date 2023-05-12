@@ -38,6 +38,7 @@
   </PropertyGroup>
   <PropertyGroup>
     <ApplicationIcon>sat-icon.ico</ApplicationIcon>
+    <RepositoryUrl>https://github.com/Triky313/AlbionOnline-StatisticsAnalysis</RepositoryUrl>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|x86'">
     <OutputPath>bin\x86\Debug\</OutputPath>

@@ -341,7 +341,7 @@ public static class ExtensionMethod
 
     public static bool IsDateInWeekOfYear(this DateTime date1, DateTime date2)
     {
-        return ISOWeek.GetWeekOfYear(date1) == ISOWeek.GetWeekOfYear(date2);
+        return date1.Year == date2.Year && ISOWeek.GetWeekOfYear(date1) == ISOWeek.GetWeekOfYear(date2);
     }
 
     #endregion

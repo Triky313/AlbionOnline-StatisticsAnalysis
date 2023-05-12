@@ -1,4 +1,4 @@
-﻿namespace StatisticsAnalysisTool.Models;
+﻿namespace StatisticsAnalysisTool.Trade;
 
 public struct DeleteTradesAfterDaysStruct
 {
