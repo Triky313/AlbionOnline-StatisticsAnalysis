@@ -9,8 +9,10 @@ public class MightFavorPointsEvent
 {
     public FixPoint Might;
     public FixPoint PremiumOfMight;
+    public FixPoint BonusOfMight;
     public FixPoint Favor;
     public FixPoint PremiumOfFavor;
+    public FixPoint BonusOfFavor;
     public FixPoint TotalFavor;
 
     public MightFavorPointsEvent(Dictionary<byte, object> parameters)
@@ -18,33 +20,45 @@ public class MightFavorPointsEvent
         ConsoleManager.WriteLineForNetworkHandler(GetType().Name, parameters);
         try
         {
-            if (parameters.ContainsKey(0))
+            if (parameters.ContainsKey(1))
             {
-                var might = parameters[0].ObjectToLong();
+                var might = parameters[1].ObjectToLong();
                 Might = FixPoint.FromInternalValue(might ?? 0);
             }
 
             if (parameters.ContainsKey(2))
             {
-                var premiumOfMight = parameters[2].ObjectToLong();
-                PremiumOfMight = FixPoint.FromInternalValue(premiumOfMight ?? 0);
+                var bonusOfMight = parameters[2].ObjectToLong();
+                BonusOfMight = FixPoint.FromInternalValue(bonusOfMight ?? 0);
             }
 
             if (parameters.ContainsKey(3))
             {
-                var favor = parameters[3].ObjectToLong();
+                var premiumOfMight = parameters[3].ObjectToLong();
+                PremiumOfMight = FixPoint.FromInternalValue(premiumOfMight ?? 0);
+            }
+
+            if (parameters.ContainsKey(4))
+            {
+                var favor = parameters[4].ObjectToLong();
                 Favor = FixPoint.FromInternalValue(favor ?? 0);
             }
 
             if (parameters.ContainsKey(5))
             {
-                var premiumOfFavor = parameters[5].ObjectToLong();
-                PremiumOfFavor = FixPoint.FromInternalValue(premiumOfFavor ?? 0);
+                var bonusOfFavor = parameters[5].ObjectToLong();
+                BonusOfFavor = FixPoint.FromInternalValue(bonusOfFavor ?? 0);
             }
 
             if (parameters.ContainsKey(6))
             {
-                var totalFavor = parameters[6].ObjectToLong();
+                var premiumOfFavor = parameters[6].ObjectToLong();
+                PremiumOfFavor = FixPoint.FromInternalValue(premiumOfFavor ?? 0);
+            }
+
+            if (parameters.ContainsKey(7))
+            {
+                var totalFavor = parameters[7].ObjectToLong();
                 TotalFavor = FixPoint.FromInternalValue(totalFavor ?? 0);
             }
         }

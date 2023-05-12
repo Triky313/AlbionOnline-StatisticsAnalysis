@@ -22,7 +22,10 @@ public partial class App
     protected override void OnStartup(StartupEventArgs e)
     {
         base.OnStartup(e);
-
+        
+        log4net.Config.XmlConfigurator.Configure();
+        Log.InfoFormat(LanguageController.CurrentCultureInfo, $"Tool started with v{Assembly.GetExecutingAssembly().GetName().Version}");
+        
         AppDomain.CurrentDomain.UnhandledException += OnUnhandledException;
 
         SettingsController.LoadSettings();
