@@ -732,4 +732,10 @@
 	<translation name="GAME_TRACKING_IS_STARTED">游戏追踪开始</translation>
 	<translation name="GAME_TRACKING_IS_STOPPED">游戏追踪结束</translation>
 	<translation name="TRACKING_STATUS">追踪状态</translation>
+	<translation name="ADD_TRADE_MANUALLY">手动添加交易</translation>
+	<translation name="DESCRIPTION">描述</translation>
+	<translation name="VALUE">价值</translation>
+	<translation name="ADD_TRADE">添加交易</translation>
+	<translation name="MANUAL_SELL">手动卖出</translation>
+	<translation name="MANUAL_BUY">手动买入</translation>
 </translations>
