@@ -53,17 +53,35 @@ public class TradeController
 
     public async Task RemoveTradesByIdsAsync(IEnumerable<long> ids)
     {
-        await Application.Current.Dispatcher.InvokeAsync(() =>
+        await Task.Run(() =>
         {
-            foreach (var trade in _mainWindowViewModel?.TradeMonitoringBindings?.Trades?.ToList().Where(x => ids.Contains(x.Id)) ?? new List<Trade>())
-            {
-                _mainWindowViewModel?.TradeMonitoringBindings?.Trades?.Remove(trade);
-            }
-            _mainWindowViewModel?.TradeMonitoringBindings?.TradeStatsObject?.SetTradeStats(_mainWindowViewModel?.TradeMonitoringBindings?.TradeCollectionView?.Cast<Trade>().ToList());
+            var tradesToRemove = _mainWindowViewModel?.TradeMonitoringBindings?.Trades?.ToList().Where(x => ids.Contains(x.Id)).ToList();
+            var newList = _mainWindowViewModel?.TradeMonitoringBindings?.Trades?.ToList();
 
-            _mainWindowViewModel?.TradeMonitoringBindings?.UpdateTotalTradesUi(null, null);
-            _mainWindowViewModel?.TradeMonitoringBindings?.UpdateCurrentTradesUi(null, null);
+            if (tradesToRemove != null && tradesToRemove.Any())
+            {
+                foreach (var trade in tradesToRemove)
+                {
+                    newList?.Remove(trade);
+                }
+            }
+
+            Application.Current.Dispatcher.InvokeAsync(() =>
+            {
+                UpdateTrades(newList);
+            });
         });
+    }
+
+    private void UpdateTrades(IEnumerable<Trade> updatedList)
+    {
+        _mainWindowViewModel.TradeMonitoringBindings.Trades.Clear();
+        _mainWindowViewModel.TradeMonitoringBindings.Trades.AddRange(updatedList);
+
+        _mainWindowViewModel.TradeMonitoringBindings.TradeStatsObject.SetTradeStats(_mainWindowViewModel.TradeMonitoringBindings.TradeCollectionView.Cast<Trade>().ToList());
+
+        _mainWindowViewModel.TradeMonitoringBindings.UpdateTotalTradesUi(null, null);
+        _mainWindowViewModel.TradeMonitoringBindings.UpdateCurrentTradesUi(null, null);
     }
 
     public async Task RemoveTradesByDaysInSettingsAsync()

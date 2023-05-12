@@ -25,6 +25,7 @@ public class TradeMonitoringBindings : INotifyPropertyChanged
     private int _totalTradeCounts;
     private int _currentTradeCounts;
     private ManuallyTradeMenuObject _tradeManuallyMenuObject = new ();
+    private bool _isDeleteTradesButtonEnabled = true;
 
     public TradeMonitoringBindings()
     {
@@ -96,6 +97,16 @@ public class TradeMonitoringBindings : INotifyPropertyChanged
             _datePickerTradeTo = value;
             TradeCollectionView?.Refresh();
             TradeStatsObject.SetTradeStats(TradeCollectionView?.Cast<Trade>().ToList());
+            OnPropertyChanged();
+        }
+    }
+
+    public bool IsDeleteTradesButtonEnabled
+    {
+        get => _isDeleteTradesButtonEnabled;
+        set
+        {
+            _isDeleteTradesButtonEnabled = value;
             OnPropertyChanged();
         }
     }

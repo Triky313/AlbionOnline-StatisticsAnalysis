@@ -2,6 +2,7 @@
 using StatisticsAnalysisTool.ViewModels;
 using StatisticsAnalysisTool.Views;
 using System.Linq;
+using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Data;
@@ -19,7 +20,7 @@ public partial class TradeMonitoringControl
         InitializeComponent();
     }
 
-    public void DeleteSelectedTrades()
+    public async Task DeleteSelectedTradesAsync()
     {
         var dialog = new DialogWindow(LanguageController.Translation("DELETE_SELECTED_TRADES"), LanguageController.Translation("SURE_YOU_WANT_TO_DELETE_SELECTED_TRADES"));
         var dialogResult = dialog.ShowDialog();
@@ -29,7 +30,9 @@ public partial class TradeMonitoringControl
         if (dialogResult is true)
         {
             var selectedMails = vm?.TradeMonitoringBindings?.Trades?.Where(x => x?.IsSelectedForDeletion ?? false).Select(x => x.Id);
-            vm?.TrackingController.TradeController.RemoveTradesByIdsAsync(selectedMails);
+            ServiceLocator.Resolve<MainWindowViewModel>().TradeMonitoringBindings.IsDeleteTradesButtonEnabled = false;
+            await vm?.TrackingController.TradeController.RemoveTradesByIdsAsync(selectedMails)!;
+            ServiceLocator.Resolve<MainWindowViewModel>().TradeMonitoringBindings.IsDeleteTradesButtonEnabled = true;
         }
     }
 
@@ -47,9 +50,9 @@ public partial class TradeMonitoringControl
         vm.TradeMonitoringBindings.IsTradeMonitoringPopupVisible = Visibility.Collapsed;
     }
 
-    private void BtnDeleteSelectedMails_Click(object sender, RoutedEventArgs e)
+    private async void BtnDeleteSelectedMails_Click(object sender, RoutedEventArgs e)
     {
-        DeleteSelectedTrades();
+        await DeleteSelectedTradesAsync();
     }
 
     private bool _isSelectAllActive;
