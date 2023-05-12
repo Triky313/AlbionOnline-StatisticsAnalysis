@@ -1,5 +1,5 @@
-﻿using System;
-using StatisticsAnalysisTool.Common;
+﻿using StatisticsAnalysisTool.Common;
+using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Globalization;
@@ -125,7 +125,7 @@ public class ExtensionMethodTests
     [Fact]
     public void ObjectToLong_WithValidValues_ReturnLongValue()
     {
-        var value = (object)15;
+        var value = (object) 15;
 
         var result = value.ObjectToLong();
         const long expected = 15L;
@@ -145,7 +145,7 @@ public class ExtensionMethodTests
     [Fact]
     public void ObjectToInt_WithInvalidValues_ReturnIntValue()
     {
-        var value = (object)15;
+        var value = (object) 15;
 
         var result = value.ObjectToInt();
         const long expected = 15L;
@@ -188,5 +188,19 @@ public class ExtensionMethodTests
             var result = input.GetShortNumber(new CultureInfo("en-US"));
             Assert.Equal(expectedOutput, result);
         }
+    }
+
+    [Fact]
+    public void IsDateInWeekOfYear_WithValidValues_ReturnTrue()
+    {
+        // Arrange
+        var dateTime1 = new DateTime(2023, 4, 4, 12, 12, 12);
+        var dateTime2 = new DateTime(2023, 4, 5, 12, 12, 12);
+
+        // Act
+        var result = dateTime1.IsDateInWeekOfYear(dateTime2);
+
+        // Assert
+        Assert.True(result);
     }
 }
