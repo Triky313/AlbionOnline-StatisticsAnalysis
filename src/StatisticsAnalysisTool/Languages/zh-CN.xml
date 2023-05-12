@@ -724,4 +724,18 @@
 	<translation name="ADDED_EXPIRED_SELL_ORDER">卖出订单到期</translation>
 	<translation name="ADDED_TRADES">新的交易</translation>
 	<translation name="NOTIFICATIONS">通知</translation>
+	<translation name="NO_LISTENING_ADAPTERS">没有监听的适配器</translation>
+	<translation name="PACKET_FILTER">包过滤器</translation>
+	<translation name="RESET">重置</translation>
+	<translation name="START_TRACKING">开始追踪</translation>
+	<translation name="STOP_TRACKING">停止追踪</translation>
+	<translation name="GAME_TRACKING_IS_STARTED">游戏追踪开始</translation>
+	<translation name="GAME_TRACKING_IS_STOPPED">游戏追踪结束</translation>
+	<translation name="TRACKING_STATUS">追踪状态</translation>
+	<translation name="ADD_TRADE_MANUALLY">手动添加交易</translation>
+	<translation name="DESCRIPTION">描述</translation>
+	<translation name="VALUE">价值</translation>
+	<translation name="ADD_TRADE">添加交易</translation>
+	<translation name="MANUAL_SELL">手动卖出</translation>
+	<translation name="MANUAL_BUY">手动买入</translation>
 </translations>
