@@ -381,7 +381,7 @@ public static class ItemController
             }
         }
     }
-    
+
     public static void SaveFavoriteItemsToLocalFile()
     {
         DirectoryController.CreateDirectoryWhenNotExists(Path.Combine(AppDomain.CurrentDomain.BaseDirectory, Settings.Default.UserDataDirectoryName));
@@ -692,7 +692,7 @@ public static class ItemController
         }
         catch
         {
-            DeleteLocalFile(localFilePath);
+.           DeleteLocalFile(localFilePath);
             return new ItemsJson();
         }
     }
