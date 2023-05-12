@@ -692,7 +692,7 @@ public static class ItemController
         }
         catch
         {
-.           DeleteLocalFile(localFilePath);
+            DeleteLocalFile(localFilePath);
             return new ItemsJson();
         }
     }
