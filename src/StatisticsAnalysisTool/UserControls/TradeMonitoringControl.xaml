@@ -14,7 +14,9 @@
         <trade:TradeDataTemplateSelector x:Key="TradeDataTemplateSelector"
                                          MailTemplate="{StaticResource MailTemplate}"
                                          InstantSellTemplate="{StaticResource InstantSellTemplate}" 
-                                         InstantBuyTemplate="{StaticResource InstantBuyTemplate}" />
+                                         InstantBuyTemplate="{StaticResource InstantBuyTemplate}"
+                                         ManualSellTemplate="{StaticResource ManualSellTemplate}" 
+                                         ManualBuyTemplate="{StaticResource ManualBuyTemplate}" />
     </UserControl.Resources>
     <Grid>
         <Grid Margin="0,0,0,0" Height="60" VerticalAlignment="Top">

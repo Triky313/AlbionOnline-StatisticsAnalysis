@@ -116,6 +116,8 @@ public class Trade : INotifyPropertyChanged
     {
         TradeType.InstantSell => LanguageController.Translation("INSTANT_SELL"),
         TradeType.InstantBuy => LanguageController.Translation("INSTANT_BUY"),
+        TradeType.ManualSell => LanguageController.Translation("MANUAL_SELL"),
+        TradeType.ManualBuy => LanguageController.Translation("MANUAL_BUY"),
         TradeType.Mail => LanguageController.Translation("MAIL"),
         _ => LanguageController.Translation("UNKNOWN_TRADE")
     };

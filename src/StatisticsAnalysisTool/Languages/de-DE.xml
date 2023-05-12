@@ -736,4 +736,6 @@
 	<translation name="DESCRIPTION">Beschreibung</translation>
 	<translation name="VALUE">Wert</translation>
 	<translation name="ADD_TRADE">Handel hinzufügen</translation>
+	<translation name="MANUAL_SELL">Manueller Verkauf</translation>
+	<translation name="MANUAL_BUY">Manueller Kauf</translation>
 </translations>

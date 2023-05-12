@@ -5,5 +5,7 @@ public enum TradeType
     Unknown,
     Mail,
     InstantSell,
-    InstantBuy
+    InstantBuy,
+    ManualSell,
+    ManualBuy
 }

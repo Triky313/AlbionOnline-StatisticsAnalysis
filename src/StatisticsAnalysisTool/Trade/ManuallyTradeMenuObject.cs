@@ -7,7 +7,6 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
 using System.Windows.Input;
-using StatisticsAnalysisTool.Trade.Mails;
 
 namespace StatisticsAnalysisTool.Trade;
 
@@ -21,8 +20,8 @@ public class ManuallyTradeMenuObject : INotifyPropertyChanged
     public ManuallyTradeMenuObject()
     {
         ManuallyTradeTypes.Clear();
-        ManuallyTradeTypes.Add(new ManuallyTradeTypeStruct() { Type = TradeType.InstantSell, Name = LanguageController.Translation("SOLD") });
-        ManuallyTradeTypes.Add(new ManuallyTradeTypeStruct() { Type = TradeType.InstantBuy, Name = LanguageController.Translation("BOUGHT") });
+        ManuallyTradeTypes.Add(new ManuallyTradeTypeStruct() { Type = TradeType.ManualSell, Name = LanguageController.Translation("SOLD") });
+        ManuallyTradeTypes.Add(new ManuallyTradeTypeStruct() { Type = TradeType.ManualBuy, Name = LanguageController.Translation("BOUGHT") });
     }
 
     public List<ManuallyTradeTypeStruct> ManuallyTradeTypes
@@ -73,16 +72,17 @@ public class ManuallyTradeMenuObject : INotifyPropertyChanged
 
     public void AddTrade(object obj)
     {
-        if (Value == 0 || ManuallyTradeTypeSelection.Type is TradeType.Mail or TradeType.Unknown)
+        if (Value == 0 || (ManuallyTradeTypeSelection.Type != TradeType.ManualSell && ManuallyTradeTypeSelection.Type != TradeType.ManualBuy))
         {
             return;
         }
 
+        var dateTimeTicks = DateTime.UtcNow.Ticks;
         var trade = new Trade()
         {
-            Ticks = DateTime.UtcNow.Ticks,
+            Ticks = dateTimeTicks,
             Type = ManuallyTradeTypeSelection.Type,
-            Id = default,
+            Id = dateTimeTicks,
             ClusterIndex = default,
             AuctionEntry = default,
             Guid = Guid.NewGuid(),

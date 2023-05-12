@@ -41,6 +41,22 @@ public static class TradeMapping
                 AuctionEntry = trade.AuctionEntry,
                 Description = trade.Description
             },
+            TradeType.ManualBuy => new TradeDto()
+            {
+                Type = TradeType.ManualBuy,
+                Id = trade.Id,
+                Ticks = trade.Ticks,
+                InstantBuySellContent = trade.InstantBuySellContent,
+                Description = trade.Description
+            },
+            TradeType.ManualSell => new TradeDto()
+            {
+                Type = TradeType.ManualSell,
+                Id = trade.Id,
+                Ticks = trade.Ticks,
+                InstantBuySellContent = trade.InstantBuySellContent,
+                Description = trade.Description
+            },
             _ => throw new ArgumentOutOfRangeException()
         };
     }
@@ -77,6 +93,22 @@ public static class TradeMapping
                 Ticks = trade.Ticks,
                 ClusterIndex = trade.ClusterIndex,
                 AuctionEntry = trade.AuctionEntry,
+                InstantBuySellContent = trade.InstantBuySellContent ?? new InstantBuySellContent(),
+                Description = trade.Description
+            },
+            TradeType.ManualBuy => new Trade()
+            {
+                Type = TradeType.ManualBuy,
+                Id = trade.Id,
+                Ticks = trade.Ticks,
+                InstantBuySellContent = trade.InstantBuySellContent ?? new InstantBuySellContent(),
+                Description = trade.Description
+            },
+            TradeType.ManualSell => new Trade()
+            {
+                Type = TradeType.ManualSell,
+                Id = trade.Id,
+                Ticks = trade.Ticks,
                 InstantBuySellContent = trade.InstantBuySellContent ?? new InstantBuySellContent(),
                 Description = trade.Description
             },

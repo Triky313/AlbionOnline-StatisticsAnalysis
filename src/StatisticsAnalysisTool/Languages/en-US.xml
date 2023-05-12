@@ -736,4 +736,6 @@
 	<translation name="DESCRIPTION">Description</translation>
 	<translation name="VALUE">Value</translation>
 	<translation name="ADD_TRADE">Add trade</translation>
+	<translation name="MANUAL_SELL">Manual sell</translation>
+	<translation name="MANUAL_BUY">Manual buy</translation>
 </translations>
