@@ -366,7 +366,7 @@
 	<translation name="OPENED_UNCOMMON_CHESTS">파란색 상자 연 횟수</translation>
 	<translation name="OPENED_RARE_CHESTS">보라색 상자 연 횟수</translation>
 	<translation name="OPENED_LEGENDARY_CHESTS">주황색 상자 연 횟수</translation>
-	
+
 	<translation name="DAMAGE_METER_DESCRIPTION_1">파티에 있는 다른 플레이어의 피해를 추적하려면, 먼저 이 TOOL을 활성화 한 후에 파티 가입이 되거나 혹은 탈퇴 후 재가입을 해야 합니다.</translation>
 
 	<translation name="SORT_BY_DAMAGE">데미지</translation>
@@ -666,8 +666,8 @@
 	<translation name="MOBS_JSON_SOURCE_URL">mobs.json 소스 URL</translation>
 	<translation name="GET_MOBS_JSON">mobs.json 얻기</translation>
 	<translation name="MOBS_JSON_CAN_NOT_BE_LOADED">mobs.json을 로드할 수 없습니다.</translation>
-	<translation name="INSTANT_SELL">Instant sell</translation>
-	<translation name="INSTANT_BUY">Instant buy</translation>
+	<translation name="INSTANT_SELL">즉시 구매</translation>
+	<translation name="INSTANT_BUY">즉시 판매</translation>
 	<translation name="TRADE_MONITORING_ACTIVE">거래 모니터링 활성화</translation>
 	<translation name="DELETE_TRADES_NEVER">거래 데이터 삭제 안함</translation>
 	<translation name="DELETE_TRADES_AFTER_7_DAYS">7일 지난 거래 삭제</translation>
@@ -715,6 +715,24 @@
 	<translation name="AUTOMATICALLY">자동</translation>
 	<translation name="NETWORK_FILTERING">네트워크 필터링</translation>
 	<translation name="ACTIVATED">활성화</translation>
+	<translation name="DISABLED">비활성화</translation>
+	<translation name="ADDED_PURCHASE">구매한 아이템 추가</translation>
+	<translation name="ADDED_SALE">판매한 아이템 추가</translation>
+	<translation name="ADDED_UNKNOWN_TRADE">알 수 없는 거래 추가</translation>
+	<translation name="ADDED_BUY_ORDER">구매 요청 추가</translation>
+	<translation name="ADDED_SELL_ORDER">판매 요청 추가</translation>
+	<translation name="ADDED_EXPIRED_BUY_ORDER">만료된 구매 요청 추가</translation>
+	<translation name="ADDED_EXPIRED_SELL_ORDER">만료된 판매 요청 추가</translation>
+	<translation name="ADDED_TRADES">거래 추가</translation>
+	<translation name="NOTIFICATIONS">알림</translation>
+	<translation name="NO_LISTENING_ADAPTERS">수신 어댑터 없음</translation>
+	<translation name="PACKET_FILTER">패킷 필터</translation>
+	<translation name="RESET">초기화</translation>
+	<translation name="START_TRACKING">추적 시작</translation>
+	<translation name="STOP_TRACKING">추적 종료</translation>
+	<translation name="GAME_TRACKING_IS_STARTED">게임 추적기가 시작되었습니다.</translation>
+	<translation name="GAME_TRACKING_IS_STOPPED">게임 추적기가 중지되었습니다.</translation>
+	<translation name="TRACKING_STATUS">추적 상태</translation>
 	<translation name="DISABLED">비활성화</translation>	
 	<translation name="ADDED_PURCHASE">구매 정보</translation>
 	<translation name="ADDED_SALE">판매 정보</translation>
@@ -737,4 +755,8 @@
 	<translation name="DESCRIPTION">설명</translation>
 	<translation name="VALUE">값</translation>
 	<translation name="ADD_TRADE">거래 등록</translation>
-</translations>	
+	<translation name="ADD_TRADE_MANUALLY">거래 수동 등록</translation>
+	<translation name="DESCRIPTION">설명</translation>
+	<translation name="VALUE">값</translation>
+	<translation name="ADD_TRADE">거래 등록</translation>
+</translations>
