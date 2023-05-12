@@ -6,6 +6,7 @@ using System.Collections.Specialized;
 using System.ComponentModel;
 using System.Linq;
 using System.Runtime.CompilerServices;
+using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Data;
 
@@ -13,7 +14,7 @@ namespace StatisticsAnalysisTool.Trade;
 
 public class TradeMonitoringBindings : INotifyPropertyChanged
 {
-    private readonly ListCollectionView _tradeCollectionView;
+    private ListCollectionView _tradeCollectionView;
     private ObservableRangeCollection<Trade> _trades = new();
     private string _tradesSearchText;
     private DateTime _datePickerTradeFrom = new(2017, 1, 1);
@@ -24,7 +25,7 @@ public class TradeMonitoringBindings : INotifyPropertyChanged
     private GridLength _gridSplitterPosition = GridLength.Auto;
     private int _totalTradeCounts;
     private int _currentTradeCounts;
-    private ManuallyTradeMenuObject _tradeManuallyMenuObject = new ();
+    private ManuallyTradeMenuObject _tradeManuallyMenuObject = new();
     private bool _isDeleteTradesButtonEnabled = true;
 
     public TradeMonitoringBindings()
@@ -39,16 +40,13 @@ public class TradeMonitoringBindings : INotifyPropertyChanged
             TradeCollectionView.IsLiveSorting = true;
             TradeCollectionView.IsLiveFiltering = true;
             TradeCollectionView.CustomSort = new TradeComparer();
-
-            TradeCollectionView.Filter = Filter;
-            TradeCollectionView?.Refresh();
         }
     }
 
     public ListCollectionView TradeCollectionView
     {
         get => _tradeCollectionView;
-        init
+        set
         {
             _tradeCollectionView = value;
             OnPropertyChanged();
@@ -204,19 +202,34 @@ public class TradeMonitoringBindings : INotifyPropertyChanged
 
     #region Filter
 
+    public async Task UpdateFilteredTradesAsync()
+    {
+        var filteredTrades = await Task.Run(() => Trades.Where(Filter).ToList());
+
+        TradeCollectionView = CollectionViewSource.GetDefaultView(filteredTrades) as ListCollectionView;
+        TradeCollectionView?.Refresh();
+    }
+
     private bool Filter(object obj)
     {
-        return obj is Trade trade
-               && trade.Timestamp.Date >= DatePickerTradeFrom.Date
-               && trade.Timestamp.Date <= DatePickerTradeTo.Date && (
-                   trade.LocationName != null && trade.LocationName.ToLower().Contains(TradesSearchText?.ToLower() ?? string.Empty)
-                   || $"T{trade.Item?.Tier}.{trade.Item?.Level}".ToLower().Contains(TradesSearchText?.ToLower() ?? string.Empty)
-                   || trade.MailTypeDescription.ToLower().Contains(TradesSearchText?.ToLower() ?? string.Empty)
-                   || trade.Item != null && trade.Item.LocalizedName.ToLower().Contains(TradesSearchText?.ToLower() ?? string.Empty)
-                   || trade.MailContent.ActualUnitPrice.ToString().Contains(TradesSearchText?.ToLower() ?? string.Empty)
-                   || trade.MailContent.TotalPrice.ToString().Contains(TradesSearchText?.ToLower() ?? string.Empty)
-                   || trade.InstantBuySellContent.UnitPrice.ToString().Contains(TradesSearchText?.ToLower() ?? string.Empty)
-                   || trade.InstantBuySellContent.TotalPrice.ToString().Contains(TradesSearchText?.ToLower() ?? string.Empty));
+        if (TradesSearchText == null)
+        {
+            return true;
+        }
+
+        return obj is Trade trade &&
+               trade.Timestamp.Date >= DatePickerTradeFrom.Date &&
+               trade.Timestamp.Date <= DatePickerTradeTo.Date &&
+               (
+                   trade.LocationName != null && trade.LocationName.IndexOf(TradesSearchText, StringComparison.OrdinalIgnoreCase) >= 0 ||
+                   $"T{trade.Item?.Tier}.{trade.Item?.Level}".IndexOf(TradesSearchText, StringComparison.OrdinalIgnoreCase) >= 0 ||
+                   trade.MailTypeDescription.IndexOf(TradesSearchText, StringComparison.OrdinalIgnoreCase) >= 0 ||
+                   trade.Item != null && trade.Item.LocalizedName.IndexOf(TradesSearchText, StringComparison.OrdinalIgnoreCase) >= 0 ||
+                   trade.MailContent.ActualUnitPrice.ToString().IndexOf(TradesSearchText, StringComparison.OrdinalIgnoreCase) >= 0 ||
+                   trade.MailContent.TotalPrice.ToString().IndexOf(TradesSearchText, StringComparison.OrdinalIgnoreCase) >= 0 ||
+                   trade.InstantBuySellContent.UnitPrice.ToString().IndexOf(TradesSearchText, StringComparison.OrdinalIgnoreCase) >= 0 ||
+                   trade.InstantBuySellContent.TotalPrice.ToString().IndexOf(TradesSearchText, StringComparison.OrdinalIgnoreCase) >= 0
+               );
     }
 
     #endregion

@@ -72,10 +72,10 @@ public partial class TradeMonitoringControl
         _isSelectAllActive = !_isSelectAllActive;
     }
 
-    private void SearchText_TextChanged(object sender, TextChangedEventArgs e)
+    private async void SearchText_TextChanged(object sender, TextChangedEventArgs e)
     {
         var vm = (MainWindowViewModel) DataContext;
-        CollectionViewSource.GetDefaultView(vm.TradeMonitoringBindings.Trades).Refresh();
+        await vm.TradeMonitoringBindings.UpdateFilteredTradesAsync();
     }
 
     private void DatePicker_OnSelectedDateChanged(object sender, SelectionChangedEventArgs e)
