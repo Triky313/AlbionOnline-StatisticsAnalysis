@@ -666,8 +666,8 @@
 	<translation name="MOBS_JSON_SOURCE_URL">mobs.json 소스 URL</translation>
 	<translation name="GET_MOBS_JSON">mobs.json 얻기</translation>
 	<translation name="MOBS_JSON_CAN_NOT_BE_LOADED">mobs.json을 로드할 수 없습니다.</translation>
-	<translation name="INSTANT_SELL">즉시 구매</translation>
-	<translation name="INSTANT_BUY">즉시 판매</translation>
+	<translation name="INSTANT_SELL">즉시 판매</translation>
+	<translation name="INSTANT_BUY">즉시 구매</translation>
 	<translation name="TRADE_MONITORING_ACTIVE">거래 모니터링 활성화</translation>
 	<translation name="DELETE_TRADES_NEVER">거래 데이터 삭제 안함</translation>
 	<translation name="DELETE_TRADES_AFTER_7_DAYS">7일 지난 거래 삭제</translation>
