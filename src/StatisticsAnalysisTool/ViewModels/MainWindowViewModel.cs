@@ -3,6 +3,7 @@ using LiveChartsCore;
 using LiveChartsCore.SkiaSharpView;
 using log4net;
 using Microsoft.Win32;
+using SharpPcap;
 using StatisticsAnalysisTool.Cluster;
 using StatisticsAnalysisTool.Common;
 using StatisticsAnalysisTool.Common.UserSettings;
@@ -552,10 +553,16 @@ public class MainWindowViewModel : INotifyPropertyChanged
             NetworkManager.StartNetworkCapture(TrackingController);
             IsTrackingActive = true;
         }
-        catch (NoListeningAdaptersException aEx)
+        catch (PcapException e)
         {
-            ConsoleManager.WriteLineForError(MethodBase.GetCurrentMethod()?.DeclaringType, aEx);
-            Log.Error(MethodBase.GetCurrentMethod()?.DeclaringType, aEx);
+            ConsoleManager.WriteLineForError(MethodBase.GetCurrentMethod()?.DeclaringType, e);
+            Log.Error(MethodBase.GetCurrentMethod()?.DeclaringType, e);
+            SetErrorBar(Visibility.Visible, LanguageController.Translation(e.Message));
+        }
+        catch (NoListeningAdaptersException e)
+        {
+            ConsoleManager.WriteLineForError(MethodBase.GetCurrentMethod()?.DeclaringType, e);
+            Log.Error(MethodBase.GetCurrentMethod()?.DeclaringType, e);
             SetErrorBar(Visibility.Visible, LanguageController.Translation("NO_LISTENING_ADAPTERS"));
         }
         catch (Exception e)

@@ -106,7 +106,7 @@ public class NetworkManager
 
         ConsoleManager.WriteLineForMessage(MethodBase.GetCurrentMethod()?.DeclaringType, "CapturedDevices:");
 
-        foreach (ICaptureDevice captureDevice in CapturedDevices)
+        foreach (ICaptureDevice captureDevice in CapturedDevices.ToList())
         {
             ConsoleManager.WriteLineForMessage($"- {captureDevice.Description}");
             PacketEvent(captureDevice);
