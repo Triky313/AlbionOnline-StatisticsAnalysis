@@ -36,6 +36,6 @@ public class UpdateFameEventHandler : EventPacketHandler<UpdateFameEvent>
     {
         return new TrackingNotification(DateTime.Now, new FameNotificationFragment(LanguageController.Translation("YOU_HAVE"), AttributeStatOperator.Plus, totalPlayerFame, totalGainedFame,
             LanguageController.Translation("FAME"), PvpPveType.Pve, zoneFame, premiumFame, satchelFame, isBonusFactorActive, bonusFactorInPercent,
-            LanguageController.Translation("GAINED")), NotificationType.Fame);
+            LanguageController.Translation("GAINED")), LoggingFilterType.Fame);
     }
 }

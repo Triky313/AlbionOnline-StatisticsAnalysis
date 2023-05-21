@@ -30,6 +30,6 @@ public class UpdateFactionStandingEventHandler : EventPacketHandler<UpdateFactio
     private TrackingNotification SetFactionFlagPointsNotification(CityFaction cityFaction, double gainedFractionPoints, double bonusPremiumGainedFractionPoints)
     {
         return new TrackingNotification(DateTime.Now, new FactionFlagPointsNotificationFragment(LanguageController.Translation("YOU_HAVE"), AttributeStatOperator.Plus, cityFaction, gainedFractionPoints,
-            bonusPremiumGainedFractionPoints, LanguageController.Translation("FACTION_FLAG_POINTS"), LanguageController.Translation("GAINED")), NotificationType.Faction);
+            bonusPremiumGainedFractionPoints, LanguageController.Translation("FACTION_FLAG_POINTS"), LanguageController.Translation("GAINED")), LoggingFilterType.Faction);
     }
 }

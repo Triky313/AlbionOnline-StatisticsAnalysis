@@ -9,6 +9,7 @@ using StatisticsAnalysisTool.Common;
 using StatisticsAnalysisTool.Common.UserSettings;
 using StatisticsAnalysisTool.Enumerations;
 using StatisticsAnalysisTool.Views;
+using StatisticsAnalysisTool.Network.Manager;
 
 namespace StatisticsAnalysisTool.UserControls;
 
@@ -31,8 +32,8 @@ public partial class DamageMeterControl
 
         if (dialogResult is true)
         {
-            var vm = (MainWindowViewModel)DataContext;
-            vm?.TrackingController?.CombatController?.ResetDamageMeter();
+            var trackingController = ServiceLocator.Resolve<TrackingController>();
+            trackingController?.CombatController?.ResetDamageMeter();
         }
     }
 

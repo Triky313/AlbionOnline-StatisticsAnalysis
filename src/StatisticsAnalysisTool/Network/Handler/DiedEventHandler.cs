@@ -1,5 +1,4 @@
 ﻿using StatisticsAnalysisTool.Common;
-using StatisticsAnalysisTool.Enumerations;
 using StatisticsAnalysisTool.EventLogging;
 using StatisticsAnalysisTool.EventLogging.Notification;
 using StatisticsAnalysisTool.Models.NetworkModel;
@@ -27,6 +26,6 @@ public class DiedEventHandler : EventPacketHandler<DiedEvent>
 
     private static TrackingNotification SetKillNotification(string died, string killedBy, string killedByGuild)
     {
-        return new TrackingNotification(DateTime.Now, new KillNotificationFragment(died, killedBy, killedByGuild, LanguageController.Translation("WAS_KILLED_BY")), NotificationType.Kill);
+        return new TrackingNotification(DateTime.Now, new KillNotificationFragment(died, killedBy, killedByGuild, LanguageController.Translation("WAS_KILLED_BY")), LoggingFilterType.Kill);
     }
 }

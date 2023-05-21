@@ -1,4 +1,4 @@
-﻿using StatisticsAnalysisTool.ViewModels;
+﻿using StatisticsAnalysisTool.Network.Manager;
 using System;
 using System.Windows.Input;
 
@@ -6,13 +6,6 @@ namespace StatisticsAnalysisTool.Common;
 
 public class RemoveDungeonButtonClick : ICommand
 {
-    private readonly MainWindowViewModel _mainWindowViewModel;
-
-    public RemoveDungeonButtonClick(MainWindowViewModel mainWindowViewModel)
-    {
-        _mainWindowViewModel = mainWindowViewModel;
-    }
-
     public bool CanExecute(object parameter)
     {
         return true;
@@ -20,12 +13,13 @@ public class RemoveDungeonButtonClick : ICommand
 
     public void Execute(object parameter)
     {
-        _mainWindowViewModel.TrackingController.DungeonController.RemoveDungeonAsync((string)parameter);
+        var trackingController = ServiceLocator.Resolve<TrackingController>();
+        trackingController?.DungeonController?.RemoveDungeonAsync((string) parameter);
     }
 
-    public event EventHandler CanExecuteChanged 
+    public event EventHandler CanExecuteChanged
     {
-        add {}
-        remove {}
+        add { }
+        remove { }
     }
 }

@@ -16,7 +16,7 @@ public class ActionOnBuildingFinishedEventHandler : EventPacketHandler<ActionOnB
 
     protected override async Task OnActionAsync(ActionOnBuildingFinishedEvent value)
     {
-        if (value is {UserObjectId: { } userObjectId, ActionType: ActionOnBuildingType.Repair})
+        if (value is { UserObjectId: { } userObjectId, ActionType: ActionOnBuildingType.Repair })
         {
             _trackingController.RepairFinished(userObjectId, value.BuildingObjectId);
         }

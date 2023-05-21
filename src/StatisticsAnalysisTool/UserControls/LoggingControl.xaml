@@ -68,7 +68,7 @@
             </StackPanel>
         </Grid>
         <Separator Background="{StaticResource SolidColorBrush.Background.3}" Height="4" Margin="0,100,0,0" VerticalAlignment="Top"/>
-        <vwp:VirtualizingItemsControl Margin="0,104,0,40" ItemsSource="{Binding LoggingBindings.NotificationsCollectionView, IsAsync=True, Mode=OneWay}" ItemTemplate="{StaticResource NotificationTemplate}"              
+        <vwp:VirtualizingItemsControl Margin="0,104,0,40" ItemsSource="{Binding LoggingBindings.GameLoggingCollectionView, IsAsync=True, Mode=OneWay}" ItemTemplate="{StaticResource NotificationTemplate}"              
                                       VirtualizingPanel.CacheLengthUnit="Item"
                                       VirtualizingPanel.CacheLength="10,10"
                                       VirtualizingPanel.ScrollUnit="Pixel"

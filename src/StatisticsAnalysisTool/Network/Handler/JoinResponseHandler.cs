@@ -94,7 +94,8 @@ public class JoinResponseHandler : ResponsePacketHandler<JoinResponse>
     {
         if (_mainWindowViewModel.IsTrackingResetByMapChangeActive)
         {
-            _mainWindowViewModel?.TrackingController?.LiveStatsTracker?.Reset();
+            var trackingController = ServiceLocator.Resolve<TrackingController>();
+            trackingController?.LiveStatsTracker?.Reset();
         }
     }
 

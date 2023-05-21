@@ -1,4 +1,5 @@
 ﻿using StatisticsAnalysisTool.Common;
+using StatisticsAnalysisTool.Network.Manager;
 using StatisticsAnalysisTool.ViewModels;
 using StatisticsAnalysisTool.Views;
 using System.Linq;
@@ -29,9 +30,11 @@ public partial class TradeMonitoringControl
 
         if (dialogResult is true)
         {
+            var trackingController = ServiceLocator.Resolve<TrackingController>();
+
             var selectedMails = vm?.TradeMonitoringBindings?.Trades?.Where(x => x?.IsSelectedForDeletion ?? false).Select(x => x.Id);
             ServiceLocator.Resolve<MainWindowViewModel>().TradeMonitoringBindings.IsDeleteTradesButtonEnabled = false;
-            await vm?.TrackingController.TradeController.RemoveTradesByIdsAsync(selectedMails)!;
+            await trackingController?.TradeController?.RemoveTradesByIdsAsync(selectedMails)!;
             ServiceLocator.Resolve<MainWindowViewModel>().TradeMonitoringBindings.IsDeleteTradesButtonEnabled = true;
         }
     }

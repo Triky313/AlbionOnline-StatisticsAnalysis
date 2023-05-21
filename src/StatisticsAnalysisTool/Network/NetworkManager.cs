@@ -17,7 +17,7 @@ using System.Threading.Tasks;
 
 namespace StatisticsAnalysisTool.Network;
 
-public class NetworkManager
+public static class NetworkManager
 {
     private static IPhotonReceiver _receiver;
     private static readonly ILog Log = LogManager.GetLogger(MethodBase.GetCurrentMethod()?.DeclaringType);

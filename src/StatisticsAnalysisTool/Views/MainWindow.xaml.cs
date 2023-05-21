@@ -1,6 +1,7 @@
 ﻿using log4net;
 using StatisticsAnalysisTool.Common;
 using StatisticsAnalysisTool.Common.UserSettings;
+using StatisticsAnalysisTool.Network.Manager;
 using StatisticsAnalysisTool.ViewModels;
 using System;
 using System.Diagnostics;
@@ -91,7 +92,8 @@ public partial class MainWindow
 
     private void CopyPartyToClipboard_PreviewMouseDown(object sender, MouseButtonEventArgs e)
     {
-        _mainWindowViewModel.TrackingController.EntityController.CopyPartyToClipboard();
+        var trackingController = ServiceLocator.Resolve<TrackingController>();
+        trackingController?.EntityController?.CopyPartyToClipboard();
     }
 
     private void MainWindow_OnClosed(object sender, EventArgs eventArgs)

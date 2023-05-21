@@ -1,4 +1,5 @@
 ﻿using StatisticsAnalysisTool.Common;
+using StatisticsAnalysisTool.Network.Manager;
 using StatisticsAnalysisTool.ViewModels;
 using StatisticsAnalysisTool.Views;
 using System.Windows;
@@ -24,7 +25,8 @@ public partial class StorageHistoryControl
 
         if (dialogResult is true)
         {
-            vm?.TrackingController?.VaultController?.RemoveVault(vm.VaultBindings?.VaultSelected);
+            var trackingController = ServiceLocator.Resolve<TrackingController>();
+            trackingController?.VaultController?.RemoveVault(vm.VaultBindings?.VaultSelected);
         }
     }
 }

@@ -1,10 +1,10 @@
-﻿using System;
+﻿using StatisticsAnalysisTool.Common;
+using StatisticsAnalysisTool.Enumerations;
+using StatisticsAnalysisTool.Properties;
+using System;
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
 using System.Windows;
-using StatisticsAnalysisTool.Common;
-using StatisticsAnalysisTool.Enumerations;
-using StatisticsAnalysisTool.Properties;
 
 namespace StatisticsAnalysisTool.EventLogging.Notification;
 
@@ -12,12 +12,12 @@ public class TrackingNotification : INotifyPropertyChanged
 {
     private const int SetTypesMaxTries = 3;
 
-    private NotificationType _type;
+    private LoggingFilterType _type;
     private Visibility _visibility;
     private readonly int _itemIndex;
     private int _trySetTypeCounter;
 
-    public TrackingNotification(DateTime dateTime, LineFragment fragment, NotificationType type)
+    public TrackingNotification(DateTime dateTime, LineFragment fragment, LoggingFilterType type)
     {
         DateTime = dateTime;
         Fragment = fragment;
@@ -36,7 +36,7 @@ public class TrackingNotification : INotifyPropertyChanged
     public DateTime DateTime { get; }
     public LineFragment Fragment { get; }
 
-    public NotificationType Type
+    public LoggingFilterType Type
     {
         get => _type;
         set
@@ -60,7 +60,7 @@ public class TrackingNotification : INotifyPropertyChanged
 
     public void SetType(bool forceSetType = false)
     {
-        if ((Type == NotificationType.Unknown && _trySetTypeCounter <= SetTypesMaxTries) || forceSetType)
+        if ((Type == LoggingFilterType.Unknown && _trySetTypeCounter <= SetTypesMaxTries) || forceSetType)
         {
             Type = GetNotificationType(ItemController.GetItemType(_itemIndex));
         }
@@ -68,14 +68,14 @@ public class TrackingNotification : INotifyPropertyChanged
         _trySetTypeCounter++;
     }
 
-    private static NotificationType GetNotificationType(ItemType itemType)
+    private static LoggingFilterType GetNotificationType(ItemType itemType)
     {
         return itemType switch
         {
-            ItemType.Weapon => NotificationType.EquipmentLoot,
-            ItemType.Consumable => NotificationType.ConsumableLoot,
-            ItemType.Simple => NotificationType.SimpleLoot,
-            _ => NotificationType.UnknownLoot,
+            ItemType.Weapon => LoggingFilterType.EquipmentLoot,
+            ItemType.Consumable => LoggingFilterType.ConsumableLoot,
+            ItemType.Simple => LoggingFilterType.SimpleLoot,
+            _ => LoggingFilterType.UnknownLoot,
         };
     }
 
