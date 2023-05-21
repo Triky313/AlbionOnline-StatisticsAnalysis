@@ -16,6 +16,7 @@ using StatisticsAnalysisTool.Trade;
 using StatisticsAnalysisTool.Trade.Mails;
 using StatisticsAnalysisTool.Trade.Market;
 using StatisticsAnalysisTool.ViewModels;
+using StatisticsAnalysisTool.Views;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -407,6 +408,19 @@ public class TrackingController : ITrackingController
         }
 
         return false;
+    }
+
+    public async Task ResetTrackingNotificationsAsync()
+    {
+        var dialog = new DialogWindow(LanguageController.Translation("RESET_TRACKING_NOTIFICATIONS"), LanguageController.Translation("SURE_YOU_WANT_TO_RESET_TRACKING_NOTIFICATIONS"));
+        var dialogResult = dialog.ShowDialog();
+
+        if (dialogResult is true)
+        {
+            await ClearNotificationsAsync()!;
+            Application.Current.Dispatcher.Invoke(() => _mainWindowViewModel?.LoggingBindings?.TopLooters?.Clear());
+            LootController?.ClearLootLogger();
+        }
     }
 
     #endregion

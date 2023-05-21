@@ -433,55 +433,7 @@ public class MainWindowViewModel : INotifyPropertyChanged
     }
 
     #endregion
-
-    #region Tracking
-
-    // TODO: Move in tracking controllers
-    public void ResetDamageMeter()
-    {
-        var dialog = new DialogWindow(LanguageController.Translation("RESET_DAMAGE_METER"), LanguageController.Translation("SURE_YOU_WANT_TO_RESET_DAMAGE_METER"));
-        var dialogResult = dialog.ShowDialog();
-
-        if (dialogResult is true)
-        {
-            var trackingController = ServiceLocator.Resolve<TrackingController>();
-            trackingController?.CombatController?.ResetDamageMeter();
-        }
-    }
-
-    public void ResetDungeons()
-    {
-        var dialog = new DialogWindow(LanguageController.Translation("RESET_DUNGEON_TRACKER"), LanguageController.Translation("SURE_YOU_WANT_TO_RESET_DUNGEON_TRACKER"));
-        var dialogResult = dialog.ShowDialog();
-
-        if (dialogResult is true)
-        {
-            var trackingController = ServiceLocator.Resolve<TrackingController>();
-            trackingController?.DungeonController?.ResetDungeons();
-        }
-    }
-
-    public async Task ResetTrackingNotificationsAsync()
-    {
-        var dialog = new DialogWindow(LanguageController.Translation("RESET_TRACKING_NOTIFICATIONS"), LanguageController.Translation("SURE_YOU_WANT_TO_RESET_TRACKING_NOTIFICATIONS"));
-        var dialogResult = dialog.ShowDialog();
-
-        if (dialogResult is true)
-        {
-            var trackingController = ServiceLocator.Resolve<TrackingController>();
-            await trackingController.ClearNotificationsAsync();
-            Application.Current.Dispatcher.Invoke(() => LoggingBindings.TopLooters.Clear());
-            trackingController.LootController?.ClearLootLogger();
-        }
-    }
-
-    public void DamageMeterActivationToggle()
-    {
-        IsDamageMeterTrackingActive = !IsDamageMeterTrackingActive;
-    }
-
-    #endregion
-
+    
     #region Item View Filters
 
     private void ItemsViewFilter()
