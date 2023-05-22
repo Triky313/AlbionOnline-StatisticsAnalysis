@@ -738,4 +738,9 @@
 	<translation name="ADD_TRADE">Add trade</translation>
 	<translation name="MANUAL_SELL">Manual sell</translation>
 	<translation name="MANUAL_BUY">Manual buy</translation>
+	<translation name="NEVER_DELETE">Never delete</translation>
+	<translation name="DELETE_AFTER_7_DAYS">Delete after 7 days</translation>
+	<translation name="DELETE_AFTER_14_DAYS">Delete after 14 days</translation>
+	<translation name="DELETE_AFTER_30_DAYS">Delete after 30 days</translation>
+	<translation name="DELETE_AFTER_365_DAYS">Delete after 365 days</translation>
 </translations>
