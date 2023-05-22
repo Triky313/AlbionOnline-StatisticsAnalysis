@@ -74,6 +74,7 @@ public class GatheringController
             };
 
             AddGatheredToBindingCollection(gathered);
+            await RemoveEntriesByAutoDeleteDateAsync();
         }
 
         await SaveInFileAfterExceedingLimit(10);
@@ -85,6 +86,34 @@ public class GatheringController
         await Application.Current.Dispatcher.InvokeAsync(() =>
         {
             _mainWindowViewModel?.GatheringBindings?.GatheredCollection.Add(gathered);
+        });
+    }
+
+    public async Task RemoveEntriesByAutoDeleteDateAsync()
+    {
+        await Application.Current.Dispatcher.InvokeAsync(() =>
+        {
+            switch (SettingsController.CurrentSettings.AutoDeleteGatheringStats)
+            {
+                case AutoDeleteGatheringStats.NeverDelete:
+                    return;
+                case AutoDeleteGatheringStats.DeleteAfter7Days:
+                    var entriesToDelete7Days = _mainWindowViewModel?.GatheringBindings?.GatheredCollection.ToList().Where(x => x.Timestamp < DateTime.UtcNow.AddDays(-7).Ticks);
+                    _mainWindowViewModel?.GatheringBindings?.GatheredCollection.RemoveRange(entriesToDelete7Days);
+                    break;
+                case AutoDeleteGatheringStats.DeleteAfter14Days:
+                    var entriesToDelete14Days = _mainWindowViewModel?.GatheringBindings?.GatheredCollection.ToList().Where(x => x.Timestamp < DateTime.UtcNow.AddDays(-14).Ticks);
+                    _mainWindowViewModel?.GatheringBindings?.GatheredCollection.RemoveRange(entriesToDelete14Days);
+                    break;
+                case AutoDeleteGatheringStats.DeleteAfter30Days:
+                    var entriesToDelete30Days = _mainWindowViewModel?.GatheringBindings?.GatheredCollection.ToList().Where(x => x.Timestamp < DateTime.UtcNow.AddDays(-30).Ticks);
+                    _mainWindowViewModel?.GatheringBindings?.GatheredCollection.RemoveRange(entriesToDelete30Days);
+                    break;
+                case AutoDeleteGatheringStats.DeleteAfter365Days:
+                    var entriesToDelete365Days = _mainWindowViewModel?.GatheringBindings?.GatheredCollection.ToList().Where(x => x.Timestamp < DateTime.UtcNow.AddDays(-365).Ticks);
+                    _mainWindowViewModel?.GatheringBindings?.GatheredCollection.RemoveRange(entriesToDelete365Days);
+                    break;
+            }
         });
     }
 
@@ -112,7 +141,7 @@ public class GatheringController
     public async Task SaveInFileAsync(bool safeMoreThan356Days = false)
     {
         DirectoryController.CreateDirectoryWhenNotExists(Path.Combine(AppDomain.CurrentDomain.BaseDirectory, Settings.Default.UserDataDirectoryName));
-        
+
         var gatheredToSave = _mainWindowViewModel.GatheringBindings?.GatheredCollection
             .Where(x => !safeMoreThan356Days && x.TimestampDateTime > DateTime.UtcNow.AddDays(-365) || safeMoreThan356Days)
             .ToList()

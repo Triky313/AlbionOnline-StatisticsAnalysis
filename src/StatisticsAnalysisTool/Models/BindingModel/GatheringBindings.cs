@@ -36,10 +36,12 @@ public class GatheringBindings : INotifyPropertyChanged
     };
     private GatheringFilterType _selectedGatheringFilter = GatheringFilterType.Generally;
     private GatheringStatsTimeType _gatheringStatsTimeTypeSelection = GatheringStatsTimeType.Today;
+    private AutoDeleteGatheringStats _autoDeleteStatsByDateSelection;
 
     public GatheringBindings()
     {
         IsGatheringActive = SettingsController.CurrentSettings.IsGatheringActive;
+        AutoDeleteStatsByDateSelection = SettingsController.CurrentSettings.AutoDeleteGatheringStats;
 
         GatheredCollectionView = CollectionViewSource.GetDefaultView(GatheredCollection) as ListCollectionView;
 
@@ -116,12 +118,13 @@ public class GatheringBindings : INotifyPropertyChanged
                     .Select(g => new Gathered
                     {
                         UniqueName = g.Key,
-                        GainedStandardAmount = g.Sum(x => x.GainedStandardAmount),
-                        GainedBonusAmount = g.Sum(x => x.GainedBonusAmount),
-                        GainedPremiumBonusAmount = g.Sum(x => x.GainedPremiumBonusAmount),
-                        GainedTotalAmount = g.Sum(x => x.GainedTotalAmount),
-                        MiningProcesses = g.Sum(x => x.MiningProcesses)
-                    }).MaxBy(x => x.GainedTotalAmount);
+                        GainedStandardAmount = g.Sum(x => x?.GainedStandardAmount ?? 0),
+                        GainedBonusAmount = g.Sum(x => x?.GainedBonusAmount ?? 0),
+                        GainedPremiumBonusAmount = g.Sum(x => x?.GainedPremiumBonusAmount ?? 0),
+                        GainedTotalAmount = g.Sum(x => x?.GainedTotalAmount ?? 0),
+                        MiningProcesses = g.Sum(x => x?.MiningProcesses ?? 0)
+                    })
+                    .MaxBy(x => x.GainedTotalAmount);
 
                 await Application.Current.Dispatcher.InvokeAsync(() =>
                 {
@@ -378,6 +381,46 @@ public class GatheringBindings : INotifyPropertyChanged
         {
             _gatheringStatsTimeTypeSelection = value;
             UpdateStats();
+            OnPropertyChanged();
+        }
+    }
+
+    public List<AutoDeleteGatheringStatsFilterStruct> AutoDeleteStatsByDate { get; } = new()
+    {
+        new AutoDeleteGatheringStatsFilterStruct
+        {
+            Name = LanguageController.Translation("NEVER_DELETE"),
+            AutoDeleteGatheringStats = AutoDeleteGatheringStats.NeverDelete
+        },
+        new AutoDeleteGatheringStatsFilterStruct
+        {
+            Name = LanguageController.Translation("DELETE_AFTER_7_DAYS"),
+            AutoDeleteGatheringStats = AutoDeleteGatheringStats.DeleteAfter7Days
+        },
+        new AutoDeleteGatheringStatsFilterStruct
+        {
+            Name = LanguageController.Translation("DELETE_AFTER_14_DAYS"),
+            AutoDeleteGatheringStats = AutoDeleteGatheringStats.DeleteAfter14Days
+        },
+        new AutoDeleteGatheringStatsFilterStruct
+        {
+            Name = LanguageController.Translation("DELETE_AFTER_30_DAYS"),
+            AutoDeleteGatheringStats = AutoDeleteGatheringStats.DeleteAfter30Days
+        },
+        new AutoDeleteGatheringStatsFilterStruct
+        {
+            Name = LanguageController.Translation("DELETE_AFTER_365_DAYS"),
+            AutoDeleteGatheringStats = AutoDeleteGatheringStats.DeleteAfter365Days
+        }
+    };
+
+    public AutoDeleteGatheringStats AutoDeleteStatsByDateSelection
+    {
+        get => _autoDeleteStatsByDateSelection;
+        set
+        {
+            _autoDeleteStatsByDateSelection = value;
+            SettingsController.CurrentSettings.AutoDeleteGatheringStats = _autoDeleteStatsByDateSelection;
             OnPropertyChanged();
         }
     }

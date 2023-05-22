@@ -1,4 +1,5 @@
-﻿using StatisticsAnalysisTool.Models;
+﻿using StatisticsAnalysisTool.Gathering;
+using StatisticsAnalysisTool.Models;
 using System.Collections.Generic;
 
 namespace StatisticsAnalysisTool.Common.UserSettings;
@@ -75,4 +76,5 @@ public class SettingsObject
     public bool IsPlayerInformationNaviTabActive { get; set; } = true;
     public bool IsNotificationFilterTradeActive { get; set; } = false;
     public bool IsNotificationTrackingStatusActive { get; set; } = false;
+    public AutoDeleteGatheringStats AutoDeleteGatheringStats { get; set; } = AutoDeleteGatheringStats.NeverDelete;
 }
