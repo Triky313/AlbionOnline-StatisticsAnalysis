@@ -738,4 +738,9 @@
 	<translation name="ADD_TRADE">Dodaj transakcję</translation>
 	<translation name="MANUAL_SELL">Ręczna sprzedaż</translation>
 	<translation name="MANUAL_BUY">Ręczny zakup</translation>
+	<translation name="NEVER_DELETE">Nigdy nie usuwaj</translation>
+	<translation name="DELETE_AFTER_7_DAYS">Usuń po 7 dniach</translation>
+	<translation name="DELETE_AFTER_14_DAYS">Usuń po 14 dniach</translation>
+	<translation name="DELETE_AFTER_30_DAYS">Usuń po 30 dniach</translation>
+	<translation name="DELETE_AFTER_365_DAYS">Usuń po 365 dniach</translation>
 </translations>
