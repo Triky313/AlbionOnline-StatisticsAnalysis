@@ -3,6 +3,7 @@ using Notification.Wpf;
 using StatisticsAnalysisTool.Common;
 using StatisticsAnalysisTool.Common.UserSettings;
 using StatisticsAnalysisTool.Enumerations;
+using StatisticsAnalysisTool.Network.Manager;
 using StatisticsAnalysisTool.Notification;
 using StatisticsAnalysisTool.ViewModels;
 using StatisticsAnalysisTool.Views;
@@ -18,14 +19,15 @@ public partial class App
 {
     private static readonly ILog Log = LogManager.GetLogger(MethodBase.GetCurrentMethod()?.DeclaringType);
     private MainWindowViewModel _mainWindowViewModel;
+    private TrackingController _trackingController;
 
     protected override void OnStartup(StartupEventArgs e)
     {
         base.OnStartup(e);
-        
+
         log4net.Config.XmlConfigurator.Configure();
         Log.InfoFormat(LanguageController.CurrentCultureInfo, $"Tool started with v{Assembly.GetExecutingAssembly().GetName().Version}");
-        
+
         AppDomain.CurrentDomain.UnhandledException += OnUnhandledException;
 
         SettingsController.LoadSettings();
@@ -34,15 +36,23 @@ public partial class App
         AutoUpdateController.RemoveUpdateFiles();
         AutoUpdateController.AutoUpdate();
 
+        RegisterServices();
+
+        var mainWindow = new MainWindow(_mainWindowViewModel);
+        mainWindow.Show();
+        _mainWindowViewModel.InitMainWindowData();
+    }
+
+    private void RegisterServices()
+    {
         _mainWindowViewModel = new MainWindowViewModel();
         ServiceLocator.Register<MainWindowViewModel>(_mainWindowViewModel);
 
         var satNotifications = new SatNotificationManager(new NotificationManager(Current.Dispatcher));
         ServiceLocator.Register<SatNotificationManager>(satNotifications);
 
-        var mainWindow = new MainWindow(_mainWindowViewModel);
-        mainWindow.Show();
-        _mainWindowViewModel.InitMainWindowData();
+        _trackingController = new TrackingController(_mainWindowViewModel);
+        ServiceLocator.Register<TrackingController>(_trackingController);
     }
 
     private static void InitializeLanguage()
@@ -93,7 +103,7 @@ public partial class App
 
         if (_mainWindowViewModel.IsTrackingActive)
         {
-            _ = _mainWindowViewModel.StopTrackingAsync();
+            _ = _trackingController.StopTrackingAsync();
         }
     }
 
@@ -104,7 +114,7 @@ public partial class App
 
         if (_mainWindowViewModel.IsTrackingActive)
         {
-            _ = _mainWindowViewModel.StopTrackingAsync();
+            _ = _trackingController.StopTrackingAsync();
         }
     }
 }

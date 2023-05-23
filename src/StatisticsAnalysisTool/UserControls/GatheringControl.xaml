@@ -6,26 +6,37 @@
              xmlns:viewModels="clr-namespace:StatisticsAnalysisTool.ViewModels"
              xmlns:controls="clr-namespace:WpfToolkit.Controls;assembly=VirtualizingWrapPanel"
              xmlns:gathering="clr-namespace:StatisticsAnalysisTool.Gathering"
+             xmlns:fa5="http://schemas.fontawesome.com/icons/"
              mc:Ignorable="d" 
              d:DesignHeight="800" d:DesignWidth="800"
              d:DataContext="{d:DesignInstance Type=viewModels:MainWindowViewModel}">
     <Grid>
         <StackPanel Orientation="Vertical">
             <Grid>
-                <StackPanel Orientation="Horizontal" HorizontalAlignment="Left" MaxWidth="500">
-                    <StackPanel Orientation="Vertical">
-                        <ComboBox Width="200" Height="26" Margin="5,5" HorizontalAlignment="Left" VerticalAlignment="Top"
-                              ItemsSource="{Binding GatheringBindings.GatheringFilter}" 
-                              SelectedValue="{Binding GatheringBindings.SelectedGatheringFilter}"
-                              IsSynchronizedWithCurrentItem="True" SelectedValuePath="Key" DisplayMemberPath="Value" />
-                        <CheckBox IsChecked="{Binding GatheringBindings.IsGatheringActive, FallbackValue=true}" 
-                              Content="{Binding GatheringBindings.TranslationGatheringActive, FallbackValue=GATHERING__ACTIVE}"  
-                              HorizontalAlignment="Left" VerticalAlignment="Top" Width="150" Margin="5,0,0,0" />
+                <StackPanel Orientation="Vertical" HorizontalAlignment="Left" MaxWidth="580">
+                    <StackPanel Orientation="Horizontal">
+                        <fa5:ImageAwesome Icon="Solid_Filter" Foreground="{StaticResource SolidColorBrush.Text.1}" 
+                                          Width="20" Height="20" Margin="5,8,5,0" VerticalAlignment="Top" />
+                        <ComboBox Width="180" Height="26" Margin="0,5,5,5" HorizontalAlignment="Left" VerticalAlignment="Top"
+                                  ItemsSource="{Binding GatheringBindings.GatheringFilter}" 
+                                  SelectedValue="{Binding GatheringBindings.SelectedGatheringFilter}"
+                                  IsSynchronizedWithCurrentItem="True" SelectedValuePath="Key" DisplayMemberPath="Value" />
+                        <ComboBox Width="180" Height="26" Margin="5,5" HorizontalAlignment="Left" VerticalAlignment="Top"
+                                  ItemsSource="{Binding GatheringBindings.GatheringStatsTimeTypes}" 
+                                  SelectedValue="{Binding GatheringBindings.GatheringStatsTimeTypeSelection}" 
+                                  IsSynchronizedWithCurrentItem="True" DisplayMemberPath="Name" SelectedValuePath="GatheringStatsTimeType" />
                     </StackPanel>
-                    <ComboBox Width="200" Height="26" Margin="5,5" HorizontalAlignment="Left" VerticalAlignment="Top"
-                              ItemsSource="{Binding GatheringBindings.GatheringStatsTimeTypes}" 
-                              SelectedValue="{Binding GatheringBindings.GatheringStatsTimeTypeSelection}" 
-                              IsSynchronizedWithCurrentItem="True" DisplayMemberPath="Name" SelectedValuePath="GatheringStatsTimeType" />
+                    <StackPanel Orientation="Horizontal">
+                        <fa5:ImageAwesome Icon="Solid_UserCog" Foreground="{StaticResource SolidColorBrush.Text.1}" 
+                                          Width="20" Height="20" Margin="5,5,5,5" />
+                        <CheckBox IsChecked="{Binding GatheringBindings.IsGatheringActive, FallbackValue=true}" 
+                                  Content="{Binding GatheringBindings.TranslationGatheringActive, FallbackValue=GATHERING__ACTIVE}"  
+                                  HorizontalAlignment="Left" VerticalAlignment="Center" Width="180" Margin="5,0,0,0" />
+                        <ComboBox Width="180" Height="26" Margin="5,5" HorizontalAlignment="Left" VerticalAlignment="Top"
+                                  ItemsSource="{Binding GatheringBindings.AutoDeleteStatsByDate}" 
+                                  SelectedValue="{Binding GatheringBindings.AutoDeleteStatsByDateSelection}" 
+                                  IsSynchronizedWithCurrentItem="True" DisplayMemberPath="Name" SelectedValuePath="AutoDeleteGatheringStats" />
+                    </StackPanel>
                 </StackPanel>
                 <StackPanel Orientation="Vertical" Height="60" HorizontalAlignment="Right" VerticalAlignment="Top" MaxWidth="280" Margin="0,0,5,0">
                     <StackPanel Orientation="Horizontal" MaxWidth="300" Height="30" HorizontalAlignment="Right" VerticalAlignment="Top">

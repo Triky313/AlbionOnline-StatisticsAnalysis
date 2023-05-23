@@ -6,17 +6,14 @@ using Microsoft.Win32;
 using StatisticsAnalysisTool.Cluster;
 using StatisticsAnalysisTool.Common;
 using StatisticsAnalysisTool.Common.UserSettings;
-using StatisticsAnalysisTool.Dungeon;
 using StatisticsAnalysisTool.Enumerations;
 using StatisticsAnalysisTool.EstimatedMarketValue;
 using StatisticsAnalysisTool.EventLogging;
-using StatisticsAnalysisTool.Exceptions;
 using StatisticsAnalysisTool.GameData;
 using StatisticsAnalysisTool.Models;
 using StatisticsAnalysisTool.Models.BindingModel;
 using StatisticsAnalysisTool.Models.NetworkModel;
 using StatisticsAnalysisTool.Models.TranslationModel;
-using StatisticsAnalysisTool.Network;
 using StatisticsAnalysisTool.Network.Manager;
 using StatisticsAnalysisTool.Properties;
 using StatisticsAnalysisTool.Trade;
@@ -68,7 +65,6 @@ public class MainWindowViewModel : INotifyPropertyChanged
     private ItemLevel _selectedItemLevel;
     private ShopCategory _selectedItemShopCategories;
     private ItemTier _selectedItemTier;
-    public TrackingController TrackingController;
     private MainWindowTranslation _translation;
     private string _updateTranslation;
     private double _usernameInfoWidth;
@@ -323,92 +319,13 @@ public class MainWindowViewModel : INotifyPropertyChanged
         ItemsView = new ListCollectionView(ItemController.Items);
         InitAlerts();
         await EstimatedMarketValueController.SetAllEstimatedMarketValuesToItemsAsync();
-        await InitTrackingAsync();
+        LoggingBindings.Init();
 
         LoadIconVisibility = Visibility.Hidden;
         IsFilterResetEnabled = true;
         IsItemSearchCheckboxesEnabled = true;
         IsTxtSearchEnabled = true;
         IsTaskProgressbarIndeterminate = false;
-    }
-
-    public async Task InitTrackingAsync()
-    {
-        WorldData.GetDataListFromJson();
-        DungeonObjectData.GetDataListFromJson();
-
-        TrackingController ??= new TrackingController(this);
-
-        await StartTrackingAsync();
-
-        IsDamageMeterTrackingActive = SettingsController.CurrentSettings.IsDamageMeterTrackingActive;
-        IsTrackingPartyLootOnly = SettingsController.CurrentSettings.IsTrackingPartyLootOnly;
-        LoggingBindings.IsTrackingSilver = SettingsController.CurrentSettings.IsTrackingSilver;
-        LoggingBindings.IsTrackingFame = SettingsController.CurrentSettings.IsTrackingFame;
-        LoggingBindings.IsTrackingMobLoot = SettingsController.CurrentSettings.IsTrackingMobLoot;
-
-        LoggingBindings.NotificationsCollectionView = CollectionViewSource.GetDefaultView(LoggingBindings.TrackingNotifications) as ListCollectionView;
-        if (LoggingBindings?.NotificationsCollectionView != null)
-        {
-            LoggingBindings.NotificationsCollectionView.IsLiveSorting = true;
-            LoggingBindings.NotificationsCollectionView.IsLiveFiltering = true;
-            LoggingBindings.NotificationsCollectionView.SortDescriptions.Add(new SortDescription(nameof(DateTime), ListSortDirection.Descending));
-        }
-
-        // Logging
-        LoggingBindings?.Filters.Add(new LoggingFilterObject(TrackingController, this, LoggingFilterType.Fame)
-        {
-            IsSelected = SettingsController.CurrentSettings.IsMainTrackerFilterFame,
-            Name = MainWindowTranslation.Fame
-        });
-
-        LoggingBindings?.Filters.Add(new LoggingFilterObject(TrackingController, this, LoggingFilterType.Silver)
-        {
-            IsSelected = SettingsController.CurrentSettings.IsMainTrackerFilterSilver,
-            Name = MainWindowTranslation.Silver
-        });
-
-        LoggingBindings?.Filters.Add(new LoggingFilterObject(TrackingController, this, LoggingFilterType.Faction)
-        {
-            IsSelected = SettingsController.CurrentSettings.IsMainTrackerFilterFaction,
-            Name = MainWindowTranslation.Faction
-        });
-
-        LoggingBindings?.Filters.Add(new LoggingFilterObject(TrackingController, this, LoggingFilterType.ConsumableLoot)
-        {
-            IsSelected = SettingsController.CurrentSettings.IsMainTrackerFilterConsumableLoot,
-            Name = MainWindowTranslation.ConsumableLoot
-        });
-
-        LoggingBindings?.Filters.Add(new LoggingFilterObject(TrackingController, this, LoggingFilterType.EquipmentLoot)
-        {
-            IsSelected = SettingsController.CurrentSettings.IsMainTrackerFilterEquipmentLoot,
-            Name = MainWindowTranslation.EquipmentLoot
-        });
-
-        LoggingBindings?.Filters.Add(new LoggingFilterObject(TrackingController, this, LoggingFilterType.SimpleLoot)
-        {
-            IsSelected = SettingsController.CurrentSettings.IsMainTrackerFilterSimpleLoot,
-            Name = MainWindowTranslation.SimpleLoot
-        });
-
-        LoggingBindings?.Filters.Add(new LoggingFilterObject(TrackingController, this, LoggingFilterType.UnknownLoot)
-        {
-            IsSelected = SettingsController.CurrentSettings.IsMainTrackerFilterUnknownLoot,
-            Name = MainWindowTranslation.UnknownLoot
-        });
-
-        LoggingBindings?.Filters.Add(new LoggingFilterObject(TrackingController, this, LoggingFilterType.ShowLootFromMob)
-        {
-            IsSelected = SettingsController.CurrentSettings.IsLootFromMobShown,
-            Name = MainWindowTranslation.ShowLootFromMobs
-        });
-
-        LoggingBindings?.Filters.Add(new LoggingFilterObject(TrackingController, this, LoggingFilterType.Kill)
-        {
-            IsSelected = SettingsController.CurrentSettings.IsMainTrackerFilterKill,
-            Name = MainWindowTranslation.ShowKills
-        });
     }
 
     #endregion
@@ -504,7 +421,8 @@ public class MainWindowViewModel : INotifyPropertyChanged
         {
             try
             {
-                File.WriteAllText(dialog.FileName, TrackingController.LootController.GetLootLoggerObjectsAsCsv());
+                var trackingController = ServiceLocator.Resolve<TrackingController>();
+                File.WriteAllText(dialog.FileName, trackingController?.LootController?.GetLootLoggerObjectsAsCsv());
             }
             catch (Exception e)
             {
@@ -515,125 +433,7 @@ public class MainWindowViewModel : INotifyPropertyChanged
     }
 
     #endregion
-
-    #region Tracking
-
-    public async Task StartTrackingAsync()
-    {
-        if (NetworkManager.IsNetworkCaptureRunning())
-        {
-            return;
-        }
-
-        await EstimatedMarketValueController.LoadFromFileAsync();
-
-        await TrackingController?.StatisticController?.LoadFromFileAsync()!;
-        await TrackingController?.TradeController?.LoadFromFileAsync()!;
-        await TrackingController?.GatheringController?.LoadFromFileAsync()!;
-        await TrackingController?.TreasureController?.LoadFromFileAsync()!;
-        await TrackingController?.DungeonController?.LoadDungeonFromFileAsync()!;
-        await TrackingController?.VaultController?.LoadFromFileAsync()!;
-
-        TrackingController?.DungeonController?.UpdateDungeonStatsUi();
-        TrackingController?.DungeonController?.SetDungeonStatsUi();
-        TrackingController?.DungeonController?.UpdateDungeonChestsUi();
-        TrackingController?.DungeonController?.SetOrUpdateDungeonsDataUiAsync();
-
-        TrackingController?.ClusterController?.RegisterEvents();
-        TrackingController?.LootController?.RegisterEvents();
-        TrackingController?.TreasureController?.RegisterEvents();
-
-        TrackingController?.LiveStatsTracker.Start();
-
-        DungeonBindings.DungeonStatsFilter = new DungeonStatsFilter(TrackingController);
-
-        try
-        {
-            NetworkManager.StartNetworkCapture(TrackingController);
-            IsTrackingActive = true;
-        }
-        catch (NoListeningAdaptersException aEx)
-        {
-            ConsoleManager.WriteLineForError(MethodBase.GetCurrentMethod()?.DeclaringType, aEx);
-            Log.Error(MethodBase.GetCurrentMethod()?.DeclaringType, aEx);
-            SetErrorBar(Visibility.Visible, LanguageController.Translation("NO_LISTENING_ADAPTERS"));
-        }
-        catch (Exception e)
-        {
-            ConsoleManager.WriteLineForError(MethodBase.GetCurrentMethod()?.DeclaringType, e);
-            Log.Error(MethodBase.GetCurrentMethod()?.DeclaringType, e);
-            SetErrorBar(Visibility.Visible, LanguageController.Translation("PACKET_HANDLER_ERROR_MESSAGE"));
-
-            await StopTrackingAsync();
-        }
-    }
-
-    public async Task StopTrackingAsync()
-    {
-        NetworkManager.StopDeviceCapture();
-
-        TrackingController?.LiveStatsTracker?.Stop();
-
-        TrackingController?.TreasureController.UnregisterEvents();
-        TrackingController?.LootController.UnregisterEvents();
-        TrackingController?.ClusterController.UnregisterEvents();
-
-        await TrackingController?.VaultController?.SaveInFileAsync()!;
-        await TrackingController?.TreasureController?.SaveInFileAsync()!;
-        await TrackingController?.StatisticController?.SaveInFileAsync()!;
-        await TrackingController?.GatheringController?.SaveInFileAsync(true)!;
-        await TrackingController?.TradeController?.SaveInFileAsync()!;
-
-        await FileController.SaveAsync(DamageMeterBindings?.DamageMeterSnapshots,
-            Path.Combine(AppDomain.CurrentDomain.BaseDirectory, Settings.Default.UserDataDirectoryName, Settings.Default.DamageMeterSnapshotsFileName));
-
-        await EstimatedMarketValueController.SaveInFileAsync();
-
-        IsTrackingActive = false;
-    }
-
-    public void ResetDamageMeter()
-    {
-        var dialog = new DialogWindow(LanguageController.Translation("RESET_DAMAGE_METER"), LanguageController.Translation("SURE_YOU_WANT_TO_RESET_DAMAGE_METER"));
-        var dialogResult = dialog.ShowDialog();
-
-        if (dialogResult is true)
-        {
-            TrackingController.CombatController.ResetDamageMeter();
-        }
-    }
-
-    public void ResetDungeons()
-    {
-        var dialog = new DialogWindow(LanguageController.Translation("RESET_DUNGEON_TRACKER"), LanguageController.Translation("SURE_YOU_WANT_TO_RESET_DUNGEON_TRACKER"));
-        var dialogResult = dialog.ShowDialog();
-
-        if (dialogResult is true)
-        {
-            TrackingController.DungeonController.ResetDungeons();
-        }
-    }
-
-    public async Task ResetTrackingNotificationsAsync()
-    {
-        var dialog = new DialogWindow(LanguageController.Translation("RESET_TRACKING_NOTIFICATIONS"), LanguageController.Translation("SURE_YOU_WANT_TO_RESET_TRACKING_NOTIFICATIONS"));
-        var dialogResult = dialog.ShowDialog();
-
-        if (dialogResult is true)
-        {
-            await TrackingController.ClearNotificationsAsync().ConfigureAwait(false);
-            Application.Current.Dispatcher.Invoke(() => LoggingBindings.TopLooters.Clear());
-            TrackingController.LootController.ClearLootLogger();
-        }
-    }
-
-    public void DamageMeterActivationToggle()
-    {
-        IsDamageMeterTrackingActive = !IsDamageMeterTrackingActive;
-    }
-
-    #endregion
-
+    
     #region Item View Filters
 
     private void ItemsViewFilter()
@@ -734,7 +534,8 @@ public class MainWindowViewModel : INotifyPropertyChanged
         set
         {
             _loggingSearchText = value;
-            TrackingController?.NotificationUiFilteringAsync(_loggingSearchText);
+            var trackingController = ServiceLocator.Resolve<TrackingController>();
+            trackingController?.NotificationUiFilteringAsync(_loggingSearchText);
             OnPropertyChanged();
         }
     }
@@ -745,7 +546,8 @@ public class MainWindowViewModel : INotifyPropertyChanged
         set
         {
             _isTrackingPartyLootOnly = value;
-            TrackingController.LootController.IsPartyLootOnly = _isTrackingPartyLootOnly;
+            var trackingController = ServiceLocator.Resolve<TrackingController>();
+            trackingController.LootController.IsPartyLootOnly = _isTrackingPartyLootOnly;
 
             SettingsController.CurrentSettings.IsTrackingPartyLootOnly = _isTrackingPartyLootOnly;
             OnPropertyChanged();
@@ -879,14 +681,15 @@ public class MainWindowViewModel : INotifyPropertyChanged
         set
         {
             _isTrackingActive = value;
+            var trackingController = ServiceLocator.Resolve<TrackingController>();
 
             switch (_isTrackingActive)
             {
-                case true when TrackingController is { ExistIndispensableInfos: false }:
+                case true when trackingController is { ExistIndispensableInfos: false }:
                     TrackingActivityBindings.TrackingActiveText = MainWindowTranslation.TrackingIsPartiallyActive;
                     TrackingActivityBindings.TrackingActivityType = TrackingIconType.Partially;
                     break;
-                case true when TrackingController is { ExistIndispensableInfos: true }:
+                case true when trackingController is { ExistIndispensableInfos: true }:
                     TrackingActivityBindings.TrackingActiveText = MainWindowTranslation.TrackingIsActive;
                     TrackingActivityBindings.TrackingActivityType = TrackingIconType.On;
                     break;
@@ -915,14 +718,16 @@ public class MainWindowViewModel : INotifyPropertyChanged
         get => _isDamageMeterTrackingActive;
         set
         {
-            if (TrackingController?.CombatController == null)
+            var trackingController = ServiceLocator.Resolve<TrackingController>();
+
+            if (trackingController?.CombatController == null)
             {
                 return;
             }
 
             _isDamageMeterTrackingActive = value;
 
-            TrackingController.CombatController.IsDamageMeterActive = _isDamageMeterTrackingActive;
+            trackingController.CombatController.IsDamageMeterActive = _isDamageMeterTrackingActive;
 
             DamageMeterBindings.DamageMeterActivationToggleIcon = _isDamageMeterTrackingActive ? EFontAwesomeIcon.Solid_ToggleOn : EFontAwesomeIcon.Solid_ToggleOff;
 

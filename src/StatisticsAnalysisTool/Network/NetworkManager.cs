@@ -17,7 +17,7 @@ using System.Threading.Tasks;
 
 namespace StatisticsAnalysisTool.Network;
 
-public class NetworkManager
+public static class NetworkManager
 {
     private static IPhotonReceiver _receiver;
     private static readonly ILog Log = LogManager.GetLogger(MethodBase.GetCurrentMethod()?.DeclaringType);
@@ -106,7 +106,7 @@ public class NetworkManager
 
         ConsoleManager.WriteLineForMessage(MethodBase.GetCurrentMethod()?.DeclaringType, "CapturedDevices:");
 
-        foreach (ICaptureDevice captureDevice in CapturedDevices)
+        foreach (ICaptureDevice captureDevice in CapturedDevices.ToList())
         {
             ConsoleManager.WriteLineForMessage($"- {captureDevice.Description}");
             PacketEvent(captureDevice);

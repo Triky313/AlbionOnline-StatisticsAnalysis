@@ -58,6 +58,6 @@ public class TakeSilverEventHandler : EventPacketHandler<TakeSilverEvent>
     private TrackingNotification SetNotification(FixPoint totalGainedSilver, FixPoint cluster, FixPoint premium, FixPoint clusterTax)
     {
         return new TrackingNotification(DateTime.Now, new SilverNotificationFragment(LanguageController.Translation("YOU_HAVE"), AttributeStatOperator.Plus, totalGainedSilver,
-            LanguageController.Translation("SILVER"), cluster, premium, clusterTax, LanguageController.Translation("GAINED")), NotificationType.Silver);
+            LanguageController.Translation("SILVER"), cluster, premium, clusterTax, LanguageController.Translation("GAINED")), LoggingFilterType.Silver);
     }
 }

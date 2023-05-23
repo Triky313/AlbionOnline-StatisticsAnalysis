@@ -5,6 +5,7 @@ using StatisticsAnalysisTool.Views;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Windows;
+using StatisticsAnalysisTool.Network.Manager;
 
 namespace StatisticsAnalysisTool.UserControls;
 
@@ -27,8 +28,9 @@ public partial class DungeonControl
 
         if (dialogResult is true)
         {
-            vm?.TrackingController.DungeonController.ResetDungeons();
-            _ = vm?.TrackingController.DungeonController.SetOrUpdateDungeonsDataUiAsync();
+            var trackingController = ServiceLocator.Resolve<TrackingController>();
+            trackingController?.DungeonController?.ResetDungeons();
+            _ = trackingController?.DungeonController?.SetOrUpdateDungeonsDataUiAsync();
         }
     }
 
@@ -41,8 +43,9 @@ public partial class DungeonControl
 
         if (dialogResult is true)
         {
-            vm?.TrackingController.DungeonController.ResetDungeonsByDateAscending(DateTime.UtcNow.Date);
-            _ = vm?.TrackingController.DungeonController.SetOrUpdateDungeonsDataUiAsync();
+            var trackingController = ServiceLocator.Resolve<TrackingController>();
+            trackingController?.DungeonController?.ResetDungeonsByDateAscending(DateTime.UtcNow.Date);
+            _ = trackingController?.DungeonController?.SetOrUpdateDungeonsDataUiAsync();
         }
     }
 
@@ -58,7 +61,8 @@ public partial class DungeonControl
             var selectedDungeons = vm?.DungeonBindings?.TrackingDungeons.Where(x => x.IsSelectedForDeletion ?? false).Select(x => x.DungeonHash);
             if (selectedDungeons != null)
             {
-                await vm.TrackingController.DungeonController.RemoveDungeonByHashAsync(selectedDungeons);
+                var trackingController = ServiceLocator.Resolve<TrackingController>();
+                await trackingController?.DungeonController?.RemoveDungeonByHashAsync(selectedDungeons)!;
             }
         }
     }
@@ -72,8 +76,9 @@ public partial class DungeonControl
 
         if (dialogResult is true)
         {
-            vm?.TrackingController.DungeonController.DeleteDungeonsWithZeroFame();
-            _ = vm?.TrackingController.DungeonController.SetOrUpdateDungeonsDataUiAsync();
+            var trackingController = ServiceLocator.Resolve<TrackingController>();
+            trackingController?.DungeonController?.DeleteDungeonsWithZeroFame();
+            _ = trackingController?.DungeonController?.SetOrUpdateDungeonsDataUiAsync();
         }
     }
 

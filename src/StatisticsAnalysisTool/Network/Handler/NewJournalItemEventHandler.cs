@@ -1,5 +1,4 @@
 ﻿using StatisticsAnalysisTool.Common;
-using StatisticsAnalysisTool.Enumerations;
 using StatisticsAnalysisTool.EstimatedMarketValue;
 using StatisticsAnalysisTool.Network.Events;
 using StatisticsAnalysisTool.Network.Manager;

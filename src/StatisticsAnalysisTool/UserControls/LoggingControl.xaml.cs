@@ -1,8 +1,10 @@
-﻿using System.Diagnostics;
+﻿using StatisticsAnalysisTool.Common;
+using StatisticsAnalysisTool.Network.Manager;
+using StatisticsAnalysisTool.ViewModels;
+using System.Diagnostics;
 using System.Windows;
 using System.Windows.Input;
 using System.Windows.Navigation;
-using StatisticsAnalysisTool.ViewModels;
 
 namespace StatisticsAnalysisTool.UserControls;
 
@@ -20,14 +22,14 @@ public partial class LoggingControl
 
     private void BtnTrackingNotificationsReset_Click(object sender, RoutedEventArgs e)
     {
-        var vm = (MainWindowViewModel)DataContext;
-        vm?.ResetTrackingNotificationsAsync().ConfigureAwait(false);
+        var trackingController = ServiceLocator.Resolve<TrackingController>();
+        trackingController?.ResetTrackingNotificationsAsync();
     }
 
     private void BtnExportLootToFile_MouseUp(object sender, MouseEventArgs e)
     {
-        var vm = (MainWindowViewModel)DataContext;
-        vm?.ExportLootToFile();
+        var mainWindowViewModel = ServiceLocator.Resolve<MainWindowViewModel>();
+        mainWindowViewModel?.ExportLootToFile();
     }
 
     private void Hyperlink_RequestNavigate(object sender, RequestNavigateEventArgs e)

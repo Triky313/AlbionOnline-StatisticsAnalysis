@@ -1,25 +1,39 @@
+using log4net;
+using SharpPcap;
 using StatisticsAnalysisTool.Cluster;
 using StatisticsAnalysisTool.Common;
 using StatisticsAnalysisTool.Common.UserSettings;
 using StatisticsAnalysisTool.Dungeon;
+using StatisticsAnalysisTool.EstimatedMarketValue;
 using StatisticsAnalysisTool.EventLogging;
 using StatisticsAnalysisTool.EventLogging.Notification;
+using StatisticsAnalysisTool.Exceptions;
+using StatisticsAnalysisTool.GameData;
 using StatisticsAnalysisTool.Gathering;
+using StatisticsAnalysisTool.Models;
+using StatisticsAnalysisTool.Properties;
 using StatisticsAnalysisTool.Trade;
 using StatisticsAnalysisTool.Trade.Mails;
 using StatisticsAnalysisTool.Trade.Market;
 using StatisticsAnalysisTool.ViewModels;
+using StatisticsAnalysisTool.Views;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel;
+using System.IO;
 using System.Linq;
+using System.Reflection;
 using System.Threading.Tasks;
 using System.Windows;
+using System.Windows.Data;
 using ValueType = StatisticsAnalysisTool.Enumerations.ValueType;
 
 namespace StatisticsAnalysisTool.Network.Manager;
 
 public class TrackingController : ITrackingController
 {
+    private static readonly ILog Log = LogManager.GetLogger(MethodBase.GetCurrentMethod()?.DeclaringType);
+
     private const int MaxNotifications = 4000;
 
     private readonly MainWindowViewModel _mainWindowViewModel;
@@ -36,7 +50,7 @@ public class TrackingController : ITrackingController
     public readonly TradeController TradeController;
     public readonly VaultController VaultController;
     public readonly GatheringController GatheringController;
-    private readonly List<NotificationType> _notificationTypesFilters = new();
+    private readonly List<LoggingFilterType> _notificationTypesFilters = new();
 
     public TrackingController(MainWindowViewModel mainWindowViewModel)
     {
@@ -54,9 +68,117 @@ public class TrackingController : ITrackingController
         VaultController = new VaultController(mainWindowViewModel);
         GatheringController = new GatheringController(this, mainWindowViewModel);
         LiveStatsTracker = new LiveStatsTracker(this, mainWindowViewModel);
+
+        _ = InitTrackingAsync();
+    }
+
+    #region Tracking
+
+    public async Task InitTrackingAsync()
+    {
+        WorldData.GetDataListFromJson();
+        DungeonObjectData.GetDataListFromJson();
+
+        await StartTrackingAsync();
+
+        _mainWindowViewModel.IsDamageMeterTrackingActive = SettingsController.CurrentSettings.IsDamageMeterTrackingActive;
+        _mainWindowViewModel.IsTrackingPartyLootOnly = SettingsController.CurrentSettings.IsTrackingPartyLootOnly;
+        _mainWindowViewModel.LoggingBindings.IsTrackingSilver = SettingsController.CurrentSettings.IsTrackingSilver;
+        _mainWindowViewModel.LoggingBindings.IsTrackingFame = SettingsController.CurrentSettings.IsTrackingFame;
+        _mainWindowViewModel.LoggingBindings.IsTrackingMobLoot = SettingsController.CurrentSettings.IsTrackingMobLoot;
+
+        _mainWindowViewModel.LoggingBindings.GameLoggingCollectionView = CollectionViewSource.GetDefaultView(_mainWindowViewModel.LoggingBindings.TrackingNotifications) as ListCollectionView;
+        if (_mainWindowViewModel.LoggingBindings?.GameLoggingCollectionView != null)
+        {
+            _mainWindowViewModel.LoggingBindings.GameLoggingCollectionView.IsLiveSorting = true;
+            _mainWindowViewModel.LoggingBindings.GameLoggingCollectionView.IsLiveFiltering = true;
+            _mainWindowViewModel.LoggingBindings.GameLoggingCollectionView.SortDescriptions.Add(new SortDescription(nameof(DateTime), ListSortDirection.Descending));
+        }
+    }
+
+    public async Task StartTrackingAsync()
+    {
+        if (NetworkManager.IsNetworkCaptureRunning())
+        {
+            return;
+        }
+
+        await EstimatedMarketValueController.LoadFromFileAsync();
+
+        await StatisticController?.LoadFromFileAsync()!;
+        await TradeController?.LoadFromFileAsync()!;
+        await GatheringController?.LoadFromFileAsync()!;
+        await TreasureController?.LoadFromFileAsync()!;
+        await DungeonController?.LoadDungeonFromFileAsync()!;
+        await VaultController?.LoadFromFileAsync()!;
+
+        DungeonController?.UpdateDungeonStatsUi();
+        DungeonController?.SetDungeonStatsUi();
+        DungeonController?.UpdateDungeonChestsUi();
+        DungeonController?.SetOrUpdateDungeonsDataUiAsync();
+
+        ClusterController?.RegisterEvents();
+        LootController?.RegisterEvents();
+        TreasureController?.RegisterEvents();
+
+        LiveStatsTracker.Start();
+
+        _mainWindowViewModel.DungeonBindings.DungeonStatsFilter = new DungeonStatsFilter(this);
+
+        try
+        {
+            NetworkManager.StartNetworkCapture(this);
+            _mainWindowViewModel.IsTrackingActive = true;
+        }
+        catch (PcapException e)
+        {
+            ConsoleManager.WriteLineForError(MethodBase.GetCurrentMethod()?.DeclaringType, e);
+            Log.Error(MethodBase.GetCurrentMethod()?.DeclaringType, e);
+            _mainWindowViewModel.SetErrorBar(Visibility.Visible, LanguageController.Translation(e.Message));
+        }
+        catch (NoListeningAdaptersException e)
+        {
+            ConsoleManager.WriteLineForError(MethodBase.GetCurrentMethod()?.DeclaringType, e);
+            Log.Error(MethodBase.GetCurrentMethod()?.DeclaringType, e);
+            _mainWindowViewModel.SetErrorBar(Visibility.Visible, LanguageController.Translation("NO_LISTENING_ADAPTERS"));
+        }
+        catch (Exception e)
+        {
+            ConsoleManager.WriteLineForError(MethodBase.GetCurrentMethod()?.DeclaringType, e);
+            Log.Error(MethodBase.GetCurrentMethod()?.DeclaringType, e);
+            _mainWindowViewModel.SetErrorBar(Visibility.Visible, LanguageController.Translation("PACKET_HANDLER_ERROR_MESSAGE"));
+
+            await StopTrackingAsync();
+        }
+    }
+
+    public async Task StopTrackingAsync()
+    {
+        NetworkManager.StopDeviceCapture();
+
+        LiveStatsTracker?.Stop();
+
+        TreasureController.UnregisterEvents();
+        LootController.UnregisterEvents();
+        ClusterController.UnregisterEvents();
+
+        await VaultController?.SaveInFileAsync()!;
+        await TreasureController?.SaveInFileAsync()!;
+        await StatisticController?.SaveInFileAsync()!;
+        await GatheringController?.SaveInFileAsync(true)!;
+        await TradeController?.SaveInFileAsync()!;
+
+        await FileController.SaveAsync(_mainWindowViewModel.DamageMeterBindings?.DamageMeterSnapshots,
+            Path.Combine(AppDomain.CurrentDomain.BaseDirectory, Settings.Default.UserDataDirectoryName, Settings.Default.DamageMeterSnapshotsFileName));
+
+        await EstimatedMarketValueController.SaveInFileAsync();
+
+        _mainWindowViewModel.IsTrackingActive = false;
     }
 
     public bool ExistIndispensableInfos => ClusterController.CurrentCluster != null && EntityController.ExistLocalEntity();
+
+    #endregion
 
     #region Notifications
 
@@ -64,7 +186,7 @@ public class TrackingController : ITrackingController
     {
         item.SetType();
 
-        if (!IsTrackingAllowedByMainCharacter() && item.Type is NotificationType.Fame or NotificationType.Silver or NotificationType.Faction)
+        if (!IsTrackingAllowedByMainCharacter() && item.Type is LoggingFilterType.Fame or LoggingFilterType.Silver or LoggingFilterType.Faction)
         {
             return;
         }
@@ -74,12 +196,12 @@ public class TrackingController : ITrackingController
             return;
         }
 
-        if (!_mainWindowViewModel.LoggingBindings.IsTrackingFame && item.Type == NotificationType.Fame)
+        if (!_mainWindowViewModel.LoggingBindings.IsTrackingFame && item.Type == LoggingFilterType.Fame)
         {
             return;
         }
 
-        if (!_mainWindowViewModel.LoggingBindings.IsTrackingSilver && item.Type == NotificationType.Silver)
+        if (!_mainWindowViewModel.LoggingBindings.IsTrackingSilver && item.Type == LoggingFilterType.Silver)
         {
             return;
         }
@@ -199,19 +321,59 @@ public class TrackingController : ITrackingController
         return !_notificationTypesFilters?.Exists(x => x == trackingNotification.Type) ?? false;
     }
 
-    public void AddFilterType(NotificationType notificationType)
+    public void UpdateFilterType(LoggingFilterType notificationType, bool isSelected)
     {
-        if (!_notificationTypesFilters.Exists(x => x == notificationType))
+        if (notificationType == LoggingFilterType.ShowLootFromMob)
+        {
+            IsLootFromMobShown = isSelected;
+            SettingsController.CurrentSettings.IsLootFromMobShown = isSelected;
+        }
+        else if (isSelected && !_notificationTypesFilters.Exists(x => x == notificationType))
         {
             _notificationTypesFilters.Add(notificationType);
         }
+        else if (!isSelected && _notificationTypesFilters.Exists(x => x == notificationType))
+        {
+            _notificationTypesFilters.Remove(notificationType);
+        }
+
+        UpdateLoggingFilterSettings(notificationType, isSelected);
     }
 
-    public void RemoveFilterType(NotificationType notificationType)
+    private static void UpdateLoggingFilterSettings(LoggingFilterType notificationType, bool isSelected)
     {
-        if (_notificationTypesFilters.Exists(x => x == notificationType))
+        switch (notificationType)
         {
-            _ = _notificationTypesFilters.Remove(notificationType);
+            case LoggingFilterType.Fame:
+                SettingsController.CurrentSettings.IsMainTrackerFilterFame = isSelected;
+                break;
+            case LoggingFilterType.Silver:
+                SettingsController.CurrentSettings.IsMainTrackerFilterSilver = isSelected;
+                break;
+            case LoggingFilterType.Faction:
+                SettingsController.CurrentSettings.IsMainTrackerFilterFaction = isSelected;
+                break;
+            case LoggingFilterType.EquipmentLoot:
+                SettingsController.CurrentSettings.IsMainTrackerFilterEquipmentLoot = isSelected;
+                break;
+            case LoggingFilterType.ConsumableLoot:
+                SettingsController.CurrentSettings.IsMainTrackerFilterConsumableLoot = isSelected;
+                break;
+            case LoggingFilterType.SimpleLoot:
+                SettingsController.CurrentSettings.IsMainTrackerFilterSimpleLoot = isSelected;
+                break;
+            case LoggingFilterType.UnknownLoot:
+                SettingsController.CurrentSettings.IsMainTrackerFilterUnknownLoot = isSelected;
+                break;
+            case LoggingFilterType.SeasonPoints:
+                SettingsController.CurrentSettings.IsMainTrackerFilterSeasonPoints = isSelected;
+                break;
+            case LoggingFilterType.ShowLootFromMob:
+                SettingsController.CurrentSettings.IsLootFromMobShown = isSelected;
+                break;
+            case LoggingFilterType.Kill:
+                SettingsController.CurrentSettings.IsMainTrackerFilterKill = isSelected;
+                break;
         }
     }
 
@@ -246,6 +408,19 @@ public class TrackingController : ITrackingController
         }
 
         return false;
+    }
+
+    public async Task ResetTrackingNotificationsAsync()
+    {
+        var dialog = new DialogWindow(LanguageController.Translation("RESET_TRACKING_NOTIFICATIONS"), LanguageController.Translation("SURE_YOU_WANT_TO_RESET_TRACKING_NOTIFICATIONS"));
+        var dialogResult = dialog.ShowDialog();
+
+        if (dialogResult is true)
+        {
+            await ClearNotificationsAsync()!;
+            Application.Current.Dispatcher.Invoke(() => _mainWindowViewModel?.LoggingBindings?.TopLooters?.Clear());
+            LootController?.ClearLootLogger();
+        }
     }
 
     #endregion

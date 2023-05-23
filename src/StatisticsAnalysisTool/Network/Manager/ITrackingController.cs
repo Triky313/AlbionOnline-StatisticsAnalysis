@@ -16,9 +16,9 @@ public interface ITrackingController
 
     void NotificationUiFilteringAsync() { }
 
-    void AddFilterType(NotificationType notificationType) { }
+    void UpdateFilterType(LoggingFilterType notificationType) { }
 
-    void RemoveFilterType(NotificationType notificationType) { }
+    void RemoveFilterType(LoggingFilterType notificationType) { }
 
     void IsTrackingAllowedByMainCharacter() { }
 }

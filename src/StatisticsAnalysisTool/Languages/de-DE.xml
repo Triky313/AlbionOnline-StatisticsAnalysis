@@ -738,4 +738,9 @@
 	<translation name="ADD_TRADE">Handel hinzufügen</translation>
 	<translation name="MANUAL_SELL">Manueller Verkauf</translation>
 	<translation name="MANUAL_BUY">Manueller Kauf</translation>
+	<translation name="NEVER_DELETE">Nie löschen</translation>
+	<translation name="DELETE_AFTER_7_DAYS">Löschen nach 7 Tagen</translation>
+	<translation name="DELETE_AFTER_14_DAYS">Löschen nach 14 Tagen</translation>
+	<translation name="DELETE_AFTER_30_DAYS">Löschen nach 30 Tagen</translation>
+	<translation name="DELETE_AFTER_365_DAYS">Löschen nach 365 Tagen</translation>
 </translations>

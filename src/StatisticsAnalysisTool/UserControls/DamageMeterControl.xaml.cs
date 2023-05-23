@@ -1,14 +1,15 @@
-﻿using System;
-using System.Linq;
-using System.Reflection;
-using StatisticsAnalysisTool.ViewModels;
-using System.Windows;
-using System.Windows.Input;
-using log4net;
+﻿using log4net;
 using StatisticsAnalysisTool.Common;
 using StatisticsAnalysisTool.Common.UserSettings;
 using StatisticsAnalysisTool.Enumerations;
+using StatisticsAnalysisTool.Network.Manager;
+using StatisticsAnalysisTool.ViewModels;
 using StatisticsAnalysisTool.Views;
+using System;
+using System.Linq;
+using System.Reflection;
+using System.Windows;
+using System.Windows.Input;
 
 namespace StatisticsAnalysisTool.UserControls;
 
@@ -23,7 +24,7 @@ public partial class DamageMeterControl
     {
         InitializeComponent();
     }
-        
+
     public void ResetDamageMeter()
     {
         var dialog = new DialogWindow(LanguageController.Translation("RESET_DAMAGE_METER"), LanguageController.Translation("SURE_YOU_WANT_TO_RESET_DAMAGE_METER"));
@@ -31,8 +32,8 @@ public partial class DamageMeterControl
 
         if (dialogResult is true)
         {
-            var vm = (MainWindowViewModel)DataContext;
-            vm?.TrackingController?.CombatController?.ResetDamageMeter();
+            var trackingController = ServiceLocator.Resolve<TrackingController>();
+            trackingController?.CombatController?.ResetDamageMeter();
         }
     }
 
@@ -47,7 +48,7 @@ public partial class DamageMeterControl
             }
             else
             {
-                var vm = (MainWindowViewModel)DataContext;
+                var vm = (MainWindowViewModel) DataContext;
                 var itemWindow = new DamageMeterWindow(vm?.DamageMeterBindings?.DamageMeter);
                 itemWindow.Show();
             }
@@ -64,10 +65,10 @@ public partial class DamageMeterControl
         var output = string.Empty;
         var counter = 1;
 
-        var vm = (MainWindowViewModel)DataContext;
+        var vm = (MainWindowViewModel) DataContext;
 
         var damageMeterSortType = vm?.DamageMeterBindings?.DamageMeterSortSelection.DamageMeterSortType;
-            
+
         if (isSnapshot)
         {
             damageMeterSortType = vm?.DamageMeterBindings?.DamageMeterSnapshotSortSelection.DamageMeterSortType;
@@ -77,7 +78,7 @@ public partial class DamageMeterControl
         {
             case DamageMeterSortType.Damage when isSnapshot:
                 Clipboard.SetDataObject((SettingsController.CurrentSettings.ShortDamageMeterToClipboard
-                    ? vm.DamageMeterBindings?.DamageMeterSnapshotSelection?.DamageMeter?.Aggregate(output, (current, entity) 
+                    ? vm.DamageMeterBindings?.DamageMeterSnapshotSelection?.DamageMeter?.Aggregate(output, (current, entity)
                         => current + $"{counter++}. {entity.Name}: {entity.DamagePercentage:N2}%\n")
                     : vm.DamageMeterBindings?.DamageMeterSnapshotSelection?.DamageMeter?.Aggregate(output,
                         (current, entity) => current + $"{counter++}. {entity.Name}: {entity.Damage}({entity.DamagePercentage:N2}%)|{entity.Dps:N2} DPS\n")) ?? string.Empty);
@@ -97,13 +98,13 @@ public partial class DamageMeterControl
             case DamageMeterSortType.Name when isSnapshot:
                 Clipboard.SetDataObject((SettingsController.CurrentSettings.ShortDamageMeterToClipboard
                     ? vm.DamageMeterBindings?.DamageMeterSnapshotSelection?.DamageMeter.Aggregate(output, (current, entity) => current + $"{counter++}. {entity.Name}: {entity.DamagePercentage:N2}%\n")
-                    : vm.DamageMeterBindings?.DamageMeterSnapshotSelection?.DamageMeter.Aggregate(output, 
+                    : vm.DamageMeterBindings?.DamageMeterSnapshotSelection?.DamageMeter.Aggregate(output,
                         (current, entity) => current + $"{counter++}. {entity.Name}: {entity.Damage}({entity.DamagePercentage:N2}%)|{entity.Dps:N2} DPS\n")) ?? string.Empty);
                 break;
             case DamageMeterSortType.Name:
                 Clipboard.SetDataObject((SettingsController.CurrentSettings.ShortDamageMeterToClipboard
                     ? vm.DamageMeterBindings?.DamageMeter?.Aggregate(output, (current, entity) => current + $"{counter++}. {entity.Name}: {entity.DamagePercentage:N2}%\n")
-                    : vm.DamageMeterBindings?.DamageMeter?.Aggregate(output, 
+                    : vm.DamageMeterBindings?.DamageMeter?.Aggregate(output,
                         (current, entity) => current + $"{counter++}. {entity.Name}: {entity.Damage}({entity.DamagePercentage:N2}%)|{entity.Dps:N2} DPS\n")) ?? string.Empty);
                 break;
             case DamageMeterSortType.Heal when isSnapshot:
@@ -129,19 +130,12 @@ public partial class DamageMeterControl
         }
     }
 
-    public void DamageMeterActivationToggle()
-    {
-        if (DataContext is MainWindowViewModel vm)
-        {
-            vm.IsDamageMeterTrackingActive = !vm.IsDamageMeterTrackingActive;
-        }
-    }
-
     #region Ui events
 
     private void DamageMeterModeActiveToggle_MouseUp(object sender, MouseButtonEventArgs e)
     {
-        DamageMeterActivationToggle();
+        var mainWindowViewModel = ServiceLocator.Resolve<MainWindowViewModel>();
+        mainWindowViewModel.IsDamageMeterTrackingActive = !mainWindowViewModel.IsDamageMeterTrackingActive;
     }
 
     private void BtnDamageMeterReset_Click(object sender, RoutedEventArgs e)
@@ -151,13 +145,13 @@ public partial class DamageMeterControl
 
     private void OpenDamageMeterInfoPopup_MouseEnter(object sender, MouseEventArgs e)
     {
-        var vm = (MainWindowViewModel)DataContext;
+        var vm = (MainWindowViewModel) DataContext;
         vm.IsDamageMeterPopupVisible = Visibility.Visible;
     }
 
     private void CloseDamageMeterInfoPopup_MouseLeave(object sender, MouseEventArgs e)
     {
-        var vm = (MainWindowViewModel)DataContext;
+        var vm = (MainWindowViewModel) DataContext;
         vm.IsDamageMeterPopupVisible = Visibility.Hidden;
     }
 
@@ -184,13 +178,13 @@ public partial class DamageMeterControl
 
     private void TakeASnapShot_MouseUp(object sender, MouseButtonEventArgs e)
     {
-        var vm = (MainWindowViewModel)DataContext;
+        var vm = (MainWindowViewModel) DataContext;
         vm?.DamageMeterBindings?.GetSnapshot();
     }
 
     private void BtnDeleteSelectedSnapshot_Click(object sender, RoutedEventArgs e)
     {
-        var vm = (MainWindowViewModel)DataContext;
+        var vm = (MainWindowViewModel) DataContext;
         vm?.DamageMeterBindings?.DeleteSelectedSnapshot();
     }
 

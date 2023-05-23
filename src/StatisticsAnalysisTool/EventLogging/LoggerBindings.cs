@@ -1,5 +1,6 @@
 ﻿using StatisticsAnalysisTool.Common.UserSettings;
 using StatisticsAnalysisTool.EventLogging.Notification;
+using StatisticsAnalysisTool.Models.TranslationModel;
 using StatisticsAnalysisTool.Properties;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
@@ -10,7 +11,7 @@ namespace StatisticsAnalysisTool.EventLogging;
 
 public class LoggingBindings : INotifyPropertyChanged
 {
-    private ListCollectionView _notificationsCollectionView;
+    private ListCollectionView _gameLoggingCollectionView;
     private ObservableCollection<TrackingNotification> _trackingNotifications = new();
     private ObservableCollection<TopLooterObject> _topLooters = new();
     private bool _isTrackingSilver;
@@ -18,8 +19,8 @@ public class LoggingBindings : INotifyPropertyChanged
     private bool _isTrackingMobLoot;
     private ObservableCollection<LoggingFilterObject> _filters = new();
     private ListCollectionView _topLootersCollectionView;
-
-    public LoggingBindings()
+    
+    public void Init()
     {
         TopLootersCollectionView = CollectionViewSource.GetDefaultView(TopLooters) as ListCollectionView;
         if (TopLootersCollectionView != null)
@@ -27,16 +28,70 @@ public class LoggingBindings : INotifyPropertyChanged
             TopLootersCollectionView.IsLiveSorting = true;
             TopLootersCollectionView.CustomSort = new TopLooterComparer();
         }
+
+        Filters.Add(new LoggingFilterObject(LoggingFilterType.Fame)
+        {
+            IsSelected = SettingsController.CurrentSettings.IsMainTrackerFilterFame,
+            Name = MainWindowTranslation.Fame
+        });
+
+        Filters.Add(new LoggingFilterObject(LoggingFilterType.Silver)
+        {
+            IsSelected = SettingsController.CurrentSettings.IsMainTrackerFilterSilver,
+            Name = MainWindowTranslation.Silver
+        });
+
+        Filters.Add(new LoggingFilterObject(LoggingFilterType.Faction)
+        {
+            IsSelected = SettingsController.CurrentSettings.IsMainTrackerFilterFaction,
+            Name = MainWindowTranslation.Faction
+        });
+
+        Filters.Add(new LoggingFilterObject(LoggingFilterType.ConsumableLoot)
+        {
+            IsSelected = SettingsController.CurrentSettings.IsMainTrackerFilterConsumableLoot,
+            Name = MainWindowTranslation.ConsumableLoot
+        });
+
+        Filters.Add(new LoggingFilterObject(LoggingFilterType.EquipmentLoot)
+        {
+            IsSelected = SettingsController.CurrentSettings.IsMainTrackerFilterEquipmentLoot,
+            Name = MainWindowTranslation.EquipmentLoot
+        });
+
+        Filters.Add(new LoggingFilterObject(LoggingFilterType.SimpleLoot)
+        {
+            IsSelected = SettingsController.CurrentSettings.IsMainTrackerFilterSimpleLoot,
+            Name = MainWindowTranslation.SimpleLoot
+        });
+
+        Filters.Add(new LoggingFilterObject(LoggingFilterType.UnknownLoot)
+        {
+            IsSelected = SettingsController.CurrentSettings.IsMainTrackerFilterUnknownLoot,
+            Name = MainWindowTranslation.UnknownLoot
+        });
+
+        Filters.Add(new LoggingFilterObject(LoggingFilterType.ShowLootFromMob)
+        {
+            IsSelected = SettingsController.CurrentSettings.IsLootFromMobShown,
+            Name = MainWindowTranslation.ShowLootFromMobs
+        });
+
+        Filters.Add(new LoggingFilterObject(LoggingFilterType.Kill)
+        {
+            IsSelected = SettingsController.CurrentSettings.IsMainTrackerFilterKill,
+            Name = MainWindowTranslation.ShowKills
+        });
     }
 
     #region Bindings
 
-    public ListCollectionView NotificationsCollectionView
+    public ListCollectionView GameLoggingCollectionView
     {
-        get => _notificationsCollectionView;
+        get => _gameLoggingCollectionView;
         set
         {
-            _notificationsCollectionView = value;
+            _gameLoggingCollectionView = value;
             OnPropertyChanged();
         }
     }

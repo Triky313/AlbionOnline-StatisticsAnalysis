@@ -1,4 +1,5 @@
 ﻿using log4net;
+using SharpPcap;
 using StatisticsAnalysisTool.Common;
 using StatisticsAnalysisTool.Common.UserSettings;
 using StatisticsAnalysisTool.Enumerations;
@@ -192,7 +193,22 @@ public class SettingsWindowViewModel : INotifyPropertyChanged
         }
 
         SettingsController.CurrentSettings.PacketFilter = PacketFilter ?? string.Empty;
-        NetworkManager.RestartNetworkCapture();
+        try
+        {
+            NetworkManager.RestartNetworkCapture();
+        }
+        catch (PcapException e)
+        {
+            ConsoleManager.WriteLineForError(MethodBase.GetCurrentMethod()?.DeclaringType, e);
+            Log.Error(MethodBase.GetCurrentMethod()?.DeclaringType, e);
+            ServiceLocator.Resolve<MainWindowViewModel>().SetErrorBar(Visibility.Visible, LanguageController.Translation(e.Message));
+        }
+        catch (Exception e)
+        {
+            ConsoleManager.WriteLineForError(MethodBase.GetCurrentMethod()?.DeclaringType, e);
+            Log.Error(MethodBase.GetCurrentMethod()?.DeclaringType, e);
+            ServiceLocator.Resolve<MainWindowViewModel>().SetErrorBar(Visibility.Visible, LanguageController.Translation(e.Message));
+        }
     }
 
     public void ResetPacketFilter()

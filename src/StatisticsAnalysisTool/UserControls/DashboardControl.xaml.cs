@@ -1,5 +1,6 @@
 ﻿using log4net;
 using StatisticsAnalysisTool.Common;
+using StatisticsAnalysisTool.Network.Manager;
 using StatisticsAnalysisTool.ViewModels;
 using StatisticsAnalysisTool.Views;
 using System;
@@ -49,8 +50,8 @@ public partial class DashboardControl
 
     private void BtnTrackingReset_Click(object sender, RoutedEventArgs e)
     {
-        var vm = (MainWindowViewModel)DataContext;
-        vm?.TrackingController?.LiveStatsTracker?.Reset();
+        var trackingController = ServiceLocator.Resolve<TrackingController>();
+        trackingController?.LiveStatsTracker?.Reset();
     }
 
     private void OpenDashboardWindow_MouseUp(object sender, MouseButtonEventArgs e)

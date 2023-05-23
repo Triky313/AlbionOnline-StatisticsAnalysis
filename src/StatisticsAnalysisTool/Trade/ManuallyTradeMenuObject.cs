@@ -1,7 +1,7 @@
 ﻿using StatisticsAnalysisTool.Common;
+using StatisticsAnalysisTool.Network.Manager;
 using StatisticsAnalysisTool.Properties;
 using StatisticsAnalysisTool.Trade.Market;
-using StatisticsAnalysisTool.ViewModels;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -95,7 +95,8 @@ public class ManuallyTradeMenuObject : INotifyPropertyChanged
             }
         };
 
-        ServiceLocator.Resolve<MainWindowViewModel>()?.TrackingController?.TradeController?.AddTradeToBindingCollection(trade);
+        var trackingController = ServiceLocator.Resolve<TrackingController>();
+        trackingController?.TradeController?.AddTradeToBindingCollection(trade);
     }
 
     private ICommand _addTradeCommand;
