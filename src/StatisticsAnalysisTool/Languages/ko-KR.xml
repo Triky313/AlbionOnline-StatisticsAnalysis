@@ -738,5 +738,10 @@
 	<translation name="VALUE">값</translation>
 	<translation name="ADD_TRADE">거래 등록</translation>
 	<translation name="MANUAL_SELL">수동 판매</translation>
-	<translation name="MANUAL_BUY">수동 구매</translation>	
+	<translation name="MANUAL_BUY">수동 구매</translation>
+	<translation name="NEVER_DELETE">삭제 안 함</translation>
+	<translation name="DELETE_AFTER_7_DAYS">7일 후 삭제</translation>
+	<translation name="DELETE_AFTER_14_DAYS">14일 후 삭제</translation>
+	<translation name="DELETE_AFTER_30_DAYS">30일 후 삭제</translation>
+	<translation name="DELETE_AFTER_365_DAYS">365일 후 삭제</translation>
 </translations>
