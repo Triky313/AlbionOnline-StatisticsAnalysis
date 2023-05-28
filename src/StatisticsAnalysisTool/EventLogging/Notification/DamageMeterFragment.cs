@@ -1,11 +1,11 @@
-﻿using StatisticsAnalysisTool.Common;
-using StatisticsAnalysisTool.Models;
-using System;
+﻿using System;
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
+using StatisticsAnalysisTool.Common;
+using StatisticsAnalysisTool.Models;
 using StatisticsAnalysisTool.Properties;
 
-namespace StatisticsAnalysisTool.Network.Notification;
+namespace StatisticsAnalysisTool.EventLogging.Notification;
 
 public class DamageMeterFragment : INotifyPropertyChanged
 {
