@@ -81,10 +81,10 @@ public partial class TradeMonitoringControl
         await vm.TradeMonitoringBindings.UpdateFilteredTradesAsync();
     }
 
-    private void DatePicker_OnSelectedDateChanged(object sender, SelectionChangedEventArgs e)
+    private async void DatePicker_OnSelectedDateChanged(object sender, SelectionChangedEventArgs e)
     {
         var vm = (MainWindowViewModel) DataContext;
-        CollectionViewSource.GetDefaultView(vm.TradeMonitoringBindings.Trades).Refresh();
+        await vm.TradeMonitoringBindings.UpdateFilteredTradesAsync();
     }
 
     #endregion
