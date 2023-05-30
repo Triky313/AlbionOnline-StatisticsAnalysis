@@ -6,7 +6,6 @@ using System.Linq;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
 using System.Windows.Input;
 
 namespace StatisticsAnalysisTool.UserControls;
@@ -26,16 +25,25 @@ public partial class TradeMonitoringControl
         var dialog = new DialogWindow(LanguageController.Translation("DELETE_SELECTED_TRADES"), LanguageController.Translation("SURE_YOU_WANT_TO_DELETE_SELECTED_TRADES"));
         var dialogResult = dialog.ShowDialog();
 
-        var vm = (MainWindowViewModel) DataContext;
+        var mainWindowViewModel = ServiceLocator.Resolve<MainWindowViewModel>();
+
+        if (mainWindowViewModel == null)
+        {
+            return;
+        }
 
         if (dialogResult is true)
         {
             var trackingController = ServiceLocator.Resolve<TrackingController>();
 
-            var selectedMails = vm?.TradeMonitoringBindings?.Trades?.Where(x => x?.IsSelectedForDeletion ?? false).Select(x => x.Id);
-            ServiceLocator.Resolve<MainWindowViewModel>().TradeMonitoringBindings.IsDeleteTradesButtonEnabled = false;
-            await trackingController?.TradeController?.RemoveTradesByIdsAsync(selectedMails)!;
-            ServiceLocator.Resolve<MainWindowViewModel>().TradeMonitoringBindings.IsDeleteTradesButtonEnabled = true;
+            var selectedTrades = mainWindowViewModel.TradeMonitoringBindings.TradeCollectionView?.Cast<Trade.Trade>()
+                .ToList()
+                .Where(x => x?.IsSelectedForDeletion ?? false)
+                .Select(x => x.Id);
+
+            mainWindowViewModel.TradeMonitoringBindings.IsDeleteTradesButtonEnabled = false;
+            await trackingController?.TradeController?.RemoveTradesByIdsAsync(selectedTrades)!;
+            mainWindowViewModel.TradeMonitoringBindings.IsDeleteTradesButtonEnabled = true;
         }
     }
 
@@ -56,6 +64,7 @@ public partial class TradeMonitoringControl
     private async void BtnDeleteSelectedMails_Click(object sender, RoutedEventArgs e)
     {
         await DeleteSelectedTradesAsync();
+        _isSelectAllActive = !_isSelectAllActive;
     }
 
     private bool _isSelectAllActive;
@@ -67,9 +76,9 @@ public partial class TradeMonitoringControl
             return;
         }
 
-        foreach (var trade in mainWindowViewModel.TradeMonitoringBindings.Trades)
+        foreach (var trade in mainWindowViewModel.TradeMonitoringBindings.TradeCollectionView)
         {
-            trade.IsSelectedForDeletion = !_isSelectAllActive;
+            ((Trade.Trade) trade).IsSelectedForDeletion = !_isSelectAllActive;
         }
 
         _isSelectAllActive = !_isSelectAllActive;
@@ -81,10 +90,10 @@ public partial class TradeMonitoringControl
         await vm.TradeMonitoringBindings.UpdateFilteredTradesAsync();
     }
 
-    private void DatePicker_OnSelectedDateChanged(object sender, SelectionChangedEventArgs e)
+    private async void DatePicker_OnSelectedDateChanged(object sender, SelectionChangedEventArgs e)
     {
         var vm = (MainWindowViewModel) DataContext;
-        CollectionViewSource.GetDefaultView(vm.TradeMonitoringBindings.Trades).Refresh();
+        await vm.TradeMonitoringBindings.UpdateFilteredTradesAsync();
     }
 
     #endregion
