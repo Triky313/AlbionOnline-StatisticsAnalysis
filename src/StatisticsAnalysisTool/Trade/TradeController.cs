@@ -1,16 +1,13 @@
-﻿using log4net;
-using StatisticsAnalysisTool.Common;
+﻿using StatisticsAnalysisTool.Common;
 using StatisticsAnalysisTool.Common.UserSettings;
 using StatisticsAnalysisTool.Notification;
 using StatisticsAnalysisTool.Properties;
-using StatisticsAnalysisTool.Trade.Mails;
 using StatisticsAnalysisTool.ViewModels;
 using System;
 using System.Collections.Generic;
 using System.Collections.Specialized;
 using System.IO;
 using System.Linq;
-using System.Reflection;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
@@ -21,8 +18,6 @@ namespace StatisticsAnalysisTool.Trade;
 
 public class TradeController
 {
-    private static readonly ILog Log = LogManager.GetLogger(MethodBase.GetCurrentMethod()?.DeclaringType);
-
     private readonly MainWindowViewModel _mainWindowViewModel;
     private int _tradeCounter;
 
@@ -116,13 +111,9 @@ public class TradeController
     {
         FileController.TransferFileIfExistFromOldPathToUserDataDirectory(Path.Combine(AppDomain.CurrentDomain.BaseDirectory, Settings.Default.TradesFileName));
 
-        var tradesFromOldMails = GetOldMails();
-
         var tradeDtos = await FileController.LoadAsync<List<TradeDto>>(
             Path.Combine(AppDomain.CurrentDomain.BaseDirectory, Settings.Default.UserDataDirectoryName, Settings.Default.TradesFileName));
         var trades = tradeDtos.Select(TradeMapping.Mapping).ToList();
-
-        trades.AddRange(await tradesFromOldMails);
 
         await SetTradesToBindings(trades);
     }
@@ -132,7 +123,6 @@ public class TradeController
         DirectoryController.CreateDirectoryWhenNotExists(Path.Combine(AppDomain.CurrentDomain.BaseDirectory, Settings.Default.UserDataDirectoryName));
         await FileController.SaveAsync(_mainWindowViewModel.TradeMonitoringBindings?.Trades?.Select(TradeMapping.Mapping),
             Path.Combine(AppDomain.CurrentDomain.BaseDirectory, Settings.Default.UserDataDirectoryName, Settings.Default.TradesFileName));
-        DeleteMailsJson();
     }
 
     public async Task SaveInFileAfterExceedingLimit(int limit)
@@ -170,49 +160,6 @@ public class TradeController
             _mainWindowViewModel?.TradeMonitoringBindings?.TradeCollectionView?.Refresh();
             _mainWindowViewModel?.TradeMonitoringBindings?.TradeStatsObject?.SetTradeStats(enumerable);
         }, DispatcherPriority.Background, CancellationToken.None);
-    }
-
-    private static async Task<IEnumerable<Trade>> GetOldMails()
-    {
-        if (!File.Exists(Path.Combine(AppDomain.CurrentDomain.BaseDirectory, Settings.Default.MailsFileName)))
-        {
-            return new List<Trade>();
-        }
-
-        return ConvertOldMailsToTrade(await FileController.LoadAsync<List<MailOld>>($"{AppDomain.CurrentDomain.BaseDirectory}{Settings.Default.MailsFileName}"));
-    }
-
-    [Obsolete("Can be deleted after july 2023")]
-    private static void DeleteMailsJson()
-    {
-        try
-        {
-            if (File.Exists(Path.Combine(AppDomain.CurrentDomain.BaseDirectory, Settings.Default.MailsFileName)))
-            {
-                File.Delete(Path.Combine(AppDomain.CurrentDomain.BaseDirectory, Settings.Default.MailsFileName));
-            }
-        }
-        catch (Exception e)
-        {
-            ConsoleManager.WriteLineForError(MethodBase.GetCurrentMethod()?.DeclaringType, e);
-            Log.Error(MethodBase.GetCurrentMethod()?.DeclaringType, e);
-        }
-    }
-
-    [Obsolete("Can be deleted after july 2023")]
-    private static IEnumerable<Trade> ConvertOldMailsToTrade(IEnumerable<MailOld> mails)
-    {
-        return mails.Select(mail => new Trade()
-        {
-            Id = mail.MailId,
-            Type = TradeType.Mail,
-            Ticks = mail.Tick,
-            ClusterIndex = mail.ClusterIndex,
-            MailContent = mail.MailContent,
-            MailTypeText = mail.MailTypeText,
-            Guid = mail.Guid
-        })
-            .ToList();
     }
 
     #endregion
