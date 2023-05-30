@@ -24,16 +24,15 @@ public class LoggingFilterObject : INotifyPropertyChanged
     {
         try
         {
-
             var loggingSearchText = ServiceLocator.Resolve<MainWindowViewModel>()?.LoggingSearchText;
             var trackingController = ServiceLocator.Resolve<TrackingController>();
 
             trackingController?.UpdateFilterType(LoggingFilterType, IsSelected ?? false);
             trackingController?.NotificationUiFilteringAsync(loggingSearchText);
         }
-        catch (KeyNotFoundException e)
+        catch (KeyNotFoundException)
         {
-
+            // ignored
         }
     }
 
