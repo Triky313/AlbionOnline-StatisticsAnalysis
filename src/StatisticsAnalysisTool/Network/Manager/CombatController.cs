@@ -458,7 +458,7 @@ public class CombatController
             };
 
             _trackingController?.EntityController?.AddEntity(i, guid, interactGuid, name, guildName, allianceName, charItem, GameObjectType.Player, GameObjectSubType.Mob);
-            _trackingController?.EntityController?.AddToPartyAsync(guid, name);
+            _trackingController?.EntityController?.AddToPartyAsync(guid);
         }
 
         return _trackingController?.EntityController?.GetAllEntities();

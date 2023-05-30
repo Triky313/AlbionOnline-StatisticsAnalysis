@@ -21,7 +21,7 @@ public class EntityController
     private static readonly ILog Log = LogManager.GetLogger(MethodBase.GetCurrentMethod()?.DeclaringType);
 
     private readonly ConcurrentDictionary<Guid, PlayerGameObject> _knownEntities = new();
-    private readonly ConcurrentDictionary<Guid, string> _knownPartyEntities = new();
+    private readonly ObservableCollection<Guid> _knownPartyEntities = new();
     private readonly MainWindowViewModel _mainWindowViewModel;
     private readonly ObservableCollection<EquipmentItemInternal> _newEquipmentItems = new();
     private readonly ObservableCollection<SpellEffect> _spellEffects = new();
@@ -40,7 +40,7 @@ public class EntityController
 
     public event Action<GameObject> OnAddEntity;
 
-    public void AddEntity(long objectId, Guid userGuid, Guid? interactGuid, string name, string guild, string alliance, 
+    public void AddEntity(long objectId, Guid userGuid, Guid? interactGuid, string name, string guild, string alliance,
         CharacterEquipment characterEquipment, GameObjectType objectType, GameObjectSubType objectSubType)
     {
         PlayerGameObject gameObject;
@@ -77,6 +77,12 @@ public class EntityController
             };
         }
 
+        // When players in a group and go to the Mist, the party player is indicated as PA
+        if (gameObject.Name == "PA" && oldEntity?.Name != null)
+        {
+            gameObject.Name = oldEntity.Name;
+        }
+
         if (_tempCharacterEquipmentData.TryGetValue(objectId, out var characterEquipmentData))
         {
             ResetTempCharacterEquipment();
@@ -100,6 +106,11 @@ public class EntityController
         }
     }
 
+    public KeyValuePair<Guid, PlayerGameObject>? GetEntity(Guid userGuid)
+    {
+        return _knownEntities?.FirstOrDefault(x => x.Key == userGuid);
+    }
+
     public KeyValuePair<Guid, PlayerGameObject>? GetEntity(long objectId)
     {
         return _knownEntities?.FirstOrDefault(x => x.Value.ObjectId == objectId);
@@ -112,7 +123,7 @@ public class EntityController
 
     public List<KeyValuePair<Guid, PlayerGameObject>> GetAllEntities(bool onlyInParty = false)
     {
-        return new List<KeyValuePair<Guid, PlayerGameObject>>(onlyInParty ? _knownEntities.ToArray().Where(x => IsEntityInParty(x.Value.Name)) : _knownEntities.ToArray());
+        return new List<KeyValuePair<Guid, PlayerGameObject>>(onlyInParty ? _knownEntities.ToArray().Where(x => IsEntityInParty(x.Key)) : _knownEntities.ToArray());
     }
 
     public List<KeyValuePair<Guid, PlayerGameObject>> GetAllEntitiesWithDamageOrHeal()
@@ -124,11 +135,11 @@ public class EntityController
 
     #region Party
 
-    public async Task AddToPartyAsync(Guid guid, string username)
+    public async Task AddToPartyAsync(Guid guid)
     {
-        if (_knownPartyEntities.All(x => x.Key != guid))
+        if (_knownPartyEntities.All(x => x != guid))
         {
-            _knownPartyEntities.TryAdd(guid, username);
+            _knownPartyEntities.Add(guid);
         }
 
         await SetPartyMemberUiAsync();
@@ -145,7 +156,7 @@ public class EntityController
             }
             else
             {
-                _ = _knownPartyEntities.TryRemove(notNullGuid, out _);
+                _ = _knownPartyEntities.Remove(notNullGuid);
             }
 
             await SetPartyMemberUiAsync();
@@ -162,7 +173,7 @@ public class EntityController
     {
         foreach (var member in _knownEntities.Where(x => x.Value.ObjectSubType == GameObjectSubType.LocalPlayer))
         {
-            _knownPartyEntities.TryAdd(member.Key, member.Value.Name);
+            _knownPartyEntities.Add(member.Key);
         }
 
         await SetPartyMemberUiAsync();
@@ -177,7 +188,7 @@ public class EntityController
 
         foreach (var member in party)
         {
-            await AddToPartyAsync(member.Key, member.Value);
+            await AddToPartyAsync(member.Key);
         }
 
         await SetPartyMemberUiAsync();
@@ -188,39 +199,41 @@ public class EntityController
         await Application.Current.Dispatcher.InvokeAsync(() =>
         {
             _mainWindowViewModel.PartyMemberCircles.Clear();
-            
-            foreach (var member in _knownPartyEntities)
+
+            foreach (var memberGuid in _knownPartyEntities)
             {
+                var user = GetEntity(memberGuid);
                 _mainWindowViewModel.PartyMemberCircles.Add(new PartyMemberCircle
                 {
-                    Name = member.Value,
-                    UserGuid = member.Key
+                    UserGuid = memberGuid,
+                    Name = user?.Value.Name ?? string.Empty
                 });
                 _mainWindowViewModel.PartyMemberNumber = _knownPartyEntities.Count;
             }
         });
     }
 
-    public bool IsEntityInParty(string name)
-    {
-        return _knownPartyEntities.Any(x => x.Value == name);
-    }
-
     public bool IsEntityInParty(long objectId)
     {
         var entity = _knownEntities.FirstOrDefault(x => x.Value.ObjectId == objectId);
-        return entity.Value != null && _knownPartyEntities.Any(x => x.Value == entity.Value.Name);
+        return entity.Value != null && _knownPartyEntities.Any(key => key == entity.Key);
     }
 
     public bool IsEntityInParty(Guid guid)
     {
-        return _knownPartyEntities.Any(x => x.Key == guid);
+        return _knownPartyEntities.Any(key => key == guid);
+    }
+
+    public bool IsEntityInParty(string name)
+    {
+        var user = GetEntity(name);
+        return _knownPartyEntities.Any(x => x == user?.Key);
     }
 
     public void CopyPartyToClipboard()
     {
         var output = string.Empty;
-        var partyString = _knownPartyEntities.Aggregate(output, (current, entity) => current + $"{entity.Value},");
+        var partyString = _knownPartyEntities.Aggregate(output, (current, entity) => current + $"{GetEntity(entity)?.Value?.Name},");
         Clipboard.SetDataObject(partyString[..(partyString.Length > 0 ? partyString.Length - 1 : 0)]);
     }
 
@@ -309,9 +322,9 @@ public class EntityController
                 {
                     foreach (var spell in
                              (from itemSpell in item.SpellDictionary.ToArray()
-                                 from spell in _spellEffects.ToArray()
-                                 where spell != null && spell.SpellIndex.Equals(itemSpell.Value)
-                                 select spell).ToArray())
+                              from spell in _spellEffects.ToArray()
+                              where spell != null && spell.SpellIndex.Equals(itemSpell.Value)
+                              select spell).ToArray())
                     {
                         if (playerItemList.Any(x => x.Key.Equals(spell.CauserId)))
                         {
