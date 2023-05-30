@@ -78,7 +78,7 @@ public class JoinResponseHandler : ResponsePacketHandler<JoinResponse>
         }
 
         _trackingController.EntityController.AddEntity((long) userObjectId, (Guid) guid, interactGuid, name, guild, alliance, null, GameObjectType.Player, GameObjectSubType.LocalPlayer);
-        await _trackingController.EntityController.AddToPartyAsync((Guid) guid, name);
+        await _trackingController.EntityController.AddToPartyAsync((Guid) guid);
     }
 
     private void SetTrackingActivityText()
