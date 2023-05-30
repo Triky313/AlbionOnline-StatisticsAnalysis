@@ -14,6 +14,7 @@ using System.Reflection;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
+using System.Windows.Data;
 using System.Windows.Threading;
 
 namespace StatisticsAnalysisTool.Trade;
@@ -53,7 +54,7 @@ public class TradeController
 
     public async Task RemoveTradesByIdsAsync(IEnumerable<long> ids)
     {
-        await Task.Run(() =>
+        await Task.Run(async () =>
         {
             var tradesToRemove = _mainWindowViewModel?.TradeMonitoringBindings?.Trades?.ToList().Where(x => ids.Contains(x.Id)).ToList();
             var newList = _mainWindowViewModel?.TradeMonitoringBindings?.Trades?.ToList();
@@ -66,22 +67,25 @@ public class TradeController
                 }
             }
 
-            Application.Current.Dispatcher.InvokeAsync(() =>
+            await Application.Current.Dispatcher.InvokeAsync(async () =>
             {
-                UpdateTrades(newList);
+                await UpdateTradesAsync(newList);
             });
         });
     }
 
-    private void UpdateTrades(IEnumerable<Trade> updatedList)
+    private async Task UpdateTradesAsync(IEnumerable<Trade> updatedList)
     {
-        _mainWindowViewModel.TradeMonitoringBindings.Trades.Clear();
-        _mainWindowViewModel.TradeMonitoringBindings.Trades.AddRange(updatedList);
+        var tradeBindings = _mainWindowViewModel.TradeMonitoringBindings;
+        tradeBindings.Trades.Clear();
+        tradeBindings.Trades.AddRange(updatedList);
+        tradeBindings.TradeCollectionView = CollectionViewSource.GetDefaultView(updatedList) as ListCollectionView;
+        await tradeBindings.UpdateFilteredTradesAsync();
 
-        _mainWindowViewModel.TradeMonitoringBindings.TradeStatsObject.SetTradeStats(_mainWindowViewModel.TradeMonitoringBindings.TradeCollectionView.Cast<Trade>().ToList());
+        tradeBindings.TradeStatsObject.SetTradeStats(tradeBindings.TradeCollectionView?.Cast<Trade>().ToList());
 
-        _mainWindowViewModel.TradeMonitoringBindings.UpdateTotalTradesUi(null, null);
-        _mainWindowViewModel.TradeMonitoringBindings.UpdateCurrentTradesUi(null, null);
+        tradeBindings.UpdateTotalTradesUi(null, null);
+        tradeBindings.UpdateCurrentTradesUi(null, null);
     }
 
     public async Task RemoveTradesByDaysInSettingsAsync()
