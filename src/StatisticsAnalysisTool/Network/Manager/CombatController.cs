@@ -58,7 +58,7 @@ public class CombatController
 
         if (gameObject?.Value == null
             || gameObject.Value.Value?.ObjectType != GameObjectType.Player
-            || !_trackingController.EntityController.IsEntityInParty(gameObject.Value.Value.Name)
+            || !_trackingController.EntityController.IsEntityInParty(gameObject.Value.Key)
            )
         {
             return Task.CompletedTask;
