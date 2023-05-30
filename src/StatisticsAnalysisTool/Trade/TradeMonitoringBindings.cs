@@ -3,9 +3,9 @@ using StatisticsAnalysisTool.Common.UserSettings;
 using StatisticsAnalysisTool.Properties;
 using System;
 using System.Collections.Concurrent;
+using System.Collections.Generic;
 using System.Collections.Specialized;
 using System.ComponentModel;
-using System.Diagnostics;
 using System.Linq;
 using System.Runtime.CompilerServices;
 using System.Threading;
@@ -220,42 +220,49 @@ public class TradeMonitoringBindings : INotifyPropertyChanged
             return;
         }
 
-        Debug.Print("run");
-
         FilteringIsRunningIconVisibility = Visibility.Visible;
 
         _cancellationTokenSource?.Cancel();
         _cancellationTokenSource = new CancellationTokenSource();
 
-        var filteredTrades = await Task.Run(() =>
+        try
         {
-            var partitioner = Partitioner.Create(Trades, EnumerablePartitionerOptions.NoBuffering);
-            var result = new ConcurrentBag<Trade>();
+            var filteredTrades = await Task.Run(ParallelTradeFilterProcess, _cancellationTokenSource.Token);
 
-            Parallel.ForEach(partitioner, (tradeBatch, state) =>
+            TradeCollectionView = CollectionViewSource.GetDefaultView(filteredTrades) as ListCollectionView;
+            TradeStatsObject?.SetTradeStats(TradeCollectionView?.Cast<Trade>().ToList());
+            UpdateCurrentTradesUi(null, null);
+        }
+        catch (TaskCanceledException)
+        {
+            // ignored
+        }
+        finally
+        {
+            FilteringIsRunningIconVisibility = Visibility.Collapsed;
+        }
+    }
+
+    public List<Trade> ParallelTradeFilterProcess()
+    {
+        var partitioner = Partitioner.Create(Trades, EnumerablePartitionerOptions.NoBuffering);
+        var result = new ConcurrentBag<Trade>();
+
+        Parallel.ForEach(partitioner, (tradeBatch, state) =>
+        {
+            if (_cancellationTokenSource.Token.IsCancellationRequested)
             {
-                if (_cancellationTokenSource.Token.IsCancellationRequested)
-                {
-                    FilteringIsRunningIconVisibility = Visibility.Collapsed;
-                    state.Stop();
-                }
+                FilteringIsRunningIconVisibility = Visibility.Collapsed;
+                state.Stop();
+            }
 
-                if (Filter(tradeBatch))
-                {
-                    result.Add(tradeBatch);
-                }
-            });
+            if (Filter(tradeBatch))
+            {
+                result.Add(tradeBatch);
+            }
+        });
 
-            return result.ToList();
-        }, _cancellationTokenSource.Token);
-
-        TradeCollectionView = CollectionViewSource.GetDefaultView(filteredTrades) as ListCollectionView;
-
-        UpdateCurrentTradesUi(null, null);
-
-        TradeStatsObject?.SetTradeStats(TradeCollectionView?.Cast<Trade>().ToList());
-
-        FilteringIsRunningIconVisibility = Visibility.Collapsed;
+        return result.ToList();
     }
 
     private bool Filter(object obj)
