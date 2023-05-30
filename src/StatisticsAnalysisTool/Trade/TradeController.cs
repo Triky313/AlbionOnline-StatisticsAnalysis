@@ -1,27 +1,23 @@
-﻿using log4net;
-using StatisticsAnalysisTool.Common;
+﻿using StatisticsAnalysisTool.Common;
 using StatisticsAnalysisTool.Common.UserSettings;
 using StatisticsAnalysisTool.Notification;
 using StatisticsAnalysisTool.Properties;
-using StatisticsAnalysisTool.Trade.Mails;
 using StatisticsAnalysisTool.ViewModels;
 using System;
 using System.Collections.Generic;
 using System.Collections.Specialized;
 using System.IO;
 using System.Linq;
-using System.Reflection;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
+using System.Windows.Data;
 using System.Windows.Threading;
 
 namespace StatisticsAnalysisTool.Trade;
 
 public class TradeController
 {
-    private static readonly ILog Log = LogManager.GetLogger(MethodBase.GetCurrentMethod()?.DeclaringType);
-
     private readonly MainWindowViewModel _mainWindowViewModel;
     private int _tradeCounter;
 
@@ -53,7 +49,7 @@ public class TradeController
 
     public async Task RemoveTradesByIdsAsync(IEnumerable<long> ids)
     {
-        await Task.Run(() =>
+        await Task.Run(async () =>
         {
             var tradesToRemove = _mainWindowViewModel?.TradeMonitoringBindings?.Trades?.ToList().Where(x => ids.Contains(x.Id)).ToList();
             var newList = _mainWindowViewModel?.TradeMonitoringBindings?.Trades?.ToList();
@@ -66,22 +62,25 @@ public class TradeController
                 }
             }
 
-            Application.Current.Dispatcher.InvokeAsync(() =>
+            await Application.Current.Dispatcher.InvokeAsync(async () =>
             {
-                UpdateTrades(newList);
+                await UpdateTradesAsync(newList);
             });
         });
     }
 
-    private void UpdateTrades(IEnumerable<Trade> updatedList)
+    private async Task UpdateTradesAsync(IEnumerable<Trade> updatedList)
     {
-        _mainWindowViewModel.TradeMonitoringBindings.Trades.Clear();
-        _mainWindowViewModel.TradeMonitoringBindings.Trades.AddRange(updatedList);
+        var tradeBindings = _mainWindowViewModel.TradeMonitoringBindings;
+        tradeBindings.Trades.Clear();
+        tradeBindings.Trades.AddRange(updatedList);
+        tradeBindings.TradeCollectionView = CollectionViewSource.GetDefaultView(updatedList) as ListCollectionView;
+        await tradeBindings.UpdateFilteredTradesAsync();
 
-        _mainWindowViewModel.TradeMonitoringBindings.TradeStatsObject.SetTradeStats(_mainWindowViewModel.TradeMonitoringBindings.TradeCollectionView.Cast<Trade>().ToList());
+        tradeBindings.TradeStatsObject.SetTradeStats(tradeBindings.TradeCollectionView?.Cast<Trade>().ToList());
 
-        _mainWindowViewModel.TradeMonitoringBindings.UpdateTotalTradesUi(null, null);
-        _mainWindowViewModel.TradeMonitoringBindings.UpdateCurrentTradesUi(null, null);
+        tradeBindings.UpdateTotalTradesUi(null, null);
+        tradeBindings.UpdateCurrentTradesUi(null, null);
     }
 
     public async Task RemoveTradesByDaysInSettingsAsync()
@@ -112,13 +111,9 @@ public class TradeController
     {
         FileController.TransferFileIfExistFromOldPathToUserDataDirectory(Path.Combine(AppDomain.CurrentDomain.BaseDirectory, Settings.Default.TradesFileName));
 
-        var tradesFromOldMails = GetOldMails();
-
         var tradeDtos = await FileController.LoadAsync<List<TradeDto>>(
             Path.Combine(AppDomain.CurrentDomain.BaseDirectory, Settings.Default.UserDataDirectoryName, Settings.Default.TradesFileName));
         var trades = tradeDtos.Select(TradeMapping.Mapping).ToList();
-
-        trades.AddRange(await tradesFromOldMails);
 
         await SetTradesToBindings(trades);
     }
@@ -128,7 +123,6 @@ public class TradeController
         DirectoryController.CreateDirectoryWhenNotExists(Path.Combine(AppDomain.CurrentDomain.BaseDirectory, Settings.Default.UserDataDirectoryName));
         await FileController.SaveAsync(_mainWindowViewModel.TradeMonitoringBindings?.Trades?.Select(TradeMapping.Mapping),
             Path.Combine(AppDomain.CurrentDomain.BaseDirectory, Settings.Default.UserDataDirectoryName, Settings.Default.TradesFileName));
-        DeleteMailsJson();
     }
 
     public async Task SaveInFileAfterExceedingLimit(int limit)
@@ -166,49 +160,6 @@ public class TradeController
             _mainWindowViewModel?.TradeMonitoringBindings?.TradeCollectionView?.Refresh();
             _mainWindowViewModel?.TradeMonitoringBindings?.TradeStatsObject?.SetTradeStats(enumerable);
         }, DispatcherPriority.Background, CancellationToken.None);
-    }
-
-    private static async Task<IEnumerable<Trade>> GetOldMails()
-    {
-        if (!File.Exists(Path.Combine(AppDomain.CurrentDomain.BaseDirectory, Settings.Default.MailsFileName)))
-        {
-            return new List<Trade>();
-        }
-
-        return ConvertOldMailsToTrade(await FileController.LoadAsync<List<MailOld>>($"{AppDomain.CurrentDomain.BaseDirectory}{Settings.Default.MailsFileName}"));
-    }
-
-    [Obsolete("Can be deleted after july 2023")]
-    private static void DeleteMailsJson()
-    {
-        try
-        {
-            if (File.Exists(Path.Combine(AppDomain.CurrentDomain.BaseDirectory, Settings.Default.MailsFileName)))
-            {
-                File.Delete(Path.Combine(AppDomain.CurrentDomain.BaseDirectory, Settings.Default.MailsFileName));
-            }
-        }
-        catch (Exception e)
-        {
-            ConsoleManager.WriteLineForError(MethodBase.GetCurrentMethod()?.DeclaringType, e);
-            Log.Error(MethodBase.GetCurrentMethod()?.DeclaringType, e);
-        }
-    }
-
-    [Obsolete("Can be deleted after july 2023")]
-    private static IEnumerable<Trade> ConvertOldMailsToTrade(IEnumerable<MailOld> mails)
-    {
-        return mails.Select(mail => new Trade()
-        {
-            Id = mail.MailId,
-            Type = TradeType.Mail,
-            Ticks = mail.Tick,
-            ClusterIndex = mail.ClusterIndex,
-            MailContent = mail.MailContent,
-            MailTypeText = mail.MailTypeText,
-            Guid = mail.Guid
-        })
-            .ToList();
     }
 
     #endregion

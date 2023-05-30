@@ -2,10 +2,13 @@
 using StatisticsAnalysisTool.Common.UserSettings;
 using StatisticsAnalysisTool.Properties;
 using System;
+using System.Collections.Concurrent;
+using System.Collections.Generic;
 using System.Collections.Specialized;
 using System.ComponentModel;
 using System.Linq;
 using System.Runtime.CompilerServices;
+using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Data;
@@ -27,6 +30,7 @@ public class TradeMonitoringBindings : INotifyPropertyChanged
     private int _currentTradeCounts;
     private ManuallyTradeMenuObject _tradeManuallyMenuObject = new();
     private bool _isDeleteTradesButtonEnabled = true;
+    private Visibility _filteringIsRunningIconVisibility = Visibility.Collapsed;
 
     public TradeMonitoringBindings()
     {
@@ -34,12 +38,13 @@ public class TradeMonitoringBindings : INotifyPropertyChanged
 
         if (TradeCollectionView != null)
         {
-            TradeCollectionView.CurrentChanged += UpdateCurrentTradesUi;
             Trades.CollectionChanged += UpdateTotalTradesUi;
+            TradeCollectionView.CurrentChanged += UpdateCurrentTradesUi;
 
             TradeCollectionView.IsLiveSorting = true;
             TradeCollectionView.IsLiveFiltering = true;
             TradeCollectionView.CustomSort = new TradeComparer();
+            TradeCollectionView.Refresh();
         }
     }
 
@@ -69,8 +74,6 @@ public class TradeMonitoringBindings : INotifyPropertyChanged
         set
         {
             _tradesSearchText = value;
-            TradeCollectionView?.Refresh();
-            TradeStatsObject.SetTradeStats(TradeCollectionView?.Cast<Trade>().ToList());
             OnPropertyChanged();
         }
     }
@@ -81,8 +84,6 @@ public class TradeMonitoringBindings : INotifyPropertyChanged
         set
         {
             _datePickerTradeFrom = value;
-            TradeCollectionView?.Refresh();
-            TradeStatsObject.SetTradeStats(TradeCollectionView?.Cast<Trade>().ToList());
             OnPropertyChanged();
         }
     }
@@ -93,8 +94,6 @@ public class TradeMonitoringBindings : INotifyPropertyChanged
         set
         {
             _datePickerTradeTo = value;
-            TradeCollectionView?.Refresh();
-            TradeStatsObject.SetTradeStats(TradeCollectionView?.Cast<Trade>().ToList());
             OnPropertyChanged();
         }
     }
@@ -180,6 +179,16 @@ public class TradeMonitoringBindings : INotifyPropertyChanged
         }
     }
 
+    public Visibility FilteringIsRunningIconVisibility
+    {
+        get => _filteringIsRunningIconVisibility;
+        set
+        {
+            _filteringIsRunningIconVisibility = value;
+            OnPropertyChanged();
+        }
+    }
+
     #region Update ui
 
     public void UpdateTotalTradesUi(object sender, NotifyCollectionChangedEventArgs e)
@@ -202,34 +211,86 @@ public class TradeMonitoringBindings : INotifyPropertyChanged
 
     #region Filter
 
+    private CancellationTokenSource _cancellationTokenSource;
+
     public async Task UpdateFilteredTradesAsync()
     {
-        var filteredTrades = await Task.Run(() => Trades.Where(Filter).ToList());
+        if (Trades?.Count <= 0 && TradeCollectionView?.Count <= 0)
+        {
+            return;
+        }
 
-        TradeCollectionView = CollectionViewSource.GetDefaultView(filteredTrades) as ListCollectionView;
-        TradeCollectionView?.Refresh();
+        FilteringIsRunningIconVisibility = Visibility.Visible;
+
+        _cancellationTokenSource?.Cancel();
+        _cancellationTokenSource = new CancellationTokenSource();
+
+        try
+        {
+            var filteredTrades = await Task.Run(ParallelTradeFilterProcess, _cancellationTokenSource.Token);
+
+            TradeCollectionView = CollectionViewSource.GetDefaultView(filteredTrades) as ListCollectionView;
+            TradeStatsObject?.SetTradeStats(TradeCollectionView?.Cast<Trade>().ToList());
+            UpdateCurrentTradesUi(null, null);
+        }
+        catch (TaskCanceledException)
+        {
+            // ignored
+        }
+        finally
+        {
+            FilteringIsRunningIconVisibility = Visibility.Collapsed;
+        }
+    }
+
+    public List<Trade> ParallelTradeFilterProcess()
+    {
+        var partitioner = Partitioner.Create(Trades, EnumerablePartitionerOptions.NoBuffering);
+        var result = new ConcurrentBag<Trade>();
+
+        Parallel.ForEach(partitioner, (tradeBatch, state) =>
+        {
+            if (_cancellationTokenSource.Token.IsCancellationRequested)
+            {
+                FilteringIsRunningIconVisibility = Visibility.Collapsed;
+                state.Stop();
+            }
+
+            if (Filter(tradeBatch))
+            {
+                result.Add(tradeBatch);
+            }
+        });
+
+        return result.ToList();
     }
 
     private bool Filter(object obj)
     {
-        if (TradesSearchText == null)
+        if (obj is null)
         {
-            return true;
+            return false;
         }
 
-        return obj is Trade trade &&
-               trade.Timestamp.Date >= DatePickerTradeFrom.Date &&
-               trade.Timestamp.Date <= DatePickerTradeTo.Date &&
-               (
-                   trade.LocationName != null && trade.LocationName.IndexOf(TradesSearchText, StringComparison.OrdinalIgnoreCase) >= 0 ||
-                   $"T{trade.Item?.Tier}.{trade.Item?.Level}".IndexOf(TradesSearchText, StringComparison.OrdinalIgnoreCase) >= 0 ||
-                   trade.MailTypeDescription.IndexOf(TradesSearchText, StringComparison.OrdinalIgnoreCase) >= 0 ||
-                   trade.Item != null && trade.Item.LocalizedName.IndexOf(TradesSearchText, StringComparison.OrdinalIgnoreCase) >= 0 ||
-                   trade.MailContent.ActualUnitPrice.ToString().IndexOf(TradesSearchText, StringComparison.OrdinalIgnoreCase) >= 0 ||
-                   trade.MailContent.TotalPrice.ToString().IndexOf(TradesSearchText, StringComparison.OrdinalIgnoreCase) >= 0 ||
-                   trade.InstantBuySellContent.UnitPrice.ToString().IndexOf(TradesSearchText, StringComparison.OrdinalIgnoreCase) >= 0 ||
-                   trade.InstantBuySellContent.TotalPrice.ToString().IndexOf(TradesSearchText, StringComparison.OrdinalIgnoreCase) >= 0
-               );
+        return obj is Trade trade2 &&
+               (TradesSearchText == null &&
+                trade2.Timestamp.Date >= DatePickerTradeFrom.Date &&
+                trade2.Timestamp.Date <= DatePickerTradeTo.Date)
+               ||
+               (obj is Trade trade &&
+                TradesSearchText != null &&
+                trade.Timestamp.Date >= DatePickerTradeFrom.Date &&
+                trade.Timestamp.Date <= DatePickerTradeTo.Date &&
+                (
+                    trade.LocationName != null && trade.LocationName.IndexOf(TradesSearchText, StringComparison.OrdinalIgnoreCase) >= 0 ||
+                    $"T{trade.Item?.Tier}.{trade.Item?.Level}".IndexOf(TradesSearchText, StringComparison.OrdinalIgnoreCase) >= 0 ||
+                    trade.MailTypeDescription.IndexOf(TradesSearchText, StringComparison.OrdinalIgnoreCase) >= 0 ||
+                    trade.Item != null && trade.Item.LocalizedName.IndexOf(TradesSearchText, StringComparison.OrdinalIgnoreCase) >= 0 ||
+                    trade.MailContent.ActualUnitPrice.ToString().IndexOf(TradesSearchText, StringComparison.OrdinalIgnoreCase) >= 0 ||
+                    trade.MailContent.TotalPrice.ToString().IndexOf(TradesSearchText, StringComparison.OrdinalIgnoreCase) >= 0 ||
+                    trade.InstantBuySellContent.UnitPrice.ToString().IndexOf(TradesSearchText, StringComparison.OrdinalIgnoreCase) >= 0 ||
+                    trade.InstantBuySellContent.TotalPrice.ToString().IndexOf(TradesSearchText, StringComparison.OrdinalIgnoreCase) >= 0
+                ));
     }
 
     #endregion

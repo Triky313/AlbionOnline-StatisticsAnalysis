@@ -97,7 +97,30 @@ public static class NetworkManager
         ConsoleManager.WriteLineForMessage("Start Device Capture");
 
         CapturedDevices.Clear();
-        CapturedDevices.AddRange(CaptureDeviceList.Instance);
+
+        foreach (var device in CaptureDeviceList.Instance)
+        {
+            if (device.Started)
+            {
+                continue;
+            }
+
+            try
+            {
+                device.Open(new DeviceConfiguration()
+                {
+                    Mode = DeviceModes.DataTransferUdp | DeviceModes.Promiscuous | DeviceModes.NoCaptureLocal,
+                    ReadTimeout = 5000
+                });
+            }
+            catch (Exception e)
+            {
+                Log.Warn(MethodBase.GetCurrentMethod()?.DeclaringType, e);
+                continue;
+            }
+
+            CapturedDevices.Add(device);
+        }
 
         if (CapturedDevices.Count <= 0)
         {
@@ -142,12 +165,6 @@ public static class NetworkManager
         {
             return;
         }
-
-        device.Open(new DeviceConfiguration()
-        {
-            Mode = DeviceModes.DataTransferUdp | DeviceModes.Promiscuous | DeviceModes.NoCaptureLocal,
-            ReadTimeout = 5000
-        });
 
         device.Filter = SettingsController.CurrentSettings.PacketFilter;
         device.OnPacketArrival += Device_OnPacketArrival;

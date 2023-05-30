@@ -1,5 +1,5 @@
 ﻿using StatisticsAnalysisTool.Common;
-using StatisticsAnalysisTool.Network.Notification;
+using StatisticsAnalysisTool.EventLogging.Notification;
 using System;
 using System.Text.Json.Serialization;
 

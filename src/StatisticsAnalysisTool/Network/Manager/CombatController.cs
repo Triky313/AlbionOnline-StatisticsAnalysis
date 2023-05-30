@@ -13,6 +13,7 @@ using System.Linq;
 using System.Reflection;
 using System.Threading.Tasks;
 using System.Windows;
+using StatisticsAnalysisTool.EventLogging.Notification;
 
 namespace StatisticsAnalysisTool.Network.Manager;
 

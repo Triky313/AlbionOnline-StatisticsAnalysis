@@ -2,7 +2,7 @@
 using StatisticsAnalysisTool.Common;
 using StatisticsAnalysisTool.Common.UserSettings;
 using StatisticsAnalysisTool.Enumerations;
-using StatisticsAnalysisTool.Network.Notification;
+using StatisticsAnalysisTool.EventLogging.Notification;
 using StatisticsAnalysisTool.Properties;
 using StatisticsAnalysisTool.Views;
 using System;
