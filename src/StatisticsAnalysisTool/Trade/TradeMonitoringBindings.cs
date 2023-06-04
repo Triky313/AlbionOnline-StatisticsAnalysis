@@ -289,7 +289,8 @@ public class TradeMonitoringBindings : INotifyPropertyChanged
                     trade.MailContent.ActualUnitPrice.ToString().IndexOf(TradesSearchText, StringComparison.OrdinalIgnoreCase) >= 0 ||
                     trade.MailContent.TotalPrice.ToString().IndexOf(TradesSearchText, StringComparison.OrdinalIgnoreCase) >= 0 ||
                     trade.InstantBuySellContent.UnitPrice.ToString().IndexOf(TradesSearchText, StringComparison.OrdinalIgnoreCase) >= 0 ||
-                    trade.InstantBuySellContent.TotalPrice.ToString().IndexOf(TradesSearchText, StringComparison.OrdinalIgnoreCase) >= 0
+                    trade.InstantBuySellContent.TotalPrice.ToString().IndexOf(TradesSearchText, StringComparison.OrdinalIgnoreCase) >= 0 ||
+                    trade.Description.IndexOf(TradesSearchText, StringComparison.OrdinalIgnoreCase) >= 0
                 ));
     }
 

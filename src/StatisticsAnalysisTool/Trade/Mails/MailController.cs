@@ -2,7 +2,6 @@
 using StatisticsAnalysisTool.Common.UserSettings;
 using StatisticsAnalysisTool.Enumerations;
 using StatisticsAnalysisTool.Network.Manager;
-using StatisticsAnalysisTool.Notification;
 using StatisticsAnalysisTool.ViewModels;
 using System.Collections.Generic;
 using System.Linq;
@@ -76,7 +75,7 @@ public class MailController
         {
             return;
         }
-        
+
         _ = _trackingController.TradeController.AddTradeToBindingCollection(trade);
         await _trackingController.TradeController.SaveInFileAfterExceedingLimit(10);
     }
