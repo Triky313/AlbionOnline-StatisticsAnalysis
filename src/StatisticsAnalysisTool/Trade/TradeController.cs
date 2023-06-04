@@ -74,7 +74,7 @@ public class TradeController
         var tradeBindings = _mainWindowViewModel.TradeMonitoringBindings;
         tradeBindings.Trades.Clear();
         tradeBindings.Trades.AddRange(updatedList);
-        tradeBindings.TradeCollectionView = CollectionViewSource.GetDefaultView(updatedList) as ListCollectionView;
+        tradeBindings.TradeCollectionView = CollectionViewSource.GetDefaultView(tradeBindings.Trades) as ListCollectionView;
         await tradeBindings.UpdateFilteredTradesAsync();
 
         tradeBindings.TradeStatsObject.SetTradeStats(tradeBindings.TradeCollectionView?.Cast<Trade>().ToList());
