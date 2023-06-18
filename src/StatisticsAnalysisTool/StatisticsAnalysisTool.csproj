@@ -1,4 +1,4 @@
-﻿<Project Sdk="Microsoft.NET.Sdk">
+<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
     <TargetFramework>net6.0-windows</TargetFramework>
     <OutputType>WinExe</OutputType>
@@ -554,7 +554,7 @@
     <PackageReference Include="LiveChartsCore.SkiaSharpView.WPF" Version="2.0.0-beta.700" />
     <PackageReference Include="Microsoft.CSharp" Version="4.7.0" />
     <PackageReference Include="Microsoft.Web.WebView2" Version="1.0.1722.45" />
-    <PackageReference Include="Microsoft.Windows.Compatibility" Version="7.0.1" />
+    <PackageReference Include="Microsoft.Windows.Compatibility" Version="7.0.3" />
     <PackageReference Include="Autoupdater.NET.Official" Version="1.8.1" />
     <PackageReference Include="FontAwesome5" Version="2.1.6" />
     <PackageReference Include="log4net" Version="2.0.15" />
