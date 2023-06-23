@@ -312,7 +312,7 @@
 	<translation name="THE_PRICE_OF">價格是</translation>
 	<translation name="IN">in</translation>
 	<translation name="SHOW_ONLY_ITEMS_WITH_ALERT_ON">只顯示預警項目</translation>
-	<translation name="SHOW_ONLY_FAVORITES">只顯示收藏夾</translation>
+	<translation name="SHOW_ONLY_FAVORITES">只顯示最愛</translation>
 	<translation name="HAS_BEEN_UNDERCUT">已被削弱</translation>
 	<translation name="IS_ALERT_ACTIVATE">是否預警</translation>
 	<translation name="UNDERCUTTING_PRICE">價格閾值</translation>
@@ -369,11 +369,11 @@
 
 	<translation name="DAMAGE_METER_DESCRIPTION_1">爲了使隊伍中其他玩家的傷害被統計，首先必須啟用該工具，然後必須有玩家離開或加入隊伍。</translation>
 
-	<translation name="SORT_BY_DAMAGE">按傷害量排序</translation>
-	<translation name="SORT_BY_DPS">按每秒傷害量排序</translation>
-	<translation name="SORT_BY_NAME">按名稱排序</translation>
-	<translation name="SORT_BY_HEAL">按治療量排序</translation>
-	<translation name="SORT_BY_HPS">按每秒治療量排序</translation>
+	<translation name="SORT_BY_DAMAGE">依傷害量排序</translation>
+	<translation name="SORT_BY_DPS">依每秒傷害量排序</translation>
+	<translation name="SORT_BY_NAME">依名稱排序</translation>
+	<translation name="SORT_BY_HEAL">依治療量排序</translation>
+	<translation name="SORT_BY_HPS">依每秒治療量排序</translation>
 	<translation name="FACTION_FLAG_POINTS">陣營旗幟積分</translation>
 	<translation name="FACTION_POINTS">陣營點數</translation>
 	<translation name="NUMBER_OF_DUNGEON_FLOORS">副本層數</translation>
@@ -381,7 +381,7 @@
 	<translation name="OPEN_TOOL_DIRECTORY">打開工具目錄</translation>
 	<translation name="OPEN_DEBUG_CONSOLE">打開除錯控制台</translation>
 	<translation name="CREATE_DESKTOP_SHORTCUT">建立桌面捷徑</translation>
-	<translation name="FAVORITE">收藏</translation>
+	<translation name="FAVORITE">最愛</translation>
 	<translation name="SILVER_SHRINE">銀幣祭壇</translation>
 	<translation name="FAME_SHRINE">聲望祭壇</translation>
 	<translation name="COMBAT_BUFF">增強 BUFF</translation>
@@ -621,8 +621,8 @@
 	<translation name="SNAPSHOT_AFTER_MAP_CHANGE">過圖後截取簡報</translation>
 	<translation name="IGNORE_MAILS_WITH_ZERO_VALUES">忽略價值爲0的郵件</translation>
 	<translation name="CHECK_FOR_UPDATE">檢查更新</translation>
-	<translation name="PAID_SILVER_FOR_RESPEC_THIS_SESSION">此階段自動重新專攻所花費的銀幣</translation>
-	<translation name="PAID_SILVER_FOR_RESPEC_PER_HOUR">每小時自動重新專攻所花費的銀幣</translation>
+	<translation name="PAID_SILVER_FOR_RESPEC_THIS_SESSION">此階段自動重新專精所花費的銀幣</translation>
+	<translation name="PAID_SILVER_FOR_RESPEC_PER_HOUR">每小時自動重新專精所花費的銀幣</translation>
 	<translation name="RESET_TODAYS_DUNGEONS">重置今日副本</translation>
 	<translation name="SURE_YOU_WANT_TO_RESET_DUNGEONS">你確定要重置今日副本麼？</translation>
 	<translation name="DELETE_AND_RESET">刪除與重置</translation>
@@ -652,9 +652,9 @@
 	<translation name="CRAFTING_INFO_DESCRIPTION_4">當你在拍賣行賣東西的時候，你就可以看到“市場稅費”和“市場創建費”這項資料。</translation>
 	<translation name="CRAFTING_INFO_DESCRIPTION_5">如果你有尊享加成（會員），你就不用改這項資料了。如果你要自己找買家交易東西的話，就把它們都設爲 0。 如果你沒有會員，那這兩項就要加倍了。</translation>
 	<translation name="MISTS">迷霧</translation>
-	<translation name="REPAIR_COSTS_TODAY">今日維修花費</translation>
-	<translation name="REPAIR_COSTS_LAST_7_DAYS">7 日內維修花費</translation>
-	<translation name="REPAIR_COSTS_LAST_30_DAYS">30 日內維修花費</translation>
+	<translation name="REPAIR_COSTS_TODAY">今日修裝花費</translation>
+	<translation name="REPAIR_COSTS_LAST_7_DAYS">7 日內修裝花費</translation>
+	<translation name="REPAIR_COSTS_LAST_30_DAYS">30 日內修裝花費</translation>
 	<translation name="RESET_BEFORE_COMBAT">進入戰鬥前重置</translation>
 	<translation name="SEARCHED_PLAYER">搜索玩家</translation>
 	<translation name="LOCAL_PLAYER">本地玩家</translation>
@@ -712,4 +712,35 @@
 	<translation name="LOGGING_DESCRIPTION_2">只有在你畫面内，以及畫面外一個畫面的距離内的玩家，才會記錄他們的拾取。</translation>
 	<translation name="SET_SERVER_MANUALLY">手動設定伺服器</translation>
 	<translation name="AUTOMATICALLY">自動</translation>
+	<translation name="NETWORK_FILTERING">網路過瀘</translation>
+	<translation name="ACTIVATED">啟用</translation>
+	<translation name="DISABLED">停用</translation>
+	<translation name="ADDED_PURCHASE">新增的購買</translation>
+	<translation name="ADDED_SALE">新增的售出</translation>
+	<translation name="ADDED_UNKNOWN_TRADE">新增的未知交易</translation>
+	<translation name="ADDED_BUY_ORDER">新增的購買訂單</translation>
+	<translation name="ADDED_SELL_ORDER">新增的售出訂單</translation>
+	<translation name="ADDED_EXPIRED_BUY_ORDER">新增的過期購買訂單</translation>
+	<translation name="ADDED_EXPIRED_SELL_ORDER">新增的過期出售訂單</translation>
+	<translation name="ADDED_TRADES">新增的交易</translation>
+	<translation name="NOTIFICATIONS">通知</translation>
+	<translation name="NO_LISTENING_ADAPTERS">沒有監聽裝置</translation>
+	<translation name="PACKET_FILTER">封包過瀘</translation>
+	<translation name="RESET">重置</translation>
+	<translation name="START_TRACKING">開始追蹤</translation>
+	<translation name="STOP_TRACKING">停止追蹤</translation>
+	<translation name="GAME_TRACKING_IS_STARTED">遊戲追蹤已開始</translation>
+	<translation name="GAME_TRACKING_IS_STOPPED">遊戲追蹤已停止</translation>
+	<translation name="TRACKING_STATUS">追蹤狀態</translation>
+	<translation name="ADD_TRADE_MANUALLY">手動增加交易</translation>
+	<translation name="DESCRIPTION">描述</translation>
+	<translation name="VALUE">價值</translation>
+	<translation name="ADD_TRADE">新增交易</translation>
+	<translation name="MANUAL_SELL">主動賣出</translation>
+	<translation name="MANUAL_BUY">主動買入</translation>
+	<translation name="NEVER_DELETE">永不刪除</translation>
+	<translation name="DELETE_AFTER_7_DAYS">7 天後刪除</translation>
+	<translation name="DELETE_AFTER_14_DAYS">14 天後刪除</translation>
+	<translation name="DELETE_AFTER_30_DAYS">30 天後刪除</translation>
+	<translation name="DELETE_AFTER_365_DAYS">365 天後刪除</translation>
 </translations>

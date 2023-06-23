@@ -147,6 +147,7 @@ public class TradeStatsObject : INotifyPropertyChanged
                         {
                             case TradeType.Mail when trade.MailType is MailType.MarketplaceSellOrderFinished or MailType.MarketplaceSellOrderExpired:
                             case TradeType.InstantSell:
+                            case TradeType.ManualSell:
                                 return true;
                         }
                         break;
@@ -156,6 +157,7 @@ public class TradeStatsObject : INotifyPropertyChanged
                         {
                             case TradeType.Mail when trade.MailType is MailType.MarketplaceBuyOrderFinished or MailType.MarketplaceBuyOrderExpired:
                             case TradeType.InstantBuy:
+                            case TradeType.ManualBuy:
                                 return true;
                         }
                         break;
@@ -182,12 +184,14 @@ public class TradeStatsObject : INotifyPropertyChanged
                     {
                         TradeType.Mail => trade.MailContent.TotalPrice.IntegerValue,
                         TradeType.InstantSell => trade.InstantBuySellContent.TotalPrice.IntegerValue,
+                        TradeType.ManualSell => trade.InstantBuySellContent.TotalPrice.IntegerValue,
                         _ => 0
                     },
                     TradeStatType.BoughtToday or TradeStatType.BoughtThisWeek or TradeStatType.BoughtLastWeek or TradeStatType.BoughtMonth or TradeStatType.BoughtYear => trade.Type switch
                     {
                         TradeType.Mail => trade.MailContent.TotalPriceWithDeductedTaxes.IntegerValue,
                         TradeType.InstantBuy => trade.InstantBuySellContent.TotalPrice.IntegerValue,
+                        TradeType.ManualBuy => trade.InstantBuySellContent.TotalPrice.IntegerValue,
                         _ => 0
                     },
                     TradeStatType.TaxesToday or TradeStatType.TaxesThisWeek or TradeStatType.TaxesLastWeek or TradeStatType.TaxesMonth or TradeStatType.TaxesYear 
@@ -201,12 +205,14 @@ public class TradeStatsObject : INotifyPropertyChanged
                     {
                         TradeType.Mail => trade.MailContent.TotalPrice.IntegerValue,
                         TradeType.InstantSell => trade.InstantBuySellContent.TotalPrice.IntegerValue,
+                        TradeType.ManualSell => trade.InstantBuySellContent.TotalPrice.IntegerValue,
                         _ => 0
                     },
                     TradeStatType.BoughtTotal => trade.Type switch
                     {
                         TradeType.Mail => trade.MailContent.TotalPrice.IntegerValue,
                         TradeType.InstantBuy => trade.InstantBuySellContent.TotalPrice.IntegerValue,
+                        TradeType.ManualBuy => trade.InstantBuySellContent.TotalPrice.IntegerValue,
                         _ => 0
                     },
                     _ => 0
