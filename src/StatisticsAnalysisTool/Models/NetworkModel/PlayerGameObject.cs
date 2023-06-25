@@ -12,7 +12,7 @@ public class PlayerGameObject : GameObject
     private Guid? _interactGuid;
     private List<TimeCollectObject> _combatTimes = new();
 
-    public PlayerGameObject(long objectId)
+    public PlayerGameObject(long? objectId)
     {
         ObjectId = objectId;
         LastUpdate = DateTime.UtcNow.Ticks;

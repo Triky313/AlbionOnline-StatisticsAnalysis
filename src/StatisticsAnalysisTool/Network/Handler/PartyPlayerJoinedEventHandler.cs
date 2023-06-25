@@ -1,4 +1,5 @@
-﻿using StatisticsAnalysisTool.Network.Events;
+﻿using StatisticsAnalysisTool.Enumerations;
+using StatisticsAnalysisTool.Network.Events;
 using StatisticsAnalysisTool.Network.Manager;
 using System;
 using System.Threading.Tasks;
@@ -18,6 +19,7 @@ public class PartyPlayerJoinedEventHandler : EventPacketHandler<PartyPlayerJoine
     {
         if (value?.UserGuid != null)
         {
+            _trackingController.EntityController.AddEntity(null, (Guid) value.UserGuid, null, value.Username, null, null, null, GameObjectType.Player, GameObjectSubType.Player);
             await _trackingController.EntityController.AddToPartyAsync((Guid) value.UserGuid);
         }
     }

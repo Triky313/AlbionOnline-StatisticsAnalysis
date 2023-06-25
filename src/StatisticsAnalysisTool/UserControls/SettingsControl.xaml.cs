@@ -58,10 +58,10 @@ public partial class SettingsControl
         _settingsWindowViewModel.ReloadSettings();
     }
 
-    private void CheckForUpdate_Click(object sender, RoutedEventArgs e)
+    private async void CheckForUpdate_Click(object sender, RoutedEventArgs e)
     {
         AutoUpdateController.RemoveUpdateFiles();
-        AutoUpdateController.AutoUpdate(true);
+        await AutoUpdateController.AutoUpdateAsync(true);
     }
 
     private void ResetPacketFilter_Click(object sender, RoutedEventArgs e)

@@ -21,7 +21,7 @@ public partial class App
     private MainWindowViewModel _mainWindowViewModel;
     private TrackingController _trackingController;
 
-    protected override void OnStartup(StartupEventArgs e)
+    protected override async void OnStartup(StartupEventArgs e)
     {
         base.OnStartup(e);
 
@@ -34,7 +34,7 @@ public partial class App
         InitializeLanguage();
 
         AutoUpdateController.RemoveUpdateFiles();
-        AutoUpdateController.AutoUpdate();
+        await AutoUpdateController.AutoUpdateAsync();
 
         RegisterServices();
 
