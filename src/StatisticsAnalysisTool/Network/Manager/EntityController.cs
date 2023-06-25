@@ -13,6 +13,8 @@ using System.Linq;
 using System.Reflection;
 using System.Threading.Tasks;
 using System.Windows;
+using System.Windows.Controls;
+using System.Xml.Linq;
 
 namespace StatisticsAnalysisTool.Network.Manager;
 
@@ -40,7 +42,7 @@ public class EntityController
 
     public event Action<GameObject> OnAddEntity;
 
-    public void AddEntity(long objectId, Guid userGuid, Guid? interactGuid, string name, string guild, string alliance,
+    public void AddEntity(long? objectId, Guid userGuid, Guid? interactGuid, string name, string guild, string alliance,
         CharacterEquipment characterEquipment, GameObjectType objectType, GameObjectSubType objectSubType)
     {
         PlayerGameObject gameObject;
@@ -83,11 +85,11 @@ public class EntityController
             gameObject.Name = oldEntity.Name;
         }
 
-        if (_tempCharacterEquipmentData.TryGetValue(objectId, out var characterEquipmentData))
+        if (objectId is not null && _tempCharacterEquipmentData.TryGetValue((long) objectId, out var characterEquipmentData))
         {
             ResetTempCharacterEquipment();
             gameObject.CharacterEquipment = characterEquipmentData.CharacterEquipment;
-            _tempCharacterEquipmentData.TryRemove(objectId, out _);
+            _tempCharacterEquipmentData.TryRemove((long) objectId, out _);
         }
 
         _knownEntities.TryAdd(gameObject.UserGuid, gameObject);
@@ -131,6 +133,11 @@ public class EntityController
         return new List<KeyValuePair<Guid, PlayerGameObject>>(_knownEntities.ToArray().Where(x => x.Value.Damage > 0 || x.Value.Heal > 0));
     }
 
+    public bool ExistEntity(Guid guid)
+    {
+        return _knownEntities?.Any(x => x.Key == guid) ?? false;
+    }
+
     #endregion
 
     #region Party
@@ -157,9 +164,8 @@ public class EntityController
             else
             {
                 _ = _knownPartyEntities.Remove(notNullGuid);
+                await SetPartyMemberUiAsync();
             }
-
-            await SetPartyMemberUiAsync();
         }
     }
 
@@ -188,12 +194,14 @@ public class EntityController
 
         foreach (var member in party)
         {
+            if (!ExistEntity(member.Key) && GetLocalEntity()?.Key != member.Key)
+            {
+                AddEntity(null, member.Key, null, member.Value, null, null, null, GameObjectType.Player, GameObjectSubType.Player);
+            }
+
             await AddToPartyAsync(member.Key);
         }
-
-        await SetPartyMemberUiAsync();
     }
-
     private async Task SetPartyMemberUiAsync()
     {
         await Application.Current.Dispatcher.InvokeAsync(() =>
@@ -203,6 +211,12 @@ public class EntityController
             foreach (var memberGuid in _knownPartyEntities)
             {
                 var user = GetEntity(memberGuid);
+
+                if (!user.HasValue || user.Value.Key == Guid.Empty)
+                {
+                    continue;
+                }
+
                 _mainWindowViewModel.PartyMemberCircles.Add(new PartyMemberCircle
                 {
                     UserGuid = memberGuid,
