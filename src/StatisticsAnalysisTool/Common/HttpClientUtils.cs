@@ -63,4 +63,13 @@ public static class HttpClientUtils
             return false;
         }
     }
+
+    public static async Task<bool> IsUrlAccessible(string url)
+    {
+        using HttpClient client = new HttpClient();
+        HttpRequestMessage request = new HttpRequestMessage(HttpMethod.Head, url);
+
+        HttpResponseMessage response = await client.SendAsync(request);
+        return response.IsSuccessStatusCode;
+    }
 }

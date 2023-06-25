@@ -4,7 +4,9 @@ using StatisticsAnalysisTool.Common.UserSettings;
 using StatisticsAnalysisTool.Properties;
 using System;
 using System.IO;
+using System.Net.Http;
 using System.Reflection;
+using System.Threading.Tasks;
 using Application = System.Windows.Application;
 
 namespace StatisticsAnalysisTool.Common;
@@ -13,10 +15,13 @@ public static class AutoUpdateController
 {
     private static readonly ILog Log = LogManager.GetLogger(MethodBase.GetCurrentMethod()?.DeclaringType);
 
-    public static void AutoUpdate(bool reportErrors = false)
+    public static async Task AutoUpdateAsync(bool reportErrors = false)
     {
         try
         {
+            await HttpClientUtils.IsUrlAccessible(Settings.Default.AutoUpdatePreReleaseConfigUrl);
+            await HttpClientUtils.IsUrlAccessible(Settings.Default.AutoUpdateConfigUrl);
+
             AutoUpdater.ApplicationExitEvent -= AutoUpdaterApplicationExit;
 
             AutoUpdater.Start(SettingsController.CurrentSettings.IsSuggestPreReleaseUpdatesActive
@@ -28,6 +33,11 @@ public static class AutoUpdateController
             AutoUpdater.ReportErrors = reportErrors;
             AutoUpdater.ShowSkipButton = false;
             AutoUpdater.ApplicationExitEvent += AutoUpdaterApplicationExit;
+        }
+        catch (HttpRequestException e)
+        {
+            ConsoleManager.WriteLineForError(MethodBase.GetCurrentMethod()?.DeclaringType, e);
+            Log.Error(MethodBase.GetCurrentMethod()?.DeclaringType, e);
         }
         catch (Exception e)
         {
