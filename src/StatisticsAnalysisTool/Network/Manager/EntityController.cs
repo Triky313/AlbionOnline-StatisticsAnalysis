@@ -13,8 +13,6 @@ using System.Linq;
 using System.Reflection;
 using System.Threading.Tasks;
 using System.Windows;
-using System.Windows.Controls;
-using System.Xml.Linq;
 
 namespace StatisticsAnalysisTool.Network.Manager;
 
@@ -149,7 +147,7 @@ public class EntityController
             _knownPartyEntities.Add(guid);
         }
 
-        await SetPartyMemberUiAsync();
+        await UpdatePartyMemberUiAsync();
     }
 
     public async Task RemoveFromPartyAsync(Guid? guid)
@@ -164,7 +162,7 @@ public class EntityController
             else
             {
                 _ = _knownPartyEntities.Remove(notNullGuid);
-                await SetPartyMemberUiAsync();
+                await UpdatePartyMemberUiAsync();
             }
         }
     }
@@ -172,7 +170,7 @@ public class EntityController
     public async Task ResetPartyMemberAsync()
     {
         _knownPartyEntities.Clear();
-        await SetPartyMemberUiAsync();
+        await UpdatePartyMemberUiAsync();
     }
 
     public async Task AddLocalEntityToPartyAsync()
@@ -182,7 +180,7 @@ public class EntityController
             _knownPartyEntities.Add(member.Key);
         }
 
-        await SetPartyMemberUiAsync();
+        await UpdatePartyMemberUiAsync();
     }
 
     public async Task SetPartyAsync(Dictionary<Guid, string> party, bool resetPartyBefore = false)
@@ -202,13 +200,14 @@ public class EntityController
             await AddToPartyAsync(member.Key);
         }
     }
-    private async Task SetPartyMemberUiAsync()
+
+    private async Task UpdatePartyMemberUiAsync()
     {
         await Application.Current.Dispatcher.InvokeAsync(() =>
         {
             _mainWindowViewModel.PartyMemberCircles.Clear();
 
-            foreach (var memberGuid in _knownPartyEntities)
+            foreach (var memberGuid in _knownPartyEntities.ToList())
             {
                 var user = GetEntity(memberGuid);
 

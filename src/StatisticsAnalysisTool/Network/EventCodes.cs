@@ -218,7 +218,8 @@ public enum EventCodes
     NewTeleportStone,
     Cloak,
     PartyInvitation,
-    PartyJoined,
+    PartyJoinRequest,
+    PartyJoined = 219, // map[0:[39 75 81 -72 -80 97 25 66 -65 -97 111 45 -59 -126 98 -43] 1:crismooo 2:55 3:13 4:0 5:WiId Card 6:7805 7:true 252:219]
     PartyChangedOrder = 220, // map[0:14368 2:1 3:[-45 -35 124 14 -23 103 -41 74 -71 66 67 20 -12 60 44 -101] 4:[[-45 -35 124 14 -23 103 -41 74 -71 66 67 20 -12 60 44 -101] [-118 61 -70 72 17 -107 121 72 -102 110 20 -25 64 20 106 2]] 5:[Triky313 Bruno313] 6:[0 0] 7:[18 0] 8:[35 0] 9:[-1 -1] 10:[true true] 252:212]
     PartyDisbanded = 221, // map[1:14184 252:213]
     PartyPlayerJoined = 222, // map[0:11925 1:[-63 -19 39 16 26 35 -25 67 -111 60 -87 -58 -31 -100 -124 -44] 2:Mitch77 3:1 4:20 5:12 6:-1 7:true 252:214]
@@ -227,11 +228,12 @@ public enum EventCodes
     PartyLootSettingChangedPlayer = 226, // map[0:14368 1:1 252:218]
     PartySilverGained,
     PartyPlayerUpdated = 229, // map[0:Bruno313 1:true 3:5 252:221]
-    PartyInvitationPlayerBusy,
+    PartyInvitationAnswer,
+    PartyJoinRequestAnswer,
     PartyMarkedObjectsUpdated,
     PartyOnClusterPartyJoined,
     PartySetRoleFlag, // map[0:8 1:[-118 61 -70 72 17 -107 121 72 -102 110 20 -25 64 20 106 2] 252:225] (0: FlagType, 1: ObjectId)
-    PartyJoinRequest = 234,
+    PartyInviteOrJoinPlayerEquipmentInfo,
     SpellCooldownUpdate,
     NewHellgate,
     NewHellgateExit,
