@@ -16,7 +16,12 @@ public class PartyJoinedEventHandler : EventPacketHandler<PartyJoinedEvent>
 
     protected override async Task OnActionAsync(PartyJoinedEvent value)
     {
-        _trackingController.EntityController.AddEntity(null, value.UserGuid, null, value.Username, value.GuildName, null, null, GameObjectType.Player, GameObjectSubType.LocalPlayer);
-        await _trackingController.EntityController.AddToPartyAsync(value.UserGuid);
+        if (!_trackingController.EntityController.IsLocalEntity(value.UserGuid) && !_trackingController.EntityController.ExistEntity(value.UserGuid))
+        {
+            _trackingController.EntityController
+                .AddEntity(null, value.UserGuid, null, value.Username, value.GuildName, null, null, GameObjectType.Player, GameObjectSubType.Player);
+        }
+
+        await Task.CompletedTask;
     }
 }

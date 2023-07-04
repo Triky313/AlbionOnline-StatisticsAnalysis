@@ -52,9 +52,9 @@ public class EntityController
                 Name = name,
                 ObjectType = objectType,
                 UserGuid = userGuid,
-                Guild = guild,
-                Alliance = alliance,
-                InteractGuid = interactGuid,
+                Guild = string.Empty == guild ? oldEntity.Guild : guild,
+                Alliance = string.Empty == alliance ? oldEntity.Alliance : alliance,
+                InteractGuid = interactGuid == Guid.Empty || interactGuid == null ? oldEntity.InteractGuid : interactGuid,
                 ObjectSubType = objectSubType,
                 CharacterEquipment = characterEquipment ?? oldEntity.CharacterEquipment,
                 CombatStart = oldEntity.CombatStart,
@@ -142,6 +142,11 @@ public class EntityController
 
     public async Task AddToPartyAsync(Guid guid)
     {
+        if (guid == Guid.Empty)
+        {
+            return;
+        }
+
         if (_knownPartyEntities.All(x => x != guid))
         {
             _knownPartyEntities.Add(guid);
@@ -183,12 +188,9 @@ public class EntityController
         await UpdatePartyMemberUiAsync();
     }
 
-    public async Task SetPartyAsync(Dictionary<Guid, string> party, bool resetPartyBefore = false)
+    public async Task SetPartyAsync(Dictionary<Guid, string> party)
     {
-        if (resetPartyBefore)
-        {
-            await ResetPartyMemberAsync();
-        }
+        await ResetPartyMemberAsync();
 
         foreach (var member in party)
         {
@@ -219,7 +221,7 @@ public class EntityController
                 _mainWindowViewModel.PartyMemberCircles.Add(new PartyMemberCircle
                 {
                     UserGuid = memberGuid,
-                    Name = user?.Value.Name ?? string.Empty
+                    Name = user.Value.Value.Name ?? string.Empty
                 });
                 _mainWindowViewModel.PartyMemberNumber = _knownPartyEntities.Count;
             }
@@ -493,6 +495,11 @@ public class EntityController
     public bool ExistLocalEntity()
     {
         return _knownEntities?.Any(x => x.Value.ObjectSubType == GameObjectSubType.LocalPlayer) ?? false;
+    }
+
+    public bool IsLocalEntity(Guid guid)
+    {
+        return _knownEntities?.Any(x => x.Value.ObjectSubType == GameObjectSubType.LocalPlayer && x.Value.UserGuid == guid) ?? false;
     }
 
     public KeyValuePair<Guid, PlayerGameObject>? GetLocalEntity() => _knownEntities?.ToArray().FirstOrDefault(x => x.Value.ObjectSubType == GameObjectSubType.LocalPlayer);
