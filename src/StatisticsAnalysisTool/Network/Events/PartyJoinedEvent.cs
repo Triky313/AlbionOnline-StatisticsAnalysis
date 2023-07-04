@@ -17,7 +17,7 @@ public class PartyJoinedEvent
 
         try
         {
-            if (parameters.TryGetValue(1, out object userGuid) && userGuid is Guid)
+            if (parameters.TryGetValue(0, out object userGuid))
             {
                 UserGuid = userGuid.ObjectToGuid() ?? Guid.Empty;
             }
