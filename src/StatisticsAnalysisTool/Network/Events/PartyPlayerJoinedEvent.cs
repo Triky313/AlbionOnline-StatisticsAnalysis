@@ -1,14 +1,14 @@
-﻿using System;
+﻿using StatisticsAnalysisTool.Common;
+using System;
 using System.Collections.Generic;
 using System.Reflection;
-using StatisticsAnalysisTool.Common;
 
 namespace StatisticsAnalysisTool.Network.Events;
 
 public class PartyPlayerJoinedEvent
 {
-    public Guid? UserGuid;
-    public readonly string Username;
+    public Guid UserGuid { get; private set; } = Guid.Empty;
+    public string Username { get; private set; } = string.Empty;
 
     public PartyPlayerJoinedEvent(Dictionary<byte, object> parameters)
     {
@@ -16,15 +16,16 @@ public class PartyPlayerJoinedEvent
 
         try
         {
-            if (parameters.ContainsKey(1))
+            if (parameters.TryGetValue(1, out object userGuid) && userGuid is Guid)
             {
-                UserGuid = parameters[1].ObjectToGuid();
+                UserGuid = userGuid.ObjectToGuid() ?? Guid.Empty;
             }
 
-            if (parameters.ContainsKey(2))
+            if (parameters.TryGetValue(2, out object username) && username is string usernameString && !string.IsNullOrEmpty(usernameString))
             {
-                Username = string.IsNullOrEmpty(parameters[2].ToString()) ? string.Empty : parameters[2].ToString();
+                Username = usernameString;
             }
+
         }
         catch (Exception e)
         {
