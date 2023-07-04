@@ -15,6 +15,6 @@ public class PartyChangedOrderEventHandler : EventPacketHandler<PartyChangedOrde
 
     protected override async Task OnActionAsync(PartyChangedOrderEvent value)
     {
-        await _trackingController.EntityController.SetPartyAsync(value.PartyUsers, true);
+        await _trackingController.EntityController.SetPartyAsync(value.PartyUsers);
     }
 }
