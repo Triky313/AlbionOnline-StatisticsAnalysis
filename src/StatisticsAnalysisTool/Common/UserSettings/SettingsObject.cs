@@ -32,10 +32,10 @@ public class SettingsObject
     public bool IsMainTrackerFilterFame { get; set; }
     public bool IsMainTrackerFilterFaction { get; set; }
     public bool IsMainTrackerFilterSeasonPoints { get; set; }
-    public bool IsMainTrackerFilterEquipmentLoot { get; set; }
-    public bool IsMainTrackerFilterConsumableLoot { get; set; }
-    public bool IsMainTrackerFilterSimpleLoot { get; set; }
-    public bool IsMainTrackerFilterUnknownLoot { get; set; }
+    public bool IsMainTrackerFilterEquipmentLoot { get; set; } = true;
+    public bool IsMainTrackerFilterConsumableLoot { get; set; } = true;
+    public bool IsMainTrackerFilterSimpleLoot { get; set; } = true;
+    public bool IsMainTrackerFilterUnknownLoot { get; set; } = true;
     public bool IsMainTrackerFilterKill { get; set; }
     public bool IsDamageMeterTrackingActive { get; set; } = true;
     public bool IsTrackingPartyLootOnly { get; set; }
