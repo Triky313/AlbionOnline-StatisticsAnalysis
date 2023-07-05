@@ -68,4 +68,9 @@ public partial class SettingsControl
     {
         _settingsWindowViewModel.ResetPacketFilter();
     }
+
+    private void ResetPlayerSelectionWithSameNameInDb_Click(object sender, RoutedEventArgs e)
+    {
+        _settingsWindowViewModel.ResetPlayerSelectionWithSameNameInDb();
+    }
 }

@@ -4,8 +4,9 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:viewModels="clr-namespace:StatisticsAnalysisTool.ViewModels"
+             xmlns:common="clr-namespace:StatisticsAnalysisTool.Common"
              mc:Ignorable="d" 
-             d:DesignHeight="800" d:DesignWidth="800"
+             d:DesignHeight="1000" d:DesignWidth="800"
              d:DataContext="{d:DesignInstance Type=viewModels:SettingsWindowViewModel}">
     <Grid IsVisibleChanged="ReloadSettings_OnIsVisibleChanged">
         <Grid Margin="0,0,0,44">
@@ -140,6 +141,15 @@
                     <DockPanel Margin="0,5,0,0">
                         <Label Content="{Binding Translation.CopyShortDamageMeterToTheClipboard, FallbackValue=COPY__SHORT__DAMAGE__METER__TO__THE__CLIPBOARD}" MinWidth="300" VerticalAlignment="Top" />
                         <CheckBox IsChecked="{Binding ShortDamageMeterToClipboard}" Height="21" VerticalContentAlignment="Center" />
+                    </DockPanel>
+                    <DockPanel Margin="0,5,0,0">
+                        <Label Content="{Binding Translation.PlayerSelectionWithSameNameInDb, FallbackValue=PLAYER_SELECTION_WITH_SAME_NAME_IN_DB}" MinWidth="300" VerticalAlignment="Top" />
+                        <StackPanel Orientation="Horizontal">
+                            <TextBox Text="{Binding PlayerSelectionWithSameNameInDb}" Height="26" MinWidth="100" TextWrapping="NoWrap" VerticalAlignment="Center" 
+                                     Margin="0,0,5,0" MaxLength="2" common:TextBoxHelper.OnlyNumeric="Double" />
+                            <Button Content="{Binding Translation.Reset, FallbackValue=RESET}" Height="24" MaxWidth="100" VerticalAlignment="Center" 
+                                    Click="ResetPlayerSelectionWithSameNameInDb_Click" />
+                        </StackPanel>
                     </DockPanel>
                 </StackPanel>
             </ScrollViewer>

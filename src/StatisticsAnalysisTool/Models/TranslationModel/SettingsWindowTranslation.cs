@@ -47,4 +47,5 @@ public class SettingsWindowTranslation
     public static string Notifications => LanguageController.Translation("NOTIFICATIONS");
     public static string PacketFilter => LanguageController.Translation("PACKET_FILTER");
     public static string Reset => LanguageController.Translation("RESET");
+    public static string PlayerSelectionWithSameNameInDb => LanguageController.Translation("PLAYER_SELECTION_WITH_SAME_NAME_IN_DB");
 }
