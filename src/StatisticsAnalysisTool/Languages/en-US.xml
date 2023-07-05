@@ -743,4 +743,5 @@
 	<translation name="DELETE_AFTER_14_DAYS">Delete after 14 days</translation>
 	<translation name="DELETE_AFTER_30_DAYS">Delete after 30 days</translation>
 	<translation name="DELETE_AFTER_365_DAYS">Delete after 365 days</translation>
+	<translation name="PLAYER_SELECTION_WITH_SAME_NAME_IN_DB">Player selection with the same name in the DB</translation>
 </translations>

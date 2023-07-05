@@ -1,5 +1,6 @@
 ﻿using log4net;
 using StatisticsAnalysisTool.Common;
+using StatisticsAnalysisTool.Common.UserSettings;
 using StatisticsAnalysisTool.Enumerations;
 using StatisticsAnalysisTool.Models.ApiModel;
 using StatisticsAnalysisTool.Properties;
@@ -95,7 +96,7 @@ public class LocalUserData
         if (currentUsername != newUsername || LastUpdate < DateTime.UtcNow.AddMinutes(-5))
         {
             var info = await ApiController.GetGameInfoSearchFromJsonAsync(newUsername);
-            WebApiUserId = info?.SearchPlayer?.FirstOrDefault(x => x?.Name == newUsername)?.Id;
+            WebApiUserId = GetWebApiUserId(info, newUsername)?.Id;
 
             await AddPlayerKillsDeathsToListAsync(await ApiController.GetGameInfoPlayerKillsDeathsFromJsonAsync(WebApiUserId, GameInfoPlayersType.Deaths), GameInfoPlayerKillsDeathsType.Death);
             await AddPlayerKillsDeathsToListAsync(await ApiController.GetGameInfoPlayerTopKillsFromJsonAsync(WebApiUserId, UnitOfTime.Month), GameInfoPlayerKillsDeathsType.Kill);
@@ -104,6 +105,21 @@ public class LocalUserData
 
             LastUpdate = DateTime.UtcNow;
         }
+    }
+
+    public static SearchPlayerResponse GetWebApiUserId(GameInfoSearchResponse gameInfoSearchResponse, string username)
+    {
+        if (ExistMultipleExactMatchPlayerNames(gameInfoSearchResponse, username) > 1 && SettingsController.CurrentSettings.ExactMatchPlayerNamesLineNumber > 0)
+        {
+            return gameInfoSearchResponse?.SearchPlayer?.ElementAtOrDefault(SettingsController.CurrentSettings.ExactMatchPlayerNamesLineNumber);
+        }
+
+        return gameInfoSearchResponse?.SearchPlayer?.FirstOrDefault(x => x?.Name == username);
+    }
+
+    private static int ExistMultipleExactMatchPlayerNames(GameInfoSearchResponse gameInfoSearchResponse, string username)
+    {
+        return gameInfoSearchResponse?.SearchPlayer?.Count(x => x?.Name == username) ?? 0;
     }
 
     private async Task AddPlayerKillsDeathsToListAsync(IEnumerable<GameInfoPlayerKillsDeaths> items, GameInfoPlayerKillsDeathsType type = GameInfoPlayerKillsDeathsType.Unknown)

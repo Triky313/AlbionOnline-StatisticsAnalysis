@@ -53,6 +53,7 @@ public class SettingsWindowViewModel : INotifyPropertyChanged
     private ObservableCollection<SettingDataInformation> _server = new();
     private ObservableCollection<NotificationFilter> _notificationFilters = new();
     private string _packetFilter;
+    private short _playerSelectionWithSameNameInDb;
 
     public SettingsWindowViewModel()
     {
@@ -109,6 +110,9 @@ public class SettingsWindowViewModel : INotifyPropertyChanged
 
         // Packet Filter
         PacketFilter = SettingsController.CurrentSettings.PacketFilter;
+
+        // Player Selection with same name in db
+        PlayerSelectionWithSameNameInDb = SettingsController.CurrentSettings.ExactMatchPlayerNamesLineNumber;
     }
 
     public void SaveSettings()
@@ -137,6 +141,7 @@ public class SettingsWindowViewModel : INotifyPropertyChanged
         SettingsController.CurrentSettings.IsLootLoggerSaveReminderActive = IsLootLoggerSaveReminderActive;
         SettingsController.CurrentSettings.IsSuggestPreReleaseUpdatesActive = IsSuggestPreReleaseUpdatesActive;
         SettingsController.CurrentSettings.ShortDamageMeterToClipboard = ShortDamageMeterToClipboard;
+        SettingsController.CurrentSettings.ExactMatchPlayerNamesLineNumber = PlayerSelectionWithSameNameInDb;
 
         SetAppSettingsAndTranslations();
         SetNaviTabVisibilities();
@@ -221,6 +226,18 @@ public class SettingsWindowViewModel : INotifyPropertyChanged
         }
 
         PacketFilter = defaultFilter;
+    }
+
+    public void ResetPlayerSelectionWithSameNameInDb()
+    {
+        const short defaultValue = 0;
+
+        if (PlayerSelectionWithSameNameInDb == defaultValue)
+        {
+            return;
+        }
+
+        PlayerSelectionWithSameNameInDb = defaultValue;
     }
 
     public struct SettingDataInformation
@@ -560,6 +577,16 @@ public class SettingsWindowViewModel : INotifyPropertyChanged
         set
         {
             _packetFilter = value;
+            OnPropertyChanged();
+        }
+    }
+
+    public short PlayerSelectionWithSameNameInDb
+    {
+        get => _playerSelectionWithSameNameInDb;
+        set
+        {
+            _playerSelectionWithSameNameInDb = value;
             OnPropertyChanged();
         }
     }

@@ -77,4 +77,5 @@ public class SettingsObject
     public bool IsNotificationFilterTradeActive { get; set; } = false;
     public bool IsNotificationTrackingStatusActive { get; set; } = false;
     public AutoDeleteGatheringStats AutoDeleteGatheringStats { get; set; } = AutoDeleteGatheringStats.NeverDelete;
+    public short ExactMatchPlayerNamesLineNumber { get; set; } = 0;
 }

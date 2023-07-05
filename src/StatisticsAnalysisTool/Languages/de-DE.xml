@@ -743,4 +743,5 @@
 	<translation name="DELETE_AFTER_14_DAYS">Löschen nach 14 Tagen</translation>
 	<translation name="DELETE_AFTER_30_DAYS">Löschen nach 30 Tagen</translation>
 	<translation name="DELETE_AFTER_365_DAYS">Löschen nach 365 Tagen</translation>
+	<translation name="PLAYER_SELECTION_WITH_SAME_NAME_IN_DB">Spieler Auswahl bei gleichen Namen in der DB</translation>
 </translations>
