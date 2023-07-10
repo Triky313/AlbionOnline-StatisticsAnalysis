@@ -13,7 +13,6 @@ using System.Linq;
 using System.Reflection;
 using System.Threading.Tasks;
 using System.Windows;
-using System.Xml.Linq;
 
 namespace StatisticsAnalysisTool.Network.Manager;
 
@@ -47,7 +46,15 @@ public class EntityController
 
         if (_knownEntities.TryRemove(userGuid, out var oldEntity))
         {
-            gameObject = new PlayerGameObject(objectId)
+            // Parties are recreated several times in HCE's and therefore the ObjectId may only be set to zero once after a map change.
+            // However, this must not happen in AddEntity
+            long? newObjectId = oldEntity.ObjectId;
+            if (objectId != null)
+            {
+                newObjectId = objectId;
+            }
+
+            gameObject = new PlayerGameObject(newObjectId)
             {
                 Name = name,
                 ObjectType = objectType,
@@ -93,8 +100,6 @@ public class EntityController
 
         _knownEntities.TryAdd(gameObject.UserGuid, gameObject);
         OnAddEntity?.Invoke(gameObject);
-
-        Log.Info($"AddEntity >> objectId: {objectId}|userGuid: {userGuid}|name: {name}|IsInParty: {gameObject.IsInParty}|Damage: {gameObject.Damage}");
     }
 
     public void RemoveEntitiesByLastUpdate(int withoutAnUpdateForMinutes)
@@ -106,6 +111,11 @@ public class EntityController
                      && new DateTime(x.Value.LastUpdate).AddMinutes(withoutAnUpdateForMinutes).Ticks < DateTime.UtcNow.Ticks))
         {
             _knownEntities.TryRemove(entity.Key, out _);
+        }
+
+        foreach (var entity in _knownEntities.Where(x => x.Value.ObjectSubType != GameObjectSubType.LocalPlayer))
+        {
+            entity.Value.ObjectId = null;
         }
     }
 
@@ -150,8 +160,6 @@ public class EntityController
         {
             entity.Value.IsInParty = true;
             await SetPartyMemberUiAsync();
-
-            Log.Info($"Added to party >> objectId: {entity.Value?.ObjectId}|guid: {entity.Value?.UserGuid}|name: {entity.Value?.Name}|IsInParty: {entity.Value?.IsInParty}|Damage: {entity.Value?.Damage}");
         }
     }
 
@@ -170,8 +178,6 @@ public class EntityController
                 if (entity.Value != null)
                 {
                     entity.Value.IsInParty = false;
-
-                    Log.Info($"Remove from party >> objectId: {entity.Value?.ObjectId}|guid: {entity.Value?.UserGuid}|name: {entity.Value?.Name}|IsInParty: {entity.Value?.IsInParty}|Damage: {entity.Value?.Damage}");
                 }
             }
 

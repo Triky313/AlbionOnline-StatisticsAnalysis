@@ -14,7 +14,7 @@ public class PlayerGameObject : GameObject
 
     public PlayerGameObject(long? objectId)
     {
-        ObjectId = objectId;
+        ObjectId ??= objectId;
         LastUpdate = DateTime.UtcNow.Ticks;
     }
 
