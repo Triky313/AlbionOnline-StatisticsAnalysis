@@ -1,14 +1,12 @@
 ﻿using StatisticsAnalysisTool.Common;
 using StatisticsAnalysisTool.Common.Comparer;
 using StatisticsAnalysisTool.Common.UserSettings;
-using StatisticsAnalysisTool.Dungeon;
+using StatisticsAnalysisTool.DungeonTracker;
 using StatisticsAnalysisTool.Enumerations;
 using StatisticsAnalysisTool.Models.NetworkModel;
 using StatisticsAnalysisTool.Models.TranslationModel;
 using StatisticsAnalysisTool.Properties;
-using StatisticsAnalysisTool.Trade;
 using System.Collections.Generic;
-using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
 using System.Windows;
@@ -18,7 +16,7 @@ namespace StatisticsAnalysisTool.Models.BindingModel;
 
 public class DungeonBindings : INotifyPropertyChanged
 {
-    private ObservableCollection<DungeonNotificationFragment> _trackingDungeons = new();
+    private ObservableRangeCollection<Dungeon> _dungeons = new();
     private ListCollectionView _dungeonsCollectionView;
     private DungeonCloseTimer _dungeonCloseTimer = new();
     private DungeonStatsFilter _dungeonStatsFilter;
@@ -31,11 +29,11 @@ public class DungeonBindings : INotifyPropertyChanged
     private DungeonsTranslation _translation = new();
     private DungeonStatsFilterStruct _dungeonStatTimeSelection;
     private DungeonStats _dungeonStatsSelection;
-    private DungeonOptionsObject _dungeonOptionsObject = new ();
+    private DungeonOptionsObject _dungeonOptionsObject = new();
 
     public DungeonBindings()
     {
-        DungeonsCollectionView = CollectionViewSource.GetDefaultView(TrackingDungeons) as ListCollectionView;
+        DungeonsCollectionView = CollectionViewSource.GetDefaultView(Dungeons) as ListCollectionView;
         if (DungeonsCollectionView != null)
         {
             DungeonsCollectionView.IsLiveSorting = true;
@@ -44,13 +42,13 @@ public class DungeonBindings : INotifyPropertyChanged
             DungeonsCollectionView.Refresh();
         }
     }
-    
-    public ObservableCollection<DungeonNotificationFragment> TrackingDungeons
+
+    public ObservableRangeCollection<Dungeon> Dungeons
     {
-        get => _trackingDungeons;
+        get => _dungeons;
         set
         {
-            _trackingDungeons = value;
+            _dungeons = value;
             OnPropertyChanged();
         }
     }
@@ -205,7 +203,7 @@ public class DungeonBindings : INotifyPropertyChanged
             OnPropertyChanged();
         }
     }
-    
+
     public DungeonStats DungeonStatsSelection
     {
         get => _dungeonStatsSelection;

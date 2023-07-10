@@ -1,6 +1,5 @@
 ﻿using StatisticsAnalysisTool.Common;
 using StatisticsAnalysisTool.Enumerations;
-using StatisticsAnalysisTool.EventLogging.Notification;
 using StatisticsAnalysisTool.GameData;
 using StatisticsAnalysisTool.Models;
 using StatisticsAnalysisTool.Models.NetworkModel;
@@ -16,10 +15,11 @@ using System.Text.Json.Serialization;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Threading;
+using ValueType = StatisticsAnalysisTool.Enumerations.ValueType;
 
-namespace StatisticsAnalysisTool.Dungeon;
+namespace StatisticsAnalysisTool.DungeonTracker;
 
-public class DungeonNotificationFragment : LineFragment, INotifyPropertyChanged
+public class Dungeon : INotifyPropertyChanged
 {
     private bool _diedInDungeon;
     private string _diedName;
@@ -79,40 +79,126 @@ public class DungeonNotificationFragment : LineFragment, INotifyPropertyChanged
     private string _bestLootedItemName;
     private string _tierString = "?";
     private string _levelString = "?";
+    public List<DungeonEventObject> DungeonEventObjects { get; set; } = new();
+    public List<TimeCollectObject> DungeonRunTimes { get; } = new();
+    public List<DungeonLoot> DungeonLoot { get; set; } = new();
 
     public string DungeonHash => $"{EnterDungeonFirstTime.Ticks}{string.Join(",", GuidList)}";
 
-    public DungeonNotificationFragment(int dungeonNumber, List<Guid> guidList, string mainMapIndex, DateTime enterDungeonFirstTime)
+    public Dungeon()
     {
-        DungeonNumber = dungeonNumber;
+    }
+
+    public Dungeon(string mainMapIndex, Guid guid, DungeonStatus status)
+    {
         MainMapIndex = mainMapIndex;
-        GuidList = guidList;
+        EnterDungeonFirstTime = DateTime.UtcNow;
+        GuidList.Add(guid);
+        Status = status;
+        AddTimer(DateTime.UtcNow);
+        Mode = Mode == DungeonMode.Unknown ? DungeonObjectData.GetDungeonMode(mainMapIndex) : Mode;
+    }
+
+    public Dungeon(int dungeonNumber, List<Guid> guidList, string mainMapIndex, DateTime enterDungeonFirstTime)
+    {
+        MainMapIndex = mainMapIndex;
         EnterDungeonFirstTime = enterDungeonFirstTime;
+        GuidList = guidList;
+        DungeonNumber = dungeonNumber;
         Faction = Faction.Unknown;
     }
 
-    public void SetValues(DungeonObject dungeonObject)
+    public void Set(Dungeon dungeon)
     {
-        TotalRunTimeInSeconds = dungeonObject.TotalRunTimeInSeconds;
-        DiedInDungeon = dungeonObject.DiedInDungeon;
-        DiedName = dungeonObject.DiedName;
-        KilledBy = dungeonObject.KilledBy;
-        Faction = dungeonObject.Faction;
-        Fame = dungeonObject.Fame;
-        ReSpec = dungeonObject.ReSpec;
-        Silver = dungeonObject.Silver;
-        CityFaction = dungeonObject.CityFaction;
-        FactionCoins = dungeonObject.FactionCoins;
-        FactionFlags = dungeonObject.FactionFlags;
-        Might = dungeonObject.Might;
-        Favor = dungeonObject.Favor;
-        Mode = dungeonObject.Mode;
-        Status = dungeonObject.Status;
-        Tier = dungeonObject.Tier;
-        Level = dungeonObject.Level;
+        TotalRunTimeInSeconds = dungeon.TotalRunTimeInSeconds;
+        GuidList = dungeon.GuidList;
+        EnterDungeonFirstTime = dungeon.EnterDungeonFirstTime;
+        MainMapIndex = dungeon.MainMapIndex;
+        DungeonEventObjects = dungeon.DungeonEventObjects;
+        DungeonLoot = dungeon.DungeonLoot;
+        DiedInDungeon = dungeon.DiedInDungeon;
+        DiedName = dungeon.DiedName;
+        KilledBy = dungeon.KilledBy;
+        Faction = dungeon.Faction;
+        Fame = dungeon.Fame;
+        ReSpec = dungeon.ReSpec;
+        Silver = dungeon.Silver;
+        CityFaction = dungeon.CityFaction;
+        FactionCoins = dungeon.FactionCoins;
+        FactionFlags = dungeon.FactionFlags;
+        Might = dungeon.Might;
+        Favor = dungeon.Favor;
+        Mode = dungeon.Mode;
+        Status = dungeon.Status;
+        Tier = dungeon.Tier;
+        Level = dungeon.Level;
 
-        UpdateChests(dungeonObject.DungeonEventObjects.ToList());
-        _ = UpdateDungeonLootAsync(dungeonObject.DungeonLoot.ToAsyncEnumerable());
+        UpdateChests(dungeon.DungeonEventObjects.ToList());
+        _ = UpdateDungeonLootAsync(dungeon.DungeonLoot.ToAsyncEnumerable());
+    }
+
+    public async Task SetAsync(DungeonDto dungeonDto)
+    {
+        TotalRunTimeInSeconds = dungeonDto.TotalRunTimeInSeconds;
+        GuidList = dungeonDto.GuidList;
+        EnterDungeonFirstTime = dungeonDto.EnterDungeonFirstTime;
+        MainMapIndex = dungeonDto.MainMapIndex;
+        DungeonEventObjects = dungeonDto.DungeonEventObjects;
+        DungeonLoot = dungeonDto.DungeonLoot;
+        DiedInDungeon = dungeonDto.DiedInDungeon;
+        DiedName = dungeonDto.DiedName;
+        KilledBy = dungeonDto.KilledBy;
+        Faction = dungeonDto.Faction;
+        Fame = dungeonDto.Fame;
+        ReSpec = dungeonDto.ReSpec;
+        Silver = dungeonDto.Silver;
+        CityFaction = dungeonDto.CityFaction;
+        FactionCoins = dungeonDto.FactionCoins;
+        FactionFlags = dungeonDto.FactionFlags;
+        Might = dungeonDto.Might;
+        Favor = dungeonDto.Favor;
+        Mode = dungeonDto.Mode;
+        Status = dungeonDto.Status;
+        Tier = dungeonDto.Tier;
+        Level = dungeonDto.Level;
+
+        UpdateChests(dungeonDto.DungeonEventObjects.ToList());
+        await UpdateDungeonLootAsync(dungeonDto.DungeonLoot.ToAsyncEnumerable());
+    }
+
+    public void Add(double value, ValueType type, CityFaction cityFaction = CityFaction.Unknown)
+    {
+        switch (type)
+        {
+            case ValueType.Fame:
+                Fame += value;
+                return;
+            case ValueType.ReSpec:
+                ReSpec += value;
+                return;
+            case ValueType.Silver:
+                Silver += value;
+                return;
+            case ValueType.FactionFame:
+                if (cityFaction != CityFaction.Unknown)
+                {
+                    FactionFlags += value;
+                }
+                return;
+            case ValueType.FactionPoints:
+                if (cityFaction != CityFaction.Unknown)
+                {
+                    FactionCoins += value;
+                    CityFaction = cityFaction;
+                }
+                return;
+            case ValueType.Might:
+                Might += value;
+                return;
+            case ValueType.Favor:
+                Favor += value;
+                return;
+        }
     }
 
     private void UpdateChests(IEnumerable<DungeonEventObject> dungeonEventObjects)
@@ -224,6 +310,66 @@ public class DungeonNotificationFragment : LineFragment, INotifyPropertyChanged
         };
 
         return levelString;
+    }
+
+    public void AddTimer(DateTime time)
+    {
+        if (DungeonRunTimes.Any(x => x.EndTime == null))
+        {
+            var dun = DungeonRunTimes.FirstOrDefault(x => x.EndTime == null);
+            if (dun != null)
+            {
+                dun.EndTime = time;
+                DungeonRunTimes.Add(new TimeCollectObject(time));
+            }
+        }
+        else
+        {
+            DungeonRunTimes.Add(new TimeCollectObject(time));
+        }
+
+        SetTotalRunTimeInSeconds();
+    }
+
+    public void EndTimer()
+    {
+        var dateTime = DateTime.UtcNow;
+
+        var dun = DungeonRunTimes.FirstOrDefault(x => x.EndTime == null);
+        if (dun != null && dun.StartTime < dateTime)
+        {
+            dun.EndTime = dateTime;
+            SetTotalRunTimeInSeconds();
+        }
+    }
+
+    public void SetTier(Tier tier)
+    {
+        if (Tier != Tier.Unknown)
+        {
+            return;
+        }
+
+        Tier = tier;
+    }
+
+    public void SetLevel(int level)
+    {
+        if (Level >= 0)
+        {
+            return;
+        }
+
+        Level = level;
+    }
+
+    private void SetTotalRunTimeInSeconds()
+    {
+        foreach (var time in DungeonRunTimes.Where(x => x.EndTime != null).ToList())
+        {
+            TotalRunTimeInSeconds += (int) time.TimeSpan.TotalSeconds;
+            DungeonRunTimes.Remove(time);
+        }
     }
 
     public string TierString

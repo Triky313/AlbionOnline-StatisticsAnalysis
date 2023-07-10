@@ -10,7 +10,7 @@ using System.Reflection;
 using System.Text;
 using System.Text.Json;
 
-namespace StatisticsAnalysisTool.Dungeon;
+namespace StatisticsAnalysisTool.DungeonTracker;
 
 public static class DungeonObjectData
 {

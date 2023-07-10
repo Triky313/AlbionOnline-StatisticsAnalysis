@@ -1,5 +1,5 @@
 ﻿using StatisticsAnalysisTool.Common;
-using StatisticsAnalysisTool.Dungeon;
+using StatisticsAnalysisTool.DungeonTracker;
 using StatisticsAnalysisTool.Enumerations;
 using StatisticsAnalysisTool.Network.Manager;
 using StatisticsAnalysisTool.Properties;
@@ -75,7 +75,7 @@ public class DungeonStatsFilter : INotifyPropertyChanged
         _trackingController?.DungeonController?.UpdateDungeonChestsUi();
     }
 
-    #region Dungeon
+    #region DungeonObjectOld
 
     public bool? SoloCheckbox
     {

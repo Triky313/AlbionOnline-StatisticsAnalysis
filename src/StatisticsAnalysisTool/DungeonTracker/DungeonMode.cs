@@ -1,4 +1,4 @@
-﻿namespace StatisticsAnalysisTool.Dungeon;
+﻿namespace StatisticsAnalysisTool.DungeonTracker;
 
 public enum DungeonMode
 {

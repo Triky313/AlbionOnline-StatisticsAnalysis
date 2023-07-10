@@ -393,9 +393,9 @@
 	<translation name="SAFE">Seguro</translation>
 	<translation name="DUNGEON_TIMER">Temporizador de mazmorra</translation>
 	<translation name="SURE_YOU_WANT_TO_RESET_DAMAGE_METER">Are you sure you want to reset the Damage Meter?</translation>
-	<translation name="RESET_DUNGEON_TRACKER">Reset Dungeon Tracker</translation>
-	<translation name="SURE_YOU_WANT_TO_RESET_DUNGEON_TRACKER">Are you sure you want to reset the Dungeon Tracker?</translation>
-	<translation name="REMOVE_DUNGEON">Remove Dungeon</translation>
+	<translation name="RESET_DUNGEON_TRACKER">Reset DungeonObjectOld Tracker</translation>
+	<translation name="SURE_YOU_WANT_TO_RESET_DUNGEON_TRACKER">Are you sure you want to reset the DungeonObjectOld Tracker?</translation>
+	<translation name="REMOVE_DUNGEON">Remove DungeonObjectOld</translation>
 	<translation name="SURE_YOU_WANT_TO_REMOVE_DUNGEON">¿Estás seguro de que deseas reiniciar el medidor de daños?</translation>
 	<translation name="RESPEC">ReSpec</translation>
 	<translation name="SOLO_DUNGEON">Mazmorra en solitario</translation>

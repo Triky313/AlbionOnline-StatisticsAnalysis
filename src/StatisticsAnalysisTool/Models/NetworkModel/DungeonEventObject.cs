@@ -1,4 +1,4 @@
-﻿using StatisticsAnalysisTool.Dungeon;
+﻿using StatisticsAnalysisTool.DungeonTracker;
 using StatisticsAnalysisTool.Enumerations;
 using System;
 

@@ -58,7 +58,7 @@ public partial class DungeonControl
 
         if (dialogResult is true)
         {
-            var selectedDungeons = vm?.DungeonBindings?.TrackingDungeons.Where(x => x.IsSelectedForDeletion ?? false).Select(x => x.DungeonHash);
+            var selectedDungeons = vm?.DungeonBindings?.Dungeons.Where(x => x.IsSelectedForDeletion ?? false).Select(x => x.DungeonHash);
             if (selectedDungeons != null)
             {
                 var trackingController = ServiceLocator.Resolve<TrackingController>();
