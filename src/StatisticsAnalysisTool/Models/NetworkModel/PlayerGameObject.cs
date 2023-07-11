@@ -14,7 +14,7 @@ public class PlayerGameObject : GameObject
 
     public PlayerGameObject(long? objectId)
     {
-        ObjectId = objectId;
+        ObjectId ??= objectId;
         LastUpdate = DateTime.UtcNow.Ticks;
     }
 
@@ -40,6 +40,7 @@ public class PlayerGameObject : GameObject
     public string Name { get; set; } = "Unknown";
     public string Guild { get; set; }
     public string Alliance { get; set; }
+    public bool IsInParty { get; set; }
     public CharacterEquipment CharacterEquipment
     {
         get => _characterEquipment;
