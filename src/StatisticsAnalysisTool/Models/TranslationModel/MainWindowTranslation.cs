@@ -37,6 +37,7 @@ public class MainWindowTranslation
     public static string Total => LanguageController.Translation("TOTAL");
     public static string DamageMeter => LanguageController.Translation("DAMAGE_METER");
     public static string DamageMeterDescription1 => LanguageController.Translation("DAMAGE_METER_DESCRIPTION_1");
+    public static string DamageMeterDescription2 => LanguageController.Translation("DAMAGE_METER_DESCRIPTION_2");
     public static string ResetDamageMeter => LanguageController.Translation("RESET_DAMAGE_METER");
     public static string Settings => LanguageController.Translation("SETTINGS");
     public static string Favorite => LanguageController.Translation("FAVORITE");

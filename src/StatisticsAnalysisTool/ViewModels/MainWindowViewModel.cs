@@ -260,7 +260,7 @@ public class MainWindowViewModel : INotifyPropertyChanged
 
         ServerTypeText = LanguageController.Translation("UNKNOWN_SERVER");
 
-        if (!ItemController.IsItemsLoaded())
+        if (!ItemController.IsItemListLoaded())
         {
             var itemListTaskTextObject = new TaskTextObject(LanguageController.Translation("GET_ITEM_LIST_JSON"));
             ToolTaskBindings.Add(itemListTaskTextObject);
@@ -326,6 +326,27 @@ public class MainWindowViewModel : INotifyPropertyChanged
         IsItemSearchCheckboxesEnabled = true;
         IsTxtSearchEnabled = true;
         IsTaskProgressbarIndeterminate = false;
+    }
+
+    public async Task DownloadItemsJsonAsync()
+    {
+        if (!ItemController.IsItemListLoaded())
+        {
+            var itemListTaskTextObject = new TaskTextObject(LanguageController.Translation("GET_ITEM_LIST_JSON"));
+            ToolTaskBindings.Add(itemListTaskTextObject);
+            var isItemListLoaded = await ItemController.GetItemListFromJsonAsync().ConfigureAwait(true);
+            if (!isItemListLoaded)
+            {
+                SetErrorBar(Visibility.Visible, LanguageController.Translation("ITEM_LIST_CAN_NOT_BE_LOADED"));
+                GridTryToLoadTheItemListAgainVisibility = Visibility.Visible;
+                IsTaskProgressbarIndeterminate = false;
+                itemListTaskTextObject.SetStatus(TaskTextObject.TaskTextObjectStatus.Canceled);
+            }
+            else
+            {
+                itemListTaskTextObject.SetStatus(TaskTextObject.TaskTextObjectStatus.Done);
+            }
+        }
     }
 
     #endregion
