@@ -744,4 +744,6 @@
 	<translation name="DELETE_AFTER_30_DAYS">Delete after 30 days</translation>
 	<translation name="DELETE_AFTER_365_DAYS">Delete after 365 days</translation>
 	<translation name="PLAYER_SELECTION_WITH_SAME_NAME_IN_DB">Player selection with the same name in the DB</translation>
+	<translation name="UPDATE_NOW">Update now</translation>
+	<translation name="DAMAGE_METER_DESCRIPTION_2">If the right weapons are not displayed in the Damage Meter, this is usually due to the outdated ItemList.json and Items.json files. Manually delete the files from the tool folder and restart the tool, then the latest version of the files will be downloaded and everything should work as usual.</translation>
 </translations>

@@ -73,4 +73,22 @@ public partial class SettingsControl
     {
         _settingsWindowViewModel.ResetPlayerSelectionWithSameNameInDb();
     }
+
+    private async void UpdateItemListNow_Click(object sender, RoutedEventArgs e)
+    {
+        _settingsWindowViewModel.IsUpdateItemListNowButtonEnabled = false;
+        _settingsWindowViewModel.IsUpdateItemsJsonNowButtonEnabled = false;
+        await ItemController.DownloadItemListAsync();
+        _settingsWindowViewModel.IsUpdateItemListNowButtonEnabled = true;
+        _settingsWindowViewModel.IsUpdateItemsJsonNowButtonEnabled = true;
+    }
+
+    private async void UpdateItemsJsonNow_Click(object sender, RoutedEventArgs e)
+    {
+        _settingsWindowViewModel.IsUpdateItemListNowButtonEnabled = false;
+        _settingsWindowViewModel.IsUpdateItemsJsonNowButtonEnabled = false;
+        await ItemController.DownloadItemsJsonAsync();
+        _settingsWindowViewModel.IsUpdateItemListNowButtonEnabled = true;
+        _settingsWindowViewModel.IsUpdateItemsJsonNowButtonEnabled = true;
+    }
 }

@@ -158,7 +158,7 @@ public class GatheringController
             return;
         }
 
-        if (_mainWindowViewModel?.TradeMonitoringBindings?.Trades == null)
+        if (_mainWindowViewModel?.GatheringBindings?.GatheredCollection == null)
         {
             return;
         }

@@ -21,7 +21,6 @@ public class EntityController
     private static readonly ILog Log = LogManager.GetLogger(MethodBase.GetCurrentMethod()?.DeclaringType);
 
     private readonly ConcurrentDictionary<Guid, PlayerGameObject> _knownEntities = new();
-    private readonly ObservableCollection<Guid> _knownPartyEntities = new();
     private readonly MainWindowViewModel _mainWindowViewModel;
     private readonly ObservableCollection<EquipmentItemInternal> _newEquipmentItems = new();
     private readonly ObservableCollection<SpellEffect> _spellEffects = new();
@@ -41,13 +40,21 @@ public class EntityController
     public event Action<GameObject> OnAddEntity;
 
     public void AddEntity(long? objectId, Guid userGuid, Guid? interactGuid, string name, string guild, string alliance,
-        CharacterEquipment characterEquipment, GameObjectType objectType, GameObjectSubType objectSubType)
+         CharacterEquipment characterEquipment, GameObjectType objectType, GameObjectSubType objectSubType)
     {
         PlayerGameObject gameObject;
 
         if (_knownEntities.TryRemove(userGuid, out var oldEntity))
         {
-            gameObject = new PlayerGameObject(objectId)
+            // Parties are recreated several times in HCE's and therefore the ObjectId may only be set to zero once after a map change.
+            // However, this must not happen in AddEntity
+            long? newObjectId = oldEntity.ObjectId;
+            if (objectId != null)
+            {
+                newObjectId = objectId;
+            }
+
+            gameObject = new PlayerGameObject(newObjectId)
             {
                 Name = name,
                 ObjectType = objectType,
@@ -60,7 +67,8 @@ public class EntityController
                 CombatStart = oldEntity.CombatStart,
                 CombatTime = oldEntity.CombatTime,
                 Damage = oldEntity.Damage,
-                Heal = oldEntity.Heal
+                Heal = oldEntity.Heal,
+                IsInParty = oldEntity.IsInParty,
             };
         }
         else
@@ -104,11 +112,11 @@ public class EntityController
         {
             _knownEntities.TryRemove(entity.Key, out _);
         }
-    }
 
-    public KeyValuePair<Guid, PlayerGameObject>? GetEntity(Guid userGuid)
-    {
-        return _knownEntities?.FirstOrDefault(x => x.Key == userGuid);
+        foreach (var entity in _knownEntities.Where(x => x.Value.ObjectSubType != GameObjectSubType.LocalPlayer))
+        {
+            entity.Value.ObjectId = null;
+        }
     }
 
     public KeyValuePair<Guid, PlayerGameObject>? GetEntity(long objectId)
@@ -121,9 +129,14 @@ public class EntityController
         return _knownEntities?.FirstOrDefault(x => x.Value.Name == uniqueName);
     }
 
+    private KeyValuePair<Guid, PlayerGameObject> GetEntity(Guid guid)
+    {
+        return _knownEntities.FirstOrDefault(x => x.Key == guid);
+    }
+
     public List<KeyValuePair<Guid, PlayerGameObject>> GetAllEntities(bool onlyInParty = false)
     {
-        return new List<KeyValuePair<Guid, PlayerGameObject>>(onlyInParty ? _knownEntities.ToArray().Where(x => IsEntityInParty(x.Key)) : _knownEntities.ToArray());
+        return new List<KeyValuePair<Guid, PlayerGameObject>>(onlyInParty ? _knownEntities.ToArray().Where(x => IsEntityInParty(x.Value.Name)) : _knownEntities.ToArray());
     }
 
     public List<KeyValuePair<Guid, PlayerGameObject>> GetAllEntitiesWithDamageOrHeal()
@@ -142,17 +155,12 @@ public class EntityController
 
     public async Task AddToPartyAsync(Guid guid)
     {
-        if (guid == Guid.Empty)
+        var entity = GetEntity(guid);
+        if (entity.Value is { IsInParty: false })
         {
-            return;
+            entity.Value.IsInParty = true;
+            await SetPartyMemberUiAsync();
         }
-
-        if (_knownPartyEntities.All(x => x != guid))
-        {
-            _knownPartyEntities.Add(guid);
-        }
-
-        await UpdatePartyMemberUiAsync();
     }
 
     public async Task RemoveFromPartyAsync(Guid? guid)
@@ -166,26 +174,35 @@ public class EntityController
             }
             else
             {
-                _ = _knownPartyEntities.Remove(notNullGuid);
-                await UpdatePartyMemberUiAsync();
+                var entity = GetEntity(notNullGuid);
+                if (entity.Value != null)
+                {
+                    entity.Value.IsInParty = false;
+                }
             }
+
+            await SetPartyMemberUiAsync();
         }
     }
 
     public async Task ResetPartyMemberAsync()
     {
-        _knownPartyEntities.Clear();
-        await UpdatePartyMemberUiAsync();
+        foreach (var partyEntities in _knownEntities.Where(x => x.Value.IsInParty))
+        {
+            partyEntities.Value.IsInParty = false;
+        }
+
+        await SetPartyMemberUiAsync();
     }
 
     public async Task AddLocalEntityToPartyAsync()
     {
-        foreach (var member in _knownEntities.Where(x => x.Value.ObjectSubType == GameObjectSubType.LocalPlayer))
+        var localEntity = GetLocalEntity();
+        if (localEntity != null)
         {
-            _knownPartyEntities.Add(member.Key);
+            localEntity.Value.Value.IsInParty = true;
+            await SetPartyMemberUiAsync();
         }
-
-        await UpdatePartyMemberUiAsync();
     }
 
     public async Task SetPartyAsync(Dictionary<Guid, string> party)
@@ -201,54 +218,66 @@ public class EntityController
 
             await AddToPartyAsync(member.Key);
         }
+
+        await SetPartyMemberUiAsync();
     }
 
-    private async Task UpdatePartyMemberUiAsync()
+    private async Task SetPartyMemberUiAsync()
     {
         await Application.Current.Dispatcher.InvokeAsync(() =>
         {
             _mainWindowViewModel.PartyMemberCircles.Clear();
 
-            foreach (var memberGuid in _knownPartyEntities.ToList())
+            var localEntity = GetLocalEntity();
+            if (localEntity != null)
             {
-                var user = GetEntity(memberGuid);
-
-                if (!user.HasValue || user.Value.Key == Guid.Empty)
-                {
-                    continue;
-                }
-
                 _mainWindowViewModel.PartyMemberCircles.Add(new PartyMemberCircle
                 {
-                    UserGuid = memberGuid,
-                    Name = user.Value.Value.Name ?? string.Empty
+                    Name = localEntity.Value.Value?.Name,
+                    UserGuid = localEntity.Value.Key
                 });
-                _mainWindowViewModel.PartyMemberNumber = _knownPartyEntities.Count;
             }
+
+            foreach (var member in _knownEntities.Where(x => x.Value.IsInParty && x.Key != localEntity?.Value?.UserGuid).ToList())
+            {
+                _mainWindowViewModel.PartyMemberCircles.Add(new PartyMemberCircle
+                {
+                    Name = member.Value.Name,
+                    UserGuid = member.Key
+                });
+            }
+
+            _mainWindowViewModel.PartyMemberNumber = _knownEntities.Count(x => x.Value.IsInParty);
         });
-    }
-
-    public bool IsEntityInParty(long objectId)
-    {
-        var entity = _knownEntities.FirstOrDefault(x => x.Value.ObjectId == objectId);
-        return entity.Value != null && _knownPartyEntities.Any(key => key == entity.Key);
-    }
-
-    public bool IsEntityInParty(Guid guid)
-    {
-        return _knownPartyEntities.Any(key => key == guid);
     }
 
     public bool IsEntityInParty(string name)
     {
-        var user = GetEntity(name);
-        return _knownPartyEntities.Any(x => x == user?.Key);
+        if (string.IsNullOrEmpty(name))
+        {
+            return false;
+        }
+
+        return _knownEntities?.FirstOrDefault(x => x.Value?.Name == name).Value?.IsInParty ?? false;
+    }
+
+    public bool IsEntityInParty(long objectId)
+    {
+        var entity = _knownEntities?.FirstOrDefault(x => x.Value.ObjectId == objectId);
+        return IsEntityInParty(entity?.Value?.Name);
+    }
+
+    public bool IsEntityInParty(Guid guid)
+    {
+        return _knownEntities?.FirstOrDefault(x => x.Key == guid).Value?.IsInParty ?? false;
     }
 
     public void CopyPartyToClipboard()
     {
         var output = string.Empty;
-        var partyString = _knownPartyEntities.Aggregate(output, (current, entity) => current + $"{GetEntity(entity)?.Value?.Name},");
+        var partyString = _knownEntities.Where(x => x.Value.IsInParty)
+            .Aggregate(output, (current, entity) => current + $"{entity.Value.Name},");
+
         Clipboard.SetDataObject(partyString[..(partyString.Length > 0 ? partyString.Length - 1 : 0)]);
     }
 
@@ -495,11 +524,6 @@ public class EntityController
     public bool ExistLocalEntity()
     {
         return _knownEntities?.Any(x => x.Value.ObjectSubType == GameObjectSubType.LocalPlayer) ?? false;
-    }
-
-    public bool IsLocalEntity(Guid guid)
-    {
-        return _knownEntities?.Any(x => x.Value.ObjectSubType == GameObjectSubType.LocalPlayer && x.Value.UserGuid == guid) ?? false;
     }
 
     public KeyValuePair<Guid, PlayerGameObject>? GetLocalEntity() => _knownEntities?.ToArray().FirstOrDefault(x => x.Value.ObjectSubType == GameObjectSubType.LocalPlayer);

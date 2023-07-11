@@ -54,6 +54,9 @@ public class SettingsWindowViewModel : INotifyPropertyChanged
     private ObservableCollection<NotificationFilter> _notificationFilters = new();
     private string _packetFilter;
     private short _playerSelectionWithSameNameInDb;
+    private bool _isUpdateItemListNowButtonEnabled = true;
+    private bool _isUpdateItemsJsonNowButtonEnabled = true;
+    private bool _isUpdateMobsJsonNowButtonEnabled = true;
 
     public SettingsWindowViewModel()
     {
@@ -737,6 +740,36 @@ public class SettingsWindowViewModel : INotifyPropertyChanged
         set
         {
             _isSuggestPreReleaseUpdatesActive = value;
+            OnPropertyChanged();
+        }
+    }
+
+    public bool IsUpdateItemListNowButtonEnabled
+    {
+        get => _isUpdateItemListNowButtonEnabled;
+        set
+        {
+            _isUpdateItemListNowButtonEnabled = value;
+            OnPropertyChanged();
+        }
+    }
+
+    public bool IsUpdateItemsJsonNowButtonEnabled
+    {
+        get => _isUpdateItemsJsonNowButtonEnabled;
+        set
+        {
+            _isUpdateItemsJsonNowButtonEnabled = value;
+            OnPropertyChanged();
+        }
+    }
+
+    public bool IsUpdateMobsJsonNowButtonEnabled
+    {
+        get => _isUpdateMobsJsonNowButtonEnabled;
+        set
+        {
+            _isUpdateMobsJsonNowButtonEnabled = value;
             OnPropertyChanged();
         }
     }
