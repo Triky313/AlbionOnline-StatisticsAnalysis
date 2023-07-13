@@ -5,27 +5,32 @@ using System.Reflection;
 
 namespace StatisticsAnalysisTool.Network.Events;
 
-public class PartyPlayerJoinedEvent
+public class PartyJoinedEvent
 {
     public Guid UserGuid { get; private set; } = Guid.Empty;
     public string Username { get; private set; } = string.Empty;
+    public string GuildName { get; private set; } = string.Empty;
 
-    public PartyPlayerJoinedEvent(Dictionary<byte, object> parameters)
+    public PartyJoinedEvent(Dictionary<byte, object> parameters)
     {
         ConsoleManager.WriteLineForNetworkHandler(GetType().Name, parameters);
 
         try
         {
-            if (parameters.TryGetValue(1, out object userGuid))
+            if (parameters.TryGetValue(0, out object userGuid))
             {
                 UserGuid = userGuid.ObjectToGuid() ?? Guid.Empty;
             }
 
-            if (parameters.TryGetValue(2, out object username) && username is string usernameString && !string.IsNullOrEmpty(usernameString))
+            if (parameters.TryGetValue(1, out object username) && username is string usernameString && !string.IsNullOrEmpty(usernameString))
             {
                 Username = usernameString;
             }
 
+            if (parameters.TryGetValue(5, out object guildName) && guildName is string guildNameString && !string.IsNullOrEmpty(guildNameString))
+            {
+                GuildName = guildNameString;
+            }
         }
         catch (Exception e)
         {

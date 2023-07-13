@@ -290,9 +290,9 @@ public static class ItemController
 
     public static async Task<bool> GetItemListFromJsonAsync()
     {
-        var currentSettingsItemsJsonSourceUrl = SettingsController.CurrentSettings.ItemListSourceUrl;
-        var url = GetSourceUrlOrDefault(Settings.Default.DefaultItemListSourceUrl, currentSettingsItemsJsonSourceUrl, ref currentSettingsItemsJsonSourceUrl);
-        SettingsController.CurrentSettings.ItemListSourceUrl = currentSettingsItemsJsonSourceUrl;
+        var currentSettingsItemListSourceUrl = SettingsController.CurrentSettings.ItemListSourceUrl;
+        var url = GetSourceUrlOrDefault(Settings.Default.DefaultItemListSourceUrl, currentSettingsItemListSourceUrl, ref currentSettingsItemListSourceUrl);
+        SettingsController.CurrentSettings.ItemListSourceUrl = currentSettingsItemListSourceUrl;
 
         var localFilePath = $"{AppDomain.CurrentDomain.BaseDirectory}{Settings.Default.ItemListFileName}";
 
@@ -401,9 +401,36 @@ public static class ItemController
         }
     }
 
-    public static bool IsItemsLoaded()
+    public static bool IsItemListLoaded()
     {
         return Items?.Count > 0;
+    }
+
+    public static async Task DownloadItemListAsync()
+    {
+        var url = GetItemListSourceUrlOrDefault();
+        var localFilePath = $"{AppDomain.CurrentDomain.BaseDirectory}{Settings.Default.ItemListFileName}";
+
+        if (string.IsNullOrEmpty(url))
+        {
+            return;
+        }
+
+        using var client = new HttpClient
+        {
+            Timeout = TimeSpan.FromSeconds(1200)
+        };
+
+        await client.DownloadFileAsync(url, localFilePath, LanguageController.Translation("GET_ITEM_LIST_JSON"));
+    }
+
+    private static string GetItemListSourceUrlOrDefault()
+    {
+        var currentSettingsItemListSourceUrl = SettingsController.CurrentSettings.ItemListSourceUrl;
+        var url = GetSourceUrlOrDefault(Settings.Default.DefaultItemListSourceUrl, currentSettingsItemListSourceUrl, ref currentSettingsItemListSourceUrl);
+        SettingsController.CurrentSettings.ItemListSourceUrl = currentSettingsItemListSourceUrl;
+
+        return url;
     }
 
     #endregion Item list
@@ -623,10 +650,7 @@ public static class ItemController
 
     public static async Task<bool> GetItemsJsonAsync()
     {
-        var currentSettingsItemsJsonSourceUrl = SettingsController.CurrentSettings.ItemsJsonSourceUrl;
-        var url = GetSourceUrlOrDefault(Settings.Default.DefaultItemsJsonSourceUrl, currentSettingsItemsJsonSourceUrl, ref currentSettingsItemsJsonSourceUrl);
-        SettingsController.CurrentSettings.ItemsJsonSourceUrl = currentSettingsItemsJsonSourceUrl;
-
+        var url = GetItemsJsonSourceUrlOrDefault();
         var localFilePath = $"{AppDomain.CurrentDomain.BaseDirectory}{Settings.Default.ItemsJsonFileName}";
 
         if (string.IsNullOrEmpty(url))
@@ -744,6 +768,33 @@ public static class ItemController
         }
 
         return resultUniqueName;
+    }
+
+    public static async Task DownloadItemsJsonAsync()
+    {
+        var url = GetItemsJsonSourceUrlOrDefault();
+        var localFilePath = $"{AppDomain.CurrentDomain.BaseDirectory}{Settings.Default.ItemListFileName}";
+
+        if (string.IsNullOrEmpty(url))
+        {
+            return;
+        }
+
+        using var client = new HttpClient
+        {
+            Timeout = TimeSpan.FromSeconds(1200)
+        };
+
+        await client.DownloadFileAsync(url, localFilePath, LanguageController.Translation("GET_ITEM_LIST_JSON"));
+    }
+
+    private static string GetItemsJsonSourceUrlOrDefault()
+    {
+        var currentSettingsItemsJsonSourceUrl = SettingsController.CurrentSettings.ItemsJsonSourceUrl;
+        var url = GetSourceUrlOrDefault(Settings.Default.DefaultItemsJsonSourceUrl, currentSettingsItemsJsonSourceUrl, ref currentSettingsItemsJsonSourceUrl);
+        SettingsController.CurrentSettings.ItemsJsonSourceUrl = currentSettingsItemsJsonSourceUrl;
+
+        return url;
     }
 
     #endregion

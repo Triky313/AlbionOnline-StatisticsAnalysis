@@ -4,8 +4,9 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:viewModels="clr-namespace:StatisticsAnalysisTool.ViewModels"
+             xmlns:common="clr-namespace:StatisticsAnalysisTool.Common"
              mc:Ignorable="d" 
-             d:DesignHeight="800" d:DesignWidth="800"
+             d:DesignHeight="1000" d:DesignWidth="800"
              d:DataContext="{d:DesignInstance Type=viewModels:SettingsWindowViewModel}">
     <Grid IsVisibleChanged="ReloadSettings_OnIsVisibleChanged">
         <Grid Margin="0,0,0,44">
@@ -74,7 +75,10 @@
                     </DockPanel>
                     <DockPanel Margin="0,5,0,0">
                         <Label Content="{Binding Translation.UpdateItemListByDays, FallbackValue=UPDATE__ITEM__LIST__BY__DAYS}" MinWidth="300" VerticalAlignment="Top" />
-                        <ComboBox ItemsSource="{Binding UpdateItemListByDays}" SelectedItem="{Binding UpdateItemListByDaysSelection}" IsSynchronizedWithCurrentItem="True" DisplayMemberPath="Name" SelectedValuePath="Value" HorizontalAlignment="Left" VerticalAlignment="Top" Width="200" Height="26" />
+                        <ComboBox ItemsSource="{Binding UpdateItemListByDays}" SelectedItem="{Binding UpdateItemListByDaysSelection}" 
+                                  IsSynchronizedWithCurrentItem="True" DisplayMemberPath="Name" SelectedValuePath="Value" HorizontalAlignment="Left" VerticalAlignment="Top" Width="200" Height="26" />
+                        <Button Content="{Binding Translation.UpdateNow, FallbackValue=UPDATE__NOW}" IsEnabled="{Binding IsUpdateItemListNowButtonEnabled}"
+                                Margin="5,0,5,2" Height="24" MaxWidth="120" HorizontalAlignment="Left" VerticalAlignment="Center" Click="UpdateItemListNow_Click" />
                     </DockPanel>
                     <DockPanel Margin="0,5,0,0">
                         <Label Content="{Binding Translation.ItemListSourceUrl, FallbackValue=ITEM_LIST_SOURCE_URL}" MinWidth="300" VerticalAlignment="Top" />
@@ -84,6 +88,8 @@
                         <Label Content="{Binding Translation.UpdateItemsJsonByDays, FallbackValue=UPDATE__ITEMS_JSON__BY__DAYS}" MinWidth="300" VerticalAlignment="Top" />
                         <ComboBox ItemsSource="{Binding UpdateItemsJsonByDays}" SelectedItem="{Binding UpdateItemsJsonByDaysSelection}" 
                                   IsSynchronizedWithCurrentItem="True" DisplayMemberPath="Name" SelectedValuePath="Value" HorizontalAlignment="Left" VerticalAlignment="Top" Width="200" Height="26" />
+                        <Button Content="{Binding Translation.UpdateNow, FallbackValue=UPDATE__NOW}" IsEnabled="{Binding IsUpdateItemsJsonNowButtonEnabled}"
+                                Margin="5,0,5,2" Height="24" MaxWidth="120" HorizontalAlignment="Left" VerticalAlignment="Center" Click="UpdateItemsJsonNow_Click" />
                     </DockPanel>
                     <DockPanel Margin="0,5,0,0">
                         <Label Content="{Binding Translation.ItemsJsonSourceUrl, FallbackValue=ITEMS_JSON_SOURCE_URL}" MinWidth="300" VerticalAlignment="Top" />
@@ -93,6 +99,8 @@
                         <Label Content="{Binding Translation.UpdateMobsJsonByDays, FallbackValue=UPDATE__MOBS_JSON__BY__DAYS}" MinWidth="300" VerticalAlignment="Top" />
                         <ComboBox ItemsSource="{Binding UpdateMobsJsonByDays}" SelectedItem="{Binding UpdateMobsJsonByDaysSelection}" 
                                   IsSynchronizedWithCurrentItem="True" DisplayMemberPath="Name" SelectedValuePath="Value" HorizontalAlignment="Left" VerticalAlignment="Top" Width="200" Height="26" />
+                        <!--<Button Content="{Binding Translation.UpdateNow, FallbackValue=UPDATE__NOW}" IsEnabled="{Binding IsUpdateMobsJsonNowButtonEnabled}"
+                                Margin="5,0,5,2" Height="24" MaxWidth="120" HorizontalAlignment="Left" VerticalAlignment="Center" />-->
                     </DockPanel>
                     <DockPanel Margin="0,5,0,0">
                         <Label Content="{Binding Translation.MobsJsonSourceUrl, FallbackValue=MOBS__JSON__SOURCE__URL}" MinWidth="300" VerticalAlignment="Top" />
@@ -140,6 +148,15 @@
                     <DockPanel Margin="0,5,0,0">
                         <Label Content="{Binding Translation.CopyShortDamageMeterToTheClipboard, FallbackValue=COPY__SHORT__DAMAGE__METER__TO__THE__CLIPBOARD}" MinWidth="300" VerticalAlignment="Top" />
                         <CheckBox IsChecked="{Binding ShortDamageMeterToClipboard}" Height="21" VerticalContentAlignment="Center" />
+                    </DockPanel>
+                    <DockPanel Margin="0,5,0,0">
+                        <Label Content="{Binding Translation.PlayerSelectionWithSameNameInDb, FallbackValue=PLAYER_SELECTION_WITH_SAME_NAME_IN_DB}" MinWidth="300" VerticalAlignment="Top" />
+                        <StackPanel Orientation="Horizontal">
+                            <TextBox Text="{Binding PlayerSelectionWithSameNameInDb}" Height="26" MinWidth="100" TextWrapping="NoWrap" VerticalAlignment="Center" 
+                                     Margin="0,0,5,0" MaxLength="2" common:TextBoxHelper.OnlyNumeric="Double" />
+                            <Button Content="{Binding Translation.Reset, FallbackValue=RESET}" Height="24" MaxWidth="100" VerticalAlignment="Center" 
+                                    Click="ResetPlayerSelectionWithSameNameInDb_Click" />
+                        </StackPanel>
                     </DockPanel>
                 </StackPanel>
             </ScrollViewer>

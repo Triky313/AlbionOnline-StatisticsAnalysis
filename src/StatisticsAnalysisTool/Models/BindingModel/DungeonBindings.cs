@@ -6,6 +6,7 @@ using StatisticsAnalysisTool.Enumerations;
 using StatisticsAnalysisTool.Models.NetworkModel;
 using StatisticsAnalysisTool.Models.TranslationModel;
 using StatisticsAnalysisTool.Properties;
+using StatisticsAnalysisTool.Trade;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
@@ -38,7 +39,9 @@ public class DungeonBindings : INotifyPropertyChanged
         if (DungeonsCollectionView != null)
         {
             DungeonsCollectionView.IsLiveSorting = true;
+            DungeonsCollectionView.IsLiveFiltering = true;
             DungeonsCollectionView.CustomSort = new DungeonTrackingNumberComparer();
+            DungeonsCollectionView.Refresh();
         }
     }
     

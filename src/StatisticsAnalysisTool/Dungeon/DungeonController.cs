@@ -318,8 +318,13 @@ public class DungeonController
                     return true;
                 }
 
+                if (((tierFilter?.Contains(Tier.Unknown) ?? false) && x.Tier is Tier.Unknown or > Tier.T8))
+                {
+                    return true;
+                }
+
                 return (modeFilter?.Contains(x.Mode) ?? false)
-                       && (tierFilter?.Contains(x.Tier) ?? false)
+                       && ((tierFilter?.Contains(x.Tier) ?? false))
                        && (levelFilter?.Contains((ItemLevel) x.Level) ?? false);
             })
             .ToAsyncEnumerable()

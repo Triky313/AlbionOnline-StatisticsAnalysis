@@ -743,4 +743,7 @@
 	<translation name="DELETE_AFTER_14_DAYS">Usuń po 14 dniach</translation>
 	<translation name="DELETE_AFTER_30_DAYS">Usuń po 30 dniach</translation>
 	<translation name="DELETE_AFTER_365_DAYS">Usuń po 365 dniach</translation>
+	<translation name="PLAYER_SELECTION_WITH_SAME_NAME_IN_DB">Wybór gracza o takiej samej nazwie w bazie danych</translation>
+	<translation name="UPDATE_NOW">Zaktualizuj teraz</translation>
+	<translation name="DAMAGE_METER_DESCRIPTION_2">Jeśli w Damage Meter nie wyświetlają się właściwe bronie, zazwyczaj jest to spowodowane nieaktualnymi plikami ItemList.json i Items.json. Ręcznie usuń pliki z folderu narzędzia i uruchom je ponownie, wówczas zostanie pobrana najnowsza wersja plików i wszystko powinno działać normalnie.</translation>
 </translations>

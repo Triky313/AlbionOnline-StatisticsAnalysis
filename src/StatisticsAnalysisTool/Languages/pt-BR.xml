@@ -743,4 +743,7 @@
 	<translation name="DELETE_AFTER_14_DAYS">Excluir após 14 dias</translation>
 	<translation name="DELETE_AFTER_30_DAYS">Excluir após 30 dias</translation>
 	<translation name="DELETE_AFTER_365_DAYS">Excluir após 365 dias</translation>
+	<translation name="PLAYER_SELECTION_WITH_SAME_NAME_IN_DB">Seleção de jogador com o mesmo nome no banco de dados</translation>
+	<translation name="UPDATE_NOW">Atualizar agora</translation>
+	<translation name="DAMAGE_METER_DESCRIPTION_2">Se as armas certas não forem exibidas no medidor de dano, isso geralmente se deve aos arquivos ItemList.json e Items.json desatualizados. Exclua manualmente esses arquivos da pasta do StatisticsAnalysis e reinicie o StatisticsAnalysisTool, então a versão mais recente dos arquivos será baixada e tudo deve funcionar normalmente.</translation>
 </translations>

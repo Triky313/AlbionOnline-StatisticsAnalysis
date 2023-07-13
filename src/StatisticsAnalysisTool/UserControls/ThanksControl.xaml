@@ -38,7 +38,7 @@
                 <TextBlock Text="arabinos" Style="{StaticResource Thanks.TextBlock.Name.Style}" />
                 <TextBlock Text="Thank you for your translations into Polish." Style="{StaticResource Thanks.TextBlock.Text.Style}" />
                 <TextBlock />
-                <TextBlock Text="Ewerson" Style="{StaticResource Thanks.TextBlock.Name.Style}" />
+                <TextBlock Text="Ewerson (Maligors)" Style="{StaticResource Thanks.TextBlock.Name.Style}" />
                 <TextBlock Text="Thank you for your Brazilian translations." Style="{StaticResource Thanks.TextBlock.Text.Style}" />
                 <TextBlock />
                 <TextBlock Text="Me1onSeed" Style="{StaticResource Thanks.TextBlock.Name.Style}" />

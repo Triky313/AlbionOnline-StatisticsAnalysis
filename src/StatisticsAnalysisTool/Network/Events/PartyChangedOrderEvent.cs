@@ -7,7 +7,7 @@ namespace StatisticsAnalysisTool.Network.Events;
 
 public class PartyChangedOrderEvent
 {
-    public readonly Dictionary<Guid, string> PartyUsersGuid = new();
+    public readonly Dictionary<Guid, string> PartyUsers = new();
 
     public PartyChangedOrderEvent(Dictionary<byte, object> parameters)
     {
@@ -26,7 +26,7 @@ public class PartyChangedOrderEvent
                     var name = partyUserNameArray[i];
                     if (guid != null && !string.IsNullOrEmpty(name))
                     {
-                        PartyUsersGuid.Add((Guid)guid, name);
+                        PartyUsers.Add((Guid)guid, name);
                     }
                 }
             }

@@ -29,6 +29,9 @@ public class DungeonStatsFilter : INotifyPropertyChanged
             DungeonMode.Unknown
         };
     private bool? _isTierUnknown = true;
+    private bool? _isT1 = true;
+    private bool? _isT2 = true;
+    private bool? _isT3 = true;
     private bool? _isT4 = true;
     private bool? _isT5 = true;
     private bool? _isT6 = true;
@@ -37,6 +40,9 @@ public class DungeonStatsFilter : INotifyPropertyChanged
     private List<Tier> _tierFilters = new()
         {
             Tier.Unknown,
+            Tier.T1,
+            Tier.T2,
+            Tier.T3,
             Tier.T4,
             Tier.T5,
             Tier.T6,
@@ -199,6 +205,39 @@ public class DungeonStatsFilter : INotifyPropertyChanged
         {
             _isTierUnknown = value;
             ChangeTierFilter(Tier.Unknown, _isTierUnknown ?? false);
+            OnPropertyChanged();
+        }
+    }
+
+    public bool? IsT1
+    {
+        get => _isT1;
+        set
+        {
+            _isT1 = value;
+            ChangeTierFilter(Tier.T1, _isT1 ?? false);
+            OnPropertyChanged();
+        }
+    }
+
+    public bool? IsT2
+    {
+        get => _isT2;
+        set
+        {
+            _isT2 = value;
+            ChangeTierFilter(Tier.T2, _isT2 ?? false);
+            OnPropertyChanged();
+        }
+    }
+
+    public bool? IsT3
+    {
+        get => _isT3;
+        set
+        {
+            _isT3 = value;
+            ChangeTierFilter(Tier.T3, _isT3 ?? false);
             OnPropertyChanged();
         }
     }
@@ -424,6 +463,9 @@ public class DungeonStatsFilter : INotifyPropertyChanged
     public static string TranslationExped => LanguageController.Translation("EXPED");
     public static string TranslationExpedition => LanguageController.Translation("EXPEDITION");
     public static string TranslationUnknown => LanguageController.Translation("UNKNOWN");
+    public static string TranslationT1 => LanguageController.Translation("T1");
+    public static string TranslationT2 => LanguageController.Translation("T2");
+    public static string TranslationT3 => LanguageController.Translation("T3");
     public static string TranslationT4 => LanguageController.Translation("T4");
     public static string TranslationT5 => LanguageController.Translation("T5");
     public static string TranslationT6 => LanguageController.Translation("T6");

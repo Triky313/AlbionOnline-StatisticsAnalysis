@@ -58,14 +58,37 @@ public partial class SettingsControl
         _settingsWindowViewModel.ReloadSettings();
     }
 
-    private void CheckForUpdate_Click(object sender, RoutedEventArgs e)
+    private async void CheckForUpdate_Click(object sender, RoutedEventArgs e)
     {
         AutoUpdateController.RemoveUpdateFiles();
-        AutoUpdateController.AutoUpdate(true);
+        await AutoUpdateController.AutoUpdateAsync(true);
     }
 
     private void ResetPacketFilter_Click(object sender, RoutedEventArgs e)
     {
         _settingsWindowViewModel.ResetPacketFilter();
+    }
+
+    private void ResetPlayerSelectionWithSameNameInDb_Click(object sender, RoutedEventArgs e)
+    {
+        _settingsWindowViewModel.ResetPlayerSelectionWithSameNameInDb();
+    }
+
+    private async void UpdateItemListNow_Click(object sender, RoutedEventArgs e)
+    {
+        _settingsWindowViewModel.IsUpdateItemListNowButtonEnabled = false;
+        _settingsWindowViewModel.IsUpdateItemsJsonNowButtonEnabled = false;
+        await ItemController.DownloadItemListAsync();
+        _settingsWindowViewModel.IsUpdateItemListNowButtonEnabled = true;
+        _settingsWindowViewModel.IsUpdateItemsJsonNowButtonEnabled = true;
+    }
+
+    private async void UpdateItemsJsonNow_Click(object sender, RoutedEventArgs e)
+    {
+        _settingsWindowViewModel.IsUpdateItemListNowButtonEnabled = false;
+        _settingsWindowViewModel.IsUpdateItemsJsonNowButtonEnabled = false;
+        await ItemController.DownloadItemsJsonAsync();
+        _settingsWindowViewModel.IsUpdateItemListNowButtonEnabled = true;
+        _settingsWindowViewModel.IsUpdateItemsJsonNowButtonEnabled = true;
     }
 }

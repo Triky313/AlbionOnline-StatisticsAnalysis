@@ -7,6 +7,7 @@ using System.Linq;
 using System.Runtime.CompilerServices;
 using System.Threading.Tasks;
 using System.Windows;
+using StatisticsAnalysisTool.Models.NetworkModel;
 
 namespace StatisticsAnalysisTool.Models.BindingModel;
 
@@ -24,7 +25,7 @@ public class PlayerInformationBindings : INotifyPropertyChanged
         PlayerModeTranslation = new PlayerModeTranslation();
     }
 
-    private async Task<PlayerModeInformationModel> GetPlayerInformationAsync(string playerName)
+    private async Task<PlayerModeInformationModel> GetPlayerInformationAsync(string playerName, bool isLocalPlayer)
     {
         if (string.IsNullOrWhiteSpace(playerName))
         {
@@ -32,14 +33,8 @@ public class PlayerInformationBindings : INotifyPropertyChanged
         }
 
         var gameInfoSearch = await ApiController.GetGameInfoSearchFromJsonAsync(playerName);
-
-        if (gameInfoSearch?.SearchPlayer?.FirstOrDefault()?.Id == null)
-        {
-            return null;
-        }
-
-        var searchPlayer = gameInfoSearch.SearchPlayer?.FirstOrDefault();
-        var gameInfoPlayers = await ApiController.GetGameInfoPlayersFromJsonAsync(gameInfoSearch.SearchPlayer?.FirstOrDefault()?.Id);
+        var searchPlayer = isLocalPlayer ? LocalUserData.GetWebApiUserId(gameInfoSearch, playerName) : gameInfoSearch?.SearchPlayer?.FirstOrDefault();
+        var gameInfoPlayers = await ApiController.GetGameInfoPlayersFromJsonAsync(searchPlayer?.Id);
 
         return new PlayerModeInformationModel
         {
@@ -87,7 +82,7 @@ public class PlayerInformationBindings : INotifyPropertyChanged
     public async Task LoadPlayerDataAsync(string playerName)
     {
         ListBoxUserSearchVisibility = Visibility.Collapsed;
-        PlayerModeInformation = await GetPlayerInformationAsync(playerName);
+        PlayerModeInformation = await GetPlayerInformationAsync(playerName, false);
     }
 
     public async Task LoadLocalPlayerDataAsync(string playerName)
@@ -97,7 +92,7 @@ public class PlayerInformationBindings : INotifyPropertyChanged
             return;
         }
 
-        PlayerModeInformationLocal = await GetPlayerInformationAsync(playerName);
+        PlayerModeInformationLocal = await GetPlayerInformationAsync(playerName, true);
     }
 
     public struct PlayerSearchStruct

@@ -1,9 +1,9 @@
 using log4net;
 using StatisticsAnalysisTool.Common;
 using StatisticsAnalysisTool.Enumerations;
+using StatisticsAnalysisTool.EventLogging.Notification;
 using StatisticsAnalysisTool.Models.ItemsJsonModel;
 using StatisticsAnalysisTool.Models.NetworkModel;
-using StatisticsAnalysisTool.Network.Notification;
 using StatisticsAnalysisTool.ViewModels;
 using System;
 using System.Collections.Concurrent;
@@ -13,7 +13,6 @@ using System.Linq;
 using System.Reflection;
 using System.Threading.Tasks;
 using System.Windows;
-using StatisticsAnalysisTool.EventLogging.Notification;
 
 namespace StatisticsAnalysisTool.Network.Manager;
 
@@ -56,10 +55,7 @@ public class CombatController
         var gameObject = _trackingController?.EntityController?.GetEntity(causerId);
         var gameObjectValue = gameObject?.Value;
 
-        if (gameObject?.Value == null
-            || gameObject.Value.Value?.ObjectType != GameObjectType.Player
-            || !_trackingController.EntityController.IsEntityInParty(gameObject.Value.Key)
-           )
+        if (gameObject?.Value is not { ObjectType: GameObjectType.Player } || !_trackingController.EntityController.IsEntityInParty(gameObject.Value.Key))
         {
             return Task.CompletedTask;
         }
