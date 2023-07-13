@@ -744,4 +744,7 @@
 	<translation name="DELETE_AFTER_14_DAYS">14일 후 삭제</translation>
 	<translation name="DELETE_AFTER_30_DAYS">30일 후 삭제</translation>
 	<translation name="DELETE_AFTER_365_DAYS">365일 후 삭제</translation>
+	<translation name="PLAYER_SELECTION_WITH_SAME_NAME_IN_DB">DB에서 동일한 이름의 플레이어 선택</translation>
+	<translation name="UPDATE_NOW">지금 업데이트</translation>
+	<translation name="DAMAGE_METER_DESCRIPTION_2">데미지 미터에 올바른 무기가 표시되지 않는 경우, 이는 일반적으로 오래된 ItemList.json 및 Items.json 파일 때문일 수 있습니다. 도구 폴더에서 파일을 수동으로 삭제하고 도구를 다시 시작하면 최신 버전의 파일이 다운로드되고 모든 것이 정상적으로 작동합니다.</translation>
 </translations>
