@@ -26,6 +26,7 @@ using System.Reflection;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Data;
+using StatisticsAnalysisTool.PartyPlanner;
 using ValueType = StatisticsAnalysisTool.Enumerations.ValueType;
 
 namespace StatisticsAnalysisTool.Network.Manager;
@@ -50,13 +51,14 @@ public class TrackingController : ITrackingController
     public readonly TradeController TradeController;
     public readonly VaultController VaultController;
     public readonly GatheringController GatheringController;
+    public readonly PartyBuilderController PartyBuilderController;
     private readonly List<LoggingFilterType> _notificationTypesFilters = new();
 
     public TrackingController(MainWindowViewModel mainWindowViewModel)
     {
         _mainWindowViewModel = mainWindowViewModel;
         ClusterController = new ClusterController(this, mainWindowViewModel);
-        EntityController = new EntityController(mainWindowViewModel);
+        EntityController = new EntityController(this, mainWindowViewModel);
         DungeonController = new DungeonController(this, mainWindowViewModel);
         CombatController = new CombatController(this, mainWindowViewModel);
         LootController = new LootController(this, mainWindowViewModel);
@@ -67,6 +69,7 @@ public class TrackingController : ITrackingController
         TradeController = new TradeController(mainWindowViewModel);
         VaultController = new VaultController(mainWindowViewModel);
         GatheringController = new GatheringController(this, mainWindowViewModel);
+        PartyBuilderController = new PartyBuilderController(this, mainWindowViewModel);
         LiveStatsTracker = new LiveStatsTracker(this, mainWindowViewModel);
 
         _ = InitTrackingAsync();

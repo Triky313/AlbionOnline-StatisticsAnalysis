@@ -14,9 +14,11 @@ public class SettingsObject
     public int UpdateItemListByDays { get; set; } = 7;
     public int UpdateItemsJsonByDays { get; set; } = 7;
     public int UpdateMobsJsonByDays { get; set; } = 7;
+    public int UpdateSpellsJsonByDays { get; set; } = 7;
     public string ItemListSourceUrl { get; set; } = "https://raw.githubusercontent.com/ao-data/ao-bin-dumps/master/formatted/items.json";
     public string ItemsJsonSourceUrl { get; set; } = "https://raw.githubusercontent.com/ao-data/ao-bin-dumps/master/items.json";
     public string MobsJsonSourceUrl { get; set; } = "https://raw.githubusercontent.com/ao-data/ao-bin-dumps/master/mobs.json";
+    public string SpellsJsonSourceUrl { get; set; } = "https://raw.githubusercontent.com/ao-data/ao-bin-dumps/master/spells.json";
     public bool IsOpenItemWindowInNewWindowChecked { get; set; } = true;
     public bool IsInfoWindowShownOnStart { get; set; } = true;
     public string SelectedAlertSound { get; set; }
@@ -71,6 +73,7 @@ public class SettingsObject
     public bool IsDamageMeterNaviTabActive { get; set; } = true;
     public bool IsTradeMonitoringNaviTabActive { get; set; } = true;
     public bool IsGatheringNaviTabActive { get; set; } = true;
+    public bool IsPartyPlannerNaviTabActive { get; set; } = true;
     public bool IsStorageHistoryNaviTabActive { get; set; } = true;
     public bool IsMapHistoryNaviTabActive { get; set; } = true;
     public bool IsPlayerInformationNaviTabActive { get; set; } = true;

@@ -797,6 +797,24 @@ public static class ItemController
         return url;
     }
 
+    public static SlotType GetSlotType(string slotTypeString)
+    {
+        return slotTypeString switch
+        {
+            "food" => SlotType.Food,
+            "potion" => SlotType.Potion,
+            "mainhand" => SlotType.MainHand,
+            "offhand" => SlotType.OffHand,
+            "cape" => SlotType.Cape,
+            "bag" => SlotType.Bag,
+            "armor" => SlotType.Armor,
+            "head" => SlotType.Head,
+            "shoes" => SlotType.Shoes,
+            "mount" => SlotType.Mount,
+            _ => SlotType.Unknown
+        };
+    }
+
     #endregion
 
     #region Estimated market value

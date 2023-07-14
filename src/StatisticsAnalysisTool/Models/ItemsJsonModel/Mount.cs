@@ -1,4 +1,6 @@
-﻿using StatisticsAnalysisTool.Common.Converters;
+﻿using StatisticsAnalysisTool.Common;
+using StatisticsAnalysisTool.Common.Converters;
+using StatisticsAnalysisTool.Enumerations;
 using System.Collections.Generic;
 using System.Text.Json.Serialization;
 
@@ -23,6 +25,8 @@ public class Mount : ItemJsonObject
 
     [JsonPropertyName("@slottype")]
     public string SlotType { get; set; }
+    [JsonIgnore]
+    public SlotType SlotTypeEnum => ItemController.GetSlotType(SlotType);
 
     [JsonPropertyName("@shopcategory")]
     public string ShopCategory { get; set; }

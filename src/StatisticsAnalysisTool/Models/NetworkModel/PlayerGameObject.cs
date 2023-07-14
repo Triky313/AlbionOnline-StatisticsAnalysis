@@ -8,7 +8,7 @@ namespace StatisticsAnalysisTool.Models.NetworkModel;
 public class PlayerGameObject : GameObject
 {
     private CharacterEquipment _characterEquipment;
-    private Guid _userGuid;
+    private readonly Guid _userGuid;
     private Guid? _interactGuid;
     private List<TimeCollectObject> _combatTimes = new();
 
@@ -22,7 +22,7 @@ public class PlayerGameObject : GameObject
     public Guid UserGuid
     {
         get => _userGuid;
-        set
+        init
         {
             _userGuid = value;
             LastUpdate = DateTime.UtcNow.Ticks;
@@ -60,7 +60,7 @@ public class PlayerGameObject : GameObject
             LastUpdate = DateTime.UtcNow.Ticks;
         }
     }
-    public TimeSpan CombatTime { get; set; } = new (1);
+    public TimeSpan CombatTime { get; set; } = new(1);
     public long Damage { get; set; }
     public long Heal { get; set; }
     public double Dps => Utilities.GetValuePerSecondToDouble(Damage, CombatStart, CombatTime, 9999);

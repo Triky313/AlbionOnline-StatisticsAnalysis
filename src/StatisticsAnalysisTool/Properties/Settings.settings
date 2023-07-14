@@ -134,5 +134,14 @@
     <Setting Name="IsDebugMode" Type="System.Boolean" Scope="User">
       <Value Profile="(Default)">False</Value>
     </Setting>
+    <Setting Name="SpellDataFileName" Type="System.String" Scope="User">
+      <Value Profile="(Default)">spells.json</Value>
+    </Setting>
+    <Setting Name="ModifiedSpellDataFileName" Type="System.String" Scope="User">
+      <Value Profile="(Default)">spells-modified.json</Value>
+    </Setting>
+    <Setting Name="SpellImageResources" Type="System.String" Scope="Application">
+      <Value Profile="(Default)">SpellImageResources</Value>
+    </Setting>
   </Settings>
 </SettingsFile>
