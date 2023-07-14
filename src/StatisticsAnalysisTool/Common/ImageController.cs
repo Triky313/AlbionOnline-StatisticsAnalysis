@@ -75,9 +75,7 @@ internal static class ImageController
         {
             if (string.IsNullOrEmpty(uniqueName))
             {
-                return new BitmapImage(new Uri(
-                    @"pack://application:,,,/" + Assembly.GetExecutingAssembly().GetName().Name + ";component/" + "Resources/Trash.png",
-                    UriKind.Absolute));
+                return null;
             }
 
             BitmapImage image;
@@ -97,9 +95,7 @@ internal static class ImageController
         }
         catch
         {
-            return new BitmapImage(new Uri(
-                @"pack://application:,,,/" + Assembly.GetExecutingAssembly().GetName().Name + ";component/" + "Resources/Trash.png",
-                UriKind.Absolute));
+            return null;
         }
     }
 
