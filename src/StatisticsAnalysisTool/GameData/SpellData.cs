@@ -17,7 +17,7 @@ public static class SpellData
 
     public static string GetUniqueName(int index)
     {
-        return GetSpellJsonObjectByIndex(index).UniqueName;
+        return GetSpellJsonObjectByIndex(index)?.UniqueName ?? string.Empty;
     }
 
     public static bool IsDataLoaded()
@@ -27,6 +27,11 @@ public static class SpellData
 
     private static SpellsJsonObject GetSpellJsonObjectByIndex(int index)
     {
+        if (!IsDataLoaded())
+        {
+            return new SpellsJsonObject();
+        }
+
         // The ID in the game has a difference of -360 to the file.
         index -= 360;
 

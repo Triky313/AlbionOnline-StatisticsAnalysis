@@ -13,10 +13,11 @@
     </Style>
 
     <DataTemplate x:Key="PartyBuilderPlayerTemplate" DataType="{x:Type pp:PartyBuilderPlayer}">
-        <Grid Height="450">
+        <Grid Height="80">
             <StackPanel Orientation="Vertical">
                 <StackPanel Orientation="Horizontal" Background="{StaticResource SolidColorBrush.Accent.Blue.5}">
-                    <Label Content="{Binding Username}" />
+                    <Label Content="{Binding Username, IsAsync=True}" />
+                    <Label Content="{Binding AverageBasicItemPower, IsAsync=True, StringFormat='Average IP: {}{0}'}" />
                 </StackPanel>
                 <StackPanel Orientation="Horizontal">
                     <Image Source="{Binding MainHand.Icon, IsAsync=True, Mode=OneWay}" Style="{StaticResource PartyBuilder.Equipment.Icon}" />
@@ -111,7 +112,6 @@
                     </ItemsControl>
                 </StackPanel>
             </StackPanel>
-            <Separator Background="{StaticResource SolidColorBrush.Accent.Blue.3}"/>
         </Grid>
     </DataTemplate>
 </ResourceDictionary>

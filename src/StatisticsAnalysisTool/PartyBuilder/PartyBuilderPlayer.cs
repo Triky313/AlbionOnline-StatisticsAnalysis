@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
+using StatisticsAnalysisTool.Common;
 using StatisticsAnalysisTool.Models;
 using StatisticsAnalysisTool.Properties;
 
@@ -28,6 +29,7 @@ public class PartyBuilderPlayer : INotifyPropertyChanged
     private IEnumerable<Spell> _mountSpells;
     private IEnumerable<Spell> _potionSpells;
     private IEnumerable<Spell> _foodSpells;
+    private int _averageBasicItemPower;
     public Guid Guid { get; init; }
 
     public string Username
@@ -40,12 +42,23 @@ public class PartyBuilderPlayer : INotifyPropertyChanged
         }
     }
 
+    public int AverageBasicItemPower
+    {
+        get => _averageBasicItemPower;
+        set
+        {
+            _averageBasicItemPower = value;
+            OnPropertyChanged();
+        }
+    }
+
     public Item MainHand
     {
         get => _mainHand;
         set
         {
             _mainHand = value;
+            AverageBasicItemPower = ItemController.GetAverageItemPower(new [] { MainHand, OffHand, Head, Chest, Shoes, Cape });
             OnPropertyChanged();
         }
     }
@@ -56,6 +69,7 @@ public class PartyBuilderPlayer : INotifyPropertyChanged
         set
         {
             _offHand = value;
+            AverageBasicItemPower = ItemController.GetAverageItemPower(new[] { MainHand, OffHand, Head, Chest, Shoes, Cape });
             OnPropertyChanged();
         }
     }
@@ -66,6 +80,7 @@ public class PartyBuilderPlayer : INotifyPropertyChanged
         set
         {
             _head = value;
+            AverageBasicItemPower = ItemController.GetAverageItemPower(new[] { MainHand, OffHand, Head, Chest, Shoes, Cape });
             OnPropertyChanged();
         }
     }
@@ -76,6 +91,7 @@ public class PartyBuilderPlayer : INotifyPropertyChanged
         set
         {
             _chest = value;
+            AverageBasicItemPower = ItemController.GetAverageItemPower(new[] { MainHand, OffHand, Head, Chest, Shoes, Cape });
             OnPropertyChanged();
         }
     }
@@ -86,6 +102,7 @@ public class PartyBuilderPlayer : INotifyPropertyChanged
         set
         {
             _shoes = value;
+            AverageBasicItemPower = ItemController.GetAverageItemPower(new[] { MainHand, OffHand, Head, Chest, Shoes, Cape });
             OnPropertyChanged();
         }
     }
@@ -106,6 +123,7 @@ public class PartyBuilderPlayer : INotifyPropertyChanged
         set
         {
             _cape = value;
+            AverageBasicItemPower = ItemController.GetAverageItemPower(new[] { MainHand, OffHand, Head, Chest, Shoes, Cape });
             OnPropertyChanged();
         }
     }
