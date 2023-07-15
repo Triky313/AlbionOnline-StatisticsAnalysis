@@ -750,4 +750,7 @@
 	<translation name="WORLD_JSON_CAN_NOT_BE_LOADED">Nie można załadować pliku world.json.</translation>
 	<translation name="UPDATE_WORLD_JSON_BY_DAYS">Zaktualizuj world.json o dni: </translation>
 	<translation name="WORLD_JSON_SOURCE_URL">Adres URL źródła world.json</translation>
+	<translation name="PARTY_BUILDER">Kreator Grup</translation>
+	<translation name="GET_SPELLS_JSON">Pobierz spells.json</translation>
+	<translation name="SPELLS_JSON_CAN_NOT_BE_LOADED">Nie można załadować pliku spells.json.</translation>
 </translations>
