@@ -1,10 +1,12 @@
 using StatisticsAnalysisTool.Common;
 using StatisticsAnalysisTool.Common.UserSettings;
-using StatisticsAnalysisTool.Models;
+using StatisticsAnalysisTool.GameData.Models;
 using StatisticsAnalysisTool.Properties;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text.Json.Serialization;
+using System.Text.Json;
 using System.Threading.Tasks;
 
 namespace StatisticsAnalysisTool.GameData;
@@ -61,7 +63,12 @@ public static class MobsData
             Settings.Default.ModifiedMobDataFileName,
             SettingsController.CurrentSettings.MobsJsonSourceUrl,
             SettingsController.CurrentSettings.UpdateMobsJsonByDays,
-            LanguageController.Translation("GET_MOBS_JSON"));
+            LanguageController.Translation("GET_MOBS_JSON"),
+            new JsonSerializerOptions()
+            {
+                NumberHandling = JsonNumberHandling.AllowReadingFromString,
+                ReadCommentHandling = JsonCommentHandling.Skip
+            });
 
         _mobs = mobs;
         return mobs.Count >= 0;

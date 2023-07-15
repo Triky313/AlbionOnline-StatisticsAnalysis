@@ -1,21 +1,21 @@
 ﻿using System.Text.Json.Serialization;
 
-namespace StatisticsAnalysisTool.Models;
+namespace StatisticsAnalysisTool.GameData.Models;
 
 public class WorldJsonObject
 {
-    [JsonPropertyName("Index")] 
+    [JsonPropertyName("@id")]
     public string Index { get; set; }
 
-    [JsonPropertyName("UniqueName")] 
+    [JsonPropertyName("@displayname")]
     public string UniqueName { get; set; }
 
-    [JsonPropertyName("Type")] 
+    [JsonPropertyName("@type")]
     public string Type { get; set; }
 
-    [JsonPropertyName("File")] 
+    [JsonPropertyName("@file")]
     public string File { get; set; }
 
-    [JsonPropertyName("MiniMapMarkers")]
+    [JsonPropertyName("minimapmarkers")]
     public MiniMapMarkers MiniMapMarkers { get; set; }
 }

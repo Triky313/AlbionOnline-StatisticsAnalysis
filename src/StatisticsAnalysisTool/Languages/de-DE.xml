@@ -746,4 +746,6 @@
 	<translation name="PLAYER_SELECTION_WITH_SAME_NAME_IN_DB">Spieler Auswahl bei gleichen Namen in der DB</translation>
 	<translation name="UPDATE_NOW">Jetzt aktualisieren</translation>
 	<translation name="DAMAGE_METER_DESCRIPTION_2">Wenn im Damage Meter nicht die richtigen Waffen angezeigt werden, liegt das meistens an den nicht aktuellen ItemList.json und Items.json Dateien. Lösche Die Dateien manuell aus dem Tool ordner und starte das Tool neu, dann wird die neuste Version der Dateien heruntergeladen und alles sollte wie gewohn funktionieren.</translation>
+	<translation name="GET_WORLD_JSON">world.json erhalten</translation>
+	<translation name="WORLD_JSON_CAN_NOT_BE_LOADED">world.json kann nicht geladen werden.</translation>
 </translations>

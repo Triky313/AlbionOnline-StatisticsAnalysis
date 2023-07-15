@@ -1,5 +1,6 @@
 ﻿using log4net;
 using StatisticsAnalysisTool.Common;
+using StatisticsAnalysisTool.GameData.Models;
 using StatisticsAnalysisTool.Models;
 using StatisticsAnalysisTool.Properties;
 using System;
@@ -18,7 +19,13 @@ public static class GameData
 {
     private static readonly ILog Log = LogManager.GetLogger(MethodBase.GetCurrentMethod()?.DeclaringType);
 
-    public static async Task<List<T>> LoadDataAsync<T, TRoot>(string tempFileName, string regularDataFileName, string sourceUrl, int updateByDays, string taskName) where T : new()
+    public static async Task<List<T>> LoadDataAsync<T, TRoot>(
+        string tempFileName,
+        string regularDataFileName,
+        string sourceUrl,
+        int updateByDays,
+        string taskName,
+        JsonSerializerOptions jsonSerializerOptions) where T : new()
     {
         var tempDirPath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, Settings.Default.TempDirecoryName);
         var tempFilePath = Path.Combine(tempDirPath, tempFileName);
@@ -51,11 +58,13 @@ public static class GameData
             }
         }
 
-        var data = GetSpecificDataFromJsonFileLocal<T>(regularDataFilePath, new JsonSerializerOptions()
+        jsonSerializerOptions ??= new JsonSerializerOptions()
         {
             NumberHandling = JsonNumberHandling.AllowReadingFromString,
             ReadCommentHandling = JsonCommentHandling.Skip
-        });
+        };
+
+        var data = GetSpecificDataFromJsonFileLocal<T>(regularDataFilePath, jsonSerializerOptions);
         FileController.DeleteFile(tempFilePath);
 
         return data;
@@ -93,6 +102,7 @@ public static class GameData
             {
                 MobJsonRootObject mobRootObject => mobRootObject.Mobs?.Mob as List<T> ?? new List<T>(),
                 LootChestRoot lootChestRoot => lootChestRoot.LootChests?.LootChest as List<T> ?? new List<T>(),
+                WorldJsonRootObject worldJsonRoot => worldJsonRoot.World.Clusters.Cluster as List<T> ?? new List<T>(),
                 _ => new List<T>()
             };
         }

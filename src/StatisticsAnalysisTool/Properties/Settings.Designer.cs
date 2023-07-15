@@ -500,5 +500,14 @@ namespace StatisticsAnalysisTool.Properties {
                 return ((string)(this["ModifiedLootChestDataFileName"]));
             }
         }
+        
+        [global::System.Configuration.ApplicationScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("world-modified.json")]
+        public string ModifiedWorldDataFileName {
+            get {
+                return ((string)(this["ModifiedWorldDataFileName"]));
+            }
+        }
     }
 }

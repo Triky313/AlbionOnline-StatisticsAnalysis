@@ -5,6 +5,8 @@ using StatisticsAnalysisTool.Properties;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text.Json.Serialization;
+using System.Text.Json;
 using System.Threading.Tasks;
 
 namespace StatisticsAnalysisTool.GameData;
@@ -36,7 +38,12 @@ public static class LootChestData
             Settings.Default.ModifiedLootChestDataFileName,
             SettingsController.CurrentSettings.LootChestJsonSourceUrl,
             SettingsController.CurrentSettings.UpdateLootChestJsonByDays,
-            LanguageController.Translation("GET_LOOT_CHEST_JSON"));
+            LanguageController.Translation("GET_LOOT_CHEST_JSON"),
+            new JsonSerializerOptions()
+            {
+                NumberHandling = JsonNumberHandling.AllowReadingFromString,
+                ReadCommentHandling = JsonCommentHandling.Skip
+            });
 
         _lootChest = lootChestData;
         return lootChestData.Count >= 0;
