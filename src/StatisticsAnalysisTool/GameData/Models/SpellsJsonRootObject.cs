@@ -1,6 +1,7 @@
 ﻿using System.Text.Json.Serialization;
+using StatisticsAnalysisTool.Models;
 
-namespace StatisticsAnalysisTool.Models;
+namespace StatisticsAnalysisTool.GameData.Models;
 
 public class SpellsJsonRootObject
 {

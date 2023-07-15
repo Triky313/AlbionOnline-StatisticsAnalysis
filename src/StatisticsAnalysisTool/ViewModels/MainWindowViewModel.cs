@@ -338,23 +338,23 @@ public class MainWindowViewModel : INotifyPropertyChanged
             }
         }
 
-        if (!SpellData.IsDataLoaded())
-        {
-            var itemsTaskTextObject = new TaskTextObject(LanguageController.Translation("GET_SPELLS_JSON"));
-            ToolTaskBindings.Add(itemsTaskTextObject);
-            var isSpellsJsonLoaded = await SpellData.LoadSpellsDataAsync().ConfigureAwait(true);
-            if (!isSpellsJsonLoaded)
-            {
-                SetErrorBar(Visibility.Visible, LanguageController.Translation("SPELLS_JSON_CAN_NOT_BE_LOADED"));
-                GridTryToLoadTheSpellsJsonAgainVisibility = Visibility.Visible;
-                IsTaskProgressbarIndeterminate = false;
-                itemsTaskTextObject.SetStatus(TaskTextObject.TaskTextObjectStatus.Canceled);
-            }
-            else
-            {
-                itemsTaskTextObject.SetStatus(TaskTextObject.TaskTextObjectStatus.Done);
-            }
-        }
+        //if (!SpellData.IsDataLoaded())
+        //{
+        //    var itemsTaskTextObject = new TaskTextObject(LanguageController.Translation("GET_SPELLS_JSON"));
+        //    ToolTaskBindings.Add(itemsTaskTextObject);
+        //    var isSpellsJsonLoaded = await SpellData.LoadDataAsync().ConfigureAwait(true);
+        //    if (!isSpellsJsonLoaded)
+        //    {
+        //        SetErrorBar(Visibility.Visible, LanguageController.Translation("SPELLS_JSON_CAN_NOT_BE_LOADED"));
+        //        GridTryToLoadTheSpellsJsonAgainVisibility = Visibility.Visible;
+        //        IsTaskProgressbarIndeterminate = false;
+        //        itemsTaskTextObject.SetStatus(TaskTextObject.TaskTextObjectStatus.Canceled);
+        //    }
+        //    else
+        //    {
+        //        itemsTaskTextObject.SetStatus(TaskTextObject.TaskTextObjectStatus.Done);
+        //    }
+        //}
 
         await ItemController.SetFavoriteItemsFromLocalFileAsync();
 
