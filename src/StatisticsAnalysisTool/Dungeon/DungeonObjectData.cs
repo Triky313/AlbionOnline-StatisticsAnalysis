@@ -1,21 +1,11 @@
 ﻿using StatisticsAnalysisTool.Common;
 using StatisticsAnalysisTool.Enumerations;
-using StatisticsAnalysisTool.Models;
-using StatisticsAnalysisTool.Properties;
-using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
 using System.Reflection;
-using System.Text;
-using System.Text.Json;
 
 namespace StatisticsAnalysisTool.Dungeon;
 
 public static class DungeonObjectData
 {
-    public static IEnumerable<LootChest> LootChests;
-
     public static DungeonMode GetDungeonMode(string value)
     {
         if (string.IsNullOrEmpty(value))
@@ -109,19 +99,6 @@ public static class DungeonObjectData
         return Faction.Unknown;
     }
 
-    public static bool GetDataListFromJson()
-    {
-        var localFilePath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "GameFiles", Settings.Default.LootChestDataFileName);
-
-        if (!File.Exists(localFilePath))
-        {
-            return false;
-        }
-
-        LootChests = GetLootChestDataFromLocal();
-        return LootChests?.Count() > 0;
-    }
-
     public static DungeonEventObjectType GetDungeonEventObjectType(string value)
     {
         if (value.Contains("SHRINE_COMBAT"))
@@ -144,7 +121,7 @@ public static class DungeonObjectData
             return DungeonEventObjectType.BookChest;
         }
 
-        if (value.Contains("CHEST") || value.Contains("AVALON") || value.Contains("HELL_STD_PVP") || value.Contains("HELL_HRD_PVP")|| value.Contains("HELL_STD_PVE") || value.Contains("HELL_HRD_PVE"))
+        if (value.Contains("CHEST") || value.Contains("AVALON") || value.Contains("HELL_STD_PVP") || value.Contains("HELL_HRD_PVP") || value.Contains("HELL_STD_PVE") || value.Contains("HELL_HRD_PVE"))
         {
             return DungeonEventObjectType.Chest;
         }
@@ -239,26 +216,6 @@ public static class DungeonObjectData
         }
 
         return ShrineType.Unknown;
-    }
-
-    #endregion
-
-    #region Helper methods
-
-    private static IEnumerable<LootChest> GetLootChestDataFromLocal()
-    {
-        try
-        {
-            var localItemString =
-                File.ReadAllText(Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "GameFiles", Settings.Default.LootChestDataFileName),
-                    Encoding.UTF8);
-            return JsonSerializer.Deserialize<LootChestRoot>(localItemString)?.LootChests.LootChest;
-        }
-        catch (Exception e)
-        {
-            ConsoleManager.WriteLineForWarning(MethodBase.GetCurrentMethod()?.DeclaringType, e);
-            return new List<LootChest>();
-        }
     }
 
     #endregion

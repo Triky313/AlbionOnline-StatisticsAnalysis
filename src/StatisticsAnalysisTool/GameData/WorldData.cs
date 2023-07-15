@@ -1,24 +1,20 @@
-using log4net;
+using StatisticsAnalysisTool.Cluster;
 using StatisticsAnalysisTool.Common;
-using StatisticsAnalysisTool.Models;
+using StatisticsAnalysisTool.Common.UserSettings;
+using StatisticsAnalysisTool.Enumerations;
+using StatisticsAnalysisTool.GameData.Models;
 using StatisticsAnalysisTool.Properties;
 using System;
 using System.Collections.Generic;
-using System.Collections.ObjectModel;
-using System.IO;
 using System.Linq;
-using System.Reflection;
-using System.Text;
 using System.Text.Json;
-using StatisticsAnalysisTool.Enumerations;
-using StatisticsAnalysisTool.Cluster;
+using System.Threading.Tasks;
 
 namespace StatisticsAnalysisTool.GameData;
 
 public static class WorldData
 {
-    public static ObservableCollection<WorldJsonObject> MapData;
-    private static readonly ILog Log = LogManager.GetLogger(MethodBase.GetCurrentMethod()?.DeclaringType);
+    public static List<WorldJsonObject> MapData;
 
     public static string GetUniqueNameOrNull(string index)
     {
@@ -42,7 +38,7 @@ public static class WorldData
 
         return name;
     }
-        
+
     public static List<MapMarkerType> GetMapMarkers(string index)
     {
         var miniMapMarkers = MapData?.FirstOrDefault(x => x.Index == index)?.MiniMapMarkers?.Marker ?? new List<Marker>();
@@ -154,19 +150,6 @@ public static class WorldData
         return MapType.Unknown;
     }
 
-    public static bool GetDataListFromJson()
-    {
-        var localFilePath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "GameFiles", Settings.Default.WorldDataFileName);
-
-        if (!File.Exists(localFilePath))
-        {
-            return false;
-        }
-
-        MapData = GetWorldDataFromLocal();
-        return MapData?.Count > 0;
-    }
-
     public static string GetWorldJsonTypeByIndex(string index)
     {
         if (index == null)
@@ -188,23 +171,25 @@ public static class WorldData
         return MapData?.FirstOrDefault(x => x.Index == index)?.File;
     }
 
-    private static ObservableCollection<WorldJsonObject> GetWorldDataFromLocal()
+    public static bool IsDataLoaded()
     {
-        try
-        {
-            var options = new JsonSerializerOptions()
+        return MapData?.Count > 0;
+    }
+
+    public static async Task<bool> LoadDataAsync()
+    {
+        var data = await GameData.LoadDataAsync<WorldJsonObject, WorldJsonRootObject>(
+            Settings.Default.WorldDataFileName,
+            Settings.Default.ModifiedWorldDataFileName,
+            SettingsController.CurrentSettings.WorldJsonSourceUrl,
+            SettingsController.CurrentSettings.UpdateWorldJsonByDays,
+            LanguageController.Translation("GET_WORLD_JSON"),
+            new JsonSerializerOptions()
             {
                 ReadCommentHandling = JsonCommentHandling.Skip
-            };
+            });
 
-            var localItemString = File.ReadAllText(Path.Combine(AppDomain.CurrentDomain.BaseDirectory, Settings.Default.GameFilesDirectoryName, Settings.Default.WorldDataFileName), Encoding.UTF8);
-            return JsonSerializer.Deserialize<ObservableCollection<WorldJsonObject>>(localItemString, options);
-        }
-        catch (Exception e)
-        {
-            ConsoleManager.WriteLineForError(MethodBase.GetCurrentMethod()?.DeclaringType, e);
-            Log.Error(MethodBase.GetCurrentMethod()?.DeclaringType, e);
-            return new ObservableCollection<WorldJsonObject>();
-        }
+        MapData = data;
+        return data.Count >= 0;
     }
 }

@@ -662,7 +662,7 @@
 	<translation name="THANK_YOU">Vielen Dank</translation>
 	<translation name="DUNGEON_CLOSED_SOUND_ACTIVE">Dungeon geschlossen Sound aktiv</translation>
 	<translation name="TOTAL_PRICE_WITH_DEDUCTED_TAXES">Gesamtpreis ohne Steuern</translation>
-	<translation name="UPDATE_MOBS_JSON_BY_DAYS">mobs.json aktualisieren</translation>
+	<translation name="UPDATE_MOBS_JSON_BY_DAYS">mobs.json aktualisieren: </translation>
 	<translation name="MOBS_JSON_SOURCE_URL">mobs.json Url Quelle</translation>
 	<translation name="GET_MOBS_JSON">mobs.json erhalten</translation>
 	<translation name="MOBS_JSON_CAN_NOT_BE_LOADED">mobs.json kann nicht geladen werden.</translation>
@@ -746,4 +746,8 @@
 	<translation name="PLAYER_SELECTION_WITH_SAME_NAME_IN_DB">Spieler Auswahl bei gleichen Namen in der DB</translation>
 	<translation name="UPDATE_NOW">Jetzt aktualisieren</translation>
 	<translation name="DAMAGE_METER_DESCRIPTION_2">Wenn im Damage Meter nicht die richtigen Waffen angezeigt werden, liegt das meistens an den nicht aktuellen ItemList.json und Items.json Dateien. Lösche Die Dateien manuell aus dem Tool ordner und starte das Tool neu, dann wird die neuste Version der Dateien heruntergeladen und alles sollte wie gewohn funktionieren.</translation>
+	<translation name="GET_WORLD_JSON">world.json erhalten</translation>
+	<translation name="WORLD_JSON_CAN_NOT_BE_LOADED">world.json kann nicht geladen werden.</translation>
+	<translation name="UPDATE_WORLD_JSON_BY_DAYS">world.json aktualisieren: </translation>
+	<translation name="WORLD_JSON_SOURCE_URL">world.json Url Quelle</translation>
 </translations>
