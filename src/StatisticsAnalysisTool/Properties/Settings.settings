@@ -134,5 +134,8 @@
     <Setting Name="IsDebugMode" Type="System.Boolean" Scope="User">
       <Value Profile="(Default)">False</Value>
     </Setting>
+    <Setting Name="ModifiedLootChestDataFileName" Type="System.String" Scope="Application">
+      <Value Profile="(Default)">lootchest-modified.json</Value>
+    </Setting>
   </Settings>
 </SettingsFile>

@@ -77,8 +77,8 @@ public class TrackingController : ITrackingController
     public async Task InitTrackingAsync()
     {
         WorldData.GetDataListFromJson();
-        DungeonObjectData.GetDataListFromJson();
 
+        await LootChestData.LoadDataAsync();
         await StartTrackingAsync();
 
         _mainWindowViewModel.IsDamageMeterTrackingActive = SettingsController.CurrentSettings.IsDamageMeterTrackingActive;

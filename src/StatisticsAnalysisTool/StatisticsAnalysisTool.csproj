@@ -97,9 +97,6 @@
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
     </None>
-    <Content Include="GameFiles\lootchests.json">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
     <Content Include="GameFiles\world.json">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
@@ -612,7 +609,6 @@
     <None Remove="Assets\repair_cross.png" />
     <None Remove="Assets\sat-icon.png" />
     <None Remove="Assets\static_chest.png" />
-    <None Remove="GameFiles\lootchests.json" />
     <None Remove="GameFiles\world.json" />
     <None Remove="Languages\de-DE.xml" />
     <None Remove="Languages\en-US.xml" />

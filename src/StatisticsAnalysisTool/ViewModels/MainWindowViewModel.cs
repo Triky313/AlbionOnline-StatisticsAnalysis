@@ -84,6 +84,7 @@ public class MainWindowViewModel : INotifyPropertyChanged
     private string _loggingSearchText;
     private Visibility _gridTryToLoadTheItemJsonAgainVisibility = Visibility.Collapsed;
     private Visibility _gridTryToLoadTheMobsJsonAgainVisibility = Visibility.Collapsed;
+    private Visibility _gridTryToLoadTheLootChestJsonAgainVisibility = Visibility.Collapsed;
     private Visibility _toolTasksVisibility = Visibility.Collapsed;
     private double _taskProgressbarMinimum;
     private double _taskProgressbarMaximum = 100;
@@ -300,7 +301,7 @@ public class MainWindowViewModel : INotifyPropertyChanged
         {
             var itemsTaskTextObject = new TaskTextObject(LanguageController.Translation("GET_MOBS_JSON"));
             ToolTaskBindings.Add(itemsTaskTextObject);
-            var isMobsJsonLoaded = await MobsData.LoadMobsDataAsync().ConfigureAwait(true);
+            var isMobsJsonLoaded = await MobsData.LoadDataAsync().ConfigureAwait(true);
             if (!isMobsJsonLoaded)
             {
                 SetErrorBar(Visibility.Visible, LanguageController.Translation("MOBS_JSON_CAN_NOT_BE_LOADED"));
@@ -313,6 +314,24 @@ public class MainWindowViewModel : INotifyPropertyChanged
                 itemsTaskTextObject.SetStatus(TaskTextObject.TaskTextObjectStatus.Done);
             }
         }
+
+        //if (!LootChestData.IsDataLoaded())
+        //{
+        //    var itemsTaskTextObject = new TaskTextObject(LanguageController.Translation("GET_LOOT_CHEST_JSON"));
+        //    ToolTaskBindings.Add(itemsTaskTextObject);
+        //    var isLootChestJsonLoaded = await LootChestData.LoadDataAsync().ConfigureAwait(true);
+        //    if (!isLootChestJsonLoaded)
+        //    {
+        //        SetErrorBar(Visibility.Visible, LanguageController.Translation("LOOT_CHEST_JSON_CAN_NOT_BE_LOADED"));
+        //        GridTryToLoadTheLootChestJsonAgainVisibility = Visibility.Visible;
+        //        IsTaskProgressbarIndeterminate = false;
+        //        itemsTaskTextObject.SetStatus(TaskTextObject.TaskTextObjectStatus.Canceled);
+        //    }
+        //    else
+        //    {
+        //        itemsTaskTextObject.SetStatus(TaskTextObject.TaskTextObjectStatus.Done);
+        //    }
+        //}
 
         await ItemController.SetFavoriteItemsFromLocalFileAsync();
 
@@ -1076,6 +1095,16 @@ public class MainWindowViewModel : INotifyPropertyChanged
         set
         {
             _gridTryToLoadTheMobsJsonAgainVisibility = value;
+            OnPropertyChanged();
+        }
+    }
+
+    public Visibility GridTryToLoadTheLootChestJsonAgainVisibility
+    {
+        get => _gridTryToLoadTheLootChestJsonAgainVisibility;
+        set
+        {
+            _gridTryToLoadTheLootChestJsonAgainVisibility = value;
             OnPropertyChanged();
         }
     }
