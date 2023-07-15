@@ -85,6 +85,7 @@ public class MainWindowViewModel : INotifyPropertyChanged
     private string _loggingSearchText;
     private Visibility _gridTryToLoadTheItemJsonAgainVisibility = Visibility.Collapsed;
     private Visibility _gridTryToLoadTheMobsJsonAgainVisibility = Visibility.Collapsed;
+    private Visibility _gridTryToLoadTheWorldJsonAgainVisibility = Visibility.Collapsed;
     private Visibility _gridTryToLoadTheSpellsJsonAgainVisibility = Visibility.Collapsed;
     private Visibility _toolTasksVisibility = Visibility.Collapsed;
     private double _taskProgressbarMinimum;
@@ -305,11 +306,29 @@ public class MainWindowViewModel : INotifyPropertyChanged
         {
             var itemsTaskTextObject = new TaskTextObject(LanguageController.Translation("GET_MOBS_JSON"));
             ToolTaskBindings.Add(itemsTaskTextObject);
-            var isMobsJsonLoaded = await MobsData.LoadMobsDataAsync().ConfigureAwait(true);
+            var isMobsJsonLoaded = await MobsData.LoadDataAsync().ConfigureAwait(true);
             if (!isMobsJsonLoaded)
             {
                 SetErrorBar(Visibility.Visible, LanguageController.Translation("MOBS_JSON_CAN_NOT_BE_LOADED"));
                 GridTryToLoadTheMobsJsonAgainVisibility = Visibility.Visible;
+                IsTaskProgressbarIndeterminate = false;
+                itemsTaskTextObject.SetStatus(TaskTextObject.TaskTextObjectStatus.Canceled);
+            }
+            else
+            {
+                itemsTaskTextObject.SetStatus(TaskTextObject.TaskTextObjectStatus.Done);
+            }
+        }
+
+        if (!WorldData.IsDataLoaded())
+        {
+            var itemsTaskTextObject = new TaskTextObject(LanguageController.Translation("GET_WORLD_JSON"));
+            ToolTaskBindings.Add(itemsTaskTextObject);
+            var isLootChestJsonLoaded = await WorldData.LoadDataAsync().ConfigureAwait(true);
+            if (!isLootChestJsonLoaded)
+            {
+                SetErrorBar(Visibility.Visible, LanguageController.Translation("WORLD_JSON_CAN_NOT_BE_LOADED"));
+                GridTryToLoadTheWorldJsonAgainVisibility = Visibility.Visible;
                 IsTaskProgressbarIndeterminate = false;
                 itemsTaskTextObject.SetStatus(TaskTextObject.TaskTextObjectStatus.Canceled);
             }
@@ -1109,6 +1128,16 @@ public class MainWindowViewModel : INotifyPropertyChanged
         set
         {
             _gridTryToLoadTheMobsJsonAgainVisibility = value;
+            OnPropertyChanged();
+        }
+    }
+
+    public Visibility GridTryToLoadTheWorldJsonAgainVisibility
+    {
+        get => _gridTryToLoadTheWorldJsonAgainVisibility;
+        set
+        {
+            _gridTryToLoadTheWorldJsonAgainVisibility = value;
             OnPropertyChanged();
         }
     }

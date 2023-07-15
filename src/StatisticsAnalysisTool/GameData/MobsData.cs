@@ -1,25 +1,18 @@
-using log4net;
 using StatisticsAnalysisTool.Common;
 using StatisticsAnalysisTool.Common.UserSettings;
-using StatisticsAnalysisTool.Models;
+using StatisticsAnalysisTool.GameData.Models;
 using StatisticsAnalysisTool.Properties;
 using System;
 using System.Collections.Generic;
-using System.IO;
 using System.Linq;
-using System.Net.Http;
-using System.Reflection;
-using System.Text;
-using System.Text.Json;
 using System.Text.Json.Serialization;
+using System.Text.Json;
 using System.Threading.Tasks;
 
 namespace StatisticsAnalysisTool.GameData;
 
 public static class MobsData
 {
-    private static readonly ILog Log = LogManager.GetLogger(MethodBase.GetCurrentMethod()?.DeclaringType);
-
     private static IEnumerable<MobJsonObject> _mobs;
 
     public static int GetMobTierByIndex(int index)
@@ -63,68 +56,21 @@ public static class MobsData
         return _mobs.IsInBounds(index) ? _mobs?.ElementAt(index) : new MobJsonObject();
     }
 
-    public static async Task<bool> LoadMobsDataAsync()
+    public static async Task<bool> LoadDataAsync()
     {
-        var tempDirPath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, Settings.Default.TempDirecoryName);
-        var tempFilePath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, Settings.Default.TempDirecoryName, Settings.Default.MobDataFileName);
-        var regularDataFilePath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, Settings.Default.GameFilesDirectoryName, Settings.Default.ModifiedMobDataFileName);
-
-        if (!DirectoryController.CreateDirectoryWhenNotExists(tempDirPath))
-        {
-            return false;
-        }
-
-        var regularFileDateTime = File.GetLastWriteTime(regularDataFilePath);
-        var tempFileDateTime = File.GetLastWriteTime(tempFilePath);
-
-        if (!File.Exists(regularDataFilePath) || regularFileDateTime.AddDays(SettingsController.CurrentSettings.UpdateMobsJsonByDays) < DateTime.Now)
-        {
-            if (!File.Exists(tempFilePath) || tempFileDateTime.AddDays(SettingsController.CurrentSettings.UpdateMobsJsonByDays) < DateTime.Now)
-            {
-                using var client = new HttpClient
-                {
-                    Timeout = TimeSpan.FromSeconds(3600)
-                };
-
-                await client.DownloadFileAsync(SettingsController.CurrentSettings.MobsJsonSourceUrl, tempFilePath, LanguageController.Translation("GET_MOBS_JSON"));
-            }
-
-            var fullMobsJson = GetDataFromFullJsonFileLocal(tempFilePath);
-            if (fullMobsJson.Count() > 1)
-            {
-                await FileController.SaveAsync(fullMobsJson, regularDataFilePath);
-            }
-        }
-
-        _mobs = GameData.GetSpecificDataFromJsonFileLocal<MobJsonObject>(regularDataFilePath, new JsonSerializerOptions()
-        {
-            NumberHandling = JsonNumberHandling.AllowReadingFromString,
-            ReadCommentHandling = JsonCommentHandling.Skip
-        });
-        FileController.DeleteFile(Path.Combine(AppDomain.CurrentDomain.BaseDirectory, Settings.Default.TempDirecoryName, Settings.Default.MobDataFileName));
-
-        return _mobs?.Count() > 0;
-    }
-
-    private static List<MobJsonObject> GetDataFromFullJsonFileLocal(string localFilePath)
-    {
-        try
-        {
-            var options = new JsonSerializerOptions()
+        var mobs = await GameData.LoadDataAsync<MobJsonObject, MobJsonRootObject>(
+            Settings.Default.MobDataFileName,
+            Settings.Default.ModifiedMobDataFileName,
+            SettingsController.CurrentSettings.MobsJsonSourceUrl,
+            SettingsController.CurrentSettings.UpdateMobsJsonByDays,
+            LanguageController.Translation("GET_MOBS_JSON"),
+            new JsonSerializerOptions()
             {
                 NumberHandling = JsonNumberHandling.AllowReadingFromString,
                 ReadCommentHandling = JsonCommentHandling.Skip
-            };
+            });
 
-            var localString = File.ReadAllText(localFilePath, Encoding.UTF8);
-            var rootObject = JsonSerializer.Deserialize<MobJsonRootObject>(localString, options);
-            return rootObject?.Mobs?.Mob ?? new List<MobJsonObject>();
-        }
-        catch (Exception e)
-        {
-            ConsoleManager.WriteLineForError(MethodBase.GetCurrentMethod()?.DeclaringType, e);
-            Log.Error(MethodBase.GetCurrentMethod()?.DeclaringType, e);
-            return new List<MobJsonObject>();
-        }
+        _mobs = mobs;
+        return mobs.Count >= 0;
     }
 }

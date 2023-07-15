@@ -1,4 +1,4 @@
-﻿<Window x:Class="StatisticsAnalysisTool.Views.MainWindow"
+<Window x:Class="StatisticsAnalysisTool.Views.MainWindow"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
@@ -251,6 +251,18 @@
 
         <!-- mobs.json Info -->
         <Grid ZIndex="2" Margin="0,90,0,42" Visibility="{Binding GridTryToLoadTheMobsJsonAgainVisibility, FallbackValue=Collapsed}" Background="{StaticResource SolidColorBrush.Background.1}">
+            <StackPanel Orientation="Vertical" VerticalAlignment="Center">
+                <Label Foreground="{StaticResource SolidColorBrush.Accent.Yellow.1}" HorizontalContentAlignment="Center" 
+                       Content="{Binding Translation.FileDownloadFailedText1}" Margin="10,0,10,0" />
+                <Button Height="24" Width="auto" MinWidth="100" MaxWidth="500" HorizontalContentAlignment="Center" VerticalContentAlignment="Center"
+                        Content="{Binding Translation.OpenToolDirectory, FallbackValue=OPEN__TOOL__DIRECTORY}" Click="OpenToolDirectory_Click" />
+                <Label Foreground="{StaticResource SolidColorBrush.Accent.Yellow.1}" HorizontalContentAlignment="Center" 
+                       Content="{Binding Translation.ThenRestartTheTool}" Margin="10,0,10,0" />
+            </StackPanel>
+        </Grid>
+
+        <!-- world.json Info -->
+        <Grid ZIndex="2" Margin="0,90,0,42" Visibility="{Binding GridTryToLoadTheWorldJsonAgainVisibility, FallbackValue=Collapsed}" Background="{StaticResource SolidColorBrush.Background.1}">
             <StackPanel Orientation="Vertical" VerticalAlignment="Center">
                 <Label Foreground="{StaticResource SolidColorBrush.Accent.Yellow.1}" HorizontalContentAlignment="Center" 
                        Content="{Binding Translation.FileDownloadFailedText1}" Margin="10,0,10,0" />

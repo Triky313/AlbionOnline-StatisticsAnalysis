@@ -746,6 +746,10 @@
 	<translation name="PLAYER_SELECTION_WITH_SAME_NAME_IN_DB">Player selection with the same name in the DB</translation>
 	<translation name="UPDATE_NOW">Update now</translation>
 	<translation name="DAMAGE_METER_DESCRIPTION_2">If the right weapons are not displayed in the Damage Meter, this is usually due to the outdated ItemList.json and Items.json files. Manually delete the files from the tool folder and restart the tool, then the latest version of the files will be downloaded and everything should work as usual.</translation>
+	<translation name="GET_WORLD_JSON">Get world.json</translation>
+	<translation name="WORLD_JSON_CAN_NOT_BE_LOADED">world.json can not be loaded.</translation>
+	<translation name="UPDATE_WORLD_JSON_BY_DAYS">Update world.json by days: </translation>
+	<translation name="WORLD_JSON_SOURCE_URL">world.json source url</translation>
 	<translation name="PARTY_BUILDER">Party Builder</translation>
 	<translation name="GET_SPELLS_JSON">Get spells.json</translation>
 	<translation name="SPELLS_JSON_CAN_NOT_BE_LOADED">spells.json can not be loaded.</translation>
