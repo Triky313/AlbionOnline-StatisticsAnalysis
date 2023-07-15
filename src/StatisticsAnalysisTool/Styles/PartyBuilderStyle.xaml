@@ -1,6 +1,6 @@
 ﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-                    xmlns:pp="clr-namespace:StatisticsAnalysisTool.PartyPlanner">
+                    xmlns:pp="clr-namespace:StatisticsAnalysisTool.PartyBuilder">
 
     <Style TargetType="Image" x:Key="PartyBuilder.Equipment.Icon">
         <Setter Property="Height" Value="50"/>

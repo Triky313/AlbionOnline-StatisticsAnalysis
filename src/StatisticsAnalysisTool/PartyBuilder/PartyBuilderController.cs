@@ -1,14 +1,14 @@
-﻿using StatisticsAnalysisTool.Models;
-using StatisticsAnalysisTool.Models.NetworkModel;
-using StatisticsAnalysisTool.Network.Manager;
-using StatisticsAnalysisTool.ViewModels;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Windows;
+using StatisticsAnalysisTool.Models;
+using StatisticsAnalysisTool.Models.NetworkModel;
+using StatisticsAnalysisTool.Network.Manager;
+using StatisticsAnalysisTool.ViewModels;
 
-namespace StatisticsAnalysisTool.PartyPlanner;
+namespace StatisticsAnalysisTool.PartyBuilder;
 
 public class PartyBuilderController
 {

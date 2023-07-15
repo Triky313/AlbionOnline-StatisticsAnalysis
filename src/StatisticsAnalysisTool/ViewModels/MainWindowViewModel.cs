@@ -30,7 +30,7 @@ using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Data;
 using System.Windows.Media;
-using StatisticsAnalysisTool.PartyPlanner;
+using StatisticsAnalysisTool.PartyBuilder;
 
 // ReSharper disable UnusedMember.Global
 

@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections;
 
-namespace StatisticsAnalysisTool.PartyPlanner;
+namespace StatisticsAnalysisTool.PartyBuilder;
 
 public class PartyPlannerPlayerComparer : IComparer
 {

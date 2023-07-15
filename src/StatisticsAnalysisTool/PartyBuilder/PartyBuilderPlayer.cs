@@ -1,11 +1,11 @@
-﻿using StatisticsAnalysisTool.Models;
-using StatisticsAnalysisTool.Properties;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
+using StatisticsAnalysisTool.Models;
+using StatisticsAnalysisTool.Properties;
 
-namespace StatisticsAnalysisTool.PartyPlanner;
+namespace StatisticsAnalysisTool.PartyBuilder;
 
 public class PartyBuilderPlayer : INotifyPropertyChanged
 {
