@@ -1,4 +1,5 @@
-﻿using StatisticsAnalysisTool.Gathering;
+﻿using System;
+using StatisticsAnalysisTool.Gathering;
 using StatisticsAnalysisTool.Models;
 using System.Collections.Generic;
 
@@ -82,4 +83,6 @@ public class SettingsObject
     public bool IsNotificationTrackingStatusActive { get; set; } = false;
     public AutoDeleteGatheringStats AutoDeleteGatheringStats { get; set; } = AutoDeleteGatheringStats.NeverDelete;
     public short ExactMatchPlayerNamesLineNumber { get; set; } = 0;
+    public DateTime TradeMonitoringDatePickerTradeFrom { get; set; } = new(2017, 1, 1);
+    public DateTime TradeMonitoringDatePickerTradeTo { get; set; } = DateTime.UtcNow.AddDays(1);
 }

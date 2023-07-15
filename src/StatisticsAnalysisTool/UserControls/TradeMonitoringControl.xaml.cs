@@ -96,5 +96,11 @@ public partial class TradeMonitoringControl
         await vm.TradeMonitoringBindings.UpdateFilteredTradesAsync();
     }
 
+    private void FilterReset_MouseUp(object sender, MouseButtonEventArgs e)
+    {
+        var vm = (MainWindowViewModel) DataContext;
+        vm.TradeMonitoringBindings?.ItemFilterReset();
+    }
+
     #endregion
 }
