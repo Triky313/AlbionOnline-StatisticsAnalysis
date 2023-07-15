@@ -88,6 +88,7 @@ public static class NetworkManager
         builder.AddResponseHandler(new ReadMailResponseHandler(trackingController));
         builder.AddResponseHandler(new AuctionGetOffersResponseHandler(trackingController));
         builder.AddResponseHandler(new AuctionGetResponseHandler(trackingController));
+        builder.AddResponseHandler(new GetCharacterEquipmentResponseHandler(trackingController));
 
         _receiver = builder.Build();
         StartDeviceCapture();

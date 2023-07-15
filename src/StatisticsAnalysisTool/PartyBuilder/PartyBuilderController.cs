@@ -89,6 +89,7 @@ public class PartyBuilderController
             return;
         }
 
+        partyBuilderPlayer.AverageTotalItemPower = (int)Math.Round(playerGameObject.ItemPower, MidpointRounding.AwayFromZero);
         partyBuilderPlayer.MainHand = playerGameObject.CharacterEquipment?.GetMainHand();
         partyBuilderPlayer.OffHand = playerGameObject.CharacterEquipment?.GetOffHand();
         partyBuilderPlayer.Head = playerGameObject.CharacterEquipment?.GetHead();

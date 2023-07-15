@@ -30,6 +30,7 @@ public class PartyBuilderPlayer : INotifyPropertyChanged
     private IEnumerable<Spell> _potionSpells;
     private IEnumerable<Spell> _foodSpells;
     private int _averageBasicItemPower;
+    private int _averageTotalItemPower;
     public Guid Guid { get; init; }
 
     public string Username
@@ -38,6 +39,16 @@ public class PartyBuilderPlayer : INotifyPropertyChanged
         set
         {
             _username = value;
+            OnPropertyChanged();
+        }
+    }
+
+    public int AverageTotalItemPower
+    {
+        get => _averageTotalItemPower;
+        set
+        {
+            _averageTotalItemPower = value;
             OnPropertyChanged();
         }
     }

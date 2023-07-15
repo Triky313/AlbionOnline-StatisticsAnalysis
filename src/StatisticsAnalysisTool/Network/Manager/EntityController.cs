@@ -151,6 +151,16 @@ public class EntityController
         return _knownEntities?.Any(x => x.Key == guid) ?? false;
     }
 
+    public async Task SetItemPowerAsync(Guid guid, double itemPower)
+    {
+        var entity = GetEntity(guid);
+        if (Math.Abs(entity.Value.ItemPower - itemPower) > 0)
+        {
+            entity.Value.ItemPower = itemPower;
+            await _trackingController?.PartyBuilderController?.UpdatePartyAsync()!;
+        }
+    }
+
     #endregion
 
     #region Party

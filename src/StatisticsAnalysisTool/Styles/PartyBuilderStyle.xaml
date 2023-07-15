@@ -18,6 +18,7 @@
                 <StackPanel Orientation="Horizontal" Background="{StaticResource SolidColorBrush.Accent.Blue.5}">
                     <Label Content="{Binding Username, IsAsync=True}" />
                     <Label Content="{Binding AverageBasicItemPower, IsAsync=True, StringFormat='Average IP: {}{0}'}" />
+                    <Label Content="{Binding AverageTotalItemPower, IsAsync=True, StringFormat='({}{0})'}" />
                 </StackPanel>
                 <StackPanel Orientation="Horizontal">
                     <Image Source="{Binding MainHand.Icon, IsAsync=True, Mode=OneWay}" Style="{StaticResource PartyBuilder.Equipment.Icon}" />
