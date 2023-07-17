@@ -25,6 +25,8 @@ public class Weapon : ItemJsonObject
 
     [JsonPropertyName("@slottype")]
     public string SlotType { get; set; }
+    [JsonIgnore]
+    public SlotType SlotTypeEnum => ItemController.GetSlotType(SlotType);
 
     [JsonPropertyName("@shopcategory")]
     public string ShopCategory { get; set; }

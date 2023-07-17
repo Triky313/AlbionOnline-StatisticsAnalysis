@@ -1,6 +1,8 @@
 ﻿using System.Collections.Generic;
 using System.Text.Json.Serialization;
+using StatisticsAnalysisTool.Common;
 using StatisticsAnalysisTool.Common.Converters;
+using StatisticsAnalysisTool.Enumerations;
 
 namespace StatisticsAnalysisTool.Models.ItemsJsonModel;
 
@@ -32,6 +34,8 @@ public class ConsumableItem : ItemJsonObject
 
     [JsonPropertyName("@slottype")]
     public string SlotType { get; set; }
+    [JsonIgnore]
+    public SlotType SlotTypeEnum => ItemController.GetSlotType(SlotType);
 
     [JsonPropertyName("@consumespell")]
     public string ConsumeSpell { get; set; }

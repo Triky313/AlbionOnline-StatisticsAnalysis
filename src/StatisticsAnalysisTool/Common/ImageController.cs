@@ -11,7 +11,10 @@ namespace StatisticsAnalysisTool.Common;
 internal static class ImageController
 {
     private static readonly ILog Log = LogManager.GetLogger(MethodBase.GetCurrentMethod()?.DeclaringType);
-    private static readonly string ImageDir = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, Settings.Default.ImageResources);
+    private static readonly string ItemImagesDirectory = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, Settings.Default.ImageResources);
+    private static readonly string SpellImagesDirectory = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, Settings.Default.SpellImageResources);
+
+    #region Item image
 
     public static BitmapImage GetItemImage(string uniqueName = null, int pixelHeight = 100, int pixelWidth = 100, bool freeze = false)
     {
@@ -25,16 +28,16 @@ internal static class ImageController
             }
 
             BitmapImage image;
-            var localFilePath = Path.Combine(ImageDir, uniqueName);
+            var localFilePath = Path.Combine(ItemImagesDirectory, uniqueName);
 
             if (File.Exists(localFilePath))
             {
-                image = GetImageFromResource(localFilePath, pixelHeight, pixelWidth, freeze);
+                image = GetImageFromLocal(localFilePath, pixelHeight, pixelWidth, freeze);
             }
             else
             {
                 image = SetImage($"https://render.albiononline.com/v1/item/{uniqueName}", pixelHeight, pixelWidth, freeze);
-                SaveImageLocal(image, localFilePath);
+                SaveImageLocal(image, localFilePath, ItemImagesDirectory);
             }
 
             return image;
@@ -47,21 +50,102 @@ internal static class ImageController
         }
     }
 
-    public static void SaveImageLocal(BitmapImage image, string localFilePath)
+    public static async Task<int> LocalImagesCounterAsync()
     {
-        if (!DirectoryController.CreateDirectoryWhenNotExists(ImageDir) && !Directory.Exists(ImageDir))
+        return await Task.Run(() =>
+        {
+            try
+            {
+                return Directory.Exists(ItemImagesDirectory) ? Directory.GetFiles(ItemImagesDirectory, "*", SearchOption.TopDirectoryOnly).Length : 0;
+            }
+            catch
+            {
+                return 0;
+            }
+        });
+    }
+
+    #endregion
+
+    #region Spell image
+
+    public static BitmapImage GetSpellImage(string uniqueName = null, int pixelHeight = 100, int pixelWidth = 100, bool freeze = false)
+    {
+        try
+        {
+            if (string.IsNullOrEmpty(uniqueName))
+            {
+                return null;
+            }
+
+            BitmapImage image;
+            var localFilePath = Path.Combine(SpellImagesDirectory, uniqueName);
+
+            if (File.Exists(localFilePath))
+            {
+                image = GetImageFromLocal(localFilePath, pixelHeight, pixelWidth, freeze);
+            }
+            else
+            {
+                image = SetImage($"https://render.albiononline.com/v1/spell/{uniqueName}", pixelHeight, pixelWidth, freeze);
+                SaveImageLocal(image, localFilePath, SpellImagesDirectory);
+            }
+
+            return image;
+        }
+        catch
+        {
+            return null;
+        }
+    }
+
+    #endregion
+
+    #region Utilities
+
+    private static BitmapImage GetImageFromLocal(string localResourcePath, int pixelHeight, int pixelWidth, bool freeze)
+    {
+        try
+        {
+            var bmp = new BitmapImage();
+            bmp.BeginInit();
+            bmp.CacheOption = BitmapCacheOption.OnDemand;
+            bmp.DecodePixelHeight = pixelHeight;
+            bmp.DecodePixelWidth = pixelWidth;
+            bmp.UriSource = new Uri(localResourcePath);
+            bmp.EndInit();
+            if (freeze)
+            {
+                bmp.Freeze();
+            }
+
+            return bmp;
+        }
+        catch (Exception e)
+        {
+            ConsoleManager.WriteLineForError(MethodBase.GetCurrentMethod()?.DeclaringType, e);
+            Log.Error($"{MethodBase.GetCurrentMethod()?.DeclaringType}: {e.Message}");
+            return null;
+        }
+    }
+
+    private static void SaveImageLocal(BitmapSource image, string localFilePath, string localDirectory)
+    {
+        if (!DirectoryController.CreateDirectoryWhenNotExists(localDirectory) && !Directory.Exists(localDirectory))
+        {
             return;
+        }
 
         image.DownloadCompleted += (sender, _) =>
         {
             var encoder = new PngBitmapEncoder();
-            encoder.Frames.Add(BitmapFrame.Create(((BitmapImage)sender)!));
+            encoder.Frames.Add(BitmapFrame.Create(((BitmapImage) sender)!));
             using var fileStream = new FileStream(localFilePath, FileMode.Create);
             encoder.Save(fileStream);
         };
     }
 
-    public static BitmapImage SetImage(string webPath, int pixelHeight, int pixelWidth, bool freeze)
+    private static BitmapImage SetImage(string webPath, int pixelHeight, int pixelWidth, bool freeze)
     {
         if (webPath == null)
         {
@@ -94,42 +178,5 @@ internal static class ImageController
         }
     }
 
-    public static BitmapImage GetImageFromResource(string resourcePath, int pixelHeight, int pixelWidth, bool freeze)
-    {
-        try
-        {
-            var bmp = new BitmapImage();
-            bmp.BeginInit();
-            bmp.CacheOption = BitmapCacheOption.OnDemand;
-            bmp.DecodePixelHeight = pixelHeight;
-            bmp.DecodePixelWidth = pixelWidth;
-            bmp.UriSource = new Uri(resourcePath);
-            bmp.EndInit();
-            if (freeze)
-                bmp.Freeze();
-
-            return bmp;
-        }
-        catch (Exception e)
-        {
-            ConsoleManager.WriteLineForError(MethodBase.GetCurrentMethod()?.DeclaringType, e);
-            Log.Error($"{MethodBase.GetCurrentMethod()?.DeclaringType}: {e.Message}");
-            return null;
-        }
-    }
-
-    public static async Task<int> LocalImagesCounterAsync()
-    {
-        return await Task.Run(() =>
-        {
-            try
-            {
-                return Directory.Exists(ImageDir) ? Directory.GetFiles(ImageDir, "*", SearchOption.TopDirectoryOnly).Length : 0;
-            }
-            catch
-            {
-                return 0;
-            }
-        });
-    }
+    #endregion
 }

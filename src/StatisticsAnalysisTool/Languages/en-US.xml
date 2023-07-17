@@ -750,4 +750,17 @@
 	<translation name="WORLD_JSON_CAN_NOT_BE_LOADED">world.json can not be loaded.</translation>
 	<translation name="UPDATE_WORLD_JSON_BY_DAYS">Update world.json by days: </translation>
 	<translation name="WORLD_JSON_SOURCE_URL">world.json source url</translation>
+	<translation name="PARTY_BUILDER">Party Builder</translation>
+	<translation name="GET_SPELLS_JSON">Get spells.json</translation>
+	<translation name="SPELLS_JSON_CAN_NOT_BE_LOADED">spells.json can not be loaded.</translation>
+	<translation name="CONDITIONS">Conditions</translation>
+	<translation name="DESCRIPTIONS">Descriptions</translation>
+	<translation name="MINIMAL_ITEM_POWER">Minimal item power</translation>
+	<translation name="MAXIMUM_ITEM_POWER">Maximum item power</translation>
+	<translation name="MINIMAL_BASIC_ITEM_POWER">Minimal basic item power</translation>
+	<translation name="MAXIMUM_BASIC_ITEM_POWER">Maximum basic item power</translation>
+	<translation name="IP_OR_BIP_BETWEEN_MIN_AND_MAX_RANGE">Item power or Basic item power between min and max range</translation>
+	<translation name="IP_OR_BIP_OVER_MAX_RANGE">Item power or Basic item power over max range</translation>
+	<translation name="IP_OR_BIP_UNDER_MIN_RANGE">Item power or Basic item power under min range</translation>
+	<translation name="PLAYER_IS_NOT_INSPECTED">Player is not inspected</translation>
 </translations>

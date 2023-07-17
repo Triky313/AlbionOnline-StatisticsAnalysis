@@ -10,6 +10,7 @@ public enum NavigationTabFilterType
     DamageMeter,
     TradeMonitoring,
     Gathering,
+    PartyBuilder,
     StorageHistory,
     MapHistory,
     PlayerInformation

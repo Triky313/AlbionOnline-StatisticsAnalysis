@@ -41,6 +41,7 @@
     <Color x:Key="Color.Accent.Green.5">#FF188C3F</Color>
     <Color x:Key="Color.Accent.Green.6">#FF10602B</Color>
 
+    <Color x:Key="Color.Accent.Yellow.0">#FFF6C96A</Color>
     <Color x:Key="Color.Accent.Yellow.1">#FFf2b83b</Color>
     <Color x:Key="Color.Accent.Yellow.2">#55f2b83b</Color>
     <Color x:Key="Color.Accent.Yellow.3">#FFEBA50F</Color>
@@ -209,6 +210,7 @@
     <SolidColorBrush x:Key="SolidColorBrush.Accent.Green.5" Color="{StaticResource Color.Accent.Green.5}"/>
     <SolidColorBrush x:Key="SolidColorBrush.Accent.Green.6" Color="{StaticResource Color.Accent.Green.6}"/>
 
+    <SolidColorBrush x:Key="SolidColorBrush.Accent.Yellow.0" Color="{StaticResource Color.Accent.Yellow.0}"/>
     <SolidColorBrush x:Key="SolidColorBrush.Accent.Yellow.1" Color="{StaticResource Color.Accent.Yellow.1}"/>
     <SolidColorBrush x:Key="SolidColorBrush.Accent.Yellow.2" Color="{StaticResource Color.Accent.Yellow.2}"/>
 
