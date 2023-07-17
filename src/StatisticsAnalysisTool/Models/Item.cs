@@ -26,6 +26,7 @@ public class Item
 
     public int Level => ItemController.GetItemLevel(UniqueName);
     public int Tier => ItemController.GetItemTier(this);
+    public int BasicItemPower => ItemController.GetBasicItemPower(this);
 
     public string TierLevelString
     {

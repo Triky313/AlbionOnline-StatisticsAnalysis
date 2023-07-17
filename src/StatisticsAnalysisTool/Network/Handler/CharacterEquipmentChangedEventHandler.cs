@@ -17,8 +17,7 @@ public class CharacterEquipmentChangedEventHandler : EventPacketHandler<Characte
     {
         if (value.ObjectId != null)
         {
-            _trackingController.EntityController.SetCharacterEquipment((long)value.ObjectId, value.CharacterEquipment);
+            await _trackingController.EntityController.SetCharacterEquipmentAsync((long) value.ObjectId, value.CharacterEquipment);
         }
-        await Task.CompletedTask;
     }
 }

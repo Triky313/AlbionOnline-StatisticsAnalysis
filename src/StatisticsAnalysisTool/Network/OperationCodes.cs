@@ -141,7 +141,7 @@ public enum OperationCodes
     InviteMercenaryToMatch,
     SubscribeToCluster,
     AnswerMercenaryInvitation,
-    GetCharacterEquipment,
+    GetCharacterEquipment = 137,
     GetCharacterSteamAchievements,
     GetCharacterStats,
     GetKillHistoryDetails,

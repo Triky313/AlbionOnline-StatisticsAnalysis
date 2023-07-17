@@ -16,7 +16,7 @@ public class NewEquipmentItemEvent
     private readonly long _estimatedMarketValue;
     private readonly short _qualityLevel = 1;
     private readonly FixPoint _durability;
-    private Dictionary<int, int> SpellDictionary { get; } = new ();
+    private Dictionary<int, int> SpellDictionary { get; } = new();
 
     public NewEquipmentItemEvent(Dictionary<byte, object> parameters)
     {
@@ -24,34 +24,34 @@ public class NewEquipmentItemEvent
 
         try
         {
-            if (parameters.ContainsKey(0))
+            if (parameters.TryGetValue(0, out object objectId))
             {
-                _objectId = parameters[0].ObjectToLong();
+                _objectId = objectId.ObjectToLong();
             }
 
-            if (parameters.ContainsKey(1))
+            if (parameters.TryGetValue(1, out object itemId))
             {
-                _itemId = parameters[1].ObjectToInt();
+                _itemId = itemId.ObjectToInt();
             }
 
-            if (parameters.ContainsKey(2))
+            if (parameters.TryGetValue(2, out object quantity))
             {
-                _quantity = parameters[2].ObjectToInt();
+                _quantity = quantity.ObjectToInt();
             }
 
-            if (parameters.ContainsKey(4))
+            if (parameters.TryGetValue(4, out object estimatedMarketValue))
             {
-                _estimatedMarketValue = parameters[4].ObjectToLong() ?? 0;
+                _estimatedMarketValue = estimatedMarketValue.ObjectToLong() ?? 0;
             }
-                
-            if (parameters.ContainsKey(6))
+
+            if (parameters.TryGetValue(6, out object qualityLevel))
             {
-                _qualityLevel = parameters[6].ObjectToShort();
+                _qualityLevel = qualityLevel.ObjectToShort();
             }
-                
-            if (parameters.ContainsKey(7))
+
+            if (parameters.TryGetValue(7, out object durabilityValue))
             {
-                var durability = parameters[7].ObjectToLong();
+                var durability = durabilityValue.ObjectToLong();
                 _durability = FixPoint.FromInternalValue(durability ?? 0);
             }
 
@@ -88,7 +88,7 @@ public class NewEquipmentItemEvent
             {
                 Item = new DiscoveredItem()
                 {
-                    ObjectId = (long)_objectId,
+                    ObjectId = (long) _objectId,
                     ItemIndex = _itemId,
                     Quantity = _quantity,
                     SpellDictionary = SpellDictionary,
@@ -108,7 +108,7 @@ public class NewEquipmentItemEvent
         }
     }
 
-    private ItemQuality ItemQualityMapper(short quality)
+    private static ItemQuality ItemQualityMapper(short quality)
     {
         return quality switch
         {

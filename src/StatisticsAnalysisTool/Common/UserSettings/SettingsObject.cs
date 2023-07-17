@@ -1,4 +1,5 @@
-﻿using StatisticsAnalysisTool.Gathering;
+using System;
+using StatisticsAnalysisTool.Gathering;
 using StatisticsAnalysisTool.Models;
 using System.Collections.Generic;
 
@@ -14,9 +15,15 @@ public class SettingsObject
     public int UpdateItemListByDays { get; set; } = 7;
     public int UpdateItemsJsonByDays { get; set; } = 7;
     public int UpdateMobsJsonByDays { get; set; } = 7;
+    public int UpdateSpellsJsonByDays { get; set; } = 7;
+    public int UpdateLootChestJsonByDays { get; set; } = 7;
+    public int UpdateWorldJsonByDays { get; set; } = 7;
     public string ItemListSourceUrl { get; set; } = "https://raw.githubusercontent.com/ao-data/ao-bin-dumps/master/formatted/items.json";
     public string ItemsJsonSourceUrl { get; set; } = "https://raw.githubusercontent.com/ao-data/ao-bin-dumps/master/items.json";
     public string MobsJsonSourceUrl { get; set; } = "https://raw.githubusercontent.com/ao-data/ao-bin-dumps/master/mobs.json";
+    public string SpellsJsonSourceUrl { get; set; } = "https://raw.githubusercontent.com/ao-data/ao-bin-dumps/master/spells.json";
+    public string LootChestJsonSourceUrl { get; set; } = "https://raw.githubusercontent.com/ao-data/ao-bin-dumps/master/lootchests.json";
+    public string WorldJsonSourceUrl { get; set; } = "https://raw.githubusercontent.com/ao-data/ao-bin-dumps/master/cluster/world.json";
     public bool IsOpenItemWindowInNewWindowChecked { get; set; } = true;
     public bool IsInfoWindowShownOnStart { get; set; } = true;
     public string SelectedAlertSound { get; set; }
@@ -49,6 +56,7 @@ public class SettingsObject
     public double DungeonsGridSplitterPosition { get; set; } = 125;
     public double StorageHistoryGridSplitterPosition { get; set; } = 125;
     public double DamageMeterGridSplitterPosition { get; set; } = 125;
+    public double PartyBuilderGridSplitterPosition { get; set; } = 125;
     public bool ShortDamageMeterToClipboard { get; set; }
     public bool IsTradeMonitoringActive { get; set; } = true;
     public bool IgnoreMailsWithZeroValues { get; set; }
@@ -71,6 +79,7 @@ public class SettingsObject
     public bool IsDamageMeterNaviTabActive { get; set; } = true;
     public bool IsTradeMonitoringNaviTabActive { get; set; } = true;
     public bool IsGatheringNaviTabActive { get; set; } = true;
+    public bool IsPartyBuilderNaviTabActive { get; set; } = true;
     public bool IsStorageHistoryNaviTabActive { get; set; } = true;
     public bool IsMapHistoryNaviTabActive { get; set; } = true;
     public bool IsPlayerInformationNaviTabActive { get; set; } = true;
@@ -78,4 +87,10 @@ public class SettingsObject
     public bool IsNotificationTrackingStatusActive { get; set; } = false;
     public AutoDeleteGatheringStats AutoDeleteGatheringStats { get; set; } = AutoDeleteGatheringStats.NeverDelete;
     public short ExactMatchPlayerNamesLineNumber { get; set; } = 0;
+    public DateTime TradeMonitoringDatePickerTradeFrom { get; set; } = new(2017, 1, 1);
+    public DateTime TradeMonitoringDatePickerTradeTo { get; set; } = DateTime.UtcNow.AddDays(1);
+    public double PartyBuilderMinimalItemPower { get; set; } = 600;
+    public double PartyBuilderMaximumItemPower { get; set; } = 900;
+    public double PartyBuilderMinimalBasicItemPower { get; set; } = 600;
+    public double PartyBuilderMaximumBasicItemPower { get; set; } = 900;
 }

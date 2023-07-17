@@ -79,6 +79,7 @@ public class ClusterController
         _trackingController.LootController.ResetIdentifiedBodies();
         _ = _trackingController.TradeController.RemoveTradesByDaysInSettingsAsync();
         _ = _trackingController.GatheringController.SetGatheredResourcesClosedAsync();
+        _trackingController.PartyBuilderController.UpdateIsPlayerInspectedToFalse();
     }
 
     public static string ComposingMapInfoString(string index, MapType mapType, string instanceName)

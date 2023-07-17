@@ -21,15 +21,30 @@ public class NewCharacterEvent
 
         try
         {
-            if (parameters.ContainsKey(0)) ObjectId = parameters[0].ObjectToLong();
+            if (parameters.TryGetValue(0, out object objectId))
+            {
+                ObjectId = objectId.ObjectToLong();
+            }
 
-            if (parameters.ContainsKey(1)) Name = parameters[1].ToString();
+            if (parameters.TryGetValue(1, out object name))
+            {
+                Name = name.ToString();
+            }
 
-            if (parameters.ContainsKey(7)) Guid = parameters[7].ObjectToGuid();
+            if (parameters.TryGetValue(7, out object guid))
+            {
+                Guid = guid.ObjectToGuid();
+            }
 
-            if (parameters.ContainsKey(8)) GuildName = parameters[8].ToString();
+            if (parameters.TryGetValue(8, out object guildName))
+            {
+                GuildName = guildName.ToString();
+            }
 
-            if (parameters.ContainsKey(13)) Position = (float[]) parameters[13];
+            if (parameters.TryGetValue(13, out object position))
+            {
+                Position = (float[]) position;
+            }
                 
             if (parameters.ContainsKey(34))
             {
@@ -74,7 +89,9 @@ public class NewCharacterEvent
             Shoes = values[4].ObjectToInt(),
             Bag = values[5].ObjectToInt(),
             Cape = values[6].ObjectToInt(),
-            Mount = values[7].ObjectToInt()
+            Mount = values[7].ObjectToInt(),
+            Potion = values[8].ObjectToInt(),
+            BuffFood = values[9].ObjectToInt()
         };
     }
 }
