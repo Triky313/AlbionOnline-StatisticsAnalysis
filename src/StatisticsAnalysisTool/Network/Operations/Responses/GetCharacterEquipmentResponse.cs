@@ -10,7 +10,7 @@ public class GetCharacterEquipmentResponse
 {
     public Guid Guid { get; }
     public double ItemPower { get; }
-    public CharacterEquipment CharacterEquipment { get; } = new();
+    public InternalCharacterEquipment CharacterEquipment { get; } = new();
 
     public GetCharacterEquipmentResponse(Dictionary<byte, object> parameters)
     {
@@ -60,9 +60,9 @@ public class GetCharacterEquipmentResponse
         }
     }
 
-    private CharacterEquipment GetEquipment<T>(IReadOnlyDictionary<int, T> values)
+    private InternalCharacterEquipment GetEquipment<T>(IReadOnlyDictionary<int, T> values)
     {
-        return new CharacterEquipment
+        return new InternalCharacterEquipment
         {
             MainHand = values[0].ObjectToInt(),
             OffHand = values[1].ObjectToInt(),

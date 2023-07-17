@@ -834,7 +834,7 @@ public static class ItemController
 
     #region Item power
 
-    public static int GetAverageItemPower(Item[] items)
+    public static double GetAverageItemPower(Item[] items)
     {
         if (items is not { Length: > 0 })
         {
@@ -842,9 +842,16 @@ public static class ItemController
         }
 
         int totalValue = items.Sum(item => item?.BasicItemPower ?? 0);
+        
+        var itemCount = items.Length;
+        if (items.FirstOrDefault(x => x?.FullItemInformation is Weapon)?.FullItemInformation is Weapon { TwoHanded: true })
+        {
+            var weapon = items.FirstOrDefault(x => x?.FullItemInformation is Weapon);
+            totalValue += weapon?.BasicItemPower ?? 0;
+            itemCount++;
+        }
 
-        double average = (double) totalValue / items.Length;
-        return (int) Math.Round(average);
+        return (double) totalValue / itemCount;
     }
 
     public static int GetBasicItemPower(Item item)

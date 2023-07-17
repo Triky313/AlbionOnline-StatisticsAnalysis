@@ -169,6 +169,9 @@ public class MainWindowViewModel : INotifyPropertyChanged
 
         // Gathering
         GatheringBindings.GridSplitterPosition = new GridLength(SettingsController.CurrentSettings.GatheringGridSplitterPosition);
+
+        // Party Builder
+        PartyBuilderBindings.GridSplitterPosition = new GridLength(SettingsController.CurrentSettings.PartyBuilderGridSplitterPosition);
     }
 
     #region Alert

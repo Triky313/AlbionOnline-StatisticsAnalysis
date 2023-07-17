@@ -771,4 +771,12 @@
         <Setter Property="VerticalAlignment" Value="Top" />
     </Style>
 
+    <Style TargetType="TextBlock" x:Key="Text.Title.1">
+        <Setter Property="FontSize" Value="18"/>
+        <Setter Property="FontWeight" Value="Light"/>
+        <Setter Property="Foreground" Value="{StaticResource SolidColorBrush.Accent.Blue.3}"/>
+        <Setter Property="HorizontalAlignment" Value="Left"/>
+        <Setter Property="Margin" Value="0,5,0,0"/>
+    </Style>
+
 </ResourceDictionary>

@@ -1,5 +1,7 @@
-﻿using StatisticsAnalysisTool.Network.Manager;
+﻿using StatisticsAnalysisTool.Models.NetworkModel;
+using StatisticsAnalysisTool.Network.Manager;
 using StatisticsAnalysisTool.Network.Operations.Responses;
+using System;
 using System.Threading.Tasks;
 
 namespace StatisticsAnalysisTool.Network.Handler;
@@ -15,6 +17,8 @@ public class GetCharacterEquipmentResponseHandler : ResponsePacketHandler<GetCha
 
     protected override async Task OnActionAsync(GetCharacterEquipmentResponse value)
     {
-        await _trackingController.EntityController.SetItemPowerAsync(value.Guid, value.ItemPower);
+        _trackingController.EntityController.SetItemPower(value.Guid, value.ItemPower);
+        _trackingController.PartyBuilderController.UpdateInspectedPlayer(value.Guid, value.CharacterEquipment, value.ItemPower);
+        await Task.CompletedTask;
     }
 }

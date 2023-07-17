@@ -56,6 +56,7 @@ public class SettingsObject
     public double DungeonsGridSplitterPosition { get; set; } = 125;
     public double StorageHistoryGridSplitterPosition { get; set; } = 125;
     public double DamageMeterGridSplitterPosition { get; set; } = 125;
+    public double PartyBuilderGridSplitterPosition { get; set; } = 125;
     public bool ShortDamageMeterToClipboard { get; set; }
     public bool IsTradeMonitoringActive { get; set; } = true;
     public bool IgnoreMailsWithZeroValues { get; set; }

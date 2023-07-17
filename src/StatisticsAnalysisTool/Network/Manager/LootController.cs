@@ -143,7 +143,7 @@ public class LootController : ILootController
             new OtherGrabbedLootNotificationFragment(lootedByName, lootedFromName, lootedByGuild, lootedFromGuild, item, quantity), item.Index);
     }
     
-    #region Lokal player loot tracking
+    #region Loot tracking
 
     private readonly ObservableCollection<IdentifiedBody> _identifiedBodies = new();
 
@@ -239,6 +239,12 @@ public class LootController : ILootController
         _identifiedBodies.Clear();
     }
 
+    public Item GetItemFromDiscoveredLoot(long objectId)
+    {
+        var item = _discoveredLoot?.FirstOrDefault(x => x.ObjectId == objectId);
+        return item?.ItemIndex > -1 ? ItemController.GetItemByIndex(item.ItemIndex) : null;
+    }
+    
     #endregion
 
     #region Top looters

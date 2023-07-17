@@ -151,13 +151,12 @@ public class EntityController
         return _knownEntities?.Any(x => x.Key == guid) ?? false;
     }
 
-    public async Task SetItemPowerAsync(Guid guid, double itemPower)
+    public void SetItemPower(Guid guid, double itemPower)
     {
         var entity = GetEntity(guid);
         if (Math.Abs(entity.Value.ItemPower - itemPower) > 0)
         {
             entity.Value.ItemPower = itemPower;
-            await _trackingController?.PartyBuilderController?.UpdatePartyAsync()!;
         }
     }
 
@@ -433,7 +432,7 @@ public class EntityController
     {
         lock (_newEquipmentItems)
         {
-            foreach (var item in _newEquipmentItems.ToList().Where(x => x?.TimeStamp < DateTime.UtcNow.AddSeconds(-15)))
+            foreach (var item in _newEquipmentItems.ToList().Where(x => x?.TimeStamp < DateTime.UtcNow.AddSeconds(-20)))
             {
                 Application.Current.Dispatcher.Invoke(() =>
                 {
@@ -444,7 +443,7 @@ public class EntityController
 
         lock (_spellEffects)
         {
-            foreach (var spell in _spellEffects.ToList().Where(x => x?.TimeStamp < DateTime.UtcNow.AddSeconds(-15)))
+            foreach (var spell in _spellEffects.ToList().Where(x => x?.TimeStamp < DateTime.UtcNow.AddSeconds(-20)))
             {
                 Application.Current.Dispatcher.Invoke(() =>
                 {
