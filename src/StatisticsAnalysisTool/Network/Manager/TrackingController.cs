@@ -107,9 +107,9 @@ public class TrackingController : ITrackingController
 
         await StatisticController?.LoadFromFileAsync()!;
         await TradeController?.LoadFromFileAsync()!;
-        await GatheringController?.LoadFromFileAsync()!;
         await TreasureController?.LoadFromFileAsync()!;
         await DungeonController?.LoadDungeonFromFileAsync()!;
+        await GatheringController?.LoadFromFileAsync()!;
         await VaultController?.LoadFromFileAsync()!;
 
         DungeonController?.UpdateDungeonStatsUi();

@@ -183,7 +183,7 @@ public class GatheringController
             var enumerable = gathered as Gathered[] ?? gathered.ToArray();
             _mainWindowViewModel?.GatheringBindings?.GatheredCollection?.AddRange(enumerable.AsEnumerable());
             _mainWindowViewModel?.GatheringBindings?.GatheredCollectionView?.Refresh();
-        }, DispatcherPriority.Background, CancellationToken.None);
+        }, DispatcherPriority.Loaded, CancellationToken.None);
     }
 
     #endregion
