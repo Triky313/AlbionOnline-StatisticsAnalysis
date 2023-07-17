@@ -27,11 +27,13 @@ public class EntityController
     private readonly ConcurrentDictionary<long, CharacterEquipmentData> _tempCharacterEquipmentData = new();
     private double _lastLocalEntityGuildTaxInPercent;
     private double _lastLocalEntityClusterTaxInPercent;
+    private readonly TrackingController _trackingController;
 
     public LocalUserData LocalUserData { get; init; } = new();
 
-    public EntityController(MainWindowViewModel mainWindowViewModel)
+    public EntityController(TrackingController trackingController, MainWindowViewModel mainWindowViewModel)
     {
+        _trackingController = trackingController;
         _mainWindowViewModel = mainWindowViewModel;
     }
 
@@ -149,6 +151,15 @@ public class EntityController
         return _knownEntities?.Any(x => x.Key == guid) ?? false;
     }
 
+    public void SetItemPower(Guid guid, double itemPower)
+    {
+        var entity = GetEntity(guid);
+        if (Math.Abs(entity.Value.ItemPower - itemPower) > 0)
+        {
+            entity.Value.ItemPower = itemPower;
+        }
+    }
+
     #endregion
 
     #region Party
@@ -160,6 +171,7 @@ public class EntityController
         {
             entity.Value.IsInParty = true;
             await SetPartyMemberUiAsync();
+            await _trackingController?.PartyBuilderController?.UpdatePartyAsync()!;
         }
     }
 
@@ -182,6 +194,7 @@ public class EntityController
             }
 
             await SetPartyMemberUiAsync();
+            await _trackingController?.PartyBuilderController?.UpdatePartyAsync()!;
         }
     }
 
@@ -193,6 +206,7 @@ public class EntityController
         }
 
         await SetPartyMemberUiAsync();
+        await _trackingController?.PartyBuilderController?.UpdatePartyAsync()!;
     }
 
     public async Task AddLocalEntityToPartyAsync()
@@ -202,6 +216,7 @@ public class EntityController
         {
             localEntity.Value.Value.IsInParty = true;
             await SetPartyMemberUiAsync();
+            await _trackingController?.PartyBuilderController?.UpdatePartyAsync()!;
         }
     }
 
@@ -220,6 +235,7 @@ public class EntityController
         }
 
         await SetPartyMemberUiAsync();
+        await _trackingController?.PartyBuilderController?.UpdatePartyAsync()!;
     }
 
     private async Task SetPartyMemberUiAsync()
@@ -271,7 +287,7 @@ public class EntityController
     {
         return _knownEntities?.FirstOrDefault(x => x.Key == guid).Value?.IsInParty ?? false;
     }
-
+    
     public void CopyPartyToClipboard()
     {
         var output = string.Empty;
@@ -285,12 +301,17 @@ public class EntityController
 
     #region Equipment
 
-    public void SetCharacterEquipment(long objectId, CharacterEquipment equipment)
+    public async Task SetCharacterEquipmentAsync(long objectId, CharacterEquipment equipment)
     {
         var entity = _knownEntities?.FirstOrDefault(x => x.Value.ObjectId == objectId);
         if (entity?.Value != null)
         {
             entity.Value.Value.CharacterEquipment = equipment;
+
+            if (entity.Value.Value.IsInParty)
+            {
+                await _trackingController?.PartyBuilderController?.UpdatePartyAsync()!;
+            }
         }
         else
         {
@@ -411,7 +432,7 @@ public class EntityController
     {
         lock (_newEquipmentItems)
         {
-            foreach (var item in _newEquipmentItems.ToList().Where(x => x?.TimeStamp < DateTime.UtcNow.AddSeconds(-15)))
+            foreach (var item in _newEquipmentItems.ToList().Where(x => x?.TimeStamp < DateTime.UtcNow.AddSeconds(-20)))
             {
                 Application.Current.Dispatcher.Invoke(() =>
                 {
@@ -422,7 +443,7 @@ public class EntityController
 
         lock (_spellEffects)
         {
-            foreach (var spell in _spellEffects.ToList().Where(x => x?.TimeStamp < DateTime.UtcNow.AddSeconds(-15)))
+            foreach (var spell in _spellEffects.ToList().Where(x => x?.TimeStamp < DateTime.UtcNow.AddSeconds(-20)))
             {
                 Application.Current.Dispatcher.Invoke(() =>
                 {

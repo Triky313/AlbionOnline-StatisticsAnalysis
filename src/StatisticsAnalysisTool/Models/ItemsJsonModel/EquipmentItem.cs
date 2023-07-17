@@ -22,6 +22,8 @@ public class EquipmentItem : ItemJsonObject
 
     [JsonPropertyName("@slottype")]
     public string Slottype { get; set; }
+    [JsonIgnore]
+    public SlotType SlotTypeEnum => ItemController.GetSlotType(Slottype);
 
     [JsonPropertyName("@itempowerprogressiontype")]
     public string ItemPowerProgressionType { get; set; }

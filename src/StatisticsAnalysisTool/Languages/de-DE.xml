@@ -750,4 +750,17 @@
 	<translation name="WORLD_JSON_CAN_NOT_BE_LOADED">world.json kann nicht geladen werden.</translation>
 	<translation name="UPDATE_WORLD_JSON_BY_DAYS">world.json aktualisieren: </translation>
 	<translation name="WORLD_JSON_SOURCE_URL">world.json Url Quelle</translation>
+	<translation name="PARTY_BUILDER">Party-Bauer</translation>
+	<translation name="GET_SPELLS_JSON">spells.json erhalten</translation>
+	<translation name="SPELLS_JSON_CAN_NOT_BE_LOADED">spells.json kann nicht geladen werden.</translation>
+	<translation name="CONDITIONS">Bedingungen</translation>
+	<translation name="DESCRIPTIONS">Beschreibungen</translation>
+	<translation name="MINIMAL_ITEM_POWER">Minimale Gegenstandsstärke</translation>
+	<translation name="MAXIMUM_ITEM_POWER">Maximale Gegenstandsstärke</translation>
+	<translation name="MINIMAL_BASIC_ITEM_POWER">Minimale Basis-Gegenstandskraft</translation>
+	<translation name="MAXIMUM_BASIC_ITEM_POWER">Maximale Basis-Gegenstandskraft</translation>
+	<translation name="IP_OR_BIP_BETWEEN_MIN_AND_MAX_RANGE">Gegenstandsstärke oder Grundgegenstandsstärke zwischen minimaler und maximaler Reichweite</translation>
+	<translation name="IP_OR_BIP_OVER_MAX_RANGE">Gegenstandsstärke oder Basisgegenstandsstärke über der maximalen Reichweite</translation>
+	<translation name="IP_OR_BIP_UNDER_MIN_RANGE">Gegenstandsstärke oder Grundgegenstandsstärke unter Mindestbereich</translation>
+	<translation name="PLAYER_IS_NOT_INSPECTED">Spieler ist nicht inspiziert</translation>
 </translations>

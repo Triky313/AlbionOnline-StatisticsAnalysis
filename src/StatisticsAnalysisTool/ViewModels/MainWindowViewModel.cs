@@ -30,6 +30,7 @@ using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Data;
 using System.Windows.Media;
+using StatisticsAnalysisTool.PartyBuilder;
 
 // ReSharper disable UnusedMember.Global
 
@@ -85,6 +86,7 @@ public class MainWindowViewModel : INotifyPropertyChanged
     private Visibility _gridTryToLoadTheItemJsonAgainVisibility = Visibility.Collapsed;
     private Visibility _gridTryToLoadTheMobsJsonAgainVisibility = Visibility.Collapsed;
     private Visibility _gridTryToLoadTheWorldJsonAgainVisibility = Visibility.Collapsed;
+    private Visibility _gridTryToLoadTheSpellsJsonAgainVisibility = Visibility.Collapsed;
     private Visibility _toolTasksVisibility = Visibility.Collapsed;
     private double _taskProgressbarMinimum;
     private double _taskProgressbarMaximum = 100;
@@ -109,6 +111,7 @@ public class MainWindowViewModel : INotifyPropertyChanged
     private Visibility _damageMeterTabVisibility = Visibility.Visible;
     private Visibility _tradeMonitoringTabVisibility = Visibility.Visible;
     private Visibility _gatheringTabVisibility = Visibility.Visible;
+    private Visibility _partyBuilderTabVisibility = Visibility.Visible;
     private Visibility _storageHistoryTabVisibility = Visibility.Visible;
     private Visibility _mapHistoryTabVisibility = Visibility.Visible;
     private Visibility _playerInformationTabVisibility = Visibility.Visible;
@@ -117,6 +120,7 @@ public class MainWindowViewModel : INotifyPropertyChanged
     private string _toolTaskCurrentTaskName;
     private ToolTaskBindings _toolTaskBindings = new();
     private string _serverTypeText;
+    private PartyBuilderBindings _partyBuilderBindings = new();
 
     public MainWindowViewModel()
     {
@@ -165,6 +169,9 @@ public class MainWindowViewModel : INotifyPropertyChanged
 
         // Gathering
         GatheringBindings.GridSplitterPosition = new GridLength(SettingsController.CurrentSettings.GatheringGridSplitterPosition);
+
+        // Party Builder
+        PartyBuilderBindings.GridSplitterPosition = new GridLength(SettingsController.CurrentSettings.PartyBuilderGridSplitterPosition);
     }
 
     #region Alert
@@ -258,6 +265,7 @@ public class MainWindowViewModel : INotifyPropertyChanged
         GridTryToLoadTheItemListAgainVisibility = Visibility.Collapsed;
         GridTryToLoadTheItemJsonAgainVisibility = Visibility.Collapsed;
         GridTryToLoadTheMobsJsonAgainVisibility = Visibility.Collapsed;
+        GridTryToLoadTheSpellsJsonAgainVisibility = Visibility.Collapsed;
 
         ServerTypeText = LanguageController.Translation("UNKNOWN_SERVER");
 
@@ -332,6 +340,24 @@ public class MainWindowViewModel : INotifyPropertyChanged
                 itemsTaskTextObject.SetStatus(TaskTextObject.TaskTextObjectStatus.Done);
             }
         }
+
+        //if (!SpellData.IsDataLoaded())
+        //{
+        //    var itemsTaskTextObject = new TaskTextObject(LanguageController.Translation("GET_SPELLS_JSON"));
+        //    ToolTaskBindings.Add(itemsTaskTextObject);
+        //    var isSpellsJsonLoaded = await SpellData.LoadDataAsync().ConfigureAwait(true);
+        //    if (!isSpellsJsonLoaded)
+        //    {
+        //        SetErrorBar(Visibility.Visible, LanguageController.Translation("SPELLS_JSON_CAN_NOT_BE_LOADED"));
+        //        GridTryToLoadTheSpellsJsonAgainVisibility = Visibility.Visible;
+        //        IsTaskProgressbarIndeterminate = false;
+        //        itemsTaskTextObject.SetStatus(TaskTextObject.TaskTextObjectStatus.Canceled);
+        //    }
+        //    else
+        //    {
+        //        itemsTaskTextObject.SetStatus(TaskTextObject.TaskTextObjectStatus.Done);
+        //    }
+        //}
 
         await ItemController.SetFavoriteItemsFromLocalFileAsync();
 
@@ -590,6 +616,16 @@ public class MainWindowViewModel : INotifyPropertyChanged
             trackingController.LootController.IsPartyLootOnly = _isTrackingPartyLootOnly;
 
             SettingsController.CurrentSettings.IsTrackingPartyLootOnly = _isTrackingPartyLootOnly;
+            OnPropertyChanged();
+        }
+    }
+
+    public PartyBuilderBindings PartyBuilderBindings
+    {
+        get => _partyBuilderBindings;
+        set
+        {
+            _partyBuilderBindings = value;
             OnPropertyChanged();
         }
     }
@@ -1109,6 +1145,16 @@ public class MainWindowViewModel : INotifyPropertyChanged
         }
     }
 
+    public Visibility GridTryToLoadTheSpellsJsonAgainVisibility
+    {
+        get => _gridTryToLoadTheSpellsJsonAgainVisibility;
+        set
+        {
+            _gridTryToLoadTheSpellsJsonAgainVisibility = value;
+            OnPropertyChanged();
+        }
+    }
+
     public double TaskProgressbarMinimum
     {
         get => _taskProgressbarMinimum;
@@ -1235,6 +1281,16 @@ public class MainWindowViewModel : INotifyPropertyChanged
         set
         {
             _gatheringTabVisibility = value;
+            OnPropertyChanged();
+        }
+    }
+
+    public Visibility PartyBuilderTabVisibility
+    {
+        get => _partyBuilderTabVisibility;
+        set
+        {
+            _partyBuilderTabVisibility = value;
             OnPropertyChanged();
         }
     }

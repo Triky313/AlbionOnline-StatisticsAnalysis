@@ -1,74 +1,56 @@
-﻿using StatisticsAnalysisTool.Common;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Reflection;
+using StatisticsAnalysisTool.Common;
 using StatisticsAnalysisTool.Models.NetworkModel;
 
-namespace StatisticsAnalysisTool.Network.Events;
+namespace StatisticsAnalysisTool.Network.Operations.Responses;
 
-public class NewCharacterEvent
+public class GetCharacterEquipmentResponse
 {
-    public long? ObjectId { get; }
-    public Guid? Guid { get; }
-    public string Name { get; }
-    public string GuildName { get; }
-    public float[] Position { get; }
-    public CharacterEquipment CharacterEquipment { get; } = new();
+    public Guid Guid { get; }
+    public double ItemPower { get; }
+    public InternalCharacterEquipment CharacterEquipment { get; } = new();
 
-    public NewCharacterEvent(Dictionary<byte, object> parameters)
+    public GetCharacterEquipmentResponse(Dictionary<byte, object> parameters)
     {
         ConsoleManager.WriteLineForNetworkHandler(GetType().Name, parameters);
 
         try
         {
-            if (parameters.TryGetValue(0, out object objectId))
+            if (parameters.TryGetValue(0, out object guid))
             {
-                ObjectId = objectId.ObjectToLong();
+                Guid = guid.ObjectToGuid() ?? Guid.Empty;
             }
-
-            if (parameters.TryGetValue(1, out object name))
+            
+            if (parameters.ContainsKey(1))
             {
-                Name = name.ToString();
-            }
-
-            if (parameters.TryGetValue(7, out object guid))
-            {
-                Guid = guid.ObjectToGuid();
-            }
-
-            if (parameters.TryGetValue(8, out object guildName))
-            {
-                GuildName = guildName.ToString();
-            }
-
-            if (parameters.TryGetValue(13, out object position))
-            {
-                Position = (float[]) position;
-            }
-                
-            if (parameters.ContainsKey(34))
-            {
-                var valueType = parameters[34].GetType();
+                var valueType = parameters[1].GetType();
                 switch (valueType.IsArray)
                 {
                     case true when typeof(byte[]).Name == valueType.Name:
                     {
-                        var values = ((byte[])parameters[34]).ToDictionary();
+                        var values = ((byte[])parameters[1]).ToDictionary();
                         CharacterEquipment = GetEquipment(values);
                         break;
                     }
                     case true when typeof(short[]).Name == valueType.Name:
                     {
-                        var values = ((short[])parameters[34]).ToDictionary();
+                        var values = ((short[])parameters[1]).ToDictionary();
                         CharacterEquipment = GetEquipment(values);
                         break;
                     }
                     case true when typeof(int[]).Name == valueType.Name:
                     {
-                        var values = ((int[])parameters[34]).ToDictionary();
+                        var values = ((int[])parameters[1]).ToDictionary();
                         CharacterEquipment = GetEquipment(values);
                         break;
                     }
+                }
+
+                if (parameters.TryGetValue(3, out object itemPower))
+                {
+                    ItemPower = itemPower.ObjectToDouble();
                 }
             }
         }
@@ -78,9 +60,9 @@ public class NewCharacterEvent
         }
     }
 
-    private CharacterEquipment GetEquipment<T>(IReadOnlyDictionary<int, T> values)
+    private InternalCharacterEquipment GetEquipment<T>(IReadOnlyDictionary<int, T> values)
     {
-        return new CharacterEquipment
+        return new InternalCharacterEquipment
         {
             MainHand = values[0].ObjectToInt(),
             OffHand = values[1].ObjectToInt(),

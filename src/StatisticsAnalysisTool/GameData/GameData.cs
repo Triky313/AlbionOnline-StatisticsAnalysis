@@ -1,4 +1,4 @@
-﻿using log4net;
+using log4net;
 using StatisticsAnalysisTool.Common;
 using StatisticsAnalysisTool.GameData.Models;
 using StatisticsAnalysisTool.Models;
@@ -103,6 +103,7 @@ public static class GameData
                 MobJsonRootObject mobRootObject => mobRootObject.Mobs?.Mob as List<T> ?? new List<T>(),
                 LootChestRoot lootChestRoot => lootChestRoot.LootChests?.LootChest as List<T> ?? new List<T>(),
                 WorldJsonRootObject worldJsonRoot => worldJsonRoot.World.Clusters.Cluster as List<T> ?? new List<T>(),
+                SpellsJsonRootObject spellsJsonRoot => spellsJsonRoot.SpellsJson.ActiveSpells as List<T> ?? new List<T>(),
                 _ => new List<T>()
             };
         }
