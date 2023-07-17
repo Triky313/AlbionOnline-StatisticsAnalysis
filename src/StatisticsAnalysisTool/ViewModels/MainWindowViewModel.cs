@@ -120,7 +120,7 @@ public class MainWindowViewModel : INotifyPropertyChanged
     private string _toolTaskCurrentTaskName;
     private ToolTaskBindings _toolTaskBindings = new();
     private string _serverTypeText;
-    private PartyPlannerBindings _partyBuilderBindings = new();
+    private PartyBuilderBindings _partyBuilderBindings = new();
 
     public MainWindowViewModel()
     {
@@ -620,7 +620,7 @@ public class MainWindowViewModel : INotifyPropertyChanged
         }
     }
 
-    public PartyPlannerBindings PartyBuilderBindings
+    public PartyBuilderBindings PartyBuilderBindings
     {
         get => _partyBuilderBindings;
         set

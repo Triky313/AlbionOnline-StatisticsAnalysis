@@ -9,7 +9,7 @@ using System.Windows.Data;
 
 namespace StatisticsAnalysisTool.PartyBuilder;
 
-public class PartyPlannerBindings : INotifyPropertyChanged
+public class PartyBuilderBindings : INotifyPropertyChanged
 {
     private ObservableCollection<PartyBuilderPlayer> _party = new();
     private ListCollectionView _partyCollectionView;
@@ -19,7 +19,7 @@ public class PartyPlannerBindings : INotifyPropertyChanged
     private double _minimalBasicItemPower;
     private double _maximumBasicItemPower;
 
-    public PartyPlannerBindings()
+    public PartyBuilderBindings()
     {
         PartyCollectionView = CollectionViewSource.GetDefaultView(Party) as ListCollectionView;
 
@@ -30,6 +30,11 @@ public class PartyPlannerBindings : INotifyPropertyChanged
             PartyCollectionView.CustomSort = new PartyPlannerPlayerComparer();
             PartyCollectionView.Refresh();
         }
+
+        MinimalItemPower = SettingsController.CurrentSettings.PartyBuilderMinimalItemPower;
+        MaximumItemPower = SettingsController.CurrentSettings.PartyBuilderMaximumItemPower;
+        MinimalBasicItemPower = SettingsController.CurrentSettings.PartyBuilderMinimalBasicItemPower;
+        MaximumBasicItemPower = SettingsController.CurrentSettings.PartyBuilderMaximumBasicItemPower;
     }
 
     public ListCollectionView PartyCollectionView
@@ -59,6 +64,7 @@ public class PartyPlannerBindings : INotifyPropertyChanged
         set
         {
             _minimalItemPower = value;
+            SettingsController.CurrentSettings.PartyBuilderMinimalItemPower = _minimalItemPower;
             OnPropertyChanged();
         }
     }
@@ -69,6 +75,7 @@ public class PartyPlannerBindings : INotifyPropertyChanged
         set
         {
             _maximumItemPower = value;
+            SettingsController.CurrentSettings.PartyBuilderMaximumItemPower = _maximumItemPower;
             OnPropertyChanged();
         }
     }
@@ -79,6 +86,7 @@ public class PartyPlannerBindings : INotifyPropertyChanged
         set
         {
             _minimalBasicItemPower = value;
+            SettingsController.CurrentSettings.PartyBuilderMinimalBasicItemPower = _minimalBasicItemPower;
             OnPropertyChanged();
         }
     }
@@ -89,6 +97,7 @@ public class PartyPlannerBindings : INotifyPropertyChanged
         set
         {
             _maximumBasicItemPower = value;
+            SettingsController.CurrentSettings.PartyBuilderMaximumBasicItemPower = _maximumBasicItemPower;
             OnPropertyChanged();
         }
     }

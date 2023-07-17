@@ -79,7 +79,7 @@ public class SettingsObject
     public bool IsDamageMeterNaviTabActive { get; set; } = true;
     public bool IsTradeMonitoringNaviTabActive { get; set; } = true;
     public bool IsGatheringNaviTabActive { get; set; } = true;
-    public bool IsPartyPlannerNaviTabActive { get; set; } = true;
+    public bool IsPartyBuilderNaviTabActive { get; set; } = true;
     public bool IsStorageHistoryNaviTabActive { get; set; } = true;
     public bool IsMapHistoryNaviTabActive { get; set; } = true;
     public bool IsPlayerInformationNaviTabActive { get; set; } = true;
@@ -89,4 +89,8 @@ public class SettingsObject
     public short ExactMatchPlayerNamesLineNumber { get; set; } = 0;
     public DateTime TradeMonitoringDatePickerTradeFrom { get; set; } = new(2017, 1, 1);
     public DateTime TradeMonitoringDatePickerTradeTo { get; set; } = DateTime.UtcNow.AddDays(1);
+    public double PartyBuilderMinimalItemPower { get; set; } = 600;
+    public double PartyBuilderMaximumItemPower { get; set; } = 900;
+    public double PartyBuilderMinimalBasicItemPower { get; set; } = 600;
+    public double PartyBuilderMaximumBasicItemPower { get; set; } = 900;
 }

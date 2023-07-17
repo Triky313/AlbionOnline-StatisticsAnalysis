@@ -1,6 +1,5 @@
 ﻿using StatisticsAnalysisTool.ViewModels;
 using System.Windows.Controls;
-using static SkiaSharp.HarfBuzz.SKShaper;
 
 namespace StatisticsAnalysisTool.UserControls;
 /// <summary>
