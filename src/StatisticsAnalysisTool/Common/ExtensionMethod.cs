@@ -259,9 +259,10 @@ public static class ExtensionMethod
     public static string DateTimeToLastUpdateTime(this DateTime dateTime)
     {
         var endTime = DateTime.UtcNow;
-        var minutes = (endTime - dateTime).TotalMinutes;
-        var hours = (endTime - dateTime).TotalHours;
-        var days = (endTime - dateTime).TotalDays;
+        var timeSpan = endTime - dateTime;
+        var minutes = timeSpan.TotalMinutes;
+        var hours = timeSpan.TotalHours;
+        var days = timeSpan.TotalDays;
 
         if (minutes <= 120) return $"{minutes:N0} {LanguageController.Translation("MINUTES")}";
 
@@ -279,17 +280,19 @@ public static class ExtensionMethod
             return ValueTimeStatus.NoValue;
         }
 
-        if (dateTime.AddHours(8) <= DateTime.UtcNow)
+        var currentDateTime = DateTime.UtcNow;
+
+        if (dateTime.AddHours(8) <= currentDateTime)
         {
             return ValueTimeStatus.ToOldThird;
         }
 
-        if (dateTime.AddHours(4) <= DateTime.UtcNow)
+        if (dateTime.AddHours(4) <= currentDateTime)
         {
             return ValueTimeStatus.ToOldSecond;
         }
 
-        if (dateTime.AddHours(2) <= DateTime.UtcNow)
+        if (dateTime.AddHours(2) <= currentDateTime)
         {
             return ValueTimeStatus.ToOldFirst;
         }
