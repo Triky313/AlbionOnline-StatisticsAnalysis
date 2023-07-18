@@ -1,7 +1,6 @@
 ﻿using StatisticsAnalysisTool.Common;
 using StatisticsAnalysisTool.Enumerations;
 using StatisticsAnalysisTool.GameData;
-using StatisticsAnalysisTool.Models;
 using StatisticsAnalysisTool.Models.NetworkModel;
 using StatisticsAnalysisTool.Network.Notification;
 using StatisticsAnalysisTool.Properties;
@@ -39,7 +38,7 @@ public class Dungeon : INotifyPropertyChanged
     private bool _isBestTime;
     private string _mainMapIndex;
     private string _mainMapName;
-    private List<Guid> _guidList;
+    private List<Guid> _guidList = new ();
     private DungeonMode _mode = DungeonMode.Unknown;
     private double _reSpec;
     private double _reSpecPerHour;
@@ -82,6 +81,8 @@ public class Dungeon : INotifyPropertyChanged
     public List<DungeonEventObject> DungeonEventObjects { get; set; } = new();
     public List<TimeCollectObject> DungeonRunTimes { get; } = new();
     public List<DungeonLoot> DungeonLoot { get; set; } = new();
+    public DungeonLoot MostExpensiveLoot => DungeonLoot?.MaxBy(x => x?.EstimatedMarketValueInternal);
+    public long TotalLootInSilver => DungeonLoot.Sum(x => x.EstimatedMarketValue.IntegerValue);
 
     public string DungeonHash => $"{EnterDungeonFirstTime.Ticks}{string.Join(",", GuidList)}";
 
@@ -96,7 +97,7 @@ public class Dungeon : INotifyPropertyChanged
         GuidList.Add(guid);
         Status = status;
         AddTimer(DateTime.UtcNow);
-        Mode = Mode == DungeonMode.Unknown ? DungeonObjectData.GetDungeonMode(mainMapIndex) : Mode;
+        Mode = Mode == DungeonMode.Unknown ? DungeonController.GetDungeonMode(mainMapIndex) : Mode;
     }
 
     public Dungeon(int dungeonNumber, List<Guid> guidList, string mainMapIndex, DateTime enterDungeonFirstTime)
@@ -632,7 +633,7 @@ public class Dungeon : INotifyPropertyChanged
     public double Fame
     {
         get => _fame;
-        private set
+        set
         {
             _fame = value;
             FamePerHour = Utilities.GetValuePerHourToDouble(Fame, TotalRunTimeInSeconds <= 0 ? (DateTime.UtcNow - EnterDungeonFirstTime).Seconds : TotalRunTimeInSeconds);
@@ -643,7 +644,7 @@ public class Dungeon : INotifyPropertyChanged
     public double ReSpec
     {
         get => _reSpec;
-        private set
+        set
         {
             _reSpec = value;
             ReSpecPerHour = Utilities.GetValuePerHourToDouble(ReSpec, TotalRunTimeInSeconds <= 0 ? (DateTime.UtcNow - EnterDungeonFirstTime).Seconds : TotalRunTimeInSeconds);
@@ -654,7 +655,7 @@ public class Dungeon : INotifyPropertyChanged
     public double Silver
     {
         get => _silver;
-        private set
+        set
         {
             _silver = value;
             SilverPerHour = Utilities.GetValuePerHourToDouble(Silver, TotalRunTimeInSeconds <= 0 ? (DateTime.UtcNow - EnterDungeonFirstTime).Seconds : TotalRunTimeInSeconds);
@@ -665,7 +666,7 @@ public class Dungeon : INotifyPropertyChanged
     public double FactionFlags
     {
         get => _factionFlags;
-        private set
+        set
         {
             _factionFlags = value;
             FactionFlagsPerHour = Utilities.GetValuePerHourToDouble(FactionFlags, TotalRunTimeInSeconds <= 0 ? (DateTime.UtcNow - EnterDungeonFirstTime).Seconds : TotalRunTimeInSeconds);
@@ -676,7 +677,7 @@ public class Dungeon : INotifyPropertyChanged
     public double FactionCoins
     {
         get => _factionCoins;
-        private set
+        set
         {
             _factionCoins = value;
             FactionCoinsPerHour = Utilities.GetValuePerHourToDouble(FactionCoins, TotalRunTimeInSeconds <= 0 ? (DateTime.UtcNow - EnterDungeonFirstTime).Seconds : TotalRunTimeInSeconds);
@@ -728,8 +729,7 @@ public class Dungeon : INotifyPropertyChanged
     public double Might
     {
         get => _might;
-        // ReSharper disable once UnusedMember.Local
-        private set
+        set
         {
             _might = value;
             MightPerHour = Utilities.GetValuePerHourToDouble(Might, TotalRunTimeInSeconds <= 0 ? (DateTime.UtcNow - EnterDungeonFirstTime).Seconds : TotalRunTimeInSeconds);
@@ -746,8 +746,7 @@ public class Dungeon : INotifyPropertyChanged
     public double Favor
     {
         get => _favor;
-        // ReSharper disable once UnusedMember.Local
-        private set
+        set
         {
             _favor = value;
             FavorPerHour = Utilities.GetValuePerHourToDouble(Favor, TotalRunTimeInSeconds <= 0 ? (DateTime.UtcNow - EnterDungeonFirstTime).Seconds : TotalRunTimeInSeconds);

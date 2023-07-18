@@ -1,11 +1,11 @@
-﻿using System;
-using StatisticsAnalysisTool.Common;
+﻿using StatisticsAnalysisTool.Common;
+using StatisticsAnalysisTool.Network.Manager;
 using StatisticsAnalysisTool.ViewModels;
 using StatisticsAnalysisTool.Views;
+using System;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Windows;
-using StatisticsAnalysisTool.Network.Manager;
 
 namespace StatisticsAnalysisTool.UserControls;
 
@@ -24,12 +24,11 @@ public partial class DungeonControl
         var dialog = new DialogWindow(LanguageController.Translation("RESET_DUNGEON_TRACKER"), LanguageController.Translation("SURE_YOU_WANT_TO_RESET_DUNGEON_TRACKER"));
         var dialogResult = dialog.ShowDialog();
 
-        var vm = (MainWindowViewModel)DataContext;
-
         if (dialogResult is true)
         {
+            var vm = (MainWindowViewModel) DataContext;
+            vm?.DungeonBindings?.ResetDungeons();
             var trackingController = ServiceLocator.Resolve<TrackingController>();
-            trackingController?.DungeonController?.ResetDungeons();
             _ = trackingController?.DungeonController?.SetOrUpdateDungeonsDataUiAsync();
         }
     }
@@ -38,8 +37,6 @@ public partial class DungeonControl
     {
         var dialog = new DialogWindow(LanguageController.Translation("RESET_TODAYS_DUNGEONS"), LanguageController.Translation("SURE_YOU_WANT_TO_RESET_DUNGEONS"));
         var dialogResult = dialog.ShowDialog();
-
-        var vm = (MainWindowViewModel)DataContext;
 
         if (dialogResult is true)
         {
@@ -54,7 +51,7 @@ public partial class DungeonControl
         var dialog = new DialogWindow(LanguageController.Translation("DELETE_SELECTED_DUNGEONS"), LanguageController.Translation("SURE_YOU_WANT_TO_DELETE_SELECTED_DUNGEONS"));
         var dialogResult = dialog.ShowDialog();
 
-        var vm = (MainWindowViewModel)DataContext;
+        var vm = (MainWindowViewModel) DataContext;
 
         if (dialogResult is true)
         {
@@ -72,7 +69,7 @@ public partial class DungeonControl
         var dialog = new DialogWindow(LanguageController.Translation("DELETE_ZERO_FAME_DUNGEONS"), LanguageController.Translation("SURE_YOU_WANT_TO_DELETE_ZERO_FAME_DUNGEONS"));
         var dialogResult = dialog.ShowDialog();
 
-        var vm = (MainWindowViewModel)DataContext;
+        var vm = (MainWindowViewModel) DataContext;
 
         if (dialogResult is true)
         {

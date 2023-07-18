@@ -75,13 +75,13 @@ public class DungeonController
                 lastDungeon?.EndTimer();
             }
 
-            _dungeonBindings?.Dungeons.Where(x => x.Status != DungeonStatus.Done).ToList().ForEach(x => x.Status = DungeonStatus.Done);
+            Application.Current.Dispatcher.Invoke(() => { _dungeonBindings?.Dungeons.Where(x => x.Status != DungeonStatus.Done).ToList().ForEach(x => x.Status = DungeonStatus.Done); });
 
             var newDungeon = new Dungeon(ClusterController.CurrentCluster.MainClusterIndex,
                 mapGuid ?? new Guid(0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0), DungeonStatus.Active);
             SetDungeonMapType(newDungeon, mapType);
 
-            _dungeonBindings?.Dungeons.Insert(0, newDungeon);
+            Application.Current.Dispatcher.Invoke(() => { _dungeonBindings?.Dungeons.Insert(0, newDungeon); });
         }
         // Activate exist dungeon again
         else if (IsDungeonCluster(mapType, mapGuid) && !ExistDungeon(_lastMapGuid) && ExistDungeon(_currentGuid) || IsDungeonCluster(mapType, mapGuid) && mapType is MapType.CorruptedDungeon or MapType.HellGate)
@@ -103,7 +103,7 @@ public class DungeonController
             _lastGuidWithRecognizedLevel = new List<Guid>();
         }
 
-        RemoveDungeonsAfterCertainNumber(_dungeonBindings.Dungeons, MaxDungeons);
+        RemoveDungeonsAfterCertainNumber(_dungeonBindings?.Dungeons, MaxDungeons);
 
         _lastMapGuid = mapGuid;
 
@@ -113,18 +113,12 @@ public class DungeonController
         UpdateDungeonChestsUi();
     }
 
-    public void ResetDungeons()
-    {
-        _dungeonBindings?.Dungeons?.Clear();
-        Application.Current.Dispatcher.Invoke(() => { _dungeonBindings?.Dungeons?.Clear(); });
-    }
-
     public void ResetDungeonsByDateAscending(DateTime date)
     {
         var dungeonsToDelete = _dungeonBindings.Dungeons?.Where(x => x.EnterDungeonFirstTime >= date).ToList();
         foreach (var dungeonObject in dungeonsToDelete ?? new List<Dungeon>())
         {
-            _dungeonBindings?.Dungeons?.Remove(dungeonObject);
+            Application.Current.Dispatcher.Invoke(() => { _dungeonBindings?.Dungeons?.Remove(dungeonObject); });
         }
 
         var trackingDungeonsToDelete = _dungeonBindings?.Dungeons?.Where(x => x.EnterDungeonFirstTime >= date).ToList();
@@ -186,8 +180,11 @@ public class DungeonController
                 var dateTime = GetLowestDate(dungeons);
                 if (dateTime != null)
                 {
-                    var removableItem = dungeons.FirstOrDefault(x => x.EnterDungeonFirstTime == dateTime);
-                    dungeons.Remove(removableItem);
+                    Application.Current.Dispatcher.Invoke(() =>
+                    {
+                        var removableItem = dungeons.FirstOrDefault(x => x.EnterDungeonFirstTime == dateTime);
+                        dungeons.Remove(removableItem);
+                    });
                 }
             }
         }
@@ -219,7 +216,7 @@ public class DungeonController
     {
         await foreach (var dungeonFragment in _dungeonBindings?.Dungeons?.ToAsyncEnumerable().ConfigureAwait(false) ?? new ConfiguredCancelableAsyncEnumerable<Dungeon>())
         {
-            var dungeonObjectFound = _dungeonBindings?.Dungeons?.Select(x => x.DungeonHash).Contains(dungeonFragment.DungeonHash);
+            var dungeonObjectFound = _dungeonBindings?.Dungeons?.Select(x => x.DungeonHash).Contains(dungeonFragment.DungeonHash) ?? false;
             if (dungeonObjectFound)
             {
                 continue;
@@ -338,7 +335,7 @@ public class DungeonController
 
     public async Task SetOrUpdateDungeonsDataUiAsync()
     {
-        var orderedDungeon = _dungeonBindings?.Dungeons?.OrderBy(x => x.EnterDungeonFirstTime).ToList();
+        var orderedDungeon = _dungeonBindings?.Dungeons?.OrderBy(x => x.EnterDungeonFirstTime).ToList() ?? new List<Dungeon>();
         foreach (var dungeonObject in orderedDungeon)
         {
             var dungeonFragment = _dungeonBindings?.Dungeons?.FirstOrDefault(x => x.DungeonHash == dungeonObject.DungeonHash);
@@ -441,17 +438,17 @@ public class DungeonController
                 var eventObject = new DungeonEventObject()
                 {
                     UniqueName = uniqueName,
-                    IsBossChest = DungeonObjectData.IsBossChest(uniqueName),
+                    IsBossChest = IsBossChest(uniqueName),
                     Id = id
                 };
 
                 dun.DungeonEventObjects?.Add(eventObject);
 
-                dun.Faction = DungeonObjectData.GetFaction(uniqueName);
+                dun.Faction = GetFaction(uniqueName);
 
                 if (dun.Mode == DungeonMode.Unknown)
                 {
-                    dun.Mode = DungeonObjectData.GetDungeonMode(uniqueName);
+                    dun.Mode = GetDungeonMode(uniqueName);
                 }
 
                 await SetOrUpdateDungeonsDataUiAsync().ConfigureAwait(false);
@@ -843,7 +840,7 @@ public class DungeonController
         var dungeonStatsFilter = _dungeonBindings?.DungeonStatsFilter;
 
         var dungeonsWithEnterDungeonFiltering = _dungeonBindings?.Dungeons
-            .Where(x => x.EnterDungeonFirstTime > chestIsNewerAsDateTime || chestIsNewerAsDateTime == null);
+            .Where(x => x.EnterDungeonFirstTime > chestIsNewerAsDateTime || chestIsNewerAsDateTime == null) ?? new List<Dungeon>();
 
         var dungeonWithDungeonModeFilters = dungeonsWithEnterDungeonFiltering
             .Where(x => dungeonStatsFilter?.DungeonModeFilters != null && dungeonStatsFilter.DungeonModeFilters.Contains(x.Mode) || dungeonStatsFilter?.DungeonModeFilters == null);
@@ -952,8 +949,8 @@ public class DungeonController
 
         var filteredDungeons = _dungeonBindings?.Dungeons
             ?.Where(x => x?.EnterDungeonFirstTime > dungeonIsNewerAsDateTime && filters.Contains(x.Mode) && tierFilters.Contains(x.Tier) && levelFilters.Contains((ItemLevel) x.Level)).ToList();
-        var mostExpensiveLoot = filteredDungeons?.MaxBy(x => x.MostExpensiveLoot?.EstimatedMarketValueInternal) ?? 0;
-        return mostExpensiveLoot?.MostExpensiveLoot;
+        var mostExpensiveLoot = filteredDungeons?.MaxBy(x => x?.MostExpensiveLoot?.EstimatedMarketValueInternal) ?? new Dungeon();
+        return mostExpensiveLoot.MostExpensiveLoot;
     }
 
     private long GetLootInSilver(DateTime dungeonIsNewerAsDateTime)
@@ -998,9 +995,9 @@ public class DungeonController
 
         try
         {
-            lock (_dungeons)
+            lock (_dungeonBindings.Dungeons)
             {
-                var dun = _dungeons?.FirstOrDefault(x => x.GuidList.Contains(currentGuid) && x.Status == DungeonStatus.Active);
+                var dun = _dungeonBindings?.Dungeons?.FirstOrDefault(x => x.GuidList.Contains(currentGuid) && x.Status == DungeonStatus.Active);
                 if (dun == null)
                 {
                     return;
@@ -1044,10 +1041,10 @@ public class DungeonController
 
         try
         {
-            lock (_dungeons)
+            lock (_dungeonBindings.Dungeons)
             {
                 var mobTier = (Tier) MobsData.GetMobTierByIndex((int) mobIndex);
-                var dun = _dungeons?.FirstOrDefault(x => x.GuidList.Contains(currentGuid) && x.Status == DungeonStatus.Active);
+                var dun = _dungeonBindings?.Dungeons?.FirstOrDefault(x => x.GuidList.Contains(currentGuid) && x.Status == DungeonStatus.Active);
                 if (dun == null || dun.Tier >= mobTier)
                 {
                     return;
@@ -1225,7 +1222,6 @@ public class DungeonController
             var enumerable = dungeons as Dungeon[] ?? dungeons.ToArray();
             _dungeonBindings?.Dungeons?.AddRange(enumerable.AsEnumerable());
             _dungeonBindings?.DungeonsCollectionView?.Refresh();
-            _dungeonBindings?.Stats?.SetTradeStats(enumerable);
         }, DispatcherPriority.Background, CancellationToken.None);
     }
 

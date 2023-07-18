@@ -43,6 +43,11 @@ public class DungeonBindings : INotifyPropertyChanged
         }
     }
 
+    public void ResetDungeons()
+    {
+        Dungeons?.Clear();
+    }
+
     public ObservableRangeCollection<Dungeon> Dungeons
     {
         get => _dungeons;
