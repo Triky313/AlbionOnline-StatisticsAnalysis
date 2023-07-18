@@ -28,7 +28,6 @@ public class SettingsWindowViewModel : INotifyPropertyChanged
     private static FileInformation _languagesSelection;
     private static ObservableCollection<SettingDataInformation> _refreshRates = new();
     private static SettingDataInformation _refreshRatesSelection;
-    private static ObservableCollection<SettingDataInformation> _updateItemListByDays = new();
     private static SettingDataInformation _updateItemListByDaysSelection;
     private static readonly ILog Log = LogManager.GetLogger(MethodBase.GetCurrentMethod()?.DeclaringType);
     private ObservableCollection<FileInformation> _alertSounds = new();
@@ -41,8 +40,10 @@ public class SettingsWindowViewModel : INotifyPropertyChanged
     private string _goldStatsApiUrl;
     private bool _isLootLoggerSaveReminderActive;
     private string _itemsJsonSourceUrl;
+    private static ObservableCollection<SettingDataInformation> _updateItemListByDays = new();
     private ObservableCollection<SettingDataInformation> _updateItemsJsonByDays = new();
     private ObservableCollection<SettingDataInformation> _updateMobsJsonByDays = new();
+    private ObservableCollection<SettingDataInformation> _updateWorldJsonByDays = new();
     private SettingDataInformation _updateItemsJsonByDaysSelection;
     private SettingDataInformation _updateMobsJsonByDaysSelection;
     private bool _isSuggestPreReleaseUpdatesActive;
@@ -54,6 +55,11 @@ public class SettingsWindowViewModel : INotifyPropertyChanged
     private ObservableCollection<NotificationFilter> _notificationFilters = new();
     private string _packetFilter;
     private short _playerSelectionWithSameNameInDb;
+    private bool _isUpdateItemListNowButtonEnabled = true;
+    private bool _isUpdateItemsJsonNowButtonEnabled = true;
+    private bool _isUpdateMobsJsonNowButtonEnabled = true;
+    private string _worldJsonSourceUrl;
+    private SettingDataInformation _updateWorldJsonByDaysSelection;
 
     public SettingsWindowViewModel()
     {
@@ -85,6 +91,11 @@ public class SettingsWindowViewModel : INotifyPropertyChanged
         InitDropDownDownByDays(UpdateMobsJsonByDays);
         UpdateMobsJsonByDaysSelection = UpdateMobsJsonByDays.FirstOrDefault(x => x.Value == SettingsController.CurrentSettings.UpdateMobsJsonByDays);
         MobsJsonSourceUrl = SettingsController.CurrentSettings.MobsJsonSourceUrl;
+
+        // Update world.json by days
+        InitDropDownDownByDays(UpdateWorldJsonByDays);
+        UpdateWorldJsonByDaysSelection = UpdateWorldJsonByDays.FirstOrDefault(x => x.Value == SettingsController.CurrentSettings.UpdateWorldJsonByDays);
+        WorldJsonSourceUrl = SettingsController.CurrentSettings.WorldJsonSourceUrl;
 
         // Alert sounds
         InitAlertSounds();
@@ -120,6 +131,7 @@ public class SettingsWindowViewModel : INotifyPropertyChanged
         SettingsController.CurrentSettings.ItemListSourceUrl = ItemListSourceUrl;
         SettingsController.CurrentSettings.ItemsJsonSourceUrl = ItemsJsonSourceUrl;
         SettingsController.CurrentSettings.MobsJsonSourceUrl = MobsJsonSourceUrl;
+        SettingsController.CurrentSettings.WorldJsonSourceUrl = WorldJsonSourceUrl;
         SettingsController.CurrentSettings.RefreshRate = RefreshRatesSelection.Value;
         SettingsController.CurrentSettings.Server = ServerSelection.Value;
         NetworkManager.SetCurrentServer(ServerSelection.Value >= 2 ? AlbionServer.East : AlbionServer.West, true);
@@ -128,6 +140,7 @@ public class SettingsWindowViewModel : INotifyPropertyChanged
         SettingsController.CurrentSettings.UpdateItemListByDays = UpdateItemListByDaysSelection.Value;
         SettingsController.CurrentSettings.UpdateItemsJsonByDays = UpdateItemsJsonByDaysSelection.Value;
         SettingsController.CurrentSettings.UpdateMobsJsonByDays = UpdateMobsJsonByDaysSelection.Value;
+        SettingsController.CurrentSettings.UpdateWorldJsonByDays = UpdateWorldJsonByDaysSelection.Value;
         SettingsController.CurrentSettings.IsOpenItemWindowInNewWindowChecked = IsOpenItemWindowInNewWindowChecked;
         SettingsController.CurrentSettings.IsInfoWindowShownOnStart = ShowInfoWindowOnStartChecked;
         SettingsController.CurrentSettings.SelectedAlertSound = AlertSoundSelection?.FileName ?? string.Empty;
@@ -167,6 +180,7 @@ public class SettingsWindowViewModel : INotifyPropertyChanged
         SettingsController.CurrentSettings.IsDamageMeterNaviTabActive = TabVisibilities?.FirstOrDefault(x => x?.NavigationTabFilterType == NavigationTabFilterType.DamageMeter)?.IsSelected ?? true;
         SettingsController.CurrentSettings.IsTradeMonitoringNaviTabActive = TabVisibilities?.FirstOrDefault(x => x?.NavigationTabFilterType == NavigationTabFilterType.TradeMonitoring)?.IsSelected ?? true;
         SettingsController.CurrentSettings.IsGatheringNaviTabActive = TabVisibilities?.FirstOrDefault(x => x?.NavigationTabFilterType == NavigationTabFilterType.Gathering)?.IsSelected ?? true;
+        SettingsController.CurrentSettings.IsPartyBuilderNaviTabActive = TabVisibilities?.FirstOrDefault(x => x?.NavigationTabFilterType == NavigationTabFilterType.PartyBuilder)?.IsSelected ?? true;
         SettingsController.CurrentSettings.IsStorageHistoryNaviTabActive = TabVisibilities?.FirstOrDefault(x => x?.NavigationTabFilterType == NavigationTabFilterType.StorageHistory)?.IsSelected ?? true;
         SettingsController.CurrentSettings.IsMapHistoryNaviTabActive = TabVisibilities?.FirstOrDefault(x => x?.NavigationTabFilterType == NavigationTabFilterType.MapHistory)?.IsSelected ?? true;
         SettingsController.CurrentSettings.IsPlayerInformationNaviTabActive = TabVisibilities?.FirstOrDefault(x => x?.NavigationTabFilterType == NavigationTabFilterType.PlayerInformation)?.IsSelected ?? true;
@@ -179,6 +193,7 @@ public class SettingsWindowViewModel : INotifyPropertyChanged
         mainWindowViewModel.DamageMeterTabVisibility = SettingsController.CurrentSettings.IsDamageMeterNaviTabActive.BoolToVisibility();
         mainWindowViewModel.TradeMonitoringTabVisibility = SettingsController.CurrentSettings.IsTradeMonitoringNaviTabActive.BoolToVisibility();
         mainWindowViewModel.GatheringTabVisibility = SettingsController.CurrentSettings.IsGatheringNaviTabActive.BoolToVisibility();
+        mainWindowViewModel.PartyBuilderTabVisibility = SettingsController.CurrentSettings.IsPartyBuilderNaviTabActive.BoolToVisibility();
         mainWindowViewModel.StorageHistoryTabVisibility = SettingsController.CurrentSettings.IsStorageHistoryNaviTabActive.BoolToVisibility();
         mainWindowViewModel.MapHistoryTabVisibility = SettingsController.CurrentSettings.IsMapHistoryNaviTabActive.BoolToVisibility();
         mainWindowViewModel.PlayerInformationTabVisibility = SettingsController.CurrentSettings.IsPlayerInformationNaviTabActive.BoolToVisibility();
@@ -341,6 +356,11 @@ public class SettingsWindowViewModel : INotifyPropertyChanged
             IsSelected = SettingsController.CurrentSettings.IsGatheringNaviTabActive,
             Name = MainWindowTranslation.Gathering
         });
+        TabVisibilities.Add(new TabVisibilityFilter(NavigationTabFilterType.PartyBuilder)
+        {
+            IsSelected = SettingsController.CurrentSettings.IsPartyBuilderNaviTabActive,
+            Name = MainWindowTranslation.PartyBuilder
+        });
         TabVisibilities.Add(new TabVisibilityFilter(NavigationTabFilterType.StorageHistory)
         {
             IsSelected = SettingsController.CurrentSettings.IsStorageHistoryNaviTabActive,
@@ -365,6 +385,7 @@ public class SettingsWindowViewModel : INotifyPropertyChanged
         mainWindowViewModel.DamageMeterTabVisibility = SettingsController.CurrentSettings.IsDamageMeterNaviTabActive.BoolToVisibility();
         mainWindowViewModel.TradeMonitoringTabVisibility = SettingsController.CurrentSettings.IsTradeMonitoringNaviTabActive.BoolToVisibility();
         mainWindowViewModel.GatheringTabVisibility = SettingsController.CurrentSettings.IsGatheringNaviTabActive.BoolToVisibility();
+        mainWindowViewModel.PartyBuilderTabVisibility = SettingsController.CurrentSettings.IsPartyBuilderNaviTabActive.BoolToVisibility();
         mainWindowViewModel.StorageHistoryTabVisibility = SettingsController.CurrentSettings.IsStorageHistoryNaviTabActive.BoolToVisibility();
         mainWindowViewModel.MapHistoryTabVisibility = SettingsController.CurrentSettings.IsMapHistoryNaviTabActive.BoolToVisibility();
         mainWindowViewModel.PlayerInformationTabVisibility = SettingsController.CurrentSettings.IsPlayerInformationNaviTabActive.BoolToVisibility();
@@ -501,6 +522,16 @@ public class SettingsWindowViewModel : INotifyPropertyChanged
         }
     }
 
+    public SettingDataInformation UpdateWorldJsonByDaysSelection
+    {
+        get => _updateWorldJsonByDaysSelection;
+        set
+        {
+            _updateWorldJsonByDaysSelection = value;
+            OnPropertyChanged();
+        }
+    }
+
     public ObservableCollection<SettingDataInformation> UpdateItemListByDays
     {
         get => _updateItemListByDays;
@@ -527,6 +558,16 @@ public class SettingsWindowViewModel : INotifyPropertyChanged
         set
         {
             _updateMobsJsonByDays = value;
+            OnPropertyChanged();
+        }
+    }
+
+    public ObservableCollection<SettingDataInformation> UpdateWorldJsonByDays
+    {
+        get => _updateWorldJsonByDays;
+        set
+        {
+            _updateWorldJsonByDays = value;
             OnPropertyChanged();
         }
     }
@@ -651,6 +692,16 @@ public class SettingsWindowViewModel : INotifyPropertyChanged
         }
     }
 
+    public string WorldJsonSourceUrl
+    {
+        get => _worldJsonSourceUrl;
+        set
+        {
+            _worldJsonSourceUrl = value;
+            OnPropertyChanged();
+        }
+    }
+
     public SettingsWindowTranslation Translation
     {
         get => _translation;
@@ -737,6 +788,36 @@ public class SettingsWindowViewModel : INotifyPropertyChanged
         set
         {
             _isSuggestPreReleaseUpdatesActive = value;
+            OnPropertyChanged();
+        }
+    }
+
+    public bool IsUpdateItemListNowButtonEnabled
+    {
+        get => _isUpdateItemListNowButtonEnabled;
+        set
+        {
+            _isUpdateItemListNowButtonEnabled = value;
+            OnPropertyChanged();
+        }
+    }
+
+    public bool IsUpdateItemsJsonNowButtonEnabled
+    {
+        get => _isUpdateItemsJsonNowButtonEnabled;
+        set
+        {
+            _isUpdateItemsJsonNowButtonEnabled = value;
+            OnPropertyChanged();
+        }
+    }
+
+    public bool IsUpdateMobsJsonNowButtonEnabled
+    {
+        get => _isUpdateMobsJsonNowButtonEnabled;
+        set
+        {
+            _isUpdateMobsJsonNowButtonEnabled = value;
             OnPropertyChanged();
         }
     }

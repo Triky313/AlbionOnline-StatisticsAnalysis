@@ -290,9 +290,9 @@ public static class ItemController
 
     public static async Task<bool> GetItemListFromJsonAsync()
     {
-        var currentSettingsItemsJsonSourceUrl = SettingsController.CurrentSettings.ItemListSourceUrl;
-        var url = GetSourceUrlOrDefault(Settings.Default.DefaultItemListSourceUrl, currentSettingsItemsJsonSourceUrl, ref currentSettingsItemsJsonSourceUrl);
-        SettingsController.CurrentSettings.ItemListSourceUrl = currentSettingsItemsJsonSourceUrl;
+        var currentSettingsItemListSourceUrl = SettingsController.CurrentSettings.ItemListSourceUrl;
+        var url = GetSourceUrlOrDefault(Settings.Default.DefaultItemListSourceUrl, currentSettingsItemListSourceUrl, ref currentSettingsItemListSourceUrl);
+        SettingsController.CurrentSettings.ItemListSourceUrl = currentSettingsItemListSourceUrl;
 
         var localFilePath = $"{AppDomain.CurrentDomain.BaseDirectory}{Settings.Default.ItemListFileName}";
 
@@ -401,9 +401,36 @@ public static class ItemController
         }
     }
 
-    public static bool IsItemsLoaded()
+    public static bool IsItemListLoaded()
     {
         return Items?.Count > 0;
+    }
+
+    public static async Task DownloadItemListAsync()
+    {
+        var url = GetItemListSourceUrlOrDefault();
+        var localFilePath = $"{AppDomain.CurrentDomain.BaseDirectory}{Settings.Default.ItemListFileName}";
+
+        if (string.IsNullOrEmpty(url))
+        {
+            return;
+        }
+
+        using var client = new HttpClient
+        {
+            Timeout = TimeSpan.FromSeconds(1200)
+        };
+
+        await client.DownloadFileAsync(url, localFilePath, LanguageController.Translation("GET_ITEM_LIST_JSON"));
+    }
+
+    private static string GetItemListSourceUrlOrDefault()
+    {
+        var currentSettingsItemListSourceUrl = SettingsController.CurrentSettings.ItemListSourceUrl;
+        var url = GetSourceUrlOrDefault(Settings.Default.DefaultItemListSourceUrl, currentSettingsItemListSourceUrl, ref currentSettingsItemListSourceUrl);
+        SettingsController.CurrentSettings.ItemListSourceUrl = currentSettingsItemListSourceUrl;
+
+        return url;
     }
 
     #endregion Item list
@@ -623,10 +650,7 @@ public static class ItemController
 
     public static async Task<bool> GetItemsJsonAsync()
     {
-        var currentSettingsItemsJsonSourceUrl = SettingsController.CurrentSettings.ItemsJsonSourceUrl;
-        var url = GetSourceUrlOrDefault(Settings.Default.DefaultItemsJsonSourceUrl, currentSettingsItemsJsonSourceUrl, ref currentSettingsItemsJsonSourceUrl);
-        SettingsController.CurrentSettings.ItemsJsonSourceUrl = currentSettingsItemsJsonSourceUrl;
-
+        var url = GetItemsJsonSourceUrlOrDefault();
         var localFilePath = $"{AppDomain.CurrentDomain.BaseDirectory}{Settings.Default.ItemsJsonFileName}";
 
         if (string.IsNullOrEmpty(url))
@@ -746,6 +770,51 @@ public static class ItemController
         return resultUniqueName;
     }
 
+    public static async Task DownloadItemsJsonAsync()
+    {
+        var url = GetItemsJsonSourceUrlOrDefault();
+        var localFilePath = $"{AppDomain.CurrentDomain.BaseDirectory}{Settings.Default.ItemListFileName}";
+
+        if (string.IsNullOrEmpty(url))
+        {
+            return;
+        }
+
+        using var client = new HttpClient
+        {
+            Timeout = TimeSpan.FromSeconds(1200)
+        };
+
+        await client.DownloadFileAsync(url, localFilePath, LanguageController.Translation("GET_ITEM_LIST_JSON"));
+    }
+
+    private static string GetItemsJsonSourceUrlOrDefault()
+    {
+        var currentSettingsItemsJsonSourceUrl = SettingsController.CurrentSettings.ItemsJsonSourceUrl;
+        var url = GetSourceUrlOrDefault(Settings.Default.DefaultItemsJsonSourceUrl, currentSettingsItemsJsonSourceUrl, ref currentSettingsItemsJsonSourceUrl);
+        SettingsController.CurrentSettings.ItemsJsonSourceUrl = currentSettingsItemsJsonSourceUrl;
+
+        return url;
+    }
+
+    public static SlotType GetSlotType(string slotTypeString)
+    {
+        return slotTypeString switch
+        {
+            "food" => SlotType.Food,
+            "potion" => SlotType.Potion,
+            "mainhand" => SlotType.MainHand,
+            "offhand" => SlotType.OffHand,
+            "cape" => SlotType.Cape,
+            "bag" => SlotType.Bag,
+            "armor" => SlotType.Armor,
+            "head" => SlotType.Head,
+            "shoes" => SlotType.Shoes,
+            "mount" => SlotType.Mount,
+            _ => SlotType.Unknown
+        };
+    }
+
     #endregion
 
     #region Estimated market value
@@ -759,6 +828,175 @@ public static class ItemController
         }
 
         item.EstimatedMarketValues = estimatedMarketValues;
+    }
+
+    #endregion
+
+    #region Item power
+
+    public static double GetAverageItemPower(Item[] items)
+    {
+        if (items is not { Length: > 0 })
+        {
+            return 0;
+        }
+
+        int totalValue = items.Sum(item => item?.BasicItemPower ?? 0);
+        
+        var itemCount = items.Length;
+        if (items.FirstOrDefault(x => x?.FullItemInformation is Weapon)?.FullItemInformation is Weapon { TwoHanded: true })
+        {
+            var weapon = items.FirstOrDefault(x => x?.FullItemInformation is Weapon);
+            totalValue += weapon?.BasicItemPower ?? 0;
+            itemCount++;
+        }
+
+        return (double) totalValue / itemCount;
+    }
+
+    public static int GetBasicItemPower(Item item)
+    {
+        int itemPower = 0;
+
+        switch (item.Tier)
+        {
+            case 1:
+                itemPower += 100;
+                break;
+            case 2:
+                itemPower += 300;
+                break;
+            case 3:
+                itemPower += 500;
+                break;
+            case 4:
+                itemPower += 700;
+                break;
+            case 5:
+                itemPower += 800;
+                break;
+            case 6:
+                itemPower += 900;
+                break;
+            case 7:
+                itemPower += 1000;
+                break;
+            case 8:
+                itemPower += 1100;
+                break;
+        }
+
+        switch (item.Level)
+        {
+            case 1:
+                itemPower += 100;
+                break;
+            case 2:
+                itemPower += 200;
+                break;
+            case 3:
+                itemPower += 300;
+                break;
+            case 4:
+                itemPower += 400;
+                break;
+        }
+
+        var artefactType = GetArtefactType(GetArtefactOfItem(item));
+        switch (artefactType)
+        {
+            case ArtefactType.Rune:
+                itemPower += 25;
+                break;
+            case ArtefactType.Soul:
+                itemPower += 50;
+                break;
+            case ArtefactType.Relic:
+                itemPower += 75;
+                break;
+            case ArtefactType.Avalonian:
+                itemPower += 100;
+                break;
+        }
+
+        return itemPower;
+    }
+
+    private static string GetArtefactOfItem(Item item)
+    {
+        switch (item.FullItemInformation)
+        {
+            case Weapon weapon:
+                {
+                    foreach (CraftResource craftResource in (weapon.CraftingRequirements ?? new List<CraftingRequirements>())
+                             .SelectMany(requirement => (requirement?.CraftResource ?? new List<CraftResource>())
+                                 .Where(craftResource => craftResource.UniqueName.Contains("ARTEFACT"))))
+                    {
+                        return craftResource.UniqueName;
+                    }
+
+                    return string.Empty;
+                }
+            case EquipmentItem equipmentItem:
+                {
+                    foreach (CraftResource craftResource in (equipmentItem.CraftingRequirements ?? new List<CraftingRequirements>())
+                             .SelectMany(requirement => (requirement?.CraftResource ?? new List<CraftResource>())
+                                 .Where(craftResource => craftResource.UniqueName.Contains("ARTEFACT"))))
+                    {
+                        return craftResource.UniqueName;
+                    }
+
+                    return string.Empty;
+                }
+            default:
+                return string.Empty;
+        }
+    }
+
+    private static ArtefactType GetArtefactType(string uniqueName)
+    {
+        if (string.IsNullOrEmpty(uniqueName))
+        {
+            return ArtefactType.Unknown;
+        }
+
+        var item = GetItemByUniqueName(uniqueName);
+
+        switch (item.FullItemInformation)
+        {
+            case SimpleItem simpleItem:
+                {
+                    foreach (CraftingRequirements simpleItemCraftingRequirement in simpleItem.CraftingRequirements ?? new List<CraftingRequirements>())
+                    {
+                        foreach (CraftResource craftResource in simpleItemCraftingRequirement?.CraftResource ?? new List<CraftResource>())
+                        {
+                            if (craftResource.UniqueName.Contains("RUNE"))
+                            {
+                                return ArtefactType.Rune;
+                            }
+
+                            if (craftResource.UniqueName.Contains("SOUL"))
+                            {
+                                return ArtefactType.Soul;
+                            }
+
+                            if (craftResource.UniqueName.Contains("RELIC"))
+                            {
+                                return ArtefactType.Relic;
+                            }
+
+                            if (craftResource.UniqueName.Contains("AVALONIAN"))
+                            {
+                                return ArtefactType.Avalonian;
+                            }
+                        }
+                    }
+
+                    return ArtefactType.Unknown;
+                }
+            default:
+                return ArtefactType.Unknown;
+        }
     }
 
     #endregion

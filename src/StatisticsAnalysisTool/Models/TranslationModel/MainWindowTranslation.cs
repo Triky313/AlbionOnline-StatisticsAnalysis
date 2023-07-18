@@ -37,6 +37,7 @@ public class MainWindowTranslation
     public static string Total => LanguageController.Translation("TOTAL");
     public static string DamageMeter => LanguageController.Translation("DAMAGE_METER");
     public static string DamageMeterDescription1 => LanguageController.Translation("DAMAGE_METER_DESCRIPTION_1");
+    public static string DamageMeterDescription2 => LanguageController.Translation("DAMAGE_METER_DESCRIPTION_2");
     public static string ResetDamageMeter => LanguageController.Translation("RESET_DAMAGE_METER");
     public static string Settings => LanguageController.Translation("SETTINGS");
     public static string Favorite => LanguageController.Translation("FAVORITE");
@@ -71,6 +72,7 @@ public class MainWindowTranslation
     public static string Dungeons => LanguageController.Translation("DUNGEONS");
     public static string PlayerInformation => LanguageController.Translation("PLAYER_INFORMATION");
     public static string TradeMonitoring => LanguageController.Translation("TRADE_MONITORING");
+    public static string PartyBuilder => LanguageController.Translation("PARTY_BUILDER");
     public static string StorageHistory => LanguageController.Translation("STORAGE_HISTORY");
     public static string Logging => LanguageController.Translation("LOGGING");
     public static string TrackingIsActive => LanguageController.Translation("TRACKING_IS_ACTIVE");

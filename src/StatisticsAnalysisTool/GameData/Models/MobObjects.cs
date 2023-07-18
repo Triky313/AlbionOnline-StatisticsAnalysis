@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Text.Json.Serialization;
 
-namespace StatisticsAnalysisTool.Models;
+namespace StatisticsAnalysisTool.GameData.Models;
 
 public class MobObjects
 {

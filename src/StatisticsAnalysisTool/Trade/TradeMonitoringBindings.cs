@@ -46,6 +46,16 @@ public class TradeMonitoringBindings : INotifyPropertyChanged
             TradeCollectionView.CustomSort = new TradeComparer();
             TradeCollectionView.Refresh();
         }
+
+        DatePickerTradeFrom = SettingsController.CurrentSettings.TradeMonitoringDatePickerTradeFrom;
+        DatePickerTradeTo = SettingsController.CurrentSettings.TradeMonitoringDatePickerTradeTo;
+    }
+
+    public void ItemFilterReset()
+    {
+        DatePickerTradeFrom = new DateTime(2017, 1, 1);
+        DatePickerTradeTo = DateTime.UtcNow.AddDays(1);
+        TradesSearchText = string.Empty;
     }
 
     public ListCollectionView TradeCollectionView
@@ -84,6 +94,7 @@ public class TradeMonitoringBindings : INotifyPropertyChanged
         set
         {
             _datePickerTradeFrom = value;
+            SettingsController.CurrentSettings.TradeMonitoringDatePickerTradeFrom = _datePickerTradeFrom;
             OnPropertyChanged();
         }
     }
@@ -94,6 +105,7 @@ public class TradeMonitoringBindings : INotifyPropertyChanged
         set
         {
             _datePickerTradeTo = value;
+            SettingsController.CurrentSettings.TradeMonitoringDatePickerTradeTo = _datePickerTradeTo;
             OnPropertyChanged();
         }
     }

@@ -743,4 +743,24 @@
 	<translation name="DELETE_AFTER_14_DAYS">Excluir após 14 dias</translation>
 	<translation name="DELETE_AFTER_30_DAYS">Excluir após 30 dias</translation>
 	<translation name="DELETE_AFTER_365_DAYS">Excluir após 365 dias</translation>
+	<translation name="PLAYER_SELECTION_WITH_SAME_NAME_IN_DB">Seleção de jogador com o mesmo nome no banco de dados</translation>
+	<translation name="UPDATE_NOW">Atualizar agora</translation>
+	<translation name="DAMAGE_METER_DESCRIPTION_2">Se as armas certas não forem exibidas no medidor de dano, isso geralmente se deve aos arquivos ItemList.json e Items.json desatualizados. Exclua manualmente esses arquivos da pasta do StatisticsAnalysis e reinicie o StatisticsAnalysisTool, então a versão mais recente dos arquivos será baixada e tudo deve funcionar normalmente.</translation>
+	<translation name="GET_WORLD_JSON">Obter world.json</translation>
+	<translation name="WORLD_JSON_CAN_NOT_BE_LOADED">world.json não pode ser carregado.</translation>
+	<translation name="UPDATE_WORLD_JSON_BY_DAYS">Atualizar world.json por dias: </translation>
+	<translation name="WORLD_JSON_SOURCE_URL">url de origem world.json</translation>
+	<translation name="PARTY_BUILDER">Criador de Party</translation>
+	<translation name="GET_SPELLS_JSON">Obter spells.json</translation>
+	<translation name="SPELLS_JSON_CAN_NOT_BE_LOADED">spells.json não pode ser carregado.</translation>
+	<translation name="CONDITIONS">Condições</translation>
+	<translation name="DESCRIPTIONS">Descrições</translation>
+	<translation name="MINIMAL_ITEM_POWER">Poder mínimo do item</translation>
+	<translation name="MAXIMUM_ITEM_POWER">Poder máximo do item</translation>
+	<translation name="MINIMAL_BASIC_ITEM_POWER">Poder básico mínimo do item</translation>
+	<translation name="MAXIMUM_BASIC_ITEM_POWER">Poder básico máximo do item</translation>
+	<translation name="IP_OR_BIP_BETWEEN_MIN_AND_MAX_RANGE">Poder do item ou Poder do item básico entre o alcance mínimo e máximo</translation>
+	<translation name="IP_OR_BIP_OVER_MAX_RANGE">Poder do item ou Poder básico do item acima do alcance máximo</translation>
+	<translation name="IP_OR_BIP_UNDER_MIN_RANGE">Poder do item ou Poder básico do item abaixo do alcance mínimo</translation>
+	<translation name="PLAYER_IS_NOT_INSPECTED">O jogador não foi inspecionado</translation>
 </translations>

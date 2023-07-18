@@ -111,25 +111,28 @@ public class GatheringBindings : INotifyPropertyChanged
                 });
 
                 // Most gathered resource
-                var mostGatheredResource = gatherCollection
-                    .ToList()
-                    .Where(x => IsTimestampOkayByGatheringStatsTimeType(x.TimestampDateTime, GatheringStatsTimeTypeSelection))
-                    .GroupBy(x => x.UniqueName)
-                    .Select(g => new Gathered
-                    {
-                        UniqueName = g.Key,
-                        GainedStandardAmount = g.Sum(x => x?.GainedStandardAmount ?? 0),
-                        GainedBonusAmount = g.Sum(x => x?.GainedBonusAmount ?? 0),
-                        GainedPremiumBonusAmount = g.Sum(x => x?.GainedPremiumBonusAmount ?? 0),
-                        GainedTotalAmount = g.Sum(x => x?.GainedTotalAmount ?? 0),
-                        MiningProcesses = g.Sum(x => x?.MiningProcesses ?? 0)
-                    })
-                    .MaxBy(x => x.GainedTotalAmount);
-
-                await Application.Current.Dispatcher.InvokeAsync(() =>
+                if (gatherCollection.Any(x => x?.GainedTotalAmount != null))
                 {
-                    GatheringStats.MostGatheredResource = mostGatheredResource;
-                });
+                    var mostGatheredResource = gatherCollection
+                        .ToList()
+                        .Where(x => IsTimestampOkayByGatheringStatsTimeType(x.TimestampDateTime, GatheringStatsTimeTypeSelection))
+                        .GroupBy(x => x.UniqueName)
+                        .Select(g => new Gathered
+                        {
+                            UniqueName = g.Key,
+                            GainedStandardAmount = g.Sum(x => x?.GainedStandardAmount ?? 0),
+                            GainedBonusAmount = g.Sum(x => x?.GainedBonusAmount ?? 0),
+                            GainedPremiumBonusAmount = g.Sum(x => x?.GainedPremiumBonusAmount ?? 0),
+                            GainedTotalAmount = g.Sum(x => x?.GainedTotalAmount ?? 0),
+                            MiningProcesses = g.Sum(x => x?.MiningProcesses ?? 0)
+                        })
+                        .MaxBy(x => x.GainedTotalAmount);
+
+                    await Application.Current.Dispatcher.InvokeAsync(() =>
+                    {
+                        GatheringStats.MostGatheredResource = mostGatheredResource;
+                    });
+                }
 
                 // Most gathered cluster
                 var mostGatheredCluster = gatherCollection

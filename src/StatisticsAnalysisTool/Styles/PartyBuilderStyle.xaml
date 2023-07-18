@@ -1,0 +1,180 @@
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                    xmlns:pp="clr-namespace:StatisticsAnalysisTool.PartyBuilder"
+                    xmlns:converters="clr-namespace:StatisticsAnalysisTool.Common.Converters"
+                    xmlns:fa5="http://schemas.fontawesome.com/icons/">
+
+    <converters:RoundingConverter x:Key="RoundingConverter" />
+
+    <Style TargetType="Image" x:Key="PartyBuilder.Equipment.Icon">
+        <Setter Property="Height" Value="50"/>
+        <Setter Property="Width" Value="50"/>
+    </Style>
+
+    <Style TargetType="Image" x:Key="PartyBuilder.Spell.Icon">
+        <Setter Property="Height" Value="50"/>
+        <Setter Property="Width" Value="50"/>
+    </Style>
+
+    <Style TargetType="Image" x:Key="PartyBuilder.Attention.Icon">
+        <Setter Property="Height" Value="18"/>
+        <Setter Property="Width" Value="18"/>
+        <Setter Property="Margin" Value="5,0,5,1"/>
+    </Style>
+
+    <Style x:Key="PartyBuilder.IPText.Style" TargetType="Label">
+        <Style.Triggers>
+            <DataTrigger Binding="{Binding ItemPowerCondition, IsAsync=True}" Value="{x:Static pp:PartyBuilderItemPowerCondition.UnderMinimal}">
+                <Setter Property="Foreground" Value="{StaticResource SolidColorBrush.Accent.Red.2}" />
+            </DataTrigger>
+            <DataTrigger Binding="{Binding ItemPowerCondition, IsAsync=True}" Value="{x:Static pp:PartyBuilderItemPowerCondition.AboveMaximum}">
+                <Setter Property="Foreground" Value="{StaticResource SolidColorBrush.Accent.Green.2}" />
+            </DataTrigger>
+            <DataTrigger Binding="{Binding ItemPowerCondition, IsAsync=True}" Value="{x:Static pp:PartyBuilderItemPowerCondition.Normal}">
+                <Setter Property="Foreground" Value="{StaticResource SolidColorBrush.Accent.Blue.2}" />
+            </DataTrigger>
+            <DataTrigger Binding="{Binding ItemPowerCondition, IsAsync=True}" Value="{x:Static pp:PartyBuilderItemPowerCondition.Unknown}">
+                <Setter Property="Foreground" Value="{StaticResource SolidColorBrush.Accent.Blue.2}" />
+            </DataTrigger>
+        </Style.Triggers>
+    </Style>
+
+    <Style x:Key="PartyBuilder.BasicIPText.Style" TargetType="Label">
+        <Style.Triggers>
+            <DataTrigger Binding="{Binding BasicItemPowerCondition, IsAsync=True}" Value="{x:Static pp:PartyBuilderItemPowerCondition.UnderMinimal}">
+                <Setter Property="Foreground" Value="{StaticResource SolidColorBrush.Accent.Red.2}" />
+            </DataTrigger>
+            <DataTrigger Binding="{Binding BasicItemPowerCondition, IsAsync=True}" Value="{x:Static pp:PartyBuilderItemPowerCondition.AboveMaximum}">
+                <Setter Property="Foreground" Value="{StaticResource SolidColorBrush.Accent.Green.2}" />
+            </DataTrigger>
+            <DataTrigger Binding="{Binding BasicItemPowerCondition, IsAsync=True}" Value="{x:Static pp:PartyBuilderItemPowerCondition.Normal}">
+                <Setter Property="Foreground" Value="{StaticResource SolidColorBrush.Accent.Blue.2}" />
+            </DataTrigger>
+            <DataTrigger Binding="{Binding BasicItemPowerCondition, IsAsync=True}" Value="{x:Static pp:PartyBuilderItemPowerCondition.Unknown}">
+                <Setter Property="Foreground" Value="{StaticResource SolidColorBrush.Accent.Blue.2}" />
+            </DataTrigger>
+        </Style.Triggers>
+    </Style>
+
+    <Style x:Key="PartyBuilder.PlayerInspection.Grid" TargetType="Grid">
+        <Setter Property="Width" Value="25" />
+        <Setter Property="Margin" Value="5,0,0,0" />
+        <Setter Property="Visibility" Value="Collapsed" />
+        <Style.Triggers>
+            <DataTrigger Binding="{Binding IsPlayerInspected, IsAsync=True}" Value="true">
+                <Setter Property="Visibility" Value="Collapsed" />
+            </DataTrigger>
+            <DataTrigger Binding="{Binding IsPlayerInspected, IsAsync=True}" Value="false">
+                <Setter Property="Visibility" Value="Visible" />
+            </DataTrigger>
+        </Style.Triggers>
+    </Style>
+
+    <DataTemplate x:Key="PartyBuilderPlayerTemplate" DataType="{x:Type pp:PartyBuilderPlayer}">
+        <Grid>
+            <StackPanel Orientation="Vertical" Margin="0,0,0,5">
+                <StackPanel Orientation="Vertical" Background="{StaticResource SolidColorBrush.Accent.Blue.5}">
+                    <StackPanel Orientation="Horizontal">
+                        <Grid Style="{StaticResource PartyBuilder.PlayerInspection.Grid}">
+                            <fa5:ImageAwesome Margin="0" Icon="Solid_Eye" Foreground="{StaticResource SolidColorBrush.Accent.Yellow.1}" Style="{StaticResource PartyBuilder.Attention.Icon}" />
+                        </Grid>
+                        <Label Content="{Binding Username, IsAsync=True}" FontWeight="Bold" Width="120" Padding="0,5" Margin="5,0,0,0" />
+                        <StackPanel Orientation="Horizontal" Width="60">
+                            <Label Content="IP" FontWeight="ExtraBold" Padding="5,5,0,0" Style="{StaticResource PartyBuilder.IPText.Style}" />
+                            <Label Content="{Binding AverageItemPower.ItemPower, IsAsync=True, Mode=OneWay, Converter={StaticResource RoundingConverter}, ConverterParameter=0}" Padding="5,5,10,0" />
+                        </StackPanel>
+                        <StackPanel Orientation="Horizontal" Width="60">
+                            <Label Content="BIP" FontWeight="ExtraBold" Padding="5,5,0,0" Style="{StaticResource PartyBuilder.BasicIPText.Style}" />
+                            <Label Content="{Binding AverageBasicItemPower.ItemPower, IsAsync=True, Mode=OneWay, Converter={StaticResource RoundingConverter}, ConverterParameter=0}" Padding="5,5,10,0" />
+                        </StackPanel>
+                    </StackPanel>
+                </StackPanel>
+                <StackPanel Orientation="Horizontal" Background="{StaticResource SolidColorBrush.Accent.Blue.Transparent.4}">
+                    <Image Source="{Binding MainHand.Icon, IsAsync=True, Mode=OneWay}" Style="{StaticResource PartyBuilder.Equipment.Icon}" />
+                    <Image Source="{Binding OffHand.Icon, IsAsync=True, Mode=OneWay}" Style="{StaticResource PartyBuilder.Equipment.Icon}" />
+                    <Image Source="{Binding Head.Icon, IsAsync=True, Mode=OneWay}" Style="{StaticResource PartyBuilder.Equipment.Icon}" />
+                    <Image Source="{Binding Chest.Icon, IsAsync=True, Mode=OneWay}" Style="{StaticResource PartyBuilder.Equipment.Icon}" />
+                    <Image Source="{Binding Shoes.Icon, IsAsync=True, Mode=OneWay}" Style="{StaticResource PartyBuilder.Equipment.Icon}" />
+                    <Image Source="{Binding Cape.Icon, IsAsync=True, Mode=OneWay}" Style="{StaticResource PartyBuilder.Equipment.Icon}" />
+                    <Image Source="{Binding Mount.Icon, IsAsync=True, Mode=OneWay}" Style="{StaticResource PartyBuilder.Equipment.Icon}" />
+                    <Image Source="{Binding BuffFood.Icon, IsAsync=True, Mode=OneWay}" Style="{StaticResource PartyBuilder.Equipment.Icon}" />
+                    <Image Source="{Binding Potion.Icon, IsAsync=True, Mode=OneWay}" Style="{StaticResource PartyBuilder.Equipment.Icon}" />
+                </StackPanel>
+                <!--<StackPanel Orientation="Horizontal">
+                    <ItemsControl ItemsSource="{Binding MainHandSpells}" Width="50">
+                        <ItemsControl.ItemTemplate>
+                            <DataTemplate>
+                                <StackPanel Orientation="Horizontal">
+                                    <Image Source="{Binding Icon, IsAsync=True, Mode=OneWay}" Style="{StaticResource PartyBuilder.Equipment.Icon}" />
+                                </StackPanel>
+                            </DataTemplate>
+                        </ItemsControl.ItemTemplate>
+                    </ItemsControl>
+                    <ItemsControl ItemsSource="{Binding OffHandSpells}" Width="50">
+                        <ItemsControl.ItemTemplate>
+                            <DataTemplate>
+                                <StackPanel Orientation="Horizontal">
+                                    <Image Source="{Binding Icon, IsAsync=True, Mode=OneWay}" Style="{StaticResource PartyBuilder.Equipment.Icon}" />
+                                </StackPanel>
+                            </DataTemplate>
+                        </ItemsControl.ItemTemplate>
+                    </ItemsControl>
+                    <ItemsControl ItemsSource="{Binding HeadSpells}" Width="50">
+                        <ItemsControl.ItemTemplate>
+                            <DataTemplate>
+                                <StackPanel Orientation="Horizontal">
+                                    <Image Source="{Binding Icon, IsAsync=True, Mode=OneWay}" Style="{StaticResource PartyBuilder.Equipment.Icon}" />
+                                </StackPanel>
+                            </DataTemplate>
+                        </ItemsControl.ItemTemplate>
+                    </ItemsControl>
+                    <ItemsControl ItemsSource="{Binding ChestSpells}" Width="50">
+                        <ItemsControl.ItemTemplate>
+                            <DataTemplate>
+                                <StackPanel Orientation="Horizontal">
+                                    <Image Source="{Binding Icon, IsAsync=True, Mode=OneWay}" Style="{StaticResource PartyBuilder.Equipment.Icon}" />
+                                </StackPanel>
+                            </DataTemplate>
+                        </ItemsControl.ItemTemplate>
+                    </ItemsControl>
+                    <ItemsControl ItemsSource="{Binding ShoesSpells}" Width="50">
+                        <ItemsControl.ItemTemplate>
+                            <DataTemplate>
+                                <StackPanel Orientation="Horizontal">
+                                    <Image Source="{Binding Icon, IsAsync=True, Mode=OneWay}" Style="{StaticResource PartyBuilder.Equipment.Icon}" />
+                                </StackPanel>
+                            </DataTemplate>
+                        </ItemsControl.ItemTemplate>
+                    </ItemsControl>
+                    <ItemsControl ItemsSource="{Binding MountSpells}" Width="50">
+                        <ItemsControl.ItemTemplate>
+                            <DataTemplate>
+                                <StackPanel Orientation="Horizontal">
+                                    <Image Source="{Binding Icon, IsAsync=True, Mode=OneWay}" Style="{StaticResource PartyBuilder.Equipment.Icon}" />
+                                </StackPanel>
+                            </DataTemplate>
+                        </ItemsControl.ItemTemplate>
+                    </ItemsControl>
+                    <ItemsControl ItemsSource="{Binding PotionSpells}" Width="50">
+                        <ItemsControl.ItemTemplate>
+                            <DataTemplate>
+                                <StackPanel Orientation="Horizontal">
+                                    <Image Source="{Binding Icon, IsAsync=True, Mode=OneWay}" Style="{StaticResource PartyBuilder.Equipment.Icon}" />
+                                </StackPanel>
+                            </DataTemplate>
+                        </ItemsControl.ItemTemplate>
+                    </ItemsControl>
+                    <ItemsControl ItemsSource="{Binding FoodSpells}" Width="50">
+                        <ItemsControl.ItemTemplate>
+                            <DataTemplate>
+                                <StackPanel Orientation="Horizontal">
+                                    <Image Source="{Binding Icon, IsAsync=True, Mode=OneWay}" Style="{StaticResource PartyBuilder.Equipment.Icon}" />
+                                </StackPanel>
+                            </DataTemplate>
+                        </ItemsControl.ItemTemplate>
+                    </ItemsControl>
+                </StackPanel>-->
+            </StackPanel>
+        </Grid>
+    </DataTemplate>
+</ResourceDictionary>
