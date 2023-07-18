@@ -46,8 +46,7 @@ public static class FileController
                 NumberHandling = System.Text.Json.Serialization.JsonNumberHandling.AllowNamedFloatingPointLiterals
             };
             var fileString = await value.SerializeJsonStringAsync(option);
-            var task = File.WriteAllTextAsync(localFilePath, fileString, Encoding.UTF8);
-            task.Wait();
+            await File.WriteAllTextAsync(localFilePath, fileString, Encoding.UTF8);
         }
         catch (Exception e)
         {
