@@ -4,7 +4,7 @@ using StatisticsAnalysisTool.Properties;
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
 
-namespace StatisticsAnalysisTool.Models;
+namespace StatisticsAnalysisTool.DungeonTracker.Models;
 
 public class DungeonOptionsObject : INotifyPropertyChanged
 {

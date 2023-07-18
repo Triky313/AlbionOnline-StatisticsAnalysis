@@ -1,4 +1,6 @@
-﻿namespace StatisticsAnalysisTool.DungeonTracker;
+﻿using StatisticsAnalysisTool.DungeonTracker.Models;
+
+namespace StatisticsAnalysisTool.DungeonTracker;
 
 public static class DungeonMapping
 {

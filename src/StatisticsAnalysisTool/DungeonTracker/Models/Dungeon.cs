@@ -17,7 +17,7 @@ using System.Windows;
 using System.Windows.Threading;
 using ValueType = StatisticsAnalysisTool.Enumerations.ValueType;
 
-namespace StatisticsAnalysisTool.DungeonTracker;
+namespace StatisticsAnalysisTool.DungeonTracker.Models;
 
 public class Dungeon : INotifyPropertyChanged
 {

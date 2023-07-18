@@ -1,7 +1,7 @@
 ﻿using StatisticsAnalysisTool.Common;
 using StatisticsAnalysisTool.Common.Comparer;
 using StatisticsAnalysisTool.Common.UserSettings;
-using StatisticsAnalysisTool.DungeonTracker;
+using StatisticsAnalysisTool.DungeonTracker.Models;
 using StatisticsAnalysisTool.Enumerations;
 using StatisticsAnalysisTool.Models.NetworkModel;
 using StatisticsAnalysisTool.Models.TranslationModel;
@@ -12,7 +12,7 @@ using System.Runtime.CompilerServices;
 using System.Windows;
 using System.Windows.Data;
 
-namespace StatisticsAnalysisTool.Models.BindingModel;
+namespace StatisticsAnalysisTool.DungeonTracker;
 
 public class DungeonBindings : INotifyPropertyChanged
 {

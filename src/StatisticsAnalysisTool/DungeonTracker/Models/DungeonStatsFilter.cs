@@ -1,13 +1,12 @@
-﻿using StatisticsAnalysisTool.Common;
-using StatisticsAnalysisTool.DungeonTracker;
+﻿using System.Collections.Generic;
+using System.ComponentModel;
+using System.Runtime.CompilerServices;
+using StatisticsAnalysisTool.Common;
 using StatisticsAnalysisTool.Enumerations;
 using StatisticsAnalysisTool.Network.Manager;
 using StatisticsAnalysisTool.Properties;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Runtime.CompilerServices;
 
-namespace StatisticsAnalysisTool.Models;
+namespace StatisticsAnalysisTool.DungeonTracker.Models;
 
 public class DungeonStatsFilter : INotifyPropertyChanged
 {

@@ -63,7 +63,7 @@
 
         <Grid Row="2">
             <vwp:VirtualizingItemsControl ItemsSource="{Binding DungeonBindings.DungeonsCollectionView, IsAsync=True, Mode=OneWay}" 
-                                          ItemTemplate="{StaticResource Dungeon}" 
+                                          ItemTemplate="{StaticResource DungeonTemplate}" 
                                           d:ItemsSource="{d:SampleData ItemCount=5}"
                                           VirtualizingPanel.CacheLengthUnit="Item"
                                           VirtualizingPanel.CacheLength="10,10"

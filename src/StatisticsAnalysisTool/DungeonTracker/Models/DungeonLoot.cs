@@ -1,8 +1,9 @@
-﻿using StatisticsAnalysisTool.Common;
-using System;
+﻿using System;
 using System.Text.Json.Serialization;
+using StatisticsAnalysisTool.Common;
+using StatisticsAnalysisTool.Models;
 
-namespace StatisticsAnalysisTool.Models;
+namespace StatisticsAnalysisTool.DungeonTracker.Models;
 
 public class DungeonLoot
 {

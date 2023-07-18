@@ -31,6 +31,7 @@ using System.Windows;
 using System.Windows.Data;
 using System.Windows.Media;
 using StatisticsAnalysisTool.PartyBuilder;
+using StatisticsAnalysisTool.DungeonTracker;
 
 // ReSharper disable UnusedMember.Global
 

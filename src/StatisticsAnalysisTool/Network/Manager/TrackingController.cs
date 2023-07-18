@@ -26,6 +26,7 @@ using System.Reflection;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Data;
+using StatisticsAnalysisTool.DungeonTracker.Models;
 using StatisticsAnalysisTool.PartyBuilder;
 using ValueType = StatisticsAnalysisTool.Enumerations.ValueType;
 

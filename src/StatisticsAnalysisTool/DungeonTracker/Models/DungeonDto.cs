@@ -4,7 +4,7 @@ using StatisticsAnalysisTool.Models.NetworkModel;
 using System;
 using System.Collections.Generic;
 
-namespace StatisticsAnalysisTool.DungeonTracker;
+namespace StatisticsAnalysisTool.DungeonTracker.Models;
 
 public class DungeonDto
 {

@@ -3,7 +3,7 @@ using StatisticsAnalysisTool.Properties;
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
 
-namespace StatisticsAnalysisTool.Models;
+namespace StatisticsAnalysisTool.DungeonTracker.Models;
 
 public class DungeonStats : INotifyPropertyChanged
 {
@@ -318,7 +318,7 @@ public class DungeonStats : INotifyPropertyChanged
             OnPropertyChanged();
         }
     }
-        
+
     public double LootInSilverPerHour
     {
         get => _lootInSilverPerHour;

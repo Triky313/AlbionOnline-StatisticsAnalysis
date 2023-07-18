@@ -1,6 +1,6 @@
 ﻿using StatisticsAnalysisTool.Enumerations;
 
-namespace StatisticsAnalysisTool.Models;
+namespace StatisticsAnalysisTool.DungeonTracker.Models;
 
 public struct DungeonStatsFilterStruct
 {
