@@ -106,13 +106,13 @@ internal static class ImageController
     {
         try
         {
-            var bmp = new BitmapImage
-            {
-                CacheOption = BitmapCacheOption.OnDemand,
-                DecodePixelHeight = pixelHeight,
-                DecodePixelWidth = pixelWidth,
-                UriSource = new Uri(localResourcePath)
-            };
+            var bmp = new BitmapImage();
+            bmp.BeginInit();
+            bmp.CacheOption = BitmapCacheOption.OnDemand;
+            bmp.DecodePixelHeight = pixelHeight;
+            bmp.DecodePixelWidth = pixelWidth;
+            bmp.UriSource = new Uri(localResourcePath);
+            bmp.EndInit();
 
             if (freeze)
             {
@@ -156,11 +156,14 @@ internal static class ImageController
         {
             var userImage = new BitmapImage
             {
-                CacheOption = BitmapCacheOption.OnDemand,
-                DecodePixelHeight = pixelHeight,
-                DecodePixelWidth = pixelWidth,
-                UriSource = new Uri(webPath)
+                CacheOption = BitmapCacheOption.OnDemand
             };
+
+            userImage.BeginInit();
+            userImage.DecodePixelHeight = pixelHeight;
+            userImage.DecodePixelWidth = pixelWidth;
+            userImage.UriSource = new Uri(webPath);
+            userImage.EndInit();
 
             if (freeze)
             {
