@@ -750,4 +750,17 @@
 	<translation name="WORLD_JSON_CAN_NOT_BE_LOADED">Nie można załadować pliku world.json.</translation>
 	<translation name="UPDATE_WORLD_JSON_BY_DAYS">Zaktualizuj world.json o dni: </translation>
 	<translation name="WORLD_JSON_SOURCE_URL">Adres URL źródła world.json</translation>
+	<translation name="PARTY_BUILDER">Kreator Grup</translation>
+	<translation name="GET_SPELLS_JSON">Pobierz spells.json</translation>
+	<translation name="SPELLS_JSON_CAN_NOT_BE_LOADED">Nie można załadować pliku spells.json.</translation>	
+	<translation name="CONDITIONS">Warunki</translation>
+	<translation name="DESCRIPTIONS">Opisy</translation>
+	<translation name="MINIMAL_ITEM_POWER">Minimalna siła przedmiotu</translation>
+	<translation name="MAXIMUM_ITEM_POWER">Maksymalna siła przedmiotu</translation>
+	<translation name="MINIMAL_BASIC_ITEM_POWER">Minimalna podstawowa siła przedmiotu</translation>
+	<translation name="MAXIMUM_BASIC_ITEM_POWER">Maksymalna podstawowa siła przedmiotu</translation>
+	<translation name="IP_OR_BIP_BETWEEN_MIN_AND_MAX_RANGE">Siła przedmiotu lub podstawowa siła przedmiotu między zakresem min i max</translation>
+	<translation name="IP_OR_BIP_OVER_MAX_RANGE">Siła przedmiotu lub podstawowa siła przedmiotu powyżej zakresu max</translation>
+	<translation name="IP_OR_BIP_UNDER_MIN_RANGE">Siła przedmiotu lub podstawowa siła przedmiotu poniżej zakresu min</translation>
+	<translation name="PLAYER_IS_NOT_INSPECTED">Gracz nie jest sprawdzony</translation>
 </translations>
