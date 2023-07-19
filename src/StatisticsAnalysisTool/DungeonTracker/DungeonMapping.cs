@@ -4,32 +4,32 @@ namespace StatisticsAnalysisTool.DungeonTracker;
 
 public static class DungeonMapping
 {
-    public static DungeonDto Mapping(Dungeon dungeonObjectOld)
+    public static DungeonDto Mapping(Dungeon dungeon)
     {
         return new DungeonDto()
         {
-            TotalRunTimeInSeconds = dungeonObjectOld.TotalRunTimeInSeconds,
-            GuidList = dungeonObjectOld.GuidList,
-            EnterDungeonFirstTime = dungeonObjectOld.EnterDungeonFirstTime,
-            MainMapIndex = dungeonObjectOld.MainMapIndex,
-            DungeonEventObjects = dungeonObjectOld.DungeonEventObjects,
-            DungeonLoot = dungeonObjectOld.DungeonLoot,
-            Status = dungeonObjectOld.Status,
-            Fame = dungeonObjectOld.Fame,
-            ReSpec = dungeonObjectOld.ReSpec,
-            Silver = dungeonObjectOld.Silver,
-            Might = dungeonObjectOld.Might,
-            Favor = dungeonObjectOld.Favor,
-            FactionCoins = dungeonObjectOld.FactionCoins,
-            FactionFlags = dungeonObjectOld.FactionFlags,
-            DiedName = dungeonObjectOld.DiedName,
-            KilledBy = dungeonObjectOld.KilledBy,
-            DiedInDungeon = dungeonObjectOld.DiedInDungeon,
-            Faction = dungeonObjectOld.Faction,
-            Mode = dungeonObjectOld.Mode,
-            CityFaction = dungeonObjectOld.CityFaction,
-            Tier = dungeonObjectOld.Tier,
-            Level = dungeonObjectOld.Level
+            TotalRunTimeInSeconds = dungeon.TotalRunTimeInSeconds,
+            GuidList = dungeon.GuidList,
+            EnterDungeonFirstTime = dungeon.EnterDungeonFirstTime,
+            MainMapIndex = dungeon.MainMapIndex,
+            DungeonEventObjects = dungeon.DungeonEventObjects,
+            DungeonLoot = dungeon.DungeonLoot,
+            Status = dungeon.Status,
+            Fame = dungeon.Fame,
+            ReSpec = dungeon.ReSpec,
+            Silver = dungeon.Silver,
+            Might = dungeon.Might,
+            Favor = dungeon.Favor,
+            FactionCoins = dungeon.FactionCoins,
+            FactionFlags = dungeon.FactionFlags,
+            DiedName = dungeon.DiedName,
+            KilledBy = dungeon.KilledBy,
+            DiedInDungeon = dungeon.DiedInDungeon,
+            Faction = dungeon.Faction,
+            Mode = dungeon.Mode,
+            CityFaction = dungeon.CityFaction,
+            Tier = dungeon.Tier,
+            Level = dungeon.Level
         };
     }
 

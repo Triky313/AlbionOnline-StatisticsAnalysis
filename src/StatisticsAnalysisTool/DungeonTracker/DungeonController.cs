@@ -1200,7 +1200,7 @@ public class DungeonController
     public async Task SaveInFileAsync()
     {
         DirectoryController.CreateDirectoryWhenNotExists(Path.Combine(AppDomain.CurrentDomain.BaseDirectory, Settings.Default.UserDataDirectoryName));
-        var toSaveDungeons = _dungeonBindings?.Dungeons?.Where(x => x is { Status: DungeonStatus.Done }).ToList();
+        var toSaveDungeons = _dungeonBindings?.Dungeons?.Where(x => x is { Status: DungeonStatus.Done }).Select(DungeonMapping.Mapping).ToList();
         await FileController.SaveAsync(toSaveDungeons, Path.Combine(AppDomain.CurrentDomain.BaseDirectory, Settings.Default.UserDataDirectoryName, Settings.Default.DungeonRunsFileName));
     }
 
