@@ -8,9 +8,9 @@ using StatisticsAnalysisTool.EstimatedMarketValue;
 using StatisticsAnalysisTool.EventLogging;
 using StatisticsAnalysisTool.EventLogging.Notification;
 using StatisticsAnalysisTool.Exceptions;
-using StatisticsAnalysisTool.GameData;
 using StatisticsAnalysisTool.Gathering;
 using StatisticsAnalysisTool.Models;
+using StatisticsAnalysisTool.PartyBuilder;
 using StatisticsAnalysisTool.Properties;
 using StatisticsAnalysisTool.Trade;
 using StatisticsAnalysisTool.Trade.Mails;
@@ -20,13 +20,13 @@ using StatisticsAnalysisTool.Views;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Reflection;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Data;
-using StatisticsAnalysisTool.PartyBuilder;
 using ValueType = StatisticsAnalysisTool.Enumerations.ValueType;
 
 namespace StatisticsAnalysisTool.Network.Manager;
@@ -148,12 +148,17 @@ public class TrackingController : ITrackingController
             Log.Error(MethodBase.GetCurrentMethod()?.DeclaringType, e);
             _mainWindowViewModel.SetErrorBar(Visibility.Visible, LanguageController.Translation("PACKET_HANDLER_ERROR_MESSAGE"));
 
-            await StopTrackingAsync();
+            StopTracking();
         }
     }
 
-    public async Task StopTrackingAsync()
+    public void StopTracking()
     {
+        if (!_mainWindowViewModel.IsTrackingActive)
+        {
+            return;
+        }
+
         NetworkManager.StopDeviceCapture();
 
         LiveStatsTracker?.Stop();
@@ -162,6 +167,13 @@ public class TrackingController : ITrackingController
         LootController.UnregisterEvents();
         ClusterController.UnregisterEvents();
 
+        _mainWindowViewModel.IsTrackingActive = false;
+
+        Debug.Print("Stopped tracking");
+    }
+
+    public async Task SaveData()
+    {
         await VaultController?.SaveInFileAsync()!;
         await TreasureController?.SaveInFileAsync()!;
         await StatisticController?.SaveInFileAsync()!;
@@ -173,7 +185,7 @@ public class TrackingController : ITrackingController
 
         await EstimatedMarketValueController.SaveInFileAsync();
 
-        _mainWindowViewModel.IsTrackingActive = false;
+        Debug.Print("Data saved");
     }
 
     public bool ExistIndispensableInfos => ClusterController.CurrentCluster != null && EntityController.ExistLocalEntity();

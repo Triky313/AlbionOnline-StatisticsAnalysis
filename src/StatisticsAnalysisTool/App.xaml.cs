@@ -10,6 +10,7 @@ using StatisticsAnalysisTool.Views;
 using System;
 using System.Reflection;
 using System.Runtime.InteropServices;
+using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Threading;
 
@@ -96,25 +97,15 @@ public partial class App
         }
     }
 
-    private void Application_SessionEnding(object sender, SessionEndingCancelEventArgs e)
+    protected override void OnExit(ExitEventArgs e)
     {
-        _mainWindowViewModel.SaveLootLogger();
-        SettingsController.SaveSettings();
-
-        if (_mainWindowViewModel.IsTrackingActive)
+        var task = Task.Factory.StartNew(_trackingController.StopTracking);
+        var task2 = Task.Factory.StartNew(_mainWindowViewModel.SaveLootLogger);
+        var task3 = Task.Factory.StartNew(SettingsController.SaveSettings);
+        var task4 = Task.Factory.StartNew(_trackingController.SaveData);
+        while (!task.IsCompleted && !task2.IsCompleted && !task3.IsCompleted && !task4.IsCompleted)
         {
-            _ = _trackingController.StopTrackingAsync();
-        }
-    }
-
-    private void Application_Exit(object sender, ExitEventArgs e)
-    {
-        _mainWindowViewModel.SaveLootLogger();
-        SettingsController.SaveSettings();
-
-        if (_mainWindowViewModel.IsTrackingActive)
-        {
-            _ = _trackingController.StopTrackingAsync();
+            Task.Delay(250);
         }
     }
 }
