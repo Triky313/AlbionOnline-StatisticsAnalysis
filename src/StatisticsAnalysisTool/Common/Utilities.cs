@@ -1,6 +1,4 @@
-﻿using StatisticsAnalysisTool.EstimatedMarketValue;
-using System;
-using System.Collections.Generic;
+﻿using System;
 using System.Globalization;
 using System.Linq;
 using System.Runtime.InteropServices;
@@ -35,7 +33,7 @@ public static class Utilities
         window.Left = (screenWidth / 2) - (windowWidth / 2);
         window.Top = (screenHeight / 2) - (windowHeight / 2);
     }
-
+    
     public static bool IsWindowOpen<T>(string name = "") where T : Window
     {
         return string.IsNullOrEmpty(name)

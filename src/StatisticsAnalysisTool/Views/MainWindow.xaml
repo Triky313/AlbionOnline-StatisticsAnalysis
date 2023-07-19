@@ -9,7 +9,6 @@
         xmlns:vwp="clr-namespace:WpfToolkit.Controls;assembly=VirtualizingWrapPanel"
         mc:Ignorable="d"
         d:DesignHeight="650" d:DesignWidth="1000"
-        WindowStartupLocation="CenterScreen"
         Title="AlbionOnline - StatisticsAnalysisTool"
         Closed="MainWindow_OnClosed"
         d:DataContext="{d:DesignInstance Type=viewModels:MainWindowViewModel}"

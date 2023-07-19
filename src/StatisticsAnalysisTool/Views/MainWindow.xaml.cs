@@ -25,10 +25,26 @@ public partial class MainWindow
     public MainWindow(MainWindowViewModel mainWindowViewModel)
     {
         InitializeComponent();
+        InitWindow();
         _mainWindowViewModel = mainWindowViewModel;
         DataContext = _mainWindowViewModel;
+    }
 
-        _ = SettingsController.SetMainWindowSettings();
+    public void InitWindow()
+    {
+        Height = SettingsController.CurrentSettings.MainWindowHeight;
+        Width = SettingsController.CurrentSettings.MainWindowWidth;
+        Left = SettingsController.CurrentSettings.MainWindowLeftPosition;
+        Top = SettingsController.CurrentSettings.MainWindowTopPosition;
+        if (SettingsController.CurrentSettings.MainWindowMaximized)
+        {
+            WindowState = WindowState.Maximized;
+        }
+
+        if (SettingsController.CurrentSettings.MainWindowLeftPosition == 0 && SettingsController.CurrentSettings.MainWindowLeftPosition == 0)
+        {
+            Utilities.CenterWindowOnScreen(this);
+        }
     }
 
     private void Hotbar_MouseDown(object sender, MouseButtonEventArgs e)
@@ -98,7 +114,7 @@ public partial class MainWindow
 
     private void MainWindow_OnClosed(object sender, EventArgs eventArgs)
     {
-        SettingsController.SetWindowSettings(WindowState, Height, Width);
+        SettingsController.SetWindowSettings(WindowState, Height, Width, Left, Top);
     }
 
     private void Grid_MouseMove(object sender, MouseEventArgs e)
