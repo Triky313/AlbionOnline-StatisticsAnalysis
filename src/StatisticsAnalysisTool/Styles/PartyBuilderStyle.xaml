@@ -214,6 +214,9 @@
                     </ItemsControl>
                 </StackPanel>-->
             </StackPanel>
+            <StackPanel Orientation="Vertical">
+                <Label Content="{Binding LastUpdate}" ToolTip="{Binding TranslationLastUpdate}" HorizontalAlignment="Right" />
+            </StackPanel>
         </Grid>
     </DataTemplate>
 
