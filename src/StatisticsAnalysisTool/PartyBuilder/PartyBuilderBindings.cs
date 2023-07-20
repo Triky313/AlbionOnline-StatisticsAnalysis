@@ -2,7 +2,9 @@
 using StatisticsAnalysisTool.Common.UserSettings;
 using StatisticsAnalysisTool.Properties;
 using System.Collections.ObjectModel;
+using System.Collections.Specialized;
 using System.ComponentModel;
+using System.Linq;
 using System.Runtime.CompilerServices;
 using System.Windows;
 using System.Windows.Data;
@@ -18,6 +20,8 @@ public class PartyBuilderBindings : INotifyPropertyChanged
     private double _maximumItemPower;
     private double _minimalBasicItemPower;
     private double _maximumBasicItemPower;
+    private double _averagePartyIp;
+    private double _averagePartyBasicIp;
 
     public PartyBuilderBindings()
     {
@@ -35,6 +39,8 @@ public class PartyBuilderBindings : INotifyPropertyChanged
         MaximumItemPower = SettingsController.CurrentSettings.PartyBuilderMaximumItemPower;
         MinimalBasicItemPower = SettingsController.CurrentSettings.PartyBuilderMinimalBasicItemPower;
         MaximumBasicItemPower = SettingsController.CurrentSettings.PartyBuilderMaximumBasicItemPower;
+
+        Party.CollectionChanged += UpdateAveragePartyIp;
     }
 
     public ListCollectionView PartyCollectionView
@@ -113,6 +119,26 @@ public class PartyBuilderBindings : INotifyPropertyChanged
         {
             _gridSplitterPosition = value;
             SettingsController.CurrentSettings.PartyBuilderGridSplitterPosition = _gridSplitterPosition.Value;
+            OnPropertyChanged();
+        }
+    }
+
+    public double AveragePartyIp
+    {
+        get => _averagePartyIp;
+        set
+        {
+            _averagePartyIp = value;
+            OnPropertyChanged();
+        }
+    }
+
+    public double AveragePartyBasicIp
+    {
+        get => _averagePartyBasicIp;
+        set
+        {
+            _averagePartyBasicIp = value;
             OnPropertyChanged();
         }
     }
@@ -207,6 +233,34 @@ public class PartyBuilderBindings : INotifyPropertyChanged
         }
     }
 
+    public void UpdateAveragePartyIp(object sender, NotifyCollectionChangedEventArgs e)
+    {
+        var ipSum = Party.Where(x => x.IsLocalPlayer == false).Sum(x => x.AverageItemPower.ItemPower);
+        var basicIpSum = Party.Sum(x => x.AverageBasicItemPower.ItemPower);
+        if (Party.Count <= 0)
+        {
+            return;
+        }
+
+        if (ipSum > 0)
+        {
+            AveragePartyIp = ipSum / Party.Count(x => x.IsLocalPlayer == false);
+        }
+        else
+        {
+            AveragePartyIp = 0;
+        }
+
+        if (basicIpSum > 0)
+        {
+            AveragePartyBasicIp = basicIpSum / Party.Count;
+        }
+        else
+        {
+            AveragePartyBasicIp = 0;
+        }
+    }
+
     public static string TranslationDescriptions => LanguageController.Translation("DESCRIPTIONS");
     public static string TranslationPlayerIsNotInspected => LanguageController.Translation("PLAYER_IS_NOT_INSPECTED");
     public static string TranslationItemPower => LanguageController.Translation("ITEM_POWER");
@@ -219,6 +273,7 @@ public class PartyBuilderBindings : INotifyPropertyChanged
     public static string TranslationIpOrBipBetweenMinAndMaxRange => LanguageController.Translation("IP_OR_BIP_BETWEEN_MIN_AND_MAX_RANGE");
     public static string TranslationIpOrBipOverMaxRange => LanguageController.Translation("IP_OR_BIP_OVER_MAX_RANGE");
     public static string TranslationIpOrBipUnderMinRange => LanguageController.Translation("IP_OR_BIP_UNDER_MIN_RANGE");
+    public static string TranslationPartyInformation => LanguageController.Translation("PARTY_INFORMATION");
 
     public event PropertyChangedEventHandler PropertyChanged;
 
