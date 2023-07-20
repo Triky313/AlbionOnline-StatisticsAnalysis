@@ -175,17 +175,17 @@ public class TrackingController : ITrackingController
     public async Task SaveData()
     {
         await VaultController?.SaveInFileAsync()!;
+        await TradeController?.SaveInFileAsync()!;
         await TreasureController?.SaveInFileAsync()!;
         await StatisticController?.SaveInFileAsync()!;
         await GatheringController?.SaveInFileAsync(true)!;
-        await TradeController?.SaveInFileAsync()!;
 
         await FileController.SaveAsync(_mainWindowViewModel.DamageMeterBindings?.DamageMeterSnapshots,
             Path.Combine(AppDomain.CurrentDomain.BaseDirectory, Settings.Default.UserDataDirectoryName, Settings.Default.DamageMeterSnapshotsFileName));
+        Debug.Print("Damage Meter snapshots saved");
 
         await EstimatedMarketValueController.SaveInFileAsync();
-
-        Debug.Print("Data saved");
+        Debug.Print("Estimated market values saved");
     }
 
     public bool ExistIndispensableInfos => ClusterController.CurrentCluster != null && EntityController.ExistLocalEntity();
