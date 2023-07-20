@@ -274,6 +274,8 @@ public class PartyBuilderBindings : INotifyPropertyChanged
     public static string TranslationIpOrBipOverMaxRange => LanguageController.Translation("IP_OR_BIP_OVER_MAX_RANGE");
     public static string TranslationIpOrBipUnderMinRange => LanguageController.Translation("IP_OR_BIP_UNDER_MIN_RANGE");
     public static string TranslationPartyInformation => LanguageController.Translation("PARTY_INFORMATION");
+    public static string TranslationAverageIp => LanguageController.Translation("AVERAGE_IP");
+    public static string TranslationAverageBasicIp => LanguageController.Translation("AVERAGE_BIP");
 
     public event PropertyChangedEventHandler PropertyChanged;
 

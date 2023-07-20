@@ -259,11 +259,11 @@
             <StackPanel Orientation="Horizontal">
                 <StackPanel Orientation="Vertical" Width="250">
                     <StackPanel Orientation="Horizontal">
-                        <Label Content="Average IP" Style="{StaticResource PartyBuilder.Label.Designation}" Foreground="{StaticResource SolidColorBrush.Accent.Blue.2}" ContentStringFormat="{}{0}:" />
+                        <Label Content="{Binding TranslationAverageIp, FallbackValue='AVERAGE__IP'}" Style="{StaticResource PartyBuilder.Label.Designation}" Foreground="{StaticResource SolidColorBrush.Accent.Blue.2}" ContentStringFormat="{}{0}:" />
                         <Label Content="{Binding AveragePartyIp, FallbackValue='0', Converter={StaticResource RoundingConverter}, ConverterParameter=0}" Style="{StaticResource PartyBuilder.Label.Value}" />
                     </StackPanel>
                     <StackPanel Orientation="Horizontal">
-                        <Label Content="Average BIP" Style="{StaticResource PartyBuilder.Label.Designation}" Foreground="{StaticResource SolidColorBrush.Accent.Blue.2}" ContentStringFormat="{}{0}:" />
+                        <Label Content="{Binding TranslationAverageBasicIp, FallbackValue='AVERAGE__BIP'}" Style="{StaticResource PartyBuilder.Label.Designation}" Foreground="{StaticResource SolidColorBrush.Accent.Blue.2}" ContentStringFormat="{}{0}:" />
                         <Label Content="{Binding AveragePartyBasicIp, FallbackValue='0', Converter={StaticResource RoundingConverter}, ConverterParameter=0}" Style="{StaticResource PartyBuilder.Label.Value}" />
                     </StackPanel>
                 </StackPanel>
