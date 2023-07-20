@@ -65,6 +65,7 @@ public class PartyBuilderBindings : INotifyPropertyChanged
         {
             _minimalItemPower = value;
             SettingsController.CurrentSettings.PartyBuilderMinimalItemPower = _minimalItemPower;
+            UpdatePartyBuilderPlayerConditionsMinIP(value);
             OnPropertyChanged();
         }
     }
@@ -76,6 +77,7 @@ public class PartyBuilderBindings : INotifyPropertyChanged
         {
             _maximumItemPower = value;
             SettingsController.CurrentSettings.PartyBuilderMaximumItemPower = _maximumItemPower;
+            UpdatePartyBuilderPlayerConditionsMaxIP(value);
             OnPropertyChanged();
         }
     }
@@ -87,6 +89,7 @@ public class PartyBuilderBindings : INotifyPropertyChanged
         {
             _minimalBasicItemPower = value;
             SettingsController.CurrentSettings.PartyBuilderMinimalBasicItemPower = _minimalBasicItemPower;
+            UpdatePartyBuilderPlayerConditionsMinBIP(value);
             OnPropertyChanged();
         }
     }
@@ -98,6 +101,7 @@ public class PartyBuilderBindings : INotifyPropertyChanged
         {
             _maximumBasicItemPower = value;
             SettingsController.CurrentSettings.PartyBuilderMaximumBasicItemPower = _maximumBasicItemPower;
+            UpdatePartyBuilderPlayerConditionsMaxBIP(value);
             OnPropertyChanged();
         }
     }
