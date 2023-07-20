@@ -763,4 +763,7 @@
 	<translation name="IP_OR_BIP_OVER_MAX_RANGE">Gegenstandsstärke oder Basisgegenstandsstärke über der maximalen Reichweite</translation>
 	<translation name="IP_OR_BIP_UNDER_MIN_RANGE">Gegenstandsstärke oder Grundgegenstandsstärke unter Mindestbereich</translation>
 	<translation name="PLAYER_IS_NOT_INSPECTED">Spieler ist nicht inspiziert</translation>
+	<translation name="PARTY_INFORMATION">Party Information</translation>
+	<translation name="AVERAGE_IP">Durchschnitts IP</translation>
+	<translation name="AVERAGE_BIP">Durchschnitts BIP</translation>
 </translations>
