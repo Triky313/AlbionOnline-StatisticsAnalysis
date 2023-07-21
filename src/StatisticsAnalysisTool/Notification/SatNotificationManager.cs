@@ -32,6 +32,11 @@ public class SatNotificationManager
 
         await Application.Current.Dispatcher.InvokeAsync(() =>
         {
+            if (ForegroundText1 is null || BackgroundBlue is null)
+            {
+                return;
+            }
+
             var content = new NotificationContent
             {
                 Title = title,
@@ -50,11 +55,14 @@ public class SatNotificationManager
 
     public async Task ShowTradeAsync(Trade.Trade trade)
     {
-        if (!SettingsController.CurrentSettings.IsNotificationFilterTradeActive || trade == null)
+        if (!SettingsController.CurrentSettings.IsNotificationFilterTradeActive 
+            || trade == null 
+            || ForegroundText1 is null 
+            || BackgroundBlue is null)
         {
             return;
         }
-        
+
         await Application.Current.Dispatcher.InvokeAsync(() =>
         {
             var content = new NotificationContent
