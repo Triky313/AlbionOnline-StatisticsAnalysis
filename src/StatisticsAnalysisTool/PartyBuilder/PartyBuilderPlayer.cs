@@ -35,6 +35,7 @@ public class PartyBuilderPlayer : INotifyPropertyChanged
     private PartyBuilderItemPowerCondition _basicItemPowerCondition;
     private PartyBuilderItemPowerCondition _itemPowerCondition;
     private bool _isPlayerInspected;
+    private DateTime _lastUpdate;
     public Guid Guid { get; init; }
 
     public string Username
@@ -77,6 +78,7 @@ public class PartyBuilderPlayer : INotifyPropertyChanged
         set
         {
             _averageItemPower = value;
+            LastUpdate = DateTime.UtcNow;
             OnPropertyChanged();
         }
     }
@@ -88,6 +90,7 @@ public class PartyBuilderPlayer : INotifyPropertyChanged
         {
             _averageBasicItemPower = value;
             IsPlayerInspected = false;
+            LastUpdate = DateTime.UtcNow;
             OnPropertyChanged();
         }
     }
@@ -173,6 +176,7 @@ public class PartyBuilderPlayer : INotifyPropertyChanged
         set
         {
             _bag = value;
+            LastUpdate = DateTime.UtcNow;
             OnPropertyChanged();
         }
     }
@@ -194,6 +198,7 @@ public class PartyBuilderPlayer : INotifyPropertyChanged
         set
         {
             _mount = value;
+            LastUpdate = DateTime.UtcNow;
             OnPropertyChanged();
         }
     }
@@ -204,6 +209,7 @@ public class PartyBuilderPlayer : INotifyPropertyChanged
         set
         {
             _potion = value;
+            LastUpdate = DateTime.UtcNow;
             OnPropertyChanged();
         }
     }
@@ -214,6 +220,7 @@ public class PartyBuilderPlayer : INotifyPropertyChanged
         set
         {
             _buffFood = value;
+            LastUpdate = DateTime.UtcNow;
             OnPropertyChanged();
         }
     }
@@ -298,7 +305,18 @@ public class PartyBuilderPlayer : INotifyPropertyChanged
         }
     }
 
+    public DateTime LastUpdate
+    {
+        get => _lastUpdate;
+        set
+        {
+            _lastUpdate = value;
+            OnPropertyChanged();
+        }
+    }
+
     public static string TranslationItemPower => LanguageController.Translation("ITEM_POWER");
+    public static string TranslationLastUpdate => LanguageController.Translation("LAST_UPDATE");
 
     public event PropertyChangedEventHandler PropertyChanged;
 

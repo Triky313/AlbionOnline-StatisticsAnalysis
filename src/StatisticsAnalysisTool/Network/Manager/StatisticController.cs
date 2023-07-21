@@ -11,6 +11,7 @@ using StatisticsAnalysisTool.ViewModels;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Diagnostics;
 using System.Globalization;
 using System.IO;
 using System.Linq;
@@ -276,6 +277,7 @@ public class StatisticController
     public async Task SaveInFileAsync()
     {
         await FileController.SaveAsync(_dashboardStatistics, Path.Combine(AppDomain.CurrentDomain.BaseDirectory, Settings.Default.UserDataDirectoryName, Settings.Default.StatsFileName));
+        Debug.Print("Statistics saved");
     }
 
     #endregion

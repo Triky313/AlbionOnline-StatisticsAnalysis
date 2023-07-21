@@ -7,6 +7,7 @@ using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Collections.Specialized;
+using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Text.RegularExpressions;
@@ -292,6 +293,7 @@ public class TreasureController
     public async Task SaveInFileAsync()
     {
         await FileController.SaveAsync(_treasures, Path.Combine(AppDomain.CurrentDomain.BaseDirectory, Settings.Default.UserDataDirectoryName, Settings.Default.TreasureStatsFileName));
+        Debug.Print("Treasure saved");
     }
 
     #endregion

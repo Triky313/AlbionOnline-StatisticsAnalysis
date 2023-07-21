@@ -33,6 +33,8 @@ public class SettingsObject
     public string AlbionOnlineApiBaseUrlEast { get; set; } = "https://gameinfo-sgp.albiononline.com";
     public double MainWindowHeight { get; set; } = 100;
     public double MainWindowWidth { get; set; } = 100;
+    public double MainWindowLeftPosition { get; set; } = 0;
+    public double MainWindowTopPosition { get; set; } = 0;
     public bool MainWindowMaximized { get; set; }
     public bool IsTrackingResetByMapChangeActive { get; set; }
     public bool IsMainTrackerFilterSilver { get; set; }

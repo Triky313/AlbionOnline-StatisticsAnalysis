@@ -52,6 +52,7 @@ public class PartyBuilderController
             }
 
             _mainWindowViewModel?.PartyBuilderBindings?.UpdatePartyBuilderPlayerConditions();
+            _mainWindowViewModel?.PartyBuilderBindings?.UpdateAveragePartyIp(null, null);
         });
     }
 
@@ -145,5 +146,6 @@ public class PartyBuilderController
 
         bindingsParty.IsPlayerInspected = true;
         _mainWindowViewModel.PartyBuilderBindings.UpdatePartyBuilderPlayerConditions();
+        _mainWindowViewModel.PartyBuilderBindings.UpdateAveragePartyIp(null, null);
     }
 }

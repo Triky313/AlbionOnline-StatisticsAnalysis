@@ -102,7 +102,6 @@ internal static class ImageController
     #endregion
 
     #region Utilities
-
     private static BitmapImage GetImageFromLocal(string localResourcePath, int pixelHeight, int pixelWidth, bool freeze)
     {
         try
@@ -114,6 +113,7 @@ internal static class ImageController
             bmp.DecodePixelWidth = pixelWidth;
             bmp.UriSource = new Uri(localResourcePath);
             bmp.EndInit();
+
             if (freeze)
             {
                 bmp.Freeze();
@@ -158,11 +158,13 @@ internal static class ImageController
             {
                 CacheOption = BitmapCacheOption.OnDemand
             };
+
             userImage.BeginInit();
             userImage.DecodePixelHeight = pixelHeight;
             userImage.DecodePixelWidth = pixelWidth;
             userImage.UriSource = new Uri(webPath);
             userImage.EndInit();
+
             if (freeze)
             {
                 userImage.Freeze();

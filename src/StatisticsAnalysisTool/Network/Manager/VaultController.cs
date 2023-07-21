@@ -7,6 +7,7 @@ using StatisticsAnalysisTool.ViewModels;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Reflection;
@@ -331,6 +332,7 @@ public class VaultController
     public async Task SaveInFileAsync()
     {
         await FileController.SaveAsync(Vaults, Path.Combine(AppDomain.CurrentDomain.BaseDirectory, Settings.Default.UserDataDirectoryName, Settings.Default.VaultsFileName));
+        Debug.Print("Vault saved");
     }
 
     #endregion

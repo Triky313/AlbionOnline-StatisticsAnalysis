@@ -8,6 +8,7 @@ using StatisticsAnalysisTool.Properties;
 using StatisticsAnalysisTool.ViewModels;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Threading;
@@ -149,6 +150,7 @@ public class GatheringController
 
         await FileController.SaveAsync(gatheredToSave,
             Path.Combine(AppDomain.CurrentDomain.BaseDirectory, Settings.Default.UserDataDirectoryName, Settings.Default.GatheringFileName));
+        Debug.Print("Gathering saved");
     }
 
     public async Task SaveInFileAfterExceedingLimit(int limit)

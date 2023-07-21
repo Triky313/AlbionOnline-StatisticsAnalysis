@@ -763,4 +763,7 @@
 	<translation name="IP_OR_BIP_OVER_MAX_RANGE">Item power or Basic item power over max range</translation>
 	<translation name="IP_OR_BIP_UNDER_MIN_RANGE">Item power or Basic item power under min range</translation>
 	<translation name="PLAYER_IS_NOT_INSPECTED">Player is not inspected</translation>
+	<translation name="PARTY_INFORMATION">Party information</translation>
+	<translation name="AVERAGE_IP">Average IP</translation>
+	<translation name="AVERAGE_BIP">Average BIP</translation>
 </translations>
