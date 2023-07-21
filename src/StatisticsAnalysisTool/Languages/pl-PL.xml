@@ -748,7 +748,7 @@
 	<translation name="DAMAGE_METER_DESCRIPTION_2">Jeśli w Damage Meter nie wyświetlają się właściwe bronie, zazwyczaj jest to spowodowane nieaktualnymi plikami ItemList.json i Items.json. Ręcznie usuń pliki z folderu narzędzia i uruchom je ponownie, wówczas zostanie pobrana najnowsza wersja plików i wszystko powinno działać normalnie.</translation>	
 	<translation name="GET_WORLD_JSON">Pobierz world.json</translation>
 	<translation name="WORLD_JSON_CAN_NOT_BE_LOADED">Nie można załadować pliku world.json.</translation>
-	<translation name="UPDATE_WORLD_JSON_BY_DAYS">Zaktualizuj world.json o dni: </translation>
+	<translation name="UPDATE_WORLD_JSON_BY_DAYS">Zaktualizuj world.json  wedłóg dni:</translation>
 	<translation name="WORLD_JSON_SOURCE_URL">Adres URL źródła world.json</translation>
 	<translation name="PARTY_BUILDER">Kreator Grup</translation>
 	<translation name="GET_SPELLS_JSON">Pobierz spells.json</translation>
@@ -765,5 +765,7 @@
 	<translation name="PLAYER_IS_NOT_INSPECTED">Gracz nie jest sprawdzony</translation>
 	<translation name="PARTY_INFORMATION">Informacje o grupie</translation>
 	<translation name="AVERAGE_IP">Średnia siła przedmiotu ( IP )</translation>
-	<translation name="AVERAGE_BIP">Średnia podstawowa siła przedmiotu ( BIP )</translation>
+	<translation name="AVERAGE_BIP">Średnia podstawowa siła przedmiotu ( BIP )</translation>	
+	<translation name="SPELLS_JSON_SOURCE_URL">Adres URL źródła spells.json</translation>
+	<translation name="UPDATE_SPELLS_JSON_BY_DAYS">Zaktualizuj spells.json wedłóg dni:</translation>
 </translations>
