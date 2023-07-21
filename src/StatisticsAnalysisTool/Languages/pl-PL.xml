@@ -763,4 +763,7 @@
 	<translation name="IP_OR_BIP_OVER_MAX_RANGE">Siła przedmiotu lub podstawowa siła przedmiotu powyżej zakresu max</translation>
 	<translation name="IP_OR_BIP_UNDER_MIN_RANGE">Siła przedmiotu lub podstawowa siła przedmiotu poniżej zakresu min</translation>
 	<translation name="PLAYER_IS_NOT_INSPECTED">Gracz nie jest sprawdzony</translation>
+	<translation name="PARTY_INFORMATION">Informacje o grupie</translation>
+	<translation name="AVERAGE_IP">Średnia siła przedmiotu ( IP )</translation>
+	<translation name="AVERAGE_BIP">Średnia podstawowa siła przedmiotu ( BIP )</translation>
 </translations>
