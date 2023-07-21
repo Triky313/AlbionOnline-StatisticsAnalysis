@@ -1,5 +1,19 @@
 [ 
     {
+	"Timestamp": "2023-07-03T00:00:00",
+	"Amount": 1000000,
+	"RealMoneyAmount": 0,
+	"Contributor": "Flamires",
+	"IsDonationRealMoney": false
+    },
+    {
+	"Timestamp": "2023-06-25T00:00:00",
+	"Amount": 990000,
+	"RealMoneyAmount": 0,
+	"Contributor": "Mieku",
+	"IsDonationRealMoney": false
+    },
+    {
 	"Timestamp": "2023-05-05T00:00:00",
 	"Amount": 25000000,
 	"RealMoneyAmount": 0,

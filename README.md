@@ -24,7 +24,7 @@ A tool to easily read auction house data with a loot logger, damage meter, dunge
 - Installing **Npcap** Free Edition (v1.6 or higher) [here](https://npcap.com/#download) (For Game tracking)
 
 **Download the Statistics Analysis Tool**
-- [**DOWNLOAD**](https://github.com/Triky313/AlbionOnline-StatisticsAnalysis/releases/download/v5.18.2/StatisticsAnalysis-AlbionOnline-v5.18.2-x64.zip)
+- [**DOWNLOAD**](https://github.com/Triky313/AlbionOnline-StatisticsAnalysis/releases/download/v5.22.0/StatisticsAnalysis-AlbionOnline-v5.22.0-x64.zip)
 Unzip the `.zip` file and start `StatisticsAnalysisTool.exe` with a double click. You may not be able to see the `.exe`. Don't worry, usually it's the file with the icon.
 
 ![tool_dir](https://user-images.githubusercontent.com/14247773/170473306-4dcc629e-384e-41b2-ada8-657cabe1b472.png)
