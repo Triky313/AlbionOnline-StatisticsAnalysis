@@ -766,4 +766,6 @@
 	<translation name="PARTY_INFORMATION">Party Information</translation>
 	<translation name="AVERAGE_IP">Durchschnitts IP</translation>
 	<translation name="AVERAGE_BIP">Durchschnitts BIP</translation>
+	<translation name="SPELLS_JSON_SOURCE_URL">spells.json Url Quelle</translation>
+	<translation name="UPDATE_SPELLS_JSON_BY_DAYS">spells.json aktualisieren: </translation>
 </translations>

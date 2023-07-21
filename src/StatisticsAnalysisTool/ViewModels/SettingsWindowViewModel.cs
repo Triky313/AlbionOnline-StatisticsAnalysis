@@ -44,6 +44,7 @@ public class SettingsWindowViewModel : INotifyPropertyChanged
     private ObservableCollection<SettingDataInformation> _updateItemsJsonByDays = new();
     private ObservableCollection<SettingDataInformation> _updateMobsJsonByDays = new();
     private ObservableCollection<SettingDataInformation> _updateWorldJsonByDays = new();
+    private ObservableCollection<SettingDataInformation> _updateSpellsJsonByDays = new();
     private SettingDataInformation _updateItemsJsonByDaysSelection;
     private SettingDataInformation _updateMobsJsonByDaysSelection;
     private bool _isSuggestPreReleaseUpdatesActive;
@@ -60,6 +61,8 @@ public class SettingsWindowViewModel : INotifyPropertyChanged
     private bool _isUpdateMobsJsonNowButtonEnabled = true;
     private string _worldJsonSourceUrl;
     private SettingDataInformation _updateWorldJsonByDaysSelection;
+    private SettingDataInformation _updateSpellsJsonByDaysSelection;
+    private string _spellsJsonSourceUrl;
 
     public SettingsWindowViewModel()
     {
@@ -97,6 +100,11 @@ public class SettingsWindowViewModel : INotifyPropertyChanged
         UpdateWorldJsonByDaysSelection = UpdateWorldJsonByDays.FirstOrDefault(x => x.Value == SettingsController.CurrentSettings.UpdateWorldJsonByDays);
         WorldJsonSourceUrl = SettingsController.CurrentSettings.WorldJsonSourceUrl;
 
+        // Update spells.json by days
+        InitDropDownDownByDays(UpdateSpellsJsonByDays);
+        UpdateSpellsJsonByDaysSelection = UpdateSpellsJsonByDays.FirstOrDefault(x => x.Value == SettingsController.CurrentSettings.UpdateSpellsJsonByDays);
+        SpellsJsonSourceUrl = SettingsController.CurrentSettings.SpellsJsonSourceUrl;
+
         // Alert sounds
         InitAlertSounds();
 
@@ -132,6 +140,7 @@ public class SettingsWindowViewModel : INotifyPropertyChanged
         SettingsController.CurrentSettings.ItemsJsonSourceUrl = ItemsJsonSourceUrl;
         SettingsController.CurrentSettings.MobsJsonSourceUrl = MobsJsonSourceUrl;
         SettingsController.CurrentSettings.WorldJsonSourceUrl = WorldJsonSourceUrl;
+        SettingsController.CurrentSettings.SpellsJsonSourceUrl = SpellsJsonSourceUrl;
         SettingsController.CurrentSettings.RefreshRate = RefreshRatesSelection.Value;
         SettingsController.CurrentSettings.Server = ServerSelection.Value;
         NetworkManager.SetCurrentServer(ServerSelection.Value >= 2 ? AlbionServer.East : AlbionServer.West, true);
@@ -141,6 +150,7 @@ public class SettingsWindowViewModel : INotifyPropertyChanged
         SettingsController.CurrentSettings.UpdateItemsJsonByDays = UpdateItemsJsonByDaysSelection.Value;
         SettingsController.CurrentSettings.UpdateMobsJsonByDays = UpdateMobsJsonByDaysSelection.Value;
         SettingsController.CurrentSettings.UpdateWorldJsonByDays = UpdateWorldJsonByDaysSelection.Value;
+        SettingsController.CurrentSettings.UpdateSpellsJsonByDays = UpdateSpellsJsonByDaysSelection.Value;
         SettingsController.CurrentSettings.IsOpenItemWindowInNewWindowChecked = IsOpenItemWindowInNewWindowChecked;
         SettingsController.CurrentSettings.IsInfoWindowShownOnStart = ShowInfoWindowOnStartChecked;
         SettingsController.CurrentSettings.SelectedAlertSound = AlertSoundSelection?.FileName ?? string.Empty;
@@ -532,6 +542,16 @@ public class SettingsWindowViewModel : INotifyPropertyChanged
         }
     }
 
+    public SettingDataInformation UpdateSpellsJsonByDaysSelection
+    {
+        get => _updateSpellsJsonByDaysSelection;
+        set
+        {
+            _updateSpellsJsonByDaysSelection = value;
+            OnPropertyChanged();
+        }
+    }
+
     public ObservableCollection<SettingDataInformation> UpdateItemListByDays
     {
         get => _updateItemListByDays;
@@ -568,6 +588,16 @@ public class SettingsWindowViewModel : INotifyPropertyChanged
         set
         {
             _updateWorldJsonByDays = value;
+            OnPropertyChanged();
+        }
+    }
+
+    public ObservableCollection<SettingDataInformation> UpdateSpellsJsonByDays
+    {
+        get => _updateSpellsJsonByDays;
+        set
+        {
+            _updateSpellsJsonByDays = value;
             OnPropertyChanged();
         }
     }
@@ -688,6 +718,16 @@ public class SettingsWindowViewModel : INotifyPropertyChanged
         set
         {
             _mobsJsonSourceUrl = value;
+            OnPropertyChanged();
+        }
+    }
+
+    public string SpellsJsonSourceUrl
+    {
+        get => _spellsJsonSourceUrl;
+        set
+        {
+            _spellsJsonSourceUrl = value;
             OnPropertyChanged();
         }
     }

@@ -25,52 +25,72 @@ public class SatNotificationManager
 
     public async Task ShowTrackingStatusAsync(string title, string message)
     {
-        if (!SettingsController.CurrentSettings.IsNotificationTrackingStatusActive)
+        if (!SettingsController.CurrentSettings.IsNotificationTrackingStatusActive
+            || ForegroundText1 == null
+            || BackgroundBlue == null)
         {
             return;
         }
 
-        await Application.Current.Dispatcher.InvokeAsync(() =>
+        try
         {
-            var content = new NotificationContent
+            await Application.Current.Dispatcher.InvokeAsync(() =>
             {
-                Title = title,
-                Message = message,
-                Type = NotificationType.Information,
-                TrimType = NotificationTextTrimType.AttachIfMoreRows,
-                RowsCount = 1,
-                CloseOnClick = true,
-                Foreground = ForegroundText1,
-                Background = BackgroundBlue
-            };
+                var content = new NotificationContent
+                {
+                    Title = title,
+                    Message = message,
+                    Type = NotificationType.Information,
+                    TrimType = NotificationTextTrimType.AttachIfMoreRows,
+                    RowsCount = 1,
+                    CloseOnClick = true,
+                    Foreground = ForegroundText1,
+                    Background = BackgroundBlue
+                };
 
-            _notificationManager.Show(content);
-        });
+                _notificationManager.Show(content);
+            });
+        }
+        catch (TaskCanceledException)
+        {
+            // ignore
+        }
     }
 
     public async Task ShowTradeAsync(Trade.Trade trade)
     {
-        if (!SettingsController.CurrentSettings.IsNotificationFilterTradeActive || trade == null)
+        if (!SettingsController.CurrentSettings.IsNotificationFilterTradeActive
+            || trade == null
+            || ForegroundText1 == null
+            || BackgroundBlue == null
+            || Application.Current == null)
         {
             return;
         }
-        
-        await Application.Current.Dispatcher.InvokeAsync(() =>
-        {
-            var content = new NotificationContent
-            {
-                Title = trade.TradeNotificationTitleText,
-                Message = $"{trade.LocationName} - {trade.Item?.LocalizedName}",
-                Type = NotificationType.Success,
-                TrimType = NotificationTextTrimType.AttachIfMoreRows,
-                RowsCount = 2,
-                CloseOnClick = true,
-                Foreground = ForegroundText1,
-                Background = BackgroundGreen
-            };
 
-            _notificationManager.Show(content);
-        });
+        try
+        {
+            await Application.Current.Dispatcher.InvokeAsync(() =>
+            {
+                var content = new NotificationContent
+                {
+                    Title = trade.TradeNotificationTitleText,
+                    Message = $"{trade.LocationName} - {trade.Item?.LocalizedName}",
+                    Type = NotificationType.Success,
+                    TrimType = NotificationTextTrimType.AttachIfMoreRows,
+                    RowsCount = 2,
+                    CloseOnClick = true,
+                    Foreground = ForegroundText1,
+                    Background = BackgroundGreen
+                };
+
+                _notificationManager.Show(content);
+            });
+        }
+        catch (TaskCanceledException)
+        {
+            // ignore
+        }
     }
 
     #region Test
@@ -121,9 +141,68 @@ public class SatNotificationManager
 
     #endregion
 
-    private static SolidColorBrush ForegroundText1 => (SolidColorBrush) Application.Current.Resources["SolidColorBrush.Text.1"];
-    private static SolidColorBrush BackgroundBlue => (SolidColorBrush) Application.Current.Resources["SolidColorBrush.Notification.Background.Blue"];
-    private static SolidColorBrush BackgroundGreen => (SolidColorBrush) Application.Current.Resources["SolidColorBrush.Notification.Background.Green"];
-    private static SolidColorBrush BackgroundYellow => (SolidColorBrush) Application.Current.Resources["SolidColorBrush.Notification.Background.Yellow"];
-    private static SolidColorBrush BackgroundRed => (SolidColorBrush) Application.Current.Resources["SolidColorBrush.Notification.Background.Red"];
+    private static SolidColorBrush ForegroundText1
+    {
+        get
+        {
+            if (Application.Current != null && Application.Current.Resources.Contains("SolidColorBrush.Text.1"))
+            {
+                return (SolidColorBrush) Application.Current.Resources["SolidColorBrush.Text.1"];
+            }
+
+            return null;
+        }
+    }
+
+    private static SolidColorBrush BackgroundBlue
+    {
+        get
+        {
+            if (Application.Current != null && Application.Current.Resources.Contains("SolidColorBrush.Notification.Background.Blue"))
+            {
+                return (SolidColorBrush) Application.Current.Resources["SolidColorBrush.Notification.Background.Blue"];
+            }
+
+            return null;
+        }
+    }
+
+    private static SolidColorBrush BackgroundGreen
+    {
+        get
+        {
+            if (Application.Current != null && Application.Current.Resources.Contains("SolidColorBrush.Notification.Background.Green"))
+            {
+                return (SolidColorBrush) Application.Current.Resources["SolidColorBrush.Notification.Background.Green"];
+            }
+
+            return null;
+        }
+    }
+
+    private static SolidColorBrush BackgroundYellow
+    {
+        get
+        {
+            if (Application.Current != null && Application.Current.Resources.Contains("SolidColorBrush.Notification.Background.Yellow"))
+            {
+                return (SolidColorBrush) Application.Current.Resources["SolidColorBrush.Notification.Background.Yellow"];
+            }
+
+            return null;
+        }
+    }
+
+    private static SolidColorBrush BackgroundRed
+    {
+        get
+        {
+            if (Application.Current != null && Application.Current.Resources.Contains("SolidColorBrush.Notification.Background.Red"))
+            {
+                return (SolidColorBrush) Application.Current.Resources["SolidColorBrush.Notification.Background.Red"];
+            }
+
+            return null;
+        }
+    }
 }
