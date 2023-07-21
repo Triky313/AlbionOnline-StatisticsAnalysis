@@ -64,9 +64,8 @@ public partial class MainWindow
         }
     }
 
-    private async void CloseButton_Click(object sender, RoutedEventArgs e)
+    private void CloseButton_Click(object sender, RoutedEventArgs e)
     {
-        await CriticalData.SaveAsync();
         Application.Current?.Shutdown();
     }
 
@@ -113,8 +112,9 @@ public partial class MainWindow
         trackingController?.EntityController?.CopyPartyToClipboard();
     }
 
-    private void MainWindow_OnClosed(object sender, EventArgs eventArgs)
+    private async void MainWindow_OnClosed(object sender, EventArgs eventArgs)
     {
+        await CriticalData.SaveAsync();
         SettingsController.SetWindowSettings(WindowState, Height, Width, Left, Top);
     }
 
