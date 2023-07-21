@@ -32,22 +32,29 @@ public class SatNotificationManager
             return;
         }
 
-        await Application.Current.Dispatcher.InvokeAsync(() =>
+        try
         {
-            var content = new NotificationContent
+            await Application.Current.Dispatcher.InvokeAsync(() =>
             {
-                Title = title,
-                Message = message,
-                Type = NotificationType.Information,
-                TrimType = NotificationTextTrimType.AttachIfMoreRows,
-                RowsCount = 1,
-                CloseOnClick = true,
-                Foreground = ForegroundText1,
-                Background = BackgroundBlue
-            };
+                var content = new NotificationContent
+                {
+                    Title = title,
+                    Message = message,
+                    Type = NotificationType.Information,
+                    TrimType = NotificationTextTrimType.AttachIfMoreRows,
+                    RowsCount = 1,
+                    CloseOnClick = true,
+                    Foreground = ForegroundText1,
+                    Background = BackgroundBlue
+                };
 
-            _notificationManager.Show(content);
-        });
+                _notificationManager.Show(content);
+            });
+        }
+        catch (TaskCanceledException)
+        {
+            // ignore
+        }
     }
 
     public async Task ShowTradeAsync(Trade.Trade trade)
@@ -55,27 +62,35 @@ public class SatNotificationManager
         if (!SettingsController.CurrentSettings.IsNotificationFilterTradeActive
             || trade == null
             || ForegroundText1 == null
-            || BackgroundBlue == null)
+            || BackgroundBlue == null
+            || Application.Current == null)
         {
             return;
         }
 
-        await Application.Current.Dispatcher.InvokeAsync(() =>
+        try
         {
-            var content = new NotificationContent
+            await Application.Current.Dispatcher.InvokeAsync(() =>
             {
-                Title = trade.TradeNotificationTitleText,
-                Message = $"{trade.LocationName} - {trade.Item?.LocalizedName}",
-                Type = NotificationType.Success,
-                TrimType = NotificationTextTrimType.AttachIfMoreRows,
-                RowsCount = 2,
-                CloseOnClick = true,
-                Foreground = ForegroundText1,
-                Background = BackgroundGreen
-            };
+                var content = new NotificationContent
+                {
+                    Title = trade.TradeNotificationTitleText,
+                    Message = $"{trade.LocationName} - {trade.Item?.LocalizedName}",
+                    Type = NotificationType.Success,
+                    TrimType = NotificationTextTrimType.AttachIfMoreRows,
+                    RowsCount = 2,
+                    CloseOnClick = true,
+                    Foreground = ForegroundText1,
+                    Background = BackgroundGreen
+                };
 
-            _notificationManager.Show(content);
-        });
+                _notificationManager.Show(content);
+            });
+        }
+        catch (TaskCanceledException)
+        {
+            // ignore
+        }
     }
 
     #region Test
