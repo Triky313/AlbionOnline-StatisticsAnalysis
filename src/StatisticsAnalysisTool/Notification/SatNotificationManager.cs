@@ -25,18 +25,15 @@ public class SatNotificationManager
 
     public async Task ShowTrackingStatusAsync(string title, string message)
     {
-        if (!SettingsController.CurrentSettings.IsNotificationTrackingStatusActive)
+        if (!SettingsController.CurrentSettings.IsNotificationTrackingStatusActive 
+            || ForegroundText1 == null 
+            || BackgroundBlue == null)
         {
             return;
         }
 
         await Application.Current.Dispatcher.InvokeAsync(() =>
         {
-            if (ForegroundText1 is null || BackgroundBlue is null)
-            {
-                return;
-            }
-
             var content = new NotificationContent
             {
                 Title = title,
@@ -57,8 +54,8 @@ public class SatNotificationManager
     {
         if (!SettingsController.CurrentSettings.IsNotificationFilterTradeActive 
             || trade == null 
-            || ForegroundText1 is null 
-            || BackgroundBlue is null)
+            || ForegroundText1 == null
+            || BackgroundBlue == null)
         {
             return;
         }
