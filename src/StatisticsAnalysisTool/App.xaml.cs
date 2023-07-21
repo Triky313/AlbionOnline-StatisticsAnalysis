@@ -1,5 +1,6 @@
 ﻿using log4net;
 using Notification.Wpf;
+using Notifications.Wpf.ViewModels.Base;
 using StatisticsAnalysisTool.Common;
 using StatisticsAnalysisTool.Common.UserSettings;
 using StatisticsAnalysisTool.Enumerations;
@@ -10,7 +11,6 @@ using StatisticsAnalysisTool.Views;
 using System;
 using System.Reflection;
 using System.Runtime.InteropServices;
-using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Threading;
 
@@ -97,15 +97,13 @@ public partial class App
         }
     }
 
-    protected override void OnExit(ExitEventArgs e)
+    protected override async void OnExit(ExitEventArgs e)
     {
-        var task = Task.Factory.StartNew(_trackingController.StopTracking);
-        var task2 = Task.Factory.StartNew(_mainWindowViewModel.SaveLootLogger);
-        var task3 = Task.Factory.StartNew(SettingsController.SaveSettings);
-        var task4 = Task.Factory.StartNew(_trackingController.SaveData);
-        while (!task.IsCompleted && !task2.IsCompleted && !task3.IsCompleted && !task4.IsCompleted)
-        {
-            Task.Delay(250);
-        }
+        await CriticalData.SaveAsync();
+    }
+    
+    private async void OnSessionEnding(object sender, SessionEndingCancelEventArgs e)
+    {
+        await CriticalData.SaveAsync();
     }
 }

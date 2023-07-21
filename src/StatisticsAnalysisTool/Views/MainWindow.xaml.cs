@@ -64,8 +64,9 @@ public partial class MainWindow
         }
     }
 
-    private void CloseButton_Click(object sender, RoutedEventArgs e)
+    private async void CloseButton_Click(object sender, RoutedEventArgs e)
     {
+        await CriticalData.SaveAsync();
         Application.Current?.Shutdown();
     }
 
