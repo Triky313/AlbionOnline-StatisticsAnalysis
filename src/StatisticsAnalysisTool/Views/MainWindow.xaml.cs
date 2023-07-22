@@ -112,9 +112,9 @@ public partial class MainWindow
         trackingController?.EntityController?.CopyPartyToClipboard();
     }
 
-    private async void MainWindow_OnClosed(object sender, EventArgs eventArgs)
+    private void MainWindow_OnClosed(object sender, EventArgs eventArgs)
     {
-        await CriticalData.SaveAsync();
+        CriticalData.Save();
         SettingsController.SetWindowSettings(WindowState, Height, Width, Left, Top);
     }
 

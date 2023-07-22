@@ -12,6 +12,11 @@ public class CriticalData
     private static SaveOnClosing _saveOnClosing;
     private static readonly List<Task> TaskList = new();
 
+    public static void Save()
+    {
+        Task.Run(SaveAsync).GetAwaiter().GetResult();
+    }
+
     public static async Task SaveAsync()
     {
         if (_saveOnClosing is SaveOnClosing.IsRunning or SaveOnClosing.Done)
