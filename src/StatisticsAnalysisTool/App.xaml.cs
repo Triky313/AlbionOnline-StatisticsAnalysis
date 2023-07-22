@@ -96,15 +96,15 @@ public partial class App
         }
     }
 
-    protected override async void OnExit(ExitEventArgs e)
+    protected override void OnExit(ExitEventArgs e)
     {
         _trackingController.StopTracking();
-        await CriticalData.SaveAsync();
+        CriticalData.Save();
     }
 
-    private async void OnSessionEnding(object sender, SessionEndingCancelEventArgs e)
+    private void OnSessionEnding(object sender, SessionEndingCancelEventArgs e)
     {
         _trackingController.StopTracking();
-        await CriticalData.SaveAsync();
+        CriticalData.Save();
     }
 }
