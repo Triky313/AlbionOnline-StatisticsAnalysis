@@ -1,6 +1,5 @@
 ﻿using log4net;
 using Notification.Wpf;
-using Notifications.Wpf.ViewModels.Base;
 using StatisticsAnalysisTool.Common;
 using StatisticsAnalysisTool.Common.UserSettings;
 using StatisticsAnalysisTool.Enumerations;
@@ -102,7 +101,7 @@ public partial class App
         _trackingController.StopTracking();
         await CriticalData.SaveAsync();
     }
-    
+
     private async void OnSessionEnding(object sender, SessionEndingCancelEventArgs e)
     {
         _trackingController.StopTracking();
