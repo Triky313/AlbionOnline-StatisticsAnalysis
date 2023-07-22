@@ -23,16 +23,14 @@ public class CriticalData
 
         var trackingController = ServiceLocator.Resolve<TrackingController>();
         var mainWindowViewModel = ServiceLocator.Resolve<MainWindowViewModel>();
-
-        var task = Task.Factory.StartNew(trackingController.StopTracking);
-        var task2 = Task.Factory.StartNew(mainWindowViewModel.SaveLootLogger);
-        var task3 = Task.Factory.StartNew(SettingsController.SaveSettings);
-        var task4 = Task.Factory.StartNew(trackingController.SaveData);
-
-        TaskList.Add(task);
+        
+        var task1 = Task.Factory.StartNew(mainWindowViewModel.SaveLootLogger);
+        var task2 = Task.Factory.StartNew(SettingsController.SaveSettings);
+        var task3 = Task.Factory.StartNew(trackingController.SaveData);
+        
+        TaskList.Add(task1);
         TaskList.Add(task2);
         TaskList.Add(task3);
-        TaskList.Add(task4);
         await Task.WhenAll(TaskList.ToArray());
 
         _saveOnClosing = SaveOnClosing.Done;

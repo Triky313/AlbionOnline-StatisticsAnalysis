@@ -99,11 +99,13 @@ public partial class App
 
     protected override async void OnExit(ExitEventArgs e)
     {
+        _trackingController.StopTracking();
         await CriticalData.SaveAsync();
     }
     
     private async void OnSessionEnding(object sender, SessionEndingCancelEventArgs e)
     {
+        _trackingController.StopTracking();
         await CriticalData.SaveAsync();
     }
 }
