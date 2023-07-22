@@ -764,8 +764,8 @@
 	<translation name="IP_OR_BIP_UNDER_MIN_RANGE">Siła przedmiotu lub podstawowa siła przedmiotu poniżej zakresu min</translation>
 	<translation name="PLAYER_IS_NOT_INSPECTED">Gracz nie jest sprawdzony</translation>
 	<translation name="PARTY_INFORMATION">Informacje o grupie</translation>
-	<translation name="AVERAGE_IP">Średnia siła przedmiotu (IP)</translation>
-	<translation name="AVERAGE_BIP">Średnia podstawowa siła (BIP)</translation>	
+	<translation name="AVERAGE_IP">Śr. siła przedmiotu (IP)</translation>
+	<translation name="AVERAGE_BIP">Śr. podstawowa siła (BIP)</translation>	
 	<translation name="SPELLS_JSON_SOURCE_URL">Adres URL źródła spells.json</translation>
 	<translation name="UPDATE_SPELLS_JSON_BY_DAYS">Zaktualizuj spells.json wedłóg dni:</translation>
 </translations>
