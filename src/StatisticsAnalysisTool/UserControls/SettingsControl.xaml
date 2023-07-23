@@ -6,7 +6,7 @@
              xmlns:viewModels="clr-namespace:StatisticsAnalysisTool.ViewModels"
              xmlns:common="clr-namespace:StatisticsAnalysisTool.Common"
              mc:Ignorable="d" 
-             d:DesignHeight="1000" d:DesignWidth="800"
+             d:DesignHeight="1300" d:DesignWidth="800"
              d:DataContext="{d:DesignInstance Type=viewModels:SettingsWindowViewModel}">
     <Grid IsVisibleChanged="ReloadSettings_OnIsVisibleChanged">
         <Grid Margin="0,0,0,44">
@@ -175,6 +175,25 @@
                             <Button Content="{Binding Translation.Reset, FallbackValue=RESET}" Height="24" MaxWidth="100" VerticalAlignment="Center" 
                                     Click="ResetPlayerSelectionWithSameNameInDb_Click" />
                         </StackPanel>
+                    </DockPanel>
+
+                    <!-- Backup -->
+                    <Grid Height="20" />
+                    <Label Content="BACKUP" FontSize="14" Foreground="{StaticResource SolidColorBrush.Accent.Blue.2}" />
+                    <DockPanel Margin="0,5,0,0">
+                        <Label Content="{Binding Translation.BackupInterval, FallbackValue=BACKUP__INTERVAL}" MinWidth="300" VerticalAlignment="Top" />
+                        <ComboBox ItemsSource="{Binding BackupIntervalByDays}" SelectedItem="{Binding BackupIntervalByDaysSelection}" 
+                                  IsSynchronizedWithCurrentItem="True" DisplayMemberPath="Name" SelectedValuePath="Value" HorizontalAlignment="Left" VerticalAlignment="Top" Width="200" Height="26" />
+                    </DockPanel>
+                    <DockPanel Margin="0,5,0,0">
+                        <Label Content="{Binding Translation.MaximumNumberOfBackups, FallbackValue=MAXIMUM__NUMBER__OF__BACKUPS}" MinWidth="300" VerticalAlignment="Top" />
+                        <ComboBox ItemsSource="{Binding MaximumNumberOfBackups}" SelectedItem="{Binding MaximumNumberOfBackupsSelection}" 
+                                  IsSynchronizedWithCurrentItem="True" DisplayMemberPath="Name" SelectedValuePath="Value" HorizontalAlignment="Left" VerticalAlignment="Top" Width="200" Height="26" />
+                    </DockPanel>
+                    <DockPanel Margin="0,5,0,0">
+                        <Label MinWidth="300" VerticalAlignment="Top" />
+                        <Button Content="{Binding Translation.BackupNow, FallbackValue=BACKUP__NOW}" IsEnabled="{Binding IsBackupNowButtonEnabled}"
+                                Margin="0,0,5,2" Height="24" MaxWidth="120" HorizontalAlignment="Left" VerticalAlignment="Center" Click="BackupNow_Click" />
                     </DockPanel>
                 </StackPanel>
             </ScrollViewer>

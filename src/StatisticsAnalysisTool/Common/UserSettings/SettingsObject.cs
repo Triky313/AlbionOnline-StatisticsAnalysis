@@ -18,6 +18,8 @@ public class SettingsObject
     public int UpdateSpellsJsonByDays { get; set; } = 7;
     public int UpdateLootChestJsonByDays { get; set; } = 7;
     public int UpdateWorldJsonByDays { get; set; } = 7;
+    public int BackupIntervalByDays { get; set; } = 7;
+    public int MaximumNumberOfBackups { get; set; } = 5;
     public string ItemListSourceUrl { get; set; } = "https://raw.githubusercontent.com/ao-data/ao-bin-dumps/master/formatted/items.json";
     public string ItemsJsonSourceUrl { get; set; } = "https://raw.githubusercontent.com/ao-data/ao-bin-dumps/master/items.json";
     public string MobsJsonSourceUrl { get; set; } = "https://raw.githubusercontent.com/ao-data/ao-bin-dumps/master/mobs.json";

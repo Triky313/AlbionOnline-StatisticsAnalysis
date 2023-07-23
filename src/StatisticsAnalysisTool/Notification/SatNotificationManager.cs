@@ -23,6 +23,40 @@ public class SatNotificationManager
 #endif
     }
 
+    public async Task ShowSuccessAsync(string title, string message)
+    {
+        if (!SettingsController.CurrentSettings.IsNotificationTrackingStatusActive
+            || ForegroundText1 == null
+            || BackgroundBlue == null)
+        {
+            return;
+        }
+
+        try
+        {
+            await Application.Current.Dispatcher.InvokeAsync(() =>
+            {
+                var content = new NotificationContent
+                {
+                    Title = title,
+                    Message = message,
+                    Type = NotificationType.Success,
+                    TrimType = NotificationTextTrimType.AttachIfMoreRows,
+                    RowsCount = 1,
+                    CloseOnClick = true,
+                    Foreground = ForegroundText1,
+                    Background = BackgroundGreen
+                };
+
+                _notificationManager.Show(content);
+            });
+        }
+        catch (TaskCanceledException)
+        {
+            // ignore
+        }
+    }
+
     public async Task ShowTrackingStatusAsync(string title, string message)
     {
         if (!SettingsController.CurrentSettings.IsNotificationTrackingStatusActive

@@ -1,5 +1,6 @@
 ﻿using log4net;
 using Notification.Wpf;
+using StatisticsAnalysisTool.Backup;
 using StatisticsAnalysisTool.Common;
 using StatisticsAnalysisTool.Common.UserSettings;
 using StatisticsAnalysisTool.Enumerations;
@@ -99,12 +100,14 @@ public partial class App
     protected override void OnExit(ExitEventArgs e)
     {
         _trackingController.StopTracking();
+        BackupController.Save();
         CriticalData.Save();
     }
 
     private void OnSessionEnding(object sender, SessionEndingCancelEventArgs e)
     {
         _trackingController.StopTracking();
+        BackupController.Save();
         CriticalData.Save();
     }
 }
