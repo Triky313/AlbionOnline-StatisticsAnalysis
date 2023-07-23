@@ -772,6 +772,7 @@
 	<translation name="A_BACKUP_HAS_BEEN_CREATED">Ein Backup wurde erstellt</translation>
 	<translation name="BACKUP_INTERVAL">Backup intervall</translation>
 	<translation name="BACKUP_NOW">Backup erstellen</translation>
+	<translation name="MAXIMUM_NUMBER_OF_BACKUPS">Anzahl maximaler Backups</translation>
 	<translation name="BACKUP">Backup</translation>
 	<translation name="ITEM_WINDOW">Item Fenster</translation>
 	<translation name="ITEM_SEARCH">Item Suche</translation>
