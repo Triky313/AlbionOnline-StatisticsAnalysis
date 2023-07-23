@@ -773,4 +773,9 @@
 	<translation name="BACKUP_INTERVAL">Backup interval</translation>
 	<translation name="BACKUP_NOW">Backup now</translation>
 	<translation name="MAXIMUM_NUMBER_OF_BACKUPS">Maximum number of backups</translation>
+	<translation name="BACKUP">Backup</translation>
+	<translation name="ITEM_WINDOW">Item window</translation>
+	<translation name="ITEM_SEARCH">Item search</translation>
+	<translation name="LOOT_LOGGER">Loot logger</translation>
+	<translation name="TOOLS">Tools</translation>
 </translations>
