@@ -773,4 +773,9 @@
 	<translation name="BACKUP_INTERVAL">Ilość kopii zapasowych</translation>
 	<translation name="BACKUP_NOW">Wykonaj kopię</translation>
 	<translation name="MAXIMUM_NUMBER_OF_BACKUPS">Maksymalna liczba kopii zapasowych</translation>
+	<translation name="BACKUP">Kopia zapasowa</translation>
+	<translation name="ITEM_WINDOW">Okno przedmiotów</translation>
+	<translation name="ITEM_SEARCH">Wyszukiwanie przedmiotów</translation>
+	<translation name="LOOT_LOGGER">Dziennik łupów</translation>
+	<translation name="TOOLS">Narzędzia</translation>
 </translations>
