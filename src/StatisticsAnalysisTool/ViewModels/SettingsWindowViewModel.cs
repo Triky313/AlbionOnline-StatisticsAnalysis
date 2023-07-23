@@ -45,6 +45,8 @@ public class SettingsWindowViewModel : INotifyPropertyChanged
     private ObservableCollection<SettingDataInformation> _updateMobsJsonByDays = new();
     private ObservableCollection<SettingDataInformation> _updateWorldJsonByDays = new();
     private ObservableCollection<SettingDataInformation> _updateSpellsJsonByDays = new();
+    private ObservableCollection<SettingDataInformation> _backupIntervalByDays = new();
+    private ObservableCollection<SettingDataInformation> _maximumNumberOfBackups = new();
     private SettingDataInformation _updateItemsJsonByDaysSelection;
     private SettingDataInformation _updateMobsJsonByDaysSelection;
     private bool _isSuggestPreReleaseUpdatesActive;
@@ -59,10 +61,13 @@ public class SettingsWindowViewModel : INotifyPropertyChanged
     private bool _isUpdateItemListNowButtonEnabled = true;
     private bool _isUpdateItemsJsonNowButtonEnabled = true;
     private bool _isUpdateMobsJsonNowButtonEnabled = true;
+    private bool _isBackupNowButtonEnabled = true;
     private string _worldJsonSourceUrl;
+    private string _spellsJsonSourceUrl;
     private SettingDataInformation _updateWorldJsonByDaysSelection;
     private SettingDataInformation _updateSpellsJsonByDaysSelection;
-    private string _spellsJsonSourceUrl;
+    private SettingDataInformation _backupIntervalByDaysSelection;
+    private SettingDataInformation _maximumNumberOfBackupsSelection;
 
     public SettingsWindowViewModel()
     {
@@ -104,6 +109,14 @@ public class SettingsWindowViewModel : INotifyPropertyChanged
         InitDropDownDownByDays(UpdateSpellsJsonByDays);
         UpdateSpellsJsonByDaysSelection = UpdateSpellsJsonByDays.FirstOrDefault(x => x.Value == SettingsController.CurrentSettings.UpdateSpellsJsonByDays);
         SpellsJsonSourceUrl = SettingsController.CurrentSettings.SpellsJsonSourceUrl;
+
+        // Backup interval by days
+        InitDropDownDownByDays(BackupIntervalByDays);
+        BackupIntervalByDaysSelection = BackupIntervalByDays.FirstOrDefault(x => x.Value == SettingsController.CurrentSettings.BackupIntervalByDays);
+
+        // Maximum number of backups
+        InitMaxAmountOfBackups(MaximumNumberOfBackups);
+        MaximumNumberOfBackupsSelection = MaximumNumberOfBackups.FirstOrDefault(x => x.Value == SettingsController.CurrentSettings.MaximumNumberOfBackups);
 
         // Alert sounds
         InitAlertSounds();
@@ -151,6 +164,8 @@ public class SettingsWindowViewModel : INotifyPropertyChanged
         SettingsController.CurrentSettings.UpdateMobsJsonByDays = UpdateMobsJsonByDaysSelection.Value;
         SettingsController.CurrentSettings.UpdateWorldJsonByDays = UpdateWorldJsonByDaysSelection.Value;
         SettingsController.CurrentSettings.UpdateSpellsJsonByDays = UpdateSpellsJsonByDaysSelection.Value;
+        SettingsController.CurrentSettings.BackupIntervalByDays = BackupIntervalByDaysSelection.Value;
+        SettingsController.CurrentSettings.MaximumNumberOfBackups = MaximumNumberOfBackupsSelection.Value;
         SettingsController.CurrentSettings.IsOpenItemWindowInNewWindowChecked = IsOpenItemWindowInNewWindowChecked;
         SettingsController.CurrentSettings.IsInfoWindowShownOnStart = ShowInfoWindowOnStartChecked;
         SettingsController.CurrentSettings.SelectedAlertSound = AlertSoundSelection?.FileName ?? string.Empty;
@@ -436,6 +451,18 @@ public class SettingsWindowViewModel : INotifyPropertyChanged
         ServerSelection = Server.FirstOrDefault(x => x.Value == SettingsController.CurrentSettings.Server);
     }
 
+    private void InitMaxAmountOfBackups(ICollection<SettingDataInformation> amountOfBackups)
+    {
+        amountOfBackups.Clear();
+        amountOfBackups.Add(new SettingDataInformation { Name = "1", Value = 1 });
+        amountOfBackups.Add(new SettingDataInformation { Name = "3", Value = 3 });
+        amountOfBackups.Add(new SettingDataInformation { Name = "5", Value = 5 });
+        amountOfBackups.Add(new SettingDataInformation { Name = "10", Value = 10 });
+        amountOfBackups.Add(new SettingDataInformation { Name = "20", Value = 20 });
+        amountOfBackups.Add(new SettingDataInformation { Name = "50", Value = 50 });
+        amountOfBackups.Add(new SettingDataInformation { Name = "100", Value = 100 });
+    }
+
     private static void InitDropDownDownByDays(ICollection<SettingDataInformation> updateJsonByDays)
     {
         updateJsonByDays.Clear();
@@ -552,6 +579,26 @@ public class SettingsWindowViewModel : INotifyPropertyChanged
         }
     }
 
+    public SettingDataInformation BackupIntervalByDaysSelection
+    {
+        get => _backupIntervalByDaysSelection;
+        set
+        {
+            _backupIntervalByDaysSelection = value;
+            OnPropertyChanged();
+        }
+    }
+
+    public SettingDataInformation MaximumNumberOfBackupsSelection
+    {
+        get => _maximumNumberOfBackupsSelection;
+        set
+        {
+            _maximumNumberOfBackupsSelection = value;
+            OnPropertyChanged();
+        }
+    }
+
     public ObservableCollection<SettingDataInformation> UpdateItemListByDays
     {
         get => _updateItemListByDays;
@@ -598,6 +645,26 @@ public class SettingsWindowViewModel : INotifyPropertyChanged
         set
         {
             _updateSpellsJsonByDays = value;
+            OnPropertyChanged();
+        }
+    }
+
+    public ObservableCollection<SettingDataInformation> BackupIntervalByDays
+    {
+        get => _backupIntervalByDays;
+        set
+        {
+            _backupIntervalByDays = value;
+            OnPropertyChanged();
+        }
+    }
+
+    public ObservableCollection<SettingDataInformation> MaximumNumberOfBackups
+    {
+        get => _maximumNumberOfBackups;
+        set
+        {
+            _maximumNumberOfBackups = value;
             OnPropertyChanged();
         }
     }
@@ -848,6 +915,16 @@ public class SettingsWindowViewModel : INotifyPropertyChanged
         set
         {
             _isUpdateItemsJsonNowButtonEnabled = value;
+            OnPropertyChanged();
+        }
+    }
+
+    public bool IsBackupNowButtonEnabled
+    {
+        get => _isBackupNowButtonEnabled;
+        set
+        {
+            _isBackupNowButtonEnabled = value;
             OnPropertyChanged();
         }
     }

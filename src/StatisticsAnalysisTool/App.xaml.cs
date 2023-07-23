@@ -1,5 +1,6 @@
 ﻿using log4net;
 using Notification.Wpf;
+using StatisticsAnalysisTool.Backup;
 using StatisticsAnalysisTool.Common;
 using StatisticsAnalysisTool.Common.UserSettings;
 using StatisticsAnalysisTool.Enumerations;
@@ -8,6 +9,7 @@ using StatisticsAnalysisTool.Notification;
 using StatisticsAnalysisTool.ViewModels;
 using StatisticsAnalysisTool.Views;
 using System;
+using System.Diagnostics;
 using System.Reflection;
 using System.Runtime.InteropServices;
 using System.Windows;
@@ -35,6 +37,7 @@ public partial class App
 
         AutoUpdateController.RemoveUpdateFiles();
         await AutoUpdateController.AutoUpdateAsync();
+        await BackupController.DeleteOldestBackupsIfNeededAsync();
 
         RegisterServices();
 
@@ -99,12 +102,20 @@ public partial class App
     protected override void OnExit(ExitEventArgs e)
     {
         _trackingController.StopTracking();
+        if (!BackupController.ExistBackupOnSettingConditions())
+        {
+            BackupController.Save();
+        }
         CriticalData.Save();
     }
 
     private void OnSessionEnding(object sender, SessionEndingCancelEventArgs e)
     {
         _trackingController.StopTracking();
+        if (!BackupController.ExistBackupOnSettingConditions())
+        {
+            BackupController.Save();
+        }
         CriticalData.Save();
     }
 }

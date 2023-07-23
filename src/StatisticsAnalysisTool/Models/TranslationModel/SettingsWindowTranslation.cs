@@ -53,4 +53,7 @@ public class SettingsWindowTranslation
     public static string Reset => LanguageController.Translation("RESET");
     public static string PlayerSelectionWithSameNameInDb => LanguageController.Translation("PLAYER_SELECTION_WITH_SAME_NAME_IN_DB");
     public static string UpdateNow => LanguageController.Translation("UPDATE_NOW");
+    public static string BackupInterval => LanguageController.Translation("BACKUP_INTERVAL");
+    public static string BackupNow => LanguageController.Translation("BACKUP_NOW");
+    public static string MaximumNumberOfBackups => LanguageController.Translation("MAXIMUM_NUMBER_OF_BACKUPS");
 }

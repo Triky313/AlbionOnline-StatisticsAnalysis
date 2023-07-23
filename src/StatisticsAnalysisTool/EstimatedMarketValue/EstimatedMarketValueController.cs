@@ -3,6 +3,7 @@ using StatisticsAnalysisTool.Properties;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
@@ -133,6 +134,7 @@ public static class EstimatedMarketValueController
     {
         await FileController.SaveAsync(_estimatedMarketValueObjects.ToList().Select(EstimatesMarketValueMapping.Mapping),
             Path.Combine(AppDomain.CurrentDomain.BaseDirectory, Settings.Default.UserDataDirectoryName, Settings.Default.EstimatedMarketValueFileName));
+        Debug.Print("Estimated market values saved");
     }
 
     #endregion

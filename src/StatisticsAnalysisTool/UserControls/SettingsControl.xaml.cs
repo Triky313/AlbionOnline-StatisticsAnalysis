@@ -1,10 +1,12 @@
 ﻿using log4net;
+using StatisticsAnalysisTool.Backup;
 using StatisticsAnalysisTool.Common;
 using StatisticsAnalysisTool.Common.Shortcut;
 using StatisticsAnalysisTool.ViewModels;
 using System;
 using System.Diagnostics;
 using System.Reflection;
+using System.Threading.Tasks;
 using System.Windows;
 
 namespace StatisticsAnalysisTool.UserControls;
@@ -90,5 +92,13 @@ public partial class SettingsControl
         await ItemController.DownloadItemsJsonAsync();
         _settingsWindowViewModel.IsUpdateItemListNowButtonEnabled = true;
         _settingsWindowViewModel.IsUpdateItemsJsonNowButtonEnabled = true;
+    }
+
+    private async void BackupNow_Click(object sender, RoutedEventArgs e)
+    {
+        _settingsWindowViewModel.IsBackupNowButtonEnabled = false;
+        BackupController.Save();
+        await Task.Delay(200);
+        _settingsWindowViewModel.IsBackupNowButtonEnabled = true;
     }
 }

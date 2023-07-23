@@ -121,6 +121,7 @@ public class MainWindowViewModel : INotifyPropertyChanged
     private ToolTaskBindings _toolTaskBindings = new();
     private string _serverTypeText;
     private PartyBuilderBindings _partyBuilderBindings = new();
+    private bool _isDataLoaded;
 
     public MainWindowViewModel()
     {
@@ -228,7 +229,7 @@ public class MainWindowViewModel : INotifyPropertyChanged
     #endregion
 
     #region Inits
-
+    
     private void InitAlerts()
     {
         SoundController.InitializeSoundFilesFromDirectory();
@@ -371,6 +372,7 @@ public class MainWindowViewModel : INotifyPropertyChanged
         IsItemSearchCheckboxesEnabled = true;
         IsTxtSearchEnabled = true;
         IsTaskProgressbarIndeterminate = false;
+        IsDataLoaded = true;
     }
 
     public async Task DownloadItemsJsonAsync()
@@ -726,6 +728,16 @@ public class MainWindowViewModel : INotifyPropertyChanged
         set
         {
             _mainTrackerTimer = value;
+            OnPropertyChanged();
+        }
+    }
+
+    public bool IsDataLoaded
+    {
+        get => _isDataLoaded;
+        set
+        {
+            _isDataLoaded = value;
             OnPropertyChanged();
         }
     }
