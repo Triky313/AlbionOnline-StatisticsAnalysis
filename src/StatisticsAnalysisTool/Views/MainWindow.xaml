@@ -10,7 +10,7 @@
         mc:Ignorable="d"
         d:DesignHeight="650" d:DesignWidth="1000"
         Title="AlbionOnline - StatisticsAnalysisTool"
-        Closed="MainWindow_OnClosed"
+        Closing="MainWindow_OnClosing"
         d:DataContext="{d:DesignInstance Type=viewModels:MainWindowViewModel}"
         Style="{StaticResource MainWindowStyle}">
 

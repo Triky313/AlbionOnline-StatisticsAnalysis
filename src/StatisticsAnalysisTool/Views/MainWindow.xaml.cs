@@ -1,5 +1,4 @@
 ﻿using log4net;
-using StatisticsAnalysisTool.Backup;
 using StatisticsAnalysisTool.Common;
 using StatisticsAnalysisTool.Common.UserSettings;
 using StatisticsAnalysisTool.Network.Manager;
@@ -70,11 +69,9 @@ public partial class MainWindow
         Application.Current?.Shutdown();
     }
 
-    private void MainWindow_OnClosed(object sender, EventArgs eventArgs)
+    private void MainWindow_OnClosing(object sender, EventArgs eventArgs)
     {
-        BackupController.Save();
         SettingsController.SetWindowSettings(WindowState, Height, Width, Left, Top);
-        CriticalData.Save();
     }
 
     private void MinimizeButton_Click(object sender, RoutedEventArgs e)

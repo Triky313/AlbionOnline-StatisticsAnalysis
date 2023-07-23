@@ -97,7 +97,7 @@ public partial class SettingsControl
     private async void BackupNow_Click(object sender, RoutedEventArgs e)
     {
         _settingsWindowViewModel.IsBackupNowButtonEnabled = false;
-        await BackupController.SaveAsync();
+        BackupController.Save();
         await Task.Delay(200);
         _settingsWindowViewModel.IsBackupNowButtonEnabled = true;
     }
