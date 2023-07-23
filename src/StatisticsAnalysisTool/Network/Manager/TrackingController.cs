@@ -172,20 +172,26 @@ public class TrackingController : ITrackingController
         Debug.Print("Stopped tracking");
     }
 
-    public async Task SaveData()
+    public async Task SaveDataAsync()
     {
-        await VaultController?.SaveInFileAsync()!;
-        await TradeController?.SaveInFileAsync()!;
-        await TreasureController?.SaveInFileAsync()!;
-        await StatisticController?.SaveInFileAsync()!;
-        await GatheringController?.SaveInFileAsync(true)!;
+        var tasks = new List<Task>
+        {
+            Task.Run(async () => { await VaultController?.SaveInFileAsync()!; }),
+            Task.Run(async () => { await TradeController?.SaveInFileAsync()!; }),
+            Task.Run(async () => { await TreasureController?.SaveInFileAsync()!; }),
+            Task.Run(async () => { await StatisticController?.SaveInFileAsync()!; }),
+            Task.Run(async () => { await DungeonController?.SaveInFileAsync()!; }),
+            Task.Run(async () => { await GatheringController?.SaveInFileAsync(true)!; }),
+            Task.Run(EstimatedMarketValueController.SaveInFileAsync),
+            Task.Run(async () =>
+            {
+                await FileController.SaveAsync(_mainWindowViewModel.DamageMeterBindings?.DamageMeterSnapshots,
+                    Path.Combine(AppDomain.CurrentDomain.BaseDirectory, Settings.Default.UserDataDirectoryName, Settings.Default.DamageMeterSnapshotsFileName));
+                Debug.Print("Damage Meter snapshots saved");
+            })
+        };
 
-        await FileController.SaveAsync(_mainWindowViewModel.DamageMeterBindings?.DamageMeterSnapshots,
-            Path.Combine(AppDomain.CurrentDomain.BaseDirectory, Settings.Default.UserDataDirectoryName, Settings.Default.DamageMeterSnapshotsFileName));
-        Debug.Print("Damage Meter snapshots saved");
-
-        await EstimatedMarketValueController.SaveInFileAsync();
-        Debug.Print("Estimated market values saved");
+        await Task.WhenAll(tasks);
     }
 
     public bool ExistIndispensableInfos => ClusterController.CurrentCluster != null && EntityController.ExistLocalEntity();

@@ -69,6 +69,11 @@ public partial class MainWindow
         Application.Current?.Shutdown();
     }
 
+    private void MainWindow_OnClosing(object sender, EventArgs eventArgs)
+    {
+        SettingsController.SetWindowSettings(WindowState, Height, Width, Left, Top);
+    }
+
     private void MinimizeButton_Click(object sender, RoutedEventArgs e)
     {
         WindowState = WindowState.Minimized;
@@ -110,12 +115,6 @@ public partial class MainWindow
     {
         var trackingController = ServiceLocator.Resolve<TrackingController>();
         trackingController?.EntityController?.CopyPartyToClipboard();
-    }
-
-    private async void MainWindow_OnClosed(object sender, EventArgs eventArgs)
-    {
-        await CriticalData.SaveAsync();
-        SettingsController.SetWindowSettings(WindowState, Height, Width, Left, Top);
     }
 
     private void Grid_MouseMove(object sender, MouseEventArgs e)

@@ -768,4 +768,9 @@
 	<translation name="AVERAGE_BIP">Average BIP</translation>
 	<translation name="SPELLS_JSON_SOURCE_URL">spells.json source url</translation>
 	<translation name="UPDATE_SPELLS_JSON_BY_DAYS">Update spells.json by days: </translation>
+	<translation name="BACKUP_CREATED">Backup created</translation>
+	<translation name="A_BACKUP_HAS_BEEN_CREATED">A backup has been created</translation>
+	<translation name="BACKUP_INTERVAL">Backup interval</translation>
+	<translation name="BACKUP_NOW">Backup now</translation>
+	<translation name="MAXIMUM_NUMBER_OF_BACKUPS">Maximum number of backups</translation>
 </translations>

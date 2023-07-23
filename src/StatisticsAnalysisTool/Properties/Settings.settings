@@ -149,5 +149,8 @@
     <Setting Name="SpellImageResources" Type="System.String" Scope="Application">
       <Value Profile="(Default)">SpellImageResources</Value>
     </Setting>
+    <Setting Name="BackupDirectoryName" Type="System.String" Scope="Application">
+      <Value Profile="(Default)">Backups</Value>
+    </Setting>
   </Settings>
 </SettingsFile>

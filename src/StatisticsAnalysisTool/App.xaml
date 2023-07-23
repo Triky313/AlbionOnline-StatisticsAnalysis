@@ -2,7 +2,6 @@
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              DispatcherUnhandledException="Application_DispatcherUnhandledException"
-             ShutdownMode="OnMainWindowClose"
              SessionEnding="OnSessionEnding">
     <Application.Resources>
         <ResourceDictionary>

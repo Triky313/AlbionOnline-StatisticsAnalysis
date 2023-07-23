@@ -29,9 +29,15 @@ public static class GameData
     {
         var tempDirPath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, Settings.Default.TempDirecoryName);
         var tempFilePath = Path.Combine(tempDirPath, tempFileName);
-        var regularDataFilePath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, Settings.Default.GameFilesDirectoryName, regularDataFileName);
+        var gameFilesDirPath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, Settings.Default.GameFilesDirectoryName);
+        var regularDataFilePath = Path.Combine(gameFilesDirPath, regularDataFileName);
 
         if (!DirectoryController.CreateDirectoryWhenNotExists(tempDirPath))
+        {
+            return new List<T>();
+        }
+
+        if (!DirectoryController.CreateDirectoryWhenNotExists(gameFilesDirPath))
         {
             return new List<T>();
         }

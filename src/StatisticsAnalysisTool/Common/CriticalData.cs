@@ -10,7 +10,11 @@ namespace StatisticsAnalysisTool.Common;
 public class CriticalData
 {
     private static SaveOnClosing _saveOnClosing;
-    private static readonly List<Task> TaskList = new();
+
+    public static void Save()
+    {
+        Task.Run(SaveAsync).GetAwaiter().GetResult();
+    }
 
     public static async Task SaveAsync()
     {
@@ -24,16 +28,14 @@ public class CriticalData
         var trackingController = ServiceLocator.Resolve<TrackingController>();
         var mainWindowViewModel = ServiceLocator.Resolve<MainWindowViewModel>();
 
-        var task = Task.Factory.StartNew(trackingController.StopTracking);
-        var task2 = Task.Factory.StartNew(mainWindowViewModel.SaveLootLogger);
-        var task3 = Task.Factory.StartNew(SettingsController.SaveSettings);
-        var task4 = Task.Factory.StartNew(trackingController.SaveData);
+        var tasks = new List<Task>
+        {
+            Task.Run(SettingsController.SaveSettings),
+            Task.Run(mainWindowViewModel.SaveLootLogger),
+            Task.Run(async () => { await trackingController?.SaveDataAsync()!; })
+        };
 
-        TaskList.Add(task);
-        TaskList.Add(task2);
-        TaskList.Add(task3);
-        TaskList.Add(task4);
-        await Task.WhenAll(TaskList.ToArray());
+        await Task.WhenAll(tasks);
 
         _saveOnClosing = SaveOnClosing.Done;
     }
