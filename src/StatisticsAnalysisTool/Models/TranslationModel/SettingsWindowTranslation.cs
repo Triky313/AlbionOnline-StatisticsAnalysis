@@ -56,4 +56,12 @@ public class SettingsWindowTranslation
     public static string BackupInterval => LanguageController.Translation("BACKUP_INTERVAL");
     public static string BackupNow => LanguageController.Translation("BACKUP_NOW");
     public static string MaximumNumberOfBackups => LanguageController.Translation("MAXIMUM_NUMBER_OF_BACKUPS");
+    public static string Generally => LanguageController.Translation("GENERALLY");
+    public static string Backup => LanguageController.Translation("BACKUP");
+    public static string Tool => LanguageController.Translation("TOOL");
+    public static string Tracking => LanguageController.Translation("TRACKING");
+    public static string ItemWindow => LanguageController.Translation("ITEM_WINDOW");
+    public static string ItemSearch => LanguageController.Translation("ITEM_SEARCH");
+    public static string LootLogger => LanguageController.Translation("LOOT_LOGGER");
+    public static string DamageMeter => LanguageController.Translation("DAMAGE_METER");
 }

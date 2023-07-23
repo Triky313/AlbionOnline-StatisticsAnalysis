@@ -440,7 +440,7 @@ public static class CategoryController
         {ShopCategory.Ranged, LanguageController.Translation("RANGED")},
         {ShopCategory.Resources, LanguageController.Translation("RESOURCE")},
         {ShopCategory.Token, LanguageController.Translation("TOKEN")},
-        {ShopCategory.Tools, LanguageController.Translation("TOOL")},
+        {ShopCategory.Tools, LanguageController.Translation("TOOLS")},
         {ShopCategory.Trophies, LanguageController.Translation("TROPHIES")}
     };
 
