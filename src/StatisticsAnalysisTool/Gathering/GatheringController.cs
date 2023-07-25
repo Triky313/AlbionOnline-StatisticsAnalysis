@@ -2,12 +2,14 @@
 using StatisticsAnalysisTool.Common;
 using StatisticsAnalysisTool.Common.UserSettings;
 using StatisticsAnalysisTool.EstimatedMarketValue;
+using StatisticsAnalysisTool.Models;
 using StatisticsAnalysisTool.Models.NetworkModel;
 using StatisticsAnalysisTool.Network.Manager;
 using StatisticsAnalysisTool.Properties;
 using StatisticsAnalysisTool.ViewModels;
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
@@ -129,6 +131,116 @@ public class GatheringController
             }
         });
     }
+
+    #region Fishing
+
+    private FishingEvent _activeFishingEvent;
+
+    public void FishingIsStarted(long eventId, int itemIndex)
+    {
+        var fishingEvent = new FishingEvent
+        {
+            EventId = eventId,
+            UsedFishingRod = itemIndex
+        };
+
+        _activeFishingEvent = fishingEvent;
+    }
+
+    public void IsCurrentFishingSucceeded(bool isSucceeded)
+    {
+        if (_activeFishingEvent is { } fishingEvent)
+        {
+            fishingEvent.IsFishingSucceeded = isSucceeded;
+        }
+    }
+
+    public void CloseFishingEvent()
+    {
+        if (_activeFishingEvent is { } fishingEvent)
+        {
+            fishingEvent.IsClosedForEvents = true;
+        }
+    }
+
+    public void AddFishedItem(DiscoveredItem item)
+    {
+        _activeFishingEvent?.DiscoveredFishingItems?.Add(item);
+    }
+
+    public void ConfirmReward(int itemIndex, int fishedItemQuantity)
+    {
+        var rewardItem = _activeFishingEvent?.DiscoveredFishingItems?.FirstOrDefault(x => x.ItemIndex == itemIndex);
+        if (rewardItem != null && _activeFishingEvent is { IsClosedForEvents: false } fishingEvent)
+        {
+            fishingEvent.FishedItem = rewardItem;
+            fishingEvent.IsRewardGranted = true;
+            fishingEvent.FishedItemQuantity = fishedItemQuantity;
+        }
+    }
+
+    public async Task FishingFinishedAsync()
+    {
+        if (_activeFishingEvent is not { IsFishingSucceeded: true, IsRewardGranted: true, FishedItem: not null } fishingEvent)
+        {
+            _activeFishingEvent = null;
+            return;
+        }
+
+        var fishedItem = ItemController.GetItemByIndex(fishingEvent.FishedItem.ItemIndex);
+        if (fishedItem == null)
+        {
+            _activeFishingEvent = null;
+            return;
+        }
+
+        var gathered = new Gathered()
+        {
+            Timestamp = _activeFishingEvent.CreateAt.Ticks,
+            UniqueName = fishedItem.UniqueName,
+            UserObjectId = -1,
+            ObjectId = fishingEvent.EventId,
+            EstimatedMarketValue = EstimatedMarketValueController.CalculateNearestToAverage(fishedItem.EstimatedMarketValues).MarketValue,
+            GainedStandardAmount = fishingEvent.FishedItemQuantity,
+            GainedBonusAmount = 0,
+            GainedPremiumBonusAmount = 0,
+            ClusterIndex = ClusterController.CurrentCluster.Index,
+            MapType = ClusterController.CurrentCluster.MapType,
+            InstanceName = ClusterController.CurrentCluster.InstanceName,
+            MiningProcesses = 0,
+            HasBeenFished = true
+        };
+
+        _activeFishingEvent.DiscoveredFishingItems.Clear();
+
+        AddGatheredToBindingCollection(gathered);
+        _activeFishingEvent = null;
+
+        await RemoveEntriesByAutoDeleteDateAsync();
+        await SaveInFileAfterExceedingLimit(10);
+        _mainWindowViewModel.GatheringBindings.UpdateStats();
+    }
+
+    public class FishingEvent
+    {
+        public DateTime CreateAt { get; init; }
+        public long EventId { get; init; }
+        public int UsedFishingRod { get; set; }
+        public Item UsedFishingRodItem => ItemController.GetItemByIndex(UsedFishingRod);
+        public bool IsFishingSucceeded { get; set; }
+        public bool IsClosedForEvents { get; set; }
+        public DiscoveredItem FishedItem { get; set; }
+        public bool IsRewardGranted { get; set; }
+        public int FishedItemQuantity { get; set; }
+        public ObservableCollection<DiscoveredItem> DiscoveredFishingItems = new();
+
+        public FishingEvent()
+        {
+            CreateAt = DateTime.UtcNow;
+        }
+    }
+
+    #endregion
 
     #region Save / Load data
 

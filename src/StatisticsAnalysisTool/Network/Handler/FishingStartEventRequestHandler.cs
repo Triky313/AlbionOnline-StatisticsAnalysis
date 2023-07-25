@@ -15,6 +15,7 @@ public class FishingStartEventRequestHandler : RequestPacketHandler<FishingStart
 
     protected override async Task OnActionAsync(FishingStartRequest value)
     {
+        _trackingController.GatheringController.FishingIsStarted(value.EventId, value.ItemIndex);
         await Task.CompletedTask;
     }
 }

@@ -15,6 +15,6 @@ public class FishingCancelRequestHandler : RequestPacketHandler<FishingCancelReq
 
     protected override async Task OnActionAsync(FishingCancelRequest value)
     {
-        await Task.CompletedTask;
+        await _trackingController.GatheringController.FishingFinishedAsync();
     }
 }

@@ -15,6 +15,7 @@ public class FishingFinishRequestHandler : RequestPacketHandler<FishingFinishReq
 
     protected override async Task OnActionAsync(FishingFinishRequest value)
     {
+        _trackingController.GatheringController.IsCurrentFishingSucceeded(value.Succeeded);
         await Task.CompletedTask;
     }
 }

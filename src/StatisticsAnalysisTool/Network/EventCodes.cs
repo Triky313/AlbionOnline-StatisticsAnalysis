@@ -253,7 +253,7 @@ public enum EventCodes
     ExpeditionRegistrationInfo,
     EnteringExpeditionStart,
     EnteringExpeditionCancel,
-    RewardGranted,
+    RewardGranted = 252,
     ArenaRegistrationInfo,
     EnteringArenaStart,
     EnteringArenaCancel,

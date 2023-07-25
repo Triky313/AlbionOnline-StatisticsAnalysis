@@ -152,6 +152,7 @@ public class Gathered : INotifyPropertyChanged
     public string ClusterIndex { get; init; }
     public MapType MapType { get; init; }
     public string InstanceName { get; init; }
+    public bool HasBeenFished { get; init; }
 
     public int GetTotalAmountResources()
     {
