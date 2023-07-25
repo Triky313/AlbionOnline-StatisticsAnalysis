@@ -80,6 +80,9 @@ public static class NetworkManager
         builder.AddRequestHandler(new UnRegisterFromObjectRequestHandler(trackingController));
         builder.AddRequestHandler(new AuctionBuyOfferRequestHandler(trackingController));
         builder.AddRequestHandler(new AuctionSellSpecificItemRequestHandler(trackingController));
+        builder.AddRequestHandler(new FishingStartEventRequestHandler(trackingController));
+        builder.AddRequestHandler(new FishingFinishRequestHandler(trackingController));
+        builder.AddRequestHandler(new FishingCancelRequestHandler(trackingController));
 
         builder.AddResponseHandler(new ChangeClusterResponseHandler(trackingController));
         builder.AddResponseHandler(new PartyMakeLeaderResponseHandler(trackingController));
@@ -89,6 +92,7 @@ public static class NetworkManager
         builder.AddResponseHandler(new AuctionGetOffersResponseHandler(trackingController));
         builder.AddResponseHandler(new AuctionGetResponseHandler(trackingController));
         builder.AddResponseHandler(new GetCharacterEquipmentResponseHandler(trackingController));
+        builder.AddResponseHandler(new FishingFinishResponseHandler(trackingController));
 
         _receiver = builder.Build();
         StartDeviceCapture();
