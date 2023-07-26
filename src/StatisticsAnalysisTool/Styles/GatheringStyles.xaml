@@ -43,6 +43,12 @@
         <Setter Property="Source" Value="../Assets/pickaxe_box.png" />
     </Style>
 
+    <Style x:Key="Gathering.Image.FishingLure.Box" TargetType="Image">
+        <Setter Property="Width" Value="25" />
+        <Setter Property="Height" Value="25" />
+        <Setter Property="Source" Value="../Assets/fishing_lure_box.png" />
+    </Style>
+
     <Style x:Key="Gathering.TextBlock.CollectionFragment.Numbers" TargetType="TextBlock">
         <Setter Property="Width" Value="auto" />
         <Setter Property="FontSize" Value="20" />
@@ -130,12 +136,8 @@
                                     </Style>
                                 </StackPanel.Style>
                                 <StackPanel Orientation="Horizontal" Width="90">
-                                    <Image Style="{StaticResource Gathering.Image.Pickaxe.Box}" ToolTip="{Binding TranslationTotal, FallbackValue='TOTAL'}" />
+                                    <Image Style="{StaticResource Gathering.Image.FishingLure.Box}" ToolTip="{Binding TranslationTotal, FallbackValue='TOTAL'}" />
                                     <TextBlock Text="{Binding GainedTotalAmount, IsAsync=True}" Style="{StaticResource Gathering.TextBlock.CollectionFragment.Numbers}" />
-                                </StackPanel>
-                                <StackPanel Orientation="Horizontal" Width="90">
-                                    <Image Style="{StaticResource Gathering.Image.Pickaxe}" ToolTip="{Binding TranslationStandard, FallbackValue='STANDARD'}" />
-                                    <TextBlock Text="{Binding GainedStandardAmount, IsAsync=True}" Style="{StaticResource Gathering.TextBlock.CollectionFragment.Numbers}" />
                                 </StackPanel>
                                 <StackPanel Orientation="Horizontal" Width="130">
                                     <Image Style="{StaticResource Icon.Silver}" ToolTip="{Binding TranslationTotalMarketValue, FallbackValue='TOTAL__MARKET__VALUE'}" />
