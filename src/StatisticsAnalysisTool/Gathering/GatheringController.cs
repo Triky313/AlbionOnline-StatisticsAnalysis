@@ -165,55 +165,54 @@ public class GatheringController
 
     public void AddFishedItem(DiscoveredItem item)
     {
-        _activeFishingEvent?.DiscoveredFishingItems?.Add(item);
-    }
-
-    public void ConfirmReward(int itemIndex, int fishedItemQuantity)
-    {
-        var rewardItem = _activeFishingEvent?.DiscoveredFishingItems?.FirstOrDefault(x => x.ItemIndex == itemIndex);
-        if (rewardItem != null && _activeFishingEvent is { IsClosedForEvents: false } fishingEvent)
+        if (_activeFishingEvent is { IsClosedForEvents: true } || _activeFishingEvent.UsedFishingRod == item.ObjectId)
         {
-            fishingEvent.FishedItem = rewardItem;
-            fishingEvent.IsRewardGranted = true;
-            fishingEvent.FishedItemQuantity = fishedItemQuantity;
+            return;
         }
+
+        _activeFishingEvent?.DiscoveredFishingItems?.Add(item);
     }
 
     public async Task FishingFinishedAsync()
     {
-        if (_activeFishingEvent is not { IsFishingSucceeded: true, IsRewardGranted: true, FishedItem: not null } fishingEvent)
+        if (_activeFishingEvent is not { IsFishingSucceeded: true } fishingEvent)
         {
             _activeFishingEvent = null;
             return;
         }
 
-        var fishedItem = ItemController.GetItemByIndex(fishingEvent.FishedItem.ItemIndex);
-        if (fishedItem == null)
+        var itemCount = 0;
+        foreach (DiscoveredItem discoveredItem in fishingEvent.DiscoveredFishingItems)
         {
-            _activeFishingEvent = null;
-            return;
-        }
+            var fishedItem = ItemController.GetItemByIndex(discoveredItem?.ItemIndex);
+            if (fishedItem == null)
+            {
+                _activeFishingEvent = null;
+                return;
+            }
 
-        var gathered = new Gathered()
-        {
-            Timestamp = _activeFishingEvent.CreateAt.Ticks,
-            UniqueName = fishedItem.UniqueName,
-            UserObjectId = -1,
-            ObjectId = fishingEvent.EventId,
-            EstimatedMarketValue = EstimatedMarketValueController.CalculateNearestToAverage(fishedItem.EstimatedMarketValues).MarketValue,
-            GainedStandardAmount = fishingEvent.FishedItemQuantity,
-            GainedBonusAmount = 0,
-            GainedPremiumBonusAmount = 0,
-            ClusterIndex = ClusterController.CurrentCluster.Index,
-            MapType = ClusterController.CurrentCluster.MapType,
-            InstanceName = ClusterController.CurrentCluster.InstanceName,
-            MiningProcesses = 0,
-            HasBeenFished = true
-        };
+            var gathered = new Gathered()
+            {
+                Timestamp = _activeFishingEvent.CreateAt.Ticks,
+                UniqueName = fishedItem.UniqueName,
+                UserObjectId = -1,
+                ObjectId = fishingEvent.EventId + itemCount,
+                EstimatedMarketValue = EstimatedMarketValueController.CalculateNearestToAverage(fishedItem.EstimatedMarketValues).MarketValue,
+                GainedStandardAmount = discoveredItem?.Quantity ?? 0,
+                GainedBonusAmount = 0,
+                GainedPremiumBonusAmount = 0,
+                ClusterIndex = ClusterController.CurrentCluster.Index,
+                MapType = ClusterController.CurrentCluster.MapType,
+                InstanceName = ClusterController.CurrentCluster.InstanceName,
+                MiningProcesses = 0,
+                HasBeenFished = true
+            };
+
+            AddGatheredToBindingCollection(gathered);
+            itemCount++;
+        }
 
         _activeFishingEvent.DiscoveredFishingItems.Clear();
-
-        AddGatheredToBindingCollection(gathered);
         _activeFishingEvent = null;
 
         await RemoveEntriesByAutoDeleteDateAsync();
@@ -229,9 +228,6 @@ public class GatheringController
         public Item UsedFishingRodItem => ItemController.GetItemByIndex(UsedFishingRod);
         public bool IsFishingSucceeded { get; set; }
         public bool IsClosedForEvents { get; set; }
-        public DiscoveredItem FishedItem { get; set; }
-        public bool IsRewardGranted { get; set; }
-        public int FishedItemQuantity { get; set; }
         public ObservableCollection<DiscoveredItem> DiscoveredFishingItems = new();
 
         public FishingEvent()
