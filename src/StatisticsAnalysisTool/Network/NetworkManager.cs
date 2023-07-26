@@ -83,6 +83,7 @@ public static class NetworkManager
         builder.AddRequestHandler(new AuctionSellSpecificItemRequestHandler(trackingController));
         builder.AddRequestHandler(new FishingStartEventRequestHandler(trackingController));
         builder.AddRequestHandler(new FishingFinishRequestHandler(trackingController));
+        builder.AddRequestHandler(new FishingCancelRequestHandler(trackingController));
 
         builder.AddResponseHandler(new ChangeClusterResponseHandler(trackingController));
         builder.AddResponseHandler(new PartyMakeLeaderResponseHandler(trackingController));

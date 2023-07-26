@@ -163,9 +163,26 @@ public class GatheringController
         }
     }
 
+    public void AddRewardItem(int itemIndex, int quantity)
+    {
+        if (_activeFishingEvent is not { IsClosedForEvents: false } fishingEvent)
+        {
+            return;
+        }
+
+        var itemToAdd = fishingEvent.DiscoveredFishingItems?.FirstOrDefault(x => x?.ItemIndex == itemIndex);
+        if (itemToAdd == null)
+        {
+            return;
+        }
+
+        itemToAdd.Quantity = quantity;
+        fishingEvent.ConfirmedFishingItems.Add(itemToAdd);
+    }
+
     public void AddFishedItem(DiscoveredItem item)
     {
-        if (_activeFishingEvent is { IsClosedForEvents: true } || _activeFishingEvent.UsedFishingRod == item.ObjectId)
+        if (_activeFishingEvent is { IsClosedForEvents: true } || _activeFishingEvent?.UsedFishingRod == item?.ObjectId)
         {
             return;
         }
@@ -182,9 +199,9 @@ public class GatheringController
         }
 
         var itemCount = 0;
-        foreach (DiscoveredItem discoveredItem in fishingEvent.DiscoveredFishingItems)
+        foreach (DiscoveredItem confirmedDiscoveredItem in fishingEvent.ConfirmedFishingItems)
         {
-            var fishedItem = ItemController.GetItemByIndex(discoveredItem?.ItemIndex);
+            var fishedItem = ItemController.GetItemByIndex(confirmedDiscoveredItem?.ItemIndex);
             if (fishedItem == null)
             {
                 _activeFishingEvent = null;
@@ -198,7 +215,7 @@ public class GatheringController
                 UserObjectId = -1,
                 ObjectId = fishingEvent.EventId + itemCount,
                 EstimatedMarketValue = EstimatedMarketValueController.CalculateNearestToAverage(fishedItem.EstimatedMarketValues).MarketValue,
-                GainedStandardAmount = discoveredItem?.Quantity ?? 0,
+                GainedStandardAmount = confirmedDiscoveredItem?.Quantity ?? 0,
                 GainedBonusAmount = 0,
                 GainedPremiumBonusAmount = 0,
                 ClusterIndex = ClusterController.CurrentCluster.Index,
@@ -229,6 +246,7 @@ public class GatheringController
         public bool IsFishingSucceeded { get; set; }
         public bool IsClosedForEvents { get; set; }
         public ObservableCollection<DiscoveredItem> DiscoveredFishingItems = new();
+        public ObservableCollection<DiscoveredItem> ConfirmedFishingItems = new ();
 
         public FishingEvent()
         {
