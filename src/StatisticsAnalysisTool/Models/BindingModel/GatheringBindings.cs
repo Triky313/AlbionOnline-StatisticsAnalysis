@@ -32,7 +32,8 @@ public class GatheringBindings : INotifyPropertyChanged
         { GatheringFilterType.Fiber, LanguageController.Translation("FIBER") },
         { GatheringFilterType.Hide, LanguageController.Translation("HIDE") },
         { GatheringFilterType.Ore, LanguageController.Translation("ORE") },
-        { GatheringFilterType.Rock, LanguageController.Translation("ROCK") }
+        { GatheringFilterType.Rock, LanguageController.Translation("ROCK") },
+        { GatheringFilterType.Fishing, LanguageController.Translation("FISHING") }
     };
     private GatheringFilterType _selectedGatheringFilter = GatheringFilterType.Generally;
     private GatheringStatsTimeType _gatheringStatsTimeTypeSelection = GatheringStatsTimeType.Today;
@@ -108,6 +109,14 @@ public class GatheringBindings : INotifyPropertyChanged
                 {
                     UpdateObservableRangeCollection(GatheringStats.GatheredRock, rock);
                     GatheringStats.GainedSilverByRock = Utilities.LongWithCulture(rock.Sum(x => x.TotalMarketValue.IntegerValue));
+                });
+
+                // Fish
+                var fish = await GroupAndFilterAndSumAsync(gatherCollection, x => x?.Item?.ShopShopSubCategory1 == ShopSubCategory.Fish, GatheringStatsTimeTypeSelection);
+                await Application.Current.Dispatcher.InvokeAsync(() =>
+                {
+                    UpdateObservableRangeCollection(GatheringStats.GatheredFish, fish);
+                    GatheringStats.GainedSilverByFish = Utilities.LongWithCulture(fish.Sum(x => x.TotalMarketValue.IntegerValue));
                 });
 
                 // Most gathered resource

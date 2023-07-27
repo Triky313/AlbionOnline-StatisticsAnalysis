@@ -402,4 +402,24 @@
         </StackPanel>
     </DataTemplate>
 
+    <DataTemplate x:Key="FishingTemplate" DataType="{x:Type gathering:GatheringStats}">
+        <StackPanel Orientation="Vertical">
+            <TextBlock Style="{StaticResource Gathering.Stats.TitleText}" Text="{Binding TranslationResourceValue}" />
+            <StackPanel Orientation="Horizontal">
+                <Image Style="{StaticResource Icon.Silver}" Margin="0,0,0,2" />
+                <TextBlock Text="{Binding GainedSilverByFish, IsAsync=True}" Style="{StaticResource Gathering.TextBlock.CollectionFragment.Numbers}" />
+            </StackPanel>
+            <StackPanel Orientation="Vertical">
+                <controls:VirtualizingItemsControl ItemsSource="{Binding GatheredFish, IsAsync=True, Mode=OneWay}"
+                                                   ItemTemplate="{StaticResource GatheredItemStatsTemplate}" 
+                                                   VirtualizingPanel.CacheLengthUnit="Item"
+                                                   VirtualizingPanel.CacheLength="10,10"
+                                                   VirtualizingPanel.ScrollUnit="Pixel"
+                                                   VirtualizingPanel.VirtualizationMode="Recycling"
+                                                   ScrollViewer.HorizontalScrollBarVisibility="Disabled"
+                                                   ScrollViewer.VerticalScrollBarVisibility="Disabled" />
+            </StackPanel>
+        </StackPanel>
+    </DataTemplate>
+
 </ResourceDictionary>
