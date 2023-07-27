@@ -122,6 +122,7 @@ public class MainWindowViewModel : INotifyPropertyChanged
     private string _serverTypeText;
     private PartyBuilderBindings _partyBuilderBindings = new();
     private bool _isDataLoaded;
+    private bool _isCloseButtonActive;
 
     public MainWindowViewModel()
     {
@@ -229,7 +230,7 @@ public class MainWindowViewModel : INotifyPropertyChanged
     #endregion
 
     #region Inits
-    
+
     private void InitAlerts()
     {
         SoundController.InitializeSoundFilesFromDirectory();
@@ -373,6 +374,8 @@ public class MainWindowViewModel : INotifyPropertyChanged
         IsTxtSearchEnabled = true;
         IsTaskProgressbarIndeterminate = false;
         IsDataLoaded = true;
+
+        CloseButtonActivationDelayAync();
     }
 
     public async Task DownloadItemsJsonAsync()
@@ -394,6 +397,12 @@ public class MainWindowViewModel : INotifyPropertyChanged
                 itemListTaskTextObject.SetStatus(TaskTextObject.TaskTextObjectStatus.Done);
             }
         }
+    }
+
+    private async void CloseButtonActivationDelayAync()
+    {
+        await Task.Delay(2000);
+        IsCloseButtonActive = true;
     }
 
     #endregion
@@ -961,6 +970,16 @@ public class MainWindowViewModel : INotifyPropertyChanged
             _selectedItemTier = value;
             ItemsViewFilter();
             ItemsView?.Refresh();
+            OnPropertyChanged();
+        }
+    }
+
+    public bool IsCloseButtonActive
+    {
+        get => _isCloseButtonActive;
+        set
+        {
+            _isCloseButtonActive = value;
             OnPropertyChanged();
         }
     }
