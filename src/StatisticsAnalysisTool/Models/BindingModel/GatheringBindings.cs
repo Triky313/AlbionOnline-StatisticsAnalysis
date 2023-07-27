@@ -112,7 +112,7 @@ public class GatheringBindings : INotifyPropertyChanged
                 });
 
                 // Fish
-                var fish = await GroupAndFilterAndSumAsync(gatherCollection, x => x?.Item?.ShopShopSubCategory1 == ShopSubCategory.Fish, GatheringStatsTimeTypeSelection);
+                var fish = await GroupAndFilterAndSumAsync(gatherCollection, x => x?.Item?.ShopShopSubCategory1 == ShopSubCategory.Fish, GatheringStatsTimeTypeSelection, true);
                 await Application.Current.Dispatcher.InvokeAsync(() =>
                 {
                     UpdateObservableRangeCollection(GatheringStats.GatheredFish, fish);
@@ -204,16 +204,19 @@ public class GatheringBindings : INotifyPropertyChanged
         });
     }
 
-    private static async Task<List<Gathered>> GroupAndFilterAndSumAsync(IEnumerable<Gathered> gatheredData, Func<Gathered, bool> filter, GatheringStatsTimeType gatheringStatsTimeType)
+    private static async Task<List<Gathered>> GroupAndFilterAndSumAsync(IEnumerable<Gathered> gatheredData, Func<Gathered, bool> filter, GatheringStatsTimeType gatheringStatsTimeType, bool hasBeenFished = false)
     {
         try
         {
             return await Task.Run(() =>
             {
                 var filteredData = gatheredData.ToList()
-                    .Where(filter)
                     .Where(x => IsTimestampOkayByGatheringStatsTimeType(x.TimestampDateTime, gatheringStatsTimeType))
                     .ToList();
+
+                filteredData = hasBeenFished 
+                    ? filteredData.Where(x => x.HasBeenFished).ToList() 
+                    : filteredData.Where(filter).Where(x => x.HasBeenFished == false).ToList();
 
                 var groupedData = filteredData.GroupBy(x => x.UniqueName)
                     .Select(g => new Gathered()
