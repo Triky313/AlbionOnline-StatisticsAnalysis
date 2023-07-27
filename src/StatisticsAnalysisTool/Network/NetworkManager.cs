@@ -198,7 +198,6 @@ public static class NetworkManager
         {
             ConsoleManager.WriteLineForError(MethodBase.GetCurrentMethod()?.DeclaringType, ex);
             Log.Error(nameof(Device_OnPacketArrival), ex);
-            StopDeviceCapture();
         }
         catch (Exception ex)
         {
