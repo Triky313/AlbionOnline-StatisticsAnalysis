@@ -7,6 +7,8 @@
         mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
         x:Class="StatisticsAnalysisTool.Avalonia.Views.MainWindow"
         Icon="/Assets/avalonia-logo.ico"
-        Title="StatisticsAnalysisTool.Avalonia">
+        Title="StatisticsAnalysisTool.Avalonia"
+        TransparencyLevelHint="AcrylicBlur"
+        Background="Transparent">
         <views:MainView />
 </Window>
