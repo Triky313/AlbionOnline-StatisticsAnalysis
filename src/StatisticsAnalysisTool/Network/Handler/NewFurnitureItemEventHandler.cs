@@ -24,6 +24,7 @@ public class NewFurnitureItemEventHandler : EventPacketHandler<NewFurnitureItemE
         EstimatedMarketValueController.Add(value.Item.ItemIndex, value.Item.EstimatedMarketValueInternal, value.Item.Quality);
         _trackingController.LootController.AddDiscoveredItem(value.Item);
         _trackingController.DungeonController.AddDiscoveredItem(value.Item);
+        _trackingController.GatheringController.AddFishedItem(value.Item);
         await Task.CompletedTask;
     }
 }

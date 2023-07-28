@@ -317,14 +317,14 @@ public enum OperationCodes
     DepositItemToGuildCurrency,
     WithdrawalItemFromGuildCurrency,
     AuctionSellSpecificItemRequest = 315,
-    FishingStart,
+    FishingStart = 316, // 0: EventId, 2: Used fishing rod
     FishingCasting,
     FishingCast,
     FishingCatch,
     FishingPull,
     FishingGiveLine,
-    FishingFinish,
-    FishingCancel,
+    FishingFinish = 322, // Request: 1: true is finished | false is failed - Response: Fishing finished
+    FishingCancel = 323, // Request: Fishing canceled
     CreateGuildAccessTag,
     DeleteGuildAccessTag,
     RenameGuildAccessTag,

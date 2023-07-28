@@ -178,6 +178,9 @@
     <Resource Include="Assets\empty_icon.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Resource>
+    <Resource Include="Assets\fishing_lure_box.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Resource>
     <Resource Include="Assets\gem_level0.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Resource>
@@ -576,6 +579,7 @@
     <None Remove="Assets\crafting_description_image002.png" />
     <None Remove="Assets\dungeon.png" />
     <None Remove="Assets\empty_icon.png" />
+    <None Remove="Assets\fishing_lure_box.png" />
     <None Remove="Assets\gem_level0.png" />
     <None Remove="Assets\gem_level1.png" />
     <None Remove="Assets\gem_level2.png" />
