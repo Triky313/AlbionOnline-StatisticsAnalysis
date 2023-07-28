@@ -211,8 +211,8 @@ public class GatheringBindings : INotifyPropertyChanged
                     .Where(x => IsTimestampOkayByGatheringStatsTimeType(x.TimestampDateTime, gatheringStatsTimeType))
                     .ToList();
 
-                filteredData = hasBeenFished 
-                    ? filteredData.Where(x => x.HasBeenFished).ToList() 
+                filteredData = hasBeenFished
+                    ? filteredData.Where(x => x.HasBeenFished).ToList()
                     : filteredData.Where(filter).Where(x => x.HasBeenFished == false).ToList();
 
                 var groupedData = filteredData.GroupBy(x => x.UniqueName)
@@ -240,11 +240,35 @@ public class GatheringBindings : INotifyPropertyChanged
         }
     }
 
-    private static void UpdateObservableRangeCollection(ObservableRangeCollection<Gathered> target, IEnumerable<Gathered> source)
+    private static void UpdateObservableRangeCollection(ICollection<Gathered> target, IEnumerable<Gathered> source)
     {
-        var sourceSorted = source.OrderByDescending(x => x.UniqueName);
-        target.Clear();
-        target.AddRange(sourceSorted.ToList());
+        var targetDictionary = target.ToDictionary(x => x.UniqueName);
+
+        foreach (var item in source)
+        {
+            if (targetDictionary.TryGetValue(item.UniqueName, out var existingItem))
+            {
+                existingItem.GainedStandardAmount = item.GainedStandardAmount;
+                existingItem.GainedBonusAmount = item.GainedBonusAmount;
+                existingItem.GainedBonusAmount = item.GainedBonusAmount;
+                existingItem.GainedTotalAmount = item.GainedTotalAmount;
+                existingItem.GainedFame = item.GainedFame;
+                existingItem.MiningProcesses = item.MiningProcesses;
+                existingItem.EstimatedMarketValue = item.EstimatedMarketValue;
+                existingItem.TotalMarketValueWithCulture = item.TotalMarketValueWithCulture;
+
+                targetDictionary.Remove(item.UniqueName);
+            }
+            else
+            {
+                target.Add(item);
+            }
+        }
+
+        foreach (var itemToRemove in targetDictionary.Values)
+        {
+            target.Remove(itemToRemove);
+        }
     }
 
     public static bool IsTimestampOkayByGatheringStatsTimeType(DateTime dateTime, GatheringStatsTimeType gatheringStatsTimeType)
