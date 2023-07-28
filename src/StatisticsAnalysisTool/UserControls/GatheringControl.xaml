@@ -136,6 +136,18 @@
                                 </Style>
                             </ContentControl.Style>
                         </ContentControl>
+                        <ContentControl Content="{Binding GatheringBindings.GatheringStats}" ContentTemplate="{StaticResource FishingTemplate}">
+                            <ContentControl.Style>
+                                <Style TargetType="{x:Type ContentControl}">
+                                    <Setter Property="Visibility" Value="Collapsed"/>
+                                    <Style.Triggers>
+                                        <DataTrigger Binding="{Binding GatheringBindings.SelectedGatheringFilter}" Value="{x:Static gathering:GatheringFilterType.Fishing}">
+                                            <Setter Property="Visibility" Value="Visible"/>
+                                        </DataTrigger>
+                                    </Style.Triggers>
+                                </Style>
+                            </ContentControl.Style>
+                        </ContentControl>
                     </Grid>
                 </ScrollViewer>
             </Grid>

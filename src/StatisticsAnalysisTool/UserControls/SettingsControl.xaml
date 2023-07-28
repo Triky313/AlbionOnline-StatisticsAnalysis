@@ -6,12 +6,15 @@
              xmlns:viewModels="clr-namespace:StatisticsAnalysisTool.ViewModels"
              xmlns:common="clr-namespace:StatisticsAnalysisTool.Common"
              mc:Ignorable="d" 
-             d:DesignHeight="1300" d:DesignWidth="800"
+             d:DesignHeight="1600" d:DesignWidth="800"
              d:DataContext="{d:DesignInstance Type=viewModels:SettingsWindowViewModel}">
     <Grid IsVisibleChanged="ReloadSettings_OnIsVisibleChanged">
         <Grid Margin="0,0,0,44">
             <ScrollViewer>
                 <StackPanel>
+                    <DockPanel Margin="0,0,0,0">
+                        <Label Content="{Binding Translation.Generally, FallbackValue='GENERALLY'}" FontSize="14" Foreground="{StaticResource SolidColorBrush.Accent.Blue.2}" />
+                    </DockPanel>
                     <DockPanel Margin="0,5,0,0">
                         <Label Content="{Binding Translation.Language, FallbackValue=LANGUAGE}" MinWidth="300" VerticalAlignment="Top" />
                         <ComboBox ItemsSource="{Binding Languages}" SelectedItem="{Binding LanguagesSelection}" 
@@ -48,30 +51,35 @@
                                   HorizontalAlignment="Left" VerticalAlignment="Top" Width="200" Height="26" />
                     </DockPanel>
                     <DockPanel Margin="0,5,0,0">
-                        <Label Content="{Binding Translation.SetServerManually, FallbackValue=SET_SERVER_MANUALLY}" MinWidth="300" VerticalAlignment="Top" />
-                        <ComboBox ItemsSource="{Binding Server}" SelectedItem="{Binding ServerSelection}" IsSynchronizedWithCurrentItem="True" DisplayMemberPath="Name" 
-                                  SelectedValuePath="Value" HorizontalAlignment="Left" VerticalAlignment="Top" Width="200" Height="26" />
-                    </DockPanel>
-                    <DockPanel Margin="0,5,0,0">
-                        <Label Content="{Binding Translation.PacketFilter, FallbackValue=PACKET__FILTER}" MinWidth="300" VerticalAlignment="Top" />
-                        <StackPanel Orientation="Horizontal">
-                            <TextBox Text="{Binding PacketFilter}" Height="26" MinWidth="350" TextWrapping="NoWrap" VerticalAlignment="Center" Margin="0,0,5,0" />
-                            <Button Content="{Binding Translation.Reset, FallbackValue=RESET}" Height="24" MaxWidth="120" VerticalAlignment="Center" Click="ResetPacketFilter_Click" />
-                        </StackPanel>
-                    </DockPanel>
-                    <DockPanel Margin="0,5,0,0">
                         <Label Content="{Binding Translation.Notifications, FallbackValue=NOTIFICATIONS}" MinWidth="300" VerticalAlignment="Top" />
                         <ComboBox ItemsSource="{Binding NotificationFilters}" ItemTemplate="{StaticResource NotificationFilter}" 
                                   HorizontalAlignment="Left" VerticalAlignment="Top" Width="200" Height="26" />
                     </DockPanel>
                     <DockPanel Margin="0,5,0,0">
-                        <Label Content="{Binding Translation.RefreshRate, FallbackValue=REFRESH__RATE}" MinWidth="300" VerticalAlignment="Top" />
-                        <ComboBox ItemsSource="{Binding RefreshRates}" SelectedItem="{Binding RefreshRatesSelection}" IsSynchronizedWithCurrentItem="True" DisplayMemberPath="Name" 
-                                  SelectedValuePath="Value" HorizontalAlignment="Left" VerticalAlignment="Top" Width="200" Height="26" />
-                    </DockPanel>
-                    <DockPanel Margin="0,5,0,0">
                         <Label Content="{Binding Translation.CharacterNameToTrack, FallbackValue=CHARACTER_NAME_TO_TRACK}" MinWidth="300" VerticalAlignment="Top" />
                         <TextBox Text="{Binding MainTrackingCharacterName}" Height="26" TextWrapping="NoWrap" MaxLength="50" VerticalAlignment="Top" Margin="0,0,5,0" />
+                    </DockPanel>
+                    <DockPanel Margin="0,5,0,0">
+                        <Label Content="{Binding Translation.PlayerSelectionWithSameNameInDb, FallbackValue=PLAYER_SELECTION_WITH_SAME_NAME_IN_DB}" MinWidth="300" VerticalAlignment="Top" />
+                        <StackPanel Orientation="Horizontal">
+                            <TextBox Text="{Binding PlayerSelectionWithSameNameInDb}" Height="26" MinWidth="100" TextWrapping="NoWrap" VerticalAlignment="Center" 
+                                     Margin="0,0,5,0" MaxLength="2" common:TextBoxHelper.OnlyNumeric="Double" />
+                            <Button Content="{Binding Translation.Reset, FallbackValue=RESET}" Height="24" MaxWidth="100" VerticalAlignment="Center" 
+                                    Click="ResetPlayerSelectionWithSameNameInDb_Click" />
+                        </StackPanel>
+                    </DockPanel>
+                    <DockPanel Margin="0,5,5,0">
+                        <Label MinWidth="300"/>
+                        <Button Content="{Binding Translation.OpenToolDirectory, FallbackValue=OPEN__TOOL__DIRECTORY}" Height="24" VerticalAlignment="Bottom" Click="OpenToolDirectory_Click" />
+                    </DockPanel>
+                    <DockPanel Margin="0,5,5,0">
+                        <Label MinWidth="300"/>
+                        <Button Content="{Binding Translation.CreateDesktopShortcut, FallbackValue=CREATE__DESKTOP__SHORTCUT}" Height="24" VerticalAlignment="Bottom" Click="CreateDesktopShortcut_Click" />
+                    </DockPanel>
+                    <DockPanel Margin="0,5,5,0">
+                        <Label MinWidth="300"/>
+                        <Button Content="{Binding Translation.OpenDebugConsole, FallbackValue=OPEN__DEBUG__CONSOLE}" Height="24" 
+                                VerticalAlignment="Bottom" Click="OpenDebugConsole_Click" />
                     </DockPanel>
                     <DockPanel Margin="0,5,0,0">
                         <Label Content="{Binding Translation.UpdateItemListByDays, FallbackValue=UPDATE__ITEM__LIST__BY__DAYS}" MinWidth="300" VerticalAlignment="Top" />
@@ -124,31 +132,22 @@
                         <Label Content="{Binding Translation.SpellsJsonSourceUrl, FallbackValue=SPELLS__JSON__SOURCE__URL}" MinWidth="300" VerticalAlignment="Top" />
                         <TextBox Text="{Binding SpellsJsonSourceUrl}" Height="40" TextWrapping="Wrap" VerticalAlignment="Top" Margin="0,0,5,0" />
                     </DockPanel>
+
+                    <!-- Tracking -->
+                    <DockPanel Margin="0,20,0,0">
+                        <Label Content="{Binding Translation.Tracking, FallbackValue='TRACKING'}" FontSize="14" Foreground="{StaticResource SolidColorBrush.Accent.Blue.2}" />
+                    </DockPanel>
                     <DockPanel Margin="0,5,0,0">
-                        <Label Content="{Binding Translation.OpenItemWindowInNewWindow, FallbackValue=OPEN__ITEM__WINDOW__IN__NEW__WINDOW}" MinWidth="300" VerticalAlignment="Top" />
-                        <CheckBox IsChecked="{Binding IsOpenItemWindowInNewWindowChecked}" Height="21" VerticalContentAlignment="Center" />
+                        <Label Content="{Binding Translation.SetServerManually, FallbackValue=SET_SERVER_MANUALLY}" MinWidth="300" VerticalAlignment="Top" />
+                        <ComboBox ItemsSource="{Binding Server}" SelectedItem="{Binding ServerSelection}" IsSynchronizedWithCurrentItem="True" DisplayMemberPath="Name" 
+                                  SelectedValuePath="Value" HorizontalAlignment="Left" VerticalAlignment="Top" Width="200" Height="26" />
                     </DockPanel>
-                    <!--<DockPanel Margin="0,5,0,0">
-                        <Label Content="{Binding Translation.ShowInfoWindowOnStart, FallbackValue=SHOW__INFO__WINDOW__ON__START}" MinWidth="300" VerticalAlignment="Top" />
-                        <CheckBox IsChecked="{Binding ShowInfoWindowOnStartChecked}" Height="21" VerticalContentAlignment="Center"  />
-                    </DockPanel>-->
                     <DockPanel Margin="0,5,0,0">
-                        <Label Content="{Binding Translation.AlarmSoundUsed, FallbackValue=ALERT__SOUND__USED}" MinWidth="300" VerticalAlignment="Top" />
-                        <ComboBox ItemsSource="{Binding AlertSounds}" SelectedItem="{Binding AlertSoundSelection}" IsSynchronizedWithCurrentItem="True" 
-                                  DisplayMemberPath="FileName" SelectedValuePath="FilePath" HorizontalAlignment="Left" VerticalAlignment="Top" Width="200" Height="26" />
-                    </DockPanel>
-                    <DockPanel Margin="0,5,5,0">
-                        <Label MinWidth="300"/>
-                        <Button Content="{Binding Translation.OpenToolDirectory, FallbackValue=OPEN__TOOL__DIRECTORY}" Height="24" VerticalAlignment="Bottom" Click="OpenToolDirectory_Click" />
-                    </DockPanel>
-                    <DockPanel Margin="0,5,5,0">
-                        <Label MinWidth="300"/>
-                        <Button Content="{Binding Translation.CreateDesktopShortcut, FallbackValue=CREATE__DESKTOP__SHORTCUT}" Height="24" VerticalAlignment="Bottom" Click="CreateDesktopShortcut_Click" />
-                    </DockPanel>
-                    <DockPanel Margin="0,5,5,0">
-                        <Label MinWidth="300"/>
-                        <Button Content="{Binding Translation.OpenDebugConsole, FallbackValue=OPEN__DEBUG__CONSOLE}" Height="24" 
-                                VerticalAlignment="Bottom" Click="OpenDebugConsole_Click" />
+                        <Label Content="{Binding Translation.PacketFilter, FallbackValue=PACKET__FILTER}" MinWidth="300" VerticalAlignment="Top" />
+                        <StackPanel Orientation="Horizontal">
+                            <TextBox Text="{Binding PacketFilter}" Height="26" MinWidth="350" TextWrapping="NoWrap" VerticalAlignment="Center" Margin="0,0,5,0" />
+                            <Button Content="{Binding Translation.Reset, FallbackValue=RESET}" Height="24" MaxWidth="120" VerticalAlignment="Center" Click="ResetPacketFilter_Click" />
+                        </StackPanel>
                     </DockPanel>
                     <DockPanel Margin="0,5,0,0">
                         <Label Content="{Binding Translation.AlbionDataProjectBaseUrlWest, FallbackValue=ALBION_DATA_PROJECT_BASE_URL_WEST}" MinWidth="300" VerticalAlignment="Top" />
@@ -159,27 +158,56 @@
                         <TextBox Text="{Binding AlbionDataProjectBaseUrlEast}" Height="40" TextWrapping="Wrap" VerticalAlignment="Top" Margin="0,0,5,0" />
                     </DockPanel>
 
+                    <!-- Item window -->
+                    <DockPanel Margin="0,20,0,0">
+                        <Label Content="{Binding Translation.ItemWindow, FallbackValue='ITEM__WINDOW'}" FontSize="14" Foreground="{StaticResource SolidColorBrush.Accent.Blue.2}" />
+                    </DockPanel>
+                    <DockPanel Margin="0,5,0,0">
+                        <Label Content="{Binding Translation.RefreshRate, FallbackValue=REFRESH__RATE}" MinWidth="300" VerticalAlignment="Top" />
+                        <ComboBox ItemsSource="{Binding RefreshRates}" SelectedItem="{Binding RefreshRatesSelection}" IsSynchronizedWithCurrentItem="True" DisplayMemberPath="Name" 
+                                  SelectedValuePath="Value" HorizontalAlignment="Left" VerticalAlignment="Top" Width="200" Height="26" />
+                    </DockPanel>
+                    <DockPanel Margin="0,5,0,0">
+                        <Label Content="{Binding Translation.OpenItemWindowInNewWindow, FallbackValue=OPEN__ITEM__WINDOW__IN__NEW__WINDOW}" MinWidth="300" VerticalAlignment="Top" />
+                        <CheckBox IsChecked="{Binding IsOpenItemWindowInNewWindowChecked}" Height="21" VerticalContentAlignment="Center" />
+                    </DockPanel>
+                    <!--<DockPanel Margin="0,5,0,0">
+                        <Label Content="{Binding Translation.ShowInfoWindowOnStart, FallbackValue=SHOW__INFO__WINDOW__ON__START}" MinWidth="300" VerticalAlignment="Top" />
+                        <CheckBox IsChecked="{Binding ShowInfoWindowOnStartChecked}" Height="21" VerticalContentAlignment="Center"  />
+                    </DockPanel>-->
+
+                    <!-- Item search -->
+                    <DockPanel Margin="0,20,0,0">
+                        <Label Content="{Binding Translation.ItemSearch, FallbackValue='ITEM__SEARCH'}" FontSize="14" Foreground="{StaticResource SolidColorBrush.Accent.Blue.2}" />
+                    </DockPanel>
+                    <DockPanel Margin="0,5,0,0">
+                        <Label Content="{Binding Translation.AlarmSoundUsed, FallbackValue=ALERT__SOUND__USED}" MinWidth="300" VerticalAlignment="Top" />
+                        <ComboBox ItemsSource="{Binding AlertSounds}" SelectedItem="{Binding AlertSoundSelection}" IsSynchronizedWithCurrentItem="True" 
+                                  DisplayMemberPath="FileName" SelectedValuePath="FilePath" HorizontalAlignment="Left" VerticalAlignment="Top" Width="200" Height="26" />
+                    </DockPanel>
+
+                    <!-- Loot logger -->
+                    <DockPanel Margin="0,20,0,0">
+                        <Label Content="{Binding Translation.LootLogger, FallbackValue='LOOT__LOGGER'}" FontSize="14" Foreground="{StaticResource SolidColorBrush.Accent.Blue.2}" />
+                    </DockPanel>
                     <DockPanel Margin="0,5,0,0">
                         <Label Content="{Binding Translation.IsLootLoggerSaveReminderActive, FallbackValue=IS__LOOT__LOGGER__SAVE__REMINDER__ACTIVE}" MinWidth="300" VerticalAlignment="Top" />
                         <CheckBox IsChecked="{Binding IsLootLoggerSaveReminderActive}" Height="21" VerticalContentAlignment="Center" />
+                    </DockPanel>
+
+                    <!-- Damage meter -->
+                    <DockPanel Margin="0,20,0,0">
+                        <Label Content="{Binding Translation.DamageMeter, FallbackValue='DAMAGE__METER'}" FontSize="14" Foreground="{StaticResource SolidColorBrush.Accent.Blue.2}" />
                     </DockPanel>
                     <DockPanel Margin="0,5,0,0">
                         <Label Content="{Binding Translation.CopyShortDamageMeterToTheClipboard, FallbackValue=COPY__SHORT__DAMAGE__METER__TO__THE__CLIPBOARD}" MinWidth="300" VerticalAlignment="Top" />
                         <CheckBox IsChecked="{Binding ShortDamageMeterToClipboard}" Height="21" VerticalContentAlignment="Center" />
                     </DockPanel>
-                    <DockPanel Margin="0,5,0,0">
-                        <Label Content="{Binding Translation.PlayerSelectionWithSameNameInDb, FallbackValue=PLAYER_SELECTION_WITH_SAME_NAME_IN_DB}" MinWidth="300" VerticalAlignment="Top" />
-                        <StackPanel Orientation="Horizontal">
-                            <TextBox Text="{Binding PlayerSelectionWithSameNameInDb}" Height="26" MinWidth="100" TextWrapping="NoWrap" VerticalAlignment="Center" 
-                                     Margin="0,0,5,0" MaxLength="2" common:TextBoxHelper.OnlyNumeric="Double" />
-                            <Button Content="{Binding Translation.Reset, FallbackValue=RESET}" Height="24" MaxWidth="100" VerticalAlignment="Center" 
-                                    Click="ResetPlayerSelectionWithSameNameInDb_Click" />
-                        </StackPanel>
-                    </DockPanel>
 
                     <!-- Backup -->
-                    <Grid Height="20" />
-                    <Label Content="BACKUP" FontSize="14" Foreground="{StaticResource SolidColorBrush.Accent.Blue.2}" />
+                    <DockPanel Margin="0,20,0,0">
+                        <Label Content="{Binding Translation.Backup, FallbackValue='BACKUP'}" FontSize="14" Foreground="{StaticResource SolidColorBrush.Accent.Blue.2}" />
+                    </DockPanel>
                     <DockPanel Margin="0,5,0,0">
                         <Label Content="{Binding Translation.BackupInterval, FallbackValue=BACKUP__INTERVAL}" MinWidth="300" VerticalAlignment="Top" />
                         <ComboBox ItemsSource="{Binding BackupIntervalByDays}" SelectedItem="{Binding BackupIntervalByDaysSelection}" 
@@ -192,7 +220,7 @@
                     </DockPanel>
                     <DockPanel Margin="0,5,0,0">
                         <Label MinWidth="300" VerticalAlignment="Top" />
-                        <Button Content="{Binding Translation.BackupNow, FallbackValue=BACKUP__NOW}" IsEnabled="{Binding IsBackupNowButtonEnabled}"
+                        <Button Content="{Binding Translation.BackupNow, FallbackValue=BACKUP__NOW}" MinWidth="120" IsEnabled="{Binding IsBackupNowButtonEnabled}"
                                 Margin="0,0,5,2" Height="24" MaxWidth="120" HorizontalAlignment="Left" VerticalAlignment="Center" Click="BackupNow_Click" />
                     </DockPanel>
                 </StackPanel>

@@ -1,6 +1,6 @@
-﻿using System;
+﻿using StatisticsAnalysisTool.Common;
+using System;
 using System.Collections.Generic;
-using StatisticsAnalysisTool.Common;
 
 namespace StatisticsAnalysisTool.Models.NetworkModel;
 

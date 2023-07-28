@@ -43,6 +43,12 @@
         <Setter Property="Source" Value="../Assets/pickaxe_box.png" />
     </Style>
 
+    <Style x:Key="Gathering.Image.FishingLure.Box" TargetType="Image">
+        <Setter Property="Width" Value="25" />
+        <Setter Property="Height" Value="25" />
+        <Setter Property="Source" Value="../Assets/fishing_lure_box.png" />
+    </Style>
+
     <Style x:Key="Gathering.TextBlock.CollectionFragment.Numbers" TargetType="TextBlock">
         <Setter Property="Width" Value="auto" />
         <Setter Property="FontSize" Value="20" />
@@ -79,6 +85,18 @@
                         </DockPanel>
                         <DockPanel>
                             <StackPanel Orientation="Horizontal">
+                                <StackPanel.Style>
+                                    <Style TargetType="{x:Type StackPanel}">
+                                        <Style.Triggers>
+                                            <DataTrigger Binding="{Binding HasBeenFished, IsAsync=True}" Value="true">
+                                                <Setter Property="Visibility" Value="Collapsed"/>
+                                            </DataTrigger>
+                                            <DataTrigger Binding="{Binding HasBeenFished, IsAsync=True}" Value="false">
+                                                <Setter Property="Visibility" Value="Visible"/>
+                                            </DataTrigger>
+                                        </Style.Triggers>
+                                    </Style>
+                                </StackPanel.Style>
                                 <StackPanel Orientation="Horizontal" Width="90">
                                     <Image Style="{StaticResource Gathering.Image.Pickaxe.Box}" ToolTip="{Binding TranslationTotal, FallbackValue='TOTAL'}" />
                                     <TextBlock Text="{Binding GainedTotalAmount, IsAsync=True}" Style="{StaticResource Gathering.TextBlock.CollectionFragment.Numbers}" />
@@ -98,6 +116,28 @@
                                 <StackPanel Orientation="Horizontal" Width="100">
                                     <Image Style="{StaticResource Gathering.Image.Pickaxe.Repeat}" ToolTip="{Binding TranslationAmountOfMiningProcesses, FallbackValue='AMOUNT__OF__MINING__PROCESSES'}" />
                                     <TextBlock Text="{Binding MiningProcesses, IsAsync=True}" Style="{StaticResource Gathering.TextBlock.CollectionFragment.Numbers}" />
+                                </StackPanel>
+                                <StackPanel Orientation="Horizontal" Width="130">
+                                    <Image Style="{StaticResource Icon.Silver}" ToolTip="{Binding TranslationTotalMarketValue, FallbackValue='TOTAL__MARKET__VALUE'}" />
+                                    <TextBlock Text="{Binding TotalMarketValueWithCulture, IsAsync=True, Mode=OneWay}" Style="{StaticResource Gathering.TextBlock.CollectionFragment.Numbers}" />
+                                </StackPanel>
+                            </StackPanel>
+                            <StackPanel Orientation="Horizontal">
+                                <StackPanel.Style>
+                                    <Style TargetType="{x:Type StackPanel}">
+                                        <Style.Triggers>
+                                            <DataTrigger Binding="{Binding HasBeenFished, IsAsync=True}" Value="true">
+                                                <Setter Property="Visibility" Value="Visible"/>
+                                            </DataTrigger>
+                                            <DataTrigger Binding="{Binding HasBeenFished, IsAsync=True}" Value="false">
+                                                <Setter Property="Visibility" Value="Collapsed"/>
+                                            </DataTrigger>
+                                        </Style.Triggers>
+                                    </Style>
+                                </StackPanel.Style>
+                                <StackPanel Orientation="Horizontal" Width="90">
+                                    <Image Style="{StaticResource Gathering.Image.FishingLure.Box}" ToolTip="{Binding TranslationTotal, FallbackValue='TOTAL'}" />
+                                    <TextBlock Text="{Binding GainedTotalAmount, IsAsync=True}" Style="{StaticResource Gathering.TextBlock.CollectionFragment.Numbers}" />
                                 </StackPanel>
                                 <StackPanel Orientation="Horizontal" Width="130">
                                     <Image Style="{StaticResource Icon.Silver}" ToolTip="{Binding TranslationTotalMarketValue, FallbackValue='TOTAL__MARKET__VALUE'}" />
@@ -130,6 +170,19 @@
                         </DockPanel>
                         <DockPanel>
                             <StackPanel Orientation="Horizontal">
+                                <StackPanel.Style>
+                                    <Style TargetType="{x:Type StackPanel}">
+                                        <Setter Property="Visibility" Value="Collapsed" />
+                                        <Style.Triggers>
+                                            <DataTrigger Binding="{Binding HasBeenFished, IsAsync=True}" Value="true">
+                                                <Setter Property="Visibility" Value="Collapsed"/>
+                                            </DataTrigger>
+                                            <DataTrigger Binding="{Binding HasBeenFished, IsAsync=True}" Value="false">
+                                                <Setter Property="Visibility" Value="Visible"/>
+                                            </DataTrigger>
+                                        </Style.Triggers>
+                                    </Style>
+                                </StackPanel.Style>
                                 <StackPanel Orientation="Horizontal" Width="90">
                                     <Image Style="{StaticResource Gathering.Image.Pickaxe.Box}" ToolTip="{Binding TranslationTotal, FallbackValue='TOTAL'}" />
                                     <TextBlock Text="{Binding GainedTotalAmount, IsAsync=True}" Style="{StaticResource Gathering.TextBlock.CollectionFragment.Numbers}" />
@@ -149,6 +202,33 @@
                                 <StackPanel Orientation="Horizontal" Width="100">
                                     <Image Style="{StaticResource Gathering.Image.Pickaxe.Repeat}" ToolTip="{Binding TranslationAmountOfMiningProcesses, FallbackValue='AMOUNT__OF__MINING__PROCESSES'}" />
                                     <TextBlock Text="{Binding MiningProcesses, IsAsync=True}" Style="{StaticResource Gathering.TextBlock.CollectionFragment.Numbers}" />
+                                </StackPanel>
+                                <StackPanel Orientation="Horizontal" Width="130">
+                                    <Image Style="{StaticResource Icon.Silver}" ToolTip="{Binding TranslationTotalMarketValue, FallbackValue='TOTAL__MARKET__VALUE'}" />
+                                    <TextBlock Text="{Binding TotalMarketValueWithCulture, IsAsync=True, Mode=OneWay}" Style="{StaticResource Gathering.TextBlock.CollectionFragment.Numbers}" />
+                                </StackPanel>
+                            </StackPanel>
+                            <StackPanel Orientation="Horizontal">
+                                <StackPanel.Style>
+                                    <Style TargetType="{x:Type StackPanel}">
+                                        <Setter Property="Visibility" Value="Collapsed" />
+                                        <Style.Triggers>
+                                            <DataTrigger Binding="{Binding HasBeenFished, IsAsync=True}" Value="true">
+                                                <Setter Property="Visibility" Value="Visible"/>
+                                            </DataTrigger>
+                                            <DataTrigger Binding="{Binding HasBeenFished, IsAsync=True}" Value="false">
+                                                <Setter Property="Visibility" Value="Collapsed"/>
+                                            </DataTrigger>
+                                        </Style.Triggers>
+                                    </Style>
+                                </StackPanel.Style>
+                                <StackPanel Orientation="Horizontal" Width="90">
+                                    <Image Style="{StaticResource Gathering.Image.FishingLure.Box}" ToolTip="{Binding TranslationTotal, FallbackValue='TOTAL'}" />
+                                    <TextBlock Text="{Binding GainedTotalAmount, IsAsync=True}" Style="{StaticResource Gathering.TextBlock.CollectionFragment.Numbers}" />
+                                </StackPanel>
+                                <StackPanel Orientation="Horizontal" Width="130">
+                                    <Image Style="{StaticResource Icon.Silver}" ToolTip="{Binding TranslationTotalMarketValue, FallbackValue='TOTAL__MARKET__VALUE'}" />
+                                    <TextBlock Text="{Binding TotalMarketValueWithCulture, IsAsync=True, Mode=OneWay}" Style="{StaticResource Gathering.TextBlock.CollectionFragment.Numbers}" />
                                 </StackPanel>
                             </StackPanel>
                         </DockPanel>
@@ -351,6 +431,26 @@
             </StackPanel>
             <StackPanel Orientation="Vertical">
                 <controls:VirtualizingItemsControl ItemsSource="{Binding GatheredWood, IsAsync=True, Mode=OneWay}"
+                                                   ItemTemplate="{StaticResource GatheredItemStatsTemplate}" 
+                                                   VirtualizingPanel.CacheLengthUnit="Item"
+                                                   VirtualizingPanel.CacheLength="10,10"
+                                                   VirtualizingPanel.ScrollUnit="Pixel"
+                                                   VirtualizingPanel.VirtualizationMode="Recycling"
+                                                   ScrollViewer.HorizontalScrollBarVisibility="Disabled"
+                                                   ScrollViewer.VerticalScrollBarVisibility="Disabled" />
+            </StackPanel>
+        </StackPanel>
+    </DataTemplate>
+
+    <DataTemplate x:Key="FishingTemplate" DataType="{x:Type gathering:GatheringStats}">
+        <StackPanel Orientation="Vertical">
+            <TextBlock Style="{StaticResource Gathering.Stats.TitleText}" Text="{Binding TranslationResourceValue}" />
+            <StackPanel Orientation="Horizontal">
+                <Image Style="{StaticResource Icon.Silver}" Margin="0,0,0,2" />
+                <TextBlock Text="{Binding GainedSilverByFish, IsAsync=True}" Style="{StaticResource Gathering.TextBlock.CollectionFragment.Numbers}" />
+            </StackPanel>
+            <StackPanel Orientation="Vertical">
+                <controls:VirtualizingItemsControl ItemsSource="{Binding GatheredFish, IsAsync=True, Mode=OneWay}"
                                                    ItemTemplate="{StaticResource GatheredItemStatsTemplate}" 
                                                    VirtualizingPanel.CacheLengthUnit="Item"
                                                    VirtualizingPanel.CacheLength="10,10"

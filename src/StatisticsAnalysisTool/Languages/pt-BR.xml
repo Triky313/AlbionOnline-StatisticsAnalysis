@@ -768,4 +768,14 @@
 	<translation name="AVERAGE_BIP">BIP médio</translation>
 	<translation name="SPELLS_JSON_SOURCE_URL">Url de origem spells.json</translation>
 	<translation name="UPDATE_SPELLS_JSON_BY_DAYS">Atualizar spells.json por dias: </translation>
+	<translation name="BACKUP_CREATED">Backup criado</translation>
+	<translation name="A_BACKUP_HAS_BEEN_CREATED">Um backup foi criado</translation>
+	<translation name="BACKUP_INTERVAL">Intervalo de backup</translation>
+	<translation name="BACKUP_NOW">Fazer backup agora</translation>
+	<translation name="MAXIMUM_NUMBER_OF_BACKUPS">Número máximo de backups</translation>
+	<translation name="BACKUP">Backup</translation>
+	<translation name="ITEM_WINDOW">Janela do item</translation>
+	<translation name="ITEM_SEARCH">Pesquisa de itens</translation>
+	<translation name="LOOT_LOGGER">Loot logger</translation>
+	<translation name="TOOLS">Ferramentas</translation>
 </translations>

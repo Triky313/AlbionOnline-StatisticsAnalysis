@@ -298,7 +298,7 @@
 	<translation name="RANGED">Fernkampf</translation>
 	<translation name="RESOURCE">Ressourcen</translation>
 	<translation name="TOKEN">Abzeichen</translation>
-	<translation name="TOOL">Werkzeuge</translation>
+	<translation name="TOOL">Werkzeug</translation>
 	<translation name="TROPHIES">Trophäen</translation>
 
 	<translation name="WEIGHT">Gewicht</translation>
@@ -772,4 +772,11 @@
 	<translation name="A_BACKUP_HAS_BEEN_CREATED">Ein Backup wurde erstellt</translation>
 	<translation name="BACKUP_INTERVAL">Backup intervall</translation>
 	<translation name="BACKUP_NOW">Backup erstellen</translation>
+	<translation name="MAXIMUM_NUMBER_OF_BACKUPS">Anzahl maximaler Backups</translation>
+	<translation name="BACKUP">Backup</translation>
+	<translation name="ITEM_WINDOW">Item Fenster</translation>
+	<translation name="ITEM_SEARCH">Item Suche</translation>
+	<translation name="LOOT_LOGGER">Loot Protokollierung</translation>
+	<translation name="TOOLS">Werkzeuge</translation>
+	<translation name="FISHING">Angeln</translation>
 </translations>

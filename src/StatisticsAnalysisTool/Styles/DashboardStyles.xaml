@@ -252,7 +252,7 @@
                             </StackPanel>
                         </StackPanel>
                     </StackPanel>
-                    <StackPanel Orientation="Vertical" HorizontalAlignment="Center" Margin="20,5" MinWidth="200">
+                    <!--<StackPanel Orientation="Vertical" HorizontalAlignment="Center" Margin="20,5" MinWidth="200">
                         <TextBlock Text="{Binding TranslationMists, FallbackValue=MISTS}" FontSize="16" Foreground="{StaticResource SolidColorBrush.Text.1}" HorizontalAlignment="Center" />
                         <StackPanel Orientation="Horizontal">
                             <StackPanel Orientation="Vertical" Margin="5,0">
@@ -292,7 +292,7 @@
                                 <TextBlock Text="{Binding MistLegendaryYear, StringFormat='{}{0:N0}', FallbackValue=0}" Style="{StaticResource LootedChests.Stats.Numbers}" />
                             </StackPanel>
                         </StackPanel>
-                    </StackPanel>
+                    </StackPanel>-->
                 </StackPanel>
             </StackPanel>
         </Grid>

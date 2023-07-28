@@ -32,6 +32,7 @@ public class NewEquipmentItemEventHandler : EventPacketHandler<NewEquipmentItemE
 
         _trackingController.LootController.AddDiscoveredItem(value.Item);
         _trackingController.DungeonController.AddDiscoveredItem(value.Item);
+        _trackingController.GatheringController.AddFishedItem(value.Item);
         await Task.CompletedTask;
     }
 }
