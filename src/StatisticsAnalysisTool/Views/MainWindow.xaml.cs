@@ -6,7 +6,6 @@ using StatisticsAnalysisTool.ViewModels;
 using System;
 using System.Diagnostics;
 using System.Reflection;
-using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Input;
 
@@ -79,69 +78,60 @@ public partial class MainWindow
         WindowState = WindowState.Minimized;
     }
 
-    private async void Grid_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
-    {
-        await Task.Delay(200);
-        switch (e.ClickCount)
-        {
-            case 2 when WindowState == WindowState.Normal:
-                SwitchState();
-                _isWindowMaximized = true;
-                return;
-            case 2 when WindowState == WindowState.Maximized:
-                SwitchState();
-                Utilities.CenterWindowOnScreen(this);
-                _isWindowMaximized = false;
-                break;
-        }
-    }
-
-    private void MaximizedButton_Click(object sender, RoutedEventArgs e)
+    private void MaximizeButton_Click(object sender, RoutedEventArgs e)
     {
         if (_isWindowMaximized)
         {
-            SwitchState();
-            Utilities.CenterWindowOnScreen(this);
-            _isWindowMaximized = false;
+            RestoreWindow();
         }
         else
         {
-            SwitchState();
-            _isWindowMaximized = true;
+            MaximizeWindow();
         }
+    }
+
+    private void Grid_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
+    {
+        if (e.ClickCount == 2)
+        {
+            if (_isWindowMaximized)
+            {
+                RestoreWindow();
+            }
+            else
+            {
+                MaximizeWindow();
+            }
+        }
+    }
+
+    private void MaximizeWindow()
+    {
+        WindowState = WindowState.Maximized;
+        _isWindowMaximized = true;
+        var screen = System.Windows.Forms.Screen.FromHandle(new System.Windows.Interop.WindowInteropHelper(this).Handle);
+        MaxHeight = screen.WorkingArea.Height;
+
+        Visibility = Visibility.Hidden;
+        Topmost = true;
+        ResizeMode = ResizeMode.NoResize;
+        Visibility = Visibility.Visible;
+        MaximizedButton.Content = 2;
+    }
+
+    private void RestoreWindow()
+    {
+        WindowState = WindowState.Normal;
+        _isWindowMaximized = false;
+        Topmost = false;
+        ResizeMode = ResizeMode.CanResize;
+        MaximizedButton.Content = 1;
     }
 
     private void CopyPartyToClipboard_PreviewMouseDown(object sender, MouseButtonEventArgs e)
     {
         var trackingController = ServiceLocator.Resolve<TrackingController>();
         trackingController?.EntityController?.CopyPartyToClipboard();
-    }
-
-    private void Grid_MouseMove(object sender, MouseEventArgs e)
-    {
-        if (e.LeftButton == MouseButtonState.Pressed)
-        {
-            if (WindowState == WindowState.Maximized)
-            {
-                SwitchState();
-                if (Application.Current.MainWindow != null)
-                {
-                    Application.Current.MainWindow.Top = 3;
-                    MaximizedButton.Content = 1;
-                }
-            }
-            DragMove();
-        }
-    }
-
-    private void SwitchState()
-    {
-        WindowState = WindowState switch
-        {
-            WindowState.Normal => WindowState.Maximized,
-            WindowState.Maximized => WindowState.Normal,
-            _ => WindowState
-        };
     }
 
     private void BtnTryToLoadItemJsonAgain_Click(object sender, RoutedEventArgs e)
