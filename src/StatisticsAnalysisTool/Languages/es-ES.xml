@@ -261,7 +261,7 @@
 	<translation name="ROYAL_SIGILS">Sellos reales</translation>
 
 	<translation name="DEMOLITION_HAMMER">Martillo de demolición</translation>
-	<translation name="FISHING">Caña de pescar</translation>
+	<translation name="FISHING">Pesca</translation>
 	<translation name="PICKAXE">Pico</translation>
 	<translation name="SICKLE">Hoz</translation>
 	<translation name="SKINNING_KNIFE">Cuchillo de despellejar</translation>
@@ -781,5 +781,4 @@
     <translation name="ITEM_SEARCH">Buscar objeto</translation>
     <translation name="LOOT_LOGGER">Registro de botín</translation>
     <translation name="TOOLS">Herramientas</translation>
-    <translation name="FISHING">Pesca</translation>
 </translations>
