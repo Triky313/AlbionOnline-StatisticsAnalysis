@@ -770,7 +770,7 @@
 	<translation name="UPDATE_SPELLS_JSON_BY_DAYS">Zaktualizuj spells.json wedłóg dni:</translation>
 	<translation name="BACKUP_CREATED">Utworzono kopię zapasową</translation>
 	<translation name="A_BACKUP_HAS_BEEN_CREATED">Utworzono kopię zapasową</translation>
-	<translation name="BACKUP_INTERVAL">Ilość kopii zapasowych</translation>
+	<translation name="BACKUP_INTERVAL">Jak często ma być wykonywana</translation>
 	<translation name="BACKUP_NOW">Wykonaj kopię</translation>
 	<translation name="MAXIMUM_NUMBER_OF_BACKUPS">Maksymalna liczba kopii zapasowych</translation>
 	<translation name="BACKUP">Kopia zapasowa</translation>
@@ -778,4 +778,5 @@
 	<translation name="ITEM_SEARCH">Wyszukiwanie przedmiotów</translation>
 	<translation name="LOOT_LOGGER">Dziennik łupów</translation>
 	<translation name="TOOLS">Narzędzia</translation>
+	<translation name="FISHING">Wędkarstwo</translation>
 </translations>

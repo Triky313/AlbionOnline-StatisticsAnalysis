@@ -24,6 +24,7 @@ public class Gathered : INotifyPropertyChanged
     private FixPoint _estimatedMarketValue;
     private string _totalMarketValueWithCulture;
     private Item _item;
+    private readonly bool _hasBeenFished;
 
     public Gathered()
     {
@@ -145,6 +146,16 @@ public class Gathered : INotifyPropertyChanged
         set
         {
             _totalMarketValueWithCulture = value;
+            OnPropertyChanged();
+        }
+    }
+
+    public bool HasBeenFished
+    {
+        get => _hasBeenFished;
+        init
+        {
+            _hasBeenFished = value;
             OnPropertyChanged();
         }
     }

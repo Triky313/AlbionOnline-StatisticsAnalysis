@@ -8,5 +8,6 @@ public enum GatheringFilterType
     Fiber,
     Hide,
     Ore,
-    Rock
+    Rock,
+    Fishing
 }

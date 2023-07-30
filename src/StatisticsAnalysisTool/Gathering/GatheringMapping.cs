@@ -18,7 +18,8 @@ public static class GatheringMapping
             ClusterIndex = gathered.ClusterIndex,
             MapType = gathered.MapType,
             InstanceName = gathered.InstanceName,
-            MiningProcesses = gathered.MiningProcesses
+            MiningProcesses = gathered.MiningProcesses,
+            HasBeenFished = gathered.HasBeenFished
         };
     }
 
@@ -36,7 +37,8 @@ public static class GatheringMapping
             ClusterIndex = gathered.ClusterIndex,
             MapType = gathered.MapType,
             InstanceName = gathered.InstanceName,
-            MiningProcesses = gathered.MiningProcesses
+            MiningProcesses = gathered.MiningProcesses,
+            HasBeenFished = gathered.HasBeenFished
         };
     }
 }

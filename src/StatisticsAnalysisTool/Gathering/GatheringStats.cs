@@ -15,6 +15,7 @@ public class GatheringStats : INotifyPropertyChanged
     private ObservableRangeCollection<Gathered> _gatheredOre = new();
     private ObservableRangeCollection<Gathered> _gatheredRock = new();
     private ObservableRangeCollection<Gathered> _gatheredFiber = new();
+    private ObservableRangeCollection<Gathered> _gatheredFish= new();
     private Gathered _mostGatheredResource = new();
     private Gathered _mostGatheredCluster;
     private long _totalMiningProcesses;
@@ -27,6 +28,7 @@ public class GatheringStats : INotifyPropertyChanged
     private string _gainedSilverByFiber;
     private string _gainedSilverByWood;
     private string _totalGainedSilverString;
+    private string _gainedSilverByFish;
 
     public GatheringFilterType GatheringFilterType
     {
@@ -167,6 +169,16 @@ public class GatheringStats : INotifyPropertyChanged
         }
     }
 
+    public ObservableRangeCollection<Gathered> GatheredFish
+    {
+        get => _gatheredFish;
+        set
+        {
+            _gatheredFish = value;
+            OnPropertyChanged();
+        }
+    }
+
     public string GainedSilverByHide
     {
         get => _gainedSilverByHide;
@@ -213,6 +225,16 @@ public class GatheringStats : INotifyPropertyChanged
         set
         {
             _gainedSilverByWood = value;
+            OnPropertyChanged();
+        }
+    }
+
+    public string GainedSilverByFish
+    {
+        get => _gainedSilverByFish;
+        set
+        {
+            _gainedSilverByFish = value;
             OnPropertyChanged();
         }
     }
