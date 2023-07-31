@@ -4,7 +4,7 @@
              RequestedThemeVariant="Dark">
              <!-- "Default" ThemeVariant follows system theme variant. "Dark" or "Light" are other available options. -->
 
-    <Application.Styles>
+             <Application.Styles>
         <FluentTheme />
     </Application.Styles>
 </Application>

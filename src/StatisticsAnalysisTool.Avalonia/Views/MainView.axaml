@@ -6,11 +6,97 @@
              mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
              x:Class="StatisticsAnalysisTool.Avalonia.Views.MainView"
              x:DataType="vm:MainViewModel">
-  <Design.DataContext>
-    <!-- This only sets the DataContext for the previewer in an IDE,
+    <UserControl.Styles>
+        <StyleInclude Source="/Styles/MainStyle.axaml" />
+    </UserControl.Styles>
+    <Design.DataContext>
+        <!-- This only sets the DataContext for the previewer in an IDE,
          to set the actual DataContext for runtime, set the DataContext property in code (look at App.axaml.cs) -->
-    <vm:MainViewModel />
-  </Design.DataContext>
+        <vm:MainViewModel />
+    </Design.DataContext>
+    <Panel>
+        <ExperimentalAcrylicBorder IsHitTestVisible="False">
+            <ExperimentalAcrylicBorder.Material>
+                <ExperimentalAcrylicMaterial
+                    BackgroundSource="Digger"
+                    TintColor="#FF0D0F11"
+                    TintOpacity="2"
+                    MaterialOpacity="0.55" />
+            </ExperimentalAcrylicBorder.Material>
+        </ExperimentalAcrylicBorder>
 
-  <TextBlock Text="{Binding Greeting}" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+        <Grid>
+            <!--<Grid Style="{StaticResource BackgroundImageGridStyle}" />-->
+            <StackPanel Orientation="Vertical" Margin="0">
+                <Grid PointerPressed="InputElement_OnPointerPressed">
+                    <StackPanel Orientation="Horizontal"  Height="38" VerticalAlignment="Top" Margin="35,0,90,0">
+                        <Label Content="AlbionOnline - STATISTICS ANALYSIS TOOL" Classes="Title" />
+                        <!--<Grid Visibility="{Binding UnsupportedOsVisibility, FallbackValue=Collapsed}"
+                              Height="20" Width="20" VerticalAlignment="Center" ToolTip="{Binding Translation.UnsupportedOs, FallbackValue='UNSUPPORTED_OS'}">
+                            <fa5:ImageAwesome Icon="Solid_ExclamationTriangle" Foreground="{StaticResource SolidColorBrush.Accent.Red.3}" />
+                        </Grid>
+                        <Label Content="- DEBUG -" Style="{StaticResource MainWindow.Title}" Foreground="{StaticResource SolidColorBrush.Accent.Red.3}"
+                               Visibility="{Binding DebugModeVisibility}" />
+                        <Label Content="{Binding ServerTypeText, FallbackValue=(SEVER__TYPE)}" Style="{StaticResource HeaderStyle.Tracking.Content}"
+                               ContentStringFormat="{}({0})" Foreground="{StaticResource SolidColorBrush.Accent.Blue.4}" />-->
+                        <!--<Label Content="{Binding TrackingActivityBindings.TrackingActiveText, FallbackValue=TRACKING__IS__NOT__ACTIVE}" VerticalAlignment="Center">
+                            <Label.Style>
+                                <Style TargetType="{x:Type Label}">
+                                    <Setter Property="Foreground" Value="{StaticResource SolidColorBrush.Text.6}"/>
+                                    <Style.Triggers>
+                                        <DataTrigger Binding="{Binding TrackingActivityBindings.TrackingActivityType}" Value="Partially">
+                                            <Setter Property="Foreground" Value="{StaticResource SolidColorBrush.Accent.Yellow.1}"/>
+                                        </DataTrigger>
+                                        <DataTrigger Binding="{Binding TrackingActivityBindings.TrackingActivityType}" Value="On">
+                                            <Setter Property="Foreground" Value="{StaticResource SolidColorBrush.Accent.Green.4}"/>
+                                        </DataTrigger>
+                                    </Style.Triggers>
+                                </Style>
+                            </Label.Style>
+                        </Label>-->
+                        <!--<Grid Style="{StaticResource LoadingIconGridStyle}">
+                            <fa5:ImageAwesome Visibility="{Binding LoadIconVisibility}" Style="{StaticResource LoadingIconStyle}" />
+                        </Grid>-->
+                    </StackPanel>
+                    <Image Classes="ToolIcon" />
+                </Grid>
+
+                <Grid>
+                    <!--<Grid HorizontalAlignment="Left">
+                        <StackPanel Orientation="Horizontal" Margin="10,0,0,0">
+                            <StackPanel Orientation="Horizontal" Visibility="{Binding UserTrackingBindings.UsernameInformationVisibility, FallbackValue=Hidden}">
+                                <Label Style="{StaticResource HeaderStyle.Tracking.Title}" Content="{Binding Translation.Username, FallbackValue=USERNAME}" ContentStringFormat="{}{0}: "/>
+                                <Label Style="{StaticResource HeaderStyle.Tracking.Content}" Content="{Binding UserTrackingBindings.Username, FallbackValue=USERNAME}"/>
+                                <Grid Visibility="{Binding TrackingActivityBindings.CharacterIsNotTrackedInfoVisibility, FallbackValue=Collapsed}" Height="20" Width="20" Margin="5,0,0,3" VerticalAlignment="Center"
+                                      ToolTip="{Binding Translation.ThisCharacterIsNotTracked, FallbackValue=THIS_CHARACTER_IS_NOT_TRACKED}">
+                                    <fa5:ImageAwesome Icon="Solid_ExclamationTriangle" Foreground="{StaticResource SolidColorBrush.Accent.Yellow.1}" />
+                                </Grid>
+                                <Label Content=" | "/>
+                            </StackPanel>
+                            <StackPanel Orientation="Horizontal" Visibility="{Binding UserTrackingBindings.GuildInformationVisibility, FallbackValue=Collapsed}">
+                                <Label Style="{StaticResource HeaderStyle.Tracking.Title}" Content="{Binding Translation.Guild, FallbackValue=GUILD}" ContentStringFormat="{}{0}: " />
+                                <Label Style="{StaticResource HeaderStyle.Tracking.Content}" Content="{Binding UserTrackingBindings.GuildName, FallbackValue=GUILD__NAME}" />
+                                <Label Content=" | "/>
+                            </StackPanel>
+                            <StackPanel Orientation="Horizontal" Visibility="{Binding UserTrackingBindings.AllianceInformationVisibility, FallbackValue=Collapsed}">
+                                <Label Style="{StaticResource HeaderStyle.Tracking.Title}" Content="{Binding Translation.Alliance, FallbackValue=ALLIANCE}" ContentStringFormat="{}{0}: " />
+                                <Label Style="{StaticResource HeaderStyle.Tracking.Content}" Content="{Binding UserTrackingBindings.AllianceName, FallbackValue=ALLIANCE__NAME}" />
+                                <Label Content=" | "/>
+                            </StackPanel>
+                            <StackPanel Orientation="Horizontal" Visibility="{Binding UserTrackingBindings.CurrentMapInfoBinding.CurrentMapInformationVisibility, FallbackValue=Collapsed}">
+                                <Label Style="{StaticResource HeaderStyle.Tracking.Title}" Content="{Binding Translation.CurrentMap, FallbackValue=CURRENT__MAP}" ContentStringFormat="{}{0}: " />
+                                <ContentControl Content="{Binding UserTrackingBindings.CurrentMapInfoBinding}" ContentTemplate="{StaticResource CurrentMapInfoTemplate}" />
+                            </StackPanel>
+                        </StackPanel>
+                    </Grid>
+                    <Grid HorizontalAlignment="Right" VerticalAlignment="Top" Margin="0,0,5,0" Height="18">
+                        <StackPanel Orientation="Horizontal">
+                            <Label Style="{StaticResource HeaderStyle.Tracking.Content}" Content="{Binding MainTrackerTimer, FallbackValue=00:00:00}"/>
+                        </StackPanel>
+                    </Grid>-->
+                </Grid>
+            </StackPanel>
+            <Button Classes="WindowButton">Test Button</Button>
+        </Grid>
+    </Panel>
 </UserControl>
