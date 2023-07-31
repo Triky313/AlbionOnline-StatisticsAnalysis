@@ -13,6 +13,8 @@ namespace StatisticsAnalysisTool.Views;
 /// </summary>
 public partial class ItemWindow
 {
+    private bool _isWindowMaximized;
+
     public ItemWindow(Item item)
     {
         InitializeComponent();
@@ -33,27 +35,68 @@ public partial class ItemWindow
     private void Hotbar_MouseDown(object sender, MouseButtonEventArgs e)
     {
         if (e?.ChangedButton == MouseButton.Left)
+        {
             DragMove();
+        }
     }
 
     private void CloseButton_Click(object sender, RoutedEventArgs e)
     {
         Close();
     }
+    private void MinimizeButton_Click(object sender, RoutedEventArgs e)
+    {
+        WindowState = WindowState.Minimized;
+    }
 
-    private void MinimizeButton_Click(object sender, RoutedEventArgs e) => WindowState = WindowState.Minimized;
+    private void MaximizeButton_Click(object sender, RoutedEventArgs e)
+    {
+        if (_isWindowMaximized)
+        {
+            RestoreWindow();
+        }
+        else
+        {
+            MaximizeWindow();
+        }
+    }
 
     private void Grid_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
     {
-        switch (e?.ClickCount)
+        if (e.ClickCount == 2)
         {
-            case 2 when WindowState == WindowState.Normal:
-                WindowState = WindowState.Maximized;
-                return;
-            case 2 when WindowState == WindowState.Maximized:
-                WindowState = WindowState.Normal;
-                break;
+            if (_isWindowMaximized)
+            {
+                RestoreWindow();
+            }
+            else
+            {
+                MaximizeWindow();
+            }
         }
+    }
+
+    private void MaximizeWindow()
+    {
+        WindowState = WindowState.Maximized;
+        _isWindowMaximized = true;
+        var screen = System.Windows.Forms.Screen.FromHandle(new System.Windows.Interop.WindowInteropHelper(this).Handle);
+        MaxHeight = screen.WorkingArea.Height;
+
+        Visibility = Visibility.Hidden;
+        Topmost = true;
+        ResizeMode = ResizeMode.NoResize;
+        Visibility = Visibility.Visible;
+        MaximizedButton.Content = 2;
+    }
+
+    private void RestoreWindow()
+    {
+        WindowState = WindowState.Normal;
+        _isWindowMaximized = false;
+        Topmost = false;
+        ResizeMode = ResizeMode.CanResize;
+        MaximizedButton.Content = 1;
     }
 
     private void RefreshSpin_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
