@@ -96,7 +96,7 @@
                     </Grid>-->
                 </Grid>
             </StackPanel>
-            <Button Classes="WindowButton">Test Button</Button>
+            <Button>Test Button</Button>
         </Grid>
     </Panel>
 </UserControl>

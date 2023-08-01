@@ -8,10 +8,13 @@
         </ResourceDictionary>
     </Styles.Resources>
     <Design.PreviewWith>
-        <Border Padding="20">
+        <Border Padding="20" Background="{DynamicResource SolidColorBrush.Background.2}">
             <StackPanel Orientation="Vertical">
                 <Image Classes="ToolIcon" />
-                <Label Classes="Title" Content="Test Text" />
+                <Label Classes="Title" Content="Statistic Test Text" />
+                <Button Content="Test Button" />
+                <Button Content="Test Button" Classes="Success" />
+                <Button Content="Test Button" Classes="Abort" />
             </StackPanel>
         </Border>
     </Design.PreviewWith>
@@ -31,12 +34,45 @@
         <Setter Property="Foreground" Value="{DynamicResource SolidColorBrush.Text.1}" />
     </Style>
 
-    <Style Selector="Button.WindowButton">
-        <Setter Property="FontSize" Value="20" />
+    <Style Selector="Button">
+        <Setter Property="MinWidth" Value="30" />
+        <Setter Property="MinHeight" Value="24" />
         <Setter Property="CornerRadius" Value="0" />
         <Setter Property="Foreground" Value="{DynamicResource SolidColorBrush.Text.1}"/>
-        <Style Selector="^:pointerover">
-            <Setter Property="Foreground" Value="{DynamicResource Colors.SolidColorBrush.Text.4}" />
+        <Setter Property="Background" Value="{DynamicResource SolidColorBrush.Accent.Blue.5}"/>
+        <Style Selector="^:pointerover /template/ ContentPresenter#PART_ContentPresenter">
+            <Setter Property="Background" Value="{DynamicResource SolidColorBrush.Accent.Blue.4}" />
+        </Style>
+        <Style Selector="^:pressed /template/ ContentPresenter#PART_ContentPresenter">
+            <Setter Property="Background" Value="{DynamicResource SolidColorBrush.Accent.Blue.3}" />
+        </Style>
+    </Style>
+
+    <Style Selector="Button.Success">
+        <Setter Property="MinWidth" Value="30" />
+        <Setter Property="MinHeight" Value="24" />
+        <Setter Property="CornerRadius" Value="0" />
+        <Setter Property="Foreground" Value="{DynamicResource SolidColorBrush.Text.1}"/>
+        <Setter Property="Background" Value="{DynamicResource SolidColorBrush.Accent.Green.5}"/>
+        <Style Selector="^:pointerover /template/ ContentPresenter#PART_ContentPresenter">
+            <Setter Property="Background" Value="{DynamicResource SolidColorBrush.Accent.Green.4}" />
+        </Style>
+        <Style Selector="^:pressed /template/ ContentPresenter#PART_ContentPresenter">
+            <Setter Property="Background" Value="{DynamicResource SolidColorBrush.Accent.Green.3}" />
+        </Style>
+    </Style>
+
+    <Style Selector="Button.Abort">
+        <Setter Property="MinWidth" Value="30" />
+        <Setter Property="MinHeight" Value="24" />
+        <Setter Property="CornerRadius" Value="0" />
+        <Setter Property="Foreground" Value="{DynamicResource SolidColorBrush.Text.1}"/>
+        <Setter Property="Background" Value="{DynamicResource SolidColorBrush.Accent.Red.5}"/>
+        <Style Selector="^:pointerover /template/ ContentPresenter#PART_ContentPresenter">
+            <Setter Property="Background" Value="{DynamicResource SolidColorBrush.Accent.Red.4}" />
+        </Style>
+        <Style Selector="^:pressed /template/ ContentPresenter#PART_ContentPresenter">
+            <Setter Property="Background" Value="{DynamicResource SolidColorBrush.Accent.Red.3}" />
         </Style>
     </Style>
 
