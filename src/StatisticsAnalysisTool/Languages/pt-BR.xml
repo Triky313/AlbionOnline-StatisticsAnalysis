@@ -750,7 +750,7 @@
 	<translation name="WORLD_JSON_CAN_NOT_BE_LOADED">world.json não pode ser carregado.</translation>
 	<translation name="UPDATE_WORLD_JSON_BY_DAYS">Atualizar world.json por dias: </translation>
 	<translation name="WORLD_JSON_SOURCE_URL">Url de origem world.json</translation>
-	<translation name="PARTY_BUILDER">Criador de Party</translation>
+	<translation name="PARTY_BUILDER">Criador de Grupo</translation>
 	<translation name="GET_SPELLS_JSON">Obter spells.json</translation>
 	<translation name="SPELLS_JSON_CAN_NOT_BE_LOADED">spells.json não pode ser carregado.</translation>
 	<translation name="CONDITIONS">Condições</translation>
@@ -778,4 +778,5 @@
 	<translation name="ITEM_SEARCH">Pesquisa de itens</translation>
 	<translation name="LOOT_LOGGER">Loot logger</translation>
 	<translation name="TOOLS">Ferramentas</translation>
+	<translation name="FISHING">Pesca</translation>
 </translations>
