@@ -777,4 +777,7 @@
 	<translation name="ITEM_WINDOW">Okno przedmiotów</translation>
 	<translation name="LOOT_LOGGER">Dziennik łupów</translation>
 	<translation name="TOOLS">Narzędzia</translation>
+	<translation name="CAN_NOT_START_APP_WITH_PATH">Nie można uruchomić aplikacji z podaną ścieżką: {path}</translation>
+	<translation name="ANOTHER_APP_TO_START_PATH">Inna aplikacja do uruchomienia ze ścieżką</translation>
+	<translation name="CANNOT_START_OTHER_APP">Nie można uruchomić innej aplikacji</translation>
 </translations>
