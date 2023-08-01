@@ -776,7 +776,6 @@
 	<translation name="MAXIMUM_NUMBER_OF_BACKUPS">최대 백업 개수</translation>	
 	<translation name="BACKUP">Backup</translation>
 	<translation name="ITEM_WINDOW">Item window</translation>
-	<translation name="ITEM_SEARCH">Item search</translation>
 	<translation name="LOOT_LOGGER">Loot logger</translation>
 	<translation name="TOOLS">Tools</translation>
 </translations>
