@@ -16,7 +16,7 @@ public class SatNotificationManager
         _notificationManager = notificationManager;
 
 #if DEBUG
-        for (int i = 0; i < 5; i++)
+        for (int i = 0; i < 1; i++)
         {
             _ = ShowTestNotificationsAsync();
         }
@@ -46,6 +46,40 @@ public class SatNotificationManager
                     CloseOnClick = true,
                     Foreground = ForegroundText1,
                     Background = BackgroundGreen
+                };
+
+                _notificationManager.Show(content);
+            });
+        }
+        catch (TaskCanceledException)
+        {
+            // ignore
+        }
+    }
+
+    public async Task ShowErrorAsync(string title, string message)
+    {
+        if (!SettingsController.CurrentSettings.IsNotificationTrackingStatusActive
+            || ForegroundText1 == null
+            || BackgroundBlue == null)
+        {
+            return;
+        }
+
+        try
+        {
+            await Application.Current.Dispatcher.InvokeAsync(() =>
+            {
+                var content = new NotificationContent
+                {
+                    Title = title,
+                    Message = message,
+                    Type = NotificationType.Error,
+                    TrimType = NotificationTextTrimType.AttachIfMoreRows,
+                    RowsCount = 3,
+                    CloseOnClick = true,
+                    Foreground = ForegroundText1,
+                    Background = BackgroundRed
                 };
 
                 _notificationManager.Show(content);

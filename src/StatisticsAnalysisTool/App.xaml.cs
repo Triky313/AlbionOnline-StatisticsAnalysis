@@ -9,7 +9,6 @@ using StatisticsAnalysisTool.Notification;
 using StatisticsAnalysisTool.ViewModels;
 using StatisticsAnalysisTool.Views;
 using System;
-using System.Diagnostics;
 using System.Reflection;
 using System.Runtime.InteropServices;
 using System.Windows;
@@ -44,6 +43,8 @@ public partial class App
         var mainWindow = new MainWindow(_mainWindowViewModel);
         mainWindow.Show();
         _mainWindowViewModel.InitMainWindowData();
+
+        Utilities.AnotherAppToStart(SettingsController.CurrentSettings.AnotherAppToStartPath);
     }
 
     private void RegisterServices()
