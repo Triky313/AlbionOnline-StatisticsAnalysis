@@ -8,10 +8,12 @@
         </ResourceDictionary>
     </Styles.Resources>
     <Design.PreviewWith>
-        <Border Padding="20" Background="{DynamicResource SolidColorBrush.Background.2}">
+        <Border Padding="0" Background="{DynamicResource SolidColorBrush.Background.2}">
             <StackPanel Orientation="Vertical">
-                <Image Classes="ToolIcon" />
-                <Label Classes="Title" Content="Statistic Test Text" />
+                <StackPanel Orientation="Horizontal" VerticalAlignment="Top">
+                    <Image Classes="ToolIcon" />
+                    <Label Content="AlbionOnline - STATISTICS ANALYSIS TOOL" Classes="Title" />
+                </StackPanel>
                 <Button Content="Test Button" />
                 <Button Content="Test Button" Classes="Success" />
                 <Button Content="Test Button" Classes="Abort" />
@@ -23,8 +25,7 @@
         <Setter Property="Source" Value="../Assets/sat-icon.png"/>
         <Setter Property="VerticalAlignment" Value="Top"/>
         <Setter Property="HorizontalAlignment" Value="Left"/>
-        <Setter Property="Margin" Value="10,10,0,0"/>
-        <Setter Property="Height" Value="30"/>
+        <Setter Property="Height" Value="35"/>
         <Setter Property="Width" Value="35"/>
     </Style>
 
@@ -32,6 +33,16 @@
         <Setter Property="Height" Value="28" />
         <Setter Property="MinWidth" Value="20" />
         <Setter Property="Foreground" Value="{DynamicResource SolidColorBrush.Text.1}" />
+    </Style>
+
+    <Style Selector="Label.Title">
+        <Setter Property="Foreground" Value="{DynamicResource SolidColorBrush.Text.1}" />
+        <Setter Property="HorizontalAlignment" Value="Left"/>
+        <Setter Property="VerticalAlignment" Value="Top"/>
+        <Setter Property="FontSize" Value="20"/>
+        <Setter Property="FontWeight" Value="Bold"/>
+        <Setter Property="Margin" Value="0,2"/>
+        <Setter Property="Width" Value="NaN"/>
     </Style>
 
     <Style Selector="Button">
@@ -74,15 +85,6 @@
         <Style Selector="^:pressed /template/ ContentPresenter#PART_ContentPresenter">
             <Setter Property="Background" Value="{DynamicResource SolidColorBrush.Accent.Red.3}" />
         </Style>
-    </Style>
-
-    <Style Selector="Label.Title">
-        <Setter Property="Foreground" Value="{DynamicResource SolidColorBrush.Text.1}" />
-        <Setter Property="HorizontalAlignment" Value="Left"/>
-        <Setter Property="VerticalAlignment" Value="Top"/>
-        <Setter Property="FontSize" Value="20"/>
-        <Setter Property="FontWeight" Value="Bold"/>
-        <Setter Property="Width" Value="NaN"/>
     </Style>
 
 </Styles>

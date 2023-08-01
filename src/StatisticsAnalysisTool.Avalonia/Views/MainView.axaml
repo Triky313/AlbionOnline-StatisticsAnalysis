@@ -28,8 +28,9 @@
         <Grid>
             <!--<Grid Style="{StaticResource BackgroundImageGridStyle}" />-->
             <StackPanel Orientation="Vertical" Margin="0">
-                <Grid PointerPressed="InputElement_OnPointerPressed">
-                    <StackPanel Orientation="Horizontal"  Height="38" VerticalAlignment="Top" Margin="35,0,90,0">
+                <Grid>
+                    <StackPanel Orientation="Horizontal" VerticalAlignment="Top" Margin="10,10">
+                        <Image Classes="ToolIcon" />
                         <Label Content="AlbionOnline - STATISTICS ANALYSIS TOOL" Classes="Title" />
                         <!--<Grid Visibility="{Binding UnsupportedOsVisibility, FallbackValue=Collapsed}"
                               Height="20" Width="20" VerticalAlignment="Center" ToolTip="{Binding Translation.UnsupportedOs, FallbackValue='UNSUPPORTED_OS'}">
@@ -58,7 +59,6 @@
                             <fa5:ImageAwesome Visibility="{Binding LoadIconVisibility}" Style="{StaticResource LoadingIconStyle}" />
                         </Grid>-->
                     </StackPanel>
-                    <Image Classes="ToolIcon" />
                 </Grid>
 
                 <Grid>
