@@ -777,4 +777,7 @@
 	<translation name="ITEM_WINDOW">Item Fenster</translation>
 	<translation name="LOOT_LOGGER">Loot Protokollierung</translation>
 	<translation name="TOOLS">Werkzeuge</translation>
+	<translation name="CAN_NOT_START_APP_WITH_PATH">Die App mit dem Pfad {path} kann nicht gestartet werden.</translation>
+	<translation name="ANOTHER_APP_TO_START_PATH">Eine weitere App zum Starten Pfad</translation>
+	<translation name="CANNOT_START_OTHER_APP">Kann andere App nicht starten</translation>
 </translations>

@@ -93,6 +93,33 @@ public static class LanguageController
         }
     }
 
+    public static string Translation(string key, List<string> placeholders, List<string> replacements)
+    {
+        try
+        {
+            if (Translations.TryGetValue(key, out var value))
+            {
+                if (string.IsNullOrEmpty(value) || placeholders.Count != replacements.Count)
+                {
+                    return key;
+                }
+
+                for (int i = 0; i < placeholders.Count; i++)
+                {
+                    value = value.Replace("{" + placeholders[i] + "}", replacements[i]);
+                }
+
+                return value;
+            }
+        }
+        catch (ArgumentNullException)
+        {
+            return "TRANSLATION-ERROR";
+        }
+
+        return key;
+    }
+
     public static string Translation(string key)
     {
         try

@@ -15,6 +15,8 @@ using StatisticsAnalysisTool.Models.BindingModel;
 using StatisticsAnalysisTool.Models.NetworkModel;
 using StatisticsAnalysisTool.Models.TranslationModel;
 using StatisticsAnalysisTool.Network.Manager;
+using StatisticsAnalysisTool.Notification;
+using StatisticsAnalysisTool.PartyBuilder;
 using StatisticsAnalysisTool.Properties;
 using StatisticsAnalysisTool.Trade;
 using StatisticsAnalysisTool.Views;
@@ -22,6 +24,7 @@ using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
+using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Reflection;
@@ -30,7 +33,6 @@ using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Data;
 using System.Windows.Media;
-using StatisticsAnalysisTool.PartyBuilder;
 
 // ReSharper disable UnusedMember.Global
 
@@ -510,7 +512,7 @@ public class MainWindowViewModel : INotifyPropertyChanged
     }
 
     #endregion
-    
+
     #region Item View Filters
 
     private void ItemsViewFilter()
