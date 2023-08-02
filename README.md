@@ -20,11 +20,11 @@ A tool to easily read auction house data with a loot logger, damage meter, dunge
 
 ### Prerequisites & Installation
 - You need **Windows 10** or higher
-- Install **.NET 6.0 Desktop Runtime** (v6.0.5 or higher) [here](https://dotnet.microsoft.com/en-us/download/dotnet/thank-you/runtime-desktop-6.0.5-windows-x64-installer) (To start the tool)
+- Install **.NET 7.0 Desktop Runtime** (v7.0.9 or higher) [here](https://dotnet.microsoft.com/en-us/download/dotnet/thank-you/runtime-desktop-7.0.9-windows-x64-installer) (To start the tool)
 - Installing **Npcap** Free Edition (v1.6 or higher) [here](https://npcap.com/#download) (For Game tracking)
 
 **Download the Statistics Analysis Tool**
-- [**DOWNLOAD**](https://github.com/Triky313/AlbionOnline-StatisticsAnalysis/releases/download/v5.22.0/StatisticsAnalysis-AlbionOnline-v5.22.0-x64.zip)
+- [**DOWNLOAD**](https://github.com/Triky313/AlbionOnline-StatisticsAnalysis/releases/download/v6.0.0/StatisticsAnalysis-AlbionOnline-v6.0.0-x64.zip)
 Unzip the `.zip` file and start `StatisticsAnalysisTool.exe` with a double click. You may not be able to see the `.exe`. Don't worry, usually it's the file with the icon.
 
 ![tool_dir](https://user-images.githubusercontent.com/14247773/170473306-4dcc629e-384e-41b2-ada8-657cabe1b472.png)
@@ -56,8 +56,15 @@ Or you extract the files yourself from the game. More information can be found h
 
 ❌ Linux is currently not supported!
 
+❌ Mac is currently not supported!
+
+### Can I use the tool with Geforce Now
+No, unfortunately this is not technically possible.
+
 ### Can I use the tool with ExitLag or VPN?
-Unfortunately, **ExitLag is not supported**, but there are other VPN services that the tool works well with. There is no support from the developers for this. Validating it would be too time-consuming.
+Yes, VPN or ExitLag can generally be used. 
+In most cases this should work without problems. In the event of problems, it can help if you deactivate network filtering in the tool settings. 
+If that doesn't help, a proxy redirect can help.
 
 ### How fast does my internet need to be?
 An internet connection with at least 1M/bit (256KB/s) download rate.
@@ -67,6 +74,9 @@ Double click on the **DownloadItemJsonFilesManually.bat** file in the tool direc
 
 Then restart the tool and everything should work.
 
+### Can I use the tool even if the game is not started
+Yes, but not all features are available. 
+It is only important that you set the game server from automatic to one of your choice in the settings. Otherwise the tool does not know for which server it should load data.
 
 ## INFORMATION
 
