@@ -395,7 +395,7 @@ public static class CategoryController
         #region Tool
 
         {ShopSubCategory.DemolitionHammer, LanguageController.Translation("DEMOLITION_HAMMER")},
-        {ShopSubCategory.Fishing, LanguageController.Translation("FISHING")},
+        {ShopSubCategory.Fishing, LanguageController.Translation("FISHING_ROD")},
         {ShopSubCategory.Pickaxe, LanguageController.Translation("PICKAXE")},
         {ShopSubCategory.Sickle, LanguageController.Translation("SICKLE")},
         {ShopSubCategory.SkinningKnife, LanguageController.Translation("SKINNING_KNIFE")},
