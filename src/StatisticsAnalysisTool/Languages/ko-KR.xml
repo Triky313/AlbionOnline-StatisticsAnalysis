@@ -778,4 +778,7 @@
 	<translation name="ITEM_WINDOW">Item window</translation>
 	<translation name="LOOT_LOGGER">전리품 로그</translation>
 	<translation name="TOOLS">도구</translation>
+	<translation name="CAN_NOT_START_APP_WITH_PATH">해당 경로에 있는 앱을 시작할 수 없습니다 : {path}</translation>
+	<translation name="ANOTHER_APP_TO_START_PATH">프로그램을 시작할 수 있는 다른 경로</translation>
+	<translation name="CANNOT_START_OTHER_APP">다른 경로에 있는 프로그램을 시작할 수 없습니다</translation>
 </translations>
