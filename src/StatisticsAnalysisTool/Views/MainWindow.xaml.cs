@@ -149,6 +149,11 @@ public partial class MainWindow
         _mainWindowViewModel?.SwitchToolTasksState();
     }
 
+    private void TatsDropDownOpenClose_PreviewMouseDown(object sender, RoutedEventArgs e)
+    {
+        _mainWindowViewModel?.SwitchStatsDropDownState();
+    }
+
     private void OpenToolDirectory_Click(object sender, RoutedEventArgs e)
     {
         try

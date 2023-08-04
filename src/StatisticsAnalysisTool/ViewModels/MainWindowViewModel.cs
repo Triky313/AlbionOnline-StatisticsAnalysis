@@ -116,6 +116,7 @@ public class MainWindowViewModel : INotifyPropertyChanged
     private Visibility _mapHistoryTabVisibility = Visibility.Visible;
     private Visibility _playerInformationTabVisibility = Visibility.Visible;
     private Visibility _toolTaskFrontViewVisibility = Visibility.Collapsed;
+    private Visibility _statsDropDownVisibility = Visibility.Collapsed;
     private double _toolTaskProgressBarValue;
     private string _toolTaskCurrentTaskName;
     private ToolTaskBindings _toolTaskBindings = new();
@@ -421,6 +422,20 @@ public class MainWindowViewModel : INotifyPropertyChanged
             Visibility.Collapsed => Visibility.Visible,
             Visibility.Visible => Visibility.Collapsed,
             _ => ToolTasksVisibility
+        };
+    }
+
+    #endregion
+
+    #region Stats drop down
+    
+    public void SwitchStatsDropDownState()
+    {
+        StatsDropDownVisibility = StatsDropDownVisibility switch
+        {
+            Visibility.Collapsed => Visibility.Visible,
+            Visibility.Visible => Visibility.Collapsed,
+            _ => StatsDropDownVisibility
         };
     }
 
@@ -1232,6 +1247,16 @@ public class MainWindowViewModel : INotifyPropertyChanged
         set
         {
             _toolTasksVisibility = value;
+            OnPropertyChanged();
+        }
+    }
+
+    public Visibility StatsDropDownVisibility
+    {
+        get => _statsDropDownVisibility;
+        set
+        {
+            _statsDropDownVisibility = value;
             OnPropertyChanged();
         }
     }
