@@ -261,7 +261,7 @@
 	<translation name="ROYAL_SIGILS">왕실 인장</translation>
 
 	<translation name="DEMOLITION_HAMMER">철거 망치</translation>
-	<translation name="FISHING">낚시대</translation>
+	<translation name="FISHING_ROD">낚시대</translation>
 	<translation name="PICKAXE">곡갱이</translation>
 	<translation name="SICKLE">낫</translation>
 	<translation name="SKINNING_KNIFE">무두질용 나이프</translation>
@@ -781,4 +781,5 @@
 	<translation name="CAN_NOT_START_APP_WITH_PATH">해당 경로에 있는 앱을 시작할 수 없습니다 : {path}</translation>
 	<translation name="ANOTHER_APP_TO_START_PATH">프로그램을 시작할 수 있는 다른 경로</translation>
 	<translation name="CANNOT_START_OTHER_APP">다른 경로에 있는 프로그램을 시작할 수 없습니다</translation>
+	<translation name="FISHING">낚시</translation>
 </translations>
