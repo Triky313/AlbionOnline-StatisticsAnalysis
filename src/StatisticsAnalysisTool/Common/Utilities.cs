@@ -1,6 +1,12 @@
-﻿using System;
+﻿using log4net;
+using StatisticsAnalysisTool.Notification;
+using System;
+using System.Collections.Generic;
+using System.Diagnostics;
 using System.Globalization;
+using System.IO;
 using System.Linq;
+using System.Reflection;
 using System.Runtime.InteropServices;
 using System.Windows;
 using System.Windows.Interop;
@@ -9,6 +15,8 @@ namespace StatisticsAnalysisTool.Common;
 
 public static class Utilities
 {
+    private static readonly ILog Log = LogManager.GetLogger(MethodBase.GetCurrentMethod()?.DeclaringType);
+
     public static long GetHighestLength(params Array[] arrays)
     {
         long highestLength = 0;
@@ -33,7 +41,7 @@ public static class Utilities
         window.Left = (screenWidth / 2) - (windowWidth / 2);
         window.Top = (screenHeight / 2) - (windowHeight / 2);
     }
-    
+
     public static bool IsWindowOpen<T>(string name = "") where T : Window
     {
         return string.IsNullOrEmpty(name)
@@ -81,6 +89,39 @@ public static class Utilities
         var currentDateTime = DateTime.UtcNow;
         var difference = currentDateTime.Subtract(dateTime);
         return difference.Seconds >= waitingSeconds;
+    }
+
+    public static void AnotherAppToStart(string path)
+    {
+        var notifyManager = ServiceLocator.Resolve<SatNotificationManager>();
+
+        if (string.IsNullOrEmpty(path))
+        {
+            return;
+        }
+
+        try
+        {
+            if (!File.Exists(path))
+            {
+                notifyManager?.ShowErrorAsync(LanguageController.Translation("CANNOT_START_OTHER_APP"), 
+                    LanguageController.Translation("CAN_NOT_START_APP_WITH_PATH",
+                        new List<string> { "path" },
+                        new List<string> { path }));
+                return;
+            }
+
+            Process.Start(path);
+        }
+        catch (Exception e)
+        {
+            ConsoleManager.WriteLineForError(MethodBase.GetCurrentMethod()?.DeclaringType, e);
+            Log.Error(MethodBase.GetCurrentMethod()?.DeclaringType, e);
+            notifyManager?.ShowErrorAsync(LanguageController.Translation("CANNOT_START_OTHER_APP"),
+                LanguageController.Translation("CAN_NOT_START_APP_WITH_PATH",
+                    new List<string> { "path" },
+                    new List<string> { path }));
+        }
     }
 
     #region Window Flash

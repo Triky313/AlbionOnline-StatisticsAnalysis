@@ -23,6 +23,7 @@ public class LootController : ILootController
     private readonly List<LootLoggerObject> _lootLoggerObjects = new();
     private ItemContainerObject _currentItemContainer;
     private readonly List<DiscoveredItem> _discoveredLoot = new();
+    private Loot _lastLootedItem;
 
     private const int MaxLoot = 5000;
 
@@ -67,6 +68,13 @@ public class LootController : ILootController
             return;
         }
 
+        if (IsLastLootedItem(loot))
+        {
+            return;
+        }
+
+        _lastLootedItem = loot;
+
         var item = ItemController.GetItemByIndex(loot.ItemIndex);
         var lootedByUser = _trackingController.EntityController.GetEntity(loot.LootedByName);
         var lootedFromUser = _trackingController.EntityController.GetEntity(loot.LootedFromName);
@@ -99,7 +107,7 @@ public class LootController : ILootController
             {
                 return;
             }
-            
+
             var itemsToBeRemoved = (from loot in _lootLoggerObjects orderby loot?.UtcPickupTime select loot).Take(numberOfItemsToBeDeleted);
             await foreach (var item in itemsToBeRemoved.ToAsyncEnumerable())
             {
@@ -111,6 +119,15 @@ public class LootController : ILootController
             ConsoleManager.WriteLineForError(MethodBase.GetCurrentMethod()?.DeclaringType, e);
             Log.Error(MethodBase.GetCurrentMethod()?.DeclaringType, e);
         }
+    }
+
+    private bool IsLastLootedItem(Loot loot)
+    {
+        var lastItem = _lastLootedItem;
+        return lastItem?.ItemIndex == loot?.ItemIndex
+               && lastItem?.Quantity == loot?.Quantity
+               && lastItem?.LootedByName == loot?.LootedByName
+               && lastItem?.LootedFromName == loot?.LootedFromName;
     }
 
     public void ClearLootLogger()
@@ -142,7 +159,7 @@ public class LootController : ILootController
         return new TrackingNotification(DateTime.Now,
             new OtherGrabbedLootNotificationFragment(lootedByName, lootedFromName, lootedByGuild, lootedFromGuild, item, quantity), item.Index);
     }
-    
+
     #region Loot tracking
 
     private readonly ObservableCollection<IdentifiedBody> _identifiedBodies = new();
@@ -244,7 +261,7 @@ public class LootController : ILootController
         var item = _discoveredLoot?.FirstOrDefault(x => x.ObjectId == objectId);
         return item?.ItemIndex > -1 ? ItemController.GetItemByIndex(item.ItemIndex) : null;
     }
-    
+
     #endregion
 
     #region Top looters

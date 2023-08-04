@@ -770,13 +770,15 @@
 	<translation name="UPDATE_SPELLS_JSON_BY_DAYS">Zaktualizuj spells.json wedłóg dni:</translation>
 	<translation name="BACKUP_CREATED">Utworzono kopię zapasową</translation>
 	<translation name="A_BACKUP_HAS_BEEN_CREATED">Utworzono kopię zapasową</translation>
-	<translation name="BACKUP_INTERVAL">Ilość kopii zapasowych</translation>
+	<translation name="BACKUP_INTERVAL">Jak często ma być wykonywana</translation>
 	<translation name="BACKUP_NOW">Wykonaj kopię</translation>
 	<translation name="MAXIMUM_NUMBER_OF_BACKUPS">Maksymalna liczba kopii zapasowych</translation>
 	<translation name="BACKUP">Kopia zapasowa</translation>
 	<translation name="ITEM_WINDOW">Okno przedmiotów</translation>
-	<translation name="ITEM_SEARCH">Wyszukiwanie przedmiotów</translation>
 	<translation name="LOOT_LOGGER">Dziennik łupów</translation>
 	<translation name="TOOLS">Narzędzia</translation>
-	<translation name="FISHING">Wędkarstwo</translation>
+	<translation name="CAN_NOT_START_APP_WITH_PATH">Nie można uruchomić aplikacji z podaną ścieżką: {path}</translation>
+	<translation name="ANOTHER_APP_TO_START_PATH">Inna aplikacja do uruchomienia ze ścieżką</translation>
+	<translation name="CANNOT_START_OTHER_APP">Nie można uruchomić innej aplikacji</translation>
+	<translation name="FISHING_ROD">Wędka</translation>
 </translations>

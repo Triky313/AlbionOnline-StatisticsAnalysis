@@ -12,11 +12,14 @@ using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
+using System.Drawing;
 using System.Globalization;
+using System.IO;
 using System.Linq;
 using System.Reflection;
 using System.Runtime.CompilerServices;
 using System.Windows;
+using System.Windows.Media.Imaging;
 
 namespace StatisticsAnalysisTool.ViewModels;
 
@@ -68,6 +71,8 @@ public class SettingsWindowViewModel : INotifyPropertyChanged
     private SettingDataInformation _updateSpellsJsonByDaysSelection;
     private SettingDataInformation _backupIntervalByDaysSelection;
     private SettingDataInformation _maximumNumberOfBackupsSelection;
+    private string _anotherAppToStartPath;
+    private BitmapImage _anotherAppToStartExeIcon;
 
     public SettingsWindowViewModel()
     {
@@ -118,6 +123,9 @@ public class SettingsWindowViewModel : INotifyPropertyChanged
         InitMaxAmountOfBackups(MaximumNumberOfBackups);
         MaximumNumberOfBackupsSelection = MaximumNumberOfBackups.FirstOrDefault(x => x.Value == SettingsController.CurrentSettings.MaximumNumberOfBackups);
 
+        // Another app to start path
+        AnotherAppToStartPath = SettingsController.CurrentSettings.AnotherAppToStartPath;
+
         // Alert sounds
         InitAlertSounds();
 
@@ -145,6 +153,9 @@ public class SettingsWindowViewModel : INotifyPropertyChanged
 
         // Player Selection with same name in db
         PlayerSelectionWithSameNameInDb = SettingsController.CurrentSettings.ExactMatchPlayerNamesLineNumber;
+
+        // Another app to start
+        SetIconSourceToAnotherAppToStart();
     }
 
     public void SaveSettings()
@@ -156,6 +167,7 @@ public class SettingsWindowViewModel : INotifyPropertyChanged
         SettingsController.CurrentSettings.SpellsJsonSourceUrl = SpellsJsonSourceUrl;
         SettingsController.CurrentSettings.RefreshRate = RefreshRatesSelection.Value;
         SettingsController.CurrentSettings.Server = ServerSelection.Value;
+        SettingsController.CurrentSettings.AnotherAppToStartPath = AnotherAppToStartPath;
         NetworkManager.SetCurrentServer(ServerSelection.Value >= 2 ? AlbionServer.East : AlbionServer.West, true);
         SetPacketFilter();
         SettingsController.CurrentSettings.MainTrackingCharacterName = MainTrackingCharacterName;
@@ -184,6 +196,7 @@ public class SettingsWindowViewModel : INotifyPropertyChanged
         SetAppSettingsAndTranslations();
         SetNaviTabVisibilities();
         SetNotificationFilter();
+        SetIconSourceToAnotherAppToStart();
     }
 
     public void ReloadSettings()
@@ -278,6 +291,57 @@ public class SettingsWindowViewModel : INotifyPropertyChanged
         }
 
         PlayerSelectionWithSameNameInDb = defaultValue;
+    }
+
+    private void SetIconSourceToAnotherAppToStart()
+    {
+        AnotherAppToStartExeIcon = GetExeIcon(SettingsController.CurrentSettings.AnotherAppToStartPath);
+    }
+
+    private static BitmapImage GetExeIcon(string path)
+    {
+        try
+        {
+            if (!File.Exists(path))
+            {
+                return null;
+            }
+
+            Icon appIcon = Icon.ExtractAssociatedIcon(path);
+            Icon highDpiIcon = appIcon;
+            BitmapImage imageResult;
+
+            if (appIcon != null && appIcon.Handle != IntPtr.Zero)
+            {
+                highDpiIcon = Icon.FromHandle(new Icon(appIcon, new System.Drawing.Size(64, 64)).Handle);
+            }
+
+            using (MemoryStream stream = new MemoryStream())
+            {
+                highDpiIcon?.Save(stream);
+
+                stream.Seek(0, SeekOrigin.Begin);
+
+                BitmapImage bitmapImage = new BitmapImage();
+                bitmapImage.BeginInit();
+                bitmapImage.StreamSource = stream;
+                bitmapImage.CacheOption = BitmapCacheOption.OnLoad;
+                bitmapImage.EndInit();
+
+                imageResult = bitmapImage;
+            }
+
+            highDpiIcon?.Dispose();
+            appIcon?.Dispose();
+
+            return imageResult;
+        }
+        catch
+        {
+            // ignore
+        }
+
+        return null;
     }
 
     public struct SettingDataInformation
@@ -799,6 +863,16 @@ public class SettingsWindowViewModel : INotifyPropertyChanged
         }
     }
 
+    public string AnotherAppToStartPath
+    {
+        get => _anotherAppToStartPath;
+        set
+        {
+            _anotherAppToStartPath = value;
+            OnPropertyChanged();
+        }
+    }
+
     public string WorldJsonSourceUrl
     {
         get => _worldJsonSourceUrl;
@@ -935,6 +1009,16 @@ public class SettingsWindowViewModel : INotifyPropertyChanged
         set
         {
             _isUpdateMobsJsonNowButtonEnabled = value;
+            OnPropertyChanged();
+        }
+    }
+
+    public BitmapImage AnotherAppToStartExeIcon
+    {
+        get => _anotherAppToStartExeIcon;
+        set
+        {
+            _anotherAppToStartExeIcon = value;
             OnPropertyChanged();
         }
     }

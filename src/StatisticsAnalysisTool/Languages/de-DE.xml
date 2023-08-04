@@ -261,7 +261,7 @@
 	<translation name="ROYAL_SIGILS">Königliches Siegel</translation>
 
 	<translation name="DEMOLITION_HAMMER">Abbruchhammer</translation>
-	<translation name="FISHING">Angel</translation>
+	<translation name="FISHING">Angeln</translation>
 	<translation name="PICKAXE">Spitzhacke</translation>
 	<translation name="SICKLE">Sichel</translation>
 	<translation name="SKINNING_KNIFE">Abhäutemesser</translation>
@@ -775,8 +775,10 @@
 	<translation name="MAXIMUM_NUMBER_OF_BACKUPS">Anzahl maximaler Backups</translation>
 	<translation name="BACKUP">Backup</translation>
 	<translation name="ITEM_WINDOW">Item Fenster</translation>
-	<translation name="ITEM_SEARCH">Item Suche</translation>
 	<translation name="LOOT_LOGGER">Loot Protokollierung</translation>
 	<translation name="TOOLS">Werkzeuge</translation>
-	<translation name="FISHING">Angeln</translation>
+	<translation name="CAN_NOT_START_APP_WITH_PATH">Die App mit dem Pfad {path} kann nicht gestartet werden.</translation>
+	<translation name="ANOTHER_APP_TO_START_PATH">Eine weitere App zum Starten Pfad</translation>
+	<translation name="CANNOT_START_OTHER_APP">Kann andere App nicht starten</translation>
+	<translation name="FISHING_ROD">Angel</translation>
 </translations>

@@ -15,6 +15,7 @@ using StatisticsAnalysisTool.Models.BindingModel;
 using StatisticsAnalysisTool.Models.NetworkModel;
 using StatisticsAnalysisTool.Models.TranslationModel;
 using StatisticsAnalysisTool.Network.Manager;
+using StatisticsAnalysisTool.PartyBuilder;
 using StatisticsAnalysisTool.Properties;
 using StatisticsAnalysisTool.Trade;
 using StatisticsAnalysisTool.Views;
@@ -30,7 +31,6 @@ using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Data;
 using System.Windows.Media;
-using StatisticsAnalysisTool.PartyBuilder;
 
 // ReSharper disable UnusedMember.Global
 
@@ -116,6 +116,7 @@ public class MainWindowViewModel : INotifyPropertyChanged
     private Visibility _mapHistoryTabVisibility = Visibility.Visible;
     private Visibility _playerInformationTabVisibility = Visibility.Visible;
     private Visibility _toolTaskFrontViewVisibility = Visibility.Collapsed;
+    private Visibility _statsDropDownVisibility = Visibility.Collapsed;
     private double _toolTaskProgressBarValue;
     private string _toolTaskCurrentTaskName;
     private ToolTaskBindings _toolTaskBindings = new();
@@ -426,6 +427,20 @@ public class MainWindowViewModel : INotifyPropertyChanged
 
     #endregion
 
+    #region Stats drop down
+    
+    public void SwitchStatsDropDownState()
+    {
+        StatsDropDownVisibility = StatsDropDownVisibility switch
+        {
+            Visibility.Collapsed => Visibility.Visible,
+            Visibility.Visible => Visibility.Collapsed,
+            _ => StatsDropDownVisibility
+        };
+    }
+
+    #endregion
+
     #region Save loot logger
 
     public void SaveLootLogger()
@@ -510,7 +525,7 @@ public class MainWindowViewModel : INotifyPropertyChanged
     }
 
     #endregion
-    
+
     #region Item View Filters
 
     private void ItemsViewFilter()
@@ -1232,6 +1247,16 @@ public class MainWindowViewModel : INotifyPropertyChanged
         set
         {
             _toolTasksVisibility = value;
+            OnPropertyChanged();
+        }
+    }
+
+    public Visibility StatsDropDownVisibility
+    {
+        get => _statsDropDownVisibility;
+        set
+        {
+            _statsDropDownVisibility = value;
             OnPropertyChanged();
         }
     }

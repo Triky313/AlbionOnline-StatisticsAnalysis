@@ -775,8 +775,10 @@
 	<translation name="MAXIMUM_NUMBER_OF_BACKUPS">Maximum number of backups</translation>
 	<translation name="BACKUP">Backup</translation>
 	<translation name="ITEM_WINDOW">Item window</translation>
-	<translation name="ITEM_SEARCH">Item search</translation>
 	<translation name="LOOT_LOGGER">Loot logger</translation>
 	<translation name="TOOLS">Tools</translation>
-	<translation name="FISHING">Fishing</translation>
+	<translation name="CAN_NOT_START_APP_WITH_PATH">Can not start App with path: {path}</translation>
+	<translation name="ANOTHER_APP_TO_START_PATH">Another app to start path</translation>
+	<translation name="CANNOT_START_OTHER_APP">Cannot start other app</translation>
+	<translation name="FISHING_ROD">Fishing rod</translation>
 </translations>

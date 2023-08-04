@@ -287,7 +287,7 @@ public class EntityController
     {
         return _knownEntities?.FirstOrDefault(x => x.Key == guid).Value?.IsInParty ?? false;
     }
-    
+
     public void CopyPartyToClipboard()
     {
         var output = string.Empty;
