@@ -113,7 +113,6 @@ public partial class MainWindow
         MaxHeight = screen.WorkingArea.Height;
 
         Visibility = Visibility.Hidden;
-        Topmost = true;
         ResizeMode = ResizeMode.NoResize;
         Visibility = Visibility.Visible;
         MaximizedButton.Content = 2;
@@ -123,7 +122,6 @@ public partial class MainWindow
     {
         WindowState = WindowState.Normal;
         _isWindowMaximized = false;
-        Topmost = false;
         ResizeMode = ResizeMode.CanResize;
         MaximizedButton.Content = 1;
     }
