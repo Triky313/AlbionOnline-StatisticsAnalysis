@@ -122,7 +122,7 @@ public partial class MainWindow
     {
         WindowState = WindowState.Normal;
         _isWindowMaximized = false;
-        ResizeMode = ResizeMode.CanResize;
+        ResizeMode = ResizeMode.CanResizeWithGrip;
         MaximizedButton.Content = 1;
     }
 
