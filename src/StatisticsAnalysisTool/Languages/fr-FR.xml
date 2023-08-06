@@ -330,7 +330,7 @@
 	<translation name="YOU_HAVE">Vous avez</translation>
 	<translation name="FAME">Renommée</translation>
 	<translation name="GAINED">gagné(e).</translation>
-	<translation name="MAP_CHANGE_RESET">Réinitialisation pour chaque carte</translation>
+	<translation name="MAP_CHANGE_RESET">Réinitialisation à chaque nouvelle carte</translation>
 	<translation name="TOTAL_FAME">Renommée totale</translation>
 	<translation name="TOTAL_SILVER">Argent total</translation>
 	<translation name="TOTAL_RESPEC">Total Re-Spécialisation</translation>
@@ -373,13 +373,13 @@
 	<translation name="SORT_BY_DPS">Trier par DPS</translation>
 	<translation name="SORT_BY_NAME">Trier par nom</translation>
 	<translation name="SORT_BY_HEAL">Trier par soins</translation>
-	<translation name="SORT_BY_HPS">Trier par soin par secondes</translation>
+	<translation name="SORT_BY_HPS">Trier par soin par seconde</translation>
 	<translation name="FACTION_FLAG_POINTS">Points de Réputation de Faction</translation>
 	<translation name="FACTION_POINTS">Points de Faction</translation>
 	<translation name="NUMBER_OF_DUNGEON_FLOORS">Nombre d'étages</translation>
 	<translation name="TOOL_DIRECTORY">Répertoire du programme</translation>
 	<translation name="OPEN_TOOL_DIRECTORY">Ouvrir le répertoire du programme</translation>
-	<translation name="OPEN_OR_CLOSE_DEBUG_CONSOLE">Ouvrir ou fermer la console de débogage</translation>
+	<translation name="OPEN_DEBUG_CONSOLE">Ouvrir la console de débogage</translation>
 	<translation name="CREATE_DESKTOP_SHORTCUT">Créer un raccourci sur le bureau</translation>
 	<translation name="FAVORITE">Favori</translation>
 	<translation name="SILVER_SHRINE">Autel d'argent</translation>
@@ -444,7 +444,7 @@
 	<translation name="DESC_UPDATE_MARKET_PRICES_1">Afin de pouvoir mettre à jour vous-même les prix d'un objet, vous devez installer Albion Online Data Project: </translation>
 	<translation name="SEASON_POINTS">Points de saison</translation>
 	<translation name="EXPORT_LOOT_TO_FILE">Exporter le butin vers un fichier</translation>
-	<translation name="TRACK_PARTY_LOOT_ONLY">Suivre le butin de groupe uniquement</translation>
+	<translation name="TRACK_PARTY_LOOT_ONLY">Traquer le butin de groupe uniquement</translation>
 	<translation name="RESET_DUNGEON_TIMER">Réinitialiser le minuteur du donjon</translation>
 	<translation name="REQUIRED_RESOURCES">Ressources requises</translation>
 	<translation name="SELL_PRICE_PER_ITEM">Prix de vente par objet</translation>
@@ -480,12 +480,12 @@
 	<translation name="IS_LOOT_LOGGER_SAVE_REMINDER_ACTIVE">Le rappel de sauvegarde de traqueur de butin est-il actif ?</translation>
 	<translation name="SAVE_LOOT_LOGGER_NOW">Enregistrer le butin maintenant ?</translation>
 	<translation name="SAVE_LOOT_LOGGER">Enregistrer le butin</translation>
-	<translation name="TRACKING_SILVER">Traqueur d'argent</translation>
-	<translation name="TRACKING_FAME">Traqueur de renommée</translation>
+	<translation name="TRACKING_SILVER">Traquer l'argent</translation>
+	<translation name="TRACKING_FAME">Traquer la renommée</translation>
 	<translation name="ITEM_SEARCH">Recherche d'objet</translation>
 	<translation name="DUNGEONS">Donjons</translation>
 	<translation name="PLAYER_INFORMATION">Information du joueur</translation>
-	<translation name="LOGGING">Traqueur</translation>
+	<translation name="LOGGING">Traqueur de butin</translation>
 	<translation name="TRACKING_IS_ACTIVE">Le Traqueur est actif</translation>
 	<translation name="TRACKING_IS_PARTIALLY_ACTIVE">Le Traqueur est partiellement actif</translation>
 	<translation name="TRACKING_IS_NOT_ACTIVE">Le Traqueur n'est pas actif</translation>
@@ -495,7 +495,7 @@
 	<translation name="FAVOR">Faveur</translation>
 	<translation name="USAGE_FEE_PER_HUNDRED_FOOD">Frais d'utilisation par 100 nourriture</translation>
 	<translation name="SHOW_LOOT_FROM_MOBS">Montrer le butin sur les monstres</translation>
-	<translation name="TRACKING_MOB_LOOT">Suivre le butin sur les monstres</translation>
+	<translation name="TRACKING_MOB_LOOT">Traquer le butin sur les monstres</translation>
 	<translation name="ITEMS_JSON_SOURCE_URL">URL Source de Items.json</translation>
 	<translation name="UPDATE_ITEMS_JSON_BY_DAYS">Intervalle de MAJ de items.json en jours : </translation>
 	<translation name="SHOP_CATEGORY">Catégorie</translation>
@@ -505,7 +505,7 @@
 	<translation name="TRY_DOWNLOADING_THE_ITEM_JSON_AGAIN">Essayez de télécharger item.json à nouveau</translation>
 	<translation name="ITEM_JSON_CAN_NOT_BE_LOADED">Item.json ne peut pas être chargé.</translation>
 	<translation name="SUGGEST_PRE_RELEASE_UPDATES">Suggérer des mises à jour en pré-version</translation>
-    <translation name="ATTENTION_THESE_VERSION_ARE_STILL_BEING_TESTED">ATTENTION! Ces versions sont encore en cours de test</translation>
+	<translation name="ATTENTION_THESE_VERSION_ARE_STILL_BEING_TESTED">ATTENTION! Ces versions sont encore en cours de test</translation>
 	<translation name="DUNGEON_RESPEC">Donjon respé</translation>
 	<translation name="DUNGEON_SILVER">Donjon argent</translation>
 	<translation name="DUNGEON_FAME_PER_HOUR">Donjon renommée par heure</translation>
@@ -606,7 +606,7 @@
 	<translation name="LOOTED_CHESTS">Coffres pillés</translation>
 	<translation name="STATIC_DUNGEONS">Donjons statiques</translation>
 	<translation name="AVALONIAN_ROADS">Routes avaloniennes</translation>
-	<translation name="HELLGATES">Portes de l'enfer</translation>
+	<translation name="HELLGATES">Portes de l'enfer (HellGates)</translation>
 	<translation name="OPEN_WORLD">Monde ouvert</translation>
 	<translation name="LAST_7_DAYS">Les 7 derniers jours</translation>
 	<translation name="LAST_30_DAYS">Les 30 derniers jours</translation>
@@ -660,7 +660,7 @@
 	<translation name="LOCAL_PLAYER">Joueur local</translation>
 	<translation name="THANKS">Merci</translation>
 	<translation name="THANK_YOU">Merci</translation>
-	<translation name="DUNGEON_CLOSED_SOUND_ACTIVE">Jouer un son lors de la fermeture du donjon</translation>
+	<translation name="DUNGEON_CLOSED_SOUND_ACTIVE">Jouer un son à la fermeture du donjon</translation>
 	<translation name="TOTAL_PRICE_WITH_DEDUCTED_TAXES">Prix total avec taxes déduites</translation>
 	<translation name="UPDATE_MOBS_JSON_BY_DAYS">Mettre à jour mobs.json : </translation>
 	<translation name="MOBS_JSON_SOURCE_URL">URL source mobs.json</translation>
@@ -678,7 +678,7 @@
 	<translation name="DELETE_TRADES_AFTER_365_DAYS">Supprimer après 365 jours</translation>
 	<translation name="DELETE_SELECTED_TRADES">Supprimer les transactions sélectionnées</translation>
 	<translation name="SURE_YOU_WANT_TO_DELETE_SELECTED_TRADES">Voulez-vous vraiment supprimer les transactions sélectionnées ?</translation>
-	<translation name="TRADE_MONITORING">Surveillance des transactions</translation>
+	<translation name="TRADE_MONITORING">Supervision des transactions</translation>
 	<translation name="TRADE">Transactions</translation>
 	<translation name="TRADE_MONITORING_DESCRIPTION1">Afin de reconnaître les nouvelles transactions, chaque message doit être ouvert dans la boîte de réception dans le jeu.</translation>
 	<translation name="UNKNOWN_TRADE">Transaction inconnue</translation>
@@ -744,7 +744,7 @@
 	<translation name="DELETE_AFTER_30_DAYS">Supprimer après 30 jours</translation>
 	<translation name="DELETE_AFTER_365_DAYS">Supprimer après 365 jours</translation>
 	<translation name="PLAYER_SELECTION_WITH_SAME_NAME_IN_DB">Sélection du joueur avec le même nom dans la base de donnée</translation>
-	<translation name="UPDATE_NOW">Mettre à jour maintenant</translation>
+	<translation name="UPDATE_NOW">Mettre à jour</translation>
 	<translation name="DAMAGE_METER_DESCRIPTION_2">Si les bonnes armes ne sont pas affichées dans le Damage Meter, cela est généralement dû aux fichiers ItemList.json et Items.json obsolètes. Supprimez manuellement les fichiers du dossier du logiciel et redémarrez le, la dernière version des fichiers sera téléchargée et tout devrait fonctionner.</translation>
 	<translation name="GET_WORLD_JSON">Obtenir world.json</translation>
 	<translation name="WORLD_JSON_CAN_NOT_BE_LOADED">world.json ne peut pas être chargé.</translation>
@@ -777,4 +777,8 @@
 	<translation name="ITEM_WINDOW">Fenêtre de l'objet</translation>
 	<translation name="LOOT_LOGGER">Enregistreur de butin</translation>
 	<translation name="TOOLS">Outils</translation>
+	<translation name="CAN_NOT_START_APP_WITH_PATH">Impossible de démarrer l'application avec le chemin : {path}</translation>
+	<translation name="ANOTHER_APP_TO_START_PATH">Ouvrir une autre application au démarrage</translation>
+	<translation name="CANNOT_START_OTHER_APP">Impossible de démarrer une autre application</translation>
+	<translation name="FISHING_ROD">Canne à pêche</translation>
 </translations>
