@@ -123,7 +123,7 @@
         </Grid>
 
         <!-- Stats drop down -->
-        <Grid ZIndex="3" Height="90" MaxWidth="400" Margin="0,90,5,0" HorizontalAlignment="Center" VerticalAlignment="Top"
+        <Grid ZIndex="3" Height="90" MaxWidth="500" Margin="0,90,5,0" HorizontalAlignment="Center" VerticalAlignment="Top"
               Background="{StaticResource SolidColorBrush.Background.3}" Visibility="{Binding StatsDropDownVisibility, FallbackValue=Visible}">
             <Border BorderBrush="{StaticResource SolidColorBrush.Text.7}" BorderThickness="1">
                 <DockPanel HorizontalAlignment="Center" VerticalAlignment="Center" Margin="10">
