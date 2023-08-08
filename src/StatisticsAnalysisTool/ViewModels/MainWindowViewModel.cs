@@ -3,6 +3,7 @@ using LiveChartsCore;
 using LiveChartsCore.SkiaSharpView;
 using log4net;
 using Microsoft.Win32;
+using StatisticAnalysisTool.Extractor;
 using StatisticsAnalysisTool.Cluster;
 using StatisticsAnalysisTool.Common;
 using StatisticsAnalysisTool.Common.UserSettings;
@@ -31,6 +32,7 @@ using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Data;
 using System.Windows.Media;
+using StatisticAnalysisTool.Extractor.Enums;
 
 // ReSharper disable UnusedMember.Global
 
@@ -130,6 +132,11 @@ public class MainWindowViewModel : INotifyPropertyChanged
         UpgradeSettings();
         SetUiElements();
         Translation = new MainWindowTranslation();
+
+
+        // TEST
+        var extractor = new Extractor();
+        extractor.ExtractGameData("F:\\AlbionOnline", ServerType.Live, "C:\\Users\\schul\\Desktop\\test");
     }
 
     public void SetUiElements()

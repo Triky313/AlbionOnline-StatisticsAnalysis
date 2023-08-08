@@ -668,6 +668,7 @@
     <None Remove="Sounds\dungeon_closed.wav" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\StatisticAnalysisTool.Extractor\StatisticAnalysisTool.Extractor.csproj" />
     <ProjectReference Include="..\StatisticsAnalysisTool.Network\StatisticsAnalysisTool.Network.csproj" />
   </ItemGroup>
   <ItemGroup>
