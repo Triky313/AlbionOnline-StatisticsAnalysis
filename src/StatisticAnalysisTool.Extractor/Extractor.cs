@@ -5,14 +5,15 @@ namespace StatisticAnalysisTool.Extractor;
 
 public class Extractor
 {
-    public void ExtractGameData(string mainGameFolder, ServerType serverType, string outputDirPath)
+    public static async Task ExtractGameDataAsync(string mainGameFolder, ServerType serverType, string outputDirPath)
     {
         string mainGameFolderString = Path.Combine(mainGameFolder, GetServerTypeString(serverType));
         mainGameFolderString = mainGameFolderString.Replace("'", "");
 
-        using var localizationData = new LocalizationData(mainGameFolderString);
+        using var localizationData = new LocalizationData();
+        await localizationData.LoadDataAsync(mainGameFolderString);
 
-        ItemData.CreateItemData(mainGameFolderString, localizationData, outputDirPath);
+        await ItemData.CreateItemDataAsync(mainGameFolderString, localizationData, outputDirPath);
         // TODO ...
     }
 

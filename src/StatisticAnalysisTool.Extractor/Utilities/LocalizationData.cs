@@ -1,4 +1,5 @@
-﻿using System.Text;
+﻿using System.Collections.Concurrent;
+using System.Text;
 using System.Xml;
 
 namespace StatisticAnalysisTool.Extractor.Utilities;
@@ -8,13 +9,13 @@ public class LocalizationData : IDisposable
     public const string ItemPrefix = "@ITEMS_";
     public const string DescPostfix = "_DESC";
 
-    public Dictionary<string, Dictionary<string, string>> LocalizedNames = new();
-    public Dictionary<string, Dictionary<string, string>> LocalizedDescriptions = new();
+    public ConcurrentDictionary<string, ConcurrentDictionary<string, string>> LocalizedNames = new();
+    public ConcurrentDictionary<string, ConcurrentDictionary<string, string>> LocalizedDescriptions = new();
 
-    public LocalizationData(string mainGameFolder)
+    public async Task LoadDataAsync(string mainGameFolder)
     {
         var localizationBinFilePath = Path.Combine(mainGameFolder, ".\\Albion-Online_Data\\StreamingAssets\\GameData\\localization.bin");
-        var localizationDataByteArray = BinaryDecrypter.DecryptAndDecompress(localizationBinFilePath);
+        var localizationDataByteArray = await BinaryDecrypter.DecryptAndDecompressAsync(localizationBinFilePath);
 
         var xmlDoc = new XmlDocument();
         xmlDoc.LoadXml(Encoding.UTF8.GetString(localizationDataByteArray));
@@ -26,18 +27,18 @@ public class LocalizationData : IDisposable
             return;
         }
 
-        foreach (XmlNode node in rootNode)
+        await Parallel.ForEachAsync(rootNode.Cast<XmlNode>(), (node, _)  =>
         {
             if (node.NodeType != XmlNodeType.Element)
             {
-                continue;
+                return default;
             }
 
             var tuId = node.Attributes?["tuid"];
 
             if (tuId?.Value.StartsWith(ItemPrefix) != true)
             {
-                continue;
+                return default;
             }
 
             Dictionary<string, string> languages;
@@ -50,20 +51,22 @@ public class LocalizationData : IDisposable
             }
             catch (Exception)
             {
-                continue;
+                return default;
             }
 
             // Is item description
             if (tuId.Value.EndsWith(DescPostfix))
             {
-                LocalizedDescriptions[tuId.Value] = languages;
+                LocalizedDescriptions[tuId.Value] = new ConcurrentDictionary<string, string>(languages);
             }
             // Is item name
             else
             {
-                LocalizedNames[tuId.Value] = languages;
+                LocalizedNames[tuId.Value] = new ConcurrentDictionary<string, string>(languages); 
             }
-        }
+
+            return default;
+        });
     }
 
     public void Dispose()

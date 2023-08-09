@@ -135,8 +135,7 @@ public class MainWindowViewModel : INotifyPropertyChanged
 
 
         // TEST
-        var extractor = new Extractor();
-        extractor.ExtractGameData("F:\\AlbionOnline", ServerType.Live, "C:\\Users\\schul\\Desktop\\test");
+        _ = Extractor.ExtractGameDataAsync("F:\\AlbionOnline", ServerType.Live, "C:\\Users\\schul\\Desktop\\test");
     }
 
     public void SetUiElements()

@@ -6,10 +6,10 @@ namespace StatisticAnalysisTool.Extractor.Utilities;
 
 public class ItemData : IDisposable
 {
-    public static void CreateItemData(string mainGameFolder, LocalizationData localizationData, string outputFolderPath, string outputFileNameWithExtension = "items.json")
+    public static async Task CreateItemDataAsync(string mainGameFolder, LocalizationData localizationData, string outputFolderPath, string outputFileNameWithExtension = "items.json")
     {
         var itemBinPath = Path.Combine(mainGameFolder, ".\\Albion-Online_Data\\StreamingAssets\\GameData\\items.bin");
-        var itemDataByteArray = BinaryDecrypter.DecryptAndDecompress(itemBinPath);
+        var itemDataByteArray = await BinaryDecrypter.DecryptAndDecompressAsync(itemBinPath);
 
         ExtractFromByteArray(itemDataByteArray, GetExportStream(outputFolderPath, outputFileNameWithExtension), localizationData);
     }
@@ -32,71 +32,83 @@ public class ItemData : IDisposable
 
         var index = 1;
         var first = true;
-        foreach (XmlNode node in rootNode?.ChildNodes)
+
+        if (rootNode?.ChildNodes != null)
         {
-            if (node.NodeType != XmlNodeType.Element || string.IsNullOrEmpty(node.Attributes?["uniquename"]?.Value))
+            foreach (XmlNode node in rootNode.ChildNodes)
             {
-                continue;
-            }
-
-            var uniqueName = node.Attributes["uniquename"]?.Value;
-            var enchantmentLevel = node.Attributes["enchantmentlevel"];
-            var description = node.Attributes["descriptionlocatag"];
-            var name = node.Attributes["descvariable0"];
-            var enchantment = "";
-            if (enchantmentLevel != null && enchantmentLevel.Value != "0")
-            {
-                enchantment = "@" + enchantmentLevel.Value;
-            }
-            var localizationNameVariable = name != null ? name.Value : LocalizationData.ItemPrefix + uniqueName;
-            if (uniqueName != null && uniqueName.Contains("ARTEFACT"))
-            {
-                localizationNameVariable = LocalizationData.ItemPrefix + uniqueName;
-            }
-            var container = new ItemContainer()
-            {
-                Index = index.ToString(),
-                UniqueName = uniqueName + enchantment,
-                LocalizationDescriptionVariable = description != null ? description.Value : LocalizationData.ItemPrefix + uniqueName + LocalizationData.DescPostfix,
-                LocalizationNameVariable = localizationNameVariable
-            };
-
-            SetLocalization(localizationData, container);
-            WriteItem(outputStream, container, first);
-            if (first)
-            {
-                first = false;
-            }
-            index++;
-
-            if (node.Name == "journalitem")
-            {
-                journals.Add(new ItemContainer()
+                if (node.NodeType != XmlNodeType.Element || string.IsNullOrEmpty(node.Attributes?["uniquename"]?.Value))
                 {
-                    UniqueName = uniqueName
-                });
-            }
+                    continue;
+                }
 
-            var element = FindElement(node, "enchantments");
-            if (element == null)
-            {
-                continue;
-            }
+                var uniqueName = node.Attributes["uniquename"]?.Value;
+                var enchantmentLevel = node.Attributes["enchantmentlevel"];
+                var description = node.Attributes["descriptionlocatag"];
+                var name = node.Attributes["descvariable0"];
+                var enchantment = "";
+                if (enchantmentLevel != null && enchantmentLevel.Value != "0")
+                {
+                    enchantment = "@" + enchantmentLevel.Value;
+                }
 
-            foreach (XmlElement childNode in element.ChildNodes)
-            {
-                var enchantmentName = node.Attributes["uniquename"]?.Value + "@" + childNode.Attributes["enchantmentlevel"]?.Value;
-                container = new ItemContainer()
+                var localizationNameVariable = name != null ? name.Value : LocalizationData.ItemPrefix + uniqueName;
+                if (uniqueName != null && uniqueName.Contains("ARTEFACT"))
+                {
+                    localizationNameVariable = LocalizationData.ItemPrefix + uniqueName;
+                }
+
+                var container = new ItemContainer()
                 {
                     Index = index.ToString(),
-                    UniqueName = enchantmentName,
-                    LocalizationDescriptionVariable = description != null ? description.Value : LocalizationData.ItemPrefix + uniqueName + LocalizationData.DescPostfix,
-                    LocalizationNameVariable = name != null ? name.Value : LocalizationData.ItemPrefix + uniqueName
+                    UniqueName = uniqueName + enchantment,
+                    LocalizationDescriptionVariable = description != null
+                        ? description.Value
+                        : LocalizationData.ItemPrefix + uniqueName + LocalizationData.DescPostfix,
+                    LocalizationNameVariable = localizationNameVariable
                 };
+
                 SetLocalization(localizationData, container);
-                WriteItem(outputStream, container);
+                WriteItem(outputStream, container, first);
+                if (first)
+                {
+                    first = false;
+                }
 
                 index++;
+
+                if (node.Name == "journalitem")
+                {
+                    journals.Add(new ItemContainer()
+                    {
+                        UniqueName = uniqueName ?? string.Empty
+                    });
+                }
+
+                var element = FindElement(node, "enchantments");
+                if (element == null)
+                {
+                    continue;
+                }
+
+                foreach (XmlElement childNode in element.ChildNodes)
+                {
+                    var enchantmentName = node.Attributes["uniquename"]?.Value + "@" +
+                                          childNode.Attributes["enchantmentlevel"]?.Value;
+                    container = new ItemContainer()
+                    {
+                        Index = index.ToString(),
+                        UniqueName = enchantmentName,
+                        LocalizationDescriptionVariable = description != null
+                            ? description.Value
+                            : LocalizationData.ItemPrefix + uniqueName + LocalizationData.DescPostfix,
+                        LocalizationNameVariable = name != null ? name.Value : LocalizationData.ItemPrefix + uniqueName
+                    };
+                    SetLocalization(localizationData, container);
+                    WriteItem(outputStream, container);
+
+                    index++;
+                }
             }
         }
 
@@ -134,11 +146,6 @@ public class ItemData : IDisposable
 
     private static void SetLocalization(LocalizationData data, ItemContainer item)
     {
-        if (data == default)
-        {
-            return;
-        }
-
         if (data.LocalizedDescriptions.TryGetValue(item.LocalizationDescriptionVariable, out var descriptions))
         {
             item.LocalizedDescriptions = descriptions;
@@ -166,7 +173,7 @@ public class ItemData : IDisposable
     private static void WriteItem(Stream stream, IdContainer idContainer, bool first = false)
     {
         var output = new StringBuilder();
-        
+
         if (!first)
         {
             output.AppendLine(",");
