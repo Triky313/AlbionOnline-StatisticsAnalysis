@@ -12,7 +12,7 @@ public class Extractor
 
         using var localizationData = new LocalizationData(mainGameFolderString);
 
-        ExtractItems(mainGameFolderString, localizationData, outputDirPath);
+        ItemData.CreateItemData(mainGameFolderString, localizationData, outputDirPath);
         // TODO ...
     }
 

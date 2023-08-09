@@ -1,4 +1,5 @@
-﻿using StatisticAnalysisTool.Extractor.Utilities;
+﻿using System.Diagnostics;
+using StatisticAnalysisTool.Extractor.Utilities;
 using System.Text;
 using System.Text.Json;
 using System.Xml;
@@ -17,7 +18,7 @@ public abstract class BaseExtractor
     }
 
     protected abstract string GetBinFilePath();
-    protected abstract void ExtractFromXml(Stream inputXmlFile, Stream outputStream, Action<Stream, IdContainer, bool> writeItem, LocalizationData localizationData = default);
+    protected abstract void ExtractFromXml(Stream inputXmlFile, Stream outputStream, Action<Stream, IdContainer, bool> writeItem, LocalizationData localizationData);
 
     protected static XmlElement? FindElement(XmlNode node, string elementName)
     {
@@ -35,7 +36,7 @@ public abstract class BaseExtractor
     public void Extract(LocalizationData localizationData = default)
     {
         var xmlPath = DecryptBinFile(GetBinFilePath(), OutputFolderPath);
-        Console.WriteLine("Attribute of the File " + OutputFolderPath);
+        Debug.Print("Attribute of the File " + OutputFolderPath);
         try
         {
             using var inputFile = File.OpenRead(xmlPath);
@@ -80,7 +81,7 @@ public abstract class BaseExtractor
         WriteString(stream, Environment.NewLine + "]");
     }
 
-    private static void WriteItem(Stream stream, IdContainer idContainer, bool first = false)
+    protected static void WriteItem(Stream stream, IdContainer idContainer, bool first = false)
     {
         var output = new StringBuilder();
 
@@ -94,7 +95,7 @@ public abstract class BaseExtractor
         output.Clear();
     }
 
-    private static void WriteString(Stream stream, string val)
+    protected static void WriteString(Stream stream, string val)
     {
         var buffer = Encoding.UTF8.GetBytes(val);
         stream.Write(buffer, 0, buffer.Length);
