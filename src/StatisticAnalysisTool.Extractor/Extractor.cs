@@ -1,5 +1,4 @@
 ﻿using StatisticAnalysisTool.Extractor.Enums;
-using StatisticAnalysisTool.Extractor.Utilities;
 
 namespace StatisticAnalysisTool.Extractor;
 
@@ -14,7 +13,7 @@ public class Extractor
         await localizationData.LoadDataAsync(mainGameFolderString);
 
         await ItemData.CreateItemDataAsync(mainGameFolderString, localizationData, outputDirPath);
-        // TODO ...
+        await BinaryDumper.ExtractAsync(mainGameFolderString, outputDirPath, new[] { "cluster\\world", "mobs", "spells" });
     }
 
     private static string GetServerTypeString(ServerType serverType)

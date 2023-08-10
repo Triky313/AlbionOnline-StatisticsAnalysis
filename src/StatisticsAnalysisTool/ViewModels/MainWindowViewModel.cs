@@ -132,10 +132,6 @@ public class MainWindowViewModel : INotifyPropertyChanged
         UpgradeSettings();
         SetUiElements();
         Translation = new MainWindowTranslation();
-
-
-        // TEST
-        _ = Extractor.ExtractGameDataAsync("F:\\AlbionOnline", ServerType.Live, "C:\\Users\\schul\\Desktop\\test");
     }
 
     public void SetUiElements()

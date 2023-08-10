@@ -1,5 +1,7 @@
 ﻿using log4net;
 using Notification.Wpf;
+using StatisticAnalysisTool.Extractor;
+using StatisticAnalysisTool.Extractor.Enums;
 using StatisticsAnalysisTool.Backup;
 using StatisticsAnalysisTool.Common;
 using StatisticsAnalysisTool.Common.UserSettings;
@@ -33,6 +35,9 @@ public partial class App
 
         SettingsController.LoadSettings();
         InitializeLanguage();
+
+        // TEST
+        await Extractor.ExtractGameDataAsync("F:\\AlbionOnline", ServerType.Live, "C:\\Users\\schul\\Desktop\\test");
 
         AutoUpdateController.RemoveUpdateFiles();
         await AutoUpdateController.AutoUpdateAsync();

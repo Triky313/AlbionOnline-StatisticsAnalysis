@@ -2,7 +2,7 @@
 using System.Text;
 using System.Xml;
 
-namespace StatisticAnalysisTool.Extractor.Utilities;
+namespace StatisticAnalysisTool.Extractor;
 
 public class LocalizationData : IDisposable
 {
@@ -15,10 +15,10 @@ public class LocalizationData : IDisposable
     public async Task LoadDataAsync(string mainGameFolder)
     {
         var localizationBinFilePath = Path.Combine(mainGameFolder, ".\\Albion-Online_Data\\StreamingAssets\\GameData\\localization.bin");
-        var localizationDataByteArray = await BinaryDecrypter.DecryptAndDecompressAsync(localizationBinFilePath);
+        var localizationData = await BinaryDecrypter.DecryptAndDecompressAsync(localizationBinFilePath);
 
         var xmlDoc = new XmlDocument();
-        xmlDoc.LoadXml(Encoding.UTF8.GetString(localizationDataByteArray));
+        xmlDoc.LoadXml(Encoding.UTF8.GetString(localizationData.ToArray()));
 
         var rootNode = xmlDoc.LastChild?.LastChild?.ChildNodes;
 
@@ -27,7 +27,7 @@ public class LocalizationData : IDisposable
             return;
         }
 
-        await Parallel.ForEachAsync(rootNode.Cast<XmlNode>(), (node, _)  =>
+        await Parallel.ForEachAsync(rootNode.Cast<XmlNode>(), (node, _) =>
         {
             if (node.NodeType != XmlNodeType.Element)
             {
@@ -62,7 +62,7 @@ public class LocalizationData : IDisposable
             // Is item name
             else
             {
-                LocalizedNames[tuId.Value] = new ConcurrentDictionary<string, string>(languages); 
+                LocalizedNames[tuId.Value] = new ConcurrentDictionary<string, string>(languages);
             }
 
             return default;

@@ -8,11 +8,11 @@ public static class BinaryDecrypter
     private static readonly byte[] Key = { 48, 239, 114, 71, 66, 242, 4, 50 };
     private static readonly byte[] Iv = { 14, 166, 220, 137, 219, 237, 220, 79 };
 
-    public static void DecryptBinaryFile(string inputPath, Stream outputStream)
+    public static async Task DecryptBinaryFileAsync(string inputPath, Stream outputStream)
     {
-        using var inputFile = File.OpenRead(inputPath);
+        await using var inputFile = File.OpenRead(inputPath);
         var fileBuffer = new byte[inputFile.Length];
-        int _ = inputFile.Read(fileBuffer, 0, fileBuffer.Length);
+        _ = await inputFile.ReadAsync(fileBuffer, 0, fileBuffer.Length);
 
         var tDes = new DESCryptoServiceProvider
         {
@@ -26,18 +26,18 @@ public static class BinaryDecrypter
         var buffer = new byte[size];
         int bytesRead;
 
-        using GZipStream decompression = new GZipStream(new MemoryStream(outBuffer), CompressionMode.Decompress);
+        await using GZipStream decompression = new GZipStream(new MemoryStream(outBuffer), CompressionMode.Decompress);
         while ((bytesRead = decompression.Read(buffer, 0, buffer.Length)) > 0)
         {
-            outputStream.Write(buffer, 0, bytesRead);
+            await outputStream.WriteAsync(buffer, 0, bytesRead);
         }
     }
 
-    public static byte[] DecryptAndDecompress(string inputPath)
+    public static async Task<MemoryStream> DecryptAndDecompressAsync(string inputPath)
     {
-        using var inputFile = File.OpenRead(inputPath);
+        await using var inputFile = File.OpenRead(inputPath);
         var fileBuffer = new byte[inputFile.Length];
-        int bytesRead = inputFile.Read(fileBuffer, 0, fileBuffer.Length);
+        int bytesRead = await inputFile.ReadAsync(fileBuffer, 0, fileBuffer.Length);
 
         var tDes = new DESCryptoServiceProvider
         {
@@ -51,14 +51,14 @@ public static class BinaryDecrypter
         var buffer = new byte[size];
         int decompressedBytesRead;
 
-        using GZipStream decompression = new GZipStream(new MemoryStream(outBuffer), CompressionMode.Decompress);
-        using MemoryStream outputMemoryStream = new MemoryStream();
+        await using GZipStream decompression = new GZipStream(new MemoryStream(outBuffer), CompressionMode.Decompress);
+        await using MemoryStream outputMemoryStream = new MemoryStream();
 
-        while ((decompressedBytesRead = decompression.Read(buffer, 0, buffer.Length)) > 0)
+        while ((decompressedBytesRead = await decompression.ReadAsync(buffer, 0, buffer.Length)) > 0)
         {
-            outputMemoryStream.Write(buffer, 0, decompressedBytesRead);
+            await outputMemoryStream.WriteAsync(buffer, 0, decompressedBytesRead);
         }
 
-        return outputMemoryStream.ToArray();
+        return outputMemoryStream;
     }
 }

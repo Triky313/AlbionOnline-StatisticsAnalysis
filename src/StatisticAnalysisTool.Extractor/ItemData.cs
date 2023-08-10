@@ -1,19 +1,31 @@
-﻿using StatisticAnalysisTool.Extractor.Utilities;
+﻿using System.Text;
 using System.Xml;
 
 namespace StatisticAnalysisTool.Extractor;
 
-public class ItemExtractor : BaseExtractor
+public class ItemData : IDisposable
 {
-    public ItemExtractor(string mainGameFolder, string outputFolderPath) : base(mainGameFolder, outputFolderPath)
+    public static async Task CreateItemDataAsync(string mainGameFolder, LocalizationData localizationData, string outputFolderPath, string outputFileNameWithExtension = "items.json")
     {
+        var itemBinPath = Path.Combine(mainGameFolder, ".\\Albion-Online_Data\\StreamingAssets\\GameData\\items.bin");
+        var itemDataByteArray = await BinaryDecrypter.DecryptAndDecompressAsync(itemBinPath);
+
+        ExtractFromByteArray(itemDataByteArray.ToArray(), GetExportStream(outputFolderPath, outputFileNameWithExtension), localizationData);
     }
 
-    protected override void ExtractFromXml(Stream inputXmlFile, Stream outputStream, Action<Stream, IdContainer, bool> writeItem, LocalizationData localizationData)
+    private static Stream GetExportStream(string outputFolderPath, string outputFileNameWithExtension)
+    {
+        var stream = File.Create(Path.Combine(outputFolderPath, outputFileNameWithExtension));
+        ExtractorUtilities.WriteString(stream, "[" + Environment.NewLine);
+        return stream;
+    }
+
+    private static void ExtractFromByteArray(byte[] itemDataByteArray, Stream outputStream, LocalizationData localizationData)
     {
         var journals = new List<IdContainer>();
+
         var xmlDoc = new XmlDocument();
-        xmlDoc.Load(inputXmlFile);
+        xmlDoc.LoadXml(RemoveNonPrintableCharacters(Encoding.UTF8.GetString(RemoveBom(itemDataByteArray))));
 
         var rootNode = xmlDoc.LastChild;
 
@@ -54,8 +66,9 @@ public class ItemExtractor : BaseExtractor
                         : LocalizationData.ItemPrefix + uniqueName + LocalizationData.DescPostfix,
                     LocalizationNameVariable = localizationNameVariable
                 };
+
                 SetLocalization(localizationData, container);
-                writeItem(outputStream, container, first);
+                ExtractorUtilities.WriteItem(outputStream, container, first);
                 if (first)
                 {
                     first = false;
@@ -91,7 +104,7 @@ public class ItemExtractor : BaseExtractor
                         LocalizationNameVariable = name != null ? name.Value : LocalizationData.ItemPrefix + uniqueName
                     };
                     SetLocalization(localizationData, container);
-                    writeItem(outputStream, container, false);
+                    ExtractorUtilities.WriteItem(outputStream, container);
 
                     index++;
                 }
@@ -110,7 +123,7 @@ public class ItemExtractor : BaseExtractor
             };
 
             SetLocalization(localizationData, container);
-            writeItem(outputStream, container, false);
+            ExtractorUtilities.WriteItem(outputStream, container);
             index++;
 
             container = new ItemContainer()
@@ -122,12 +135,15 @@ public class ItemExtractor : BaseExtractor
             };
 
             SetLocalization(localizationData, container);
-            writeItem(outputStream, container, false);
+            ExtractorUtilities.WriteItem(outputStream, container);
             index++;
         }
+
+        ExtractorUtilities.WriteString(outputStream, Environment.NewLine + "]");
+        outputStream.Close();
     }
 
-    private void SetLocalization(LocalizationData data, ItemContainer item)
+    private static void SetLocalization(LocalizationData data, ItemContainer item)
     {
         if (data.LocalizedDescriptions.TryGetValue(item.LocalizationDescriptionVariable, out var descriptions))
         {
@@ -140,8 +156,43 @@ public class ItemExtractor : BaseExtractor
         }
     }
 
-    protected override string GetBinFilePath()
+    private static XmlElement? FindElement(XmlNode node, string elementName)
     {
-        return Path.Combine(MainGameFolder, ".\\Albion-Online_Data\\StreamingAssets\\GameData\\items.bin");
+        foreach (XmlNode childNode in node.ChildNodes)
+        {
+            if (childNode is XmlElement ele && ele.Name == elementName)
+            {
+                return ele;
+            }
+        }
+
+        return null;
+    }
+
+    private static string RemoveNonPrintableCharacters(string input)
+    {
+        return new string(input.Where(c => !char.IsControl(c) || char.IsWhiteSpace(c)).ToArray());
+    }
+
+    private static byte[] RemoveBom(byte[] byteArray)
+    {
+        byte[] utf8Bom = { 0xEF, 0xBB, 0xBF };
+
+        if (byteArray.Length >= utf8Bom.Length && byteArray[0] == utf8Bom[0] && byteArray[1] == utf8Bom[1] && byteArray[2] == utf8Bom[2])
+        {
+            return byteArray.Skip(utf8Bom.Length).ToArray();
+        }
+
+        return byteArray;
+    }
+
+    public void Dispose()
+    {
+        GC.SuppressFinalize(this);
+    }
+
+    ~ItemData()
+    {
+        Dispose();
     }
 }

@@ -1,66 +1,62 @@
-﻿using System.Text.Json;
+﻿using Newtonsoft.Json;
 using System.Xml;
+using Formatting = Newtonsoft.Json.Formatting;
 
 namespace StatisticAnalysisTool.Extractor;
 
 public class BinaryDumper
 {
-    public void Extract(string mainGameFolder, string outputFolderPath)
+    public static async Task ExtractAsync(string mainGameFolder, string outputFolderPath,
+        string[] binFileNamesToExtract)
     {
-        var allFiles = Directory.GetFiles(GetBinFilePath(mainGameFolder), "*.bin", SearchOption.AllDirectories);
+        var allFiles = GetBinFilePaths(mainGameFolder, binFileNamesToExtract);
         var outFiles = (string[]) allFiles.Clone();
         for (var i = 0; i < outFiles.Length; i++)
         {
-            outFiles[i] = outFiles[i].Remove(0, outFiles[i].LastIndexOf("GameData\\", StringComparison.Ordinal) + "GameData\\".Length);
+            outFiles[i] = outFiles[i].Remove(0,
+                outFiles[i].LastIndexOf("GameData\\", StringComparison.Ordinal) + "GameData\\".Length);
         }
 
-        for (var i = 0; i < allFiles.Length; i++)
+        foreach (string binFilePath in allFiles)
         {
-            DecryptBinFile(outputFolderPath, allFiles[i], outFiles[i]);
+            await DecryptBinFileAsync(outputFolderPath, binFilePath);
         }
     }
 
-    private string GetBinFilePath(string mainGameFolder)
+    private static string[] GetBinFilePaths(string mainGameFolder, IEnumerable<string> binFileNamesToExtract)
     {
-        return Path.Combine(mainGameFolder, @".\Albion-Online_Data\StreamingAssets\GameData");
+        return binFileNamesToExtract.Select(fileName => Path.Combine(GetBinFilePath(mainGameFolder), $"{fileName}.bin"))
+            .ToArray();
     }
 
-    private string DecryptBinFile(string outputFolderPath, string binFile, string subdir)
+    private static string GetBinFilePath(string mainGameFolder)
     {
-        var binFileWOE = Path.GetFileNameWithoutExtension(binFile);
+        return Path.Combine(mainGameFolder, ".\\Albion-Online_Data\\StreamingAssets\\GameData");
+    }
 
-        // Skip profanity as it has no value for us
-        if (binFileWOE.StartsWith("profanity", StringComparison.OrdinalIgnoreCase))
+    private static async Task DecryptBinFileAsync(string outputFolderPath, string binFilePath)
+    {
+        var binFileWoe = Path.GetFileNameWithoutExtension(binFilePath);
+
+        if (binFileWoe.StartsWith("profanity", StringComparison.OrdinalIgnoreCase))
         {
-            return "";
+            return;
         }
 
-        var outSubdirs = Path.GetDirectoryName(Path.Combine(outputFolderPath, subdir));
+        var finalJsonPath = Path.Combine(outputFolderPath, binFileWoe + ".json");
 
-        if (outSubdirs != "")
-            Directory.CreateDirectory(outSubdirs);
-        var finalOutPath = Path.Combine(outSubdirs, binFileWOE);
-        var finalXmlPath = finalOutPath + ".xml";
-        var finalJsonPath = finalOutPath + ".json";
-        Console.Out.WriteLine("Extracting " + binFileWOE + ".bin... to:" + finalOutPath + ".xml");
+        await using var memoryStream = new MemoryStream();
+        await BinaryDecrypter.DecryptBinaryFileAsync(binFilePath, memoryStream);
+        memoryStream.Position = 0;
 
-        using (var outputXmlFile = File.Create(finalXmlPath))
+        var xmlDocument = new XmlDocument();
+        var xmlReaderSettings = new XmlReaderSettings
         {
-            BinaryDecrypter.DecryptBinaryFile(binFile, outputXmlFile);
-        }
+            IgnoreComments = true
+        };
+        var xmlReader = XmlReader.Create(memoryStream, xmlReaderSettings);
+        xmlDocument.Load(xmlReader);
 
-        if (string.Equals("world", binFileWOE, StringComparison.OrdinalIgnoreCase) || (!subdir.StartsWith("cluster") && !subdir.StartsWith("templates")))
-        {
-            var xmlDocument = new XmlDocument();
-            var xmlReaderSettings = new XmlReaderSettings
-            {
-                IgnoreComments = true
-            };
-            var xmlReader = XmlReader.Create(finalXmlPath, xmlReaderSettings);
-            xmlDocument.Load(xmlReader);
-            File.WriteAllText(finalJsonPath, JsonSerializer.Serialize(xmlDocument, new JsonSerializerOptions { WriteIndented = true }));
-        }
-
-        return finalOutPath;
+        await File.WriteAllTextAsync(finalJsonPath, JsonConvert.SerializeXmlNode(xmlDocument, Formatting.Indented, false));
     }
 }
