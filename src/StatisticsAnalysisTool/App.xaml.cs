@@ -39,25 +39,31 @@ public partial class App
         await AutoUpdateController.AutoUpdateAsync();
         await BackupController.DeleteOldestBackupsIfNeededAsync();
 
-        RegisterServices();
+        RegisterServicesEarly();
 
         Current.MainWindow = new MainWindow(_mainWindowViewModel);
         await GameData.InitializeMainGameDataFilesAsync();
 
+        RegisterServicesLate();
+
         await _mainWindowViewModel.InitMainWindowDataAsync();
         Current.MainWindow.Show();
+
 
         Utilities.AnotherAppToStart(SettingsController.CurrentSettings.AnotherAppToStartPath);
     }
 
-    private void RegisterServices()
+    private void RegisterServicesEarly()
     {
         _mainWindowViewModel = new MainWindowViewModel();
         ServiceLocator.Register<MainWindowViewModel>(_mainWindowViewModel);
 
         var satNotifications = new SatNotificationManager(new NotificationManager(Current.Dispatcher));
         ServiceLocator.Register<SatNotificationManager>(satNotifications);
+    }
 
+    private void RegisterServicesLate()
+    {
         _trackingController = new TrackingController(_mainWindowViewModel);
         ServiceLocator.Register<TrackingController>(_trackingController);
     }

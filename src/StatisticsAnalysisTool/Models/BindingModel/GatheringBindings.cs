@@ -51,8 +51,6 @@ public class GatheringBindings : INotifyPropertyChanged
             GatheredCollectionView.IsLiveSorting = true;
             GatheredCollectionView.IsLiveFiltering = true;
             GatheredCollectionView.CustomSort = new GatheredComparer();
-
-            GatheredCollectionView?.Refresh();
         }
 
         GatheredCollection.CollectionChanged += UpdateStatsAsync;

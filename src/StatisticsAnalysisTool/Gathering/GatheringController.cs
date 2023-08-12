@@ -246,7 +246,7 @@ public class GatheringController
         public bool IsFishingSucceeded { get; set; }
         public bool IsClosedForEvents { get; set; }
         public ObservableCollection<DiscoveredItem> DiscoveredFishingItems = new();
-        public ObservableCollection<DiscoveredItem> ConfirmedFishingItems = new ();
+        public ObservableCollection<DiscoveredItem> ConfirmedFishingItems = new();
 
         public FishingEvent()
         {
@@ -312,6 +312,7 @@ public class GatheringController
             _mainWindowViewModel?.GatheringBindings?.GatheredCollection?.AddRange(enumerable.AsEnumerable());
             _mainWindowViewModel?.GatheringBindings?.GatheredCollectionView?.Refresh();
         }, DispatcherPriority.Loaded, CancellationToken.None);
+        _mainWindowViewModel?.GatheringBindings?.GatheredCollectionView?.Refresh();
     }
 
     #endregion
