@@ -5,7 +5,7 @@ namespace StatisticAnalysisTool.Extractor;
 
 public class ItemData : IDisposable
 {
-    public static async Task CreateItemDataAsync(string mainGameFolder, LocalizationData localizationData, string outputFolderPath, string outputFileNameWithExtension = "items.json")
+    public static async Task CreateItemDataAsync(string mainGameFolder, LocalizationData localizationData, string outputFolderPath, string outputFileNameWithExtension = "indexedItems.json")
     {
         var itemBinPath = Path.Combine(mainGameFolder, ".\\Albion-Online_Data\\StreamingAssets\\GameData\\items.bin");
         var itemDataByteArray = await BinaryDecrypter.DecryptAndDecompressAsync(itemBinPath);
@@ -27,14 +27,14 @@ public class ItemData : IDisposable
         var xmlDoc = new XmlDocument();
         xmlDoc.LoadXml(RemoveNonPrintableCharacters(Encoding.UTF8.GetString(RemoveBom(itemDataByteArray))));
 
-        var rootNode = xmlDoc.LastChild;
+        using var childNodes = xmlDoc.LastChild?.ChildNodes;
 
         var index = 1;
         var first = true;
 
-        if (rootNode?.ChildNodes != null)
+        if (childNodes != null)
         {
-            foreach (XmlNode node in rootNode.ChildNodes)
+            foreach (XmlNode node in childNodes)
             {
                 if (node.NodeType != XmlNodeType.Element || string.IsNullOrEmpty(node.Attributes?["uniquename"]?.Value))
                 {

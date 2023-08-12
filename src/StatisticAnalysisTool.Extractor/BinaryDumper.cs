@@ -6,15 +6,13 @@ namespace StatisticAnalysisTool.Extractor;
 
 public class BinaryDumper
 {
-    public static async Task ExtractAsync(string mainGameFolder, string outputFolderPath,
-        string[] binFileNamesToExtract)
+    public static async Task ExtractAsync(string mainGameFolder, string outputFolderPath, string[] binFileNamesToExtract)
     {
         var allFiles = GetBinFilePaths(mainGameFolder, binFileNamesToExtract);
         var outFiles = (string[]) allFiles.Clone();
         for (var i = 0; i < outFiles.Length; i++)
         {
-            outFiles[i] = outFiles[i].Remove(0,
-                outFiles[i].LastIndexOf("GameData\\", StringComparison.Ordinal) + "GameData\\".Length);
+            outFiles[i] = outFiles[i].Remove(0, outFiles[i].LastIndexOf("GameData\\", StringComparison.Ordinal) + "GameData\\".Length);
         }
 
         foreach (string binFilePath in allFiles)
@@ -25,13 +23,8 @@ public class BinaryDumper
 
     private static string[] GetBinFilePaths(string mainGameFolder, IEnumerable<string> binFileNamesToExtract)
     {
-        return binFileNamesToExtract.Select(fileName => Path.Combine(GetBinFilePath(mainGameFolder), $"{fileName}.bin"))
+        return binFileNamesToExtract.Select(fileName => Path.Combine(ExtractorUtilities.GetBinFilePath(mainGameFolder), $"{fileName}.bin"))
             .ToArray();
-    }
-
-    private static string GetBinFilePath(string mainGameFolder)
-    {
-        return Path.Combine(mainGameFolder, ".\\Albion-Online_Data\\StreamingAssets\\GameData");
     }
 
     private static async Task DecryptBinFileAsync(string outputFolderPath, string binFilePath)
