@@ -1,6 +1,6 @@
 ﻿using StatisticsAnalysisTool.Common;
 using StatisticsAnalysisTool.Common.UserSettings;
-using StatisticsAnalysisTool.GameData;
+using StatisticsAnalysisTool.GameFileData;
 using StatisticsAnalysisTool.ViewModels;
 using System;
 using System.Collections.Generic;
@@ -49,7 +49,7 @@ public class RequiredResource : INotifyPropertyChanged
         var sellPriceMin = _marketResponse?.FirstOrDefault(x => string.Equals(x?.City, Locations.GetParameterName(location), StringComparison.CurrentCultureIgnoreCase))?.SellPriceMin;
         if (sellPriceMin != null)
         {
-            ResourceCost = (long)sellPriceMin;
+            ResourceCost = (long) sellPriceMin;
         }
     }
 
@@ -134,7 +134,7 @@ public class RequiredResource : INotifyPropertyChanged
         set
         {
             _resourceCost = value;
-                
+
             TotalCost = ResourceCost * TotalQuantity;
             _itemWindowViewModelOld.UpdateCraftingCalculationTab();
             OnPropertyChanged();

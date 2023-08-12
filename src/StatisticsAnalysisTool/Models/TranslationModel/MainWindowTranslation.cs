@@ -105,10 +105,6 @@ public class MainWindowTranslation
     public static string Thanks => LanguageController.Translation("THANKS");
     public static string UnsupportedOs => LanguageController.Translation("UNSUPPORTED_OS");
     public static string OpenToolDirectory => LanguageController.Translation("OPEN_TOOL_DIRECTORY");
-    public static string FileDownloadFailedText1 => LanguageController.Translation("FILE_DOWNLOAD_FAILED_TEXT1");
-    public static string FileDownloadFailedText2 => LanguageController.Translation("FILE_DOWNLOAD_FAILED_TEXT2");
-    public static string FileDownloadFailedText3 => LanguageController.Translation("FILE_DOWNLOAD_FAILED_TEXT3");
-    public static string FileDownloadFailedText4 => LanguageController.Translation("FILE_DOWNLOAD_FAILED_TEXT4");
     public static string ThenRestartTheTool => LanguageController.Translation("THEN_RESTART_THE_TOOL");
     public static string Or => LanguageController.Translation("OR");
     public static string SelectDeselectAll => LanguageController.Translation("SELECT_DESELECT_ALL");

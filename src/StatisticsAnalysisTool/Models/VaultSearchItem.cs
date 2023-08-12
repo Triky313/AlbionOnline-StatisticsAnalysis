@@ -1,7 +1,7 @@
-﻿using System.Text.Json.Serialization;
-using StatisticsAnalysisTool.Cluster;
+﻿using StatisticsAnalysisTool.Cluster;
 using StatisticsAnalysisTool.Common;
-using StatisticsAnalysisTool.GameData;
+using StatisticsAnalysisTool.GameFileData;
+using System.Text.Json.Serialization;
 
 namespace StatisticsAnalysisTool.Models;
 
