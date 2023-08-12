@@ -47,29 +47,37 @@ public class Extractor
         return serverTypeString;
     }
 
-    public static bool IsBinFileNewer(DateTime toolFileDateTime, string mainGameFolder, ServerType serverType, string fileName)
+    public static bool IsBinFileNewer(string toolFilePath, string mainGameFolder, ServerType serverType, string binFileName)
     {
-        string mainGameFolderPath = Path.Combine(mainGameFolder, GetServerTypeString(serverType));
-        var binFilePath = Path.Combine(ExtractorUtilities.GetBinFilePath(mainGameFolderPath), $"{fileName}.bin");
-
-        if (!File.Exists(binFilePath))
-        {
-            return false;
-        }
-
         try
         {
-            if (File.GetLastWriteTime(binFilePath) > toolFileDateTime)
+            string mainGameFolderPath = Path.Combine(mainGameFolder, GetServerTypeString(serverType));
+            var binFilePath = Path.Combine(ExtractorUtilities.GetBinFilePath(mainGameFolderPath), $"{binFileName}.bin");
+            var toolFileDateTime = File.GetLastWriteTime(toolFilePath);
+
+            if (!File.Exists(binFilePath))
             {
-                return true;
+                return false;
             }
+
+            try
+            {
+                if (File.GetLastWriteTime(binFilePath) > toolFileDateTime)
+                {
+                    return true;
+                }
+            }
+            catch
+            {
+                return false;
+            }
+
+            return false;
         }
         catch
         {
             return false;
         }
-
-        return false;
     }
 
     public static bool IsValidMainGameFolder(string mainGameFolder, ServerType serverType)

@@ -25,13 +25,10 @@ namespace StatisticsAnalysisTool.ViewModels;
 
 public class SettingsWindowViewModel : INotifyPropertyChanged
 {
-    private static string _itemListSourceUrl;
-    private static string _mobsJsonSourceUrl;
     private static ObservableCollection<FileInformation> _languages = new();
     private static FileInformation _languagesSelection;
     private static ObservableCollection<SettingDataInformation> _refreshRates = new();
     private static SettingDataInformation _refreshRatesSelection;
-    private static SettingDataInformation _updateItemListByDaysSelection;
     private static readonly ILog Log = LogManager.GetLogger(MethodBase.GetCurrentMethod()?.DeclaringType);
     private ObservableCollection<FileInformation> _alertSounds = new();
     private FileInformation _alertSoundSelection;
@@ -40,18 +37,9 @@ public class SettingsWindowViewModel : INotifyPropertyChanged
     private SettingsWindowTranslation _translation;
     private string _albionDataProjectBaseUrlWest;
     private string _albionDataProjectBaseUrlEast;
-    private string _goldStatsApiUrl;
     private bool _isLootLoggerSaveReminderActive;
-    private string _itemsJsonSourceUrl;
-    private static ObservableCollection<SettingDataInformation> _updateItemListByDays = new();
-    private ObservableCollection<SettingDataInformation> _updateItemsJsonByDays = new();
-    private ObservableCollection<SettingDataInformation> _updateMobsJsonByDays = new();
-    private ObservableCollection<SettingDataInformation> _updateWorldJsonByDays = new();
-    private ObservableCollection<SettingDataInformation> _updateSpellsJsonByDays = new();
     private ObservableCollection<SettingDataInformation> _backupIntervalByDays = new();
     private ObservableCollection<SettingDataInformation> _maximumNumberOfBackups = new();
-    private SettingDataInformation _updateItemsJsonByDaysSelection;
-    private SettingDataInformation _updateMobsJsonByDaysSelection;
     private bool _isSuggestPreReleaseUpdatesActive;
     private string _mainTrackingCharacterName;
     private bool _shortDamageMeterToClipboard;
@@ -61,14 +49,7 @@ public class SettingsWindowViewModel : INotifyPropertyChanged
     private ObservableCollection<NotificationFilter> _notificationFilters = new();
     private string _packetFilter;
     private short _playerSelectionWithSameNameInDb;
-    private bool _isUpdateItemListNowButtonEnabled = true;
-    private bool _isUpdateItemsJsonNowButtonEnabled = true;
-    private bool _isUpdateMobsJsonNowButtonEnabled = true;
     private bool _isBackupNowButtonEnabled = true;
-    private string _worldJsonSourceUrl;
-    private string _spellsJsonSourceUrl;
-    private SettingDataInformation _updateWorldJsonByDaysSelection;
-    private SettingDataInformation _updateSpellsJsonByDaysSelection;
     private SettingDataInformation _backupIntervalByDaysSelection;
     private SettingDataInformation _maximumNumberOfBackupsSelection;
     private string _anotherAppToStartPath;
@@ -89,31 +70,6 @@ public class SettingsWindowViewModel : INotifyPropertyChanged
         InitServer();
 
         MainTrackingCharacterName = SettingsController.CurrentSettings.MainTrackingCharacterName;
-
-        // Update item list by days
-        InitDropDownDownByDays(UpdateItemListByDays);
-        UpdateItemListByDaysSelection = UpdateItemListByDays.FirstOrDefault(x => x.Value == SettingsController.CurrentSettings.UpdateItemListByDays);
-        ItemListSourceUrl = SettingsController.CurrentSettings.ItemListSourceUrl;
-
-        // Update items.json by days
-        InitDropDownDownByDays(UpdateItemsJsonByDays);
-        UpdateItemsJsonByDaysSelection = UpdateItemsJsonByDays.FirstOrDefault(x => x.Value == SettingsController.CurrentSettings.UpdateItemsJsonByDays);
-        ItemsJsonSourceUrl = SettingsController.CurrentSettings.ItemsJsonSourceUrl;
-
-        // Update mobs.json by days
-        InitDropDownDownByDays(UpdateMobsJsonByDays);
-        UpdateMobsJsonByDaysSelection = UpdateMobsJsonByDays.FirstOrDefault(x => x.Value == SettingsController.CurrentSettings.UpdateMobsJsonByDays);
-        MobsJsonSourceUrl = SettingsController.CurrentSettings.MobsJsonSourceUrl;
-
-        // Update world.json by days
-        InitDropDownDownByDays(UpdateWorldJsonByDays);
-        UpdateWorldJsonByDaysSelection = UpdateWorldJsonByDays.FirstOrDefault(x => x.Value == SettingsController.CurrentSettings.UpdateWorldJsonByDays);
-        WorldJsonSourceUrl = SettingsController.CurrentSettings.WorldJsonSourceUrl;
-
-        // Update spells.json by days
-        InitDropDownDownByDays(UpdateSpellsJsonByDays);
-        UpdateSpellsJsonByDaysSelection = UpdateSpellsJsonByDays.FirstOrDefault(x => x.Value == SettingsController.CurrentSettings.UpdateSpellsJsonByDays);
-        SpellsJsonSourceUrl = SettingsController.CurrentSettings.SpellsJsonSourceUrl;
 
         // Backup interval by days
         InitDropDownDownByDays(BackupIntervalByDays);
@@ -160,22 +116,12 @@ public class SettingsWindowViewModel : INotifyPropertyChanged
 
     public void SaveSettings()
     {
-        SettingsController.CurrentSettings.ItemListSourceUrl = ItemListSourceUrl;
-        SettingsController.CurrentSettings.ItemsJsonSourceUrl = ItemsJsonSourceUrl;
-        SettingsController.CurrentSettings.MobsJsonSourceUrl = MobsJsonSourceUrl;
-        SettingsController.CurrentSettings.WorldJsonSourceUrl = WorldJsonSourceUrl;
-        SettingsController.CurrentSettings.SpellsJsonSourceUrl = SpellsJsonSourceUrl;
         SettingsController.CurrentSettings.RefreshRate = RefreshRatesSelection.Value;
         SettingsController.CurrentSettings.Server = ServerSelection.Value;
         SettingsController.CurrentSettings.AnotherAppToStartPath = AnotherAppToStartPath;
         NetworkManager.SetCurrentServer(ServerSelection.Value >= 2 ? AlbionServer.East : AlbionServer.West, true);
         SetPacketFilter();
         SettingsController.CurrentSettings.MainTrackingCharacterName = MainTrackingCharacterName;
-        SettingsController.CurrentSettings.UpdateItemListByDays = UpdateItemListByDaysSelection.Value;
-        SettingsController.CurrentSettings.UpdateItemsJsonByDays = UpdateItemsJsonByDaysSelection.Value;
-        SettingsController.CurrentSettings.UpdateMobsJsonByDays = UpdateMobsJsonByDaysSelection.Value;
-        SettingsController.CurrentSettings.UpdateWorldJsonByDays = UpdateWorldJsonByDaysSelection.Value;
-        SettingsController.CurrentSettings.UpdateSpellsJsonByDays = UpdateSpellsJsonByDaysSelection.Value;
         SettingsController.CurrentSettings.BackupIntervalByDays = BackupIntervalByDaysSelection.Value;
         SettingsController.CurrentSettings.MaximumNumberOfBackups = MaximumNumberOfBackupsSelection.Value;
         SettingsController.CurrentSettings.IsOpenItemWindowInNewWindowChecked = IsOpenItemWindowInNewWindowChecked;
@@ -593,56 +539,6 @@ public class SettingsWindowViewModel : INotifyPropertyChanged
         }
     }
 
-    public SettingDataInformation UpdateItemListByDaysSelection
-    {
-        get => _updateItemListByDaysSelection;
-        set
-        {
-            _updateItemListByDaysSelection = value;
-            OnPropertyChanged();
-        }
-    }
-
-    public SettingDataInformation UpdateItemsJsonByDaysSelection
-    {
-        get => _updateItemsJsonByDaysSelection;
-        set
-        {
-            _updateItemsJsonByDaysSelection = value;
-            OnPropertyChanged();
-        }
-    }
-
-    public SettingDataInformation UpdateMobsJsonByDaysSelection
-    {
-        get => _updateMobsJsonByDaysSelection;
-        set
-        {
-            _updateMobsJsonByDaysSelection = value;
-            OnPropertyChanged();
-        }
-    }
-
-    public SettingDataInformation UpdateWorldJsonByDaysSelection
-    {
-        get => _updateWorldJsonByDaysSelection;
-        set
-        {
-            _updateWorldJsonByDaysSelection = value;
-            OnPropertyChanged();
-        }
-    }
-
-    public SettingDataInformation UpdateSpellsJsonByDaysSelection
-    {
-        get => _updateSpellsJsonByDaysSelection;
-        set
-        {
-            _updateSpellsJsonByDaysSelection = value;
-            OnPropertyChanged();
-        }
-    }
-
     public SettingDataInformation BackupIntervalByDaysSelection
     {
         get => _backupIntervalByDaysSelection;
@@ -659,56 +555,6 @@ public class SettingsWindowViewModel : INotifyPropertyChanged
         set
         {
             _maximumNumberOfBackupsSelection = value;
-            OnPropertyChanged();
-        }
-    }
-
-    public ObservableCollection<SettingDataInformation> UpdateItemListByDays
-    {
-        get => _updateItemListByDays;
-        set
-        {
-            _updateItemListByDays = value;
-            OnPropertyChanged();
-        }
-    }
-
-    public ObservableCollection<SettingDataInformation> UpdateItemsJsonByDays
-    {
-        get => _updateItemsJsonByDays;
-        set
-        {
-            _updateItemsJsonByDays = value;
-            OnPropertyChanged();
-        }
-    }
-
-    public ObservableCollection<SettingDataInformation> UpdateMobsJsonByDays
-    {
-        get => _updateMobsJsonByDays;
-        set
-        {
-            _updateMobsJsonByDays = value;
-            OnPropertyChanged();
-        }
-    }
-
-    public ObservableCollection<SettingDataInformation> UpdateWorldJsonByDays
-    {
-        get => _updateWorldJsonByDays;
-        set
-        {
-            _updateWorldJsonByDays = value;
-            OnPropertyChanged();
-        }
-    }
-
-    public ObservableCollection<SettingDataInformation> UpdateSpellsJsonByDays
-    {
-        get => _updateSpellsJsonByDays;
-        set
-        {
-            _updateSpellsJsonByDays = value;
             OnPropertyChanged();
         }
     }
@@ -823,62 +669,12 @@ public class SettingsWindowViewModel : INotifyPropertyChanged
         }
     }
 
-    public string ItemListSourceUrl
-    {
-        get => _itemListSourceUrl;
-        set
-        {
-            _itemListSourceUrl = value;
-            OnPropertyChanged();
-        }
-    }
-
-    public string ItemsJsonSourceUrl
-    {
-        get => _itemsJsonSourceUrl;
-        set
-        {
-            _itemsJsonSourceUrl = value;
-            OnPropertyChanged();
-        }
-    }
-
-    public string MobsJsonSourceUrl
-    {
-        get => _mobsJsonSourceUrl;
-        set
-        {
-            _mobsJsonSourceUrl = value;
-            OnPropertyChanged();
-        }
-    }
-
-    public string SpellsJsonSourceUrl
-    {
-        get => _spellsJsonSourceUrl;
-        set
-        {
-            _spellsJsonSourceUrl = value;
-            OnPropertyChanged();
-        }
-    }
-
     public string AnotherAppToStartPath
     {
         get => _anotherAppToStartPath;
         set
         {
             _anotherAppToStartPath = value;
-            OnPropertyChanged();
-        }
-    }
-
-    public string WorldJsonSourceUrl
-    {
-        get => _worldJsonSourceUrl;
-        set
-        {
-            _worldJsonSourceUrl = value;
             OnPropertyChanged();
         }
     }
@@ -933,16 +729,6 @@ public class SettingsWindowViewModel : INotifyPropertyChanged
         }
     }
 
-    public string GoldStatsApiUrl
-    {
-        get => _goldStatsApiUrl;
-        set
-        {
-            _goldStatsApiUrl = value;
-            OnPropertyChanged();
-        }
-    }
-
     public bool IsLootLoggerSaveReminderActive
     {
         get => _isLootLoggerSaveReminderActive;
@@ -973,42 +759,12 @@ public class SettingsWindowViewModel : INotifyPropertyChanged
         }
     }
 
-    public bool IsUpdateItemListNowButtonEnabled
-    {
-        get => _isUpdateItemListNowButtonEnabled;
-        set
-        {
-            _isUpdateItemListNowButtonEnabled = value;
-            OnPropertyChanged();
-        }
-    }
-
-    public bool IsUpdateItemsJsonNowButtonEnabled
-    {
-        get => _isUpdateItemsJsonNowButtonEnabled;
-        set
-        {
-            _isUpdateItemsJsonNowButtonEnabled = value;
-            OnPropertyChanged();
-        }
-    }
-
     public bool IsBackupNowButtonEnabled
     {
         get => _isBackupNowButtonEnabled;
         set
         {
             _isBackupNowButtonEnabled = value;
-            OnPropertyChanged();
-        }
-    }
-
-    public bool IsUpdateMobsJsonNowButtonEnabled
-    {
-        get => _isUpdateMobsJsonNowButtonEnabled;
-        set
-        {
-            _isUpdateMobsJsonNowButtonEnabled = value;
             OnPropertyChanged();
         }
     }

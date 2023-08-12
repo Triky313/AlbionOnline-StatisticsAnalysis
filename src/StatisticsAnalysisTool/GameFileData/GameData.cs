@@ -11,7 +11,6 @@ using StatisticsAnalysisTool.Views;
 using System;
 using System.Collections.Generic;
 using System.IO;
-using System.Net.Http;
 using System.Reflection;
 using System.Text;
 using System.Text.Json;
@@ -25,7 +24,7 @@ public static class GameData
 {
     private static readonly ILog Log = LogManager.GetLogger(MethodBase.GetCurrentMethod()?.DeclaringType);
 
-    public static async Task InitializeGameDataFilesAsync()
+    public static async Task InitializeMainGameDataFilesAsync()
     {
         if (string.IsNullOrEmpty(SettingsController.CurrentSettings.MainGameFolderPath))
         {
@@ -38,7 +37,7 @@ public static class GameData
         }
         else if (!string.IsNullOrEmpty(SettingsController.CurrentSettings.MainGameFolderPath)
                  && Extractor.IsBinFileNewer(
-                     File.GetLastWriteTime(Path.Combine(AppDomain.CurrentDomain.BaseDirectory, Settings.Default.ItemListFileName)),
+                     Path.Combine(AppDomain.CurrentDomain.BaseDirectory, Settings.Default.IndexedItemsFileName),
                      SettingsController.CurrentSettings.MainGameFolderPath, ServerType.Live, "items"))
         {
             await GetMainGameDataAsync(SettingsController.CurrentSettings.MainGameFolderPath);
@@ -80,10 +79,38 @@ public static class GameData
             var gameFilesDirPath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, Settings.Default.GameFilesDirectoryName);
 
             var extractor = new Extractor(mainGameFolderPath, ServerType.Live);
-            await extractor.ExtractIndexedItemGameDataAsync(gameFilesDirPath, "indexedItems.json");
-            await extractor.ExtractGameDataAsync(gameFilesDirPath, new[] { "items" });
-            await extractor.ExtractGameDataAsync(tempDirPath, new[] { "cluster\\world", "mobs", "spells", "items" });
+            var fileNamesToLoad = new List<string>();
+
+            if (Extractor.IsBinFileNewer(Path.Combine(gameFilesDirPath, "indexedItems.json"), mainGameFolderPath, ServerType.Live, "items")
+                || Extractor.IsBinFileNewer(Path.Combine(gameFilesDirPath, "items.json"), mainGameFolderPath, ServerType.Live, "items"))
+            {
+                await extractor.ExtractIndexedItemGameDataAsync(gameFilesDirPath, "indexedItems.json");
+                await extractor.ExtractGameDataAsync(gameFilesDirPath, new[] { "items" });
+            }
+
+            if (Extractor.IsBinFileNewer(Path.Combine(gameFilesDirPath, "mobs-modified.json"), mainGameFolderPath, ServerType.Live, "mobs"))
+            {
+                fileNamesToLoad.Add("mobs");
+            }
+
+            if (Extractor.IsBinFileNewer(Path.Combine(gameFilesDirPath, "world-modified.json"), mainGameFolderPath, ServerType.Live, "cluster\\world"))
+            {
+                fileNamesToLoad.Add("cluster\\world");
+            }
+
+            if (Extractor.IsBinFileNewer(Path.Combine(gameFilesDirPath, "spells-modified.json"), mainGameFolderPath, ServerType.Live, "spells"))
+            {
+                fileNamesToLoad.Add("spells");
+            }
+
+            await extractor.ExtractGameDataAsync(tempDirPath, fileNamesToLoad.ToArray());
             extractor.Dispose();
+
+            await ItemController.LoadIndexedItemsDataAsync();
+            await ItemController.LoadItemsDataAsync();
+            await MobsData.LoadDataAsync();
+            await WorldData.LoadDataAsync();
+            await SpellData.LoadDataAsync();
 
             return true;
         }
@@ -95,14 +122,8 @@ public static class GameData
             return false;
         }
     }
-
-    public static async Task<List<T>> LoadDataAsync<T, TRoot>(
-        string tempFileName,
-        string regularDataFileName,
-        string sourceUrl,
-        int updateByDays,
-        string taskName,
-        JsonSerializerOptions jsonSerializerOptions) where T : new()
+    
+    public static async Task<List<T>> LoadDataAsync<T, TRoot>(string tempFileName, string regularDataFileName, JsonSerializerOptions jsonSerializerOptions) where T : new()
     {
         var tempDirPath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, Settings.Default.TempDirecoryName);
         var tempFilePath = Path.Combine(tempDirPath, tempFileName);
@@ -119,21 +140,8 @@ public static class GameData
             return new List<T>();
         }
 
-        var regularFileDateTime = File.GetLastWriteTime(regularDataFilePath);
-        var tempFileDateTime = File.GetLastWriteTime(tempFilePath);
-
-        if (!File.Exists(regularDataFilePath) || regularFileDateTime.AddDays(updateByDays) < DateTime.Now)
+        if (File.Exists(tempFilePath))
         {
-            if (!File.Exists(tempFilePath) || tempFileDateTime.AddDays(updateByDays) < DateTime.Now)
-            {
-                using var client = new HttpClient
-                {
-                    Timeout = TimeSpan.FromSeconds(3600)
-                };
-
-                await client.DownloadFileAsync(sourceUrl, tempFilePath, taskName);
-            }
-
             var fullDataJson = GetDataFromFullJsonFileLocal<T, TRoot>(tempFilePath);
             if (fullDataJson?.Count > 1)
             {

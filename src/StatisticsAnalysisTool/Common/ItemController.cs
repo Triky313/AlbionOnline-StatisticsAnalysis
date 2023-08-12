@@ -1,6 +1,5 @@
 using log4net;
 using StatisticsAnalysisTool.Common.Converters;
-using StatisticsAnalysisTool.Common.UserSettings;
 using StatisticsAnalysisTool.Enumerations;
 using StatisticsAnalysisTool.EstimatedMarketValue;
 using StatisticsAnalysisTool.Models;
@@ -12,7 +11,6 @@ using System.Collections.ObjectModel;
 using System.Globalization;
 using System.IO;
 using System.Linq;
-using System.Net.Http;
 using System.Reflection;
 using System.Runtime.InteropServices;
 using System.Text;
@@ -288,49 +286,13 @@ public static class ItemController
         return (item != null && item.UniqueName.Contains("TRASH")) || item == null;
     }
 
-    public static async Task<bool> GetItemListFromJsonAsync()
+    public static async Task<bool> LoadIndexedItemsDataAsync()
     {
-        var currentSettingsItemListSourceUrl = SettingsController.CurrentSettings.ItemListSourceUrl;
-        var url = GetSourceUrlOrDefault(Settings.Default.DefaultItemListSourceUrl, currentSettingsItemListSourceUrl, ref currentSettingsItemListSourceUrl);
-        SettingsController.CurrentSettings.ItemListSourceUrl = currentSettingsItemListSourceUrl;
-
-        var localFilePath = $"{AppDomain.CurrentDomain.BaseDirectory}{Settings.Default.ItemListFileName}";
-
-        if (string.IsNullOrEmpty(url))
-        {
-            return false;
-        }
-
-        using var client = new HttpClient
-        {
-            Timeout = TimeSpan.FromSeconds(1200)
-        };
-
-        if (File.Exists(localFilePath))
-        {
-            var fileDateTime = File.GetLastWriteTime(localFilePath);
-
-            if (fileDateTime.AddDays(SettingsController.CurrentSettings.UpdateItemListByDays) < DateTime.Now)
-            {
-                if (await client.DownloadFileAsync(url, localFilePath, LanguageController.Translation("GET_ITEM_LIST_JSON")))
-                {
-                    Items = await GetItemListFromLocal();
-                }
-                return Items?.Count > 0;
-            }
-
-            Items = await GetItemListFromLocal();
-            return Items?.Count > 0;
-        }
-
-        if (await client.DownloadFileAsync(url, localFilePath, LanguageController.Translation("GET_ITEM_LIST_JSON")))
-        {
-            Items = await GetItemListFromLocal();
-        }
+        Items = await GetIndexedItemsFromLocal();
         return Items?.Count > 0;
     }
 
-    private static async Task<ObservableCollection<Item>> GetItemListFromLocal()
+    private static async Task<ObservableCollection<Item>> GetIndexedItemsFromLocal()
     {
         try
         {
@@ -340,12 +302,14 @@ public static class ItemController
                                  JsonNumberHandling.WriteAsString
             };
 
-            var localItemString = await File.ReadAllTextAsync($"{AppDomain.CurrentDomain.BaseDirectory}{Settings.Default.ItemListFileName}", Encoding.UTF8);
-            return ConvertItemJsonObjectToItem(JsonSerializer.Deserialize<ObservableCollection<ItemListObject>>(localItemString, options));
+            var localFilePath = await File.ReadAllTextAsync(
+                Path.Combine(AppDomain.CurrentDomain.BaseDirectory, Settings.Default.GameFilesDirectoryName, Settings.Default.IndexedItemsFileName), Encoding.UTF8);
+
+            return ConvertItemJsonObjectToItem(JsonSerializer.Deserialize<ObservableCollection<ItemListObject>>(localFilePath, options));
         }
         catch
         {
-            DeleteLocalFile($"{AppDomain.CurrentDomain.BaseDirectory}{Settings.Default.ItemListFileName}");
+            DeleteLocalFile($"{AppDomain.CurrentDomain.BaseDirectory}{Settings.Default.IndexedItemsFileName}");
             return new ObservableCollection<Item>();
         }
     }
@@ -399,38 +363,6 @@ public static class ItemController
             ConsoleManager.WriteLineForError(MethodBase.GetCurrentMethod()?.DeclaringType, e);
             Log.Error(MethodBase.GetCurrentMethod()?.Name, e);
         }
-    }
-
-    public static bool IsItemListLoaded()
-    {
-        return Items?.Count > 0;
-    }
-
-    public static async Task DownloadItemListAsync()
-    {
-        var url = GetItemListSourceUrlOrDefault();
-        var localFilePath = $"{AppDomain.CurrentDomain.BaseDirectory}{Settings.Default.ItemListFileName}";
-
-        if (string.IsNullOrEmpty(url))
-        {
-            return;
-        }
-
-        using var client = new HttpClient
-        {
-            Timeout = TimeSpan.FromSeconds(1200)
-        };
-
-        await client.DownloadFileAsync(url, localFilePath, LanguageController.Translation("GET_ITEM_LIST_JSON"));
-    }
-
-    private static string GetItemListSourceUrlOrDefault()
-    {
-        var currentSettingsItemListSourceUrl = SettingsController.CurrentSettings.ItemListSourceUrl;
-        var url = GetSourceUrlOrDefault(Settings.Default.DefaultItemListSourceUrl, currentSettingsItemListSourceUrl, ref currentSettingsItemListSourceUrl);
-        SettingsController.CurrentSettings.ItemListSourceUrl = currentSettingsItemListSourceUrl;
-
-        return url;
     }
 
     #endregion Item list
@@ -648,55 +580,17 @@ public static class ItemController
         return itemTypeStructs.FirstOrDefault(x => x.UniqueName == itemObject.UniqueName).ItemType;
     }
 
-    public static async Task<bool> GetItemsJsonAsync()
+    public static async Task<bool> LoadItemsDataAsync()
     {
-        var url = GetItemsJsonSourceUrlOrDefault();
-        var localFilePath = $"{AppDomain.CurrentDomain.BaseDirectory}{Settings.Default.ItemsJsonFileName}";
-
-        if (string.IsNullOrEmpty(url))
-        {
-            return false;
-        }
-
-        using var client = new HttpClient
-        {
-            Timeout = TimeSpan.FromSeconds(1200)
-        };
-
-        if (File.Exists(localFilePath))
-        {
-            var fileDateTime = File.GetLastWriteTime(localFilePath);
-
-            if (fileDateTime.AddDays(SettingsController.CurrentSettings.UpdateItemsJsonByDays) < DateTime.Now)
-            {
-                if (await client.DownloadFileAsync(url, localFilePath, LanguageController.Translation("GET_ITEM_LIST_JSON")))
-                {
-                    _itemsJson = await GetItemsJsonFromLocal();
-                    await SetFullItemInfoToItems();
-                }
-
-                return _itemsJson?.Items != null;
-            }
-
-            _itemsJson = await GetItemsJsonFromLocal();
-            await SetFullItemInfoToItems();
-
-            return _itemsJson?.Items != null;
-        }
-
-        if (await client.DownloadFileAsync(url, localFilePath, LanguageController.Translation("GET_ITEM_LIST_JSON")))
-        {
-            _itemsJson = await GetItemsJsonFromLocal();
-            await SetFullItemInfoToItems();
-        }
+        var localFilePath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, Settings.Default.GameFilesDirectoryName, Settings.Default.ItemsJsonFileName);
+        _itemsJson = await GetItemsJsonFromLocal(localFilePath);
+        await SetFullItemInfoToItems();
 
         return _itemsJson?.Items != null;
     }
 
-    private static async Task<ItemsJson> GetItemsJsonFromLocal()
+    private static async Task<ItemsJson> GetItemsJsonFromLocal(string localFilePath)
     {
-        var localFilePath = $"{AppDomain.CurrentDomain.BaseDirectory}{Settings.Default.ItemsJsonFileName}";
-
         try
         {
             var options = new JsonSerializerOptions()
@@ -770,33 +664,6 @@ public static class ItemController
         return resultUniqueName;
     }
 
-    public static async Task DownloadItemsJsonAsync()
-    {
-        var url = GetItemsJsonSourceUrlOrDefault();
-        var localFilePath = $"{AppDomain.CurrentDomain.BaseDirectory}{Settings.Default.ItemListFileName}";
-
-        if (string.IsNullOrEmpty(url))
-        {
-            return;
-        }
-
-        using var client = new HttpClient
-        {
-            Timeout = TimeSpan.FromSeconds(1200)
-        };
-
-        await client.DownloadFileAsync(url, localFilePath, LanguageController.Translation("GET_ITEM_LIST_JSON"));
-    }
-
-    private static string GetItemsJsonSourceUrlOrDefault()
-    {
-        var currentSettingsItemsJsonSourceUrl = SettingsController.CurrentSettings.ItemsJsonSourceUrl;
-        var url = GetSourceUrlOrDefault(Settings.Default.DefaultItemsJsonSourceUrl, currentSettingsItemsJsonSourceUrl, ref currentSettingsItemsJsonSourceUrl);
-        SettingsController.CurrentSettings.ItemsJsonSourceUrl = currentSettingsItemsJsonSourceUrl;
-
-        return url;
-    }
-
     public static SlotType GetSlotType(string slotTypeString)
     {
         return slotTypeString switch
@@ -842,7 +709,7 @@ public static class ItemController
         }
 
         int totalValue = items.Sum(item => item?.BasicItemPower ?? 0);
-        
+
         var itemCount = items.Length;
         if (items.FirstOrDefault(x => x?.FullItemInformation is Weapon)?.FullItemInformation is Weapon { TwoHanded: true })
         {
@@ -1017,14 +884,6 @@ public static class ItemController
                 Log.Error(MethodBase.GetCurrentMethod()?.Name, e);
             }
         }
-    }
-
-    // ReSharper disable once RedundantAssignment
-    private static string GetSourceUrlOrDefault(string defaultUrl, string sourceUrl, ref string newSourceUrl)
-    {
-        var tempSourceUrl = string.IsNullOrEmpty(sourceUrl) ? defaultUrl : sourceUrl;
-        newSourceUrl = tempSourceUrl;
-        return newSourceUrl;
     }
 
     #endregion

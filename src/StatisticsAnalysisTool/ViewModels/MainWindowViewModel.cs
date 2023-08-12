@@ -9,7 +9,6 @@ using StatisticsAnalysisTool.Common.UserSettings;
 using StatisticsAnalysisTool.Enumerations;
 using StatisticsAnalysisTool.EstimatedMarketValue;
 using StatisticsAnalysisTool.EventLogging;
-using StatisticsAnalysisTool.GameFileData;
 using StatisticsAnalysisTool.Models;
 using StatisticsAnalysisTool.Models.BindingModel;
 using StatisticsAnalysisTool.Models.NetworkModel;
@@ -76,17 +75,12 @@ public class MainWindowViewModel : INotifyPropertyChanged
     private int _partyMemberNumber;
     private bool _isItemSearchCheckboxesEnabled;
     private bool _isFilterResetEnabled;
-    private Visibility _gridTryToLoadTheItemListAgainVisibility = Visibility.Collapsed;
     private bool _isDamageMeterTrackingActive;
     private bool _isTrackingPartyLootOnly;
     private Axis[] _xAxesDashboardHourValues;
     private ObservableCollection<ISeries> _seriesDashboardHourValues;
     private DashboardBindings _dashboardBindings = new();
     private string _loggingSearchText;
-    private Visibility _gridTryToLoadTheItemJsonAgainVisibility = Visibility.Collapsed;
-    private Visibility _gridTryToLoadTheMobsJsonAgainVisibility = Visibility.Collapsed;
-    private Visibility _gridTryToLoadTheWorldJsonAgainVisibility = Visibility.Collapsed;
-    private Visibility _gridTryToLoadTheSpellsJsonAgainVisibility = Visibility.Collapsed;
     private Visibility _toolTasksVisibility = Visibility.Collapsed;
     private double _taskProgressbarMinimum;
     private double _taskProgressbarMaximum = 100;
@@ -250,117 +244,18 @@ public class MainWindowViewModel : INotifyPropertyChanged
         Settings.Default.Save();
     }
 
-    public void InitMainWindowData()
+    public async Task InitMainWindowDataAsync()
     {
 #if DEBUG
         DebugModeVisibility = Visibility.Visible;
 #endif
 
-        _ = InitAsync();
-    }
-
-    public async Task InitAsync()
-    {
         IsTaskProgressbarIndeterminate = true;
         IsTxtSearchEnabled = false;
         IsItemSearchCheckboxesEnabled = false;
         IsFilterResetEnabled = false;
-        GridTryToLoadTheItemListAgainVisibility = Visibility.Collapsed;
-        GridTryToLoadTheItemJsonAgainVisibility = Visibility.Collapsed;
-        GridTryToLoadTheMobsJsonAgainVisibility = Visibility.Collapsed;
-        GridTryToLoadTheSpellsJsonAgainVisibility = Visibility.Collapsed;
 
         ServerTypeText = LanguageController.Translation("UNKNOWN_SERVER");
-
-        if (!ItemController.IsItemListLoaded())
-        {
-            var itemListTaskTextObject = new TaskTextObject(LanguageController.Translation("GET_ITEM_LIST_JSON"));
-            ToolTaskBindings.Add(itemListTaskTextObject);
-            var isItemListLoaded = await ItemController.GetItemListFromJsonAsync().ConfigureAwait(true);
-            if (!isItemListLoaded)
-            {
-                SetErrorBar(Visibility.Visible, LanguageController.Translation("ITEM_LIST_CAN_NOT_BE_LOADED"));
-                GridTryToLoadTheItemListAgainVisibility = Visibility.Visible;
-                IsTaskProgressbarIndeterminate = false;
-                itemListTaskTextObject.SetStatus(TaskTextObject.TaskTextObjectStatus.Canceled);
-            }
-            else
-            {
-                itemListTaskTextObject.SetStatus(TaskTextObject.TaskTextObjectStatus.Done);
-            }
-        }
-
-        if (!ItemController.IsItemsJsonLoaded())
-        {
-            var itemsTaskTextObject = new TaskTextObject(LanguageController.Translation("GET_ITEMS_JSON"));
-            ToolTaskBindings.Add(itemsTaskTextObject);
-            var isItemsJsonLoaded = await ItemController.GetItemsJsonAsync().ConfigureAwait(true);
-            if (!isItemsJsonLoaded)
-            {
-                SetErrorBar(Visibility.Visible, LanguageController.Translation("ITEM_JSON_CAN_NOT_BE_LOADED"));
-                GridTryToLoadTheItemJsonAgainVisibility = Visibility.Visible;
-                IsTaskProgressbarIndeterminate = false;
-                itemsTaskTextObject.SetStatus(TaskTextObject.TaskTextObjectStatus.Canceled);
-            }
-            else
-            {
-                itemsTaskTextObject.SetStatus(TaskTextObject.TaskTextObjectStatus.Done);
-            }
-        }
-
-        if (!MobsData.IsDataLoaded())
-        {
-            var itemsTaskTextObject = new TaskTextObject(LanguageController.Translation("GET_MOBS_JSON"));
-            ToolTaskBindings.Add(itemsTaskTextObject);
-            var isMobsJsonLoaded = await MobsData.LoadDataAsync().ConfigureAwait(true);
-            if (!isMobsJsonLoaded)
-            {
-                SetErrorBar(Visibility.Visible, LanguageController.Translation("MOBS_JSON_CAN_NOT_BE_LOADED"));
-                GridTryToLoadTheMobsJsonAgainVisibility = Visibility.Visible;
-                IsTaskProgressbarIndeterminate = false;
-                itemsTaskTextObject.SetStatus(TaskTextObject.TaskTextObjectStatus.Canceled);
-            }
-            else
-            {
-                itemsTaskTextObject.SetStatus(TaskTextObject.TaskTextObjectStatus.Done);
-            }
-        }
-
-        if (!WorldData.IsDataLoaded())
-        {
-            var itemsTaskTextObject = new TaskTextObject(LanguageController.Translation("GET_WORLD_JSON"));
-            ToolTaskBindings.Add(itemsTaskTextObject);
-            var isLootChestJsonLoaded = await WorldData.LoadDataAsync().ConfigureAwait(true);
-            if (!isLootChestJsonLoaded)
-            {
-                SetErrorBar(Visibility.Visible, LanguageController.Translation("WORLD_JSON_CAN_NOT_BE_LOADED"));
-                GridTryToLoadTheWorldJsonAgainVisibility = Visibility.Visible;
-                IsTaskProgressbarIndeterminate = false;
-                itemsTaskTextObject.SetStatus(TaskTextObject.TaskTextObjectStatus.Canceled);
-            }
-            else
-            {
-                itemsTaskTextObject.SetStatus(TaskTextObject.TaskTextObjectStatus.Done);
-            }
-        }
-
-        if (!SpellData.IsDataLoaded())
-        {
-            var itemsTaskTextObject = new TaskTextObject(LanguageController.Translation("GET_SPELLS_JSON"));
-            ToolTaskBindings.Add(itemsTaskTextObject);
-            var isSpellsJsonLoaded = await SpellData.LoadDataAsync().ConfigureAwait(true);
-            if (!isSpellsJsonLoaded)
-            {
-                SetErrorBar(Visibility.Visible, LanguageController.Translation("SPELLS_JSON_CAN_NOT_BE_LOADED"));
-                GridTryToLoadTheSpellsJsonAgainVisibility = Visibility.Visible;
-                IsTaskProgressbarIndeterminate = false;
-                itemsTaskTextObject.SetStatus(TaskTextObject.TaskTextObjectStatus.Canceled);
-            }
-            else
-            {
-                itemsTaskTextObject.SetStatus(TaskTextObject.TaskTextObjectStatus.Done);
-            }
-        }
 
         await ItemController.SetFavoriteItemsFromLocalFileAsync();
 
@@ -1126,56 +1021,6 @@ public class MainWindowViewModel : INotifyPropertyChanged
         set
         {
             _xAxesDashboardHourValues = value;
-            OnPropertyChanged();
-        }
-    }
-
-    public Visibility GridTryToLoadTheItemListAgainVisibility
-    {
-        get => _gridTryToLoadTheItemListAgainVisibility;
-        set
-        {
-            _gridTryToLoadTheItemListAgainVisibility = value;
-            OnPropertyChanged();
-        }
-    }
-
-    public Visibility GridTryToLoadTheItemJsonAgainVisibility
-    {
-        get => _gridTryToLoadTheItemJsonAgainVisibility;
-        set
-        {
-            _gridTryToLoadTheItemJsonAgainVisibility = value;
-            OnPropertyChanged();
-        }
-    }
-
-    public Visibility GridTryToLoadTheMobsJsonAgainVisibility
-    {
-        get => _gridTryToLoadTheMobsJsonAgainVisibility;
-        set
-        {
-            _gridTryToLoadTheMobsJsonAgainVisibility = value;
-            OnPropertyChanged();
-        }
-    }
-
-    public Visibility GridTryToLoadTheWorldJsonAgainVisibility
-    {
-        get => _gridTryToLoadTheWorldJsonAgainVisibility;
-        set
-        {
-            _gridTryToLoadTheWorldJsonAgainVisibility = value;
-            OnPropertyChanged();
-        }
-    }
-
-    public Visibility GridTryToLoadTheSpellsJsonAgainVisibility
-    {
-        get => _gridTryToLoadTheSpellsJsonAgainVisibility;
-        set
-        {
-            _gridTryToLoadTheSpellsJsonAgainVisibility = value;
             OnPropertyChanged();
         }
     }

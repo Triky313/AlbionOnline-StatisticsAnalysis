@@ -4,7 +4,6 @@ using StatisticsAnalysisTool.Common.UserSettings;
 using StatisticsAnalysisTool.Network.Manager;
 using StatisticsAnalysisTool.ViewModels;
 using System;
-using System.Diagnostics;
 using System.Reflection;
 using System.Windows;
 using System.Windows.Input;
@@ -132,37 +131,8 @@ public partial class MainWindow
         trackingController?.EntityController?.CopyPartyToClipboard();
     }
 
-    private void BtnTryToLoadItemJsonAgain_Click(object sender, RoutedEventArgs e)
-    {
-        _mainWindowViewModel?.InitAsync().ConfigureAwait(false);
-    }
-
-    private void ToolTasksCloseButton_OnClick(object sender, RoutedEventArgs e)
-    {
-        _mainWindowViewModel?.SetToolTasksVisibility(Visibility.Collapsed);
-    }
-
-    private void ToolTasksOpenClose_PreviewMouseDown(object sender, RoutedEventArgs e)
-    {
-        _mainWindowViewModel?.SwitchToolTasksState();
-    }
-
     private void TatsDropDownOpenClose_PreviewMouseDown(object sender, RoutedEventArgs e)
     {
         _mainWindowViewModel?.SwitchStatsDropDownState();
-    }
-
-    private void OpenToolDirectory_Click(object sender, RoutedEventArgs e)
-    {
-        try
-        {
-            _ = Process.Start(new ProcessStartInfo { FileName = MainWindowViewModel.ToolDirectory, UseShellExecute = true });
-        }
-        catch (Exception exception)
-        {
-            _ = MessageBox.Show(exception.Message, LanguageController.Translation("ERROR"));
-            ConsoleManager.WriteLineForError(MethodBase.GetCurrentMethod()?.DeclaringType, exception);
-            Log.Error(MethodBase.GetCurrentMethod()?.DeclaringType, exception);
-        }
     }
 }

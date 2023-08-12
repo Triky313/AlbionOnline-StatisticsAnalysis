@@ -49,9 +49,6 @@ public static class SpellData
         var spells = await GameData.LoadDataAsync<SpellsJsonObject, SpellsJsonRootObject>(
             Settings.Default.SpellDataFileName,
             Settings.Default.ModifiedSpellDataFileName,
-            SettingsController.CurrentSettings.SpellsJsonSourceUrl,
-            SettingsController.CurrentSettings.UpdateSpellsJsonByDays,
-            LanguageController.Translation("GET_SPELLS_JSON"),
             new JsonSerializerOptions()
             {
                 NumberHandling = JsonNumberHandling.AllowReadingFromString,

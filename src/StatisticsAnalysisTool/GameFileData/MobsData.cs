@@ -61,9 +61,6 @@ public static class MobsData
         var mobs = await GameData.LoadDataAsync<MobJsonObject, MobJsonRootObject>(
             Settings.Default.MobDataFileName,
             Settings.Default.ModifiedMobDataFileName,
-            SettingsController.CurrentSettings.MobsJsonSourceUrl,
-            SettingsController.CurrentSettings.UpdateMobsJsonByDays,
-            LanguageController.Translation("GET_MOBS_JSON"),
             new JsonSerializerOptions()
             {
                 NumberHandling = JsonNumberHandling.AllowReadingFromString,

@@ -42,9 +42,9 @@ public partial class App
         RegisterServices();
 
         Current.MainWindow = new MainWindow(_mainWindowViewModel);
-        await GameData.InitializeGameDataFilesAsync();
+        await GameData.InitializeMainGameDataFilesAsync();
 
-        _mainWindowViewModel.InitMainWindowData();
+        await _mainWindowViewModel.InitMainWindowDataAsync();
         Current.MainWindow.Show();
 
         Utilities.AnotherAppToStart(SettingsController.CurrentSettings.AnotherAppToStartPath);

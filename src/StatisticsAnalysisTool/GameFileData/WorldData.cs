@@ -181,9 +181,6 @@ public static class WorldData
         var data = await GameData.LoadDataAsync<WorldJsonObject, WorldJsonRootObject>(
             Settings.Default.WorldDataFileName,
             Settings.Default.ModifiedWorldDataFileName,
-            SettingsController.CurrentSettings.WorldJsonSourceUrl,
-            SettingsController.CurrentSettings.UpdateWorldJsonByDays,
-            LanguageController.Translation("GET_WORLD_JSON"),
             new JsonSerializerOptions()
             {
                 ReadCommentHandling = JsonCommentHandling.Skip
