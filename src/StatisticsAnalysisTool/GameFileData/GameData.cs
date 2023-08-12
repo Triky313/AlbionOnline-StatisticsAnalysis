@@ -1,8 +1,13 @@
 using log4net;
+using StatisticAnalysisTool.Extractor;
+using StatisticAnalysisTool.Extractor.Enums;
 using StatisticsAnalysisTool.Common;
-using StatisticsAnalysisTool.GameData.Models;
+using StatisticsAnalysisTool.Common.UserSettings;
+using StatisticsAnalysisTool.GameFileData.Models;
 using StatisticsAnalysisTool.Models;
 using StatisticsAnalysisTool.Properties;
+using StatisticsAnalysisTool.ViewModels;
+using StatisticsAnalysisTool.Views;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -12,12 +17,84 @@ using System.Text;
 using System.Text.Json;
 using System.Text.Json.Serialization;
 using System.Threading.Tasks;
+using System.Windows;
 
-namespace StatisticsAnalysisTool.GameData;
+namespace StatisticsAnalysisTool.GameFileData;
 
 public static class GameData
 {
     private static readonly ILog Log = LogManager.GetLogger(MethodBase.GetCurrentMethod()?.DeclaringType);
+
+    public static async Task InitializeGameDataFilesAsync()
+    {
+        if (string.IsNullOrEmpty(SettingsController.CurrentSettings.MainGameFolderPath))
+        {
+            var result = await GetMainGameDataWithDialogAsync();
+            if (!result)
+            {
+                Application.Current.Shutdown();
+                return;
+            }
+        }
+        else if (!string.IsNullOrEmpty(SettingsController.CurrentSettings.MainGameFolderPath)
+                 && Extractor.IsBinFileNewer(
+                     File.GetLastWriteTime(Path.Combine(AppDomain.CurrentDomain.BaseDirectory, Settings.Default.ItemListFileName)),
+                     SettingsController.CurrentSettings.MainGameFolderPath, ServerType.Live, "items"))
+        {
+            await GetMainGameDataAsync(SettingsController.CurrentSettings.MainGameFolderPath);
+            return;
+        }
+
+        if (!Extractor.IsValidMainGameFolder(SettingsController.CurrentSettings?.MainGameFolderPath ?? string.Empty, ServerType.Live))
+        {
+            var result = await GetMainGameDataWithDialogAsync();
+            if (!result)
+            {
+                Application.Current.Shutdown();
+            }
+        }
+    }
+
+    public static async Task<bool> GetMainGameDataWithDialogAsync()
+    {
+        var dialogWindow = new GameDataPreparationWindow();
+        var dialogResult = dialogWindow.ShowDialog();
+
+        if (dialogResult is true)
+        {
+            var gameDataPreparationWindowViewModel = (GameDataPreparationWindowViewModel) dialogWindow.DataContext;
+            var mainGameFolderPath = gameDataPreparationWindowViewModel.Path;
+
+            SettingsController.CurrentSettings.MainGameFolderPath = mainGameFolderPath;
+            return await GetMainGameDataAsync(SettingsController.CurrentSettings.MainGameFolderPath);
+        }
+
+        return false;
+    }
+
+    public static async Task<bool> GetMainGameDataAsync(string mainGameFolderPath)
+    {
+        try
+        {
+            var tempDirPath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, Settings.Default.TempDirecoryName);
+            var gameFilesDirPath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, Settings.Default.GameFilesDirectoryName);
+
+            var extractor = new Extractor(mainGameFolderPath, ServerType.Live);
+            await extractor.ExtractIndexedItemGameDataAsync(gameFilesDirPath, "indexedItems.json");
+            await extractor.ExtractGameDataAsync(gameFilesDirPath, new[] { "items" });
+            await extractor.ExtractGameDataAsync(tempDirPath, new[] { "cluster\\world", "mobs", "spells", "items" });
+            extractor.Dispose();
+
+            return true;
+        }
+        catch (Exception e)
+        {
+            SettingsController.CurrentSettings.MainGameFolderPath = string.Empty;
+            ConsoleManager.WriteLineForError(MethodBase.GetCurrentMethod()?.DeclaringType, e);
+            Log.Error(MethodBase.GetCurrentMethod()?.DeclaringType, e);
+            return false;
+        }
+    }
 
     public static async Task<List<T>> LoadDataAsync<T, TRoot>(
         string tempFileName,
