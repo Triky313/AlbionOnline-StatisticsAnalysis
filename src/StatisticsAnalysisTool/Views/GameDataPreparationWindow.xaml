@@ -32,7 +32,7 @@
                        TextWrapping="Wrap" Foreground="{StaticResource SolidColorBrush.Text.1}" Height="60" />
             <TextBlock Text="{Binding ErrorMessage, FallbackValue='ERROR_MESSAGE'}" FontSize="20" TextAlignment="Center" HorizontalAlignment="Center" 
                        TextWrapping="Wrap" Foreground="{StaticResource SolidColorBrush.Accent.Red.2}" Height="60" />
-            <Button Content="{Binding TranslationSelectAlbionOnlineMainGameFolder, FallbackValue='SELECT_ALBION_ONLINE_MAIN_GAME_FOLDER...'}"  
+            <Button Content="{Binding TranslationSelectMainGameFolder, FallbackValue='SELECT_ALBION_ONLINE_MAIN_GAME_FOLDER...'}" ContentStringFormat="{} {0} " 
                     FontSize="18" FontWeight="Bold" Height="34" Width="auto" VerticalAlignment="Bottom" Margin="0,5,10,10" HorizontalAlignment="Center" Click="BtnSelectMainGameFolder_Click" />
             <Button Content="{Binding TranslationConfirm, FallbackValue=CONFIRM}" IsEnabled="{Binding IsConfirmButtonEnabled, FallbackValue=false}"
                     FontSize="18" FontWeight="Bold" Height="34" Width="200" VerticalAlignment="Bottom" Margin="0,0,10,10" HorizontalAlignment="Center" Click="BtnConfirm_Click" />

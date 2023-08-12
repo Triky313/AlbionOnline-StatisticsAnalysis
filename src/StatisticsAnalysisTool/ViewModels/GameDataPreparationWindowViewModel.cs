@@ -104,7 +104,7 @@ public class GameDataPreparationWindowViewModel : INotifyPropertyChanged
         }
     }
 
-    public static string TranslationSelectAlbionOnlineMainGameFolder => LanguageController.Translation("SELECT_ALBION_ONLINE_MAIN_GAME_FOLDER_DOTS");
+    public static string TranslationSelectMainGameFolder => LanguageController.Translation("SELECT_MAIN_GAME_FOLDER_DOTS");
     public static string TranslationConfirm => LanguageController.Translation("CONFIRM");
 
     public event PropertyChangedEventHandler PropertyChanged;
