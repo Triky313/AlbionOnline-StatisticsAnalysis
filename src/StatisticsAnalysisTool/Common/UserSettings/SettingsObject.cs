@@ -98,4 +98,5 @@ public class SettingsObject
     public double PartyBuilderMinimalBasicItemPower { get; set; } = 600;
     public double PartyBuilderMaximumBasicItemPower { get; set; } = 900;
     public string AnotherAppToStartPath { get; set; }
+    public string MainGameFolderPath { get; set; } = string.Empty;
 }
