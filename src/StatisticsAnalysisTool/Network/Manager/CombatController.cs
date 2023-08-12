@@ -47,7 +47,8 @@ public class CombatController
 
     public Task AddDamage(long objectId, long causerId, double healthChange, double newHealthValue)
     {
-        if (!IsDamageMeterActive || objectId == causerId)
+        var healthChangeType = GetHealthChangeType(healthChange);
+        if (!IsDamageMeterActive || (objectId == causerId && healthChangeType == HealthChangeType.Damage))
         {
             return Task.CompletedTask;
         }
@@ -60,7 +61,7 @@ public class CombatController
             return Task.CompletedTask;
         }
 
-        if (GetHealthChangeType(healthChange) == HealthChangeType.Damage)
+        if (healthChangeType == HealthChangeType.Damage)
         {
             var damageChangeValue = (int) Math.Round(healthChange.ToPositiveFromNegativeOrZero(), MidpointRounding.AwayFromZero);
             if (damageChangeValue <= 0)
@@ -68,10 +69,10 @@ public class CombatController
                 return Task.CompletedTask;
             }
 
-            gameObject.Value.Value.Damage += damageChangeValue;
+            gameObjectValue.Damage += damageChangeValue;
         }
 
-        if (GetHealthChangeType(healthChange) == HealthChangeType.Heal)
+        if (healthChangeType == HealthChangeType.Heal)
         {
             var healChangeValue = healthChange;
             if (healChangeValue <= 0)
@@ -81,10 +82,11 @@ public class CombatController
 
             if (IsMaxHealthReached(objectId, newHealthValue))
             {
+                gameObjectValue.Overhealed += (int) Math.Round(healChangeValue, MidpointRounding.AwayFromZero);
                 return Task.CompletedTask;
             }
 
-            gameObject.Value.Value.Heal += (int) Math.Round(healChangeValue, MidpointRounding.AwayFromZero);
+            gameObjectValue.Heal += (int) Math.Round(healChangeValue, MidpointRounding.AwayFromZero);
         }
 
         gameObjectValue.CombatStart ??= DateTime.UtcNow;

@@ -1,9 +1,9 @@
-﻿using System;
-using System.ComponentModel;
-using System.Runtime.CompilerServices;
-using StatisticsAnalysisTool.Common;
+﻿using StatisticsAnalysisTool.Common;
 using StatisticsAnalysisTool.Models;
 using StatisticsAnalysisTool.Properties;
+using System;
+using System.ComponentModel;
+using System.Runtime.CompilerServices;
 
 namespace StatisticsAnalysisTool.EventLogging.Notification;
 
@@ -27,6 +27,8 @@ public class DamageMeterFragment : INotifyPropertyChanged
     private string _damageShortString;
     private string _healShortString;
     private TimeSpan _combatTime;
+    private long _overhealed;
+    private string _overhealedShortString;
 
     public DamageMeterFragment(DamageMeterFragment damageMeterFragment)
     {
@@ -67,7 +69,7 @@ public class DamageMeterFragment : INotifyPropertyChanged
         }
     }
 
-    public bool IsDamageMeterShowing 
+    public bool IsDamageMeterShowing
     {
         get => _isDamageMeterShowing;
         set
@@ -89,51 +91,63 @@ public class DamageMeterFragment : INotifyPropertyChanged
 
     #region Damage
 
-    public long Damage {
+    public long Damage
+    {
         get => _damage;
-        set {
+        set
+        {
             _damage = value;
             DamageShortString = _damage.ToShortNumberString();
             OnPropertyChanged();
         }
     }
-        
-    public string DamageShortString {
+
+    public string DamageShortString
+    {
         get => _damageShortString;
-        private set {
+        private set
+        {
             _damageShortString = value;
             OnPropertyChanged();
         }
     }
-        
-    public string DpsString {
+
+    public string DpsString
+    {
         get => _dpsString;
-        private set {
+        private set
+        {
             _dpsString = value;
             OnPropertyChanged();
         }
     }
 
-    public double Dps {
+    public double Dps
+    {
         get => _dps;
-        set {
+        set
+        {
             _dps = value;
             DpsString = _dps.ToShortNumberString();
             OnPropertyChanged();
         }
     }
 
-    public double DamageInPercent {
+    public double DamageInPercent
+    {
         get => _damageInPercent;
-        set {
+        set
+        {
             _damageInPercent = value;
             OnPropertyChanged();
         }
     }
 
-    public double DamagePercentage {
+    public double DamagePercentage
+    {
         get => _damagePercentage;
-        set {
+        set
+        {
             _damagePercentage = value;
             OnPropertyChanged();
         }
@@ -143,52 +157,85 @@ public class DamageMeterFragment : INotifyPropertyChanged
 
     #region Heal
 
-    public long Heal {
+    public long Heal
+    {
         get => _heal;
-        set {
+        set
+        {
             _heal = value;
             HealShortString = _heal.ToShortNumberString();
             OnPropertyChanged();
         }
     }
-        
-    public string HealShortString {
+
+    public string HealShortString
+    {
         get => _healShortString;
-        private set {
+        private set
+        {
             _healShortString = value;
             OnPropertyChanged();
         }
     }
-        
-    public string HpsString {
+
+    public string HpsString
+    {
         get => _hpsString;
-        private set {
+        private set
+        {
             _hpsString = value;
             OnPropertyChanged();
         }
     }
 
-    public double Hps {
+    public double Hps
+    {
         get => _hps;
-        set {
+        set
+        {
             _hps = value;
             HpsString = _hps.ToShortNumberString();
             OnPropertyChanged();
         }
     }
 
-    public double HealInPercent {
+    public double HealInPercent
+    {
         get => _healInPercent;
-        set {
+        set
+        {
             _healInPercent = value;
             OnPropertyChanged();
         }
     }
 
-    public double HealPercentage {
+    public double HealPercentage
+    {
         get => _healPercentage;
-        set {
+        set
+        {
             _healPercentage = value;
+            OnPropertyChanged();
+        }
+    }
+
+    public long Overhealed
+    {
+        get => _overhealed;
+        set
+        {
+            _overhealed = value;
+            OverhealedShortString = _overhealed.ToShortNumberString();
+            OnPropertyChanged();
+        }
+    }
+
+    public string OverhealedShortString
+    {
+        get => _overhealedShortString;
+        private set
+        {
+            _overhealedShortString = value;
             OnPropertyChanged();
         }
     }
