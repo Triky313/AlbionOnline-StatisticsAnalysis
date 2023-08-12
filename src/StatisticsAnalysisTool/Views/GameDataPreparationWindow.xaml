@@ -10,8 +10,7 @@
         Title="{Binding Title, FallbackValue=TITLE}" Height="250" Width="550" AllowsTransparency="True" WindowStartupLocation="CenterScreen" 
         Background="{StaticResource SolidColorBrush.Background.1}" FontSize="{StaticResource BaseFontSize}" 
         WindowStyle="None" 
-        Topmost="True" 
-        ShowInTaskbar="False" 
+        ShowInTaskbar="True" 
         ResizeMode="NoResize">
     <Grid>
         <Border BorderThickness="1,0,0,0" BorderBrush="{StaticResource SolidColorBrush.Accent.Blue.2}" />

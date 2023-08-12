@@ -781,4 +781,9 @@
 	<translation name="ANOTHER_APP_TO_START_PATH">Eine weitere App zum Starten Pfad</translation>
 	<translation name="CANNOT_START_OTHER_APP">Kann andere App nicht starten</translation>
 	<translation name="FISHING_ROD">Angel</translation>
+	<translation name="SELECT_ALBION_ONLINE_MAIN_GAME_FOLDER">Wähle den Hauptspielordner von Albion Online aus</translation>
+	<translation name="PLEASE_SELECT_A_CORRECT_ALBION_ONLINE_MAIN_GAME_FOLDER">Bitte wähle einen korrekten Hauptspielordner von Albion Online aus</translation>
+	<translation name="PLEASE_SELECT_A_CORRECT_FOLDER">Bitte wähle einen korrekten Ordner aus</translation>
+	<translation name="SELECT_ALBION_ONLINE_MAIN_GAME_FOLDER_DOTS">Wähle den Hauptspielordner von Albion Online aus...</translation>
+	<translation name="CONFIRM">Bestätigen</translation>
 </translations>

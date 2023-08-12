@@ -26,7 +26,7 @@ public static class ItemController
 {
     private static readonly ILog Log = LogManager.GetLogger(MethodBase.GetCurrentMethod()?.DeclaringType);
 
-    public static ObservableCollection<Item> Items;
+    public static ObservableCollection<Item> Items = new ();
     private static ItemsJson _itemsJson;
 
     #region General

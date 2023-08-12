@@ -31,7 +31,7 @@ public static class GameData
             var result = await GetMainGameDataWithDialogAsync();
             if (!result)
             {
-                Application.Current.Shutdown();
+                Application.Current?.Shutdown();
                 return;
             }
         }
@@ -49,7 +49,7 @@ public static class GameData
             var result = await GetMainGameDataWithDialogAsync();
             if (!result)
             {
-                Application.Current.Shutdown();
+                Application.Current?.Shutdown();
             }
         }
     }
@@ -80,6 +80,9 @@ public static class GameData
 
             var extractor = new Extractor(mainGameFolderPath, ServerType.Live);
             var fileNamesToLoad = new List<string>();
+
+            DirectoryController.CreateDirectoryWhenNotExists(tempDirPath);
+            DirectoryController.CreateDirectoryWhenNotExists(gameFilesDirPath);
 
             if (Extractor.IsBinFileNewer(Path.Combine(gameFilesDirPath, "indexedItems.json"), mainGameFolderPath, ServerType.Live, "items")
                 || Extractor.IsBinFileNewer(Path.Combine(gameFilesDirPath, "items.json"), mainGameFolderPath, ServerType.Live, "items"))
