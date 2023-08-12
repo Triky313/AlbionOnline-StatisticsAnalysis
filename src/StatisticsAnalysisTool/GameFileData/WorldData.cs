@@ -2,7 +2,7 @@ using StatisticsAnalysisTool.Cluster;
 using StatisticsAnalysisTool.Common;
 using StatisticsAnalysisTool.Common.UserSettings;
 using StatisticsAnalysisTool.Enumerations;
-using StatisticsAnalysisTool.GameData.Models;
+using StatisticsAnalysisTool.GameFileData.Models;
 using StatisticsAnalysisTool.Properties;
 using System;
 using System.Collections.Generic;
@@ -10,7 +10,7 @@ using System.Linq;
 using System.Text.Json;
 using System.Threading.Tasks;
 
-namespace StatisticsAnalysisTool.GameData;
+namespace StatisticsAnalysisTool.GameFileData;
 
 public static class WorldData
 {

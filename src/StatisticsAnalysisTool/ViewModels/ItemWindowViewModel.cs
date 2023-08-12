@@ -5,7 +5,7 @@ using log4net;
 using StatisticsAnalysisTool.Common;
 using StatisticsAnalysisTool.Common.UserSettings;
 using StatisticsAnalysisTool.Exceptions;
-using StatisticsAnalysisTool.GameData;
+using StatisticsAnalysisTool.GameFileData;
 using StatisticsAnalysisTool.Models;
 using StatisticsAnalysisTool.Models.BindingModel;
 using StatisticsAnalysisTool.Models.ItemsJsonModel;
@@ -427,7 +427,7 @@ public class ItemWindowViewModel : INotifyPropertyChanged
     {
         if (fullItemInfo is EquipmentItem equipmentItem)
         {
-            if (int.TryParse(equipmentItem.CraftingRequirements?.FirstOrDefault()?.CraftingFocus, NumberStyles.Any, 
+            if (int.TryParse(equipmentItem.CraftingRequirements?.FirstOrDefault()?.CraftingFocus, NumberStyles.Any,
                     CultureInfo.InvariantCulture, out int craftingFocusNumber) && (craftingFocusNumber <= 0))
             {
                 EssentialCraftingValues.IsCraftingWithFocusCheckboxEnabled = false;

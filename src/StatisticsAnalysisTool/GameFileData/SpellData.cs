@@ -1,6 +1,6 @@
 using StatisticsAnalysisTool.Common;
 using StatisticsAnalysisTool.Common.UserSettings;
-using StatisticsAnalysisTool.GameData.Models;
+using StatisticsAnalysisTool.GameFileData.Models;
 using StatisticsAnalysisTool.Properties;
 using System;
 using System.Collections.Generic;
@@ -9,7 +9,7 @@ using System.Text.Json;
 using System.Text.Json.Serialization;
 using System.Threading.Tasks;
 
-namespace StatisticsAnalysisTool.GameData;
+namespace StatisticsAnalysisTool.GameFileData;
 
 public static class SpellData
 {

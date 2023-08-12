@@ -1,8 +1,8 @@
-﻿using System.Collections.Generic;
-using System.Text.Json.Serialization;
-using StatisticsAnalysisTool.Cluster;
+﻿using StatisticsAnalysisTool.Cluster;
 using StatisticsAnalysisTool.Common;
-using StatisticsAnalysisTool.GameData;
+using StatisticsAnalysisTool.GameFileData;
+using System.Collections.Generic;
+using System.Text.Json.Serialization;
 
 namespace StatisticsAnalysisTool.Models.NetworkModel;
 
@@ -13,10 +13,11 @@ public class Vault
     public MapType MapType { get; set; }
     public List<VaultContainer> VaultContainer { get; set; } = new();
 
-    [JsonIgnore] 
+    [JsonIgnore]
     public string MainLocation => WorldData.GetUniqueNameOrDefault(MainLocationIndex);
     [JsonIgnore]
-    public string LocationDisplayString {
+    public string LocationDisplayString
+    {
         get
         {
             if (MapType is MapType.Hideout)

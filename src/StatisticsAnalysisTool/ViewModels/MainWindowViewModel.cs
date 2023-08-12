@@ -3,14 +3,13 @@ using LiveChartsCore;
 using LiveChartsCore.SkiaSharpView;
 using log4net;
 using Microsoft.Win32;
-using StatisticAnalysisTool.Extractor;
 using StatisticsAnalysisTool.Cluster;
 using StatisticsAnalysisTool.Common;
 using StatisticsAnalysisTool.Common.UserSettings;
 using StatisticsAnalysisTool.Enumerations;
 using StatisticsAnalysisTool.EstimatedMarketValue;
 using StatisticsAnalysisTool.EventLogging;
-using StatisticsAnalysisTool.GameData;
+using StatisticsAnalysisTool.GameFileData;
 using StatisticsAnalysisTool.Models;
 using StatisticsAnalysisTool.Models.BindingModel;
 using StatisticsAnalysisTool.Models.NetworkModel;
@@ -32,7 +31,6 @@ using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Data;
 using System.Windows.Media;
-using StatisticAnalysisTool.Extractor.Enums;
 
 // ReSharper disable UnusedMember.Global
 
@@ -378,31 +376,10 @@ public class MainWindowViewModel : INotifyPropertyChanged
         IsTaskProgressbarIndeterminate = false;
         IsDataLoaded = true;
 
-        CloseButtonActivationDelayAync();
+        CloseButtonActivationDelayAsync();
     }
 
-    public async Task DownloadItemsJsonAsync()
-    {
-        if (!ItemController.IsItemListLoaded())
-        {
-            var itemListTaskTextObject = new TaskTextObject(LanguageController.Translation("GET_ITEM_LIST_JSON"));
-            ToolTaskBindings.Add(itemListTaskTextObject);
-            var isItemListLoaded = await ItemController.GetItemListFromJsonAsync().ConfigureAwait(true);
-            if (!isItemListLoaded)
-            {
-                SetErrorBar(Visibility.Visible, LanguageController.Translation("ITEM_LIST_CAN_NOT_BE_LOADED"));
-                GridTryToLoadTheItemListAgainVisibility = Visibility.Visible;
-                IsTaskProgressbarIndeterminate = false;
-                itemListTaskTextObject.SetStatus(TaskTextObject.TaskTextObjectStatus.Canceled);
-            }
-            else
-            {
-                itemListTaskTextObject.SetStatus(TaskTextObject.TaskTextObjectStatus.Done);
-            }
-        }
-    }
-
-    private async void CloseButtonActivationDelayAync()
+    private async void CloseButtonActivationDelayAsync()
     {
         await Task.Delay(2000);
         IsCloseButtonActive = true;
@@ -430,7 +407,7 @@ public class MainWindowViewModel : INotifyPropertyChanged
     #endregion
 
     #region Stats drop down
-    
+
     public void SwitchStatsDropDownState()
     {
         StatsDropDownVisibility = StatsDropDownVisibility switch
