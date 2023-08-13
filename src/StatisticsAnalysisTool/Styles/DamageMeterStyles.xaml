@@ -128,18 +128,27 @@
                         </Style.Triggers>
                     </Style>
                 </Grid.Style>
-                <ProgressBar common:ProgressBarSmoother.SmoothValue="{Binding HealInPercent}" Minimum="0" Maximum="100" 
-                             Height="40" Margin="3,1,2,1" VerticalAlignment="Top" Background="#00FFFFFF" BorderThickness="0" 
-                             Style="{StaticResource DamageMeter.ProgressBar.Colors}" />
-                <StackPanel Orientation="Horizontal">
+                <Grid ZIndex="2">
+                    <ProgressBar common:ProgressBarSmoother.SmoothValue="{Binding HealInPercent}" Minimum="0" Maximum="100"
+                                 Height="40" Margin="3,1,2,1" VerticalAlignment="Top" Background="#00FFFFFF" BorderThickness="0" 
+                                 Style="{StaticResource DamageMeter.ProgressBar.Colors}" />
+                </Grid>
+                <Grid ZIndex="1">
+                    <ProgressBar common:ProgressBarSmoother.SmoothValue="{Binding HealAndOverhealedInPercent}" Minimum="0" Maximum="100" 
+                                 Height="40" Margin="3,1,2,1" VerticalAlignment="Top" Background="#00FFFFFF" BorderThickness="0"
+                                 Style="{StaticResource DamageMeter.ProgressBar.Colors}" Opacity="0.25" />
+                </Grid>
+                <StackPanel Orientation="Horizontal" ZIndex="3">
                     <Grid Margin="10,0, 0, 0" HorizontalAlignment="Center" VerticalAlignment="Center">
                         <Image Source="{Binding CauserMainHand.Icon}" Style="{StaticResource DamageMeter.Icon}" />
                     </Grid>
                     <Label Foreground="{StaticResource SolidColorBrush.Weapon.Text}" Content="{Binding HealPercentage}" 
                            ContentStringFormat="{}{0:N2}%" MinWidth="55" Margin="10,3" HorizontalContentAlignment="Right"></Label>
                     <Label Content="{Binding Name}" MinWidth="125" MaxWidth="125" Margin="10,0, 0, 0"></Label>
-                    <Label Foreground="{StaticResource SolidColorBrush.Weapon.Text}" Content="{Binding HealShortString}" MinWidth="100" MaxWidth="100" FontWeight="Bold" Margin="10,3, 5, 0"/>
-                    <Label Foreground="{StaticResource SolidColorBrush.Weapon.Text}" Content="{Binding HpsString}" ContentStringFormat="{}{0:N0}/hps" MinWidth="75" MaxWidth="75" FontWeight="Bold" Margin="10,3, 50, 0"/>
+                    <Label Foreground="{StaticResource SolidColorBrush.Weapon.Text}" Content="{Binding HealShortString}" 
+                           MinWidth="100" MaxWidth="100" FontWeight="Bold" Margin="10,3, 5, 0"/>
+                    <Label Foreground="{StaticResource SolidColorBrush.Weapon.Text}" Content="{Binding HpsString}" 
+                           ContentStringFormat="{}{0:N0}/hps" MinWidth="75" MaxWidth="75" FontWeight="Bold" Margin="10,3, 50, 0"/>
                     <Grid Width="16" Height="16" VerticalAlignment="Center" ToolTip="{Binding TranslationCombatTime, FallbackValue='COMBAT_TIME'}">
                         <fa5:ImageAwesome Icon="Regular_Clock" Foreground="{StaticResource SolidColorBrush.Text.1}" />
                     </Grid>

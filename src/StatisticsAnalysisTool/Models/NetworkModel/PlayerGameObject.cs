@@ -64,7 +64,7 @@ public class PlayerGameObject : GameObject
     public TimeSpan CombatTime { get; set; } = new(1);
     public long Damage { get; set; }
     public long Heal { get; set; }
-    public long Overhealed { get; set; }
+    public long HealAndOverhealed { get; set; }
     public double Dps => Utilities.GetValuePerSecondToDouble(Damage, CombatStart, CombatTime, 9999);
     public double Hps => Utilities.GetValuePerSecondToDouble(Heal, CombatStart, CombatTime, 9999);
 

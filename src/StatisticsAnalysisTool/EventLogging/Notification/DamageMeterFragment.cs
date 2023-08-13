@@ -3,7 +3,11 @@ using StatisticsAnalysisTool.Models;
 using StatisticsAnalysisTool.Properties;
 using System;
 using System.ComponentModel;
+using System.Diagnostics;
 using System.Runtime.CompilerServices;
+using System.Windows;
+using System.Windows.Controls;
+using System.Windows.Threading;
 
 namespace StatisticsAnalysisTool.EventLogging.Notification;
 
@@ -27,8 +31,11 @@ public class DamageMeterFragment : INotifyPropertyChanged
     private string _damageShortString;
     private string _healShortString;
     private TimeSpan _combatTime;
-    private long _overhealed;
-    private string _overhealedShortString;
+    private long _healWithOverhealed;
+    private string _healAndOverhealedShortString;
+    private double _healAndOverhealedInPercent;
+    private double _healAndOverhealedPercentage;
+    private ProgressBar _healAndOverhealedProgressBar;
 
     public DamageMeterFragment(DamageMeterFragment damageMeterFragment)
     {
@@ -43,6 +50,14 @@ public class DamageMeterFragment : INotifyPropertyChanged
         HealPercentage = damageMeterFragment.HealPercentage;
         Name = damageMeterFragment.Name;
         CauserMainHand = damageMeterFragment.CauserMainHand;
+
+        Application.Current.Dispatcher.Invoke(() =>
+        {
+            HealAndOverhealedProgressBar = new ProgressBar()
+            {
+                Opacity = 0.25d
+            };
+        });
     }
 
     public DamageMeterFragment()
@@ -219,23 +234,54 @@ public class DamageMeterFragment : INotifyPropertyChanged
         }
     }
 
-    public long Overhealed
+    public long HealWithOverhealed
     {
-        get => _overhealed;
+        get => _healWithOverhealed;
         set
         {
-            _overhealed = value;
-            OverhealedShortString = _overhealed.ToShortNumberString();
+            _healWithOverhealed = value;
+            HealAndOverhealedShortString = _healWithOverhealed.ToShortNumberString();
             OnPropertyChanged();
         }
     }
 
-    public string OverhealedShortString
+    public string HealAndOverhealedShortString
     {
-        get => _overhealedShortString;
+        get => _healAndOverhealedShortString;
         private set
         {
-            _overhealedShortString = value;
+            _healAndOverhealedShortString = value;
+            OnPropertyChanged();
+        }
+    }
+
+    public double HealAndOverhealedInPercent
+    {
+        get => _healAndOverhealedInPercent;
+        set
+        {
+            Debug.Print($"DMF-HealAndOverhealedInPercent: {_healAndOverhealedInPercent}");
+            _healAndOverhealedInPercent = value;
+            OnPropertyChanged();
+        }
+    }
+
+    public double HealAndOverhealedPercentage
+    {
+        get => _healAndOverhealedPercentage;
+        set
+        {
+            _healAndOverhealedPercentage = value;
+            OnPropertyChanged();
+        }
+    }
+
+    public ProgressBar HealAndOverhealedProgressBar
+    {
+        get => _healAndOverhealedProgressBar;
+        set
+        {
+            _healAndOverhealedProgressBar = value;
             OnPropertyChanged();
         }
     }

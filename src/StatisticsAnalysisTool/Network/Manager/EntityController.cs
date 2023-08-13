@@ -143,7 +143,7 @@ public class EntityController
 
     public List<KeyValuePair<Guid, PlayerGameObject>> GetAllEntitiesWithDamageOrHeal()
     {
-        return new List<KeyValuePair<Guid, PlayerGameObject>>(_knownEntities.ToArray().Where(x => x.Value.Damage > 0 || x.Value.Heal > 0));
+        return new List<KeyValuePair<Guid, PlayerGameObject>>(_knownEntities.ToArray().Where(x => x.Value.Damage > 0 || x.Value.Heal > 0 || x.Value.HealAndOverhealed > 0));
     }
 
     public bool ExistEntity(Guid guid)
@@ -492,6 +492,14 @@ public class EntityController
         foreach (var entity in _knownEntities)
         {
             entity.Value.Heal = 0;
+        }
+    }
+
+    public void ResetEntitiesHealAndOverhealed()
+    {
+        foreach (var entity in _knownEntities)
+        {
+            entity.Value.HealAndOverhealed = 0;
         }
     }
 
