@@ -1,6 +1,6 @@
 ﻿using StatisticsAnalysisTool.Common;
 using StatisticsAnalysisTool.Common.UserSettings;
-using StatisticsAnalysisTool.GameData;
+using StatisticsAnalysisTool.GameFileData;
 using StatisticsAnalysisTool.ViewModels;
 using System;
 using System.Collections.Generic;
@@ -56,7 +56,7 @@ public class RequiredJournal : INotifyPropertyChanged
         var sellPriceMin = _marketResponseEmptyJournal?.FirstOrDefault(x => string.Equals(x?.City, Locations.GetParameterName(location), StringComparison.CurrentCultureIgnoreCase))?.SellPriceMin;
         if (sellPriceMin != null)
         {
-            CostsPerJournal = (long)sellPriceMin;
+            CostsPerJournal = (long) sellPriceMin;
         }
     }
 
@@ -72,7 +72,7 @@ public class RequiredJournal : INotifyPropertyChanged
         var sellPriceMin = _marketResponseFullJournal?.FirstOrDefault(x => string.Equals(x?.City, Locations.GetParameterName(location), StringComparison.CurrentCultureIgnoreCase))?.SellPriceMin;
         if (sellPriceMin != null)
         {
-            SellPricePerJournal = (long)sellPriceMin;
+            SellPricePerJournal = (long) sellPriceMin;
         }
     }
 

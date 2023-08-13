@@ -1,12 +1,12 @@
 ﻿using log4net;
+using StatisticsAnalysisTool.Cluster;
 using StatisticsAnalysisTool.Common;
+using StatisticsAnalysisTool.Enumerations;
+using StatisticsAnalysisTool.GameFileData;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
-using StatisticsAnalysisTool.Enumerations;
-using StatisticsAnalysisTool.GameData;
-using StatisticsAnalysisTool.Cluster;
 
 namespace StatisticsAnalysisTool.Network.Operations.Responses;
 
@@ -61,7 +61,7 @@ public class ChangeClusterResponse
 
             if (parameters.ContainsKey(3))
             {
-                DungeonInformation = ((byte[])parameters[3]).ToArray();
+                DungeonInformation = ((byte[]) parameters[3]).ToArray();
             }
         }
         catch (Exception e)

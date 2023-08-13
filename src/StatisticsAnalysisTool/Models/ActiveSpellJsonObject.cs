@@ -1,6 +1,6 @@
-﻿using System.Collections.Generic;
+﻿using StatisticsAnalysisTool.GameFileData.Models;
+using System.Collections.Generic;
 using System.Text.Json.Serialization;
-using StatisticsAnalysisTool.GameData.Models;
 
 namespace StatisticsAnalysisTool.Models;
 

@@ -82,57 +82,6 @@
                                 VerticalAlignment="Bottom" Click="OpenDebugConsole_Click" />
                     </DockPanel>
                     <DockPanel Margin="0,5,0,0">
-                        <Label Content="{Binding Translation.UpdateItemListByDays, FallbackValue=UPDATE__ITEM__LIST__BY__DAYS}" MinWidth="300" VerticalAlignment="Top" />
-                        <ComboBox ItemsSource="{Binding UpdateItemListByDays}" SelectedItem="{Binding UpdateItemListByDaysSelection}" 
-                                  IsSynchronizedWithCurrentItem="True" DisplayMemberPath="Name" SelectedValuePath="Value" HorizontalAlignment="Left" VerticalAlignment="Top" Width="200" Height="26" />
-                        <Button Content="{Binding Translation.UpdateNow, FallbackValue=UPDATE__NOW}" IsEnabled="{Binding IsUpdateItemListNowButtonEnabled}"
-                                Margin="5,0,5,2" Height="24" MaxWidth="120" HorizontalAlignment="Left" VerticalAlignment="Center" Click="UpdateItemListNow_Click" />
-                    </DockPanel>
-                    <DockPanel Margin="0,5,0,0">
-                        <Label Content="{Binding Translation.ItemListSourceUrl, FallbackValue=ITEM_LIST_SOURCE_URL}" MinWidth="300" VerticalAlignment="Top" />
-                        <TextBox Text="{Binding ItemListSourceUrl}" Height="40" TextWrapping="Wrap" VerticalAlignment="Top" Margin="0,0,5,0" />
-                    </DockPanel>
-                    <DockPanel Margin="0,5,0,0">
-                        <Label Content="{Binding Translation.UpdateItemsJsonByDays, FallbackValue=UPDATE__ITEMS_JSON__BY__DAYS}" MinWidth="300" VerticalAlignment="Top" />
-                        <ComboBox ItemsSource="{Binding UpdateItemsJsonByDays}" SelectedItem="{Binding UpdateItemsJsonByDaysSelection}" 
-                                  IsSynchronizedWithCurrentItem="True" DisplayMemberPath="Name" SelectedValuePath="Value" HorizontalAlignment="Left" VerticalAlignment="Top" Width="200" Height="26" />
-                        <Button Content="{Binding Translation.UpdateNow, FallbackValue=UPDATE__NOW}" IsEnabled="{Binding IsUpdateItemsJsonNowButtonEnabled}"
-                                Margin="5,0,5,2" Height="24" MaxWidth="120" HorizontalAlignment="Left" VerticalAlignment="Center" Click="UpdateItemsJsonNow_Click" />
-                    </DockPanel>
-                    <DockPanel Margin="0,5,0,0">
-                        <Label Content="{Binding Translation.ItemsJsonSourceUrl, FallbackValue=ITEMS_JSON_SOURCE_URL}" MinWidth="300" VerticalAlignment="Top" />
-                        <TextBox Text="{Binding ItemsJsonSourceUrl}" Height="40" TextWrapping="Wrap" VerticalAlignment="Top" Margin="0,0,5,0" />
-                    </DockPanel>
-                    <DockPanel Margin="0,5,0,0">
-                        <Label Content="{Binding Translation.UpdateMobsJsonByDays, FallbackValue=UPDATE__MOBS_JSON__BY__DAYS}" MinWidth="300" VerticalAlignment="Top" />
-                        <ComboBox ItemsSource="{Binding UpdateMobsJsonByDays}" SelectedItem="{Binding UpdateMobsJsonByDaysSelection}" 
-                                  IsSynchronizedWithCurrentItem="True" DisplayMemberPath="Name" SelectedValuePath="Value" HorizontalAlignment="Left" VerticalAlignment="Top" Width="200" Height="26" />
-                        <!--<Button Content="{Binding Translation.UpdateNow, FallbackValue=UPDATE__NOW}" IsEnabled="{Binding IsUpdateMobsJsonNowButtonEnabled}"
-                                Margin="5,0,5,2" Height="24" MaxWidth="120" HorizontalAlignment="Left" VerticalAlignment="Center" />-->
-                    </DockPanel>
-                    <DockPanel Margin="0,5,0,0">
-                        <Label Content="{Binding Translation.MobsJsonSourceUrl, FallbackValue=MOBS__JSON__SOURCE__URL}" MinWidth="300" VerticalAlignment="Top" />
-                        <TextBox Text="{Binding MobsJsonSourceUrl}" Height="40" TextWrapping="Wrap" VerticalAlignment="Top" Margin="0,0,5,0" />
-                    </DockPanel>
-                    <DockPanel Margin="0,5,0,0">
-                        <Label Content="{Binding Translation.UpdateWorldJsonByDays, FallbackValue=UPDATE__WORLD_JSON__BY__DAYS}" MinWidth="300" VerticalAlignment="Top" />
-                        <ComboBox ItemsSource="{Binding UpdateWorldJsonByDays}" SelectedItem="{Binding UpdateWorldJsonByDaysSelection}" 
-                                  IsSynchronizedWithCurrentItem="True" DisplayMemberPath="Name" SelectedValuePath="Value" HorizontalAlignment="Left" VerticalAlignment="Top" Width="200" Height="26" />
-                    </DockPanel>
-                    <DockPanel Margin="0,5,0,0">
-                        <Label Content="{Binding Translation.WorldJsonSourceUrl, FallbackValue=WORLD__JSON__SOURCE__URL}" MinWidth="300" VerticalAlignment="Top" />
-                        <TextBox Text="{Binding WorldJsonSourceUrl}" Height="40" TextWrapping="Wrap" VerticalAlignment="Top" Margin="0,0,5,0" />
-                    </DockPanel>
-                    <DockPanel Margin="0,5,0,0">
-                        <Label Content="{Binding Translation.UpdateSpellsJsonByDays, FallbackValue=UPDATE__SPELLS_JSON__BY__DAYS}" MinWidth="300" VerticalAlignment="Top" />
-                        <ComboBox ItemsSource="{Binding UpdateSpellsJsonByDays}" SelectedItem="{Binding UpdateSpellsJsonByDaysSelection}" 
-                                  IsSynchronizedWithCurrentItem="True" DisplayMemberPath="Name" SelectedValuePath="Value" HorizontalAlignment="Left" VerticalAlignment="Top" Width="200" Height="26" />
-                    </DockPanel>
-                    <DockPanel Margin="0,5,0,0">
-                        <Label Content="{Binding Translation.SpellsJsonSourceUrl, FallbackValue=SPELLS__JSON__SOURCE__URL}" MinWidth="300" VerticalAlignment="Top" />
-                        <TextBox Text="{Binding SpellsJsonSourceUrl}" Height="40" TextWrapping="Wrap" VerticalAlignment="Top" Margin="0,0,5,0" />
-                    </DockPanel>
-                    <DockPanel Margin="0,5,0,0">
                         <Label Content="{Binding Translation.AnotherAppToStartPath, FallbackValue=ANOTHER_APP_TO_START_PATH}" MinWidth="300" VerticalAlignment="Top" />
                         <Grid Background="{StaticResource SolidColorBrush.Background.4}" Margin="0,0,5,0">
                             <Image Source="{Binding AnotherAppToStartExeIcon}" Width="40" Height="40" />

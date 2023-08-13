@@ -43,10 +43,10 @@ namespace StatisticsAnalysisTool.Properties {
         
         [global::System.Configuration.ApplicationScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("ItemList.json")]
-        public string ItemListFileName {
+        [global::System.Configuration.DefaultSettingValueAttribute("IndexedItems.json")]
+        public string IndexedItemsFileName {
             get {
-                return ((string)(this["ItemListFileName"]));
+                return ((string)(this["IndexedItemsFileName"]));
             }
         }
         

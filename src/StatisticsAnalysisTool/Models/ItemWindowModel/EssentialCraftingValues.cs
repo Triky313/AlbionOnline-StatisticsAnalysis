@@ -1,6 +1,6 @@
 using StatisticsAnalysisTool.Common;
 using StatisticsAnalysisTool.Common.UserSettings;
-using StatisticsAnalysisTool.GameData;
+using StatisticsAnalysisTool.GameFileData;
 using StatisticsAnalysisTool.ViewModels;
 using System;
 using System.Collections.Generic;
@@ -53,7 +53,7 @@ public class EssentialCraftingValuesTemplate : INotifyPropertyChanged
             var buyPriceMax = _marketResponse?.FirstOrDefault(x => string.Equals(x?.City, Locations.GetParameterName(location), StringComparison.CurrentCultureIgnoreCase))?.BuyPriceMax;
             if (buyPriceMax != null)
             {
-                SellPricePerItem = (long)buyPriceMax;
+                SellPricePerItem = (long) buyPriceMax;
             }
 
             return;
@@ -62,7 +62,7 @@ public class EssentialCraftingValuesTemplate : INotifyPropertyChanged
         var sellPriceMin = _marketResponse?.FirstOrDefault(x => string.Equals(x?.City, Locations.GetParameterName(location), StringComparison.CurrentCultureIgnoreCase))?.SellPriceMin;
         if (sellPriceMin != null)
         {
-            SellPricePerItem = (long)sellPriceMin;
+            SellPricePerItem = (long) sellPriceMin;
         }
     }
 

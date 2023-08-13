@@ -4,6 +4,7 @@ using StatisticsAnalysisTool.Backup;
 using StatisticsAnalysisTool.Common;
 using StatisticsAnalysisTool.Common.UserSettings;
 using StatisticsAnalysisTool.Enumerations;
+using StatisticsAnalysisTool.GameFileData;
 using StatisticsAnalysisTool.Network.Manager;
 using StatisticsAnalysisTool.Notification;
 using StatisticsAnalysisTool.ViewModels;
@@ -38,23 +39,31 @@ public partial class App
         await AutoUpdateController.AutoUpdateAsync();
         await BackupController.DeleteOldestBackupsIfNeededAsync();
 
-        RegisterServices();
+        RegisterServicesEarly();
 
-        var mainWindow = new MainWindow(_mainWindowViewModel);
-        mainWindow.Show();
-        _mainWindowViewModel.InitMainWindowData();
+        Current.MainWindow = new MainWindow(_mainWindowViewModel);
+        await GameData.InitializeMainGameDataFilesAsync();
+
+        RegisterServicesLate();
+
+        await _mainWindowViewModel.InitMainWindowDataAsync();
+        Current.MainWindow.Show();
+
 
         Utilities.AnotherAppToStart(SettingsController.CurrentSettings.AnotherAppToStartPath);
     }
 
-    private void RegisterServices()
+    private void RegisterServicesEarly()
     {
         _mainWindowViewModel = new MainWindowViewModel();
         ServiceLocator.Register<MainWindowViewModel>(_mainWindowViewModel);
 
         var satNotifications = new SatNotificationManager(new NotificationManager(Current.Dispatcher));
         ServiceLocator.Register<SatNotificationManager>(satNotifications);
+    }
 
+    private void RegisterServicesLate()
+    {
         _trackingController = new TrackingController(_mainWindowViewModel);
         ServiceLocator.Register<TrackingController>(_trackingController);
     }
@@ -102,21 +111,21 @@ public partial class App
 
     protected override void OnExit(ExitEventArgs e)
     {
-        _trackingController.StopTracking();
+        _trackingController?.StopTracking();
+        CriticalData.Save();
         if (!BackupController.ExistBackupOnSettingConditions())
         {
             BackupController.Save();
         }
-        CriticalData.Save();
     }
 
     private void OnSessionEnding(object sender, SessionEndingCancelEventArgs e)
     {
-        _trackingController.StopTracking();
+        _trackingController?.StopTracking();
+        CriticalData.Save();
         if (!BackupController.ExistBackupOnSettingConditions())
         {
             BackupController.Save();
         }
-        CriticalData.Save();
     }
 }

@@ -1,6 +1,6 @@
 using StatisticsAnalysisTool.Common;
 using StatisticsAnalysisTool.Common.UserSettings;
-using StatisticsAnalysisTool.GameData.Models;
+using StatisticsAnalysisTool.GameFileData.Models;
 using StatisticsAnalysisTool.Properties;
 using System;
 using System.Collections.Generic;
@@ -9,7 +9,7 @@ using System.Text.Json;
 using System.Text.Json.Serialization;
 using System.Threading.Tasks;
 
-namespace StatisticsAnalysisTool.GameData;
+namespace StatisticsAnalysisTool.GameFileData;
 
 public static class SpellData
 {
@@ -49,9 +49,6 @@ public static class SpellData
         var spells = await GameData.LoadDataAsync<SpellsJsonObject, SpellsJsonRootObject>(
             Settings.Default.SpellDataFileName,
             Settings.Default.ModifiedSpellDataFileName,
-            SettingsController.CurrentSettings.SpellsJsonSourceUrl,
-            SettingsController.CurrentSettings.UpdateSpellsJsonByDays,
-            LanguageController.Translation("GET_SPELLS_JSON"),
             new JsonSerializerOptions()
             {
                 NumberHandling = JsonNumberHandling.AllowReadingFromString,

@@ -781,4 +781,9 @@
 	<translation name="ANOTHER_APP_TO_START_PATH">Inna aplikacja do uruchomienia ze ścieżką</translation>
 	<translation name="CANNOT_START_OTHER_APP">Nie można uruchomić innej aplikacji</translation>
 	<translation name="FISHING_ROD">Wędka</translation>
+	<translation name="SELECT_ALBION_ONLINE_MAIN_GAME_FOLDER">Wybierz główny folder gry Albion Online</translation>
+	<translation name="PLEASE_SELECT_A_CORRECT_ALBION_ONLINE_MAIN_GAME_FOLDER">Proszę wybrać poprawny główny folder gry Albion Online</translation>
+	<translation name="PLEASE_SELECT_A_CORRECT_FOLDER">Proszę wybrać poprawny folder</translation>
+	<translation name="SELECT_MAIN_GAME_FOLDER_DOTS">Wybierz główny folder gry...</translation>
+	<translation name="CONFIRM">Potwierdź</translation>
 </translations>

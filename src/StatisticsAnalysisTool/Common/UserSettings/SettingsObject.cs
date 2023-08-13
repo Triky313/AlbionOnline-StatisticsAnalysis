@@ -12,20 +12,8 @@ public class SettingsObject
     public int Server { get; set; } = 0; // 0: auto, 1: west, 2: east
     public string PacketFilter { get; set; } = "(host 5.45.187 or host 5.188.125) and udp port 5056";
     public string MainTrackingCharacterName { get; set; }
-    public int UpdateItemListByDays { get; set; } = 7;
-    public int UpdateItemsJsonByDays { get; set; } = 7;
-    public int UpdateMobsJsonByDays { get; set; } = 7;
-    public int UpdateSpellsJsonByDays { get; set; } = 7;
-    public int UpdateLootChestJsonByDays { get; set; } = 7;
-    public int UpdateWorldJsonByDays { get; set; } = 7;
     public int BackupIntervalByDays { get; set; } = 7;
     public int MaximumNumberOfBackups { get; set; } = 5;
-    public string ItemListSourceUrl { get; set; } = "https://raw.githubusercontent.com/ao-data/ao-bin-dumps/master/formatted/items.json";
-    public string ItemsJsonSourceUrl { get; set; } = "https://raw.githubusercontent.com/ao-data/ao-bin-dumps/master/items.json";
-    public string MobsJsonSourceUrl { get; set; } = "https://raw.githubusercontent.com/ao-data/ao-bin-dumps/master/mobs.json";
-    public string SpellsJsonSourceUrl { get; set; } = "https://raw.githubusercontent.com/ao-data/ao-bin-dumps/master/spells.json";
-    public string LootChestJsonSourceUrl { get; set; } = "https://raw.githubusercontent.com/ao-data/ao-bin-dumps/master/lootchests.json";
-    public string WorldJsonSourceUrl { get; set; } = "https://raw.githubusercontent.com/ao-data/ao-bin-dumps/master/cluster/world.json";
     public bool IsOpenItemWindowInNewWindowChecked { get; set; } = true;
     public bool IsInfoWindowShownOnStart { get; set; } = true;
     public string SelectedAlertSound { get; set; }
@@ -98,4 +86,5 @@ public class SettingsObject
     public double PartyBuilderMinimalBasicItemPower { get; set; } = 600;
     public double PartyBuilderMaximumBasicItemPower { get; set; } = 900;
     public string AnotherAppToStartPath { get; set; }
+    public string MainGameFolderPath { get; set; } = string.Empty;
 }

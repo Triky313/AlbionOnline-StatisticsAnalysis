@@ -1,10 +1,10 @@
-﻿using StatisticsAnalysisTool.GameData.Models;
+﻿using StatisticsAnalysisTool.GameFileData.Models;
 using System;
 using System.Collections.Generic;
 using System.Text.Json;
 using System.Text.Json.Serialization;
 
-namespace StatisticsAnalysisTool.GameData.Converter;
+namespace StatisticsAnalysisTool.GameFileData.Converter;
 
 public class MarkerToMarkersListConverter : JsonConverter<List<Marker>>
 {

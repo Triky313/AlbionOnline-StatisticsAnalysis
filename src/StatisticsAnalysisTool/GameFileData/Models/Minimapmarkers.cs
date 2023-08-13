@@ -1,8 +1,8 @@
-﻿using StatisticsAnalysisTool.GameData.Converter;
+﻿using StatisticsAnalysisTool.GameFileData.Converter;
 using System.Collections.Generic;
 using System.Text.Json.Serialization;
 
-namespace StatisticsAnalysisTool.GameData.Models;
+namespace StatisticsAnalysisTool.GameFileData.Models;
 
 public class MiniMapMarkers
 {

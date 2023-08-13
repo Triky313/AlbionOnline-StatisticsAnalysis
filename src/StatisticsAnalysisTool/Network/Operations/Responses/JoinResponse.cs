@@ -1,12 +1,12 @@
 ﻿using log4net;
+using StatisticsAnalysisTool.Cluster;
 using StatisticsAnalysisTool.Common;
-using StatisticsAnalysisTool.GameData;
+using StatisticsAnalysisTool.Enumerations;
+using StatisticsAnalysisTool.GameFileData;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Reflection;
-using StatisticsAnalysisTool.Enumerations;
-using StatisticsAnalysisTool.Cluster;
 
 namespace StatisticsAnalysisTool.Network.Operations.Responses;
 

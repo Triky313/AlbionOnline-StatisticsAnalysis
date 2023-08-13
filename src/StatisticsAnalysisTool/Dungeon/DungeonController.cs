@@ -2,7 +2,7 @@ using log4net;
 using StatisticsAnalysisTool.Cluster;
 using StatisticsAnalysisTool.Common;
 using StatisticsAnalysisTool.Enumerations;
-using StatisticsAnalysisTool.GameData;
+using StatisticsAnalysisTool.GameFileData;
 using StatisticsAnalysisTool.Models;
 using StatisticsAnalysisTool.Models.NetworkModel;
 using StatisticsAnalysisTool.Network.Manager;
@@ -241,7 +241,7 @@ public class DungeonController
             }
         }
 
-        await foreach (var dungeonFragment in _mainWindowViewModel?.DungeonBindings?.TrackingDungeons?.ToList().ToAsyncEnumerable() 
+        await foreach (var dungeonFragment in _mainWindowViewModel?.DungeonBindings?.TrackingDungeons?.ToList().ToAsyncEnumerable()
                                               ?? new List<DungeonNotificationFragment>().ToAsyncEnumerable())
         {
             await Application.Current.Dispatcher.InvokeAsync(() =>

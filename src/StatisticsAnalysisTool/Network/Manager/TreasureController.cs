@@ -20,7 +20,7 @@ public class TreasureController
     private readonly TrackingController _trackingController;
     private readonly MainWindowViewModel _mainWindowViewModel;
     private readonly ObservableCollection<TemporaryTreasure> _temporaryTreasures = new();
-    private ObservableCollection<Treasure> _treasures;
+    private ObservableCollection<Treasure> _treasures = new ();
 
     public TreasureController(TrackingController trackingController, MainWindowViewModel mainWindowViewModel)
     {
