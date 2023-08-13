@@ -80,13 +80,10 @@ public class CombatController
                 return Task.CompletedTask;
             }
 
-            if (IsMaxHealthReached(objectId, newHealthValue))
+            if (!IsMaxHealthReached(objectId, newHealthValue))
             {
-                gameObjectValue.Overhealed += (int) Math.Round(healChangeValue, MidpointRounding.AwayFromZero);
-                return Task.CompletedTask;
+                gameObjectValue.Heal += (int) Math.Round(healChangeValue, MidpointRounding.AwayFromZero);
             }
-
-            gameObjectValue.Heal += (int) Math.Round(healChangeValue, MidpointRounding.AwayFromZero);
         }
 
         gameObjectValue.CombatStart ??= DateTime.UtcNow;
