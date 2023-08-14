@@ -5,9 +5,7 @@ using System;
 using System.ComponentModel;
 using System.Diagnostics;
 using System.Runtime.CompilerServices;
-using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Threading;
 
 namespace StatisticsAnalysisTool.EventLogging.Notification;
 
@@ -50,14 +48,6 @@ public class DamageMeterFragment : INotifyPropertyChanged
         HealPercentage = damageMeterFragment.HealPercentage;
         Name = damageMeterFragment.Name;
         CauserMainHand = damageMeterFragment.CauserMainHand;
-
-        Application.Current.Dispatcher.Invoke(() =>
-        {
-            HealAndOverhealedProgressBar = new ProgressBar()
-            {
-                Opacity = 0.25d
-            };
-        });
     }
 
     public DamageMeterFragment()
@@ -272,16 +262,6 @@ public class DamageMeterFragment : INotifyPropertyChanged
         set
         {
             _healAndOverhealedPercentage = value;
-            OnPropertyChanged();
-        }
-    }
-
-    public ProgressBar HealAndOverhealedProgressBar
-    {
-        get => _healAndOverhealedProgressBar;
-        set
-        {
-            _healAndOverhealedProgressBar = value;
             OnPropertyChanged();
         }
     }
