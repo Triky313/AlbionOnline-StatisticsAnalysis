@@ -83,11 +83,9 @@ public class CombatController
 
             if (!IsMaxHealthReached(objectId, newHealthValue))
             {
-                Debug.Print($"Heal: {gameObjectValue.Heal + healChangeValue} = {gameObjectValue.Heal} + {healChangeValue}");
                 gameObjectValue.Heal += (int) Math.Round(healChangeValue, MidpointRounding.AwayFromZero);
             }
-
-            Debug.Print($"OverHeal: {gameObjectValue.HealAndOverhealed + healChangeValue} = {gameObjectValue.HealAndOverhealed} + {healChangeValue}");
+            
             gameObjectValue.HealAndOverhealed += (int) Math.Round(healChangeValue, MidpointRounding.AwayFromZero);
         }
 
