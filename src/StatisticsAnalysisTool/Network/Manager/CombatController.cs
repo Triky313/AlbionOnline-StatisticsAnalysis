@@ -179,7 +179,7 @@ public class CombatController
         if (healthChangeObjectValue?.HealAndOverhealed > 0)
         {
             fragment.HealAndOverhealedInPercent = (double) healthChangeObjectValue.HealAndOverhealed / currentTotalHealAndOverhealed * 100;
-            fragment.HealWithOverhealed = healthChangeObjectValue.HealAndOverhealed;
+            fragment.HealAndOverhealed = healthChangeObjectValue.HealAndOverhealed;
         }
 
         // Generally

@@ -31,7 +31,7 @@ public class DamageMeterFragment : INotifyPropertyChanged
     private string _damageShortString;
     private string _healShortString;
     private TimeSpan _combatTime;
-    private long _healWithOverhealed;
+    private long _healAndOverhealed;
     private string _healAndOverhealedShortString;
     private double _healAndOverhealedInPercent;
     private double _healAndOverhealedPercentage;
@@ -234,13 +234,13 @@ public class DamageMeterFragment : INotifyPropertyChanged
         }
     }
 
-    public long HealWithOverhealed
+    public long HealAndOverhealed
     {
-        get => _healWithOverhealed;
+        get => _healAndOverhealed;
         set
         {
-            _healWithOverhealed = value;
-            HealAndOverhealedShortString = _healWithOverhealed.ToShortNumberString();
+            _healAndOverhealed = value;
+            HealAndOverhealedShortString = _healAndOverhealed.ToShortNumberString();
             OnPropertyChanged();
         }
     }
