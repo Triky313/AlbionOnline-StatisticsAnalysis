@@ -9,7 +9,6 @@ using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.Diagnostics;
 using System.Linq;
 using System.Reflection;
 using System.Threading.Tasks;
@@ -85,13 +84,13 @@ public class CombatController
             {
                 gameObjectValue.Heal += (int) Math.Round(healChangeValue, MidpointRounding.AwayFromZero);
             }
-            
+
             gameObjectValue.HealAndOverhealed += (int) Math.Round(healChangeValue, MidpointRounding.AwayFromZero);
         }
 
         gameObjectValue.CombatStart ??= DateTime.UtcNow;
 
-        OnDamageUpdate?.Invoke(_mainWindowViewModel?.DamageMeterBindings?.DamageMeter, _trackingController.EntityController.GetAllEntitiesWithDamageOrHeal());
+        OnDamageUpdate?.Invoke(_mainWindowViewModel?.DamageMeterBindings?.DamageMeter, _trackingController.EntityController.GetAllEntitiesWithDamageOrHealAndInParty());
         return Task.CompletedTask;
     }
 
@@ -190,12 +189,35 @@ public class CombatController
         }
     }
 
+    public async Task RemoveNonRelevantEntityFromDamageMeterAsync()
+    {
+        await Application.Current.Dispatcher.InvokeAsync(() =>
+        {
+            var newPartyGuids = _trackingController.EntityController
+                .GetAllEntitiesWithDamageOrHealAndInParty()
+                .Select(x => x.Key)
+                .ToList();
+
+            var damageMeter = _mainWindowViewModel?.DamageMeterBindings?.DamageMeter?.ToList() ?? new List<DamageMeterFragment>();
+            foreach (DamageMeterFragment damageMeterFragment in damageMeter)
+            {
+                if (!newPartyGuids.Contains(damageMeterFragment.CauserGuid) && _mainWindowViewModel?.DamageMeterBindings?.DamageMeter != null)
+                {
+                    lock (_mainWindowViewModel.DamageMeterBindings.DamageMeter)
+                    {
+                        _mainWindowViewModel.DamageMeterBindings.DamageMeter.Remove(damageMeterFragment);
+                    }
+                }
+            }
+        });
+    }
+
     private static async Task AddDamageMeterFragmentAsync(ICollection<DamageMeterFragment> damageMeter, KeyValuePair<Guid, PlayerGameObject> healthChangeObject,
         List<KeyValuePair<Guid, PlayerGameObject>> entities, long currentTotalDamage, long currentTotalHeal)
     {
         if (healthChangeObject.Value == null
-            || (double.IsNaN(healthChangeObject.Value.Damage) && double.IsNaN(healthChangeObject.Value.Heal))
-            || (healthChangeObject.Value.Damage <= 0 && healthChangeObject.Value.Heal <= 0))
+            || (double.IsNaN(healthChangeObject.Value.Damage) && double.IsNaN(healthChangeObject.Value.Heal) && double.IsNaN(healthChangeObject.Value.HealAndOverhealed))
+            || (healthChangeObject.Value.Damage <= 0 && healthChangeObject.Value.Heal <= 0 && healthChangeObject.Value.HealAndOverhealed <= 0))
         {
             return;
         }

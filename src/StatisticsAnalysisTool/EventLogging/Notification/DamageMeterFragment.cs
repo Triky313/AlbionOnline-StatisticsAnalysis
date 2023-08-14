@@ -250,7 +250,6 @@ public class DamageMeterFragment : INotifyPropertyChanged
         get => _healAndOverhealedInPercent;
         set
         {
-            Debug.Print($"DMF-HealAndOverhealedInPercent: {_healAndOverhealedInPercent}");
             _healAndOverhealedInPercent = value;
             OnPropertyChanged();
         }
@@ -290,6 +289,8 @@ public class DamageMeterFragment : INotifyPropertyChanged
     }
 
     public string TranslationCombatTime => LanguageController.Translation("COMBAT_TIME");
+    public string TranslationHeal => LanguageController.Translation("HEAL");
+    public string TranslationHealWithOverhealed => LanguageController.Translation("HEAL_WITH_OVERHEALED");
 
     public event PropertyChangedEventHandler PropertyChanged;
 

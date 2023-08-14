@@ -1,7 +1,6 @@
-﻿using StatisticsAnalysisTool.Network.Manager;
-using System;
+﻿using StatisticsAnalysisTool.Network.Events;
+using StatisticsAnalysisTool.Network.Manager;
 using System.Threading.Tasks;
-using StatisticsAnalysisTool.Network.Events;
 
 namespace StatisticsAnalysisTool.Network.Handler;
 
@@ -17,5 +16,6 @@ public class PartyPlayerLeftEventHandler : EventPacketHandler<PartyPlayerLeftEve
     protected override async Task OnActionAsync(PartyPlayerLeftEvent value)
     {
         await _trackingController.EntityController.RemoveFromPartyAsync(value.UserGuid);
+        await _trackingController.CombatController.RemoveNonRelevantEntityFromDamageMeterAsync();
     }
 }
