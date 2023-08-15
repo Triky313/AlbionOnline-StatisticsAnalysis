@@ -98,7 +98,7 @@ public static class WorldData
             if (splitName.Length > 1 && index.ToLower().Contains('@'))
             {
                 var mapType = GetMapType(splitName[0]);
-                if (mapType is MapType.RandomDungeon or MapType.CorruptedDungeon or MapType.HellGate or MapType.Expedition or MapType.Mists && !string.IsNullOrEmpty(splitName[1]))
+                if (mapType is MapType.RandomDungeon or MapType.CorruptedDungeon or MapType.HellGate or MapType.Expedition or MapType.MistsDungeon or MapType.Mists && !string.IsNullOrEmpty(splitName[1]))
                 {
                     var mapGuid = new Guid(splitName[1]);
                     return mapGuid;
@@ -124,6 +124,7 @@ public static class WorldData
             MapType.Hideout => LanguageController.Translation("HIDEOUT"),
             MapType.Expedition => LanguageController.Translation("EXPEDITION"),
             MapType.Arena => LanguageController.Translation("ARENA"),
+            MapType.MistsDungeon => LanguageController.Translation("MISTS_DUNGEON"),
             MapType.Mists => LanguageController.Translation("MISTS"),
             _ => LanguageController.Translation("UNKNOWN")
         };
@@ -144,6 +145,8 @@ public static class WorldData
         if (index.ToUpper().Contains("EXPEDITION")) return MapType.Expedition;
 
         if (index.ToUpper().Contains("ARENA")) return MapType.Arena;
+
+        if (index.ToUpper().Contains("MISTSDUNGEON")) return MapType.MistsDungeon;
 
         if (index.ToUpper().Contains("MISTS")) return MapType.Mists;
 

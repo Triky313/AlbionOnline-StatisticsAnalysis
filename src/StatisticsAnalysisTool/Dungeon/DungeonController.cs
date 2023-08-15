@@ -486,6 +486,8 @@ public class DungeonController
                 break;
             case MapType.Arena:
                 break;
+            case MapType.MistsDungeon:
+                break;
             case MapType.Mists:
                 break;
             case MapType.Unknown:

@@ -789,4 +789,5 @@
 	<translation name="CONFIRM">확인</translation>
 	<translation name="OVERHEALED_PERCENTAGE_OF_TOTAL_HEALING">총 치유량 중 초과 치유량(Overheal) 비율</translation>
 	<translation name="HEALING_WITHOUT_OVERHEALED">초과 치유를 제외한 치유량</translation>
+	<translation name="MISTS_DUNGEON">Knightfall Abbey</translation>
 </translations>

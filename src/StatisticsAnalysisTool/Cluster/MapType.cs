@@ -10,5 +10,6 @@ public enum MapType
     Hideout,
     Expedition,
     Arena,
-    Mists
+    Mists,
+    MistsDungeon
 }
