@@ -786,4 +786,6 @@
 	<translation name="PLEASE_SELECT_A_CORRECT_FOLDER">Please select a correct folder</translation>
 	<translation name="SELECT_MAIN_GAME_FOLDER_DOTS">Select main game folder...</translation>
 	<translation name="CONFIRM">Confirm</translation>
+	<translation name="OVERHEALED_PERCENTAGE_OF_TOTAL_HEALING">Overhealed percentage of total healing</translation>
+	<translation name="HEALING_WITHOUT_OVERHEALED">Healing without overhealed</translation>
 </translations>

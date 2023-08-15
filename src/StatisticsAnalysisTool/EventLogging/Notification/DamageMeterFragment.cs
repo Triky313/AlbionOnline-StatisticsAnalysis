@@ -1,8 +1,9 @@
-﻿using StatisticsAnalysisTool.Common;
+using StatisticsAnalysisTool.Common;
 using StatisticsAnalysisTool.Models;
 using StatisticsAnalysisTool.Properties;
 using System;
 using System.ComponentModel;
+using System.Diagnostics;
 using System.Runtime.CompilerServices;
 
 namespace StatisticsAnalysisTool.EventLogging.Notification;
@@ -27,6 +28,8 @@ public class DamageMeterFragment : INotifyPropertyChanged
     private string _damageShortString;
     private string _healShortString;
     private TimeSpan _combatTime;
+    private double _overhealedPercentageOfTotalHealing;
+    private double _overhealed;
 
     public DamageMeterFragment(DamageMeterFragment damageMeterFragment)
     {
@@ -202,6 +205,7 @@ public class DamageMeterFragment : INotifyPropertyChanged
         get => _healInPercent;
         set
         {
+            Debug.Print($"Heal in percent ({Name}): {value}");
             _healInPercent = value;
             OnPropertyChanged();
         }
@@ -213,6 +217,26 @@ public class DamageMeterFragment : INotifyPropertyChanged
         set
         {
             _healPercentage = value;
+            OnPropertyChanged();
+        }
+    }
+
+    public double Overhealed
+    {
+        get => _overhealed;
+        set
+        {
+            _overhealed = value;
+            OnPropertyChanged();
+        }
+    }
+
+    public double OverhealedPercentageOfTotalHealing
+    {
+        get => _overhealedPercentageOfTotalHealing;
+        set
+        {
+            _overhealedPercentageOfTotalHealing = value;
             OnPropertyChanged();
         }
     }
@@ -240,7 +264,9 @@ public class DamageMeterFragment : INotifyPropertyChanged
         }
     }
 
-    public string TranslationCombatTime => LanguageController.Translation("COMBAT_TIME");
+    public static string TranslationCombatTime => LanguageController.Translation("COMBAT_TIME");
+    public static string TranslationHealingWithoutOverhealed => LanguageController.Translation("HEALING_WITHOUT_OVERHEALED");
+    public static string TranslationOverhealedPercentageOfTotalHealing => LanguageController.Translation("OVERHEALED_PERCENTAGE_OF_TOTAL_HEALING");
 
     public event PropertyChangedEventHandler PropertyChanged;
 

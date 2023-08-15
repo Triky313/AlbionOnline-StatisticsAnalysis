@@ -224,12 +224,12 @@ public static class ExtensionMethod
 
     #region Player Objects
 
-    public static long GetHighestDamage(this List<KeyValuePair<Guid, PlayerGameObject>> playerObjects)
+    public static long GetCurrentTotalDamage(this List<KeyValuePair<Guid, PlayerGameObject>> playerObjects)
     {
         return playerObjects.Count <= 0 ? 0 : playerObjects.Max(x => x.Value.Damage);
     }
 
-    public static long GetHighestHeal(this List<KeyValuePair<Guid, PlayerGameObject>> playerObjects)
+    public static long GetCurrentTotalHeal(this List<KeyValuePair<Guid, PlayerGameObject>> playerObjects)
     {
         return playerObjects.Count <= 0 ? 0 : playerObjects.Max(x => x.Value.Heal);
     }
@@ -239,7 +239,7 @@ public static class ExtensionMethod
         var totalDamage = playerObjects.Sum(x => x.Value.Damage);
         return 100.00 / totalDamage * playerDamage;
     }
-
+    
     public static double GetHealPercentage(this List<KeyValuePair<Guid, PlayerGameObject>> playerObjects, double playerHeal)
     {
         var totalHeal = playerObjects.Sum(x => x.Value.Heal);

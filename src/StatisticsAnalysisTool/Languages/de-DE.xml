@@ -786,4 +786,6 @@
 	<translation name="PLEASE_SELECT_A_CORRECT_FOLDER">Bitte wähle einen korrekten Ordner aus</translation>
 	<translation name="SELECT_MAIN_GAME_FOLDER_DOTS">Wähle den Hauptspielordner aus...</translation>
 	<translation name="CONFIRM">Bestätigen</translation>
+	<translation name="OVERHEALED_PERCENTAGE_OF_TOTAL_HEALING">Überheilter Prozentsatz der Gesamtheilung</translation>
+	<translation name="HEALING_WITHOUT_OVERHEALED">Heilung ohne Überheilung</translation>
 </translations>
