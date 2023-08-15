@@ -70,6 +70,7 @@ public class EntityController
                 CombatTime = oldEntity.CombatTime,
                 Damage = oldEntity.Damage,
                 Heal = oldEntity.Heal,
+                Overhealed = oldEntity.Overhealed,
                 IsInParty = oldEntity.IsInParty,
             };
         }
@@ -131,7 +132,7 @@ public class EntityController
         return _knownEntities?.FirstOrDefault(x => x.Value.Name == uniqueName);
     }
 
-    private KeyValuePair<Guid, PlayerGameObject> GetEntity(Guid guid)
+    public KeyValuePair<Guid, PlayerGameObject> GetEntity(Guid guid)
     {
         return _knownEntities.FirstOrDefault(x => x.Key == guid);
     }
@@ -141,9 +142,11 @@ public class EntityController
         return new List<KeyValuePair<Guid, PlayerGameObject>>(onlyInParty ? _knownEntities.ToArray().Where(x => IsEntityInParty(x.Value.Name)) : _knownEntities.ToArray());
     }
 
-    public List<KeyValuePair<Guid, PlayerGameObject>> GetAllEntitiesWithDamageOrHeal()
+    public List<KeyValuePair<Guid, PlayerGameObject>> GetAllEntitiesWithDamageOrHealAndInParty()
     {
-        return new List<KeyValuePair<Guid, PlayerGameObject>>(_knownEntities.ToArray().Where(x => x.Value.Damage > 0 || x.Value.Heal > 0));
+        return new List<KeyValuePair<Guid, PlayerGameObject>>(_knownEntities
+            .ToArray()
+            .Where(x => (x.Value.Damage > 0 || x.Value.Heal > 0 || x.Value.Overhealed > 0) && IsEntityInParty(x.Key)));
     }
 
     public bool ExistEntity(Guid guid)
@@ -492,6 +495,14 @@ public class EntityController
         foreach (var entity in _knownEntities)
         {
             entity.Value.Heal = 0;
+        }
+    }
+
+    public void ResetEntitiesHealAndOverhealed()
+    {
+        foreach (var entity in _knownEntities)
+        {
+            entity.Value.Overhealed = 0;
         }
     }
 

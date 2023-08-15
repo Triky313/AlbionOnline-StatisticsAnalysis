@@ -9,16 +9,16 @@ using System.Threading.Tasks;
 
 namespace StatisticsAnalysisTool.Network.Handler;
 
-public class ReceivedSeasonPointsEventHandler : EventPacketHandler<ReceivedSeasonPointsEvent>
+public class ReceivedGvgSeasonPointsEventHandler : EventPacketHandler<ReceivedGvgSeasonPointsEvent>
 {
     private readonly TrackingController _trackingController;
 
-    public ReceivedSeasonPointsEventHandler(TrackingController trackingController) : base((int) EventCodes.ReceivedSeasonPoints)
+    public ReceivedGvgSeasonPointsEventHandler(TrackingController trackingController) : base((int) EventCodes.ReceivedGvgSeasonPoints)
     {
         _trackingController = trackingController;
     }
 
-    protected override async Task OnActionAsync(ReceivedSeasonPointsEvent value)
+    protected override async Task OnActionAsync(ReceivedGvgSeasonPointsEvent value)
     {
         await Task.CompletedTask;
     }

@@ -1,15 +1,15 @@
-﻿using System;
+﻿using StatisticsAnalysisTool.Common;
+using System;
 using System.Collections.Generic;
 using System.Reflection;
-using StatisticsAnalysisTool.Common;
 
 namespace StatisticsAnalysisTool.Network.Events;
 
-public class ReceivedSeasonPointsEvent
+public class ReceivedGvgSeasonPointsEvent
 {
     public int SeasonPoints;
 
-    public ReceivedSeasonPointsEvent(Dictionary<byte, object> parameters)
+    public ReceivedGvgSeasonPointsEvent(Dictionary<byte, object> parameters)
     {
         ConsoleManager.WriteLineForNetworkHandler(GetType().Name, parameters);
 
