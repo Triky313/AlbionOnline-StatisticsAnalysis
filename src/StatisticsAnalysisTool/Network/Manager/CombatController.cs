@@ -45,10 +45,10 @@ public class CombatController
 
     public event Action<ObservableCollection<DamageMeterFragment>, List<KeyValuePair<Guid, PlayerGameObject>>> OnDamageUpdate;
 
-    public Task AddDamage(long objectId, long causerId, double healthChange, double newHealthValue)
+    public Task AddDamage(long affectedId, long causerId, double healthChange, double newHealthValue)
     {
         var healthChangeType = GetHealthChangeType(healthChange);
-        if (!IsDamageMeterActive || (objectId == causerId && healthChangeType == HealthChangeType.Damage))
+        if (!IsDamageMeterActive || (affectedId == causerId && healthChangeType == HealthChangeType.Damage))
         {
             return Task.CompletedTask;
         }
@@ -80,7 +80,7 @@ public class CombatController
                 return Task.CompletedTask;
             }
 
-            if (!IsMaxHealthReached(objectId, newHealthValue))
+            if (!IsMaxHealthReached(affectedId, newHealthValue))
             {
                 gameObjectValue.Heal += (int) Math.Round(healChangeValue, MidpointRounding.AwayFromZero);
             }
@@ -350,31 +350,37 @@ public class CombatController
         });
     }
 
-    public ConcurrentDictionary<long, double> LastPlayersHealth = new();
+    public ConcurrentDictionary<Guid, double> LastPlayersHealth = new();
 
     public bool IsMaxHealthReached(long objectId, double newHealthValue)
     {
-        var playerHealth = LastPlayersHealth?.ToArray().FirstOrDefault(x => x.Key == objectId);
+        var gameObject = _trackingController?.EntityController?.GetEntity(objectId);
+        var playerHealth = LastPlayersHealth?.ToArray().FirstOrDefault(x => x.Key == gameObject?.Value?.UserGuid);
         if (playerHealth?.Value.CompareTo(newHealthValue) == 0)
         {
             return true;
         }
 
-        SetLastPlayersHealth(objectId, newHealthValue);
+        SetLastPlayersHealth(gameObject?.Value?.UserGuid, newHealthValue);
         return false;
     }
 
-    private void SetLastPlayersHealth(long key, double value)
+    private void SetLastPlayersHealth(Guid? userGuid, double value)
     {
-        if (LastPlayersHealth.ContainsKey(key))
+        if (userGuid is not { } notNullGuid)
         {
-            LastPlayersHealth[key] = value;
+            return;
+        }
+
+        if (LastPlayersHealth.ContainsKey(notNullGuid))
+        {
+            LastPlayersHealth[notNullGuid] = value;
         }
         else
         {
             try
             {
-                LastPlayersHealth.TryAdd(key, value);
+                LastPlayersHealth.TryAdd(notNullGuid, value);
             }
             catch (Exception e)
             {
