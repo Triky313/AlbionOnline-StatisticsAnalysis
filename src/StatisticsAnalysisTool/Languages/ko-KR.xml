@@ -782,4 +782,11 @@
 	<translation name="ANOTHER_APP_TO_START_PATH">프로그램을 시작할 수 있는 다른 경로</translation>
 	<translation name="CANNOT_START_OTHER_APP">다른 경로에 있는 프로그램을 시작할 수 없습니다</translation>
 	<translation name="FISHING">낚시</translation>
+	<translation name="SELECT_ALBION_ONLINE_MAIN_GAME_FOLDER">Albion Online 게임 폴더 선택</translation>
+	<translation name="PLEASE_SELECT_A_CORRECT_ALBION_ONLINE_MAIN_GAME_FOLDER">올바른 Albion Online 게임 폴더를 선택하세요.</translation>
+	<translation name="PLEASE_SELECT_A_CORRECT_FOLDER">올바른 폴더를 선택하세요</translation>
+	<translation name="SELECT_MAIN_GAME_FOLDER_DOTS">기본 게임 폴더를 선택하세요..</translation>
+	<translation name="CONFIRM">확인</translation>
+	<translation name="OVERHEALED_PERCENTAGE_OF_TOTAL_HEALING">총 치유량 중 초과 치유량(Overheal) 비율</translation>
+	<translation name="HEALING_WITHOUT_OVERHEALED">초과 치유를 제외한 치유량</translation>
 </translations>
