@@ -145,7 +145,7 @@ public class EntityController
     {
         return new List<KeyValuePair<Guid, PlayerGameObject>>(_knownEntities
             .ToArray()
-            .Where(x => (x.Value.Damage > 0 || x.Value.Heal > 0 || x.Value.HealAndOverhealed > 0) && IsEntityInParty(x.Key)));
+            .Where(x => (x.Value.Damage > 0 || x.Value.Heal > 0 || x.Value.Overhealed > 0) && IsEntityInParty(x.Key)));
     }
 
     public bool ExistEntity(Guid guid)
@@ -501,7 +501,7 @@ public class EntityController
     {
         foreach (var entity in _knownEntities)
         {
-            entity.Value.HealAndOverhealed = 0;
+            entity.Value.Overhealed = 0;
         }
     }
 

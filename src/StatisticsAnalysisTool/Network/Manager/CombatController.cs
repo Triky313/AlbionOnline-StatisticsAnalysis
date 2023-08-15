@@ -84,8 +84,10 @@ public class CombatController
             {
                 gameObjectValue.Heal += (int) Math.Round(healChangeValue, MidpointRounding.AwayFromZero);
             }
-
-            gameObjectValue.HealAndOverhealed += (int) Math.Round(healChangeValue, MidpointRounding.AwayFromZero);
+            else
+            {
+                gameObjectValue.Overhealed += (int) Math.Round(healChangeValue, MidpointRounding.AwayFromZero);
+            }
         }
 
         gameObjectValue.CombatStart ??= DateTime.UtcNow;
@@ -106,7 +108,7 @@ public class CombatController
         _isUiUpdateActive = true;
 
         var currentTotalDamage = entities.GetCurrentTotalDamage();
-        var currentTotalHealAndOverhealed = entities.GetCurrentTotalHealAndOverhealed();
+        var currentTotalHeal = entities.GetCurrentTotalHeal();
 
         _trackingController.EntityController.DetectUsedWeapon();
 
@@ -120,11 +122,11 @@ public class CombatController
             var fragment = damageMeter.ToList().FirstOrDefault(x => x.CauserGuid == healthChangeObject.Value.UserGuid);
             if (fragment != null)
             {
-                UpdateDamageMeterFragment(fragment, healthChangeObject, entities, currentTotalDamage, currentTotalHealAndOverhealed);
+                UpdateDamageMeterFragment(fragment, healthChangeObject, entities, currentTotalDamage, currentTotalHeal);
             }
             else
             {
-                await AddDamageMeterFragmentAsync(damageMeter, healthChangeObject, entities, currentTotalDamage, currentTotalHealAndOverhealed).ConfigureAwait(true);
+                await AddDamageMeterFragmentAsync(damageMeter, healthChangeObject, entities, currentTotalDamage, currentTotalHeal).ConfigureAwait(true);
             }
 
             Application.Current.Dispatcher.Invoke(() => _mainWindowViewModel.DamageMeterBindings?.SetDamageMeterSort());
@@ -139,7 +141,7 @@ public class CombatController
     }
 
     private static void UpdateDamageMeterFragment(DamageMeterFragment fragment, KeyValuePair<Guid, PlayerGameObject> healthChangeObject,
-        List<KeyValuePair<Guid, PlayerGameObject>> entities, long currentTotalDamage, long currentTotalHealAndOverhealed)
+        List<KeyValuePair<Guid, PlayerGameObject>> entities, long currentTotalDamage, long currentTotalHeal)
     {
         var healthChangeObjectValue = healthChangeObject.Value;
 
@@ -164,7 +166,7 @@ public class CombatController
         // Heal
         if (healthChangeObjectValue?.Heal > 0)
         {
-            fragment.HealInPercent = (double) healthChangeObjectValue.Heal / currentTotalHealAndOverhealed * 100;
+            fragment.HealInPercent = (double) healthChangeObjectValue.Heal / currentTotalHeal * 100;
             fragment.Heal = healthChangeObjectValue.Heal;
         }
 
@@ -173,10 +175,9 @@ public class CombatController
             fragment.Hps = healthChangeObjectValue.Hps;
         }
 
-        if (healthChangeObjectValue?.HealAndOverhealed > 0)
+        if (healthChangeObjectValue?.Overhealed > 0)
         {
-            fragment.HealAndOverhealedInPercent = (double) healthChangeObjectValue.HealAndOverhealed / currentTotalHealAndOverhealed * 100;
-            fragment.HealAndOverhealed = healthChangeObjectValue.HealAndOverhealed;
+            fragment.Overhealed = healthChangeObjectValue.Overhealed;
         }
 
         // Generally
@@ -185,8 +186,13 @@ public class CombatController
             fragment.CombatTime = healthChangeObjectValue.CombatTime;
             fragment.DamagePercentage = entities.GetDamagePercentage(healthChangeObjectValue.Damage);
             fragment.HealPercentage = entities.GetHealPercentage(healthChangeObjectValue.Heal);
-            fragment.HealAndOverhealedPercentage = entities.GetHealAndOverhealedPercentage(healthChangeObjectValue.HealAndOverhealed);
+            fragment.OverhealedPercentageOfTotalHealing = GetOverhealedPercentageOfHealWithOverhealed(healthChangeObjectValue.Overhealed, healthChangeObjectValue.Heal);
         }
+    }
+
+    public static double GetOverhealedPercentageOfHealWithOverhealed(double overhealed, double heal)
+    {
+        return 100.00 / (heal + overhealed) * overhealed;
     }
 
     public async Task RemoveNonRelevantEntityFromDamageMeterAsync()
@@ -216,8 +222,8 @@ public class CombatController
         List<KeyValuePair<Guid, PlayerGameObject>> entities, long currentTotalDamage, long currentTotalHeal)
     {
         if (healthChangeObject.Value == null
-            || (double.IsNaN(healthChangeObject.Value.Damage) && double.IsNaN(healthChangeObject.Value.Heal) && double.IsNaN(healthChangeObject.Value.HealAndOverhealed))
-            || (healthChangeObject.Value.Damage <= 0 && healthChangeObject.Value.Heal <= 0 && healthChangeObject.Value.HealAndOverhealed <= 0))
+            || (double.IsNaN(healthChangeObject.Value.Damage) && double.IsNaN(healthChangeObject.Value.Heal) && double.IsNaN(healthChangeObject.Value.Overhealed))
+            || (healthChangeObject.Value.Damage <= 0 && healthChangeObject.Value.Heal <= 0 && healthChangeObject.Value.Overhealed <= 0))
         {
             return;
         }
@@ -237,8 +243,8 @@ public class CombatController
             Hps = healthChangeObjectValue.Hps,
             HealInPercent = (double) healthChangeObjectValue.Heal / currentTotalHeal * 100,
             HealPercentage = entities.GetHealPercentage(healthChangeObjectValue.Heal),
-            HealAndOverhealedInPercent = (double) healthChangeObjectValue.HealAndOverhealed / currentTotalHeal * 100,
-            HealAndOverhealedPercentage = entities.GetHealAndOverhealedPercentage(healthChangeObjectValue.HealAndOverhealed),
+            Overhealed = healthChangeObjectValue.Overhealed,
+            OverhealedPercentageOfTotalHealing = GetOverhealedPercentageOfHealWithOverhealed(healthChangeObjectValue.Overhealed, healthChangeObjectValue.Heal),
 
             Name = healthChangeObjectValue.Name,
             CauserMainHand = item

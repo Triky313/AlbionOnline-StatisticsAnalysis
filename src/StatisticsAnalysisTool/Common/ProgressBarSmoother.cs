@@ -29,7 +29,7 @@ public class ProgressBarSmoother
             return;
         }
 
-        var anim = new DoubleAnimation((double) e.OldValue, (double) e.NewValue, new TimeSpan(0, 0, 0, 0, 150));
+        var anim = new DoubleAnimation((double) e.OldValue, (double) e.NewValue, new TimeSpan(0, 0, 0, 0, 250));
         (d as ProgressBar)?.BeginAnimation(RangeBase.ValueProperty, anim, HandoffBehavior.Compose);
     }
 }

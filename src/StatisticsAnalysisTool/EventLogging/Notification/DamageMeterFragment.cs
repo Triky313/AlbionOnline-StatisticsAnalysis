@@ -5,7 +5,6 @@ using System;
 using System.ComponentModel;
 using System.Diagnostics;
 using System.Runtime.CompilerServices;
-using System.Windows.Controls;
 
 namespace StatisticsAnalysisTool.EventLogging.Notification;
 
@@ -29,11 +28,8 @@ public class DamageMeterFragment : INotifyPropertyChanged
     private string _damageShortString;
     private string _healShortString;
     private TimeSpan _combatTime;
-    private long _healAndOverhealed;
-    private string _healAndOverhealedShortString;
-    private double _healAndOverhealedInPercent;
-    private double _healAndOverhealedPercentage;
-    private ProgressBar _healAndOverhealedProgressBar;
+    private double _overhealedPercentageOfTotalHealing;
+    private double _overhealed;
 
     public DamageMeterFragment(DamageMeterFragment damageMeterFragment)
     {
@@ -209,6 +205,7 @@ public class DamageMeterFragment : INotifyPropertyChanged
         get => _healInPercent;
         set
         {
+            Debug.Print($"Heal in percent ({Name}): {value}");
             _healInPercent = value;
             OnPropertyChanged();
         }
@@ -224,43 +221,22 @@ public class DamageMeterFragment : INotifyPropertyChanged
         }
     }
 
-    public long HealAndOverhealed
+    public double Overhealed
     {
-        get => _healAndOverhealed;
+        get => _overhealed;
         set
         {
-            _healAndOverhealed = value;
-            HealAndOverhealedShortString = _healAndOverhealed.ToShortNumberString();
+            _overhealed = value;
             OnPropertyChanged();
         }
     }
 
-    public string HealAndOverhealedShortString
+    public double OverhealedPercentageOfTotalHealing
     {
-        get => _healAndOverhealedShortString;
-        private set
-        {
-            _healAndOverhealedShortString = value;
-            OnPropertyChanged();
-        }
-    }
-
-    public double HealAndOverhealedInPercent
-    {
-        get => _healAndOverhealedInPercent;
+        get => _overhealedPercentageOfTotalHealing;
         set
         {
-            _healAndOverhealedInPercent = value;
-            OnPropertyChanged();
-        }
-    }
-
-    public double HealAndOverhealedPercentage
-    {
-        get => _healAndOverhealedPercentage;
-        set
-        {
-            _healAndOverhealedPercentage = value;
+            _overhealedPercentageOfTotalHealing = value;
             OnPropertyChanged();
         }
     }
@@ -288,9 +264,9 @@ public class DamageMeterFragment : INotifyPropertyChanged
         }
     }
 
-    public string TranslationCombatTime => LanguageController.Translation("COMBAT_TIME");
-    public string TranslationHeal => LanguageController.Translation("HEAL");
-    public string TranslationHealWithOverhealed => LanguageController.Translation("HEAL_WITH_OVERHEALED");
+    public static string TranslationCombatTime => LanguageController.Translation("COMBAT_TIME");
+    public static string TranslationHealingWithoutOverhealed => LanguageController.Translation("HEALING_WITHOUT_OVERHEALED");
+    public static string TranslationOverhealedPercentageOfTotalHealing => LanguageController.Translation("OVERHEALED_PERCENTAGE_OF_TOTAL_HEALING");
 
     public event PropertyChangedEventHandler PropertyChanged;
 
