@@ -205,7 +205,6 @@ public class DamageMeterFragment : INotifyPropertyChanged
         get => _healInPercent;
         set
         {
-            Debug.Print($"Heal in percent ({Name}): {value}");
             _healInPercent = value;
             OnPropertyChanged();
         }

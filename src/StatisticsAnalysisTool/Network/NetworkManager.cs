@@ -65,7 +65,7 @@ public static class NetworkManager
         builder.AddEventHandler(new ActiveSpellEffectsUpdateEventHandler(trackingController));
         builder.AddEventHandler(new UpdateFactionStandingEventHandler(trackingController));
         //builder.AddEventHandler(new ReceivedSeasonPointsEventHandler(trackingController));
-        builder.AddEventHandler(new MightFavorPointsEventHandler(trackingController));
+        builder.AddEventHandler(new MightAndFavorReceivedEventHandler(trackingController));
         builder.AddEventHandler(new BaseVaultInfoEventHandler(trackingController));
         builder.AddEventHandler(new GuildVaultInfoEventHandler(trackingController));
         builder.AddEventHandler(new NewLootEventHandler(trackingController));

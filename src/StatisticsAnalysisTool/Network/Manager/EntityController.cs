@@ -70,6 +70,7 @@ public class EntityController
                 CombatTime = oldEntity.CombatTime,
                 Damage = oldEntity.Damage,
                 Heal = oldEntity.Heal,
+                Overhealed = oldEntity.Overhealed,
                 IsInParty = oldEntity.IsInParty,
             };
         }
