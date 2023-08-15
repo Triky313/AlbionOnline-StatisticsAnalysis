@@ -5,7 +5,7 @@ using System.Reflection;
 
 namespace StatisticsAnalysisTool.Network.Events;
 
-public class MightFavorPointsEvent
+public class MightAndFavorReceivedEvent
 {
     public FixPoint Might;
     public FixPoint PremiumOfMight;
@@ -15,7 +15,7 @@ public class MightFavorPointsEvent
     public FixPoint BonusOfFavor;
     public FixPoint TotalFavor;
 
-    public MightFavorPointsEvent(Dictionary<byte, object> parameters)
+    public MightAndFavorReceivedEvent(Dictionary<byte, object> parameters)
     {
         ConsoleManager.WriteLineForNetworkHandler(GetType().Name, parameters);
         try
