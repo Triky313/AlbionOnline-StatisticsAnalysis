@@ -22,9 +22,9 @@ public class AuctionGetOffersResponse
 
         try
         {
-            if (parameters.ContainsKey(0))
+            if (parameters.TryGetValue(0, out object auctionOffers))
             {
-                foreach (var auctionOfferString in (IEnumerable<string>) parameters[0] ?? new List<string>())
+                foreach (var auctionOfferString in (IEnumerable<string>) auctionOffers ?? new List<string>())
                 {
                     AuctionEntries.Add(JsonSerializer.Deserialize<AuctionEntry>(auctionOfferString ?? string.Empty));
                 }

@@ -26,8 +26,6 @@ public class AuctionGetLoadoutOffersResponse
         {
             if (parameters.TryGetValue(1, out object auctionEntries))
             {
-                var test = auctionEntries.GetType();
-
                 if (auctionEntries is string[][] auctionEntriesList)
                 {
                     var allRecords = auctionEntriesList.SelectMany(x => x).ToList();
