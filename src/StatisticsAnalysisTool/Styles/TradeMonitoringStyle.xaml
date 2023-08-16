@@ -1,7 +1,8 @@
 ﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
                     xmlns:common="clr-namespace:StatisticsAnalysisTool.Common"
-                    xmlns:trade="clr-namespace:StatisticsAnalysisTool.Trade">
+                    xmlns:trade="clr-namespace:StatisticsAnalysisTool.Trade"
+                    xmlns:fa5="http://schemas.fontawesome.com/icons/">
 
     <Style TargetType="Image" x:Key="Trade.Icon">
         <Setter Property="Height" Value="50"/>
@@ -477,6 +478,7 @@
             <Border Style="{StaticResource Container.Border}">
                 <DockPanel VerticalAlignment="Top" HorizontalAlignment="Stretch" Margin="5,0,10,0">
                     <Grid Margin="0,0, 5, 0" HorizontalAlignment="Center" VerticalAlignment="Center">
+
                         <Image Source="{Binding Item.Icon, IsAsync=True, Mode=OneWay}" Style="{StaticResource Trade.Icon}" />
                     </Grid>
                     <StackPanel Orientation="Vertical">
@@ -804,7 +806,7 @@
             <Border Style="{StaticResource Container.Border}">
                 <DockPanel VerticalAlignment="Top" HorizontalAlignment="Stretch" Margin="5,0,10,0">
                     <Grid Margin="0,0, 5, 0" HorizontalAlignment="Center" VerticalAlignment="Center">
-                        <Image Source="{Binding Item.Icon, IsAsync=True, Mode=OneWay}" Style="{StaticResource Trade.Icon}" />
+                        <fa5:ImageAwesome Icon="Solid_HandHoldingUsd" Foreground="{StaticResource SolidColorBrush.Accent.Green.3}" Margin="10" />
                     </Grid>
                     <StackPanel Orientation="Vertical">
                         <DockPanel>
@@ -877,7 +879,7 @@
             <Border Style="{StaticResource Container.Border}">
                 <DockPanel VerticalAlignment="Top" HorizontalAlignment="Stretch" Margin="5,0,10,0">
                     <Grid Margin="0,0, 5, 0" HorizontalAlignment="Center" VerticalAlignment="Center">
-                        <Image Source="{Binding Item.Icon, IsAsync=True, Mode=OneWay}" Style="{StaticResource Trade.Icon}" />
+                        <fa5:ImageAwesome Icon="Solid_ShoppingCart" Foreground="{StaticResource SolidColorBrush.Accent.Red.3}" Margin="10" />
                     </Grid>
                     <StackPanel Orientation="Vertical">
                         <DockPanel>

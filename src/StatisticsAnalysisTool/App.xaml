@@ -24,7 +24,7 @@
                 <ResourceDictionary Source="Styles/DashboardStyles.xaml" />
                 <ResourceDictionary Source="Styles/DungeonStyles.xaml" />
                 <ResourceDictionary Source="Styles/DamageMeterStyles.xaml" />
-                <ResourceDictionary Source="Styles/MailMonitoringStyle.xaml" />
+                <ResourceDictionary Source="Styles/TradeMonitoringStyle.xaml" />
                 <ResourceDictionary Source="Styles/GatheringStyles.xaml" />
                 <ResourceDictionary Source="Styles/PartyBuilderStyle.xaml" />
                 <ResourceDictionary Source="Styles/StorageHistoryStyle.xaml" />
