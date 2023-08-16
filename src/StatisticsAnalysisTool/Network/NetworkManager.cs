@@ -7,6 +7,7 @@ using StatisticsAnalysisTool.Enumerations;
 using StatisticsAnalysisTool.Exceptions;
 using StatisticsAnalysisTool.Network.Handler;
 using StatisticsAnalysisTool.Network.Manager;
+using StatisticsAnalysisTool.Network.Operations.Responses;
 using StatisticsAnalysisTool.Notification;
 using StatisticsAnalysisTool.ViewModels;
 using System;
@@ -94,6 +95,8 @@ public static class NetworkManager
         builder.AddResponseHandler(new AuctionGetResponseHandler(trackingController));
         builder.AddResponseHandler(new GetCharacterEquipmentResponseHandler(trackingController));
         builder.AddResponseHandler(new FishingFinishResponseHandler(trackingController));
+        builder.AddResponseHandler(new AuctionGetLoadoutOffersResponseHandler(trackingController));
+        builder.AddResponseHandler(new AuctionBuyLoadoutOfferResponseHandler(trackingController));
 
         _receiver = builder.Build();
         StartDeviceCapture();

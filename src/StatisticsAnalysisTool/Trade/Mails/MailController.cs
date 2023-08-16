@@ -76,7 +76,7 @@ public class MailController
             return;
         }
 
-        _ = _trackingController.TradeController.AddTradeToBindingCollection(trade);
+        _ = _trackingController.TradeController.AddTradeToBindingCollectionAsync(trade);
         await _trackingController.TradeController.SaveInFileAfterExceedingLimit(10);
     }
 
