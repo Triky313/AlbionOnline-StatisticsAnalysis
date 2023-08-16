@@ -7,7 +7,6 @@ using StatisticsAnalysisTool.Enumerations;
 using StatisticsAnalysisTool.Exceptions;
 using StatisticsAnalysisTool.Network.Handler;
 using StatisticsAnalysisTool.Network.Manager;
-using StatisticsAnalysisTool.Network.Operations.Responses;
 using StatisticsAnalysisTool.Notification;
 using StatisticsAnalysisTool.ViewModels;
 using System;
