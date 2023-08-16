@@ -262,9 +262,9 @@ public enum EventCodes
     InvitedToArenaMatch,
     PlayerCounts,
     OtherGrabbedLoot,
-    InCombatStateUpdate = 263, // map[0:671362 1:true 2:true 252:257] | 1 = true; player hits enemy | 2 = true; enemy hits player
-    GrabbedLoot = 264, // LOOT: map[0:424 1:Triky313 2:Bruno313 4:1841 5:1 252:256] | SILVER: map[0:6436 2:Triky313 3:true 5:1550115 252:256] (0: ObjectId, 1: LootedBody, 2: Looter, 4: ItemId, 5: Quantity) 
-    SiegeCampClaimStart = 265,
+    InCombatStateUpdate = 262, // map[0:671362 1:true 2:true 252:257] | 1 = true; player hits enemy | 2 = true; enemy hits player
+    GrabbedLoot = 263, // LOOT: map[0:424 1:Triky313 2:Bruno313 4:1841 5:1 252:256] | SILVER: map[0:6436 2:Triky313 3:true 5:1550115 252:256] (0: ObjectId, 1: LootedBody, 2: Looter, 4: ItemId, 5: Quantity) 
+    SiegeCampClaimStart = 264,
     SiegeCampClaimCancel,
     SiegeCampClaimFinished,
     SiegeCampScheduleResult,
@@ -379,12 +379,12 @@ public enum EventCodes
     TutorialUpdate,
     TriggerHintBox,
     RandomDungeonPositionInfo,
-    NewLootChest = 378, // map[0:23 1:[20.5 177.5] 2:423 3:KEEPER_SOLO_BOOKCHEST_STANDARD 4:FOREST_GREEN_LOOTCHEST_KEEPER_SOLO_BOOKCHEST_STANDARD 5:4 6:637734315213820408 7:[] 8:[] 13:true 252:367] // map[0:4399 1:[165 -263] 3:TREASURE_SOLO_UNCOMMON 4:SWAMP_DEAD_LOOTCHEST_TREASURE_SOLO_UNCOMMON 5:4 6:637926439332719127 7:[] 8:[] 13:true 14:SWAMP_DEAD_TREASURE_SOLO 16:31ff503a-ded6-53d6-974a-7e32e3126457 252:370]
-    UpdateLootChest = 379, // 0=ObjectId, 3=PlayerGuid, 4=PlayerGuid, 7=Free4All map[0:4769 1:5 2:637927794424868192 3:[[-45 -35 124 14 -23 103 -41 74 -71 66 67 20 -12 60 44 -101]] 4:[[-45 -35 124 14 -23 103 -41 74 -71 66 67 20 -12 60 44 -101]] 6:true 7:true 8:2.6 9:true 252:371]
-    LootChestOpened = 380, // map[0:23 252:369]
+    NewLootChest = 377, // map[0:23 1:[20.5 177.5] 2:423 3:KEEPER_SOLO_BOOKCHEST_STANDARD 4:FOREST_GREEN_LOOTCHEST_KEEPER_SOLO_BOOKCHEST_STANDARD 5:4 6:637734315213820408 7:[] 8:[] 13:true 252:367] // map[0:4399 1:[165 -263] 3:TREASURE_SOLO_UNCOMMON 4:SWAMP_DEAD_LOOTCHEST_TREASURE_SOLO_UNCOMMON 5:4 6:637926439332719127 7:[] 8:[] 13:true 14:SWAMP_DEAD_TREASURE_SOLO 16:31ff503a-ded6-53d6-974a-7e32e3126457 252:370]
+    UpdateLootChest = 378, // 0=ObjectId, 3=PlayerGuid, 4=PlayerGuid, 7=Free4All map[0:4769 1:5 2:637927794424868192 3:[[-45 -35 124 14 -23 103 -41 74 -71 66 67 20 -12 60 44 -101]] 4:[[-45 -35 124 14 -23 103 -41 74 -71 66 67 20 -12 60 44 -101]] 6:true 7:true 8:2.6 9:true 252:371]
+    LootChestOpened = 379, // map[0:23 252:369]
     UpdateLootProtectedByMobsWithMinimapDisplay,
-    NewShrine = 382, // map[0:19 1:[-89 90] 2:180 3:GENERAL_SHRINE_COMBAT_BUFF 4:SHRINE_NON_COMBAT_BUFF 5:1 6:637734312344532502 252:371]
-    UpdateShrine = 383, // map[0:19 1:2 2:637734313445294913 252:372]
+    NewShrine = 381, // map[0:19 1:[-89 90] 2:180 3:GENERAL_SHRINE_COMBAT_BUFF 4:SHRINE_NON_COMBAT_BUFF 5:1 6:637734312344532502 252:371]
+    UpdateShrine = 382, // map[0:19 1:2 2:637734313445294913 252:372]
     UpdateRoom,
     NewMistDungeonRoomMobSoul,
     NewHellgateShrine,
@@ -398,10 +398,10 @@ public enum EventCodes
     UnlockVanityUnlock,
     AvatarUnlocked,
     CustomizationChanged,
-    GuildVaultInfo = 398,
-    BaseVaultInfo = 399,
+    GuildVaultInfo = 397,
+    BaseVaultInfo = 398,
     BankVaultInfo, // map[0:6 1:6466931c-65a1-4c5d-870b-8724cf2611dc@3007 2:[] 3:[] 4:[] 5:[] 6:[] 7:[] 8:[] 252:390]
-    RecoveryVaultPlayerInfo = 401,
+    RecoveryVaultPlayerInfo = 400,
     RecoveryVaultGuildInfo,
     UpdateWardrobe,
     CastlePhaseChanged,
@@ -481,7 +481,7 @@ public enum EventCodes
     DoSimpleActionCancel,
     DoSimpleActionFinished,
     NotifyGuestAccountVerified,
-    MightAndFavorReceivedEvent = 480, // map[0:63063 2:21021 3:16617 5:5539 6:349680 8:0 252:470] (0: Might, 2: Premium of might, 3: Favor, 5: Premium of favor, 6: Total favor, 8: ???) 
+    MightAndFavorReceivedEvent = 479, // map[0:63063 2:21021 3:16617 5:5539 6:349680 8:0 252:470] (0: Might, 2: Premium of might, 3: Favor, 5: Premium of favor, 6: Total favor, 8: ???) 
     WeeklyPvpChallengeRewardStateUpdate,
     NewUnlockedPvpSeasonChallengeRewards,
     StaticDungeonEntrancesDungeonEventStatusUpdates,
@@ -531,5 +531,17 @@ public enum EventCodes
     Transformation,
     TransformationEnd,
     UpdateTrustlevel,
-    RevealHiddenTimeStamps
+    RevealHiddenTimeStamps,
+    ModifyItemTraitFinished,
+    RerollItemTraitValueFinished,
+    HuntQuestProgressInfo,
+    HuntStarted,
+    HuntFinished,
+    HuntAborted,
+    HuntMissionStepStateUpdate,
+    NewHuntTrack,
+    HuntMissionUpdate,
+    HuntQuestMissionProgressUpdate,
+    HuntTrackUsed,
+    LegendaryItemDestroyed
 }
