@@ -2,37 +2,36 @@
 using StatisticsAnalysisTool.Common;
 using StatisticsAnalysisTool.Enumerations;
 using StatisticsAnalysisTool.Models;
-using StatisticsAnalysisTool.Trade.Market;
 using System;
 using System.Collections.Generic;
 using System.Reflection;
-using System.Text.Json;
 
 namespace StatisticsAnalysisTool.Network.Operations.Responses;
 
-public class AuctionGetOffersResponse
+public class AuctionBuyLoadoutOfferResponse
 {
     private static readonly ILog Log = LogManager.GetLogger(MethodBase.GetCurrentMethod()?.DeclaringType);
 
-    public readonly List<AuctionEntry> AuctionEntries = new();
+    public List<long> PurchaseIds = new();
 
-    public AuctionGetOffersResponse(Dictionary<byte, object> parameters)
+    public AuctionBuyLoadoutOfferResponse(Dictionary<byte, object> parameters)
     {
         ConsoleManager.WriteLine(new ConsoleFragment(GetType().Name, parameters, ConsoleColorType.EventColor));
 
         try
         {
-            if (parameters.TryGetValue(0, out object auctionOffers))
+            if (parameters.TryGetValue(3, out object numberToBuyArray))
             {
-                foreach (var auctionOfferString in (IEnumerable<string>) auctionOffers ?? new List<string>())
+                foreach (var numberToBuy in (IEnumerable<long>) numberToBuyArray ?? new List<long>())
                 {
-                    AuctionEntries.Add(JsonSerializer.Deserialize<AuctionEntry>(auctionOfferString ?? string.Empty));
+                    PurchaseIds.Add(numberToBuy);
                 }
             }
+
         }
         catch (Exception e)
         {
-            Log.Error(nameof(AuctionGetOffersResponse), e);
+            Log.Error(nameof(ReadMailResponse), e);
         }
     }
 }

@@ -96,7 +96,7 @@ public class ManuallyTradeMenuObject : INotifyPropertyChanged
         };
 
         var trackingController = ServiceLocator.Resolve<TrackingController>();
-        trackingController?.TradeController?.AddTradeToBindingCollection(trade);
+        trackingController?.TradeController?.AddTradeToBindingCollectionAsync(trade);
     }
 
     private ICommand _addTradeCommand;

@@ -37,7 +37,7 @@ public class TradeController
         _mainWindowViewModel?.TradeMonitoringBindings?.TradeStatsObject.SetTradeStats(_mainWindowViewModel?.TradeMonitoringBindings?.Trades);
     }
 
-    public async Task AddTradeToBindingCollection(Trade trade)
+    public async Task AddTradeToBindingCollectionAsync(Trade trade)
     {
         await Application.Current.Dispatcher.InvokeAsync(() =>
         {

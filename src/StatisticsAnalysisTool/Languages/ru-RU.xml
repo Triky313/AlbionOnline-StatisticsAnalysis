@@ -84,8 +84,8 @@
 	<translation name="MAINHAND">Правая рука</translation>
 	<translation name="HEAD">Голова</translation>
 	<translation name="SHOES">Обувь</translation>
-	<translation name="BAG">Сумка</translation>
-	<translation name="CAPE">Плащ</translation>
+	<translation name="BAG">Сумки</translation>
+	<translation name="CAPE">Плащи</translation>
 	<translation name="FOOD">Еда</translation>
 	<translation name="PLAYER">Игрок</translation>
 	<translation name="GENERAL_INFORMATION">Общая информация</translation>
@@ -120,18 +120,18 @@
 	<translation name="LOAD_FULL_ITEM_INFO">Загрузить все предметы</translation>
 	<translation name="UNKNOWN">Неизвестно</translation>
 	
-	<translation name="CLOTH_ARMOR">Тканевые мантии</translation>
-	<translation name="CLOTH_HELMET">Тканевые колпаки</translation>
-	<translation name="CLOTH_SHOES">Тканевые сандалии</translation>
-	<translation name="LEATHER_ARMOR">Кожаные куртки</translation>
-	<translation name="LEATHER_HELMET">Кожаные капюшоны</translation>
-	<translation name="LEATHER_SHOES">Кожаные ботинки</translation>
+	<translation name="CLOTH_ARMOR">Тканевая броня</translation>
+	<translation name="CLOTH_HELMET">Тканевый шлем</translation>
+	<translation name="CLOTH_SHOES">Тканевая обувь</translation>
+	<translation name="LEATHER_ARMOR">Кожаная броня</translation>
+	<translation name="LEATHER_HELMET">Кожаный шлем</translation>
+	<translation name="LEATHER_SHOES">Кожаная обувь</translation>
 	<translation name="PLATE_ARMOR">Латная броня</translation>
-	<translation name="PLATE_HELMET">Латные шлемы</translation>
-	<translation name="PLATE_SHOES">Латные сапоги</translation>
+	<translation name="PLATE_HELMET">Латный шлем</translation>
+	<translation name="PLATE_SHOES">Латная обувь</translation>
 	<translation name="UNIQUE_ARMOR">Уникальная броня</translation>
-	<translation name="UNIQUE_HELMET">Уникальная шлемы</translation>
-	<translation name="UNIQUE_SHOES">Уникальная сапоги</translation>
+	<translation name="UNIQUE_HELMET">Уникальные шлемы</translation>
+	<translation name="UNIQUE_SHOES">Уникальные сапоги</translation>
 	
 	<translation name="ARMOR_ARTEFACT">Броня</translation>
 	<translation name="MAGIC_ARTEFACT">Магия</translation>
@@ -139,10 +139,10 @@
 	<translation name="OFFHAND_ARTEFACT">Левая рука</translation>
 	<translation name="RANGED_ARTEFACT">Дальний бой</translation>
 	
-	<translation name="BEASTHEART">Звериное сердце</translation>
+	<translation name="BEASTHEART">Сердце зверя</translation>
 	<translation name="MOUNTAINHEART">Сердце горы</translation>
-	<translation name="ROCKHEART">Каменное сердце</translation>
-	<translation name="TREEHEART">Древесное сердце</translation>
+	<translation name="ROCKHEART">Сердце камня</translation>
+	<translation name="TREEHEART">Сердце древа</translation>
 	<translation name="VINEHEART">Сердце лозы</translation>
 	
 	<translation name="COOKED">Еда</translation>
@@ -170,34 +170,34 @@
 	<translation name="UNIQUE">Уникальное</translation>
 	
 	<translation name="FIBERGATHERER_ARMOR">Одежда жнеца</translation>
-	<translation name="FIBERGATHERER_HELMET">Рюкзак жнеца</translation>
-	<translation name="FIBERGATHERER_SHOES">Шапка жнеца</translation>
-	<translation name="FIBERGATHERER_BACKPACK">Сапоги жнеца</translation>
+	<translation name="FIBERGATHERER_HELMET">Шапка жнеца</translation>
+	<translation name="FIBERGATHERER_SHOES">Сапоги жнеца</translation>
+	<translation name="FIBERGATHERER_BACKPACK">Рюкзак жнеца</translation>
 	
 	<translation name="FISHGATHERER_ARMOR">Одежда рыбака</translation>
-	<translation name="FISHGATHERER_HELMET">Рюкзак рыбака</translation>
-	<translation name="FISHGATHERER_SHOES">Шапка рыбака</translation>
-	<translation name="FISHGATHERER_BACKPACK">Сапоги рыбака</translation>
+	<translation name="FISHGATHERER_HELMET">Шапка рыбака</translation>
+	<translation name="FISHGATHERER_SHOES">Сапоги рыбака</translation>
+	<translation name="FISHGATHERER_BACKPACK">Рюкзак рыбака</translation>
 	
 	<translation name="HIDEGATHERER_ARMOR">Одежда свежевателя</translation>
-	<translation name="HIDEGATHERER_HELMET">Рюкзак свежевателя</translation>
-	<translation name="HIDEGATHERER_SHOES">Шапка свежевателя</translation>
-	<translation name="HIDEGATHERERR_BACKPACK">Сапоги свежевателя</translation>
+	<translation name="HIDEGATHERER_HELMET">Шапка свежевателя</translation>
+	<translation name="HIDEGATHERER_SHOES">Сапоги свежевателя</translation>
+	<translation name="HIDEGATHERERR_BACKPACK">Рюкзак свежевателя</translation>
 	
 	<translation name="OREGATHERER_ARMOR">Одежда шахтера</translation>
-	<translation name="OREGATHERER_HELMET">Рюкзак шахтера</translation>
-	<translation name="OREGATHERER_SHOES">Шапка шахтера</translation>
-	<translation name="OREGATHERER_BACKPACK">Сапоги шахтера</translation>
+	<translation name="OREGATHERER_HELMET">Шапка шахтера</translation>
+	<translation name="OREGATHERER_SHOES">Сапоги шахтера</translation>
+	<translation name="OREGATHERER_BACKPACK">Рюкзак шахтера</translation>
 	
 	<translation name="ROCKGATHERER_ARMOR">Одежда каменолома</translation>
-	<translation name="ROCKGATHERER_HELMET">Рюкзак каменолома</translation>
-	<translation name="ROCKGATHERER_SHOES">Шапка каменолома</translation>
-	<translation name="ROCKGATHERER_BACKPACK">Сапоги каменолома</translation>
+	<translation name="ROCKGATHERER_HELMET">Шапка каменолома</translation>
+	<translation name="ROCKGATHERER_SHOES">Сапоги каменолома</translation>
+	<translation name="ROCKGATHERER_BACKPACK">Рюкзак каменолома</translation>
 	
 	<translation name="WOODGATHERER_ARMOR">Одежда дровосека</translation>
-	<translation name="WOODGATHERER_HELMET">Рюкзак дровосека</translation>
-	<translation name="WOODGATHERER_SHOES">Шапка дровосека</translation>
-	<translation name="WOODGATHERER_BACKPACK">Сапоги дровосека</translation>
+	<translation name="WOODGATHERER_HELMET">Шапка дровосека</translation>
+	<translation name="WOODGATHERER_SHOES">Сапоги дровосека</translation>
+	<translation name="WOODGATHERER_BACKPACK">Рюкзак дровосека</translation>
 	
 	<translation name="BRIDGEWATCH">Bridgewatch</translation>
 	<translation name="CAERLEON">Caerleon</translation>
@@ -247,13 +247,13 @@
 	
 	<translation name="CLOTH">Ткань</translation>
 	<translation name="FIBER">Волокно</translation>
-	<translation name="HIDE">Шкуры</translation>
+	<translation name="HIDE">Шкура</translation>
 	<translation name="LEATHER">Кожа</translation>
 	<translation name="METALBAR">Слитки</translation>
 	<translation name="ORE">Руда</translation>
 	<translation name="WOOD">Древесина</translation>
 	<translation name="PLANKS">Брусья</translation>
-	<translation name="ROCK">Камни</translation>
+	<translation name="ROCK">Камень</translation>
 	<translation name="STONEBLOCK">Блоки</translation>
 	
 	<translation name="ARENA_SIGILS">Знак арены</translation>
@@ -689,7 +689,7 @@
 	<translation name="GATHERING_ACTIVE">Отслеживать собирательство</translation>
 	<translation name="THIS_WEEK">Эта неделя</translation>
 	<translation name="LAST_WEEK">Прошлая неделя</translation>
-	<translation name="GENERALLY">Обычное</translation>
+	<translation name="GENERALLY">Общие сведения</translation>
 	<translation name="MOST_GATHERED_RESOURCE">Больше всего собрано</translation>
 	<translation name="MOST_GATHERED_ON_MAP">Большe всего собрано на локации</translation>
 	<translation name="TOTAL_RESOURCES">Всего ресурсов</translation>
@@ -786,4 +786,6 @@
 	<translation name="PLEASE_SELECT_A_CORRECT_FOLDER">Пожалуста, выберите правильную папку</translation>
 	<translation name="SELECT_MAIN_GAME_FOLDER_DOTS">Выбрать папку с игрой...</translation>
 	<translation name="CONFIRM">Подтвердить</translation>
+	<translation name="OVERHEALED_PERCENTAGE_OF_TOTAL_HEALING">Процент перехила от общего значения лечения</translation>
+	<translation name="HEALING_WITHOUT_OVERHEALED">Лечение без перехила</translation>
 </translations>

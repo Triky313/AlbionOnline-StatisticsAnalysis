@@ -19,6 +19,7 @@ public class UnRegisterFromObjectRequestHandler : RequestPacketHandler<UnRegiste
 
         _trackingController.MarketController.ResetTempOffers();
         _trackingController.MarketController.ResetTempBuyOrders();
+        _trackingController.MarketController.ResetTempNumberToBuyList();
         await Task.CompletedTask;
     }
 }
