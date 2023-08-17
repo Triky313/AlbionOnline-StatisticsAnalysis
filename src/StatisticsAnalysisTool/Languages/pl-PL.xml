@@ -786,4 +786,6 @@
 	<translation name="PLEASE_SELECT_A_CORRECT_FOLDER">Proszę wybrać poprawny folder</translation>
 	<translation name="SELECT_MAIN_GAME_FOLDER_DOTS">Wybierz główny folder gry...</translation>
 	<translation name="CONFIRM">Potwierdź</translation>
+	<translation name="OVERHEALED_PERCENTAGE_OF_TOTAL_HEALING">Procent nadleczonego leczenia w stosunku do całkowitego leczenia</translation>
+	<translation name="HEALING_WITHOUT_OVERHEALED">Leczenie bez nadleczenia</translation>
 </translations>
