@@ -44,6 +44,9 @@
                 <TextBlock Text="Me1onSeed" Style="{StaticResource Thanks.TextBlock.Name.Style}" />
                 <TextBlock Text="Thank you for your Chinese translations." Style="{StaticResource Thanks.TextBlock.Text.Style}" />
                 <TextBlock />
+                <TextBlock Text="SeoheeKhang" Style="{StaticResource Thanks.TextBlock.Name.Style}" />
+                <TextBlock Text="Thank you for your Korean translations." Style="{StaticResource Thanks.TextBlock.Text.Style}" />
+                <TextBlock />
                 <TextBlock />
                 <StackPanel Orientation="Horizontal">
                     <TextBlock Text="Last but not least, thanks to all the players who use my tool!" Style="{StaticResource Thanks.TextBlock.Name.Style}" />
