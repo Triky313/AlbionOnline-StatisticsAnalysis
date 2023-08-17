@@ -102,7 +102,7 @@ public class ClusterInfo
             return;
         }
 
-        if (MapType is MapType.Arena or MapType.CorruptedDungeon or MapType.RandomDungeon or MapType.Expedition or MapType.HellGate or MapType.Mists)
+        if (MapType is MapType.Arena or MapType.CorruptedDungeon or MapType.RandomDungeon or MapType.Expedition or MapType.HellGate or MapType.MistsDungeon or MapType.Mists)
         {
             ClusterHistoryString1 = MapTypeString;
             ClusterHistoryString2 = string.Empty;
@@ -334,6 +334,7 @@ public class ClusterInfo
             MapType.Hideout => LanguageController.Translation("HIDEOUT"),
             MapType.Expedition => LanguageController.Translation("EXPEDITION"),
             MapType.Arena => LanguageController.Translation("ARENA"),
+            MapType.MistsDungeon => LanguageController.Translation("MISTS_DUNGEON"),
             MapType.Mists => LanguageController.Translation("MISTS"),
             _ => ""
         };
