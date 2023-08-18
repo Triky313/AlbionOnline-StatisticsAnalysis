@@ -781,4 +781,12 @@
 	<translation name="ANOTHER_APP_TO_START_PATH">Ouvrir une autre application au démarrage</translation>
 	<translation name="CANNOT_START_OTHER_APP">Impossible de démarrer une autre application</translation>
 	<translation name="FISHING_ROD">Canne à pêche</translation>
+	<translation name="SELECT_ALBION_ONLINE_MAIN_GAME_FOLDER">Sélectionnez le dossier principal du jeu Albion Online</translation>
+	<translation name="PLEASE_SELECT_A_CORRECT_ALBION_ONLINE_MAIN_GAME_FOLDER">Veuillez sélectionner un dossier de jeu Albion Online valide</translation>
+	<translation name="PLEASE_SELECT_A_CORRECT_FOLDER">Veuillez sélectionner un dossier correct</translation>
+	<translation name="SELECT_MAIN_GAME_FOLDER_DOTS">Sélectionnez le dossier principal du jeu...</translation>
+	<translation name="CONFIRM">Confirmer</translation>
+	<translation name="OVERHEALED_PERCENTAGE_OF_TOTAL_HEALING">Pourcentage de soin excessif par rapport au soin totale</translation>
+	<translation name="HEALING_WITHOUT_OVERHEALED">Soin sans soin excessif</translation>
+	<translation name="MISTS_DUNGEON">Knightfall Abbey</translation>
 </translations>
