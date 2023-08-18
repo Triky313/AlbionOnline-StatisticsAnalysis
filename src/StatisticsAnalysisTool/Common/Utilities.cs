@@ -1,5 +1,4 @@
-﻿using log4net;
-using StatisticsAnalysisTool.Notification;
+﻿using StatisticsAnalysisTool.Notification;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -10,13 +9,12 @@ using System.Reflection;
 using System.Runtime.InteropServices;
 using System.Windows;
 using System.Windows.Interop;
+using Serilog;
 
 namespace StatisticsAnalysisTool.Common;
 
 public static class Utilities
 {
-    private static readonly ILog Log = LogManager.GetLogger(MethodBase.GetCurrentMethod()?.DeclaringType);
-
     public static long GetHighestLength(params Array[] arrays)
     {
         long highestLength = 0;
@@ -116,7 +114,7 @@ public static class Utilities
         catch (Exception e)
         {
             ConsoleManager.WriteLineForError(MethodBase.GetCurrentMethod()?.DeclaringType, e);
-            Log.Error(MethodBase.GetCurrentMethod()?.DeclaringType, e);
+            Log.Error(e, "{message}", MethodBase.GetCurrentMethod()?.DeclaringType);
             notifyManager?.ShowErrorAsync(LanguageController.Translation("CANNOT_START_OTHER_APP"),
                 LanguageController.Translation("CAN_NOT_START_APP_WITH_PATH",
                     new List<string> { "path" },

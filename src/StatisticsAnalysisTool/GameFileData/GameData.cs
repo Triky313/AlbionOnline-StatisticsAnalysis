@@ -1,4 +1,4 @@
-using log4net;
+using Serilog;
 using StatisticAnalysisTool.Extractor;
 using StatisticAnalysisTool.Extractor.Enums;
 using StatisticsAnalysisTool.Common;
@@ -22,8 +22,6 @@ namespace StatisticsAnalysisTool.GameFileData;
 
 public static class GameData
 {
-    private static readonly ILog Log = LogManager.GetLogger(MethodBase.GetCurrentMethod()?.DeclaringType);
-
     public static async Task InitializeMainGameDataFilesAsync()
     {
         if (string.IsNullOrEmpty(SettingsController.CurrentSettings.MainGameFolderPath))
@@ -78,7 +76,7 @@ public static class GameData
             var toolLoadingWindowViewModel = new ToolLoadingWindowViewModel();
             var toolLoadingWindow = new ToolLoadingWindow(toolLoadingWindowViewModel);
             toolLoadingWindow.Show();
-            
+
             var tempDirPath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, Settings.Default.TempDirecoryName);
             var gameFilesDirPath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, Settings.Default.GameFilesDirectoryName);
 
@@ -117,7 +115,7 @@ public static class GameData
             toolLoadingWindowViewModel.ProgressBarValue = 50;
             await extractor.ExtractGameDataAsync(tempDirPath, fileNamesToLoad.ToArray());
             extractor.Dispose();
-            
+
             await ItemController.LoadIndexedItemsDataAsync();
             toolLoadingWindowViewModel.ProgressBarValue = 60;
             await ItemController.LoadItemsDataAsync();
@@ -137,11 +135,11 @@ public static class GameData
         {
             SettingsController.CurrentSettings.MainGameFolderPath = string.Empty;
             ConsoleManager.WriteLineForError(MethodBase.GetCurrentMethod()?.DeclaringType, e);
-            Log.Error(MethodBase.GetCurrentMethod()?.DeclaringType, e);
+            Log.Error(e, "{message}", MethodBase.GetCurrentMethod()?.DeclaringType);
             return false;
         }
     }
-    
+
     public static async Task<List<T>> LoadDataAsync<T, TRoot>(string tempFileName, string regularDataFileName, JsonSerializerOptions jsonSerializerOptions) where T : new()
     {
         var tempDirPath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, Settings.Default.TempDirecoryName);
@@ -190,7 +188,7 @@ public static class GameData
         catch (Exception e)
         {
             ConsoleManager.WriteLineForError(MethodBase.GetCurrentMethod()?.DeclaringType, e);
-            Log.Error(MethodBase.GetCurrentMethod()?.DeclaringType, e);
+            Log.Error(e, "{message}", MethodBase.GetCurrentMethod()?.DeclaringType);
             return new List<T>();
         }
     }
@@ -220,7 +218,7 @@ public static class GameData
         catch (Exception e)
         {
             ConsoleManager.WriteLineForError(MethodBase.GetCurrentMethod()?.DeclaringType, e);
-            Log.Error(MethodBase.GetCurrentMethod()?.DeclaringType, e);
+            Log.Error(e, "{message}", MethodBase.GetCurrentMethod()?.DeclaringType);
             return new List<T>();
         }
     }

@@ -1,5 +1,4 @@
-﻿using log4net;
-using StatisticsAnalysisTool.Models;
+﻿using StatisticsAnalysisTool.Models;
 using StatisticsAnalysisTool.Properties;
 using System;
 using System.Collections.Generic;
@@ -13,12 +12,12 @@ using System.Text;
 using System.Text.Json;
 using System.Threading.Tasks;
 using System.Windows;
+using Serilog;
 
 namespace StatisticsAnalysisTool.Common;
 
 public class AlertController
 {
-    private static readonly ILog Log = LogManager.GetLogger(MethodBase.GetCurrentMethod()?.DeclaringType);
     private readonly ObservableCollection<Alert> _alerts = new();
     private readonly ICollectionView _itemsView;
 
@@ -79,7 +78,7 @@ public class AlertController
         catch (Exception e)
         {
             ConsoleManager.WriteLineForError(MethodBase.GetCurrentMethod()?.DeclaringType, e);
-            Log.Error(MethodBase.GetCurrentMethod()?.DeclaringType, e);
+            Log.Error(e, "{message}", MethodBase.GetCurrentMethod()?.DeclaringType);
             return false;
         }
     }
@@ -101,7 +100,7 @@ public class AlertController
         catch (Exception e)
         {
             ConsoleManager.WriteLineForError(MethodBase.GetCurrentMethod()?.DeclaringType, e);
-            Log.Error(MethodBase.GetCurrentMethod()?.DeclaringType, e);
+            Log.Error(e, "{message}", MethodBase.GetCurrentMethod()?.DeclaringType);
         }
     }
 
@@ -123,7 +122,7 @@ public class AlertController
         catch (Exception e)
         {
             ConsoleManager.WriteLineForError(MethodBase.GetCurrentMethod()?.DeclaringType, e);
-            Log.Error(MethodBase.GetCurrentMethod()?.DeclaringType, e);
+            Log.Error(e, "{message}", MethodBase.GetCurrentMethod()?.DeclaringType);
         }
     }
 
@@ -173,15 +172,15 @@ public class AlertController
         catch (Exception e)
         {
             ConsoleManager.WriteLineForError(MethodBase.GetCurrentMethod()?.DeclaringType, e);
-            Log.Error(MethodBase.GetCurrentMethod()?.DeclaringType, e);
+            Log.Error(e, "{message}", MethodBase.GetCurrentMethod()?.DeclaringType);
         }
     }
 
     private struct AlertSaveObject
     {
-        public string UniqueName { get; set; }
+        public string UniqueName { get; init; }
 
-        public int MinSellUndercutPrice { get; set; }
+        public int MinSellUndercutPrice { get; init; }
     }
 
     #endregion

@@ -1,7 +1,7 @@
 ﻿using LiveChartsCore;
 using LiveChartsCore.Defaults;
 using LiveChartsCore.SkiaSharpView;
-using log4net;
+using Serilog;
 using StatisticsAnalysisTool.Common;
 using StatisticsAnalysisTool.Common.UserSettings;
 using StatisticsAnalysisTool.Exceptions;
@@ -30,7 +30,6 @@ namespace StatisticsAnalysisTool.ViewModels;
 
 public class ItemWindowViewModel : INotifyPropertyChanged
 {
-    private static readonly ILog Log = LogManager.GetLogger(MethodBase.GetCurrentMethod()?.DeclaringType);
     private readonly ItemWindow _itemWindow;
     private Item _item;
     private string _titleName;
@@ -585,7 +584,7 @@ public class ItemWindowViewModel : INotifyPropertyChanged
 
         // Auctions house tax
         CraftingCalculation.AuctionsHouseTax =
-            EssentialCraftingValues.SellPricePerItem * Convert.ToInt64(EssentialCraftingValues.CraftingItemQuantity) / 100 * Convert.ToInt64(EssentialCraftingValues.AuctionHouseTax);
+            EssentialCraftingValues.SellPricePerItem * Convert.ToInt64(EssentialCraftingValues.CraftingItemQuantity) / 100.00 * Convert.ToInt64(EssentialCraftingValues.AuctionHouseTax);
 
         // Total resource costs
         CraftingCalculation.TotalResourceCosts = RequiredResources?.Sum(x => x.TotalCost) ?? 0;
@@ -701,7 +700,7 @@ public class ItemWindowViewModel : INotifyPropertyChanged
         catch (TooManyRequestsException ex)
         {
             SetErrorValues(Error.ToManyRequests);
-            Log.Warn(nameof(UpdateMarketPricesAsync), ex);
+            Log.Warning(ex, "{message}", MethodBase.GetCurrentMethod()?.DeclaringType);
         }
     }
 

@@ -1,4 +1,4 @@
-﻿using log4net;
+﻿using Serilog;
 using StatisticsAnalysisTool.Common;
 using System;
 using System.Collections.Generic;
@@ -8,7 +8,6 @@ namespace StatisticsAnalysisTool.Network.Operations;
 
 public class FishingFinishRequest
 {
-    private static readonly ILog Log = LogManager.GetLogger(MethodBase.GetCurrentMethod()?.DeclaringType);
     public bool Succeeded { get; set; }
 
     public FishingFinishRequest(Dictionary<byte, object> parameters)
@@ -25,7 +24,7 @@ public class FishingFinishRequest
         catch (Exception e)
         {
             ConsoleManager.WriteLineForError(MethodBase.GetCurrentMethod()?.DeclaringType, e);
-            Log.Error(MethodBase.GetCurrentMethod()?.DeclaringType, e);
+            Log.Error(e, "{message}", MethodBase.GetCurrentMethod()?.DeclaringType);
         }
     }
 }

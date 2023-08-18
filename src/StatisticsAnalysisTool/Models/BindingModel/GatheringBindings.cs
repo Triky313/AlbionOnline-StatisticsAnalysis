@@ -1,4 +1,4 @@
-﻿using log4net;
+﻿using Serilog;
 using StatisticsAnalysisTool.Common;
 using StatisticsAnalysisTool.Common.UserSettings;
 using StatisticsAnalysisTool.Gathering;
@@ -18,8 +18,6 @@ namespace StatisticsAnalysisTool.Models.BindingModel;
 
 public class GatheringBindings : INotifyPropertyChanged
 {
-    private static readonly ILog Log = LogManager.GetLogger(MethodBase.GetCurrentMethod()?.DeclaringType);
-
     private bool _isGatheringActive = true;
     private GatheringStats _gatheringStats = new();
     private ObservableRangeCollection<Gathered> _gatheredCollection = new();
@@ -195,7 +193,7 @@ public class GatheringBindings : INotifyPropertyChanged
         catch (Exception ex)
         {
             ConsoleManager.WriteLineForError(MethodBase.GetCurrentMethod()?.DeclaringType, ex);
-            Log.Error(MethodBase.GetCurrentMethod()?.DeclaringType, ex);
+            Log.Error(ex, "{message}", MethodBase.GetCurrentMethod()?.DeclaringType);
         }
     }
 
@@ -233,7 +231,7 @@ public class GatheringBindings : INotifyPropertyChanged
         catch (Exception e)
         {
             ConsoleManager.WriteLineForError(MethodBase.GetCurrentMethod()?.DeclaringType, e);
-            Log.Error(MethodBase.GetCurrentMethod()?.DeclaringType, e);
+            Log.Error(e, "{message}", MethodBase.GetCurrentMethod()?.DeclaringType);
             return new List<Gathered>();
         }
     }

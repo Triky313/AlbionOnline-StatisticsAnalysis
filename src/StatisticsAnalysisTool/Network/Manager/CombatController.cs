@@ -1,4 +1,4 @@
-using log4net;
+using Serilog;
 using StatisticsAnalysisTool.Common;
 using StatisticsAnalysisTool.Enumerations;
 using StatisticsAnalysisTool.EventLogging.Notification;
@@ -18,8 +18,6 @@ namespace StatisticsAnalysisTool.Network.Manager;
 
 public class CombatController
 {
-    private static readonly ILog Log = LogManager.GetLogger(MethodBase.GetCurrentMethod()?.DeclaringType);
-
     private readonly MainWindowViewModel _mainWindowViewModel;
     private readonly TrackingController _trackingController;
     private bool _combatModeWasCombatOver;
@@ -385,7 +383,7 @@ public class CombatController
             }
             catch (Exception e)
             {
-                Log.Warn(MethodBase.GetCurrentMethod()?.DeclaringType, e);
+                Log.Warning(e, "{message}", MethodBase.GetCurrentMethod()?.DeclaringType);
             }
         }
     }

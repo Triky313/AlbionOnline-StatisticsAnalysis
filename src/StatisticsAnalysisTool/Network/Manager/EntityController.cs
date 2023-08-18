@@ -1,4 +1,4 @@
-﻿using log4net;
+﻿using Serilog;
 using StatisticsAnalysisTool.Common;
 using StatisticsAnalysisTool.Enumerations;
 using StatisticsAnalysisTool.Models;
@@ -18,8 +18,6 @@ namespace StatisticsAnalysisTool.Network.Manager;
 
 public class EntityController
 {
-    private static readonly ILog Log = LogManager.GetLogger(MethodBase.GetCurrentMethod()?.DeclaringType);
-
     private readonly ConcurrentDictionary<Guid, PlayerGameObject> _knownEntities = new();
     private readonly MainWindowViewModel _mainWindowViewModel;
     private readonly ObservableCollection<EquipmentItemInternal> _newEquipmentItems = new();
@@ -406,7 +404,7 @@ public class EntityController
         }
         catch (Exception e)
         {
-            Log.Warn(MethodBase.GetCurrentMethod()?.DeclaringType, e);
+            Log.Warning(e, "{message}", MethodBase.GetCurrentMethod()?.DeclaringType);
         }
 
         foreach (var (key, value) in playerItemList.ToList())

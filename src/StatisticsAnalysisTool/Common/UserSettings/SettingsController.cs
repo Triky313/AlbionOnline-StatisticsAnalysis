@@ -1,4 +1,4 @@
-﻿using log4net;
+﻿using Serilog;
 using StatisticsAnalysisTool.Properties;
 using System;
 using System.IO;
@@ -13,7 +13,6 @@ public class SettingsController
 {
     public static SettingsObject CurrentSettings = new();
 
-    private static readonly ILog Log = LogManager.GetLogger(MethodBase.GetCurrentMethod()?.DeclaringType);
     private static bool _haveSettingsAlreadyBeenLoaded;
 
     public static void SetWindowSettings(WindowState windowState, double height, double width, double left, double top)
@@ -55,7 +54,7 @@ public class SettingsController
             catch (Exception e)
             {
                 ConsoleManager.WriteLineForError(MethodBase.GetCurrentMethod()?.DeclaringType, e);
-                Log.Error(MethodBase.GetCurrentMethod()?.DeclaringType, e);
+                Log.Error(e, "{message}", MethodBase.GetCurrentMethod()?.DeclaringType);
             }
         }
     }
@@ -72,7 +71,7 @@ public class SettingsController
         catch (Exception e)
         {
             ConsoleManager.WriteLineForError(MethodBase.GetCurrentMethod()?.DeclaringType, e);
-            Log.Error(MethodBase.GetCurrentMethod()?.DeclaringType, e);
+            Log.Error(e, "{message}", MethodBase.GetCurrentMethod()?.DeclaringType);
         }
     }
 }

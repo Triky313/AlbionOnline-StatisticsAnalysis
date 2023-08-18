@@ -1,4 +1,4 @@
-using log4net;
+using Serilog;
 using StatisticsAnalysisTool.Common;
 using StatisticsAnalysisTool.EventLogging;
 using StatisticsAnalysisTool.EventLogging.Notification;
@@ -17,7 +17,6 @@ namespace StatisticsAnalysisTool.Network.Manager;
 
 public class LootController : ILootController
 {
-    private static readonly ILog Log = LogManager.GetLogger(MethodBase.GetCurrentMethod()?.DeclaringType);
     private readonly TrackingController _trackingController;
     private readonly MainWindowViewModel _mainWindowViewModel;
     private readonly List<LootLoggerObject> _lootLoggerObjects = new();
@@ -117,7 +116,7 @@ public class LootController : ILootController
         catch (Exception e)
         {
             ConsoleManager.WriteLineForError(MethodBase.GetCurrentMethod()?.DeclaringType, e);
-            Log.Error(MethodBase.GetCurrentMethod()?.DeclaringType, e);
+            Log.Error(e, "{message}", MethodBase.GetCurrentMethod()?.DeclaringType);
         }
     }
 
@@ -149,7 +148,7 @@ public class LootController : ILootController
         catch (Exception e)
         {
             ConsoleManager.WriteLineForError(MethodBase.GetCurrentMethod()?.DeclaringType, e);
-            Log.Error(MethodBase.GetCurrentMethod()?.DeclaringType, e);
+            Log.Error(e, "{message}", MethodBase.GetCurrentMethod()?.DeclaringType);
             return string.Empty;
         }
     }

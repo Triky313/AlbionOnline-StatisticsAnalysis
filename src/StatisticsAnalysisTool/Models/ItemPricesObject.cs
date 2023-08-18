@@ -1,4 +1,4 @@
-﻿using log4net;
+﻿using Serilog;
 using StatisticsAnalysisTool.Common;
 using StatisticsAnalysisTool.Enumerations;
 using System;
@@ -12,7 +12,6 @@ namespace StatisticsAnalysisTool.Models;
 
 public class ItemPricesObject : INotifyPropertyChanged
 {
-    private static readonly ILog Log = LogManager.GetLogger(MethodBase.GetCurrentMethod()?.DeclaringType);
     private Visibility _visibility;
     private MarketLocation _marketLocation = MarketLocation.Unknown;
     private bool _isBestSellMinPrice;
@@ -51,7 +50,7 @@ public class ItemPricesObject : INotifyPropertyChanged
         {
             return;
         }
-        
+
         QualityLevel = marketResponse.QualityLevel;
         SellPriceMin = marketResponse.SellPriceMin;
         SellPriceMinDate = marketResponse.SellPriceMinDate;
@@ -368,7 +367,7 @@ public class ItemPricesObject : INotifyPropertyChanged
     }
 
     #endregion
-    
+
     private ICommand _copyTextToClipboard;
     public ICommand CopyTextToClipboard => _copyTextToClipboard ??= new CommandHandler(PerformCopyTextToClipboard, true);
 
@@ -381,7 +380,7 @@ public class ItemPricesObject : INotifyPropertyChanged
         catch (Exception ex)
         {
             ConsoleManager.WriteLineForError(MethodBase.GetCurrentMethod()?.DeclaringType, ex);
-            Log.Error(MethodBase.GetCurrentMethod()?.DeclaringType, ex);
+            Log.Error(ex, "{message}", MethodBase.GetCurrentMethod()?.DeclaringType);
         }
     }
 

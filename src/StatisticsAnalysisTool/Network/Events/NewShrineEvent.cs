@@ -1,15 +1,13 @@
-﻿using System;
+﻿using Serilog;
+using StatisticsAnalysisTool.Common;
+using System;
 using System.Collections.Generic;
 using System.Reflection;
-using log4net;
-using StatisticsAnalysisTool.Common;
 
 namespace StatisticsAnalysisTool.Network.Events;
 
 public class NewShrineEvent
 {
-    private static readonly ILog Log = LogManager.GetLogger(MethodBase.GetCurrentMethod()?.DeclaringType);
-        
     public NewShrineEvent(Dictionary<byte, object> parameters)
     {
         ConsoleManager.WriteLineForNetworkHandler(GetType().Name, parameters);
@@ -33,7 +31,7 @@ public class NewShrineEvent
         }
         catch (Exception e)
         {
-            Log.Debug(nameof(NewShrineEvent), e);
+            Log.Error(e, "{message}", MethodBase.GetCurrentMethod()?.DeclaringType);
         }
     }
 

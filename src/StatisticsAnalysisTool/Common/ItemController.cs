@@ -1,4 +1,4 @@
-using log4net;
+using Serilog;
 using StatisticsAnalysisTool.Common.Converters;
 using StatisticsAnalysisTool.Enumerations;
 using StatisticsAnalysisTool.EstimatedMarketValue;
@@ -24,9 +24,9 @@ namespace StatisticsAnalysisTool.Common;
 
 public static class ItemController
 {
-    private static readonly ILog Log = LogManager.GetLogger(MethodBase.GetCurrentMethod()?.DeclaringType);
 
-    public static ObservableCollection<Item> Items = new ();
+
+    public static ObservableCollection<Item> Items = new();
     private static ItemsJson _itemsJson;
 
     #region General
@@ -361,7 +361,7 @@ public static class ItemController
         catch (Exception e)
         {
             ConsoleManager.WriteLineForError(MethodBase.GetCurrentMethod()?.DeclaringType, e);
-            Log.Error(MethodBase.GetCurrentMethod()?.Name, e);
+            Log.Error(e, "{message}", MethodBase.GetCurrentMethod()?.DeclaringType);
         }
     }
 
@@ -881,7 +881,7 @@ public static class ItemController
             catch (Exception e)
             {
                 ConsoleManager.WriteLineForError(MethodBase.GetCurrentMethod()?.DeclaringType, e);
-                Log.Error(MethodBase.GetCurrentMethod()?.Name, e);
+                Log.Error(e, "{message}", MethodBase.GetCurrentMethod()?.DeclaringType);
             }
         }
     }

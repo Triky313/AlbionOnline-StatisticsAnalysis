@@ -1,8 +1,8 @@
 using FontAwesome5;
 using LiveChartsCore;
 using LiveChartsCore.SkiaSharpView;
-using log4net;
 using Microsoft.Win32;
+using Serilog;
 using StatisticsAnalysisTool.Cluster;
 using StatisticsAnalysisTool.Common;
 using StatisticsAnalysisTool.Common.UserSettings;
@@ -37,8 +37,6 @@ namespace StatisticsAnalysisTool.ViewModels;
 
 public class MainWindowViewModel : INotifyPropertyChanged
 {
-    private static readonly ILog Log = LogManager.GetLogger(MethodBase.GetCurrentMethod()?.DeclaringType);
-
     private double _allianceInfoWidth;
     private double _currentMapInfoWidth;
     private string _errorBarText;
@@ -195,7 +193,7 @@ public class MainWindowViewModel : INotifyPropertyChanged
         catch (Exception e)
         {
             ConsoleManager.WriteLineForError(MethodBase.GetCurrentMethod()?.DeclaringType, e);
-            Log.Error(MethodBase.GetCurrentMethod()?.DeclaringType, e);
+            Log.Error(e, "{message}", MethodBase.GetCurrentMethod()?.DeclaringType);
         }
     }
 
@@ -337,7 +335,7 @@ public class MainWindowViewModel : INotifyPropertyChanged
         catch (Exception e)
         {
             ConsoleManager.WriteLineForError(MethodBase.GetCurrentMethod()?.DeclaringType, e);
-            Log.Error(MethodBase.GetCurrentMethod()?.DeclaringType, e);
+            Log.Error(e, "{message}", MethodBase.GetCurrentMethod()?.DeclaringType);
         }
     }
 
@@ -367,7 +365,7 @@ public class MainWindowViewModel : INotifyPropertyChanged
         catch (ArgumentNullException e)
         {
             ConsoleManager.WriteLineForError(MethodBase.GetCurrentMethod()?.DeclaringType, e);
-            Log.Error(MethodBase.GetCurrentMethod()?.DeclaringType, e);
+            Log.Error(e, "{message}", MethodBase.GetCurrentMethod()?.DeclaringType);
             var catchItemWindow = new ItemWindow(item);
             catchItemWindow.Show();
         }
@@ -393,7 +391,7 @@ public class MainWindowViewModel : INotifyPropertyChanged
             catch (Exception e)
             {
                 ConsoleManager.WriteLineForError(MethodBase.GetCurrentMethod()?.DeclaringType, e);
-                Log.Error(MethodBase.GetCurrentMethod()?.DeclaringType, e);
+                Log.Error(e, "{message}", MethodBase.GetCurrentMethod()?.DeclaringType);
             }
         }
     }
@@ -452,7 +450,7 @@ public class MainWindowViewModel : INotifyPropertyChanged
         catch (Exception e)
         {
             ConsoleManager.WriteLineForError(MethodBase.GetCurrentMethod()?.DeclaringType, e);
-            Log.Error(MethodBase.GetCurrentMethod()?.DeclaringType, e);
+            Log.Error(e, "{message}", MethodBase.GetCurrentMethod()?.DeclaringType);
         }
     }
 

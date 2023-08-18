@@ -1,4 +1,4 @@
-﻿using log4net;
+﻿using Serilog;
 using SharpPcap;
 using StatisticsAnalysisTool.Common;
 using StatisticsAnalysisTool.Common.UserSettings;
@@ -29,7 +29,7 @@ public class SettingsWindowViewModel : INotifyPropertyChanged
     private static FileInformation _languagesSelection;
     private static ObservableCollection<SettingDataInformation> _refreshRates = new();
     private static SettingDataInformation _refreshRatesSelection;
-    private static readonly ILog Log = LogManager.GetLogger(MethodBase.GetCurrentMethod()?.DeclaringType);
+
     private ObservableCollection<FileInformation> _alertSounds = new();
     private FileInformation _alertSoundSelection;
     private bool _isOpenItemWindowInNewWindowChecked;
@@ -204,13 +204,13 @@ public class SettingsWindowViewModel : INotifyPropertyChanged
         catch (PcapException e)
         {
             ConsoleManager.WriteLineForError(MethodBase.GetCurrentMethod()?.DeclaringType, e);
-            Log.Error(MethodBase.GetCurrentMethod()?.DeclaringType, e);
+            Log.Error(e, "{message}", MethodBase.GetCurrentMethod()?.DeclaringType);
             ServiceLocator.Resolve<MainWindowViewModel>().SetErrorBar(Visibility.Visible, LanguageController.Translation(e.Message));
         }
         catch (Exception e)
         {
             ConsoleManager.WriteLineForError(MethodBase.GetCurrentMethod()?.DeclaringType, e);
-            Log.Error(MethodBase.GetCurrentMethod()?.DeclaringType, e);
+            Log.Error(e, "{message}", MethodBase.GetCurrentMethod()?.DeclaringType);
             ServiceLocator.Resolve<MainWindowViewModel>().SetErrorBar(Visibility.Visible, LanguageController.Translation(e.Message));
         }
     }
@@ -320,7 +320,7 @@ public class SettingsWindowViewModel : INotifyPropertyChanged
         catch (Exception e)
         {
             ConsoleManager.WriteLineForError(MethodBase.GetCurrentMethod()?.DeclaringType, e);
-            Log.Error(MethodBase.GetCurrentMethod()?.DeclaringType, e);
+            Log.Error(e, "{message}", MethodBase.GetCurrentMethod()?.DeclaringType);
         }
     }
 
@@ -347,7 +347,7 @@ public class SettingsWindowViewModel : INotifyPropertyChanged
             catch (CultureNotFoundException e)
             {
                 ConsoleManager.WriteLineForError(MethodBase.GetCurrentMethod()?.DeclaringType, e);
-                Log.Error(MethodBase.GetCurrentMethod()?.DeclaringType, e);
+                Log.Error(e, "{message}", MethodBase.GetCurrentMethod()?.DeclaringType);
             }
         }
 

@@ -1,10 +1,10 @@
-﻿using log4net;
+﻿using Serilog;
 using StatisticsAnalysisTool.Common;
+using StatisticsAnalysisTool.Enumerations;
+using StatisticsAnalysisTool.Models;
 using System;
 using System.Collections.Generic;
 using System.Reflection;
-using StatisticsAnalysisTool.Enumerations;
-using StatisticsAnalysisTool.Models;
 
 namespace StatisticsAnalysisTool.Network.Events;
 
@@ -13,8 +13,6 @@ public class UpdateReSpecPointsEvent
     public FixPoint? CurrentTotalReSpecPoints { get; }
     public FixPoint GainedReSpecPoints { get; }
     public FixPoint PaidSilver { get; }
-
-    private static readonly ILog Log = LogManager.GetLogger(MethodBase.GetCurrentMethod()?.DeclaringType);
 
     public UpdateReSpecPointsEvent(Dictionary<byte, object> parameters)
     {
@@ -39,39 +37,39 @@ public class UpdateReSpecPointsEvent
                 switch (parameterType.Name)
                 {
                     case "Int32[]":
-                    {
-                        var reSpecPointsArray = ((int[])parameters[0]).ToDictionary();
-
-                        if (reSpecPointsArray?.Count > 0 && reSpecPointsArray.ContainsKey(1))
                         {
-                            CurrentTotalReSpecPoints = FixPoint.FromInternalValue(reSpecPointsArray[1].ObjectToLong() ?? 0);
-                        }
+                            var reSpecPointsArray = ((int[]) parameters[0]).ToDictionary();
 
-                        break;
-                    }
+                            if (reSpecPointsArray?.Count > 0 && reSpecPointsArray.ContainsKey(1))
+                            {
+                                CurrentTotalReSpecPoints = FixPoint.FromInternalValue(reSpecPointsArray[1].ObjectToLong() ?? 0);
+                            }
+
+                            break;
+                        }
                     case "Int64[]":
-                    {
-                        var reSpecPointsArray = ((long[])parameters[0]).ToDictionary();
-
-                        if (reSpecPointsArray?.Count > 0 && reSpecPointsArray.ContainsKey(1))
                         {
-                            CurrentTotalReSpecPoints = FixPoint.FromInternalValue(reSpecPointsArray[1].ObjectToLong() ?? 0);
-                        }
+                            var reSpecPointsArray = ((long[]) parameters[0]).ToDictionary();
 
-                        break;
-                    }
+                            if (reSpecPointsArray?.Count > 0 && reSpecPointsArray.ContainsKey(1))
+                            {
+                                CurrentTotalReSpecPoints = FixPoint.FromInternalValue(reSpecPointsArray[1].ObjectToLong() ?? 0);
+                            }
+
+                            break;
+                        }
                 }
             }
         }
         catch (ArgumentNullException e)
         {
             ConsoleManager.WriteLineForError(MethodBase.GetCurrentMethod()?.DeclaringType, e);
-            Log.Error(MethodBase.GetCurrentMethod()?.DeclaringType, e);
+            Log.Error(e, "{message}", MethodBase.GetCurrentMethod()?.DeclaringType);
         }
         catch (InvalidCastException e)
         {
             ConsoleManager.WriteLineForError(MethodBase.GetCurrentMethod()?.DeclaringType, e);
-            Log.Error(MethodBase.GetCurrentMethod()?.DeclaringType, e);
+            Log.Error(e, "{message}", MethodBase.GetCurrentMethod()?.DeclaringType);
         }
     }
 }

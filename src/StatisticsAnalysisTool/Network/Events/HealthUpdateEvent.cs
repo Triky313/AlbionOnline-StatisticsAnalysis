@@ -1,16 +1,15 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Reflection;
-using log4net;
+﻿using Serilog;
 using StatisticsAnalysisTool.Common;
 using StatisticsAnalysisTool.Enumerations;
 using StatisticsAnalysisTool.Network.Time;
+using System;
+using System.Collections.Generic;
+using System.Reflection;
 
 namespace StatisticsAnalysisTool.Network.Events;
 
 public class HealthUpdateEvent
 {
-    private static readonly ILog Log = LogManager.GetLogger(MethodBase.GetCurrentMethod()?.DeclaringType);
     public long CauserId;
     public int CausingSpellType;
     public EffectOrigin EffectOrigin;
@@ -70,12 +69,12 @@ public class HealthUpdateEvent
         catch (ArgumentNullException ex)
         {
             ConsoleManager.WriteLineForError(MethodBase.GetCurrentMethod()?.DeclaringType, ex);
-            Log.Error(MethodBase.GetCurrentMethod()?.DeclaringType, ex);
+            Log.Error(ex, "{message}", MethodBase.GetCurrentMethod()?.DeclaringType);
         }
         catch (Exception e)
         {
             ConsoleManager.WriteLineForError(MethodBase.GetCurrentMethod()?.DeclaringType, e);
-            Log.Error(MethodBase.GetCurrentMethod()?.DeclaringType, e);
+            Log.Error(e, "{message}", MethodBase.GetCurrentMethod()?.DeclaringType);
         }
     }
 }

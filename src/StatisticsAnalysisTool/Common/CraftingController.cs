@@ -1,18 +1,16 @@
-﻿using log4net;
-using StatisticsAnalysisTool.Enumerations;
+﻿using StatisticsAnalysisTool.Enumerations;
 using StatisticsAnalysisTool.Models;
 using StatisticsAnalysisTool.Models.ItemsJsonModel;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
+using Serilog;
 
 namespace StatisticsAnalysisTool.Common;
 
 public static class CraftingController
 {
-    private static readonly ILog Log = LogManager.GetLogger(MethodBase.GetCurrentMethod()?.DeclaringType);
-
     public static int GetTotalAmountResources(List<CraftingRequirements> craftingRequirements)
     {
         var craftingRequirement = craftingRequirements.FirstOrDefault();
@@ -190,7 +188,7 @@ public static class CraftingController
         catch (Exception e)
         {
             ConsoleManager.WriteLineForError(MethodBase.GetCurrentMethod()?.DeclaringType, e);
-            Log.Error(MethodBase.GetCurrentMethod()?.DeclaringType, e);
+            Log.Error(e, "{message}", MethodBase.GetCurrentMethod()?.DeclaringType);
             return 0;
         }
     }

@@ -2,7 +2,7 @@
 using LiveChartsCore.Defaults;
 using LiveChartsCore.SkiaSharpView;
 using LiveChartsCore.SkiaSharpView.Painting;
-using log4net;
+
 using SkiaSharp;
 using StatisticsAnalysisTool.Common;
 using StatisticsAnalysisTool.Models;
@@ -27,7 +27,7 @@ namespace StatisticsAnalysisTool.Network.Manager;
 
 public class StatisticController
 {
-    private static readonly ILog Log = LogManager.GetLogger(MethodBase.GetCurrentMethod()?.DeclaringType);
+    
 
     private readonly TrackingController _trackingController;
     private readonly MainWindowViewModel _mainWindowViewModel;

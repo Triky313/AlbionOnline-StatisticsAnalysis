@@ -1,5 +1,4 @@
-﻿using log4net;
-using StatisticsAnalysisTool.Common;
+﻿using StatisticsAnalysisTool.Common;
 using StatisticsAnalysisTool.Enumerations;
 using StatisticsAnalysisTool.Models;
 using StatisticsAnalysisTool.Trade.Market;
@@ -8,13 +7,12 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 using System.Text.Json;
+using Serilog;
 
 namespace StatisticsAnalysisTool.Network.Operations.Responses;
 
 public class AuctionGetLoadoutOffersResponse
 {
-    private static readonly ILog Log = LogManager.GetLogger(MethodBase.GetCurrentMethod()?.DeclaringType);
-
     public readonly List<AuctionEntry> AuctionEntries = new();
     public readonly List<int> NumberToBuyList = new();
 
@@ -52,7 +50,7 @@ public class AuctionGetLoadoutOffersResponse
         }
         catch (Exception e)
         {
-            Log.Error(nameof(AuctionGetOffersResponse), e);
+            Log.Error(e, "{message}", MethodBase.GetCurrentMethod()?.DeclaringType);
         }
     }
 }

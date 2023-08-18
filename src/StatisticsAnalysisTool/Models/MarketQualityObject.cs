@@ -1,5 +1,6 @@
-﻿using log4net;
+﻿using Serilog;
 using StatisticsAnalysisTool.Common;
+using StatisticsAnalysisTool.Common.Converters;
 using StatisticsAnalysisTool.Enumerations;
 using System;
 using System.Collections.Generic;
@@ -8,14 +9,11 @@ using System.Reflection;
 using System.Runtime.CompilerServices;
 using System.Windows;
 using System.Windows.Input;
-using StatisticsAnalysisTool.Common.Converters;
 
 namespace StatisticsAnalysisTool.Models;
 
 public class MarketQualityObject : INotifyPropertyChanged
 {
-    private static readonly ILog Log = LogManager.GetLogger(MethodBase.GetCurrentMethod()?.DeclaringType);
-    
     private Visibility _visibility;
     private MarketLocation _marketLocation;
     private ulong _sellPriceMinNormal;
@@ -303,7 +301,7 @@ public class MarketQualityObject : INotifyPropertyChanged
                 return;
         }
     }
-    
+
     private ICommand _copyTextToClipboard;
     public ICommand CopyTextToClipboard => _copyTextToClipboard ??= new CommandHandler(PerformCopyTextToClipboard, true);
 
@@ -316,7 +314,7 @@ public class MarketQualityObject : INotifyPropertyChanged
         catch (Exception ex)
         {
             ConsoleManager.WriteLineForError(MethodBase.GetCurrentMethod()?.DeclaringType, ex);
-            Log.Error(MethodBase.GetCurrentMethod()?.DeclaringType, ex);
+            Log.Error(ex, "{message}", MethodBase.GetCurrentMethod()?.DeclaringType);
         }
     }
 

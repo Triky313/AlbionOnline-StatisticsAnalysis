@@ -87,9 +87,6 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
-    <None Update="log4net.config">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
     <None Update="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
@@ -549,11 +546,14 @@
     <PackageReference Include="Microsoft.Web.WebView2" Version="1.0.1722.45" />
     <PackageReference Include="Autoupdater.NET.Official" Version="1.8.1" />
     <PackageReference Include="FontAwesome5" Version="2.1.6" />
-    <PackageReference Include="log4net" Version="2.0.15" />
     <PackageReference Include="Notification.Wpf" Version="7.0.0" />
     <PackageReference Include="Ookii.Dialogs.Wpf" Version="5.0.1" />
     <PackageReference Include="PacketDotNet" Version="1.4.7" />
     <PackageReference Include="PhotonPackageParser" Version="4.1.0" />
+    <PackageReference Include="Serilog" Version="3.0.1" />
+    <PackageReference Include="Serilog.Sinks.Console" Version="4.1.0" />
+    <PackageReference Include="Serilog.Sinks.Debug" Version="2.0.0" />
+    <PackageReference Include="Serilog.Sinks.File" Version="5.0.0" />
     <PackageReference Include="SharpPcap" Version="6.2.5" />
     <PackageReference Include="System.Linq.Async" Version="6.0.1" />
     <PackageReference Include="VirtualizingWrapPanel" Version="1.5.7" />

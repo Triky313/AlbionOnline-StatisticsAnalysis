@@ -1,17 +1,15 @@
-﻿using log4net;
+﻿using Serilog;
 using StatisticsAnalysisTool.Common;
+using StatisticsAnalysisTool.Enumerations;
+using StatisticsAnalysisTool.Models;
 using System;
 using System.Collections.Generic;
 using System.Reflection;
-using StatisticsAnalysisTool.Enumerations;
-using StatisticsAnalysisTool.Models;
 
 namespace StatisticsAnalysisTool.Network.Operations.Responses;
 
 public class PartyMakeLeaderResponse
 {
-    private static readonly ILog Log = LogManager.GetLogger(MethodBase.GetCurrentMethod()?.DeclaringType);
-
     public string Username;
 
     public PartyMakeLeaderResponse(Dictionary<byte, object> parameters)
@@ -27,7 +25,7 @@ public class PartyMakeLeaderResponse
         }
         catch (Exception e)
         {
-            Log.Error(nameof(PartyMakeLeaderResponse), e);
+            Log.Error(e, "{message}", MethodBase.GetCurrentMethod()?.DeclaringType);
         }
     }
 }

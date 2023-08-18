@@ -1,4 +1,4 @@
-using log4net;
+using Serilog;
 using SharpPcap;
 using StatisticsAnalysisTool.Cluster;
 using StatisticsAnalysisTool.Common;
@@ -33,8 +33,6 @@ namespace StatisticsAnalysisTool.Network.Manager;
 
 public class TrackingController : ITrackingController
 {
-    private static readonly ILog Log = LogManager.GetLogger(MethodBase.GetCurrentMethod()?.DeclaringType);
-
     private const int MaxNotifications = 4000;
 
     private readonly MainWindowViewModel _mainWindowViewModel;
@@ -133,19 +131,19 @@ public class TrackingController : ITrackingController
         catch (PcapException e)
         {
             ConsoleManager.WriteLineForError(MethodBase.GetCurrentMethod()?.DeclaringType, e);
-            Log.Error(MethodBase.GetCurrentMethod()?.DeclaringType, e);
+            Log.Error(e, "{message}", MethodBase.GetCurrentMethod()?.DeclaringType);
             _mainWindowViewModel.SetErrorBar(Visibility.Visible, LanguageController.Translation(e.Message));
         }
         catch (NoListeningAdaptersException e)
         {
             ConsoleManager.WriteLineForError(MethodBase.GetCurrentMethod()?.DeclaringType, e);
-            Log.Error(MethodBase.GetCurrentMethod()?.DeclaringType, e);
+            Log.Error(e, "{message}", MethodBase.GetCurrentMethod()?.DeclaringType);
             _mainWindowViewModel.SetErrorBar(Visibility.Visible, LanguageController.Translation("NO_LISTENING_ADAPTERS"));
         }
         catch (Exception e)
         {
             ConsoleManager.WriteLineForError(MethodBase.GetCurrentMethod()?.DeclaringType, e);
-            Log.Error(MethodBase.GetCurrentMethod()?.DeclaringType, e);
+            Log.Error(e, "{message}", MethodBase.GetCurrentMethod()?.DeclaringType);
             _mainWindowViewModel.SetErrorBar(Visibility.Visible, LanguageController.Translation("PACKET_HANDLER_ERROR_MESSAGE"));
 
             StopTracking();
