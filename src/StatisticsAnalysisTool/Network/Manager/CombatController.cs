@@ -132,11 +132,7 @@ public class CombatController
             Application.Current.Dispatcher.Invoke(() => _mainWindowViewModel.DamageMeterBindings?.SetDamageMeterSort());
         }
 
-        if (HasDamageMeterDupes(_mainWindowViewModel?.DamageMeterBindings?.DamageMeter))
-        {
-            await RemoveDuplicatesAsync(_mainWindowViewModel?.DamageMeterBindings?.DamageMeter);
-        }
-
+        await RemoveDuplicatesAsync(_mainWindowViewModel?.DamageMeterBindings?.DamageMeter);
         _isUiUpdateActive = false;
     }
 
@@ -258,11 +254,16 @@ public class CombatController
 
     private static bool HasDamageMeterDupes(IEnumerable<DamageMeterFragment> damageMeter)
     {
-        return damageMeter.ToList().GroupBy(x => x.Name).Any(g => g.Count() > 1);
+        return damageMeter?.ToList().GroupBy(x => x?.Name).Any(g => g.Count() > 1) ?? false;
     }
 
     private static async Task RemoveDuplicatesAsync(ICollection<DamageMeterFragment> damageMeter)
     {
+        if (!HasDamageMeterDupes(damageMeter))
+        {
+            return;
+        }
+
         await Application.Current.Dispatcher.InvokeAsync(() =>
         {
             var damageMeterWithoutDupes = (from dmf in damageMeter.ToList()

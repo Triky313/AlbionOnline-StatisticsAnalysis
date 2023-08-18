@@ -12,5 +12,7 @@ public enum GameLanguage
     Chinese,
     Korean,
     Italy,
-    Japan
+    Japan,
+    Taiwan,
+    Indonesian
 }
