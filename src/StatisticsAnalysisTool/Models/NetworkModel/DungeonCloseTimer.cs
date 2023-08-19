@@ -1,17 +1,16 @@
 ﻿using StatisticsAnalysisTool.Common;
+using StatisticsAnalysisTool.Common.UserSettings;
+using StatisticsAnalysisTool.Properties;
+using StatisticsAnalysisTool.ViewModels;
 using System;
-using System.ComponentModel;
 using System.IO;
-using System.Runtime.CompilerServices;
 using System.Windows;
 using System.Windows.Input;
 using System.Windows.Threading;
-using StatisticsAnalysisTool.Common.UserSettings;
-using StatisticsAnalysisTool.Properties;
 
 namespace StatisticsAnalysisTool.Models.NetworkModel;
 
-public class DungeonCloseTimer : INotifyPropertyChanged
+public class DungeonCloseTimer : BaseViewModel
 {
     private string _timerString;
     private bool _isDungeonClosed;
@@ -44,8 +43,9 @@ public class DungeonCloseTimer : INotifyPropertyChanged
             OnPropertyChanged();
         }
     }
-        
-    public Visibility Visibility {
+
+    public Visibility Visibility
+    {
         get => _visibility;
         set
         {
@@ -71,7 +71,7 @@ public class DungeonCloseTimer : INotifyPropertyChanged
     {
         var duration = _endTime - DateTime.UtcNow;
         TimerString = duration.ToString("hh\\:mm\\:ss");
-            
+
         if (duration.TotalSeconds <= 0)
         {
             IsDungeonClosed = true;
@@ -103,12 +103,4 @@ public class DungeonCloseTimer : INotifyPropertyChanged
     public static string TranslationSafe => LanguageController.Translation("SAFE");
     public static string TranslationDungeonTimer => LanguageController.Translation("DUNGEON_TIMER");
     public static string TranslationResetDungeonTimer => LanguageController.Translation("RESET_DUNGEON_TIMER");
-
-    public event PropertyChangedEventHandler PropertyChanged;
-
-    [NotifyPropertyChangedInvocator]
-    protected virtual void OnPropertyChanged([CallerMemberName] string propertyName = null)
-    {
-        PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
-    }
 }

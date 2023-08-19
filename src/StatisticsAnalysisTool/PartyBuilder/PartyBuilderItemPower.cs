@@ -1,11 +1,9 @@
-﻿using System;
-using System.ComponentModel;
-using System.Runtime.CompilerServices;
-using StatisticsAnalysisTool.Properties;
+﻿using StatisticsAnalysisTool.ViewModels;
+using System;
 
 namespace StatisticsAnalysisTool.PartyBuilder;
 
-public class PartyBuilderItemPower : INotifyPropertyChanged
+public class PartyBuilderItemPower : BaseViewModel
 {
     private double _itemPower;
     private bool _isItemPowerAvailable;
@@ -41,13 +39,5 @@ public class PartyBuilderItemPower : INotifyPropertyChanged
             _itemPowerUpdate = value;
             OnPropertyChanged();
         }
-    }
-
-    public event PropertyChangedEventHandler PropertyChanged;
-
-    [NotifyPropertyChangedInvocator]
-    protected virtual void OnPropertyChanged([CallerMemberName] string propertyName = null)
-    {
-        PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
     }
 }

@@ -1,10 +1,8 @@
-﻿using StatisticsAnalysisTool.Properties;
-using System.ComponentModel;
-using System.Runtime.CompilerServices;
+﻿using StatisticsAnalysisTool.ViewModels;
 
 namespace StatisticsAnalysisTool.EventLogging;
 
-public class TopLooterObject : INotifyPropertyChanged
+public class TopLooterObject : BaseViewModel
 {
     private string _playerName;
     private int _quantity;
@@ -45,13 +43,5 @@ public class TopLooterObject : INotifyPropertyChanged
             _lootActions = value;
             OnPropertyChanged();
         }
-    }
-
-    public event PropertyChangedEventHandler PropertyChanged;
-
-    [NotifyPropertyChangedInvocator]
-    protected virtual void OnPropertyChanged([CallerMemberName] string propertyName = null)
-    {
-        PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
     }
 }

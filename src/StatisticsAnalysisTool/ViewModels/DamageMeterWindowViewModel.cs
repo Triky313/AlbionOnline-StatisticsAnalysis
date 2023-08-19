@@ -1,12 +1,10 @@
 ﻿using StatisticsAnalysisTool.EventLogging.Notification;
 using StatisticsAnalysisTool.Models.TranslationModel;
 using System.Collections.ObjectModel;
-using System.ComponentModel;
-using System.Runtime.CompilerServices;
 
 namespace StatisticsAnalysisTool.ViewModels;
 
-public class DamageMeterWindowViewModel : INotifyPropertyChanged
+public class DamageMeterWindowViewModel : BaseViewModel
 {
     private ObservableCollection<DamageMeterFragment> _damageMeter;
     private DamageMeterWindowTranslation _translation;
@@ -40,12 +38,5 @@ public class DamageMeterWindowViewModel : INotifyPropertyChanged
             _translation = value;
             OnPropertyChanged();
         }
-    }
-
-    public event PropertyChangedEventHandler PropertyChanged;
-
-    protected virtual void OnPropertyChanged([CallerMemberName] string propertyName = null)
-    {
-        PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
     }
 }

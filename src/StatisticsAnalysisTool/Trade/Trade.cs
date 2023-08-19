@@ -2,18 +2,15 @@
 using StatisticsAnalysisTool.Enumerations;
 using StatisticsAnalysisTool.GameFileData;
 using StatisticsAnalysisTool.Models;
-using StatisticsAnalysisTool.Properties;
 using StatisticsAnalysisTool.Trade.Mails;
 using StatisticsAnalysisTool.Trade.Market;
 using StatisticsAnalysisTool.ViewModels;
 using System;
-using System.ComponentModel;
-using System.Runtime.CompilerServices;
 using System.Windows.Input;
 
 namespace StatisticsAnalysisTool.Trade;
 
-public class Trade : INotifyPropertyChanged
+public class Trade : BaseViewModel
 {
     public long Id { get; init; }
     public long Ticks { get; init; }
@@ -159,12 +156,4 @@ public class Trade : INotifyPropertyChanged
     public ICommand OpenItemWindowCommand => _openItemWindowCommand ??= new CommandHandler(OpenItemWindow, true);
 
     #endregion
-
-    public event PropertyChangedEventHandler PropertyChanged;
-
-    [NotifyPropertyChangedInvocator]
-    protected void OnPropertyChanged([CallerMemberName] string propertyName = null)
-    {
-        PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
-    }
 }

@@ -1,12 +1,10 @@
-﻿using StatisticsAnalysisTool.Common;
-using StatisticsAnalysisTool.Properties;
-using System;
-using System.ComponentModel;
-using System.Runtime.CompilerServices;
+﻿using System;
+using StatisticsAnalysisTool.Common;
+using StatisticsAnalysisTool.ViewModels;
 
-namespace StatisticsAnalysisTool.Network.Notification;
+namespace StatisticsAnalysisTool.EventLogging.Notification;
 
-public class DungeonLootFragment : INotifyPropertyChanged
+public class DungeonLootFragment : BaseViewModel
 {
     private string _uniqueName;
     private DateTime _utcDiscoveryTime;
@@ -56,12 +54,4 @@ public class DungeonLootFragment : INotifyPropertyChanged
     public FixPoint TotalEstimatedMarketValue => Quantity * EstimatedMarketValue;
 
     public string Hash => $"{UniqueName}{UtcDiscoveryTime.Ticks}{Quantity}{EstimatedMarketValue.InternalValue}";
-
-    public event PropertyChangedEventHandler PropertyChanged;
-
-    [NotifyPropertyChangedInvocator]
-    protected virtual void OnPropertyChanged([CallerMemberName] string propertyName = null)
-    {
-        PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
-    }
 }

@@ -2,17 +2,16 @@
 using StatisticsAnalysisTool.Common;
 using StatisticsAnalysisTool.Common.Converters;
 using StatisticsAnalysisTool.Enumerations;
+using StatisticsAnalysisTool.ViewModels;
 using System;
 using System.Collections.Generic;
-using System.ComponentModel;
 using System.Reflection;
-using System.Runtime.CompilerServices;
 using System.Windows;
 using System.Windows.Input;
 
 namespace StatisticsAnalysisTool.Models;
 
-public class MarketQualityObject : INotifyPropertyChanged
+public class MarketQualityObject : BaseViewModel
 {
     private Visibility _visibility;
     private MarketLocation _marketLocation;
@@ -316,12 +315,5 @@ public class MarketQualityObject : INotifyPropertyChanged
             ConsoleManager.WriteLineForError(MethodBase.GetCurrentMethod()?.DeclaringType, ex);
             Log.Error(ex, "{message}", MethodBase.GetCurrentMethod()?.DeclaringType);
         }
-    }
-
-    public event PropertyChangedEventHandler PropertyChanged;
-
-    protected virtual void OnPropertyChanged([CallerMemberName] string propertyName = null)
-    {
-        PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
     }
 }

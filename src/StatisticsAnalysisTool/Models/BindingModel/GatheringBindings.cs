@@ -2,21 +2,19 @@
 using StatisticsAnalysisTool.Common;
 using StatisticsAnalysisTool.Common.UserSettings;
 using StatisticsAnalysisTool.Gathering;
-using StatisticsAnalysisTool.Properties;
+using StatisticsAnalysisTool.ViewModels;
 using System;
 using System.Collections.Generic;
 using System.Collections.Specialized;
-using System.ComponentModel;
 using System.Linq;
 using System.Reflection;
-using System.Runtime.CompilerServices;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Data;
 
 namespace StatisticsAnalysisTool.Models.BindingModel;
 
-public class GatheringBindings : INotifyPropertyChanged
+public class GatheringBindings : BaseViewModel
 {
     private bool _isGatheringActive = true;
     private GatheringStats _gatheringStats = new();
@@ -461,12 +459,4 @@ public class GatheringBindings : INotifyPropertyChanged
     #endregion
 
     public static string TranslationGatheringActive => LanguageController.Translation("GATHERING_ACTIVE");
-
-    public event PropertyChangedEventHandler PropertyChanged;
-
-    [NotifyPropertyChangedInvocator]
-    protected virtual void OnPropertyChanged([CallerMemberName] string propertyName = null)
-    {
-        PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
-    }
 }

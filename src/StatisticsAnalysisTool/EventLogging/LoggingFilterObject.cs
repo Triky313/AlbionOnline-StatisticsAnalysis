@@ -1,14 +1,11 @@
 ﻿using StatisticsAnalysisTool.Common;
 using StatisticsAnalysisTool.Network.Manager;
-using StatisticsAnalysisTool.Properties;
 using StatisticsAnalysisTool.ViewModels;
 using System.Collections.Generic;
-using System.ComponentModel;
-using System.Runtime.CompilerServices;
 
 namespace StatisticsAnalysisTool.EventLogging;
 
-public class LoggingFilterObject : INotifyPropertyChanged
+public class LoggingFilterObject : BaseViewModel
 {
     private bool? _isSelected;
     private string _name;
@@ -55,13 +52,5 @@ public class LoggingFilterObject : INotifyPropertyChanged
             _name = value;
             OnPropertyChanged();
         }
-    }
-
-    public event PropertyChangedEventHandler PropertyChanged;
-
-    [NotifyPropertyChangedInvocator]
-    protected virtual void OnPropertyChanged([CallerMemberName] string propertyName = null)
-    {
-        PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
     }
 }

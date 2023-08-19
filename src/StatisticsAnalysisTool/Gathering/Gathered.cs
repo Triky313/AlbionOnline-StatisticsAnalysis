@@ -2,15 +2,13 @@
 using StatisticsAnalysisTool.Common;
 using StatisticsAnalysisTool.Models;
 using StatisticsAnalysisTool.Models.ItemsJsonModel;
-using StatisticsAnalysisTool.Properties;
+using StatisticsAnalysisTool.ViewModels;
 using System;
-using System.ComponentModel;
 using System.Globalization;
-using System.Runtime.CompilerServices;
 
 namespace StatisticsAnalysisTool.Gathering;
 
-public class Gathered : INotifyPropertyChanged
+public class Gathered : BaseViewModel
 {
     private int _gainedStandardAmount;
     private int _gainedBonusAmount;
@@ -51,7 +49,8 @@ public class Gathered : INotifyPropertyChanged
         }
     }
 
-    public Item Item {
+    public Item Item
+    {
         get => _item;
         set
         {
@@ -198,14 +197,5 @@ public class Gathered : INotifyPropertyChanged
             _isSelectedForDeletion = value;
             OnPropertyChanged();
         }
-    }
-
-
-    public event PropertyChangedEventHandler PropertyChanged;
-
-    [NotifyPropertyChangedInvocator]
-    protected virtual void OnPropertyChanged([CallerMemberName] string propertyName = null)
-    {
-        PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
     }
 }

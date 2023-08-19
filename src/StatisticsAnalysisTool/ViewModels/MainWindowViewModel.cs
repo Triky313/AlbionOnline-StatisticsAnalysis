@@ -25,7 +25,6 @@ using System.ComponentModel;
 using System.IO;
 using System.Linq;
 using System.Reflection;
-using System.Runtime.CompilerServices;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Data;
@@ -35,7 +34,7 @@ using System.Windows.Media;
 
 namespace StatisticsAnalysisTool.ViewModels;
 
-public class MainWindowViewModel : INotifyPropertyChanged
+public class MainWindowViewModel : BaseViewModel
 {
     private double _allianceInfoWidth;
     private double _currentMapInfoWidth;
@@ -1319,14 +1318,6 @@ public class MainWindowViewModel : INotifyPropertyChanged
 
     public static string ToolDirectory => AppDomain.CurrentDomain.BaseDirectory;
     public static string Version => $"v{Assembly.GetExecutingAssembly().GetName().Version}";
-
-    public event PropertyChangedEventHandler PropertyChanged;
-
-    [NotifyPropertyChangedInvocator]
-    protected virtual void OnPropertyChanged([CallerMemberName] string propertyName = null)
-    {
-        PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
-    }
 
     #endregion Bindings
 }

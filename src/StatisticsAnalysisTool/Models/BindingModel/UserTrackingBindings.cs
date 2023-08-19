@@ -1,11 +1,9 @@
-﻿using StatisticsAnalysisTool.Properties;
-using System.ComponentModel;
-using System.Runtime.CompilerServices;
+﻿using StatisticsAnalysisTool.ViewModels;
 using System.Windows;
 
 namespace StatisticsAnalysisTool.Models.BindingModel;
 
-public class UserTrackingBindings : INotifyPropertyChanged
+public class UserTrackingBindings : BaseViewModel
 {
     private string _username;
     private string _guildName;
@@ -13,7 +11,7 @@ public class UserTrackingBindings : INotifyPropertyChanged
     private Visibility _usernameInformationVisibility;
     private Visibility _guildInformationVisibility;
     private Visibility _allianceInformationVisibility;
-    private CurrentMapInfoBinding _currentMapInfoBinding = new ();
+    private CurrentMapInfoBinding _currentMapInfoBinding = new();
 
     public string Username
     {
@@ -86,13 +84,5 @@ public class UserTrackingBindings : INotifyPropertyChanged
             _allianceInformationVisibility = value;
             OnPropertyChanged();
         }
-    }
-
-    public event PropertyChangedEventHandler PropertyChanged;
-
-    [NotifyPropertyChangedInvocator]
-    protected virtual void OnPropertyChanged([CallerMemberName] string propertyName = null)
-    {
-        PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
     }
 }

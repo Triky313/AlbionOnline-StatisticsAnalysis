@@ -1,13 +1,11 @@
-﻿using System.ComponentModel;
-using System.Runtime.CompilerServices;
-using StatisticsAnalysisTool.Common;
+﻿using StatisticsAnalysisTool.Common;
 
 namespace StatisticsAnalysisTool.ViewModels;
 
-public class ToolLoadingWindowViewModel : INotifyPropertyChanged
+public class ToolLoadingWindowViewModel : BaseViewModel
 {
     private double _progressBarValue;
-    
+
     public double ProgressBarValue
     {
         get => _progressBarValue;
@@ -19,11 +17,4 @@ public class ToolLoadingWindowViewModel : INotifyPropertyChanged
     }
 
     public static string TranslationLoading => LanguageController.Translation("LOADING");
-
-    public event PropertyChangedEventHandler PropertyChanged;
-
-    protected virtual void OnPropertyChanged([CallerMemberName] string propertyName = null)
-    {
-        PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
-    }
 }

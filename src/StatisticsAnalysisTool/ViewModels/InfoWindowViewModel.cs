@@ -1,12 +1,10 @@
 ﻿using StatisticsAnalysisTool.Common.UserSettings;
 using StatisticsAnalysisTool.Models.TranslationModel;
 using StatisticsAnalysisTool.Properties;
-using System.ComponentModel;
-using System.Runtime.CompilerServices;
 
 namespace StatisticsAnalysisTool.ViewModels;
 
-internal class InfoWindowViewModel : INotifyPropertyChanged
+internal class InfoWindowViewModel : BaseViewModel
 {
     private bool _showNotAgainChecked;
     private InfoWindowTranslation _translation;
@@ -45,13 +43,6 @@ internal class InfoWindowViewModel : INotifyPropertyChanged
     }
 
     public string DonateUrl => Settings.Default.DonateUrl;
-
-    public event PropertyChangedEventHandler PropertyChanged;
-
-    protected virtual void OnPropertyChanged([CallerMemberName] string propertyName = null)
-    {
-        PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
-    }
 
     #endregion Bindings
 }

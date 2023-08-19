@@ -11,19 +11,17 @@ using StatisticsAnalysisTool.Views;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.ComponentModel;
 using System.Drawing;
 using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Reflection;
-using System.Runtime.CompilerServices;
 using System.Windows;
 using System.Windows.Media.Imaging;
 
 namespace StatisticsAnalysisTool.ViewModels;
 
-public class SettingsWindowViewModel : INotifyPropertyChanged
+public class SettingsWindowViewModel : BaseViewModel
 {
     private static ObservableCollection<FileInformation> _languages = new();
     private static FileInformation _languagesSelection;
@@ -780,13 +778,6 @@ public class SettingsWindowViewModel : INotifyPropertyChanged
     }
 
     public string ToolDirectory => AppDomain.CurrentDomain.BaseDirectory;
-
-    public event PropertyChangedEventHandler PropertyChanged;
-
-    protected virtual void OnPropertyChanged([CallerMemberName] string propertyName = null)
-    {
-        PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
-    }
 
     #endregion Bindings
 }

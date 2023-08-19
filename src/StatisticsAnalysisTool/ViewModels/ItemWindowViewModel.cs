@@ -15,11 +15,9 @@ using StatisticsAnalysisTool.Views;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.ComponentModel;
 using System.Globalization;
 using System.Linq;
 using System.Reflection;
-using System.Runtime.CompilerServices;
 using System.Threading.Tasks;
 using System.Timers;
 using System.Windows;
@@ -28,7 +26,7 @@ using System.Windows.Media.Imaging;
 
 namespace StatisticsAnalysisTool.ViewModels;
 
-public class ItemWindowViewModel : INotifyPropertyChanged
+public class ItemWindowViewModel : BaseViewModel
 {
     private readonly ItemWindow _itemWindow;
     private Item _item;
@@ -1337,11 +1335,4 @@ public class ItemWindowViewModel : INotifyPropertyChanged
     }
 
     #endregion
-
-    public event PropertyChangedEventHandler PropertyChanged;
-
-    protected virtual void OnPropertyChanged([CallerMemberName] string propertyName = null)
-    {
-        PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
-    }
 }

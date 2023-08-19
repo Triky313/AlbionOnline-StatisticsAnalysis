@@ -5,13 +5,10 @@ using StatisticsAnalysisTool.GameFileData;
 using StatisticsAnalysisTool.Models;
 using StatisticsAnalysisTool.Models.NetworkModel;
 using StatisticsAnalysisTool.Network.Notification;
-using StatisticsAnalysisTool.Properties;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.ComponentModel;
 using System.Linq;
-using System.Runtime.CompilerServices;
 using System.Text.Json.Serialization;
 using System.Threading.Tasks;
 using System.Windows;
@@ -19,7 +16,7 @@ using System.Windows.Threading;
 
 namespace StatisticsAnalysisTool.Dungeon;
 
-public class DungeonNotificationFragment : LineFragment, INotifyPropertyChanged
+public class DungeonNotificationFragment : LineFragment
 {
     private bool _diedInDungeon;
     private string _diedName;
@@ -919,12 +916,4 @@ public class DungeonNotificationFragment : LineFragment, INotifyPropertyChanged
     [JsonIgnore] public static string TranslationFavorPerHour => LanguageController.Translation("FAVOR_PER_HOUR");
     [JsonIgnore] public static string TranslationBestLootedItem => LanguageController.Translation("BEST_LOOTED_ITEM");
     [JsonIgnore] public static string TranslationTotalLootedValue => LanguageController.Translation("TOTAL_LOOT_VALUE");
-
-    public event PropertyChangedEventHandler PropertyChanged;
-
-    [NotifyPropertyChangedInvocator]
-    protected virtual void OnPropertyChanged([CallerMemberName] string propertyName = null)
-    {
-        PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
-    }
 }

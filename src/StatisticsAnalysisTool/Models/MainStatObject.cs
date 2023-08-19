@@ -1,20 +1,19 @@
 ﻿using StatisticsAnalysisTool.Common;
 using StatisticsAnalysisTool.Enumerations;
-using System.ComponentModel;
-using System.Runtime.CompilerServices;
+using StatisticsAnalysisTool.ViewModels;
 using System.Windows;
-using StatisticsAnalysisTool.Properties;
 
 namespace StatisticsAnalysisTool.Models;
 
-public class MainStatObject : INotifyPropertyChanged
+public class MainStatObject : BaseViewModel
 {
     private CityFaction _cityFaction = CityFaction.Unknown;
     private double _value;
     private double _valuePerHour;
     private Visibility _visibility = Visibility.Hidden;
 
-    public CityFaction CityFaction {
+    public CityFaction CityFaction
+    {
         get => _cityFaction;
         set
         {
@@ -24,7 +23,8 @@ public class MainStatObject : INotifyPropertyChanged
         }
     }
 
-    public double Value {
+    public double Value
+    {
         get => _value;
         set
         {
@@ -33,7 +33,8 @@ public class MainStatObject : INotifyPropertyChanged
         }
     }
 
-    public double ValuePerHour {
+    public double ValuePerHour
+    {
         get => _valuePerHour;
         set
         {
@@ -42,7 +43,8 @@ public class MainStatObject : INotifyPropertyChanged
         }
     }
 
-    public Visibility Visibility {
+    public Visibility Visibility
+    {
         get => _visibility;
         set
         {
@@ -52,12 +54,4 @@ public class MainStatObject : INotifyPropertyChanged
     }
 
     public static string TranslationTotalFactionPoints => LanguageController.Translation("TOTAL_FACTION_POINTS");
-
-    public event PropertyChangedEventHandler PropertyChanged;
-        
-    [NotifyPropertyChangedInvocator]
-    protected virtual void OnPropertyChanged([CallerMemberName] string propertyName = null)
-    {
-        PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
-    }
 }

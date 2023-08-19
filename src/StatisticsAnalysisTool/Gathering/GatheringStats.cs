@@ -1,12 +1,10 @@
 ﻿using StatisticsAnalysisTool.Common;
-using StatisticsAnalysisTool.Properties;
-using System.ComponentModel;
-using System.Runtime.CompilerServices;
+using StatisticsAnalysisTool.ViewModels;
 using System.Windows;
 
 namespace StatisticsAnalysisTool.Gathering;
 
-public class GatheringStats : INotifyPropertyChanged
+public class GatheringStats : BaseViewModel
 {
     private ItemTier _tier = ItemTier.Unknown;
     private GatheringFilterType _gatheringFilterType = GatheringFilterType.Unknown;
@@ -15,7 +13,7 @@ public class GatheringStats : INotifyPropertyChanged
     private ObservableRangeCollection<Gathered> _gatheredOre = new();
     private ObservableRangeCollection<Gathered> _gatheredRock = new();
     private ObservableRangeCollection<Gathered> _gatheredFiber = new();
-    private ObservableRangeCollection<Gathered> _gatheredFish= new();
+    private ObservableRangeCollection<Gathered> _gatheredFish = new();
     private Gathered _mostGatheredResource = new();
     private Gathered _mostGatheredCluster;
     private long _totalMiningProcesses;
@@ -254,12 +252,4 @@ public class GatheringStats : INotifyPropertyChanged
     public static string TranslationTotalResources => LanguageController.Translation("TOTAL_RESOURCES");
     public static string TranslationTotalMiningProcesses => LanguageController.Translation("TOTAL_MINING_PROCESSES");
     public static string TranslationResourceValue => LanguageController.Translation("RESOURCE_VALUE");
-
-    public event PropertyChangedEventHandler PropertyChanged;
-
-    [NotifyPropertyChangedInvocator]
-    protected virtual void OnPropertyChanged([CallerMemberName] string propertyName = null)
-    {
-        PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
-    }
 }

@@ -1,11 +1,9 @@
 ﻿using StatisticsAnalysisTool.Common;
-using StatisticsAnalysisTool.Properties;
-using System.ComponentModel;
-using System.Runtime.CompilerServices;
+using StatisticsAnalysisTool.ViewModels;
 
 namespace StatisticsAnalysisTool.Models;
 
-public class LootedChests : INotifyPropertyChanged
+public class LootedChests : BaseViewModel
 {
     private int _outlandsCommonWeek;
     private int _outlandsCommonMonth;
@@ -835,12 +833,4 @@ public class LootedChests : INotifyPropertyChanged
     public static string TranslationLast7Days => LanguageController.Translation("LAST_7_DAYS");
     public static string TranslationLast30Days => LanguageController.Translation("LAST_30_DAYS");
     public static string TranslationLast365Days => LanguageController.Translation("LAST_365_DAYS");
-
-    public event PropertyChangedEventHandler PropertyChanged;
-
-    [NotifyPropertyChangedInvocator]
-    protected virtual void OnPropertyChanged([CallerMemberName] string propertyName = null)
-    {
-        PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
-    }
 }

@@ -1,13 +1,11 @@
 ﻿using StatisticsAnalysisTool.Enumerations;
 using StatisticsAnalysisTool.Models.TranslationModel;
-using StatisticsAnalysisTool.Properties;
-using System.ComponentModel;
-using System.Runtime.CompilerServices;
+using StatisticsAnalysisTool.ViewModels;
 using System.Windows;
 
 namespace StatisticsAnalysisTool.Models.BindingModel;
 
-public class TrackingActivityBindings : INotifyPropertyChanged
+public class TrackingActivityBindings : BaseViewModel
 {
     private TrackingIconType _trackingActivityType = TrackingIconType.Off;
     private string _trackingActiveText = MainWindowTranslation.TrackingIsNotActive;
@@ -41,13 +39,5 @@ public class TrackingActivityBindings : INotifyPropertyChanged
             _characterIsNotTrackedInfoVisibility = value;
             OnPropertyChanged();
         }
-    }
-
-    public event PropertyChangedEventHandler PropertyChanged;
-
-    [NotifyPropertyChangedInvocator]
-    protected virtual void OnPropertyChanged([CallerMemberName] string propertyName = null)
-    {
-        PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
     }
 }

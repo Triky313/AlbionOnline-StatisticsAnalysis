@@ -1,15 +1,14 @@
 ﻿using StatisticsAnalysisTool.Common;
 using StatisticsAnalysisTool.Properties;
+using StatisticsAnalysisTool.ViewModels;
 using System;
 using System.Collections.Generic;
-using System.ComponentModel;
 using System.Linq;
-using System.Runtime.CompilerServices;
 using System.Windows;
 
 namespace StatisticsAnalysisTool.Models.BindingModel;
 
-public class DashboardBindings : INotifyPropertyChanged
+public class DashboardBindings : BaseViewModel
 {
     private double _famePerHour;
     private double _reSpecPointsPerHour;
@@ -517,12 +516,4 @@ public class DashboardBindings : INotifyPropertyChanged
     public static string TranslationRepairCostsToday => LanguageController.Translation("REPAIR_COSTS_TODAY");
     public static string TranslationRepairCostsLast7Days => LanguageController.Translation("REPAIR_COSTS_LAST_7_DAYS");
     public static string TranslationRepairCostsLast30Days => LanguageController.Translation("REPAIR_COSTS_LAST_30_DAYS");
-
-    public event PropertyChangedEventHandler PropertyChanged;
-
-    [NotifyPropertyChangedInvocator]
-    protected virtual void OnPropertyChanged([CallerMemberName] string propertyName = null)
-    {
-        PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
-    }
 }

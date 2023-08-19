@@ -1,13 +1,10 @@
 ﻿using StatisticsAnalysisTool.Enumerations;
 using StatisticsAnalysisTool.Models.TranslationModel;
-using StatisticsAnalysisTool.Properties;
-using System.ComponentModel;
-using System.Runtime.CompilerServices;
 using System.Windows;
 
 namespace StatisticsAnalysisTool.ViewModels;
 
-public class DialogWindowViewModel : INotifyPropertyChanged
+public class DialogWindowViewModel : BaseViewModel
 {
     private string _title;
     private string _message;
@@ -111,12 +108,4 @@ public class DialogWindowViewModel : INotifyPropertyChanged
     }
 
     #endregion
-
-    public event PropertyChangedEventHandler PropertyChanged;
-
-    [NotifyPropertyChangedInvocator]
-    protected virtual void OnPropertyChanged([CallerMemberName] string propertyName = null)
-    {
-        PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
-    }
 }
