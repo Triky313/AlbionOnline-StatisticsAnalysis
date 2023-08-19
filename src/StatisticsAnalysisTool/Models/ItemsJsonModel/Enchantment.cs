@@ -30,4 +30,15 @@ public class Enchantment
 
     [JsonPropertyName("upgraderequirements")]
     public UpgradeRequirements UpgradeRequirements { get; set; }
+
+    public void Reset()
+    {
+        EnchantmentLevel = null;
+        AbilityPower = null;
+        DummyItemPower = null;
+        ConsumeSpell = null;
+        Durability = 0;
+        CraftingRequirements = null;
+        UpgradeRequirements = null;
+    }
 }
