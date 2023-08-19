@@ -1,4 +1,3 @@
-using log4net;
 using StatisticsAnalysisTool.Exceptions;
 using StatisticsAnalysisTool.Models;
 using StatisticsAnalysisTool.Properties;
@@ -11,12 +10,12 @@ using System.Reflection;
 using System.Runtime.CompilerServices;
 using System.Threading.Tasks;
 using System.Windows;
+using Serilog;
 
 namespace StatisticsAnalysisTool.Common;
 
 public class Alert
 {
-    private static readonly ILog Log = LogManager.GetLogger(MethodBase.GetCurrentMethod()?.DeclaringType);
     private int _alertModeMinSellPriceIsUndercutPrice;
     private bool _isEventActive;
     private Item _item;
@@ -101,12 +100,12 @@ public class Alert
             catch (FileNotFoundException e)
             {
                 ConsoleManager.WriteLineForError(MethodBase.GetCurrentMethod()?.DeclaringType, e);
-                Log.Error(MethodBase.GetCurrentMethod()?.DeclaringType, e);
+                Log.Error(e, "{message}", MethodBase.GetCurrentMethod()?.DeclaringType);
             }
             catch (TooManyRequestsException e)
             {
                 ConsoleManager.WriteLineForError(MethodBase.GetCurrentMethod()?.DeclaringType, e);
-                Log.Warn(MethodBase.GetCurrentMethod()?.DeclaringType, e);
+                Log.Error(e, "{message}", MethodBase.GetCurrentMethod()?.DeclaringType);
                 return;
             }
         }

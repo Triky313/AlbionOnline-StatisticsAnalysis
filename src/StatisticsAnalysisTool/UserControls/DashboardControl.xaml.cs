@@ -1,5 +1,4 @@
-﻿using log4net;
-using StatisticsAnalysisTool.Common;
+﻿using StatisticsAnalysisTool.Common;
 using StatisticsAnalysisTool.Network.Manager;
 using StatisticsAnalysisTool.ViewModels;
 using StatisticsAnalysisTool.Views;
@@ -8,6 +7,7 @@ using System.Linq;
 using System.Reflection;
 using System.Windows;
 using System.Windows.Input;
+using Serilog;
 
 namespace StatisticsAnalysisTool.UserControls;
 
@@ -16,8 +16,6 @@ namespace StatisticsAnalysisTool.UserControls;
 /// </summary>
 public partial class DashboardControl
 {
-    private static readonly ILog Log = LogManager.GetLogger(MethodBase.GetCurrentMethod()?.DeclaringType);
-
     public DashboardControl()
     {
         InitializeComponent();
@@ -34,7 +32,7 @@ public partial class DashboardControl
             }
             else
             {
-                var vm = (MainWindowViewModel)DataContext;
+                var vm = (MainWindowViewModel) DataContext;
                 var itemWindow = new DashboardWindow(vm?.DashboardBindings, vm?.FactionPointStats);
                 itemWindow.Show();
             }
@@ -42,7 +40,7 @@ public partial class DashboardControl
         catch (Exception e)
         {
             ConsoleManager.WriteLineForError(MethodBase.GetCurrentMethod()?.DeclaringType, e);
-            Log.Error(MethodBase.GetCurrentMethod()?.DeclaringType, e);
+            Log.Error(e, "{Message}", MethodBase.GetCurrentMethod()?.DeclaringType);
         }
     }
 
@@ -50,6 +48,7 @@ public partial class DashboardControl
 
     private void BtnTrackingReset_Click(object sender, RoutedEventArgs e)
     {
+        Log.Error("{Message}", MethodBase.GetCurrentMethod()?.DeclaringType);
         var trackingController = ServiceLocator.Resolve<TrackingController>();
         trackingController?.LiveStatsTracker?.Reset();
     }

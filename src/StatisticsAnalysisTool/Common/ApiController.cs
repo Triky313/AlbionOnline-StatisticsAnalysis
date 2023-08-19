@@ -1,5 +1,4 @@
-﻿using log4net;
-using StatisticsAnalysisTool.Common.UserSettings;
+﻿using StatisticsAnalysisTool.Common.UserSettings;
 using StatisticsAnalysisTool.Enumerations;
 using StatisticsAnalysisTool.Exceptions;
 using StatisticsAnalysisTool.Models;
@@ -14,14 +13,13 @@ using System.Net.Http;
 using System.Reflection;
 using System.Text.Json;
 using System.Threading.Tasks;
+using Serilog;
 using StatisticsAnalysisTool.Network;
 
 namespace StatisticsAnalysisTool.Common;
 
 public static class ApiController
 {
-    private static readonly ILog Log = LogManager.GetLogger(MethodBase.GetCurrentMethod()?.DeclaringType);
-
     /// <summary>
     ///     Returns a list of all city item prices by uniqueName.
     /// </summary>
@@ -84,7 +82,7 @@ public static class ApiController
         catch (Exception e)
         {
             ConsoleManager.WriteLineForError(MethodBase.GetCurrentMethod()?.DeclaringType, e);
-            Log.Error(MethodBase.GetCurrentMethod()?.DeclaringType, e);
+            Log.Error(e, "{message}", MethodBase.GetCurrentMethod()?.DeclaringType);
             return null;
         }
     }
@@ -128,7 +126,7 @@ public static class ApiController
         catch (Exception e)
         {
             ConsoleManager.WriteLineForError(MethodBase.GetCurrentMethod()?.DeclaringType, e);
-            Log.Error(MethodBase.GetCurrentMethod()?.DeclaringType, e);
+            Log.Error(e, "{message}", MethodBase.GetCurrentMethod()?.DeclaringType);
             return null;
         }
     }
@@ -158,7 +156,7 @@ public static class ApiController
         catch (Exception e)
         {
             ConsoleManager.WriteLineForError(MethodBase.GetCurrentMethod()?.DeclaringType, e);
-            Log.Error(MethodBase.GetCurrentMethod()?.DeclaringType, e);
+            Log.Error(e, "{message}", MethodBase.GetCurrentMethod()?.DeclaringType);
             return gameInfoSearchResponse;
         }
     }
@@ -183,7 +181,7 @@ public static class ApiController
         catch (Exception e)
         {
             ConsoleManager.WriteLineForError(MethodBase.GetCurrentMethod()?.DeclaringType, e);
-            Log.Error(MethodBase.GetCurrentMethod()?.DeclaringType, e);
+            Log.Error(e, "{message}", MethodBase.GetCurrentMethod()?.DeclaringType);
             return gameInfoPlayerResponse;
         }
     }
@@ -214,7 +212,7 @@ public static class ApiController
         catch (Exception e)
         {
             ConsoleManager.WriteLineForError(MethodBase.GetCurrentMethod()?.DeclaringType, e);
-            Log.Error(MethodBase.GetCurrentMethod()?.DeclaringType, e);
+            Log.Error(e, "{message}", MethodBase.GetCurrentMethod()?.DeclaringType);
             return values;
         }
     }
@@ -254,7 +252,7 @@ public static class ApiController
         catch (Exception e)
         {
             ConsoleManager.WriteLineForError(MethodBase.GetCurrentMethod()?.DeclaringType, e);
-            Log.Error(MethodBase.GetCurrentMethod()?.DeclaringType, e);
+            Log.Error(e, "{message}", MethodBase.GetCurrentMethod()?.DeclaringType);
             return values;
         }
     }
@@ -294,7 +292,7 @@ public static class ApiController
         catch (Exception e)
         {
             ConsoleManager.WriteLineForError(MethodBase.GetCurrentMethod()?.DeclaringType, e);
-            Log.Error(MethodBase.GetCurrentMethod()?.DeclaringType, e);
+            Log.Error(e, "{message}", MethodBase.GetCurrentMethod()?.DeclaringType);
             return values;
         }
     }
@@ -319,7 +317,7 @@ public static class ApiController
     //        catch (Exception e)
     //        {
     //            ConsoleManager.WriteLineForError(MethodBase.GetCurrentMethod()?.DeclaringType, e);
-    //            Log.Error(MethodBase.GetCurrentMethod()?.DeclaringType, e);
+    //            Log.Error(e, "{message}", MethodBase.GetCurrentMethod()?.DeclaringType);
     //            return null;
     //        }
     //    }
@@ -347,7 +345,7 @@ public static class ApiController
         catch (Exception e)
         {
             ConsoleManager.WriteLineForError(MethodBase.GetCurrentMethod()?.DeclaringType, e);
-            Log.Error(MethodBase.GetCurrentMethod()?.DeclaringType, e);
+            Log.Error(e, "{message}", MethodBase.GetCurrentMethod()?.DeclaringType);
             return new List<GoldResponseModel>();
         }
     }
@@ -371,7 +369,7 @@ public static class ApiController
         catch (Exception e)
         {
             ConsoleManager.WriteLineForError(MethodBase.GetCurrentMethod()?.DeclaringType, e);
-            Log.Error(MethodBase.GetCurrentMethod()?.DeclaringType, e);
+            Log.Error(e, "{message}", MethodBase.GetCurrentMethod()?.DeclaringType);
             return values;
         }
     }

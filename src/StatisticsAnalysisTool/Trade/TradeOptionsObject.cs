@@ -1,14 +1,12 @@
 ﻿using StatisticsAnalysisTool.Common;
 using StatisticsAnalysisTool.Common.UserSettings;
-using StatisticsAnalysisTool.Properties;
+using StatisticsAnalysisTool.ViewModels;
 using System.Collections.Generic;
-using System.ComponentModel;
 using System.Linq;
-using System.Runtime.CompilerServices;
 
 namespace StatisticsAnalysisTool.Trade;
 
-public class TradeOptionsObject : INotifyPropertyChanged
+public class TradeOptionsObject : BaseViewModel
 {
     private bool _isTradeMonitoringActive = true;
     private List<DeleteTradesAfterDaysStruct> _deleteTradesOlderThanSpecifiedDays = new();
@@ -109,12 +107,4 @@ public class TradeOptionsObject : INotifyPropertyChanged
     public static string TranslationMarketTaxRate => LanguageController.Translation("MARKET_TAX_RATE");
     public static string TranslationMarketTaxSetupRate => LanguageController.Translation("MARKET_TAX_SETUP_RATE");
     public static string TranslationSettings => LanguageController.Translation("SETTINGS");
-
-    public event PropertyChangedEventHandler PropertyChanged;
-
-    [NotifyPropertyChangedInvocator]
-    protected virtual void OnPropertyChanged([CallerMemberName] string propertyName = null)
-    {
-        PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
-    }
 }

@@ -1,17 +1,14 @@
-﻿using log4net;
+﻿using Serilog;
 using StatisticsAnalysisTool.Common;
 using StatisticsAnalysisTool.Trade.Mails;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Reflection;
 
 namespace StatisticsAnalysisTool.Network.Operations.Responses;
 
 public class GetMailInfosResponse
 {
-    private static readonly ILog Log = LogManager.GetLogger(MethodBase.GetCurrentMethod()?.DeclaringType);
-
     public readonly List<MailNetworkObject> MailInfos = new();
 
     public GetMailInfosResponse(Dictionary<byte, object> parameters)

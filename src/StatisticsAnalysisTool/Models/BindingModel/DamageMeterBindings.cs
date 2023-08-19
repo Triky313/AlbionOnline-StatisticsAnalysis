@@ -4,21 +4,20 @@ using StatisticsAnalysisTool.Common.UserSettings;
 using StatisticsAnalysisTool.Enumerations;
 using StatisticsAnalysisTool.EventLogging.Notification;
 using StatisticsAnalysisTool.Properties;
+using StatisticsAnalysisTool.ViewModels;
 using StatisticsAnalysisTool.Views;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.ComponentModel;
 using System.IO;
 using System.Linq;
-using System.Runtime.CompilerServices;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Media;
 
 namespace StatisticsAnalysisTool.Models.BindingModel;
 
-public class DamageMeterBindings : INotifyPropertyChanged, IAsyncInitialization
+public class DamageMeterBindings : BaseViewModel, IAsyncInitialization
 {
     private List<DamageMeterSortStruct> _damageMeterSort = new();
     private DamageMeterSortStruct _damageMeterSortSelection;
@@ -33,6 +32,7 @@ public class DamageMeterBindings : INotifyPropertyChanged, IAsyncInitialization
     private bool _isSnapshotAfterMapChangeActive;
     private GridLength _gridSplitterPosition;
     private bool _isDamageMeterResetBeforeCombatActive;
+    private bool _shortDamageMeterToClipboard;
     public Task Initialization { get; init; }
 
     public DamageMeterBindings()
@@ -82,6 +82,7 @@ public class DamageMeterBindings : INotifyPropertyChanged, IAsyncInitialization
         IsSnapshotAfterMapChangeActive = SettingsController.CurrentSettings.IsSnapshotAfterMapChangeActive;
         IsDamageMeterResetByMapChangeActive = SettingsController.CurrentSettings.IsDamageMeterResetByMapChangeActive;
         IsDamageMeterResetBeforeCombatActive = SettingsController.CurrentSettings.IsDamageMeterResetBeforeCombatActive;
+        ShortDamageMeterToClipboard = SettingsController.CurrentSettings.ShortDamageMeterToClipboard;
 
         Initialization = LoadLocalFileAsync();
     }
@@ -207,6 +208,17 @@ public class DamageMeterBindings : INotifyPropertyChanged, IAsyncInitialization
         {
             _isDamageMeterResetBeforeCombatActive = value;
             SettingsController.CurrentSettings.IsDamageMeterResetBeforeCombatActive = _isDamageMeterResetBeforeCombatActive;
+            OnPropertyChanged();
+        }
+    }
+
+    public bool ShortDamageMeterToClipboard
+    {
+        get => _shortDamageMeterToClipboard;
+        set
+        {
+            _shortDamageMeterToClipboard = value;
+            SettingsController.CurrentSettings.ShortDamageMeterToClipboard = ShortDamageMeterToClipboard;
             OnPropertyChanged();
         }
     }
@@ -400,12 +412,4 @@ public class DamageMeterBindings : INotifyPropertyChanged, IAsyncInitialization
     }
 
     #endregion
-
-    public event PropertyChangedEventHandler PropertyChanged;
-
-    [NotifyPropertyChangedInvocator]
-    protected virtual void OnPropertyChanged([CallerMemberName] string propertyName = null)
-    {
-        PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
-    }
 }

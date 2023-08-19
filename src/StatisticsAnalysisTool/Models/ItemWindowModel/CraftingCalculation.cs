@@ -1,12 +1,11 @@
 ﻿using StatisticsAnalysisTool.Common;
-using System.ComponentModel;
-using System.Runtime.CompilerServices;
+using StatisticsAnalysisTool.ViewModels;
 using System.Windows;
 using System.Windows.Input;
 
 namespace StatisticsAnalysisTool.Models.ItemWindowModel;
 
-public class CraftingCalculation : INotifyPropertyChanged
+public class CraftingCalculation : BaseViewModel
 {
     private double _possibleItemCrafting;
     private double _craftingTax;
@@ -280,11 +279,4 @@ public class CraftingCalculation : INotifyPropertyChanged
     public static string TranslationTotalCraftedItemWeight => LanguageController.Translation("TOTAL_CRAFTED_WEIGHT");
     public static string TranslationTotalUnfinishedCraftingWeight => LanguageController.Translation("TOTAL_UNFINISHED_CRAFTING_WEIGHT");
     public static string TranslationTotalFinishedCraftingWeight => LanguageController.Translation("TOTAL_FINISHED_CRAFTING_WEIGHT");
-
-    public event PropertyChangedEventHandler PropertyChanged;
-
-    protected virtual void OnPropertyChanged([CallerMemberName] string propertyName = null)
-    {
-        PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
-    }
 }

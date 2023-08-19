@@ -1,17 +1,15 @@
 ﻿using StatisticsAnalysisTool.Common;
 using StatisticsAnalysisTool.Common.UserSettings;
-using StatisticsAnalysisTool.Properties;
+using StatisticsAnalysisTool.ViewModels;
 using System.Collections.ObjectModel;
 using System.Collections.Specialized;
-using System.ComponentModel;
 using System.Linq;
-using System.Runtime.CompilerServices;
 using System.Windows;
 using System.Windows.Data;
 
 namespace StatisticsAnalysisTool.PartyBuilder;
 
-public class PartyBuilderBindings : INotifyPropertyChanged
+public class PartyBuilderBindings : BaseViewModel
 {
     private ObservableCollection<PartyBuilderPlayer> _party = new();
     private ListCollectionView _partyCollectionView;
@@ -276,12 +274,4 @@ public class PartyBuilderBindings : INotifyPropertyChanged
     public static string TranslationPartyInformation => LanguageController.Translation("PARTY_INFORMATION");
     public static string TranslationAverageIp => LanguageController.Translation("AVERAGE_IP");
     public static string TranslationAverageBasicIp => LanguageController.Translation("AVERAGE_BIP");
-
-    public event PropertyChangedEventHandler PropertyChanged;
-
-    [NotifyPropertyChangedInvocator]
-    protected virtual void OnPropertyChanged([CallerMemberName] string propertyName = null)
-    {
-        PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
-    }
 }

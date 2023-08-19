@@ -1,14 +1,12 @@
 ﻿using StatisticsAnalysisTool.Common;
 using StatisticsAnalysisTool.Enumerations;
-using StatisticsAnalysisTool.Properties;
+using StatisticsAnalysisTool.ViewModels;
 using System;
-using System.ComponentModel;
-using System.Runtime.CompilerServices;
 using System.Windows;
 
 namespace StatisticsAnalysisTool.EventLogging.Notification;
 
-public class TrackingNotification : INotifyPropertyChanged
+public class TrackingNotification : BaseViewModel
 {
     private const int SetTypesMaxTries = 3;
 
@@ -77,13 +75,5 @@ public class TrackingNotification : INotifyPropertyChanged
             ItemType.Simple => LoggingFilterType.SimpleLoot,
             _ => LoggingFilterType.UnknownLoot,
         };
-    }
-
-    public event PropertyChangedEventHandler PropertyChanged;
-
-    [NotifyPropertyChangedInvocator]
-    protected virtual void OnPropertyChanged([CallerMemberName] string propertyName = null)
-    {
-        PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
     }
 }

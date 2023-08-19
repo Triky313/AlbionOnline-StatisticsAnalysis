@@ -1,5 +1,6 @@
-﻿using log4net;
-using Notification.Wpf;
+﻿using Notification.Wpf;
+using Serilog;
+using Serilog.Events;
 using StatisticsAnalysisTool.Backup;
 using StatisticsAnalysisTool.Common;
 using StatisticsAnalysisTool.Common.UserSettings;
@@ -10,6 +11,7 @@ using StatisticsAnalysisTool.Notification;
 using StatisticsAnalysisTool.ViewModels;
 using StatisticsAnalysisTool.Views;
 using System;
+using System.IO;
 using System.Reflection;
 using System.Runtime.InteropServices;
 using System.Windows;
@@ -19,7 +21,6 @@ namespace StatisticsAnalysisTool;
 
 public partial class App
 {
-    private static readonly ILog Log = LogManager.GetLogger(MethodBase.GetCurrentMethod()?.DeclaringType);
     private MainWindowViewModel _mainWindowViewModel;
     private TrackingController _trackingController;
 
@@ -27,8 +28,8 @@ public partial class App
     {
         base.OnStartup(e);
 
-        log4net.Config.XmlConfigurator.Configure();
-        Log.InfoFormat(LanguageController.CurrentCultureInfo, $"Tool started with v{Assembly.GetExecutingAssembly().GetName().Version}");
+        InitLogger();
+        Log.Information($"Tool started with v{Assembly.GetExecutingAssembly().GetName().Version}");
 
         AppDomain.CurrentDomain.UnhandledException += OnUnhandledException;
 
@@ -51,6 +52,24 @@ public partial class App
 
 
         Utilities.AnotherAppToStart(SettingsController.CurrentSettings.AnotherAppToStartPath);
+    }
+
+    private static void InitLogger()
+    {
+        const string logFolderName = "logs";
+        DirectoryController.CreateDirectoryWhenNotExists(Path.Combine(AppDomain.CurrentDomain.BaseDirectory, logFolderName));
+
+        Log.Logger = new LoggerConfiguration()
+            .WriteTo.Console()
+            .WriteTo.File(
+                Path.Combine(logFolderName, "sat-.logs"),
+                rollingInterval: RollingInterval.Day,
+                retainedFileCountLimit: 7,
+                restrictedToMinimumLevel: LogEventLevel.Information)
+            .MinimumLevel.Verbose()
+            .WriteTo.Debug(
+                restrictedToMinimumLevel: LogEventLevel.Verbose)
+            .CreateLogger();
     }
 
     private void RegisterServicesEarly()

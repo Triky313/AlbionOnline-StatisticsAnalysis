@@ -1,5 +1,7 @@
-﻿namespace StatisticsAnalysisTool.EventLogging.Notification;
+﻿using StatisticsAnalysisTool.ViewModels;
 
-public abstract class LineFragment
+namespace StatisticsAnalysisTool.EventLogging.Notification;
+
+public abstract class LineFragment : BaseViewModel
 {
 }

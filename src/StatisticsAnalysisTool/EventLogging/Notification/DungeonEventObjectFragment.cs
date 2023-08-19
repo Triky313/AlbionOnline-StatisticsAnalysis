@@ -1,14 +1,12 @@
 ﻿using StatisticsAnalysisTool.Common;
 using StatisticsAnalysisTool.Enumerations;
-using StatisticsAnalysisTool.Properties;
+using StatisticsAnalysisTool.ViewModels;
 using System;
-using System.ComponentModel;
-using System.Runtime.CompilerServices;
 using System.Text.Json.Serialization;
 
-namespace StatisticsAnalysisTool.Network.Notification;
+namespace StatisticsAnalysisTool.EventLogging.Notification;
 
-public class DungeonEventObjectFragment : INotifyPropertyChanged
+public class DungeonEventObjectFragment : BaseViewModel
 {
     private int _id;
     private bool _isBossChest;
@@ -152,8 +150,6 @@ public class DungeonEventObjectFragment : INotifyPropertyChanged
     [JsonIgnore]
     public static string TranslationFameShrine => LanguageController.Translation("FAME_SHRINE");
 
-    public event PropertyChangedEventHandler PropertyChanged;
-
     private ChestStatus SetStatus()
     {
         if (IsChestOpen)
@@ -186,11 +182,5 @@ public class DungeonEventObjectFragment : INotifyPropertyChanged
         }
 
         return ChestStatus.Unknown;
-    }
-
-    [NotifyPropertyChangedInvocator]
-    protected virtual void OnPropertyChanged([CallerMemberName] string propertyName = null)
-    {
-        PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
     }
 }

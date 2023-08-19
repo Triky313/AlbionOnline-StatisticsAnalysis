@@ -1,11 +1,9 @@
 ﻿using StatisticsAnalysisTool.Common;
-using StatisticsAnalysisTool.Properties;
-using System.ComponentModel;
-using System.Runtime.CompilerServices;
+using StatisticsAnalysisTool.ViewModels;
 
 namespace StatisticsAnalysisTool.Models;
 
-public class DungeonStats : INotifyPropertyChanged
+public class DungeonStats : BaseViewModel
 {
     private int _enteredDungeon;
     private int _openedLegendaryChests;
@@ -318,7 +316,7 @@ public class DungeonStats : INotifyPropertyChanged
             OnPropertyChanged();
         }
     }
-        
+
     public double LootInSilverPerHour
     {
         get => _lootInSilverPerHour;
@@ -345,12 +343,4 @@ public class DungeonStats : INotifyPropertyChanged
     public static string TranslationMight => LanguageController.Translation("MIGHT");
     public static string TranslationFavor => LanguageController.Translation("FAVOR");
     public static string TranslationLootInSilver => LanguageController.Translation("LOOT_IN_SILVER");
-
-    public event PropertyChangedEventHandler PropertyChanged;
-
-    [NotifyPropertyChangedInvocator]
-    protected virtual void OnPropertyChanged([CallerMemberName] string propertyName = null)
-    {
-        PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
-    }
 }

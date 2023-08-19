@@ -1,4 +1,4 @@
-﻿using log4net;
+﻿using Serilog;
 using SharpPcap;
 using StatisticsAnalysisTool.Common;
 using StatisticsAnalysisTool.Common.UserSettings;
@@ -11,25 +11,23 @@ using StatisticsAnalysisTool.Views;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.ComponentModel;
 using System.Drawing;
 using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Reflection;
-using System.Runtime.CompilerServices;
 using System.Windows;
 using System.Windows.Media.Imaging;
 
 namespace StatisticsAnalysisTool.ViewModels;
 
-public class SettingsWindowViewModel : INotifyPropertyChanged
+public class SettingsWindowViewModel : BaseViewModel
 {
     private static ObservableCollection<FileInformation> _languages = new();
     private static FileInformation _languagesSelection;
     private static ObservableCollection<SettingDataInformation> _refreshRates = new();
     private static SettingDataInformation _refreshRatesSelection;
-    private static readonly ILog Log = LogManager.GetLogger(MethodBase.GetCurrentMethod()?.DeclaringType);
+
     private ObservableCollection<FileInformation> _alertSounds = new();
     private FileInformation _alertSoundSelection;
     private bool _isOpenItemWindowInNewWindowChecked;
@@ -94,10 +92,7 @@ public class SettingsWindowViewModel : INotifyPropertyChanged
 
         // Auto update
         IsSuggestPreReleaseUpdatesActive = SettingsController.CurrentSettings.IsSuggestPreReleaseUpdatesActive;
-
-        // Damage Meter
-        ShortDamageMeterToClipboard = SettingsController.CurrentSettings.ShortDamageMeterToClipboard;
-
+        
         // Item window
         IsOpenItemWindowInNewWindowChecked = SettingsController.CurrentSettings.IsOpenItemWindowInNewWindowChecked;
 
@@ -136,7 +131,6 @@ public class SettingsWindowViewModel : INotifyPropertyChanged
 
         SettingsController.CurrentSettings.IsLootLoggerSaveReminderActive = IsLootLoggerSaveReminderActive;
         SettingsController.CurrentSettings.IsSuggestPreReleaseUpdatesActive = IsSuggestPreReleaseUpdatesActive;
-        SettingsController.CurrentSettings.ShortDamageMeterToClipboard = ShortDamageMeterToClipboard;
         SettingsController.CurrentSettings.ExactMatchPlayerNamesLineNumber = PlayerSelectionWithSameNameInDb;
 
         SetAppSettingsAndTranslations();
@@ -204,13 +198,13 @@ public class SettingsWindowViewModel : INotifyPropertyChanged
         catch (PcapException e)
         {
             ConsoleManager.WriteLineForError(MethodBase.GetCurrentMethod()?.DeclaringType, e);
-            Log.Error(MethodBase.GetCurrentMethod()?.DeclaringType, e);
+            Log.Error(e, "{message}", MethodBase.GetCurrentMethod()?.DeclaringType);
             ServiceLocator.Resolve<MainWindowViewModel>().SetErrorBar(Visibility.Visible, LanguageController.Translation(e.Message));
         }
         catch (Exception e)
         {
             ConsoleManager.WriteLineForError(MethodBase.GetCurrentMethod()?.DeclaringType, e);
-            Log.Error(MethodBase.GetCurrentMethod()?.DeclaringType, e);
+            Log.Error(e, "{message}", MethodBase.GetCurrentMethod()?.DeclaringType);
             ServiceLocator.Resolve<MainWindowViewModel>().SetErrorBar(Visibility.Visible, LanguageController.Translation(e.Message));
         }
     }
@@ -320,7 +314,7 @@ public class SettingsWindowViewModel : INotifyPropertyChanged
         catch (Exception e)
         {
             ConsoleManager.WriteLineForError(MethodBase.GetCurrentMethod()?.DeclaringType, e);
-            Log.Error(MethodBase.GetCurrentMethod()?.DeclaringType, e);
+            Log.Error(e, "{message}", MethodBase.GetCurrentMethod()?.DeclaringType);
         }
     }
 
@@ -347,7 +341,7 @@ public class SettingsWindowViewModel : INotifyPropertyChanged
             catch (CultureNotFoundException e)
             {
                 ConsoleManager.WriteLineForError(MethodBase.GetCurrentMethod()?.DeclaringType, e);
-                Log.Error(MethodBase.GetCurrentMethod()?.DeclaringType, e);
+                Log.Error(e, "{message}", MethodBase.GetCurrentMethod()?.DeclaringType);
             }
         }
 
@@ -739,16 +733,6 @@ public class SettingsWindowViewModel : INotifyPropertyChanged
         }
     }
 
-    public bool ShortDamageMeterToClipboard
-    {
-        get => _shortDamageMeterToClipboard;
-        set
-        {
-            _shortDamageMeterToClipboard = value;
-            OnPropertyChanged();
-        }
-    }
-
     public bool IsSuggestPreReleaseUpdatesActive
     {
         get => _isSuggestPreReleaseUpdatesActive;
@@ -780,13 +764,6 @@ public class SettingsWindowViewModel : INotifyPropertyChanged
     }
 
     public string ToolDirectory => AppDomain.CurrentDomain.BaseDirectory;
-
-    public event PropertyChangedEventHandler PropertyChanged;
-
-    protected virtual void OnPropertyChanged([CallerMemberName] string propertyName = null)
-    {
-        PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
-    }
 
     #endregion Bindings
 }

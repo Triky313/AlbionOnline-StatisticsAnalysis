@@ -1,12 +1,10 @@
-﻿using System;
-using StatisticsAnalysisTool.Common;
-using StatisticsAnalysisTool.Properties;
-using System.ComponentModel;
-using System.Runtime.CompilerServices;
+﻿using StatisticsAnalysisTool.Common;
+using StatisticsAnalysisTool.ViewModels;
+using System;
 
 namespace StatisticsAnalysisTool.Models;
 
-public class MainTabLocationFilterObject : INotifyPropertyChanged
+public class MainTabLocationFilterObject : BaseViewModel
 {
     private bool? _isChecked;
     private string _name;
@@ -41,13 +39,5 @@ public class MainTabLocationFilterObject : INotifyPropertyChanged
             _name = value;
             OnPropertyChanged();
         }
-    }
-
-    public event PropertyChangedEventHandler PropertyChanged;
-
-    [NotifyPropertyChangedInvocator]
-    protected virtual void OnPropertyChanged([CallerMemberName] string propertyName = null)
-    {
-        PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
     }
 }

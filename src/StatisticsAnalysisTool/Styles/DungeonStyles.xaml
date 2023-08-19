@@ -1,7 +1,6 @@
 <ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
                     xmlns:enumerations="clr-namespace:StatisticsAnalysisTool.Enumerations"
-                    xmlns:notification="clr-namespace:StatisticsAnalysisTool.Network.Notification"
                     xmlns:fa5="http://schemas.fontawesome.com/icons/"
                     xmlns:com="clr-namespace:StatisticsAnalysisTool.Common"
                     xmlns:models="clr-namespace:StatisticsAnalysisTool.Models"
@@ -9,7 +8,8 @@
                     xmlns:bindingModel="clr-namespace:StatisticsAnalysisTool.Models.BindingModel"
                     xmlns:converters="clr-namespace:StatisticsAnalysisTool.Common.Converters" 
                     xmlns:glob="clr-namespace:System.Globalization;assembly=mscorlib"
-                    xmlns:dungeon="clr-namespace:StatisticsAnalysisTool.Dungeon">
+                    xmlns:dungeon="clr-namespace:StatisticsAnalysisTool.Dungeon"
+                    xmlns:notification1="clr-namespace:StatisticsAnalysisTool.EventLogging.Notification">
 
     <converters:ValuePerHourConverter x:Key="ValuePerHourConverter" />
     <converters:ValueAvgConverter x:Key="ValueAvgConverter" />
@@ -784,7 +784,7 @@
         </Style.Triggers>
     </Style>
 
-    <DataTemplate x:Key="DungeonEventObjectFragmentTemplate" DataType="{x:Type notification:DungeonEventObjectFragment}">
+    <DataTemplate x:Key="DungeonEventObjectFragmentTemplate" DataType="{x:Type notification1:DungeonEventObjectFragment}">
         <Grid Width="18" Margin="0 0 0 0">
             <Grid>
                 <Grid.Style>

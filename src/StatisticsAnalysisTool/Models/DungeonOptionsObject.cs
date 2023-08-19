@@ -1,12 +1,10 @@
 ﻿using StatisticsAnalysisTool.Common;
 using StatisticsAnalysisTool.Common.UserSettings;
-using StatisticsAnalysisTool.Properties;
-using System.ComponentModel;
-using System.Runtime.CompilerServices;
+using StatisticsAnalysisTool.ViewModels;
 
 namespace StatisticsAnalysisTool.Models;
 
-public class DungeonOptionsObject : INotifyPropertyChanged
+public class DungeonOptionsObject : BaseViewModel
 {
     private bool _isDungeonClosedSoundActive;
 
@@ -28,12 +26,4 @@ public class DungeonOptionsObject : INotifyPropertyChanged
 
     public static string TranslationSettings => LanguageController.Translation("SETTINGS");
     public static string TranslationDungeonClosedSoundActive => LanguageController.Translation("DUNGEON_CLOSED_SOUND_ACTIVE");
-
-    public event PropertyChangedEventHandler PropertyChanged;
-
-    [NotifyPropertyChangedInvocator]
-    protected virtual void OnPropertyChanged([CallerMemberName] string propertyName = null)
-    {
-        PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
-    }
 }

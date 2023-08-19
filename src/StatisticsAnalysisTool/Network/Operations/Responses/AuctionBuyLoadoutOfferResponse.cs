@@ -1,16 +1,17 @@
-﻿using log4net;
+﻿
 using StatisticsAnalysisTool.Common;
 using StatisticsAnalysisTool.Enumerations;
 using StatisticsAnalysisTool.Models;
 using System;
 using System.Collections.Generic;
 using System.Reflection;
+using Serilog;
 
 namespace StatisticsAnalysisTool.Network.Operations.Responses;
 
 public class AuctionBuyLoadoutOfferResponse
 {
-    private static readonly ILog Log = LogManager.GetLogger(MethodBase.GetCurrentMethod()?.DeclaringType);
+    
 
     public List<long> PurchaseIds = new();
 
@@ -31,7 +32,7 @@ public class AuctionBuyLoadoutOfferResponse
         }
         catch (Exception e)
         {
-            Log.Error(nameof(ReadMailResponse), e);
+            Log.Error(e, "{message}", MethodBase.GetCurrentMethod()?.DeclaringType);
         }
     }
 }

@@ -1,12 +1,10 @@
 ﻿using StatisticsAnalysisTool.Common;
-using StatisticsAnalysisTool.Properties;
-using System.ComponentModel;
-using System.Runtime.CompilerServices;
+using StatisticsAnalysisTool.ViewModels;
 using System.Windows;
 
 namespace StatisticsAnalysisTool.Gathering;
 
-public class GatheringStats : INotifyPropertyChanged
+public class GatheringStats : BaseViewModel
 {
     private ItemTier _tier = ItemTier.Unknown;
     private GatheringFilterType _gatheringFilterType = GatheringFilterType.Unknown;
@@ -15,20 +13,20 @@ public class GatheringStats : INotifyPropertyChanged
     private ObservableRangeCollection<Gathered> _gatheredOre = new();
     private ObservableRangeCollection<Gathered> _gatheredRock = new();
     private ObservableRangeCollection<Gathered> _gatheredFiber = new();
-    private ObservableRangeCollection<Gathered> _gatheredFish= new();
+    private ObservableRangeCollection<Gathered> _gatheredFish = new();
     private Gathered _mostGatheredResource = new();
     private Gathered _mostGatheredCluster;
     private long _totalMiningProcesses;
     private long _totalResources;
     private Visibility _mostGatheredResourceVisibility = Visibility.Collapsed;
     private Visibility _mostGatheredClusterVisibility = Visibility.Collapsed;
-    private string _gainedSilverByHide;
-    private string _gainedSilverByOre;
-    private string _gainedSilverByRock;
-    private string _gainedSilverByFiber;
-    private string _gainedSilverByWood;
-    private string _totalGainedSilverString;
-    private string _gainedSilverByFish;
+    private long _gainedSilverByHide;
+    private long _gainedSilverByOre;
+    private long _gainedSilverByRock;
+    private long _gainedSilverByFiber;
+    private long _gainedSilverByWood;
+    private long _totalGainedSilverString;
+    private long _gainedSilverByFish;
 
     public GatheringFilterType GatheringFilterType
     {
@@ -179,7 +177,7 @@ public class GatheringStats : INotifyPropertyChanged
         }
     }
 
-    public string GainedSilverByHide
+    public long GainedSilverByHide
     {
         get => _gainedSilverByHide;
         set
@@ -189,7 +187,7 @@ public class GatheringStats : INotifyPropertyChanged
         }
     }
 
-    public string GainedSilverByOre
+    public long GainedSilverByOre
     {
         get => _gainedSilverByOre;
         set
@@ -199,7 +197,7 @@ public class GatheringStats : INotifyPropertyChanged
         }
     }
 
-    public string GainedSilverByRock
+    public long GainedSilverByRock
     {
         get => _gainedSilverByRock;
         set
@@ -209,7 +207,7 @@ public class GatheringStats : INotifyPropertyChanged
         }
     }
 
-    public string GainedSilverByFiber
+    public long GainedSilverByFiber
     {
         get => _gainedSilverByFiber;
         set
@@ -219,7 +217,7 @@ public class GatheringStats : INotifyPropertyChanged
         }
     }
 
-    public string GainedSilverByWood
+    public long GainedSilverByWood
     {
         get => _gainedSilverByWood;
         set
@@ -229,7 +227,7 @@ public class GatheringStats : INotifyPropertyChanged
         }
     }
 
-    public string GainedSilverByFish
+    public long GainedSilverByFish
     {
         get => _gainedSilverByFish;
         set
@@ -239,7 +237,7 @@ public class GatheringStats : INotifyPropertyChanged
         }
     }
 
-    public string TotalGainedSilverString
+    public long TotalGainedSilverString
     {
         get => _totalGainedSilverString;
         set
@@ -254,12 +252,4 @@ public class GatheringStats : INotifyPropertyChanged
     public static string TranslationTotalResources => LanguageController.Translation("TOTAL_RESOURCES");
     public static string TranslationTotalMiningProcesses => LanguageController.Translation("TOTAL_MINING_PROCESSES");
     public static string TranslationResourceValue => LanguageController.Translation("RESOURCE_VALUE");
-
-    public event PropertyChangedEventHandler PropertyChanged;
-
-    [NotifyPropertyChangedInvocator]
-    protected virtual void OnPropertyChanged([CallerMemberName] string propertyName = null)
-    {
-        PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
-    }
 }

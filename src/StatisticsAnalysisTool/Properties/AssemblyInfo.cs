@@ -1,4 +1,3 @@
-using log4net.Config;
 using System.Reflection;
 using System.Runtime.InteropServices;
 using System.Runtime.Versioning;
@@ -16,9 +15,6 @@ using System.Windows;
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 [assembly: SupportedOSPlatform("windows")]
-
-// Log4net
-[assembly: XmlConfigurator(ConfigFile = "Log4Net.config", Watch = true)]
 
 // Durch Festlegen von ComVisible auf FALSE werden die Typen in dieser Assembly
 // für COM-Komponenten unsichtbar.  Wenn Sie auf einen Typ in dieser Assembly von

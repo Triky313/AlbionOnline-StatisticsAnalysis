@@ -4,16 +4,14 @@ using StatisticsAnalysisTool.GameFileData;
 using StatisticsAnalysisTool.ViewModels;
 using System;
 using System.Collections.Generic;
-using System.ComponentModel;
 using System.Linq;
-using System.Runtime.CompilerServices;
 using System.Windows;
 using System.Windows.Input;
 using System.Windows.Media.Imaging;
 
 namespace StatisticsAnalysisTool.Models.ItemWindowModel;
 
-public class RequiredResource : INotifyPropertyChanged
+public class RequiredResource : BaseViewModel
 {
     public string UniqueName { get; set; }
     private string _craftingResourceName;
@@ -224,11 +222,4 @@ public class RequiredResource : INotifyPropertyChanged
     public string TranslationTotalQuantity => LanguageController.Translation("TOTAL_QUANTITY");
     public string TranslationTotalCost => LanguageController.Translation("TOTAL_COST");
     public string TranslationGetPrice => LanguageController.Translation("GET_PRICE");
-
-    public event PropertyChangedEventHandler PropertyChanged;
-
-    protected virtual void OnPropertyChanged([CallerMemberName] string propertyName = null)
-    {
-        PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
-    }
 }

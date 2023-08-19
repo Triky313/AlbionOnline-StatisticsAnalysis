@@ -1,5 +1,4 @@
-﻿using log4net;
-using StatisticsAnalysisTool.Common.UserSettings;
+﻿using StatisticsAnalysisTool.Common.UserSettings;
 using StatisticsAnalysisTool.Models;
 using StatisticsAnalysisTool.Properties;
 using System;
@@ -13,6 +12,7 @@ using System.Windows;
 using System.Windows.Markup;
 using System.Xml;
 using System.Xml.Linq;
+using Serilog;
 
 namespace StatisticsAnalysisTool.Common;
 
@@ -20,7 +20,7 @@ public static class LanguageController
 {
     private static readonly Dictionary<string, string> Translations = new();
     private static CultureInfo _currentCultureInfo;
-    private static readonly ILog Log = LogManager.GetLogger(MethodBase.GetCurrentMethod()?.DeclaringType);
+    
     public static List<FileInformation> LanguageFiles { get; set; }
 
     static LanguageController()
@@ -46,7 +46,7 @@ public static class LanguageController
             catch (Exception e)
             {
                 ConsoleManager.WriteLineForError(MethodBase.GetCurrentMethod()?.DeclaringType, e);
-                Log.Error(MethodBase.GetCurrentMethod()?.DeclaringType, e);
+                Log.Error(e, "{message}", MethodBase.GetCurrentMethod()?.DeclaringType);
             }
         }
     }
@@ -84,10 +84,10 @@ public static class LanguageController
 
             throw new CultureNotFoundException();
         }
-        catch (CultureNotFoundException)
+        catch (CultureNotFoundException e)
         {
             ConsoleManager.WriteLineForError(MethodBase.GetCurrentMethod()?.DeclaringType, new CultureNotFoundException());
-            Log.Error(MethodBase.GetCurrentMethod()?.DeclaringType, new CultureNotFoundException());
+            Log.Error(e, "{message}", MethodBase.GetCurrentMethod()?.DeclaringType);
             MessageBox.Show("No culture info found!", Translation("ERROR"), MessageBoxButton.OK, MessageBoxImage.Warning);
             return false;
         }
@@ -168,14 +168,14 @@ public static class LanguageController
         {
             MessageBox.Show(e.Message, Translation("ERROR"));
             ConsoleManager.WriteLineForError(MethodBase.GetCurrentMethod()?.DeclaringType, e);
-            Log.Error(MethodBase.GetCurrentMethod()?.DeclaringType, e);
+            Log.Error(e, "{message}", MethodBase.GetCurrentMethod()?.DeclaringType);
             return false;
         }
         catch (FileNotFoundException ex)
         {
             MessageBox.Show("Language file not found. ", Translation("ERROR"), MessageBoxButton.OK, MessageBoxImage.Error);
             ConsoleManager.WriteLineForError(MethodBase.GetCurrentMethod()?.DeclaringType, ex);
-            Log.Error(MethodBase.GetCurrentMethod()?.DeclaringType, ex);
+            Log.Error(ex, "{message}", MethodBase.GetCurrentMethod()?.DeclaringType);
             return false;
         }
     }
@@ -211,7 +211,7 @@ public static class LanguageController
         {
             MessageBox.Show(e.Message, Translation("ERROR"));
             ConsoleManager.WriteLineForError(MethodBase.GetCurrentMethod()?.DeclaringType, e);
-            Log.Error(MethodBase.GetCurrentMethod()?.DeclaringType, e);
+            Log.Error(e, "{message}", MethodBase.GetCurrentMethod()?.DeclaringType);
             return false;
         }
 
@@ -230,7 +230,7 @@ public static class LanguageController
 
         if (Translations.ContainsKey(name))
         {
-            Log.Warn($"{nameof(GetTranslationLine)}: {Translation("DOUBLE_VALUE_EXISTS_IN_THE_LANGUAGE_FILE")}: {name}");
+            Log.Warning("{message}", $"{MethodBase.GetCurrentMethod()?.DeclaringType}: {Translation("DOUBLE_VALUE_EXISTS_IN_THE_LANGUAGE_FILE")}: {name}");
             return new Tuple<string, string>(string.Empty, string.Empty);
         }
 

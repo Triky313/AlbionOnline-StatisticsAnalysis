@@ -1,14 +1,12 @@
-﻿using System.ComponentModel;
-using System.Runtime.CompilerServices;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using StatisticsAnalysisTool.Common;
+﻿using StatisticsAnalysisTool.Common;
 using StatisticsAnalysisTool.Models;
 using StatisticsAnalysisTool.Models.TranslationModel;
+using System.Windows.Media;
+using System.Windows.Media.Imaging;
 
 namespace StatisticsAnalysisTool.ViewModels;
 
-public class ItemAlertWindowViewModel : INotifyPropertyChanged
+public class ItemAlertWindowViewModel : BaseViewModel
 {
     private readonly AlertInfos _alertInfos;
     private Color _cityColor;
@@ -82,13 +80,6 @@ public class ItemAlertWindowViewModel : INotifyPropertyChanged
             _translation = value;
             OnPropertyChanged();
         }
-    }
-
-    public event PropertyChangedEventHandler PropertyChanged;
-
-    protected virtual void OnPropertyChanged([CallerMemberName] string propertyName = null)
-    {
-        PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
     }
 
     #endregion

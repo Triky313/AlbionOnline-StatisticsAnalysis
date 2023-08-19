@@ -2,14 +2,12 @@
 using StatisticsAnalysisTool.Dungeon;
 using StatisticsAnalysisTool.Enumerations;
 using StatisticsAnalysisTool.Network.Manager;
-using StatisticsAnalysisTool.Properties;
+using StatisticsAnalysisTool.ViewModels;
 using System.Collections.Generic;
-using System.ComponentModel;
-using System.Runtime.CompilerServices;
 
 namespace StatisticsAnalysisTool.Models;
 
-public class DungeonStatsFilter : INotifyPropertyChanged
+public class DungeonStatsFilter : BaseViewModel
 {
     private bool? _soloCheckbox = true;
     private bool? _standardCheckbox = true;
@@ -476,12 +474,4 @@ public class DungeonStatsFilter : INotifyPropertyChanged
     public static string TranslationLevelPoint1 => LanguageController.Translation("LevelPoint1");
     public static string TranslationLevelPoint2 => LanguageController.Translation("LevelPoint2");
     public static string TranslationLevelPoint3 => LanguageController.Translation("LevelPoint3");
-
-    public event PropertyChangedEventHandler PropertyChanged;
-
-    [NotifyPropertyChangedInvocator]
-    protected virtual void OnPropertyChanged([CallerMemberName] string propertyName = null)
-    {
-        PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
-    }
 }

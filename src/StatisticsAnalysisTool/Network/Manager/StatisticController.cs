@@ -2,7 +2,7 @@
 using LiveChartsCore.Defaults;
 using LiveChartsCore.SkiaSharpView;
 using LiveChartsCore.SkiaSharpView.Painting;
-using log4net;
+
 using SkiaSharp;
 using StatisticsAnalysisTool.Common;
 using StatisticsAnalysisTool.Models;
@@ -15,9 +15,6 @@ using System.Diagnostics;
 using System.Globalization;
 using System.IO;
 using System.Linq;
-using System.Reflection;
-using System.Text;
-using System.Text.Json;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Media;
@@ -27,7 +24,7 @@ namespace StatisticsAnalysisTool.Network.Manager;
 
 public class StatisticController
 {
-    private static readonly ILog Log = LogManager.GetLogger(MethodBase.GetCurrentMethod()?.DeclaringType);
+
 
     private readonly TrackingController _trackingController;
     private readonly MainWindowViewModel _mainWindowViewModel;
@@ -72,7 +69,7 @@ public class StatisticController
             }
         }
     }
-        
+
     public void AddValue(ValueType valueType, double gainedValue)
     {
         if (!_trackingController.IsTrackingAllowedByMainCharacter())
@@ -83,7 +80,7 @@ public class StatisticController
         _dashboardStatistics.Add(new DailyValues(valueType, gainedValue, DateTime.Now));
         OnAddValue?.Invoke();
     }
-        
+
     private void UpdateDailyChart(ObservableCollection<DashboardHourObject> stats)
     {
         if (!IsUpdateChartAllowed())
@@ -131,7 +128,7 @@ public class StatisticController
         {
             LabelsRotation = 15,
             Labels = date,
-            Labeler = value => new DateTime((long)value).ToString(CultureInfo.CurrentCulture),
+            Labeler = value => new DateTime((long) value).ToString(CultureInfo.CurrentCulture),
             UnitWidth = TimeSpan.FromHours(1).Ticks
         });
 
@@ -178,14 +175,14 @@ public class StatisticController
         {
             if (transparent)
             {
-                var scbt = (SolidColorBrush)Application.Current.Resources[$"SolidColorBrush.Value.{valueType}.Transparent"];
+                var scbt = (SolidColorBrush) Application.Current.Resources[$"SolidColorBrush.Value.{valueType}.Transparent"];
                 return new SolidColorPaint
                 {
                     Color = new SKColor(scbt.Color.R, scbt.Color.G, scbt.Color.B, scbt.Color.A)
                 };
             }
 
-            var scb = (SolidColorBrush)Application.Current.Resources[$"SolidColorBrush.Value.{valueType}"];
+            var scb = (SolidColorBrush) Application.Current.Resources[$"SolidColorBrush.Value.{valueType}"];
             return new SolidColorPaint
             {
                 Color = new SKColor(scb.Color.R, scb.Color.G, scb.Color.B, scb.Color.A)
@@ -199,7 +196,7 @@ public class StatisticController
             };
         }
     }
-        
+
     private class DashboardHourObject
     {
         public ValueType Type { get; init; }

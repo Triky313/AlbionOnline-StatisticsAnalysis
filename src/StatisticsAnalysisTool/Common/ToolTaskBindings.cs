@@ -1,13 +1,11 @@
 ﻿using StatisticsAnalysisTool.Models;
-using StatisticsAnalysisTool.Properties;
+using StatisticsAnalysisTool.ViewModels;
 using System.Collections.ObjectModel;
-using System.ComponentModel;
 using System.Linq;
-using System.Runtime.CompilerServices;
 
 namespace StatisticsAnalysisTool.Common;
 
-public class ToolTaskBindings : INotifyPropertyChanged
+public class ToolTaskBindings : BaseViewModel
 {
     private ObservableCollection<TaskTextObject> _toolTaskObjects = new();
     private const int RemoveOn = 10;
@@ -42,13 +40,5 @@ public class ToolTaskBindings : INotifyPropertyChanged
                 ToolTaskObjects.Remove(item);
             }
         }
-    }
-
-    public event PropertyChangedEventHandler PropertyChanged;
-
-    [NotifyPropertyChangedInvocator]
-    protected virtual void OnPropertyChanged([CallerMemberName] string propertyName = null)
-    {
-        PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
     }
 }

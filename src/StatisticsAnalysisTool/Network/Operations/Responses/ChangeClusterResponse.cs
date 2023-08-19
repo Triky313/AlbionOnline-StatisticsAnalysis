@@ -1,4 +1,4 @@
-﻿using log4net;
+﻿using Serilog;
 using StatisticsAnalysisTool.Cluster;
 using StatisticsAnalysisTool.Common;
 using StatisticsAnalysisTool.Enumerations;
@@ -6,14 +6,11 @@ using StatisticsAnalysisTool.GameFileData;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Reflection;
 
 namespace StatisticsAnalysisTool.Network.Operations.Responses;
 
 public class ChangeClusterResponse
 {
-    private static readonly ILog Log = LogManager.GetLogger(MethodBase.GetCurrentMethod()?.DeclaringType);
-
     public string Index;
     public Guid? Guid;
     public MapType MapType = MapType.Unknown;

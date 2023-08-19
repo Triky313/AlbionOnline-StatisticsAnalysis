@@ -1,5 +1,5 @@
 ﻿using AutoUpdaterDotNET;
-using log4net;
+using Serilog;
 using StatisticsAnalysisTool.Common.UserSettings;
 using StatisticsAnalysisTool.Properties;
 using System;
@@ -13,8 +13,6 @@ namespace StatisticsAnalysisTool.Common;
 
 public static class AutoUpdateController
 {
-    private static readonly ILog Log = LogManager.GetLogger(MethodBase.GetCurrentMethod()?.DeclaringType);
-
     public static async Task AutoUpdateAsync(bool reportErrors = false)
     {
         try
@@ -37,12 +35,12 @@ public static class AutoUpdateController
         catch (HttpRequestException e)
         {
             ConsoleManager.WriteLineForError(MethodBase.GetCurrentMethod()?.DeclaringType, e);
-            Log.Error(MethodBase.GetCurrentMethod()?.DeclaringType, e);
+            Log.Warning(e, "{message}", MethodBase.GetCurrentMethod()?.DeclaringType);
         }
         catch (Exception e)
         {
             ConsoleManager.WriteLineForError(MethodBase.GetCurrentMethod()?.DeclaringType, e);
-            Log.Warn($"{MethodBase.GetCurrentMethod()?.DeclaringType}: {e.Message}");
+            Log.Error(e, "{message}", MethodBase.GetCurrentMethod()?.DeclaringType);
         }
     }
 
@@ -68,12 +66,12 @@ public static class AutoUpdateController
         catch (Exception ex) when (ex is DirectoryNotFoundException or UnauthorizedAccessException or PathTooLongException)
         {
             ConsoleManager.WriteLineForError(MethodBase.GetCurrentMethod()?.DeclaringType, ex);
-            Log.Warn($"{MethodBase.GetCurrentMethod()?.DeclaringType}: {ex.Message}");
+            Log.Warning(ex, "{message}", MethodBase.GetCurrentMethod()?.DeclaringType);
         }
         catch (Exception e)
         {
             ConsoleManager.WriteLineForError(MethodBase.GetCurrentMethod()?.DeclaringType, e);
-            Log.Error($"{MethodBase.GetCurrentMethod()?.DeclaringType}: {e.Message}");
+            Log.Error(e, "{message}", MethodBase.GetCurrentMethod()?.DeclaringType);
         }
     }
 }

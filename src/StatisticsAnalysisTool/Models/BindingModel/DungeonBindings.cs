@@ -5,18 +5,15 @@ using StatisticsAnalysisTool.Dungeon;
 using StatisticsAnalysisTool.Enumerations;
 using StatisticsAnalysisTool.Models.NetworkModel;
 using StatisticsAnalysisTool.Models.TranslationModel;
-using StatisticsAnalysisTool.Properties;
-using StatisticsAnalysisTool.Trade;
+using StatisticsAnalysisTool.ViewModels;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.ComponentModel;
-using System.Runtime.CompilerServices;
 using System.Windows;
 using System.Windows.Data;
 
 namespace StatisticsAnalysisTool.Models.BindingModel;
 
-public class DungeonBindings : INotifyPropertyChanged
+public class DungeonBindings : BaseViewModel
 {
     private ObservableCollection<DungeonNotificationFragment> _trackingDungeons = new();
     private ListCollectionView _dungeonsCollectionView;
@@ -31,7 +28,7 @@ public class DungeonBindings : INotifyPropertyChanged
     private DungeonsTranslation _translation = new();
     private DungeonStatsFilterStruct _dungeonStatTimeSelection;
     private DungeonStats _dungeonStatsSelection;
-    private DungeonOptionsObject _dungeonOptionsObject = new ();
+    private DungeonOptionsObject _dungeonOptionsObject = new();
 
     public DungeonBindings()
     {
@@ -44,7 +41,7 @@ public class DungeonBindings : INotifyPropertyChanged
             DungeonsCollectionView.Refresh();
         }
     }
-    
+
     public ObservableCollection<DungeonNotificationFragment> TrackingDungeons
     {
         get => _trackingDungeons;
@@ -205,7 +202,7 @@ public class DungeonBindings : INotifyPropertyChanged
             OnPropertyChanged();
         }
     }
-    
+
     public DungeonStats DungeonStatsSelection
     {
         get => _dungeonStatsSelection;
@@ -224,13 +221,5 @@ public class DungeonBindings : INotifyPropertyChanged
             _translation = value;
             OnPropertyChanged();
         }
-    }
-
-    public event PropertyChangedEventHandler PropertyChanged;
-
-    [NotifyPropertyChangedInvocator]
-    protected virtual void OnPropertyChanged([CallerMemberName] string propertyName = null)
-    {
-        PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
     }
 }

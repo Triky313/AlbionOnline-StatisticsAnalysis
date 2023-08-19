@@ -1,4 +1,4 @@
-﻿using log4net;
+﻿using Serilog;
 using StatisticsAnalysisTool.Cluster;
 using StatisticsAnalysisTool.Common;
 using StatisticsAnalysisTool.Enumerations;
@@ -12,7 +12,6 @@ namespace StatisticsAnalysisTool.Network.Operations.Responses;
 
 public class JoinResponse
 {
-    private static readonly ILog Log = LogManager.GetLogger(MethodBase.GetCurrentMethod()?.DeclaringType);
     public long? UserObjectId;
     public Guid? UserGuid { get; }
     public string Username { get; }
@@ -117,7 +116,7 @@ public class JoinResponse
         }
         catch (Exception e)
         {
-            Log.Debug(nameof(JoinResponse), e);
+            Log.Error(e, "{message}", MethodBase.GetCurrentMethod()?.DeclaringType);
         }
     }
 }

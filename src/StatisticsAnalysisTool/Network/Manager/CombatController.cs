@@ -1,4 +1,4 @@
-using log4net;
+using Serilog;
 using StatisticsAnalysisTool.Common;
 using StatisticsAnalysisTool.Enumerations;
 using StatisticsAnalysisTool.EventLogging.Notification;
@@ -18,8 +18,6 @@ namespace StatisticsAnalysisTool.Network.Manager;
 
 public class CombatController
 {
-    private static readonly ILog Log = LogManager.GetLogger(MethodBase.GetCurrentMethod()?.DeclaringType);
-
     private readonly MainWindowViewModel _mainWindowViewModel;
     private readonly TrackingController _trackingController;
     private bool _combatModeWasCombatOver;
@@ -132,11 +130,7 @@ public class CombatController
             Application.Current.Dispatcher.Invoke(() => _mainWindowViewModel.DamageMeterBindings?.SetDamageMeterSort());
         }
 
-        if (HasDamageMeterDupes(_mainWindowViewModel?.DamageMeterBindings?.DamageMeter))
-        {
-            await RemoveDuplicatesAsync(_mainWindowViewModel?.DamageMeterBindings?.DamageMeter);
-        }
-
+        await RemoveDuplicatesAsync(_mainWindowViewModel?.DamageMeterBindings?.DamageMeter);
         _isUiUpdateActive = false;
     }
 
@@ -194,30 +188,7 @@ public class CombatController
     {
         return 100.00 / (heal + overhealed) * overhealed;
     }
-
-    public async Task RemoveNonRelevantEntityFromDamageMeterAsync()
-    {
-        await Application.Current.Dispatcher.InvokeAsync(() =>
-        {
-            var newPartyGuids = _trackingController.EntityController
-                .GetAllEntitiesWithDamageOrHealAndInParty()
-                .Select(x => x.Key)
-                .ToList();
-
-            var damageMeter = _mainWindowViewModel?.DamageMeterBindings?.DamageMeter?.ToList() ?? new List<DamageMeterFragment>();
-            foreach (DamageMeterFragment damageMeterFragment in damageMeter)
-            {
-                if (!newPartyGuids.Contains(damageMeterFragment.CauserGuid) && _mainWindowViewModel?.DamageMeterBindings?.DamageMeter != null)
-                {
-                    lock (_mainWindowViewModel.DamageMeterBindings.DamageMeter)
-                    {
-                        _mainWindowViewModel.DamageMeterBindings.DamageMeter.Remove(damageMeterFragment);
-                    }
-                }
-            }
-        });
-    }
-
+    
     private static async Task AddDamageMeterFragmentAsync(ICollection<DamageMeterFragment> damageMeter, KeyValuePair<Guid, PlayerGameObject> healthChangeObject,
         List<KeyValuePair<Guid, PlayerGameObject>> entities, long currentTotalDamage, long currentTotalHeal)
     {
@@ -258,11 +229,16 @@ public class CombatController
 
     private static bool HasDamageMeterDupes(IEnumerable<DamageMeterFragment> damageMeter)
     {
-        return damageMeter.ToList().GroupBy(x => x.Name).Any(g => g.Count() > 1);
+        return damageMeter?.ToList().GroupBy(x => x?.Name).Any(g => g.Count() > 1) ?? false;
     }
 
     private static async Task RemoveDuplicatesAsync(ICollection<DamageMeterFragment> damageMeter)
     {
+        if (!HasDamageMeterDupes(damageMeter))
+        {
+            return;
+        }
+
         await Application.Current.Dispatcher.InvokeAsync(() =>
         {
             var damageMeterWithoutDupes = (from dmf in damageMeter.ToList()
@@ -384,7 +360,7 @@ public class CombatController
             }
             catch (Exception e)
             {
-                Log.Warn(MethodBase.GetCurrentMethod()?.DeclaringType, e);
+                Log.Warning(e, "{message}", MethodBase.GetCurrentMethod()?.DeclaringType);
             }
         }
     }

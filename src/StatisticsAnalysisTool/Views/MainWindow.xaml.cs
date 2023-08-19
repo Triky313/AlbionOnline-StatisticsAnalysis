@@ -1,4 +1,4 @@
-﻿using log4net;
+﻿using Serilog;
 using StatisticsAnalysisTool.Common;
 using StatisticsAnalysisTool.Common.UserSettings;
 using StatisticsAnalysisTool.Network.Manager;
@@ -15,8 +15,6 @@ namespace StatisticsAnalysisTool.Views;
 /// </summary>
 public partial class MainWindow
 {
-    private static readonly ILog Log = LogManager.GetLogger(MethodBase.GetCurrentMethod()?.DeclaringType);
-
     private readonly MainWindowViewModel _mainWindowViewModel;
     private static bool _isWindowMaximized;
 
@@ -56,9 +54,9 @@ public partial class MainWindow
         {
             DragMove();
         }
-        catch (Exception exception)
+        catch (Exception ex)
         {
-            Log.Error(MethodBase.GetCurrentMethod()?.DeclaringType, exception);
+            Log.Error(ex, "{message}", MethodBase.GetCurrentMethod()?.DeclaringType);
         }
     }
 

@@ -1,12 +1,10 @@
 ﻿using StatisticsAnalysisTool.Models;
 using StatisticsAnalysisTool.Models.BindingModel;
 using System.Collections.ObjectModel;
-using System.ComponentModel;
-using System.Runtime.CompilerServices;
 
 namespace StatisticsAnalysisTool.ViewModels;
 
-public class DashboardWindowViewModel : INotifyPropertyChanged
+public class DashboardWindowViewModel : BaseViewModel
 {
     private DashboardBindings _dashboardBindings;
     private ObservableCollection<MainStatObject> _factionPointStats;
@@ -16,7 +14,7 @@ public class DashboardWindowViewModel : INotifyPropertyChanged
         DashboardBindings = dashboardBindings;
         FactionPointStats = factionPointStats;
     }
-        
+
     public DashboardBindings DashboardBindings
     {
         get => _dashboardBindings;
@@ -35,12 +33,5 @@ public class DashboardWindowViewModel : INotifyPropertyChanged
             _factionPointStats = value;
             OnPropertyChanged();
         }
-    }
-        
-    public event PropertyChangedEventHandler PropertyChanged;
-
-    protected virtual void OnPropertyChanged([CallerMemberName] string propertyName = null)
-    {
-        PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
     }
 }

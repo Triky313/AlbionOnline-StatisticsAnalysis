@@ -48,7 +48,11 @@ public static class FrequentlyValues
         {GameLanguage.France, "FR-FR"},
         {GameLanguage.Spain, "ES-ES"},
         {GameLanguage.Chinese, "ZH-CN"},
-        {GameLanguage.Korean, "KO-KR"}
+        {GameLanguage.Korean, "KO-KR"},
+        {GameLanguage.Italy, "IT-IT"},
+        {GameLanguage.Japan, "JA-JP"},
+        {GameLanguage.Taiwan, "ZH-TW"},
+        {GameLanguage.Indonesian, "ID-ID"}
     };
 }
 

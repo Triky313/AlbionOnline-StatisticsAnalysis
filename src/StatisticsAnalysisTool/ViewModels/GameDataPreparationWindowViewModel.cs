@@ -1,16 +1,12 @@
 ﻿using Ookii.Dialogs.Wpf;
-using StatisticsAnalysisTool.Common.UserSettings;
-using StatisticsAnalysisTool.Common;
-using StatisticsAnalysisTool.Properties;
-using System;
-using System.ComponentModel;
-using System.Runtime.CompilerServices;
-using StatisticAnalysisTool.Extractor.Enums;
 using StatisticAnalysisTool.Extractor;
+using StatisticAnalysisTool.Extractor.Enums;
+using StatisticsAnalysisTool.Common;
+using System;
 
 namespace StatisticsAnalysisTool.ViewModels;
 
-public class GameDataPreparationWindowViewModel : INotifyPropertyChanged
+public class GameDataPreparationWindowViewModel : BaseViewModel
 {
     private string _title;
     private string _message;
@@ -33,7 +29,7 @@ public class GameDataPreparationWindowViewModel : INotifyPropertyChanged
             Description = LanguageController.Translation("SELECT_ALBION_ONLINE_MAIN_GAME_FOLDER"),
             RootFolder = Environment.SpecialFolder.Desktop,
             ShowNewFolderButton = false,
-            UseDescriptionForTitle = true, 
+            UseDescriptionForTitle = true,
             Multiselect = false
         };
 
@@ -106,12 +102,4 @@ public class GameDataPreparationWindowViewModel : INotifyPropertyChanged
 
     public static string TranslationSelectMainGameFolder => LanguageController.Translation("SELECT_MAIN_GAME_FOLDER_DOTS");
     public static string TranslationConfirm => LanguageController.Translation("CONFIRM");
-
-    public event PropertyChangedEventHandler PropertyChanged;
-
-    [NotifyPropertyChangedInvocator]
-    protected virtual void OnPropertyChanged([CallerMemberName] string propertyName = null)
-    {
-        PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
-    }
 }

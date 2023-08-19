@@ -1,5 +1,5 @@
-using log4net;
 using PacketDotNet;
+using Serilog;
 using SharpPcap;
 using StatisticsAnalysisTool.Common;
 using StatisticsAnalysisTool.Common.UserSettings;
@@ -20,7 +20,6 @@ namespace StatisticsAnalysisTool.Network;
 public static class NetworkManager
 {
     private static IPhotonReceiver _receiver;
-    private static readonly ILog Log = LogManager.GetLogger(MethodBase.GetCurrentMethod()?.DeclaringType);
     private static DateTime _lastGetCurrentServerByIpTime = DateTime.MinValue;
     private static int _serverEventCounter;
     private static AlbionServer _lastServerType;
@@ -124,7 +123,7 @@ public static class NetworkManager
             }
             catch (Exception e)
             {
-                Log.Warn(MethodBase.GetCurrentMethod()?.DeclaringType, e);
+                Log.Warning(e, "{message}", MethodBase.GetCurrentMethod()?.DeclaringType);
                 continue;
             }
 
@@ -204,12 +203,12 @@ public static class NetworkManager
         catch (OverflowException ex)
         {
             ConsoleManager.WriteLineForError(MethodBase.GetCurrentMethod()?.DeclaringType, ex);
-            Log.Error(nameof(Device_OnPacketArrival), ex);
+            Log.Error(ex, "{message}", MethodBase.GetCurrentMethod()?.DeclaringType);
         }
         catch (Exception ex)
         {
             ConsoleManager.WriteLineForError(MethodBase.GetCurrentMethod()?.DeclaringType, ex);
-            Log.Error(nameof(Device_OnPacketArrival), ex);
+            Log.Error(ex, "{message}", MethodBase.GetCurrentMethod()?.DeclaringType);
         }
     }
 

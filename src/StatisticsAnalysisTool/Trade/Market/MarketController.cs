@@ -1,4 +1,4 @@
-﻿using log4net;
+﻿using Serilog;
 using StatisticsAnalysisTool.Cluster;
 using StatisticsAnalysisTool.Common;
 using StatisticsAnalysisTool.Common.UserSettings;
@@ -14,8 +14,6 @@ namespace StatisticsAnalysisTool.Trade.Market;
 
 public class MarketController
 {
-    private static readonly ILog Log = LogManager.GetLogger(MethodBase.GetCurrentMethod()?.DeclaringType);
-
     private readonly TrackingController _trackingController;
     private ObservableCollection<AuctionEntry> _tempOffers = new();
     private ObservableCollection<AuctionEntry> _tempBuyOrders = new();
@@ -146,7 +144,7 @@ public class MarketController
         catch (Exception e)
         {
             ConsoleManager.WriteLineForError(MethodBase.GetCurrentMethod()?.DeclaringType, e);
-            Log.Error(MethodBase.GetCurrentMethod()?.DeclaringType, e);
+            Log.Error(e, "{message}", MethodBase.GetCurrentMethod()?.DeclaringType);
         }
 
         return 0;

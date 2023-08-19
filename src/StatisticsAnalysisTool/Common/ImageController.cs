@@ -1,16 +1,15 @@
-﻿using log4net;
-using StatisticsAnalysisTool.Properties;
+﻿using StatisticsAnalysisTool.Properties;
 using System;
 using System.IO;
 using System.Reflection;
 using System.Threading.Tasks;
 using System.Windows.Media.Imaging;
+using Serilog;
 
 namespace StatisticsAnalysisTool.Common;
 
 internal static class ImageController
 {
-    private static readonly ILog Log = LogManager.GetLogger(MethodBase.GetCurrentMethod()?.DeclaringType);
     private static readonly string ItemImagesDirectory = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, Settings.Default.ImageResources);
     private static readonly string SpellImagesDirectory = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, Settings.Default.SpellImageResources);
 
@@ -124,7 +123,7 @@ internal static class ImageController
         catch (Exception e)
         {
             ConsoleManager.WriteLineForError(MethodBase.GetCurrentMethod()?.DeclaringType, e);
-            Log.Error($"{MethodBase.GetCurrentMethod()?.DeclaringType}: {e.Message}");
+            Log.Error(e, "{message}", MethodBase.GetCurrentMethod()?.DeclaringType);
             return null;
         }
     }

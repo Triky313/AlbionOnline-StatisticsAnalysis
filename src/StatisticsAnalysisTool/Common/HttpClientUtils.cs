@@ -1,18 +1,16 @@
-﻿using log4net;
-using StatisticsAnalysisTool.ViewModels;
+﻿using StatisticsAnalysisTool.ViewModels;
 using System;
 using System.IO;
 using System.Net.Http;
 using System.Reflection;
 using System.Threading.Tasks;
 using System.Windows;
+using Serilog;
 
 namespace StatisticsAnalysisTool.Common;
 
 public static class HttpClientUtils
 {
-    private static readonly ILog Log = LogManager.GetLogger(MethodBase.GetCurrentMethod()?.DeclaringType);
-
     public static async Task<bool> DownloadFileAsync(this HttpClient client, string url, string filePath, string taskName)
     {
         try
@@ -59,7 +57,7 @@ public static class HttpClientUtils
         catch (Exception e)
         {
             ConsoleManager.WriteLineForError(MethodBase.GetCurrentMethod()?.DeclaringType, e);
-            Log.Error(MethodBase.GetCurrentMethod()?.DeclaringType, e);
+            Log.Error(e, "{message}", MethodBase.GetCurrentMethod()?.DeclaringType);
             return false;
         }
     }

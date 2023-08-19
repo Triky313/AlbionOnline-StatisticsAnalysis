@@ -1,15 +1,13 @@
 ﻿using StatisticsAnalysisTool.Common;
 using StatisticsAnalysisTool.Enumerations;
-using StatisticsAnalysisTool.Properties;
+using StatisticsAnalysisTool.ViewModels;
 using System;
 using System.Collections.Generic;
-using System.ComponentModel;
 using System.Linq;
-using System.Runtime.CompilerServices;
 
 namespace StatisticsAnalysisTool.Trade;
 
-public class TradeStatsObject : INotifyPropertyChanged
+public class TradeStatsObject : BaseViewModel
 {
     private long _soldToday;
     private long _soldMonth;
@@ -72,14 +70,14 @@ public class TradeStatsObject : INotifyPropertyChanged
         SoldTotal = GetStatByType(trades, currentUtc, TradeStatType.SoldTotal);
         BoughtTotal = GetStatByType(trades, currentUtc, TradeStatType.BoughtTotal);
         TaxesTotal = GetStatByType(trades, currentUtc, TradeStatType.TaxesTotal);
-        
+
         SalesToday = SoldToday - (BoughtToday + TaxesToday);
         SalesThisWeek = SoldThisWeek - (BoughtThisWeek + TaxesThisWeek);
         SalesLastWeek = SoldLastWeek - (BoughtLastWeek + TaxesLastWeek);
         SalesMonth = SoldMonth - (BoughtMonth + TaxesMonth);
         SalesYear = SoldYear - (BoughtYear + TaxesYear);
         SalesTotal = SoldTotal - (BoughtTotal + TaxesTotal);
-        
+
         MostExpensiveSaleItem = trades
             .Where(x => x.MailType is MailType.MarketplaceSellOrderFinished or MailType.MarketplaceSellOrderExpired || x.Type == TradeType.InstantSell)
             .MaxBy(x =>
@@ -99,7 +97,7 @@ public class TradeStatsObject : INotifyPropertyChanged
 
         MostExpensivePurchasedItem = trades
             .Where(x => x.MailType is MailType.MarketplaceBuyOrderFinished or MailType.MarketplaceBuyOrderExpired || x.Type == TradeType.InstantBuy)
-            .MaxBy(x => 
+            .MaxBy(x =>
             {
                 switch (x.Type)
                 {
@@ -141,7 +139,7 @@ public class TradeStatsObject : INotifyPropertyChanged
 
                 switch (type)
                 {
-                    case TradeStatType.SoldToday or TradeStatType.SoldThisWeek or TradeStatType.SoldLastWeek or TradeStatType.SoldMonth or TradeStatType.SoldYear 
+                    case TradeStatType.SoldToday or TradeStatType.SoldThisWeek or TradeStatType.SoldLastWeek or TradeStatType.SoldMonth or TradeStatType.SoldYear
                         or TradeStatType.SoldTotal:
                         switch (trade.Type)
                         {
@@ -151,7 +149,7 @@ public class TradeStatsObject : INotifyPropertyChanged
                                 return true;
                         }
                         break;
-                    case TradeStatType.BoughtToday or TradeStatType.BoughtThisWeek or TradeStatType.BoughtLastWeek or TradeStatType.BoughtMonth or TradeStatType.BoughtYear 
+                    case TradeStatType.BoughtToday or TradeStatType.BoughtThisWeek or TradeStatType.BoughtLastWeek or TradeStatType.BoughtMonth or TradeStatType.BoughtYear
                         or TradeStatType.BoughtTotal:
                         switch (trade.Type)
                         {
@@ -161,7 +159,7 @@ public class TradeStatsObject : INotifyPropertyChanged
                                 return true;
                         }
                         break;
-                    case TradeStatType.TaxesToday or TradeStatType.TaxesThisWeek or TradeStatType.TaxesLastWeek or TradeStatType.TaxesMonth or TradeStatType.TaxesYear 
+                    case TradeStatType.TaxesToday or TradeStatType.TaxesThisWeek or TradeStatType.TaxesLastWeek or TradeStatType.TaxesMonth or TradeStatType.TaxesYear
                         or TradeStatType.TaxesTotal:
                         switch (trade.Type)
                         {
@@ -194,13 +192,13 @@ public class TradeStatsObject : INotifyPropertyChanged
                         TradeType.ManualBuy => trade.InstantBuySellContent.TotalPrice.IntegerValue,
                         _ => 0
                     },
-                    TradeStatType.TaxesToday or TradeStatType.TaxesThisWeek or TradeStatType.TaxesLastWeek or TradeStatType.TaxesMonth or TradeStatType.TaxesYear 
+                    TradeStatType.TaxesToday or TradeStatType.TaxesThisWeek or TradeStatType.TaxesLastWeek or TradeStatType.TaxesMonth or TradeStatType.TaxesYear
                         or TradeStatType.TaxesTotal => trade.Type switch
-                    {
-                        TradeType.Mail => trade.MailContent.TaxSetupPrice.IntegerValue + trade.MailContent.TaxPrice.IntegerValue,
-                        TradeType.InstantSell => trade.InstantBuySellContent.TaxPrice.IntegerValue,
-                        _ => 0
-                    },
+                        {
+                            TradeType.Mail => trade.MailContent.TaxSetupPrice.IntegerValue + trade.MailContent.TaxPrice.IntegerValue,
+                            TradeType.InstantSell => trade.InstantBuySellContent.TaxPrice.IntegerValue,
+                            _ => 0
+                        },
                     TradeStatType.SoldTotal => trade.Type switch
                     {
                         TradeType.Mail => trade.MailContent.TotalPrice.IntegerValue,
@@ -530,24 +528,4 @@ public class TradeStatsObject : INotifyPropertyChanged
     public static string TranslationMostExpensivePurchase => LanguageController.Translation("MOST_EXPENSIVE_PURCHASE");
 
     public static string TranslationSilver => LanguageController.Translation("SILVER");
-
-    public event PropertyChangedEventHandler PropertyChanged;
-
-    [NotifyPropertyChangedInvocator]
-    protected virtual void OnPropertyChanged([CallerMemberName] string propertyName = null)
-    {
-        PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
-    }
-
-    protected bool SetProperty<T>(ref T field, T newValue, [CallerMemberName] string propertyName = null)
-    {
-        if (!Equals(field, newValue))
-        {
-            field = newValue;
-            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
-            return true;
-        }
-
-        return false;
-    }
 }

@@ -1,4 +1,4 @@
-﻿using log4net;
+﻿using Serilog;
 using StatisticsAnalysisTool.Common;
 using StatisticsAnalysisTool.Enumerations;
 using StatisticsAnalysisTool.Models;
@@ -10,8 +10,6 @@ namespace StatisticsAnalysisTool.Network.Operations.Responses;
 
 public class ReSpecBoostRequest
 {
-    private static readonly ILog Log = LogManager.GetLogger(MethodBase.GetCurrentMethod()?.DeclaringType);
-
     public readonly bool IsReSpecBoostActive;
 
     public ReSpecBoostRequest(Dictionary<byte, object> parameters)
@@ -27,7 +25,7 @@ public class ReSpecBoostRequest
         }
         catch (Exception e)
         {
-            Log.Error(nameof(ReadMailResponse), e);
+            Log.Error(e, "{message}", MethodBase.GetCurrentMethod()?.DeclaringType);
         }
     }
 }

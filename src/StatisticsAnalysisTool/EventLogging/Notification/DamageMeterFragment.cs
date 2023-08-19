@@ -1,14 +1,11 @@
 using StatisticsAnalysisTool.Common;
 using StatisticsAnalysisTool.Models;
-using StatisticsAnalysisTool.Properties;
+using StatisticsAnalysisTool.ViewModels;
 using System;
-using System.ComponentModel;
-using System.Diagnostics;
-using System.Runtime.CompilerServices;
 
 namespace StatisticsAnalysisTool.EventLogging.Notification;
 
-public class DamageMeterFragment : INotifyPropertyChanged
+public class DamageMeterFragment : BaseViewModel
 {
     private string _shopSubCategory;
     private Guid _causerGuid;
@@ -266,14 +263,6 @@ public class DamageMeterFragment : INotifyPropertyChanged
     public static string TranslationCombatTime => LanguageController.Translation("COMBAT_TIME");
     public static string TranslationHealingWithoutOverhealed => LanguageController.Translation("HEALING_WITHOUT_OVERHEALED");
     public static string TranslationOverhealedPercentageOfTotalHealing => LanguageController.Translation("OVERHEALED_PERCENTAGE_OF_TOTAL_HEALING");
-
-    public event PropertyChangedEventHandler PropertyChanged;
-
-    [NotifyPropertyChangedInvocator]
-    protected virtual void OnPropertyChanged([CallerMemberName] string propertyName = null)
-    {
-        PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
-    }
 
     public override bool Equals(object obj)
     {

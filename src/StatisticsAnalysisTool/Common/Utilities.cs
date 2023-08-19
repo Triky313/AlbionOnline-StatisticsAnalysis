@@ -1,9 +1,8 @@
-﻿using log4net;
+﻿using Serilog;
 using StatisticsAnalysisTool.Notification;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
-using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Reflection;
@@ -15,8 +14,6 @@ namespace StatisticsAnalysisTool.Common;
 
 public static class Utilities
 {
-    private static readonly ILog Log = LogManager.GetLogger(MethodBase.GetCurrentMethod()?.DeclaringType);
-
     public static long GetHighestLength(params Array[] arrays)
     {
         long highestLength = 0;
@@ -47,11 +44,6 @@ public static class Utilities
         return string.IsNullOrEmpty(name)
             ? Application.Current.Windows.OfType<T>().Any()
             : Application.Current.Windows.OfType<T>().Any(w => w.Name.Equals(name));
-    }
-
-    public static string LongWithCulture(long value)
-    {
-        return value.ToString("N0", new CultureInfo(LanguageController.CurrentCultureInfo.TextInfo.CultureName));
     }
 
     public static double GetValuePerHourToDouble(double value, double seconds)
@@ -104,7 +96,7 @@ public static class Utilities
         {
             if (!File.Exists(path))
             {
-                notifyManager?.ShowErrorAsync(LanguageController.Translation("CANNOT_START_OTHER_APP"), 
+                notifyManager?.ShowErrorAsync(LanguageController.Translation("CANNOT_START_OTHER_APP"),
                     LanguageController.Translation("CAN_NOT_START_APP_WITH_PATH",
                         new List<string> { "path" },
                         new List<string> { path }));
@@ -116,7 +108,7 @@ public static class Utilities
         catch (Exception e)
         {
             ConsoleManager.WriteLineForError(MethodBase.GetCurrentMethod()?.DeclaringType, e);
-            Log.Error(MethodBase.GetCurrentMethod()?.DeclaringType, e);
+            Log.Error(e, "{message}", MethodBase.GetCurrentMethod()?.DeclaringType);
             notifyManager?.ShowErrorAsync(LanguageController.Translation("CANNOT_START_OTHER_APP"),
                 LanguageController.Translation("CAN_NOT_START_APP_WITH_PATH",
                     new List<string> { "path" },

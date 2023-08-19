@@ -2,12 +2,13 @@ using System;
 using StatisticsAnalysisTool.Gathering;
 using StatisticsAnalysisTool.Models;
 using System.Collections.Generic;
+using System.Globalization;
 
 namespace StatisticsAnalysisTool.Common.UserSettings;
 
 public class SettingsObject
 {
-    public string CurrentLanguageCultureName { get; set; } = "en-US";
+    public string CurrentLanguageCultureName { get; set; } = CultureInfo.CurrentUICulture.Name;
     public int RefreshRate { get; set; } = 10000;
     public int Server { get; set; } = 0; // 0: auto, 1: west, 2: east
     public string PacketFilter { get; set; } = "(host 5.45.187 or host 5.188.125) and udp port 5056";

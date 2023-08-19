@@ -1,16 +1,15 @@
-﻿using log4net;
+﻿using Serilog;
 using StatisticsAnalysisTool.Common;
 using StatisticsAnalysisTool.Enumerations;
 using StatisticsAnalysisTool.Models;
 using System;
 using System.Collections.Generic;
-using System.Reflection;
 
 namespace StatisticsAnalysisTool.Network.Operations.Responses;
 
 public class RegisterToObjectRequest
 {
-    private static readonly ILog Log = LogManager.GetLogger(MethodBase.GetCurrentMethod()?.DeclaringType);
+
 
     public readonly long BuildingObjectId;
 

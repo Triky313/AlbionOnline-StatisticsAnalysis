@@ -1,14 +1,12 @@
 ﻿using StatisticsAnalysisTool.Common;
 using StatisticsAnalysisTool.Models;
-using StatisticsAnalysisTool.Properties;
+using StatisticsAnalysisTool.ViewModels;
 using System;
 using System.Collections.Generic;
-using System.ComponentModel;
-using System.Runtime.CompilerServices;
 
 namespace StatisticsAnalysisTool.PartyBuilder;
 
-public class PartyBuilderPlayer : INotifyPropertyChanged
+public class PartyBuilderPlayer : BaseViewModel
 {
     private Item _mainHand;
     private Item _offHand;
@@ -317,12 +315,4 @@ public class PartyBuilderPlayer : INotifyPropertyChanged
 
     public static string TranslationItemPower => LanguageController.Translation("ITEM_POWER");
     public static string TranslationLastUpdate => LanguageController.Translation("LAST_UPDATE");
-
-    public event PropertyChangedEventHandler PropertyChanged;
-
-    [NotifyPropertyChangedInvocator]
-    protected virtual void OnPropertyChanged([CallerMemberName] string propertyName = null)
-    {
-        PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
-    }
 }

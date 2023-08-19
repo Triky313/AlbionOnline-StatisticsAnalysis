@@ -1,15 +1,13 @@
-﻿using System;
+﻿using Serilog;
+using StatisticsAnalysisTool.Common;
+using System;
 using System.Collections.Generic;
 using System.Reflection;
-using log4net;
-using StatisticsAnalysisTool.Common;
 
 namespace StatisticsAnalysisTool.Network.Events;
 
 public class UpdateSilverEvent
 {
-    private static readonly ILog Log = LogManager.GetLogger(MethodBase.GetCurrentMethod()?.DeclaringType);
-
     public UpdateSilverEvent(Dictionary<byte, object> parameters)
     {
         ConsoleManager.WriteLineForNetworkHandler(GetType().Name, parameters);
@@ -24,7 +22,7 @@ public class UpdateSilverEvent
         catch (ArgumentNullException e)
         {
             ConsoleManager.WriteLineForError(MethodBase.GetCurrentMethod()?.DeclaringType, e);
-            Log.Error(MethodBase.GetCurrentMethod()?.DeclaringType, e);
+            Log.Error(e, "{message}", MethodBase.GetCurrentMethod()?.DeclaringType);
         }
     }
 
