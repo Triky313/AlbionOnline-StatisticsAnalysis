@@ -92,10 +92,7 @@ public class SettingsWindowViewModel : BaseViewModel
 
         // Auto update
         IsSuggestPreReleaseUpdatesActive = SettingsController.CurrentSettings.IsSuggestPreReleaseUpdatesActive;
-
-        // Damage Meter
-        ShortDamageMeterToClipboard = SettingsController.CurrentSettings.ShortDamageMeterToClipboard;
-
+        
         // Item window
         IsOpenItemWindowInNewWindowChecked = SettingsController.CurrentSettings.IsOpenItemWindowInNewWindowChecked;
 
@@ -134,7 +131,6 @@ public class SettingsWindowViewModel : BaseViewModel
 
         SettingsController.CurrentSettings.IsLootLoggerSaveReminderActive = IsLootLoggerSaveReminderActive;
         SettingsController.CurrentSettings.IsSuggestPreReleaseUpdatesActive = IsSuggestPreReleaseUpdatesActive;
-        SettingsController.CurrentSettings.ShortDamageMeterToClipboard = ShortDamageMeterToClipboard;
         SettingsController.CurrentSettings.ExactMatchPlayerNamesLineNumber = PlayerSelectionWithSameNameInDb;
 
         SetAppSettingsAndTranslations();
@@ -733,16 +729,6 @@ public class SettingsWindowViewModel : BaseViewModel
         set
         {
             _isLootLoggerSaveReminderActive = value;
-            OnPropertyChanged();
-        }
-    }
-
-    public bool ShortDamageMeterToClipboard
-    {
-        get => _shortDamageMeterToClipboard;
-        set
-        {
-            _shortDamageMeterToClipboard = value;
             OnPropertyChanged();
         }
     }

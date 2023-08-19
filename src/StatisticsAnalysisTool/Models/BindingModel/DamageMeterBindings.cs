@@ -32,6 +32,7 @@ public class DamageMeterBindings : BaseViewModel, IAsyncInitialization
     private bool _isSnapshotAfterMapChangeActive;
     private GridLength _gridSplitterPosition;
     private bool _isDamageMeterResetBeforeCombatActive;
+    private bool _shortDamageMeterToClipboard;
     public Task Initialization { get; init; }
 
     public DamageMeterBindings()
@@ -81,6 +82,7 @@ public class DamageMeterBindings : BaseViewModel, IAsyncInitialization
         IsSnapshotAfterMapChangeActive = SettingsController.CurrentSettings.IsSnapshotAfterMapChangeActive;
         IsDamageMeterResetByMapChangeActive = SettingsController.CurrentSettings.IsDamageMeterResetByMapChangeActive;
         IsDamageMeterResetBeforeCombatActive = SettingsController.CurrentSettings.IsDamageMeterResetBeforeCombatActive;
+        ShortDamageMeterToClipboard = SettingsController.CurrentSettings.ShortDamageMeterToClipboard;
 
         Initialization = LoadLocalFileAsync();
     }
@@ -206,6 +208,17 @@ public class DamageMeterBindings : BaseViewModel, IAsyncInitialization
         {
             _isDamageMeterResetBeforeCombatActive = value;
             SettingsController.CurrentSettings.IsDamageMeterResetBeforeCombatActive = _isDamageMeterResetBeforeCombatActive;
+            OnPropertyChanged();
+        }
+    }
+
+    public bool ShortDamageMeterToClipboard
+    {
+        get => _shortDamageMeterToClipboard;
+        set
+        {
+            _shortDamageMeterToClipboard = value;
+            SettingsController.CurrentSettings.ShortDamageMeterToClipboard = ShortDamageMeterToClipboard;
             OnPropertyChanged();
         }
     }

@@ -77,6 +77,9 @@
                                     <CheckBox IsChecked="{Binding DamageMeterBindings.IsSnapshotAfterMapChangeActive}" 
                                           Content="{Binding Translation.SnapshotAfterMapChange, FallbackValue=SNAPSHOT__AFTER__MAP__CHANGE}" 
                                           HorizontalContentAlignment="Left" Margin="5,2,10,0" VerticalAlignment="Top" HorizontalAlignment="Left" Width="auto" MaxWidth="250"/>
+                                    <CheckBox IsChecked="{Binding DamageMeterBindings.ShortDamageMeterToClipboard}" 
+                                              Content="{Binding Translation.CopyShortDamageMeterToTheClipboard, FallbackValue=COPY__SHORT__DAMAGE__METER__TO__THE__CLIPBOARD}" 
+                                              HorizontalContentAlignment="Left" Margin="5,2,10,0" VerticalAlignment="Top" HorizontalAlignment="Left" Width="auto" MaxWidth="250"/>
                                 </StackPanel>
                             </StackPanel>
 
