@@ -292,6 +292,7 @@ public class TreasureController
 
     public async Task SaveInFileAsync()
     {
+        DirectoryController.CreateDirectoryWhenNotExists(Path.Combine(AppDomain.CurrentDomain.BaseDirectory, Settings.Default.UserDataDirectoryName));
         await FileController.SaveAsync(_treasures, Path.Combine(AppDomain.CurrentDomain.BaseDirectory, Settings.Default.UserDataDirectoryName, Settings.Default.TreasureStatsFileName));
         Debug.Print("Treasure saved");
     }
