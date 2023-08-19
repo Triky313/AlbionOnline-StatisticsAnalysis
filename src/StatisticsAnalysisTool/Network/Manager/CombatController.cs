@@ -188,30 +188,7 @@ public class CombatController
     {
         return 100.00 / (heal + overhealed) * overhealed;
     }
-
-    public async Task RemoveNonRelevantEntityFromDamageMeterAsync()
-    {
-        await Application.Current.Dispatcher.InvokeAsync(() =>
-        {
-            var newPartyGuids = _trackingController.EntityController
-                .GetAllEntitiesWithDamageOrHealAndInParty()
-                .Select(x => x.Key)
-                .ToList();
-
-            var damageMeter = _mainWindowViewModel?.DamageMeterBindings?.DamageMeter?.ToList() ?? new List<DamageMeterFragment>();
-            foreach (DamageMeterFragment damageMeterFragment in damageMeter)
-            {
-                if (!newPartyGuids.Contains(damageMeterFragment.CauserGuid) && _mainWindowViewModel?.DamageMeterBindings?.DamageMeter != null)
-                {
-                    lock (_mainWindowViewModel.DamageMeterBindings.DamageMeter)
-                    {
-                        _mainWindowViewModel.DamageMeterBindings.DamageMeter.Remove(damageMeterFragment);
-                    }
-                }
-            }
-        });
-    }
-
+    
     private static async Task AddDamageMeterFragmentAsync(ICollection<DamageMeterFragment> damageMeter, KeyValuePair<Guid, PlayerGameObject> healthChangeObject,
         List<KeyValuePair<Guid, PlayerGameObject>> entities, long currentTotalDamage, long currentTotalHeal)
     {
