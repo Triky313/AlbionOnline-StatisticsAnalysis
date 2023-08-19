@@ -68,7 +68,7 @@ public class GatheringBindings : BaseViewModel
             await Application.Current.Dispatcher.InvokeAsync(() =>
             {
                 UpdateObservableRangeCollection(GatheringStats.GatheredHide, hide);
-                GatheringStats.GainedSilverByHide = Utilities.LongWithCulture(hide.Sum(x => x.TotalMarketValue.IntegerValue));
+                GatheringStats.GainedSilverByHide = hide.Sum(x => x.TotalMarketValue.IntegerValue);
             });
 
             // Ore
@@ -76,7 +76,7 @@ public class GatheringBindings : BaseViewModel
             await Application.Current.Dispatcher.InvokeAsync(() =>
             {
                 UpdateObservableRangeCollection(GatheringStats.GatheredOre, ore);
-                GatheringStats.GainedSilverByOre = Utilities.LongWithCulture(ore.Sum(x => x.TotalMarketValue.IntegerValue));
+                GatheringStats.GainedSilverByOre = ore.Sum(x => x.TotalMarketValue.IntegerValue);
             });
 
             // Fiber
@@ -84,7 +84,7 @@ public class GatheringBindings : BaseViewModel
             await Application.Current.Dispatcher.InvokeAsync(() =>
             {
                 UpdateObservableRangeCollection(GatheringStats.GatheredFiber, fiber);
-                GatheringStats.GainedSilverByFiber = Utilities.LongWithCulture(fiber.Sum(x => x.TotalMarketValue.IntegerValue));
+                GatheringStats.GainedSilverByFiber = fiber.Sum(x => x.TotalMarketValue.IntegerValue);
             });
 
             // Wood
@@ -92,7 +92,7 @@ public class GatheringBindings : BaseViewModel
             await Application.Current.Dispatcher.InvokeAsync(() =>
             {
                 UpdateObservableRangeCollection(GatheringStats.GatheredWood, wood);
-                GatheringStats.GainedSilverByWood = Utilities.LongWithCulture(wood.Sum(x => x.TotalMarketValue.IntegerValue));
+                GatheringStats.GainedSilverByWood = wood.Sum(x => x.TotalMarketValue.IntegerValue);
             });
 
             // Rock
@@ -100,7 +100,7 @@ public class GatheringBindings : BaseViewModel
             await Application.Current.Dispatcher.InvokeAsync(() =>
             {
                 UpdateObservableRangeCollection(GatheringStats.GatheredRock, rock);
-                GatheringStats.GainedSilverByRock = Utilities.LongWithCulture(rock.Sum(x => x.TotalMarketValue.IntegerValue));
+                GatheringStats.GainedSilverByRock = rock.Sum(x => x.TotalMarketValue.IntegerValue);
             });
 
             // Fish
@@ -108,7 +108,7 @@ public class GatheringBindings : BaseViewModel
             await Application.Current.Dispatcher.InvokeAsync(() =>
             {
                 UpdateObservableRangeCollection(GatheringStats.GatheredFish, fish);
-                GatheringStats.GainedSilverByFish = Utilities.LongWithCulture(fish.Sum(x => x.TotalMarketValue.IntegerValue));
+                GatheringStats.GainedSilverByFish = fish.Sum(x => x.TotalMarketValue.IntegerValue);
             });
 
             // Most gathered resource
@@ -185,7 +185,7 @@ public class GatheringBindings : BaseViewModel
 
             await Application.Current.Dispatcher.InvokeAsync(() =>
             {
-                GatheringStats.TotalGainedSilverString = Utilities.LongWithCulture(totalGainedSilver);
+                GatheringStats.TotalGainedSilverString = totalGainedSilver;
             });
         }
         catch (Exception ex)

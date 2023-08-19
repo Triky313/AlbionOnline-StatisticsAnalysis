@@ -20,7 +20,7 @@ public class Gathered : BaseViewModel
     private int _gainedTotalAmount;
     private bool _isSelectedForDeletion;
     private FixPoint _estimatedMarketValue;
-    private string _totalMarketValueWithCulture;
+    private long _totalMarketValueWithCulture;
     private Item _item;
     private readonly bool _hasBeenFished;
 
@@ -99,7 +99,7 @@ public class Gathered : BaseViewModel
         {
             _gainedTotalAmount = value;
 
-            TotalMarketValueWithCulture = Utilities.LongWithCulture(FixPoint.FromFloatingPointValue(_gainedTotalAmount * EstimatedMarketValue.IntegerValue).IntegerValue);
+            TotalMarketValueWithCulture = FixPoint.FromFloatingPointValue(_gainedTotalAmount * EstimatedMarketValue.IntegerValue).IntegerValue;
             OnPropertyChanged();
         }
     }
@@ -139,7 +139,7 @@ public class Gathered : BaseViewModel
         get => FixPoint.FromFloatingPointValue(GainedTotalAmount * EstimatedMarketValue.IntegerValue);
     }
 
-    public string TotalMarketValueWithCulture
+    public long TotalMarketValueWithCulture
     {
         get => _totalMarketValueWithCulture;
         set

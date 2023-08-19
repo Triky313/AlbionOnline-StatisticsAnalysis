@@ -2,7 +2,8 @@
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
                     xmlns:models="clr-namespace:StatisticsAnalysisTool.Models"
                     xmlns:controls="clr-namespace:StatisticsAnalysisTool.Common.Controls"
-                    xmlns:enum="clr-namespace:StatisticsAnalysisTool.Enumerations">
+                    xmlns:enum="clr-namespace:StatisticsAnalysisTool.Enumerations"
+                    xmlns:glob="clr-namespace:System.Globalization;assembly=System.Runtime">
 
     <Style x:Key="ItemSearchTextBoxStyle" BasedOn="{StaticResource {x:Type TextBox}}" TargetType="TextBox">
         <Setter Property="HorizontalAlignment" Value="Left" />
@@ -25,7 +26,7 @@
                 <TextBlock TextWrapping="Wrap" Text="{Binding LocalizedNameAndEnglish}" />
                 <StackPanel Orientation="Horizontal">
                     <Image Source="../Resources/silver.png" Width="12" Height="12" ToolTip="{Binding TranslationEstMarketValue, IsAsync=True, Mode=OneWay}" />
-                    <Label Content="{Binding AverageEstQualityValueString, StringFormat='{}{0:N0}', IsAsync=True, Mode=OneWay}" 
+                    <Label Content="{Binding AverageEstQualityValue, IsAsync=True, Mode=OneWay, StringFormat=N0, ConverterCulture={x:Static glob:CultureInfo.CurrentCulture}}" 
                            ToolTip="{Binding LastEstimatedUpdateTimeString, IsAsync=True, Mode=OneWay}">
                         <Label.Style>
                             <Style TargetType="{x:Type Label}">

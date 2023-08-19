@@ -20,13 +20,13 @@ public class GatheringStats : BaseViewModel
     private long _totalResources;
     private Visibility _mostGatheredResourceVisibility = Visibility.Collapsed;
     private Visibility _mostGatheredClusterVisibility = Visibility.Collapsed;
-    private string _gainedSilverByHide;
-    private string _gainedSilverByOre;
-    private string _gainedSilverByRock;
-    private string _gainedSilverByFiber;
-    private string _gainedSilverByWood;
-    private string _totalGainedSilverString;
-    private string _gainedSilverByFish;
+    private long _gainedSilverByHide;
+    private long _gainedSilverByOre;
+    private long _gainedSilverByRock;
+    private long _gainedSilverByFiber;
+    private long _gainedSilverByWood;
+    private long _totalGainedSilverString;
+    private long _gainedSilverByFish;
 
     public GatheringFilterType GatheringFilterType
     {
@@ -177,7 +177,7 @@ public class GatheringStats : BaseViewModel
         }
     }
 
-    public string GainedSilverByHide
+    public long GainedSilverByHide
     {
         get => _gainedSilverByHide;
         set
@@ -187,7 +187,7 @@ public class GatheringStats : BaseViewModel
         }
     }
 
-    public string GainedSilverByOre
+    public long GainedSilverByOre
     {
         get => _gainedSilverByOre;
         set
@@ -197,7 +197,7 @@ public class GatheringStats : BaseViewModel
         }
     }
 
-    public string GainedSilverByRock
+    public long GainedSilverByRock
     {
         get => _gainedSilverByRock;
         set
@@ -207,7 +207,7 @@ public class GatheringStats : BaseViewModel
         }
     }
 
-    public string GainedSilverByFiber
+    public long GainedSilverByFiber
     {
         get => _gainedSilverByFiber;
         set
@@ -217,7 +217,7 @@ public class GatheringStats : BaseViewModel
         }
     }
 
-    public string GainedSilverByWood
+    public long GainedSilverByWood
     {
         get => _gainedSilverByWood;
         set
@@ -227,7 +227,7 @@ public class GatheringStats : BaseViewModel
         }
     }
 
-    public string GainedSilverByFish
+    public long GainedSilverByFish
     {
         get => _gainedSilverByFish;
         set
@@ -237,7 +237,7 @@ public class GatheringStats : BaseViewModel
         }
     }
 
-    public string TotalGainedSilverString
+    public long TotalGainedSilverString
     {
         get => _totalGainedSilverString;
         set
