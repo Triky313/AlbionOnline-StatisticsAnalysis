@@ -369,17 +369,14 @@ public static class ItemController
 
     #region Item extra information
 
-    public static async Task SetFullItemInfoToItems()
+    public static void SetFullItemInfoToItems()
     {
-        var tasks = await Items.ToAsyncEnumerable()
-            .Select(item => Task.Run(() =>
-            {
-                item.FullItemInformation = GetSpecificItemInfo(item.UniqueName);
-                item.ShopCategory = GetShopCategory(item.UniqueName);
-                item.ShopShopSubCategory1 = GetShopSubCategory(item.UniqueName);
-            }))
-            .ToListAsync();
-        await Task.WhenAll(tasks);
+        Parallel.ForEach(Items, item =>
+        {
+            item.FullItemInformation = GetSpecificItemInfo(item.UniqueName);
+            item.ShopCategory = GetShopCategory(item.UniqueName);
+            item.ShopShopSubCategory1 = GetShopSubCategory(item.UniqueName);
+        });
     }
 
     private static object GetSpecificItemInfo(string uniqueName)
@@ -584,7 +581,7 @@ public static class ItemController
     {
         var localFilePath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, Settings.Default.GameFilesDirectoryName, Settings.Default.ItemsJsonFileName);
         _itemsJson = await GetItemsJsonFromLocal(localFilePath);
-        await SetFullItemInfoToItems();
+        SetFullItemInfoToItems();
 
         return _itemsJson?.Items != null;
     }

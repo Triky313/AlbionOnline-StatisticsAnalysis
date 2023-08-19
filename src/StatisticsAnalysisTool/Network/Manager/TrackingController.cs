@@ -101,14 +101,15 @@ public class TrackingController : ITrackingController
             return;
         }
 
-        await EstimatedMarketValueController.LoadFromFileAsync();
-
-        await StatisticController?.LoadFromFileAsync()!;
-        await TradeController?.LoadFromFileAsync()!;
-        await TreasureController?.LoadFromFileAsync()!;
-        await DungeonController?.LoadDungeonFromFileAsync()!;
-        await GatheringController?.LoadFromFileAsync()!;
-        await VaultController?.LoadFromFileAsync()!;
+        await Task.WhenAll(
+            EstimatedMarketValueController.LoadFromFileAsync(),
+            StatisticController.LoadFromFileAsync(),
+            TradeController.LoadFromFileAsync(),
+            TreasureController.LoadFromFileAsync(),
+            DungeonController.LoadDungeonFromFileAsync(),
+            GatheringController.LoadFromFileAsync(),
+            VaultController.LoadFromFileAsync()
+        );
 
         DungeonController?.UpdateDungeonStatsUi();
         DungeonController?.SetDungeonStatsUi();
@@ -172,24 +173,18 @@ public class TrackingController : ITrackingController
 
     public async Task SaveDataAsync()
     {
-        var tasks = new List<Task>
-        {
-            Task.Run(async () => { await VaultController?.SaveInFileAsync()!; }),
-            Task.Run(async () => { await TradeController?.SaveInFileAsync()!; }),
-            Task.Run(async () => { await TreasureController?.SaveInFileAsync()!; }),
-            Task.Run(async () => { await StatisticController?.SaveInFileAsync()!; }),
-            Task.Run(async () => { await DungeonController?.SaveInFileAsync()!; }),
-            Task.Run(async () => { await GatheringController?.SaveInFileAsync(true)!; }),
-            Task.Run(EstimatedMarketValueController.SaveInFileAsync),
-            Task.Run(async () =>
-            {
-                await FileController.SaveAsync(_mainWindowViewModel.DamageMeterBindings?.DamageMeterSnapshots,
-                    Path.Combine(AppDomain.CurrentDomain.BaseDirectory, Settings.Default.UserDataDirectoryName, Settings.Default.DamageMeterSnapshotsFileName));
-                Debug.Print("Damage Meter snapshots saved");
-            })
-        };
-
-        await Task.WhenAll(tasks);
+        await Task.WhenAll(
+            VaultController.SaveInFileAsync(),
+            TradeController.SaveInFileAsync(),
+            TreasureController.SaveInFileAsync(),
+            StatisticController.SaveInFileAsync(),
+            DungeonController.SaveInFileAsync(),
+            GatheringController.SaveInFileAsync(true),
+            EstimatedMarketValueController.SaveInFileAsync(),
+            FileController.SaveAsync(_mainWindowViewModel.DamageMeterBindings?.DamageMeterSnapshots,
+                Path.Combine(AppDomain.CurrentDomain.BaseDirectory, Settings.Default.UserDataDirectoryName, Settings.Default.DamageMeterSnapshotsFileName))
+        );
+        Debug.Print("Damage Meter snapshots saved");
     }
 
     public bool ExistIndispensableInfos => ClusterController.CurrentCluster != null && EntityController.ExistLocalEntity();
