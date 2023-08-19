@@ -24,7 +24,7 @@ A tool to easily read auction house data with a loot logger, damage meter, dunge
 - Installing **Npcap** Free Edition (v1.6 or higher) [here](https://npcap.com/#download) (For Game tracking)
 
 **Download the Statistics Analysis Tool**
-- [**DOWNLOAD**](https://github.com/Triky313/AlbionOnline-StatisticsAnalysis/releases/download/v6.3.1/StatisticsAnalysis-AlbionOnline-v6.3.1-x64.zip)
+- [**DOWNLOAD**](https://github.com/Triky313/AlbionOnline-StatisticsAnalysis/releases/download/v6.3.3/StatisticsAnalysis-AlbionOnline-v6.3.3-x64.zip)
 Unzip the `.zip` file and start `StatisticsAnalysisTool.exe` with a double click. You may not be able to see the `.exe`. Don't worry, usually it's the file with the icon.
 
 ![tool_dir](https://user-images.githubusercontent.com/14247773/170473306-4dcc629e-384e-41b2-ada8-657cabe1b472.png)
@@ -37,16 +37,6 @@ https://forum.albiononline.com/index.php/Thread/124819-Regarding-3rd-Party-Softw
 - [x] Does not modify our game client
 - [x] Does not track players that are not within the player's view
 - [x] Does not have an overlay to the game
-
-## SETTINGS 
-
-### ITEM LIST SOURCE
-If the item list is outdated, you can change it yourself. Just change the "ITEM LIST SOURCE" URL for that. 
-
-Another good source is https://github.com/broderickhyman/ao-bin-dumps
-
-Or you extract the files yourself from the game. More information can be found here: https://github.com/broderickhyman/ao-id-extractor
-
 
 ## FAQ
 ### Which operating system is supported?
@@ -68,11 +58,6 @@ If that doesn't help, a proxy redirect can help.
 
 ### How fast does my internet need to be?
 An internet connection with at least 1M/bit (256KB/s) download rate.
-
-### The tool cannot download the ItemList.json or Item.json, what to do?
-Double click on the **DownloadItemJsonFilesManually.bat** file in the tool directory!
-
-Then restart the tool and everything should work.
 
 ### Can I use the tool even if the game is not started
 Yes, but not all features are available. 
