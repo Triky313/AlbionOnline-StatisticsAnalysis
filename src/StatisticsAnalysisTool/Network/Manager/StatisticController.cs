@@ -273,6 +273,7 @@ public class StatisticController
 
     public async Task SaveInFileAsync()
     {
+        DirectoryController.CreateDirectoryWhenNotExists(Path.Combine(AppDomain.CurrentDomain.BaseDirectory, Settings.Default.UserDataDirectoryName));
         await FileController.SaveAsync(_dashboardStatistics, Path.Combine(AppDomain.CurrentDomain.BaseDirectory, Settings.Default.UserDataDirectoryName, Settings.Default.StatsFileName));
         Debug.Print("Statistics saved");
     }
