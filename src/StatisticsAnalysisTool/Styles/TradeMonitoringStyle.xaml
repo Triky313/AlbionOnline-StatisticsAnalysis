@@ -145,188 +145,187 @@
             <StackPanel Orientation="Vertical">
                 <StackPanel Orientation="Vertical" HorizontalAlignment="Center">
                     <StackPanel Orientation="Horizontal" Margin="0,10">
+                        <StackPanel Orientation="Vertical" Margin="0,31,20,0">
+                            <TextBlock Text="{Binding TranslationToday, IsAsync=True, FallbackValue=TODAY}" FontSize="14"
+                                       Foreground="{StaticResource SolidColorBrush.Text.1}" Height="36" />
+                            <TextBlock Text="{Binding TranslationThisWeek, IsAsync=True, FallbackValue=THIS_WEEK}" FontSize="14" 
+                                       Foreground="{StaticResource SolidColorBrush.Text.1}" Height="36" />
+                            <TextBlock Text="{Binding TranslationLastWeek, IsAsync=True, FallbackValue=LAST_WEEK}" FontSize="14"
+                                       Foreground="{StaticResource SolidColorBrush.Text.1}" Height="36" />
+                            <TextBlock Text="{Binding TranslationMonth, IsAsync=True, FallbackValue=MONTH}" FontSize="14"
+                                       Foreground="{StaticResource SolidColorBrush.Text.1}" Height="36" />
+                            <TextBlock Text="{Binding TranslationYear, IsAsync=True, FallbackValue=YEAR}" FontSize="14" 
+                                       Foreground="{StaticResource SolidColorBrush.Text.1}" Height="36" />
+                            <TextBlock Text="{Binding TranslationTotal, IsAsync=True, FallbackValue=TOTAL}" FontSize="14" 
+                                       Foreground="{StaticResource SolidColorBrush.Text.1}" Height="36" />
+                        </StackPanel>
                         <StackPanel Orientation="Vertical" Margin="5,0,5,0">
-                            <TextBlock Text="{Binding TranslationSoldToday, IsAsync=True, FallbackValue=SOLD_TODAY}" MinWidth="100" FontSize="14" FontWeight="Light" 
-                               Foreground="{StaticResource SolidColorBrush.Text.2}" VerticalAlignment="Center" />
+                            <TextBlock Text="{Binding TranslationSold, IsAsync=True, FallbackValue=SOLD}" MinWidth="100" FontSize="14" FontWeight="Bold"
+                                       Foreground="{StaticResource SolidColorBrush.Text.2}" TextAlignment="Center" Height="26" />
                             <StackPanel Orientation="Horizontal" Margin="0,0,0,5">
-                                <Image Style="{StaticResource Trade.Silver.Image.Style}" ToolTip="{Binding TranslationSilver, IsAsync=True}" />
-                                <TextBlock Text="{Binding SoldToday, IsAsync=True, StringFormat='{} {0:N0}', FallbackValue=0}" 
-                               FontSize="14" FontWeight="Light" Foreground="{StaticResource SolidColorBrush.Accent.Green.3}" VerticalAlignment="Center" />
+                                <Image Style="{StaticResource Trade.Silver.Image.Style}" ToolTip="{Binding TranslationSilver, IsAsync=True}" Height="31" />
+                                <TextBlock Text="{Binding SoldToday, IsAsync=True, StringFormat='{} {0:N0}', FallbackValue=0}"
+                                           FontSize="14" FontWeight="Light" Foreground="{StaticResource SolidColorBrush.Accent.Green.3}"
+                                           VerticalAlignment="Center" Height="19" />
                             </StackPanel>
-                            <TextBlock Text="{Binding TranslationSoldThisWeek, IsAsync=True, FallbackValue=SOLD_THIS_WEEK}" MinWidth="100" FontSize="14" FontWeight="Light" 
-                                   Foreground="{StaticResource SolidColorBrush.Text.2}" VerticalAlignment="Center" />
                             <StackPanel Orientation="Horizontal" Margin="0,0,0,5">
-                                <Image Style="{StaticResource Trade.Silver.Image.Style}" ToolTip="{Binding TranslationSilver, IsAsync=True}" />
+                                <Image Style="{StaticResource Trade.Silver.Image.Style}" ToolTip="{Binding TranslationSilver, IsAsync=True}" Height="31" />
                                 <TextBlock Text="{Binding SoldThisWeek, IsAsync=True, StringFormat='{} {0:N0}', FallbackValue=0}" 
-                                       FontSize="14" FontWeight="Light" Foreground="{StaticResource SolidColorBrush.Accent.Green.3}" VerticalAlignment="Center" />
+                                           FontSize="14" FontWeight="Light" Foreground="{StaticResource SolidColorBrush.Accent.Green.3}"
+                                           VerticalAlignment="Center" Height="19" />
                             </StackPanel>
-                            <TextBlock Text="{Binding TranslationSoldLastWeek, IsAsync=True, FallbackValue=SOLD_LAST_WEEK}" MinWidth="100" FontSize="14" FontWeight="Light" 
-                                   Foreground="{StaticResource SolidColorBrush.Text.2}" VerticalAlignment="Center" />
                             <StackPanel Orientation="Horizontal" Margin="0,0,0,5">
-                                <Image Style="{StaticResource Trade.Silver.Image.Style}" ToolTip="{Binding TranslationSilver, IsAsync=True}" />
+                                <Image Style="{StaticResource Trade.Silver.Image.Style}" ToolTip="{Binding TranslationSilver, IsAsync=True}" Height="31" />
                                 <TextBlock Text="{Binding SoldLastWeek, IsAsync=True, StringFormat='{} {0:N0}', FallbackValue=0}" 
-                                       FontSize="14" FontWeight="Light" Foreground="{StaticResource SolidColorBrush.Accent.Green.3}" VerticalAlignment="Center" />
+                                           FontSize="14" FontWeight="Light" Foreground="{StaticResource SolidColorBrush.Accent.Green.3}"
+                                           VerticalAlignment="Center" Height="19" />
                             </StackPanel>
-                            <TextBlock Text="{Binding TranslationSoldMonth, IsAsync=True, FallbackValue=SOLD_MONTH}" MinWidth="100" FontSize="14" FontWeight="Light" 
-                                   Foreground="{StaticResource SolidColorBrush.Text.2}" VerticalAlignment="Center" />
                             <StackPanel Orientation="Horizontal" Margin="0,0,0,5">
-                                <Image Style="{StaticResource Trade.Silver.Image.Style}" ToolTip="{Binding TranslationSilver, IsAsync=True}" />
-                                <TextBlock Text="{Binding SoldMonth, IsAsync=True, StringFormat='{} {0:N0}', FallbackValue=0}" 
-                               FontSize="14" FontWeight="Light" Foreground="{StaticResource SolidColorBrush.Accent.Green.3}" VerticalAlignment="Center" />
+                                <Image Style="{StaticResource Trade.Silver.Image.Style}" ToolTip="{Binding TranslationSilver, IsAsync=True}" Height="31" />
+                                <TextBlock Text="{Binding SoldMonth, IsAsync=True, StringFormat='{} {0:N0}', FallbackValue=0}"
+                                           FontSize="14" FontWeight="Light" Foreground="{StaticResource SolidColorBrush.Accent.Green.3}"
+                                           VerticalAlignment="Center" Height="19" />
                             </StackPanel>
-                            <TextBlock Text="{Binding TranslationSoldYear, IsAsync=True, FallbackValue=SOLD_YEAR}" MinWidth="100" FontSize="14" FontWeight="Light" 
-                                   Foreground="{StaticResource SolidColorBrush.Text.2}" VerticalAlignment="Center" />
                             <StackPanel Orientation="Horizontal" Margin="0,0,0,5">
-                                <Image Style="{StaticResource Trade.Silver.Image.Style}" ToolTip="{Binding TranslationSilver, IsAsync=True}" />
-                                <TextBlock Text="{Binding SoldYear, IsAsync=True, StringFormat='{} {0:N0}', FallbackValue=0}" 
-                               FontSize="14" FontWeight="Light" Foreground="{StaticResource SolidColorBrush.Accent.Green.3}" VerticalAlignment="Center" />
+                                <Image Style="{StaticResource Trade.Silver.Image.Style}" ToolTip="{Binding TranslationSilver, IsAsync=True}" Height="31" />
+                                <TextBlock Text="{Binding SoldYear, IsAsync=True, StringFormat='{} {0:N0}', FallbackValue=0}"
+                                           FontSize="14" FontWeight="Light" Foreground="{StaticResource SolidColorBrush.Accent.Green.3}"
+                                           VerticalAlignment="Center" Height="19" />
                             </StackPanel>
-                            <TextBlock Text="{Binding TranslationSoldTotal, IsAsync=True, FallbackValue=SOLD_TOTAL}" MinWidth="100" FontSize="14" FontWeight="Light" 
-                               Foreground="{StaticResource SolidColorBrush.Text.2}" VerticalAlignment="Center" />
                             <StackPanel Orientation="Horizontal" Margin="0,0,0,5">
-                                <Image Style="{StaticResource Trade.Silver.Image.Style}" ToolTip="{Binding TranslationSilver, IsAsync=True}" />
+                                <Image Style="{StaticResource Trade.Silver.Image.Style}" ToolTip="{Binding TranslationSilver, IsAsync=True}" Height="31" />
                                 <TextBlock Text="{Binding SoldTotal, IsAsync=True, StringFormat='{} {0:N0}', FallbackValue=0}" 
-                               FontSize="14" FontWeight="Light" Foreground="{StaticResource SolidColorBrush.Accent.Green.3}" VerticalAlignment="Center" />
+                                           FontSize="14" FontWeight="Light" Foreground="{StaticResource SolidColorBrush.Accent.Green.3}"
+                                           VerticalAlignment="Center" Height="19" />
                             </StackPanel>
                         </StackPanel>
                         <StackPanel Orientation="Vertical" Margin="5,0,5,0">
-                            <TextBlock Text="{Binding TranslationBoughtToday, IsAsync=True, FallbackValue=BOUGHT_TODAY}" MinWidth="100" FontSize="14" FontWeight="Light" 
-                               Foreground="{StaticResource SolidColorBrush.Text.2}" VerticalAlignment="Center" />
+                            <TextBlock Text="{Binding TranslationBought, IsAsync=True, FallbackValue=BOUGHT}" MinWidth="100" FontSize="14" FontWeight="Bold"
+                                       Foreground="{StaticResource SolidColorBrush.Text.2}" TextAlignment="Center" Height="26" />
                             <StackPanel Orientation="Horizontal" Margin="0,0,0,5">
-                                <Image Style="{StaticResource Trade.Silver.Image.Style}" ToolTip="{Binding TranslationSilver, IsAsync=True}" />
+                                <Image Style="{StaticResource Trade.Silver.Image.Style}" ToolTip="{Binding TranslationSilver, IsAsync=True}" Height="31" />
                                 <TextBlock Text="{Binding BoughtToday, IsAsync=True, StringFormat='{} {0:N0}', FallbackValue=0}" 
-                               FontSize="14" FontWeight="Light" Foreground="{StaticResource SolidColorBrush.Accent.Red.3}" VerticalAlignment="Center" />
+                                           FontSize="14" FontWeight="Light" Foreground="{StaticResource SolidColorBrush.Accent.Red.3}"
+                                           VerticalAlignment="Center" Height="19" />
                             </StackPanel>
-                            <TextBlock Text="{Binding TranslationBoughtThisWeek, IsAsync=True, FallbackValue=BOUGHT_THIS_WEEK}" MinWidth="100" FontSize="14" FontWeight="Light" 
-                               Foreground="{StaticResource SolidColorBrush.Text.2}" VerticalAlignment="Center" />
                             <StackPanel Orientation="Horizontal" Margin="0,0,0,5">
-                                <Image Style="{StaticResource Trade.Silver.Image.Style}" ToolTip="{Binding TranslationSilver, IsAsync=True}" />
+                                <Image Style="{StaticResource Trade.Silver.Image.Style}" ToolTip="{Binding TranslationSilver, IsAsync=True}" Height="31" />
                                 <TextBlock Text="{Binding BoughtThisWeek, IsAsync=True, StringFormat='{} {0:N0}', FallbackValue=0}" 
-                               FontSize="14" FontWeight="Light" Foreground="{StaticResource SolidColorBrush.Accent.Red.3}" VerticalAlignment="Center" />
+                                           FontSize="14" FontWeight="Light" Foreground="{StaticResource SolidColorBrush.Accent.Red.3}"
+                                           VerticalAlignment="Center" Height="19" />
                             </StackPanel>
-                            <TextBlock Text="{Binding TranslationBoughtLastWeek, IsAsync=True, FallbackValue=BOUGHT_LAST_WEEK}" MinWidth="100" FontSize="14" FontWeight="Light" 
-                               Foreground="{StaticResource SolidColorBrush.Text.2}" VerticalAlignment="Center" />
                             <StackPanel Orientation="Horizontal" Margin="0,0,0,5">
-                                <Image Style="{StaticResource Trade.Silver.Image.Style}" ToolTip="{Binding TranslationSilver, IsAsync=True}" />
+                                <Image Style="{StaticResource Trade.Silver.Image.Style}" ToolTip="{Binding TranslationSilver, IsAsync=True}" Height="31" />
                                 <TextBlock Text="{Binding BoughtLastWeek, IsAsync=True, StringFormat='{} {0:N0}', FallbackValue=0}" 
-                               FontSize="14" FontWeight="Light" Foreground="{StaticResource SolidColorBrush.Accent.Red.3}" VerticalAlignment="Center" />
+                                           FontSize="14" FontWeight="Light" Foreground="{StaticResource SolidColorBrush.Accent.Red.3}"
+                                           VerticalAlignment="Center" Height="19" />
                             </StackPanel>
-                            <TextBlock Text="{Binding TranslationBoughtMonth, IsAsync=True, FallbackValue=BOUGHT_MONTH}" MinWidth="100" FontSize="14" FontWeight="Light" 
-                               Foreground="{StaticResource SolidColorBrush.Text.2}" VerticalAlignment="Center" />
                             <StackPanel Orientation="Horizontal" Margin="0,0,0,5">
-                                <Image Style="{StaticResource Trade.Silver.Image.Style}" ToolTip="{Binding TranslationSilver, IsAsync=True}" />
+                                <Image Style="{StaticResource Trade.Silver.Image.Style}" ToolTip="{Binding TranslationSilver, IsAsync=True}" Height="31" />
                                 <TextBlock Text="{Binding BoughtMonth, IsAsync=True, StringFormat='{} {0:N0}', FallbackValue=0}" 
-                               FontSize="14" FontWeight="Light" Foreground="{StaticResource SolidColorBrush.Accent.Red.3}" VerticalAlignment="Center" />
+                                           FontSize="14" FontWeight="Light" Foreground="{StaticResource SolidColorBrush.Accent.Red.3}"
+                                           VerticalAlignment="Center" Height="19" />
                             </StackPanel>
-                            <TextBlock Text="{Binding TranslationBoughtYear, IsAsync=True, FallbackValue=BOUGHT_YEAR}" MinWidth="100" FontSize="14" FontWeight="Light" 
-                               Foreground="{StaticResource SolidColorBrush.Text.2}" VerticalAlignment="Center" />
                             <StackPanel Orientation="Horizontal" Margin="0,0,0,5">
-                                <Image Style="{StaticResource Trade.Silver.Image.Style}" ToolTip="{Binding TranslationSilver, IsAsync=True}" />
+                                <Image Style="{StaticResource Trade.Silver.Image.Style}" ToolTip="{Binding TranslationSilver, IsAsync=True}" Height="31" />
                                 <TextBlock Text="{Binding BoughtYear, IsAsync=True, StringFormat='{} {0:N0}', FallbackValue=0}" 
-                               FontSize="14" FontWeight="Light" Foreground="{StaticResource SolidColorBrush.Accent.Red.3}" VerticalAlignment="Center" />
+                                           FontSize="14" FontWeight="Light" Foreground="{StaticResource SolidColorBrush.Accent.Red.3}"
+                                           VerticalAlignment="Center" Height="19" />
                             </StackPanel>
-                            <TextBlock Text="{Binding TranslationBoughtTotal, IsAsync=True, FallbackValue=BOUGHT_TOTAL}" MinWidth="100" FontSize="14" FontWeight="Light" 
-                               Foreground="{StaticResource SolidColorBrush.Text.2}" VerticalAlignment="Center" />
                             <StackPanel Orientation="Horizontal" Margin="0,0,0,5">
-                                <Image Style="{StaticResource Trade.Silver.Image.Style}" ToolTip="{Binding TranslationSilver, IsAsync=True}" />
+                                <Image Style="{StaticResource Trade.Silver.Image.Style}" ToolTip="{Binding TranslationSilver, IsAsync=True}" Height="31" />
                                 <TextBlock Text="{Binding BoughtTotal, IsAsync=True, StringFormat='{} {0:N0}', FallbackValue=0}" 
-                                   FontSize="14" FontWeight="Light" Foreground="{StaticResource SolidColorBrush.Accent.Red.3}" VerticalAlignment="Center" />
+                                           FontSize="14" FontWeight="Light" Foreground="{StaticResource SolidColorBrush.Accent.Red.3}"
+                                           VerticalAlignment="Center" Height="19" />
                             </StackPanel>
                         </StackPanel>
                         <StackPanel Orientation="Vertical" Margin="5,0,5,0">
-                            <TextBlock Text="{Binding TranslationTaxesToday, IsAsync=True, FallbackValue=TAX_TODAY}" MinWidth="100" FontSize="14" FontWeight="Light" 
-                               Foreground="{StaticResource SolidColorBrush.Text.2}" VerticalAlignment="Center" />
+                            <TextBlock Text="{Binding TranslationTax, IsAsync=True, FallbackValue=TAX}" MinWidth="100" FontSize="14" FontWeight="Bold" 
+                                       Foreground="{StaticResource SolidColorBrush.Text.2}" TextAlignment="Center" Height="26" />
                             <StackPanel Orientation="Horizontal" Margin="0,0,0,5">
-                                <Image Style="{StaticResource Trade.Silver.Image.Style}" ToolTip="{Binding TranslationSilver, IsAsync=True}" />
+                                <Image Style="{StaticResource Trade.Silver.Image.Style}" ToolTip="{Binding TranslationSilver, IsAsync=True}" Height="31" />
                                 <TextBlock Text="{Binding TaxesToday, IsAsync=True, StringFormat='{} {0:N0}', FallbackValue=0}" 
-                               FontSize="14" FontWeight="Light" Foreground="{StaticResource SolidColorBrush.Accent.Red.3}" VerticalAlignment="Center" />
+                                           FontSize="14" FontWeight="Light" Foreground="{StaticResource SolidColorBrush.Accent.Red.3}"
+                                           VerticalAlignment="Center" Height="19"/>
                             </StackPanel>
-                            <TextBlock Text="{Binding TranslationTaxesThisWeek, IsAsync=True, FallbackValue=TAX_THIS_WEEK}" MinWidth="100" FontSize="14" FontWeight="Light" 
-                               Foreground="{StaticResource SolidColorBrush.Text.2}" VerticalAlignment="Center" />
                             <StackPanel Orientation="Horizontal" Margin="0,0,0,5">
-                                <Image Style="{StaticResource Trade.Silver.Image.Style}" ToolTip="{Binding TranslationSilver, IsAsync=True}" />
+                                <Image Style="{StaticResource Trade.Silver.Image.Style}" ToolTip="{Binding TranslationSilver, IsAsync=True}" Height="31" />
                                 <TextBlock Text="{Binding TaxesThisWeek, IsAsync=True, StringFormat='{} {0:N0}', FallbackValue=0}" 
-                               FontSize="14" FontWeight="Light" Foreground="{StaticResource SolidColorBrush.Accent.Red.3}" VerticalAlignment="Center" />
+                                           FontSize="14" FontWeight="Light" Foreground="{StaticResource SolidColorBrush.Accent.Red.3}"
+                                           VerticalAlignment="Center" Height="19" />
                             </StackPanel>
-                            <TextBlock Text="{Binding TranslationTaxesLastWeek, IsAsync=True, FallbackValue=TAX_LAST_WEEK}" MinWidth="100" FontSize="14" FontWeight="Light" 
-                               Foreground="{StaticResource SolidColorBrush.Text.2}" VerticalAlignment="Center" />
                             <StackPanel Orientation="Horizontal" Margin="0,0,0,5">
-                                <Image Style="{StaticResource Trade.Silver.Image.Style}" ToolTip="{Binding TranslationSilver, IsAsync=True}" />
+                                <Image Style="{StaticResource Trade.Silver.Image.Style}" ToolTip="{Binding TranslationSilver, IsAsync=True}" Height="31" />
                                 <TextBlock Text="{Binding TaxesLastWeek, IsAsync=True, StringFormat='{} {0:N0}', FallbackValue=0}" 
-                               FontSize="14" FontWeight="Light" Foreground="{StaticResource SolidColorBrush.Accent.Red.3}" VerticalAlignment="Center" />
+                                           FontSize="14" FontWeight="Light" Foreground="{StaticResource SolidColorBrush.Accent.Red.3}"
+                                           VerticalAlignment="Center" Height="19" />
                             </StackPanel>
-                            <TextBlock Text="{Binding TranslationTaxesMonth, IsAsync=True, FallbackValue=TAX_MONTH}" MinWidth="100" FontSize="14" FontWeight="Light" 
-                               Foreground="{StaticResource SolidColorBrush.Text.2}" VerticalAlignment="Center" />
                             <StackPanel Orientation="Horizontal" Margin="0,0,0,5">
-                                <Image Style="{StaticResource Trade.Silver.Image.Style}" ToolTip="{Binding TranslationSilver, IsAsync=True}" />
+                                <Image Style="{StaticResource Trade.Silver.Image.Style}" ToolTip="{Binding TranslationSilver, IsAsync=True}" Height="31" />
                                 <TextBlock Text="{Binding TaxesMonth, IsAsync=True, StringFormat='{} {0:N0}', FallbackValue=0}" 
-                               FontSize="14" FontWeight="Light" Foreground="{StaticResource SolidColorBrush.Accent.Red.3}" VerticalAlignment="Center" />
+                                           FontSize="14" FontWeight="Light" Foreground="{StaticResource SolidColorBrush.Accent.Red.3}"
+                                           VerticalAlignment="Center" Height="19" />
                             </StackPanel>
-                            <TextBlock Text="{Binding TranslationTaxesYear, IsAsync=True, FallbackValue=TAX_YEAR}" MinWidth="100" FontSize="14" FontWeight="Light" 
-                               Foreground="{StaticResource SolidColorBrush.Text.2}" VerticalAlignment="Center" />
                             <StackPanel Orientation="Horizontal" Margin="0,0,0,5">
-                                <Image Style="{StaticResource Trade.Silver.Image.Style}" ToolTip="{Binding TranslationSilver, IsAsync=True}" />
+                                <Image Style="{StaticResource Trade.Silver.Image.Style}" ToolTip="{Binding TranslationSilver, IsAsync=True}" Height="31" />
                                 <TextBlock Text="{Binding TaxesYear, IsAsync=True, StringFormat='{} {0:N0}', FallbackValue=0}" 
-                               FontSize="14" FontWeight="Light" Foreground="{StaticResource SolidColorBrush.Accent.Red.3}" VerticalAlignment="Center" />
+                                           FontSize="14" FontWeight="Light" Foreground="{StaticResource SolidColorBrush.Accent.Red.3}"
+                                           VerticalAlignment="Center" Height="19" />
                             </StackPanel>
-                            <TextBlock Text="{Binding TranslationTaxesTotal, IsAsync=True, FallbackValue=TAX_TOTAL}" MinWidth="100" FontSize="14" FontWeight="Light" 
-                               Foreground="{StaticResource SolidColorBrush.Text.2}" VerticalAlignment="Center" />
                             <StackPanel Orientation="Horizontal" Margin="0,0,0,5">
-                                <Image Style="{StaticResource Trade.Silver.Image.Style}" ToolTip="{Binding TranslationSilver, IsAsync=True}" />
+                                <Image Style="{StaticResource Trade.Silver.Image.Style}" ToolTip="{Binding TranslationSilver, IsAsync=True}" Height="31" />
                                 <TextBlock Text="{Binding TaxesTotal, IsAsync=True, StringFormat='{} {0:N0}', FallbackValue=0}" 
-                                   FontSize="14" FontWeight="Light" Foreground="{StaticResource SolidColorBrush.Accent.Red.3}" VerticalAlignment="Center" />
+                                           FontSize="14" FontWeight="Light" Foreground="{StaticResource SolidColorBrush.Accent.Red.3}"
+                                           VerticalAlignment="Center" Height="19" />
                             </StackPanel>
                         </StackPanel>
                         <StackPanel Orientation="Vertical" Margin="5,0,5,0">
-                            <TextBlock Text="{Binding TranslationNetProfitToday, IsAsync=True, FallbackValue=NET_PROFIT_TODAY}" MinWidth="100" FontSize="14" FontWeight="Light" 
-                               Foreground="{StaticResource SolidColorBrush.Text.2}" VerticalAlignment="Center" />
+                            <TextBlock Text="{Binding TranslationNetProfit, IsAsync=True, FallbackValue=NET_PROFIT}" MinWidth="100" FontSize="14" FontWeight="Bold" 
+                                       Foreground="{StaticResource SolidColorBrush.Text.2}" TextAlignment="Center" Height="26" />
                             <StackPanel Orientation="Horizontal" Margin="0,0,0,5">
-                                <Image Style="{StaticResource Trade.Silver.Image.Style}" ToolTip="{Binding TranslationSilver, IsAsync=True}" />
+                                <Image Style="{StaticResource Trade.Silver.Image.Style}" ToolTip="{Binding TranslationSilver, IsAsync=True}" Height="31" />
                                 <TextBlock Text="{Binding SalesToday, IsAsync=True, StringFormat='{} {0:N0}', FallbackValue=0}" 
-                               FontSize="14" FontWeight="Light" Foreground="{StaticResource SolidColorBrush.Accent.Blue.2}" VerticalAlignment="Center" />
+                                           FontSize="14" FontWeight="Light" Foreground="{StaticResource SolidColorBrush.Accent.Blue.2}"
+                                           VerticalAlignment="Center" Height="19" />
                             </StackPanel>
-                            <TextBlock Text="{Binding TranslationNetProfitThisWeek, IsAsync=True, FallbackValue=NET_PROFIT_THIS_WEEK}" MinWidth="100" FontSize="14" FontWeight="Light" 
-                               Foreground="{StaticResource SolidColorBrush.Text.2}" VerticalAlignment="Center" />
                             <StackPanel Orientation="Horizontal" Margin="0,0,0,5">
-                                <Image Style="{StaticResource Trade.Silver.Image.Style}" ToolTip="{Binding TranslationSilver, IsAsync=True}" />
+                                <Image Style="{StaticResource Trade.Silver.Image.Style}" ToolTip="{Binding TranslationSilver, IsAsync=True}" Height="31" />
                                 <TextBlock Text="{Binding SalesThisWeek, IsAsync=True, StringFormat='{} {0:N0}', FallbackValue=0}" 
-                               FontSize="14" FontWeight="Light" Foreground="{StaticResource SolidColorBrush.Accent.Blue.2}" VerticalAlignment="Center" />
+                                           FontSize="14" FontWeight="Light" Foreground="{StaticResource SolidColorBrush.Accent.Blue.2}"
+                                           VerticalAlignment="Center" Height="19" />
                             </StackPanel>
-                            <TextBlock Text="{Binding TranslationNetProfitLastWeek, IsAsync=True, FallbackValue=NET_PROFIT_LAST_WEEK}" MinWidth="100" FontSize="14" FontWeight="Light" 
-                               Foreground="{StaticResource SolidColorBrush.Text.2}" VerticalAlignment="Center" />
                             <StackPanel Orientation="Horizontal" Margin="0,0,0,5">
-                                <Image Style="{StaticResource Trade.Silver.Image.Style}" ToolTip="{Binding TranslationSilver, IsAsync=True}" />
+                                <Image Style="{StaticResource Trade.Silver.Image.Style}" ToolTip="{Binding TranslationSilver, IsAsync=True}" Height="31" />
                                 <TextBlock Text="{Binding SalesLastWeek, IsAsync=True, StringFormat='{} {0:N0}', FallbackValue=0}" 
-                               FontSize="14" FontWeight="Light" Foreground="{StaticResource SolidColorBrush.Accent.Blue.2}" VerticalAlignment="Center" />
+                                           FontSize="14" FontWeight="Light" Foreground="{StaticResource SolidColorBrush.Accent.Blue.2}"
+                                           VerticalAlignment="Center" Height="19" />
                             </StackPanel>
-                            <TextBlock Text="{Binding TranslationNetProfitMonth, IsAsync=True, FallbackValue=NET_PROFIT_MONTH}" MinWidth="100" FontSize="14" FontWeight="Light" 
-                               Foreground="{StaticResource SolidColorBrush.Text.2}" VerticalAlignment="Center" />
                             <StackPanel Orientation="Horizontal" Margin="0,0,0,5">
-                                <Image Style="{StaticResource Trade.Silver.Image.Style}" ToolTip="{Binding TranslationSilver, IsAsync=True}" />
+                                <Image Style="{StaticResource Trade.Silver.Image.Style}" ToolTip="{Binding TranslationSilver, IsAsync=True}" Height="31" />
                                 <TextBlock Text="{Binding SalesMonth, IsAsync=True, StringFormat='{} {0:N0}', FallbackValue=0}" 
-                               FontSize="14" FontWeight="Light" Foreground="{StaticResource SolidColorBrush.Accent.Blue.2}" VerticalAlignment="Center" />
+                                           FontSize="14" FontWeight="Light" Foreground="{StaticResource SolidColorBrush.Accent.Blue.2}"
+                                           VerticalAlignment="Center" Height="19" />
                             </StackPanel>
-                            <TextBlock Text="{Binding TranslationNetProfitYear, IsAsync=True, FallbackValue=NET_PROFIT_YEAR}" MinWidth="100" FontSize="14" FontWeight="Light" 
-                               Foreground="{StaticResource SolidColorBrush.Text.2}" VerticalAlignment="Center" />
                             <StackPanel Orientation="Horizontal" Margin="0,0,0,5">
-                                <Image Style="{StaticResource Trade.Silver.Image.Style}" ToolTip="{Binding TranslationSilver, IsAsync=True}" />
+                                <Image Style="{StaticResource Trade.Silver.Image.Style}" ToolTip="{Binding TranslationSilver, IsAsync=True}" Height="31" />
                                 <TextBlock Text="{Binding SalesYear, IsAsync=True, StringFormat='{} {0:N0}', FallbackValue=0}" 
-                               FontSize="14" FontWeight="Light" Foreground="{StaticResource SolidColorBrush.Accent.Blue.2}" VerticalAlignment="Center" />
+                                           FontSize="14" FontWeight="Light" Foreground="{StaticResource SolidColorBrush.Accent.Blue.2}"
+                                           VerticalAlignment="Center" Height="19" />
                             </StackPanel>
-                            <TextBlock Text="{Binding TranslationNetProfitTotal, IsAsync=True, FallbackValue=NET_PROFIT_TOTAL}" MinWidth="100" FontSize="14" FontWeight="Light" 
-                               Foreground="{StaticResource SolidColorBrush.Text.2}" VerticalAlignment="Center" />
                             <StackPanel Orientation="Horizontal" Margin="0,0,0,5">
-                                <Image Style="{StaticResource Trade.Silver.Image.Style}" ToolTip="{Binding TranslationSilver, IsAsync=True}" />
+                                <Image Style="{StaticResource Trade.Silver.Image.Style}" ToolTip="{Binding TranslationSilver, IsAsync=True}" Height="31" />
                                 <TextBlock Text="{Binding SalesTotal, IsAsync=True, StringFormat='{} {0:N0}', FallbackValue=0}" 
-                                   FontSize="14" FontWeight="Light" Foreground="{StaticResource SolidColorBrush.Accent.Blue.2}" VerticalAlignment="Center" />
+                                           FontSize="14" FontWeight="Light" Foreground="{StaticResource SolidColorBrush.Accent.Blue.2}"
+                                           VerticalAlignment="Center" Height="19" />
                             </StackPanel>
                         </StackPanel>
                     </StackPanel>
                     <StackPanel Orientation="Vertical" Margin="0,10">
                         <StackPanel Orientation="Vertical" Margin="5,0,5,0">
-                            <TextBlock Text="{Binding TranslationMostExpensiveSale, IsAsync=True, FallbackValue=MOST_EXPENSIVE_SALE}" MinWidth="250" FontSize="14" FontWeight="Light" 
-                                       Foreground="{StaticResource SolidColorBrush.Text.2}" VerticalAlignment="Center" />
-                            <StackPanel Orientation="Horizontal">
+                            <TextBlock Text="{Binding TranslationMostExpensiveSale, IsAsync=True, FallbackValue=MOST_EXPENSIVE_SALE}" MinWidth="250"
+                                       FontSize="14" FontWeight="Bold" Foreground="{StaticResource SolidColorBrush.Text.2}"
+                                       VerticalAlignment="Center" TextAlignment="Center" Height="21" />
+                            <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
                                 <Grid Margin="0,0, 5, 0" HorizontalAlignment="Center" VerticalAlignment="Center">
                                     <Image Source="{Binding MostExpensiveSaleItem.Item.Icon, IsAsync=True, Mode=OneWay}" Style="{StaticResource Trade.Icon}" />
                                 </Grid>
@@ -357,10 +356,11 @@
                                 </StackPanel>
                             </StackPanel>
                         </StackPanel>
-                        <StackPanel Orientation="Vertical" Margin="5,0,5,0">
-                            <TextBlock Text="{Binding TranslationMostExpensivePurchase, IsAsync=True, FallbackValue=MOST_EXPENSIVE_PURCHASE}" MinWidth="250" FontSize="14" FontWeight="Light" 
-                                       Foreground="{StaticResource SolidColorBrush.Text.2}" VerticalAlignment="Center" />
-                            <StackPanel Orientation="Horizontal">
+                        <StackPanel Orientation="Vertical" Margin="5,7,5,0">
+                            <TextBlock Text="{Binding TranslationMostExpensivePurchase, IsAsync=True, FallbackValue=MOST_EXPENSIVE_PURCHASE}" MinWidth="250"
+                                       FontSize="14" FontWeight="Bold" Foreground="{StaticResource SolidColorBrush.Text.2}"
+                                       VerticalAlignment="Center" TextAlignment="Center" Height="21" />
+                            <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
                                 <Grid Margin="0,0, 5, 0" HorizontalAlignment="Center" VerticalAlignment="Center">
                                     <Image Source="{Binding MostExpensivePurchasedItem.Item.Icon, IsAsync=True, Mode=OneWay}" Style="{StaticResource Trade.Icon}" />
                                 </Grid>
@@ -401,28 +401,32 @@
         <Grid>
             <StackPanel Orientation="Vertical" Margin="0,0,0,0">
                 <Separator Background="{StaticResource SolidColorBrush.Background.2}" Height="4" Margin="0,0,0,0" VerticalAlignment="Top"/>
-                <StackPanel>
-                    <Label Content="{Binding TranslationSettings, FallbackValue=SETTINGS}" Style="{StaticResource HeaderStyle.Tracking.Title}" Margin="2,5,0,0"
+                <StackPanel Orientation="Vertical" Margin="10,0,0,0">
+                    <Label Content="{Binding TranslationSettings, FallbackValue=SETTINGS}" Style="{StaticResource HeaderStyle.Tracking.Title}" Margin="0,5,0,0"
                            Foreground="{StaticResource SolidColorBrush.Accent.Blue.2}" />
-
-                    <CheckBox IsChecked="{Binding IsTradeMonitoringActive}" 
+                    <StackPanel Orientation="Horizontal" Margin="-3,0,0,0">
+                        <StackPanel Orientation="Vertical" Margin="0,5,5,5">
+                            <CheckBox IsChecked="{Binding IsTradeMonitoringActive}" 
                               Content="{Binding TranslationTradeMonitoringActive, FallbackValue=MAIL__MONITORING__ACTIVE}" 
-                              HorizontalContentAlignment="Left" Margin="0,2,10,0" VerticalAlignment="Top" HorizontalAlignment="Left" Width="auto" MaxWidth="250"/>
+                              HorizontalContentAlignment="Left" Margin="0,0,0,5" VerticalAlignment="Top" HorizontalAlignment="Left" MinWidth="220"/>
 
-                    <CheckBox IsChecked="{Binding IgnoreMailsWithZeroValues}" 
+                            <CheckBox IsChecked="{Binding IgnoreMailsWithZeroValues}" 
                               Content="{Binding TranslationIgnoreMailsWithZeroValues, FallbackValue=IGNORE__MAILS__WITH__ZERO__VALUES}" 
-                              HorizontalContentAlignment="Left" Margin="0,2,10,0" VerticalAlignment="Top" HorizontalAlignment="Left" Width="auto" MaxWidth="250"/>
+                              HorizontalContentAlignment="Left" Margin="0,5,0,0" VerticalAlignment="Top" HorizontalAlignment="Left" MinWidth="220"/>
+                        </StackPanel>
+                        <StackPanel Orientation="Vertical" Margin="5,0,0,5">
+                            <StackPanel Orientation="Horizontal" Margin="0,0,0,5">
+                                <TextBox Text="{Binding MarketTaxRate}" Width="25" Height="20" common:TextBoxHelper.OnlyNumeric="Double" />
+                                <Label Content="{Binding TranslationMarketTaxRate, FallbackValue=MARKET__TAX__RATE}" MinWidth="100" VerticalAlignment="Top" />
+                            </StackPanel>
 
-                    <StackPanel Orientation="Horizontal">
-                        <TextBox Text="{Binding MarketTaxRate}" Width="25" Height="20"  Margin="5,-2,0,0" common:TextBoxHelper.OnlyNumeric="Double" />
-                        <Label Content="{Binding TranslationMarketTaxRate, FallbackValue=MARKET__TAX__RATE}" MinWidth="300" VerticalAlignment="Top" />
+                            <StackPanel Orientation="Horizontal">
+                                <TextBox Text="{Binding MarketTaxSetupRate}" Width="25" Height="20" Margin="0,-2,0,0" common:TextBoxHelper.OnlyNumeric="Double" />
+                                <Label Content="{Binding TranslationMarketTaxSetupRate, FallbackValue=MARKET__TAX__SETUP__RATE}" MinWidth="100" VerticalAlignment="Top" />
+                            </StackPanel>
+                        </StackPanel>
                     </StackPanel>
-
-                    <StackPanel Orientation="Horizontal">
-                        <TextBox Text="{Binding MarketTaxSetupRate}" Width="25" Height="20"  Margin="5,-2,0,0" common:TextBoxHelper.OnlyNumeric="Double" />
-                        <Label Content="{Binding TranslationMarketTaxSetupRate, FallbackValue=MARKET__TAX__SETUP__RATE}" MinWidth="300" VerticalAlignment="Top" />
-                    </StackPanel>
-
+                    
                     <ComboBox Width="200" Height="26" Margin="0,5,0,5" ItemsSource="{Binding DeleteTradesOlderThanSpecifiedDays}" 
                               SelectedItem="{Binding DeleteTradesOlderThanSpecifiedDaysSelection, IsAsync=true}" 
                               HorizontalAlignment="Left" DisplayMemberPath="Name" SelectedValuePath="Days" />
@@ -434,7 +438,7 @@
 
     <DataTemplate x:Key="ManuallyMailMenuTemplate" DataType="{x:Type trade:ManuallyTradeMenuObject}">
         <Grid>
-            <StackPanel Orientation="Vertical" Margin="0,0,0,0">
+            <StackPanel Orientation="Vertical" Margin="10,0,0,0">
                 <Separator Background="{StaticResource SolidColorBrush.Background.2}" Height="4" Margin="0,0,0,0" VerticalAlignment="Top"/>
                 <StackPanel>
                     <Label Content="{Binding TranslationAddTradeManually, FallbackValue=ADD_TRADE_MANUALLY}" Style="{StaticResource HeaderStyle.Tracking.Title}" Margin="2,5,0,0"

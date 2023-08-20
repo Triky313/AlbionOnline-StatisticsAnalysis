@@ -528,9 +528,9 @@
 	<translation name="CHARACTER_NAME_TO_TRACK">Отслеживать по нику</translation>
 	<translation name="THIS_CHARACTER_IS_NOT_TRACKED">Этот персонаж не отслеживается</translation>
 	<translation name="DATA_FROM_ALBION_ONLINE_SERVERS">Информация взята с серверов Albion Online</translation>
-	<translation name="TODAY">За сегодня</translation>
-	<translation name="WEEK">За неделю</translation>
-	<translation name="MONTH">За месяц</translation>
+	<translation name="TODAY">Сегодня</translation>
+	<translation name="WEEK">Неделя</translation>
+	<translation name="MONTH">Месяц</translation>
 	<translation name="KILLS">Убийства</translation>
 	<translation name="SOLO_KILLS">Убийства соло</translation>
 	<translation name="DEATHS">Смерти</translation>
@@ -540,14 +540,6 @@
 	<translation name="BOUGHT">Покупка</translation>
 	<translation name="SOLD">Продажа</translation>
 	<translation name="COST_PER_ITEM">Цена за предмет</translation>
-	<translation name="SOLD_TODAY">Продано за сегодня</translation>
-	<translation name="SOLD_MONTH">Продано за месяц</translation>
-	<translation name="SOLD_YEAR">Продано за год</translation>
-	<translation name="BOUGHT_TODAY">Куплено за сегодня</translation>
-	<translation name="BOUGHT_MONTH">Куплено за месяц</translation>
-	<translation name="BOUGHT_YEAR">Куплено за год</translation>
-	<translation name="SOLD_TOTAL">Всего продано</translation>
-	<translation name="BOUGHT_TOTAL">Всего куплено</translation>
 	<translation name="SALES_TODAY">Прибыль за сегодня</translation>
 	<translation name="SALES_MONTH">Прибыль за месяц</translation>
 	<translation name="SALES_YEAR">Прибыль за год</translation>
@@ -557,16 +549,6 @@
 	<translation name="TO">с / по</translation>
 	<translation name="STORAGE_HISTORY">Хранилища</translation>
 	<translation name="BANK">Банк</translation>
-	<translation name="SOLD_THIS_WEEK">Продано за эту неделю</translation>
-	<translation name="SOLD_LAST_WEEK">Продано за прошлую неделю</translation>
-	<translation name="BOUGHT_THIS_WEEK">Куплено за эту неделю</translation>
-	<translation name="BOUGHT_LAST_WEEK">Куплено за прошлую неделю</translation>
-	<translation name="NET_PROFIT_TODAY">Прибыль за сегодня</translation>
-	<translation name="NET_PROFIT_MONTH">Прибыль за месяц</translation>
-	<translation name="NET_PROFIT_YEAR">Прибыль за год</translation>
-	<translation name="NET_PROFIT_TOTAL">Общая прибыль</translation>
-	<translation name="NET_PROFIT_THIS_WEEK">Прибыль за эту неделю</translation>
-	<translation name="NET_PROFIT_LAST_WEEK">Прибыль за прошлую неделю</translation>
 	<translation name="DELETE_SELECTED_STORAGE">Удалить выбранное хранилище</translation>
 	<translation name="SURE_YOU_WANT_TO_DELETE_SELECTED_STORAGE">Вы уверены что хотите удалить это хранилище? (Удаляет все вкладки выбранного банка)</translation>
 	<translation name="DONATIONS">Поддержать автора</translation>
@@ -588,12 +570,6 @@
 	<translation name="DEBUG_CONSOLE">Консоль отладки</translation>
 	<translation name="TOTAL_REVENUE">Общая прибыль</translation>
 	<translation name="TAX">Налог</translation>
-	<translation name="TAXES_TODAY">Налог за сегодня</translation>
-	<translation name="TAXES_THIS_WEEK">Налог за эту неделю</translation>
-	<translation name="TAXES_LAST_WEEK">Налог за прошлую неделю</translation>
-	<translation name="TAXES_MONTH">Налог за месяц</translation>
-	<translation name="TAXES_YEAR">Налог за год</translation>
-	<translation name="TAXES_TOTAL">Всего налога</translation>
 	<translation name="NOTES">Примечание</translation>
 	<translation name="UNSUPPORTED_OS">Неподдерживаемая ОС: могут возникать ошибки в работе программы.</translation>
 	<translation name="FILE_DOWNLOAD_FAILED_TEXT1">Закройте программу, перейдите в её папку и запустите файл DownloadItemJsonFilesManually.bat.</translation>
@@ -790,4 +766,6 @@
 	<translation name="HEALING_WITHOUT_OVERHEALED">Лечение без перехила</translation>
 	<translation name="MISTS_DUNGEON">Knightfall Abbey</translation>
 	<translation name="LOADING">Загрузка</translation>
+	<translation name="NET_PROFIT">Прибыль</translation>
+	<translation name="YEAR">Год</translation>
 </translations>
