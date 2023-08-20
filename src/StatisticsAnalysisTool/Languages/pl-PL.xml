@@ -540,14 +540,6 @@
 	<translation name="BOUGHT">Kupione</translation>
 	<translation name="SOLD">Sprzedane</translation>
 	<translation name="COST_PER_ITEM">Koszt</translation>
-	<translation name="SOLD_TODAY">Sprzedano dzisiaj</translation>
-	<translation name="SOLD_MONTH">Miesiąc sprzedaży</translation>
-	<translation name="SOLD_YEAR">Rok sprzedaży</translation>
-	<translation name="BOUGHT_TODAY">Kupiłem dzisiaj</translation>
-	<translation name="BOUGHT_MONTH">Miesiąc zakupów</translation>
-	<translation name="BOUGHT_YEAR">Rok zakupów</translation>
-	<translation name="SOLD_TOTAL">Sprzedane łącznie</translation>
-	<translation name="BOUGHT_TOTAL">Całkowite zakupy</translation>
 	<translation name="SALES_TODAY">Sprzedaż dzisiaj</translation>
 	<translation name="SALES_MONTH">Miesiąc sprzedaży</translation>
 	<translation name="SALES_YEAR">Rok sprzedaży</translation>
@@ -557,16 +549,6 @@
 	<translation name="TO">do</translation>
 	<translation name="STORAGE_HISTORY">Historia przechowywania</translation>
 	<translation name="BANK">Bank</translation>
-	<translation name="SOLD_THIS_WEEK">Sprzedano w tym tygodniu</translation>
-	<translation name="SOLD_LAST_WEEK">Sprzedane w zeszłym tygodniu</translation>
-	<translation name="BOUGHT_THIS_WEEK">Kupione w tym tygodniu</translation>
-	<translation name="BOUGHT_LAST_WEEK">Kupione w zeszłym tygodniu</translation>
-	<translation name="NET_PROFIT_TODAY">Zysk netto dzisiaj</translation>
-	<translation name="NET_PROFIT_MONTH">Miesiąc zysku netto</translation>
-	<translation name="NET_PROFIT_YEAR">Rok zysku netto</translation>
-	<translation name="NET_PROFIT_TOTAL">Całkowity zysk netto</translation>
-	<translation name="NET_PROFIT_THIS_WEEK">Zysk netto w tym tygodniu</translation>
-	<translation name="NET_PROFIT_LAST_WEEK">Zysk netto w zeszłym tygodniu</translation>
 	<translation name="DELETE_SELECTED_STORAGE">Usuń wybraną skrytkę</translation>
 	<translation name="SURE_YOU_WANT_TO_DELETE_SELECTED_STORAGE">Czy na pewno chcesz usunąć wybrane miejsce?</translation>
 	<translation name="DONATIONS">Darowizny</translation>
@@ -588,12 +570,6 @@
 	<translation name="DEBUG_CONSOLE">Konsola debugowania</translation>
 	<translation name="TOTAL_REVENUE">Całkowite przychody</translation>
 	<translation name="TAX">Podatek</translation>
-	<translation name="TAXES_TODAY">Podatki dzisiaj</translation>
-	<translation name="TAXES_THIS_WEEK">Podatki w tym tygodniu</translation>
-	<translation name="TAXES_LAST_WEEK">Podatki w zeszłym tygodniu</translation>
-	<translation name="TAXES_MONTH">Miesiąc podatkowy</translation>
-	<translation name="TAXES_YEAR">Rok podatkowy</translation>
-	<translation name="TAXES_TOTAL">Podatki łącznie</translation>
 	<translation name="NOTES">Notatki</translation>
 	<translation name="UNSUPPORTED_OS">Nieobsługiwany system operacyjny: mogą wystąpić błędy.</translation>
 	<translation name="FILE_DOWNLOAD_FAILED_TEXT1">Zamknij program i uruchom plik DownloadItemJsonFilesManually.bat który znajduje sie w folderze programu.</translation>
@@ -790,4 +766,6 @@
 	<translation name="HEALING_WITHOUT_OVERHEALED">Leczenie bez nadleczenia</translation>
 	<translation name="MISTS_DUNGEON">Opactwo Upadku Rycerza</translation>
 	<translation name="LOADING">Ładowanie</translation>
+	<translation name="NET_PROFIT">Zysk netto</translation>
+	<translation name="YEAR">Rok</translation>
 </translations>
