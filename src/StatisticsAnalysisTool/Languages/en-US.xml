@@ -540,14 +540,6 @@
 	<translation name="BOUGHT">Bought</translation>
 	<translation name="SOLD">Sold</translation>
 	<translation name="COST_PER_ITEM">Cost per item</translation>
-	<translation name="SOLD_TODAY">Sold today</translation>
-	<translation name="SOLD_MONTH">Sold month</translation>
-	<translation name="SOLD_YEAR">Sold year</translation>
-	<translation name="BOUGHT_TODAY">Bought today</translation>
-	<translation name="BOUGHT_MONTH">Bought month</translation>
-	<translation name="BOUGHT_YEAR">Bought year</translation>
-	<translation name="SOLD_TOTAL">Sold total</translation>
-	<translation name="BOUGHT_TOTAL">Bought total</translation>
 	<translation name="SALES_TODAY">Sales today</translation>
 	<translation name="SALES_MONTH">Sales month</translation>
 	<translation name="SALES_YEAR">Sales year</translation>
@@ -557,16 +549,6 @@
 	<translation name="TO">to</translation>
 	<translation name="STORAGE_HISTORY">Storage History</translation>
 	<translation name="BANK">Bank</translation>
-	<translation name="SOLD_THIS_WEEK">Sold this week</translation>
-	<translation name="SOLD_LAST_WEEK">Sold last week</translation>
-	<translation name="BOUGHT_THIS_WEEK">Bought this week</translation>
-	<translation name="BOUGHT_LAST_WEEK">Bought last week</translation>
-	<translation name="NET_PROFIT_TODAY">Net profit today</translation>
-	<translation name="NET_PROFIT_MONTH">Net profit month</translation>
-	<translation name="NET_PROFIT_YEAR">Net profit year</translation>
-	<translation name="NET_PROFIT_TOTAL">Net profit total</translation>
-	<translation name="NET_PROFIT_THIS_WEEK">Net profit this week</translation>
-	<translation name="NET_PROFIT_LAST_WEEK">Net profit last week</translation>
 	<translation name="DELETE_SELECTED_STORAGE">Delete selected storage</translation>
 	<translation name="SURE_YOU_WANT_TO_DELETE_SELECTED_STORAGE">Are you sure you want to delete selected storage?</translation>
 	<translation name="DONATIONS">Donations</translation>
@@ -588,12 +570,6 @@
 	<translation name="DEBUG_CONSOLE">Debug console</translation>
 	<translation name="TOTAL_REVENUE">Total revenue</translation>
 	<translation name="TAX">Tax</translation>
-	<translation name="TAXES_TODAY">Taxes today</translation>
-	<translation name="TAXES_THIS_WEEK">Taxes this week</translation>
-	<translation name="TAXES_LAST_WEEK">Taxes last week</translation>
-	<translation name="TAXES_MONTH">Taxes month</translation>
-	<translation name="TAXES_YEAR">Tax year</translation>
-	<translation name="TAXES_TOTAL">Taxes total</translation>
 	<translation name="NOTES">Notes</translation>
 	<translation name="UNSUPPORTED_OS">Unsupported OS: Errors may occur.</translation>
 	<translation name="FILE_DOWNLOAD_FAILED_TEXT1">Close the tool and double-click the DownloadItemJsonFilesManually.bat file in the tool directory.</translation>
@@ -790,4 +766,6 @@
 	<translation name="HEALING_WITHOUT_OVERHEALED">Healing without overhealed</translation>
 	<translation name="MISTS_DUNGEON">Knightfall Abbey</translation>
 	<translation name="LOADING">Loading</translation>
+	<translation name="NET_PROFIT">Net profit</translation>
+	<translation name="YEAR">Year</translation>
 </translations>
