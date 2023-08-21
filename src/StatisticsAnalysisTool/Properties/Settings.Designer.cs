@@ -61,16 +61,6 @@ namespace StatisticsAnalysisTool.Properties {
         
         [global::System.Configuration.ApplicationScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("https://raw.githubusercontent.com/ao-data/ao-bin-dumps/master/formatted/items.jso" +
-            "n")]
-        public string DefaultItemListSourceUrl {
-            get {
-                return ((string)(this["DefaultItemListSourceUrl"]));
-            }
-        }
-        
-        [global::System.Configuration.ApplicationScopedSettingAttribute()]
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.DefaultSettingValueAttribute("https://raw.githubusercontent.com/Triky313/AlbionOnline-StatisticsAnalysis/main/s" +
             "rc/StatisticsAnalysisTool/ao-update-check.xml")]
         public string AutoUpdateConfigUrl {
@@ -229,18 +219,6 @@ namespace StatisticsAnalysisTool.Properties {
             }
             set {
                 this["ItemSpriteToJournalFileName"] = value;
-            }
-        }
-        
-        [global::System.Configuration.UserScopedSettingAttribute()]
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("https://raw.githubusercontent.com/ao-data/ao-bin-dumps/master/items.json")]
-        public string DefaultItemsJsonSourceUrl {
-            get {
-                return ((string)(this["DefaultItemsJsonSourceUrl"]));
-            }
-            set {
-                this["DefaultItemsJsonSourceUrl"] = value;
             }
         }
         
