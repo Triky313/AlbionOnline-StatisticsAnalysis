@@ -540,14 +540,6 @@
 	<translation name="BOUGHT">Acheté</translation>
 	<translation name="SOLD">Vendu</translation>
 	<translation name="COST_PER_ITEM">Coût par objet</translation>
-	<translation name="SOLD_TODAY">Vendu aujourd'hui</translation>
-	<translation name="SOLD_MONTH">Vendu ce mois-ci</translation>
-	<translation name="SOLD_YEAR">Vendu cette année</translation>
-	<translation name="BOUGHT_TODAY">Acheté aujourd'hui</translation>
-	<translation name="BOUGHT_MONTH">Acheté ce mois-ci</translation>
-	<translation name="BOUGHT_YEAR">Acheté cette année</translation>
-	<translation name="SOLD_TOTAL">Total vendu</translation>
-	<translation name="BOUGHT_TOTAL">Total acheté</translation>
 	<translation name="SALES_TODAY">Ventes aujourd'hui</translation>
 	<translation name="SALES_MONTH">Ventes ce mois-ci</translation>
 	<translation name="SALES_YEAR">Ventes cette année</translation>
@@ -557,16 +549,6 @@
 	<translation name="TO">AU</translation>
 	<translation name="STORAGE_HISTORY">Historique de stockage</translation>
 	<translation name="BANK">Banque</translation>
-	<translation name="SOLD_THIS_WEEK">Vendu cette semaine</translation>
-	<translation name="SOLD_LAST_WEEK">Vendu la semaine dernière</translation>
-	<translation name="BOUGHT_THIS_WEEK">Acheté cette semaine</translation>
-	<translation name="BOUGHT_LAST_WEEK">Acheté la semaine dernière</translation>
-	<translation name="NET_PROFIT_TODAY">Profit Net aujourd'hui</translation>
-	<translation name="NET_PROFIT_MONTH">Profit Net ce mois-ci</translation>
-	<translation name="NET_PROFIT_YEAR">Profit Net cette année</translation>
-	<translation name="NET_PROFIT_TOTAL">Profit Net total</translation>
-	<translation name="NET_PROFIT_THIS_WEEK">Profit Net cette semaine</translation>
-	<translation name="NET_PROFIT_LAST_WEEK">Profit Net la semaine dernière</translation>
 	<translation name="DELETE_SELECTED_STORAGE">Supprimer le stockage sélectionné</translation>
 	<translation name="SURE_YOU_WANT_TO_DELETE_SELECTED_STORAGE">Voulez-vous vraiment supprimer l'espace de stockage sélectionné ?</translation>
 	<translation name="DONATIONS">Dons</translation>
@@ -588,12 +570,6 @@
 	<translation name="DEBUG_CONSOLE">Console de débogage</translation>
 	<translation name="TOTAL_REVENUE">Revenu total</translation>
 	<translation name="TAX">Taxe</translation>
-	<translation name="TAXES_TODAY">Taxes aujourd'hui</translation>
-	<translation name="TAXES_THIS_WEEK">Taxes cette semaine</translation>
-	<translation name="TAXES_LAST_WEEK">Taxes la semaine dernière</translation>
-	<translation name="TAXES_MONTH">Taxes ce mois-ci</translation>
-	<translation name="TAXES_YEAR">Tax cette année</translation>
-	<translation name="TAXES_TOTAL">Taxes total</translation>
 	<translation name="NOTES">Notes</translation>
 	<translation name="UNSUPPORTED_OS">Système d'exploitation non pris en charge : des erreurs peuvent survenir.</translation>
 	<translation name="FILE_DOWNLOAD_FAILED_TEXT1">Fermez le logiciel et double-cliquez sur le fichier DownloadItemJsonFilesManually.bat dans le répertoire de l'exécutable.</translation>
@@ -789,4 +765,7 @@
 	<translation name="OVERHEALED_PERCENTAGE_OF_TOTAL_HEALING">Pourcentage de soin excessif par rapport au soin totale</translation>
 	<translation name="HEALING_WITHOUT_OVERHEALED">Soin sans soin excessif</translation>
 	<translation name="MISTS_DUNGEON">Knightfall Abbey</translation>
+	<translation name="LOADING">Chargement</translation>
+	<translation name="NET_PROFIT">Profit net</translation>
+	<translation name="YEAR">Année</translation>
 </translations>
