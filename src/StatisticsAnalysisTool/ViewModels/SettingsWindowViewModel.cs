@@ -40,7 +40,6 @@ public class SettingsWindowViewModel : BaseViewModel
     private ObservableCollection<SettingDataInformation> _maximumNumberOfBackups = new();
     private bool _isSuggestPreReleaseUpdatesActive;
     private string _mainTrackingCharacterName;
-    private bool _shortDamageMeterToClipboard;
     private ObservableCollection<TabVisibilityFilter> _tabVisibilities = new();
     private SettingDataInformation _serverSelection;
     private ObservableCollection<SettingDataInformation> _server = new();
@@ -92,7 +91,7 @@ public class SettingsWindowViewModel : BaseViewModel
 
         // Auto update
         IsSuggestPreReleaseUpdatesActive = SettingsController.CurrentSettings.IsSuggestPreReleaseUpdatesActive;
-        
+
         // Item window
         IsOpenItemWindowInNewWindowChecked = SettingsController.CurrentSettings.IsOpenItemWindowInNewWindowChecked;
 
