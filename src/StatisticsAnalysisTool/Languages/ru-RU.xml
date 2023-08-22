@@ -3,7 +3,6 @@
 <translations>
 	<translation name="LANGUAGE">Язык</translation>
 	<translation name="REFRESH_RATE">Частота обновления цен предметов</translation>
-	<translation name="UPDATE_ITEM_LIST_BY_DAYS">Частота обновления items.json: </translation>
 	<translation name="SETTINGS">Настройки</translation>
 	<translation name="SAVE">Сохранить</translation>
 	<translation name="CITY">Город</translation>
@@ -55,8 +54,6 @@
 	<translation name="5_MINUTES">Каждые 5 минут</translation>
 	<translation name="MIN_PROFIT_TOOLTIP">Определяет минимальную прибыль, которую должен получить элемент.</translation>
 	<translation name="REMOVE">Удалить</translation>
-	<translation name="ITEM_LIST_SOURCE_URL">Ссылка на файл ItemList.json</translation>
-	<translation name="ITEM_LIST_CAN_NOT_BE_LOADED">Невозможно загрузить ItemList.json.</translation>
 	<translation name="ERROR">Ошибка</translation>
 	<translation name="NOTE">Примечание</translation>
 	<translation name="DEFAULT_ITEMLIST_HAS_BEEN_LOADED">Загружен список предметов по умолчанию.</translation>
@@ -424,7 +421,6 @@
 	<translation name="OPEN_EXTENDED_DAMAGE_METER_WINDOW">Открыть отдельное окно DPS метра</translation>
 	<translation name="COPY_TO_CLIPBOARD">Скопировать в буфер обмена</translation>
 	<translation name="MAP_HISTORY">История перемещений</translation>
-	<translation name="TRY_DOWNLOADING_THE_ITEM_LIST_AGAIN">Попробуйте загрузить ItemList.json еще раз</translation>
 	<translation name="DAMAGE_METER_ON_OFF">Счетчик урона - Вкл./Выкл.</translation>
 	<translation name="TRACKER_ON_OFF">Трекер - Вкл./Выкл.</translation>
 	<translation name="DELETE_SELECTED_DUNGEONS">Удалить выбранные подземелья</translation>
@@ -496,14 +492,10 @@
 	<translation name="USAGE_FEE_PER_HUNDRED_FOOD">Налог за 100 единиц еды</translation>
 	<translation name="SHOW_LOOT_FROM_MOBS">Показывать лут с мобов</translation>
 	<translation name="TRACKING_MOB_LOOT">Отслеживать лут с мобов</translation>
-	<translation name="ITEMS_JSON_SOURCE_URL">Ссылка на источник для Items.json</translation>
-	<translation name="UPDATE_ITEMS_JSON_BY_DAYS">Обновлять Items.json: </translation>
 	<translation name="SHOP_CATEGORY">Категория рынка</translation>
 	<translation name="SHOP_SUB_CATEGORY">Подкатегория рынка</translation>
 	<translation name="CAN_BE_OVERCHARGED">Возможность сверхусиления</translation>
 	<translation name="WAR_GLOVES">Боевые перчатки</translation>
-	<translation name="TRY_DOWNLOADING_THE_ITEM_JSON_AGAIN">Попробуйте скачать Item.json снова</translation>
-	<translation name="ITEM_JSON_CAN_NOT_BE_LOADED">Невозможно загрузить Item.json.</translation>
 	<translation name="SUGGEST_PRE_RELEASE_UPDATES">Предлагать тестовые версии</translation>
 	<translation name="ATTENTION_THESE_VERSION_ARE_STILL_BEING_TESTED">ВНИМАНИЕ! Данные версии все еще тестируются и могут содержать баги!</translation>
 	<translation name="DUNGEON_RESPEC">Свободки за данж</translation>
@@ -523,8 +515,6 @@
 	<translation name="WAS_KILLED_BY">убит</translation>
 	<translation name="SHOW_KILLS">Показать убийства</translation>
 	<translation name="TOOL_TASKS">Требования</translation>
-	<translation name="GET_ITEM_LIST_JSON">Получение ItemList.json</translation>
-	<translation name="GET_ITEMS_JSON">Получение Items.json</translation>
 	<translation name="CHARACTER_NAME_TO_TRACK">Отслеживать по нику</translation>
 	<translation name="THIS_CHARACTER_IS_NOT_TRACKED">Этот персонаж не отслеживается</translation>
 	<translation name="DATA_FROM_ALBION_ONLINE_SERVERS">Информация взята с серверов Albion Online</translation>
@@ -572,8 +562,6 @@
 	<translation name="TAX">Налог</translation>
 	<translation name="NOTES">Примечание</translation>
 	<translation name="UNSUPPORTED_OS">Неподдерживаемая ОС: могут возникать ошибки в работе программы.</translation>
-	<translation name="FILE_DOWNLOAD_FAILED_TEXT1">Закройте программу, перейдите в её папку и запустите файл DownloadItemJsonFilesManually.bat.</translation>
-	<translation name="THEN_RESTART_THE_TOOL">Затем перезапустите приложение.</translation>
 	<translation name="OR">ИЛИ</translation>
 	<translation name="COPY_SHORT_DAMAGE_METER_TO_THE_CLIPBOARD">Упрощенное копирование DPS (для чатов)</translation>
 	<translation name="LOCATION">Локация</translation>
@@ -638,10 +626,6 @@
 	<translation name="THANK_YOU">Спасибо вам!</translation>
 	<translation name="DUNGEON_CLOSED_SOUND_ACTIVE">Звук при закрытии подземелья</translation>
 	<translation name="TOTAL_PRICE_WITH_DEDUCTED_TAXES">Общая цена с налогами</translation>
-	<translation name="UPDATE_MOBS_JSON_BY_DAYS">Частота обновления mobs.json:</translation>
-	<translation name="MOBS_JSON_SOURCE_URL">Ссылка на файл mobs.json</translation>
-	<translation name="GET_MOBS_JSON">Получение mobs.json</translation>
-	<translation name="MOBS_JSON_CAN_NOT_BE_LOADED">Невозможно загрузить mobs.json.</translation>
 	<translation name="INSTANT_SELL">Продажа</translation>
 	<translation name="INSTANT_BUY">Покупка</translation>
 	<translation name="TRADE_MONITORING_ACTIVE">Отслеживание обменов</translation>
@@ -722,13 +706,7 @@
 	<translation name="PLAYER_SELECTION_WITH_SAME_NAME_IN_DB">Выбор игрока с таким же именем в БД</translation>
 	<translation name="UPDATE_NOW">Обновить сейчас</translation>
 	<translation name="DAMAGE_METER_DESCRIPTION_2">Если DPS метр неправильно отображает используемое оружие, то это связано с устаревшими файлами ItemsList.json и Items.json. Вручную удалите эти файлы из папки программы и перезапустите ее, тогда последняя версия файлов будет загружена автоматически и все должно работать как обычно</translation>
-	<translation name="GET_WORLD_JSON">Получение world.json</translation>
-	<translation name="WORLD_JSON_CAN_NOT_BE_LOADED">Невозможно загрузить world.json.</translation>
-	<translation name="UPDATE_WORLD_JSON_BY_DAYS">Частота обновления world.json: </translation>
-	<translation name="WORLD_JSON_SOURCE_URL">Ссылка на файл world.json</translation>
 	<translation name="PARTY_BUILDER">Конструктор групп</translation>
-	<translation name="GET_SPELLS_JSON">Получение spells.json</translation>
-	<translation name="SPELLS_JSON_CAN_NOT_BE_LOADED">Невозможно загрузить spells.json.</translation>
 	<translation name="CONDITIONS">Условия</translation>
 	<translation name="DESCRIPTIONS">Обозначения</translation>
 	<translation name="MINIMAL_ITEM_POWER">Минимальный IP</translation>
@@ -742,8 +720,6 @@
 	<translation name="PARTY_INFORMATION">Информация о команде</translation>
 	<translation name="AVERAGE_IP">Средний IP</translation>
 	<translation name="AVERAGE_BIP">Средний базовый IP</translation>
-	<translation name="SPELLS_JSON_SOURCE_URL">Ссылка на файл spells.json</translation>
-	<translation name="UPDATE_SPELLS_JSON_BY_DAYS">Частота обновления spells.json: </translation>
 	<translation name="BACKUP_CREATED">Создание резервной копии</translation>
 	<translation name="A_BACKUP_HAS_BEEN_CREATED">Резервная копия создана успешно</translation>
 	<translation name="BACKUP_INTERVAL">Частота создания резервных копий</translation>

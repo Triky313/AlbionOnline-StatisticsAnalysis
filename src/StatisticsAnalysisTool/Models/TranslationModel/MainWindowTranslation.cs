@@ -57,8 +57,6 @@ public class MainWindowTranslation
     public static string OpenExtendedDamageMeterWindow => LanguageController.Translation("OPEN_EXTENDED_DAMAGE_METER_WINDOW");
     public static string CopyToClipboard => LanguageController.Translation("COPY_TO_CLIPBOARD");
     public static string MapHistory => LanguageController.Translation("MAP_HISTORY");
-    public static string TryDownloadingTheItemListAgain => LanguageController.Translation("TRY_DOWNLOADING_THE_ITEM_LIST_AGAIN");
-    public static string TryDownloadingTheItemJsonAgain => LanguageController.Translation("TRY_DOWNLOADING_THE_ITEM_JSON_AGAIN");
     public static string DamageMeterOnOff => LanguageController.Translation("DAMAGE_METER_ON_OFF");
     public static string DeleteSelectedDungeons => LanguageController.Translation("DELETE_SELECTED_DUNGEONS");
     public static string DeleteZeroFameDungeons => LanguageController.Translation("DELETE_ZERO_FAME_DUNGEONS");
@@ -105,7 +103,6 @@ public class MainWindowTranslation
     public static string Thanks => LanguageController.Translation("THANKS");
     public static string UnsupportedOs => LanguageController.Translation("UNSUPPORTED_OS");
     public static string OpenToolDirectory => LanguageController.Translation("OPEN_TOOL_DIRECTORY");
-    public static string ThenRestartTheTool => LanguageController.Translation("THEN_RESTART_THE_TOOL");
     public static string Or => LanguageController.Translation("OR");
     public static string SelectDeselectAll => LanguageController.Translation("SELECT_DESELECT_ALL");
     public static string Gathering => LanguageController.Translation("GATHERING");
