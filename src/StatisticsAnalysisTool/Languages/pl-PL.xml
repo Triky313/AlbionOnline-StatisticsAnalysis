@@ -3,7 +3,6 @@
 <translations>
 	<translation name="LANGUAGE">Język</translation>
 	<translation name="REFRESH_RATE">Częstotliwość odświeżania</translation>
-	<translation name="UPDATE_ITEM_LIST_BY_DAYS">Aktualizuj listę przedmiotów według dni: </translation>
 	<translation name="SETTINGS">Ustawienia</translation>
 	<translation name="SAVE">Zapisz</translation>
 	<translation name="CITY">Miasto</translation>
@@ -55,8 +54,6 @@
 	<translation name="5_MINUTES">5 minut</translation>
 	<translation name="MIN_PROFIT_TOOLTIP">Określa minimalny zysk, jaki powinien wygenerować przedmiot.</translation>
 	<translation name="REMOVE">Usuń</translation>
-	<translation name="ITEM_LIST_SOURCE_URL">Źródłowy URL listy produktów</translation>
-	<translation name="ITEM_LIST_CAN_NOT_BE_LOADED">Nie można załadować listy przedmiotów.</translation>
 	<translation name="ERROR">Błąd</translation>
 	<translation name="NOTE">Uwaga</translation>
 	<translation name="DEFAULT_ITEMLIST_HAS_BEEN_LOADED">Załadowano domyślną listę przedmiotów.</translation>
@@ -424,7 +421,6 @@
 	<translation name="OPEN_EXTENDED_DAMAGE_METER_WINDOW">Otwórz rozszerzone okno zadanych obrażeń</translation>
 	<translation name="COPY_TO_CLIPBOARD">Skopiuj do schowka</translation>
 	<translation name="MAP_HISTORY">Historia mapy</translation>
-	<translation name="TRY_DOWNLOADING_THE_ITEM_LIST_AGAIN">Spróbuj ponownie pobrać listę produktów</translation>
 	<translation name="DAMAGE_METER_ON_OFF">Zadane Obrażenia - WŁ./WYŁ.</translation>
 	<translation name="TRACKER_ON_OFF">Tracker – WŁ./WYŁ.</translation>
 	<translation name="DELETE_SELECTED_DUNGEONS">Usuń wybrane lochy</translation>
@@ -496,14 +492,10 @@
 	<translation name="USAGE_FEE_PER_HUNDRED_FOOD">Opłata za użytkowanie za 100 posiłków</translation>
 	<translation name="SHOW_LOOT_FROM_MOBS">Pokaż łupy z mobów</translation>
 	<translation name="TRACKING_MOB_LOOT">Śledzenie łupów mobów</translation>
-	<translation name="ITEMS_JSON_SOURCE_URL">źródłowy URL Items.json</translation>
-	<translation name="UPDATE_ITEMS_JSON_BY_DAYS">Aktualizuj items.json według dni: </translation>
 	<translation name="SHOP_CATEGORY">Kategoria sklepu</translation>
 	<translation name="SHOP_SUB_CATEGORY">Podkategoria sklepu</translation>
 	<translation name="CAN_BE_OVERCHARGED">Może być przeładowany</translation>
 	<translation name="WAR_GLOVES">Rękawice wojenne</translation>
-	<translation name="TRY_DOWNLOADING_THE_ITEM_JSON_AGAIN">Spróbuj ponownie pobrać plik Item.json</translation>
-	<translation name="ITEM_JSON_CAN_NOT_BE_LOADED">Nie można załadować Item.json.</translation>
 	<translation name="SUGGEST_PRE_RELEASE_UPDATES">Zaproponuj przedpremierowe aktualizacje</translation>
 	<translation name="ATTENTION_THESE_VERSION_ARE_STILL_BEING_TESTED">UWAGA! Te wersje są nadal testowane</translation>
 	<translation name="DUNGEON_RESPEC">Bitewne kredyty</translation>
@@ -523,8 +515,6 @@
 	<translation name="WAS_KILLED_BY">został zabity przez</translation>
 	<translation name="SHOW_KILLS">Pokaż zabójstwa</translation>
 	<translation name="TOOL_TASKS">Zadania narzędziowe</translation>
-	<translation name="GET_ITEM_LIST_JSON">Pobierz ItemList.json</translation>
-	<translation name="GET_ITEMS_JSON">Pobierz Items.json</translation>
 	<translation name="CHARACTER_NAME_TO_TRACK">Nazwa postaci do śledzenia</translation>
 	<translation name="THIS_CHARACTER_IS_NOT_TRACKED">Ta postać nie jest śledzona</translation>
 	<translation name="DATA_FROM_ALBION_ONLINE_SERVERS">Dane z serwerów Albion Online</translation>
@@ -572,8 +562,6 @@
 	<translation name="TAX">Podatek</translation>
 	<translation name="NOTES">Notatki</translation>
 	<translation name="UNSUPPORTED_OS">Nieobsługiwany system operacyjny: mogą wystąpić błędy.</translation>
-	<translation name="FILE_DOWNLOAD_FAILED_TEXT1">Zamknij program i uruchom plik DownloadItemJsonFilesManually.bat który znajduje sie w folderze programu.</translation>
-	<translation name="THEN_RESTART_THE_TOOL">Następnie uruchom ponownie narzędzie.</translation>
 	<translation name="OR">LUB</translation>
 	<translation name="COPY_SHORT_DAMAGE_METER_TO_THE_CLIPBOARD">Skopiuj krótki wskaźnik zadanych obrażeń do schowka</translation>
 	<translation name="LOCATION">Lokalizacja</translation>
@@ -638,10 +626,6 @@
 	<translation name="THANK_YOU">Dziękuję tobie</translation>
 	<translation name="DUNGEON_CLOSED_SOUND_ACTIVE">Dzwięk zamykania lochu</translation>
 	<translation name="TOTAL_PRICE_WITH_DEDUCTED_TAXES">Cena całkowita z odliczonym podatkiem</translation>
-	<translation name="UPDATE_MOBS_JSON_BY_DAYS">Aktualizuj plik mobs.json według dni</translation>
-	<translation name="MOBS_JSON_SOURCE_URL">adres URL źródła mobs.json</translation>
-	<translation name="GET_MOBS_JSON">Pobierz plik mobs.json</translation>
-	<translation name="MOBS_JSON_CAN_NOT_BE_LOADED">nie można załadować pliku mobs.json</translation>
 	<translation name="INSTANT_SELL">Natychmiastowa sprzedaż</translation>
 	<translation name="INSTANT_BUY">Natychmiastowy zakup</translation>
 	<translation name="TRADE_MONITORING_ACTIVE">Monitorowanie transakcji aktywne</translation>
@@ -722,13 +706,7 @@
 	<translation name="PLAYER_SELECTION_WITH_SAME_NAME_IN_DB">Wybór gracza o takiej samej nazwie w bazie danych</translation>
 	<translation name="UPDATE_NOW">Zaktualizuj teraz</translation>
 	<translation name="DAMAGE_METER_DESCRIPTION_2">Jeśli w Damage Meter nie wyświetlają się właściwe bronie, zazwyczaj jest to spowodowane nieaktualnymi plikami ItemList.json i Items.json. Ręcznie usuń pliki z folderu narzędzia i uruchom je ponownie, wówczas zostanie pobrana najnowsza wersja plików i wszystko powinno działać normalnie.</translation>	
-	<translation name="GET_WORLD_JSON">Pobierz world.json</translation>
-	<translation name="WORLD_JSON_CAN_NOT_BE_LOADED">Nie można załadować pliku world.json.</translation>
-	<translation name="UPDATE_WORLD_JSON_BY_DAYS">Zaktualizuj world.json  wedłóg dni:</translation>
-	<translation name="WORLD_JSON_SOURCE_URL">Adres URL źródła world.json</translation>
 	<translation name="PARTY_BUILDER">Kreator Grup</translation>
-	<translation name="GET_SPELLS_JSON">Pobierz spells.json</translation>
-	<translation name="SPELLS_JSON_CAN_NOT_BE_LOADED">Nie można załadować pliku spells.json.</translation>	
 	<translation name="CONDITIONS">Warunki</translation>
 	<translation name="DESCRIPTIONS">Opisy</translation>
 	<translation name="MINIMAL_ITEM_POWER">Minimalna siła przedmiotu</translation>
@@ -742,8 +720,6 @@
 	<translation name="PARTY_INFORMATION">Informacje o grupie</translation>
 	<translation name="AVERAGE_IP">Śr. siła przedmiotu (IP)</translation>
 	<translation name="AVERAGE_BIP">Śr. podstawowa siła (BIP)</translation>	
-	<translation name="SPELLS_JSON_SOURCE_URL">Adres URL źródła spells.json</translation>
-	<translation name="UPDATE_SPELLS_JSON_BY_DAYS">Zaktualizuj spells.json wedłóg dni:</translation>
 	<translation name="BACKUP_CREATED">Utworzono kopię zapasową</translation>
 	<translation name="A_BACKUP_HAS_BEEN_CREATED">Utworzono kopię zapasową</translation>
 	<translation name="BACKUP_INTERVAL">Jak często ma być wykonywana</translation>
