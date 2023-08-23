@@ -11,12 +11,15 @@ using StatisticsAnalysisTool.Views;
 using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using System.Reflection;
 using System.Text;
 using System.Text.Json;
 using System.Text.Json.Serialization;
 using System.Threading.Tasks;
 using System.Windows;
+using StatisticsAnalysisTool.Dungeon;
+using StatisticsAnalysisTool.Dungeon.Models;
 
 namespace StatisticsAnalysisTool.GameFileData;
 
@@ -113,14 +116,20 @@ public static class GameData
             }
 
             toolLoadingWindowViewModel.ProgressBarValue = 50;
+            if (Extractor.IsBinFileNewer(Path.Combine(gameFilesDirPath, "mists-modified.json"), mainGameFolderPath, ServerType.Live, "mists"))
+            {
+                fileNamesToLoad.Add("mists");
+            }
+
+            toolLoadingWindowViewModel.ProgressBarValue = 60;
             await extractor.ExtractGameDataAsync(tempDirPath, fileNamesToLoad.ToArray());
             extractor.Dispose();
 
             await ItemController.LoadIndexedItemsDataAsync();
-            toolLoadingWindowViewModel.ProgressBarValue = 60;
             await ItemController.LoadItemsDataAsync();
             toolLoadingWindowViewModel.ProgressBarValue = 70;
             await MobsData.LoadDataAsync();
+            await MistsData.LoadDataAsync();
             toolLoadingWindowViewModel.ProgressBarValue = 80;
             await WorldData.LoadDataAsync();
             toolLoadingWindowViewModel.ProgressBarValue = 90;
@@ -205,13 +214,20 @@ public static class GameData
 
             var localString = File.ReadAllText(localFilePath, Encoding.UTF8);
             var rootObject = JsonSerializer.Deserialize<TRoot>(localString, options);
-
+            
             return rootObject switch
             {
                 MobJsonRootObject mobRootObject => mobRootObject.Mobs?.Mob as List<T> ?? new List<T>(),
                 LootChestRoot lootChestRoot => lootChestRoot.LootChests?.LootChest as List<T> ?? new List<T>(),
-                WorldJsonRootObject worldJsonRoot => worldJsonRoot.World.Clusters.Cluster as List<T> ?? new List<T>(),
-                SpellsJsonRootObject spellsJsonRoot => spellsJsonRoot.SpellsJson.ActiveSpells as List<T> ?? new List<T>(),
+                WorldJsonRootObject worldJsonRoot => worldJsonRoot.World?.Clusters?.Cluster as List<T> ?? new List<T>(),
+                SpellsJsonRootObject spellsJsonRoot => spellsJsonRoot.SpellsJson?.ActiveSpells as List<T> ?? new List<T>(),
+                MistsJsonRootObject mistsJsonRoot => mistsJsonRoot.Mists?.MistsMaps?.MapSet?.SelectMany(x => x.Map).Select(map => new MistsJsonObject
+                {
+                    Id = map.Id,
+                    TemplatePool = map.TemplatePool,
+                    ClusterTier = map.ClusterTier,
+                    SubBiome = map.SubBiome
+                }).ToList() as List<T> ?? new List<T>(),
                 _ => new List<T>()
             };
         }

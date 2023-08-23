@@ -125,7 +125,7 @@
     <Setting Name="UserDataDirectoryName" Type="System.String" Scope="User">
       <Value Profile="(Default)">UserData</Value>
     </Setting>
-    <Setting Name="GatheringFileName" Type="System.String" Scope="User">
+    <Setting Name="GatheringFileName" Type="System.String" Scope="Application">
       <Value Profile="(Default)">Gathering.json</Value>
     </Setting>
     <Setting Name="ModifiedMobDataFileName" Type="System.String" Scope="Application">
@@ -140,7 +140,7 @@
     <Setting Name="ModifiedWorldDataFileName" Type="System.String" Scope="Application">
       <Value Profile="(Default)">world-modified.json</Value>
     </Setting>
-    <Setting Name="SpellDataFileName" Type="System.String" Scope="User">
+    <Setting Name="SpellDataFileName" Type="System.String" Scope="Application">
       <Value Profile="(Default)">spells.json</Value>
     </Setting>
     <Setting Name="ModifiedSpellDataFileName" Type="System.String" Scope="User">
@@ -151,6 +151,12 @@
     </Setting>
     <Setting Name="BackupDirectoryName" Type="System.String" Scope="Application">
       <Value Profile="(Default)">Backups</Value>
+    </Setting>
+    <Setting Name="MistsDataFileName" Type="System.String" Scope="Application">
+      <Value Profile="(Default)">mists.json</Value>
+    </Setting>
+    <Setting Name="ModifiedMistsDataFileName" Type="System.String" Scope="Application">
+      <Value Profile="(Default)">mists-modified.json</Value>
     </Setting>
   </Settings>
 </SettingsFile>

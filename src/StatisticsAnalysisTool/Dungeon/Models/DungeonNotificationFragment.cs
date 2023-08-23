@@ -3,8 +3,6 @@ using StatisticsAnalysisTool.Enumerations;
 using StatisticsAnalysisTool.EventLogging.Notification;
 using StatisticsAnalysisTool.GameFileData;
 using StatisticsAnalysisTool.Models;
-using StatisticsAnalysisTool.Models.NetworkModel;
-using StatisticsAnalysisTool.Network.Notification;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -14,8 +12,9 @@ using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Threading;
 
-namespace StatisticsAnalysisTool.Dungeon;
+namespace StatisticsAnalysisTool.Dungeon.Models;
 
+[Obsolete]
 public class DungeonNotificationFragment : LineFragment
 {
     private bool _diedInDungeon;
@@ -112,7 +111,7 @@ public class DungeonNotificationFragment : LineFragment
         _ = UpdateDungeonLootAsync(dungeonObject.DungeonLoot.ToAsyncEnumerable());
     }
 
-    private void UpdateChests(IEnumerable<DungeonEventObject> dungeonEventObjects)
+    private void UpdateChests(IEnumerable<DungeonEvent> dungeonEventObjects)
     {
         foreach (var dungeonEventObject in dungeonEventObjects.ToList())
         {
@@ -121,10 +120,10 @@ public class DungeonNotificationFragment : LineFragment
             if (dungeon != null)
             {
                 dungeon.IsBossChest = dungeonEventObject.IsBossChest;
-                dungeon.IsChestOpen = dungeonEventObject.IsOpen;
+                //dungeon.IsChestOpen = dungeonEventObject.IsOpen;
                 dungeon.Opened = dungeonEventObject.Opened;
                 dungeon.Rarity = dungeonEventObject.Rarity;
-                dungeon.Type = dungeonEventObject.ObjectType;
+                //dungeon.Type = dungeonEventObject.ObjectType;
                 dungeon.UniqueName = dungeonEventObject.UniqueName;
                 dungeon.ShrineType = dungeonEventObject.ShrineType;
                 dungeon.ShrineBuff = dungeonEventObject.ShrineBuff;
@@ -137,10 +136,10 @@ public class DungeonNotificationFragment : LineFragment
                     {
                         Id = dungeonEventObject.Id,
                         IsBossChest = dungeonEventObject.IsBossChest,
-                        IsChestOpen = dungeonEventObject.IsOpen,
+                        //IsChestOpen = dungeonEventObject.IsOpen,
                         Opened = dungeonEventObject.Opened,
                         Rarity = dungeonEventObject.Rarity,
-                        Type = dungeonEventObject.ObjectType,
+                        //Type = dungeonEventObject.ObjectType,
                         UniqueName = dungeonEventObject.UniqueName,
                         ShrineType = dungeonEventObject.ShrineType,
                         ShrineBuff = dungeonEventObject.ShrineBuff
@@ -150,7 +149,7 @@ public class DungeonNotificationFragment : LineFragment
         }
     }
 
-    public async Task UpdateDungeonLootAsync(IAsyncEnumerable<DungeonLoot> dungeonLoot)
+    public async Task UpdateDungeonLootAsync(IAsyncEnumerable<Loot> dungeonLoot)
     {
         foreach (var loot in await dungeonLoot.ToListAsync().ConfigureAwait(false))
         {
@@ -207,6 +206,7 @@ public class DungeonNotificationFragment : LineFragment
 
         return tierString;
     }
+
     // Flat-Map: 16% (green), .1-Map 36% (blue), .2-Map 58% (purple), .3-Map 84% (gold)
     private static string SetLevelString(int level)
     {
@@ -486,7 +486,7 @@ public class DungeonNotificationFragment : LineFragment
         private set
         {
             _fame = value;
-            FamePerHour = Utilities.GetValuePerHourToDouble(Fame, TotalRunTimeInSeconds <= 0 ? (DateTime.UtcNow - EnterDungeonFirstTime).Seconds : TotalRunTimeInSeconds);
+            //FamePerHour = Utilities.GetValuePerHourToDouble(Fame, TotalRunTimeInSeconds <= 0 ? (DateTime.UtcNow - EnterDungeonFirstTime).Seconds : TotalRunTimeInSeconds);
             OnPropertyChanged();
         }
     }
@@ -497,7 +497,7 @@ public class DungeonNotificationFragment : LineFragment
         private set
         {
             _reSpec = value;
-            ReSpecPerHour = Utilities.GetValuePerHourToDouble(ReSpec, TotalRunTimeInSeconds <= 0 ? (DateTime.UtcNow - EnterDungeonFirstTime).Seconds : TotalRunTimeInSeconds);
+            //ReSpecPerHour = Utilities.GetValuePerHourToDouble(ReSpec, TotalRunTimeInSeconds <= 0 ? (DateTime.UtcNow - EnterDungeonFirstTime).Seconds : TotalRunTimeInSeconds);
             OnPropertyChanged();
         }
     }
@@ -508,7 +508,7 @@ public class DungeonNotificationFragment : LineFragment
         private set
         {
             _silver = value;
-            SilverPerHour = Utilities.GetValuePerHourToDouble(Silver, TotalRunTimeInSeconds <= 0 ? (DateTime.UtcNow - EnterDungeonFirstTime).Seconds : TotalRunTimeInSeconds);
+            //SilverPerHour = Utilities.GetValuePerHourToDouble(Silver, TotalRunTimeInSeconds <= 0 ? (DateTime.UtcNow - EnterDungeonFirstTime).Seconds : TotalRunTimeInSeconds);
             OnPropertyChanged();
         }
     }
@@ -519,7 +519,7 @@ public class DungeonNotificationFragment : LineFragment
         private set
         {
             _factionFlags = value;
-            FactionFlagsPerHour = Utilities.GetValuePerHourToDouble(FactionFlags, TotalRunTimeInSeconds <= 0 ? (DateTime.UtcNow - EnterDungeonFirstTime).Seconds : TotalRunTimeInSeconds);
+            //FactionFlagsPerHour = Utilities.GetValuePerHourToDouble(FactionFlags, TotalRunTimeInSeconds <= 0 ? (DateTime.UtcNow - EnterDungeonFirstTime).Seconds : TotalRunTimeInSeconds);
             OnPropertyChanged();
         }
     }
@@ -530,7 +530,7 @@ public class DungeonNotificationFragment : LineFragment
         private set
         {
             _factionCoins = value;
-            FactionCoinsPerHour = Utilities.GetValuePerHourToDouble(FactionCoins, TotalRunTimeInSeconds <= 0 ? (DateTime.UtcNow - EnterDungeonFirstTime).Seconds : TotalRunTimeInSeconds);
+            //FactionCoinsPerHour = Utilities.GetValuePerHourToDouble(FactionCoins, TotalRunTimeInSeconds <= 0 ? (DateTime.UtcNow - EnterDungeonFirstTime).Seconds : TotalRunTimeInSeconds);
 
             if (FactionCoins > 0 && IsFactionWarfareVisible == Visibility.Collapsed && IsMightFavorVisible == Visibility.Collapsed)
             {
@@ -583,7 +583,7 @@ public class DungeonNotificationFragment : LineFragment
         private set
         {
             _might = value;
-            MightPerHour = Utilities.GetValuePerHourToDouble(Might, TotalRunTimeInSeconds <= 0 ? (DateTime.UtcNow - EnterDungeonFirstTime).Seconds : TotalRunTimeInSeconds);
+            //MightPerHour = Utilities.GetValuePerHourToDouble(Might, TotalRunTimeInSeconds <= 0 ? (DateTime.UtcNow - EnterDungeonFirstTime).Seconds : TotalRunTimeInSeconds);
 
             if (Might > 0 && IsMightFavorVisible != Visibility.Visible)
             {
@@ -601,7 +601,7 @@ public class DungeonNotificationFragment : LineFragment
         private set
         {
             _favor = value;
-            FavorPerHour = Utilities.GetValuePerHourToDouble(Favor, TotalRunTimeInSeconds <= 0 ? (DateTime.UtcNow - EnterDungeonFirstTime).Seconds : TotalRunTimeInSeconds);
+            //FavorPerHour = Utilities.GetValuePerHourToDouble(Favor, TotalRunTimeInSeconds <= 0 ? (DateTime.UtcNow - EnterDungeonFirstTime).Seconds : TotalRunTimeInSeconds);
 
             if (Favor > 0 && IsMightFavorVisible != Visibility.Visible)
             {

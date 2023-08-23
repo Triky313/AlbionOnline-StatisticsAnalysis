@@ -2,12 +2,11 @@
 using StatisticsAnalysisTool.Common.Comparer;
 using StatisticsAnalysisTool.Common.UserSettings;
 using StatisticsAnalysisTool.Dungeon;
+using StatisticsAnalysisTool.Dungeon.Models;
 using StatisticsAnalysisTool.Enumerations;
-using StatisticsAnalysisTool.Models.NetworkModel;
 using StatisticsAnalysisTool.Models.TranslationModel;
 using StatisticsAnalysisTool.ViewModels;
 using System.Collections.Generic;
-using System.Collections.ObjectModel;
 using System.Windows;
 using System.Windows.Data;
 
@@ -15,7 +14,7 @@ namespace StatisticsAnalysisTool.Models.BindingModel;
 
 public class DungeonBindings : BaseViewModel
 {
-    private ObservableCollection<DungeonNotificationFragment> _trackingDungeons = new();
+    private ObservableRangeCollection<DungeonBaseFragment> _dungeons = new();
     private ListCollectionView _dungeonsCollectionView;
     private DungeonCloseTimer _dungeonCloseTimer = new();
     private DungeonStatsFilter _dungeonStatsFilter;
@@ -30,9 +29,9 @@ public class DungeonBindings : BaseViewModel
     private DungeonStats _dungeonStatsSelection;
     private DungeonOptionsObject _dungeonOptionsObject = new();
 
-    public DungeonBindings()
+    public void InitListCollectionView()
     {
-        DungeonsCollectionView = CollectionViewSource.GetDefaultView(TrackingDungeons) as ListCollectionView;
+        DungeonsCollectionView = CollectionViewSource.GetDefaultView(Dungeons) as ListCollectionView;
         if (DungeonsCollectionView != null)
         {
             DungeonsCollectionView.IsLiveSorting = true;
@@ -42,12 +41,12 @@ public class DungeonBindings : BaseViewModel
         }
     }
 
-    public ObservableCollection<DungeonNotificationFragment> TrackingDungeons
+    public ObservableRangeCollection<DungeonBaseFragment> Dungeons
     {
-        get => _trackingDungeons;
+        get => _dungeons;
         set
         {
-            _trackingDungeons = value;
+            _dungeons = value;
             OnPropertyChanged();
         }
     }

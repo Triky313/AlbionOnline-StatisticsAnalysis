@@ -3,7 +3,7 @@
 public enum TreasureRarity
 {
     Unknown,
-    Standard,
+    Common,
     Uncommon,
     Rare,
     Legendary

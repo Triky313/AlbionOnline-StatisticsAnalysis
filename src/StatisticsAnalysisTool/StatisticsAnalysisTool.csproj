@@ -391,6 +391,12 @@
     <Resource Include="Resources\might.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Resource>
+    <Resource Include="Resources\mists_banner.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Resources\mists_dungeon_banner.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Resource>
     <Resource Include="Resources\skull.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Resource>
@@ -662,6 +668,8 @@
     <None Remove="Resources\favor.png" />
     <None Remove="Resources\icon_daily_season_points.png" />
     <None Remove="Resources\might.png" />
+    <None Remove="Resources\mists_banner.png" />
+    <None Remove="Resources\mists_dungeon_banner.png" />
     <None Remove="Resources\skull.png" />
     <None Remove="Sounds\alert1.wav" />
     <None Remove="Sounds\alert2.wav" />

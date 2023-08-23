@@ -1,4 +1,5 @@
 ﻿using StatisticsAnalysisTool.Common;
+using StatisticsAnalysisTool.Dungeon.Models;
 using StatisticsAnalysisTool.ViewModels;
 
 namespace StatisticsAnalysisTool.Models;
@@ -30,7 +31,7 @@ public class DungeonStats : BaseViewModel
     private double _mightPerHour;
     private double _favorPerHour;
     private int _dungeonRunTimeTotal;
-    private DungeonLoot _bestLootedItem;
+    private Loot _bestLootedItem;
     private double _lootInSilver;
     private double _lootInSilverPerHour;
     private double _lootInSilverAverage;
@@ -142,7 +143,7 @@ public class DungeonStats : BaseViewModel
         {
             _fame = value;
             FameAverage = (_fame / EnteredDungeon).ToShortNumber(99999999.99);
-            FamePerHour = Utilities.GetValuePerHourToDouble(Fame, _dungeonRunTimeTotal);
+            FamePerHour = value.GetValuePerHour(_dungeonRunTimeTotal);
             OnPropertyChanged();
         }
     }
@@ -154,7 +155,7 @@ public class DungeonStats : BaseViewModel
         {
             _reSpec = value;
             ReSpecAverage = (_reSpec / EnteredDungeon).ToShortNumber(99999999.99);
-            ReSpecPerHour = Utilities.GetValuePerHourToDouble(ReSpec, _dungeonRunTimeTotal);
+            ReSpecPerHour = value.GetValuePerHour(_dungeonRunTimeTotal);
             OnPropertyChanged();
         }
     }
@@ -166,7 +167,7 @@ public class DungeonStats : BaseViewModel
         {
             _silver = value;
             SilverAverage = (_silver / EnteredDungeon).ToShortNumber(99999999.99);
-            SilverPerHour = Utilities.GetValuePerHourToDouble(Silver, _dungeonRunTimeTotal);
+            SilverPerHour = value.GetValuePerHour(_dungeonRunTimeTotal);
             OnPropertyChanged();
         }
     }
@@ -178,7 +179,7 @@ public class DungeonStats : BaseViewModel
         {
             _might = value;
             MightAverage = (_might / EnteredDungeon).ToShortNumber(99999999.99);
-            MightPerHour = Utilities.GetValuePerHourToDouble(Might, _dungeonRunTimeTotal);
+            MightPerHour = value.GetValuePerHour(_dungeonRunTimeTotal);
             OnPropertyChanged();
         }
     }
@@ -190,7 +191,7 @@ public class DungeonStats : BaseViewModel
         {
             _favor = value;
             FavorAverage = (_favor / EnteredDungeon).ToShortNumber(99999999.99);
-            FavorPerHour = Utilities.GetValuePerHourToDouble(Favor, _dungeonRunTimeTotal);
+            FavorPerHour = value.GetValuePerHour(_dungeonRunTimeTotal);
             OnPropertyChanged();
         }
     }
@@ -202,7 +203,7 @@ public class DungeonStats : BaseViewModel
         {
             _lootInSilver = value;
             LootInSilverAverage = (_lootInSilver / EnteredDungeon).ToShortNumber(99999999.99);
-            LootInSilverPerHour = Utilities.GetValuePerHourToDouble(LootInSilver, _dungeonRunTimeTotal);
+            LootInSilverPerHour = value.GetValuePerHour(_dungeonRunTimeTotal);
             OnPropertyChanged();
         }
     }
@@ -307,7 +308,7 @@ public class DungeonStats : BaseViewModel
         }
     }
 
-    public DungeonLoot BestLootedItem
+    public Loot BestLootedItem
     {
         get => _bestLootedItem;
         set

@@ -1,10 +1,11 @@
 ﻿using StatisticsAnalysisTool.Common;
+using StatisticsAnalysisTool.Models;
 using System;
 using System.Text.Json.Serialization;
 
-namespace StatisticsAnalysisTool.Models;
+namespace StatisticsAnalysisTool.Dungeon.Models;
 
-public class DungeonLoot
+public class Loot
 {
     public string UniqueName { get; set; }
     public DateTime UtcDiscoveryTime { get; set; }
@@ -12,7 +13,7 @@ public class DungeonLoot
     public long EstimatedMarketValueInternal { get; set; }
     [JsonIgnore]
     public Item Item => ItemController.GetItemByUniqueName(UniqueName);
-    [JsonIgnore] 
+    [JsonIgnore]
     public FixPoint EstimatedMarketValue => FixPoint.FromInternalValue(EstimatedMarketValueInternal);
     [JsonIgnore]
     public string Hash => $"{UniqueName}{UtcDiscoveryTime.Ticks}{Quantity}{EstimatedMarketValueInternal}";

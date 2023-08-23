@@ -8,7 +8,7 @@ using System.Windows;
 using System.Windows.Input;
 using System.Windows.Threading;
 
-namespace StatisticsAnalysisTool.Models.NetworkModel;
+namespace StatisticsAnalysisTool.Dungeon;
 
 public class DungeonCloseTimer : BaseViewModel
 {

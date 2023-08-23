@@ -1,4 +1,4 @@
-﻿namespace StatisticsAnalysisTool.Enumerations;
+﻿namespace StatisticsAnalysisTool.Dungeon;
 
 public enum Faction
 {
@@ -9,5 +9,7 @@ public enum Faction
     Heretic,
     Avalon,
     HellGate,
-    Corrupted
+    Corrupted,
+    Mists,
+    MistsDungeon
 }

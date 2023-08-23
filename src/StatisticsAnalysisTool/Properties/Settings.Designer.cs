@@ -459,15 +459,12 @@ namespace StatisticsAnalysisTool.Properties {
             }
         }
         
-        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Configuration.ApplicationScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.DefaultSettingValueAttribute("Gathering.json")]
         public string GatheringFileName {
             get {
                 return ((string)(this["GatheringFileName"]));
-            }
-            set {
-                this["GatheringFileName"] = value;
             }
         }
         
@@ -510,15 +507,12 @@ namespace StatisticsAnalysisTool.Properties {
             }
         }
         
-        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Configuration.ApplicationScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.DefaultSettingValueAttribute("spells.json")]
         public string SpellDataFileName {
             get {
                 return ((string)(this["SpellDataFileName"]));
-            }
-            set {
-                this["SpellDataFileName"] = value;
             }
         }
         
@@ -549,6 +543,24 @@ namespace StatisticsAnalysisTool.Properties {
         public string BackupDirectoryName {
             get {
                 return ((string)(this["BackupDirectoryName"]));
+            }
+        }
+        
+        [global::System.Configuration.ApplicationScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("mists.json")]
+        public string MistsDataFileName {
+            get {
+                return ((string)(this["MistsDataFileName"]));
+            }
+        }
+        
+        [global::System.Configuration.ApplicationScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("mists-modified.json")]
+        public string ModifiedMistsDataFileName {
+            get {
+                return ((string)(this["ModifiedMistsDataFileName"]));
             }
         }
     }

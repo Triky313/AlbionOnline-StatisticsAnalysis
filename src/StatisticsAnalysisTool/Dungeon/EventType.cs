@@ -1,6 +1,6 @@
-﻿namespace StatisticsAnalysisTool.Enumerations;
+﻿namespace StatisticsAnalysisTool.Dungeon;
 
-public enum DungeonEventObjectType
+public enum EventType
 {
     Unknown,
     Chest,

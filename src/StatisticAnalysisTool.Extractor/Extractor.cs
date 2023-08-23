@@ -87,11 +87,13 @@ public class Extractor
         var itemsBinFilePath = Path.Combine(ExtractorUtilities.GetBinFilePath(mainGameFolderPath), "items.bin");
         var mobsBinFilePath = Path.Combine(ExtractorUtilities.GetBinFilePath(mainGameFolderPath), "mobs.bin");
         var spellsBinFilePath = Path.Combine(ExtractorUtilities.GetBinFilePath(mainGameFolderPath), "spells.bin");
+        var mistsBinFilePath = Path.Combine(ExtractorUtilities.GetBinFilePath(mainGameFolderPath), "mists.bin");
         var worldBinFilePath = Path.Combine(ExtractorUtilities.GetBinFilePath(mainGameFolderPath), "cluster", "world.bin");
 
         return File.Exists(itemsBinFilePath)
                && File.Exists(mobsBinFilePath)
                && File.Exists(spellsBinFilePath)
+               && File.Exists(mistsBinFilePath)
                && File.Exists(worldBinFilePath);
     }
 

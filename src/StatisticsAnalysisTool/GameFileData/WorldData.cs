@@ -1,6 +1,5 @@
 using StatisticsAnalysisTool.Cluster;
 using StatisticsAnalysisTool.Common;
-using StatisticsAnalysisTool.Common.UserSettings;
 using StatisticsAnalysisTool.Enumerations;
 using StatisticsAnalysisTool.GameFileData.Models;
 using StatisticsAnalysisTool.Properties;
@@ -173,12 +172,7 @@ public static class WorldData
     {
         return MapData?.FirstOrDefault(x => x.Index == index)?.File;
     }
-
-    public static bool IsDataLoaded()
-    {
-        return MapData?.Count > 0;
-    }
-
+    
     public static async Task<bool> LoadDataAsync()
     {
         var data = await GameData.LoadDataAsync<WorldJsonObject, WorldJsonRootObject>(

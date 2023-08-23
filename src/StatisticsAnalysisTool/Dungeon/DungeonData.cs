@@ -4,7 +4,7 @@ using System.Reflection;
 
 namespace StatisticsAnalysisTool.Dungeon;
 
-public static class DungeonObjectData
+public static class DungeonData
 {
     public static DungeonMode GetDungeonMode(string value)
     {
@@ -99,34 +99,34 @@ public static class DungeonObjectData
         return Faction.Unknown;
     }
 
-    public static DungeonEventObjectType GetDungeonEventObjectType(string value)
+    public static EventType GetDungeonEventType(string value)
     {
         if (value.Contains("SHRINE_COMBAT"))
         {
-            return DungeonEventObjectType.CombatShrine;
+            return EventType.CombatShrine;
         }
 
         if (value.Contains("SHRINE_SILVER"))
         {
-            return DungeonEventObjectType.SilverShrine;
+            return EventType.SilverShrine;
         }
 
         if (value.Contains("SHRINE_FAME"))
         {
-            return DungeonEventObjectType.FameShrine;
+            return EventType.FameShrine;
         }
 
         if (value.Contains("BOOKCHEST"))
         {
-            return DungeonEventObjectType.BookChest;
+            return EventType.BookChest;
         }
 
         if (value.Contains("CHEST") || value.Contains("AVALON") || value.Contains("HELL_STD_PVP") || value.Contains("HELL_HRD_PVP") || value.Contains("HELL_STD_PVE") || value.Contains("HELL_HRD_PVE"))
         {
-            return DungeonEventObjectType.Chest;
+            return EventType.Chest;
         }
 
-        return DungeonEventObjectType.Unknown;
+        return EventType.Unknown;
     }
 
     #region Chest
@@ -138,7 +138,7 @@ public static class DungeonObjectData
             || value.Contains("CHEST_BOSS_HALLOWEEN_STANDARD")
             || value.Contains("AVALON") && value.Contains("STANDARD"))
         {
-            return TreasureRarity.Standard;
+            return TreasureRarity.Common;
         }
 
         if (value.Contains("BOOKCHEST_UNCOMMON")

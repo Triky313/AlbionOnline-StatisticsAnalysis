@@ -24,6 +24,8 @@ public class DungeonStatsFilter : BaseViewModel
             DungeonMode.HellGate,
             DungeonMode.Expedition,
             DungeonMode.Corrupted,
+            DungeonMode.Mists,
+            DungeonMode.MistsDungeon,
             DungeonMode.Unknown
         };
     private bool? _isTierUnknown = true;
@@ -172,8 +174,6 @@ public class DungeonStatsFilter : BaseViewModel
         {
             RemoveDungeonMode(dungeonMode);
         }
-
-        _trackingController?.DungeonController?.SetOrUpdateDungeonsDataUiAsync();
     }
 
     private void AddDungeonMode(DungeonMode dungeonMode)
@@ -315,8 +315,6 @@ public class DungeonStatsFilter : BaseViewModel
         {
             RemoveTier(tier);
         }
-
-        _trackingController?.DungeonController?.SetOrUpdateDungeonsDataUiAsync();
     }
 
     private void AddTier(Tier tier)
@@ -425,8 +423,6 @@ public class DungeonStatsFilter : BaseViewModel
         {
             RemoveTier(level);
         }
-
-        _trackingController?.DungeonController?.SetOrUpdateDungeonsDataUiAsync();
     }
 
     private void AddTier(ItemLevel level)

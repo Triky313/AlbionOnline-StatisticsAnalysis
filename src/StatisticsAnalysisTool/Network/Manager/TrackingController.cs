@@ -114,7 +114,6 @@ public class TrackingController : ITrackingController
         DungeonController?.UpdateDungeonStatsUi();
         DungeonController?.SetDungeonStatsUi();
         DungeonController?.UpdateDungeonChestsUi();
-        DungeonController?.SetOrUpdateDungeonsDataUiAsync();
 
         ClusterController?.RegisterEvents();
         LootController?.RegisterEvents();

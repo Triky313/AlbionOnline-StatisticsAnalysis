@@ -14,7 +14,7 @@ public class RemoveDungeonButtonClick : ICommand
     public void Execute(object parameter)
     {
         var trackingController = ServiceLocator.Resolve<TrackingController>();
-        trackingController?.DungeonController?.RemoveDungeonAsync((string) parameter);
+        trackingController?.DungeonController?.RemoveDungeon((string) parameter);
     }
 
     public event EventHandler CanExecuteChanged

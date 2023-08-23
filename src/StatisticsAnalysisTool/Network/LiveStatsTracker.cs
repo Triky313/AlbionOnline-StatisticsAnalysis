@@ -203,20 +203,22 @@ public class LiveStatsTracker
         _mainWindowViewModel.DashboardBindings.TotalGainedFavorInSession = _totalGainedFavorInSession;
         _mainWindowViewModel.DashboardBindings.TotalSilverCostForReSpecInSession = _totalPaidSilverForReSpecInSession;
 
+        var totalSeconds = (DateTime.UtcNow - _startTime).TotalSeconds;
+
         var factionPointStat = _mainWindowViewModel.FactionPointStats.FirstOrDefault();
         if (factionPointStat != null)
         {
             factionPointStat.CityFaction = _currentCityFaction;
-            factionPointStat.ValuePerHour = Utilities.GetValuePerHourToDouble(_factionPointsPerHourValue, (DateTime.UtcNow - _startTime).TotalSeconds);
+            factionPointStat.ValuePerHour = _factionPointsPerHourValue.GetValuePerHour(totalSeconds);
             factionPointStat.Value = _totalGainedFactionPointsInSession;
         }
 
-        _mainWindowViewModel.DashboardBindings.FamePerHour = Utilities.GetValuePerHourToDouble(_famePerHourValue, (DateTime.UtcNow - _startTime).TotalSeconds);
-        _mainWindowViewModel.DashboardBindings.ReSpecPointsPerHour = Utilities.GetValuePerHourToDouble(_reSpecPerHourValue, (DateTime.UtcNow - _startTime).TotalSeconds);
-        _mainWindowViewModel.DashboardBindings.SilverPerHour = Utilities.GetValuePerHourToDouble(_silverPerHourValue, (DateTime.UtcNow - _startTime).TotalSeconds);
-        _mainWindowViewModel.DashboardBindings.MightPerHour = Utilities.GetValuePerHourToDouble(_mightPerHourValue, (DateTime.UtcNow - _startTime).TotalSeconds);
-        _mainWindowViewModel.DashboardBindings.FavorPerHour = Utilities.GetValuePerHourToDouble(_favorPerHourValue, (DateTime.UtcNow - _startTime).TotalSeconds);
-        _mainWindowViewModel.DashboardBindings.SilverCostForReSpecHour = Utilities.GetValuePerHourToDouble(_paidSilverForReSpecPerHourValue, (DateTime.UtcNow - _startTime).TotalSeconds);
+        _mainWindowViewModel.DashboardBindings.FamePerHour = _famePerHourValue.GetValuePerHour(totalSeconds);
+        _mainWindowViewModel.DashboardBindings.ReSpecPointsPerHour = _reSpecPerHourValue.GetValuePerHour(totalSeconds);
+        _mainWindowViewModel.DashboardBindings.SilverPerHour = _silverPerHourValue.GetValuePerHour(totalSeconds);
+        _mainWindowViewModel.DashboardBindings.MightPerHour = _mightPerHourValue.GetValuePerHour(totalSeconds);
+        _mainWindowViewModel.DashboardBindings.FavorPerHour = _favorPerHourValue.GetValuePerHour(totalSeconds);
+        _mainWindowViewModel.DashboardBindings.SilverCostForReSpecHour = _paidSilverForReSpecPerHourValue.GetValuePerHour(totalSeconds);
 
         var duration = _startTime - DateTime.UtcNow;
         _mainWindowViewModel.MainTrackerTimer = duration.ToString("hh\\:mm\\:ss");

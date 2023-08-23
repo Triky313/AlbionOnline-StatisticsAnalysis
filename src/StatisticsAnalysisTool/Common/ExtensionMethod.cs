@@ -59,6 +59,19 @@ public static class ExtensionMethod
         return (status ?? false).BoolToVisibility();
     }
 
+    public static double GetValuePerHour(this double value, double seconds)
+    {
+        try
+        {
+            var hours = seconds / 60d / 60d;
+            return value / hours;
+        }
+        catch (OverflowException)
+        {
+            return double.MaxValue;
+        }
+    }
+
     #region Object to
 
     public static Guid? ObjectToGuid(this object value)
