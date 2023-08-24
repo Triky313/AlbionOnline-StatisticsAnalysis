@@ -178,12 +178,12 @@ public class RandomDungeonFragment : DungeonBaseFragment
 
     private void UpdateValueVisibility()
     {
-        if (Favor is > 0 or > 0 && IsMightFavorVisible != Visibility.Visible)
+        if ((Favor > 0 || Might > 0) && IsMightFavorVisible != Visibility.Visible)
         {
             IsMightFavorVisible = Visibility.Visible;
             IsFactionWarfareVisible = Visibility.Collapsed;
         }
-        else if (FactionCoins > 0 && IsFactionWarfareVisible == Visibility.Collapsed)
+        else if (FactionCoins > 0 && IsFactionWarfareVisible != Visibility.Visible)
         {
             IsMightFavorVisible = Visibility.Collapsed;
             IsFactionWarfareVisible = Visibility.Visible;

@@ -108,7 +108,6 @@ public class DungeonController
         {
             var lastDungeon = GetDungeon(_lastMapGuid);
             lastDungeon.EndTimer();
-            lastDungeon.EndTimer();
             lastDungeon.Status = DungeonStatus.Done;
             await SaveInFileAfterExceedingLimit(NumberOfDungeonsUntilSaved);
             _lastGuidWithRecognizedLevel = new ObservableCollection<Guid>();
@@ -133,11 +132,11 @@ public class DungeonController
         DungeonBaseFragment newDungeon = mapType switch
         {
             MapType.RandomDungeon => new RandomDungeonFragment((Guid) guid, mapType, dungeonMode, mainMapIndex),
-            MapType.CorruptedDungeon => new CorruptedFragment((Guid) guid, mapType, dungeonMode, mainMapIndex),
-            MapType.HellGate => new HellGateFragment((Guid) guid, mapType, dungeonMode, mainMapIndex),
-            MapType.Expedition => new ExpeditionFragment((Guid) guid, mapType, dungeonMode, mainMapIndex),
-            MapType.Mists => new MistsFragment((Guid) guid, mapType, dungeonMode, mainMapIndex),
-            MapType.MistsDungeon => new MistsDungeonFragment((Guid) guid, mapType, dungeonMode, mainMapIndex),
+            MapType.CorruptedDungeon => new CorruptedFragment((Guid) guid, mapType, DungeonMode.Corrupted, mainMapIndex),
+            MapType.HellGate => new HellGateFragment((Guid) guid, mapType, DungeonMode.HellGate, mainMapIndex),
+            MapType.Expedition => new ExpeditionFragment((Guid) guid, mapType, DungeonMode.Expedition, mainMapIndex),
+            MapType.Mists => new MistsFragment((Guid) guid, mapType, DungeonMode.Mists, mainMapIndex),
+            MapType.MistsDungeon => new MistsDungeonFragment((Guid) guid, mapType, DungeonMode.MistsDungeon, mainMapIndex),
             _ => null
         };
 

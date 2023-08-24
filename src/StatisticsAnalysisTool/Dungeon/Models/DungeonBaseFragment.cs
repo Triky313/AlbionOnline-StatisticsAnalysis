@@ -44,6 +44,7 @@ public abstract class DungeonBaseFragment : BaseViewModel
 
     protected DungeonBaseFragment(Guid guid, MapType mapType, DungeonMode mode, string mainMapIndex)
     {
+        AddTimer(DateTime.UtcNow);
         GuidList = new ObservableCollection<Guid>() { guid };
         MapType = mapType;
         Mode = mode;
@@ -56,7 +57,6 @@ public abstract class DungeonBaseFragment : BaseViewModel
     protected DungeonBaseFragment(DungeonDto dto)
     {
         GuidList = new ObservableCollection<Guid>(dto.GuidList);
-        AddTimer(new DateTime());
         MapType = dto.MapType;
         Mode = dto.Mode;
         Faction = dto.Faction;
@@ -352,6 +352,16 @@ public abstract class DungeonBaseFragment : BaseViewModel
         TotalValue = Silver + lootValue;
     }
 
+    public void SetTier(Tier tier)
+    {
+        if ((int) tier <= (int) Tier)
+        {
+            return;
+        }
+
+        Tier = tier;
+    }
+
     public void AddTimer(DateTime time)
     {
         if (DungeonRunTimes.Any(x => x.EndTime == null))
@@ -381,16 +391,6 @@ public abstract class DungeonBaseFragment : BaseViewModel
             dun.EndTime = dateTime;
             SetTotalRunTimeInSeconds();
         }
-    }
-
-    public void SetTier(Tier tier)
-    {
-        if ((int) tier <= (int) Tier)
-        {
-            return;
-        }
-
-        Tier = tier;
     }
 
     private void SetTotalRunTimeInSeconds()
