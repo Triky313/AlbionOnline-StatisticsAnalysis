@@ -10,6 +10,7 @@ namespace StatisticsAnalysisTool.Dungeon.Models;
 
 public class RandomDungeonFragment : DungeonBaseFragment
 {
+    private int _level = -1;
     private double _might;
     private double _favor;
     private double _factionCoins;
@@ -20,6 +21,7 @@ public class RandomDungeonFragment : DungeonBaseFragment
     private Visibility _isMightFavorVisible = Visibility.Collapsed;
     private double _mightPerHour;
     private double _favorPerHour;
+    private string _levelString = "?";
 
     public RandomDungeonFragment(Guid guid, MapType mapType, DungeonMode mode, string mainMapIndex) : base(guid, mapType, mode, mainMapIndex)
     {
@@ -29,6 +31,7 @@ public class RandomDungeonFragment : DungeonBaseFragment
 
     public RandomDungeonFragment(DungeonDto dto) : base(dto)
     {
+        Level = dto.Level;
         Might = dto.Might;
         Favor = dto.Favor;
         FactionCoins = dto.FactionCoins;
@@ -36,6 +39,17 @@ public class RandomDungeonFragment : DungeonBaseFragment
         CityFaction = dto.CityFaction;
 
         GuidList.CollectionChanged += UpdateGuids;
+    }
+
+    public int Level
+    {
+        get => _level;
+        set
+        {
+            _level = value;
+            LevelString = SetLevelString(_level);
+            OnPropertyChanged();
+        }
     }
 
     public double Might
@@ -145,6 +159,16 @@ public class RandomDungeonFragment : DungeonBaseFragment
         }
     }
 
+    public string LevelString
+    {
+        get => _levelString;
+        private set
+        {
+            _levelString = value;
+            OnPropertyChanged();
+        }
+    }
+
     #endregion
 
     private void UpdateGuids(object sender, NotifyCollectionChangedEventArgs e)
@@ -165,7 +189,23 @@ public class RandomDungeonFragment : DungeonBaseFragment
             IsFactionWarfareVisible = Visibility.Visible;
         }
     }
-    
+
+    // Flat-Map: 16% (green), .1-Map 36% (blue), .2-Map 58% (purple), .3-Map 84% (gold)
+    private static string SetLevelString(int level)
+    {
+        var levelString = level switch
+        {
+            0 => string.Empty,
+            1 => ".0",
+            2 => ".1",
+            3 => ".2",
+            4 => ".3",
+            _ => ".?"
+        };
+
+        return levelString;
+    }
+
     public void Add(double value, ValueType type, CityFaction cityFaction = CityFaction.Unknown)
     {
         switch (type)

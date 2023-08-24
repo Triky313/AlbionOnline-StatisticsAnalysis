@@ -7,7 +7,6 @@ using StatisticsAnalysisTool.ViewModels;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.Collections.Specialized;
 using System.Linq;
 using System.Windows;
 
@@ -22,7 +21,6 @@ public abstract class DungeonBaseFragment : BaseViewModel
     private DateTime _enterDungeonFirstTime;
     private DungeonMode _mode = DungeonMode.Unknown;
     private Tier _tier = Tier.Unknown;
-    private int _level = -1;
     private string _mainMapName;
     private bool? _isSelectedForDeletion = false;
     private double _fame;
@@ -30,7 +28,7 @@ public abstract class DungeonBaseFragment : BaseViewModel
     private double _silver;
     private List<TimeCollectObject> _dungeonRunTimes = new();
     private int _totalRunTimeInSeconds;
-    private ObservableCollection<DungeonEvent> _events = new ();
+    private ObservableCollection<DungeonEvent> _events = new();
     private ObservableCollection<Loot> _loot = new();
     private string _diedName;
     private string _killedBy;
@@ -66,15 +64,12 @@ public abstract class DungeonBaseFragment : BaseViewModel
         Visibility = Visibility.Visible;
         EnterDungeonFirstTime = dto.EnterDungeonFirstTime;
         Tier = dto.Tier;
-        Level = dto.Level;
         Fame = dto.Fame;
         Silver = dto.Silver;
         ReSpec = dto.ReSpec;
         TotalRunTimeInSeconds = dto.TotalRunTimeInSeconds;
         Events = new ObservableCollection<DungeonEvent>(dto.Events.Select(DungeonMapping.Mapping));
         Loot = new ObservableCollection<Loot>(dto.Loot.Select(DungeonMapping.Mapping));
-
-        Loot.CollectionChanged += UpdateLoot;
     }
 
     public int Count
@@ -158,16 +153,6 @@ public abstract class DungeonBaseFragment : BaseViewModel
         }
     }
 
-    public int Level
-    {
-        get => _level;
-        set
-        {
-            _level = value;
-            OnPropertyChanged();
-        }
-    }
-
     public string MainMapIndex
     {
         get => _mainMapIndex;
@@ -218,7 +203,7 @@ public abstract class DungeonBaseFragment : BaseViewModel
         {
             _silver = value;
             SilverPerHour = value.GetValuePerHour(TotalRunTimeInSeconds <= 0 ? (DateTime.UtcNow - EnterDungeonFirstTime).Seconds : TotalRunTimeInSeconds);
-            UpdateLoot(null, null);
+            UpdateTotalValue();
             OnPropertyChanged();
         }
     }
@@ -360,44 +345,11 @@ public abstract class DungeonBaseFragment : BaseViewModel
     }
 
     #endregion
-
-    private void UpdateLoot(object sender, NotifyCollectionChangedEventArgs e)
+    
+    public void UpdateTotalValue()
     {
-        var lootValue = Loot?.Sum(x => FixPoint.FromInternalValue(x?.EstimatedMarketValueInternal ?? 0).DoubleValue) ?? 0;
+        var lootValue = Loot?.Sum(x => x.Quantity * FixPoint.FromInternalValue(x.EstimatedMarketValueInternal).DoubleValue) ?? 0;
         TotalValue = Silver + lootValue;
-    }
-
-    public static string SetTierString(Tier tier)
-    {
-        var tierString = tier switch
-        {
-            Tier.T1 => "T1",
-            Tier.T2 => "T2",
-            Tier.T3 => "T3",
-            Tier.T4 => "T4",
-            Tier.T5 => "T5",
-            Tier.T6 => "T6",
-            Tier.T7 => "T7",
-            Tier.T8 => "T8",
-            _ => "T?"
-        };
-
-        return tierString;
-    }
-
-    public static string SetLevelString(int level)
-    {
-        var levelString = level switch
-        {
-            0 => "",
-            1 => ".0",
-            2 => ".1",
-            3 => ".2",
-            4 => ".3",
-            _ => ".?"
-        };
-
-        return levelString;
     }
 
     public void AddTimer(DateTime time)

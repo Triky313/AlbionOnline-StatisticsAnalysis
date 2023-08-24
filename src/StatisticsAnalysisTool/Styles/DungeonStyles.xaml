@@ -691,7 +691,6 @@
                     </Style>
                 </Image.Style>
             </Image>
-
             <Image Source="../Assets/gem_level2.png" Height="11" Width="11" Margin="0,0,-5,0">
                 <Image.Style>
                     <Style TargetType="Image">
@@ -867,9 +866,9 @@
                         <StackPanel Orientation="Vertical" VerticalAlignment="Center" HorizontalAlignment="Center">
                             <TextBlock Style="{StaticResource Fragment.TierLevel}">
                                 <TextBlock.Text>
-                                    <MultiBinding StringFormat="{}{0}.{1}">
-                                        <Binding Path="Tier" FallbackValue="?" Converter="{StaticResource EnumToIntOrQuestionMarkConverter}" />
-                                        <Binding Path="Level" FallbackValue="?" Converter="{StaticResource IntToStringOrQuestionMarkConverter}" />
+                                    <MultiBinding StringFormat="{}T{0}{1}">
+                                        <Binding Path="Tier" FallbackValue="?" Converter="{StaticResource EnumToIntOrQuestionMarkConverter}" IsAsync="True" />
+                                        <Binding Path="LevelString" FallbackValue="?" IsAsync="True" />
                                     </MultiBinding>
                                 </TextBlock.Text>
                             </TextBlock>
@@ -973,10 +972,7 @@
                                     <Label Content="{Binding SilverPerHour, Converter={StaticResource ShortNumberConverter}, ConverterCulture={x:Static glob:CultureInfo.CurrentCulture}, IsAsync=True, FallbackValue=-}" 
                                    ContentStringFormat="{}{0:N0}/h" Foreground="{StaticResource SolidColorBrush.Text.1}" VerticalAlignment="Center" Margin="0 0 10 0" MinWidth="85">
                                         <Label.ToolTip>
-                                            <ToolTip 
-                                                Content="{Binding SilverPerHour}"
-                                                ContentStringFormat="{}{0:N0}/h"
-                                            />
+                                            <ToolTip Content="{Binding SilverPerHour}" ContentStringFormat="{}{0:N0}/h" />
                                         </Label.ToolTip>
                                     </Label>
                                 </StackPanel>

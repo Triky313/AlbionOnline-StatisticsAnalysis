@@ -13,7 +13,6 @@ public class DungeonMapping
             MapType = dungeon.MapType,
             GuidList = dungeon.GuidList.ToList(),
             Tier = dungeon.Tier,
-            Level = dungeon.Level,
             Faction = dungeon.Faction,
             EnterDungeonFirstTime = dungeon.EnterDungeonFirstTime,
             TotalRunTimeInSeconds = dungeon.TotalRunTimeInSeconds,
@@ -29,6 +28,7 @@ public class DungeonMapping
 
         if (dungeon is RandomDungeonFragment randomDungeon)
         {
+            dto.Level = randomDungeon.Level;
             dto.CityFaction = randomDungeon.CityFaction;
             dto.FactionCoins = randomDungeon.FactionCoins;
             dto.FactionFlags = randomDungeon.FactionFlags;
