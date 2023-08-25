@@ -8,13 +8,13 @@
 	<translation name="SAVE">Sauver</translation>
 	<translation name="CITY">Ville</translation>
 	<translation name="SELL_PRICE_MIN">Prix de vente MIN</translation>
-	<translation name="SELL_PRICE_MIN_DATE">Prix de vente MIN Dt</translation>
+	<translation name="SELL_PRICE_MIN_DATE">Date (vente MIN)</translation>
 	<translation name="SELL_PRICE_MAX">Prix de vente MAX</translation>
-	<translation name="SELL_PRICE_MAX_DATE">Prix de vente MAX Dt</translation>
+	<translation name="SELL_PRICE_MAX_DATE">Date (vente MAX)</translation>
 	<translation name="BUY_PRICE_MIN">Prix d'achat MIN</translation>
-	<translation name="BUY_PRICE_MIN_DATE">Prix d'achat MIN Dt</translation>
+	<translation name="BUY_PRICE_MIN_DATE">Date (Achat MIN)</translation>
 	<translation name="BUY_PRICE_MAX">Prix d'achat MAX</translation>
-	<translation name="BUY_PRICE_MAX_DATE">Prix d'achat MAX Dt</translation>
+	<translation name="BUY_PRICE_MAX_DATE">Date (Achat MAX)</translation>
 	<translation name="LAST_UPDATE">Dernière mise à jour</translation>
 	<translation name="SHOW_VILLAGES">Voir les villages</translation>
 	<translation name="AUTO_UPDATE_DATA">Mise à jour automatique</translation>
