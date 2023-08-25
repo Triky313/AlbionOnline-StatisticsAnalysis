@@ -308,12 +308,12 @@
 	<translation name="TOO_MANY_REQUESTS_CLOSE_WINDOWS_OR_WAIT">Trop de requêtes, fermer la fenêtre ou attendez.</translation>
 
 	<translation name="ALARM_SOUND_USED">Son d'alarme</translation>
-	<translation name="ITEM_PRICE_UNDERCUT">Prix de l'objet sous-côté</translation>
+	<translation name="ITEM_PRICE_UNDERCUT">Le prix de l'objet a baissé</translation>
 	<translation name="THE_PRICE_OF">Le prix de</translation>
-	<translation name="IN">dans</translation>
+	<translation name="IN">à</translation>
 	<translation name="SHOW_ONLY_ITEMS_WITH_ALERT_ON">Montrer seulement les objets avec alerte</translation>
 	<translation name="SHOW_ONLY_FAVORITES">Montrer seulement les favoris</translation>
-	<translation name="HAS_BEEN_UNDERCUT">a été sous-côté</translation>
+	<translation name="HAS_BEEN_UNDERCUT">a baissé</translation>
 	<translation name="IS_ALERT_ACTIVATE">Alerte ON/OFF</translation>
 	<translation name="UNDERCUTTING_PRICE">Prix</translation>
 	<translation name="AVERAGE_PRICES">Prix moyens</translation>
