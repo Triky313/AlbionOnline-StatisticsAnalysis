@@ -17,16 +17,18 @@ public class RandomDungeonFragment : DungeonBaseFragment
     private double _factionFlags;
     private CityFaction _cityFaction = CityFaction.Unknown;
     private int _numberOfFloors;
-    private Visibility _isFactionWarfareVisible = Visibility.Collapsed;
-    private Visibility _isMightFavorVisible = Visibility.Collapsed;
+    private Visibility _mightFavorVisibility = Visibility.Collapsed;
+    private Visibility _factionPointsVisibility = Visibility.Collapsed;
     private double _mightPerHour;
     private double _favorPerHour;
+    private double _factionCoinsPerHour;
+    private double _factionFlagsPerHour;
     private string _levelString = "?";
 
     public RandomDungeonFragment(Guid guid, MapType mapType, DungeonMode mode, string mainMapIndex) : base(guid, mapType, mode, mainMapIndex)
     {
         NumberOfFloors = 1;
-        GuidList.CollectionChanged += UpdateGuids;
+        GuidList.CollectionChanged += UpdateNumberOfFloors;
     }
 
     public RandomDungeonFragment(DungeonDto dto) : base(dto)
@@ -37,8 +39,9 @@ public class RandomDungeonFragment : DungeonBaseFragment
         FactionCoins = dto.FactionCoins;
         FactionFlags = dto.FactionFlags;
         CityFaction = dto.CityFaction;
+        UpdateValueVisibility();
 
-        GuidList.CollectionChanged += UpdateGuids;
+        GuidList.CollectionChanged += UpdateNumberOfFloors;
     }
 
     public int Level
@@ -82,6 +85,7 @@ public class RandomDungeonFragment : DungeonBaseFragment
         set
         {
             _factionCoins = value;
+            FactionCoinsPerHour = value.GetValuePerHour(TotalRunTimeInSeconds <= 0 ? (DateTime.UtcNow - EnterDungeonFirstTime).Seconds : TotalRunTimeInSeconds);
             UpdateValueVisibility();
             OnPropertyChanged();
         }
@@ -93,6 +97,7 @@ public class RandomDungeonFragment : DungeonBaseFragment
         set
         {
             _factionFlags = value;
+            FactionFlagsPerHour = value.GetValuePerHour(TotalRunTimeInSeconds <= 0 ? (DateTime.UtcNow - EnterDungeonFirstTime).Seconds : TotalRunTimeInSeconds);
             OnPropertyChanged();
         }
     }
@@ -119,22 +124,22 @@ public class RandomDungeonFragment : DungeonBaseFragment
         }
     }
 
-    public Visibility IsFactionWarfareVisible
+    public Visibility MightFavorVisibility
     {
-        get => _isFactionWarfareVisible;
+        get => _mightFavorVisibility;
         set
         {
-            _isFactionWarfareVisible = value;
+            _mightFavorVisibility = value;
             OnPropertyChanged();
         }
     }
 
-    public Visibility IsMightFavorVisible
+    public Visibility FactionPointsVisibility
     {
-        get => _isMightFavorVisible;
+        get => _factionPointsVisibility;
         set
         {
-            _isMightFavorVisible = value;
+            _factionPointsVisibility = value;
             OnPropertyChanged();
         }
     }
@@ -159,6 +164,26 @@ public class RandomDungeonFragment : DungeonBaseFragment
         }
     }
 
+    public double FactionCoinsPerHour
+    {
+        get => double.IsNaN(_factionCoinsPerHour) ? 0 : _factionCoinsPerHour;
+        private set
+        {
+            _factionCoinsPerHour = value;
+            OnPropertyChanged();
+        }
+    }
+
+    public double FactionFlagsPerHour
+    {
+        get => double.IsNaN(_factionFlagsPerHour) ? 0 : _factionFlagsPerHour;
+        private set
+        {
+            _factionFlagsPerHour = value;
+            OnPropertyChanged();
+        }
+    }
+
     public string LevelString
     {
         get => _levelString;
@@ -171,22 +196,22 @@ public class RandomDungeonFragment : DungeonBaseFragment
 
     #endregion
 
-    private void UpdateGuids(object sender, NotifyCollectionChangedEventArgs e)
+    private void UpdateNumberOfFloors(object sender, NotifyCollectionChangedEventArgs e)
     {
         NumberOfFloors = GuidList.Count;
     }
 
     private void UpdateValueVisibility()
     {
-        if ((Favor > 0 || Might > 0) && IsMightFavorVisible != Visibility.Visible)
+        if ((Favor > 0 || Might > 0) && MightFavorVisibility != Visibility.Visible)
         {
-            IsMightFavorVisible = Visibility.Visible;
-            IsFactionWarfareVisible = Visibility.Collapsed;
+            MightFavorVisibility = Visibility.Visible;
+            FactionPointsVisibility = Visibility.Collapsed;
         }
-        else if (FactionCoins > 0 && IsFactionWarfareVisible != Visibility.Visible)
+        else if (FactionCoins > 0 && FactionPointsVisibility != Visibility.Visible)
         {
-            IsMightFavorVisible = Visibility.Collapsed;
-            IsFactionWarfareVisible = Visibility.Visible;
+            MightFavorVisibility = Visibility.Collapsed;
+            FactionPointsVisibility = Visibility.Visible;
         }
     }
 

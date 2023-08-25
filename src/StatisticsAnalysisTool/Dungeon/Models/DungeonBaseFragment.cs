@@ -38,6 +38,8 @@ public abstract class DungeonBaseFragment : BaseViewModel
     private double _reSpecPerHour;
     private double _silverPerHour;
     private string _mainMapIndex;
+    private Loot _mostValuableLoot;
+    private Visibility _mostValuableLootVisibility = Visibility.Collapsed;
 
     public ObservableCollection<Guid> GuidList { get; set; }
     public string DungeonHash => $"{EnterDungeonFirstTime.Ticks}{string.Join(",", GuidList)}";
@@ -59,6 +61,7 @@ public abstract class DungeonBaseFragment : BaseViewModel
         GuidList = new ObservableCollection<Guid>(dto.GuidList);
         MapType = dto.MapType;
         Mode = dto.Mode;
+        MainMapIndex = dto.MainMapIndex;
         Faction = dto.Faction;
         Status = DungeonStatus.Done;
         Visibility = Visibility.Visible;
@@ -70,6 +73,10 @@ public abstract class DungeonBaseFragment : BaseViewModel
         TotalRunTimeInSeconds = dto.TotalRunTimeInSeconds;
         Events = new ObservableCollection<DungeonEvent>(dto.Events.Select(DungeonMapping.Mapping));
         Loot = new ObservableCollection<Loot>(dto.Loot.Select(DungeonMapping.Mapping));
+
+        UpdateTotalValue();
+        UpdateMostValuableLoot();
+        UpdateMostValuableLootVisibility();
     }
 
     public int Count
@@ -344,12 +351,43 @@ public abstract class DungeonBaseFragment : BaseViewModel
         }
     }
 
+    public Loot MostValuableLoot
+    {
+        get => _mostValuableLoot;
+        private set
+        {
+            _mostValuableLoot = value;
+            OnPropertyChanged();
+        }
+    }
+
+    public Visibility MostValuableLootVisibility
+    {
+        get => _mostValuableLootVisibility;
+        set
+        {
+            _mostValuableLootVisibility = value;
+            OnPropertyChanged();
+        }
+    }
+
     #endregion
-    
+
     public void UpdateTotalValue()
     {
         var lootValue = Loot?.Sum(x => x.Quantity * FixPoint.FromInternalValue(x.EstimatedMarketValueInternal).DoubleValue) ?? 0;
         TotalValue = Silver + lootValue;
+    }
+
+    public void UpdateMostValuableLoot()
+    {
+        var loot = Loot?.MaxBy(x => x?.EstimatedMarketValueInternal) ?? new Loot();
+        MostValuableLoot = loot;
+    }
+
+    public void UpdateMostValuableLootVisibility()
+    {
+        MostValuableLootVisibility = MostValuableLoot is not null && MostValuableLoot.EstimatedMarketValue.DoubleValue > 0 ? Visibility.Visible : Visibility.Collapsed;
     }
 
     public void SetTier(Tier tier)
@@ -440,13 +478,13 @@ public abstract class DungeonBaseFragment : BaseViewModel
     }
 
     public static string TranslationSelectToDelete => LanguageController.Translation("SELECT_TO_DELETE");
-    public static string TranslationDungeonFame => LanguageController.Translation("DUNGEON_FAME");
-    public static string TranslationDungeonReSpec => LanguageController.Translation("DUNGEON_RESPEC");
-    public static string TranslationDungeonSilver => LanguageController.Translation("DUNGEON_SILVER");
-    public static string TranslationDungeonFamePerHour => LanguageController.Translation("DUNGEON_FAME_PER_HOUR");
-    public static string TranslationDungeonReSpecPerHour => LanguageController.Translation("DUNGEON_RESPEC_PER_HOUR");
-    public static string TranslationDungeonSilverPerHour => LanguageController.Translation("DUNGEON_SILVER_PER_HOUR");
-    public static string TranslationDungeonRunTime => LanguageController.Translation("DUNGEON_RUN_TIME");
+    public static string TranslationFame => LanguageController.Translation("FAME");
+    public static string TranslationReSpec => LanguageController.Translation("RESPEC");
+    public static string TranslationSilver => LanguageController.Translation("SILVER");
+    public static string TranslationFamePerHour => LanguageController.Translation("FAME_PER_HOUR");
+    public static string TranslationReSpecPerHour => LanguageController.Translation("RESPEC_PER_HOUR");
+    public static string TranslationSilverPerHour => LanguageController.Translation("SILVER_PER_HOUR");
+    public static string TranslationRunTime => LanguageController.Translation("RUN_TIME");
     public static string TranslationNumberOfDungeonFloors => LanguageController.Translation("NUMBER_OF_DUNGEON_FLOORS");
     public static string TranslationExpedition => LanguageController.Translation("EXPEDITION");
     public static string TranslationSolo => LanguageController.Translation("SOLO");
@@ -463,4 +501,6 @@ public abstract class DungeonBaseFragment : BaseViewModel
     public static string TranslationFavorPerHour => LanguageController.Translation("FAVOR_PER_HOUR");
     public static string TranslationBestLootedItem => LanguageController.Translation("BEST_LOOTED_ITEM");
     public static string TranslationTotalLootedValue => LanguageController.Translation("TOTAL_LOOT_VALUE");
+    public static string TranslationMap => LanguageController.Translation("MAP");
+    public static string TranslationMostValuableLoot => LanguageController.Translation("MOST_VALUABLE_LOOT");
 }

@@ -94,17 +94,6 @@
         </Style.Triggers>
     </Style>
 
-    <Style x:Key="DungeonFragment.MainMapName" TargetType="Label">
-        <Setter Property="Foreground" Value="{StaticResource SolidColorBrush.Text.1}" />
-        <!--<Setter Property="Effect">
-            <Setter.Value>
-                <DropShadowEffect BlurRadius="10" ShadowDepth="0" Opacity="1" Color="{StaticResource Color.Blue.2}"/>
-            </Setter.Value>
-        </Setter>-->
-        <Setter Property="VerticalAlignment" Value="Center" />
-        <Setter Property="Margin" Value="0 -2 0 0" />
-    </Style>
-
     <Style x:Key="DungeonNotificationFragment.Image.Skull" TargetType="Image">
         <Setter Property="Width" Value="16" />
         <Setter Property="Height" Value="16" />
@@ -677,7 +666,7 @@
         </Grid>
     </DataTemplate>
 
-    <DataTemplate x:Key="DungeonNotificationFragment.MapTypeIcon.Template" DataType="{x:Type dungeonModels:DungeonBaseFragment}">
+    <DataTemplate x:Key="DungeonFragment.MapTypeIcon.Template" DataType="{x:Type dungeonModels:DungeonBaseFragment}">
         <StackPanel Orientation="Horizontal" VerticalAlignment="Center" HorizontalAlignment="Center">
             <Image Source="../Assets/gem_level1.png" Height="11" Width="11" Margin="0,0,-5,0">
                 <Image.Style>
@@ -872,14 +861,35 @@
                                     </MultiBinding>
                                 </TextBlock.Text>
                             </TextBlock>
-                            <ContentPresenter ContentTemplate="{StaticResource DungeonNotificationFragment.MapTypeIcon.Template}" Content="{Binding}"/>
+                            <ContentPresenter ContentTemplate="{StaticResource DungeonFragment.MapTypeIcon.Template}" Content="{Binding}"/>
                         </StackPanel>
                         <Grid Height="96">
+                            <StackPanel Orientation="Vertical" HorizontalAlignment="Right" VerticalAlignment="Top">
+                                <StackPanel Orientation="Horizontal">
+                                    <!-- Number of floors -->
+                                    <StackPanel Orientation="Horizontal">
+                                        <fa5:ImageAwesome Icon="Solid_Dungeon" Foreground="{StaticResource SolidColorBrush.Text.1}" Height="16" 
+                                                          ToolTip="{Binding TranslationNumberOfDungeonFloors, FallbackValue=NUMBER__OF__DUNGEON__FLOORS}" />
+                                        <Label Content="{Binding NumberOfFloors, IsAsync=True, FallbackValue=0}" ContentStringFormat="{}{0}" VerticalAlignment="Center" Width="22" />
+                                    </StackPanel>
+
+                                    <!-- Run time -->
+                                    <Grid Width="18" Height="24" VerticalAlignment="Center" 
+                                          ToolTip="{Binding TranslationRunTime, FallbackValue=RUN__TIME}">
+                                        <fa5:ImageAwesome Icon="Regular_Clock" Foreground="{StaticResource SolidColorBrush.Text.1}" />
+                                    </Grid>
+                                    <Label Height="24" Content="{Binding TotalRunTimeInSeconds, IsAsync=True, FallbackValue=00:00:00, Converter={StaticResource SecondsToTimeFormatConverter}}" Width="60" />
+                                </StackPanel>
+
+                                <!-- Delete checkbox -->
+                                <Grid Margin="0,0,10,0" Height="18" Width="18" HorizontalAlignment="Right">
+                                    <CheckBox IsChecked="{Binding IsSelectedForDeletion}" ToolTip="{Binding TranslationSelectToDelete}" />
+                                </Grid>
+                            </StackPanel>
+
                             <StackPanel Orientation="Vertical">
-                                <StackPanel Orientation="Horizontal" Height="24" Margin="0">
-                                    <Label Content="{Binding Count, IsAsync=True, FallbackValue=0}" ContentStringFormat="{}[{0}]" MinWidth="38" 
-                                           VerticalAlignment="Center" Foreground="{StaticResource SolidColorBrush.Text.1}"/>
-                                    <Label MinWidth="135" VerticalAlignment="Center" Margin="0 0 5 0" Foreground="{StaticResource SolidColorBrush.Text.1}">
+                                <StackPanel Orientation="Horizontal" Height="24">
+                                    <Label Width="150" VerticalAlignment="Center" Foreground="{StaticResource SolidColorBrush.Text.1}">
                                         <Label.Content>
                                             <TextBlock>
                                                 <TextBlock.Text>
@@ -890,179 +900,177 @@
                                             </TextBlock>
                                         </Label.Content>
                                     </Label>
-                                    <Label Content="{Binding MainMapName, IsAsync=True, FallbackValue=UNKNOWN}" Style="{StaticResource DungeonFragment.MainMapName}" MinWidth="138" />
-                                    <Grid Margin="5 0 20 0">
-                                        <StackPanel Orientation="Horizontal" MinWidth="210">
-                                            <ItemsControl ItemsSource="{Binding Events, IsAsync=True}" ItemTemplate="{StaticResource DungeonEventTemplate}">
-                                                <ItemsControl.ItemsPanel>
-                                                    <ItemsPanelTemplate>
-                                                        <UniformGrid Rows="1"/>
-                                                    </ItemsPanelTemplate>
-                                                </ItemsControl.ItemsPanel>
-                                            </ItemsControl>
+
+                                    <!-- Main map name -->
+                                    <DockPanel>
+                                        <Image Source="../Assets/map_icon.png" Width="20" Height="20" VerticalAlignment="Center" ToolTip="{Binding TranslationMap, FallbackValue=MAP}" />
+                                        <Label Content="{Binding MainMapName, IsAsync=True, FallbackValue=UNKNOWN}" 
+                                               Foreground="{StaticResource SolidColorBrush.Text.1}" VerticalAlignment="Center" />
+                                    </DockPanel>
+                                </StackPanel>
+                                <StackPanel Orientation="Horizontal">
+                                    <StackPanel Orientation="Vertical" Margin="0,2" Width="150">
+                                        <!-- Fame -->
+                                        <DockPanel Height="16">
+                                            <Grid HorizontalAlignment="Center" Width="20" Margin="0,0,2,0" VerticalAlignment="Center" ToolTip="{Binding TranslationFame, FallbackValue=FAME}">
+                                                <Image Source="../Resources/fame.png" />
+                                            </Grid>
+                                            <DockPanel>
+                                                <TextBlock Text="{Binding Fame, Converter={StaticResource ShortNumberConverter}, 
+                                                        ConverterCulture={x:Static glob:CultureInfo.CurrentCulture}, IsAsync=True, Mode=OneWay, FallbackValue=-}" 
+                                                    Foreground="{StaticResource SolidColorBrush.Text.1}" TextAlignment="Right" />
+                                                <TextBlock Text="/" Foreground="{StaticResource SolidColorBrush.Accent.Blue.2}" FontWeight="Bold" Margin="2,0,2,0" />
+                                                <TextBlock Text="{Binding FamePerHour, Converter={StaticResource ShortNumberConverter}, 
+                                                        ConverterCulture={x:Static glob:CultureInfo.CurrentCulture}, IsAsync=True, Mode=OneWay, StringFormat='{}{0:N0}/h', FallbackValue=-}" 
+                                                           Foreground="{StaticResource SolidColorBrush.Text.1}" TextAlignment="Left" />
+                                            </DockPanel>
+                                        </DockPanel>
+                                        <!-- ReSpec -->
+                                        <DockPanel Height="16">
+                                            <Grid HorizontalAlignment="Center" Width="20" Margin="0,0,2,0" VerticalAlignment="Center" ToolTip="{Binding TranslationReSpec, FallbackValue=RESPEC}">
+                                                <Image Source="../Resources/respec.png" />
+                                            </Grid>
+                                            <DockPanel>
+                                                <TextBlock Text="{Binding ReSpec, Converter={StaticResource ShortNumberConverter}, 
+                                                        ConverterCulture={x:Static glob:CultureInfo.CurrentCulture}, IsAsync=True, Mode=OneWay, FallbackValue=-}" 
+                                                           Foreground="{StaticResource SolidColorBrush.Text.1}" TextAlignment="Right" />
+                                                <TextBlock Text="/" Foreground="{StaticResource SolidColorBrush.Accent.Blue.2}" FontWeight="Bold" Margin="2,0,2,0" />
+                                                <TextBlock Text="{Binding ReSpecPerHour, Converter={StaticResource ShortNumberConverter}, 
+                                                        ConverterCulture={x:Static glob:CultureInfo.CurrentCulture}, IsAsync=True, Mode=OneWay, StringFormat='{}{0:N0}/h', FallbackValue=-}" 
+                                                           Foreground="{StaticResource SolidColorBrush.Text.1}" TextAlignment="Left" />
+                                            </DockPanel>
+                                        </DockPanel>
+                                        <!-- Silver -->
+                                        <DockPanel Height="16">
+                                            <Grid HorizontalAlignment="Center" Width="20" Margin="0,0,2,0" VerticalAlignment="Center" ToolTip="{Binding TranslationSilver, FallbackValue=SILVER}">
+                                                <Image Source="../Resources/silver.png" />
+                                            </Grid>
+                                            <DockPanel>
+                                                <TextBlock Text="{Binding Silver, Converter={StaticResource ShortNumberConverter}, 
+                                                        ConverterCulture={x:Static glob:CultureInfo.CurrentCulture}, IsAsync=True, Mode=OneWay, FallbackValue=-}" 
+                                                           Foreground="{StaticResource SolidColorBrush.Text.1}" TextAlignment="Right" />
+                                                <TextBlock Text="/" Foreground="{StaticResource SolidColorBrush.Accent.Blue.2}" FontWeight="Bold" Margin="2,0,2,0" />
+                                                <TextBlock Text="{Binding SilverPerHour, Converter={StaticResource ShortNumberConverter}, 
+                                                        ConverterCulture={x:Static glob:CultureInfo.CurrentCulture}, IsAsync=True, Mode=OneWay, StringFormat='{}{0:N0}/h', FallbackValue=-}" 
+                                                           Foreground="{StaticResource SolidColorBrush.Text.1}" TextAlignment="Left" />
+                                            </DockPanel>
+                                        </DockPanel>
+
+                                        <!-- Events -->
+                                        <StackPanel Orientation="Vertical">
+                                            <Grid Margin="0,0,20,0" Height="20">
+                                                <StackPanel Orientation="Horizontal" MinWidth="210">
+                                                    <ItemsControl ItemsSource="{Binding Events, IsAsync=True}" ItemTemplate="{StaticResource DungeonEventTemplate}">
+                                                        <ItemsControl.ItemsPanel>
+                                                            <ItemsPanelTemplate>
+                                                                <UniformGrid Rows="1"/>
+                                                            </ItemsPanelTemplate>
+                                                        </ItemsControl.ItemsPanel>
+                                                    </ItemsControl>
+                                                </StackPanel>
+                                            </Grid>
                                         </StackPanel>
-                                    </Grid>
-                                    <Grid Margin="0,0,0,0" Width="16" Height="16" VerticalAlignment="Center" 
-                                      ToolTip="{Binding TranslationDungeonRunTime, FallbackValue=DUNGEON__RUN__TIME}">
-                                        <fa5:ImageAwesome Icon="Regular_Clock" Foreground="{StaticResource SolidColorBrush.Text.1}" />
-                                    </Grid>
-                                    <Label Content="{Binding TotalRunTimeInSeconds, IsAsync=True, FallbackValue=00:00:00, Converter={StaticResource SecondsToTimeFormatConverter}}" 
-                                           VerticalAlignment="Center" Margin="3 0 10 0" MinWidth="55" />
+                                    </StackPanel>
+
+                                    <StackPanel Orientation="Vertical" Margin="0,2" Width="150">
+                                        <!-- Might -->
+                                        <DockPanel Height="16" Visibility="{Binding MightFavorVisibility, IsAsync=True, FallbackValue=Collapsed}">
+                                            <Grid HorizontalAlignment="Center" Width="20" Margin="0,0,2,0" VerticalAlignment="Center" ToolTip="{Binding TranslationMight, FallbackValue=MIGHT}">
+                                                <Image Source="../Resources/might.png" />
+                                            </Grid>
+                                            <DockPanel>
+                                                <TextBlock Text="{Binding Might, Converter={StaticResource ShortNumberConverter}, 
+                                                        ConverterCulture={x:Static glob:CultureInfo.CurrentCulture}, IsAsync=True, Mode=OneWay, FallbackValue=-}" 
+                                                    Foreground="{StaticResource SolidColorBrush.Text.1}" TextAlignment="Right">
+                                                    <TextBlock.ToolTip>
+                                                        <ToolTip Content="{Binding Might}" ContentStringFormat="{}{0:N0}" />
+                                                    </TextBlock.ToolTip>
+                                                </TextBlock>
+                                                <TextBlock Text="/" Foreground="{StaticResource SolidColorBrush.Accent.Blue.2}" FontWeight="Bold" Margin="2,0,2,0" />
+                                                <TextBlock Text="{Binding MightPerHour, Converter={StaticResource ShortNumberConverter}, 
+                                                        ConverterCulture={x:Static glob:CultureInfo.CurrentCulture}, IsAsync=True, Mode=OneWay, StringFormat='{}{0:N0}/h', FallbackValue=-}" 
+                                                           Foreground="{StaticResource SolidColorBrush.Text.1}" TextAlignment="Left" />
+                                            </DockPanel>
+                                        </DockPanel>
+                                        <!-- Favor -->
+                                        <DockPanel Height="16" Visibility="{Binding MightFavorVisibility, IsAsync=True, FallbackValue=Collapsed}">
+                                            <Grid HorizontalAlignment="Center" Width="20" Margin="0,0,2,0" VerticalAlignment="Center" ToolTip="{Binding TranslationFavor, FallbackValue=FAVOR}">
+                                                <Image Source="../Resources/favor.png" />
+                                            </Grid>
+                                            <DockPanel>
+                                                <TextBlock Text="{Binding Favor, Converter={StaticResource ShortNumberConverter}, 
+                                                        ConverterCulture={x:Static glob:CultureInfo.CurrentCulture}, IsAsync=True, Mode=OneWay, FallbackValue=-}" 
+                                                           Foreground="{StaticResource SolidColorBrush.Text.1}" TextAlignment="Right" />
+                                                <TextBlock Text="/" Foreground="{StaticResource SolidColorBrush.Accent.Blue.2}" FontWeight="Bold" Margin="2,0,2,0" />
+                                                <TextBlock Text="{Binding FavorPerHour, Converter={StaticResource ShortNumberConverter}, 
+                                                        ConverterCulture={x:Static glob:CultureInfo.CurrentCulture}, IsAsync=True, Mode=OneWay, StringFormat='{}{0:N0}/h', FallbackValue=-}" 
+                                                           Foreground="{StaticResource SolidColorBrush.Text.1}" TextAlignment="Left" />
+                                            </DockPanel>
+                                        </DockPanel>
+
+                                        <!-- Faction coins -->
+                                        <DockPanel Height="16" Visibility="{Binding FactionPointsVisibility, IsAsync=True, FallbackValue=Collapsed}">
+                                            <Grid HorizontalAlignment="Center" Margin="0,0,2,0" VerticalAlignment="Center" ToolTip="{Binding TranslationFactionCoins, FallbackValue=FACTION__COINS}">
+                                                <Image Style="{StaticResource Tracker.Fraction.Coin.Icon}" />
+                                            </Grid>
+                                            <DockPanel>
+                                                <TextBlock Text="{Binding FactionCoins, Converter={StaticResource ShortNumberConverter}, 
+                                                        ConverterCulture={x:Static glob:CultureInfo.CurrentCulture}, IsAsync=True, Mode=OneWay, FallbackValue=-}" 
+                                                           Foreground="{StaticResource SolidColorBrush.Text.1}" TextAlignment="Right" />
+                                                <TextBlock Text="/" Foreground="{StaticResource SolidColorBrush.Accent.Blue.2}" FontWeight="Bold" Margin="2,0,2,0" />
+                                                <TextBlock Text="{Binding FactionCoinsPerHour, Converter={StaticResource ShortNumberConverter}, 
+                                                        ConverterCulture={x:Static glob:CultureInfo.CurrentCulture}, IsAsync=True, Mode=OneWay, StringFormat='{}{0:N0}/h', FallbackValue='-/h'}" 
+                                                           Foreground="{StaticResource SolidColorBrush.Text.1}" TextAlignment="Left" />
+                                            </DockPanel>
+                                        </DockPanel>
+                                        <!-- Faction flags -->
+                                        <DockPanel Height="16" Visibility="{Binding FactionPointsVisibility, IsAsync=True, FallbackValue=Collapsed}">
+                                            <Grid HorizontalAlignment="Center" Width="16" Margin="0,0,2,0" VerticalAlignment="Center" ToolTip="{Binding TranslationFactionFlags, FallbackValue=FACTION__FLAGS}">
+                                                <Image Style="{StaticResource Tracker.Fraction.Flag.Icon}" />
+                                            </Grid>
+                                            <DockPanel>
+                                                <TextBlock Text="{Binding FactionFlags, Converter={StaticResource ShortNumberConverter}, 
+                                                        ConverterCulture={x:Static glob:CultureInfo.CurrentCulture}, IsAsync=True, Mode=OneWay, FallbackValue=-}" 
+                                                           Foreground="{StaticResource SolidColorBrush.Text.1}" TextAlignment="Right" />
+                                                <TextBlock Text="/" Foreground="{StaticResource SolidColorBrush.Accent.Blue.2}" FontWeight="Bold" Margin="2,0,2,0" />
+                                                <TextBlock Text="{Binding FactionFlagsPerHour, Converter={StaticResource ShortNumberConverter}, 
+                                                        ConverterCulture={x:Static glob:CultureInfo.CurrentCulture}, IsAsync=True, Mode=OneWay, StringFormat='{}{0:N0}/h', FallbackValue='-/h'}" 
+                                                           Foreground="{StaticResource SolidColorBrush.Text.1}" TextAlignment="Left" />
+                                            </DockPanel>
+                                        </DockPanel>
+                                    </StackPanel>
+
+                                    <StackPanel Orientation="Vertical" Margin="0,2">
+                                        <!-- Total value -->
+                                        <StackPanel Orientation="Horizontal" Height="20">
+                                            <Grid HorizontalAlignment="Center" Width="20" Margin="0,0,2,0" VerticalAlignment="Center" ToolTip="{Binding TranslationTotalLootedValue, FallbackValue=TOTAL_LOOTED_VALUE}">
+                                                <Image Source="../Assets/static_chest.png" />
+                                            </Grid>
+                                            <DockPanel>
+                                                <TextBlock Text="{Binding TotalValue, ConverterCulture={x:Static glob:CultureInfo.CurrentCulture}, StringFormat='{}{0:N0}', IsAsync=True, Mode=OneWay, FallbackValue=-}" 
+                                                           Foreground="{StaticResource SolidColorBrush.Text.1}" TextAlignment="Right" />
+                                                <TextBlock Margin="2,0,2,0" />
+                                                <TextBlock Foreground="{StaticResource SolidColorBrush.Text.1}" TextAlignment="Left" />
+                                            </DockPanel>
+                                        </StackPanel>
+
+                                        <!-- Most valuable loot -->
+                                        <StackPanel Orientation="Horizontal" Height="30" Margin="-6,-2,0,0" Visibility="{Binding MostValuableLootVisibility}">
+                                            <Image Source="{Binding MostValuableLoot.Item.Icon, IsAsync=True}" Height="34" ToolTip="{Binding TranslationMostValuableLoot}" />
+                                            <StackPanel Orientation="Vertical" Height="32" Width="200">
+                                                <TextBlock Padding="0" Text="{Binding MostValuableLoot.Item.LocalizedName, IsAsync=True}" 
+                                                           Foreground="{StaticResource SolidColorBrush.Text.1}" />
+                                                <TextBlock Padding="0" Text="{Binding MostValuableLoot.EstimatedMarketValue.DoubleValue, StringFormat='{}{0:N0}', IsAsync=True}" 
+                                                           Foreground="{StaticResource SolidColorBrush.Accent.Blue.2}" />
+                                            </StackPanel>
+                                        </StackPanel>
+
+                                    </StackPanel>
                                 </StackPanel>
-                                <StackPanel Orientation="Horizontal" Height="24">
-                                    <Grid HorizontalAlignment="Center" Margin="5,0,0,0" VerticalAlignment="Center" 
-                                          ToolTip="{Binding TranslationDungeonFame, FallbackValue=DUNGEON__FAME}">
-                                        <Image Source="../Resources/fame.png" Style="{StaticResource LineFragmentImageStyle}" />
-                                    </Grid>
-                                    <Label Content="{Binding Fame, Converter={StaticResource ShortNumberConverter}, ConverterCulture={x:Static glob:CultureInfo.CurrentCulture}, IsAsync=True, FallbackValue=-}" 
-                                            VerticalAlignment="Center" Margin="0 0 10 0" MinWidth="75" Foreground="{StaticResource SolidColorBrush.Text.1}">
-                                        <Label.ToolTip>
-                                            <ToolTip Content="{Binding Fame}" ContentStringFormat="{}{0:N0}" />
-                                        </Label.ToolTip>
-                                    </Label>
-
-                                    <Grid HorizontalAlignment="Center" VerticalAlignment="Center" 
-                                          ToolTip="{Binding TranslationDungeonReSpec, FallbackValue=DUNGEON__RESPEC}">
-                                        <Image Source="../Resources/respec.png" Style="{StaticResource LineFragmentImageStyle}" />
-                                    </Grid>
-                                    <Label Content="{Binding ReSpec, Converter={StaticResource ShortNumberConverter}, ConverterCulture={x:Static glob:CultureInfo.CurrentCulture}, IsAsync=True, FallbackValue=-}" 
-                                           VerticalAlignment="Center" Margin="0 0 10 0" MinWidth="75" Foreground="{StaticResource SolidColorBrush.Text.1}">
-                                        <Label.ToolTip>
-                                            <ToolTip Content="{Binding ReSpec}" ContentStringFormat="{}{0:N0}" />
-                                        </Label.ToolTip>
-                                    </Label>
-
-                                    <Grid HorizontalAlignment="Center" VerticalAlignment="Center" 
-                                          ToolTip="{Binding TranslationDungeonSilver, FallbackValue=DUNGEON__SILVER}">
-                                        <Image Source="../Resources/silver.png" Style="{StaticResource LineFragmentImageStyle}" />
-                                    </Grid>
-                                    <Label Content="{Binding Silver, Converter={StaticResource ShortNumberConverter}, ConverterCulture={x:Static glob:CultureInfo.CurrentCulture}, IsAsync=True, FallbackValue=-}" 
-                                           VerticalAlignment="Center" Margin="0 0 10 0" MinWidth="75" Foreground="{StaticResource SolidColorBrush.Text.1}">
-                                        <Label.ToolTip>
-                                            <ToolTip Content="{Binding Silver}" ContentStringFormat="{}{0:N0}" />
-                                        </Label.ToolTip>
-                                    </Label>
-
-                                    <Grid HorizontalAlignment="Center" VerticalAlignment="Center" 
-                                          ToolTip="{Binding TranslationDungeonFamePerHour, FallbackValue=DUNGEON__FAME__PER__HOUR}">
-                                        <Image Source="../Resources/fame.png" Style="{StaticResource LineFragmentImageStyle}" />
-                                    </Grid>
-                                    <Label Content="{Binding FamePerHour, Converter={StaticResource ShortNumberConverter}, ConverterCulture={x:Static glob:CultureInfo.CurrentCulture}, IsAsync=True, FallbackValue=-}" 
-                                           ContentStringFormat="{}{0:N0}/h" VerticalAlignment="Center" Margin="0 0 10 0" MinWidth="85" Foreground="{StaticResource SolidColorBrush.Text.1}">
-                                        <Label.ToolTip>
-                                            <ToolTip Content="{Binding FamePerHour}" ContentStringFormat="{}{0:N0}/h" />
-                                        </Label.ToolTip>
-                                    </Label>
-
-                                    <Grid HorizontalAlignment="Center" VerticalAlignment="Center" 
-                                          ToolTip="{Binding TranslationDungeonReSpecPerHour, FallbackValue=DUNGEON__RESPEC__PER__HOUR}">
-                                        <Image Source="../Resources/respec.png" Style="{StaticResource LineFragmentImageStyle}" />
-                                    </Grid>
-                                    <Label Content="{Binding ReSpecPerHour, Converter={StaticResource ShortNumberConverter}, ConverterCulture={x:Static glob:CultureInfo.CurrentCulture}, IsAsync=True, FallbackValue=-}" 
-                                           ContentStringFormat="{}{0:N0}/h" Foreground="{StaticResource SolidColorBrush.Text.1}" VerticalAlignment="Center" Margin="0 0 10 0" MinWidth="85">
-                                        <Label.ToolTip>
-                                            <ToolTip Content="{Binding ReSpecPerHour}" ContentStringFormat="{}{0:N0}/h" />
-                                        </Label.ToolTip>
-                                    </Label>
-
-                                    <Grid HorizontalAlignment="Center" VerticalAlignment="Center" 
-                                          ToolTip="{Binding TranslationDungeonSilverPerHour, FallbackValue=DUNGEON__SILVER__PER__HOUR}">
-                                        <Image Source="../Resources/silver.png" Style="{StaticResource LineFragmentImageStyle}" />
-                                    </Grid>
-                                    <Label Content="{Binding SilverPerHour, Converter={StaticResource ShortNumberConverter}, ConverterCulture={x:Static glob:CultureInfo.CurrentCulture}, IsAsync=True, FallbackValue=-}" 
-                                   ContentStringFormat="{}{0:N0}/h" Foreground="{StaticResource SolidColorBrush.Text.1}" VerticalAlignment="Center" Margin="0 0 10 0" MinWidth="85">
-                                        <Label.ToolTip>
-                                            <ToolTip Content="{Binding SilverPerHour}" ContentStringFormat="{}{0:N0}/h" />
-                                        </Label.ToolTip>
-                                    </Label>
-                                </StackPanel>
-
-                                <!--Faction points and coins-->
-                                <StackPanel Orientation="Horizontal" Height="24" Visibility="{Binding IsFactionWarfareVisible, FallbackValue=Collapsed}">
-                                    <Grid HorizontalAlignment="Center" VerticalAlignment="Center" Margin="8,0,2,0">
-                                        <Image Style="{StaticResource Tracker.Fraction.Flag.Icon}" ToolTip="{Binding TranslationFactionFlags, FallbackValue=FACTION__FLAGS}"/>
-                                    </Grid>
-                                    <Label Content="{Binding FactionFlags, Converter={StaticResource ShortNumberConverter}, ConverterCulture={x:Static glob:CultureInfo.CurrentCulture}, IsAsync=True, FallbackValue=-}" 
-                                       ContentStringFormat="{}{0:N0}" Foreground="{StaticResource SolidColorBrush.Text.1}" VerticalAlignment="Center" Margin="0 0 5 0" MinWidth="82">
-                                        <Label.ToolTip>
-                                            <ToolTip Content="{Binding FactionFlags}" ContentStringFormat="{}{0:N0}" />
-                                        </Label.ToolTip>
-                                    </Label>
-
-                                    <Grid HorizontalAlignment="Center" VerticalAlignment="Center" Margin="5,0,0,0">
-                                        <Image Style="{StaticResource Tracker.Fraction.Coin.Icon}" ToolTip="{Binding TranslationFactionCoins, FallbackValue=FACTION__COINS}"/>
-                                    </Grid>
-                                    <Label Content="{Binding FactionCoins, Converter={StaticResource ShortNumberConverter}, ConverterCulture={x:Static glob:CultureInfo.CurrentCulture}, IsAsync=True, FallbackValue=-}" 
-                                       ContentStringFormat="{}{0:N0}" Foreground="{StaticResource SolidColorBrush.Text.1}" VerticalAlignment="Center" Margin="0 0 5 0" MinWidth="85">
-                                        <Label.ToolTip>
-                                            <ToolTip Content="{Binding FactionCoins}" ContentStringFormat="{}{0:N0}" />
-                                        </Label.ToolTip>
-                                    </Label>
-                                </StackPanel>
-
-                                <!--Might - Favor-->
-                                <StackPanel Orientation="Horizontal" Height="24" Visibility="{Binding IsMightFavorVisible, FallbackValue=Collapsed}">
-                                    <Grid HorizontalAlignment="Center" VerticalAlignment="Center" Margin="8,2,2,0">
-                                        <Image Height="16" Width="16" Source="../Resources/might.png" ToolTip="{Binding TranslationMight, FallbackValue=MIGHT}" />
-                                    </Grid>
-                                    <Label Content="{Binding Might, Converter={StaticResource ShortNumberConverter}, ConverterCulture={x:Static glob:CultureInfo.CurrentCulture}, IsAsync=True, FallbackValue=-}" ContentStringFormat="{}{0:N0}" 
-                                           Foreground="{StaticResource SolidColorBrush.Text.1}" VerticalAlignment="Center" Margin="0 0 5 0" MinWidth="82">
-                                        <Label.ToolTip>
-                                            <ToolTip Content="{Binding Might}" ContentStringFormat="{}{0:N0}" />
-                                        </Label.ToolTip>
-                                    </Label>
-
-                                    <Grid HorizontalAlignment="Center" VerticalAlignment="Center" Margin="0,2,0,0">
-                                        <Image Height="16" Width="16" Source="../Resources/might.png" ToolTip="{Binding TranslationMightPerHour, FallbackValue=MIGHT__PER__HOUR}" />
-                                    </Grid>
-                                    <Label Content="{Binding MightPerHour, Converter={StaticResource ShortNumberConverter}, ConverterCulture={x:Static glob:CultureInfo.CurrentCulture}, IsAsync=True, FallbackValue=-}" 
-                                       ContentStringFormat="{}{0:N0}/h" Foreground="{StaticResource SolidColorBrush.Text.1}" VerticalAlignment="Center" Margin="0 0 5 0" MinWidth="80">
-                                        <Label.ToolTip>
-                                            <ToolTip Content="{Binding MightPerHour}" ContentStringFormat="{}{0:N0}/h" />
-                                        </Label.ToolTip>
-                                    </Label>
-
-                                    <Grid HorizontalAlignment="Center" VerticalAlignment="Center" Margin="5,2,0,0">
-                                        <Image Height="16" Width="16" Source="../Resources/favor.png" ToolTip="{Binding TranslationFavor, FallbackValue=Favor}" />
-                                    </Grid>
-                                    <Label Content="{Binding Favor, Converter={StaticResource ShortNumberConverter}, ConverterCulture={x:Static glob:CultureInfo.CurrentCulture}, IsAsync=True, FallbackValue=-}" 
-                                       ContentStringFormat="{}{0:N0}" Foreground="{StaticResource SolidColorBrush.Text.1}" VerticalAlignment="Center" Margin="0 0 5 0" MinWidth="85">
-                                        <Label.ToolTip>
-                                            <ToolTip Content="{Binding Favor}" ContentStringFormat="{}{0:N0}"/>
-                                        </Label.ToolTip>
-                                    </Label>
-
-                                    <Grid HorizontalAlignment="Center" VerticalAlignment="Center" Margin="0,2,0,0">
-                                        <Image Height="16" Width="16" Source="../Resources/favor.png" ToolTip="{Binding TranslationFavorPerHour, FallbackValue=FAVOR__PER__HOUR}" />
-                                    </Grid>
-                                    <Label Content="{Binding FavorPerHour, Converter={StaticResource ShortNumberConverter}, ConverterCulture={x:Static glob:CultureInfo.CurrentCulture}, IsAsync=True, FallbackValue=-}" 
-                                           ContentStringFormat="{}{0:N0}/h" Foreground="{StaticResource SolidColorBrush.Text.1}" VerticalAlignment="Center" Margin="0 0 5 0" MinWidth="80">
-                                        <Label.ToolTip>
-                                            <ToolTip Content="{Binding FavorPerHour}" ContentStringFormat="{}{0:N0}/h" />
-                                        </Label.ToolTip>
-                                    </Label>
-                                </StackPanel>
-
-                                <!-- Total value -->
-                                <StackPanel Orientation="Horizontal" Height="24">
-                                    <Grid HorizontalAlignment="Center" VerticalAlignment="Center" Margin="8,0,1,0">
-                                        <Image Height="16" Width="16" Source="../Assets/static_chest.png" ToolTip="{Binding TranslationTotalLootedValue, FallbackValue=TOTAL_LOOTED_VALUE}" />
-                                    </Grid>
-                                    <Label Content="{Binding TotalValue}" ContentStringFormat="{}{0:N0}" />
-                                </StackPanel>
-                            </StackPanel>
-                            <StackPanel Orientation="Horizontal" HorizontalAlignment="Left" Margin="551,24,0,0">
-                                <Grid Margin="0,0,0,0" Width="16" Height="16" VerticalAlignment="Center" ToolTip="{Binding TranslationNumberOfDungeonFloors, FallbackValue=NUMBER__OF__DUNGEON__FLOORS}">
-                                    <fa5:ImageAwesome Icon="Solid_Dungeon" Foreground="{StaticResource SolidColorBrush.Text.1}" />
-                                </Grid>
-                                <Label Content="{Binding NumberOfFloors, IsAsync=True, FallbackValue=0}" ContentStringFormat="{}{0}" VerticalAlignment="Center" Margin="2 3 10 0" MinWidth="55" />
                             </StackPanel>
                         </Grid>
                     </DockPanel>
                 </StackPanel>
-                <Grid Margin="0 0 20 0" Height="30" Width="50" HorizontalAlignment="Right">
-                    <CheckBox Width="auto" Height="auto" IsChecked="{Binding IsSelectedForDeletion}" ToolTip="{Binding TranslationSelectToDelete}" />
-                </Grid>
             </Grid>
         </Border>
     </DataTemplate>
@@ -1213,7 +1221,7 @@
                                     </MultiBinding>
                                 </TextBlock.Text>
                             </TextBlock>
-                            <ContentPresenter ContentTemplate="{StaticResource DungeonNotificationFragment.MapTypeIcon.Template}" Content="{Binding}"/>
+                            <ContentPresenter ContentTemplate="{StaticResource DungeonFragment.MapTypeIcon.Template}" Content="{Binding}"/>
                         </StackPanel>
                         <Grid Height="96">
                             <StackPanel Orientation="Vertical">
@@ -1275,7 +1283,7 @@
                                 <StackPanel Orientation="Horizontal" Height="24">
                                     <Grid HorizontalAlignment="Center" Margin="5,0,0,0" VerticalAlignment="Center" 
                                           ToolTip="{Binding TranslationDungeonFame, FallbackValue=DUNGEON__FAME}">
-                                        <Image Source="../Resources/fame.png" Style="{StaticResource LineFragmentImageStyle}" />
+                                        <Image Source="../Resources/fame.png" Style="{StaticResource Dungeon.Value.Image}" />
                                     </Grid>
                                     <Label Content="{Binding Fame, Converter={StaticResource ShortNumberConverter}, ConverterCulture={x:Static glob:CultureInfo.CurrentCulture}, IsAsync=True, FallbackValue=-}" 
                                            Style="{StaticResource DungeonNotificationFragment.BestFame}" VerticalAlignment="Center" 
@@ -1290,7 +1298,7 @@
 
                                     <Grid HorizontalAlignment="Center" VerticalAlignment="Center" 
                                           ToolTip="{Binding TranslationDungeonReSpec, FallbackValue=DUNGEON__RESPEC}">
-                                        <Image Source="../Resources/respec.png" Style="{StaticResource LineFragmentImageStyle}" />
+                                        <Image Source="../Resources/respec.png" Style="{StaticResource Dungeon.Value.Image}" />
                                     </Grid>
                                     <Label Content="{Binding ReSpec, Converter={StaticResource ShortNumberConverter}, ConverterCulture={x:Static glob:CultureInfo.CurrentCulture}, IsAsync=True, FallbackValue=-}" 
                                            Style="{StaticResource DungeonNotificationFragment.BestReSpec}" VerticalAlignment="Center" 
@@ -1305,7 +1313,7 @@
 
                                     <Grid HorizontalAlignment="Center" VerticalAlignment="Center" 
                                           ToolTip="{Binding TranslationDungeonSilver, FallbackValue=DUNGEON__SILVER}">
-                                        <Image Source="../Resources/silver.png" Style="{StaticResource LineFragmentImageStyle}" />
+                                        <Image Source="../Resources/silver.png" Style="{StaticResource Dungeon.Value.Image}" />
                                     </Grid>
                                     <Label Content="{Binding Silver, Converter={StaticResource ShortNumberConverter}, ConverterCulture={x:Static glob:CultureInfo.CurrentCulture}, IsAsync=True, FallbackValue=-}" 
                                            Style="{StaticResource DungeonNotificationFragment.BestSilver}" VerticalAlignment="Center" 
@@ -1320,7 +1328,7 @@
 
                                     <Grid HorizontalAlignment="Center" VerticalAlignment="Center" 
                                           ToolTip="{Binding TranslationDungeonFamePerHour, FallbackValue=DUNGEON__FAME__PER__HOUR}">
-                                        <Image Source="../Resources/fame.png" Style="{StaticResource LineFragmentImageStyle}" />
+                                        <Image Source="../Resources/fame.png" Style="{StaticResource Dungeon.Value.Image}" />
                                     </Grid>
                                     <Label Content="{Binding FamePerHour, Converter={StaticResource ShortNumberConverter}, ConverterCulture={x:Static glob:CultureInfo.CurrentCulture}, IsAsync=True, FallbackValue=-}" 
                                            ContentStringFormat="{}{0:N0}/h" Style="{StaticResource DungeonNotificationFragment.BestFamePerHour}" VerticalAlignment="Center" Margin="0 0 10 0" MinWidth="85">
@@ -1334,7 +1342,7 @@
 
                                     <Grid HorizontalAlignment="Center" VerticalAlignment="Center" 
                                           ToolTip="{Binding TranslationDungeonReSpecPerHour, FallbackValue=DUNGEON__RESPEC__PER__HOUR}">
-                                        <Image Source="../Resources/respec.png" Style="{StaticResource LineFragmentImageStyle}" />
+                                        <Image Source="../Resources/respec.png" Style="{StaticResource Dungeon.Value.Image}" />
                                     </Grid>
                                     <Label Content="{Binding ReSpecPerHour, Converter={StaticResource ShortNumberConverter}, ConverterCulture={x:Static glob:CultureInfo.CurrentCulture}, IsAsync=True, FallbackValue=-}" 
                                            ContentStringFormat="{}{0:N0}/h" Style="{StaticResource DungeonNotificationFragment.BestReSpecPerHour}" VerticalAlignment="Center" Margin="0 0 10 0" MinWidth="85">
@@ -1348,7 +1356,7 @@
 
                                     <Grid HorizontalAlignment="Center" VerticalAlignment="Center" 
                                           ToolTip="{Binding TranslationDungeonSilverPerHour, FallbackValue=DUNGEON__SILVER__PER__HOUR}">
-                                        <Image Source="../Resources/silver.png" Style="{StaticResource LineFragmentImageStyle}" />
+                                        <Image Source="../Resources/silver.png" Style="{StaticResource Dungeon.Value.Image}" />
                                     </Grid>
                                     <Label Content="{Binding SilverPerHour, Converter={StaticResource ShortNumberConverter}, ConverterCulture={x:Static glob:CultureInfo.CurrentCulture}, IsAsync=True, FallbackValue=-}" 
                                    ContentStringFormat="{}{0:N0}/h" Style="{StaticResource DungeonNotificationFragment.BestSilverPerHour}" VerticalAlignment="Center" Margin="0 0 10 0" MinWidth="85">

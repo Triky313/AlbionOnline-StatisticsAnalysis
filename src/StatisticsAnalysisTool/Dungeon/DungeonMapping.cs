@@ -1,5 +1,6 @@
 ﻿using StatisticsAnalysisTool.Dungeon.Models;
 using System.Linq;
+using StatisticsAnalysisTool.Enumerations;
 
 namespace StatisticsAnalysisTool.Dungeon;
 
@@ -11,6 +12,7 @@ public class DungeonMapping
         {
             Mode = dungeon.Mode,
             MapType = dungeon.MapType,
+            MainMapIndex = dungeon.MainMapIndex,
             GuidList = dungeon.GuidList.ToList(),
             Tier = dungeon.Tier,
             Faction = dungeon.Faction,
@@ -18,7 +20,7 @@ public class DungeonMapping
             TotalRunTimeInSeconds = dungeon.TotalRunTimeInSeconds,
             Events = dungeon.Events.Select(Mapping).ToList(),
             Loot = dungeon.Loot.Select(Mapping).ToList(),
-            Status = dungeon.Status,
+            Status = DungeonStatus.Done,
             Fame = dungeon.Fame,
             ReSpec = dungeon.ReSpec,
             Silver = dungeon.Silver,

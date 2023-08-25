@@ -9,6 +9,7 @@ public class DungeonDto
 {
     public DungeonMode Mode { get; set; }
     public MapType MapType { get; set; }
+    public string MainMapIndex { get; set; }
     public List<Guid> GuidList { get; set; } = new();
     public Tier Tier { get; set; } = Tier.Unknown;
     public int Level { get; set; } = -1;

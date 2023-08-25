@@ -199,6 +199,9 @@
     <Resource Include="Assets\heart.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Resource>
+    <Resource Include="Assets\map_icon.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Resource>
     <Resource Include="Assets\MiniMapMarker\group_dungeon.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Resource>
@@ -267,6 +270,21 @@
     </Resource>
     <Resource Include="Assets\sat-icon.png">
       <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Assets\shiny_common.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Assets\shiny_epic.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Assets\shiny_legendary.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Assets\shiny_rare.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Assets\shiny_uncommon.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Resource>
     <Resource Include="Assets\static_chest.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
@@ -595,6 +613,7 @@
     <None Remove="Assets\gold_glow.png" />
     <None Remove="Assets\green_glow.png" />
     <None Remove="Assets\heart.png" />
+    <None Remove="Assets\map_icon.png" />
     <None Remove="Assets\MiniMapMarker\group_dungeon.png" />
     <None Remove="Assets\MiniMapMarker\minimapmarker_fiber.png" />
     <None Remove="Assets\MiniMapMarker\minimapmarker_hide.png" />
@@ -618,6 +637,11 @@
     <None Remove="Assets\purple_glow.png" />
     <None Remove="Assets\repair_cross.png" />
     <None Remove="Assets\sat-icon.png" />
+    <None Remove="Assets\shiny_common.png" />
+    <None Remove="Assets\shiny_epic.png" />
+    <None Remove="Assets\shiny_legendary.png" />
+    <None Remove="Assets\shiny_rare.png" />
+    <None Remove="Assets\shiny_uncommon.png" />
     <None Remove="Assets\static_chest.png" />
     <None Remove="Languages\de-DE.xml" />
     <None Remove="Languages\en-US.xml" />

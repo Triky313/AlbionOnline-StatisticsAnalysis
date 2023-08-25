@@ -1109,6 +1109,8 @@ public class DungeonController
                     UtcDiscoveryTime = discoveredItem.UtcDiscoveryTime
                 });
                 dun.UpdateTotalValue();
+                dun.UpdateMostValuableLoot();
+                dun.UpdateMostValuableLootVisibility();
             }
         }
         catch (Exception e)
@@ -1156,14 +1158,17 @@ public class DungeonController
         var dungeons = await FileController.LoadAsync<List<DungeonDto>>(
             Path.Combine(AppDomain.CurrentDomain.BaseDirectory, Settings.Default.UserDataDirectoryName, Settings.Default.DungeonRunsFileName));
 
-        _mainWindowViewModel.DungeonBindings.Dungeons.AddRange(dungeons.Where(x => x.Mode != DungeonMode.Unknown).Select(DungeonMapping.Mapping).ToList());
+        _mainWindowViewModel.DungeonBindings.Dungeons.AddRange(dungeons
+            .Where(x => x.Mode != DungeonMode.Unknown).Select(DungeonMapping.Mapping)
+            .OrderBy(x => x.EnterDungeonFirstTime)
+            .ToList());
         _mainWindowViewModel.DungeonBindings.InitListCollectionView();
     }
 
     public async Task SaveInFileAsync()
     {
         DirectoryController.CreateDirectoryWhenNotExists(Path.Combine(AppDomain.CurrentDomain.BaseDirectory, Settings.Default.UserDataDirectoryName));
-        var toSaveDungeons = _mainWindowViewModel.DungeonBindings.Dungeons.Where(x => x is { Status: DungeonStatus.Done }).ToList();
+        var toSaveDungeons = _mainWindowViewModel.DungeonBindings.Dungeons.Select(DungeonMapping.Mapping).ToList();
         await FileController.SaveAsync(toSaveDungeons, Path.Combine(AppDomain.CurrentDomain.BaseDirectory, Settings.Default.UserDataDirectoryName, Settings.Default.DungeonRunsFileName));
         Debug.Print("Dungeons saved");
     }
