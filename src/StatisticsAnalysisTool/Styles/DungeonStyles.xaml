@@ -666,9 +666,9 @@
         </Grid>
     </DataTemplate>
 
-    <DataTemplate x:Key="DungeonFragment.MapTypeIcon.Template" DataType="{x:Type dungeonModels:DungeonBaseFragment}">
-        <StackPanel Orientation="Horizontal" VerticalAlignment="Center" HorizontalAlignment="Center">
-            <Image Source="../Assets/gem_level1.png" Height="11" Width="11" Margin="0,0,-5,0">
+    <DataTemplate x:Key="DungeonFragment.MapTypeIcon.Template" DataType="{x:Type dungeonModels:RandomDungeonFragment}">
+        <StackPanel Orientation="Horizontal" VerticalAlignment="Center" HorizontalAlignment="Center" Margin="0,-10,0,-10">
+            <Image Source="../Assets/butterfly_uncommon.png" Height="46" Width="38">
                 <Image.Style>
                     <Style TargetType="Image">
                         <Setter Property="Visibility" Value="Collapsed"/>
@@ -680,19 +680,8 @@
                     </Style>
                 </Image.Style>
             </Image>
-            <Image Source="../Assets/gem_level2.png" Height="11" Width="11" Margin="0,0,-5,0">
-                <Image.Style>
-                    <Style TargetType="Image">
-                        <Setter Property="Visibility" Value="Collapsed"/>
-                        <Style.Triggers>
-                            <DataTrigger Binding="{Binding Level}" Value="2">
-                                <Setter Property="Visibility" Value="Visible" />
-                            </DataTrigger>
-                        </Style.Triggers>
-                    </Style>
-                </Image.Style>
-            </Image>
-            <Image Source="../Assets/gem_level2.png" Height="11" Width="11" Margin="0,0,-5,0">
+
+            <Image Source="../Assets/butterfly_rare.png" Height="46" Width="38">
                 <Image.Style>
                     <Style TargetType="Image">
                         <Setter Property="Visibility" Value="Collapsed"/>
@@ -705,31 +694,7 @@
                 </Image.Style>
             </Image>
 
-            <Image Source="../Assets/gem_level3.png" Height="11" Width="11" Margin="0,0,-5,0">
-                <Image.Style>
-                    <Style TargetType="Image">
-                        <Setter Property="Visibility" Value="Collapsed"/>
-                        <Style.Triggers>
-                            <DataTrigger Binding="{Binding Level}" Value="3">
-                                <Setter Property="Visibility" Value="Visible" />
-                            </DataTrigger>
-                        </Style.Triggers>
-                    </Style>
-                </Image.Style>
-            </Image>
-            <Image Source="../Assets/gem_level3.png" Height="11" Width="11" Margin="0,0,-5,0">
-                <Image.Style>
-                    <Style TargetType="Image">
-                        <Setter Property="Visibility" Value="Collapsed"/>
-                        <Style.Triggers>
-                            <DataTrigger Binding="{Binding Level}" Value="3">
-                                <Setter Property="Visibility" Value="Visible" />
-                            </DataTrigger>
-                        </Style.Triggers>
-                    </Style>
-                </Image.Style>
-            </Image>
-            <Image Source="../Assets/gem_level3.png" Height="11" Width="11" Margin="0,0,-5,0">
+            <Image Source="../Assets/butterfly_epic.png" Height="46" Width="38">
                 <Image.Style>
                     <Style TargetType="Image">
                         <Setter Property="Visibility" Value="Collapsed"/>
@@ -742,43 +707,7 @@
                 </Image.Style>
             </Image>
 
-            <Image Source="../Assets/gem_level4.png" Height="11" Width="11" Margin="0,0,-5,0">
-                <Image.Style>
-                    <Style TargetType="Image">
-                        <Setter Property="Visibility" Value="Collapsed"/>
-                        <Style.Triggers>
-                            <DataTrigger Binding="{Binding Level}" Value="4">
-                                <Setter Property="Visibility" Value="Visible" />
-                            </DataTrigger>
-                        </Style.Triggers>
-                    </Style>
-                </Image.Style>
-            </Image>
-            <Image Source="../Assets/gem_level4.png" Height="11" Width="11" Margin="0,0,-5,0">
-                <Image.Style>
-                    <Style TargetType="Image">
-                        <Setter Property="Visibility" Value="Collapsed"/>
-                        <Style.Triggers>
-                            <DataTrigger Binding="{Binding Level}" Value="4">
-                                <Setter Property="Visibility" Value="Visible" />
-                            </DataTrigger>
-                        </Style.Triggers>
-                    </Style>
-                </Image.Style>
-            </Image>
-            <Image Source="../Assets/gem_level4.png" Height="11" Width="11" Margin="0,0,-5,0">
-                <Image.Style>
-                    <Style TargetType="Image">
-                        <Setter Property="Visibility" Value="Collapsed"/>
-                        <Style.Triggers>
-                            <DataTrigger Binding="{Binding Level}" Value="4">
-                                <Setter Property="Visibility" Value="Visible" />
-                            </DataTrigger>
-                        </Style.Triggers>
-                    </Style>
-                </Image.Style>
-            </Image>
-            <Image Source="../Assets/gem_level4.png" Height="11" Width="11" Margin="0,0,-5,0">
+            <Image Source="../Assets/butterfly_legendary.png" Height="46" Width="38">
                 <Image.Style>
                     <Style TargetType="Image">
                         <Setter Property="Visibility" Value="Collapsed"/>
@@ -822,27 +751,9 @@
         <Setter Property="VerticalAlignment" Value="Center"/>
         <Setter Property="HorizontalAlignment" Value="Center"/>
         <Setter Property="TextAlignment" Value="Center"/>
-        <Setter Property="FontWeight" Value="Bold"/>
-        <Setter Property="Width" Value="35"/>
-        <Setter Property="Margin" Value="5,0,0,0"/>
-        <Setter Property="Foreground" Value="{StaticResource SolidColorBrush.Text.5}" />
-        <Style.Triggers>
-            <DataTrigger Binding="{Binding Level}" Value="0">
-                <Setter Property="Foreground" Value="{StaticResource SolidColorBrush.Text.3}" />
-            </DataTrigger>
-            <DataTrigger Binding="{Binding Level}" Value="1">
-                <Setter Property="Foreground" Value="{StaticResource SolidColorBrush.Text.2}" />
-            </DataTrigger>
-            <DataTrigger Binding="{Binding Level}" Value="2">
-                <Setter Property="Foreground" Value="{StaticResource SolidColorBrush.Item.Level.Color.1}" />
-            </DataTrigger>
-            <DataTrigger Binding="{Binding Level}" Value="3">
-                <Setter Property="Foreground" Value="{StaticResource SolidColorBrush.Item.Level.Color.2}" />
-            </DataTrigger>
-            <DataTrigger Binding="{Binding Level}" Value="4">
-                <Setter Property="Foreground" Value="{StaticResource SolidColorBrush.Item.Level.Color.3}" />
-            </DataTrigger>
-        </Style.Triggers>
+        <Setter Property="FontWeight" Value="ExtraBold"/>
+        <Setter Property="Width" Value="40"/>
+        <Setter Property="Foreground" Value="{StaticResource SolidColorBrush.Text.1}" />
     </Style>
 
     <!-- Dungeon fragments -->
@@ -853,6 +764,7 @@
                     <DockPanel>
                         <Grid HorizontalAlignment="Left" Style="{StaticResource DungeonFragment.Grid.DungeonMode}" />
                         <StackPanel Orientation="Vertical" VerticalAlignment="Center" HorizontalAlignment="Center">
+                            <ContentPresenter ContentTemplate="{StaticResource DungeonFragment.MapTypeIcon.Template}" Content="{Binding}" />
                             <TextBlock Style="{StaticResource Fragment.TierLevel}">
                                 <TextBlock.Text>
                                     <MultiBinding StringFormat="{}T{0}{1}">
@@ -861,16 +773,16 @@
                                     </MultiBinding>
                                 </TextBlock.Text>
                             </TextBlock>
-                            <ContentPresenter ContentTemplate="{StaticResource DungeonFragment.MapTypeIcon.Template}" Content="{Binding}"/>
                         </StackPanel>
                         <Grid Height="96">
                             <StackPanel Orientation="Vertical" HorizontalAlignment="Right" VerticalAlignment="Top">
                                 <StackPanel Orientation="Horizontal">
                                     <!-- Number of floors -->
                                     <StackPanel Orientation="Horizontal">
-                                        <fa5:ImageAwesome Icon="Solid_Dungeon" Foreground="{StaticResource SolidColorBrush.Text.1}" Height="16" 
+                                        <fa5:ImageAwesome Icon="Solid_Dungeon" Foreground="{StaticResource SolidColorBrush.Text.1}" Height="18" 
                                                           ToolTip="{Binding TranslationNumberOfDungeonFloors, FallbackValue=NUMBER__OF__DUNGEON__FLOORS}" />
-                                        <Label Content="{Binding NumberOfFloors, IsAsync=True, FallbackValue=0}" ContentStringFormat="{}{0}" VerticalAlignment="Center" Width="22" />
+                                        <Label Content="{Binding NumberOfFloors, IsAsync=True, FallbackValue=0}" ContentStringFormat="{}{0}" 
+                                               VerticalAlignment="Center" Width="22" Padding="8,6,0,0" />
                                     </StackPanel>
 
                                     <!-- Run time -->
@@ -1497,8 +1409,7 @@
                                 <Grid Margin="0,0,0,0" Width="16" Height="16" VerticalAlignment="Center" ToolTip="{Binding TranslationNumberOfDungeonFloors, FallbackValue=NUMBER__OF__DUNGEON__FLOORS}">
                                     <fa5:ImageAwesome Icon="Solid_Dungeon" Foreground="{StaticResource SolidColorBrush.Text.1}" />
                                 </Grid>
-                                <Label Content="{Binding NumberOfDungeonFloors, IsAsync=True, FallbackValue=0}" ContentStringFormat="{}{0}" VerticalAlignment="Center" 
-                                       Margin="2 3 10 0" MinWidth="55" />
+                                <Label Content="{Binding NumberOfDungeonFloors, IsAsync=True, FallbackValue=0}" ContentStringFormat="{}{0}" VerticalAlignment="Center" MinWidth="55" />
                             </StackPanel>
                         </Grid>
                     </DockPanel>

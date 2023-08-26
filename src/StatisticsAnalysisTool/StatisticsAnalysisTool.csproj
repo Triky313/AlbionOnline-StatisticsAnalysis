@@ -160,6 +160,18 @@
     <Resource Include="Assets\book_oblique.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Resource>
+    <Resource Include="Assets\butterfly_epic.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Assets\butterfly_legendary.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Assets\butterfly_rare.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Assets\butterfly_uncommon.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Resource>
     <Resource Include="Assets\crafting_description_image001.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Resource>
@@ -600,6 +612,10 @@
     <None Remove="Assets\blue_glow.png" />
     <None Remove="Assets\book.png" />
     <None Remove="Assets\book_oblique.png" />
+    <None Remove="Assets\butterfly_epic.png" />
+    <None Remove="Assets\butterfly_legendary.png" />
+    <None Remove="Assets\butterfly_rare.png" />
+    <None Remove="Assets\butterfly_uncommon.png" />
     <None Remove="Assets\crafting_description_image001.png" />
     <None Remove="Assets\crafting_description_image002.png" />
     <None Remove="Assets\dungeon.png" />

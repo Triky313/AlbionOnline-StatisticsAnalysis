@@ -39,6 +39,7 @@ public class RandomDungeonFragment : DungeonBaseFragment
         FactionCoins = dto.FactionCoins;
         FactionFlags = dto.FactionFlags;
         CityFaction = dto.CityFaction;
+        UpdateNumberOfFloors(null, null);
         UpdateValueVisibility();
 
         GuidList.CollectionChanged += UpdateNumberOfFloors;
