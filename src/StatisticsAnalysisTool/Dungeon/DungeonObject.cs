@@ -20,7 +20,7 @@ public class DungeonObject
     public List<Guid> GuidList { get; set; } = new();
     public DateTime EnterDungeonFirstTime { get; set; }
     public string MainMapIndex { get; set; }
-    public List<DungeonEvent> DungeonEventObjects { get; set; } = new();
+    public List<PointOfInterest> DungeonEventObjects { get; set; } = new();
     public List<Loot> DungeonLoot { get; set; } = new();
     public DungeonStatus Status { get; set; }
     public double Fame { get; set; }

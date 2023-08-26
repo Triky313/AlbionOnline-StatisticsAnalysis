@@ -5,7 +5,7 @@ using System;
 
 namespace StatisticsAnalysisTool.Dungeon.Models;
 
-public class DungeonEvent : BaseViewModel
+public class PointOfInterest : BaseViewModel
 {
     public int Id { get; set; }
     public DateTime Opened { get; set; }
@@ -18,7 +18,7 @@ public class DungeonEvent : BaseViewModel
     private ShrineBuff _shrineBuff;
     public string Hash => $"{Id}{UniqueName}";
 
-    public DungeonEvent(int id, string uniqueName)
+    public PointOfInterest(int id, string uniqueName)
     {
         Id = id;
         UniqueName = uniqueName;
@@ -30,7 +30,7 @@ public class DungeonEvent : BaseViewModel
         Status = ChestStatus.Close;
     }
 
-    public DungeonEvent()
+    public PointOfInterest()
     {
     }
 
@@ -113,4 +113,5 @@ public class DungeonEvent : BaseViewModel
     public static string TranslationCombatBuff => LanguageController.Translation("COMBAT_BUFF");
     public static string TranslationSilverShrine => LanguageController.Translation("SILVER_SHRINE");
     public static string TranslationFameShrine => LanguageController.Translation("FAME_SHRINE");
+    public static string TranslationLockedChest => LanguageController.Translation("LOCKED_CHEST");
 }

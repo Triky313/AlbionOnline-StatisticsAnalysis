@@ -79,9 +79,9 @@ public class DungeonMapping
         };
     }
 
-    public static DungeonEvent Mapping(DungeonEventDto dto)
+    public static PointOfInterest Mapping(DungeonEventDto dto)
     {
-        return new DungeonEvent()
+        return new PointOfInterest()
         {
             Id = dto.Id,
             IsBossChest = dto.IsBossChest,
@@ -95,19 +95,19 @@ public class DungeonMapping
         };
     }
 
-    public static DungeonEventDto Mapping(DungeonEvent dungeonEvent)
+    public static DungeonEventDto Mapping(PointOfInterest pointOfInterest)
     {
         return new DungeonEventDto()
         {
-            Id = dungeonEvent.Id,
-            IsBossChest = dungeonEvent.IsBossChest,
-            Opened = dungeonEvent.Opened,
-            Rarity = dungeonEvent.Rarity,
-            ShrineBuff = dungeonEvent.ShrineBuff,
-            ShrineType = dungeonEvent.ShrineType,
-            Status = dungeonEvent.Status,
-            Type = dungeonEvent.Type,
-            UniqueName = dungeonEvent.UniqueName
+            Id = pointOfInterest.Id,
+            IsBossChest = pointOfInterest.IsBossChest,
+            Opened = pointOfInterest.Opened,
+            Rarity = pointOfInterest.Rarity,
+            ShrineBuff = pointOfInterest.ShrineBuff,
+            ShrineType = pointOfInterest.ShrineType,
+            Status = pointOfInterest.Status,
+            Type = pointOfInterest.Type,
+            UniqueName = pointOfInterest.UniqueName
         };
     }
 

@@ -28,11 +28,12 @@ public abstract class DungeonBaseFragment : BaseViewModel
     private double _silver;
     private List<TimeCollectObject> _dungeonRunTimes = new();
     private int _totalRunTimeInSeconds;
-    private ObservableCollection<DungeonEvent> _events = new();
+    private ObservableCollection<PointOfInterest> _events = new();
     private ObservableCollection<Loot> _loot = new();
     private string _diedName;
     private string _killedBy;
     private MapType _mapType = MapType.Unknown;
+    private ClusterType _clusterType = ClusterType.Unknown;
     private double _totalValue;
     private double _famePerHour;
     private double _reSpecPerHour;
@@ -47,6 +48,7 @@ public abstract class DungeonBaseFragment : BaseViewModel
     protected DungeonBaseFragment(Guid guid, MapType mapType, DungeonMode mode, string mainMapIndex)
     {
         AddTimer(DateTime.UtcNow);
+        ClusterType = WorldData.GetClusterTypeByIndex(mainMapIndex);
         GuidList = new ObservableCollection<Guid>() { guid };
         MapType = mapType;
         Mode = mode;
@@ -59,6 +61,7 @@ public abstract class DungeonBaseFragment : BaseViewModel
     protected DungeonBaseFragment(DungeonDto dto)
     {
         GuidList = new ObservableCollection<Guid>(dto.GuidList);
+        ClusterType = WorldData.GetClusterTypeByIndex(dto.MainMapIndex);
         MapType = dto.MapType;
         Mode = dto.Mode;
         MainMapIndex = dto.MainMapIndex;
@@ -71,7 +74,7 @@ public abstract class DungeonBaseFragment : BaseViewModel
         Silver = dto.Silver;
         ReSpec = dto.ReSpec;
         TotalRunTimeInSeconds = dto.TotalRunTimeInSeconds;
-        Events = new ObservableCollection<DungeonEvent>(dto.Events.Select(DungeonMapping.Mapping));
+        Events = new ObservableCollection<PointOfInterest>(dto.Events.Select(DungeonMapping.Mapping));
         Loot = new ObservableCollection<Loot>(dto.Loot.Select(DungeonMapping.Mapping));
 
         UpdateTotalValue();
@@ -235,7 +238,7 @@ public abstract class DungeonBaseFragment : BaseViewModel
         }
     }
 
-    public ObservableCollection<DungeonEvent> Events
+    public ObservableCollection<PointOfInterest> Events
     {
         get => _events;
         set
@@ -283,6 +286,16 @@ public abstract class DungeonBaseFragment : BaseViewModel
         set
         {
             _mainMapName = value;
+            OnPropertyChanged();
+        }
+    }
+
+    public ClusterType ClusterType
+    {
+        get => _clusterType;
+        set
+        {
+            _clusterType = value;
             OnPropertyChanged();
         }
     }
@@ -501,6 +514,6 @@ public abstract class DungeonBaseFragment : BaseViewModel
     public static string TranslationFavorPerHour => LanguageController.Translation("FAVOR_PER_HOUR");
     public static string TranslationBestLootedItem => LanguageController.Translation("BEST_LOOTED_ITEM");
     public static string TranslationTotalLootedValue => LanguageController.Translation("TOTAL_LOOT_VALUE");
-    public static string TranslationMap => LanguageController.Translation("MAP");
+    public static string TranslationClusterType => LanguageController.Translation("CLUSTER_TYPE");
     public static string TranslationMostValuableLoot => LanguageController.Translation("MOST_VALUABLE_LOOT");
 }

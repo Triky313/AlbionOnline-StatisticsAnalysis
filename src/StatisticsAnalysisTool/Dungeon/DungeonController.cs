@@ -414,7 +414,7 @@ public class DungeonController
                 return;
             }
 
-            var eventObject = new DungeonEvent(id, uniqueName);
+            var eventObject = new PointOfInterest(id, uniqueName);
             await Application.Current.Dispatcher.InvokeAsync(() => { dun.Events?.Add(eventObject); });
 
             if (dun.Faction == Faction.Unknown)
