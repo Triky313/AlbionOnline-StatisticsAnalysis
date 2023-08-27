@@ -41,6 +41,7 @@ public abstract class DungeonBaseFragment : BaseViewModel
     private string _mainMapIndex;
     private Loot _mostValuableLoot;
     private Visibility _mostValuableLootVisibility = Visibility.Collapsed;
+    private KillStatus _killStatus;
 
     public ObservableCollection<Guid> GuidList { get; set; }
     public string DungeonHash => $"{EnterDungeonFirstTime.Ticks}{string.Join(",", GuidList)}";
@@ -274,6 +275,16 @@ public abstract class DungeonBaseFragment : BaseViewModel
         set
         {
             _killedBy = value;
+            OnPropertyChanged();
+        }
+    }
+
+    public KillStatus KillStatus
+    {
+        get => _killStatus;
+        set
+        {
+            _killStatus = value;
             OnPropertyChanged();
         }
     }
@@ -516,4 +527,6 @@ public abstract class DungeonBaseFragment : BaseViewModel
     public static string TranslationTotalLootedValue => LanguageController.Translation("TOTAL_LOOT_VALUE");
     public static string TranslationClusterType => LanguageController.Translation("CLUSTER_TYPE");
     public static string TranslationMostValuableLoot => LanguageController.Translation("MOST_VALUABLE_LOOT");
+    public static string TranslationCorrupted => LanguageController.Translation("CORRUPTED");
+    public static string TranslationKilledBy => LanguageController.Translation("KILLED_BY");
 }

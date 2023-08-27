@@ -1,6 +1,7 @@
 ﻿using StatisticsAnalysisTool.Cluster;
 using StatisticsAnalysisTool.Common;
 using System;
+using System.Windows;
 using ValueType = StatisticsAnalysisTool.Enumerations.ValueType;
 
 namespace StatisticsAnalysisTool.Dungeon.Models;
@@ -11,6 +12,7 @@ public class CorruptedFragment : DungeonBaseFragment
     private double _favor;
     private double _mightPerHour;
     private double _favorPerHour;
+    private Visibility _mightFavorVisibility = Visibility.Collapsed;
 
     public CorruptedFragment(Guid guid, MapType mapType, DungeonMode mode, string mainMapIndex) : base(guid, mapType, mode, mainMapIndex)
     {
@@ -20,6 +22,8 @@ public class CorruptedFragment : DungeonBaseFragment
     {
         Might = dto.Might;
         Favor = dto.Favor;
+
+        UpdateValueVisibility();
     }
 
     public double Might
@@ -66,7 +70,25 @@ public class CorruptedFragment : DungeonBaseFragment
         }
     }
 
+    public Visibility MightFavorVisibility
+    {
+        get => _mightFavorVisibility;
+        set
+        {
+            _mightFavorVisibility = value;
+            OnPropertyChanged();
+        }
+    }
+
     #endregion
+
+    private void UpdateValueVisibility()
+    {
+        if ((Favor > 0 || Might > 0) && MightFavorVisibility != Visibility.Visible)
+        {
+            MightFavorVisibility = Visibility.Visible;
+        }
+    }
 
     public void Add(double value, ValueType type)
     {

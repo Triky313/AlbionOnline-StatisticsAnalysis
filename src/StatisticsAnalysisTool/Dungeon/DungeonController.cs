@@ -473,26 +473,29 @@ public class DungeonController
 
     public void SetDiedIfInDungeon(DiedObject dieObject)
     {
-        if (_currentGuid != null && _trackingController.EntityController.LocalUserData.Username != null && dieObject.DiedName == _trackingController.EntityController.LocalUserData.Username)
+        if (_currentGuid == null || _trackingController.EntityController.LocalUserData.Username == null)
         {
-            try
-            {
-                var item = _mainWindowViewModel.DungeonBindings.Dungeons.FirstOrDefault(x => x.GuidList.Contains((Guid) _currentGuid) && x.EnterDungeonFirstTime > DateTime.UtcNow.AddDays(-1));
-
-                if (item == null)
-                {
-                    return;
-                }
-
-                item.DiedName = dieObject.DiedName;
-                item.KilledBy = dieObject.KilledBy;
-            }
-            catch (Exception e)
-            {
-                ConsoleManager.WriteLineForError(MethodBase.GetCurrentMethod()?.DeclaringType, e);
-                Log.Error(e, "{message}", MethodBase.GetCurrentMethod()?.DeclaringType);
-            }
+            return;
         }
+
+        var dungeon = _mainWindowViewModel.DungeonBindings.Dungeons.FirstOrDefault(x => x.GuidList.Contains((Guid) _currentGuid));
+
+        if (dungeon is null)
+        {
+            return;
+        }
+
+        if (dieObject.DiedName == _trackingController.EntityController.LocalUserData.Username)
+        {
+            dungeon.KillStatus = KillStatus.LocalPlayerDead;
+        }
+        else if (dieObject.KilledBy == _trackingController.EntityController.LocalUserData.Username)
+        {
+            dungeon.KillStatus = KillStatus.OpponentDead;
+        }
+
+        dungeon.DiedName = dieObject.DiedName;
+        dungeon.KilledBy = dieObject.KilledBy;
     }
 
     #endregion
