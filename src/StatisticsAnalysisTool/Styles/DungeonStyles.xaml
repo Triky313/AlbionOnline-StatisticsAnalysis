@@ -685,15 +685,17 @@
                 <Image.Style>
                     <Style TargetType="Image">
                         <Setter Property="Source" Value="../Assets/checkpoint.png" />
+                        <Setter Property="ToolTip" Value="{Binding TranslationCheckPoint}" />
                         <Setter Property="Opacity" Value="0.50" />
                         <Style.Triggers>
+                            <DataTrigger Binding="{Binding Status, IsAsync=True}" Value="{x:Static enumerations:CheckPointStatus.Unknown}">
+                                <Setter Property="Opacity" Value="0.25" />
+                            </DataTrigger>
                             <DataTrigger Binding="{Binding Status, IsAsync=True}" Value="{x:Static enumerations:CheckPointStatus.Active}">
                                 <Setter Property="Opacity" Value="1" />
-                                <Setter Property="ToolTip" Value="{Binding TranslationCheckPoint}" />
                             </DataTrigger>
                             <DataTrigger Binding="{Binding Status, IsAsync=True}" Value="{x:Static enumerations:CheckPointStatus.Done}">
                                 <Setter Property="Opacity" Value="0.75" />
-                                <Setter Property="ToolTip" Value="{Binding TranslationCheckPoint}" />
                             </DataTrigger>
                         </Style.Triggers>
                     </Style>

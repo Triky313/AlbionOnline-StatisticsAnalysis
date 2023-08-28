@@ -1,6 +1,6 @@
 ﻿using StatisticsAnalysisTool.Cluster;
 using System;
-using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Linq;
 using ValueType = StatisticsAnalysisTool.Enumerations.ValueType;
 
@@ -8,7 +8,7 @@ namespace StatisticsAnalysisTool.Dungeon.Models;
 
 public class ExpeditionFragment : DungeonBaseFragment
 {
-    private List<CheckPoint> _checkPoints = new();
+    private ObservableCollection<CheckPoint> _checkPoints = new();
 
     public ExpeditionFragment(Guid guid, MapType mapType, DungeonMode mode, string mainMapIndex) : base(guid, mapType, mode, mainMapIndex)
     {
@@ -16,10 +16,10 @@ public class ExpeditionFragment : DungeonBaseFragment
 
     public ExpeditionFragment(DungeonDto dto) : base(dto)
     {
-        CheckPoints = dto.CheckPoints.Select(DungeonMapping.Mapping).ToList();
+        CheckPoints = new ObservableCollection<CheckPoint>(dto.CheckPoints.Select(DungeonMapping.Mapping));
     }
 
-    public List<CheckPoint> CheckPoints
+    public ObservableCollection<CheckPoint> CheckPoints
     {
         get => _checkPoints;
         set

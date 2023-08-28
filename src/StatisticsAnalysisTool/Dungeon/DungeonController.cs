@@ -1141,7 +1141,7 @@ public class DungeonController
 
     #region Expedition
 
-    public void UpdateCheckPoint(CheckPoint checkPoint)
+    public async Task UpdateCheckPointAsync(CheckPoint checkPoint)
     {
         if (_currentGuid is not { } currentGuid)
         {
@@ -1154,7 +1154,7 @@ public class DungeonController
             return;
         }
 
-        Application.Current.Dispatcher.Invoke(() =>
+        await Application.Current.Dispatcher.InvokeAsync(() =>
         {
             var dun = _mainWindowViewModel.DungeonBindings.Dungeons?.FirstOrDefault(x => x.GuidList.Contains(currentGuid) && x.Status == DungeonStatus.Active);
             if (dun is not ExpeditionFragment expedition)
