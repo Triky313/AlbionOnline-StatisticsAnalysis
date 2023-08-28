@@ -172,6 +172,9 @@
     <Resource Include="Assets\butterfly_uncommon.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Resource>
+    <Resource Include="Assets\checkpoint.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Resource>
     <Resource Include="Assets\chest_locked.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Resource>
@@ -640,6 +643,7 @@
     <None Remove="Assets\butterfly_legendary.png" />
     <None Remove="Assets\butterfly_rare.png" />
     <None Remove="Assets\butterfly_uncommon.png" />
+    <None Remove="Assets\checkpoint.png" />
     <None Remove="Assets\chest_locked.png" />
     <None Remove="Assets\crafting_description_image001.png" />
     <None Remove="Assets\crafting_description_image002.png" />

@@ -71,6 +71,7 @@ public static class NetworkManager
         builder.AddEventHandler(new AttachItemContainerEventHandler(trackingController));
         builder.AddEventHandler(new HarvestFinishedEventHandler(trackingController));
         builder.AddEventHandler(new RewardGrantedEventHandler(trackingController));
+        builder.AddEventHandler(new NewExpeditionCheckPointHandler(trackingController));
 
         builder.AddRequestHandler(new InventoryMoveItemRequestHandler(trackingController));
         builder.AddRequestHandler(new UseShrineRequestHandler(trackingController));

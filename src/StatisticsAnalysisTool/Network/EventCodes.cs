@@ -299,7 +299,7 @@ public enum EventCodes
     MountHealthUpdate,
     MountCooldownUpdate,
     NewExpeditionAgent,
-    NewExpeditionCheckPoint,
+    NewExpeditionCheckPoint = 299,
     ExpeditionStartent,
     Voteent,
     Ratingent,

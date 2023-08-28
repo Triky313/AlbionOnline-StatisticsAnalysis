@@ -1,6 +1,6 @@
 ﻿using StatisticsAnalysisTool.Dungeon.Models;
-using System.Linq;
 using StatisticsAnalysisTool.Enumerations;
+using System.Linq;
 
 namespace StatisticsAnalysisTool.Dungeon;
 
@@ -42,6 +42,11 @@ public class DungeonMapping
         {
             dto.Might = corrupted.Might;
             dto.Favor = corrupted.Favor;
+        }
+
+        if (dungeon is ExpeditionFragment expedition)
+        {
+            dto.CheckPoints = expedition.CheckPoints.Select(Mapping).ToList();
         }
 
         if (dungeon is HellGateFragment hellGate)
@@ -130,6 +135,22 @@ public class DungeonMapping
             UtcDiscoveryTime = loot.UtcDiscoveryTime,
             Quantity = loot.Quantity,
             EstimatedMarketValueInternal = loot.EstimatedMarketValueInternal
+        };
+    }
+
+    public static CheckPoint Mapping(CheckPointDto dto)
+    {
+        return new CheckPoint()
+        {
+            Status = dto.Status
+        };
+    }
+
+    public static CheckPointDto Mapping(CheckPoint checkPoint)
+    {
+        return new CheckPointDto()
+        {
+            Status = checkPoint.Status
         };
     }
 }

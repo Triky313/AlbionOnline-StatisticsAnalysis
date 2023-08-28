@@ -958,7 +958,7 @@ public class DungeonController
         }
     }
 
-    public void AddTierToCurrentDungeon(int? mobIndex)
+    public async Task AddTierToCurrentDungeonAsync(int? mobIndex)
     {
         if (_currentGuid is not { } currentGuid)
         {
@@ -980,7 +980,7 @@ public class DungeonController
 
         try
         {
-            lock (_mainWindowViewModel.DungeonBindings.Dungeons)
+            await Application.Current.Dispatcher.InvokeAsync(() =>
             {
                 var mobTier = (Tier) MobsData.GetMobTierByIndex((int) mobIndex);
                 var dun = _mainWindowViewModel.DungeonBindings.Dungeons?.FirstOrDefault(x => x.GuidList.Contains(currentGuid) && x.Status == DungeonStatus.Active);
@@ -990,7 +990,7 @@ public class DungeonController
                 }
 
                 dun.SetTier(mobTier);
-            }
+            });
         }
         catch
         {
@@ -1135,6 +1135,44 @@ public class DungeonController
     private void UpdateDungeonSaveTimerUi(MapType mapType = MapType.Unknown)
     {
         _mainWindowViewModel.DungeonBindings.DungeonCloseTimer.Visibility = mapType == MapType.RandomDungeon ? Visibility.Visible : Visibility.Collapsed;
+    }
+
+    #endregion
+
+    #region Expedition
+
+    public void UpdateCheckPoint(CheckPoint checkPoint)
+    {
+        if (_currentGuid is not { } currentGuid)
+        {
+            return;
+        }
+
+
+        if (ClusterController.CurrentCluster.MapType != MapType.Expedition)
+        {
+            return;
+        }
+
+        Application.Current.Dispatcher.Invoke(() =>
+        {
+            var dun = _mainWindowViewModel.DungeonBindings.Dungeons?.FirstOrDefault(x => x.GuidList.Contains(currentGuid) && x.Status == DungeonStatus.Active);
+            if (dun is not ExpeditionFragment expedition)
+            {
+                return;
+            }
+
+            var foundCheckPoint = expedition.CheckPoints?.FirstOrDefault(x => x.Id == checkPoint.Id);
+            if (foundCheckPoint is null)
+            {
+                expedition.CheckPoints?.Add(checkPoint);
+            }
+            else
+            {
+                foundCheckPoint.Status = checkPoint.Status;
+            }
+
+        });
     }
 
     #endregion

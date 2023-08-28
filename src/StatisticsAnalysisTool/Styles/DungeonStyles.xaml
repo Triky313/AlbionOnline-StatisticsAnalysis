@@ -679,6 +679,29 @@
         </Grid>
     </DataTemplate>
 
+    <DataTemplate x:Key="Dungeon.CheckPoint.Template" DataType="{x:Type dungeonModels:CheckPoint}">
+        <Grid Width="18">
+            <Image>
+                <Image.Style>
+                    <Style TargetType="Image">
+                        <Setter Property="Source" Value="../Assets/checkpoint.png" />
+                        <Setter Property="Opacity" Value="0.50" />
+                        <Style.Triggers>
+                            <DataTrigger Binding="{Binding Status, IsAsync=True}" Value="{x:Static enumerations:CheckPointStatus.Active}">
+                                <Setter Property="Opacity" Value="1" />
+                                <Setter Property="ToolTip" Value="{Binding TranslationCheckPoint}" />
+                            </DataTrigger>
+                            <DataTrigger Binding="{Binding Status, IsAsync=True}" Value="{x:Static enumerations:CheckPointStatus.Done}">
+                                <Setter Property="Opacity" Value="0.75" />
+                                <Setter Property="ToolTip" Value="{Binding TranslationCheckPoint}" />
+                            </DataTrigger>
+                        </Style.Triggers>
+                    </Style>
+                </Image.Style>
+            </Image>
+        </Grid>
+    </DataTemplate>
+
     <DataTemplate x:Key="DungeonFragment.MapTypeIcon.Template" DataType="{x:Type dungeonModels:RandomDungeonFragment}">
         <StackPanel Orientation="Horizontal" VerticalAlignment="Center" HorizontalAlignment="Center" Margin="0,-10,0,-10">
             <Image Height="46" Width="38">
@@ -1068,6 +1091,8 @@
                                             </StackPanel>
                                         </StackPanel>
 
+                                        <!-- Kill message -->
+                                        <ContentPresenter ContentTemplate="{StaticResource DungeonFragment.Kill.Template}" Content="{Binding}" />
                                     </StackPanel>
                                 </StackPanel>
                             </StackPanel>
@@ -1248,16 +1273,116 @@
     </DataTemplate>
 
     <DataTemplate x:Key="ExpeditionTemplate" DataType="{x:Type dungeonModels:ExpeditionFragment}">
-        <Border BorderBrush="{StaticResource SolidColorBrush.Background.2}" BorderThickness="0,0,0,1" Visibility="{Binding Visibility}">
-            <Grid Height="96" Style="{StaticResource Fragment.Activity}">
+        <Border BorderBrush="{StaticResource SolidColorBrush.Background.2}" BorderThickness="0,0,0,1">
+            <Grid Style="{StaticResource Fragment.Activity}">
                 <StackPanel Orientation="Vertical" Style="{StaticResource DungeonFragment.Faction}">
                     <DockPanel>
                         <Grid HorizontalAlignment="Left" Style="{StaticResource DungeonFragment.Grid.DungeonMode}" />
+                        <StackPanel Orientation="Vertical" VerticalAlignment="Center" HorizontalAlignment="Center">
+                            <!-- Tier / Level -->
+                            <TextBlock Style="{StaticResource Fragment.Tier}">
+                                <TextBlock.Text>
+                                    <MultiBinding StringFormat="{}T{0}">
+                                        <Binding Path="Tier" FallbackValue="?" Converter="{StaticResource EnumToIntOrQuestionMarkConverter}" IsAsync="True" />
+                                    </MultiBinding>
+                                </TextBlock.Text>
+                            </TextBlock>
+                        </StackPanel>
+                        <Grid Height="96">
+                            <StackPanel Orientation="Vertical" HorizontalAlignment="Right" VerticalAlignment="Top">
+                                <StackPanel Orientation="Horizontal">
+                                    <!-- Run time -->
+                                    <Grid Width="18" Height="24" VerticalAlignment="Center" 
+                                          ToolTip="{Binding TranslationRunTime, FallbackValue=RUN__TIME}">
+                                        <fa5:ImageAwesome Icon="Regular_Clock" Foreground="{StaticResource SolidColorBrush.Text.1}" />
+                                    </Grid>
+                                    <Label Height="24" Content="{Binding TotalRunTimeInSeconds, IsAsync=True, FallbackValue=00:00:00, Converter={StaticResource SecondsToTimeFormatConverter}}" Width="60" />
+                                </StackPanel>
+
+                                <!-- Delete checkbox -->
+                                <Grid Margin="0,0,10,0" Height="18" Width="18" HorizontalAlignment="Right">
+                                    <CheckBox IsChecked="{Binding IsSelectedForDeletion}" ToolTip="{Binding TranslationSelectToDelete}" />
+                                </Grid>
+                            </StackPanel>
+
+                            <StackPanel Orientation="Vertical">
+                                <StackPanel Orientation="Horizontal" Height="24">
+                                    <Label Width="150" VerticalAlignment="Center" Foreground="{StaticResource SolidColorBrush.Text.1}">
+                                        <Label.Content>
+                                            <TextBlock>
+                                                <TextBlock.Text>
+                                                    <MultiBinding StringFormat="{}{0}" ConverterCulture="{x:Static com:LanguageController.CurrentCultureInfo}">
+                                                        <Binding Path="EnterDungeonFirstTime" FallbackValue="00.00.0000 00:00:00" />
+                                                    </MultiBinding>
+                                                </TextBlock.Text>
+                                            </TextBlock>
+                                        </Label.Content>
+                                    </Label>
+
+                                    <!-- Main cluster name + icon -->
+                                    <ContentPresenter ContentTemplate="{StaticResource DungeonFragment.ClusterTypeIcon.Template}" Content="{Binding}" />
+                                    <Label Content="{Binding MainMapName, IsAsync=True, FallbackValue=UNKNOWN}" 
+                                           Foreground="{StaticResource SolidColorBrush.Text.1}" VerticalAlignment="Center" />
+                                </StackPanel>
+                                <StackPanel Orientation="Horizontal">
+                                    <StackPanel Orientation="Vertical" Margin="0,2" Width="150">
+                                        <!-- Fame -->
+                                        <ContentPresenter ContentTemplate="{StaticResource DungeonFragment.Fame.Template}" Content="{Binding}" />
+
+                                        <!-- ReSpec -->
+                                        <ContentPresenter ContentTemplate="{StaticResource DungeonFragment.ReSpec.Template}" Content="{Binding}" />
+
+                                        <!-- Silver -->
+                                        <ContentPresenter ContentTemplate="{StaticResource DungeonFragment.Silver.Template}" Content="{Binding}" />
+
+                                        <!-- Checkpoints -->
+                                        <StackPanel Orientation="Vertical">
+                                            <Grid Margin="0,0,20,0" Height="22">
+                                                <StackPanel Orientation="Horizontal" MinWidth="210">
+                                                    <ItemsControl ItemsSource="{Binding CheckPoints, IsAsync=True}" ItemTemplate="{StaticResource Dungeon.CheckPoint.Template}">
+                                                        <ItemsControl.ItemsPanel>
+                                                            <ItemsPanelTemplate>
+                                                                <UniformGrid Rows="1"/>
+                                                            </ItemsPanelTemplate>
+                                                        </ItemsControl.ItemsPanel>
+                                                    </ItemsControl>
+                                                </StackPanel>
+                                            </Grid>
+                                        </StackPanel>
+                                    </StackPanel>
+
+                                    <StackPanel Orientation="Vertical" Margin="0,2" Width="150"></StackPanel>
+
+                                    <StackPanel Orientation="Vertical" Margin="0,2">
+                                        <!-- Total value -->
+                                        <StackPanel Orientation="Horizontal" Height="20">
+                                            <Grid HorizontalAlignment="Center" Width="20" Margin="0,0,2,0" VerticalAlignment="Center" ToolTip="{Binding TranslationTotalLootedValue, FallbackValue=TOTAL_LOOTED_VALUE}">
+                                                <Image Source="../Assets/static_chest.png" />
+                                            </Grid>
+                                            <DockPanel>
+                                                <TextBlock Text="{Binding TotalValue, ConverterCulture={x:Static glob:CultureInfo.CurrentCulture}, StringFormat='{}{0:N0}', IsAsync=True, Mode=OneWay, FallbackValue=-}" 
+                                                           Foreground="{StaticResource SolidColorBrush.Text.1}" TextAlignment="Right" />
+                                                <TextBlock Margin="2,0,2,0" />
+                                                <TextBlock Foreground="{StaticResource SolidColorBrush.Text.1}" TextAlignment="Left" />
+                                            </DockPanel>
+                                        </StackPanel>
+
+                                        <!-- Most valuable loot -->
+                                        <StackPanel Orientation="Horizontal" Height="30" Margin="-6,-2,0,0" Visibility="{Binding MostValuableLootVisibility}">
+                                            <Image Source="{Binding MostValuableLoot.Item.Icon, IsAsync=True}" Height="34" ToolTip="{Binding TranslationMostValuableLoot}" />
+                                            <StackPanel Orientation="Vertical" Height="32" Width="200">
+                                                <TextBlock Padding="0" Text="{Binding MostValuableLoot.Item.LocalizedName, IsAsync=True}" 
+                                                           Foreground="{StaticResource SolidColorBrush.Text.1}" />
+                                                <TextBlock Padding="0" Text="{Binding MostValuableLoot.EstimatedMarketValue.DoubleValue, StringFormat='{}{0:N0}', IsAsync=True}" 
+                                                           Foreground="{StaticResource SolidColorBrush.Accent.Blue.2}" />
+                                            </StackPanel>
+                                        </StackPanel>
+                                    </StackPanel>
+                                </StackPanel>
+                            </StackPanel>
+                        </Grid>
                     </DockPanel>
                 </StackPanel>
-                <Grid Margin="0 0 20 0" Height="30" Width="50" HorizontalAlignment="Right">
-                    <CheckBox Width="auto" Height="auto" IsChecked="{Binding IsSelectedForDeletion}" ToolTip="{Binding TranslationSelectToDelete}" />
-                </Grid>
             </Grid>
         </Border>
     </DataTemplate>
