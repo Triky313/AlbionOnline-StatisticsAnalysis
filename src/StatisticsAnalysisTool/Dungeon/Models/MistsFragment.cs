@@ -1,6 +1,7 @@
 ﻿using StatisticsAnalysisTool.Cluster;
 using StatisticsAnalysisTool.Common;
 using System;
+using System.Windows;
 using ValueType = StatisticsAnalysisTool.Enumerations.ValueType;
 
 namespace StatisticsAnalysisTool.Dungeon.Models;
@@ -11,15 +12,21 @@ public class MistsFragment : DungeonBaseFragment
     private double _favor;
     private double _mightPerHour;
     private double _favorPerHour;
+    private MistsRarity _rarity;
+    private Visibility _mightFavorVisibility = Visibility.Collapsed;
 
-    public MistsFragment(Guid guid, MapType mapType, DungeonMode mode, string mainMapIndex) : base(guid, mapType, mode, mainMapIndex)
+    public MistsFragment(Guid guid, MapType mapType, DungeonMode mode, string mainMapIndex, MistsRarity rarity) : base(guid, mapType, mode, mainMapIndex)
     {
+        Rarity = rarity;
     }
 
     public MistsFragment(DungeonDto dto) : base(dto)
     {
         Might = dto.Might;
         Favor = dto.Favor;
+        Rarity = dto.MistsRarity;
+
+        UpdateValueVisibility();
     }
 
     public double Might
@@ -40,6 +47,16 @@ public class MistsFragment : DungeonBaseFragment
         {
             _favor = value;
             FavorPerHour = value.GetValuePerHour(TotalRunTimeInSeconds <= 0 ? (DateTime.UtcNow - EnterDungeonFirstTime).Seconds : TotalRunTimeInSeconds);
+            OnPropertyChanged();
+        }
+    }
+
+    public MistsRarity Rarity
+    {
+        get => _rarity;
+        set
+        {
+            _rarity = value;
             OnPropertyChanged();
         }
     }
@@ -66,6 +83,16 @@ public class MistsFragment : DungeonBaseFragment
         }
     }
 
+    public Visibility MightFavorVisibility
+    {
+        get => _mightFavorVisibility;
+        set
+        {
+            _mightFavorVisibility = value;
+            OnPropertyChanged();
+        }
+    }
+
     #endregion
 
     public void Add(double value, ValueType type)
@@ -87,6 +114,14 @@ public class MistsFragment : DungeonBaseFragment
             case ValueType.Favor:
                 Favor += value;
                 return;
+        }
+    }
+
+    private void UpdateValueVisibility()
+    {
+        if ((Favor > 0 || Might > 0) && MightFavorVisibility != Visibility.Visible)
+        {
+            MightFavorVisibility = Visibility.Visible;
         }
     }
 }

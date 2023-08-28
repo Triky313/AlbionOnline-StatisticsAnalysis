@@ -33,6 +33,7 @@ public class ClusterInfo
     public string ClusterHistoryString1 { get; private set; }
     public string ClusterHistoryString2 { get; private set; }
     public string ClusterHistoryString3 { get; private set; }
+    public MistsRarity MistsRarity { get; private set; }
     public List<MapMarkerType> MapMarkers => WorldData.GetMapMarkers(Index);
 
     public ClusterInfo()
@@ -70,6 +71,7 @@ public class ClusterInfo
         InstanceName = instanceName;
         WorldMapDataType = worldMapDataType;
         DungeonInformation = dungeonInformation;
+        MistsRarity = GetMistsRarity(dungeonInformation);
 
         MainClusterIndex = mainClusterIndex;
         WorldJsonType = null;
@@ -124,6 +126,26 @@ public class ClusterInfo
             ClusterHistoryString2 = UniqueName;
             ClusterHistoryString3 = AvalonTunnelType.ToString();
         }
+    }
+
+    private MistsRarity GetMistsRarity(byte[] infoArray)
+    {
+        if (infoArray is null)
+        {
+            return MistsRarity.Unknown;
+        }
+
+        var rarity = DungeonInformation[^1];
+
+        return rarity switch
+        {
+            0 => MistsRarity.Common,
+            1 => MistsRarity.Uncommon,
+            2 => MistsRarity.Rare,
+            3 => MistsRarity.Epic,
+            4 => MistsRarity.Legendary,
+            _ => MistsRarity.Unknown
+        };
     }
 
     public string TierRomanString

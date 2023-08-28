@@ -15,7 +15,9 @@ public class ChangeClusterResponseHandler : ResponsePacketHandler<ChangeClusterR
 
     protected override async Task OnActionAsync(ChangeClusterResponse value)
     {
-        _trackingController.ClusterController.ChangeClusterInformation(value.MapType, value.Guid, value.Index, value.IslandName, value.WorldMapDataType, value.DungeonInformation, value.MainClusterIndex);
+        _trackingController.ClusterController.ChangeClusterInformation(
+            value.MapType, value.Guid, value.Index, value.IslandName, 
+            value.WorldMapDataType, value.DungeonInformation, value.MainClusterIndex);
         _trackingController.EntityController.RemoveEntitiesByLastUpdate(2);
         _trackingController.DungeonController.ResetLocalPlayerDiscoveredLoot();
         _trackingController.DungeonController.AddTierToCurrentDungeon(value.WorldMapDataType);

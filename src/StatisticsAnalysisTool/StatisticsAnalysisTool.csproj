@@ -223,9 +223,6 @@
     <Resource Include="Assets\map_blue_icon.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Resource>
-    <Resource Include="Assets\map_purple_icon.png">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Resource>
     <Resource Include="Assets\map_red_icon.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Resource>
@@ -660,7 +657,6 @@
     <None Remove="Assets\heart.png" />
     <None Remove="Assets\map_black_icon.png" />
     <None Remove="Assets\map_blue_icon.png" />
-    <None Remove="Assets\map_purple_icon.png" />
     <None Remove="Assets\map_red_icon.png" />
     <None Remove="Assets\map_white_icon.png" />
     <None Remove="Assets\map_yellow_icon.png" />

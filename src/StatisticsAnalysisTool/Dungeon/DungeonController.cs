@@ -135,7 +135,7 @@ public class DungeonController
             MapType.CorruptedDungeon => new CorruptedFragment((Guid) guid, mapType, DungeonMode.Corrupted, mainMapIndex),
             MapType.HellGate => new HellGateFragment((Guid) guid, mapType, DungeonMode.HellGate, mainMapIndex),
             MapType.Expedition => new ExpeditionFragment((Guid) guid, mapType, DungeonMode.Expedition, mainMapIndex),
-            MapType.Mists => new MistsFragment((Guid) guid, mapType, DungeonMode.Mists, mainMapIndex),
+            MapType.Mists => new MistsFragment((Guid) guid, mapType, DungeonMode.Mists, mainMapIndex, ClusterController.CurrentCluster.MistsRarity),
             MapType.MistsDungeon => new MistsDungeonFragment((Guid) guid, mapType, DungeonMode.MistsDungeon, mainMapIndex),
             _ => null
         };

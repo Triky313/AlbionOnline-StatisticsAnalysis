@@ -56,14 +56,14 @@ public class ChangeClusterResponse
                 IslandName = string.IsNullOrEmpty(parameters[2].ToString()) ? string.Empty : parameters[2].ToString();
             }
 
-            if (parameters.ContainsKey(3))
+            if (parameters.TryGetValue(3, out object dungeonInfo))
             {
-                DungeonInformation = ((byte[]) parameters[3]).ToArray();
+                DungeonInformation = ((byte[]) dungeonInfo).ToArray();
             }
         }
         catch (Exception e)
         {
-            Log.Debug(nameof(ChangeClusterResponse), e);
+            Log.Debug(e, nameof(ChangeClusterResponse));
         }
     }
 }
