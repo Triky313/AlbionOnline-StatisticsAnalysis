@@ -60,6 +60,7 @@ public class DungeonMapping
             dto.Might = mists.Might;
             dto.Favor = mists.Favor;
             dto.MistsRarity = mists.Rarity;
+            dto.BrecilianStanding = mists.BrecilianStanding;
         }
 
         if (dungeon is MistsDungeonFragment mistsDungeon)

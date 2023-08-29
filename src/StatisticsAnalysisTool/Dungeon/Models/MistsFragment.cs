@@ -2,6 +2,8 @@
 using StatisticsAnalysisTool.Common;
 using System;
 using System.Windows;
+using StatisticsAnalysisTool.Enumerations;
+using StatisticsAnalysisTool.GameFileData;
 using ValueType = StatisticsAnalysisTool.Enumerations.ValueType;
 
 namespace StatisticsAnalysisTool.Dungeon.Models;
@@ -10,14 +12,18 @@ public class MistsFragment : DungeonBaseFragment
 {
     private double _might;
     private double _favor;
+    private double _brecilianStanding;
     private double _mightPerHour;
     private double _favorPerHour;
+    private double _brecilianStandingPerHour;
     private MistsRarity _rarity;
     private Visibility _mightFavorVisibility = Visibility.Collapsed;
+    private Visibility _brecilianStandingVisibility = Visibility.Collapsed;
 
-    public MistsFragment(Guid guid, MapType mapType, DungeonMode mode, string mainMapIndex, MistsRarity rarity) : base(guid, mapType, mode, mainMapIndex)
+    public MistsFragment(Guid guid, MapType mapType, DungeonMode mode, string mainMapIndex, MistsRarity rarity, Tier tier) : base(guid, mapType, mode, mainMapIndex)
     {
         Rarity = rarity;
+        Tier = tier;
     }
 
     public MistsFragment(DungeonDto dto) : base(dto)
@@ -25,8 +31,10 @@ public class MistsFragment : DungeonBaseFragment
         Might = dto.Might;
         Favor = dto.Favor;
         Rarity = dto.MistsRarity;
+        BrecilianStanding = dto.BrecilianStanding;
 
         UpdateValueVisibility();
+        UpdateBrecilianStandingVisibility();
     }
 
     public double Might
@@ -36,6 +44,7 @@ public class MistsFragment : DungeonBaseFragment
         {
             _might = value;
             MightPerHour = value.GetValuePerHour(TotalRunTimeInSeconds <= 0 ? (DateTime.UtcNow - EnterDungeonFirstTime).Seconds : TotalRunTimeInSeconds);
+            UpdateValueVisibility();
             OnPropertyChanged();
         }
     }
@@ -47,6 +56,18 @@ public class MistsFragment : DungeonBaseFragment
         {
             _favor = value;
             FavorPerHour = value.GetValuePerHour(TotalRunTimeInSeconds <= 0 ? (DateTime.UtcNow - EnterDungeonFirstTime).Seconds : TotalRunTimeInSeconds);
+            OnPropertyChanged();
+        }
+    }
+
+    public double BrecilianStanding
+    {
+        get => _brecilianStanding;
+        set
+        {
+            _brecilianStanding = value;
+            BrecilianStandingPerHour = value.GetValuePerHour(TotalRunTimeInSeconds <= 0 ? (DateTime.UtcNow - EnterDungeonFirstTime).Seconds : TotalRunTimeInSeconds);
+            UpdateBrecilianStandingVisibility();
             OnPropertyChanged();
         }
     }
@@ -83,12 +104,32 @@ public class MistsFragment : DungeonBaseFragment
         }
     }
 
+    public double BrecilianStandingPerHour
+    {
+        get => double.IsNaN(_brecilianStandingPerHour) ? 0 : _brecilianStandingPerHour;
+        private set
+        {
+            _brecilianStandingPerHour = value;
+            OnPropertyChanged();
+        }
+    }
+
     public Visibility MightFavorVisibility
     {
         get => _mightFavorVisibility;
         set
         {
             _mightFavorVisibility = value;
+            OnPropertyChanged();
+        }
+    }
+
+    public Visibility BrecilianStandingVisibility
+    {
+        get => _brecilianStandingVisibility;
+        set
+        {
+            _brecilianStandingVisibility = value;
             OnPropertyChanged();
         }
     }
@@ -114,6 +155,9 @@ public class MistsFragment : DungeonBaseFragment
             case ValueType.Favor:
                 Favor += value;
                 return;
+            case ValueType.BrecilianStanding:
+                BrecilianStanding += value;
+                return;
         }
     }
 
@@ -122,6 +166,14 @@ public class MistsFragment : DungeonBaseFragment
         if ((Favor > 0 || Might > 0) && MightFavorVisibility != Visibility.Visible)
         {
             MightFavorVisibility = Visibility.Visible;
+        }
+    }
+
+    private void UpdateBrecilianStandingVisibility()
+    {
+        if (BrecilianStanding > 0 && BrecilianStandingVisibility != Visibility.Visible)
+        {
+            BrecilianStandingVisibility = Visibility.Visible;
         }
     }
 }

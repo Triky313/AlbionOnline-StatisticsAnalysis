@@ -25,6 +25,7 @@ public class DungeonDto
     public double Silver { get; set; }
     public double Might { get; set; }
     public double Favor { get; set; }
+    public double BrecilianStanding { get; set; }
     public double FactionCoins { get; set; }
     public double FactionFlags { get; set; }
     public string DiedName { get; set; }

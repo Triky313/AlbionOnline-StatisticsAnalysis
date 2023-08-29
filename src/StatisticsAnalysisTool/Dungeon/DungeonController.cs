@@ -128,17 +128,33 @@ public class DungeonController
             return null;
         }
 
-        var dungeonMode = DungeonData.GetDungeonMode(mainMapIndex);
-        DungeonBaseFragment newDungeon = mapType switch
+        DungeonBaseFragment newDungeon;
+        switch (mapType)
         {
-            MapType.RandomDungeon => new RandomDungeonFragment((Guid) guid, mapType, dungeonMode, mainMapIndex),
-            MapType.CorruptedDungeon => new CorruptedFragment((Guid) guid, mapType, DungeonMode.Corrupted, mainMapIndex),
-            MapType.HellGate => new HellGateFragment((Guid) guid, mapType, DungeonMode.HellGate, mainMapIndex),
-            MapType.Expedition => new ExpeditionFragment((Guid) guid, mapType, DungeonMode.Expedition, mainMapIndex),
-            MapType.Mists => new MistsFragment((Guid) guid, mapType, DungeonMode.Mists, mainMapIndex, ClusterController.CurrentCluster.MistsRarity),
-            MapType.MistsDungeon => new MistsDungeonFragment((Guid) guid, mapType, DungeonMode.MistsDungeon, mainMapIndex),
-            _ => null
-        };
+            case MapType.RandomDungeon:
+                var dungeonMode = DungeonData.GetDungeonMode(mainMapIndex);
+                newDungeon = new RandomDungeonFragment((Guid) guid, mapType, dungeonMode, mainMapIndex);
+                break;
+            case MapType.CorruptedDungeon:
+                newDungeon = new CorruptedFragment((Guid) guid, mapType, DungeonMode.Corrupted, mainMapIndex);
+                break;
+            case MapType.HellGate:
+                newDungeon = new HellGateFragment((Guid) guid, mapType, DungeonMode.HellGate, mainMapIndex);
+                break;
+            case MapType.Expedition:
+                newDungeon = new ExpeditionFragment((Guid) guid, mapType, DungeonMode.Expedition, mainMapIndex);
+                break;
+            case MapType.Mists:
+                var tier = (Tier) Enum.ToObject(typeof(Tier), MistsData.GetTier(ClusterController.CurrentCluster.WorldMapDataType));
+                newDungeon = new MistsFragment((Guid) guid, mapType, DungeonMode.Mists, mainMapIndex, ClusterController.CurrentCluster.MistsRarity, tier);
+                break;
+            case MapType.MistsDungeon:
+                newDungeon = new MistsDungeonFragment((Guid) guid, mapType, DungeonMode.MistsDungeon, mainMapIndex);
+                break;
+            default:
+                newDungeon = null;
+                break;
+        }
 
         return newDungeon;
     }
@@ -991,34 +1007,6 @@ public class DungeonController
 
                 dun.SetTier(mobTier);
             });
-        }
-        catch
-        {
-            // ignored
-        }
-    }
-
-    public void AddTierToCurrentDungeon(string worldMapDataType)
-    {
-        if (_currentGuid is not { } currentGuid || ClusterController.CurrentCluster.Guid != currentGuid)
-        {
-            return;
-        }
-
-        try
-        {
-            var mistTier = (Tier) MistsData.GetTier(worldMapDataType);
-
-            lock (_mainWindowViewModel.DungeonBindings.Dungeons)
-            {
-                var dun = _mainWindowViewModel.DungeonBindings.Dungeons?.FirstOrDefault(x => x.GuidList.Contains(currentGuid) && x.Status == DungeonStatus.Active);
-                if (dun == null || dun.Tier >= mistTier)
-                {
-                    return;
-                }
-
-                dun.SetTier(mistTier);
-            }
         }
         catch
         {

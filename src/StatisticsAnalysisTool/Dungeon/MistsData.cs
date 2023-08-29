@@ -18,7 +18,7 @@ public class MistsData
     public static int GetTier(string worldMapDataType)
     {
         var mistData = Get(worldMapDataType);
-        return int.TryParse(mistData.ClusterTier, NumberStyles.Any, LanguageController.CurrentCultureInfo, out int result) ? 0 : result;
+        return int.TryParse(mistData.ClusterTier, NumberStyles.Any, LanguageController.CurrentCultureInfo, out int result) ? result : 0;
     }
 
     public static MistsJsonObject Get(string worldMapDataType)
@@ -26,7 +26,7 @@ public class MistsData
         var mistData = _mists.FirstOrDefault(x => x.Id == worldMapDataType);
         return mistData ?? new MistsJsonObject();
     }
-    
+
     public static async Task<bool> LoadDataAsync()
     {
         var mists = await GameData.LoadDataAsync<MistsJsonObject, MistsJsonRootObject>(
