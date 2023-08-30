@@ -77,7 +77,7 @@
                                           VirtualizingPanel.CacheLengthUnit="Item"
                                           VirtualizingPanel.CacheLength="10,10"
                                           VirtualizingPanel.ScrollUnit="Pixel"
-                                          VirtualizingPanel.VirtualizationMode="Recycling"
+                                          VirtualizingPanel.VirtualizationMode="Standard"
                                           ScrollViewer.HorizontalScrollBarVisibility="Disabled"
                                           ScrollViewer.VerticalScrollBarVisibility="Visible" />
         </Grid>

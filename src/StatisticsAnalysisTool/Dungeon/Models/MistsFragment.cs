@@ -1,9 +1,8 @@
 ﻿using StatisticsAnalysisTool.Cluster;
 using StatisticsAnalysisTool.Common;
+using StatisticsAnalysisTool.Enumerations;
 using System;
 using System.Windows;
-using StatisticsAnalysisTool.Enumerations;
-using StatisticsAnalysisTool.GameFileData;
 using ValueType = StatisticsAnalysisTool.Enumerations.ValueType;
 
 namespace StatisticsAnalysisTool.Dungeon.Models;
