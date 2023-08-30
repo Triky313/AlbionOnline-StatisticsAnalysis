@@ -230,4 +230,20 @@ public static class WorldData
         MapData = data;
         return data.Count >= 0;
     }
+
+    public static Tier GetTier(int value)
+    {
+        return value switch
+        {
+            1 => Tier.T1,
+            2 => Tier.T2,
+            3 => Tier.T3,
+            4 => Tier.T4,
+            5 => Tier.T5,
+            6 => Tier.T6,
+            7 => Tier.T7,
+            8 => Tier.T8,
+            _ => Tier.Unknown
+        };
+    }
 }

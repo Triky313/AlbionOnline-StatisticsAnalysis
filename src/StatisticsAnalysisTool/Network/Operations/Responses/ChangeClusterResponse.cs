@@ -6,6 +6,7 @@ using StatisticsAnalysisTool.GameFileData;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using StatisticsAnalysisTool.Dungeon;
 
 namespace StatisticsAnalysisTool.Network.Operations.Responses;
 
@@ -18,6 +19,7 @@ public class ChangeClusterResponse
     public string IslandName;
     public byte[] DungeonInformation;
     public string MainClusterIndex;
+    public Tier MistsDungeonTier;
 
     public ChangeClusterResponse(Dictionary<byte, object> parameters)
     {
@@ -59,6 +61,11 @@ public class ChangeClusterResponse
             if (parameters.TryGetValue(3, out object dungeonInfo))
             {
                 DungeonInformation = ((byte[]) dungeonInfo).ToArray();
+            }
+
+            if (parameters.TryGetValue(5, out object mistsDungeonTier))
+            {
+                MistsDungeonTier = WorldData.GetTier(mistsDungeonTier.ObjectToInt());
             }
         }
         catch (Exception e)

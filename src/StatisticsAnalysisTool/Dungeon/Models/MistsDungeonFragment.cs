@@ -2,6 +2,7 @@
 using StatisticsAnalysisTool.Common;
 using System;
 using System.Windows;
+using StatisticsAnalysisTool.Enumerations;
 using ValueType = StatisticsAnalysisTool.Enumerations.ValueType;
 
 namespace StatisticsAnalysisTool.Dungeon.Models;
@@ -14,8 +15,9 @@ public class MistsDungeonFragment : DungeonBaseFragment
     private double _favorPerHour;
     private Visibility _mightFavorVisibility = Visibility.Collapsed;
 
-    public MistsDungeonFragment(Guid guid, MapType mapType, DungeonMode mode, string mainMapIndex) : base(guid, mapType, mode, mainMapIndex)
+    public MistsDungeonFragment(Guid guid, MapType mapType, DungeonMode mode, string mainMapIndex, Tier tier) : base(guid, mapType, mode, mainMapIndex)
     {
+        Tier = tier;
     }
 
     public MistsDungeonFragment(DungeonDto dto) : base(dto)
@@ -33,6 +35,7 @@ public class MistsDungeonFragment : DungeonBaseFragment
         {
             _might = value;
             MightPerHour = value.GetValuePerHour(TotalRunTimeInSeconds <= 0 ? (DateTime.UtcNow - EnterDungeonFirstTime).Seconds : TotalRunTimeInSeconds);
+            UpdateValueVisibility();
             OnPropertyChanged();
         }
     }

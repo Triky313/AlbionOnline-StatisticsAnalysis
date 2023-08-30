@@ -1591,10 +1591,10 @@
                     <DockPanel>
                         <Grid HorizontalAlignment="Left" Style="{StaticResource DungeonFragment.Grid.DungeonMode}" />
                         <StackPanel Orientation="Vertical" VerticalAlignment="Center" HorizontalAlignment="Center">
-                            <ContentPresenter ContentTemplate="{StaticResource DungeonFragment.RandomDungeon.MapTypeIcon.Template}" Content="{Binding}" />
-                            <TextBlock Style="{StaticResource Fragment.TierLevel}">
+                            <Image Source="../Assets/mists_dungeon.png" Height="28" Width="32" Margin="3,0,3,0"/>
+                            <TextBlock Style="{StaticResource Fragment.Tier}">
                                 <TextBlock.Text>
-                                    <MultiBinding StringFormat="{}T{0}{1}">
+                                    <MultiBinding StringFormat="{}T{0}">
                                         <Binding Path="Tier" FallbackValue="?" Converter="{StaticResource EnumToIntOrQuestionMarkConverter}" IsAsync="True" />
                                     </MultiBinding>
                                 </TextBlock.Text>

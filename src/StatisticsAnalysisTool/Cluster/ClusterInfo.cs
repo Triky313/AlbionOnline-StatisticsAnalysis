@@ -18,6 +18,7 @@ public class ClusterInfo
     public string InstanceName { get; set; }
     public string WorldMapDataType { get; set; }
     public byte[] DungeonInformation { get; set; }
+    public Tier MistsDungeonTier { get; set; }
 
     // Join data
     public string MainClusterIndex { get; set; }
@@ -56,13 +57,14 @@ public class ClusterInfo
         UniqueName = clusterInfo.UniqueName;
         UniqueClusterName = clusterInfo.UniqueClusterName;
         Tier = clusterInfo.Tier;
+        MistsDungeonTier = clusterInfo.MistsDungeonTier;
         ClusterMode = clusterInfo.ClusterMode;
         AvalonTunnelType = clusterInfo.AvalonTunnelType;
         MapTypeString = clusterInfo.MapTypeString;
         ClusterHistoryString();
     }
 
-    public void SetClusterInfo(MapType mapType, Guid? mapGuid, string clusterIndex, string instanceName, string worldMapDataType, byte[] dungeonInformation, string mainClusterIndex)
+    public void SetClusterInfo(MapType mapType, Guid? mapGuid, string clusterIndex, string instanceName, string worldMapDataType, byte[] dungeonInformation, string mainClusterIndex, Tier mistsDungeonTier)
     {
         Entered = DateTime.UtcNow;
         MapType = mapType;
@@ -71,6 +73,7 @@ public class ClusterInfo
         InstanceName = instanceName;
         WorldMapDataType = worldMapDataType;
         DungeonInformation = dungeonInformation;
+        MistsDungeonTier = mistsDungeonTier;
         MistsRarity = GetMistsRarity(dungeonInformation);
 
         MainClusterIndex = mainClusterIndex;
