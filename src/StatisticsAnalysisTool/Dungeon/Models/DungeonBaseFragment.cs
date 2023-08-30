@@ -74,6 +74,9 @@ public abstract class DungeonBaseFragment : BaseViewModel
         Fame = dto.Fame;
         Silver = dto.Silver;
         ReSpec = dto.ReSpec;
+        KilledBy = dto.KilledBy;
+        DiedName = dto.DiedName;
+        KillStatus = dto.KillStatus;
         TotalRunTimeInSeconds = dto.TotalRunTimeInSeconds;
         Events = new ObservableCollection<PointOfInterest>(dto.Events.Select(DungeonMapping.Mapping));
         Loot = new ObservableCollection<Loot>(dto.Loot.Select(DungeonMapping.Mapping));
@@ -528,5 +531,6 @@ public abstract class DungeonBaseFragment : BaseViewModel
     public static string TranslationClusterType => LanguageController.Translation("CLUSTER_TYPE");
     public static string TranslationMostValuableLoot => LanguageController.Translation("MOST_VALUABLE_LOOT");
     public static string TranslationCorrupted => LanguageController.Translation("CORRUPTED");
+    public static string TranslationHellGate => LanguageController.Translation("HELLGATE");
     public static string TranslationKilledBy => LanguageController.Translation("KILLED_BY");
 }

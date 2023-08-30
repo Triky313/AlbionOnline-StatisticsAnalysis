@@ -30,6 +30,7 @@ public class DungeonDto
     public double FactionFlags { get; set; }
     public string DiedName { get; set; }
     public string KilledBy { get; set; }
+    public KillStatus KillStatus { get; set; }
     public MistsRarity MistsRarity { get; set; }
     public List<CheckPointDto> CheckPoints { get; set; }
 }

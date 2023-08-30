@@ -25,7 +25,8 @@ public class DungeonMapping
             ReSpec = dungeon.ReSpec,
             Silver = dungeon.Silver,
             DiedName = dungeon.DiedName,
-            KilledBy = dungeon.KilledBy
+            KilledBy = dungeon.KilledBy,
+            KillStatus = dungeon.KillStatus
         };
 
         if (dungeon is RandomDungeonFragment randomDungeon)

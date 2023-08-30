@@ -273,33 +273,33 @@
             <DockPanel HorizontalAlignment="Left" VerticalAlignment="Top" Margin="10">
                 <StackPanel Orientation="Vertical" Margin="10,0,10,0">
                     <Image Source="../Resources/fame.png" Width="22" Height="22" ToolTip="{Binding TranslationFame, FallbackValue=FAME}" />
-                    <TextBlock Text="{Binding Fame, StringFormat='{}{0:N0}', FallbackValue=0}" Style="{StaticResource Dungeons.Stats.Value}" />
-                    <TextBlock Text="{Binding FamePerHour, Converter={StaticResource ValuePerHourConverter}, FallbackValue=0 /h}" Style="{StaticResource Dungeons.Stats.Value}" />
-                    <TextBlock Text="{Binding FameAverage, Converter={StaticResource ValueAvgConverter}, FallbackValue=0 .Avg}" Style="{StaticResource Dungeons.Stats.Value}" Margin="0,0,0,5" />
+                    <TextBlock Text="{Binding Fame, IsAsync=True, Mode=OneWay, StringFormat='{}{0:N0}', FallbackValue=0}" Style="{StaticResource Dungeons.Stats.Value}" />
+                    <TextBlock Text="{Binding FamePerHour, IsAsync=True, Mode=OneWay, Converter={StaticResource ValuePerHourConverter}, FallbackValue=0 /h}" Style="{StaticResource Dungeons.Stats.Value}" />
+                    <TextBlock Text="{Binding FameAverage, IsAsync=True, Mode=OneWay, Converter={StaticResource ValueAvgConverter}, FallbackValue=0 .Avg}" Style="{StaticResource Dungeons.Stats.Value}" Margin="0,0,0,5" />
                 </StackPanel>
                 <StackPanel Orientation="Vertical" Margin="10,0,10,0">
                     <Image Source="../Resources/silver.png" Width="22" Height="22" ToolTip="{Binding TranslationSilver, FallbackValue=SILVER}" />
-                    <TextBlock Text="{Binding Silver, StringFormat='{}{0:N0}', FallbackValue=0}" Style="{StaticResource Dungeons.Stats.Value}" />
-                    <TextBlock Text="{Binding SilverPerHour, Converter={StaticResource ValuePerHourConverter}, FallbackValue=0 /h}" Style="{StaticResource Dungeons.Stats.Value}" />
-                    <TextBlock Text="{Binding SilverAverage, Converter={StaticResource ValueAvgConverter}, FallbackValue=0 .Avg}" Style="{StaticResource Dungeons.Stats.Value}" Margin="0,0,0,5" />
+                    <TextBlock Text="{Binding Silver, IsAsync=True, Mode=OneWay, StringFormat='{}{0:N0}', FallbackValue=0}" Style="{StaticResource Dungeons.Stats.Value}" />
+                    <TextBlock Text="{Binding SilverPerHour, IsAsync=True, Mode=OneWay, Converter={StaticResource ValuePerHourConverter}, FallbackValue=0 /h}" Style="{StaticResource Dungeons.Stats.Value}" />
+                    <TextBlock Text="{Binding SilverAverage, IsAsync=True, Mode=OneWay, Converter={StaticResource ValueAvgConverter}, FallbackValue=0 .Avg}" Style="{StaticResource Dungeons.Stats.Value}" Margin="0,0,0,5" />
                 </StackPanel>
                 <StackPanel Orientation="Vertical" Margin="10,0,10,0">
                     <Image Source="../Resources/respec.png" Width="22" Height="22" ToolTip="{Binding TranslationReSpec, FallbackValue=RESPEC}" />
-                    <TextBlock Text="{Binding ReSpec, StringFormat='{}{0:N0}', FallbackValue=0}" Style="{StaticResource Dungeons.Stats.Value}" />
-                    <TextBlock Text="{Binding ReSpecPerHour, Converter={StaticResource ValuePerHourConverter}, FallbackValue=0 /h}" Style="{StaticResource Dungeons.Stats.Value}" />
-                    <TextBlock Text="{Binding ReSpecAverage, Converter={StaticResource ValueAvgConverter}, FallbackValue=0 .Avg}" Style="{StaticResource Dungeons.Stats.Value}" Margin="0,0,0,5" />
+                    <TextBlock Text="{Binding ReSpec, IsAsync=True, Mode=OneWay, StringFormat='{}{0:N0}', FallbackValue=0}" Style="{StaticResource Dungeons.Stats.Value}" />
+                    <TextBlock Text="{Binding ReSpecPerHour, IsAsync=True, Mode=OneWay, Converter={StaticResource ValuePerHourConverter}, FallbackValue=0 /h}" Style="{StaticResource Dungeons.Stats.Value}" />
+                    <TextBlock Text="{Binding ReSpecAverage, IsAsync=True, Mode=OneWay, Converter={StaticResource ValueAvgConverter}, FallbackValue=0 .Avg}" Style="{StaticResource Dungeons.Stats.Value}" Margin="0,0,0,5" />
                 </StackPanel>
                 <StackPanel Orientation="Vertical" Margin="10,0,10,0">
                     <Image Source="../Resources/might.png" Width="22" Height="22" ToolTip="{Binding TranslationMight, FallbackValue=MIGHT}" />
-                    <TextBlock Text="{Binding Might, StringFormat='{}{0:N0}', FallbackValue=0}" Style="{StaticResource Dungeons.Stats.Value}" />
-                    <TextBlock Text="{Binding MightPerHour, Converter={StaticResource ValuePerHourConverter}, FallbackValue=0 /h}" Style="{StaticResource Dungeons.Stats.Value}" />
-                    <TextBlock Text="{Binding MightAverage, Converter={StaticResource ValueAvgConverter}, FallbackValue=0 .Avg}" Style="{StaticResource Dungeons.Stats.Value}" Margin="0,0,0,5" />
+                    <TextBlock Text="{Binding Might, IsAsync=True, Mode=OneWay, StringFormat='{}{0:N0}', FallbackValue=0}" Style="{StaticResource Dungeons.Stats.Value}" />
+                    <TextBlock Text="{Binding MightPerHour, IsAsync=True, Mode=OneWay, Converter={StaticResource ValuePerHourConverter}, FallbackValue=0 /h}" Style="{StaticResource Dungeons.Stats.Value}" />
+                    <TextBlock Text="{Binding MightAverage, IsAsync=True, Mode=OneWay, Converter={StaticResource ValueAvgConverter}, FallbackValue=0 .Avg}" Style="{StaticResource Dungeons.Stats.Value}" Margin="0,0,0,5" />
                 </StackPanel>
                 <StackPanel Orientation="Vertical" Margin="10,0,10,0">
                     <Image Source="../Resources/favor.png" Width="22" Height="22" ToolTip="{Binding TranslationFavor, FallbackValue=FAVOR}" />
-                    <TextBlock Text="{Binding Favor, StringFormat='{}{0:N0}', FallbackValue=0}" Style="{StaticResource Dungeons.Stats.Value}" />
-                    <TextBlock Text="{Binding FavorPerHour, Converter={StaticResource ValuePerHourConverter}, FallbackValue=0 /h}" Style="{StaticResource Dungeons.Stats.Value}" />
-                    <TextBlock Text="{Binding FavorAverage, Converter={StaticResource ValueAvgConverter}, FallbackValue=0 .Avg}" Style="{StaticResource Dungeons.Stats.Value}" Margin="0,0,0,5" />
+                    <TextBlock Text="{Binding Favor, IsAsync=True, Mode=OneWay, StringFormat='{}{0:N0}', FallbackValue=0}" Style="{StaticResource Dungeons.Stats.Value}" />
+                    <TextBlock Text="{Binding FavorPerHour, IsAsync=True, Mode=OneWay, Converter={StaticResource ValuePerHourConverter}, FallbackValue=0 /h}" Style="{StaticResource Dungeons.Stats.Value}" />
+                    <TextBlock Text="{Binding FavorAverage, IsAsync=True, Mode=OneWay, Converter={StaticResource ValueAvgConverter}, FallbackValue=0 .Avg}" Style="{StaticResource Dungeons.Stats.Value}" Margin="0,0,0,5" />
                 </StackPanel>
             </DockPanel>
         </Grid>
@@ -591,10 +591,10 @@
                     <Style TargetType="{x:Type Grid}">
                         <Setter Property="Visibility" Value="Collapsed" />
                         <Style.Triggers>
-                            <DataTrigger Binding="{Binding Type, IsAsync=True}" Value="{x:Static dungeon:EventType.BookChest}">
+                            <DataTrigger Binding="{Binding Type, IsAsync=True, Mode=OneWay}" Value="{x:Static dungeon:EventType.BookChest}">
                                 <Setter Property="Visibility" Value="Visible"/>
                             </DataTrigger>
-                            <DataTrigger Binding="{Binding Type, IsAsync=True}" Value="{x:Static dungeon:EventType.Chest}">
+                            <DataTrigger Binding="{Binding Type, IsAsync=True, Mode=OneWay}" Value="{x:Static dungeon:EventType.Chest}">
                                 <Setter Property="Visibility" Value="Visible"/>
                             </DataTrigger>
                         </Style.Triggers>
@@ -605,11 +605,11 @@
                         <Style TargetType="{x:Type Image}">
                             <Setter Property="Visibility" Value="Collapsed" />
                             <Style.Triggers>
-                               <DataTrigger Binding="{Binding Status}" Value="{x:Static enumerations:ChestStatus.Close}">
+                                <DataTrigger Binding="{Binding Status, IsAsync=True, Mode=OneWay}" Value="{x:Static enumerations:ChestStatus.Close}">
                                    <Setter Property="Visibility" Value="Visible" />
                                    <Setter Property="ToolTip" Value="{Binding TranslationLockedChest}" />
                                </DataTrigger>
-                               <DataTrigger Binding="{Binding Status}" Value="{x:Static enumerations:ChestStatus.Open}">
+                                <DataTrigger Binding="{Binding Status, IsAsync=True, Mode=OneWay}" Value="{x:Static enumerations:ChestStatus.Open}">
                                    <Setter Property="Visibility" Value="Collapsed" />
                                    <Setter Property="ToolTip" Value="{Binding TranslationLockedChest}" />
                                </DataTrigger>
@@ -623,28 +623,28 @@
                             <Setter Property="Visibility" Value="Collapsed" />
                             <Style.Triggers>
 
-                                <DataTrigger Binding="{Binding Status}" Value="{x:Static enumerations:ChestStatus.Close}">
+                                <DataTrigger Binding="{Binding Status, IsAsync=True, Mode=OneWay}" Value="{x:Static enumerations:ChestStatus.Close}">
                                     <Setter Property="Visibility" Value="Collapsed" />
                                 </DataTrigger>
-                                <DataTrigger Binding="{Binding Status}" Value="{x:Static enumerations:ChestStatus.Open}">
+                                <DataTrigger Binding="{Binding Status, IsAsync=True, Mode=OneWay}" Value="{x:Static enumerations:ChestStatus.Open}">
                                     <Setter Property="Visibility" Value="Visible" />
                                 </DataTrigger>
 
-                                <DataTrigger Binding="{Binding Rarity}" Value="{x:Static enumerations:TreasureRarity.Common}">
+                                <DataTrigger Binding="{Binding Rarity, IsAsync=True, Mode=OneWay}" Value="{x:Static enumerations:TreasureRarity.Common}">
                                     <Setter Property="Source" Value="../Resources/chest_close_standard.png" />
-                                    <Setter Property="ToolTip" Value="{Binding TranslationStandard}" />
+                                    <Setter Property="ToolTip" Value="{Binding TranslationStandard, IsAsync=True, Mode=OneWay}" />
                                 </DataTrigger>
-                                <DataTrigger Binding="{Binding Rarity}" Value="{x:Static enumerations:TreasureRarity.Uncommon}">
+                                <DataTrigger Binding="{Binding Rarity, IsAsync=True, Mode=OneWay}" Value="{x:Static enumerations:TreasureRarity.Uncommon}">
                                     <Setter Property="Source" Value="../Resources/chest_close_uncommon.png" />
-                                    <Setter Property="ToolTip" Value="{Binding TranslationUncommon}" />
+                                    <Setter Property="ToolTip" Value="{Binding TranslationUncommon, IsAsync=True, Mode=OneWay}" />
                                 </DataTrigger>
-                                <DataTrigger Binding="{Binding Rarity}" Value="{x:Static enumerations:TreasureRarity.Rare}">
+                                <DataTrigger Binding="{Binding Rarity, IsAsync=True, Mode=OneWay}" Value="{x:Static enumerations:TreasureRarity.Rare}">
                                     <Setter Property="Source" Value="../Resources/chest_close_rare.png" />
-                                    <Setter Property="ToolTip" Value="{Binding TranslationRare}" />
+                                    <Setter Property="ToolTip" Value="{Binding TranslationRare, IsAsync=True, Mode=OneWay}" />
                                 </DataTrigger>
-                                <DataTrigger Binding="{Binding Rarity}" Value="{x:Static enumerations:TreasureRarity.Legendary}">
+                                <DataTrigger Binding="{Binding Rarity, IsAsync=True, Mode=OneWay}" Value="{x:Static enumerations:TreasureRarity.Legendary}">
                                     <Setter Property="Source" Value="../Resources/chest_close_legendary.png" />
-                                    <Setter Property="ToolTip" Value="{Binding TranslationLegendary}" />
+                                    <Setter Property="ToolTip" Value="{Binding TranslationLegendary, IsAsync=True, Mode=OneWay}" />
                                 </DataTrigger>
                             </Style.Triggers>
                         </Style>
@@ -655,9 +655,9 @@
                     <Image.Style>
                         <Style TargetType="Image">
                             <Style.Triggers>
-                                <DataTrigger Binding="{Binding IsBossChest, IsAsync=True}" Value="true">
+                                <DataTrigger Binding="{Binding IsBossChest, IsAsync=True, Mode=OneWay}" Value="true">
                                     <Setter Property="Source" Value="../Resources/boss.png"/>
-                                    <Setter Property="ToolTip" Value="{Binding TranslationBossChest}"/>
+                                    <Setter Property="ToolTip" Value="{Binding TranslationBossChest, IsAsync=True, Mode=OneWay}"/>
                                 </DataTrigger>
                             </Style.Triggers>
                         </Style>
@@ -667,9 +667,9 @@
                     <Image.Style>
                         <Style TargetType="Image">
                             <Style.Triggers>
-                                <DataTrigger Binding="{Binding Type, IsAsync=True}" Value="{x:Static dungeon:EventType.BookChest}">
+                                <DataTrigger Binding="{Binding Type, IsAsync=True, Mode=OneWay}" Value="{x:Static dungeon:EventType.BookChest}">
                                     <Setter Property="Source" Value="../Resources/book.png"/>
-                                    <Setter Property="ToolTip" Value="{Binding TranslationBookChest}"/>
+                                    <Setter Property="ToolTip" Value="{Binding TranslationBookChest, IsAsync=True, Mode=OneWay}"/>
                                 </DataTrigger>
                             </Style.Triggers>
                         </Style>
@@ -685,16 +685,16 @@
                 <Image.Style>
                     <Style TargetType="Image">
                         <Setter Property="Source" Value="../Assets/checkpoint.png" />
-                        <Setter Property="ToolTip" Value="{Binding TranslationCheckPoint}" />
+                        <Setter Property="ToolTip" Value="{Binding TranslationCheckPoint, IsAsync=True, Mode=OneWay}" />
                         <Setter Property="Opacity" Value="0.50" />
                         <Style.Triggers>
-                            <DataTrigger Binding="{Binding Status, IsAsync=True}" Value="{x:Static enumerations:CheckPointStatus.Unknown}">
+                            <DataTrigger Binding="{Binding Status, IsAsync=True, Mode=OneWay}" Value="{x:Static enumerations:CheckPointStatus.Unknown}">
                                 <Setter Property="Opacity" Value="0.25" />
                             </DataTrigger>
-                            <DataTrigger Binding="{Binding Status, IsAsync=True}" Value="{x:Static enumerations:CheckPointStatus.Active}">
+                            <DataTrigger Binding="{Binding Status, IsAsync=True, Mode=OneWay}" Value="{x:Static enumerations:CheckPointStatus.Active}">
                                 <Setter Property="Opacity" Value="1" />
                             </DataTrigger>
-                            <DataTrigger Binding="{Binding Status, IsAsync=True}" Value="{x:Static enumerations:CheckPointStatus.Done}">
+                            <DataTrigger Binding="{Binding Status, IsAsync=True, Mode=OneWay}" Value="{x:Static enumerations:CheckPointStatus.Done}">
                                 <Setter Property="Opacity" Value="0.75" />
                             </DataTrigger>
                         </Style.Triggers>
@@ -711,19 +711,19 @@
                     <Style TargetType="Image">
                         <Setter Property="Visibility" Value="Collapsed" />
                         <Style.Triggers>
-                            <DataTrigger Binding="{Binding Level}" Value="1">
+                            <DataTrigger Binding="{Binding Level, IsAsync=True, Mode=OneWay}" Value="1">
                                 <Setter Property="Source" Value="../Assets/butterfly_uncommon.png" />
                                 <Setter Property="Visibility" Value="Visible" />
                             </DataTrigger>
-                            <DataTrigger Binding="{Binding Level}" Value="2">
+                            <DataTrigger Binding="{Binding Level, IsAsync=True, Mode=OneWay}" Value="2">
                                 <Setter Property="Source" Value="../Assets/butterfly_rare.png" />
                                 <Setter Property="Visibility" Value="Visible" />
                             </DataTrigger>
-                            <DataTrigger Binding="{Binding Level}" Value="3">
+                            <DataTrigger Binding="{Binding Level, IsAsync=True, Mode=OneWay}" Value="3">
                                 <Setter Property="Source" Value="../Assets/butterfly_epic.png" />
                                 <Setter Property="Visibility" Value="Visible" />
                             </DataTrigger>
-                            <DataTrigger Binding="{Binding Level}" Value="4">
+                            <DataTrigger Binding="{Binding Level, IsAsync=True, Mode=OneWay}" Value="4">
                                 <Setter Property="Source" Value="../Assets/butterfly_legendary.png" />
                                 <Setter Property="Visibility" Value="Visible" />
                             </DataTrigger>
@@ -741,27 +741,27 @@
                     <Style TargetType="Image">
                         <Setter Property="Visibility" Value="Collapsed" />
                         <Style.Triggers>
-                            <DataTrigger Binding="{Binding Rarity}" Value="{x:Static cluster:MistsRarity.Unknown}">
+                            <DataTrigger Binding="{Binding Rarity, IsAsync=True, Mode=OneWay}" Value="{x:Static cluster:MistsRarity.Unknown}">
                                 <Setter Property="Source" Value="../Assets/shiny_common.png" />
                                 <Setter Property="Visibility" Value="Visible" />
                             </DataTrigger>
-                            <DataTrigger Binding="{Binding Rarity}" Value="{x:Static cluster:MistsRarity.Common}">
+                            <DataTrigger Binding="{Binding Rarity, IsAsync=True, Mode=OneWay}" Value="{x:Static cluster:MistsRarity.Common}">
                                 <Setter Property="Source" Value="../Assets/shiny_common.png" />
                                 <Setter Property="Visibility" Value="Visible" />
                             </DataTrigger>
-                            <DataTrigger Binding="{Binding Rarity}" Value="{x:Static cluster:MistsRarity.Uncommon}">
+                            <DataTrigger Binding="{Binding Rarity, IsAsync=True, Mode=OneWay}" Value="{x:Static cluster:MistsRarity.Uncommon}">
                                 <Setter Property="Source" Value="../Assets/shiny_uncommon.png" />
                                 <Setter Property="Visibility" Value="Visible" />
                             </DataTrigger>
-                            <DataTrigger Binding="{Binding Rarity}" Value="{x:Static cluster:MistsRarity.Rare}">
+                            <DataTrigger Binding="{Binding Rarity, IsAsync=True, Mode=OneWay}" Value="{x:Static cluster:MistsRarity.Rare}">
                                 <Setter Property="Source" Value="../Assets/shiny_rare.png" />
                                 <Setter Property="Visibility" Value="Visible" />
                             </DataTrigger>
-                            <DataTrigger Binding="{Binding Rarity}" Value="{x:Static cluster:MistsRarity.Epic}">
+                            <DataTrigger Binding="{Binding Rarity, IsAsync=True, Mode=OneWay}" Value="{x:Static cluster:MistsRarity.Epic}">
                                 <Setter Property="Source" Value="../Assets/shiny_epic.png" />
                                 <Setter Property="Visibility" Value="Visible" />
                             </DataTrigger>
-                            <DataTrigger Binding="{Binding Rarity}" Value="{x:Static cluster:MistsRarity.Legendary}">
+                            <DataTrigger Binding="{Binding Rarity, IsAsync=True, Mode=OneWay}" Value="{x:Static cluster:MistsRarity.Legendary}">
                                 <Setter Property="Source" Value="../Assets/shiny_legendary.png" />
                                 <Setter Property="Visibility" Value="Visible" />
                             </DataTrigger>
@@ -779,16 +779,16 @@
                     <Style TargetType="Image">
                         <Setter Property="Source" Value="../Assets/map_white_icon.png"/>
                         <Style.Triggers>
-                            <DataTrigger Binding="{Binding ClusterType}" Value="{x:Static cluster:ClusterType.SafeArea}">
+                            <DataTrigger Binding="{Binding ClusterType, IsAsync=True, Mode=OneWay}" Value="{x:Static cluster:ClusterType.SafeArea}">
                                 <Setter Property="Source" Value="../Assets/map_blue_icon.png" />
                             </DataTrigger>
-                            <DataTrigger Binding="{Binding ClusterType}" Value="{x:Static cluster:ClusterType.Yellow}">
+                            <DataTrigger Binding="{Binding ClusterType, IsAsync=True, Mode=OneWay}" Value="{x:Static cluster:ClusterType.Yellow}">
                                 <Setter Property="Source" Value="../Assets/map_yellow_icon.png" />
                             </DataTrigger>
-                            <DataTrigger Binding="{Binding ClusterType}" Value="{x:Static cluster:ClusterType.Red}">
+                            <DataTrigger Binding="{Binding ClusterType, IsAsync=True, Mode=OneWay}" Value="{x:Static cluster:ClusterType.Red}">
                                 <Setter Property="Source" Value="../Assets/map_red_icon.png" />
                             </DataTrigger>
-                            <DataTrigger Binding="{Binding ClusterType}" Value="{x:Static cluster:ClusterType.Black}">
+                            <DataTrigger Binding="{Binding ClusterType, IsAsync=True, Mode=OneWay}" Value="{x:Static cluster:ClusterType.Black}">
                                 <Setter Property="Source" Value="../Assets/map_black_icon.png" />
                             </DataTrigger>
                         </Style.Triggers>
@@ -800,7 +800,7 @@
 
     <Style x:Key="Fragment.Activity" TargetType="Grid">
         <Style.Triggers>
-            <DataTrigger Binding="{Binding Status, IsAsync=True}" Value="{x:Static enumerations:DungeonStatus.Active}">
+            <DataTrigger Binding="{Binding Status, IsAsync=True, Mode=OneWay}" Value="{x:Static enumerations:DungeonStatus.Active}">
                 <Setter Property="Background">
                     <Setter.Value>
                         <LinearGradientBrush StartPoint="0,0" EndPoint="1,1">
@@ -810,7 +810,7 @@
                     </Setter.Value>
                 </Setter>
             </DataTrigger>
-            <DataTrigger Binding="{Binding Status, IsAsync=True}" Value="{x:Static enumerations:DungeonStatus.Done}">
+            <DataTrigger Binding="{Binding Status, IsAsync=True, Mode=OneWay}" Value="{x:Static enumerations:DungeonStatus.Done}">
                 <Setter Property="Background">
                     <Setter.Value>
                         <LinearGradientBrush StartPoint="0,0" EndPoint="1,1">
@@ -831,19 +831,19 @@
         <Setter Property="Width" Value="40"/>
         <Setter Property="Foreground" Value="{StaticResource SolidColorBrush.Text.5}" />
         <Style.Triggers>
-            <DataTrigger Binding="{Binding Level}" Value="0">
+            <DataTrigger Binding="{Binding Level, IsAsync=True, Mode=OneWay}" Value="0">
                 <Setter Property="Foreground" Value="{StaticResource SolidColorBrush.Text.3}" />
             </DataTrigger>
-            <DataTrigger Binding="{Binding Level}" Value="1">
+            <DataTrigger Binding="{Binding Level, IsAsync=True, Mode=OneWay}" Value="1">
                 <Setter Property="Foreground" Value="{StaticResource SolidColorBrush.Text.2}" />
             </DataTrigger>
-            <DataTrigger Binding="{Binding Level}" Value="2">
+            <DataTrigger Binding="{Binding Level, IsAsync=True, Mode=OneWay}" Value="2">
                 <Setter Property="Foreground" Value="{StaticResource SolidColorBrush.Item.Level.Color.1}" />
             </DataTrigger>
-            <DataTrigger Binding="{Binding Level}" Value="3">
+            <DataTrigger Binding="{Binding Level, IsAsync=True, Mode=OneWay}" Value="3">
                 <Setter Property="Foreground" Value="{StaticResource SolidColorBrush.Item.Level.Color.2}" />
             </DataTrigger>
-            <DataTrigger Binding="{Binding Level}" Value="4">
+            <DataTrigger Binding="{Binding Level, IsAsync=True, Mode=OneWay}" Value="4">
                 <Setter Property="Foreground" Value="{StaticResource SolidColorBrush.Item.Level.Color.3}" />
             </DataTrigger>
         </Style.Triggers>
@@ -857,7 +857,7 @@
         <Setter Property="Width" Value="40"/>
         <Setter Property="Foreground" Value="{StaticResource SolidColorBrush.Text.3}" />
         <Style.Triggers>
-            <DataTrigger Binding="{Binding Tier}" Value="{x:Static enumerations:Tier.Unknown}">
+            <DataTrigger Binding="{Binding Tier, IsAsync=True, Mode=OneWay}" Value="{x:Static enumerations:Tier.Unknown}">
                 <Setter Property="Foreground" Value="{StaticResource SolidColorBrush.Text.5}" />
             </DataTrigger>
         </Style.Triggers>
@@ -920,10 +920,10 @@
                 <Style TargetType="{x:Type StackPanel}">
                     <Setter Property="Visibility" Value="Collapsed"/>
                     <Style.Triggers>
-                        <DataTrigger Binding="{Binding KillStatus}" Value="{x:Static dungeon:KillStatus.LocalPlayerDead}">
+                        <DataTrigger Binding="{Binding KillStatus, IsAsync=True, Mode=OneWay}" Value="{x:Static dungeon:KillStatus.LocalPlayerDead}">
                             <Setter Property="Visibility" Value="Visible"/>
                         </DataTrigger>
-                        <DataTrigger Binding="{Binding KillStatus}" Value="{x:Static dungeon:KillStatus.OpponentDead}">
+                        <DataTrigger Binding="{Binding KillStatus, IsAsync=True, Mode=OneWay}" Value="{x:Static dungeon:KillStatus.OpponentDead}">
                             <Setter Property="Visibility" Value="Visible"/>
                         </DataTrigger>
                     </Style.Triggers>
@@ -934,19 +934,19 @@
                     <Style TargetType="{x:Type Image}">
                         <Setter Property="Source" Value="../Assets/skull.png"/>
                         <Style.Triggers>
-                            <DataTrigger Binding="{Binding KillStatus}" Value="{x:Static dungeon:KillStatus.LocalPlayerDead}">
+                            <DataTrigger Binding="{Binding KillStatus, IsAsync=True, Mode=OneWay}" Value="{x:Static dungeon:KillStatus.OpponentDead}">
                                 <Setter Property="Source" Value="../Assets/skull_green.png"/>
                             </DataTrigger>
-                            <DataTrigger Binding="{Binding KillStatus}" Value="{x:Static dungeon:KillStatus.OpponentDead}">
+                            <DataTrigger Binding="{Binding KillStatus, IsAsync=True, Mode=OneWay}" Value="{x:Static dungeon:KillStatus.LocalPlayerDead}">
                                 <Setter Property="Source" Value="../Assets/skull_red.png"/>
                             </DataTrigger>
                         </Style.Triggers>
                     </Style>
                 </Image.Style>
             </Image>
-            <TextBlock Text="NAME" Foreground="{StaticResource SolidColorBrush.Accent.Red.2}" Margin="2,2,2,0" />
-            <TextBlock Text="{Binding TranslationKilledBy, FallbackValue='KILLED_BY'}" Foreground="{StaticResource SolidColorBrush.Text.1}" Margin="2,2,2,0" />
-            <TextBlock Text="NAME" Foreground="{StaticResource SolidColorBrush.Accent.Blue.2}" Margin="2,2,2,0" />
+            <TextBlock Text="{Binding DiedName, IsAsync=True, Mode=OneWay}" Foreground="{StaticResource SolidColorBrush.Accent.Red.2}" Margin="2,2,2,0" />
+            <TextBlock Text="{Binding TranslationKilledBy, IsAsync=True, Mode=OneWay, FallbackValue='KILLED_BY'}" Foreground="{StaticResource SolidColorBrush.Text.1}" Margin="2,2,2,0" />
+            <TextBlock Text="{Binding KilledBy, IsAsync=True, Mode=OneWay}" Foreground="{StaticResource SolidColorBrush.Accent.Blue.2}" Margin="2,2,2,0" />
         </StackPanel>
     </DataTemplate>
 
@@ -1146,16 +1146,157 @@
     </DataTemplate>
 
     <DataTemplate x:Key="HellGateTemplate" DataType="{x:Type dungeonModels:HellGateFragment}">
-        <Border BorderBrush="{StaticResource SolidColorBrush.Background.2}" BorderThickness="0,0,0,1" Visibility="{Binding Visibility}">
+        <Border BorderBrush="{StaticResource SolidColorBrush.Background.2}" BorderThickness="0,0,0,1">
             <Grid Style="{StaticResource Fragment.Activity}">
                 <StackPanel Orientation="Vertical" Style="{StaticResource DungeonFragment.Faction}">
                     <DockPanel>
                         <Grid HorizontalAlignment="Left" Style="{StaticResource DungeonFragment.Grid.DungeonMode}" />
+                        <StackPanel Orientation="Vertical" VerticalAlignment="Center" HorizontalAlignment="Center">
+                            <TextBlock Style="{StaticResource Fragment.Tier}" Foreground="{StaticResource SolidColorBrush.Text.2}">
+                                <TextBlock.Text>
+                                    <MultiBinding StringFormat="{}T{0}">
+                                        <Binding Path="Tier" FallbackValue="?" Converter="{StaticResource EnumToIntOrQuestionMarkConverter}" IsAsync="True" />
+                                    </MultiBinding>
+                                </TextBlock.Text>
+                            </TextBlock>
+                        </StackPanel>
+                        <Grid Height="96">
+                            <StackPanel Orientation="Vertical" HorizontalAlignment="Right" VerticalAlignment="Top">
+                                <StackPanel Orientation="Horizontal">
+                                    <!-- Run time -->
+                                    <Grid Width="18" Height="24" VerticalAlignment="Center" 
+                                          ToolTip="{Binding TranslationRunTime, FallbackValue=RUN__TIME}">
+                                        <fa5:ImageAwesome Icon="Regular_Clock" Foreground="{StaticResource SolidColorBrush.Text.1}" />
+                                    </Grid>
+                                    <Label Height="24" Content="{Binding TotalRunTimeInSeconds, IsAsync=True, FallbackValue=00:00:00, Converter={StaticResource SecondsToTimeFormatConverter}}" Width="60" />
+                                </StackPanel>
+
+                                <!-- Delete checkbox -->
+                                <Grid Margin="0,0,10,0" Height="18" Width="18" HorizontalAlignment="Right">
+                                    <CheckBox IsChecked="{Binding IsSelectedForDeletion}" ToolTip="{Binding TranslationSelectToDelete}" />
+                                </Grid>
+                            </StackPanel>
+
+                            <StackPanel Orientation="Vertical">
+                                <StackPanel Orientation="Horizontal" Height="24">
+                                    <Label Width="150" VerticalAlignment="Center" Foreground="{StaticResource SolidColorBrush.Text.1}">
+                                        <Label.Content>
+                                            <TextBlock>
+                                                <TextBlock.Text>
+                                                    <MultiBinding StringFormat="{}{0}" ConverterCulture="{x:Static com:LanguageController.CurrentCultureInfo}">
+                                                        <Binding Path="EnterDungeonFirstTime" FallbackValue="00.00.0000 00:00:00" />
+                                                    </MultiBinding>
+                                                </TextBlock.Text>
+                                            </TextBlock>
+                                        </Label.Content>
+                                    </Label>
+
+                                    <!-- Main cluster name + icon -->
+                                    <Image Height="20" Width="20" VerticalAlignment="Center" Source="../Assets/map_white_icon.png" 
+                                           ToolTip="{Binding TranslationClusterType, FallbackValue=CLUSTER_TYPE}" />
+                                    <Label Content="{Binding TranslationHellGate, IsAsync=True, FallbackValue=HELLGATE}" 
+                                           Foreground="{StaticResource SolidColorBrush.Dungeon.Mode.HellGate.1}" VerticalAlignment="Center" />
+                                </StackPanel>
+                                <StackPanel Orientation="Horizontal">
+                                    <StackPanel Orientation="Vertical" Margin="0,2" Width="150">
+                                        <!-- Fame -->
+                                        <ContentPresenter ContentTemplate="{StaticResource DungeonFragment.Fame.Template}" Content="{Binding}" />
+
+                                        <!-- ReSpec -->
+                                        <ContentPresenter ContentTemplate="{StaticResource DungeonFragment.ReSpec.Template}" Content="{Binding}" />
+
+                                        <!-- Silver -->
+                                        <ContentPresenter ContentTemplate="{StaticResource DungeonFragment.Silver.Template}" Content="{Binding}" />
+
+
+                                        <!-- Point of interest -->
+                                        <StackPanel Orientation="Vertical">
+                                            <Grid Margin="0,0,20,0" Height="22">
+                                                <StackPanel Orientation="Horizontal" MinWidth="210">
+                                                    <ItemsControl ItemsSource="{Binding Events, IsAsync=True}" ItemTemplate="{StaticResource Dungeon.Poi.Template}">
+                                                        <ItemsControl.ItemsPanel>
+                                                            <ItemsPanelTemplate>
+                                                                <UniformGrid Rows="1"/>
+                                                            </ItemsPanelTemplate>
+                                                        </ItemsControl.ItemsPanel>
+                                                    </ItemsControl>
+                                                </StackPanel>
+                                            </Grid>
+                                        </StackPanel>
+                                    </StackPanel>
+
+                                    <StackPanel Orientation="Vertical" Margin="0,2" Width="150">
+                                        <!-- Might -->
+                                        <DockPanel Height="16" Visibility="{Binding MightFavorVisibility, IsAsync=True, FallbackValue=Collapsed}">
+                                            <Grid HorizontalAlignment="Center" Width="20" Margin="0,0,2,0" VerticalAlignment="Center" ToolTip="{Binding TranslationMight, FallbackValue=MIGHT}">
+                                                <Image Source="../Resources/might.png" />
+                                            </Grid>
+                                            <DockPanel>
+                                                <TextBlock Text="{Binding Might, Converter={StaticResource ShortNumberConverter}, 
+                                                        ConverterCulture={x:Static glob:CultureInfo.CurrentCulture}, IsAsync=True, Mode=OneWay, FallbackValue=-}" 
+                                                    Foreground="{StaticResource SolidColorBrush.Text.1}" TextAlignment="Right">
+                                                    <TextBlock.ToolTip>
+                                                        <ToolTip Content="{Binding Might}" ContentStringFormat="{}{0:N0}" />
+                                                    </TextBlock.ToolTip>
+                                                </TextBlock>
+                                                <TextBlock Text="/" Foreground="{StaticResource SolidColorBrush.Accent.Blue.2}" FontWeight="Bold" Margin="2,0,2,0" />
+                                                <TextBlock Text="{Binding MightPerHour, Converter={StaticResource ShortNumberConverter}, 
+                                                        ConverterCulture={x:Static glob:CultureInfo.CurrentCulture}, IsAsync=True, Mode=OneWay, StringFormat='{}{0:N0}/h', FallbackValue=-}" 
+                                                           Foreground="{StaticResource SolidColorBrush.Text.1}" TextAlignment="Left" />
+                                            </DockPanel>
+                                        </DockPanel>
+                                        <!-- Favor -->
+                                        <DockPanel Height="16" Visibility="{Binding MightFavorVisibility, IsAsync=True, FallbackValue=Collapsed}">
+                                            <Grid HorizontalAlignment="Center" Width="20" Margin="0,0,2,0" VerticalAlignment="Center" 
+                                                  ToolTip="{Binding TranslationFavor, FallbackValue=FAVOR}">
+                                                <Image Source="../Resources/favor.png" />
+                                            </Grid>
+                                            <DockPanel>
+                                                <TextBlock Text="{Binding Favor, Converter={StaticResource ShortNumberConverter}, 
+                                                        ConverterCulture={x:Static glob:CultureInfo.CurrentCulture}, IsAsync=True, Mode=OneWay, FallbackValue=-}" 
+                                                           Foreground="{StaticResource SolidColorBrush.Text.1}" TextAlignment="Right" />
+                                                <TextBlock Text="/" Foreground="{StaticResource SolidColorBrush.Accent.Blue.2}" FontWeight="Bold" Margin="2,0,2,0" />
+                                                <TextBlock Text="{Binding FavorPerHour, Converter={StaticResource ShortNumberConverter}, 
+                                                        ConverterCulture={x:Static glob:CultureInfo.CurrentCulture}, IsAsync=True, Mode=OneWay, StringFormat='{}{0:N0}/h', FallbackValue=-}" 
+                                                           Foreground="{StaticResource SolidColorBrush.Text.1}" TextAlignment="Left" />
+                                            </DockPanel>
+                                        </DockPanel>
+                                    </StackPanel>
+
+                                    <StackPanel Orientation="Vertical" Margin="0,2">
+                                        <!-- Total value -->
+                                        <StackPanel Orientation="Horizontal" Height="20">
+                                            <Grid HorizontalAlignment="Center" Width="20" Margin="0,0,2,0" VerticalAlignment="Center" 
+                                                  ToolTip="{Binding TranslationTotalLootedValue, FallbackValue=TOTAL_LOOTED_VALUE}">
+                                                <Image Source="../Assets/static_chest.png" />
+                                            </Grid>
+                                            <DockPanel>
+                                                <TextBlock Text="{Binding TotalValue, ConverterCulture={x:Static glob:CultureInfo.CurrentCulture}, StringFormat='{}{0:N0}', IsAsync=True, Mode=OneWay, FallbackValue=-}" 
+                                                           Foreground="{StaticResource SolidColorBrush.Text.1}" TextAlignment="Right" />
+                                                <TextBlock Margin="2,0,2,0" />
+                                                <TextBlock Foreground="{StaticResource SolidColorBrush.Text.1}" TextAlignment="Left" />
+                                            </DockPanel>
+                                        </StackPanel>
+
+                                        <!-- Most valuable loot -->
+                                        <StackPanel Orientation="Horizontal" Height="30" Margin="-6,-2,0,0" Visibility="{Binding MostValuableLootVisibility}">
+                                            <Image Source="{Binding MostValuableLoot.Item.Icon, IsAsync=True}" Height="34" ToolTip="{Binding TranslationMostValuableLoot}" />
+                                            <StackPanel Orientation="Vertical" Height="32" Width="200">
+                                                <TextBlock Padding="0" Text="{Binding MostValuableLoot.Item.LocalizedName, IsAsync=True}" 
+                                                           Foreground="{StaticResource SolidColorBrush.Text.1}" />
+                                                <TextBlock Padding="0" Text="{Binding MostValuableLoot.EstimatedMarketValue.DoubleValue, StringFormat='{}{0:N0}', IsAsync=True}" 
+                                                           Foreground="{StaticResource SolidColorBrush.Accent.Blue.2}" />
+                                            </StackPanel>
+                                        </StackPanel>
+
+                                        <!-- Kill message -->
+                                        <ContentPresenter ContentTemplate="{StaticResource DungeonFragment.Kill.Template}" Content="{Binding}" />
+                                    </StackPanel>
+                                </StackPanel>
+                            </StackPanel>
+                        </Grid>
                     </DockPanel>
                 </StackPanel>
-                <Grid Margin="0 0 20 0" Height="30" Width="50" HorizontalAlignment="Right">
-                    <CheckBox Width="auto" Height="auto" IsChecked="{Binding IsSelectedForDeletion}" ToolTip="{Binding TranslationSelectToDelete}" />
-                </Grid>
             </Grid>
         </Border>
     </DataTemplate>
