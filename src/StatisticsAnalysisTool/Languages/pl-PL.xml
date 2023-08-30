@@ -745,4 +745,8 @@
 	<translation name="NET_PROFIT">Zysk netto</translation>
 	<translation name="YEAR">Rok</translation>
 	<translation name="CHECKPOINT">Punkt kontrolny</translation>
+	<translation name="MOST_VALUABLE_LOOT">Najcenniejszy łup</translation>
+	<translation name="CLUSTER_TYPE">Typ klastra</translation>
+	<translation name="LOCKED_CHEST">Zamknięta skrzynia</translation>
+	<translation name="RUN_TIME">Czas trwania</translation>
 </translations>
