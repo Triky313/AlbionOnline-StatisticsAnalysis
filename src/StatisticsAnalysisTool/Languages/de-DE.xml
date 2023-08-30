@@ -769,4 +769,8 @@
 	<translation name="NET_PROFIT">Reingewinn</translation>
 	<translation name="YEAR">Jahr</translation>
 	<translation name="CHECKPOINT">Kontrollpunkt</translation>
+	<translation name="MOST_VALUABLE_LOOT">Wertvollste Beute</translation>
+	<translation name="CLUSTER_TYPE">Clustertyp</translation>
+	<translation name="LOCKED_CHEST">Verschlossene Truhe</translation>
+	<translation name="RUN_TIME">Laufzeit</translation>
 </translations>

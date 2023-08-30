@@ -769,4 +769,8 @@
 	<translation name="NET_PROFIT">Net profit</translation>
 	<translation name="YEAR">Year</translation>
 	<translation name="CHECKPOINT">Checkpoint</translation>
+	<translation name="MOST_VALUABLE_LOOT">Most valuable loot</translation>
+	<translation name="CLUSTER_TYPE">Cluster Type</translation>
+	<translation name="LOCKED_CHEST">Locked chest</translation>
+	<translation name="RUN_TIME">Run time</translation>
 </translations>

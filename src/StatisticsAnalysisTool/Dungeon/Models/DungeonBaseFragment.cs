@@ -532,5 +532,7 @@ public abstract class DungeonBaseFragment : BaseViewModel
     public static string TranslationMostValuableLoot => LanguageController.Translation("MOST_VALUABLE_LOOT");
     public static string TranslationCorrupted => LanguageController.Translation("CORRUPTED");
     public static string TranslationHellGate => LanguageController.Translation("HELLGATE");
+    public static string TranslationMists => LanguageController.Translation("MISTS");
+    public static string TranslationMistsDungeon => LanguageController.Translation("MISTS_DUNGEON");
     public static string TranslationKilledBy => LanguageController.Translation("KILLED_BY");
 }
