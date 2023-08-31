@@ -749,4 +749,9 @@
 	<translation name="CLUSTER_TYPE">Typ klastra</translation>
 	<translation name="LOCKED_CHEST">Zamknięta skrzynia</translation>
 	<translation name="RUN_TIME">Czas trwania</translation>
+	<translation name="AVERAGE_ABBREVIATION">Śr.</translation>
+	<translation name="HOUR_ABBREVIATION">godz.</translation>
+	<translation name="AVERAGE">Średnia</translation>
+	<translation name="PER_HOUR">Na godzinę</translation>
+	<translation name="TOTAL">Razem</translation>
 </translations>
