@@ -1,8 +1,10 @@
-﻿using StatisticsAnalysisTool.Common;
-using StatisticsAnalysisTool.Dungeon.Models;
+﻿using StatisticsAnalysisTool.Cluster;
+using StatisticsAnalysisTool.Common;
 using StatisticsAnalysisTool.ViewModels;
+using System.Collections.Generic;
+using System.Linq;
 
-namespace StatisticsAnalysisTool.Models;
+namespace StatisticsAnalysisTool.Dungeon.Models;
 
 public class DungeonStats : BaseViewModel
 {
@@ -35,6 +37,44 @@ public class DungeonStats : BaseViewModel
     private double _lootInSilver;
     private double _lootInSilverPerHour;
     private double _lootInSilverAverage;
+    private StatsMists _statsMists = new();
+
+    public void Set(IEnumerable<DungeonBaseFragment> dungeons)
+    {
+        Set(dungeons.ToList());
+    }
+
+    public void Set(List<DungeonBaseFragment> dungeons)
+    {
+        UpdateMistsStats(dungeons);
+    }
+
+    public void UpdateMistsStats(List<DungeonBaseFragment> dungeons)
+    {
+        StatsMists.Entered = dungeons
+            .Count(x => x is MistsFragment);
+
+        StatsMists.EnteredCommon = dungeons
+            .Count(x => x is MistsFragment { Rarity: MistsRarity.Common });
+        StatsMists.EnteredUncommon = dungeons
+            .Count(x => x is MistsFragment { Rarity: MistsRarity.Uncommon });
+        StatsMists.EnteredRare = dungeons
+            .Count(x => x is MistsFragment { Rarity: MistsRarity.Rare });
+        StatsMists.EnteredEpic = dungeons
+            .Count(x => x is MistsFragment { Rarity: MistsRarity.Epic });
+        StatsMists.EnteredLegendary = dungeons
+            .Count(x => x is MistsFragment { Rarity: MistsRarity.Legendary });
+    }
+
+    public StatsMists StatsMists
+    {
+        get => _statsMists;
+        set
+        {
+            _statsMists = value;
+            OnPropertyChanged();
+        }
+    }
 
     public int EnteredDungeon
     {

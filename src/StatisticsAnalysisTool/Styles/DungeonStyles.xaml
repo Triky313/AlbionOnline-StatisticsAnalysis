@@ -2,7 +2,6 @@
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
                     xmlns:fa5="http://schemas.fontawesome.com/icons/"
                     xmlns:models="clr-namespace:StatisticsAnalysisTool.Models"
-                    xmlns:bindingModel="clr-namespace:StatisticsAnalysisTool.Models.BindingModel"
                     xmlns:converters="clr-namespace:StatisticsAnalysisTool.Common.Converters" 
                     xmlns:glob="clr-namespace:System.Globalization;assembly=mscorlib"
                     xmlns:dungeon="clr-namespace:StatisticsAnalysisTool.Dungeon"
@@ -268,7 +267,7 @@
         <Setter Property="HorizontalAlignment" Value="Center"/>
     </Style>
 
-    <DataTemplate x:Key="DungeonStatsTemplate" DataType="{x:Type models:DungeonStats}">
+    <DataTemplate x:Key="DungeonStatsTemplate" DataType="{x:Type dungeonModels:DungeonStats}">
         <Grid>
             <DockPanel HorizontalAlignment="Left" VerticalAlignment="Top" Margin="10">
                 <StackPanel Orientation="Vertical" Margin="10,0,10,0">
@@ -305,9 +304,41 @@
         </Grid>
     </DataTemplate>
 
-    <DataTemplate x:Key="DungeonGeneralStatsTemplate" DataType="{x:Type bindingModel:DungeonBindings}">
+    <DataTemplate x:Key="Stats.Mists.Template" DataType="{x:Type dungeonModels:StatsMists}">
         <StackPanel Orientation="Vertical">
-            <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
+            <TextBlock Style="{StaticResource TitleText}" Text="{Binding TranslationMists, FallbackValue='MISTS'}" />
+
+            <StackPanel Orientation="Horizontal">
+                <StackPanel Orientation="Vertical" Width="40">
+                    <Image Source="../Assets/shiny_common.png" Height="24" Width="24" />
+                    <TextBlock Text="{Binding EnteredCommon, FallbackValue=0}" HorizontalAlignment="Center" Foreground="{StaticResource SolidColorBrush.Text.1}" />
+                </StackPanel>
+                <StackPanel Orientation="Vertical" Width="40">
+                    <Image Source="../Assets/shiny_uncommon.png" Height="24" Width="24" />
+                    <TextBlock Text="{Binding EnteredUncommon, FallbackValue=0}" HorizontalAlignment="Center" Foreground="{StaticResource SolidColorBrush.Text.1}" />
+                </StackPanel>
+                <StackPanel Orientation="Vertical" Width="40">
+                    <Image Source="../Assets/shiny_rare.png" Height="24" Width="24" />
+                    <TextBlock Text="{Binding EnteredRare, FallbackValue=0}" HorizontalAlignment="Center" Foreground="{StaticResource SolidColorBrush.Text.1}" />
+                </StackPanel>
+                <StackPanel Orientation="Vertical" Width="40">
+                    <Image Source="../Assets/shiny_epic.png" Height="24" Width="24" />
+                    <TextBlock Text="{Binding EnteredEpic, FallbackValue=0}" HorizontalAlignment="Center" Foreground="{StaticResource SolidColorBrush.Text.1}" />
+                </StackPanel>
+                <StackPanel Orientation="Vertical" Width="40">
+                    <Image Source="../Assets/shiny_legendary.png" Height="24" Width="24" />
+                    <TextBlock Text="{Binding EnteredLegendary, FallbackValue=0}" HorizontalAlignment="Center" Foreground="{StaticResource SolidColorBrush.Text.1}" />
+                </StackPanel>
+            </StackPanel>
+        </StackPanel>
+    </DataTemplate>
+
+    <DataTemplate x:Key="Dungeon.Stats.Template" DataType="{x:Type dungeonModels:DungeonStats}">
+        <StackPanel Orientation="Vertical">
+            <!-- Mists -->
+            <ContentPresenter ContentTemplate="{StaticResource Stats.Mists.Template}" Content="{Binding StatsMists}" />
+
+            <!--<StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
                 <StackPanel Orientation="Vertical">
                     <TextBlock Text="{Binding Translation.DungeonStats, FallbackValue=DUNGEON_STATS}" FontSize="16" Foreground="{StaticResource SolidColorBrush.Text.1}" HorizontalAlignment="Center" />
                     <DockPanel HorizontalAlignment="Left" VerticalAlignment="Top" Margin="10">
@@ -457,30 +488,26 @@
                         </StackPanel>
                     </StackPanel>
                 </StackPanel>
-            </StackPanel>
+            </StackPanel>-->
 
             <Separator Background="{StaticResource SolidColorBrush.Background.3}" Height="4" Margin="0,2,0,2" />
         </StackPanel>
     </DataTemplate>
 
+    <!-- Filter settings template -->
     <DataTemplate x:Key="DungeonStatsFilterTemplate" DataType="{x:Type models:DungeonStatsFilter}">
         <StackPanel Orientation="Vertical" HorizontalAlignment="Left" Width="auto" Margin="10,10,0,0">
             <Label Style="{StaticResource Tracking.Information.Title}" Content="{Binding TranslationFilter, FallbackValue=FILTER}" FontWeight="Bold"/>
             <DockPanel Margin="0,0,0,0" Height="30" VerticalAlignment="Top">
-                <CheckBox Content="{Binding TranslationSolo, FallbackValue='SOLO'}" ToolTip="{Binding TranslationSoloDungeon}"
-                          Margin="5,0,5,0" IsChecked="{Binding SoloCheckbox}"/>
-                <CheckBox Content="{Binding TranslationStandard, FallbackValue='STANDARD'}" ToolTip="{Binding TranslationStandardDungeon}"
-                          Margin="5,0,5,0" IsChecked="{Binding StandardCheckbox}"/>
-                <CheckBox Content="{Binding TranslationAva, FallbackValue='AVA'}" ToolTip="{Binding TranslationAvalonianDungeon}"
-                          Margin="5,0,5,0" IsChecked="{Binding AvaCheckbox}"/>
-                <CheckBox Content="{Binding TranslationHg, FallbackValue='HG'}" ToolTip="{Binding TranslationHellGate}"
-                          Margin="5,0,5,0" IsChecked="{Binding HgCheckbox}"/>
-                <CheckBox Content="{Binding TranslationCorrupted, FallbackValue='CORRUPTED'}" ToolTip="{Binding TranslationCorruptedDungeon}"
-                          Margin="5,0,5,0" IsChecked="{Binding CorruptedCheckbox}"/>
-                <CheckBox Content="{Binding TranslationExped, FallbackValue='EXPEDITION'}" ToolTip="{Binding TranslationExpedition}"
-                          Margin="5,0,5,0" IsChecked="{Binding ExpeditionCheckbox}"/>
-                <CheckBox Content="{Binding TranslationUnknown, FallbackValue='UNKNOWN'}" 
-                          Margin="5,0,5,0" IsChecked="{Binding UnknownCheckbox}"/>
+                <CheckBox Content="{Binding TranslationSolo, FallbackValue='SOLO'}" Margin="5,0,5,0" IsChecked="{Binding SoloCheckbox}"/>
+                <CheckBox Content="{Binding TranslationStandard, FallbackValue='STANDARD'}" Margin="5,0,5,0" IsChecked="{Binding StandardCheckbox}"/>
+                <CheckBox Content="{Binding TranslationAva, FallbackValue='AVA'}" Margin="5,0,5,0" IsChecked="{Binding AvaCheckbox}"/>
+                <CheckBox Content="{Binding TranslationHg, FallbackValue='HG'}" Margin="5,0,5,0" IsChecked="{Binding HgCheckbox}"/>
+                <CheckBox Content="{Binding TranslationCorrupted, FallbackValue='CORRUPTED'}" Margin="5,0,5,0" IsChecked="{Binding CorruptedCheckbox}"/>
+                <CheckBox Content="{Binding TranslationExped, FallbackValue='EXPEDITION'}" Margin="5,0,5,0" IsChecked="{Binding ExpeditionCheckbox}"/>
+                <CheckBox Content="{Binding TranslationMists, FallbackValue='MISTS'}" Margin="5,0,5,0" IsChecked="{Binding MistsCheckbox}"/>
+                <CheckBox Content="{Binding TranslationMistsDungeon, FallbackValue='MISTS_DUNGEON'}" Margin="5,0,5,0" IsChecked="{Binding MistsDungeonCheckbox}"/>
+                <CheckBox Content="{Binding TranslationUnknown, FallbackValue='UNKNOWN'}" Margin="5,0,5,0" IsChecked="{Binding UnknownCheckbox}"/>
             </DockPanel>
             <DockPanel Margin="0,0,0,0" Height="30" VerticalAlignment="Top" Width="auto" HorizontalAlignment="Left">
                 <CheckBox Content="T?" Margin="5,0,5,0" IsChecked="{Binding IsTierUnknown}"/>
@@ -516,7 +543,6 @@
                 <CheckBox ToolTip=".1" Margin="5,0,5,0" IsChecked="{Binding IsLevel2}">
                     <CheckBox.Content>
                         <StackPanel Orientation="Horizontal">
-                            <Image Source="../Assets/gem_level2.png" Height="11" Width="11" Margin="0,2,0,0" />
                             <Image Source="../Assets/gem_level2.png" Height="11" Width="11" Margin="-5,2,0,0" />
                         </StackPanel>
                     </CheckBox.Content>
@@ -524,8 +550,6 @@
                 <CheckBox ToolTip=".2" Margin="5,0,5,0" IsChecked="{Binding IsLevel3}">
                     <CheckBox.Content>
                         <StackPanel Orientation="Horizontal">
-                            <Image Source="../Assets/gem_level3.png" Height="11" Width="11" Margin="0,2,0,0" />
-                            <Image Source="../Assets/gem_level3.png" Height="11" Width="11" Margin="-5,2,0,0" />
                             <Image Source="../Assets/gem_level3.png" Height="11" Width="11" Margin="-5,2,0,0" />
                         </StackPanel>
                     </CheckBox.Content>
@@ -533,9 +557,6 @@
                 <CheckBox ToolTip=".3" Margin="5,0,5,0" IsChecked="{Binding IsLevel4}">
                     <CheckBox.Content>
                         <StackPanel Orientation="Horizontal">
-                            <Image Source="../Assets/gem_level4.png" Height="11" Width="11" Margin="0,2,0,0" />
-                            <Image Source="../Assets/gem_level4.png" Height="11" Width="11" Margin="-5,2,0,0" />
-                            <Image Source="../Assets/gem_level4.png" Height="11" Width="11" Margin="-5,2,0,0" />
                             <Image Source="../Assets/gem_level4.png" Height="11" Width="11" Margin="-5,2,0,0" />
                         </StackPanel>
                     </CheckBox.Content>

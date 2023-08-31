@@ -12,6 +12,7 @@ using StatisticsAnalysisTool.Views;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Collections.Specialized;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
@@ -41,6 +42,16 @@ public class DungeonController
     {
         _trackingController = trackingController;
         _mainWindowViewModel = mainWindowViewModel;
+
+        if (_mainWindowViewModel?.DungeonBindings?.Dungeons != null)
+        {
+            _mainWindowViewModel.DungeonBindings.Dungeons.CollectionChanged += OnCollectionChanged;
+        }
+    }
+
+    private void OnCollectionChanged(object sender, NotifyCollectionChangedEventArgs e)
+    {
+        _mainWindowViewModel?.DungeonBindings?.Stats.Set(_mainWindowViewModel?.DungeonBindings?.Dungeons);
     }
 
     public async Task AddDungeonAsync(MapType mapType, Guid? mapGuid)
@@ -113,12 +124,10 @@ public class DungeonController
             _lastGuidWithRecognizedLevel = new ObservableCollection<Guid>();
         }
 
-        RemoveDungeonsAfterCertainNumber(_mainWindowViewModel.DungeonBindings.Dungeons, MaxDungeons);
-
         _lastMapGuid = mapGuid;
 
-        //UpdateDungeonStatsUi();
-        //UpdateDungeonChestsUi();
+        await RemoveDungeonsAfterCertainNumberAsync(_mainWindowViewModel.DungeonBindings.Dungeons, MaxDungeons);
+        await Application.Current.Dispatcher.InvokeAsync(async () => { await _mainWindowViewModel.DungeonBindings.UpdateFilteredDungeonsAsync(); });
     }
 
     private static DungeonBaseFragment CreateNewDungeon(MapType mapType, string mainMapIndex, Guid? guid)
@@ -209,7 +218,7 @@ public class DungeonController
         _ = _mainWindowViewModel.DungeonBindings.Dungeons.Remove(dungeon);
     }
 
-    private static void RemoveDungeonsAfterCertainNumber(ICollection<DungeonBaseFragment> dungeons, int dungeonLimit)
+    private async Task RemoveDungeonsAfterCertainNumberAsync(ICollection<DungeonBaseFragment> dungeons, int dungeonLimit)
     {
         try
         {
@@ -220,15 +229,22 @@ public class DungeonController
                 return;
             }
 
-            for (var i = toDelete; i <= 0; i--)
+            await Application.Current.Dispatcher.InvokeAsync(async () =>
             {
-                var dateTime = GetLowestDate(dungeons);
-                if (dateTime != null)
+                for (var i = toDelete; i <= 0; i--)
                 {
-                    var removableItem = dungeons.FirstOrDefault(x => x.EnterDungeonFirstTime == dateTime);
-                    dungeons.Remove(removableItem);
+                    var dateTime = GetLowestDate(dungeons);
+                    if (dateTime == null)
+                    {
+                        continue;
+                    }
+
+                    var removableItem = dungeons?.FirstOrDefault(x => x.EnterDungeonFirstTime == dateTime);
+                    dungeons?.Remove(removableItem);
                 }
-            }
+
+                await _mainWindowViewModel.DungeonBindings.UpdateFilteredDungeonsAsync();
+            });
         }
         catch (Exception e)
         {
@@ -643,128 +659,134 @@ public class DungeonController
 
     #region Stats
 
-    public void UpdateDungeonStatsUi()
+    public void UpdateStatsUi()
     {
-        var nowMinus1days = DateTime.UtcNow.AddDays(-1);
-        var nowMinus7days = DateTime.UtcNow.AddDays(-7);
-        var nowMinus30days = DateTime.UtcNow.AddDays(-30);
-        var nowMinus365days = DateTime.UtcNow.AddDays(-365);
-        var nowMinus10Years = DateTime.UtcNow.AddYears(-10);
 
-        _mainWindowViewModel.DungeonBindings.DungeonStatsDay.EnteredDungeon = GetDungeonsCount(nowMinus1days);
-        _mainWindowViewModel.DungeonBindings.DungeonStatsWeek.EnteredDungeon = GetDungeonsCount(nowMinus7days);
-        _mainWindowViewModel.DungeonBindings.DungeonStatsMonth.EnteredDungeon = GetDungeonsCount(nowMinus30days);
-        _mainWindowViewModel.DungeonBindings.DungeonStatsYear.EnteredDungeon = GetDungeonsCount(nowMinus365days);
-        _mainWindowViewModel.DungeonBindings.DungeonStatsTotal.EnteredDungeon = GetDungeonsCount(nowMinus10Years);
+        //var nowMinus1days = DateTime.UtcNow.AddDays(-1);
+        //var nowMinus7days = DateTime.UtcNow.AddDays(-7);
+        //var nowMinus30days = DateTime.UtcNow.AddDays(-30);
+        //var nowMinus365days = DateTime.UtcNow.AddDays(-365);
+        //var nowMinus10Years = DateTime.UtcNow.AddYears(-10);
 
-        _mainWindowViewModel.DungeonBindings.DungeonStatsDay.DungeonRunTimeTotal = GetDungeonsRunTime(nowMinus1days);
-        _mainWindowViewModel.DungeonBindings.DungeonStatsWeek.DungeonRunTimeTotal = GetDungeonsRunTime(nowMinus7days);
-        _mainWindowViewModel.DungeonBindings.DungeonStatsMonth.DungeonRunTimeTotal = GetDungeonsRunTime(nowMinus30days);
-        _mainWindowViewModel.DungeonBindings.DungeonStatsYear.DungeonRunTimeTotal = GetDungeonsRunTime(nowMinus365days);
-        _mainWindowViewModel.DungeonBindings.DungeonStatsTotal.DungeonRunTimeTotal = GetDungeonsRunTime(nowMinus10Years);
+        //_mainWindowViewModel.DungeonBindings.Stats.EnteredDungeon = GetDungeonsCount(nowMinus1days);
+        //_mainWindowViewModel.DungeonBindings.DungeonStatsWeek.EnteredDungeon = GetDungeonsCount(nowMinus7days);
+        //_mainWindowViewModel.DungeonBindings.DungeonStatsMonth.EnteredDungeon = GetDungeonsCount(nowMinus30days);
+        //_mainWindowViewModel.DungeonBindings.DungeonStatsYear.EnteredDungeon = GetDungeonsCount(nowMinus365days);
+        //_mainWindowViewModel.DungeonBindings.DungeonStatsTotal.EnteredDungeon = GetDungeonsCount(nowMinus10Years);
 
-        _mainWindowViewModel.DungeonBindings.DungeonStatsDay.Fame = GetFame(nowMinus1days);
-        _mainWindowViewModel.DungeonBindings.DungeonStatsDay.ReSpec = GetReSpec(nowMinus1days);
-        _mainWindowViewModel.DungeonBindings.DungeonStatsDay.Silver = GetSilver(nowMinus1days);
-        _mainWindowViewModel.DungeonBindings.DungeonStatsDay.Might = GetMight(nowMinus1days);
-        _mainWindowViewModel.DungeonBindings.DungeonStatsDay.Favor = GetFavor(nowMinus1days);
+        //_mainWindowViewModel.DungeonBindings.Stats.DungeonRunTimeTotal = GetDungeonsRunTime(nowMinus1days);
+        //_mainWindowViewModel.DungeonBindings.DungeonStatsWeek.DungeonRunTimeTotal = GetDungeonsRunTime(nowMinus7days);
+        //_mainWindowViewModel.DungeonBindings.DungeonStatsMonth.DungeonRunTimeTotal = GetDungeonsRunTime(nowMinus30days);
+        //_mainWindowViewModel.DungeonBindings.DungeonStatsYear.DungeonRunTimeTotal = GetDungeonsRunTime(nowMinus365days);
+        //_mainWindowViewModel.DungeonBindings.DungeonStatsTotal.DungeonRunTimeTotal = GetDungeonsRunTime(nowMinus10Years);
 
-        _mainWindowViewModel.DungeonBindings.DungeonStatsWeek.Fame = GetFame(nowMinus7days);
-        _mainWindowViewModel.DungeonBindings.DungeonStatsWeek.ReSpec = GetReSpec(nowMinus7days);
-        _mainWindowViewModel.DungeonBindings.DungeonStatsWeek.Silver = GetSilver(nowMinus7days);
-        _mainWindowViewModel.DungeonBindings.DungeonStatsWeek.Might = GetMight(nowMinus7days);
-        _mainWindowViewModel.DungeonBindings.DungeonStatsWeek.Favor = GetFavor(nowMinus7days);
+        //_mainWindowViewModel.DungeonBindings.Stats.Fame = GetFame(nowMinus1days);
+        //_mainWindowViewModel.DungeonBindings.Stats.ReSpec = GetReSpec(nowMinus1days);
+        //_mainWindowViewModel.DungeonBindings.Stats.Silver = GetSilver(nowMinus1days);
+        //_mainWindowViewModel.DungeonBindings.Stats.Might = GetMight(nowMinus1days);
+        //_mainWindowViewModel.DungeonBindings.Stats.Favor = GetFavor(nowMinus1days);
 
-        _mainWindowViewModel.DungeonBindings.DungeonStatsMonth.Fame = GetFame(nowMinus30days);
-        _mainWindowViewModel.DungeonBindings.DungeonStatsMonth.ReSpec = GetReSpec(nowMinus30days);
-        _mainWindowViewModel.DungeonBindings.DungeonStatsMonth.Silver = GetSilver(nowMinus30days);
-        _mainWindowViewModel.DungeonBindings.DungeonStatsMonth.Might = GetMight(nowMinus30days);
-        _mainWindowViewModel.DungeonBindings.DungeonStatsMonth.Favor = GetFavor(nowMinus30days);
+        //_mainWindowViewModel.DungeonBindings.DungeonStatsWeek.Fame = GetFame(nowMinus7days);
+        //_mainWindowViewModel.DungeonBindings.DungeonStatsWeek.ReSpec = GetReSpec(nowMinus7days);
+        //_mainWindowViewModel.DungeonBindings.DungeonStatsWeek.Silver = GetSilver(nowMinus7days);
+        //_mainWindowViewModel.DungeonBindings.DungeonStatsWeek.Might = GetMight(nowMinus7days);
+        //_mainWindowViewModel.DungeonBindings.DungeonStatsWeek.Favor = GetFavor(nowMinus7days);
 
-        _mainWindowViewModel.DungeonBindings.DungeonStatsYear.Fame = GetFame(nowMinus365days);
-        _mainWindowViewModel.DungeonBindings.DungeonStatsYear.ReSpec = GetReSpec(nowMinus365days);
-        _mainWindowViewModel.DungeonBindings.DungeonStatsYear.Silver = GetSilver(nowMinus365days);
-        _mainWindowViewModel.DungeonBindings.DungeonStatsYear.Might = GetMight(nowMinus365days);
-        _mainWindowViewModel.DungeonBindings.DungeonStatsYear.Favor = GetFavor(nowMinus365days);
+        //_mainWindowViewModel.DungeonBindings.DungeonStatsMonth.Fame = GetFame(nowMinus30days);
+        //_mainWindowViewModel.DungeonBindings.DungeonStatsMonth.ReSpec = GetReSpec(nowMinus30days);
+        //_mainWindowViewModel.DungeonBindings.DungeonStatsMonth.Silver = GetSilver(nowMinus30days);
+        //_mainWindowViewModel.DungeonBindings.DungeonStatsMonth.Might = GetMight(nowMinus30days);
+        //_mainWindowViewModel.DungeonBindings.DungeonStatsMonth.Favor = GetFavor(nowMinus30days);
 
-        _mainWindowViewModel.DungeonBindings.DungeonStatsTotal.Fame = GetFame(null);
-        _mainWindowViewModel.DungeonBindings.DungeonStatsTotal.ReSpec = GetReSpec(null);
-        _mainWindowViewModel.DungeonBindings.DungeonStatsTotal.Silver = GetSilver(null);
-        _mainWindowViewModel.DungeonBindings.DungeonStatsTotal.Might = GetMight(null);
-        _mainWindowViewModel.DungeonBindings.DungeonStatsTotal.Favor = GetFavor(null);
+        //_mainWindowViewModel.DungeonBindings.DungeonStatsYear.Fame = GetFame(nowMinus365days);
+        //_mainWindowViewModel.DungeonBindings.DungeonStatsYear.ReSpec = GetReSpec(nowMinus365days);
+        //_mainWindowViewModel.DungeonBindings.DungeonStatsYear.Silver = GetSilver(nowMinus365days);
+        //_mainWindowViewModel.DungeonBindings.DungeonStatsYear.Might = GetMight(nowMinus365days);
+        //_mainWindowViewModel.DungeonBindings.DungeonStatsYear.Favor = GetFavor(nowMinus365days);
 
-        _mainWindowViewModel.DungeonBindings.DungeonStatsDay.BestLootedItem = GetBestLootedItem(nowMinus1days);
-        _mainWindowViewModel.DungeonBindings.DungeonStatsWeek.BestLootedItem = GetBestLootedItem(nowMinus7days);
-        _mainWindowViewModel.DungeonBindings.DungeonStatsMonth.BestLootedItem = GetBestLootedItem(nowMinus30days);
-        _mainWindowViewModel.DungeonBindings.DungeonStatsYear.BestLootedItem = GetBestLootedItem(nowMinus365days);
-        _mainWindowViewModel.DungeonBindings.DungeonStatsTotal.BestLootedItem = GetBestLootedItem(nowMinus10Years);
+        //_mainWindowViewModel.DungeonBindings.DungeonStatsTotal.Fame = GetFame(null);
+        //_mainWindowViewModel.DungeonBindings.DungeonStatsTotal.ReSpec = GetReSpec(null);
+        //_mainWindowViewModel.DungeonBindings.DungeonStatsTotal.Silver = GetSilver(null);
+        //_mainWindowViewModel.DungeonBindings.DungeonStatsTotal.Might = GetMight(null);
+        //_mainWindowViewModel.DungeonBindings.DungeonStatsTotal.Favor = GetFavor(null);
 
-        _mainWindowViewModel.DungeonBindings.DungeonStatsDay.LootInSilver = GetLootInSilver(nowMinus1days);
-        _mainWindowViewModel.DungeonBindings.DungeonStatsWeek.LootInSilver = GetLootInSilver(nowMinus7days);
-        _mainWindowViewModel.DungeonBindings.DungeonStatsMonth.LootInSilver = GetLootInSilver(nowMinus30days);
-        _mainWindowViewModel.DungeonBindings.DungeonStatsYear.LootInSilver = GetLootInSilver(nowMinus365days);
-        _mainWindowViewModel.DungeonBindings.DungeonStatsTotal.LootInSilver = GetLootInSilver(nowMinus10Years);
+        //_mainWindowViewModel.DungeonBindings.Stats.BestLootedItem = GetBestLootedItem(nowMinus1days);
+        //_mainWindowViewModel.DungeonBindings.DungeonStatsWeek.BestLootedItem = GetBestLootedItem(nowMinus7days);
+        //_mainWindowViewModel.DungeonBindings.DungeonStatsMonth.BestLootedItem = GetBestLootedItem(nowMinus30days);
+        //_mainWindowViewModel.DungeonBindings.DungeonStatsYear.BestLootedItem = GetBestLootedItem(nowMinus365days);
+        //_mainWindowViewModel.DungeonBindings.DungeonStatsTotal.BestLootedItem = GetBestLootedItem(nowMinus10Years);
+
+        //_mainWindowViewModel.DungeonBindings.Stats.LootInSilver = GetLootInSilver(nowMinus1days);
+        //_mainWindowViewModel.DungeonBindings.DungeonStatsWeek.LootInSilver = GetLootInSilver(nowMinus7days);
+        //_mainWindowViewModel.DungeonBindings.DungeonStatsMonth.LootInSilver = GetLootInSilver(nowMinus30days);
+        //_mainWindowViewModel.DungeonBindings.DungeonStatsYear.LootInSilver = GetLootInSilver(nowMinus365days);
+        //_mainWindowViewModel.DungeonBindings.DungeonStatsTotal.LootInSilver = GetLootInSilver(nowMinus10Years);
     }
 
-    public void SetDungeonStatsUi()
+    private static DateTime GetDateTimeByDungeonStatTimeType(DungeonStatTimeType statTimeType)
     {
-        if (_mainWindowViewModel.DungeonBindings.DungeonStatsSelection?.EnteredDungeon == null)
+        return statTimeType switch
         {
-            _mainWindowViewModel.DungeonBindings.DungeonStatsSelection = _mainWindowViewModel.DungeonBindings.DungeonStatsDay;
-        }
+            DungeonStatTimeType.Total => new DateTime(0, 0, 0, 0, 0, 0),
+            DungeonStatTimeType.Last365Days => DateTime.UtcNow.AddDays(-365),
+            DungeonStatTimeType.Last30Days => DateTime.UtcNow.AddDays(-30),
+            DungeonStatTimeType.Last7Days => DateTime.UtcNow.AddDays(-7),
+            DungeonStatTimeType.Today => DateTime.Today,
+            _ => new DateTime(0, 0, 0, 0, 0, 0)
+        };
     }
 
     public void UpdateDungeonChestsUi()
     {
-        _mainWindowViewModel.DungeonBindings.DungeonStatsDay.OpenedStandardChests = GetChests(DateTime.UtcNow.AddDays(-1), TreasureRarity.Common);
-        _mainWindowViewModel.DungeonBindings.DungeonStatsDay.OpenedUncommonChests = GetChests(DateTime.UtcNow.AddDays(-1), TreasureRarity.Uncommon);
-        _mainWindowViewModel.DungeonBindings.DungeonStatsDay.OpenedRareChests = GetChests(DateTime.UtcNow.AddDays(-1), TreasureRarity.Rare);
-        _mainWindowViewModel.DungeonBindings.DungeonStatsDay.OpenedLegendaryChests = GetChests(DateTime.UtcNow.AddDays(-1), TreasureRarity.Legendary);
+        _mainWindowViewModel.DungeonBindings.Stats.OpenedStandardChests = GetChests(DateTime.UtcNow.AddDays(-1), TreasureRarity.Common);
+        _mainWindowViewModel.DungeonBindings.Stats.OpenedUncommonChests = GetChests(DateTime.UtcNow.AddDays(-1), TreasureRarity.Uncommon);
+        _mainWindowViewModel.DungeonBindings.Stats.OpenedRareChests = GetChests(DateTime.UtcNow.AddDays(-1), TreasureRarity.Rare);
+        _mainWindowViewModel.DungeonBindings.Stats.OpenedLegendaryChests = GetChests(DateTime.UtcNow.AddDays(-1), TreasureRarity.Legendary);
 
-        _mainWindowViewModel.DungeonBindings.DungeonStatsDay.OpenedStandardBookChests = GetChests(DateTime.UtcNow.AddDays(-1), TreasureRarity.Common, EventType.BookChest);
-        _mainWindowViewModel.DungeonBindings.DungeonStatsDay.OpenedUncommonBookChests = GetChests(DateTime.UtcNow.AddDays(-1), TreasureRarity.Uncommon, EventType.BookChest);
-        _mainWindowViewModel.DungeonBindings.DungeonStatsDay.OpenedRareBookChests = GetChests(DateTime.UtcNow.AddDays(-1), TreasureRarity.Rare, EventType.BookChest);
-        _mainWindowViewModel.DungeonBindings.DungeonStatsDay.OpenedLegendaryBookChests = GetChests(DateTime.UtcNow.AddDays(-1), TreasureRarity.Legendary, EventType.BookChest);
+        _mainWindowViewModel.DungeonBindings.Stats.OpenedStandardBookChests = GetChests(DateTime.UtcNow.AddDays(-1), TreasureRarity.Common, EventType.BookChest);
+        _mainWindowViewModel.DungeonBindings.Stats.OpenedUncommonBookChests = GetChests(DateTime.UtcNow.AddDays(-1), TreasureRarity.Uncommon, EventType.BookChest);
+        _mainWindowViewModel.DungeonBindings.Stats.OpenedRareBookChests = GetChests(DateTime.UtcNow.AddDays(-1), TreasureRarity.Rare, EventType.BookChest);
+        _mainWindowViewModel.DungeonBindings.Stats.OpenedLegendaryBookChests = GetChests(DateTime.UtcNow.AddDays(-1), TreasureRarity.Legendary, EventType.BookChest);
 
-        _mainWindowViewModel.DungeonBindings.DungeonStatsWeek.OpenedStandardChests = GetChests(DateTime.UtcNow.AddDays(-7), TreasureRarity.Common);
-        _mainWindowViewModel.DungeonBindings.DungeonStatsWeek.OpenedUncommonChests = GetChests(DateTime.UtcNow.AddDays(-7), TreasureRarity.Uncommon);
-        _mainWindowViewModel.DungeonBindings.DungeonStatsWeek.OpenedRareChests = GetChests(DateTime.UtcNow.AddDays(-7), TreasureRarity.Rare);
-        _mainWindowViewModel.DungeonBindings.DungeonStatsWeek.OpenedLegendaryChests = GetChests(DateTime.UtcNow.AddDays(-7), TreasureRarity.Legendary);
+        //_mainWindowViewModel.DungeonBindings.DungeonStatsWeek.OpenedStandardChests = GetChests(DateTime.UtcNow.AddDays(-7), TreasureRarity.Common);
+        //_mainWindowViewModel.DungeonBindings.DungeonStatsWeek.OpenedUncommonChests = GetChests(DateTime.UtcNow.AddDays(-7), TreasureRarity.Uncommon);
+        //_mainWindowViewModel.DungeonBindings.DungeonStatsWeek.OpenedRareChests = GetChests(DateTime.UtcNow.AddDays(-7), TreasureRarity.Rare);
+        //_mainWindowViewModel.DungeonBindings.DungeonStatsWeek.OpenedLegendaryChests = GetChests(DateTime.UtcNow.AddDays(-7), TreasureRarity.Legendary);
 
-        _mainWindowViewModel.DungeonBindings.DungeonStatsWeek.OpenedStandardBookChests = GetChests(DateTime.UtcNow.AddDays(-7), TreasureRarity.Common, EventType.BookChest);
-        _mainWindowViewModel.DungeonBindings.DungeonStatsWeek.OpenedUncommonBookChests = GetChests(DateTime.UtcNow.AddDays(-7), TreasureRarity.Uncommon, EventType.BookChest);
-        _mainWindowViewModel.DungeonBindings.DungeonStatsWeek.OpenedRareBookChests = GetChests(DateTime.UtcNow.AddDays(-7), TreasureRarity.Rare, EventType.BookChest);
-        _mainWindowViewModel.DungeonBindings.DungeonStatsWeek.OpenedLegendaryBookChests = GetChests(DateTime.UtcNow.AddDays(-7), TreasureRarity.Legendary, EventType.BookChest);
+        //_mainWindowViewModel.DungeonBindings.DungeonStatsWeek.OpenedStandardBookChests = GetChests(DateTime.UtcNow.AddDays(-7), TreasureRarity.Common, EventType.BookChest);
+        //_mainWindowViewModel.DungeonBindings.DungeonStatsWeek.OpenedUncommonBookChests = GetChests(DateTime.UtcNow.AddDays(-7), TreasureRarity.Uncommon, EventType.BookChest);
+        //_mainWindowViewModel.DungeonBindings.DungeonStatsWeek.OpenedRareBookChests = GetChests(DateTime.UtcNow.AddDays(-7), TreasureRarity.Rare, EventType.BookChest);
+        //_mainWindowViewModel.DungeonBindings.DungeonStatsWeek.OpenedLegendaryBookChests = GetChests(DateTime.UtcNow.AddDays(-7), TreasureRarity.Legendary, EventType.BookChest);
 
-        _mainWindowViewModel.DungeonBindings.DungeonStatsMonth.OpenedStandardChests = GetChests(DateTime.UtcNow.AddDays(-30), TreasureRarity.Common);
-        _mainWindowViewModel.DungeonBindings.DungeonStatsMonth.OpenedUncommonChests = GetChests(DateTime.UtcNow.AddDays(-30), TreasureRarity.Uncommon);
-        _mainWindowViewModel.DungeonBindings.DungeonStatsMonth.OpenedRareChests = GetChests(DateTime.UtcNow.AddDays(-30), TreasureRarity.Rare);
-        _mainWindowViewModel.DungeonBindings.DungeonStatsMonth.OpenedLegendaryChests = GetChests(DateTime.UtcNow.AddDays(-30), TreasureRarity.Legendary);
+        //_mainWindowViewModel.DungeonBindings.DungeonStatsMonth.OpenedStandardChests = GetChests(DateTime.UtcNow.AddDays(-30), TreasureRarity.Common);
+        //_mainWindowViewModel.DungeonBindings.DungeonStatsMonth.OpenedUncommonChests = GetChests(DateTime.UtcNow.AddDays(-30), TreasureRarity.Uncommon);
+        //_mainWindowViewModel.DungeonBindings.DungeonStatsMonth.OpenedRareChests = GetChests(DateTime.UtcNow.AddDays(-30), TreasureRarity.Rare);
+        //_mainWindowViewModel.DungeonBindings.DungeonStatsMonth.OpenedLegendaryChests = GetChests(DateTime.UtcNow.AddDays(-30), TreasureRarity.Legendary);
 
-        _mainWindowViewModel.DungeonBindings.DungeonStatsMonth.OpenedStandardBookChests = GetChests(DateTime.UtcNow.AddDays(-30), TreasureRarity.Common, EventType.BookChest);
-        _mainWindowViewModel.DungeonBindings.DungeonStatsMonth.OpenedUncommonBookChests = GetChests(DateTime.UtcNow.AddDays(-30), TreasureRarity.Uncommon, EventType.BookChest);
-        _mainWindowViewModel.DungeonBindings.DungeonStatsMonth.OpenedRareBookChests = GetChests(DateTime.UtcNow.AddDays(-30), TreasureRarity.Rare, EventType.BookChest);
-        _mainWindowViewModel.DungeonBindings.DungeonStatsMonth.OpenedLegendaryBookChests = GetChests(DateTime.UtcNow.AddDays(-30), TreasureRarity.Legendary, EventType.BookChest);
+        //_mainWindowViewModel.DungeonBindings.DungeonStatsMonth.OpenedStandardBookChests = GetChests(DateTime.UtcNow.AddDays(-30), TreasureRarity.Common, EventType.BookChest);
+        //_mainWindowViewModel.DungeonBindings.DungeonStatsMonth.OpenedUncommonBookChests = GetChests(DateTime.UtcNow.AddDays(-30), TreasureRarity.Uncommon, EventType.BookChest);
+        //_mainWindowViewModel.DungeonBindings.DungeonStatsMonth.OpenedRareBookChests = GetChests(DateTime.UtcNow.AddDays(-30), TreasureRarity.Rare, EventType.BookChest);
+        //_mainWindowViewModel.DungeonBindings.DungeonStatsMonth.OpenedLegendaryBookChests = GetChests(DateTime.UtcNow.AddDays(-30), TreasureRarity.Legendary, EventType.BookChest);
 
-        _mainWindowViewModel.DungeonBindings.DungeonStatsYear.OpenedStandardChests = GetChests(DateTime.UtcNow.AddDays(-365), TreasureRarity.Common);
-        _mainWindowViewModel.DungeonBindings.DungeonStatsYear.OpenedUncommonChests = GetChests(DateTime.UtcNow.AddDays(-365), TreasureRarity.Uncommon);
-        _mainWindowViewModel.DungeonBindings.DungeonStatsYear.OpenedRareChests = GetChests(DateTime.UtcNow.AddDays(-365), TreasureRarity.Rare);
-        _mainWindowViewModel.DungeonBindings.DungeonStatsYear.OpenedLegendaryChests = GetChests(DateTime.UtcNow.AddDays(-365), TreasureRarity.Legendary);
+        //_mainWindowViewModel.DungeonBindings.DungeonStatsYear.OpenedStandardChests = GetChests(DateTime.UtcNow.AddDays(-365), TreasureRarity.Common);
+        //_mainWindowViewModel.DungeonBindings.DungeonStatsYear.OpenedUncommonChests = GetChests(DateTime.UtcNow.AddDays(-365), TreasureRarity.Uncommon);
+        //_mainWindowViewModel.DungeonBindings.DungeonStatsYear.OpenedRareChests = GetChests(DateTime.UtcNow.AddDays(-365), TreasureRarity.Rare);
+        //_mainWindowViewModel.DungeonBindings.DungeonStatsYear.OpenedLegendaryChests = GetChests(DateTime.UtcNow.AddDays(-365), TreasureRarity.Legendary);
 
-        _mainWindowViewModel.DungeonBindings.DungeonStatsYear.OpenedStandardBookChests = GetChests(DateTime.UtcNow.AddDays(-365), TreasureRarity.Common, EventType.BookChest);
-        _mainWindowViewModel.DungeonBindings.DungeonStatsYear.OpenedUncommonBookChests = GetChests(DateTime.UtcNow.AddDays(-365), TreasureRarity.Uncommon, EventType.BookChest);
-        _mainWindowViewModel.DungeonBindings.DungeonStatsYear.OpenedRareBookChests = GetChests(DateTime.UtcNow.AddDays(-365), TreasureRarity.Rare, EventType.BookChest);
-        _mainWindowViewModel.DungeonBindings.DungeonStatsYear.OpenedLegendaryBookChests = GetChests(DateTime.UtcNow.AddDays(-365), TreasureRarity.Legendary, EventType.BookChest);
+        //_mainWindowViewModel.DungeonBindings.DungeonStatsYear.OpenedStandardBookChests = GetChests(DateTime.UtcNow.AddDays(-365), TreasureRarity.Common, EventType.BookChest);
+        //_mainWindowViewModel.DungeonBindings.DungeonStatsYear.OpenedUncommonBookChests = GetChests(DateTime.UtcNow.AddDays(-365), TreasureRarity.Uncommon, EventType.BookChest);
+        //_mainWindowViewModel.DungeonBindings.DungeonStatsYear.OpenedRareBookChests = GetChests(DateTime.UtcNow.AddDays(-365), TreasureRarity.Rare, EventType.BookChest);
+        //_mainWindowViewModel.DungeonBindings.DungeonStatsYear.OpenedLegendaryBookChests = GetChests(DateTime.UtcNow.AddDays(-365), TreasureRarity.Legendary, EventType.BookChest);
 
-        _mainWindowViewModel.DungeonBindings.DungeonStatsTotal.OpenedStandardChests = GetChests(null, TreasureRarity.Common);
-        _mainWindowViewModel.DungeonBindings.DungeonStatsTotal.OpenedUncommonChests = GetChests(null, TreasureRarity.Uncommon);
-        _mainWindowViewModel.DungeonBindings.DungeonStatsTotal.OpenedRareChests = GetChests(null, TreasureRarity.Rare);
-        _mainWindowViewModel.DungeonBindings.DungeonStatsTotal.OpenedLegendaryChests = GetChests(null, TreasureRarity.Legendary);
+        //_mainWindowViewModel.DungeonBindings.DungeonStatsTotal.OpenedStandardChests = GetChests(null, TreasureRarity.Common);
+        //_mainWindowViewModel.DungeonBindings.DungeonStatsTotal.OpenedUncommonChests = GetChests(null, TreasureRarity.Uncommon);
+        //_mainWindowViewModel.DungeonBindings.DungeonStatsTotal.OpenedRareChests = GetChests(null, TreasureRarity.Rare);
+        //_mainWindowViewModel.DungeonBindings.DungeonStatsTotal.OpenedLegendaryChests = GetChests(null, TreasureRarity.Legendary);
 
-        _mainWindowViewModel.DungeonBindings.DungeonStatsTotal.OpenedStandardBookChests = GetChests(null, TreasureRarity.Common, EventType.BookChest);
-        _mainWindowViewModel.DungeonBindings.DungeonStatsTotal.OpenedUncommonBookChests = GetChests(null, TreasureRarity.Uncommon, EventType.BookChest);
-        _mainWindowViewModel.DungeonBindings.DungeonStatsTotal.OpenedRareBookChests = GetChests(null, TreasureRarity.Rare, EventType.BookChest);
-        _mainWindowViewModel.DungeonBindings.DungeonStatsTotal.OpenedLegendaryBookChests = GetChests(null, TreasureRarity.Legendary, EventType.BookChest);
+        //_mainWindowViewModel.DungeonBindings.DungeonStatsTotal.OpenedStandardBookChests = GetChests(null, TreasureRarity.Common, EventType.BookChest);
+        //_mainWindowViewModel.DungeonBindings.DungeonStatsTotal.OpenedUncommonBookChests = GetChests(null, TreasureRarity.Uncommon, EventType.BookChest);
+        //_mainWindowViewModel.DungeonBindings.DungeonStatsTotal.OpenedRareBookChests = GetChests(null, TreasureRarity.Rare, EventType.BookChest);
+        //_mainWindowViewModel.DungeonBindings.DungeonStatsTotal.OpenedLegendaryBookChests = GetChests(null, TreasureRarity.Legendary, EventType.BookChest);
     }
 
     private int GetChests(DateTime? chestIsNewerAsDateTime, TreasureRarity rarity, EventType eventType = EventType.Chest)
@@ -1040,7 +1062,7 @@ public class DungeonController
         _discoveredLoot.Add(discoveredItem);
     }
 
-    public void AddNewLocalPlayerLootOnCurrentDungeon(int containerSlot, Guid containerGuid, Guid userInteractGuid)
+    public async Task AddNewLocalPlayerLootOnCurrentDungeonAsync(int containerSlot, Guid containerGuid, Guid userInteractGuid)
     {
         if (_trackingController.EntityController.LocalUserData.InteractGuid != userInteractGuid)
         {
@@ -1060,7 +1082,7 @@ public class DungeonController
             return;
         }
 
-        AddLocalPlayerLootedItemToCurrentDungeon(lootedItem);
+        await AddLocalPlayerLootedItemToCurrentDungeonAsync(lootedItem);
     }
 
     private long GetItemObjectIdFromContainer(int containerSlot)
@@ -1073,7 +1095,7 @@ public class DungeonController
         return _currentItemContainer!.SlotItemIds![containerSlot];
     }
 
-    public void AddLocalPlayerLootedItemToCurrentDungeon(DiscoveredItem discoveredItem)
+    public async Task AddLocalPlayerLootedItemToCurrentDungeonAsync(DiscoveredItem discoveredItem)
     {
         if (_currentGuid == null)
         {
@@ -1082,7 +1104,7 @@ public class DungeonController
 
         try
         {
-            lock (_mainWindowViewModel.DungeonBindings.Dungeons)
+            await Application.Current.Dispatcher.InvokeAsync(() =>
             {
                 var dun = GetDungeon((Guid) _currentGuid);
                 if (dun == null)
@@ -1102,7 +1124,7 @@ public class DungeonController
                 dun.UpdateTotalValue();
                 dun.UpdateMostValuableLoot();
                 dun.UpdateMostValuableLootVisibility();
-            }
+            });
         }
         catch (Exception e)
         {

@@ -111,9 +111,7 @@ public class TrackingController : ITrackingController
             VaultController.LoadFromFileAsync()
         );
 
-        DungeonController?.UpdateDungeonStatsUi();
-        DungeonController?.SetDungeonStatsUi();
-        DungeonController?.UpdateDungeonChestsUi();
+        DungeonController?.UpdateStatsUi();
 
         ClusterController?.RegisterEvents();
         LootController?.RegisterEvents();
@@ -121,7 +119,7 @@ public class TrackingController : ITrackingController
 
         LiveStatsTracker.Start();
 
-        _mainWindowViewModel.DungeonBindings.DungeonStatsFilter = new DungeonStatsFilter(this);
+        _mainWindowViewModel.DungeonBindings.DungeonStatsFilter = new DungeonStatsFilter(_mainWindowViewModel.DungeonBindings);
 
         try
         {

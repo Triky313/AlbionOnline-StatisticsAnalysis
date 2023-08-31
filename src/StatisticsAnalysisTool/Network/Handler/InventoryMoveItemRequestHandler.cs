@@ -18,7 +18,7 @@ public class InventoryMoveItemRequestHandler : RequestPacketHandler<InventoryMov
     {
         if (value.ContainerGuid is not null && value.UserInteractGuid is not null)
         {
-            _trackingController.DungeonController.AddNewLocalPlayerLootOnCurrentDungeon(value.ContainerSlot, (Guid)value.ContainerGuid, (Guid)value.UserInteractGuid);
+            await _trackingController.DungeonController.AddNewLocalPlayerLootOnCurrentDungeonAsync(value.ContainerSlot, (Guid)value.ContainerGuid, (Guid)value.UserInteractGuid);
             await _trackingController.LootController.AddNewLocalPlayerLootAsync(value.ContainerSlot, (Guid)value.ContainerGuid, (Guid)value.UserInteractGuid);
         }
     }

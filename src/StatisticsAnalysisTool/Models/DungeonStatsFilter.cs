@@ -1,9 +1,9 @@
 ﻿using StatisticsAnalysisTool.Common;
 using StatisticsAnalysisTool.Dungeon;
 using StatisticsAnalysisTool.Enumerations;
-using StatisticsAnalysisTool.Network.Manager;
 using StatisticsAnalysisTool.ViewModels;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 
 namespace StatisticsAnalysisTool.Models;
 
@@ -16,6 +16,9 @@ public class DungeonStatsFilter : BaseViewModel
     private bool? _expeditionCheckbox = true;
     private bool? _corruptedCheckbox = true;
     private bool? _unknownCheckbox = true;
+    private bool? _mistsCheckbox = true;
+    private bool? _mistsDungeonCheckbox = true;
+
     private List<DungeonMode> _dungeonModeFilters = new()
         {
             DungeonMode.Solo,
@@ -28,6 +31,7 @@ public class DungeonStatsFilter : BaseViewModel
             DungeonMode.MistsDungeon,
             DungeonMode.Unknown
         };
+
     private bool? _isTierUnknown = true;
     private bool? _isT1 = true;
     private bool? _isT2 = true;
@@ -37,6 +41,7 @@ public class DungeonStatsFilter : BaseViewModel
     private bool? _isT6 = true;
     private bool? _isT7 = true;
     private bool? _isT8 = true;
+
     private List<Tier> _tierFilters = new()
         {
             Tier.Unknown,
@@ -49,12 +54,14 @@ public class DungeonStatsFilter : BaseViewModel
             Tier.T7,
             Tier.T8
         };
+
     private bool? _isLevelUnknown = true;
     private bool? _isLevel0 = true;
     private bool? _isLevel1 = true;
     private bool? _isLevel2 = true;
     private bool? _isLevel3 = true;
     private bool? _isLevel4 = true;
+
     private List<ItemLevel> _levelFilters = new()
         {
             ItemLevel.Unknown,
@@ -65,14 +72,11 @@ public class DungeonStatsFilter : BaseViewModel
             ItemLevel.Level4
         };
 
-    private readonly TrackingController _trackingController;
+    private readonly DungeonBindings _dungeonBindings;
 
-    public DungeonStatsFilter(TrackingController trackingController)
+    public DungeonStatsFilter(DungeonBindings dungeonBindings)
     {
-        _trackingController = trackingController;
-
-        _trackingController?.DungeonController?.UpdateDungeonStatsUi();
-        _trackingController?.DungeonController?.UpdateDungeonChestsUi();
+        _dungeonBindings = dungeonBindings;
     }
 
     #region Dungeon
@@ -83,7 +87,7 @@ public class DungeonStatsFilter : BaseViewModel
         set
         {
             _soloCheckbox = value;
-            ChangeDungeonModeFilter(DungeonMode.Solo, _soloCheckbox ?? false);
+            ChangeDungeonModeFilterAsync(DungeonMode.Solo, value ?? false);
             OnPropertyChanged();
         }
     }
@@ -94,7 +98,7 @@ public class DungeonStatsFilter : BaseViewModel
         set
         {
             _standardCheckbox = value;
-            ChangeDungeonModeFilter(DungeonMode.Standard, _standardCheckbox ?? false);
+            ChangeDungeonModeFilterAsync(DungeonMode.Standard, value ?? false);
             OnPropertyChanged();
         }
     }
@@ -105,7 +109,7 @@ public class DungeonStatsFilter : BaseViewModel
         set
         {
             _avaCheckbox = value;
-            ChangeDungeonModeFilter(DungeonMode.Avalon, _avaCheckbox ?? false);
+            ChangeDungeonModeFilterAsync(DungeonMode.Avalon, value ?? false);
             OnPropertyChanged();
         }
     }
@@ -116,7 +120,7 @@ public class DungeonStatsFilter : BaseViewModel
         set
         {
             _hgCheckbox = value;
-            ChangeDungeonModeFilter(DungeonMode.HellGate, _hgCheckbox ?? false);
+            ChangeDungeonModeFilterAsync(DungeonMode.HellGate, value ?? false);
             OnPropertyChanged();
         }
     }
@@ -127,7 +131,7 @@ public class DungeonStatsFilter : BaseViewModel
         set
         {
             _expeditionCheckbox = value;
-            ChangeDungeonModeFilter(DungeonMode.Expedition, _expeditionCheckbox ?? false);
+            ChangeDungeonModeFilterAsync(DungeonMode.Expedition, value ?? false);
             OnPropertyChanged();
         }
     }
@@ -138,7 +142,29 @@ public class DungeonStatsFilter : BaseViewModel
         set
         {
             _corruptedCheckbox = value;
-            ChangeDungeonModeFilter(DungeonMode.Corrupted, _corruptedCheckbox ?? false);
+            ChangeDungeonModeFilterAsync(DungeonMode.Corrupted, value ?? false);
+            OnPropertyChanged();
+        }
+    }
+
+    public bool? MistsCheckbox
+    {
+        get => _mistsCheckbox;
+        set
+        {
+            _mistsCheckbox = value;
+            ChangeDungeonModeFilterAsync(DungeonMode.Mists, value ?? false);
+            OnPropertyChanged();
+        }
+    }
+
+    public bool? MistsDungeonCheckbox
+    {
+        get => _mistsDungeonCheckbox;
+        set
+        {
+            _mistsDungeonCheckbox = value;
+            ChangeDungeonModeFilterAsync(DungeonMode.MistsDungeon, value ?? false);
             OnPropertyChanged();
         }
     }
@@ -149,7 +175,7 @@ public class DungeonStatsFilter : BaseViewModel
         set
         {
             _unknownCheckbox = value;
-            ChangeDungeonModeFilter(DungeonMode.Unknown, _unknownCheckbox ?? false);
+            ChangeDungeonModeFilterAsync(DungeonMode.Unknown, _unknownCheckbox ?? false);
             OnPropertyChanged();
         }
     }
@@ -164,7 +190,7 @@ public class DungeonStatsFilter : BaseViewModel
         }
     }
 
-    private void ChangeDungeonModeFilter(DungeonMode dungeonMode, bool filterStatus)
+    private async void ChangeDungeonModeFilterAsync(DungeonMode dungeonMode, bool filterStatus)
     {
         if (filterStatus)
         {
@@ -172,8 +198,10 @@ public class DungeonStatsFilter : BaseViewModel
         }
         else
         {
-            RemoveDungeonMode(dungeonMode);
+           RemoveDungeonMode(dungeonMode);
         }
+
+        await _dungeonBindings.UpdateFilteredDungeonsAsync();
     }
 
     private void AddDungeonMode(DungeonMode dungeonMode)
@@ -202,7 +230,7 @@ public class DungeonStatsFilter : BaseViewModel
         set
         {
             _isTierUnknown = value;
-            ChangeTierFilter(Tier.Unknown, _isTierUnknown ?? false);
+            ChangeTierFilterAsync(Tier.Unknown, _isTierUnknown ?? false);
             OnPropertyChanged();
         }
     }
@@ -213,7 +241,7 @@ public class DungeonStatsFilter : BaseViewModel
         set
         {
             _isT1 = value;
-            ChangeTierFilter(Tier.T1, _isT1 ?? false);
+            ChangeTierFilterAsync(Tier.T1, _isT1 ?? false);
             OnPropertyChanged();
         }
     }
@@ -224,7 +252,7 @@ public class DungeonStatsFilter : BaseViewModel
         set
         {
             _isT2 = value;
-            ChangeTierFilter(Tier.T2, _isT2 ?? false);
+            ChangeTierFilterAsync(Tier.T2, _isT2 ?? false);
             OnPropertyChanged();
         }
     }
@@ -235,7 +263,7 @@ public class DungeonStatsFilter : BaseViewModel
         set
         {
             _isT3 = value;
-            ChangeTierFilter(Tier.T3, _isT3 ?? false);
+            ChangeTierFilterAsync(Tier.T3, _isT3 ?? false);
             OnPropertyChanged();
         }
     }
@@ -246,7 +274,7 @@ public class DungeonStatsFilter : BaseViewModel
         set
         {
             _isT4 = value;
-            ChangeTierFilter(Tier.T4, _isT4 ?? false);
+            ChangeTierFilterAsync(Tier.T4, _isT4 ?? false);
             OnPropertyChanged();
         }
     }
@@ -257,7 +285,7 @@ public class DungeonStatsFilter : BaseViewModel
         set
         {
             _isT5 = value;
-            ChangeTierFilter(Tier.T5, _isT5 ?? false);
+            ChangeTierFilterAsync(Tier.T5, _isT5 ?? false);
             OnPropertyChanged();
         }
     }
@@ -268,7 +296,7 @@ public class DungeonStatsFilter : BaseViewModel
         set
         {
             _isT6 = value;
-            ChangeTierFilter(Tier.T6, _isT6 ?? false);
+            ChangeTierFilterAsync(Tier.T6, _isT6 ?? false);
             OnPropertyChanged();
         }
     }
@@ -279,7 +307,7 @@ public class DungeonStatsFilter : BaseViewModel
         set
         {
             _isT7 = value;
-            ChangeTierFilter(Tier.T7, _isT7 ?? false);
+            ChangeTierFilterAsync(Tier.T7, _isT7 ?? false);
             OnPropertyChanged();
         }
     }
@@ -290,7 +318,7 @@ public class DungeonStatsFilter : BaseViewModel
         set
         {
             _isT8 = value;
-            ChangeTierFilter(Tier.T8, _isT8 ?? false);
+            ChangeTierFilterAsync(Tier.T8, _isT8 ?? false);
             OnPropertyChanged();
         }
     }
@@ -305,7 +333,7 @@ public class DungeonStatsFilter : BaseViewModel
         }
     }
 
-    private void ChangeTierFilter(Tier tier, bool filterStatus)
+    private async void ChangeTierFilterAsync(Tier tier, bool filterStatus)
     {
         if (filterStatus)
         {
@@ -315,6 +343,8 @@ public class DungeonStatsFilter : BaseViewModel
         {
             RemoveTier(tier);
         }
+
+        await _dungeonBindings.UpdateFilteredDungeonsAsync();
     }
 
     private void AddTier(Tier tier)
@@ -343,7 +373,7 @@ public class DungeonStatsFilter : BaseViewModel
         set
         {
             _isLevelUnknown = value;
-            ChangeTierFilter(ItemLevel.Unknown, _isLevelUnknown ?? false);
+            ChangeTierFilterAsync(ItemLevel.Unknown, _isLevelUnknown ?? false);
             OnPropertyChanged();
         }
     }
@@ -354,7 +384,7 @@ public class DungeonStatsFilter : BaseViewModel
         set
         {
             _isLevel0 = value;
-            ChangeTierFilter(ItemLevel.Level0, _isLevel0 ?? false);
+            ChangeTierFilterAsync(ItemLevel.Level0, _isLevel0 ?? false);
             OnPropertyChanged();
         }
     }
@@ -365,7 +395,7 @@ public class DungeonStatsFilter : BaseViewModel
         set
         {
             _isLevel1 = value;
-            ChangeTierFilter(ItemLevel.Level1, _isLevel1 ?? false);
+            ChangeTierFilterAsync(ItemLevel.Level1, _isLevel1 ?? false);
             OnPropertyChanged();
         }
     }
@@ -376,7 +406,7 @@ public class DungeonStatsFilter : BaseViewModel
         set
         {
             _isLevel2 = value;
-            ChangeTierFilter(ItemLevel.Level2, _isLevel2 ?? false);
+            ChangeTierFilterAsync(ItemLevel.Level2, _isLevel2 ?? false);
             OnPropertyChanged();
         }
     }
@@ -387,7 +417,7 @@ public class DungeonStatsFilter : BaseViewModel
         set
         {
             _isLevel3 = value;
-            ChangeTierFilter(ItemLevel.Level3, _isLevel3 ?? false);
+            ChangeTierFilterAsync(ItemLevel.Level3, _isLevel3 ?? false);
             OnPropertyChanged();
         }
     }
@@ -398,7 +428,7 @@ public class DungeonStatsFilter : BaseViewModel
         set
         {
             _isLevel4 = value;
-            ChangeTierFilter(ItemLevel.Level4, _isLevel4 ?? false);
+            ChangeTierFilterAsync(ItemLevel.Level4, _isLevel4 ?? false);
             OnPropertyChanged();
         }
     }
@@ -413,7 +443,7 @@ public class DungeonStatsFilter : BaseViewModel
         }
     }
 
-    private void ChangeTierFilter(ItemLevel level, bool filterStatus)
+    private async void ChangeTierFilterAsync(ItemLevel level, bool filterStatus)
     {
         if (filterStatus)
         {
@@ -423,6 +453,8 @@ public class DungeonStatsFilter : BaseViewModel
         {
             RemoveTier(level);
         }
+
+        await _dungeonBindings.UpdateFilteredDungeonsAsync();
     }
 
     private void AddTier(ItemLevel level)
@@ -456,6 +488,8 @@ public class DungeonStatsFilter : BaseViewModel
     public static string TranslationCorruptedDungeon => LanguageController.Translation("CORRUPTED_LAIR");
     public static string TranslationExped => LanguageController.Translation("EXPED");
     public static string TranslationExpedition => LanguageController.Translation("EXPEDITION");
+    public static string TranslationMists => LanguageController.Translation("MISTS");
+    public static string TranslationMistsDungeon => LanguageController.Translation("MISTS_DUNGEON");
     public static string TranslationUnknown => LanguageController.Translation("UNKNOWN");
     public static string TranslationT1 => LanguageController.Translation("T1");
     public static string TranslationT2 => LanguageController.Translation("T2");
