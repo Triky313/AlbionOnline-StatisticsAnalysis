@@ -2,7 +2,7 @@
 using StatisticsAnalysisTool.Common.UserSettings;
 using StatisticsAnalysisTool.ViewModels;
 
-namespace StatisticsAnalysisTool.Models;
+namespace StatisticsAnalysisTool.Dungeon.Models;
 
 public class DungeonOptionsObject : BaseViewModel
 {

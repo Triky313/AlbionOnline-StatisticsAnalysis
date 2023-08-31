@@ -2,11 +2,9 @@
 using StatisticsAnalysisTool.Common.Comparer;
 using StatisticsAnalysisTool.Common.UserSettings;
 using StatisticsAnalysisTool.Dungeon.Models;
-using StatisticsAnalysisTool.Enumerations;
-using StatisticsAnalysisTool.Models;
 using StatisticsAnalysisTool.Models.TranslationModel;
-using StatisticsAnalysisTool.Network.Manager;
 using StatisticsAnalysisTool.ViewModels;
+using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Linq;
@@ -26,9 +24,95 @@ public class DungeonBindings : BaseViewModel
     private DungeonStats _stats = new();
     private GridLength _gridSplitterPosition;
     private DungeonsTranslation _translation = new();
-    private DungeonStatsFilterStruct _statsTimeSelection;
+    private DungeonStatsFilterStruct _selectedStatsTimeType;
     private DungeonStats _dungeonStatsSelection;
     private DungeonOptionsObject _dungeonOptionsObject = new();
+    private StatsTypeFilterStruct _selectedDungeonStatsType;
+
+    public DungeonBindings()
+    {
+        DungeonStatTimeTypes = new List<DungeonStatsFilterStruct>
+        {
+            new ()
+            {
+                Name = LanguageController.Translation("TODAY"),
+                StatTimeType = DungeonStatTimeType.Today
+            },
+            new ()
+            {
+                Name = LanguageController.Translation("LAST_7_DAYS"),
+                StatTimeType = DungeonStatTimeType.Last7Days
+            },
+            new ()
+            {
+                Name = LanguageController.Translation("LAST_30_DAYS"),
+                StatTimeType = DungeonStatTimeType.Last30Days
+            },
+            new ()
+            {
+                Name = LanguageController.Translation("LAST_365_DAYS"),
+                StatTimeType = DungeonStatTimeType.Last365Days
+            },
+            new ()
+            {
+                Name = LanguageController.Translation("TOTAL"),
+                StatTimeType = DungeonStatTimeType.Total
+            }
+        };
+
+        SelectedStatsTimeType = DungeonStatTimeTypes.FirstOrDefault(x => x.StatTimeType == DungeonStatTimeType.Total);
+
+        DungeonStatsType = new List<StatsTypeFilterStruct>
+        {
+            new ()
+            {
+                Name = LanguageController.Translation("SOLO_DUNGEON"),
+                StatsViewType = DungeonMode.Solo
+            },
+            new ()
+            {
+                Name = LanguageController.Translation("GROUP_DUNGEON"),
+                StatsViewType = DungeonMode.Standard
+            },
+            new ()
+            {
+                Name = LanguageController.Translation("AVALONIAN_DUNGEON"),
+                StatsViewType = DungeonMode.Avalon
+            },
+            new ()
+            {
+                Name = LanguageController.Translation("CORRUPTED"),
+                StatsViewType = DungeonMode.Corrupted
+            },
+            new ()
+            {
+                Name = LanguageController.Translation("HELLGATE"),
+                StatsViewType = DungeonMode.HellGate
+            },
+            new ()
+            {
+                Name = LanguageController.Translation("HCE_EXPEDITION"),
+                StatsViewType = DungeonMode.Expedition
+            },
+            new ()
+            {
+                Name = LanguageController.Translation("MISTS"),
+                StatsViewType = DungeonMode.Mists
+            },
+            new ()
+            {
+                Name = LanguageController.Translation("MISTS_DUNGEON"),
+                StatsViewType = DungeonMode.MistsDungeon
+            },
+            new ()
+            {
+                Name = LanguageController.Translation("ALL"),
+                StatsViewType = DungeonMode.Unknown
+            }
+        };
+
+        SelectedDungeonStatsType = DungeonStatsType.FirstOrDefault(x => x.StatsViewType == DungeonMode.Unknown);
+    }
 
     public void InitListCollectionView()
     {
@@ -113,50 +197,31 @@ public class DungeonBindings : BaseViewModel
         }
     }
 
-    public List<DungeonStatsFilterStruct> DungeonStatTimeTypes { get; } = new()
-    {
-        new DungeonStatsFilterStruct
-        {
-            Name = LanguageController.Translation("TODAY"),
-            DungeonStatTimeType = DungeonStatTimeType.Today
-        },
-        new DungeonStatsFilterStruct
-        {
-            Name = LanguageController.Translation("LAST_7_DAYS"),
-            DungeonStatTimeType = DungeonStatTimeType.Last7Days
-        },
-        new DungeonStatsFilterStruct
-        {
-            Name = LanguageController.Translation("LAST_30_DAYS"),
-            DungeonStatTimeType = DungeonStatTimeType.Last30Days
-        },
-        new DungeonStatsFilterStruct
-        {
-            Name = LanguageController.Translation("LAST_365_DAYS"),
-            DungeonStatTimeType = DungeonStatTimeType.Last365Days
-        },
-        new DungeonStatsFilterStruct
-        {
-            Name = LanguageController.Translation("TOTAL"),
-            DungeonStatTimeType = DungeonStatTimeType.Total
-        }
-    };
+    public List<DungeonStatsFilterStruct> DungeonStatTimeTypes { get; }
 
-    public DungeonStatsFilterStruct StatsTimeSelection
+    public DungeonStatsFilterStruct SelectedStatsTimeType
     {
-        get => _statsTimeSelection;
+        get => _selectedStatsTimeType;
         set
         {
-            _statsTimeSelection = value;
-            UpdateStats();
+            _selectedStatsTimeType = value;
+            _ = UpdateFilteredDungeonsAsync();
             OnPropertyChanged();
         }
     }
 
-    private void UpdateStats()
+    public List<StatsTypeFilterStruct> DungeonStatsType { get; }
+
+    public StatsTypeFilterStruct SelectedDungeonStatsType
     {
-        var trackingController = ServiceLocator.Resolve<TrackingController>();
-        trackingController.DungeonController.UpdateStatsUi();
+        get => _selectedDungeonStatsType;
+        set
+        {
+            _selectedDungeonStatsType = value;
+            _ = UpdateFilteredDungeonsAsync();
+            UpdateStatsView();
+            OnPropertyChanged();
+        }
     }
 
     public DungeonStats DungeonStatsSelection
@@ -236,7 +301,8 @@ public class DungeonBindings : BaseViewModel
 
         bool isLevelOkay = false;
         bool isTierOkay = false;
-        bool isTypeOkay = false;
+        bool isModeOkay = false;
+        bool isTimestampOkay = false;
 
         if (IsLevelOkay(obj))
         {
@@ -248,30 +314,17 @@ public class DungeonBindings : BaseViewModel
             isTierOkay = true;
         }
 
-        if (IsTypeOkay(obj))
+        if (IsModeOkay(obj))
         {
-            isTypeOkay = true;
+            isModeOkay = true;
         }
 
-        return isLevelOkay && isTierOkay && isTypeOkay;
-    }
-
-    private bool IsTypeOkay(object obj)
-    {
-        switch (obj)
+        if (IsTimestampOkay(obj))
         {
-            case RandomDungeonFragment {Mode: DungeonMode.Solo} when DungeonStatsFilter.SoloCheckbox == true:
-            case RandomDungeonFragment {Mode: DungeonMode.Standard} when DungeonStatsFilter.StandardCheckbox == true:
-            case RandomDungeonFragment {Mode: DungeonMode.Avalon} when DungeonStatsFilter.AvaCheckbox == true:
-            case CorruptedFragment when DungeonStatsFilter.CorruptedCheckbox == true:
-            case HellGateFragment when DungeonStatsFilter.HgCheckbox == true:
-            case ExpeditionFragment when DungeonStatsFilter.ExpeditionCheckbox == true:
-            case MistsFragment when DungeonStatsFilter.MistsCheckbox == true:
-            case MistsDungeonFragment when DungeonStatsFilter.MistsDungeonCheckbox == true:
-                return true;
-            default:
-                return false;
+            isTimestampOkay = true;
         }
+
+        return isLevelOkay && isTierOkay && isModeOkay && isTimestampOkay;
     }
 
     private bool IsTierOkay(object obj)
@@ -347,6 +400,127 @@ public class DungeonBindings : BaseViewModel
         }
 
         return false;
+    }
+
+    private bool IsTimestampOkay(object obj)
+    {
+        if (obj is not DungeonBaseFragment dungeon)
+        {
+            return false;
+        }
+
+        if (SelectedStatsTimeType.StatTimeType == DungeonStatTimeType.Total)
+        {
+            return true;
+        }
+
+        if (SelectedStatsTimeType.StatTimeType == DungeonStatTimeType.Last365Days && dungeon.EnterDungeonFirstTime > DateTime.UtcNow.AddDays(-365))
+        {
+            return true;
+        }
+
+        if (SelectedStatsTimeType.StatTimeType == DungeonStatTimeType.Last30Days && dungeon.EnterDungeonFirstTime > DateTime.UtcNow.AddDays(-30))
+        {
+            return true;
+        }
+
+        if (SelectedStatsTimeType.StatTimeType == DungeonStatTimeType.Last7Days && dungeon.EnterDungeonFirstTime > DateTime.UtcNow.AddDays(-7))
+        {
+            return true;
+        }
+
+        if (SelectedStatsTimeType.StatTimeType == DungeonStatTimeType.Today && dungeon.EnterDungeonFirstTime.Date == DateTime.UtcNow.Date)
+        {
+            return true;
+        }
+
+        if (SelectedStatsTimeType.StatTimeType == DungeonStatTimeType.Unknown)
+        {
+            return true;
+        }
+
+        return false;
+    }
+
+    private bool IsModeOkay(object obj)
+    {
+        if (obj is not DungeonBaseFragment dungeon)
+        {
+            return false;
+        }
+
+        if (SelectedDungeonStatsType.StatsViewType == DungeonMode.Solo && dungeon.Mode == DungeonMode.Solo)
+        {
+            return true;
+        }
+
+        if (SelectedDungeonStatsType.StatsViewType == DungeonMode.Standard && dungeon.Mode == DungeonMode.Standard)
+        {
+            return true;
+        }
+
+        if (SelectedDungeonStatsType.StatsViewType == DungeonMode.Avalon && dungeon.Mode == DungeonMode.Avalon)
+        {
+            return true;
+        }
+
+        if (SelectedDungeonStatsType.StatsViewType == DungeonMode.Corrupted && dungeon.Mode == DungeonMode.Corrupted)
+        {
+            return true;
+        }
+
+        if (SelectedDungeonStatsType.StatsViewType == DungeonMode.HellGate && dungeon.Mode == DungeonMode.HellGate)
+        {
+            return true;
+        }
+
+        if (SelectedDungeonStatsType.StatsViewType == DungeonMode.Expedition && dungeon.Mode == DungeonMode.Expedition)
+        {
+            return true;
+        }
+
+        if (SelectedDungeonStatsType.StatsViewType == DungeonMode.Mists && dungeon.Mode == DungeonMode.Mists)
+        {
+            return true;
+        }
+
+        if (SelectedDungeonStatsType.StatsViewType == DungeonMode.MistsDungeon && dungeon.Mode == DungeonMode.MistsDungeon)
+        {
+            return true;
+        }
+
+        if (SelectedDungeonStatsType.StatsViewType == DungeonMode.Unknown)
+        {
+            return true;
+        }
+
+        return false;
+    }
+
+    private void UpdateStatsView()
+    {
+        SetAllStatViewsToCollapsed();
+
+        if (SelectedDungeonStatsType.StatsViewType == DungeonMode.Mists)
+        {
+            Stats.StatsMists.Visibility = Visibility.Visible;
+            return;
+        }
+
+        if (SelectedDungeonStatsType.StatsViewType == DungeonMode.Unknown)
+        {
+            SetAllStatViewsToVisible();
+        }
+    }
+
+    private void SetAllStatViewsToCollapsed()
+    {
+        Stats.StatsMists.Visibility = Visibility.Collapsed;
+    }
+
+    private void SetAllStatViewsToVisible()
+    {
+        Stats.StatsMists.Visibility = Visibility.Visible;
     }
 
     #endregion

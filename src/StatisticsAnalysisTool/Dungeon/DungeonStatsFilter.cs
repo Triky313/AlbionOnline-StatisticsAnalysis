@@ -1,11 +1,9 @@
 ﻿using StatisticsAnalysisTool.Common;
-using StatisticsAnalysisTool.Dungeon;
 using StatisticsAnalysisTool.Enumerations;
 using StatisticsAnalysisTool.ViewModels;
 using System.Collections.Generic;
-using System.Threading.Tasks;
 
-namespace StatisticsAnalysisTool.Models;
+namespace StatisticsAnalysisTool.Dungeon;
 
 public class DungeonStatsFilter : BaseViewModel
 {
@@ -198,7 +196,7 @@ public class DungeonStatsFilter : BaseViewModel
         }
         else
         {
-           RemoveDungeonMode(dungeonMode);
+            RemoveDungeonMode(dungeonMode);
         }
 
         await _dungeonBindings.UpdateFilteredDungeonsAsync();

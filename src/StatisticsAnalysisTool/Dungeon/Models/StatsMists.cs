@@ -1,5 +1,6 @@
 ﻿using StatisticsAnalysisTool.Common;
 using StatisticsAnalysisTool.ViewModels;
+using System.Windows;
 
 namespace StatisticsAnalysisTool.Dungeon.Models;
 
@@ -31,6 +32,17 @@ public class StatsMists : BaseViewModel
     private double _lootInSilver;
     private double _lootInSilverPerHour;
     private double _lootInSilverAverage;
+    private Visibility _visibility = Visibility.Collapsed;
+
+    public Visibility Visibility
+    {
+        get => _visibility;
+        set
+        {
+            _visibility = value;
+            OnPropertyChanged();
+        }
+    }
 
     public int Entered
     {
@@ -119,7 +131,7 @@ public class StatsMists : BaseViewModel
         {
             _fame = value;
             FameAverage = (_fame / Entered).ToShortNumber(99999999.99);
-            FamePerHour = value.GetValuePerHour(_runTimeTotal);
+            FamePerHour = value.GetValuePerHour(RunTimeTotal);
             OnPropertyChanged();
         }
     }
@@ -131,7 +143,7 @@ public class StatsMists : BaseViewModel
         {
             _reSpec = value;
             ReSpecAverage = (_reSpec / Entered).ToShortNumber(99999999.99);
-            ReSpecPerHour = value.GetValuePerHour(_runTimeTotal);
+            ReSpecPerHour = value.GetValuePerHour(RunTimeTotal);
             OnPropertyChanged();
         }
     }
@@ -304,5 +316,11 @@ public class StatsMists : BaseViewModel
         }
     }
 
+    public static string TranslationAverageAbbreviation => LanguageController.Translation("AVERAGE_ABBREVIATION");
+    public static string TranslationHourAbbreviation => LanguageController.Translation("HOUR_ABBREVIATION");
     public static string TranslationMists => LanguageController.Translation("MISTS");
+    public static string TranslationMostValuableLoot => LanguageController.Translation("MOST_VALUABLE_LOOT");
+    public static string TranslationTotal => LanguageController.Translation("TOTAL");
+    public static string TranslationPerHour => LanguageController.Translation("PER_HOUR");
+    public static string TranslationAverage => LanguageController.Translation("AVERAGE");
 }

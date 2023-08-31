@@ -3,6 +3,7 @@ using StatisticsAnalysisTool.Common;
 using StatisticsAnalysisTool.ViewModels;
 using System.Collections.Generic;
 using System.Linq;
+using System.Windows;
 
 namespace StatisticsAnalysisTool.Dungeon.Models;
 
@@ -51,19 +52,26 @@ public class DungeonStats : BaseViewModel
 
     public void UpdateMistsStats(List<DungeonBaseFragment> dungeons)
     {
-        StatsMists.Entered = dungeons
-            .Count(x => x is MistsFragment);
+        var mists = dungeons?.Where(x => x is MistsFragment).Cast<MistsFragment>().ToList() ?? new List<MistsFragment>();
 
-        StatsMists.EnteredCommon = dungeons
-            .Count(x => x is MistsFragment { Rarity: MistsRarity.Common });
-        StatsMists.EnteredUncommon = dungeons
-            .Count(x => x is MistsFragment { Rarity: MistsRarity.Uncommon });
-        StatsMists.EnteredRare = dungeons
-            .Count(x => x is MistsFragment { Rarity: MistsRarity.Rare });
-        StatsMists.EnteredEpic = dungeons
-            .Count(x => x is MistsFragment { Rarity: MistsRarity.Epic });
-        StatsMists.EnteredLegendary = dungeons
-            .Count(x => x is MistsFragment { Rarity: MistsRarity.Legendary });
+        StatsMists.RunTimeTotal = mists.Sum(x => x.TotalRunTimeInSeconds);
+
+        StatsMists.Entered = mists.Count;
+
+        StatsMists.EnteredCommon = mists.Count(x => x.Rarity == MistsRarity.Common);
+        StatsMists.EnteredUncommon = mists.Count(x => x.Rarity == MistsRarity.Uncommon);
+        StatsMists.EnteredRare = mists.Count(x => x.Rarity == MistsRarity.Rare);
+        StatsMists.EnteredEpic = mists.Count(x => x.Rarity == MistsRarity.Epic);
+        StatsMists.EnteredLegendary = mists.Count(x => x.Rarity == MistsRarity.Legendary);
+
+        StatsMists.Fame = mists.Sum(x => x.Fame);
+        StatsMists.ReSpec = mists.Sum(x => x.ReSpec);
+        StatsMists.Silver = mists.Sum(x => x.Silver);
+        StatsMists.Might = mists.Sum(x => x.Might);
+        StatsMists.Favor = mists.Sum(x => x.Favor);
+        
+        StatsMists.LootInSilver = mists.SelectMany(x => x.Loot).Sum(x => FixPoint.FromInternalValue(x.EstimatedMarketValueInternal).DoubleValue);
+        StatsMists.MostValuableLoot = mists.SelectMany(x => x.Loot).MaxBy(x => x?.EstimatedMarketValueInternal);
     }
 
     public StatsMists StatsMists

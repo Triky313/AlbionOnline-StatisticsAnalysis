@@ -773,4 +773,9 @@
 	<translation name="CLUSTER_TYPE">Clustertyp</translation>
 	<translation name="LOCKED_CHEST">Verschlossene Truhe</translation>
 	<translation name="RUN_TIME">Laufzeit</translation>
+	<translation name="AVERAGE_ABBREVIATION">Durchschn.</translation>
+	<translation name="HOUR_ABBREVIATION">Std</translation>
+	<translation name="AVERAGE">Durchschnitt</translation>
+	<translation name="PER_HOUR">Pro Stunde</translation>
+	<translation name="TOTAL">Gesamt</translation>
 </translations>

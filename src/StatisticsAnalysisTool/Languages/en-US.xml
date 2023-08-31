@@ -773,4 +773,9 @@
 	<translation name="CLUSTER_TYPE">Cluster Type</translation>
 	<translation name="LOCKED_CHEST">Locked chest</translation>
 	<translation name="RUN_TIME">Run time</translation>
+	<translation name="AVERAGE_ABBREVIATION">Avg.</translation>
+	<translation name="HOUR_ABBREVIATION">hr</translation>
+	<translation name="AVERAGE">Average</translation>
+	<translation name="PER_HOUR">Per hour</translation>
+	<translation name="TOTAL">Total</translation>
 </translations>
