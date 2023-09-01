@@ -1,44 +1,17 @@
 ﻿using StatisticsAnalysisTool.Cluster;
 using StatisticsAnalysisTool.Common;
+using StatisticsAnalysisTool.Enumerations;
 using StatisticsAnalysisTool.ViewModels;
 using System.Collections.Generic;
 using System.Linq;
-using System.Windows;
 
 namespace StatisticsAnalysisTool.Dungeon.Models;
 
 public class DungeonStats : BaseViewModel
 {
-    private int _enteredDungeon;
-    private int _openedLegendaryChests;
-    private int _openedRareChests;
-    private int _openedStandardChests;
-    private int _openedUncommonChests;
-    private int _openedLegendaryBookChests;
-    private int _openedRareBookChests;
-    private int _openedStandardBookChests;
-    private int _openedUncommonBookChests;
-    private double _fame;
-    private double _reSpec;
-    private double _silver;
-    private double _might;
-    private double _favor;
-    private double _fameAverage;
-    private double _reSpecAverage;
-    private double _silverAverage;
-    private double _mightAverage;
-    private double _favorAverage;
-    private double _famePerHour;
-    private double _reSpecPerHour;
-    private double _silverPerHour;
-    private double _mightPerHour;
-    private double _favorPerHour;
-    private int _dungeonRunTimeTotal;
-    private Loot _bestLootedItem;
-    private double _lootInSilver;
-    private double _lootInSilverPerHour;
-    private double _lootInSilverAverage;
     private StatsMists _statsMists = new();
+    private StatsSolo _statsSolo = new();
+    private StatsStandard _statsStandard = new();
 
     public void Set(IEnumerable<DungeonBaseFragment> dungeons)
     {
@@ -48,6 +21,8 @@ public class DungeonStats : BaseViewModel
     public void Set(List<DungeonBaseFragment> dungeons)
     {
         UpdateMistsStats(dungeons);
+        UpdateSoloStats(dungeons);
+        UpdateStandardStats(dungeons);
     }
 
     public void UpdateMistsStats(List<DungeonBaseFragment> dungeons)
@@ -69,9 +44,73 @@ public class DungeonStats : BaseViewModel
         StatsMists.Silver = mists.Sum(x => x.Silver);
         StatsMists.Might = mists.Sum(x => x.Might);
         StatsMists.Favor = mists.Sum(x => x.Favor);
-        
+
         StatsMists.LootInSilver = mists.SelectMany(x => x.Loot).Sum(x => FixPoint.FromInternalValue(x.EstimatedMarketValueInternal).DoubleValue);
         StatsMists.MostValuableLoot = mists.SelectMany(x => x.Loot).MaxBy(x => x?.EstimatedMarketValueInternal);
+    }
+
+    public void UpdateSoloStats(List<DungeonBaseFragment> dungeons)
+    {
+        var soloDun = dungeons?.Where(x => x is RandomDungeonFragment { Mode: DungeonMode.Solo }).Cast<RandomDungeonFragment>().ToList() ?? new List<RandomDungeonFragment>();
+
+        StatsSolo.RunTimeTotal = soloDun.Sum(x => x.TotalRunTimeInSeconds);
+
+        StatsSolo.Entered = soloDun.Count;
+        
+        StatsSolo.EnteredUncommon = soloDun.Count(x => x.Level == 1);
+        StatsSolo.EnteredRare = soloDun.Count(x => x.Level == 2);
+        StatsSolo.EnteredEpic = soloDun.Count(x => x.Level == 3);
+        StatsSolo.EnteredLegendary = soloDun.Count(x => x.Level == 4);
+
+        StatsSolo.OpenedStandardChests = soloDun.Sum(x => x.Events.Count(eventObject => eventObject.Rarity == TreasureRarity.Common && eventObject.Type == EventType.Chest));
+        StatsSolo.OpenedUncommonChests = soloDun.Sum(x => x.Events.Count(eventObject => eventObject.Rarity == TreasureRarity.Uncommon && eventObject.Type == EventType.Chest));
+        StatsSolo.OpenedRareChests = soloDun.Sum(x => x.Events.Count(eventObject => eventObject.Rarity == TreasureRarity.Rare && eventObject.Type == EventType.Chest));
+        StatsSolo.OpenedLegendaryChests = soloDun.Sum(x => x.Events.Count(eventObject => eventObject.Rarity == TreasureRarity.Legendary && eventObject.Type == EventType.Chest));
+
+        StatsSolo.OpenedStandardBookChests = soloDun.Sum(x => x.Events.Count(eventObject => eventObject.Rarity == TreasureRarity.Common && eventObject.Type == EventType.BookChest));
+        StatsSolo.OpenedUncommonBookChests = soloDun.Sum(x => x.Events.Count(eventObject => eventObject.Rarity == TreasureRarity.Uncommon && eventObject.Type == EventType.BookChest));
+        StatsSolo.OpenedRareBookChests = soloDun.Sum(x => x.Events.Count(eventObject => eventObject.Rarity == TreasureRarity.Rare && eventObject.Type == EventType.BookChest));
+
+        StatsSolo.Fame = soloDun.Sum(x => x.Fame);
+        StatsSolo.ReSpec = soloDun.Sum(x => x.ReSpec);
+        StatsSolo.Silver = soloDun.Sum(x => x.Silver);
+        StatsSolo.Might = soloDun.Sum(x => x.Might);
+        StatsSolo.Favor = soloDun.Sum(x => x.Favor);
+
+        StatsSolo.LootInSilver = soloDun.SelectMany(x => x.Loot).Sum(x => FixPoint.FromInternalValue(x.EstimatedMarketValueInternal).DoubleValue);
+        StatsSolo.MostValuableLoot = soloDun.SelectMany(x => x.Loot).MaxBy(x => x?.EstimatedMarketValueInternal);
+    }
+
+    public void UpdateStandardStats(List<DungeonBaseFragment> dungeons)
+    {
+        var stdDun = dungeons?.Where(x => x is RandomDungeonFragment { Mode: DungeonMode.Standard }).Cast<RandomDungeonFragment>().ToList() ?? new List<RandomDungeonFragment>();
+
+        StatsStandard.RunTimeTotal = stdDun.Sum(x => x.TotalRunTimeInSeconds);
+
+        StatsStandard.Entered = stdDun.Count;
+
+        StatsStandard.EnteredUncommon = stdDun.Count(x => x.Level == 1);
+        StatsStandard.EnteredRare = stdDun.Count(x => x.Level == 2);
+        StatsStandard.EnteredEpic = stdDun.Count(x => x.Level == 3);
+        StatsStandard.EnteredLegendary = stdDun.Count(x => x.Level == 4);
+
+        StatsStandard.OpenedStandardChests = stdDun.Sum(x => x.Events.Count(eventObject => eventObject.Rarity == TreasureRarity.Common && eventObject.Type == EventType.Chest));
+        StatsStandard.OpenedUncommonChests = stdDun.Sum(x => x.Events.Count(eventObject => eventObject.Rarity == TreasureRarity.Uncommon && eventObject.Type == EventType.Chest));
+        StatsStandard.OpenedRareChests = stdDun.Sum(x => x.Events.Count(eventObject => eventObject.Rarity == TreasureRarity.Rare && eventObject.Type == EventType.Chest));
+        StatsStandard.OpenedLegendaryChests = stdDun.Sum(x => x.Events.Count(eventObject => eventObject.Rarity == TreasureRarity.Legendary && eventObject.Type == EventType.Chest));
+
+        StatsStandard.OpenedStandardBookChests = stdDun.Sum(x => x.Events.Count(eventObject => eventObject.Rarity == TreasureRarity.Common && eventObject.Type == EventType.BookChest));
+        StatsStandard.OpenedUncommonBookChests = stdDun.Sum(x => x.Events.Count(eventObject => eventObject.Rarity == TreasureRarity.Uncommon && eventObject.Type == EventType.BookChest));
+        StatsStandard.OpenedRareBookChests = stdDun.Sum(x => x.Events.Count(eventObject => eventObject.Rarity == TreasureRarity.Rare && eventObject.Type == EventType.BookChest));
+
+        StatsStandard.Fame = stdDun.Sum(x => x.Fame);
+        StatsStandard.ReSpec = stdDun.Sum(x => x.ReSpec);
+        StatsStandard.Silver = stdDun.Sum(x => x.Silver);
+        StatsStandard.Might = stdDun.Sum(x => x.Might);
+        StatsStandard.Favor = stdDun.Sum(x => x.Favor);
+
+        StatsStandard.LootInSilver = stdDun.SelectMany(x => x.Loot).Sum(x => FixPoint.FromInternalValue(x.EstimatedMarketValueInternal).DoubleValue);
+        StatsStandard.MostValuableLoot = stdDun.SelectMany(x => x.Loot).MaxBy(x => x?.EstimatedMarketValueInternal);
     }
 
     public StatsMists StatsMists
@@ -84,304 +123,22 @@ public class DungeonStats : BaseViewModel
         }
     }
 
-    public int EnteredDungeon
+    public StatsSolo StatsSolo
     {
-        get => _enteredDungeon;
+        get => _statsSolo;
         set
         {
-            _enteredDungeon = value;
+            _statsSolo = value;
             OnPropertyChanged();
         }
     }
 
-    public int DungeonRunTimeTotal
+    public StatsStandard StatsStandard
     {
-        get => _dungeonRunTimeTotal;
+        get => _statsStandard;
         set
         {
-            _dungeonRunTimeTotal = value;
-            OnPropertyChanged();
-        }
-    }
-
-    public int OpenedStandardChests
-    {
-        get => _openedStandardChests;
-        set
-        {
-            _openedStandardChests = value;
-            OnPropertyChanged();
-        }
-    }
-
-    public int OpenedUncommonChests
-    {
-        get => _openedUncommonChests;
-        set
-        {
-            _openedUncommonChests = value;
-            OnPropertyChanged();
-        }
-    }
-
-    public int OpenedRareChests
-    {
-        get => _openedRareChests;
-        set
-        {
-            _openedRareChests = value;
-            OnPropertyChanged();
-        }
-    }
-
-    public int OpenedLegendaryChests
-    {
-        get => _openedLegendaryChests;
-        set
-        {
-            _openedLegendaryChests = value;
-            OnPropertyChanged();
-        }
-    }
-
-    public int OpenedStandardBookChests
-    {
-        get => _openedStandardBookChests;
-        set
-        {
-            _openedStandardBookChests = value;
-            OnPropertyChanged();
-        }
-    }
-
-    public int OpenedUncommonBookChests
-    {
-        get => _openedUncommonBookChests;
-        set
-        {
-            _openedUncommonBookChests = value;
-            OnPropertyChanged();
-        }
-    }
-
-    public int OpenedRareBookChests
-    {
-        get => _openedRareBookChests;
-        set
-        {
-            _openedRareBookChests = value;
-            OnPropertyChanged();
-        }
-    }
-
-    public int OpenedLegendaryBookChests
-    {
-        get => _openedLegendaryBookChests;
-        set
-        {
-            _openedLegendaryBookChests = value;
-            OnPropertyChanged();
-        }
-    }
-
-    public double Fame
-    {
-        get => _fame;
-        set
-        {
-            _fame = value;
-            FameAverage = (_fame / EnteredDungeon).ToShortNumber(99999999.99);
-            FamePerHour = value.GetValuePerHour(_dungeonRunTimeTotal);
-            OnPropertyChanged();
-        }
-    }
-
-    public double ReSpec
-    {
-        get => _reSpec;
-        set
-        {
-            _reSpec = value;
-            ReSpecAverage = (_reSpec / EnteredDungeon).ToShortNumber(99999999.99);
-            ReSpecPerHour = value.GetValuePerHour(_dungeonRunTimeTotal);
-            OnPropertyChanged();
-        }
-    }
-
-    public double Silver
-    {
-        get => _silver;
-        set
-        {
-            _silver = value;
-            SilverAverage = (_silver / EnteredDungeon).ToShortNumber(99999999.99);
-            SilverPerHour = value.GetValuePerHour(_dungeonRunTimeTotal);
-            OnPropertyChanged();
-        }
-    }
-
-    public double Might
-    {
-        get => _might;
-        set
-        {
-            _might = value;
-            MightAverage = (_might / EnteredDungeon).ToShortNumber(99999999.99);
-            MightPerHour = value.GetValuePerHour(_dungeonRunTimeTotal);
-            OnPropertyChanged();
-        }
-    }
-
-    public double Favor
-    {
-        get => _favor;
-        set
-        {
-            _favor = value;
-            FavorAverage = (_favor / EnteredDungeon).ToShortNumber(99999999.99);
-            FavorPerHour = value.GetValuePerHour(_dungeonRunTimeTotal);
-            OnPropertyChanged();
-        }
-    }
-
-    public double LootInSilver
-    {
-        get => _lootInSilver;
-        set
-        {
-            _lootInSilver = value;
-            LootInSilverAverage = (_lootInSilver / EnteredDungeon).ToShortNumber(99999999.99);
-            LootInSilverPerHour = value.GetValuePerHour(_dungeonRunTimeTotal);
-            OnPropertyChanged();
-        }
-    }
-
-    public double FamePerHour
-    {
-        get => _famePerHour;
-        set
-        {
-            _famePerHour = value;
-            OnPropertyChanged();
-        }
-    }
-
-    public double ReSpecPerHour
-    {
-        get => _reSpecPerHour;
-        set
-        {
-            _reSpecPerHour = value;
-            OnPropertyChanged();
-        }
-    }
-
-    public double SilverPerHour
-    {
-        get => _silverPerHour;
-        set
-        {
-            _silverPerHour = value;
-            OnPropertyChanged();
-        }
-    }
-
-    public double MightPerHour
-    {
-        get => _mightPerHour;
-        set
-        {
-            _mightPerHour = value;
-            OnPropertyChanged();
-        }
-    }
-
-    public double FavorPerHour
-    {
-        get => _favorPerHour;
-        set
-        {
-            _favorPerHour = value;
-            OnPropertyChanged();
-        }
-    }
-
-    public double FameAverage
-    {
-        get => _fameAverage;
-        set
-        {
-            _fameAverage = value;
-            OnPropertyChanged();
-        }
-    }
-
-    public double ReSpecAverage
-    {
-        get => _reSpecAverage;
-        set
-        {
-            _reSpecAverage = value;
-            OnPropertyChanged();
-        }
-    }
-
-    public double SilverAverage
-    {
-        get => _silverAverage;
-        set
-        {
-            _silverAverage = value;
-            OnPropertyChanged();
-        }
-    }
-
-    public double MightAverage
-    {
-        get => _mightAverage;
-        set
-        {
-            _mightAverage = value;
-            OnPropertyChanged();
-        }
-    }
-
-    public double FavorAverage
-    {
-        get => _favorAverage;
-        set
-        {
-            _favorAverage = value;
-            OnPropertyChanged();
-        }
-    }
-
-    public Loot BestLootedItem
-    {
-        get => _bestLootedItem;
-        set
-        {
-            _bestLootedItem = value;
-            OnPropertyChanged();
-        }
-    }
-
-    public double LootInSilverPerHour
-    {
-        get => _lootInSilverPerHour;
-        set
-        {
-            _lootInSilverPerHour = value;
-            OnPropertyChanged();
-        }
-    }
-
-    public double LootInSilverAverage
-    {
-        get => _lootInSilverAverage;
-        set
-        {
-            _lootInSilverAverage = value;
+            _statsStandard = value;
             OnPropertyChanged();
         }
     }

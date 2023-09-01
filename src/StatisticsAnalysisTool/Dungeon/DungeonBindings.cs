@@ -103,15 +103,10 @@ public class DungeonBindings : BaseViewModel
             {
                 Name = LanguageController.Translation("MISTS_DUNGEON"),
                 StatsViewType = DungeonMode.MistsDungeon
-            },
-            new ()
-            {
-                Name = LanguageController.Translation("ALL"),
-                StatsViewType = DungeonMode.Unknown
             }
         };
 
-        SelectedDungeonStatsType = DungeonStatsType.FirstOrDefault(x => x.StatsViewType == DungeonMode.Unknown);
+        SelectedDungeonStatsType = DungeonStatsType.FirstOrDefault(x => x.StatsViewType == DungeonMode.Solo);
     }
 
     public void InitListCollectionView()
@@ -497,6 +492,8 @@ public class DungeonBindings : BaseViewModel
         return false;
     }
 
+    #endregion
+
     private void UpdateStatsView()
     {
         SetAllStatViewsToCollapsed();
@@ -507,21 +504,23 @@ public class DungeonBindings : BaseViewModel
             return;
         }
 
-        if (SelectedDungeonStatsType.StatsViewType == DungeonMode.Unknown)
+        if (SelectedDungeonStatsType.StatsViewType == DungeonMode.Solo)
         {
-            SetAllStatViewsToVisible();
+            Stats.StatsSolo.Visibility = Visibility.Visible;
+            return;
+        }
+
+        if (SelectedDungeonStatsType.StatsViewType == DungeonMode.Standard)
+        {
+            Stats.StatsStandard.Visibility = Visibility.Visible;
+            return;
         }
     }
 
     private void SetAllStatViewsToCollapsed()
     {
         Stats.StatsMists.Visibility = Visibility.Collapsed;
+        Stats.StatsSolo.Visibility = Visibility.Collapsed;
+        Stats.StatsStandard.Visibility = Visibility.Collapsed;
     }
-
-    private void SetAllStatViewsToVisible()
-    {
-        Stats.StatsMists.Visibility = Visibility.Visible;
-    }
-
-    #endregion
 }

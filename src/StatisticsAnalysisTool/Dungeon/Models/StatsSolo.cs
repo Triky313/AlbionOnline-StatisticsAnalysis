@@ -4,12 +4,11 @@ using System.Windows;
 
 namespace StatisticsAnalysisTool.Dungeon.Models;
 
-public class StatsMists : BaseViewModel
+public class StatsSolo : BaseViewModel
 {
     private int _entered;
     private int _enteredEpic;
     private int _enteredRare;
-    private int _enteredCommon;
     private int _enteredUncommon;
     private int _enteredLegendary;
     private Loot _mostValuableLoot;
@@ -33,6 +32,13 @@ public class StatsMists : BaseViewModel
     private double _lootInSilverPerHour;
     private double _lootInSilverAverage;
     private Visibility _visibility = Visibility.Collapsed;
+    private int _openedStandardChests;
+    private int _openedUncommonChests;
+    private int _openedRareChests;
+    private int _openedLegendaryChests;
+    private int _openedStandardBookChests;
+    private int _openedUncommonBookChests;
+    private int _openedRareBookChests;
 
     public Visibility Visibility
     {
@@ -60,16 +66,6 @@ public class StatsMists : BaseViewModel
         set
         {
             _runTimeTotal = value;
-            OnPropertyChanged();
-        }
-    }
-
-    public int EnteredCommon
-    {
-        get => _enteredCommon;
-        set
-        {
-            _enteredCommon = value;
             OnPropertyChanged();
         }
     }
@@ -316,12 +312,91 @@ public class StatsMists : BaseViewModel
         }
     }
 
+    public int OpenedStandardChests
+    {
+        get => _openedStandardChests;
+        set
+        {
+            _openedStandardChests = value;
+            OnPropertyChanged();
+        }
+    }
+
+    public int OpenedUncommonChests
+    {
+        get => _openedUncommonChests;
+        set
+        {
+            _openedUncommonChests = value;
+            OnPropertyChanged();
+        }
+    }
+
+    public int OpenedRareChests
+    {
+        get => _openedRareChests;
+        set
+        {
+            _openedRareChests = value;
+            OnPropertyChanged();
+        }
+    }
+
+    public int OpenedLegendaryChests
+    {
+        get => _openedLegendaryChests;
+        set
+        {
+            _openedLegendaryChests = value;
+            OnPropertyChanged();
+        }
+    }
+
+    public int OpenedStandardBookChests
+    {
+        get => _openedStandardBookChests;
+        set
+        {
+            _openedStandardBookChests = value;
+            OnPropertyChanged();
+        }
+    }
+
+    public int OpenedUncommonBookChests
+    {
+        get => _openedUncommonBookChests;
+        set
+        {
+            _openedUncommonBookChests = value;
+            OnPropertyChanged();
+        }
+    }
+
+    public int OpenedRareBookChests
+    {
+        get => _openedRareBookChests;
+        set
+        {
+            _openedRareBookChests = value;
+            OnPropertyChanged();
+        }
+    }
+
     public static string TranslationAverageAbbreviation => LanguageController.Translation("AVERAGE_ABBREVIATION");
     public static string TranslationHourAbbreviation => LanguageController.Translation("HOUR_ABBREVIATION");
-    public static string TranslationMists => LanguageController.Translation("MISTS");
+    public static string TranslationSoloDungeons => LanguageController.Translation("SOLO_DUNGEONS");
     public static string TranslationMostValuableLoot => LanguageController.Translation("MOST_VALUABLE_LOOT");
     public static string TranslationTotal => LanguageController.Translation("TOTAL");
     public static string TranslationPerHour => LanguageController.Translation("PER_HOUR");
     public static string TranslationAverage => LanguageController.Translation("AVERAGE");
+    public static string TranslationAll => LanguageController.Translation("ALL");
+    public static string TranslationEnteredDungeons => LanguageController.Translation("ENTERED_DUNGEONS");
+    public static string TranslationChestStats => LanguageController.Translation("CHEST_STATS");
+    public static string TranslationOpenedStandardChests => LanguageController.Translation("STANDARD_CHESTS");
+    public static string TranslationOpenedUncommonChests => LanguageController.Translation("UNCOMMON_CHESTS");
+    public static string TranslationOpenedRareChests => LanguageController.Translation("RARE_CHESTS");
+    public static string TranslationOpenedLegendaryChests => LanguageController.Translation("LEGENDARY_CHESTS");
+    public static string TranslationBookChestStats => LanguageController.Translation("BOOK_CHEST_STATS");
     public static string TranslationType => LanguageController.Translation("TYPE");
+    public static string TranslationNumberOfDungeons => LanguageController.Translation("NUMBER_OF_DUNGEONS");
 }

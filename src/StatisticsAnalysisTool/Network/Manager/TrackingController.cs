@@ -111,8 +111,6 @@ public class TrackingController : ITrackingController
             VaultController.LoadFromFileAsync()
         );
 
-        DungeonController?.UpdateStatsUi();
-
         ClusterController?.RegisterEvents();
         LootController?.RegisterEvents();
         TreasureController?.RegisterEvents();
