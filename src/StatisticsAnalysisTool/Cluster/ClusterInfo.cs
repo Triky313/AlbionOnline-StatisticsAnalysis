@@ -353,7 +353,7 @@ public class ClusterInfo
         return mapType switch
         {
             MapType.RandomDungeon => LanguageController.Translation("DUNGEON"),
-            MapType.HellGate => LanguageController.Translation("HELL_GATE"),
+            MapType.HellGate => LanguageController.Translation("HELLGATE"),
             MapType.CorruptedDungeon => LanguageController.Translation("CORRUPTED_DUNGEON"),
             MapType.Island => LanguageController.Translation("ISLAND"),
             MapType.Hideout => LanguageController.Translation("HIDEOUT"),
