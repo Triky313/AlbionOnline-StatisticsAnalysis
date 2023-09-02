@@ -71,7 +71,7 @@
 	<translation name="GVG_KILLS">GVG Tötungen</translation>
 	<translation name="GVG_WON">GVG Siege</translation>
 	<translation name="CRYSTAL_LEAGUE">Kristallliga</translation>
-	<translation name="TOTAL">Total</translation>
+	<translation name="TOTAL">Gesamt</translation>
 	<translation name="ROYAL">Royal</translation>
 	<translation name="OUTLANDS">Outlands</translation>
 	<translation name="HELLGATE">Hellgate</translation>
@@ -753,7 +753,6 @@
 	<translation name="HOUR_ABBREVIATION">Std</translation>
 	<translation name="AVERAGE">Durchschnitt</translation>
 	<translation name="PER_HOUR">Pro Stunde</translation>
-	<translation name="TOTAL">Gesamt</translation>
 	<translation name="TYPE">Type</translation>
 	<translation name="HCE_EXPEDITION">HCE (Expedition)</translation>
 	<translation name="NUMBER_OF_DUNGEONS">Anzahl Dungeons</translation>

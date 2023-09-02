@@ -71,7 +71,7 @@
 	<translation name="GVG_KILLS">Убийств в GVG</translation>
 	<translation name="GVG_WON">Побед в GVG</translation>
 	<translation name="CRYSTAL_LEAGUE">Кристальная лига</translation>
-	<translation name="TOTAL">Всего</translation>
+	<translation name="TOTAL">Всё время</translation>
 	<translation name="ROYAL">Королевские</translation>
 	<translation name="OUTLANDS">Черные</translation>
 	<translation name="HELLGATE">Врата Ада</translation>
@@ -396,7 +396,7 @@
 	<translation name="SURE_YOU_WANT_TO_REMOVE_DUNGEON">Вы уверены, что хотите удалить подземелье?</translation>
 	<translation name="RESPEC">Свободка</translation>
 	<translation name="SOLO_DUNGEON">Одиночное подземелье</translation>
-	<translation name="STANDARD_DUNGEON">Стандартное подземелье</translation>
+	<translation name="STANDARD_DUNGEON">Групповое подземелье</translation>
 	<translation name="AVA">Авалон</translation>
 	<translation name="AVALONIAN_DUNGEON">Авалонское подземелье</translation>
 	<translation name="HG">ХГ</translation>
@@ -567,7 +567,7 @@
 	<translation name="LOCATION">Локация</translation>
 	<translation name="STORAGE_NAME">Название вкладки</translation>
 	<translation name="SELECT_DESELECT_ALL">Выделить все / Снять выделение</translation>
-	<translation name="LOOTED_CHESTS">Обысканные сундуки</translation>
+	<translation name="LOOTED_CHESTS">Открытые сундуки</translation>
 	<translation name="STATIC_DUNGEONS">Статики</translation>
 	<translation name="AVALONIAN_ROADS">Авалонские пути</translation>
 	<translation name="HELLGATES">Врата Ада</translation>
@@ -591,10 +591,10 @@
 	<translation name="SURE_YOU_WANT_TO_RESET_DUNGEONS">Вы уверены, что хотите удалить подземелья, пройденные сегодня?</translation>
 	<translation name="DELETE_AND_RESET">Удаление и сброс</translation>
 	<translation name="DUNGEON_STATS">Статистика подземелий</translation>
-	<translation name="CHEST_STATS">Открыто сундуков с лутом</translation>
+	<translation name="CHEST_STATS">Сундуки</translation>
 	<translation name="EST_MARKET_VALUE">Предполагаемая цена на рынке</translation>
 	<translation name="LAST_ESTIMATED_VALUE_UPDATE">Последнее обновление цены</translation>
-	<translation name="BOOK_CHEST_STATS">Открыто сундуков с книгами</translation>
+	<translation name="BOOK_CHEST_STATS">Книжные сундуки</translation>
 	<translation name="BEST_LOOTED_ITEM">Лучший выпавший предмет</translation>
 	<translation name="TOTAL_LOOT_VALUE">Общая стоимость лута</translation>
 	<translation name="FILTER">Фильтры</translation>
@@ -747,12 +747,13 @@
 	<translation name="CHECKPOINT">Точка сохранения</translation>
 	<translation name="MOST_VALUABLE_LOOT">Самая ценная вещь</translation>
 	<translation name="CLUSTER_TYPE">Тип локации</translation>
-	<translation name="LOCKED_CHEST">Закрытые сундуки</translation>
+	<translation name="LOCKED_CHEST">Закрытый сундук</translation>
 	<translation name="RUN_TIME">Время прохождения</translation>
 	<translation name="AVERAGE_ABBREVIATION">Ср.</translation>
 	<translation name="HOUR_ABBREVIATION">ч</translation>
 	<translation name="AVERAGE">Среднее</translation>
 	<translation name="PER_HOUR">В час</translation>
+	<translation name="TYPE">Тип</translation>
 	<translation name="HCE_EXPEDITION">HCE</translation>
-	<translation name="GROUP_DUNGEON">Групповое подземелье</translation>
+	<translation name="NUMBER_OF_DUNGEONS">Количество подземелий</translation>
 </translations>
