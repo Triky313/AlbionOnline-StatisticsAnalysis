@@ -744,4 +744,15 @@
 	<translation name="LOADING">Загрузка</translation>
 	<translation name="NET_PROFIT">Прибыль</translation>
 	<translation name="YEAR">Год</translation>
+	<translation name="CHECKPOINT">Точка сохранения</translation>
+	<translation name="MOST_VALUABLE_LOOT">Самая ценная вещь</translation>
+	<translation name="CLUSTER_TYPE">Тип локации</translation>
+	<translation name="LOCKED_CHEST">Закрытые сундуки</translation>
+	<translation name="RUN_TIME">Время прохождения</translation>
+	<translation name="AVERAGE_ABBREVIATION">Ср.</translation>
+	<translation name="HOUR_ABBREVIATION">ч</translation>
+	<translation name="AVERAGE">Среднее</translation>
+	<translation name="PER_HOUR">В час</translation>
+	<translation name="HCE_EXPEDITION">HCE</translation>
+	<translation name="GROUP_DUNGEON">Групповое подземелье</translation>
 </translations>
