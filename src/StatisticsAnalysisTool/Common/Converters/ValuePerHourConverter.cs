@@ -10,9 +10,9 @@ public class ValuePerHourConverter : IValueConverter
     {
         return value switch
         {
-            double.NaN => $"{0:N0} /h".ToString(CultureInfo.CurrentCulture),
-            double doubleValue when double.IsInfinity(doubleValue) => $"{100000000:N0} /h".ToString(CultureInfo.CurrentCulture),
-            _ => $"{value:N0} /h".ToString(CultureInfo.CurrentCulture)
+            double.NaN => $"{0:N0}/h".ToString(CultureInfo.CurrentCulture),
+            double doubleValue when double.IsInfinity(doubleValue) => $"{999999999:N0}/h".ToString(CultureInfo.CurrentCulture),
+            _ => $"{value:N0}/h".ToString(CultureInfo.CurrentCulture)
         };
     }
 

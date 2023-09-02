@@ -5,10 +5,13 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text.Json.Serialization;
+using StatisticsAnalysisTool.Dungeon.Models;
+using Loot = StatisticsAnalysisTool.Dungeon.Models.Loot;
 using ValueType = StatisticsAnalysisTool.Enumerations.ValueType;
 
 namespace StatisticsAnalysisTool.Dungeon;
 
+[Obsolete]
 public class DungeonObject
 {
     [JsonIgnore]
@@ -17,8 +20,8 @@ public class DungeonObject
     public List<Guid> GuidList { get; set; } = new();
     public DateTime EnterDungeonFirstTime { get; set; }
     public string MainMapIndex { get; set; }
-    public List<DungeonEventObject> DungeonEventObjects { get; set; } = new();
-    public List<DungeonLoot> DungeonLoot { get; set; } = new();
+    public List<PointOfInterest> DungeonEventObjects { get; set; } = new();
+    public List<Loot> DungeonLoot { get; set; } = new();
     public DungeonStatus Status { get; set; }
     public double Fame { get; set; }
     public double ReSpec { get; set; }
@@ -38,7 +41,7 @@ public class DungeonObject
     [JsonIgnore]
     public string DungeonHash => $"{EnterDungeonFirstTime.Ticks}{string.Join(",", GuidList)}";
     [JsonIgnore]
-    public DungeonLoot MostExpensiveLoot => DungeonLoot.MaxBy(x => x.EstimatedMarketValueInternal);
+    public Loot MostExpensiveLoot => DungeonLoot.MaxBy(x => x.EstimatedMarketValueInternal);
     [JsonIgnore]
     public long TotalLootInSilver => DungeonLoot.Sum(x => x.EstimatedMarketValue.IntegerValue);
 
@@ -53,7 +56,7 @@ public class DungeonObject
         GuidList.Add(guid);
         Status = status;
         AddTimer(DateTime.UtcNow);
-        Mode = Mode == DungeonMode.Unknown ? DungeonObjectData.GetDungeonMode(mainMapIndex) : Mode;
+        Mode = Mode == DungeonMode.Unknown ? DungeonData.GetDungeonMode(mainMapIndex) : Mode;
     }
 
     public void Add(double value, ValueType type, CityFaction cityFaction = CityFaction.Unknown)

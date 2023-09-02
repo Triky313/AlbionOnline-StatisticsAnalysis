@@ -155,6 +155,13 @@
         <Setter Property="VerticalContentAlignment" Value="Center" />
     </Style>
 
+    <Style TargetType="{x:Type TextBlock}" x:Key="TitleText">
+        <Setter Property="FontSize" Value="18"/>
+        <Setter Property="FontWeight" Value="Light"/>
+        <Setter Property="Foreground" Value="{StaticResource SolidColorBrush.Accent.Blue.3}"/>
+        <Setter Property="HorizontalAlignment" Value="Left"/>
+    </Style>
+
     <Style TargetType="{x:Type controls:DigitsTextBox}">
         <Setter Property="Foreground" Value="{StaticResource SolidColorBrush.Text.1}" />
         <Setter Property="Background" Value="{StaticResource SolidColorBrush.Background.7}" />

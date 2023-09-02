@@ -4,7 +4,6 @@ using StatisticsAnalysisTool.EventLogging;
 using StatisticsAnalysisTool.EventLogging.Notification;
 using StatisticsAnalysisTool.Network.Events;
 using StatisticsAnalysisTool.Network.Manager;
-using StatisticsAnalysisTool.Network.Notification;
 using System;
 using System.Threading.Tasks;
 using ValueType = StatisticsAnalysisTool.Enumerations.ValueType;

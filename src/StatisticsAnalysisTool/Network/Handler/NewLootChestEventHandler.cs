@@ -15,8 +15,7 @@ public class NewLootChestEventHandler : EventPacketHandler<NewLootChestEvent>
 
     protected override async Task OnActionAsync(NewLootChestEvent value)
     {
-        _trackingController?.DungeonController?.SetDungeonEventObjectInformationAsync(value.ObjectId, value.UniqueName).ConfigureAwait(false);
+        await _trackingController?.DungeonController?.SetDungeonEventInformationAsync(value.ObjectId, value.UniqueName)!;
         _trackingController?.TreasureController?.AddTreasure(value.ObjectId, value.UniqueName, value.UniqueNameWithLocation);
-        await Task.CompletedTask;
     }
 }

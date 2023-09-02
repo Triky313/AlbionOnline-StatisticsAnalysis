@@ -16,4 +16,9 @@ public static class ServiceLocator
     {
         return (T) Services[typeof(T)];
     }
+
+    public static bool IsServiceInDictionary<T>()
+    {
+        return Services.ContainsKey(typeof(T));
+    }
 }

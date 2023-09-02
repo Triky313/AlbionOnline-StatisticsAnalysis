@@ -744,4 +744,17 @@
 	<translation name="LOADING">Loading</translation>
 	<translation name="NET_PROFIT">Net profit</translation>
 	<translation name="YEAR">Year</translation>
+	<translation name="CHECKPOINT">Checkpoint</translation>
+	<translation name="MOST_VALUABLE_LOOT">Most valuable loot</translation>
+	<translation name="CLUSTER_TYPE">Cluster Type</translation>
+	<translation name="LOCKED_CHEST">Locked chest</translation>
+	<translation name="RUN_TIME">Run time</translation>
+	<translation name="AVERAGE_ABBREVIATION">Avg.</translation>
+	<translation name="HOUR_ABBREVIATION">hr</translation>
+	<translation name="AVERAGE">Average</translation>
+	<translation name="PER_HOUR">Per hour</translation>
+	<translation name="TOTAL">Total</translation>
+	<translation name="TYPE">Type</translation>
+	<translation name="HCE_EXPEDITION">HCE (Expedition)</translation>
+	<translation name="NUMBER_OF_DUNGEONS">Number of dungeons</translation>
 </translations>

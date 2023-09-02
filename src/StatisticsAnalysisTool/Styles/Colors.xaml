@@ -85,7 +85,11 @@
     <Color x:Key="Color.City.MorganasRest.Transparent">#3383AF00</Color>
     <Color x:Key="Color.City.BlackMarket.Transparent">#3395233F</Color>
 
-    <!-- Faction colors -->
+    <!-- Dungeon mode colors -->
+    <Color x:Key="Dungeon.Mode.Mists.1">#7657DB</Color>
+    <Color x:Key="Dungeon.Mode.Mists.2">#5331C4</Color>
+    <Color x:Key="Dungeon.Mode.MistsDungeon.1">#7657DB</Color>
+    <Color x:Key="Dungeon.Mode.MistsDungeon.2">#5331C4</Color>
     <Color x:Key="Dungeon.Mode.Expedition.1">#B857DB</Color>
     <Color x:Key="Dungeon.Mode.Expedition.2">#8329A3</Color>
     <Color x:Key="Dungeon.Mode.HellGate.1">#EF1527</Color>
@@ -246,6 +250,8 @@
     <SolidColorBrush x:Key="SolidColorBrush.City.MorganasRest.Transparent" Color="{StaticResource Color.City.MorganasRest.Transparent}"/>
     <SolidColorBrush x:Key="SolidColorBrush.City.BlackMarket.Transparent" Color="{StaticResource Color.City.BlackMarket.Transparent}"/>
 
+    <SolidColorBrush x:Key="SolidColorBrush.Dungeon.Mode.Mists.1" Color="{StaticResource Dungeon.Mode.Mists.1}"/>
+    <SolidColorBrush x:Key="SolidColorBrush.Dungeon.Mode.MistsDungeon.1" Color="{StaticResource Dungeon.Mode.MistsDungeon.1}"/>
     <SolidColorBrush x:Key="SolidColorBrush.Dungeon.Mode.Expedition.1" Color="{StaticResource Dungeon.Mode.Expedition.1}"/>
     <SolidColorBrush x:Key="SolidColorBrush.Dungeon.Mode.HellGate.1" Color="{StaticResource Dungeon.Mode.HellGate.1}"/>
     <SolidColorBrush x:Key="SolidColorBrush.Dungeon.Mode.Corrupted.1" Color="{StaticResource Dungeon.Mode.Corrupted.1}"/>

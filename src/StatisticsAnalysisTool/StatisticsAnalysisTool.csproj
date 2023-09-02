@@ -160,6 +160,30 @@
     <Resource Include="Assets\book_oblique.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Resource>
+    <Resource Include="Assets\brecilien_standing_coin.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Assets\butterfly_common.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Assets\butterfly_epic.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Assets\butterfly_legendary.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Assets\butterfly_rare.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Assets\butterfly_uncommon.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Assets\checkpoint.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Assets\chest_locked.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Resource>
     <Resource Include="Assets\crafting_description_image001.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Resource>
@@ -199,6 +223,21 @@
     <Resource Include="Assets\heart.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Resource>
+    <Resource Include="Assets\map_black_icon.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Assets\map_blue_icon.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Assets\map_red_icon.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Assets\map_white_icon.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Assets\map_yellow_icon.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Resource>
     <Resource Include="Assets\MiniMapMarker\group_dungeon.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Resource>
@@ -230,6 +269,9 @@
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Resource>
     <Resource Include="Assets\MiniMapMarker\solo_dungeon.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Assets\mists_dungeon.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Resource>
     <Resource Include="Assets\openworld_chests.png">
@@ -267,6 +309,30 @@
     </Resource>
     <Resource Include="Assets\sat-icon.png">
       <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Assets\shiny_common.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Assets\shiny_epic.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Assets\shiny_legendary.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Assets\shiny_rare.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Assets\shiny_uncommon.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Assets\skull.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Assets\skull_green.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Assets\skull_red.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Resource>
     <Resource Include="Assets\static_chest.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
@@ -391,7 +457,10 @@
     <Resource Include="Resources\might.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Resource>
-    <Resource Include="Resources\skull.png">
+    <Resource Include="Resources\mists_banner.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Resources\mists_dungeon_banner.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Resource>
     <Resource Include="Resources\zone.png">
@@ -576,6 +645,14 @@
     <None Remove="Assets\blue_glow.png" />
     <None Remove="Assets\book.png" />
     <None Remove="Assets\book_oblique.png" />
+    <None Remove="Assets\brecilien_standing_coin.png" />
+    <None Remove="Assets\butterfly_common.png" />
+    <None Remove="Assets\butterfly_epic.png" />
+    <None Remove="Assets\butterfly_legendary.png" />
+    <None Remove="Assets\butterfly_rare.png" />
+    <None Remove="Assets\butterfly_uncommon.png" />
+    <None Remove="Assets\checkpoint.png" />
+    <None Remove="Assets\chest_locked.png" />
     <None Remove="Assets\crafting_description_image001.png" />
     <None Remove="Assets\crafting_description_image002.png" />
     <None Remove="Assets\dungeon.png" />
@@ -589,6 +666,11 @@
     <None Remove="Assets\gold_glow.png" />
     <None Remove="Assets\green_glow.png" />
     <None Remove="Assets\heart.png" />
+    <None Remove="Assets\map_black_icon.png" />
+    <None Remove="Assets\map_blue_icon.png" />
+    <None Remove="Assets\map_red_icon.png" />
+    <None Remove="Assets\map_white_icon.png" />
+    <None Remove="Assets\map_yellow_icon.png" />
     <None Remove="Assets\MiniMapMarker\group_dungeon.png" />
     <None Remove="Assets\MiniMapMarker\minimapmarker_fiber.png" />
     <None Remove="Assets\MiniMapMarker\minimapmarker_hide.png" />
@@ -600,6 +682,7 @@
     <None Remove="Assets\MiniMapMarker\road_chest_raid.png" />
     <None Remove="Assets\MiniMapMarker\road_chest_solo.png" />
     <None Remove="Assets\MiniMapMarker\solo_dungeon.png" />
+    <None Remove="Assets\mists_dungeon.png" />
     <None Remove="Assets\openworld_chests.png" />
     <None Remove="Assets\outpost_chest.png" />
     <None Remove="Assets\paypal-QR-Code.png" />
@@ -612,6 +695,14 @@
     <None Remove="Assets\purple_glow.png" />
     <None Remove="Assets\repair_cross.png" />
     <None Remove="Assets\sat-icon.png" />
+    <None Remove="Assets\shiny_common.png" />
+    <None Remove="Assets\shiny_epic.png" />
+    <None Remove="Assets\shiny_legendary.png" />
+    <None Remove="Assets\shiny_rare.png" />
+    <None Remove="Assets\shiny_uncommon.png" />
+    <None Remove="Assets\skull.png" />
+    <None Remove="Assets\skull_green.png" />
+    <None Remove="Assets\skull_red.png" />
     <None Remove="Assets\static_chest.png" />
     <None Remove="Languages\de-DE.xml" />
     <None Remove="Languages\en-US.xml" />
@@ -662,7 +753,8 @@
     <None Remove="Resources\favor.png" />
     <None Remove="Resources\icon_daily_season_points.png" />
     <None Remove="Resources\might.png" />
-    <None Remove="Resources\skull.png" />
+    <None Remove="Resources\mists_banner.png" />
+    <None Remove="Resources\mists_dungeon_banner.png" />
     <None Remove="Sounds\alert1.wav" />
     <None Remove="Sounds\alert2.wav" />
     <None Remove="Sounds\alert3.wav" />

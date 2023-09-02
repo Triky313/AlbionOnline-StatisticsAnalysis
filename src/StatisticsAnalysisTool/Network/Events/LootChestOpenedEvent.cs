@@ -13,9 +13,9 @@ public class LootChestOpenedEvent
 
         try
         {
-            if (parameters.ContainsKey(0))
+            if (parameters.TryGetValue(0, out object id))
             {
-                Id = parameters.ObjectToInt();
+                Id = id.ObjectToInt();
             }
         }
         catch (Exception e)

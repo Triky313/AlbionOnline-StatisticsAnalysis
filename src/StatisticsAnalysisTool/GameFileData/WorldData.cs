@@ -1,12 +1,12 @@
 using StatisticsAnalysisTool.Cluster;
 using StatisticsAnalysisTool.Common;
-using StatisticsAnalysisTool.Common.UserSettings;
 using StatisticsAnalysisTool.Enumerations;
 using StatisticsAnalysisTool.GameFileData.Models;
 using StatisticsAnalysisTool.Properties;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection;
 using System.Text.Json;
 using System.Threading.Tasks;
 
@@ -153,6 +153,49 @@ public static class WorldData
         return MapType.Unknown;
     }
 
+    public static ClusterType GetClusterTypeByIndex(string index)
+    {
+        var type = MapData?.FirstOrDefault(x => x?.Index == index)?.Type;
+
+        if (type is null)
+        {
+            return ClusterType.Unknown;
+        }
+
+        if (type.Contains("SAFEAREA"))
+        {
+            return ClusterType.SafeArea;
+        }
+
+        if (type.Contains("YELLOW"))
+        {
+            return ClusterType.Yellow;
+        }
+
+        if (type.Contains("RED"))
+        {
+            return ClusterType.Red;
+        }
+
+        if (type.Contains("BLACK") || type.Contains("TUNNEL"))
+        {
+            return ClusterType.Black;
+        }
+
+        if (type.Contains("EXPEDITION"))
+        {
+            return ClusterType.Expedition;
+        }
+
+        if (type.Contains("CORRUPTED"))
+        {
+            return ClusterType.Corrupted;
+        }
+
+        ConsoleManager.WriteLineForMessage(MethodBase.GetCurrentMethod()?.DeclaringType, $"GetClusterType Unknown: {type}", ConsoleColorType.EventMapChangeColor);
+        return ClusterType.Unknown;
+    }
+
     public static string GetWorldJsonTypeByIndex(string index)
     {
         if (index == null)
@@ -174,11 +217,6 @@ public static class WorldData
         return MapData?.FirstOrDefault(x => x.Index == index)?.File;
     }
 
-    public static bool IsDataLoaded()
-    {
-        return MapData?.Count > 0;
-    }
-
     public static async Task<bool> LoadDataAsync()
     {
         var data = await GameData.LoadDataAsync<WorldJsonObject, WorldJsonRootObject>(
@@ -191,5 +229,21 @@ public static class WorldData
 
         MapData = data;
         return data.Count >= 0;
+    }
+
+    public static Tier GetTier(int value)
+    {
+        return value switch
+        {
+            1 => Tier.T1,
+            2 => Tier.T2,
+            3 => Tier.T3,
+            4 => Tier.T4,
+            5 => Tier.T5,
+            6 => Tier.T6,
+            7 => Tier.T7,
+            8 => Tier.T8,
+            _ => Tier.Unknown
+        };
     }
 }

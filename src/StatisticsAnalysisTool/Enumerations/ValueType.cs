@@ -10,5 +10,6 @@ public enum ValueType
     Might,
     Favor,
     RepairCosts,
-    PaidSilverForReSpec
+    PaidSilverForReSpec,
+    BrecilianStanding
 }

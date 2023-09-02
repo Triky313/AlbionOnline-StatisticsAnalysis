@@ -35,12 +35,7 @@ public static class MobsData
             _ => -1
         };
     }
-
-    public static bool IsDataLoaded()
-    {
-        return _mobs?.Count() > 0;
-    }
-
+    
     private static MobJsonObject GetMobJsonObjectByIndex(int index)
     {
         // From February 13, 2023, the in-game index will start counting from 2. The character data that was previously in the file is now in a separate file.
