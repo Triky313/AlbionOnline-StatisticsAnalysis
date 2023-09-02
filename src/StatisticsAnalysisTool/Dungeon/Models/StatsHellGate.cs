@@ -4,14 +4,9 @@ using System.Windows;
 
 namespace StatisticsAnalysisTool.Dungeon.Models;
 
-public class StatsSolo : BaseViewModel
+public class StatsHellGate : BaseViewModel
 {
     private int _entered;
-    private int _enteredCommon;
-    private int _enteredEpic;
-    private int _enteredRare;
-    private int _enteredUncommon;
-    private int _enteredLegendary;
     private Loot _mostValuableLoot;
     private double _fame;
     private double _reSpec;
@@ -67,56 +62,6 @@ public class StatsSolo : BaseViewModel
         set
         {
             _runTimeTotal = value;
-            OnPropertyChanged();
-        }
-    }
-
-    public int EnteredCommon
-    {
-        get => _enteredCommon;
-        set
-        {
-            _enteredCommon = value;
-            OnPropertyChanged();
-        }
-    }
-
-    public int EnteredUncommon
-    {
-        get => _enteredUncommon;
-        set
-        {
-            _enteredUncommon = value;
-            OnPropertyChanged();
-        }
-    }
-
-    public int EnteredRare
-    {
-        get => _enteredRare;
-        set
-        {
-            _enteredRare = value;
-            OnPropertyChanged();
-        }
-    }
-
-    public int EnteredEpic
-    {
-        get => _enteredEpic;
-        set
-        {
-            _enteredEpic = value;
-            OnPropertyChanged();
-        }
-    }
-
-    public int EnteredLegendary
-    {
-        get => _enteredLegendary;
-        set
-        {
-            _enteredLegendary = value;
             OnPropertyChanged();
         }
     }
@@ -395,7 +340,7 @@ public class StatsSolo : BaseViewModel
 
     public static string TranslationAverageAbbreviation => LanguageController.Translation("AVERAGE_ABBREVIATION");
     public static string TranslationHourAbbreviation => LanguageController.Translation("HOUR_ABBREVIATION");
-    public static string TranslationSoloDungeon => LanguageController.Translation("SOLO_DUNGEON");
+    public static string TranslationHellGates => LanguageController.Translation("HELLGATES");
     public static string TranslationMostValuableLoot => LanguageController.Translation("MOST_VALUABLE_LOOT");
     public static string TranslationTotal => LanguageController.Translation("TOTAL");
     public static string TranslationPerHour => LanguageController.Translation("PER_HOUR");

@@ -71,7 +71,7 @@ public class DungeonBindings : BaseViewModel
             },
             new ()
             {
-                Name = LanguageController.Translation("GROUP_DUNGEON"),
+                Name = LanguageController.Translation("STANDARD_DUNGEON"),
                 StatsViewType = DungeonMode.Standard
             },
             new ()
@@ -498,12 +498,6 @@ public class DungeonBindings : BaseViewModel
     {
         SetAllStatViewsToCollapsed();
 
-        if (SelectedDungeonStatsType.StatsViewType == DungeonMode.Mists)
-        {
-            Stats.StatsMists.Visibility = Visibility.Visible;
-            return;
-        }
-
         if (SelectedDungeonStatsType.StatsViewType == DungeonMode.Solo)
         {
             Stats.StatsSolo.Visibility = Visibility.Visible;
@@ -515,12 +509,52 @@ public class DungeonBindings : BaseViewModel
             Stats.StatsStandard.Visibility = Visibility.Visible;
             return;
         }
+
+        if (SelectedDungeonStatsType.StatsViewType == DungeonMode.Avalon)
+        {
+            Stats.StatsAvalonian.Visibility = Visibility.Visible;
+            return;
+        }
+
+        if (SelectedDungeonStatsType.StatsViewType == DungeonMode.Corrupted)
+        {
+            Stats.StatsCorrupted.Visibility = Visibility.Visible;
+            return;
+        }
+
+        if (SelectedDungeonStatsType.StatsViewType == DungeonMode.HellGate)
+        {
+            Stats.StatsHellGate.Visibility = Visibility.Visible;
+            return;
+        }
+
+        if (SelectedDungeonStatsType.StatsViewType == DungeonMode.Expedition)
+        {
+            Stats.StatsExpedition.Visibility = Visibility.Visible;
+            return;
+        }
+
+        if (SelectedDungeonStatsType.StatsViewType == DungeonMode.Mists)
+        {
+            Stats.StatsMists.Visibility = Visibility.Visible;
+            return;
+        }
+
+        if (SelectedDungeonStatsType.StatsViewType == DungeonMode.MistsDungeon)
+        {
+            Stats.StatsMistsDungeon.Visibility = Visibility.Visible;
+        }
     }
 
     private void SetAllStatViewsToCollapsed()
     {
-        Stats.StatsMists.Visibility = Visibility.Collapsed;
         Stats.StatsSolo.Visibility = Visibility.Collapsed;
         Stats.StatsStandard.Visibility = Visibility.Collapsed;
+        Stats.StatsAvalonian.Visibility = Visibility.Collapsed;
+        Stats.StatsExpedition.Visibility = Visibility.Collapsed;
+        Stats.StatsCorrupted.Visibility = Visibility.Collapsed;
+        Stats.StatsHellGate.Visibility = Visibility.Collapsed;
+        Stats.StatsMists.Visibility = Visibility.Collapsed;
+        Stats.StatsMistsDungeon.Visibility = Visibility.Collapsed;
     }
 }

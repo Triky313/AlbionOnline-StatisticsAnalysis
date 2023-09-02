@@ -39,6 +39,7 @@ public class StatsStandard : BaseViewModel
     private int _openedStandardBookChests;
     private int _openedUncommonBookChests;
     private int _openedRareBookChests;
+    private int _enteredCommon;
 
     public Visibility Visibility
     {
@@ -66,6 +67,16 @@ public class StatsStandard : BaseViewModel
         set
         {
             _runTimeTotal = value;
+            OnPropertyChanged();
+        }
+    }
+
+    public int EnteredCommon
+    {
+        get => _enteredCommon;
+        set
+        {
+            _enteredCommon = value;
             OnPropertyChanged();
         }
     }
@@ -384,7 +395,7 @@ public class StatsStandard : BaseViewModel
 
     public static string TranslationAverageAbbreviation => LanguageController.Translation("AVERAGE_ABBREVIATION");
     public static string TranslationHourAbbreviation => LanguageController.Translation("HOUR_ABBREVIATION");
-    public static string TranslationStandardDungeons => LanguageController.Translation("STANDARD_DUNGEONS");
+    public static string TranslationStandardDungeon => LanguageController.Translation("STANDARD_DUNGEON");
     public static string TranslationMostValuableLoot => LanguageController.Translation("MOST_VALUABLE_LOOT");
     public static string TranslationTotal => LanguageController.Translation("TOTAL");
     public static string TranslationPerHour => LanguageController.Translation("PER_HOUR");

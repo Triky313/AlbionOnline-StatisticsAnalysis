@@ -4,10 +4,9 @@ using System.Windows;
 
 namespace StatisticsAnalysisTool.Dungeon.Models;
 
-public class StatsSolo : BaseViewModel
+public class StatsAvalonian : BaseViewModel
 {
     private int _entered;
-    private int _enteredCommon;
     private int _enteredEpic;
     private int _enteredRare;
     private int _enteredUncommon;
@@ -40,6 +39,7 @@ public class StatsSolo : BaseViewModel
     private int _openedStandardBookChests;
     private int _openedUncommonBookChests;
     private int _openedRareBookChests;
+    private int _enteredCommon;
 
     public Visibility Visibility
     {
@@ -395,7 +395,7 @@ public class StatsSolo : BaseViewModel
 
     public static string TranslationAverageAbbreviation => LanguageController.Translation("AVERAGE_ABBREVIATION");
     public static string TranslationHourAbbreviation => LanguageController.Translation("HOUR_ABBREVIATION");
-    public static string TranslationSoloDungeon => LanguageController.Translation("SOLO_DUNGEON");
+    public static string TranslationAvalonianDungeon => LanguageController.Translation("AVALONIAN_DUNGEON");
     public static string TranslationMostValuableLoot => LanguageController.Translation("MOST_VALUABLE_LOOT");
     public static string TranslationTotal => LanguageController.Translation("TOTAL");
     public static string TranslationPerHour => LanguageController.Translation("PER_HOUR");

@@ -163,6 +163,9 @@
     <Resource Include="Assets\brecilien_standing_coin.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Resource>
+    <Resource Include="Assets\butterfly_common.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Resource>
     <Resource Include="Assets\butterfly_epic.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Resource>
@@ -643,6 +646,7 @@
     <None Remove="Assets\book.png" />
     <None Remove="Assets\book_oblique.png" />
     <None Remove="Assets\brecilien_standing_coin.png" />
+    <None Remove="Assets\butterfly_common.png" />
     <None Remove="Assets\butterfly_epic.png" />
     <None Remove="Assets\butterfly_legendary.png" />
     <None Remove="Assets\butterfly_rare.png" />
