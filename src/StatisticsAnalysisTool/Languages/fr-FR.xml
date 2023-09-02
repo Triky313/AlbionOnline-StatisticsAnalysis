@@ -3,18 +3,18 @@
 <translations>
 	<translation name="LANGUAGE">Langue</translation>
 	<translation name="REFRESH_RATE">Taux de rafraîchissement</translation>
-	<translation name="UPDATE_ITEM_LIST_BY_DAYS">Intervalle de mise à jour des objets : </translation>
+
 	<translation name="SETTINGS">Paramêtres</translation>
 	<translation name="SAVE">Sauver</translation>
 	<translation name="CITY">Ville</translation>
 	<translation name="SELL_PRICE_MIN">Prix de vente MIN</translation>
-	<translation name="SELL_PRICE_MIN_DATE">Prix de vente MIN Dt</translation>
+	<translation name="SELL_PRICE_MIN_DATE">Date (vente MIN)</translation>
 	<translation name="SELL_PRICE_MAX">Prix de vente MAX</translation>
-	<translation name="SELL_PRICE_MAX_DATE">Prix de vente MAX Dt</translation>
+	<translation name="SELL_PRICE_MAX_DATE">Date (vente MAX)</translation>
 	<translation name="BUY_PRICE_MIN">Prix d'achat MIN</translation>
-	<translation name="BUY_PRICE_MIN_DATE">Prix d'achat MIN Dt</translation>
+	<translation name="BUY_PRICE_MIN_DATE">Date (Achat MIN)</translation>
 	<translation name="BUY_PRICE_MAX">Prix d'achat MAX</translation>
-	<translation name="BUY_PRICE_MAX_DATE">Prix d'achat MAX Dt</translation>
+	<translation name="BUY_PRICE_MAX_DATE">Date (Achat MAX)</translation>
 	<translation name="LAST_UPDATE">Dernière mise à jour</translation>
 	<translation name="SHOW_VILLAGES">Voir les villages</translation>
 	<translation name="AUTO_UPDATE_DATA">Mise à jour automatique</translation>
@@ -55,8 +55,8 @@
 	<translation name="5_MINUTES">5 Minutes</translation>
 	<translation name="MIN_PROFIT_TOOLTIP">Indique le profit minimum qu'un objet devrait générer.</translation>
 	<translation name="REMOVE">Retirer</translation>
-	<translation name="ITEM_LIST_SOURCE_URL">URL Source de la liste d'objets</translation>
-	<translation name="ITEM_LIST_CAN_NOT_BE_LOADED">La liste d'objets ne peut être chargée.</translation>
+
+
 	<translation name="ERROR">Erreur</translation>
 	<translation name="NOTE">Note</translation>
 	<translation name="DEFAULT_ITEMLIST_HAS_BEEN_LOADED">La liste d'objets par défaut a été chargée.</translation>
@@ -308,12 +308,12 @@
 	<translation name="TOO_MANY_REQUESTS_CLOSE_WINDOWS_OR_WAIT">Trop de requêtes, fermer la fenêtre ou attendez.</translation>
 
 	<translation name="ALARM_SOUND_USED">Son d'alarme</translation>
-	<translation name="ITEM_PRICE_UNDERCUT">Prix de l'objet sous-côté</translation>
+	<translation name="ITEM_PRICE_UNDERCUT">Le prix de l'objet a baissé</translation>
 	<translation name="THE_PRICE_OF">Le prix de</translation>
-	<translation name="IN">dans</translation>
+	<translation name="IN">à</translation>
 	<translation name="SHOW_ONLY_ITEMS_WITH_ALERT_ON">Montrer seulement les objets avec alerte</translation>
 	<translation name="SHOW_ONLY_FAVORITES">Montrer seulement les favoris</translation>
-	<translation name="HAS_BEEN_UNDERCUT">a été sous-côté</translation>
+	<translation name="HAS_BEEN_UNDERCUT">a baissé</translation>
 	<translation name="IS_ALERT_ACTIVATE">Alerte ON/OFF</translation>
 	<translation name="UNDERCUTTING_PRICE">Prix</translation>
 	<translation name="AVERAGE_PRICES">Prix moyens</translation>
@@ -424,7 +424,7 @@
 	<translation name="OPEN_EXTENDED_DAMAGE_METER_WINDOW">Ouvrir la fenêtre étendue du compteur de dégâts</translation>
 	<translation name="COPY_TO_CLIPBOARD">Copier dans le presse-papier</translation>
 	<translation name="MAP_HISTORY">Historique des cartes</translation>
-	<translation name="TRY_DOWNLOADING_THE_ITEM_LIST_AGAIN">Essayez de télécharger à nouveau la liste des objets</translation>
+
 	<translation name="DAMAGE_METER_ON_OFF">Compteur de dégâts - ON/OFF</translation>
 	<translation name="TRACKER_ON_OFF">Traqueur - ON/OFF</translation>
 	<translation name="DELETE_SELECTED_DUNGEONS">Effacer les donjons sélectionnés</translation>
@@ -496,14 +496,14 @@
 	<translation name="USAGE_FEE_PER_HUNDRED_FOOD">Frais d'utilisation par 100 nourriture</translation>
 	<translation name="SHOW_LOOT_FROM_MOBS">Montrer le butin sur les monstres</translation>
 	<translation name="TRACKING_MOB_LOOT">Traquer le butin sur les monstres</translation>
-	<translation name="ITEMS_JSON_SOURCE_URL">URL Source de Items.json</translation>
-	<translation name="UPDATE_ITEMS_JSON_BY_DAYS">Intervalle de MAJ de items.json en jours : </translation>
+
+
 	<translation name="SHOP_CATEGORY">Catégorie</translation>
 	<translation name="SHOP_SUB_CATEGORY">Sous-catégorie</translation>
 	<translation name="CAN_BE_OVERCHARGED">Peut être surchargé(e)</translation>
 	<translation name="WAR_GLOVES">Gantelets de Guerre</translation>
-	<translation name="TRY_DOWNLOADING_THE_ITEM_JSON_AGAIN">Essayez de télécharger item.json à nouveau</translation>
-	<translation name="ITEM_JSON_CAN_NOT_BE_LOADED">Item.json ne peut pas être chargé.</translation>
+
+
 	<translation name="SUGGEST_PRE_RELEASE_UPDATES">Suggérer des mises à jour en pré-version</translation>
 	<translation name="ATTENTION_THESE_VERSION_ARE_STILL_BEING_TESTED">ATTENTION! Ces versions sont encore en cours de test</translation>
 	<translation name="DUNGEON_RESPEC">Donjon respé</translation>
@@ -523,8 +523,8 @@
 	<translation name="WAS_KILLED_BY">a été tué par</translation>
 	<translation name="SHOW_KILLS">Afficher les victimes</translation>
 	<translation name="TOOL_TASKS">Tâche de fond</translation>
-	<translation name="GET_ITEM_LIST_JSON">Récupérer ItemList.json</translation>
-	<translation name="GET_ITEMS_JSON">Récupérer Items.json</translation>
+
+
 	<translation name="CHARACTER_NAME_TO_TRACK">Nom du personnage à suivre</translation>
 	<translation name="THIS_CHARACTER_IS_NOT_TRACKED">Ce personnage n'est pas suivi</translation>
 	<translation name="DATA_FROM_ALBION_ONLINE_SERVERS">Données des serveurs Albion Online</translation>
@@ -572,8 +572,8 @@
 	<translation name="TAX">Taxe</translation>
 	<translation name="NOTES">Notes</translation>
 	<translation name="UNSUPPORTED_OS">Système d'exploitation non pris en charge : des erreurs peuvent survenir.</translation>
-	<translation name="FILE_DOWNLOAD_FAILED_TEXT1">Fermez le logiciel et double-cliquez sur le fichier DownloadItemJsonFilesManually.bat dans le répertoire de l'exécutable.</translation>
-	<translation name="THEN_RESTART_THE_TOOL">Redémarrez ensuite le logiciel.</translation>
+
+
 	<translation name="OR">OU</translation>
 	<translation name="COPY_SHORT_DAMAGE_METER_TO_THE_CLIPBOARD">Copier le compteur de dégâts dans le presse-papiers</translation>
 	<translation name="LOCATION">Emplacement</translation>
@@ -638,10 +638,10 @@
 	<translation name="THANK_YOU">Merci</translation>
 	<translation name="DUNGEON_CLOSED_SOUND_ACTIVE">Jouer un son à la fermeture du donjon</translation>
 	<translation name="TOTAL_PRICE_WITH_DEDUCTED_TAXES">Prix total avec taxes déduites</translation>
-	<translation name="UPDATE_MOBS_JSON_BY_DAYS">Mettre à jour mobs.json : </translation>
-	<translation name="MOBS_JSON_SOURCE_URL">URL source mobs.json</translation>
-	<translation name="GET_MOBS_JSON">Obtenir mobs.json</translation>
-	<translation name="MOBS_JSON_CAN_NOT_BE_LOADED">mobs.json ne peut pas être chargé.</translation>
+
+
+
+
 	<translation name="INSTANT_SELL">Vente instantanée</translation>
 	<translation name="INSTANT_BUY">Achat instantané</translation>
 	<translation name="TRADE_MONITORING_ACTIVE">Surveiller les transactions avec le marché</translation>
@@ -722,13 +722,13 @@
 	<translation name="PLAYER_SELECTION_WITH_SAME_NAME_IN_DB">Sélection du joueur avec le même nom dans la base de donnée</translation>
 	<translation name="UPDATE_NOW">Mettre à jour</translation>
 	<translation name="DAMAGE_METER_DESCRIPTION_2">Si les bonnes armes ne sont pas affichées dans le Damage Meter, cela est généralement dû aux fichiers ItemList.json et Items.json obsolètes. Supprimez manuellement les fichiers du dossier du logiciel et redémarrez le, la dernière version des fichiers sera téléchargée et tout devrait fonctionner.</translation>
-	<translation name="GET_WORLD_JSON">Obtenir world.json</translation>
-	<translation name="WORLD_JSON_CAN_NOT_BE_LOADED">world.json ne peut pas être chargé.</translation>
-	<translation name="UPDATE_WORLD_JSON_BY_DAYS">Mettre à jour mobs.json : </translation>
-	<translation name="WORLD_JSON_SOURCE_URL">URL Source de Items.json</translation>
+
+
+
+
 	<translation name="PARTY_BUILDER">Groupe</translation>
-	<translation name="GET_SPELLS_JSON">Obtenir spells.json</translation>
-	<translation name="SPELLS_JSON_CAN_NOT_BE_LOADED">spells.json ne peut pas être chargé.</translation>
+
+
 	<translation name="CONDITIONS">Conditions</translation>
 	<translation name="DESCRIPTIONS">Descriptions</translation>
 	<translation name="MINIMAL_ITEM_POWER">Puissance minimale d'objet</translation>
@@ -742,8 +742,8 @@
 	<translation name="PARTY_INFORMATION">Informations du groupe</translation>
 	<translation name="AVERAGE_IP">IP moyen</translation>
 	<translation name="AVERAGE_BIP">BIP moyen </translation>
-	<translation name="SPELLS_JSON_SOURCE_URL">URL Source de spells.json</translation>
-	<translation name="UPDATE_SPELLS_JSON_BY_DAYS">Mettre à jour spells.json : </translation>
+
+
 	<translation name="BACKUP_CREATED">Sauvegarde créée</translation>
 	<translation name="A_BACKUP_HAS_BEEN_CREATED">Une sauvegarde a été créée</translation>
 	<translation name="BACKUP_INTERVAL">Intervalle de sauvegarde</translation>
