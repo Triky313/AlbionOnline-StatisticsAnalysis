@@ -1,6 +1,6 @@
 ﻿namespace StatisticAnalysisTool.Extractor;
 
-public class ItemContainer : IdContainer
+internal class ItemContainer : IdContainer
 {
     public string LocalizationNameVariable { get; set; }
     public string LocalizationDescriptionVariable { get; set; }

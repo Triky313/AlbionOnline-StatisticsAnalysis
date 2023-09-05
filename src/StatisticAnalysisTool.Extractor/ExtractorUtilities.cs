@@ -3,7 +3,7 @@ using System.Text.Json;
 
 namespace StatisticAnalysisTool.Extractor;
 
-public static class ExtractorUtilities
+internal static class ExtractorUtilities
 {
     private static readonly JsonWriterOptions JsonWriterOptions = new ()
     {

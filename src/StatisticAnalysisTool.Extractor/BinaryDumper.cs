@@ -4,7 +4,7 @@ using Formatting = Newtonsoft.Json.Formatting;
 
 namespace StatisticAnalysisTool.Extractor;
 
-public class BinaryDumper
+internal class BinaryDumper
 {
     public static async Task ExtractAsync(string mainGameFolder, string outputFolderPath, string[] binFileNamesToExtract)
     {
