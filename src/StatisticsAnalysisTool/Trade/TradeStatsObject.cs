@@ -500,30 +500,16 @@ public class TradeStatsObject : BaseViewModel
         }
     }
 
-    public static string TranslationSoldToday => LanguageController.Translation("SOLD_TODAY");
-    public static string TranslationSoldThisWeek => LanguageController.Translation("SOLD_THIS_WEEK");
-    public static string TranslationSoldLastWeek => LanguageController.Translation("SOLD_LAST_WEEK");
-    public static string TranslationSoldMonth => LanguageController.Translation("SOLD_MONTH");
-    public static string TranslationSoldYear => LanguageController.Translation("SOLD_YEAR");
-    public static string TranslationBoughtToday => LanguageController.Translation("BOUGHT_TODAY");
-    public static string TranslationBoughtThisWeek => LanguageController.Translation("BOUGHT_THIS_WEEK");
-    public static string TranslationBoughtLastWeek => LanguageController.Translation("BOUGHT_LAST_WEEK");
-    public static string TranslationBoughtMonth => LanguageController.Translation("BOUGHT_MONTH");
-    public static string TranslationBoughtYear => LanguageController.Translation("BOUGHT_YEAR");
-    public static string TranslationSoldTotal => LanguageController.Translation("SOLD_TOTAL");
-    public static string TranslationBoughtTotal => LanguageController.Translation("BOUGHT_TOTAL");
-    public static string TranslationTaxesToday => LanguageController.Translation("TAXES_TODAY");
-    public static string TranslationTaxesThisWeek => LanguageController.Translation("TAXES_THIS_WEEK");
-    public static string TranslationTaxesLastWeek => LanguageController.Translation("TAXES_LAST_WEEK");
-    public static string TranslationTaxesMonth => LanguageController.Translation("TAXES_MONTH");
-    public static string TranslationTaxesYear => LanguageController.Translation("TAXES_YEAR");
-    public static string TranslationTaxesTotal => LanguageController.Translation("TAXES_TOTAL");
-    public static string TranslationNetProfitToday => LanguageController.Translation("NET_PROFIT_TODAY");
-    public static string TranslationNetProfitThisWeek => LanguageController.Translation("NET_PROFIT_THIS_WEEK");
-    public static string TranslationNetProfitLastWeek => LanguageController.Translation("NET_PROFIT_LAST_WEEK");
-    public static string TranslationNetProfitMonth => LanguageController.Translation("NET_PROFIT_MONTH");
-    public static string TranslationNetProfitYear => LanguageController.Translation("NET_PROFIT_YEAR");
-    public static string TranslationNetProfitTotal => LanguageController.Translation("NET_PROFIT_TOTAL");
+    public static string TranslationSold => LanguageController.Translation("SOLD");
+    public static string TranslationToday => LanguageController.Translation("TODAY");
+    public static string TranslationThisWeek => LanguageController.Translation("THIS_WEEK");
+    public static string TranslationLastWeek => LanguageController.Translation("LAST_WEEK");
+    public static string TranslationMonth => LanguageController.Translation("MONTH");
+    public static string TranslationYear => LanguageController.Translation("YEAR");
+    public static string TranslationTotal => LanguageController.Translation("TOTAL");
+    public static string TranslationBought => LanguageController.Translation("BOUGHT");
+    public static string TranslationTax => LanguageController.Translation("TAX");
+    public static string TranslationNetProfit => LanguageController.Translation("NET_PROFIT");
     public static string TranslationMostExpensiveSale => LanguageController.Translation("MOST_EXPENSIVE_SALE");
     public static string TranslationMostExpensivePurchase => LanguageController.Translation("MOST_EXPENSIVE_PURCHASE");
 

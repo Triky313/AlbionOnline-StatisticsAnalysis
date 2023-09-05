@@ -3,7 +3,7 @@ using System.Security.Cryptography;
 
 namespace StatisticAnalysisTool.Extractor;
 
-public static class BinaryDecrypter
+internal static class BinaryDecrypter
 {
     private static readonly byte[] Key = { 48, 239, 114, 71, 66, 242, 4, 50 };
     private static readonly byte[] Iv = { 14, 166, 220, 137, 219, 237, 220, 79 };

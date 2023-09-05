@@ -46,19 +46,6 @@ public static class Utilities
             : Application.Current.Windows.OfType<T>().Any(w => w.Name.Equals(name));
     }
 
-    public static double GetValuePerHourToDouble(double value, double seconds)
-    {
-        try
-        {
-            var hours = seconds / 60d / 60d;
-            return value / hours;
-        }
-        catch (OverflowException)
-        {
-            return double.MaxValue;
-        }
-    }
-
     public static double GetValuePerSecondToDouble(double value, DateTime? combatStart, TimeSpan time, double maxValue = -1)
     {
         if (double.IsInfinity(value)) return maxValue > 0 ? maxValue : double.MaxValue;

@@ -43,10 +43,10 @@ public class ClusterController
 
     public event Action<ClusterInfo> OnChangeCluster;
 
-    public void ChangeClusterInformation(MapType mapType, Guid? mapGuid, string clusterIndex, string instanceName, string worldMapDataType, byte[] dungeonInformation, string mainClusterIndex)
+    public void ChangeClusterInformation(MapType mapType, Guid? mapGuid, string clusterIndex, string instanceName, string worldMapDataType, byte[] dungeonInformation, string mainClusterIndex, Tier mistsDungeonTier)
     {
         CurrentCluster.ClusterInfoFullyAvailable = false;
-        CurrentCluster.SetClusterInfo(mapType, mapGuid, clusterIndex, instanceName, worldMapDataType, dungeonInformation, mainClusterIndex);
+        CurrentCluster.SetClusterInfo(mapType, mapGuid, clusterIndex, instanceName, worldMapDataType, dungeonInformation, mainClusterIndex, mistsDungeonTier);
     }
 
     public void SetJoinClusterInformation(string index, string mainClusterIndex)
@@ -146,7 +146,7 @@ public class ClusterController
             var clusterInfo = new ClusterInfo();
             var value = RandomEnumValue<MapType>();
 
-            clusterInfo.SetClusterInfo(value, Guid.NewGuid(), "3000", "Meine Super Insel", "@ISLAND", null, "4001");
+            clusterInfo.SetClusterInfo(value, Guid.NewGuid(), "3000", "Meine Super Insel", "@ISLAND", null, "4001", Tier.T7);
 
             UpdateClusterTracking(clusterInfo);
         }

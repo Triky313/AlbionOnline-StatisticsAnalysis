@@ -106,15 +106,15 @@ public partial class App
         }
     }
 
-    private void OnUnhandledException(object sender, UnhandledExceptionEventArgs e)
+    private static void OnUnhandledException(object sender, UnhandledExceptionEventArgs e)
     {
         try
         {
-            Log.Fatal(nameof(OnUnhandledException), (Exception) e.ExceptionObject);
+            Log.Fatal(e.ExceptionObject as Exception, "{message}", MethodBase.GetCurrentMethod()?.DeclaringType);
         }
         catch (Exception ex)
         {
-            Log.Fatal(nameof(OnUnhandledException), ex);
+            Log.Fatal(ex, "{message}", MethodBase.GetCurrentMethod()?.DeclaringType);
         }
     }
 

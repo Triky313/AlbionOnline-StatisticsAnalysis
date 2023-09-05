@@ -84,9 +84,9 @@ public class TreasureController
     {
         #region Avalonian roads
 
-        _mainWindowViewModel.DashboardBindings.LootedChests.AvalonianRoadCommonWeek = GetStats(TreasureRarity.Standard, TreasureType.Avalon, -7);
-        _mainWindowViewModel.DashboardBindings.LootedChests.AvalonianRoadCommonMonth = GetStats(TreasureRarity.Standard, TreasureType.Avalon, -30);
-        _mainWindowViewModel.DashboardBindings.LootedChests.AvalonianRoadCommonYear = GetStats(TreasureRarity.Standard, TreasureType.Avalon, -365);
+        _mainWindowViewModel.DashboardBindings.LootedChests.AvalonianRoadCommonWeek = GetStats(TreasureRarity.Common, TreasureType.Avalon, -7);
+        _mainWindowViewModel.DashboardBindings.LootedChests.AvalonianRoadCommonMonth = GetStats(TreasureRarity.Common, TreasureType.Avalon, -30);
+        _mainWindowViewModel.DashboardBindings.LootedChests.AvalonianRoadCommonYear = GetStats(TreasureRarity.Common, TreasureType.Avalon, -365);
         _mainWindowViewModel.DashboardBindings.LootedChests.AvalonianRoadUncommonWeek = GetStats(TreasureRarity.Uncommon, TreasureType.Avalon, -7);
         _mainWindowViewModel.DashboardBindings.LootedChests.AvalonianRoadUncommonMonth = GetStats(TreasureRarity.Uncommon, TreasureType.Avalon, -30);
         _mainWindowViewModel.DashboardBindings.LootedChests.AvalonianRoadUncommonYear = GetStats(TreasureRarity.Uncommon, TreasureType.Avalon, -365);
@@ -101,9 +101,9 @@ public class TreasureController
 
         #region Open world
 
-        _mainWindowViewModel.DashboardBindings.LootedChests.OpenWorldCommonWeek = GetStats(TreasureRarity.Standard, TreasureType.OpenWorld, -7);
-        _mainWindowViewModel.DashboardBindings.LootedChests.OpenWorldCommonMonth = GetStats(TreasureRarity.Standard, TreasureType.OpenWorld, -30);
-        _mainWindowViewModel.DashboardBindings.LootedChests.OpenWorldCommonYear = GetStats(TreasureRarity.Standard, TreasureType.OpenWorld, -365);
+        _mainWindowViewModel.DashboardBindings.LootedChests.OpenWorldCommonWeek = GetStats(TreasureRarity.Common, TreasureType.OpenWorld, -7);
+        _mainWindowViewModel.DashboardBindings.LootedChests.OpenWorldCommonMonth = GetStats(TreasureRarity.Common, TreasureType.OpenWorld, -30);
+        _mainWindowViewModel.DashboardBindings.LootedChests.OpenWorldCommonYear = GetStats(TreasureRarity.Common, TreasureType.OpenWorld, -365);
         _mainWindowViewModel.DashboardBindings.LootedChests.OpenWorldUncommonWeek = GetStats(TreasureRarity.Uncommon, TreasureType.OpenWorld, -7);
         _mainWindowViewModel.DashboardBindings.LootedChests.OpenWorldUncommonMonth = GetStats(TreasureRarity.Uncommon, TreasureType.OpenWorld, -30);
         _mainWindowViewModel.DashboardBindings.LootedChests.OpenWorldUncommonYear = GetStats(TreasureRarity.Uncommon, TreasureType.OpenWorld, -365);
@@ -118,9 +118,9 @@ public class TreasureController
 
         #region Random group dungeons
 
-        _mainWindowViewModel.DashboardBindings.LootedChests.RandomGroupDungeonCommonWeek = GetStats(TreasureRarity.Standard, TreasureType.RandomGroupDungeon, -7);
-        _mainWindowViewModel.DashboardBindings.LootedChests.RandomGroupDungeonCommonMonth = GetStats(TreasureRarity.Standard, TreasureType.RandomGroupDungeon, -30);
-        _mainWindowViewModel.DashboardBindings.LootedChests.RandomGroupDungeonCommonYear = GetStats(TreasureRarity.Standard, TreasureType.RandomGroupDungeon, -365);
+        _mainWindowViewModel.DashboardBindings.LootedChests.RandomGroupDungeonCommonWeek = GetStats(TreasureRarity.Common, TreasureType.RandomGroupDungeon, -7);
+        _mainWindowViewModel.DashboardBindings.LootedChests.RandomGroupDungeonCommonMonth = GetStats(TreasureRarity.Common, TreasureType.RandomGroupDungeon, -30);
+        _mainWindowViewModel.DashboardBindings.LootedChests.RandomGroupDungeonCommonYear = GetStats(TreasureRarity.Common, TreasureType.RandomGroupDungeon, -365);
         _mainWindowViewModel.DashboardBindings.LootedChests.RandomGroupDungeonUncommonWeek = GetStats(TreasureRarity.Uncommon, TreasureType.RandomGroupDungeon, -7);
         _mainWindowViewModel.DashboardBindings.LootedChests.RandomGroupDungeonUncommonMonth = GetStats(TreasureRarity.Uncommon, TreasureType.RandomGroupDungeon, -30);
         _mainWindowViewModel.DashboardBindings.LootedChests.RandomGroupDungeonUncommonYear = GetStats(TreasureRarity.Uncommon, TreasureType.RandomGroupDungeon, -365);
@@ -135,9 +135,9 @@ public class TreasureController
 
         #region Random solo dungeons
 
-        _mainWindowViewModel.DashboardBindings.LootedChests.RandomSoloDungeonCommonWeek = GetStats(TreasureRarity.Standard, TreasureType.RandomSoloDungeon, -7);
-        _mainWindowViewModel.DashboardBindings.LootedChests.RandomSoloDungeonCommonMonth = GetStats(TreasureRarity.Standard, TreasureType.RandomSoloDungeon, -30);
-        _mainWindowViewModel.DashboardBindings.LootedChests.RandomSoloDungeonCommonYear = GetStats(TreasureRarity.Standard, TreasureType.RandomSoloDungeon, -365);
+        _mainWindowViewModel.DashboardBindings.LootedChests.RandomSoloDungeonCommonWeek = GetStats(TreasureRarity.Common, TreasureType.RandomSoloDungeon, -7);
+        _mainWindowViewModel.DashboardBindings.LootedChests.RandomSoloDungeonCommonMonth = GetStats(TreasureRarity.Common, TreasureType.RandomSoloDungeon, -30);
+        _mainWindowViewModel.DashboardBindings.LootedChests.RandomSoloDungeonCommonYear = GetStats(TreasureRarity.Common, TreasureType.RandomSoloDungeon, -365);
         _mainWindowViewModel.DashboardBindings.LootedChests.RandomSoloDungeonUncommonWeek = GetStats(TreasureRarity.Uncommon, TreasureType.RandomSoloDungeon, -7);
         _mainWindowViewModel.DashboardBindings.LootedChests.RandomSoloDungeonUncommonMonth = GetStats(TreasureRarity.Uncommon, TreasureType.RandomSoloDungeon, -30);
         _mainWindowViewModel.DashboardBindings.LootedChests.RandomSoloDungeonUncommonYear = GetStats(TreasureRarity.Uncommon, TreasureType.RandomSoloDungeon, -365);
@@ -152,9 +152,9 @@ public class TreasureController
 
         #region HellGate
 
-        _mainWindowViewModel.DashboardBindings.LootedChests.HellGateCommonWeek = GetStats(TreasureRarity.Standard, TreasureType.HellGate, -7);
-        _mainWindowViewModel.DashboardBindings.LootedChests.HellGateCommonMonth = GetStats(TreasureRarity.Standard, TreasureType.HellGate, -30);
-        _mainWindowViewModel.DashboardBindings.LootedChests.HellGateCommonYear = GetStats(TreasureRarity.Standard, TreasureType.HellGate, -365);
+        _mainWindowViewModel.DashboardBindings.LootedChests.HellGateCommonWeek = GetStats(TreasureRarity.Common, TreasureType.HellGate, -7);
+        _mainWindowViewModel.DashboardBindings.LootedChests.HellGateCommonMonth = GetStats(TreasureRarity.Common, TreasureType.HellGate, -30);
+        _mainWindowViewModel.DashboardBindings.LootedChests.HellGateCommonYear = GetStats(TreasureRarity.Common, TreasureType.HellGate, -365);
         _mainWindowViewModel.DashboardBindings.LootedChests.HellGateUncommonWeek = GetStats(TreasureRarity.Uncommon, TreasureType.HellGate, -7);
         _mainWindowViewModel.DashboardBindings.LootedChests.HellGateUncommonMonth = GetStats(TreasureRarity.Uncommon, TreasureType.HellGate, -30);
         _mainWindowViewModel.DashboardBindings.LootedChests.HellGateUncommonYear = GetStats(TreasureRarity.Uncommon, TreasureType.HellGate, -365);
@@ -169,9 +169,9 @@ public class TreasureController
 
         #region Mist
 
-        _mainWindowViewModel.DashboardBindings.LootedChests.MistCommonWeek = GetStats(TreasureRarity.Standard, TreasureType.Mist, -7);
-        _mainWindowViewModel.DashboardBindings.LootedChests.MistCommonMonth = GetStats(TreasureRarity.Standard, TreasureType.Mist, -30);
-        _mainWindowViewModel.DashboardBindings.LootedChests.MistCommonYear = GetStats(TreasureRarity.Standard, TreasureType.Mist, -365);
+        _mainWindowViewModel.DashboardBindings.LootedChests.MistCommonWeek = GetStats(TreasureRarity.Common, TreasureType.Mist, -7);
+        _mainWindowViewModel.DashboardBindings.LootedChests.MistCommonMonth = GetStats(TreasureRarity.Common, TreasureType.Mist, -30);
+        _mainWindowViewModel.DashboardBindings.LootedChests.MistCommonYear = GetStats(TreasureRarity.Common, TreasureType.Mist, -365);
         _mainWindowViewModel.DashboardBindings.LootedChests.MistUncommonWeek = GetStats(TreasureRarity.Uncommon, TreasureType.Mist, -7);
         _mainWindowViewModel.DashboardBindings.LootedChests.MistUncommonMonth = GetStats(TreasureRarity.Uncommon, TreasureType.Mist, -30);
         _mainWindowViewModel.DashboardBindings.LootedChests.MistUncommonYear = GetStats(TreasureRarity.Uncommon, TreasureType.Mist, -365);
@@ -210,7 +210,7 @@ public class TreasureController
 
         if (Regex.IsMatch(value, "\\w*_STANDARD\\b|\\w*_STANDARD_[T][4-8]|\\w*_STANDARD_STANDARD_[T][4-8]|STATIC_\\w*_POI"))
         {
-            return TreasureRarity.Standard;
+            return TreasureRarity.Common;
         }
         if (Regex.IsMatch(value, "\\w*_UNCOMMON\\b|\\w*_UNCOMMON_[T][4-8]|\\w*_STANDARD_UNCOMMON_[T][4-8]|STATIC_\\w*_CHAMPION"))
         {

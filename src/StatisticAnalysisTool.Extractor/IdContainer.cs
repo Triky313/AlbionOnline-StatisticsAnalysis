@@ -1,7 +1,7 @@
 ﻿namespace StatisticAnalysisTool.Extractor;
 
-public class IdContainer
+internal class IdContainer
 {
-    public string Index { get; set; }
-    public string UniqueName { get; set; }
+    public string? Index { get; set; }
+    public required string UniqueName { get; set; }
 }

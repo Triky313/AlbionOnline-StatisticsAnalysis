@@ -5,7 +5,10 @@
                     xmlns:itemWindowModel="clr-namespace:StatisticsAnalysisTool.Models.ItemWindowModel"
                     xmlns:fa5="http://schemas.fontawesome.com/icons/"
                     xmlns:com="clr-namespace:StatisticsAnalysisTool.Common"
-                    xmlns:models="clr-namespace:StatisticsAnalysisTool.Models">
+                    xmlns:models="clr-namespace:StatisticsAnalysisTool.Models"
+                    xmlns:converters="clr-namespace:StatisticsAnalysisTool.Common.Converters">
+
+    <converters:ZeroToDashConverter x:Key="ZeroToDashConverter" />
 
     <Style x:Key="ListView.Grid.Item.Price" TargetType="Grid">
         <Setter Property="VerticalAlignment" Value="Center"/>
@@ -266,15 +269,15 @@
         <StackPanel Orientation="Horizontal" Margin="5,0,5,5">
             <Image Source="{Binding Icon}" HorizontalAlignment="Left" Height="50" Width="50" Margin="0,0,0,0" VerticalAlignment="Top" />
             <StackPanel Orientation="Vertical">
-               <StackPanel Orientation="Horizontal">
-                   <Label Content="{Binding CraftingResourceName, FallbackValue=CRAFTING__RESOURCE__FIRST__NAME}" Style="{StaticResource Label.Crafting.Title}" />
-                   <Grid Margin="2" Width="12" Height="12" VerticalAlignment="Top" HorizontalAlignment="Left">
-                       <fa5:ImageAwesome Icon="Solid_Copy" Foreground="{StaticResource SolidColorBrush.Text.1}">
-                           <fa5:ImageAwesome.InputBindings>
+                <StackPanel Orientation="Horizontal">
+                    <Label Content="{Binding CraftingResourceName, FallbackValue=CRAFTING__RESOURCE__FIRST__NAME}" Style="{StaticResource Label.Crafting.Title}" />
+                    <Grid Margin="2" Width="12" Height="12" VerticalAlignment="Top" HorizontalAlignment="Left">
+                        <fa5:ImageAwesome Icon="Solid_Copy" Foreground="{StaticResource SolidColorBrush.Text.1}">
+                            <fa5:ImageAwesome.InputBindings>
                                 <MouseBinding MouseAction="LeftClick" Command="{Binding CopyItemNameToClipboardCommand}" CommandParameter="{Binding CraftingResourceName}" />
-                           </fa5:ImageAwesome.InputBindings>
-                       </fa5:ImageAwesome>
-                   </Grid>
+                            </fa5:ImageAwesome.InputBindings>
+                        </fa5:ImageAwesome>
+                    </Grid>
                 </StackPanel>
                 <StackPanel Orientation="Horizontal">
                     <StackPanel Orientation="Vertical">
@@ -558,16 +561,10 @@
     <DataTemplate x:Key="GridViewColumnSellPriceMinTemplate"  DataType="{x:Type models:ItemPricesObject}">
         <Grid Style="{StaticResource ListView.Grid.Item.Price}" Visibility="{Binding Visibility}">
             <StackPanel Style="{StaticResource ListView.Grid.StackPanel.Item.Price}">
-                <Label>
-                    <Label.Content>
-                        <TextBlock>
-                            <TextBlock.Text>
-                                <MultiBinding StringFormat="N0" ConverterCulture="{x:Static com:LanguageController.CurrentCultureInfo}">
-                                    <Binding Path="SellPriceMin" />
-                                </MultiBinding>
-                            </TextBlock.Text>
-                        </TextBlock>
-                    </Label.Content>
+                <Label Content="{Binding SellPriceMin, 
+                    StringFormat='N0', 
+                    Converter={StaticResource ZeroToDashConverter}, 
+                    ConverterCulture={x:Static com:LanguageController.CurrentCultureInfo}}">
                     <Label.InputBindings>
                         <!-- ReSharper disable once Xaml.BindingWithContextNotResolved -->
                         <MouseBinding MouseAction="LeftDoubleClick" Command="{Binding CopyTextToClipboard}" 
@@ -635,16 +632,10 @@
     <DataTemplate x:Key="GridViewColumnSellPriceMaxTemplate"  DataType="{x:Type models:ItemPricesObject}">
         <Grid Style="{StaticResource ListView.Grid.Item.Price}" Visibility="{Binding Visibility}">
             <StackPanel Style="{StaticResource ListView.Grid.StackPanel.Item.Price}">
-                <Label>
-                    <Label.Content>
-                        <TextBlock>
-                            <TextBlock.Text>
-                                <MultiBinding StringFormat="N0" ConverterCulture="{x:Static com:LanguageController.CurrentCultureInfo}">
-                                    <Binding Path="SellPriceMax" />
-                                </MultiBinding>
-                            </TextBlock.Text>
-                        </TextBlock>
-                    </Label.Content>
+                <Label Content="{Binding SellPriceMax, 
+                    StringFormat='N0', 
+                    Converter={StaticResource ZeroToDashConverter}, 
+                    ConverterCulture={x:Static com:LanguageController.CurrentCultureInfo}}">
                     <Label.InputBindings>
                         <!-- ReSharper disable once Xaml.BindingWithContextNotResolved -->
                         <MouseBinding MouseAction="LeftDoubleClick" Command="{Binding CopyTextToClipboard}" 
@@ -713,16 +704,10 @@
     <DataTemplate x:Key="GridViewColumnBuyPriceMinTemplate"  DataType="{x:Type models:ItemPricesObject}">
         <Grid Style="{StaticResource ListView.Grid.Item.Price}" Visibility="{Binding Visibility}">
             <StackPanel Style="{StaticResource ListView.Grid.StackPanel.Item.Price}">
-                <Label>
-                    <Label.Content>
-                        <TextBlock>
-                            <TextBlock.Text>
-                                <MultiBinding StringFormat="N0" ConverterCulture="{x:Static com:LanguageController.CurrentCultureInfo}">
-                                    <Binding Path="BuyPriceMin" />
-                                </MultiBinding>
-                            </TextBlock.Text>
-                        </TextBlock>
-                    </Label.Content>
+                <Label Content="{Binding BuyPriceMin, 
+                    StringFormat='N0', 
+                    Converter={StaticResource ZeroToDashConverter}, 
+                    ConverterCulture={x:Static com:LanguageController.CurrentCultureInfo}}">
                     <Label.InputBindings>
                         <!-- ReSharper disable once Xaml.BindingWithContextNotResolved -->
                         <MouseBinding MouseAction="LeftDoubleClick" Command="{Binding CopyTextToClipboard}" 
@@ -791,16 +776,10 @@
     <DataTemplate x:Key="GridViewColumnBuyPriceMaxTemplate"  DataType="{x:Type models:ItemPricesObject}">
         <Grid Style="{StaticResource ListView.Grid.Item.Price}" Visibility="{Binding Visibility}">
             <StackPanel Style="{StaticResource ListView.Grid.StackPanel.Item.Price}">
-                <Label>
-                    <Label.Content>
-                        <TextBlock>
-                            <TextBlock.Text>
-                                <MultiBinding StringFormat="N0" ConverterCulture="{x:Static com:LanguageController.CurrentCultureInfo}">
-                                    <Binding Path="BuyPriceMax" />
-                                </MultiBinding>
-                            </TextBlock.Text>
-                        </TextBlock>
-                    </Label.Content>
+                <Label Content="{Binding BuyPriceMax, 
+                    StringFormat='N0', 
+                    Converter={StaticResource ZeroToDashConverter}, 
+                    ConverterCulture={x:Static com:LanguageController.CurrentCultureInfo}}">
                     <Label.InputBindings>
                         <!-- ReSharper disable once Xaml.BindingWithContextNotResolved -->
                         <MouseBinding MouseAction="LeftDoubleClick" Command="{Binding CopyTextToClipboard}" 
@@ -878,16 +857,10 @@
     <DataTemplate x:Key="GridViewColumn.SellPriceMinNormalTemplate"  DataType="{x:Type models:MarketQualityObject}">
         <Grid Style="{StaticResource ListView.Grid.Item.Price}" Visibility="{Binding Visibility}">
             <StackPanel Style="{StaticResource ListView.Grid.StackPanel.Item.Price}">
-                <Label ToolTip="{Binding SellPriceMinNormalDate, StringFormat='G'}">
-                    <Label.Content>
-                        <TextBlock>
-                            <TextBlock.Text>
-                                <MultiBinding StringFormat="N0" ConverterCulture="{x:Static com:LanguageController.CurrentCultureInfo}">
-                                    <Binding Path="SellPriceMinNormal" />
-                                </MultiBinding>
-                            </TextBlock.Text>
-                        </TextBlock>
-                    </Label.Content>
+                <Label Content="{Binding SellPriceMinNormal, 
+                    StringFormat='N0', 
+                    Converter={StaticResource ZeroToDashConverter}, 
+                    ConverterCulture={x:Static com:LanguageController.CurrentCultureInfo}}"  ToolTip="{Binding SellPriceMinNormalDate, StringFormat='G'}">
                     <Label.InputBindings>
                         <!-- ReSharper disable once Xaml.BindingWithContextNotResolved -->
                         <MouseBinding MouseAction="LeftDoubleClick" Command="{Binding CopyTextToClipboard}" 
@@ -924,16 +897,10 @@
     <DataTemplate x:Key="GridViewColumn.SellPriceMinGoodTemplate"  DataType="{x:Type models:MarketQualityObject}">
         <Grid Style="{StaticResource ListView.Grid.Item.Price}" Visibility="{Binding Visibility}">
             <StackPanel Style="{StaticResource ListView.Grid.StackPanel.Item.Price}">
-                <Label ToolTip="{Binding SellPriceMinGoodDate}">
-                    <Label.Content>
-                        <TextBlock>
-                            <TextBlock.Text>
-                                <MultiBinding StringFormat="N0" ConverterCulture="{x:Static com:LanguageController.CurrentCultureInfo}">
-                                    <Binding Path="SellPriceMinGood" />
-                                </MultiBinding>
-                            </TextBlock.Text>
-                        </TextBlock>
-                    </Label.Content>
+                <Label Content="{Binding SellPriceMinGood, 
+                    StringFormat='N0', 
+                    Converter={StaticResource ZeroToDashConverter}, 
+                    ConverterCulture={x:Static com:LanguageController.CurrentCultureInfo}}"  ToolTip="{Binding SellPriceMinGoodDate, StringFormat='G'}">
                     <Label.InputBindings>
                         <!-- ReSharper disable once Xaml.BindingWithContextNotResolved -->
                         <MouseBinding MouseAction="LeftDoubleClick" Command="{Binding CopyTextToClipboard}" 
@@ -970,16 +937,10 @@
     <DataTemplate x:Key="GridViewColumn.SellPriceMinOutstandingTemplate"  DataType="{x:Type models:MarketQualityObject}">
         <Grid Style="{StaticResource ListView.Grid.Item.Price}" Visibility="{Binding Visibility}">
             <StackPanel Style="{StaticResource ListView.Grid.StackPanel.Item.Price}">
-                <Label ToolTip="{Binding SellPriceMinOutstandingDate}">
-                    <Label.Content>
-                        <TextBlock>
-                            <TextBlock.Text>
-                                <MultiBinding StringFormat="N0" ConverterCulture="{x:Static com:LanguageController.CurrentCultureInfo}">
-                                    <Binding Path="SellPriceMinOutstanding" />
-                                </MultiBinding>
-                            </TextBlock.Text>
-                        </TextBlock>
-                    </Label.Content>
+                <Label Content="{Binding SellPriceMinOutstanding, 
+                    StringFormat='N0', 
+                    Converter={StaticResource ZeroToDashConverter}, 
+                    ConverterCulture={x:Static com:LanguageController.CurrentCultureInfo}}"  ToolTip="{Binding SellPriceMinOutstandingDate, StringFormat='G'}">
                     <Label.InputBindings>
                         <!-- ReSharper disable once Xaml.BindingWithContextNotResolved -->
                         <MouseBinding MouseAction="LeftDoubleClick" Command="{Binding CopyTextToClipboard}" 
@@ -1016,16 +977,10 @@
     <DataTemplate x:Key="GridViewColumn.SellPriceMinExcellentTemplate"  DataType="{x:Type models:MarketQualityObject}">
         <Grid Style="{StaticResource ListView.Grid.Item.Price}" Visibility="{Binding Visibility}">
             <StackPanel Style="{StaticResource ListView.Grid.StackPanel.Item.Price}">
-                <Label ToolTip="{Binding SellPriceMinExcellentDate}">
-                    <Label.Content>
-                        <TextBlock>
-                            <TextBlock.Text>
-                                <MultiBinding StringFormat="N0" ConverterCulture="{x:Static com:LanguageController.CurrentCultureInfo}">
-                                    <Binding Path="SellPriceMinExcellent" />
-                                </MultiBinding>
-                            </TextBlock.Text>
-                        </TextBlock>
-                    </Label.Content>
+                <Label Content="{Binding SellPriceMinExcellent, 
+                    StringFormat='N0', 
+                    Converter={StaticResource ZeroToDashConverter}, 
+                    ConverterCulture={x:Static com:LanguageController.CurrentCultureInfo}}"  ToolTip="{Binding SellPriceMinExcellentDate, StringFormat='G'}">
                     <Label.InputBindings>
                         <!-- ReSharper disable once Xaml.BindingWithContextNotResolved -->
                         <MouseBinding MouseAction="LeftDoubleClick" Command="{Binding CopyTextToClipboard}" 
@@ -1062,16 +1017,10 @@
     <DataTemplate x:Key="GridViewColumn.SellPriceMinMasterpieceTemplate"  DataType="{x:Type models:MarketQualityObject}">
         <Grid Style="{StaticResource ListView.Grid.Item.Price}" Visibility="{Binding Visibility}">
             <StackPanel Style="{StaticResource ListView.Grid.StackPanel.Item.Price}">
-                <Label ToolTip="{Binding SellPriceMinMasterpieceDate}">
-                    <Label.Content>
-                        <TextBlock>
-                            <TextBlock.Text>
-                                <MultiBinding StringFormat="N0" ConverterCulture="{x:Static com:LanguageController.CurrentCultureInfo}">
-                                    <Binding Path="SellPriceMinMasterpiece" />
-                                </MultiBinding>
-                            </TextBlock.Text>
-                        </TextBlock>
-                    </Label.Content>
+                <Label Content="{Binding SellPriceMinMasterpiece, 
+                    StringFormat='N0', 
+                    Converter={StaticResource ZeroToDashConverter}, 
+                    ConverterCulture={x:Static com:LanguageController.CurrentCultureInfo}}"  ToolTip="{Binding SellPriceMinMasterpieceDate, StringFormat='G'}">
                     <Label.InputBindings>
                         <!-- ReSharper disable once Xaml.BindingWithContextNotResolved -->
                         <MouseBinding MouseAction="LeftDoubleClick" Command="{Binding CopyTextToClipboard}" 

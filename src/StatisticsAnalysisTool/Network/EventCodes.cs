@@ -80,7 +80,7 @@ public enum EventCodes
     UpdateReSpecPoints = 79, // map[0:[0 55814284204 0 0 0] 1:1 2:9948534 3:10000000 252:78] 2: GainedReSpec, 3: PaidSilver
     UpdateCurrency = 80,
     UpdateFactionStanding = 81,
-    UpdateBrecilienStanding, // map[0:11575080 1:3858360 2:970279167 252:81] 0: StandingPoints
+    UpdateBrecilienStanding = 82, // map[0:11575080 1:3858360 2:970279167 252:81] 0: StandingPoints
     Respawn,
     ServerDebugLog,
     CharacterEquipmentChanged = 85, // map[0:297 1:26283117 2:[0 1721 0 0 0 2330 2301 2468 0 0] 5:[-1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 3168] 252:85]
@@ -299,7 +299,7 @@ public enum EventCodes
     MountHealthUpdate,
     MountCooldownUpdate,
     NewExpeditionAgent,
-    NewExpeditionCheckPoint,
+    NewExpeditionCheckPoint = 299,
     ExpeditionStartent,
     Voteent,
     Ratingent,

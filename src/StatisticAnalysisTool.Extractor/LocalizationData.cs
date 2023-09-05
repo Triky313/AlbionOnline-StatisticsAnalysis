@@ -3,7 +3,7 @@ using System.Xml;
 
 namespace StatisticAnalysisTool.Extractor;
 
-public class LocalizationData : IDisposable
+internal class LocalizationData : IDisposable
 {
     public const string ItemPrefix = "@ITEMS_";
     public const string DescPostfix = "_DESC";

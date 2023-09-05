@@ -3,7 +3,7 @@ using System.Xml;
 
 namespace StatisticAnalysisTool.Extractor;
 
-public class ItemData : IDisposable
+internal class ItemData : IDisposable
 {
     public static async Task CreateItemDataAsync(string mainGameFolder, LocalizationData localizationData, string outputFolderPath, string outputFileNameWithExtension = "indexedItems.json")
     {

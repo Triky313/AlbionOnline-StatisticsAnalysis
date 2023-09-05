@@ -12,6 +12,7 @@ using System.Linq;
 using System.Reflection;
 using System.Threading.Tasks;
 using System.Windows;
+using Loot = StatisticsAnalysisTool.Models.NetworkModel.Loot;
 
 namespace StatisticsAnalysisTool.Network.Manager;
 

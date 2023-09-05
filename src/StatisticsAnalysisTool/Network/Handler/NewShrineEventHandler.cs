@@ -15,7 +15,7 @@ public class NewShrineEventHandler : EventPacketHandler<NewShrineEvent>
 
     protected override async Task OnActionAsync(NewShrineEvent value)
     {
-        _trackingController.DungeonController?.SetDungeonEventObjectInformationAsync(value.Id, value.UniqueName).ConfigureAwait(false);
+        await _trackingController.DungeonController?.SetDungeonEventInformationAsync(value.Id, value.UniqueName)!;
         await Task.CompletedTask;
     }
 }

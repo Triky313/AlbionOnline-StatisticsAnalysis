@@ -18,6 +18,7 @@ public class ClusterInfo
     public string InstanceName { get; set; }
     public string WorldMapDataType { get; set; }
     public byte[] DungeonInformation { get; set; }
+    public Tier MistsDungeonTier { get; set; }
 
     // Join data
     public string MainClusterIndex { get; set; }
@@ -33,6 +34,7 @@ public class ClusterInfo
     public string ClusterHistoryString1 { get; private set; }
     public string ClusterHistoryString2 { get; private set; }
     public string ClusterHistoryString3 { get; private set; }
+    public MistsRarity MistsRarity { get; private set; }
     public List<MapMarkerType> MapMarkers => WorldData.GetMapMarkers(Index);
 
     public ClusterInfo()
@@ -55,13 +57,14 @@ public class ClusterInfo
         UniqueName = clusterInfo.UniqueName;
         UniqueClusterName = clusterInfo.UniqueClusterName;
         Tier = clusterInfo.Tier;
+        MistsDungeonTier = clusterInfo.MistsDungeonTier;
         ClusterMode = clusterInfo.ClusterMode;
         AvalonTunnelType = clusterInfo.AvalonTunnelType;
         MapTypeString = clusterInfo.MapTypeString;
         ClusterHistoryString();
     }
 
-    public void SetClusterInfo(MapType mapType, Guid? mapGuid, string clusterIndex, string instanceName, string worldMapDataType, byte[] dungeonInformation, string mainClusterIndex)
+    public void SetClusterInfo(MapType mapType, Guid? mapGuid, string clusterIndex, string instanceName, string worldMapDataType, byte[] dungeonInformation, string mainClusterIndex, Tier mistsDungeonTier)
     {
         Entered = DateTime.UtcNow;
         MapType = mapType;
@@ -70,6 +73,8 @@ public class ClusterInfo
         InstanceName = instanceName;
         WorldMapDataType = worldMapDataType;
         DungeonInformation = dungeonInformation;
+        MistsDungeonTier = mistsDungeonTier;
+        MistsRarity = GetMistsRarity(dungeonInformation);
 
         MainClusterIndex = mainClusterIndex;
         WorldJsonType = null;
@@ -124,6 +129,26 @@ public class ClusterInfo
             ClusterHistoryString2 = UniqueName;
             ClusterHistoryString3 = AvalonTunnelType.ToString();
         }
+    }
+
+    private MistsRarity GetMistsRarity(byte[] infoArray)
+    {
+        if (infoArray is null)
+        {
+            return MistsRarity.Unknown;
+        }
+
+        var rarity = DungeonInformation[^1];
+
+        return rarity switch
+        {
+            0 => MistsRarity.Common,
+            1 => MistsRarity.Uncommon,
+            2 => MistsRarity.Rare,
+            3 => MistsRarity.Epic,
+            4 => MistsRarity.Legendary,
+            _ => MistsRarity.Unknown
+        };
     }
 
     public string TierRomanString
@@ -328,7 +353,7 @@ public class ClusterInfo
         return mapType switch
         {
             MapType.RandomDungeon => LanguageController.Translation("DUNGEON"),
-            MapType.HellGate => LanguageController.Translation("HELL_GATE"),
+            MapType.HellGate => LanguageController.Translation("HELLGATE"),
             MapType.CorruptedDungeon => LanguageController.Translation("CORRUPTED_DUNGEON"),
             MapType.Island => LanguageController.Translation("ISLAND"),
             MapType.Hideout => LanguageController.Translation("HIDEOUT"),
