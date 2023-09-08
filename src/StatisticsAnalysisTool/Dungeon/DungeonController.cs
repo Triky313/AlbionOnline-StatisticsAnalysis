@@ -127,7 +127,7 @@ public class DungeonController
         _lastMapGuid = mapGuid;
 
         await RemoveDungeonsAfterCertainNumberAsync(_mainWindowViewModel.DungeonBindings.Dungeons, MaxDungeons);
-        await Application.Current.Dispatcher.InvokeAsync(async () => { await _mainWindowViewModel.DungeonBindings.UpdateFilteredDungeonsAsync(); });
+        await Application.Current.Dispatcher.InvokeAsync(_mainWindowViewModel.DungeonBindings.UpdateFilteredDungeonsAsync);
     }
 
     private static DungeonBaseFragment CreateNewDungeon(MapType mapType, string mainMapIndex, Guid? guid)

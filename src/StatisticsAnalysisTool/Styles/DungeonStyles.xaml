@@ -1745,6 +1745,33 @@
                         </StackPanel>
                     </StackPanel>
                 </StackPanel>
+                <Rectangle VerticalAlignment="Stretch" Fill="{StaticResource SolidColorBrush.Background.3}" Width="1" Margin="10,0" />
+
+                <!-- Kills / Deaths -->
+                <StackPanel Orientation="Vertical">
+                    <TextBlock Text="{Binding TranslationKillsDeaths, IsAsync=True, FallbackValue=KILLS_DEATHS}" FontSize="16" 
+                               Foreground="{StaticResource SolidColorBrush.Accent.Blue.2}" Margin="10,0,0,0" />
+                    <StackPanel Orientation="Horizontal">
+                        <StackPanel Orientation="Vertical" Margin="5,0">
+                            <Grid Height="40" Width="40" ToolTip="{Binding TranslationFights}">
+                                <Image Source="/Assets/skull.png" Height="26" Width="26" />
+                            </Grid>
+                            <TextBlock Text="{Binding Fights, StringFormat='{}{0:N0}', FallbackValue=0}" Style="{StaticResource Dungeons.Stats.Value.Big}" />
+                        </StackPanel>
+                        <StackPanel Orientation="Vertical" Margin="5,0">
+                            <Grid Height="40" Width="40" ToolTip="{Binding TranslationKills}">
+                                <Image Source="/Assets/skull_green.png" Height="26" Width="26" />
+                            </Grid>
+                            <TextBlock Text="{Binding Kills, StringFormat='{}{0:N0}', FallbackValue=0}" Style="{StaticResource Dungeons.Stats.Value.Big}" />
+                        </StackPanel>
+                        <StackPanel Orientation="Vertical" Margin="5,0">
+                            <Grid Height="40" Width="40" ToolTip="{Binding TranslationDeaths}">
+                                <Image Source="/Assets/skull_red.png" Height="26" Width="26" />
+                            </Grid>
+                            <TextBlock Text="{Binding Deaths, StringFormat='{}{0:N0}', FallbackValue=0}" Style="{StaticResource Dungeons.Stats.Value.Big}" />
+                        </StackPanel>
+                    </StackPanel>
+                </StackPanel>
             </StackPanel>
 
             <!-- Fame, ReSpec, Silver, Might, Favor, Loot value, table -->

@@ -35,6 +35,9 @@ public class StatsHellGate : BaseViewModel
     private int _openedStandardBookChests;
     private int _openedUncommonBookChests;
     private int _openedRareBookChests;
+    private int _kills;
+    private int _deaths;
+    private int _fights;
 
     public Visibility Visibility
     {
@@ -338,6 +341,36 @@ public class StatsHellGate : BaseViewModel
         }
     }
 
+    public int Kills
+    {
+        get => _kills;
+        set
+        {
+            _kills = value;
+            OnPropertyChanged();
+        }
+    }
+
+    public int Deaths
+    {
+        get => _deaths;
+        set
+        {
+            _deaths = value;
+            OnPropertyChanged();
+        }
+    }
+
+    public int Fights
+    {
+        get => _fights;
+        set
+        {
+            _fights = value;
+            OnPropertyChanged();
+        }
+    }
+
     public static string TranslationAverageAbbreviation => LanguageController.Translation("AVERAGE_ABBREVIATION");
     public static string TranslationHourAbbreviation => LanguageController.Translation("HOUR_ABBREVIATION");
     public static string TranslationHellGates => LanguageController.Translation("HELLGATES");
@@ -355,4 +388,8 @@ public class StatsHellGate : BaseViewModel
     public static string TranslationBookChestStats => LanguageController.Translation("BOOK_CHEST_STATS");
     public static string TranslationType => LanguageController.Translation("TYPE");
     public static string TranslationNumberOfDungeons => LanguageController.Translation("NUMBER_OF_DUNGEONS");
+    public static string TranslationKillsDeaths => $"{LanguageController.Translation("KILLS")} / {LanguageController.Translation("DEATHS")}";
+    public static string TranslationFights => LanguageController.Translation("FIGHTS");
+    public static string TranslationKills => LanguageController.Translation("KILLS");
+    public static string TranslationDeaths => LanguageController.Translation("DEATHS");
 }
