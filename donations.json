@@ -1,4 +1,11 @@
 [ 
+     {
+	"Timestamp": "2023-09-08T00:00:00",
+	"Amount": 0,
+	"RealMoneyAmount": 4.75,
+	"Contributor": "Anonymously Donated",
+	"IsDonationRealMoney": true
+    },
     {
 	"Timestamp": "2023-08-08T00:00:00",
 	"Amount": 0,
