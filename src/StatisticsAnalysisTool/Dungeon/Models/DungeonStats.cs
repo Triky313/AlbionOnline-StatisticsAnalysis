@@ -277,6 +277,10 @@ public class DungeonStats : BaseViewModel
         StatsHellGate.Might = hellGate.Sum(x => x.Might);
         StatsHellGate.Favor = hellGate.Sum(x => x.Favor);
 
+        StatsHellGate.Kills = hellGate.Count(x => x.KillStatus == KillStatus.OpponentDead);
+        StatsHellGate.Deaths = hellGate.Count(x => x.KillStatus == KillStatus.LocalPlayerDead);
+        StatsHellGate.Fights = hellGate.Count(x => x.KillStatus is KillStatus.LocalPlayerDead or KillStatus.OpponentDead);
+
         StatsHellGate.LootInSilver = hellGate.SelectMany(x => x.Loot).Sum(x => FixPoint.FromInternalValue(x.EstimatedMarketValueInternal).DoubleValue);
         StatsHellGate.MostValuableLoot = hellGate.SelectMany(x => x.Loot).MaxBy(x => x?.EstimatedMarketValueInternal);
     }
