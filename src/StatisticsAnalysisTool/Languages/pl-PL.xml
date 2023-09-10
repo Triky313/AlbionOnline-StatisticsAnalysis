@@ -518,9 +518,9 @@
 	<translation name="CHARACTER_NAME_TO_TRACK">Nazwa postaci do śledzenia</translation>
 	<translation name="THIS_CHARACTER_IS_NOT_TRACKED">Ta postać nie jest śledzona</translation>
 	<translation name="DATA_FROM_ALBION_ONLINE_SERVERS">Dane z serwerów Albion Online</translation>
-	<translation name="TODAY"> ostatnie 24h</translation>
-	<translation name="WEEK"> w ciągu tygodnia</translation>
-	<translation name="MONTH"> w ciągu miesiąca</translation>
+	<translation name="TODAY">Dziś</translation>
+	<translation name="WEEK">Tydzień</translation>
+	<translation name="MONTH">Miesiąc</translation>
 	<translation name="KILLS">Zabójstwa</translation>
 	<translation name="SOLO_KILLS">Solo Zabójstwa</translation>
 	<translation name="DEATHS">Zgony</translation>
@@ -647,8 +647,8 @@
 	<translation name="BONUS">Bonus</translation>
 	<translation name="PREMIUM">Premium</translation>
 	<translation name="GATHERING_ACTIVE">Zbieranie aktywne</translation>
-	<translation name="THIS_WEEK">W tym tygodniu</translation>
-	<translation name="LAST_WEEK">Ostatni tydzień</translation>
+	<translation name="THIS_WEEK">Obecny Tydzień</translation>
+	<translation name="LAST_WEEK">Poprzedni Tydzień</translation>
 	<translation name="GENERALLY">Ogólnie</translation>
 	<translation name="MOST_GATHERED_RESOURCE">Najczęściej zbierany surowiec</translation>
 	<translation name="MOST_GATHERED_ON_MAP">Na jakiej mapie najcześciej zbieramy</translation>
