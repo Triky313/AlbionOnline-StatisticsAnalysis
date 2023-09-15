@@ -4,7 +4,6 @@ using System.IO;
 using System.Linq;
 using System.Net;
 using System.Net.Sockets;
-using System.Threading.Tasks;
 
 namespace StatisticsAnalysisTool.Network;
 
@@ -14,7 +13,7 @@ public class PacketSniffer
     private Socket _mainSocket;
     private byte[] _byteData = new byte[65000];
     private readonly IPAddress _gateway;
-    
+
     public PacketSniffer(IPhotonReceiver photonReceiver)
     {
         _photonReceiver = photonReceiver;
@@ -24,7 +23,7 @@ public class PacketSniffer
         if (hostEntry.AddressList.Length > 0)
         {
             foreach (IPAddress ip in hostEntry.AddressList)
-            
+
             {
                 try
                 {
