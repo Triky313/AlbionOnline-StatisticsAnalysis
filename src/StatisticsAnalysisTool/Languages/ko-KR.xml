@@ -402,7 +402,7 @@
 	<translation name="AVALONIAN_DUNGEON">아발론 던전</translation>
 	<translation name="HG">헬게</translation>
 	<translation name="EXPED">원정대</translation>
-	<translation name="CORRUPTED">오던</translation>
+	<translation name="CORRUPTED">오염된 던전</translation>
 	<translation name="AVERAGE_FAME">평균 명성</translation>
 	<translation name="AVERAGE_RESPEC">평균 재특화</translation>
 	<translation name="AVERAGE_SILVER">평균 실버</translation>
@@ -519,7 +519,7 @@
 	<translation name="CHARACTER_NAME_TO_TRACK">추적할 캐릭터 이름</translation>
 	<translation name="THIS_CHARACTER_IS_NOT_TRACKED">이 캐릭터는 추적되지 않음.</translation>
 	<translation name="DATA_FROM_ALBION_ONLINE_SERVERS">알비온 온라인 서버에서 수집한 데이터</translation>
-	<translation name="TODAY">일</translation>
+	<translation name="TODAY">오늘</translation>
 	<translation name="WEEK">주</translation>
 	<translation name="MONTH">월</translation>
 	<translation name="KILLS">처치</translation>
