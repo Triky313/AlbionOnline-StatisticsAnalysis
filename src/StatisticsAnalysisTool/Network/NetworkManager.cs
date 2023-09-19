@@ -76,7 +76,7 @@ public static class NetworkManager
 
         builder.AddRequestHandler(new InventoryMoveItemRequestHandler(trackingController));
         builder.AddRequestHandler(new UseShrineRequestHandler(trackingController));
-        builder.AddRequestHandler(new ReSpecBoostRequestHandler(trackingController));
+        builder.AddRequestHandler(new ClaimPaymentTransactionRequestHandler(trackingController));
         builder.AddRequestHandler(new TakeSilverRequestHandler(trackingController));
         builder.AddRequestHandler(new RegisterToObjectRequestHandler(trackingController));
         builder.AddRequestHandler(new UnRegisterFromObjectRequestHandler(trackingController));
