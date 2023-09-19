@@ -12,6 +12,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Data;
+using StatisticsAnalysisTool.Cluster;
 
 namespace StatisticsAnalysisTool.Dungeon;
 
@@ -297,6 +298,7 @@ public class DungeonBindings : BaseViewModel
         bool isLevelOkay = false;
         bool isTierOkay = false;
         bool isModeOkay = false;
+        bool isMapTypeOkay = false;
         bool isTimestampOkay = false;
 
         if (IsLevelOkay(obj))
@@ -314,12 +316,17 @@ public class DungeonBindings : BaseViewModel
             isModeOkay = true;
         }
 
+        if (IsMapTypeOkay(obj))
+        {
+            isMapTypeOkay = true;
+        }
+
         if (IsTimestampOkay(obj))
         {
             isTimestampOkay = true;
         }
 
-        return isLevelOkay && isTierOkay && isModeOkay && isTimestampOkay;
+        return isLevelOkay && isTierOkay && isModeOkay && isMapTypeOkay && isTimestampOkay;
     }
 
     private bool IsTierOkay(object obj)
@@ -484,7 +491,52 @@ public class DungeonBindings : BaseViewModel
             return true;
         }
 
-        if (SelectedDungeonStatsType.StatsViewType == DungeonMode.Unknown)
+        if (dungeon.Mode == DungeonMode.Unknown)
+        {
+            return true;
+        }
+
+        return false;
+    }
+    
+    private bool IsMapTypeOkay(object obj)
+    {
+        if (obj is not DungeonBaseFragment dungeon)
+        {
+            return false;
+        }
+
+        if (SelectedDungeonStatsType.StatsViewType is DungeonMode.Solo or DungeonMode.Standard or DungeonMode.Avalon && dungeon.MapType == MapType.RandomDungeon)
+        {
+            return true;
+        }
+        
+        if (SelectedDungeonStatsType.StatsViewType == DungeonMode.Corrupted && dungeon.MapType == MapType.CorruptedDungeon)
+        {
+            return true;
+        }
+
+        if (SelectedDungeonStatsType.StatsViewType == DungeonMode.HellGate && dungeon.MapType == MapType.HellGate)
+        {
+            return true;
+        }
+
+        if (SelectedDungeonStatsType.StatsViewType == DungeonMode.Expedition && dungeon.MapType == MapType.Expedition)
+        {
+            return true;
+        }
+
+        if (SelectedDungeonStatsType.StatsViewType == DungeonMode.Mists && dungeon.MapType == MapType.Mists)
+        {
+            return true;
+        }
+
+        if (SelectedDungeonStatsType.StatsViewType == DungeonMode.MistsDungeon && dungeon.MapType == MapType.MistsDungeon)
+        {
+            return true;
+        }
+
+        if (dungeon.MapType == MapType.Unknown)
         {
             return true;
         }
