@@ -4,16 +4,16 @@ using StatisticsAnalysisTool.Network.Events;
 
 namespace StatisticsAnalysisTool.Network.Handler;
 
-public class UpdateSilverEventHandler : EventPacketHandler<UpdateSilverEvent>
+public class UpdateMoneyEventHandler : EventPacketHandler<UpdateMoneyEvent>
 {
     private readonly LiveStatsTracker _liveStatsTracker;
 
-    public UpdateSilverEventHandler(TrackingController trackingController) : base((int) EventCodes.UpdateSilver)
+    public UpdateMoneyEventHandler(TrackingController trackingController) : base((int) EventCodes.UpdateMoney)
     {
         _liveStatsTracker = trackingController?.LiveStatsTracker;
     }
 
-    protected override async Task OnActionAsync(UpdateSilverEvent value)
+    protected override async Task OnActionAsync(UpdateMoneyEvent value)
     {
         await Task.CompletedTask;
     }

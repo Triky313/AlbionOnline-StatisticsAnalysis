@@ -42,7 +42,7 @@ public static class NetworkManager
         builder.AddEventHandler(new TakeSilverEventHandler(trackingController));
         builder.AddEventHandler(new ActionOnBuildingFinishedEventHandler(trackingController));
         builder.AddEventHandler(new UpdateFameEventHandler(trackingController));
-        builder.AddEventHandler(new UpdateSilverEventHandler(trackingController));
+        builder.AddEventHandler(new UpdateMoneyEventHandler(trackingController));
         builder.AddEventHandler(new UpdateReSpecPointsEventHandler(trackingController));
         builder.AddEventHandler(new UpdateCurrencyEventHandler(trackingController));
         builder.AddEventHandler(new DiedEventHandler(trackingController));
@@ -58,7 +58,7 @@ public static class NetworkManager
         builder.AddEventHandler(new PartyPlayerLeftEventHandler(trackingController));
         builder.AddEventHandler(new PartyChangedOrderEventHandler(trackingController));
         builder.AddEventHandler(new NewCharacterEventHandler(trackingController));
-        builder.AddEventHandler(new SiegeCampClaimStartEventHandler(trackingController));
+        builder.AddEventHandler(new TreasureChestUsingStartEventHandler(trackingController));
         builder.AddEventHandler(new CharacterEquipmentChangedEventHandler(trackingController));
         builder.AddEventHandler(new NewMobEventHandler(trackingController));
         builder.AddEventHandler(new ActiveSpellEffectsUpdateEventHandler(trackingController));
@@ -72,7 +72,7 @@ public static class NetworkManager
         builder.AddEventHandler(new HarvestFinishedEventHandler(trackingController));
         builder.AddEventHandler(new RewardGrantedEventHandler(trackingController));
         builder.AddEventHandler(new NewExpeditionCheckPointHandler(trackingController));
-        builder.AddEventHandler(new UpdateBrecilienStandingEventHandler(trackingController));
+        builder.AddEventHandler(new UpdateMistCityStandingEventHandler(trackingController));
 
         builder.AddRequestHandler(new InventoryMoveItemRequestHandler(trackingController));
         builder.AddRequestHandler(new UseShrineRequestHandler(trackingController));
