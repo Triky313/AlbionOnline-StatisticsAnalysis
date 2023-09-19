@@ -34,6 +34,7 @@ public static class NetworkManager
         builder.AddEventHandler(new NewEquipmentItemEventHandler(trackingController));
         builder.AddEventHandler(new NewSimpleItemEventHandler(trackingController));
         builder.AddEventHandler(new NewFurnitureItemEventHandler(trackingController));
+        builder.AddEventHandler(new NewKillTrophyItemHandler(trackingController));
         builder.AddEventHandler(new NewJournalItemEventHandler(trackingController));
         builder.AddEventHandler(new NewLaborerItemEventHandler(trackingController));
         builder.AddEventHandler(new OtherGrabbedLootEventHandler(trackingController));
