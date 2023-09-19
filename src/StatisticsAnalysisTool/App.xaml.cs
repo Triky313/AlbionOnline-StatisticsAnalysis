@@ -37,7 +37,6 @@ public partial class App
         InitializeLanguage();
 
         AutoUpdateController.RemoveUpdateFiles();
-        await AutoUpdateController.AutoUpdateAsync();
         await BackupController.DeleteOldestBackupsIfNeededAsync();
 
         RegisterServicesEarly();
@@ -50,6 +49,7 @@ public partial class App
         await _mainWindowViewModel.InitMainWindowDataAsync();
         Current.MainWindow.Show();
 
+        await AutoUpdateController.AutoUpdateAsync();
 
         Utilities.AnotherAppToStart(SettingsController.CurrentSettings.AnotherAppToStartPath);
     }
