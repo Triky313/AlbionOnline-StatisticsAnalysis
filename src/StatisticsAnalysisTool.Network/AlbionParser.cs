@@ -1,5 +1,4 @@
-﻿using System.Diagnostics;
-using PhotonPackageParser;
+﻿using PhotonPackageParser;
 
 namespace StatisticsAnalysisTool.Network;
 
@@ -41,7 +40,7 @@ internal sealed class AlbionParser : PhotonParser, IPhotonReceiver
         }
 
         var requestPacket = new RequestPacket(operationCode, parameters);
-        
+
         _ = _handlers.HandleAsync(requestPacket);
     }
 
@@ -58,7 +57,7 @@ internal sealed class AlbionParser : PhotonParser, IPhotonReceiver
 
         _ = _handlers.HandleAsync(responsePacket);
     }
-    
+
     private static short ParseOperationCode(Dictionary<byte, object> parameters)
     {
         if (!parameters.TryGetValue(253, out object value))
