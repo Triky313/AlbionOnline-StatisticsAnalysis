@@ -17,38 +17,38 @@ internal static class ImageController
 
     public static BitmapImage GetItemImage(string uniqueName = null, int pixelHeight = 100, int pixelWidth = 100, bool freeze = false)
     {
+        string defaultImagePath = @"pack://application:,,,/" + Assembly.GetExecutingAssembly().GetName().Name + ";component/" + "Resources/Trash.png";
         try
         {
             if (string.IsNullOrEmpty(uniqueName))
             {
-                return new BitmapImage(new Uri(
-                    @"pack://application:,,,/" + Assembly.GetExecutingAssembly().GetName().Name + ";component/" + "Resources/Trash.png",
-                    UriKind.Absolute));
+                return CreateBitmapImage(defaultImagePath);
             }
 
-            BitmapImage image;
             var localFilePath = Path.Combine(ItemImagesDirectory, uniqueName);
 
             if (File.Exists(localFilePath))
             {
-                image = GetImageFromLocal(localFilePath, pixelHeight, pixelWidth, freeze);
+                return GetImageFromLocal(localFilePath, pixelHeight, pixelWidth, freeze);
             }
             else
             {
-                image = SetImage($"https://render.albiononline.com/v1/item/{uniqueName}", pixelHeight, pixelWidth, freeze);
+                var image = SetImage($"https://render.albiononline.com/v1/item/{uniqueName}", pixelHeight, pixelWidth, freeze);
                 SaveImageLocal(image, localFilePath, ItemImagesDirectory);
+                return image;
             }
-
-            return image;
         }
         catch
         {
-            return new BitmapImage(new Uri(
-                @"pack://application:,,,/" + Assembly.GetExecutingAssembly().GetName().Name + ";component/" + "Resources/Trash.png",
-                UriKind.Absolute));
+            return CreateBitmapImage(defaultImagePath);
         }
     }
 
+    private static BitmapImage CreateBitmapImage(string path)
+    {
+        return new BitmapImage(new Uri(path, UriKind.Absolute));
+    }
+    
     public static async Task<int> LocalImagesCounterAsync()
     {
         return await Task.Run(() =>
