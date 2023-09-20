@@ -1,4 +1,5 @@
-﻿using StatisticsAnalysisTool.Common;
+﻿using StatisticsAnalysisTool.Cluster;
+using StatisticsAnalysisTool.Common;
 using StatisticsAnalysisTool.Common.Comparer;
 using StatisticsAnalysisTool.Common.UserSettings;
 using StatisticsAnalysisTool.Dungeon.Models;
@@ -12,7 +13,6 @@ using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Data;
-using StatisticsAnalysisTool.Cluster;
 
 namespace StatisticsAnalysisTool.Dungeon;
 
@@ -117,7 +117,7 @@ public class DungeonBindings : BaseViewModel
         {
             DungeonsCollectionView.IsLiveSorting = true;
             DungeonsCollectionView.IsLiveFiltering = true;
-            DungeonsCollectionView.CustomSort = new DungeonTrackingNumberComparer();
+            DungeonsCollectionView.CustomSort = new DungeonComparer();
             DungeonsCollectionView.Refresh();
         }
     }
@@ -256,7 +256,7 @@ public class DungeonBindings : BaseViewModel
 
         try
         {
-            var filteredDungeons = await Task.Run(ParallelTradeFilterProcess, _cancellationTokenSource.Token);
+            var filteredDungeons = await Task.Run(ParallelDungeonFilterProcess, _cancellationTokenSource.Token);
 
             DungeonsCollectionView = CollectionViewSource.GetDefaultView(filteredDungeons) as ListCollectionView;
             Stats?.Set(DungeonsCollectionView?.Cast<DungeonBaseFragment>().ToList());
@@ -267,25 +267,25 @@ public class DungeonBindings : BaseViewModel
         }
     }
 
-    public List<DungeonBaseFragment> ParallelTradeFilterProcess()
+    public List<DungeonBaseFragment> ParallelDungeonFilterProcess()
     {
         var partitioner = Partitioner.Create(Dungeons, EnumerablePartitionerOptions.NoBuffering);
         var result = new ConcurrentBag<DungeonBaseFragment>();
 
-        Parallel.ForEach(partitioner, (tradeBatch, state) =>
+        Parallel.ForEach(partitioner, (dungeon, state) =>
         {
             if (_cancellationTokenSource.Token.IsCancellationRequested)
             {
                 state.Stop();
             }
 
-            if (Filter(tradeBatch))
+            if (Filter(dungeon))
             {
-                result.Add(tradeBatch);
+                result.Add(dungeon);
             }
         });
 
-        return result.ToList();
+        return result.OrderByDescending(d => d.EnterDungeonFirstTime).ToList();
     }
 
     private bool Filter(object obj)
@@ -498,7 +498,7 @@ public class DungeonBindings : BaseViewModel
 
         return false;
     }
-    
+
     private bool IsMapTypeOkay(object obj)
     {
         if (obj is not DungeonBaseFragment dungeon)
@@ -510,7 +510,7 @@ public class DungeonBindings : BaseViewModel
         {
             return true;
         }
-        
+
         if (SelectedDungeonStatsType.StatsViewType == DungeonMode.Corrupted && dungeon.MapType == MapType.CorruptedDungeon)
         {
             return true;
