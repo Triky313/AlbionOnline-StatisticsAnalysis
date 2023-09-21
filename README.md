@@ -31,7 +31,8 @@ Unzip the `.zip` file and start `StatisticsAnalysisTool.exe` with a double click
 
 
 ## Is This Allowed
-https://forum.albiononline.com/index.php/Thread/124819-Regarding-3rd-Party-Software-and-Network-Traffic-aka-do-not-cheat-Update-16-45-U/
+[Debate](https://forum.albiononline.com/index.php/Thread/124819-Regarding-3rd-Party-Software-and-Network-Traffic-aka-do-not-cheat-Update-16-45-U/)  
+[Clarified](https://forum.albiononline.com/index.php/Thread/153238-DPS-METER/#:~:text=As%20noted%20on%20the%20GitHub,to%20use%20it%20without%20concern.)  
 
 - [x] Only monitors
 - [x] Does not modify our game client
