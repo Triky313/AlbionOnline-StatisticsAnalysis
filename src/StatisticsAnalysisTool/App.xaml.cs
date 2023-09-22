@@ -33,6 +33,8 @@ public partial class App
 
         AppDomain.CurrentDomain.UnhandledException += OnUnhandledException;
 
+        await AutoUpdateController.AutoUpdateAsync();
+
         SettingsController.LoadSettings();
         InitializeLanguage();
 
@@ -49,7 +51,6 @@ public partial class App
         await _mainWindowViewModel.InitMainWindowDataAsync();
         Current.MainWindow.Show();
 
-        await AutoUpdateController.AutoUpdateAsync();
 
         Utilities.AnotherAppToStart(SettingsController.CurrentSettings.AnotherAppToStartPath);
     }
