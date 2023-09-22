@@ -4,6 +4,7 @@ using StatisticsAnalysisTool.ViewModels;
 using System.ComponentModel;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Data;
 using System.Windows.Input;
 
 namespace StatisticsAnalysisTool.Views;
@@ -14,12 +15,13 @@ namespace StatisticsAnalysisTool.Views;
 public partial class ItemWindow
 {
     private bool _isWindowMaximized;
+    private readonly ItemWindowViewModel _itemWindowViewModel;
 
     public ItemWindow(Item item)
     {
-        InitializeComponent();
-        var itemWindowViewModel = new ItemWindowViewModel(this, item);
-        DataContext = itemWindowViewModel;
+        InitializeComponent(); 
+        _itemWindowViewModel = new ItemWindowViewModel(this, item);
+        DataContext = _itemWindowViewModel;
     }
 
     private void ItemWindow_OnClosing(object sender, CancelEventArgs e)
@@ -120,5 +122,24 @@ public partial class ItemWindow
 
         var vm = (ItemWindowViewModel)DataContext;
         _ = CraftingTabController.AddNoteAsync(vm?.Item.UniqueName, textBox.Text);
+    }
+
+    private ListSortDirection _lastDirection = ListSortDirection.Ascending;
+
+    private void GridViewColumnHeader_Click(object sender, RoutedEventArgs e)
+    {
+        GridViewColumnHeader column = sender as GridViewColumnHeader;
+        string sortBy = column?.Tag.ToString();
+        CollectionView view = (CollectionView) CollectionViewSource.GetDefaultView(_itemWindowViewModel.MainTabBindings.ItemPrices);
+
+        view.SortDescriptions.Clear();
+        if (sortBy != null)
+        {
+            _lastDirection = _lastDirection == ListSortDirection.Ascending ? ListSortDirection.Descending : ListSortDirection.Ascending;
+            SortDescription sd = new SortDescription(sortBy, _lastDirection);
+            view.SortDescriptions.Add(sd);
+        }
+
+        view.Refresh();
     }
 }
