@@ -1,6 +1,4 @@
-﻿using StatisticsAnalysisTool.Enumerations;
-
-namespace StatisticsAnalysisTool.Models;
+﻿namespace StatisticsAnalysisTool.DamageMeter;
 
 public struct DamageMeterSortStruct
 {

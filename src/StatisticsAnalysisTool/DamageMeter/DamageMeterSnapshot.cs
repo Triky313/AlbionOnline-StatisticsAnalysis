@@ -1,10 +1,10 @@
-﻿using StatisticsAnalysisTool.Models;
+﻿using StatisticsAnalysisTool.Common;
 using StatisticsAnalysisTool.ViewModels;
 using System;
 using System.Collections.Generic;
 using System.Text.Json.Serialization;
 
-namespace StatisticsAnalysisTool.Common;
+namespace StatisticsAnalysisTool.DamageMeter;
 
 public class DamageMeterSnapshot : BaseViewModel
 {

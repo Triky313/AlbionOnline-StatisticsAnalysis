@@ -1,6 +1,6 @@
 ﻿using StatisticsAnalysisTool.Common;
 
-namespace StatisticsAnalysisTool.Models.TranslationModel;
+namespace StatisticsAnalysisTool.DamageMeter;
 
 public class DamageMeterWindowTranslation
 {

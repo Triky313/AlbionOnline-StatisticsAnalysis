@@ -1,9 +1,10 @@
 ﻿using StatisticsAnalysisTool.Common;
 using StatisticsAnalysisTool.EventLogging.Notification;
+using StatisticsAnalysisTool.Models;
 using System;
 using System.Text.Json.Serialization;
 
-namespace StatisticsAnalysisTool.Models;
+namespace StatisticsAnalysisTool.DamageMeter;
 public class DamageMeterSnapshotFragment
 {
     private string _causerMainHandItemUniqueName;

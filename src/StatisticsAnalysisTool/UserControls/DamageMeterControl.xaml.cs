@@ -1,7 +1,7 @@
 ﻿using Serilog;
 using StatisticsAnalysisTool.Common;
 using StatisticsAnalysisTool.Common.UserSettings;
-using StatisticsAnalysisTool.Enumerations;
+using StatisticsAnalysisTool.DamageMeter;
 using StatisticsAnalysisTool.Network.Manager;
 using StatisticsAnalysisTool.ViewModels;
 using StatisticsAnalysisTool.Views;
