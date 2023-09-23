@@ -416,8 +416,10 @@ public class ItemWindowViewModel : BaseViewModel
         switch (Item?.FullItemInformation)
         {
             case Weapon weapon when weapon.CraftingRequirements?.FirstOrDefault()?.CraftResource.Count > 0:
+            case TransformationWeapon transformationWeapon when transformationWeapon.CraftingRequirements?.FirstOrDefault()?.CraftResource.Count > 0:
             case EquipmentItem equipmentItem when equipmentItem.CraftingRequirements?.FirstOrDefault()?.CraftResource.Count > 0:
             case Mount mount when mount.CraftingRequirements?.FirstOrDefault()?.CraftResource.Count > 0:
+            case TrackingItem trackingItem when trackingItem.CraftingRequirements?.FirstOrDefault()?.CraftResource.Count > 0:
             case ConsumableItem consumableItem when consumableItem.CraftingRequirements?.FirstOrDefault()?.CraftResource.Count > 0:
                 areResourcesAvailable = true;
                 break;
@@ -465,7 +467,9 @@ public class ItemWindowViewModel : BaseViewModel
         var craftingJournalType = Item?.FullItemInformation switch
         {
             Weapon weapon => CraftingController.GetCraftingJournalItem(Item.Tier, weapon.CraftingJournalType),
+            TransformationWeapon transformationWeapon => CraftingController.GetCraftingJournalItem(Item.Tier, transformationWeapon.CraftingJournalType),
             EquipmentItem equipmentItem => CraftingController.GetCraftingJournalItem(Item.Tier, equipmentItem.CraftingJournalType),
+            TrackingItem trackingItem => CraftingController.GetCraftingJournalItem(Item.Tier, trackingItem.CraftingJournalType),
             _ => null
         };
 
@@ -499,6 +503,7 @@ public class ItemWindowViewModel : BaseViewModel
         {
             EquipmentItem equipmentItem => equipmentItem.Enchantments,
             ConsumableItem consumableItem => consumableItem.Enchantments,
+            TransformationWeapon transformationWeapon => transformationWeapon.Enchantments,
             _ => null
         };
 
@@ -509,17 +514,16 @@ public class ItemWindowViewModel : BaseViewModel
             craftingRequirements = enchantment.CraftingRequirements;
         }
 
-        if (craftingRequirements == null)
+        craftingRequirements ??= Item?.FullItemInformation switch
         {
-            craftingRequirements = Item?.FullItemInformation switch
-            {
-                Weapon weapon => weapon.CraftingRequirements,
-                EquipmentItem equipmentItem => equipmentItem.CraftingRequirements,
-                Mount mount => mount.CraftingRequirements,
-                ConsumableItem consumableItem => consumableItem.CraftingRequirements,
-                _ => null
-            };
-        }
+            Weapon weapon => weapon.CraftingRequirements,
+            TransformationWeapon transformationWeapon => transformationWeapon.CraftingRequirements,
+            EquipmentItem equipmentItem => equipmentItem.CraftingRequirements,
+            Mount mount => mount.CraftingRequirements,
+            ConsumableItem consumableItem => consumableItem.CraftingRequirements,
+            TrackingItem trackingItem => trackingItem.CraftingRequirements,
+            _ => null
+        };
 
         if (craftingRequirements?.FirstOrDefault()?.CraftResource == null)
         {

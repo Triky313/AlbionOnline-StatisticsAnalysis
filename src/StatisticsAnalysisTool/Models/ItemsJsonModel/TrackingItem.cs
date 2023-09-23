@@ -1,4 +1,6 @@
-﻿using StatisticsAnalysisTool.Common.Converters;
+﻿using StatisticsAnalysisTool.Common;
+using StatisticsAnalysisTool.Common.Converters;
+using StatisticsAnalysisTool.Enumerations;
 using System.Collections.Generic;
 using System.Text.Json.Serialization;
 
@@ -38,6 +40,9 @@ public class TrackingItem : ItemJsonObject
 
     [JsonPropertyName("@craftingcategory")]
     public string CraftingCategory { get; set; }
+
+    [JsonIgnore]
+    public CraftingJournalType CraftingJournalType => CraftingController.GetCraftingJournalType(UniqueName, CraftingCategory);
 
     [JsonPropertyName("@maxstacksize")]
     public string MaxStackSize { get; set; }
