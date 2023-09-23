@@ -42,7 +42,6 @@ public class TradeController
         await Application.Current.Dispatcher.InvokeAsync(() =>
         {
             _mainWindowViewModel?.TradeMonitoringBindings?.Trades.Add(trade);
-            _mainWindowViewModel?.TradeMonitoringBindings?.TradeCollectionView?.Refresh();
         });
 
         await ServiceLocator.Resolve<SatNotificationManager>().ShowTradeAsync(trade);
