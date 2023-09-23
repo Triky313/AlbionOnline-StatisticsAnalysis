@@ -245,6 +245,11 @@ public class ItemWindowViewModel : BaseViewModel
                 ExtraItemInformation.ShowInMarketPlace = weapon.ShowInMarketPlace.SetYesOrNo();
                 ExtraItemInformation.Weight = weapon.Weight;
                 break;
+            case TransformationWeapon transformationWeapon:
+                ExtraItemInformation.ShopCategory = transformationWeapon.ShopCategory;
+                ExtraItemInformation.ShopSubCategory1 = transformationWeapon.ShopSubCategory1;
+                ExtraItemInformation.Weight = transformationWeapon.Weight;
+                break;
             case HideoutItem hideoutItem:
                 ExtraItemInformation.ShopCategory = hideoutItem.ShopCategory;
                 ExtraItemInformation.ShopSubCategory1 = hideoutItem.ShopSubCategory1;
@@ -307,6 +312,16 @@ public class ItemWindowViewModel : BaseViewModel
                 ExtraItemInformation.ShopCategory = crystalLeagueItem.ShopCategory;
                 ExtraItemInformation.ShopSubCategory1 = crystalLeagueItem.ShopSubCategory1;
                 ExtraItemInformation.Weight = crystalLeagueItem.Weight;
+                break;
+            case TrackingItem trackingItem:
+                ExtraItemInformation.ShopCategory = trackingItem.ShopCategory;
+                ExtraItemInformation.ShopSubCategory1 = trackingItem.ShopSubCategory1;
+                ExtraItemInformation.Weight = trackingItem.Weight;
+                break;
+            case KillTrophyItem killTrophyItem:
+                ExtraItemInformation.ShopCategory = killTrophyItem.ShopCategory;
+                ExtraItemInformation.ShopSubCategory1 = killTrophyItem.ShopSubCategory1;
+                ExtraItemInformation.Weight = killTrophyItem.Weight;
                 break;
         }
     }
