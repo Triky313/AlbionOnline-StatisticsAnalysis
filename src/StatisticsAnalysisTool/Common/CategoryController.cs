@@ -161,6 +161,7 @@ public static class CategoryController
         new ("skinningknife", ShopSubCategory.SkinningKnife, ShopCategory.Tools),
         new ("stonehammer", ShopSubCategory.StoneHammer, ShopCategory.Tools),
         new ("woodaxe", ShopSubCategory.WoodAxe, ShopCategory.Tools),
+        new ("trackingtool", ShopSubCategory.TrackingTool, ShopCategory.Tools),
 
         new ("fibertrophy", ShopSubCategory.FiberTrophy, ShopCategory.Trophies),
         new ("fishtrophy", ShopSubCategory.FishTrophy, ShopCategory.Trophies),
@@ -403,6 +404,7 @@ public static class CategoryController
         {ShopSubCategory.SkinningKnife, LanguageController.Translation("SKINNING_KNIFE")},
         {ShopSubCategory.StoneHammer, LanguageController.Translation("STONE_HAMMER")},
         {ShopSubCategory.WoodAxe, LanguageController.Translation("WOOD_AXE")},
+        {ShopSubCategory.TrackingTool, LanguageController.Translation("TRACKING_TOOL")},
 
         #endregion Tool
 
@@ -522,7 +524,7 @@ public static class CategoryController
 
     public static string GetCategoryIdByShopCategory(ShopCategory shopCategory)
     {
-        return Categories.ContainsKey(shopCategory) ? Categories[shopCategory] : "unknown";
+        return Categories.TryGetValue(shopCategory, out string category) ? category : "unknown";
     }
 
     public static string GetSubCategoryName(ShopSubCategory shopSubCategory)
@@ -681,7 +683,8 @@ public enum ShopSubCategory
     OreTrophy,
     RockTrophy,
     WoodTrophy,
-    ShapeShifterStaff
+    ShapeShifterStaff,
+    TrackingTool
 }
 
 public enum ShopCategory

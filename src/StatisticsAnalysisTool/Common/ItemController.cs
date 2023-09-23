@@ -480,7 +480,7 @@ public static class ItemController
             return crystalLeagueItem;
         }
 
-        var killTrophyItemObject = GetItemJsonObject(cleanUniqueName, _itemsJson.Items.KillTrophyItem);
+        var killTrophyItemObject = GetItemJsonObject(cleanUniqueName, new List<KillTrophyItem>() { _itemsJson.Items.KillTrophyItem });
         if (killTrophyItemObject is KillTrophyItem killTrophyItem)
         {
             killTrophyItem.ItemType = ItemType.killTrophy;
@@ -582,6 +582,7 @@ public static class ItemController
         itemTypeStructs.AddRange(_itemsJson.Items.LabourerContract.Select(x => new ItemTypeStruct(x.UniqueName, x.ItemType)));
         itemTypeStructs.AddRange(_itemsJson.Items.MountSkin.Select(x => new ItemTypeStruct(x.UniqueName, x.ItemType)));
         itemTypeStructs.AddRange(_itemsJson.Items.CrystalLeagueItem.Select(x => new ItemTypeStruct(x.UniqueName, x.ItemType)));
+        itemTypeStructs.Add(new ItemTypeStruct(_itemsJson.Items.KillTrophyItem.UniqueName, _itemsJson.Items.KillTrophyItem.ItemType));
 
         return itemTypeStructs.FirstOrDefault(x => x.UniqueName == itemObject.UniqueName).ItemType;
     }
