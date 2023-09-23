@@ -16,6 +16,7 @@ using System.Reflection;
 using System.Runtime.InteropServices;
 using System.Windows;
 using System.Windows.Threading;
+using StatisticAnalysisTool.Extractor.Enums;
 
 namespace StatisticsAnalysisTool;
 
@@ -44,7 +45,7 @@ public partial class App
         RegisterServicesEarly();
 
         Current.MainWindow = new MainWindow(_mainWindowViewModel);
-        await GameData.InitializeMainGameDataFilesAsync();
+        await GameData.InitializeMainGameDataFilesAsync(ServerType.Live);
 
         RegisterServicesLate();
 
