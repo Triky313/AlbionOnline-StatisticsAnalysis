@@ -41,7 +41,7 @@ public static class GameData
                      Path.Combine(AppDomain.CurrentDomain.BaseDirectory, Settings.Default.IndexedItemsFileName),
                      SettingsController.CurrentSettings.MainGameFolderPath, serverType, "items"))
         {
-            await GetMainGameDataAsync(SettingsController.CurrentSettings.MainGameFolderPath);
+            await GetMainGameDataAsync(SettingsController.CurrentSettings.MainGameFolderPath, serverType);
             return;
         }
 
@@ -72,7 +72,7 @@ public static class GameData
         return false;
     }
 
-    public static async Task<bool> GetMainGameDataAsync(string mainGameFolderPath, ServerType serverType = ServerType.Live)
+    public static async Task<bool> GetMainGameDataAsync(string mainGameFolderPath, ServerType serverType)
     {
         try
         {
