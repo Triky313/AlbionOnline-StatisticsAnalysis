@@ -103,6 +103,7 @@ public static class CategoryController
         new ("froststaff", ShopSubCategory.FrostStaff, ShopCategory.Magic),
         new ("holystaff", ShopSubCategory.HolyStaff, ShopCategory.Magic),
         new ("naturestaff", ShopSubCategory.NatureStaff, ShopCategory.Magic),
+        new ("shapeshifterstaff", ShopSubCategory.ShapeShifterStaff, ShopCategory.Magic),
 
         new ("essence", ShopSubCategory.Essence, ShopCategory.Materials),
         new ("other", ShopSubCategory.OtherMaterials, ShopCategory.Materials),
@@ -303,6 +304,7 @@ public static class CategoryController
         {ShopSubCategory.FrostStaff, LanguageController.Translation("FROST_STAFF")},
         {ShopSubCategory.HolyStaff, LanguageController.Translation("HOLY_STAFF")},
         {ShopSubCategory.NatureStaff, LanguageController.Translation("NATURE_STAFF")},
+        {ShopSubCategory.ShapeShifterStaff, LanguageController.Translation("SHAPESHIFTER")},
 
         #endregion Magic
 
@@ -678,7 +680,8 @@ public enum ShopSubCategory
     MercenaryTrophy,
     OreTrophy,
     RockTrophy,
-    WoodTrophy
+    WoodTrophy,
+    ShapeShifterStaff
 }
 
 public enum ShopCategory

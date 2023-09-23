@@ -33,4 +33,6 @@ public class Items
     public List<MountSkin> MountSkin { get; set; }
     [JsonPropertyName("crystalleagueitem")]
     public List<CrystalLeagueItem> CrystalLeagueItem { get; set; }
+    [JsonPropertyName("killtrophy")]
+    public List<CrystalLeagueItem> KillTrophyItem { get; set; }
 }

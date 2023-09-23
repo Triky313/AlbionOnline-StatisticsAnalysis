@@ -24,8 +24,6 @@ namespace StatisticsAnalysisTool.Common;
 
 public static class ItemController
 {
-
-
     public static ObservableCollection<Item> Items = new();
     private static ItemsJson _itemsJson;
 
@@ -120,6 +118,9 @@ public static class ItemController
                     .Sum(craftingRequirement => GetItemValueByCraftingRequirements(craftingRequirement, level));
             case JournalItem journalItem:
                 return (journalItem.CraftingRequirements ?? new List<CraftingRequirements>())
+                    .Sum(craftingRequirement => GetItemValueByCraftingRequirements(craftingRequirement, level));
+            case KillTrophyItem killTrophyItem:
+                return (killTrophyItem.CraftingRequirements ?? new List<CraftingRequirements>())
                     .Sum(craftingRequirement => GetItemValueByCraftingRequirements(craftingRequirement, level));
         }
 
@@ -479,13 +480,19 @@ public static class ItemController
             return crystalLeagueItem;
         }
 
+        var killTrophyItemObject = GetItemJsonObject(cleanUniqueName, _itemsJson.Items.KillTrophyItem);
+        if (killTrophyItemObject is KillTrophyItem killTrophyItem)
+        {
+            killTrophyItem.ItemType = ItemType.killTrophy;
+            return killTrophyItem;
+        }
+
         return null;
     }
 
     private static object GetItemJsonObject<T>(string uniqueName, List<T> itemJsonObjects)
     {
         var itemAsSpan = CollectionsMarshal.AsSpan(itemJsonObjects);
-        // ReSharper disable once ForCanBeConvertedToForeach
         for (var i = 0; i < itemAsSpan.Length; i++)
         {
             if (itemAsSpan[i] is ItemJsonObject item && item.UniqueName == uniqueName)
@@ -513,6 +520,7 @@ public static class ItemController
             JournalItem journalItem => CategoryController.ShopCategoryStringToCategory(journalItem.ShopCategory),
             LabourerContract labourerContract => CategoryController.ShopCategoryStringToCategory(labourerContract.ShopCategory),
             CrystalLeagueItem crystalLeagueItem => CategoryController.ShopCategoryStringToCategory(crystalLeagueItem.ShopCategory),
+            KillTrophyItem killTrophyItem => CategoryController.ShopCategoryStringToCategory(killTrophyItem.ShopCategory),
             _ => ShopCategory.Unknown
         };
     }
@@ -535,6 +543,7 @@ public static class ItemController
             JournalItem journalItem => CategoryController.ShopSubCategoryStringToShopSubCategory(journalItem.ShopSubCategory1),
             LabourerContract labourerContract => CategoryController.ShopSubCategoryStringToShopSubCategory(labourerContract.ShopSubCategory1),
             CrystalLeagueItem crystalLeagueItem => CategoryController.ShopSubCategoryStringToShopSubCategory(crystalLeagueItem.ShopSubCategory1),
+            KillTrophyItem killTrophyItem => CategoryController.ShopSubCategoryStringToShopSubCategory(killTrophyItem.ShopSubCategory1),
             _ => ShopSubCategory.Unknown
         };
     }
@@ -638,6 +647,9 @@ public static class ItemController
                 double.TryParse(item.Weight, NumberStyles.Float, CultureInfo.InvariantCulture, out weight);
                 return weight;
             case JournalItem item:
+                double.TryParse(item.Weight, NumberStyles.Float, CultureInfo.InvariantCulture, out weight);
+                return weight;
+            case KillTrophyItem item:
                 double.TryParse(item.Weight, NumberStyles.Float, CultureInfo.InvariantCulture, out weight);
                 return weight;
             default: return 0;
