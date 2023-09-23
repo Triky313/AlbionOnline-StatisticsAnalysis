@@ -6,17 +6,14 @@ using StatisticsAnalysisTool.Enumerations;
 
 namespace StatisticsAnalysisTool.Models.ItemsJsonModel;
 
-public class Weapon : ItemJsonObject
+public class TransformationWeapon : ItemJsonObject
 {
     [JsonPropertyName("@uniquename")]
     public override string UniqueName { get; set; }
 
-    //[JsonPropertyName("@mesh")]
-    //public string Mesh { get; set; }
-
-    [JsonPropertyName("@uisprite")]
-    public string UiSprite { get; set; }
-
+    [JsonPropertyName("@transformation")]
+    public string Transformation { get; set; }
+    
     [JsonPropertyName("@maxqualitylevel")]
     public string MaxQualityLevel { get; set; }
 
@@ -100,35 +97,23 @@ public class Weapon : ItemJsonObject
     [JsonPropertyName("@focusfireprotectionpenetration")]
     public string FocusFireProtectionPenetration { get; set; }
     
-    //[JsonPropertyName("@uicraftsoundstart")]
-    //public string Uicraftsoundstart { get; set; }
-
-    //[JsonPropertyName("@uicraftsoundfinish")]
-    //public string Uicraftsoundfinish { get; set; }
-
     [JsonPropertyName("@healmodifier")]
     public string HealModifier { get; set; }
 
     [JsonPropertyName("@canbeovercharged")]
     public bool CanBeOvercharged { get; set; }
 
-    [JsonPropertyName("@showinmarketplace")]
-    public bool ShowInMarketPlace { get; set; }
-
-    [JsonPropertyName("canharvest")]
-    public CanHarvest CanHarvest { get; set; }
+    //[JsonPropertyName("@showinmarketplace")]
+    //public bool ShowInMarketPlace { get; set; }
 
     [JsonConverter(typeof(CraftingRequirementsToCraftingRequirementsList))]
     [JsonPropertyName("craftingrequirements")]
     public List<CraftingRequirements> CraftingRequirements { get; set; }
-
-    //public AudioInfo AudioInfo { get; set; }
-    //public SocketPreset SocketPreset { get; set; }
-
+    
     [JsonPropertyName("@craftingcategory")]
     public string CraftingCategory { get; set; }
 
-    [JsonIgnore] 
+    [JsonIgnore]
     public CraftingJournalType CraftingJournalType => CraftingController.GetCraftingJournalType(UniqueName, CraftingCategory);
 
     [JsonPropertyName("@physicalattackdamagebonus")]
@@ -139,6 +124,9 @@ public class Weapon : ItemJsonObject
 
     [JsonPropertyName("@descriptionlocatag")]
     public string DescriptionLocaTag { get; set; }
+
+    //[JsonPropertyName("@attackvariations")]
+    //public string AttackVariations { get; set; }
 
     [JsonPropertyName("craftingspelllist")]
     public CraftingSpellList CraftingSpellList { get; set; }
