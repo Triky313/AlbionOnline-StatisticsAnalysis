@@ -6,7 +6,7 @@ using System.Collections.Generic;
 
 namespace StatisticsAnalysisTool.Cluster;
 
-public class ClusterInfo
+public sealed class ClusterInfo
 {
     public bool ClusterInfoFullyAvailable { get; set; }
 

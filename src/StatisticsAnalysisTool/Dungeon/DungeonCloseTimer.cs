@@ -10,7 +10,7 @@ using System.Windows.Threading;
 
 namespace StatisticsAnalysisTool.Dungeon;
 
-public class DungeonCloseTimer : BaseViewModel
+public sealed class DungeonCloseTimer : BaseViewModel
 {
     private string _timerString;
     private bool _isDungeonClosed;

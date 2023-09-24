@@ -6,7 +6,7 @@ using System.Text.Json.Serialization;
 
 namespace StatisticsAnalysisTool.DamageMeter;
 
-public class DamageMeterSnapshot : BaseViewModel
+public sealed class DamageMeterSnapshot : BaseViewModel
 {
     private DateTime _timestamp;
     private List<DamageMeterSnapshotFragment> _damageMeter = new();

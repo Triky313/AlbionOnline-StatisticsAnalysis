@@ -1,6 +1,6 @@
 ﻿namespace StatisticsAnalysisTool.Network;
 
-internal class HandlersCollection
+internal sealed class HandlersCollection
 {
     private readonly List<IPacketHandler> _handlers;
 

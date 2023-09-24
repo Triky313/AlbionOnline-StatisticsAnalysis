@@ -11,7 +11,7 @@ using System.Threading.Tasks;
 
 namespace StatisticsAnalysisTool.Dungeon;
 
-public class MistsData
+public sealed class MistsData
 {
     private static IEnumerable<MistsJsonObject> _mists;
 

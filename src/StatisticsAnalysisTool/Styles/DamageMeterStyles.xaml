@@ -66,7 +66,7 @@
     </Style>
 
     <!-- Damage meter -->
-    <DataTemplate x:Key="DamageMeterFragmentTemplate" DataType="{x:Type notification1:DamageMeterFragment}">
+    <DataTemplate x:Key="DamageMeterFragmentTemplate" DataType="{x:Type damageMeter:DamageMeterFragment}">
         <Grid>
             <Grid>
                 <Grid.Style>

@@ -25,7 +25,7 @@ using ValueType = StatisticsAnalysisTool.Enumerations.ValueType;
 
 namespace StatisticsAnalysisTool.Dungeon;
 
-public class DungeonController
+public sealed class DungeonController
 {
     private const int MaxDungeons = 9999;
     private const int NumberOfDungeonsUntilSaved = 1;

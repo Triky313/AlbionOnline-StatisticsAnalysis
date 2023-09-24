@@ -17,7 +17,7 @@ using System.Windows;
 
 namespace StatisticsAnalysisTool.Alert;
 
-public class AlertController
+public sealed class AlertController
 {
     private readonly ObservableCollection<Alert> _alerts = new();
     private readonly ICollectionView _itemsView;
