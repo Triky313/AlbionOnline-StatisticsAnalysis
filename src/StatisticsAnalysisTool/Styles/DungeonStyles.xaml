@@ -262,6 +262,150 @@
         <Setter Property="Foreground" Value="{StaticResource SolidColorBrush.Accent.Blue.1}"/>
     </Style>
 
+    <DataTemplate x:Key="Stats.Total.Template" DataType="{x:Type dungeonModels:StatsTotal}">
+        <StackPanel Orientation="Vertical" Visibility="{Binding Visibility}">
+            <TextBlock Style="{StaticResource TitleText}" Text="{Binding TranslationTotalOverview, FallbackValue='TOTAL_OVERVIEW'}" />
+
+            <StackPanel Orientation="Horizontal" HorizontalAlignment="Left" Margin="0,10,0,24">
+                <!-- Entered dungeons -->
+                <StackPanel Orientation="Vertical">
+                    <TextBlock Text="" FontSize="16" 
+                           Foreground="{StaticResource SolidColorBrush.Accent.Blue.2}" />
+                    <StackPanel Orientation="Horizontal" Height="60" Width="60" Margin="0,0,0,0">
+                        <StackPanel Orientation="Vertical" Width="40">
+                            <Image Source="../Assets/dungeon.png" Height="30" Width="30" Margin="0,6,0,4" ToolTip="{Binding TranslationNumberOfDungeons}" />
+                            <TextBlock Text="{Binding Entered, FallbackValue=0}" Style="{StaticResource Dungeons.Stats.Value.Big}" />
+                        </StackPanel>
+                    </StackPanel>
+                </StackPanel>
+            </StackPanel>
+
+            <!-- Fame, ReSpec, Silver, Might, Favor, Loot value, table -->
+            <StackPanel Orientation="Vertical" Margin="0,0,0,20">
+                <StackPanel Orientation="Horizontal" Height="20">
+                    <Grid Width="34" />
+                    <TextBlock Width="140" FontSize="14" Text="{Binding TranslationTotal, IsAsync=True, FallbackValue='TOTAL'}" Foreground="{StaticResource SolidColorBrush.Accent.Blue.2}" />
+                    <TextBlock Width="140" FontSize="14" Text="{Binding TranslationPerHour, IsAsync=True, FallbackValue='PER_HOUR'}" Foreground="{StaticResource SolidColorBrush.Accent.Blue.2}" />
+                    <TextBlock Width="140" FontSize="14" Text="{Binding TranslationAverage, IsAsync=True, FallbackValue='AVERAGE'}" Foreground="{StaticResource SolidColorBrush.Accent.Blue.2}" />
+                </StackPanel>
+                <StackPanel Orientation="Horizontal" Margin="5,3">
+                    <Image Source="../Resources/fame.png" Height="20" Width="20" Margin="5,0,5,0" />
+                    <TextBlock Width="140" Text="{Binding Fame, IsAsync=True, Converter={StaticResource ShortNumberConverter}, FallbackValue='0'}" 
+                               Style="{StaticResource Dungeons.Stats.Value}" />
+                    <DockPanel Width="140">
+                        <TextBlock Text="{Binding FamePerHour, IsAsync=True, Converter={StaticResource ShortNumberConverter}, FallbackValue='0'}" 
+                                   Style="{StaticResource Dungeons.Stats.Value}" Padding="0" Margin="0" />
+                        <TextBlock Text="{Binding TranslationHourAbbreviation, FallbackValue='/h', StringFormat='{}/{0}'}" Style="{StaticResource Dungeons.Stats.Value}" 
+                                   Margin="0,0" Foreground="{StaticResource SolidColorBrush.Accent.Blue.1}" />
+                    </DockPanel>
+                    <DockPanel Width="140">
+                        <TextBlock Text="{Binding FameAverage, IsAsync=True, Converter={StaticResource ShortNumberConverter}, FallbackValue='0'}" 
+                                   Style="{StaticResource Dungeons.Stats.Value}" Padding="0" Margin="0" />
+                        <TextBlock Text="{Binding TranslationAverageAbbreviation, FallbackValue='Avg.'}" Style="{StaticResource Dungeons.Stats.Value}" 
+                                   Margin="5,0" Foreground="{StaticResource SolidColorBrush.Accent.Blue.1}" />
+                    </DockPanel>
+                </StackPanel>
+                <StackPanel Orientation="Horizontal" Margin="5,3">
+                    <Image Source="../Resources/respec.png" Height="20" Width="20" Margin="5,0,5,0" />
+                    <TextBlock Width="140" Text="{Binding ReSpec, IsAsync=True, Converter={StaticResource ShortNumberConverter}, FallbackValue='0'}" 
+                               Style="{StaticResource Dungeons.Stats.Value}" />
+                    <DockPanel Width="140">
+                        <TextBlock Text="{Binding ReSpecPerHour, IsAsync=True, Converter={StaticResource ShortNumberConverter}, FallbackValue='0'}" 
+                                   Style="{StaticResource Dungeons.Stats.Value}" Padding="0" Margin="0" />
+                        <TextBlock Text="{Binding TranslationHourAbbreviation, FallbackValue='/h', StringFormat='{}/{0}'}" Style="{StaticResource Dungeons.Stats.Value}" 
+                                   Margin="0,0" Foreground="{StaticResource SolidColorBrush.Accent.Blue.1}" />
+                    </DockPanel>
+                    <DockPanel Width="140">
+                        <TextBlock Text="{Binding ReSpecAverage, IsAsync=True, Converter={StaticResource ShortNumberConverter}, FallbackValue='0'}" 
+                                   Style="{StaticResource Dungeons.Stats.Value}" Padding="0" Margin="0" />
+                        <TextBlock Text="{Binding TranslationAverageAbbreviation, FallbackValue='Avg.'}" Style="{StaticResource Dungeons.Stats.Value}" 
+                                   Margin="5,0" Foreground="{StaticResource SolidColorBrush.Accent.Blue.1}" />
+                    </DockPanel>
+                </StackPanel>
+                <StackPanel Orientation="Horizontal" Margin="5,3">
+                    <Image Source="../Resources/might.png" Height="20" Width="20" Margin="5,0,5,0" />
+                    <TextBlock Width="140" Text="{Binding Might, IsAsync=True, Converter={StaticResource ShortNumberConverter}, FallbackValue='0'}" 
+                               Style="{StaticResource Dungeons.Stats.Value}" />
+                    <DockPanel Width="140">
+                        <TextBlock Text="{Binding MightPerHour, IsAsync=True, Converter={StaticResource ShortNumberConverter}, FallbackValue='0'}" 
+                                   Style="{StaticResource Dungeons.Stats.Value}" Padding="0" Margin="0" />
+                        <TextBlock Text="{Binding TranslationHourAbbreviation, FallbackValue='/h', StringFormat='{}/{0}'}" Style="{StaticResource Dungeons.Stats.Value}" 
+                                   Margin="0,0" Foreground="{StaticResource SolidColorBrush.Accent.Blue.1}" />
+                    </DockPanel>
+                    <DockPanel Width="140">
+                        <TextBlock Text="{Binding MightAverage, IsAsync=True, Converter={StaticResource ShortNumberConverter}, FallbackValue='0'}" 
+                                   Style="{StaticResource Dungeons.Stats.Value}" Padding="0" Margin="0" />
+                        <TextBlock Text="{Binding TranslationAverageAbbreviation, FallbackValue='Avg.'}" Style="{StaticResource Dungeons.Stats.Value}" 
+                                   Margin="5,0" Foreground="{StaticResource SolidColorBrush.Accent.Blue.1}" />
+                    </DockPanel>
+                </StackPanel>
+                <StackPanel Orientation="Horizontal" Margin="5,3">
+                    <Image Source="../Resources/favor.png" Height="20" Width="20" Margin="5,0,5,0" />
+                    <TextBlock Width="140" Text="{Binding Favor, IsAsync=True, Converter={StaticResource ShortNumberConverter}, FallbackValue='0'}" 
+                               Style="{StaticResource Dungeons.Stats.Value}" />
+                    <DockPanel Width="140">
+                        <TextBlock Text="{Binding FavorPerHour, IsAsync=True, Converter={StaticResource ShortNumberConverter}, FallbackValue='0'}" 
+                                   Style="{StaticResource Dungeons.Stats.Value}" Padding="0" Margin="0" />
+                        <TextBlock Text="{Binding TranslationHourAbbreviation, FallbackValue='/h', StringFormat='{}/{0}'}" Style="{StaticResource Dungeons.Stats.Value}" 
+                                   Margin="0,0" Foreground="{StaticResource SolidColorBrush.Accent.Blue.1}" />
+                    </DockPanel>
+                    <DockPanel Width="140">
+                        <TextBlock Text="{Binding FavorAverage, IsAsync=True, Converter={StaticResource ShortNumberConverter}, FallbackValue='0'}" 
+                                   Style="{StaticResource Dungeons.Stats.Value}" Padding="0" Margin="0" />
+                        <TextBlock Text="{Binding TranslationAverageAbbreviation, FallbackValue='Avg.'}" Style="{StaticResource Dungeons.Stats.Value}" 
+                                   Margin="5,0" Foreground="{StaticResource SolidColorBrush.Accent.Blue.1}" />
+                    </DockPanel>
+                </StackPanel>
+                <StackPanel Orientation="Horizontal" Margin="5,3">
+                    <Image Source="../Resources/silver.png" Height="20" Width="20" Margin="5,0,5,0" />
+                    <TextBlock Width="140" Text="{Binding Silver, IsAsync=True, Converter={StaticResource ShortNumberConverter}, FallbackValue='0'}" 
+                               Style="{StaticResource Dungeons.Stats.Value}" />
+                    <DockPanel Width="140">
+                        <TextBlock Text="{Binding SilverPerHour, IsAsync=True, Converter={StaticResource ShortNumberConverter}, FallbackValue='0'}" 
+                                   Style="{StaticResource Dungeons.Stats.Value}" Padding="0" Margin="0" />
+                        <TextBlock Text="{Binding TranslationHourAbbreviation, FallbackValue='/h', StringFormat='{}/{0}'}" Style="{StaticResource Dungeons.Stats.Value}" 
+                                   Margin="0,0" Foreground="{StaticResource SolidColorBrush.Accent.Blue.1}" />
+                    </DockPanel>
+                    <DockPanel Width="140">
+                        <TextBlock Text="{Binding SilverAverage, IsAsync=True, Converter={StaticResource ShortNumberConverter}, FallbackValue='0'}" 
+                                   Style="{StaticResource Dungeons.Stats.Value}" Padding="0" Margin="0" />
+                        <TextBlock Text="{Binding TranslationAverageAbbreviation, FallbackValue='Avg.'}" Style="{StaticResource Dungeons.Stats.Value}" 
+                                   Margin="5,0" Foreground="{StaticResource SolidColorBrush.Accent.Blue.1}" />
+                    </DockPanel>
+                </StackPanel>
+                <StackPanel Orientation="Horizontal" Margin="5,3">
+                    <Image Source="../Assets/bag.png" Height="20" Width="20" Margin="5,0,5,0" />
+                    <TextBlock Width="140" Text="{Binding LootInSilver, IsAsync=True, Converter={StaticResource ShortNumberConverter}, FallbackValue='0'}" 
+                               Style="{StaticResource Dungeons.Stats.Value}" />
+                    <DockPanel Width="140">
+                        <TextBlock Text="{Binding LootInSilverPerHour, IsAsync=True, Converter={StaticResource ShortNumberConverter}, FallbackValue='0'}" 
+                                   Style="{StaticResource Dungeons.Stats.Value}" Padding="0" Margin="0" />
+                        <TextBlock Text="{Binding TranslationHourAbbreviation, FallbackValue='/h', StringFormat='{}/{0}'}" Style="{StaticResource Dungeons.Stats.Value}" 
+                                   Margin="0,0" Foreground="{StaticResource SolidColorBrush.Accent.Blue.1}" />
+                    </DockPanel>
+                    <DockPanel Width="140">
+                        <TextBlock Text="{Binding LootInSilverAverage, IsAsync=True, Converter={StaticResource ShortNumberConverter}, FallbackValue='0'}" 
+                                   Style="{StaticResource Dungeons.Stats.Value}" Padding="0" Margin="0" />
+                        <TextBlock Text="{Binding TranslationAverageAbbreviation, FallbackValue='Avg.'}" Style="{StaticResource Dungeons.Stats.Value}" 
+                                   Margin="5,0" Foreground="{StaticResource SolidColorBrush.Accent.Blue.1}" />
+                    </DockPanel>
+                </StackPanel>
+            </StackPanel>
+
+            <!-- Most valuable loot -->
+            <TextBlock Text="{Binding TranslationMostValuableLoot, IsAsync=True, FallbackValue=MOST_VALUABLE_LOOT}" FontSize="16" Foreground="{StaticResource SolidColorBrush.Accent.Blue.2}" />
+            <StackPanel Orientation="Horizontal">
+                <Image Source="{Binding MostValuableLoot.Item.Icon, IsAsync=True}" Height="34" ToolTip="{Binding TranslationMostValuableLoot}" />
+                <StackPanel Orientation="Vertical" Height="32" Width="200">
+                    <TextBlock Padding="0" Text="{Binding MostValuableLoot.Item.LocalizedName, IsAsync=True}" 
+                               Foreground="{StaticResource SolidColorBrush.Text.1}" />
+                    <TextBlock Padding="0" Text="{Binding MostValuableLoot.EstimatedMarketValue.DoubleValue, StringFormat='{}{0:N0}', IsAsync=True}" 
+                               Foreground="{StaticResource SolidColorBrush.Accent.Blue.2}" />
+                </StackPanel>
+            </StackPanel>
+        </StackPanel>
+    </DataTemplate>
+
     <DataTemplate x:Key="Stats.Mists.Template" DataType="{x:Type dungeonModels:StatsMists}">
         <StackPanel Orientation="Vertical" Visibility="{Binding Visibility}">
             <TextBlock Style="{StaticResource TitleText}" Text="{Binding TranslationMists, FallbackValue='MISTS'}" />
@@ -1903,6 +2047,9 @@
 
     <DataTemplate x:Key="Dungeon.Stats.Template" DataType="{x:Type dungeonModels:DungeonStats}">
         <StackPanel Height="420">
+            <!-- Total View -->
+            <ContentPresenter ContentTemplate="{StaticResource Stats.Total.Template}" Content="{Binding StatsTotal}" />
+
             <!-- Solo dungeons -->
             <ContentPresenter ContentTemplate="{StaticResource Stats.Solo.Template}" Content="{Binding StatsSolo}" />
 

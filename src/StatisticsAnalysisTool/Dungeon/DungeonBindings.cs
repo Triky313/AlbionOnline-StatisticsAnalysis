@@ -67,6 +67,11 @@ public class DungeonBindings : BaseViewModel
         {
             new ()
             {
+                Name = LanguageController.Translation("TOTAL_OVERVIEW"),
+                StatsViewType = DungeonMode.Unknown
+            },
+            new ()
+            {
                 Name = LanguageController.Translation("SOLO_DUNGEON"),
                 StatsViewType = DungeonMode.Solo
             },
@@ -107,7 +112,7 @@ public class DungeonBindings : BaseViewModel
             }
         };
 
-        SelectedDungeonStatsType = DungeonStatsType.FirstOrDefault(x => x.StatsViewType == DungeonMode.Solo);
+        SelectedDungeonStatsType = DungeonStatsType.FirstOrDefault(x => x.StatsViewType == DungeonMode.Unknown);
     }
 
     public void InitListCollectionView()
@@ -491,7 +496,7 @@ public class DungeonBindings : BaseViewModel
             return true;
         }
 
-        if (dungeon.Mode == DungeonMode.Unknown)
+        if (SelectedDungeonStatsType.StatsViewType == DungeonMode.Unknown)
         {
             return true;
         }
@@ -536,7 +541,7 @@ public class DungeonBindings : BaseViewModel
             return true;
         }
 
-        if (dungeon.MapType == MapType.Unknown)
+        if (SelectedDungeonStatsType.StatsViewType == DungeonMode.Unknown || dungeon.MapType == MapType.Unknown)
         {
             return true;
         }
@@ -549,6 +554,12 @@ public class DungeonBindings : BaseViewModel
     private void UpdateStatsView()
     {
         SetAllStatViewsToCollapsed();
+
+        if (SelectedDungeonStatsType.StatsViewType == DungeonMode.Unknown)
+        {
+            Stats.StatsTotal.Visibility = Visibility.Visible;
+            return;
+        }
 
         if (SelectedDungeonStatsType.StatsViewType == DungeonMode.Solo)
         {
@@ -600,6 +611,7 @@ public class DungeonBindings : BaseViewModel
 
     private void SetAllStatViewsToCollapsed()
     {
+        Stats.StatsTotal.Visibility = Visibility.Collapsed;
         Stats.StatsSolo.Visibility = Visibility.Collapsed;
         Stats.StatsStandard.Visibility = Visibility.Collapsed;
         Stats.StatsAvalonian.Visibility = Visibility.Collapsed;

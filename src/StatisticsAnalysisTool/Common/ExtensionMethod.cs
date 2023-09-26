@@ -65,6 +65,11 @@ public static class ExtensionMethod
         return hours > 0 ? value / hours : double.MaxValue;
     }
 
+    public static bool HasProperty(this object obj, string propertyName)
+    {
+        return obj.GetType().GetProperty(propertyName) != null;
+    }
+
     #region Object to
 
     public static Guid? ObjectToGuid(this object value)
