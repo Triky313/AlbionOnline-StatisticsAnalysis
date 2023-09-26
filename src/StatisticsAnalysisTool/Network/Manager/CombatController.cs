@@ -412,7 +412,7 @@ public class CombatController
             return;
         }
 
-        if (inActiveCombat || inPassiveCombat) playerObject.Value.Value.AddCombatTime(new TimeCollectObject(DateTime.UtcNow));
+        if (inActiveCombat || inPassiveCombat) playerObject.Value.Value.AddCombatTime(new ActionInterval(DateTime.UtcNow));
 
         if (!inActiveCombat && !inPassiveCombat)
         {

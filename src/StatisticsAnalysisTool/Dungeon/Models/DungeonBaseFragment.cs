@@ -26,7 +26,7 @@ public abstract class DungeonBaseFragment : BaseViewModel
     private double _fame;
     private double _reSpec;
     private double _silver;
-    private List<TimeCollectObject> _dungeonRunTimes = new();
+    private List<ActionInterval> _runningIntervals = new();
     private int _totalRunTimeInSeconds;
     private ObservableCollection<PointOfInterest> _events = new();
     private ObservableCollection<Loot> _loot = new();
@@ -70,6 +70,11 @@ public abstract class DungeonBaseFragment : BaseViewModel
         Status = DungeonStatus.Done;
         Visibility = Visibility.Visible;
         EnterDungeonFirstTime = dto.EnterDungeonFirstTime;
+        RunningIntervals = new List<ActionInterval>() { new (EnterDungeonFirstTime)
+        {
+            EndTime = EnterDungeonFirstTime.AddSeconds(dto.TotalRunTimeInSeconds)
+        }};
+        TotalRunTimeInSeconds = dto.TotalRunTimeInSeconds;
         Tier = dto.Tier;
         Fame = dto.Fame;
         Silver = dto.Silver;
@@ -77,11 +82,10 @@ public abstract class DungeonBaseFragment : BaseViewModel
         KilledBy = dto.KilledBy;
         DiedName = dto.DiedName;
         KillStatus = dto.KillStatus;
-        TotalRunTimeInSeconds = dto.TotalRunTimeInSeconds;
         Events = new ObservableCollection<PointOfInterest>(dto.Events.Select(DungeonMapping.Mapping));
         Loot = new ObservableCollection<Loot>(dto.Loot.Select(DungeonMapping.Mapping));
 
-        UpdateTotalValue();
+        UpdateTotalSilverValue();
         UpdateMostValuableLoot();
         UpdateMostValuableLootVisibility();
     }
@@ -194,7 +198,8 @@ public abstract class DungeonBaseFragment : BaseViewModel
         set
         {
             _fame = value;
-            FamePerHour = value.GetValuePerHour(TotalRunTimeInSeconds <= 0 ? (DateTime.UtcNow - EnterDungeonFirstTime).Seconds : TotalRunTimeInSeconds);
+            TotalRunTimeInSeconds = GetTotalRunTimeInSeconds();
+            FamePerHour = value.GetValuePerHour(GetTotalRunTimeInSeconds());
             OnPropertyChanged();
         }
     }
@@ -205,7 +210,8 @@ public abstract class DungeonBaseFragment : BaseViewModel
         set
         {
             _reSpec = value;
-            ReSpecPerHour = value.GetValuePerHour(TotalRunTimeInSeconds <= 0 ? (DateTime.UtcNow - EnterDungeonFirstTime).Seconds : TotalRunTimeInSeconds);
+            TotalRunTimeInSeconds = GetTotalRunTimeInSeconds();
+            ReSpecPerHour = value.GetValuePerHour(GetTotalRunTimeInSeconds());
             OnPropertyChanged();
         }
     }
@@ -216,28 +222,9 @@ public abstract class DungeonBaseFragment : BaseViewModel
         set
         {
             _silver = value;
-            SilverPerHour = value.GetValuePerHour(TotalRunTimeInSeconds <= 0 ? (DateTime.UtcNow - EnterDungeonFirstTime).Seconds : TotalRunTimeInSeconds);
-            UpdateTotalValue();
-            OnPropertyChanged();
-        }
-    }
-
-    public List<TimeCollectObject> DungeonRunTimes
-    {
-        get => _dungeonRunTimes;
-        set
-        {
-            _dungeonRunTimes = value;
-            OnPropertyChanged();
-        }
-    }
-
-    public int TotalRunTimeInSeconds
-    {
-        get => _totalRunTimeInSeconds;
-        set
-        {
-            _totalRunTimeInSeconds = value;
+            TotalRunTimeInSeconds = GetTotalRunTimeInSeconds();
+            SilverPerHour = value.GetValuePerHour(GetTotalRunTimeInSeconds());
+            UpdateTotalSilverValue();
             OnPropertyChanged();
         }
     }
@@ -288,6 +275,16 @@ public abstract class DungeonBaseFragment : BaseViewModel
         set
         {
             _killStatus = value;
+            OnPropertyChanged();
+        }
+    }
+
+    public List<ActionInterval> RunningIntervals
+    {
+        get => _runningIntervals;
+        set
+        {
+            _runningIntervals = value;
             OnPropertyChanged();
         }
     }
@@ -398,9 +395,22 @@ public abstract class DungeonBaseFragment : BaseViewModel
         }
     }
 
+    public int TotalRunTimeInSeconds
+    {
+        get
+        {
+            return _totalRunTimeInSeconds;
+        }
+        private set
+        {
+            _totalRunTimeInSeconds = value;
+            OnPropertyChanged();
+        }
+    }
+
     #endregion
 
-    public void UpdateTotalValue()
+    public void UpdateTotalSilverValue()
     {
         var lootValue = Loot?.Sum(x => x.Quantity * FixPoint.FromInternalValue(x.EstimatedMarketValueInternal).DoubleValue) ?? 0;
         TotalValue = Silver + lootValue;
@@ -417,6 +427,54 @@ public abstract class DungeonBaseFragment : BaseViewModel
         MostValuableLootVisibility = MostValuableLoot is not null && MostValuableLoot.EstimatedMarketValue.DoubleValue > 0 ? Visibility.Visible : Visibility.Collapsed;
     }
 
+    public void AddTimer(DateTime time)
+    {
+        if (RunningIntervals.Any(x => x.EndTime == null))
+        {
+            var dun = RunningIntervals.FirstOrDefault(x => x.EndTime == null);
+            if (dun != null)
+            {
+                dun.EndTime = time;
+                TotalRunTimeInSeconds = GetTotalRunTimeInSeconds();
+                RunningIntervals.Add(new ActionInterval(time));
+            }
+        }
+        else
+        {
+            RunningIntervals.Add(new ActionInterval(time));
+        }
+    }
+
+    public void EndTimer()
+    {
+        var dateTime = DateTime.UtcNow;
+
+        var dun = RunningIntervals.FirstOrDefault(x => x.EndTime == null);
+        if (dun != null && dun.StartTime < dateTime)
+        {
+            dun.EndTime = dateTime;
+            TotalRunTimeInSeconds = GetTotalRunTimeInSeconds();
+        }
+    }
+
+    private int GetTotalRunTimeInSeconds()
+    {
+        int newTotalRunTime = 0;
+
+        foreach (var time in RunningIntervals.Where(x => x.EndTime != null).ToList())
+        {
+            newTotalRunTime += (int) time.TimeSpan.TotalSeconds;
+        }
+
+        var currentlyRunningTime = RunningIntervals.FirstOrDefault(x => x.EndTime == null);
+        if (currentlyRunningTime != null)
+        {
+            newTotalRunTime += (int) (DateTime.UtcNow - currentlyRunningTime.StartTime).TotalSeconds;
+        }
+
+        return newTotalRunTime;
+    }
+
     public void SetTier(Tier tier)
     {
         if ((int) tier <= (int) Tier)
@@ -425,46 +483,6 @@ public abstract class DungeonBaseFragment : BaseViewModel
         }
 
         Tier = tier;
-    }
-
-    public void AddTimer(DateTime time)
-    {
-        if (DungeonRunTimes.Any(x => x.EndTime == null))
-        {
-            var dun = DungeonRunTimes.FirstOrDefault(x => x.EndTime == null);
-            if (dun != null)
-            {
-                dun.EndTime = time;
-                DungeonRunTimes.Add(new TimeCollectObject(time));
-            }
-        }
-        else
-        {
-            DungeonRunTimes.Add(new TimeCollectObject(time));
-        }
-
-        SetTotalRunTimeInSeconds();
-    }
-
-    public void EndTimer()
-    {
-        var dateTime = DateTime.UtcNow;
-
-        var dun = DungeonRunTimes.FirstOrDefault(x => x.EndTime == null);
-        if (dun != null && dun.StartTime < dateTime)
-        {
-            dun.EndTime = dateTime;
-            SetTotalRunTimeInSeconds();
-        }
-    }
-
-    private void SetTotalRunTimeInSeconds()
-    {
-        foreach (var time in DungeonRunTimes.Where(x => x.EndTime != null).ToList())
-        {
-            TotalRunTimeInSeconds += (int) time.TimeSpan.TotalSeconds;
-            DungeonRunTimes.Remove(time);
-        }
     }
 
     private void SetModeAndFaction(MapType mapType)

@@ -609,7 +609,7 @@ public sealed class DungeonController
                     UniqueName = uniqueItemName,
                     UtcDiscoveryTime = discoveredItem.UtcDiscoveryTime
                 });
-                dun.UpdateTotalValue();
+                dun.UpdateTotalSilverValue();
                 dun.UpdateMostValuableLoot();
                 dun.UpdateMostValuableLootVisibility();
             });
