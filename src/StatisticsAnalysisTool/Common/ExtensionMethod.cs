@@ -61,15 +61,8 @@ public static class ExtensionMethod
 
     public static double GetValuePerHour(this double value, double seconds)
     {
-        try
-        {
-            var hours = seconds / 60d / 60d;
-            return value / hours;
-        }
-        catch (OverflowException)
-        {
-            return double.MaxValue;
-        }
+        double hours = seconds > 0 ? seconds / 60d / 60d : 0;
+        return hours > 0 ? value / hours : double.MaxValue;
     }
 
     #region Object to
