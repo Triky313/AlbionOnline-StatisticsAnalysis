@@ -1,6 +1,6 @@
-﻿using StatisticsAnalysisTool.Common;
-using StatisticsAnalysisTool.EventLogging;
+﻿using StatisticsAnalysisTool.EventLogging;
 using StatisticsAnalysisTool.EventLogging.Notification;
+using StatisticsAnalysisTool.Localization;
 using StatisticsAnalysisTool.Models.NetworkModel;
 using StatisticsAnalysisTool.Network.Events;
 using StatisticsAnalysisTool.Network.Manager;

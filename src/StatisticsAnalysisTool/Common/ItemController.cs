@@ -238,7 +238,7 @@ public static class ItemController
 
         if (string.IsNullOrEmpty(currentLanguage))
         {
-            currentLanguage = LanguageController.CurrentCultureInfo?.TextInfo.CultureName.ToUpper();
+            currentLanguage = CultureInfo.DefaultThreadCurrentUICulture?.TextInfo.CultureName.ToUpper();
         }
 
         return FrequentlyValues.GameLanguages

@@ -2,6 +2,7 @@
 using StatisticsAnalysisTool.ViewModels;
 using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Text.Json.Serialization;
 
 namespace StatisticsAnalysisTool.DamageMeter;
@@ -27,7 +28,7 @@ public sealed class DamageMeterSnapshot : BaseViewModel
     }
 
     [JsonIgnore]
-    public string TimestampString => Timestamp.ToString(LanguageController.CurrentCultureInfo);
+    public string TimestampString => Timestamp.ToString(CultureInfo.DefaultThreadCurrentCulture);
 
     public List<DamageMeterSnapshotFragment> DamageMeter
     {

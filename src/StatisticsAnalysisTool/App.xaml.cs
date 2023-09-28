@@ -1,11 +1,12 @@
 ﻿using Notification.Wpf;
 using Serilog;
 using Serilog.Events;
+using StatisticAnalysisTool.Extractor.Enums;
 using StatisticsAnalysisTool.Backup;
 using StatisticsAnalysisTool.Common;
 using StatisticsAnalysisTool.Common.UserSettings;
-using StatisticsAnalysisTool.Enumerations;
 using StatisticsAnalysisTool.GameFileData;
+using StatisticsAnalysisTool.Localization;
 using StatisticsAnalysisTool.Network.Manager;
 using StatisticsAnalysisTool.Notification;
 using StatisticsAnalysisTool.ViewModels;
@@ -16,7 +17,6 @@ using System.Reflection;
 using System.Runtime.InteropServices;
 using System.Windows;
 using System.Windows.Threading;
-using StatisticAnalysisTool.Extractor.Enums;
 
 namespace StatisticsAnalysisTool;
 
@@ -24,6 +24,7 @@ public partial class App
 {
     private MainWindowViewModel _mainWindowViewModel;
     private TrackingController _trackingController;
+    private bool _isEarlyShutdown;
 
     protected override async void OnStartup(StartupEventArgs e)
     {
@@ -37,7 +38,13 @@ public partial class App
         await AutoUpdateController.AutoUpdateAsync();
 
         SettingsController.LoadSettings();
-        InitializeLanguage();
+        Culture.SetCulture(Culture.GetCulture(SettingsController.CurrentSettings.CurrentCultureIetfLanguageTag));
+        if (!LanguageController.Init())
+        {
+            _isEarlyShutdown = true;
+            Current.Shutdown();
+            return;
+        }
 
         AutoUpdateController.RemoveUpdateFiles();
         await BackupController.DeleteOldestBackupsIfNeededAsync();
@@ -45,7 +52,7 @@ public partial class App
         RegisterServicesEarly();
 
         Current.MainWindow = new MainWindow(_mainWindowViewModel);
-        await GameData.InitializeMainGameDataFilesAsync(ServerType.Live);
+        await GameData.InitializeMainGameDataFilesAsync(ServerType.Staging);
 
         RegisterServicesLate();
 
@@ -89,25 +96,6 @@ public partial class App
         ServiceLocator.Register<TrackingController>(_trackingController);
     }
 
-    private static void InitializeLanguage()
-    {
-        if (LanguageController.InitializeLanguage())
-        {
-            return;
-        }
-
-        var dialogWindow = new DialogWindow(
-            "LANGUAGE FILE NOT FOUND",
-            "No language file was found, please add one and restart the tool!",
-            DialogType.Error);
-        var dialogResult = dialogWindow.ShowDialog();
-
-        if (dialogResult is not true)
-        {
-            Current.Shutdown();
-        }
-    }
-
     private static void OnUnhandledException(object sender, UnhandledExceptionEventArgs e)
     {
         try
@@ -132,6 +120,11 @@ public partial class App
 
     protected override void OnExit(ExitEventArgs e)
     {
+        if (_isEarlyShutdown)
+        {
+            return;
+        }
+
         _trackingController?.StopTracking();
         CriticalData.Save();
         if (!BackupController.ExistBackupOnSettingConditions())
@@ -142,6 +135,11 @@ public partial class App
 
     private void OnSessionEnding(object sender, SessionEndingCancelEventArgs e)
     {
+        if (_isEarlyShutdown)
+        {
+            return;
+        }
+
         _trackingController?.StopTracking();
         CriticalData.Save();
         if (!BackupController.ExistBackupOnSettingConditions())

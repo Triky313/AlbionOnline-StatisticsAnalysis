@@ -23,6 +23,7 @@ using System.Timers;
 using System.Windows;
 using System.Windows.Markup;
 using System.Windows.Media.Imaging;
+using StatisticsAnalysisTool.Localization;
 
 namespace StatisticsAnalysisTool.ViewModels;
 
@@ -42,7 +43,7 @@ public class ItemWindowViewModel : BaseViewModel
     private double _taskProgressbarMaximum = 100;
     private double _taskProgressbarValue;
     private bool _isTaskProgressbarIndeterminate;
-    private XmlLanguage _itemListViewLanguage = XmlLanguage.GetLanguage(LanguageController.CurrentCultureInfo.ToString());
+    private XmlLanguage _itemListViewLanguage = XmlLanguage.GetLanguage(CultureInfo.DefaultThreadCurrentCulture?.IetfLanguageTag ?? string.Empty);
     private double _refreshRateInMilliseconds = 10;
     private RequiredJournal _requiredJournal;
     private EssentialCraftingValuesTemplate _essentialCraftingValues;
@@ -95,7 +96,7 @@ public class ItemWindowViewModel : BaseViewModel
         Translation = new ItemWindowTranslation();
         _ = InitAsync(item);
 
-        ItemListViewLanguage = XmlLanguage.GetLanguage(LanguageController.CurrentCultureInfo.ToString());
+        ItemListViewLanguage = XmlLanguage.GetLanguage(CultureInfo.DefaultThreadCurrentCulture?.IetfLanguageTag ?? string.Empty);
     }
 
     #region Inits

@@ -9,6 +9,7 @@ using StatisticsAnalysisTool.EventLogging;
 using StatisticsAnalysisTool.EventLogging.Notification;
 using StatisticsAnalysisTool.Exceptions;
 using StatisticsAnalysisTool.Gathering;
+using StatisticsAnalysisTool.Localization;
 using StatisticsAnalysisTool.Models;
 using StatisticsAnalysisTool.PartyBuilder;
 using StatisticsAnalysisTool.Properties;

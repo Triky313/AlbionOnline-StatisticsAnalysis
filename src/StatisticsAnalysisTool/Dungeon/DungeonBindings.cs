@@ -3,6 +3,7 @@ using StatisticsAnalysisTool.Common;
 using StatisticsAnalysisTool.Common.Comparer;
 using StatisticsAnalysisTool.Common.UserSettings;
 using StatisticsAnalysisTool.Dungeon.Models;
+using StatisticsAnalysisTool.Localization;
 using StatisticsAnalysisTool.Models.TranslationModel;
 using StatisticsAnalysisTool.ViewModels;
 using System;

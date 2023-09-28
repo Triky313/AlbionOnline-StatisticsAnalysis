@@ -85,6 +85,9 @@
     <Compile Update="UserControls\ErrorBarControl.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Update="Views\LanguageSelectionWindow.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
   </ItemGroup>
   <ItemGroup>
     <None Update="Properties\Settings.settings">
