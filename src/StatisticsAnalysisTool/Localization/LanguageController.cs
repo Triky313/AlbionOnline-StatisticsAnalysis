@@ -78,7 +78,6 @@ public static class LanguageController
 
     public static bool SetLanguageWithDialogWindow()
     {
-        Application.Current.ShutdownMode = ShutdownMode.OnExplicitShutdown;
         var dialogWindow = new LanguageSelectionWindow();
         var dialogResult = dialogWindow.ShowDialog();
 
@@ -89,8 +88,6 @@ public static class LanguageController
 
         var languageSelectionWindowViewModel = (LanguageSelectionWindowViewModel) dialogWindow.DataContext;
         var selectedLanguage = languageSelectionWindowViewModel.SelectedFileInformation;
-
-        Application.Current.ShutdownMode = ShutdownMode.OnMainWindowClose;
 
         var culture = new CultureInfo(selectedLanguage.FileName);
         SetLanguage(culture);

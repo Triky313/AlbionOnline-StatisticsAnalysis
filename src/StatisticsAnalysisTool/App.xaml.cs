@@ -30,6 +30,8 @@ public partial class App
     {
         base.OnStartup(e);
 
+        Current.ShutdownMode = ShutdownMode.OnExplicitShutdown;
+
         InitLogger();
         Log.Information($"Tool started with v{Assembly.GetExecutingAssembly().GetName().Version}");
 
@@ -46,19 +48,19 @@ public partial class App
             return;
         }
 
+        await GameData.InitializeMainGameDataFilesAsync(ServerType.Staging);
+
         AutoUpdateController.RemoveUpdateFiles();
         await BackupController.DeleteOldestBackupsIfNeededAsync();
 
+        Current.ShutdownMode = ShutdownMode.OnMainWindowClose;
+
         RegisterServicesEarly();
-
         Current.MainWindow = new MainWindow(_mainWindowViewModel);
-        await GameData.InitializeMainGameDataFilesAsync(ServerType.Staging);
-
         RegisterServicesLate();
 
         await _mainWindowViewModel.InitMainWindowDataAsync();
         Current.MainWindow.Show();
-
 
         Utilities.AnotherAppToStart(SettingsController.CurrentSettings.AnotherAppToStartPath);
     }
