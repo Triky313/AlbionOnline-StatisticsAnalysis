@@ -1,6 +1,6 @@
 ﻿using Serilog;
+using StatisticsAnalysisTool.Common;
 using StatisticsAnalysisTool.Common.UserSettings;
-using StatisticsAnalysisTool.Localization;
 using StatisticsAnalysisTool.Models;
 using StatisticsAnalysisTool.Properties;
 using StatisticsAnalysisTool.ViewModels;
@@ -15,7 +15,7 @@ using System.Windows;
 using System.Xml;
 using System.Xml.Linq;
 
-namespace StatisticsAnalysisTool.Common;
+namespace StatisticsAnalysisTool.Localization;
 
 public static class LanguageController
 {
@@ -30,7 +30,7 @@ public static class LanguageController
         LanguageFiles = InitLanguageFiles();
 
         // Set culture information
-        var cultureInfo = CultureManager.GetCulture(SettingsController.CurrentSettings.CurrentCultureIetfLanguageTag);
+        var cultureInfo = Culture.GetCulture(SettingsController.CurrentSettings.CurrentCultureIetfLanguageTag);
         IsLanguageSelected = IsCultureInfoAvailableAsLanguageFile(cultureInfo);
 
         // Set language
@@ -99,7 +99,7 @@ public static class LanguageController
 
     public static bool SetLanguage(CultureInfo cultureInfo)
     {
-        CultureManager.SetCulture(cultureInfo);
+        Culture.SetCulture(cultureInfo);
         var languageFileInfo = GetLanguageFileInfo(cultureInfo);
         return LoadTranslations(languageFileInfo.FilePath);
     }
@@ -234,7 +234,7 @@ public static class LanguageController
         var mainLanguageFileCount = CountTranslations(mainLanguageFile.FilePath);
         mainLanguageFile.PercentageTranslations = 100;
 
-        foreach (FileInformation fileInformation in files.Where(x => x.FileName != mainLanguageFileName).ToList())
+        foreach (var fileInformation in files.Where(x => x.FileName != mainLanguageFileName).ToList())
         {
             var countTranslations = CountTranslations(fileInformation.FilePath);
             double percentageValue = 100d / mainLanguageFileCount * countTranslations;
@@ -242,7 +242,7 @@ public static class LanguageController
             var fileInfo = files.FirstOrDefault(x => x.FileName == fileInformation.FileName);
             if (fileInfo != null)
             {
-                fileInfo.PercentageTranslations = (percentageValue > 100d) ? 100 : percentageValue;
+                fileInfo.PercentageTranslations = percentageValue > 100d ? 100 : percentageValue;
             }
         }
     }

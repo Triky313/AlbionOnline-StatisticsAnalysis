@@ -1,4 +1,4 @@
-﻿using StatisticsAnalysisTool.Common;
+﻿using StatisticsAnalysisTool.Localization;
 using StatisticsAnalysisTool.Models;
 using System.Collections.ObjectModel;
 using System.Linq;

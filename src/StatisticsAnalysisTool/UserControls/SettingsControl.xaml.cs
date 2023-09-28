@@ -3,6 +3,7 @@ using Serilog;
 using StatisticsAnalysisTool.Backup;
 using StatisticsAnalysisTool.Common;
 using StatisticsAnalysisTool.Common.Shortcut;
+using StatisticsAnalysisTool.Localization;
 using StatisticsAnalysisTool.ViewModels;
 using System;
 using System.Diagnostics;

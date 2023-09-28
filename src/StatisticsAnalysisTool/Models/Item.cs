@@ -1,6 +1,7 @@
 ﻿using StatisticsAnalysisTool.Common;
 using StatisticsAnalysisTool.Enumerations;
 using StatisticsAnalysisTool.EstimatedMarketValue;
+using StatisticsAnalysisTool.Localization;
 using System.Collections.Generic;
 using System.Globalization;
 using System.Text.Json.Serialization;

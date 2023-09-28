@@ -38,7 +38,7 @@ public partial class App
         await AutoUpdateController.AutoUpdateAsync();
 
         SettingsController.LoadSettings();
-        CultureManager.SetCulture(CultureManager.GetCulture(SettingsController.CurrentSettings.CurrentCultureIetfLanguageTag));
+        Culture.SetCulture(Culture.GetCulture(SettingsController.CurrentSettings.CurrentCultureIetfLanguageTag));
         if (!LanguageController.Init())
         {
             _isEarlyShutdown = true;

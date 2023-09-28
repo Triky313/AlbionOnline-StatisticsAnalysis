@@ -1,4 +1,5 @@
 ﻿using Serilog;
+using StatisticsAnalysisTool.Localization;
 using StatisticsAnalysisTool.Notification;
 using System;
 using System.Collections.Generic;

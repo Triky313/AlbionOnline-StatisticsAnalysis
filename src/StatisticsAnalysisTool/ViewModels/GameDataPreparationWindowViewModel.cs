@@ -1,7 +1,7 @@
 ﻿using Ookii.Dialogs.Wpf;
 using StatisticAnalysisTool.Extractor;
 using StatisticAnalysisTool.Extractor.Enums;
-using StatisticsAnalysisTool.Common;
+using StatisticsAnalysisTool.Localization;
 using System;
 
 namespace StatisticsAnalysisTool.ViewModels;

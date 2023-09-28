@@ -1,8 +1,8 @@
 ﻿using System.Linq;
-using StatisticsAnalysisTool.Common;
 using StatisticsAnalysisTool.ViewModels;
 using StatisticsAnalysisTool.Views;
 using System.Windows;
+using StatisticsAnalysisTool.Localization;
 
 namespace StatisticsAnalysisTool.UserControls;
 /// <summary>

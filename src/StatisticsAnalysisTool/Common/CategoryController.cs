@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
+using StatisticsAnalysisTool.Localization;
 using StatisticsAnalysisTool.Models;
 
 namespace StatisticsAnalysisTool.Common;

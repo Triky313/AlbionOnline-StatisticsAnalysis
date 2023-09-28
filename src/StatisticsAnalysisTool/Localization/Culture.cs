@@ -5,9 +5,9 @@ using System.Windows.Markup;
 
 namespace StatisticsAnalysisTool.Localization;
 
-public class CultureManager
+public class Culture
 {
-    static CultureManager()
+    static Culture()
     {
         FrameworkElement.LanguageProperty.OverrideMetadata(typeof(FrameworkElement), new FrameworkPropertyMetadata(XmlLanguage.GetLanguage(CultureInfo.CurrentCulture.IetfLanguageTag)));
     }

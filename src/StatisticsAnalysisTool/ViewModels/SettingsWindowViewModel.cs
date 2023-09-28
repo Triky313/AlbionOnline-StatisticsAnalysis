@@ -123,7 +123,7 @@ public class SettingsWindowViewModel : BaseViewModel
         SettingsController.CurrentSettings.IsInfoWindowShownOnStart = ShowInfoWindowOnStartChecked;
         SettingsController.CurrentSettings.SelectedAlertSound = AlertSoundSelection?.FileName ?? string.Empty;
 
-        LanguageController.SetLanguage(CultureManager.GetCulture(LanguagesSelection.FileName));
+        LanguageController.SetLanguage(Culture.GetCulture(LanguagesSelection.FileName));
 
         SettingsController.CurrentSettings.AlbionDataProjectBaseUrlWest = AlbionDataProjectBaseUrlWest;
         SettingsController.CurrentSettings.AlbionDataProjectBaseUrlEast = AlbionDataProjectBaseUrlEast;
