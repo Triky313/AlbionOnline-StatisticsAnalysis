@@ -402,9 +402,11 @@
 	<translation name="STANDARD_DUNGEON">スタンダードダンジョン</translation>
 	<translation name="AVA">アバロン</translation>
 	<translation name="AVALONIAN_DUNGEON">アバロニアンダンジョン</translation>
+	<translation name="HCE_EXPEDITION">HCE(ハードな探検)</translation>
+	<translation name="MISTS_DUNGEON">ナイトフォール・アビー</translation>
 	<translation name="HG">HG</translation>
 	<translation name="EXPED">期限切れ</translation>
-	<translation name="CORRUPTED">Corrupted</translation>
+	<translation name="CORRUPTED">堕落</translation>
 	<translation name="AVERAGE_FAME">平均名声</translation>
 	<translation name="AVERAGE_RESPEC">Average Respec</translation>
 	<translation name="AVERAGE_SILVER">平均シルバー</translation>
