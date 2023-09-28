@@ -6,8 +6,8 @@
                     xmlns:dungeon="clr-namespace:StatisticsAnalysisTool.Dungeon"
                     xmlns:dungeonModels="clr-namespace:StatisticsAnalysisTool.Dungeon.Models"
                     xmlns:enumerations="clr-namespace:StatisticsAnalysisTool.Enumerations"
-                    xmlns:com="clr-namespace:StatisticsAnalysisTool.Common"
-                    xmlns:cluster="clr-namespace:StatisticsAnalysisTool.Cluster">
+                    xmlns:cluster="clr-namespace:StatisticsAnalysisTool.Cluster"
+                    xmlns:globalization="clr-namespace:System.Globalization;assembly=System.Runtime">
 
     <converters:ValueAvgConverter x:Key="ValueAvgConverter" />
     <converters:ShortNumberConverter x:Key="ShortNumberConverter" />
@@ -2590,7 +2590,7 @@
                                         <Label.Content>
                                             <TextBlock>
                                                 <TextBlock.Text>
-                                                    <MultiBinding StringFormat="{}{0}" ConverterCulture="{x:Static com:LanguageController.CurrentCultureInfo}">
+                                                    <MultiBinding StringFormat="{}{0}" ConverterCulture="{x:Static globalization:CultureInfo.DefaultThreadCurrentUICulture}">
                                                         <Binding Path="EnterDungeonFirstTime" FallbackValue="00.00.0000 00:00:00" />
                                                     </MultiBinding>
                                                 </TextBlock.Text>
@@ -2774,7 +2774,7 @@
                                         <Label.Content>
                                             <TextBlock>
                                                 <TextBlock.Text>
-                                                    <MultiBinding StringFormat="{}{0}" ConverterCulture="{x:Static com:LanguageController.CurrentCultureInfo}">
+                                                    <MultiBinding StringFormat="{}{0}" ConverterCulture="{x:Static globalization:CultureInfo.DefaultThreadCurrentUICulture}">
                                                         <Binding Path="EnterDungeonFirstTime" FallbackValue="00.00.0000 00:00:00" />
                                                     </MultiBinding>
                                                 </TextBlock.Text>
@@ -2930,7 +2930,7 @@
                                         <Label.Content>
                                             <TextBlock>
                                                 <TextBlock.Text>
-                                                    <MultiBinding StringFormat="{}{0}" ConverterCulture="{x:Static com:LanguageController.CurrentCultureInfo}">
+                                                    <MultiBinding StringFormat="{}{0}" ConverterCulture="{x:Static globalization:CultureInfo.DefaultThreadCurrentUICulture}">
                                                         <Binding Path="EnterDungeonFirstTime" FallbackValue="00.00.0000 00:00:00" />
                                                     </MultiBinding>
                                                 </TextBlock.Text>
@@ -3085,7 +3085,7 @@
                                         <Label.Content>
                                             <TextBlock>
                                                 <TextBlock.Text>
-                                                    <MultiBinding StringFormat="{}{0}" ConverterCulture="{x:Static com:LanguageController.CurrentCultureInfo}">
+                                                    <MultiBinding StringFormat="{}{0}" ConverterCulture="{x:Static globalization:CultureInfo.DefaultThreadCurrentUICulture}">
                                                         <Binding Path="EnterDungeonFirstTime" FallbackValue="00.00.0000 00:00:00" />
                                                     </MultiBinding>
                                                 </TextBlock.Text>
@@ -3200,7 +3200,7 @@
                                         <Label.Content>
                                             <TextBlock>
                                                 <TextBlock.Text>
-                                                    <MultiBinding StringFormat="{}{0}" ConverterCulture="{x:Static com:LanguageController.CurrentCultureInfo}">
+                                                    <MultiBinding StringFormat="{}{0}" ConverterCulture="{x:Static globalization:CultureInfo.DefaultThreadCurrentUICulture}">
                                                         <Binding Path="EnterDungeonFirstTime" FallbackValue="00.00.0000 00:00:00" />
                                                     </MultiBinding>
                                                 </TextBlock.Text>
@@ -3355,7 +3355,7 @@
                                         <Label.Content>
                                             <TextBlock>
                                                 <TextBlock.Text>
-                                                    <MultiBinding StringFormat="{}{0}" ConverterCulture="{x:Static com:LanguageController.CurrentCultureInfo}">
+                                                    <MultiBinding StringFormat="{}{0}" ConverterCulture="{x:Static globalization:CultureInfo.DefaultThreadCurrentUICulture}">
                                                         <Binding Path="EnterDungeonFirstTime" FallbackValue="00.00.0000 00:00:00" />
                                                     </MultiBinding>
                                                 </TextBlock.Text>

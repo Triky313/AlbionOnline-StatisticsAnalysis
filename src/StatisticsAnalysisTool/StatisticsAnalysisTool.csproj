@@ -85,6 +85,9 @@
     <Compile Update="UserControls\ErrorBarControl.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Update="Views\LanguageSelectionWindow.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
   </ItemGroup>
   <ItemGroup>
     <None Update="Properties\Settings.settings">
@@ -892,5 +895,8 @@
       <Generator>PublicResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
     </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Localization\" />
   </ItemGroup>
 </Project>

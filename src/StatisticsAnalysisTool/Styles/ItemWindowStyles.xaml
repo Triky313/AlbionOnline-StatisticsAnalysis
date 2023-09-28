@@ -4,9 +4,9 @@
                     xmlns:enum="clr-namespace:StatisticsAnalysisTool.Enumerations"
                     xmlns:itemWindowModel="clr-namespace:StatisticsAnalysisTool.Models.ItemWindowModel"
                     xmlns:fa5="http://schemas.fontawesome.com/icons/"
-                    xmlns:com="clr-namespace:StatisticsAnalysisTool.Common"
                     xmlns:models="clr-namespace:StatisticsAnalysisTool.Models"
-                    xmlns:converters="clr-namespace:StatisticsAnalysisTool.Common.Converters">
+                    xmlns:converters="clr-namespace:StatisticsAnalysisTool.Common.Converters"
+                    xmlns:globalization="clr-namespace:System.Globalization;assembly=System.Runtime">
 
     <converters:ZeroToDashConverter x:Key="ZeroToDashConverter" />
 
@@ -564,7 +564,7 @@
                 <Label Content="{Binding SellPriceMin, 
                     StringFormat='N0', 
                     Converter={StaticResource ZeroToDashConverter}, 
-                    ConverterCulture={x:Static com:LanguageController.CurrentCultureInfo}}">
+                    ConverterCulture={x:Static globalization:CultureInfo.DefaultThreadCurrentUICulture}}">
                     <Label.InputBindings>
                         <!-- ReSharper disable once Xaml.BindingWithContextNotResolved -->
                         <MouseBinding MouseAction="LeftDoubleClick" Command="{Binding CopyTextToClipboard}" 
@@ -635,7 +635,7 @@
                 <Label Content="{Binding SellPriceMax, 
                     StringFormat='N0', 
                     Converter={StaticResource ZeroToDashConverter}, 
-                    ConverterCulture={x:Static com:LanguageController.CurrentCultureInfo}}">
+                    ConverterCulture={x:Static globalization:CultureInfo.DefaultThreadCurrentUICulture}}">
                     <Label.InputBindings>
                         <!-- ReSharper disable once Xaml.BindingWithContextNotResolved -->
                         <MouseBinding MouseAction="LeftDoubleClick" Command="{Binding CopyTextToClipboard}" 
@@ -707,7 +707,7 @@
                 <Label Content="{Binding BuyPriceMin, 
                     StringFormat='N0', 
                     Converter={StaticResource ZeroToDashConverter}, 
-                    ConverterCulture={x:Static com:LanguageController.CurrentCultureInfo}}">
+                    ConverterCulture={x:Static globalization:CultureInfo.DefaultThreadCurrentUICulture}}">
                     <Label.InputBindings>
                         <!-- ReSharper disable once Xaml.BindingWithContextNotResolved -->
                         <MouseBinding MouseAction="LeftDoubleClick" Command="{Binding CopyTextToClipboard}" 
@@ -779,7 +779,7 @@
                 <Label Content="{Binding BuyPriceMax, 
                     StringFormat='N0', 
                     Converter={StaticResource ZeroToDashConverter}, 
-                    ConverterCulture={x:Static com:LanguageController.CurrentCultureInfo}}">
+                    ConverterCulture={x:Static globalization:CultureInfo.DefaultThreadCurrentUICulture}}">
                     <Label.InputBindings>
                         <!-- ReSharper disable once Xaml.BindingWithContextNotResolved -->
                         <MouseBinding MouseAction="LeftDoubleClick" Command="{Binding CopyTextToClipboard}" 
@@ -860,7 +860,7 @@
                 <Label Content="{Binding SellPriceMinNormal, 
                     StringFormat='N0', 
                     Converter={StaticResource ZeroToDashConverter}, 
-                    ConverterCulture={x:Static com:LanguageController.CurrentCultureInfo}}"  ToolTip="{Binding SellPriceMinNormalDate, StringFormat='G'}">
+                    ConverterCulture={x:Static globalization:CultureInfo.DefaultThreadCurrentUICulture}}"  ToolTip="{Binding SellPriceMinNormalDate, StringFormat='G'}">
                     <Label.InputBindings>
                         <!-- ReSharper disable once Xaml.BindingWithContextNotResolved -->
                         <MouseBinding MouseAction="LeftDoubleClick" Command="{Binding CopyTextToClipboard}" 
@@ -900,7 +900,7 @@
                 <Label Content="{Binding SellPriceMinGood, 
                     StringFormat='N0', 
                     Converter={StaticResource ZeroToDashConverter}, 
-                    ConverterCulture={x:Static com:LanguageController.CurrentCultureInfo}}"  ToolTip="{Binding SellPriceMinGoodDate, StringFormat='G'}">
+                    ConverterCulture={x:Static globalization:CultureInfo.DefaultThreadCurrentUICulture}}"  ToolTip="{Binding SellPriceMinGoodDate, StringFormat='G'}">
                     <Label.InputBindings>
                         <!-- ReSharper disable once Xaml.BindingWithContextNotResolved -->
                         <MouseBinding MouseAction="LeftDoubleClick" Command="{Binding CopyTextToClipboard}" 
@@ -940,7 +940,7 @@
                 <Label Content="{Binding SellPriceMinOutstanding, 
                     StringFormat='N0', 
                     Converter={StaticResource ZeroToDashConverter}, 
-                    ConverterCulture={x:Static com:LanguageController.CurrentCultureInfo}}"  ToolTip="{Binding SellPriceMinOutstandingDate, StringFormat='G'}">
+                    ConverterCulture={x:Static globalization:CultureInfo.DefaultThreadCurrentUICulture}}"  ToolTip="{Binding SellPriceMinOutstandingDate, StringFormat='G'}">
                     <Label.InputBindings>
                         <!-- ReSharper disable once Xaml.BindingWithContextNotResolved -->
                         <MouseBinding MouseAction="LeftDoubleClick" Command="{Binding CopyTextToClipboard}" 
@@ -980,7 +980,7 @@
                 <Label Content="{Binding SellPriceMinExcellent, 
                     StringFormat='N0', 
                     Converter={StaticResource ZeroToDashConverter}, 
-                    ConverterCulture={x:Static com:LanguageController.CurrentCultureInfo}}"  ToolTip="{Binding SellPriceMinExcellentDate, StringFormat='G'}">
+                    ConverterCulture={x:Static globalization:CultureInfo.DefaultThreadCurrentUICulture}}"  ToolTip="{Binding SellPriceMinExcellentDate, StringFormat='G'}">
                     <Label.InputBindings>
                         <!-- ReSharper disable once Xaml.BindingWithContextNotResolved -->
                         <MouseBinding MouseAction="LeftDoubleClick" Command="{Binding CopyTextToClipboard}" 
@@ -1020,7 +1020,7 @@
                 <Label Content="{Binding SellPriceMinMasterpiece, 
                     StringFormat='N0', 
                     Converter={StaticResource ZeroToDashConverter}, 
-                    ConverterCulture={x:Static com:LanguageController.CurrentCultureInfo}}"  ToolTip="{Binding SellPriceMinMasterpieceDate, StringFormat='G'}">
+                    ConverterCulture={x:Static globalization:CultureInfo.DefaultThreadCurrentUICulture}}"  ToolTip="{Binding SellPriceMinMasterpieceDate, StringFormat='G'}">
                     <Label.InputBindings>
                         <!-- ReSharper disable once Xaml.BindingWithContextNotResolved -->
                         <MouseBinding MouseAction="LeftDoubleClick" Command="{Binding CopyTextToClipboard}" 

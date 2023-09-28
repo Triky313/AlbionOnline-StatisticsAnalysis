@@ -18,7 +18,7 @@ public sealed class MistsData
     public static int GetTier(string worldMapDataType)
     {
         var mistData = Get(worldMapDataType);
-        return int.TryParse(mistData.ClusterTier, NumberStyles.Any, LanguageController.CurrentCultureInfo, out int result) ? result : 0;
+        return int.TryParse(mistData.ClusterTier, NumberStyles.Any, CultureInfo.DefaultThreadCurrentCulture, out int result) ? result : 0;
     }
 
     public static MistsJsonObject Get(string worldMapDataType)

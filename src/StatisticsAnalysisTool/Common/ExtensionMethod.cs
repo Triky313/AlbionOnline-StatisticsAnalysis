@@ -1,3 +1,4 @@
+using StatisticsAnalysisTool.Common.UserSettings;
 using StatisticsAnalysisTool.Enumerations;
 using StatisticsAnalysisTool.Models.NetworkModel;
 using System;
@@ -264,7 +265,7 @@ public static class ExtensionMethod
     public static string CurrentDateTimeFormat(this DateTime value)
     {
         return DateTime.SpecifyKind(value, DateTimeKind.Utc).ToLocalTime()
-            .ToString("G", new CultureInfo(LanguageController.CurrentCultureInfo.TextInfo.CultureName));
+            .ToString("G", CultureInfo.DefaultThreadCurrentCulture);
     }
 
     public static string DateTimeToLastUpdateTime(this DateTime dateTime)
