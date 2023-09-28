@@ -341,11 +341,11 @@
                                         <TextBlock.Style>
                                             <Style TargetType="{x:Type TextBlock}">
                                                 <Style.Triggers>
-                                                    <DataTrigger Binding="{Binding IsMostExpensiveSaleItemFromMail, IsAsync=True}" Value="true">
-                                                        <Setter Property="Text" Value="{Binding MostExpensiveSaleItem.MailContent.TotalPrice.IntegerValue, IsAsync=True, StringFormat='{} {0:N0}', FallbackValue=0}"/>
+                                                    <DataTrigger Binding="{Binding MostExpensiveSaleItem.Type, Mode=OneWay, IsAsync=True}" Value="{x:Static trade:TradeType.Mail}">
+                                                        <Setter Property="Text" Value="{Binding MostExpensiveSaleItem.MailContent.TotalPrice.IntegerValue, IsAsync=True, StringFormat='{}{0:N0}', FallbackValue=0}"/>
                                                     </DataTrigger>
-                                                    <DataTrigger Binding="{Binding IsMostExpensiveSaleItemFromMail, IsAsync=True}" Value="false">
-                                                        <Setter Property="Text" Value="{Binding MostExpensiveSaleItem.InstantBuySellContent.TotalPrice.IntegerValue, IsAsync=True, StringFormat='{} {0:N0}', FallbackValue=0}"/>
+                                                    <DataTrigger Binding="{Binding MostExpensiveSaleItem.Type, Mode=OneWay, IsAsync=True}" Value="{x:Static trade:TradeType.InstantSell}">
+                                                        <Setter Property="Text" Value="{Binding MostExpensiveSaleItem.InstantBuySellContent.TotalPrice.IntegerValue, IsAsync=True, StringFormat='{}{0:N0}', FallbackValue=0}"/>
                                                     </DataTrigger>
                                                 </Style.Triggers>
                                             </Style>
@@ -376,11 +376,11 @@
                                         <TextBlock.Style>
                                             <Style TargetType="{x:Type TextBlock}">
                                                 <Style.Triggers>
-                                                    <DataTrigger Binding="{Binding IsMostExpensivePurchasedItemFromMail, IsAsync=True}" Value="true">
-                                                        <Setter Property="Text" Value="{Binding MostExpensivePurchasedItem.MailContent.TotalPrice.IntegerValue, IsAsync=True, StringFormat='{} {0:N0}', FallbackValue=0}"/>
+                                                    <DataTrigger Binding="{Binding MostExpensivePurchasedItem.Type, IsAsync=True}" Value="{x:Static trade:TradeType.Mail}">
+                                                        <Setter Property="Text" Value="{Binding MostExpensivePurchasedItem.MailContent.TotalPrice.IntegerValue, IsAsync=True, StringFormat='{}{0:N0}', FallbackValue=0}"/>
                                                     </DataTrigger>
-                                                    <DataTrigger Binding="{Binding IsMostExpensivePurchasedItemFromMail, IsAsync=True}" Value="false">
-                                                        <Setter Property="Text" Value="{Binding MostExpensivePurchasedItem.InstantBuySellContent.TotalPrice.IntegerValue, IsAsync=True, StringFormat='{} {0:N0}', FallbackValue=0}"/>
+                                                    <DataTrigger Binding="{Binding MostExpensivePurchasedItem.Type, IsAsync=True}" Value="{x:Static trade:TradeType.InstantBuy}">
+                                                        <Setter Property="Text" Value="{Binding MostExpensivePurchasedItem.InstantBuySellContent.TotalPrice.IntegerValue, IsAsync=True, StringFormat='{}{0:N0}', FallbackValue=0}"/>
                                                     </DataTrigger>
                                                 </Style.Triggers>
                                             </Style>

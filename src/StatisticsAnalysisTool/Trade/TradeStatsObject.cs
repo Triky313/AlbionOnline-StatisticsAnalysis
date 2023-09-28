@@ -36,8 +36,6 @@ public class TradeStatsObject : BaseViewModel
     private long _taxesTotal;
     private Trade _mostExpensiveSaleItem;
     private Trade _mostExpensivePurchasedItem;
-    private bool _isMostExpensivePurchasedItemFromMail;
-    private bool _isMostExpensiveSaleItemFromMail;
 
     #region Stat calculations
 
@@ -86,10 +84,8 @@ public class TradeStatsObject : BaseViewModel
                 switch (x.Type)
                 {
                     case TradeType.Mail:
-                        IsMostExpensiveSaleItemFromMail = true;
                         return x.MailContent.TotalPrice.IntegerValue;
                     case TradeType.InstantBuy:
-                        IsMostExpensiveSaleItemFromMail = false;
                         return x.InstantBuySellContent.TotalPrice.IntegerValue;
                     default:
                         return 0;
@@ -103,10 +99,8 @@ public class TradeStatsObject : BaseViewModel
                 switch (x.Type)
                 {
                     case TradeType.Mail:
-                        IsMostExpensivePurchasedItemFromMail = true;
                         return x.MailContent.TotalPrice.IntegerValue;
                     case TradeType.InstantBuy:
-                        IsMostExpensivePurchasedItemFromMail = false;
                         return x.InstantBuySellContent.TotalPrice.IntegerValue;
                     default:
                         return 0;
@@ -220,26 +214,6 @@ public class TradeStatsObject : BaseViewModel
     }
 
     #endregion
-
-    public bool IsMostExpensiveSaleItemFromMail
-    {
-        get => _isMostExpensiveSaleItemFromMail;
-        set
-        {
-            _isMostExpensiveSaleItemFromMail = value;
-            OnPropertyChanged();
-        }
-    }
-
-    public bool IsMostExpensivePurchasedItemFromMail
-    {
-        get => _isMostExpensivePurchasedItemFromMail;
-        set
-        {
-            _isMostExpensivePurchasedItemFromMail = value;
-            OnPropertyChanged();
-        }
-    }
 
     public long SoldToday
     {
