@@ -1,12 +1,12 @@
-﻿using StatisticsAnalysisTool.Common;
-using StatisticsAnalysisTool.Enumerations;
+﻿using StatisticsAnalysisTool.Enumerations;
 using StatisticsAnalysisTool.GameFileData;
+using StatisticsAnalysisTool.Localization;
 using System;
 using System.Collections.Generic;
 
 namespace StatisticsAnalysisTool.Cluster;
 
-public class ClusterInfo
+public sealed class ClusterInfo
 {
     public bool ClusterInfoFullyAvailable { get; set; }
 

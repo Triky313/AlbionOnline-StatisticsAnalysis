@@ -6,14 +6,14 @@ using System.Reflection;
 
 namespace StatisticsAnalysisTool.Network.Events;
 
-public class UpdateBrecilienStandingEvent
+public class UpdateMistCityStandingEvent
 {
     public CityFaction CityFaction;
     public FixPoint PointsWithoutPremium;
     public FixPoint PremiumBonus;
     public FixPoint TotalPoints;
 
-    public UpdateBrecilienStandingEvent(Dictionary<byte, object> parameters)
+    public UpdateMistCityStandingEvent(Dictionary<byte, object> parameters)
     {
         ConsoleManager.WriteLineForNetworkHandler(GetType().Name, parameters);
 

@@ -1,8 +1,8 @@
 ﻿using FontAwesome5;
 using StatisticsAnalysisTool.Common;
 using StatisticsAnalysisTool.Common.UserSettings;
-using StatisticsAnalysisTool.Enumerations;
 using StatisticsAnalysisTool.EventLogging.Notification;
+using StatisticsAnalysisTool.Localization;
 using StatisticsAnalysisTool.Properties;
 using StatisticsAnalysisTool.ViewModels;
 using StatisticsAnalysisTool.Views;
@@ -15,7 +15,7 @@ using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Media;
 
-namespace StatisticsAnalysisTool.Models.BindingModel;
+namespace StatisticsAnalysisTool.DamageMeter;
 
 public class DamageMeterBindings : BaseViewModel, IAsyncInitialization
 {

@@ -23,6 +23,12 @@ public class Weapon : ItemJsonObject
     [JsonPropertyName("@abilitypower")]
     public string AbilityPower { get; set; }
 
+    [JsonPropertyName("@physicalspelldamagebonus")]
+    public string PhysicalSpellDamageBonus { get; set; }
+
+    [JsonPropertyName("@magicspelldamagebonus")]
+    public string MagicSpellDamageBonus { get; set; }
+
     [JsonPropertyName("@slottype")]
     public string SlotType { get; set; }
     [JsonIgnore]
@@ -88,14 +94,20 @@ public class Weapon : ItemJsonObject
     [JsonPropertyName("@itempower")]
     public string ItemPower { get; set; }
 
-    [JsonPropertyName("@unequipincombat")]
-    public bool UnEquipInCombat { get; set; }
+    [JsonPropertyName("@hitpointsregenerationbonus")]
+    public string HitPointsRegenerationBonus { get; set; }
 
+    [JsonPropertyName("@focusfireprotectionpenetration")]
+    public string FocusFireProtectionPenetration { get; set; }
+    
     //[JsonPropertyName("@uicraftsoundstart")]
     //public string Uicraftsoundstart { get; set; }
 
     //[JsonPropertyName("@uicraftsoundfinish")]
     //public string Uicraftsoundfinish { get; set; }
+
+    [JsonPropertyName("@healmodifier")]
+    public string HealModifier { get; set; }
 
     [JsonPropertyName("@canbeovercharged")]
     public bool CanBeOvercharged { get; set; }
@@ -118,6 +130,12 @@ public class Weapon : ItemJsonObject
 
     [JsonIgnore] 
     public CraftingJournalType CraftingJournalType => CraftingController.GetCraftingJournalType(UniqueName, CraftingCategory);
+
+    [JsonPropertyName("@physicalattackdamagebonus")]
+    public string PhysicAttackDamageBonus { get; set; }
+
+    [JsonPropertyName("@magicattackdamagebonus")]
+    public string MagicAttackDamageBonus { get; set; }
 
     [JsonPropertyName("@descriptionlocatag")]
     public string DescriptionLocaTag { get; set; }

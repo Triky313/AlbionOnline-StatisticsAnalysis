@@ -1,9 +1,10 @@
 using StatisticsAnalysisTool.Common;
+using StatisticsAnalysisTool.Localization;
 using StatisticsAnalysisTool.Models;
 using StatisticsAnalysisTool.ViewModels;
 using System;
 
-namespace StatisticsAnalysisTool.EventLogging.Notification;
+namespace StatisticsAnalysisTool.DamageMeter;
 
 public class DamageMeterFragment : BaseViewModel
 {

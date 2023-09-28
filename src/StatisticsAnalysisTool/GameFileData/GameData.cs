@@ -25,11 +25,11 @@ namespace StatisticsAnalysisTool.GameFileData;
 
 public static class GameData
 {
-    public static async Task InitializeMainGameDataFilesAsync()
+    public static async Task InitializeMainGameDataFilesAsync(ServerType serverType)
     {
         if (string.IsNullOrEmpty(SettingsController.CurrentSettings.MainGameFolderPath))
         {
-            var result = await GetMainGameDataWithDialogAsync();
+            var result = await GetMainGameDataWithDialogAsync(serverType);
             if (!result)
             {
                 Application.Current?.Shutdown();
@@ -39,15 +39,15 @@ public static class GameData
         else if (!string.IsNullOrEmpty(SettingsController.CurrentSettings.MainGameFolderPath)
                  && Extractor.IsBinFileNewer(
                      Path.Combine(AppDomain.CurrentDomain.BaseDirectory, Settings.Default.IndexedItemsFileName),
-                     SettingsController.CurrentSettings.MainGameFolderPath, ServerType.Live, "items"))
+                     SettingsController.CurrentSettings.MainGameFolderPath, serverType, "items"))
         {
-            await GetMainGameDataAsync(SettingsController.CurrentSettings.MainGameFolderPath);
+            await GetMainGameDataAsync(SettingsController.CurrentSettings.MainGameFolderPath, serverType);
             return;
         }
 
-        if (!Extractor.IsValidMainGameFolder(SettingsController.CurrentSettings?.MainGameFolderPath ?? string.Empty, ServerType.Live))
+        if (!Extractor.IsValidMainGameFolder(SettingsController.CurrentSettings?.MainGameFolderPath ?? string.Empty, serverType))
         {
-            var result = await GetMainGameDataWithDialogAsync();
+            var result = await GetMainGameDataWithDialogAsync(serverType);
             if (!result)
             {
                 Application.Current?.Shutdown();
@@ -55,7 +55,7 @@ public static class GameData
         }
     }
 
-    public static async Task<bool> GetMainGameDataWithDialogAsync()
+    public static async Task<bool> GetMainGameDataWithDialogAsync(ServerType serverType)
     {
         var dialogWindow = new GameDataPreparationWindow();
         var dialogResult = dialogWindow.ShowDialog();
@@ -66,13 +66,13 @@ public static class GameData
             var mainGameFolderPath = gameDataPreparationWindowViewModel.Path;
 
             SettingsController.CurrentSettings.MainGameFolderPath = mainGameFolderPath;
-            return await GetMainGameDataAsync(SettingsController.CurrentSettings.MainGameFolderPath);
+            return await GetMainGameDataAsync(SettingsController.CurrentSettings.MainGameFolderPath, serverType);
         }
 
         return false;
     }
 
-    public static async Task<bool> GetMainGameDataAsync(string mainGameFolderPath)
+    public static async Task<bool> GetMainGameDataAsync(string mainGameFolderPath, ServerType serverType)
     {
         try
         {
@@ -83,40 +83,40 @@ public static class GameData
             var tempDirPath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, Settings.Default.TempDirecoryName);
             var gameFilesDirPath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, Settings.Default.GameFilesDirectoryName);
 
-            var extractor = new Extractor(mainGameFolderPath, ServerType.Live);
+            var extractor = new Extractor(mainGameFolderPath, serverType);
             var fileNamesToLoad = new List<string>();
 
             DirectoryController.CreateDirectoryWhenNotExists(tempDirPath);
             DirectoryController.CreateDirectoryWhenNotExists(gameFilesDirPath);
 
             toolLoadingWindowViewModel.ProgressBarValue = 10;
-            if (Extractor.IsBinFileNewer(Path.Combine(gameFilesDirPath, "indexedItems.json"), mainGameFolderPath, ServerType.Live, "items")
-                || Extractor.IsBinFileNewer(Path.Combine(gameFilesDirPath, "items.json"), mainGameFolderPath, ServerType.Live, "items"))
+            if (Extractor.IsBinFileNewer(Path.Combine(gameFilesDirPath, "indexedItems.json"), mainGameFolderPath, serverType, "items")
+                || Extractor.IsBinFileNewer(Path.Combine(gameFilesDirPath, "items.json"), mainGameFolderPath, serverType, "items"))
             {
                 await extractor.ExtractIndexedItemGameDataAsync(gameFilesDirPath, "indexedItems.json");
                 await extractor.ExtractGameDataAsync(gameFilesDirPath, new[] { "items" });
             }
 
             toolLoadingWindowViewModel.ProgressBarValue = 20;
-            if (Extractor.IsBinFileNewer(Path.Combine(gameFilesDirPath, "mobs-modified.json"), mainGameFolderPath, ServerType.Live, "mobs"))
+            if (Extractor.IsBinFileNewer(Path.Combine(gameFilesDirPath, "mobs-modified.json"), mainGameFolderPath, serverType, "mobs"))
             {
                 fileNamesToLoad.Add("mobs");
             }
 
             toolLoadingWindowViewModel.ProgressBarValue = 30;
-            if (Extractor.IsBinFileNewer(Path.Combine(gameFilesDirPath, "world-modified.json"), mainGameFolderPath, ServerType.Live, "cluster\\world"))
+            if (Extractor.IsBinFileNewer(Path.Combine(gameFilesDirPath, "world-modified.json"), mainGameFolderPath, serverType, "cluster\\world"))
             {
                 fileNamesToLoad.Add("cluster\\world");
             }
 
             toolLoadingWindowViewModel.ProgressBarValue = 40;
-            if (Extractor.IsBinFileNewer(Path.Combine(gameFilesDirPath, "spells-modified.json"), mainGameFolderPath, ServerType.Live, "spells"))
+            if (Extractor.IsBinFileNewer(Path.Combine(gameFilesDirPath, "spells-modified.json"), mainGameFolderPath, serverType, "spells"))
             {
                 fileNamesToLoad.Add("spells");
             }
 
             toolLoadingWindowViewModel.ProgressBarValue = 50;
-            if (Extractor.IsBinFileNewer(Path.Combine(gameFilesDirPath, "mists-modified.json"), mainGameFolderPath, ServerType.Live, "mists"))
+            if (Extractor.IsBinFileNewer(Path.Combine(gameFilesDirPath, "mists-modified.json"), mainGameFolderPath, serverType, "mists"))
             {
                 fileNamesToLoad.Add("mists");
             }

@@ -6,9 +6,9 @@ using System.Reflection;
 
 namespace StatisticsAnalysisTool.Network.Events;
 
-public class UpdateSilverEvent
+public class UpdateMoneyEvent
 {
-    public UpdateSilverEvent(Dictionary<byte, object> parameters)
+    public UpdateMoneyEvent(Dictionary<byte, object> parameters)
     {
         ConsoleManager.WriteLineForNetworkHandler(GetType().Name, parameters);
 

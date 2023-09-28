@@ -2,6 +2,7 @@ using StatisticsAnalysisTool.Cluster;
 using StatisticsAnalysisTool.Common;
 using StatisticsAnalysisTool.Enumerations;
 using StatisticsAnalysisTool.GameFileData.Models;
+using StatisticsAnalysisTool.Localization;
 using StatisticsAnalysisTool.Properties;
 using System;
 using System.Collections.Generic;

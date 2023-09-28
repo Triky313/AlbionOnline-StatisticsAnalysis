@@ -1,7 +1,9 @@
 ﻿using StatisticsAnalysisTool.Common;
 using StatisticsAnalysisTool.Enumerations;
 using StatisticsAnalysisTool.EstimatedMarketValue;
+using StatisticsAnalysisTool.Localization;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Text.Json.Serialization;
 using System.Windows;
 using System.Windows.Media.Imaging;
@@ -18,7 +20,7 @@ public class Item
     public int Index { get; set; }
     public string UniqueName { get; set; }
     [JsonIgnore]
-    public string LocalizedNameAndEnglish => LanguageController.CurrentCultureInfo.TextInfo.CultureName.ToUpper() == "EN-US"
+    public string LocalizedNameAndEnglish => CultureInfo.DefaultThreadCurrentUICulture?.TextInfo.CultureName.ToUpper() == "EN-US"
         ? $"{ItemController.LocalizedName(LocalizedNames, null, UniqueName)}{GetUniqueNameIfDebug()}"
         : $"{ItemController.LocalizedName(LocalizedNames, null, UniqueName)}" +
           $"\n{ItemController.LocalizedName(LocalizedNames, "EN-US", string.Empty)}{GetUniqueNameIfDebug()}";

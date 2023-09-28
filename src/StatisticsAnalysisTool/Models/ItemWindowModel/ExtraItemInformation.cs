@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel;
 using System.Runtime.CompilerServices;
-using StatisticsAnalysisTool.Common;
+using StatisticsAnalysisTool.Localization;
 
 namespace StatisticsAnalysisTool.Models.ItemWindowModel;
 

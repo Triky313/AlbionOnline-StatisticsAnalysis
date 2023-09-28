@@ -2,9 +2,9 @@
 
 namespace StatisticsAnalysisTool.Models.NetworkModel;
 
-public class TimeCollectObject
+public class ActionInterval
 {
-    public TimeCollectObject(DateTime startTime)
+    public ActionInterval(DateTime startTime)
     {
         StartTime = startTime;
     }

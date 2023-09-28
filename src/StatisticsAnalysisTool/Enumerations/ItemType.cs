@@ -15,5 +15,8 @@ public enum ItemType
     Hideout,
     Mount,
     MountSkin,
-    CrystalLeague
+    CrystalLeague,
+    killTrophy,
+    TrackingItem,
+    TransformationWeapon
 }

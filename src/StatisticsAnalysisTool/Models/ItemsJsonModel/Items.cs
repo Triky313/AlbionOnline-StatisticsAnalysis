@@ -9,6 +9,8 @@ public class Items
     public ShopCategories ShopCategories { get; set; }
     [JsonPropertyName("hideoutitem")]
     public HideoutItem HideoutItem { get; set; }
+    [JsonPropertyName("trackingitem")]
+    public List<TrackingItem> TrackingItem { get; set; }
     [JsonPropertyName("farmableitem")]
     public List<FarmableItem> FarmableItem { get; set; }
     [JsonPropertyName("simpleitem")]
@@ -31,6 +33,10 @@ public class Items
     public List<LabourerContract> LabourerContract { get; set; }
     [JsonPropertyName("mountskin")]
     public List<MountSkin> MountSkin { get; set; }
+    [JsonPropertyName("transformationweapon")]
+    public List<TransformationWeapon> TransformationWeapon { get; set; }
     [JsonPropertyName("crystalleagueitem")]
     public List<CrystalLeagueItem> CrystalLeagueItem { get; set; }
+    [JsonPropertyName("killtrophy")]
+    public KillTrophyItem KillTrophyItem { get; set; }
 }

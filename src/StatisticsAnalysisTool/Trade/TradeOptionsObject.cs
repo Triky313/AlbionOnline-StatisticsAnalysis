@@ -1,5 +1,5 @@
-﻿using StatisticsAnalysisTool.Common;
-using StatisticsAnalysisTool.Common.UserSettings;
+﻿using StatisticsAnalysisTool.Common.UserSettings;
+using StatisticsAnalysisTool.Localization;
 using StatisticsAnalysisTool.ViewModels;
 using System.Collections.Generic;
 using System.Linq;

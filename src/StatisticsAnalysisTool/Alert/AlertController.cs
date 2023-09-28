@@ -1,4 +1,6 @@
-﻿using StatisticsAnalysisTool.Models;
+﻿using Serilog;
+using StatisticsAnalysisTool.Common;
+using StatisticsAnalysisTool.Models;
 using StatisticsAnalysisTool.Properties;
 using System;
 using System.Collections.Generic;
@@ -12,11 +14,10 @@ using System.Text;
 using System.Text.Json;
 using System.Threading.Tasks;
 using System.Windows;
-using Serilog;
 
-namespace StatisticsAnalysisTool.Common;
+namespace StatisticsAnalysisTool.Alert;
 
-public class AlertController
+public sealed class AlertController
 {
     private readonly ObservableCollection<Alert> _alerts = new();
     private readonly ICollectionView _itemsView;
@@ -32,11 +33,17 @@ public class AlertController
 
     private void Add(Item item, int alertModeMinSellPriceIsUndercutPrice)
     {
-        if (IsAlertInCollection(item.UniqueName) || !IsSpaceInAlertsCollection()) return;
+        if (IsAlertInCollection(item.UniqueName) || !IsSpaceInAlertsCollection())
+        {
+            return;
+        }
 
         _alerts.CollectionChanged += delegate (object _, NotifyCollectionChangedEventArgs e)
         {
-            if (e.Action == NotifyCollectionChangedAction.Add) SaveActiveAlertsToLocalFile();
+            if (e.Action == NotifyCollectionChangedAction.Add)
+            {
+                SaveActiveAlertsToLocalFile();
+            }
         };
 
         var alertController = this;
@@ -49,7 +56,10 @@ public class AlertController
     {
         _alerts.CollectionChanged += delegate (object _, NotifyCollectionChangedEventArgs e)
         {
-            if (e.Action == NotifyCollectionChangedAction.Remove) SaveActiveAlertsToLocalFile();
+            if (e.Action == NotifyCollectionChangedAction.Remove)
+            {
+                SaveActiveAlertsToLocalFile();
+            }
         };
 
         var alert = GetAlertByUniqueName(uniqueName);
@@ -64,7 +74,10 @@ public class AlertController
     {
         try
         {
-            if (!IsAlertInCollection(item.UniqueName) && !IsSpaceInAlertsCollection()) return false;
+            if (!IsAlertInCollection(item.UniqueName) && !IsSpaceInAlertsCollection())
+            {
+                return false;
+            }
 
             if (IsAlertInCollection(item.UniqueName))
             {
@@ -95,7 +108,7 @@ public class AlertController
             item.IsAlertActive = false;
             Remove(item.UniqueName);
 
-            Application.Current.MainWindow?.Dispatcher?.Invoke(() => { _itemsView.Refresh(); });
+            Application.Current.MainWindow?.Dispatcher?.Invoke(_itemsView.Refresh);
         }
         catch (Exception e)
         {
@@ -117,7 +130,7 @@ public class AlertController
             item.AlertModeMinSellPriceIsUndercutPrice = minSellUndercutPrice;
             Add(item, item.AlertModeMinSellPriceIsUndercutPrice);
 
-            Application.Current.MainWindow?.Dispatcher?.Invoke(() => { _itemsView.Refresh(); });
+            Application.Current.MainWindow?.Dispatcher?.Invoke(_itemsView.Refresh);
         }
         catch (Exception e)
         {
