@@ -153,6 +153,8 @@
                                Foreground="{StaticResource SolidColorBrush.Text.1}" Height="26" />
                         <Label Content="{Binding TranslationMonth, IsAsync=True, FallbackValue=MONTH}" FontSize="14" VerticalContentAlignment="Center" Padding="0"
                                Foreground="{StaticResource SolidColorBrush.Text.1}" Height="26" />
+                        <Label Content="{Binding TranslationLastMonth, IsAsync=True, FallbackValue=LAST_MONTH}" FontSize="14" VerticalContentAlignment="Center" Padding="0"
+                               Foreground="{StaticResource SolidColorBrush.Text.1}" Height="26" />
                         <Label Content="{Binding TranslationYear, IsAsync=True, FallbackValue=YEAR}" FontSize="14" VerticalContentAlignment="Center" Padding="0"
                                Foreground="{StaticResource SolidColorBrush.Text.1}" Height="26" />
                         <Label Content="{Binding TranslationTotal, IsAsync=True, FallbackValue=TOTAL}" FontSize="14" VerticalContentAlignment="Center" Padding="0"
@@ -182,6 +184,12 @@
                         <StackPanel Orientation="Horizontal" Height="26">
                             <Image Style="{StaticResource Trade.Silver.Image.Style}" ToolTip="{Binding TranslationSilver, IsAsync=True}" Height="21" />
                             <TextBlock Text="{Binding SoldMonth, IsAsync=True, StringFormat='{} {0:N0}', FallbackValue=0}"
+                                           FontSize="14" FontWeight="Light" Foreground="{StaticResource SolidColorBrush.Accent.Green.3}"
+                                           VerticalAlignment="Center" Height="19" />
+                        </StackPanel>
+                        <StackPanel Orientation="Horizontal" Height="26">
+                            <Image Style="{StaticResource Trade.Silver.Image.Style}" ToolTip="{Binding TranslationSilver, IsAsync=True}" Height="21" />
+                            <TextBlock Text="{Binding SoldLastMonth, IsAsync=True, StringFormat='{} {0:N0}', FallbackValue=0}"
                                            FontSize="14" FontWeight="Light" Foreground="{StaticResource SolidColorBrush.Accent.Green.3}"
                                            VerticalAlignment="Center" Height="19" />
                         </StackPanel>
@@ -227,6 +235,12 @@
                         </StackPanel>
                         <StackPanel Orientation="Horizontal" Height="26">
                             <Image Style="{StaticResource Trade.Silver.Image.Style}" ToolTip="{Binding TranslationSilver, IsAsync=True}" Height="21" />
+                            <TextBlock Text="{Binding BoughtLastMonth, IsAsync=True, StringFormat='{} {0:N0}', FallbackValue=0}" 
+                                           FontSize="14" FontWeight="Light" Foreground="{StaticResource SolidColorBrush.Accent.Red.3}"
+                                           VerticalAlignment="Center" Height="19" />
+                        </StackPanel>
+                        <StackPanel Orientation="Horizontal" Height="26">
+                            <Image Style="{StaticResource Trade.Silver.Image.Style}" ToolTip="{Binding TranslationSilver, IsAsync=True}" Height="21" />
                             <TextBlock Text="{Binding BoughtYear, IsAsync=True, StringFormat='{} {0:N0}', FallbackValue=0}" 
                                            FontSize="14" FontWeight="Light" Foreground="{StaticResource SolidColorBrush.Accent.Red.3}"
                                            VerticalAlignment="Center" Height="19" />
@@ -262,6 +276,12 @@
                         <StackPanel Orientation="Horizontal" Height="26">
                             <Image Style="{StaticResource Trade.Silver.Image.Style}" ToolTip="{Binding TranslationSilver, IsAsync=True}" Height="21" />
                             <TextBlock Text="{Binding TaxesMonth, IsAsync=True, StringFormat='{} {0:N0}', FallbackValue=0}" 
+                                           FontSize="14" FontWeight="Light" Foreground="{StaticResource SolidColorBrush.Accent.Red.3}"
+                                           VerticalAlignment="Center" Height="19" />
+                        </StackPanel>
+                        <StackPanel Orientation="Horizontal" Height="26">
+                            <Image Style="{StaticResource Trade.Silver.Image.Style}" ToolTip="{Binding TranslationSilver, IsAsync=True}" Height="21" />
+                            <TextBlock Text="{Binding TaxesLastMonth, IsAsync=True, StringFormat='{} {0:N0}', FallbackValue=0}" 
                                            FontSize="14" FontWeight="Light" Foreground="{StaticResource SolidColorBrush.Accent.Red.3}"
                                            VerticalAlignment="Center" Height="19" />
                         </StackPanel>
@@ -307,6 +327,12 @@
                         </StackPanel>
                         <StackPanel Orientation="Horizontal" Height="26">
                             <Image Style="{StaticResource Trade.Silver.Image.Style}" ToolTip="{Binding TranslationSilver, IsAsync=True}" Height="21" />
+                            <TextBlock Text="{Binding SalesLastMonth, IsAsync=True, StringFormat='{} {0:N0}', FallbackValue=0}" 
+                                           FontSize="14" FontWeight="Light" Foreground="{StaticResource SolidColorBrush.Accent.Blue.2}"
+                                           VerticalAlignment="Center" Height="19" />
+                        </StackPanel>
+                        <StackPanel Orientation="Horizontal" Height="26">
+                            <Image Style="{StaticResource Trade.Silver.Image.Style}" ToolTip="{Binding TranslationSilver, IsAsync=True}" Height="21" />
                             <TextBlock Text="{Binding SalesYear, IsAsync=True, StringFormat='{} {0:N0}', FallbackValue=0}" 
                                            FontSize="14" FontWeight="Light" Foreground="{StaticResource SolidColorBrush.Accent.Blue.2}"
                                            VerticalAlignment="Center" Height="19" />
@@ -341,11 +367,11 @@
                                         <TextBlock.Style>
                                             <Style TargetType="{x:Type TextBlock}">
                                                 <Style.Triggers>
-                                                    <DataTrigger Binding="{Binding IsMostExpensiveSaleItemFromMail, IsAsync=True}" Value="true">
-                                                        <Setter Property="Text" Value="{Binding MostExpensiveSaleItem.MailContent.TotalPrice.IntegerValue, IsAsync=True, StringFormat='{} {0:N0}', FallbackValue=0}"/>
+                                                    <DataTrigger Binding="{Binding MostExpensiveSaleItem.Type, Mode=OneWay, IsAsync=True}" Value="{x:Static trade:TradeType.Mail}">
+                                                        <Setter Property="Text" Value="{Binding MostExpensiveSaleItem.MailContent.TotalPrice.IntegerValue, IsAsync=True, StringFormat='{}{0:N0}', FallbackValue=0}"/>
                                                     </DataTrigger>
-                                                    <DataTrigger Binding="{Binding IsMostExpensiveSaleItemFromMail, IsAsync=True}" Value="false">
-                                                        <Setter Property="Text" Value="{Binding MostExpensiveSaleItem.InstantBuySellContent.TotalPrice.IntegerValue, IsAsync=True, StringFormat='{} {0:N0}', FallbackValue=0}"/>
+                                                    <DataTrigger Binding="{Binding MostExpensiveSaleItem.Type, Mode=OneWay, IsAsync=True}" Value="{x:Static trade:TradeType.InstantSell}">
+                                                        <Setter Property="Text" Value="{Binding MostExpensiveSaleItem.InstantBuySellContent.TotalPrice.IntegerValue, IsAsync=True, StringFormat='{}{0:N0}', FallbackValue=0}"/>
                                                     </DataTrigger>
                                                 </Style.Triggers>
                                             </Style>
@@ -376,11 +402,11 @@
                                         <TextBlock.Style>
                                             <Style TargetType="{x:Type TextBlock}">
                                                 <Style.Triggers>
-                                                    <DataTrigger Binding="{Binding IsMostExpensivePurchasedItemFromMail, IsAsync=True}" Value="true">
-                                                        <Setter Property="Text" Value="{Binding MostExpensivePurchasedItem.MailContent.TotalPrice.IntegerValue, IsAsync=True, StringFormat='{} {0:N0}', FallbackValue=0}"/>
+                                                    <DataTrigger Binding="{Binding MostExpensivePurchasedItem.Type, IsAsync=True}" Value="{x:Static trade:TradeType.Mail}">
+                                                        <Setter Property="Text" Value="{Binding MostExpensivePurchasedItem.MailContent.TotalPrice.IntegerValue, IsAsync=True, StringFormat='{}{0:N0}', FallbackValue=0}"/>
                                                     </DataTrigger>
-                                                    <DataTrigger Binding="{Binding IsMostExpensivePurchasedItemFromMail, IsAsync=True}" Value="false">
-                                                        <Setter Property="Text" Value="{Binding MostExpensivePurchasedItem.InstantBuySellContent.TotalPrice.IntegerValue, IsAsync=True, StringFormat='{} {0:N0}', FallbackValue=0}"/>
+                                                    <DataTrigger Binding="{Binding MostExpensivePurchasedItem.Type, IsAsync=True}" Value="{x:Static trade:TradeType.InstantBuy}">
+                                                        <Setter Property="Text" Value="{Binding MostExpensivePurchasedItem.InstantBuySellContent.TotalPrice.IntegerValue, IsAsync=True, StringFormat='{}{0:N0}', FallbackValue=0}"/>
                                                     </DataTrigger>
                                                 </Style.Triggers>
                                             </Style>

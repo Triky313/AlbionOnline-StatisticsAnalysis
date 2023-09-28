@@ -360,6 +360,11 @@ public static class ExtensionMethod
         return date1.Year == date2.Year && ISOWeek.GetWeekOfYear(date1) == ISOWeek.GetWeekOfYear(date2);
     }
 
+    public static bool IsDateInSameMonth(this DateTime date1, DateTime date2)
+    {
+        return date1.Year == date2.Year && date1.Month == date2.Month;
+    }
+
     #endregion
 
     #region Json
