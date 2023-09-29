@@ -32,6 +32,10 @@ jobs:
       with:
         fetch-depth: 0
         
+    - name: Check for build errors
+      if: ${{ matrix.configuration == 'Debug' }}
+      run: dotnet build src\StatisticsAnalysisTool
+    
     - name: 🏗 dotnet restore
       run: dotnet restore src\StatisticsAnalysisTool
 
@@ -40,10 +44,6 @@ jobs:
       uses: actions/setup-dotnet@v1
       with:
         dotnet-version: '7.0.x'
-        
-    - name: Check for build errors
-      if: ${{ matrix.configuration == 'Debug' }}
-      run: dotnet build src\StatisticsAnalysisTool
         
     - name: 🛠 dotnet build
       run: dotnet build src\StatisticsAnalysisTool -no-restore
