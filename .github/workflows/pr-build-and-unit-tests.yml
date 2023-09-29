@@ -1,4 +1,4 @@
-name: 🛠️ PR - Build + Unit tests
+name: 🛠️ Build + Unit tests
 
 on:
   pull_request:
@@ -32,16 +32,11 @@ jobs:
       with:
         fetch-depth: 0
         
-    - name: Install .NET
-      uses: actions/setup-dotnet@v1
-      with:
-        dotnet-version: '7.0.x'        
-        
     - name: 🏗 dotnet restore
       run: dotnet restore src
         
     - name: 🛠 dotnet build
-      run: dotnet build src\StatisticsAnalysisTool -no-restore
+      run: dotnet build --no-restore
 
     - name: 📦 Setup MSBuild.exe
       uses: microsoft/setup-msbuild@v1.1
