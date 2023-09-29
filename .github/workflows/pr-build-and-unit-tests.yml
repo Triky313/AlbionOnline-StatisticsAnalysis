@@ -1,6 +1,10 @@
 name: 🛠️ PR - Build + Unit tests
 
 on:
+  pull_request:
+    types: [review_requested, opened, reopened, synchronize]
+    branches:
+      - dev
   push:
     branches: [ main ]
     paths-ignore:
@@ -8,10 +12,6 @@ on:
       - '**/*.gitignore'
       - '**/*.gitattributes'
       - '**/donations.json'
-    pull_request:
-        types: [review_requested, opened, reopened, synchronize]
-        branches:
-          - dev
 
 jobs:
 
@@ -27,16 +27,12 @@ jobs:
       Test_Project_Path: src\StatisticsAnalysisTool.UnitTests\StatisticsAnalysisTool.UnitTests.csproj
 
     steps:
-    - name: Checkout
+    - name: 🛒 Checkout
       uses: actions/checkout@v3
       with:
         fetch-depth: 0
-
-    - name: Check for build errors
-      if: ${{ matrix.configuration == 'Debug' }}
-      run: dotnet build src\StatisticsAnalysisTool
-
-    - name: Install dependencies
+        
+    - name: 🏗 dotnet restore
       run: dotnet restore src\StatisticsAnalysisTool
 
     - name: Install .NET (Debug)
@@ -44,7 +40,13 @@ jobs:
       uses: actions/setup-dotnet@v1
       with:
         dotnet-version: '7.0.x'
-    - run: dotnet build src\StatisticsAnalysisTool
+        
+    - name: Check for build errors
+      if: ${{ matrix.configuration == 'Debug' }}
+      run: dotnet build src\StatisticsAnalysisTool
+        
+    - name: 🛠 dotnet build
+      run: dotnet build src\StatisticsAnalysisTool -no-restore
 
     - name: Setup MSBuild.exe
       uses: microsoft/setup-msbuild@v1.1
