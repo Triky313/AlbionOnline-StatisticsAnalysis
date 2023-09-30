@@ -7,16 +7,16 @@ namespace StatisticsAnalysisTool.Network.Handler;
 /// <summary>
 ///     Triggered when silver is picked up. Each party member gets their own event.
 /// </summary>
-public class SiegeCampClaimStartEventHandler : EventPacketHandler<SiegeCampClaimStartEvent>
+public class TreasureChestUsingStartEventHandler : EventPacketHandler<TreasureChestUsingStartEvent>
 {
     private readonly TrackingController _trackingController;
 
-    public SiegeCampClaimStartEventHandler(TrackingController trackingController) : base((int) EventCodes.SiegeCampClaimStart)
+    public TreasureChestUsingStartEventHandler(TrackingController trackingController) : base((int) EventCodes.TreasureChestUsingStart)
     {
         _trackingController = trackingController;
     }
 
-    protected override async Task OnActionAsync(SiegeCampClaimStartEvent value)
+    protected override async Task OnActionAsync(TreasureChestUsingStartEvent value)
     {
         await Task.CompletedTask;
     }

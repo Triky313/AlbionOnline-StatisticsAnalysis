@@ -8,7 +8,7 @@ public class OtherGrabbedLootEventHandler : EventPacketHandler<GrabbedLootEvent>
 {
     private readonly TrackingController _trackingController;
 
-    public OtherGrabbedLootEventHandler(TrackingController trackingController) : base((int) EventCodes.GrabbedLoot)
+    public OtherGrabbedLootEventHandler(TrackingController trackingController) : base((int) EventCodes.OtherGrabbedLoot)
     {
         _trackingController = trackingController;
     }

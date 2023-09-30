@@ -1,5 +1,5 @@
 ﻿using StatisticsAnalysisTool.Common;
-using StatisticsAnalysisTool.EventLogging.Notification;
+using StatisticsAnalysisTool.DamageMeter;
 using StatisticsAnalysisTool.ViewModels;
 using System.Collections.ObjectModel;
 using System.Windows;

@@ -3,6 +3,7 @@ using SharpPcap;
 using StatisticsAnalysisTool.Common;
 using StatisticsAnalysisTool.Common.UserSettings;
 using StatisticsAnalysisTool.Enumerations;
+using StatisticsAnalysisTool.Localization;
 using StatisticsAnalysisTool.Models;
 using StatisticsAnalysisTool.Models.TranslationModel;
 using StatisticsAnalysisTool.Network;
@@ -122,8 +123,7 @@ public class SettingsWindowViewModel : BaseViewModel
         SettingsController.CurrentSettings.IsInfoWindowShownOnStart = ShowInfoWindowOnStartChecked;
         SettingsController.CurrentSettings.SelectedAlertSound = AlertSoundSelection?.FileName ?? string.Empty;
 
-        LanguageController.CurrentCultureInfo = new CultureInfo(LanguagesSelection.FileName);
-        LanguageController.SetLanguage();
+        LanguageController.SetLanguage(Culture.GetCulture(LanguagesSelection.FileName));
 
         SettingsController.CurrentSettings.AlbionDataProjectBaseUrlWest = AlbionDataProjectBaseUrlWest;
         SettingsController.CurrentSettings.AlbionDataProjectBaseUrlEast = AlbionDataProjectBaseUrlEast;
@@ -321,30 +321,8 @@ public class SettingsWindowViewModel : BaseViewModel
 
     private void InitLanguageFiles()
     {
-        Languages.Clear();
-
-        LanguageController.GetPercentageTranslationValues();
-
-        foreach (var langInfo in LanguageController.LanguageFiles)
-        {
-            try
-            {
-                var cultureInfo = CultureInfo.CreateSpecificCulture(langInfo.FileName);
-                Languages.Add(new FileInformation(langInfo.FileName, string.Empty)
-                {
-                    EnglishName = cultureInfo.EnglishName,
-                    NativeName = cultureInfo.NativeName,
-                    PercentageTranslations = langInfo.PercentageTranslations
-                });
-            }
-            catch (CultureNotFoundException e)
-            {
-                ConsoleManager.WriteLineForError(MethodBase.GetCurrentMethod()?.DeclaringType, e);
-                Log.Error(e, "{message}", MethodBase.GetCurrentMethod()?.DeclaringType);
-            }
-        }
-
-        LanguagesSelection = Languages.FirstOrDefault(x => x.FileName == LanguageController.CurrentCultureInfo.TextInfo.CultureName);
+        Languages = new ObservableCollection<FileInformation>(LanguageController.InitLanguageFiles());
+        LanguagesSelection = Languages.FirstOrDefault(x => x.FileName == CultureInfo.DefaultThreadCurrentCulture?.TextInfo.CultureName);
     }
 
     private void InitNaviTabVisibilities()

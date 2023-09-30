@@ -1,5 +1,6 @@
 ﻿using StatisticsAnalysisTool.Common;
 using StatisticsAnalysisTool.Common.UserSettings;
+using StatisticsAnalysisTool.Localization;
 using StatisticsAnalysisTool.Properties;
 using StatisticsAnalysisTool.ViewModels;
 using System;
@@ -10,7 +11,7 @@ using System.Windows.Threading;
 
 namespace StatisticsAnalysisTool.Dungeon;
 
-public class DungeonCloseTimer : BaseViewModel
+public sealed class DungeonCloseTimer : BaseViewModel
 {
     private string _timerString;
     private bool _isDungeonClosed;

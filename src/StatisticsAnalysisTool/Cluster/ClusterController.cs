@@ -10,7 +10,7 @@ using System.Windows;
 
 namespace StatisticsAnalysisTool.Cluster;
 
-public class ClusterController
+public sealed class ClusterController
 {
     private const int MaxEnteredCluster = 500;
 

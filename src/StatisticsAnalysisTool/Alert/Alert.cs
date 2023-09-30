@@ -1,7 +1,3 @@
-using StatisticsAnalysisTool.Exceptions;
-using StatisticsAnalysisTool.Models;
-using StatisticsAnalysisTool.Properties;
-using StatisticsAnalysisTool.Views;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -11,8 +7,13 @@ using System.Runtime.CompilerServices;
 using System.Threading.Tasks;
 using System.Windows;
 using Serilog;
+using StatisticsAnalysisTool.Common;
+using StatisticsAnalysisTool.Exceptions;
+using StatisticsAnalysisTool.Models;
+using StatisticsAnalysisTool.Properties;
+using StatisticsAnalysisTool.Views;
 
-namespace StatisticsAnalysisTool.Common;
+namespace StatisticsAnalysisTool.Alert;
 
 public class Alert
 {

@@ -5,6 +5,7 @@ using StatisticsAnalysisTool.Common;
 using StatisticsAnalysisTool.Common.UserSettings;
 using StatisticsAnalysisTool.Enumerations;
 using StatisticsAnalysisTool.Exceptions;
+using StatisticsAnalysisTool.Localization;
 using StatisticsAnalysisTool.Network.Handler;
 using StatisticsAnalysisTool.Network.Manager;
 using StatisticsAnalysisTool.Notification;
@@ -34,6 +35,7 @@ public static class NetworkManager
         builder.AddEventHandler(new NewEquipmentItemEventHandler(trackingController));
         builder.AddEventHandler(new NewSimpleItemEventHandler(trackingController));
         builder.AddEventHandler(new NewFurnitureItemEventHandler(trackingController));
+        builder.AddEventHandler(new NewKillTrophyItemHandler(trackingController));
         builder.AddEventHandler(new NewJournalItemEventHandler(trackingController));
         builder.AddEventHandler(new NewLaborerItemEventHandler(trackingController));
         builder.AddEventHandler(new OtherGrabbedLootEventHandler(trackingController));
@@ -42,7 +44,7 @@ public static class NetworkManager
         builder.AddEventHandler(new TakeSilverEventHandler(trackingController));
         builder.AddEventHandler(new ActionOnBuildingFinishedEventHandler(trackingController));
         builder.AddEventHandler(new UpdateFameEventHandler(trackingController));
-        builder.AddEventHandler(new UpdateSilverEventHandler(trackingController));
+        builder.AddEventHandler(new UpdateMoneyEventHandler(trackingController));
         builder.AddEventHandler(new UpdateReSpecPointsEventHandler(trackingController));
         builder.AddEventHandler(new UpdateCurrencyEventHandler(trackingController));
         builder.AddEventHandler(new DiedEventHandler(trackingController));
@@ -58,7 +60,7 @@ public static class NetworkManager
         builder.AddEventHandler(new PartyPlayerLeftEventHandler(trackingController));
         builder.AddEventHandler(new PartyChangedOrderEventHandler(trackingController));
         builder.AddEventHandler(new NewCharacterEventHandler(trackingController));
-        builder.AddEventHandler(new SiegeCampClaimStartEventHandler(trackingController));
+        builder.AddEventHandler(new TreasureChestUsingStartEventHandler(trackingController));
         builder.AddEventHandler(new CharacterEquipmentChangedEventHandler(trackingController));
         builder.AddEventHandler(new NewMobEventHandler(trackingController));
         builder.AddEventHandler(new ActiveSpellEffectsUpdateEventHandler(trackingController));
@@ -72,11 +74,11 @@ public static class NetworkManager
         builder.AddEventHandler(new HarvestFinishedEventHandler(trackingController));
         builder.AddEventHandler(new RewardGrantedEventHandler(trackingController));
         builder.AddEventHandler(new NewExpeditionCheckPointHandler(trackingController));
-        builder.AddEventHandler(new UpdateBrecilienStandingEventHandler(trackingController));
+        builder.AddEventHandler(new UpdateMistCityStandingEventHandler(trackingController));
 
         builder.AddRequestHandler(new InventoryMoveItemRequestHandler(trackingController));
         builder.AddRequestHandler(new UseShrineRequestHandler(trackingController));
-        builder.AddRequestHandler(new ReSpecBoostRequestHandler(trackingController));
+        builder.AddRequestHandler(new ClaimPaymentTransactionRequestHandler(trackingController));
         builder.AddRequestHandler(new TakeSilverRequestHandler(trackingController));
         builder.AddRequestHandler(new RegisterToObjectRequestHandler(trackingController));
         builder.AddRequestHandler(new UnRegisterFromObjectRequestHandler(trackingController));

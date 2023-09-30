@@ -51,31 +51,56 @@
                                   HorizontalAlignment="Left" DisplayMemberPath="Name" SelectedValuePath="Quality" />
                     </StackPanel>
 
-                    <ListView ItemsSource="{Binding MainTabBindings.ItemPrices}" Language="{Binding ItemListViewLanguage}" SnapsToDevicePixels="True" BorderThickness="0" 
-                              SelectionMode="Single" Foreground="{StaticResource SolidColorBrush.Text.1}" Margin="0,30,0,0" d:ItemsSource="{d:SampleData ItemCount=10}">
+                    <ListView ItemsSource="{Binding MainTabBindings.ItemPrices}" Language="{Binding ItemListViewLanguage}" SnapsToDevicePixels="True" 
+                              BorderThickness="0" SelectionMode="Single" Foreground="{StaticResource SolidColorBrush.Text.1}" Margin="0,30,0,0" 
+                              d:ItemsSource="{d:SampleData ItemCount=10}">
                         <ListView.View>
                             <GridView>
                                 <GridViewColumn CellTemplate="{StaticResource GridViewColumnCityTemplate}">
                                     <GridViewColumn.Header>
-                                        <GridViewColumnHeader Tag="LocationName" Content="{Binding Translation.Location, FallbackValue=LOCATION}" />
+                                        <GridViewColumnHeader Tag="LocationName" Content="{Binding Translation.Location, FallbackValue=LOCATION}" Click="GridViewColumnHeader_Click" />
                                     </GridViewColumn.Header>
                                 </GridViewColumn>
-                                <GridViewColumn Header="{Binding Translation.SellPriceMin, FallbackValue=SELL_PRICE_MIN}" 
-                                                CellTemplate="{StaticResource GridViewColumnSellPriceMinTemplate}"/>
-                                <GridViewColumn Header="{Binding Translation.SellPriceMinDate, FallbackValue=SELL_PRICE_MIN_DATE}" 
-                                                CellTemplate="{StaticResource GridViewColumnSellPriceMinDateTemplate}" Width="auto" />
-                                <GridViewColumn Header="{Binding Translation.SellPriceMax, FallbackValue=SELL_PRICE_MAX}" 
-                                                CellTemplate="{StaticResource GridViewColumnSellPriceMaxTemplate}"/>
-                                <GridViewColumn Header="{Binding Translation.SellPriceMaxDate, FallbackValue=SELL_PRICE_MAX_DATE}" 
-                                                CellTemplate="{StaticResource GridViewColumnSellPriceMaxDateTemplate}" Width="auto" />
-                                <GridViewColumn Header="{Binding Translation.BuyPriceMin, FallbackValue=BUY_PRICE_MIN}" 
-                                                CellTemplate="{StaticResource GridViewColumnBuyPriceMinTemplate}"/>
-                                <GridViewColumn Header="{Binding Translation.BuyPriceMinDate, FallbackValue=BUY_PRICE_MIN_DATE}" 
-                                                CellTemplate="{StaticResource GridViewColumnBuyPriceMinDateTemplate}" Width="auto" />
-                                <GridViewColumn Header="{Binding Translation.BuyPriceMax, FallbackValue=BUY_PRICE_MAX}" 
-                                                CellTemplate="{StaticResource GridViewColumnBuyPriceMaxTemplate}"/>
-                                <GridViewColumn Header="{Binding Translation.BuyPriceMaxDate, FallbackValue=BUY_PRICE_MAX_DATE}" 
-                                                CellTemplate="{StaticResource GridViewColumnBuyPriceMaxDateTemplate}" Width="auto" />
+                                <GridViewColumn CellTemplate="{StaticResource GridViewColumnSellPriceMinTemplate}">
+                                    <GridViewColumn.Header>
+                                        <GridViewColumnHeader Tag="SellPriceMin" Content="{Binding Translation.SellPriceMin, FallbackValue=SELL_PRICE_MIN}" Click="GridViewColumnHeader_Click" />
+                                    </GridViewColumn.Header>
+                                </GridViewColumn>
+                                <GridViewColumn CellTemplate="{StaticResource GridViewColumnSellPriceMinDateTemplate}">
+                                    <GridViewColumn.Header>
+                                        <GridViewColumnHeader Tag="SellPriceMinDate" Content="{Binding Translation.SellPriceMinDate, FallbackValue=SELL_PRICE_MIN_DATE}" Click="GridViewColumnHeader_Click" />
+                                    </GridViewColumn.Header>
+                                </GridViewColumn>
+                                <GridViewColumn CellTemplate="{StaticResource GridViewColumnSellPriceMaxTemplate}">
+                                    <GridViewColumn.Header>
+                                        <GridViewColumnHeader Tag="SellPriceMax" Content="{Binding Translation.SellPriceMax, FallbackValue=SELL_PRICE_MAX}" Click="GridViewColumnHeader_Click" />
+                                    </GridViewColumn.Header>
+                                </GridViewColumn>
+                                <GridViewColumn CellTemplate="{StaticResource GridViewColumnSellPriceMaxDateTemplate}">
+                                    <GridViewColumn.Header>
+                                        <GridViewColumnHeader Tag="SellPriceMaxDate" Content="{Binding Translation.SellPriceMaxDate, FallbackValue=SELL_PRICE_MAX_DATE}" Click="GridViewColumnHeader_Click" />
+                                    </GridViewColumn.Header>
+                                </GridViewColumn>
+                                <GridViewColumn CellTemplate="{StaticResource GridViewColumnBuyPriceMinTemplate}">
+                                    <GridViewColumn.Header>
+                                        <GridViewColumnHeader Tag="BuyPriceMin" Content="{Binding Translation.BuyPriceMin, FallbackValue=BUY_PRICE_MIN}" Click="GridViewColumnHeader_Click" />
+                                    </GridViewColumn.Header>
+                                </GridViewColumn>
+                                <GridViewColumn CellTemplate="{StaticResource GridViewColumnBuyPriceMinDateTemplate}">
+                                    <GridViewColumn.Header>
+                                        <GridViewColumnHeader Tag="BuyPriceMinDate" Content="{Binding Translation.BuyPriceMinDate, FallbackValue=BUY_PRICE_MIN_DATE}" Click="GridViewColumnHeader_Click" />
+                                    </GridViewColumn.Header>
+                                </GridViewColumn>
+                                <GridViewColumn CellTemplate="{StaticResource GridViewColumnBuyPriceMaxTemplate}">
+                                    <GridViewColumn.Header>
+                                        <GridViewColumnHeader Tag="BuyPriceMax" Content="{Binding Translation.BuyPriceMax, FallbackValue=BUY_PRICE_MAX}" Click="GridViewColumnHeader_Click" />
+                                    </GridViewColumn.Header>
+                                </GridViewColumn>
+                                <GridViewColumn CellTemplate="{StaticResource GridViewColumnBuyPriceMaxDateTemplate}">
+                                    <GridViewColumn.Header>
+                                        <GridViewColumnHeader Tag="BuyPriceMaxDate" Content="{Binding Translation.BuyPriceMaxDate, FallbackValue=BUY_PRICE_MAX_DATE}" Click="GridViewColumnHeader_Click" />
+                                    </GridViewColumn.Header>
+                                </GridViewColumn>
                             </GridView>
                         </ListView.View>
                     </ListView>

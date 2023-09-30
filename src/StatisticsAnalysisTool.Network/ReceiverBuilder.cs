@@ -1,6 +1,6 @@
 ﻿namespace StatisticsAnalysisTool.Network;
 
-public class ReceiverBuilder
+public sealed class ReceiverBuilder
 {
     private readonly AlbionParser _parser;
 

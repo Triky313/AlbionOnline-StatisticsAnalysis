@@ -1,4 +1,4 @@
-﻿using StatisticsAnalysisTool.Common;
+﻿using StatisticsAnalysisTool.Localization;
 using StatisticsAnalysisTool.ViewModels;
 
 namespace StatisticsAnalysisTool.Models;

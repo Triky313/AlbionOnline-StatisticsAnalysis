@@ -85,6 +85,9 @@
     <Compile Update="UserControls\ErrorBarControl.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Update="Views\LanguageSelectionWindow.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
   </ItemGroup>
   <ItemGroup>
     <None Update="Properties\Settings.settings">
@@ -92,6 +95,9 @@
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
     </None>
     <Content Include="Languages\de-DE.xml">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Languages\ja-JP.xml">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="Languages\zh-TW.xml">
@@ -708,6 +714,7 @@
     <None Remove="Languages\en-US.xml" />
     <None Remove="Languages\es-ES.xml" />
     <None Remove="Languages\fr-FR.xml" />
+    <None Remove="Languages\ja-JP.xml" />
     <None Remove="Languages\ko-KR.xml" />
     <None Remove="Languages\pl-PL.xml" />
     <None Remove="Languages\pt-BR.xml" />

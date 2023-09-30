@@ -1,4 +1,4 @@
-﻿using StatisticsAnalysisTool.Common;
+﻿using StatisticsAnalysisTool.Localization;
 using System;
 
 namespace StatisticsAnalysisTool.Models.TranslationModel;

@@ -1,6 +1,7 @@
 ﻿using Serilog;
 using StatisticsAnalysisTool.Common;
 using StatisticsAnalysisTool.Common.UserSettings;
+using StatisticsAnalysisTool.Localization;
 using StatisticsAnalysisTool.Notification;
 using StatisticsAnalysisTool.Properties;
 using System;

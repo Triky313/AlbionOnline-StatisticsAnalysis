@@ -1,5 +1,6 @@
 ﻿using StatisticsAnalysisTool.Common;
 using StatisticsAnalysisTool.Enumerations;
+using StatisticsAnalysisTool.Localization;
 using StatisticsAnalysisTool.ViewModels;
 using System;
 using System.Collections.Generic;
@@ -33,10 +34,12 @@ public class TradeStatsObject : BaseViewModel
     private long _taxesMonth;
     private long _taxesYear;
     private long _taxesTotal;
+    private long _soldLastMonth;
+    private long _boughtLastMonth;
+    private long _taxesLastMonth;
+    private long _salesLastMonth;
     private Trade _mostExpensiveSaleItem;
     private Trade _mostExpensivePurchasedItem;
-    private bool _isMostExpensivePurchasedItemFromMail;
-    private bool _isMostExpensiveSaleItemFromMail;
 
     #region Stat calculations
 
@@ -53,18 +56,21 @@ public class TradeStatsObject : BaseViewModel
         SoldThisWeek = GetStatByType(trades, currentUtc, TradeStatType.SoldThisWeek);
         SoldLastWeek = GetStatByType(trades, currentUtc, TradeStatType.SoldLastWeek);
         SoldMonth = GetStatByType(trades, currentUtc, TradeStatType.SoldMonth);
+        SoldLastMonth = GetStatByType(trades, currentUtc, TradeStatType.SoldLastMonth);
         SoldYear = GetStatByType(trades, currentUtc, TradeStatType.SoldYear);
 
         BoughtToday = GetStatByType(trades, currentUtc, TradeStatType.BoughtToday);
         BoughtThisWeek = GetStatByType(trades, currentUtc, TradeStatType.BoughtThisWeek);
         BoughtLastWeek = GetStatByType(trades, currentUtc, TradeStatType.BoughtLastWeek);
         BoughtMonth = GetStatByType(trades, currentUtc, TradeStatType.BoughtMonth);
+        BoughtLastMonth = GetStatByType(trades, currentUtc, TradeStatType.BoughtLastMonth);
         BoughtYear = GetStatByType(trades, currentUtc, TradeStatType.BoughtYear);
 
         TaxesToday = GetStatByType(trades, currentUtc, TradeStatType.TaxesToday);
         TaxesThisWeek = GetStatByType(trades, currentUtc, TradeStatType.TaxesThisWeek);
         TaxesLastWeek = GetStatByType(trades, currentUtc, TradeStatType.TaxesLastWeek);
         TaxesMonth = GetStatByType(trades, currentUtc, TradeStatType.TaxesMonth);
+        TaxesLastMonth = GetStatByType(trades, currentUtc, TradeStatType.TaxesLastMonth);
         TaxesYear = GetStatByType(trades, currentUtc, TradeStatType.TaxesYear);
 
         SoldTotal = GetStatByType(trades, currentUtc, TradeStatType.SoldTotal);
@@ -75,6 +81,7 @@ public class TradeStatsObject : BaseViewModel
         SalesThisWeek = SoldThisWeek - (BoughtThisWeek + TaxesThisWeek);
         SalesLastWeek = SoldLastWeek - (BoughtLastWeek + TaxesLastWeek);
         SalesMonth = SoldMonth - (BoughtMonth + TaxesMonth);
+        SalesLastMonth = SoldLastMonth - (BoughtLastMonth + TaxesLastMonth);
         SalesYear = SoldYear - (BoughtYear + TaxesYear);
         SalesTotal = SoldTotal - (BoughtTotal + TaxesTotal);
 
@@ -85,10 +92,8 @@ public class TradeStatsObject : BaseViewModel
                 switch (x.Type)
                 {
                     case TradeType.Mail:
-                        IsMostExpensiveSaleItemFromMail = true;
                         return x.MailContent.TotalPrice.IntegerValue;
                     case TradeType.InstantBuy:
-                        IsMostExpensiveSaleItemFromMail = false;
                         return x.InstantBuySellContent.TotalPrice.IntegerValue;
                     default:
                         return 0;
@@ -102,10 +107,8 @@ public class TradeStatsObject : BaseViewModel
                 switch (x.Type)
                 {
                     case TradeType.Mail:
-                        IsMostExpensivePurchasedItemFromMail = true;
                         return x.MailContent.TotalPrice.IntegerValue;
                     case TradeType.InstantBuy:
-                        IsMostExpensivePurchasedItemFromMail = false;
                         return x.InstantBuySellContent.TotalPrice.IntegerValue;
                     default:
                         return 0;
@@ -131,6 +134,9 @@ public class TradeStatsObject : BaseViewModel
                     case TradeStatType.SoldMonth when trade.Timestamp.Year != datetime.Year || trade.Timestamp.Month != datetime.Month:
                     case TradeStatType.BoughtMonth when trade.Timestamp.Year != datetime.Year || trade.Timestamp.Month != datetime.Month:
                     case TradeStatType.TaxesMonth when trade.Timestamp.Year != datetime.Year || trade.Timestamp.Month != datetime.Month:
+                    case TradeStatType.SoldLastMonth when !trade.Timestamp.Date.IsDateInSameMonth(datetime.AddMonths(-1)):
+                    case TradeStatType.BoughtLastMonth when !trade.Timestamp.Date.IsDateInSameMonth(datetime.AddMonths(-1)):
+                    case TradeStatType.TaxesLastMonth when !trade.Timestamp.Date.IsDateInSameMonth(datetime.AddMonths(-1)):
                     case TradeStatType.SoldYear when trade.Timestamp.Year != datetime.Year:
                     case TradeStatType.BoughtYear when trade.Timestamp.Year != datetime.Year:
                     case TradeStatType.TaxesYear when trade.Timestamp.Year != datetime.Year:
@@ -139,7 +145,7 @@ public class TradeStatsObject : BaseViewModel
 
                 switch (type)
                 {
-                    case TradeStatType.SoldToday or TradeStatType.SoldThisWeek or TradeStatType.SoldLastWeek or TradeStatType.SoldMonth or TradeStatType.SoldYear
+                    case TradeStatType.SoldToday or TradeStatType.SoldThisWeek or TradeStatType.SoldLastWeek or TradeStatType.SoldMonth or TradeStatType.SoldLastMonth or TradeStatType.SoldYear
                         or TradeStatType.SoldTotal:
                         switch (trade.Type)
                         {
@@ -149,7 +155,7 @@ public class TradeStatsObject : BaseViewModel
                                 return true;
                         }
                         break;
-                    case TradeStatType.BoughtToday or TradeStatType.BoughtThisWeek or TradeStatType.BoughtLastWeek or TradeStatType.BoughtMonth or TradeStatType.BoughtYear
+                    case TradeStatType.BoughtToday or TradeStatType.BoughtThisWeek or TradeStatType.BoughtLastWeek or TradeStatType.BoughtMonth or TradeStatType.BoughtLastMonth or TradeStatType.BoughtYear
                         or TradeStatType.BoughtTotal:
                         switch (trade.Type)
                         {
@@ -159,7 +165,7 @@ public class TradeStatsObject : BaseViewModel
                                 return true;
                         }
                         break;
-                    case TradeStatType.TaxesToday or TradeStatType.TaxesThisWeek or TradeStatType.TaxesLastWeek or TradeStatType.TaxesMonth or TradeStatType.TaxesYear
+                    case TradeStatType.TaxesToday or TradeStatType.TaxesThisWeek or TradeStatType.TaxesLastWeek or TradeStatType.TaxesMonth or TradeStatType.TaxesLastMonth or TradeStatType.TaxesYear
                         or TradeStatType.TaxesTotal:
                         switch (trade.Type)
                         {
@@ -178,21 +184,21 @@ public class TradeStatsObject : BaseViewModel
             {
                 return type switch
                 {
-                    TradeStatType.SoldToday or TradeStatType.SoldThisWeek or TradeStatType.SoldLastWeek or TradeStatType.SoldMonth or TradeStatType.SoldYear => trade.Type switch
+                    TradeStatType.SoldToday or TradeStatType.SoldThisWeek or TradeStatType.SoldLastWeek or TradeStatType.SoldMonth or TradeStatType.SoldLastMonth or TradeStatType.SoldYear => trade.Type switch
                     {
                         TradeType.Mail => trade.MailContent.TotalPrice.IntegerValue,
                         TradeType.InstantSell => trade.InstantBuySellContent.TotalPrice.IntegerValue,
                         TradeType.ManualSell => trade.InstantBuySellContent.TotalPrice.IntegerValue,
                         _ => 0
                     },
-                    TradeStatType.BoughtToday or TradeStatType.BoughtThisWeek or TradeStatType.BoughtLastWeek or TradeStatType.BoughtMonth or TradeStatType.BoughtYear => trade.Type switch
+                    TradeStatType.BoughtToday or TradeStatType.BoughtThisWeek or TradeStatType.BoughtLastWeek or TradeStatType.BoughtMonth or TradeStatType.BoughtLastMonth or TradeStatType.BoughtYear => trade.Type switch
                     {
                         TradeType.Mail => trade.MailContent.TotalPriceWithDeductedTaxes.IntegerValue,
                         TradeType.InstantBuy => trade.InstantBuySellContent.TotalPrice.IntegerValue,
                         TradeType.ManualBuy => trade.InstantBuySellContent.TotalPrice.IntegerValue,
                         _ => 0
                     },
-                    TradeStatType.TaxesToday or TradeStatType.TaxesThisWeek or TradeStatType.TaxesLastWeek or TradeStatType.TaxesMonth or TradeStatType.TaxesYear
+                    TradeStatType.TaxesToday or TradeStatType.TaxesThisWeek or TradeStatType.TaxesLastWeek or TradeStatType.TaxesMonth or TradeStatType.TaxesLastMonth or TradeStatType.TaxesYear
                         or TradeStatType.TaxesTotal => trade.Type switch
                         {
                             TradeType.Mail => trade.MailContent.TaxSetupPrice.IntegerValue + trade.MailContent.TaxPrice.IntegerValue,
@@ -219,26 +225,6 @@ public class TradeStatsObject : BaseViewModel
     }
 
     #endregion
-
-    public bool IsMostExpensiveSaleItemFromMail
-    {
-        get => _isMostExpensiveSaleItemFromMail;
-        set
-        {
-            _isMostExpensiveSaleItemFromMail = value;
-            OnPropertyChanged();
-        }
-    }
-
-    public bool IsMostExpensivePurchasedItemFromMail
-    {
-        get => _isMostExpensivePurchasedItemFromMail;
-        set
-        {
-            _isMostExpensivePurchasedItemFromMail = value;
-            OnPropertyChanged();
-        }
-    }
 
     public long SoldToday
     {
@@ -276,6 +262,16 @@ public class TradeStatsObject : BaseViewModel
         set
         {
             _soldMonth = value;
+            OnPropertyChanged();
+        }
+    }
+
+    public long SoldLastMonth
+    {
+        get => _soldLastMonth;
+        set
+        {
+            _soldLastMonth = value;
             OnPropertyChanged();
         }
     }
@@ -326,6 +322,16 @@ public class TradeStatsObject : BaseViewModel
         set
         {
             _boughtMonth = value;
+            OnPropertyChanged();
+        }
+    }
+
+    public long BoughtLastMonth
+    {
+        get => _boughtLastMonth;
+        set
+        {
+            _boughtLastMonth = value;
             OnPropertyChanged();
         }
     }
@@ -400,6 +406,16 @@ public class TradeStatsObject : BaseViewModel
         }
     }
 
+    public long SalesLastMonth
+    {
+        get => _salesLastMonth;
+        set
+        {
+            _salesLastMonth = value;
+            OnPropertyChanged();
+        }
+    }
+
     public long SalesYear
     {
         get => _salesYear;
@@ -460,6 +476,16 @@ public class TradeStatsObject : BaseViewModel
         }
     }
 
+    public long TaxesLastMonth
+    {
+        get => _taxesLastMonth;
+        set
+        {
+            _taxesLastMonth = value;
+            OnPropertyChanged();
+        }
+    }
+
     public long TaxesYear
     {
         get => _taxesYear;
@@ -505,6 +531,7 @@ public class TradeStatsObject : BaseViewModel
     public static string TranslationThisWeek => LanguageController.Translation("THIS_WEEK");
     public static string TranslationLastWeek => LanguageController.Translation("LAST_WEEK");
     public static string TranslationMonth => LanguageController.Translation("MONTH");
+    public static string TranslationLastMonth => LanguageController.Translation("LAST_MONTH");
     public static string TranslationYear => LanguageController.Translation("YEAR");
     public static string TranslationTotal => LanguageController.Translation("TOTAL");
     public static string TranslationBought => LanguageController.Translation("BOUGHT");
