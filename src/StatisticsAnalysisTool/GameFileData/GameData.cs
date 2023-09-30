@@ -3,6 +3,8 @@ using StatisticAnalysisTool.Extractor;
 using StatisticAnalysisTool.Extractor.Enums;
 using StatisticsAnalysisTool.Common;
 using StatisticsAnalysisTool.Common.UserSettings;
+using StatisticsAnalysisTool.Dungeon;
+using StatisticsAnalysisTool.Dungeon.Models;
 using StatisticsAnalysisTool.GameFileData.Models;
 using StatisticsAnalysisTool.Models;
 using StatisticsAnalysisTool.Properties;
@@ -18,8 +20,6 @@ using System.Text.Json;
 using System.Text.Json.Serialization;
 using System.Threading.Tasks;
 using System.Windows;
-using StatisticsAnalysisTool.Dungeon;
-using StatisticsAnalysisTool.Dungeon.Models;
 
 namespace StatisticsAnalysisTool.GameFileData;
 
@@ -89,53 +89,56 @@ public static class GameData
             DirectoryController.CreateDirectoryWhenNotExists(tempDirPath);
             DirectoryController.CreateDirectoryWhenNotExists(gameFilesDirPath);
 
-            toolLoadingWindowViewModel.ProgressBarValue = 10;
+            List<Func<Task>> taskFactories = new List<Func<Task>>();
+            
             if (Extractor.IsBinFileNewer(Path.Combine(gameFilesDirPath, "indexedItems.json"), mainGameFolderPath, serverType, "items")
                 || Extractor.IsBinFileNewer(Path.Combine(gameFilesDirPath, "items.json"), mainGameFolderPath, serverType, "items"))
             {
-                await extractor.ExtractIndexedItemGameDataAsync(gameFilesDirPath, "indexedItems.json");
-                await extractor.ExtractGameDataAsync(gameFilesDirPath, new[] { "items" });
+                taskFactories.Add(() => extractor.ExtractIndexedItemGameDataAsync(gameFilesDirPath, "indexedItems.json"));
+                taskFactories.Add(() => extractor.ExtractGameDataAsync(gameFilesDirPath, new[] { "items" }));
             }
-
-            toolLoadingWindowViewModel.ProgressBarValue = 20;
+            
             if (Extractor.IsBinFileNewer(Path.Combine(gameFilesDirPath, "mobs-modified.json"), mainGameFolderPath, serverType, "mobs"))
             {
                 fileNamesToLoad.Add("mobs");
             }
-
-            toolLoadingWindowViewModel.ProgressBarValue = 30;
+            
             if (Extractor.IsBinFileNewer(Path.Combine(gameFilesDirPath, "world-modified.json"), mainGameFolderPath, serverType, "cluster\\world"))
             {
                 fileNamesToLoad.Add("cluster\\world");
             }
-
-            toolLoadingWindowViewModel.ProgressBarValue = 40;
+            
             if (Extractor.IsBinFileNewer(Path.Combine(gameFilesDirPath, "spells-modified.json"), mainGameFolderPath, serverType, "spells"))
             {
                 fileNamesToLoad.Add("spells");
             }
-
-            toolLoadingWindowViewModel.ProgressBarValue = 50;
+            
             if (Extractor.IsBinFileNewer(Path.Combine(gameFilesDirPath, "mists-modified.json"), mainGameFolderPath, serverType, "mists"))
             {
                 fileNamesToLoad.Add("mists");
             }
 
-            toolLoadingWindowViewModel.ProgressBarValue = 60;
-            await extractor.ExtractGameDataAsync(tempDirPath, fileNamesToLoad.ToArray());
+
+            taskFactories.Add(() => extractor.ExtractGameDataAsync(tempDirPath, fileNamesToLoad.ToArray()));
+            taskFactories.Add(ItemController.LoadIndexedItemsDataAsync);
+            taskFactories.Add(ItemController.LoadItemsDataAsync);
+            taskFactories.Add(MobsData.LoadDataAsync);
+            taskFactories.Add(MistsData.LoadDataAsync);
+            taskFactories.Add(WorldData.LoadDataAsync);
+            taskFactories.Add(SpellData.LoadDataAsync);
+
+            int totalTasks = taskFactories.Count;
+            int completedTasks = 0;
+
+            foreach (var taskFactory in taskFactories)
+            {
+                await taskFactory();
+
+                completedTasks++;
+                toolLoadingWindowViewModel.ProgressBarValue = (completedTasks / (double) totalTasks) * 100;
+            }
+
             extractor.Dispose();
-
-            await ItemController.LoadIndexedItemsDataAsync();
-            await ItemController.LoadItemsDataAsync();
-            toolLoadingWindowViewModel.ProgressBarValue = 70;
-            await MobsData.LoadDataAsync();
-            await MistsData.LoadDataAsync();
-            toolLoadingWindowViewModel.ProgressBarValue = 80;
-            await WorldData.LoadDataAsync();
-            toolLoadingWindowViewModel.ProgressBarValue = 90;
-            await SpellData.LoadDataAsync();
-            toolLoadingWindowViewModel.ProgressBarValue = 100;
-
             toolLoadingWindow.Close();
 
             return true;
@@ -214,7 +217,7 @@ public static class GameData
 
             var localString = File.ReadAllText(localFilePath, Encoding.UTF8);
             var rootObject = JsonSerializer.Deserialize<TRoot>(localString, options);
-            
+
             return rootObject switch
             {
                 MobJsonRootObject mobRootObject => mobRootObject.Mobs?.Mob as List<T> ?? new List<T>(),
