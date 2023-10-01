@@ -255,8 +255,8 @@ public class MainWindowViewModel : BaseViewModel
         IsTxtSearchEnabled = false;
         IsItemSearchCheckboxesEnabled = false;
         IsFilterResetEnabled = false;
-
-        ServerTypeText = LanguageController.Translation("UNKNOWN_SERVER");
+        
+        UpdateServerTypeLabel();
 
         await ItemController.SetFavoriteItemsFromLocalFileAsync();
 
@@ -345,6 +345,16 @@ public class MainWindowViewModel : BaseViewModel
     #endregion
 
     #region Ui utility methods
+
+    public void UpdateServerTypeLabel()
+    {
+        ServerTypeText = SettingsController.CurrentSettings.Server switch
+        {
+            AlbionServer.East => LanguageController.Translation("EAST_SERVER"),
+            AlbionServer.West => LanguageController.Translation("WEST_SERVER"),
+            _ => LanguageController.Translation("UNKNOWN_SERVER")
+        };
+    }
 
     public static void OpenItemWindow(Item item)
     {

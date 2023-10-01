@@ -3,6 +3,6 @@
 public enum AlbionServer
 {
     Unknown,
-    West,
-    East
+    West = 1,
+    East = 2
 }

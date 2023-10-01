@@ -1,12 +1,10 @@
 ﻿using Serilog;
-using SharpPcap;
 using StatisticsAnalysisTool.Common;
 using StatisticsAnalysisTool.Common.UserSettings;
 using StatisticsAnalysisTool.Enumerations;
 using StatisticsAnalysisTool.Localization;
 using StatisticsAnalysisTool.Models;
 using StatisticsAnalysisTool.Models.TranslationModel;
-using StatisticsAnalysisTool.Network;
 using StatisticsAnalysisTool.Notification;
 using StatisticsAnalysisTool.Views;
 using System;
@@ -111,11 +109,15 @@ public class SettingsWindowViewModel : BaseViewModel
 
     public void SaveSettings()
     {
+        var mainWindowViewModel = ServiceLocator.Resolve<MainWindowViewModel>();
+
         SettingsController.CurrentSettings.RefreshRate = RefreshRatesSelection.Value;
-        SettingsController.CurrentSettings.Server = ServerSelection.Value;
+
+        SettingsController.CurrentSettings.Server = (AlbionServer) ServerSelection.Value;
+        mainWindowViewModel.UpdateServerTypeLabel();
+
         SettingsController.CurrentSettings.AnotherAppToStartPath = AnotherAppToStartPath;
-        NetworkManager.SetCurrentServer(ServerSelection.Value >= 2 ? AlbionServer.East : AlbionServer.West, true);
-        SetPacketFilter();
+
         SettingsController.CurrentSettings.MainTrackingCharacterName = MainTrackingCharacterName;
         SettingsController.CurrentSettings.BackupIntervalByDays = BackupIntervalByDaysSelection.Value;
         SettingsController.CurrentSettings.MaximumNumberOfBackups = MaximumNumberOfBackupsSelection.Value;
@@ -133,7 +135,7 @@ public class SettingsWindowViewModel : BaseViewModel
         SettingsController.CurrentSettings.ExactMatchPlayerNamesLineNumber = PlayerSelectionWithSameNameInDb;
 
         SetAppSettingsAndTranslations();
-        SetNaviTabVisibilities();
+        SetNaviTabVisibilities(mainWindowViewModel);
         SetNotificationFilter();
         SetIconSourceToAnotherAppToStart();
     }
@@ -148,7 +150,7 @@ public class SettingsWindowViewModel : BaseViewModel
         Translation = new SettingsWindowTranslation();
     }
 
-    private void SetNaviTabVisibilities()
+    private void SetNaviTabVisibilities(MainWindowViewModel mainWindowViewModel)
     {
         SettingsController.CurrentSettings.IsDashboardNaviTabActive = TabVisibilities?.FirstOrDefault(x => x?.NavigationTabFilterType == NavigationTabFilterType.Dashboard)?.IsSelected ?? true;
         SettingsController.CurrentSettings.IsItemSearchNaviTabActive = TabVisibilities?.FirstOrDefault(x => x?.NavigationTabFilterType == NavigationTabFilterType.ItemSearch)?.IsSelected ?? true;
@@ -161,8 +163,7 @@ public class SettingsWindowViewModel : BaseViewModel
         SettingsController.CurrentSettings.IsStorageHistoryNaviTabActive = TabVisibilities?.FirstOrDefault(x => x?.NavigationTabFilterType == NavigationTabFilterType.StorageHistory)?.IsSelected ?? true;
         SettingsController.CurrentSettings.IsMapHistoryNaviTabActive = TabVisibilities?.FirstOrDefault(x => x?.NavigationTabFilterType == NavigationTabFilterType.MapHistory)?.IsSelected ?? true;
         SettingsController.CurrentSettings.IsPlayerInformationNaviTabActive = TabVisibilities?.FirstOrDefault(x => x?.NavigationTabFilterType == NavigationTabFilterType.PlayerInformation)?.IsSelected ?? true;
-
-        var mainWindowViewModel = ServiceLocator.Resolve<MainWindowViewModel>();
+        
         mainWindowViewModel.DashboardTabVisibility = SettingsController.CurrentSettings.IsDashboardNaviTabActive.BoolToVisibility();
         mainWindowViewModel.ItemSearchTabVisibility = SettingsController.CurrentSettings.IsItemSearchNaviTabActive.BoolToVisibility();
         mainWindowViewModel.LoggingTabVisibility = SettingsController.CurrentSettings.IsLoggingNaviTabActive.BoolToVisibility();
@@ -180,44 +181,6 @@ public class SettingsWindowViewModel : BaseViewModel
     {
         SettingsController.CurrentSettings.IsNotificationFilterTradeActive = NotificationFilters?.FirstOrDefault(x => x?.NotificationFilterType == NotificationFilterType.Trade)?.IsSelected ?? true;
         SettingsController.CurrentSettings.IsNotificationTrackingStatusActive = NotificationFilters?.FirstOrDefault(x => x?.NotificationFilterType == NotificationFilterType.TrackingStatus)?.IsSelected ?? true;
-    }
-
-    private void SetPacketFilter()
-    {
-        if (SettingsController.CurrentSettings.PacketFilter == PacketFilter)
-        {
-            return;
-        }
-
-        SettingsController.CurrentSettings.PacketFilter = PacketFilter ?? string.Empty;
-        try
-        {
-            NetworkManager.RestartNetworkCapture();
-        }
-        catch (PcapException e)
-        {
-            ConsoleManager.WriteLineForError(MethodBase.GetCurrentMethod()?.DeclaringType, e);
-            Log.Error(e, "{message}", MethodBase.GetCurrentMethod()?.DeclaringType);
-            ServiceLocator.Resolve<MainWindowViewModel>().SetErrorBar(Visibility.Visible, LanguageController.Translation(e.Message));
-        }
-        catch (Exception e)
-        {
-            ConsoleManager.WriteLineForError(MethodBase.GetCurrentMethod()?.DeclaringType, e);
-            Log.Error(e, "{message}", MethodBase.GetCurrentMethod()?.DeclaringType);
-            ServiceLocator.Resolve<MainWindowViewModel>().SetErrorBar(Visibility.Visible, LanguageController.Translation(e.Message));
-        }
-    }
-
-    public void ResetPacketFilter()
-    {
-        const string defaultFilter = "(host 5.45.187 or host 5.188.125) and udp port 5056";
-
-        if (PacketFilter == defaultFilter)
-        {
-            return;
-        }
-
-        PacketFilter = defaultFilter;
     }
 
     public void ResetPlayerSelectionWithSameNameInDb()
@@ -426,10 +389,9 @@ public class SettingsWindowViewModel : BaseViewModel
     private void InitServer()
     {
         Server.Clear();
-        Server.Add(new SettingDataInformation { Name = SettingsWindowTranslation.Automatically, Value = 0 });
         Server.Add(new SettingDataInformation { Name = SettingsWindowTranslation.WestServer, Value = 1 });
         Server.Add(new SettingDataInformation { Name = SettingsWindowTranslation.EastServer, Value = 2 });
-        ServerSelection = Server.FirstOrDefault(x => x.Value == SettingsController.CurrentSettings.Server);
+        ServerSelection = Server.FirstOrDefault(x => x.Value == (int) SettingsController.CurrentSettings.Server);
     }
 
     private void InitMaxAmountOfBackups(ICollection<SettingDataInformation> amountOfBackups)

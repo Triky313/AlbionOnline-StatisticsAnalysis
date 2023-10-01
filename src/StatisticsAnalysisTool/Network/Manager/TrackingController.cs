@@ -1,8 +1,8 @@
 using Serilog;
-using SharpPcap;
 using StatisticsAnalysisTool.Cluster;
 using StatisticsAnalysisTool.Common;
 using StatisticsAnalysisTool.Common.UserSettings;
+using StatisticsAnalysisTool.Core;
 using StatisticsAnalysisTool.Dungeon;
 using StatisticsAnalysisTool.EstimatedMarketValue;
 using StatisticsAnalysisTool.EventLogging;
@@ -10,7 +10,6 @@ using StatisticsAnalysisTool.EventLogging.Notification;
 using StatisticsAnalysisTool.Exceptions;
 using StatisticsAnalysisTool.Gathering;
 using StatisticsAnalysisTool.Localization;
-using StatisticsAnalysisTool.Models;
 using StatisticsAnalysisTool.PartyBuilder;
 using StatisticsAnalysisTool.Properties;
 using StatisticsAnalysisTool.Trade;
@@ -24,6 +23,7 @@ using System.ComponentModel;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
+using System.Net.Sockets;
 using System.Reflection;
 using System.Threading.Tasks;
 using System.Windows;
@@ -36,7 +36,9 @@ public class TrackingController : ITrackingController
 {
     private const int MaxNotifications = 4000;
 
+    private NetworkManager _networkManager;
     private readonly MainWindowViewModel _mainWindowViewModel;
+
     public readonly LiveStatsTracker LiveStatsTracker;
     public readonly CombatController CombatController;
     public readonly DungeonController DungeonController;
@@ -97,9 +99,16 @@ public class TrackingController : ITrackingController
 
     public async Task StartTrackingAsync()
     {
-        if (NetworkManager.IsNetworkCaptureRunning())
+        if (_networkManager?.IsAnySocketActive() ?? false)
         {
             return;
+        }
+
+        _networkManager = new NetworkManager(this);
+
+        if (!ApplicationCore.IsAppStartedAsAdministrator())
+        {
+            _mainWindowViewModel.SetErrorBar(Visibility.Visible, LanguageController.Translation("START_APPLICATION_AS_ADMINISTRATOR"));
         }
 
         await Task.WhenAll(
@@ -122,20 +131,20 @@ public class TrackingController : ITrackingController
 
         try
         {
-            NetworkManager.StartNetworkCapture(this);
+            _networkManager.Start();
             _mainWindowViewModel.IsTrackingActive = true;
-        }
-        catch (PcapException e)
-        {
-            ConsoleManager.WriteLineForError(MethodBase.GetCurrentMethod()?.DeclaringType, e);
-            Log.Error(e, "{message}", MethodBase.GetCurrentMethod()?.DeclaringType);
-            _mainWindowViewModel.SetErrorBar(Visibility.Visible, LanguageController.Translation(e.Message));
         }
         catch (NoListeningAdaptersException e)
         {
             ConsoleManager.WriteLineForError(MethodBase.GetCurrentMethod()?.DeclaringType, e);
             Log.Error(e, "{message}", MethodBase.GetCurrentMethod()?.DeclaringType);
             _mainWindowViewModel.SetErrorBar(Visibility.Visible, LanguageController.Translation("NO_LISTENING_ADAPTERS"));
+        }
+        catch (SocketException e)
+        {
+            ConsoleManager.WriteLineForError(MethodBase.GetCurrentMethod()?.DeclaringType, e);
+            Log.Error(e, "{message}", MethodBase.GetCurrentMethod()?.DeclaringType);
+            _mainWindowViewModel.SetErrorBar(Visibility.Visible, LanguageController.Translation("START_APPLICATION_AS_ADMINISTRATOR"));
         }
         catch (Exception e)
         {
@@ -154,7 +163,7 @@ public class TrackingController : ITrackingController
             return;
         }
 
-        NetworkManager.StopDeviceCapture();
+        _networkManager.Stop();
 
         LiveStatsTracker?.Stop();
 
