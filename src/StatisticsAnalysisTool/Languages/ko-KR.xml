@@ -2,8 +2,7 @@
 
 <translations>
 	<translation name="LANGUAGE">언어</translation>
-	<translation name="REFRESH_RATE">새로 고침 빈도</translation>
-	
+	<translation name="REFRESH_RATE">새로 고침 빈도</translation>	
 	<translation name="SETTINGS">설정</translation>
 	<translation name="SAVE">저장</translation>
 	<translation name="CITY">도시</translation>
@@ -55,7 +54,7 @@
 	<translation name="5_MINUTES">5 분</translation>
 	<translation name="MIN_PROFIT_TOOLTIP">아이템이 창출해야 하는 최소 수익을 지정합니다.</translation>
 	<translation name="REMOVE">삭제</translation>
-		<translation name="ERROR">에러</translation>
+	<translation name="ERROR">에러</translation>
 	<translation name="NOTE">메모</translation>
 	<translation name="DEFAULT_ITEMLIST_HAS_BEEN_LOADED">기본 ItemList가 로드되었습니다.</translation>
 	<translation name="SHOW_BLACKZONE_OUTPOSTS">블랙 존 은신처 보기</translation>
@@ -76,7 +75,7 @@
 	<translation name="ROYAL">Royal</translation>
 	<translation name="OUTLANDS">Outlands</translation>
 	<translation name="HELLGATE">헬게이트</translation>
-	<translation name="EXPEDITION">원정</translation>
+	<translation name="EXPEDITION">원정(하드코어)</translation>
 	<translation name="CRAFTING">제작</translation>
 	<translation name="GATHERING">채집</translation>
 	<translation name="MAINHAND">주무기(오른손)</translation>
@@ -742,6 +741,7 @@
 	<translation name="OVERHEALED_PERCENTAGE_OF_TOTAL_HEALING">총 치유량 중 초과 치유량(Overheal) 비율</translation>
 	<translation name="HEALING_WITHOUT_OVERHEALED">초과 치유를 제외한 치유량</translation>
 	<translation name="MISTS_DUNGEON">Knightfall Abbey</translation>
+	<translation name="LOADING">Loading</translation>
 	<translation name="NET_PROFIT">순이익</translation>
 	<translation name="YEAR">연도</translation>
 	<translation name="CHECKPOINT">Checkpoint</translation>
@@ -757,4 +757,9 @@
 	<translation name="TYPE">타입</translation>
 	<translation name="HCE_EXPEDITION">하드코어</translation>
 	<translation name="NUMBER_OF_DUNGEONS">던전 숫자</translation>
+	<translation name="FIGHTS">Fights</translation>
+	<translation name="SHAPESHIFTER">Shapeshifter</translation>
+	<translation name="TRACKING_TOOL">Tracking tool</translation>
+	<translation name="TOTAL_OVERVIEW">Total Overview</translation>
+	<translation name="LAST_MONTH">Last month</translation>
 </translations>
