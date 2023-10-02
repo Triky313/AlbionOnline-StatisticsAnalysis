@@ -5,16 +5,16 @@ using StatisticsAnalysisTool.Models.NetworkModel;
 
 namespace StatisticsAnalysisTool.Network.Handler;
 
-public class BaseVaultInfoEventHandler : EventPacketHandler<BaseVaultInfoEvent>
+public class BankVaultInfoEventHandler : EventPacketHandler<BankVaultInfoEvent>
 {
     private readonly TrackingController _trackingController;
 
-    public BaseVaultInfoEventHandler(TrackingController trackingController) : base((int) EventCodes.BaseVaultInfo)
+    public BankVaultInfoEventHandler(TrackingController trackingController) : base((int) EventCodes.BankVaultInfo)
     {
         _trackingController = trackingController;
     }
 
-    protected override async Task OnActionAsync(BaseVaultInfoEvent value)
+    protected override async Task OnActionAsync(BankVaultInfoEvent value)
     {
         if (_trackingController.IsTrackingAllowedByMainCharacter())
         {
