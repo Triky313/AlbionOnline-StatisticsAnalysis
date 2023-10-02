@@ -18,7 +18,7 @@ public class NetworkManager
     private readonly List<Socket> _sockets = new();
     private byte[] _byteData = new byte[65000];
     private readonly List<IPAddress> _gateways = new();
-    private bool _stopReceiving = false;
+    private bool _stopReceiving;
 
     public NetworkManager(TrackingController trackingController)
     {
@@ -32,6 +32,7 @@ public class NetworkManager
     {
         ReceiverBuilder builder = ReceiverBuilder.Create();
 
+        // Event
         builder.AddEventHandler(new NewEquipmentItemEventHandler(trackingController));
         builder.AddEventHandler(new NewSimpleItemEventHandler(trackingController));
         builder.AddEventHandler(new NewFurnitureItemEventHandler(trackingController));
@@ -76,6 +77,7 @@ public class NetworkManager
         builder.AddEventHandler(new NewExpeditionCheckPointHandler(trackingController));
         builder.AddEventHandler(new UpdateMistCityStandingEventHandler(trackingController));
 
+        // Request
         builder.AddRequestHandler(new InventoryMoveItemRequestHandler(trackingController));
         builder.AddRequestHandler(new UseShrineRequestHandler(trackingController));
         builder.AddRequestHandler(new ClaimPaymentTransactionRequestHandler(trackingController));
@@ -88,6 +90,7 @@ public class NetworkManager
         builder.AddRequestHandler(new FishingFinishRequestHandler(trackingController));
         builder.AddRequestHandler(new FishingCancelRequestHandler(trackingController));
 
+        // Response
         builder.AddResponseHandler(new ChangeClusterResponseHandler(trackingController));
         builder.AddResponseHandler(new PartyMakeLeaderResponseHandler(trackingController));
         builder.AddResponseHandler(new JoinResponseHandler(trackingController));
@@ -149,10 +152,13 @@ public class NetworkManager
 
             _sockets.Add(socket);
         }
+
+        _ = ServiceLocator.Resolve<SatNotificationManager>().ShowTrackingStatusAsync(LanguageController.Translation("START_TRACKING"), LanguageController.Translation("GAME_TRACKING_IS_STARTED"));
     }
 
     public void Stop()
     {
+        ConsoleManager.WriteLineForMessage("Stop Capture");
         _stopReceiving = true;
 
         foreach (var socket in _sockets)
@@ -161,15 +167,14 @@ public class NetworkManager
             {
                 socket.Disconnect(true);
             }
-            
+
             socket.Close();
         }
-        _sockets.Clear();
 
-        ConsoleManager.WriteLineForMessage("Stop Capture");
+        _sockets.Clear();
         _ = ServiceLocator.Resolve<SatNotificationManager>().ShowTrackingStatusAsync(LanguageController.Translation("STOP_TRACKING"), LanguageController.Translation("GAME_TRACKING_IS_STOPPED"));
     }
-    
+
     private void OnReceive(IAsyncResult ar)
     {
         if (_stopReceiving)
