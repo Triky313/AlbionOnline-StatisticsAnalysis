@@ -625,7 +625,7 @@
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="LiveChartsCore.SkiaSharpView.WPF" Version="2.0.0-beta.700" />
-    <PackageReference Include="Microsoft.Web.WebView2" Version="1.0.1722.45" />
+    <PackageReference Include="Microsoft.Web.WebView2" Version="1.0.2045.28" />
     <PackageReference Include="Autoupdater.NET.Official" Version="1.8.1" />
     <PackageReference Include="FontAwesome5" Version="2.1.6" />
     <PackageReference Include="Notification.Wpf" Version="7.0.0" />
