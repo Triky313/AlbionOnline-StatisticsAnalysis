@@ -218,7 +218,7 @@ public class VaultController
     {
         var vaultSearchItem = new List<VaultSearchItem>();
 
-        await foreach (var vault in Vaults.ToAsyncEnumerable())
+        await foreach (var vault in Vaults.ToList().ToAsyncEnumerable())
         {
             var tempItems = new List<VaultSearchItem>();
 
