@@ -40,6 +40,7 @@ public partial class App
         await AutoUpdateController.AutoUpdateAsync();
 
         SettingsController.LoadSettings();
+
         Culture.SetCulture(Culture.GetCulture(SettingsController.CurrentSettings.CurrentCultureIetfLanguageTag));
         if (!LanguageController.Init())
         {
@@ -48,7 +49,12 @@ public partial class App
             return;
         }
 
-        await GameData.InitializeMainGameDataFilesAsync(ServerType.Staging);
+        if (!await GameData.InitializeMainGameDataFilesAsync(ServerType.Staging))
+        {
+            _isEarlyShutdown = true;
+            Current.Shutdown();
+            return;
+        }
 
         AutoUpdateController.RemoveUpdateFiles();
         await BackupController.DeleteOldestBackupsIfNeededAsync();
