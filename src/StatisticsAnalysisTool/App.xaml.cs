@@ -17,6 +17,7 @@ using System.Reflection;
 using System.Runtime.InteropServices;
 using System.Windows;
 using System.Windows.Threading;
+using StatisticsAnalysisTool.Enumerations;
 
 namespace StatisticsAnalysisTool;
 
@@ -47,6 +48,12 @@ public partial class App
             _isEarlyShutdown = true;
             Current.Shutdown();
             return;
+        }
+
+        if (SettingsController.CurrentSettings.ServerLocation != ServerLocation.West
+            && SettingsController.CurrentSettings.ServerLocation != ServerLocation.East)
+        {
+            Server.SetServerLocationWithDialogAsync();
         }
 
         if (!await GameData.InitializeMainGameDataFilesAsync(ServerType.Staging))

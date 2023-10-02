@@ -1,37 +1,38 @@
-using PacketDotNet;
-using Serilog;
-using SharpPcap;
 using StatisticsAnalysisTool.Common;
-using StatisticsAnalysisTool.Common.UserSettings;
-using StatisticsAnalysisTool.Enumerations;
-using StatisticsAnalysisTool.Exceptions;
 using StatisticsAnalysisTool.Localization;
 using StatisticsAnalysisTool.Network.Handler;
 using StatisticsAnalysisTool.Network.Manager;
 using StatisticsAnalysisTool.Notification;
-using StatisticsAnalysisTool.ViewModels;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
-using System.Reflection;
-using System.Threading.Tasks;
+using System.Net;
+using System.Net.Sockets;
 
 namespace StatisticsAnalysisTool.Network;
 
-public static class NetworkManager
+public class NetworkManager
 {
-    private static IPhotonReceiver _receiver;
-    private static DateTime _lastGetCurrentServerByIpTime = DateTime.MinValue;
-    private static int _serverEventCounter;
-    private static AlbionServer _lastServerType;
-    private static readonly List<ICaptureDevice> CapturedDevices = new();
+    private readonly IPhotonReceiver _photonReceiver;
+    private readonly List<Socket> _sockets = new();
+    private byte[] _byteData = new byte[65000];
+    private readonly List<IPAddress> _gateways = new();
+    private bool _stopReceiving;
 
-    public static AlbionServer AlbionServer { get; set; } = AlbionServer.Unknown;
+    public NetworkManager(TrackingController trackingController)
+    {
+        _photonReceiver = Build(trackingController);
 
-    public static void StartNetworkCapture(TrackingController trackingController)
+        var hostEntries = GetAllHostEntries();
+        SetGateway(hostEntries);
+    }
+
+    private static IPhotonReceiver Build(TrackingController trackingController)
     {
         ReceiverBuilder builder = ReceiverBuilder.Create();
 
+        // Event
         builder.AddEventHandler(new NewEquipmentItemEventHandler(trackingController));
         builder.AddEventHandler(new NewSimpleItemEventHandler(trackingController));
         builder.AddEventHandler(new NewFurnitureItemEventHandler(trackingController));
@@ -76,6 +77,7 @@ public static class NetworkManager
         builder.AddEventHandler(new NewExpeditionCheckPointHandler(trackingController));
         builder.AddEventHandler(new UpdateMistCityStandingEventHandler(trackingController));
 
+        // Request
         builder.AddRequestHandler(new InventoryMoveItemRequestHandler(trackingController));
         builder.AddRequestHandler(new UseShrineRequestHandler(trackingController));
         builder.AddRequestHandler(new ClaimPaymentTransactionRequestHandler(trackingController));
@@ -88,6 +90,7 @@ public static class NetworkManager
         builder.AddRequestHandler(new FishingFinishRequestHandler(trackingController));
         builder.AddRequestHandler(new FishingCancelRequestHandler(trackingController));
 
+        // Response
         builder.AddResponseHandler(new ChangeClusterResponseHandler(trackingController));
         builder.AddResponseHandler(new PartyMakeLeaderResponseHandler(trackingController));
         builder.AddResponseHandler(new JoinResponseHandler(trackingController));
@@ -100,218 +103,146 @@ public static class NetworkManager
         builder.AddResponseHandler(new AuctionGetLoadoutOffersResponseHandler(trackingController));
         builder.AddResponseHandler(new AuctionBuyLoadoutOfferResponseHandler(trackingController));
 
-        _receiver = builder.Build();
-        StartDeviceCapture();
+        return builder.Build();
     }
 
-    public static void StartDeviceCapture()
+    private static IEnumerable<IPHostEntry> GetAllHostEntries()
     {
-        ConsoleManager.WriteLineForMessage("Start Device Capture");
+        List<IPHostEntry> hostEntries = new List<IPHostEntry>();
+        string hostName = Dns.GetHostName();
+        IPHostEntry hostEntry = Dns.GetHostEntry(hostName);
+        hostEntries.Add(hostEntry);
+        return hostEntries;
+    }
 
-        CapturedDevices.Clear();
-
-        foreach (var device in CaptureDeviceList.Instance)
+    private void SetGateway(IEnumerable<IPHostEntry> hostEntries)
+    {
+        foreach (IPAddress ip in hostEntries.SelectMany(hostEntry => hostEntry.AddressList))
         {
-            if (device.Started)
-            {
-                continue;
-            }
-
             try
             {
-                device.Open(new DeviceConfiguration()
+                if (ip.AddressFamily == AddressFamily.InterNetwork)
                 {
-                    Mode = DeviceModes.DataTransferUdp | DeviceModes.Promiscuous | DeviceModes.NoCaptureLocal,
-                    ReadTimeout = 5000
-                });
+                    _gateways.Add(ip);
+                }
             }
-            catch (Exception e)
+            catch
             {
-                Log.Warning(e, "{message}", MethodBase.GetCurrentMethod()?.DeclaringType);
-                continue;
+                // ignored
             }
-
-            CapturedDevices.Add(device);
         }
+    }
 
-        if (CapturedDevices.Count <= 0)
+    public void Start()
+    {
+        ConsoleManager.WriteLineForMessage("Start Capture");
+
+        _stopReceiving = false;
+        foreach (var gateway in _gateways)
         {
-            throw new NoListeningAdaptersException();
-        }
+            var socket = new Socket(AddressFamily.InterNetwork, SocketType.Raw, ProtocolType.IP);
+            socket.Bind(new IPEndPoint(gateway, 0));
+            socket.SetSocketOption(SocketOptionLevel.IP, SocketOptionName.HeaderIncluded, true);
 
-        ConsoleManager.WriteLineForMessage(MethodBase.GetCurrentMethod()?.DeclaringType, "CapturedDevices:");
+            byte[] byTrue = { 1, 0, 0, 0 };
+            byte[] byOut = { 1, 0, 0, 0 };
 
-        foreach (ICaptureDevice captureDevice in CapturedDevices.ToList())
-        {
-            ConsoleManager.WriteLineForMessage($"- {captureDevice.Description}");
-            PacketEvent(captureDevice);
+            socket.IOControl(IOControlCode.ReceiveAll, byTrue, byOut);
+            socket.BeginReceive(_byteData, 0, _byteData.Length, SocketFlags.None, OnReceive, null);
+
+            _sockets.Add(socket);
         }
 
         _ = ServiceLocator.Resolve<SatNotificationManager>().ShowTrackingStatusAsync(LanguageController.Translation("START_TRACKING"), LanguageController.Translation("GAME_TRACKING_IS_STARTED"));
     }
 
-    public static void StopDeviceCapture()
+    public void Stop()
     {
-        if (CapturedDevices is not { Count: > 0 })
+        ConsoleManager.WriteLineForMessage("Stop Capture");
+        _stopReceiving = true;
+
+        foreach (var socket in _sockets)
         {
-            return;
+            if (socket.Connected)
+            {
+                socket.Disconnect(true);
+            }
+
+            socket.Close();
         }
 
-        ConsoleManager.WriteLineForMessage("Stop Device Capture");
-
-        foreach (ICaptureDevice capturedDevice in CapturedDevices)
-        {
-            capturedDevice.StopCapture();
-            capturedDevice.OnPacketArrival -= Device_OnPacketArrival;
-            capturedDevice.Close();
-        }
-
-        CapturedDevices.Clear();
-
+        _sockets.Clear();
         _ = ServiceLocator.Resolve<SatNotificationManager>().ShowTrackingStatusAsync(LanguageController.Translation("STOP_TRACKING"), LanguageController.Translation("GAME_TRACKING_IS_STOPPED"));
     }
 
-    private static void PacketEvent(ICaptureDevice device)
+    private void OnReceive(IAsyncResult ar)
     {
-        if (device.Started)
+        if (_stopReceiving)
         {
             return;
         }
 
-        device.Filter = SettingsController.CurrentSettings.PacketFilter;
-        device.OnPacketArrival += Device_OnPacketArrival;
-        device.StartCapture();
-    }
-
-    private static void Device_OnPacketArrival(object sender, PacketCapture e)
-    {
-        try
+        foreach (var socket in _sockets)
         {
-            var server = GetCurrentServerByIpOrSettings(e);
-            SetCurrentServer(server);
-            if (server == AlbionServer.Unknown)
+            socket.EndReceive(ar);
+
+            using (MemoryStream buffer = new MemoryStream(_byteData))
             {
-                return;
+                using BinaryReader read = new BinaryReader(buffer);
+                read.BaseStream.Seek(2, SeekOrigin.Begin);
+                ushort dataLength = (ushort) IPAddress.NetworkToHostOrder(read.ReadInt16());
+
+                read.BaseStream.Seek(9, SeekOrigin.Begin);
+                int protocol = read.ReadByte();
+
+                if (protocol != 17)
+                {
+                    _byteData = new byte[65000];
+                    socket.BeginReceive(_byteData, 0, _byteData.Length, SocketFlags.None, OnReceive, null);
+                    return;
+                }
+
+                read.BaseStream.Seek(20, SeekOrigin.Begin);
+
+                string srcPort = ((ushort) IPAddress.NetworkToHostOrder(read.ReadInt16())).ToString();
+                string destPort = ((ushort) IPAddress.NetworkToHostOrder(read.ReadInt16())).ToString();
+
+                if (srcPort == "5056" || destPort == "5056")
+                {
+                    read.BaseStream.Seek(28, SeekOrigin.Begin);
+
+                    byte[] data = read.ReadBytes(dataLength - 28);
+                    _ = data.Reverse();
+
+                    try
+                    {
+                        _photonReceiver.ReceivePacket(data);
+                    }
+                    catch
+                    {
+                        // ignored
+                    }
+                }
             }
 
-            var packet = Packet.ParsePacket(e.GetPacket().LinkLayerType, e.GetPacket().Data).Extract<UdpPacket>();
-            if (packet != null)
+            _byteData = new byte[65000];
+
+            if (!_stopReceiving)
             {
-                _receiver.ReceivePacket(packet.PayloadData);
+                socket.BeginReceive(_byteData, 0, _byteData.Length, SocketFlags.None, OnReceive, null);
             }
         }
-        catch (Exception ex) when (ex is IndexOutOfRangeException or InvalidOperationException or ArgumentException)
-        {
-            ConsoleManager.WriteLineForWarning(MethodBase.GetCurrentMethod()?.DeclaringType, ex);
-        }
-        catch (OverflowException ex)
-        {
-            ConsoleManager.WriteLineForError(MethodBase.GetCurrentMethod()?.DeclaringType, ex);
-            Log.Error(ex, "{message}", MethodBase.GetCurrentMethod()?.DeclaringType);
-        }
-        catch (Exception ex)
-        {
-            ConsoleManager.WriteLineForError(MethodBase.GetCurrentMethod()?.DeclaringType, ex);
-            Log.Error(ex, "{message}", MethodBase.GetCurrentMethod()?.DeclaringType);
-        }
     }
 
-    public static void SetCurrentServer(AlbionServer server, bool directUpdateWithoutCounter = false)
+    public bool IsAnySocketActive()
     {
-        if (directUpdateWithoutCounter)
-        {
-            AlbionServer = server;
-            _ = UpdateMainWindowServerTypeLabelAsync(server);
-            return;
-        }
-
-        if ((DateTime.Now - _lastGetCurrentServerByIpTime).TotalSeconds < 10)
-        {
-            return;
-        }
-
-        AlbionServer = server;
-        _ = UpdateMainWindowServerTypeLabelAsync(server);
-
-        _lastGetCurrentServerByIpTime = DateTime.Now;
+        return _sockets.Any(IsSocketActive);
     }
 
-    private static AlbionServer GetCurrentServerByIpOrSettings(PacketCapture e)
+    private static bool IsSocketActive(Socket socket)
     {
-        if (SettingsController.CurrentSettings.Server == 1)
-        {
-            return AlbionServer.West;
-        }
-
-        if (SettingsController.CurrentSettings.Server == 2)
-        {
-            return AlbionServer.East;
-        }
-
-        var packet = Packet.ParsePacket(e.GetPacket().LinkLayerType, e.GetPacket().Data);
-        var ipPacket = packet.Extract<IPPacket>();
-        var srcIp = ipPacket?.SourceAddress?.ToString();
-        var albionServer = AlbionServer.Unknown;
-
-        if (srcIp == null || string.IsNullOrEmpty(srcIp))
-        {
-            albionServer = AlbionServer.Unknown;
-        }
-        else if (srcIp.Contains("5.188.125."))
-        {
-            albionServer = AlbionServer.West;
-        }
-        else if (srcIp!.Contains("5.45.187."))
-        {
-            albionServer = AlbionServer.East;
-        }
-
-        return GetActiveAlbionServer(albionServer);
-    }
-
-    private static AlbionServer GetActiveAlbionServer(AlbionServer albionServer)
-    {
-        if (albionServer != AlbionServer.Unknown && _lastServerType == albionServer)
-        {
-            _serverEventCounter++;
-        }
-        else if (albionServer != AlbionServer.Unknown)
-        {
-            _serverEventCounter = 1;
-            _lastServerType = albionServer;
-        }
-
-        if (_serverEventCounter < 20 || albionServer == AlbionServer.Unknown)
-        {
-            return _lastServerType;
-        }
-
-        _serverEventCounter = 20;
-        return albionServer;
-    }
-
-    private static async Task UpdateMainWindowServerTypeLabelAsync(AlbionServer albionServer)
-    {
-        await Task.Run(() =>
-        {
-            var mainWindowViewModel = ServiceLocator.Resolve<MainWindowViewModel>();
-            mainWindowViewModel.ServerTypeText = albionServer switch
-            {
-                AlbionServer.East => LanguageController.Translation("EAST_SERVER"),
-                AlbionServer.West => LanguageController.Translation("WEST_SERVER"),
-                _ => LanguageController.Translation("UNKNOWN_SERVER")
-            };
-        });
-    }
-
-    public static void RestartNetworkCapture()
-    {
-        StopDeviceCapture();
-        StartDeviceCapture();
-    }
-
-    public static bool IsNetworkCaptureRunning()
-    {
-        return CapturedDevices?.Any(x => x.Started) ?? false;
+        bool part1 = socket.Poll(1000, SelectMode.SelectRead);
+        bool part2 = (socket.Available == 0);
+        return !part1 || !part2;
     }
 }
