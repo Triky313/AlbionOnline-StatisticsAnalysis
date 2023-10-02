@@ -18,6 +18,7 @@ public class NetworkManager
     private readonly List<Socket> _sockets = new();
     private byte[] _byteData = new byte[65000];
     private readonly List<IPAddress> _gateways = new();
+    private bool _stopReceiving = false;
 
     public NetworkManager(TrackingController trackingController)
     {
@@ -133,6 +134,7 @@ public class NetworkManager
     {
         ConsoleManager.WriteLineForMessage("Start Capture");
 
+        _stopReceiving = false;
         foreach (var gateway in _gateways)
         {
             var socket = new Socket(AddressFamily.InterNetwork, SocketType.Raw, ProtocolType.IP);
@@ -151,6 +153,8 @@ public class NetworkManager
 
     public void Stop()
     {
+        _stopReceiving = true;
+
         foreach (var socket in _sockets)
         {
             if (socket.Connected)
@@ -165,10 +169,14 @@ public class NetworkManager
         ConsoleManager.WriteLineForMessage("Stop Capture");
         _ = ServiceLocator.Resolve<SatNotificationManager>().ShowTrackingStatusAsync(LanguageController.Translation("STOP_TRACKING"), LanguageController.Translation("GAME_TRACKING_IS_STOPPED"));
     }
-
+    
     private void OnReceive(IAsyncResult ar)
     {
-        //TODO: Noch viele errors beim schlieﬂen des Programms
+        if (_stopReceiving)
+        {
+            return;
+        }
+
         foreach (var socket in _sockets)
         {
             socket.EndReceive(ar);
@@ -214,7 +222,10 @@ public class NetworkManager
 
             _byteData = new byte[65000];
 
-            socket.BeginReceive(_byteData, 0, _byteData.Length, SocketFlags.None, OnReceive, null);
+            if (!_stopReceiving)
+            {
+                socket.BeginReceive(_byteData, 0, _byteData.Length, SocketFlags.None, OnReceive, null);
+            }
         }
     }
 
