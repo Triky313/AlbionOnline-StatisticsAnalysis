@@ -556,20 +556,20 @@ public static class ApiController
 
     private static string GetAoDataProjectServerBaseUrlByCurrentServer()
     {
-        return SettingsController.CurrentSettings.Server switch
+        return SettingsController.CurrentSettings.ServerLocation switch
         {
-            AlbionServer.West => SettingsController.CurrentSettings.AlbionDataProjectBaseUrlWest,
-            AlbionServer.East => SettingsController.CurrentSettings.AlbionDataProjectBaseUrlEast,
+            ServerLocation.West => SettingsController.CurrentSettings.AlbionDataProjectBaseUrlWest,
+            ServerLocation.East => SettingsController.CurrentSettings.AlbionDataProjectBaseUrlEast,
             _ => SettingsController.CurrentSettings.AlbionDataProjectBaseUrlWest
         };
     }
 
     private static string GetServerBaseUrlByCurrentServer()
     {
-        return SettingsController.CurrentSettings.Server switch
+        return SettingsController.CurrentSettings.ServerLocation switch
         {
-            AlbionServer.West => SettingsController.CurrentSettings.AlbionOnlineApiBaseUrlWest,
-            AlbionServer.East => SettingsController.CurrentSettings.AlbionOnlineApiBaseUrlEast,
+            ServerLocation.West => SettingsController.CurrentSettings.AlbionOnlineApiBaseUrlWest,
+            ServerLocation.East => SettingsController.CurrentSettings.AlbionOnlineApiBaseUrlEast,
             _ => SettingsController.CurrentSettings.AlbionOnlineApiBaseUrlWest
         };
     }

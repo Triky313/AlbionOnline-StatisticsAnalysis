@@ -1,8 +1,8 @@
 ﻿namespace StatisticsAnalysisTool.Enumerations;
 
-public enum AlbionServer
+public enum ServerLocation
 {
-    Unknown,
+    Unknown = 0,
     West = 1,
     East = 2
 }

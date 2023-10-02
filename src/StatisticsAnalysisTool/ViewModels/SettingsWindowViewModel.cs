@@ -113,7 +113,7 @@ public class SettingsWindowViewModel : BaseViewModel
 
         SettingsController.CurrentSettings.RefreshRate = RefreshRatesSelection.Value;
 
-        SettingsController.CurrentSettings.Server = (AlbionServer) ServerSelection.Value;
+        SettingsController.CurrentSettings.ServerLocation = (ServerLocation) ServerSelection.Value;
         mainWindowViewModel.UpdateServerTypeLabel();
 
         SettingsController.CurrentSettings.AnotherAppToStartPath = AnotherAppToStartPath;
@@ -391,7 +391,7 @@ public class SettingsWindowViewModel : BaseViewModel
         Server.Clear();
         Server.Add(new SettingDataInformation { Name = SettingsWindowTranslation.WestServer, Value = 1 });
         Server.Add(new SettingDataInformation { Name = SettingsWindowTranslation.EastServer, Value = 2 });
-        ServerSelection = Server.FirstOrDefault(x => x.Value == (int) SettingsController.CurrentSettings.Server);
+        ServerSelection = Server.FirstOrDefault(x => x.Value == (int) SettingsController.CurrentSettings.ServerLocation);
     }
 
     private void InitMaxAmountOfBackups(ICollection<SettingDataInformation> amountOfBackups)

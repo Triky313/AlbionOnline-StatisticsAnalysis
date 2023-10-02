@@ -19,7 +19,6 @@ using System.Text;
 using System.Text.Json;
 using System.Text.Json.Serialization;
 using System.Threading.Tasks;
-using System.Windows;
 
 namespace StatisticsAnalysisTool.GameFileData;
 
@@ -91,29 +90,29 @@ public static class GameData
             DirectoryController.CreateDirectoryWhenNotExists(gameFilesDirPath);
 
             List<Func<Task>> taskFactories = new List<Func<Task>>();
-            
+
             if (Extractor.IsBinFileNewer(Path.Combine(gameFilesDirPath, "indexedItems.json"), mainGameFolderPath, serverType, "items")
                 || Extractor.IsBinFileNewer(Path.Combine(gameFilesDirPath, "items.json"), mainGameFolderPath, serverType, "items"))
             {
                 taskFactories.Add(() => extractor.ExtractIndexedItemGameDataAsync(gameFilesDirPath, "indexedItems.json"));
                 taskFactories.Add(() => extractor.ExtractGameDataAsync(gameFilesDirPath, new[] { "items" }));
             }
-            
+
             if (Extractor.IsBinFileNewer(Path.Combine(gameFilesDirPath, "mobs-modified.json"), mainGameFolderPath, serverType, "mobs"))
             {
                 fileNamesToLoad.Add("mobs");
             }
-            
+
             if (Extractor.IsBinFileNewer(Path.Combine(gameFilesDirPath, "world-modified.json"), mainGameFolderPath, serverType, "cluster\\world"))
             {
                 fileNamesToLoad.Add("cluster\\world");
             }
-            
+
             if (Extractor.IsBinFileNewer(Path.Combine(gameFilesDirPath, "spells-modified.json"), mainGameFolderPath, serverType, "spells"))
             {
                 fileNamesToLoad.Add("spells");
             }
-            
+
             if (Extractor.IsBinFileNewer(Path.Combine(gameFilesDirPath, "mists-modified.json"), mainGameFolderPath, serverType, "mists"))
             {
                 fileNamesToLoad.Add("mists");

@@ -348,10 +348,10 @@ public class MainWindowViewModel : BaseViewModel
 
     public void UpdateServerTypeLabel()
     {
-        ServerTypeText = SettingsController.CurrentSettings.Server switch
+        ServerTypeText = SettingsController.CurrentSettings.ServerLocation switch
         {
-            AlbionServer.East => LanguageController.Translation("EAST_SERVER"),
-            AlbionServer.West => LanguageController.Translation("WEST_SERVER"),
+            ServerLocation.East => LanguageController.Translation("EAST_SERVER"),
+            ServerLocation.West => LanguageController.Translation("WEST_SERVER"),
             _ => LanguageController.Translation("UNKNOWN_SERVER")
         };
     }

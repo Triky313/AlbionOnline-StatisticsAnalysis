@@ -762,4 +762,6 @@
 	<translation name="TOTAL_OVERVIEW">Total Overview</translation>
 	<translation name="LAST_MONTH">Last month</translation>
 	<translation name="START_APPLICATION_AS_ADMINISTRATOR">Start application as administrator</translation>
+	<translation name="SELECT_SERVER_LOCATION">Select server location</translation>
+	<translation name="PLEASE_SELECT_A_SERVER_LOCATION">Please select a server location</translation>
 </translations>
