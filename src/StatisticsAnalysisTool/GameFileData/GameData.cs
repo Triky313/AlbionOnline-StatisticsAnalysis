@@ -25,15 +25,14 @@ namespace StatisticsAnalysisTool.GameFileData;
 
 public static class GameData
 {
-    public static async Task InitializeMainGameDataFilesAsync(ServerType serverType)
+    public static async Task<bool> InitializeMainGameDataFilesAsync(ServerType serverType)
     {
         if (string.IsNullOrEmpty(SettingsController.CurrentSettings.MainGameFolderPath))
         {
             var result = await GetMainGameDataWithDialogAsync(serverType);
             if (!result)
             {
-                Application.Current?.Shutdown();
-                return;
+                return false;
             }
         }
         else if (!string.IsNullOrEmpty(SettingsController.CurrentSettings.MainGameFolderPath)
@@ -42,7 +41,7 @@ public static class GameData
                      SettingsController.CurrentSettings.MainGameFolderPath, serverType, "items"))
         {
             await GetMainGameDataAsync(SettingsController.CurrentSettings.MainGameFolderPath, serverType);
-            return;
+            return true;
         }
 
         if (!Extractor.IsValidMainGameFolder(SettingsController.CurrentSettings?.MainGameFolderPath ?? string.Empty, serverType))
@@ -50,9 +49,11 @@ public static class GameData
             var result = await GetMainGameDataWithDialogAsync(serverType);
             if (!result)
             {
-                Application.Current?.Shutdown();
+                return false;
             }
         }
+
+        return true;
     }
 
     public static async Task<bool> GetMainGameDataWithDialogAsync(ServerType serverType)
