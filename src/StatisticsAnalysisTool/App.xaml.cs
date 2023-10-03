@@ -56,7 +56,7 @@ public partial class App
             Server.SetServerLocationWithDialogAsync();
         }
 
-        if (!await GameData.InitializeMainGameDataFilesAsync(ServerType.Staging))
+        if (!await GameData.InitializeMainGameDataFilesAsync(ServerType.Live))
         {
             _isEarlyShutdown = true;
             Current.Shutdown();
