@@ -19,21 +19,19 @@ using System.Text;
 using System.Text.Json;
 using System.Text.Json.Serialization;
 using System.Threading.Tasks;
-using System.Windows;
 
 namespace StatisticsAnalysisTool.GameFileData;
 
 public static class GameData
 {
-    public static async Task InitializeMainGameDataFilesAsync(ServerType serverType)
+    public static async Task<bool> InitializeMainGameDataFilesAsync(ServerType serverType)
     {
         if (string.IsNullOrEmpty(SettingsController.CurrentSettings.MainGameFolderPath))
         {
             var result = await GetMainGameDataWithDialogAsync(serverType);
             if (!result)
             {
-                Application.Current?.Shutdown();
-                return;
+                return false;
             }
         }
         else if (!string.IsNullOrEmpty(SettingsController.CurrentSettings.MainGameFolderPath)
@@ -42,7 +40,7 @@ public static class GameData
                      SettingsController.CurrentSettings.MainGameFolderPath, serverType, "items"))
         {
             await GetMainGameDataAsync(SettingsController.CurrentSettings.MainGameFolderPath, serverType);
-            return;
+            return true;
         }
 
         if (!Extractor.IsValidMainGameFolder(SettingsController.CurrentSettings?.MainGameFolderPath ?? string.Empty, serverType))
@@ -50,9 +48,11 @@ public static class GameData
             var result = await GetMainGameDataWithDialogAsync(serverType);
             if (!result)
             {
-                Application.Current?.Shutdown();
+                return false;
             }
         }
+
+        return true;
     }
 
     public static async Task<bool> GetMainGameDataWithDialogAsync(ServerType serverType)
@@ -90,29 +90,29 @@ public static class GameData
             DirectoryController.CreateDirectoryWhenNotExists(gameFilesDirPath);
 
             List<Func<Task>> taskFactories = new List<Func<Task>>();
-            
+
             if (Extractor.IsBinFileNewer(Path.Combine(gameFilesDirPath, "indexedItems.json"), mainGameFolderPath, serverType, "items")
                 || Extractor.IsBinFileNewer(Path.Combine(gameFilesDirPath, "items.json"), mainGameFolderPath, serverType, "items"))
             {
                 taskFactories.Add(() => extractor.ExtractIndexedItemGameDataAsync(gameFilesDirPath, "indexedItems.json"));
                 taskFactories.Add(() => extractor.ExtractGameDataAsync(gameFilesDirPath, new[] { "items" }));
             }
-            
+
             if (Extractor.IsBinFileNewer(Path.Combine(gameFilesDirPath, "mobs-modified.json"), mainGameFolderPath, serverType, "mobs"))
             {
                 fileNamesToLoad.Add("mobs");
             }
-            
+
             if (Extractor.IsBinFileNewer(Path.Combine(gameFilesDirPath, "world-modified.json"), mainGameFolderPath, serverType, "cluster\\world"))
             {
                 fileNamesToLoad.Add("cluster\\world");
             }
-            
+
             if (Extractor.IsBinFileNewer(Path.Combine(gameFilesDirPath, "spells-modified.json"), mainGameFolderPath, serverType, "spells"))
             {
                 fileNamesToLoad.Add("spells");
             }
-            
+
             if (Extractor.IsBinFileNewer(Path.Combine(gameFilesDirPath, "mists-modified.json"), mainGameFolderPath, serverType, "mists"))
             {
                 fileNamesToLoad.Add("mists");

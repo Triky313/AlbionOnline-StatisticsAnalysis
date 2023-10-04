@@ -397,9 +397,9 @@ public enum EventCodes
     UnlockVanityUnlock,
     AvatarUnlocked,
     CustomizationChanged,
-    BaseVaultInfo = 397,
-    GuildVaultInfo = 398,
-    BankVaultInfo, // map[0:6 1:6466931c-65a1-4c5d-870b-8724cf2611dc@3007 2:[] 3:[] 4:[] 5:[] 6:[] 7:[] 8:[] 252:390]
+    BaseVaultInfo,
+    GuildVaultInfo,
+    BankVaultInfo = 399, // map[0:6 1:6466931c-65a1-4c5d-870b-8724cf2611dc@3007 2:[] 3:[] 4:[] 5:[] 6:[] 7:[] 8:[] 252:390]
     RecoveryVaultPlayerInfo = 400,
     RecoveryVaultGuildInfo,
     UpdateWardrobe,

@@ -67,11 +67,6 @@ public partial class SettingsControl
         await AutoUpdateController.AutoUpdateAsync(true);
     }
 
-    private void ResetPacketFilter_Click(object sender, RoutedEventArgs e)
-    {
-        _settingsWindowViewModel.ResetPacketFilter();
-    }
-
     private void ResetPlayerSelectionWithSameNameInDb_Click(object sender, RoutedEventArgs e)
     {
         _settingsWindowViewModel.ResetPlayerSelectionWithSameNameInDb();

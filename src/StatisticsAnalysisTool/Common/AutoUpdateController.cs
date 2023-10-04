@@ -1,4 +1,4 @@
-﻿using AutoUpdaterDotNET;
+using AutoUpdaterDotNET;
 using Serilog;
 using StatisticsAnalysisTool.Common.UserSettings;
 using StatisticsAnalysisTool.Properties;
@@ -31,6 +31,7 @@ public static class AutoUpdateController
             AutoUpdater.RunUpdateAsAdmin = false;
             AutoUpdater.ReportErrors = reportErrors;
             AutoUpdater.ShowSkipButton = false;
+            AutoUpdater.TopMost = true;
             AutoUpdater.ApplicationExitEvent += AutoUpdaterApplicationExit;
         }
         catch (HttpRequestException e)

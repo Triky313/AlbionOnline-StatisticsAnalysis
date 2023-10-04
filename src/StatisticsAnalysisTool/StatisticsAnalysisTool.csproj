@@ -39,6 +39,7 @@
   <PropertyGroup>
     <ApplicationIcon>sat-icon.ico</ApplicationIcon>
     <RepositoryUrl>https://github.com/Triky313/AlbionOnline-StatisticsAnalysis</RepositoryUrl>
+    <ApplicationManifest>app.manifest</ApplicationManifest>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|x86'">
     <OutputPath>bin\x86\Debug\</OutputPath>
@@ -83,6 +84,9 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Update="UserControls\ErrorBarControl.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Update="Views\ServerLocationSelectionWindow.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
     <Compile Update="Views\LanguageSelectionWindow.xaml.cs">
@@ -621,18 +625,15 @@
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="LiveChartsCore.SkiaSharpView.WPF" Version="2.0.0-beta.700" />
-    <PackageReference Include="Microsoft.Web.WebView2" Version="1.0.1722.45" />
-    <PackageReference Include="Autoupdater.NET.Official" Version="1.8.1" />
+    <PackageReference Include="Microsoft.Web.WebView2" Version="1.0.2045.28" />
+    <PackageReference Include="Autoupdater.NET.Official" Version="1.8.4" />
     <PackageReference Include="FontAwesome5" Version="2.1.6" />
     <PackageReference Include="Notification.Wpf" Version="7.0.0" />
     <PackageReference Include="Ookii.Dialogs.Wpf" Version="5.0.1" />
-    <PackageReference Include="PacketDotNet" Version="1.4.7" />
-    <PackageReference Include="PhotonPackageParser" Version="4.1.0" />
     <PackageReference Include="Serilog" Version="3.0.1" />
     <PackageReference Include="Serilog.Sinks.Console" Version="4.1.0" />
     <PackageReference Include="Serilog.Sinks.Debug" Version="2.0.0" />
     <PackageReference Include="Serilog.Sinks.File" Version="5.0.0" />
-    <PackageReference Include="SharpPcap" Version="6.2.5" />
     <PackageReference Include="System.Linq.Async" Version="6.0.1" />
     <PackageReference Include="VirtualizingWrapPanel" Version="1.5.7" />
     <PackageReference Include="Microsoft.CSharp" Version="4.7.0" />

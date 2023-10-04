@@ -99,13 +99,6 @@
                                   SelectedValuePath="Value" HorizontalAlignment="Left" VerticalAlignment="Top" Width="200" Height="26" />
                     </DockPanel>
                     <DockPanel Margin="0,5,0,0">
-                        <Label Content="{Binding Translation.PacketFilter, FallbackValue=PACKET__FILTER}" MinWidth="300" VerticalAlignment="Top" />
-                        <StackPanel Orientation="Horizontal">
-                            <TextBox Text="{Binding PacketFilter}" Height="26" MinWidth="350" TextWrapping="NoWrap" VerticalAlignment="Center" Margin="0,0,5,0" />
-                            <Button Content="{Binding Translation.Reset, FallbackValue=RESET}" Height="24" MaxWidth="120" VerticalAlignment="Center" Click="ResetPacketFilter_Click" />
-                        </StackPanel>
-                    </DockPanel>
-                    <DockPanel Margin="0,5,0,0">
                         <Label Content="{Binding Translation.AlbionDataProjectBaseUrlWest, FallbackValue=ALBION_DATA_PROJECT_BASE_URL_WEST}" MinWidth="300" VerticalAlignment="Top" />
                         <TextBox Text="{Binding AlbionDataProjectBaseUrlWest}" Height="40" TextWrapping="Wrap" VerticalAlignment="Top" Margin="0,0,5,0" />
                     </DockPanel>
