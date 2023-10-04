@@ -753,14 +753,13 @@
 	<translation name="HOUR_ABBREVIATION">시간</translation>
 	<translation name="AVERAGE">평균</translation>
 	<translation name="PER_HOUR">시간당</translation>
-	<translation name="TOTAL">전체</translation>
 	<translation name="TYPE">타입</translation>
 	<translation name="HCE_EXPEDITION">하드코어</translation>
 	<translation name="NUMBER_OF_DUNGEONS">던전 숫자</translation>
 	<translation name="FIGHTS">Fights</translation>
 	<translation name="SHAPESHIFTER">Shapeshifter</translation>
-	<translation name="TRACKING_TOOL">Tracking tool</translation>
-	<translation name="TOTAL_OVERVIEW">Total Overview</translation>
+	<translation name="TRACKING_TOOL">추적 도구</translation>
+	<translation name="TOTAL_OVERVIEW">종합 개요</translation>
 	<translation name="LAST_MONTH">Last month</translation>
 	<translation name="START_APPLICATION_AS_ADMINISTRATOR">관리자 권한으로 시작</translation>
 	<translation name="SELECT_SERVER_LOCATION">서버 선택</translation>
