@@ -762,4 +762,8 @@
 	<translation name="TRACKING_TOOL">Tracking tool</translation>
 	<translation name="TOTAL_OVERVIEW">Total Overview</translation>
 	<translation name="LAST_MONTH">Last month</translation>
+	<translation name="START_APPLICATION_AS_ADMINISTRATOR">관리자 권한으로 시작</translation>
+	<translation name="SELECT_SERVER_LOCATION">서버 선택</translation>
+	<translation name="PLEASE_SELECT_A_SERVER_LOCATION">서버 위치를 선택하세요.</translation>
+</translations>
 </translations>
