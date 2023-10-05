@@ -1,8 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using StatisticsAnalysisTool.Models.ItemsJsonModel;
+using System;
 using System.ComponentModel;
 using System.Diagnostics;
-using StatisticsAnalysisTool.Models.ItemsJsonModel;
 
 namespace StatisticsAnalysisTool.Common;
 
@@ -40,7 +39,7 @@ public class TestMethods
             {
                 return itemIndex;
             }
-            
+
             counter++;
         }
     }
