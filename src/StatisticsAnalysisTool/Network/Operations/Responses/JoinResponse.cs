@@ -66,52 +66,68 @@ public class JoinResponse
                 MapGuid = WorldData.GetMapGuid(MapIndex);
             }
 
-            if (parameters.ContainsKey(23)) CurrentFocusPoints = parameters[23].ObjectToDouble();
+            if (parameters.ContainsKey(26))
+            {
+                CurrentFocusPoints = parameters[26].ObjectToDouble();
+            }
 
-            if (parameters.ContainsKey(24)) MaxCurrentFocusPoints = parameters[24].ObjectToDouble();
+            if (parameters.ContainsKey(27))
+            {
+                MaxCurrentFocusPoints = parameters[27].ObjectToDouble();
+            }
 
-            if (parameters.ContainsKey(28)) Silver = FixPoint.FromInternalValue(parameters[28].ObjectToLong() ?? 0);
+            if (parameters.ContainsKey(32))
+            {
+                Silver = FixPoint.FromInternalValue(parameters[32].ObjectToLong() ?? 0);
+            }
 
-            if (parameters.ContainsKey(29)) Gold = FixPoint.FromInternalValue(parameters[29].ObjectToLong() ?? 0);
+            if (parameters.ContainsKey(33))
+            {
+                Gold = FixPoint.FromInternalValue(parameters[33].ObjectToLong() ?? 0);
+            }
 
-            if (parameters.ContainsKey(32)) LearningPoints = FixPoint.FromInternalValue(parameters[32].ObjectToLong() ?? 0);
+            if (parameters.ContainsKey(36))
+            {
+                LearningPoints = FixPoint.FromInternalValue(parameters[36].ObjectToLong() ?? 0);
+            }
 
-            if (parameters.ContainsKey(36)) Reputation = parameters[36].ObjectToDouble();
+            if (parameters.ContainsKey(40))
+            {
+                Reputation = parameters[40].ObjectToDouble();
+            }
 
-            if (parameters.ContainsKey(38) && parameters[38] is long[] { Length: > 1 } reSpecArray)
+            if (parameters.ContainsKey(42) && parameters[42] is long[] { Length: > 1 } reSpecArray)
             {
                 ReSpecPoints = FixPoint.FromInternalValue(reSpecArray[1]);
             }
 
-            if (parameters.ContainsKey(48))
+            if (parameters.ContainsKey(52))
             {
-                InteractGuid = parameters[48].ObjectToGuid();
+                InteractGuid = parameters[52].ObjectToGuid();
                 ConsoleManager.WriteLineForMessage(MethodBase.GetCurrentMethod()?.DeclaringType, $"Local interact object Guid: {InteractGuid}", ConsoleColorType.EventMapChangeColor);
             }
 
-            if (parameters.ContainsKey(52))
+            if (parameters.ContainsKey(56))
             {
-                GuildName = string.IsNullOrEmpty(parameters[52].ToString()) ? string.Empty : parameters[52].ToString();
+                GuildName = string.IsNullOrEmpty(parameters[56].ToString()) ? string.Empty : parameters[56].ToString();
             }
 
-            if (parameters.ContainsKey(59))
+            if (parameters.ContainsKey(63))
             {
-                MainMapIndex = string.IsNullOrEmpty(parameters[59].ToString()) ? string.Empty : parameters[59].ToString();
+                MainMapIndex = string.IsNullOrEmpty(parameters[63].ToString()) ? string.Empty : parameters[63].ToString();
             }
 
-            if (parameters.ContainsKey(62))
+            // Temporarily removed until value is found
+            PlayTimeInSeconds = 0;
+
+            if (parameters.ContainsKey(76))
             {
-                PlayTimeInSeconds = parameters[62].ObjectToInt();
+                AllianceName = string.IsNullOrEmpty(parameters[76].ToString()) ? string.Empty : parameters[76].ToString();
             }
 
-            if (parameters.ContainsKey(72))
+            if (parameters.ContainsKey(93))
             {
-                AllianceName = string.IsNullOrEmpty(parameters[72].ToString()) ? string.Empty : parameters[72].ToString();
-            }
-
-            if (parameters.ContainsKey(89))
-            {
-                IsReSpecActive = parameters[89].ObjectToBool();
+                IsReSpecActive = parameters[93].ObjectToBool();
             }
         }
         catch (Exception e)

@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
+using StatisticsAnalysisTool.Localization;
 using StatisticsAnalysisTool.Models;
 
 namespace StatisticsAnalysisTool.Common;
@@ -103,6 +104,7 @@ public static class CategoryController
         new ("froststaff", ShopSubCategory.FrostStaff, ShopCategory.Magic),
         new ("holystaff", ShopSubCategory.HolyStaff, ShopCategory.Magic),
         new ("naturestaff", ShopSubCategory.NatureStaff, ShopCategory.Magic),
+        new ("shapeshifterstaff", ShopSubCategory.ShapeShifterStaff, ShopCategory.Magic),
 
         new ("essence", ShopSubCategory.Essence, ShopCategory.Materials),
         new ("other", ShopSubCategory.OtherMaterials, ShopCategory.Materials),
@@ -160,6 +162,7 @@ public static class CategoryController
         new ("skinningknife", ShopSubCategory.SkinningKnife, ShopCategory.Tools),
         new ("stonehammer", ShopSubCategory.StoneHammer, ShopCategory.Tools),
         new ("woodaxe", ShopSubCategory.WoodAxe, ShopCategory.Tools),
+        new ("trackingtool", ShopSubCategory.TrackingTool, ShopCategory.Tools),
 
         new ("fibertrophy", ShopSubCategory.FiberTrophy, ShopCategory.Trophies),
         new ("fishtrophy", ShopSubCategory.FishTrophy, ShopCategory.Trophies),
@@ -303,6 +306,7 @@ public static class CategoryController
         {ShopSubCategory.FrostStaff, LanguageController.Translation("FROST_STAFF")},
         {ShopSubCategory.HolyStaff, LanguageController.Translation("HOLY_STAFF")},
         {ShopSubCategory.NatureStaff, LanguageController.Translation("NATURE_STAFF")},
+        {ShopSubCategory.ShapeShifterStaff, LanguageController.Translation("SHAPESHIFTER")},
 
         #endregion Magic
 
@@ -401,6 +405,7 @@ public static class CategoryController
         {ShopSubCategory.SkinningKnife, LanguageController.Translation("SKINNING_KNIFE")},
         {ShopSubCategory.StoneHammer, LanguageController.Translation("STONE_HAMMER")},
         {ShopSubCategory.WoodAxe, LanguageController.Translation("WOOD_AXE")},
+        {ShopSubCategory.TrackingTool, LanguageController.Translation("TRACKING_TOOL")},
 
         #endregion Tool
 
@@ -520,7 +525,7 @@ public static class CategoryController
 
     public static string GetCategoryIdByShopCategory(ShopCategory shopCategory)
     {
-        return Categories.ContainsKey(shopCategory) ? Categories[shopCategory] : "unknown";
+        return Categories.TryGetValue(shopCategory, out string category) ? category : "unknown";
     }
 
     public static string GetSubCategoryName(ShopSubCategory shopSubCategory)
@@ -678,7 +683,9 @@ public enum ShopSubCategory
     MercenaryTrophy,
     OreTrophy,
     RockTrophy,
-    WoodTrophy
+    WoodTrophy,
+    ShapeShifterStaff,
+    TrackingTool
 }
 
 public enum ShopCategory

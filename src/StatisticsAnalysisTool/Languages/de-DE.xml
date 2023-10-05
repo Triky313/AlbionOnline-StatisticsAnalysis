@@ -757,4 +757,11 @@
 	<translation name="HCE_EXPEDITION">HCE (Expedition)</translation>
 	<translation name="NUMBER_OF_DUNGEONS">Anzahl Dungeons</translation>
 	<translation name="FIGHTS">Kämpfe</translation>
+	<translation name="SHAPESHIFTER">Gestaltenwandler</translation>
+	<translation name="TRACKING_TOOL">Fährtensuchen</translation>
+	<translation name="TOTAL_OVERVIEW">Gesamtübersicht</translation>
+	<translation name="LAST_MONTH">Letzten Monat</translation>
+	<translation name="START_APPLICATION_AS_ADMINISTRATOR">Starte Anwendung als Administrator</translation>
+	<translation name="SELECT_SERVER_LOCATION">Serverstandort auswählen</translation>
+	<translation name="PLEASE_SELECT_A_SERVER_LOCATION">Bitte wähle einen Serverstandort aus</translation>
 </translations>

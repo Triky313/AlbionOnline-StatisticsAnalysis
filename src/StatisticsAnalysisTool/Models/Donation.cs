@@ -1,5 +1,5 @@
-﻿using StatisticsAnalysisTool.Common;
-using StatisticsAnalysisTool.Enumerations;
+﻿using StatisticsAnalysisTool.Enumerations;
+using StatisticsAnalysisTool.Localization;
 using System;
 using System.Text.Json.Serialization;
 using System.Windows;

@@ -10,7 +10,7 @@ public class PlayerGameObject : GameObject
     private CharacterEquipment _characterEquipment;
     private readonly Guid _userGuid;
     private Guid? _interactGuid;
-    private List<TimeCollectObject> _combatTimes = new();
+    private List<ActionInterval> _combatTimes = new();
 
     public PlayerGameObject(long? objectId)
     {
@@ -52,7 +52,7 @@ public class PlayerGameObject : GameObject
         }
     }
     public DateTime? CombatStart { get; set; }
-    public List<TimeCollectObject> CombatTimes
+    public List<ActionInterval> CombatTimes
     {
         get => _combatTimes;
         set
@@ -75,9 +75,9 @@ public class PlayerGameObject : GameObject
 
     #region Combat
 
-    public void AddCombatTime(TimeCollectObject timeCollectObject)
+    public void AddCombatTime(ActionInterval actionInterval)
     {
-        CombatTimes.Add(timeCollectObject);
+        CombatTimes.Add(actionInterval);
         SetCombatTimeSpan();
     }
 

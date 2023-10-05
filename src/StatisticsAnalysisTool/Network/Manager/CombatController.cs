@@ -1,7 +1,7 @@
 using Serilog;
 using StatisticsAnalysisTool.Common;
+using StatisticsAnalysisTool.DamageMeter;
 using StatisticsAnalysisTool.Enumerations;
-using StatisticsAnalysisTool.EventLogging.Notification;
 using StatisticsAnalysisTool.Models.ItemsJsonModel;
 using StatisticsAnalysisTool.Models.NetworkModel;
 using StatisticsAnalysisTool.ViewModels;
@@ -188,7 +188,7 @@ public class CombatController
     {
         return 100.00 / (heal + overhealed) * overhealed;
     }
-    
+
     private static async Task AddDamageMeterFragmentAsync(ICollection<DamageMeterFragment> damageMeter, KeyValuePair<Guid, PlayerGameObject> healthChangeObject,
         List<KeyValuePair<Guid, PlayerGameObject>> entities, long currentTotalDamage, long currentTotalHeal)
     {
@@ -412,7 +412,7 @@ public class CombatController
             return;
         }
 
-        if (inActiveCombat || inPassiveCombat) playerObject.Value.Value.AddCombatTime(new TimeCollectObject(DateTime.UtcNow));
+        if (inActiveCombat || inPassiveCombat) playerObject.Value.Value.AddCombatTime(new ActionInterval(DateTime.UtcNow));
 
         if (!inActiveCombat && !inPassiveCombat)
         {

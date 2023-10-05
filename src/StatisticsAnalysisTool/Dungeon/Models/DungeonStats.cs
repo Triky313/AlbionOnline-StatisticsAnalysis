@@ -1,6 +1,7 @@
 ﻿using StatisticsAnalysisTool.Cluster;
 using StatisticsAnalysisTool.Common;
 using StatisticsAnalysisTool.Enumerations;
+using StatisticsAnalysisTool.Localization;
 using StatisticsAnalysisTool.ViewModels;
 using System.Collections.Generic;
 using System.Linq;
@@ -17,6 +18,7 @@ public class DungeonStats : BaseViewModel
     private StatsCorrupted _statsCorrupted = new();
     private StatsHellGate _statsHellGate = new();
     private StatsAvalonian _statsAvalonian = new();
+    private StatsTotal _statsTotal = new();
 
     public void Set(IEnumerable<DungeonBaseFragment> dungeons)
     {
@@ -25,6 +27,7 @@ public class DungeonStats : BaseViewModel
 
     public void Set(List<DungeonBaseFragment> dungeons)
     {
+        UpdateTotalStats(dungeons);
         UpdateMistsStats(dungeons);
         UpdateMistsDungeonStats(dungeons);
         UpdateSoloStats(dungeons);
@@ -33,6 +36,24 @@ public class DungeonStats : BaseViewModel
         UpdateExpeditionStats(dungeons);
         UpdateCorruptedStats(dungeons);
         UpdateHellGateStats(dungeons);
+    }
+
+    public void UpdateTotalStats(List<DungeonBaseFragment> dungeons)
+    {
+        var baseDun = dungeons?.ToList() ?? new List<DungeonBaseFragment>();
+
+        StatsTotal.RunTimeTotal = baseDun.Sum(x => x.TotalRunTimeInSeconds);
+
+        StatsTotal.Entered = baseDun.Count;
+
+        StatsTotal.Fame = baseDun.Sum(x => x.Fame);
+        StatsTotal.ReSpec = baseDun.Sum(x => x.ReSpec);
+        StatsTotal.Silver = baseDun.Sum(x => x.Silver);
+        StatsTotal.Might = baseDun.Where(x => x.HasProperty("Might")).Sum(x => (double) x?.GetType().GetProperty("Might")?.GetValue(x)!);
+        StatsTotal.Favor = baseDun.Where(x => x.HasProperty("Favor")).Sum(x => (double) x?.GetType().GetProperty("Favor")?.GetValue(x)!);
+
+        StatsTotal.LootInSilver = baseDun.SelectMany(x => x.Loot).Sum(x => FixPoint.FromInternalValue(x.EstimatedMarketValueInternal).DoubleValue);
+        StatsTotal.MostValuableLoot = baseDun.SelectMany(x => x.Loot).MaxBy(x => x?.EstimatedMarketValueInternal);
     }
 
     public void UpdateMistsStats(List<DungeonBaseFragment> dungeons)
@@ -283,6 +304,16 @@ public class DungeonStats : BaseViewModel
 
         StatsHellGate.LootInSilver = hellGate.SelectMany(x => x.Loot).Sum(x => FixPoint.FromInternalValue(x.EstimatedMarketValueInternal).DoubleValue);
         StatsHellGate.MostValuableLoot = hellGate.SelectMany(x => x.Loot).MaxBy(x => x?.EstimatedMarketValueInternal);
+    }
+
+    public StatsTotal StatsTotal
+    {
+        get => _statsTotal;
+        set
+        {
+            _statsTotal = value;
+            OnPropertyChanged();
+        }
     }
 
     public StatsMists StatsMists

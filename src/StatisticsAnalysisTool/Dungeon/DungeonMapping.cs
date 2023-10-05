@@ -17,7 +17,7 @@ public class DungeonMapping
             Tier = dungeon.Tier,
             Faction = dungeon.Faction,
             EnterDungeonFirstTime = dungeon.EnterDungeonFirstTime,
-            TotalRunTimeInSeconds = dungeon.TotalRunTimeInSeconds,
+            TotalRunTimeInSeconds = dungeon.RunningIntervals.Where(x => x.EndTime != null).ToList().Sum(time => (int) time.TimeSpan.TotalSeconds),
             Events = dungeon.Events.Select(Mapping).ToList(),
             Loot = dungeon.Loot.Select(Mapping).ToList(),
             Status = DungeonStatus.Done,

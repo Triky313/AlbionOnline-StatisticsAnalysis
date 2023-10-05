@@ -31,8 +31,9 @@ public enum EventCodes
     NewEquipmentItem = 28, //  map[0:657 1:2036 2:1 4:28169331 5:Apolo540 6:3 7:90000000 8:[] 9:[0] 252:27] (0: ObjectId, 1: ItemId, 2: Amount, 4: Est. market value, 5: CrafterName)
     NewSimpleItem = 29, //  map[0:505 1:7006 2:1 3:true 4:29033970 252:27] (0: ObjectId, 1: ItemId, 2: Amount, 4: Est. market value)
     NewFurnitureItem = 30,
-    NewJournalItem = 31,
-    NewLaborerItem = 32, // [0:513 1:7996 2:4 4:522947156 5: 6:10000 7:72000000 252:32]
+    NewKillTrophyItem = 31,
+    NewJournalItem = 32,
+    NewLaborerItem = 33, // [0:513 1:7996 2:4 4:522947156 5: 6:10000 7:72000000 252:32]
     NewSimpleHarvestableObject,
     NewSimpleHarvestableObjectList,
     NewHarvestableObject, // map[0:[3405 3468] 1:[6 6] 2:[3 2] 3:[182 -383 176 -369 183 -371] 4:[3 3] 252:35] - 0: ObjectId 2: Max charges, 4: Current charges
@@ -53,13 +54,11 @@ public enum EventCodes
     MarketPlaceBuildingInfo,
     HarvestStart, // map[0:5270 1:637926215956544319 2:637926215956544319 3:4250 4:16 5:1.6169999 6:5287 7:2195 252:52] - 0 = UserId, 3 = ObjectId, 5: Abbauzeit 7: Abbau-Tool (T8_2H_TOOL_SICKLE), 
     HarvestCancel,
-    HarvestFinished = 57, // map[0:5270 1:637926215956544319 2:637926215972723131 3:4250 4:1 5:1 7:28 8:[] 9:[] 252:54] - 0: UserId, 3: ObjectId, 4:ItemId 5: Res Standard Quantity 6: Sammelbonus Res, 6: Premium Bonus Res, 8: Inhalt in der Ressource
-    TakeSilver = 58, // map[0:-57 1:2178162 2:-57 3:10000000 8:10000 252:55]
+    HarvestFinished = 58, // map[0:5270 1:637926215956544319 2:637926215972723131 3:4250 4:1 5:1 7:28 8:[] 9:[] 252:54] - 0: UserId, 3: ObjectId, 4:ItemId 5: Res Standard Quantity 6: Sammelbonus Res, 6: Premium Bonus Res, 8: Inhalt in der Ressource
+    TakeSilver = 59, // map[0:-57 1:2178162 2:-57 3:10000000 8:10000 252:55]
     ActionOnBuildingStart,
     ActionOnBuildingCancel,
-    ActionOnBuildingFinished = 61, // Repear: [60]evInstallResourceCancel - map[0:1562 1:63802829 282167 2:442 3:454 4:2 252:60] 0: UserObjectId, 2: ActionId, 4: ActionType
-    ItemRerollQualityStart,
-    ItemRerollQualityCancel,
+    ActionOnBuildingFinished = 62, // Repear: [60]evInstallResourceCancel - map[0:1562 1:63802829 282167 2:442 3:454 4:2 252:60] 0: UserObjectId, 2: ActionId, 4: ActionType
     ItemRerollQualityFinished,
     InstallResourceStart,
     InstallResourceCancel,
@@ -74,16 +73,16 @@ public enum EventCodes
     StopEmote,
     SystemMessage,
     UtilityTextMessage,
-    UpdateSilver = 76, // map[0:4195 1:884995625105 252:71] (0: ObjectId, 1: CurrentSilver)
-    UpdateFame = 77, // map[0:4195 1:5811910006347 2:100000000 4:10000 6:1 7:427 252:72] (0: ObjectId, 1: TotalPlayerFame, 2: fameWithZoneMultiplier, 3: GroupSize, 4: Multiplier, 5: IsPremiumBonus, 6: BonusFactor, 8: UsedBagInsightItemIndex, 10: SatchelFame, )
+    UpdateMoney = 77, // map[0:4195 1:884995625105 252:71] (0: ObjectId, 1: CurrentSilver)
+    UpdateFame = 78, // map[0:4195 1:5811910006347 2:100000000 4:10000 6:1 7:427 252:72] (0: ObjectId, 1: TotalPlayerFame, 2: fameWithZoneMultiplier, 3: GroupSize, 4: Multiplier, 5: IsPremiumBonus, 6: BonusFactor, 8: UsedBagInsightItemIndex, 10: SatchelFame, )
     UpdateLearningPoints,
-    UpdateReSpecPoints = 79, // map[0:[0 55814284204 0 0 0] 1:1 2:9948534 3:10000000 252:78] 2: GainedReSpec, 3: PaidSilver
-    UpdateCurrency = 80,
-    UpdateFactionStanding = 81,
-    UpdateBrecilienStanding = 82, // map[0:11575080 1:3858360 2:970279167 252:81] 0: StandingPoints
+    UpdateReSpecPoints = 80, // map[0:[0 55814284204 0 0 0] 1:1 2:9948534 3:10000000 252:78] 2: GainedReSpec, 3: PaidSilver
+    UpdateCurrency = 81,
+    UpdateFactionStanding = 82,
+    UpdateMistCityStanding = 83, // map[0:11575080 1:3858360 2:970279167 252:81] 0: StandingPoints
     Respawn,
     ServerDebugLog,
-    CharacterEquipmentChanged = 85, // map[0:297 1:26283117 2:[0 1721 0 0 0 2330 2301 2468 0 0] 5:[-1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 3168] 252:85]
+    CharacterEquipmentChanged = 86, // map[0:297 1:26283117 2:[0 1721 0 0 0 2330 2301 2468 0 0] 5:[-1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 3168] 252:85]
     RegenerationHealthChanged,
     RegenerationEnergyChanged,
     RegenerationMountHealthChanged,
@@ -91,9 +90,9 @@ public enum EventCodes
     RegenerationHealthEnergyComboChanged,
     RegenerationPlayerComboChanged,
     DurabilityChanged,
-    NewLoot = 93, // map[0:1863 2:1853 3:Dicky 4:[236.79169 -185.40233] 5:42.864536 6:true 7:1 10:[[-85 -58 82 55 101 -15 76 79 -103 -113 -21 8 -33 46 -99 -28]] 
+    NewLoot = 94, // map[0:1863 2:1853 3:Dicky 4:[236.79169 -185.40233] 5:42.864536 6:true 7:1 10:[[-85 -58 82 55 101 -15 76 79 -103 -113 -21 8 -33 46 -99 -28]] 
     // 12:637993823308929158 18:[] 19:[-63 68 12 104 -29 1 114 78 -91 -75 -21 68 -13 -96 -29 -67] 20:[-23 20 93 -6 73 127 19 78 -65 44 -42 65 -97 105 -82 -16] 21:25900 22:0 23:3 24:-1 252:89]
-    AttachItemContainer = 94, //  map[0:78 1:[-99 -50 125 -49 86 0 -115 74 -74 67 9 101 -87 -71 -66 -10] 3:[0 0 0 0 0 0 656 657] 4:8 252:89] (0: ObjectId, 3: ItemId[])
+    AttachItemContainer = 95, //  map[0:78 1:[-99 -50 125 -49 86 0 -115 74 -74 67 9 101 -87 -71 -66 -10] 3:[0 0 0 0 0 0 656 657] 4:8 252:89] (0: ObjectId, 3: ItemId[])
     DetachItemContainer, //  map[0:[-95 72 -77 -75 -70 34 127 73 -114 -96 28 8 75 -107 -106 125] 252:90]
     InvalidateItemContainer,
     LockItemContainer,
@@ -119,7 +118,7 @@ public enum EventCodes
     EndArenaMatch,
     MatchUpdate,
     ActiveMatchUpdate,
-    NewMob = 117,
+    NewMob = 118,
     DebugAggroInfo,
     DebugVariablesInfo,
     DebugReputationInfo,
@@ -130,6 +129,7 @@ public enum EventCodes
     ClaimOrbCancel,
     OrbUpdate,
     OrbClaimed,
+    OrbReset,
     NewWarCampObject,
     NewMatchLootChestObject,
     NewArenaExit,
@@ -157,8 +157,9 @@ public enum EventCodes
     ChangeMountSkin,
     GameEvent,
     KilledPlayer,
-    Died = 156,
+    Died = 157,
     KnockedDown,
+    Unconcious,
     MatchPlayerJoinedEvent,
     MatchPlayerStatsEvent,
     MatchPlayerStatsCompleteEvent,
@@ -178,6 +179,7 @@ public enum EventCodes
     DuelStarted,
     DuelEnded,
     DuelDenied,
+    DuelRequestCanceled,
     DuelLeftArea,
     DuelReEnteredArea,
     NewRealEstate,
@@ -191,7 +193,7 @@ public enum EventCodes
     FurnitureObjectCheatProviderInfo,
     FarmableObjectInfo,
     NewUnreadMails,
-    Unknown187,
+    MailOperationPossible,
     GuildLogoObjectUpdate,
     StartLogout,
     NewChatChannels,
@@ -219,13 +221,13 @@ public enum EventCodes
     Cloak,
     PartyInvitation,
     PartyJoinRequest,
-    PartyJoined = 219, // map[0:[39 75 81 -72 -80 97 25 66 -65 -97 111 45 -59 -126 98 -43] 1:crismooo 2:55 3:13 4:0 5:WiId Card 6:7805 7:true 252:219]
-    PartyChangedOrder = 220, // map[0:14368 2:1 3:[-45 -35 124 14 -23 103 -41 74 -71 66 67 20 -12 60 44 -101] 4:[[-45 -35 124 14 -23 103 -41 74 -71 66 67 20 -12 60 44 -101] [-118 61 -70 72 17 -107 121 72 -102 110 20 -25 64 20 106 2]] 5:[Triky313 Bruno313] 6:[0 0] 7:[18 0] 8:[35 0] 9:[-1 -1] 10:[true true] 252:212]
-    PartyDisbanded = 221, // map[1:14184 252:213]
-    PartyPlayerJoined = 222, // map[0:11925 1:[-63 -19 39 16 26 35 -25 67 -111 60 -87 -58 -31 -100 -124 -44] 2:Mitch77 3:1 4:20 5:12 6:-1 7:true 252:214]
-    PartyPlayerLeft = 224, // map[0:14368 1:[-45 -35 124 14 -23 103 -41 74 -71 66 67 20 -12 60 44 -101] 252:216]
-    PartyLeaderChanged = 225, // map[0:14595 1:[-45 -35 124 14 -23 103 -41 74 -71 66 67 20 -12 60 44 -101] 252:217]
-    PartyLootSettingChangedPlayer = 226, // map[0:14368 1:1 252:218]
+    PartyJoined = 221, // map[0:[39 75 81 -72 -80 97 25 66 -65 -97 111 45 -59 -126 98 -43] 1:crismooo 2:55 3:13 4:0 5:WiId Card 6:7805 7:true 252:219]
+    PartyDisbanded = 222, // map[1:14184 252:213]
+    PartyPlayerJoined = 223, // map[0:11925 1:[-63 -19 39 16 26 35 -25 67 -111 60 -87 -58 -31 -100 -124 -44] 2:Mitch77 3:1 4:20 5:12 6:-1 7:true 252:214]
+    PartyChangedOrder = 224, // map[0:14368 2:1 3:[-45 -35 124 14 -23 103 -41 74 -71 66 67 20 -12 60 44 -101] 4:[[-45 -35 124 14 -23 103 -41 74 -71 66 67 20 -12 60 44 -101] [-118 61 -70 72 17 -107 121 72 -102 110 20 -25 64 20 106 2]] 5:[Triky313 Bruno313] 6:[0 0] 7:[18 0] 8:[35 0] 9:[-1 -1] 10:[true true] 252:212]
+    PartyPlayerLeft = 225, // map[0:14368 1:[-45 -35 124 14 -23 103 -41 74 -71 66 67 20 -12 60 44 -101] 252:216]
+    PartyLeaderChanged = 226, // map[0:14595 1:[-45 -35 124 14 -23 103 -41 74 -71 66 67 20 -12 60 44 -101] 252:217]
+    PartyLootSettingChangedPlayer = 227, // map[0:14368 1:1 252:218]
     PartySilverGained,
     PartyPlayerUpdated = 229, // map[0:Bruno313 1:true 3:5 252:221]
     PartyInvitationAnswer,
@@ -235,14 +237,12 @@ public enum EventCodes
     PartySetRoleFlag, // map[0:8 1:[-118 61 -70 72 17 -107 121 72 -102 110 20 -25 64 20 106 2] 252:225] (0: FlagType, 1: ObjectId)
     PartyInviteOrJoinPlayerEquipmentInfo,
     SpellCooldownUpdate,
-    NewHellgate,
-    NewHellgateExit,
+    NewHellgateExitPortal,
     NewExpeditionExit,
     NewExpeditionNarrator,
     ExitEnterStart,
     ExitEnterCancel,
     ExitEnterFinished,
-    HellClusterTimeUpdate,
     NewQuestGiverObject,
     FullQuestInfo,
     QuestProgressInfo,
@@ -253,29 +253,30 @@ public enum EventCodes
     ExpeditionRegistrationInfo,
     EnteringExpeditionStart,
     EnteringExpeditionCancel,
-    RewardGranted = 252,
+    RewardGranted = 253,
     ArenaRegistrationInfo,
     EnteringArenaStart,
     EnteringArenaCancel,
     EnteringArenaLockStart,
     EnteringArenaLockCancel,
     InvitedToArenaMatch,
+    UsingHellgateShrine,
+    EnteringHellgateLockStart,
+    EnteringHellgateLockCancel,
     PlayerCounts,
-    OtherGrabbedLoot,
-    InCombatStateUpdate = 263, // map[0:671362 1:true 2:true 252:257] | 1 = true; player hits enemy | 2 = true; enemy hits player
-    GrabbedLoot = 264, // LOOT: map[0:424 1:Triky313 2:Bruno313 4:1841 5:1 252:256] | SILVER: map[0:6436 2:Triky313 3:true 5:1550115 252:256] (0: ObjectId, 1: LootedBody, 2: Looter, 4: ItemId, 5: Quantity) 
-    SiegeCampClaimStart = 265,
-    SiegeCampClaimCancel,
-    SiegeCampClaimFinished,
-    SiegeCampScheduleResult,
-    TreasureChestUsingStart,
+    InCombatStateUpdate = 264, // map[0:671362 1:true 2:true 252:257] | 1 = true; player hits enemy | 2 = true; enemy hits player
+    OtherGrabbedLoot = 265, // LOOT: map[0:424 1:Triky313 2:Bruno313 4:1841 5:1 252:256] | SILVER: map[0:6436 2:Triky313 3:true 5:1550115 252:256] (0: ObjectId, 1: LootedBody, 2: Looter, 4: ItemId, 5: Quantity) 
+    TreasureChestUsingStart = 266,
     TreasureChestUsingFinished,
     TreasureChestUsingCancel,
     TreasureChestUsingOpeningComplete,
     TreasureChestForceCloseInventory,
+    LocalTreasuresUpdate,
+    LootChestSpawnpointsUpdate,
     PremiumChanged,
     PremiumExtended,
     PremiumLifeTimeRewardGained,
+    GoldPurchased,
     LaborerGotUpgraded,
     JournalGotFull,
     JournalFillError,
@@ -299,10 +300,10 @@ public enum EventCodes
     MountHealthUpdate,
     MountCooldownUpdate,
     NewExpeditionAgent,
-    NewExpeditionCheckPoint = 299,
-    ExpeditionStartent,
-    Voteent,
-    Ratingent,
+    NewExpeditionCheckPoint = 300,
+    ExpeditionStartEvent,
+    VoteEvent,
+    RatingEvent,
     NewArenaAgent,
     BoostFarmable,
     UseFunction,
@@ -352,7 +353,6 @@ public enum EventCodes
     NewOutpostObject,
     OutpostUpdate,
     OutpostClaimed,
-    OutpostReward,
     OverChargeEnd,
     OverChargeStatus,
     PartyFinderFullUpdate,
@@ -363,7 +363,6 @@ public enum EventCodes
     NewUnlockedPersonalSeasonRewards,
     PersonalSeasonPointsGained,
     PersonalSeasonPastSeasonDataEvent,
-    ChallengePoints,
     EasyAntiCheatMessageToClient,
     MatchLootChestOpeningStart,
     MatchLootChestOpeningFinished,
@@ -379,12 +378,12 @@ public enum EventCodes
     TutorialUpdate,
     TriggerHintBox,
     RandomDungeonPositionInfo,
-    NewLootChest = 377, // map[0:23 1:[20.5 177.5] 2:423 3:KEEPER_SOLO_BOOKCHEST_STANDARD 4:FOREST_GREEN_LOOTCHEST_KEEPER_SOLO_BOOKCHEST_STANDARD 5:4 6:637734315213820408 7:[] 8:[] 13:true 252:367] // map[0:4399 1:[165 -263] 3:TREASURE_SOLO_UNCOMMON 4:SWAMP_DEAD_LOOTCHEST_TREASURE_SOLO_UNCOMMON 5:4 6:637926439332719127 7:[] 8:[] 13:true 14:SWAMP_DEAD_TREASURE_SOLO 16:31ff503a-ded6-53d6-974a-7e32e3126457 252:370]
-    UpdateLootChest = 378, // 0=ObjectId, 3=PlayerGuid, 4=PlayerGuid, 7=Free4All map[0:4769 1:5 2:637927794424868192 3:[[-45 -35 124 14 -23 103 -41 74 -71 66 67 20 -12 60 44 -101]] 4:[[-45 -35 124 14 -23 103 -41 74 -71 66 67 20 -12 60 44 -101]] 6:true 7:true 8:2.6 9:true 252:371]
-    LootChestOpened = 379, // map[0:23 252:369]
+    NewLootChest = 378, // map[0:23 1:[20.5 177.5] 2:423 3:KEEPER_SOLO_BOOKCHEST_STANDARD 4:FOREST_GREEN_LOOTCHEST_KEEPER_SOLO_BOOKCHEST_STANDARD 5:4 6:637734315213820408 7:[] 8:[] 13:true 252:367] // map[0:4399 1:[165 -263] 3:TREASURE_SOLO_UNCOMMON 4:SWAMP_DEAD_LOOTCHEST_TREASURE_SOLO_UNCOMMON 5:4 6:637926439332719127 7:[] 8:[] 13:true 14:SWAMP_DEAD_TREASURE_SOLO 16:31ff503a-ded6-53d6-974a-7e32e3126457 252:370]
+    UpdateLootChest = 379, // 0=ObjectId, 3=PlayerGuid, 4=PlayerGuid, 7=Free4All map[0:4769 1:5 2:637927794424868192 3:[[-45 -35 124 14 -23 103 -41 74 -71 66 67 20 -12 60 44 -101]] 4:[[-45 -35 124 14 -23 103 -41 74 -71 66 67 20 -12 60 44 -101]] 6:true 7:true 8:2.6 9:true 252:371]
+    LootChestOpened = 380, // map[0:23 252:369]
     UpdateLootProtectedByMobsWithMinimapDisplay,
-    NewShrine = 381, // map[0:19 1:[-89 90] 2:180 3:GENERAL_SHRINE_COMBAT_BUFF 4:SHRINE_NON_COMBAT_BUFF 5:1 6:637734312344532502 252:371]
-    UpdateShrine = 382, // map[0:19 1:2 2:637734313445294913 252:372]
+    NewShrine = 382, // map[0:19 1:[-89 90] 2:180 3:GENERAL_SHRINE_COMBAT_BUFF 4:SHRINE_NON_COMBAT_BUFF 5:1 6:637734312344532502 252:371]
+    UpdateShrine = 383, // map[0:19 1:2 2:637734313445294913 252:372]
     UpdateRoom,
     NewMistDungeonRoomMobSoul,
     NewHellgateShrine,
@@ -398,9 +397,9 @@ public enum EventCodes
     UnlockVanityUnlock,
     AvatarUnlocked,
     CustomizationChanged,
-    GuildVaultInfo = 397,
-    BaseVaultInfo = 398,
-    BankVaultInfo, // map[0:6 1:6466931c-65a1-4c5d-870b-8724cf2611dc@3007 2:[] 3:[] 4:[] 5:[] 6:[] 7:[] 8:[] 252:390]
+    BaseVaultInfo,
+    GuildVaultInfo,
+    BankVaultInfo = 399, // map[0:6 1:6466931c-65a1-4c5d-870b-8724cf2611dc@3007 2:[] 3:[] 4:[] 5:[] 6:[] 7:[] 8:[] 252:390]
     RecoveryVaultPlayerInfo = 400,
     RecoveryVaultGuildInfo,
     UpdateWardrobe,
@@ -481,7 +480,7 @@ public enum EventCodes
     DoSimpleActionCancel,
     DoSimpleActionFinished,
     NotifyGuestAccountVerified,
-    MightAndFavorReceivedEvent = 479, // map[0:63063 2:21021 3:16617 5:5539 6:349680 8:0 252:470] (0: Might, 2: Premium of might, 3: Favor, 5: Premium of favor, 6: Total favor, 8: ???) 
+    MightAndFavorReceivedEvent = 480, // map[0:63063 2:21021 3:16617 5:5539 6:349680 8:0 252:470] (0: Might, 2: Premium of might, 3: Favor, 5: Premium of favor, 6: Total favor, 8: ???) 
     WeeklyPvpChallengeRewardStateUpdate,
     NewUnlockedPvpSeasonChallengeRewards,
     StaticDungeonEntrancesDungeonEventStatusUpdates,
@@ -491,6 +490,9 @@ public enum EventCodes
     FeatureSwitchInfo,
     PartyJoinRequestAborted,
     PartyInviteAborted,
+    PartyStartHuntRequest,
+    PartyStartHuntRequested,
+    PartyStartHuntRequestAnswer,
     GuildInviteDeclined,
     CancelMultiSpellSlots,
     NewVisualEventObject,
@@ -543,5 +545,14 @@ public enum EventCodes
     HuntMissionUpdate,
     HuntQuestMissionProgressUpdate,
     HuntTrackUsed,
-    LegendaryItemDestroyed
+    HuntTrackUseableAgain,
+    MinimapHuntTrackMarkers,
+    NoTracksFound,
+    HuntQuestAborted,
+    InteractWithTrackStart,
+    InteractWithTrackCancel,
+    InteractWithTrackFinished,
+    NewDynamicCompound,
+    LegendaryItemDestroyed,
+    AttunementInfo
 }

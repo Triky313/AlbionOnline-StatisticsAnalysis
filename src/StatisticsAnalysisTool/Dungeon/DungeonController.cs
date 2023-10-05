@@ -4,6 +4,7 @@ using StatisticsAnalysisTool.Common;
 using StatisticsAnalysisTool.Dungeon.Models;
 using StatisticsAnalysisTool.Enumerations;
 using StatisticsAnalysisTool.GameFileData;
+using StatisticsAnalysisTool.Localization;
 using StatisticsAnalysisTool.Models.NetworkModel;
 using StatisticsAnalysisTool.Network.Manager;
 using StatisticsAnalysisTool.Properties;
@@ -25,7 +26,7 @@ using ValueType = StatisticsAnalysisTool.Enumerations.ValueType;
 
 namespace StatisticsAnalysisTool.Dungeon;
 
-public class DungeonController
+public sealed class DungeonController
 {
     private const int MaxDungeons = 9999;
     private const int NumberOfDungeonsUntilSaved = 1;
@@ -609,7 +610,7 @@ public class DungeonController
                     UniqueName = uniqueItemName,
                     UtcDiscoveryTime = discoveredItem.UtcDiscoveryTime
                 });
-                dun.UpdateTotalValue();
+                dun.UpdateTotalSilverValue();
                 dun.UpdateMostValuableLoot();
                 dun.UpdateMostValuableLootVisibility();
             });

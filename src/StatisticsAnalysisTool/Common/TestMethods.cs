@@ -1,5 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using StatisticsAnalysisTool.Models.ItemsJsonModel;
+using System;
 using System.ComponentModel;
 using System.Diagnostics;
 
@@ -30,12 +30,18 @@ public class TestMethods
 
     public static int GetRandomWeaponIndex()
     {
-        var indexArray = new List<int> { 6147, 5900, 6326, 5614, 6600, 5602, 6467, 5181, 5080, 5705, 4998, 4777, 5438, 6045, 447, 0 };
+        var counter = 0;
+        while (true)
+        {
+            var itemIndex = Random.Next(20, 10000);
+            var item = ItemController.GetItemByIndex(itemIndex);
+            if (item.FullItemInformation is Weapon || counter > 1000)
+            {
+                return itemIndex;
+            }
 
-        var index = Random.Next(indexArray.Count);
-        var itemIndex = indexArray[index];
-        indexArray.RemoveAt(index);
-        return itemIndex;
+            counter++;
+        }
     }
 
     public static void PrintProperties(object obj)

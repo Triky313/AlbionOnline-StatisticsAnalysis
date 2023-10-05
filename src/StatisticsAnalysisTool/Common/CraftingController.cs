@@ -20,7 +20,7 @@ public static class CraftingController
         }
 
         return craftingRequirement.CraftResource
-            .Where(x => !x.UniqueName.ToUpper().Contains("_ARTEFACT_") && !x.UniqueName.ToUpper().Contains("_FAVOR_"))
+            .Where(x => !x.UniqueName.ToUpper().Contains("_ARTEFACT_") && !x.UniqueName.ToUpper().Contains("_FAVOR_") && !x.UniqueName.ToUpper().Contains("_ALCHEMY_"))
             .Sum(craftResource => craftResource.Count);
     }
 
@@ -34,6 +34,7 @@ public static class CraftingController
         var resources = item.FullItemInformation switch
         {
             Weapon weapon => GetTotalAmountResources(weapon.CraftingRequirements),
+            TransformationWeapon transformationWeapon => GetTotalAmountResources(transformationWeapon.CraftingRequirements),
             EquipmentItem equipmentItem => GetTotalAmountResources(equipmentItem.CraftingRequirements),
             _ => 0
         };
@@ -95,8 +96,8 @@ public static class CraftingController
 
         return craftingCategory switch
         {
-            "tools" or "gatherergear" => CraftingJournalType.JournalToolMaker,
-            "cloth_helmet" or "cloth_armor" or "cloth_shoes" or "cursestaff" or "firestaff" or "froststaff" or "arcanestaff" or "holystaff" => CraftingJournalType.JournalMage,
+            "tools" or "gatherergear" or "trackingtool" => CraftingJournalType.JournalToolMaker,
+            "cloth_helmet" or "cloth_armor" or "cloth_shoes" or "cursestaff" or "firestaff" or "froststaff" or "arcanestaff" or "holystaff" or "shapeshifterstaff" => CraftingJournalType.JournalMage,
             "plate_helmet" or "plate_armor" or "plate_shoes" or "crossbow" or "axe" or "sword" or "hammer" or "mace" or "knuckles" => CraftingJournalType.JournalWarrior,
             "leather_helmet" or "leather_armor" or "leather_shoes" or "bow" or "naturestaff" or "dagger" or "spear" or "quarterstaff" => CraftingJournalType.JournalHunter,
             _ => CraftingJournalType.Unknown

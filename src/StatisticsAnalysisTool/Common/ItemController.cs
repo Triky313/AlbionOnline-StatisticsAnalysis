@@ -24,8 +24,6 @@ namespace StatisticsAnalysisTool.Common;
 
 public static class ItemController
 {
-
-
     public static ObservableCollection<Item> Items = new();
     private static ItemsJson _itemsJson;
 
@@ -120,6 +118,12 @@ public static class ItemController
                     .Sum(craftingRequirement => GetItemValueByCraftingRequirements(craftingRequirement, level));
             case JournalItem journalItem:
                 return (journalItem.CraftingRequirements ?? new List<CraftingRequirements>())
+                    .Sum(craftingRequirement => GetItemValueByCraftingRequirements(craftingRequirement, level));
+            case TransformationWeapon transformationWeapon:
+                return (transformationWeapon.CraftingRequirements ?? new List<CraftingRequirements>())
+                    .Sum(craftingRequirement => GetItemValueByCraftingRequirements(craftingRequirement, level));
+            case KillTrophyItem killTrophyItem:
+                return (killTrophyItem.CraftingRequirements ?? new List<CraftingRequirements>())
                     .Sum(craftingRequirement => GetItemValueByCraftingRequirements(craftingRequirement, level));
         }
 
@@ -234,7 +238,7 @@ public static class ItemController
 
         if (string.IsNullOrEmpty(currentLanguage))
         {
-            currentLanguage = LanguageController.CurrentCultureInfo?.TextInfo.CultureName.ToUpper();
+            currentLanguage = CultureInfo.DefaultThreadCurrentUICulture?.TextInfo.CultureName.ToUpper();
         }
 
         return FrequentlyValues.GameLanguages
@@ -395,6 +399,13 @@ public static class ItemController
             return hideoutItem;
         }
 
+        var trackingItemObject = GetItemJsonObject(cleanUniqueName, _itemsJson.Items.TrackingItem);
+        if (trackingItemObject is TrackingItem trackingItem)
+        {
+            trackingItem.ItemType = ItemType.TrackingItem;
+            return trackingItem;
+        }
+
         var farmableItemObject = GetItemJsonObject(cleanUniqueName, _itemsJson.Items.FarmableItem);
         if (farmableItemObject is FarmableItem farmableItem)
         {
@@ -472,11 +483,25 @@ public static class ItemController
             return mountSkin;
         }
 
+        var transformationWeaponItemObject = GetItemJsonObject(cleanUniqueName, _itemsJson.Items.TransformationWeapon);
+        if (transformationWeaponItemObject is TransformationWeapon transformationWeapon)
+        {
+            transformationWeapon.ItemType = ItemType.TransformationWeapon;
+            return transformationWeapon;
+        }
+
         var crystalLeagueItemObject = GetItemJsonObject(cleanUniqueName, _itemsJson.Items.CrystalLeagueItem);
         if (crystalLeagueItemObject is CrystalLeagueItem crystalLeagueItem)
         {
             crystalLeagueItem.ItemType = ItemType.CrystalLeague;
             return crystalLeagueItem;
+        }
+
+        var killTrophyItemObject = GetItemJsonObject(cleanUniqueName, new List<KillTrophyItem>() { _itemsJson.Items.KillTrophyItem });
+        if (killTrophyItemObject is KillTrophyItem killTrophyItem)
+        {
+            killTrophyItem.ItemType = ItemType.killTrophy;
+            return killTrophyItem;
         }
 
         return null;
@@ -485,7 +510,6 @@ public static class ItemController
     private static object GetItemJsonObject<T>(string uniqueName, List<T> itemJsonObjects)
     {
         var itemAsSpan = CollectionsMarshal.AsSpan(itemJsonObjects);
-        // ReSharper disable once ForCanBeConvertedToForeach
         for (var i = 0; i < itemAsSpan.Length; i++)
         {
             if (itemAsSpan[i] is ItemJsonObject item && item.UniqueName == uniqueName)
@@ -502,6 +526,7 @@ public static class ItemController
         return GetItemByUniqueName(uniqueName)?.FullItemInformation switch
         {
             HideoutItem hideoutItem => CategoryController.ShopCategoryStringToCategory(hideoutItem.ShopCategory),
+            TrackingItem trackingItem => CategoryController.ShopCategoryStringToCategory(trackingItem.ShopCategory),
             FarmableItem farmableItem => CategoryController.ShopCategoryStringToCategory(farmableItem.ShopCategory),
             SimpleItem simpleItem => CategoryController.ShopCategoryStringToCategory(simpleItem.ShopCategory),
             ConsumableItem consumableItem => CategoryController.ShopCategoryStringToCategory(consumableItem.ShopCategory),
@@ -512,7 +537,9 @@ public static class ItemController
             FurnitureItem furnitureItem => CategoryController.ShopCategoryStringToCategory(furnitureItem.ShopCategory),
             JournalItem journalItem => CategoryController.ShopCategoryStringToCategory(journalItem.ShopCategory),
             LabourerContract labourerContract => CategoryController.ShopCategoryStringToCategory(labourerContract.ShopCategory),
+            TransformationWeapon transformationWeapon => CategoryController.ShopCategoryStringToCategory(transformationWeapon.ShopCategory),
             CrystalLeagueItem crystalLeagueItem => CategoryController.ShopCategoryStringToCategory(crystalLeagueItem.ShopCategory),
+            KillTrophyItem killTrophyItem => CategoryController.ShopCategoryStringToCategory(killTrophyItem.ShopCategory),
             _ => ShopCategory.Unknown
         };
     }
@@ -524,6 +551,7 @@ public static class ItemController
         return item switch
         {
             HideoutItem hideoutItem => CategoryController.ShopSubCategoryStringToShopSubCategory(hideoutItem.ShopSubCategory1),
+            TrackingItem trackingItem => CategoryController.ShopSubCategoryStringToShopSubCategory(trackingItem.ShopSubCategory1),
             FarmableItem farmableItem => CategoryController.ShopSubCategoryStringToShopSubCategory(farmableItem.ShopSubCategory1),
             SimpleItem simpleItem => CategoryController.ShopSubCategoryStringToShopSubCategory(simpleItem.ShopSubCategory1),
             ConsumableItem consumableItem => CategoryController.ShopSubCategoryStringToShopSubCategory(consumableItem.ShopSubCategory1),
@@ -534,7 +562,9 @@ public static class ItemController
             FurnitureItem furnitureItem => CategoryController.ShopSubCategoryStringToShopSubCategory(furnitureItem.ShopSubCategory1),
             JournalItem journalItem => CategoryController.ShopSubCategoryStringToShopSubCategory(journalItem.ShopSubCategory1),
             LabourerContract labourerContract => CategoryController.ShopSubCategoryStringToShopSubCategory(labourerContract.ShopSubCategory1),
+            TransformationWeapon transformationWeapon => CategoryController.ShopSubCategoryStringToShopSubCategory(transformationWeapon.ShopSubCategory1),
             CrystalLeagueItem crystalLeagueItem => CategoryController.ShopSubCategoryStringToShopSubCategory(crystalLeagueItem.ShopSubCategory1),
+            KillTrophyItem killTrophyItem => CategoryController.ShopSubCategoryStringToShopSubCategory(killTrophyItem.ShopSubCategory1),
             _ => ShopSubCategory.Unknown
         };
     }
@@ -561,6 +591,7 @@ public static class ItemController
         }
 
         var itemTypeStructs = new List<ItemTypeStruct> { new(_itemsJson.Items.HideoutItem.UniqueName, ItemType.Hideout) };
+        itemTypeStructs.AddRange(_itemsJson.Items.TrackingItem.Select(x => new ItemTypeStruct(x.UniqueName, x.ItemType)));
         itemTypeStructs.AddRange(_itemsJson.Items.FarmableItem.Select(x => new ItemTypeStruct(x.UniqueName, x.ItemType)));
         itemTypeStructs.AddRange(_itemsJson.Items.SimpleItem.Select(x => new ItemTypeStruct(x.UniqueName, x.ItemType)));
         itemTypeStructs.AddRange(_itemsJson.Items.ConsumableItem.Select(x => new ItemTypeStruct(x.UniqueName, x.ItemType)));
@@ -572,7 +603,9 @@ public static class ItemController
         itemTypeStructs.AddRange(_itemsJson.Items.JournalItem.Select(x => new ItemTypeStruct(x.UniqueName, x.ItemType)));
         itemTypeStructs.AddRange(_itemsJson.Items.LabourerContract.Select(x => new ItemTypeStruct(x.UniqueName, x.ItemType)));
         itemTypeStructs.AddRange(_itemsJson.Items.MountSkin.Select(x => new ItemTypeStruct(x.UniqueName, x.ItemType)));
+        itemTypeStructs.AddRange(_itemsJson.Items.TransformationWeapon.Select(x => new ItemTypeStruct(x.UniqueName, x.ItemType)));
         itemTypeStructs.AddRange(_itemsJson.Items.CrystalLeagueItem.Select(x => new ItemTypeStruct(x.UniqueName, x.ItemType)));
+        itemTypeStructs.Add(new ItemTypeStruct(_itemsJson.Items.KillTrophyItem.UniqueName, _itemsJson.Items.KillTrophyItem.ItemType));
 
         return itemTypeStructs.FirstOrDefault(x => x.UniqueName == itemObject.UniqueName).ItemType;
     }
@@ -625,6 +658,9 @@ public static class ItemController
             case Weapon item:
                 double.TryParse(item.Weight, NumberStyles.Float, CultureInfo.InvariantCulture, out weight);
                 return weight;
+            case TransformationWeapon item:
+                double.TryParse(item.Weight, NumberStyles.Float, CultureInfo.InvariantCulture, out weight);
+                return weight;
             case EquipmentItem item:
                 double.TryParse(item.Weight, NumberStyles.Float, CultureInfo.InvariantCulture, out weight);
                 return weight;
@@ -638,6 +674,9 @@ public static class ItemController
                 double.TryParse(item.Weight, NumberStyles.Float, CultureInfo.InvariantCulture, out weight);
                 return weight;
             case JournalItem item:
+                double.TryParse(item.Weight, NumberStyles.Float, CultureInfo.InvariantCulture, out weight);
+                return weight;
+            case KillTrophyItem item:
                 double.TryParse(item.Weight, NumberStyles.Float, CultureInfo.InvariantCulture, out weight);
                 return weight;
             default: return 0;

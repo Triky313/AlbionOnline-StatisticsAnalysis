@@ -23,6 +23,7 @@ using System.Timers;
 using System.Windows;
 using System.Windows.Markup;
 using System.Windows.Media.Imaging;
+using StatisticsAnalysisTool.Localization;
 
 namespace StatisticsAnalysisTool.ViewModels;
 
@@ -42,7 +43,7 @@ public class ItemWindowViewModel : BaseViewModel
     private double _taskProgressbarMaximum = 100;
     private double _taskProgressbarValue;
     private bool _isTaskProgressbarIndeterminate;
-    private XmlLanguage _itemListViewLanguage = XmlLanguage.GetLanguage(LanguageController.CurrentCultureInfo.ToString());
+    private XmlLanguage _itemListViewLanguage = XmlLanguage.GetLanguage(CultureInfo.DefaultThreadCurrentCulture?.IetfLanguageTag ?? string.Empty);
     private double _refreshRateInMilliseconds = 10;
     private RequiredJournal _requiredJournal;
     private EssentialCraftingValuesTemplate _essentialCraftingValues;
@@ -95,7 +96,7 @@ public class ItemWindowViewModel : BaseViewModel
         Translation = new ItemWindowTranslation();
         _ = InitAsync(item);
 
-        ItemListViewLanguage = XmlLanguage.GetLanguage(LanguageController.CurrentCultureInfo.ToString());
+        ItemListViewLanguage = XmlLanguage.GetLanguage(CultureInfo.DefaultThreadCurrentCulture?.IetfLanguageTag ?? string.Empty);
     }
 
     #region Inits
@@ -245,6 +246,11 @@ public class ItemWindowViewModel : BaseViewModel
                 ExtraItemInformation.ShowInMarketPlace = weapon.ShowInMarketPlace.SetYesOrNo();
                 ExtraItemInformation.Weight = weapon.Weight;
                 break;
+            case TransformationWeapon transformationWeapon:
+                ExtraItemInformation.ShopCategory = transformationWeapon.ShopCategory;
+                ExtraItemInformation.ShopSubCategory1 = transformationWeapon.ShopSubCategory1;
+                ExtraItemInformation.Weight = transformationWeapon.Weight;
+                break;
             case HideoutItem hideoutItem:
                 ExtraItemInformation.ShopCategory = hideoutItem.ShopCategory;
                 ExtraItemInformation.ShopSubCategory1 = hideoutItem.ShopSubCategory1;
@@ -307,6 +313,16 @@ public class ItemWindowViewModel : BaseViewModel
                 ExtraItemInformation.ShopCategory = crystalLeagueItem.ShopCategory;
                 ExtraItemInformation.ShopSubCategory1 = crystalLeagueItem.ShopSubCategory1;
                 ExtraItemInformation.Weight = crystalLeagueItem.Weight;
+                break;
+            case TrackingItem trackingItem:
+                ExtraItemInformation.ShopCategory = trackingItem.ShopCategory;
+                ExtraItemInformation.ShopSubCategory1 = trackingItem.ShopSubCategory1;
+                ExtraItemInformation.Weight = trackingItem.Weight;
+                break;
+            case KillTrophyItem killTrophyItem:
+                ExtraItemInformation.ShopCategory = killTrophyItem.ShopCategory;
+                ExtraItemInformation.ShopSubCategory1 = killTrophyItem.ShopSubCategory1;
+                ExtraItemInformation.Weight = killTrophyItem.Weight;
                 break;
         }
     }
@@ -401,8 +417,10 @@ public class ItemWindowViewModel : BaseViewModel
         switch (Item?.FullItemInformation)
         {
             case Weapon weapon when weapon.CraftingRequirements?.FirstOrDefault()?.CraftResource.Count > 0:
+            case TransformationWeapon transformationWeapon when transformationWeapon.CraftingRequirements?.FirstOrDefault()?.CraftResource.Count > 0:
             case EquipmentItem equipmentItem when equipmentItem.CraftingRequirements?.FirstOrDefault()?.CraftResource.Count > 0:
             case Mount mount when mount.CraftingRequirements?.FirstOrDefault()?.CraftResource.Count > 0:
+            case TrackingItem trackingItem when trackingItem.CraftingRequirements?.FirstOrDefault()?.CraftResource.Count > 0:
             case ConsumableItem consumableItem when consumableItem.CraftingRequirements?.FirstOrDefault()?.CraftResource.Count > 0:
                 areResourcesAvailable = true;
                 break;
@@ -450,7 +468,9 @@ public class ItemWindowViewModel : BaseViewModel
         var craftingJournalType = Item?.FullItemInformation switch
         {
             Weapon weapon => CraftingController.GetCraftingJournalItem(Item.Tier, weapon.CraftingJournalType),
+            TransformationWeapon transformationWeapon => CraftingController.GetCraftingJournalItem(Item.Tier, transformationWeapon.CraftingJournalType),
             EquipmentItem equipmentItem => CraftingController.GetCraftingJournalItem(Item.Tier, equipmentItem.CraftingJournalType),
+            TrackingItem trackingItem => CraftingController.GetCraftingJournalItem(Item.Tier, trackingItem.CraftingJournalType),
             _ => null
         };
 
@@ -484,6 +504,7 @@ public class ItemWindowViewModel : BaseViewModel
         {
             EquipmentItem equipmentItem => equipmentItem.Enchantments,
             ConsumableItem consumableItem => consumableItem.Enchantments,
+            TransformationWeapon transformationWeapon => transformationWeapon.Enchantments,
             _ => null
         };
 
@@ -494,17 +515,16 @@ public class ItemWindowViewModel : BaseViewModel
             craftingRequirements = enchantment.CraftingRequirements;
         }
 
-        if (craftingRequirements == null)
+        craftingRequirements ??= Item?.FullItemInformation switch
         {
-            craftingRequirements = Item?.FullItemInformation switch
-            {
-                Weapon weapon => weapon.CraftingRequirements,
-                EquipmentItem equipmentItem => equipmentItem.CraftingRequirements,
-                Mount mount => mount.CraftingRequirements,
-                ConsumableItem consumableItem => consumableItem.CraftingRequirements,
-                _ => null
-            };
-        }
+            Weapon weapon => weapon.CraftingRequirements,
+            TransformationWeapon transformationWeapon => transformationWeapon.CraftingRequirements,
+            EquipmentItem equipmentItem => equipmentItem.CraftingRequirements,
+            Mount mount => mount.CraftingRequirements,
+            ConsumableItem consumableItem => consumableItem.CraftingRequirements,
+            TrackingItem trackingItem => trackingItem.CraftingRequirements,
+            _ => null
+        };
 
         if (craftingRequirements?.FirstOrDefault()?.CraftResource == null)
         {

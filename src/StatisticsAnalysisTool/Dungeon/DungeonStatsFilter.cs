@@ -1,11 +1,12 @@
 ﻿using StatisticsAnalysisTool.Common;
 using StatisticsAnalysisTool.Enumerations;
+using StatisticsAnalysisTool.Localization;
 using StatisticsAnalysisTool.ViewModels;
 using System.Collections.Generic;
 
 namespace StatisticsAnalysisTool.Dungeon;
 
-public class DungeonStatsFilter : BaseViewModel
+public sealed class DungeonStatsFilter : BaseViewModel
 {
     private bool? _soloCheckbox = true;
     private bool? _standardCheckbox = true;

@@ -272,7 +272,7 @@ public class TradeMonitoringBindings : BaseViewModel
             }
         });
 
-        return result.ToList();
+        return result.OrderByDescending(d => d.Ticks).ToList();
     }
 
     private bool Filter(object obj)

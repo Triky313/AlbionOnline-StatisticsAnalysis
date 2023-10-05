@@ -6,6 +6,9 @@ using System.Text;
 using System.Text.Json;
 using System.Threading.Tasks;
 using Serilog;
+using StatisticsAnalysisTool.Models;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace StatisticsAnalysisTool.Common;
 
@@ -101,5 +104,21 @@ public static class FileController
             ConsoleManager.WriteLineForError(MethodBase.GetCurrentMethod()?.DeclaringType, e);
             Log.Error(e, "{message}", MethodBase.GetCurrentMethod()?.DeclaringType);
         }
+    }
+
+    public static List<FileInformation> GetFileInformation(string dirPath, string extension = "*.xml")
+    {
+        if (!Directory.Exists(dirPath))
+        {
+            return new List<FileInformation>();
+        }
+
+        var files = DirectoryController.GetFiles(dirPath, extension);
+        if (files == null)
+        {
+            return new List<FileInformation>();
+        }
+
+        return files.Select(file => new FileInformation(Path.GetFileNameWithoutExtension(file), file)).ToList();
     }
 }

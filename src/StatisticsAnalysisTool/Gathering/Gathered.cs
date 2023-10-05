@@ -1,5 +1,6 @@
 ﻿using StatisticsAnalysisTool.Cluster;
 using StatisticsAnalysisTool.Common;
+using StatisticsAnalysisTool.Localization;
 using StatisticsAnalysisTool.Models;
 using StatisticsAnalysisTool.Models.ItemsJsonModel;
 using StatisticsAnalysisTool.ViewModels;

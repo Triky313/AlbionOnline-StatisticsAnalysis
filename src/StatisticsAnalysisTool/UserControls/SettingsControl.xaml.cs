@@ -3,6 +3,7 @@ using Serilog;
 using StatisticsAnalysisTool.Backup;
 using StatisticsAnalysisTool.Common;
 using StatisticsAnalysisTool.Common.Shortcut;
+using StatisticsAnalysisTool.Localization;
 using StatisticsAnalysisTool.ViewModels;
 using System;
 using System.Diagnostics;
@@ -64,11 +65,6 @@ public partial class SettingsControl
     {
         AutoUpdateController.RemoveUpdateFiles();
         await AutoUpdateController.AutoUpdateAsync(true);
-    }
-
-    private void ResetPacketFilter_Click(object sender, RoutedEventArgs e)
-    {
-        _settingsWindowViewModel.ResetPacketFilter();
     }
 
     private void ResetPlayerSelectionWithSameNameInDb_Click(object sender, RoutedEventArgs e)

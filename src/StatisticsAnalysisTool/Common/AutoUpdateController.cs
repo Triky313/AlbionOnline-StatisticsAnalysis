@@ -1,4 +1,4 @@
-﻿using AutoUpdaterDotNET;
+using AutoUpdaterDotNET;
 using Serilog;
 using StatisticsAnalysisTool.Common.UserSettings;
 using StatisticsAnalysisTool.Properties;
@@ -20,6 +20,7 @@ public static class AutoUpdateController
             await HttpClientUtils.IsUrlAccessible(Settings.Default.AutoUpdatePreReleaseConfigUrl);
             await HttpClientUtils.IsUrlAccessible(Settings.Default.AutoUpdateConfigUrl);
 
+            AutoUpdater.Synchronous = true;
             AutoUpdater.ApplicationExitEvent -= AutoUpdaterApplicationExit;
 
             AutoUpdater.Start(SettingsController.CurrentSettings.IsSuggestPreReleaseUpdatesActive
@@ -30,6 +31,7 @@ public static class AutoUpdateController
             AutoUpdater.RunUpdateAsAdmin = false;
             AutoUpdater.ReportErrors = reportErrors;
             AutoUpdater.ShowSkipButton = false;
+            AutoUpdater.TopMost = true;
             AutoUpdater.ApplicationExitEvent += AutoUpdaterApplicationExit;
         }
         catch (HttpRequestException e)
@@ -46,6 +48,7 @@ public static class AutoUpdateController
 
     private static void AutoUpdaterApplicationExit()
     {
+        AutoUpdater.ApplicationExitEvent -= AutoUpdaterApplicationExit;
         Application.Current.Shutdown();
     }
 

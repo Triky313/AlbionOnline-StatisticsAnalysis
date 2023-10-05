@@ -50,7 +50,7 @@ public enum OperationCodes
     ActionBuildingChangeSettings,
     HarvestStart,
     HarvestCancel,
-    TakeSilver = 49, // map[0:638028282819317254 1:442 2:2 3:3 4:530000 5:[1571] 253:48] 
+    TakeSilver = 48, // map[0:638028282819317254 1:442 2:2 3:3 4:530000 5:[1571] 253:48] 
     ActionOnBuildingStart,
     ActionOnBuildingCancel,
     InstallResourceStart,
@@ -188,6 +188,7 @@ public enum OperationCodes
     RequestGuildFinderRecommendedList,
     RegisterChatPeer,
     SendChatMessage,
+    SendModeratorMessage,
     JoinChatChannel,
     LeaveChatChannel,
     SendWhisperMessage,
@@ -236,7 +237,7 @@ public enum OperationCodes
     PartyChangeLootSetting,
     PartyMarkObject,
     PartySetRole,
-    GetGuildMotd,
+    SetGuildCodex,
     ExitEnterStart,
     ExitEnterCancel,
     QuestGiverRequest,
@@ -250,14 +251,11 @@ public enum OperationCodes
     GoldMarketCreateBuyOrder,
     GoldMarketGetInfos,
     GoldMarketCancelOrder,
-    Unknown246,
     GoldMarketGetAverageInfo,
-    SiegeCampClaimStart,
-    SiegeCampClaimCancel,
     TreasureChestUsingStart,
     TreasureChestUsingCancel,
     UseLootChest, // <- LootLogger: https://github.com/EmeraldKnight79/AO-DU-LootLogger/blob/b1ab099e0d82bdee0a87c153f4bbae324295656e/LootLogger/PacketHandler.cs#L68
-    UseShrine = 248,
+    UseShrine = 252,
     UseHellgateShrine,
     LaborerStartJob,
     LaborerTakeJobLoot,
@@ -266,10 +264,8 @@ public enum OperationCodes
     LaborerBuyItem,
     LaborerUpgrade,
     BuyPremium,
-    BuyTrial,
     RealEstateGetAuctionData,
     RealEstateBidOnAuction,
-    GetSiegeCampCooldown,
     FriendInvite,
     FriendAnswerInvitation,
     FriendCancelnvitation,
@@ -305,11 +301,10 @@ public enum OperationCodes
     UsePortalEntrance,
     ResetPortalBinding,
     QueryPortalBinding,
-    ClaimPaymentTransaction,
-    ReSpecBoost = 297,
+    ClaimPaymentTransaction = 298,
     ChangeUseFlag,
     ClientPerformanceStats,
-    ExtendedHardwareStats = 300, //  map[0:NVIDIA GeForce RTX 3090 1:AMD Ryzen 7 2700X Eight-Core Processor  2:Windows 10  (10.0.0) 64bit 3:3693 4:24348 5:16293 6:DE-DE 7:Custom 8:1746 10:-1 253:303]
+    ExtendedHardwareStats, //  map[0:NVIDIA GeForce RTX 3090 1:AMD Ryzen 7 2700X Eight-Core Processor  2:Windows 10  (10.0.0) 64bit 3:3693 4:24348 5:16293 6:DE-DE 7:Custom 8:1746 10:-1 253:303]
     ClientLowMemoryWarning,
     TerritoryClaimStart,
     TerritoryClaimCancel,
@@ -324,15 +319,15 @@ public enum OperationCodes
     SetAchievementsAutoLearn,
     DepositItemToGuildCurrency,
     WithdrawalItemFromGuildCurrency,
-    AuctionSellSpecificItemRequest = 315,
-    FishingStart = 316, // 0: EventId, 2: Used fishing rod
+    AuctionSellSpecificItemRequest = 316,
+    FishingStart = 317, // 0: EventId, 2: Used fishing rod
     FishingCasting,
     FishingCast,
     FishingCatch,
     FishingPull,
     FishingGiveLine,
-    FishingFinish = 322, // Request: 1: true is finished | false is failed - Response: Fishing finished
-    FishingCancel = 323, // Request: Fishing canceled
+    FishingFinish = 323, // Request: 1: true is finished | false is failed - Response: Fishing finished
+    FishingCancel = 324, // Request: Fishing canceled
     CreateGuildAccessTag,
     DeleteGuildAccessTag,
     RenameGuildAccessTag,
@@ -456,8 +451,8 @@ public enum OperationCodes
     ClaimPvpChallengeWeeklyReward,
     GetPersonalMightStats,
     GetGvgSeasonGuildParticipationTime,
-    AuctionGetLoadoutOffers = 446,
-    AuctionBuyLoadoutOffer = 447,
+    AuctionGetLoadoutOffers = 448,
+    AuctionBuyLoadoutOffer = 449,
     AccountDeletionRequest,
     AccountReactivationRequest,
     GetModerationEscalationDefiniton,
@@ -467,6 +462,7 @@ public enum OperationCodes
     EquipKillEmote,
     ChangeKillEmotePlayOnKnockdownSetting,
     BuyVanityConsumableCharges,
+    ReclaimVanityItem,
     GetArenaRankings,
     GetCrystalLeagueStatistics,
     SendOptionsLog,
@@ -489,5 +485,11 @@ public enum OperationCodes
     ApnsTokenToServer,
     DeathRecap,
     AuctionFetchFinishedAuctions,
-    AbortAuctionFetchFinishedAuctions
+    AbortAuctionFetchFinishedAuctions,
+    RequestLegendaryEvenHistory,
+    PartyAnswerStartHuntRequest,
+    HuntAbort,
+    UseFindTrackSpellFromItemPrepare,
+    InteractWithTrackStart,
+    InteractWithTrackCancel
 }
