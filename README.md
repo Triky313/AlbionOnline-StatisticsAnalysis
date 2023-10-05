@@ -1,14 +1,15 @@
 AlbionOnline - Statistics Analysis
 ===================
-[![Github All Releases](https://img.shields.io/github/v/release/Triky313/AlbionOnline-StatisticsAnalysis)](https://github.com/Triky313/AlbionOnline-StatisticsAnalysis/releases)
-[![Github All Releases](https://img.shields.io/github/downloads/Triky313/AlbionOnline-StatisticsAnalysis/total.svg)](https://github.com/Triky313/AlbionOnline-StatisticsAnalysis/releases) 
-[![CodeFactor](https://www.codefactor.io/repository/github/triky313/albiononline-statisticsanalysis/badge/main)](https://www.codefactor.io/repository/github/triky313/albiononline-statisticsanalysis/overview/main)
-[![Build + Tests](https://github.com/Triky313/AlbionOnline-StatisticsAnalysis/actions/workflows/pr-build-and-unit-tests.yml/badge.svg)](https://github.com/Triky313/AlbionOnline-StatisticsAnalysis/actions/workflows/dotnet-desktop.yml)
-![GitHub commits since latest release (by date)](https://img.shields.io/github/commits-since/Triky313/AlbionOnline-StatisticsAnalysis/latest?color=AF3B7F)
-[![GitHub issues](https://img.shields.io/github/issues/Triky313/AlbionOnline-StatisticsAnalysis)](https://github.com/Triky313/AlbionOnline-StatisticsAnalysis/issues)
-[![Discord](https://img.shields.io/discord/772406813438115891?color=%237289da&label=Discord&logo=discord&logoColor=%237289da&style=flat)](https://discord.gg/Wv5RWehbrU)
-[![Donate](https://img.shields.io/badge/paypal-donate-1e477a)](https://www.paypal.com/donate/?hosted_button_id=N6T3CWXYNGHKC)
-[![Support me on Patreon](https://img.shields.io/endpoint.svg?url=https%3A%2F%2Fshieldsio-patreon.vercel.app%2Fapi%3Fusername%3DTriky313%26type%3Dpatrons&style=flat)](https://patreon.com/Triky313)
+[![GitHub release (with filter)](https://img.shields.io/github/v/release/Triky313/AlbionOnline-StatisticsAnalysis?style=for-the-badge&labelColor=1E2126&color=0C637F)](https://github.com/Triky313/AlbionOnline-StatisticsAnalysis/releases)
+[![GitHub all releases downloads](https://img.shields.io/github/downloads/Triky313/AlbionOnline-StatisticsAnalysis/total?style=for-the-badge&labelColor=1E2126&color=EF476F)
+](https://github.com/Triky313/AlbionOnline-StatisticsAnalysis/releases)
+[![Build + Tests Workflow Status (with event)](https://img.shields.io/github/actions/workflow/status/Triky313/AlbionOnline-StatisticsAnalysis/pr-build-and-unit-tests.yml?style=for-the-badge&label=%F0%9F%9B%A0%EF%B8%8F%20Build%20%2B%20Unit%20tests&labelColor=1E2126&color=09C3A5)](https://github.com/Triky313/AlbionOnline-StatisticsAnalysis/actions/workflows/pr-build-and-unit-tests.yml)
+![GitHub commits since latest release (by date)](https://img.shields.io/github/commits-since/Triky313/AlbionOnline-StatisticsAnalysis/latest?style=for-the-badge&labelColor=1E2126&color=09C3A5)
+[![GitHub issues](https://img.shields.io/github/issues/Triky313/AlbionOnline-StatisticsAnalysis?style=for-the-badge&labelColor=1E2126&color=FBAF69)](https://github.com/Triky313/AlbionOnline-StatisticsAnalysis/issues)
+[![CodeFactor](https://www.codefactor.io/repository/github/triky313/albiononline-statisticsanalysis/badge/main?style=for-the-badge&labelColor=1E2126&color=0CB0A9)](https://www.codefactor.io/repository/github/triky313/albiononline-statisticsanalysis/overview/main)
+[![Discord](https://img.shields.io/discord/772406813438115891?style=for-the-badge&logo=discord&logoColor=7289da&label=discord&labelColor=1E2126&color=7289da)](https://discord.gg/Wv5RWehbrU)
+[![Donate PAYPAL](https://img.shields.io/badge/paypal-donate-1e477a?style=for-the-badge&labelColor=1E2126&color=1e477a)](https://www.paypal.com/donate/?hosted_button_id=N6T3CWXYNGHKC)
+[![Support me on Patreon](https://img.shields.io/endpoint.svg?url=https%3A%2F%2Fshieldsio-patreon.vercel.app%2Fapi%3Fusername%3DTriky313%26type%3Dpatrons&style=for-the-badge)](https://patreon.com/Triky313)
 
 A tool to easily read auction house data with a loot logger, damage meter, dungeon tracker, dungeon entry timer, crafting calculator, map history and player information
 
