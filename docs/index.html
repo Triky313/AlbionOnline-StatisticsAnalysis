@@ -7,7 +7,8 @@
             font-family: Arial, sans-serif;
             margin: 0;
             padding: 0;
-            background-color: #f0f0f0;
+            color: #E9EDF1;
+            background-color: #1E2126;
         }
         .container {
             width: 80%;
@@ -16,37 +17,148 @@
         }
         .download-button {
             display: inline-block;
-            background-color: #4CAF50; 
-            border: none; 
-            color: white; 
+            background-color: #3498DB; 
+            border-style: solid;
+            border-width: 1px;
+            border-color: #63B0E3;
+            color: #E9EDF1;
             padding: 15px 32px; 
             text-align: center; 
             text-decoration: none; 
             display: inline-block; 
-            font-size: 16px; 
+            font-size: 18px;
+            font-weight:bold; 
             margin: 4px 2px; 
             cursor: pointer; 
         }
+        .download-button:hover {
+            background-color: #2280BF;
+            color: #E9EDF1;
+            border-style: solid;
+            border-width: 1px;
+            border-color: #3498DB;
+            margin: 3px 1px;
+            padding: 16px 33px 16px 32px;
+        }
+        .download-button:active {
+            background-color: #2280BF;
+            color: #E9EDF1;
+            border-style: solid;
+            border-width: 1px;
+            border-color: #3498DB;
+            margin: 4px 2px;
+            padding: 15px 32px;
+        }
+        h2 {
+            color: #CBD4DC;
+            margin: 10px 0px 0px 0px;
+        }
+        p {
+            color: #677683;
+            margin: 5px 0px 10px 0px;
+        }
     </style>
 </head>
+
 <body>
     <div class="container">
-        <h1>Albion Online Statistics Analysis</h1>
-        <p>Dieses Projekt bietet eine detaillierte Analyse der Statistiken von Albion Online.</p>
-        <a href="https://github.com/Triky313/AlbionOnline-StatisticsAnalysis/archive/refs/heads/main.zip" class="download-button">Download</a>
+    
+        <div style="display: flex; justify-content: left; align-items: center;">
+            <img src="https://github.com/Triky313/AlbionOnline-StatisticsAnalysis/raw/main/docs/images/sat-icon.png" height="50" style="margin-right: 0px;" />
+            <h1>Albion Online Statistics Analysis</h1>
+        </div>
+        <p>A tool to easily read auction house data with a loot logger, damage meter, dungeon tracker, dungeon entry timer, crafting calculator, map history and player information</p>
+        <p>Designed and programmed by Triky313</p>
+        <a href="" class="download-button">Statistics Analysis Tool - Download</a>
+        <ul>
+            <li>You need <b>Windows 10</b> or higher</li>
+            <li>Install .NET 7.0 Desktop Runtime (v7.0.9 or higher) <a href="https://dotnet.microsoft.com/en-us/download/dotnet/thank-you/runtime-desktop-7.0.9-windows-x64-installer">here</a> (To start the tool)</li>
+        </ul>
+    </div>
+
+    <div class="container">
+        <h1>Features</h1>
+
+        <h2>Header</h2>
+        <p>Next to the name of the tool, the selected server is displayed and whether the tool is completely active in tracking or not.</p>
+        <p>Additionally, there is information about the character you are playing with.</p>
+        <p>Below that the player himself and if available the party members are listed. The small icon next to the number of players can be clicked and you get a coma separated list of all players in the party in your clipboard.</p>
+        <p>On the right side you can see how long the tracking has been running.</p>
+        <img src="https://github.com/Triky313/AlbionOnline-StatisticsAnalysis/raw/main/docs/images/header.png">
+        <br>
+        <br>
+        <h2>Item search</h2>
+        <p>In the item search all items of the game are displayed. With a double click you can open the window of the item and get more information.</p>
+        <img src="https://github.com/Triky313/AlbionOnline-StatisticsAnalysis/raw/main/docs/images/itemsearch.png">
+        <br>
+        <br>
+        <h2>Logging</h2>
+        <p>In the logging tab, items collected by nearby players can be displayed. Fame, Silver and Faction Points can also be displayed here.</p>
+        <img src="https://github.com/Triky313/AlbionOnline-StatisticsAnalysis/raw/main/docs/images/logging.png">
+        <br>
+        <br>
+        <h2>Dungeons</h2>
+        <p>The Dungeon Tab displays Solo Dungeons, Group Dungeons, Avas, Mists, Mist Dungeons, Hellgates, Corrupted Dungeons and HCEs with lots of information. </p>
+        <img src="https://github.com/Triky313/AlbionOnline-StatisticsAnalysis/raw/main/docs/images/dungeons.png">
+        <br>
+        <br>
+        <h2>Damage Meter</h2>
+        <p>The Damage Meter shows the damage and healing of you and players in your party. You can also take snapshots of your damage meter so you don't lose them.</p>
+        <img src="https://github.com/Triky313/AlbionOnline-StatisticsAnalysis/raw/main/docs/images/damage_meter.png">
+        <br>
+        <br>
+        <h2>Trade Monitoring</h2>
+        <p>The Trade Monitoring tab shows you sold and bought items that you have received by mail in the game or traded directly in the market. Additionally, statistics about the trades are displayed. You can also create manual entries.</p>
+        <img src="https://github.com/Triky313/AlbionOnline-StatisticsAnalysis/raw/main/docs/images/trade_monitoring.png">
+        <br>
+        <br>
+        <h2>Gathering</h2>
+        <p>The Gathering Tab shows you information about your gathered resources. Fishing is also displayed.</p>
+        <img src="https://github.com/Triky313/AlbionOnline-StatisticsAnalysis/raw/main/docs/images/gathering.png">
+        <br>
+        <br>
+        <h2>Party Builder</h2>
+        <p>The Party Builder shows you the IP of your character and your party members. Items of party members can be updated when you call the values of the player.</p>
+        <img src="https://github.com/Triky313/AlbionOnline-StatisticsAnalysis/raw/main/docs/images/party_builder.png">
+        <br>
+        <br>
+        <h2>Storage History</h2>
+        <p>When you open the chests in the bank, in the hideout or on your islands, the contents that were present at that time are saved and displayed in the history.</p>
+        <img src="https://github.com/Triky313/AlbionOnline-StatisticsAnalysis/raw/main/docs/images/storage_history.png">
+        <br>
+        <br>
+        <h2>Map History</h2>
+        <p>In the Map History you can see the maps you have entered. Sorted from top to bottom they are displayed.</p>
+        <img src="https://github.com/Triky313/AlbionOnline-StatisticsAnalysis/raw/main/docs/images/map_history.png">
+        <br>
+        <br>
+        <h2>Player Information</h2>
+        <p>Here player information can be loaded from the Albion Online servers.</p>
+        <img src="https://github.com/Triky313/AlbionOnline-StatisticsAnalysis/raw/main/docs/images/player_info.png">
+        <br>
+        <br>
+        <h3>The features mentioned above are the most important ones, but there are a lot of other features just waiting to be tried out.</h3>
+    </div>
+
+    <div class="container">
+        <a href="https://github.com/Triky313/AlbionOnline-StatisticsAnalysis"><h2>Github Repository</h2></a>
     </div>
 </body>
 </html>
 
 <script>
- fetch('https://api.github.com/repos/Triky313/AlbionOnline-StatisticsAnalysis/releases/latest')
-    .then(response => response.json())
-    .then(data => {
-        let zipAsset = data.assets.find(asset => asset.name.startsWith('StatisticsAnalysis-AlbionOnline-v') && asset.name.endsWith('.zip'));
-        if (zipAsset) {
-            let downloadButton = document.querySelector('.download-button');
-            downloadButton.href = zipAsset.browser_download_url;
-        }
-    })
+    fetch('https://api.github.com/repos/Triky313/AlbionOnline-StatisticsAnalysis/releases/latest')
+        .then(response => response.json())
+        .then(data => {
+            let zipAsset = data.assets.find(asset => asset.name.startsWith('StatisticsAnalysis-AlbionOnline-v') && asset.name.endsWith('.zip'));
+            if (zipAsset) {
+                let downloadButton = document.querySelector('.download-button');
+                downloadButton.href = zipAsset.browser_download_url;
+                // Extrahieren Sie die Version aus dem Namen der Asset-Datei
+                let version = zipAsset.name.match(/v(\d+\.\d+\.\d+)-x64/)[1];
+                // Aktualisieren Sie den Text des Buttons, um die Version anzuzeigen
+                downloadButton.textContent = 'Statistics Analysis Tool v' + version + ' - Download';
+            }
+        })
     .catch(error => console.error(error));
 </script>
