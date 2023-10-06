@@ -35,8 +35,11 @@ Unzip the `.zip` file and start `StatisticsAnalysisTool.exe` with a double click
 [Debate](https://forum.albiononline.com/index.php/Thread/124819-Regarding-3rd-Party-Software-and-Network-Traffic-aka-do-not-cheat-Update-16-45-U/) (Original link),  [Clarified](https://forum.albiononline.com/index.php/Thread/153238-DPS-METER/#:~:text=As%20noted%20on%20the%20GitHub,to%20use%20it%20without%20concern.) (2023 short CM answer)  
 
 ✅ Only monitors
+
 ✅ Does not modify our game client
+
 ✅ Does not track players that are not within the player's view
+
 ✅ Does not have an overlay to the game
 
 ## FAQ
@@ -62,40 +65,10 @@ An internet connection with at least 1M/bit (256KB/s) download rate.
 Yes, but not all features are available. 
 It is only important that you set the game server from automatic to one of your choice in the settings. Otherwise the tool does not know for which server it should load data.
 
-## INFORMATION
+## WIKI
+More information can be found on the [Wiki](https://github.com/Triky313/AlbionOnline-StatisticsAnalysis/wiki) pages.
 
-### Where does the price information come from?
-From this project: [https://www.albion-online-data.com/](https://www.albion-online-data.com/)
-
-### I want more current prices!
-Download the [Albion online data client](https://www.albion-online-data.com/) and scan the auction houses.
-
-
-## CONTRIBUTING
-
-### Problem or question?
-Create an issue [here](https://github.com/Triky313/AlbionOnline-StatisticsAnalysis/issues).
-
-### Language translation
-
-#### How it works
-To add your language, you only need to create or adapt a file in the `Languages` directory.
-The file must always have the language code. 
-
-Example:
-```
-en-US.xml
-```
-
-You can find language codes here: https://www.andiamo.co.uk/resources/iso-language-codes/
-
-#### Create file
-Copy the en-US file and change everything, then all APP-CODES should be available. 
-```
-<translation name = "EVERY_3_DAYS">HERE YOUR TEXT</translation>
-```
-
-## This website
+## Tool website
 [triky313.github.io/AlbionOnline-StatisticsAnalysis](https://triky313.github.io/AlbionOnline-StatisticsAnalysis/)
 
 ## DONATIONS
