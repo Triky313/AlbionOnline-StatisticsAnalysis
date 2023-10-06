@@ -1,14 +1,15 @@
 AlbionOnline - Statistics Analysis
 ===================
-[![Github All Releases](https://img.shields.io/github/v/release/Triky313/AlbionOnline-StatisticsAnalysis)](https://github.com/Triky313/AlbionOnline-StatisticsAnalysis/releases)
-[![Github All Releases](https://img.shields.io/github/downloads/Triky313/AlbionOnline-StatisticsAnalysis/total.svg)](https://github.com/Triky313/AlbionOnline-StatisticsAnalysis/releases) 
-[![CodeFactor](https://www.codefactor.io/repository/github/triky313/albiononline-statisticsanalysis/badge/main)](https://www.codefactor.io/repository/github/triky313/albiononline-statisticsanalysis/overview/main)
-[![Build + Tests](https://github.com/Triky313/AlbionOnline-StatisticsAnalysis/actions/workflows/pr-build-and-unit-tests.yml/badge.svg)](https://github.com/Triky313/AlbionOnline-StatisticsAnalysis/actions/workflows/dotnet-desktop.yml)
-![GitHub commits since latest release (by date)](https://img.shields.io/github/commits-since/Triky313/AlbionOnline-StatisticsAnalysis/latest?color=AF3B7F)
-[![GitHub issues](https://img.shields.io/github/issues/Triky313/AlbionOnline-StatisticsAnalysis)](https://github.com/Triky313/AlbionOnline-StatisticsAnalysis/issues)
-[![Discord](https://img.shields.io/discord/772406813438115891?color=%237289da&label=Discord&logo=discord&logoColor=%237289da&style=flat)](https://discord.gg/Wv5RWehbrU)
-[![Donate](https://img.shields.io/badge/paypal-donate-1e477a)](https://www.paypal.com/donate/?hosted_button_id=N6T3CWXYNGHKC)
-[![Support me on Patreon](https://img.shields.io/endpoint.svg?url=https%3A%2F%2Fshieldsio-patreon.vercel.app%2Fapi%3Fusername%3DTriky313%26type%3Dpatrons&style=flat)](https://patreon.com/Triky313)
+[![GitHub release (with filter)](https://img.shields.io/github/v/release/Triky313/AlbionOnline-StatisticsAnalysis?style=for-the-badge&labelColor=1E2126&color=0C637F)](https://github.com/Triky313/AlbionOnline-StatisticsAnalysis/releases)
+[![GitHub all releases downloads](https://img.shields.io/github/downloads/Triky313/AlbionOnline-StatisticsAnalysis/total?style=for-the-badge&labelColor=1E2126&color=EF476F)
+](https://github.com/Triky313/AlbionOnline-StatisticsAnalysis/releases)
+[![Build + Tests Workflow Status (with event)](https://img.shields.io/github/actions/workflow/status/Triky313/AlbionOnline-StatisticsAnalysis/pr-build-and-unit-tests.yml?style=for-the-badge&label=%F0%9F%9B%A0%EF%B8%8F%20Build%20%2B%20Unit%20tests&labelColor=1E2126&color=09C3A5)](https://github.com/Triky313/AlbionOnline-StatisticsAnalysis/actions/workflows/pr-build-and-unit-tests.yml)
+![GitHub commits since latest release (by date)](https://img.shields.io/github/commits-since/Triky313/AlbionOnline-StatisticsAnalysis/latest?style=for-the-badge&labelColor=1E2126&color=09C3A5)
+[![GitHub issues](https://img.shields.io/github/issues/Triky313/AlbionOnline-StatisticsAnalysis?style=for-the-badge&labelColor=1E2126&color=FBAF69)](https://github.com/Triky313/AlbionOnline-StatisticsAnalysis/issues)
+[![CodeFactor](https://www.codefactor.io/repository/github/triky313/albiononline-statisticsanalysis/badge/main?style=for-the-badge&labelColor=1E2126&color=0CB0A9)](https://www.codefactor.io/repository/github/triky313/albiononline-statisticsanalysis/overview/main)
+[![Discord](https://img.shields.io/discord/772406813438115891?style=for-the-badge&logo=discord&logoColor=7289da&label=discord&labelColor=1E2126&color=7289da)](https://discord.gg/Wv5RWehbrU)
+[![Donate PAYPAL](https://img.shields.io/badge/paypal-donate-1e477a?style=for-the-badge&labelColor=1E2126&color=1e477a)](https://www.paypal.com/donate/?hosted_button_id=N6T3CWXYNGHKC)
+[![Support me on Patreon](https://img.shields.io/endpoint.svg?url=https%3A%2F%2Fshieldsio-patreon.vercel.app%2Fapi%3Fusername%3DTriky313%26type%3Dpatrons&style=for-the-badge)](https://patreon.com/Triky313)
 
 A tool to easily read auction house data with a loot logger, damage meter, dungeon tracker, dungeon entry timer, crafting calculator, map history and player information
 
@@ -34,8 +35,11 @@ Unzip the `.zip` file and start `StatisticsAnalysisTool.exe` with a double click
 [Debate](https://forum.albiononline.com/index.php/Thread/124819-Regarding-3rd-Party-Software-and-Network-Traffic-aka-do-not-cheat-Update-16-45-U/) (Original link),  [Clarified](https://forum.albiononline.com/index.php/Thread/153238-DPS-METER/#:~:text=As%20noted%20on%20the%20GitHub,to%20use%20it%20without%20concern.) (2023 short CM answer)  
 
 ✅ Only monitors
+
 ✅ Does not modify our game client
+
 ✅ Does not track players that are not within the player's view
+
 ✅ Does not have an overlay to the game
 
 ## FAQ
@@ -61,40 +65,10 @@ An internet connection with at least 1M/bit (256KB/s) download rate.
 Yes, but not all features are available. 
 It is only important that you set the game server from automatic to one of your choice in the settings. Otherwise the tool does not know for which server it should load data.
 
-## INFORMATION
+## WIKI
+More information can be found on the [Wiki](https://github.com/Triky313/AlbionOnline-StatisticsAnalysis/wiki) pages.
 
-### Where does the price information come from?
-From this project: [https://www.albion-online-data.com/](https://www.albion-online-data.com/)
-
-### I want more current prices!
-Download the [Albion online data client](https://www.albion-online-data.com/) and scan the auction houses.
-
-
-## CONTRIBUTING
-
-### Problem or question?
-Create an issue [here](https://github.com/Triky313/AlbionOnline-StatisticsAnalysis/issues).
-
-### Language translation
-
-#### How it works
-To add your language, you only need to create or adapt a file in the `Languages` directory.
-The file must always have the language code. 
-
-Example:
-```
-en-US.xml
-```
-
-You can find language codes here: https://www.andiamo.co.uk/resources/iso-language-codes/
-
-#### Create file
-Copy the en-US file and change everything, then all APP-CODES should be available. 
-```
-<translation name = "EVERY_3_DAYS">HERE YOUR TEXT</translation>
-```
-
-## This website
+## Tool website
 [triky313.github.io/AlbionOnline-StatisticsAnalysis](https://triky313.github.io/AlbionOnline-StatisticsAnalysis/)
 
 ## DONATIONS
