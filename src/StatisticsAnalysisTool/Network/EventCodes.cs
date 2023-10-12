@@ -554,5 +554,5 @@ public enum EventCodes
     InteractWithTrackFinished,
     NewDynamicCompound,
     LegendaryItemDestroyed,
-    AttunementInfo
+    AttunementInfo //  map[0:T8_MAIN_AXE@4 1:0 2:180810 3:1000000000 252:554] 0: UniqueItemName, 2: GainedAttunement, 3: MaximalAttunementValue
 }

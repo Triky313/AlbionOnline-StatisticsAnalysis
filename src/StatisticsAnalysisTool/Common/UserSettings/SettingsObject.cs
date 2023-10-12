@@ -88,4 +88,8 @@ public class SettingsObject
     public double PartyBuilderMaximumBasicItemPower { get; set; } = 900;
     public string AnotherAppToStartPath { get; set; }
     public string MainGameFolderPath { get; set; } = string.Empty;
+    public bool IsKillDeathStatsVisible { get; set; } = true;
+    public bool IsLootedChestsStatsVisible { get; set; } = true;
+    public bool IsReSpecStatsVisible { get; set; } = true;
+    public bool IsRepairCostsStatsVisible { get; set; } = true;
 }

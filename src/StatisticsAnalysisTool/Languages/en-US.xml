@@ -764,4 +764,6 @@
 	<translation name="START_APPLICATION_AS_ADMINISTRATOR">Start application as administrator</translation>
 	<translation name="SELECT_SERVER_LOCATION">Select server location</translation>
 	<translation name="PLEASE_SELECT_A_SERVER_LOCATION">Please select a server location</translation>
+	<translation name="KILLS_DEATHS">Kills / Deaths</translation>
+	<translation name="REPAIR_COSTS">Repair costs</translation>
 </translations>
