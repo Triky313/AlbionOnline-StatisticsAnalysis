@@ -81,3 +81,7 @@ This project has existed since June 2019. Almost every week I put +10 hours into
 [PayPal - Triky313](https://www.paypal.com/donate/?hosted_button_id=N6T3CWXYNGHKC)
 
 <img src="https://user-images.githubusercontent.com/14247773/201472890-33a0ed70-7ef8-4804-aa84-46f0a84f3168.png" width="100" height="100" />
+
+## Contributors
+<!-- readme: contributors -start -->
+<!-- readme: contributors -end -->
