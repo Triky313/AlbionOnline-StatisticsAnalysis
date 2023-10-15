@@ -1,3 +1,4 @@
+using StatisticAnalysisTool.Extractor.Enums;
 using StatisticsAnalysisTool.Enumerations;
 using StatisticsAnalysisTool.Gathering;
 using StatisticsAnalysisTool.Models;
@@ -11,7 +12,7 @@ public class SettingsObject
     public string CurrentCultureIetfLanguageTag { get; set; }
     public int RefreshRate { get; set; } = 10000;
     public ServerLocation ServerLocation { get; set; } = 0; // 0: auto, 1: west, 2: east
-    public string PacketFilter { get; set; } = "(host 5.45.187 or host 5.188.125) and udp port 5056";
+    public ServerType ServerType { get; set; } = ServerType.Live; // 0: Live, 1: Staging, 2: Playground
     public string MainTrackingCharacterName { get; set; }
     public int BackupIntervalByDays { get; set; } = 7;
     public int MaximumNumberOfBackups { get; set; } = 5;
@@ -88,4 +89,8 @@ public class SettingsObject
     public double PartyBuilderMaximumBasicItemPower { get; set; } = 900;
     public string AnotherAppToStartPath { get; set; }
     public string MainGameFolderPath { get; set; } = string.Empty;
+    public bool IsKillDeathStatsVisible { get; set; } = true;
+    public bool IsLootedChestsStatsVisible { get; set; } = true;
+    public bool IsReSpecStatsVisible { get; set; } = true;
+    public bool IsRepairCostsStatsVisible { get; set; } = true;
 }

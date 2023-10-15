@@ -821,8 +821,7 @@ public class LootedChests : BaseViewModel
     }
 
     #endregion
-
-    public static string TranslationLootedChests => LanguageController.Translation("LOOTED_CHESTS");
+    
     public static string TranslationOpenWorld => LanguageController.Translation("OPEN_WORLD");
     public static string TranslationStaticDungeons => LanguageController.Translation("STATIC_DUNGEONS");
     public static string TranslationAvalonianRoads => LanguageController.Translation("AVALONIAN_ROADS");

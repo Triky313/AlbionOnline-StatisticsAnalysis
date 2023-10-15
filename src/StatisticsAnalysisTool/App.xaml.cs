@@ -1,10 +1,10 @@
 ﻿using Notification.Wpf;
 using Serilog;
 using Serilog.Events;
-using StatisticAnalysisTool.Extractor.Enums;
 using StatisticsAnalysisTool.Backup;
 using StatisticsAnalysisTool.Common;
 using StatisticsAnalysisTool.Common.UserSettings;
+using StatisticsAnalysisTool.Enumerations;
 using StatisticsAnalysisTool.GameFileData;
 using StatisticsAnalysisTool.Localization;
 using StatisticsAnalysisTool.Network.Manager;
@@ -17,7 +17,6 @@ using System.Reflection;
 using System.Runtime.InteropServices;
 using System.Windows;
 using System.Windows.Threading;
-using StatisticsAnalysisTool.Enumerations;
 
 namespace StatisticsAnalysisTool;
 
@@ -56,7 +55,7 @@ public partial class App
             Server.SetServerLocationWithDialogAsync();
         }
 
-        if (!await GameData.InitializeMainGameDataFilesAsync(ServerType.Live))
+        if (!await GameData.InitializeMainGameDataFilesAsync(SettingsController.CurrentSettings.ServerType))
         {
             _isEarlyShutdown = true;
             Current.Shutdown();

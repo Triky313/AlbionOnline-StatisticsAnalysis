@@ -43,7 +43,6 @@ public class SettingsWindowViewModel : BaseViewModel
     private SettingDataInformation _serverSelection;
     private ObservableCollection<SettingDataInformation> _server = new();
     private ObservableCollection<NotificationFilter> _notificationFilters = new();
-    private string _packetFilter;
     private short _playerSelectionWithSameNameInDb;
     private bool _isBackupNowButtonEnabled = true;
     private SettingDataInformation _backupIntervalByDaysSelection;
@@ -96,9 +95,6 @@ public class SettingsWindowViewModel : BaseViewModel
 
         // Info window
         ShowInfoWindowOnStartChecked = SettingsController.CurrentSettings.IsInfoWindowShownOnStart;
-
-        // Packet Filter
-        PacketFilter = SettingsController.CurrentSettings.PacketFilter;
 
         // Player Selection with same name in db
         PlayerSelectionWithSameNameInDb = SettingsController.CurrentSettings.ExactMatchPlayerNamesLineNumber;
@@ -163,7 +159,7 @@ public class SettingsWindowViewModel : BaseViewModel
         SettingsController.CurrentSettings.IsStorageHistoryNaviTabActive = TabVisibilities?.FirstOrDefault(x => x?.NavigationTabFilterType == NavigationTabFilterType.StorageHistory)?.IsSelected ?? true;
         SettingsController.CurrentSettings.IsMapHistoryNaviTabActive = TabVisibilities?.FirstOrDefault(x => x?.NavigationTabFilterType == NavigationTabFilterType.MapHistory)?.IsSelected ?? true;
         SettingsController.CurrentSettings.IsPlayerInformationNaviTabActive = TabVisibilities?.FirstOrDefault(x => x?.NavigationTabFilterType == NavigationTabFilterType.PlayerInformation)?.IsSelected ?? true;
-        
+
         mainWindowViewModel.DashboardTabVisibility = SettingsController.CurrentSettings.IsDashboardNaviTabActive.BoolToVisibility();
         mainWindowViewModel.ItemSearchTabVisibility = SettingsController.CurrentSettings.IsItemSearchNaviTabActive.BoolToVisibility();
         mainWindowViewModel.LoggingTabVisibility = SettingsController.CurrentSettings.IsLoggingNaviTabActive.BoolToVisibility();
@@ -548,16 +544,6 @@ public class SettingsWindowViewModel : BaseViewModel
         set
         {
             _server = value;
-            OnPropertyChanged();
-        }
-    }
-
-    public string PacketFilter
-    {
-        get => _packetFilter;
-        set
-        {
-            _packetFilter = value;
             OnPropertyChanged();
         }
     }

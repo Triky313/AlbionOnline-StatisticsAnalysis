@@ -761,4 +761,9 @@
 	<translation name="TRACKING_TOOL">Набор следопыта</translation>
 	<translation name="TOTAL_OVERVIEW">Общая статистика</translation>
 	<translation name="LAST_MONTH">Прошлый месяц</translation>
+	<translation name="START_APPLICATION_AS_ADMINISTRATOR">Запустите приложение от имени Администратора</translation>
+	<translation name="SELECT_SERVER_LOCATION">Выбор сервера</translation>
+	<translation name="PLEASE_SELECT_A_SERVER_LOCATION">Пожалуйста, выберите сервер</translation>
+	<translation name="KILLS_DEATHS">Убийства / Смерти</translation>
+	<translation name="REPAIR_COSTS">Затраты на ремонт</translation>
 </translations>

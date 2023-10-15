@@ -20,7 +20,6 @@
     <DataTemplate x:Key="LootedChestsTemplate" DataType="{x:Type models:LootedChests}">
         <Grid>
             <StackPanel Orientation="Vertical">
-                <TextBlock Text="{Binding TranslationLootedChests, FallbackValue=LOOTED_CHESTS}" FontSize="20" FontWeight="Bold" Foreground="{StaticResource SolidColorBrush.Text.1}" HorizontalAlignment="Center" />
                 <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
                     <StackPanel Orientation="Vertical" HorizontalAlignment="Center" Margin="0,77,0,0">
                         <StackPanel Orientation="Vertical">

@@ -125,10 +125,14 @@ public class LootController : ILootController
     private bool IsLastLootedItem(Loot loot)
     {
         var lastItem = _lastLootedItem;
-        return lastItem?.ItemIndex == loot?.ItemIndex
-               && lastItem?.Quantity == loot?.Quantity
-               && lastItem?.LootedByName == loot?.LootedByName
-               && lastItem?.LootedFromName == loot?.LootedFromName;
+
+        double secondsDifference = Math.Abs((lastItem.UtcPickupTime - (loot?.UtcPickupTime ?? DateTime.MinValue)).TotalSeconds);
+        var isSameTimeArea = secondsDifference <= 2;
+
+        return lastItem.ItemIndex == loot?.ItemIndex
+               && lastItem.Quantity == loot.Quantity
+               && lastItem.LootedFromName == loot.LootedFromName
+               && isSameTimeArea;
     }
 
     public void ClearLootLogger()
