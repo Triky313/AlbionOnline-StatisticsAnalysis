@@ -213,15 +213,15 @@ This project has existed since June 2019. Almost every week I put +10 hours into
             <br />
             <sub><b>Josh Stout</b></sub>
         </a>
-    </td></tr>
-<tr>
+    </td>
     <td align="center">
         <a href="https://github.com/Kukkimonsuta">
             <img src="https://avatars.githubusercontent.com/u/737093?v=4" width="50;" alt="Kukkimonsuta"/>
             <br />
             <sub><b>Lukáš Novotný</b></sub>
         </a>
-    </td>
+    </td></tr>
+<tr>
     <td align="center">
         <a href="https://github.com/Dibort">
             <img src="https://avatars.githubusercontent.com/u/7732931?v=4" width="50;" alt="Dibort"/>
