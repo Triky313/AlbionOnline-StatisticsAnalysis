@@ -88,42 +88,42 @@ This project has existed since June 2019. Almost every week I put +10 hours into
 <tr>
     <td align="center">
         <a href="https://github.com/Triky313">
-            <img src="https://avatars.githubusercontent.com/u/14247773?v=4" width="100;" alt="Triky313"/>
+            <img src="https://avatars.githubusercontent.com/u/14247773?v=4" width="50;" alt="Triky313"/>
             <br />
             <sub><b>Aaron Schultz</b></sub>
         </a>
     </td>
     <td align="center">
         <a href="https://github.com/arabinos">
-            <img src="https://avatars.githubusercontent.com/u/115917138?v=4" width="100;" alt="arabinos"/>
+            <img src="https://avatars.githubusercontent.com/u/115917138?v=4" width="50;" alt="arabinos"/>
             <br />
             <sub><b>Marcin Wieczorek</b></sub>
         </a>
     </td>
     <td align="center">
         <a href="https://github.com/bluenyx">
-            <img src="https://avatars.githubusercontent.com/u/96876?v=4" width="100;" alt="bluenyx"/>
+            <img src="https://avatars.githubusercontent.com/u/96876?v=4" width="50;" alt="bluenyx"/>
             <br />
             <sub><b>SeoheeKhang</b></sub>
         </a>
     </td>
     <td align="center">
         <a href="https://github.com/isnullibi">
-            <img src="https://avatars.githubusercontent.com/u/100205074?v=4" width="100;" alt="isnullibi"/>
+            <img src="https://avatars.githubusercontent.com/u/100205074?v=4" width="50;" alt="isnullibi"/>
             <br />
             <sub><b>Null</b></sub>
         </a>
     </td>
     <td align="center">
         <a href="https://github.com/ewersonmssilva">
-            <img src="https://avatars.githubusercontent.com/u/26557729?v=4" width="100;" alt="ewersonmssilva"/>
+            <img src="https://avatars.githubusercontent.com/u/26557729?v=4" width="50;" alt="ewersonmssilva"/>
             <br />
             <sub><b>Ewerson</b></sub>
         </a>
     </td>
     <td align="center">
         <a href="https://github.com/NuberuSH">
-            <img src="https://avatars.githubusercontent.com/u/45773746?v=4" width="100;" alt="NuberuSH"/>
+            <img src="https://avatars.githubusercontent.com/u/45773746?v=4" width="50;" alt="NuberuSH"/>
             <br />
             <sub><b>Dani Tallón</b></sub>
         </a>
@@ -131,42 +131,42 @@ This project has existed since June 2019. Almost every week I put +10 hours into
 <tr>
     <td align="center">
         <a href="https://github.com/kkkingim">
-            <img src="https://avatars.githubusercontent.com/u/22095496?v=4" width="100;" alt="kkkingim"/>
+            <img src="https://avatars.githubusercontent.com/u/22095496?v=4" width="50;" alt="kkkingim"/>
             <br />
             <sub><b>Vagitus</b></sub>
         </a>
     </td>
     <td align="center">
         <a href="https://github.com/Faeeth">
-            <img src="https://avatars.githubusercontent.com/u/37340968?v=4" width="100;" alt="Faeeth"/>
+            <img src="https://avatars.githubusercontent.com/u/37340968?v=4" width="50;" alt="Faeeth"/>
             <br />
             <sub><b>Faeeth</b></sub>
         </a>
     </td>
     <td align="center">
         <a href="https://github.com/Me1onSeed">
-            <img src="https://avatars.githubusercontent.com/u/81557800?v=4" width="100;" alt="Me1onSeed"/>
+            <img src="https://avatars.githubusercontent.com/u/81557800?v=4" width="50;" alt="Me1onSeed"/>
             <br />
             <sub><b>瓜子</b></sub>
         </a>
     </td>
     <td align="center">
         <a href="https://github.com/PurpleGale">
-            <img src="https://avatars.githubusercontent.com/u/90148755?v=4" width="100;" alt="PurpleGale"/>
+            <img src="https://avatars.githubusercontent.com/u/90148755?v=4" width="50;" alt="PurpleGale"/>
             <br />
             <sub><b>Null</b></sub>
         </a>
     </td>
     <td align="center">
         <a href="https://github.com/taco0603">
-            <img src="https://avatars.githubusercontent.com/u/19679024?v=4" width="100;" alt="taco0603"/>
+            <img src="https://avatars.githubusercontent.com/u/19679024?v=4" width="50;" alt="taco0603"/>
             <br />
             <sub><b>Null</b></sub>
         </a>
     </td>
     <td align="center">
         <a href="https://github.com/1027603857">
-            <img src="https://avatars.githubusercontent.com/u/38471268?v=4" width="100;" alt="1027603857"/>
+            <img src="https://avatars.githubusercontent.com/u/38471268?v=4" width="50;" alt="1027603857"/>
             <br />
             <sub><b>Null</b></sub>
         </a>
@@ -174,42 +174,42 @@ This project has existed since June 2019. Almost every week I put +10 hours into
 <tr>
     <td align="center">
         <a href="https://github.com/acelan">
-            <img src="https://avatars.githubusercontent.com/u/71646?v=4" width="100;" alt="acelan"/>
+            <img src="https://avatars.githubusercontent.com/u/71646?v=4" width="50;" alt="acelan"/>
             <br />
             <sub><b>AceLan Kao</b></sub>
         </a>
     </td>
     <td align="center">
         <a href="https://github.com/ivanmaxlogiudice">
-            <img src="https://avatars.githubusercontent.com/u/3275920?v=4" width="100;" alt="ivanmaxlogiudice"/>
+            <img src="https://avatars.githubusercontent.com/u/3275920?v=4" width="50;" alt="ivanmaxlogiudice"/>
             <br />
             <sub><b>Iván Máximiliano, Lo Giudice</b></sub>
         </a>
     </td>
     <td align="center">
         <a href="https://github.com/devsurimlee">
-            <img src="https://avatars.githubusercontent.com/u/53467957?v=4" width="100;" alt="devsurimlee"/>
+            <img src="https://avatars.githubusercontent.com/u/53467957?v=4" width="50;" alt="devsurimlee"/>
             <br />
             <sub><b>Surim Lee</b></sub>
         </a>
     </td>
     <td align="center">
         <a href="https://github.com/lx78WyY0J5">
-            <img src="https://avatars.githubusercontent.com/u/84735589?v=4" width="100;" alt="lx78WyY0J5"/>
+            <img src="https://avatars.githubusercontent.com/u/84735589?v=4" width="50;" alt="lx78WyY0J5"/>
             <br />
             <sub><b>Null</b></sub>
         </a>
     </td>
     <td align="center">
         <a href="https://github.com/rdayltx">
-            <img src="https://avatars.githubusercontent.com/u/82792422?v=4" width="100;" alt="rdayltx"/>
+            <img src="https://avatars.githubusercontent.com/u/82792422?v=4" width="50;" alt="rdayltx"/>
             <br />
             <sub><b>DayLight</b></sub>
         </a>
     </td>
     <td align="center">
         <a href="https://github.com/zenion">
-            <img src="https://avatars.githubusercontent.com/u/4081449?v=4" width="100;" alt="zenion"/>
+            <img src="https://avatars.githubusercontent.com/u/4081449?v=4" width="50;" alt="zenion"/>
             <br />
             <sub><b>Josh Stout</b></sub>
         </a>
@@ -217,28 +217,28 @@ This project has existed since June 2019. Almost every week I put +10 hours into
 <tr>
     <td align="center">
         <a href="https://github.com/Kukkimonsuta">
-            <img src="https://avatars.githubusercontent.com/u/737093?v=4" width="100;" alt="Kukkimonsuta"/>
+            <img src="https://avatars.githubusercontent.com/u/737093?v=4" width="50;" alt="Kukkimonsuta"/>
             <br />
             <sub><b>Lukáš Novotný</b></sub>
         </a>
     </td>
     <td align="center">
         <a href="https://github.com/Dibort">
-            <img src="https://avatars.githubusercontent.com/u/7732931?v=4" width="100;" alt="Dibort"/>
+            <img src="https://avatars.githubusercontent.com/u/7732931?v=4" width="50;" alt="Dibort"/>
             <br />
             <sub><b>Null</b></sub>
         </a>
     </td>
     <td align="center">
         <a href="https://github.com/dyj0816">
-            <img src="https://avatars.githubusercontent.com/u/40786887?v=4" width="100;" alt="dyj0816"/>
+            <img src="https://avatars.githubusercontent.com/u/40786887?v=4" width="50;" alt="dyj0816"/>
             <br />
             <sub><b>Redmeier</b></sub>
         </a>
     </td>
     <td align="center">
         <a href="https://github.com/mleen4">
-            <img src="https://avatars.githubusercontent.com/u/63968148?v=4" width="100;" alt="mleen4"/>
+            <img src="https://avatars.githubusercontent.com/u/63968148?v=4" width="50;" alt="mleen4"/>
             <br />
             <sub><b>Michael</b></sub>
         </a>
