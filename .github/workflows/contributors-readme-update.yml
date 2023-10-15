@@ -1,5 +1,7 @@
+name: 💻 Contributor update
+
 on:
-    push:
+    workflow_dispatch:
         branches:
             - main
 
