@@ -1,3 +1,5 @@
+name: 💻 Contributor update
+
 on:
     workflow_dispatch:
     push:
