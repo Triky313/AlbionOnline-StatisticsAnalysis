@@ -13,7 +13,6 @@ public class SettingsObject
     public int RefreshRate { get; set; } = 10000;
     public ServerLocation ServerLocation { get; set; } = 0; // 0: auto, 1: west, 2: east
     public ServerType ServerType { get; set; } = ServerType.Live; // 0: Live, 1: Staging, 2: Playground
-    public string PacketFilter { get; set; } = "(host 5.45.187 or host 5.188.125) and udp port 5056";
     public string MainTrackingCharacterName { get; set; }
     public int BackupIntervalByDays { get; set; } = 7;
     public int MaximumNumberOfBackups { get; set; } = 5;
