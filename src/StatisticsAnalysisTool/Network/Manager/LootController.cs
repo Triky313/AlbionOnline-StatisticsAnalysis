@@ -126,6 +126,11 @@ public class LootController : ILootController
     {
         var lastItem = _lastLootedItem;
 
+        if (_lastLootedItem == null)
+        {
+            return false;
+        }
+
         double secondsDifference = Math.Abs((lastItem.UtcPickupTime - (loot?.UtcPickupTime ?? DateTime.MinValue)).TotalSeconds);
         var isSameTimeArea = secondsDifference <= 2;
 

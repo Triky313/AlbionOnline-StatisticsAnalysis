@@ -46,26 +46,26 @@ public class NewCharacterEvent
                 Position = (float[]) position;
             }
                 
-            if (parameters.ContainsKey(34))
+            if (parameters.ContainsKey(37))
             {
-                var valueType = parameters[34].GetType();
+                var valueType = parameters[37].GetType();
                 switch (valueType.IsArray)
                 {
                     case true when typeof(byte[]).Name == valueType.Name:
                     {
-                        var values = ((byte[])parameters[34]).ToDictionary();
+                        var values = ((byte[])parameters[37]).ToDictionary();
                         CharacterEquipment = GetEquipment(values);
                         break;
                     }
                     case true when typeof(short[]).Name == valueType.Name:
                     {
-                        var values = ((short[])parameters[34]).ToDictionary();
+                        var values = ((short[])parameters[37]).ToDictionary();
                         CharacterEquipment = GetEquipment(values);
                         break;
                     }
                     case true when typeof(int[]).Name == valueType.Name:
                     {
-                        var values = ((int[])parameters[34]).ToDictionary();
+                        var values = ((int[])parameters[37]).ToDictionary();
                         CharacterEquipment = GetEquipment(values);
                         break;
                     }

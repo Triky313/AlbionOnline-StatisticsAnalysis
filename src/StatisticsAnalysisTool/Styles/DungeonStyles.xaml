@@ -2586,7 +2586,7 @@
 
                             <StackPanel Orientation="Vertical">
                                 <StackPanel Orientation="Horizontal" Height="24">
-                                    <Label Width="150" VerticalAlignment="Center" Foreground="{StaticResource SolidColorBrush.Text.1}">
+                                    <Label Width="180" VerticalAlignment="Center" Foreground="{StaticResource SolidColorBrush.Text.1}">
                                         <Label.Content>
                                             <TextBlock>
                                                 <TextBlock.Text>
@@ -2604,7 +2604,7 @@
                                            Foreground="{StaticResource SolidColorBrush.Text.1}" VerticalAlignment="Center" />
                                 </StackPanel>
                                 <StackPanel Orientation="Horizontal">
-                                    <StackPanel Orientation="Vertical" Margin="0,2" Width="150">
+                                    <StackPanel Orientation="Vertical" Margin="0,2" Width="180">
                                         <!-- Fame -->
                                         <ContentPresenter ContentTemplate="{StaticResource DungeonFragment.Fame.Template}" Content="{Binding}" />
 
@@ -2630,7 +2630,7 @@
                                         </StackPanel>
                                     </StackPanel>
 
-                                    <StackPanel Orientation="Vertical" Margin="0,2" Width="150">
+                                    <StackPanel Orientation="Vertical" Margin="0,2" Width="180">
                                         <!-- Might -->
                                         <DockPanel Height="16" Visibility="{Binding MightFavorVisibility, IsAsync=True, FallbackValue=Collapsed}">
                                             <Grid HorizontalAlignment="Center" Width="20" Margin="0,0,2,0" VerticalAlignment="Center" ToolTip="{Binding TranslationMight, FallbackValue=MIGHT}">
@@ -2770,7 +2770,7 @@
 
                             <StackPanel Orientation="Vertical">
                                 <StackPanel Orientation="Horizontal" Height="24">
-                                    <Label Width="150" VerticalAlignment="Center" Foreground="{StaticResource SolidColorBrush.Text.1}">
+                                    <Label Width="180" VerticalAlignment="Center" Foreground="{StaticResource SolidColorBrush.Text.1}">
                                         <Label.Content>
                                             <TextBlock>
                                                 <TextBlock.Text>
@@ -2789,7 +2789,7 @@
                                            Foreground="{StaticResource SolidColorBrush.Dungeon.Mode.HellGate.1}" VerticalAlignment="Center" />
                                 </StackPanel>
                                 <StackPanel Orientation="Horizontal">
-                                    <StackPanel Orientation="Vertical" Margin="0,2" Width="150">
+                                    <StackPanel Orientation="Vertical" Margin="0,2" Width="180">
                                         <!-- Fame -->
                                         <ContentPresenter ContentTemplate="{StaticResource DungeonFragment.Fame.Template}" Content="{Binding}" />
 
@@ -2816,7 +2816,7 @@
                                         </StackPanel>
                                     </StackPanel>
 
-                                    <StackPanel Orientation="Vertical" Margin="0,2" Width="150">
+                                    <StackPanel Orientation="Vertical" Margin="0,2" Width="1580">
                                         <!-- Might -->
                                         <DockPanel Height="16" Visibility="{Binding MightFavorVisibility, IsAsync=True, FallbackValue=Collapsed}">
                                             <Grid HorizontalAlignment="Center" Width="20" Margin="0,0,2,0" VerticalAlignment="Center" ToolTip="{Binding TranslationMight, FallbackValue=MIGHT}">
@@ -2926,7 +2926,7 @@
 
                             <StackPanel Orientation="Vertical">
                                 <StackPanel Orientation="Horizontal" Height="24">
-                                    <Label Width="150" VerticalAlignment="Center" Foreground="{StaticResource SolidColorBrush.Text.1}">
+                                    <Label Width="180" VerticalAlignment="Center" Foreground="{StaticResource SolidColorBrush.Text.1}">
                                         <Label.Content>
                                             <TextBlock>
                                                 <TextBlock.Text>
@@ -2945,7 +2945,7 @@
                                            Foreground="{StaticResource SolidColorBrush.Dungeon.Mode.Corrupted.1}" VerticalAlignment="Center" />
                                 </StackPanel>
                                 <StackPanel Orientation="Horizontal">
-                                    <StackPanel Orientation="Vertical" Margin="0,2" Width="150">
+                                    <StackPanel Orientation="Vertical" Margin="0,2" Width="180">
                                         <!-- Fame -->
                                         <ContentPresenter ContentTemplate="{StaticResource DungeonFragment.Fame.Template}" Content="{Binding}" />
 
@@ -2972,7 +2972,7 @@
                                         </StackPanel>
                                     </StackPanel>
 
-                                    <StackPanel Orientation="Vertical" Margin="0,2" Width="150">
+                                    <StackPanel Orientation="Vertical" Margin="0,2" Width="180">
                                         <!-- Might -->
                                         <DockPanel Height="16" Visibility="{Binding MightFavorVisibility, IsAsync=True, FallbackValue=Collapsed}">
                                             <Grid HorizontalAlignment="Center" Width="20" Margin="0,0,2,0" VerticalAlignment="Center" ToolTip="{Binding TranslationMight, FallbackValue=MIGHT}">
@@ -3081,7 +3081,7 @@
 
                             <StackPanel Orientation="Vertical">
                                 <StackPanel Orientation="Horizontal" Height="24">
-                                    <Label Width="150" VerticalAlignment="Center" Foreground="{StaticResource SolidColorBrush.Text.1}">
+                                    <Label Width="180" VerticalAlignment="Center" Foreground="{StaticResource SolidColorBrush.Text.1}">
                                         <Label.Content>
                                             <TextBlock>
                                                 <TextBlock.Text>
@@ -3099,7 +3099,7 @@
                                            Foreground="{StaticResource SolidColorBrush.Text.1}" VerticalAlignment="Center" />
                                 </StackPanel>
                                 <StackPanel Orientation="Horizontal">
-                                    <StackPanel Orientation="Vertical" Margin="0,2" Width="150">
+                                    <StackPanel Orientation="Vertical" Margin="0,2" Width="180">
                                         <!-- Fame -->
                                         <ContentPresenter ContentTemplate="{StaticResource DungeonFragment.Fame.Template}" Content="{Binding}" />
 
@@ -3125,7 +3125,7 @@
                                         </StackPanel>
                                     </StackPanel>
 
-                                    <StackPanel Orientation="Vertical" Margin="0,2" Width="150"></StackPanel>
+                                    <StackPanel Orientation="Vertical" Margin="0,2" Width="180"></StackPanel>
 
                                     <StackPanel Orientation="Vertical" Margin="0,2">
                                         <!-- Total value -->
@@ -3196,7 +3196,7 @@
 
                             <StackPanel Orientation="Vertical">
                                 <StackPanel Orientation="Horizontal" Height="24">
-                                    <Label Width="150" VerticalAlignment="Center" Foreground="{StaticResource SolidColorBrush.Text.1}">
+                                    <Label Width="180" VerticalAlignment="Center" Foreground="{StaticResource SolidColorBrush.Text.1}">
                                         <Label.Content>
                                             <TextBlock>
                                                 <TextBlock.Text>
@@ -3214,7 +3214,7 @@
                                            Foreground="{StaticResource SolidColorBrush.Text.1}" VerticalAlignment="Center" />
                                 </StackPanel>
                                 <StackPanel Orientation="Horizontal">
-                                    <StackPanel Orientation="Vertical" Margin="0,2" Width="150">
+                                    <StackPanel Orientation="Vertical" Margin="0,2" Width="180">
                                         <!-- Fame -->
                                         <ContentPresenter ContentTemplate="{StaticResource DungeonFragment.Fame.Template}" Content="{Binding}" />
 
@@ -3225,7 +3225,7 @@
                                         <ContentPresenter ContentTemplate="{StaticResource DungeonFragment.Silver.Template}" Content="{Binding}" />
                                     </StackPanel>
 
-                                    <StackPanel Orientation="Vertical" Margin="0,2" Width="150">
+                                    <StackPanel Orientation="Vertical" Margin="0,2" Width="180">
                                         <!-- Might -->
                                         <DockPanel Height="16" Visibility="{Binding MightFavorVisibility, IsAsync=True, FallbackValue=Collapsed}">
                                             <Grid HorizontalAlignment="Center" Width="20" Margin="0,0,2,0" VerticalAlignment="Center" ToolTip="{Binding TranslationMight, FallbackValue=MIGHT}">
@@ -3351,7 +3351,7 @@
 
                             <StackPanel Orientation="Vertical">
                                 <StackPanel Orientation="Horizontal" Height="24">
-                                    <Label Width="150" VerticalAlignment="Center" Foreground="{StaticResource SolidColorBrush.Text.1}">
+                                    <Label Width="180" VerticalAlignment="Center" Foreground="{StaticResource SolidColorBrush.Text.1}">
                                         <Label.Content>
                                             <TextBlock>
                                                 <TextBlock.Text>
@@ -3369,7 +3369,7 @@
                                            Foreground="{StaticResource SolidColorBrush.Text.1}" VerticalAlignment="Center" />
                                 </StackPanel>
                                 <StackPanel Orientation="Horizontal">
-                                    <StackPanel Orientation="Vertical" Margin="0,2" Width="150">
+                                    <StackPanel Orientation="Vertical" Margin="0,2" Width="180">
                                         <!-- Fame -->
                                         <ContentPresenter ContentTemplate="{StaticResource DungeonFragment.Fame.Template}" Content="{Binding}" />
 
@@ -3380,7 +3380,7 @@
                                         <ContentPresenter ContentTemplate="{StaticResource DungeonFragment.Silver.Template}" Content="{Binding}" />
                                     </StackPanel>
 
-                                    <StackPanel Orientation="Vertical" Margin="0,2" Width="150">
+                                    <StackPanel Orientation="Vertical" Margin="0,2" Width="180">
                                         <!-- Might -->
                                         <DockPanel Height="16" Visibility="{Binding MightFavorVisibility, IsAsync=True, FallbackValue=Collapsed}">
                                             <Grid HorizontalAlignment="Center" Width="20" Margin="0,0,2,0" VerticalAlignment="Center" ToolTip="{Binding TranslationMight, FallbackValue=MIGHT}">
