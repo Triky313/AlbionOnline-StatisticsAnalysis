@@ -9,6 +9,8 @@ using System.IO;
 using System.Linq;
 using System.Net;
 using System.Net.Sockets;
+using System.Reflection;
+using Serilog;
 
 namespace StatisticsAnalysisTool.Network;
 
@@ -151,6 +153,13 @@ public class NetworkManager
             socket.BeginReceive(_byteData, 0, _byteData.Length, SocketFlags.None, OnReceive, null);
 
             _sockets.Add(socket);
+            Log.Information("{title}: {message}", "NetworkManager - Added Socket |", 
+                $"AddressFamily: {socket.AddressFamily}, LocalEndPoint: {socket.LocalEndPoint}, Connected: {socket.Connected}, Available: {socket.Available}, " +
+                $"Blocking: {socket.Blocking}, IsBound: {socket.IsBound}, ReceiveBufferSize: {socket.ReceiveBufferSize}, SendBufferSize: {socket.SendBufferSize}, Ttl: {socket.Ttl}");
+
+            ConsoleManager.WriteLineForMessage($"NetworkManager - Added Socket | AddressFamily: {socket.AddressFamily}, LocalEndPoint: {socket.LocalEndPoint}, " +
+                                               $"Connected: {socket.Connected}, Available: {socket.Available}, Blocking: {socket.Blocking}, IsBound: {socket.IsBound}, " +
+                                               $"ReceiveBufferSize: {socket.ReceiveBufferSize}, SendBufferSize: {socket.SendBufferSize}, Ttl: {socket.Ttl}");
         }
 
         _ = ServiceLocator.Resolve<SatNotificationManager>().ShowTrackingStatusAsync(LanguageController.Translation("START_TRACKING"), LanguageController.Translation("GAME_TRACKING_IS_STARTED"));
