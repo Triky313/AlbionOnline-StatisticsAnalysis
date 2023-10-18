@@ -1,8 +1,8 @@
-﻿using System;
+﻿using StatisticsAnalysisTool.Common;
+using StatisticsAnalysisTool.Enumerations;
+using System;
 using System.Collections.Generic;
 using System.Reflection;
-using StatisticsAnalysisTool.Common;
-using StatisticsAnalysisTool.Enumerations;
 
 namespace StatisticsAnalysisTool.Network.Events;
 
@@ -18,20 +18,20 @@ public class ActionOnBuildingFinishedEvent
 
         try
         {
-            if (parameters.ContainsKey(0))
+            if (parameters.TryGetValue(0, out object userObjectId))
             {
-                UserObjectId = parameters[0].ObjectToLong();
+                UserObjectId = userObjectId.ObjectToLong();
             }
 
-            if (parameters.ContainsKey(2))
+            if (parameters.TryGetValue(2, out object buildingObjectId))
             {
-                BuildingObjectId = parameters[2].ObjectToLong() ?? -1;
+                BuildingObjectId = buildingObjectId.ObjectToLong() ?? -1;
             }
 
-            if (parameters.ContainsKey(4))
+            if (parameters.TryGetValue(4, out object actionType))
             {
-                var actionTypeNumber = parameters[4].ObjectToLong() ?? 0;
-                ActionType = (ActionOnBuildingType)actionTypeNumber;
+                var actionTypeNumber = actionType.ObjectToLong() ?? 0;
+                ActionType = (ActionOnBuildingType) actionTypeNumber;
             }
         }
         catch (Exception e)
