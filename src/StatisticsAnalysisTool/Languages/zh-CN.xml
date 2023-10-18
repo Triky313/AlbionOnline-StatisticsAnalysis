@@ -242,16 +242,16 @@
 	<translation name="BOW">弓</translation>
 	<translation name="CROSSBOW">十字弓</translation>
 
-	<translation name="CLOTH">布料</translation>
+	<translation name="CLOTH">棉布料</translation>
 	<translation name="FIBER">纤维</translation>
 	<translation name="HIDE">兽皮</translation>
-	<translation name="LEATHER">皮革</translation>
-	<translation name="METALBAR">钢条</translation>
+	<translation name="LEATHER">皮制品</translation>
+	<translation name="METALBAR">金属条</translation>
 	<translation name="ORE">矿石</translation>
 	<translation name="WOOD">木头</translation>
-	<translation name="PLANKS">板条</translation>
+	<translation name="PLANKS">木板条</translation>
 	<translation name="ROCK">石头</translation>
-	<translation name="STONEBLOCK">石块</translation>
+	<translation name="STONEBLOCK">石砌块</translation>
 
 	<translation name="ARENA_SIGILS">竞技场徽章</translation>
 	<translation name="EVENT">活动物品</translation>
@@ -284,7 +284,7 @@
 	<translation name="FURNITURE">家具</translation>
 	<translation name="GATHERING_GEAR">采集装备</translation>
 	<translation name="LUXURY_GOODS">奢侈品</translation>
-	<translation name="MAGIC">魔法武器</translation>
+	<translation name="MAGIC">法术武器</translation>
 
 	<translation name="MATERIALS">基本材料</translation>
 	<translation name="MELEE">近战武器</translation>
@@ -567,7 +567,7 @@
 	<translation name="LOCATION">位置</translation>
 	<translation name="STORAGE_NAME">仓库页</translation>
 	<translation name="SELECT_DESELECT_ALL">全选/反选</translation>
-	<translation name="LOOTED_CHESTS">开箱记录</translation>
+	<translation name="LOOTED_CHESTS">已解锁的宝箱</translation>
 	<translation name="STATIC_DUNGEONS">固定地下城</translation>
 	<translation name="AVALONIAN_ROADS">阿瓦隆之路</translation>
 	<translation name="HELLGATES">地狱之门</translation>
@@ -757,4 +757,13 @@
 	<translation name="HCE_EXPEDITION">HCE (远征)</translation>
 	<translation name="NUMBER_OF_DUNGEONS">地下城数量</translation>
 	<translation name="FIGHTS">战斗</translation>
+	<translation name="SHAPESHIFTER">幻形者法杖</translation>
+	<translation name="TRACKING_TOOL">追踪工具包</translation>
+	<translation name="TOTAL_OVERVIEW">总览</translation>
+	<translation name="LAST_MONTH">上月</translation>
+	<translation name="START_APPLICATION_AS_ADMINISTRATOR">以管理员方式运行应用</translation>
+	<translation name="SELECT_SERVER_LOCATION">选择游戏服务器</translation>
+	<translation name="PLEASE_SELECT_A_SERVER_LOCATION">请选择游戏服务器</translation>
+	<translation name="KILLS_DEATHS">击杀 / 死亡</translation>
+	<translation name="REPAIR_COSTS">修理花费</translation>
 </translations>
