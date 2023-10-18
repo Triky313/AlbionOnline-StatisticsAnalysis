@@ -8,25 +8,25 @@ using System.Reflection;
 
 namespace StatisticsAnalysisTool.Network.Operations.Responses;
 
-public class TakeSilverRequest
+public class ActionOnBuildingStartRequest
 {
     public readonly long BuildingObjectId;
     public readonly long Costs;
 
-    public TakeSilverRequest(Dictionary<byte, object> parameters)
+    public ActionOnBuildingStartRequest(Dictionary<byte, object> parameters)
     {
         ConsoleManager.WriteLine(new ConsoleFragment(GetType().Name, parameters, ConsoleColorType.EventColor));
 
         try
         {
-            if (parameters.ContainsKey(1))
+            if (parameters.TryGetValue(1, out object buildingObjectId))
             {
-                BuildingObjectId = parameters[1].ObjectToLong() ?? -1;
+                BuildingObjectId = buildingObjectId.ObjectToLong() ?? -1;
             }
 
-            if (parameters.ContainsKey(4))
+            if (parameters.TryGetValue(4, out object costs))
             {
-                Costs = parameters[4].ObjectToLong() ?? 0;
+                Costs = costs.ObjectToLong() ?? 0;
             }
 
         }
