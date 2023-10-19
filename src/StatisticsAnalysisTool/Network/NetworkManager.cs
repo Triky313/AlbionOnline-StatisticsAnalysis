@@ -218,18 +218,21 @@ public class NetworkManager
             {
                 read.BaseStream.Seek(28, SeekOrigin.Begin);
 
-                byte[] data = read.ReadBytes(dataLength - 28);
-                _ = data.Reverse();
+                if (dataLength >= 28)
+                {
+                    byte[] data = read.ReadBytes(dataLength - 28);
+                    _ = data.Reverse();
 
-                try
-                {
-                    // TODO: System.OverflowException: 'Arithmetic operation resulted in an overflow.'
-                    // TODO: Index was outside the bounds of the array.
-                    _photonReceiver.ReceivePacket(data);
-                }
-                catch
-                {
-                    // ignored
+                    try
+                    {
+                        // TODO: System.OverflowException: 'Arithmetic operation resulted in an overflow.'
+                        // TODO: Index was outside the bounds of the array.
+                        _photonReceiver.ReceivePacket(data);
+                    }
+                    catch
+                    {
+                        // ignored
+                    }
                 }
             }
         }
@@ -241,7 +244,6 @@ public class NetworkManager
             socket?.BeginReceive(_byteData, 0, _byteData.Length, SocketFlags.None, OnReceive, socket);
         }
     }
-
 
     public bool IsAnySocketActive()
     {
