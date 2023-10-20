@@ -402,11 +402,11 @@
 	<translation name="STANDARD_DUNGEON">スタンダードダンジョン</translation>
 	<translation name="AVA">アバロン</translation>
 	<translation name="AVALONIAN_DUNGEON">アバロニアンダンジョン</translation>
-	<translation name="HCE_EXPEDITION">HCE(ハードな探検)</translation>
-	<translation name="MISTS_DUNGEON">ナイトフォール・アビー</translation>
 	<translation name="HG">HG</translation>
 	<translation name="EXPED">期限切れ</translation>
-	<translation name="CORRUPTED">堕落</translation>
+	<translation name="CORRUPTED">堕落したダンジョン</translation>
+	<translation name="HCE_EXPEDITION">HCE (ハードな探検)</translation>	
+	<translation name="MISTS_DUNGEON">ナイトフォール・アビー</translation>	
 	<translation name="AVERAGE_FAME">平均名声</translation>
 	<translation name="AVERAGE_RESPEC">Average Respec</translation>
 	<translation name="AVERAGE_SILVER">平均シルバー</translation>
@@ -776,6 +776,7 @@
 	<translation name="PARTY_INFORMATION">パーティー情報</translation>
 	<translation name="AVERAGE_IP">平均IP</translation>
 	<translation name="AVERAGE_BIP">平均BIP</translation>
+	<translation name="TOTAL_OVERVIEW">全体概要</translation>
 	<translation name="SPELLS_JSON_SOURCE_URL">Spells.json ソース URL</translation>
 	<translation name="UPDATE_SPELLS_JSON_BY_DAYS">Spells.json の更新頻度: </translation>
 	<translation name="BACKUP_CREATED">バックアップの作成</translation>
@@ -791,4 +792,5 @@
 	<translation name="ANOTHER_APP_TO_START_PATH">別のアプリの開始パス</translation>
 	<translation name="CANNOT_START_OTHER_APP">他のアプリを起動できません</translation>
 	<translation name="FISHING_ROD">釣り竿</translation>
+	<translation name="KILLS_DEATHS">キル数 / 死亡数</translation>
 </translations>
