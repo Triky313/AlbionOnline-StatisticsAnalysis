@@ -287,12 +287,13 @@
     <SolidColorBrush x:Key="SolidColorBrush.Weapon.Text" Color="#fafafa"/>
     <SolidColorBrush x:Key="SolidColorBrush.Weapon.Sword" Color="#FAA307"/>
     <SolidColorBrush x:Key="SolidColorBrush.Weapon.Spear" Color="#DAB10B"/>
-    <SolidColorBrush x:Key="SolidColorBrush.Weapon.Quarterstaff" Color="#297A7A"/>
-    <SolidColorBrush x:Key="SolidColorBrush.Weapon.NatureStaff" Color="#afafaf"/>
+    <SolidColorBrush x:Key="SolidColorBrush.Weapon.Quarterstaff" Color="#9F5EC5"/>
+    <SolidColorBrush x:Key="SolidColorBrush.Weapon.ShapeShifterStaff" Color="#1D9090"/>
+    <SolidColorBrush x:Key="SolidColorBrush.Weapon.NatureStaff" Color="#2DB53D"/>
     <SolidColorBrush x:Key="SolidColorBrush.Weapon.Mace" Color="#D35F91"/>
     <SolidColorBrush x:Key="SolidColorBrush.Weapon.HolyStaff" Color="#afafaf"/>
     <SolidColorBrush x:Key="SolidColorBrush.Weapon.Hammer" Color="#7373D9"/>
-    <SolidColorBrush x:Key="SolidColorBrush.Weapon.FrostStaff" Color="#4089d1"/>
+    <SolidColorBrush x:Key="SolidColorBrush.Weapon.FrostStaff" Color="#0797DF"/>
     <SolidColorBrush x:Key="SolidColorBrush.Weapon.FireStaff" Color="#C9561D"/>
     <SolidColorBrush x:Key="SolidColorBrush.Weapon.Dagger" Color="#A2AD1F"/>
     <SolidColorBrush x:Key="SolidColorBrush.Weapon.CursedStaff" Color="#61358D"/>

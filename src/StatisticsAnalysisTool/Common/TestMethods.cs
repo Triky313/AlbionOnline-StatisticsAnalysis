@@ -35,7 +35,7 @@ public class TestMethods
         {
             var itemIndex = Random.Next(20, 10000);
             var item = ItemController.GetItemByIndex(itemIndex);
-            if (item.FullItemInformation is Weapon || counter > 1000)
+            if (item.FullItemInformation is TransformationWeapon or Weapon || counter > 1000)
             {
                 return itemIndex;
             }

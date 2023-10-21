@@ -1,3 +1,4 @@
+using Serilog;
 using StatisticsAnalysisTool.Common;
 using StatisticsAnalysisTool.Localization;
 using StatisticsAnalysisTool.Network.Handler;
@@ -56,10 +57,10 @@ public class NetworkManager
         builder.AddEventHandler(new NewShrineEventHandler(trackingController));
         builder.AddEventHandler(new HealthUpdateEventHandler(trackingController));
         builder.AddEventHandler(new PartyDisbandedEventHandler(trackingController));
-        //builder.AddEventHandler(new PartyJoinedEventHandler(trackingController));
+        builder.AddEventHandler(new PartyJoinedEventHandler(trackingController));
         builder.AddEventHandler(new PartyPlayerJoinedEventHandler(trackingController));
         builder.AddEventHandler(new PartyPlayerLeftEventHandler(trackingController));
-        builder.AddEventHandler(new PartyChangedOrderEventHandler(trackingController));
+        //builder.AddEventHandler(new PartyChangedOrderEventHandler(trackingController));
         builder.AddEventHandler(new NewCharacterEventHandler(trackingController));
         builder.AddEventHandler(new TreasureChestUsingStartEventHandler(trackingController));
         builder.AddEventHandler(new CharacterEquipmentChangedEventHandler(trackingController));
@@ -81,7 +82,7 @@ public class NetworkManager
         builder.AddRequestHandler(new InventoryMoveItemRequestHandler(trackingController));
         builder.AddRequestHandler(new UseShrineRequestHandler(trackingController));
         builder.AddRequestHandler(new ClaimPaymentTransactionRequestHandler(trackingController));
-        builder.AddRequestHandler(new TakeSilverRequestHandler(trackingController));
+        builder.AddRequestHandler(new ActionOnBuildingStartRequestHandler(trackingController));
         builder.AddRequestHandler(new RegisterToObjectRequestHandler(trackingController));
         builder.AddRequestHandler(new UnRegisterFromObjectRequestHandler(trackingController));
         builder.AddRequestHandler(new AuctionBuyOfferRequestHandler(trackingController));
@@ -148,9 +149,16 @@ public class NetworkManager
             byte[] byOut = { 1, 0, 0, 0 };
 
             socket.IOControl(IOControlCode.ReceiveAll, byTrue, byOut);
-            socket.BeginReceive(_byteData, 0, _byteData.Length, SocketFlags.None, OnReceive, null);
+            socket.BeginReceive(_byteData, 0, _byteData.Length, SocketFlags.None, OnReceive, socket);
 
             _sockets.Add(socket);
+            Log.Information("{title}: {message}", "NetworkManager - Added Socket |",
+                $"AddressFamily: {socket.AddressFamily}, LocalEndPoint: {socket.LocalEndPoint}, Connected: {socket.Connected}, Available: {socket.Available}, " +
+                $"Blocking: {socket.Blocking}, IsBound: {socket.IsBound}, ReceiveBufferSize: {socket.ReceiveBufferSize}, SendBufferSize: {socket.SendBufferSize}, Ttl: {socket.Ttl}");
+
+            ConsoleManager.WriteLineForMessage($"NetworkManager - Added Socket | AddressFamily: {socket.AddressFamily}, LocalEndPoint: {socket.LocalEndPoint}, " +
+                                               $"Connected: {socket.Connected}, Available: {socket.Available}, Blocking: {socket.Blocking}, IsBound: {socket.IsBound}, " +
+                                               $"ReceiveBufferSize: {socket.ReceiveBufferSize}, SendBufferSize: {socket.SendBufferSize}, Ttl: {socket.Ttl}");
         }
 
         _ = ServiceLocator.Resolve<SatNotificationManager>().ShowTrackingStatusAsync(LanguageController.Translation("START_TRACKING"), LanguageController.Translation("GAME_TRACKING_IS_STARTED"));
@@ -182,41 +190,43 @@ public class NetworkManager
             return;
         }
 
-        foreach (var socket in _sockets)
+        Socket socket = (Socket) ar.AsyncState;
+        socket?.EndReceive(ar);
+
+        using (MemoryStream buffer = new MemoryStream(_byteData))
         {
-            socket.EndReceive(ar);
+            using BinaryReader read = new BinaryReader(buffer);
+            read.BaseStream.Seek(2, SeekOrigin.Begin);
+            ushort dataLength = (ushort) IPAddress.NetworkToHostOrder(read.ReadInt16());
 
-            using (MemoryStream buffer = new MemoryStream(_byteData))
+            read.BaseStream.Seek(9, SeekOrigin.Begin);
+            int protocol = read.ReadByte();
+
+            if (protocol != 17)
             {
-                using BinaryReader read = new BinaryReader(buffer);
-                read.BaseStream.Seek(2, SeekOrigin.Begin);
-                ushort dataLength = (ushort) IPAddress.NetworkToHostOrder(read.ReadInt16());
+                _byteData = new byte[65000];
+                socket?.BeginReceive(_byteData, 0, _byteData.Length, SocketFlags.None, OnReceive, socket);
+                return;
+            }
 
-                read.BaseStream.Seek(9, SeekOrigin.Begin);
-                int protocol = read.ReadByte();
+            read.BaseStream.Seek(20, SeekOrigin.Begin);
 
-                if (protocol != 17)
+            string srcPort = ((ushort) IPAddress.NetworkToHostOrder(read.ReadInt16())).ToString();
+            string destPort = ((ushort) IPAddress.NetworkToHostOrder(read.ReadInt16())).ToString();
+
+            if (srcPort == "5056" || destPort == "5056")
+            {
+                read.BaseStream.Seek(28, SeekOrigin.Begin);
+
+                if (dataLength >= 28)
                 {
-                    _byteData = new byte[65000];
-                    socket.BeginReceive(_byteData, 0, _byteData.Length, SocketFlags.None, OnReceive, null);
-                    return;
-                }
-
-                read.BaseStream.Seek(20, SeekOrigin.Begin);
-
-                string srcPort = ((ushort) IPAddress.NetworkToHostOrder(read.ReadInt16())).ToString();
-                string destPort = ((ushort) IPAddress.NetworkToHostOrder(read.ReadInt16())).ToString();
-
-                if (srcPort == "5056" || destPort == "5056")
-                {
-                    read.BaseStream.Seek(28, SeekOrigin.Begin);
-
                     byte[] data = read.ReadBytes(dataLength - 28);
                     _ = data.Reverse();
 
                     try
                     {
                         // TODO: System.OverflowException: 'Arithmetic operation resulted in an overflow.'
+                        // TODO: Index was outside the bounds of the array.
                         _photonReceiver.ReceivePacket(data);
                     }
                     catch
@@ -225,13 +235,13 @@ public class NetworkManager
                     }
                 }
             }
+        }
 
-            _byteData = new byte[65000];
+        _byteData = new byte[65000];
 
-            if (!_stopReceiving)
-            {
-                socket.BeginReceive(_byteData, 0, _byteData.Length, SocketFlags.None, OnReceive, null);
-            }
+        if (!_stopReceiving)
+        {
+            socket?.BeginReceive(_byteData, 0, _byteData.Length, SocketFlags.None, OnReceive, socket);
         }
     }
 

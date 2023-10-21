@@ -2,7 +2,6 @@
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
                     xmlns:common="clr-namespace:StatisticsAnalysisTool.Common"
                     xmlns:fa5="http://schemas.fontawesome.com/icons/"
-                    xmlns:notification1="clr-namespace:StatisticsAnalysisTool.EventLogging.Notification"
                     xmlns:damageMeter="clr-namespace:StatisticsAnalysisTool.DamageMeter">
 
     <!-- Damage meter icon -->
@@ -22,6 +21,9 @@
             </DataTrigger>
             <DataTrigger Binding="{Binding ShopSubCategory}" Value="quarterstaff">
                 <Setter Property="Foreground" Value="{StaticResource SolidColorBrush.Weapon.Quarterstaff}" />
+            </DataTrigger>
+            <DataTrigger Binding="{Binding ShopSubCategory}" Value="shapeshifterstaff">
+                <Setter Property="Foreground" Value="{StaticResource SolidColorBrush.Weapon.ShapeShifterStaff}" />
             </DataTrigger>
             <DataTrigger Binding="{Binding ShopSubCategory}" Value="naturestaff">
                 <Setter Property="Foreground" Value="{StaticResource SolidColorBrush.Weapon.NatureStaff}" />

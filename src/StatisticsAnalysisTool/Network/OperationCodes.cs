@@ -50,8 +50,8 @@ public enum OperationCodes
     ActionBuildingChangeSettings,
     HarvestStart,
     HarvestCancel,
-    TakeSilver = 48, // map[0:638028282819317254 1:442 2:2 3:3 4:530000 5:[1571] 253:48] 
-    ActionOnBuildingStart,
+    TakeSilver,
+    ActionOnBuildingStart = 49, // map[0:638028282819317254 1:442 2:2 3:3 4:530000 5:[1571] 253:48] 
     ActionOnBuildingCancel,
     InstallResourceStart,
     InstallResourceCancel,

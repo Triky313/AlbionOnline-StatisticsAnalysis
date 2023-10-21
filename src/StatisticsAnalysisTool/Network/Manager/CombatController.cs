@@ -142,7 +142,7 @@ public class CombatController
         if (healthChangeObjectValue?.CharacterEquipment?.MainHand != null)
         {
             var item = ItemController.GetItemByIndex(healthChangeObjectValue.CharacterEquipment?.MainHand);
-            fragment.CauserMainHand = ((ItemJsonObject) item?.FullItemInformation)?.ItemType == ItemType.Weapon ? item : null;
+            fragment.CauserMainHand = ((ItemJsonObject) item?.FullItemInformation)?.ItemType is ItemType.TransformationWeapon or ItemType.Weapon  ? item : null;
         }
 
         // Damage

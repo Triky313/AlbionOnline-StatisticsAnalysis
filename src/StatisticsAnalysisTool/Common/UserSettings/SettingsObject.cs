@@ -43,7 +43,6 @@ public class SettingsObject
     public bool IsTrackingSilver { get; set; }
     public bool IsTrackingFame { get; set; }
     public bool IsTrackingMobLoot { get; set; }
-    public bool IsLootLoggerSaveReminderActive { get; set; }
     public bool IsSuggestPreReleaseUpdatesActive { get; set; }
     public bool IsLootFromMobShown { get; set; }
     public double MailMonitoringGridSplitterPosition { get; set; } = 125;

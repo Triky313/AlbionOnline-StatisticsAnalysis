@@ -135,15 +135,6 @@
                                   DisplayMemberPath="FileName" SelectedValuePath="FilePath" HorizontalAlignment="Left" VerticalAlignment="Top" Width="200" Height="26" />
                     </DockPanel>
 
-                    <!-- Loot logger -->
-                    <DockPanel Margin="0,20,0,0">
-                        <Label Content="{Binding Translation.LootLogger, FallbackValue='LOOT__LOGGER'}" FontSize="14" Foreground="{StaticResource SolidColorBrush.Accent.Blue.2}" />
-                    </DockPanel>
-                    <DockPanel Margin="0,5,0,0">
-                        <Label Content="{Binding Translation.IsLootLoggerSaveReminderActive, FallbackValue=IS__LOOT__LOGGER__SAVE__REMINDER__ACTIVE}" MinWidth="300" VerticalAlignment="Top" />
-                        <CheckBox IsChecked="{Binding IsLootLoggerSaveReminderActive}" Height="21" VerticalContentAlignment="Center" />
-                    </DockPanel>
-
                     <!-- Backup -->
                     <DockPanel Margin="0,20,0,0">
                         <Label Content="{Binding Translation.Backup, FallbackValue='BACKUP'}" FontSize="14" Foreground="{StaticResource SolidColorBrush.Accent.Blue.2}" />

@@ -15,6 +15,6 @@ public class PartyJoinedEventHandler : EventPacketHandler<PartyJoinedEvent>
 
     protected override async Task OnActionAsync(PartyJoinedEvent value)
     {
-        await Task.CompletedTask;
+        await _trackingController.EntityController.SetPartyAsync(value.PartyUsers);
     }
 }
