@@ -255,7 +255,7 @@ public class MainWindowViewModel : BaseViewModel
         IsTxtSearchEnabled = false;
         IsItemSearchCheckboxesEnabled = false;
         IsFilterResetEnabled = false;
-        
+
         UpdateServerTypeLabel();
 
         await ItemController.SetFavoriteItemsFromLocalFileAsync();
@@ -312,34 +312,6 @@ public class MainWindowViewModel : BaseViewModel
             Visibility.Visible => Visibility.Collapsed,
             _ => StatsDropDownVisibility
         };
-    }
-
-    #endregion
-
-    #region Save loot logger
-
-    public void SaveLootLogger()
-    {
-        if (!SettingsController.CurrentSettings.IsLootLoggerSaveReminderActive)
-        {
-            return;
-        }
-
-        try
-        {
-            var dialog = new DialogWindow(LanguageController.Translation("SAVE_LOOT_LOGGER"), LanguageController.Translation("SAVE_LOOT_LOGGER_NOW"));
-            var dialogResult = dialog.ShowDialog();
-
-            if (dialogResult is true)
-            {
-                ExportLootToFile();
-            }
-        }
-        catch (Exception e)
-        {
-            ConsoleManager.WriteLineForError(MethodBase.GetCurrentMethod()?.DeclaringType, e);
-            Log.Error(e, "{message}", MethodBase.GetCurrentMethod()?.DeclaringType);
-        }
     }
 
     #endregion
