@@ -26,12 +26,10 @@ public class CriticalData
         _saveOnClosing = SaveOnClosing.IsRunning;
 
         var trackingController = ServiceLocator.Resolve<TrackingController>();
-        var mainWindowViewModel = ServiceLocator.Resolve<MainWindowViewModel>();
 
         var tasks = new List<Task>
         {
             Task.Run(SettingsController.SaveSettings),
-            Task.Run(mainWindowViewModel.SaveLootLogger),
             Task.Run(async () => { await trackingController?.SaveDataAsync()!; })
         };
 

@@ -34,7 +34,6 @@ public class SettingsWindowViewModel : BaseViewModel
     private SettingsWindowTranslation _translation;
     private string _albionDataProjectBaseUrlWest;
     private string _albionDataProjectBaseUrlEast;
-    private bool _isLootLoggerSaveReminderActive;
     private ObservableCollection<SettingDataInformation> _backupIntervalByDays = new();
     private ObservableCollection<SettingDataInformation> _maximumNumberOfBackups = new();
     private bool _isSuggestPreReleaseUpdatesActive;
@@ -84,9 +83,6 @@ public class SettingsWindowViewModel : BaseViewModel
         AlbionDataProjectBaseUrlWest = SettingsController.CurrentSettings.AlbionDataProjectBaseUrlWest;
         AlbionDataProjectBaseUrlEast = SettingsController.CurrentSettings.AlbionDataProjectBaseUrlEast;
 
-        // Loot logger
-        IsLootLoggerSaveReminderActive = SettingsController.CurrentSettings.IsLootLoggerSaveReminderActive;
-
         // Auto update
         IsSuggestPreReleaseUpdatesActive = SettingsController.CurrentSettings.IsSuggestPreReleaseUpdatesActive;
 
@@ -126,7 +122,6 @@ public class SettingsWindowViewModel : BaseViewModel
         SettingsController.CurrentSettings.AlbionDataProjectBaseUrlWest = AlbionDataProjectBaseUrlWest;
         SettingsController.CurrentSettings.AlbionDataProjectBaseUrlEast = AlbionDataProjectBaseUrlEast;
 
-        SettingsController.CurrentSettings.IsLootLoggerSaveReminderActive = IsLootLoggerSaveReminderActive;
         SettingsController.CurrentSettings.IsSuggestPreReleaseUpdatesActive = IsSuggestPreReleaseUpdatesActive;
         SettingsController.CurrentSettings.ExactMatchPlayerNamesLineNumber = PlayerSelectionWithSameNameInDb;
 
@@ -644,16 +639,6 @@ public class SettingsWindowViewModel : BaseViewModel
         set
         {
             _albionDataProjectBaseUrlEast = value;
-            OnPropertyChanged();
-        }
-    }
-
-    public bool IsLootLoggerSaveReminderActive
-    {
-        get => _isLootLoggerSaveReminderActive;
-        set
-        {
-            _isLootLoggerSaveReminderActive = value;
             OnPropertyChanged();
         }
     }
