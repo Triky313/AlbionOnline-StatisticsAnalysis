@@ -304,8 +304,13 @@ public sealed class DungeonController
 
     #region Dungeon object
 
-    public void SetDungeonChestOpen(int id)
+    public void SetDungeonChestOpen(int id, List<Guid> allowedToOpen)
     {
+        if (!_trackingController.EntityController.IsAnyEntityInParty(allowedToOpen))
+        {
+            return;
+        }
+
         if (_currentGuid != null)
         {
             try

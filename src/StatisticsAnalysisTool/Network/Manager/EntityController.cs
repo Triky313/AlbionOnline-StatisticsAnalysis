@@ -289,6 +289,11 @@ public class EntityController
         return _knownEntities?.FirstOrDefault(x => x.Key == guid).Value?.IsInParty ?? false;
     }
 
+    public bool IsAnyEntityInParty(List<Guid> guids)
+    {
+        return _knownEntities?.Any(x => guids.Contains(x.Key) && x.Value.IsInParty) ?? false;
+    }
+
     public void CopyPartyToClipboard()
     {
         var output = string.Empty;

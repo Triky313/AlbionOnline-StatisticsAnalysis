@@ -15,7 +15,6 @@ public class LootChestOpenedEventHandler : EventPacketHandler<LootChestOpenedEve
 
     protected override async Task OnActionAsync(LootChestOpenedEvent value)
     {
-        _trackingController.DungeonController?.SetDungeonChestOpen(value.Id);
         await Task.CompletedTask;
     }
 }

@@ -52,7 +52,7 @@ public class NetworkManager
         builder.AddEventHandler(new DiedEventHandler(trackingController));
         builder.AddEventHandler(new NewLootChestEventHandler(trackingController));
         builder.AddEventHandler(new UpdateLootChestEventHandler(trackingController));
-        builder.AddEventHandler(new LootChestOpenedEventHandler(trackingController));
+        //builder.AddEventHandler(new LootChestOpenedEventHandler(trackingController));
         builder.AddEventHandler(new InCombatStateUpdateEventHandler(trackingController));
         builder.AddEventHandler(new NewShrineEventHandler(trackingController));
         builder.AddEventHandler(new HealthUpdateEventHandler(trackingController));
