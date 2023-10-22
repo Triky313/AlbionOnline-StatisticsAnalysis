@@ -2,7 +2,6 @@ using Serilog;
 using StatisticsAnalysisTool.Cluster;
 using StatisticsAnalysisTool.Common;
 using StatisticsAnalysisTool.Common.UserSettings;
-using StatisticsAnalysisTool.Core;
 using StatisticsAnalysisTool.Dungeon;
 using StatisticsAnalysisTool.EstimatedMarketValue;
 using StatisticsAnalysisTool.EventLogging;
@@ -105,11 +104,6 @@ public class TrackingController : ITrackingController
         }
 
         _networkManager = new NetworkManager(this);
-
-        if (!ApplicationCore.IsAppStartedAsAdministrator())
-        {
-            _mainWindowViewModel.SetErrorBar(Visibility.Visible, LanguageController.Translation("START_APPLICATION_AS_ADMINISTRATOR"));
-        }
 
         await Task.WhenAll(
             EstimatedMarketValueController.LoadFromFileAsync(),
