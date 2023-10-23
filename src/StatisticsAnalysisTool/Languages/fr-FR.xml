@@ -56,6 +56,10 @@
 	<translation name="MIN_PROFIT_TOOLTIP">Indique le profit minimum qu'un objet devrait générer.</translation>
 	<translation name="REMOVE">Retirer</translation>
 
+	<translation name="PER_HOUR">Par heure</translation>
+	<translation name="AVERAGE">Moyenne</translation>
+	<translation name="AVERAGE_ABBREVIATION">Moy.</translation>
+	<translation name="HOUR_ABBREVIATION">h</translation>
 
 	<translation name="ERROR">Erreur</translation>
 	<translation name="NOTE">Note</translation>
