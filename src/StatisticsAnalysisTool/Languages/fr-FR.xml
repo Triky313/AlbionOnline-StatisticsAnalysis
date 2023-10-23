@@ -509,6 +509,12 @@
 	<translation name="DUNGEON_RESPEC">Donjon respé</translation>
 	<translation name="DUNGEON_SILVER">Donjon argent</translation>
 	<translation name="DUNGEON_FAME_PER_HOUR">Donjon renommée par heure</translation>
+
+	<translation name="PER_HOUR">Par heure</translation>
+	<translation name="AVERAGE">Moyenne</translation>
+	<translation name="AVERAGE_ABBREVIATION">Moy.</translation>
+	<translation name="HOUR_ABBREVIATION">h</translation>
+
 	<translation name="DUNGEON_RESPEC_PER_HOUR">Donjon respé par heure</translation>
 	<translation name="DUNGEON_SILVER_PER_HOUR">Donjon argent par heure</translation>
 	<translation name="GET_PRICE">Obtenir le prix</translation>
