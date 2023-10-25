@@ -9,6 +9,7 @@ using StatisticsAnalysisTool.EventLogging;
 using StatisticsAnalysisTool.EventLogging.Notification;
 using StatisticsAnalysisTool.Exceptions;
 using StatisticsAnalysisTool.Gathering;
+using StatisticsAnalysisTool.Guild;
 using StatisticsAnalysisTool.Localization;
 using StatisticsAnalysisTool.PartyBuilder;
 using StatisticsAnalysisTool.Properties;
@@ -53,6 +54,7 @@ public class TrackingController : ITrackingController
     public readonly VaultController VaultController;
     public readonly GatheringController GatheringController;
     public readonly PartyBuilderController PartyBuilderController;
+    public readonly GuildController GuildController;
     private readonly List<LoggingFilterType> _notificationTypesFilters = new();
 
     public TrackingController(MainWindowViewModel mainWindowViewModel)
@@ -71,6 +73,7 @@ public class TrackingController : ITrackingController
         VaultController = new VaultController(mainWindowViewModel);
         GatheringController = new GatheringController(this, mainWindowViewModel);
         PartyBuilderController = new PartyBuilderController(this, mainWindowViewModel);
+        GuildController = new GuildController(this, mainWindowViewModel);
         LiveStatsTracker = new LiveStatsTracker(this, mainWindowViewModel);
 
         _ = InitTrackingAsync();

@@ -9,13 +9,13 @@
              xmlns:gl="clr-namespace:System.Globalization;assembly=System.Runtime"
              mc:Ignorable="d" 
              d:DesignHeight="400" d:DesignWidth="800"
-             d:DataContext="{d:DesignInstance Type=viewModels:GuildViewModel}">
+             d:DataContext="{d:DesignInstance Type=viewModels:MainWindowViewModel}">
     <Grid>
         <TabControl Background="Transparent">
-            <TabItem Header="{Binding Translation.LootLogChecker, FallbackValue=LOOT_LOG_CHECKER}">
-                <StackPanel Orientation="Vertical">
+            <TabItem Header="{Binding GuildBindings.TranslationLootLogChecker, FallbackValue=LOOT_LOG_CHECKER}" Visibility="Collapsed">
+                <!--<StackPanel Orientation="Vertical">
                     <StackPanel Orientation="Horizontal" HorizontalAlignment="Left" VerticalAlignment="Top" Height="30">
-                        <Button Content="{Binding Translation.Reset, FallbackValue=RESET}" Margin="5,0" Height="26" Width="100" />
+                        <Button Content="{Binding GuildBindings.TranslationReset, FallbackValue=RESET}" Margin="5,0" Height="26" Width="100" />
                     </StackPanel>
                     <StackPanel>
                         <Grid>
@@ -28,9 +28,9 @@
                                                           ScrollViewer.VerticalScrollBarVisibility="Visible" />
                         </Grid>
                     </StackPanel>
-                </StackPanel>
+                </StackPanel>-->
             </TabItem>
-            <TabItem Header="{Binding TranslationSiphonedEnergy, FallbackValue=SIPHONED_ENERGY}">
+            <TabItem Header="{Binding GuildBindings.TranslationSiphonedEnergy, FallbackValue=SIPHONED_ENERGY}">
                 <Grid>
                     <Grid.RowDefinitions>
                         <RowDefinition Height="*"/>
@@ -41,50 +41,49 @@
                     <GridSplitter Grid.Row="1" ResizeDirection="Rows" ResizeBehavior="PreviousAndNext" HorizontalAlignment="Stretch" Margin="0,0,1,1" Background="{StaticResource SolidColorBrush.Accent.Blue.4}" />
 
                     <Grid Row="0" Margin="0,0,0,6" Grid.RowSpan="2">
-                        <Grid Margin="0,0,0,0" Height="66" VerticalAlignment="Top">
+                        <Grid Height="66" VerticalAlignment="Top">
                             <StackPanel Orientation="Vertical" Height="60" HorizontalAlignment="Right" VerticalAlignment="Top" Margin="0,6,3,0">
                                 <StackPanel Orientation="Horizontal" MaxWidth="300" Height="30" HorizontalAlignment="Right" VerticalAlignment="Top">
-                                    <Button Content="{Binding TranslationDeleteSelectedEntries, FallbackValue=DELETE__SELECTED__ENTRIES}" Margin="5,0,0,0"
-                                            Height="24" Width="200" MaxWidth="300" MinWidth="200" IsEnabled="{Binding TradeMonitoringBindings.IsDeleteTradesButtonEnabled}" Click="BtnDeleteSelectedSiphonedEnergyEntries_Click" />
+                                    <Button Content="{Binding GuildBindings.TranslationDeleteSelectedEntries, FallbackValue=DELETE__SELECTED__ENTRIES}" Margin="5,0,0,0"
+                                        Height="24" Width="200" MaxWidth="300" MinWidth="200" IsEnabled="{Binding TradeMonitoringBindings.IsDeleteTradesButtonEnabled}" Click="BtnDeleteSelectedSiphonedEnergyEntries_Click" />
                                     <Grid Height="20" Width="20" Margin="5,0,0,0" VerticalAlignment="Center"
-                                          MouseEnter="OpenSiphonedEnergyInfoPopup_MouseEnter" MouseLeave="CloseSiphonedEnergyInfoPopup_MouseLeave">
+                                      MouseEnter="OpenSiphonedEnergyInfoPopup_MouseEnter" MouseLeave="CloseSiphonedEnergyInfoPopup_MouseLeave">
                                         <fa5:ImageAwesome Icon="Solid_InfoCircle" Foreground="{StaticResource SolidColorBrush.Text.1}" />
                                     </Grid>
                                 </StackPanel>
                                 <StackPanel Orientation="Horizontal" Height="30" HorizontalAlignment="Right" VerticalAlignment="Top">
-                                    <Button Content="{Binding TranslationSelectDeselectAll, FallbackValue=SELECT__DESELECT__ALL}" Margin="5,0,25,0"
-                                            Height="24" Width="200" MaxWidth="300" MinWidth="200" Click="BtnSelectSwitchAllSiphonedEnergyEntries_Click" />
+                                    <Button Content="{Binding GuildBindings.TranslationSelectDeselectAll, FallbackValue=SELECT__DESELECT__ALL}" Margin="5,0,25,0"
+                                        Height="24" Width="200" MaxWidth="300" MinWidth="200" Click="BtnSelectSwitchAllSiphonedEnergyEntries_Click" />
                                 </StackPanel>
                             </StackPanel>
 
                             <StackPanel Orientation="Horizontal" HorizontalAlignment="Left" VerticalAlignment="Top" Height="24" Margin="0,5"
-                                        Visibility="{Binding VaultBindings.LastUpdateVisibility}">
-                                <TextBlock Text="{Binding TranslationLastUpdate, StringFormat='{}{0:N0}: ', FallbackValue=LAST_UPDATE:}" FontSize="12" 
-                                           Foreground="{StaticResource SolidColorBrush.Text.4}" VerticalAlignment="Center" />
+                                    Visibility="{Binding VaultBindings.LastUpdateVisibility}">
+                                <TextBlock Text="{Binding GuildBindings.TranslationLastUpdate, StringFormat='{}{0:N0}: ', FallbackValue=LAST_UPDATE:}" FontSize="12" 
+                                       Foreground="{StaticResource SolidColorBrush.Text.4}" VerticalAlignment="Center" />
                                 <TextBlock Text="{Binding VaultBindings.LastUpdate, StringFormat='{}{0} UTC', ConverterCulture={x:Static gl:CultureInfo.CurrentCulture}, FallbackValue=00:00:00}" 
-                                           FontSize="12" Foreground="{StaticResource SolidColorBrush.Text.4}" VerticalAlignment="Center" />
+                                       FontSize="12" Foreground="{StaticResource SolidColorBrush.Text.4}" VerticalAlignment="Center" />
                             </StackPanel>
                         </Grid>
 
                         <Separator Background="{StaticResource SolidColorBrush.Background.2}" Height="4" Margin="0,66,0,0" VerticalAlignment="Top"/>
-                        <vwp:VirtualizingItemsControl Margin="0,68,0,0" ItemsSource="{Binding VaultBindings.VaultSearchCollectionView, IsAsync=True, Mode=OneWay}" 
-                                                      ItemTemplate="{StaticResource VaultSearchItemTemplate}" 
-                                                      VirtualizingPanel.CacheLengthUnit="Item"
-                                                      VirtualizingPanel.CacheLength="10,10"
-                                                      VirtualizingPanel.ScrollUnit="Pixel"
-                                                      VirtualizingPanel.VirtualizationMode="Recycling"
-                                                      ScrollViewer.HorizontalScrollBarVisibility="Disabled"
-                                                      ScrollViewer.VerticalScrollBarVisibility="Visible" />
-                    </Grid>
-
-                    <Grid Row="2">
-                        <StackPanel Orientation="Horizontal" MaxWidth="400" Height="30" HorizontalAlignment="Left" VerticalAlignment="Top">
-                            <fa5:ImageAwesome Icon="Solid_Filter" Foreground="{StaticResource SolidColorBrush.Text.1}" Width="20" Height="20" Margin="0,0,5,0" />
-                            <TextBox Text="{Binding VaultBindings.SearchText, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Width="200" Height="24" HorizontalAlignment="Left" />
+                        <StackPanel Orientation="Vertical" Margin="0,68,0,0">
+                            <vwp:VirtualizingItemsControl ItemsSource="{Binding GuildBindings.SiphonedEnergyOverviewList, IsAsync=True, Mode=OneWay}" Height="240"
+                                                          ItemTemplate="{StaticResource SiphonedEnergyOverviewItemTemplate}" Background="{StaticResource SolidColorBrush.Accent.Blue.Transparent.5}"
+                                                          VirtualizingPanel.CacheLengthUnit="Item"
+                                                          VirtualizingPanel.CacheLength="10,10"
+                                                          VirtualizingPanel.ScrollUnit="Pixel"
+                                                          VirtualizingPanel.VirtualizationMode="Recycling"
+                                                          ScrollViewer.HorizontalScrollBarVisibility="Disabled"
+                                                          ScrollViewer.VerticalScrollBarVisibility="Visible" />
+                            <ContentControl Margin="0,0,0,0" ContentTemplate="{StaticResource ManuallySiphonedEnergy.Template}" 
+                                        Content="{Binding GuildBindings.ManuallySiphonedEnergy}" />
                         </StackPanel>
-                        <Separator Background="{StaticResource SolidColorBrush.Background.2}" Height="4" Margin="0,30,0,0" VerticalAlignment="Top"/>
-                        <vwp:VirtualizingItemsControl Margin="0,35,0,0" ItemsSource="{Binding VaultBindings.VaultSearchCollectionView, IsAsync=True, Mode=OneWay}" 
-                                          ItemTemplate="{StaticResource VaultSearchItemTemplate}" 
+                    </Grid>
+                    <Grid Row="2">
+                       <vwp:VirtualizingItemsControl Margin="0,0,0,0" ItemsSource="{Binding GuildBindings.SiphonedEnergyCollectionView, IsAsync=True, Mode=OneWay}" 
+                                          ItemTemplate="{StaticResource SiphonedEnergyItemTemplate}"
+                                          d:ItemsSource="{d:SampleData ItemCount=10}"
                                           VirtualizingPanel.CacheLengthUnit="Item"
                                           VirtualizingPanel.CacheLength="10,10"
                                           VirtualizingPanel.ScrollUnit="Pixel"
@@ -95,5 +94,17 @@
                 </Grid>
             </TabItem>
         </TabControl>
+        <Grid Visibility="{Binding TradeMonitoringBindings.IsTradeMonitoringPopupVisible, FallbackValue=Collapsed}" 
+              Margin="0,35,0,0" Background="{StaticResource SolidColorBrush.Background.2}">
+            <StackPanel CanHorizontallyScroll="False" CanVerticallyScroll="True" Margin="10,0">
+                <DockPanel Margin="0,0,0,16">
+                    <Grid Height="16" Width="16" Margin="0,3,10,0" VerticalAlignment="Top">
+                        <fa5:ImageAwesome Icon="Regular_DotCircle" Foreground="{StaticResource SolidColorBrush.Accent.Blue.3}" />
+                    </Grid>
+                    <TextBlock Text="{Binding Translation.TradeMonitoringDescription1}" Foreground="{StaticResource SolidColorBrush.Text.1}" 
+                               FontSize="16" TextWrapping="Wrap" Width="auto" />
+                </DockPanel>
+            </StackPanel>
+        </Grid>
     </Grid>
 </UserControl>

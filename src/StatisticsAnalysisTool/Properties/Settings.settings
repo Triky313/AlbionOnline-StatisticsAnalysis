@@ -152,5 +152,8 @@
     <Setting Name="ModifiedMistsDataFileName" Type="System.String" Scope="Application">
       <Value Profile="(Default)">mists-modified.json</Value>
     </Setting>
+    <Setting Name="GuildFileName" Type="System.String" Scope="User">
+      <Value Profile="(Default)">guild.json</Value>
+    </Setting>
   </Settings>
 </SettingsFile>

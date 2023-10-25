@@ -107,4 +107,5 @@ public class MainWindowTranslation
     public static string SelectDeselectAll => LanguageController.Translation("SELECT_DESELECT_ALL");
     public static string Gathering => LanguageController.Translation("GATHERING");
     public static string CopyShortDamageMeterToTheClipboard => LanguageController.Translation("COPY_SHORT_DAMAGE_METER_TO_THE_CLIPBOARD");
+    public static string GuildDescription1 => LanguageController.Translation("GUILD_DESCRIPTION1");
 }

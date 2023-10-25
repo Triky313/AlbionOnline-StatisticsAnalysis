@@ -1,6 +1,13 @@
-﻿using StatisticsAnalysisTool.ViewModels;
+﻿using System.Linq;
+using System.Threading.Tasks;
+using StatisticsAnalysisTool.Common;
+using StatisticsAnalysisTool.Localization;
+using StatisticsAnalysisTool.Network.Manager;
+using StatisticsAnalysisTool.ViewModels;
+using StatisticsAnalysisTool.Views;
 using System.Windows;
 using System.Windows.Input;
+using StatisticsAnalysisTool.Guild;
 
 namespace StatisticsAnalysisTool.UserControls;
 
@@ -9,32 +16,64 @@ namespace StatisticsAnalysisTool.UserControls;
 /// </summary>
 public partial class GuildControl
 {
-    private readonly GuildViewModel _guildViewModel;
+    private bool _isSelectAllActive;
 
     public GuildControl()
     {
         InitializeComponent();
-        _guildViewModel = new GuildViewModel();
-        DataContext = _guildViewModel;
     }
 
-    private void BtnDeleteSelectedSiphonedEnergyEntries_Click(object sender, RoutedEventArgs e)
+    private async void BtnDeleteSelectedSiphonedEnergyEntries_Click(object sender, RoutedEventArgs e)
     {
-        throw new System.NotImplementedException();
+        var dialog = new DialogWindow(LanguageController.Translation("DELETE_SELECTED_ENTRIES"), LanguageController.Translation("SURE_YOU_WANT_TO_DELETE_SELECTED_ENTRIES"));
+        var dialogResult = dialog.ShowDialog();
+
+        var mainWindowViewModel = ServiceLocator.Resolve<MainWindowViewModel>();
+
+        if (mainWindowViewModel == null)
+        {
+            return;
+        }
+
+        if (dialogResult is true)
+        {
+            var trackingController = ServiceLocator.Resolve<TrackingController>();
+
+            var selectedEntries = mainWindowViewModel.GuildBindings.SiphonedEnergyCollectionView?.Cast<SiphonedEnergyItem>()
+                .ToList()
+                .Where(x => x?.IsSelectedForDeletion ?? false)
+                .Select(x => x.GetHashCode());
+
+            mainWindowViewModel.TradeMonitoringBindings.IsDeleteTradesButtonEnabled = false;
+            await trackingController?.GuildController?.RemoveTradesByIdsAsync(selectedEntries)!;
+            mainWindowViewModel.TradeMonitoringBindings.IsDeleteTradesButtonEnabled = true;
+        }
     }
 
     private void OpenSiphonedEnergyInfoPopup_MouseEnter(object sender, MouseEventArgs e)
     {
-        throw new System.NotImplementedException();
+        var vm = (MainWindowViewModel) DataContext;
+        vm.GuildBindings.GuildPopupVisibility = Visibility.Visible;
     }
 
     private void CloseSiphonedEnergyInfoPopup_MouseLeave(object sender, MouseEventArgs e)
     {
-        throw new System.NotImplementedException();
+        var vm = (MainWindowViewModel) DataContext;
+        vm.GuildBindings.GuildPopupVisibility = Visibility.Collapsed;
     }
 
     private void BtnSelectSwitchAllSiphonedEnergyEntries_Click(object sender, RoutedEventArgs e)
     {
-        throw new System.NotImplementedException();
+        if ((MainWindowViewModel) DataContext is not { GuildBindings.SiphonedEnergyList: not null } mainWindowViewModel)
+        {
+            return;
+        }
+
+        foreach (var item in mainWindowViewModel.GuildBindings.SiphonedEnergyList)
+        {
+            item.IsSelectedForDeletion = !_isSelectAllActive;
+        }
+
+        _isSelectAllActive = !_isSelectAllActive;
     }
 }

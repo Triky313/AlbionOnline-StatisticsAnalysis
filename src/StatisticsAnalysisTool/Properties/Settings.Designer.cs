@@ -541,5 +541,17 @@ namespace StatisticsAnalysisTool.Properties {
                 return ((string)(this["ModifiedMistsDataFileName"]));
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("guild.json")]
+        public string GuildFileName {
+            get {
+                return ((string)(this["GuildFileName"]));
+            }
+            set {
+                this["GuildFileName"] = value;
+            }
+        }
     }
 }
