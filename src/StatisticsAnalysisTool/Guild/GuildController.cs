@@ -82,7 +82,9 @@ public class GuildController
 
             Application.Current.Dispatcher.InvokeAsync(() =>
             {
-                _mainWindowViewModel.GuildBindings.LastUpdate = DateTime.UtcNow;
+                _mainWindowViewModel.GuildBindings.SiphonedEnergyLastUpdate = DateTime.UtcNow;
+                _mainWindowViewModel.GuildBindings.SiphonedEnergyLastUpdateVisibility 
+                    = _mainWindowViewModel.GuildBindings?.SiphonedEnergyLastUpdate.Ticks <= 1 ? Visibility.Hidden : Visibility.Visible;
             });
         }
     }

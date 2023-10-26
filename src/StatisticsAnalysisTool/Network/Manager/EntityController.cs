@@ -155,6 +155,12 @@ public class EntityController
     public void SetItemPower(Guid guid, double itemPower)
     {
         var entity = GetEntity(guid);
+
+        if (entity.Value == null)
+        {
+            return;
+        }
+
         if (Math.Abs(entity.Value.ItemPower - itemPower) > 0)
         {
             entity.Value.ItemPower = itemPower;
