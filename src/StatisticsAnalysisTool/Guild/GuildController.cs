@@ -1,7 +1,7 @@
 ﻿using StatisticsAnalysisTool.Common;
+using StatisticsAnalysisTool.Enumerations;
 using StatisticsAnalysisTool.Network.Manager;
 using StatisticsAnalysisTool.Properties;
-using StatisticsAnalysisTool.Trade;
 using StatisticsAnalysisTool.ViewModels;
 using System;
 using System.Collections.Generic;
@@ -38,9 +38,16 @@ public class GuildController
 
     public void AddSiphonedEnergyEntries(List<string> usernames, List<FixPoint> quantities, List<long> timestamps, bool isManualEntry = false)
     {
+        if (_mainWindowViewModel.TrackingActivityBindings.TrackingActivityType != TrackingIconType.On)
+        {
+            return;
+        }
+
         // Siphoned Energy tab is 2
         if ((_currentTabId == 2 && (usernames.Count == quantities.Count && usernames.Count == timestamps.Count)) || isManualEntry)
         {
+            var tempList = new List<SiphonedEnergyItem>();
+
             for (int i = 0; i < quantities.Count; i++)
             {
                 string username = usernames[i];
@@ -49,22 +56,28 @@ public class GuildController
 
                 var siphonedEnergyEntry = new SiphonedEnergyItem()
                 {
+                    GuildName = _trackingController.EntityController.LocalUserData.GuildName,
                     CharacterName = username,
                     Quantity = quantity,
                     Timestamp = timestamp
                 };
 
-                if (!_mainWindowViewModel.GuildBindings.SiphonedEnergyList.ToList().Any(x =>
+                if (!_mainWindowViewModel.GuildBindings.SiphonedEnergyList.Any(x =>
                         x.CharacterName == siphonedEnergyEntry.CharacterName
                         && x.Quantity.InternalValue == siphonedEnergyEntry.Quantity.InternalValue
                         && x.Timestamp == siphonedEnergyEntry.Timestamp))
                 {
-                    Application.Current.Dispatcher.InvokeAsync(() =>
-                    {
-                        _mainWindowViewModel.GuildBindings.SiphonedEnergyList.Add(siphonedEnergyEntry);
-                        UpdateSiphonedEnergyOverview();
-                    });
+                    tempList.Add(siphonedEnergyEntry);
                 }
+            }
+
+            foreach (var item in tempList)
+            {
+                Application.Current.Dispatcher.InvokeAsync(() =>
+                {
+                    _mainWindowViewModel.GuildBindings.SiphonedEnergyList.Add(item);
+                    UpdateSiphonedEnergyOverview();
+                });
             }
         }
     }
@@ -82,10 +95,13 @@ public class GuildController
                 Quantity = FixPoint.FromInternalValue(item.Sum(x => x.Quantity.InternalValue)),
                 Timestamp = item.Max(x => x.Timestamp)
             })
-            .OrderBy(x => x.Timestamp)
+            .OrderByDescending(x => x.Quantity.IntegerValue)
             .ToList();
 
-        _mainWindowViewModel.GuildBindings.SiphonedEnergyOverviewList = new ObservableRangeCollection<SiphonedEnergyItem>(grouped);
+        Application.Current.Dispatcher.InvokeAsync(() =>
+        {
+            _mainWindowViewModel.GuildBindings.SiphonedEnergyOverviewList = new ObservableRangeCollection<SiphonedEnergyItem>(grouped);
+        });
     }
 
     public async Task RemoveTradesByIdsAsync(IEnumerable<int> hashCodes)
@@ -122,22 +138,25 @@ public class GuildController
 
     #region Save / Load data
 
-    public async Task LoadFromFileAsync(string guildId)
+    public async Task LoadFromFileAsync()
     {
         FileController.TransferFileIfExistFromOldPathToUserDataDirectory(Path.Combine(AppDomain.CurrentDomain.BaseDirectory, Settings.Default.GuildFileName));
 
-        var dtos = await FileController.LoadAsync<List<GuildDto>>(
+        var dto = await FileController.LoadAsync<GuildDto>(
             Path.Combine(AppDomain.CurrentDomain.BaseDirectory, Settings.Default.UserDataDirectoryName, Settings.Default.GuildFileName));
-        var guild = dtos.Select(GuildMapping.Mapping);
+        var guild = GuildMapping.Mapping(dto);
 
-        _mainWindowViewModel.GuildBindings.SiphonedEnergyList
-            = new ObservableRangeCollection<SiphonedEnergyItem>(guild.FirstOrDefault(x => x.GuildId == guildId)?.SiphonedEnergy ?? new List<SiphonedEnergyItem>());
+        _mainWindowViewModel.GuildBindings.SiphonedEnergyList.AddRange(guild.SiphonedEnergies);
+        UpdateSiphonedEnergyOverview();
     }
 
     public async Task SaveInFileAsync()
     {
         DirectoryController.CreateDirectoryWhenNotExists(Path.Combine(AppDomain.CurrentDomain.BaseDirectory, Settings.Default.UserDataDirectoryName));
-        await FileController.SaveAsync(_mainWindowViewModel.TradeMonitoringBindings?.Trades?.Select(TradeMapping.Mapping),
+        await FileController.SaveAsync(new GuildDto()
+        {
+            SiphonedEnergies = _mainWindowViewModel.GuildBindings.SiphonedEnergyList.Select(GuildMapping.Mapping).ToList()
+        },
             Path.Combine(AppDomain.CurrentDomain.BaseDirectory, Settings.Default.UserDataDirectoryName, Settings.Default.GuildFileName));
         Debug.Print("Guild data saved");
     }

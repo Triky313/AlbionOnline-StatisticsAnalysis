@@ -772,8 +772,10 @@
 	<translation name="SIPHONED_ENERGY_DESCRIPTION4">4. Jede Seite muss einzeln aufgerufen werden, damit sie getrackt werden kann.</translation>
 	<translation name="GUILD">Gilde</translation>
 	<translation name="DELETE_SELECTED_ENTRIES">Ausgewählte Einträge löschen</translation>
+	<translation name="SURE_YOU_WANT_TO_DELETE_SELECTED_ENTRIES">Wirklich alle ausgewählte Einträge löschen?</translation>
 	<translation name="CHARACTER_NAME">Charakter Name</translation>
 	<translation name="QUANTITY">Menge</translation>
 	<translation name="ADD_ENTRY">Eintrag hinzufügen</translation>
 	<translation name="ADD_OR_REMOVE_MANUALLY">Manuelles Hinzufügen oder Entfernen</translation>
+	<translation name="SELECT_TO_DISABLE">Zum deaktivieren auswählen</translation>
 </translations>

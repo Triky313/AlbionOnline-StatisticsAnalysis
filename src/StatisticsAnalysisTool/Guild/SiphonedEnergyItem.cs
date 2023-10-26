@@ -11,6 +11,7 @@ public class SiphonedEnergyItem : BaseViewModel, IEquatable<SiphonedEnergyItem>
     private bool _isSelectedForDeletion;
     private bool _isDisabled;
 
+    public string GuildName { get; init; }
     public string CharacterName { get; init; }
     public FixPoint Quantity { get; init; }
     public DateTime Timestamp { get; init; }
@@ -76,9 +77,7 @@ public class SiphonedEnergyItem : BaseViewModel, IEquatable<SiphonedEnergyItem>
     {
         return HashCode.Combine(CharacterName, Quantity, Timestamp);
     }
-
-    public static string TranslationDeposit => LanguageController.Translation("DEPOSIT");
-    public static string TranslationPayout => LanguageController.Translation("PAYOUT");
+    
     public static string TranslationSelectToDisable => LanguageController.Translation("SELECT_TO_DISABLE");
     public static string TranslationSelectToDelete => LanguageController.Translation("SELECT_TO_DELETE");
 }

@@ -121,7 +121,8 @@ public class TrackingController : ITrackingController
             TreasureController.LoadFromFileAsync(),
             DungeonController.LoadDungeonFromFileAsync(),
             GatheringController.LoadFromFileAsync(),
-            VaultController.LoadFromFileAsync()
+            VaultController.LoadFromFileAsync(),
+            GuildController.LoadFromFileAsync()
         );
 
         ClusterController?.RegisterEvents();
@@ -188,6 +189,7 @@ public class TrackingController : ITrackingController
             StatisticController.SaveInFileAsync(),
             DungeonController.SaveInFileAsync(),
             GatheringController.SaveInFileAsync(true),
+            GuildController.SaveInFileAsync(),
             EstimatedMarketValueController.SaveInFileAsync(),
             FileController.SaveAsync(_mainWindowViewModel.DamageMeterBindings?.DamageMeterSnapshots,
                 Path.Combine(AppDomain.CurrentDomain.BaseDirectory, Settings.Default.UserDataDirectoryName, Settings.Default.DamageMeterSnapshotsFileName))

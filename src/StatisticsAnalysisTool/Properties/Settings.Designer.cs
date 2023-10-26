@@ -544,7 +544,7 @@ namespace StatisticsAnalysisTool.Properties {
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("guild.json")]
+        [global::System.Configuration.DefaultSettingValueAttribute("Guild.json")]
         public string GuildFileName {
             get {
                 return ((string)(this["GuildFileName"]));

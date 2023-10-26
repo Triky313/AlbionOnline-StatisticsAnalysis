@@ -31,8 +31,8 @@
             <StackPanel Orientation="Vertical" Margin="10,0,0,0">
                 <Separator Background="{StaticResource SolidColorBrush.Background.2}" Height="4" Margin="0,0,0,0" VerticalAlignment="Top"/>
                 <StackPanel>
-                    <Label Content="{Binding TranslationAddOrRemoveManually, FallbackValue=ADD_OR_REMOVE_MANUALLY}" Style="{StaticResource HeaderStyle.Tracking.Title}" Margin="2,5,0,0"
-                           Foreground="{StaticResource SolidColorBrush.Accent.Blue.2}" />
+                    <Label Content="{Binding TranslationAddOrRemoveManually, FallbackValue=ADD_OR_REMOVE_MANUALLY}" Style="{StaticResource HeaderStyle.Tracking.Title}" 
+                           Margin="2,5,0,0" Foreground="{StaticResource SolidColorBrush.Accent.Blue.2}" />
 
                     <StackPanel Orientation="Horizontal">
                         <StackPanel Orientation="Vertical" Width="200" Margin="0,0,5,0">
@@ -63,7 +63,7 @@
             <Border Style="{StaticResource Container.Border}">
                 <StackPanel Orientation="Vertical" Margin="0,0,5,0">
                     <DockPanel>
-                        <TextBlock Text="{Binding Timestamp, IsAsync=True, FallbackValue=0}" FontWeight="Bold" Width="200">
+                        <TextBlock Text="{Binding Timestamp, IsAsync=True, FallbackValue=0}" FontWeight="Bold" Width="175">
                             <TextBlock.Style>
                                 <Style TargetType="{x:Type TextBlock}">
                                     <Setter Property="Foreground" Value="{StaticResource SolidColorBrush.Accent.Blue.2}"/>
@@ -78,7 +78,7 @@
                                 </Style>
                             </TextBlock.Style>
                         </TextBlock>
-                        <TextBlock Text="{Binding CharacterName, IsAsync=True, FallbackValue=0}" FontWeight="Bold" Width="200">
+                        <TextBlock Text="{Binding CharacterName, IsAsync=True, FallbackValue=0}" FontWeight="Bold" Width="225" Margin="3,0">
                             <TextBlock.Style>
                                 <Style TargetType="{x:Type TextBlock}">
                                     <Setter Property="Foreground" Value="{StaticResource SolidColorBrush.Accent.Blue.2}"/>
@@ -93,18 +93,12 @@
                                 </Style>
                             </TextBlock.Style>
                         </TextBlock>
-                        <TextBlock FontWeight="Bold" Width="150">
+                        <TextBlock FontWeight="Bold" Width="175" Margin="3,0">
                             <TextBlock.Style>
                                 <Style TargetType="{x:Type TextBlock}">
-                                    <Setter Property="Text" Value="?"/>
+                                    <Setter Property="Text" Value="{Binding GuildName, FallbackValue=''}"/>
                                     <Setter Property="Foreground" Value="{StaticResource SolidColorBrush.Text.1}"/>
                                     <Style.Triggers>
-                                        <DataTrigger Binding="{Binding IsDeposit}" Value="true">
-                                            <Setter Property="Text" Value="{Binding TranslationDeposit, FallbackValue='DEPOSIT'}"/>
-                                        </DataTrigger>
-                                        <DataTrigger Binding="{Binding IsDeposit}" Value="false">
-                                            <Setter Property="Text" Value="{Binding TranslationPayout, FallbackValue='PAYOUT'}"/>
-                                        </DataTrigger>
                                         <DataTrigger Binding="{Binding IsDisabled}" Value="true">
                                             <Setter Property="Foreground" Value="{StaticResource SolidColorBrush.Accent.Blue.Transparent.2}"/>
                                         </DataTrigger>
@@ -112,7 +106,7 @@
                                 </Style>
                             </TextBlock.Style>
                         </TextBlock>
-                        <TextBlock Text="{Binding Quantity, IsAsync=True, FallbackValue=0}" FontWeight="Bold" Width="150">
+                        <TextBlock Text="{Binding Quantity, IsAsync=True, FallbackValue=0}" FontWeight="Bold" Width="75" Margin="3,0">
                             <TextBlock.Style>
                                 <Style TargetType="{x:Type TextBlock}">
                                     <Setter Property="Foreground" Value="{StaticResource SolidColorBrush.Text.1}" />
@@ -131,14 +125,18 @@
                             </TextBlock.Style>
                         </TextBlock>
 
-                        <!-- Disable checkbox -->
-                        <Grid Margin="0,0,10,0" Height="18" Width="18" HorizontalAlignment="Right">
-                            <CheckBox IsChecked="{Binding IsDisabled}" ToolTip="{Binding TranslationSelectToDisable, FallbackValue='SELECT_TO_DISABLE'}" />
-                        </Grid>
+                        <Grid HorizontalAlignment="Right">
+                            <StackPanel Orientation="Horizontal">
+                                <!-- Disable checkbox -->
+                                <Grid Margin="0,0,10,0" Height="18" Width="18">
+                                    <CheckBox IsChecked="{Binding IsDisabled}" ToolTip="{Binding TranslationSelectToDisable, FallbackValue='SELECT_TO_DISABLE'}" />
+                                </Grid>
 
-                        <!-- Delete checkbox -->
-                        <Grid Margin="0,0,10,0" Height="18" Width="18" HorizontalAlignment="Right">
-                            <CheckBox IsChecked="{Binding IsSelectedForDeletion}" ToolTip="{Binding TranslationSelectToDelete, FallbackValue='SELECT_TO_DELETE'}" />
+                                <!-- Delete checkbox -->
+                                <Grid Margin="0,0,10,0" Height="18" Width="18">
+                                    <CheckBox IsChecked="{Binding IsSelectedForDeletion}" ToolTip="{Binding TranslationSelectToDelete, FallbackValue='SELECT_TO_DELETE'}" />
+                                </Grid>
+                            </StackPanel>
                         </Grid>
                     </DockPanel>
                 </StackPanel>

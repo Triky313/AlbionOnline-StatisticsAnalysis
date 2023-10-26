@@ -153,7 +153,7 @@
       <Value Profile="(Default)">mists-modified.json</Value>
     </Setting>
     <Setting Name="GuildFileName" Type="System.String" Scope="User">
-      <Value Profile="(Default)">guild.json</Value>
+      <Value Profile="(Default)">Guild.json</Value>
     </Setting>
   </Settings>
 </SettingsFile>
