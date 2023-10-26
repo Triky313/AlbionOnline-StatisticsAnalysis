@@ -79,6 +79,11 @@ public class GuildController
                     UpdateSiphonedEnergyOverview();
                 });
             }
+
+            Application.Current.Dispatcher.InvokeAsync(() =>
+            {
+                _mainWindowViewModel.GuildBindings.LastUpdate = DateTime.UtcNow;
+            });
         }
     }
 

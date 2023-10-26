@@ -2,7 +2,7 @@
 using StatisticsAnalysisTool.Common.UserSettings;
 using StatisticsAnalysisTool.Localization;
 using StatisticsAnalysisTool.ViewModels;
-using System.Collections.ObjectModel;
+using System;
 using System.Windows;
 using System.Windows.Data;
 
@@ -17,6 +17,7 @@ public class GuildBindings : BaseViewModel
     private ObservableRangeCollection<SiphonedEnergyItem> _siphonedEnergyOverviewList = new();
     private Visibility _guildPopupVisibility = Visibility.Collapsed;
     private bool _isDeleteEntriesButtonEnabled = true;
+    private DateTime _lastUpdate;
 
 
     public GuildBindings()
@@ -92,6 +93,16 @@ public class GuildBindings : BaseViewModel
         set
         {
             _isDeleteEntriesButtonEnabled = value;
+            OnPropertyChanged();
+        }
+    }
+
+    public DateTime LastUpdate
+    {
+        get => _lastUpdate;
+        set
+        {
+            _lastUpdate = value;
             OnPropertyChanged();
         }
     }

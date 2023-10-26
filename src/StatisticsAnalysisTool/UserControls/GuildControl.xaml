@@ -62,7 +62,7 @@
                                         Visibility="{Binding VaultBindings.LastUpdateVisibility}">
                                 <TextBlock Text="{Binding GuildBindings.TranslationLastUpdate, StringFormat='{}{0:N0}: ', FallbackValue=LAST_UPDATE:}" FontSize="12" 
                                        Foreground="{StaticResource SolidColorBrush.Text.4}" VerticalAlignment="Center" />
-                                <TextBlock Text="{Binding VaultBindings.LastUpdate, StringFormat='{}{0} UTC', ConverterCulture={x:Static gl:CultureInfo.CurrentCulture}, FallbackValue=00:00:00}" 
+                                <TextBlock Text="{Binding GuildBindings.LastUpdate, StringFormat='{}{0} UTC', ConverterCulture={x:Static gl:CultureInfo.CurrentCulture}, FallbackValue=00:00:00}" 
                                        FontSize="12" Foreground="{StaticResource SolidColorBrush.Text.4}" VerticalAlignment="Center" />
                             </StackPanel>
                         </Grid>

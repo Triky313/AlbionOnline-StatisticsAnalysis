@@ -150,6 +150,7 @@ public class VaultBindings : BaseViewModel
             OnPropertyChanged();
         }
     }
+
     public GridLength GridSplitterPosition
     {
         get => _gridSplitterPosition;
