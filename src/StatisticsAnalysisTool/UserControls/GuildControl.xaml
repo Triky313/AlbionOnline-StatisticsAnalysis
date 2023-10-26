@@ -11,7 +11,7 @@
              d:DesignHeight="400" d:DesignWidth="800"
              d:DataContext="{d:DesignInstance Type=viewModels:MainWindowViewModel}">
     <Grid>
-        <TabControl Background="Transparent">
+        <TabControl SelectedIndex="1" Background="Transparent">
             <TabItem Header="{Binding GuildBindings.TranslationLootLogChecker, FallbackValue=LOOT_LOG_CHECKER}" Visibility="Collapsed">
                 <!--<StackPanel Orientation="Vertical">
                     <StackPanel Orientation="Horizontal" HorizontalAlignment="Left" VerticalAlignment="Top" Height="30">
@@ -45,9 +45,10 @@
                             <StackPanel Orientation="Vertical" Height="60" HorizontalAlignment="Right" VerticalAlignment="Top" Margin="0,6,3,0">
                                 <StackPanel Orientation="Horizontal" MaxWidth="300" Height="30" HorizontalAlignment="Right" VerticalAlignment="Top">
                                     <Button Content="{Binding GuildBindings.TranslationDeleteSelectedEntries, FallbackValue=DELETE__SELECTED__ENTRIES}" Margin="5,0,0,0"
-                                        Height="24" Width="200" MaxWidth="300" MinWidth="200" IsEnabled="{Binding TradeMonitoringBindings.IsDeleteTradesButtonEnabled}" Click="BtnDeleteSelectedSiphonedEnergyEntries_Click" />
+                                        Height="24" Width="200" MaxWidth="300" MinWidth="200" IsEnabled="{Binding TradeMonitoringBindings.IsDeleteTradesButtonEnabled}" 
+                                        Click="BtnDeleteSelectedSiphonedEnergyEntries_Click" />
                                     <Grid Height="20" Width="20" Margin="5,0,0,0" VerticalAlignment="Center"
-                                      MouseEnter="OpenSiphonedEnergyInfoPopup_MouseEnter" MouseLeave="CloseSiphonedEnergyInfoPopup_MouseLeave">
+                                          MouseEnter="OpenSiphonedEnergyInfoPopup_MouseEnter" MouseLeave="CloseSiphonedEnergyInfoPopup_MouseLeave">
                                         <fa5:ImageAwesome Icon="Solid_InfoCircle" Foreground="{StaticResource SolidColorBrush.Text.1}" />
                                     </Grid>
                                 </StackPanel>
@@ -58,7 +59,7 @@
                             </StackPanel>
 
                             <StackPanel Orientation="Horizontal" HorizontalAlignment="Left" VerticalAlignment="Top" Height="24" Margin="0,5"
-                                    Visibility="{Binding VaultBindings.LastUpdateVisibility}">
+                                        Visibility="{Binding VaultBindings.LastUpdateVisibility}">
                                 <TextBlock Text="{Binding GuildBindings.TranslationLastUpdate, StringFormat='{}{0:N0}: ', FallbackValue=LAST_UPDATE:}" FontSize="12" 
                                        Foreground="{StaticResource SolidColorBrush.Text.4}" VerticalAlignment="Center" />
                                 <TextBlock Text="{Binding VaultBindings.LastUpdate, StringFormat='{}{0} UTC', ConverterCulture={x:Static gl:CultureInfo.CurrentCulture}, FallbackValue=00:00:00}" 
@@ -76,8 +77,7 @@
                                                           VirtualizingPanel.VirtualizationMode="Recycling"
                                                           ScrollViewer.HorizontalScrollBarVisibility="Disabled"
                                                           ScrollViewer.VerticalScrollBarVisibility="Visible" />
-                            <ContentControl Margin="0,0,0,0" ContentTemplate="{StaticResource ManuallySiphonedEnergy.Template}" 
-                                        Content="{Binding GuildBindings.ManuallySiphonedEnergy}" />
+                            <ContentControl ContentTemplate="{StaticResource ManuallySiphonedEnergy.Template}" Content="{Binding GuildBindings.ManuallySiphonedEnergy}" />
                         </StackPanel>
                     </Grid>
                     <Grid Row="2">
@@ -94,16 +94,38 @@
                 </Grid>
             </TabItem>
         </TabControl>
-        <Grid Visibility="{Binding TradeMonitoringBindings.IsTradeMonitoringPopupVisible, FallbackValue=Collapsed}" 
-              Margin="0,35,0,0" Background="{StaticResource SolidColorBrush.Background.2}">
+        <Grid Visibility="{Binding GuildBindings.GuildPopupVisibility, FallbackValue=Collapsed}" 
+              Margin="0,60,0,0" Background="{StaticResource SolidColorBrush.Background.2}">
             <StackPanel CanHorizontallyScroll="False" CanVerticallyScroll="True" Margin="10,0">
-                <DockPanel Margin="0,0,0,16">
+                <StackPanel Orientation="Horizontal">
                     <Grid Height="16" Width="16" Margin="0,3,10,0" VerticalAlignment="Top">
                         <fa5:ImageAwesome Icon="Regular_DotCircle" Foreground="{StaticResource SolidColorBrush.Accent.Blue.3}" />
                     </Grid>
-                    <TextBlock Text="{Binding Translation.TradeMonitoringDescription1}" Foreground="{StaticResource SolidColorBrush.Text.1}" 
-                               FontSize="16" TextWrapping="Wrap" Width="auto" />
-                </DockPanel>
+                    <TextBlock Text="{Binding Translation.SiphonedEnergyDescription1}" Foreground="{StaticResource SolidColorBrush.Text.1}" 
+                                   FontSize="16" TextWrapping="Wrap" Width="auto" />
+                </StackPanel>
+                <StackPanel Orientation="Horizontal">
+                    <Grid Height="16" Width="16" Margin="0,3,10,0" VerticalAlignment="Top">
+                        <fa5:ImageAwesome Icon="Regular_DotCircle" Foreground="{StaticResource SolidColorBrush.Accent.Blue.3}" />
+                    </Grid>
+                    <TextBlock Text="{Binding Translation.SiphonedEnergyDescription2}" Foreground="{StaticResource SolidColorBrush.Text.1}" 
+                                   FontSize="16" TextWrapping="Wrap" Width="auto" />
+                </StackPanel>
+                <StackPanel Orientation="Horizontal">
+                    <Grid Height="16" Width="16" Margin="0,3,10,0" VerticalAlignment="Top">
+                        <fa5:ImageAwesome Icon="Regular_DotCircle" Foreground="{StaticResource SolidColorBrush.Accent.Blue.3}" />
+                    </Grid>
+                    <TextBlock Text="{Binding Translation.SiphonedEnergyDescription3}" Foreground="{StaticResource SolidColorBrush.Text.1}" 
+                                   FontSize="16" TextWrapping="Wrap" Width="auto" />
+                </StackPanel>
+                <StackPanel Orientation="Horizontal">
+                    <Grid Height="16" Width="16" Margin="0,3,10,0" VerticalAlignment="Top">
+                        <fa5:ImageAwesome Icon="Regular_DotCircle" Foreground="{StaticResource SolidColorBrush.Accent.Blue.3}" />
+                    </Grid>
+                    <TextBlock Text="{Binding Translation.SiphonedEnergyDescription4}" Foreground="{StaticResource SolidColorBrush.Text.1}" 
+                                   FontSize="16" TextWrapping="Wrap" Width="auto" />
+                </StackPanel>
+                <Image Margin="0,10" Source="../Assets/siphoned_energy_description01.jpg" />
             </StackPanel>
         </Grid>
     </Grid>

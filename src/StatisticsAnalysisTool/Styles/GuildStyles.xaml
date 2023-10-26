@@ -46,14 +46,13 @@
                         </StackPanel>
                     </StackPanel>
 
-                    <Button Content="{Binding TranslationAddManualEntry, FallbackValue=ADD_MANUAL_ENTRY}" HorizontalAlignment="Left" 
+                    <Button Content="{Binding TranslationAddEntry, FallbackValue=ADD_MANUAL_ENTRY}" HorizontalAlignment="Left" 
                             Margin="0,10" Height="24" Width="200" MaxWidth="300" MinWidth="200">
                         <Button.InputBindings>
                             <MouseBinding MouseAction="LeftClick" Command="{Binding AddManualEntryCommand}" />
                         </Button.InputBindings>
                     </Button>
-
-                    <Grid Height="25"/>
+                    <Separator Background="{StaticResource SolidColorBrush.Background.2}" Height="4" VerticalAlignment="Top"/>
                 </StackPanel>
             </StackPanel>
         </Grid>

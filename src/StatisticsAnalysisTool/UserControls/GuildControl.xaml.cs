@@ -44,9 +44,9 @@ public partial class GuildControl
                 .Where(x => x?.IsSelectedForDeletion ?? false)
                 .Select(x => x.GetHashCode());
 
-            mainWindowViewModel.TradeMonitoringBindings.IsDeleteTradesButtonEnabled = false;
+            mainWindowViewModel.GuildBindings.IsDeleteEntriesButtonEnabled = false;
             await trackingController?.GuildController?.RemoveTradesByIdsAsync(selectedEntries)!;
-            mainWindowViewModel.TradeMonitoringBindings.IsDeleteTradesButtonEnabled = true;
+            mainWindowViewModel.GuildBindings.IsDeleteEntriesButtonEnabled = true;
         }
     }
 

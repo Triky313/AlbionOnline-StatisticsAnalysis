@@ -338,6 +338,9 @@
     <Resource Include="Assets\shiny_uncommon.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Resource>
+    <Resource Include="Assets\siphoned_energy_description01.jpg">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Resource>
     <Resource Include="Assets\skull.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Resource>
@@ -710,6 +713,7 @@
     <None Remove="Assets\shiny_legendary.png" />
     <None Remove="Assets\shiny_rare.png" />
     <None Remove="Assets\shiny_uncommon.png" />
+    <None Remove="Assets\siphoned_energy_description01.jpg" />
     <None Remove="Assets\skull.png" />
     <None Remove="Assets\skull_green.png" />
     <None Remove="Assets\skull_red.png" />

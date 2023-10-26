@@ -16,6 +16,7 @@ public class GuildBindings : BaseViewModel
     private ObservableRangeCollection<SiphonedEnergyItem> _siphonedEnergyList = new();
     private ObservableRangeCollection<SiphonedEnergyItem> _siphonedEnergyOverviewList = new();
     private Visibility _guildPopupVisibility = Visibility.Collapsed;
+    private bool _isDeleteEntriesButtonEnabled = true;
 
 
     public GuildBindings()
@@ -81,6 +82,16 @@ public class GuildBindings : BaseViewModel
         set
         {
             _guildPopupVisibility = value;
+            OnPropertyChanged();
+        }
+    }
+
+    public bool IsDeleteEntriesButtonEnabled
+    {
+        get => _isDeleteEntriesButtonEnabled;
+        set
+        {
+            _isDeleteEntriesButtonEnabled = value;
             OnPropertyChanged();
         }
     }

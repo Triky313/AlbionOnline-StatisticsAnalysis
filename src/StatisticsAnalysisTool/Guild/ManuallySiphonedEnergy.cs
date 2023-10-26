@@ -59,6 +59,6 @@ public class ManuallySiphonedEnergy : BaseViewModel
 
     public static string TranslationAddOrRemoveManually => LanguageController.Translation("ADD_OR_REMOVE_MANUALLY");
     public static string TranslationCharacterName => LanguageController.Translation("CHARACTER_NAME");
-    public static string TranslationAddManualEntry => LanguageController.Translation("ADD_MANUAL_ENTRY");
+    public static string TranslationAddEntry => LanguageController.Translation("ADD_ENTRY");
     public static string TranslationQuantity => LanguageController.Translation("QUANTITY");
 }

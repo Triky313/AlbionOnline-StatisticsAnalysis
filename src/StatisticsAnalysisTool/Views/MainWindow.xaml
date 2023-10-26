@@ -71,7 +71,7 @@
                                 <Label Content=" | "/>
                             </StackPanel>
                             <StackPanel Orientation="Horizontal" Visibility="{Binding UserTrackingBindings.GuildInformationVisibility, FallbackValue=Collapsed}">
-                                <Label Style="{StaticResource HeaderStyle.Tracking.Title}" Content="{Binding Translation.Guild, FallbackValue=GUILD}" ContentStringFormat="{}{0}: " />
+                                <Label Style="{StaticResource HeaderStyle.Tracking.Title}" Content="{Binding Translation.GuildCap, FallbackValue=GUILD}" ContentStringFormat="{}{0}: " />
                                 <Label Style="{StaticResource HeaderStyle.Tracking.Content}" Content="{Binding UserTrackingBindings.GuildName, FallbackValue=GUILD__NAME}" />
                                 <Label Content=" | "/>
                             </StackPanel>
