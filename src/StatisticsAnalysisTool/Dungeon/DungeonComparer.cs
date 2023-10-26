@@ -1,7 +1,7 @@
 ﻿using StatisticsAnalysisTool.Dungeon.Models;
 using System.Collections;
 
-namespace StatisticsAnalysisTool.Common.Comparer;
+namespace StatisticsAnalysisTool.Dungeon;
 
 public class DungeonComparer : IComparer
 {

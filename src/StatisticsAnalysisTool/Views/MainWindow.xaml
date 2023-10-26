@@ -71,7 +71,7 @@
                                 <Label Content=" | "/>
                             </StackPanel>
                             <StackPanel Orientation="Horizontal" Visibility="{Binding UserTrackingBindings.GuildInformationVisibility, FallbackValue=Collapsed}">
-                                <Label Style="{StaticResource HeaderStyle.Tracking.Title}" Content="{Binding Translation.Guild, FallbackValue=GUILD}" ContentStringFormat="{}{0}: " />
+                                <Label Style="{StaticResource HeaderStyle.Tracking.Title}" Content="{Binding Translation.GuildCap, FallbackValue=GUILD}" ContentStringFormat="{}{0}: " />
                                 <Label Style="{StaticResource HeaderStyle.Tracking.Content}" Content="{Binding UserTrackingBindings.GuildName, FallbackValue=GUILD__NAME}" />
                                 <Label Content=" | "/>
                             </StackPanel>
@@ -200,6 +200,11 @@
             <TabItem Visibility="{Binding LoggingTabVisibility, Mode=OneWay}" Header="{Binding Translation.Logging, FallbackValue=LOGGING}">
                 <Grid Style="{StaticResource TabItemGridStyle}">
                     <userControls:LoggingControl DataContext="{Binding RelativeSource={RelativeSource AncestorType=Window}, Path=DataContext}" />
+                </Grid>
+            </TabItem>
+            <TabItem Visibility="{Binding GuildTabVisibility, Mode=OneWay}" Header="{Binding Translation.Guild, FallbackValue=GUILD}">
+                <Grid Style="{StaticResource TabItemGridStyle}">
+                    <userControls:GuildControl DataContext="{Binding RelativeSource={RelativeSource AncestorType=Window}, Path=DataContext}" />
                 </Grid>
             </TabItem>
             <TabItem Visibility="{Binding DungeonsTabVisibility, Mode=OneWay}" Header="{Binding Translation.Dungeons, FallbackValue=DUNGEONS}">

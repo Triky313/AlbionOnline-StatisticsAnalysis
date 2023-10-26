@@ -319,7 +319,7 @@
 	<translation name="TRACKING">Tracking</translation>
 	<translation name="IS_TRACKING_ACTIVE">Ist tracken aktiv? (Grün - AN | Gelb - Teilweise | Grau - AUS)</translation>
 	<translation name="USERNAME">USERNAME</translation>
-	<translation name="GUILD">GILDE</translation>
+	<translation name="GUILD_CAP">GILDE</translation>
 	<translation name="ALLIANCE">ALLIANZ</translation>
 	<translation name="RESET_TRACKING_COUNTER">Tracking zurücksetzen</translation>
 	<translation name="MAKE_SURE_YOU_HAVE_INSTALLED_NPCAP">Geh sicher, dass du NPcap installiert hast. https://nmap.org/npcap</translation>
@@ -766,4 +766,17 @@
 	<translation name="PLEASE_SELECT_A_SERVER_LOCATION">Bitte wähle einen Serverstandort aus</translation>
 	<translation name="KILLS_DEATHS">Tötungen / Tode</translation>
 	<translation name="REPAIR_COSTS">Reparaturkosten</translation>
+	<translation name="SIPHONED_ENERGY_DESCRIPTION1">1. Wähle zuerst auf der rechten Seite den 3. Tab aus.</translation>
+	<translation name="SIPHONED_ENERGY_DESCRIPTION2">2. Wähle in der Suche Gesammelte Energie aus</translation>
+	<translation name="SIPHONED_ENERGY_DESCRIPTION3">3. Wähle eine Zeitangabe aus um mehr oder weniger Einträge zu tracken</translation>
+	<translation name="SIPHONED_ENERGY_DESCRIPTION4">4. Jede Seite muss einzeln aufgerufen werden, damit sie getrackt werden kann.</translation>
+	<translation name="GUILD">Gilde</translation>
+	<translation name="DELETE_SELECTED_ENTRIES">Ausgewählte Einträge löschen</translation>
+	<translation name="SURE_YOU_WANT_TO_DELETE_SELECTED_ENTRIES">Wirklich alle ausgewählte Einträge löschen?</translation>
+	<translation name="CHARACTER_NAME">Charakter Name</translation>
+	<translation name="QUANTITY">Menge</translation>
+	<translation name="ADD_ENTRY">Eintrag hinzufügen</translation>
+	<translation name="ADD_OR_REMOVE_MANUALLY">Manuelles Hinzufügen oder Entfernen</translation>
+	<translation name="SELECT_TO_DISABLE">Zum deaktivieren auswählen</translation>
+	<translation name="SIPHONED_ENERGY">Gesammelte Energie</translation>
 </translations>

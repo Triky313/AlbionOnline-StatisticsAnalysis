@@ -33,6 +33,7 @@ using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Data;
 using System.Windows.Media;
+using StatisticsAnalysisTool.Guild;
 
 // ReSharper disable UnusedMember.Global
 
@@ -110,13 +111,15 @@ public class MainWindowViewModel : BaseViewModel
     private Visibility _storageHistoryTabVisibility = Visibility.Visible;
     private Visibility _mapHistoryTabVisibility = Visibility.Visible;
     private Visibility _playerInformationTabVisibility = Visibility.Visible;
+    private Visibility _guildTabVisibility = Visibility.Visible;
     private Visibility _toolTaskFrontViewVisibility = Visibility.Collapsed;
     private Visibility _statsDropDownVisibility = Visibility.Collapsed;
     private double _toolTaskProgressBarValue;
     private string _toolTaskCurrentTaskName;
     private ToolTaskBindings _toolTaskBindings = new();
-    private string _serverTypeText;
+    private GuildBindings _guildBindings = new ();
     private PartyBuilderBindings _partyBuilderBindings = new();
+    private string _serverTypeText;
     private bool _isDataLoaded;
     private bool _isCloseButtonActive;
 
@@ -170,6 +173,9 @@ public class MainWindowViewModel : BaseViewModel
 
         // Party Builder
         PartyBuilderBindings.GridSplitterPosition = new GridLength(SettingsController.CurrentSettings.PartyBuilderGridSplitterPosition);
+
+        // Guild
+        GuildBindings.GridSplitterPosition = new GridLength(SettingsController.CurrentSettings.GuildGridSplitterPosition);
     }
 
     #region Alert
@@ -509,6 +515,16 @@ public class MainWindowViewModel : BaseViewModel
         set
         {
             _partyBuilderBindings = value;
+            OnPropertyChanged();
+        }
+    }
+
+    public GuildBindings GuildBindings
+    {
+        get => _guildBindings;
+        set
+        {
+            _guildBindings = value;
             OnPropertyChanged();
         }
     }
@@ -1104,6 +1120,16 @@ public class MainWindowViewModel : BaseViewModel
         set
         {
             _loggingTabVisibility = value;
+            OnPropertyChanged();
+        }
+    }
+
+    public Visibility GuildTabVisibility
+    {
+        get => _guildTabVisibility;
+        set
+        {
+            _guildTabVisibility = value;
             OnPropertyChanged();
         }
     }
