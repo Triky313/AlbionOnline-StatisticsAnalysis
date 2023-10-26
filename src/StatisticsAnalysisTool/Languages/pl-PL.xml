@@ -766,4 +766,15 @@
 	<translation name="PLEASE_SELECT_A_SERVER_LOCATION">Proszę wybrać lokalizację serwera</translation>
 	<translation name="KILLS_DEATHS">Zabicia / Śmierci</translation>
 	<translation name="REPAIR_COSTS">Koszty naprawy</translation>
+	<translation name="SIPHONED_ENERGY_DESCRIPTION1">1. najpierw wybierz trzecią zakładkę po prawej stronie.</translation>
+	<translation name="SIPHONED_ENERGY_DESCRIPTION2">2. wybierz siphoned energy w wyszukiwaniu</translation>
+	<translation name="SIPHONED_ENERGY_DESCRIPTION3">3. wybierz czas, aby śledzić więcej lub mniej wpisów</translation>
+	<translation name="SIPHONED_ENERGY_DESCRIPTION4">4. każdą stronę trzeba wywołać indywidualnie, aby można ją było śledzić.</translation>
+	<translation name="GUILD">Gildia</translation>
+	<translation name="DELETE_SELECTED_ENTRIES">Usuń wybrane wpisy</translation>
+	<translation name="CHARACTER_NAME">Nazwa postaci</translation>
+	<translation name="QUANTITY">Ilość</translation>
+	<translation name="ADD_ENTRY">Dodaj wpis</translation>
+	<translation name="ADD_OR_REMOVE_MANUALLY">Dodaj lub usuń ręcznie</translation>
+</translations>
 </translations>
