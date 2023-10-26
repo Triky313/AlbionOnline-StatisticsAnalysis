@@ -50,6 +50,7 @@ public class SettingsObject
     public double StorageHistoryGridSplitterPosition { get; set; } = 125;
     public double DamageMeterGridSplitterPosition { get; set; } = 125;
     public double PartyBuilderGridSplitterPosition { get; set; } = 125;
+    public double GuildGridSplitterPosition { get; set; } = 125;
     public bool ShortDamageMeterToClipboard { get; set; }
     public bool IsTradeMonitoringActive { get; set; } = true;
     public bool IgnoreMailsWithZeroValues { get; set; }
@@ -76,6 +77,7 @@ public class SettingsObject
     public bool IsStorageHistoryNaviTabActive { get; set; } = true;
     public bool IsMapHistoryNaviTabActive { get; set; } = true;
     public bool IsPlayerInformationNaviTabActive { get; set; } = true;
+    public bool IsGuildTabActive { get; set; } = true;
     public bool IsNotificationFilterTradeActive { get; set; } = false;
     public bool IsNotificationTrackingStatusActive { get; set; } = false;
     public AutoDeleteGatheringStats AutoDeleteGatheringStats { get; set; } = AutoDeleteGatheringStats.NeverDelete;
