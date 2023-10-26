@@ -772,9 +772,11 @@
 	<translation name="SIPHONED_ENERGY_DESCRIPTION4">4. każdą stronę trzeba wywołać indywidualnie, aby można ją było śledzić.</translation>
 	<translation name="GUILD">Gildia</translation>
 	<translation name="DELETE_SELECTED_ENTRIES">Usuń wybrane wpisy</translation>
+	<translation name="SURE_YOU_WANT_TO_DELETE_SELECTED_ENTRIES">Jesteś pewien, że chcesz usunąć wybrane wpisy?</translation>
 	<translation name="CHARACTER_NAME">Nazwa postaci</translation>
 	<translation name="QUANTITY">Ilość</translation>
 	<translation name="ADD_ENTRY">Dodaj wpis</translation>
 	<translation name="ADD_OR_REMOVE_MANUALLY">Dodaj lub usuń ręcznie</translation>
+	<translation name="SELECT_TO_DISABLE">Wybierz, aby wyłączyć</translation>
 </translations>
 </translations>
