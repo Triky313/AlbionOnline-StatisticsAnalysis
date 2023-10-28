@@ -147,8 +147,8 @@ public class TrackingController : ITrackingController
         catch (SocketException e)
         {
             ConsoleManager.WriteLineForError(MethodBase.GetCurrentMethod()?.DeclaringType, e);
-            Log.Error(e, "{message}", MethodBase.GetCurrentMethod()?.DeclaringType);
-            _mainWindowViewModel.SetErrorBar(Visibility.Visible, LanguageController.Translation("START_APPLICATION_AS_ADMINISTRATOR"));
+            Log.Error(e, "{message}|{socketErrorCode}", MethodBase.GetCurrentMethod()?.DeclaringType, e.SocketErrorCode);
+            _mainWindowViewModel.SetErrorBar(Visibility.Visible, $"Socket Exception - {e.Message}");
         }
         catch (Exception e)
         {
