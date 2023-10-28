@@ -10,6 +10,7 @@ using System.IO;
 using System.Linq;
 using System.Net;
 using System.Net.Sockets;
+using System.Reflection;
 
 namespace StatisticsAnalysisTool.Network;
 
@@ -150,7 +151,17 @@ public class NetworkManager
             byte[] byTrue = { 1, 0, 0, 0 };
             byte[] byOut = { 1, 0, 0, 0 };
 
-            socket.IOControl(IOControlCode.ReceiveAll, byTrue, byOut);
+            try
+            {
+                socket.IOControl(IOControlCode.ReceiveAll, byTrue, byOut);
+            }
+            catch (SocketException e)
+            {
+                ConsoleManager.WriteLineForError(MethodBase.GetCurrentMethod()?.DeclaringType, e);
+                Log.Error(e, "{message}|{socketErrorCode}", MethodBase.GetCurrentMethod()?.DeclaringType, e.SocketErrorCode);
+                continue;
+            }
+
             socket.BeginReceive(_byteData, 0, _byteData.Length, SocketFlags.None, OnReceive, socket);
 
             _sockets.Add(socket);
