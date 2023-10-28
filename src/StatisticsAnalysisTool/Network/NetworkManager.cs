@@ -10,6 +10,7 @@ using System.IO;
 using System.Linq;
 using System.Net;
 using System.Net.Sockets;
+using System.Reflection;
 
 namespace StatisticsAnalysisTool.Network;
 
@@ -90,6 +91,7 @@ public class NetworkManager
         builder.AddRequestHandler(new FishingStartEventRequestHandler(trackingController));
         builder.AddRequestHandler(new FishingFinishRequestHandler(trackingController));
         builder.AddRequestHandler(new FishingCancelRequestHandler(trackingController));
+        builder.AddRequestHandler(new GetGuildAccountLogsRequestHandler(trackingController));
 
         // Response
         builder.AddResponseHandler(new ChangeClusterResponseHandler(trackingController));
@@ -103,6 +105,7 @@ public class NetworkManager
         builder.AddResponseHandler(new FishingFinishResponseHandler(trackingController));
         builder.AddResponseHandler(new AuctionGetLoadoutOffersResponseHandler(trackingController));
         builder.AddResponseHandler(new AuctionBuyLoadoutOfferResponseHandler(trackingController));
+        builder.AddResponseHandler(new GetGuildAccountLogsResponseHandler(trackingController));
 
         return builder.Build();
     }
@@ -148,7 +151,17 @@ public class NetworkManager
             byte[] byTrue = { 1, 0, 0, 0 };
             byte[] byOut = { 1, 0, 0, 0 };
 
-            socket.IOControl(IOControlCode.ReceiveAll, byTrue, byOut);
+            try
+            {
+                socket.IOControl(IOControlCode.ReceiveAll, byTrue, byOut);
+            }
+            catch (SocketException e)
+            {
+                ConsoleManager.WriteLineForError(MethodBase.GetCurrentMethod()?.DeclaringType, e);
+                Log.Error(e, "{message}|{socketErrorCode}", MethodBase.GetCurrentMethod()?.DeclaringType, e.SocketErrorCode);
+                continue;
+            }
+
             socket.BeginReceive(_byteData, 0, _byteData.Length, SocketFlags.None, OnReceive, socket);
 
             _sockets.Add(socket);

@@ -26,6 +26,7 @@
                 <ResourceDictionary Source="Styles/DamageMeterStyles.xaml" />
                 <ResourceDictionary Source="Styles/TradeMonitoringStyle.xaml" />
                 <ResourceDictionary Source="Styles/GatheringStyles.xaml" />
+                <ResourceDictionary Source="Styles/GuildStyles.xaml" />
                 <ResourceDictionary Source="Styles/PartyBuilderStyle.xaml" />
                 <ResourceDictionary Source="Styles/StorageHistoryStyle.xaml" />
                 <ResourceDictionary Source="Styles/DonationStyles.xaml" />

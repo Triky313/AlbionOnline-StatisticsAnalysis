@@ -62,6 +62,9 @@
       <AutoGen>True</AutoGen>
       <DependentUpon>Settings.settings</DependentUpon>
     </Compile>
+    <Compile Update="UserControls\GuildControl.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Update="UserControls\TradeMonitoringControl.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -333,6 +336,9 @@
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Resource>
     <Resource Include="Assets\shiny_uncommon.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Assets\siphoned_energy_description01.jpg">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Resource>
     <Resource Include="Assets\skull.png">
@@ -707,6 +713,7 @@
     <None Remove="Assets\shiny_legendary.png" />
     <None Remove="Assets\shiny_rare.png" />
     <None Remove="Assets\shiny_uncommon.png" />
+    <None Remove="Assets\siphoned_energy_description01.jpg" />
     <None Remove="Assets\skull.png" />
     <None Remove="Assets\skull_green.png" />
     <None Remove="Assets\skull_red.png" />
@@ -790,6 +797,9 @@
       <XamlRuntime>$(DefaultXamlRuntime)</XamlRuntime>
       <SubType>Designer</SubType>
     </Page>
+    <Page Update="Styles\GuildStyles.xaml">
+      <XamlRuntime>$(DefaultXamlRuntime)</XamlRuntime>
+    </Page>
     <Page Update="Styles\ThanksStyle.xaml">
       <XamlRuntime>$(DefaultXamlRuntime)</XamlRuntime>
       <SubType>Designer</SubType>
@@ -843,6 +853,9 @@
       <SubType>Designer</SubType>
     </Page>
     <Page Update="Styles\DonationStyles.xaml">
+      <XamlRuntime>$(DefaultXamlRuntime)</XamlRuntime>
+    </Page>
+    <Page Update="UserControls\GuildControl.xaml">
       <XamlRuntime>$(DefaultXamlRuntime)</XamlRuntime>
     </Page>
     <Page Update="UserControls\TradeMonitoringControl.xaml">

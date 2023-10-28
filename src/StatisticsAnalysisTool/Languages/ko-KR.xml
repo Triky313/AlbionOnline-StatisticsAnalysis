@@ -766,4 +766,16 @@
 	<translation name="PLEASE_SELECT_A_SERVER_LOCATION">서버 위치를 선택하세요.</translation>
 	<translation name="KILLS_DEATHS">킬 / 사망</translation>
 	<translation name="REPAIR_COSTS">수리비</translation>
+	<translation name="SIPHONED_ENERGY_DESCRIPTION1">1. 먼저 오른쪽에 있는 세 번째 탭을 선택합니다.</translation>
+	<translation name="SIPHONED_ENERGY_DESCRIPTION2">2. 검색에서 착취한 에너지 선택</translation>
+	<translation name="SIPHONED_ENERGY_DESCRIPTION3">3. 검색할 기간을 선택하세요.</translation>
+	<translation name="SIPHONED_ENERGY_DESCRIPTION4">4. 추적할 수 있도록 각 페이지를 누르세요.</translation>
+	<translation name="DELETE_SELECTED_ENTRIES">선택한 항목 삭제</translation>
+	<translation name="SURE_YOU_WANT_TO_DELETE_SELECTED_ENTRIES">선택한 항목을 삭제하시겠습니까?</translation>
+	<translation name="CHARACTER_NAME">캐릭터 이름</translation>
+	<translation name="QUANTITY">수량</translation>
+	<translation name="ADD_ENTRY">항목 추가</translation>
+	<translation name="ADD_OR_REMOVE_MANUALLY">수동으로 추가 또는 제거</translation>
+	<translation name="SELECT_TO_DISABLE">비활성화하려면 선택</translation>
+	<translation name="SIPHONED_ENERGY">착취한 에너지</translation>
 </translations>

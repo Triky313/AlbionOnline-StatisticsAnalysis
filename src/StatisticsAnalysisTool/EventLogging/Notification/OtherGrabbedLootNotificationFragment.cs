@@ -30,5 +30,5 @@ public class OtherGrabbedLootNotificationFragment : LineFragment
 
     public static string FromTranslation => LanguageController.Translation("FROM");
     public static string LootedTranslation => LanguageController.Translation("LOOTED");
-    public static string TranslationGuild => LanguageController.Translation("GUILD");
+    public static string TranslationGuild => LanguageController.Translation("GUILD_CAP");
 }

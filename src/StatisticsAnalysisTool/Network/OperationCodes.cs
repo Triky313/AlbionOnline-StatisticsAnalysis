@@ -156,7 +156,7 @@ public enum OperationCodes
     GetCrystalLeagueDailySeasonPoints,
     GetChestLogs,
     GetAccessRightLogs,
-    GetGuildAccountLogs,
+    GetGuildAccountLogs = 154,
     GetGuildAccountLogsLargeAmount,
     InviteToPlayerTrade,
     PlayerTradeCancel,
