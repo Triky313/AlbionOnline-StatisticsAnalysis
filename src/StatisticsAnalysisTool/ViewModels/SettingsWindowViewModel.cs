@@ -17,6 +17,7 @@ using System.Linq;
 using System.Reflection;
 using System.Windows;
 using System.Windows.Media.Imaging;
+using StatisticsAnalysisTool.Network.Listeners;
 
 namespace StatisticsAnalysisTool.ViewModels;
 
@@ -39,6 +40,8 @@ public class SettingsWindowViewModel : BaseViewModel
     private bool _isSuggestPreReleaseUpdatesActive;
     private string _mainTrackingCharacterName;
     private ObservableCollection<TabVisibilityFilter> _tabVisibilities = new();
+    private SettingDataInformation _packetProviderSelection;
+    private ObservableCollection<SettingDataInformation> _packetProvider = new();
     private SettingDataInformation _serverSelection;
     private ObservableCollection<SettingDataInformation> _server = new();
     private ObservableCollection<NotificationFilter> _notificationFilters = new();
@@ -61,6 +64,7 @@ public class SettingsWindowViewModel : BaseViewModel
         InitNaviTabVisibilities();
         InitNotificationAreas();
         InitRefreshRate();
+        InitPacketProvider();
         InitServer();
 
         MainTrackingCharacterName = SettingsController.CurrentSettings.MainTrackingCharacterName;
@@ -105,6 +109,7 @@ public class SettingsWindowViewModel : BaseViewModel
 
         SettingsController.CurrentSettings.RefreshRate = RefreshRatesSelection.Value;
 
+        SettingsController.CurrentSettings.PacketProvider = (PacketProviderKind) PacketProviderSelection.Value;
         SettingsController.CurrentSettings.ServerLocation = (ServerLocation) ServerSelection.Value;
         mainWindowViewModel.UpdateServerTypeLabel();
 
@@ -379,6 +384,14 @@ public class SettingsWindowViewModel : BaseViewModel
         RefreshRatesSelection = RefreshRates.FirstOrDefault(x => x.Value == SettingsController.CurrentSettings.RefreshRate);
     }
 
+    private void InitPacketProvider()
+    {
+        PacketProvider.Clear();
+        PacketProvider.Add(new SettingDataInformation { Name = "Sockets", Value = (int)PacketProviderKind.Sockets });
+        PacketProvider.Add(new SettingDataInformation { Name = "Npcap", Value = (int)PacketProviderKind.Npcap });
+        PacketProviderSelection = PacketProvider.FirstOrDefault(x => x.Value == (int) SettingsController.CurrentSettings.PacketProvider);
+    }
+    
     private void InitServer()
     {
         Server.Clear();
@@ -515,22 +528,42 @@ public class SettingsWindowViewModel : BaseViewModel
         }
     }
 
-    public SettingDataInformation ServerSelection
-    {
-        get => _serverSelection;
-        set
-        {
-            _serverSelection = value;
-            OnPropertyChanged();
-        }
-    }
-
     public ObservableCollection<SettingDataInformation> RefreshRates
     {
         get => _refreshRates;
         set
         {
             _refreshRates = value;
+            OnPropertyChanged();
+        }
+    }
+
+    public SettingDataInformation PacketProviderSelection
+    {
+        get => _packetProviderSelection;
+        set
+        {
+            _packetProviderSelection = value;
+            OnPropertyChanged();
+        }
+    }
+
+    public ObservableCollection<SettingDataInformation> PacketProvider
+    {
+        get => _packetProvider;
+        set
+        {
+            _packetProvider = value;
+            OnPropertyChanged();
+        }
+    }
+    
+    public SettingDataInformation ServerSelection
+    {
+        get => _serverSelection;
+        set
+        {
+            _serverSelection = value;
             OnPropertyChanged();
         }
     }
