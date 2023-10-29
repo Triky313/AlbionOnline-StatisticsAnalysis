@@ -13,7 +13,7 @@ using System.Net.Sockets;
 using System.Reflection;
 using System.Threading.Tasks;
 using StatisticsAnalysisTool.Common.UserSettings;
-using StatisticsAnalysisTool.Network.Listeners;
+using StatisticsAnalysisTool.Network.PacketProviders;
 
 namespace StatisticsAnalysisTool.Network;
 

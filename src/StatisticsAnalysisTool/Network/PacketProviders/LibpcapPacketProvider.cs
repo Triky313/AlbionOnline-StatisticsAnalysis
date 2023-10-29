@@ -1,7 +1,6 @@
 ﻿#nullable enable
 
 using System;
-using System.Buffers;
 using System.Net.NetworkInformation;
 using System.Net.Sockets;
 using System.Threading;
@@ -12,7 +11,7 @@ using BinaryFormat.Udp;
 using Libpcap;
 using Serilog;
 
-namespace StatisticsAnalysisTool.Network.Listeners;
+namespace StatisticsAnalysisTool.Network.PacketProviders;
 
 public class LibpcapPacketProvider : PacketProvider
 {
@@ -127,7 +126,7 @@ public class LibpcapPacketProvider : PacketProvider
             var dispatched = _dispatcher.Dispatch(10);
             if (dispatched <= 0)
             {
-                Thread.Sleep(1);
+                Thread.Sleep(100);
             }
         }
     }

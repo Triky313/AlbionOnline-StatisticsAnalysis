@@ -17,7 +17,7 @@ using System.Linq;
 using System.Reflection;
 using System.Windows;
 using System.Windows.Media.Imaging;
-using StatisticsAnalysisTool.Network.Listeners;
+using StatisticsAnalysisTool.Network.PacketProviders;
 
 namespace StatisticsAnalysisTool.ViewModels;
 

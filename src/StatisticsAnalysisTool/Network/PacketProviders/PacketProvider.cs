@@ -1,4 +1,4 @@
-﻿namespace StatisticsAnalysisTool.Network.Listeners;
+﻿namespace StatisticsAnalysisTool.Network.PacketProviders;
 
 public enum PacketProviderKind
 {

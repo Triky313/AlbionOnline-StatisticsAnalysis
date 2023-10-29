@@ -8,7 +8,7 @@ using System.Reflection;
 using Serilog;
 using StatisticsAnalysisTool.Common;
 
-namespace StatisticsAnalysisTool.Network.Listeners;
+namespace StatisticsAnalysisTool.Network.PacketProviders;
 
 public class SocketsPacketProvider : PacketProvider
 {

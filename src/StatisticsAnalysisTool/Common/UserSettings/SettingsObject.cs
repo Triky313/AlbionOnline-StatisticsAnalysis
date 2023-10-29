@@ -4,7 +4,7 @@ using StatisticsAnalysisTool.Gathering;
 using StatisticsAnalysisTool.Models;
 using System;
 using System.Collections.Generic;
-using StatisticsAnalysisTool.Network.Listeners;
+using StatisticsAnalysisTool.Network.PacketProviders;
 
 namespace StatisticsAnalysisTool.Common.UserSettings;
 
