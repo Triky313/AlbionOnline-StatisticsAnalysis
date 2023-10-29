@@ -123,10 +123,10 @@ public class LibpcapPacketProvider : PacketProvider
     {
         while (_cts is { IsCancellationRequested: false })
         {
-            var dispatched = _dispatcher.Dispatch(10);
+            var dispatched = _dispatcher.Dispatch(50);
             if (dispatched <= 0)
             {
-                Thread.Sleep(100);
+                Thread.Sleep(25);
             }
         }
     }
