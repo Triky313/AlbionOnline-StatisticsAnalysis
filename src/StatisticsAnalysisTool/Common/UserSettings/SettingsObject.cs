@@ -12,7 +12,7 @@ public class SettingsObject
 {
     public string CurrentCultureIetfLanguageTag { get; set; }
     public int RefreshRate { get; set; } = 10000;
-    public PacketProviderKind PacketProvider { get; set; } = PacketProviderKind.Sockets;
+    public PacketProviderKind PacketProvider { get; set; } = PacketProviderKind.Npcap;
     public ServerLocation ServerLocation { get; set; } = 0; // 0: auto, 1: west, 2: east
     public ServerType ServerType { get; set; } = ServerType.Live; // 0: Live, 1: Staging, 2: Playground
     public string MainTrackingCharacterName { get; set; }
