@@ -1,3 +1,4 @@
+using Serilog;
 using StatisticsAnalysisTool.Common;
 using StatisticsAnalysisTool.Common.UserSettings;
 using StatisticsAnalysisTool.Localization;
@@ -19,10 +20,12 @@ public class NetworkManager
         if (SettingsController.CurrentSettings.PacketProvider == PacketProviderKind.Npcap)
         {
             _packetProvider = new LibpcapPacketProvider(photonReceiver);
+            Log.Information($"Used packet provider: {PacketProviderKind.Npcap}");
         }
         else
         {
             _packetProvider = new SocketsPacketProvider(photonReceiver);
+            Log.Information($"Used packet provider: {PacketProviderKind.Sockets}");
         }
     }
 

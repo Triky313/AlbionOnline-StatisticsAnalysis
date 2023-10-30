@@ -26,7 +26,6 @@ public class SystemInfo
 
         var activeNetworks = NetworkInterface.GetAllNetworkInterfaces().Where(nic => nic.OperationalStatus == OperationalStatus.Up).Select(nic => nic.Name).ToList();
 
-        Log.Information($"OS Version: {osVersion} - {osArchitecture} | Processor: {processor} | Video: {videoController} | Is Admin: {isAdmin} | Is Debug: {isDebug}");
-        Log.Information($"Active Networks: {string.Join(", ", activeNetworks)}");
+        Log.Information($"OS Version: {osVersion} - {osArchitecture} | Processor: {processor} | Video: {videoController} | Is Admin: {isAdmin} | Is Debug: {isDebug} | Active Networks: {string.Join(", ", activeNetworks)}");
     }
 }

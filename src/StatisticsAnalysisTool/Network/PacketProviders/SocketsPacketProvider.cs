@@ -53,10 +53,6 @@ public class SocketsPacketProvider : PacketProvider
             socket.BeginReceive(_byteData, 0, _byteData.Length, SocketFlags.None, OnReceive, socket);
 
             _sockets.Add(socket);
-            Log.Information("{title}: {message}", "NetworkManager - Added Socket |",
-                $"AddressFamily: {socket.AddressFamily}, LocalEndPoint: {socket.LocalEndPoint}, Connected: {socket.Connected}, Available: {socket.Available}, " +
-                $"Blocking: {socket.Blocking}, IsBound: {socket.IsBound}, ReceiveBufferSize: {socket.ReceiveBufferSize}, SendBufferSize: {socket.SendBufferSize}, Ttl: {socket.Ttl}");
-
             ConsoleManager.WriteLineForMessage($"NetworkManager - Added Socket | AddressFamily: {socket.AddressFamily}, LocalEndPoint: {socket.LocalEndPoint}, " +
                                                $"Connected: {socket.Connected}, Available: {socket.Available}, Blocking: {socket.Blocking}, IsBound: {socket.IsBound}, " +
                                                $"ReceiveBufferSize: {socket.ReceiveBufferSize}, SendBufferSize: {socket.SendBufferSize}, Ttl: {socket.Ttl}");
