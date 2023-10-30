@@ -1,11 +1,5 @@
 ﻿namespace StatisticsAnalysisTool.Network.PacketProviders;
 
-public enum PacketProviderKind
-{
-    Sockets = 1,
-    Npcap = 2,
-}
-
 public abstract class PacketProvider
 {
     public abstract bool IsRunning { get; }
