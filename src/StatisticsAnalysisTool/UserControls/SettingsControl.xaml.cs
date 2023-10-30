@@ -72,6 +72,11 @@ public partial class SettingsControl
         _settingsWindowViewModel.ResetPlayerSelectionWithSameNameInDb();
     }
 
+    private void ResetPacketFilter_Click(object sender, RoutedEventArgs e)
+    {
+        _settingsWindowViewModel.ResetPacketFilter();
+    }
+
     private async void BackupNow_Click(object sender, RoutedEventArgs e)
     {
         _settingsWindowViewModel.IsBackupNowButtonEnabled = false;

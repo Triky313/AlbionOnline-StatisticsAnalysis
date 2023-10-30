@@ -6,6 +6,7 @@ using BinaryFormat.IPv4;
 using BinaryFormat.Udp;
 using Libpcap;
 using Serilog;
+using StatisticsAnalysisTool.Common.UserSettings;
 using System;
 using System.Net.NetworkInformation;
 using System.Net.Sockets;
@@ -64,7 +65,8 @@ public class LibpcapPacketProvider : PacketProvider
             {
                 pcap.NonBlocking = true;
             });
-            _dispatcher.Filter = "udp";
+
+            _dispatcher.Filter = SettingsController.CurrentSettings.PacketFilter;
         }
 
         _cts = new CancellationTokenSource();

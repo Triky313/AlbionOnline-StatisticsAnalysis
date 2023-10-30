@@ -100,8 +100,15 @@
                         <Label Content="{Binding Translation.RestartRequired, StringFormat='{}({0})', FallbackValue=(RESTART__REQUIRED)}" 
                                Foreground="{StaticResource SolidColorBrush.Accent.Red.3}" MinWidth="300" VerticalAlignment="Top" />
                     </DockPanel>
+                    <DockPanel Margin="0,5,0,0" Visibility="{Binding PacketFilterVisibility}">
+                        <Label Content="{Binding Translation.PacketFilter, FallbackValue=PACKET__FILTER}" MinWidth="300" VerticalAlignment="Top" />
+                        <StackPanel Orientation="Horizontal">
+                            <TextBox Text="{Binding PacketFilter}" Height="26" MinWidth="350" TextWrapping="NoWrap" VerticalAlignment="Center" Margin="0,0,5,0" />
+                            <Button Content="{Binding Translation.Reset, FallbackValue=RESET}" Height="24" MaxWidth="120" VerticalAlignment="Center" Click="ResetPacketFilter_Click" />
+                        </StackPanel>
+                    </DockPanel>
                     <DockPanel Margin="0,5,0,0">
-                        <Label Content="{Binding Translation.SetServerManually, FallbackValue=SET_SERVER_MANUALLY}" MinWidth="300" VerticalAlignment="Top" />
+                        <Label Content="{Binding Translation.SetServer, FallbackValue=SET__SERVER}" MinWidth="300" VerticalAlignment="Top" />
                         <ComboBox ItemsSource="{Binding Server}" SelectedItem="{Binding ServerSelection}" IsSynchronizedWithCurrentItem="True" DisplayMemberPath="Name" 
                                   SelectedValuePath="Value" HorizontalAlignment="Left" VerticalAlignment="Top" Width="200" Height="26" />
                     </DockPanel>

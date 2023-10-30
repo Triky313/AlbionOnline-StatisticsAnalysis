@@ -5,6 +5,7 @@ using StatisticsAnalysisTool.Enumerations;
 using StatisticsAnalysisTool.Localization;
 using StatisticsAnalysisTool.Models;
 using StatisticsAnalysisTool.Models.TranslationModel;
+using StatisticsAnalysisTool.Network.PacketProviders;
 using StatisticsAnalysisTool.Notification;
 using StatisticsAnalysisTool.Views;
 using System;
@@ -17,7 +18,6 @@ using System.Linq;
 using System.Reflection;
 using System.Windows;
 using System.Windows.Media.Imaging;
-using StatisticsAnalysisTool.Network.PacketProviders;
 
 namespace StatisticsAnalysisTool.ViewModels;
 
@@ -51,6 +51,8 @@ public class SettingsWindowViewModel : BaseViewModel
     private SettingDataInformation _maximumNumberOfBackupsSelection;
     private string _anotherAppToStartPath;
     private BitmapImage _anotherAppToStartExeIcon;
+    private string _packetFilter;
+    private Visibility _packetFilterVisibility = Visibility.Collapsed;
 
     public SettingsWindowViewModel()
     {
@@ -96,6 +98,9 @@ public class SettingsWindowViewModel : BaseViewModel
         // Info window
         ShowInfoWindowOnStartChecked = SettingsController.CurrentSettings.IsInfoWindowShownOnStart;
 
+        // Packet Filter
+        PacketFilter = SettingsController.CurrentSettings.PacketFilter;
+
         // Player Selection with same name in db
         PlayerSelectionWithSameNameInDb = SettingsController.CurrentSettings.ExactMatchPlayerNamesLineNumber;
 
@@ -111,6 +116,7 @@ public class SettingsWindowViewModel : BaseViewModel
 
         SettingsController.CurrentSettings.PacketProvider = (PacketProviderKind) PacketProviderSelection.Value;
         SettingsController.CurrentSettings.ServerLocation = (ServerLocation) ServerSelection.Value;
+        SetPacketFilter();
         mainWindowViewModel.UpdateServerTypeLabel();
 
         SettingsController.CurrentSettings.AnotherAppToStartPath = AnotherAppToStartPath;
@@ -172,6 +178,28 @@ public class SettingsWindowViewModel : BaseViewModel
         mainWindowViewModel.MapHistoryTabVisibility = SettingsController.CurrentSettings.IsMapHistoryNaviTabActive.BoolToVisibility();
         mainWindowViewModel.PlayerInformationTabVisibility = SettingsController.CurrentSettings.IsPlayerInformationNaviTabActive.BoolToVisibility();
         mainWindowViewModel.GuildTabVisibility = SettingsController.CurrentSettings.IsGuildTabActive.BoolToVisibility();
+    }
+
+    private void SetPacketFilter()
+    {
+        if (SettingsController.CurrentSettings.PacketFilter == PacketFilter)
+        {
+            return;
+        }
+
+        SettingsController.CurrentSettings.PacketFilter = PacketFilter ?? string.Empty;
+    }
+
+    public void ResetPacketFilter()
+    {
+        const string defaultFilter = "(host 5.45.187 or host 5.188.125) and udp port 5056";
+
+        if (PacketFilter == defaultFilter)
+        {
+            return;
+        }
+
+        PacketFilter = defaultFilter;
     }
 
     private void SetNotificationFilter()
@@ -387,11 +415,11 @@ public class SettingsWindowViewModel : BaseViewModel
     private void InitPacketProvider()
     {
         PacketProvider.Clear();
-        PacketProvider.Add(new SettingDataInformation { Name = $"Sockets ({LanguageController.Translation("TOOL_MUST_BE_RUN_AS_ADMIN")})", Value = (int)PacketProviderKind.Sockets });
-        PacketProvider.Add(new SettingDataInformation { Name = $"Npcap ({LanguageController.Translation("EXPERIMENTAL")})", Value = (int)PacketProviderKind.Npcap });
+        PacketProvider.Add(new SettingDataInformation { Name = $"Sockets ({LanguageController.Translation("TOOL_MUST_BE_RUN_AS_ADMIN")})", Value = (int) PacketProviderKind.Sockets });
+        PacketProvider.Add(new SettingDataInformation { Name = $"Npcap ({LanguageController.Translation("EXPERIMENTAL")})", Value = (int) PacketProviderKind.Npcap });
         PacketProviderSelection = PacketProvider.FirstOrDefault(x => x.Value == (int) SettingsController.CurrentSettings.PacketProvider);
     }
-    
+
     private void InitServer()
     {
         Server.Clear();
@@ -544,6 +572,7 @@ public class SettingsWindowViewModel : BaseViewModel
         set
         {
             _packetProviderSelection = value;
+            PacketFilterVisibility = _packetProviderSelection.Value == 2 ? Visibility.Visible : Visibility.Collapsed;
             OnPropertyChanged();
         }
     }
@@ -557,7 +586,17 @@ public class SettingsWindowViewModel : BaseViewModel
             OnPropertyChanged();
         }
     }
-    
+
+    public Visibility PacketFilterVisibility
+    {
+        get => _packetFilterVisibility;
+        set
+        {
+            _packetFilterVisibility = value;
+            OnPropertyChanged();
+        }
+    }
+
     public SettingDataInformation ServerSelection
     {
         get => _serverSelection;
@@ -574,6 +613,16 @@ public class SettingsWindowViewModel : BaseViewModel
         set
         {
             _server = value;
+            OnPropertyChanged();
+        }
+    }
+
+    public string PacketFilter
+    {
+        get => _packetFilter;
+        set
+        {
+            _packetFilter = value;
             OnPropertyChanged();
         }
     }

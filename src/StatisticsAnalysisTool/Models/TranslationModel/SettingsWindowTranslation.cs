@@ -8,7 +8,7 @@ public class SettingsWindowTranslation
     public static string Language => $"{LanguageController.Translation("LANGUAGE")} ({LanguageController.Translation("RESTART_REQUIRED")})";
     public static string CheckForUpdate => LanguageController.Translation("CHECK_FOR_UPDATE");
     public static string RefreshRate => LanguageController.Translation("REFRESH_RATE");
-    public static string SetServerManually => LanguageController.Translation("SET_SERVER_MANUALLY");
+    public static string SetServer => LanguageController.Translation("SET_SERVER");
     public static string NetworkFiltering => LanguageController.Translation("NETWORK_FILTERING");
     public static string OpenItemWindowInNewWindow => LanguageController.Translation("OPEN_ITEM_WINDOW_IN_NEW_WINDOW");
     public static string ShowInfoWindowOnStart => LanguageController.Translation("SHOW_INFO_WINDOW_ON_START");
