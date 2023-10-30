@@ -94,6 +94,11 @@
                         <Label Content="{Binding Translation.Tracking, FallbackValue='TRACKING'}" FontSize="14" Foreground="{StaticResource SolidColorBrush.Accent.Blue.2}" />
                     </DockPanel>
                     <DockPanel Margin="0,5,0,0">
+                        <Label Content="{Binding Translation.PacketProvider, FallbackValue=PACKET_PROVIDER}" MinWidth="300" VerticalAlignment="Top" />
+                        <ComboBox ItemsSource="{Binding PacketProvider}" SelectedItem="{Binding PacketProviderSelection}" IsSynchronizedWithCurrentItem="True" DisplayMemberPath="Name" 
+                                  SelectedValuePath="Value" HorizontalAlignment="Left" VerticalAlignment="Top" Width="200" Height="26" />
+                    </DockPanel>
+                    <DockPanel Margin="0,5,0,0">
                         <Label Content="{Binding Translation.SetServerManually, FallbackValue=SET_SERVER_MANUALLY}" MinWidth="300" VerticalAlignment="Top" />
                         <ComboBox ItemsSource="{Binding Server}" SelectedItem="{Binding ServerSelection}" IsSynchronizedWithCurrentItem="True" DisplayMemberPath="Name" 
                                   SelectedValuePath="Value" HorizontalAlignment="Left" VerticalAlignment="Top" Width="200" Height="26" />
