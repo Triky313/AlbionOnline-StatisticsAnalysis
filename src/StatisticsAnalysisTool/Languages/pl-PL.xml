@@ -485,7 +485,7 @@
 	<translation name="TRACKING_IS_ACTIVE">Śledzenie jest aktywne</translation>
 	<translation name="TRACKING_IS_PARTIALLY_ACTIVE">Śledzenie jest częściowo aktywne (zmień strefę!)</translation>
 	<translation name="TRACKING_IS_NOT_ACTIVE">Śledzenie nie jest aktywne</translation>
-	<translation name="PROGRAM_RESTART_REQUIRED">Wymagane ponowne uruchomienie programu</translation>
+	<translation name="RESTART_REQUIRED">Wymagane ponowne uruchomienie</translation>
 	<translation name="DASHBOARD">Panel</translation>
 	<translation name="MIGHT">Potęga</translation>
 	<translation name="FAVOR">Łaska</translation>
@@ -670,7 +670,7 @@
 	<translation name="SURE_YOU_WANT_TO_DELETE_ALL_SNAPSHOTS">Czy na pewno chcesz usunąć wszystkie zrzuty ekranu?</translation>
 	<translation name="LOGGING_DESCRIPTION_1">Jeśli śledzone są błędne elementy, może to być spowodowane nieaktualnymi listami elementów. Ich adresy URL można dostosować w ustawieniach.</translation>
     <translation name="LOGGING_DESCRIPTION_2">Tylko gracze znajdujący się na ekranie oraz na ekranie poza twoim polem widzenia są śledzeni podczas zdobywania łupów.</translation>
-	<translation name="SET_SERVER_MANUALLY">Ustaw serwer ręcznie</translation>
+	<translation name="SET_SERVER">Ustaw Server</translation>
 	<translation name="AUTOMATICALLY">Automatycznie</translation>
 	<translation name="NETWORK_FILTERING">Filtrowanie sieciowe</translation>
 	<translation name="ACTIVATED">Aktywowane</translation>
@@ -779,4 +779,6 @@
 	<translation name="ADD_OR_REMOVE_MANUALLY">Dodaj lub usuń ręcznie</translation>
 	<translation name="SELECT_TO_DISABLE">Wybierz, aby wyłączyć</translation>
 	<translation name="SIPHONED_ENERGY">Wyssana Energia</translation>
+	<translation name="PACKET_PROVIDER">Dostawca pakietów</translation>
+	<translation name="TOOL_MUST_BE_RUN_AS_ADMIN">Narzędzie musi być uruchomione jako administrator</translation>
 </translations>
