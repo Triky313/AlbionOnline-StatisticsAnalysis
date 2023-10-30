@@ -1,33 +1,32 @@
 using Serilog;
 using StatisticsAnalysisTool.Common;
+using StatisticsAnalysisTool.Common.UserSettings;
 using StatisticsAnalysisTool.Localization;
 using StatisticsAnalysisTool.Network.Handler;
 using StatisticsAnalysisTool.Network.Manager;
+using StatisticsAnalysisTool.Network.PacketProviders;
 using StatisticsAnalysisTool.Notification;
-using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using System.Net;
-using System.Net.Sockets;
-using System.Reflection;
 
 namespace StatisticsAnalysisTool.Network;
 
 public class NetworkManager
 {
-    private readonly IPhotonReceiver _photonReceiver;
-    private readonly List<Socket> _sockets = new();
-    private byte[] _byteData = new byte[65000];
-    private readonly List<IPAddress> _gateways = new();
-    private bool _stopReceiving;
+    private readonly PacketProvider _packetProvider;
 
     public NetworkManager(TrackingController trackingController)
     {
-        _photonReceiver = Build(trackingController);
+        IPhotonReceiver photonReceiver = Build(trackingController);
 
-        var hostEntries = GetAllHostEntries();
-        SetGateway(hostEntries);
+        if (SettingsController.CurrentSettings.PacketProvider == PacketProviderKind.Npcap)
+        {
+            _packetProvider = new LibpcapPacketProvider(photonReceiver);
+            Log.Information($"Used packet provider: {PacketProviderKind.Npcap}");
+        }
+        else
+        {
+            _packetProvider = new SocketsPacketProvider(photonReceiver);
+            Log.Information($"Used packet provider: {PacketProviderKind.Sockets}");
+        }
     }
 
     private static IPhotonReceiver Build(TrackingController trackingController)
@@ -110,69 +109,11 @@ public class NetworkManager
         return builder.Build();
     }
 
-    private static IEnumerable<IPHostEntry> GetAllHostEntries()
-    {
-        List<IPHostEntry> hostEntries = new List<IPHostEntry>();
-        string hostName = Dns.GetHostName();
-        IPHostEntry hostEntry = Dns.GetHostEntry(hostName);
-        hostEntries.Add(hostEntry);
-        return hostEntries;
-    }
-
-    private void SetGateway(IEnumerable<IPHostEntry> hostEntries)
-    {
-        foreach (IPAddress ip in hostEntries.SelectMany(hostEntry => hostEntry.AddressList))
-        {
-            try
-            {
-                if (ip.AddressFamily == AddressFamily.InterNetwork)
-                {
-                    _gateways.Add(ip);
-                }
-            }
-            catch
-            {
-                // ignored
-            }
-        }
-    }
-
     public void Start()
     {
         ConsoleManager.WriteLineForMessage("Start Capture");
 
-        _stopReceiving = false;
-        foreach (var gateway in _gateways)
-        {
-            var socket = new Socket(AddressFamily.InterNetwork, SocketType.Raw, ProtocolType.IP);
-            socket.Bind(new IPEndPoint(gateway, 0));
-            socket.SetSocketOption(SocketOptionLevel.IP, SocketOptionName.HeaderIncluded, true);
-
-            byte[] byTrue = { 1, 0, 0, 0 };
-            byte[] byOut = { 1, 0, 0, 0 };
-
-            try
-            {
-                socket.IOControl(IOControlCode.ReceiveAll, byTrue, byOut);
-            }
-            catch (SocketException e)
-            {
-                ConsoleManager.WriteLineForError(MethodBase.GetCurrentMethod()?.DeclaringType, e);
-                Log.Error(e, "{message}|{socketErrorCode}", MethodBase.GetCurrentMethod()?.DeclaringType, e.SocketErrorCode);
-                continue;
-            }
-
-            socket.BeginReceive(_byteData, 0, _byteData.Length, SocketFlags.None, OnReceive, socket);
-
-            _sockets.Add(socket);
-            Log.Information("{title}: {message}", "NetworkManager - Added Socket |",
-                $"AddressFamily: {socket.AddressFamily}, LocalEndPoint: {socket.LocalEndPoint}, Connected: {socket.Connected}, Available: {socket.Available}, " +
-                $"Blocking: {socket.Blocking}, IsBound: {socket.IsBound}, ReceiveBufferSize: {socket.ReceiveBufferSize}, SendBufferSize: {socket.SendBufferSize}, Ttl: {socket.Ttl}");
-
-            ConsoleManager.WriteLineForMessage($"NetworkManager - Added Socket | AddressFamily: {socket.AddressFamily}, LocalEndPoint: {socket.LocalEndPoint}, " +
-                                               $"Connected: {socket.Connected}, Available: {socket.Available}, Blocking: {socket.Blocking}, IsBound: {socket.IsBound}, " +
-                                               $"ReceiveBufferSize: {socket.ReceiveBufferSize}, SendBufferSize: {socket.SendBufferSize}, Ttl: {socket.Ttl}");
-        }
+        _packetProvider.Start();
 
         _ = ServiceLocator.Resolve<SatNotificationManager>().ShowTrackingStatusAsync(LanguageController.Translation("START_TRACKING"), LanguageController.Translation("GAME_TRACKING_IS_STARTED"));
     }
@@ -180,93 +121,14 @@ public class NetworkManager
     public void Stop()
     {
         ConsoleManager.WriteLineForMessage("Stop Capture");
-        _stopReceiving = true;
 
-        foreach (var socket in _sockets)
-        {
-            if (socket.Connected)
-            {
-                socket.Disconnect(true);
-            }
+        _packetProvider.Stop();
 
-            socket.Close();
-        }
-
-        _sockets.Clear();
         _ = ServiceLocator.Resolve<SatNotificationManager>().ShowTrackingStatusAsync(LanguageController.Translation("STOP_TRACKING"), LanguageController.Translation("GAME_TRACKING_IS_STOPPED"));
-    }
-
-    private void OnReceive(IAsyncResult ar)
-    {
-        if (_stopReceiving)
-        {
-            return;
-        }
-
-        Socket socket = (Socket) ar.AsyncState;
-        socket?.EndReceive(ar);
-
-        using (MemoryStream buffer = new MemoryStream(_byteData))
-        {
-            using BinaryReader read = new BinaryReader(buffer);
-            read.BaseStream.Seek(2, SeekOrigin.Begin);
-            ushort dataLength = (ushort) IPAddress.NetworkToHostOrder(read.ReadInt16());
-
-            read.BaseStream.Seek(9, SeekOrigin.Begin);
-            int protocol = read.ReadByte();
-
-            if (protocol != 17)
-            {
-                _byteData = new byte[65000];
-                socket?.BeginReceive(_byteData, 0, _byteData.Length, SocketFlags.None, OnReceive, socket);
-                return;
-            }
-
-            read.BaseStream.Seek(20, SeekOrigin.Begin);
-
-            string srcPort = ((ushort) IPAddress.NetworkToHostOrder(read.ReadInt16())).ToString();
-            string destPort = ((ushort) IPAddress.NetworkToHostOrder(read.ReadInt16())).ToString();
-
-            if (srcPort == "5056" || destPort == "5056")
-            {
-                read.BaseStream.Seek(28, SeekOrigin.Begin);
-
-                if (dataLength >= 28)
-                {
-                    byte[] data = read.ReadBytes(dataLength - 28);
-                    _ = data.Reverse();
-
-                    try
-                    {
-                        // TODO: System.OverflowException: 'Arithmetic operation resulted in an overflow.'
-                        // TODO: Index was outside the bounds of the array.
-                        _photonReceiver.ReceivePacket(data);
-                    }
-                    catch
-                    {
-                        // ignored
-                    }
-                }
-            }
-        }
-
-        _byteData = new byte[65000];
-
-        if (!_stopReceiving)
-        {
-            socket?.BeginReceive(_byteData, 0, _byteData.Length, SocketFlags.None, OnReceive, socket);
-        }
     }
 
     public bool IsAnySocketActive()
     {
-        return _sockets.Any(IsSocketActive);
-    }
-
-    private static bool IsSocketActive(Socket socket)
-    {
-        bool part1 = socket.Poll(1000, SelectMode.SelectRead);
-        bool part2 = (socket.Available == 0);
-        return !part1 || !part2;
+        return _packetProvider.IsRunning;
     }
 }

@@ -319,8 +319,9 @@
 	<translation name="TRACKING">추적하기</translation>
 	<translation name="IS_TRACKING_ACTIVE">추적 활성화 상태(녹색 - 켜짐 | 노란색 - 부분적으로 | 회색 - 꺼짐)</translation>
 	<translation name="USERNAME">캐릭터명</translation>
-	<translation name="GUILD">길드</translation>
+	<translation name="GUILD_CAP">길드</translation>
 	<translation name="ALLIANCE">동맹</translation>
+
 	<translation name="RESET_TRACKING_COUNTER">추적기 초기화</translation>
 	<translation name="MAKE_SURE_YOU_HAVE_INSTALLED_NPCAP">Npcap을 설치했는지 확인하세요. https://nmap.org/npcap</translation>
 	<translation name="PACKET_HANDLER_ERROR_MESSAGE">추적 오류가 발생했습니다. Npcap이 설치되어 있나요? https://nmap.org/npcap</translation>
@@ -397,9 +398,9 @@
 	<translation name="RESPEC">전투 명성(재특화)</translation>
 	<translation name="SOLO_DUNGEON">솔로 던전</translation>
 	<translation name="STANDARD_DUNGEON">기본 던전</translation>
-	<translation name="AVA">아발</translation>
+	<translation name="AVA">아발로드</translation>
 	<translation name="AVALONIAN_DUNGEON">아발론 던전</translation>
-	<translation name="HG">헬게</translation>
+	<translation name="HG">헬게이트</translation>
 	<translation name="EXPED">원정대</translation>
 	<translation name="CORRUPTED">오염된 던전</translation>
 	<translation name="AVERAGE_FAME">평균 명성</translation>
@@ -421,7 +422,7 @@
 	<translation name="OPEN_EXTENDED_DAMAGE_METER_WINDOW">확장된 데미지 미터기 창 열기</translation>
 	<translation name="COPY_TO_CLIPBOARD">클립보드로 복사</translation>
 	<translation name="MAP_HISTORY">맵 이동 기록</translation>
-		<translation name="DAMAGE_METER_ON_OFF">데미지 미터 - 켜기/끄기</translation>
+	<translation name="DAMAGE_METER_ON_OFF">데미지 미터기 - 켜기/끄기</translation>
 	<translation name="TRACKER_ON_OFF">추적기 - 켜기/끄기</translation>
 	<translation name="DELETE_SELECTED_DUNGEONS">선택한 던전 기록 삭제</translation>
 	<translation name="SELECT_TO_DELETE">삭제하려면 선택하세요</translation>
@@ -770,6 +771,7 @@
 	<translation name="SIPHONED_ENERGY_DESCRIPTION2">2. 검색에서 착취한 에너지 선택</translation>
 	<translation name="SIPHONED_ENERGY_DESCRIPTION3">3. 검색할 기간을 선택하세요.</translation>
 	<translation name="SIPHONED_ENERGY_DESCRIPTION4">4. 추적할 수 있도록 각 페이지를 누르세요.</translation>
+	<translation name="GUILD">길드</translation>
 	<translation name="DELETE_SELECTED_ENTRIES">선택한 항목 삭제</translation>
 	<translation name="SURE_YOU_WANT_TO_DELETE_SELECTED_ENTRIES">선택한 항목을 삭제하시겠습니까?</translation>
 	<translation name="CHARACTER_NAME">캐릭터 이름</translation>

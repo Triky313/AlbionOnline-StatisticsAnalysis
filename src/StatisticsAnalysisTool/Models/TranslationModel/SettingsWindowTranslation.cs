@@ -5,10 +5,10 @@ namespace StatisticsAnalysisTool.Models.TranslationModel;
 public class SettingsWindowTranslation
 {
     public static string Settings => LanguageController.Translation("SETTINGS");
-    public static string Language => $"{LanguageController.Translation("LANGUAGE")} ({LanguageController.Translation("PROGRAM_RESTART_REQUIRED")})";
+    public static string Language => $"{LanguageController.Translation("LANGUAGE")} ({LanguageController.Translation("RESTART_REQUIRED")})";
     public static string CheckForUpdate => LanguageController.Translation("CHECK_FOR_UPDATE");
     public static string RefreshRate => LanguageController.Translation("REFRESH_RATE");
-    public static string SetServerManually => LanguageController.Translation("SET_SERVER_MANUALLY");
+    public static string SetServer => LanguageController.Translation("SET_SERVER");
     public static string NetworkFiltering => LanguageController.Translation("NETWORK_FILTERING");
     public static string OpenItemWindowInNewWindow => LanguageController.Translation("OPEN_ITEM_WINDOW_IN_NEW_WINDOW");
     public static string ShowInfoWindowOnStart => LanguageController.Translation("SHOW_INFO_WINDOW_ON_START");
@@ -39,6 +39,8 @@ public class SettingsWindowTranslation
     public static string Disabled => LanguageController.Translation("DISABLED");
     public static string Notifications => LanguageController.Translation("NOTIFICATIONS");
     public static string PacketFilter => LanguageController.Translation("PACKET_FILTER");
+    public static string PacketProvider => LanguageController.Translation("PACKET_PROVIDER");
+    public static string RestartRequired => LanguageController.Translation("RESTART_REQUIRED");
     public static string Reset => LanguageController.Translation("RESET");
     public static string PlayerSelectionWithSameNameInDb => LanguageController.Translation("PLAYER_SELECTION_WITH_SAME_NAME_IN_DB");
     public static string UpdateNow => LanguageController.Translation("UPDATE_NOW");
