@@ -1,39 +1,28 @@
-using Serilog;
 using StatisticsAnalysisTool.Common;
+using StatisticsAnalysisTool.Common.UserSettings;
 using StatisticsAnalysisTool.Localization;
 using StatisticsAnalysisTool.Network.Handler;
 using StatisticsAnalysisTool.Network.Manager;
-using StatisticsAnalysisTool.Notification;
-using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using System.Net;
-using System.Net.Sockets;
-using System.Reflection;
-using System.Threading.Tasks;
-using StatisticsAnalysisTool.Common.UserSettings;
 using StatisticsAnalysisTool.Network.PacketProviders;
+using StatisticsAnalysisTool.Notification;
 
 namespace StatisticsAnalysisTool.Network;
 
 public class NetworkManager
 {
-    private readonly IPhotonReceiver _photonReceiver;
-
-    private PacketProvider _packetProvider;
+    private readonly PacketProvider _packetProvider;
 
     public NetworkManager(TrackingController trackingController)
     {
-        _photonReceiver = Build(trackingController);
+        IPhotonReceiver photonReceiver = Build(trackingController);
 
         if (SettingsController.CurrentSettings.PacketProvider == PacketProviderKind.Npcap)
         {
-            _packetProvider = new LibpcapPacketProvider(_photonReceiver); 
+            _packetProvider = new LibpcapPacketProvider(photonReceiver);
         }
         else
         {
-            _packetProvider = new SocketsPacketProvider(_photonReceiver);
+            _packetProvider = new SocketsPacketProvider(photonReceiver);
         }
     }
 
@@ -122,16 +111,16 @@ public class NetworkManager
         ConsoleManager.WriteLineForMessage("Start Capture");
 
         _packetProvider.Start();
-        
+
         _ = ServiceLocator.Resolve<SatNotificationManager>().ShowTrackingStatusAsync(LanguageController.Translation("START_TRACKING"), LanguageController.Translation("GAME_TRACKING_IS_STARTED"));
     }
 
     public void Stop()
     {
         ConsoleManager.WriteLineForMessage("Stop Capture");
-        
+
         _packetProvider.Stop();
-        
+
         _ = ServiceLocator.Resolve<SatNotificationManager>().ShowTrackingStatusAsync(LanguageController.Translation("STOP_TRACKING"), LanguageController.Translation("GAME_TRACKING_IS_STOPPED"));
     }
 
