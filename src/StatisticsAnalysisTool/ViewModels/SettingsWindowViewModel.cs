@@ -387,8 +387,8 @@ public class SettingsWindowViewModel : BaseViewModel
     private void InitPacketProvider()
     {
         PacketProvider.Clear();
-        PacketProvider.Add(new SettingDataInformation { Name = "Sockets", Value = (int)PacketProviderKind.Sockets });
-        PacketProvider.Add(new SettingDataInformation { Name = "Npcap (experimental)", Value = (int)PacketProviderKind.Npcap });
+        PacketProvider.Add(new SettingDataInformation { Name = $"Sockets ({LanguageController.Translation("TOOL_MUST_BE_RUN_AS_ADMIN")})", Value = (int)PacketProviderKind.Sockets });
+        PacketProvider.Add(new SettingDataInformation { Name = $"Npcap ({LanguageController.Translation("EXPERIMENTAL")})", Value = (int)PacketProviderKind.Npcap });
         PacketProviderSelection = PacketProvider.FirstOrDefault(x => x.Value == (int) SettingsController.CurrentSettings.PacketProvider);
     }
     

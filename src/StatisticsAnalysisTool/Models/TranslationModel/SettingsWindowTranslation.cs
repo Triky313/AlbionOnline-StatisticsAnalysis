@@ -5,7 +5,7 @@ namespace StatisticsAnalysisTool.Models.TranslationModel;
 public class SettingsWindowTranslation
 {
     public static string Settings => LanguageController.Translation("SETTINGS");
-    public static string Language => $"{LanguageController.Translation("LANGUAGE")} ({LanguageController.Translation("PROGRAM_RESTART_REQUIRED")})";
+    public static string Language => $"{LanguageController.Translation("LANGUAGE")} ({LanguageController.Translation("RESTART_REQUIRED")})";
     public static string CheckForUpdate => LanguageController.Translation("CHECK_FOR_UPDATE");
     public static string RefreshRate => LanguageController.Translation("REFRESH_RATE");
     public static string SetServerManually => LanguageController.Translation("SET_SERVER_MANUALLY");
@@ -40,6 +40,7 @@ public class SettingsWindowTranslation
     public static string Notifications => LanguageController.Translation("NOTIFICATIONS");
     public static string PacketFilter => LanguageController.Translation("PACKET_FILTER");
     public static string PacketProvider => LanguageController.Translation("PACKET_PROVIDER");
+    public static string RestartRequired => LanguageController.Translation("RESTART_REQUIRED");
     public static string Reset => LanguageController.Translation("RESET");
     public static string PlayerSelectionWithSameNameInDb => LanguageController.Translation("PLAYER_SELECTION_WITH_SAME_NAME_IN_DB");
     public static string UpdateNow => LanguageController.Translation("UPDATE_NOW");

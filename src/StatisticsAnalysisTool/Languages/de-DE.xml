@@ -485,7 +485,7 @@
 	<translation name="TRACKING_IS_ACTIVE">Tracking ist aktiv</translation>
 	<translation name="TRACKING_IS_PARTIALLY_ACTIVE">Tracking is teilweise aktiv (Bitte die Zone wechseln!)</translation>
 	<translation name="TRACKING_IS_NOT_ACTIVE">Tracking ist nicht aktiv</translation>
-	<translation name="PROGRAM_RESTART_REQUIRED">Programmneustart erforderlich</translation>
+	<translation name="RESTART_REQUIRED">Neustart erforderlich</translation>
 	<translation name="DASHBOARD">Dashboard</translation>
 	<translation name="MIGHT">Stärke</translation>
 	<translation name="FAVOR">Gunst</translation>
@@ -779,4 +779,6 @@
 	<translation name="ADD_OR_REMOVE_MANUALLY">Manuelles Hinzufügen oder Entfernen</translation>
 	<translation name="SELECT_TO_DISABLE">Zum deaktivieren auswählen</translation>
 	<translation name="SIPHONED_ENERGY">Gesammelte Energie</translation>
+	<translation name="PACKET_PROVIDER">Packet provider</translation>
+	<translation name="TOOL_MUST_BE_RUN_AS_ADMIN">Tool muss als Admin ausgeführt werden</translation>
 </translations>
