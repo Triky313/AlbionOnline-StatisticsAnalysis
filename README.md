@@ -24,12 +24,21 @@ A tool to easily read auction house data with a loot logger, damage meter, dunge
 - Install **.NET 7.0 Desktop Runtime** (v7.0.9 or higher) [here](https://dotnet.microsoft.com/en-us/download/dotnet/thank-you/runtime-desktop-7.0.9-windows-x64-installer) (To start the tool)
 
 **Download the Statistics Analysis Tool**
-- [**DOWNLOAD**](https://github.com/Triky313/AlbionOnline-StatisticsAnalysis/releases/download/v6.3.3/StatisticsAnalysis-AlbionOnline-v6.3.3-x64.zip)
+- [**DOWNLOAD**](https://github.com/Triky313/AlbionOnline-StatisticsAnalysis/releases/download/v7.1.0/StatisticsAnalysis-AlbionOnline-v7.1.0-x64.zip)
 Unzip the `.zip` file and start `StatisticsAnalysisTool.exe` with a double click. You may not be able to see the `.exe`. Don't worry, usually it's the file with the icon.  
 [Latest release](https://github.com/Triky313/AlbionOnline-StatisticsAnalysis/releases/latest)
 
 ![tool_dir](https://user-images.githubusercontent.com/14247773/170473306-4dcc629e-384e-41b2-ada8-657cabe1b472.png)
 
+
+### Tracking via socket
+If tracking is used via socket, the tool only needs to be started as an administrator for it to work fully.
+
+### Tracking via Npcap
+As an alternative there is the Npcap variant, for this Npcap must be installed, but the tool must no longer be started as administrator.
+In addition, a filtering is available for VPN users that allows IP and port filtering.
+
+https://npcap.com/ (Normally the latest version should work!)
 
 ## Is This Allowed
 [Debate](https://forum.albiononline.com/index.php/Thread/124819-Regarding-3rd-Party-Software-and-Network-Traffic-aka-do-not-cheat-Update-16-45-U/) (Original link),  [Clarified](https://forum.albiononline.com/index.php/Thread/153238-DPS-METER/#:~:text=As%20noted%20on%20the%20GitHub,to%20use%20it%20without%20concern.) (2023 short CM answer)  
@@ -56,7 +65,7 @@ Unzip the `.zip` file and start `StatisticsAnalysisTool.exe` with a double click
 No, unfortunately this is not technically possible.
 
 ### Can I use the tool with ExitLag or VPN?
-Yes, VPN or ExitLag can generally be used.
+Yes, VPN or ExitLag can generally be used, if you use Npcap tracking
 
 ### How fast does my internet need to be?
 An internet connection with at least 1M/bit (256KB/s) download rate.
