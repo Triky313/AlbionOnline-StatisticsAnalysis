@@ -113,6 +113,7 @@ public class TrackingController : ITrackingController
         if (!ApplicationCore.IsAppStartedAsAdministrator() && SettingsController.CurrentSettings.PacketProvider == PacketProviderKind.Sockets)
         {
             _mainWindowViewModel.SetErrorBar(Visibility.Visible, LanguageController.Translation("START_APPLICATION_AS_ADMINISTRATOR"));
+            return;
         }
 
         await Task.WhenAll(
