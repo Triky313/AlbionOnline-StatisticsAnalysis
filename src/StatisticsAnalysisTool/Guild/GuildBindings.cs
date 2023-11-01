@@ -19,6 +19,7 @@ public class GuildBindings : BaseViewModel
     private bool _isDeleteEntriesButtonEnabled = true;
     private DateTime _siphonedEnergyLastUpdate;
     private Visibility _siphonedEnergyLastUpdateVisibility = Visibility.Collapsed;
+    private long _totalSiphonedEnergyQuantity;
 
 
     public GuildBindings()
@@ -78,6 +79,16 @@ public class GuildBindings : BaseViewModel
         }
     }
 
+    public long TotalSiphonedEnergyQuantity
+    {
+        get => _totalSiphonedEnergyQuantity;
+        set
+        {
+            _totalSiphonedEnergyQuantity = value;
+            OnPropertyChanged();
+        }
+    }
+
     public Visibility GuildPopupVisibility
     {
         get => _guildPopupVisibility;
@@ -123,4 +134,5 @@ public class GuildBindings : BaseViewModel
     public string TranslationSelectDeselectAll => LanguageController.Translation("SELECT_DESELECT_ALL");
     public string TranslationLastUpdate => LanguageController.Translation("LAST_UPDATE");
     public string TranslationLootLogChecker => LanguageController.Translation("LOOT_LOG_CHECKER");
+    public string TranslationTotal => LanguageController.Translation("TOTAL");
 }
