@@ -319,7 +319,7 @@
 	<translation name="TRACKING">Rastreando</translation>
 	<translation name="IS_TRACKING_ACTIVE">O rastreamento esta ativado? (Verde - ON | Amarelo - Parcialmente | Cinza - OFF)</translation>
 	<translation name="USERNAME">Nome de Usuário</translation>
-	<translation name="GUILD">Guild</translation>
+	<translation name="GUILD_CAP">Guild</translation>
 	<translation name="ALLIANCE">Aliança</translation>
 	<translation name="RESET_TRACKING_COUNTER">Resetar Contador de Rastreio</translation>
 	<translation name="MAKE_SURE_YOU_HAVE_INSTALLED_NPCAP">Tenha certeza de que tem o NPCAP instalado. https://nmap.org/npcap</translation>
