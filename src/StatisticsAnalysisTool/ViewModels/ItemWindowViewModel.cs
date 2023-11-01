@@ -6,6 +6,7 @@ using StatisticsAnalysisTool.Common;
 using StatisticsAnalysisTool.Common.UserSettings;
 using StatisticsAnalysisTool.Exceptions;
 using StatisticsAnalysisTool.GameFileData;
+using StatisticsAnalysisTool.Localization;
 using StatisticsAnalysisTool.Models;
 using StatisticsAnalysisTool.Models.BindingModel;
 using StatisticsAnalysisTool.Models.ItemsJsonModel;
@@ -23,7 +24,6 @@ using System.Timers;
 using System.Windows;
 using System.Windows.Markup;
 using System.Windows.Media.Imaging;
-using StatisticsAnalysisTool.Localization;
 
 namespace StatisticsAnalysisTool.ViewModels;
 
@@ -537,7 +537,11 @@ public class ItemWindowViewModel : BaseViewModel
         }
 
         await foreach (var craftResource in craftingRequirements
-                           .SelectMany(x => x.CraftResource).ToList().GroupBy(x => x.UniqueName).Select(grp => grp.FirstOrDefault()).ToAsyncEnumerable().ConfigureAwait(false))
+                           .SelectMany(x => x.CraftResource)
+                           .ToList()
+                           .GroupBy(x => x.UniqueName)
+                           .Select(grp => grp.FirstOrDefault())
+                           .ToAsyncEnumerable())
         {
             var item = GetSuitableResourceItem(craftResource.UniqueName);
             var craftingQuantity = (long) Math.Round(item?.UniqueName?.ToUpper().Contains("ARTEFACT") ?? false
@@ -553,17 +557,39 @@ public class ItemWindowViewModel : BaseViewModel
                 ResourceCost = 0,
                 Weight = ItemController.GetWeight(item?.FullItemInformation),
                 CraftingQuantity = craftingQuantity,
-                IsArtifactResource = item?.UniqueName?.ToUpper().Contains("ARTEFACT") ?? false,
+                ResourceType = GetResourceType(item),
                 IsTomeOfInsightResource = item?.UniqueName?.ToUpper().Contains("SKILLBOOK_STANDARD") ?? false,
                 IsAvalonianEnergy = item?.UniqueName?.ToUpper().Contains("QUESTITEM_TOKEN_AVALON") ?? false
             });
         }
     }
 
+    private static ResourceType GetResourceType(Item item)
+    {
+        if (item?.FullItemInformation is SimpleItem { ResourceType: "ESSENCE" })
+        {
+            return ResourceType.Essence;
+        }
+
+        if (item?.UniqueName?.ToUpper().Contains("ARTEFACT") ?? false)
+        {
+            return ResourceType.Artefact;
+        }
+
+        return ResourceType.Unknown;
+    }
+
     private Item GetSuitableResourceItem(string uniqueName)
     {
-        var suitableUniqueName = $"{uniqueName}_LEVEL{Item.Level}@{Item.Level}";
-        return ItemController.GetItemByUniqueName(suitableUniqueName) ?? ItemController.GetItemByUniqueName(uniqueName);
+        var item = ItemController.GetItemByUniqueName(uniqueName);
+
+        if (item == null)
+        {
+            var suitableUniqueName = $"{uniqueName}_LEVEL{Item.Level}@{Item.Level}";
+            item = ItemController.GetItemByUniqueName(suitableUniqueName);
+        }
+
+        return item;
     }
 
     public void UpdateCraftingCalculationTab()
@@ -582,7 +608,7 @@ public class ItemWindowViewModel : BaseViewModel
         {
             foreach (var requiredResource in RequiredResources.ToList())
             {
-                if (requiredResource.IsArtifactResource || requiredResource.IsTomeOfInsightResource || requiredResource.IsAvalonianEnergy)
+                if (requiredResource.ResourceType is ResourceType.Artefact or ResourceType.Essence || requiredResource.IsTomeOfInsightResource || requiredResource.IsAvalonianEnergy)
                 {
                     requiredResource.CraftingQuantity = (long) Math.Round(possibleItemCrafting, MidpointRounding.ToNegativeInfinity);
                     continue;

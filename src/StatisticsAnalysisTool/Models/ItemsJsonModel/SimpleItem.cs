@@ -1,6 +1,6 @@
-﻿using System.Collections.Generic;
+﻿using StatisticsAnalysisTool.Common.Converters;
+using System.Collections.Generic;
 using System.Text.Json.Serialization;
-using StatisticsAnalysisTool.Common.Converters;
 
 namespace StatisticsAnalysisTool.Models.ItemsJsonModel;
 
