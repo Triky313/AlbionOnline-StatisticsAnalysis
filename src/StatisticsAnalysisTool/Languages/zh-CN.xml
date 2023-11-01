@@ -319,7 +319,7 @@
 	<translation name="TRACKING">追踪</translation>
 	<translation name="IS_TRACKING_ACTIVE">追踪是否激活（绿色--开启|黄色--部分开启|灰色--关闭）。</translation>
 	<translation name="USERNAME">用户名</translation>
-	<translation name="GUILD">公会</translation>
+	<translation name="GUILD_CAP">公会</translation>
 	<translation name="ALLIANCE">联盟</translation>
 	<translation name="RESET_TRACKING_COUNTER">重置追踪统计</translation>
 	<translation name="MAKE_SURE_YOU_HAVE_INSTALLED_NPCAP">请确保你已经安装了Npcap。 https://nmap.org/npcap</translation>

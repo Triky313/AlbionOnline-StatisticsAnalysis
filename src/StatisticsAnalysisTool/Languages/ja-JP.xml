@@ -322,7 +322,7 @@
 	<translation name="TRACKING">追跡</translation>
 	<translation name="IS_TRACKING_ACTIVE">追跡はアクティブです (緑色 - オン | 黄色 - 部分的 | 灰色 - オフ)</translation>
 	<translation name="USERNAME">ユーザーネーム</translation>
-	<translation name="GUILD">ギルド</translation>
+	<translation name="GUILD_CAP">ギルド</translation>
 	<translation name="ALLIANCE">同盟</translation>
 	<translation name="RESET_TRACKING_COUNTER">追跡カウンタをリセット</translation>
 	<translation name="MAKE_SURE_YOU_HAVE_INSTALLED_NPCAP">Npcap がインストールされていることを確認してください。 https://nmap.org/npcap</translation>
