@@ -319,7 +319,7 @@
 	<translation name="TRACKING">Śledzenie</translation>
 	<translation name="IS_TRACKING_ACTIVE">Czy śledzenie jest aktywne (zielony – włączony | żółty – częściowo | szary – wyłączony)</translation>
 	<translation name="USERNAME">Nazwa Gracza</translation>
-	<translation name="GUILD">Klan</translation>
+	<translation name="GUILD_CAP">Gildia</translation>
 	<translation name="ALLIANCE">Sojusz</translation>
 	<translation name="RESET_TRACKING_COUNTER">Zresetuj obecna sesje</translation>
 	<translation name="MAKE_SURE_YOU_HAVE_INSTALLED_NPCAP">Upewnij się, że zainstalowałeś Npcap. https://nmap.org/npcap</translation>

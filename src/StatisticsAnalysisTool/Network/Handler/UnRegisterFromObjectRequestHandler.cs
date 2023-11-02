@@ -16,6 +16,7 @@ public class UnRegisterFromObjectRequestHandler : RequestPacketHandler<UnRegiste
     protected override async Task OnActionAsync(UnRegisterFromObjectRequest value)
     {
         _trackingController.UnregisterBuilding(value.BuildingObjectId);
+        _trackingController.TradeController.UnregisterBuilding(value.BuildingObjectId);
 
         _trackingController.MarketController.ResetTempOffers();
         _trackingController.MarketController.ResetTempBuyOrders();

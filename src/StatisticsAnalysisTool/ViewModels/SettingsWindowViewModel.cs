@@ -157,6 +157,7 @@ public class SettingsWindowViewModel : BaseViewModel
         SettingsController.CurrentSettings.IsDashboardNaviTabActive = TabVisibilities?.FirstOrDefault(x => x?.NavigationTabFilterType == NavigationTabFilterType.Dashboard)?.IsSelected ?? true;
         SettingsController.CurrentSettings.IsItemSearchNaviTabActive = TabVisibilities?.FirstOrDefault(x => x?.NavigationTabFilterType == NavigationTabFilterType.ItemSearch)?.IsSelected ?? true;
         SettingsController.CurrentSettings.IsLoggingNaviTabActive = TabVisibilities?.FirstOrDefault(x => x?.NavigationTabFilterType == NavigationTabFilterType.Logging)?.IsSelected ?? true;
+        SettingsController.CurrentSettings.IsGuildTabActive = TabVisibilities?.FirstOrDefault(x => x?.NavigationTabFilterType == NavigationTabFilterType.Guild)?.IsSelected ?? true;
         SettingsController.CurrentSettings.IsDungeonsNaviTabActive = TabVisibilities?.FirstOrDefault(x => x?.NavigationTabFilterType == NavigationTabFilterType.Dungeons)?.IsSelected ?? true;
         SettingsController.CurrentSettings.IsDamageMeterNaviTabActive = TabVisibilities?.FirstOrDefault(x => x?.NavigationTabFilterType == NavigationTabFilterType.DamageMeter)?.IsSelected ?? true;
         SettingsController.CurrentSettings.IsTradeMonitoringNaviTabActive = TabVisibilities?.FirstOrDefault(x => x?.NavigationTabFilterType == NavigationTabFilterType.TradeMonitoring)?.IsSelected ?? true;
@@ -329,6 +330,11 @@ public class SettingsWindowViewModel : BaseViewModel
         {
             IsSelected = SettingsController.CurrentSettings.IsLoggingNaviTabActive,
             Name = MainWindowTranslation.Logging
+        });
+        TabVisibilities.Add(new TabVisibilityFilter(NavigationTabFilterType.Guild)
+        {
+            IsSelected = SettingsController.CurrentSettings.IsGuildTabActive,
+            Name = MainWindowTranslation.Guild
         });
         TabVisibilities.Add(new TabVisibilityFilter(NavigationTabFilterType.Dungeons)
         {

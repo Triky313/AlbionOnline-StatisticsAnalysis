@@ -70,7 +70,7 @@ public class TrackingController : ITrackingController
         TreasureController = new TreasureController(this, mainWindowViewModel);
         MailController = new MailController(this, mainWindowViewModel);
         MarketController = new MarketController(this);
-        TradeController = new TradeController(mainWindowViewModel);
+        TradeController = new TradeController(this, mainWindowViewModel);
         VaultController = new VaultController(mainWindowViewModel);
         GatheringController = new GatheringController(this, mainWindowViewModel);
         PartyBuilderController = new PartyBuilderController(this, mainWindowViewModel);
@@ -113,6 +113,7 @@ public class TrackingController : ITrackingController
         if (!ApplicationCore.IsAppStartedAsAdministrator() && SettingsController.CurrentSettings.PacketProvider == PacketProviderKind.Sockets)
         {
             _mainWindowViewModel.SetErrorBar(Visibility.Visible, LanguageController.Translation("START_APPLICATION_AS_ADMINISTRATOR"));
+            return;
         }
 
         await Task.WhenAll(

@@ -322,7 +322,7 @@
 	<translation name="TRACKING">追蹤</translation>
 	<translation name="IS_TRACKING_ACTIVE">追蹤是否啟用（綠色--開啓|黃色--部分開啓|灰色--關閉）。</translation>
 	<translation name="USERNAME">角色名稱</translation>
-	<translation name="GUILD">公會</translation>
+	<translation name="GUILD_CAP">公會</translation>
 	<translation name="ALLIANCE">聯盟</translation>
 	<translation name="RESET_TRACKING_COUNTER">重置追蹤統計</translation>
 	<translation name="MAKE_SURE_YOU_HAVE_INSTALLED_NPCAP">請確保你已經安裝了 Npcap。 https://nmap.org/npcap</translation>

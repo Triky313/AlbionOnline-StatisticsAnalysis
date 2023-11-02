@@ -23,7 +23,7 @@ public class RequiredResource : BaseViewModel
     private long _craftingQuantity;
     private long _oneProductionAmount;
     private readonly ItemWindowViewModel _itemWindowViewModelOld;
-    private bool _isArtifactResource;
+    private ResourceType _resourceType;
     private List<MarketResponse> _marketResponse = new();
     private Location _itemPricesLocationSelected;
     private DateTime _lastUpdate = DateTime.UtcNow.AddDays(-100);
@@ -87,12 +87,12 @@ public class RequiredResource : BaseViewModel
         }
     }
 
-    public bool IsArtifactResource
+    public ResourceType ResourceType
     {
-        get => _isArtifactResource;
+        get => _resourceType;
         set
         {
-            _isArtifactResource = value;
+            _resourceType = value;
             OnPropertyChanged();
         }
     }

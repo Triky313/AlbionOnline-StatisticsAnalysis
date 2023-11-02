@@ -16,11 +16,14 @@ public class ActionOnBuildingFinishedEventHandler : EventPacketHandler<ActionOnB
 
     protected override async Task OnActionAsync(ActionOnBuildingFinishedEvent value)
     {
-        if (value is { UserObjectId: { } userObjectId, ActionType: ActionOnBuildingType.Repair })
+        if (value is { UserObjectId: { } userObjectIdForRepair, ActionType: ActionOnBuildingType.Repair })
         {
-            _trackingController.RepairFinished(userObjectId, value.BuildingObjectId);
+            _trackingController.RepairFinished(userObjectIdForRepair, value.BuildingObjectId);
         }
 
-        await Task.CompletedTask;
+        if (value is { UserObjectId: { } userObjectIdForBuy, ActionType: ActionOnBuildingType.Buy })
+        {
+            await _trackingController.TradeController.TradeFinishedAsync(userObjectIdForBuy, value.BuildingObjectId);
+        }
     }
 }

@@ -108,6 +108,7 @@ public class GuildController
         Application.Current.Dispatcher.InvokeAsync(() =>
         {
             _mainWindowViewModel.GuildBindings.SiphonedEnergyOverviewList = new ObservableRangeCollection<SiphonedEnergyItem>(grouped);
+            _mainWindowViewModel.GuildBindings.TotalSiphonedEnergyQuantity = grouped.Sum(x => x.Quantity.IntegerValue);
         });
     }
 
