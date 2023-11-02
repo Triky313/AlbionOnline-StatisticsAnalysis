@@ -30,7 +30,7 @@ public class ActionOnBuildingFinishedEvent
 
             if (parameters.TryGetValue(4, out object actionType))
             {
-                var actionTypeNumber = actionType.ObjectToLong() ?? 0;
+                var actionTypeNumber = actionType.ObjectToLong() ?? -1;
                 ActionType = (ActionOnBuildingType) actionTypeNumber;
             }
         }

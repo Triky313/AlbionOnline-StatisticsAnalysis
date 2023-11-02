@@ -16,6 +16,7 @@ public class RegisterToObjectRequestHandler : RequestPacketHandler<RegisterToObj
     protected override async Task OnActionAsync(RegisterToObjectRequest value)
     {
         _trackingController.RegisterBuilding(value.BuildingObjectId);
+        _trackingController.TradeController.RegisterBuilding(value.BuildingObjectId);
         await Task.CompletedTask;
     }
 }
