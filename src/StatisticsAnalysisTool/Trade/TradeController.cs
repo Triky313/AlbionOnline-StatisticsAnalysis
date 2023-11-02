@@ -148,7 +148,7 @@ public class TradeController
             Id = dateTimeTicks,
             ClusterIndex = ClusterController.CurrentCluster.MainClusterIndex ?? ClusterController.CurrentCluster.Index,
             Guid = Guid.NewGuid(),
-            Item = ItemController.GetItemByIndex(itemIndex),
+            ItemIndex = itemIndex,
             InstantBuySellContent = new InstantBuySellContent()
             {
                 InternalUnitPrice = unitPrice,

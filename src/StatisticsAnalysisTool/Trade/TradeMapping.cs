@@ -29,7 +29,8 @@ public static class TradeMapping
                 ClusterIndex = trade.ClusterIndex,
                 InstantBuySellContent = trade.InstantBuySellContent,
                 AuctionEntry = trade.AuctionEntry,
-                Description = trade.Description
+                Description = trade.Description,
+                ItemIndex = trade.ItemIndex
             },
             TradeType.InstantSell => new TradeDto()
             {
@@ -84,7 +85,8 @@ public static class TradeMapping
                 ClusterIndex = trade.ClusterIndex,
                 AuctionEntry = trade.AuctionEntry,
                 InstantBuySellContent = trade.InstantBuySellContent ?? new InstantBuySellContent(),
-                Description = trade.Description
+                Description = trade.Description,
+                ItemIndex = trade.ItemIndex
             },
             TradeType.InstantSell => new Trade()
             {

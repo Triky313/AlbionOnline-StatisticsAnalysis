@@ -19,10 +19,10 @@ public class Trade : BaseViewModel
     public string ClusterIndex { get; init; }
     public TradeType Type { get; init; }
     public string Description { get; init; } = string.Empty;
+    public int ItemIndex { get; init; } = -1;
     public string UniqueClusterName => WorldData.GetUniqueNameOrDefault(ClusterIndex);
 
     private bool? _isSelectedForDeletion = false;
-    private Item _item;
 
     public bool? IsSelectedForDeletion
     {
@@ -34,22 +34,7 @@ public class Trade : BaseViewModel
         }
     }
 
-    public Item Item
-    {
-        get
-        {
-            if (_item != null)
-            {
-                return _item;
-            }
-
-            return ItemController.GetItemByUniqueName(MailContent?.UniqueItemName) ?? ItemController.GetItemByUniqueName(AuctionEntry?.ItemTypeId);
-        }
-        set
-        {
-            _item = value;
-        }
-    }
+    public Item Item => ItemController.GetItemByIndex(ItemIndex) ?? ItemController.GetItemByUniqueName(MailContent?.UniqueItemName) ?? ItemController.GetItemByUniqueName(AuctionEntry?.ItemTypeId);
 
     #region Mail
 
