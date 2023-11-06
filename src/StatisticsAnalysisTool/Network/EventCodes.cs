@@ -42,7 +42,7 @@ public enum EventCodes
     HarvestableChangeState,
     MobChangeState,
     FactionBuildingInfo,
-    CraftBuildingInfo,
+    CraftBuildingInfo = 42,
     RepairBuildingInfo,
     MeldBuildingInfo,
     ConstructionSiteInfo,

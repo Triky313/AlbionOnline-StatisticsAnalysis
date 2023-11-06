@@ -162,6 +162,7 @@ public class TradeStatsObject : BaseViewModel
                             case TradeType.Mail when trade.MailType is MailType.MarketplaceBuyOrderFinished or MailType.MarketplaceBuyOrderExpired:
                             case TradeType.InstantBuy:
                             case TradeType.ManualBuy:
+                            case TradeType.Crafting:
                                 return true;
                         }
                         break;
@@ -196,6 +197,7 @@ public class TradeStatsObject : BaseViewModel
                         TradeType.Mail => trade.MailContent.TotalPriceWithDeductedTaxes.IntegerValue,
                         TradeType.InstantBuy => trade.InstantBuySellContent.TotalPrice.IntegerValue,
                         TradeType.ManualBuy => trade.InstantBuySellContent.TotalPrice.IntegerValue,
+                        TradeType.Crafting => trade.InstantBuySellContent.TotalPrice.IntegerValue,
                         _ => 0
                     },
                     TradeStatType.TaxesToday or TradeStatType.TaxesThisWeek or TradeStatType.TaxesLastWeek or TradeStatType.TaxesMonth or TradeStatType.TaxesLastMonth or TradeStatType.TaxesYear
@@ -217,6 +219,7 @@ public class TradeStatsObject : BaseViewModel
                         TradeType.Mail => trade.MailContent.TotalPrice.IntegerValue,
                         TradeType.InstantBuy => trade.InstantBuySellContent.TotalPrice.IntegerValue,
                         TradeType.ManualBuy => trade.InstantBuySellContent.TotalPrice.IntegerValue,
+                        TradeType.Crafting => trade.InstantBuySellContent.TotalPrice.IntegerValue,
                         _ => 0
                     },
                     _ => 0

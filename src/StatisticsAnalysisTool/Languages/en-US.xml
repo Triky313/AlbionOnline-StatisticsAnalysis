@@ -781,4 +781,5 @@
 	<translation name="SIPHONED_ENERGY">Siphoned energy</translation>
 	<translation name="PACKET_PROVIDER">Packet provider</translation>
 	<translation name="TOOL_MUST_BE_RUN_AS_ADMIN">Tool must be run as admin</translation>
+	<translation name="ADDED_CRAFTING">Added crafting</translation>
 </translations>

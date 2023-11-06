@@ -781,4 +781,5 @@
 	<translation name="SIPHONED_ENERGY">Gesammelte Energie</translation>
 	<translation name="PACKET_PROVIDER">Packet provider</translation>
 	<translation name="TOOL_MUST_BE_RUN_AS_ADMIN">Tool muss als Admin ausgeführt werden</translation>
+	<translation name="ADDED_CRAFTING">Herstellung hinzugefügt</translation>
 </translations>

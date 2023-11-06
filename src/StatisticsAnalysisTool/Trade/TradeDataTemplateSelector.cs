@@ -10,6 +10,7 @@ public class TradeDataTemplateSelector : DataTemplateSelector
     public DataTemplate InstantBuyTemplate { get; set; }
     public DataTemplate ManualSellTemplate { get; set; }
     public DataTemplate ManualBuyTemplate { get; set; }
+    public DataTemplate CraftingTemplate { get; set; }
 
     public override DataTemplate SelectTemplate(object item, DependencyObject container)
     {
@@ -25,6 +26,7 @@ public class TradeDataTemplateSelector : DataTemplateSelector
             TradeType.InstantSell => InstantSellTemplate,
             TradeType.ManualSell => ManualSellTemplate,
             TradeType.ManualBuy => ManualBuyTemplate,
+            TradeType.Crafting => CraftingTemplate,
             _ => base.SelectTemplate(item, container)
         };
     }

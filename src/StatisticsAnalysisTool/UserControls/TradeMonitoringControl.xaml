@@ -16,7 +16,8 @@
                                          InstantSellTemplate="{StaticResource InstantSellTemplate}" 
                                          InstantBuyTemplate="{StaticResource InstantBuyTemplate}"
                                          ManualSellTemplate="{StaticResource ManualSellTemplate}" 
-                                         ManualBuyTemplate="{StaticResource ManualBuyTemplate}" />
+                                         ManualBuyTemplate="{StaticResource ManualBuyTemplate}" 
+                                         CraftingTemplate="{StaticResource CraftingTemplate}" />
     </UserControl.Resources>
     <Grid>
         <Grid Margin="0,0,0,0" Height="66" VerticalAlignment="Top">

@@ -17,7 +17,6 @@ using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Data;
 using System.Windows.Threading;
-using StatisticsAnalysisTool.Models;
 
 namespace StatisticsAnalysisTool.Trade;
 
@@ -111,10 +110,12 @@ public class TradeController
         });
     }
 
-    #region Merchant buy
+    #region Merchant buy and crafting costs 
 
     private long _buildingObjectId = -1;
     private Trade _upcomingTrade;
+    private Trade _lastTrade;
+    private readonly List<CraftingBuildingInfo> _craftingBuildingInfos = new();
 
     public void RegisterBuilding(long buildingObjectId)
     {
@@ -132,6 +133,21 @@ public class TradeController
         _upcomingTrade = null;
     }
 
+    public void AddCraftingBuildingInfo(CraftingBuildingInfo craftingBuildingInfo)
+    {
+        if (_craftingBuildingInfos.Contains(craftingBuildingInfo))
+        {
+            return;
+        }
+
+        _craftingBuildingInfos.Add(craftingBuildingInfo);
+    }
+
+    public void ResetCraftingBuildingInfo()
+    {
+        _craftingBuildingInfos.Clear();
+    }
+
     public void SetUpcomingTrade(long buildingObjectId, long dateTimeTicks, long internalTotalPrice, int quantity, int itemIndex)
     {
         if (_buildingObjectId != buildingObjectId || quantity <= 0 || internalTotalPrice <= 0)
@@ -139,33 +155,79 @@ public class TradeController
             return;
         }
 
+        var craftingBuildingInfo = _craftingBuildingInfos?.FirstOrDefault(x => x.ObjectId == buildingObjectId);
+        if (craftingBuildingInfo == null)
+        {
+            return;
+        }
+
         var unitPrice = internalTotalPrice / quantity;
 
-        _upcomingTrade = new Trade()
-        {
-            Ticks = dateTimeTicks,
-            Type = TradeType.InstantBuy,
-            Id = dateTimeTicks,
-            ClusterIndex = ClusterController.CurrentCluster.MainClusterIndex ?? ClusterController.CurrentCluster.Index,
-            Guid = Guid.NewGuid(),
-            ItemIndex = itemIndex,
-            InstantBuySellContent = new InstantBuySellContent()
+        if (CraftingBuildingData.DoesCraftingBuildingNameFit(craftingBuildingInfo.BuildingName, new List<CraftingBuildingName>
             {
-                InternalUnitPrice = unitPrice,
-                Quantity = quantity,
-                TaxRate = 0
-            }
-        };
+                CraftingBuildingName.Forge, CraftingBuildingName.HuntersLodge,
+                CraftingBuildingName.MagicItems, CraftingBuildingName.ToolMaker,
+                CraftingBuildingName.Alchemist, CraftingBuildingName.Cook
+            }))
+        {
+            _upcomingTrade = new Trade()
+            {
+                Ticks = dateTimeTicks,
+                Type = TradeType.Crafting,
+                Id = dateTimeTicks,
+                ClusterIndex = ClusterController.CurrentCluster.MainClusterIndex ?? ClusterController.CurrentCluster.Index,
+                Guid = Guid.NewGuid(),
+                ItemIndex = itemIndex,
+                InstantBuySellContent = new InstantBuySellContent()
+                {
+                    InternalUnitPrice = unitPrice,
+                    Quantity = quantity,
+                    TaxRate = 0
+                }
+            };
+        }
+
+        if (CraftingBuildingData.DoesCraftingBuildingNameFit(craftingBuildingInfo.BuildingName, new List<CraftingBuildingName>
+            {
+                CraftingBuildingName.FarmingMerchant
+            }))
+        {
+            _upcomingTrade = new Trade()
+            {
+                Ticks = dateTimeTicks,
+                Type = TradeType.InstantBuy,
+                Id = dateTimeTicks,
+                ClusterIndex = ClusterController.CurrentCluster.MainClusterIndex ?? ClusterController.CurrentCluster.Index,
+                Guid = Guid.NewGuid(),
+                ItemIndex = itemIndex,
+                InstantBuySellContent = new InstantBuySellContent()
+                {
+                    InternalUnitPrice = unitPrice,
+                    Quantity = quantity,
+                    TaxRate = 0
+                }
+            };
+        }
     }
 
     public async Task TradeFinishedAsync(long userObjectId, long buildingObjectId)
     {
+        if (_lastTrade is not null
+            && _lastTrade.Ticks.TickCompare(_upcomingTrade.Ticks, 20) 
+            && _lastTrade.ItemIndex == _upcomingTrade?.ItemIndex
+            && _lastTrade.InstantBuySellContent?.Quantity == _upcomingTrade?.InstantBuySellContent?.Quantity
+            && _lastTrade.InstantBuySellContent?.InternalTotalPrice == _upcomingTrade?.InstantBuySellContent?.InternalTotalPrice)
+        {
+            return;
+        }
+
         if (_trackingController.EntityController.LocalUserData.UserObjectId != userObjectId || _upcomingTrade is null || _buildingObjectId != buildingObjectId)
         {
             return;
         }
 
         await AddTradeToBindingCollectionAsync(_upcomingTrade);
+        _lastTrade = _upcomingTrade;
     }
 
     #endregion

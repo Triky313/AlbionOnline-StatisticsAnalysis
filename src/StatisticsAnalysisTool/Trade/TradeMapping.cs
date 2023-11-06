@@ -58,6 +58,15 @@ public static class TradeMapping
                 InstantBuySellContent = trade.InstantBuySellContent,
                 Description = trade.Description
             },
+            TradeType.Crafting => new TradeDto()
+            {
+                Type = TradeType.Crafting,
+                Id = trade.Id,
+                Ticks = trade.Ticks,
+                InstantBuySellContent = trade.InstantBuySellContent,
+                Description = trade.Description,
+                ItemIndex = trade.ItemIndex
+            },
             _ => throw new ArgumentOutOfRangeException()
         };
     }
@@ -113,6 +122,15 @@ public static class TradeMapping
                 Ticks = trade.Ticks,
                 InstantBuySellContent = trade.InstantBuySellContent ?? new InstantBuySellContent(),
                 Description = trade.Description
+            },
+            TradeType.Crafting => new Trade()
+            {
+                Type = TradeType.Crafting,
+                Id = trade.Id,
+                Ticks = trade.Ticks,
+                InstantBuySellContent = trade.InstantBuySellContent ?? new InstantBuySellContent(),
+                Description = trade.Description,
+                ItemIndex = trade.ItemIndex
             },
             TradeType.Unknown => null,
             _ => null

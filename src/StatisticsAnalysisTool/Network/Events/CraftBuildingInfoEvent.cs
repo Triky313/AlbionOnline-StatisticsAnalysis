@@ -1,18 +1,17 @@
 ﻿using StatisticsAnalysisTool.Common;
-using StatisticsAnalysisTool.Enumerations;
 using System;
 using System.Collections.Generic;
 using System.Reflection;
 
 namespace StatisticsAnalysisTool.Network.Events;
 
-public class ActionOnBuildingFinishedEvent
+public class CraftBuildingInfoEvent
 {
     public long? ObjectId;
     public readonly long BuildingObjectId;
-    public readonly ActionOnBuildingType ActionType;
+    public readonly string BuildingName;
 
-    public ActionOnBuildingFinishedEvent(Dictionary<byte, object> parameters)
+    public CraftBuildingInfoEvent(Dictionary<byte, object> parameters)
     {
         ConsoleManager.WriteLineForNetworkHandler(GetType().Name, parameters);
 
@@ -28,10 +27,9 @@ public class ActionOnBuildingFinishedEvent
                 BuildingObjectId = buildingObjectId.ObjectToLong() ?? -1;
             }
 
-            if (parameters.TryGetValue(4, out object actionType))
+            if (parameters.TryGetValue(3, out object buildingName))
             {
-                var actionTypeNumber = actionType.ObjectToLong() ?? -1;
-                ActionType = (ActionOnBuildingType) actionTypeNumber;
+                BuildingName = buildingName.ToString();
             }
         }
         catch (Exception e)

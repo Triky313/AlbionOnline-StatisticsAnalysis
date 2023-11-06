@@ -80,6 +80,7 @@ public sealed class ClusterController
         _ = _trackingController.TradeController.RemoveTradesByDaysInSettingsAsync();
         _ = _trackingController.GatheringController.SetGatheredResourcesClosedAsync();
         _trackingController.PartyBuilderController.UpdateIsPlayerInspectedToFalse();
+        _trackingController.TradeController.ResetCraftingBuildingInfo();
     }
 
     public static string ComposingMapInfoString(string index, MapType mapType, string instanceName)

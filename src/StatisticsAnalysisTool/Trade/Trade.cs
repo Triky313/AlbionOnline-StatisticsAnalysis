@@ -98,6 +98,9 @@ public class Trade : BaseViewModel
                         MailType.MarketplaceBuyOrderExpired => LanguageController.Translation("ADDED_EXPIRED_BUY_ORDER"),
                         _ => LanguageController.Translation("ADDED_UNKNOWN_TRADE")
                     };
+
+                case TradeType.Crafting:
+                    return LanguageController.Translation("ADDED_CRAFTING");
                 case TradeType.Unknown:
                 default:
                     return LanguageController.Translation("ADDED_UNKNOWN_TRADE");
@@ -117,6 +120,7 @@ public class Trade : BaseViewModel
         TradeType.InstantBuy => LanguageController.Translation("INSTANT_BUY"),
         TradeType.ManualSell => LanguageController.Translation("MANUAL_SELL"),
         TradeType.ManualBuy => LanguageController.Translation("MANUAL_BUY"),
+        TradeType.Crafting => LanguageController.Translation("CRAFTING"),
         TradeType.Mail => LanguageController.Translation("MAIL"),
         _ => LanguageController.Translation("UNKNOWN_TRADE")
     };

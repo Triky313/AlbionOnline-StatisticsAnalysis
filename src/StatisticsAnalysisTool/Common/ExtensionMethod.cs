@@ -365,6 +365,14 @@ public static class ExtensionMethod
         return date1.Year == date2.Year && date1.Month == date2.Month;
     }
 
+    public static bool TickCompare(this long ticks1, long ticks2, double toleranceInMilliseconds)
+    {
+        var tolerance = TimeSpan.FromMilliseconds(toleranceInMilliseconds);
+        var difference = ticks1 - ticks2;
+
+        return Math.Abs(difference) <= tolerance.Ticks;
+    }
+
     #endregion
 
     #region Json
