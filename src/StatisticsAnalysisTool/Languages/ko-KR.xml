@@ -781,5 +781,6 @@
 	<translation name="SELECT_TO_DISABLE">비활성화하려면 선택</translation>
 	<translation name="SIPHONED_ENERGY">착취한 에너지</translation>
 	<translation name="PACKET_PROVIDER">패킷 전달자</translation>
-	<translation name="TOOL_MUST_BE_RUN_AS_ADMIN">관리자 권한으로 실행해야 합니다.</translation>	
+	<translation name="TOOL_MUST_BE_RUN_AS_ADMIN">관리자 권한으로 실행해야 합니다.</translation>
+	<translation name="ADDED_CRAFTING">채집 추가</translation>
 </translations>
