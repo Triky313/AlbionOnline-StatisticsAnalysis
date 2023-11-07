@@ -115,7 +115,7 @@ public class TradeController
     private long _buildingObjectId = -1;
     private Trade _upcomingTrade;
     private Trade _lastTrade;
-    private readonly List<CraftingBuildingInfo> _craftingBuildingInfos = new();
+    private readonly HashSet<CraftingBuildingInfo> _craftingBuildingInfos = new ();
 
     public void RegisterBuilding(long buildingObjectId)
     {
@@ -135,11 +135,6 @@ public class TradeController
 
     public void AddCraftingBuildingInfo(CraftingBuildingInfo craftingBuildingInfo)
     {
-        if (_craftingBuildingInfos.Contains(craftingBuildingInfo))
-        {
-            return;
-        }
-
         _craftingBuildingInfos.Add(craftingBuildingInfo);
     }
 
@@ -212,16 +207,10 @@ public class TradeController
 
     public async Task TradeFinishedAsync(long userObjectId, long buildingObjectId)
     {
-        if (_lastTrade is not null
-            && _lastTrade.Ticks.TickCompare(_upcomingTrade.Ticks, 20) 
-            && _lastTrade.ItemIndex == _upcomingTrade?.ItemIndex
-            && _lastTrade.InstantBuySellContent?.Quantity == _upcomingTrade?.InstantBuySellContent?.Quantity
-            && _lastTrade.InstantBuySellContent?.InternalTotalPrice == _upcomingTrade?.InstantBuySellContent?.InternalTotalPrice)
-        {
-            return;
-        }
-
-        if (_trackingController.EntityController.LocalUserData.UserObjectId != userObjectId || _upcomingTrade is null || _buildingObjectId != buildingObjectId)
+        if (_upcomingTrade == _lastTrade 
+            || _trackingController.EntityController.LocalUserData.UserObjectId != userObjectId 
+            || _upcomingTrade is null 
+            || _buildingObjectId != buildingObjectId)
         {
             return;
         }
