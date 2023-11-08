@@ -8,7 +8,7 @@ namespace StatisticsAnalysisTool.Network.Events;
 
 public class ActionOnBuildingFinishedEvent
 {
-    public long? ObjectId;
+    public long? UserObjectId;
     public readonly long BuildingObjectId;
     public readonly ActionOnBuildingType ActionType;
 
@@ -20,7 +20,7 @@ public class ActionOnBuildingFinishedEvent
         {
             if (parameters.TryGetValue(0, out object objectId))
             {
-                ObjectId = objectId.ObjectToLong();
+                UserObjectId = objectId.ObjectToLong();
             }
 
             if (parameters.TryGetValue(2, out object buildingObjectId))

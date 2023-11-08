@@ -67,6 +67,7 @@ public sealed class ClusterController
 
     public void SetAndResetValues(ClusterInfo currentCluster)
     {
+        _trackingController.TradeController.ResetCraftingBuildingInfo();
         _mainWindowViewModel.DamageMeterBindings.GetSnapshot(_mainWindowViewModel.DamageMeterBindings.IsSnapshotAfterMapChangeActive);
         _trackingController.CombatController.ResetDamageMeterByClusterChange();
         _trackingController.StatisticController.SetKillsDeathsValues();
@@ -80,7 +81,6 @@ public sealed class ClusterController
         _ = _trackingController.TradeController.RemoveTradesByDaysInSettingsAsync();
         _ = _trackingController.GatheringController.SetGatheredResourcesClosedAsync();
         _trackingController.PartyBuilderController.UpdateIsPlayerInspectedToFalse();
-        _trackingController.TradeController.ResetCraftingBuildingInfo();
     }
 
     public static string ComposingMapInfoString(string index, MapType mapType, string instanceName)

@@ -136,11 +136,11 @@ public partial class App
 
     protected override void OnExit(ExitEventArgs e)
     {
-        if (_isEarlyShutdown)
+        if (_isEarlyShutdown || _trackingController is null)
         {
             return;
         }
-
+        
         _trackingController?.StopTracking();
         CriticalData.Save();
         if (!BackupController.ExistBackupOnSettingConditions())
@@ -151,7 +151,7 @@ public partial class App
 
     private void OnSessionEnding(object sender, SessionEndingCancelEventArgs e)
     {
-        if (_isEarlyShutdown)
+        if (_isEarlyShutdown || _trackingController is null)
         {
             return;
         }
