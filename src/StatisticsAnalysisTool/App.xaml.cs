@@ -40,8 +40,6 @@ public partial class App
         AppDomain.CurrentDomain.UnhandledException += OnUnhandledException;
 
         await AutoUpdateController.AutoUpdateAsync();
-        Current.Shutdown();
-        return;
 
         SettingsController.LoadSettings();
 
