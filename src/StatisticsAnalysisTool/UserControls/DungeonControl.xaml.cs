@@ -91,9 +91,9 @@ public partial class DungeonControl
         DeleteZeroFameDungeons();
     }
 
-    private void BtnDeleteSelectedDungeons_Click(object sender, RoutedEventArgs e)
+    private async void BtnDeleteSelectedDungeons_Click(object sender, RoutedEventArgs e)
     {
-        _ = DeleteSelectedDungeonsAsync();
+        await DeleteSelectedDungeonsAsync();
     }
 
     #endregion
