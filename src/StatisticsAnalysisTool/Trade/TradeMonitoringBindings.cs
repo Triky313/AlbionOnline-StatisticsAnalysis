@@ -51,9 +51,11 @@ public class TradeMonitoringBindings : BaseViewModel
 
     public void ItemFilterReset()
     {
-        DatePickerTradeFrom = new DateTime(2017, 1, 1);
-        DatePickerTradeTo = DateTime.UtcNow.AddDays(1);
+        _datePickerTradeFrom = new DateTime(2017, 1, 1);
+        _datePickerTradeTo = DateTime.UtcNow.AddDays(1);
         TradesSearchText = string.Empty;
+
+        TradeCollectionView = CollectionViewSource.GetDefaultView(Trades) as ListCollectionView;
     }
 
     public ListCollectionView TradeCollectionView
