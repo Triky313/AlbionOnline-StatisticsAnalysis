@@ -318,7 +318,6 @@
 	<translation name="UNDERCUTTING_PRICE">価格が下回る</translation>
 	<translation name="AVERAGE_PRICES">平均価格</translation>
 	<translation name="AVERAGE_PRICES_TOOLTIP">最低販売価格 | 最大販売価格 | 最低購入価格 | 最大購入価格</translation>
-
 	<translation name="TRACKING">追跡</translation>
 	<translation name="IS_TRACKING_ACTIVE">追跡はアクティブです (緑色 - オン | 黄色 - 部分的 | 灰色 - オフ)</translation>
 	<translation name="USERNAME">ユーザーネーム</translation>
@@ -491,6 +490,7 @@
 	<translation name="TRACKING_IS_ACTIVE">追跡はアクティブ</translation>
 	<translation name="TRACKING_IS_PARTIALLY_ACTIVE">トラッキングは部分的にアクティブです (ゾーンを変更してください!)</translation>
 	<translation name="TRACKING_IS_NOT_ACTIVE">追跡は休止状態です</translation>
+	<translation name="RESTART_REQUIRED">再起動が必要です</translation>
 	<translation name="PROGRAM_RESTART_REQUIRED">プログラムの再起動が必要です</translation>
 	<translation name="DASHBOARD">ダッシュボード</translation>
 	<translation name="MIGHT">およそ</translation>
@@ -720,6 +720,7 @@
 	<translation name="SURE_YOU_WANT_TO_DELETE_ALL_SNAPSHOTS">すべてのスナップショットを削除してもよろしいですか?</translation>
 	<translation name="LOGGING_DESCRIPTION_1">間違ったアイテムが追跡される場合は、アイテムリストが最新でないことが原因である可能性があります。 この URL は設定で調整できます。</translation>
 	<translation name="LOGGING_DESCRIPTION_2">略奪時には、自分の画面内にいて、さらに 1 画面ほど視野の外にいるプレイヤーのみが追跡されます。</translation>
+	<translation name="SET_SERVER">サーバーの設定</translation>
 	<translation name="SET_SERVER_MANUALLY">サーバーの検出</translation>
 	<translation name="AUTOMATICALLY">自動的</translation>
 	<translation name="NETWORK_FILTERING">ネットワークフィルタリング</translation>
@@ -777,6 +778,7 @@
 	<translation name="AVERAGE_IP">平均IP</translation>
 	<translation name="AVERAGE_BIP">平均BIP</translation>
 	<translation name="TOTAL_OVERVIEW">全体概要</translation>
+	<translation name="LAST_MONTH">先月</translation>
 	<translation name="SPELLS_JSON_SOURCE_URL">Spells.json ソース URL</translation>
 	<translation name="UPDATE_SPELLS_JSON_BY_DAYS">Spells.json の更新頻度: </translation>
 	<translation name="BACKUP_CREATED">バックアップの作成</translation>
@@ -793,4 +795,23 @@
 	<translation name="CANNOT_START_OTHER_APP">他のアプリを起動できません</translation>
 	<translation name="FISHING_ROD">釣り竿</translation>
 	<translation name="KILLS_DEATHS">キル数 / 死亡数</translation>
+	<translation name="REPAIR_COSTS">修理費</translation>
+	<translation name="START_APPLICATION_AS_ADMINISTRATOR">管理者としてアプリケーションを起動する</translation>
+	<translation name="SELECT_SERVER_LOCATION">サーバーの場所を選択</translation>
+	<translation name="PLEASE_SELECT_A_SERVER_LOCATION">サーバーの場所を選択してください</translation>
+	<translation name="CHARACTER_NAME">キャラクター名</translation>
+	<translation name="SIPHONED_ENERGY_DESCRIPTION1">1. まず、右側の3番目のタブを選択します。</translation>
+	<translation name="SIPHONED_ENERGY_DESCRIPTION2">2. 検索でサイフォンエネルギーを選択します</translation>
+	<translation name="SIPHONED_ENERGY_DESCRIPTION3">3. 追跡する時間を選択するエントリの数を増やすまたは減らす</translation>
+	<translation name="SIPHONED_ENERGY_DESCRIPTION4">4. 各ページは、追跡できるように個別に呼び出す必要があります。</translation>
+	<translation name="GUILD">ギルド</translation>
+	<translation name="DELETE_SELECTED_ENTRIES">選択したエントリーを削除</translation>
+	<translation name="SURE_YOU_WANT_TO_DELETE_SELECTED_ENTRIES">選択したエントリーを削除してもよろしいですか?</translation>
+	<translation name="QUANTITY">量</translation>
+	<translation name="ADD_ENTRY">エントリーを追加</translation>
+	<translation name="ADD_OR_REMOVE_MANUALLY">手動で追加または削除する</translation>
+	<translation name="SELECT_TO_DISABLE">選択して無効にします</translation>
+	<translation name="SIPHONED_ENERGY">サイフォンエネルギー</translation>
+	<translation name="PACKET_PROVIDER">パケットプロバイダー</translation>
+	<translation name="TOOL_MUST_BE_RUN_AS_ADMIN">ツールは管理者権限で実行してください</translation>
 </translations>
