@@ -39,7 +39,7 @@ public class TradeController
 
     private void OnCollectionChanged(object sender, NotifyCollectionChangedEventArgs e)
     {
-        _mainWindowViewModel?.TradeMonitoringBindings?.TradeStatsObject.SetTradeStats(_mainWindowViewModel?.TradeMonitoringBindings?.Trades);
+        _mainWindowViewModel?.TradeMonitoringBindings?.TradeStatsObject.SetTradeStats(_mainWindowViewModel?.TradeMonitoringBindings?.TradeCollectionView?.Cast<Trade>().ToList());
     }
 
     public async Task AddTradeToBindingCollectionAsync(Trade trade)
