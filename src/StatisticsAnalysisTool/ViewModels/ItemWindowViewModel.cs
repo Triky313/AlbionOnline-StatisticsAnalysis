@@ -502,6 +502,7 @@ public class ItemWindowViewModel : BaseViewModel
 
         var enchantments = Item?.FullItemInformation switch
         {
+            Weapon weapon => weapon.Enchantments,
             EquipmentItem equipmentItem => equipmentItem.Enchantments,
             ConsumableItem consumableItem => consumableItem.Enchantments,
             TransformationWeapon transformationWeapon => transformationWeapon.Enchantments,
