@@ -1,5 +1,6 @@
 ﻿using StatisticsAnalysisTool.Dungeon.Models;
 using StatisticsAnalysisTool.Enumerations;
+using StatisticsAnalysisTool.Exceptions;
 using System.Linq;
 
 namespace StatisticsAnalysisTool.Dungeon;
@@ -77,13 +78,13 @@ public class DungeonMapping
     {
         return dto.Mode switch
         {
-            DungeonMode.Solo or DungeonMode.Standard => new RandomDungeonFragment(dto),
+            DungeonMode.Solo or DungeonMode.Standard or DungeonMode.Avalon => new RandomDungeonFragment(dto),
             DungeonMode.Corrupted => new CorruptedFragment(dto),
             DungeonMode.HellGate => new HellGateFragment(dto),
             DungeonMode.Expedition => new ExpeditionFragment(dto),
             DungeonMode.Mists => new MistsFragment(dto),
             DungeonMode.MistsDungeon => new MistsDungeonFragment(dto),
-            _ => null
+            _ => throw new MappingException("Unknown dungeon mode")
         };
     }
 
