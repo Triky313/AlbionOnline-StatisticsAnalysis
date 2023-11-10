@@ -1,8 +1,7 @@
-﻿using System;
-using StatisticsAnalysisTool.Dungeon.Models;
+﻿using StatisticsAnalysisTool.Dungeon.Models;
 using StatisticsAnalysisTool.Enumerations;
-using System.Linq;
 using StatisticsAnalysisTool.Exceptions;
+using System.Linq;
 
 namespace StatisticsAnalysisTool.Dungeon;
 
