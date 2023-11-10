@@ -20,6 +20,7 @@ using System.Linq;
 using System.Reflection;
 using System.Threading.Tasks;
 using System.Windows;
+using StatisticsAnalysisTool.Exceptions;
 using Loot = StatisticsAnalysisTool.Dungeon.Models.Loot;
 using ValueType = StatisticsAnalysisTool.Enumerations.ValueType;
 // ReSharper disable PossibleMultipleEnumeration
@@ -702,11 +703,22 @@ public sealed class DungeonController
         FileController.TransferFileIfExistFromOldPathToUserDataDirectory(Path.Combine(AppDomain.CurrentDomain.BaseDirectory, Settings.Default.DungeonRunsFileName));
         var dungeons = await FileController.LoadAsync<List<DungeonDto>>(
             Path.Combine(AppDomain.CurrentDomain.BaseDirectory, Settings.Default.UserDataDirectoryName, Settings.Default.DungeonRunsFileName));
+        
+        var dungeonsToAdd = new List<DungeonBaseFragment>();
+        foreach (DungeonDto dungeonDto in dungeons.Where(x => x.Mode != DungeonMode.Unknown))
+        {
+            try
+            {
+                dungeonsToAdd.Add(DungeonMapping.Mapping(dungeonDto));
+            }
+            catch (MappingException e)
+            {
+                ConsoleManager.WriteLineForError(MethodBase.GetCurrentMethod()?.DeclaringType, e);
+                Log.Error(e, "{message}", MethodBase.GetCurrentMethod()?.DeclaringType);
+            }
+        }
 
-        _mainWindowViewModel.DungeonBindings.Dungeons.AddRange(dungeons
-            .Where(x => x.Mode != DungeonMode.Unknown).Select(DungeonMapping.Mapping)
-            .OrderBy(x => x.EnterDungeonFirstTime)
-            .ToList());
+        _mainWindowViewModel.DungeonBindings.Dungeons.AddRange(dungeonsToAdd.OrderBy(x => x?.EnterDungeonFirstTime).ToList());
         _mainWindowViewModel.DungeonBindings.InitListCollectionView();
     }
 

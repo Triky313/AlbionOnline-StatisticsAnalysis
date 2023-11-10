@@ -116,16 +116,25 @@ public class TrackingController : ITrackingController
             return;
         }
 
-        await Task.WhenAll(
-            EstimatedMarketValueController.LoadFromFileAsync(),
-            StatisticController.LoadFromFileAsync(),
-            TradeController.LoadFromFileAsync(),
-            TreasureController.LoadFromFileAsync(),
-            DungeonController.LoadDungeonFromFileAsync(),
-            GatheringController.LoadFromFileAsync(),
-            VaultController.LoadFromFileAsync(),
-            GuildController.LoadFromFileAsync()
-        );
+        try
+        {
+            await Task.WhenAll(
+                EstimatedMarketValueController.LoadFromFileAsync(),
+                StatisticController.LoadFromFileAsync(),
+                TradeController.LoadFromFileAsync(),
+                TreasureController.LoadFromFileAsync(),
+                DungeonController.LoadDungeonFromFileAsync(),
+                GatheringController.LoadFromFileAsync(),
+                VaultController.LoadFromFileAsync(),
+                GuildController.LoadFromFileAsync()
+            );
+        }
+        catch (Exception e)
+        {
+            ConsoleManager.WriteLineForError(MethodBase.GetCurrentMethod()?.DeclaringType, e);
+            Log.Error(e, "{message}", MethodBase.GetCurrentMethod()?.DeclaringType);
+            _mainWindowViewModel.SetErrorBar(Visibility.Visible, e.Message);
+        }
 
         ClusterController?.RegisterEvents();
         LootController?.RegisterEvents();
