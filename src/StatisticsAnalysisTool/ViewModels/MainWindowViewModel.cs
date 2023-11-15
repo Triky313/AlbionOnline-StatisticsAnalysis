@@ -501,8 +501,6 @@ public class MainWindowViewModel : BaseViewModel
         set
         {
             _isTrackingPartyLootOnly = value;
-            var trackingController = ServiceLocator.Resolve<TrackingController>();
-            trackingController.LootController.IsPartyLootOnly = _isTrackingPartyLootOnly;
 
             SettingsController.CurrentSettings.IsTrackingPartyLootOnly = _isTrackingPartyLootOnly;
             OnPropertyChanged();
@@ -703,16 +701,7 @@ public class MainWindowViewModel : BaseViewModel
         get => _isDamageMeterTrackingActive;
         set
         {
-            var trackingController = ServiceLocator.Resolve<TrackingController>();
-
-            if (trackingController?.CombatController == null)
-            {
-                return;
-            }
-
             _isDamageMeterTrackingActive = value;
-
-            trackingController.CombatController.IsDamageMeterActive = _isDamageMeterTrackingActive;
 
             DamageMeterBindings.DamageMeterActivationToggleIcon = _isDamageMeterTrackingActive ? EFontAwesomeIcon.Solid_ToggleOn : EFontAwesomeIcon.Solid_ToggleOff;
 

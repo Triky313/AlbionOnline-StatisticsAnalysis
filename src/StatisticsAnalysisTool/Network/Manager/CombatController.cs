@@ -1,5 +1,6 @@
 using Serilog;
 using StatisticsAnalysisTool.Common;
+using StatisticsAnalysisTool.Common.UserSettings;
 using StatisticsAnalysisTool.DamageMeter;
 using StatisticsAnalysisTool.Enumerations;
 using StatisticsAnalysisTool.Models.ItemsJsonModel;
@@ -21,8 +22,6 @@ public class CombatController
     private readonly MainWindowViewModel _mainWindowViewModel;
     private readonly TrackingController _trackingController;
     private bool _combatModeWasCombatOver;
-
-    public bool IsDamageMeterActive { get; set; }
 
     public CombatController(TrackingController trackingController, MainWindowViewModel mainWindowViewModel)
     {
@@ -46,7 +45,7 @@ public class CombatController
     public Task AddDamage(long affectedId, long causerId, double healthChange, double newHealthValue)
     {
         var healthChangeType = GetHealthChangeType(healthChange);
-        if (!IsDamageMeterActive || (affectedId == causerId && healthChangeType == HealthChangeType.Damage))
+        if (!SettingsController.CurrentSettings.IsDamageMeterTrackingActive || (affectedId == causerId && healthChangeType == HealthChangeType.Damage))
         {
             return Task.CompletedTask;
         }
@@ -142,7 +141,7 @@ public class CombatController
         if (healthChangeObjectValue?.CharacterEquipment?.MainHand != null)
         {
             var item = ItemController.GetItemByIndex(healthChangeObjectValue.CharacterEquipment?.MainHand);
-            fragment.CauserMainHand = ((ItemJsonObject) item?.FullItemInformation)?.ItemType is ItemType.TransformationWeapon or ItemType.Weapon  ? item : null;
+            fragment.CauserMainHand = ((ItemJsonObject) item?.FullItemInformation)?.ItemType is ItemType.TransformationWeapon or ItemType.Weapon ? item : null;
         }
 
         // Damage
