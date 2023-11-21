@@ -1,5 +1,6 @@
 using Serilog;
 using StatisticsAnalysisTool.Common;
+using StatisticsAnalysisTool.Common.UserSettings;
 using StatisticsAnalysisTool.EventLogging;
 using StatisticsAnalysisTool.EventLogging.Notification;
 using StatisticsAnalysisTool.Localization;
@@ -27,8 +28,6 @@ public class LootController : ILootController
     private Loot _lastLootedItem;
 
     private const int MaxLoot = 5000;
-
-    public bool IsPartyLootOnly;
 
     public LootController(TrackingController trackingController, MainWindowViewModel mainWindowViewModel)
     {
@@ -59,7 +58,9 @@ public class LootController : ILootController
             return;
         }
 
-        if (IsPartyLootOnly && !_trackingController.EntityController.IsEntityInParty(loot.LootedByName) && !_trackingController.EntityController.IsEntityInParty(loot.LootedFromName))
+        if (SettingsController.CurrentSettings.IsTrackingPartyLootOnly
+            && !_trackingController.EntityController.IsEntityInParty(loot.LootedByName)
+            && !_trackingController.EntityController.IsEntityInParty(loot.LootedFromName))
         {
             return;
         }
