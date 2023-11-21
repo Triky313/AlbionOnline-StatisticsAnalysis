@@ -39,31 +39,30 @@ public class EntityController
 
     public event Action<GameObject> OnAddEntity;
 
-    public void AddEntity(long? objectId, Guid userGuid, Guid? interactGuid, string name, string guild, string alliance,
-         CharacterEquipment characterEquipment, GameObjectType objectType, GameObjectSubType objectSubType)
+    public void AddEntity(Entity entity)
     {
         PlayerGameObject gameObject;
 
-        if (_knownEntities.TryRemove(userGuid, out var oldEntity))
+        if (_knownEntities.TryRemove(entity.UserGuid, out var oldEntity))
         {
             // Parties are recreated several times in HCE's and therefore the ObjectId may only be set to zero once after a map change.
             // However, this must not happen in AddEntity
-            long? newObjectId = oldEntity.ObjectId;
-            if (objectId != null)
+            long? newUserObjectId = oldEntity.ObjectId;
+            if (entity.ObjectId != null)
             {
-                newObjectId = objectId;
+                newUserObjectId = entity.ObjectId;
             }
 
-            gameObject = new PlayerGameObject(newObjectId)
+            gameObject = new PlayerGameObject(newUserObjectId)
             {
-                Name = name,
-                ObjectType = objectType,
-                UserGuid = userGuid,
-                Guild = string.Empty == guild ? oldEntity.Guild : guild,
-                Alliance = string.Empty == alliance ? oldEntity.Alliance : alliance,
-                InteractGuid = interactGuid == Guid.Empty || interactGuid == null ? oldEntity.InteractGuid : interactGuid,
-                ObjectSubType = objectSubType,
-                CharacterEquipment = characterEquipment ?? oldEntity.CharacterEquipment,
+                Name = entity.Name,
+                ObjectType = entity.ObjectType,
+                UserGuid = entity.UserGuid,
+                Guild = string.Empty == entity.Guild ? oldEntity.Guild : entity.Guild,
+                Alliance = string.Empty == entity.Alliance ? oldEntity.Alliance : entity.Alliance,
+                InteractGuid = entity.InteractGuid == Guid.Empty || entity.InteractGuid == null ? oldEntity.InteractGuid : entity.InteractGuid,
+                ObjectSubType = entity.ObjectSubType,
+                CharacterEquipment = entity.CharacterEquipment ?? oldEntity.CharacterEquipment,
                 CombatStart = oldEntity.CombatStart,
                 CombatTime = oldEntity.CombatTime,
                 Damage = oldEntity.Damage,
@@ -74,16 +73,21 @@ public class EntityController
         }
         else
         {
-            gameObject = new PlayerGameObject(objectId)
+            gameObject = new PlayerGameObject(entity.ObjectId)
             {
-                Name = name,
-                ObjectType = objectType,
-                UserGuid = userGuid,
-                Guild = guild,
-                Alliance = alliance,
-                ObjectSubType = objectSubType,
-                CharacterEquipment = characterEquipment
+                Name = entity.Name,
+                ObjectType = entity.ObjectType,
+                UserGuid = entity.UserGuid,
+                Guild = entity.Guild,
+                Alliance = entity.Alliance,
+                ObjectSubType = entity.ObjectSubType,
+                CharacterEquipment = entity.CharacterEquipment
             };
+
+            if (gameObject.ObjectSubType == GameObjectSubType.LocalPlayer)
+            {
+                RemoveLocalEntityFromPartyAsync().GetAwaiter();
+            }
         }
 
         // When players in a group and go to the Mist, the party player is indicated as PA
@@ -92,11 +96,11 @@ public class EntityController
             gameObject.Name = oldEntity.Name;
         }
 
-        if (objectId is not null && _tempCharacterEquipmentData.TryGetValue((long) objectId, out var characterEquipmentData))
+        if (entity.ObjectId is not null && _tempCharacterEquipmentData.TryGetValue((long) entity.ObjectId, out var characterEquipmentData))
         {
             ResetTempCharacterEquipment();
             gameObject.CharacterEquipment = characterEquipmentData.CharacterEquipment;
-            _tempCharacterEquipmentData.TryRemove((long) objectId, out _);
+            _tempCharacterEquipmentData.TryRemove((long) entity.ObjectId, out _);
         }
 
         _knownEntities.TryAdd(gameObject.UserGuid, gameObject);
@@ -182,6 +186,15 @@ public class EntityController
         }
     }
 
+    private async Task RemoveLocalEntityFromPartyAsync()
+    {
+        var entity = GetLocalEntity();
+        if (entity?.Value is not null)
+        {
+            await RemoveFromPartyAsync(entity.Value.Key);
+        }
+    }
+
     public async Task RemoveFromPartyAsync(Guid? guid)
     {
         if (guid is { } notNullGuid)
@@ -235,7 +248,13 @@ public class EntityController
         {
             if (!ExistEntity(member.Key) && GetLocalEntity()?.Key != member.Key)
             {
-                AddEntity(null, member.Key, null, member.Value, null, null, null, GameObjectType.Player, GameObjectSubType.Player);
+                AddEntity(new Entity
+                {
+                    UserGuid = member.Key,
+                    Name = member.Value,
+                    ObjectType = GameObjectType.Player,
+                    ObjectSubType = GameObjectSubType.Player
+                });
             }
 
             await AddToPartyAsync(member.Key);

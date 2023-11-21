@@ -474,7 +474,18 @@ public class CombatController
                 Cape = Random.Next(1867, 1874)
             };
 
-            _trackingController?.EntityController?.AddEntity(i, guid, interactGuid, name, guildName, allianceName, charItem, GameObjectType.Player, GameObjectSubType.Mob);
+            _trackingController?.EntityController?.AddEntity(new Entity
+            {
+                ObjectId = i,
+                UserGuid = guid,
+                InteractGuid = interactGuid,
+                Name = name,
+                Guild = guildName,
+                Alliance = allianceName,
+                CharacterEquipment = charItem,
+                ObjectType = GameObjectType.Player,
+                ObjectSubType = GameObjectSubType.Mob
+            });
             _trackingController?.EntityController?.AddToPartyAsync(guid);
         }
 
