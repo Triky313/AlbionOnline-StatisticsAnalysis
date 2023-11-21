@@ -37,8 +37,6 @@ public class EntityController
 
     #region Entities
 
-    public event Action<GameObject> OnAddEntity;
-
     public void AddEntity(Entity entity)
     {
         PlayerGameObject gameObject;
@@ -104,7 +102,6 @@ public class EntityController
         }
 
         _knownEntities.TryAdd(gameObject.UserGuid, gameObject);
-        OnAddEntity?.Invoke(gameObject);
     }
 
     public void RemoveEntitiesByLastUpdate(int withoutAnUpdateForMinutes)
