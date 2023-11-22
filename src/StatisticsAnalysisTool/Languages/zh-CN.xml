@@ -766,4 +766,20 @@
 	<translation name="PLEASE_SELECT_A_SERVER_LOCATION">请选择游戏服务器</translation>
 	<translation name="KILLS_DEATHS">击杀 / 死亡</translation>
 	<translation name="REPAIR_COSTS">修理花费</translation>
+	<translation name="SIPHONED_ENERGY_DESCRIPTION1">1. 首先选中右边的第三栏；</translation>
+	<translation name="SIPHONED_ENERGY_DESCRIPTION2">2. 在搜索中选择虹吸能量；</translation>
+	<translation name="SIPHONED_ENERGY_DESCRIPTION3">3. 选择一个时间来追踪更多或更少的条目；</translation>
+	<translation name="SIPHONED_ENERGY_DESCRIPTION4">4. 每一页必须独立调用才能被追踪到。</translation>
+	<translation name="GUILD">公会</translation>
+	<translation name="DELETE_SELECTED_ENTRIES">删除选中的条目</translation>
+	<translation name="SURE_YOU_WANT_TO_DELETE_SELECTED_ENTRIES">确定要删除选中的条目？</translation>
+	<translation name="CHARACTER_NAME">角色名字</translation>
+	<translation name="QUANTITY">质量</translation>
+	<translation name="ADD_ENTRY">添加条目</translation>
+	<translation name="ADD_OR_REMOVE_MANUALLY">自动添加或删除</translation>
+	<translation name="SELECT_TO_DISABLE">选中以禁用</translation>
+	<translation name="SIPHONED_ENERGY">虹吸能量</translation>
+	<translation name="PACKET_PROVIDER">工具包提供者</translation>
+	<translation name="TOOL_MUST_BE_RUN_AS_ADMIN">工具必须以管理员身份运行</translation>
+	<translation name="ADDED_CRAFTING">已添加的制造</translation>
 </translations>
