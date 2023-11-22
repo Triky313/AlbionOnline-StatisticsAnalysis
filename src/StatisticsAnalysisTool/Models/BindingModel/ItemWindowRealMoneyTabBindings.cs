@@ -1,13 +1,10 @@
-﻿using StatisticsAnalysisTool.Properties;
-using StatisticsAnalysisTool.ViewModels;
+﻿using StatisticsAnalysisTool.ViewModels;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.ComponentModel;
-using System.Runtime.CompilerServices;
 
 namespace StatisticsAnalysisTool.Models.BindingModel;
 
-public class ItemWindowRealMoneyTabBindings : INotifyPropertyChanged
+public class ItemWindowRealMoneyTabBindings : BaseViewModel
 {
     private readonly ItemWindowViewModel _itemWindowViewModel;
     private List<QualityStruct> _qualities = new();
@@ -58,13 +55,5 @@ public class ItemWindowRealMoneyTabBindings : INotifyPropertyChanged
     {
         public string Name { get; set; }
         public int Quality { get; set; }
-    }
-
-    public event PropertyChangedEventHandler PropertyChanged;
-
-    [NotifyPropertyChangedInvocator]
-    protected virtual void OnPropertyChanged([CallerMemberName] string propertyName = null)
-    {
-        PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
     }
 }

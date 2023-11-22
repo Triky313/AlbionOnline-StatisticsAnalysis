@@ -1,5 +1,4 @@
-﻿
-using StatisticsAnalysisTool.Common;
+﻿using StatisticsAnalysisTool.Common;
 using StatisticsAnalysisTool.Common.UserSettings;
 using StatisticsAnalysisTool.Enumerations;
 using StatisticsAnalysisTool.Models.NetworkModel;
@@ -38,8 +37,17 @@ public class JoinResponseHandler : ResponsePacketHandler<JoinResponse>
 
         _mainWindowViewModel.DungeonBindings.DungeonCloseTimer.Visibility = Visibility.Collapsed;
 
-        await AddEntityAsync(value.UserObjectId, value.UserGuid, value.InteractGuid,
-            value.Username, value.GuildName, value.AllianceName, GameObjectType.Player, GameObjectSubType.LocalPlayer);
+        await AddEntityAsync(new Entity
+        {
+            ObjectId = value.UserObjectId,
+            UserGuid = value.UserGuid ?? Guid.Empty,
+            InteractGuid = value.InteractGuid,
+            Name = value.Username,
+            Guild = value.GuildName,
+            Alliance = value.AllianceName,
+            ObjectType = GameObjectType.Player,
+            ObjectSubType = GameObjectSubType.LocalPlayer
+        });
 
         _trackingController.DungeonController?.AddDungeonAsync(value.MapType, value.MapGuid).ConfigureAwait(false);
 
@@ -70,15 +78,15 @@ public class JoinResponseHandler : ResponsePacketHandler<JoinResponse>
         });
     }
 
-    private async Task AddEntityAsync(long? userObjectId, Guid? guid, Guid? interactGuid, string name, string guild, string alliance, GameObjectType gameObjectType, GameObjectSubType gameObjectSubType)
+    private async Task AddEntityAsync(Entity entity)
     {
-        if (guid == null || interactGuid == null || userObjectId == null)
+        if (entity?.UserGuid == null || entity.InteractGuid == null || entity.ObjectId == null)
         {
             return;
         }
 
-        _trackingController.EntityController.AddEntity((long) userObjectId, (Guid) guid, interactGuid, name, guild, alliance, null, GameObjectType.Player, GameObjectSubType.LocalPlayer);
-        await _trackingController.EntityController.AddToPartyAsync((Guid) guid);
+        _trackingController.EntityController.AddEntity(entity);
+        await _trackingController.EntityController.AddToPartyAsync(entity.UserGuid);
     }
 
     private void SetTrackingActivityText()

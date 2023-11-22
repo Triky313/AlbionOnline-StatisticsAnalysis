@@ -1,11 +1,12 @@
 ﻿using LiveChartsCore;
 using LiveChartsCore.Defaults;
 using LiveChartsCore.SkiaSharpView;
-using log4net;
+using Serilog;
 using StatisticsAnalysisTool.Common;
 using StatisticsAnalysisTool.Common.UserSettings;
 using StatisticsAnalysisTool.Exceptions;
-using StatisticsAnalysisTool.GameData;
+using StatisticsAnalysisTool.GameFileData;
+using StatisticsAnalysisTool.Localization;
 using StatisticsAnalysisTool.Models;
 using StatisticsAnalysisTool.Models.BindingModel;
 using StatisticsAnalysisTool.Models.ItemsJsonModel;
@@ -15,11 +16,9 @@ using StatisticsAnalysisTool.Views;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.ComponentModel;
 using System.Globalization;
 using System.Linq;
 using System.Reflection;
-using System.Runtime.CompilerServices;
 using System.Threading.Tasks;
 using System.Timers;
 using System.Windows;
@@ -28,9 +27,8 @@ using System.Windows.Media.Imaging;
 
 namespace StatisticsAnalysisTool.ViewModels;
 
-public class ItemWindowViewModel : INotifyPropertyChanged
+public class ItemWindowViewModel : BaseViewModel
 {
-    private static readonly ILog Log = LogManager.GetLogger(MethodBase.GetCurrentMethod()?.DeclaringType);
     private readonly ItemWindow _itemWindow;
     private Item _item;
     private string _titleName;
@@ -45,7 +43,7 @@ public class ItemWindowViewModel : INotifyPropertyChanged
     private double _taskProgressbarMaximum = 100;
     private double _taskProgressbarValue;
     private bool _isTaskProgressbarIndeterminate;
-    private XmlLanguage _itemListViewLanguage = XmlLanguage.GetLanguage(LanguageController.CurrentCultureInfo.ToString());
+    private XmlLanguage _itemListViewLanguage = XmlLanguage.GetLanguage(CultureInfo.DefaultThreadCurrentCulture?.IetfLanguageTag ?? string.Empty);
     private double _refreshRateInMilliseconds = 10;
     private RequiredJournal _requiredJournal;
     private EssentialCraftingValuesTemplate _essentialCraftingValues;
@@ -98,7 +96,7 @@ public class ItemWindowViewModel : INotifyPropertyChanged
         Translation = new ItemWindowTranslation();
         _ = InitAsync(item);
 
-        ItemListViewLanguage = XmlLanguage.GetLanguage(LanguageController.CurrentCultureInfo.ToString());
+        ItemListViewLanguage = XmlLanguage.GetLanguage(CultureInfo.DefaultThreadCurrentCulture?.IetfLanguageTag ?? string.Empty);
     }
 
     #region Inits
@@ -248,6 +246,11 @@ public class ItemWindowViewModel : INotifyPropertyChanged
                 ExtraItemInformation.ShowInMarketPlace = weapon.ShowInMarketPlace.SetYesOrNo();
                 ExtraItemInformation.Weight = weapon.Weight;
                 break;
+            case TransformationWeapon transformationWeapon:
+                ExtraItemInformation.ShopCategory = transformationWeapon.ShopCategory;
+                ExtraItemInformation.ShopSubCategory1 = transformationWeapon.ShopSubCategory1;
+                ExtraItemInformation.Weight = transformationWeapon.Weight;
+                break;
             case HideoutItem hideoutItem:
                 ExtraItemInformation.ShopCategory = hideoutItem.ShopCategory;
                 ExtraItemInformation.ShopSubCategory1 = hideoutItem.ShopSubCategory1;
@@ -310,6 +313,16 @@ public class ItemWindowViewModel : INotifyPropertyChanged
                 ExtraItemInformation.ShopCategory = crystalLeagueItem.ShopCategory;
                 ExtraItemInformation.ShopSubCategory1 = crystalLeagueItem.ShopSubCategory1;
                 ExtraItemInformation.Weight = crystalLeagueItem.Weight;
+                break;
+            case TrackingItem trackingItem:
+                ExtraItemInformation.ShopCategory = trackingItem.ShopCategory;
+                ExtraItemInformation.ShopSubCategory1 = trackingItem.ShopSubCategory1;
+                ExtraItemInformation.Weight = trackingItem.Weight;
+                break;
+            case KillTrophyItem killTrophyItem:
+                ExtraItemInformation.ShopCategory = killTrophyItem.ShopCategory;
+                ExtraItemInformation.ShopSubCategory1 = killTrophyItem.ShopSubCategory1;
+                ExtraItemInformation.Weight = killTrophyItem.Weight;
                 break;
         }
     }
@@ -404,8 +417,10 @@ public class ItemWindowViewModel : INotifyPropertyChanged
         switch (Item?.FullItemInformation)
         {
             case Weapon weapon when weapon.CraftingRequirements?.FirstOrDefault()?.CraftResource.Count > 0:
+            case TransformationWeapon transformationWeapon when transformationWeapon.CraftingRequirements?.FirstOrDefault()?.CraftResource.Count > 0:
             case EquipmentItem equipmentItem when equipmentItem.CraftingRequirements?.FirstOrDefault()?.CraftResource.Count > 0:
             case Mount mount when mount.CraftingRequirements?.FirstOrDefault()?.CraftResource.Count > 0:
+            case TrackingItem trackingItem when trackingItem.CraftingRequirements?.FirstOrDefault()?.CraftResource.Count > 0:
             case ConsumableItem consumableItem when consumableItem.CraftingRequirements?.FirstOrDefault()?.CraftResource.Count > 0:
                 areResourcesAvailable = true;
                 break;
@@ -427,7 +442,7 @@ public class ItemWindowViewModel : INotifyPropertyChanged
     {
         if (fullItemInfo is EquipmentItem equipmentItem)
         {
-            if (int.TryParse(equipmentItem.CraftingRequirements?.FirstOrDefault()?.CraftingFocus, NumberStyles.Any, 
+            if (int.TryParse(equipmentItem.CraftingRequirements?.FirstOrDefault()?.CraftingFocus, NumberStyles.Any,
                     CultureInfo.InvariantCulture, out int craftingFocusNumber) && (craftingFocusNumber <= 0))
             {
                 EssentialCraftingValues.IsCraftingWithFocusCheckboxEnabled = false;
@@ -453,7 +468,9 @@ public class ItemWindowViewModel : INotifyPropertyChanged
         var craftingJournalType = Item?.FullItemInformation switch
         {
             Weapon weapon => CraftingController.GetCraftingJournalItem(Item.Tier, weapon.CraftingJournalType),
+            TransformationWeapon transformationWeapon => CraftingController.GetCraftingJournalItem(Item.Tier, transformationWeapon.CraftingJournalType),
             EquipmentItem equipmentItem => CraftingController.GetCraftingJournalItem(Item.Tier, equipmentItem.CraftingJournalType),
+            TrackingItem trackingItem => CraftingController.GetCraftingJournalItem(Item.Tier, trackingItem.CraftingJournalType),
             _ => null
         };
 
@@ -485,8 +502,10 @@ public class ItemWindowViewModel : INotifyPropertyChanged
 
         var enchantments = Item?.FullItemInformation switch
         {
+            Weapon weapon => weapon.Enchantments,
             EquipmentItem equipmentItem => equipmentItem.Enchantments,
             ConsumableItem consumableItem => consumableItem.Enchantments,
+            TransformationWeapon transformationWeapon => transformationWeapon.Enchantments,
             _ => null
         };
 
@@ -497,17 +516,16 @@ public class ItemWindowViewModel : INotifyPropertyChanged
             craftingRequirements = enchantment.CraftingRequirements;
         }
 
-        if (craftingRequirements == null)
+        craftingRequirements ??= Item?.FullItemInformation switch
         {
-            craftingRequirements = Item?.FullItemInformation switch
-            {
-                Weapon weapon => weapon.CraftingRequirements,
-                EquipmentItem equipmentItem => equipmentItem.CraftingRequirements,
-                Mount mount => mount.CraftingRequirements,
-                ConsumableItem consumableItem => consumableItem.CraftingRequirements,
-                _ => null
-            };
-        }
+            Weapon weapon => weapon.CraftingRequirements,
+            TransformationWeapon transformationWeapon => transformationWeapon.CraftingRequirements,
+            EquipmentItem equipmentItem => equipmentItem.CraftingRequirements,
+            Mount mount => mount.CraftingRequirements,
+            ConsumableItem consumableItem => consumableItem.CraftingRequirements,
+            TrackingItem trackingItem => trackingItem.CraftingRequirements,
+            _ => null
+        };
 
         if (craftingRequirements?.FirstOrDefault()?.CraftResource == null)
         {
@@ -520,7 +538,11 @@ public class ItemWindowViewModel : INotifyPropertyChanged
         }
 
         await foreach (var craftResource in craftingRequirements
-                           .SelectMany(x => x.CraftResource).ToList().GroupBy(x => x.UniqueName).Select(grp => grp.FirstOrDefault()).ToAsyncEnumerable().ConfigureAwait(false))
+                           .SelectMany(x => x.CraftResource)
+                           .ToList()
+                           .GroupBy(x => x.UniqueName)
+                           .Select(grp => grp.FirstOrDefault())
+                           .ToAsyncEnumerable())
         {
             var item = GetSuitableResourceItem(craftResource.UniqueName);
             var craftingQuantity = (long) Math.Round(item?.UniqueName?.ToUpper().Contains("ARTEFACT") ?? false
@@ -536,17 +558,39 @@ public class ItemWindowViewModel : INotifyPropertyChanged
                 ResourceCost = 0,
                 Weight = ItemController.GetWeight(item?.FullItemInformation),
                 CraftingQuantity = craftingQuantity,
-                IsArtifactResource = item?.UniqueName?.ToUpper().Contains("ARTEFACT") ?? false,
+                ResourceType = GetResourceType(item),
                 IsTomeOfInsightResource = item?.UniqueName?.ToUpper().Contains("SKILLBOOK_STANDARD") ?? false,
                 IsAvalonianEnergy = item?.UniqueName?.ToUpper().Contains("QUESTITEM_TOKEN_AVALON") ?? false
             });
         }
     }
 
+    private static ResourceType GetResourceType(Item item)
+    {
+        if (item?.FullItemInformation is SimpleItem { ResourceType: "ESSENCE" })
+        {
+            return ResourceType.Essence;
+        }
+
+        if (item?.UniqueName?.ToUpper().Contains("ARTEFACT") ?? false)
+        {
+            return ResourceType.Artefact;
+        }
+
+        return ResourceType.Unknown;
+    }
+
     private Item GetSuitableResourceItem(string uniqueName)
     {
-        var suitableUniqueName = $"{uniqueName}_LEVEL{Item.Level}@{Item.Level}";
-        return ItemController.GetItemByUniqueName(suitableUniqueName) ?? ItemController.GetItemByUniqueName(uniqueName);
+        var item = ItemController.GetItemByUniqueName(uniqueName);
+
+        if (item == null)
+        {
+            var suitableUniqueName = $"{uniqueName}_LEVEL{Item.Level}@{Item.Level}";
+            item = ItemController.GetItemByUniqueName(suitableUniqueName);
+        }
+
+        return item;
     }
 
     public void UpdateCraftingCalculationTab()
@@ -565,7 +609,7 @@ public class ItemWindowViewModel : INotifyPropertyChanged
         {
             foreach (var requiredResource in RequiredResources.ToList())
             {
-                if (requiredResource.IsArtifactResource || requiredResource.IsTomeOfInsightResource || requiredResource.IsAvalonianEnergy)
+                if (requiredResource.ResourceType is ResourceType.Artefact or ResourceType.Essence || requiredResource.IsTomeOfInsightResource || requiredResource.IsAvalonianEnergy)
                 {
                     requiredResource.CraftingQuantity = (long) Math.Round(possibleItemCrafting, MidpointRounding.ToNegativeInfinity);
                     continue;
@@ -585,7 +629,7 @@ public class ItemWindowViewModel : INotifyPropertyChanged
 
         // Auctions house tax
         CraftingCalculation.AuctionsHouseTax =
-            EssentialCraftingValues.SellPricePerItem * Convert.ToInt64(EssentialCraftingValues.CraftingItemQuantity) / 100 * Convert.ToInt64(EssentialCraftingValues.AuctionHouseTax);
+            EssentialCraftingValues.SellPricePerItem * Convert.ToInt64(EssentialCraftingValues.CraftingItemQuantity) / 100.00 * Convert.ToInt64(EssentialCraftingValues.AuctionHouseTax);
 
         // Total resource costs
         CraftingCalculation.TotalResourceCosts = RequiredResources?.Sum(x => x.TotalCost) ?? 0;
@@ -701,7 +745,7 @@ public class ItemWindowViewModel : INotifyPropertyChanged
         catch (TooManyRequestsException ex)
         {
             SetErrorValues(Error.ToManyRequests);
-            Log.Warn(nameof(UpdateMarketPricesAsync), ex);
+            Log.Warning(ex, "{message}", MethodBase.GetCurrentMethod()?.DeclaringType);
         }
     }
 
@@ -1338,11 +1382,4 @@ public class ItemWindowViewModel : INotifyPropertyChanged
     }
 
     #endregion
-
-    public event PropertyChangedEventHandler PropertyChanged;
-
-    protected virtual void OnPropertyChanged([CallerMemberName] string propertyName = null)
-    {
-        PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
-    }
 }

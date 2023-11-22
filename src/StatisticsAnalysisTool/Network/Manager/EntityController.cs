@@ -1,4 +1,4 @@
-﻿using log4net;
+﻿using Serilog;
 using StatisticsAnalysisTool.Common;
 using StatisticsAnalysisTool.Enumerations;
 using StatisticsAnalysisTool.Models;
@@ -18,8 +18,6 @@ namespace StatisticsAnalysisTool.Network.Manager;
 
 public class EntityController
 {
-    private static readonly ILog Log = LogManager.GetLogger(MethodBase.GetCurrentMethod()?.DeclaringType);
-
     private readonly ConcurrentDictionary<Guid, PlayerGameObject> _knownEntities = new();
     private readonly MainWindowViewModel _mainWindowViewModel;
     private readonly ObservableCollection<EquipmentItemInternal> _newEquipmentItems = new();
@@ -39,52 +37,55 @@ public class EntityController
 
     #region Entities
 
-    public event Action<GameObject> OnAddEntity;
-
-    public void AddEntity(long? objectId, Guid userGuid, Guid? interactGuid, string name, string guild, string alliance,
-         CharacterEquipment characterEquipment, GameObjectType objectType, GameObjectSubType objectSubType)
+    public void AddEntity(Entity entity)
     {
         PlayerGameObject gameObject;
 
-        if (_knownEntities.TryRemove(userGuid, out var oldEntity))
+        if (_knownEntities.TryRemove(entity.UserGuid, out var oldEntity))
         {
             // Parties are recreated several times in HCE's and therefore the ObjectId may only be set to zero once after a map change.
             // However, this must not happen in AddEntity
-            long? newObjectId = oldEntity.ObjectId;
-            if (objectId != null)
+            long? newUserObjectId = oldEntity.ObjectId;
+            if (entity.ObjectId != null)
             {
-                newObjectId = objectId;
+                newUserObjectId = entity.ObjectId;
             }
 
-            gameObject = new PlayerGameObject(newObjectId)
+            gameObject = new PlayerGameObject(newUserObjectId)
             {
-                Name = name,
-                ObjectType = objectType,
-                UserGuid = userGuid,
-                Guild = string.Empty == guild ? oldEntity.Guild : guild,
-                Alliance = string.Empty == alliance ? oldEntity.Alliance : alliance,
-                InteractGuid = interactGuid == Guid.Empty || interactGuid == null ? oldEntity.InteractGuid : interactGuid,
-                ObjectSubType = objectSubType,
-                CharacterEquipment = characterEquipment ?? oldEntity.CharacterEquipment,
+                Name = entity.Name,
+                ObjectType = entity.ObjectType,
+                UserGuid = entity.UserGuid,
+                Guild = string.Empty == entity.Guild ? oldEntity.Guild : entity.Guild,
+                Alliance = string.Empty == entity.Alliance ? oldEntity.Alliance : entity.Alliance,
+                InteractGuid = entity.InteractGuid == Guid.Empty || entity.InteractGuid == null ? oldEntity.InteractGuid : entity.InteractGuid,
+                ObjectSubType = entity.ObjectSubType,
+                CharacterEquipment = entity.CharacterEquipment ?? oldEntity.CharacterEquipment,
                 CombatStart = oldEntity.CombatStart,
                 CombatTime = oldEntity.CombatTime,
                 Damage = oldEntity.Damage,
                 Heal = oldEntity.Heal,
+                Overhealed = oldEntity.Overhealed,
                 IsInParty = oldEntity.IsInParty,
             };
         }
         else
         {
-            gameObject = new PlayerGameObject(objectId)
+            gameObject = new PlayerGameObject(entity.ObjectId)
             {
-                Name = name,
-                ObjectType = objectType,
-                UserGuid = userGuid,
-                Guild = guild,
-                Alliance = alliance,
-                ObjectSubType = objectSubType,
-                CharacterEquipment = characterEquipment
+                Name = entity.Name,
+                ObjectType = entity.ObjectType,
+                UserGuid = entity.UserGuid,
+                Guild = entity.Guild,
+                Alliance = entity.Alliance,
+                ObjectSubType = entity.ObjectSubType,
+                CharacterEquipment = entity.CharacterEquipment
             };
+
+            if (gameObject.ObjectSubType == GameObjectSubType.LocalPlayer)
+            {
+                RemoveLocalEntityFromPartyAsync().GetAwaiter();
+            }
         }
 
         // When players in a group and go to the Mist, the party player is indicated as PA
@@ -93,15 +94,14 @@ public class EntityController
             gameObject.Name = oldEntity.Name;
         }
 
-        if (objectId is not null && _tempCharacterEquipmentData.TryGetValue((long) objectId, out var characterEquipmentData))
+        if (entity.ObjectId is not null && _tempCharacterEquipmentData.TryGetValue((long) entity.ObjectId, out var characterEquipmentData))
         {
             ResetTempCharacterEquipment();
             gameObject.CharacterEquipment = characterEquipmentData.CharacterEquipment;
-            _tempCharacterEquipmentData.TryRemove((long) objectId, out _);
+            _tempCharacterEquipmentData.TryRemove((long) entity.ObjectId, out _);
         }
 
         _knownEntities.TryAdd(gameObject.UserGuid, gameObject);
-        OnAddEntity?.Invoke(gameObject);
     }
 
     public void RemoveEntitiesByLastUpdate(int withoutAnUpdateForMinutes)
@@ -131,7 +131,7 @@ public class EntityController
         return _knownEntities?.FirstOrDefault(x => x.Value.Name == uniqueName);
     }
 
-    private KeyValuePair<Guid, PlayerGameObject> GetEntity(Guid guid)
+    public KeyValuePair<Guid, PlayerGameObject> GetEntity(Guid guid)
     {
         return _knownEntities.FirstOrDefault(x => x.Key == guid);
     }
@@ -141,9 +141,11 @@ public class EntityController
         return new List<KeyValuePair<Guid, PlayerGameObject>>(onlyInParty ? _knownEntities.ToArray().Where(x => IsEntityInParty(x.Value.Name)) : _knownEntities.ToArray());
     }
 
-    public List<KeyValuePair<Guid, PlayerGameObject>> GetAllEntitiesWithDamageOrHeal()
+    public List<KeyValuePair<Guid, PlayerGameObject>> GetAllEntitiesWithDamageOrHealAndInParty()
     {
-        return new List<KeyValuePair<Guid, PlayerGameObject>>(_knownEntities.ToArray().Where(x => x.Value.Damage > 0 || x.Value.Heal > 0));
+        return new List<KeyValuePair<Guid, PlayerGameObject>>(_knownEntities
+            .ToArray()
+            .Where(x => (x.Value.Damage > 0 || x.Value.Heal > 0 || x.Value.Overhealed > 0) && IsEntityInParty(x.Key)));
     }
 
     public bool ExistEntity(Guid guid)
@@ -154,6 +156,12 @@ public class EntityController
     public void SetItemPower(Guid guid, double itemPower)
     {
         var entity = GetEntity(guid);
+
+        if (entity.Value == null)
+        {
+            return;
+        }
+
         if (Math.Abs(entity.Value.ItemPower - itemPower) > 0)
         {
             entity.Value.ItemPower = itemPower;
@@ -172,6 +180,15 @@ public class EntityController
             entity.Value.IsInParty = true;
             await SetPartyMemberUiAsync();
             await _trackingController?.PartyBuilderController?.UpdatePartyAsync()!;
+        }
+    }
+
+    private async Task RemoveLocalEntityFromPartyAsync()
+    {
+        var entity = GetLocalEntity();
+        if (entity?.Value is not null)
+        {
+            await RemoveFromPartyAsync(entity.Value.Key);
         }
     }
 
@@ -228,7 +245,13 @@ public class EntityController
         {
             if (!ExistEntity(member.Key) && GetLocalEntity()?.Key != member.Key)
             {
-                AddEntity(null, member.Key, null, member.Value, null, null, null, GameObjectType.Player, GameObjectSubType.Player);
+                AddEntity(new Entity
+                {
+                    UserGuid = member.Key,
+                    Name = member.Value,
+                    ObjectType = GameObjectType.Player,
+                    ObjectSubType = GameObjectSubType.Player
+                });
             }
 
             await AddToPartyAsync(member.Key);
@@ -287,7 +310,12 @@ public class EntityController
     {
         return _knownEntities?.FirstOrDefault(x => x.Key == guid).Value?.IsInParty ?? false;
     }
-    
+
+    public bool IsAnyEntityInParty(List<Guid> guids)
+    {
+        return _knownEntities?.Any(x => guids.Contains(x.Key) && x.Value.IsInParty) ?? false;
+    }
+
     public void CopyPartyToClipboard()
     {
         var output = string.Empty;
@@ -403,7 +431,7 @@ public class EntityController
         }
         catch (Exception e)
         {
-            Log.Warn(MethodBase.GetCurrentMethod()?.DeclaringType, e);
+            Log.Warning(e, "{message}", MethodBase.GetCurrentMethod()?.DeclaringType);
         }
 
         foreach (var (key, value) in playerItemList.ToList())
@@ -492,6 +520,14 @@ public class EntityController
         foreach (var entity in _knownEntities)
         {
             entity.Value.Heal = 0;
+        }
+    }
+
+    public void ResetEntitiesHealAndOverhealed()
+    {
+        foreach (var entity in _knownEntities)
+        {
+            entity.Value.Overhealed = 0;
         }
     }
 

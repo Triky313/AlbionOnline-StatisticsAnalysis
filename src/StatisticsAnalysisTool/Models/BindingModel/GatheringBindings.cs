@@ -1,25 +1,22 @@
-﻿using log4net;
+﻿using Serilog;
 using StatisticsAnalysisTool.Common;
 using StatisticsAnalysisTool.Common.UserSettings;
 using StatisticsAnalysisTool.Gathering;
-using StatisticsAnalysisTool.Properties;
+using StatisticsAnalysisTool.Localization;
+using StatisticsAnalysisTool.ViewModels;
 using System;
 using System.Collections.Generic;
 using System.Collections.Specialized;
-using System.ComponentModel;
 using System.Linq;
 using System.Reflection;
-using System.Runtime.CompilerServices;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Data;
 
 namespace StatisticsAnalysisTool.Models.BindingModel;
 
-public class GatheringBindings : INotifyPropertyChanged
+public class GatheringBindings : BaseViewModel
 {
-    private static readonly ILog Log = LogManager.GetLogger(MethodBase.GetCurrentMethod()?.DeclaringType);
-
     private bool _isGatheringActive = true;
     private GatheringStats _gatheringStats = new();
     private ObservableRangeCollection<Gathered> _gatheredCollection = new();
@@ -51,8 +48,6 @@ public class GatheringBindings : INotifyPropertyChanged
             GatheredCollectionView.IsLiveSorting = true;
             GatheredCollectionView.IsLiveFiltering = true;
             GatheredCollectionView.CustomSort = new GatheredComparer();
-
-            GatheredCollectionView?.Refresh();
         }
 
         GatheredCollection.CollectionChanged += UpdateStatsAsync;
@@ -74,7 +69,7 @@ public class GatheringBindings : INotifyPropertyChanged
             await Application.Current.Dispatcher.InvokeAsync(() =>
             {
                 UpdateObservableRangeCollection(GatheringStats.GatheredHide, hide);
-                GatheringStats.GainedSilverByHide = Utilities.LongWithCulture(hide.Sum(x => x.TotalMarketValue.IntegerValue));
+                GatheringStats.GainedSilverByHide = hide.Sum(x => x.TotalMarketValue.IntegerValue);
             });
 
             // Ore
@@ -82,7 +77,7 @@ public class GatheringBindings : INotifyPropertyChanged
             await Application.Current.Dispatcher.InvokeAsync(() =>
             {
                 UpdateObservableRangeCollection(GatheringStats.GatheredOre, ore);
-                GatheringStats.GainedSilverByOre = Utilities.LongWithCulture(ore.Sum(x => x.TotalMarketValue.IntegerValue));
+                GatheringStats.GainedSilverByOre = ore.Sum(x => x.TotalMarketValue.IntegerValue);
             });
 
             // Fiber
@@ -90,7 +85,7 @@ public class GatheringBindings : INotifyPropertyChanged
             await Application.Current.Dispatcher.InvokeAsync(() =>
             {
                 UpdateObservableRangeCollection(GatheringStats.GatheredFiber, fiber);
-                GatheringStats.GainedSilverByFiber = Utilities.LongWithCulture(fiber.Sum(x => x.TotalMarketValue.IntegerValue));
+                GatheringStats.GainedSilverByFiber = fiber.Sum(x => x.TotalMarketValue.IntegerValue);
             });
 
             // Wood
@@ -98,7 +93,7 @@ public class GatheringBindings : INotifyPropertyChanged
             await Application.Current.Dispatcher.InvokeAsync(() =>
             {
                 UpdateObservableRangeCollection(GatheringStats.GatheredWood, wood);
-                GatheringStats.GainedSilverByWood = Utilities.LongWithCulture(wood.Sum(x => x.TotalMarketValue.IntegerValue));
+                GatheringStats.GainedSilverByWood = wood.Sum(x => x.TotalMarketValue.IntegerValue);
             });
 
             // Rock
@@ -106,7 +101,7 @@ public class GatheringBindings : INotifyPropertyChanged
             await Application.Current.Dispatcher.InvokeAsync(() =>
             {
                 UpdateObservableRangeCollection(GatheringStats.GatheredRock, rock);
-                GatheringStats.GainedSilverByRock = Utilities.LongWithCulture(rock.Sum(x => x.TotalMarketValue.IntegerValue));
+                GatheringStats.GainedSilverByRock = rock.Sum(x => x.TotalMarketValue.IntegerValue);
             });
 
             // Fish
@@ -114,7 +109,7 @@ public class GatheringBindings : INotifyPropertyChanged
             await Application.Current.Dispatcher.InvokeAsync(() =>
             {
                 UpdateObservableRangeCollection(GatheringStats.GatheredFish, fish);
-                GatheringStats.GainedSilverByFish = Utilities.LongWithCulture(fish.Sum(x => x.TotalMarketValue.IntegerValue));
+                GatheringStats.GainedSilverByFish = fish.Sum(x => x.TotalMarketValue.IntegerValue);
             });
 
             // Most gathered resource
@@ -191,13 +186,13 @@ public class GatheringBindings : INotifyPropertyChanged
 
             await Application.Current.Dispatcher.InvokeAsync(() =>
             {
-                GatheringStats.TotalGainedSilverString = Utilities.LongWithCulture(totalGainedSilver);
+                GatheringStats.TotalGainedSilverString = totalGainedSilver;
             });
         }
         catch (Exception ex)
         {
             ConsoleManager.WriteLineForError(MethodBase.GetCurrentMethod()?.DeclaringType, ex);
-            Log.Error(MethodBase.GetCurrentMethod()?.DeclaringType, ex);
+            Log.Error(ex, "{message}", MethodBase.GetCurrentMethod()?.DeclaringType);
         }
     }
 
@@ -235,7 +230,7 @@ public class GatheringBindings : INotifyPropertyChanged
         catch (Exception e)
         {
             ConsoleManager.WriteLineForError(MethodBase.GetCurrentMethod()?.DeclaringType, e);
-            Log.Error(MethodBase.GetCurrentMethod()?.DeclaringType, e);
+            Log.Error(e, "{message}", MethodBase.GetCurrentMethod()?.DeclaringType);
             return new List<Gathered>();
         }
     }
@@ -465,12 +460,4 @@ public class GatheringBindings : INotifyPropertyChanged
     #endregion
 
     public static string TranslationGatheringActive => LanguageController.Translation("GATHERING_ACTIVE");
-
-    public event PropertyChangedEventHandler PropertyChanged;
-
-    [NotifyPropertyChangedInvocator]
-    protected virtual void OnPropertyChanged([CallerMemberName] string propertyName = null)
-    {
-        PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
-    }
 }

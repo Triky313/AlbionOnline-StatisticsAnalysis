@@ -1,4 +1,6 @@
+using StatisticsAnalysisTool.Common.UserSettings;
 using StatisticsAnalysisTool.Enumerations;
+using StatisticsAnalysisTool.Localization;
 using StatisticsAnalysisTool.Models.NetworkModel;
 using System;
 using System.Collections;
@@ -57,6 +59,17 @@ public static class ExtensionMethod
     public static Visibility BoolToVisibility(this bool? status)
     {
         return (status ?? false).BoolToVisibility();
+    }
+
+    public static double GetValuePerHour(this double value, double seconds)
+    {
+        double hours = seconds > 0 ? seconds / 60d / 60d : 0;
+        return hours > 0 ? value / hours : double.MaxValue;
+    }
+
+    public static bool HasProperty(this object obj, string propertyName)
+    {
+        return obj.GetType().GetProperty(propertyName) != null;
     }
 
     #region Object to
@@ -224,12 +237,12 @@ public static class ExtensionMethod
 
     #region Player Objects
 
-    public static long GetHighestDamage(this List<KeyValuePair<Guid, PlayerGameObject>> playerObjects)
+    public static long GetCurrentTotalDamage(this List<KeyValuePair<Guid, PlayerGameObject>> playerObjects)
     {
         return playerObjects.Count <= 0 ? 0 : playerObjects.Max(x => x.Value.Damage);
     }
 
-    public static long GetHighestHeal(this List<KeyValuePair<Guid, PlayerGameObject>> playerObjects)
+    public static long GetCurrentTotalHeal(this List<KeyValuePair<Guid, PlayerGameObject>> playerObjects)
     {
         return playerObjects.Count <= 0 ? 0 : playerObjects.Max(x => x.Value.Heal);
     }
@@ -239,7 +252,7 @@ public static class ExtensionMethod
         var totalDamage = playerObjects.Sum(x => x.Value.Damage);
         return 100.00 / totalDamage * playerDamage;
     }
-
+    
     public static double GetHealPercentage(this List<KeyValuePair<Guid, PlayerGameObject>> playerObjects, double playerHeal)
     {
         var totalHeal = playerObjects.Sum(x => x.Value.Heal);
@@ -253,7 +266,7 @@ public static class ExtensionMethod
     public static string CurrentDateTimeFormat(this DateTime value)
     {
         return DateTime.SpecifyKind(value, DateTimeKind.Utc).ToLocalTime()
-            .ToString("G", new CultureInfo(LanguageController.CurrentCultureInfo.TextInfo.CultureName));
+            .ToString("G", CultureInfo.DefaultThreadCurrentCulture);
     }
 
     public static string DateTimeToLastUpdateTime(this DateTime dateTime)
@@ -345,6 +358,19 @@ public static class ExtensionMethod
     public static bool IsDateInWeekOfYear(this DateTime date1, DateTime date2)
     {
         return date1.Year == date2.Year && ISOWeek.GetWeekOfYear(date1) == ISOWeek.GetWeekOfYear(date2);
+    }
+
+    public static bool IsDateInSameMonth(this DateTime date1, DateTime date2)
+    {
+        return date1.Year == date2.Year && date1.Month == date2.Month;
+    }
+
+    public static bool TickCompare(this long ticks1, long ticks2, double toleranceInMilliseconds)
+    {
+        var tolerance = TimeSpan.FromMilliseconds(toleranceInMilliseconds);
+        var difference = ticks1 - ticks2;
+
+        return Math.Abs(difference) <= tolerance.Ticks;
     }
 
     #endregion

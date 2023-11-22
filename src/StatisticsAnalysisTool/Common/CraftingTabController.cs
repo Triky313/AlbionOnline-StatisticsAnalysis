@@ -1,5 +1,4 @@
-﻿using log4net;
-using StatisticsAnalysisTool.Models;
+﻿using StatisticsAnalysisTool.Models;
 using StatisticsAnalysisTool.Properties;
 using System;
 using System.Collections.Generic;
@@ -9,13 +8,12 @@ using System.Reflection;
 using System.Text;
 using System.Text.Json;
 using System.Threading.Tasks;
+using Serilog;
 
 namespace StatisticsAnalysisTool.Common;
 
 public static class CraftingTabController
 {
-    private static readonly ILog Log = LogManager.GetLogger(MethodBase.GetCurrentMethod()?.DeclaringType);
-
     public static List<CraftingNote> CraftingNotes;
     private static bool _isLoading;
     private static bool _isSaving;
@@ -91,7 +89,7 @@ public static class CraftingTabController
         catch (Exception e)
         {
             ConsoleManager.WriteLineForError(MethodBase.GetCurrentMethod()?.DeclaringType, e);
-            Log.Error(MethodBase.GetCurrentMethod()?.DeclaringType, e);
+            Log.Error(e, "{message}", MethodBase.GetCurrentMethod()?.DeclaringType);
         }
 
         _isSaving = false;

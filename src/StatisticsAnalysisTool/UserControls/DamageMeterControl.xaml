@@ -70,13 +70,16 @@
                                 <StackPanel HorizontalAlignment="Left" VerticalAlignment="Top" Orientation="Vertical">
                                     <CheckBox IsChecked="{Binding DamageMeterBindings.IsDamageMeterResetByMapChangeActive}" 
                                           Content="{Binding Translation.MapChangeReset, FallbackValue=MAP__CHANGE__RESET}" 
-                                          HorizontalContentAlignment="Left" Margin="5,2,10,0" VerticalAlignment="Top" HorizontalAlignment="Left" Width="auto" MaxWidth="250"/>
+                                          HorizontalContentAlignment="Left" Margin="5,2,10,0" VerticalAlignment="Top" HorizontalAlignment="Left" Width="auto"/>
                                     <CheckBox IsChecked="{Binding DamageMeterBindings.IsDamageMeterResetBeforeCombatActive}" 
                                           Content="{Binding Translation.ResetBeforeCombat, FallbackValue=RESET__BEFORE__COMBAT}" 
-                                          HorizontalContentAlignment="Left" Margin="5,2,10,0" VerticalAlignment="Top" HorizontalAlignment="Left" Width="auto" MaxWidth="250"/>
+                                          HorizontalContentAlignment="Left" Margin="5,2,10,0" VerticalAlignment="Top" HorizontalAlignment="Left" Width="auto"/>
                                     <CheckBox IsChecked="{Binding DamageMeterBindings.IsSnapshotAfterMapChangeActive}" 
                                           Content="{Binding Translation.SnapshotAfterMapChange, FallbackValue=SNAPSHOT__AFTER__MAP__CHANGE}" 
-                                          HorizontalContentAlignment="Left" Margin="5,2,10,0" VerticalAlignment="Top" HorizontalAlignment="Left" Width="auto" MaxWidth="250"/>
+                                          HorizontalContentAlignment="Left" Margin="5,2,10,0" VerticalAlignment="Top" HorizontalAlignment="Left" Width="auto"/>
+                                    <CheckBox IsChecked="{Binding DamageMeterBindings.ShortDamageMeterToClipboard}" 
+                                              Content="{Binding Translation.CopyShortDamageMeterToTheClipboard, FallbackValue=COPY__SHORT__DAMAGE__METER__TO__THE__CLIPBOARD}" 
+                                              HorizontalContentAlignment="Left" Margin="5,2,10,0" VerticalAlignment="Top" HorizontalAlignment="Left" Width="auto"/>
                                 </StackPanel>
                             </StackPanel>
 

@@ -1,25 +1,15 @@
-﻿using StatisticsAnalysisTool.Common;
+﻿using StatisticsAnalysisTool.Localization;
 
 namespace StatisticsAnalysisTool.Models.TranslationModel;
 
 public class SettingsWindowTranslation
 {
     public static string Settings => LanguageController.Translation("SETTINGS");
-    public static string Language => $"{LanguageController.Translation("LANGUAGE")} ({LanguageController.Translation("PROGRAM_RESTART_REQUIRED")})";
+    public static string Language => $"{LanguageController.Translation("LANGUAGE")} ({LanguageController.Translation("RESTART_REQUIRED")})";
     public static string CheckForUpdate => LanguageController.Translation("CHECK_FOR_UPDATE");
     public static string RefreshRate => LanguageController.Translation("REFRESH_RATE");
-    public static string SetServerManually => LanguageController.Translation("SET_SERVER_MANUALLY");
+    public static string SetServer => LanguageController.Translation("SET_SERVER");
     public static string NetworkFiltering => LanguageController.Translation("NETWORK_FILTERING");
-    public static string UpdateItemListByDays => LanguageController.Translation("UPDATE_ITEM_LIST_BY_DAYS");
-    public static string UpdateItemsJsonByDays => LanguageController.Translation("UPDATE_ITEMS_JSON_BY_DAYS");
-    public static string UpdateMobsJsonByDays => LanguageController.Translation("UPDATE_MOBS_JSON_BY_DAYS");
-    public static string UpdateWorldJsonByDays => LanguageController.Translation("UPDATE_WORLD_JSON_BY_DAYS");
-    public static string UpdateSpellsJsonByDays => LanguageController.Translation("UPDATE_SPELLS_JSON_BY_DAYS");
-    public static string ItemListSourceUrl => LanguageController.Translation("ITEM_LIST_SOURCE_URL");
-    public static string ItemsJsonSourceUrl => LanguageController.Translation("ITEMS_JSON_SOURCE_URL");
-    public static string MobsJsonSourceUrl => LanguageController.Translation("MOBS_JSON_SOURCE_URL");
-    public static string WorldJsonSourceUrl => LanguageController.Translation("WORLD_JSON_SOURCE_URL");
-    public static string SpellsJsonSourceUrl => LanguageController.Translation("SPELLS_JSON_SOURCE_URL");
     public static string OpenItemWindowInNewWindow => LanguageController.Translation("OPEN_ITEM_WINDOW_IN_NEW_WINDOW");
     public static string ShowInfoWindowOnStart => LanguageController.Translation("SHOW_INFO_WINDOW_ON_START");
     public static string Save => LanguageController.Translation("SAVE");
@@ -41,7 +31,6 @@ public class SettingsWindowTranslation
     public static string SuggestPreReleaseUpdates => LanguageController.Translation("SUGGEST_PRE_RELEASE_UPDATES");
     public static string AttentionTheseVersionsAreStillBeingTested => LanguageController.Translation("ATTENTION_THESE_VERSION_ARE_STILL_BEING_TESTED");
     public static string CharacterNameToTrack => LanguageController.Translation("CHARACTER_NAME_TO_TRACK");
-    public static string CopyShortDamageMeterToTheClipboard => LanguageController.Translation("COPY_SHORT_DAMAGE_METER_TO_THE_CLIPBOARD");
     public static string NavigationTabVisibility => LanguageController.Translation("NAVIGATION_TAB_VISIBILITY");
     public static string Automatically => LanguageController.Translation("AUTOMATICALLY");
     public static string WestServer => LanguageController.Translation("WEST_SERVER");
@@ -50,6 +39,8 @@ public class SettingsWindowTranslation
     public static string Disabled => LanguageController.Translation("DISABLED");
     public static string Notifications => LanguageController.Translation("NOTIFICATIONS");
     public static string PacketFilter => LanguageController.Translation("PACKET_FILTER");
+    public static string PacketProvider => LanguageController.Translation("PACKET_PROVIDER");
+    public static string RestartRequired => LanguageController.Translation("RESTART_REQUIRED");
     public static string Reset => LanguageController.Translation("RESET");
     public static string PlayerSelectionWithSameNameInDb => LanguageController.Translation("PLAYER_SELECTION_WITH_SAME_NAME_IN_DB");
     public static string UpdateNow => LanguageController.Translation("UPDATE_NOW");
@@ -64,4 +55,5 @@ public class SettingsWindowTranslation
     public static string ItemSearch => LanguageController.Translation("ITEM_SEARCH");
     public static string LootLogger => LanguageController.Translation("LOOT_LOGGER");
     public static string DamageMeter => LanguageController.Translation("DAMAGE_METER");
+    public static string AnotherAppToStartPath => LanguageController.Translation("ANOTHER_APP_TO_START_PATH");
 }

@@ -6,8 +6,8 @@ namespace StatisticsAnalysisTool.UnitTests.Common;
 
 public class UtilitiesTests
 {
-    private static readonly DateTime SomeDateTime = new (2021, 9, 7, 14, 22, 50);
-        
+    private static readonly DateTime SomeDateTime = new(2021, 9, 7, 14, 22, 50);
+
     [Fact]
     public void GetHighestLength_WithValidValues_ReturnHighestValue()
     {
@@ -20,18 +20,6 @@ public class UtilitiesTests
         const long expected = 4;
 
         Assert.StrictEqual(expected, result);
-    }
-        
-    [Fact]
-    public void GetValuePerHourToDouble_WithValidValues_ReturnCorrectValue()
-    {
-        const double value = 4500.25;
-        const double seconds = 1800;
-
-        var result = Utilities.GetValuePerHourToDouble(value, seconds);
-        const double expected = 9000.50;
-
-        Assert.Equal(expected, result);
     }
 
     [Fact]

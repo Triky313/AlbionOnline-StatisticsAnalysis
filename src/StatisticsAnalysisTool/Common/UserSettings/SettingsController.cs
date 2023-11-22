@@ -1,11 +1,10 @@
-﻿using log4net;
+﻿using Serilog;
 using StatisticsAnalysisTool.Properties;
 using System;
 using System.IO;
 using System.Reflection;
 using System.Text;
 using System.Text.Json;
-using System.Threading.Tasks;
 using System.Windows;
 
 namespace StatisticsAnalysisTool.Common.UserSettings;
@@ -14,12 +13,11 @@ public class SettingsController
 {
     public static SettingsObject CurrentSettings = new();
 
-    private static readonly ILog Log = LogManager.GetLogger(MethodBase.GetCurrentMethod()?.DeclaringType);
     private static bool _haveSettingsAlreadyBeenLoaded;
 
     public static void SetWindowSettings(WindowState windowState, double height, double width, double left, double top)
     {
-        if(windowState != WindowState.Maximized)
+        if (windowState != WindowState.Maximized)
         {
             CurrentSettings.MainWindowHeight = double.IsNegativeInfinity(height) || double.IsPositiveInfinity(height) ? 0 : height;
             CurrentSettings.MainWindowWidth = double.IsNegativeInfinity(width) || double.IsPositiveInfinity(width) ? 0 : width;
@@ -56,7 +54,7 @@ public class SettingsController
             catch (Exception e)
             {
                 ConsoleManager.WriteLineForError(MethodBase.GetCurrentMethod()?.DeclaringType, e);
-                Log.Error(MethodBase.GetCurrentMethod()?.DeclaringType, e);
+                Log.Error(e, "{message}", MethodBase.GetCurrentMethod()?.DeclaringType);
             }
         }
     }
@@ -73,7 +71,7 @@ public class SettingsController
         catch (Exception e)
         {
             ConsoleManager.WriteLineForError(MethodBase.GetCurrentMethod()?.DeclaringType, e);
-            Log.Error(MethodBase.GetCurrentMethod()?.DeclaringType, e);
+            Log.Error(e, "{message}", MethodBase.GetCurrentMethod()?.DeclaringType);
         }
     }
 }

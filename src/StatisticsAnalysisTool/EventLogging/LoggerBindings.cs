@@ -1,15 +1,13 @@
 ﻿using StatisticsAnalysisTool.Common.UserSettings;
 using StatisticsAnalysisTool.EventLogging.Notification;
 using StatisticsAnalysisTool.Models.TranslationModel;
-using StatisticsAnalysisTool.Properties;
+using StatisticsAnalysisTool.ViewModels;
 using System.Collections.ObjectModel;
-using System.ComponentModel;
-using System.Runtime.CompilerServices;
 using System.Windows.Data;
 
 namespace StatisticsAnalysisTool.EventLogging;
 
-public class LoggingBindings : INotifyPropertyChanged
+public class LoggingBindings : BaseViewModel
 {
     private ListCollectionView _gameLoggingCollectionView;
     private ObservableCollection<TrackingNotification> _trackingNotifications = new();
@@ -19,7 +17,7 @@ public class LoggingBindings : INotifyPropertyChanged
     private bool _isTrackingMobLoot;
     private ObservableCollection<LoggingFilterObject> _filters = new();
     private ListCollectionView _topLootersCollectionView;
-    
+
     public void Init()
     {
         TopLootersCollectionView = CollectionViewSource.GetDefaultView(TopLooters) as ListCollectionView;
@@ -173,12 +171,4 @@ public class LoggingBindings : INotifyPropertyChanged
     }
 
     #endregion
-
-    public event PropertyChangedEventHandler PropertyChanged;
-
-    [NotifyPropertyChangedInvocator]
-    protected virtual void OnPropertyChanged([CallerMemberName] string propertyName = null)
-    {
-        PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
-    }
 }

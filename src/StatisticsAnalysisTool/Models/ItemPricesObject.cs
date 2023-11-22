@@ -1,18 +1,16 @@
-﻿using log4net;
+﻿using Serilog;
 using StatisticsAnalysisTool.Common;
 using StatisticsAnalysisTool.Enumerations;
+using StatisticsAnalysisTool.ViewModels;
 using System;
-using System.ComponentModel;
 using System.Reflection;
-using System.Runtime.CompilerServices;
 using System.Windows;
 using System.Windows.Input;
 
 namespace StatisticsAnalysisTool.Models;
 
-public class ItemPricesObject : INotifyPropertyChanged
+public class ItemPricesObject : BaseViewModel
 {
-    private static readonly ILog Log = LogManager.GetLogger(MethodBase.GetCurrentMethod()?.DeclaringType);
     private Visibility _visibility;
     private MarketLocation _marketLocation = MarketLocation.Unknown;
     private bool _isBestSellMinPrice;
@@ -51,7 +49,7 @@ public class ItemPricesObject : INotifyPropertyChanged
         {
             return;
         }
-        
+
         QualityLevel = marketResponse.QualityLevel;
         SellPriceMin = marketResponse.SellPriceMin;
         SellPriceMinDate = marketResponse.SellPriceMinDate;
@@ -368,7 +366,7 @@ public class ItemPricesObject : INotifyPropertyChanged
     }
 
     #endregion
-    
+
     private ICommand _copyTextToClipboard;
     public ICommand CopyTextToClipboard => _copyTextToClipboard ??= new CommandHandler(PerformCopyTextToClipboard, true);
 
@@ -381,14 +379,7 @@ public class ItemPricesObject : INotifyPropertyChanged
         catch (Exception ex)
         {
             ConsoleManager.WriteLineForError(MethodBase.GetCurrentMethod()?.DeclaringType, ex);
-            Log.Error(MethodBase.GetCurrentMethod()?.DeclaringType, ex);
+            Log.Error(ex, "{message}", MethodBase.GetCurrentMethod()?.DeclaringType);
         }
-    }
-
-    public event PropertyChangedEventHandler PropertyChanged;
-
-    protected virtual void OnPropertyChanged([CallerMemberName] string propertyName = null)
-    {
-        PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
     }
 }

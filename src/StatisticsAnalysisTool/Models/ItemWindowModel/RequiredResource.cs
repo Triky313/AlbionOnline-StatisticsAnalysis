@@ -1,19 +1,18 @@
 ﻿using StatisticsAnalysisTool.Common;
 using StatisticsAnalysisTool.Common.UserSettings;
-using StatisticsAnalysisTool.GameData;
+using StatisticsAnalysisTool.GameFileData;
+using StatisticsAnalysisTool.Localization;
 using StatisticsAnalysisTool.ViewModels;
 using System;
 using System.Collections.Generic;
-using System.ComponentModel;
 using System.Linq;
-using System.Runtime.CompilerServices;
 using System.Windows;
 using System.Windows.Input;
 using System.Windows.Media.Imaging;
 
 namespace StatisticsAnalysisTool.Models.ItemWindowModel;
 
-public class RequiredResource : INotifyPropertyChanged
+public class RequiredResource : BaseViewModel
 {
     public string UniqueName { get; set; }
     private string _craftingResourceName;
@@ -24,7 +23,7 @@ public class RequiredResource : INotifyPropertyChanged
     private long _craftingQuantity;
     private long _oneProductionAmount;
     private readonly ItemWindowViewModel _itemWindowViewModelOld;
-    private bool _isArtifactResource;
+    private ResourceType _resourceType;
     private List<MarketResponse> _marketResponse = new();
     private Location _itemPricesLocationSelected;
     private DateTime _lastUpdate = DateTime.UtcNow.AddDays(-100);
@@ -49,7 +48,7 @@ public class RequiredResource : INotifyPropertyChanged
         var sellPriceMin = _marketResponse?.FirstOrDefault(x => string.Equals(x?.City, Locations.GetParameterName(location), StringComparison.CurrentCultureIgnoreCase))?.SellPriceMin;
         if (sellPriceMin != null)
         {
-            ResourceCost = (long)sellPriceMin;
+            ResourceCost = (long) sellPriceMin;
         }
     }
 
@@ -88,12 +87,12 @@ public class RequiredResource : INotifyPropertyChanged
         }
     }
 
-    public bool IsArtifactResource
+    public ResourceType ResourceType
     {
-        get => _isArtifactResource;
+        get => _resourceType;
         set
         {
-            _isArtifactResource = value;
+            _resourceType = value;
             OnPropertyChanged();
         }
     }
@@ -134,7 +133,7 @@ public class RequiredResource : INotifyPropertyChanged
         set
         {
             _resourceCost = value;
-                
+
             TotalCost = ResourceCost * TotalQuantity;
             _itemWindowViewModelOld.UpdateCraftingCalculationTab();
             OnPropertyChanged();
@@ -224,11 +223,4 @@ public class RequiredResource : INotifyPropertyChanged
     public string TranslationTotalQuantity => LanguageController.Translation("TOTAL_QUANTITY");
     public string TranslationTotalCost => LanguageController.Translation("TOTAL_COST");
     public string TranslationGetPrice => LanguageController.Translation("GET_PRICE");
-
-    public event PropertyChangedEventHandler PropertyChanged;
-
-    protected virtual void OnPropertyChanged([CallerMemberName] string propertyName = null)
-    {
-        PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
-    }
 }

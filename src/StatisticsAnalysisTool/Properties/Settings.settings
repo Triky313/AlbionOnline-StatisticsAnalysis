@@ -8,14 +8,11 @@
     <Setting Name="ImageResources" Type="System.String" Scope="Application">
       <Value Profile="(Default)">ImageResources</Value>
     </Setting>
-    <Setting Name="ItemListFileName" Type="System.String" Scope="Application">
-      <Value Profile="(Default)">ItemList.json</Value>
+    <Setting Name="IndexedItemsFileName" Type="System.String" Scope="Application">
+      <Value Profile="(Default)">IndexedItems.json</Value>
     </Setting>
     <Setting Name="DonateUrl" Type="System.String" Scope="Application">
       <Value Profile="(Default)">https://www.paypal.com/donate/?hosted_button_id=N6T3CWXYNGHKC</Value>
-    </Setting>
-    <Setting Name="DefaultItemListSourceUrl" Type="System.String" Scope="Application">
-      <Value Profile="(Default)">https://raw.githubusercontent.com/ao-data/ao-bin-dumps/master/formatted/items.json</Value>
     </Setting>
     <Setting Name="AutoUpdateConfigUrl" Type="System.String" Scope="Application">
       <Value Profile="(Default)">https://raw.githubusercontent.com/Triky313/AlbionOnline-StatisticsAnalysis/main/src/StatisticsAnalysisTool/ao-update-check.xml</Value>
@@ -61,9 +58,6 @@
     </Setting>
     <Setting Name="ItemSpriteToJournalFileName" Type="System.String" Scope="User">
       <Value Profile="(Default)">ItemSpriteToJournal.json</Value>
-    </Setting>
-    <Setting Name="DefaultItemsJsonSourceUrl" Type="System.String" Scope="User">
-      <Value Profile="(Default)">https://raw.githubusercontent.com/ao-data/ao-bin-dumps/master/items.json</Value>
     </Setting>
     <Setting Name="ItemsJsonFileName" Type="System.String" Scope="User">
       <Value Profile="(Default)">Items.json</Value>
@@ -125,7 +119,7 @@
     <Setting Name="UserDataDirectoryName" Type="System.String" Scope="User">
       <Value Profile="(Default)">UserData</Value>
     </Setting>
-    <Setting Name="GatheringFileName" Type="System.String" Scope="User">
+    <Setting Name="GatheringFileName" Type="System.String" Scope="Application">
       <Value Profile="(Default)">Gathering.json</Value>
     </Setting>
     <Setting Name="ModifiedMobDataFileName" Type="System.String" Scope="Application">
@@ -140,7 +134,7 @@
     <Setting Name="ModifiedWorldDataFileName" Type="System.String" Scope="Application">
       <Value Profile="(Default)">world-modified.json</Value>
     </Setting>
-    <Setting Name="SpellDataFileName" Type="System.String" Scope="User">
+    <Setting Name="SpellDataFileName" Type="System.String" Scope="Application">
       <Value Profile="(Default)">spells.json</Value>
     </Setting>
     <Setting Name="ModifiedSpellDataFileName" Type="System.String" Scope="User">
@@ -151,6 +145,15 @@
     </Setting>
     <Setting Name="BackupDirectoryName" Type="System.String" Scope="Application">
       <Value Profile="(Default)">Backups</Value>
+    </Setting>
+    <Setting Name="MistsDataFileName" Type="System.String" Scope="Application">
+      <Value Profile="(Default)">mists.json</Value>
+    </Setting>
+    <Setting Name="ModifiedMistsDataFileName" Type="System.String" Scope="Application">
+      <Value Profile="(Default)">mists-modified.json</Value>
+    </Setting>
+    <Setting Name="GuildFileName" Type="System.String" Scope="User">
+      <Value Profile="(Default)">Guild.json</Value>
     </Setting>
   </Settings>
 </SettingsFile>

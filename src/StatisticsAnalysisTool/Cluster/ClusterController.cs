@@ -1,6 +1,6 @@
 using StatisticsAnalysisTool.Common;
 using StatisticsAnalysisTool.Enumerations;
-using StatisticsAnalysisTool.GameData;
+using StatisticsAnalysisTool.GameFileData;
 using StatisticsAnalysisTool.Network.Manager;
 using StatisticsAnalysisTool.ViewModels;
 using System;
@@ -10,7 +10,7 @@ using System.Windows;
 
 namespace StatisticsAnalysisTool.Cluster;
 
-public class ClusterController
+public sealed class ClusterController
 {
     private const int MaxEnteredCluster = 500;
 
@@ -43,10 +43,10 @@ public class ClusterController
 
     public event Action<ClusterInfo> OnChangeCluster;
 
-    public void ChangeClusterInformation(MapType mapType, Guid? mapGuid, string clusterIndex, string instanceName, string worldMapDataType, byte[] dungeonInformation, string mainClusterIndex)
+    public void ChangeClusterInformation(MapType mapType, Guid? mapGuid, string clusterIndex, string instanceName, string worldMapDataType, byte[] dungeonInformation, string mainClusterIndex, Tier mistsDungeonTier)
     {
         CurrentCluster.ClusterInfoFullyAvailable = false;
-        CurrentCluster.SetClusterInfo(mapType, mapGuid, clusterIndex, instanceName, worldMapDataType, dungeonInformation, mainClusterIndex);
+        CurrentCluster.SetClusterInfo(mapType, mapGuid, clusterIndex, instanceName, worldMapDataType, dungeonInformation, mainClusterIndex, mistsDungeonTier);
     }
 
     public void SetJoinClusterInformation(string index, string mainClusterIndex)
@@ -67,6 +67,7 @@ public class ClusterController
 
     public void SetAndResetValues(ClusterInfo currentCluster)
     {
+        _trackingController.TradeController.ResetCraftingBuildingInfo();
         _mainWindowViewModel.DamageMeterBindings.GetSnapshot(_mainWindowViewModel.DamageMeterBindings.IsSnapshotAfterMapChangeActive);
         _trackingController.CombatController.ResetDamageMeterByClusterChange();
         _trackingController.StatisticController.SetKillsDeathsValues();
@@ -146,7 +147,7 @@ public class ClusterController
             var clusterInfo = new ClusterInfo();
             var value = RandomEnumValue<MapType>();
 
-            clusterInfo.SetClusterInfo(value, Guid.NewGuid(), "3000", "Meine Super Insel", "@ISLAND", null, "4001");
+            clusterInfo.SetClusterInfo(value, Guid.NewGuid(), "3000", "Meine Super Insel", "@ISLAND", null, "4001", Tier.T7);
 
             UpdateClusterTracking(clusterInfo);
         }

@@ -1,15 +1,18 @@
-﻿using log4net;
-using Notification.Wpf;
+﻿using Notification.Wpf;
+using Serilog;
+using Serilog.Events;
 using StatisticsAnalysisTool.Backup;
 using StatisticsAnalysisTool.Common;
 using StatisticsAnalysisTool.Common.UserSettings;
 using StatisticsAnalysisTool.Enumerations;
+using StatisticsAnalysisTool.GameFileData;
+using StatisticsAnalysisTool.Localization;
 using StatisticsAnalysisTool.Network.Manager;
 using StatisticsAnalysisTool.Notification;
 using StatisticsAnalysisTool.ViewModels;
 using StatisticsAnalysisTool.Views;
 using System;
-using System.Diagnostics;
+using System.IO;
 using System.Reflection;
 using System.Runtime.InteropServices;
 using System.Windows;
@@ -19,73 +22,105 @@ namespace StatisticsAnalysisTool;
 
 public partial class App
 {
-    private static readonly ILog Log = LogManager.GetLogger(MethodBase.GetCurrentMethod()?.DeclaringType);
     private MainWindowViewModel _mainWindowViewModel;
     private TrackingController _trackingController;
+    private bool _isEarlyShutdown;
 
     protected override async void OnStartup(StartupEventArgs e)
     {
         base.OnStartup(e);
 
-        log4net.Config.XmlConfigurator.Configure();
-        Log.InfoFormat(LanguageController.CurrentCultureInfo, $"Tool started with v{Assembly.GetExecutingAssembly().GetName().Version}");
+        Current.ShutdownMode = ShutdownMode.OnExplicitShutdown;
+
+        InitLogger();
+        Log.Information($"Tool started with v{Assembly.GetExecutingAssembly().GetName().Version}");
+
+        SystemInfo.LogSystemInfo();
 
         AppDomain.CurrentDomain.UnhandledException += OnUnhandledException;
 
+        await AutoUpdateController.AutoUpdateAsync();
+
         SettingsController.LoadSettings();
-        InitializeLanguage();
+
+        Culture.SetCulture(Culture.GetCulture(SettingsController.CurrentSettings.CurrentCultureIetfLanguageTag));
+        if (!LanguageController.Init())
+        {
+            _isEarlyShutdown = true;
+            Current.Shutdown();
+            return;
+        }
+
+        if (SettingsController.CurrentSettings.ServerLocation != ServerLocation.West
+            && SettingsController.CurrentSettings.ServerLocation != ServerLocation.East)
+        {
+            Server.SetServerLocationWithDialogAsync();
+        }
+
+        if (!await GameData.InitializeMainGameDataFilesAsync(SettingsController.CurrentSettings.ServerType))
+        {
+            _isEarlyShutdown = true;
+            Current.Shutdown();
+            return;
+        }
 
         AutoUpdateController.RemoveUpdateFiles();
-        await AutoUpdateController.AutoUpdateAsync();
         await BackupController.DeleteOldestBackupsIfNeededAsync();
 
-        RegisterServices();
+        Current.ShutdownMode = ShutdownMode.OnMainWindowClose;
 
-        var mainWindow = new MainWindow(_mainWindowViewModel);
-        mainWindow.Show();
-        _mainWindowViewModel.InitMainWindowData();
+        RegisterServicesEarly();
+        Current.MainWindow = new MainWindow(_mainWindowViewModel);
+        RegisterServicesLate();
+
+        await _mainWindowViewModel.InitMainWindowDataAsync();
+        Current.MainWindow.Show();
+
+        Utilities.AnotherAppToStart(SettingsController.CurrentSettings.AnotherAppToStartPath);
     }
 
-    private void RegisterServices()
+    private static void InitLogger()
+    {
+        const string logFolderName = "logs";
+        DirectoryController.CreateDirectoryWhenNotExists(Path.Combine(AppDomain.CurrentDomain.BaseDirectory, logFolderName));
+
+        Log.Logger = new LoggerConfiguration()
+            .WriteTo.Console()
+            .WriteTo.File(
+                Path.Combine(logFolderName, "sat-.logs"),
+                rollingInterval: RollingInterval.Day,
+                retainedFileCountLimit: 7,
+                restrictedToMinimumLevel: LogEventLevel.Information)
+            .MinimumLevel.Verbose()
+            .WriteTo.Debug(
+                restrictedToMinimumLevel: LogEventLevel.Verbose)
+            .CreateLogger();
+    }
+
+    private void RegisterServicesEarly()
     {
         _mainWindowViewModel = new MainWindowViewModel();
         ServiceLocator.Register<MainWindowViewModel>(_mainWindowViewModel);
 
         var satNotifications = new SatNotificationManager(new NotificationManager(Current.Dispatcher));
         ServiceLocator.Register<SatNotificationManager>(satNotifications);
+    }
 
+    private void RegisterServicesLate()
+    {
         _trackingController = new TrackingController(_mainWindowViewModel);
         ServiceLocator.Register<TrackingController>(_trackingController);
     }
 
-    private static void InitializeLanguage()
-    {
-        if (LanguageController.InitializeLanguage())
-        {
-            return;
-        }
-
-        var dialogWindow = new DialogWindow(
-            "LANGUAGE FILE NOT FOUND",
-            "No language file was found, please add one and restart the tool!",
-            DialogType.Error);
-        var dialogResult = dialogWindow.ShowDialog();
-
-        if (dialogResult is not true)
-        {
-            Current.Shutdown();
-        }
-    }
-
-    private void OnUnhandledException(object sender, UnhandledExceptionEventArgs e)
+    private static void OnUnhandledException(object sender, UnhandledExceptionEventArgs e)
     {
         try
         {
-            Log.Fatal(nameof(OnUnhandledException), (Exception) e.ExceptionObject);
+            Log.Fatal(e.ExceptionObject as Exception, "{message}", MethodBase.GetCurrentMethod()?.DeclaringType);
         }
         catch (Exception ex)
         {
-            Log.Fatal(nameof(OnUnhandledException), ex);
+            Log.Fatal(ex, "{message}", MethodBase.GetCurrentMethod()?.DeclaringType);
         }
     }
 
@@ -101,21 +136,31 @@ public partial class App
 
     protected override void OnExit(ExitEventArgs e)
     {
-        _trackingController.StopTracking();
+        if (_isEarlyShutdown || _trackingController is null)
+        {
+            return;
+        }
+        
+        _trackingController?.StopTracking();
+        CriticalData.Save();
         if (!BackupController.ExistBackupOnSettingConditions())
         {
             BackupController.Save();
         }
-        CriticalData.Save();
     }
 
     private void OnSessionEnding(object sender, SessionEndingCancelEventArgs e)
     {
-        _trackingController.StopTracking();
+        if (_isEarlyShutdown || _trackingController is null)
+        {
+            return;
+        }
+
+        _trackingController?.StopTracking();
+        CriticalData.Save();
         if (!BackupController.ExistBackupOnSettingConditions())
         {
             BackupController.Save();
         }
-        CriticalData.Save();
     }
 }

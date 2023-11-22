@@ -76,7 +76,7 @@ public class MailController
             return;
         }
 
-        _ = _trackingController.TradeController.AddTradeToBindingCollection(trade);
+        _ = _trackingController.TradeController.AddTradeToBindingCollectionAsync(trade);
         await _trackingController.TradeController.SaveInFileAfterExceedingLimit(10);
     }
 
@@ -217,19 +217,14 @@ public class MailController
             TaxSetupRate = taxSetupRate
         };
     }
-
-    /// <summary>
-    /// Converted a string to MailType.
-    /// </summary>
-    /// <param name="typeString"></param>
-    /// <returns>Returns a enum as MailType.</returns>
+    
     public static MailType ConvertToMailType(string typeString)
     {
         return typeString switch
         {
             "MARKETPLACE_BUYORDER_FINISHED_SUMMARY" => MailType.MarketplaceBuyOrderFinished,
             "MARKETPLACE_SELLORDER_FINISHED_SUMMARY" => MailType.MarketplaceSellOrderFinished,
-            "MARKETPLACE_SELLORDER_EXPIRED_SUMMARY" => MailType.MarketplaceSellOrderExpired,
+            "MARKETPLACE_SELLORDER_EXPIRED_SUMMARY" or "BLACKMARKET_SELLORDER_EXPIRED_SUMMARY" => MailType.MarketplaceSellOrderExpired,
             "MARKETPLACE_BUYORDER_EXPIRED_SUMMARY" => MailType.MarketplaceBuyOrderExpired,
             _ => MailType.Unknown
         };

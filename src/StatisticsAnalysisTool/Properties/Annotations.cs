@@ -213,7 +213,7 @@ public sealed class InvokerParameterNameAttribute : Attribute
 
 /// <summary>
 ///     Indicates that the method is contained in a type that implements
-///     <c>System.ComponentModel.INotifyPropertyChanged</c> interface and this method
+///     <c>System.ComponentModel.BaseViewModel</c> interface and this method
 ///     is used to notify that some property value changed.
 /// </summary>
 /// <remarks>
@@ -238,7 +238,7 @@ public sealed class InvokerParameterNameAttribute : Attribute
 /// </remarks>
 /// <example>
 ///     <code>
-/// public class Foo : INotifyPropertyChanged {
+/// public class Foo : BaseViewModel {
 ///   public event PropertyChangedEventHandler PropertyChanged;
 /// 
 ///   [NotifyPropertyChangedInvocator]

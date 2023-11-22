@@ -1,7 +1,9 @@
-﻿using log4net;
+﻿
+using Serilog;
 using StatisticsAnalysisTool.Backup;
 using StatisticsAnalysisTool.Common;
 using StatisticsAnalysisTool.Common.Shortcut;
+using StatisticsAnalysisTool.Localization;
 using StatisticsAnalysisTool.ViewModels;
 using System;
 using System.Diagnostics;
@@ -17,7 +19,6 @@ namespace StatisticsAnalysisTool.UserControls;
 public partial class SettingsControl
 {
     private readonly SettingsWindowViewModel _settingsWindowViewModel;
-    private static readonly ILog Log = LogManager.GetLogger(MethodBase.GetCurrentMethod()?.DeclaringType);
 
     public SettingsControl()
     {
@@ -37,11 +38,11 @@ public partial class SettingsControl
         {
             _ = Process.Start(new ProcessStartInfo { FileName = _settingsWindowViewModel.ToolDirectory, UseShellExecute = true });
         }
-        catch (Exception exception)
+        catch (Exception ex)
         {
-            _ = MessageBox.Show(exception.Message, LanguageController.Translation("ERROR"));
-            ConsoleManager.WriteLineForError(MethodBase.GetCurrentMethod()?.DeclaringType, exception);
-            Log.Error(MethodBase.GetCurrentMethod()?.DeclaringType, exception);
+            _ = MessageBox.Show(ex.Message, LanguageController.Translation("ERROR"));
+            ConsoleManager.WriteLineForError(MethodBase.GetCurrentMethod()?.DeclaringType, ex);
+            Log.Error(ex, "{message}", MethodBase.GetCurrentMethod()?.DeclaringType);
         }
     }
 
@@ -66,32 +67,14 @@ public partial class SettingsControl
         await AutoUpdateController.AutoUpdateAsync(true);
     }
 
-    private void ResetPacketFilter_Click(object sender, RoutedEventArgs e)
-    {
-        _settingsWindowViewModel.ResetPacketFilter();
-    }
-
     private void ResetPlayerSelectionWithSameNameInDb_Click(object sender, RoutedEventArgs e)
     {
         _settingsWindowViewModel.ResetPlayerSelectionWithSameNameInDb();
     }
 
-    private async void UpdateItemListNow_Click(object sender, RoutedEventArgs e)
+    private void ResetPacketFilter_Click(object sender, RoutedEventArgs e)
     {
-        _settingsWindowViewModel.IsUpdateItemListNowButtonEnabled = false;
-        _settingsWindowViewModel.IsUpdateItemsJsonNowButtonEnabled = false;
-        await ItemController.DownloadItemListAsync();
-        _settingsWindowViewModel.IsUpdateItemListNowButtonEnabled = true;
-        _settingsWindowViewModel.IsUpdateItemsJsonNowButtonEnabled = true;
-    }
-
-    private async void UpdateItemsJsonNow_Click(object sender, RoutedEventArgs e)
-    {
-        _settingsWindowViewModel.IsUpdateItemListNowButtonEnabled = false;
-        _settingsWindowViewModel.IsUpdateItemsJsonNowButtonEnabled = false;
-        await ItemController.DownloadItemsJsonAsync();
-        _settingsWindowViewModel.IsUpdateItemListNowButtonEnabled = true;
-        _settingsWindowViewModel.IsUpdateItemsJsonNowButtonEnabled = true;
+        _settingsWindowViewModel.ResetPacketFilter();
     }
 
     private async void BackupNow_Click(object sender, RoutedEventArgs e)

@@ -1,5 +1,6 @@
 ﻿using StatisticsAnalysisTool.Cluster;
 using StatisticsAnalysisTool.Common;
+using StatisticsAnalysisTool.Localization;
 using StatisticsAnalysisTool.Models;
 using StatisticsAnalysisTool.Models.NetworkModel;
 using StatisticsAnalysisTool.Properties;
@@ -217,7 +218,7 @@ public class VaultController
     {
         var vaultSearchItem = new List<VaultSearchItem>();
 
-        await foreach (var vault in Vaults.ToAsyncEnumerable())
+        await foreach (var vault in Vaults.ToList().ToAsyncEnumerable())
         {
             var tempItems = new List<VaultSearchItem>();
 
@@ -331,6 +332,7 @@ public class VaultController
 
     public async Task SaveInFileAsync()
     {
+        DirectoryController.CreateDirectoryWhenNotExists(Path.Combine(AppDomain.CurrentDomain.BaseDirectory, Settings.Default.UserDataDirectoryName));
         await FileController.SaveAsync(Vaults, Path.Combine(AppDomain.CurrentDomain.BaseDirectory, Settings.Default.UserDataDirectoryName, Settings.Default.VaultsFileName));
         Debug.Print("Vault saved");
     }

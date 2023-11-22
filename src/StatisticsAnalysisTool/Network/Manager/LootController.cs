@@ -1,7 +1,9 @@
-using log4net;
+using Serilog;
 using StatisticsAnalysisTool.Common;
+using StatisticsAnalysisTool.Common.UserSettings;
 using StatisticsAnalysisTool.EventLogging;
 using StatisticsAnalysisTool.EventLogging.Notification;
+using StatisticsAnalysisTool.Localization;
 using StatisticsAnalysisTool.Models;
 using StatisticsAnalysisTool.Models.NetworkModel;
 using StatisticsAnalysisTool.ViewModels;
@@ -12,21 +14,20 @@ using System.Linq;
 using System.Reflection;
 using System.Threading.Tasks;
 using System.Windows;
+using Loot = StatisticsAnalysisTool.Models.NetworkModel.Loot;
 
 namespace StatisticsAnalysisTool.Network.Manager;
 
 public class LootController : ILootController
 {
-    private static readonly ILog Log = LogManager.GetLogger(MethodBase.GetCurrentMethod()?.DeclaringType);
     private readonly TrackingController _trackingController;
     private readonly MainWindowViewModel _mainWindowViewModel;
     private readonly List<LootLoggerObject> _lootLoggerObjects = new();
     private ItemContainerObject _currentItemContainer;
     private readonly List<DiscoveredItem> _discoveredLoot = new();
+    private Loot _lastLootedItem;
 
     private const int MaxLoot = 5000;
-
-    public bool IsPartyLootOnly;
 
     public LootController(TrackingController trackingController, MainWindowViewModel mainWindowViewModel)
     {
@@ -57,7 +58,9 @@ public class LootController : ILootController
             return;
         }
 
-        if (IsPartyLootOnly && !_trackingController.EntityController.IsEntityInParty(loot.LootedByName) && !_trackingController.EntityController.IsEntityInParty(loot.LootedFromName))
+        if (SettingsController.CurrentSettings.IsTrackingPartyLootOnly
+            && !_trackingController.EntityController.IsEntityInParty(loot.LootedByName)
+            && !_trackingController.EntityController.IsEntityInParty(loot.LootedFromName))
         {
             return;
         }
@@ -66,6 +69,13 @@ public class LootController : ILootController
         {
             return;
         }
+
+        if (IsLastLootedItem(loot))
+        {
+            return;
+        }
+
+        _lastLootedItem = loot;
 
         var item = ItemController.GetItemByIndex(loot.ItemIndex);
         var lootedByUser = _trackingController.EntityController.GetEntity(loot.LootedByName);
@@ -99,7 +109,7 @@ public class LootController : ILootController
             {
                 return;
             }
-            
+
             var itemsToBeRemoved = (from loot in _lootLoggerObjects orderby loot?.UtcPickupTime select loot).Take(numberOfItemsToBeDeleted);
             await foreach (var item in itemsToBeRemoved.ToAsyncEnumerable())
             {
@@ -109,8 +119,26 @@ public class LootController : ILootController
         catch (Exception e)
         {
             ConsoleManager.WriteLineForError(MethodBase.GetCurrentMethod()?.DeclaringType, e);
-            Log.Error(MethodBase.GetCurrentMethod()?.DeclaringType, e);
+            Log.Error(e, "{message}", MethodBase.GetCurrentMethod()?.DeclaringType);
         }
+    }
+
+    private bool IsLastLootedItem(Loot loot)
+    {
+        var lastItem = _lastLootedItem;
+
+        if (_lastLootedItem == null)
+        {
+            return false;
+        }
+
+        double secondsDifference = Math.Abs((lastItem.UtcPickupTime - (loot?.UtcPickupTime ?? DateTime.MinValue)).TotalSeconds);
+        var isSameTimeArea = secondsDifference <= 2;
+
+        return lastItem.ItemIndex == loot?.ItemIndex
+               && lastItem.Quantity == loot.Quantity
+               && lastItem.LootedFromName == loot.LootedFromName
+               && isSameTimeArea;
     }
 
     public void ClearLootLogger()
@@ -132,7 +160,7 @@ public class LootController : ILootController
         catch (Exception e)
         {
             ConsoleManager.WriteLineForError(MethodBase.GetCurrentMethod()?.DeclaringType, e);
-            Log.Error(MethodBase.GetCurrentMethod()?.DeclaringType, e);
+            Log.Error(e, "{message}", MethodBase.GetCurrentMethod()?.DeclaringType);
             return string.Empty;
         }
     }
@@ -142,7 +170,7 @@ public class LootController : ILootController
         return new TrackingNotification(DateTime.Now,
             new OtherGrabbedLootNotificationFragment(lootedByName, lootedFromName, lootedByGuild, lootedFromGuild, item, quantity), item.Index);
     }
-    
+
     #region Loot tracking
 
     private readonly ObservableCollection<IdentifiedBody> _identifiedBodies = new();
@@ -244,7 +272,7 @@ public class LootController : ILootController
         var item = _discoveredLoot?.FirstOrDefault(x => x.ObjectId == objectId);
         return item?.ItemIndex > -1 ? ItemController.GetItemByIndex(item.ItemIndex) : null;
     }
-    
+
     #endregion
 
     #region Top looters

@@ -1,15 +1,16 @@
-﻿using StatisticsAnalysisTool.Common;
+﻿using StatisticsAnalysisTool.Localization;
 using StatisticsAnalysisTool.Properties;
+using StatisticsAnalysisTool.ViewModels;
 using System;
 using System.Collections.Generic;
-using System.ComponentModel;
 using System.Linq;
-using System.Runtime.CompilerServices;
 using System.Windows;
+using FontAwesome5;
+using StatisticsAnalysisTool.Common.UserSettings;
 
 namespace StatisticsAnalysisTool.Models.BindingModel;
 
-public class DashboardBindings : INotifyPropertyChanged
+public class DashboardBindings : BaseViewModel
 {
     private double _famePerHour;
     private double _reSpecPointsPerHour;
@@ -48,11 +49,119 @@ public class DashboardBindings : INotifyPropertyChanged
     private long _repairCostsLast30Days;
     private long _repairCostsChest;
     private Visibility _repairCostsChestVisibility;
+    private Visibility _killDeathStatsVisibility;
+    private EFontAwesomeIcon _killDeathStatsToggleIcon;
+    private Visibility _lootedChestsStatsVisibility;
+    private EFontAwesomeIcon _lootedChestsStatsToggleIcon;
+    private Visibility _reSpecStatsVisibility;
+    private EFontAwesomeIcon _reSpecStatsToggleIcon;
+    private Visibility _repairCostsStatsVisibility;
+    private EFontAwesomeIcon _repairCostsStatsToggleIcon;
 
     public DashboardBindings()
     {
         RepairCostsChestVisibility = Settings.Default.IsContainerRepairCostsVisible ? Visibility.Visible : Visibility.Collapsed;
+
+        KillDeathStatsVisibility = SettingsController.CurrentSettings.IsKillDeathStatsVisible ? Visibility.Visible : Visibility.Collapsed;
+        KillDeathStatsToggleIcon = SettingsController.CurrentSettings.IsKillDeathStatsVisible ? EFontAwesomeIcon.Solid_Minus : EFontAwesomeIcon.Solid_Plus;
+
+        LootedChestsStatsVisibility = SettingsController.CurrentSettings.IsLootedChestsStatsVisible ? Visibility.Visible : Visibility.Collapsed;
+        LootedChestsStatsToggleIcon = SettingsController.CurrentSettings.IsLootedChestsStatsVisible ? EFontAwesomeIcon.Solid_Minus : EFontAwesomeIcon.Solid_Plus;
+
+        ReSpecStatsVisibility = SettingsController.CurrentSettings.IsReSpecStatsVisible ? Visibility.Visible : Visibility.Collapsed;
+        ReSpecStatsToggleIcon = SettingsController.CurrentSettings.IsReSpecStatsVisible ? EFontAwesomeIcon.Solid_Minus : EFontAwesomeIcon.Solid_Plus;
+
+        RepairCostsStatsVisibility = SettingsController.CurrentSettings.IsRepairCostsStatsVisible ? Visibility.Visible : Visibility.Collapsed;
+        RepairCostsStatsToggleIcon = SettingsController.CurrentSettings.IsRepairCostsStatsVisible ? EFontAwesomeIcon.Solid_Minus : EFontAwesomeIcon.Solid_Plus;
     }
+
+    #region Toggle
+
+    public Visibility KillDeathStatsVisibility
+    {
+        get => _killDeathStatsVisibility;
+        set
+        {
+            _killDeathStatsVisibility = value;
+            SettingsController.CurrentSettings.IsKillDeathStatsVisible = value == Visibility.Visible;
+            OnPropertyChanged();
+        }
+    }
+
+    public EFontAwesomeIcon KillDeathStatsToggleIcon
+    {
+        get => _killDeathStatsToggleIcon;
+        set
+        {
+            _killDeathStatsToggleIcon = value;
+            OnPropertyChanged();
+        }
+    }
+
+    public Visibility LootedChestsStatsVisibility
+    {
+        get => _lootedChestsStatsVisibility;
+        set
+        {
+            _lootedChestsStatsVisibility = value;
+            SettingsController.CurrentSettings.IsLootedChestsStatsVisible = value == Visibility.Visible;
+            OnPropertyChanged();
+        }
+    }
+
+    public EFontAwesomeIcon LootedChestsStatsToggleIcon
+    {
+        get => _lootedChestsStatsToggleIcon;
+        set
+        {
+            _lootedChestsStatsToggleIcon = value;
+            OnPropertyChanged();
+        }
+    }
+
+    public Visibility ReSpecStatsVisibility
+    {
+        get => _reSpecStatsVisibility;
+        set
+        {
+            _reSpecStatsVisibility = value;
+            SettingsController.CurrentSettings.IsReSpecStatsVisible = value == Visibility.Visible;
+            OnPropertyChanged();
+        }
+    }
+
+    public EFontAwesomeIcon ReSpecStatsToggleIcon
+    {
+        get => _reSpecStatsToggleIcon;
+        set
+        {
+            _reSpecStatsToggleIcon = value;
+            OnPropertyChanged();
+        }
+    }
+
+    public Visibility RepairCostsStatsVisibility
+    {
+        get => _repairCostsStatsVisibility;
+        set
+        {
+            _repairCostsStatsVisibility = value;
+            SettingsController.CurrentSettings.IsRepairCostsStatsVisible = value == Visibility.Visible;
+            OnPropertyChanged();
+        }
+    }
+
+    public EFontAwesomeIcon RepairCostsStatsToggleIcon
+    {
+        get => _repairCostsStatsToggleIcon;
+        set
+        {
+            _repairCostsStatsToggleIcon = value;
+            OnPropertyChanged();
+        }
+    }
+
+    #endregion
 
     #region Fame / Respec / Silver / Might / Faction
 
@@ -517,12 +626,7 @@ public class DashboardBindings : INotifyPropertyChanged
     public static string TranslationRepairCostsToday => LanguageController.Translation("REPAIR_COSTS_TODAY");
     public static string TranslationRepairCostsLast7Days => LanguageController.Translation("REPAIR_COSTS_LAST_7_DAYS");
     public static string TranslationRepairCostsLast30Days => LanguageController.Translation("REPAIR_COSTS_LAST_30_DAYS");
-
-    public event PropertyChangedEventHandler PropertyChanged;
-
-    [NotifyPropertyChangedInvocator]
-    protected virtual void OnPropertyChanged([CallerMemberName] string propertyName = null)
-    {
-        PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
-    }
+    public static string TranslationKillsDeaths => LanguageController.Translation("KILLS_DEATHS");
+    public static string TranslationLootedChests => LanguageController.Translation("LOOTED_CHESTS");
+    public static string TranslationRepairCosts => LanguageController.Translation("REPAIR_COSTS");
 }

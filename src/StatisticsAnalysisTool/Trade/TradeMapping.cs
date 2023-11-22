@@ -29,7 +29,8 @@ public static class TradeMapping
                 ClusterIndex = trade.ClusterIndex,
                 InstantBuySellContent = trade.InstantBuySellContent,
                 AuctionEntry = trade.AuctionEntry,
-                Description = trade.Description
+                Description = trade.Description,
+                ItemIndex = trade.ItemIndex
             },
             TradeType.InstantSell => new TradeDto()
             {
@@ -56,6 +57,15 @@ public static class TradeMapping
                 Ticks = trade.Ticks,
                 InstantBuySellContent = trade.InstantBuySellContent,
                 Description = trade.Description
+            },
+            TradeType.Crafting => new TradeDto()
+            {
+                Type = TradeType.Crafting,
+                Id = trade.Id,
+                Ticks = trade.Ticks,
+                InstantBuySellContent = trade.InstantBuySellContent,
+                Description = trade.Description,
+                ItemIndex = trade.ItemIndex
             },
             _ => throw new ArgumentOutOfRangeException()
         };
@@ -84,7 +94,8 @@ public static class TradeMapping
                 ClusterIndex = trade.ClusterIndex,
                 AuctionEntry = trade.AuctionEntry,
                 InstantBuySellContent = trade.InstantBuySellContent ?? new InstantBuySellContent(),
-                Description = trade.Description
+                Description = trade.Description,
+                ItemIndex = trade.ItemIndex
             },
             TradeType.InstantSell => new Trade()
             {
@@ -111,6 +122,15 @@ public static class TradeMapping
                 Ticks = trade.Ticks,
                 InstantBuySellContent = trade.InstantBuySellContent ?? new InstantBuySellContent(),
                 Description = trade.Description
+            },
+            TradeType.Crafting => new Trade()
+            {
+                Type = TradeType.Crafting,
+                Id = trade.Id,
+                Ticks = trade.Ticks,
+                InstantBuySellContent = trade.InstantBuySellContent ?? new InstantBuySellContent(),
+                Description = trade.Description,
+                ItemIndex = trade.ItemIndex
             },
             TradeType.Unknown => null,
             _ => null

@@ -1,6 +1,5 @@
-using log4net;
+using Serilog;
 using StatisticsAnalysisTool.Common.Converters;
-using StatisticsAnalysisTool.Common.UserSettings;
 using StatisticsAnalysisTool.Enumerations;
 using StatisticsAnalysisTool.EstimatedMarketValue;
 using StatisticsAnalysisTool.Models;
@@ -12,7 +11,6 @@ using System.Collections.ObjectModel;
 using System.Globalization;
 using System.IO;
 using System.Linq;
-using System.Net.Http;
 using System.Reflection;
 using System.Runtime.InteropServices;
 using System.Text;
@@ -26,9 +24,7 @@ namespace StatisticsAnalysisTool.Common;
 
 public static class ItemController
 {
-    private static readonly ILog Log = LogManager.GetLogger(MethodBase.GetCurrentMethod()?.DeclaringType);
-
-    public static ObservableCollection<Item> Items;
+    public static ObservableCollection<Item> Items = new();
     private static ItemsJson _itemsJson;
 
     #region General
@@ -122,6 +118,12 @@ public static class ItemController
                     .Sum(craftingRequirement => GetItemValueByCraftingRequirements(craftingRequirement, level));
             case JournalItem journalItem:
                 return (journalItem.CraftingRequirements ?? new List<CraftingRequirements>())
+                    .Sum(craftingRequirement => GetItemValueByCraftingRequirements(craftingRequirement, level));
+            case TransformationWeapon transformationWeapon:
+                return (transformationWeapon.CraftingRequirements ?? new List<CraftingRequirements>())
+                    .Sum(craftingRequirement => GetItemValueByCraftingRequirements(craftingRequirement, level));
+            case KillTrophyItem killTrophyItem:
+                return (killTrophyItem.CraftingRequirements ?? new List<CraftingRequirements>())
                     .Sum(craftingRequirement => GetItemValueByCraftingRequirements(craftingRequirement, level));
         }
 
@@ -236,7 +238,7 @@ public static class ItemController
 
         if (string.IsNullOrEmpty(currentLanguage))
         {
-            currentLanguage = LanguageController.CurrentCultureInfo?.TextInfo.CultureName.ToUpper();
+            currentLanguage = CultureInfo.DefaultThreadCurrentUICulture?.TextInfo.CultureName.ToUpper();
         }
 
         return FrequentlyValues.GameLanguages
@@ -288,49 +290,13 @@ public static class ItemController
         return (item != null && item.UniqueName.Contains("TRASH")) || item == null;
     }
 
-    public static async Task<bool> GetItemListFromJsonAsync()
+    public static async Task<bool> LoadIndexedItemsDataAsync()
     {
-        var currentSettingsItemListSourceUrl = SettingsController.CurrentSettings.ItemListSourceUrl;
-        var url = GetSourceUrlOrDefault(Settings.Default.DefaultItemListSourceUrl, currentSettingsItemListSourceUrl, ref currentSettingsItemListSourceUrl);
-        SettingsController.CurrentSettings.ItemListSourceUrl = currentSettingsItemListSourceUrl;
-
-        var localFilePath = $"{AppDomain.CurrentDomain.BaseDirectory}{Settings.Default.ItemListFileName}";
-
-        if (string.IsNullOrEmpty(url))
-        {
-            return false;
-        }
-
-        using var client = new HttpClient
-        {
-            Timeout = TimeSpan.FromSeconds(1200)
-        };
-
-        if (File.Exists(localFilePath))
-        {
-            var fileDateTime = File.GetLastWriteTime(localFilePath);
-
-            if (fileDateTime.AddDays(SettingsController.CurrentSettings.UpdateItemListByDays) < DateTime.Now)
-            {
-                if (await client.DownloadFileAsync(url, localFilePath, LanguageController.Translation("GET_ITEM_LIST_JSON")))
-                {
-                    Items = await GetItemListFromLocal();
-                }
-                return Items?.Count > 0;
-            }
-
-            Items = await GetItemListFromLocal();
-            return Items?.Count > 0;
-        }
-
-        if (await client.DownloadFileAsync(url, localFilePath, LanguageController.Translation("GET_ITEM_LIST_JSON")))
-        {
-            Items = await GetItemListFromLocal();
-        }
+        Items = await GetIndexedItemsFromLocal();
         return Items?.Count > 0;
     }
 
-    private static async Task<ObservableCollection<Item>> GetItemListFromLocal()
+    private static async Task<ObservableCollection<Item>> GetIndexedItemsFromLocal()
     {
         try
         {
@@ -340,12 +306,14 @@ public static class ItemController
                                  JsonNumberHandling.WriteAsString
             };
 
-            var localItemString = await File.ReadAllTextAsync($"{AppDomain.CurrentDomain.BaseDirectory}{Settings.Default.ItemListFileName}", Encoding.UTF8);
-            return ConvertItemJsonObjectToItem(JsonSerializer.Deserialize<ObservableCollection<ItemListObject>>(localItemString, options));
+            var localFilePath = await File.ReadAllTextAsync(
+                Path.Combine(AppDomain.CurrentDomain.BaseDirectory, Settings.Default.GameFilesDirectoryName, Settings.Default.IndexedItemsFileName), Encoding.UTF8);
+
+            return ConvertItemJsonObjectToItem(JsonSerializer.Deserialize<ObservableCollection<ItemListObject>>(localFilePath, options));
         }
         catch
         {
-            DeleteLocalFile($"{AppDomain.CurrentDomain.BaseDirectory}{Settings.Default.ItemListFileName}");
+            DeleteLocalFile($"{AppDomain.CurrentDomain.BaseDirectory}{Settings.Default.IndexedItemsFileName}");
             return new ObservableCollection<Item>();
         }
     }
@@ -397,57 +365,22 @@ public static class ItemController
         catch (Exception e)
         {
             ConsoleManager.WriteLineForError(MethodBase.GetCurrentMethod()?.DeclaringType, e);
-            Log.Error(MethodBase.GetCurrentMethod()?.Name, e);
+            Log.Error(e, "{message}", MethodBase.GetCurrentMethod()?.DeclaringType);
         }
-    }
-
-    public static bool IsItemListLoaded()
-    {
-        return Items?.Count > 0;
-    }
-
-    public static async Task DownloadItemListAsync()
-    {
-        var url = GetItemListSourceUrlOrDefault();
-        var localFilePath = $"{AppDomain.CurrentDomain.BaseDirectory}{Settings.Default.ItemListFileName}";
-
-        if (string.IsNullOrEmpty(url))
-        {
-            return;
-        }
-
-        using var client = new HttpClient
-        {
-            Timeout = TimeSpan.FromSeconds(1200)
-        };
-
-        await client.DownloadFileAsync(url, localFilePath, LanguageController.Translation("GET_ITEM_LIST_JSON"));
-    }
-
-    private static string GetItemListSourceUrlOrDefault()
-    {
-        var currentSettingsItemListSourceUrl = SettingsController.CurrentSettings.ItemListSourceUrl;
-        var url = GetSourceUrlOrDefault(Settings.Default.DefaultItemListSourceUrl, currentSettingsItemListSourceUrl, ref currentSettingsItemListSourceUrl);
-        SettingsController.CurrentSettings.ItemListSourceUrl = currentSettingsItemListSourceUrl;
-
-        return url;
     }
 
     #endregion Item list
 
     #region Item extra information
 
-    public static async Task SetFullItemInfoToItems()
+    public static void SetFullItemInfoToItems()
     {
-        var tasks = await Items.ToAsyncEnumerable()
-            .Select(item => Task.Run(() =>
-            {
-                item.FullItemInformation = GetSpecificItemInfo(item.UniqueName);
-                item.ShopCategory = GetShopCategory(item.UniqueName);
-                item.ShopShopSubCategory1 = GetShopSubCategory(item.UniqueName);
-            }))
-            .ToListAsync();
-        await Task.WhenAll(tasks);
+        Parallel.ForEach(Items, item =>
+        {
+            item.FullItemInformation = GetSpecificItemInfo(item.UniqueName);
+            item.ShopCategory = GetShopCategory(item.UniqueName);
+            item.ShopShopSubCategory1 = GetShopSubCategory(item.UniqueName);
+        });
     }
 
     private static object GetSpecificItemInfo(string uniqueName)
@@ -464,6 +397,13 @@ public static class ItemController
         {
             hideoutItem.ItemType = ItemType.Hideout;
             return hideoutItem;
+        }
+
+        var trackingItemObject = GetItemJsonObject(cleanUniqueName, _itemsJson.Items.TrackingItem);
+        if (trackingItemObject is TrackingItem trackingItem)
+        {
+            trackingItem.ItemType = ItemType.TrackingItem;
+            return trackingItem;
         }
 
         var farmableItemObject = GetItemJsonObject(cleanUniqueName, _itemsJson.Items.FarmableItem);
@@ -543,11 +483,25 @@ public static class ItemController
             return mountSkin;
         }
 
+        var transformationWeaponItemObject = GetItemJsonObject(cleanUniqueName, _itemsJson.Items.TransformationWeapon);
+        if (transformationWeaponItemObject is TransformationWeapon transformationWeapon)
+        {
+            transformationWeapon.ItemType = ItemType.TransformationWeapon;
+            return transformationWeapon;
+        }
+
         var crystalLeagueItemObject = GetItemJsonObject(cleanUniqueName, _itemsJson.Items.CrystalLeagueItem);
         if (crystalLeagueItemObject is CrystalLeagueItem crystalLeagueItem)
         {
             crystalLeagueItem.ItemType = ItemType.CrystalLeague;
             return crystalLeagueItem;
+        }
+
+        var killTrophyItemObject = GetItemJsonObject(cleanUniqueName, new List<KillTrophyItem>() { _itemsJson.Items.KillTrophyItem });
+        if (killTrophyItemObject is KillTrophyItem killTrophyItem)
+        {
+            killTrophyItem.ItemType = ItemType.killTrophy;
+            return killTrophyItem;
         }
 
         return null;
@@ -556,7 +510,6 @@ public static class ItemController
     private static object GetItemJsonObject<T>(string uniqueName, List<T> itemJsonObjects)
     {
         var itemAsSpan = CollectionsMarshal.AsSpan(itemJsonObjects);
-        // ReSharper disable once ForCanBeConvertedToForeach
         for (var i = 0; i < itemAsSpan.Length; i++)
         {
             if (itemAsSpan[i] is ItemJsonObject item && item.UniqueName == uniqueName)
@@ -573,6 +526,7 @@ public static class ItemController
         return GetItemByUniqueName(uniqueName)?.FullItemInformation switch
         {
             HideoutItem hideoutItem => CategoryController.ShopCategoryStringToCategory(hideoutItem.ShopCategory),
+            TrackingItem trackingItem => CategoryController.ShopCategoryStringToCategory(trackingItem.ShopCategory),
             FarmableItem farmableItem => CategoryController.ShopCategoryStringToCategory(farmableItem.ShopCategory),
             SimpleItem simpleItem => CategoryController.ShopCategoryStringToCategory(simpleItem.ShopCategory),
             ConsumableItem consumableItem => CategoryController.ShopCategoryStringToCategory(consumableItem.ShopCategory),
@@ -583,7 +537,9 @@ public static class ItemController
             FurnitureItem furnitureItem => CategoryController.ShopCategoryStringToCategory(furnitureItem.ShopCategory),
             JournalItem journalItem => CategoryController.ShopCategoryStringToCategory(journalItem.ShopCategory),
             LabourerContract labourerContract => CategoryController.ShopCategoryStringToCategory(labourerContract.ShopCategory),
+            TransformationWeapon transformationWeapon => CategoryController.ShopCategoryStringToCategory(transformationWeapon.ShopCategory),
             CrystalLeagueItem crystalLeagueItem => CategoryController.ShopCategoryStringToCategory(crystalLeagueItem.ShopCategory),
+            KillTrophyItem killTrophyItem => CategoryController.ShopCategoryStringToCategory(killTrophyItem.ShopCategory),
             _ => ShopCategory.Unknown
         };
     }
@@ -595,6 +551,7 @@ public static class ItemController
         return item switch
         {
             HideoutItem hideoutItem => CategoryController.ShopSubCategoryStringToShopSubCategory(hideoutItem.ShopSubCategory1),
+            TrackingItem trackingItem => CategoryController.ShopSubCategoryStringToShopSubCategory(trackingItem.ShopSubCategory1),
             FarmableItem farmableItem => CategoryController.ShopSubCategoryStringToShopSubCategory(farmableItem.ShopSubCategory1),
             SimpleItem simpleItem => CategoryController.ShopSubCategoryStringToShopSubCategory(simpleItem.ShopSubCategory1),
             ConsumableItem consumableItem => CategoryController.ShopSubCategoryStringToShopSubCategory(consumableItem.ShopSubCategory1),
@@ -605,7 +562,9 @@ public static class ItemController
             FurnitureItem furnitureItem => CategoryController.ShopSubCategoryStringToShopSubCategory(furnitureItem.ShopSubCategory1),
             JournalItem journalItem => CategoryController.ShopSubCategoryStringToShopSubCategory(journalItem.ShopSubCategory1),
             LabourerContract labourerContract => CategoryController.ShopSubCategoryStringToShopSubCategory(labourerContract.ShopSubCategory1),
+            TransformationWeapon transformationWeapon => CategoryController.ShopSubCategoryStringToShopSubCategory(transformationWeapon.ShopSubCategory1),
             CrystalLeagueItem crystalLeagueItem => CategoryController.ShopSubCategoryStringToShopSubCategory(crystalLeagueItem.ShopSubCategory1),
+            KillTrophyItem killTrophyItem => CategoryController.ShopSubCategoryStringToShopSubCategory(killTrophyItem.ShopSubCategory1),
             _ => ShopSubCategory.Unknown
         };
     }
@@ -632,6 +591,7 @@ public static class ItemController
         }
 
         var itemTypeStructs = new List<ItemTypeStruct> { new(_itemsJson.Items.HideoutItem.UniqueName, ItemType.Hideout) };
+        itemTypeStructs.AddRange(_itemsJson.Items.TrackingItem.Select(x => new ItemTypeStruct(x.UniqueName, x.ItemType)));
         itemTypeStructs.AddRange(_itemsJson.Items.FarmableItem.Select(x => new ItemTypeStruct(x.UniqueName, x.ItemType)));
         itemTypeStructs.AddRange(_itemsJson.Items.SimpleItem.Select(x => new ItemTypeStruct(x.UniqueName, x.ItemType)));
         itemTypeStructs.AddRange(_itemsJson.Items.ConsumableItem.Select(x => new ItemTypeStruct(x.UniqueName, x.ItemType)));
@@ -643,60 +603,24 @@ public static class ItemController
         itemTypeStructs.AddRange(_itemsJson.Items.JournalItem.Select(x => new ItemTypeStruct(x.UniqueName, x.ItemType)));
         itemTypeStructs.AddRange(_itemsJson.Items.LabourerContract.Select(x => new ItemTypeStruct(x.UniqueName, x.ItemType)));
         itemTypeStructs.AddRange(_itemsJson.Items.MountSkin.Select(x => new ItemTypeStruct(x.UniqueName, x.ItemType)));
+        itemTypeStructs.AddRange(_itemsJson.Items.TransformationWeapon.Select(x => new ItemTypeStruct(x.UniqueName, x.ItemType)));
         itemTypeStructs.AddRange(_itemsJson.Items.CrystalLeagueItem.Select(x => new ItemTypeStruct(x.UniqueName, x.ItemType)));
+        itemTypeStructs.Add(new ItemTypeStruct(_itemsJson.Items.KillTrophyItem.UniqueName, _itemsJson.Items.KillTrophyItem.ItemType));
 
         return itemTypeStructs.FirstOrDefault(x => x.UniqueName == itemObject.UniqueName).ItemType;
     }
 
-    public static async Task<bool> GetItemsJsonAsync()
+    public static async Task<bool> LoadItemsDataAsync()
     {
-        var url = GetItemsJsonSourceUrlOrDefault();
-        var localFilePath = $"{AppDomain.CurrentDomain.BaseDirectory}{Settings.Default.ItemsJsonFileName}";
-
-        if (string.IsNullOrEmpty(url))
-        {
-            return false;
-        }
-
-        using var client = new HttpClient
-        {
-            Timeout = TimeSpan.FromSeconds(1200)
-        };
-
-        if (File.Exists(localFilePath))
-        {
-            var fileDateTime = File.GetLastWriteTime(localFilePath);
-
-            if (fileDateTime.AddDays(SettingsController.CurrentSettings.UpdateItemsJsonByDays) < DateTime.Now)
-            {
-                if (await client.DownloadFileAsync(url, localFilePath, LanguageController.Translation("GET_ITEM_LIST_JSON")))
-                {
-                    _itemsJson = await GetItemsJsonFromLocal();
-                    await SetFullItemInfoToItems();
-                }
-
-                return _itemsJson?.Items != null;
-            }
-
-            _itemsJson = await GetItemsJsonFromLocal();
-            await SetFullItemInfoToItems();
-
-            return _itemsJson?.Items != null;
-        }
-
-        if (await client.DownloadFileAsync(url, localFilePath, LanguageController.Translation("GET_ITEM_LIST_JSON")))
-        {
-            _itemsJson = await GetItemsJsonFromLocal();
-            await SetFullItemInfoToItems();
-        }
+        var localFilePath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, Settings.Default.GameFilesDirectoryName, Settings.Default.ItemsJsonFileName);
+        _itemsJson = await GetItemsJsonFromLocal(localFilePath);
+        SetFullItemInfoToItems();
 
         return _itemsJson?.Items != null;
     }
 
-    private static async Task<ItemsJson> GetItemsJsonFromLocal()
+    private static async Task<ItemsJson> GetItemsJsonFromLocal(string localFilePath)
     {
-        var localFilePath = $"{AppDomain.CurrentDomain.BaseDirectory}{Settings.Default.ItemsJsonFileName}";
-
         try
         {
             var options = new JsonSerializerOptions()
@@ -734,6 +658,9 @@ public static class ItemController
             case Weapon item:
                 double.TryParse(item.Weight, NumberStyles.Float, CultureInfo.InvariantCulture, out weight);
                 return weight;
+            case TransformationWeapon item:
+                double.TryParse(item.Weight, NumberStyles.Float, CultureInfo.InvariantCulture, out weight);
+                return weight;
             case EquipmentItem item:
                 double.TryParse(item.Weight, NumberStyles.Float, CultureInfo.InvariantCulture, out weight);
                 return weight;
@@ -747,6 +674,9 @@ public static class ItemController
                 double.TryParse(item.Weight, NumberStyles.Float, CultureInfo.InvariantCulture, out weight);
                 return weight;
             case JournalItem item:
+                double.TryParse(item.Weight, NumberStyles.Float, CultureInfo.InvariantCulture, out weight);
+                return weight;
+            case KillTrophyItem item:
                 double.TryParse(item.Weight, NumberStyles.Float, CultureInfo.InvariantCulture, out weight);
                 return weight;
             default: return 0;
@@ -768,33 +698,6 @@ public static class ItemController
         }
 
         return resultUniqueName;
-    }
-
-    public static async Task DownloadItemsJsonAsync()
-    {
-        var url = GetItemsJsonSourceUrlOrDefault();
-        var localFilePath = $"{AppDomain.CurrentDomain.BaseDirectory}{Settings.Default.ItemListFileName}";
-
-        if (string.IsNullOrEmpty(url))
-        {
-            return;
-        }
-
-        using var client = new HttpClient
-        {
-            Timeout = TimeSpan.FromSeconds(1200)
-        };
-
-        await client.DownloadFileAsync(url, localFilePath, LanguageController.Translation("GET_ITEM_LIST_JSON"));
-    }
-
-    private static string GetItemsJsonSourceUrlOrDefault()
-    {
-        var currentSettingsItemsJsonSourceUrl = SettingsController.CurrentSettings.ItemsJsonSourceUrl;
-        var url = GetSourceUrlOrDefault(Settings.Default.DefaultItemsJsonSourceUrl, currentSettingsItemsJsonSourceUrl, ref currentSettingsItemsJsonSourceUrl);
-        SettingsController.CurrentSettings.ItemsJsonSourceUrl = currentSettingsItemsJsonSourceUrl;
-
-        return url;
     }
 
     public static SlotType GetSlotType(string slotTypeString)
@@ -842,7 +745,7 @@ public static class ItemController
         }
 
         int totalValue = items.Sum(item => item?.BasicItemPower ?? 0);
-        
+
         var itemCount = items.Length;
         if (items.FirstOrDefault(x => x?.FullItemInformation is Weapon)?.FullItemInformation is Weapon { TwoHanded: true })
         {
@@ -1014,17 +917,9 @@ public static class ItemController
             catch (Exception e)
             {
                 ConsoleManager.WriteLineForError(MethodBase.GetCurrentMethod()?.DeclaringType, e);
-                Log.Error(MethodBase.GetCurrentMethod()?.Name, e);
+                Log.Error(e, "{message}", MethodBase.GetCurrentMethod()?.DeclaringType);
             }
         }
-    }
-
-    // ReSharper disable once RedundantAssignment
-    private static string GetSourceUrlOrDefault(string defaultUrl, string sourceUrl, ref string newSourceUrl)
-    {
-        var tempSourceUrl = string.IsNullOrEmpty(sourceUrl) ? defaultUrl : sourceUrl;
-        newSourceUrl = tempSourceUrl;
-        return newSourceUrl;
     }
 
     #endregion

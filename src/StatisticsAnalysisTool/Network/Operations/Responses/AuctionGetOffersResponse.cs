@@ -1,4 +1,4 @@
-﻿using log4net;
+﻿
 using StatisticsAnalysisTool.Common;
 using StatisticsAnalysisTool.Enumerations;
 using StatisticsAnalysisTool.Models;
@@ -7,13 +7,12 @@ using System;
 using System.Collections.Generic;
 using System.Reflection;
 using System.Text.Json;
+using Serilog;
 
 namespace StatisticsAnalysisTool.Network.Operations.Responses;
 
 public class AuctionGetOffersResponse
 {
-    private static readonly ILog Log = LogManager.GetLogger(MethodBase.GetCurrentMethod()?.DeclaringType);
-
     public readonly List<AuctionEntry> AuctionEntries = new();
 
     public AuctionGetOffersResponse(Dictionary<byte, object> parameters)
@@ -22,9 +21,9 @@ public class AuctionGetOffersResponse
 
         try
         {
-            if (parameters.ContainsKey(0))
+            if (parameters.TryGetValue(0, out object auctionOffers))
             {
-                foreach (var auctionOfferString in (IEnumerable<string>) parameters[0] ?? new List<string>())
+                foreach (var auctionOfferString in (IEnumerable<string>) auctionOffers ?? new List<string>())
                 {
                     AuctionEntries.Add(JsonSerializer.Deserialize<AuctionEntry>(auctionOfferString ?? string.Empty));
                 }
@@ -32,7 +31,7 @@ public class AuctionGetOffersResponse
         }
         catch (Exception e)
         {
-            Log.Error(nameof(AuctionGetOffersResponse), e);
+            Log.Error(e, "{message}", MethodBase.GetCurrentMethod()?.DeclaringType);
         }
     }
 }

@@ -1,31 +1,24 @@
-using System;
+using StatisticAnalysisTool.Extractor.Enums;
+using StatisticsAnalysisTool.Enumerations;
 using StatisticsAnalysisTool.Gathering;
 using StatisticsAnalysisTool.Models;
+using StatisticsAnalysisTool.Network.PacketProviders;
+using System;
 using System.Collections.Generic;
 
 namespace StatisticsAnalysisTool.Common.UserSettings;
 
 public class SettingsObject
 {
-    public string CurrentLanguageCultureName { get; set; } = "en-US";
+    public string CurrentCultureIetfLanguageTag { get; set; }
     public int RefreshRate { get; set; } = 10000;
-    public int Server { get; set; } = 0; // 0: auto, 1: west, 2: east
     public string PacketFilter { get; set; } = "(host 5.45.187 or host 5.188.125) and udp port 5056";
+    public PacketProviderKind PacketProvider { get; set; } = PacketProviderKind.Sockets;
+    public ServerLocation ServerLocation { get; set; } = 0; // 0: auto, 1: west, 2: east
+    public ServerType ServerType { get; set; } = ServerType.Live; // 0: Live, 1: Staging, 2: Playground
     public string MainTrackingCharacterName { get; set; }
-    public int UpdateItemListByDays { get; set; } = 7;
-    public int UpdateItemsJsonByDays { get; set; } = 7;
-    public int UpdateMobsJsonByDays { get; set; } = 7;
-    public int UpdateSpellsJsonByDays { get; set; } = 7;
-    public int UpdateLootChestJsonByDays { get; set; } = 7;
-    public int UpdateWorldJsonByDays { get; set; } = 7;
     public int BackupIntervalByDays { get; set; } = 7;
-    public int MaximumNumberOfBackups { get; set; } = 5;
-    public string ItemListSourceUrl { get; set; } = "https://raw.githubusercontent.com/ao-data/ao-bin-dumps/master/formatted/items.json";
-    public string ItemsJsonSourceUrl { get; set; } = "https://raw.githubusercontent.com/ao-data/ao-bin-dumps/master/items.json";
-    public string MobsJsonSourceUrl { get; set; } = "https://raw.githubusercontent.com/ao-data/ao-bin-dumps/master/mobs.json";
-    public string SpellsJsonSourceUrl { get; set; } = "https://raw.githubusercontent.com/ao-data/ao-bin-dumps/master/spells.json";
-    public string LootChestJsonSourceUrl { get; set; } = "https://raw.githubusercontent.com/ao-data/ao-bin-dumps/master/lootchests.json";
-    public string WorldJsonSourceUrl { get; set; } = "https://raw.githubusercontent.com/ao-data/ao-bin-dumps/master/cluster/world.json";
+    public int MaximumNumberOfBackups { get; set; } = 10;
     public bool IsOpenItemWindowInNewWindowChecked { get; set; } = true;
     public bool IsInfoWindowShownOnStart { get; set; } = true;
     public string SelectedAlertSound { get; set; }
@@ -53,7 +46,6 @@ public class SettingsObject
     public bool IsTrackingSilver { get; set; }
     public bool IsTrackingFame { get; set; }
     public bool IsTrackingMobLoot { get; set; }
-    public bool IsLootLoggerSaveReminderActive { get; set; }
     public bool IsSuggestPreReleaseUpdatesActive { get; set; }
     public bool IsLootFromMobShown { get; set; }
     public double MailMonitoringGridSplitterPosition { get; set; } = 125;
@@ -61,6 +53,7 @@ public class SettingsObject
     public double StorageHistoryGridSplitterPosition { get; set; } = 125;
     public double DamageMeterGridSplitterPosition { get; set; } = 125;
     public double PartyBuilderGridSplitterPosition { get; set; } = 125;
+    public double GuildGridSplitterPosition { get; set; } = 125;
     public bool ShortDamageMeterToClipboard { get; set; }
     public bool IsTradeMonitoringActive { get; set; } = true;
     public bool IgnoreMailsWithZeroValues { get; set; }
@@ -87,6 +80,7 @@ public class SettingsObject
     public bool IsStorageHistoryNaviTabActive { get; set; } = true;
     public bool IsMapHistoryNaviTabActive { get; set; } = true;
     public bool IsPlayerInformationNaviTabActive { get; set; } = true;
+    public bool IsGuildTabActive { get; set; } = true;
     public bool IsNotificationFilterTradeActive { get; set; } = false;
     public bool IsNotificationTrackingStatusActive { get; set; } = false;
     public AutoDeleteGatheringStats AutoDeleteGatheringStats { get; set; } = AutoDeleteGatheringStats.NeverDelete;
@@ -97,4 +91,10 @@ public class SettingsObject
     public double PartyBuilderMaximumItemPower { get; set; } = 900;
     public double PartyBuilderMinimalBasicItemPower { get; set; } = 600;
     public double PartyBuilderMaximumBasicItemPower { get; set; } = 900;
+    public string AnotherAppToStartPath { get; set; }
+    public string MainGameFolderPath { get; set; } = string.Empty;
+    public bool IsKillDeathStatsVisible { get; set; } = true;
+    public bool IsLootedChestsStatsVisible { get; set; } = true;
+    public bool IsReSpecStatsVisible { get; set; } = true;
+    public bool IsRepairCostsStatsVisible { get; set; } = true;
 }

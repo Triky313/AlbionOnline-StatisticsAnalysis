@@ -1,17 +1,15 @@
 ﻿using StatisticsAnalysisTool.Common.UserSettings;
 using StatisticsAnalysisTool.Models.NetworkModel;
-using StatisticsAnalysisTool.Properties;
+using StatisticsAnalysisTool.ViewModels;
 using System;
 using System.Collections.Generic;
-using System.ComponentModel;
 using System.Linq;
-using System.Runtime.CompilerServices;
 using System.Windows;
 using System.Windows.Data;
 
 namespace StatisticsAnalysisTool.Models.BindingModel;
 
-public class VaultBindings : INotifyPropertyChanged
+public class VaultBindings : BaseViewModel
 {
     private List<ContainerItem> _vaultContainerContent;
     private List<Vault> _vaults;
@@ -152,6 +150,7 @@ public class VaultBindings : INotifyPropertyChanged
             OnPropertyChanged();
         }
     }
+
     public GridLength GridSplitterPosition
     {
         get => _gridSplitterPosition;
@@ -174,12 +173,4 @@ public class VaultBindings : INotifyPropertyChanged
     }
 
     #endregion
-
-    public event PropertyChangedEventHandler PropertyChanged;
-
-    [NotifyPropertyChangedInvocator]
-    protected virtual void OnPropertyChanged([CallerMemberName] string propertyName = null)
-    {
-        PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
-    }
 }

@@ -1,16 +1,15 @@
 using StatisticsAnalysisTool.Common;
 using StatisticsAnalysisTool.Common.UserSettings;
-using StatisticsAnalysisTool.GameData;
+using StatisticsAnalysisTool.GameFileData;
+using StatisticsAnalysisTool.Localization;
 using StatisticsAnalysisTool.ViewModels;
 using System;
 using System.Collections.Generic;
-using System.ComponentModel;
 using System.Linq;
-using System.Runtime.CompilerServices;
 
 namespace StatisticsAnalysisTool.Models.ItemWindowModel;
 
-public class EssentialCraftingValuesTemplate : INotifyPropertyChanged
+public class EssentialCraftingValuesTemplate : BaseViewModel
 {
     private readonly ItemWindowViewModel _itemWindowViewModel;
     private int _amountCrafted = 1;
@@ -53,7 +52,7 @@ public class EssentialCraftingValuesTemplate : INotifyPropertyChanged
             var buyPriceMax = _marketResponse?.FirstOrDefault(x => string.Equals(x?.City, Locations.GetParameterName(location), StringComparison.CurrentCultureIgnoreCase))?.BuyPriceMax;
             if (buyPriceMax != null)
             {
-                SellPricePerItem = (long)buyPriceMax;
+                SellPricePerItem = (long) buyPriceMax;
             }
 
             return;
@@ -62,7 +61,7 @@ public class EssentialCraftingValuesTemplate : INotifyPropertyChanged
         var sellPriceMin = _marketResponse?.FirstOrDefault(x => string.Equals(x?.City, Locations.GetParameterName(location), StringComparison.CurrentCultureIgnoreCase))?.SellPriceMin;
         if (sellPriceMin != null)
         {
-            SellPricePerItem = (long)sellPriceMin;
+            SellPricePerItem = (long) sellPriceMin;
         }
     }
 
@@ -232,13 +231,6 @@ public class EssentialCraftingValuesTemplate : INotifyPropertyChanged
     public string TranslationCraftingBonusPercent => LanguageController.Translation("CRAFTING_BONUS_PERCENT");
     public string TranslationCraftingWithFocus => LanguageController.Translation("CRAFTING_WITH_FOCUS");
     public string TranslationOtherCosts => LanguageController.Translation("OTHER_COSTS");
-
-    public event PropertyChangedEventHandler PropertyChanged;
-
-    protected virtual void OnPropertyChanged([CallerMemberName] string propertyName = null)
-    {
-        PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
-    }
 
     #endregion
 }

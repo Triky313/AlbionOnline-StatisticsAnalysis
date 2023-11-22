@@ -15,6 +15,7 @@ public class UpdateLootChestEventHandler : EventPacketHandler<UpdateLootChestEve
 
     protected override async Task OnActionAsync(UpdateLootChestEvent value)
     {
+        _trackingController.DungeonController?.SetDungeonChestOpen(value.ObjectId, value.PlayerGuid);
         _trackingController?.TreasureController?.UpdateTreasure(value.ObjectId, value.PlayerGuid);
         await Task.CompletedTask;
     }

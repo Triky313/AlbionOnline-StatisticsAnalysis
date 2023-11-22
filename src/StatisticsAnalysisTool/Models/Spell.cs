@@ -1,5 +1,5 @@
 ﻿using StatisticsAnalysisTool.Common;
-using StatisticsAnalysisTool.GameData;
+using StatisticsAnalysisTool.GameFileData;
 using System.Windows;
 using System.Windows.Media.Imaging;
 

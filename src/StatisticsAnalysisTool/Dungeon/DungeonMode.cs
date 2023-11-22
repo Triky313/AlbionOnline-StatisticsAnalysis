@@ -8,5 +8,7 @@ public enum DungeonMode
     Avalon,
     HellGate,
     Corrupted,
-    Expedition
+    Expedition,
+    Mists,
+    MistsDungeon
 }

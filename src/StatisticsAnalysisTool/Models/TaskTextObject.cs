@@ -1,11 +1,9 @@
-﻿using System;
-using System.ComponentModel;
-using System.Runtime.CompilerServices;
-using StatisticsAnalysisTool.Properties;
+﻿using StatisticsAnalysisTool.ViewModels;
+using System;
 
 namespace StatisticsAnalysisTool.Models;
 
-public class TaskTextObject : INotifyPropertyChanged
+public class TaskTextObject : BaseViewModel
 {
     private string _statusIcon = "Solid_CircleNotch";
     private bool _statusIconSpin = true;
@@ -84,7 +82,7 @@ public class TaskTextObject : INotifyPropertyChanged
             OnPropertyChanged();
         }
     }
-        
+
     public string Text
     {
         get => _text;
@@ -94,9 +92,9 @@ public class TaskTextObject : INotifyPropertyChanged
             OnPropertyChanged();
         }
     }
-        
+
     public DateTime CreateAt { get; }
-        
+
     protected bool Equals(TaskTextObject other)
     {
         return CreateAt.Equals(other.CreateAt) && Text == other.Text;
@@ -105,13 +103,5 @@ public class TaskTextObject : INotifyPropertyChanged
     public override int GetHashCode()
     {
         return HashCode.Combine(CreateAt, Text);
-    }
-
-    public event PropertyChangedEventHandler PropertyChanged;
-
-    [NotifyPropertyChangedInvocator]
-    protected virtual void OnPropertyChanged([CallerMemberName] string propertyName = null)
-    {
-        PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
     }
 }

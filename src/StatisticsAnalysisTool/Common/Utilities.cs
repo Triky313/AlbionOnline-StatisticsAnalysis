@@ -1,6 +1,12 @@
-﻿using System;
-using System.Globalization;
+﻿using Serilog;
+using StatisticsAnalysisTool.Localization;
+using StatisticsAnalysisTool.Notification;
+using System;
+using System.Collections.Generic;
+using System.Diagnostics;
+using System.IO;
 using System.Linq;
+using System.Reflection;
 using System.Runtime.InteropServices;
 using System.Windows;
 using System.Windows.Interop;
@@ -33,30 +39,12 @@ public static class Utilities
         window.Left = (screenWidth / 2) - (windowWidth / 2);
         window.Top = (screenHeight / 2) - (windowHeight / 2);
     }
-    
+
     public static bool IsWindowOpen<T>(string name = "") where T : Window
     {
         return string.IsNullOrEmpty(name)
             ? Application.Current.Windows.OfType<T>().Any()
             : Application.Current.Windows.OfType<T>().Any(w => w.Name.Equals(name));
-    }
-
-    public static string LongWithCulture(long value)
-    {
-        return value.ToString("N0", new CultureInfo(LanguageController.CurrentCultureInfo.TextInfo.CultureName));
-    }
-
-    public static double GetValuePerHourToDouble(double value, double seconds)
-    {
-        try
-        {
-            var hours = seconds / 60d / 60d;
-            return value / hours;
-        }
-        catch (OverflowException)
-        {
-            return double.MaxValue;
-        }
     }
 
     public static double GetValuePerSecondToDouble(double value, DateTime? combatStart, TimeSpan time, double maxValue = -1)
@@ -81,6 +69,39 @@ public static class Utilities
         var currentDateTime = DateTime.UtcNow;
         var difference = currentDateTime.Subtract(dateTime);
         return difference.Seconds >= waitingSeconds;
+    }
+
+    public static void AnotherAppToStart(string path)
+    {
+        var notifyManager = ServiceLocator.Resolve<SatNotificationManager>();
+
+        if (string.IsNullOrEmpty(path))
+        {
+            return;
+        }
+
+        try
+        {
+            if (!File.Exists(path))
+            {
+                notifyManager?.ShowErrorAsync(LanguageController.Translation("CANNOT_START_OTHER_APP"),
+                    LanguageController.Translation("CAN_NOT_START_APP_WITH_PATH",
+                        new List<string> { "path" },
+                        new List<string> { path }));
+                return;
+            }
+
+            Process.Start(path);
+        }
+        catch (Exception e)
+        {
+            ConsoleManager.WriteLineForError(MethodBase.GetCurrentMethod()?.DeclaringType, e);
+            Log.Error(e, "{message}", MethodBase.GetCurrentMethod()?.DeclaringType);
+            notifyManager?.ShowErrorAsync(LanguageController.Translation("CANNOT_START_OTHER_APP"),
+                LanguageController.Translation("CAN_NOT_START_APP_WITH_PATH",
+                    new List<string> { "path" },
+                    new List<string> { path }));
+        }
     }
 
     #region Window Flash

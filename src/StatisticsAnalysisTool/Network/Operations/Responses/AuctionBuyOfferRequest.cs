@@ -1,4 +1,4 @@
-﻿using log4net;
+﻿
 using StatisticsAnalysisTool.Common;
 using StatisticsAnalysisTool.Enumerations;
 using StatisticsAnalysisTool.Models;
@@ -6,12 +6,13 @@ using StatisticsAnalysisTool.Trade.Market;
 using System;
 using System.Collections.Generic;
 using System.Reflection;
+using Serilog;
 
 namespace StatisticsAnalysisTool.Network.Operations.Responses;
 
 public class AuctionBuyOfferRequest
 {
-    private static readonly ILog Log = LogManager.GetLogger(MethodBase.GetCurrentMethod()?.DeclaringType);
+    
 
     public readonly Purchase Purchase;
 
@@ -49,7 +50,7 @@ public class AuctionBuyOfferRequest
         }
         catch (Exception e)
         {
-            Log.Error(nameof(AuctionBuyOfferRequest), e);
+            Log.Error(e, "{message}", MethodBase.GetCurrentMethod()?.DeclaringType);
         }
     }
 }

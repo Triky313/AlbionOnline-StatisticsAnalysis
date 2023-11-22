@@ -1,17 +1,15 @@
 ﻿using StatisticsAnalysisTool.Common;
-using StatisticsAnalysisTool.Properties;
-using System.Collections.ObjectModel;
+using StatisticsAnalysisTool.Models.NetworkModel;
+using StatisticsAnalysisTool.ViewModels;
 using System;
-using System.ComponentModel;
+using System.Collections.ObjectModel;
 using System.Linq;
-using System.Runtime.CompilerServices;
 using System.Threading.Tasks;
 using System.Windows;
-using StatisticsAnalysisTool.Models.NetworkModel;
 
 namespace StatisticsAnalysisTool.Models.BindingModel;
 
-public class PlayerInformationBindings : INotifyPropertyChanged
+public class PlayerInformationBindings : BaseViewModel
 {
     private PlayerModeInformationModel _playerModeInformation;
     private PlayerModeInformationModel _playerModeInformationLocal;
@@ -159,13 +157,5 @@ public class PlayerInformationBindings : INotifyPropertyChanged
             _playerModeInformationLocal = value;
             OnPropertyChanged();
         }
-    }
-
-    public event PropertyChangedEventHandler PropertyChanged;
-
-    [NotifyPropertyChangedInvocator]
-    protected virtual void OnPropertyChanged([CallerMemberName] string propertyName = null)
-    {
-        PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
     }
 }

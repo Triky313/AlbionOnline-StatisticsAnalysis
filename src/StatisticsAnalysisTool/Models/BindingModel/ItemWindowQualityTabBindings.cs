@@ -1,12 +1,10 @@
-﻿using StatisticsAnalysisTool.Properties;
+﻿using StatisticsAnalysisTool.ViewModels;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.ComponentModel;
-using System.Runtime.CompilerServices;
 
 namespace StatisticsAnalysisTool.Models.BindingModel;
 
-public class ItemWindowQualityTabBindings : INotifyPropertyChanged
+public class ItemWindowQualityTabBindings : BaseViewModel
 {
     private ObservableCollection<MainTabLocationFilterObject> _locationFilters;
     private List<MarketQualityObject> _prices = new();
@@ -34,12 +32,4 @@ public class ItemWindowQualityTabBindings : INotifyPropertyChanged
     }
 
     #endregion
-
-    public event PropertyChangedEventHandler PropertyChanged;
-
-    [NotifyPropertyChangedInvocator]
-    protected virtual void OnPropertyChanged([CallerMemberName] string propertyName = null)
-    {
-        PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
-    }
 }

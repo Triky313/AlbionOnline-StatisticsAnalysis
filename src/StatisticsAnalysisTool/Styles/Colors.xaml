@@ -41,6 +41,12 @@
     <Color x:Key="Color.Accent.Green.5">#FF188C3F</Color>
     <Color x:Key="Color.Accent.Green.6">#FF10602B</Color>
 
+    <Color x:Key="Color.Accent.Orange.1">#FFFF9F80</Color>
+    <Color x:Key="Color.Accent.Orange.2">#FFFC8760</Color>
+    <Color x:Key="Color.Accent.Orange.3">#FFFA7548</Color>
+    <Color x:Key="Color.Accent.Orange.4">#FFE3653B</Color>
+    <Color x:Key="Color.Accent.Orange.5">#FFCC5B35</Color>
+
     <Color x:Key="Color.Accent.Yellow.0">#FFF6C96A</Color>
     <Color x:Key="Color.Accent.Yellow.1">#FFf2b83b</Color>
     <Color x:Key="Color.Accent.Yellow.2">#55f2b83b</Color>
@@ -85,7 +91,11 @@
     <Color x:Key="Color.City.MorganasRest.Transparent">#3383AF00</Color>
     <Color x:Key="Color.City.BlackMarket.Transparent">#3395233F</Color>
 
-    <!-- Faction colors -->
+    <!-- Dungeon mode colors -->
+    <Color x:Key="Dungeon.Mode.Mists.1">#7657DB</Color>
+    <Color x:Key="Dungeon.Mode.Mists.2">#5331C4</Color>
+    <Color x:Key="Dungeon.Mode.MistsDungeon.1">#7657DB</Color>
+    <Color x:Key="Dungeon.Mode.MistsDungeon.2">#5331C4</Color>
     <Color x:Key="Dungeon.Mode.Expedition.1">#B857DB</Color>
     <Color x:Key="Dungeon.Mode.Expedition.2">#8329A3</Color>
     <Color x:Key="Dungeon.Mode.HellGate.1">#EF1527</Color>
@@ -210,6 +220,12 @@
     <SolidColorBrush x:Key="SolidColorBrush.Accent.Green.5" Color="{StaticResource Color.Accent.Green.5}"/>
     <SolidColorBrush x:Key="SolidColorBrush.Accent.Green.6" Color="{StaticResource Color.Accent.Green.6}"/>
 
+    <SolidColorBrush x:Key="SolidColorBrush.Accent.Orange.1" Color="{StaticResource Color.Accent.Orange.1}"/>
+    <SolidColorBrush x:Key="SolidColorBrush.Accent.Orange.2" Color="{StaticResource Color.Accent.Orange.2}"/>
+    <SolidColorBrush x:Key="SolidColorBrush.Accent.Orange.3" Color="{StaticResource Color.Accent.Orange.3}"/>
+    <SolidColorBrush x:Key="SolidColorBrush.Accent.Orange.4" Color="{StaticResource Color.Accent.Orange.4}"/>
+    <SolidColorBrush x:Key="SolidColorBrush.Accent.Orange.5" Color="{StaticResource Color.Accent.Orange.5}"/>
+
     <SolidColorBrush x:Key="SolidColorBrush.Accent.Yellow.0" Color="{StaticResource Color.Accent.Yellow.0}"/>
     <SolidColorBrush x:Key="SolidColorBrush.Accent.Yellow.1" Color="{StaticResource Color.Accent.Yellow.1}"/>
     <SolidColorBrush x:Key="SolidColorBrush.Accent.Yellow.2" Color="{StaticResource Color.Accent.Yellow.2}"/>
@@ -246,6 +262,8 @@
     <SolidColorBrush x:Key="SolidColorBrush.City.MorganasRest.Transparent" Color="{StaticResource Color.City.MorganasRest.Transparent}"/>
     <SolidColorBrush x:Key="SolidColorBrush.City.BlackMarket.Transparent" Color="{StaticResource Color.City.BlackMarket.Transparent}"/>
 
+    <SolidColorBrush x:Key="SolidColorBrush.Dungeon.Mode.Mists.1" Color="{StaticResource Dungeon.Mode.Mists.1}"/>
+    <SolidColorBrush x:Key="SolidColorBrush.Dungeon.Mode.MistsDungeon.1" Color="{StaticResource Dungeon.Mode.MistsDungeon.1}"/>
     <SolidColorBrush x:Key="SolidColorBrush.Dungeon.Mode.Expedition.1" Color="{StaticResource Dungeon.Mode.Expedition.1}"/>
     <SolidColorBrush x:Key="SolidColorBrush.Dungeon.Mode.HellGate.1" Color="{StaticResource Dungeon.Mode.HellGate.1}"/>
     <SolidColorBrush x:Key="SolidColorBrush.Dungeon.Mode.Corrupted.1" Color="{StaticResource Dungeon.Mode.Corrupted.1}"/>
@@ -281,12 +299,13 @@
     <SolidColorBrush x:Key="SolidColorBrush.Weapon.Text" Color="#fafafa"/>
     <SolidColorBrush x:Key="SolidColorBrush.Weapon.Sword" Color="#FAA307"/>
     <SolidColorBrush x:Key="SolidColorBrush.Weapon.Spear" Color="#DAB10B"/>
-    <SolidColorBrush x:Key="SolidColorBrush.Weapon.Quarterstaff" Color="#297A7A"/>
-    <SolidColorBrush x:Key="SolidColorBrush.Weapon.NatureStaff" Color="#afafaf"/>
+    <SolidColorBrush x:Key="SolidColorBrush.Weapon.Quarterstaff" Color="#9F5EC5"/>
+    <SolidColorBrush x:Key="SolidColorBrush.Weapon.ShapeShifterStaff" Color="#1D9090"/>
+    <SolidColorBrush x:Key="SolidColorBrush.Weapon.NatureStaff" Color="#2DB53D"/>
     <SolidColorBrush x:Key="SolidColorBrush.Weapon.Mace" Color="#D35F91"/>
     <SolidColorBrush x:Key="SolidColorBrush.Weapon.HolyStaff" Color="#afafaf"/>
     <SolidColorBrush x:Key="SolidColorBrush.Weapon.Hammer" Color="#7373D9"/>
-    <SolidColorBrush x:Key="SolidColorBrush.Weapon.FrostStaff" Color="#4089d1"/>
+    <SolidColorBrush x:Key="SolidColorBrush.Weapon.FrostStaff" Color="#0797DF"/>
     <SolidColorBrush x:Key="SolidColorBrush.Weapon.FireStaff" Color="#C9561D"/>
     <SolidColorBrush x:Key="SolidColorBrush.Weapon.Dagger" Color="#A2AD1F"/>
     <SolidColorBrush x:Key="SolidColorBrush.Weapon.CursedStaff" Color="#61358D"/>

@@ -1,4 +1,46 @@
 [ 
+     {
+	"Timestamp": "2023-10-06T00:00:00",
+	"Amount": 1000000,
+	"RealMoneyAmount": 0,
+	"Contributor": "atakujonc",
+	"IsDonationRealMoney": false
+     },
+     {
+	"Timestamp": "2023-09-26T00:00:00",
+	"Amount": 0,
+	"RealMoneyAmount": 2.30,
+	"Contributor": "atakujonc",
+	"IsDonationRealMoney": true
+     },
+     {
+	"Timestamp": "2023-09-08T00:00:00",
+	"Amount": 0,
+	"RealMoneyAmount": 4.75,
+	"Contributor": "Anonymously Donated",
+	"IsDonationRealMoney": true
+    },
+    {
+	"Timestamp": "2023-08-08T00:00:00",
+	"Amount": 0,
+	"RealMoneyAmount": 2.40,
+	"Contributor": "AstroPope",
+	"IsDonationRealMoney": true
+    },
+    {
+	"Timestamp": "2023-08-02T00:00:00",
+	"Amount": 0,
+	"RealMoneyAmount": 10,
+	"Contributor": "zc",
+	"IsDonationRealMoney": true
+    },
+    {
+	"Timestamp": "2023-08-01T00:00:00",
+	"Amount": 3000000,
+	"RealMoneyAmount": 0,
+	"Contributor": "Apollo92",
+	"IsDonationRealMoney": false
+    },
     {
 	"Timestamp": "2023-07-03T00:00:00",
 	"Amount": 1000000,

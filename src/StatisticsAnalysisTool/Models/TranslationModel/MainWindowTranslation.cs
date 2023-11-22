@@ -1,4 +1,4 @@
-﻿using StatisticsAnalysisTool.Common;
+﻿using StatisticsAnalysisTool.Localization;
 
 namespace StatisticsAnalysisTool.Models.TranslationModel;
 
@@ -14,7 +14,7 @@ public class MainWindowTranslation
     public static string IsAlertActive => LanguageController.Translation("IS_ALERT_ACTIVATE");
     public static string UndercuttingPrice => LanguageController.Translation("UNDERCUTTING_PRICE");
     public static string Username => LanguageController.Translation("USERNAME");
-    public static string Guild => LanguageController.Translation("GUILD");
+    public static string GuildCap => LanguageController.Translation("GUILD_CAP");
     public static string Alliance => LanguageController.Translation("ALLIANCE");
     public static string ResetTrackingCounter => LanguageController.Translation("RESET_TRACKING_COUNTER");
     public static string MakeSureYouHaveInstalledNpcap => LanguageController.Translation("MAKE_SURE_YOU_HAVE_INSTALLED_NPCAP");
@@ -57,8 +57,6 @@ public class MainWindowTranslation
     public static string OpenExtendedDamageMeterWindow => LanguageController.Translation("OPEN_EXTENDED_DAMAGE_METER_WINDOW");
     public static string CopyToClipboard => LanguageController.Translation("COPY_TO_CLIPBOARD");
     public static string MapHistory => LanguageController.Translation("MAP_HISTORY");
-    public static string TryDownloadingTheItemListAgain => LanguageController.Translation("TRY_DOWNLOADING_THE_ITEM_LIST_AGAIN");
-    public static string TryDownloadingTheItemJsonAgain => LanguageController.Translation("TRY_DOWNLOADING_THE_ITEM_JSON_AGAIN");
     public static string DamageMeterOnOff => LanguageController.Translation("DAMAGE_METER_ON_OFF");
     public static string DeleteSelectedDungeons => LanguageController.Translation("DELETE_SELECTED_DUNGEONS");
     public static string DeleteZeroFameDungeons => LanguageController.Translation("DELETE_ZERO_FAME_DUNGEONS");
@@ -99,18 +97,19 @@ public class MainWindowTranslation
     public static string DeleteSelectedTrades => LanguageController.Translation("DELETE_SELECTED_TRADES");
     public static string DeleteSelectedResources => LanguageController.Translation("DELETE_SELECTED_RESOURCES");
     public static string TradeMonitoringDescription1 => LanguageController.Translation("TRADE_MONITORING_DESCRIPTION1");
+    public static string SiphonedEnergyDescription1 => LanguageController.Translation("SIPHONED_ENERGY_DESCRIPTION1");
+    public static string SiphonedEnergyDescription2 => LanguageController.Translation("SIPHONED_ENERGY_DESCRIPTION2");
+    public static string SiphonedEnergyDescription3 => LanguageController.Translation("SIPHONED_ENERGY_DESCRIPTION3");
+    public static string SiphonedEnergyDescription4 => LanguageController.Translation("SIPHONED_ENERGY_DESCRIPTION4");
     public static string To => LanguageController.Translation("TO");
     public static string DeleteCurrentStorage => LanguageController.Translation("DELETE_SELECTED_STORAGE");
     public static string Donations => LanguageController.Translation("DONATIONS");
     public static string Thanks => LanguageController.Translation("THANKS");
     public static string UnsupportedOs => LanguageController.Translation("UNSUPPORTED_OS");
     public static string OpenToolDirectory => LanguageController.Translation("OPEN_TOOL_DIRECTORY");
-    public static string FileDownloadFailedText1 => LanguageController.Translation("FILE_DOWNLOAD_FAILED_TEXT1");
-    public static string FileDownloadFailedText2 => LanguageController.Translation("FILE_DOWNLOAD_FAILED_TEXT2");
-    public static string FileDownloadFailedText3 => LanguageController.Translation("FILE_DOWNLOAD_FAILED_TEXT3");
-    public static string FileDownloadFailedText4 => LanguageController.Translation("FILE_DOWNLOAD_FAILED_TEXT4");
-    public static string ThenRestartTheTool => LanguageController.Translation("THEN_RESTART_THE_TOOL");
     public static string Or => LanguageController.Translation("OR");
     public static string SelectDeselectAll => LanguageController.Translation("SELECT_DESELECT_ALL");
     public static string Gathering => LanguageController.Translation("GATHERING");
+    public static string CopyShortDamageMeterToTheClipboard => LanguageController.Translation("COPY_SHORT_DAMAGE_METER_TO_THE_CLIPBOARD");
+    public static string Guild => LanguageController.Translation("GUILD");
 }

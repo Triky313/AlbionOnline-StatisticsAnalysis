@@ -1,20 +1,24 @@
 using FontAwesome5;
 using LiveChartsCore;
 using LiveChartsCore.SkiaSharpView;
-using log4net;
 using Microsoft.Win32;
+using Serilog;
+using StatisticsAnalysisTool.Alert;
 using StatisticsAnalysisTool.Cluster;
 using StatisticsAnalysisTool.Common;
 using StatisticsAnalysisTool.Common.UserSettings;
+using StatisticsAnalysisTool.DamageMeter;
+using StatisticsAnalysisTool.Dungeon;
 using StatisticsAnalysisTool.Enumerations;
 using StatisticsAnalysisTool.EstimatedMarketValue;
 using StatisticsAnalysisTool.EventLogging;
-using StatisticsAnalysisTool.GameData;
+using StatisticsAnalysisTool.Localization;
 using StatisticsAnalysisTool.Models;
 using StatisticsAnalysisTool.Models.BindingModel;
 using StatisticsAnalysisTool.Models.NetworkModel;
 using StatisticsAnalysisTool.Models.TranslationModel;
 using StatisticsAnalysisTool.Network.Manager;
+using StatisticsAnalysisTool.PartyBuilder;
 using StatisticsAnalysisTool.Properties;
 using StatisticsAnalysisTool.Trade;
 using StatisticsAnalysisTool.Views;
@@ -25,21 +29,18 @@ using System.ComponentModel;
 using System.IO;
 using System.Linq;
 using System.Reflection;
-using System.Runtime.CompilerServices;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Data;
 using System.Windows.Media;
-using StatisticsAnalysisTool.PartyBuilder;
+using StatisticsAnalysisTool.Guild;
 
 // ReSharper disable UnusedMember.Global
 
 namespace StatisticsAnalysisTool.ViewModels;
 
-public class MainWindowViewModel : INotifyPropertyChanged
+public class MainWindowViewModel : BaseViewModel
 {
-    private static readonly ILog Log = LogManager.GetLogger(MethodBase.GetCurrentMethod()?.DeclaringType);
-
     private double _allianceInfoWidth;
     private double _currentMapInfoWidth;
     private string _errorBarText;
@@ -76,17 +77,12 @@ public class MainWindowViewModel : INotifyPropertyChanged
     private int _partyMemberNumber;
     private bool _isItemSearchCheckboxesEnabled;
     private bool _isFilterResetEnabled;
-    private Visibility _gridTryToLoadTheItemListAgainVisibility = Visibility.Collapsed;
     private bool _isDamageMeterTrackingActive;
     private bool _isTrackingPartyLootOnly;
     private Axis[] _xAxesDashboardHourValues;
     private ObservableCollection<ISeries> _seriesDashboardHourValues;
     private DashboardBindings _dashboardBindings = new();
     private string _loggingSearchText;
-    private Visibility _gridTryToLoadTheItemJsonAgainVisibility = Visibility.Collapsed;
-    private Visibility _gridTryToLoadTheMobsJsonAgainVisibility = Visibility.Collapsed;
-    private Visibility _gridTryToLoadTheWorldJsonAgainVisibility = Visibility.Collapsed;
-    private Visibility _gridTryToLoadTheSpellsJsonAgainVisibility = Visibility.Collapsed;
     private Visibility _toolTasksVisibility = Visibility.Collapsed;
     private double _taskProgressbarMinimum;
     private double _taskProgressbarMaximum = 100;
@@ -115,12 +111,15 @@ public class MainWindowViewModel : INotifyPropertyChanged
     private Visibility _storageHistoryTabVisibility = Visibility.Visible;
     private Visibility _mapHistoryTabVisibility = Visibility.Visible;
     private Visibility _playerInformationTabVisibility = Visibility.Visible;
+    private Visibility _guildTabVisibility = Visibility.Visible;
     private Visibility _toolTaskFrontViewVisibility = Visibility.Collapsed;
+    private Visibility _statsDropDownVisibility = Visibility.Collapsed;
     private double _toolTaskProgressBarValue;
     private string _toolTaskCurrentTaskName;
     private ToolTaskBindings _toolTaskBindings = new();
-    private string _serverTypeText;
+    private GuildBindings _guildBindings = new ();
     private PartyBuilderBindings _partyBuilderBindings = new();
+    private string _serverTypeText;
     private bool _isDataLoaded;
     private bool _isCloseButtonActive;
 
@@ -174,6 +173,9 @@ public class MainWindowViewModel : INotifyPropertyChanged
 
         // Party Builder
         PartyBuilderBindings.GridSplitterPosition = new GridLength(SettingsController.CurrentSettings.PartyBuilderGridSplitterPosition);
+
+        // Guild
+        GuildBindings.GridSplitterPosition = new GridLength(SettingsController.CurrentSettings.GuildGridSplitterPosition);
     }
 
     #region Alert
@@ -200,7 +202,7 @@ public class MainWindowViewModel : INotifyPropertyChanged
         catch (Exception e)
         {
             ConsoleManager.WriteLineForError(MethodBase.GetCurrentMethod()?.DeclaringType, e);
-            Log.Error(MethodBase.GetCurrentMethod()?.DeclaringType, e);
+            Log.Error(e, "{message}", MethodBase.GetCurrentMethod()?.DeclaringType);
         }
     }
 
@@ -249,117 +251,18 @@ public class MainWindowViewModel : INotifyPropertyChanged
         Settings.Default.Save();
     }
 
-    public void InitMainWindowData()
+    public async Task InitMainWindowDataAsync()
     {
 #if DEBUG
         DebugModeVisibility = Visibility.Visible;
 #endif
 
-        _ = InitAsync();
-    }
-
-    public async Task InitAsync()
-    {
         IsTaskProgressbarIndeterminate = true;
         IsTxtSearchEnabled = false;
         IsItemSearchCheckboxesEnabled = false;
         IsFilterResetEnabled = false;
-        GridTryToLoadTheItemListAgainVisibility = Visibility.Collapsed;
-        GridTryToLoadTheItemJsonAgainVisibility = Visibility.Collapsed;
-        GridTryToLoadTheMobsJsonAgainVisibility = Visibility.Collapsed;
-        GridTryToLoadTheSpellsJsonAgainVisibility = Visibility.Collapsed;
 
-        ServerTypeText = LanguageController.Translation("UNKNOWN_SERVER");
-
-        if (!ItemController.IsItemListLoaded())
-        {
-            var itemListTaskTextObject = new TaskTextObject(LanguageController.Translation("GET_ITEM_LIST_JSON"));
-            ToolTaskBindings.Add(itemListTaskTextObject);
-            var isItemListLoaded = await ItemController.GetItemListFromJsonAsync().ConfigureAwait(true);
-            if (!isItemListLoaded)
-            {
-                SetErrorBar(Visibility.Visible, LanguageController.Translation("ITEM_LIST_CAN_NOT_BE_LOADED"));
-                GridTryToLoadTheItemListAgainVisibility = Visibility.Visible;
-                IsTaskProgressbarIndeterminate = false;
-                itemListTaskTextObject.SetStatus(TaskTextObject.TaskTextObjectStatus.Canceled);
-            }
-            else
-            {
-                itemListTaskTextObject.SetStatus(TaskTextObject.TaskTextObjectStatus.Done);
-            }
-        }
-
-        if (!ItemController.IsItemsJsonLoaded())
-        {
-            var itemsTaskTextObject = new TaskTextObject(LanguageController.Translation("GET_ITEMS_JSON"));
-            ToolTaskBindings.Add(itemsTaskTextObject);
-            var isItemsJsonLoaded = await ItemController.GetItemsJsonAsync().ConfigureAwait(true);
-            if (!isItemsJsonLoaded)
-            {
-                SetErrorBar(Visibility.Visible, LanguageController.Translation("ITEM_JSON_CAN_NOT_BE_LOADED"));
-                GridTryToLoadTheItemJsonAgainVisibility = Visibility.Visible;
-                IsTaskProgressbarIndeterminate = false;
-                itemsTaskTextObject.SetStatus(TaskTextObject.TaskTextObjectStatus.Canceled);
-            }
-            else
-            {
-                itemsTaskTextObject.SetStatus(TaskTextObject.TaskTextObjectStatus.Done);
-            }
-        }
-
-        if (!MobsData.IsDataLoaded())
-        {
-            var itemsTaskTextObject = new TaskTextObject(LanguageController.Translation("GET_MOBS_JSON"));
-            ToolTaskBindings.Add(itemsTaskTextObject);
-            var isMobsJsonLoaded = await MobsData.LoadDataAsync().ConfigureAwait(true);
-            if (!isMobsJsonLoaded)
-            {
-                SetErrorBar(Visibility.Visible, LanguageController.Translation("MOBS_JSON_CAN_NOT_BE_LOADED"));
-                GridTryToLoadTheMobsJsonAgainVisibility = Visibility.Visible;
-                IsTaskProgressbarIndeterminate = false;
-                itemsTaskTextObject.SetStatus(TaskTextObject.TaskTextObjectStatus.Canceled);
-            }
-            else
-            {
-                itemsTaskTextObject.SetStatus(TaskTextObject.TaskTextObjectStatus.Done);
-            }
-        }
-
-        if (!WorldData.IsDataLoaded())
-        {
-            var itemsTaskTextObject = new TaskTextObject(LanguageController.Translation("GET_WORLD_JSON"));
-            ToolTaskBindings.Add(itemsTaskTextObject);
-            var isLootChestJsonLoaded = await WorldData.LoadDataAsync().ConfigureAwait(true);
-            if (!isLootChestJsonLoaded)
-            {
-                SetErrorBar(Visibility.Visible, LanguageController.Translation("WORLD_JSON_CAN_NOT_BE_LOADED"));
-                GridTryToLoadTheWorldJsonAgainVisibility = Visibility.Visible;
-                IsTaskProgressbarIndeterminate = false;
-                itemsTaskTextObject.SetStatus(TaskTextObject.TaskTextObjectStatus.Canceled);
-            }
-            else
-            {
-                itemsTaskTextObject.SetStatus(TaskTextObject.TaskTextObjectStatus.Done);
-            }
-        }
-
-        if (!SpellData.IsDataLoaded())
-        {
-            var itemsTaskTextObject = new TaskTextObject(LanguageController.Translation("GET_SPELLS_JSON"));
-            ToolTaskBindings.Add(itemsTaskTextObject);
-            var isSpellsJsonLoaded = await SpellData.LoadDataAsync().ConfigureAwait(true);
-            if (!isSpellsJsonLoaded)
-            {
-                SetErrorBar(Visibility.Visible, LanguageController.Translation("SPELLS_JSON_CAN_NOT_BE_LOADED"));
-                GridTryToLoadTheSpellsJsonAgainVisibility = Visibility.Visible;
-                IsTaskProgressbarIndeterminate = false;
-                itemsTaskTextObject.SetStatus(TaskTextObject.TaskTextObjectStatus.Canceled);
-            }
-            else
-            {
-                itemsTaskTextObject.SetStatus(TaskTextObject.TaskTextObjectStatus.Done);
-            }
-        }
+        UpdateServerTypeLabel();
 
         await ItemController.SetFavoriteItemsFromLocalFileAsync();
 
@@ -375,31 +278,10 @@ public class MainWindowViewModel : INotifyPropertyChanged
         IsTaskProgressbarIndeterminate = false;
         IsDataLoaded = true;
 
-        CloseButtonActivationDelayAync();
+        CloseButtonActivationDelayAsync();
     }
 
-    public async Task DownloadItemsJsonAsync()
-    {
-        if (!ItemController.IsItemListLoaded())
-        {
-            var itemListTaskTextObject = new TaskTextObject(LanguageController.Translation("GET_ITEM_LIST_JSON"));
-            ToolTaskBindings.Add(itemListTaskTextObject);
-            var isItemListLoaded = await ItemController.GetItemListFromJsonAsync().ConfigureAwait(true);
-            if (!isItemListLoaded)
-            {
-                SetErrorBar(Visibility.Visible, LanguageController.Translation("ITEM_LIST_CAN_NOT_BE_LOADED"));
-                GridTryToLoadTheItemListAgainVisibility = Visibility.Visible;
-                IsTaskProgressbarIndeterminate = false;
-                itemListTaskTextObject.SetStatus(TaskTextObject.TaskTextObjectStatus.Canceled);
-            }
-            else
-            {
-                itemListTaskTextObject.SetStatus(TaskTextObject.TaskTextObjectStatus.Done);
-            }
-        }
-    }
-
-    private async void CloseButtonActivationDelayAync()
+    private async void CloseButtonActivationDelayAsync()
     {
         await Task.Delay(2000);
         IsCloseButtonActive = true;
@@ -426,35 +308,31 @@ public class MainWindowViewModel : INotifyPropertyChanged
 
     #endregion
 
-    #region Save loot logger
+    #region Stats drop down
 
-    public void SaveLootLogger()
+    public void SwitchStatsDropDownState()
     {
-        if (!SettingsController.CurrentSettings.IsLootLoggerSaveReminderActive)
+        StatsDropDownVisibility = StatsDropDownVisibility switch
         {
-            return;
-        }
-
-        try
-        {
-            var dialog = new DialogWindow(LanguageController.Translation("SAVE_LOOT_LOGGER"), LanguageController.Translation("SAVE_LOOT_LOGGER_NOW"));
-            var dialogResult = dialog.ShowDialog();
-
-            if (dialogResult is true)
-            {
-                ExportLootToFile();
-            }
-        }
-        catch (Exception e)
-        {
-            ConsoleManager.WriteLineForError(MethodBase.GetCurrentMethod()?.DeclaringType, e);
-            Log.Error(MethodBase.GetCurrentMethod()?.DeclaringType, e);
-        }
+            Visibility.Collapsed => Visibility.Visible,
+            Visibility.Visible => Visibility.Collapsed,
+            _ => StatsDropDownVisibility
+        };
     }
 
     #endregion
 
     #region Ui utility methods
+
+    public void UpdateServerTypeLabel()
+    {
+        ServerTypeText = SettingsController.CurrentSettings.ServerLocation switch
+        {
+            ServerLocation.East => LanguageController.Translation("EAST_SERVER"),
+            ServerLocation.West => LanguageController.Translation("WEST_SERVER"),
+            _ => LanguageController.Translation("UNKNOWN_SERVER")
+        };
+    }
 
     public static void OpenItemWindow(Item item)
     {
@@ -478,7 +356,7 @@ public class MainWindowViewModel : INotifyPropertyChanged
         catch (ArgumentNullException e)
         {
             ConsoleManager.WriteLineForError(MethodBase.GetCurrentMethod()?.DeclaringType, e);
-            Log.Error(MethodBase.GetCurrentMethod()?.DeclaringType, e);
+            Log.Error(e, "{message}", MethodBase.GetCurrentMethod()?.DeclaringType);
             var catchItemWindow = new ItemWindow(item);
             catchItemWindow.Show();
         }
@@ -504,13 +382,13 @@ public class MainWindowViewModel : INotifyPropertyChanged
             catch (Exception e)
             {
                 ConsoleManager.WriteLineForError(MethodBase.GetCurrentMethod()?.DeclaringType, e);
-                Log.Error(MethodBase.GetCurrentMethod()?.DeclaringType, e);
+                Log.Error(e, "{message}", MethodBase.GetCurrentMethod()?.DeclaringType);
             }
         }
     }
 
     #endregion
-    
+
     #region Item View Filters
 
     private void ItemsViewFilter()
@@ -563,7 +441,7 @@ public class MainWindowViewModel : INotifyPropertyChanged
         catch (Exception e)
         {
             ConsoleManager.WriteLineForError(MethodBase.GetCurrentMethod()?.DeclaringType, e);
-            Log.Error(MethodBase.GetCurrentMethod()?.DeclaringType, e);
+            Log.Error(e, "{message}", MethodBase.GetCurrentMethod()?.DeclaringType);
         }
     }
 
@@ -623,8 +501,6 @@ public class MainWindowViewModel : INotifyPropertyChanged
         set
         {
             _isTrackingPartyLootOnly = value;
-            var trackingController = ServiceLocator.Resolve<TrackingController>();
-            trackingController.LootController.IsPartyLootOnly = _isTrackingPartyLootOnly;
 
             SettingsController.CurrentSettings.IsTrackingPartyLootOnly = _isTrackingPartyLootOnly;
             OnPropertyChanged();
@@ -637,6 +513,16 @@ public class MainWindowViewModel : INotifyPropertyChanged
         set
         {
             _partyBuilderBindings = value;
+            OnPropertyChanged();
+        }
+    }
+
+    public GuildBindings GuildBindings
+    {
+        get => _guildBindings;
+        set
+        {
+            _guildBindings = value;
             OnPropertyChanged();
         }
     }
@@ -815,16 +701,7 @@ public class MainWindowViewModel : INotifyPropertyChanged
         get => _isDamageMeterTrackingActive;
         set
         {
-            var trackingController = ServiceLocator.Resolve<TrackingController>();
-
-            if (trackingController?.CombatController == null)
-            {
-                return;
-            }
-
             _isDamageMeterTrackingActive = value;
-
-            trackingController.CombatController.IsDamageMeterActive = _isDamageMeterTrackingActive;
 
             DamageMeterBindings.DamageMeterActivationToggleIcon = _isDamageMeterTrackingActive ? EFontAwesomeIcon.Solid_ToggleOn : EFontAwesomeIcon.Solid_ToggleOff;
 
@@ -1136,56 +1013,6 @@ public class MainWindowViewModel : INotifyPropertyChanged
         }
     }
 
-    public Visibility GridTryToLoadTheItemListAgainVisibility
-    {
-        get => _gridTryToLoadTheItemListAgainVisibility;
-        set
-        {
-            _gridTryToLoadTheItemListAgainVisibility = value;
-            OnPropertyChanged();
-        }
-    }
-
-    public Visibility GridTryToLoadTheItemJsonAgainVisibility
-    {
-        get => _gridTryToLoadTheItemJsonAgainVisibility;
-        set
-        {
-            _gridTryToLoadTheItemJsonAgainVisibility = value;
-            OnPropertyChanged();
-        }
-    }
-
-    public Visibility GridTryToLoadTheMobsJsonAgainVisibility
-    {
-        get => _gridTryToLoadTheMobsJsonAgainVisibility;
-        set
-        {
-            _gridTryToLoadTheMobsJsonAgainVisibility = value;
-            OnPropertyChanged();
-        }
-    }
-
-    public Visibility GridTryToLoadTheWorldJsonAgainVisibility
-    {
-        get => _gridTryToLoadTheWorldJsonAgainVisibility;
-        set
-        {
-            _gridTryToLoadTheWorldJsonAgainVisibility = value;
-            OnPropertyChanged();
-        }
-    }
-
-    public Visibility GridTryToLoadTheSpellsJsonAgainVisibility
-    {
-        get => _gridTryToLoadTheSpellsJsonAgainVisibility;
-        set
-        {
-            _gridTryToLoadTheSpellsJsonAgainVisibility = value;
-            OnPropertyChanged();
-        }
-    }
-
     public double TaskProgressbarMinimum
     {
         get => _taskProgressbarMinimum;
@@ -1236,6 +1063,16 @@ public class MainWindowViewModel : INotifyPropertyChanged
         }
     }
 
+    public Visibility StatsDropDownVisibility
+    {
+        get => _statsDropDownVisibility;
+        set
+        {
+            _statsDropDownVisibility = value;
+            OnPropertyChanged();
+        }
+    }
+
     public Visibility UnsupportedOsVisibility
     {
         get => _unsupportedOsVisibility;
@@ -1272,6 +1109,16 @@ public class MainWindowViewModel : INotifyPropertyChanged
         set
         {
             _loggingTabVisibility = value;
+            OnPropertyChanged();
+        }
+    }
+
+    public Visibility GuildTabVisibility
+    {
+        get => _guildTabVisibility;
+        set
+        {
+            _guildTabVisibility = value;
             OnPropertyChanged();
         }
     }
@@ -1472,14 +1319,6 @@ public class MainWindowViewModel : INotifyPropertyChanged
 
     public static string ToolDirectory => AppDomain.CurrentDomain.BaseDirectory;
     public static string Version => $"v{Assembly.GetExecutingAssembly().GetName().Version}";
-
-    public event PropertyChangedEventHandler PropertyChanged;
-
-    [NotifyPropertyChangedInvocator]
-    protected virtual void OnPropertyChanged([CallerMemberName] string propertyName = null)
-    {
-        PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
-    }
 
     #endregion Bindings
 }

@@ -1,6 +1,10 @@
-name: 🛠️ PR - Build + Unit tests
+name: 🛠️ Build + Unit tests
 
 on:
+  pull_request:
+    types: [review_requested, opened, reopened, synchronize]
+    branches:
+      - dev
   push:
     branches: [ main ]
     paths-ignore:
@@ -8,15 +12,11 @@ on:
       - '**/*.gitignore'
       - '**/*.gitattributes'
       - '**/donations.json'
-    pull_request:
-        types: [review_requested, opened, reopened, synchronize]
-        branches:
-          - dev
 
 jobs:
 
   build:
-
+    if: "!contains(github.event.head_commit.message, '--wip')"
     strategy:
       matrix:
         configuration: [Debug, Release]
@@ -27,31 +27,23 @@ jobs:
       Test_Project_Path: src\StatisticsAnalysisTool.UnitTests\StatisticsAnalysisTool.UnitTests.csproj
 
     steps:
-    - name: Checkout
+    - name: 🛒 Checkout
       uses: actions/checkout@v3
       with:
         fetch-depth: 0
 
-    - name: Check for build errors
-      if: ${{ matrix.configuration == 'Debug' }}
-      run: dotnet build src\StatisticsAnalysisTool
-
-    - name: Install dependencies
+    - name: 🏗 dotnet restore
       run: dotnet restore src\StatisticsAnalysisTool
+      
+    - name: 🛠 dotnet build
+      run: dotnet build src\StatisticsAnalysisTool --no-restore
 
-    - name: Install .NET (Debug)
-      if: ${{ matrix.configuration == 'Debug' }}
-      uses: actions/setup-dotnet@v1
-      with:
-        dotnet-version: '7.0.x'
-    - run: dotnet build src\StatisticsAnalysisTool
-
-    - name: Setup MSBuild.exe
+    - name: 📦 Setup MSBuild.exe
       uses: microsoft/setup-msbuild@v1.1
       with:
         # vs-version: '[17.1]'
         msbuild-architecture: x64
 
-    - name: Execute unit tests
+    - name: 🧪 Execute unit tests (Only debug)
       if: ${{ matrix.configuration == 'Debug' }}
-      run: dotnet test $env:Test_Project_Path
+      run: dotnet test $env:Test_Project_Path --no-restore

@@ -1,13 +1,11 @@
 ﻿using StatisticsAnalysisTool.Common;
 using StatisticsAnalysisTool.Common.UserSettings;
-using StatisticsAnalysisTool.Properties;
+using StatisticsAnalysisTool.ViewModels;
 using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Collections.Specialized;
-using System.ComponentModel;
 using System.Linq;
-using System.Runtime.CompilerServices;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
@@ -15,7 +13,7 @@ using System.Windows.Data;
 
 namespace StatisticsAnalysisTool.Trade;
 
-public class TradeMonitoringBindings : INotifyPropertyChanged
+public class TradeMonitoringBindings : BaseViewModel
 {
     private ListCollectionView _tradeCollectionView;
     private ObservableRangeCollection<Trade> _trades = new();
@@ -53,9 +51,11 @@ public class TradeMonitoringBindings : INotifyPropertyChanged
 
     public void ItemFilterReset()
     {
-        DatePickerTradeFrom = new DateTime(2017, 1, 1);
-        DatePickerTradeTo = DateTime.UtcNow.AddDays(1);
+        _datePickerTradeFrom = new DateTime(2017, 1, 1);
+        _datePickerTradeTo = DateTime.UtcNow.AddDays(1);
         TradesSearchText = string.Empty;
+
+        TradeCollectionView = CollectionViewSource.GetDefaultView(Trades) as ListCollectionView;
     }
 
     public ListCollectionView TradeCollectionView
@@ -274,7 +274,7 @@ public class TradeMonitoringBindings : INotifyPropertyChanged
             }
         });
 
-        return result.ToList();
+        return result.OrderByDescending(d => d.Ticks).ToList();
     }
 
     private bool Filter(object obj)
@@ -307,12 +307,4 @@ public class TradeMonitoringBindings : INotifyPropertyChanged
     }
 
     #endregion
-
-    public event PropertyChangedEventHandler PropertyChanged;
-
-    [NotifyPropertyChangedInvocator]
-    protected virtual void OnPropertyChanged([CallerMemberName] string propertyName = null)
-    {
-        PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
-    }
 }

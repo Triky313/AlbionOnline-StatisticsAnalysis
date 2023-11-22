@@ -1,4 +1,4 @@
-﻿using log4net;
+﻿using Serilog;
 using StatisticsAnalysisTool.Common;
 using StatisticsAnalysisTool.Enumerations;
 using System;
@@ -9,8 +9,6 @@ namespace StatisticsAnalysisTool.Network.Operations.Responses;
 
 public class InventoryMoveItemRequest
 {
-    private static readonly ILog Log = LogManager.GetLogger(MethodBase.GetCurrentMethod()?.DeclaringType);
-
     public readonly int ContainerSlot;
     public readonly Guid? ContainerGuid;
     public readonly int InventorySlot;
@@ -44,7 +42,7 @@ public class InventoryMoveItemRequest
         }
         catch (Exception e)
         {
-            Log.Debug(nameof(InventoryMoveItemRequest), e);
+            Log.Error(e, "{message}", MethodBase.GetCurrentMethod()?.DeclaringType);
         }
     }
 }

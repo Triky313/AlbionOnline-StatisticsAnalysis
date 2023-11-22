@@ -12,6 +12,7 @@ public class TradeDto
     public string Description { get; init; }
     public TradeType Type { get; init; }
     public double TaxRate { get; set; }
+    public int ItemIndex { get; set; }
 
     #region Mail
 

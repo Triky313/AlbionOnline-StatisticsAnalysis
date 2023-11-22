@@ -4,15 +4,13 @@ using StatisticsAnalysisTool.Models.TranslationModel;
 using StatisticsAnalysisTool.Properties;
 using System;
 using System.Collections.Generic;
-using System.ComponentModel;
 using System.Linq;
-using System.Runtime.CompilerServices;
 using System.Threading.Tasks;
 using System.Windows;
 
 namespace StatisticsAnalysisTool.ViewModels;
 
-public class DonationViewModel : INotifyPropertyChanged
+public class DonationViewModel : BaseViewModel
 {
     private DonationTranslation _translation;
     private List<Donation> _topDonationsAllTime;
@@ -212,12 +210,4 @@ public class DonationViewModel : INotifyPropertyChanged
     public static string PatreonUrl => Settings.Default.PatreonUrl;
     public static string DonateUrl => Settings.Default.DonateUrl;
     public static string GitHubSponsorsUrl => Settings.Default.GitHubSponsorsUrl;
-
-    public event PropertyChangedEventHandler PropertyChanged;
-
-    [NotifyPropertyChangedInvocator]
-    protected virtual void OnPropertyChanged([CallerMemberName] string propertyName = null)
-    {
-        PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
-    }
 }

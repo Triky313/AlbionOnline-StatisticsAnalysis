@@ -1,11 +1,9 @@
-﻿using StatisticsAnalysisTool.Properties;
-using System.ComponentModel;
-using System.Runtime.CompilerServices;
+﻿using StatisticsAnalysisTool.ViewModels;
 using System.Windows;
 
 namespace StatisticsAnalysisTool.Models.BindingModel;
 
-public class ItemWindowCraftingTabBindings : INotifyPropertyChanged
+public class ItemWindowCraftingTabBindings : BaseViewModel
 {
     private Visibility _craftingInfoPopupVisibility = Visibility.Hidden;
 
@@ -27,12 +25,4 @@ public class ItemWindowCraftingTabBindings : INotifyPropertyChanged
     }
 
     #endregion
-
-    public event PropertyChangedEventHandler PropertyChanged;
-
-    [NotifyPropertyChangedInvocator]
-    protected virtual void OnPropertyChanged([CallerMemberName] string propertyName = null)
-    {
-        PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
-    }
 }

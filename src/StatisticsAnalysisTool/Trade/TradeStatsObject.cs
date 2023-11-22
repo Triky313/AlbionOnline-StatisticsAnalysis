@@ -1,15 +1,14 @@
 ﻿using StatisticsAnalysisTool.Common;
 using StatisticsAnalysisTool.Enumerations;
-using StatisticsAnalysisTool.Properties;
+using StatisticsAnalysisTool.Localization;
+using StatisticsAnalysisTool.ViewModels;
 using System;
 using System.Collections.Generic;
-using System.ComponentModel;
 using System.Linq;
-using System.Runtime.CompilerServices;
 
 namespace StatisticsAnalysisTool.Trade;
 
-public class TradeStatsObject : INotifyPropertyChanged
+public class TradeStatsObject : BaseViewModel
 {
     private long _soldToday;
     private long _soldMonth;
@@ -35,10 +34,12 @@ public class TradeStatsObject : INotifyPropertyChanged
     private long _taxesMonth;
     private long _taxesYear;
     private long _taxesTotal;
+    private long _soldLastMonth;
+    private long _boughtLastMonth;
+    private long _taxesLastMonth;
+    private long _salesLastMonth;
     private Trade _mostExpensiveSaleItem;
     private Trade _mostExpensivePurchasedItem;
-    private bool _isMostExpensivePurchasedItemFromMail;
-    private bool _isMostExpensiveSaleItemFromMail;
 
     #region Stat calculations
 
@@ -55,31 +56,35 @@ public class TradeStatsObject : INotifyPropertyChanged
         SoldThisWeek = GetStatByType(trades, currentUtc, TradeStatType.SoldThisWeek);
         SoldLastWeek = GetStatByType(trades, currentUtc, TradeStatType.SoldLastWeek);
         SoldMonth = GetStatByType(trades, currentUtc, TradeStatType.SoldMonth);
+        SoldLastMonth = GetStatByType(trades, currentUtc, TradeStatType.SoldLastMonth);
         SoldYear = GetStatByType(trades, currentUtc, TradeStatType.SoldYear);
 
         BoughtToday = GetStatByType(trades, currentUtc, TradeStatType.BoughtToday);
         BoughtThisWeek = GetStatByType(trades, currentUtc, TradeStatType.BoughtThisWeek);
         BoughtLastWeek = GetStatByType(trades, currentUtc, TradeStatType.BoughtLastWeek);
         BoughtMonth = GetStatByType(trades, currentUtc, TradeStatType.BoughtMonth);
+        BoughtLastMonth = GetStatByType(trades, currentUtc, TradeStatType.BoughtLastMonth);
         BoughtYear = GetStatByType(trades, currentUtc, TradeStatType.BoughtYear);
 
         TaxesToday = GetStatByType(trades, currentUtc, TradeStatType.TaxesToday);
         TaxesThisWeek = GetStatByType(trades, currentUtc, TradeStatType.TaxesThisWeek);
         TaxesLastWeek = GetStatByType(trades, currentUtc, TradeStatType.TaxesLastWeek);
         TaxesMonth = GetStatByType(trades, currentUtc, TradeStatType.TaxesMonth);
+        TaxesLastMonth = GetStatByType(trades, currentUtc, TradeStatType.TaxesLastMonth);
         TaxesYear = GetStatByType(trades, currentUtc, TradeStatType.TaxesYear);
 
         SoldTotal = GetStatByType(trades, currentUtc, TradeStatType.SoldTotal);
         BoughtTotal = GetStatByType(trades, currentUtc, TradeStatType.BoughtTotal);
         TaxesTotal = GetStatByType(trades, currentUtc, TradeStatType.TaxesTotal);
-        
+
         SalesToday = SoldToday - (BoughtToday + TaxesToday);
         SalesThisWeek = SoldThisWeek - (BoughtThisWeek + TaxesThisWeek);
         SalesLastWeek = SoldLastWeek - (BoughtLastWeek + TaxesLastWeek);
         SalesMonth = SoldMonth - (BoughtMonth + TaxesMonth);
+        SalesLastMonth = SoldLastMonth - (BoughtLastMonth + TaxesLastMonth);
         SalesYear = SoldYear - (BoughtYear + TaxesYear);
         SalesTotal = SoldTotal - (BoughtTotal + TaxesTotal);
-        
+
         MostExpensiveSaleItem = trades
             .Where(x => x.MailType is MailType.MarketplaceSellOrderFinished or MailType.MarketplaceSellOrderExpired || x.Type == TradeType.InstantSell)
             .MaxBy(x =>
@@ -87,10 +92,8 @@ public class TradeStatsObject : INotifyPropertyChanged
                 switch (x.Type)
                 {
                     case TradeType.Mail:
-                        IsMostExpensiveSaleItemFromMail = true;
                         return x.MailContent.TotalPrice.IntegerValue;
                     case TradeType.InstantBuy:
-                        IsMostExpensiveSaleItemFromMail = false;
                         return x.InstantBuySellContent.TotalPrice.IntegerValue;
                     default:
                         return 0;
@@ -99,15 +102,13 @@ public class TradeStatsObject : INotifyPropertyChanged
 
         MostExpensivePurchasedItem = trades
             .Where(x => x.MailType is MailType.MarketplaceBuyOrderFinished or MailType.MarketplaceBuyOrderExpired || x.Type == TradeType.InstantBuy)
-            .MaxBy(x => 
+            .MaxBy(x =>
             {
                 switch (x.Type)
                 {
                     case TradeType.Mail:
-                        IsMostExpensivePurchasedItemFromMail = true;
                         return x.MailContent.TotalPrice.IntegerValue;
                     case TradeType.InstantBuy:
-                        IsMostExpensivePurchasedItemFromMail = false;
                         return x.InstantBuySellContent.TotalPrice.IntegerValue;
                     default:
                         return 0;
@@ -133,6 +134,9 @@ public class TradeStatsObject : INotifyPropertyChanged
                     case TradeStatType.SoldMonth when trade.Timestamp.Year != datetime.Year || trade.Timestamp.Month != datetime.Month:
                     case TradeStatType.BoughtMonth when trade.Timestamp.Year != datetime.Year || trade.Timestamp.Month != datetime.Month:
                     case TradeStatType.TaxesMonth when trade.Timestamp.Year != datetime.Year || trade.Timestamp.Month != datetime.Month:
+                    case TradeStatType.SoldLastMonth when !trade.Timestamp.Date.IsDateInSameMonth(datetime.AddMonths(-1)):
+                    case TradeStatType.BoughtLastMonth when !trade.Timestamp.Date.IsDateInSameMonth(datetime.AddMonths(-1)):
+                    case TradeStatType.TaxesLastMonth when !trade.Timestamp.Date.IsDateInSameMonth(datetime.AddMonths(-1)):
                     case TradeStatType.SoldYear when trade.Timestamp.Year != datetime.Year:
                     case TradeStatType.BoughtYear when trade.Timestamp.Year != datetime.Year:
                     case TradeStatType.TaxesYear when trade.Timestamp.Year != datetime.Year:
@@ -141,7 +145,7 @@ public class TradeStatsObject : INotifyPropertyChanged
 
                 switch (type)
                 {
-                    case TradeStatType.SoldToday or TradeStatType.SoldThisWeek or TradeStatType.SoldLastWeek or TradeStatType.SoldMonth or TradeStatType.SoldYear 
+                    case TradeStatType.SoldToday or TradeStatType.SoldThisWeek or TradeStatType.SoldLastWeek or TradeStatType.SoldMonth or TradeStatType.SoldLastMonth or TradeStatType.SoldYear
                         or TradeStatType.SoldTotal:
                         switch (trade.Type)
                         {
@@ -151,17 +155,18 @@ public class TradeStatsObject : INotifyPropertyChanged
                                 return true;
                         }
                         break;
-                    case TradeStatType.BoughtToday or TradeStatType.BoughtThisWeek or TradeStatType.BoughtLastWeek or TradeStatType.BoughtMonth or TradeStatType.BoughtYear 
+                    case TradeStatType.BoughtToday or TradeStatType.BoughtThisWeek or TradeStatType.BoughtLastWeek or TradeStatType.BoughtMonth or TradeStatType.BoughtLastMonth or TradeStatType.BoughtYear
                         or TradeStatType.BoughtTotal:
                         switch (trade.Type)
                         {
                             case TradeType.Mail when trade.MailType is MailType.MarketplaceBuyOrderFinished or MailType.MarketplaceBuyOrderExpired:
                             case TradeType.InstantBuy:
                             case TradeType.ManualBuy:
+                            case TradeType.Crafting:
                                 return true;
                         }
                         break;
-                    case TradeStatType.TaxesToday or TradeStatType.TaxesThisWeek or TradeStatType.TaxesLastWeek or TradeStatType.TaxesMonth or TradeStatType.TaxesYear 
+                    case TradeStatType.TaxesToday or TradeStatType.TaxesThisWeek or TradeStatType.TaxesLastWeek or TradeStatType.TaxesMonth or TradeStatType.TaxesLastMonth or TradeStatType.TaxesYear
                         or TradeStatType.TaxesTotal:
                         switch (trade.Type)
                         {
@@ -180,27 +185,28 @@ public class TradeStatsObject : INotifyPropertyChanged
             {
                 return type switch
                 {
-                    TradeStatType.SoldToday or TradeStatType.SoldThisWeek or TradeStatType.SoldLastWeek or TradeStatType.SoldMonth or TradeStatType.SoldYear => trade.Type switch
+                    TradeStatType.SoldToday or TradeStatType.SoldThisWeek or TradeStatType.SoldLastWeek or TradeStatType.SoldMonth or TradeStatType.SoldLastMonth or TradeStatType.SoldYear => trade.Type switch
                     {
                         TradeType.Mail => trade.MailContent.TotalPrice.IntegerValue,
                         TradeType.InstantSell => trade.InstantBuySellContent.TotalPrice.IntegerValue,
                         TradeType.ManualSell => trade.InstantBuySellContent.TotalPrice.IntegerValue,
                         _ => 0
                     },
-                    TradeStatType.BoughtToday or TradeStatType.BoughtThisWeek or TradeStatType.BoughtLastWeek or TradeStatType.BoughtMonth or TradeStatType.BoughtYear => trade.Type switch
+                    TradeStatType.BoughtToday or TradeStatType.BoughtThisWeek or TradeStatType.BoughtLastWeek or TradeStatType.BoughtMonth or TradeStatType.BoughtLastMonth or TradeStatType.BoughtYear => trade.Type switch
                     {
                         TradeType.Mail => trade.MailContent.TotalPriceWithDeductedTaxes.IntegerValue,
                         TradeType.InstantBuy => trade.InstantBuySellContent.TotalPrice.IntegerValue,
                         TradeType.ManualBuy => trade.InstantBuySellContent.TotalPrice.IntegerValue,
+                        TradeType.Crafting => trade.InstantBuySellContent.TotalPrice.IntegerValue,
                         _ => 0
                     },
-                    TradeStatType.TaxesToday or TradeStatType.TaxesThisWeek or TradeStatType.TaxesLastWeek or TradeStatType.TaxesMonth or TradeStatType.TaxesYear 
+                    TradeStatType.TaxesToday or TradeStatType.TaxesThisWeek or TradeStatType.TaxesLastWeek or TradeStatType.TaxesMonth or TradeStatType.TaxesLastMonth or TradeStatType.TaxesYear
                         or TradeStatType.TaxesTotal => trade.Type switch
-                    {
-                        TradeType.Mail => trade.MailContent.TaxSetupPrice.IntegerValue + trade.MailContent.TaxPrice.IntegerValue,
-                        TradeType.InstantSell => trade.InstantBuySellContent.TaxPrice.IntegerValue,
-                        _ => 0
-                    },
+                        {
+                            TradeType.Mail => trade.MailContent.TaxSetupPrice.IntegerValue + trade.MailContent.TaxPrice.IntegerValue,
+                            TradeType.InstantSell => trade.InstantBuySellContent.TaxPrice.IntegerValue,
+                            _ => 0
+                        },
                     TradeStatType.SoldTotal => trade.Type switch
                     {
                         TradeType.Mail => trade.MailContent.TotalPrice.IntegerValue,
@@ -213,6 +219,7 @@ public class TradeStatsObject : INotifyPropertyChanged
                         TradeType.Mail => trade.MailContent.TotalPrice.IntegerValue,
                         TradeType.InstantBuy => trade.InstantBuySellContent.TotalPrice.IntegerValue,
                         TradeType.ManualBuy => trade.InstantBuySellContent.TotalPrice.IntegerValue,
+                        TradeType.Crafting => trade.InstantBuySellContent.TotalPrice.IntegerValue,
                         _ => 0
                     },
                     _ => 0
@@ -221,26 +228,6 @@ public class TradeStatsObject : INotifyPropertyChanged
     }
 
     #endregion
-
-    public bool IsMostExpensiveSaleItemFromMail
-    {
-        get => _isMostExpensiveSaleItemFromMail;
-        set
-        {
-            _isMostExpensiveSaleItemFromMail = value;
-            OnPropertyChanged();
-        }
-    }
-
-    public bool IsMostExpensivePurchasedItemFromMail
-    {
-        get => _isMostExpensivePurchasedItemFromMail;
-        set
-        {
-            _isMostExpensivePurchasedItemFromMail = value;
-            OnPropertyChanged();
-        }
-    }
 
     public long SoldToday
     {
@@ -278,6 +265,16 @@ public class TradeStatsObject : INotifyPropertyChanged
         set
         {
             _soldMonth = value;
+            OnPropertyChanged();
+        }
+    }
+
+    public long SoldLastMonth
+    {
+        get => _soldLastMonth;
+        set
+        {
+            _soldLastMonth = value;
             OnPropertyChanged();
         }
     }
@@ -328,6 +325,16 @@ public class TradeStatsObject : INotifyPropertyChanged
         set
         {
             _boughtMonth = value;
+            OnPropertyChanged();
+        }
+    }
+
+    public long BoughtLastMonth
+    {
+        get => _boughtLastMonth;
+        set
+        {
+            _boughtLastMonth = value;
             OnPropertyChanged();
         }
     }
@@ -402,6 +409,16 @@ public class TradeStatsObject : INotifyPropertyChanged
         }
     }
 
+    public long SalesLastMonth
+    {
+        get => _salesLastMonth;
+        set
+        {
+            _salesLastMonth = value;
+            OnPropertyChanged();
+        }
+    }
+
     public long SalesYear
     {
         get => _salesYear;
@@ -462,6 +479,16 @@ public class TradeStatsObject : INotifyPropertyChanged
         }
     }
 
+    public long TaxesLastMonth
+    {
+        get => _taxesLastMonth;
+        set
+        {
+            _taxesLastMonth = value;
+            OnPropertyChanged();
+        }
+    }
+
     public long TaxesYear
     {
         get => _taxesYear;
@@ -502,52 +529,19 @@ public class TradeStatsObject : INotifyPropertyChanged
         }
     }
 
-    public static string TranslationSoldToday => LanguageController.Translation("SOLD_TODAY");
-    public static string TranslationSoldThisWeek => LanguageController.Translation("SOLD_THIS_WEEK");
-    public static string TranslationSoldLastWeek => LanguageController.Translation("SOLD_LAST_WEEK");
-    public static string TranslationSoldMonth => LanguageController.Translation("SOLD_MONTH");
-    public static string TranslationSoldYear => LanguageController.Translation("SOLD_YEAR");
-    public static string TranslationBoughtToday => LanguageController.Translation("BOUGHT_TODAY");
-    public static string TranslationBoughtThisWeek => LanguageController.Translation("BOUGHT_THIS_WEEK");
-    public static string TranslationBoughtLastWeek => LanguageController.Translation("BOUGHT_LAST_WEEK");
-    public static string TranslationBoughtMonth => LanguageController.Translation("BOUGHT_MONTH");
-    public static string TranslationBoughtYear => LanguageController.Translation("BOUGHT_YEAR");
-    public static string TranslationSoldTotal => LanguageController.Translation("SOLD_TOTAL");
-    public static string TranslationBoughtTotal => LanguageController.Translation("BOUGHT_TOTAL");
-    public static string TranslationTaxesToday => LanguageController.Translation("TAXES_TODAY");
-    public static string TranslationTaxesThisWeek => LanguageController.Translation("TAXES_THIS_WEEK");
-    public static string TranslationTaxesLastWeek => LanguageController.Translation("TAXES_LAST_WEEK");
-    public static string TranslationTaxesMonth => LanguageController.Translation("TAXES_MONTH");
-    public static string TranslationTaxesYear => LanguageController.Translation("TAXES_YEAR");
-    public static string TranslationTaxesTotal => LanguageController.Translation("TAXES_TOTAL");
-    public static string TranslationNetProfitToday => LanguageController.Translation("NET_PROFIT_TODAY");
-    public static string TranslationNetProfitThisWeek => LanguageController.Translation("NET_PROFIT_THIS_WEEK");
-    public static string TranslationNetProfitLastWeek => LanguageController.Translation("NET_PROFIT_LAST_WEEK");
-    public static string TranslationNetProfitMonth => LanguageController.Translation("NET_PROFIT_MONTH");
-    public static string TranslationNetProfitYear => LanguageController.Translation("NET_PROFIT_YEAR");
-    public static string TranslationNetProfitTotal => LanguageController.Translation("NET_PROFIT_TOTAL");
+    public static string TranslationSold => LanguageController.Translation("SOLD");
+    public static string TranslationToday => LanguageController.Translation("TODAY");
+    public static string TranslationThisWeek => LanguageController.Translation("THIS_WEEK");
+    public static string TranslationLastWeek => LanguageController.Translation("LAST_WEEK");
+    public static string TranslationMonth => LanguageController.Translation("MONTH");
+    public static string TranslationLastMonth => LanguageController.Translation("LAST_MONTH");
+    public static string TranslationYear => LanguageController.Translation("YEAR");
+    public static string TranslationTotal => LanguageController.Translation("TOTAL");
+    public static string TranslationBought => LanguageController.Translation("BOUGHT");
+    public static string TranslationTax => LanguageController.Translation("TAX");
+    public static string TranslationNetProfit => LanguageController.Translation("NET_PROFIT");
     public static string TranslationMostExpensiveSale => LanguageController.Translation("MOST_EXPENSIVE_SALE");
     public static string TranslationMostExpensivePurchase => LanguageController.Translation("MOST_EXPENSIVE_PURCHASE");
 
     public static string TranslationSilver => LanguageController.Translation("SILVER");
-
-    public event PropertyChangedEventHandler PropertyChanged;
-
-    [NotifyPropertyChangedInvocator]
-    protected virtual void OnPropertyChanged([CallerMemberName] string propertyName = null)
-    {
-        PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
-    }
-
-    protected bool SetProperty<T>(ref T field, T newValue, [CallerMemberName] string propertyName = null)
-    {
-        if (!Equals(field, newValue))
-        {
-            field = newValue;
-            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
-            return true;
-        }
-
-        return false;
-    }
 }

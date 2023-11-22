@@ -7,9 +7,7 @@ namespace StatisticsAnalysisTool.Network.Events;
 
 public class PartyJoinedEvent
 {
-    public Guid UserGuid { get; private set; } = Guid.Empty;
-    public string Username { get; private set; } = string.Empty;
-    public string GuildName { get; private set; } = string.Empty;
+    public readonly Dictionary<Guid, string> PartyUsers = new();
 
     public PartyJoinedEvent(Dictionary<byte, object> parameters)
     {
@@ -17,19 +15,20 @@ public class PartyJoinedEvent
 
         try
         {
-            if (parameters.TryGetValue(0, out object userGuid))
+            if (parameters.ContainsKey(0) && parameters[0] != null)
             {
-                UserGuid = userGuid.ObjectToGuid() ?? Guid.Empty;
-            }
+                var partyUsersByteArrays = ((object[]) parameters[4]).ToDictionary();
+                var partyUserNameArray = ((string[]) parameters[5]).ToDictionary();
 
-            if (parameters.TryGetValue(1, out object username) && username is string usernameString && !string.IsNullOrEmpty(usernameString))
-            {
-                Username = usernameString;
-            }
-
-            if (parameters.TryGetValue(5, out object guildName) && guildName is string guildNameString && !string.IsNullOrEmpty(guildNameString))
-            {
-                GuildName = guildNameString;
+                for (var i = 0; i < partyUsersByteArrays.Count; i++)
+                {
+                    var guid = partyUsersByteArrays[i].ObjectToGuid();
+                    var name = partyUserNameArray[i];
+                    if (guid != null && !string.IsNullOrEmpty(name))
+                    {
+                        PartyUsers.Add((Guid) guid, name);
+                    }
+                }
             }
         }
         catch (Exception e)

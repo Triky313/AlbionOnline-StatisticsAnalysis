@@ -1,4 +1,4 @@
-﻿using log4net;
+﻿using Serilog;
 using StatisticsAnalysisTool.Enumerations;
 using StatisticsAnalysisTool.Models;
 using StatisticsAnalysisTool.Models.ItemsJsonModel;
@@ -11,8 +11,6 @@ namespace StatisticsAnalysisTool.Common;
 
 public static class CraftingController
 {
-    private static readonly ILog Log = LogManager.GetLogger(MethodBase.GetCurrentMethod()?.DeclaringType);
-
     public static int GetTotalAmountResources(List<CraftingRequirements> craftingRequirements)
     {
         var craftingRequirement = craftingRequirements.FirstOrDefault();
@@ -22,7 +20,7 @@ public static class CraftingController
         }
 
         return craftingRequirement.CraftResource
-            .Where(x => !x.UniqueName.ToUpper().Contains("_ARTEFACT_") && !x.UniqueName.ToUpper().Contains("_FAVOR_"))
+            .Where(x => !x.UniqueName.ToUpper().Contains("_ARTEFACT_") && !x.UniqueName.ToUpper().Contains("_FAVOR_") && !x.UniqueName.ToUpper().Contains("_ALCHEMY_"))
             .Sum(craftResource => craftResource.Count);
     }
 
@@ -36,13 +34,14 @@ public static class CraftingController
         var resources = item.FullItemInformation switch
         {
             Weapon weapon => GetTotalAmountResources(weapon.CraftingRequirements),
+            TransformationWeapon transformationWeapon => GetTotalAmountResources(transformationWeapon.CraftingRequirements),
             EquipmentItem equipmentItem => GetTotalAmountResources(equipmentItem.CraftingRequirements),
             _ => 0
         };
 
-        var totalBaseFame = GetTotalBaseFame(resources, (ItemTier)item.Tier, (ItemLevel)item.Level);
+        var totalBaseFame = GetTotalBaseFame(resources, (ItemTier) item.Tier, (ItemLevel) item.Level);
         var totalJournalFame = totalBaseFame * itemQuantityToBeCrafted;
-        return totalJournalFame / MaxJournalFame((ItemTier)item.Tier);
+        return totalJournalFame / MaxJournalFame((ItemTier) item.Tier);
     }
 
     public static Item GetCraftingJournalItem(int tier, CraftingJournalType craftingJournalType)
@@ -97,10 +96,10 @@ public static class CraftingController
 
         return craftingCategory switch
         {
-            "tools" or "gatherergear" => CraftingJournalType.JournalToolMaker,
+            "tools" or "gatherergear" or "trackingtool" => CraftingJournalType.JournalToolMaker,
             "cloth_helmet" or "cloth_armor" or "cloth_shoes" or "cursestaff" or "firestaff" or "froststaff" or "arcanestaff" or "holystaff" => CraftingJournalType.JournalMage,
             "plate_helmet" or "plate_armor" or "plate_shoes" or "crossbow" or "axe" or "sword" or "hammer" or "mace" or "knuckles" => CraftingJournalType.JournalWarrior,
-            "leather_helmet" or "leather_armor" or "leather_shoes" or "bow" or "naturestaff" or "dagger" or "spear" or "quarterstaff" => CraftingJournalType.JournalHunter,
+            "leather_helmet" or "leather_armor" or "leather_shoes" or "bow" or "naturestaff" or "dagger" or "spear" or "quarterstaff" or "shapeshifterstaff" => CraftingJournalType.JournalHunter,
             _ => CraftingJournalType.Unknown
         };
     }
@@ -109,13 +108,13 @@ public static class CraftingController
     {
         return tier switch
         {
-            ItemTier.T2 => (int)CraftingJournalFame.T2,
-            ItemTier.T3 => (int)CraftingJournalFame.T3,
-            ItemTier.T4 => (int)CraftingJournalFame.T4,
-            ItemTier.T5 => (int)CraftingJournalFame.T5,
-            ItemTier.T6 => (int)CraftingJournalFame.T6,
-            ItemTier.T7 => (int)CraftingJournalFame.T7,
-            ItemTier.T8 => (int)CraftingJournalFame.T8,
+            ItemTier.T2 => (int) CraftingJournalFame.T2,
+            ItemTier.T3 => (int) CraftingJournalFame.T3,
+            ItemTier.T4 => (int) CraftingJournalFame.T4,
+            ItemTier.T5 => (int) CraftingJournalFame.T5,
+            ItemTier.T6 => (int) CraftingJournalFame.T6,
+            ItemTier.T7 => (int) CraftingJournalFame.T7,
+            ItemTier.T8 => (int) CraftingJournalFame.T8,
             _ => 0
         };
     }
@@ -162,27 +161,27 @@ public static class CraftingController
             switch (item.FullItemInformation)
             {
                 case Weapon weapon:
-                {
-                    //var resources = GetTotalAmountResources(weapon.CraftingRequirements);
-                    var itemValue = ItemController.GetItemValue(item.FullItemInformation, item.Level);
-                    return itemQuantity * (foodValue / 44.44 / 100) * (itemValue * 5);
-                    //return itemQuantity * GetSetupFeePerFoodConsumed(foodValue, resources, (ItemTier)item.Tier, (ItemLevel)item.Level, weapon.CraftingRequirements?.FirstOrDefault()?.CraftResource);
-                }
+                    {
+                        //var resources = GetTotalAmountResources(weapon.CraftingRequirements);
+                        var itemValue = ItemController.GetItemValue(item.FullItemInformation, item.Level);
+                        return itemQuantity * (foodValue / 44.44 / 100) * (itemValue * 5);
+                        //return itemQuantity * GetSetupFeePerFoodConsumed(foodValue, resources, (ItemTier)item.Tier, (ItemLevel)item.Level, weapon.CraftingRequirements?.FirstOrDefault()?.CraftResource);
+                    }
                 case EquipmentItem equipmentItem:
-                {
-                    var resources = GetTotalAmountResources(equipmentItem.CraftingRequirements);
-                    return itemQuantity * GetSetupFeePerFoodConsumed(foodValue, resources, (ItemTier)item.Tier, (ItemLevel)item.Level, equipmentItem.CraftingRequirements?.FirstOrDefault()?.CraftResource);
-                }
+                    {
+                        var resources = GetTotalAmountResources(equipmentItem.CraftingRequirements);
+                        return itemQuantity * GetSetupFeePerFoodConsumed(foodValue, resources, (ItemTier) item.Tier, (ItemLevel) item.Level, equipmentItem.CraftingRequirements?.FirstOrDefault()?.CraftResource);
+                    }
                 case Mount mount:
-                {
-                    var resources = GetTotalAmountResources(mount.CraftingRequirements);
-                    return itemQuantity * GetSetupFeePerFoodConsumed(foodValue, resources, (ItemTier)item.Tier, (ItemLevel)item.Level, mount.CraftingRequirements?.FirstOrDefault()?.CraftResource);
-                }
+                    {
+                        var resources = GetTotalAmountResources(mount.CraftingRequirements);
+                        return itemQuantity * GetSetupFeePerFoodConsumed(foodValue, resources, (ItemTier) item.Tier, (ItemLevel) item.Level, mount.CraftingRequirements?.FirstOrDefault()?.CraftResource);
+                    }
                 case ConsumableItem consumableItem:
-                {
-                    var itemValue = ItemController.GetItemValue(item.FullItemInformation, item.Level);
-                    return itemQuantity * (foodValue / 44.44 / 100) * (itemValue * 5);
-                }
+                    {
+                        var itemValue = ItemController.GetItemValue(item.FullItemInformation, item.Level);
+                        return itemQuantity * (foodValue / 44.44 / 100) * (itemValue * 5);
+                    }
             }
 
             return 0;
@@ -190,7 +189,7 @@ public static class CraftingController
         catch (Exception e)
         {
             ConsoleManager.WriteLineForError(MethodBase.GetCurrentMethod()?.DeclaringType, e);
-            Log.Error(MethodBase.GetCurrentMethod()?.DeclaringType, e);
+            Log.Error(e, "{message}", MethodBase.GetCurrentMethod()?.DeclaringType);
             return 0;
         }
     }
@@ -274,7 +273,7 @@ public static class CraftingController
     {
         if (craftingItemQuantity != null && setupFee != null && sellPricePerItem != null && craftingItemQuantity > 0 && setupFee > 0 && sellPricePerItem > 0)
         {
-            return (double)craftingItemQuantity * (double)sellPricePerItem / 100 * (double)setupFee;
+            return (double) craftingItemQuantity * (double) sellPricePerItem / 100 * (double) setupFee;
         }
 
         return 0.0d;

@@ -7,5 +7,6 @@ public enum TradeType
     InstantSell,
     InstantBuy,
     ManualSell,
-    ManualBuy
+    ManualBuy,
+    Crafting
 }

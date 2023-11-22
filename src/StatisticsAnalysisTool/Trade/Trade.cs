@@ -1,19 +1,17 @@
 ﻿using StatisticsAnalysisTool.Common;
 using StatisticsAnalysisTool.Enumerations;
-using StatisticsAnalysisTool.GameData;
+using StatisticsAnalysisTool.GameFileData;
+using StatisticsAnalysisTool.Localization;
 using StatisticsAnalysisTool.Models;
-using StatisticsAnalysisTool.Properties;
 using StatisticsAnalysisTool.Trade.Mails;
 using StatisticsAnalysisTool.Trade.Market;
 using StatisticsAnalysisTool.ViewModels;
 using System;
-using System.ComponentModel;
-using System.Runtime.CompilerServices;
 using System.Windows.Input;
 
 namespace StatisticsAnalysisTool.Trade;
 
-public class Trade : INotifyPropertyChanged
+public class Trade : BaseViewModel
 {
     public long Id { get; init; }
     public long Ticks { get; init; }
@@ -21,6 +19,7 @@ public class Trade : INotifyPropertyChanged
     public string ClusterIndex { get; init; }
     public TradeType Type { get; init; }
     public string Description { get; init; } = string.Empty;
+    public int ItemIndex { get; init; } = -1;
     public string UniqueClusterName => WorldData.GetUniqueNameOrDefault(ClusterIndex);
 
     private bool? _isSelectedForDeletion = false;
@@ -35,7 +34,7 @@ public class Trade : INotifyPropertyChanged
         }
     }
 
-    public Item Item => ItemController.GetItemByUniqueName(MailContent?.UniqueItemName) ?? ItemController.GetItemByUniqueName(AuctionEntry?.ItemTypeId);
+    public Item Item => ItemController.GetItemByIndex(ItemIndex) ?? ItemController.GetItemByUniqueName(MailContent?.UniqueItemName) ?? ItemController.GetItemByUniqueName(AuctionEntry?.ItemTypeId);
 
     #region Mail
 
@@ -99,6 +98,9 @@ public class Trade : INotifyPropertyChanged
                         MailType.MarketplaceBuyOrderExpired => LanguageController.Translation("ADDED_EXPIRED_BUY_ORDER"),
                         _ => LanguageController.Translation("ADDED_UNKNOWN_TRADE")
                     };
+
+                case TradeType.Crafting:
+                    return LanguageController.Translation("ADDED_CRAFTING");
                 case TradeType.Unknown:
                 default:
                     return LanguageController.Translation("ADDED_UNKNOWN_TRADE");
@@ -118,6 +120,7 @@ public class Trade : INotifyPropertyChanged
         TradeType.InstantBuy => LanguageController.Translation("INSTANT_BUY"),
         TradeType.ManualSell => LanguageController.Translation("MANUAL_SELL"),
         TradeType.ManualBuy => LanguageController.Translation("MANUAL_BUY"),
+        TradeType.Crafting => LanguageController.Translation("CRAFTING"),
         TradeType.Mail => LanguageController.Translation("MAIL"),
         _ => LanguageController.Translation("UNKNOWN_TRADE")
     };
@@ -159,12 +162,4 @@ public class Trade : INotifyPropertyChanged
     public ICommand OpenItemWindowCommand => _openItemWindowCommand ??= new CommandHandler(OpenItemWindow, true);
 
     #endregion
-
-    public event PropertyChangedEventHandler PropertyChanged;
-
-    [NotifyPropertyChangedInvocator]
-    protected void OnPropertyChanged([CallerMemberName] string propertyName = null)
-    {
-        PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
-    }
 }

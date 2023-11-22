@@ -16,7 +16,7 @@ public class EnchantmentToEnchantmentList : JsonConverter<List<Enchantment>>
             throw new JsonException("JSON payload expected to start with StartObject or StartArray token.");
         }
 
-        var enchantmentList = new List<Enchantment>();
+        List<Enchantment> enchantmentList;
 
         try
         {
@@ -24,12 +24,12 @@ public class EnchantmentToEnchantmentList : JsonConverter<List<Enchantment>>
             {
                 JsonTokenType.StartArray => SetEnchantmentArray(ref reader),
                 JsonTokenType.StartObject => SetEnchantmentObject(ref reader),
-                _ => enchantmentList
+                _ => new List<Enchantment>()
             };
         }
         catch (Exception)
         {
-            return enchantmentList;
+            return new List<Enchantment>();
         }
 
         return enchantmentList;
@@ -55,60 +55,65 @@ public class EnchantmentToEnchantmentList : JsonConverter<List<Enchantment>>
 
             if (reader.TokenType == JsonTokenType.StartObject)
             {
-                enchantment = new Enchantment();
+                enchantment.Reset();
             }
 
             if (reader.TokenType == JsonTokenType.EndObject)
             {
                 enchantmentList.Add(enchantment);
+                enchantment = new Enchantment();
             }
 
             if (reader.TokenType == JsonTokenType.PropertyName)
             {
                 var propertyName = reader.GetString();
 
-                switch (propertyName)
+                if (propertyName == "@enchantmentlevel")
                 {
-                    case "@enchantmentlevel":
-                        reader.Read();
-                        enchantment.EnchantmentLevel = reader.GetString();
-                        break;
-                    case "@abilitypower":
-                        reader.Read();
-                        enchantment.AbilityPower = reader.GetString();
-                        break;
-                    case "@dummyitempower":
-                        reader.Read();
-                        enchantment.DummyItemPower = reader.GetString();
-                        break;
-                    case "@consumespell":
-                        reader.Read();
-                        enchantment.ConsumeSpell = reader.GetString();
-                        break;
-                    case "@durability":
-                        reader.Read();
-                        if (double.TryParse(reader.GetString(), NumberStyles.Float, CultureInfo.InvariantCulture, out var durabilityResult))
-                        {
-                            enchantment.Durability = durabilityResult;
-                        }
-                        else
-                        {
-                            enchantment.Durability = 0;
-                        }
-                        break;
-                    case "craftingrequirements":
-                        reader.Read();
-                        enchantment.CraftingRequirements = reader.TokenType switch
-                        {
-                            JsonTokenType.StartArray => CraftingRequirementsToCraftingRequirementsList.SetCraftingRequirementsArray(ref reader),
-                            JsonTokenType.StartObject => CraftingRequirementsToCraftingRequirementsList.SetCraftingRequirementsObject(ref reader),
-                            _ => enchantment.CraftingRequirements
-                        };
-                        break;
-                    case "upgraderequirements":
-                        reader.Read();
-                        enchantment.UpgradeRequirements = SetUpgradeRequirements(ref reader);
-                        break;
+                    reader.Read();
+                    enchantment.EnchantmentLevel = reader.GetString();
+                }
+                else if (propertyName == "@abilitypower")
+                {
+                    reader.Read();
+                    enchantment.AbilityPower = reader.GetString();
+                }
+                else if (propertyName == "@dummyitempower")
+                {
+                    reader.Read();
+                    enchantment.DummyItemPower = reader.GetString();
+                }
+                else if (propertyName == "@consumespell")
+                {
+                    reader.Read();
+                    enchantment.ConsumeSpell = reader.GetString();
+                }
+                else if (propertyName == "@durability")
+                {
+                    reader.Read();
+                    if (double.TryParse(reader.GetString(), NumberStyles.Float, CultureInfo.InvariantCulture, out var durabilityResult))
+                    {
+                        enchantment.Durability = durabilityResult;
+                    }
+                    else
+                    {
+                        enchantment.Durability = 0;
+                    }
+                }
+                else if (propertyName == "craftingrequirements")
+                {
+                    reader.Read();
+                    enchantment.CraftingRequirements = reader.TokenType switch
+                    {
+                        JsonTokenType.StartArray => CraftingRequirementsToCraftingRequirementsList.SetCraftingRequirementsArray(ref reader),
+                        JsonTokenType.StartObject => CraftingRequirementsToCraftingRequirementsList.SetCraftingRequirementsObject(ref reader),
+                        _ => enchantment.CraftingRequirements
+                    };
+                }
+                else if (propertyName == "upgraderequirements")
+                {
+                    reader.Read();
+                    enchantment.UpgradeRequirements = SetUpgradeRequirements(ref reader);
                 }
             }
         }

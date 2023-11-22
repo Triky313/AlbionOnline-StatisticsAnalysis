@@ -1,5 +1,4 @@
-﻿using log4net;
-using StatisticsAnalysisTool.Common.UserSettings;
+﻿using StatisticsAnalysisTool.Common.UserSettings;
 using StatisticsAnalysisTool.Models;
 using StatisticsAnalysisTool.Properties;
 using System;
@@ -8,12 +7,12 @@ using System.IO;
 using System.Linq;
 using System.Media;
 using System.Reflection;
+using Serilog;
 
 namespace StatisticsAnalysisTool.Common;
 
 public static class SoundController
 {
-    private static readonly ILog Log = LogManager.GetLogger(MethodBase.GetCurrentMethod()?.DeclaringType);
     public static List<FileInformation> AlertSounds { get; set; } = new();
 
     public static void InitializeSoundFilesFromDirectory()
@@ -58,7 +57,7 @@ public static class SoundController
         catch (Exception e) when (e is InvalidOperationException or UriFormatException or FileNotFoundException or ArgumentException)
         {
             ConsoleManager.WriteLineForError(MethodBase.GetCurrentMethod()?.DeclaringType, e);
-            Log.Error(MethodBase.GetCurrentMethod()?.DeclaringType, e);
+            Log.Error(e, "{message}", MethodBase.GetCurrentMethod()?.DeclaringType);
         }
     }
 
@@ -72,7 +71,7 @@ public static class SoundController
         catch (Exception e) when (e is ArgumentException)
         {
             ConsoleManager.WriteLineForError(MethodBase.GetCurrentMethod()?.DeclaringType, e);
-            Log.Error(MethodBase.GetCurrentMethod()?.DeclaringType, e);
+            Log.Error(e, "{message}", MethodBase.GetCurrentMethod()?.DeclaringType);
             return string.Empty;
         }
     }

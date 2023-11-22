@@ -1,7 +1,8 @@
-using log4net;
+using Serilog;
 using StatisticsAnalysisTool.Common;
+using StatisticsAnalysisTool.Common.UserSettings;
+using StatisticsAnalysisTool.DamageMeter;
 using StatisticsAnalysisTool.Enumerations;
-using StatisticsAnalysisTool.EventLogging.Notification;
 using StatisticsAnalysisTool.Models.ItemsJsonModel;
 using StatisticsAnalysisTool.Models.NetworkModel;
 using StatisticsAnalysisTool.ViewModels;
@@ -18,13 +19,9 @@ namespace StatisticsAnalysisTool.Network.Manager;
 
 public class CombatController
 {
-    private static readonly ILog Log = LogManager.GetLogger(MethodBase.GetCurrentMethod()?.DeclaringType);
-
     private readonly MainWindowViewModel _mainWindowViewModel;
     private readonly TrackingController _trackingController;
     private bool _combatModeWasCombatOver;
-
-    public bool IsDamageMeterActive { get; set; }
 
     public CombatController(TrackingController trackingController, MainWindowViewModel mainWindowViewModel)
     {
@@ -45,9 +42,10 @@ public class CombatController
 
     public event Action<ObservableCollection<DamageMeterFragment>, List<KeyValuePair<Guid, PlayerGameObject>>> OnDamageUpdate;
 
-    public Task AddDamage(long objectId, long causerId, double healthChange, double newHealthValue)
+    public Task AddDamage(long affectedId, long causerId, double healthChange, double newHealthValue)
     {
-        if (!IsDamageMeterActive || objectId == causerId)
+        var healthChangeType = GetHealthChangeType(healthChange);
+        if (!SettingsController.CurrentSettings.IsDamageMeterTrackingActive || (affectedId == causerId && healthChangeType == HealthChangeType.Damage))
         {
             return Task.CompletedTask;
         }
@@ -60,7 +58,7 @@ public class CombatController
             return Task.CompletedTask;
         }
 
-        if (GetHealthChangeType(healthChange) == HealthChangeType.Damage)
+        if (healthChangeType == HealthChangeType.Damage)
         {
             var damageChangeValue = (int) Math.Round(healthChange.ToPositiveFromNegativeOrZero(), MidpointRounding.AwayFromZero);
             if (damageChangeValue <= 0)
@@ -68,10 +66,10 @@ public class CombatController
                 return Task.CompletedTask;
             }
 
-            gameObject.Value.Value.Damage += damageChangeValue;
+            gameObjectValue.Damage += damageChangeValue;
         }
 
-        if (GetHealthChangeType(healthChange) == HealthChangeType.Heal)
+        if (healthChangeType == HealthChangeType.Heal)
         {
             var healChangeValue = healthChange;
             if (healChangeValue <= 0)
@@ -79,17 +77,19 @@ public class CombatController
                 return Task.CompletedTask;
             }
 
-            if (IsMaxHealthReached(objectId, newHealthValue))
+            if (!IsMaxHealthReached(affectedId, newHealthValue))
             {
-                return Task.CompletedTask;
+                gameObjectValue.Heal += (int) Math.Round(healChangeValue, MidpointRounding.AwayFromZero);
             }
-
-            gameObject.Value.Value.Heal += (int) Math.Round(healChangeValue, MidpointRounding.AwayFromZero);
+            else
+            {
+                gameObjectValue.Overhealed += (int) Math.Round(healChangeValue, MidpointRounding.AwayFromZero);
+            }
         }
 
         gameObjectValue.CombatStart ??= DateTime.UtcNow;
 
-        OnDamageUpdate?.Invoke(_mainWindowViewModel?.DamageMeterBindings?.DamageMeter, _trackingController.EntityController.GetAllEntitiesWithDamageOrHeal());
+        OnDamageUpdate?.Invoke(_mainWindowViewModel?.DamageMeterBindings?.DamageMeter, _trackingController.EntityController.GetAllEntitiesWithDamageOrHealAndInParty());
         return Task.CompletedTask;
     }
 
@@ -104,8 +104,8 @@ public class CombatController
 
         _isUiUpdateActive = true;
 
-        var highestDamage = entities.GetHighestDamage();
-        var highestHeal = entities.GetHighestHeal();
+        var currentTotalDamage = entities.GetCurrentTotalDamage();
+        var currentTotalHeal = entities.GetCurrentTotalHeal();
 
         _trackingController.EntityController.DetectUsedWeapon();
 
@@ -119,39 +119,35 @@ public class CombatController
             var fragment = damageMeter.ToList().FirstOrDefault(x => x.CauserGuid == healthChangeObject.Value.UserGuid);
             if (fragment != null)
             {
-                UpdateDamageMeterFragment(fragment, healthChangeObject, entities, highestDamage, highestHeal);
+                UpdateDamageMeterFragment(fragment, healthChangeObject, entities, currentTotalDamage, currentTotalHeal);
             }
             else
             {
-                await AddDamageMeterFragmentAsync(damageMeter, healthChangeObject, entities, highestDamage, highestHeal).ConfigureAwait(true);
+                await AddDamageMeterFragmentAsync(damageMeter, healthChangeObject, entities, currentTotalDamage, currentTotalHeal).ConfigureAwait(true);
             }
 
             Application.Current.Dispatcher.Invoke(() => _mainWindowViewModel.DamageMeterBindings?.SetDamageMeterSort());
         }
 
-        if (HasDamageMeterDupes(_mainWindowViewModel?.DamageMeterBindings?.DamageMeter))
-        {
-            await RemoveDuplicatesAsync(_mainWindowViewModel?.DamageMeterBindings?.DamageMeter);
-        }
-
+        await RemoveDuplicatesAsync(_mainWindowViewModel?.DamageMeterBindings?.DamageMeter);
         _isUiUpdateActive = false;
     }
 
     private static void UpdateDamageMeterFragment(DamageMeterFragment fragment, KeyValuePair<Guid, PlayerGameObject> healthChangeObject,
-        List<KeyValuePair<Guid, PlayerGameObject>> entities, long highestDamage, long highestHeal)
+        List<KeyValuePair<Guid, PlayerGameObject>> entities, long currentTotalDamage, long currentTotalHeal)
     {
         var healthChangeObjectValue = healthChangeObject.Value;
 
         if (healthChangeObjectValue?.CharacterEquipment?.MainHand != null)
         {
             var item = ItemController.GetItemByIndex(healthChangeObjectValue.CharacterEquipment?.MainHand);
-            fragment.CauserMainHand = ((ItemJsonObject) item?.FullItemInformation)?.ItemType == ItemType.Weapon ? item : null;
+            fragment.CauserMainHand = ((ItemJsonObject) item?.FullItemInformation)?.ItemType is ItemType.TransformationWeapon or ItemType.Weapon ? item : null;
         }
 
         // Damage
         if (healthChangeObjectValue?.Damage > 0)
         {
-            fragment.DamageInPercent = (double) healthChangeObjectValue.Damage / highestDamage * 100;
+            fragment.DamageInPercent = (double) healthChangeObjectValue.Damage / currentTotalDamage * 100;
             fragment.Damage = healthChangeObjectValue.Damage;
         }
 
@@ -163,7 +159,7 @@ public class CombatController
         // Heal
         if (healthChangeObjectValue?.Heal > 0)
         {
-            fragment.HealInPercent = (double) healthChangeObjectValue.Heal / highestHeal * 100;
+            fragment.HealInPercent = (double) healthChangeObjectValue.Heal / currentTotalHeal * 100;
             fragment.Heal = healthChangeObjectValue.Heal;
         }
 
@@ -172,21 +168,32 @@ public class CombatController
             fragment.Hps = healthChangeObjectValue.Hps;
         }
 
+        if (healthChangeObjectValue?.Overhealed > 0)
+        {
+            fragment.Overhealed = healthChangeObjectValue.Overhealed;
+        }
+
         // Generally
         if (healthChangeObjectValue != null)
         {
             fragment.CombatTime = healthChangeObjectValue.CombatTime;
             fragment.DamagePercentage = entities.GetDamagePercentage(healthChangeObjectValue.Damage);
             fragment.HealPercentage = entities.GetHealPercentage(healthChangeObjectValue.Heal);
+            fragment.OverhealedPercentageOfTotalHealing = GetOverhealedPercentageOfHealWithOverhealed(healthChangeObjectValue.Overhealed, healthChangeObjectValue.Heal);
         }
     }
 
+    public static double GetOverhealedPercentageOfHealWithOverhealed(double overhealed, double heal)
+    {
+        return 100.00 / (heal + overhealed) * overhealed;
+    }
+
     private static async Task AddDamageMeterFragmentAsync(ICollection<DamageMeterFragment> damageMeter, KeyValuePair<Guid, PlayerGameObject> healthChangeObject,
-        List<KeyValuePair<Guid, PlayerGameObject>> entities, long highestDamage, long highestHeal)
+        List<KeyValuePair<Guid, PlayerGameObject>> entities, long currentTotalDamage, long currentTotalHeal)
     {
         if (healthChangeObject.Value == null
-            || (double.IsNaN(healthChangeObject.Value.Damage) && double.IsNaN(healthChangeObject.Value.Heal))
-            || (healthChangeObject.Value.Damage <= 0 && healthChangeObject.Value.Heal <= 0))
+            || (double.IsNaN(healthChangeObject.Value.Damage) && double.IsNaN(healthChangeObject.Value.Heal) && double.IsNaN(healthChangeObject.Value.Overhealed))
+            || (healthChangeObject.Value.Damage <= 0 && healthChangeObject.Value.Heal <= 0 && healthChangeObject.Value.Overhealed <= 0))
         {
             return;
         }
@@ -199,13 +206,15 @@ public class CombatController
             CauserGuid = healthChangeObjectValue.UserGuid,
             Damage = healthChangeObjectValue.Damage,
             Dps = healthChangeObjectValue.Dps,
-            DamageInPercent = (double) healthChangeObjectValue.Damage / highestDamage * 100,
+            DamageInPercent = (double) healthChangeObjectValue.Damage / currentTotalDamage * 100,
             DamagePercentage = entities.GetDamagePercentage(healthChangeObjectValue.Damage),
 
             Heal = healthChangeObjectValue.Heal,
             Hps = healthChangeObjectValue.Hps,
-            HealInPercent = (double) healthChangeObjectValue.Heal / highestHeal * 100,
+            HealInPercent = (double) healthChangeObjectValue.Heal / currentTotalHeal * 100,
             HealPercentage = entities.GetHealPercentage(healthChangeObjectValue.Heal),
+            Overhealed = healthChangeObjectValue.Overhealed,
+            OverhealedPercentageOfTotalHealing = GetOverhealedPercentageOfHealWithOverhealed(healthChangeObjectValue.Overhealed, healthChangeObjectValue.Heal),
 
             Name = healthChangeObjectValue.Name,
             CauserMainHand = item
@@ -219,11 +228,16 @@ public class CombatController
 
     private static bool HasDamageMeterDupes(IEnumerable<DamageMeterFragment> damageMeter)
     {
-        return damageMeter.ToList().GroupBy(x => x.Name).Any(g => g.Count() > 1);
+        return damageMeter?.ToList().GroupBy(x => x?.Name).Any(g => g.Count() > 1) ?? false;
     }
 
-    private static async Task RemoveDuplicatesAsync(ObservableCollection<DamageMeterFragment> damageMeter)
+    private static async Task RemoveDuplicatesAsync(ICollection<DamageMeterFragment> damageMeter)
     {
+        if (!HasDamageMeterDupes(damageMeter))
+        {
+            return;
+        }
+
         await Application.Current.Dispatcher.InvokeAsync(() =>
         {
             var damageMeterWithoutDupes = (from dmf in damageMeter.ToList()
@@ -302,6 +316,7 @@ public class CombatController
         _trackingController.EntityController.ResetEntitiesDamageTimes();
         _trackingController.EntityController.ResetEntitiesDamage();
         _trackingController.EntityController.ResetEntitiesHeal();
+        _trackingController.EntityController.ResetEntitiesHealAndOverhealed();
         _trackingController.EntityController.ResetEntitiesDamageStartTime();
 
         Application.Current?.Dispatcher?.InvokeAsync(() =>
@@ -310,35 +325,41 @@ public class CombatController
         });
     }
 
-    public ConcurrentDictionary<long, double> LastPlayersHealth = new();
+    public ConcurrentDictionary<Guid, double> LastPlayersHealth = new();
 
     public bool IsMaxHealthReached(long objectId, double newHealthValue)
     {
-        var playerHealth = LastPlayersHealth?.ToArray().FirstOrDefault(x => x.Key == objectId);
+        var gameObject = _trackingController?.EntityController?.GetEntity(objectId);
+        var playerHealth = LastPlayersHealth?.ToArray().FirstOrDefault(x => x.Key == gameObject?.Value?.UserGuid);
         if (playerHealth?.Value.CompareTo(newHealthValue) == 0)
         {
             return true;
         }
 
-        SetLastPlayersHealth(objectId, newHealthValue);
+        SetLastPlayersHealth(gameObject?.Value?.UserGuid, newHealthValue);
         return false;
     }
 
-    private void SetLastPlayersHealth(long key, double value)
+    private void SetLastPlayersHealth(Guid? userGuid, double value)
     {
-        if (LastPlayersHealth.ContainsKey(key))
+        if (userGuid is not { } notNullGuid)
         {
-            LastPlayersHealth[key] = value;
+            return;
+        }
+
+        if (LastPlayersHealth.ContainsKey(notNullGuid))
+        {
+            LastPlayersHealth[notNullGuid] = value;
         }
         else
         {
             try
             {
-                LastPlayersHealth.TryAdd(key, value);
+                LastPlayersHealth.TryAdd(notNullGuid, value);
             }
             catch (Exception e)
             {
-                Log.Warn(MethodBase.GetCurrentMethod()?.DeclaringType, e);
+                Log.Warning(e, "{message}", MethodBase.GetCurrentMethod()?.DeclaringType);
             }
         }
     }
@@ -390,7 +411,7 @@ public class CombatController
             return;
         }
 
-        if (inActiveCombat || inPassiveCombat) playerObject.Value.Value.AddCombatTime(new TimeCollectObject(DateTime.UtcNow));
+        if (inActiveCombat || inPassiveCombat) playerObject.Value.Value.AddCombatTime(new ActionInterval(DateTime.UtcNow));
 
         if (!inActiveCombat && !inPassiveCombat)
         {
@@ -453,7 +474,18 @@ public class CombatController
                 Cape = Random.Next(1867, 1874)
             };
 
-            _trackingController?.EntityController?.AddEntity(i, guid, interactGuid, name, guildName, allianceName, charItem, GameObjectType.Player, GameObjectSubType.Mob);
+            _trackingController?.EntityController?.AddEntity(new Entity
+            {
+                ObjectId = i,
+                UserGuid = guid,
+                InteractGuid = interactGuid,
+                Name = name,
+                Guild = guildName,
+                Alliance = allianceName,
+                CharacterEquipment = charItem,
+                ObjectType = GameObjectType.Player,
+                ObjectSubType = GameObjectSubType.Mob
+            });
             _trackingController?.EntityController?.AddToPartyAsync(guid);
         }
 

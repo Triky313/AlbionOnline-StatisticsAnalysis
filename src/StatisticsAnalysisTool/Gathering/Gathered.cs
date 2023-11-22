@@ -1,16 +1,15 @@
 ﻿using StatisticsAnalysisTool.Cluster;
 using StatisticsAnalysisTool.Common;
+using StatisticsAnalysisTool.Localization;
 using StatisticsAnalysisTool.Models;
 using StatisticsAnalysisTool.Models.ItemsJsonModel;
-using StatisticsAnalysisTool.Properties;
+using StatisticsAnalysisTool.ViewModels;
 using System;
-using System.ComponentModel;
 using System.Globalization;
-using System.Runtime.CompilerServices;
 
 namespace StatisticsAnalysisTool.Gathering;
 
-public class Gathered : INotifyPropertyChanged
+public class Gathered : BaseViewModel
 {
     private int _gainedStandardAmount;
     private int _gainedBonusAmount;
@@ -22,7 +21,7 @@ public class Gathered : INotifyPropertyChanged
     private int _gainedTotalAmount;
     private bool _isSelectedForDeletion;
     private FixPoint _estimatedMarketValue;
-    private string _totalMarketValueWithCulture;
+    private long _totalMarketValueWithCulture;
     private Item _item;
     private readonly bool _hasBeenFished;
 
@@ -51,7 +50,8 @@ public class Gathered : INotifyPropertyChanged
         }
     }
 
-    public Item Item {
+    public Item Item
+    {
         get => _item;
         set
         {
@@ -100,7 +100,7 @@ public class Gathered : INotifyPropertyChanged
         {
             _gainedTotalAmount = value;
 
-            TotalMarketValueWithCulture = Utilities.LongWithCulture(FixPoint.FromFloatingPointValue(_gainedTotalAmount * EstimatedMarketValue.IntegerValue).IntegerValue);
+            TotalMarketValueWithCulture = FixPoint.FromFloatingPointValue(_gainedTotalAmount * EstimatedMarketValue.IntegerValue).IntegerValue;
             OnPropertyChanged();
         }
     }
@@ -140,7 +140,7 @@ public class Gathered : INotifyPropertyChanged
         get => FixPoint.FromFloatingPointValue(GainedTotalAmount * EstimatedMarketValue.IntegerValue);
     }
 
-    public string TotalMarketValueWithCulture
+    public long TotalMarketValueWithCulture
     {
         get => _totalMarketValueWithCulture;
         set
@@ -198,14 +198,5 @@ public class Gathered : INotifyPropertyChanged
             _isSelectedForDeletion = value;
             OnPropertyChanged();
         }
-    }
-
-
-    public event PropertyChangedEventHandler PropertyChanged;
-
-    [NotifyPropertyChangedInvocator]
-    protected virtual void OnPropertyChanged([CallerMemberName] string propertyName = null)
-    {
-        PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
     }
 }

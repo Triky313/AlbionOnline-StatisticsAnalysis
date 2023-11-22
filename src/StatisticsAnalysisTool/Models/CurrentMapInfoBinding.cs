@@ -1,14 +1,12 @@
 ﻿using StatisticsAnalysisTool.Cluster;
 using StatisticsAnalysisTool.Enumerations;
-using StatisticsAnalysisTool.GameData;
-using StatisticsAnalysisTool.Properties;
-using System.ComponentModel;
-using System.Runtime.CompilerServices;
+using StatisticsAnalysisTool.GameFileData;
+using StatisticsAnalysisTool.ViewModels;
 using System.Windows;
 
 namespace StatisticsAnalysisTool.Models;
 
-public class CurrentMapInfoBinding : INotifyPropertyChanged
+public class CurrentMapInfoBinding : BaseViewModel
 {
     private Visibility _currentMapInformationVisibility;
     private string _displayedClusterName;
@@ -71,13 +69,5 @@ public class CurrentMapInfoBinding : INotifyPropertyChanged
         string islandName = !string.IsNullOrEmpty(clusterInfo.InstanceName) ? $"({clusterInfo.InstanceName})" : string.Empty;
 
         DisplayedClusterName = $"{currentMapName} {islandName}";
-    }
-
-    public event PropertyChangedEventHandler PropertyChanged;
-
-    [NotifyPropertyChangedInvocator]
-    protected virtual void OnPropertyChanged([CallerMemberName] string propertyName = null)
-    {
-        PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
     }
 }

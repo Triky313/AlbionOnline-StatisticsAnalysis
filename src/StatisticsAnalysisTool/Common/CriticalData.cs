@@ -1,9 +1,11 @@
-﻿using StatisticsAnalysisTool.Common.UserSettings;
+﻿using System;
+using StatisticsAnalysisTool.Common.UserSettings;
 using StatisticsAnalysisTool.Enumerations;
 using StatisticsAnalysisTool.Network.Manager;
-using StatisticsAnalysisTool.ViewModels;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using System.Reflection;
+using Serilog;
 
 namespace StatisticsAnalysisTool.Common;
 
@@ -25,19 +27,26 @@ public class CriticalData
 
         _saveOnClosing = SaveOnClosing.IsRunning;
 
-        var trackingController = ServiceLocator.Resolve<TrackingController>();
-        var mainWindowViewModel = ServiceLocator.Resolve<MainWindowViewModel>();
-
-        var tasks = new List<Task>
+        try
         {
-            Task.Run(SettingsController.SaveSettings),
-            Task.Run(mainWindowViewModel.SaveLootLogger),
-            Task.Run(async () => { await trackingController?.SaveDataAsync()!; })
-        };
+            var trackingController = ServiceLocator.Resolve<TrackingController>();
 
-        await Task.WhenAll(tasks);
+            var tasks = new List<Task>
+            {
+                Task.Run(SettingsController.SaveSettings),
+                Task.Run(async () => { await trackingController?.SaveDataAsync()!; })
+            };
 
-        _saveOnClosing = SaveOnClosing.Done;
+            await Task.WhenAll(tasks);
+        }
+        catch (KeyNotFoundException e)
+        {
+            Log.Error(e, "{message}", MethodBase.GetCurrentMethod()?.DeclaringType);
+        }
+        finally
+        {
+            _saveOnClosing = SaveOnClosing.Done;
+        }
     }
 
     public static SaveOnClosing GetStatus()

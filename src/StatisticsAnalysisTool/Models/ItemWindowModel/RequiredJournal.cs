@@ -1,19 +1,18 @@
 ﻿using StatisticsAnalysisTool.Common;
 using StatisticsAnalysisTool.Common.UserSettings;
-using StatisticsAnalysisTool.GameData;
+using StatisticsAnalysisTool.GameFileData;
+using StatisticsAnalysisTool.Localization;
 using StatisticsAnalysisTool.ViewModels;
 using System;
 using System.Collections.Generic;
-using System.ComponentModel;
 using System.Linq;
-using System.Runtime.CompilerServices;
 using System.Windows;
 using System.Windows.Input;
 using System.Windows.Media.Imaging;
 
 namespace StatisticsAnalysisTool.Models.ItemWindowModel;
 
-public class RequiredJournal : INotifyPropertyChanged
+public class RequiredJournal : BaseViewModel
 {
     private BitmapImage _icon;
     private string _craftingResourceName;
@@ -56,7 +55,7 @@ public class RequiredJournal : INotifyPropertyChanged
         var sellPriceMin = _marketResponseEmptyJournal?.FirstOrDefault(x => string.Equals(x?.City, Locations.GetParameterName(location), StringComparison.CurrentCultureIgnoreCase))?.SellPriceMin;
         if (sellPriceMin != null)
         {
-            CostsPerJournal = (long)sellPriceMin;
+            CostsPerJournal = (long) sellPriceMin;
         }
     }
 
@@ -72,7 +71,7 @@ public class RequiredJournal : INotifyPropertyChanged
         var sellPriceMin = _marketResponseFullJournal?.FirstOrDefault(x => string.Equals(x?.City, Locations.GetParameterName(location), StringComparison.CurrentCultureIgnoreCase))?.SellPriceMin;
         if (sellPriceMin != null)
         {
-            SellPricePerJournal = (long)sellPriceMin;
+            SellPricePerJournal = (long) sellPriceMin;
         }
     }
 
@@ -198,11 +197,4 @@ public class RequiredJournal : INotifyPropertyChanged
     public string TranslationSellPricePerJournal => LanguageController.Translation("SELL_PRICE_PER_JOURNAL");
     public string TranslationGetPrice => LanguageController.Translation("GET_PRICE");
     public string TranslationTotalWeight => LanguageController.Translation("TOTAL_WEIGHT");
-
-    public event PropertyChangedEventHandler PropertyChanged;
-
-    protected virtual void OnPropertyChanged([CallerMemberName] string propertyName = null)
-    {
-        PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
-    }
 }

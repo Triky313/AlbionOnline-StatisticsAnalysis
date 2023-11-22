@@ -1,16 +1,15 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Reflection;
-using log4net;
+﻿using Serilog;
 using StatisticsAnalysisTool.Common;
 using StatisticsAnalysisTool.Enumerations;
 using StatisticsAnalysisTool.Network.Time;
+using System;
+using System.Collections.Generic;
+using System.Reflection;
 
 namespace StatisticsAnalysisTool.Network.Events;
 
 public class HealthUpdateEvent
 {
-    private static readonly ILog Log = LogManager.GetLogger(MethodBase.GetCurrentMethod()?.DeclaringType);
     public long CauserId;
     public int CausingSpellType;
     public EffectOrigin EffectOrigin;
@@ -18,7 +17,7 @@ public class HealthUpdateEvent
     public double HealthChange;
     public double NewHealthValue;
 
-    public long ObjectId;
+    public long AffectedObjectId;
     public GameTimeStamp TimeStamp;
 
     public HealthUpdateEvent(Dictionary<byte, object> parameters)
@@ -27,55 +26,55 @@ public class HealthUpdateEvent
 
         try
         {
-            if (parameters.ContainsKey(0))
+            if (parameters.TryGetValue(0, out object affectedObjectId))
             {
-                ObjectId = parameters[0].ObjectToLong() ?? throw new ArgumentNullException();
+                AffectedObjectId = affectedObjectId.ObjectToLong() ?? throw new ArgumentNullException();
             }
 
-            if (parameters.ContainsKey(1))
+            if (parameters.TryGetValue(1, out object timestamp))
             {
-                TimeStamp = new GameTimeStamp(parameters[1].ObjectToLong() ?? 0);
+                TimeStamp = new GameTimeStamp(timestamp.ObjectToLong() ?? 0);
             }
 
-            if (parameters.ContainsKey(2))
+            if (parameters.TryGetValue(2, out object healthChange))
             {
-                HealthChange = parameters[2].ObjectToDouble();
+                HealthChange = healthChange.ObjectToDouble();
             }
 
-            if (parameters.ContainsKey(3))
+            if (parameters.TryGetValue(3, out object newHealthValue))
             {
-                NewHealthValue = parameters[3].ObjectToDouble();
+                NewHealthValue = newHealthValue.ObjectToDouble();
             }
 
-            if (parameters.ContainsKey(4))
+            if (parameters.TryGetValue(4, out object effectType))
             {
-                EffectType = (EffectType) (parameters[4] as byte? ?? 0);
+                EffectType = (EffectType) (effectType as byte? ?? 0);
             }
 
-            if (parameters.ContainsKey(5))
+            if (parameters.TryGetValue(5, out object effectOrigin))
             {
-                EffectOrigin = (EffectOrigin) (parameters[5] as byte? ?? 0);
+                EffectOrigin = (EffectOrigin) (effectOrigin as byte? ?? 0);
             }
 
-            if (parameters.ContainsKey(6))
+            if (parameters.TryGetValue(6, out object causerId))
             {
-                CauserId = parameters[6].ObjectToLong() ?? throw new ArgumentNullException();
+                CauserId = causerId.ObjectToLong() ?? throw new ArgumentNullException();
             }
 
-            if (parameters.ContainsKey(7))
+            if (parameters.TryGetValue(7, out object causingSpellType))
             {
-                CausingSpellType = parameters[7].ObjectToShort();
+                CausingSpellType = causingSpellType.ObjectToShort();
             }
         }
         catch (ArgumentNullException ex)
         {
             ConsoleManager.WriteLineForError(MethodBase.GetCurrentMethod()?.DeclaringType, ex);
-            Log.Error(MethodBase.GetCurrentMethod()?.DeclaringType, ex);
+            Log.Error(ex, "{message}", MethodBase.GetCurrentMethod()?.DeclaringType);
         }
         catch (Exception e)
         {
             ConsoleManager.WriteLineForError(MethodBase.GetCurrentMethod()?.DeclaringType, e);
-            Log.Error(MethodBase.GetCurrentMethod()?.DeclaringType, e);
+            Log.Error(e, "{message}", MethodBase.GetCurrentMethod()?.DeclaringType);
         }
     }
 }

@@ -1,16 +1,15 @@
 ﻿using StatisticsAnalysisTool.Common;
+using StatisticsAnalysisTool.Localization;
 using StatisticsAnalysisTool.Network.Manager;
-using StatisticsAnalysisTool.Properties;
 using StatisticsAnalysisTool.Trade.Market;
+using StatisticsAnalysisTool.ViewModels;
 using System;
 using System.Collections.Generic;
-using System.ComponentModel;
-using System.Runtime.CompilerServices;
 using System.Windows.Input;
 
 namespace StatisticsAnalysisTool.Trade;
 
-public class ManuallyTradeMenuObject : INotifyPropertyChanged
+public class ManuallyTradeMenuObject : BaseViewModel
 {
     private List<ManuallyTradeTypeStruct> _manuallyTradeTypes = new();
     private ManuallyTradeTypeStruct _manuallyTradeTypeSelection;
@@ -96,7 +95,7 @@ public class ManuallyTradeMenuObject : INotifyPropertyChanged
         };
 
         var trackingController = ServiceLocator.Resolve<TrackingController>();
-        trackingController?.TradeController?.AddTradeToBindingCollection(trade);
+        trackingController?.TradeController?.AddTradeToBindingCollectionAsync(trade);
     }
 
     private ICommand _addTradeCommand;
@@ -109,12 +108,4 @@ public class ManuallyTradeMenuObject : INotifyPropertyChanged
     public static string TranslationAddTradeManually => LanguageController.Translation("ADD_TRADE_MANUALLY");
     public static string TranslationValue => LanguageController.Translation("VALUE");
     public static string TranslationAddTrade => LanguageController.Translation("ADD_TRADE");
-
-    public event PropertyChangedEventHandler PropertyChanged;
-
-    [NotifyPropertyChangedInvocator]
-    protected virtual void OnPropertyChanged([CallerMemberName] string propertyName = null)
-    {
-        PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
-    }
 }
