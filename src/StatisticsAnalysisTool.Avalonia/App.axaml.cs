@@ -11,6 +11,7 @@ using System;
 using System.ComponentModel;
 using System.IO;
 using System.Reflection;
+using StatisticsAnalysisTool.Avalonia.Http;
 
 namespace StatisticsAnalysisTool.Avalonia;
 
@@ -37,6 +38,8 @@ public partial class App : Application
         ConfigureServices(serviceCollection);
         ServiceProvider = serviceCollection.BuildServiceProvider();
 
+        // TODO: Add tool Updater
+
         if (ApplicationLifetime is IClassicDesktopStyleApplicationLifetime desktop)
         {
             desktop.MainWindow = new MainWindow
@@ -59,7 +62,7 @@ public partial class App : Application
 
     private void ConfigureServices(IServiceCollection services)
     {
-        //services.AddSingleton<IHttpClientUtils, HttpClientUtils>();
+        services.AddSingleton<IHttpClientUtils, HttpClientUtils>();
         //services.AddSingleton<IAutoUpdateController, AutoUpdateController>();
         //services.AddSingleton<ISettingsController, SettingsController>();
 
@@ -112,7 +115,7 @@ public partial class App : Application
     private static void InitLogger()
     {
         const string logFolderName = "logs";
-        DirectoryController.CreateDirectoryWhenNotExists(Path.Combine(AppDomain.CurrentDomain.BaseDirectory, logFolderName));
+        //DirectoryController.CreateDirectoryWhenNotExists(Path.Combine(AppDomain.CurrentDomain.BaseDirectory, logFolderName));
 
         Log.Logger = new LoggerConfiguration()
             .WriteTo.Console()
@@ -139,23 +142,23 @@ public partial class App : Application
 
     private void AppClosesProcess()
     {
-        if (_isEarlyShutdown || ServiceProvider.GetService(typeof(ITrackingController)) is null)
-        {
-            return;
-        }
+        //if (_isEarlyShutdown || ServiceProvider.GetService(typeof(ITrackingController)) is null)
+        //{
+        //    return;
+        //}
 
-        var backupController = ServiceProvider.GetRequiredService<IBackupController>();
-        var trackingController = ServiceProvider.GetRequiredService<ITrackingController>();
-        var networkManager = ServiceProvider.GetRequiredService<INetworkManager>();
-        var settingsController = ServiceProvider.GetRequiredService<ISettingsController>();
+        //var backupController = ServiceProvider.GetRequiredService<IBackupController>();
+        //var trackingController = ServiceProvider.GetRequiredService<ITrackingController>();
+        //var networkManager = ServiceProvider.GetRequiredService<INetworkManager>();
+        //var settingsController = ServiceProvider.GetRequiredService<ISettingsController>();
 
-        networkManager.Stop();
-        trackingController.StopTracking();
-        trackingController.SaveDataAsync();
-        settingsController.SaveSettings();
-        if (!backupController.ExistBackupOnSettingConditions())
-        {
-            backupController.Save();
-        }
+        //networkManager.Stop();
+        //trackingController.StopTracking();
+        //trackingController.SaveDataAsync();
+        //settingsController.SaveSettings();
+        //if (!backupController.ExistBackupOnSettingConditions())
+        //{
+        //    backupController.Save();
+        //}
     }
 }
