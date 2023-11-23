@@ -5,13 +5,13 @@ using Avalonia.Markup.Xaml;
 using Microsoft.Extensions.DependencyInjection;
 using Serilog;
 using Serilog.Events;
+using StatisticsAnalysisTool.Avalonia.Http;
+using StatisticsAnalysisTool.Avalonia.ToolSettings;
 using StatisticsAnalysisTool.Avalonia.ViewModels;
 using StatisticsAnalysisTool.Avalonia.Views;
 using System;
-using System.ComponentModel;
 using System.IO;
 using System.Reflection;
-using StatisticsAnalysisTool.Avalonia.Http;
 
 namespace StatisticsAnalysisTool.Avalonia;
 
@@ -33,18 +33,20 @@ public partial class App : Application
 
         AppDomain.CurrentDomain.UnhandledException += OnUnhandledException;
         InitLogger();
-        
+
         var serviceCollection = new ServiceCollection();
         ConfigureServices(serviceCollection);
         ServiceProvider = serviceCollection.BuildServiceProvider();
 
-        // TODO: Add tool Updater
+        // TODO: Add tool Updater, maybe: https://github.com/NetSparkleUpdater/NetSparkle
+        ServiceProvider.GetRequiredService<ISettingsController>().LoadSettings();
 
+        var mainWindowViewModel = ServiceProvider.GetRequiredService<MainWindowViewModel>();
         if (ApplicationLifetime is IClassicDesktopStyleApplicationLifetime desktop)
         {
             desktop.MainWindow = new MainWindow
             {
-                DataContext = new MainViewModel()
+                DataContext = mainWindowViewModel
             };
             desktop.Exit += OnExit;
             desktop.MainWindow.Closed += OnClosing;
@@ -53,7 +55,7 @@ public partial class App : Application
         {
             singleViewPlatform.MainView = new MainView
             {
-                DataContext = new MainViewModel()
+                DataContext = mainWindowViewModel
             };
         }
 
@@ -63,11 +65,9 @@ public partial class App : Application
     private void ConfigureServices(IServiceCollection services)
     {
         services.AddSingleton<IHttpClientUtils, HttpClientUtils>();
-        //services.AddSingleton<IAutoUpdateController, AutoUpdateController>();
-        //services.AddSingleton<ISettingsController, SettingsController>();
+        services.AddSingleton<ISettingsController, SettingsController>();
 
-        //services.AddSingleton<MainWindowViewModel>();
-        //services.AddSingleton<MainWindowViewModelOld>();
+        services.AddSingleton<MainWindowViewModel>();
 
         //services.AddSingleton<ErrorBarViewModel>();
         //services.AddSingleton<GuildViewModel>();

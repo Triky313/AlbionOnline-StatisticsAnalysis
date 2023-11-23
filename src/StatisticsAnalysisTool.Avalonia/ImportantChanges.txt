@@ -1,0 +1,2 @@
+﻿# Name change
+SettingsObject class -> UserSettings class

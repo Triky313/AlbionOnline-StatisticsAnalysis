@@ -1,0 +1,55 @@
+﻿namespace StatisticsAnalysisTool.Avalonia.ToolSettings;
+
+public static class AppSettings
+{
+    public static string LanguageDirectoryName => "Languages";
+    public static string ImageResources => "ImageResources";
+    public static string IndexedItemsFileName => "IndexedItems.json";
+    public static string DonateUrl => "https://www.paypal.com/donate/?hosted_button_id=N6T3CWXYNGHKC";
+    public static string AutoUpdateConfigUrl => "https://raw.githubusercontent.com/Triky313/AlbionOnline-StatisticsAnalysis/main/src/StatisticsAnalysisTool/ao-update-check.xml";
+    public static string DefaultLanguageCultureName => "en-US";
+    public static bool UpgradeRequired => true;
+    public static string PlayerModeUpdateFileName => "PlayerModeInformation.txt";
+    public static string GitHubRepoUrl => "https://github.com/Triky313/AlbionOnline-StatisticsAnalysis";
+    public static string SoundDirectoryName => "Sounds";
+    public static string ActiveAlertsFileName => "ActiveAlerts.json";
+    public static string WorldDataFileName => "world.json";
+    public static string DungeonRunsFileName => "DungeonRuns.json";
+    public static string LootChestDataFileName => "lootchests.json";
+    public static string DiscordUrl => "https://discord.com/invite/sahSrSPmaJ";
+    public static string FavoriteItemsFileName => "FavoriteItems.json";
+    public static string GameFilesDirectoryName => "GameFiles";
+    public static string SettingsFileName => "Settings.json";
+    public static string ItemSpriteToJournalFileName => "ItemSpriteToJournal.json";
+    public static string ItemsJsonFileName => "Items.json";
+    public static string AutoUpdatePreReleaseConfigUrl => "https://raw.githubusercontent.com/Triky313/AlbionOnline-StatisticsAnalysis/main/src/StatisticsAnalysisTool/ao-pre-release-update-check.xml";
+    public static string StatsFileName => "Stats.json";
+    public static int KeepDashboardStatisticsForDays => -90;
+    public static string MailsFileName => "Mails.json";
+    public static string VaultsFileName => "Vaults.json";
+    public static string PatreonUrl => "PatreonUrl";
+    public static string CraftingNotesFileName => "CraftingNotes.json";
+    public static string PlayerKillsDeathsFileName => "PlayerKillsDeaths.json";
+    public static string TreasureStatsFileName => "TreasureStats.json";
+    public static string DamageMeterSnapshotsFileName => "DamageMeterSnapshots.json";
+    public static string DonationsUrl => "https://raw.githubusercontent.com/Triky313/AlbionOnline-StatisticsAnalysis/main/donations.json";
+    public static string EstimatedMarketValueFileName => "EstimatedMarketValues.json";
+    public static string MobDataFileName => "mobs.json";
+    public static bool IsContainerRepairCostsVisible => false;
+    public static string TempDirecoryName => "TempDirecoryName";
+    public static string GitHubSponsorsUrl => "https://github.com/sponsors/Triky313";
+    public static string TradesFileName => "Trades.json";
+    public static string UserDataDirectoryName => "UserData";
+    public static string GatheringFileName => "Gathering.json";
+    public static string ModifiedMobDataFileName => "mobs-modified.json";
+    public static bool IsDebugMode => false;
+    public static string ModifiedLootChestDataFileName => "lootchest-modified.json";
+    public static string ModifiedWorldDataFileName => "world-modified.json";
+    public static string SpellDataFileName => "spells.json";
+    public static string ModifiedSpellDataFileName => "spells-modified.json";
+    public static string SpellImageResources => "SpellImageResources";
+    public static string BackupDirectoryName => "Backups";
+    public static string MistsDataFileName => "mists.json";
+    public static string ModifiedMistsDataFileName => "mists-modified.json";
+    public static string GuildFileName => "Guild.json";
+}
