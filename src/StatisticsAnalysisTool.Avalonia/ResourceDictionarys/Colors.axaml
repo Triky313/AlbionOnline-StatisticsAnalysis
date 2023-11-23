@@ -1,5 +1,92 @@
 <ResourceDictionary xmlns="https://github.com/avaloniaui"
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+    <Design.PreviewWith>
+        <Border Padding="0" Background="{DynamicResource SolidColorBrush.Background.2}">
+            <StackPanel Orientation="Vertical">
+                <Label Foreground="{DynamicResource SolidColorBrush.Accent.Blue.1}" Height="20" Content="Accent.Blue.1" />
+                <Label Foreground="{DynamicResource SolidColorBrush.Accent.Blue.2}" Height="20" Content="Accent.Blue.2" />
+                <Label Foreground="{DynamicResource SolidColorBrush.Accent.Blue.3}" Height="20" Content="Accent.Blue.3" />
+                <Label Foreground="{DynamicResource SolidColorBrush.Accent.Blue.4}" Height="20" Content="Accent.Blue.4" />
+                <Label Foreground="{DynamicResource SolidColorBrush.Accent.Blue.5}" Height="20" Content="Accent.Blue.5" />
+                <Grid Height="10"/>
+                <Label Foreground="{DynamicResource SolidColorBrush.Accent.Red.1}" Height="20" Content="Accent.Red.1" />
+                <Label Foreground="{DynamicResource SolidColorBrush.Accent.Red.2}" Height="20" Content="Accent.Red.2" />
+                <Label Foreground="{DynamicResource SolidColorBrush.Accent.Red.3}" Height="20" Content="Accent.Red.3" />
+                <Label Foreground="{DynamicResource SolidColorBrush.Accent.Red.4}" Height="20" Content="Accent.Red.4" />
+                <Label Foreground="{DynamicResource SolidColorBrush.Accent.Red.5}" Height="20" Content="Accent.Red.5" />
+                <Label Foreground="{DynamicResource SolidColorBrush.Accent.Red.6}" Height="20" Content="Accent.Red.6" />
+                <Label Foreground="{DynamicResource SolidColorBrush.Accent.Red.7}" Height="20" Content="Accent.Red.7" />
+                <Grid Height="10"/>
+                <Label Foreground="{DynamicResource SolidColorBrush.Accent.Green.1}" Height="20" Content="Accent.Green.1" />
+                <Label Foreground="{DynamicResource SolidColorBrush.Accent.Green.2}" Height="20" Content="Accent.Green.2" />
+                <Label Foreground="{DynamicResource SolidColorBrush.Accent.Green.3}" Height="20" Content="Accent.Green.3" />
+                <Label Foreground="{DynamicResource SolidColorBrush.Accent.Green.4}" Height="20" Content="Accent.Green.4" />
+                <Label Foreground="{DynamicResource SolidColorBrush.Accent.Green.5}" Height="20" Content="Accent.Green.5" />
+                <Label Foreground="{DynamicResource SolidColorBrush.Accent.Green.6}" Height="20" Content="Accent.Green.6" />
+                <Grid Height="10"/>
+                <Label Foreground="{DynamicResource SolidColorBrush.Accent.Yellow.0}" Height="20" Content="Accent.Yellow.0" />
+                <Label Foreground="{DynamicResource SolidColorBrush.Accent.Yellow.1}" Height="20" Content="Accent.Yellow.1" />
+                <Label Foreground="{DynamicResource SolidColorBrush.Accent.Yellow.2}" Height="20" Content="Accent.Yellow.2" />
+                <Grid Height="10"/>
+                <Label Foreground="{DynamicResource SolidColorBrush.City.Default}" Height="20" Content="SolidColorBrush.City.Default" />
+                <Label Foreground="{DynamicResource SolidColorBrush.City.Caerleon}" Height="20" Content="SolidColorBrush.City.Caerleon" />
+                <Label Foreground="{DynamicResource SolidColorBrush.City.Thetford}" Height="20" Content="SolidColorBrush.City.Thetford" />
+                <Label Foreground="{DynamicResource SolidColorBrush.City.Bridgewatch}" Height="20" Content="SolidColorBrush.City.Bridgewatch" />
+                <Label Foreground="{DynamicResource SolidColorBrush.City.Martlock}" Height="20" Content="SolidColorBrush.City.Martlock" />
+                <Label Foreground="{DynamicResource SolidColorBrush.City.Lymhurst}" Height="20" Content="SolidColorBrush.City.Lymhurst" />
+                <Label Foreground="{DynamicResource SolidColorBrush.City.FortSterling}" Height="20" Content="SolidColorBrush.City.FortSterling" />
+                <Label Foreground="{DynamicResource SolidColorBrush.City.Brecilien}" Height="20" Content="SolidColorBrush.City.Brecilien" />
+                <Label Foreground="{DynamicResource SolidColorBrush.City.ArthursRest}" Height="20" Content="SolidColorBrush.City.ArthursRest" />
+                <Label Foreground="{DynamicResource SolidColorBrush.City.MerlynsRest}" Height="20" Content="SolidColorBrush.City.MerlynsRest" />
+                <Label Foreground="{DynamicResource SolidColorBrush.City.MorganasRest}" Height="20" Content="SolidColorBrush.City.MorganasRest" />
+                <Label Foreground="{DynamicResource SolidColorBrush.City.BlackMarket}" Height="20" Content="SolidColorBrush.City.BlackMarket" />
+                <Grid Height="10"/>
+                <Label Foreground="{DynamicResource SolidColorBrush.Dungeon.Mode.Expedition.1}" Height="20" Content="SolidColorBrush.Dungeon.Mode.Expedition.1" />
+                <Label Foreground="{DynamicResource SolidColorBrush.Dungeon.Mode.HellGate.1}" Height="20" Content="SolidColorBrush.Dungeon.Mode.HellGate.1" />
+                <Label Foreground="{DynamicResource SolidColorBrush.Dungeon.Mode.Corrupted.1}" Height="20" Content="SolidColorBrush.Dungeon.Mode.Corrupted.1" />
+                <Label Foreground="{DynamicResource SolidColorBrush.Dungeon.Mode.Solo.1}" Height="20" Content="SolidColorBrush.Dungeon.Mode.Solo.1" />
+                <Label Foreground="{DynamicResource SolidColorBrush.Dungeon.Mode.Standard.1}" Height="20" Content="SolidColorBrush.Dungeon.Mode.Standard.1" />
+                <Label Foreground="{DynamicResource SolidColorBrush.Dungeon.Mode.Avalon.1}" Height="20" Content="SolidColorBrush.Dungeon.Mode.Avalon.1" />
+                <Label Foreground="{DynamicResource SolidColorBrush.Dungeon.Mode.Unknown.1}" Height="20" Content="SolidColorBrush.Dungeon.Mode.Unknown.1" />
+                <Grid Height="10"/>
+                <Label Foreground="{DynamicResource SolidColorBrush.Item.Level.Color.1}" Height="20" Content="SolidColorBrush.Item.Level.Color.1" />
+                <Label Foreground="{DynamicResource SolidColorBrush.Item.Level.Color.2}" Height="20" Content="SolidColorBrush.Item.Level.Color.2" />
+                <Label Foreground="{DynamicResource SolidColorBrush.Item.Level.Color.3}" Height="20" Content="SolidColorBrush.Item.Level.Color.3" />
+                <Label Foreground="{DynamicResource SolidColorBrush.Item.Level.Color.4}" Height="20" Content="SolidColorBrush.Item.Level.Color.4" />
+                <Grid Height="10"/>
+                <Label Foreground="{DynamicResource SolidColorBrush.Text.Color.Pvp}" Height="20" Content="SolidColorBrush.Text.Color.Pvp" />
+                <Label Foreground="{DynamicResource SolidColorBrush.Text.Color.Pve}" Height="20" Content="SolidColorBrush.Text.Color.Pve" />
+                <Grid Height="10"/>
+                <Label Foreground="{DynamicResource SolidColorBrush.Value.Fame}" Height="20" Content="SolidColorBrush.Value.Fame" />
+                <Label Foreground="{DynamicResource SolidColorBrush.Value.Silver}" Height="20" Content="SolidColorBrush.Value.Silver" />
+                <Label Foreground="{DynamicResource SolidColorBrush.Value.ReSpec}" Height="20" Content="SolidColorBrush.Value.ReSpec" />
+                <Label Foreground="{DynamicResource SolidColorBrush.Value.FactionFame}" Height="20" Content="SolidColorBrush.Value.FactionFame" />
+                <Label Foreground="{DynamicResource SolidColorBrush.Value.FactionPoints}" Height="20" Content="SolidColorBrush.Value.FactionPoints" />
+                <Label Foreground="{DynamicResource SolidColorBrush.Value.Might}" Height="20" Content="SolidColorBrush.Value.Might" />
+                <Label Foreground="{DynamicResource SolidColorBrush.Value.Favor}" Height="20" Content="SolidColorBrush.Value.Favor" />
+                <Grid Height="10"/>
+                <Label Foreground="{DynamicResource SolidColorBrush.Weapon.Text}" Height="20" Content="SolidColorBrush.Weapon.Text" />
+                <Label Foreground="{DynamicResource SolidColorBrush.Weapon.Sword}" Height="20" Content="SolidColorBrush.Weapon.Sword" />
+                <Label Foreground="{DynamicResource SolidColorBrush.Weapon.Spear}" Height="20" Content="SolidColorBrush.Weapon.Spear" />
+                <Label Foreground="{DynamicResource SolidColorBrush.Weapon.Quarterstaff}" Height="20" Content="SolidColorBrush.Weapon.Quarterstaff" />
+                <Label Foreground="{DynamicResource SolidColorBrush.Weapon.NatureStaff}" Height="20" Content="SolidColorBrush.Weapon.NatureStaff" />
+                <Label Foreground="{DynamicResource SolidColorBrush.Weapon.Mace}" Height="20" Content="SolidColorBrush.Weapon.Mace" />
+                <Label Foreground="{DynamicResource SolidColorBrush.Weapon.HolyStaff}" Height="20" Content="SolidColorBrush.Weapon.HolyStaff" />
+                <Label Foreground="{DynamicResource SolidColorBrush.Weapon.Hammer}" Height="20" Content="SolidColorBrush.Weapon.Hammer" />
+                <Label Foreground="{DynamicResource SolidColorBrush.Weapon.FrostStaff}" Height="20" Content="SolidColorBrush.Weapon.FrostStaff" />
+                <Label Foreground="{DynamicResource SolidColorBrush.Weapon.FireStaff}" Height="20" Content="SolidColorBrush.Weapon.FireStaff" />
+                <Label Foreground="{DynamicResource SolidColorBrush.Weapon.Dagger}" Height="20" Content="SolidColorBrush.Weapon.Dagger" />
+                <Label Foreground="{DynamicResource SolidColorBrush.Weapon.CursedStaff}" Height="20" Content="SolidColorBrush.Weapon.CursedStaff" />
+                <Label Foreground="{DynamicResource SolidColorBrush.Weapon.Crossbow}" Height="20" Content="SolidColorBrush.Weapon.Crossbow" />
+                <Label Foreground="{DynamicResource SolidColorBrush.Weapon.Bow}" Height="20" Content="SolidColorBrush.Weapon.Bow" />
+                <Label Foreground="{DynamicResource SolidColorBrush.Weapon.Axe}" Height="20" Content="SolidColorBrush.Weapon.Axe" />
+                <Label Foreground="{DynamicResource SolidColorBrush.Weapon.ArcaneStaff}" Height="20" Content="SolidColorBrush.Weapon.ArcaneStaff" />
+                <Label Foreground="{DynamicResource SolidColorBrush.Weapon.Knuckles}" Height="20" Content="SolidColorBrush.Weapon.Knuckles" />
+                <Label Foreground="{DynamicResource SolidColorBrush.Weapon.UnknownWeaponType}" Height="20" Content="SolidColorBrush.Weapon.UnknownWeaponType" />
+                <Label Foreground="{DynamicResource SolidColorBrush.Weapon.HealBar}" Height="20" Content="SolidColorBrush.Weapon.HealBar" />
+            </StackPanel>
+        </Border>
+    </Design.PreviewWith>
 
     <!-- Foreground colors -->
     <Color x:Key="Color.Text.1">#FFE9EDF1</Color>
