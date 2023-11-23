@@ -1,4 +1,4 @@
-﻿using StatisticsAnalysisTool.Network.Manager;
+﻿using StatisticsAnalysisTool.Guild;
 using StatisticsAnalysisTool.Network.Operations;
 using System.Threading.Tasks;
 
@@ -6,16 +6,16 @@ namespace StatisticsAnalysisTool.Network.Handler;
 
 public class GetGuildAccountLogsRequestHandler : RequestPacketHandler<GetGuildAccountLogsRequest>
 {
-    private readonly TrackingController _trackingController;
+    private readonly IGuildController _guildController;
 
-    public GetGuildAccountLogsRequestHandler(TrackingController trackingController) : base((int) OperationCodes.GetGuildAccountLogs)
+    public GetGuildAccountLogsRequestHandler(IGuildController guildController) : base((int) OperationCodes.GetGuildAccountLogs)
     {
-        _trackingController = trackingController;
+        _guildController = guildController;
     }
 
     protected override async Task OnActionAsync(GetGuildAccountLogsRequest value)
     {
-        _trackingController.GuildController.SetTabId(value.TabId);
+        _guildController.SetTabId(value.TabId);
         await Task.CompletedTask;
     }
 }

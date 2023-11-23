@@ -23,6 +23,7 @@ namespace StatisticsAnalysisTool.ViewModels;
 
 public class SettingsWindowViewModel : BaseViewModel
 {
+    private readonly MainWindowViewModelOld _mainWindowViewModel;
     private static ObservableCollection<FileInformation> _languages = new();
     private static FileInformation _languagesSelection;
     private static ObservableCollection<SettingDataInformation> _refreshRates = new();
@@ -54,8 +55,9 @@ public class SettingsWindowViewModel : BaseViewModel
     private string _packetFilter;
     private Visibility _packetFilterVisibility = Visibility.Collapsed;
 
-    public SettingsWindowViewModel()
+    public SettingsWindowViewModel(MainWindowViewModelOld mainWindowViewModel)
     {
+        _mainWindowViewModel = mainWindowViewModel;
         InitializeSettings();
         Translation = new SettingsWindowTranslation();
     }
@@ -110,14 +112,12 @@ public class SettingsWindowViewModel : BaseViewModel
 
     public void SaveSettings()
     {
-        var mainWindowViewModel = ServiceLocator.Resolve<MainWindowViewModel>();
-
         SettingsController.CurrentSettings.RefreshRate = RefreshRatesSelection.Value;
 
         SettingsController.CurrentSettings.PacketProvider = (PacketProviderKind) PacketProviderSelection.Value;
         SettingsController.CurrentSettings.ServerLocation = (ServerLocation) ServerSelection.Value;
         SetPacketFilter();
-        mainWindowViewModel.UpdateServerTypeLabel();
+        _mainWindowViewModel.UpdateServerTypeLabel();
 
         SettingsController.CurrentSettings.AnotherAppToStartPath = AnotherAppToStartPath;
 
@@ -137,7 +137,7 @@ public class SettingsWindowViewModel : BaseViewModel
         SettingsController.CurrentSettings.ExactMatchPlayerNamesLineNumber = PlayerSelectionWithSameNameInDb;
 
         SetAppSettingsAndTranslations();
-        SetNaviTabVisibilities(mainWindowViewModel);
+        SetNaviTabVisibilities();
         SetNotificationFilter();
         SetIconSourceToAnotherAppToStart();
     }
@@ -152,7 +152,7 @@ public class SettingsWindowViewModel : BaseViewModel
         Translation = new SettingsWindowTranslation();
     }
 
-    private void SetNaviTabVisibilities(MainWindowViewModel mainWindowViewModel)
+    private void SetNaviTabVisibilities()
     {
         SettingsController.CurrentSettings.IsDashboardNaviTabActive = TabVisibilities?.FirstOrDefault(x => x?.NavigationTabFilterType == NavigationTabFilterType.Dashboard)?.IsSelected ?? true;
         SettingsController.CurrentSettings.IsItemSearchNaviTabActive = TabVisibilities?.FirstOrDefault(x => x?.NavigationTabFilterType == NavigationTabFilterType.ItemSearch)?.IsSelected ?? true;
@@ -167,18 +167,18 @@ public class SettingsWindowViewModel : BaseViewModel
         SettingsController.CurrentSettings.IsMapHistoryNaviTabActive = TabVisibilities?.FirstOrDefault(x => x?.NavigationTabFilterType == NavigationTabFilterType.MapHistory)?.IsSelected ?? true;
         SettingsController.CurrentSettings.IsPlayerInformationNaviTabActive = TabVisibilities?.FirstOrDefault(x => x?.NavigationTabFilterType == NavigationTabFilterType.PlayerInformation)?.IsSelected ?? true;
 
-        mainWindowViewModel.DashboardTabVisibility = SettingsController.CurrentSettings.IsDashboardNaviTabActive.BoolToVisibility();
-        mainWindowViewModel.ItemSearchTabVisibility = SettingsController.CurrentSettings.IsItemSearchNaviTabActive.BoolToVisibility();
-        mainWindowViewModel.LoggingTabVisibility = SettingsController.CurrentSettings.IsLoggingNaviTabActive.BoolToVisibility();
-        mainWindowViewModel.DungeonsTabVisibility = SettingsController.CurrentSettings.IsDungeonsNaviTabActive.BoolToVisibility();
-        mainWindowViewModel.DamageMeterTabVisibility = SettingsController.CurrentSettings.IsDamageMeterNaviTabActive.BoolToVisibility();
-        mainWindowViewModel.TradeMonitoringTabVisibility = SettingsController.CurrentSettings.IsTradeMonitoringNaviTabActive.BoolToVisibility();
-        mainWindowViewModel.GatheringTabVisibility = SettingsController.CurrentSettings.IsGatheringNaviTabActive.BoolToVisibility();
-        mainWindowViewModel.PartyBuilderTabVisibility = SettingsController.CurrentSettings.IsPartyBuilderNaviTabActive.BoolToVisibility();
-        mainWindowViewModel.StorageHistoryTabVisibility = SettingsController.CurrentSettings.IsStorageHistoryNaviTabActive.BoolToVisibility();
-        mainWindowViewModel.MapHistoryTabVisibility = SettingsController.CurrentSettings.IsMapHistoryNaviTabActive.BoolToVisibility();
-        mainWindowViewModel.PlayerInformationTabVisibility = SettingsController.CurrentSettings.IsPlayerInformationNaviTabActive.BoolToVisibility();
-        mainWindowViewModel.GuildTabVisibility = SettingsController.CurrentSettings.IsGuildTabActive.BoolToVisibility();
+        _mainWindowViewModel.DashboardTabVisibility = SettingsController.CurrentSettings.IsDashboardNaviTabActive.BoolToVisibility();
+        _mainWindowViewModel.ItemSearchTabVisibility = SettingsController.CurrentSettings.IsItemSearchNaviTabActive.BoolToVisibility();
+        _mainWindowViewModel.LoggingTabVisibility = SettingsController.CurrentSettings.IsLoggingNaviTabActive.BoolToVisibility();
+        _mainWindowViewModel.DungeonsTabVisibility = SettingsController.CurrentSettings.IsDungeonsNaviTabActive.BoolToVisibility();
+        _mainWindowViewModel.DamageMeterTabVisibility = SettingsController.CurrentSettings.IsDamageMeterNaviTabActive.BoolToVisibility();
+        _mainWindowViewModel.TradeMonitoringTabVisibility = SettingsController.CurrentSettings.IsTradeMonitoringNaviTabActive.BoolToVisibility();
+        _mainWindowViewModel.GatheringTabVisibility = SettingsController.CurrentSettings.IsGatheringNaviTabActive.BoolToVisibility();
+        _mainWindowViewModel.PartyBuilderTabVisibility = SettingsController.CurrentSettings.IsPartyBuilderNaviTabActive.BoolToVisibility();
+        _mainWindowViewModel.StorageHistoryTabVisibility = SettingsController.CurrentSettings.IsStorageHistoryNaviTabActive.BoolToVisibility();
+        _mainWindowViewModel.MapHistoryTabVisibility = SettingsController.CurrentSettings.IsMapHistoryNaviTabActive.BoolToVisibility();
+        _mainWindowViewModel.PlayerInformationTabVisibility = SettingsController.CurrentSettings.IsPlayerInformationNaviTabActive.BoolToVisibility();
+        _mainWindowViewModel.GuildTabVisibility = SettingsController.CurrentSettings.IsGuildTabActive.BoolToVisibility();
     }
 
     private void SetPacketFilter()
@@ -377,19 +377,18 @@ public class SettingsWindowViewModel : BaseViewModel
             Name = MainWindowTranslation.PlayerInformation
         });
 
-        var mainWindowViewModel = ServiceLocator.Resolve<MainWindowViewModel>();
-        mainWindowViewModel.DashboardTabVisibility = SettingsController.CurrentSettings.IsDashboardNaviTabActive.BoolToVisibility();
-        mainWindowViewModel.ItemSearchTabVisibility = SettingsController.CurrentSettings.IsItemSearchNaviTabActive.BoolToVisibility();
-        mainWindowViewModel.LoggingTabVisibility = SettingsController.CurrentSettings.IsLoggingNaviTabActive.BoolToVisibility();
-        mainWindowViewModel.DungeonsTabVisibility = SettingsController.CurrentSettings.IsDungeonsNaviTabActive.BoolToVisibility();
-        mainWindowViewModel.DamageMeterTabVisibility = SettingsController.CurrentSettings.IsDamageMeterNaviTabActive.BoolToVisibility();
-        mainWindowViewModel.TradeMonitoringTabVisibility = SettingsController.CurrentSettings.IsTradeMonitoringNaviTabActive.BoolToVisibility();
-        mainWindowViewModel.GatheringTabVisibility = SettingsController.CurrentSettings.IsGatheringNaviTabActive.BoolToVisibility();
-        mainWindowViewModel.PartyBuilderTabVisibility = SettingsController.CurrentSettings.IsPartyBuilderNaviTabActive.BoolToVisibility();
-        mainWindowViewModel.StorageHistoryTabVisibility = SettingsController.CurrentSettings.IsStorageHistoryNaviTabActive.BoolToVisibility();
-        mainWindowViewModel.MapHistoryTabVisibility = SettingsController.CurrentSettings.IsMapHistoryNaviTabActive.BoolToVisibility();
-        mainWindowViewModel.PlayerInformationTabVisibility = SettingsController.CurrentSettings.IsPlayerInformationNaviTabActive.BoolToVisibility();
-        mainWindowViewModel.GuildTabVisibility = SettingsController.CurrentSettings.IsGuildTabActive.BoolToVisibility();
+        _mainWindowViewModel.DashboardTabVisibility = SettingsController.CurrentSettings.IsDashboardNaviTabActive.BoolToVisibility();
+        _mainWindowViewModel.ItemSearchTabVisibility = SettingsController.CurrentSettings.IsItemSearchNaviTabActive.BoolToVisibility();
+        _mainWindowViewModel.LoggingTabVisibility = SettingsController.CurrentSettings.IsLoggingNaviTabActive.BoolToVisibility();
+        _mainWindowViewModel.DungeonsTabVisibility = SettingsController.CurrentSettings.IsDungeonsNaviTabActive.BoolToVisibility();
+        _mainWindowViewModel.DamageMeterTabVisibility = SettingsController.CurrentSettings.IsDamageMeterNaviTabActive.BoolToVisibility();
+        _mainWindowViewModel.TradeMonitoringTabVisibility = SettingsController.CurrentSettings.IsTradeMonitoringNaviTabActive.BoolToVisibility();
+        _mainWindowViewModel.GatheringTabVisibility = SettingsController.CurrentSettings.IsGatheringNaviTabActive.BoolToVisibility();
+        _mainWindowViewModel.PartyBuilderTabVisibility = SettingsController.CurrentSettings.IsPartyBuilderNaviTabActive.BoolToVisibility();
+        _mainWindowViewModel.StorageHistoryTabVisibility = SettingsController.CurrentSettings.IsStorageHistoryNaviTabActive.BoolToVisibility();
+        _mainWindowViewModel.MapHistoryTabVisibility = SettingsController.CurrentSettings.IsMapHistoryNaviTabActive.BoolToVisibility();
+        _mainWindowViewModel.PlayerInformationTabVisibility = SettingsController.CurrentSettings.IsPlayerInformationNaviTabActive.BoolToVisibility();
+        _mainWindowViewModel.GuildTabVisibility = SettingsController.CurrentSettings.IsGuildTabActive.BoolToVisibility();
     }
 
     private void InitNotificationAreas()

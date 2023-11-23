@@ -1,4 +1,5 @@
-﻿using Serilog;
+﻿using Microsoft.Extensions.DependencyInjection;
+using Serilog;
 using StatisticsAnalysisTool.Common;
 using StatisticsAnalysisTool.Common.UserSettings;
 using StatisticsAnalysisTool.DamageMeter;
@@ -31,8 +32,7 @@ public partial class DamageMeterControl
 
         if (dialogResult is true)
         {
-            var trackingController = ServiceLocator.Resolve<TrackingController>();
-            trackingController?.CombatController?.ResetDamageMeter();
+            App.ServiceProvider.GetRequiredService<ICombatController>()?.ResetDamageMeter();
         }
     }
 
@@ -47,7 +47,7 @@ public partial class DamageMeterControl
             }
             else
             {
-                var vm = (MainWindowViewModel) DataContext;
+                var vm = (MainWindowViewModelOld) DataContext;
                 var itemWindow = new DamageMeterWindow(vm?.DamageMeterBindings?.DamageMeter);
                 itemWindow.Show();
             }
@@ -64,7 +64,7 @@ public partial class DamageMeterControl
         var output = string.Empty;
         var counter = 1;
 
-        var vm = (MainWindowViewModel) DataContext;
+        var vm = (MainWindowViewModelOld) DataContext;
 
         var damageMeterSortType = vm?.DamageMeterBindings?.DamageMeterSortSelection.DamageMeterSortType;
 
@@ -133,7 +133,7 @@ public partial class DamageMeterControl
 
     private void DamageMeterModeActiveToggle_MouseUp(object sender, MouseButtonEventArgs e)
     {
-        var mainWindowViewModel = ServiceLocator.Resolve<MainWindowViewModel>();
+        var mainWindowViewModel = App.ServiceProvider.GetRequiredService<MainWindowViewModelOld>();
         mainWindowViewModel.IsDamageMeterTrackingActive = !mainWindowViewModel.IsDamageMeterTrackingActive;
     }
 
@@ -144,13 +144,13 @@ public partial class DamageMeterControl
 
     private void OpenDamageMeterInfoPopup_MouseEnter(object sender, MouseEventArgs e)
     {
-        var vm = (MainWindowViewModel) DataContext;
+        var vm = (MainWindowViewModelOld) DataContext;
         vm.IsDamageMeterPopupVisible = Visibility.Visible;
     }
 
     private void CloseDamageMeterInfoPopup_MouseLeave(object sender, MouseEventArgs e)
     {
-        var vm = (MainWindowViewModel) DataContext;
+        var vm = (MainWindowViewModelOld) DataContext;
         vm.IsDamageMeterPopupVisible = Visibility.Hidden;
     }
 
@@ -171,19 +171,19 @@ public partial class DamageMeterControl
 
     private void DeleteAllDamageMeterSnapshots_MouseUp(object sender, MouseButtonEventArgs e)
     {
-        var vm = (MainWindowViewModel) DataContext;
+        var vm = (MainWindowViewModelOld) DataContext;
         vm?.DamageMeterBindings?.DeleteAllSnapshots();
     }
 
     private void TakeASnapShot_MouseUp(object sender, MouseButtonEventArgs e)
     {
-        var vm = (MainWindowViewModel) DataContext;
+        var vm = (MainWindowViewModelOld) DataContext;
         vm?.DamageMeterBindings?.GetSnapshot();
     }
 
     private void BtnDeleteSelectedSnapshot_Click(object sender, RoutedEventArgs e)
     {
-        var vm = (MainWindowViewModel) DataContext;
+        var vm = (MainWindowViewModelOld) DataContext;
         vm?.DamageMeterBindings?.DeleteSelectedSnapshot();
     }
 

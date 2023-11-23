@@ -1,4 +1,4 @@
-﻿using StatisticsAnalysisTool.Common;
+﻿using Microsoft.Extensions.DependencyInjection;
 using StatisticsAnalysisTool.Network.Manager;
 using StatisticsAnalysisTool.ViewModels;
 using System.Collections.Generic;
@@ -21,8 +21,8 @@ public class LoggingFilterObject : BaseViewModel
     {
         try
         {
-            var loggingSearchText = ServiceLocator.Resolve<MainWindowViewModel>()?.LoggingSearchText;
-            var trackingController = ServiceLocator.Resolve<TrackingController>();
+            var loggingSearchText = App.ServiceProvider.GetService<MainWindowViewModelOld>()?.LoggingSearchText;
+            var trackingController = App.ServiceProvider.GetService<TrackingController>();
 
             trackingController?.UpdateFilterType(LoggingFilterType, IsSelected ?? false);
             trackingController?.NotificationUiFilteringAsync(loggingSearchText);

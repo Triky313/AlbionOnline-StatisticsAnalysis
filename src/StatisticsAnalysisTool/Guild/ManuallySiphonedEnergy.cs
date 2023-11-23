@@ -1,6 +1,6 @@
-﻿using StatisticsAnalysisTool.Common;
+﻿using Microsoft.Extensions.DependencyInjection;
+using StatisticsAnalysisTool.Common;
 using StatisticsAnalysisTool.Localization;
-using StatisticsAnalysisTool.Network.Manager;
 using StatisticsAnalysisTool.ViewModels;
 using System;
 using System.Windows.Input;
@@ -47,8 +47,7 @@ public class ManuallySiphonedEnergy : BaseViewModel
 
         var dateTimeTicks = DateTime.UtcNow.Ticks;
 
-        var trackingController = ServiceLocator.Resolve<TrackingController>();
-        trackingController?.GuildController?.AddSiphonedEnergyEntry(CharacterName, FixPoint.FromFloatingPointValue(Quantity), dateTimeTicks, true);
+        App.ServiceProvider.GetRequiredService<IGuildController>()?.AddSiphonedEnergyEntry(CharacterName, FixPoint.FromFloatingPointValue(Quantity), dateTimeTicks, true);
     }
 
     private ICommand _addManualEntryCommand;

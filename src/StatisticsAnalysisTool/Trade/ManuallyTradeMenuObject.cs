@@ -1,6 +1,6 @@
-﻿using StatisticsAnalysisTool.Common;
+﻿using Microsoft.Extensions.DependencyInjection;
+using StatisticsAnalysisTool.Common;
 using StatisticsAnalysisTool.Localization;
-using StatisticsAnalysisTool.Network.Manager;
 using StatisticsAnalysisTool.Trade.Market;
 using StatisticsAnalysisTool.ViewModels;
 using System;
@@ -94,8 +94,7 @@ public class ManuallyTradeMenuObject : BaseViewModel
             }
         };
 
-        var trackingController = ServiceLocator.Resolve<TrackingController>();
-        trackingController?.TradeController?.AddTradeToBindingCollectionAsync(trade);
+        App.ServiceProvider.GetRequiredService<ITradeController>()?.AddTradeToBindingCollectionAsync(trade);
     }
 
     private ICommand _addTradeCommand;

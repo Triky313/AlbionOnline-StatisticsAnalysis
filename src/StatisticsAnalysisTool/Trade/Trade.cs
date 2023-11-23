@@ -154,7 +154,7 @@ public class Trade : BaseViewModel
 
     public void OpenItemWindow(object value)
     {
-        MainWindowViewModel.OpenItemWindow(Item);
+        MainWindowViewModelOld.OpenItemWindow(Item);
     }
 
     private ICommand _openItemWindowCommand;

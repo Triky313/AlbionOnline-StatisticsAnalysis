@@ -15,17 +15,18 @@ using System.Threading.Tasks;
 
 namespace StatisticsAnalysisTool.Network.Manager;
 
-public class TreasureController
+public class TreasureController : ITreasureController
 {
-    private readonly TrackingController _trackingController;
-    private readonly MainWindowViewModel _mainWindowViewModel;
+    private readonly MainWindowViewModelOld _mainWindowViewModel;
+    private readonly IEntityController _entityController;
     private readonly ObservableCollection<TemporaryTreasure> _temporaryTreasures = new();
-    private ObservableCollection<Treasure> _treasures = new ();
+    private ObservableCollection<Treasure> _treasures = new();
 
-    public TreasureController(TrackingController trackingController, MainWindowViewModel mainWindowViewModel)
+    public TreasureController(MainWindowViewModelOld mainWindowViewModel,
+        IEntityController entityController)
     {
-        _trackingController = trackingController;
         _mainWindowViewModel = mainWindowViewModel;
+        _entityController = entityController;
     }
 
     public void RegisterEvents()
@@ -189,7 +190,7 @@ public class TreasureController
 
     private int GetStats(TreasureRarity treasureRarity, TreasureType treasureType, int lastDays = -90)
     {
-        if (_trackingController.EntityController.LocalUserData.Guid is not { } localPlayerGuid)
+        if (_entityController.LocalUserData.Guid is not { } localPlayerGuid)
         {
             return 0;
         }

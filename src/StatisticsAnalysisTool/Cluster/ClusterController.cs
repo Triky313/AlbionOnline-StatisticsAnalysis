@@ -1,7 +1,10 @@
 using StatisticsAnalysisTool.Common;
 using StatisticsAnalysisTool.Enumerations;
 using StatisticsAnalysisTool.GameFileData;
+using StatisticsAnalysisTool.Gathering;
 using StatisticsAnalysisTool.Network.Manager;
+using StatisticsAnalysisTool.PartyBuilder;
+using StatisticsAnalysisTool.Trade;
 using StatisticsAnalysisTool.ViewModels;
 using System;
 using System.Diagnostics;
@@ -10,18 +13,43 @@ using System.Windows;
 
 namespace StatisticsAnalysisTool.Cluster;
 
-public sealed class ClusterController
+public sealed class ClusterController : IClusterController
 {
     private const int MaxEnteredCluster = 500;
 
-    private readonly TrackingController _trackingController;
-    private readonly MainWindowViewModel _mainWindowViewModel;
+    private readonly ITrackingController _trackingController;
+    private readonly ILootController _lootController;
+    private readonly IPartyBuilderController _partyBuilderController;
+    private readonly IStatisticController _statisticController;
+    private readonly ITradeController _tradeController;
+    private readonly IVaultController _vaultController;
+    private readonly ITreasureController _treasureController;
+    private readonly IGatheringController _gatheringController;
+    private readonly ICombatController _combatController;
+    private readonly MainWindowViewModelOld _mainWindowViewModel;
 
     public static ClusterInfo CurrentCluster { get; } = new();
 
-    public ClusterController(TrackingController trackingController, MainWindowViewModel mainWindowViewModel)
+    public ClusterController(ITrackingController trackingController,
+        ILootController lootController,
+        IPartyBuilderController partyBuilderController,
+        IStatisticController statisticController,
+        ITradeController tradeController,
+        IVaultController vaultController,
+        ITreasureController treasureController,
+        IGatheringController gatheringController,
+        ICombatController combatController,
+        MainWindowViewModelOld mainWindowViewModel)
     {
         _trackingController = trackingController;
+        _lootController = lootController;
+        _partyBuilderController = partyBuilderController;
+        _statisticController = statisticController;
+        _tradeController = tradeController;
+        _vaultController = vaultController;
+        _treasureController = treasureController;
+        _gatheringController = gatheringController;
+        _combatController = combatController;
         _mainWindowViewModel = mainWindowViewModel;
 
         CreateRandomClusterInfosForTracking(0);
@@ -67,20 +95,20 @@ public sealed class ClusterController
 
     public void SetAndResetValues(ClusterInfo currentCluster)
     {
-        _trackingController.TradeController.ResetCraftingBuildingInfo();
+        _tradeController.ResetCraftingBuildingInfo();
         _mainWindowViewModel.DamageMeterBindings.GetSnapshot(_mainWindowViewModel.DamageMeterBindings.IsSnapshotAfterMapChangeActive);
-        _trackingController.CombatController.ResetDamageMeterByClusterChange();
-        _trackingController.StatisticController.SetKillsDeathsValues();
-        _trackingController.VaultController.ResetDiscoveredItems();
-        _trackingController.VaultController.ResetVaultContainer();
-        _trackingController.VaultController.ResetCurrentVaultInfo();
-        _trackingController.TreasureController.RemoveTemporaryTreasures();
-        _trackingController.TreasureController.UpdateLootedChestsDashboardUi();
-        _trackingController.LootController.ResetLocalPlayerDiscoveredLoot();
-        _trackingController.LootController.ResetIdentifiedBodies();
-        _ = _trackingController.TradeController.RemoveTradesByDaysInSettingsAsync();
-        _ = _trackingController.GatheringController.SetGatheredResourcesClosedAsync();
-        _trackingController.PartyBuilderController.UpdateIsPlayerInspectedToFalse();
+        _combatController.ResetDamageMeterByClusterChange();
+        _statisticController.SetKillsDeathsValues();
+        _vaultController.ResetDiscoveredItems();
+        _vaultController.ResetVaultContainer();
+        _vaultController.ResetCurrentVaultInfo();
+        _treasureController.RemoveTemporaryTreasures();
+        _treasureController.UpdateLootedChestsDashboardUi();
+        _lootController.ResetLocalPlayerDiscoveredLoot();
+        _lootController.ResetIdentifiedBodies();
+        _ = _tradeController.RemoveTradesByDaysInSettingsAsync();
+        _ = _gatheringController.SetGatheredResourcesClosedAsync();
+        _partyBuilderController.UpdateIsPlayerInspectedToFalse();
     }
 
     public static string ComposingMapInfoString(string index, MapType mapType, string instanceName)

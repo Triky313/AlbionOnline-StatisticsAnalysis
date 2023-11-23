@@ -6,21 +6,21 @@ namespace StatisticsAnalysisTool.Network.Handler;
 
 public class ChangeClusterResponseHandler : ResponsePacketHandler<ChangeClusterResponse>
 {
-    private readonly TrackingController _trackingController;
+    private readonly IGameEventWrapper _gameEventWrapper;
 
-    public ChangeClusterResponseHandler(TrackingController trackingController) : base((int) OperationCodes.ChangeCluster)
+    public ChangeClusterResponseHandler(IGameEventWrapper gameEventWrapper) : base((int) OperationCodes.ChangeCluster)
     {
-        _trackingController = trackingController;
+        _gameEventWrapper = gameEventWrapper;
     }
 
     protected override async Task OnActionAsync(ChangeClusterResponse value)
     {
-        _trackingController.ClusterController.ChangeClusterInformation(
+        _gameEventWrapper.ClusterController.ChangeClusterInformation(
             value.MapType, value.Guid, value.Index, value.IslandName, 
             value.WorldMapDataType, value.DungeonInformation, value.MainClusterIndex,
             value.MistsDungeonTier);
-        _trackingController.EntityController.RemoveEntitiesByLastUpdate(2);
-        _trackingController.DungeonController.ResetLocalPlayerDiscoveredLoot();
+        _gameEventWrapper.EntityController.RemoveEntitiesByLastUpdate(2);
+        _gameEventWrapper.DungeonController.ResetLocalPlayerDiscoveredLoot();
 
         await Task.CompletedTask;
     }

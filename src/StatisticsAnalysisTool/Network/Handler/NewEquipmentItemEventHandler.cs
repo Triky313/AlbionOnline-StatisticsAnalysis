@@ -8,21 +8,21 @@ namespace StatisticsAnalysisTool.Network.Handler;
 
 public class NewEquipmentItemEventHandler : EventPacketHandler<NewEquipmentItemEvent>
 {
-    private readonly TrackingController _trackingController;
+    private readonly IGameEventWrapper _gameEventWrapper;
 
-    public NewEquipmentItemEventHandler(TrackingController trackingController) : base((int) EventCodes.NewEquipmentItem)
+    public NewEquipmentItemEventHandler(IGameEventWrapper gameEventWrapper) : base((int) EventCodes.NewEquipmentItem)
     {
-        _trackingController = trackingController;
+        _gameEventWrapper = gameEventWrapper;
     }
 
     protected override async Task OnActionAsync(NewEquipmentItemEvent value)
     {
-        if (_trackingController.IsTrackingAllowedByMainCharacter())
+        if (_gameEventWrapper.TrackingController.IsTrackingAllowedByMainCharacter())
         {
-            _trackingController.VaultController.Add(value.Item);
+            _gameEventWrapper.VaultController.Add(value.Item);
         }
 
-        _trackingController.EntityController.AddEquipmentItem(new EquipmentItemInternal
+        _gameEventWrapper.EntityController.AddEquipmentItem(new EquipmentItemInternal
         {
             ItemIndex = value.Item.ItemIndex,
             SpellDictionary = value.Item.SpellDictionary
@@ -30,9 +30,9 @@ public class NewEquipmentItemEventHandler : EventPacketHandler<NewEquipmentItemE
 
         EstimatedMarketValueController.Add(value.Item.ItemIndex, value.Item.EstimatedMarketValueInternal, value.Item.Quality);
 
-        _trackingController.LootController.AddDiscoveredItem(value.Item);
-        _trackingController.DungeonController.AddDiscoveredItem(value.Item);
-        _trackingController.GatheringController.AddFishedItem(value.Item);
+        _gameEventWrapper.LootController.AddDiscoveredItem(value.Item);
+        _gameEventWrapper.DungeonController.AddDiscoveredItem(value.Item);
+        _gameEventWrapper.GatheringController.AddFishedItem(value.Item);
         await Task.CompletedTask;
     }
 }

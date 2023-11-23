@@ -4,7 +4,6 @@ using StatisticsAnalysisTool.EventLogging.Notification;
 using StatisticsAnalysisTool.Localization;
 using StatisticsAnalysisTool.Network.Events;
 using StatisticsAnalysisTool.Network.Manager;
-using StatisticsAnalysisTool.Network.Notification;
 using System;
 using System.Threading.Tasks;
 using ValueType = StatisticsAnalysisTool.Enumerations.ValueType;
@@ -13,22 +12,20 @@ namespace StatisticsAnalysisTool.Network.Handler;
 
 public class UpdateFameEventHandler : EventPacketHandler<UpdateFameEvent>
 {
-    private readonly LiveStatsTracker _liveStatsTracker;
-    private readonly TrackingController _trackingController;
+    private readonly IGameEventWrapper _gameEventWrapper;
 
-    public UpdateFameEventHandler(TrackingController trackingController) : base((int) EventCodes.UpdateFame)
+    public UpdateFameEventHandler(IGameEventWrapper gameEventWrapper) : base((int) EventCodes.UpdateFame)
     {
-        _trackingController = trackingController;
-        _liveStatsTracker = _trackingController?.LiveStatsTracker;
+        _gameEventWrapper = gameEventWrapper;
     }
 
     protected override async Task OnActionAsync(UpdateFameEvent value)
     {
-        await _trackingController.AddNotificationAsync(SetPveFameNotification(value.TotalPlayerFame.DoubleValue, value.TotalGainedFame,
+        await _gameEventWrapper.TrackingController.AddNotificationAsync(SetPveFameNotification(value.TotalPlayerFame.DoubleValue, value.TotalGainedFame,
             value.ZoneFame.DoubleValue, value.PremiumFame, value.SatchelFame.DoubleValue, value.IsBonusFactorActive, value.BonusFactorInPercent));
-        _liveStatsTracker.Add(ValueType.Fame, value.TotalGainedFame);
-        _trackingController.DungeonController?.AddValueToDungeon(value.TotalGainedFame, ValueType.Fame);
-        _trackingController.StatisticController?.AddValue(ValueType.Fame, value.TotalGainedFame);
+        _gameEventWrapper.LiveStatsTracker.Add(ValueType.Fame, value.TotalGainedFame);
+        _gameEventWrapper.DungeonController?.AddValueToDungeon(value.TotalGainedFame, ValueType.Fame);
+        _gameEventWrapper.StatisticController?.AddValue(ValueType.Fame, value.TotalGainedFame);
     }
 
     private TrackingNotification SetPveFameNotification(double totalPlayerFame, double totalGainedFame, double zoneFame, double premiumFame,

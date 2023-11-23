@@ -17,9 +17,9 @@ using System.Windows;
 
 namespace StatisticsAnalysisTool.Network.Manager;
 
-public class VaultController
+public class VaultController : IVaultController
 {
-    private readonly MainWindowViewModel _mainWindowViewModel;
+    private readonly MainWindowViewModelOld _mainWindowViewModel;
     private VaultInfo _currentVaultInfo;
     private readonly List<DiscoveredItem> _discoveredItems = new();
     private readonly List<ItemContainerObject> _vaultContainer = new();
@@ -35,7 +35,7 @@ public class VaultController
         }
     }
 
-    public VaultController(MainWindowViewModel mainWindowViewModel)
+    public VaultController(MainWindowViewModelOld mainWindowViewModel)
     {
         _mainWindowViewModel = mainWindowViewModel;
 

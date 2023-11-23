@@ -7,23 +7,23 @@ namespace StatisticsAnalysisTool.Network.Handler;
 
 public class NewLaborerItemEventHandler : EventPacketHandler<NewLaborerItemEvent>
 {
-    private readonly TrackingController _trackingController;
+    private readonly IGameEventWrapper _gameEventWrapper;
 
-    public NewLaborerItemEventHandler(TrackingController trackingController) : base((int) EventCodes.NewLaborerItem)
+    public NewLaborerItemEventHandler(IGameEventWrapper gameEventWrapper) : base((int) EventCodes.NewLaborerItem)
     {
-        _trackingController = trackingController;
+        _gameEventWrapper = gameEventWrapper;
     }
 
     protected override async Task OnActionAsync(NewLaborerItemEvent value)
     {
-        if (_trackingController.IsTrackingAllowedByMainCharacter())
+        if (_gameEventWrapper.TrackingController.IsTrackingAllowedByMainCharacter())
         {
-            _trackingController.VaultController.Add(value.Item);
+            _gameEventWrapper.VaultController.Add(value.Item);
         }
-        
+
         EstimatedMarketValueController.Add(value.Item.ItemIndex, value.Item.EstimatedMarketValueInternal, value.Item.Quality);
-        _trackingController.LootController.AddDiscoveredItem(value.Item);
-        _trackingController.DungeonController.AddDiscoveredItem(value.Item);
+        _gameEventWrapper.LootController.AddDiscoveredItem(value.Item);
+        _gameEventWrapper.DungeonController.AddDiscoveredItem(value.Item);
         await Task.CompletedTask;
     }
 }

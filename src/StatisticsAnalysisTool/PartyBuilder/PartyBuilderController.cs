@@ -10,14 +10,19 @@ using System.Windows;
 
 namespace StatisticsAnalysisTool.PartyBuilder;
 
-public class PartyBuilderController
+public class PartyBuilderController : IPartyBuilderController
 {
-    private readonly TrackingController _trackingController;
-    private readonly MainWindowViewModel _mainWindowViewModel;
+    private readonly IEntityController _entityController;
+    private readonly ILootController _lootController;
+    private readonly MainWindowViewModelOld _mainWindowViewModel;
 
-    public PartyBuilderController(TrackingController trackingController, MainWindowViewModel mainWindowViewModel)
+    public PartyBuilderController(
+        IEntityController entityController,
+        ILootController lootController,
+        MainWindowViewModelOld mainWindowViewModel)
     {
-        _trackingController = trackingController;
+        _entityController = entityController;
+        _lootController = lootController;
         _mainWindowViewModel = mainWindowViewModel;
     }
 
@@ -25,7 +30,7 @@ public class PartyBuilderController
     {
         await Application.Current.Dispatcher.InvokeAsync(() =>
         {
-            var currentParty = _trackingController?.EntityController?.GetAllEntities(true);
+            var currentParty = _entityController?.GetAllEntities(true);
             var bindingsParty = _mainWindowViewModel.PartyBuilderBindings.Party;
 
             foreach (var item in currentParty?.ToList() ?? new List<KeyValuePair<Guid, PlayerGameObject>>())
@@ -62,7 +67,7 @@ public class PartyBuilderController
         {
             Guid = playerGameObject.UserGuid,
             Username = playerGameObject.Name,
-            IsLocalPlayer = _trackingController?.EntityController?.LocalUserData?.Guid == playerGameObject.UserGuid,
+            IsLocalPlayer = _entityController?.LocalUserData?.Guid == playerGameObject.UserGuid,
             AverageItemPower = new PartyBuilderItemPower { ItemPower = playerGameObject.ItemPower },
             MainHand = playerGameObject.CharacterEquipment?.GetMainHand(),
             OffHand = playerGameObject.CharacterEquipment?.GetOffHand(),
@@ -111,7 +116,7 @@ public class PartyBuilderController
         partyBuilderPlayer.MountSpells = playerGameObject.CharacterEquipment?.GetMountSpells() ?? new List<Spell>();
         partyBuilderPlayer.PotionSpells = playerGameObject.CharacterEquipment?.GetPotionSpells() ?? new List<Spell>();
         partyBuilderPlayer.FoodSpells = playerGameObject.CharacterEquipment?.GetFoodSpells() ?? new List<Spell>();
-        
+
         _mainWindowViewModel.PartyBuilderBindings.UpdatePartyBuilderPlayerConditions();
     }
 
@@ -133,16 +138,16 @@ public class PartyBuilderController
         }
 
         bindingsParty.AverageItemPower.ItemPower = itemPower;
-        bindingsParty.MainHand = _trackingController.LootController.GetItemFromDiscoveredLoot(characterEquipment.MainHand);
-        bindingsParty.OffHand = _trackingController.LootController.GetItemFromDiscoveredLoot(characterEquipment.OffHand);
-        bindingsParty.Head = _trackingController.LootController.GetItemFromDiscoveredLoot(characterEquipment.Head);
-        bindingsParty.Chest = _trackingController.LootController.GetItemFromDiscoveredLoot(characterEquipment.Chest);
-        bindingsParty.Shoes = _trackingController.LootController.GetItemFromDiscoveredLoot(characterEquipment.Shoes);
-        bindingsParty.Bag = _trackingController.LootController.GetItemFromDiscoveredLoot(characterEquipment.Bag);
-        bindingsParty.Cape = _trackingController.LootController.GetItemFromDiscoveredLoot(characterEquipment.Cape);
-        bindingsParty.Mount = _trackingController.LootController.GetItemFromDiscoveredLoot(characterEquipment.Mount);
-        bindingsParty.Potion = _trackingController.LootController.GetItemFromDiscoveredLoot(characterEquipment.Potion);
-        bindingsParty.BuffFood = _trackingController.LootController.GetItemFromDiscoveredLoot(characterEquipment.BuffFood);
+        bindingsParty.MainHand = _lootController.GetItemFromDiscoveredLoot(characterEquipment.MainHand);
+        bindingsParty.OffHand = _lootController.GetItemFromDiscoveredLoot(characterEquipment.OffHand);
+        bindingsParty.Head = _lootController.GetItemFromDiscoveredLoot(characterEquipment.Head);
+        bindingsParty.Chest = _lootController.GetItemFromDiscoveredLoot(characterEquipment.Chest);
+        bindingsParty.Shoes = _lootController.GetItemFromDiscoveredLoot(characterEquipment.Shoes);
+        bindingsParty.Bag = _lootController.GetItemFromDiscoveredLoot(characterEquipment.Bag);
+        bindingsParty.Cape = _lootController.GetItemFromDiscoveredLoot(characterEquipment.Cape);
+        bindingsParty.Mount = _lootController.GetItemFromDiscoveredLoot(characterEquipment.Mount);
+        bindingsParty.Potion = _lootController.GetItemFromDiscoveredLoot(characterEquipment.Potion);
+        bindingsParty.BuffFood = _lootController.GetItemFromDiscoveredLoot(characterEquipment.BuffFood);
 
         bindingsParty.IsPlayerInspected = true;
         _mainWindowViewModel.PartyBuilderBindings.UpdatePartyBuilderPlayerConditions();

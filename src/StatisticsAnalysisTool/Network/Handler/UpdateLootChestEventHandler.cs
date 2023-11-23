@@ -1,22 +1,22 @@
-﻿using StatisticsAnalysisTool.Network.Manager;
+﻿using StatisticsAnalysisTool.Network.Events;
+using StatisticsAnalysisTool.Network.Manager;
 using System.Threading.Tasks;
-using StatisticsAnalysisTool.Network.Events;
 
 namespace StatisticsAnalysisTool.Network.Handler;
 
 public class UpdateLootChestEventHandler : EventPacketHandler<UpdateLootChestEvent>
 {
-    private readonly TrackingController _trackingController;
+    private readonly IGameEventWrapper _gameEventWrapper;
 
-    public UpdateLootChestEventHandler(TrackingController trackingController) : base((int) EventCodes.UpdateLootChest)
+    public UpdateLootChestEventHandler(IGameEventWrapper gameEventWrapper) : base((int) EventCodes.UpdateLootChest)
     {
-        _trackingController = trackingController;
+        _gameEventWrapper = gameEventWrapper;
     }
 
     protected override async Task OnActionAsync(UpdateLootChestEvent value)
     {
-        _trackingController.DungeonController?.SetDungeonChestOpen(value.ObjectId, value.PlayerGuid);
-        _trackingController?.TreasureController?.UpdateTreasure(value.ObjectId, value.PlayerGuid);
+        _gameEventWrapper.DungeonController?.SetDungeonChestOpen(value.ObjectId, value.PlayerGuid);
+        _gameEventWrapper?.TreasureController?.UpdateTreasure(value.ObjectId, value.PlayerGuid);
         await Task.CompletedTask;
     }
 }

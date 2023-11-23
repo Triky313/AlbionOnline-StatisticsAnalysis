@@ -1,21 +1,21 @@
-﻿using StatisticsAnalysisTool.Network.Manager;
-using StatisticsAnalysisTool.Network.Operations.Responses;
+﻿using StatisticsAnalysisTool.Network.Operations.Responses;
+using StatisticsAnalysisTool.Trade.Mails;
 using System.Threading.Tasks;
 
 namespace StatisticsAnalysisTool.Network.Handler;
 
 public class GetMailInfosResponseHandler : ResponsePacketHandler<GetMailInfosResponse>
 {
-    private readonly TrackingController _trackingController;
+    private readonly IMailController _mailController;
 
-    public GetMailInfosResponseHandler(TrackingController trackingController) : base((int) OperationCodes.GetMailInfos)
+    public GetMailInfosResponseHandler(IMailController mailController) : base((int) OperationCodes.GetMailInfos)
     {
-        _trackingController = trackingController;
+        _mailController = mailController;
     }
 
     protected override async Task OnActionAsync(GetMailInfosResponse value)
     {
-        _trackingController.MailController.SetMailInfos(value.MailInfos);
+        _mailController.SetMailInfos(value.MailInfos);
         await Task.CompletedTask;
     }
 }

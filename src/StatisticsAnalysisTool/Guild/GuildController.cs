@@ -14,16 +14,20 @@ using System.Windows.Data;
 
 namespace StatisticsAnalysisTool.Guild;
 
-public class GuildController
+public class GuildController : IGuildController
 {
-    private readonly TrackingController _trackingController;
-    private readonly MainWindowViewModel _mainWindowViewModel;
+    private readonly IEntityController _entityController;
+    private readonly MainWindowViewModelOld _mainWindowViewModel;
+    private readonly GuildViewModel _guildViewModel;
     private int _currentTabId;
 
-    public GuildController(TrackingController trackingController, MainWindowViewModel mainWindowViewModel)
+    public GuildController(IEntityController entityController,
+        MainWindowViewModelOld mainWindowViewModel,
+        GuildViewModel guildViewModel)
     {
-        _trackingController = trackingController;
+        _entityController = entityController;
         _mainWindowViewModel = mainWindowViewModel;
+        _guildViewModel = guildViewModel;
     }
 
     public void SetTabId(int id)
@@ -56,13 +60,13 @@ public class GuildController
 
                 var siphonedEnergyEntry = new SiphonedEnergyItem()
                 {
-                    GuildName = _trackingController.EntityController.LocalUserData.GuildName,
+                    GuildName = _entityController.LocalUserData.GuildName,
                     CharacterName = username,
                     Quantity = quantity,
                     Timestamp = timestamp
                 };
 
-                if (!_mainWindowViewModel.GuildBindings.SiphonedEnergyList.Any(x =>
+                if (!_guildViewModel.SiphonedEnergyList.Any(x =>
                         x.CharacterName == siphonedEnergyEntry.CharacterName
                         && x.Quantity.InternalValue == siphonedEnergyEntry.Quantity.InternalValue
                         && x.Timestamp == siphonedEnergyEntry.Timestamp))
@@ -75,23 +79,23 @@ public class GuildController
             {
                 Application.Current.Dispatcher.InvokeAsync(() =>
                 {
-                    _mainWindowViewModel.GuildBindings.SiphonedEnergyList.Add(item);
+                    _guildViewModel.SiphonedEnergyList.Add(item);
                     UpdateSiphonedEnergyOverview();
                 });
             }
 
             Application.Current.Dispatcher.InvokeAsync(() =>
             {
-                _mainWindowViewModel.GuildBindings.SiphonedEnergyLastUpdate = DateTime.UtcNow;
-                _mainWindowViewModel.GuildBindings.SiphonedEnergyLastUpdateVisibility 
-                    = _mainWindowViewModel.GuildBindings?.SiphonedEnergyLastUpdate.Ticks <= 1 ? Visibility.Hidden : Visibility.Visible;
+                _guildViewModel.SiphonedEnergyLastUpdate = DateTime.UtcNow;
+                _guildViewModel.SiphonedEnergyLastUpdateVisibility
+                    = _guildViewModel?.SiphonedEnergyLastUpdate.Ticks <= 1 ? Visibility.Hidden : Visibility.Visible;
             });
         }
     }
 
     public void UpdateSiphonedEnergyOverview()
     {
-        var siphonedEnergies = _mainWindowViewModel.GuildBindings.SiphonedEnergyList.ToList();
+        var siphonedEnergies = _guildViewModel.SiphonedEnergyList.ToList();
 
         var grouped = siphonedEnergies
             .Where(x => x.IsDisabled == false)
@@ -107,8 +111,8 @@ public class GuildController
 
         Application.Current.Dispatcher.InvokeAsync(() =>
         {
-            _mainWindowViewModel.GuildBindings.SiphonedEnergyOverviewList = new ObservableRangeCollection<SiphonedEnergyItem>(grouped);
-            _mainWindowViewModel.GuildBindings.TotalSiphonedEnergyQuantity = grouped.Sum(x => x.Quantity.IntegerValue);
+            _guildViewModel.SiphonedEnergyOverviewList = new ObservableRangeCollection<SiphonedEnergyItem>(grouped);
+            _guildViewModel.TotalSiphonedEnergyQuantity = grouped.Sum(x => x.Quantity.IntegerValue);
         });
     }
 
@@ -116,8 +120,8 @@ public class GuildController
     {
         await Task.Run(async () =>
         {
-            var itemToRemove = _mainWindowViewModel?.GuildBindings?.SiphonedEnergyList?.ToList().Where(x => hashCodes.Contains(x.GetHashCode())).ToList();
-            var newList = _mainWindowViewModel?.GuildBindings?.SiphonedEnergyList?.ToList();
+            var itemToRemove = _guildViewModel?.SiphonedEnergyList?.ToList().Where(x => hashCodes.Contains(x.GetHashCode())).ToList();
+            var newList = _guildViewModel?.SiphonedEnergyList?.ToList();
 
             if (itemToRemove != null && itemToRemove.Any())
             {
@@ -136,7 +140,7 @@ public class GuildController
 
     private void UpdateSiphonedEnergyList(IEnumerable<SiphonedEnergyItem> updatedList)
     {
-        var guildBindings = _mainWindowViewModel.GuildBindings;
+        var guildBindings = _guildViewModel;
         guildBindings.SiphonedEnergyList.Clear();
         guildBindings.SiphonedEnergyList.AddRange(updatedList);
         guildBindings.SiphonedEnergyCollectionView = CollectionViewSource.GetDefaultView(guildBindings.SiphonedEnergyList) as ListCollectionView;
@@ -154,7 +158,7 @@ public class GuildController
             Path.Combine(AppDomain.CurrentDomain.BaseDirectory, Settings.Default.UserDataDirectoryName, Settings.Default.GuildFileName));
         var guild = GuildMapping.Mapping(dto);
 
-        _mainWindowViewModel.GuildBindings.SiphonedEnergyList.AddRange(guild.SiphonedEnergies);
+        _guildViewModel.SiphonedEnergyList.AddRange(guild.SiphonedEnergies);
         UpdateSiphonedEnergyOverview();
     }
 
@@ -163,7 +167,7 @@ public class GuildController
         DirectoryController.CreateDirectoryWhenNotExists(Path.Combine(AppDomain.CurrentDomain.BaseDirectory, Settings.Default.UserDataDirectoryName));
         await FileController.SaveAsync(new GuildDto()
         {
-            SiphonedEnergies = _mainWindowViewModel.GuildBindings.SiphonedEnergyList.Select(GuildMapping.Mapping).ToList()
+            SiphonedEnergies = _guildViewModel.SiphonedEnergyList.Select(GuildMapping.Mapping).ToList()
         },
             Path.Combine(AppDomain.CurrentDomain.BaseDirectory, Settings.Default.UserDataDirectoryName, Settings.Default.GuildFileName));
         Debug.Print("Guild data saved");

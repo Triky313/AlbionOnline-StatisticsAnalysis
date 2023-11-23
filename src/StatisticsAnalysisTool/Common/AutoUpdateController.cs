@@ -11,14 +11,21 @@ using Application = System.Windows.Application;
 
 namespace StatisticsAnalysisTool.Common;
 
-public static class AutoUpdateController
+public class AutoUpdateController : IAutoUpdateController
 {
-    public static async Task AutoUpdateAsync(bool reportErrors = false)
+    private readonly IHttpClientUtils _httpClientUtils;
+
+    public AutoUpdateController(IHttpClientUtils httpClientUtils)
+    {
+        _httpClientUtils = httpClientUtils;
+    }
+
+    public async Task AutoUpdateAsync(bool reportErrors = false)
     {
         try
         {
-            await HttpClientUtils.IsUrlAccessible(Settings.Default.AutoUpdatePreReleaseConfigUrl);
-            await HttpClientUtils.IsUrlAccessible(Settings.Default.AutoUpdateConfigUrl);
+            await _httpClientUtils.IsUrlAccessible(Settings.Default.AutoUpdatePreReleaseConfigUrl);
+            await _httpClientUtils.IsUrlAccessible(Settings.Default.AutoUpdateConfigUrl);
 
             AutoUpdater.Synchronous = true;
             AutoUpdater.ApplicationExitEvent -= AutoUpdaterApplicationExit;
@@ -46,13 +53,13 @@ public static class AutoUpdateController
         }
     }
 
-    private static void AutoUpdaterApplicationExit()
+    private void AutoUpdaterApplicationExit()
     {
         AutoUpdater.ApplicationExitEvent -= AutoUpdaterApplicationExit;
         Application.Current.Shutdown();
     }
 
-    public static void RemoveUpdateFiles()
+    public void RemoveUpdateFiles()
     {
         var localFilePath = AppDomain.CurrentDomain.BaseDirectory;
 

@@ -1,5 +1,4 @@
-﻿using StatisticsAnalysisTool.Common;
-using StatisticsAnalysisTool.EstimatedMarketValue;
+﻿using StatisticsAnalysisTool.EstimatedMarketValue;
 using StatisticsAnalysisTool.Network.Events;
 using StatisticsAnalysisTool.Network.Manager;
 using System.Threading.Tasks;
@@ -8,23 +7,23 @@ namespace StatisticsAnalysisTool.Network.Handler;
 
 public class NewJournalItemEventHandler : EventPacketHandler<NewJournalItemEvent>
 {
-    private readonly TrackingController _trackingController;
+    private readonly IGameEventWrapper _gameEventWrapper;
 
-    public NewJournalItemEventHandler(TrackingController trackingController) : base((int) EventCodes.NewJournalItem)
+    public NewJournalItemEventHandler(IGameEventWrapper gameEventWrapper) : base((int) EventCodes.NewJournalItem)
     {
-        _trackingController = trackingController;
+        _gameEventWrapper = gameEventWrapper;
     }
 
     protected override async Task OnActionAsync(NewJournalItemEvent value)
     {
-        if (_trackingController.IsTrackingAllowedByMainCharacter())
+        if (_gameEventWrapper.TrackingController.IsTrackingAllowedByMainCharacter())
         {
-            _trackingController.VaultController.Add(value.Item);
+            _gameEventWrapper.VaultController.Add(value.Item);
         }
 
         EstimatedMarketValueController.Add(value.Item.ItemIndex, value.Item.EstimatedMarketValueInternal, value.Item.Quality);
-        _trackingController.LootController.AddDiscoveredItem(value.Item);
-        _trackingController.DungeonController.AddDiscoveredItem(value.Item);
+        _gameEventWrapper.LootController.AddDiscoveredItem(value.Item);
+        _gameEventWrapper.DungeonController.AddDiscoveredItem(value.Item);
         await Task.CompletedTask;
     }
 }

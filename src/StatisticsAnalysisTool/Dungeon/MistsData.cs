@@ -1,5 +1,4 @@
-﻿using StatisticsAnalysisTool.Common;
-using StatisticsAnalysisTool.Dungeon.Models;
+﻿using StatisticsAnalysisTool.Dungeon.Models;
 using StatisticsAnalysisTool.GameFileData;
 using StatisticsAnalysisTool.Properties;
 using System.Collections.Generic;

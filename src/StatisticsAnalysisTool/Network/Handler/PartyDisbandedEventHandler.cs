@@ -6,16 +6,16 @@ namespace StatisticsAnalysisTool.Network.Handler;
 
 public class PartyDisbandedEventHandler : EventPacketHandler<PartyDisbandedEvent>
 {
-    private readonly TrackingController _trackingController;
+    private readonly IEntityController _entityController;
 
-    public PartyDisbandedEventHandler(TrackingController trackingController) : base((int) EventCodes.PartyDisbanded)
+    public PartyDisbandedEventHandler(IEntityController entityController) : base((int) EventCodes.PartyDisbanded)
     {
-        _trackingController = trackingController;
+        _entityController = entityController;
     }
 
     protected override async Task OnActionAsync(PartyDisbandedEvent value)
     {
-        await _trackingController.EntityController.ResetPartyMemberAsync();
-        await _trackingController.EntityController.AddLocalEntityToPartyAsync();
+        await _entityController.ResetPartyMemberAsync();
+        await _entityController.AddLocalEntityToPartyAsync();
     }
 }

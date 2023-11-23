@@ -1,6 +1,6 @@
-﻿using StatisticsAnalysisTool.Common;
+﻿using Microsoft.Extensions.DependencyInjection;
 using StatisticsAnalysisTool.Localization;
-using StatisticsAnalysisTool.Network.Manager;
+using StatisticsAnalysisTool.Trade;
 using StatisticsAnalysisTool.ViewModels;
 using StatisticsAnalysisTool.Views;
 using System.Linq;
@@ -26,7 +26,7 @@ public partial class TradeMonitoringControl
         var dialog = new DialogWindow(LanguageController.Translation("DELETE_SELECTED_TRADES"), LanguageController.Translation("SURE_YOU_WANT_TO_DELETE_SELECTED_TRADES"));
         var dialogResult = dialog.ShowDialog();
 
-        var mainWindowViewModel = ServiceLocator.Resolve<MainWindowViewModel>();
+        var mainWindowViewModel = App.ServiceProvider.GetRequiredService<MainWindowViewModelOld>();
 
         if (mainWindowViewModel == null)
         {
@@ -35,15 +35,13 @@ public partial class TradeMonitoringControl
 
         if (dialogResult is true)
         {
-            var trackingController = ServiceLocator.Resolve<TrackingController>();
-
             var selectedTrades = mainWindowViewModel.TradeMonitoringBindings.TradeCollectionView?.Cast<Trade.Trade>()
                 .ToList()
                 .Where(x => x?.IsSelectedForDeletion ?? false)
                 .Select(x => x.Id);
 
             mainWindowViewModel.TradeMonitoringBindings.IsDeleteTradesButtonEnabled = false;
-            await trackingController?.TradeController?.RemoveTradesByIdsAsync(selectedTrades)!;
+            await App.ServiceProvider.GetRequiredService<ITradeController>()?.RemoveTradesByIdsAsync(selectedTrades)!;
             mainWindowViewModel.TradeMonitoringBindings.IsDeleteTradesButtonEnabled = true;
         }
     }
@@ -52,13 +50,13 @@ public partial class TradeMonitoringControl
 
     private void OpenMailMonitoringPopup_MouseEnter(object sender, MouseEventArgs e)
     {
-        var vm = (MainWindowViewModel) DataContext;
+        var vm = (MainWindowViewModelOld) DataContext;
         vm.TradeMonitoringBindings.IsTradeMonitoringPopupVisible = Visibility.Visible;
     }
 
     private void CloseMailMonitoringPopup_MouseLeave(object sender, MouseEventArgs e)
     {
-        var vm = (MainWindowViewModel) DataContext;
+        var vm = (MainWindowViewModelOld) DataContext;
         vm.TradeMonitoringBindings.IsTradeMonitoringPopupVisible = Visibility.Collapsed;
     }
 
@@ -72,7 +70,7 @@ public partial class TradeMonitoringControl
 
     private void BtnSelectSwitchAllMails_Click(object sender, RoutedEventArgs e)
     {
-        if ((MainWindowViewModel) DataContext is not { TradeMonitoringBindings.Trades: { } } mainWindowViewModel)
+        if ((MainWindowViewModelOld) DataContext is not { TradeMonitoringBindings.Trades: { } } mainWindowViewModel)
         {
             return;
         }
@@ -87,19 +85,19 @@ public partial class TradeMonitoringControl
 
     private async void SearchText_TextChanged(object sender, TextChangedEventArgs e)
     {
-        var vm = (MainWindowViewModel) DataContext;
+        var vm = (MainWindowViewModelOld) DataContext;
         await vm.TradeMonitoringBindings.UpdateFilteredTradesAsync();
     }
 
     private async void DatePicker_OnSelectedDateChanged(object sender, SelectionChangedEventArgs e)
     {
-        var vm = (MainWindowViewModel) DataContext;
+        var vm = (MainWindowViewModelOld) DataContext;
         await vm.TradeMonitoringBindings.UpdateFilteredTradesAsync();
     }
 
     private void FilterReset_MouseUp(object sender, MouseButtonEventArgs e)
     {
-        var vm = (MainWindowViewModel) DataContext;
+        var vm = (MainWindowViewModelOld) DataContext;
         vm.TradeMonitoringBindings?.ItemFilterReset();
     }
 

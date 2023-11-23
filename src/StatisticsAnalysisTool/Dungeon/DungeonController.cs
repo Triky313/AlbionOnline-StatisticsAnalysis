@@ -3,6 +3,7 @@ using StatisticsAnalysisTool.Cluster;
 using StatisticsAnalysisTool.Common;
 using StatisticsAnalysisTool.Dungeon.Models;
 using StatisticsAnalysisTool.Enumerations;
+using StatisticsAnalysisTool.Exceptions;
 using StatisticsAnalysisTool.GameFileData;
 using StatisticsAnalysisTool.Localization;
 using StatisticsAnalysisTool.Models.NetworkModel;
@@ -20,19 +21,19 @@ using System.Linq;
 using System.Reflection;
 using System.Threading.Tasks;
 using System.Windows;
-using StatisticsAnalysisTool.Exceptions;
 using Loot = StatisticsAnalysisTool.Dungeon.Models.Loot;
 using ValueType = StatisticsAnalysisTool.Enumerations.ValueType;
 // ReSharper disable PossibleMultipleEnumeration
 
 namespace StatisticsAnalysisTool.Dungeon;
 
-public sealed class DungeonController
+public sealed class DungeonController : IDungeonController
 {
     private const int MaxDungeons = 9999;
     private const int NumberOfDungeonsUntilSaved = 1;
 
-    private readonly MainWindowViewModel _mainWindowViewModel;
+    private readonly MainWindowViewModelOld _mainWindowViewModel;
+    private readonly IEntityController _entityController;
     private readonly TrackingController _trackingController;
     private Guid? _currentGuid;
     private Guid? _lastMapGuid;
@@ -40,10 +41,13 @@ public sealed class DungeonController
     private readonly List<DiscoveredItem> _discoveredLoot = new();
     private ObservableCollection<Guid> _lastGuidWithRecognizedLevel = new();
 
-    public DungeonController(TrackingController trackingController, MainWindowViewModel mainWindowViewModel)
+    public DungeonController(TrackingController trackingController,
+        MainWindowViewModelOld mainWindowViewModel,
+        IEntityController entityController)
     {
         _trackingController = trackingController;
         _mainWindowViewModel = mainWindowViewModel;
+        _entityController = entityController;
 
         if (_mainWindowViewModel?.DungeonBindings?.Dungeons != null)
         {
@@ -307,7 +311,7 @@ public sealed class DungeonController
 
     public void SetDungeonChestOpen(int id, List<Guid> allowedToOpen)
     {
-        if (!_trackingController.EntityController.IsAnyEntityInParty(allowedToOpen))
+        if (!_entityController.IsAnyEntityInParty(allowedToOpen))
         {
             return;
         }
@@ -411,7 +415,7 @@ public sealed class DungeonController
 
     public void SetDiedIfInDungeon(DiedObject dieObject)
     {
-        if (_currentGuid == null || _trackingController.EntityController.LocalUserData.Username == null)
+        if (_currentGuid == null || _entityController.LocalUserData.Username == null)
         {
             return;
         }
@@ -423,11 +427,11 @@ public sealed class DungeonController
             return;
         }
 
-        if (dieObject.DiedName == _trackingController.EntityController.LocalUserData.Username)
+        if (dieObject.DiedName == _entityController.LocalUserData.Username)
         {
             dungeon.KillStatus = KillStatus.LocalPlayerDead;
         }
-        else if (dieObject.KilledBy == _trackingController.EntityController.LocalUserData.Username)
+        else if (dieObject.KilledBy == _entityController.LocalUserData.Username)
         {
             dungeon.KillStatus = KillStatus.OpponentDead;
         }
@@ -559,7 +563,7 @@ public sealed class DungeonController
 
     public async Task AddNewLocalPlayerLootOnCurrentDungeonAsync(int containerSlot, Guid containerGuid, Guid userInteractGuid)
     {
-        if (_trackingController.EntityController.LocalUserData.InteractGuid != userInteractGuid)
+        if (_entityController.LocalUserData.InteractGuid != userInteractGuid)
         {
             return;
         }
@@ -703,7 +707,7 @@ public sealed class DungeonController
         FileController.TransferFileIfExistFromOldPathToUserDataDirectory(Path.Combine(AppDomain.CurrentDomain.BaseDirectory, Settings.Default.DungeonRunsFileName));
         var dungeons = await FileController.LoadAsync<List<DungeonDto>>(
             Path.Combine(AppDomain.CurrentDomain.BaseDirectory, Settings.Default.UserDataDirectoryName, Settings.Default.DungeonRunsFileName));
-        
+
         var dungeonsToAdd = new List<DungeonBaseFragment>();
         foreach (DungeonDto dungeonDto in dungeons.Where(x => x.Mode != DungeonMode.Unknown))
         {

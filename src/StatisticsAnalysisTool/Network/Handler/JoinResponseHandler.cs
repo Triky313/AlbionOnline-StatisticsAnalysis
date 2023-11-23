@@ -1,4 +1,4 @@
-﻿using StatisticsAnalysisTool.Common;
+using StatisticsAnalysisTool.Common;
 using StatisticsAnalysisTool.Common.UserSettings;
 using StatisticsAnalysisTool.Enumerations;
 using StatisticsAnalysisTool.Models.NetworkModel;
@@ -14,20 +14,20 @@ namespace StatisticsAnalysisTool.Network.Handler;
 
 public class JoinResponseHandler : ResponsePacketHandler<JoinResponse>
 {
-    private readonly MainWindowViewModel _mainWindowViewModel;
-    private readonly TrackingController _trackingController;
+    private readonly MainWindowViewModelOld _mainWindowViewModel;
+    private readonly IGameEventWrapper _gameEventWrapper;
 
-    public JoinResponseHandler(TrackingController trackingController) : base((int) OperationCodes.Join)
+    public JoinResponseHandler(IGameEventWrapper gameEventWrapper, MainWindowViewModelOld mainWindowViewModel) : base((int) OperationCodes.Join)
     {
-        _trackingController = trackingController;
-        _mainWindowViewModel = ServiceLocator.Resolve<MainWindowViewModel>();
+        _gameEventWrapper = gameEventWrapper;
+        _mainWindowViewModel = mainWindowViewModel;
     }
 
     protected override async Task OnActionAsync(JoinResponse value)
     {
         await SetLocalUserData(value);
 
-        _trackingController.ClusterController.SetJoinClusterInformation(value.MapIndex, value.MainMapIndex);
+        _gameEventWrapper.ClusterController.SetJoinClusterInformation(value.MapIndex, value.MainMapIndex);
 
         _mainWindowViewModel.UserTrackingBindings.Username = value.Username;
         _mainWindowViewModel.UserTrackingBindings.GuildName = value.GuildName;
@@ -49,7 +49,7 @@ public class JoinResponseHandler : ResponsePacketHandler<JoinResponse>
             ObjectSubType = GameObjectSubType.LocalPlayer
         });
 
-        _trackingController.DungeonController?.AddDungeonAsync(value.MapType, value.MapGuid).ConfigureAwait(false);
+        _gameEventWrapper.DungeonController?.AddDungeonAsync(value.MapType, value.MapGuid).ConfigureAwait(false);
 
         ResetFameCounterByMapChangeIfActive();
         SetTrackingActivityText();
@@ -59,7 +59,7 @@ public class JoinResponseHandler : ResponsePacketHandler<JoinResponse>
 
     private async Task SetLocalUserData(JoinResponse value)
     {
-        await _trackingController.EntityController.LocalUserData.SetValuesAsync(new LocalUserData
+        await _gameEventWrapper.EntityController.LocalUserData.SetValuesAsync(new LocalUserData
         {
             UserObjectId = value.UserObjectId,
             Guid = value.UserGuid,
@@ -91,7 +91,7 @@ public class JoinResponseHandler : ResponsePacketHandler<JoinResponse>
 
     private void SetTrackingActivityText()
     {
-        if (_trackingController.ExistIndispensableInfos)
+        if (_gameEventWrapper.TrackingController.ExistIndispensableInfos)
         {
             _mainWindowViewModel.TrackingActivityBindings.TrackingActiveText = MainWindowTranslation.TrackingIsActive;
             _mainWindowViewModel.TrackingActivityBindings.TrackingActivityType = TrackingIconType.On;
@@ -102,8 +102,7 @@ public class JoinResponseHandler : ResponsePacketHandler<JoinResponse>
     {
         if (_mainWindowViewModel.IsTrackingResetByMapChangeActive)
         {
-            var trackingController = ServiceLocator.Resolve<TrackingController>();
-            trackingController?.LiveStatsTracker?.Reset();
+            _gameEventWrapper?.LiveStatsTracker?.Reset();
         }
     }
 

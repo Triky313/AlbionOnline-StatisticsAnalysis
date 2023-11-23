@@ -8,7 +8,7 @@ using System.Security.Principal;
 
 namespace StatisticsAnalysisTool.Common;
 
-public class SystemInfo
+public static class SystemInfo
 {
     public static void LogSystemInfo()
     {

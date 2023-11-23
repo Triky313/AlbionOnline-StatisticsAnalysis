@@ -1,6 +1,6 @@
-﻿using StatisticsAnalysisTool.Enumerations;
-using StatisticsAnalysisTool.Network.Manager;
+using StatisticsAnalysisTool.Enumerations;
 using StatisticsAnalysisTool.Network.Events;
+using StatisticsAnalysisTool.Network.Manager;
 using System;
 using System.Threading.Tasks;
 using StatisticsAnalysisTool.Models.NetworkModel;
@@ -9,11 +9,11 @@ namespace StatisticsAnalysisTool.Network.Handler;
 
 public class NewCharacterEventHandler : EventPacketHandler<NewCharacterEvent>
 {
-    private readonly TrackingController _trackingController;
+    private readonly IEntityController _entityController;
 
-    public NewCharacterEventHandler(TrackingController trackingController) : base((int) EventCodes.NewCharacter)
+    public NewCharacterEventHandler(IEntityController entityController) : base((int) EventCodes.NewCharacter)
     {
-        _trackingController = trackingController;
+        _entityController = entityController;
     }
 
     protected override async Task OnActionAsync(NewCharacterEvent value)

@@ -2,7 +2,6 @@
 using LiveChartsCore.Defaults;
 using LiveChartsCore.SkiaSharpView;
 using LiveChartsCore.SkiaSharpView.Painting;
-
 using SkiaSharp;
 using StatisticsAnalysisTool.Common;
 using StatisticsAnalysisTool.Models;
@@ -22,12 +21,11 @@ using ValueType = StatisticsAnalysisTool.Enumerations.ValueType;
 
 namespace StatisticsAnalysisTool.Network.Manager;
 
-public class StatisticController
+public class StatisticController : IStatisticController
 {
-
-
-    private readonly TrackingController _trackingController;
-    private readonly MainWindowViewModel _mainWindowViewModel;
+    private readonly ITrackingController _trackingController;
+    private readonly IEntityController _entityController;
+    private readonly MainWindowViewModelOld _mainWindowViewModel;
     private readonly List<ValueType> _valueTypes = new()
     {
         ValueType.Fame, ValueType.Silver, ValueType.ReSpec, ValueType.FactionFame, ValueType.FactionPoints, ValueType.Might, ValueType.Favor, ValueType.RepairCosts
@@ -38,9 +36,12 @@ public class StatisticController
 
     public event Action OnAddValue;
 
-    public StatisticController(TrackingController trackingController, MainWindowViewModel mainWindowViewModel)
+    public StatisticController(ITrackingController trackingController,
+        IEntityController entityController,
+        MainWindowViewModelOld mainWindowViewModel)
     {
         _trackingController = trackingController;
+        _entityController = entityController;
         _mainWindowViewModel = mainWindowViewModel;
         InitStartHourValues();
 
@@ -216,21 +217,21 @@ public class StatisticController
 
     public void SetKillsDeathsValues()
     {
-        _mainWindowViewModel.DashboardBindings.KillsToday = _trackingController.EntityController.LocalUserData.KillsToday;
-        _mainWindowViewModel.DashboardBindings.SoloKillsToday = _trackingController.EntityController.LocalUserData.SoloKillsToday;
-        _mainWindowViewModel.DashboardBindings.DeathsToday = _trackingController.EntityController.LocalUserData.DeathsToday;
-        _mainWindowViewModel.DashboardBindings.KillsThisWeek = _trackingController.EntityController.LocalUserData.KillsWeek;
-        _mainWindowViewModel.DashboardBindings.SoloKillsThisWeek = _trackingController.EntityController.LocalUserData.SoloKillsWeek;
-        _mainWindowViewModel.DashboardBindings.DeathsThisWeek = _trackingController.EntityController.LocalUserData.DeathsWeek;
-        _mainWindowViewModel.DashboardBindings.KillsThisMonth = _trackingController.EntityController.LocalUserData.KillsMonth;
-        _mainWindowViewModel.DashboardBindings.SoloKillsThisMonth = _trackingController.EntityController.LocalUserData.SoloKillsMonth;
-        _mainWindowViewModel.DashboardBindings.DeathsThisMonth = _trackingController.EntityController.LocalUserData.DeathsMonth;
+        _mainWindowViewModel.DashboardBindings.KillsToday = _entityController.LocalUserData.KillsToday;
+        _mainWindowViewModel.DashboardBindings.SoloKillsToday = _entityController.LocalUserData.SoloKillsToday;
+        _mainWindowViewModel.DashboardBindings.DeathsToday = _entityController.LocalUserData.DeathsToday;
+        _mainWindowViewModel.DashboardBindings.KillsThisWeek = _entityController.LocalUserData.KillsWeek;
+        _mainWindowViewModel.DashboardBindings.SoloKillsThisWeek = _entityController.LocalUserData.SoloKillsWeek;
+        _mainWindowViewModel.DashboardBindings.DeathsThisWeek = _entityController.LocalUserData.DeathsWeek;
+        _mainWindowViewModel.DashboardBindings.KillsThisMonth = _entityController.LocalUserData.KillsMonth;
+        _mainWindowViewModel.DashboardBindings.SoloKillsThisMonth = _entityController.LocalUserData.SoloKillsMonth;
+        _mainWindowViewModel.DashboardBindings.DeathsThisMonth = _entityController.LocalUserData.DeathsMonth;
 
-        _mainWindowViewModel.DashboardBindings.AverageItemPowerWhenKilling = _trackingController.EntityController.LocalUserData.AverageItemPowerWhenKilling;
-        _mainWindowViewModel.DashboardBindings.AverageItemPowerOfTheKilledEnemies = _trackingController.EntityController.LocalUserData.AverageItemPowerOfTheKilledEnemies;
-        _mainWindowViewModel.DashboardBindings.AverageItemPowerWhenDying = _trackingController.EntityController.LocalUserData.AverageItemPowerWhenDying;
+        _mainWindowViewModel.DashboardBindings.AverageItemPowerWhenKilling = _entityController.LocalUserData.AverageItemPowerWhenKilling;
+        _mainWindowViewModel.DashboardBindings.AverageItemPowerOfTheKilledEnemies = _entityController.LocalUserData.AverageItemPowerOfTheKilledEnemies;
+        _mainWindowViewModel.DashboardBindings.AverageItemPowerWhenDying = _entityController.LocalUserData.AverageItemPowerWhenDying;
 
-        _mainWindowViewModel.DashboardBindings.LastUpdate = _trackingController.EntityController.LocalUserData.LastUpdate;
+        _mainWindowViewModel.DashboardBindings.LastUpdate = _entityController.LocalUserData.LastUpdate;
     }
 
     #endregion

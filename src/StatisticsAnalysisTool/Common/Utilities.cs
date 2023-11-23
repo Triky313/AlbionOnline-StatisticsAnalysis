@@ -1,6 +1,8 @@
-﻿using Serilog;
+﻿using Microsoft.Extensions.DependencyInjection;
+using Serilog;
 using StatisticsAnalysisTool.Localization;
 using StatisticsAnalysisTool.Notification;
+using StatisticsAnalysisTool.ViewModels;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -73,8 +75,6 @@ public static class Utilities
 
     public static void AnotherAppToStart(string path)
     {
-        var notifyManager = ServiceLocator.Resolve<SatNotificationManager>();
-
         if (string.IsNullOrEmpty(path))
         {
             return;
@@ -84,7 +84,7 @@ public static class Utilities
         {
             if (!File.Exists(path))
             {
-                notifyManager?.ShowErrorAsync(LanguageController.Translation("CANNOT_START_OTHER_APP"),
+                App.ServiceProvider.GetRequiredService<ISatNotificationManager>()?.ShowErrorAsync(LanguageController.Translation("CANNOT_START_OTHER_APP"),
                     LanguageController.Translation("CAN_NOT_START_APP_WITH_PATH",
                         new List<string> { "path" },
                         new List<string> { path }));
@@ -97,7 +97,7 @@ public static class Utilities
         {
             ConsoleManager.WriteLineForError(MethodBase.GetCurrentMethod()?.DeclaringType, e);
             Log.Error(e, "{message}", MethodBase.GetCurrentMethod()?.DeclaringType);
-            notifyManager?.ShowErrorAsync(LanguageController.Translation("CANNOT_START_OTHER_APP"),
+            App.ServiceProvider.GetRequiredService<ISatNotificationManager>()?.ShowErrorAsync(LanguageController.Translation("CANNOT_START_OTHER_APP"),
                 LanguageController.Translation("CAN_NOT_START_APP_WITH_PATH",
                     new List<string> { "path" },
                     new List<string> { path }));

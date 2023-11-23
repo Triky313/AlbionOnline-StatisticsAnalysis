@@ -6,21 +6,21 @@ namespace StatisticsAnalysisTool.Network.Handler;
 
 public class UnRegisterFromObjectRequestHandler : RequestPacketHandler<UnRegisterFromObjectRequest>
 {
-    private readonly TrackingController _trackingController;
+    private readonly IGameEventWrapper _gameEventWrapper;
 
-    public UnRegisterFromObjectRequestHandler(TrackingController trackingController) : base((int) OperationCodes.UnRegisterFromObject)
+    public UnRegisterFromObjectRequestHandler(IGameEventWrapper gameEventWrapper) : base((int) OperationCodes.UnRegisterFromObject)
     {
-        _trackingController = trackingController;
+        _gameEventWrapper = gameEventWrapper;
     }
 
     protected override async Task OnActionAsync(UnRegisterFromObjectRequest value)
     {
-        _trackingController.UnregisterBuilding(value.BuildingObjectId);
-        _trackingController.TradeController.UnregisterBuilding(value.BuildingObjectId);
+        _gameEventWrapper.TrackingController.UnregisterBuilding(value.BuildingObjectId);
+        _gameEventWrapper.TradeController.UnregisterBuilding(value.BuildingObjectId);
 
-        _trackingController.MarketController.ResetTempOffers();
-        _trackingController.MarketController.ResetTempBuyOrders();
-        _trackingController.MarketController.ResetTempNumberToBuyList();
+        _gameEventWrapper.MarketController.ResetTempOffers();
+        _gameEventWrapper.MarketController.ResetTempBuyOrders();
+        _gameEventWrapper.MarketController.ResetTempNumberToBuyList();
         await Task.CompletedTask;
     }
 }

@@ -17,15 +17,16 @@ using System.Windows;
 
 namespace StatisticsAnalysisTool.Network.Manager;
 
-public class CombatController
+public class CombatController : ICombatController
 {
-    private readonly MainWindowViewModel _mainWindowViewModel;
-    private readonly TrackingController _trackingController;
+    private readonly MainWindowViewModelOld _mainWindowViewModel;
+    private readonly IEntityController _entityController;
     private bool _combatModeWasCombatOver;
 
-    public CombatController(TrackingController trackingController, MainWindowViewModel mainWindowViewModel)
+    public CombatController(IEntityController entityController,
+        MainWindowViewModelOld mainWindowViewModel)
     {
-        _trackingController = trackingController;
+        _entityController = entityController;
         _mainWindowViewModel = mainWindowViewModel;
 
         OnChangeCombatMode += AddCombatTime;
@@ -50,10 +51,10 @@ public class CombatController
             return Task.CompletedTask;
         }
 
-        var gameObject = _trackingController?.EntityController?.GetEntity(causerId);
+        var gameObject = _entityController?.GetEntity(causerId);
         var gameObjectValue = gameObject?.Value;
 
-        if (gameObject?.Value is not { ObjectType: GameObjectType.Player } || !_trackingController.EntityController.IsEntityInParty(gameObject.Value.Key))
+        if (gameObject?.Value is not { ObjectType: GameObjectType.Player } || !_entityController.IsEntityInParty(gameObject.Value.Key))
         {
             return Task.CompletedTask;
         }
@@ -89,7 +90,7 @@ public class CombatController
 
         gameObjectValue.CombatStart ??= DateTime.UtcNow;
 
-        OnDamageUpdate?.Invoke(_mainWindowViewModel?.DamageMeterBindings?.DamageMeter, _trackingController.EntityController.GetAllEntitiesWithDamageOrHealAndInParty());
+        OnDamageUpdate?.Invoke(_mainWindowViewModel?.DamageMeterBindings?.DamageMeter, _entityController.GetAllEntitiesWithDamageOrHealAndInParty());
         return Task.CompletedTask;
     }
 
@@ -107,7 +108,7 @@ public class CombatController
         var currentTotalDamage = entities.GetCurrentTotalDamage();
         var currentTotalHeal = entities.GetCurrentTotalHeal();
 
-        _trackingController.EntityController.DetectUsedWeapon();
+        _entityController.DetectUsedWeapon();
 
         foreach (var healthChangeObject in entities)
         {
@@ -287,7 +288,7 @@ public class CombatController
             return;
         }
 
-        if (!_trackingController.EntityController.IsEntityInParty(objectId))
+        if (!_entityController.IsEntityInParty(objectId))
         {
             return;
         }
@@ -300,7 +301,7 @@ public class CombatController
 
     private void SetLastCombatMode(long objectId, bool inActiveCombat, bool inPassiveCombat)
     {
-        if (!_trackingController.EntityController.IsEntityInParty(objectId))
+        if (!_entityController.IsEntityInParty(objectId))
         {
             return;
         }
@@ -313,11 +314,11 @@ public class CombatController
 
     public void ResetDamageMeter()
     {
-        _trackingController.EntityController.ResetEntitiesDamageTimes();
-        _trackingController.EntityController.ResetEntitiesDamage();
-        _trackingController.EntityController.ResetEntitiesHeal();
-        _trackingController.EntityController.ResetEntitiesHealAndOverhealed();
-        _trackingController.EntityController.ResetEntitiesDamageStartTime();
+        _entityController.ResetEntitiesDamageTimes();
+        _entityController.ResetEntitiesDamage();
+        _entityController.ResetEntitiesHeal();
+        _entityController.ResetEntitiesHealAndOverhealed();
+        _entityController.ResetEntitiesDamageStartTime();
 
         Application.Current?.Dispatcher?.InvokeAsync(() =>
         {
@@ -329,7 +330,7 @@ public class CombatController
 
     public bool IsMaxHealthReached(long objectId, double newHealthValue)
     {
-        var gameObject = _trackingController?.EntityController?.GetEntity(objectId);
+        var gameObject = _entityController?.GetEntity(objectId);
         var playerHealth = LastPlayersHealth?.ToArray().FirstOrDefault(x => x.Key == gameObject?.Value?.UserGuid);
         if (playerHealth?.Value.CompareTo(newHealthValue) == 0)
         {
@@ -394,12 +395,12 @@ public class CombatController
 
     private void AddCombatTime(long objectId, bool inActiveCombat, bool inPassiveCombat)
     {
-        if (!_trackingController.EntityController.IsEntityInParty(objectId))
+        if (!_entityController.IsEntityInParty(objectId))
         {
             return;
         }
 
-        var playerObject = _trackingController.EntityController.GetEntity(objectId);
+        var playerObject = _entityController.GetEntity(objectId);
 
         if (playerObject?.Value == null)
         {
@@ -489,7 +490,7 @@ public class CombatController
             _trackingController?.EntityController?.AddToPartyAsync(guid);
         }
 
-        return _trackingController?.EntityController?.GetAllEntities();
+        return _entityController?.GetAllEntities();
     }
 
     #endregion

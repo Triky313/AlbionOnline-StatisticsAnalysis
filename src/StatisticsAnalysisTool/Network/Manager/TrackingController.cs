@@ -1,206 +1,138 @@
+using Microsoft.Extensions.Hosting;
 using Serilog;
 using StatisticsAnalysisTool.Cluster;
 using StatisticsAnalysisTool.Common;
 using StatisticsAnalysisTool.Common.UserSettings;
-using StatisticsAnalysisTool.Core;
 using StatisticsAnalysisTool.Dungeon;
 using StatisticsAnalysisTool.EstimatedMarketValue;
 using StatisticsAnalysisTool.EventLogging;
 using StatisticsAnalysisTool.EventLogging.Notification;
-using StatisticsAnalysisTool.Exceptions;
 using StatisticsAnalysisTool.Gathering;
 using StatisticsAnalysisTool.Guild;
-using StatisticsAnalysisTool.Localization;
-using StatisticsAnalysisTool.PartyBuilder;
 using StatisticsAnalysisTool.Properties;
 using StatisticsAnalysisTool.Trade;
-using StatisticsAnalysisTool.Trade.Mails;
-using StatisticsAnalysisTool.Trade.Market;
 using StatisticsAnalysisTool.ViewModels;
-using StatisticsAnalysisTool.Views;
 using System;
 using System.Collections.Generic;
-using System.ComponentModel;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
-using System.Net.Sockets;
 using System.Reflection;
+using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
-using System.Windows.Data;
-using StatisticsAnalysisTool.Network.PacketProviders;
 using ValueType = StatisticsAnalysisTool.Enumerations.ValueType;
 
 namespace StatisticsAnalysisTool.Network.Manager;
 
-public class TrackingController : ITrackingController
+public class TrackingController : ITrackingController, IHostedService
 {
     private const int MaxNotifications = 4000;
 
-    private NetworkManager _networkManager;
-    private readonly MainWindowViewModel _mainWindowViewModel;
-
-    public readonly LiveStatsTracker LiveStatsTracker;
-    public readonly CombatController CombatController;
-    public readonly DungeonController DungeonController;
-    public readonly ClusterController ClusterController;
-    public readonly EntityController EntityController;
-    public readonly LootController LootController;
-    public readonly StatisticController StatisticController;
-    public readonly TreasureController TreasureController;
-    public readonly MailController MailController;
-    public readonly MarketController MarketController;
-    public readonly TradeController TradeController;
-    public readonly VaultController VaultController;
-    public readonly GatheringController GatheringController;
-    public readonly PartyBuilderController PartyBuilderController;
-    public readonly GuildController GuildController;
+    private readonly MainWindowViewModelOld _mainWindowViewModel;
+    private readonly IEntityController _entityController;
+    private readonly IClusterController _clusterController;
+    private readonly IDungeonController _dungeonController;
+    private readonly ITreasureController _treasureController;
+    private readonly ITradeController _tradeController;
+    private readonly IVaultController _vaultController;
+    private readonly IGuildController _guildController;
+    private readonly IGatheringController _gatheringController;
+    private readonly ILiveStatsTracker _liveStatsTracker;
+    private readonly IStatisticController _statisticController;
+    private readonly ErrorBarViewModel _errorBarViewModel;
     private readonly List<LoggingFilterType> _notificationTypesFilters = new();
 
-    public TrackingController(MainWindowViewModel mainWindowViewModel)
+    public TrackingController(MainWindowViewModelOld mainWindowViewModel,
+        IEntityController entityController,
+        IClusterController clusterController,
+        IDungeonController dungeonController,
+        ITreasureController treasureController,
+        ITradeController tradeController,
+        IVaultController vaultController,
+        IGuildController guildController,
+        IGatheringController gatheringController,
+        ILiveStatsTracker liveStatsTracker,
+        IStatisticController statisticController,
+        ErrorBarViewModel errorBarViewModel)
     {
         _mainWindowViewModel = mainWindowViewModel;
-        ClusterController = new ClusterController(this, mainWindowViewModel);
-        EntityController = new EntityController(this, mainWindowViewModel);
-        DungeonController = new DungeonController(this, mainWindowViewModel);
-        CombatController = new CombatController(this, mainWindowViewModel);
-        LootController = new LootController(this, mainWindowViewModel);
-        StatisticController = new StatisticController(this, mainWindowViewModel);
-        TreasureController = new TreasureController(this, mainWindowViewModel);
-        MailController = new MailController(this, mainWindowViewModel);
-        MarketController = new MarketController(this);
-        TradeController = new TradeController(this, mainWindowViewModel);
-        VaultController = new VaultController(mainWindowViewModel);
-        GatheringController = new GatheringController(this, mainWindowViewModel);
-        PartyBuilderController = new PartyBuilderController(this, mainWindowViewModel);
-        GuildController = new GuildController(this, mainWindowViewModel);
-        LiveStatsTracker = new LiveStatsTracker(this, mainWindowViewModel);
+        _entityController = entityController;
+        _clusterController = clusterController;
+        _dungeonController = dungeonController;
+        _treasureController = treasureController;
+        _tradeController = tradeController;
+        _vaultController = vaultController;
+        _guildController = guildController;
+        _gatheringController = gatheringController;
+        _liveStatsTracker = liveStatsTracker;
+        _statisticController = statisticController;
+        _errorBarViewModel = errorBarViewModel;
+    }
 
-        _ = InitTrackingAsync();
+    public async Task StartAsync(CancellationToken cancellationToken)
+    {
+        StartEventsFunctionality();
+        await LoadDataAsync();
+    }
+
+    public Task StopAsync(CancellationToken cancellationToken)
+    {
+        return Task.CompletedTask;
     }
 
     #region Tracking
 
-    public async Task InitTrackingAsync()
+    private void StartEventsFunctionality()
     {
-        await StartTrackingAsync();
+        _clusterController?.RegisterEvents();
+        _treasureController?.RegisterEvents();
 
-        _mainWindowViewModel.IsDamageMeterTrackingActive = SettingsController.CurrentSettings.IsDamageMeterTrackingActive;
-        _mainWindowViewModel.IsTrackingPartyLootOnly = SettingsController.CurrentSettings.IsTrackingPartyLootOnly;
-        _mainWindowViewModel.LoggingBindings.IsTrackingSilver = SettingsController.CurrentSettings.IsTrackingSilver;
-        _mainWindowViewModel.LoggingBindings.IsTrackingFame = SettingsController.CurrentSettings.IsTrackingFame;
-        _mainWindowViewModel.LoggingBindings.IsTrackingMobLoot = SettingsController.CurrentSettings.IsTrackingMobLoot;
-
-        _mainWindowViewModel.LoggingBindings.GameLoggingCollectionView = CollectionViewSource.GetDefaultView(_mainWindowViewModel.LoggingBindings.TrackingNotifications) as ListCollectionView;
-        if (_mainWindowViewModel.LoggingBindings?.GameLoggingCollectionView != null)
-        {
-            _mainWindowViewModel.LoggingBindings.GameLoggingCollectionView.IsLiveSorting = true;
-            _mainWindowViewModel.LoggingBindings.GameLoggingCollectionView.IsLiveFiltering = true;
-            _mainWindowViewModel.LoggingBindings.GameLoggingCollectionView.SortDescriptions.Add(new SortDescription(nameof(DateTime), ListSortDirection.Descending));
-        }
+        _liveStatsTracker.Start();
     }
 
-    public async Task StartTrackingAsync()
+    public void StopTracking()
     {
-        if (_networkManager?.IsAnySocketActive() ?? false)
-        {
-            return;
-        }
+        _liveStatsTracker?.Stop();
+        _treasureController.UnregisterEvents();
+        _clusterController.UnregisterEvents();
 
-        _networkManager = new NetworkManager(this);
+        Debug.Print("Stopped tracking");
+    }
 
-        if (!ApplicationCore.IsAppStartedAsAdministrator() && SettingsController.CurrentSettings.PacketProvider == PacketProviderKind.Sockets)
-        {
-            _mainWindowViewModel.SetErrorBar(Visibility.Visible, LanguageController.Translation("START_APPLICATION_AS_ADMINISTRATOR"));
-            return;
-        }
-
+    private async Task LoadDataAsync()
+    {
         try
         {
             await Task.WhenAll(
                 EstimatedMarketValueController.LoadFromFileAsync(),
-                StatisticController.LoadFromFileAsync(),
-                TradeController.LoadFromFileAsync(),
-                TreasureController.LoadFromFileAsync(),
-                DungeonController.LoadDungeonFromFileAsync(),
-                GatheringController.LoadFromFileAsync(),
-                VaultController.LoadFromFileAsync(),
-                GuildController.LoadFromFileAsync()
+                _statisticController.LoadFromFileAsync(),
+                _tradeController.LoadFromFileAsync(),
+                _treasureController.LoadFromFileAsync(),
+                _dungeonController.LoadDungeonFromFileAsync(),
+                _gatheringController.LoadFromFileAsync(),
+                _vaultController.LoadFromFileAsync(),
+                _guildController.LoadFromFileAsync()
             );
         }
         catch (Exception e)
         {
             ConsoleManager.WriteLineForError(MethodBase.GetCurrentMethod()?.DeclaringType, e);
             Log.Error(e, "{message}", MethodBase.GetCurrentMethod()?.DeclaringType);
-            _mainWindowViewModel.SetErrorBar(Visibility.Visible, e.Message);
+            _errorBarViewModel.Set(Visibility.Visible, e.Message);
         }
-
-        ClusterController?.RegisterEvents();
-        LootController?.RegisterEvents();
-        TreasureController?.RegisterEvents();
-
-        LiveStatsTracker.Start();
-
-        _mainWindowViewModel.DungeonBindings.DungeonStatsFilter = new DungeonStatsFilter(_mainWindowViewModel.DungeonBindings);
-
-        try
-        {
-            _networkManager.Start();
-            _mainWindowViewModel.IsTrackingActive = true;
-        }
-        catch (NoListeningAdaptersException e)
-        {
-            ConsoleManager.WriteLineForError(MethodBase.GetCurrentMethod()?.DeclaringType, e);
-            Log.Error(e, "{message}", MethodBase.GetCurrentMethod()?.DeclaringType);
-            _mainWindowViewModel.SetErrorBar(Visibility.Visible, LanguageController.Translation("NO_LISTENING_ADAPTERS"));
-        }
-        catch (SocketException e)
-        {
-            ConsoleManager.WriteLineForError(MethodBase.GetCurrentMethod()?.DeclaringType, e);
-            Log.Error(e, "{message}|{socketErrorCode}", MethodBase.GetCurrentMethod()?.DeclaringType, e.SocketErrorCode);
-            _mainWindowViewModel.SetErrorBar(Visibility.Visible, $"Socket Exception - {e.Message}");
-        }
-        catch (Exception e)
-        {
-            ConsoleManager.WriteLineForError(MethodBase.GetCurrentMethod()?.DeclaringType, e);
-            Log.Error(e, "{message}", MethodBase.GetCurrentMethod()?.DeclaringType);
-            _mainWindowViewModel.SetErrorBar(Visibility.Visible, LanguageController.Translation("PACKET_HANDLER_ERROR_MESSAGE"));
-
-            StopTracking();
-        }
-    }
-
-    public void StopTracking()
-    {
-        if (!_mainWindowViewModel.IsTrackingActive)
-        {
-            return;
-        }
-
-        _networkManager.Stop();
-
-        LiveStatsTracker?.Stop();
-
-        TreasureController.UnregisterEvents();
-        LootController.UnregisterEvents();
-        ClusterController.UnregisterEvents();
-
-        _mainWindowViewModel.IsTrackingActive = false;
-
-        Debug.Print("Stopped tracking");
     }
 
     public async Task SaveDataAsync()
     {
         await Task.WhenAll(
-            VaultController.SaveInFileAsync(),
-            TradeController.SaveInFileAsync(),
-            TreasureController.SaveInFileAsync(),
-            StatisticController.SaveInFileAsync(),
-            DungeonController.SaveInFileAsync(),
-            GatheringController.SaveInFileAsync(true),
-            GuildController.SaveInFileAsync(),
+            _vaultController.SaveInFileAsync(),
+            _tradeController.SaveInFileAsync(),
+            _treasureController.SaveInFileAsync(),
+            _statisticController.SaveInFileAsync(),
+            _dungeonController.SaveInFileAsync(),
+            _gatheringController.SaveInFileAsync(true),
+            _guildController.SaveInFileAsync(),
             EstimatedMarketValueController.SaveInFileAsync(),
             FileController.SaveAsync(_mainWindowViewModel.DamageMeterBindings?.DamageMeterSnapshots,
                 Path.Combine(AppDomain.CurrentDomain.BaseDirectory, Settings.Default.UserDataDirectoryName, Settings.Default.DamageMeterSnapshotsFileName))
@@ -208,7 +140,7 @@ public class TrackingController : ITrackingController
         Debug.Print("Damage Meter snapshots saved");
     }
 
-    public bool ExistIndispensableInfos => ClusterController.CurrentCluster != null && EntityController.ExistLocalEntity();
+    public bool ExistIndispensableInfos => ClusterController.CurrentCluster != null && _entityController.ExistLocalEntity();
 
     #endregion
 
@@ -280,14 +212,6 @@ public class TrackingController : ITrackingController
         }
 
         _isRemovesUnnecessaryNotificationsActive = false;
-    }
-
-    public async Task ClearNotificationsAsync()
-    {
-        await Application.Current.Dispatcher.InvokeAsync(() =>
-        {
-            _mainWindowViewModel?.LoggingBindings?.TrackingNotifications.Clear();
-        });
     }
 
     public async Task NotificationUiFilteringAsync(string text = null)
@@ -442,26 +366,13 @@ public class TrackingController : ITrackingController
         return false;
     }
 
-    public async Task ResetTrackingNotificationsAsync()
-    {
-        var dialog = new DialogWindow(LanguageController.Translation("RESET_TRACKING_NOTIFICATIONS"), LanguageController.Translation("SURE_YOU_WANT_TO_RESET_TRACKING_NOTIFICATIONS"));
-        var dialogResult = dialog.ShowDialog();
-
-        if (dialogResult is true)
-        {
-            await ClearNotificationsAsync()!;
-            Application.Current.Dispatcher.Invoke(() => _mainWindowViewModel?.LoggingBindings?.TopLooters?.Clear());
-            LootController?.ClearLootLogger();
-        }
-    }
-
     #endregion
 
     #region Specific character name tracking
 
     public bool IsTrackingAllowedByMainCharacter()
     {
-        var localEntity = EntityController.GetLocalEntity();
+        var localEntity = _entityController.GetLocalEntity();
 
         if (localEntity?.Value?.Name == null || string.IsNullOrEmpty(SettingsController.CurrentSettings.MainTrackingCharacterName))
         {
@@ -516,13 +427,13 @@ public class TrackingController : ITrackingController
 
     public void RepairFinished(long userObjectId, long buildingObjectId)
     {
-        if (EntityController.LocalUserData.UserObjectId != userObjectId || _upcomingRepairCosts <= 0 || _buildingObjectId != buildingObjectId)
+        if (_entityController.LocalUserData.UserObjectId != userObjectId || _upcomingRepairCosts <= 0 || _buildingObjectId != buildingObjectId)
         {
             return;
         }
 
-        StatisticController?.AddValue(ValueType.RepairCosts, FixPoint.FromInternalValue(_upcomingRepairCosts).DoubleValue);
-        StatisticController?.UpdateRepairCostsUi();
+        _statisticController?.AddValue(ValueType.RepairCosts, FixPoint.FromInternalValue(_upcomingRepairCosts).DoubleValue);
+        _statisticController?.UpdateRepairCostsUi();
     }
 
     #endregion

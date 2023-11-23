@@ -6,22 +6,22 @@ namespace StatisticsAnalysisTool.Network.Handler;
 
 public class AttachItemContainerEventHandler : EventPacketHandler<AttachItemContainerEvent>
 {
-    private readonly TrackingController _trackingController;
+    private readonly IGameEventWrapper _gameEventWrapper;
 
-    public AttachItemContainerEventHandler(TrackingController trackingController) : base((int) EventCodes.AttachItemContainer)
+    public AttachItemContainerEventHandler(IGameEventWrapper gameEventWrapper) : base((int) EventCodes.AttachItemContainer)
     {
-        _trackingController = trackingController;
+        _gameEventWrapper = gameEventWrapper;
     }
 
     protected override async Task OnActionAsync(AttachItemContainerEvent value)
     {
-        if (_trackingController.IsTrackingAllowedByMainCharacter())
+        if (_gameEventWrapper.TrackingController.IsTrackingAllowedByMainCharacter())
         {
-            _trackingController.VaultController.AddContainer(value.ItemContainerObject);
+            _gameEventWrapper.VaultController.AddContainer(value.ItemContainerObject);
         }
 
-        _trackingController.LootController.SetCurrentItemContainer(value.ItemContainerObject);
-        _trackingController.DungeonController.SetCurrentItemContainer(value.ItemContainerObject);
+        _gameEventWrapper.LootController.SetCurrentItemContainer(value.ItemContainerObject);
+        _gameEventWrapper.DungeonController.SetCurrentItemContainer(value.ItemContainerObject);
         await Task.CompletedTask;
     }
 }

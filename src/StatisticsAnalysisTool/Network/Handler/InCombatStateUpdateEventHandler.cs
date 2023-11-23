@@ -6,18 +6,18 @@ namespace StatisticsAnalysisTool.Network.Handler;
 
 public class InCombatStateUpdateEventHandler : EventPacketHandler<InCombatStateUpdateEvent>
 {
-    private readonly TrackingController _trackingController;
+    private readonly ICombatController _combatController;
 
-    public InCombatStateUpdateEventHandler(TrackingController trackingController) : base((int) EventCodes.InCombatStateUpdate)
+    public InCombatStateUpdateEventHandler(ICombatController combatController) : base((int) EventCodes.InCombatStateUpdate)
     {
-        _trackingController = trackingController;
+        _combatController = combatController;
     }
 
     protected override async Task OnActionAsync(InCombatStateUpdateEvent value)
     {
         if (value.ObjectId != null)
         {
-            _trackingController.CombatController.UpdateCombatMode((long)value.ObjectId, value.InActiveCombat, value.InPassiveCombat);
+            _combatController.UpdateCombatMode((long)value.ObjectId, value.InActiveCombat, value.InPassiveCombat);
         }
 
         await Task.CompletedTask;

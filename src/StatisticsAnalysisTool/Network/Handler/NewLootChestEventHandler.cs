@@ -6,16 +6,16 @@ namespace StatisticsAnalysisTool.Network.Handler;
 
 public class NewLootChestEventHandler : EventPacketHandler<NewLootChestEvent>
 {
-    private readonly TrackingController _trackingController;
+    private readonly IGameEventWrapper _gameEventWrapper;
 
-    public NewLootChestEventHandler(TrackingController trackingController) : base((int) EventCodes.NewLootChest)
+    public NewLootChestEventHandler(IGameEventWrapper gameEventWrapper) : base((int) EventCodes.NewLootChest)
     {
-        _trackingController = trackingController;
+        _gameEventWrapper = gameEventWrapper;
     }
 
     protected override async Task OnActionAsync(NewLootChestEvent value)
     {
-        await _trackingController?.DungeonController?.SetDungeonEventInformationAsync(value.ObjectId, value.UniqueName)!;
-        _trackingController?.TreasureController?.AddTreasure(value.ObjectId, value.UniqueName, value.UniqueNameWithLocation);
+        await _gameEventWrapper?.DungeonController?.SetDungeonEventInformationAsync(value.ObjectId, value.UniqueName)!;
+        _gameEventWrapper?.TreasureController?.AddTreasure(value.ObjectId, value.UniqueName, value.UniqueNameWithLocation);
     }
 }

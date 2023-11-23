@@ -13,19 +13,19 @@ namespace StatisticsAnalysisTool.Network.Handler;
 
 public class TakeSilverEventHandler : EventPacketHandler<TakeSilverEvent>
 {
-    private readonly TrackingController _trackingController;
+    private readonly IGameEventWrapper _gameEventWrapper;
 
-    public TakeSilverEventHandler(TrackingController trackingController) : base((int) EventCodes.TakeSilver)
+    public TakeSilverEventHandler(IGameEventWrapper gameEventWrapper) : base((int) EventCodes.TakeSilver)
     {
-        _trackingController = trackingController;
+        _gameEventWrapper = gameEventWrapper;
     }
 
     protected override async Task OnActionAsync(TakeSilverEvent value)
     {
-        var localEntity = _trackingController.EntityController.GetLocalEntity()?.Value;
+        var localEntity = _gameEventWrapper.EntityController.GetLocalEntity()?.Value;
 
         var isObjectLocalEntity = value.ObjectId != null && localEntity?.ObjectId == value.ObjectId;
-        var isObjectPartyEntityAndNotTargetEntity = value.ObjectId != null && _trackingController.EntityController.IsEntityInParty((long) value.ObjectId) && value.ObjectId != value.TargetEntityId;
+        var isObjectPartyEntityAndNotTargetEntity = value.ObjectId != null && _gameEventWrapper.EntityController.IsEntityInParty((long) value.ObjectId) && value.ObjectId != value.TargetEntityId;
         var isObjectLocalEntityAndTargetEntity = value.ObjectId != null && localEntity?.ObjectId == value.ObjectId && value.ObjectId == value.TargetEntityId;
 
         if (isObjectLocalEntity || isObjectPartyEntityAndNotTargetEntity || isObjectLocalEntityAndTargetEntity)
@@ -33,25 +33,25 @@ public class TakeSilverEventHandler : EventPacketHandler<TakeSilverEvent>
             // Set guild tax % to local player
             if (isObjectLocalEntity && !isObjectLocalEntityAndTargetEntity)
             {
-                _trackingController.EntityController.SetLastLocalEntityGuildTax(value.YieldPreTax, value.GuildTax);
-                _trackingController.EntityController.SetLastLocalEntityClusterTax(value.YieldPreTax, value.ClusterTax);
+                _gameEventWrapper.EntityController.SetLastLocalEntityGuildTax(value.YieldPreTax, value.GuildTax);
+                _gameEventWrapper.EntityController.SetLastLocalEntityClusterTax(value.YieldPreTax, value.ClusterTax);
             }
 
             // Include guild + cluster tax if a party member takes silver
             if (isObjectPartyEntityAndNotTargetEntity && !isObjectLocalEntity)
             {
-                value.GuildTax = _trackingController.EntityController.GetLastLocalEntityGuildTax(value.YieldPreTax);
+                value.GuildTax = _gameEventWrapper.EntityController.GetLastLocalEntityGuildTax(value.YieldPreTax);
                 var yieldAfterGuildTax = value.YieldPreTax - value.GuildTax;
-                value.ClusterTax = _trackingController.EntityController.GetLastLocalEntityClusterTax(yieldAfterGuildTax);
+                value.ClusterTax = _gameEventWrapper.EntityController.GetLastLocalEntityClusterTax(yieldAfterGuildTax);
 
                 var yieldAfterGuildTaxAndClusterTax = yieldAfterGuildTax - value.ClusterTax;
                 value.YieldAfterTax = yieldAfterGuildTaxAndClusterTax;
             }
 
-            await _trackingController.AddNotificationAsync(SetNotification(value.YieldAfterTax, value.ClusterYieldAfterTax, value.PremiumAfterTax, value.ClusterTax));
-            _trackingController.LiveStatsTracker.Add(ValueType.Silver, value.YieldAfterTax.DoubleValue);
-            _trackingController.DungeonController?.AddValueToDungeon(value.YieldAfterTax.DoubleValue, ValueType.Silver);
-            _trackingController.StatisticController?.AddValue(ValueType.Silver, value.YieldAfterTax.DoubleValue);
+            await _gameEventWrapper.TrackingController.AddNotificationAsync(SetNotification(value.YieldAfterTax, value.ClusterYieldAfterTax, value.PremiumAfterTax, value.ClusterTax));
+            _gameEventWrapper.LiveStatsTracker.Add(ValueType.Silver, value.YieldAfterTax.DoubleValue);
+            _gameEventWrapper.DungeonController?.AddValueToDungeon(value.YieldAfterTax.DoubleValue, ValueType.Silver);
+            _gameEventWrapper.StatisticController?.AddValue(ValueType.Silver, value.YieldAfterTax.DoubleValue);
         }
     }
 

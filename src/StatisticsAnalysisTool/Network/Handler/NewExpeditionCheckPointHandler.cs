@@ -1,21 +1,21 @@
-﻿using StatisticsAnalysisTool.Dungeon.Models;
+﻿using StatisticsAnalysisTool.Dungeon;
+using StatisticsAnalysisTool.Dungeon.Models;
 using StatisticsAnalysisTool.Network.Events;
-using StatisticsAnalysisTool.Network.Manager;
 using System.Threading.Tasks;
 
 namespace StatisticsAnalysisTool.Network.Handler;
 
 public class NewExpeditionCheckPointHandler : EventPacketHandler<NewExpeditionCheckPointEvent>
 {
-    private readonly TrackingController _trackingController;
+    private readonly IDungeonController _dungeonController;
 
-    public NewExpeditionCheckPointHandler(TrackingController trackingController) : base((int) EventCodes.NewExpeditionCheckPoint)
+    public NewExpeditionCheckPointHandler(IDungeonController dungeonController) : base((int) EventCodes.NewExpeditionCheckPoint)
     {
-        _trackingController = trackingController;
+        _dungeonController = dungeonController;
     }
 
     protected override async Task OnActionAsync(NewExpeditionCheckPointEvent value)
     {
-        await _trackingController.DungeonController.UpdateCheckPointAsync(new CheckPoint() { Id = value.ObjectId, Status = value.Status });
+        await _dungeonController.UpdateCheckPointAsync(new CheckPoint() { Id = value.ObjectId, Status = value.Status });
     }
 }

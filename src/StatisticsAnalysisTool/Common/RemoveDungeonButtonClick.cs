@@ -1,4 +1,5 @@
-﻿using StatisticsAnalysisTool.Network.Manager;
+﻿using Microsoft.Extensions.DependencyInjection;
+using StatisticsAnalysisTool.Dungeon;
 using System;
 using System.Windows.Input;
 
@@ -13,8 +14,7 @@ public class RemoveDungeonButtonClick : ICommand
 
     public void Execute(object parameter)
     {
-        var trackingController = ServiceLocator.Resolve<TrackingController>();
-        trackingController?.DungeonController?.RemoveDungeon((string) parameter);
+        App.ServiceProvider.GetRequiredService<IDungeonController>()?.RemoveDungeon((string) parameter);
     }
 
     public event EventHandler CanExecuteChanged

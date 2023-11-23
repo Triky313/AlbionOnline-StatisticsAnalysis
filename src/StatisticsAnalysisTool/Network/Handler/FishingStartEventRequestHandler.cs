@@ -1,4 +1,4 @@
-﻿using StatisticsAnalysisTool.Network.Manager;
+﻿using StatisticsAnalysisTool.Gathering;
 using StatisticsAnalysisTool.Network.Operations;
 using System.Threading.Tasks;
 
@@ -6,16 +6,16 @@ namespace StatisticsAnalysisTool.Network.Handler;
 
 public class FishingStartEventRequestHandler : RequestPacketHandler<FishingStartRequest>
 {
-    private readonly TrackingController _trackingController;
+    private readonly IGatheringController _gatheringController;
 
-    public FishingStartEventRequestHandler(TrackingController trackingController) : base((int) OperationCodes.FishingStart)
+    public FishingStartEventRequestHandler(IGatheringController gatheringController) : base((int) OperationCodes.FishingStart)
     {
-        _trackingController = trackingController;
+        _gatheringController = gatheringController;
     }
 
     protected override async Task OnActionAsync(FishingStartRequest value)
     {
-        _trackingController.GatheringController.FishingIsStarted(value.EventId, value.ItemIndex);
+        _gatheringController.FishingIsStarted(value.EventId, value.ItemIndex);
         await Task.CompletedTask;
     }
 }

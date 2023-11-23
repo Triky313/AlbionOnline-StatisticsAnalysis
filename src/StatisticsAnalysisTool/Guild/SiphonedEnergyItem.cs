@@ -1,8 +1,8 @@
-﻿using StatisticsAnalysisTool.Common;
+﻿using Microsoft.Extensions.DependencyInjection;
+using StatisticsAnalysisTool.Common;
 using StatisticsAnalysisTool.Localization;
 using StatisticsAnalysisTool.ViewModels;
 using System;
-using StatisticsAnalysisTool.Network.Manager;
 
 namespace StatisticsAnalysisTool.Guild;
 
@@ -26,18 +26,18 @@ public class SiphonedEnergyItem : BaseViewModel, IEquatable<SiphonedEnergyItem>
             OnPropertyChanged();
         }
     }
-    
+
     public bool IsDisabled
     {
         get => _isDisabled;
         set
         {
             _isDisabled = value;
-            ServiceLocator.Resolve<TrackingController>()?.GuildController?.UpdateSiphonedEnergyOverview();
+            App.ServiceProvider.GetRequiredService<IGuildController>()?.UpdateSiphonedEnergyOverview();
             OnPropertyChanged();
         }
     }
-    
+
     public bool Equals(SiphonedEnergyItem other)
     {
         if (other is null)
@@ -70,14 +70,14 @@ public class SiphonedEnergyItem : BaseViewModel, IEquatable<SiphonedEnergyItem>
             return false;
         }
 
-        return Equals((SiphonedEnergyItem)obj);
+        return Equals((SiphonedEnergyItem) obj);
     }
 
     public override int GetHashCode()
     {
         return HashCode.Combine(CharacterName, Quantity, Timestamp);
     }
-    
+
     public static string TranslationSelectToDisable => LanguageController.Translation("SELECT_TO_DISABLE");
     public static string TranslationSelectToDelete => LanguageController.Translation("SELECT_TO_DELETE");
 }

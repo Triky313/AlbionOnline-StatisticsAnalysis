@@ -1,4 +1,4 @@
-﻿using StatisticsAnalysisTool.Enumerations;
+using StatisticsAnalysisTool.Enumerations;
 using StatisticsAnalysisTool.Models.NetworkModel;
 using StatisticsAnalysisTool.Network.Events;
 using StatisticsAnalysisTool.Network.Manager;
@@ -8,11 +8,11 @@ namespace StatisticsAnalysisTool.Network.Handler;
 
 public class PartyPlayerJoinedEventHandler : EventPacketHandler<PartyPlayerJoinedEvent>
 {
-    private readonly TrackingController _trackingController;
+    private readonly IEntityController _entityController;
 
-    public PartyPlayerJoinedEventHandler(TrackingController trackingController) : base((int) EventCodes.PartyPlayerJoined)
+    public PartyPlayerJoinedEventHandler(IEntityController entityController) : base((int) EventCodes.PartyPlayerJoined)
     {
-        _trackingController = trackingController;
+        _entityController = entityController;
     }
 
     protected override async Task OnActionAsync(PartyPlayerJoinedEvent value)

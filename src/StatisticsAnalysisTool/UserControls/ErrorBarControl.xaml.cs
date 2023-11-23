@@ -1,5 +1,5 @@
-﻿using StatisticsAnalysisTool.ViewModels;
-using System.Windows;
+﻿using Microsoft.Extensions.DependencyInjection;
+using StatisticsAnalysisTool.ViewModels;
 
 namespace StatisticsAnalysisTool.UserControls;
 
@@ -11,24 +11,7 @@ public partial class ErrorBarControl
     public ErrorBarControl()
     {
         InitializeComponent();
-    }
-        
-    public string ErrorBarText
-    {
-        get => (string)GetValue(ErrorBarTextProperty);
-        set => SetValue(ErrorBarTextProperty, value);
-    }
-
-    public static readonly DependencyProperty ErrorBarTextProperty = DependencyProperty.Register("ErrorBarText", typeof(string), typeof(ErrorBarControl));
-
-    private void BtnErrorBar_Click(object sender, RoutedEventArgs e)
-    {
-        Application.Current.Dispatcher.Invoke(() =>
-        {
-            var mainWindowViewModel = (MainWindowViewModel) DataContext;
-
-            mainWindowViewModel.ErrorBarText = string.Empty;
-            mainWindowViewModel.ErrorBarVisibility = Visibility.Collapsed;
-        });
+        var errorBarViewModel = App.ServiceProvider.GetRequiredService<ErrorBarViewModel>();
+        DataContext = errorBarViewModel;
     }
 }

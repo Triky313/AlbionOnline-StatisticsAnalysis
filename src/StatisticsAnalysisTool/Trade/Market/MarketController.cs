@@ -2,7 +2,6 @@
 using StatisticsAnalysisTool.Cluster;
 using StatisticsAnalysisTool.Common;
 using StatisticsAnalysisTool.Common.UserSettings;
-using StatisticsAnalysisTool.Network.Manager;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -12,16 +11,16 @@ using System.Threading.Tasks;
 
 namespace StatisticsAnalysisTool.Trade.Market;
 
-public class MarketController
+public class MarketController : IMarketController
 {
-    private readonly TrackingController _trackingController;
+    private readonly ITradeController _tradeController;
     private ObservableCollection<AuctionEntry> _tempOffers = new();
     private ObservableCollection<AuctionEntry> _tempBuyOrders = new();
     private ObservableCollection<int> _tempNumberToBuyList = new();
 
-    public MarketController(TrackingController trackingController)
+    public MarketController(ITradeController tradeController)
     {
-        _trackingController = trackingController;
+        _tradeController = tradeController;
     }
 
     #region Buy from market
@@ -74,8 +73,8 @@ public class MarketController
                 InstantBuySellContent = instantBuySellContent
             };
 
-            _ = _trackingController.TradeController.AddTradeToBindingCollectionAsync(trade);
-            await _trackingController.TradeController.SaveInFileAfterExceedingLimit(20);
+            _ = _tradeController.AddTradeToBindingCollectionAsync(trade);
+            await _tradeController.SaveInFileAfterExceedingLimit(20);
         }
     }
 
@@ -118,10 +117,10 @@ public class MarketController
                 InstantBuySellContent = instantBuySellContent
             };
 
-            _ = _trackingController.TradeController.AddTradeToBindingCollectionAsync(trade);
+            _ = _tradeController.AddTradeToBindingCollectionAsync(trade);
         }
 
-        await _trackingController.TradeController.SaveInFileAfterExceedingLimit(20);
+        await _tradeController.SaveInFileAfterExceedingLimit(20);
     }
 
     public void ResetTempOffers()
@@ -191,8 +190,8 @@ public class MarketController
                 InstantBuySellContent = instantBuySellContent
             };
 
-            _ = _trackingController.TradeController.AddTradeToBindingCollectionAsync(trade);
-            await _trackingController.TradeController.SaveInFileAfterExceedingLimit(10);
+            _ = _tradeController.AddTradeToBindingCollectionAsync(trade);
+            await _tradeController.SaveInFileAfterExceedingLimit(10);
         }
     }
 

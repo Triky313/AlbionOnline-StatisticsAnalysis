@@ -22,7 +22,7 @@ public partial class GatheringControl
         var dialog = new DialogWindow(LanguageController.Translation("DELETE_SELECTED_RESOURCES"), LanguageController.Translation("SURE_YOU_WANT_TO_DELETE_SELECTED_RESOURCES"));
         var dialogResult = dialog.ShowDialog();
 
-        var vm = (MainWindowViewModel) DataContext;
+        var vm = (MainWindowViewModelOld) DataContext;
 
         if (dialogResult is true)
         {
@@ -38,7 +38,7 @@ public partial class GatheringControl
 
     private void BtnSelectSwitchAllGathered_Click(object sender, RoutedEventArgs e)
     {
-        if ((MainWindowViewModel) DataContext is not { GatheringBindings.GatheredCollection: { } } mainWindowViewModel)
+        if ((MainWindowViewModelOld) DataContext is not { GatheringBindings.GatheredCollection: { } } mainWindowViewModel)
         {
             return;
         }

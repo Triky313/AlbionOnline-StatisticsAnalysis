@@ -13,11 +13,17 @@ using System.Threading.Tasks;
 
 namespace StatisticsAnalysisTool.Backup;
 
-public static class BackupController
+public class BackupController : IBackupController
 {
     private static bool _isBackupRunning;
+    private readonly ISatNotificationManager _satNotificationManager;
 
-    public static bool SaveWithConditions()
+    public BackupController(ISatNotificationManager satNotificationManager)
+    {
+        _satNotificationManager = satNotificationManager;
+    }
+
+    public bool SaveWithConditions()
     {
         if (!ExistBackupOnSettingConditions())
         {
@@ -27,7 +33,7 @@ public static class BackupController
         return false;
     }
 
-    public static bool Save()
+    public bool Save()
     {
         if (_isBackupRunning)
         {
@@ -57,8 +63,7 @@ public static class BackupController
             }
 
             ConsoleManager.WriteLineForMessage(LanguageController.Translation("BACKUP_CREATED"));
-            _ = ServiceLocator.Resolve<SatNotificationManager>()
-                .ShowTrackingStatusAsync(LanguageController.Translation("BACKUP_CREATED"), LanguageController.Translation("A_BACKUP_HAS_BEEN_CREATED"));
+            _ = _satNotificationManager.ShowTrackingStatusAsync(LanguageController.Translation("BACKUP_CREATED"), LanguageController.Translation("A_BACKUP_HAS_BEEN_CREATED"));
             _isBackupRunning = false;
             return true;
         }
@@ -78,7 +83,7 @@ public static class BackupController
         return $"{date:yyyy}{date:MM}{date:dd}-{secondsOfDay}-UserData-backup.zip";
     }
 
-    public static bool ExistBackupOnSettingConditions()
+    public bool ExistBackupOnSettingConditions()
     {
         var backupDirPath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, Settings.Default.BackupDirectoryName);
 
@@ -110,7 +115,7 @@ public static class BackupController
         return newestBackup.LastWriteTimeUtc >= sevenDaysAgo;
     }
 
-    public static async Task DeleteOldestBackupsIfNeededAsync()
+    public async Task DeleteOldestBackupsIfNeededAsync()
     {
         var backupDirPath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, Settings.Default.BackupDirectoryName);
 
@@ -150,7 +155,7 @@ public static class BackupController
         }
     }
 
-    private static async Task DeleteBackupAsync(string filePath)
+    private async Task DeleteBackupAsync(string filePath)
     {
         try
         {

@@ -7,24 +7,24 @@ namespace StatisticsAnalysisTool.Network.Handler;
 
 public class NewSimpleItemEventHandler : EventPacketHandler<NewSimpleItemEvent>
 {
-    private readonly TrackingController _trackingController;
+    private readonly IGameEventWrapper _gameEventWrapper;
 
-    public NewSimpleItemEventHandler(TrackingController trackingController) : base((int) EventCodes.NewSimpleItem)
+    public NewSimpleItemEventHandler(IGameEventWrapper gameEventWrapper) : base((int) EventCodes.NewSimpleItem)
     {
-        _trackingController = trackingController;
+        _gameEventWrapper = gameEventWrapper;
     }
 
     protected override async Task OnActionAsync(NewSimpleItemEvent value)
     {
-        if (_trackingController.IsTrackingAllowedByMainCharacter())
+        if (_gameEventWrapper.TrackingController.IsTrackingAllowedByMainCharacter())
         {
-            _trackingController.VaultController.Add(value.Item);
+            _gameEventWrapper.VaultController.Add(value.Item);
         }
 
         EstimatedMarketValueController.Add(value.Item.ItemIndex, value.Item.EstimatedMarketValueInternal, value.Item.Quality);
-        _trackingController.LootController.AddDiscoveredItem(value.Item);
-        _trackingController.DungeonController.AddDiscoveredItem(value.Item);
-        _trackingController.GatheringController.AddFishedItem(value.Item);
+        _gameEventWrapper.LootController.AddDiscoveredItem(value.Item);
+        _gameEventWrapper.DungeonController.AddDiscoveredItem(value.Item);
+        _gameEventWrapper.GatheringController.AddFishedItem(value.Item);
         await Task.CompletedTask;
     }
 }

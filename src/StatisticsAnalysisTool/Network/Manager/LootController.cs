@@ -20,8 +20,9 @@ namespace StatisticsAnalysisTool.Network.Manager;
 
 public class LootController : ILootController
 {
-    private readonly TrackingController _trackingController;
-    private readonly MainWindowViewModel _mainWindowViewModel;
+    private readonly ITrackingController _trackingController;
+    private readonly IEntityController _entityController;
+    private readonly MainWindowViewModelOld _mainWindowViewModel;
     private readonly List<LootLoggerObject> _lootLoggerObjects = new();
     private ItemContainerObject _currentItemContainer;
     private readonly List<DiscoveredItem> _discoveredLoot = new();
@@ -29,14 +30,25 @@ public class LootController : ILootController
 
     private const int MaxLoot = 5000;
 
-    public LootController(TrackingController trackingController, MainWindowViewModel mainWindowViewModel)
+    public LootController(
+        ITrackingController trackingController,
+        IEntityController entityController,
+        MainWindowViewModelOld mainWindowViewModel)
     {
         _trackingController = trackingController;
+        _entityController = entityController;
         _mainWindowViewModel = mainWindowViewModel;
+
+        RegisterEvents();
 
 #if DEBUG
         _ = AddTestLootNotificationsAsync(30);
 #endif
+    }
+
+    ~LootController()
+    {
+        UnregisterEvents();
     }
 
     public void RegisterEvents()
@@ -59,8 +71,8 @@ public class LootController : ILootController
         }
 
         if (SettingsController.CurrentSettings.IsTrackingPartyLootOnly
-            && !_trackingController.EntityController.IsEntityInParty(loot.LootedByName)
-            && !_trackingController.EntityController.IsEntityInParty(loot.LootedFromName))
+            && !_entityController.IsEntityInParty(loot.LootedByName)
+            && !_entityController.IsEntityInParty(loot.LootedFromName))
         {
             return;
         }
@@ -78,8 +90,8 @@ public class LootController : ILootController
         _lastLootedItem = loot;
 
         var item = ItemController.GetItemByIndex(loot.ItemIndex);
-        var lootedByUser = _trackingController.EntityController.GetEntity(loot.LootedByName);
-        var lootedFromUser = _trackingController.EntityController.GetEntity(loot.LootedFromName);
+        var lootedByUser = _entityController.GetEntity(loot.LootedByName);
+        var lootedFromUser = _entityController.GetEntity(loot.LootedFromName);
 
         var notification = SetNotificationAsync(loot.LootedByName, loot.LootedFromName, lootedByUser?.Value?.Guild, lootedFromUser?.Value?.Guild, item, loot.Quantity);
         await _trackingController.AddNotificationAsync(notification);
@@ -212,7 +224,7 @@ public class LootController : ILootController
 
     public async Task AddNewLocalPlayerLootAsync(int containerSlot, Guid containerGuid, Guid userInteractGuid)
     {
-        if (_trackingController.EntityController.LocalUserData.InteractGuid != userInteractGuid)
+        if (_entityController.LocalUserData.InteractGuid != userInteractGuid)
         {
             return;
         }
@@ -223,7 +235,7 @@ public class LootController : ILootController
             return;
         }
 
-        if (string.IsNullOrEmpty(_trackingController?.EntityController?.LocalUserData?.Username) || string.IsNullOrEmpty(identifiedBody.Name))
+        if (string.IsNullOrEmpty(_entityController?.LocalUserData?.Username) || string.IsNullOrEmpty(identifiedBody.Name))
         {
             return;
         }
@@ -241,7 +253,7 @@ public class LootController : ILootController
             IsSilver = false,
             IsTrash = false,
             ItemIndex = lootedItem.ItemIndex,
-            LootedByName = _trackingController?.EntityController?.LocalUserData?.Username,
+            LootedByName = _entityController?.LocalUserData?.Username,
             LootedFromName = MobController.IsMob(identifiedBody.Name) ? LanguageController.Translation("MOB") : identifiedBody.Name,
             Quantity = lootedItem.Quantity
         });

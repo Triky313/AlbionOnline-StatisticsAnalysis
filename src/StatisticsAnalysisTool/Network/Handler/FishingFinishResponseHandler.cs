@@ -1,4 +1,4 @@
-﻿using StatisticsAnalysisTool.Network.Manager;
+﻿using StatisticsAnalysisTool.Gathering;
 using StatisticsAnalysisTool.Network.Operations;
 using System.Threading.Tasks;
 
@@ -6,16 +6,16 @@ namespace StatisticsAnalysisTool.Network.Handler;
 
 public class FishingFinishResponseHandler : ResponsePacketHandler<FishingFinishResponse>
 {
-    private readonly TrackingController _trackingController;
+    private readonly IGatheringController _gatheringController;
 
-    public FishingFinishResponseHandler(TrackingController trackingController) : base((int) OperationCodes.FishingFinish)
+    public FishingFinishResponseHandler(IGatheringController gatheringController) : base((int) OperationCodes.FishingFinish)
     {
-        _trackingController = trackingController;
+        _gatheringController = gatheringController;
     }
 
     protected override async Task OnActionAsync(FishingFinishResponse value)
     {
-        _trackingController.GatheringController.CloseFishingEvent();
+        _gatheringController.CloseFishingEvent();
         await Task.CompletedTask;
     }
 }

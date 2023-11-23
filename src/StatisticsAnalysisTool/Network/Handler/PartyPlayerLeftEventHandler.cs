@@ -6,15 +6,15 @@ namespace StatisticsAnalysisTool.Network.Handler;
 
 public class PartyPlayerLeftEventHandler : EventPacketHandler<PartyPlayerLeftEvent>
 {
-    private readonly TrackingController _trackingController;
+    private readonly IEntityController _entityController;
 
-    public PartyPlayerLeftEventHandler(TrackingController trackingController) : base((int) EventCodes.PartyPlayerLeft)
+    public PartyPlayerLeftEventHandler(IEntityController entityController) : base((int) EventCodes.PartyPlayerLeft)
     {
-        _trackingController = trackingController;
+        _entityController = entityController;
     }
 
     protected override async Task OnActionAsync(PartyPlayerLeftEvent value)
     {
-        await _trackingController.EntityController.RemoveFromPartyAsync(value.UserGuid);
+        await _entityController.RemoveFromPartyAsync(value.UserGuid);
     }
 }

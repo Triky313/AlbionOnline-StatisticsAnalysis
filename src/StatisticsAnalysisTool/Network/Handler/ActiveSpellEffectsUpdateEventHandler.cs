@@ -8,11 +8,11 @@ namespace StatisticsAnalysisTool.Network.Handler;
 
 public class ActiveSpellEffectsUpdateEventHandler : EventPacketHandler<ActiveSpellEffectsUpdateEvent>
 {
-    private readonly TrackingController _trackingController;
+    private readonly IEntityController _entityController;
 
-    public ActiveSpellEffectsUpdateEventHandler(TrackingController trackingController) : base((int) EventCodes.ActiveSpellEffectsUpdate)
+    public ActiveSpellEffectsUpdateEventHandler(IEntityController entityController) : base((int) EventCodes.ActiveSpellEffectsUpdate)
     {
-        _trackingController = trackingController;
+        _entityController = entityController;
     }
 
     protected override async Task OnActionAsync(ActiveSpellEffectsUpdateEvent value)
@@ -25,7 +25,7 @@ public class ActiveSpellEffectsUpdateEventHandler : EventPacketHandler<ActiveSpe
                 SpellIndex = value.SpellIndex
             };
 
-            _trackingController.EntityController.AddSpellEffect(spellEffect);
+            _entityController.AddSpellEffect(spellEffect);
         }
 
         await Task.CompletedTask;

@@ -1,6 +1,8 @@
-﻿using StatisticsAnalysisTool.Common;
+﻿using Microsoft.Extensions.DependencyInjection;
+using StatisticsAnalysisTool.Localization;
 using StatisticsAnalysisTool.Network.Manager;
 using StatisticsAnalysisTool.ViewModels;
+using StatisticsAnalysisTool.Views;
 using System.Diagnostics;
 using System.Windows;
 using System.Windows.Input;
@@ -22,14 +24,22 @@ public partial class LoggingControl
 
     private void BtnTrackingNotificationsReset_Click(object sender, RoutedEventArgs e)
     {
-        var trackingController = ServiceLocator.Resolve<TrackingController>();
-        trackingController?.ResetTrackingNotificationsAsync();
+        var dialog = new DialogWindow(LanguageController.Translation("RESET_TRACKING_NOTIFICATIONS"), LanguageController.Translation("SURE_YOU_WANT_TO_RESET_TRACKING_NOTIFICATIONS"));
+        var dialogResult = dialog.ShowDialog();
+
+        if (dialogResult is true)
+        {
+            var mainWindowViewModel = App.ServiceProvider.GetRequiredService<MainWindowViewModelOld>();
+
+            App.ServiceProvider.GetRequiredService<ILootController>()?.ClearLootLogger();
+            mainWindowViewModel?.LoggingBindings?.TrackingNotifications.Clear();
+            mainWindowViewModel?.LoggingBindings?.TopLooters?.Clear();
+        }
     }
 
     private void BtnExportLootToFile_MouseUp(object sender, MouseEventArgs e)
     {
-        var mainWindowViewModel = ServiceLocator.Resolve<MainWindowViewModel>();
-        mainWindowViewModel?.ExportLootToFile();
+        App.ServiceProvider.GetRequiredService<MainWindowViewModelOld>()?.ExportLootToFile();
     }
 
     private void Hyperlink_RequestNavigate(object sender, RequestNavigateEventArgs e)

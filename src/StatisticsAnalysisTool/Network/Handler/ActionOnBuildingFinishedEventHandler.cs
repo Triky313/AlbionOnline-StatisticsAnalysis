@@ -7,23 +7,23 @@ namespace StatisticsAnalysisTool.Network.Handler;
 
 public class ActionOnBuildingFinishedEventHandler : EventPacketHandler<ActionOnBuildingFinishedEvent>
 {
-    private readonly TrackingController _trackingController;
+    private readonly IGameEventWrapper _gameEventWrapper;
 
-    public ActionOnBuildingFinishedEventHandler(TrackingController trackingController) : base((int) EventCodes.ActionOnBuildingFinished)
+    public ActionOnBuildingFinishedEventHandler(IGameEventWrapper gameEventWrapper) : base((int) EventCodes.ActionOnBuildingFinished)
     {
-        _trackingController = trackingController;
+        _gameEventWrapper = gameEventWrapper;
     }
 
     protected override async Task OnActionAsync(ActionOnBuildingFinishedEvent value)
     {
         if (value is { UserObjectId: { } userObjectIdForRepair, ActionType: ActionOnBuildingType.Repair })
         {
-            _trackingController.RepairFinished(userObjectIdForRepair, value.BuildingObjectId);
+            _gameEventWrapper.TrackingController.RepairFinished(userObjectIdForRepair, value.BuildingObjectId);
         }
 
         if (value is { UserObjectId: { } userObjectIdForBuy, ActionType: ActionOnBuildingType.BuyAndCrafting })
         {
-            await _trackingController.TradeController.TradeFinishedAsync(userObjectIdForBuy, value.BuildingObjectId);
+            await _gameEventWrapper.TradeController.TradeFinishedAsync(userObjectIdForBuy, value.BuildingObjectId);
         }
     }
 }

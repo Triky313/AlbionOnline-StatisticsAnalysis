@@ -6,18 +6,18 @@ namespace StatisticsAnalysisTool.Network.Handler;
 
 public class CharacterEquipmentChangedEventHandler : EventPacketHandler<CharacterEquipmentChangedEvent>
 {
-    private readonly TrackingController _trackingController;
+    private readonly IEntityController _entityController;
 
-    public CharacterEquipmentChangedEventHandler(TrackingController trackingController) : base((int) EventCodes.CharacterEquipmentChanged)
+    public CharacterEquipmentChangedEventHandler(IEntityController entityController) : base((int) EventCodes.CharacterEquipmentChanged)
     {
-        _trackingController = trackingController;
+        _entityController = entityController;
     }
 
     protected override async Task OnActionAsync(CharacterEquipmentChangedEvent value)
     {
         if (value.ObjectId != null)
         {
-            await _trackingController.EntityController.SetCharacterEquipmentAsync((long) value.ObjectId, value.CharacterEquipment);
+            await _entityController.SetCharacterEquipmentAsync((long) value.ObjectId, value.CharacterEquipment);
         }
     }
 }

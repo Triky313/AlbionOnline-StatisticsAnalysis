@@ -12,18 +12,18 @@ namespace StatisticsAnalysisTool.Network.Handler;
 
 public class UpdateFactionStandingEventHandler : EventPacketHandler<UpdateFactionStandingEvent>
 {
-    private readonly TrackingController _trackingController;
+    private readonly IGameEventWrapper _gameEventWrapper;
 
-    public UpdateFactionStandingEventHandler(TrackingController trackingController) : base((int) EventCodes.UpdateFactionStanding)
+    public UpdateFactionStandingEventHandler(IGameEventWrapper gameEventWrapper) : base((int) EventCodes.UpdateFactionStanding)
     {
-        _trackingController = trackingController;
+        _gameEventWrapper = gameEventWrapper;
     }
 
     protected override async Task OnActionAsync(UpdateFactionStandingEvent value)
     {
-        await _trackingController.AddNotificationAsync(SetFactionFlagPointsNotification(value.CityFaction, value.GainedFactionFlagPoints.DoubleValue, value.BonusPremiumGainedFractionFlagPoints.DoubleValue));
-        _trackingController.DungeonController?.AddValueToDungeon(value.GainedFactionFlagPoints.DoubleValue, ValueType.FactionFame, value.CityFaction);
-        _trackingController.StatisticController?.AddValue(ValueType.FactionFame, value.GainedFactionFlagPoints.DoubleValue);
+        await _gameEventWrapper.TrackingController.AddNotificationAsync(SetFactionFlagPointsNotification(value.CityFaction, value.GainedFactionFlagPoints.DoubleValue, value.BonusPremiumGainedFractionFlagPoints.DoubleValue));
+        _gameEventWrapper.DungeonController?.AddValueToDungeon(value.GainedFactionFlagPoints.DoubleValue, ValueType.FactionFame, value.CityFaction);
+        _gameEventWrapper.StatisticController?.AddValue(ValueType.FactionFame, value.GainedFactionFlagPoints.DoubleValue);
     }
 
     private TrackingNotification SetFactionFlagPointsNotification(CityFaction cityFaction, double gainedFractionPoints, double bonusPremiumGainedFractionPoints)

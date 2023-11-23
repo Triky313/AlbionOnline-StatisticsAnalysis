@@ -1,6 +1,5 @@
-﻿using StatisticsAnalysisTool.Network.Manager;
+﻿using StatisticsAnalysisTool.Network.Events;
 using System.Threading.Tasks;
-using StatisticsAnalysisTool.Network.Events;
 
 namespace StatisticsAnalysisTool.Network.Handler;
 
@@ -9,11 +8,8 @@ namespace StatisticsAnalysisTool.Network.Handler;
 /// </summary>
 public class TreasureChestUsingStartEventHandler : EventPacketHandler<TreasureChestUsingStartEvent>
 {
-    private readonly TrackingController _trackingController;
-
-    public TreasureChestUsingStartEventHandler(TrackingController trackingController) : base((int) EventCodes.TreasureChestUsingStart)
+    public TreasureChestUsingStartEventHandler() : base((int) EventCodes.TreasureChestUsingStart)
     {
-        _trackingController = trackingController;
     }
 
     protected override async Task OnActionAsync(TreasureChestUsingStartEvent value)

@@ -1,5 +1,4 @@
 ﻿using StatisticsAnalysisTool.Network.Events;
-using StatisticsAnalysisTool.Network.Manager;
 using StatisticsAnalysisTool.Trade;
 using System.Threading.Tasks;
 
@@ -7,16 +6,16 @@ namespace StatisticsAnalysisTool.Network.Handler;
 
 public class CraftBuildingInfoEventHandler : EventPacketHandler<CraftBuildingInfoEvent>
 {
-    private readonly TrackingController _trackingController;
+    private readonly ITradeController _tradeController;
 
-    public CraftBuildingInfoEventHandler(TrackingController trackingController) : base((int) EventCodes.CraftBuildingInfo)
+    public CraftBuildingInfoEventHandler(ITradeController tradeController) : base((int) EventCodes.CraftBuildingInfo)
     {
-        _trackingController = trackingController;
+        _tradeController = tradeController;
     }
 
     protected override async Task OnActionAsync(CraftBuildingInfoEvent value)
     {
-        _trackingController.TradeController.AddCraftingBuildingInfo(new CraftingBuildingInfo { BuildingName = value.BuildingName, BuildingObjectId = value.BuildingObjectId, ObjectId = value.ObjectId });
+        _tradeController.AddCraftingBuildingInfo(new CraftingBuildingInfo { BuildingName = value.BuildingName, BuildingObjectId = value.BuildingObjectId, ObjectId = value.ObjectId });
         await Task.CompletedTask;
     }
 }

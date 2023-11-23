@@ -1,23 +1,23 @@
-﻿using StatisticsAnalysisTool.Network.Manager;
+﻿using StatisticsAnalysisTool.Network.Events;
+using StatisticsAnalysisTool.Network.Manager;
 using System.Threading.Tasks;
-using StatisticsAnalysisTool.Network.Events;
 
 namespace StatisticsAnalysisTool.Network.Handler;
 
 public class NewLootEventHandler : EventPacketHandler<NewLootEvent>
 {
-    private readonly TrackingController _trackingController;
+    private readonly ILootController _lootController;
 
-    public NewLootEventHandler(TrackingController trackingController) : base((int) EventCodes.NewLoot)
+    public NewLootEventHandler(ILootController lootController) : base((int) EventCodes.NewLoot)
     {
-        _trackingController = trackingController;
+        _lootController = lootController;
     }
 
     protected override async Task OnActionAsync(NewLootEvent value)
     {
         if (value?.ObjectId != null)
         {
-            _trackingController.LootController.SetIdentifiedBody((long)value.ObjectId, value.LootBody);
+            _lootController.SetIdentifiedBody((long) value.ObjectId, value.LootBody);
         }
         await Task.CompletedTask;
     }

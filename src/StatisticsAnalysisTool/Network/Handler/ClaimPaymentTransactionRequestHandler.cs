@@ -1,21 +1,21 @@
 ﻿using StatisticsAnalysisTool.Network.Manager;
-using System.Threading.Tasks;
 using StatisticsAnalysisTool.Network.Operations.Responses;
+using System.Threading.Tasks;
 
 namespace StatisticsAnalysisTool.Network.Handler;
 
 public class ClaimPaymentTransactionRequestHandler : RequestPacketHandler<ClaimPaymentTransactionRequest>
 {
-    private readonly TrackingController _trackingController;
+    private readonly IEntityController _entityController;
 
-    public ClaimPaymentTransactionRequestHandler(TrackingController trackingController) : base((int) OperationCodes.ClaimPaymentTransaction)
+    public ClaimPaymentTransactionRequestHandler(IEntityController entityController) : base((int) OperationCodes.ClaimPaymentTransaction)
     {
-        _trackingController = trackingController;
+        _entityController = entityController;
     }
 
     protected override async Task OnActionAsync(ClaimPaymentTransactionRequest value)
     {
-        _trackingController.EntityController.LocalUserData.IsReSpecActive = value.IsReSpecBoostActive;
+        _entityController.LocalUserData.IsReSpecActive = value.IsReSpecBoostActive;
         await Task.CompletedTask;
     }
 }

@@ -4,6 +4,7 @@ using StatisticsAnalysisTool.Enumerations;
 using StatisticsAnalysisTool.Models;
 using StatisticsAnalysisTool.Models.NetworkModel;
 using StatisticsAnalysisTool.Network.Time;
+using StatisticsAnalysisTool.PartyBuilder;
 using StatisticsAnalysisTool.ViewModels;
 using System;
 using System.Collections.Concurrent;
@@ -16,23 +17,24 @@ using System.Windows;
 
 namespace StatisticsAnalysisTool.Network.Manager;
 
-public class EntityController
+public class EntityController : IEntityController
 {
     private readonly ConcurrentDictionary<Guid, PlayerGameObject> _knownEntities = new();
-    private readonly MainWindowViewModel _mainWindowViewModel;
+    private readonly MainWindowViewModelOld _mainWindowViewModel;
+    private readonly IPartyBuilderController _partyBuilderController;
     private readonly ObservableCollection<EquipmentItemInternal> _newEquipmentItems = new();
     private readonly ObservableCollection<SpellEffect> _spellEffects = new();
     private readonly ConcurrentDictionary<long, CharacterEquipmentData> _tempCharacterEquipmentData = new();
     private double _lastLocalEntityGuildTaxInPercent;
     private double _lastLocalEntityClusterTaxInPercent;
-    private readonly TrackingController _trackingController;
 
     public LocalUserData LocalUserData { get; init; } = new();
 
-    public EntityController(TrackingController trackingController, MainWindowViewModel mainWindowViewModel)
+    public EntityController(MainWindowViewModelOld mainWindowViewModel,
+        IPartyBuilderController partyBuilderController)
     {
-        _trackingController = trackingController;
         _mainWindowViewModel = mainWindowViewModel;
+        _partyBuilderController = partyBuilderController;
     }
 
     #region Entities
@@ -179,7 +181,7 @@ public class EntityController
         {
             entity.Value.IsInParty = true;
             await SetPartyMemberUiAsync();
-            await _trackingController?.PartyBuilderController?.UpdatePartyAsync()!;
+            await _partyBuilderController?.UpdatePartyAsync()!;
         }
     }
 
@@ -211,7 +213,7 @@ public class EntityController
             }
 
             await SetPartyMemberUiAsync();
-            await _trackingController?.PartyBuilderController?.UpdatePartyAsync()!;
+            await _partyBuilderController?.UpdatePartyAsync()!;
         }
     }
 
@@ -223,7 +225,7 @@ public class EntityController
         }
 
         await SetPartyMemberUiAsync();
-        await _trackingController?.PartyBuilderController?.UpdatePartyAsync()!;
+        await _partyBuilderController?.UpdatePartyAsync()!;
     }
 
     public async Task AddLocalEntityToPartyAsync()
@@ -233,7 +235,7 @@ public class EntityController
         {
             localEntity.Value.Value.IsInParty = true;
             await SetPartyMemberUiAsync();
-            await _trackingController?.PartyBuilderController?.UpdatePartyAsync()!;
+            await _partyBuilderController?.UpdatePartyAsync()!;
         }
     }
 
@@ -258,7 +260,7 @@ public class EntityController
         }
 
         await SetPartyMemberUiAsync();
-        await _trackingController?.PartyBuilderController?.UpdatePartyAsync()!;
+        await _partyBuilderController?.UpdatePartyAsync()!;
     }
 
     private async Task SetPartyMemberUiAsync()
@@ -338,7 +340,7 @@ public class EntityController
 
             if (entity.Value.Value.IsInParty)
             {
-                await _trackingController?.PartyBuilderController?.UpdatePartyAsync()!;
+                await _partyBuilderController?.UpdatePartyAsync()!;
             }
         }
         else

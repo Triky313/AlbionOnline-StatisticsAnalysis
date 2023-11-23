@@ -1,20 +1,20 @@
-﻿using StatisticsAnalysisTool.Network.Manager;
+﻿using StatisticsAnalysisTool.Network.Operations.Responses;
+using StatisticsAnalysisTool.Trade.Market;
 using System.Threading.Tasks;
-using StatisticsAnalysisTool.Network.Operations.Responses;
 
 namespace StatisticsAnalysisTool.Network.Handler;
 
 public class AuctionSellSpecificItemRequestHandler : RequestPacketHandler<AuctionSellSpecificItemRequest>
 {
-    private readonly TrackingController _trackingController;
+    private readonly IMarketController _marketController;
 
-    public AuctionSellSpecificItemRequestHandler(TrackingController trackingController) : base((int) OperationCodes.AuctionSellSpecificItemRequest)
+    public AuctionSellSpecificItemRequestHandler(IMarketController marketController) : base((int) OperationCodes.AuctionSellSpecificItemRequest)
     {
-        _trackingController = trackingController;
+        _marketController = marketController;
     }
 
     protected override async Task OnActionAsync(AuctionSellSpecificItemRequest value)
     {
-        await _trackingController.MarketController.AddSaleAsync(value.Sale);
+        await _marketController.AddSaleAsync(value.Sale);
     }
 }

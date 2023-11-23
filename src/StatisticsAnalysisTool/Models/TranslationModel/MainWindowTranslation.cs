@@ -97,10 +97,6 @@ public class MainWindowTranslation
     public static string DeleteSelectedTrades => LanguageController.Translation("DELETE_SELECTED_TRADES");
     public static string DeleteSelectedResources => LanguageController.Translation("DELETE_SELECTED_RESOURCES");
     public static string TradeMonitoringDescription1 => LanguageController.Translation("TRADE_MONITORING_DESCRIPTION1");
-    public static string SiphonedEnergyDescription1 => LanguageController.Translation("SIPHONED_ENERGY_DESCRIPTION1");
-    public static string SiphonedEnergyDescription2 => LanguageController.Translation("SIPHONED_ENERGY_DESCRIPTION2");
-    public static string SiphonedEnergyDescription3 => LanguageController.Translation("SIPHONED_ENERGY_DESCRIPTION3");
-    public static string SiphonedEnergyDescription4 => LanguageController.Translation("SIPHONED_ENERGY_DESCRIPTION4");
     public static string To => LanguageController.Translation("TO");
     public static string DeleteCurrentStorage => LanguageController.Translation("DELETE_SELECTED_STORAGE");
     public static string Donations => LanguageController.Translation("DONATIONS");

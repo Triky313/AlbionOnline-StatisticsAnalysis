@@ -20,16 +20,21 @@ using System.Windows.Threading;
 
 namespace StatisticsAnalysisTool.Trade;
 
-public class TradeController
+public class TradeController : ITradeController
 {
-    private readonly TrackingController _trackingController;
-    private readonly MainWindowViewModel _mainWindowViewModel;
+    private readonly IEntityController _entityController;
+    private readonly MainWindowViewModelOld _mainWindowViewModel;
+    private readonly ISatNotificationManager _satNotificationManager;
     private int _tradeCounter;
 
-    public TradeController(TrackingController trackingController, MainWindowViewModel mainWindowViewModel)
+    public TradeController(
+        IEntityController entityController,
+        MainWindowViewModelOld mainWindowViewModel,
+        ISatNotificationManager satNotificationManager)
     {
-        _trackingController = trackingController;
+        _entityController = entityController;
         _mainWindowViewModel = mainWindowViewModel;
+        _satNotificationManager = satNotificationManager;
 
         if (_mainWindowViewModel?.TradeMonitoringBindings?.Trades != null)
         {
@@ -49,7 +54,7 @@ public class TradeController
             _mainWindowViewModel?.TradeMonitoringBindings?.Trades.Add(trade);
         });
 
-        await ServiceLocator.Resolve<SatNotificationManager>().ShowTradeAsync(trade);
+        await _satNotificationManager.ShowTradeAsync(trade);
     }
 
     public async Task RemoveTradesByIdsAsync(IEnumerable<long> ids)
@@ -115,7 +120,7 @@ public class TradeController
     private long _buildingObjectId = -1;
     private Trade _upcomingTrade;
     private Trade _lastTrade;
-    private readonly HashSet<CraftingBuildingInfo> _craftingBuildingInfos = new ();
+    private readonly HashSet<CraftingBuildingInfo> _craftingBuildingInfos = new();
 
     public void RegisterBuilding(long buildingObjectId)
     {
@@ -207,9 +212,9 @@ public class TradeController
 
     public async Task TradeFinishedAsync(long userObjectId, long buildingObjectId)
     {
-        if (_upcomingTrade == _lastTrade 
-            || _trackingController.EntityController.LocalUserData.UserObjectId != userObjectId 
-            || _upcomingTrade is null 
+        if (_upcomingTrade == _lastTrade
+            || _entityController.LocalUserData.UserObjectId != userObjectId
+            || _upcomingTrade is null
             || _buildingObjectId != buildingObjectId)
         {
             return;

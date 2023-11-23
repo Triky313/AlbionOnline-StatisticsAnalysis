@@ -6,17 +6,17 @@ namespace StatisticsAnalysisTool.Network.Handler;
 
 public class ActionOnBuildingStartRequestHandler : RequestPacketHandler<ActionOnBuildingStartRequest>
 {
-    private readonly TrackingController _trackingController;
+    private readonly IGameEventWrapper _gameEventWrapper;
 
-    public ActionOnBuildingStartRequestHandler(TrackingController trackingController) : base((int) OperationCodes.ActionOnBuildingStart)
+    public ActionOnBuildingStartRequestHandler(IGameEventWrapper gameEventWrapper) : base((int) OperationCodes.ActionOnBuildingStart)
     {
-        _trackingController = trackingController;
+        _gameEventWrapper = gameEventWrapper;
     }
 
     protected override async Task OnActionAsync(ActionOnBuildingStartRequest value)
     {
-        _trackingController.SetUpcomingRepair(value.BuildingObjectId, value.Costs);
-        _trackingController.TradeController.SetUpcomingTrade(value.BuildingObjectId, value.Ticks, value.Costs, value.Quantity, value.ItemIndex);
+        _gameEventWrapper.TrackingController.SetUpcomingRepair(value.BuildingObjectId, value.Costs);
+        _gameEventWrapper.TradeController.SetUpcomingTrade(value.BuildingObjectId, value.Ticks, value.Costs, value.Quantity, value.ItemIndex);
         await Task.CompletedTask;
     }
 }

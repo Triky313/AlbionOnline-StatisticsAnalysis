@@ -1,4 +1,6 @@
-﻿using StatisticsAnalysisTool.Common;
+﻿using Microsoft.Extensions.DependencyInjection;
+using StatisticsAnalysisTool.Common;
+using StatisticsAnalysisTool.Dungeon;
 using StatisticsAnalysisTool.Localization;
 using StatisticsAnalysisTool.Network.Manager;
 using StatisticsAnalysisTool.ViewModels;
@@ -27,8 +29,7 @@ public partial class DungeonControl
 
         if (dialogResult is true)
         {
-            var trackingController = ServiceLocator.Resolve<TrackingController>();
-            trackingController?.DungeonController?.ResetDungeons();
+            App.ServiceProvider.GetRequiredService<IDungeonController>()?.ResetDungeons();
         }
     }
 
@@ -39,8 +40,7 @@ public partial class DungeonControl
 
         if (dialogResult is true)
         {
-            var trackingController = ServiceLocator.Resolve<TrackingController>();
-            trackingController?.DungeonController?.ResetDungeonsByDateAscending(DateTime.UtcNow.Date);
+            App.ServiceProvider.GetRequiredService<IDungeonController>()?.ResetDungeonsByDateAscending(DateTime.UtcNow.Date);
         }
     }
 
@@ -49,15 +49,14 @@ public partial class DungeonControl
         var dialog = new DialogWindow(LanguageController.Translation("DELETE_SELECTED_DUNGEONS"), LanguageController.Translation("SURE_YOU_WANT_TO_DELETE_SELECTED_DUNGEONS"));
         var dialogResult = dialog.ShowDialog();
 
-        var vm = (MainWindowViewModel) DataContext;
+        var vm = (MainWindowViewModelOld) DataContext;
 
         if (dialogResult is true)
         {
             var selectedDungeons = vm?.DungeonBindings?.Dungeons.Where(x => x.IsSelectedForDeletion ?? false).Select(x => x.DungeonHash);
             if (selectedDungeons != null)
             {
-                var trackingController = ServiceLocator.Resolve<TrackingController>();
-                await trackingController?.DungeonController?.RemoveDungeonByHashAsync(selectedDungeons)!;
+                await App.ServiceProvider.GetRequiredService<IDungeonController>()?.RemoveDungeonByHashAsync(selectedDungeons)!;
             }
         }
     }
@@ -69,8 +68,7 @@ public partial class DungeonControl
 
         if (dialogResult is true)
         {
-            var trackingController = ServiceLocator.Resolve<TrackingController>();
-            trackingController?.DungeonController?.DeleteDungeonsWithZeroFame();
+            App.ServiceProvider.GetRequiredService<IDungeonController>()?.DeleteDungeonsWithZeroFame();
         }
     }
 

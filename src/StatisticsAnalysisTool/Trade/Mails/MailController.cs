@@ -1,7 +1,6 @@
 ﻿using StatisticsAnalysisTool.Common;
 using StatisticsAnalysisTool.Common.UserSettings;
 using StatisticsAnalysisTool.Enumerations;
-using StatisticsAnalysisTool.Network.Manager;
 using StatisticsAnalysisTool.ViewModels;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,16 +8,16 @@ using System.Threading.Tasks;
 
 namespace StatisticsAnalysisTool.Trade.Mails;
 
-public class MailController
+public class MailController : IMailController
 {
-    private readonly TrackingController _trackingController;
-    private readonly MainWindowViewModel _mainWindowViewModel;
+    private readonly ITradeController _tradeController;
+    private readonly MainWindowViewModelOld _mainWindowViewModel;
 
     public readonly List<MailNetworkObject> CurrentMailInfos = new();
 
-    public MailController(TrackingController trackingController, MainWindowViewModel mainWindowViewModel)
+    public MailController(ITradeController tradeController, MainWindowViewModelOld mainWindowViewModel)
     {
-        _trackingController = trackingController;
+        _tradeController = tradeController;
         _mainWindowViewModel = mainWindowViewModel;
     }
 
@@ -76,8 +75,8 @@ public class MailController
             return;
         }
 
-        _ = _trackingController.TradeController.AddTradeToBindingCollectionAsync(trade);
-        await _trackingController.TradeController.SaveInFileAfterExceedingLimit(10);
+        _ = _tradeController.AddTradeToBindingCollectionAsync(trade);
+        await _tradeController.SaveInFileAfterExceedingLimit(10);
     }
 
     private static MailContent ContentToObject(MailType type, string content, double taxRate, double taxSetupRate)
@@ -217,7 +216,7 @@ public class MailController
             TaxSetupRate = taxSetupRate
         };
     }
-    
+
     public static MailType ConvertToMailType(string typeString)
     {
         return typeString switch

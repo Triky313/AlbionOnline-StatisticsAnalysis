@@ -6,17 +6,17 @@ namespace StatisticsAnalysisTool.Network.Handler;
 
 public class RegisterToObjectRequestHandler : RequestPacketHandler<RegisterToObjectRequest>
 {
-    private readonly TrackingController _trackingController;
+    private readonly IGameEventWrapper _gameEventWrapper;
 
-    public RegisterToObjectRequestHandler(TrackingController trackingController) : base((int) OperationCodes.RegisterToObject)
+    public RegisterToObjectRequestHandler(IGameEventWrapper gameEventWrapper) : base((int) OperationCodes.RegisterToObject)
     {
-        _trackingController = trackingController;
+        _gameEventWrapper = gameEventWrapper;
     }
 
     protected override async Task OnActionAsync(RegisterToObjectRequest value)
     {
-        _trackingController.RegisterBuilding(value.BuildingObjectId);
-        _trackingController.TradeController.RegisterBuilding(value.BuildingObjectId);
+        _gameEventWrapper.TrackingController.RegisterBuilding(value.BuildingObjectId);
+        _gameEventWrapper.TradeController.RegisterBuilding(value.BuildingObjectId);
         await Task.CompletedTask;
     }
 }

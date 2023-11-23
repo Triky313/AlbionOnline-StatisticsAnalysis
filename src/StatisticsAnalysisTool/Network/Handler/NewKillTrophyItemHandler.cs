@@ -7,23 +7,23 @@ namespace StatisticsAnalysisTool.Network.Handler;
 
 public class NewKillTrophyItemHandler : EventPacketHandler<NewKillTrophyItemEvent>
 {
-    private readonly TrackingController _trackingController;
+    private readonly IGameEventWrapper _gameEventWrapper;
 
-    public NewKillTrophyItemHandler(TrackingController trackingController) : base((int) EventCodes.NewKillTrophyItem)
+    public NewKillTrophyItemHandler(IGameEventWrapper gameEventWrapper) : base((int) EventCodes.NewKillTrophyItem)
     {
-        _trackingController = trackingController;
+        _gameEventWrapper = gameEventWrapper;
     }
 
     protected override async Task OnActionAsync(NewKillTrophyItemEvent value)
     {
-        if (_trackingController.IsTrackingAllowedByMainCharacter())
+        if (_gameEventWrapper.TrackingController.IsTrackingAllowedByMainCharacter())
         {
-            _trackingController.VaultController.Add(value.Item);
+            _gameEventWrapper.VaultController.Add(value.Item);
         }
 
         EstimatedMarketValueController.Add(value.Item.ItemIndex, value.Item.EstimatedMarketValueInternal, value.Item.Quality);
-        _trackingController.LootController.AddDiscoveredItem(value.Item);
-        _trackingController.DungeonController.AddDiscoveredItem(value.Item);
+        _gameEventWrapper.LootController.AddDiscoveredItem(value.Item);
+        _gameEventWrapper.DungeonController.AddDiscoveredItem(value.Item);
         await Task.CompletedTask;
     }
 }

@@ -1,4 +1,4 @@
-﻿
+﻿using Microsoft.Extensions.DependencyInjection;
 using Serilog;
 using StatisticsAnalysisTool.Backup;
 using StatisticsAnalysisTool.Common;
@@ -19,14 +19,17 @@ namespace StatisticsAnalysisTool.UserControls;
 public partial class SettingsControl
 {
     private readonly SettingsWindowViewModel _settingsWindowViewModel;
+    private readonly IBackupController _backupController;
 
     public SettingsControl()
     {
         InitializeComponent();
-        _settingsWindowViewModel = new SettingsWindowViewModel();
+
+        _backupController = App.ServiceProvider.GetService<IBackupController>();
+        _settingsWindowViewModel = App.ServiceProvider.GetService<SettingsWindowViewModel>();
         DataContext = _settingsWindowViewModel;
     }
-
+    
     private void BtnSave_Click(object sender, RoutedEventArgs e)
     {
         _settingsWindowViewModel.SaveSettings();
@@ -63,8 +66,9 @@ public partial class SettingsControl
 
     private async void CheckForUpdate_Click(object sender, RoutedEventArgs e)
     {
-        AutoUpdateController.RemoveUpdateFiles();
-        await AutoUpdateController.AutoUpdateAsync(true);
+        var autoUpdateController = App.ServiceProvider.GetService<AutoUpdateController>();
+        autoUpdateController.RemoveUpdateFiles();
+        await autoUpdateController.AutoUpdateAsync(true);
     }
 
     private void ResetPlayerSelectionWithSameNameInDb_Click(object sender, RoutedEventArgs e)
@@ -80,7 +84,7 @@ public partial class SettingsControl
     private async void BackupNow_Click(object sender, RoutedEventArgs e)
     {
         _settingsWindowViewModel.IsBackupNowButtonEnabled = false;
-        BackupController.Save();
+        _backupController.Save();
         await Task.Delay(200);
         _settingsWindowViewModel.IsBackupNowButtonEnabled = true;
     }

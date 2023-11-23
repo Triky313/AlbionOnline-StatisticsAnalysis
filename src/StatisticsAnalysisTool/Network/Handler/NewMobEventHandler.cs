@@ -1,21 +1,21 @@
-﻿using StatisticsAnalysisTool.Network.Events;
-using StatisticsAnalysisTool.Network.Manager;
+﻿using StatisticsAnalysisTool.Dungeon;
+using StatisticsAnalysisTool.Network.Events;
 using System.Threading.Tasks;
 
 namespace StatisticsAnalysisTool.Network.Handler;
 
 public class NewMobEventHandler : EventPacketHandler<NewMobEvent>
 {
-    private readonly TrackingController _trackingController;
+    private readonly IDungeonController _dungeonController;
 
-    public NewMobEventHandler(TrackingController trackingController) : base((int) EventCodes.NewMob)
+    public NewMobEventHandler(IDungeonController dungeonController) : base((int) EventCodes.NewMob)
     {
-        _trackingController = trackingController;
+        _dungeonController = dungeonController;
     }
 
     protected override async Task OnActionAsync(NewMobEvent value)
     {
-        await _trackingController.DungeonController.AddTierToCurrentDungeonAsync(value.MobIndex);
-        _trackingController.DungeonController.AddLevelToCurrentDungeon(value.MobIndex, value.HitPointsMax);
+        await _dungeonController.AddTierToCurrentDungeonAsync(value.MobIndex);
+        _dungeonController.AddLevelToCurrentDungeon(value.MobIndex, value.HitPointsMax);
     }
 }

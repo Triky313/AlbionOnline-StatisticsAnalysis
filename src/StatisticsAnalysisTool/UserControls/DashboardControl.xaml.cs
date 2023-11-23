@@ -1,7 +1,8 @@
 ﻿using FontAwesome5;
+using Microsoft.Extensions.DependencyInjection;
 using Serilog;
 using StatisticsAnalysisTool.Common;
-using StatisticsAnalysisTool.Network.Manager;
+using StatisticsAnalysisTool.Network;
 using StatisticsAnalysisTool.ViewModels;
 using StatisticsAnalysisTool.Views;
 using System;
@@ -33,7 +34,7 @@ public partial class DashboardControl
             }
             else
             {
-                var vm = (MainWindowViewModel) DataContext;
+                var vm = (MainWindowViewModelOld) DataContext;
                 var itemWindow = new DashboardWindow(vm?.DashboardBindings, vm?.FactionPointStats);
                 itemWindow.Show();
             }
@@ -48,8 +49,7 @@ public partial class DashboardControl
     private void BtnTrackingReset_Click(object sender, RoutedEventArgs e)
     {
         Log.Error("{Message}", MethodBase.GetCurrentMethod()?.DeclaringType);
-        var trackingController = ServiceLocator.Resolve<TrackingController>();
-        trackingController?.LiveStatsTracker?.Reset();
+        App.ServiceProvider.GetRequiredService<ILiveStatsTracker>()?.Reset();
     }
 
     private void OpenDashboardWindow_MouseUp(object sender, MouseButtonEventArgs e)
@@ -59,7 +59,7 @@ public partial class DashboardControl
 
     private void KillDeathToggle_OnMouseLeftButtonDown(object sender, MouseButtonEventArgs e)
     {
-        var vm = (MainWindowViewModel) DataContext;
+        var vm = (MainWindowViewModelOld) DataContext;
         if (vm.DashboardBindings.KillDeathStatsVisibility == Visibility.Visible)
         {
             vm.DashboardBindings.KillDeathStatsVisibility = Visibility.Collapsed;
@@ -74,7 +74,7 @@ public partial class DashboardControl
 
     private void LootedChestsToggle_OnMouseLeftButtonDown(object sender, MouseButtonEventArgs e)
     {
-        var vm = (MainWindowViewModel) DataContext;
+        var vm = (MainWindowViewModelOld) DataContext;
         if (vm.DashboardBindings.LootedChestsStatsVisibility == Visibility.Visible)
         {
             vm.DashboardBindings.LootedChestsStatsVisibility = Visibility.Collapsed;
@@ -89,7 +89,7 @@ public partial class DashboardControl
 
     private void ReSpecStatsToggle_OnMouseLeftButtonDown(object sender, MouseButtonEventArgs e)
     {
-        var vm = (MainWindowViewModel) DataContext;
+        var vm = (MainWindowViewModelOld) DataContext;
         if (vm.DashboardBindings.ReSpecStatsVisibility == Visibility.Visible)
         {
             vm.DashboardBindings.ReSpecStatsVisibility = Visibility.Collapsed;
@@ -104,7 +104,7 @@ public partial class DashboardControl
 
     private void RepairCostsStatsToggle_OnMouseLeftButtonDown(object sender, MouseButtonEventArgs e)
     {
-        var vm = (MainWindowViewModel) DataContext;
+        var vm = (MainWindowViewModelOld) DataContext;
         if (vm.DashboardBindings.RepairCostsStatsVisibility == Visibility.Visible)
         {
             vm.DashboardBindings.RepairCostsStatsVisibility = Visibility.Collapsed;

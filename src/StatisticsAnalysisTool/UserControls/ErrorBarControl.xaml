@@ -2,14 +2,15 @@
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
-             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:viewModels="clr-namespace:StatisticsAnalysisTool.ViewModels"
              mc:Ignorable="d" 
              d:DesignHeight="50" d:DesignWidth="800" 
-             d:DataContext="{d:DesignData ErrorBarControl}">
+             d:DataContext="{d:DesignInstance Type=viewModels:ErrorBarViewModel}">
 
-    <Grid ZIndex="3" Style="{StaticResource Grid.Error.Bar}">
-        <Button Style="{StaticResource Window.Error.Bar.Button.Style}" Click="BtnErrorBar_Click" />
-        <Label Style="{StaticResource Grid.Error.Bar.Label}" Content="{Binding ErrorBarText, FallbackValue=ERROR}" />
+    <Grid ZIndex="3" Style="{StaticResource Grid.Error.Bar}" Visibility="{Binding Visibility}">
+        <Button Style="{StaticResource Window.Error.Bar.Button.Style}" Command="{Binding CloseCommand}" />
+        <Label Style="{StaticResource Grid.Error.Bar.Label}" Content="{Binding Text, FallbackValue=ERROR}" />
         <Border BorderThickness="1,0,0,0" BorderBrush="{StaticResource SolidColorBrush.Accent.Red.1}" />
         <Border BorderThickness="0,1,0,0" BorderBrush="{StaticResource SolidColorBrush.Accent.Red.1}" />
         <Border BorderThickness="0,0,1,0" BorderBrush="{StaticResource SolidColorBrush.Accent.Red.5}" />

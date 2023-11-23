@@ -9,13 +9,13 @@ using System.Windows;
 
 namespace StatisticsAnalysisTool.Common.UserSettings;
 
-public class SettingsController
+public class SettingsController : ISettingsController
 {
     public static SettingsObject CurrentSettings = new();
 
     private static bool _haveSettingsAlreadyBeenLoaded;
 
-    public static void SetWindowSettings(WindowState windowState, double height, double width, double left, double top)
+    public void SetWindowSettings(WindowState windowState, double height, double width, double left, double top)
     {
         if (windowState != WindowState.Maximized)
         {
@@ -28,13 +28,13 @@ public class SettingsController
         CurrentSettings.MainWindowMaximized = windowState == WindowState.Maximized;
     }
 
-    public static void SaveSettings()
+    public void SaveSettings()
     {
         SaveToLocalFile();
         ItemController.SaveFavoriteItemsToLocalFile();
     }
 
-    public static void LoadSettings()
+    public void LoadSettings()
     {
         if (_haveSettingsAlreadyBeenLoaded)
         {

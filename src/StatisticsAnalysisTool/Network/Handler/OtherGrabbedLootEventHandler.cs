@@ -6,15 +6,15 @@ namespace StatisticsAnalysisTool.Network.Handler;
 
 public class OtherGrabbedLootEventHandler : EventPacketHandler<GrabbedLootEvent>
 {
-    private readonly TrackingController _trackingController;
+    private readonly ILootController _lootController;
 
-    public OtherGrabbedLootEventHandler(TrackingController trackingController) : base((int) EventCodes.OtherGrabbedLoot)
+    public OtherGrabbedLootEventHandler(ILootController lootController) : base((int) EventCodes.OtherGrabbedLoot)
     {
-        _trackingController = trackingController;
+        _lootController = lootController;
     }
 
     protected override async Task OnActionAsync(GrabbedLootEvent value)
     {
-        await _trackingController.LootController.AddLootAsync(value.Loot);
+        await _lootController.AddLootAsync(value.Loot);
     }
 }

@@ -7,7 +7,7 @@ using System.Windows.Media;
 
 namespace StatisticsAnalysisTool.Notification;
 
-public class SatNotificationManager
+public class SatNotificationManager : ISatNotificationManager
 {
     private readonly NotificationManager _notificationManager;
 

@@ -1,3 +1,4 @@
+using Microsoft.Extensions.DependencyInjection;
 using Serilog;
 using StatisticsAnalysisTool.Common;
 using StatisticsAnalysisTool.Common.UserSettings;
@@ -6,16 +7,21 @@ using StatisticsAnalysisTool.Network.Handler;
 using StatisticsAnalysisTool.Network.Manager;
 using StatisticsAnalysisTool.Network.PacketProviders;
 using StatisticsAnalysisTool.Notification;
+using StatisticsAnalysisTool.ViewModels;
 
 namespace StatisticsAnalysisTool.Network;
 
-public class NetworkManager
+public class NetworkManager : INetworkManager
 {
+    private readonly IGameEventWrapper _gameEventWrapper;
+    private readonly MainWindowViewModelOld _mainWindowViewModel;
     private readonly PacketProvider _packetProvider;
 
-    public NetworkManager(TrackingController trackingController)
+    public NetworkManager(IGameEventWrapper gameEventWrapper, MainWindowViewModelOld mainWindowViewModel)
     {
-        IPhotonReceiver photonReceiver = Build(trackingController);
+        _gameEventWrapper = gameEventWrapper;
+        _mainWindowViewModel = mainWindowViewModel;
+        IPhotonReceiver photonReceiver = Build();
 
         if (SettingsController.CurrentSettings.PacketProvider == PacketProviderKind.Npcap)
         {
@@ -29,107 +35,117 @@ public class NetworkManager
         }
     }
 
-    private static IPhotonReceiver Build(TrackingController trackingController)
+    private IPhotonReceiver Build()
     {
         ReceiverBuilder builder = ReceiverBuilder.Create();
 
         // Event
-        builder.AddEventHandler(new NewEquipmentItemEventHandler(trackingController));
-        builder.AddEventHandler(new NewSimpleItemEventHandler(trackingController));
-        builder.AddEventHandler(new NewFurnitureItemEventHandler(trackingController));
-        builder.AddEventHandler(new NewKillTrophyItemHandler(trackingController));
-        builder.AddEventHandler(new NewJournalItemEventHandler(trackingController));
-        builder.AddEventHandler(new NewLaborerItemEventHandler(trackingController));
-        builder.AddEventHandler(new OtherGrabbedLootEventHandler(trackingController));
-        builder.AddEventHandler(new InventoryDeleteItemEventHandler(trackingController));
-        //builder.AddEventHandler(new InventoryPutItemEventHandler(trackingController));
-        builder.AddEventHandler(new TakeSilverEventHandler(trackingController));
-        builder.AddEventHandler(new ActionOnBuildingFinishedEventHandler(trackingController));
-        builder.AddEventHandler(new UpdateFameEventHandler(trackingController));
-        builder.AddEventHandler(new UpdateMoneyEventHandler(trackingController));
-        builder.AddEventHandler(new UpdateReSpecPointsEventHandler(trackingController));
-        builder.AddEventHandler(new UpdateCurrencyEventHandler(trackingController));
-        builder.AddEventHandler(new DiedEventHandler(trackingController));
-        builder.AddEventHandler(new NewLootChestEventHandler(trackingController));
-        builder.AddEventHandler(new UpdateLootChestEventHandler(trackingController));
-        //builder.AddEventHandler(new LootChestOpenedEventHandler(trackingController));
-        builder.AddEventHandler(new InCombatStateUpdateEventHandler(trackingController));
-        builder.AddEventHandler(new NewShrineEventHandler(trackingController));
-        builder.AddEventHandler(new HealthUpdateEventHandler(trackingController));
-        builder.AddEventHandler(new PartyDisbandedEventHandler(trackingController));
-        builder.AddEventHandler(new PartyJoinedEventHandler(trackingController));
-        builder.AddEventHandler(new PartyPlayerJoinedEventHandler(trackingController));
-        builder.AddEventHandler(new PartyPlayerLeftEventHandler(trackingController));
-        //builder.AddEventHandler(new PartyChangedOrderEventHandler(trackingController));
-        builder.AddEventHandler(new NewCharacterEventHandler(trackingController));
-        builder.AddEventHandler(new TreasureChestUsingStartEventHandler(trackingController));
-        builder.AddEventHandler(new CharacterEquipmentChangedEventHandler(trackingController));
-        builder.AddEventHandler(new NewMobEventHandler(trackingController));
-        builder.AddEventHandler(new ActiveSpellEffectsUpdateEventHandler(trackingController));
-        builder.AddEventHandler(new UpdateFactionStandingEventHandler(trackingController));
-        //builder.AddEventHandler(new ReceivedSeasonPointsEventHandler(trackingController));
-        builder.AddEventHandler(new MightAndFavorReceivedEventHandler(trackingController));
-        builder.AddEventHandler(new BankVaultInfoEventHandler(trackingController));
-        builder.AddEventHandler(new GuildVaultInfoEventHandler(trackingController));
-        builder.AddEventHandler(new NewLootEventHandler(trackingController));
-        builder.AddEventHandler(new AttachItemContainerEventHandler(trackingController));
-        builder.AddEventHandler(new HarvestFinishedEventHandler(trackingController));
-        builder.AddEventHandler(new RewardGrantedEventHandler(trackingController));
-        builder.AddEventHandler(new NewExpeditionCheckPointHandler(trackingController));
-        builder.AddEventHandler(new UpdateMistCityStandingEventHandler(trackingController));
-        builder.AddEventHandler(new CraftBuildingInfoEventHandler(trackingController));
+        builder.AddEventHandler(new NewEquipmentItemEventHandler(_gameEventWrapper));
+        builder.AddEventHandler(new NewSimpleItemEventHandler(_gameEventWrapper));
+        builder.AddEventHandler(new NewFurnitureItemEventHandler(_gameEventWrapper));
+        builder.AddEventHandler(new NewKillTrophyItemHandler(_gameEventWrapper));
+        builder.AddEventHandler(new NewJournalItemEventHandler(_gameEventWrapper));
+        builder.AddEventHandler(new NewLaborerItemEventHandler(_gameEventWrapper));
+        builder.AddEventHandler(new OtherGrabbedLootEventHandler(_gameEventWrapper.LootController));
+        //builder.AddEventHandler(new InventoryDeleteItemEventHandler(_gameEventWrapper));
+        //builder.AddEventHandler(new InventoryPutItemEventHandler(_gameEventWrapper));
+        builder.AddEventHandler(new TakeSilverEventHandler(_gameEventWrapper));
+        builder.AddEventHandler(new ActionOnBuildingFinishedEventHandler(_gameEventWrapper));
+        builder.AddEventHandler(new UpdateFameEventHandler(_gameEventWrapper));
+        //builder.AddEventHandler(new UpdateMoneyEventHandler(_gameEventWrapper));
+        builder.AddEventHandler(new UpdateReSpecPointsEventHandler(_gameEventWrapper));
+        builder.AddEventHandler(new UpdateCurrencyEventHandler(_gameEventWrapper));
+        builder.AddEventHandler(new DiedEventHandler(_gameEventWrapper));
+        builder.AddEventHandler(new NewLootChestEventHandler(_gameEventWrapper));
+        builder.AddEventHandler(new UpdateLootChestEventHandler(_gameEventWrapper));
+        //builder.AddEventHandler(new LootChestOpenedEventHandler(_gameEventWrapper));
+        builder.AddEventHandler(new InCombatStateUpdateEventHandler(_gameEventWrapper.CombatController));
+        builder.AddEventHandler(new NewShrineEventHandler(_gameEventWrapper.DungeonController));
+        builder.AddEventHandler(new HealthUpdateEventHandler(_gameEventWrapper.CombatController));
+        builder.AddEventHandler(new PartyDisbandedEventHandler(_gameEventWrapper.EntityController));
+        builder.AddEventHandler(new PartyJoinedEventHandler(_gameEventWrapper.EntityController));
+        builder.AddEventHandler(new PartyPlayerJoinedEventHandler(_gameEventWrapper.EntityController));
+        builder.AddEventHandler(new PartyPlayerLeftEventHandler(_gameEventWrapper.EntityController));
+        //builder.AddEventHandler(new PartyChangedOrderEventHandler(_gameEventWrapper));
+        builder.AddEventHandler(new NewCharacterEventHandler(_gameEventWrapper.EntityController));
+        //builder.AddEventHandler(new TreasureChestUsingStartEventHandler(_gameEventWrapper));
+        builder.AddEventHandler(new CharacterEquipmentChangedEventHandler(_gameEventWrapper.EntityController));
+        builder.AddEventHandler(new NewMobEventHandler(_gameEventWrapper.DungeonController));
+        builder.AddEventHandler(new ActiveSpellEffectsUpdateEventHandler(_gameEventWrapper.EntityController));
+        builder.AddEventHandler(new UpdateFactionStandingEventHandler(_gameEventWrapper));
+        //builder.AddEventHandler(new ReceivedSeasonPointsEventHandler(_gameEventWrapper));
+        builder.AddEventHandler(new MightAndFavorReceivedEventHandler(_gameEventWrapper));
+        builder.AddEventHandler(new BankVaultInfoEventHandler(_gameEventWrapper));
+        //builder.AddEventHandler(new GuildVaultInfoEventHandler(_gameEventWrapper));
+        builder.AddEventHandler(new NewLootEventHandler(_gameEventWrapper.LootController));
+        builder.AddEventHandler(new AttachItemContainerEventHandler(_gameEventWrapper));
+        builder.AddEventHandler(new HarvestFinishedEventHandler(_gameEventWrapper.GatheringController));
+        builder.AddEventHandler(new RewardGrantedEventHandler(_gameEventWrapper.GatheringController));
+        builder.AddEventHandler(new NewExpeditionCheckPointHandler(_gameEventWrapper.DungeonController));
+        builder.AddEventHandler(new UpdateMistCityStandingEventHandler(_gameEventWrapper.DungeonController));
+        builder.AddEventHandler(new CraftBuildingInfoEventHandler(_gameEventWrapper.TradeController));
 
         // Request
-        builder.AddRequestHandler(new InventoryMoveItemRequestHandler(trackingController));
-        builder.AddRequestHandler(new UseShrineRequestHandler(trackingController));
-        builder.AddRequestHandler(new ClaimPaymentTransactionRequestHandler(trackingController));
-        builder.AddRequestHandler(new ActionOnBuildingStartRequestHandler(trackingController));
-        builder.AddRequestHandler(new RegisterToObjectRequestHandler(trackingController));
-        builder.AddRequestHandler(new UnRegisterFromObjectRequestHandler(trackingController));
-        builder.AddRequestHandler(new AuctionBuyOfferRequestHandler(trackingController));
-        builder.AddRequestHandler(new AuctionSellSpecificItemRequestHandler(trackingController));
-        builder.AddRequestHandler(new FishingStartEventRequestHandler(trackingController));
-        builder.AddRequestHandler(new FishingFinishRequestHandler(trackingController));
-        builder.AddRequestHandler(new FishingCancelRequestHandler(trackingController));
-        builder.AddRequestHandler(new GetGuildAccountLogsRequestHandler(trackingController));
+        builder.AddRequestHandler(new InventoryMoveItemRequestHandler(_gameEventWrapper));
+        //builder.AddRequestHandler(new UseShrineRequestHandler(_gameEventWrapper));
+        builder.AddRequestHandler(new ClaimPaymentTransactionRequestHandler(_gameEventWrapper.EntityController));
+        builder.AddRequestHandler(new ActionOnBuildingStartRequestHandler(_gameEventWrapper));
+        builder.AddRequestHandler(new RegisterToObjectRequestHandler(_gameEventWrapper));
+        builder.AddRequestHandler(new UnRegisterFromObjectRequestHandler(_gameEventWrapper));
+        builder.AddRequestHandler(new AuctionBuyOfferRequestHandler(_gameEventWrapper.MarketController));
+        builder.AddRequestHandler(new AuctionSellSpecificItemRequestHandler(_gameEventWrapper.MarketController));
+        builder.AddRequestHandler(new FishingStartEventRequestHandler(_gameEventWrapper.GatheringController));
+        builder.AddRequestHandler(new FishingFinishRequestHandler(_gameEventWrapper.GatheringController));
+        builder.AddRequestHandler(new FishingCancelRequestHandler(_gameEventWrapper.GatheringController));
+        builder.AddRequestHandler(new GetGuildAccountLogsRequestHandler(_gameEventWrapper.GuildController));
 
         // Response
-        builder.AddResponseHandler(new ChangeClusterResponseHandler(trackingController));
-        builder.AddResponseHandler(new PartyMakeLeaderResponseHandler(trackingController));
-        builder.AddResponseHandler(new JoinResponseHandler(trackingController));
-        builder.AddResponseHandler(new GetMailInfosResponseHandler(trackingController));
-        builder.AddResponseHandler(new ReadMailResponseHandler(trackingController));
-        builder.AddResponseHandler(new AuctionGetOffersResponseHandler(trackingController));
-        builder.AddResponseHandler(new AuctionGetResponseHandler(trackingController));
-        builder.AddResponseHandler(new GetCharacterEquipmentResponseHandler(trackingController));
-        builder.AddResponseHandler(new FishingFinishResponseHandler(trackingController));
-        builder.AddResponseHandler(new AuctionGetLoadoutOffersResponseHandler(trackingController));
-        builder.AddResponseHandler(new AuctionBuyLoadoutOfferResponseHandler(trackingController));
-        builder.AddResponseHandler(new GetGuildAccountLogsResponseHandler(trackingController));
+        builder.AddResponseHandler(new ChangeClusterResponseHandler(_gameEventWrapper));
+        //builder.AddResponseHandler(new PartyMakeLeaderResponseHandler(_gameEventWrapper));
+        builder.AddResponseHandler(new JoinResponseHandler(_gameEventWrapper, _mainWindowViewModel));
+        builder.AddResponseHandler(new GetMailInfosResponseHandler(_gameEventWrapper.MailController));
+        builder.AddResponseHandler(new ReadMailResponseHandler(_gameEventWrapper.MailController));
+        builder.AddResponseHandler(new AuctionGetOffersResponseHandler(_gameEventWrapper.MarketController));
+        builder.AddResponseHandler(new AuctionGetResponseHandler(_gameEventWrapper.MarketController));
+        builder.AddResponseHandler(new GetCharacterEquipmentResponseHandler(_gameEventWrapper));
+        builder.AddResponseHandler(new FishingFinishResponseHandler(_gameEventWrapper.GatheringController));
+        builder.AddResponseHandler(new AuctionGetLoadoutOffersResponseHandler(_gameEventWrapper.MarketController));
+        builder.AddResponseHandler(new AuctionBuyLoadoutOfferResponseHandler(_gameEventWrapper.MarketController));
+        builder.AddResponseHandler(new GetGuildAccountLogsResponseHandler(_gameEventWrapper.GuildController));
 
         return builder.Build();
     }
 
     public void Start()
     {
+        if (IsAnySocketActive())
+        {
+            return;
+        }
+
         ConsoleManager.WriteLineForMessage("Start Capture");
 
         _packetProvider.Start();
 
-        _ = ServiceLocator.Resolve<SatNotificationManager>().ShowTrackingStatusAsync(LanguageController.Translation("START_TRACKING"), LanguageController.Translation("GAME_TRACKING_IS_STARTED"));
+        _ = App.ServiceProvider.GetService<SatNotificationManager>().ShowTrackingStatusAsync(LanguageController.Translation("START_TRACKING"), LanguageController.Translation("GAME_TRACKING_IS_STARTED"));
     }
 
     public void Stop()
     {
+        if (!IsAnySocketActive())
+        {
+            return;
+        }
+
         ConsoleManager.WriteLineForMessage("Stop Capture");
 
         _packetProvider.Stop();
 
-        _ = ServiceLocator.Resolve<SatNotificationManager>().ShowTrackingStatusAsync(LanguageController.Translation("STOP_TRACKING"), LanguageController.Translation("GAME_TRACKING_IS_STOPPED"));
+        _ = App.ServiceProvider.GetService<SatNotificationManager>().ShowTrackingStatusAsync(LanguageController.Translation("STOP_TRACKING"), LanguageController.Translation("GAME_TRACKING_IS_STOPPED"));
     }
 
-    public bool IsAnySocketActive()
+    private bool IsAnySocketActive()
     {
-        return _packetProvider.IsRunning;
+        return _packetProvider?.IsRunning ?? false;
     }
 }

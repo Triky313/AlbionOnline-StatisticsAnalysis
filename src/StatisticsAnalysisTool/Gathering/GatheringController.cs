@@ -20,15 +20,17 @@ using System.Windows.Threading;
 
 namespace StatisticsAnalysisTool.Gathering;
 
-public class GatheringController
+public class GatheringController : IGatheringController
 {
-    private readonly TrackingController _trackingController;
-    private readonly MainWindowViewModel _mainWindowViewModel;
+    private readonly IEntityController _entityController;
+    private readonly MainWindowViewModelOld _mainWindowViewModel;
     private int _gatheredCounter;
 
-    public GatheringController(TrackingController trackingController, MainWindowViewModel mainWindowViewModel)
+    public GatheringController(
+        IEntityController entityController,
+        MainWindowViewModelOld mainWindowViewModel)
     {
-        _trackingController = trackingController;
+        _entityController = entityController;
         _mainWindowViewModel = mainWindowViewModel;
     }
 
@@ -39,7 +41,7 @@ public class GatheringController
             return;
         }
 
-        if (harvestFinishedObject.UserObjectId != _trackingController.EntityController.LocalUserData.UserObjectId)
+        if (harvestFinishedObject.UserObjectId != _entityController.LocalUserData.UserObjectId)
         {
             return;
         }

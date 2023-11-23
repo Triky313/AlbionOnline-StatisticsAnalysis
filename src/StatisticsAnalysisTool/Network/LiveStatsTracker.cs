@@ -11,9 +11,9 @@ using ValueType = StatisticsAnalysisTool.Enumerations.ValueType;
 
 namespace StatisticsAnalysisTool.Network;
 
-public class LiveStatsTracker
+public class LiveStatsTracker : ILiveStatsTracker
 {
-    private readonly MainWindowViewModel _mainWindowViewModel;
+    private readonly MainWindowViewModelOld _mainWindowViewModel;
 
     private readonly List<ValuePerHour> _famePerHourList = new();
     private readonly List<ValuePerHour> _reSpecPerHourList = new();
@@ -43,7 +43,7 @@ public class LiveStatsTracker
     private readonly TrackingController _trackingController;
     private readonly DispatcherTimer _dispatcherTimer = new();
 
-    public LiveStatsTracker(TrackingController trackingController, MainWindowViewModel mainWindowViewModel)
+    public LiveStatsTracker(TrackingController trackingController, MainWindowViewModelOld mainWindowViewModel)
     {
         _trackingController = trackingController;
         _mainWindowViewModel = mainWindowViewModel;

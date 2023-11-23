@@ -1,21 +1,21 @@
-﻿using StatisticsAnalysisTool.Network.Events;
-using StatisticsAnalysisTool.Network.Manager;
+﻿using StatisticsAnalysisTool.Dungeon;
+using StatisticsAnalysisTool.Network.Events;
 using System.Threading.Tasks;
 
 namespace StatisticsAnalysisTool.Network.Handler;
 
 public class NewShrineEventHandler : EventPacketHandler<NewShrineEvent>
 {
-    private readonly TrackingController _trackingController;
+    private readonly IDungeonController _dungeonController;
 
-    public NewShrineEventHandler(TrackingController trackingController) : base((int) EventCodes.NewShrine)
+    public NewShrineEventHandler(IDungeonController dungeonController) : base((int) EventCodes.NewShrine)
     {
-        _trackingController = trackingController;
+        _dungeonController = dungeonController;
     }
 
     protected override async Task OnActionAsync(NewShrineEvent value)
     {
-        await _trackingController.DungeonController?.SetDungeonEventInformationAsync(value.Id, value.UniqueName)!;
+        await _dungeonController?.SetDungeonEventInformationAsync(value.Id, value.UniqueName)!;
         await Task.CompletedTask;
     }
 }

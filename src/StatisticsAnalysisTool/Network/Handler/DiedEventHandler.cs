@@ -11,17 +11,17 @@ namespace StatisticsAnalysisTool.Network.Handler;
 
 public class DiedEventHandler : EventPacketHandler<DiedEvent>
 {
-    private readonly TrackingController _trackingController;
+    private readonly IGameEventWrapper _gameEventWrapper;
 
-    public DiedEventHandler(TrackingController trackingController) : base((int) EventCodes.Died)
+    public DiedEventHandler(IGameEventWrapper gameEventWrapper) : base((int) EventCodes.Died)
     {
-        _trackingController = trackingController;
+        _gameEventWrapper = gameEventWrapper;
     }
 
     protected override async Task OnActionAsync(DiedEvent value)
     {
-        _trackingController.DungeonController?.SetDiedIfInDungeon(new DiedObject(value.Died, value.KilledBy, value.KilledByGuild));
-        await _trackingController.AddNotificationAsync(SetKillNotification(value.Died, value.KilledBy, value.KilledByGuild));
+        _gameEventWrapper.DungeonController?.SetDiedIfInDungeon(new DiedObject(value.Died, value.KilledBy, value.KilledByGuild));
+        await _gameEventWrapper.TrackingController.AddNotificationAsync(SetKillNotification(value.Died, value.KilledBy, value.KilledByGuild));
     }
 
     private static TrackingNotification SetKillNotification(string died, string killedBy, string killedByGuild)

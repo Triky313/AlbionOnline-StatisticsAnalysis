@@ -1,4 +1,4 @@
-﻿using StatisticsAnalysisTool.Network.Manager;
+﻿using StatisticsAnalysisTool.Gathering;
 using StatisticsAnalysisTool.Network.Operations;
 using System.Threading.Tasks;
 
@@ -6,15 +6,15 @@ namespace StatisticsAnalysisTool.Network.Handler;
 
 public class FishingCancelRequestHandler : RequestPacketHandler<FishingCancelRequest>
 {
-    private readonly TrackingController _trackingController;
+    private readonly IGatheringController _gatheringController;
 
-    public FishingCancelRequestHandler(TrackingController trackingController) : base((int) OperationCodes.FishingCancel)
+    public FishingCancelRequestHandler(IGatheringController gatheringController) : base((int) OperationCodes.FishingCancel)
     {
-        _trackingController = trackingController;
+        _gatheringController = gatheringController;
     }
 
     protected override async Task OnActionAsync(FishingCancelRequest value)
     {
-        await _trackingController.GatheringController.FishingFinishedAsync();
+        await _gatheringController.FishingFinishedAsync();
     }
 }

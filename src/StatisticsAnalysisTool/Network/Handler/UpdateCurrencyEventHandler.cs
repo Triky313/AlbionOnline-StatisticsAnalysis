@@ -4,7 +4,6 @@ using StatisticsAnalysisTool.EventLogging.Notification;
 using StatisticsAnalysisTool.Localization;
 using StatisticsAnalysisTool.Network.Events;
 using StatisticsAnalysisTool.Network.Manager;
-using StatisticsAnalysisTool.Network.Notification;
 using System;
 using System.Threading.Tasks;
 using ValueType = StatisticsAnalysisTool.Enumerations.ValueType;
@@ -13,25 +12,23 @@ namespace StatisticsAnalysisTool.Network.Handler;
 
 public class UpdateCurrencyEventHandler : EventPacketHandler<UpdateCurrencyEvent>
 {
-    private readonly TrackingController _trackingController;
-    private readonly LiveStatsTracker _liveStatsTracker;
+    private readonly IGameEventWrapper _gameEventWrapper;
 
-    public UpdateCurrencyEventHandler(TrackingController trackingController) : base((int) EventCodes.UpdateCurrency)
+    public UpdateCurrencyEventHandler(IGameEventWrapper gameEventWrapper) : base((int) EventCodes.UpdateCurrency)
     {
-        _trackingController = trackingController;
-        _liveStatsTracker = _trackingController?.LiveStatsTracker;
+        _gameEventWrapper = gameEventWrapper;
     }
 
     protected override async Task OnActionAsync(UpdateCurrencyEvent value)
     {
         if (value.CityFaction != CityFaction.Unknown)
         {
-            await _trackingController.AddNotificationAsync(SetFactionPointsNotification(value.CityFaction, value.GainedFactionCoins.DoubleValue, value.BonusPremiumGainedFractionFlagPoints.DoubleValue));
+            await _gameEventWrapper.TrackingController.AddNotificationAsync(SetFactionPointsNotification(value.CityFaction, value.GainedFactionCoins.DoubleValue, value.BonusPremiumGainedFractionFlagPoints.DoubleValue));
         }
 
-        _liveStatsTracker.Add(ValueType.FactionPoints, value.GainedFactionCoins.DoubleValue, value.CityFaction);
-        _trackingController.DungeonController?.AddValueToDungeon(value.GainedFactionCoins.DoubleValue, ValueType.FactionPoints, value.CityFaction);
-        _trackingController.StatisticController?.AddValue(ValueType.FactionPoints, value.GainedFactionCoins.DoubleValue);
+        _gameEventWrapper.LiveStatsTracker.Add(ValueType.FactionPoints, value.GainedFactionCoins.DoubleValue, value.CityFaction);
+        _gameEventWrapper.DungeonController?.AddValueToDungeon(value.GainedFactionCoins.DoubleValue, ValueType.FactionPoints, value.CityFaction);
+        _gameEventWrapper.StatisticController?.AddValue(ValueType.FactionPoints, value.GainedFactionCoins.DoubleValue);
     }
 
     private TrackingNotification SetFactionPointsNotification(CityFaction cityFaction, double gainedFractionPoints, double bonusPremiumGainedFractionPoints)

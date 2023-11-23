@@ -6,15 +6,15 @@ namespace StatisticsAnalysisTool.Network.Handler;
 
 public class PartyJoinedEventHandler : EventPacketHandler<PartyJoinedEvent>
 {
-    private readonly TrackingController _trackingController;
+    private readonly IEntityController _entityController;
 
-    public PartyJoinedEventHandler(TrackingController trackingController) : base((int) EventCodes.PartyJoined)
+    public PartyJoinedEventHandler(IEntityController entityController) : base((int) EventCodes.PartyJoined)
     {
-        _trackingController = trackingController;
+        _entityController = entityController;
     }
 
     protected override async Task OnActionAsync(PartyJoinedEvent value)
     {
-        await _trackingController.EntityController.SetPartyAsync(value.PartyUsers);
+        await _entityController.SetPartyAsync(value.PartyUsers);
     }
 }

@@ -23,7 +23,7 @@ public partial class PlayerInformationControl
             return;
         }
 
-        var vm = (MainWindowViewModel)DataContext;
+        var vm = (MainWindowViewModelOld)DataContext;
         await vm?.PlayerInformationBindings?.LoadPlayerDataAsync(selectedItem.Value.Value?.Name)!;
     }
 
@@ -31,7 +31,7 @@ public partial class PlayerInformationControl
     {
         if (sender is TextBox textBox)
         {
-            var vm = (MainWindowViewModel)DataContext;
+            var vm = (MainWindowViewModelOld)DataContext;
             await vm?.PlayerInformationBindings?.UpdateUsernameListBoxAsync(textBox.Text)!;
         }
     }
