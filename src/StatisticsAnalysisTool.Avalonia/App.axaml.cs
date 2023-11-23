@@ -41,7 +41,7 @@ public partial class App : Application
         // TODO: Add tool Updater, maybe: https://github.com/NetSparkleUpdater/NetSparkle
         ServiceProvider.GetRequiredService<ISettingsController>().LoadSettings();
 
-        var mainWindowViewModel = ServiceProvider.GetRequiredService<MainWindowViewModel>();
+        var mainWindowViewModel = ServiceProvider.GetRequiredService<MainViewModel>();
         if (ApplicationLifetime is IClassicDesktopStyleApplicationLifetime desktop)
         {
             desktop.MainWindow = new MainWindow
@@ -67,7 +67,7 @@ public partial class App : Application
         services.AddSingleton<IHttpClientUtils, HttpClientUtils>();
         services.AddSingleton<ISettingsController, SettingsController>();
 
-        services.AddSingleton<MainWindowViewModel>();
+        services.AddSingleton<MainViewModel>();
 
         //services.AddSingleton<ErrorBarViewModel>();
         //services.AddSingleton<GuildViewModel>();
