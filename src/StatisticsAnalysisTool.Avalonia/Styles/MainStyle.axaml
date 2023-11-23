@@ -86,5 +86,4 @@
             <Setter Property="Background" Value="{DynamicResource SolidColorBrush.Accent.Red.3}" />
         </Style>
     </Style>
-
 </Styles>

@@ -12,5 +12,5 @@ public partial class MainViewModel : ViewModelBase
     public string Greeting => "Welcome to Avalonia!";
 
     [ObservableProperty]
-    public string _name;
+    private string _name;
 }

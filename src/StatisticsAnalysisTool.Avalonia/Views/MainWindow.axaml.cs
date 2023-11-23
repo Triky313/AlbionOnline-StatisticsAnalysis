@@ -1,7 +1,6 @@
 ﻿using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Controls.ApplicationLifetimes;
-using StatisticsAnalysisTool.Avalonia.Settings.UserSettings;
 
 namespace StatisticsAnalysisTool.Avalonia.Views;
 
@@ -16,7 +15,7 @@ public partial class MainWindow : Window
     {
         if (Application.Current?.ApplicationLifetime is IClassicDesktopStyleApplicationLifetime { MainWindow: not null } desktopLifetime)
         {
-            SettingsController.SetWindowSettings(desktopLifetime.MainWindow.WindowState, Height, Width, desktopLifetime.MainWindow.Position);
+            //SettingsController.SetWindowSettings(desktopLifetime.MainWindow.WindowState, Height, Width, desktopLifetime.MainWindow.Position);
         }
     }
 }

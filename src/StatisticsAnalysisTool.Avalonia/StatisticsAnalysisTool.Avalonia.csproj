@@ -42,6 +42,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Settings\AppSettings\" />
+    <Folder Include="Common\" />
   </ItemGroup>
 </Project>

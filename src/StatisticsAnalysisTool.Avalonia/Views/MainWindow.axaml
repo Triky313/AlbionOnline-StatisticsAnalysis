@@ -14,5 +14,6 @@
         TransparencyLevelHint="AcrylicBlur"
         ExtendClientAreaToDecorationsHint="True"
         Closing="Window_OnClosing">
+    <!--TODO: Closing="Window_OnClosing" anpassen-->
     <views:MainView />
 </Window>

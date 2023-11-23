@@ -3,6 +3,7 @@ using System.IO;
 using System.Reflection;
 using System.Text;
 using System.Text.Json;
+using Avalonia;
 using Avalonia.Controls;
 using Serilog;
 
@@ -13,15 +14,15 @@ public class SettingsController : ISettingsController
     public static UserSettings CurrentUserSettings = new();
 
     private static bool _haveSettingsAlreadyBeenLoaded;
-
-    public void SetWindowSettings(WindowState windowState, double height, double width, double left, double top)
+    
+    public void SetWindowSettings(WindowState windowState, double height, double width, PixelPoint position)
     {
         if (windowState != WindowState.Maximized)
         {
             CurrentUserSettings.MainWindowHeight = double.IsNegativeInfinity(height) || double.IsPositiveInfinity(height) ? 0 : height;
             CurrentUserSettings.MainWindowWidth = double.IsNegativeInfinity(width) || double.IsPositiveInfinity(width) ? 0 : width;
-            CurrentUserSettings.MainWindowLeftPosition = left;
-            CurrentUserSettings.MainWindowTopPosition = top;
+            CurrentUserSettings.MainWindowPositionX = position.X;
+            CurrentUserSettings.MainWindowPositionY = position.Y;
         }
 
         CurrentUserSettings.MainWindowMaximized = windowState == WindowState.Maximized;

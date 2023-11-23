@@ -69,7 +69,7 @@ public partial class App : Application
 
         services.AddSingleton<MainViewModel>();
 
-        //services.AddSingleton<ErrorBarViewModel>();
+        services.AddSingleton<ErrorBarViewModel>();
         //services.AddSingleton<GuildViewModel>();
 
         //services.AddSingleton<SettingsWindowViewModel>();
