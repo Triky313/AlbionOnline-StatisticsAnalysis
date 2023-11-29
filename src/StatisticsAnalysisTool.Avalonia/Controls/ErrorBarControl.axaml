@@ -4,16 +4,14 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:vm="clr-namespace:StatisticsAnalysisTool.Avalonia.ViewModels"
              mc:Ignorable="d" d:DesignWidth="300" d:DesignHeight="40"
-             x:Class="StatisticsAnalysisTool.Avalonia.UserControls.ErrorBarControl">
+             x:Class="StatisticsAnalysisTool.Avalonia.Controls.ErrorBarControl"
+             x:DataType="vm:ErrorBarViewModel">
     <UserControl.Styles>
         <StyleInclude Source="/Styles/ErrorBarStyles.axaml" />
     </UserControl.Styles>
-    <Design.DataContext>
-        <vm:ErrorBarViewModel />
-    </Design.DataContext>
-    <Grid ZIndex="3" Classes="ErrorBar" IsVisible="true" Width="250">
-        <Button Classes="Close" />
-        <Label Classes="ErrorBar" Content="ERROR" />
+    <Grid ZIndex="3" Classes="ErrorBar" IsVisible="{Binding IsVisible}">
+        <Button Classes="Close" Command="{Binding Close}" />
+        <Label Classes="ErrorBar" Content="{Binding Text, Mode=OneWay}" />
         <Border BorderThickness="1,0,0,0" BorderBrush="{DynamicResource SolidColorBrush.Accent.Red.1}" />
         <Border BorderThickness="0,1,0,0" BorderBrush="{DynamicResource SolidColorBrush.Accent.Red.1}" />
         <Border BorderThickness="0,0,1,0" BorderBrush="{DynamicResource SolidColorBrush.Accent.Red.5}" />

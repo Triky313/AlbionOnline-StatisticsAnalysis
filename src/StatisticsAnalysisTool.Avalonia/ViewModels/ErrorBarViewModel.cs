@@ -1,35 +1,26 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
+using CommunityToolkit.Mvvm.Input;
 
 namespace StatisticsAnalysisTool.Avalonia.ViewModels;
 
 public partial class ErrorBarViewModel : ViewModelBase
 {
-    public ErrorBarViewModel()
-    {
-        _text = string.Empty;
-        _isVisible = false;
-    }
-
     public void Set(bool isVisible, string errorMessage)
     {
-        _text = errorMessage;
-        _isVisible = isVisible;
+        Text = errorMessage;
+        IsVisible = isVisible;
     }
 
-    public void Close(string parameter)
+    [RelayCommand]
+    public void Close()
     {
-        _text = string.Empty;
-        _isVisible = false;
-    }
-
-    public bool CanRunClose(object parameter)
-    {
-        return true;
+        IsVisible = false;
+        Text = string.Empty;
     }
 
     [ObservableProperty]
-    private string _text;
+    private string _text = string.Empty;
 
     [ObservableProperty]
-    private bool _isVisible;
+    private bool _isVisible = true;
 }

@@ -3,7 +3,7 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:vm="clr-namespace:StatisticsAnalysisTool.Avalonia.ViewModels"
-             xmlns:userControls="clr-namespace:StatisticsAnalysisTool.Avalonia.UserControls"
+             xmlns:controls="clr-namespace:StatisticsAnalysisTool.Avalonia.Controls"
              mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
              x:Class="StatisticsAnalysisTool.Avalonia.Views.MainView"
              x:DataType="vm:MainViewModel">
@@ -97,8 +97,9 @@
                     </Grid>-->
                 </Grid>
             </StackPanel>
-            <Button>Test Button</Button>
+            <Button Command="{Binding Use}" Content="{Binding Name}"  />
         </Grid>
-        <userControls:ErrorBarControl VerticalAlignment="Bottom" />
+        <!--<userControls:FooterControl VerticalAlignment="Bottom" Height="40" />-->
+        <controls:ErrorBarControl />
     </Panel>
 </UserControl>

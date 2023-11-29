@@ -12,13 +12,14 @@ using StatisticsAnalysisTool.Avalonia.Views;
 using System;
 using System.IO;
 using System.Reflection;
+using StatisticsAnalysisTool.Avalonia.Controls;
 
 namespace StatisticsAnalysisTool.Avalonia;
 
 public partial class App : Application
 {
     private bool _isEarlyShutdown;
-    public static IServiceProvider ServiceProvider { get; private set; }
+    public static IServiceProvider? ServiceProvider { get; private set; }
 
     public override void Initialize()
     {
@@ -60,6 +61,8 @@ public partial class App : Application
         }
 
         base.OnFrameworkInitializationCompleted();
+
+        ServiceProvider.GetRequiredService<MainViewModel>().Name = "Bob";
     }
 
     private void ConfigureServices(IServiceCollection services)
@@ -70,6 +73,7 @@ public partial class App : Application
         services.AddSingleton<MainViewModel>();
 
         services.AddSingleton<ErrorBarViewModel>();
+
         //services.AddSingleton<GuildViewModel>();
 
         //services.AddSingleton<SettingsWindowViewModel>();
