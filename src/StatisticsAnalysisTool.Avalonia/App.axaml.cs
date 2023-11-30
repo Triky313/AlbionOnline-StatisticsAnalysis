@@ -61,8 +61,6 @@ public partial class App : Application
         }
 
         base.OnFrameworkInitializationCompleted();
-
-        ServiceProvider.GetRequiredService<MainViewModel>().Name = "Bob";
     }
 
     private void ConfigureServices(IServiceCollection services)
