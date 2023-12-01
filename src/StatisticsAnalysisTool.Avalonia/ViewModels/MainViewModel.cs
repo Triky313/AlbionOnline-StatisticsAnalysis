@@ -5,15 +5,18 @@ namespace StatisticsAnalysisTool.Avalonia.ViewModels;
 
 public partial class MainViewModel : ViewModelBase
 {
-    public MainViewModel()
+    public ErrorBarViewModel ErrorBarViewModel { get; }
+
+    public MainViewModel(ErrorBarViewModel errorBarViewModel)
     {
+        ErrorBarViewModel = errorBarViewModel;
         _name = "Aaron";
     }
 
     [RelayCommand]
     public void Use()
     {
-        //App.ServiceProvider?.GetRequiredService<ErrorBarViewModel>().Set(true, "WOW");
+        //ErrorBarViewModel.Set(true, "WOW");
     }
 
     [ObservableProperty]

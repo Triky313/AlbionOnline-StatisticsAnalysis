@@ -100,6 +100,6 @@
             <Button Command="{Binding Use}" Content="{Binding Name}"  />
         </Grid>
         <!--<userControls:FooterControl VerticalAlignment="Bottom" Height="40" />-->
-        <controls:ErrorBarControl />
+        <controls:ErrorBarControl DataContext="{Binding ErrorBarViewModel}" />
     </Panel>
 </UserControl>
