@@ -4,7 +4,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:views="clr-namespace:StatisticsAnalysisTool.Avalonia.Views"
         mc:Ignorable="d"
-        d:DesignHeight="650" d:DesignWidth="1000"
+        d:DesignHeight="650" d:DesignWidth="800"
         Title="AlbionOnline - StatisticsAnalysisTool"
         x:Class="StatisticsAnalysisTool.Avalonia.Views.MainWindow"
         Icon="/Assets/sat-icon.ico"

@@ -9,6 +9,7 @@
              x:DataType="vm:MainViewModel">
     <UserControl.Styles>
         <StyleInclude Source="/Styles/MainStyle.axaml" />
+        <StyleInclude Source="/Styles/GlobalStyle.axaml" />
     </UserControl.Styles>
     <Panel>
         <ExperimentalAcrylicBorder IsHitTestVisible="False">
