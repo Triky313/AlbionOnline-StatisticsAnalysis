@@ -8,14 +8,32 @@ namespace StatisticsAnalysisTool.Avalonia.ViewModels;
 
 public partial class FooterViewModel : ViewModelBase
 {
-    //public static string DonateUrl => AppSettings.DonateUrl;
-    //public static string DiscordUrl => AppSettings.DiscordUrl;
-    //public static string GitHubRepoUrl => AppSettings.GitHubRepoUrl;
-
     [RelayCommand]
     public void OpenGitHubRepoCommand()
     {
         var ps = new ProcessStartInfo(AppSettings.GitHubRepoUrl)
+        {
+            UseShellExecute = true,
+            Verb = "open"
+        };
+        Process.Start(ps);
+    }
+
+    [RelayCommand]
+    public void OpenDiscordUrlCommand()
+    {
+        var ps = new ProcessStartInfo(AppSettings.DiscordUrl)
+        {
+            UseShellExecute = true,
+            Verb = "open"
+        };
+        Process.Start(ps);
+    }
+
+    [RelayCommand]
+    public void OpenDonateUrlCommand()
+    {
+        var ps = new ProcessStartInfo(AppSettings.DonateUrl)
         {
             UseShellExecute = true,
             Verb = "open"

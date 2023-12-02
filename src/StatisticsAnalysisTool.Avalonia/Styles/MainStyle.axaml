@@ -17,6 +17,7 @@
                 <Button Content="Test Button" />
                 <Button Content="Test Button" Classes="Success" />
                 <Button Content="Test Button" Classes="Abort" />
+                <Button Content="Test Button" Classes="Hyperlink" />
             </StackPanel>
         </Border>
     </Design.PreviewWith>
@@ -84,6 +85,20 @@
         </Style>
         <Style Selector="^:pressed /template/ ContentPresenter#PART_ContentPresenter">
             <Setter Property="Background" Value="{DynamicResource SolidColorBrush.Accent.Red.3}" />
+        </Style>
+    </Style>
+
+    <Style Selector="Button.Hyperlink">
+        <Setter Property="MinWidth" Value="30" />
+        <Setter Property="MinHeight" Value="24" />
+        <Setter Property="CornerRadius" Value="0" />
+        <Setter Property="Foreground" Value="Transparent"/>
+        <Setter Property="Background" Value="Transparent"/>
+        <Style Selector="^:pointerover /template/ ContentPresenter#PART_ContentPresenter">
+            <Setter Property="Background" Value="Transparent" />
+        </Style>
+        <Style Selector="^:pressed /template/ ContentPresenter#PART_ContentPresenter">
+            <Setter Property="Background" Value="Transparent" />
         </Style>
     </Style>
 </Styles>

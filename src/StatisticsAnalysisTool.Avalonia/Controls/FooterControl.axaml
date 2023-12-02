@@ -6,44 +6,30 @@
              mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="50"
              x:Class="StatisticsAnalysisTool.Avalonia.Controls.FooterControl"
              x:DataType="vm:FooterViewModel">
-    <Grid ZIndex="1" Height="30" VerticalAlignment="Bottom" Margin="10,0,20,10">
+    <Grid ZIndex="1" Height="30" VerticalAlignment="Bottom" Margin="10,0,10,10">
         <Label Content="Made by Triky313" Foreground="{DynamicResource SolidColorBrush.Text.1}" FontSize="14" Padding="0"
                Margin="0,0,0,14" HorizontalAlignment="Left" VerticalAlignment="Bottom" VerticalContentAlignment="Bottom" Height="24" />
 
-        <Label Content="{Binding Version}"
+        <Label Content="{Binding Version, FallbackValue=v0.0.0}"
                Foreground="{DynamicResource SolidColorBrush.Accent.Blue.4}" FontSize="14" Padding="0"
                Margin="0,0,0,0" HorizontalAlignment="Left" VerticalAlignment="Bottom" VerticalContentAlignment="Bottom" Height="24" />
 
-        <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" Margin="0,0">
+        <StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
             <Grid ZIndex="10" Margin="5,0" HorizontalAlignment="Left" Width="22" Height="22" VerticalAlignment="Bottom">
-                <Button Command="{Binding OpenGitHubRepoCommand}">
-                    <!--<i:Icon Value="Brands_Github" Foreground="{DynamicResource SolidColorBrush.Text.1}" />-->
+                <Button Classes="Hyperlink" Command="{Binding OpenGitHubRepoCommand}">
+                    <PathIcon Foreground="{DynamicResource SolidColorBrush.Text.1}" Data="{DynamicResource fa-github}"/>
                 </Button>
             </Grid>
-
-
-            <!--<Grid ZIndex="10" Margin="5,0" HorizontalAlignment="Left" Width="22" Height="22" VerticalAlignment="Bottom">
-                <TextBlock>
-                    <Hyperlink NavigateUri="{Binding GitHubRepoUrl}" RequestNavigate="Hyperlink_RequestNavigate" TextDecorations="{x:Null}">
-                        <fa5:ImageAwesome Icon="Brands_Github" Foreground="{StaticResource SolidColorBrush.Text.1}" />
-                    </Hyperlink>
-                </TextBlock>
-            </Grid>-->
-            <!--<Grid ZIndex="10" Margin="5,0" HorizontalAlignment="Left" Width="22" Height="22" VerticalAlignment="Bottom">
-                <TextBlock>
-                    <Hyperlink NavigateUri="{Binding DiscordUrl}" RequestNavigate="Hyperlink_RequestNavigate" TextDecorations="{x:Null}">
-                        <fa5:ImageAwesome Icon="Brands_Discord" Foreground="{StaticResource SolidColorBrush.Text.1}" />
-                    </Hyperlink>
-                </TextBlock>
+            <Grid ZIndex="10" Margin="5,0" HorizontalAlignment="Left" Width="22" Height="22" VerticalAlignment="Bottom">
+                <Button Classes="Hyperlink" Command="{Binding OpenDiscordUrlCommand}">
+                    <PathIcon Foreground="{DynamicResource SolidColorBrush.Text.1}" Data="{DynamicResource fa-discord}"/>
+                </Button>
             </Grid>
             <Grid ZIndex="10" Margin="5,0" HorizontalAlignment="Left" Width="22" Height="22" VerticalAlignment="Bottom">
-                <TextBlock>
-                    <Hyperlink NavigateUri="{Binding DonateUrl}" RequestNavigate="Hyperlink_RequestNavigate" TextDecorations="{x:Null}">
-                        <fa5:ImageAwesome Icon="Brands_Paypal" Foreground="{StaticResource SolidColorBrush.Text.1}" />
-                    </Hyperlink>
-                </TextBlock>
-            </Grid>-->
-
+                <Button Classes="Hyperlink" Command="{Binding OpenDonateUrlCommand}">
+                    <PathIcon Foreground="{DynamicResource SolidColorBrush.Text.1}" Data="{DynamicResource fa-paypal}"/>
+                </Button>
+            </Grid>
         </StackPanel>
     </Grid>
 </UserControl>

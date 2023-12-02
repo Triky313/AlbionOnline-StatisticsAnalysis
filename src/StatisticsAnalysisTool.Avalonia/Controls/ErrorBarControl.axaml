@@ -9,7 +9,7 @@
     <UserControl.Styles>
         <StyleInclude Source="/Styles/ErrorBarStyles.axaml" />
     </UserControl.Styles>
-    <Grid ZIndex="3" Classes="ErrorBar" IsVisible="{Binding IsVisible}">
+    <Grid ZIndex="3" Classes="ErrorBar" IsVisible="{Binding IsVisible, FallbackValue=false}">
         <Button Classes="Close" Command="{Binding Close}" />
         <Label Classes="ErrorBar" Content="{Binding Text, Mode=OneWay}" />
         <Border BorderThickness="1,0,0,0" BorderBrush="{DynamicResource SolidColorBrush.Accent.Red.1}" />

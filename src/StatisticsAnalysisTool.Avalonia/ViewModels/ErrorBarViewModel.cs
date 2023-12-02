@@ -22,5 +22,5 @@ public partial class ErrorBarViewModel : ViewModelBase
     private string _text = string.Empty;
 
     [ObservableProperty]
-    private bool _isVisible = true;
+    private bool _isVisible;
 }
