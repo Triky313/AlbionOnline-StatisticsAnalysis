@@ -99,7 +99,7 @@
             </StackPanel>
             <Button Command="{Binding Use}" Content="{Binding Name}"  />
         </Grid>
-        <!--<userControls:FooterControl VerticalAlignment="Bottom" Height="40" />-->
+        <controls:FooterControl DataContext="{Binding FooterViewModel}" VerticalAlignment="Bottom" Height="40" />
         <controls:ErrorBarControl DataContext="{Binding ErrorBarViewModel}" />
     </Panel>
 </UserControl>

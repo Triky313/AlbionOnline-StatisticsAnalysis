@@ -6,10 +6,12 @@ namespace StatisticsAnalysisTool.Avalonia.ViewModels;
 public partial class MainViewModel : ViewModelBase
 {
     public ErrorBarViewModel ErrorBarViewModel { get; }
+    public FooterViewModel FooterViewModel { get; }
 
-    public MainViewModel(ErrorBarViewModel errorBarViewModel)
+    public MainViewModel(ErrorBarViewModel errorBarViewModel, FooterViewModel footerViewModel)
     {
         ErrorBarViewModel = errorBarViewModel;
+        FooterViewModel = footerViewModel;
         _name = "Aaron";
     }
 
