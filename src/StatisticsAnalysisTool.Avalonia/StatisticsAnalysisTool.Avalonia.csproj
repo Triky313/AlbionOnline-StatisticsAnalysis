@@ -48,10 +48,4 @@
   <ItemGroup>
     <Folder Include="Common\" />
   </ItemGroup>
-
-  <ItemGroup>
-    <Compile Update="Controls\MainControl.axaml.cs">
-      <DependentUpon>MainControl.axaml</DependentUpon>
-    </Compile>
-  </ItemGroup>
 </Project>

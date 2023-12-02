@@ -2,26 +2,34 @@
 using Avalonia.Controls;
 using CommunityToolkit.Mvvm.ComponentModel;
 using StatisticsAnalysisTool.Avalonia.ToolSettings;
+using System;
 
 namespace StatisticsAnalysisTool.Avalonia.ViewModels;
 
 public partial class MainWindowViewModel : ViewModelBase
 {
+    public ErrorBarViewModel ErrorBarViewModel { get; }
+    public FooterViewModel FooterViewModel { get; }
     private readonly ISettingsController _settingsController;
-    public MainViewModel MainViewModel { get; }
 
-    public MainWindowViewModel(MainViewModel mainViewModel, ISettingsController settingsController)
+    public MainWindowViewModel(ErrorBarViewModel errorBarViewModel, FooterViewModel footerViewModel, ISettingsController settingsController)
     {
+        ErrorBarViewModel = errorBarViewModel;
+        FooterViewModel = footerViewModel;
         _settingsController = settingsController;
-        MainViewModel = mainViewModel;
+
         InitWindow();
     }
 
     private void InitWindow()
     {
+        // Window
         WindowState = _settingsController.CurrentUserSettings.MainWindowMaximized ? WindowState.Maximized : WindowState.Normal;
         Height = _settingsController.CurrentUserSettings.MainWindowHeight;
         Width = _settingsController.CurrentUserSettings.MainWindowWidth;
+
+        // Unsupported OS
+        IsUnsupportedOs = Environment.OSVersion.Version.Major >= 10;
     }
 
     public void SetWindowSettings(PixelPoint position)
@@ -37,4 +45,7 @@ public partial class MainWindowViewModel : ViewModelBase
 
     [ObservableProperty]
     private double _width;
+    
+    [ObservableProperty]
+    private bool _isUnsupportedOs;
 }

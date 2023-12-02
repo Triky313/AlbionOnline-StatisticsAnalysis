@@ -69,8 +69,7 @@ public partial class App : Application
         services.AddSingleton<ISettingsController, SettingsController>();
 
         services.AddSingleton<MainWindowViewModel>();
-
-        services.AddSingleton<MainViewModel>();
+        
         services.AddSingleton<ErrorBarViewModel>();
         services.AddSingleton<FooterViewModel>();
 

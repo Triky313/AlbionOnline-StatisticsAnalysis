@@ -27,16 +27,6 @@
         <Setter Property="Foreground" Value="{DynamicResource SolidColorBrush.Text.1}" />
     </Style>
 
-    <Style Selector="Label.Title">
-        <Setter Property="Foreground" Value="{DynamicResource SolidColorBrush.Text.1}" />
-        <Setter Property="HorizontalAlignment" Value="Left"/>
-        <Setter Property="VerticalAlignment" Value="Top"/>
-        <Setter Property="FontSize" Value="20"/>
-        <Setter Property="FontWeight" Value="Bold"/>
-        <Setter Property="Margin" Value="0,2"/>
-        <Setter Property="Width" Value="NaN"/>
-    </Style>
-
     <Style Selector="Button">
         <Setter Property="MinWidth" Value="30" />
         <Setter Property="MinHeight" Value="24" />

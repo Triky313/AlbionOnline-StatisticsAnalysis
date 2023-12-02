@@ -19,6 +19,16 @@
         </Border>
     </Design.PreviewWith>
 
+    <Style Selector="Label.Title">
+        <Setter Property="Foreground" Value="{DynamicResource SolidColorBrush.Text.1}" />
+        <Setter Property="HorizontalAlignment" Value="Left"/>
+        <Setter Property="VerticalAlignment" Value="Top"/>
+        <Setter Property="FontSize" Value="20"/>
+        <Setter Property="FontWeight" Value="Bold"/>
+        <Setter Property="Margin" Value="0,2"/>
+        <Setter Property="Width" Value="NaN"/>
+    </Style>
+
     <Style Selector="Image.ToolIcon">
         <Setter Property="Source" Value="../Assets/sat-icon.png"/>
         <Setter Property="VerticalAlignment" Value="Top"/>
