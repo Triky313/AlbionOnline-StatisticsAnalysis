@@ -13,6 +13,7 @@
 
   
   <ItemGroup>
+    <None Remove="Assets\bg01.png" />
     <None Remove="Assets\sat-icon.ico" />
     <None Remove="Assets\sat-icon.png" />
   </ItemGroup>
@@ -33,6 +34,9 @@
   </ItemGroup>
 
   <ItemGroup>
+    <AvaloniaResource Update="Assets\bg01.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </AvaloniaResource>
     <AvaloniaResource Update="Assets\sat-icon.ico">
       <CopyToOutputDirectory>Never</CopyToOutputDirectory>
     </AvaloniaResource>

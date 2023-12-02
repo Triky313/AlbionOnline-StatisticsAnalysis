@@ -1,0 +1,44 @@
+﻿<Styles xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+    <Styles.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceInclude Source="../ResourceDictionarys/Colors.axaml"/>
+            </ResourceDictionary.MergedDictionaries>
+        </ResourceDictionary>
+    </Styles.Resources>
+    <Design.PreviewWith>
+        <Border Padding="0" Background="{DynamicResource SolidColorBrush.Background.2}">
+            <Grid Classes="BackgroundImage">
+                <StackPanel Orientation="Vertical">
+                    <StackPanel Orientation="Horizontal" VerticalAlignment="Top">
+                        <Image Classes="ToolIcon" />
+                    </StackPanel>
+                </StackPanel>
+            </Grid>
+        </Border>
+    </Design.PreviewWith>
+
+    <Style Selector="Image.ToolIcon">
+        <Setter Property="Source" Value="../Assets/sat-icon.png"/>
+        <Setter Property="VerticalAlignment" Value="Top"/>
+        <Setter Property="HorizontalAlignment" Value="Left"/>
+        <Setter Property="Height" Value="35"/>
+        <Setter Property="Width" Value="35"/>
+    </Style>
+
+    <Style Selector="Grid.BackgroundImage">
+        <Setter Property="ZIndex" Value="-1" />
+        <Setter Property="Width" Value="960" />
+        <Setter Property="Height" Value="398" />
+        <Setter Property="Opacity" Value="0.2" />
+        <Setter Property="Margin" Value="0,75,0,0" />
+        <Setter Property="VerticalAlignment" Value="Top" />
+        <Setter Property="HorizontalAlignment" Value="Right" />
+        <Setter Property="Background">
+            <Setter.Value>
+                <ImageBrush Source="../Assets/bg01.png" />
+            </Setter.Value>
+        </Setter>
+    </Style>
+</Styles>

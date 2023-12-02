@@ -11,7 +11,6 @@
         <Border Padding="0" Background="{DynamicResource SolidColorBrush.Background.2}">
             <StackPanel Orientation="Vertical">
                 <StackPanel Orientation="Horizontal" VerticalAlignment="Top">
-                    <Image Classes="ToolIcon" />
                     <Label Content="AlbionOnline - STATISTICS ANALYSIS TOOL" Classes="Title" />
                 </StackPanel>
                 <Button Content="Test Button" />
@@ -21,14 +20,6 @@
             </StackPanel>
         </Border>
     </Design.PreviewWith>
-
-    <Style Selector="Image.ToolIcon">
-        <Setter Property="Source" Value="../Assets/sat-icon.png"/>
-        <Setter Property="VerticalAlignment" Value="Top"/>
-        <Setter Property="HorizontalAlignment" Value="Left"/>
-        <Setter Property="Height" Value="35"/>
-        <Setter Property="Width" Value="35"/>
-    </Style>
 
     <Style Selector="Label">
         <Setter Property="Height" Value="28" />
