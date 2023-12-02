@@ -2,9 +2,11 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:views="clr-namespace:StatisticsAnalysisTool.Avalonia.Views"
+        xmlns:controls="clr-namespace:StatisticsAnalysisTool.Avalonia.Controls"
+        xmlns:viewModels="clr-namespace:StatisticsAnalysisTool.Avalonia.ViewModels"
         mc:Ignorable="d"
         d:DesignHeight="650" d:DesignWidth="800"
+        x:DataType="viewModels:MainWindowViewModel"
         Title="AlbionOnline - StatisticsAnalysisTool"
         x:Class="StatisticsAnalysisTool.Avalonia.Views.MainWindow"
         Icon="/Assets/sat-icon.ico"
@@ -14,6 +16,17 @@
         TransparencyLevelHint="AcrylicBlur"
         ExtendClientAreaToDecorationsHint="True"
         Closing="Window_OnClosing">
-    <!--TODO: Closing="Window_OnClosing" anpassen-->
-    <views:MainView />
+    <Panel>
+        <ExperimentalAcrylicBorder IsHitTestVisible="False">
+            <ExperimentalAcrylicBorder.Material>
+                <ExperimentalAcrylicMaterial
+                    BackgroundSource="Digger"
+                    TintColor="#FF0D0F11"
+                    TintOpacity="2"
+                    MaterialOpacity="0.55" />
+            </ExperimentalAcrylicBorder.Material>
+        </ExperimentalAcrylicBorder>
+
+        <controls:MainControl DataContext="{Binding MainViewModel}" />
+    </Panel>
 </Window>

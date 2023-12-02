@@ -12,7 +12,6 @@ using StatisticsAnalysisTool.Avalonia.Views;
 using System;
 using System.IO;
 using System.Reflection;
-using StatisticsAnalysisTool.Avalonia.Controls;
 
 namespace StatisticsAnalysisTool.Avalonia;
 
@@ -42,7 +41,7 @@ public partial class App : Application
         // TODO: Add tool Updater, maybe: https://github.com/NetSparkleUpdater/NetSparkle
         ServiceProvider.GetRequiredService<ISettingsController>().LoadSettings();
 
-        var mainWindowViewModel = ServiceProvider.GetRequiredService<MainViewModel>();
+        var mainWindowViewModel = ServiceProvider.GetRequiredService<MainWindowViewModel>();
         if (ApplicationLifetime is IClassicDesktopStyleApplicationLifetime desktop)
         {
             desktop.MainWindow = new MainWindow
@@ -54,7 +53,7 @@ public partial class App : Application
         }
         else if (ApplicationLifetime is ISingleViewApplicationLifetime singleViewPlatform)
         {
-            singleViewPlatform.MainView = new MainView
+            singleViewPlatform.MainView = new MainWindow
             {
                 DataContext = mainWindowViewModel
             };
@@ -68,8 +67,9 @@ public partial class App : Application
         services.AddSingleton<IHttpClientUtils, HttpClientUtils>();
         services.AddSingleton<ISettingsController, SettingsController>();
 
-        services.AddSingleton<MainViewModel>();
+        services.AddSingleton<MainWindowViewModel>();
 
+        services.AddSingleton<MainViewModel>();
         services.AddSingleton<ErrorBarViewModel>();
         services.AddSingleton<FooterViewModel>();
 

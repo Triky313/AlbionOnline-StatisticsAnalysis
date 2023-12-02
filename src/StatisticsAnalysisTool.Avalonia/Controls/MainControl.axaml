@@ -5,23 +5,13 @@
              xmlns:vm="clr-namespace:StatisticsAnalysisTool.Avalonia.ViewModels"
              xmlns:controls="clr-namespace:StatisticsAnalysisTool.Avalonia.Controls"
              mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
-             x:Class="StatisticsAnalysisTool.Avalonia.Views.MainView"
+             x:Class="StatisticsAnalysisTool.Avalonia.Controls.MainControl"
              x:DataType="vm:MainViewModel">
     <UserControl.Styles>
-        <StyleInclude Source="/Styles/MainStyle.axaml" />
+        <StyleInclude Source="/Styles/MainWindowStyle.axaml" />
         <StyleInclude Source="/Styles/GlobalStyle.axaml" />
     </UserControl.Styles>
     <Panel>
-        <ExperimentalAcrylicBorder IsHitTestVisible="False">
-            <ExperimentalAcrylicBorder.Material>
-                <ExperimentalAcrylicMaterial
-                    BackgroundSource="Digger"
-                    TintColor="#FF0D0F11"
-                    TintOpacity="2"
-                    MaterialOpacity="0.55" />
-            </ExperimentalAcrylicBorder.Material>
-        </ExperimentalAcrylicBorder>
-
         <Grid>
             <!--<Grid Style="{StaticResource BackgroundImageGridStyle}" />-->
             <StackPanel Orientation="Vertical" Margin="0">
