@@ -28,11 +28,7 @@ public partial class MainWindowViewModel : ViewModelBase
     {
         _settingsController.SetWindowSettings(WindowState, Height, Width, position);
     }
-
-    public void ClosingWindow()
-    {
-    }
-
+    
     [ObservableProperty]
     private WindowState _windowState;
 

@@ -2,7 +2,6 @@
 using Avalonia.Input;
 using Microsoft.Extensions.DependencyInjection;
 using StatisticsAnalysisTool.Avalonia.ViewModels;
-using System;
 
 namespace StatisticsAnalysisTool.Avalonia.Views;
 
@@ -18,7 +17,7 @@ public partial class MainWindow : Window
         _mainWindowViewModel = DataContext as MainWindowViewModel;
         Closing += MainWindow_Closing;
     }
-    
+
     private void MainWindow_Closing(object? sender, WindowClosingEventArgs e)
     {
         _mainWindowViewModel?.SetWindowSettings(Position);
