@@ -1,20 +1,20 @@
-﻿using System;
+﻿using Avalonia;
+using Avalonia.Controls;
+using Serilog;
+using System;
 using System.IO;
 using System.Reflection;
 using System.Text;
 using System.Text.Json;
-using Avalonia;
-using Avalonia.Controls;
-using Serilog;
 
 namespace StatisticsAnalysisTool.Avalonia.ToolSettings;
 
 public class SettingsController : ISettingsController
 {
-    public static UserSettings CurrentUserSettings = new();
+    public UserSettings CurrentUserSettings { get; private set; } = new();
 
     private static bool _haveSettingsAlreadyBeenLoaded;
-    
+
     public void SetWindowSettings(WindowState windowState, double height, double width, PixelPoint position)
     {
         if (windowState != WindowState.Maximized)
@@ -59,7 +59,7 @@ public class SettingsController : ISettingsController
         }
     }
 
-    private static void SaveToLocalFile()
+    private void SaveToLocalFile()
     {
         var localFilePath = $"{AppDomain.CurrentDomain.BaseDirectory}{AppSettings.SettingsFileName}";
 

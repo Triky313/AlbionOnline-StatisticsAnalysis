@@ -18,6 +18,7 @@ namespace StatisticsAnalysisTool.Avalonia;
 public partial class App : Application
 {
     private bool _isEarlyShutdown;
+
     public static IServiceProvider? ServiceProvider { get; private set; }
 
     public override void Initialize()
@@ -153,12 +154,12 @@ public partial class App : Application
         //var backupController = ServiceProvider.GetRequiredService<IBackupController>();
         //var trackingController = ServiceProvider.GetRequiredService<ITrackingController>();
         //var networkManager = ServiceProvider.GetRequiredService<INetworkManager>();
-        //var settingsController = ServiceProvider.GetRequiredService<ISettingsController>();
+        var settingsController = ServiceProvider?.GetRequiredService<ISettingsController>();
 
         //networkManager.Stop();
         //trackingController.StopTracking();
         //trackingController.SaveDataAsync();
-        //settingsController.SaveSettings();
+        settingsController?.SaveSettings();
         //if (!backupController.ExistBackupOnSettingConditions())
         //{
         //    backupController.Save();

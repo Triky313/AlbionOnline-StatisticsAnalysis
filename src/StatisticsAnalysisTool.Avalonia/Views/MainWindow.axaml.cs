@@ -1,21 +1,39 @@
-﻿using Avalonia;
-using Avalonia.Controls;
-using Avalonia.Controls.ApplicationLifetimes;
+﻿using Avalonia.Controls;
+using Avalonia.Input;
+using Microsoft.Extensions.DependencyInjection;
+using StatisticsAnalysisTool.Avalonia.ViewModels;
+using System;
 
 namespace StatisticsAnalysisTool.Avalonia.Views;
 
 public partial class MainWindow : Window
 {
+    private readonly MainWindowViewModel? _mainWindowViewModel;
+
     public MainWindow()
     {
         InitializeComponent();
+
+        DataContext = App.ServiceProvider?.GetRequiredService<MainWindowViewModel>();
+        _mainWindowViewModel = DataContext as MainWindowViewModel;
+        Closing += MainWindow_Closing;
+    }
+    
+    private void MainWindow_Closing(object? sender, WindowClosingEventArgs e)
+    {
+        _mainWindowViewModel?.SetWindowSettings(Position);
     }
 
-    private void Window_OnClosing(object? sender, WindowClosingEventArgs e)
+    private void TopBar_PointerPressed(object? sender, PointerPressedEventArgs e)
     {
-        if (Application.Current?.ApplicationLifetime is IClassicDesktopStyleApplicationLifetime { MainWindow: not null } desktopLifetime)
+        if (e.GetCurrentPoint(this).Properties.IsLeftButtonPressed)
         {
-            //SettingsController.SetWindowSettings(desktopLifetime.MainWindow.WindowState, Height, Width, desktopLifetime.MainWindow.Position);
+            BeginMoveDrag(e);
+        }
+
+        if (e.ClickCount == 2)
+        {
+            WindowState = WindowState == WindowState.Maximized ? WindowState.Normal : WindowState.Maximized;
         }
     }
 }

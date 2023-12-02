@@ -8,12 +8,11 @@
              x:Class="StatisticsAnalysisTool.Avalonia.Controls.MainControl"
              x:DataType="vm:MainViewModel">
     <UserControl.Styles>
-        <StyleInclude Source="/Styles/MainWindowStyle.axaml" />
-        <StyleInclude Source="/Styles/GlobalStyle.axaml" />
+        <StyleInclude Source="/Styles/MainStyle.axaml" />
     </UserControl.Styles>
     <Panel>
         <Grid>
-            <!--<Grid Style="{StaticResource BackgroundImageGridStyle}" />-->
+            <Grid Classes="BackgroundImage" />
             <StackPanel Orientation="Vertical" Margin="0">
                 <Grid>
                     <StackPanel Orientation="Horizontal" VerticalAlignment="Top" Margin="10,10">

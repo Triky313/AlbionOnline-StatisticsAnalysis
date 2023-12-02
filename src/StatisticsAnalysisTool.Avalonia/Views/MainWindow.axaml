@@ -15,7 +15,11 @@
         CanResize="True"
         TransparencyLevelHint="AcrylicBlur"
         ExtendClientAreaToDecorationsHint="True"
-        Closing="Window_OnClosing">
+        MinHeight="500"
+        MinWidth="1000"
+        Height="{Binding Height, Mode=TwoWay}"
+        Width="{Binding Width, Mode=TwoWay}"
+        WindowState="{Binding WindowState, Mode=TwoWay}">
     <Panel>
         <ExperimentalAcrylicBorder IsHitTestVisible="False">
             <ExperimentalAcrylicBorder.Material>
@@ -26,7 +30,8 @@
                     MaterialOpacity="0.55" />
             </ExperimentalAcrylicBorder.Material>
         </ExperimentalAcrylicBorder>
-
         <controls:MainControl DataContext="{Binding MainViewModel}" />
+        <Grid ZIndex="1" HorizontalAlignment="Stretch" VerticalAlignment="Top" Height="45" 
+              PointerPressed="TopBar_PointerPressed" Background="Transparent" />
     </Panel>
 </Window>

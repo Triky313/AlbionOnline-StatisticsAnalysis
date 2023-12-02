@@ -32,7 +32,7 @@
         <Setter Property="Width" Value="960" />
         <Setter Property="Height" Value="398" />
         <Setter Property="Opacity" Value="0.2" />
-        <Setter Property="Margin" Value="0,75,0,0" />
+        <Setter Property="Margin" Value="0,0,0,0" />
         <Setter Property="VerticalAlignment" Value="Top" />
         <Setter Property="HorizontalAlignment" Value="Right" />
         <Setter Property="Background">
