@@ -13,6 +13,7 @@ using System;
 using System.IO;
 using System.Reflection;
 using StatisticsAnalysisTool.Avalonia.Network;
+using StatisticsAnalysisTool.Avalonia.ViewModels.Interfaces;
 
 namespace StatisticsAnalysisTool.Avalonia;
 

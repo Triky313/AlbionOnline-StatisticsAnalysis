@@ -2,6 +2,7 @@
 using Avalonia.Controls;
 using CommunityToolkit.Mvvm.ComponentModel;
 using StatisticsAnalysisTool.Avalonia.ToolSettings;
+using StatisticsAnalysisTool.Avalonia.ViewModels.Interfaces;
 using System;
 
 namespace StatisticsAnalysisTool.Avalonia.ViewModels;
