@@ -8,13 +8,12 @@ namespace StatisticsAnalysisTool.Avalonia.ViewModels;
 
 public partial class MainWindowViewModel : ViewModelBase
 {
-    public ErrorBarViewModel ErrorBarViewModel { get; }
     public FooterViewModel FooterViewModel { get; }
     private readonly ISettingsController _settingsController;
 
-    public MainWindowViewModel(ErrorBarViewModel errorBarViewModel, FooterViewModel footerViewModel, ISettingsController settingsController)
+    public MainWindowViewModel(IErrorBarViewModel errorBarViewModel, FooterViewModel footerViewModel, ISettingsController settingsController)
     {
-        ErrorBarViewModel = errorBarViewModel;
+        _errorBarViewModel = errorBarViewModel;
         FooterViewModel = footerViewModel;
         _settingsController = settingsController;
 
@@ -40,6 +39,9 @@ public partial class MainWindowViewModel : ViewModelBase
     {
         _settingsController.SetWindowSettings(WindowState, Height, Width, position);
     }
+
+    [ObservableProperty]
+    private IErrorBarViewModel _errorBarViewModel;
 
     [ObservableProperty]
     private bool _isDebugMode;

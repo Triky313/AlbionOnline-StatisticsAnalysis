@@ -1,9 +1,10 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
+using StatisticsAnalysisTool.Avalonia.ViewModels.Interfaces;
 
 namespace StatisticsAnalysisTool.Avalonia.ViewModels;
 
-public partial class ErrorBarViewModel : ViewModelBase
+public partial class ErrorBarViewModel : ViewModelBase, IErrorBarViewModel
 {
     public void Set(bool isVisible, string errorMessage)
     {
