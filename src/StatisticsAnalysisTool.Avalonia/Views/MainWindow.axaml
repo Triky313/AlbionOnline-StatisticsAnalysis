@@ -23,21 +23,6 @@
     <Window.Styles>
         <StyleInclude Source="/Styles/MainWindowStyle.axaml" />
     </Window.Styles>
-    <!--<Panel>
-        <ExperimentalAcrylicBorder IsHitTestVisible="False">
-            <ExperimentalAcrylicBorder.Material>
-                <ExperimentalAcrylicMaterial
-                    BackgroundSource="Digger"
-                    TintColor="#FF0D0F11"
-                    TintOpacity="2"
-                    MaterialOpacity="0.55" />
-            </ExperimentalAcrylicBorder.Material>
-        </ExperimentalAcrylicBorder>
-        <controls:MainControl ZIndex="1" DataContext="{Binding MainViewModel}" />
-        <Grid ZIndex="1" HorizontalAlignment="Stretch" VerticalAlignment="Top" Height="45"
-              PointerPressed="TopBar_PointerPressed" Background="Transparent" />
-        <Grid ZIndex="-3" Classes="BackgroundImage" />
-    </Panel>-->
 
     <Panel>
         <ExperimentalAcrylicBorder IsHitTestVisible="False">
@@ -63,10 +48,9 @@
                         </Grid>
                         <Label Content="- DEBUG -" Classes="Title" Foreground="{DynamicResource SolidColorBrush.Accent.Red.3}"
                                IsVisible="{Binding IsDebugMode}" />
+                        <Label Content="{Binding ServerTypeText, StringFormat='{}({0})'}" Classes="ContentBold" 
+                               Foreground="{DynamicResource SolidColorBrush.Accent.Blue.4}" />
 
-                        <!--
-                        <Label Content="{Binding ServerTypeText, FallbackValue=(SEVER__TYPE)}" Style="{StaticResource HeaderStyle.Tracking.Content}"
-                               ContentStringFormat="{}({0})" Foreground="{StaticResource SolidColorBrush.Accent.Blue.4}" />-->
                         <!--<Label Content="{Binding TrackingActivityBindings.TrackingActiveText, FallbackValue=TRACKING__IS__NOT__ACTIVE}" VerticalAlignment="Center">
                             <Label.Style>
                                 <Style TargetType="{x:Type Label}">

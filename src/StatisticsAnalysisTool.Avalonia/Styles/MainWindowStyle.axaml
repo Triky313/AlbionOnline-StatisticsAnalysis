@@ -51,4 +51,13 @@
             </Setter.Value>
         </Setter>
     </Style>
+
+    <Style Selector="Label.ContentBold">
+        <Setter Property="Foreground" Value="{DynamicResource SolidColorBrush.Text.1}"/>
+        <Setter Property="FontSize" Value="14"/>
+        <Setter Property="FontWeight" Value="Bold"/>
+        <Setter Property="Height" Value="20"/>
+        <Setter Property="Padding" Value="0"/>
+        <Setter Property="Margin" Value="0"/>
+    </Style>
 </Styles>

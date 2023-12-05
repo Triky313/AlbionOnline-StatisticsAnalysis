@@ -55,4 +55,7 @@ public partial class MainWindowViewModel : ViewModelBase
     
     [ObservableProperty]
     private bool _isUnsupportedOs;
+
+    [ObservableProperty]
+    private string _serverTypeText = "SERVER_TYPE";
 }
