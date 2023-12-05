@@ -72,6 +72,7 @@ public partial class App : Application
 
         services.AddSingleton<MainWindowViewModel>();
         
+        services.AddSingleton<IMainWindowHeaderViewModel, MainWindowHeaderViewModel>();
         services.AddSingleton<IErrorBarViewModel, ErrorBarViewModel>();
         services.AddSingleton<FooterViewModel>();
 

@@ -1,44 +1,15 @@
 ﻿<Styles xmlns="https://github.com/avaloniaui"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
-    <Styles.Resources>
-        <ResourceDictionary>
-            <ResourceDictionary.MergedDictionaries>
-                <ResourceInclude Source="../ResourceDictionarys/Colors.axaml"/>
-            </ResourceDictionary.MergedDictionaries>
-        </ResourceDictionary>
-    </Styles.Resources>
     <Design.PreviewWith>
-        <Border Padding="0" Background="{DynamicResource SolidColorBrush.Background.2}">
+        <Border>
             <Grid Classes="BackgroundImage">
-                <StackPanel Orientation="Vertical">
-                    <StackPanel Orientation="Horizontal" VerticalAlignment="Top">
-                        <Image Classes="ToolIcon" />
-                    </StackPanel>
-                </StackPanel>
+
             </Grid>
         </Border>
     </Design.PreviewWith>
 
-    <Style Selector="Label.Title">
-        <Setter Property="Foreground" Value="{DynamicResource SolidColorBrush.Text.1}" />
-        <Setter Property="HorizontalAlignment" Value="Left"/>
-        <Setter Property="VerticalAlignment" Value="Top"/>
-        <Setter Property="FontSize" Value="20"/>
-        <Setter Property="FontWeight" Value="Bold"/>
-        <Setter Property="Margin" Value="0,2"/>
-        <Setter Property="Width" Value="NaN"/>
-    </Style>
-
-    <Style Selector="Image.ToolIcon">
-        <Setter Property="Source" Value="../Assets/sat-icon.png"/>
-        <Setter Property="VerticalAlignment" Value="Top"/>
-        <Setter Property="HorizontalAlignment" Value="Left"/>
-        <Setter Property="Height" Value="35"/>
-        <Setter Property="Width" Value="35"/>
-    </Style>
-
     <Style Selector="Grid.BackgroundImage">
-        <Setter Property="ZIndex" Value="-1" />
+        <Setter Property="ZIndex" Value="-3" />
         <Setter Property="Width" Value="960" />
         <Setter Property="Height" Value="398" />
         <Setter Property="Opacity" Value="0.2" />
@@ -50,14 +21,5 @@
                 <ImageBrush Source="../Assets/bg01.png" />
             </Setter.Value>
         </Setter>
-    </Style>
-
-    <Style Selector="Label.ContentBold">
-        <Setter Property="Foreground" Value="{DynamicResource SolidColorBrush.Text.1}"/>
-        <Setter Property="FontSize" Value="14"/>
-        <Setter Property="FontWeight" Value="Bold"/>
-        <Setter Property="Height" Value="20"/>
-        <Setter Property="Padding" Value="0"/>
-        <Setter Property="Margin" Value="0"/>
     </Style>
 </Styles>

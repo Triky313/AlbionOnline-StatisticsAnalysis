@@ -12,8 +12,12 @@ public partial class MainWindowViewModel : ViewModelBase
     public FooterViewModel FooterViewModel { get; }
     private readonly ISettingsController _settingsController;
 
-    public MainWindowViewModel(IErrorBarViewModel errorBarViewModel, FooterViewModel footerViewModel, ISettingsController settingsController)
+    public MainWindowViewModel(IMainWindowHeaderViewModel mainWindowHeaderViewModel, 
+        IErrorBarViewModel errorBarViewModel, 
+        FooterViewModel footerViewModel, 
+        ISettingsController settingsController)
     {
+        _mainWindowHeaderViewModel = mainWindowHeaderViewModel;
         _errorBarViewModel = errorBarViewModel;
         FooterViewModel = footerViewModel;
         _settingsController = settingsController;
@@ -23,17 +27,10 @@ public partial class MainWindowViewModel : ViewModelBase
 
     private void InitWindow()
     {
-#if DEBUG
-        IsDebugMode = true;
-#endif
-
         // Window
         WindowState = _settingsController.CurrentUserSettings.MainWindowMaximized ? WindowState.Maximized : WindowState.Normal;
         Height = _settingsController.CurrentUserSettings.MainWindowHeight;
         Width = _settingsController.CurrentUserSettings.MainWindowWidth;
-
-        // Unsupported OS
-        IsUnsupportedOs = Environment.OSVersion.Version.Major >= 10;
     }
 
     public void SetWindowSettings(PixelPoint position)
@@ -42,10 +39,10 @@ public partial class MainWindowViewModel : ViewModelBase
     }
 
     [ObservableProperty]
-    private IErrorBarViewModel _errorBarViewModel;
+    private IMainWindowHeaderViewModel _mainWindowHeaderViewModel;
 
     [ObservableProperty]
-    private bool _isDebugMode;
+    private IErrorBarViewModel _errorBarViewModel;
 
     [ObservableProperty]
     private WindowState _windowState;
@@ -55,10 +52,4 @@ public partial class MainWindowViewModel : ViewModelBase
 
     [ObservableProperty]
     private double _width;
-    
-    [ObservableProperty]
-    private bool _isUnsupportedOs;
-
-    [ObservableProperty]
-    private string _serverTypeText = "SERVER_TYPE";
 }

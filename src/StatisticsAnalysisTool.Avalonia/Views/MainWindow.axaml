@@ -4,6 +4,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:controls="clr-namespace:StatisticsAnalysisTool.Avalonia.Controls"
         xmlns:viewModels="clr-namespace:StatisticsAnalysisTool.Avalonia.ViewModels"
+        xmlns:views="clr-namespace:StatisticsAnalysisTool.Avalonia.Views"
         mc:Ignorable="d"
         d:DesignHeight="650" d:DesignWidth="800"
         x:DataType="viewModels:MainWindowViewModel"
@@ -35,80 +36,12 @@
             </ExperimentalAcrylicBorder.Material>
         </ExperimentalAcrylicBorder>
         <Grid>
-            <Grid ZIndex="-3" Classes="BackgroundImage" />
             <Grid Classes="BackgroundImage" />
-            <StackPanel Orientation="Vertical" Margin="0">
-                <Grid HorizontalAlignment="Stretch" VerticalAlignment="Top" PointerPressed="TopBar_PointerPressed" Background="Transparent">
-                    <StackPanel Orientation="Horizontal" VerticalAlignment="Top" Margin="10,10">
-                        <Image Classes="ToolIcon" />
-                        <Label ZIndex="-1" Content="AlbionOnline - STATISTICS ANALYSIS TOOL" Classes="Title" />
-                        <Grid IsVisible="{Binding IsUnsupportedOs, FallbackValue=false}" Height="20" Width="20" VerticalAlignment="Center">
-                            <Button Classes="Hyperlink" ZIndex="1" ToolTip.Tip="UnsupportedOs" />
-                            <PathIcon Foreground="{DynamicResource SolidColorBrush.Accent.Red.3}" Data="{DynamicResource fa-triangle-exclamation}"/>
-                        </Grid>
-                        <Label Content="- DEBUG -" Classes="Title" Foreground="{DynamicResource SolidColorBrush.Accent.Red.3}"
-                               IsVisible="{Binding IsDebugMode}" />
-                        <Label Content="{Binding ServerTypeText, StringFormat='{}({0})'}" Classes="ContentBold" 
-                               Foreground="{DynamicResource SolidColorBrush.Accent.Blue.4}" />
-
-                        <!--<Label Content="{Binding TrackingActivityBindings.TrackingActiveText, FallbackValue=TRACKING__IS__NOT__ACTIVE}" VerticalAlignment="Center">
-                            <Label.Style>
-                                <Style TargetType="{x:Type Label}">
-                                    <Setter Property="Foreground" Value="{StaticResource SolidColorBrush.Text.6}"/>
-                                    <Style.Triggers>
-                                        <DataTrigger Binding="{Binding TrackingActivityBindings.TrackingActivityType}" Value="Partially">
-                                            <Setter Property="Foreground" Value="{StaticResource SolidColorBrush.Accent.Yellow.1}"/>
-                                        </DataTrigger>
-                                        <DataTrigger Binding="{Binding TrackingActivityBindings.TrackingActivityType}" Value="On">
-                                            <Setter Property="Foreground" Value="{StaticResource SolidColorBrush.Accent.Green.4}"/>
-                                        </DataTrigger>
-                                    </Style.Triggers>
-                                </Style>
-                            </Label.Style>
-                        </Label>-->
-                        <!--<Grid Style="{StaticResource LoadingIconGridStyle}">
-                            <fa5:ImageAwesome Visibility="{Binding LoadIconVisibility}" Style="{StaticResource LoadingIconStyle}" />
-                        </Grid>-->
-                    </StackPanel>
-                </Grid>
-
-                <Grid>
-                    <!--<Grid HorizontalAlignment="Left">
-                        <StackPanel Orientation="Horizontal" Margin="10,0,0,0">
-                            <StackPanel Orientation="Horizontal" Visibility="{Binding UserTrackingBindings.UsernameInformationVisibility, FallbackValue=Hidden}">
-                                <Label Style="{StaticResource HeaderStyle.Tracking.Title}" Content="{Binding Translation.Username, FallbackValue=USERNAME}" ContentStringFormat="{}{0}: "/>
-                                <Label Style="{StaticResource HeaderStyle.Tracking.Content}" Content="{Binding UserTrackingBindings.Username, FallbackValue=USERNAME}"/>
-                                <Grid Visibility="{Binding TrackingActivityBindings.CharacterIsNotTrackedInfoVisibility, FallbackValue=Collapsed}" Height="20" Width="20" Margin="5,0,0,3" VerticalAlignment="Center"
-                                      ToolTip="{Binding Translation.ThisCharacterIsNotTracked, FallbackValue=THIS_CHARACTER_IS_NOT_TRACKED}">
-                                    <fa5:ImageAwesome Icon="Solid_ExclamationTriangle" Foreground="{StaticResource SolidColorBrush.Accent.Yellow.1}" />
-                                </Grid>
-                                <Label Content=" | "/>
-                            </StackPanel>
-                            <StackPanel Orientation="Horizontal" Visibility="{Binding UserTrackingBindings.GuildInformationVisibility, FallbackValue=Collapsed}">
-                                <Label Style="{StaticResource HeaderStyle.Tracking.Title}" Content="{Binding Translation.Guild, FallbackValue=GUILD}" ContentStringFormat="{}{0}: " />
-                                <Label Style="{StaticResource HeaderStyle.Tracking.Content}" Content="{Binding UserTrackingBindings.GuildName, FallbackValue=GUILD__NAME}" />
-                                <Label Content=" | "/>
-                            </StackPanel>
-                            <StackPanel Orientation="Horizontal" Visibility="{Binding UserTrackingBindings.AllianceInformationVisibility, FallbackValue=Collapsed}">
-                                <Label Style="{StaticResource HeaderStyle.Tracking.Title}" Content="{Binding Translation.Alliance, FallbackValue=ALLIANCE}" ContentStringFormat="{}{0}: " />
-                                <Label Style="{StaticResource HeaderStyle.Tracking.Content}" Content="{Binding UserTrackingBindings.AllianceName, FallbackValue=ALLIANCE__NAME}" />
-                                <Label Content=" | "/>
-                            </StackPanel>
-                            <StackPanel Orientation="Horizontal" Visibility="{Binding UserTrackingBindings.CurrentMapInfoBinding.CurrentMapInformationVisibility, FallbackValue=Collapsed}">
-                                <Label Style="{StaticResource HeaderStyle.Tracking.Title}" Content="{Binding Translation.CurrentMap, FallbackValue=CURRENT__MAP}" ContentStringFormat="{}{0}: " />
-                                <ContentControl Content="{Binding UserTrackingBindings.CurrentMapInfoBinding}" ContentTemplate="{StaticResource CurrentMapInfoTemplate}" />
-                            </StackPanel>
-                        </StackPanel>
-                    </Grid>
-                    <Grid HorizontalAlignment="Right" VerticalAlignment="Top" Margin="0,0,5,0" Height="18">
-                        <StackPanel Orientation="Horizontal">
-                            <Label Style="{StaticResource HeaderStyle.Tracking.Content}" Content="{Binding MainTrackerTimer, FallbackValue=00:00:00}"/>
-                        </StackPanel>
-                    </Grid>-->
-                </Grid>
-            </StackPanel>
+            <Grid HorizontalAlignment="Stretch" VerticalAlignment="Top" Height="80" PointerPressed="TopBar_PointerPressed" Background="Transparent">
+                <views:MainWindowHeaderControl DataContext="{Binding MainWindowHeaderViewModel}" />
+            </Grid>
+            <views:FooterControl DataContext="{Binding FooterViewModel}" VerticalAlignment="Bottom" Height="40" />
+            <views:ErrorBarControl DataContext="{Binding ErrorBarViewModel}" />
         </Grid>
-        <controls:FooterControl DataContext="{Binding FooterViewModel}" VerticalAlignment="Bottom" Height="40" />
-        <controls:ErrorBarControl DataContext="{Binding ErrorBarViewModel}" />
     </Panel>
 </Window>

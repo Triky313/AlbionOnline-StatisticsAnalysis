@@ -4,7 +4,7 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:vm="clr-namespace:StatisticsAnalysisTool.Avalonia.ViewModels"
              mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="50"
-             x:Class="StatisticsAnalysisTool.Avalonia.Controls.FooterControl"
+             x:Class="StatisticsAnalysisTool.Avalonia.Views.FooterControl"
              x:DataType="vm:FooterViewModel">
     <Grid ZIndex="1" Height="30" VerticalAlignment="Bottom" Margin="10,0,10,10">
         <Label Content="Made by Triky313" Foreground="{DynamicResource SolidColorBrush.Text.1}" FontSize="14" Padding="0"
