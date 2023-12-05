@@ -12,6 +12,7 @@ using StatisticsAnalysisTool.Avalonia.Views;
 using System;
 using System.IO;
 using System.Reflection;
+using StatisticsAnalysisTool.Avalonia.Network;
 
 namespace StatisticsAnalysisTool.Avalonia;
 
@@ -83,7 +84,7 @@ public partial class App : Application
 
         //services.AddSingleton<IBackupController, BackupController>();
 
-        //services.AddSingleton<INetworkManager, NetworkManager>();
+        services.AddSingleton<INetworkManager, NetworkManager>();
         //services.AddSingleton<ITrackingController, TrackingController>();
         //services.AddSingleton<ILootController, LootController>();
         //services.AddSingleton<IEntityController, EntityController>();

@@ -4,26 +4,29 @@ using BinaryFormat.IPv4;
 using BinaryFormat.Udp;
 using Libpcap;
 using Serilog;
-using StatisticsAnalysisTool.Common.UserSettings;
+using StatisticsAnalysisTool.Avalonia.ToolSettings;
+using StatisticsAnalysisTool.Network;
 using System;
 using System.Net.NetworkInformation;
 using System.Net.Sockets;
 using System.Threading;
 
-namespace StatisticsAnalysisTool.Network.PacketProviders;
+namespace StatisticsAnalysisTool.Avalonia.Network.PacketProviders;
 
 public class LibpcapPacketProvider : PacketProvider
 {
     private readonly IPhotonReceiver _photonReceiver;
+    private readonly ISettingsController _settingsController;
     private readonly PcapDispatcher _dispatcher;
     private CancellationTokenSource? _cts;
     private readonly Thread _thread;
 
     public override bool IsRunning => _thread.IsAlive;
 
-    public LibpcapPacketProvider(IPhotonReceiver photonReceiver)
+    public LibpcapPacketProvider(IPhotonReceiver photonReceiver, ISettingsController settingsController)
     {
         _photonReceiver = photonReceiver ?? throw new ArgumentNullException(nameof(photonReceiver));
+        _settingsController = settingsController;
 
         _dispatcher = new PcapDispatcher(Dispatch);
         _thread = new Thread(Worker)
@@ -64,7 +67,7 @@ public class LibpcapPacketProvider : PacketProvider
                 pcap.NonBlocking = true;
             });
 
-            _dispatcher.Filter = SettingsController.CurrentSettings.PacketFilter;
+            _dispatcher.Filter = _settingsController.CurrentUserSettings.PacketFilter;
         }
 
         _cts = new CancellationTokenSource();

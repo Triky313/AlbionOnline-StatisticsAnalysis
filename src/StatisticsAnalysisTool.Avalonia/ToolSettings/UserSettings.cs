@@ -1,22 +1,24 @@
+using StatisticAnalysisTool.Extractor.Enums;
+using StatisticsAnalysisTool.Avalonia.Network;
+using StatisticsAnalysisTool.Avalonia.Network.PacketProviders;
 using System;
-using System.Collections.Generic;
 
 namespace StatisticsAnalysisTool.Avalonia.ToolSettings;
 
 public class UserSettings
 {
-    public string CurrentCultureIetfLanguageTag { get; set; }
+    public string CurrentCultureIetfLanguageTag { get; set; } = string.Empty;
     public int RefreshRate { get; set; } = 10000;
     public string PacketFilter { get; set; } = "(host 5.45.187 or host 5.188.125) and udp port 5056";
-    //public PacketProviderKind PacketProvider { get; set; } = PacketProviderKind.Sockets;
-    //public ServerLocation ServerLocation { get; set; } = 0; // 0: auto, 1: west, 2: east
-    //public ServerType ServerType { get; set; } = ServerType.Live; // 0: Live, 1: Staging, 2: Playground
-    public string MainTrackingCharacterName { get; set; }
+    public PacketProviderKind PacketProvider { get; set; } = PacketProviderKind.Sockets;
+    public ServerLocation ServerLocation { get; set; } = 0; // 0: auto, 1: west, 2: east
+    public ServerType ServerType { get; set; } = ServerType.Live; // 0: Live, 1: Staging, 2: Playground
+    public string MainTrackingCharacterName { get; set; } = string.Empty;
     public int BackupIntervalByDays { get; set; } = 7;
     public int MaximumNumberOfBackups { get; set; } = 10;
     public bool IsOpenItemWindowInNewWindowChecked { get; set; } = true;
     public bool IsInfoWindowShownOnStart { get; set; } = true;
-    public string SelectedAlertSound { get; set; }
+    public string SelectedAlertSound { get; set; } = string.Empty;
     public string AlbionDataProjectBaseUrlWest { get; set; } = "https://albion-online-data.com/api/v2/";
     public string AlbionDataProjectBaseUrlEast { get; set; } = "https://east.albion-online-data.com/api/v2/";
     public string AlbionOnlineApiBaseUrlWest { get; set; } = "https://gameinfo.albiononline.com";
@@ -86,7 +88,7 @@ public class UserSettings
     public double PartyBuilderMaximumItemPower { get; set; } = 900;
     public double PartyBuilderMinimalBasicItemPower { get; set; } = 600;
     public double PartyBuilderMaximumBasicItemPower { get; set; } = 900;
-    public string AnotherAppToStartPath { get; set; }
+    public string AnotherAppToStartPath { get; set; } = string.Empty;
     public string MainGameFolderPath { get; set; } = string.Empty;
     public bool IsKillDeathStatsVisible { get; set; } = true;
     public bool IsLootedChestsStatsVisible { get; set; } = true;
