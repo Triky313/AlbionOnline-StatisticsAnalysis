@@ -61,13 +61,10 @@
                             <Button Classes="Hyperlink" ZIndex="1" ToolTip.Tip="UnsupportedOs" />
                             <PathIcon Foreground="{DynamicResource SolidColorBrush.Accent.Red.3}" Data="{DynamicResource fa-triangle-exclamation}"/>
                         </Grid>
+                        <Label Content="- DEBUG -" Classes="Title" Foreground="{DynamicResource SolidColorBrush.Accent.Red.3}"
+                               IsVisible="{Binding IsDebugMode}" />
 
-                        <!--<Grid Visibility="{Binding UnsupportedOsVisibility, FallbackValue=Collapsed}"
-                              Height="20" Width="20" VerticalAlignment="Center" ToolTip="{Binding Translation.UnsupportedOs, FallbackValue='UNSUPPORTED_OS'}">
-                            <fa5:ImageAwesome Icon="Solid_ExclamationTriangle" Foreground="{StaticResource SolidColorBrush.Accent.Red.3}" />
-                        </Grid>
-                        <Label Content="- DEBUG -" Style="{StaticResource MainWindow.Title}" Foreground="{StaticResource SolidColorBrush.Accent.Red.3}"
-                               Visibility="{Binding DebugModeVisibility}" />
+                        <!--
                         <Label Content="{Binding ServerTypeText, FallbackValue=(SEVER__TYPE)}" Style="{StaticResource HeaderStyle.Tracking.Content}"
                                ContentStringFormat="{}({0})" Foreground="{StaticResource SolidColorBrush.Accent.Blue.4}" />-->
                         <!--<Label Content="{Binding TrackingActivityBindings.TrackingActiveText, FallbackValue=TRACKING__IS__NOT__ACTIVE}" VerticalAlignment="Center">

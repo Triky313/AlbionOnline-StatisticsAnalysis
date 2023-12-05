@@ -23,6 +23,10 @@ public partial class MainWindowViewModel : ViewModelBase
 
     private void InitWindow()
     {
+#if DEBUG
+        IsDebugMode = true;
+#endif
+
         // Window
         WindowState = _settingsController.CurrentUserSettings.MainWindowMaximized ? WindowState.Maximized : WindowState.Normal;
         Height = _settingsController.CurrentUserSettings.MainWindowHeight;
@@ -36,7 +40,10 @@ public partial class MainWindowViewModel : ViewModelBase
     {
         _settingsController.SetWindowSettings(WindowState, Height, Width, position);
     }
-    
+
+    [ObservableProperty]
+    private bool _isDebugMode;
+
     [ObservableProperty]
     private WindowState _windowState;
 
