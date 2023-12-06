@@ -1,2 +1,3 @@
 ﻿# Name change
 SettingsObject class -> UserSettings class
+TrackingIconType enum -> TrackingIconType enum

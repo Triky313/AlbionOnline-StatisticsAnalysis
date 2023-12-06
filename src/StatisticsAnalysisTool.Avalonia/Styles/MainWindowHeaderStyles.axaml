@@ -3,12 +3,23 @@
     <Design.PreviewWith>
         <Border Padding="0" Background="{DynamicResource SolidColorBrush.Background.2}">
             <Grid>
-                <StackPanel Orientation="Vertical">
-                    <StackPanel Orientation="Horizontal" VerticalAlignment="Top">
-                        <Image Classes="ToolIcon" />
-                    </StackPanel>
+                <StackPanel Orientation="Horizontal" VerticalAlignment="Top" Margin="10,10">
+                    <Image Classes="ToolIcon" />
+                    <Label ZIndex="-1" Content="AlbionOnline - STATISTICS ANALYSIS TOOL" Classes="Title" />
+                    <Grid Height="20" Width="20" VerticalAlignment="Center">
+                        <Button Classes="Hyperlink" ZIndex="1" ToolTip.Tip="UnsupportedOs" />
+                        <PathIcon Foreground="{DynamicResource SolidColorBrush.Accent.Red.3}" Data="{DynamicResource fa-triangle-exclamation}"/>
+                    </Grid>
+                    <Label Content="- DEBUG -" Classes="Title" Foreground="{DynamicResource SolidColorBrush.Accent.Red.3}" />
+                    <Label Classes="ContentBold" Content="SERVER_TYPE" Foreground="{DynamicResource SolidColorBrush.Accent.Blue.4}" />
+
+                    <Grid VerticalAlignment="Center" Margin="5,0">
+                        <Label IsVisible="true" Classes="ContentLight"
+                               Foreground="{DynamicResource SolidColorBrush.Accent.Green.4}" Content="SERVER_ON" />
+                    </Grid>
                 </StackPanel>
             </Grid>
+
         </Border>
     </Design.PreviewWith>
 
@@ -29,6 +40,15 @@
         <Setter Property="Margin" Value="0"/>
     </Style>
 
+    <Style Selector="Label.ContentLight">
+        <Setter Property="Foreground" Value="{DynamicResource SolidColorBrush.Text.1}"/>
+        <Setter Property="FontSize" Value="14"/>
+        <Setter Property="FontWeight" Value="Light"/>
+        <Setter Property="Height" Value="20"/>
+        <Setter Property="Padding" Value="0"/>
+        <Setter Property="Margin" Value="0"/>
+    </Style>
+
     <Style Selector="Label.Title">
         <Setter Property="Foreground" Value="{DynamicResource SolidColorBrush.Text.1}" />
         <Setter Property="HorizontalAlignment" Value="Left"/>
@@ -38,5 +58,4 @@
         <Setter Property="Margin" Value="0,2"/>
         <Setter Property="Width" Value="NaN"/>
     </Style>
-
 </Styles>
