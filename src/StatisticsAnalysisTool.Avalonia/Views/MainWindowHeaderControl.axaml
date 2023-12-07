@@ -4,6 +4,7 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:viewModels="clr-namespace:StatisticsAnalysisTool.Avalonia.ViewModels"
              mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="80"
+             xmlns:i="https://github.com/projektanker/icons.avalonia"
              x:Class="StatisticsAnalysisTool.Avalonia.Views.MainWindowHeaderControl"
              x:DataType="viewModels:MainWindowHeaderViewModel">
     <UserControl.Styles>
@@ -16,9 +17,9 @@
                     <StackPanel Orientation="Horizontal" VerticalAlignment="Top" Margin="10,10">
                         <Image Classes="ToolIcon" />
                         <Label ZIndex="-1" Content="AlbionOnline - STATISTICS ANALYSIS TOOL" Classes="Title" />
-                        <Grid IsVisible="{Binding IsUnsupportedOs, FallbackValue=false}" Height="20" Width="20" VerticalAlignment="Center">
+                        <Grid IsVisible="true" Height="20" Width="20" VerticalAlignment="Center">
                             <Button Classes="Hyperlink" ZIndex="1" ToolTip.Tip="UnsupportedOs" />
-                            <PathIcon Foreground="{DynamicResource SolidColorBrush.Accent.Red.3}" Data="{DynamicResource fa-triangle-exclamation}"/>
+                            <i:Icon Foreground="{DynamicResource SolidColorBrush.Accent.Red.3}" Value="fa-triangle-exclamation" FontSize="20" Margin="0,0,0,2" />
                         </Grid>
                         <Label Content="- DEBUG -" Classes="Title" Foreground="{DynamicResource SolidColorBrush.Accent.Red.3}" IsVisible="{Binding IsDebugMode}" />
                         <Label Content="{Binding ServerTypeText, StringFormat='{}({0})'}" Classes="ContentBold" Foreground="{DynamicResource SolidColorBrush.Accent.Blue.4}" />
@@ -28,10 +29,7 @@
                             <Label Classes="ContentLight" IsVisible="{Binding IsTrackingStatusOff}" Foreground="{DynamicResource SolidColorBrush.Text.6}" Content="{Binding TrackingActiveText}" />
                             <Label Classes="ContentLight" IsVisible="{Binding IsTrackingStatusPartially}" Foreground="{DynamicResource SolidColorBrush.Accent.Yellow.1}" Content="{Binding TrackingActiveText}" />
                         </Grid>
-
-                        <!--<Grid Style="{StaticResource LoadingIconGridStyle}">
-                            <fa5:ImageAwesome Visibility="{Binding LoadIconVisibility}" Style="{StaticResource LoadingIconStyle}" />
-                        </Grid>-->
+                        <i:Icon IsVisible="{Binding IsLoadingIconVisible}" Classes="LoadingAnim" FontSize="20" Margin="0,0,0,2" />
                     </StackPanel>
                 </Grid>
 

@@ -1,4 +1,5 @@
 ﻿<Styles xmlns="https://github.com/avaloniaui"
+        xmlns:i="https://github.com/projektanker/icons.avalonia"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
     <Styles.Resources>
         <ResourceDictionary>
@@ -10,13 +11,10 @@
     <Design.PreviewWith>
         <Border Padding="0" Background="{DynamicResource SolidColorBrush.Background.2}">
             <StackPanel Orientation="Vertical">
-                <StackPanel Orientation="Horizontal" VerticalAlignment="Top">
-                    <Label Content="AlbionOnline - STATISTICS ANALYSIS TOOL" Classes="Title" />
-                </StackPanel>
                 <Button Content="Test Button" />
                 <Button Content="Test Button" Classes="Success" />
                 <Button Content="Test Button" Classes="Abort" />
-                <Button Content="Test Button" Classes="Hyperlink" />
+                <Button Content="Test Button" Classes="HyperlinkIcon" />
             </StackPanel>
         </Border>
     </Design.PreviewWith>
@@ -70,16 +68,22 @@
     </Style>
 
     <Style Selector="Button.Hyperlink">
-        <Setter Property="MinWidth" Value="30" />
+        <Setter Property="MinWidth" Value="24" />
         <Setter Property="MinHeight" Value="24" />
         <Setter Property="CornerRadius" Value="0" />
-        <Setter Property="Foreground" Value="Transparent"/>
-        <Setter Property="Background" Value="Transparent"/>
+        <Setter Property="Padding" Value="0" />
+        <Setter Property="Background" Value="Transparent" />
         <Style Selector="^:pointerover /template/ ContentPresenter#PART_ContentPresenter">
             <Setter Property="Background" Value="Transparent" />
         </Style>
         <Style Selector="^:pressed /template/ ContentPresenter#PART_ContentPresenter">
             <Setter Property="Background" Value="Transparent" />
         </Style>
+    </Style>
+
+    <Style Selector="i|Icon.LoadingAnim">
+        <Setter Property="Foreground" Value="{DynamicResource SolidColorBrush.Text.1}"/>
+        <Setter Property="Value" Value="fa-solid fa-circle-notch"/>
+        <Setter Property="Animation" Value="Spin"/>
     </Style>
 </Styles>

@@ -15,7 +15,7 @@
 
                     <Grid VerticalAlignment="Center" Margin="5,0">
                         <Label IsVisible="true" Classes="ContentLight"
-                               Foreground="{DynamicResource SolidColorBrush.Accent.Green.4}" Content="SERVER_ON" />
+                               Foreground="{DynamicResource SolidColorBrush.Accent.Green.4}" Content="TRACKING__STATUS__TYPE" />
                     </Grid>
                 </StackPanel>
             </Grid>

@@ -42,6 +42,9 @@ public partial class MainWindowHeaderViewModel : ViewModelBase, IMainWindowHeade
     private string _trackingActiveText = "TRACKING__ACTIVE__TEXT";
 
     [ObservableProperty]
+    private bool _isLoadingIconVisible;
+
+    [ObservableProperty]
     [NotifyPropertyChangedFor(nameof(IsTrackingStatusOn))]
     [NotifyPropertyChangedFor(nameof(IsTrackingStatusOff))]
     [NotifyPropertyChangedFor(nameof(IsTrackingStatusPartially))]
