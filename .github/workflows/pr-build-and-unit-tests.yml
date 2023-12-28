@@ -39,4 +39,4 @@ jobs:
 
     - name: 🧪 Execute unit tests (Only debug)
       if: ${{ matrix.configuration == 'Debug' }}
-      run: dotnet test $env:Test_Project_Path --no-restore
+      run: dotnet test $env:Test_Project_Path
