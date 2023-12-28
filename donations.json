@@ -1,5 +1,12 @@
 [ 
      {
+	"Timestamp": "2023-10-16T00:00:00",
+	"Amount": 1750000,
+	"RealMoneyAmount": 0,
+	"Contributor": "atakujonc",
+	"IsDonationRealMoney": false
+     },
+     {
 	"Timestamp": "2023-10-06T00:00:00",
 	"Amount": 1000000,
 	"RealMoneyAmount": 0,

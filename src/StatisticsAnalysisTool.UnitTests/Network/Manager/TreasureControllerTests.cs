@@ -1,15 +1,15 @@
-﻿using StatisticsAnalysisTool.Enumerations;
+﻿using FluentAssertions;
+using NUnit.Framework;
+using StatisticsAnalysisTool.Enumerations;
 using StatisticsAnalysisTool.Network.Manager;
-using System;
-using System.Collections.Generic;
 using System.Reflection;
-using Xunit;
 
 namespace StatisticsAnalysisTool.UnitTests.Network.Manager;
 
+[TestFixture]
 public class TreasureControllerTests
 {
-    [Fact]
+    [Test]
     public void GetRarity_ReturnsExpectedValues()
     {
         // Arrange
@@ -40,12 +40,12 @@ public class TreasureControllerTests
         // Act and Assert
         foreach (var valueToTest in valuesToTest)
         {
-            var result = (TreasureRarity)method.Invoke(null, new object[] { valueToTest.Item1 })!;
-            Assert.Equal(valueToTest.Item2, result);
+            var result = (TreasureRarity) method.Invoke(null, new object[] { valueToTest.Item1 })!;
+            result.Should().Be(valueToTest.Item2);
         }
     }
 
-    [Fact]
+    [Test]
     public void GetTreasureType_ReturnsExpectedValues()
     {
         // Arrange
@@ -67,8 +67,8 @@ public class TreasureControllerTests
         // Act and Assert
         foreach (var valueToTest in valuesToTest)
         {
-            var result = (TreasureType)method!.Invoke(null, new object[] { valueToTest.Item1 })!;
-            Assert.Equal(valueToTest.Item2, result);
+            var result = (TreasureType) method!.Invoke(null, new object[] { valueToTest.Item1 })!;
+            result.Should().Be(valueToTest.Item2);
         }
     }
 }
