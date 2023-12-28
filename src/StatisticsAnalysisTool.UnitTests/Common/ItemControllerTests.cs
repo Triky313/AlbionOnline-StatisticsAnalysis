@@ -1,13 +1,16 @@
-﻿using StatisticsAnalysisTool.Common;
+﻿using FluentAssertions;
+using NUnit.Framework;
+using StatisticsAnalysisTool.Common;
 using StatisticsAnalysisTool.Models;
 using System.Collections.ObjectModel;
-using Xunit;
+
 
 namespace StatisticsAnalysisTool.UnitTests.Common;
 
+[TestFixture]
 public class ItemControllerTests
 {
-    [Fact]
+    [Test]
     public void GetItemByIndex_WithValidValue_ReturnTrue()
     {
         var receivedItem1 = new Item() { Index = 114 };
@@ -25,10 +28,10 @@ public class ItemControllerTests
 
         var expectedItem = ItemController.GetItemByIndex(11);
 
-        Assert.Contains(expectedItem, itemList);
+        itemList.Should().Contain(expectedItem);
     }
 
-    [Fact]
+    [Test]
     public void GetItemByUniqueName_WithValidValue_ReturnTrue()
     {
         var receivedItem1 = new Item() { UniqueName = "T6_CAPEITEM_MORGANA" };
@@ -48,10 +51,10 @@ public class ItemControllerTests
 
         var expectedItem = ItemController.GetItemByUniqueName("T8_BACKPACK_GATHERER_FIBER@2");
 
-        Assert.Contains(expectedItem, itemList);
+        itemList.Should().Contain(expectedItem);
     }
 
-    [Fact]
+    [Test]
     public void IsTrash_WithExistingTrashItem_ReturnTrue()
     {
         var receivedItem1 = new Item() { Index = 114, UniqueName = "T1_SWORD" };
@@ -68,10 +71,10 @@ public class ItemControllerTests
         ItemController.Items = itemList;
 
         var result = ItemController.IsTrash(512);
-        Assert.True(result);
+        result.Should().BeTrue();
     }
 
-    [Fact]
+    [Test]
     public void IsTrash_TryToGetNotExistItem_ReturnTrue()
     {
         var receivedItem1 = new Item() { Index = 114, UniqueName = "T1_SWORD" };
@@ -88,10 +91,10 @@ public class ItemControllerTests
         ItemController.Items = itemList;
 
         var result = ItemController.IsTrash(77);
-        Assert.True(result);
+        result.Should().BeTrue();
     }
 
-    [Fact]
+    [Test]
     public void IsTrash_GetItemWithoutTrashInName_ReturnFalse()
     {
         var receivedItem1 = new Item() { Index = 114, UniqueName = "T1_SWORD" };
@@ -108,10 +111,10 @@ public class ItemControllerTests
         ItemController.Items = itemList;
 
         var result = ItemController.IsTrash(512);
-        Assert.False(result);
+        result.Should().BeFalse();
     }
 
-    [Fact]
+    [Test]
     public void GetItemLevel_WithValidValue_ReturnEqualValue()
     {
         var result = ItemController.GetItemLevel("T3_SWORD@2");
@@ -120,11 +123,11 @@ public class ItemControllerTests
         var expected = 2;
         var expected2 = 3;
 
-        Assert.Equal(expected, result);
-        Assert.Equal(expected2, result2);
+        result.Should().Be(expected);
+        result2.Should().Be(expected2);
     }
 
-    [Fact]
+    [Test]
     public void GetItemLevel_WithInvalidValue_ReturnEqualValue()
     {
         var result = ItemController.GetItemLevel("T3_SWORD");
@@ -133,7 +136,7 @@ public class ItemControllerTests
         var expected = 0;
         var expected2 = 0;
 
-        Assert.Equal(expected, result);
-        Assert.Equal(expected2, result2);
+        result.Should().Be(expected);
+        result2.Should().Be(expected2);
     }
 }

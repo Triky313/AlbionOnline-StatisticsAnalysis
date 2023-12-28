@@ -1,15 +1,15 @@
-﻿using StatisticsAnalysisTool.Common;
-using System;
-using System.Collections.Generic;
+﻿using FluentAssertions;
+using NUnit.Framework;
+using StatisticsAnalysisTool.Common;
 using System.Collections.ObjectModel;
 using System.Globalization;
-using Xunit;
 
 namespace StatisticsAnalysisTool.UnitTests.Common;
 
+[TestFixture]
 public class ExtensionMethodTests
 {
-    [Fact]
+    [Test]
     public void OrderByReference_ReordersObservableCollectionBasedOnList()
     {
         // Arrange
@@ -20,10 +20,10 @@ public class ExtensionMethodTests
         collection.OrderByReference(comparison);
 
         // Assert
-        Assert.Equal(new List<int> { 3, 1, 2 }, collection);
+        collection.Should().Equal(new List<int> { 3, 1, 2 });
     }
 
-    [Fact]
+    [Test]
     public void OrderByReference_DoesNotReorderObservableCollectionIfAlreadyOrdered()
     {
         // Arrange
@@ -34,10 +34,10 @@ public class ExtensionMethodTests
         collection.OrderByReference(comparison);
 
         // Assert
-        Assert.Equal(new List<int> { 1, 2, 3 }, collection);
+        collection.Should().Equal(new List<int> { 1, 2, 3 });
     }
 
-    [Fact]
+    [Test]
     public void ToDictionary_ReturnsDictionaryOfIndexAndValues()
     {
         // Arrange
@@ -47,10 +47,10 @@ public class ExtensionMethodTests
         var result = array.ToDictionary();
 
         // Assert
-        Assert.Equal(new Dictionary<int, int> { { 0, 1 }, { 1, 2 }, { 2, 3 } }, result);
+        result.Should().Equal(new Dictionary<int, int> { { 0, 1 }, { 1, 2 }, { 2, 3 } });
     }
 
-    [Fact]
+    [Test]
     public void ToDictionary_HandlesEmptyArray()
     {
         // Arrange
@@ -61,10 +61,10 @@ public class ExtensionMethodTests
         var result = array.ToDictionary();
 
         // Assert
-        Assert.Empty(result);
+        result.Should().BeEmpty();
     }
 
-    [Fact]
+    [Test]
     public void ToTimerString_ReturnsFormattedStringForTimeSpanInput()
     {
         // Arrange
@@ -74,10 +74,10 @@ public class ExtensionMethodTests
         var result = span.ToTimerString();
 
         // Assert
-        Assert.Equal("01:02:03", result);
+        result.Should().Be("01:02:03");
     }
 
-    [Fact]
+    [Test]
     public void ToTimerString_ReturnsFormattedStringForIntInput()
     {
         // Arrange
@@ -87,10 +87,10 @@ public class ExtensionMethodTests
         var result = seconds.ToTimerString();
 
         // Assert
-        Assert.Equal("01:02:03", result);
+        result.Should().Be("01:02:03");
     }
 
-    [Fact]
+    [Test]
     public void ToTimerString_HandlesZeroInput()
     {
         // Arrange
@@ -102,11 +102,11 @@ public class ExtensionMethodTests
         var result2 = seconds.ToTimerString();
 
         // Assert
-        Assert.Equal("00:00:00", result1);
-        Assert.Equal("00:00:00", result2);
+        result1.Should().Be("00:00:00");
+        result2.Should().Be("00:00:00");
     }
 
-    [Fact]
+    [Test]
     public void ToTimerString_HandlesNegativeInput()
     {
         // Arrange
@@ -118,11 +118,10 @@ public class ExtensionMethodTests
         var result2 = seconds.ToTimerString();
 
         // Assert
-        Assert.Equal("-01:-02:-03", result1);
-        Assert.Equal("-01:-02:-03", result2);
+        result1.Should().Be("-01:-02:-03");
+        result2.Should().Be("-01:-02:-03");
     }
-
-    [Fact]
+    [Test]
     public void ObjectToLong_WithValidValues_ReturnLongValue()
     {
         var value = (object) 15;
@@ -130,39 +129,38 @@ public class ExtensionMethodTests
         var result = value.ObjectToLong();
         const long expected = 15L;
 
-        Assert.Equal(expected, result);
+        result.Should().Be(expected);
     }
 
-    [Fact]
+    [Test]
     public void ObjectToLong_WithInvalidValues_ReturnNull()
     {
         var result = 9999999999999999999.ObjectToLong();
-        long? expected = null;
 
-        Assert.Equal(expected, result);
+        result.Should().Be(null);
     }
 
-    [Fact]
+    [Test]
     public void ObjectToInt_WithInvalidValues_ReturnIntValue()
     {
         var value = (object) 15;
 
         var result = value.ObjectToInt();
-        const long expected = 15L;
+        const int expected = 15;
 
-        Assert.Equal(expected, result);
+        result.Should().Be(expected);
     }
 
-    [Fact]
+    [Test]
     public void ObjectToInt_WithInvalidValues_ReturnNull()
     {
         var result = 9999999999999999999.ObjectToInt();
-        long? expected = 0;
+        int? expected = 0;
 
-        Assert.Equal(expected, result);
+        result.Should().Be(expected);
     }
 
-    [Fact]
+    [Test]
     public void GetShortNumber_ReturnsCorrectStringForVariousInputs()
     {
         // Arrange
@@ -186,11 +184,11 @@ public class ExtensionMethodTests
             var input = pair.Key;
             var expectedOutput = pair.Value;
             var result = input.GetShortNumber(new CultureInfo("en-US"));
-            Assert.Equal(expectedOutput, result);
+            result.Should().Be(expectedOutput);
         }
     }
 
-    [Fact]
+    [Test]
     public void IsDateInWeekOfYear_WithValidValues_ReturnTrue()
     {
         // Arrange
@@ -201,6 +199,6 @@ public class ExtensionMethodTests
         var result = dateTime1.IsDateInWeekOfYear(dateTime2);
 
         // Assert
-        Assert.True(result);
+        result.Should().BeTrue();
     }
 }

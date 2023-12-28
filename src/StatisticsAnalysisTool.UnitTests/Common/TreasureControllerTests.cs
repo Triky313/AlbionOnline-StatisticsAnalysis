@@ -1,14 +1,15 @@
-﻿using StatisticsAnalysisTool.Enumerations;
+﻿using FluentAssertions;
+using NUnit.Framework;
+using StatisticsAnalysisTool.Enumerations;
 using StatisticsAnalysisTool.Network.Manager;
-using System;
 using System.Reflection;
-using Xunit;
 
 namespace StatisticsAnalysisTool.UnitTests.Common;
 
+[TestFixture]
 public class TreasureControllerTests
 {
-    [Fact]
+    [Test]
     public void GetTreasureType_ReturnsCorrectValue()
     {
         // Arrange
@@ -25,8 +26,8 @@ public class TreasureControllerTests
 
         for (var i = 0; i < inputs.Length; i++)
         {
-            var result = (TreasureType)method.Invoke(null, new object[] { inputs[i] })!;
-            Assert.Equal(expected[i], result);
+            var result = (TreasureType) method.Invoke(null, new object[] { inputs[i] })!;
+            result.Should().Be(expected[i]);
         }
     }
 }
