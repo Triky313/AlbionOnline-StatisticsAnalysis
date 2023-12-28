@@ -1,19 +1,21 @@
-﻿using StatisticsAnalysisTool.Common;
-using Xunit;
+﻿using FluentAssertions;
+using NUnit.Framework;
+using StatisticsAnalysisTool.Common;
 
 namespace StatisticsAnalysisTool.UnitTests.Common;
 
+[TestFixture]
 public class MobControllerTests
 {
-    [Fact]
+    [Test]
     public void IsMob_WithValidString_ReturnTrue()
     {
-        Assert.True(MobController.IsMob("@MOB_SOME_MOB"));
+        MobController.IsMob("@MOB_SOME_MOB").Should().BeTrue();
     }
 
-    [Fact]
+    [Test]
     public void IsMob_WithInvalidString_ReturnFalse()
     {
-        Assert.False(MobController.IsMob("@MOOB_SOME_MOB"));
+        MobController.IsMob("@MOOB_SOME_MOB").Should().BeFalse();
     }
 }
