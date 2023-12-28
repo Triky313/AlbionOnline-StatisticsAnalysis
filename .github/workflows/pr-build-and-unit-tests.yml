@@ -35,7 +35,7 @@ jobs:
       run: dotnet restore src\StatisticsAnalysisTool
       
     - name: 🛠 dotnet build
-      run: dotnet build src\StatisticsAnalysisTool
+      run: dotnet build src\StatisticsAnalysisTool --no-restore
 
     - name: 🧪 Execute unit tests (Only debug)
       if: ${{ matrix.configuration == 'Debug' }}
