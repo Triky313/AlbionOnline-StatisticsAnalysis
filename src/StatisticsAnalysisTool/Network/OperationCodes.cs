@@ -118,7 +118,6 @@ public enum OperationCodes
     GetAttackInfo,
     GetTerritorySeasonPoints,
     GetAttackSchedule,
-    ScheduleAttack,
     GetMatches,
     GetMatchDetails,
     JoinMatch,
@@ -139,7 +138,7 @@ public enum OperationCodes
     GetServerInfo,
     SubscribeToCluster,
     AnswerMercenaryInvitation,
-    GetCharacterEquipment = 137,
+    GetCharacterEquipment = 136,
     GetCharacterSteamAchievements,
     GetCharacterStats,
     GetKillHistoryDetails,
@@ -156,7 +155,7 @@ public enum OperationCodes
     GetCrystalLeagueDailySeasonPoints,
     GetChestLogs,
     GetAccessRightLogs,
-    GetGuildAccountLogs = 154,
+    GetGuildAccountLogs = 153,
     GetGuildAccountLogsLargeAmount,
     InviteToPlayerTrade,
     PlayerTradeCancel,
@@ -171,10 +170,10 @@ public enum OperationCodes
     ClaimRealEstate,
     GiveUpRealEstate,
     ChangeRealEstateOutline,
-    GetMailInfos = 169, // map[0:- 2:0 3:[MAIL_ID, MAIL_ID] 4:- 5:- 6:[CLUSTER_ID or UserName] 7:[3 3] 8:[3 3] 9:[true true]
+    GetMailInfos = 168, // map[0:- 2:0 3:[MAIL_ID, MAIL_ID] 4:- 5:- 6:[CLUSTER_ID or UserName] 7:[3 3] 8:[3 3] 9:[true true]
     // 10:[MARKETPLACE_BUYORDER_FINISHED_SUMMARY MARKETPLACE_SELLORDER_FINISHED_SUMMARY] 11:[637852747555964630 637852641241345990] 12:[false false]]
     GetMailCount,
-    ReadMail = 171, //  map[0: MailId 1:QUANTITY|UNIQUE_ITEM_NAME(T4_ARMOR_CLOTH_SET3)|TOTAL_PRICE|UNIT_PRICE 2:[] 3:[] 4:[] 5:[] 6:[] 253:170]
+    ReadMail = 170, //  map[0: MailId 1:QUANTITY|UNIQUE_ITEM_NAME(T4_ARMOR_CLOTH_SET3)|TOTAL_PRICE|UNIT_PRICE 2:[] 3:[] 4:[] 5:[] 6:[] 253:170]
     SendNewMail,
     DeleteMail,
     MarkMailUnread,
@@ -255,7 +254,7 @@ public enum OperationCodes
     TreasureChestUsingStart,
     TreasureChestUsingCancel,
     UseLootChest, // <- LootLogger: https://github.com/EmeraldKnight79/AO-DU-LootLogger/blob/b1ab099e0d82bdee0a87c153f4bbae324295656e/LootLogger/PacketHandler.cs#L68
-    UseShrine = 252,
+    UseShrine = 251,
     UseHellgateShrine,
     LaborerStartJob,
     LaborerTakeJobLoot,
@@ -301,7 +300,7 @@ public enum OperationCodes
     UsePortalEntrance,
     ResetPortalBinding,
     QueryPortalBinding,
-    ClaimPaymentTransaction = 298,
+    ClaimPaymentTransaction = 297,
     ChangeUseFlag,
     ClientPerformanceStats,
     ExtendedHardwareStats, //  map[0:NVIDIA GeForce RTX 3090 1:AMD Ryzen 7 2700X Eight-Core Processor  2:Windows 10  (10.0.0) 64bit 3:3693 4:24348 5:16293 6:DE-DE 7:Custom 8:1746 10:-1 253:303]
@@ -319,15 +318,15 @@ public enum OperationCodes
     SetAchievementsAutoLearn,
     DepositItemToGuildCurrency,
     WithdrawalItemFromGuildCurrency,
-    AuctionSellSpecificItemRequest = 316,
-    FishingStart = 317, // 0: EventId, 2: Used fishing rod
+    AuctionSellSpecificItemRequest = 315,
+    FishingStart = 316, // 0: EventId, 2: Used fishing rod
     FishingCasting,
     FishingCast,
     FishingCatch,
     FishingPull,
     FishingGiveLine,
-    FishingFinish = 323, // Request: 1: true is finished | false is failed - Response: Fishing finished
-    FishingCancel = 324, // Request: Fishing canceled
+    FishingFinish = 322, // Request: 1: true is finished | false is failed - Response: Fishing finished
+    FishingCancel = 323, // Request: Fishing canceled
     CreateGuildAccessTag,
     DeleteGuildAccessTag,
     RenameGuildAccessTag,
@@ -450,9 +449,8 @@ public enum OperationCodes
     GetPvpChallengeData,
     ClaimPvpChallengeWeeklyReward,
     GetPersonalMightStats,
-    GetGvgSeasonGuildParticipationTime,
-    AuctionGetLoadoutOffers = 448,
-    AuctionBuyLoadoutOffer = 449,
+    AuctionGetLoadoutOffers = 446,
+    AuctionBuyLoadoutOffer = 447,
     AccountDeletionRequest,
     AccountReactivationRequest,
     GetModerationEscalationDefiniton,
