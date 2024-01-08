@@ -21,7 +21,7 @@ A tool to easily read auction house data with a loot logger, damage meter, dunge
 
 ### Prerequisites & Installation
 - You need **Windows 10** or higher
-- Install **.NET 7.0 Desktop Runtime** (v7.0.9 or higher) [here](https://dotnet.microsoft.com/en-us/download/dotnet/thank-you/runtime-desktop-7.0.9-windows-x64-installer) (To start the tool)
+- Install **.NET 8.0 Desktop Runtime** (v8.0.0 or higher) [here](https://dotnet.microsoft.com/en-us/download/dotnet/thank-you/runtime-desktop-8.0.0-windows-x64-installer) (To start the tool)
 
 **Download the Statistics Analysis Tool**
 - [**DOWNLOAD**](https://github.com/Triky313/AlbionOnline-StatisticsAnalysis/releases/download/v7.1.0/StatisticsAnalysis-AlbionOnline-v7.1.0-x64.zip)
