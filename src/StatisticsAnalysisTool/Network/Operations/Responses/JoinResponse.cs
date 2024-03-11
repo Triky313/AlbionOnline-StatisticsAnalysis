@@ -101,33 +101,33 @@ public class JoinResponse
                 ReSpecPoints = FixPoint.FromInternalValue(reSpecArray[1]);
             }
 
-            if (parameters.ContainsKey(52))
+            if (parameters.ContainsKey(53))
             {
-                InteractGuid = parameters[52].ObjectToGuid();
+                InteractGuid = parameters[53].ObjectToGuid();
                 ConsoleManager.WriteLineForMessage(MethodBase.GetCurrentMethod()?.DeclaringType, $"Local interact object Guid: {InteractGuid}", ConsoleColorType.EventMapChangeColor);
             }
 
-            if (parameters.ContainsKey(56))
+            if (parameters.ContainsKey(57))
             {
-                GuildName = string.IsNullOrEmpty(parameters[56].ToString()) ? string.Empty : parameters[56].ToString();
+                GuildName = string.IsNullOrEmpty(parameters[57].ToString()) ? string.Empty : parameters[57].ToString();
             }
 
-            if (parameters.ContainsKey(63))
+            if (parameters.ContainsKey(64))
             {
-                MainMapIndex = string.IsNullOrEmpty(parameters[63].ToString()) ? string.Empty : parameters[63].ToString();
+                MainMapIndex = string.IsNullOrEmpty(parameters[64].ToString()) ? string.Empty : parameters[64].ToString();
             }
 
             // Temporarily removed until value is found
             PlayTimeInSeconds = 0;
 
-            if (parameters.ContainsKey(76))
+            if (parameters.ContainsKey(77))
             {
-                AllianceName = string.IsNullOrEmpty(parameters[76].ToString()) ? string.Empty : parameters[76].ToString();
+                AllianceName = string.IsNullOrEmpty(parameters[77].ToString()) ? string.Empty : parameters[77].ToString();
             }
 
-            if (parameters.ContainsKey(93))
+            if (parameters.ContainsKey(94))
             {
-                IsReSpecActive = parameters[93].ObjectToBool();
+                IsReSpecActive = parameters[94].ObjectToBool();
             }
         }
         catch (Exception e)

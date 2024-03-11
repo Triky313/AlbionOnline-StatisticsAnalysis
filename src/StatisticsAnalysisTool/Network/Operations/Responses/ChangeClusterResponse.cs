@@ -6,7 +6,6 @@ using StatisticsAnalysisTool.GameFileData;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using StatisticsAnalysisTool.Dungeon;
 
 namespace StatisticsAnalysisTool.Network.Operations.Responses;
 
