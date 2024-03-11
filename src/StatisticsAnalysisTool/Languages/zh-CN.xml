@@ -485,7 +485,7 @@
 	<translation name="TRACKING_IS_ACTIVE">正在进行追踪</translation>
 	<translation name="TRACKING_IS_PARTIALLY_ACTIVE">追踪功能受限（请切换地图！）</translation>
 	<translation name="TRACKING_IS_NOT_ACTIVE">未进行追踪</translation>
-	<translation name="PROGRAM_RESTART_REQUIRED">需要重新启动程序</translation>
+	<translation name="RESTART_REQUIRED">需要重启</translation>
 	<translation name="DASHBOARD">数据总览</translation>
 	<translation name="MIGHT">力量点</translation>
 	<translation name="FAVOR">恩惠</translation>
