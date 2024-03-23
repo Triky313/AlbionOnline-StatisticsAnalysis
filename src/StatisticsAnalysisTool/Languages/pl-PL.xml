@@ -662,10 +662,10 @@
 	<translation name="NAVIGATION_TAB_VISIBILITY">Dostosowanie zakładek</translation>
 	<translation name="SERVER">Serwer</translation>
 	<translation name="UNKNOWN_SERVER">Nieznany serwer</translation>
-	<translation name="WEST_SERVER">Serwer Zachodni</translation>
-	<translation name="EAST_SERVER">Serwer Wschodni</translation>
-	<translation name="ALBION_DATA_PROJECT_BASE_URL_WEST">Baza danych projektu Albion URL Zachód</translation>
-	<translation name="ALBION_DATA_PROJECT_BASE_URL_EAST">Baza danych projektu Albion URL Wschód</translation>
+	<translation name="WEST_SERVER">Serwer Americas</translation>
+	<translation name="EAST_SERVER">Serwer Asia</translation>
+	<translation name="ALBION_DATA_PROJECT_BASE_URL_WEST">Baza danych projektu Albion URL Americas</translation>
+	<translation name="ALBION_DATA_PROJECT_BASE_URL_EAST">Baza danych projektu Albion URL Asia</translation>
 	<translation name="DELETE_ALL_SNAPSHOTS">Usuń wszystkie zrzuty ekranu</translation>
 	<translation name="SURE_YOU_WANT_TO_DELETE_ALL_SNAPSHOTS">Czy na pewno chcesz usunąć wszystkie zrzuty ekranu?</translation>
 	<translation name="LOGGING_DESCRIPTION_1">Jeśli śledzone są błędne elementy, może to być spowodowane nieaktualnymi listami elementów. Ich adresy URL można dostosować w ustawieniach.</translation>
