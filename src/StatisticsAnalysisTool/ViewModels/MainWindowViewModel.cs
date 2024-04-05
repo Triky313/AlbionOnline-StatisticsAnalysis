@@ -330,6 +330,7 @@ public class MainWindowViewModel : BaseViewModel
         {
             ServerLocation.East => LanguageController.Translation("EAST_SERVER"),
             ServerLocation.West => LanguageController.Translation("WEST_SERVER"),
+            ServerLocation.Europe => LanguageController.Translation("EUROPE_SERVER"),
             _ => LanguageController.Translation("UNKNOWN_SERVER")
         };
     }

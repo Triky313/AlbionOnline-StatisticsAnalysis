@@ -12,7 +12,7 @@ public class SettingsObject
 {
     public string CurrentCultureIetfLanguageTag { get; set; }
     public int RefreshRate { get; set; } = 10000;
-    public string PacketFilter { get; set; } = "(host 5.45.187 or host 5.188.125) and udp port 5056";
+    public string PacketFilter { get; set; } = "(host 5.45.187 or host 5.188.125 or 193.169.238) and udp port 5056";
     public PacketProviderKind PacketProvider { get; set; } = PacketProviderKind.Sockets;
     public ServerLocation ServerLocation { get; set; } = 0; // 0: auto, 1: west, 2: east
     public ServerType ServerType { get; set; } = ServerType.Live; // 0: Live, 1: Staging, 2: Playground
@@ -24,8 +24,10 @@ public class SettingsObject
     public string SelectedAlertSound { get; set; }
     public string AlbionDataProjectBaseUrlWest { get; set; } = "https://albion-online-data.com/api/v2/";
     public string AlbionDataProjectBaseUrlEast { get; set; } = "https://east.albion-online-data.com/api/v2/";
+    public string AlbionDataProjectBaseUrlEurope { get; set; } = "https://europe.albion-online-data.com/api/v2/";
     public string AlbionOnlineApiBaseUrlWest { get; set; } = "https://gameinfo.albiononline.com";
     public string AlbionOnlineApiBaseUrlEast { get; set; } = "https://gameinfo-sgp.albiononline.com";
+    public string AlbionOnlineApiBaseUrlEurope { get; set; } = ""; // TODO: URL still unknown
     public double MainWindowHeight { get; set; } = 100;
     public double MainWindowWidth { get; set; } = 100;
     public double MainWindowLeftPosition { get; set; } = 0;

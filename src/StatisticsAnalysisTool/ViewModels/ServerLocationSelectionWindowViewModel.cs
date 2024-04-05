@@ -30,6 +30,11 @@ public class ServerLocationSelectionWindowViewModel : BaseViewModel
             {
                 Name = LanguageController.Translation("EAST_SERVER"),
                 ServerLocation = ServerLocation.East
+            },
+            new ()
+            {
+                Name = LanguageController.Translation("EUROPE_SERVER"),
+                ServerLocation = ServerLocation.Europe
             }
         };
 
