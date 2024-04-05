@@ -662,10 +662,12 @@
 	<translation name="NAVIGATION_TAB_VISIBILITY">Navigation tab visibility</translation>
 	<translation name="SERVER">Server</translation>
 	<translation name="UNKNOWN_SERVER">Unknown Server</translation>
-	<translation name="WEST_SERVER">West Server</translation>
-	<translation name="EAST_SERVER">East Server</translation>
+	<translation name="WEST_SERVER">Americas Server</translation>
+	<translation name="EAST_SERVER">Asia Server</translation>
+	<translation name="EUROPE_SERVER">Europe Server</translation>
 	<translation name="ALBION_DATA_PROJECT_BASE_URL_WEST">Albion data project base url WEST</translation>
 	<translation name="ALBION_DATA_PROJECT_BASE_URL_EAST">Albion data project base url EAST</translation>
+	<translation name="ALBION_DATA_PROJECT_BASE_URL_EUROPE">Albion data project base url EUROPE</translation>
 	<translation name="DELETE_ALL_SNAPSHOTS">Delete all snapshots</translation>
 	<translation name="SURE_YOU_WANT_TO_DELETE_ALL_SNAPSHOTS">Are you sure you want to delete all snapshots?</translation>
 	<translation name="LOGGING_DESCRIPTION_1">If incorrect items are tracked, it may be because the item lists are not up to date. The URLs for this can be adjusted in the settings.</translation>

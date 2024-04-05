@@ -52,7 +52,8 @@ public partial class App
         }
 
         if (SettingsController.CurrentSettings.ServerLocation != ServerLocation.West
-            && SettingsController.CurrentSettings.ServerLocation != ServerLocation.East)
+            && SettingsController.CurrentSettings.ServerLocation != ServerLocation.East
+            && SettingsController.CurrentSettings.ServerLocation != ServerLocation.Europe)
         {
             Server.SetServerLocationWithDialogAsync();
         }
