@@ -662,8 +662,8 @@
 	<translation name="NAVIGATION_TAB_VISIBILITY">Dostosowanie zakładek</translation>
 	<translation name="SERVER">Serwer</translation>
 	<translation name="UNKNOWN_SERVER">Nieznany serwer</translation>
-	<translation name="WEST_SERVER">Americas Server</translation>
-	<translation name="EAST_SERVER">Asia Server</translation>
+	<translation name="AMERICA_SERVER">Americas Server</translation>
+	<translation name="ASIA_SERVER">Asia Server</translation>
 	<translation name="EUROPE_SERVER">Europe Server</translation>
 	<translation name="ALBION_DATA_PROJECT_BASE_URL_WEST">Baza danych projektu Albion URL Americas</translation>
 	<translation name="ALBION_DATA_PROJECT_BASE_URL_EAST">Baza danych projektu Albion URL Asia</translation>
