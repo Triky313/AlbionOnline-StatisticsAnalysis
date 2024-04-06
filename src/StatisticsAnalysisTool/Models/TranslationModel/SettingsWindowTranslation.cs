@@ -34,8 +34,8 @@ public class SettingsWindowTranslation
     public static string CharacterNameToTrack => LanguageController.Translation("CHARACTER_NAME_TO_TRACK");
     public static string NavigationTabVisibility => LanguageController.Translation("NAVIGATION_TAB_VISIBILITY");
     public static string Automatically => LanguageController.Translation("AUTOMATICALLY");
-    public static string WestServer => LanguageController.Translation("WEST_SERVER");
-    public static string EastServer => LanguageController.Translation("EAST_SERVER");
+    public static string WestServer => LanguageController.Translation("AMERICA_SERVER");
+    public static string EastServer => LanguageController.Translation("ASIA_SERVER");
     public static string EuropeServer => LanguageController.Translation("EUROPE_SERVER");
     public static string Activated => LanguageController.Translation("ACTIVATED");
     public static string Disabled => LanguageController.Translation("DISABLED");

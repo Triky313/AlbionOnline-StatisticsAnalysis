@@ -702,8 +702,8 @@
 	<translation name="NAVIGATION_TAB_VISIBILITY">設定顯示的統計標籤</translation>
 	<translation name="SERVER">伺服器</translation>
 	<translation name="UNKNOWN_SERVER">未知伺服器</translation>
-	<translation name="WEST_SERVER">西方伺服器</translation>
-	<translation name="EAST_SERVER">東方伺服器</translation>
+	<translation name="AMERICA_SERVER">西方伺服器</translation>
+	<translation name="ASIA_SERVER">東方伺服器</translation>
 	<translation name="ALBION_DATA_PROJECT_BASE_URL_WEST">Albion Data Project 網址(西方)</translation>
 	<translation name="ALBION_DATA_PROJECT_BASE_URL_EAST">Albion Data Project 網址(東方)</translation>
 	<translation name="DELETE_ALL_SNAPSHOTS">刪除所有快照</translation>

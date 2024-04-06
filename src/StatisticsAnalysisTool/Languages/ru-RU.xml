@@ -662,8 +662,8 @@
 	<translation name="NAVIGATION_TAB_VISIBILITY">Выбор отображаемых вкладок</translation>
 	<translation name="SERVER">Сервер</translation>
 	<translation name="UNKNOWN_SERVER">Неизвестный сервер</translation>
-	<translation name="WEST_SERVER">Западный Альбион</translation>
-	<translation name="EAST_SERVER">Восточный Альбион</translation>
+	<translation name="AMERICA_SERVER">Западный Альбион</translation>
+	<translation name="ASIA_SERVER">Восточный Альбион</translation>
 	<translation name="ALBION_DATA_PROJECT_BASE_URL_WEST">Ссылка на Albion data project WEST</translation>
 	<translation name="ALBION_DATA_PROJECT_BASE_URL_EAST">Ссылка на Albion data project EAST</translation>
 	<translation name="DELETE_ALL_SNAPSHOTS">Удалить все скриншоты</translation>

@@ -23,13 +23,13 @@ public class ServerLocationSelectionWindowViewModel : BaseViewModel
         {
             new ()
             {
-                Name = LanguageController.Translation("WEST_SERVER"),
-                ServerLocation = ServerLocation.West
+                Name = LanguageController.Translation("AMERICA_SERVER"),
+                ServerLocation = ServerLocation.America
             },
             new ()
             {
-                Name = LanguageController.Translation("EAST_SERVER"),
-                ServerLocation = ServerLocation.East
+                Name = LanguageController.Translation("ASIA_SERVER"),
+                ServerLocation = ServerLocation.Asia
             },
             new ()
             {

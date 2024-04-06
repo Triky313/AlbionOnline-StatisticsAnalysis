@@ -678,8 +678,8 @@
 	<translation name="NAVIGATION_TAB_VISIBILITY">Visibilité de l'onglet de navigation</translation>
 	<translation name="SERVER">Serveur</translation>
 	<translation name="UNKNOWN_SERVER">Serveur inconnu</translation>
-	<translation name="WEST_SERVER">Server Ouest</translation>
-	<translation name="EAST_SERVER">Server Est</translation>
+	<translation name="AMERICA_SERVER">Server Ouest</translation>
+	<translation name="ASIA_SERVER">Server Est</translation>
 	<translation name="ALBION_DATA_PROJECT_BASE_URL_WEST">URL du projet de données Albion OUEST</translation>
 	<translation name="ALBION_DATA_PROJECT_BASE_URL_EAST">URL du projet de données Albion EST</translation>
 	<translation name="DELETE_ALL_SNAPSHOTS">Supprimer toutes les sauvegardes</translation>

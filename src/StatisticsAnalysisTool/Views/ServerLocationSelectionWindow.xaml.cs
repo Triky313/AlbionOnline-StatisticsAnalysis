@@ -35,7 +35,7 @@ public partial class ServerLocationSelectionWindow
 
     private void BtnConfirm_Click(object sender, RoutedEventArgs e)
     {
-        if (_serverLocationSelectionWindowViewModel.SelectedServerLocation.ServerLocation is not (ServerLocation.West or ServerLocation.East or ServerLocation.Europe))
+        if (_serverLocationSelectionWindowViewModel.SelectedServerLocation.ServerLocation is not (ServerLocation.America or ServerLocation.Asia or ServerLocation.Europe))
         {
             return;
         }

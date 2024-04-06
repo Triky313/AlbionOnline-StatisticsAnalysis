@@ -705,8 +705,8 @@
 	<translation name="NAVIGATION_TAB_VISIBILITY">Visibilidad de las pestaña de navegación</translation>
     <translation name="SERVER">Servidor</translation>
     <translation name="UNKNOWN_SERVER">Servidor desonocido</translation>
-    <translation name="WEST_SERVER">Servidor Oeste</translation>
-    <translation name="EAST_SERVER">Servidor Este</translation>
+    <translation name="AMERICA_SERVER">Servidor Oeste</translation>
+    <translation name="ASIA_SERVER">Servidor Este</translation>
 	<translation name="ALBION_DATA_PROJECT_BASE_URL_WEST">URL base de Albion Data Project OESTE</translation>
     <translation name="ALBION_DATA_PROJECT_BASE_URL_EAST">URL base de Albion Data Project ESTE</translation>
 	<translation name="DELETE_ALL_SNAPSHOTS">Eliminar todas las capturas</translation>

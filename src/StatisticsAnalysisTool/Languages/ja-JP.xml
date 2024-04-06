@@ -712,8 +712,8 @@
 	<translation name="NAVIGATION_TAB_VISIBILITY">ナビゲーションタブの表示/非表示</translation>
 	<translation name="SERVER">サーバー</translation>
 	<translation name="UNKNOWN_SERVER">不明なサーバー</translation>
-	<translation name="WEST_SERVER">西サーバー(Albion West)</translation>
-	<translation name="EAST_SERVER">東サーバー(Albion East)</translation>
+	<translation name="AMERICA_SERVER">西サーバー(Albion West)</translation>
+	<translation name="ASIA_SERVER">東サーバー(Albion East)</translation>
 	<translation name="ALBION_DATA_PROJECT_BASE_URL_WEST">アルビオン データ プロジェクト ベース URL WEST</translation>
 	<translation name="ALBION_DATA_PROJECT_BASE_URL_EAST">アルビオン データ プロジェクト ベース URL EAST</translation>
 	<translation name="DELETE_ALL_SNAPSHOTS">すべてのスナップショットを削除する</translation>
