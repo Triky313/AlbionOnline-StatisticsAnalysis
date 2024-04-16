@@ -558,8 +558,9 @@ public static class ApiController
     {
         return SettingsController.CurrentSettings.ServerLocation switch
         {
-            ServerLocation.West => SettingsController.CurrentSettings.AlbionDataProjectBaseUrlWest,
-            ServerLocation.East => SettingsController.CurrentSettings.AlbionDataProjectBaseUrlEast,
+            ServerLocation.America => SettingsController.CurrentSettings.AlbionDataProjectBaseUrlWest,
+            ServerLocation.Asia => SettingsController.CurrentSettings.AlbionDataProjectBaseUrlEast,
+            ServerLocation.Europe => SettingsController.CurrentSettings.AlbionDataProjectBaseUrlEurope,
             _ => SettingsController.CurrentSettings.AlbionDataProjectBaseUrlWest
         };
     }
@@ -568,8 +569,9 @@ public static class ApiController
     {
         return SettingsController.CurrentSettings.ServerLocation switch
         {
-            ServerLocation.West => SettingsController.CurrentSettings.AlbionOnlineApiBaseUrlWest,
-            ServerLocation.East => SettingsController.CurrentSettings.AlbionOnlineApiBaseUrlEast,
+            ServerLocation.America => SettingsController.CurrentSettings.AlbionOnlineApiBaseUrlWest,
+            ServerLocation.Asia => SettingsController.CurrentSettings.AlbionOnlineApiBaseUrlEast,
+            ServerLocation.Europe => SettingsController.CurrentSettings.AlbionOnlineApiBaseUrlEurope,
             _ => SettingsController.CurrentSettings.AlbionOnlineApiBaseUrlWest
         };
     }

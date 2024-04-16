@@ -662,8 +662,8 @@
 	<translation name="NAVIGATION_TAB_VISIBILITY">Visibilidade da guia de navegação</translation>
 	<translation name="SERVER">Servidor</translation>
 	<translation name="UNKNOWN_SERVER">Servidor desconhecido</translation>
-	<translation name="WEST_SERVER">Servidor West</translation>
-	<translation name="EAST_SERVER">Servidor East</translation>
+	<translation name="AMERICA_SERVER">Servidor West</translation>
+	<translation name="ASIA_SERVER">Servidor East</translation>
 	<translation name="ALBION_DATA_PROJECT_BASE_URL_WEST">URL da base do projeto de dados Albion WEST</translation>
 	<translation name="ALBION_DATA_PROJECT_BASE_URL_EAST">URL da base do projeto de dados Albion EAST</translation>
 	<translation name="DELETE_ALL_SNAPSHOTS">Excluir todos os instantâneos</translation>

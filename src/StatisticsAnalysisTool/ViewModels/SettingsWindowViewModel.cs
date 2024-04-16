@@ -35,6 +35,7 @@ public class SettingsWindowViewModel : BaseViewModel
     private SettingsWindowTranslation _translation;
     private string _albionDataProjectBaseUrlWest;
     private string _albionDataProjectBaseUrlEast;
+    private string _albionDataProjectBaseUrlEurope;
     private ObservableCollection<SettingDataInformation> _backupIntervalByDays = new();
     private ObservableCollection<SettingDataInformation> _maximumNumberOfBackups = new();
     private bool _isSuggestPreReleaseUpdatesActive;
@@ -88,6 +89,7 @@ public class SettingsWindowViewModel : BaseViewModel
         // Api urls
         AlbionDataProjectBaseUrlWest = SettingsController.CurrentSettings.AlbionDataProjectBaseUrlWest;
         AlbionDataProjectBaseUrlEast = SettingsController.CurrentSettings.AlbionDataProjectBaseUrlEast;
+        AlbionDataProjectBaseUrlEurope = SettingsController.CurrentSettings.AlbionDataProjectBaseUrlEurope;
 
         // Auto update
         IsSuggestPreReleaseUpdatesActive = SettingsController.CurrentSettings.IsSuggestPreReleaseUpdatesActive;
@@ -193,7 +195,7 @@ public class SettingsWindowViewModel : BaseViewModel
 
     public void ResetPacketFilter()
     {
-        const string defaultFilter = "(host 5.45.187 or host 5.188.125) and udp port 5056";
+        const string defaultFilter = "(host 5.45.187 or host 5.188.125 or 193.169.238) and udp port 5056";
 
         if (PacketFilter == defaultFilter)
         {
@@ -431,6 +433,7 @@ public class SettingsWindowViewModel : BaseViewModel
         Server.Clear();
         Server.Add(new SettingDataInformation { Name = SettingsWindowTranslation.WestServer, Value = 1 });
         Server.Add(new SettingDataInformation { Name = SettingsWindowTranslation.EastServer, Value = 2 });
+        Server.Add(new SettingDataInformation { Name = SettingsWindowTranslation.EuropeServer, Value = 3 });
         ServerSelection = Server.FirstOrDefault(x => x.Value == (int) SettingsController.CurrentSettings.ServerLocation);
     }
 
@@ -729,6 +732,16 @@ public class SettingsWindowViewModel : BaseViewModel
         set
         {
             _albionDataProjectBaseUrlEast = value;
+            OnPropertyChanged();
+        }
+    }
+    
+    public string AlbionDataProjectBaseUrlEurope
+    {
+        get => _albionDataProjectBaseUrlEurope;
+        set
+        {
+            _albionDataProjectBaseUrlEurope = value;
             OnPropertyChanged();
         }
     }

@@ -5,6 +5,7 @@ using System.Reflection;
 using System.Threading.Tasks;
 using System.Windows.Media.Imaging;
 using Serilog;
+using System.Collections.Generic;
 
 namespace StatisticsAnalysisTool.Common;
 
@@ -13,6 +14,7 @@ internal static class ImageController
     private static readonly string ItemImagesDirectory = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, Settings.Default.ImageResources);
     private static readonly string SpellImagesDirectory = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, Settings.Default.SpellImageResources);
 
+    private static Dictionary<string, BitmapImage> downloading = new();
     #region Item image
 
     public static BitmapImage GetItemImage(string uniqueName = null, int pixelHeight = 100, int pixelWidth = 100, bool freeze = false)
@@ -20,7 +22,7 @@ internal static class ImageController
         string defaultImagePath = @"pack://application:,,,/" + Assembly.GetExecutingAssembly().GetName().Name + ";component/" + "Resources/Trash.png";
         try
         {
-            if (string.IsNullOrEmpty(uniqueName))
+            if (string.IsNullOrEmpty(uniqueName) || downloading.ContainsKey(uniqueName))
             {
                 return CreateBitmapImage(defaultImagePath);
             }
@@ -33,8 +35,9 @@ internal static class ImageController
             }
             else
             {
-                var image = SetImage($"https://render.albiononline.com/v1/item/{uniqueName}", pixelHeight, pixelWidth, freeze);
-                SaveImageLocal(image, localFilePath, ItemImagesDirectory);
+
+                var image = SetImage($"https://render.albiononline.com/v1/item/{uniqueName}", uniqueName, pixelHeight, pixelWidth, freeze);
+                SaveImageLocal(image, uniqueName, localFilePath, ItemImagesDirectory);
                 return image;
             }
         }
@@ -48,7 +51,7 @@ internal static class ImageController
     {
         return new BitmapImage(new Uri(path, UriKind.Absolute));
     }
-    
+
     public static async Task<int> LocalImagesCounterAsync()
     {
         return await Task.Run(() =>
@@ -86,8 +89,8 @@ internal static class ImageController
             }
             else
             {
-                image = SetImage($"https://render.albiononline.com/v1/spell/{uniqueName}", pixelHeight, pixelWidth, freeze);
-                SaveImageLocal(image, localFilePath, SpellImagesDirectory);
+                image = SetImage($"https://render.albiononline.com/v1/spell/{uniqueName}", uniqueName, pixelHeight, pixelWidth, freeze);
+                SaveImageLocal(image, uniqueName, localFilePath, SpellImagesDirectory);
             }
 
             return image;
@@ -128,7 +131,7 @@ internal static class ImageController
         }
     }
 
-    private static void SaveImageLocal(BitmapSource image, string localFilePath, string localDirectory)
+    private static void SaveImageLocal(BitmapSource image, string uniqueName, string localFilePath, string localDirectory)
     {
         if (!DirectoryController.CreateDirectoryWhenNotExists(localDirectory) && !Directory.Exists(localDirectory))
         {
@@ -137,14 +140,16 @@ internal static class ImageController
 
         image.DownloadCompleted += (sender, _) =>
         {
+
             var encoder = new PngBitmapEncoder();
             encoder.Frames.Add(BitmapFrame.Create(((BitmapImage) sender)!));
             using var fileStream = new FileStream(localFilePath, FileMode.Create);
             encoder.Save(fileStream);
+            downloading.Remove(uniqueName);
         };
     }
 
-    private static BitmapImage SetImage(string webPath, int pixelHeight, int pixelWidth, bool freeze)
+    private static BitmapImage SetImage(string webPath, string uniqueName, int pixelHeight, int pixelWidth, bool freeze)
     {
         if (webPath == null)
         {
@@ -153,11 +158,12 @@ internal static class ImageController
 
         try
         {
+
             var userImage = new BitmapImage
             {
                 CacheOption = BitmapCacheOption.OnDemand
             };
-
+            downloading.Add(uniqueName, userImage);
             userImage.BeginInit();
             userImage.DecodePixelHeight = pixelHeight;
             userImage.DecodePixelWidth = pixelWidth;

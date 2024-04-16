@@ -20,6 +20,7 @@ public class SettingsWindowTranslation
     public static string CreateDesktopShortcut => LanguageController.Translation("CREATE_DESKTOP_SHORTCUT");
     public static string AlbionDataProjectBaseUrlWest => LanguageController.Translation("ALBION_DATA_PROJECT_BASE_URL_WEST");
     public static string AlbionDataProjectBaseUrlEast => LanguageController.Translation("ALBION_DATA_PROJECT_BASE_URL_EAST");
+    public static string AlbionDataProjectBaseUrlEurope => LanguageController.Translation("ALBION_DATA_PROJECT_BASE_URL_EUROPE");
     public static string GoldStatsApiUrl => LanguageController.Translation("GOLD_STATS_API_URL");
     public static string IsLootLoggerSaveReminderActive => LanguageController.Translation("IS_LOOT_LOGGER_SAVE_REMINDER_ACTIVE");
     public static string ExportLootLoggingFileWithRealItemName => LanguageController.Translation("EXPORT_LOOT_LOGGING_FILE_WITH_REAL_ITEM_NAME");
@@ -33,8 +34,9 @@ public class SettingsWindowTranslation
     public static string CharacterNameToTrack => LanguageController.Translation("CHARACTER_NAME_TO_TRACK");
     public static string NavigationTabVisibility => LanguageController.Translation("NAVIGATION_TAB_VISIBILITY");
     public static string Automatically => LanguageController.Translation("AUTOMATICALLY");
-    public static string WestServer => LanguageController.Translation("WEST_SERVER");
-    public static string EastServer => LanguageController.Translation("EAST_SERVER");
+    public static string WestServer => LanguageController.Translation("AMERICA_SERVER");
+    public static string EastServer => LanguageController.Translation("ASIA_SERVER");
+    public static string EuropeServer => LanguageController.Translation("EUROPE_SERVER");
     public static string Activated => LanguageController.Translation("ACTIVATED");
     public static string Disabled => LanguageController.Translation("DISABLED");
     public static string Notifications => LanguageController.Translation("NOTIFICATIONS");

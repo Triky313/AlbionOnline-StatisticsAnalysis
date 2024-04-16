@@ -663,8 +663,8 @@
 	<translation name="NAVIGATION_TAB_VISIBILITY">탐색 탭 표시</translation>
 	<translation name="SERVER">서버</translation>
 	<translation name="UNKNOWN_SERVER">알 수 없는 서버</translation>
-	<translation name="WEST_SERVER">서부 서버</translation>
-	<translation name="EAST_SERVER">동부 서버</translation>
+	<translation name="AMERICA_SERVER">서부 서버</translation>
+	<translation name="ASIA_SERVER">동부 서버</translation>
 	<translation name="ALBION_DATA_PROJECT_BASE_URL_WEST">알비온 데이터 프로젝트 API URL (서부)</translation>
 	<translation name="ALBION_DATA_PROJECT_BASE_URL_EAST">알비온 데이터 프로젝트 API URL (동부)</translation>
 	<translation name="DELETE_ALL_SNAPSHOTS">전체 스냅샷 삭제</translation>
