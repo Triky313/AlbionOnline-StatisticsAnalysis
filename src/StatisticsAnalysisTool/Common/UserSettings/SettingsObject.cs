@@ -27,7 +27,7 @@ public class SettingsObject
     public string AlbionDataProjectBaseUrlEurope { get; set; } = "https://europe.albion-online-data.com/api/v2/";
     public string AlbionOnlineApiBaseUrlWest { get; set; } = "https://gameinfo.albiononline.com";
     public string AlbionOnlineApiBaseUrlEast { get; set; } = "https://gameinfo-sgp.albiononline.com";
-    public string AlbionOnlineApiBaseUrlEurope { get; set; } = ""; // TODO: URL still unknown
+    public string AlbionOnlineApiBaseUrlEurope { get; set; } = "https://gameinfo-ams.albiononline.com";
     public double MainWindowHeight { get; set; } = 100;
     public double MainWindowWidth { get; set; } = 100;
     public double MainWindowLeftPosition { get; set; } = 0;
