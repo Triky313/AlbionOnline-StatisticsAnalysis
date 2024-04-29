@@ -10,11 +10,11 @@ using Serilog;
 
 namespace StatisticsAnalysisTool.Network.Operations.Responses;
 
-public class AuctionGetResponse
+public class AuctionGetRequests
 {
     public readonly List<AuctionEntry> AuctionEntries = new();
 
-    public AuctionGetResponse(Dictionary<byte, object> parameters)
+    public AuctionGetRequests(Dictionary<byte, object> parameters)
     {
         ConsoleManager.WriteLine(new ConsoleFragment(GetType().Name, parameters, ConsoleColorType.EventColor));
 
