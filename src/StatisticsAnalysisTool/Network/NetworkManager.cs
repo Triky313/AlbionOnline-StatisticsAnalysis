@@ -100,7 +100,7 @@ public class NetworkManager
         builder.AddResponseHandler(new GetMailInfosResponseHandler(trackingController));
         builder.AddResponseHandler(new ReadMailResponseHandler(trackingController));
         builder.AddResponseHandler(new AuctionGetOffersResponseHandler(trackingController));
-        builder.AddResponseHandler(new AuctionGetResponseHandler(trackingController));
+        builder.AddResponseHandler(new AuctionGetRequestsResponseHandler(trackingController));
         builder.AddResponseHandler(new GetCharacterEquipmentResponseHandler(trackingController));
         builder.AddResponseHandler(new FishingFinishResponseHandler(trackingController));
         builder.AddResponseHandler(new AuctionGetLoadoutOffersResponseHandler(trackingController));
