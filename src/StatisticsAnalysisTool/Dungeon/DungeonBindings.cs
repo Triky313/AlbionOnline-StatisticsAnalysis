@@ -301,7 +301,7 @@ public class DungeonBindings : BaseViewModel
         }
 
         bool isLevelOkay = false;
-        bool isTierOkay = false;
+        bool isTierOkay = true;
         bool isModeOkay = false;
         bool isMapTypeOkay = false;
         bool isTimestampOkay = false;
@@ -311,10 +311,11 @@ public class DungeonBindings : BaseViewModel
             isLevelOkay = true;
         }
 
-        if (IsTierOkay(obj))
-        {
-            isTierOkay = true;
-        }
+        // TODO: Tier is currently not recognized. Value must be searched for again. - Is always set to true for the time being
+        //if (IsTierOkay(obj))
+        //{
+        //    isTierOkay = true;
+        //}
 
         if (IsModeOkay(obj))
         {
