@@ -659,7 +659,7 @@
 	<translation name="REPAIR_COSTS_LAST_7_DAYS">Costes de reparación los últimos 7 días</translation>
 	<translation name="REPAIR_COSTS_LAST_30_DAYS">Costes de reparación los últimos 30 días</translation>
 	<translation name="RESET_BEFORE_COMBAT">Reiniciar antes de combate</translation>
-	<translation name="NON_PARTY_TRACKING">Incluir a miembros no partidistas</translation>
+	<translation name="NON_PARTY_TRACKING">A los que no son miembros del partido</translation>
 	<translation name="SEARCHED_PLAYER">Jugador buscado</translation>
 	<translation name="LOCAL_PLAYER">Jugador local</translation>
 	<translation name="THANKS">Agradecimientos</translation>
