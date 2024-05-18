@@ -20,6 +20,7 @@ public class MainWindowTranslation
     public static string MakeSureYouHaveInstalledNpcap => LanguageController.Translation("MAKE_SURE_YOU_HAVE_INSTALLED_NPCAP");
     public static string MapChangeReset => LanguageController.Translation("MAP_CHANGE_RESET");
     public static string ResetBeforeCombat => LanguageController.Translation("RESET_BEFORE_COMBAT");
+    public static string NonPartyTracking => LanguageController.Translation("NON_PARTY_TRACKING");
     public static string SnapshotAfterMapChange => LanguageController.Translation("SNAPSHOT_AFTER_MAP_CHANGE");
     public static string TotalFame => LanguageController.Translation("TOTAL_FAME");
     public static string TotalSilver => LanguageController.Translation("TOTAL_SILVER");

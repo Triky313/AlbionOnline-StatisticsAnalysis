@@ -63,6 +63,7 @@ public class SettingsObject
     public bool IsSnapshotAfterMapChangeActive { get; set; }
     public bool IsDamageMeterResetByMapChangeActive { get; set; }
     public bool IsDamageMeterResetBeforeCombatActive { get; set; }
+    public bool IsDamageMeterNonPartyTrackingActive { get; set; }
     public double TradeMonitoringMarketTaxRate { get; set; } = 4;
     public double TradeMonitoringMarketTaxSetupRate { get; set; } = 2.5;
     public bool IsDungeonClosedSoundActive { get; set; }

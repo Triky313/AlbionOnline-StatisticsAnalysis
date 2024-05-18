@@ -620,6 +620,7 @@
 	<translation name="REPAIR_COSTS_LAST_7_DAYS">Repair costs last 7 days</translation>
 	<translation name="REPAIR_COSTS_LAST_30_DAYS">Repair costs last 30 days</translation>
 	<translation name="RESET_BEFORE_COMBAT">Reset before combat</translation>
+	<translation name="NON_PARTY_TRACKING">Include non-party members</translation>
 	<translation name="SEARCHED_PLAYER">Searched player</translation>
 	<translation name="LOCAL_PLAYER">Local player</translation>
 	<translation name="THANKS">Thanks</translation>

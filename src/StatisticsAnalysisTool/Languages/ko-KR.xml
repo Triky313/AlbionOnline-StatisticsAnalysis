@@ -621,6 +621,7 @@
 	<translation name="REPAIR_COSTS_LAST_7_DAYS">7일간 수리비</translation>
 	<translation name="REPAIR_COSTS_LAST_30_DAYS">30일간 수리비</translation>
 	<translation name="RESET_BEFORE_COMBAT">전투 전 초기화</translation>
+	<translation name="NON_PARTY_TRACKING">비당원 포함 (비당원 포함)</translation>
 	<translation name="SEARCHED_PLAYER">플레이어 찾기</translation>
 	<translation name="LOCAL_PLAYER">Local player</translation>
 	<translation name="THANKS">감사</translation>

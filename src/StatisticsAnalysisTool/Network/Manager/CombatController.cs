@@ -52,8 +52,9 @@ public class CombatController
 
         var gameObject = _trackingController?.EntityController?.GetEntity(causerId);
         var gameObjectValue = gameObject?.Value;
+        var shouldBeTracked = _trackingController.EntityController.IsEntityInParty(gameObject.Value.Key) || SettingsController.CurrentSettings.IsDamageMeterNonPartyTrackingActive;
 
-        if (gameObject?.Value is not { ObjectType: GameObjectType.Player } || !_trackingController.EntityController.IsEntityInParty(gameObject.Value.Key))
+        if (gameObject?.Value is not { ObjectType: GameObjectType.Player } || !shouldBeTracked)
         {
             return Task.CompletedTask;
         }
@@ -89,7 +90,8 @@ public class CombatController
 
         gameObjectValue.CombatStart ??= DateTime.UtcNow;
 
-        OnDamageUpdate?.Invoke(_mainWindowViewModel?.DamageMeterBindings?.DamageMeter, _trackingController.EntityController.GetAllEntitiesWithDamageOrHealAndInParty());
+        var entities = _trackingController.EntityController.GetAllEntitiesWithDamageOrHeal(!SettingsController.CurrentSettings.IsDamageMeterNonPartyTrackingActive);
+        OnDamageUpdate?.Invoke(_mainWindowViewModel?.DamageMeterBindings?.DamageMeter, entities);
         return Task.CompletedTask;
     }
 

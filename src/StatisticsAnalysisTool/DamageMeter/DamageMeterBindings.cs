@@ -31,6 +31,7 @@ public class DamageMeterBindings : BaseViewModel, IAsyncInitialization
     private bool _isSnapshotAfterMapChangeActive;
     private GridLength _gridSplitterPosition;
     private bool _isDamageMeterResetBeforeCombatActive;
+    private bool _isDamageMeterNonPartyTrackingActive;
     private bool _shortDamageMeterToClipboard;
     public Task Initialization { get; init; }
 
@@ -81,6 +82,7 @@ public class DamageMeterBindings : BaseViewModel, IAsyncInitialization
         IsSnapshotAfterMapChangeActive = SettingsController.CurrentSettings.IsSnapshotAfterMapChangeActive;
         IsDamageMeterResetByMapChangeActive = SettingsController.CurrentSettings.IsDamageMeterResetByMapChangeActive;
         IsDamageMeterResetBeforeCombatActive = SettingsController.CurrentSettings.IsDamageMeterResetBeforeCombatActive;
+        IsDamageMeterNonPartyTrackingActive = SettingsController.CurrentSettings.IsDamageMeterNonPartyTrackingActive;
         ShortDamageMeterToClipboard = SettingsController.CurrentSettings.ShortDamageMeterToClipboard;
 
         Initialization = LoadLocalFileAsync();
@@ -207,6 +209,17 @@ public class DamageMeterBindings : BaseViewModel, IAsyncInitialization
         {
             _isDamageMeterResetBeforeCombatActive = value;
             SettingsController.CurrentSettings.IsDamageMeterResetBeforeCombatActive = _isDamageMeterResetBeforeCombatActive;
+            OnPropertyChanged();
+        }
+    }
+
+    public bool IsDamageMeterNonPartyTrackingActive
+    {
+        get => _isDamageMeterNonPartyTrackingActive;
+        set
+        {
+            _isDamageMeterNonPartyTrackingActive = value;
+            SettingsController.CurrentSettings.IsDamageMeterNonPartyTrackingActive = _isDamageMeterNonPartyTrackingActive;
             OnPropertyChanged();
         }
     }

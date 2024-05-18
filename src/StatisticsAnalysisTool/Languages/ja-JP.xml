@@ -666,6 +666,7 @@
 	<translation name="REPAIR_COSTS_LAST_7_DAYS">7日間の修理費</translation>
 	<translation name="REPAIR_COSTS_LAST_30_DAYS">30日間の修理費</translation>
 	<translation name="RESET_BEFORE_COMBAT">戦闘前にリセット</translation>
+	<translation name="NON_PARTY_TRACKING">非党派メンバーを含む (ひとうはメンバーをふくむ)</translation>
 	<translation name="SEARCHED_PLAYER">検索されたプレイヤー</translation>
 	<translation name="LOCAL_PLAYER">ローカルプレイヤー</translation>
 	<translation name="THANKS">Thanks</translation>

@@ -141,11 +141,11 @@ public class EntityController
         return new List<KeyValuePair<Guid, PlayerGameObject>>(onlyInParty ? _knownEntities.ToArray().Where(x => IsEntityInParty(x.Value.Name)) : _knownEntities.ToArray());
     }
 
-    public List<KeyValuePair<Guid, PlayerGameObject>> GetAllEntitiesWithDamageOrHealAndInParty()
+    public List<KeyValuePair<Guid, PlayerGameObject>> GetAllEntitiesWithDamageOrHeal(bool onlyInParty = true)
     {
         return new List<KeyValuePair<Guid, PlayerGameObject>>(_knownEntities
             .ToArray()
-            .Where(x => (x.Value.Damage > 0 || x.Value.Heal > 0 || x.Value.Overhealed > 0) && IsEntityInParty(x.Key)));
+            .Where(x => (x.Value.Damage > 0 || x.Value.Heal > 0 || x.Value.Overhealed > 0) && (!onlyInParty || IsEntityInParty(x.Key))));
     }
 
     public bool ExistEntity(Guid guid)

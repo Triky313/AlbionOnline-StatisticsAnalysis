@@ -620,6 +620,7 @@
 	<translation name="REPAIR_COSTS_LAST_7_DAYS">一周内维修花费</translation>
 	<translation name="REPAIR_COSTS_LAST_30_DAYS">一月内维修花费</translation>
 	<translation name="RESET_BEFORE_COMBAT">进入战斗前重置</translation>
+	<translation name="NON_PARTY_TRACKING">包括非党派成员</translation>
 	<translation name="SEARCHED_PLAYER">搜索玩家</translation>
 	<translation name="LOCAL_PLAYER">本地玩家</translation>
 	<translation name="THANKS">鸣谢</translation>

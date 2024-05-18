@@ -620,6 +620,7 @@
 	<translation name="REPAIR_COSTS_LAST_7_DAYS">Os custos de reembolso duram 7 dias</translation>
 	<translation name="REPAIR_COSTS_LAST_30_DAYS">Os custos de reembolso duram 30 dias</translation>
 	<translation name="RESET_BEFORE_COMBAT">Reiniciar antes do combate</translation>
+	<translation name="NON_PARTY_TRACKING">Incluir membros não partidários</translation>
 	<translation name="SEARCHED_PLAYER">Jogador pesquisado</translation>
 	<translation name="LOCAL_PLAYER">Jogador local</translation>
 	<translation name="THANKS">Agradecimentos</translation>
