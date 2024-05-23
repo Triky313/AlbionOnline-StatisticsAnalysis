@@ -322,12 +322,10 @@ public static class ApiController
     //    }
     //}
 
-    public static async Task<List<GoldResponseModel>> GetGoldPricesFromJsonAsync(DateTime? dateTime, int count, int timeout = 300)
+    public static async Task<List<GoldResponseModel>> GetGoldPricesFromJsonAsync(int count, int timeout = 300)
     {
-        var dateString = dateTime != null ? $"{dateTime:yyyy-MM-dd'T'HH:mm:ss}" : string.Empty;
-
-        var url = Path.Combine(GetAoDataProjectServerBaseUrlByCurrentServer(), "stats/Gold/");
-        url += $"?date={dateString}&count={count}";
+        var url = Path.Combine(GetAoDataProjectServerBaseUrlByCurrentServer(), "stats/");
+        url += $"gold?count={count}";
 
         using var clientHandler = new HttpClientHandler();
         clientHandler.ServerCertificateCustomValidationCallback = (_, _, _, _) => true;
