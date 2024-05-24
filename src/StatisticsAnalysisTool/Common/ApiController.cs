@@ -8,9 +8,11 @@ using StatisticsAnalysisTool.Properties;
 using System;
 using System.Collections.Generic;
 using System.IO;
+using System.IO.Compression;
 using System.Linq;
 using System.Net;
 using System.Net.Http;
+using System.Net.Http.Headers;
 using System.Reflection;
 using System.Text.Json;
 using System.Threading.Tasks;
@@ -58,10 +60,11 @@ public static class ApiController
         using var clientHandler = new HttpClientHandler();
         clientHandler.ServerCertificateCustomValidationCallback = (_, _, _, _) => true;
         using var client = new HttpClient(clientHandler);
+        client.DefaultRequestHeaders.AcceptEncoding.Add(new StringWithQualityHeaderValue("gzip"));
+
         try
         {
             client.Timeout = TimeSpan.FromSeconds(30);
-
             ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls12 | SecurityProtocolType.Tls11 | SecurityProtocolType.Tls;
             using var response = await client.GetAsync(url);
             if (response.StatusCode == (HttpStatusCode) 429)
@@ -69,8 +72,11 @@ public static class ApiController
                 throw new TooManyRequestsException();
             }
 
-            using var content = response.Content;
-            var result = JsonSerializer.Deserialize<List<MarketResponse>>(await content.ReadAsStringAsync());
+            response.EnsureSuccessStatusCode();
+
+            Stream decompressedStream = await DecompressedStream(response);
+
+            var result = await JsonSerializer.DeserializeAsync<List<MarketResponse>>(decompressedStream);
             return MergeMarketAndPortalLocations(result);
         }
         catch (TooManyRequestsException)
@@ -107,19 +113,33 @@ public static class ApiController
         using var clientHandler = new HttpClientHandler();
         clientHandler.ServerCertificateCustomValidationCallback = (_, _, _, _) => true;
         using var client = new HttpClient(clientHandler);
+        client.DefaultRequestHeaders.AcceptEncoding.Add(new StringWithQualityHeaderValue("gzip"));
         client.Timeout = TimeSpan.FromSeconds(300);
 
         try
         {
             ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls12 | SecurityProtocolType.Tls11 | SecurityProtocolType.Tls;
             using var response = await client.GetAsync(url);
-            using var content = response.Content;
+
             if (response.StatusCode == (HttpStatusCode) 429)
             {
                 throw new TooManyRequestsException();
             }
 
-            var result = JsonSerializer.Deserialize<List<MarketHistoriesResponse>>(await content.ReadAsStringAsync());
+            response.EnsureSuccessStatusCode();
+
+            await using var responseStream = await response.Content.ReadAsStreamAsync();
+            using var memoryStream = new MemoryStream();
+            await responseStream.CopyToAsync(memoryStream);
+            memoryStream.Position = 0;
+            
+            Stream decompressedStream = memoryStream;
+            if (response.Content.Headers.ContentEncoding.Contains("gzip"))
+            {
+                decompressedStream = new GZipStream(memoryStream, CompressionMode.Decompress);
+            }
+
+            var result = await JsonSerializer.DeserializeAsync<List<MarketHistoriesResponse>>(decompressedStream);
             return MergeCityAndPortalCity(result);
         }
         catch (Exception e)
@@ -145,6 +165,7 @@ public static class ApiController
             ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls12 | SecurityProtocolType.Tls11 | SecurityProtocolType.Tls;
             using var response = await client.GetAsync(url);
             using var content = response.Content;
+
             return JsonSerializer.Deserialize<GameInfoSearchResponse>(await content.ReadAsStringAsync()) ?? gameInfoSearchResponse;
         }
         catch (JsonException ex)
@@ -174,6 +195,7 @@ public static class ApiController
             ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls12 | SecurityProtocolType.Tls11 | SecurityProtocolType.Tls;
             using var response = await client.GetAsync(url);
             using var content = response.Content;
+
             return JsonSerializer.Deserialize<GameInfoPlayersResponse>(await content.ReadAsStringAsync()) ??
                    gameInfoPlayerResponse;
         }
@@ -206,6 +228,7 @@ public static class ApiController
             ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls12 | SecurityProtocolType.Tls11 | SecurityProtocolType.Tls;
             using var response = await client.GetAsync(url);
             using var content = response.Content;
+
             return JsonSerializer.Deserialize<List<GameInfoPlayerKillsDeaths>>(await content.ReadAsStringAsync()) ?? values;
         }
         catch (Exception e)
@@ -246,6 +269,7 @@ public static class ApiController
             ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls12 | SecurityProtocolType.Tls11 | SecurityProtocolType.Tls;
             using var response = await client.GetAsync(url);
             using var content = response.Content;
+
             return JsonSerializer.Deserialize<List<GameInfoPlayerKillsDeaths>>(await content.ReadAsStringAsync()) ?? values;
         }
         catch (Exception e)
@@ -286,6 +310,7 @@ public static class ApiController
             ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls12 | SecurityProtocolType.Tls11 | SecurityProtocolType.Tls;
             using var response = await client.GetAsync(url);
             using var content = response.Content;
+
             return JsonSerializer.Deserialize<List<GameInfoPlayerKillsDeaths>>(await content.ReadAsStringAsync()) ?? values;
         }
         catch (Exception e)
@@ -322,24 +347,32 @@ public static class ApiController
     //    }
     //}
 
-    public static async Task<List<GoldResponseModel>> GetGoldPricesFromJsonAsync(DateTime? dateTime, int count, int timeout = 300)
+    public static async Task<List<GoldResponseModel>> GetGoldPricesFromJsonAsync(int count, int timeout = 300)
     {
-        var dateString = dateTime != null ? $"{dateTime:yyyy-MM-dd'T'HH:mm:ss}" : string.Empty;
-
-        var url = Path.Combine(GetAoDataProjectServerBaseUrlByCurrentServer(), "stats/Gold/");
-        url += $"?date={dateString}&count={count}";
+        var url = Path.Combine(GetAoDataProjectServerBaseUrlByCurrentServer(), "stats/");
+        url += $"gold?count={count}";
 
         using var clientHandler = new HttpClientHandler();
         clientHandler.ServerCertificateCustomValidationCallback = (_, _, _, _) => true;
         using var client = new HttpClient(clientHandler);
+        client.DefaultRequestHeaders.AcceptEncoding.Add(new StringWithQualityHeaderValue("gzip"));
         client.Timeout = TimeSpan.FromSeconds(timeout);
         try
         {
             ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls12 | SecurityProtocolType.Tls11 | SecurityProtocolType.Tls;
             using var response = await client.GetAsync(url);
-            using var content = response.Content;
-            var contentString = await content.ReadAsStringAsync();
-            return string.IsNullOrEmpty(contentString) ? new List<GoldResponseModel>() : JsonSerializer.Deserialize<List<GoldResponseModel>>(contentString);
+
+            response.EnsureSuccessStatusCode();
+
+            await using var responseStream = await response.Content.ReadAsStreamAsync();
+            Stream decompressedStream = responseStream;
+            if (response.Content.Headers.ContentEncoding.Contains("gzip"))
+            {
+                decompressedStream = new GZipStream(responseStream, CompressionMode.Decompress);
+            }
+
+            var result = await JsonSerializer.DeserializeAsync<List<GoldResponseModel>>(decompressedStream);
+            return result ?? new List<GoldResponseModel>();
         }
         catch (Exception e)
         {
@@ -371,6 +404,34 @@ public static class ApiController
             Log.Error(e, "{message}", MethodBase.GetCurrentMethod()?.DeclaringType);
             return values;
         }
+    }
+
+    //private static async Task<Stream> DecompressedStream(HttpResponseMessage response)
+    //{
+    //    await using var responseStream = await response.Content.ReadAsStreamAsync();
+    //    Stream decompressedStream = responseStream;
+    //    if (response.Content.Headers.ContentEncoding.Contains("gzip"))
+    //    {
+    //        decompressedStream = new GZipStream(responseStream, CompressionMode.Decompress);
+    //    }
+
+    //    return decompressedStream;
+    //}
+
+    private static async Task<Stream> DecompressedStream(HttpResponseMessage response)
+    {
+        var responseStream = await response.Content.ReadAsStreamAsync();
+        var memoryStream = new MemoryStream();
+        await responseStream.CopyToAsync(memoryStream);
+        memoryStream.Position = 0;
+
+        if (response.Content.Headers.ContentEncoding.Contains("gzip"))
+        {
+            return new GZipStream(memoryStream, CompressionMode.Decompress);
+        }
+
+        memoryStream.Position = 0;
+        return memoryStream;
     }
 
     #region Helper methods
