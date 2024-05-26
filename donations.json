@@ -1,5 +1,45 @@
 [ 
      {
+	"Timestamp": "2024-05-26T00:00:00",
+	"Amount": 4210000,
+	"RealMoneyAmount": 0,
+	"Contributor": "Grrawl",
+	"IsDonationRealMoney": false,
+	"Server": "EU"
+     },
+     {
+	"Timestamp": "2024-05-26T00:00:00",
+	"Amount": 1500000,
+	"RealMoneyAmount": 0,
+	"Contributor": "littlegiant",
+	"IsDonationRealMoney": false,
+	"Server": "EU"
+     },
+     {
+	"Timestamp": "2024-05-26T00:00:00",
+	"Amount": 1000000,
+	"RealMoneyAmount": 0,
+	"Contributor": "Fraxuz",
+	"IsDonationRealMoney": false,
+	"Server": "EU"
+     },
+     {
+	"Timestamp": "2024-05-26T00:00:00",
+	"Amount": 1220000,
+	"RealMoneyAmount": 0,
+	"Contributor": "ReporterNV",
+	"IsDonationRealMoney": false,
+	"Server": "EU"
+     },
+     {
+	"Timestamp": "2024-05-26T00:00:00",
+	"Amount": 1000000,
+	"RealMoneyAmount": 0,
+	"Contributor": "EthanRyu",
+	"IsDonationRealMoney": false,
+	"Server": "EU"
+     },
+     {
 	"Timestamp": "2024-04-16T00:00:00",
 	"Amount": 13400000,
 	"RealMoneyAmount": 0,
