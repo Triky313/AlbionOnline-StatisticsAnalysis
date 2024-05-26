@@ -33,7 +33,7 @@ public class DonationViewModel : BaseViewModel
 
     public void GetDonations()
     {
-        var apiResult = Task.Run(async () => await ApiController.GetDonationsFromJsonAsync()).ConfigureAwait(false);
+        var apiResult = Task.Run(ApiController.GetDonationsFromJsonAsync).ConfigureAwait(false);
         _donations = apiResult.GetAwaiter().GetResult();
     }
 
@@ -43,11 +43,11 @@ public class DonationViewModel : BaseViewModel
 
         TopDonationsAllTime = _donations?
             .Where(x => x.IsDonationRealMoney == false)
-            // ReSharper disable once ConstantConditionalAccessQualifier
-            .GroupBy(x => x?.Contributor)
+            .GroupBy(x => new { x?.Contributor, x?.Server })
             .Select(arg => new Donation
             {
-                Contributor = arg?.Key,
+                Contributor = arg?.Key?.Contributor,
+                Server = arg?.Key?.Server,
                 IsDonationRealMoney = arg?.FirstOrDefault()?.IsDonationRealMoney ?? false,
                 Timestamp = arg?.FirstOrDefault()?.Timestamp ?? new DateTime(),
                 Amount = arg?.Sum(x => x?.Amount ?? 0L) is not null ? arg.Sum(x => x?.Amount ?? 0L) : 0L
@@ -57,11 +57,11 @@ public class DonationViewModel : BaseViewModel
 
         TopDonationsThisMonth = _donations?
             .Where(x => x?.IsDonationRealMoney == false && x.Timestamp.Year == currentUtc.Year && x.Timestamp.Month == currentUtc.Month)
-            // ReSharper disable once ConstantConditionalAccessQualifier
-            .GroupBy(x => x?.Contributor)
+            .GroupBy(x => new { x?.Contributor, x?.Server })
             .Select(arg => new Donation
             {
-                Contributor = arg?.Key,
+                Contributor = arg?.Key?.Contributor,
+                Server = arg?.Key?.Server,
                 IsDonationRealMoney = arg?.FirstOrDefault()?.IsDonationRealMoney ?? false,
                 Timestamp = arg?.FirstOrDefault()?.Timestamp ?? new DateTime(),
                 Amount = arg?.Sum(x => x?.Amount ?? 0L) is not null ? arg.Sum(x => x?.Amount ?? 0L) : 0L
@@ -71,11 +71,11 @@ public class DonationViewModel : BaseViewModel
 
         TopRealMoneyDonations = _donations?
             .Where(x => x.IsDonationRealMoney)
-            // ReSharper disable once ConstantConditionalAccessQualifier
-            .GroupBy(x => x?.Contributor)
+            .GroupBy(x => new { x?.Contributor, x?.Server })
             .Select(arg => new Donation
             {
-                Contributor = arg?.Key,
+                Contributor = arg?.Key?.Contributor,
+                Server = arg?.Key?.Server,
                 IsDonationRealMoney = arg?.FirstOrDefault()?.IsDonationRealMoney ?? false,
                 Timestamp = arg?.FirstOrDefault()?.Timestamp ?? new DateTime(),
                 RealMoneyAmount = arg?.Sum(x => x?.RealMoneyAmount ?? 0d) is not null ? arg.Sum(x => x?.RealMoneyAmount ?? 0d) : 0d

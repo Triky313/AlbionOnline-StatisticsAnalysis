@@ -13,11 +13,33 @@ public class Donation
     public double RealMoneyAmount { get; set; }
     public string Contributor { get; set; }
     public bool IsDonationRealMoney { get; set; } = false;
+    public string Server { get; set; } = "US";
 
     [JsonIgnore] 
     public Visibility DonationRealMoneyVisibility => (IsDonationRealMoney) ? Visibility.Visible : Visibility.Collapsed;
     [JsonIgnore] 
     public Visibility DonationSilverVisibility => (IsDonationRealMoney) ? Visibility.Collapsed : Visibility.Visible;
+
+    [JsonIgnore]
+    public string DonationServer
+    {
+        get
+        {
+            if (string.IsNullOrEmpty(Server))
+            {
+                return LanguageController.Translation("AMERICA_SERVER");
+            }
+
+            return Server switch
+            {
+                "EU" => LanguageController.Translation("EUROPE_SERVER"),
+                "US" => LanguageController.Translation("AMERICA_SERVER"),
+                "ASIA" => LanguageController.Translation("ASIA_SERVER"),
+                _ => LanguageController.Translation("AMERICA_SERVER")
+            };
+        }
+    }
+
     [JsonIgnore]
     public DonationType DonationType
     {
