@@ -17,7 +17,7 @@ public class SettingsObject
     public ServerLocation ServerLocation { get; set; } = 0; // 0: auto, 1: america, 2: asia, 3: europe
     public ServerType ServerType { get; set; } = ServerType.Live; // 0: Live, 1: Staging, 2: Playground
     public string MainTrackingCharacterName { get; set; }
-    public int BackupIntervalByDays { get; set; } = 7;
+    public int BackupIntervalByDays { get; set; } = 1;
     public int MaximumNumberOfBackups { get; set; } = 10;
     public bool IsOpenItemWindowInNewWindowChecked { get; set; } = true;
     public bool IsInfoWindowShownOnStart { get; set; } = true;

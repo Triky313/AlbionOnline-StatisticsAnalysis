@@ -440,13 +440,12 @@ public class SettingsWindowViewModel : BaseViewModel
     private void InitMaxAmountOfBackups(ICollection<SettingDataInformation> amountOfBackups)
     {
         amountOfBackups.Clear();
-        amountOfBackups.Add(new SettingDataInformation { Name = "1", Value = 1 });
-        amountOfBackups.Add(new SettingDataInformation { Name = "3", Value = 3 });
         amountOfBackups.Add(new SettingDataInformation { Name = "5", Value = 5 });
         amountOfBackups.Add(new SettingDataInformation { Name = "10", Value = 10 });
         amountOfBackups.Add(new SettingDataInformation { Name = "20", Value = 20 });
         amountOfBackups.Add(new SettingDataInformation { Name = "50", Value = 50 });
         amountOfBackups.Add(new SettingDataInformation { Name = "100", Value = 100 });
+        amountOfBackups.Add(new SettingDataInformation { Name = "250", Value = 250 });
     }
 
     private static void InitDropDownDownByDays(ICollection<SettingDataInformation> updateJsonByDays)
