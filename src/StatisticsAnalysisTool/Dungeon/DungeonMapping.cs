@@ -1,4 +1,5 @@
-﻿using StatisticsAnalysisTool.Dungeon.Models;
+﻿using StatisticsAnalysisTool.Cluster;
+using StatisticsAnalysisTool.Dungeon.Models;
 using StatisticsAnalysisTool.Enumerations;
 using StatisticsAnalysisTool.Exceptions;
 using System.Linq;
@@ -76,6 +77,12 @@ public class DungeonMapping
 
     public static DungeonBaseFragment Mapping(DungeonDto dto)
     {
+        // TODO: Each RandomDungeon is temporarily loaded as a group dungeon, as no method has yet been found to recognize different dungeons
+        if (dto.MapType == MapType.RandomDungeon)
+        {
+            dto.Mode = DungeonMode.Standard;
+        }
+        
         return dto.Mode switch
         {
             DungeonMode.Solo or DungeonMode.Standard or DungeonMode.Avalon => new RandomDungeonFragment(dto),

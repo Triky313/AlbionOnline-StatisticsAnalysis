@@ -457,15 +457,15 @@ public sealed class DungeonController
             return;
         }
 
-        if (ClusterController.CurrentCluster.MapType != MapType.Expedition
-            && ClusterController.CurrentCluster.MapType != MapType.CorruptedDungeon
-            && ClusterController.CurrentCluster.MapType != MapType.HellGate
-            && ClusterController.CurrentCluster.MapType != MapType.RandomDungeon
-            && ClusterController.CurrentCluster.MapType != MapType.Mists
-            && ClusterController.CurrentCluster.MapType != MapType.MistsDungeon)
-        {
-            return;
-        }
+        //if (ClusterController.CurrentCluster.MapType != MapType.Expedition
+        //    && ClusterController.CurrentCluster.MapType != MapType.CorruptedDungeon
+        //    && ClusterController.CurrentCluster.MapType != MapType.HellGate
+        //    && ClusterController.CurrentCluster.MapType != MapType.RandomDungeon
+        //    && ClusterController.CurrentCluster.MapType != MapType.Mists
+        //    && ClusterController.CurrentCluster.MapType != MapType.MistsDungeon)
+        //{
+        //    return;
+        //}
 
         try
         {
@@ -503,13 +503,13 @@ public sealed class DungeonController
             return;
         }
 
-        if (ClusterController.CurrentCluster.MapType != MapType.Expedition
-            && ClusterController.CurrentCluster.MapType != MapType.CorruptedDungeon
-            && ClusterController.CurrentCluster.MapType != MapType.HellGate
-            && ClusterController.CurrentCluster.MapType != MapType.RandomDungeon)
-        {
-            return;
-        }
+        //if (ClusterController.CurrentCluster.MapType != MapType.Expedition
+        //    && ClusterController.CurrentCluster.MapType != MapType.CorruptedDungeon
+        //    && ClusterController.CurrentCluster.MapType != MapType.HellGate
+        //    && ClusterController.CurrentCluster.MapType != MapType.RandomDungeon)
+        //{
+        //    return;
+        //}
 
         try
         {
@@ -705,7 +705,7 @@ public sealed class DungeonController
             Path.Combine(AppDomain.CurrentDomain.BaseDirectory, Settings.Default.UserDataDirectoryName, Settings.Default.DungeonRunsFileName));
         
         var dungeonsToAdd = new List<DungeonBaseFragment>();
-        foreach (DungeonDto dungeonDto in dungeons.Where(x => x.Mode != DungeonMode.Unknown))
+        foreach (DungeonDto dungeonDto in dungeons)
         {
             try
             {
