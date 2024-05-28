@@ -11,7 +11,6 @@ using System.Collections.ObjectModel;
 using System.Linq;
 using System.Windows;
 using System.Windows.Input;
-using System.Windows.Threading;
 
 namespace StatisticsAnalysisTool.Dungeon.Models;
 
@@ -538,6 +537,11 @@ public abstract class DungeonBaseFragment : BaseViewModel
 
     private void PerformShowLootedItems(object value)
     {
+        if (Loot?.Count <= 0)
+        {
+            return;
+        }
+
         ItemsContainerVisibility = ItemsContainerVisibility == Visibility.Visible ? Visibility.Collapsed : Visibility.Visible;
     }
 
