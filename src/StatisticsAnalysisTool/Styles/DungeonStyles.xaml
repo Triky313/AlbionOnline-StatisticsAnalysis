@@ -262,6 +262,12 @@
         <Setter Property="Foreground" Value="{StaticResource SolidColorBrush.Accent.Blue.1}"/>
     </Style>
 
+    <DataTemplate x:Key="DungeonContainerItemTemplate" DataType="{x:Type dungeonModels:Loot}">
+        <Grid Height="35" Width="35" Margin="0">
+            <Image Source="{Binding Item.Icon, IsAsync=True, Mode=OneWay}" Stretch="Fill" VerticalAlignment="Bottom" HorizontalAlignment="Right" />
+        </Grid>
+    </DataTemplate>
+
     <DataTemplate x:Key="Stats.Total.Template" DataType="{x:Type dungeonModels:StatsTotal}">
         <StackPanel Orientation="Vertical" Visibility="{Binding Visibility}">
             <TextBlock Style="{StaticResource TitleText}" Text="{Binding TranslationTotalOverview, FallbackValue='TOTAL_OVERVIEW'}" />
@@ -2703,8 +2709,12 @@
                                         <!-- Total value -->
                                         <StackPanel Orientation="Horizontal" Height="20">
                                             <Grid HorizontalAlignment="Center" Width="20" Margin="0,0,2,0" VerticalAlignment="Center" ToolTip="{Binding TranslationTotalLootedValue, FallbackValue=TOTAL_LOOTED_VALUE}">
+                                                <Grid.InputBindings>
+                                                    <MouseBinding MouseAction="LeftClick" Command="{Binding ShowLootedItems}" />
+                                                </Grid.InputBindings>
                                                 <Image Source="../Assets/static_chest.png" />
                                             </Grid>
+
                                             <DockPanel>
                                                 <TextBlock Text="{Binding TotalValue, ConverterCulture={x:Static glob:CultureInfo.CurrentCulture}, StringFormat='{}{0:N0}', IsAsync=True, Mode=OneWay, FallbackValue=-}" 
                                                            Foreground="{StaticResource SolidColorBrush.Text.1}" TextAlignment="Right" />
@@ -2731,6 +2741,17 @@
                             </StackPanel>
                         </Grid>
                     </DockPanel>
+                </StackPanel>
+                <StackPanel Orientation="Vertical" Margin="0,97,0,0" MinHeight="35" Visibility="{Binding ItemsContainerVisibility}" HorizontalAlignment="Left">
+                    <ScrollViewer HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Disabled">
+                        <ItemsControl ItemsSource="{Binding Loot, IsAsync=True}" ItemTemplate="{StaticResource DungeonContainerItemTemplate}">
+                            <ItemsControl.ItemsPanel>
+                                <ItemsPanelTemplate>
+                                    <VirtualizingStackPanel Orientation="Horizontal"/>
+                                </ItemsPanelTemplate>
+                            </ItemsControl.ItemsPanel>
+                        </ItemsControl>
+                    </ScrollViewer>
                 </StackPanel>
             </Grid>
         </Border>
@@ -2799,7 +2820,6 @@
                                         <!-- Silver -->
                                         <ContentPresenter ContentTemplate="{StaticResource DungeonFragment.Silver.Template}" Content="{Binding}" />
 
-
                                         <!-- Point of interest -->
                                         <StackPanel Orientation="Vertical">
                                             <Grid Margin="0,0,20,0" Height="22">
@@ -2859,6 +2879,9 @@
                                         <StackPanel Orientation="Horizontal" Height="20">
                                             <Grid HorizontalAlignment="Center" Width="20" Margin="0,0,2,0" VerticalAlignment="Center" 
                                                   ToolTip="{Binding TranslationTotalLootedValue, FallbackValue=TOTAL_LOOTED_VALUE}">
+                                                <Grid.InputBindings>
+                                                    <MouseBinding MouseAction="LeftClick" Command="{Binding ShowLootedItems}" />
+                                                </Grid.InputBindings>
                                                 <Image Source="../Assets/static_chest.png" />
                                             </Grid>
                                             <DockPanel>
@@ -2887,6 +2910,17 @@
                             </StackPanel>
                         </Grid>
                     </DockPanel>
+                </StackPanel>
+                <StackPanel Orientation="Vertical" Margin="0,97,0,0" MinHeight="35" Visibility="{Binding ItemsContainerVisibility}" HorizontalAlignment="Left">
+                    <ScrollViewer HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Disabled">
+                        <ItemsControl ItemsSource="{Binding Loot, IsAsync=True}" ItemTemplate="{StaticResource DungeonContainerItemTemplate}">
+                            <ItemsControl.ItemsPanel>
+                                <ItemsPanelTemplate>
+                                    <VirtualizingStackPanel Orientation="Horizontal"/>
+                                </ItemsPanelTemplate>
+                            </ItemsControl.ItemsPanel>
+                        </ItemsControl>
+                    </ScrollViewer>
                 </StackPanel>
             </Grid>
         </Border>
@@ -3013,6 +3047,9 @@
                                         <!-- Total value -->
                                         <StackPanel Orientation="Horizontal" Height="20">
                                             <Grid HorizontalAlignment="Center" Width="20" Margin="0,0,2,0" VerticalAlignment="Center" ToolTip="{Binding TranslationTotalLootedValue, FallbackValue=TOTAL_LOOTED_VALUE}">
+                                                <Grid.InputBindings>
+                                                    <MouseBinding MouseAction="LeftClick" Command="{Binding ShowLootedItems}" />
+                                                </Grid.InputBindings>
                                                 <Image Source="../Assets/static_chest.png" />
                                             </Grid>
                                             <DockPanel>
@@ -3041,6 +3078,17 @@
                             </StackPanel>
                         </Grid>
                     </DockPanel>
+                </StackPanel>
+                <StackPanel Orientation="Vertical" Margin="0,97,0,0" MinHeight="35" Visibility="{Binding ItemsContainerVisibility}" HorizontalAlignment="Left">
+                    <ScrollViewer HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Disabled">
+                        <ItemsControl ItemsSource="{Binding Loot, IsAsync=True}" ItemTemplate="{StaticResource DungeonContainerItemTemplate}">
+                            <ItemsControl.ItemsPanel>
+                                <ItemsPanelTemplate>
+                                    <VirtualizingStackPanel Orientation="Horizontal"/>
+                                </ItemsPanelTemplate>
+                            </ItemsControl.ItemsPanel>
+                        </ItemsControl>
+                    </ScrollViewer>
                 </StackPanel>
             </Grid>
         </Border>
@@ -3131,6 +3179,9 @@
                                         <!-- Total value -->
                                         <StackPanel Orientation="Horizontal" Height="20">
                                             <Grid HorizontalAlignment="Center" Width="20" Margin="0,0,2,0" VerticalAlignment="Center" ToolTip="{Binding TranslationTotalLootedValue, FallbackValue=TOTAL_LOOTED_VALUE}">
+                                                <Grid.InputBindings>
+                                                    <MouseBinding MouseAction="LeftClick" Command="{Binding ShowLootedItems}" />
+                                                </Grid.InputBindings>
                                                 <Image Source="../Assets/static_chest.png" />
                                             </Grid>
                                             <DockPanel>
@@ -3156,6 +3207,17 @@
                             </StackPanel>
                         </Grid>
                     </DockPanel>
+                </StackPanel>
+                <StackPanel Orientation="Vertical" Margin="0,97,0,0" MinHeight="35" Visibility="{Binding ItemsContainerVisibility}" HorizontalAlignment="Left">
+                    <ScrollViewer HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Disabled">
+                        <ItemsControl ItemsSource="{Binding Loot, IsAsync=True}" ItemTemplate="{StaticResource DungeonContainerItemTemplate}">
+                            <ItemsControl.ItemsPanel>
+                                <ItemsPanelTemplate>
+                                    <VirtualizingStackPanel Orientation="Horizontal"/>
+                                </ItemsPanelTemplate>
+                            </ItemsControl.ItemsPanel>
+                        </ItemsControl>
+                    </ScrollViewer>
                 </StackPanel>
             </Grid>
         </Border>
@@ -3283,6 +3345,9 @@
                                         <!-- Total value -->
                                         <StackPanel Orientation="Horizontal" Height="20">
                                             <Grid HorizontalAlignment="Center" Width="20" Margin="0,0,2,0" VerticalAlignment="Center" ToolTip="{Binding TranslationTotalLootedValue, FallbackValue=TOTAL_LOOTED_VALUE}">
+                                                <Grid.InputBindings>
+                                                    <MouseBinding MouseAction="LeftClick" Command="{Binding ShowLootedItems}" />
+                                                </Grid.InputBindings>
                                                 <Image Source="../Assets/static_chest.png" />
                                             </Grid>
                                             <DockPanel>
@@ -3311,6 +3376,17 @@
                             </StackPanel>
                         </Grid>
                     </DockPanel>
+                </StackPanel>
+                <StackPanel Orientation="Vertical" Margin="0,97,0,0" MinHeight="35" Visibility="{Binding ItemsContainerVisibility}" HorizontalAlignment="Left">
+                    <ScrollViewer HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Disabled">
+                        <ItemsControl ItemsSource="{Binding Loot, IsAsync=True}" ItemTemplate="{StaticResource DungeonContainerItemTemplate}">
+                            <ItemsControl.ItemsPanel>
+                                <ItemsPanelTemplate>
+                                    <VirtualizingStackPanel Orientation="Horizontal"/>
+                                </ItemsPanelTemplate>
+                            </ItemsControl.ItemsPanel>
+                        </ItemsControl>
+                    </ScrollViewer>
                 </StackPanel>
             </Grid>
         </Border>
@@ -3422,6 +3498,9 @@
                                         <!-- Total value -->
                                         <StackPanel Orientation="Horizontal" Height="20">
                                             <Grid HorizontalAlignment="Center" Width="20" Margin="0,0,2,0" VerticalAlignment="Center" ToolTip="{Binding TranslationTotalLootedValue, FallbackValue=TOTAL_LOOTED_VALUE}">
+                                                <Grid.InputBindings>
+                                                    <MouseBinding MouseAction="LeftClick" Command="{Binding ShowLootedItems}" />
+                                                </Grid.InputBindings>
                                                 <Image Source="../Assets/static_chest.png" />
                                             </Grid>
                                             <DockPanel>
@@ -3450,6 +3529,17 @@
                             </StackPanel>
                         </Grid>
                     </DockPanel>
+                </StackPanel>
+                <StackPanel Orientation="Vertical" Margin="0,97,0,0" MinHeight="35" Visibility="{Binding ItemsContainerVisibility}" HorizontalAlignment="Left">
+                    <ScrollViewer HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Disabled">
+                        <ItemsControl ItemsSource="{Binding Loot, IsAsync=True}" ItemTemplate="{StaticResource DungeonContainerItemTemplate}">
+                            <ItemsControl.ItemsPanel>
+                                <ItemsPanelTemplate>
+                                    <VirtualizingStackPanel Orientation="Horizontal"/>
+                                </ItemsPanelTemplate>
+                            </ItemsControl.ItemsPanel>
+                        </ItemsControl>
+                    </ScrollViewer>
                 </StackPanel>
             </Grid>
         </Border>
