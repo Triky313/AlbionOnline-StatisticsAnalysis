@@ -8,6 +8,7 @@ using System.Threading.Tasks;
 using System.Windows;
 using Serilog;
 using StatisticsAnalysisTool.Common;
+using StatisticsAnalysisTool.Common.UserSettings;
 using StatisticsAnalysisTool.Exceptions;
 using StatisticsAnalysisTool.Models;
 using StatisticsAnalysisTool.Properties;
@@ -82,7 +83,7 @@ public class Alert
                         && marketResponse.SellPriceMin <= (ulong) AlertModeMinSellPriceIsUndercutPrice
                         && AlertModeMinSellPriceIsUndercutPrice > 0)
                     {
-                        SoundController.PlayAlertSound(SoundController.GetCurrentSoundPath());
+                        SoundController.PlayAlertSound(SoundController.GetCurrentSoundPath(SettingsController.CurrentSettings.SelectedAlertSound));
                         StopEvent();
                         AlertController.DeactivateAlert(uniqueName);
 

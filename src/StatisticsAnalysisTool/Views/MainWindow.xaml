@@ -227,9 +227,9 @@
                     <userControls:GatheringControl DataContext="{Binding RelativeSource={RelativeSource AncestorType=Window}, Path=DataContext}" />
                 </Grid>
             </TabItem>
-            <TabItem Visibility="{Binding PartyBuilderTabVisibility, Mode=OneWay}" Header="{Binding Translation.PartyBuilder, FallbackValue=PARTY_BUILDER}">
+            <TabItem Visibility="{Binding PartyTabVisibility, Mode=OneWay}" Header="{Binding Translation.Party, FallbackValue=PARTY}">
                 <Grid Style="{StaticResource TabItemGridStyle}">
-                    <userControls:PartyBuilderControl DataContext="{Binding RelativeSource={RelativeSource AncestorType=Window}, Path=DataContext}" />
+                    <userControls:PartyControl DataContext="{Binding RelativeSource={RelativeSource AncestorType=Window}, Path=DataContext}" />
                 </Grid>
             </TabItem>
             <TabItem Visibility="{Binding StorageHistoryTabVisibility, Mode=OneWay}" Header="{Binding Translation.StorageHistory, FallbackValue=STORAGE_HISTORY}">

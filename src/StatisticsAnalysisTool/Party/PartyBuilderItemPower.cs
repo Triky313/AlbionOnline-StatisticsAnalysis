@@ -1,7 +1,7 @@
-﻿using StatisticsAnalysisTool.ViewModels;
-using System;
+﻿using System;
+using StatisticsAnalysisTool.ViewModels;
 
-namespace StatisticsAnalysisTool.PartyBuilder;
+namespace StatisticsAnalysisTool.Party;
 
 public class PartyBuilderItemPower : BaseViewModel
 {

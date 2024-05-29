@@ -58,4 +58,6 @@ public class SettingsWindowTranslation
     public static string LootLogger => LanguageController.Translation("LOOT_LOGGER");
     public static string DamageMeter => LanguageController.Translation("DAMAGE_METER");
     public static string AnotherAppToStartPath => LanguageController.Translation("ANOTHER_APP_TO_START_PATH");
+    public static string Party => LanguageController.Translation("PARTY");
+    public static string DeathAlarmSoundUsed => LanguageController.Translation("DEATH_ALERT_SOUND_USED");
 }

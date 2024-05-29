@@ -1,13 +1,13 @@
-﻿using StatisticsAnalysisTool.Common;
+﻿using System;
+using System.Collections.Generic;
+using StatisticsAnalysisTool.Common;
 using StatisticsAnalysisTool.Localization;
 using StatisticsAnalysisTool.Models;
 using StatisticsAnalysisTool.ViewModels;
-using System;
-using System.Collections.Generic;
 
-namespace StatisticsAnalysisTool.PartyBuilder;
+namespace StatisticsAnalysisTool.Party;
 
-public class PartyBuilderPlayer : BaseViewModel
+public class PartyPlayer : BaseViewModel
 {
     private Item _mainHand;
     private Item _offHand;
@@ -35,6 +35,7 @@ public class PartyBuilderPlayer : BaseViewModel
     private PartyBuilderItemPowerCondition _itemPowerCondition;
     private bool _isPlayerInspected;
     private DateTime _lastUpdate;
+    private bool _isDeathAlertActive;
     public Guid Guid { get; init; }
 
     public string Username
@@ -314,6 +315,17 @@ public class PartyBuilderPlayer : BaseViewModel
         }
     }
 
+    public bool IsDeathAlertActive
+    {
+        get => _isDeathAlertActive;
+        set
+        {
+            _isDeathAlertActive = value;
+            OnPropertyChanged();
+        }
+    }
+
     public static string TranslationItemPower => LanguageController.Translation("ITEM_POWER");
     public static string TranslationLastUpdate => LanguageController.Translation("LAST_UPDATE");
+    public static string TranslationSelectForDeathAlert => LanguageController.Translation("SELECT_FOR_DEATH_ALERT");
 }

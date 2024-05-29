@@ -70,7 +70,7 @@ public class MainWindowTranslation
     public static string Dungeons => LanguageController.Translation("DUNGEONS");
     public static string PlayerInformation => LanguageController.Translation("PLAYER_INFORMATION");
     public static string TradeMonitoring => LanguageController.Translation("TRADE_MONITORING");
-    public static string PartyBuilder => LanguageController.Translation("PARTY_BUILDER");
+    public static string Party => LanguageController.Translation("PARTY");
     public static string StorageHistory => LanguageController.Translation("STORAGE_HISTORY");
     public static string Logging => LanguageController.Translation("LOGGING");
     public static string TrackingIsActive => LanguageController.Translation("TRACKING_IS_ACTIVE");

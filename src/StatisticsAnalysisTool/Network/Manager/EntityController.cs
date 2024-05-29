@@ -179,7 +179,7 @@ public class EntityController
         {
             entity.Value.IsInParty = true;
             await SetPartyMemberUiAsync();
-            await _trackingController?.PartyBuilderController?.UpdatePartyAsync()!;
+            await _trackingController?.PartyController?.UpdatePartyAsync()!;
         }
     }
 
@@ -211,7 +211,7 @@ public class EntityController
             }
 
             await SetPartyMemberUiAsync();
-            await _trackingController?.PartyBuilderController?.UpdatePartyAsync()!;
+            await _trackingController?.PartyController?.UpdatePartyAsync()!;
         }
     }
 
@@ -223,7 +223,7 @@ public class EntityController
         }
 
         await SetPartyMemberUiAsync();
-        await _trackingController?.PartyBuilderController?.UpdatePartyAsync()!;
+        await _trackingController?.PartyController?.UpdatePartyAsync()!;
     }
 
     public async Task AddLocalEntityToPartyAsync()
@@ -233,7 +233,7 @@ public class EntityController
         {
             localEntity.Value.Value.IsInParty = true;
             await SetPartyMemberUiAsync();
-            await _trackingController?.PartyBuilderController?.UpdatePartyAsync()!;
+            await _trackingController?.PartyController?.UpdatePartyAsync()!;
         }
     }
 
@@ -258,7 +258,7 @@ public class EntityController
         }
 
         await SetPartyMemberUiAsync();
-        await _trackingController?.PartyBuilderController?.UpdatePartyAsync()!;
+        await _trackingController?.PartyController?.UpdatePartyAsync()!;
     }
 
     private async Task SetPartyMemberUiAsync()
@@ -338,7 +338,7 @@ public class EntityController
 
             if (entity.Value.Value.IsInParty)
             {
-                await _trackingController?.PartyBuilderController?.UpdatePartyAsync()!;
+                await _trackingController?.PartyController?.UpdatePartyAsync()!;
             }
         }
         else

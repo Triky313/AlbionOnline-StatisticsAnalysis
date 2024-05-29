@@ -1,4 +1,6 @@
-﻿using StatisticsAnalysisTool.Models;
+﻿using StatisticsAnalysisTool.Common.UserSettings;
+using StatisticsAnalysisTool.Common;
+using StatisticsAnalysisTool.Models;
 using StatisticsAnalysisTool.Models.NetworkModel;
 using StatisticsAnalysisTool.Network.Manager;
 using StatisticsAnalysisTool.ViewModels;
@@ -8,25 +10,41 @@ using System.Linq;
 using System.Threading.Tasks;
 using System.Windows;
 
-namespace StatisticsAnalysisTool.PartyBuilder;
+namespace StatisticsAnalysisTool.Party;
 
-public class PartyBuilderController
+public class PartyController
 {
     private readonly TrackingController _trackingController;
     private readonly MainWindowViewModel _mainWindowViewModel;
 
-    public PartyBuilderController(TrackingController trackingController, MainWindowViewModel mainWindowViewModel)
+    public PartyController(TrackingController trackingController, MainWindowViewModel mainWindowViewModel)
     {
         _trackingController = trackingController;
         _mainWindowViewModel = mainWindowViewModel;
     }
+
+    #region Death Alert
+
+    public void PlayerHasDied(string diedPlayerName)
+    {
+        var party = _mainWindowViewModel.PartyBindings.Party;
+
+        if (party.Any(x => x.IsDeathAlertActive && x.Username == diedPlayerName))
+        {
+            SoundController.PlayAlertSound(SoundController.GetCurrentSoundPath(SettingsController.CurrentSettings.SelectedDeathAlertSound));
+        }
+    }
+
+    #endregion
+
+    #region Party Builder
 
     public async Task UpdatePartyAsync()
     {
         await Application.Current.Dispatcher.InvokeAsync(() =>
         {
             var currentParty = _trackingController?.EntityController?.GetAllEntities(true);
-            var bindingsParty = _mainWindowViewModel.PartyBuilderBindings.Party;
+            var bindingsParty = _mainWindowViewModel.PartyBindings.Party;
 
             foreach (var item in currentParty?.ToList() ?? new List<KeyValuePair<Guid, PlayerGameObject>>())
             {
@@ -51,14 +69,14 @@ public class PartyBuilderController
                 }
             }
 
-            _mainWindowViewModel?.PartyBuilderBindings?.UpdatePartyBuilderPlayerConditions();
-            _mainWindowViewModel?.PartyBuilderBindings?.UpdateAveragePartyIp(null, null);
+            _mainWindowViewModel?.PartyBindings?.UpdatePartyBuilderPlayerConditions();
+            _mainWindowViewModel?.PartyBindings?.UpdateAveragePartyIp(null, null);
         });
     }
 
-    private PartyBuilderPlayer CreatePartyPlannerPlayer(PlayerGameObject playerGameObject)
+    private PartyPlayer CreatePartyPlannerPlayer(PlayerGameObject playerGameObject)
     {
-        return new PartyBuilderPlayer()
+        return new PartyPlayer()
         {
             Guid = playerGameObject.UserGuid,
             Username = playerGameObject.Name,
@@ -85,40 +103,40 @@ public class PartyBuilderController
         };
     }
 
-    private void UpdatePartyPlannerPlayer(PlayerGameObject playerGameObject, PartyBuilderPlayer partyBuilderPlayer)
+    private void UpdatePartyPlannerPlayer(PlayerGameObject playerGameObject, PartyPlayer partyPlayer)
     {
-        if (partyBuilderPlayer == null || playerGameObject == null)
+        if (partyPlayer == null || playerGameObject == null)
         {
             return;
         }
 
-        partyBuilderPlayer.AverageItemPower.ItemPower = playerGameObject.ItemPower;
-        partyBuilderPlayer.MainHand = playerGameObject.CharacterEquipment?.GetMainHand();
-        partyBuilderPlayer.OffHand = playerGameObject.CharacterEquipment?.GetOffHand();
-        partyBuilderPlayer.Head = playerGameObject.CharacterEquipment?.GetHead();
-        partyBuilderPlayer.Chest = playerGameObject.CharacterEquipment?.GetChest();
-        partyBuilderPlayer.Shoes = playerGameObject.CharacterEquipment?.GetShoes();
-        partyBuilderPlayer.Bag = playerGameObject.CharacterEquipment?.GetBag();
-        partyBuilderPlayer.Cape = playerGameObject.CharacterEquipment?.GetCape();
-        partyBuilderPlayer.Mount = playerGameObject.CharacterEquipment?.GetMount();
-        partyBuilderPlayer.Potion = playerGameObject.CharacterEquipment?.GetPotion();
-        partyBuilderPlayer.BuffFood = playerGameObject.CharacterEquipment?.GetBuffFood();
-        partyBuilderPlayer.MainHandSpells = playerGameObject.CharacterEquipment?.GetMainHandSpells() ?? new List<Spell>();
-        partyBuilderPlayer.OffHandSpells = playerGameObject.CharacterEquipment?.GetOffHandSpells() ?? new List<Spell>();
-        partyBuilderPlayer.HeadSpells = playerGameObject.CharacterEquipment?.GetHeadSpells() ?? new List<Spell>();
-        partyBuilderPlayer.ChestSpells = playerGameObject.CharacterEquipment?.GetChestSpells() ?? new List<Spell>();
-        partyBuilderPlayer.ShoesSpells = playerGameObject.CharacterEquipment?.GetShoesSpells() ?? new List<Spell>();
-        partyBuilderPlayer.MountSpells = playerGameObject.CharacterEquipment?.GetMountSpells() ?? new List<Spell>();
-        partyBuilderPlayer.PotionSpells = playerGameObject.CharacterEquipment?.GetPotionSpells() ?? new List<Spell>();
-        partyBuilderPlayer.FoodSpells = playerGameObject.CharacterEquipment?.GetFoodSpells() ?? new List<Spell>();
-        
-        _mainWindowViewModel.PartyBuilderBindings.UpdatePartyBuilderPlayerConditions();
+        partyPlayer.AverageItemPower.ItemPower = playerGameObject.ItemPower;
+        partyPlayer.MainHand = playerGameObject.CharacterEquipment?.GetMainHand();
+        partyPlayer.OffHand = playerGameObject.CharacterEquipment?.GetOffHand();
+        partyPlayer.Head = playerGameObject.CharacterEquipment?.GetHead();
+        partyPlayer.Chest = playerGameObject.CharacterEquipment?.GetChest();
+        partyPlayer.Shoes = playerGameObject.CharacterEquipment?.GetShoes();
+        partyPlayer.Bag = playerGameObject.CharacterEquipment?.GetBag();
+        partyPlayer.Cape = playerGameObject.CharacterEquipment?.GetCape();
+        partyPlayer.Mount = playerGameObject.CharacterEquipment?.GetMount();
+        partyPlayer.Potion = playerGameObject.CharacterEquipment?.GetPotion();
+        partyPlayer.BuffFood = playerGameObject.CharacterEquipment?.GetBuffFood();
+        partyPlayer.MainHandSpells = playerGameObject.CharacterEquipment?.GetMainHandSpells() ?? new List<Spell>();
+        partyPlayer.OffHandSpells = playerGameObject.CharacterEquipment?.GetOffHandSpells() ?? new List<Spell>();
+        partyPlayer.HeadSpells = playerGameObject.CharacterEquipment?.GetHeadSpells() ?? new List<Spell>();
+        partyPlayer.ChestSpells = playerGameObject.CharacterEquipment?.GetChestSpells() ?? new List<Spell>();
+        partyPlayer.ShoesSpells = playerGameObject.CharacterEquipment?.GetShoesSpells() ?? new List<Spell>();
+        partyPlayer.MountSpells = playerGameObject.CharacterEquipment?.GetMountSpells() ?? new List<Spell>();
+        partyPlayer.PotionSpells = playerGameObject.CharacterEquipment?.GetPotionSpells() ?? new List<Spell>();
+        partyPlayer.FoodSpells = playerGameObject.CharacterEquipment?.GetFoodSpells() ?? new List<Spell>();
+
+        _mainWindowViewModel.PartyBindings.UpdatePartyBuilderPlayerConditions();
     }
 
     public void UpdateIsPlayerInspectedToFalse()
     {
-        var bindingsParty = _mainWindowViewModel.PartyBuilderBindings.Party;
-        foreach (PartyBuilderPlayer partyBuilderPlayer in bindingsParty)
+        var bindingsParty = _mainWindowViewModel.PartyBindings.Party;
+        foreach (PartyPlayer partyBuilderPlayer in bindingsParty)
         {
             partyBuilderPlayer.IsPlayerInspected = false;
         }
@@ -126,7 +144,7 @@ public class PartyBuilderController
 
     public void UpdateInspectedPlayer(Guid guid, InternalCharacterEquipment characterEquipment, double itemPower)
     {
-        var bindingsParty = _mainWindowViewModel.PartyBuilderBindings.Party.FirstOrDefault(x => x.Guid == guid);
+        var bindingsParty = _mainWindowViewModel.PartyBindings.Party.FirstOrDefault(x => x.Guid == guid);
         if (bindingsParty == null)
         {
             return;
@@ -145,7 +163,9 @@ public class PartyBuilderController
         bindingsParty.BuffFood = _trackingController.LootController.GetItemFromDiscoveredLoot(characterEquipment.BuffFood);
 
         bindingsParty.IsPlayerInspected = true;
-        _mainWindowViewModel.PartyBuilderBindings.UpdatePartyBuilderPlayerConditions();
-        _mainWindowViewModel.PartyBuilderBindings.UpdateAveragePartyIp(null, null);
+        _mainWindowViewModel.PartyBindings.UpdatePartyBuilderPlayerConditions();
+        _mainWindowViewModel.PartyBindings.UpdateAveragePartyIp(null, null);
     }
+
+    #endregion
 }

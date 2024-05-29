@@ -153,6 +153,16 @@
                                   DisplayMemberPath="FileName" SelectedValuePath="FilePath" HorizontalAlignment="Left" VerticalAlignment="Top" Width="200" Height="26" />
                     </DockPanel>
 
+                    <!-- Item search -->
+                    <DockPanel Margin="0,20,0,0">
+                        <Label Content="{Binding Translation.Party, FallbackValue='PARTY'}" FontSize="14" Foreground="{StaticResource SolidColorBrush.Accent.Blue.2}" />
+                    </DockPanel>
+                    <DockPanel Margin="0,5,0,0">
+                        <Label Content="{Binding Translation.DeathAlarmSoundUsed, FallbackValue=DEATH_ALERT__SOUND__USED}" MinWidth="300" VerticalAlignment="Top" />
+                        <ComboBox ItemsSource="{Binding DeathAlertSounds}" SelectedItem="{Binding DeathAlertSoundSelection}" IsSynchronizedWithCurrentItem="True" 
+                                  DisplayMemberPath="FileName" SelectedValuePath="FilePath" HorizontalAlignment="Left" VerticalAlignment="Top" Width="200" Height="26" />
+                    </DockPanel>
+
                     <!-- Backup -->
                     <DockPanel Margin="0,20,0,0">
                         <Label Content="{Binding Translation.Backup, FallbackValue='BACKUP'}" FontSize="14" Foreground="{StaticResource SolidColorBrush.Accent.Blue.2}" />

@@ -1,0 +1,59 @@
+﻿<UserControl x:Class="StatisticsAnalysisTool.UserControls.PartyControl"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:viewModels="clr-namespace:StatisticsAnalysisTool.ViewModels"
+             xmlns:controls="clr-namespace:WpfToolkit.Controls;assembly=VirtualizingWrapPanel"
+             mc:Ignorable="d" 
+             d:DesignHeight="650" d:DesignWidth="800"
+             d:DataContext="{d:DesignInstance Type=viewModels:MainWindowViewModel}">
+    <Grid>
+        <TabControl Background="Transparent" BorderThickness="0">
+            <TabItem Header="{Binding PartyBindings.TranslationDeathAlert, FallbackValue=DEATH_ALERT}">
+                <Grid>
+                    <controls:VirtualizingItemsControl ItemsSource="{Binding PartyBindings.PartyCollectionView, IsAsync=True, Mode=OneWay}"
+                                                       ItemTemplate="{StaticResource PartyPlayerDeathAlertTemplate}" 
+                                                       VirtualizingPanel.CacheLengthUnit="Item"
+                                                       VirtualizingPanel.CacheLength="20,20"
+                                                       VirtualizingPanel.ScrollUnit="Pixel"
+                                                       VirtualizingPanel.VirtualizationMode="Recycling"
+                                                       ScrollViewer.HorizontalScrollBarVisibility="Disabled"
+                                                       ScrollViewer.VerticalScrollBarVisibility="Visible" />
+                </Grid>
+            </TabItem>
+            <TabItem Header="{Binding PartyBindings.TranslationPartyBuilder, FallbackValue=PARTY_BUILDER}">
+                <Grid Margin="0,0,0,0">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="*"/>
+                        <RowDefinition Height="5"/>
+                        <RowDefinition Height="{Binding PartyBindings.GridSplitterPosition ,Mode=TwoWay, FallbackValue=*}"/>
+                    </Grid.RowDefinitions>
+
+                    <GridSplitter Grid.Row="1" ResizeDirection="Rows" ResizeBehavior="PreviousAndNext" HorizontalAlignment="Stretch" Margin="0,0,1,1" Background="{StaticResource SolidColorBrush.Accent.Blue.4}" />
+
+                    <Grid Row="0" Margin="0,5,0,6" Grid.RowSpan="2">
+                        <ScrollViewer>
+                            <StackPanel Orientation="Vertical">
+                                <ContentControl Margin="0,0,0,0" ContentTemplate="{StaticResource PartyBuilderConditionsTemplate}" Content="{Binding PartyBindings}" />
+                                <ContentControl Margin="0,0,0,0" ContentTemplate="{StaticResource PartyBuilderPartyInfoTemplate}" Content="{Binding PartyBindings}" />
+                                <ContentControl Margin="0,0,0,0" ContentTemplate="{StaticResource PartyBuilderDescriptionsTemplate}" Content="{Binding PartyBindings}" />
+                            </StackPanel>
+                        </ScrollViewer>
+                    </Grid>
+
+                    <Grid Row="2">
+                        <controls:VirtualizingItemsControl ItemsSource="{Binding PartyBindings.PartyCollectionView, IsAsync=True, Mode=OneWay}"
+                                                           ItemTemplate="{StaticResource PartyBuilderPlayerTemplate}" 
+                                                           VirtualizingPanel.CacheLengthUnit="Item"
+                                                           VirtualizingPanel.CacheLength="20,20"
+                                                           VirtualizingPanel.ScrollUnit="Pixel"
+                                                           VirtualizingPanel.VirtualizationMode="Recycling"
+                                                           ScrollViewer.HorizontalScrollBarVisibility="Disabled"
+                                                           ScrollViewer.VerticalScrollBarVisibility="Visible" />
+                    </Grid>
+                </Grid>
+            </TabItem>
+        </TabControl>
+    </Grid>
+</UserControl>

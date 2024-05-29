@@ -1,17 +1,17 @@
-﻿using StatisticsAnalysisTool.Common.UserSettings;
-using StatisticsAnalysisTool.Localization;
-using StatisticsAnalysisTool.ViewModels;
-using System.Collections.ObjectModel;
+﻿using System.Collections.ObjectModel;
 using System.Collections.Specialized;
 using System.Linq;
 using System.Windows;
 using System.Windows.Data;
+using StatisticsAnalysisTool.Common.UserSettings;
+using StatisticsAnalysisTool.Localization;
+using StatisticsAnalysisTool.ViewModels;
 
-namespace StatisticsAnalysisTool.PartyBuilder;
+namespace StatisticsAnalysisTool.Party;
 
-public class PartyBuilderBindings : BaseViewModel
+public class PartyBindings : BaseViewModel
 {
-    private ObservableCollection<PartyBuilderPlayer> _party = new();
+    private ObservableCollection<PartyPlayer> _party = new();
     private ListCollectionView _partyCollectionView;
     private GridLength _gridSplitterPosition;
     private double _minimalItemPower;
@@ -21,7 +21,7 @@ public class PartyBuilderBindings : BaseViewModel
     private double _averagePartyIp;
     private double _averagePartyBasicIp;
 
-    public PartyBuilderBindings()
+    public PartyBindings()
     {
         PartyCollectionView = CollectionViewSource.GetDefaultView(Party) as ListCollectionView;
 
@@ -51,7 +51,7 @@ public class PartyBuilderBindings : BaseViewModel
         }
     }
 
-    public ObservableCollection<PartyBuilderPlayer> Party
+    public ObservableCollection<PartyPlayer> Party
     {
         get => _party;
         set
@@ -143,7 +143,7 @@ public class PartyBuilderBindings : BaseViewModel
 
     public void UpdatePartyBuilderPlayerConditions(double minimalBasicItemPower, double maximumBasicItemPower, double minimalItemPower, double maximumItemPower)
     {
-        foreach (PartyBuilderPlayer partyBuilderPlayer in Party)
+        foreach (PartyPlayer partyBuilderPlayer in Party)
         {
             GetItemPowerCondition(partyBuilderPlayer, minimalBasicItemPower, maximumBasicItemPower, minimalItemPower, maximumItemPower);
         }
@@ -151,7 +151,7 @@ public class PartyBuilderBindings : BaseViewModel
 
     public void UpdatePartyBuilderPlayerConditionsMinBIP(double minimalBasicItemPower)
     {
-        foreach (PartyBuilderPlayer partyBuilderPlayer in Party)
+        foreach (PartyPlayer partyBuilderPlayer in Party)
         {
             GetItemPowerCondition(partyBuilderPlayer, minimalBasicItemPower, MaximumBasicItemPower, MinimalItemPower, MaximumItemPower);
         }
@@ -159,7 +159,7 @@ public class PartyBuilderBindings : BaseViewModel
 
     public void UpdatePartyBuilderPlayerConditionsMaxBIP(double maximumBasicItemPower)
     {
-        foreach (PartyBuilderPlayer partyBuilderPlayer in Party)
+        foreach (PartyPlayer partyBuilderPlayer in Party)
         {
             GetItemPowerCondition(partyBuilderPlayer, MinimalBasicItemPower, maximumBasicItemPower, MinimalItemPower, MaximumItemPower);
         }
@@ -167,7 +167,7 @@ public class PartyBuilderBindings : BaseViewModel
 
     public void UpdatePartyBuilderPlayerConditionsMinIP(double minimalItemPower)
     {
-        foreach (PartyBuilderPlayer partyBuilderPlayer in Party)
+        foreach (PartyPlayer partyBuilderPlayer in Party)
         {
             GetItemPowerCondition(partyBuilderPlayer, MinimalBasicItemPower, MaximumBasicItemPower, minimalItemPower, MaximumItemPower);
         }
@@ -175,7 +175,7 @@ public class PartyBuilderBindings : BaseViewModel
 
     public void UpdatePartyBuilderPlayerConditionsMaxIP(double maximumItemPower)
     {
-        foreach (PartyBuilderPlayer partyBuilderPlayer in Party)
+        foreach (PartyPlayer partyBuilderPlayer in Party)
         {
             GetItemPowerCondition(partyBuilderPlayer, MinimalBasicItemPower, MaximumBasicItemPower, MinimalItemPower, maximumItemPower);
         }
@@ -183,51 +183,51 @@ public class PartyBuilderBindings : BaseViewModel
 
     public void UpdatePartyBuilderPlayerConditions()
     {
-        foreach (PartyBuilderPlayer partyBuilderPlayer in Party)
+        foreach (PartyPlayer partyBuilderPlayer in Party)
         {
             GetItemPowerCondition(partyBuilderPlayer, MinimalBasicItemPower, MaximumBasicItemPower, MinimalItemPower, MaximumItemPower);
         }
     }
 
     private void GetItemPowerCondition(
-        PartyBuilderPlayer partyBuilderPlayer,
+        PartyPlayer partyPlayer,
         double minimalBasicItemPower,
         double maximumBasicItemPower,
         double minimalItemPower,
         double maximumItemPower)
     {
-        if (partyBuilderPlayer.AverageBasicItemPower.ItemPower < minimalBasicItemPower)
+        if (partyPlayer.AverageBasicItemPower.ItemPower < minimalBasicItemPower)
         {
-            partyBuilderPlayer.BasicItemPowerCondition = PartyBuilderItemPowerCondition.UnderMinimal;
+            partyPlayer.BasicItemPowerCondition = PartyBuilderItemPowerCondition.UnderMinimal;
         }
-        else if (partyBuilderPlayer.AverageBasicItemPower.ItemPower > maximumBasicItemPower)
+        else if (partyPlayer.AverageBasicItemPower.ItemPower > maximumBasicItemPower)
         {
-            partyBuilderPlayer.BasicItemPowerCondition = PartyBuilderItemPowerCondition.AboveMaximum;
+            partyPlayer.BasicItemPowerCondition = PartyBuilderItemPowerCondition.AboveMaximum;
         }
-        else if (partyBuilderPlayer.AverageBasicItemPower.ItemPower >= minimalBasicItemPower && partyBuilderPlayer.AverageBasicItemPower.ItemPower <= maximumBasicItemPower)
+        else if (partyPlayer.AverageBasicItemPower.ItemPower >= minimalBasicItemPower && partyPlayer.AverageBasicItemPower.ItemPower <= maximumBasicItemPower)
         {
-            partyBuilderPlayer.BasicItemPowerCondition = PartyBuilderItemPowerCondition.Normal;
+            partyPlayer.BasicItemPowerCondition = PartyBuilderItemPowerCondition.Normal;
         }
         else
         {
-            partyBuilderPlayer.BasicItemPowerCondition = PartyBuilderItemPowerCondition.Unknown;
+            partyPlayer.BasicItemPowerCondition = PartyBuilderItemPowerCondition.Unknown;
         }
 
-        if (partyBuilderPlayer.AverageItemPower.ItemPower < minimalItemPower)
+        if (partyPlayer.AverageItemPower.ItemPower < minimalItemPower)
         {
-            partyBuilderPlayer.ItemPowerCondition = PartyBuilderItemPowerCondition.UnderMinimal;
+            partyPlayer.ItemPowerCondition = PartyBuilderItemPowerCondition.UnderMinimal;
         }
-        else if (partyBuilderPlayer.AverageItemPower.ItemPower > maximumItemPower)
+        else if (partyPlayer.AverageItemPower.ItemPower > maximumItemPower)
         {
-            partyBuilderPlayer.ItemPowerCondition = PartyBuilderItemPowerCondition.AboveMaximum;
+            partyPlayer.ItemPowerCondition = PartyBuilderItemPowerCondition.AboveMaximum;
         }
-        else if (partyBuilderPlayer.AverageItemPower.ItemPower >= minimalItemPower && partyBuilderPlayer.AverageItemPower.ItemPower <= maximumItemPower)
+        else if (partyPlayer.AverageItemPower.ItemPower >= minimalItemPower && partyPlayer.AverageItemPower.ItemPower <= maximumItemPower)
         {
-            partyBuilderPlayer.ItemPowerCondition = PartyBuilderItemPowerCondition.Normal;
+            partyPlayer.ItemPowerCondition = PartyBuilderItemPowerCondition.Normal;
         }
         else
         {
-            partyBuilderPlayer.ItemPowerCondition = PartyBuilderItemPowerCondition.Unknown;
+            partyPlayer.ItemPowerCondition = PartyBuilderItemPowerCondition.Unknown;
         }
     }
 
@@ -274,4 +274,6 @@ public class PartyBuilderBindings : BaseViewModel
     public static string TranslationPartyInformation => LanguageController.Translation("PARTY_INFORMATION");
     public static string TranslationAverageIp => LanguageController.Translation("AVERAGE_IP");
     public static string TranslationAverageBasicIp => LanguageController.Translation("AVERAGE_BIP");
+    public static string TranslationPartyBuilder => LanguageController.Translation("PARTY_BUILDER");
+    public static string TranslationDeathAlert => LanguageController.Translation("DEATH_ALERT");
 }
