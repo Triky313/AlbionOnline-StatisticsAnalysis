@@ -152,6 +152,15 @@
     <Content Include="Sounds\alert4.wav">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
+    <Content Include="Sounds\deathalert1.wav">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Sounds\deathalert2.wav">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Sounds\deathalert3.wav">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
     <Content Include="Sounds\dungeon_closed.wav">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
@@ -779,6 +788,9 @@
     <None Remove="Sounds\alert2.wav" />
     <None Remove="Sounds\alert3.wav" />
     <None Remove="Sounds\alert4.wav" />
+    <None Remove="Sounds\deathalert1.wav" />
+    <None Remove="Sounds\deathalert2.wav" />
+    <None Remove="Sounds\deathalert3.wav" />
     <None Remove="Sounds\dungeon_closed.wav" />
   </ItemGroup>
   <ItemGroup>
@@ -798,7 +810,7 @@
       <XamlRuntime>$(DefaultXamlRuntime)</XamlRuntime>
       <SubType>Designer</SubType>
     </Page>
-    <Page Update="Styles\PartyBuilderStyle.xaml">
+    <Page Update="Styles\PartyStyle.xaml">
       <XamlRuntime>$(DefaultXamlRuntime)</XamlRuntime>
       <SubType>Designer</SubType>
     </Page>

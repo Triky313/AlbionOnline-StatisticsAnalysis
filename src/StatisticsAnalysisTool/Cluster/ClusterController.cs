@@ -49,9 +49,9 @@ public sealed class ClusterController
         CurrentCluster.SetClusterInfo(mapType, mapGuid, clusterIndex, instanceName, worldMapDataType, dungeonInformation, mainClusterIndex, mistsDungeonTier);
     }
 
-    public void SetJoinClusterInformation(string index, string mainClusterIndex)
+    public void SetJoinClusterInformation(string index, string mainClusterIndex, Guid? mapGuid)
     {
-        CurrentCluster.SetJoinClusterInfo(index, mainClusterIndex);
+        CurrentCluster.SetJoinClusterInfo(index, mainClusterIndex, mapGuid);
         CurrentCluster.ClusterInfoFullyAvailable = true;
 
         if (_trackingController.IsTrackingAllowedByMainCharacter())
@@ -80,7 +80,7 @@ public sealed class ClusterController
         _trackingController.LootController.ResetIdentifiedBodies();
         _ = _trackingController.TradeController.RemoveTradesByDaysInSettingsAsync();
         _ = _trackingController.GatheringController.SetGatheredResourcesClosedAsync();
-        _trackingController.PartyBuilderController.UpdateIsPlayerInspectedToFalse();
+        _trackingController.PartyController.UpdateIsPlayerInspectedToFalse();
     }
 
     public static string ComposingMapInfoString(string index, MapType mapType, string instanceName)

@@ -27,7 +27,7 @@ public class JoinResponseHandler : ResponsePacketHandler<JoinResponse>
     {
         await SetLocalUserData(value);
 
-        _trackingController.ClusterController.SetJoinClusterInformation(value.MapIndex, value.MainMapIndex);
+        _trackingController.ClusterController.SetJoinClusterInformation(value.MapIndex, value.MainMapIndex, value.MapGuid);
 
         _mainWindowViewModel.UserTrackingBindings.Username = value.Username;
         _mainWindowViewModel.UserTrackingBindings.GuildName = value.GuildName;

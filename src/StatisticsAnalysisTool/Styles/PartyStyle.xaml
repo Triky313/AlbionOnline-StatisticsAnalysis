@@ -1,9 +1,9 @@
 ﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-                    xmlns:pp="clr-namespace:StatisticsAnalysisTool.PartyBuilder"
                     xmlns:converters="clr-namespace:StatisticsAnalysisTool.Common.Converters"
                     xmlns:fa5="http://schemas.fontawesome.com/icons/"
-                    xmlns:common="clr-namespace:StatisticsAnalysisTool.Common">
+                    xmlns:common="clr-namespace:StatisticsAnalysisTool.Common"
+                    xmlns:party="clr-namespace:StatisticsAnalysisTool.Party">
 
     <converters:RoundingConverter x:Key="RoundingConverter" />
 
@@ -47,16 +47,16 @@
 
     <Style x:Key="PartyBuilder.IPText.Style" TargetType="Label">
         <Style.Triggers>
-            <DataTrigger Binding="{Binding ItemPowerCondition, IsAsync=True}" Value="{x:Static pp:PartyBuilderItemPowerCondition.UnderMinimal}">
+            <DataTrigger Binding="{Binding ItemPowerCondition, IsAsync=True}" Value="{x:Static party:PartyBuilderItemPowerCondition.UnderMinimal}">
                 <Setter Property="Foreground" Value="{StaticResource SolidColorBrush.Accent.Red.2}" />
             </DataTrigger>
-            <DataTrigger Binding="{Binding ItemPowerCondition, IsAsync=True}" Value="{x:Static pp:PartyBuilderItemPowerCondition.AboveMaximum}">
+            <DataTrigger Binding="{Binding ItemPowerCondition, IsAsync=True}" Value="{x:Static party:PartyBuilderItemPowerCondition.AboveMaximum}">
                 <Setter Property="Foreground" Value="{StaticResource SolidColorBrush.Accent.Green.2}" />
             </DataTrigger>
-            <DataTrigger Binding="{Binding ItemPowerCondition, IsAsync=True}" Value="{x:Static pp:PartyBuilderItemPowerCondition.Normal}">
+            <DataTrigger Binding="{Binding ItemPowerCondition, IsAsync=True}" Value="{x:Static party:PartyBuilderItemPowerCondition.Normal}">
                 <Setter Property="Foreground" Value="{StaticResource SolidColorBrush.Accent.Blue.2}" />
             </DataTrigger>
-            <DataTrigger Binding="{Binding ItemPowerCondition, IsAsync=True}" Value="{x:Static pp:PartyBuilderItemPowerCondition.Unknown}">
+            <DataTrigger Binding="{Binding ItemPowerCondition, IsAsync=True}" Value="{x:Static party:PartyBuilderItemPowerCondition.Unknown}">
                 <Setter Property="Foreground" Value="{StaticResource SolidColorBrush.Accent.Blue.2}" />
             </DataTrigger>
         </Style.Triggers>
@@ -64,16 +64,16 @@
 
     <Style x:Key="PartyBuilder.BasicIPText.Style" TargetType="Label">
         <Style.Triggers>
-            <DataTrigger Binding="{Binding BasicItemPowerCondition, IsAsync=True}" Value="{x:Static pp:PartyBuilderItemPowerCondition.UnderMinimal}">
+            <DataTrigger Binding="{Binding BasicItemPowerCondition, IsAsync=True}" Value="{x:Static party:PartyBuilderItemPowerCondition.UnderMinimal}">
                 <Setter Property="Foreground" Value="{StaticResource SolidColorBrush.Accent.Red.2}" />
             </DataTrigger>
-            <DataTrigger Binding="{Binding BasicItemPowerCondition, IsAsync=True}" Value="{x:Static pp:PartyBuilderItemPowerCondition.AboveMaximum}">
+            <DataTrigger Binding="{Binding BasicItemPowerCondition, IsAsync=True}" Value="{x:Static party:PartyBuilderItemPowerCondition.AboveMaximum}">
                 <Setter Property="Foreground" Value="{StaticResource SolidColorBrush.Accent.Green.2}" />
             </DataTrigger>
-            <DataTrigger Binding="{Binding BasicItemPowerCondition, IsAsync=True}" Value="{x:Static pp:PartyBuilderItemPowerCondition.Normal}">
+            <DataTrigger Binding="{Binding BasicItemPowerCondition, IsAsync=True}" Value="{x:Static party:PartyBuilderItemPowerCondition.Normal}">
                 <Setter Property="Foreground" Value="{StaticResource SolidColorBrush.Accent.Blue.2}" />
             </DataTrigger>
-            <DataTrigger Binding="{Binding BasicItemPowerCondition, IsAsync=True}" Value="{x:Static pp:PartyBuilderItemPowerCondition.Unknown}">
+            <DataTrigger Binding="{Binding BasicItemPowerCondition, IsAsync=True}" Value="{x:Static party:PartyBuilderItemPowerCondition.Unknown}">
                 <Setter Property="Foreground" Value="{StaticResource SolidColorBrush.Accent.Blue.2}" />
             </DataTrigger>
         </Style.Triggers>
@@ -109,7 +109,7 @@
         <Setter Property="Foreground" Value="{StaticResource SolidColorBrush.Text.1}" />
     </Style>
 
-    <DataTemplate x:Key="PartyBuilderPlayerTemplate" DataType="{x:Type pp:PartyBuilderPlayer}">
+    <DataTemplate x:Key="PartyBuilderPlayerTemplate" DataType="{x:Type party:PartyPlayer}">
         <Grid>
             <StackPanel Orientation="Vertical" Margin="0,0,0,5">
                 <StackPanel Orientation="Vertical" Background="{StaticResource SolidColorBrush.Accent.Blue.5}">
@@ -220,7 +220,7 @@
         </Grid>
     </DataTemplate>
 
-    <DataTemplate x:Key="PartyBuilderDescriptionsTemplate" DataType="{x:Type pp:PartyBuilderBindings}">
+    <DataTemplate x:Key="PartyBuilderDescriptionsTemplate" DataType="{x:Type party:PartyBindings}">
         <StackPanel Orientation="Vertical">
             <StackPanel Orientation="Horizontal">
                 <TextBlock Text="{Binding TranslationDescriptions, FallbackValue='DESCRIPTIONS'}" Style="{StaticResource Text.Title.1}" />
@@ -254,7 +254,7 @@
         </StackPanel>
     </DataTemplate>
 
-    <DataTemplate x:Key="PartyBuilderPartyInfoTemplate" DataType="{x:Type pp:PartyBuilderBindings}">
+    <DataTemplate x:Key="PartyBuilderPartyInfoTemplate" DataType="{x:Type party:PartyBindings}">
         <StackPanel Orientation="Vertical">
             <StackPanel Orientation="Horizontal">
                 <TextBlock Text="{Binding TranslationPartyInformation, FallbackValue='PARTY_INFORMATION'}" Style="{StaticResource Text.Title.1}" />
@@ -285,7 +285,7 @@
         </StackPanel>
     </DataTemplate>
 
-    <DataTemplate x:Key="PartyBuilderConditionsTemplate" DataType="{x:Type pp:PartyBuilderBindings}">
+    <DataTemplate x:Key="PartyBuilderConditionsTemplate" DataType="{x:Type party:PartyBindings}">
         <StackPanel Orientation="Vertical">
             <StackPanel Orientation="Horizontal">
                 <TextBlock Text="{Binding TranslationConditions, FallbackValue='CONDITIONS'}" Style="{StaticResource Text.Title.1}" />
@@ -318,5 +318,19 @@
             </StackPanel>
             <Grid Margin="5" />
         </StackPanel>
+    </DataTemplate>
+
+    <DataTemplate x:Key="PartyPlayerDeathAlertTemplate" DataType="{x:Type party:PartyPlayer}">
+        <Grid>
+            <StackPanel Orientation="Vertical" Background="{StaticResource SolidColorBrush.Accent.Blue.5}">
+                <StackPanel Orientation="Horizontal">
+                    <Label Content="{Binding Username, IsAsync=True}" FontWeight="Bold" Width="120" Padding="0,5" Margin="5,0,0,0" Style="{StaticResource PartyBuilder.LocalUsername.Style}" />
+                    <Grid Margin="0 -2 0 0" Height="18" Width="18" HorizontalAlignment="Right">
+                        <CheckBox Width="auto" Height="auto" IsChecked="{Binding IsDeathAlertActive, IsAsync=True, FallbackValue=false}" 
+                                  ToolTip="{Binding TranslationSelectForDeathAlert, IsAsync=True}" />
+                    </Grid>
+                </StackPanel>
+            </StackPanel>
+        </Grid>
     </DataTemplate>
 </ResourceDictionary>

@@ -1,4 +1,4 @@
-﻿using StatisticsAnalysisTool.Common.UserSettings;
+﻿using Serilog;
 using StatisticsAnalysisTool.Models;
 using StatisticsAnalysisTool.Properties;
 using System;
@@ -7,17 +7,16 @@ using System.IO;
 using System.Linq;
 using System.Media;
 using System.Reflection;
-using Serilog;
 
 namespace StatisticsAnalysisTool.Common;
 
 public static class SoundController
 {
-    public static List<FileInformation> AlertSounds { get; set; } = new();
+    public static List<FileInformation> Sounds { get; set; } = new();
 
     public static void InitializeSoundFilesFromDirectory()
     {
-        if (AlertSounds?.Count > 0)
+        if (Sounds?.Count > 0)
         {
             return;
         }
@@ -36,15 +35,15 @@ public static class SoundController
             return;
         }
 
-        AlertSounds ??= new List<FileInformation>();
+        Sounds ??= new List<FileInformation>();
 
         foreach (var file in files)
         {
             var fileInformation = new FileInformation(Path.GetFileNameWithoutExtension(file), file);
-            AlertSounds.Add(fileInformation);
+            Sounds.Add(fileInformation);
         }
     }
-
+    
     public static void PlayAlertSound(string soundPath)
     {
         try
@@ -61,11 +60,11 @@ public static class SoundController
         }
     }
 
-    public static string GetCurrentSoundPath()
+    public static string GetCurrentSoundPath(string selectedAlertSound)
     {
         try
         {
-            var currentSound = AlertSounds.FirstOrDefault(s => s.FileName == SettingsController.CurrentSettings.SelectedAlertSound);
+            var currentSound = Sounds.FirstOrDefault(s => s.FileName == selectedAlertSound);
             return currentSound?.FilePath ?? string.Empty;
         }
         catch (Exception e) when (e is ArgumentException)

@@ -2,9 +2,9 @@
 /// <summary>
 /// Interaction logic for PartyPlanner.xaml
 /// </summary>
-public partial class PartyBuilderControl
+public partial class PartyControl
 {
-    public PartyBuilderControl()
+    public PartyControl()
     {
         InitializeComponent();
     }

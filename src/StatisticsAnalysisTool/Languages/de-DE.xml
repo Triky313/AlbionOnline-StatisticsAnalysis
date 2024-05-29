@@ -662,7 +662,7 @@
 	<translation name="NAVIGATION_TAB_VISIBILITY">Navigation Tab Sichtbarkeit</translation>
 	<translation name="SERVER">Server</translation>
 	<translation name="UNKNOWN_SERVER">Unbekannter Server</translation>
-	<translation name="AMERICA_SERVER">Amerikas Server</translation>
+	<translation name="AMERICA_SERVER">Amerika Server</translation>
 	<translation name="ASIA_SERVER">Asien Server</translation>
 	<translation name="EUROPE_SERVER">Europa Server</translation>
 	<translation name="ALBION_DATA_PROJECT_BASE_URL_WEST">Albion data project base url AMERICA</translation>
@@ -784,4 +784,8 @@
 	<translation name="PACKET_PROVIDER">Packet provider</translation>
 	<translation name="TOOL_MUST_BE_RUN_AS_ADMIN">Tool muss als Admin ausgeführt werden</translation>
 	<translation name="ADDED_CRAFTING">Herstellung hinzugefügt</translation>
+	<translation name="PARTY">Gruppe</translation>
+	<translation name="DEATH_ALERT">Todesalarm</translation>
+	<translation name="SELECT_FOR_DEATH_ALERT">Für todes Alarm auswählen</translation>
+	<translation name="DEATH_ALERT_SOUND_USED">Verwendeter Todesalarm Sound</translation>
 </translations>

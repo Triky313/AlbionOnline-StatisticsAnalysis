@@ -784,4 +784,8 @@
 	<translation name="PACKET_PROVIDER">Packet provider</translation>
 	<translation name="TOOL_MUST_BE_RUN_AS_ADMIN">Tool must be run as admin</translation>
 	<translation name="ADDED_CRAFTING">Added crafting</translation>
+	<translation name="PARTY">Party</translation>
+	<translation name="DEATH_ALERT">Death Alert</translation>
+	<translation name="SELECT_FOR_DEATH_ALERT">Select for death alert</translation>
+	<translation name="DEATH_ALERT_SOUND_USED">Death alert sound used</translation>
 </translations>

@@ -12,16 +12,17 @@ public class SettingsObject
 {
     public string CurrentCultureIetfLanguageTag { get; set; }
     public int RefreshRate { get; set; } = 10000;
-    public string PacketFilter { get; set; } = "(host 5.45.187 or host 5.188.125 or 193.169.238) and udp port 5056";
+    public string PacketFilter { get; set; } = "(host 5.45.187 or 5.188.125 or 193.169.238) and udp port 5056";
     public PacketProviderKind PacketProvider { get; set; } = PacketProviderKind.Sockets;
     public ServerLocation ServerLocation { get; set; } = 0; // 0: auto, 1: america, 2: asia, 3: europe
     public ServerType ServerType { get; set; } = ServerType.Live; // 0: Live, 1: Staging, 2: Playground
     public string MainTrackingCharacterName { get; set; }
-    public int BackupIntervalByDays { get; set; } = 7;
+    public int BackupIntervalByDays { get; set; } = 1;
     public int MaximumNumberOfBackups { get; set; } = 10;
     public bool IsOpenItemWindowInNewWindowChecked { get; set; } = true;
     public bool IsInfoWindowShownOnStart { get; set; } = true;
     public string SelectedAlertSound { get; set; }
+    public string SelectedDeathAlertSound { get; set; }
     public string AlbionDataProjectBaseUrlWest { get; set; } = "https://albion-online-data.com/api/v2/";
     public string AlbionDataProjectBaseUrlEast { get; set; } = "https://east.albion-online-data.com/api/v2/";
     public string AlbionDataProjectBaseUrlEurope { get; set; } = "https://europe.albion-online-data.com/api/v2/";
@@ -78,7 +79,7 @@ public class SettingsObject
     public bool IsDamageMeterNaviTabActive { get; set; } = true;
     public bool IsTradeMonitoringNaviTabActive { get; set; } = true;
     public bool IsGatheringNaviTabActive { get; set; } = true;
-    public bool IsPartyBuilderNaviTabActive { get; set; } = true;
+    public bool IsPartyNaviTabActive { get; set; } = true;
     public bool IsStorageHistoryNaviTabActive { get; set; } = true;
     public bool IsMapHistoryNaviTabActive { get; set; } = true;
     public bool IsPlayerInformationNaviTabActive { get; set; } = true;

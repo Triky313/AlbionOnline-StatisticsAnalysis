@@ -11,7 +11,6 @@ using StatisticsAnalysisTool.Exceptions;
 using StatisticsAnalysisTool.Gathering;
 using StatisticsAnalysisTool.Guild;
 using StatisticsAnalysisTool.Localization;
-using StatisticsAnalysisTool.PartyBuilder;
 using StatisticsAnalysisTool.Properties;
 using StatisticsAnalysisTool.Trade;
 using StatisticsAnalysisTool.Trade.Mails;
@@ -30,6 +29,7 @@ using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Data;
 using StatisticsAnalysisTool.Network.PacketProviders;
+using StatisticsAnalysisTool.Party;
 using ValueType = StatisticsAnalysisTool.Enumerations.ValueType;
 
 namespace StatisticsAnalysisTool.Network.Manager;
@@ -54,7 +54,7 @@ public class TrackingController : ITrackingController
     public readonly TradeController TradeController;
     public readonly VaultController VaultController;
     public readonly GatheringController GatheringController;
-    public readonly PartyBuilderController PartyBuilderController;
+    public readonly PartyController PartyController;
     public readonly GuildController GuildController;
     private readonly List<LoggingFilterType> _notificationTypesFilters = new();
 
@@ -73,7 +73,7 @@ public class TrackingController : ITrackingController
         TradeController = new TradeController(this, mainWindowViewModel);
         VaultController = new VaultController(mainWindowViewModel);
         GatheringController = new GatheringController(this, mainWindowViewModel);
-        PartyBuilderController = new PartyBuilderController(this, mainWindowViewModel);
+        PartyController = new PartyController(this, mainWindowViewModel);
         GuildController = new GuildController(this, mainWindowViewModel);
         LiveStatsTracker = new LiveStatsTracker(this, mainWindowViewModel);
 

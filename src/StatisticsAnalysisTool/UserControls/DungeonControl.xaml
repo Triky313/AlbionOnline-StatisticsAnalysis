@@ -34,8 +34,7 @@
                                       SelectedItem="{Binding DungeonBindings.SelectedDungeonStatsType}" 
                                       IsSynchronizedWithCurrentItem="True" DisplayMemberPath="Name" SelectedValuePath="StatsViewType" />
                         </DockPanel>
-                        <!--TODO: Tier is currently not recognized. Value must be searched for again. - Is always set to true for the time being-->
-                        <!--<ContentPresenter ContentTemplate="{StaticResource DungeonStatsFilterTemplate}" Content="{Binding DungeonBindings.DungeonStatsFilter}"/>-->
+                        <ContentPresenter ContentTemplate="{StaticResource DungeonStatsFilterTemplate}" Content="{Binding DungeonBindings.DungeonStatsFilter}"/>
                         <Separator Background="{StaticResource SolidColorBrush.Background.3}" Height="4" Margin="0,2,0,2" />
 
                         <ContentPresenter ContentTemplate="{StaticResource Dungeon.Stats.Template}" Content="{Binding DungeonBindings.Stats}" Margin="0,10,0,0"/>

@@ -1,4 +1,4 @@
-﻿namespace StatisticsAnalysisTool.PartyBuilder;
+﻿namespace StatisticsAnalysisTool.Party;
 
 public enum PartyBuilderItemPowerCondition
 {

@@ -29,7 +29,9 @@ public class SettingsWindowViewModel : BaseViewModel
     private static SettingDataInformation _refreshRatesSelection;
 
     private ObservableCollection<FileInformation> _alertSounds = new();
+    private ObservableCollection<FileInformation> _deathAlertSounds = new();
     private FileInformation _alertSoundSelection;
+    private FileInformation _deathAlertSoundSelection;
     private bool _isOpenItemWindowInNewWindowChecked;
     private bool _showInfoWindowOnStartChecked;
     private SettingsWindowTranslation _translation;
@@ -129,6 +131,7 @@ public class SettingsWindowViewModel : BaseViewModel
         SettingsController.CurrentSettings.IsOpenItemWindowInNewWindowChecked = IsOpenItemWindowInNewWindowChecked;
         SettingsController.CurrentSettings.IsInfoWindowShownOnStart = ShowInfoWindowOnStartChecked;
         SettingsController.CurrentSettings.SelectedAlertSound = AlertSoundSelection?.FileName ?? string.Empty;
+        SettingsController.CurrentSettings.SelectedDeathAlertSound = DeathAlertSoundSelection?.FileName ?? string.Empty;
 
         LanguageController.SetLanguage(Culture.GetCulture(LanguagesSelection.FileName));
 
@@ -164,7 +167,7 @@ public class SettingsWindowViewModel : BaseViewModel
         SettingsController.CurrentSettings.IsDamageMeterNaviTabActive = TabVisibilities?.FirstOrDefault(x => x?.NavigationTabFilterType == NavigationTabFilterType.DamageMeter)?.IsSelected ?? true;
         SettingsController.CurrentSettings.IsTradeMonitoringNaviTabActive = TabVisibilities?.FirstOrDefault(x => x?.NavigationTabFilterType == NavigationTabFilterType.TradeMonitoring)?.IsSelected ?? true;
         SettingsController.CurrentSettings.IsGatheringNaviTabActive = TabVisibilities?.FirstOrDefault(x => x?.NavigationTabFilterType == NavigationTabFilterType.Gathering)?.IsSelected ?? true;
-        SettingsController.CurrentSettings.IsPartyBuilderNaviTabActive = TabVisibilities?.FirstOrDefault(x => x?.NavigationTabFilterType == NavigationTabFilterType.PartyBuilder)?.IsSelected ?? true;
+        SettingsController.CurrentSettings.IsPartyNaviTabActive = TabVisibilities?.FirstOrDefault(x => x?.NavigationTabFilterType == NavigationTabFilterType.Party)?.IsSelected ?? true;
         SettingsController.CurrentSettings.IsStorageHistoryNaviTabActive = TabVisibilities?.FirstOrDefault(x => x?.NavigationTabFilterType == NavigationTabFilterType.StorageHistory)?.IsSelected ?? true;
         SettingsController.CurrentSettings.IsMapHistoryNaviTabActive = TabVisibilities?.FirstOrDefault(x => x?.NavigationTabFilterType == NavigationTabFilterType.MapHistory)?.IsSelected ?? true;
         SettingsController.CurrentSettings.IsPlayerInformationNaviTabActive = TabVisibilities?.FirstOrDefault(x => x?.NavigationTabFilterType == NavigationTabFilterType.PlayerInformation)?.IsSelected ?? true;
@@ -176,7 +179,7 @@ public class SettingsWindowViewModel : BaseViewModel
         mainWindowViewModel.DamageMeterTabVisibility = SettingsController.CurrentSettings.IsDamageMeterNaviTabActive.BoolToVisibility();
         mainWindowViewModel.TradeMonitoringTabVisibility = SettingsController.CurrentSettings.IsTradeMonitoringNaviTabActive.BoolToVisibility();
         mainWindowViewModel.GatheringTabVisibility = SettingsController.CurrentSettings.IsGatheringNaviTabActive.BoolToVisibility();
-        mainWindowViewModel.PartyBuilderTabVisibility = SettingsController.CurrentSettings.IsPartyBuilderNaviTabActive.BoolToVisibility();
+        mainWindowViewModel.PartyTabVisibility = SettingsController.CurrentSettings.IsPartyNaviTabActive.BoolToVisibility();
         mainWindowViewModel.StorageHistoryTabVisibility = SettingsController.CurrentSettings.IsStorageHistoryNaviTabActive.BoolToVisibility();
         mainWindowViewModel.MapHistoryTabVisibility = SettingsController.CurrentSettings.IsMapHistoryNaviTabActive.BoolToVisibility();
         mainWindowViewModel.PlayerInformationTabVisibility = SettingsController.CurrentSettings.IsPlayerInformationNaviTabActive.BoolToVisibility();
@@ -358,10 +361,10 @@ public class SettingsWindowViewModel : BaseViewModel
             IsSelected = SettingsController.CurrentSettings.IsGatheringNaviTabActive,
             Name = MainWindowTranslation.Gathering
         });
-        TabVisibilities.Add(new TabVisibilityFilter(NavigationTabFilterType.PartyBuilder)
+        TabVisibilities.Add(new TabVisibilityFilter(NavigationTabFilterType.Party)
         {
-            IsSelected = SettingsController.CurrentSettings.IsPartyBuilderNaviTabActive,
-            Name = MainWindowTranslation.PartyBuilder
+            IsSelected = SettingsController.CurrentSettings.IsPartyNaviTabActive,
+            Name = MainWindowTranslation.Party
         });
         TabVisibilities.Add(new TabVisibilityFilter(NavigationTabFilterType.StorageHistory)
         {
@@ -387,7 +390,7 @@ public class SettingsWindowViewModel : BaseViewModel
         mainWindowViewModel.DamageMeterTabVisibility = SettingsController.CurrentSettings.IsDamageMeterNaviTabActive.BoolToVisibility();
         mainWindowViewModel.TradeMonitoringTabVisibility = SettingsController.CurrentSettings.IsTradeMonitoringNaviTabActive.BoolToVisibility();
         mainWindowViewModel.GatheringTabVisibility = SettingsController.CurrentSettings.IsGatheringNaviTabActive.BoolToVisibility();
-        mainWindowViewModel.PartyBuilderTabVisibility = SettingsController.CurrentSettings.IsPartyBuilderNaviTabActive.BoolToVisibility();
+        mainWindowViewModel.PartyTabVisibility = SettingsController.CurrentSettings.IsPartyNaviTabActive.BoolToVisibility();
         mainWindowViewModel.StorageHistoryTabVisibility = SettingsController.CurrentSettings.IsStorageHistoryNaviTabActive.BoolToVisibility();
         mainWindowViewModel.MapHistoryTabVisibility = SettingsController.CurrentSettings.IsMapHistoryNaviTabActive.BoolToVisibility();
         mainWindowViewModel.PlayerInformationTabVisibility = SettingsController.CurrentSettings.IsPlayerInformationNaviTabActive.BoolToVisibility();
@@ -440,13 +443,12 @@ public class SettingsWindowViewModel : BaseViewModel
     private void InitMaxAmountOfBackups(ICollection<SettingDataInformation> amountOfBackups)
     {
         amountOfBackups.Clear();
-        amountOfBackups.Add(new SettingDataInformation { Name = "1", Value = 1 });
-        amountOfBackups.Add(new SettingDataInformation { Name = "3", Value = 3 });
         amountOfBackups.Add(new SettingDataInformation { Name = "5", Value = 5 });
         amountOfBackups.Add(new SettingDataInformation { Name = "10", Value = 10 });
         amountOfBackups.Add(new SettingDataInformation { Name = "20", Value = 20 });
         amountOfBackups.Add(new SettingDataInformation { Name = "50", Value = 50 });
         amountOfBackups.Add(new SettingDataInformation { Name = "100", Value = 100 });
+        amountOfBackups.Add(new SettingDataInformation { Name = "250", Value = 250 });
     }
 
     private static void InitDropDownDownByDays(ICollection<SettingDataInformation> updateJsonByDays)
@@ -461,14 +463,25 @@ public class SettingsWindowViewModel : BaseViewModel
 
     private void InitAlertSounds()
     {
-        AlertSounds.Clear();
         SoundController.InitializeSoundFilesFromDirectory();
-        foreach (var sound in SoundController.AlertSounds)
+
+        // Item alert sounds
+        AlertSounds.Clear();
+        foreach (var sound in SoundController.Sounds.Where(x => x.FileName.Contains("alert") && !x.FileName.Contains("deathalert")))
         {
             AlertSounds.Add(new FileInformation(sound.FileName, sound.FilePath));
         }
 
         AlertSoundSelection = AlertSounds.FirstOrDefault(x => x.FileName == SettingsController.CurrentSettings.SelectedAlertSound);
+
+        // Death alert sounds
+        DeathAlertSounds.Clear();
+        foreach (var sound in SoundController.Sounds.Where(x => x.FileName.Contains("deathalert")))
+        {
+            DeathAlertSounds.Add(new FileInformation(sound.FileName, sound.FilePath));
+        }
+
+        DeathAlertSoundSelection = DeathAlertSounds.FirstOrDefault(x => x.FileName == SettingsController.CurrentSettings.SelectedDeathAlertSound);
     }
 
     #endregion
@@ -505,12 +518,32 @@ public class SettingsWindowViewModel : BaseViewModel
         }
     }
 
+    public ObservableCollection<FileInformation> DeathAlertSounds
+    {
+        get => _deathAlertSounds;
+        set
+        {
+            _deathAlertSounds = value;
+            OnPropertyChanged();
+        }
+    }
+
     public FileInformation AlertSoundSelection
     {
         get => _alertSoundSelection;
         set
         {
             _alertSoundSelection = value;
+            OnPropertyChanged();
+        }
+    }
+
+    public FileInformation DeathAlertSoundSelection
+    {
+        get => _deathAlertSoundSelection;
+        set
+        {
+            _deathAlertSoundSelection = value;
             OnPropertyChanged();
         }
     }
@@ -735,7 +768,7 @@ public class SettingsWindowViewModel : BaseViewModel
             OnPropertyChanged();
         }
     }
-    
+
     public string AlbionDataProjectBaseUrlEurope
     {
         get => _albionDataProjectBaseUrlEurope;

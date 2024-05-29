@@ -21,6 +21,7 @@ public class DiedEventHandler : EventPacketHandler<DiedEvent>
     protected override async Task OnActionAsync(DiedEvent value)
     {
         _trackingController.DungeonController?.SetDiedIfInDungeon(new DiedObject(value.Died, value.KilledBy, value.KilledByGuild));
+        _trackingController.PartyController.PlayerHasDied(value.Died);
         await _trackingController.AddNotificationAsync(SetKillNotification(value.Died, value.KilledBy, value.KilledByGuild));
     }
 

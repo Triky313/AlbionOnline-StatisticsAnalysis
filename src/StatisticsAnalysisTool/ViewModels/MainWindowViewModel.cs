@@ -18,7 +18,6 @@ using StatisticsAnalysisTool.Models.BindingModel;
 using StatisticsAnalysisTool.Models.NetworkModel;
 using StatisticsAnalysisTool.Models.TranslationModel;
 using StatisticsAnalysisTool.Network.Manager;
-using StatisticsAnalysisTool.PartyBuilder;
 using StatisticsAnalysisTool.Properties;
 using StatisticsAnalysisTool.Trade;
 using StatisticsAnalysisTool.Views;
@@ -34,6 +33,7 @@ using System.Windows;
 using System.Windows.Data;
 using System.Windows.Media;
 using StatisticsAnalysisTool.Guild;
+using StatisticsAnalysisTool.Party;
 
 // ReSharper disable UnusedMember.Global
 
@@ -107,7 +107,7 @@ public class MainWindowViewModel : BaseViewModel
     private Visibility _damageMeterTabVisibility = Visibility.Visible;
     private Visibility _tradeMonitoringTabVisibility = Visibility.Visible;
     private Visibility _gatheringTabVisibility = Visibility.Visible;
-    private Visibility _partyBuilderTabVisibility = Visibility.Visible;
+    private Visibility _partyTabVisibility = Visibility.Visible;
     private Visibility _storageHistoryTabVisibility = Visibility.Visible;
     private Visibility _mapHistoryTabVisibility = Visibility.Visible;
     private Visibility _playerInformationTabVisibility = Visibility.Visible;
@@ -118,7 +118,7 @@ public class MainWindowViewModel : BaseViewModel
     private string _toolTaskCurrentTaskName;
     private ToolTaskBindings _toolTaskBindings = new();
     private GuildBindings _guildBindings = new ();
-    private PartyBuilderBindings _partyBuilderBindings = new();
+    private PartyBindings _partyBindings = new();
     private string _serverTypeText;
     private bool _isDataLoaded;
     private bool _isCloseButtonActive;
@@ -172,7 +172,7 @@ public class MainWindowViewModel : BaseViewModel
         GatheringBindings.GridSplitterPosition = new GridLength(SettingsController.CurrentSettings.GatheringGridSplitterPosition);
 
         // Party Builder
-        PartyBuilderBindings.GridSplitterPosition = new GridLength(SettingsController.CurrentSettings.PartyBuilderGridSplitterPosition);
+        PartyBindings.GridSplitterPosition = new GridLength(SettingsController.CurrentSettings.PartyBuilderGridSplitterPosition);
 
         // Guild
         GuildBindings.GridSplitterPosition = new GridLength(SettingsController.CurrentSettings.GuildGridSplitterPosition);
@@ -508,12 +508,12 @@ public class MainWindowViewModel : BaseViewModel
         }
     }
 
-    public PartyBuilderBindings PartyBuilderBindings
+    public PartyBindings PartyBindings
     {
-        get => _partyBuilderBindings;
+        get => _partyBindings;
         set
         {
-            _partyBuilderBindings = value;
+            _partyBindings = value;
             OnPropertyChanged();
         }
     }
@@ -1164,12 +1164,12 @@ public class MainWindowViewModel : BaseViewModel
         }
     }
 
-    public Visibility PartyBuilderTabVisibility
+    public Visibility PartyTabVisibility
     {
-        get => _partyBuilderTabVisibility;
+        get => _partyTabVisibility;
         set
         {
-            _partyBuilderTabVisibility = value;
+            _partyTabVisibility = value;
             OnPropertyChanged();
         }
     }

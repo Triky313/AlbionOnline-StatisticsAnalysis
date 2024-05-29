@@ -10,6 +10,7 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
 using System.Windows;
+using System.Windows.Input;
 
 namespace StatisticsAnalysisTool.Dungeon.Models;
 
@@ -43,6 +44,7 @@ public abstract class DungeonBaseFragment : BaseViewModel
     private Loot _mostValuableLoot;
     private Visibility _mostValuableLootVisibility = Visibility.Collapsed;
     private KillStatus _killStatus;
+    private Visibility _itemsContainerVisibility = Visibility.Collapsed;
 
     public ObservableCollection<Guid> GuidList { get; set; }
     public string DungeonHash => $"{EnterDungeonFirstTime.Ticks}{string.Join(",", GuidList)}";
@@ -396,6 +398,16 @@ public abstract class DungeonBaseFragment : BaseViewModel
         }
     }
 
+    public Visibility ItemsContainerVisibility
+    {
+        get => _itemsContainerVisibility;
+        set
+        {
+            _itemsContainerVisibility = value;
+            OnPropertyChanged();
+        }
+    }
+
     public int TotalRunTimeInSeconds
     {
         get
@@ -522,6 +534,19 @@ public abstract class DungeonBaseFragment : BaseViewModel
                 return;
         }
     }
+
+    private void PerformShowLootedItems(object value)
+    {
+        if (Loot?.Count <= 0)
+        {
+            return;
+        }
+
+        ItemsContainerVisibility = ItemsContainerVisibility == Visibility.Visible ? Visibility.Collapsed : Visibility.Visible;
+    }
+
+    private ICommand _showLootedItems;
+    public ICommand ShowLootedItems => _showLootedItems ??= new CommandHandler(PerformShowLootedItems, true);
 
     public static string TranslationSelectToDelete => LanguageController.Translation("SELECT_TO_DELETE");
     public static string TranslationFame => LanguageController.Translation("FAME");

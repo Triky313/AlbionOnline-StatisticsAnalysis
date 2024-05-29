@@ -68,7 +68,7 @@ public sealed class ClusterInfo
     {
         Entered = DateTime.UtcNow;
         MapType = mapType;
-        Guid = mapGuid;
+        //Guid = mapGuid;
         Index = clusterIndex;
         InstanceName = instanceName;
         WorldMapDataType = worldMapDataType;
@@ -85,8 +85,9 @@ public sealed class ClusterInfo
         MapTypeString = GetMapTypeName(MapType);
     }
 
-    public void SetJoinClusterInfo(string index, string mainClusterIndex)
+    public void SetJoinClusterInfo(string index, string mainClusterIndex, Guid? mapGuid)
     {
+        Guid = mapGuid;
         MainClusterIndex ??= mainClusterIndex;
         WorldJsonType = WorldData.GetWorldJsonTypeByIndex(index) ?? WorldData.GetWorldJsonTypeByIndex(mainClusterIndex) ?? string.Empty;
         File = WorldData.GetFileByIndex(index) ?? WorldData.GetFileByIndex(mainClusterIndex) ?? string.Empty;

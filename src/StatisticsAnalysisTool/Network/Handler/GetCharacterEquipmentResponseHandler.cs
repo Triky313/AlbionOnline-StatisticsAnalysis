@@ -18,7 +18,7 @@ public class GetCharacterEquipmentResponseHandler : ResponsePacketHandler<GetCha
     protected override async Task OnActionAsync(GetCharacterEquipmentResponse value)
     {
         _trackingController.EntityController.SetItemPower(value.Guid, value.ItemPower);
-        _trackingController.PartyBuilderController.UpdateInspectedPlayer(value.Guid, value.CharacterEquipment, value.ItemPower);
+        _trackingController.PartyController.UpdateInspectedPlayer(value.Guid, value.CharacterEquipment, value.ItemPower);
         await Task.CompletedTask;
     }
 }

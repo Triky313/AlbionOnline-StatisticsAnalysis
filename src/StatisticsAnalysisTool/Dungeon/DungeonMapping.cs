@@ -1,4 +1,5 @@
-﻿using StatisticsAnalysisTool.Dungeon.Models;
+﻿using StatisticsAnalysisTool.Cluster;
+using StatisticsAnalysisTool.Dungeon.Models;
 using StatisticsAnalysisTool.Enumerations;
 using StatisticsAnalysisTool.Exceptions;
 using System.Linq;
