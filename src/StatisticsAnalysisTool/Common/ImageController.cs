@@ -15,6 +15,7 @@ internal static class ImageController
     private static readonly string SpellImagesDirectory = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, Settings.Default.SpellImageResources);
 
     private static Dictionary<string, BitmapImage> downloading = new();
+
     #region Item image
 
     public static BitmapImage GetItemImage(string uniqueName = null, int pixelHeight = 100, int pixelWidth = 100, bool freeze = false)
