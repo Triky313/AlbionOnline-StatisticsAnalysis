@@ -782,4 +782,8 @@
 	<translation name="PACKET_PROVIDER">工具包来源</translation>
 	<translation name="TOOL_MUST_BE_RUN_AS_ADMIN">必须以管理员身份运行工具</translation>
 	<translation name="ADDED_CRAFTING">已添加的制造</translation>
+	<translation name="PARTY">队伍管理</translation>
+	<translation name="DEATH_ALERT">死亡警报</translation>
+	<translation name="SELECT_FOR_DEATH_ALERT">选择死亡警报</translation>
+	<translation name="DEATH_ALERT_SOUND_USED">使用的死亡警报音效</translation>
 </translations>
