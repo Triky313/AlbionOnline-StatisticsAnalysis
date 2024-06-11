@@ -12,7 +12,7 @@ namespace StatisticsAnalysisTool.GameFileData;
 
 public static class SpellData
 {
-    private static IEnumerable<SpellsJsonObject> _spells;
+    private static List<SpellsJsonObject> _spells;
 
     public static string GetUniqueName(int index)
     {
@@ -30,10 +30,7 @@ public static class SpellData
         {
             return new SpellsJsonObject();
         }
-
-        // The ID in the game has a difference of -360 to the file.
-        index -= 360;
-
+        
         if (index < 0)
         {
             uint unsignedIndex = Convert.ToUInt32(index);

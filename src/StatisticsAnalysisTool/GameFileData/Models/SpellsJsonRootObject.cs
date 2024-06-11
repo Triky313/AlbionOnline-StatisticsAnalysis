@@ -6,5 +6,5 @@ namespace StatisticsAnalysisTool.GameFileData.Models;
 public class SpellsJsonRootObject
 {
     [JsonPropertyName("spells")]
-    public ActiveSpellJsonObject SpellsJson { get; set; }
+    public SpellsJson Spells { get; set; }
 }

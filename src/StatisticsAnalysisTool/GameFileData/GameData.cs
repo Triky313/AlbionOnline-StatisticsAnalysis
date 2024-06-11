@@ -223,7 +223,7 @@ public static class GameData
                 MobJsonRootObject mobRootObject => mobRootObject.Mobs?.Mob as List<T> ?? new List<T>(),
                 LootChestRoot lootChestRoot => lootChestRoot.LootChests?.LootChest as List<T> ?? new List<T>(),
                 WorldJsonRootObject worldJsonRoot => worldJsonRoot.World?.Clusters?.Cluster as List<T> ?? new List<T>(),
-                SpellsJsonRootObject spellsJsonRoot => spellsJsonRoot.SpellsJson?.ActiveSpells as List<T> ?? new List<T>(),
+                SpellsJsonRootObject spellsJsonRoot => spellsJsonRoot.Spells != null ? GetCombinedSpellsList<T>(spellsJsonRoot.Spells) : new List<T>(),
                 MistsJsonRootObject mistsJsonRoot => mistsJsonRoot.Mists?.MistsMaps?.MapSet?.SelectMany(x => x.Map).Select(map => new MistsJsonObject
                 {
                     Id = map.Id,
@@ -240,5 +240,37 @@ public static class GameData
             Log.Error(e, "{message}", MethodBase.GetCurrentMethod()?.DeclaringType);
             return new List<T>();
         }
+    }
+
+    private static List<T> GetCombinedSpellsList<T>(SpellsJson spellsJson)
+    {
+        var combinedList = new List<SpellsJsonObject>();
+
+        if (spellsJson.PassiveSpells != null)
+        {
+            combinedList.AddRange(spellsJson.PassiveSpells);
+        }
+
+        if (spellsJson.ActiveSpells != null)
+        {
+            foreach (var activeSpell in spellsJson.ActiveSpells)
+            {
+                combinedList.Add(activeSpell);
+                if (activeSpell?.ChannelingSpell != null)
+                {
+                    activeSpell.ChannelingSpell = string.Empty;
+                    activeSpell.IsChannelingSpell = true;
+
+                    combinedList.Add(activeSpell);
+                }
+            }
+        }
+
+        if (spellsJson.ToggleSpells != null)
+        {
+            combinedList.AddRange(spellsJson.ToggleSpells);
+        }
+
+        return combinedList as List<T>;
     }
 }
