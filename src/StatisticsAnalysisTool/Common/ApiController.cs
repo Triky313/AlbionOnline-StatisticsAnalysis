@@ -166,6 +166,11 @@ public static class ApiController
             using var response = await client.GetAsync(url);
             using var content = response.Content;
 
+            if (!response.IsSuccessStatusCode)
+            {
+                return gameInfoSearchResponse;
+            }
+
             return JsonSerializer.Deserialize<GameInfoSearchResponse>(await content.ReadAsStringAsync()) ?? gameInfoSearchResponse;
         }
         catch (JsonException ex)
