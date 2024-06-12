@@ -201,6 +201,11 @@ public static class ApiController
             using var response = await client.GetAsync(url);
             using var content = response.Content;
 
+            if (!response.IsSuccessStatusCode)
+            {
+                return gameInfoPlayerResponse;
+            }
+
             return JsonSerializer.Deserialize<GameInfoPlayersResponse>(await content.ReadAsStringAsync()) ??
                    gameInfoPlayerResponse;
         }
