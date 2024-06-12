@@ -528,8 +528,8 @@ public class CombatController
     {
         for (var i = 0; i < runs; i++)
         {
-            var damage = Random.Next(-100, 100);
-            await AddDamage(9999, entity.ObjectId ?? -1, damage, Random.Next(2000, 3000), 2287);
+            var damage = Random.Next(-5000, 5000);
+            await AddDamage(9999, entity.ObjectId ?? -1, damage, Random.Next(2000, 3000), Random.Next(2000, 3000));
             //Debug.Print($"--- AddDamage - {entity.Name}: {damage}");
 
             await Task.Delay(Random.Next(1, 1000));
