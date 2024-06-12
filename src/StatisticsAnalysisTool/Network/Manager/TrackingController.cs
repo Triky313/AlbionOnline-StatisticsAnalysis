@@ -126,7 +126,8 @@ public class TrackingController : ITrackingController
                 DungeonController.LoadDungeonFromFileAsync(),
                 GatheringController.LoadFromFileAsync(),
                 VaultController.LoadFromFileAsync(),
-                GuildController.LoadFromFileAsync()
+                GuildController.LoadFromFileAsync(),
+                CombatController.LoadFromFileAsync()
             );
         }
         catch (Exception e)
@@ -201,11 +202,9 @@ public class TrackingController : ITrackingController
             DungeonController.SaveInFileAsync(),
             GatheringController.SaveInFileAsync(true),
             GuildController.SaveInFileAsync(),
-            EstimatedMarketValueController.SaveInFileAsync(),
-            FileController.SaveAsync(_mainWindowViewModel.DamageMeterBindings?.DamageMeterSnapshots,
-                Path.Combine(AppDomain.CurrentDomain.BaseDirectory, Settings.Default.UserDataDirectoryName, Settings.Default.DamageMeterSnapshotsFileName))
+            CombatController.SaveInFileAsync(),
+            EstimatedMarketValueController.SaveInFileAsync()
         );
-        Debug.Print("Damage Meter snapshots saved");
     }
 
     public bool ExistIndispensableInfos => ClusterController.CurrentCluster != null && EntityController.ExistLocalEntity();

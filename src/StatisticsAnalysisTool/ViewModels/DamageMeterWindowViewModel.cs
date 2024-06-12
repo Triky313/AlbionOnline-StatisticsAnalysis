@@ -1,5 +1,4 @@
 ﻿using StatisticsAnalysisTool.DamageMeter;
-using StatisticsAnalysisTool.EventLogging.Notification;
 using System.Collections.ObjectModel;
 
 namespace StatisticsAnalysisTool.ViewModels;

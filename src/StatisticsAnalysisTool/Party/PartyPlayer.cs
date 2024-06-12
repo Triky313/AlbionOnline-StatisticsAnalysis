@@ -1,9 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using StatisticsAnalysisTool.Common;
+﻿using StatisticsAnalysisTool.Common;
 using StatisticsAnalysisTool.Localization;
 using StatisticsAnalysisTool.Models;
 using StatisticsAnalysisTool.ViewModels;
+using System;
+using System.Collections.Generic;
 
 namespace StatisticsAnalysisTool.Party;
 

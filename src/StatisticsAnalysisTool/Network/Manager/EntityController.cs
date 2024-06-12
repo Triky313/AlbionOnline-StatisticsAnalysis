@@ -523,6 +523,14 @@ public class EntityController
         }
     }
 
+    public void ResetSpells()
+    {
+        foreach (var entity in _knownEntities)
+        {
+            entity.Value.Spells = new List<Spell>();
+        }
+    }
+
     public void ResetEntitiesHealAndOverhealed()
     {
         foreach (var entity in _knownEntities)

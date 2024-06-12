@@ -11,7 +11,7 @@ namespace StatisticsAnalysisTool.Network.Events;
 public class HealthUpdateEvent
 {
     public long CauserId;
-    public int CausingSpellType;
+    public int CausingSpellIndex;
     public EffectOrigin EffectOrigin;
     public EffectType EffectType;
     public double HealthChange;
@@ -63,7 +63,7 @@ public class HealthUpdateEvent
 
             if (parameters.TryGetValue(7, out object causingSpellType))
             {
-                CausingSpellType = causingSpellType.ObjectToShort();
+                CausingSpellIndex = causingSpellType.ObjectToShort();
             }
         }
         catch (ArgumentNullException ex)

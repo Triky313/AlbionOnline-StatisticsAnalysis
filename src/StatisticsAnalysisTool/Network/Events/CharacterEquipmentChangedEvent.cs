@@ -61,12 +61,12 @@ public class CharacterEquipmentChangedEvent
 
     private void ProcessSpells(IReadOnlyDictionary<byte, object> parameters)
     {
-        if (parameters.TryGetValue(5, out object spellsObject))
+        if (parameters.TryGetValue(6, out object spellsObject))
         {
             var valueType = spellsObject.GetType();
             if (valueType.IsArray && typeof(short[]).Name == valueType.Name)
             {
-                var spell = ((short[]) parameters[5]).ToDictionary();
+                var spell = ((short[]) parameters[6]).ToDictionary();
 
                 AddSpell(SlotType.MainHand, spell[0]);
                 AddSpell(SlotType.MainHand, spell[1]);
