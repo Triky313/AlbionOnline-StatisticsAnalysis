@@ -431,9 +431,11 @@ public class CombatController
 
     private static async Task<ObservableCollection<SpellFragment>> AddOrUpdateSpellFragmentAsync(ObservableCollection<SpellFragment> spellsFragments, List<Spell> spells)
     {
-        await Application.Current.Dispatcher.InvokeAsync(() =>
+        var fragmentsToAdd = new List<SpellFragment>();
+
+        await Application.Current.Dispatcher.InvokeAsync(async () =>
         {
-            foreach (var spell in spells)
+            await foreach (var spell in spells.ToAsyncEnumerable())
             {
                 var existingFragment = spellsFragments.FirstOrDefault(x => x.Index == spell.Index);
                 if (existingFragment != null)
@@ -443,13 +445,18 @@ public class CombatController
                 }
                 else
                 {
-                    spellsFragments.Add(new SpellFragment
+                    fragmentsToAdd.Add(new SpellFragment
                     {
                         Index = spell.Index,
                         UniqueName = spell.UniqueName,
                         DamageHealValue = spell.DamageHealValue
                     });
                 }
+            }
+
+            foreach (var fragment in fragmentsToAdd)
+            {
+                spellsFragments.Add(fragment);
             }
         });
 
