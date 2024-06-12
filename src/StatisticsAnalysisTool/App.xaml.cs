@@ -141,7 +141,7 @@ public partial class App
         {
             return;
         }
-        
+
         _trackingController?.StopTracking();
         CriticalData.Save();
         if (!BackupController.ExistBackupOnSettingConditions())
