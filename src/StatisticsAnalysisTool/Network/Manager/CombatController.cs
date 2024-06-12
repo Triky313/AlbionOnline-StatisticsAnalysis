@@ -3,13 +3,17 @@ using StatisticsAnalysisTool.Common;
 using StatisticsAnalysisTool.Common.UserSettings;
 using StatisticsAnalysisTool.DamageMeter;
 using StatisticsAnalysisTool.Enumerations;
+using StatisticsAnalysisTool.Models;
 using StatisticsAnalysisTool.Models.ItemsJsonModel;
 using StatisticsAnalysisTool.Models.NetworkModel;
+using StatisticsAnalysisTool.Properties;
 using StatisticsAnalysisTool.ViewModels;
 using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Diagnostics;
+using System.IO;
 using System.Linq;
 using System.Reflection;
 using System.Threading.Tasks;
@@ -42,7 +46,7 @@ public class CombatController
 
     public event Action<ObservableCollection<DamageMeterFragment>, List<KeyValuePair<Guid, PlayerGameObject>>> OnDamageUpdate;
 
-    public Task AddDamage(long affectedId, long causerId, double healthChange, double newHealthValue)
+    public Task AddDamage(long affectedId, long causerId, double healthChange, double newHealthValue, int causingSpellIndex)
     {
         var healthChangeType = GetHealthChangeType(healthChange);
         if (!SettingsController.CurrentSettings.IsDamageMeterTrackingActive || (affectedId == causerId && healthChangeType == HealthChangeType.Damage))
@@ -67,6 +71,7 @@ public class CombatController
             }
 
             gameObjectValue.Damage += damageChangeValue;
+            AddOrUpdateSpell(causingSpellIndex, gameObjectValue, healthChangeType, damageChangeValue);
         }
 
         if (healthChangeType == HealthChangeType.Heal)
@@ -77,13 +82,15 @@ public class CombatController
                 return Task.CompletedTask;
             }
 
+            var positiveHealChangeValue = (int) Math.Round(healChangeValue, MidpointRounding.AwayFromZero);
             if (!IsMaxHealthReached(affectedId, newHealthValue))
             {
-                gameObjectValue.Heal += (int) Math.Round(healChangeValue, MidpointRounding.AwayFromZero);
+                gameObjectValue.Heal += positiveHealChangeValue;
+                AddOrUpdateSpell(causingSpellIndex, gameObjectValue, healthChangeType, positiveHealChangeValue);
             }
             else
             {
-                gameObjectValue.Overhealed += (int) Math.Round(healChangeValue, MidpointRounding.AwayFromZero);
+                gameObjectValue.Overhealed += positiveHealChangeValue;
             }
         }
 
@@ -119,7 +126,7 @@ public class CombatController
             var fragment = damageMeter.ToList().FirstOrDefault(x => x.CauserGuid == healthChangeObject.Value.UserGuid);
             if (fragment != null)
             {
-                UpdateDamageMeterFragment(fragment, healthChangeObject, entities, currentTotalDamage, currentTotalHeal);
+                await UpdateDamageMeterFragmentAsync(fragment, healthChangeObject, entities, currentTotalDamage, currentTotalHeal);
             }
             else
             {
@@ -133,7 +140,7 @@ public class CombatController
         _isUiUpdateActive = false;
     }
 
-    private static void UpdateDamageMeterFragment(DamageMeterFragment fragment, KeyValuePair<Guid, PlayerGameObject> healthChangeObject,
+    private static async Task UpdateDamageMeterFragmentAsync(DamageMeterFragment fragment, KeyValuePair<Guid, PlayerGameObject> healthChangeObject,
         List<KeyValuePair<Guid, PlayerGameObject>> entities, long currentTotalDamage, long currentTotalHeal)
     {
         var healthChangeObjectValue = healthChangeObject.Value;
@@ -172,6 +179,9 @@ public class CombatController
         {
             fragment.Overhealed = healthChangeObjectValue.Overhealed;
         }
+
+        // Spells
+        await AddOrUpdateSpellFragmentAsync(fragment.Spells, healthChangeObjectValue?.Spells);
 
         // Generally
         if (healthChangeObjectValue != null)
@@ -217,7 +227,9 @@ public class CombatController
             OverhealedPercentageOfTotalHealing = GetOverhealedPercentageOfHealWithOverhealed(healthChangeObjectValue.Overhealed, healthChangeObjectValue.Heal),
 
             Name = healthChangeObjectValue.Name,
-            CauserMainHand = item
+            CauserMainHand = item,
+
+            Spells = await AddOrUpdateSpellFragmentAsync(new ObservableCollection<SpellFragment>(), healthChangeObjectValue?.Spells)
         };
 
         await Application.Current.Dispatcher.InvokeAsync(() =>
@@ -316,6 +328,7 @@ public class CombatController
         _trackingController.EntityController.ResetEntitiesDamageTimes();
         _trackingController.EntityController.ResetEntitiesDamage();
         _trackingController.EntityController.ResetEntitiesHeal();
+        _trackingController.EntityController.ResetSpells();
         _trackingController.EntityController.ResetEntitiesHealAndOverhealed();
         _trackingController.EntityController.ResetEntitiesDamageStartTime();
 
@@ -379,6 +392,75 @@ public class CombatController
         }
 
         return false;
+    }
+
+    private void AddOrUpdateSpell(int causingSpellIndex, PlayerGameObject playerGameObject, HealthChangeType healthChangeType, int healthChangeValue)
+    {
+        if (causingSpellIndex <= 0)
+        {
+            return;
+        }
+
+        var spell = playerGameObject.Spells.FirstOrDefault(x => x.Index == causingSpellIndex);
+        if (spell is not null && healthChangeType == HealthChangeType.Damage)
+        {
+            spell.DamageHealValue += healthChangeValue;
+        }
+        else if (spell is not null && healthChangeType == HealthChangeType.Heal)
+        {
+            spell.DamageHealValue += healthChangeValue;
+        }
+        else if (spell is null)
+        {
+            if (healthChangeType == HealthChangeType.Damage)
+            {
+                playerGameObject.Spells.Add(new Spell(causingSpellIndex)
+                {
+                    DamageHealValue = healthChangeValue
+                });
+            }
+            else
+            {
+                playerGameObject.Spells.Add(new Spell(causingSpellIndex)
+                {
+                    DamageHealValue = healthChangeValue
+                });
+            }
+        }
+    }
+
+    private static async Task<ObservableCollection<SpellFragment>> AddOrUpdateSpellFragmentAsync(ObservableCollection<SpellFragment> spellsFragments, List<Spell> spells)
+    {
+        var fragmentsToAdd = new List<SpellFragment>();
+
+        await Application.Current.Dispatcher.InvokeAsync(async () =>
+        {
+            await foreach (var spell in spells.ToAsyncEnumerable())
+            {
+                var existingFragment = spellsFragments.FirstOrDefault(x => x.Index == spell.Index);
+                if (existingFragment != null)
+                {
+                    existingFragment.UniqueName = spell.UniqueName;
+                    existingFragment.DamageHealValue = spell.DamageHealValue;
+                }
+                else
+                {
+                    fragmentsToAdd.Add(new SpellFragment
+                    {
+                        Index = spell.Index,
+                        UniqueName = spell.UniqueName,
+                        DamageHealValue = spell.DamageHealValue
+                    });
+                }
+            }
+
+            foreach (var fragment in fragmentsToAdd)
+            {
+                spellsFragments.Add(fragment);
+            }
+        });
+
+        return spellsFragments;
     }
 
     #endregion
@@ -447,7 +529,7 @@ public class CombatController
         for (var i = 0; i < runs; i++)
         {
             var damage = Random.Next(-100, 100);
-            await AddDamage(9999, entity.ObjectId ?? -1, damage, Random.Next(2000, 3000));
+            await AddDamage(9999, entity.ObjectId ?? -1, damage, Random.Next(2000, 3000), 2287);
             //Debug.Print($"--- AddDamage - {entity.Name}: {damage}");
 
             await Task.Delay(Random.Next(1, 1000));
@@ -490,6 +572,27 @@ public class CombatController
         }
 
         return _trackingController?.EntityController?.GetAllEntities();
+    }
+
+    #endregion
+
+    #region Load / Save local file data
+
+    public async Task LoadFromFileAsync()
+    {
+        var dto = await FileController.LoadAsync<List<DamageMeterSnapshotDto>>(
+            Path.Combine(AppDomain.CurrentDomain.BaseDirectory, Settings.Default.UserDataDirectoryName, Settings.Default.DamageMeterSnapshotsFileName));
+        var damageMeterSnapshot = dto.Select(SnapshotMapping.Mapping);
+
+        _mainWindowViewModel.DamageMeterBindings.DamageMeterSnapshots = damageMeterSnapshot.ToList();
+    }
+
+    public async Task SaveInFileAsync()
+    {
+        DirectoryController.CreateDirectoryWhenNotExists(Path.Combine(AppDomain.CurrentDomain.BaseDirectory, Settings.Default.UserDataDirectoryName));
+        await FileController.SaveAsync(_mainWindowViewModel.DamageMeterBindings?.DamageMeterSnapshots?.Select(SnapshotMapping.Mapping),
+            Path.Combine(AppDomain.CurrentDomain.BaseDirectory, Settings.Default.UserDataDirectoryName, Settings.Default.DamageMeterSnapshotsFileName));
+        Debug.Print("Damage Meter snapshots saved");
     }
 
     #endregion

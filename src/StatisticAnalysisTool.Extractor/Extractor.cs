@@ -32,7 +32,13 @@ public class Extractor
     public async Task ExtractGameDataAsync(string outputDirPath, string[] binFileNamesToExtract)
     {
         await LoadLocationDataAsync();
-        await BinaryDumper.ExtractAsync(_mainGameServerFolderString, outputDirPath, binFileNamesToExtract);
+        await BinaryDumper.ExtractAsJsonAsync(_mainGameServerFolderString, outputDirPath, binFileNamesToExtract);
+    }
+
+    public async Task ExtractGameDataFromXmlAsync(string outputDirPath, string[] binFileNamesToExtract)
+    {
+        await LoadLocationDataAsync();
+        await BinaryDumper.ExtractAsXmlAsync(_mainGameServerFolderString, outputDirPath, binFileNamesToExtract);
     }
 
     private static string GetServerTypeString(ServerType serverType)

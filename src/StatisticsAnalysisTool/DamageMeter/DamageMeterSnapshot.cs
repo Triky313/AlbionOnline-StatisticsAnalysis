@@ -1,5 +1,4 @@
-﻿using StatisticsAnalysisTool.Common;
-using StatisticsAnalysisTool.ViewModels;
+﻿using StatisticsAnalysisTool.ViewModels;
 using System;
 using System.Collections.Generic;
 using System.Globalization;

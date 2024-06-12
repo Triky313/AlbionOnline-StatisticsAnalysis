@@ -487,22 +487,10 @@ namespace StatisticsAnalysisTool.Properties {
         
         [global::System.Configuration.ApplicationScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("spells.json")]
+        [global::System.Configuration.DefaultSettingValueAttribute("spells.xml")]
         public string SpellDataFileName {
             get {
                 return ((string)(this["SpellDataFileName"]));
-            }
-        }
-        
-        [global::System.Configuration.UserScopedSettingAttribute()]
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("spells-modified.json")]
-        public string ModifiedSpellDataFileName {
-            get {
-                return ((string)(this["ModifiedSpellDataFileName"]));
-            }
-            set {
-                this["ModifiedSpellDataFileName"] = value;
             }
         }
         

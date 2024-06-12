@@ -98,6 +98,11 @@ public static class GameData
                 taskFactories.Add(() => extractor.ExtractGameDataAsync(gameFilesDirPath, new[] { "items" }));
             }
 
+            if (Extractor.IsBinFileNewer(Path.Combine(gameFilesDirPath, "spells.xml"), mainGameFolderPath, serverType, "spells"))
+            {
+                taskFactories.Add(() => extractor.ExtractGameDataFromXmlAsync(gameFilesDirPath, new[] { "spells" }));
+            }
+
             if (Extractor.IsBinFileNewer(Path.Combine(gameFilesDirPath, "mobs-modified.json"), mainGameFolderPath, serverType, "mobs"))
             {
                 fileNamesToLoad.Add("mobs");
@@ -106,11 +111,6 @@ public static class GameData
             if (Extractor.IsBinFileNewer(Path.Combine(gameFilesDirPath, "world-modified.json"), mainGameFolderPath, serverType, "cluster\\world"))
             {
                 fileNamesToLoad.Add("cluster\\world");
-            }
-
-            if (Extractor.IsBinFileNewer(Path.Combine(gameFilesDirPath, "spells-modified.json"), mainGameFolderPath, serverType, "spells"))
-            {
-                fileNamesToLoad.Add("spells");
             }
 
             if (Extractor.IsBinFileNewer(Path.Combine(gameFilesDirPath, "mists-modified.json"), mainGameFolderPath, serverType, "mists"))
@@ -223,7 +223,6 @@ public static class GameData
                 MobJsonRootObject mobRootObject => mobRootObject.Mobs?.Mob as List<T> ?? new List<T>(),
                 LootChestRoot lootChestRoot => lootChestRoot.LootChests?.LootChest as List<T> ?? new List<T>(),
                 WorldJsonRootObject worldJsonRoot => worldJsonRoot.World?.Clusters?.Cluster as List<T> ?? new List<T>(),
-                SpellsJsonRootObject spellsJsonRoot => spellsJsonRoot.SpellsJson?.ActiveSpells as List<T> ?? new List<T>(),
                 MistsJsonRootObject mistsJsonRoot => mistsJsonRoot.Mists?.MistsMaps?.MapSet?.SelectMany(x => x.Map).Select(map => new MistsJsonObject
                 {
                     Id = map.Id,
