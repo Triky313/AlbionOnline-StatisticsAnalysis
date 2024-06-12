@@ -16,7 +16,7 @@ public static class SpellData
 
     public static string GetUniqueName(int index)
     {
-        return GetSpellJsonObjectByIndex(index)?.UniqueName ?? string.Empty;
+        return GetSpellByIndex(index)?.UniqueName ?? string.Empty;
     }
 
     public static bool IsDataLoaded()
@@ -24,7 +24,7 @@ public static class SpellData
         return _spells?.Count > 0;
     }
 
-    private static GameFileDataSpell GetSpellJsonObjectByIndex(int index)
+    public static GameFileDataSpell GetSpellByIndex(int index)
     {
         if (!IsDataLoaded())
         {

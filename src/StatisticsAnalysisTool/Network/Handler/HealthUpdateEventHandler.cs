@@ -15,6 +15,6 @@ public class HealthUpdateEventHandler : EventPacketHandler<HealthUpdateEvent>
 
     protected override async Task OnActionAsync(HealthUpdateEvent value)
     {
-        await _trackingController.CombatController.AddDamage(value.AffectedObjectId, value.CauserId, value.HealthChange, value.NewHealthValue);
+        await _trackingController.CombatController.AddDamage(value.AffectedObjectId, value.CauserId, value.HealthChange, value.NewHealthValue, value.CausingSpellIndex);
     }
 }
