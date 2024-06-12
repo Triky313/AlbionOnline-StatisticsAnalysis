@@ -32,7 +32,7 @@ public class DamageMeterFragment : BaseViewModel
     private double _overhealedPercentageOfTotalHealing;
     private double _overhealed;
     private Visibility _spellsContainerVisibility = Visibility.Collapsed;
-    private ObservableCollection<SpellsFragment> _spells = new ();
+    private ObservableCollection<SpellFragment> _spells = new ();
 
     public DamageMeterFragment(DamageMeterFragment damageMeterFragment)
     {
@@ -247,7 +247,7 @@ public class DamageMeterFragment : BaseViewModel
 
     #region Spells
 
-    public ObservableCollection<SpellsFragment> Spells
+    public ObservableCollection<SpellFragment> Spells
     {
         get => _spells;
         set
@@ -297,7 +297,6 @@ public class DamageMeterFragment : BaseViewModel
 
     private ICommand _showSpells;
     public ICommand ShowSpells => _showSpells ??= new CommandHandler(PerformShowSpells, true);
-
 
     public static string TranslationCombatTime => LanguageController.Translation("COMBAT_TIME");
     public static string TranslationHealingWithoutOverhealed => LanguageController.Translation("HEALING_WITHOUT_OVERHEALED");

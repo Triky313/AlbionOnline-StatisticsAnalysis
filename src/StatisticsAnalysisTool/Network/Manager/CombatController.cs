@@ -6,11 +6,14 @@ using StatisticsAnalysisTool.Enumerations;
 using StatisticsAnalysisTool.Models;
 using StatisticsAnalysisTool.Models.ItemsJsonModel;
 using StatisticsAnalysisTool.Models.NetworkModel;
+using StatisticsAnalysisTool.Properties;
 using StatisticsAnalysisTool.ViewModels;
 using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Diagnostics;
+using System.IO;
 using System.Linq;
 using System.Reflection;
 using System.Threading.Tasks;
@@ -226,7 +229,7 @@ public class CombatController
             Name = healthChangeObjectValue.Name,
             CauserMainHand = item,
 
-            Spells = await AddOrUpdateSpellFragmentAsync(new ObservableCollection<SpellsFragment>(), healthChangeObjectValue?.Spells)
+            Spells = await AddOrUpdateSpellFragmentAsync(new ObservableCollection<SpellFragment>(), healthChangeObjectValue?.Spells)
         };
 
         await Application.Current.Dispatcher.InvokeAsync(() =>
@@ -393,6 +396,11 @@ public class CombatController
 
     private void AddOrUpdateSpell(int causingSpellIndex, PlayerGameObject playerGameObject, HealthChangeType healthChangeType, int healthChangeValue)
     {
+        if (causingSpellIndex <= 0)
+        {
+            return;
+        }
+
         var spell = playerGameObject.Spells.FirstOrDefault(x => x.Index == causingSpellIndex);
         if (spell is not null && healthChangeType == HealthChangeType.Damage)
         {
@@ -421,7 +429,7 @@ public class CombatController
         }
     }
 
-    private static async Task<ObservableCollection<SpellsFragment>> AddOrUpdateSpellFragmentAsync(ObservableCollection<SpellsFragment> spellsFragments, List<Spell> spells)
+    private static async Task<ObservableCollection<SpellFragment>> AddOrUpdateSpellFragmentAsync(ObservableCollection<SpellFragment> spellsFragments, List<Spell> spells)
     {
         await Application.Current.Dispatcher.InvokeAsync(() =>
         {
@@ -435,7 +443,7 @@ public class CombatController
                 }
                 else
                 {
-                    spellsFragments.Add(new SpellsFragment
+                    spellsFragments.Add(new SpellFragment
                     {
                         Index = spell.Index,
                         UniqueName = spell.UniqueName,
@@ -557,6 +565,27 @@ public class CombatController
         }
 
         return _trackingController?.EntityController?.GetAllEntities();
+    }
+
+    #endregion
+
+    #region Load / Save local file data
+
+    public async Task LoadFromFileAsync()
+    {
+        var dto = await FileController.LoadAsync<List<DamageMeterSnapshotDto>>(
+            Path.Combine(AppDomain.CurrentDomain.BaseDirectory, Settings.Default.UserDataDirectoryName, Settings.Default.DamageMeterSnapshotsFileName));
+        var damageMeterSnapshot = dto.Select(SnapshotMapping.Mapping);
+
+        _mainWindowViewModel.DamageMeterBindings.DamageMeterSnapshots = damageMeterSnapshot.ToList();
+    }
+
+    public async Task SaveInFileAsync()
+    {
+        DirectoryController.CreateDirectoryWhenNotExists(Path.Combine(AppDomain.CurrentDomain.BaseDirectory, Settings.Default.UserDataDirectoryName));
+        await FileController.SaveAsync(_mainWindowViewModel.DamageMeterBindings?.DamageMeterSnapshots?.Select(SnapshotMapping.Mapping),
+            Path.Combine(AppDomain.CurrentDomain.BaseDirectory, Settings.Default.UserDataDirectoryName, Settings.Default.DamageMeterSnapshotsFileName));
+        Debug.Print("Damage Meter snapshots saved");
     }
 
     #endregion

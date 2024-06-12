@@ -5,7 +5,7 @@ using StatisticsAnalysisTool.Common;
 
 namespace StatisticsAnalysisTool.DamageMeter;
 
-public class SpellsFragment : BaseViewModel
+public class SpellFragment : BaseViewModel
 {
     private string _uniqueName;
     private long _damageHealValue;

@@ -1,17 +1,23 @@
 ﻿using StatisticsAnalysisTool.Common;
 using StatisticsAnalysisTool.Localization;
 using StatisticsAnalysisTool.Models;
+using StatisticsAnalysisTool.ViewModels;
 using System;
+using System.Collections.Generic;
+using System.Linq;
 using System.Text.Json.Serialization;
+using System.Windows;
+using System.Windows.Input;
 
 namespace StatisticsAnalysisTool.DamageMeter;
-public sealed class DamageMeterSnapshotFragment
+public sealed class DamageMeterSnapshotFragment : BaseViewModel
 {
     private string _causerMainHandItemUniqueName;
     private long _damage;
     private double _dps;
     private long _heal;
     private double _hps;
+    private Visibility _spellsContainerVisibility = Visibility.Collapsed;
 
     public DamageMeterSnapshotFragment(DamageMeterFragment damageMeterFragment)
     {
@@ -27,16 +33,24 @@ public sealed class DamageMeterSnapshotFragment
         HealInPercent = damageMeterFragment.HealInPercent;
         HealPercentage = damageMeterFragment.HealPercentage;
         CauserMainHandItemUniqueName = damageMeterFragment.CauserMainHand?.UniqueName ?? string.Empty;
+        OverhealedPercentageOfTotalHealing = damageMeterFragment.OverhealedPercentageOfTotalHealing;
+        Spells = damageMeterFragment.Spells.Select(x => new SpellsSnapshotFragment()
+        {
+            Index = x.Index,
+            UniqueName = x.UniqueName,
+            DamageHealValue = x.DamageHealValue,
+            DamageHealShortString = x.DamageHealShortString
+        }).ToList();
     }
 
     public DamageMeterSnapshotFragment()
     {
     }
 
-    public string Name { get; set; }
-    public Guid CauserGuid { get; set; }
+    public string Name { get; init; }
+    public Guid CauserGuid { get; init; }
     public bool IsDamageMeterShowing { get; set; } = true;
-    public TimeSpan CombatTime { get; set; }
+    public TimeSpan CombatTime { get; init; }
 
     #region Damage
 
@@ -100,7 +114,34 @@ public sealed class DamageMeterSnapshotFragment
 
     public double HealPercentage { get; set; }
 
+    public double OverhealedPercentageOfTotalHealing { get; set; }
+
     #endregion
+
+    #region Spells
+
+    public List<SpellsSnapshotFragment> Spells { get; init; }
+
+    [JsonIgnore]
+    public Visibility SpellsContainerVisibility
+    {
+        get => _spellsContainerVisibility;
+        set
+        {
+            _spellsContainerVisibility = value;
+            OnPropertyChanged();
+        }
+    }
+
+    #endregion
+
+    private void PerformShowSpells(object value)
+    {
+        SpellsContainerVisibility = SpellsContainerVisibility == Visibility.Visible ? Visibility.Collapsed : Visibility.Visible;
+    }
+
+    private ICommand _showSpells;
+    public ICommand ShowSpells => _showSpells ??= new CommandHandler(PerformShowSpells, true);
 
     public string TranslationCombatTime => LanguageController.Translation("COMBAT_TIME");
 
