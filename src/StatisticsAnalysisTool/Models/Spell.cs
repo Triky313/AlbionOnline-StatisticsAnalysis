@@ -20,6 +20,5 @@ public class Spell
     public string Target { get; init; }
     public string Category { get; init; }
 
-    public long Damage { get; set; }
-    public long Heal { get; set; }
+    public long DamageHealValue { get; set; }
 }

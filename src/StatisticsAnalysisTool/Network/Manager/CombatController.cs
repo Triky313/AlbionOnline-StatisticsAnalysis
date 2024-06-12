@@ -396,11 +396,11 @@ public class CombatController
         var spell = playerGameObject.Spells.FirstOrDefault(x => x.Index == causingSpellIndex);
         if (spell is not null && healthChangeType == HealthChangeType.Damage)
         {
-            spell.Damage += healthChangeValue;
+            spell.DamageHealValue += healthChangeValue;
         }
         else if (spell is not null && healthChangeType == HealthChangeType.Heal)
         {
-            spell.Heal += healthChangeValue;
+            spell.DamageHealValue += healthChangeValue;
         }
         else if (spell is null)
         {
@@ -408,14 +408,14 @@ public class CombatController
             {
                 playerGameObject.Spells.Add(new Spell(causingSpellIndex)
                 {
-                    Damage = healthChangeValue
+                    DamageHealValue = healthChangeValue
                 });
             }
             else
             {
                 playerGameObject.Spells.Add(new Spell(causingSpellIndex)
                 {
-                    Heal = healthChangeValue
+                    DamageHealValue = healthChangeValue
                 });
             }
         }
@@ -427,12 +427,11 @@ public class CombatController
         {
             foreach (var spell in spells)
             {
-                var existingFragment = spellsFragments.FirstOrDefault(f => f.Index == spell.Index);
+                var existingFragment = spellsFragments.FirstOrDefault(x => x.Index == spell.Index);
                 if (existingFragment != null)
                 {
                     existingFragment.UniqueName = spell.UniqueName;
-                    existingFragment.Damage = spell.Damage;
-                    existingFragment.Heal = spell.Heal;
+                    existingFragment.DamageHealValue = spell.DamageHealValue;
                 }
                 else
                 {
@@ -440,8 +439,7 @@ public class CombatController
                     {
                         Index = spell.Index,
                         UniqueName = spell.UniqueName,
-                        Damage = spell.Damage,
-                        Heal = spell.Heal
+                        DamageHealValue = spell.DamageHealValue
                     });
                 }
             }

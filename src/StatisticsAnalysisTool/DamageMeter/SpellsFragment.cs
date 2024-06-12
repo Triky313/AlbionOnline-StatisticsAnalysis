@@ -8,10 +8,9 @@ namespace StatisticsAnalysisTool.DamageMeter;
 public class SpellsFragment : BaseViewModel
 {
     private string _uniqueName;
-    private long _damage;
-    private long _heal;
+    private long _damageHealValue;
     private BitmapImage _icon;
-    private string _damageShortString;
+    private string _damageHealShortString;
 
     public int Index { get; set; }
 
@@ -25,36 +24,26 @@ public class SpellsFragment : BaseViewModel
         }
     }
 
-    public long Damage
+    public long DamageHealValue
     {
-        get => _damage;
+        get => _damageHealValue;
         set
         {
-            _damage = value;
-            DamageShortString = _damage.ToShortNumberString();
+            _damageHealValue = value;
+            DamageHealShortString = _damageHealValue.ToShortNumberString();
             OnPropertyChanged();
         }
     }
 
-    public string DamageShortString
+    public string DamageHealShortString
     {
-        get => _damageShortString;
+        get => _damageHealShortString;
         private set
         {
-            _damageShortString = value;
+            _damageHealShortString = value;
             OnPropertyChanged();
         }
     }
-
-    public long Heal
-    {
-        get => _heal;
-        set
-        {
-            _heal = value;
-            OnPropertyChanged();
-        }
-    }
-
+    
     public BitmapImage Icon => Application.Current.Dispatcher.Invoke(() => _icon ??= ImageController.GetSpellImage(UniqueName));
 }
