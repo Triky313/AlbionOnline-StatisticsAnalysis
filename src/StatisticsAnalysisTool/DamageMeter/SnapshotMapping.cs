@@ -79,7 +79,9 @@ public static class SnapshotMapping
             Index = snapshot.Index,
             UniqueName = snapshot.UniqueName,
             DamageHealValue = snapshot.DamageHealValue,
-            DamageHealShortString = snapshot.DamageHealShortString
+            DamageHealShortString = snapshot.DamageHealShortString,
+            Target = snapshot.Target,
+            Category = snapshot.Category
         };
     }
 
@@ -90,7 +92,9 @@ public static class SnapshotMapping
             Index = snapshotDto.Index,
             UniqueName = snapshotDto.UniqueName,
             DamageHealValue = snapshotDto.DamageHealValue,
-            DamageHealShortString = snapshotDto.DamageHealShortString
+            DamageHealShortString = snapshotDto.DamageHealShortString,
+            Target = snapshotDto.Target,
+            Category = snapshotDto.Category
         };
     }
 }

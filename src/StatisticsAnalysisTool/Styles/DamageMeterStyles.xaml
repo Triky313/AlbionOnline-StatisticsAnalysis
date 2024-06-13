@@ -67,10 +67,34 @@
         </Style.Triggers>
     </Style>
 
+    <Style TargetType="Label" x:Key="DamageMeter.Category.DamageHeal.Color">
+        <Setter Property="Foreground" Value="{StaticResource SolidColorBrush.Text.1}" />
+        <Style.Triggers>
+            <DataTrigger Binding="{Binding Category}" Value="heal">
+                <Setter Property="Foreground" Value="{StaticResource SolidColorBrush.Accent.Green.4}" />
+            </DataTrigger>
+            <DataTrigger Binding="{Binding Category}" Value="damage">
+                <Setter Property="Foreground" Value="{StaticResource SolidColorBrush.Accent.Red.4}" />
+            </DataTrigger>
+            <DataTrigger Binding="{Binding Category}" Value="instant">
+                <Setter Property="Foreground" Value="{StaticResource SolidColorBrush.Accent.Red.4}" />
+            </DataTrigger>
+        </Style.Triggers>
+    </Style>
+
+    <Style TargetType="Image" x:Key="DamageMeter.Icon.Selector">
+        <Setter Property="Source" Value="{Binding Icon, IsAsync=True, Mode=OneWay}" />
+        <Style.Triggers>
+            <DataTrigger Binding="{Binding Index}" Value="0">
+                <Setter Property="Source" Value="../Assets/auto_attack.png" />
+            </DataTrigger>
+        </Style.Triggers>
+    </Style>
+
     <DataTemplate x:Key="SpellBarTemplate" DataType="{x:Type damageMeter:SpellFragment}">
         <StackPanel Orientation="Vertical" Height="50" Width="55" Margin="0,0,0,7" ToolTip="{Binding UniqueName}">
-            <Image Source="{Binding Icon, IsAsync=True, Mode=OneWay}" Height="40" Width="40" Margin="0,0,0,5" Stretch="Fill" VerticalAlignment="Top" HorizontalAlignment="Center" />
-            <Label Foreground="{StaticResource SolidColorBrush.Weapon.Text}" Content="{Binding DamageHealShortString}" 
+            <Image Style="{StaticResource DamageMeter.Icon.Selector}" Height="40" Width="40" Margin="0,0,0,5" Stretch="Fill" VerticalAlignment="Top" HorizontalAlignment="Center" />
+            <Label Style="{StaticResource DamageMeter.Category.DamageHeal.Color}" Content="{Binding DamageHealShortString}" 
                    Margin="0,-10,0,0" Padding="0" HorizontalContentAlignment="Center" VerticalAlignment="Bottom" />
         </StackPanel>
     </DataTemplate>

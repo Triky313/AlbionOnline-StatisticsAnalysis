@@ -1,7 +1,7 @@
-﻿using System.Windows;
+﻿using StatisticsAnalysisTool.Common;
 using StatisticsAnalysisTool.ViewModels;
+using System.Windows;
 using System.Windows.Media.Imaging;
-using StatisticsAnalysisTool.Common;
 
 namespace StatisticsAnalysisTool.DamageMeter;
 
@@ -11,6 +11,8 @@ public class SpellFragment : BaseViewModel
     private long _damageHealValue;
     private BitmapImage _icon;
     private string _damageHealShortString;
+    private string _target;
+    private string _category;
 
     public int Index { get; set; }
 
@@ -35,6 +37,26 @@ public class SpellFragment : BaseViewModel
         }
     }
 
+    public string Target
+    {
+        get => _target;
+        set
+        {
+            _target = value;
+            OnPropertyChanged();
+        }
+    }
+
+    public string Category
+    {
+        get => _category;
+        set
+        {
+            _category = value;
+            OnPropertyChanged();
+        }
+    }
+
     public string DamageHealShortString
     {
         get => _damageHealShortString;
@@ -44,6 +66,6 @@ public class SpellFragment : BaseViewModel
             OnPropertyChanged();
         }
     }
-    
+
     public BitmapImage Icon => Application.Current.Dispatcher.Invoke(() => _icon ??= ImageController.GetSpellImage(UniqueName));
 }

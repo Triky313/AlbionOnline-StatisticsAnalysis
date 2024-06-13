@@ -39,7 +39,9 @@ public sealed class DamageMeterSnapshotFragment : BaseViewModel
             Index = x.Index,
             UniqueName = x.UniqueName,
             DamageHealValue = x.DamageHealValue,
-            DamageHealShortString = x.DamageHealShortString
+            DamageHealShortString = x.DamageHealShortString,
+            Target = x.Target,
+            Category = x.Category
         }).ToList();
     }
 

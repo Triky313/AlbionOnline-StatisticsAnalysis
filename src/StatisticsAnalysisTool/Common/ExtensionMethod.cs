@@ -1,4 +1,3 @@
-using StatisticsAnalysisTool.Common.UserSettings;
 using StatisticsAnalysisTool.Enumerations;
 using StatisticsAnalysisTool.Localization;
 using StatisticsAnalysisTool.Models.NetworkModel;
@@ -252,7 +251,7 @@ public static class ExtensionMethod
         var totalDamage = playerObjects.Sum(x => x.Value.Damage);
         return 100.00 / totalDamage * playerDamage;
     }
-    
+
     public static double GetHealPercentage(this List<KeyValuePair<Guid, PlayerGameObject>> playerObjects, double playerHeal)
     {
         var totalHeal = playerObjects.Sum(x => x.Value.Heal);
@@ -388,11 +387,39 @@ public static class ExtensionMethod
 
     #endregion
 
-    #region Lists / Arrays
+    #region List / Collection / Array
 
     public static bool IsInBounds<T>(this IEnumerable<T> array, long index)
     {
         return index >= 0 && index < array.Count() - 1;
+    }
+
+    public static void SortByDescending<T, TKey>(this ObservableCollection<T> collection, Func<T, TKey> keySelector)
+    {
+        var sorted = collection.OrderByDescending(keySelector).ToList();
+        for (int i = 0; i < sorted.Count; i++)
+        {
+            collection.Move(collection.IndexOf(sorted[i]), i);
+        }
+    }
+
+    public static void SortByDescending<T, TKey>(this List<T> list, Func<T, TKey> keySelector)
+    {
+        list.Sort((x, y) => Comparer<TKey>.Default.Compare(keySelector(y), keySelector(x)));
+    }
+
+    public static void SortByAscending<T, TKey>(this ObservableCollection<T> collection, Func<T, TKey> keySelector)
+    {
+        var sorted = collection.OrderBy(keySelector).ToList();
+        for (int i = 0; i < sorted.Count; i++)
+        {
+            collection.Move(collection.IndexOf(sorted[i]), i);
+        }
+    }
+
+    public static void SortByAscending<T, TKey>(this List<T> list, Func<T, TKey> keySelector)
+    {
+        list.Sort((x, y) => Comparer<TKey>.Default.Compare(keySelector(x), keySelector(y)));
     }
 
     #endregion

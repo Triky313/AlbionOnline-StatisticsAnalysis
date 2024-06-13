@@ -14,6 +14,8 @@ public class SpellsSnapshotFragment : BaseViewModel
     public string UniqueName { get; set; }
     public long DamageHealValue { get; set; }
     public string DamageHealShortString { get; set; }
+    public string Target { get; set; }
+    public string Category { get; set; }
 
     [JsonIgnore]
     public BitmapImage Icon => Application.Current.Dispatcher.Invoke(() => _icon ??= ImageController.GetSpellImage(UniqueName));

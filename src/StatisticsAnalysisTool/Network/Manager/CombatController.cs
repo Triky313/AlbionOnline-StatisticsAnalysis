@@ -211,6 +211,9 @@ public class CombatController
         var healthChangeObjectValue = healthChangeObject.Value;
         var item = ItemController.GetItemByIndex(healthChangeObject.Value?.CharacterEquipment?.MainHand ?? 0);
 
+        var spells = new ObservableCollection<SpellFragment>();
+        await AddOrUpdateSpellFragmentAsync(spells, healthChangeObjectValue.Spells);
+
         var damageMeterFragment = new DamageMeterFragment
         {
             CauserGuid = healthChangeObjectValue.UserGuid,
@@ -229,7 +232,7 @@ public class CombatController
             Name = healthChangeObjectValue.Name,
             CauserMainHand = item,
 
-            Spells = await AddOrUpdateSpellFragmentAsync(new ObservableCollection<SpellFragment>(), healthChangeObjectValue?.Spells)
+            Spells = spells
         };
 
         await Application.Current.Dispatcher.InvokeAsync(() =>
@@ -398,6 +401,21 @@ public class CombatController
     {
         if (causingSpellIndex <= 0)
         {
+            var autoAttack = playerGameObject.Spells.FirstOrDefault(x => x.Index == 0);
+            if (autoAttack is not null)
+            {
+                autoAttack.DamageHealValue += healthChangeValue;
+            }
+            else
+            {
+                playerGameObject.Spells.Add(new Spell(0)
+                {
+                    UniqueName = "AUTO_ATTACK",
+                    Category = "damage",
+                    DamageHealValue = healthChangeValue
+                });
+            }
+
             return;
         }
 
@@ -429,7 +447,7 @@ public class CombatController
         }
     }
 
-    private static async Task<ObservableCollection<SpellFragment>> AddOrUpdateSpellFragmentAsync(ObservableCollection<SpellFragment> spellsFragments, List<Spell> spells)
+    private static async Task AddOrUpdateSpellFragmentAsync(ObservableCollection<SpellFragment> spellsFragments, List<Spell> spells)
     {
         var fragmentsToAdd = new List<SpellFragment>();
 
@@ -440,7 +458,6 @@ public class CombatController
                 var existingFragment = spellsFragments.FirstOrDefault(x => x.Index == spell.Index);
                 if (existingFragment != null)
                 {
-                    existingFragment.UniqueName = spell.UniqueName;
                     existingFragment.DamageHealValue = spell.DamageHealValue;
                 }
                 else
@@ -449,7 +466,9 @@ public class CombatController
                     {
                         Index = spell.Index,
                         UniqueName = spell.UniqueName,
-                        DamageHealValue = spell.DamageHealValue
+                        DamageHealValue = spell.DamageHealValue,
+                        Category = spell.Category,
+                        Target = spell.Target
                     });
                 }
             }
@@ -458,9 +477,9 @@ public class CombatController
             {
                 spellsFragments.Add(fragment);
             }
-        });
 
-        return spellsFragments;
+            spellsFragments.SortByDescending(x => x.DamageHealValue);
+        });
     }
 
     #endregion
