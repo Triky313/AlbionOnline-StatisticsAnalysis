@@ -1,4 +1,5 @@
 ﻿using StatisticsAnalysisTool.Common;
+using StatisticsAnalysisTool.Enumerations;
 using StatisticsAnalysisTool.Localization;
 using StatisticsAnalysisTool.Models;
 using StatisticsAnalysisTool.ViewModels;
@@ -44,7 +45,8 @@ public sealed class DamageMeterSnapshotFragment : BaseViewModel
             Category = x.Category,
             Ticks = x.Ticks,
             DamageInPercent = x.DamageInPercent,
-            DamagePercentage = x.DamagePercentage
+            DamagePercentage = x.DamagePercentage,
+            HealthChangeType = x.HealthChangeType
         }).ToList();
     }
 

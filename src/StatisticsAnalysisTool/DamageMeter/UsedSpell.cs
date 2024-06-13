@@ -1,4 +1,5 @@
-﻿using StatisticsAnalysisTool.GameFileData;
+﻿using StatisticsAnalysisTool.Enumerations;
+using StatisticsAnalysisTool.GameFileData;
 
 namespace StatisticsAnalysisTool.DamageMeter;
 
@@ -21,6 +22,7 @@ public class UsedSpell
     public string Target { get; init; }
     public string Category { get; init; }
 
+    public HealthChangeType HealthChangeType { get; set; }
     public long DamageHealValue { get; set; }
     public int Ticks { get; set; }
 }

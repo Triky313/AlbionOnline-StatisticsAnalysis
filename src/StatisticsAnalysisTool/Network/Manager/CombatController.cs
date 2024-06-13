@@ -413,6 +413,7 @@ public class CombatController
                     UniqueName = "AUTO_ATTACK",
                     Category = "damage",
                     DamageHealValue = healthChangeValue,
+                    HealthChangeType = healthChangeType,
                     Ticks = 1
                 });
             }
@@ -420,37 +421,22 @@ public class CombatController
             return;
         }
 
-        var spell = playerGameObject.Spells.FirstOrDefault(x => x.SpellIndex == causingSpellIndex);
-        if (spell is not null && healthChangeType == HealthChangeType.Damage)
+        var spell = playerGameObject.Spells.FirstOrDefault(x => x.SpellIndex == causingSpellIndex && x.HealthChangeType == healthChangeType);
+        if (spell is not null)
         {
+            spell.HealthChangeType = healthChangeType;
             spell.DamageHealValue += healthChangeValue;
             spell.Ticks++;
         }
-        else if (spell is not null && healthChangeType == HealthChangeType.Heal)
+        else
         {
-            spell.DamageHealValue += healthChangeValue;
-            spell.Ticks++;
-        }
-        else if (spell is null)
-        {
-            if (healthChangeType == HealthChangeType.Damage)
+            playerGameObject.Spells.Add(new UsedSpell(causingSpellIndex, itemIndex)
             {
-                playerGameObject.Spells.Add(new UsedSpell(causingSpellIndex, itemIndex)
-                {
-                    ItemIndex = itemIndex,
-                    DamageHealValue = healthChangeValue,
-                    Ticks = 1
-                });
-            }
-            else
-            {
-                playerGameObject.Spells.Add(new UsedSpell(causingSpellIndex, itemIndex)
-                {
-                    ItemIndex = itemIndex,
-                    DamageHealValue = healthChangeValue,
-                    Ticks = 1
-                });
-            }
+                ItemIndex = itemIndex,
+                HealthChangeType = healthChangeType,
+                DamageHealValue = healthChangeValue,
+                Ticks = 1
+            });
         }
     }
 
@@ -463,9 +449,9 @@ public class CombatController
 
         await Application.Current.Dispatcher.InvokeAsync(async () =>
         {
-            await foreach (var spell in spells.ToAsyncEnumerable())
+            await foreach (var spell in spells.ToList().ToAsyncEnumerable())
             {
-                var existingFragment = spellsFragments.FirstOrDefault(x => x.SpellIndex == spell.SpellIndex);
+                var existingFragment = spellsFragments.FirstOrDefault(x => x.SpellIndex == spell.SpellIndex && x.HealthChangeType == spell.HealthChangeType);
 
                 if (existingFragment != null)
                 {
@@ -486,6 +472,7 @@ public class CombatController
                         Category = spell.Category,
                         Target = spell.Target,
                         Ticks = spell.Ticks,
+                        HealthChangeType = spell.HealthChangeType,
                         DamageInPercent = (maxDamage != 0) ? (double) spell.DamageHealValue / maxDamage * 100 : 0,
                         DamagePercentage = (totalDamage != 0) ? 100.00 / totalDamage * spell.DamageHealValue : 0
                     });

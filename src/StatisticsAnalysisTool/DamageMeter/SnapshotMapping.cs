@@ -1,4 +1,5 @@
-﻿using System.Linq;
+﻿using StatisticsAnalysisTool.Enumerations;
+using System.Linq;
 
 namespace StatisticsAnalysisTool.DamageMeter;
 
@@ -83,7 +84,8 @@ public static class SnapshotMapping
             DamageHealShortString = snapshot.DamageHealShortString,
             Target = snapshot.Target,
             Category = snapshot.Category,
-            Ticks = snapshot.Ticks
+            Ticks = snapshot.Ticks,
+            HealthChangeType = snapshot.HealthChangeType
         };
     }
 
@@ -98,7 +100,8 @@ public static class SnapshotMapping
             DamageHealShortString = snapshotDto.DamageHealShortString,
             Target = snapshotDto.Target,
             Category = snapshotDto.Category,
-            Ticks = snapshotDto.Ticks
+            Ticks = snapshotDto.Ticks,
+            HealthChangeType = snapshotDto.HealthChangeType
         };
     }
 }

@@ -1,4 +1,5 @@
 ﻿using StatisticsAnalysisTool.Common;
+using StatisticsAnalysisTool.Enumerations;
 using StatisticsAnalysisTool.Models;
 using StatisticsAnalysisTool.ViewModels;
 using System.Windows;
@@ -19,6 +20,7 @@ public class UsedSpellFragment : BaseViewModel
     private int _itemIndex;
     private double _damageInPercent;
     private double _damagePercentage;
+    private HealthChangeType _healthChangeType = HealthChangeType.Damage;
 
     public int SpellIndex { get; set; }
 
@@ -110,6 +112,16 @@ public class UsedSpellFragment : BaseViewModel
         set
         {
             _damagePercentage = value;
+            OnPropertyChanged();
+        }
+    }
+
+    public HealthChangeType HealthChangeType
+    {
+        get => _healthChangeType;
+        set
+        {
+            _healthChangeType = value;
             OnPropertyChanged();
         }
     }

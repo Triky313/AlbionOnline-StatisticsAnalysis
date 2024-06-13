@@ -2,7 +2,8 @@
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
                     xmlns:common="clr-namespace:StatisticsAnalysisTool.Common"
                     xmlns:fa5="http://schemas.fontawesome.com/icons/"
-                    xmlns:damageMeter="clr-namespace:StatisticsAnalysisTool.DamageMeter">
+                    xmlns:damageMeter="clr-namespace:StatisticsAnalysisTool.DamageMeter"
+                    xmlns:enumerations="clr-namespace:StatisticsAnalysisTool.Enumerations">
 
     <!-- Damage meter icon -->
     <Style TargetType="Image" x:Key="DamageMeter.Icon">
@@ -70,13 +71,10 @@
     <Style TargetType="Label" x:Key="DamageMeter.Category.DamageHeal.Color">
         <Setter Property="Foreground" Value="{StaticResource SolidColorBrush.Text.1}" />
         <Style.Triggers>
-            <DataTrigger Binding="{Binding Category}" Value="heal">
+            <DataTrigger Binding="{Binding HealthChangeType, IsAsync=True, Mode=OneWay}" Value="{x:Static enumerations:HealthChangeType.Heal}">
                 <Setter Property="Foreground" Value="{StaticResource SolidColorBrush.Accent.Green.4}" />
             </DataTrigger>
-            <DataTrigger Binding="{Binding Category}" Value="damage">
-                <Setter Property="Foreground" Value="{StaticResource SolidColorBrush.Accent.Red.4}" />
-            </DataTrigger>
-            <DataTrigger Binding="{Binding Category}" Value="instant">
+            <DataTrigger Binding="{Binding HealthChangeType, IsAsync=True, Mode=OneWay}" Value="{x:Static enumerations:HealthChangeType.Damage}">
                 <Setter Property="Foreground" Value="{StaticResource SolidColorBrush.Accent.Red.4}" />
             </DataTrigger>
         </Style.Triggers>
@@ -100,7 +98,7 @@
                          VerticalAlignment="Top" Background="#00FFFFFF" BorderThickness="0" Foreground="{StaticResource SolidColorBrush.Accent.Blue.Transparent.3}" />
             <StackPanel Orientation="Horizontal">
                 <Grid Margin="10,0, 0, 0" HorizontalAlignment="Center" VerticalAlignment="Top">
-                    <Image Source="{Binding Item.Icon}" Style="{StaticResource DamageMeter.Icon}" />
+                    <Image Source="{Binding Item.Icon, IsAsync=True, Mode=OneWay}" Style="{StaticResource DamageMeter.Icon}" />
                 </Grid>
                 <Grid Margin="0,0, 0, 0" HorizontalAlignment="Center" VerticalAlignment="Top">
                     <Image Style="{StaticResource DamageMeter.Spell.Icon.Selector}" />
