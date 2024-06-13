@@ -148,6 +148,10 @@ public sealed class DamageMeterSnapshotFragment : BaseViewModel
     public ICommand ShowSpells => _showSpells ??= new CommandHandler(PerformShowSpells, true);
 
     public string TranslationCombatTime => LanguageController.Translation("COMBAT_TIME");
+    public static string TranslationDmgPercent => LanguageController.Translation("DMG_PERCENT");
+    public static string TranslationName => LanguageController.Translation("NAME");
+    public static string TranslationDamageHeal => LanguageController.Translation("DAMAGE_HEAL");
+    public static string TranslationTicks => LanguageController.Translation("TICKS");
 
     public string CauserMainHandItemUniqueName
     {

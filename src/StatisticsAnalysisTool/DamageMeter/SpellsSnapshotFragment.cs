@@ -1,5 +1,5 @@
-﻿using Newtonsoft.Json;
-using StatisticsAnalysisTool.Common;
+﻿using StatisticsAnalysisTool.Common;
+using StatisticsAnalysisTool.Models;
 using StatisticsAnalysisTool.ViewModels;
 using System.Windows;
 using System.Windows.Media.Imaging;
@@ -9,6 +9,7 @@ namespace StatisticsAnalysisTool.DamageMeter;
 public class SpellsSnapshotFragment : BaseViewModel
 {
     private BitmapImage _icon;
+    private Item _item;
 
     public int SpellIndex { get; set; }
     public int ItemIndex { get; set; }
@@ -21,6 +22,6 @@ public class SpellsSnapshotFragment : BaseViewModel
     public double DamageInPercent { get; set; }
     public double DamagePercentage { get; set; }
 
-    [JsonIgnore]
+    public Item Item => Application.Current.Dispatcher.Invoke(() => _item ??= ItemController.GetItemByIndex(ItemIndex));
     public BitmapImage Icon => Application.Current.Dispatcher.Invoke(() => _icon ??= ImageController.GetSpellImage(UniqueName));
 }

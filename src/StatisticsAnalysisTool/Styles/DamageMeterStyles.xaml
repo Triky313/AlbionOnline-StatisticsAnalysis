@@ -105,20 +105,17 @@
                 <Grid Margin="0,0, 0, 0" HorizontalAlignment="Center" VerticalAlignment="Top">
                     <Image Style="{StaticResource DamageMeter.Spell.Icon.Selector}" />
                 </Grid>
-                <Label Foreground="{StaticResource SolidColorBrush.Weapon.Text}" Content="{Binding DamagePercentage}" 
-                       ContentStringFormat="{}{0:N2}%" MinWidth="55" Margin="10,5" HorizontalContentAlignment="Right" VerticalAlignment="Top" />
-                <Label Content="{Binding UniqueName}" MinWidth="200" MaxWidth="200" Margin="10,5, 0, 0" VerticalAlignment="Top" />
-                <Label Style="{StaticResource DamageMeter.Category.DamageHeal.Color}" Content="{Binding DamageHealShortString}" 
-                       MinWidth="80" MaxWidth="80" FontWeight="Bold" Margin="10,5, 5, 0" VerticalAlignment="Top" />
-                <Label Content="{Binding Ticks}" MinWidth="100" MaxWidth="100" FontWeight="Bold" Margin="0,5, 5, 0" VerticalAlignment="Top" />
+                <Label Content="{Binding UniqueName}" Width="242" Margin="10,5, 0, 0" VerticalAlignment="Top" HorizontalContentAlignment="Left" />
+
+                <Label Foreground="{StaticResource SolidColorBrush.Weapon.Text}" Content="{Binding DamagePercentage}" HorizontalContentAlignment="Left"
+                       ContentStringFormat="{}{0:N2}%" Width="68" Margin="0,5" VerticalAlignment="Top" />
+
+                <Label Style="{StaticResource DamageMeter.Category.DamageHeal.Color}" Content="{Binding DamageHealShortString}" HorizontalContentAlignment="Left"
+                       Width="82" FontWeight="Bold" Margin="0,5,0,0" VerticalAlignment="Top" />
+
+                <Label Content="{Binding Ticks}" Width="70" FontWeight="Bold" Margin="0,5, 5, 0" VerticalAlignment="Top" HorizontalContentAlignment="Left" />
             </StackPanel>
         </Grid>
-
-        <!--<StackPanel Orientation="Vertical" Height="50" Width="55" Margin="0,0,0,7" ToolTip="{Binding UniqueName}">
-            <Image Style="{StaticResource DamageMeter.Icon.Selector}" Height="40" Width="40" Margin="0,0,0,5" Stretch="Fill" VerticalAlignment="Top" HorizontalAlignment="Center" />
-            <Label Style="{StaticResource DamageMeter.Category.DamageHeal.Color}" Content="{Binding DamageHealShortString}" 
-                   Margin="0,-10,0,0" Padding="0" HorizontalContentAlignment="Center" VerticalAlignment="Bottom" />            
-        </StackPanel>-->
     </DataTemplate>
 
     <!-- Damage meter -->
@@ -229,12 +226,12 @@
                 </StackPanel>
             </Grid>
             <Grid Margin="10,41,0,3" Width="auto" VerticalAlignment="Top" HorizontalAlignment="Left" Visibility="{Binding SpellsContainerVisibility}">
-                <StackPanel Orientation="Horizontal" Height="24" Width="5000" Margin="2,0,0,0" VerticalAlignment="Top" HorizontalAlignment="Left" Background="{StaticResource SolidColorBrush.Accent.Blue.Transparent.5}">
-                    <Label Content="" Width="106" />
-                    <Label Content="pDmg" Width="68" />
-                    <Label Content="Name" Width="207" />
-                    <Label Content="Damage" Width="84" />
-                    <Label Content="Casts" Width="70" />
+                <StackPanel Orientation="Horizontal" Height="24" HorizontalAlignment="Stretch" Margin="2,0,2,0" VerticalAlignment="Top" Background="{StaticResource SolidColorBrush.Accent.Blue.Transparent.5}">
+                    <Label Content="" Width="96" />
+                    <Label Content="{Binding TranslationName}" FontWeight="Bold" Width="244" Foreground="{StaticResource SolidColorBrush.Accent.Blue.2}" />
+                    <Label Content="{Binding TranslationDmgPercent}" FontWeight="Bold" Width="64" Foreground="{StaticResource SolidColorBrush.Accent.Blue.2}" />
+                    <Label Content="{Binding TranslationDamageHeal}" FontWeight="Bold" Width="84" Foreground="{StaticResource SolidColorBrush.Accent.Blue.2}"  />
+                    <Label Content="{Binding TranslationTicks}" FontWeight="Bold" Width="70" Foreground="{StaticResource SolidColorBrush.Accent.Blue.2}" />
                 </StackPanel>
                 <ScrollViewer HorizontalScrollBarVisibility="Disabled" VerticalScrollBarVisibility="Disabled" Margin="0,25,0,0">
                     <ItemsControl ItemsSource="{Binding Spells, IsAsync=True}" ItemTemplate="{StaticResource SpellBarTemplate}">
@@ -304,7 +301,6 @@
                     </TextBlock>
                 </StackPanel>
             </Grid>
-
             <Grid>
                 <Grid.Style>
                     <Style TargetType="{x:Type Grid}">
@@ -351,12 +347,12 @@
                 </StackPanel>
             </Grid>
             <Grid Margin="10,41,0,3" Width="auto" VerticalAlignment="Top" HorizontalAlignment="Left" Visibility="{Binding SpellsContainerVisibility}">
-                <StackPanel Orientation="Horizontal" Height="24" Width="5000" Margin="2,0,0,0" VerticalAlignment="Top" HorizontalAlignment="Left" Background="{StaticResource SolidColorBrush.Accent.Blue.Transparent.5}">
-                    <Label Content="" Width="106" />
-                    <Label Content="pDmg" Width="68" />
-                    <Label Content="Name" Width="207" />
-                    <Label Content="Damage" Width="84" />
-                    <Label Content="Casts" Width="70" />
+                <StackPanel Orientation="Horizontal" Height="24" HorizontalAlignment="Stretch" Margin="2,0,2,0" VerticalAlignment="Top" Background="{StaticResource SolidColorBrush.Accent.Blue.Transparent.5}">
+                    <Label Content="" Width="96" />
+                    <Label Content="{Binding TranslationName}" FontWeight="Bold" Width="244" Foreground="{StaticResource SolidColorBrush.Accent.Blue.2}" />
+                    <Label Content="{Binding TranslationDmgPercent}" FontWeight="Bold" Width="64" Foreground="{StaticResource SolidColorBrush.Accent.Blue.2}" />
+                    <Label Content="{Binding TranslationDamageHeal}" FontWeight="Bold" Width="84" Foreground="{StaticResource SolidColorBrush.Accent.Blue.2}"  />
+                    <Label Content="{Binding TranslationTicks}" FontWeight="Bold" Width="70" Foreground="{StaticResource SolidColorBrush.Accent.Blue.2}" />
                 </StackPanel>
                 <ScrollViewer HorizontalScrollBarVisibility="Disabled" VerticalScrollBarVisibility="Disabled" Margin="0,25,0,0">
                     <ItemsControl ItemsSource="{Binding Spells, IsAsync=True}" ItemTemplate="{StaticResource SpellBarTemplate}">
