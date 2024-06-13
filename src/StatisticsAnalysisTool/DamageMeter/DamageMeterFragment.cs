@@ -32,7 +32,7 @@ public class DamageMeterFragment : BaseViewModel
     private double _overhealedPercentageOfTotalHealing;
     private double _overhealed;
     private Visibility _spellsContainerVisibility = Visibility.Collapsed;
-    private ObservableCollection<SpellFragment> _spells = new ();
+    private ObservableCollection<UsedSpellFragment> _spells = new ();
 
     public DamageMeterFragment(DamageMeterFragment damageMeterFragment)
     {
@@ -47,6 +47,7 @@ public class DamageMeterFragment : BaseViewModel
         HealPercentage = damageMeterFragment.HealPercentage;
         Name = damageMeterFragment.Name;
         CauserMainHand = damageMeterFragment.CauserMainHand;
+        Spells = damageMeterFragment.Spells;
     }
 
     public DamageMeterFragment()
@@ -247,7 +248,7 @@ public class DamageMeterFragment : BaseViewModel
 
     #region Spells
 
-    public ObservableCollection<SpellFragment> Spells
+    public ObservableCollection<UsedSpellFragment> Spells
     {
         get => _spells;
         set

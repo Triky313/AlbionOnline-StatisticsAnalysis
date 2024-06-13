@@ -1,11 +1,12 @@
 ﻿using StatisticsAnalysisTool.Common;
+using StatisticsAnalysisTool.Models;
 using StatisticsAnalysisTool.ViewModels;
 using System.Windows;
 using System.Windows.Media.Imaging;
 
 namespace StatisticsAnalysisTool.DamageMeter;
 
-public class SpellFragment : BaseViewModel
+public class UsedSpellFragment : BaseViewModel
 {
     private string _uniqueName;
     private long _damageHealValue;
@@ -13,8 +14,13 @@ public class SpellFragment : BaseViewModel
     private string _damageHealShortString;
     private string _target;
     private string _category;
+    private Item _item;
+    private int _ticks;
+    private int _itemIndex;
+    private double _damageInPercent;
+    private double _damagePercentage;
 
-    public int Index { get; set; }
+    public int SpellIndex { get; set; }
 
     public string UniqueName
     {
@@ -22,6 +28,17 @@ public class SpellFragment : BaseViewModel
         set
         {
             _uniqueName = value;
+            OnPropertyChanged();
+        }
+    }
+
+    public int ItemIndex
+    {
+        get => _itemIndex;
+        set
+        {
+            _itemIndex = value;
+            Item = ItemController.GetItemByIndex(ItemIndex);
             OnPropertyChanged();
         }
     }
@@ -63,6 +80,46 @@ public class SpellFragment : BaseViewModel
         private set
         {
             _damageHealShortString = value;
+            OnPropertyChanged();
+        }
+    }
+
+    public int Ticks
+    {
+        get => _ticks;
+        set
+        {
+            _ticks = value;
+            OnPropertyChanged();
+        }
+    }
+
+    public double DamageInPercent
+    {
+        get => _damageInPercent;
+        set
+        {
+            _damageInPercent = value;
+            OnPropertyChanged();
+        }
+    }
+
+    public double DamagePercentage
+    {
+        get => _damagePercentage;
+        set
+        {
+            _damagePercentage = value;
+            OnPropertyChanged();
+        }
+    }
+
+    public Item Item
+    {
+        get => _item;
+        set
+        {
+            _item = value;
             OnPropertyChanged();
         }
     }

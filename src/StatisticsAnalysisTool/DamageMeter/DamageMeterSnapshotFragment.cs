@@ -5,7 +5,6 @@ using StatisticsAnalysisTool.ViewModels;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text.Json.Serialization;
 using System.Windows;
 using System.Windows.Input;
 
@@ -36,12 +35,16 @@ public sealed class DamageMeterSnapshotFragment : BaseViewModel
         OverhealedPercentageOfTotalHealing = damageMeterFragment.OverhealedPercentageOfTotalHealing;
         Spells = damageMeterFragment.Spells.Select(x => new SpellsSnapshotFragment()
         {
-            Index = x.Index,
+            SpellIndex = x.SpellIndex,
+            ItemIndex = x.ItemIndex,
             UniqueName = x.UniqueName,
             DamageHealValue = x.DamageHealValue,
             DamageHealShortString = x.DamageHealShortString,
             Target = x.Target,
-            Category = x.Category
+            Category = x.Category,
+            Ticks = x.Ticks,
+            DamageInPercent = x.DamageInPercent,
+            DamagePercentage = x.DamagePercentage
         }).ToList();
     }
 
@@ -124,7 +127,6 @@ public sealed class DamageMeterSnapshotFragment : BaseViewModel
 
     public List<SpellsSnapshotFragment> Spells { get; init; }
 
-    [JsonIgnore]
     public Visibility SpellsContainerVisibility
     {
         get => _spellsContainerVisibility;
@@ -158,7 +160,6 @@ public sealed class DamageMeterSnapshotFragment : BaseViewModel
         }
     }
 
-    [JsonIgnore]
     public Item CauserMainHand => ItemController.GetItemByUniqueName(CauserMainHandItemUniqueName);
     public string ShopSubCategory { get; set; }
 }

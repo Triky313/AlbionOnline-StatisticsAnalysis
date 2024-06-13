@@ -76,12 +76,14 @@ public static class SnapshotMapping
     {
         return new SpellFragmentDto()
         {
-            Index = snapshot.Index,
+            SpellIndex = snapshot.SpellIndex,
+            ItemIndex = snapshot.ItemIndex,
             UniqueName = snapshot.UniqueName,
             DamageHealValue = snapshot.DamageHealValue,
             DamageHealShortString = snapshot.DamageHealShortString,
             Target = snapshot.Target,
-            Category = snapshot.Category
+            Category = snapshot.Category,
+            Ticks = snapshot.Ticks
         };
     }
 
@@ -89,12 +91,14 @@ public static class SnapshotMapping
     {
         return new SpellsSnapshotFragment()
         {
-            Index = snapshotDto.Index,
+            SpellIndex = snapshotDto.SpellIndex,
+            ItemIndex = snapshotDto.ItemIndex,
             UniqueName = snapshotDto.UniqueName,
             DamageHealValue = snapshotDto.DamageHealValue,
             DamageHealShortString = snapshotDto.DamageHealShortString,
             Target = snapshotDto.Target,
-            Category = snapshotDto.Category
+            Category = snapshotDto.Category,
+            Ticks = snapshotDto.Ticks
         };
     }
 }

@@ -13,6 +13,7 @@ using System.Linq;
 using System.Reflection;
 using System.Threading.Tasks;
 using System.Windows;
+using StatisticsAnalysisTool.DamageMeter;
 
 namespace StatisticsAnalysisTool.Network.Manager;
 
@@ -527,7 +528,7 @@ public class EntityController
     {
         foreach (var entity in _knownEntities)
         {
-            entity.Value.Spells = new List<Spell>();
+            entity.Value.Spells = new List<UsedSpell>();
         }
     }
 
