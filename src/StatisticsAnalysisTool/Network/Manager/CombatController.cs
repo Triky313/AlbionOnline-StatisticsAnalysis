@@ -457,6 +457,7 @@ public class CombatController
     private static async Task AddOrUpdateSpellFragmentAsync(ObservableCollection<UsedSpellFragment> spellsFragments, List<UsedSpell> spells)
     {
         var fragmentsToAdd = new List<UsedSpellFragment>();
+        var fragmentsToUpdate = new List<UsedSpellFragment>();
         var totalDamage = spells.Sum(spell => spell.DamageHealValue);
         var maxDamage = spells.Max(spell => spell.DamageHealValue);
 
@@ -466,15 +467,13 @@ public class CombatController
             {
                 var existingFragment = spellsFragments.FirstOrDefault(x => x.SpellIndex == spell.SpellIndex);
 
-                Debug.Print(((double) spell.DamageHealValue / maxDamage * 100).ToString());
-                Debug.Print((100.00 / totalDamage * spell.DamageHealValue).ToString());
-
                 if (existingFragment != null)
                 {
                     existingFragment.DamageHealValue = spell.DamageHealValue;
                     existingFragment.Ticks = spell.Ticks;
-                    existingFragment.DamageInPercent = (maxDamage != 0) ? (double)spell.DamageHealValue / maxDamage * 100 : 0;
+                    existingFragment.DamageInPercent = (maxDamage != 0) ? (double) spell.DamageHealValue / maxDamage * 100 : 0;
                     existingFragment.DamagePercentage = (totalDamage != 0) ? 100.00 / totalDamage * spell.DamageHealValue : 0;
+                    fragmentsToUpdate.Add(existingFragment);
                 }
                 else
                 {
@@ -487,7 +486,7 @@ public class CombatController
                         Category = spell.Category,
                         Target = spell.Target,
                         Ticks = spell.Ticks,
-                        DamageInPercent = (maxDamage != 0) ? (double)spell.DamageHealValue / maxDamage * 100 : 0,
+                        DamageInPercent = (maxDamage != 0) ? (double) spell.DamageHealValue / maxDamage * 100 : 0,
                         DamagePercentage = (totalDamage != 0) ? 100.00 / totalDamage * spell.DamageHealValue : 0
                     });
                 }
@@ -497,7 +496,19 @@ public class CombatController
             {
                 spellsFragments.Add(fragment);
             }
-            
+
+            foreach (var fragment in fragmentsToUpdate)
+            {
+                var updatedFragment = fragmentsToAdd.FirstOrDefault(x => x.SpellIndex == fragment.SpellIndex);
+                if (updatedFragment != null)
+                {
+                    fragment.DamageHealValue = updatedFragment.DamageHealValue;
+                    fragment.Ticks = updatedFragment.Ticks;
+                    fragment.DamageInPercent = updatedFragment.DamageInPercent;
+                    fragment.DamagePercentage = updatedFragment.DamagePercentage;
+                }
+            }
+
             spellsFragments.SortByDescending(x => x.DamageHealValue);
         });
     }
