@@ -159,12 +159,12 @@ internal static class ImageController
 
         try
         {
-
             var userImage = new BitmapImage
             {
                 CacheOption = BitmapCacheOption.OnDemand
             };
-            downloading.Add(uniqueName, userImage);
+
+            downloading.TryAdd(uniqueName, userImage);
             userImage.BeginInit();
             userImage.DecodePixelHeight = pixelHeight;
             userImage.DecodePixelWidth = pixelWidth;
