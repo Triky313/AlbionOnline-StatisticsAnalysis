@@ -6,10 +6,14 @@ namespace StatisticAnalysisTool.Extractor;
 internal class LocalizationData : IDisposable
 {
     public const string ItemPrefix = "@ITEMS_";
+    public const string SpellPrefix = "@SPELLS_";
     public const string DescPostfix = "_DESC";
 
-    public Dictionary<string, Dictionary<string, string>> LocalizedNames = new();
-    public Dictionary<string, Dictionary<string, string>> LocalizedDescriptions = new();
+    public Dictionary<string, Dictionary<string, string>> ItemLocalizedNames = new();
+    public Dictionary<string, Dictionary<string, string>> ItemLocalizedDescriptions = new();
+
+    public Dictionary<string, Dictionary<string, string>> SpellLocalizedNames = new();
+    public Dictionary<string, Dictionary<string, string>> SpellLocalizedDescriptions = new();
 
     public async Task LoadDataAsync(string mainGameFolder)
     {
@@ -21,7 +25,7 @@ internal class LocalizationData : IDisposable
             var xmlDoc = new XmlDocument();
             xmlDoc.LoadXml(Encoding.UTF8.GetString(localizationData.ToArray()));
 
-            using var rootNode = xmlDoc.LastChild?.LastChild?.ChildNodes;
+            var rootNode = xmlDoc.LastChild?.LastChild?.ChildNodes;
 
             if (rootNode is null)
             {
@@ -37,7 +41,7 @@ internal class LocalizationData : IDisposable
 
                 var tuId = node.Attributes?["tuid"];
 
-                if (tuId?.Value.StartsWith(ItemPrefix) != true)
+                if (tuId is null)
                 {
                     continue;
                 }
@@ -54,16 +58,28 @@ internal class LocalizationData : IDisposable
                 {
                     continue;
                 }
-
-                // Is item description
-                if (tuId.Value.EndsWith(DescPostfix))
+                
+                if (tuId.Value.StartsWith(ItemPrefix))
                 {
-                    LocalizedDescriptions[tuId.Value] = languages;
+                    if (tuId.Value.EndsWith(DescPostfix))
+                    {
+                        ItemLocalizedDescriptions[tuId.Value] = languages;
+                    }
+                    else
+                    {
+                        ItemLocalizedNames[tuId.Value] = languages;
+                    }
                 }
-                // Is item name
-                else
+                else if (tuId.Value.StartsWith(SpellPrefix))
                 {
-                    LocalizedNames[tuId.Value] = languages;
+                    if (tuId.Value.EndsWith(DescPostfix))
+                    {
+                        SpellLocalizedDescriptions[tuId.Value] = languages;
+                    }
+                    else
+                    {
+                        SpellLocalizedNames[tuId.Value] = languages;
+                    }
                 }
             }
         });
@@ -73,13 +89,15 @@ internal class LocalizationData : IDisposable
 
     public bool IsDataLoaded()
     {
-        return LocalizedNames.Count > 0 && LocalizedDescriptions.Count > 0;
+        return ItemLocalizedNames.Count > 0 && ItemLocalizedDescriptions.Count > 0 && SpellLocalizedNames.Count > 0 && SpellLocalizedDescriptions.Count > 0;
     }
 
     public void Dispose()
     {
-        LocalizedNames.Clear();
-        LocalizedDescriptions.Clear();
+        ItemLocalizedNames.Clear();
+        ItemLocalizedDescriptions.Clear();
+        SpellLocalizedNames.Clear();
+        SpellLocalizedDescriptions.Clear();
         GC.SuppressFinalize(this);
     }
 }

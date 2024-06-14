@@ -791,4 +791,5 @@
 	<translation name="DMG_PERCENT">DMG%</translation>
 	<translation name="DAMAGE_HEAL">DMG/HEAL</translation>
 	<translation name="TICKS">Ticks</translation>
+	<translation name="AUTO_ATTACK">Auto attack</translation>
 </translations>

@@ -1,9 +1,11 @@
 ﻿using StatisticsAnalysisTool.Common;
 using StatisticsAnalysisTool.Enumerations;
+using StatisticsAnalysisTool.GameFileData;
 using StatisticsAnalysisTool.Models;
 using StatisticsAnalysisTool.ViewModels;
 using System.Windows;
 using System.Windows.Media.Imaging;
+using StatisticsAnalysisTool.Localization;
 
 namespace StatisticsAnalysisTool.DamageMeter;
 
@@ -21,6 +23,8 @@ public class UsedSpellFragment : BaseViewModel
     private double _damageInPercent;
     private double _damagePercentage;
     private HealthChangeType _healthChangeType = HealthChangeType.Damage;
+    private string _localizationName;
+    private string _localizationDescription;
 
     public int SpellIndex { get; set; }
 
@@ -30,6 +34,8 @@ public class UsedSpellFragment : BaseViewModel
         set
         {
             _uniqueName = value;
+            LocalizationName = UniqueName == "AUTO_ATTACK" ? LanguageController.Translation("AUTO_ATTACK") : SpellData.GetLocalizationName(_uniqueName);
+            LocalizationDescription = SpellData.GetLocalizationDescription(_uniqueName);
             OnPropertyChanged();
         }
     }
@@ -122,6 +128,26 @@ public class UsedSpellFragment : BaseViewModel
         set
         {
             _healthChangeType = value;
+            OnPropertyChanged();
+        }
+    }
+
+    public string LocalizationName
+    {
+        get => _localizationName;
+        set
+        {
+            _localizationName = value;
+            OnPropertyChanged();
+        }
+    }
+
+    public string LocalizationDescription
+    {
+        get => _localizationDescription;
+        set
+        {
+            _localizationDescription = value;
             OnPropertyChanged();
         }
     }

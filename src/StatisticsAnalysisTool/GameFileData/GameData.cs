@@ -101,6 +101,7 @@ public static class GameData
             if (Extractor.IsBinFileNewer(Path.Combine(gameFilesDirPath, "spells.xml"), mainGameFolderPath, serverType, "spells"))
             {
                 taskFactories.Add(() => extractor.ExtractGameDataFromXmlAsync(gameFilesDirPath, new[] { "spells" }));
+                taskFactories.Add(() => extractor.ExtractSpellGameDataAsync(gameFilesDirPath));
             }
 
             if (Extractor.IsBinFileNewer(Path.Combine(gameFilesDirPath, "mobs-modified.json"), mainGameFolderPath, serverType, "mobs"))
@@ -190,7 +191,7 @@ public static class GameData
         return data;
     }
 
-    private static List<T> GetSpecificDataFromJsonFileLocal<T>(string localFilePath, JsonSerializerOptions options)
+    public static List<T> GetSpecificDataFromJsonFileLocal<T>(string localFilePath, JsonSerializerOptions options)
     {
         try
         {

@@ -541,5 +541,17 @@ namespace StatisticsAnalysisTool.Properties {
                 this["GuildFileName"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("spells-localization.json")]
+        public string SpellLocalizationsFileName {
+            get {
+                return ((string)(this["SpellLocalizationsFileName"]));
+            }
+            set {
+                this["SpellLocalizationsFileName"] = value;
+            }
+        }
     }
 }

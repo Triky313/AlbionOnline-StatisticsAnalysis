@@ -1,5 +1,6 @@
 ﻿using StatisticsAnalysisTool.Common;
 using StatisticsAnalysisTool.Enumerations;
+using StatisticsAnalysisTool.GameFileData;
 using StatisticsAnalysisTool.Models;
 using StatisticsAnalysisTool.ViewModels;
 using System.Windows;
@@ -23,6 +24,8 @@ public class SpellsSnapshotFragment : BaseViewModel
     public double DamageInPercent { get; set; }
     public double DamagePercentage { get; set; }
     public HealthChangeType HealthChangeType { get; set; }
+    public string LocalizationName => SpellData.GetLocalizationName(UniqueName);
+    public string LocalizationDescription => SpellData.GetLocalizationDescription(UniqueName);
 
     public Item Item => Application.Current.Dispatcher.Invoke(() => _item ??= ItemController.GetItemByIndex(ItemIndex));
     public BitmapImage Icon => Application.Current.Dispatcher.Invoke(() => _icon ??= ImageController.GetSpellImage(UniqueName));

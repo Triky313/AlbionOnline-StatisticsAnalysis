@@ -93,9 +93,9 @@
 
     <!-- Spell bar -->
     <DataTemplate x:Key="SpellBarTemplate" DataType="{x:Type damageMeter:UsedSpellFragment}">
-        <Grid Height="auto" Width="auto">
+        <Grid Height="auto" Width="auto" HorizontalAlignment="Stretch">
             <ProgressBar common:ProgressBarSmoother.SmoothValue="{Binding DamageInPercent}" Minimum="0" Maximum="100" MinHeight="40" Height="auto" Margin="3,0,2,1" 
-                         VerticalAlignment="Top" Background="#00FFFFFF" BorderThickness="0" Foreground="{StaticResource SolidColorBrush.Accent.Blue.Transparent.3}" />
+                         VerticalAlignment="Top" Background="#00FFFFFF" BorderThickness="0" Foreground="{StaticResource SolidColorBrush.Accent.Blue.Transparent.3}" HorizontalAlignment="Stretch" />
             <StackPanel Orientation="Horizontal">
                 <Grid Margin="10,0, 0, 0" HorizontalAlignment="Center" VerticalAlignment="Top">
                     <Image Source="{Binding Item.Icon, IsAsync=True, Mode=OneWay}" Style="{StaticResource DamageMeter.Icon}" />
@@ -103,7 +103,7 @@
                 <Grid Margin="0,0, 0, 0" HorizontalAlignment="Center" VerticalAlignment="Top">
                     <Image Style="{StaticResource DamageMeter.Spell.Icon.Selector}" />
                 </Grid>
-                <Label Content="{Binding UniqueName}" Width="242" Margin="10,5, 0, 0" VerticalAlignment="Top" HorizontalContentAlignment="Left" />
+                <Label Content="{Binding LocalizationName}" Width="242" Margin="10,5, 0, 0" VerticalAlignment="Top" HorizontalContentAlignment="Left" />
 
                 <Label Foreground="{StaticResource SolidColorBrush.Weapon.Text}" Content="{Binding DamagePercentage}" HorizontalContentAlignment="Left"
                        ContentStringFormat="{}{0:N2}%" Width="68" Margin="0,5" VerticalAlignment="Top" />
@@ -223,7 +223,7 @@
                     </TextBlock>
                 </StackPanel>
             </Grid>
-            <Grid Margin="10,41,0,3" Width="auto" VerticalAlignment="Top" HorizontalAlignment="Left" Visibility="{Binding SpellsContainerVisibility}">
+            <Grid Margin="10,41,0,3" VerticalAlignment="Top" HorizontalAlignment="Stretch" Visibility="{Binding SpellsContainerVisibility}">
                 <StackPanel Orientation="Horizontal" Height="24" HorizontalAlignment="Stretch" Margin="2,0,2,0" VerticalAlignment="Top" Background="{StaticResource SolidColorBrush.Accent.Blue.Transparent.5}">
                     <Label Content="" Width="96" />
                     <Label Content="{Binding TranslationName}" FontWeight="Bold" Width="244" Foreground="{StaticResource SolidColorBrush.Accent.Blue.2}" />
@@ -344,7 +344,7 @@
                     </TextBlock>
                 </StackPanel>
             </Grid>
-            <Grid Margin="10,41,0,3" Width="auto" VerticalAlignment="Top" HorizontalAlignment="Left" Visibility="{Binding SpellsContainerVisibility}">
+            <Grid Margin="10,41,0,3" Width="auto" VerticalAlignment="Top" HorizontalAlignment="Stretch" Visibility="{Binding SpellsContainerVisibility}">
                 <StackPanel Orientation="Horizontal" Height="24" HorizontalAlignment="Stretch" Margin="2,0,2,0" VerticalAlignment="Top" Background="{StaticResource SolidColorBrush.Accent.Blue.Transparent.5}">
                     <Label Content="" Width="96" />
                     <Label Content="{Binding TranslationName}" FontWeight="Bold" Width="244" Foreground="{StaticResource SolidColorBrush.Accent.Blue.2}" />

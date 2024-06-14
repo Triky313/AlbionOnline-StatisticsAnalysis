@@ -1,5 +1,4 @@
 using StatisticsAnalysisTool.Common;
-using StatisticsAnalysisTool.Common.UserSettings;
 using StatisticsAnalysisTool.GameFileData.Models;
 using StatisticsAnalysisTool.Properties;
 using System;
@@ -35,7 +34,7 @@ public static class MobsData
             _ => -1
         };
     }
-    
+
     private static MobJsonObject GetMobJsonObjectByIndex(int index)
     {
         // From September 19, 2023, the in-game index will start counting from 14.
