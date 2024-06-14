@@ -116,17 +116,7 @@ public class TrackingController : ITrackingController
 
         try
         {
-            await Task.WhenAll(
-                EstimatedMarketValueController.LoadFromFileAsync(),
-                StatisticController.LoadFromFileAsync(),
-                TradeController.LoadFromFileAsync(),
-                TreasureController.LoadFromFileAsync(),
-                DungeonController.LoadDungeonFromFileAsync(),
-                GatheringController.LoadFromFileAsync(),
-                VaultController.LoadFromFileAsync(),
-                GuildController.LoadFromFileAsync(),
-                CombatController.LoadFromFileAsync()
-            );
+            await LoadDataAsync();
         }
         catch (Exception e)
         {
@@ -202,6 +192,21 @@ public class TrackingController : ITrackingController
             GuildController.SaveInFileAsync(),
             CombatController.SaveInFileAsync(),
             EstimatedMarketValueController.SaveInFileAsync()
+        );
+    }
+
+    private async Task LoadDataAsync()
+    {
+        await Task.WhenAll(
+            EstimatedMarketValueController.LoadFromFileAsync(),
+            StatisticController.LoadFromFileAsync(),
+            TradeController.LoadFromFileAsync(),
+            TreasureController.LoadFromFileAsync(),
+            DungeonController.LoadDungeonFromFileAsync(),
+            GatheringController.LoadFromFileAsync(),
+            VaultController.LoadFromFileAsync(),
+            GuildController.LoadFromFileAsync(),
+            CombatController.LoadFromFileAsync()
         );
     }
 
