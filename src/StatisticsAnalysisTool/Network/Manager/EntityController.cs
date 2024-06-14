@@ -68,6 +68,7 @@ public class EntityController
                 Heal = oldEntity.Heal,
                 Overhealed = oldEntity.Overhealed,
                 IsInParty = oldEntity.IsInParty,
+                Spells = oldEntity.Spells
             };
         }
         else

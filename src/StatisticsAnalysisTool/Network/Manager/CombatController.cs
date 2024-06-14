@@ -440,12 +440,12 @@ public class CombatController
         }
     }
 
-    private static async Task AddOrUpdateSpellFragmentAsync(ObservableCollection<UsedSpellFragment> spellsFragments, List<UsedSpell> spells)
+    private static async Task AddOrUpdateSpellFragmentAsync(ObservableCollection<UsedSpellFragment> spellsFragments, IReadOnlyCollection<UsedSpell> spells)
     {
         var fragmentsToAdd = new List<UsedSpellFragment>();
         var fragmentsToUpdate = new List<UsedSpellFragment>();
-        var totalDamage = spells.Sum(spell => spell.DamageHealValue);
-        var maxDamage = spells.Max(spell => spell.DamageHealValue);
+        var totalDamage = spells.Sum(spell => spell?.DamageHealValue) ?? 0;
+        var maxDamage = spells.Max(spell => spell?.DamageHealValue) ?? 0;
 
         await Application.Current.Dispatcher.InvokeAsync(async () =>
         {
