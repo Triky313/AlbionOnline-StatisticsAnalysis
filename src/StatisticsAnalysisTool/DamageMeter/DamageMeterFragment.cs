@@ -32,7 +32,7 @@ public class DamageMeterFragment : BaseViewModel
     private double _overhealedPercentageOfTotalHealing;
     private double _overhealed;
     private Visibility _spellsContainerVisibility = Visibility.Collapsed;
-    private ObservableCollection<SpellFragment> _spells = new ();
+    private ObservableCollection<UsedSpellFragment> _spells = new ();
 
     public DamageMeterFragment(DamageMeterFragment damageMeterFragment)
     {
@@ -47,6 +47,7 @@ public class DamageMeterFragment : BaseViewModel
         HealPercentage = damageMeterFragment.HealPercentage;
         Name = damageMeterFragment.Name;
         CauserMainHand = damageMeterFragment.CauserMainHand;
+        Spells = damageMeterFragment.Spells;
     }
 
     public DamageMeterFragment()
@@ -247,7 +248,7 @@ public class DamageMeterFragment : BaseViewModel
 
     #region Spells
 
-    public ObservableCollection<SpellFragment> Spells
+    public ObservableCollection<UsedSpellFragment> Spells
     {
         get => _spells;
         set
@@ -301,6 +302,10 @@ public class DamageMeterFragment : BaseViewModel
     public static string TranslationCombatTime => LanguageController.Translation("COMBAT_TIME");
     public static string TranslationHealingWithoutOverhealed => LanguageController.Translation("HEALING_WITHOUT_OVERHEALED");
     public static string TranslationOverhealedPercentageOfTotalHealing => LanguageController.Translation("OVERHEALED_PERCENTAGE_OF_TOTAL_HEALING");
+    public static string TranslationDmgPercent => LanguageController.Translation("DMG_PERCENT");
+    public static string TranslationName => LanguageController.Translation("NAME");
+    public static string TranslationDamageHeal => LanguageController.Translation("DAMAGE_HEAL");
+    public static string TranslationTicks => LanguageController.Translation("TICKS");
 
     public override bool Equals(object obj)
     {

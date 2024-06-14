@@ -3,7 +3,6 @@ using StatisticsAnalysisTool.Common;
 using StatisticsAnalysisTool.Common.UserSettings;
 using StatisticsAnalysisTool.DamageMeter;
 using StatisticsAnalysisTool.Enumerations;
-using StatisticsAnalysisTool.Models;
 using StatisticsAnalysisTool.Models.ItemsJsonModel;
 using StatisticsAnalysisTool.Models.NetworkModel;
 using StatisticsAnalysisTool.Properties;
@@ -38,7 +37,7 @@ public class CombatController
         OnDamageUpdate += UpdateDamageMeterUiAsync;
 
 #if DEBUG
-        RunDamageMeterDebugAsync(0, 0);
+        RunDamageMeterDebugAsync(10, 10);
 #endif
     }
 
@@ -71,7 +70,7 @@ public class CombatController
             }
 
             gameObjectValue.Damage += damageChangeValue;
-            AddOrUpdateSpell(causingSpellIndex, gameObjectValue, healthChangeType, damageChangeValue);
+            AddOrUpdateSpell(causingSpellIndex, gameObjectValue, healthChangeType, damageChangeValue, gameObjectValue.CharacterEquipment?.MainHand ?? 0);
         }
 
         if (healthChangeType == HealthChangeType.Heal)
@@ -86,7 +85,7 @@ public class CombatController
             if (!IsMaxHealthReached(affectedId, newHealthValue))
             {
                 gameObjectValue.Heal += positiveHealChangeValue;
-                AddOrUpdateSpell(causingSpellIndex, gameObjectValue, healthChangeType, positiveHealChangeValue);
+                AddOrUpdateSpell(causingSpellIndex, gameObjectValue, healthChangeType, positiveHealChangeValue, gameObjectValue.CharacterEquipment?.MainHand ?? 0);
             }
             else
             {
@@ -211,6 +210,9 @@ public class CombatController
         var healthChangeObjectValue = healthChangeObject.Value;
         var item = ItemController.GetItemByIndex(healthChangeObject.Value?.CharacterEquipment?.MainHand ?? 0);
 
+        var spells = new ObservableCollection<UsedSpellFragment>();
+        await AddOrUpdateSpellFragmentAsync(spells, healthChangeObjectValue.Spells);
+
         var damageMeterFragment = new DamageMeterFragment
         {
             CauserGuid = healthChangeObjectValue.UserGuid,
@@ -229,7 +231,7 @@ public class CombatController
             Name = healthChangeObjectValue.Name,
             CauserMainHand = item,
 
-            Spells = await AddOrUpdateSpellFragmentAsync(new ObservableCollection<SpellFragment>(), healthChangeObjectValue?.Spells)
+            Spells = spells
         };
 
         await Application.Current.Dispatcher.InvokeAsync(() =>
@@ -394,62 +396,85 @@ public class CombatController
         return false;
     }
 
-    private void AddOrUpdateSpell(int causingSpellIndex, PlayerGameObject playerGameObject, HealthChangeType healthChangeType, int healthChangeValue)
+    private void AddOrUpdateSpell(int causingSpellIndex, PlayerGameObject playerGameObject, HealthChangeType healthChangeType, int healthChangeValue, int itemIndex)
     {
         if (causingSpellIndex <= 0)
         {
-            return;
-        }
-
-        var spell = playerGameObject.Spells.FirstOrDefault(x => x.Index == causingSpellIndex);
-        if (spell is not null && healthChangeType == HealthChangeType.Damage)
-        {
-            spell.DamageHealValue += healthChangeValue;
-        }
-        else if (spell is not null && healthChangeType == HealthChangeType.Heal)
-        {
-            spell.DamageHealValue += healthChangeValue;
-        }
-        else if (spell is null)
-        {
-            if (healthChangeType == HealthChangeType.Damage)
+            var autoAttack = playerGameObject.Spells.FirstOrDefault(x => x.SpellIndex == 0);
+            if (autoAttack is not null)
             {
-                playerGameObject.Spells.Add(new Spell(causingSpellIndex)
-                {
-                    DamageHealValue = healthChangeValue
-                });
+                autoAttack.DamageHealValue += healthChangeValue;
+                autoAttack.Ticks++;
             }
             else
             {
-                playerGameObject.Spells.Add(new Spell(causingSpellIndex)
+                playerGameObject.Spells.Add(new UsedSpell(0, 0)
                 {
-                    DamageHealValue = healthChangeValue
+                    UniqueName = "AUTO_ATTACK",
+                    Category = "damage",
+                    DamageHealValue = healthChangeValue,
+                    HealthChangeType = healthChangeType,
+                    Ticks = 1
                 });
             }
+
+            return;
+        }
+
+        var spell = playerGameObject.Spells.FirstOrDefault(x => x.SpellIndex == causingSpellIndex && x.HealthChangeType == healthChangeType);
+        if (spell is not null)
+        {
+            spell.HealthChangeType = healthChangeType;
+            spell.DamageHealValue += healthChangeValue;
+            spell.Ticks++;
+        }
+        else
+        {
+            playerGameObject.Spells.Add(new UsedSpell(causingSpellIndex, itemIndex)
+            {
+                ItemIndex = itemIndex,
+                HealthChangeType = healthChangeType,
+                DamageHealValue = healthChangeValue,
+                Ticks = 1
+            });
         }
     }
 
-    private static async Task<ObservableCollection<SpellFragment>> AddOrUpdateSpellFragmentAsync(ObservableCollection<SpellFragment> spellsFragments, List<Spell> spells)
+    private static async Task AddOrUpdateSpellFragmentAsync(ObservableCollection<UsedSpellFragment> spellsFragments, List<UsedSpell> spells)
     {
-        var fragmentsToAdd = new List<SpellFragment>();
+        var fragmentsToAdd = new List<UsedSpellFragment>();
+        var fragmentsToUpdate = new List<UsedSpellFragment>();
+        var totalDamage = spells.Sum(spell => spell.DamageHealValue);
+        var maxDamage = spells.Max(spell => spell.DamageHealValue);
 
         await Application.Current.Dispatcher.InvokeAsync(async () =>
         {
-            await foreach (var spell in spells.ToAsyncEnumerable())
+            await foreach (var spell in spells.ToList().ToAsyncEnumerable())
             {
-                var existingFragment = spellsFragments.FirstOrDefault(x => x.Index == spell.Index);
+                var existingFragment = spellsFragments.FirstOrDefault(x => x.SpellIndex == spell.SpellIndex && x.HealthChangeType == spell.HealthChangeType);
+
                 if (existingFragment != null)
                 {
-                    existingFragment.UniqueName = spell.UniqueName;
                     existingFragment.DamageHealValue = spell.DamageHealValue;
+                    existingFragment.Ticks = spell.Ticks;
+                    existingFragment.DamageInPercent = (maxDamage != 0) ? (double) spell.DamageHealValue / maxDamage * 100 : 0;
+                    existingFragment.DamagePercentage = (totalDamage != 0) ? 100.00 / totalDamage * spell.DamageHealValue : 0;
+                    fragmentsToUpdate.Add(existingFragment);
                 }
                 else
                 {
-                    fragmentsToAdd.Add(new SpellFragment
+                    fragmentsToAdd.Add(new UsedSpellFragment
                     {
-                        Index = spell.Index,
+                        SpellIndex = spell.SpellIndex,
+                        ItemIndex = spell.ItemIndex,
                         UniqueName = spell.UniqueName,
-                        DamageHealValue = spell.DamageHealValue
+                        DamageHealValue = spell.DamageHealValue,
+                        Category = spell.Category,
+                        Target = spell.Target,
+                        Ticks = spell.Ticks,
+                        HealthChangeType = spell.HealthChangeType,
+                        DamageInPercent = (maxDamage != 0) ? (double) spell.DamageHealValue / maxDamage * 100 : 0,
+                        DamagePercentage = (totalDamage != 0) ? 100.00 / totalDamage * spell.DamageHealValue : 0
                     });
                 }
             }
@@ -458,9 +483,21 @@ public class CombatController
             {
                 spellsFragments.Add(fragment);
             }
-        });
 
-        return spellsFragments;
+            foreach (var fragment in fragmentsToUpdate)
+            {
+                var updatedFragment = fragmentsToAdd.FirstOrDefault(x => x.SpellIndex == fragment.SpellIndex);
+                if (updatedFragment != null)
+                {
+                    fragment.DamageHealValue = updatedFragment.DamageHealValue;
+                    fragment.Ticks = updatedFragment.Ticks;
+                    fragment.DamageInPercent = updatedFragment.DamageInPercent;
+                    fragment.DamagePercentage = updatedFragment.DamagePercentage;
+                }
+            }
+
+            spellsFragments.SortByDescending(x => x.DamageHealValue);
+        });
     }
 
     #endregion

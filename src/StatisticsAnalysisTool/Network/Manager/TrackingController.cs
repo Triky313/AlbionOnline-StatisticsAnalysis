@@ -11,7 +11,8 @@ using StatisticsAnalysisTool.Exceptions;
 using StatisticsAnalysisTool.Gathering;
 using StatisticsAnalysisTool.Guild;
 using StatisticsAnalysisTool.Localization;
-using StatisticsAnalysisTool.Properties;
+using StatisticsAnalysisTool.Network.PacketProviders;
+using StatisticsAnalysisTool.Party;
 using StatisticsAnalysisTool.Trade;
 using StatisticsAnalysisTool.Trade.Mails;
 using StatisticsAnalysisTool.Trade.Market;
@@ -21,15 +22,12 @@ using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Diagnostics;
-using System.IO;
 using System.Linq;
 using System.Net.Sockets;
 using System.Reflection;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Data;
-using StatisticsAnalysisTool.Network.PacketProviders;
-using StatisticsAnalysisTool.Party;
 using ValueType = StatisticsAnalysisTool.Enumerations.ValueType;
 
 namespace StatisticsAnalysisTool.Network.Manager;
@@ -118,17 +116,7 @@ public class TrackingController : ITrackingController
 
         try
         {
-            await Task.WhenAll(
-                EstimatedMarketValueController.LoadFromFileAsync(),
-                StatisticController.LoadFromFileAsync(),
-                TradeController.LoadFromFileAsync(),
-                TreasureController.LoadFromFileAsync(),
-                DungeonController.LoadDungeonFromFileAsync(),
-                GatheringController.LoadFromFileAsync(),
-                VaultController.LoadFromFileAsync(),
-                GuildController.LoadFromFileAsync(),
-                CombatController.LoadFromFileAsync()
-            );
+            await LoadDataAsync();
         }
         catch (Exception e)
         {
@@ -204,6 +192,21 @@ public class TrackingController : ITrackingController
             GuildController.SaveInFileAsync(),
             CombatController.SaveInFileAsync(),
             EstimatedMarketValueController.SaveInFileAsync()
+        );
+    }
+
+    private async Task LoadDataAsync()
+    {
+        await Task.WhenAll(
+            EstimatedMarketValueController.LoadFromFileAsync(),
+            StatisticController.LoadFromFileAsync(),
+            TradeController.LoadFromFileAsync(),
+            TreasureController.LoadFromFileAsync(),
+            DungeonController.LoadDungeonFromFileAsync(),
+            GatheringController.LoadFromFileAsync(),
+            VaultController.LoadFromFileAsync(),
+            GuildController.LoadFromFileAsync(),
+            CombatController.LoadFromFileAsync()
         );
     }
 

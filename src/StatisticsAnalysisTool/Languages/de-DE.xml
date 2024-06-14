@@ -788,4 +788,8 @@
 	<translation name="DEATH_ALERT">Todesalarm</translation>
 	<translation name="SELECT_FOR_DEATH_ALERT">Für todes Alarm auswählen</translation>
 	<translation name="DEATH_ALERT_SOUND_USED">Verwendeter Todesalarm Sound</translation>
+	<translation name="DMG_PERCENT">DMG%</translation>
+	<translation name="DAMAGE_HEAL">DMG/HEAL</translation>
+	<translation name="TICKS">Ticks</translation>
+	<translation name="AUTO_ATTACK">Auto Angriff</translation>
 </translations>

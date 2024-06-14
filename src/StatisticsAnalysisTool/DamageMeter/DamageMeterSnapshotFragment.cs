@@ -5,7 +5,6 @@ using StatisticsAnalysisTool.ViewModels;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text.Json.Serialization;
 using System.Windows;
 using System.Windows.Input;
 
@@ -36,10 +35,17 @@ public sealed class DamageMeterSnapshotFragment : BaseViewModel
         OverhealedPercentageOfTotalHealing = damageMeterFragment.OverhealedPercentageOfTotalHealing;
         Spells = damageMeterFragment.Spells.Select(x => new SpellsSnapshotFragment()
         {
-            Index = x.Index,
+            SpellIndex = x.SpellIndex,
+            ItemIndex = x.ItemIndex,
             UniqueName = x.UniqueName,
             DamageHealValue = x.DamageHealValue,
-            DamageHealShortString = x.DamageHealShortString
+            DamageHealShortString = x.DamageHealShortString,
+            Target = x.Target,
+            Category = x.Category,
+            Ticks = x.Ticks,
+            DamageInPercent = x.DamageInPercent,
+            DamagePercentage = x.DamagePercentage,
+            HealthChangeType = x.HealthChangeType
         }).ToList();
     }
 
@@ -122,7 +128,6 @@ public sealed class DamageMeterSnapshotFragment : BaseViewModel
 
     public List<SpellsSnapshotFragment> Spells { get; init; }
 
-    [JsonIgnore]
     public Visibility SpellsContainerVisibility
     {
         get => _spellsContainerVisibility;
@@ -144,6 +149,10 @@ public sealed class DamageMeterSnapshotFragment : BaseViewModel
     public ICommand ShowSpells => _showSpells ??= new CommandHandler(PerformShowSpells, true);
 
     public string TranslationCombatTime => LanguageController.Translation("COMBAT_TIME");
+    public static string TranslationDmgPercent => LanguageController.Translation("DMG_PERCENT");
+    public static string TranslationName => LanguageController.Translation("NAME");
+    public static string TranslationDamageHeal => LanguageController.Translation("DAMAGE_HEAL");
+    public static string TranslationTicks => LanguageController.Translation("TICKS");
 
     public string CauserMainHandItemUniqueName
     {
@@ -156,7 +165,6 @@ public sealed class DamageMeterSnapshotFragment : BaseViewModel
         }
     }
 
-    [JsonIgnore]
     public Item CauserMainHand => ItemController.GetItemByUniqueName(CauserMainHandItemUniqueName);
     public string ShopSubCategory { get; set; }
 }

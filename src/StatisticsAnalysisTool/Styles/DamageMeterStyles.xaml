@@ -2,7 +2,8 @@
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
                     xmlns:common="clr-namespace:StatisticsAnalysisTool.Common"
                     xmlns:fa5="http://schemas.fontawesome.com/icons/"
-                    xmlns:damageMeter="clr-namespace:StatisticsAnalysisTool.DamageMeter">
+                    xmlns:damageMeter="clr-namespace:StatisticsAnalysisTool.DamageMeter"
+                    xmlns:enumerations="clr-namespace:StatisticsAnalysisTool.Enumerations">
 
     <!-- Damage meter icon -->
     <Style TargetType="Image" x:Key="DamageMeter.Icon">
@@ -67,12 +68,52 @@
         </Style.Triggers>
     </Style>
 
-    <DataTemplate x:Key="SpellBarTemplate" DataType="{x:Type damageMeter:SpellFragment}">
-        <StackPanel Orientation="Vertical" Height="50" Width="55" Margin="0,0,0,7" ToolTip="{Binding UniqueName}">
-            <Image Source="{Binding Icon, IsAsync=True, Mode=OneWay}" Height="40" Width="40" Margin="0,0,0,5" Stretch="Fill" VerticalAlignment="Top" HorizontalAlignment="Center" />
-            <Label Foreground="{StaticResource SolidColorBrush.Weapon.Text}" Content="{Binding DamageHealShortString}" 
-                   Margin="0,-10,0,0" Padding="0" HorizontalContentAlignment="Center" VerticalAlignment="Bottom" />
-        </StackPanel>
+    <Style TargetType="Label" x:Key="DamageMeter.Category.DamageHeal.Color">
+        <Setter Property="Foreground" Value="{StaticResource SolidColorBrush.Text.1}" />
+        <Style.Triggers>
+            <DataTrigger Binding="{Binding HealthChangeType, IsAsync=True, Mode=OneWay}" Value="{x:Static enumerations:HealthChangeType.Heal}">
+                <Setter Property="Foreground" Value="{StaticResource SolidColorBrush.Accent.Green.4}" />
+            </DataTrigger>
+            <DataTrigger Binding="{Binding HealthChangeType, IsAsync=True, Mode=OneWay}" Value="{x:Static enumerations:HealthChangeType.Damage}">
+                <Setter Property="Foreground" Value="{StaticResource SolidColorBrush.Accent.Red.4}" />
+            </DataTrigger>
+        </Style.Triggers>
+    </Style>
+
+    <Style TargetType="Image" x:Key="DamageMeter.Spell.Icon.Selector">
+        <Setter Property="Height" Value="40"/>
+        <Setter Property="Width" Value="40"/>
+        <Setter Property="Source" Value="{Binding Icon, IsAsync=True, Mode=OneWay}" />
+        <Style.Triggers>
+            <DataTrigger Binding="{Binding SpellIndex}" Value="0">
+                <Setter Property="Source" Value="../Assets/auto_attack.png" />
+            </DataTrigger>
+        </Style.Triggers>
+    </Style>
+
+    <!-- Spell bar -->
+    <DataTemplate x:Key="SpellBarTemplate" DataType="{x:Type damageMeter:UsedSpellFragment}">
+        <Grid Height="auto" Width="auto" HorizontalAlignment="Stretch">
+            <ProgressBar common:ProgressBarSmoother.SmoothValue="{Binding DamageInPercent}" Minimum="0" Maximum="100" MinHeight="40" Height="auto" Margin="3,0,2,1" 
+                         VerticalAlignment="Top" Background="#00FFFFFF" BorderThickness="0" Foreground="{StaticResource SolidColorBrush.Accent.Blue.Transparent.3}" HorizontalAlignment="Stretch" />
+            <StackPanel Orientation="Horizontal">
+                <Grid Margin="10,0, 0, 0" HorizontalAlignment="Center" VerticalAlignment="Top">
+                    <Image Source="{Binding Item.Icon, IsAsync=True, Mode=OneWay}" Style="{StaticResource DamageMeter.Icon}" />
+                </Grid>
+                <Grid Margin="0,0, 0, 0" HorizontalAlignment="Center" VerticalAlignment="Top">
+                    <Image Style="{StaticResource DamageMeter.Spell.Icon.Selector}" />
+                </Grid>
+                <Label Content="{Binding LocalizationName}" Width="242" Margin="10,5, 0, 0" VerticalAlignment="Top" HorizontalContentAlignment="Left" />
+
+                <Label Foreground="{StaticResource SolidColorBrush.Weapon.Text}" Content="{Binding DamagePercentage}" HorizontalContentAlignment="Left"
+                       ContentStringFormat="{}{0:N2}%" Width="68" Margin="0,5" VerticalAlignment="Top" />
+
+                <Label Style="{StaticResource DamageMeter.Category.DamageHeal.Color}" Content="{Binding DamageHealShortString}" HorizontalContentAlignment="Left"
+                       Width="82" FontWeight="Bold" Margin="0,5,0,0" VerticalAlignment="Top" />
+
+                <Label Content="{Binding Ticks}" Width="70" FontWeight="Bold" Margin="0,5, 5, 0" VerticalAlignment="Top" HorizontalContentAlignment="Left" />
+            </StackPanel>
+        </Grid>
     </DataTemplate>
 
     <!-- Damage meter -->
@@ -106,7 +147,7 @@
                     </ProgressBar.Style>
                 </ProgressBar>
                 <StackPanel Orientation="Horizontal">
-                    <Grid Margin="10,00, 0, 0" HorizontalAlignment="Center" VerticalAlignment="Top">
+                    <Grid Margin="10,0, 0, 0" HorizontalAlignment="Center" VerticalAlignment="Top">
                         <Image Source="{Binding CauserMainHand.Icon}" Style="{StaticResource DamageMeter.Icon}" />
                     </Grid>
                     <Label Foreground="{StaticResource SolidColorBrush.Weapon.Text}" Content="{Binding DamagePercentage}" 
@@ -182,18 +223,24 @@
                     </TextBlock>
                 </StackPanel>
             </Grid>
-            <StackPanel Orientation="Vertical" Margin="12,40,0,0" VerticalAlignment="Top" HorizontalAlignment="Left" 
-                        Visibility="{Binding SpellsContainerVisibility}">
-                <ScrollViewer HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Disabled">
+            <Grid Margin="10,41,0,3" VerticalAlignment="Top" HorizontalAlignment="Stretch" Visibility="{Binding SpellsContainerVisibility}">
+                <StackPanel Orientation="Horizontal" Height="24" HorizontalAlignment="Stretch" Margin="2,0,2,0" VerticalAlignment="Top" Background="{StaticResource SolidColorBrush.Accent.Blue.Transparent.5}">
+                    <Label Content="" Width="96" />
+                    <Label Content="{Binding TranslationName}" FontWeight="Bold" Width="244" Foreground="{StaticResource SolidColorBrush.Accent.Blue.2}" />
+                    <Label Content="{Binding TranslationDmgPercent}" FontWeight="Bold" Width="64" Foreground="{StaticResource SolidColorBrush.Accent.Blue.2}" />
+                    <Label Content="{Binding TranslationDamageHeal}" FontWeight="Bold" Width="84" Foreground="{StaticResource SolidColorBrush.Accent.Blue.2}"  />
+                    <Label Content="{Binding TranslationTicks}" FontWeight="Bold" Width="70" Foreground="{StaticResource SolidColorBrush.Accent.Blue.2}" />
+                </StackPanel>
+                <ScrollViewer HorizontalScrollBarVisibility="Disabled" VerticalScrollBarVisibility="Disabled" Margin="0,25,0,0">
                     <ItemsControl ItemsSource="{Binding Spells, IsAsync=True}" ItemTemplate="{StaticResource SpellBarTemplate}">
                         <ItemsControl.ItemsPanel>
                             <ItemsPanelTemplate>
-                                <VirtualizingStackPanel Orientation="Horizontal"/>
+                                <VirtualizingStackPanel Orientation="Vertical"/>
                             </ItemsPanelTemplate>
                         </ItemsControl.ItemsPanel>
                     </ItemsControl>
                 </ScrollViewer>
-            </StackPanel>
+            </Grid>
         </Grid>
     </DataTemplate>
 
@@ -228,7 +275,7 @@
                     </ProgressBar.Style>
                 </ProgressBar>
                 <StackPanel Orientation="Horizontal">
-                    <Grid Margin="10,00, 0, 0" HorizontalAlignment="Center" VerticalAlignment="Top">
+                    <Grid Margin="10,0, 0, 0" HorizontalAlignment="Center" VerticalAlignment="Top">
                         <Image Source="{Binding CauserMainHand.Icon}" Style="{StaticResource DamageMeter.Icon}" />
                     </Grid>
                     <Label Foreground="{StaticResource SolidColorBrush.Weapon.Text}" Content="{Binding DamagePercentage}" 
@@ -252,7 +299,6 @@
                     </TextBlock>
                 </StackPanel>
             </Grid>
-
             <Grid>
                 <Grid.Style>
                     <Style TargetType="{x:Type Grid}">
@@ -298,18 +344,24 @@
                     </TextBlock>
                 </StackPanel>
             </Grid>
-            <StackPanel Orientation="Vertical" Margin="12,40,0,0" VerticalAlignment="Top" HorizontalAlignment="Left" 
-                        Visibility="{Binding SpellsContainerVisibility}">
-                <ScrollViewer HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Disabled">
+            <Grid Margin="10,41,0,3" Width="auto" VerticalAlignment="Top" HorizontalAlignment="Stretch" Visibility="{Binding SpellsContainerVisibility}">
+                <StackPanel Orientation="Horizontal" Height="24" HorizontalAlignment="Stretch" Margin="2,0,2,0" VerticalAlignment="Top" Background="{StaticResource SolidColorBrush.Accent.Blue.Transparent.5}">
+                    <Label Content="" Width="96" />
+                    <Label Content="{Binding TranslationName}" FontWeight="Bold" Width="244" Foreground="{StaticResource SolidColorBrush.Accent.Blue.2}" />
+                    <Label Content="{Binding TranslationDmgPercent}" FontWeight="Bold" Width="64" Foreground="{StaticResource SolidColorBrush.Accent.Blue.2}" />
+                    <Label Content="{Binding TranslationDamageHeal}" FontWeight="Bold" Width="84" Foreground="{StaticResource SolidColorBrush.Accent.Blue.2}"  />
+                    <Label Content="{Binding TranslationTicks}" FontWeight="Bold" Width="70" Foreground="{StaticResource SolidColorBrush.Accent.Blue.2}" />
+                </StackPanel>
+                <ScrollViewer HorizontalScrollBarVisibility="Disabled" VerticalScrollBarVisibility="Disabled" Margin="0,25,0,0">
                     <ItemsControl ItemsSource="{Binding Spells, IsAsync=True}" ItemTemplate="{StaticResource SpellBarTemplate}">
                         <ItemsControl.ItemsPanel>
                             <ItemsPanelTemplate>
-                                <VirtualizingStackPanel Orientation="Horizontal"/>
+                                <VirtualizingStackPanel Orientation="Vertical"/>
                             </ItemsPanelTemplate>
                         </ItemsControl.ItemsPanel>
                     </ItemsControl>
                 </ScrollViewer>
-            </StackPanel>
+            </Grid>
         </Grid>
     </DataTemplate>
 </ResourceDictionary>

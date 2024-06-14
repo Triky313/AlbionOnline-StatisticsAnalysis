@@ -164,6 +164,9 @@
     <Content Include="Sounds\dungeon_closed.wav">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
+    <Resource Include="Assets\auto_attack.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Resource>
     <Resource Include="Assets\ava_chest.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Resource>
@@ -666,6 +669,7 @@
     <Compile Remove="Network\SilverCountUpTimer.cs" />
   </ItemGroup>
   <ItemGroup>
+    <None Remove="Assets\auto_attack.png" />
     <None Remove="Assets\ava_chest.png" />
     <None Remove="Assets\bag.png" />
     <None Remove="Assets\bg01.png" />

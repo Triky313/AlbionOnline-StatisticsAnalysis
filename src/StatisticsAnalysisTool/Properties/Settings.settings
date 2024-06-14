@@ -152,5 +152,8 @@
     <Setting Name="GuildFileName" Type="System.String" Scope="User">
       <Value Profile="(Default)">Guild.json</Value>
     </Setting>
+    <Setting Name="SpellLocalizationsFileName" Type="System.String" Scope="User">
+      <Value Profile="(Default)">spells-localization.json</Value>
+    </Setting>
   </Settings>
 </SettingsFile>
