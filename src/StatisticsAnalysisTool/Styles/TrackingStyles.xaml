@@ -418,9 +418,9 @@
         </StackPanel>
     </DataTemplate>
 
-    <DataTemplate DataType="{x:Type models:MainStatObject}">
+    <DataTemplate x:Key="FactionPointStatsTemplate" DataType="{x:Type models:MainStatObject}">
         <StackPanel Orientation="Vertical" Margin="10,0,10,0" Visibility="{Binding Visibility}">
-            <Image Style="{StaticResource Tracker.Fraction.Coin.Icon}" ToolTip="{Binding TranslationTotalFactionPoints, FallbackValue='TOTAL__FACTION__POINTS'}" />
+            <Image Style="{StaticResource Tracker.Fraction.Coin.Icon}" ToolTip="{Binding TranslationTotalFactionPoints, FallbackValue='TOTAL__FACTION__POINTS'}" Width="22" Height="22" />
             <TextBlock Text="{Binding Value, StringFormat='{}{0:N0}', FallbackValue=0}" FontSize="16" Foreground="{StaticResource SolidColorBrush.Text.1}" HorizontalAlignment="Center" />
             <TextBlock FontSize="16" Text="{Binding ValuePerHour, Converter={StaticResource ValuePerHourConverter}, FallbackValue=0 /h}"
                            Foreground="{StaticResource SolidColorBrush.Text.1}" HorizontalAlignment="Center" />
