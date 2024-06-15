@@ -126,7 +126,7 @@ public sealed class DamageMeterSnapshotFragment : BaseViewModel
 
     #region Spells
 
-    public List<SpellsSnapshotFragment> Spells { get; init; }
+    public List<SpellsSnapshotFragment> Spells { get; init; } = new ();
 
     public Visibility SpellsContainerVisibility
     {
