@@ -33,7 +33,7 @@ public sealed class DamageMeterSnapshotFragmentDto
 
     #region Spells
 
-    public List<SpellFragmentDto> Spells { get; set; }
+    public List<SpellFragmentDto> Spells { get; set; } = new ();
 
     #endregion
 

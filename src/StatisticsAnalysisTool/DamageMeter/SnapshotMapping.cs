@@ -1,5 +1,4 @@
-﻿using StatisticsAnalysisTool.Enumerations;
-using System.Linq;
+﻿using System.Linq;
 
 namespace StatisticsAnalysisTool.DamageMeter;
 
@@ -25,6 +24,11 @@ public static class SnapshotMapping
 
     private static DamageMeterSnapshotFragmentDto Mapping(DamageMeterSnapshotFragment snapshot)
     {
+        if (snapshot is null)
+        {
+            return new DamageMeterSnapshotFragmentDto();
+        }
+
         return new DamageMeterSnapshotFragmentDto()
         {
             Name = snapshot.Name,
@@ -51,6 +55,11 @@ public static class SnapshotMapping
 
     private static DamageMeterSnapshotFragment Mapping(DamageMeterSnapshotFragmentDto snapshotFragmentDto)
     {
+        if (snapshotFragmentDto is null)
+        {
+            return new DamageMeterSnapshotFragment();
+        }
+
         return new DamageMeterSnapshotFragment()
         {
             Name = snapshotFragmentDto.Name,
@@ -75,6 +84,11 @@ public static class SnapshotMapping
 
     private static SpellFragmentDto Mapping(SpellsSnapshotFragment snapshot)
     {
+        if (snapshot is null)
+        {
+            return new SpellFragmentDto();
+        }
+
         return new SpellFragmentDto()
         {
             SpellIndex = snapshot.SpellIndex,
@@ -91,6 +105,11 @@ public static class SnapshotMapping
 
     private static SpellsSnapshotFragment Mapping(SpellFragmentDto snapshotDto)
     {
+        if (snapshotDto is null)
+        {
+            return new SpellsSnapshotFragment();
+        }
+
         return new SpellsSnapshotFragment()
         {
             SpellIndex = snapshotDto.SpellIndex,
