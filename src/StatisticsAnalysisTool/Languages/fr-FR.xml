@@ -746,4 +746,12 @@
     <translation name="PACKET_PROVIDER">Fournisseur de paquets</translation>
     <translation name="TOOL_MUST_BE_RUN_AS_ADMIN">Le logiciel doit être exécuté en tant qu'administrateur</translation>
     <translation name="ADDED_CRAFTING">Ajout d'un craft</translation>
+    <translation name="PARTY">Groupe</translation>
+    <translation name="DEATH_ALERT">Alerte de mort</translation>
+    <translation name="SELECT_FOR_DEATH_ALERT">Sélectionnez pour l'alerte de mort</translation>
+    <translation name="DEATH_ALERT_SOUND_USED">Son d'alerte de mort utilisé</translation>
+    <translation name="DMG_PERCENT">DÉGATS%</translation>
+    <translation name="DAMAGE_HEAL">DÉGATS/SOINS</translation>
+    <translation name="TICKS">Ticks</translation>
+    <translation name="AUTO_ATTACK">Attaque automatique</translation>
 </translations>
