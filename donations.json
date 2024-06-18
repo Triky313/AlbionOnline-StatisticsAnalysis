@@ -1,4 +1,11 @@
-[ 
+[
+     {
+	"Timestamp": "2024-06-18T00:00:00",
+	"Amount": 0,
+	"RealMoneyAmount": 2.37,
+	"Contributor": "SolomonInsane",
+	"IsDonationRealMoney": true
+     },
      {
 	"Timestamp": "2024-05-26T00:00:00",
 	"Amount": 4210000,
@@ -70,7 +77,7 @@
      {
 	"Timestamp": "2023-09-08T00:00:00",
 	"Amount": 0,
-	"RealMoneyAmount": 4.75,
+	"RealMoneyAmount": 364.75,
 	"Contributor": "Anonymously Donated",
 	"IsDonationRealMoney": true
     },
