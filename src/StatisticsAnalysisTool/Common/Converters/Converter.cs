@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -16,12 +17,12 @@ public static class Converter
 
     private const double MinOneGoldInCent = MinGoldPriceInCent / MinReceivedGold;
     private const double MaxOneGoldInCent = MaxGoldPriceInCent / MaxReceivedGold;
-    
+
     private static DateTime _lastGoldUpdate = DateTime.MinValue;
     private static int _currentGoldPrice = DefaultGoldPrice;
 
-    private static bool _getGoldPriceisRunning = false;
-    
+    private static bool _getGoldPriceisRunning;
+
     public static string GoldToDollar(ulong itemSilverPrice)
     {
         if (itemSilverPrice == 0 || _currentGoldPrice == 0)
@@ -29,9 +30,9 @@ public static class Converter
             return 0.ToString();
         }
 
-        GetCurrentGoldPriceAsync();
+        _ = GetCurrentGoldPriceAsync();
 
-        var itemPriceInGold = itemSilverPrice / (ulong)_currentGoldPrice;
+        var itemPriceInGold = itemSilverPrice / (ulong) _currentGoldPrice;
 
         var maxPrice = MinOneGoldInCent * itemPriceInGold;
         var minPrice = MaxOneGoldInCent * itemPriceInGold;
@@ -57,5 +58,52 @@ public static class Converter
         _currentGoldPrice = price;
         _lastGoldUpdate = DateTime.UtcNow;
         _getGoldPriceisRunning = false;
+    }
+
+    public static Dictionary<int, TOut> GetValue<TOut>(object parameter) where TOut : struct
+    {
+        var dictionary = new Dictionary<int, TOut>();
+
+        if (parameter == null)
+        {
+            return dictionary;
+        }
+
+        var valueType = parameter.GetType();
+        if (!valueType.IsArray)
+        {
+            return dictionary;
+        }
+
+        var array = (Array) parameter;
+
+        for (int i = 0; i < array.Length; i++)
+        {
+            var value = array.GetValue(i);
+            var convertedValue = ConvertTo<TOut>(value);
+            if (convertedValue.HasValue)
+            {
+                dictionary.Add(i, convertedValue.Value);
+            }
+        }
+
+        return dictionary;
+    }
+
+    private static TOut? ConvertTo<TOut>(object input) where TOut : struct
+    {
+        if (input == null)
+            return null;
+
+        return typeof(TOut).Name switch
+        {
+            nameof(Byte) => (TOut) (object) input.ObjectToByte(),
+            nameof(Int16) => (TOut) (object) input.ObjectToShort(),
+            nameof(Int32) => (TOut) (object) input.ObjectToInt(),
+            nameof(Int64) => (TOut) (object) input.ObjectToLong(),
+            nameof(UInt64) => (TOut) (object) input.ObjectToUlong(),
+            nameof(Double) => (TOut) (object) input.ObjectToDouble(),
+            _ => null
+        };
     }
 }

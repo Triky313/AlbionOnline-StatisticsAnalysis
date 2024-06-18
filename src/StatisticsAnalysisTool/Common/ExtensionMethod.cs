@@ -126,6 +126,16 @@ public static class ExtensionMethod
         return value as float? ?? value as double? ?? 0;
     }
 
+    public static Dictionary<int, T> ToDictionary<T>(this T[] array)
+    {
+        var dict = new Dictionary<int, T>();
+        for (int i = 0; i < array.Length; i++)
+        {
+            dict[i] = array[i];
+        }
+        return dict;
+    }
+
     #endregion
 
     #region Number manipulation

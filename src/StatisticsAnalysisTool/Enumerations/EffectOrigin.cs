@@ -10,5 +10,6 @@ public enum EffectOrigin : byte
     OverTimeEffect,
     Reflected,
     SpellCost,
-    ServerAuthority
+    ServerAuthority,
+    Unknown
 }
