@@ -62,8 +62,13 @@ public static class ExtensionMethod
 
     public static double GetValuePerHour(this double value, double seconds)
     {
-        double hours = seconds > 0 ? seconds / 60d / 60d : 0;
-        return hours > 0 ? value / hours : double.MaxValue;
+        if (seconds <= 0)
+        {
+            return double.MaxValue;
+        }
+
+        double hours = seconds / 3600d;
+        return value / hours;
     }
 
     public static bool HasProperty(this object obj, string propertyName)
