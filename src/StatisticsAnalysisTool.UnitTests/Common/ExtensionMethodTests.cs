@@ -201,4 +201,74 @@ public class ExtensionMethodTests
         // Assert
         result.Should().BeTrue();
     }
+
+    [Test]
+    public void GetValuePerHour_ValidSeconds_ReturnsCorrectValue()
+    {
+        // Arrange
+        double value = 3600;
+        double seconds = 3600;
+
+        // Act
+        double result = value.GetValuePerHour(seconds);
+
+        // Assert
+        result.Should().Be(3600);
+    }
+
+    [Test]
+    public void GetValuePerHour_ZeroSeconds_ReturnsMaxValue()
+    {
+        // Arrange
+        double value = 100;
+        double seconds = 0;
+
+        // Act
+        double result = value.GetValuePerHour(seconds);
+
+        // Assert
+        result.Should().Be(double.MaxValue);
+    }
+
+    [Test]
+    public void GetValuePerHour_NegativeSeconds_ReturnsMaxValue()
+    {
+        // Arrange
+        double value = 100;
+        double seconds = -3600;
+
+        // Act
+        double result = value.GetValuePerHour(seconds);
+
+        // Assert
+        result.Should().Be(double.MaxValue);
+    }
+
+    [Test]
+    public void GetValuePerHour_FractionalSeconds_ReturnsCorrectValue()
+    {
+        // Arrange
+        double value = 1800;
+        double seconds = 1800;
+
+        // Act
+        double result = value.GetValuePerHour(seconds);
+
+        // Assert
+        result.Should().Be(3600);
+    }
+
+    [Test]
+    public void GetValuePerHour_SmallSecondsValue_ReturnsLargeResult()
+    {
+        // Arrange
+        double value = 1;
+        double seconds = 1;
+
+        // Act
+        double result = value.GetValuePerHour(seconds);
+
+        // Assert
+        result.Should().Be(3600);
+    }
 }

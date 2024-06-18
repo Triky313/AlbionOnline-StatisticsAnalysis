@@ -53,7 +53,7 @@ public class HealthUpdateEvent
 
             if (parameters.TryGetValue(5, out object effectOrigin))
             {
-                EffectOrigin = (EffectOrigin) (effectOrigin as byte? ?? 0);
+                EffectOrigin = (EffectOrigin) (effectOrigin as byte? ?? 9);
             }
 
             if (parameters.TryGetValue(6, out object causerId))

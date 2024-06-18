@@ -62,8 +62,13 @@ public static class ExtensionMethod
 
     public static double GetValuePerHour(this double value, double seconds)
     {
-        double hours = seconds > 0 ? seconds / 60d / 60d : 0;
-        return hours > 0 ? value / hours : double.MaxValue;
+        if (seconds <= 0)
+        {
+            return double.MaxValue;
+        }
+
+        double hours = seconds / 3600d;
+        return value / hours;
     }
 
     public static bool HasProperty(this object obj, string propertyName)
@@ -124,6 +129,16 @@ public static class ExtensionMethod
     public static double ObjectToDouble(this object value)
     {
         return value as float? ?? value as double? ?? 0;
+    }
+
+    public static Dictionary<int, T> ToDictionary<T>(this T[] array)
+    {
+        var dict = new Dictionary<int, T>();
+        for (int i = 0; i < array.Length; i++)
+        {
+            dict[i] = array[i];
+        }
+        return dict;
     }
 
     #endregion

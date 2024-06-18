@@ -56,6 +56,7 @@ public class NetworkManager
         builder.AddEventHandler(new InCombatStateUpdateEventHandler(trackingController));
         builder.AddEventHandler(new NewShrineEventHandler(trackingController));
         builder.AddEventHandler(new HealthUpdateEventHandler(trackingController));
+        builder.AddEventHandler(new HealthUpdatesEventHandler(trackingController));
         builder.AddEventHandler(new PartyDisbandedEventHandler(trackingController));
         builder.AddEventHandler(new PartyJoinedEventHandler(trackingController));
         builder.AddEventHandler(new PartyPlayerJoinedEventHandler(trackingController));
