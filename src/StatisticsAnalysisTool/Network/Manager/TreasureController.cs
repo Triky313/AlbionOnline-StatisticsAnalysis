@@ -183,6 +183,23 @@ public class TreasureController
         _mainWindowViewModel.DashboardBindings.LootedChests.MistLegendaryYear = GetStats(TreasureRarity.Legendary, TreasureType.Mist, -365);
 
         #endregion
+
+        #region Corrupted
+
+        _mainWindowViewModel.DashboardBindings.LootedChests.CorruptedCommonWeek = GetStats(TreasureRarity.Common, TreasureType.Corrupted, -7);
+        _mainWindowViewModel.DashboardBindings.LootedChests.CorruptedCommonMonth = GetStats(TreasureRarity.Common, TreasureType.Corrupted, -30);
+        _mainWindowViewModel.DashboardBindings.LootedChests.CorruptedCommonYear = GetStats(TreasureRarity.Common, TreasureType.Corrupted, -365);
+        _mainWindowViewModel.DashboardBindings.LootedChests.CorruptedUncommonWeek = GetStats(TreasureRarity.Uncommon, TreasureType.Corrupted, -7);
+        _mainWindowViewModel.DashboardBindings.LootedChests.CorruptedUncommonMonth = GetStats(TreasureRarity.Uncommon, TreasureType.Corrupted, -30);
+        _mainWindowViewModel.DashboardBindings.LootedChests.CorruptedUncommonYear = GetStats(TreasureRarity.Uncommon, TreasureType.Corrupted, -365);
+        _mainWindowViewModel.DashboardBindings.LootedChests.CorruptedEpicWeek = GetStats(TreasureRarity.Rare, TreasureType.Corrupted, -7);
+        _mainWindowViewModel.DashboardBindings.LootedChests.CorruptedEpicMonth = GetStats(TreasureRarity.Rare, TreasureType.Corrupted, -30);
+        _mainWindowViewModel.DashboardBindings.LootedChests.CorruptedEpicYear = GetStats(TreasureRarity.Rare, TreasureType.Corrupted, -365);
+        _mainWindowViewModel.DashboardBindings.LootedChests.CorruptedLegendaryWeek = GetStats(TreasureRarity.Legendary, TreasureType.Corrupted, -7);
+        _mainWindowViewModel.DashboardBindings.LootedChests.CorruptedLegendaryMonth = GetStats(TreasureRarity.Legendary, TreasureType.Corrupted, -30);
+        _mainWindowViewModel.DashboardBindings.LootedChests.CorruptedLegendaryYear = GetStats(TreasureRarity.Legendary, TreasureType.Corrupted, -365);
+
+        #endregion
     }
 
     #region Helper methods

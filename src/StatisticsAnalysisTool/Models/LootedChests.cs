@@ -37,6 +37,18 @@ public class LootedChests : BaseViewModel
     private int _hellGatesEpicMonth;
     private int _hellGatesLegendaryWeek;
     private int _hellGatesLegendaryMonth;
+    private int _corruptedCommonWeek;
+    private int _corruptedCommonMonth;
+    private int _corruptedUncommonWeek;
+    private int _corruptedUncommonMonth;
+    private int _corruptedEpicWeek;
+    private int _corruptedEpicMonth;
+    private int _corruptedLegendaryWeek;
+    private int _corruptedLegendaryMonth;
+    private int _corruptedCommonYear;
+    private int _corruptedUncommonYear;
+    private int _corruptedEpicYear;
+    private int _corruptedLegendaryYear;
     private int _mistCommonWeek;
     private int _mistCommonMonth;
     private int _mistUncommonWeek;
@@ -821,13 +833,138 @@ public class LootedChests : BaseViewModel
     }
 
     #endregion
-    
+
+    #region Corrupted bindings
+
+    public int CorruptedCommonWeek
+    {
+        get => _corruptedCommonWeek;
+        set
+        {
+            _corruptedCommonWeek = value;
+            OnPropertyChanged();
+        }
+    }
+
+    public int CorruptedCommonMonth
+    {
+        get => _corruptedCommonMonth;
+        set
+        {
+            _corruptedCommonMonth = value;
+            OnPropertyChanged();
+        }
+    }
+
+    public int CorruptedCommonYear
+    {
+        get => _corruptedCommonYear;
+        set
+        {
+            _corruptedCommonYear = value;
+            OnPropertyChanged();
+        }
+    }
+
+    public int CorruptedUncommonWeek
+    {
+        get => _corruptedUncommonWeek;
+        set
+        {
+            _corruptedUncommonWeek = value;
+            OnPropertyChanged();
+        }
+    }
+
+    public int CorruptedUncommonMonth
+    {
+        get => _corruptedUncommonMonth;
+        set
+        {
+            _corruptedUncommonMonth = value;
+            OnPropertyChanged();
+        }
+    }
+
+    public int CorruptedUncommonYear
+    {
+        get => _corruptedUncommonYear;
+        set
+        {
+            _corruptedUncommonYear = value;
+            OnPropertyChanged();
+        }
+    }
+
+    public int CorruptedEpicWeek
+    {
+        get => _corruptedEpicWeek;
+        set
+        {
+            _corruptedEpicWeek = value;
+            OnPropertyChanged();
+        }
+    }
+
+    public int CorruptedEpicMonth
+    {
+        get => _corruptedEpicMonth;
+        set
+        {
+            _corruptedEpicMonth = value;
+            OnPropertyChanged();
+        }
+    }
+
+    public int CorruptedEpicYear
+    {
+        get => _corruptedEpicYear;
+        set
+        {
+            _corruptedEpicYear = value;
+            OnPropertyChanged();
+        }
+    }
+
+    public int CorruptedLegendaryWeek
+    {
+        get => _corruptedLegendaryWeek;
+        set
+        {
+            _corruptedLegendaryWeek = value;
+            OnPropertyChanged();
+        }
+    }
+
+    public int CorruptedLegendaryMonth
+    {
+        get => _corruptedLegendaryMonth;
+        set
+        {
+            _corruptedLegendaryMonth = value;
+            OnPropertyChanged();
+        }
+    }
+
+    public int CorruptedLegendaryYear
+    {
+        get => _corruptedLegendaryYear;
+        set
+        {
+            _corruptedLegendaryYear = value;
+            OnPropertyChanged();
+        }
+    }
+
+    #endregion
+
     public static string TranslationOpenWorld => LanguageController.Translation("OPEN_WORLD");
     public static string TranslationStaticDungeons => LanguageController.Translation("STATIC_DUNGEONS");
     public static string TranslationAvalonianRoads => LanguageController.Translation("AVALONIAN_ROADS");
     public static string TranslationRandomSoloDungeons => LanguageController.Translation("RANDOM_SOLO_DUNGEONS");
     public static string TranslationRandomGroupDungeons => LanguageController.Translation("RANDOM_GROUP_DUNGEONS");
     public static string TranslationHellGates => LanguageController.Translation("HELLGATES");
+    public static string TranslationCorrupted => LanguageController.Translation("CORRUPTED");
     public static string TranslationMists => LanguageController.Translation("MISTS");
     public static string TranslationLast7Days => LanguageController.Translation("LAST_7_DAYS");
     public static string TranslationLast30Days => LanguageController.Translation("LAST_30_DAYS");
