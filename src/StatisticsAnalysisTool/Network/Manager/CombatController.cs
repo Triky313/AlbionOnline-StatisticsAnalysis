@@ -449,7 +449,7 @@ public class CombatController
 
         await Application.Current.Dispatcher.InvokeAsync(async () =>
         {
-            await foreach (var spell in spells.ToAsyncEnumerable())
+            await foreach (var spell in spells.ToList().ToAsyncEnumerable())
             {
                 var existingFragment = spellsFragments.FirstOrDefault(x => x.SpellIndex == spell.SpellIndex && x.HealthChangeType == spell.HealthChangeType);
 
