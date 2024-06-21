@@ -463,6 +463,9 @@ public class CombatController
                 }
                 else
                 {
+                    var damageInPercent = (maxDamage != 0) ? (double) spell.DamageHealValue / maxDamage * 100 : 0;
+                    var damagePercentage = (totalDamage != 0) ? 100.00 / totalDamage * spell.DamageHealValue : 0;
+
                     fragmentsToAdd.Add(new UsedSpellFragment
                     {
                         SpellIndex = spell.SpellIndex,
@@ -473,8 +476,8 @@ public class CombatController
                         Target = spell.Target,
                         Ticks = spell.Ticks,
                         HealthChangeType = spell.HealthChangeType,
-                        DamageInPercent = (maxDamage != 0) ? (double) spell.DamageHealValue / maxDamage * 100 : 0,
-                        DamagePercentage = (totalDamage != 0) ? 100.00 / totalDamage * spell.DamageHealValue : 0
+                        DamageInPercent = damageInPercent > 100 ? 100 : damageInPercent,
+                        DamagePercentage = damagePercentage > 100 ? 100 : damagePercentage
                     });
                 }
             }

@@ -8,7 +8,7 @@ public class InstantBuySellContent
     public long InternalUnitPrice { get; init; }
     public int Quantity { get; init; }
     public double TaxRate { get; init; }
-    [JsonIgnore] 
+    [JsonIgnore]
     public long InternalTotalPrice => InternalUnitPrice * Quantity;
     [JsonIgnore]
     public bool IsTaxesStated => TaxRate > 0;
@@ -22,4 +22,9 @@ public class InstantBuySellContent
     public FixPoint TotalPriceWithDeductedTaxes => FixPoint.FromFloatingPointValue(FixPoint.FromInternalValue(InternalTotalPrice).DoubleValue * ((100 - TaxRate) / 100));
     [JsonIgnore]
     public FixPoint UnitPriceWithDeductedTaxes => FixPoint.FromFloatingPointValue(FixPoint.FromInternalValue(InternalUnitPrice).DoubleValue * ((100 - TaxRate) / 100));
+
+    public string GetAsCsv()
+    {
+        return $"{UnitPrice};{Quantity};{TaxRate}";
+    }
 }

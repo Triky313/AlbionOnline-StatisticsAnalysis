@@ -792,4 +792,5 @@
 	<translation name="DAMAGE_HEAL">DMG/HEAL</translation>
 	<translation name="TICKS">Ticks</translation>
 	<translation name="AUTO_ATTACK">Auto attack</translation>
+	<translation name="EXPORT_TRADES_AS_CSV">Export trades as CSV</translation>
 </translations>
