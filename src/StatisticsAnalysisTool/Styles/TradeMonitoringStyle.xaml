@@ -508,6 +508,27 @@
         </Grid>
     </DataTemplate>
 
+    <DataTemplate x:Key="TradeExportTemplate" DataType="{x:Type trade:TradeExportTemplateObject}">
+        <Grid>
+            <StackPanel Orientation="Vertical" Margin="10,0,0,0">
+                <Separator Background="{StaticResource SolidColorBrush.Background.2}" Height="4" Margin="0,0,0,0" VerticalAlignment="Top"/>
+                <StackPanel>
+                    <Label Content="{Binding TranslationExport, FallbackValue=EXPORT}" Style="{StaticResource HeaderStyle.Tracking.Title}" Margin="2,5,0,0"
+                           Foreground="{StaticResource SolidColorBrush.Accent.Blue.2}" />
+
+                    <Button Content="{Binding TranslationExportTradesAsCsv, FallbackValue=EXPORT__TRADES__TO__CSV}" HorizontalAlignment="Left" 
+                            Margin="0,10" Height="24" Width="200" MaxWidth="300" MinWidth="200">
+                        <Button.InputBindings>
+                            <MouseBinding MouseAction="LeftClick" Command="{Binding TradeExportCommand}" />
+                        </Button.InputBindings>
+                    </Button>
+
+                    <Grid Height="25"/>
+                </StackPanel>
+            </StackPanel>
+        </Grid>
+    </DataTemplate>
+
     <DataTemplate x:Key="MailTemplate" DataType="{x:Type trade:Trade}">
         <Grid Height="50">
             <Grid.InputBindings>

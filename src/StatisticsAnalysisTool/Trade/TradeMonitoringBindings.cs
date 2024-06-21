@@ -29,6 +29,7 @@ public class TradeMonitoringBindings : BaseViewModel
     private ManuallyTradeMenuObject _tradeManuallyMenuObject = new();
     private bool _isDeleteTradesButtonEnabled = true;
     private Visibility _filteringIsRunningIconVisibility = Visibility.Collapsed;
+    private TradeExportTemplateObject _tradeExportTemplateObject = new();
 
     public TradeMonitoringBindings()
     {
@@ -136,6 +137,16 @@ public class TradeMonitoringBindings : BaseViewModel
         set
         {
             _tradeManuallyMenuObject = value;
+            OnPropertyChanged();
+        }
+    }
+
+    public TradeExportTemplateObject TradeExportTemplateObject
+    {
+        get => _tradeExportTemplateObject;
+        set
+        {
+            _tradeExportTemplateObject = value;
             OnPropertyChanged();
         }
     }

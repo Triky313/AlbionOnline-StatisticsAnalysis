@@ -31,4 +31,9 @@ public class MailContent
     public FixPoint UnitPriceWithDeductedTaxes => FixPoint.FromFloatingPointValue(FixPoint.FromInternalValue(InternalUnitPrice).DoubleValue * ((100 - TaxRate - TaxSetupRate) / 100));
     [JsonIgnore]
     public bool IsMailWithoutValues => InternalTotalPrice == 0 && UsedQuantity == 0;
+
+    public string GetAsCsv()
+    {
+        return $"{UsedQuantity};{Quantity};{UniqueItemName ?? ""};{TotalPrice};{UnitPrice};{TaxRate};{TaxSetupRate}";
+    }
 }

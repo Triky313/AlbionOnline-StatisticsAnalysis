@@ -1,4 +1,6 @@
-﻿using System;
+﻿using StatisticsAnalysisTool.Common;
+using System;
+using System.Globalization;
 
 namespace StatisticsAnalysisTool.Trade.Market;
 
@@ -23,4 +25,12 @@ public class AuctionEntry
     public int QualityLevel { get; set; }
     public DateTime Expires { get; set; }
     public string ReferenceId { get; set; }
+
+    public string GetAsCsv()
+    {
+        var expires = Expires.ToString("yyyy-MM-ddTHH:mm:ss.fffZ", CultureInfo.InvariantCulture);
+
+        return $"{FixPoint.FromInternalValue(UnitPriceSilver).IntegerValue};{FixPoint.FromInternalValue(TotalPriceSilver).IntegerValue};{Amount};{Tier};{IsFinished};{AuctionType ?? ""};" +
+               $"{HasBuyerFetched};{HasSellerFetched};{ItemTypeId ?? ""};{EnchantmentLevel};{QualityLevel};{expires}";
+    }
 }

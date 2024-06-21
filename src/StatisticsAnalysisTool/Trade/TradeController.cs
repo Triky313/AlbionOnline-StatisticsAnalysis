@@ -1,6 +1,7 @@
 ﻿using StatisticsAnalysisTool.Cluster;
 using StatisticsAnalysisTool.Common;
 using StatisticsAnalysisTool.Common.UserSettings;
+using StatisticsAnalysisTool.Models;
 using StatisticsAnalysisTool.Network.Manager;
 using StatisticsAnalysisTool.Notification;
 using StatisticsAnalysisTool.Properties;
@@ -12,11 +13,13 @@ using System.Collections.Specialized;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
+using System.Reflection;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Data;
 using System.Windows.Threading;
+using Serilog;
 
 namespace StatisticsAnalysisTool.Trade;
 
@@ -217,6 +220,32 @@ public class TradeController
 
         await AddTradeToBindingCollectionAsync(_upcomingTrade);
         _lastTrade = _upcomingTrade;
+    }
+
+    #endregion
+
+    #region Export
+
+    public string GetTradesAsCsv()
+    {
+        try
+        {
+            const string csvHeader = "Ticks;ClusterIndex;Description;Type;ItemName;MailTypeText;" +
+                                     "MailContent__UsedQuantity;MailContent__Quantity;MailContent__UniqueItemName;MailContent__TotalPrice;MailContent__UnitPrice;" +
+                                     "MailContent__TaxRate;MailContent__TaxSetupRate;Amount;" +
+                                     "AuctionEntry__UnitPriceSilver;AuctionEntry__TotalPriceSilver;AuctionEntry__Amount;AuctionEntry__Tier;AuctionEntry__IsFinished;" +
+                                     "AuctionEntry__AuctionType;AuctionEntry__HasBuyerFetched;AuctionEntry__HasSellerFetched;" +
+                                     "AuctionEntry__ItemTypeId;AuctionEntry__EnchantmentLevel;AuctionEntry__QualityLevel;AuctionEntry__Expires;" +
+                                     "InstantBuySellContent__UnitPrice;InstantBuySellContent__Quantity;InstantBuySellContent__TaxRate\n";
+            
+            return csvHeader + string.Join(Environment.NewLine, _mainWindowViewModel?.TradeMonitoringBindings?.Trades.Select(trade => TradeMapping.Mapping(trade).CsvOutput).ToArray() ?? Array.Empty<string>());
+        }
+        catch (Exception e)
+        {
+            ConsoleManager.WriteLineForError(MethodBase.GetCurrentMethod()?.DeclaringType, e);
+            Log.Error(e, "{message}", MethodBase.GetCurrentMethod()?.DeclaringType);
+            return string.Empty;
+        }
     }
 
     #endregion
