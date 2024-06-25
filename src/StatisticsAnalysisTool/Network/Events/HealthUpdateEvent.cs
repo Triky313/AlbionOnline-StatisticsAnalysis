@@ -1,6 +1,7 @@
 ﻿using Serilog;
 using StatisticsAnalysisTool.Common;
 using StatisticsAnalysisTool.Enumerations;
+using StatisticsAnalysisTool.EventValidations;
 using StatisticsAnalysisTool.Network.Time;
 using System;
 using System.Collections.Generic;
@@ -22,6 +23,7 @@ public class HealthUpdateEvent
 
     public HealthUpdateEvent(Dictionary<byte, object> parameters)
     {
+        EventValidator.IsEventValid(EventCodes.HealthUpdate, parameters);
         ConsoleManager.WriteLineForNetworkHandler(GetType().Name, parameters);
 
         try

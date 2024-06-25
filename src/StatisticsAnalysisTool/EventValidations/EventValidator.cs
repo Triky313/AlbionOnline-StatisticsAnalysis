@@ -41,11 +41,16 @@ public static class EventValidator
 
     private static ObservableCollection<EventValidityItem> EventsThatAreActivated()
     {
-        var validatedEvents = new ObservableCollection<EventValidityItem>
+        var events = new ObservableCollection<EventValidityItem>();
+        foreach (var rule in EventValidationRules.Rules)
         {
-            new () { EventCode = EventCodes.NewShrine, Status = EventValidityStatus.Unchecked }
-        };
+            events.Add(new EventValidityItem()
+            {
+                EventCode = rule.Key,
+                Status = EventValidityStatus.Unchecked
+            });
+        }
 
-        return validatedEvents;
+        return events;
     }
 }
