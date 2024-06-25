@@ -56,6 +56,11 @@ public partial class SettingsControl
         SettingsWindowViewModel.OpenConsoleWindow();
     }
 
+    private void OpenEventValidation_Click(object sender, RoutedEventArgs e)
+    {
+        SettingsWindowViewModel.OpenEventValidationWindow();
+    }
+
     private void ReloadSettings_OnIsVisibleChanged(object sender, DependencyPropertyChangedEventArgs e)
     {
         _settingsWindowViewModel.ReloadSettings();
