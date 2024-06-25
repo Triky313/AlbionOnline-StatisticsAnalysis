@@ -17,6 +17,7 @@ public class SettingsWindowTranslation
     public static string ToolDirectory => LanguageController.Translation("TOOL_DIRECTORY");
     public static string OpenToolDirectory => LanguageController.Translation("OPEN_TOOL_DIRECTORY");
     public static string OpenDebugConsole => LanguageController.Translation("OPEN_DEBUG_CONSOLE");
+    public static string OpenEventValidation => LanguageController.Translation("OPEN_EVENT_VALIDATION");
     public static string CreateDesktopShortcut => LanguageController.Translation("CREATE_DESKTOP_SHORTCUT");
     public static string AlbionDataProjectBaseUrlWest => LanguageController.Translation("ALBION_DATA_PROJECT_BASE_URL_WEST");
     public static string AlbionDataProjectBaseUrlEast => LanguageController.Translation("ALBION_DATA_PROJECT_BASE_URL_EAST");

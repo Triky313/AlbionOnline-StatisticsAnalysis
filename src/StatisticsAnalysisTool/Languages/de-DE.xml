@@ -793,4 +793,6 @@
 	<translation name="TICKS">Ticks</translation>
 	<translation name="AUTO_ATTACK">Auto Angriff</translation>
 	<translation name="EXPORT_TRADES_AS_CSV">Trades als CSV exportieren</translation>
+	<translation name="EVENT_VALIDATION">Eventvalidierung</translation>
+	<translation name="OPEN_EVENT_VALIDATION">Öffne Eventvalidierung</translation>
 </translations>

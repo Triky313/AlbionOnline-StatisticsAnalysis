@@ -1,4 +1,5 @@
 ﻿using StatisticsAnalysisTool.Common;
+using StatisticsAnalysisTool.EventValidations;
 using System;
 using System.Collections.Generic;
 using System.Reflection;
@@ -9,33 +10,50 @@ public class NewMobEvent
 {
     public NewMobEvent(Dictionary<byte, object> parameters)
     {
+        EventValidator.IsEventValid(EventCodes.NewMob, parameters);
         ConsoleManager.WriteLineForNetworkHandler(GetType().Name, parameters);
-            
+
         try
         {
-            if (parameters.ContainsKey(0)) 
-                ObjectId = parameters[0].ObjectToLong();
+            if (parameters.TryGetValue(0, out object objectId))
+            {
+                ObjectId = objectId.ObjectToLong();
+            }
 
-            if (parameters.ContainsKey(1)) 
-                MobIndex = parameters[1].ObjectToInt();
+            if (parameters.TryGetValue(1, out object mobIndex))
+            {
+                MobIndex = mobIndex.ObjectToInt();
+            }
 
-            if (parameters.ContainsKey(11))
-                MoveSpeed = parameters[11].ObjectToDouble();
+            if (parameters.TryGetValue(11, out object moveSpeed))
+            {
+                MoveSpeed = moveSpeed.ObjectToDouble();
+            }
 
-            if (parameters.ContainsKey(13))
-                HitPoints = parameters[13].ObjectToDouble();
+            if (parameters.TryGetValue(13, out object hitPoints))
+            {
+                HitPoints = hitPoints.ObjectToDouble();
+            }
 
-            if (parameters.ContainsKey(14))
-                HitPointsMax = parameters[14].ObjectToDouble();
+            if (parameters.TryGetValue(14, out object hitPointsMax))
+            {
+                HitPointsMax = hitPointsMax.ObjectToDouble();
+            }
 
-            if (parameters.ContainsKey(17))
-                Energy = parameters[17].ObjectToDouble();
+            if (parameters.TryGetValue(17, out object energy))
+            {
+                Energy = energy.ObjectToDouble();
+            }
 
-            if (parameters.ContainsKey(18))
-                EnergyMax = parameters[18].ObjectToDouble();
+            if (parameters.TryGetValue(18, out object energyMax))
+            {
+                EnergyMax = energyMax.ObjectToDouble();
+            }
 
-            if (parameters.ContainsKey(19))
-                EnergyRegeneration = parameters[19].ObjectToDouble();
+            if (parameters.TryGetValue(19, out object energyRegeneration))
+            {
+                EnergyRegeneration = energyRegeneration.ObjectToDouble();
+            }
         }
         catch (Exception e)
         {

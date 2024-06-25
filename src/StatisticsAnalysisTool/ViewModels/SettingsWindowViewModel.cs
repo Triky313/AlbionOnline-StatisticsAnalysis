@@ -311,6 +311,28 @@ public class SettingsWindowViewModel : BaseViewModel
         }
     }
 
+    public static void OpenEventValidationWindow()
+    {
+        try
+        {
+            if (Utilities.IsWindowOpen<EventValidationWindow>())
+            {
+                var existWindow = Application.Current.Windows.OfType<EventValidationWindow>().FirstOrDefault();
+                existWindow?.Activate();
+            }
+            else
+            {
+                var window = new EventValidationWindow();
+                window.Show();
+            }
+        }
+        catch (Exception e)
+        {
+            ConsoleManager.WriteLineForError(MethodBase.GetCurrentMethod()?.DeclaringType, e);
+            Log.Error(e, "{message}", MethodBase.GetCurrentMethod()?.DeclaringType);
+        }
+    }
+
     #region Inits
 
     private void InitLanguageFiles()
