@@ -1,5 +1,4 @@
 ﻿using StatisticsAnalysisTool.Common;
-using StatisticsAnalysisTool.Enumerations;
 using StatisticsAnalysisTool.Network;
 using System;
 using System.Collections.Generic;
@@ -14,6 +13,8 @@ public static class EventValidationRules
             { EventCodes.NewMob, NewMobEvent },
             { EventCodes.HealthUpdate, HealthUpdateEvent },
             { EventCodes.CharacterEquipmentChanged, CharacterEquipmentChangedEvent },
+            { EventCodes.NewCharacter, NewCharacterEvent },
+            { EventCodes.TakeSilver, TakeSilverEvent },
         };
 
     private static bool NewShrineEvent(Dictionary<byte, object> parameters)
@@ -73,10 +74,46 @@ public static class EventValidationRules
     {
         try
         {
-            return parameters.TryGetValue(2, out object equipmentObject)
+            return parameters.ContainsKey(0)
+                   && parameters.ContainsKey(2)
+                   && parameters.ContainsKey(6)
+                   && parameters.TryGetValue(2, out object equipmentObject)
                    && equipmentObject.GetType().IsArray
                    && typeof(short[]).Name == equipmentObject.GetType().Name
                    && (((short[]) parameters[2]).ToDictionary()).Count == 10;
+        }
+        catch
+        {
+            return false;
+        }
+    }
+
+    private static bool NewCharacterEvent(Dictionary<byte, object> parameters)
+    {
+        try
+        {
+            return parameters.ContainsKey(0)
+                   && parameters.ContainsKey(1)
+                   && parameters.ContainsKey(7)
+                   && !string.IsNullOrEmpty(parameters[1].ToString())
+                   && parameters[7].ObjectToGuid() != Guid.Empty;
+        }
+        catch
+        {
+            return false;
+        }
+    }
+
+    private static bool TakeSilverEvent(Dictionary<byte, object> parameters)
+    {
+        try
+        {
+            return parameters.ContainsKey(0)
+                   && parameters.ContainsKey(1)
+                   && parameters.ContainsKey(2)
+                   && parameters.ContainsKey(3)
+                   && parameters[1].ObjectToLong() > 0
+                   && parameters[2].ObjectToLong() > 0;
         }
         catch
         {

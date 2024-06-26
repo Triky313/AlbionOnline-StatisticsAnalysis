@@ -1,4 +1,5 @@
 ﻿using StatisticsAnalysisTool.Common;
+using StatisticsAnalysisTool.EventValidations;
 using StatisticsAnalysisTool.Models.NetworkModel;
 using System;
 using System.Collections.Generic;
@@ -16,6 +17,7 @@ public class NewCharacterEvent
 
     public NewCharacterEvent(Dictionary<byte, object> parameters)
     {
+        EventValidator.IsEventValid(EventCodes.NewCharacter, parameters);
         ConsoleManager.WriteLineForNetworkHandler(GetType().Name, parameters);
 
         try

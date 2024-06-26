@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Reflection;
 using StatisticsAnalysisTool.Common;
+using StatisticsAnalysisTool.EventValidations;
 
 namespace StatisticsAnalysisTool.Network.Events;
 
@@ -23,51 +24,52 @@ public class TakeSilverEvent
 
     public TakeSilverEvent(Dictionary<byte, object> parameters)
     {
+        EventValidator.IsEventValid(EventCodes.TakeSilver, parameters);
         ConsoleManager.WriteLineForNetworkHandler(GetType().Name, parameters);
 
         try
         {
-            if (parameters.ContainsKey(0))
+            if (parameters.TryGetValue(0, out object objectId))
             {
-                ObjectId = parameters[0].ObjectToLong();
+                ObjectId = objectId.ObjectToLong();
             }
 
-            if (parameters.ContainsKey(1))
+            if (parameters.TryGetValue(1, out object timeStamp))
             {
-                TimeStamp = parameters[1].ObjectToLong() ?? 0;
+                TimeStamp = timeStamp.ObjectToLong() ?? 0;
             }
 
-            if (parameters.ContainsKey(2))
+            if (parameters.TryGetValue(2, out object targetEntityId))
             {
-                TargetEntityId = parameters[2].ObjectToLong();
+                TargetEntityId = targetEntityId.ObjectToLong();
             }
 
-            if (parameters.ContainsKey(3))
+            if (parameters.TryGetValue(3, out object yieldPreTaxObject))
             {
-                var yieldPreTax = parameters[3].ObjectToLong();
+                var yieldPreTax = yieldPreTaxObject.ObjectToLong();
                 YieldPreTax = FixPoint.FromInternalValue(yieldPreTax ?? 0);
             }
 
-            if (parameters.ContainsKey(5))
+            if (parameters.TryGetValue(5, out object guildTaxObject))
             {
-                var guildTax = parameters[5].ObjectToLong();
+                var guildTax = guildTaxObject.ObjectToLong();
                 GuildTax = FixPoint.FromInternalValue(guildTax ?? 0);
             }
 
-            if (parameters.ContainsKey(6))
+            if (parameters.TryGetValue(6, out object clusterTaxObject))
             {
-                var clusterTax = parameters[6].ObjectToLong();
+                var clusterTax = clusterTaxObject.ObjectToLong();
                 ClusterTax = FixPoint.FromInternalValue(clusterTax ?? 0);
             }
 
-            if (parameters.ContainsKey(7))
+            if (parameters.TryGetValue(7, out object isPremiumBonus))
             {
-                IsPremiumBonus = parameters[7] as bool? ?? false;
+                IsPremiumBonus = isPremiumBonus as bool? ?? false;
             }
 
-            if (parameters.ContainsKey(8))
+            if (parameters.TryGetValue(8, out object multiplierObject))
             {
-                var multiplier = parameters[8].ObjectToLong();
+                var multiplier = multiplierObject.ObjectToLong();
                 Multiplier = FixPoint.FromInternalValue(multiplier ?? 0);
             }
 
