@@ -754,4 +754,7 @@
     <translation name="DAMAGE_HEAL">DÉGATS/SOINS</translation>
     <translation name="TICKS">Ticks</translation>
     <translation name="AUTO_ATTACK">Attaque automatique</translation>
+    <translation name="EXPORT_TRADES_AS_CSV">Exporter les échanges en CSV</translation>
+    <translation name="EVENT_VALIDATION">Validation d'événement</translation>
+    <translation name="OPEN_EVENT_VALIDATION">Ouvrir la validation d'événement</translation>
 </translations>
