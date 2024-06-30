@@ -25,7 +25,7 @@ public partial class GuildControl
 
     private async void BtnDeleteSelectedSiphonedEnergyEntries_Click(object sender, RoutedEventArgs e)
     {
-        var dialog = new DialogWindow(LanguageController.Translation("DELETE_SELECTED_ENTRIES"), LanguageController.Translation("SURE_YOU_WANT_TO_DELETE_SELECTED_ENTRIES"));
+        var dialog = new DialogWindow(LocalizationController.Translation("DELETE_SELECTED_ENTRIES"), LocalizationController.Translation("SURE_YOU_WANT_TO_DELETE_SELECTED_ENTRIES"));
         var dialogResult = dialog.ShowDialog();
 
         var mainWindowViewModel = ServiceLocator.Resolve<MainWindowViewModel>();

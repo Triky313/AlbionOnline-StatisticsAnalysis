@@ -559,5 +559,23 @@ namespace StatisticsAnalysisTool.Properties {
                 return ((string)(this["UpdatesDirectoryName"]));
             }
         }
+        
+        [global::System.Configuration.ApplicationScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("Localization")]
+        public string LocalizationDirectoryName {
+            get {
+                return ((string)(this["LocalizationDirectoryName"]));
+            }
+        }
+        
+        [global::System.Configuration.ApplicationScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("localization.json")]
+        public string LocalizationFileName {
+            get {
+                return ((string)(this["LocalizationFileName"]));
+            }
+        }
     }
 }

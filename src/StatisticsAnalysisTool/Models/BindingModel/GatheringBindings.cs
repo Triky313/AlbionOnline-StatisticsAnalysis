@@ -24,13 +24,13 @@ public class GatheringBindings : BaseViewModel
     private GridLength _gridSplitterPosition = GridLength.Auto;
     private Dictionary<GatheringFilterType, string> _gatheringFilter = new()
     {
-        { GatheringFilterType.Generally, LanguageController.Translation("GENERALLY") },
-        { GatheringFilterType.Wood, LanguageController.Translation("WOOD") },
-        { GatheringFilterType.Fiber, LanguageController.Translation("FIBER") },
-        { GatheringFilterType.Hide, LanguageController.Translation("HIDE") },
-        { GatheringFilterType.Ore, LanguageController.Translation("ORE") },
-        { GatheringFilterType.Rock, LanguageController.Translation("ROCK") },
-        { GatheringFilterType.Fishing, LanguageController.Translation("FISHING") }
+        { GatheringFilterType.Generally, LocalizationController.Translation("GENERALLY") },
+        { GatheringFilterType.Wood, LocalizationController.Translation("WOOD") },
+        { GatheringFilterType.Fiber, LocalizationController.Translation("FIBER") },
+        { GatheringFilterType.Hide, LocalizationController.Translation("HIDE") },
+        { GatheringFilterType.Ore, LocalizationController.Translation("ORE") },
+        { GatheringFilterType.Rock, LocalizationController.Translation("ROCK") },
+        { GatheringFilterType.Fishing, LocalizationController.Translation("FISHING") }
     };
     private GatheringFilterType _selectedGatheringFilter = GatheringFilterType.Generally;
     private GatheringStatsTimeType _gatheringStatsTimeTypeSelection = GatheringStatsTimeType.Today;
@@ -381,27 +381,27 @@ public class GatheringBindings : BaseViewModel
     {
         new GatheringStatsFilterStruct
         {
-            Name = LanguageController.Translation("TODAY"),
+            Name = LocalizationController.Translation("TODAY"),
             GatheringStatsTimeType = GatheringStatsTimeType.Today
         },
         new GatheringStatsFilterStruct
         {
-            Name = LanguageController.Translation("THIS_WEEK"),
+            Name = LocalizationController.Translation("THIS_WEEK"),
             GatheringStatsTimeType = GatheringStatsTimeType.ThisWeek
         },
         new GatheringStatsFilterStruct
         {
-            Name = LanguageController.Translation("LAST_WEEK"),
+            Name = LocalizationController.Translation("LAST_WEEK"),
             GatheringStatsTimeType = GatheringStatsTimeType.LastWeek
         },
         new GatheringStatsFilterStruct
         {
-            Name = LanguageController.Translation("LAST_30_DAYS"),
+            Name = LocalizationController.Translation("LAST_30_DAYS"),
             GatheringStatsTimeType = GatheringStatsTimeType.Month
         },
         new GatheringStatsFilterStruct
         {
-            Name = LanguageController.Translation("LAST_365_DAYS"),
+            Name = LocalizationController.Translation("LAST_365_DAYS"),
             GatheringStatsTimeType = GatheringStatsTimeType.Year
         }
     };
@@ -421,27 +421,27 @@ public class GatheringBindings : BaseViewModel
     {
         new AutoDeleteGatheringStatsFilterStruct
         {
-            Name = LanguageController.Translation("NEVER_DELETE"),
+            Name = LocalizationController.Translation("NEVER_DELETE"),
             AutoDeleteGatheringStats = AutoDeleteGatheringStats.NeverDelete
         },
         new AutoDeleteGatheringStatsFilterStruct
         {
-            Name = LanguageController.Translation("DELETE_AFTER_7_DAYS"),
+            Name = LocalizationController.Translation("DELETE_AFTER_7_DAYS"),
             AutoDeleteGatheringStats = AutoDeleteGatheringStats.DeleteAfter7Days
         },
         new AutoDeleteGatheringStatsFilterStruct
         {
-            Name = LanguageController.Translation("DELETE_AFTER_14_DAYS"),
+            Name = LocalizationController.Translation("DELETE_AFTER_14_DAYS"),
             AutoDeleteGatheringStats = AutoDeleteGatheringStats.DeleteAfter14Days
         },
         new AutoDeleteGatheringStatsFilterStruct
         {
-            Name = LanguageController.Translation("DELETE_AFTER_30_DAYS"),
+            Name = LocalizationController.Translation("DELETE_AFTER_30_DAYS"),
             AutoDeleteGatheringStats = AutoDeleteGatheringStats.DeleteAfter30Days
         },
         new AutoDeleteGatheringStatsFilterStruct
         {
-            Name = LanguageController.Translation("DELETE_AFTER_365_DAYS"),
+            Name = LocalizationController.Translation("DELETE_AFTER_365_DAYS"),
             AutoDeleteGatheringStats = AutoDeleteGatheringStats.DeleteAfter365Days
         }
     };
@@ -459,5 +459,5 @@ public class GatheringBindings : BaseViewModel
 
     #endregion
 
-    public static string TranslationGatheringActive => LanguageController.Translation("GATHERING_ACTIVE");
+    public static string TranslationGatheringActive => LocalizationController.Translation("GATHERING_ACTIVE");
 }

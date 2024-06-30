@@ -26,7 +26,7 @@ public class GrabbedLootEvent
         {
             if (parameters.ContainsKey(1))
             {
-                _lootedFromName = MobController.IsMob(parameters[1].ToString()) ? LanguageController.Translation("MOB") : parameters[1].ToString();
+                _lootedFromName = MobController.IsMob(parameters[1].ToString()) ? LocalizationController.Translation("MOB") : parameters[1].ToString();
             }
 
             if (parameters.ContainsKey(2))

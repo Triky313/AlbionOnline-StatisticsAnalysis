@@ -209,7 +209,7 @@ public sealed class DungeonController
             return;
         }
 
-        var dialog = new DialogWindow(LanguageController.Translation("REMOVE_DUNGEON"), LanguageController.Translation("SURE_YOU_WANT_TO_REMOVE_DUNGEON"));
+        var dialog = new DialogWindow(LocalizationController.Translation("REMOVE_DUNGEON"), LocalizationController.Translation("SURE_YOU_WANT_TO_REMOVE_DUNGEON"));
         var dialogResult = dialog.ShowDialog();
 
         if (dialogResult is not true)

@@ -396,10 +396,10 @@ public class DungeonStats : BaseViewModel
         }
     }
 
-    public static string TranslationFame => LanguageController.Translation("FAME");
-    public static string TranslationReSpec => LanguageController.Translation("RESPEC");
-    public static string TranslationSilver => LanguageController.Translation("SILVER");
-    public static string TranslationMight => LanguageController.Translation("MIGHT");
-    public static string TranslationFavor => LanguageController.Translation("FAVOR");
-    public static string TranslationLootInSilver => LanguageController.Translation("LOOT_IN_SILVER");
+    public static string TranslationFame => LocalizationController.Translation("FAME");
+    public static string TranslationReSpec => LocalizationController.Translation("RESPEC");
+    public static string TranslationSilver => LocalizationController.Translation("SILVER");
+    public static string TranslationMight => LocalizationController.Translation("MIGHT");
+    public static string TranslationFavor => LocalizationController.Translation("FAVOR");
+    public static string TranslationLootInSilver => LocalizationController.Translation("LOOT_IN_SILVER");
 }

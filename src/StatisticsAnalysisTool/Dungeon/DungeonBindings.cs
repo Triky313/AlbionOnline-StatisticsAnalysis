@@ -36,27 +36,27 @@ public class DungeonBindings : BaseViewModel
         {
             new ()
             {
-                Name = LanguageController.Translation("TODAY"),
+                Name = LocalizationController.Translation("TODAY"),
                 StatTimeType = DungeonStatTimeType.Today
             },
             new ()
             {
-                Name = LanguageController.Translation("LAST_7_DAYS"),
+                Name = LocalizationController.Translation("LAST_7_DAYS"),
                 StatTimeType = DungeonStatTimeType.Last7Days
             },
             new ()
             {
-                Name = LanguageController.Translation("LAST_30_DAYS"),
+                Name = LocalizationController.Translation("LAST_30_DAYS"),
                 StatTimeType = DungeonStatTimeType.Last30Days
             },
             new ()
             {
-                Name = LanguageController.Translation("LAST_365_DAYS"),
+                Name = LocalizationController.Translation("LAST_365_DAYS"),
                 StatTimeType = DungeonStatTimeType.Last365Days
             },
             new ()
             {
-                Name = LanguageController.Translation("TOTAL"),
+                Name = LocalizationController.Translation("TOTAL"),
                 StatTimeType = DungeonStatTimeType.Total
             }
         };
@@ -67,47 +67,47 @@ public class DungeonBindings : BaseViewModel
         {
             new ()
             {
-                Name = LanguageController.Translation("TOTAL_OVERVIEW"),
+                Name = LocalizationController.Translation("TOTAL_OVERVIEW"),
                 StatsViewType = DungeonMode.Unknown
             },
             new ()
             {
-                Name = LanguageController.Translation("SOLO_DUNGEON"),
+                Name = LocalizationController.Translation("SOLO_DUNGEON"),
                 StatsViewType = DungeonMode.Solo
             },
             new ()
             {
-                Name = LanguageController.Translation("STANDARD_DUNGEON"),
+                Name = LocalizationController.Translation("STANDARD_DUNGEON"),
                 StatsViewType = DungeonMode.Standard
             },
             new ()
             {
-                Name = LanguageController.Translation("AVALONIAN_DUNGEON"),
+                Name = LocalizationController.Translation("AVALONIAN_DUNGEON"),
                 StatsViewType = DungeonMode.Avalon
             },
             new ()
             {
-                Name = LanguageController.Translation("CORRUPTED"),
+                Name = LocalizationController.Translation("CORRUPTED"),
                 StatsViewType = DungeonMode.Corrupted
             },
             new ()
             {
-                Name = LanguageController.Translation("HELLGATE"),
+                Name = LocalizationController.Translation("HELLGATE"),
                 StatsViewType = DungeonMode.HellGate
             },
             new ()
             {
-                Name = LanguageController.Translation("HCE_EXPEDITION"),
+                Name = LocalizationController.Translation("HCE_EXPEDITION"),
                 StatsViewType = DungeonMode.Expedition
             },
             new ()
             {
-                Name = LanguageController.Translation("MISTS"),
+                Name = LocalizationController.Translation("MISTS"),
                 StatsViewType = DungeonMode.Mists
             },
             new ()
             {
-                Name = LanguageController.Translation("MISTS_DUNGEON"),
+                Name = LocalizationController.Translation("MISTS_DUNGEON"),
                 StatsViewType = DungeonMode.MistsDungeon
             }
         };

@@ -19,8 +19,8 @@ public class ManuallyTradeMenuObject : BaseViewModel
     public ManuallyTradeMenuObject()
     {
         ManuallyTradeTypes.Clear();
-        ManuallyTradeTypes.Add(new ManuallyTradeTypeStruct() { Type = TradeType.ManualSell, Name = LanguageController.Translation("SOLD") });
-        ManuallyTradeTypes.Add(new ManuallyTradeTypeStruct() { Type = TradeType.ManualBuy, Name = LanguageController.Translation("BOUGHT") });
+        ManuallyTradeTypes.Add(new ManuallyTradeTypeStruct() { Type = TradeType.ManualSell, Name = LocalizationController.Translation("SOLD") });
+        ManuallyTradeTypes.Add(new ManuallyTradeTypeStruct() { Type = TradeType.ManualBuy, Name = LocalizationController.Translation("BOUGHT") });
     }
 
     public List<ManuallyTradeTypeStruct> ManuallyTradeTypes
@@ -104,8 +104,8 @@ public class ManuallyTradeMenuObject : BaseViewModel
 
     #endregion
 
-    public static string TranslationDescription => LanguageController.Translation("DESCRIPTION");
-    public static string TranslationAddTradeManually => LanguageController.Translation("ADD_TRADE_MANUALLY");
-    public static string TranslationValue => LanguageController.Translation("VALUE");
-    public static string TranslationAddTrade => LanguageController.Translation("ADD_TRADE");
+    public static string TranslationDescription => LocalizationController.Translation("DESCRIPTION");
+    public static string TranslationAddTradeManually => LocalizationController.Translation("ADD_TRADE_MANUALLY");
+    public static string TranslationValue => LocalizationController.Translation("VALUE");
+    public static string TranslationAddTrade => LocalizationController.Translation("ADD_TRADE");
 }

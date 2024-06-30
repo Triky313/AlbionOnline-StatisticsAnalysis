@@ -19,5 +19,5 @@ public class CheckPoint : BaseViewModel
         }
     }
 
-    public static string TranslationCheckPoint => LanguageController.Translation("CHECKPOINT");
+    public static string TranslationCheckPoint => LocalizationController.Translation("CHECKPOINT");
 }

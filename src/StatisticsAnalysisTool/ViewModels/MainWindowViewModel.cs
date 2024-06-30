@@ -327,10 +327,10 @@ public class MainWindowViewModel : BaseViewModel
     {
         ServerTypeText = SettingsController.CurrentSettings.ServerLocation switch
         {
-            ServerLocation.Asia => LanguageController.Translation("ASIA_SERVER"),
-            ServerLocation.America => LanguageController.Translation("AMERICA_SERVER"),
-            ServerLocation.Europe => LanguageController.Translation("EUROPE_SERVER"),
-            _ => LanguageController.Translation("UNKNOWN_SERVER")
+            ServerLocation.Asia => LocalizationController.Translation("ASIA_SERVER"),
+            ServerLocation.America => LocalizationController.Translation("AMERICA_SERVER"),
+            ServerLocation.Europe => LocalizationController.Translation("EUROPE_SERVER"),
+            _ => LocalizationController.Translation("UNKNOWN_SERVER")
         };
     }
 

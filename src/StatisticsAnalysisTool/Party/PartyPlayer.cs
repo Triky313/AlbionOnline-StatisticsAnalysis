@@ -325,7 +325,7 @@ public class PartyPlayer : BaseViewModel
         }
     }
 
-    public static string TranslationItemPower => LanguageController.Translation("ITEM_POWER");
-    public static string TranslationLastUpdate => LanguageController.Translation("LAST_UPDATE");
-    public static string TranslationSelectForDeathAlert => LanguageController.Translation("SELECT_FOR_DEATH_ALERT");
+    public static string TranslationItemPower => LocalizationController.Translation("ITEM_POWER");
+    public static string TranslationLastUpdate => LocalizationController.Translation("LAST_UPDATE");
+    public static string TranslationSelectForDeathAlert => LocalizationController.Translation("SELECT_FOR_DEATH_ALERT");
 }

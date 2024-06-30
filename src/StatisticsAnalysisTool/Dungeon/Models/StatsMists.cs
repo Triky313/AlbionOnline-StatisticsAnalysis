@@ -317,12 +317,12 @@ public class StatsMists : BaseViewModel
         }
     }
 
-    public static string TranslationAverageAbbreviation => LanguageController.Translation("AVERAGE_ABBREVIATION");
-    public static string TranslationHourAbbreviation => LanguageController.Translation("HOUR_ABBREVIATION");
-    public static string TranslationMists => LanguageController.Translation("MISTS");
-    public static string TranslationMostValuableLoot => LanguageController.Translation("MOST_VALUABLE_LOOT");
-    public static string TranslationTotal => LanguageController.Translation("TOTAL");
-    public static string TranslationPerHour => LanguageController.Translation("PER_HOUR");
-    public static string TranslationAverage => LanguageController.Translation("AVERAGE");
-    public static string TranslationType => LanguageController.Translation("TYPE");
+    public static string TranslationAverageAbbreviation => LocalizationController.Translation("AVERAGE_ABBREVIATION");
+    public static string TranslationHourAbbreviation => LocalizationController.Translation("HOUR_ABBREVIATION");
+    public static string TranslationMists => LocalizationController.Translation("MISTS");
+    public static string TranslationMostValuableLoot => LocalizationController.Translation("MOST_VALUABLE_LOOT");
+    public static string TranslationTotal => LocalizationController.Translation("TOTAL");
+    public static string TranslationPerHour => LocalizationController.Translation("PER_HOUR");
+    public static string TranslationAverage => LocalizationController.Translation("AVERAGE");
+    public static string TranslationType => LocalizationController.Translation("TYPE");
 }

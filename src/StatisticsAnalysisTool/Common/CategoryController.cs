@@ -1,7 +1,7 @@
-﻿using System.Collections.Generic;
-using System.Linq;
-using StatisticsAnalysisTool.Localization;
+﻿using StatisticsAnalysisTool.Localization;
 using StatisticsAnalysisTool.Models;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace StatisticsAnalysisTool.Common;
 
@@ -176,249 +176,249 @@ public static class CategoryController
 
     public static readonly Dictionary<ShopSubCategory, string> SubCategoryNames = new()
     {
-        {ShopSubCategory.Unknown, LanguageController.Translation("UNKNOWN")},
+        {ShopSubCategory.Unknown, LocalizationController.Translation("UNKNOWN")},
 
         #region Accessories
 
-        {ShopSubCategory.Bag, LanguageController.Translation("BAG")},
-        {ShopSubCategory.Cape, LanguageController.Translation("CAPE")},
+        {ShopSubCategory.Bag, LocalizationController.Translation("BAG")},
+        {ShopSubCategory.Cape, LocalizationController.Translation("CAPE")},
 
         #endregion Accessories
 
         #region Armor
 
-        {ShopSubCategory.ClothArmor, LanguageController.Translation("CLOTH_ARMOR")},
-        {ShopSubCategory.ClothHelmet, LanguageController.Translation("CLOTH_HELMET")},
-        {ShopSubCategory.ClothShoes, LanguageController.Translation("CLOTH_SHOES")},
-        {ShopSubCategory.LeatherArmor, LanguageController.Translation("LEATHER_ARMOR")},
-        {ShopSubCategory.LeatherHelmet, LanguageController.Translation("LEATHER_HELMET")},
-        {ShopSubCategory.LeatherShoes, LanguageController.Translation("LEATHER_SHOES")},
-        {ShopSubCategory.PlateArmor, LanguageController.Translation("PLATE_ARMOR")},
-        {ShopSubCategory.PlateHelmet, LanguageController.Translation("PLATE_HELMET")},
-        {ShopSubCategory.PlateShoes, LanguageController.Translation("PLATE_SHOES")},
-        {ShopSubCategory.UniqueArmor, LanguageController.Translation("UNIQUE_ARMOR")},
-        {ShopSubCategory.UniqueHelmet, LanguageController.Translation("UNIQUE_HELMET")},
-        {ShopSubCategory.UniqueShoes, LanguageController.Translation("UNIQUE_SHOES")},
+        {ShopSubCategory.ClothArmor, LocalizationController.Translation("CLOTH_ARMOR")},
+        {ShopSubCategory.ClothHelmet, LocalizationController.Translation("CLOTH_HELMET")},
+        {ShopSubCategory.ClothShoes, LocalizationController.Translation("CLOTH_SHOES")},
+        {ShopSubCategory.LeatherArmor, LocalizationController.Translation("LEATHER_ARMOR")},
+        {ShopSubCategory.LeatherHelmet, LocalizationController.Translation("LEATHER_HELMET")},
+        {ShopSubCategory.LeatherShoes, LocalizationController.Translation("LEATHER_SHOES")},
+        {ShopSubCategory.PlateArmor, LocalizationController.Translation("PLATE_ARMOR")},
+        {ShopSubCategory.PlateHelmet, LocalizationController.Translation("PLATE_HELMET")},
+        {ShopSubCategory.PlateShoes, LocalizationController.Translation("PLATE_SHOES")},
+        {ShopSubCategory.UniqueArmor, LocalizationController.Translation("UNIQUE_ARMOR")},
+        {ShopSubCategory.UniqueHelmet, LocalizationController.Translation("UNIQUE_HELMET")},
+        {ShopSubCategory.UniqueShoes, LocalizationController.Translation("UNIQUE_SHOES")},
 
         #endregion Armor
 
         #region Artifact
 
-        {ShopSubCategory.ArmorArtefact, LanguageController.Translation("ARMOR_ARTEFACT")},
-        {ShopSubCategory.MagicArtefact, LanguageController.Translation("MAGIC_ARTEFACT")},
-        {ShopSubCategory.MeleeArtefact, LanguageController.Translation("MELEE_ARTEFACT")},
-        {ShopSubCategory.OffhandArtefact, LanguageController.Translation("OFFHAND_ARTEFACT")},
-        {ShopSubCategory.RangedArtefact, LanguageController.Translation("RANGED_ARTEFACT")},
+        {ShopSubCategory.ArmorArtefact, LocalizationController.Translation("ARMOR_ARTEFACT")},
+        {ShopSubCategory.MagicArtefact, LocalizationController.Translation("MAGIC_ARTEFACT")},
+        {ShopSubCategory.MeleeArtefact, LocalizationController.Translation("MELEE_ARTEFACT")},
+        {ShopSubCategory.OffhandArtefact, LocalizationController.Translation("OFFHAND_ARTEFACT")},
+        {ShopSubCategory.RangedArtefact, LocalizationController.Translation("RANGED_ARTEFACT")},
 
         #endregion Artifact
 
         #region CityResources
 
-        {ShopSubCategory.BeastHeart, LanguageController.Translation("BEASTHEART")},
-        {ShopSubCategory.MountainHeart, LanguageController.Translation("MOUNTAINHEART")},
-        {ShopSubCategory.RockHeart, LanguageController.Translation("ROCKHEART")},
-        {ShopSubCategory.TreeHeart, LanguageController.Translation("TREEHEART")},
-        {ShopSubCategory.VineHeart, LanguageController.Translation("VINEHEART")},
+        {ShopSubCategory.BeastHeart, LocalizationController.Translation("BEASTHEART")},
+        {ShopSubCategory.MountainHeart, LocalizationController.Translation("MOUNTAINHEART")},
+        {ShopSubCategory.RockHeart, LocalizationController.Translation("ROCKHEART")},
+        {ShopSubCategory.TreeHeart, LocalizationController.Translation("TREEHEART")},
+        {ShopSubCategory.VineHeart, LocalizationController.Translation("VINEHEART")},
 
         #endregion CityResources
 
         #region Consumable
 
-        {ShopSubCategory.Cooked, LanguageController.Translation("COOKED")},
-        {ShopSubCategory.Fish, LanguageController.Translation("FISH")},
-        {ShopSubCategory.FishingBait, LanguageController.Translation("FISHING_BAIT")},
-        {ShopSubCategory.Maps, LanguageController.Translation("MAPS")},
-        {ShopSubCategory.Other, LanguageController.Translation("OTHER")},
-        {ShopSubCategory.Potion, LanguageController.Translation("POTION")},
-        {ShopSubCategory.SkillBook, LanguageController.Translation("SKILL_BOOK")},
-        {ShopSubCategory.Vanity, LanguageController.Translation("VANITY")},
+        {ShopSubCategory.Cooked, LocalizationController.Translation("COOKED")},
+        {ShopSubCategory.Fish, LocalizationController.Translation("FISH")},
+        {ShopSubCategory.FishingBait, LocalizationController.Translation("FISHING_BAIT")},
+        {ShopSubCategory.Maps, LocalizationController.Translation("MAPS")},
+        {ShopSubCategory.Other, LocalizationController.Translation("OTHER")},
+        {ShopSubCategory.Potion, LocalizationController.Translation("POTION")},
+        {ShopSubCategory.SkillBook, LocalizationController.Translation("SKILL_BOOK")},
+        {ShopSubCategory.Vanity, LocalizationController.Translation("VANITY")},
 
         #endregion Consumable
 
         #region Farmable
 
-        {ShopSubCategory.Animals, LanguageController.Translation("ANIMALS")},
-        {ShopSubCategory.Seed, LanguageController.Translation("SEED")},
+        {ShopSubCategory.Animals, LocalizationController.Translation("ANIMALS")},
+        {ShopSubCategory.Seed, LocalizationController.Translation("SEED")},
 
         #endregion Farmable
 
         #region Furniture
 
-        {ShopSubCategory.Banner, LanguageController.Translation("BANNER")},
-        {ShopSubCategory.Bed, LanguageController.Translation("BED")},
-        {ShopSubCategory.Chest, LanguageController.Translation("CHEST")},
-        {ShopSubCategory.DecorationFurniture, LanguageController.Translation("DECORATION_FURNITURE")},
-        {ShopSubCategory.Flag, LanguageController.Translation("FLAG")},
-        {ShopSubCategory.HereticFurniture, LanguageController.Translation("HERETIC_FURNITURE")},
-        {ShopSubCategory.KeeperFurniture, LanguageController.Translation("KEEPER_FURNITURE")},
-        {ShopSubCategory.MorganaFurniture, LanguageController.Translation("MORGANA_FURNITURE")},
-        {ShopSubCategory.Table, LanguageController.Translation("TABLE")},
-        {ShopSubCategory.RepairKit, LanguageController.Translation("REPAIR_KIT")},
-        {ShopSubCategory.Unique, LanguageController.Translation("UNIQUE")},
+        {ShopSubCategory.Banner, LocalizationController.Translation("BANNER")},
+        {ShopSubCategory.Bed, LocalizationController.Translation("BED")},
+        {ShopSubCategory.Chest, LocalizationController.Translation("CHEST")},
+        {ShopSubCategory.DecorationFurniture, LocalizationController.Translation("DECORATION_FURNITURE")},
+        {ShopSubCategory.Flag, LocalizationController.Translation("FLAG")},
+        {ShopSubCategory.HereticFurniture, LocalizationController.Translation("HERETIC_FURNITURE")},
+        {ShopSubCategory.KeeperFurniture, LocalizationController.Translation("KEEPER_FURNITURE")},
+        {ShopSubCategory.MorganaFurniture, LocalizationController.Translation("MORGANA_FURNITURE")},
+        {ShopSubCategory.Table, LocalizationController.Translation("TABLE")},
+        {ShopSubCategory.RepairKit, LocalizationController.Translation("REPAIR_KIT")},
+        {ShopSubCategory.Unique, LocalizationController.Translation("UNIQUE")},
 
         #endregion Furniture
 
         #region GatheringGear
 
-        {ShopSubCategory.FibergathererArmor, LanguageController.Translation("FIBERGATHERER_ARMOR")},
-        {ShopSubCategory.FibergathererHelmet, LanguageController.Translation("FIBERGATHERER_HELMET")},
-        {ShopSubCategory.FibergathererShoes, LanguageController.Translation("FIBERGATHERER_SHOES")},
-        {ShopSubCategory.FibergathererBackpack, LanguageController.Translation("FIBERGATHERER_BACKPACK")},
-        {ShopSubCategory.FishgathererArmor, LanguageController.Translation("FISHGATHERER_ARMOR")},
-        {ShopSubCategory.FishgathererHelmet, LanguageController.Translation("FISHGATHERER_HELMET")},
-        {ShopSubCategory.FishgathererShoes, LanguageController.Translation("FISHGATHERER_SHOES")},
-        {ShopSubCategory.FishgathererBackpack, LanguageController.Translation("FISHGATHERER_BACKPACK")},
-        {ShopSubCategory.HidegathererArmor, LanguageController.Translation("HIDEGATHERER_ARMOR")},
-        {ShopSubCategory.HidegathererHelmet, LanguageController.Translation("HIDEGATHERER_HELMET")},
-        {ShopSubCategory.HidegathererShoes, LanguageController.Translation("HIDEGATHERER_SHOES")},
-        {ShopSubCategory.HidegathererBackpack, LanguageController.Translation("HIDEGATHERERR_BACKPACK")},
-        {ShopSubCategory.OregathererArmor, LanguageController.Translation("OREGATHERER_ARMOR")},
-        {ShopSubCategory.OregathererHelmet, LanguageController.Translation("OREGATHERER_HELMET")},
-        {ShopSubCategory.OregathererShoes, LanguageController.Translation("OREGATHERER_SHOES")},
-        {ShopSubCategory.OregathererBackpack, LanguageController.Translation("OREGATHERER_BACKPACK")},
-        {ShopSubCategory.RockgathererArmor, LanguageController.Translation("ROCKGATHERER_ARMOR")},
-        {ShopSubCategory.RockgathererHelmet, LanguageController.Translation("ROCKGATHERER_HELMET")},
-        {ShopSubCategory.RockgathererShoes, LanguageController.Translation("ROCKGATHERER_SHOES")},
-        {ShopSubCategory.RockgathererBackpack, LanguageController.Translation("ROCKGATHERER_BACKPACK")},
-        {ShopSubCategory.WoodgathererArmor, LanguageController.Translation("WOODGATHERER_ARMOR")},
-        {ShopSubCategory.WoodgathererHelmet, LanguageController.Translation("WOODGATHERER_HELMET")},
-        {ShopSubCategory.WoodgathererShoes, LanguageController.Translation("WOODGATHERER_SHOES")},
-        {ShopSubCategory.WoodgathererBackpack, LanguageController.Translation("WOODGATHERER_BACKPACK")},
+        {ShopSubCategory.FibergathererArmor, LocalizationController.Translation("FIBERGATHERER_ARMOR")},
+        {ShopSubCategory.FibergathererHelmet, LocalizationController.Translation("FIBERGATHERER_HELMET")},
+        {ShopSubCategory.FibergathererShoes, LocalizationController.Translation("FIBERGATHERER_SHOES")},
+        {ShopSubCategory.FibergathererBackpack, LocalizationController.Translation("FIBERGATHERER_BACKPACK")},
+        {ShopSubCategory.FishgathererArmor, LocalizationController.Translation("FISHGATHERER_ARMOR")},
+        {ShopSubCategory.FishgathererHelmet, LocalizationController.Translation("FISHGATHERER_HELMET")},
+        {ShopSubCategory.FishgathererShoes, LocalizationController.Translation("FISHGATHERER_SHOES")},
+        {ShopSubCategory.FishgathererBackpack, LocalizationController.Translation("FISHGATHERER_BACKPACK")},
+        {ShopSubCategory.HidegathererArmor, LocalizationController.Translation("HIDEGATHERER_ARMOR")},
+        {ShopSubCategory.HidegathererHelmet, LocalizationController.Translation("HIDEGATHERER_HELMET")},
+        {ShopSubCategory.HidegathererShoes, LocalizationController.Translation("HIDEGATHERER_SHOES")},
+        {ShopSubCategory.HidegathererBackpack, LocalizationController.Translation("HIDEGATHERERR_BACKPACK")},
+        {ShopSubCategory.OregathererArmor, LocalizationController.Translation("OREGATHERER_ARMOR")},
+        {ShopSubCategory.OregathererHelmet, LocalizationController.Translation("OREGATHERER_HELMET")},
+        {ShopSubCategory.OregathererShoes, LocalizationController.Translation("OREGATHERER_SHOES")},
+        {ShopSubCategory.OregathererBackpack, LocalizationController.Translation("OREGATHERER_BACKPACK")},
+        {ShopSubCategory.RockgathererArmor, LocalizationController.Translation("ROCKGATHERER_ARMOR")},
+        {ShopSubCategory.RockgathererHelmet, LocalizationController.Translation("ROCKGATHERER_HELMET")},
+        {ShopSubCategory.RockgathererShoes, LocalizationController.Translation("ROCKGATHERER_SHOES")},
+        {ShopSubCategory.RockgathererBackpack, LocalizationController.Translation("ROCKGATHERER_BACKPACK")},
+        {ShopSubCategory.WoodgathererArmor, LocalizationController.Translation("WOODGATHERER_ARMOR")},
+        {ShopSubCategory.WoodgathererHelmet, LocalizationController.Translation("WOODGATHERER_HELMET")},
+        {ShopSubCategory.WoodgathererShoes, LocalizationController.Translation("WOODGATHERER_SHOES")},
+        {ShopSubCategory.WoodgathererBackpack, LocalizationController.Translation("WOODGATHERER_BACKPACK")},
 
         #endregion GatheringGear
 
         #region LuxuryGoods
 
-        {ShopSubCategory.Bridgewatch, LanguageController.Translation("BRIDGEWATCH")},
-        {ShopSubCategory.Caerleon, LanguageController.Translation("CAERLEON")},
-        {ShopSubCategory.FortSterling, LanguageController.Translation("FORT_STERLING")},
-        {ShopSubCategory.Lymhurst, LanguageController.Translation("LYMHURST")},
-        {ShopSubCategory.Martlock, LanguageController.Translation("MARTLOCK")},
-        {ShopSubCategory.Thetford, LanguageController.Translation("THETFORD")},
+        {ShopSubCategory.Bridgewatch, LocalizationController.Translation("BRIDGEWATCH")},
+        {ShopSubCategory.Caerleon, LocalizationController.Translation("CAERLEON")},
+        {ShopSubCategory.FortSterling, LocalizationController.Translation("FORT_STERLING")},
+        {ShopSubCategory.Lymhurst, LocalizationController.Translation("LYMHURST")},
+        {ShopSubCategory.Martlock, LocalizationController.Translation("MARTLOCK")},
+        {ShopSubCategory.Thetford, LocalizationController.Translation("THETFORD")},
 
         #endregion LuxuryGoods
 
         #region Magic
 
-        {ShopSubCategory.ArcaneStaff, LanguageController.Translation("ARCANE_STAFF")},
-        {ShopSubCategory.CurseStaff, LanguageController.Translation("CURSE_STAFF")},
-        {ShopSubCategory.FireStaff, LanguageController.Translation("FIRE_STAFF")},
-        {ShopSubCategory.FrostStaff, LanguageController.Translation("FROST_STAFF")},
-        {ShopSubCategory.HolyStaff, LanguageController.Translation("HOLY_STAFF")},
-        {ShopSubCategory.NatureStaff, LanguageController.Translation("NATURE_STAFF")},
-        {ShopSubCategory.ShapeShifterStaff, LanguageController.Translation("SHAPESHIFTER")},
+        {ShopSubCategory.ArcaneStaff, LocalizationController.Translation("ARCANE_STAFF")},
+        {ShopSubCategory.CurseStaff, LocalizationController.Translation("CURSE_STAFF")},
+        {ShopSubCategory.FireStaff, LocalizationController.Translation("FIRE_STAFF")},
+        {ShopSubCategory.FrostStaff, LocalizationController.Translation("FROST_STAFF")},
+        {ShopSubCategory.HolyStaff, LocalizationController.Translation("HOLY_STAFF")},
+        {ShopSubCategory.NatureStaff, LocalizationController.Translation("NATURE_STAFF")},
+        {ShopSubCategory.ShapeShifterStaff, LocalizationController.Translation("SHAPESHIFTER")},
 
         #endregion Magic
 
         #region Materials
 
-        {ShopSubCategory.Essence, LanguageController.Translation("ESSENCE")},
-        {ShopSubCategory.OtherMaterials, LanguageController.Translation("OTHER")},
-        {ShopSubCategory.Relic, LanguageController.Translation("RELIC")},
-        {ShopSubCategory.Rune, LanguageController.Translation("RUNE")},
-        {ShopSubCategory.Soul, LanguageController.Translation("SOUL")},
+        {ShopSubCategory.Essence, LocalizationController.Translation("ESSENCE")},
+        {ShopSubCategory.OtherMaterials, LocalizationController.Translation("OTHER")},
+        {ShopSubCategory.Relic, LocalizationController.Translation("RELIC")},
+        {ShopSubCategory.Rune, LocalizationController.Translation("RUNE")},
+        {ShopSubCategory.Soul, LocalizationController.Translation("SOUL")},
 
         #endregion Materials
 
         #region Melee
 
-        {ShopSubCategory.Axe, LanguageController.Translation("AXE")},
-        {ShopSubCategory.Dagger, LanguageController.Translation("DAGGER")},
-        {ShopSubCategory.Hammer, LanguageController.Translation("HAMMER")},
-        {ShopSubCategory.Mace, LanguageController.Translation("MACE")},
-        {ShopSubCategory.QuarterStaff, LanguageController.Translation("QUARTER_STAFF")},
-        {ShopSubCategory.Spear, LanguageController.Translation("SPEAR")},
-        {ShopSubCategory.Sword, LanguageController.Translation("SWORD")},
-        {ShopSubCategory.Knuckles, LanguageController.Translation("WAR_GLOVES") },
+        {ShopSubCategory.Axe, LocalizationController.Translation("AXE")},
+        {ShopSubCategory.Dagger, LocalizationController.Translation("DAGGER")},
+        {ShopSubCategory.Hammer, LocalizationController.Translation("HAMMER")},
+        {ShopSubCategory.Mace, LocalizationController.Translation("MACE")},
+        {ShopSubCategory.QuarterStaff, LocalizationController.Translation("QUARTER_STAFF")},
+        {ShopSubCategory.Spear, LocalizationController.Translation("SPEAR")},
+        {ShopSubCategory.Sword, LocalizationController.Translation("SWORD")},
+        {ShopSubCategory.Knuckles, LocalizationController.Translation("WAR_GLOVES") },
 
         #endregion Melee
 
         #region Mount
 
-        {ShopSubCategory.ArmoredHorse, LanguageController.Translation("ARMORED_HORSE")},
-        {ShopSubCategory.Ox, LanguageController.Translation("OX")},
-        {ShopSubCategory.RareMount, LanguageController.Translation("RARE_MOUNT")},
-        {ShopSubCategory.RidingHorse, LanguageController.Translation("RIDING_HORSE")},
+        {ShopSubCategory.ArmoredHorse, LocalizationController.Translation("ARMORED_HORSE")},
+        {ShopSubCategory.Ox, LocalizationController.Translation("OX")},
+        {ShopSubCategory.RareMount, LocalizationController.Translation("RARE_MOUNT")},
+        {ShopSubCategory.RidingHorse, LocalizationController.Translation("RIDING_HORSE")},
 
         #endregion Mount
 
         #region Off-Hand
 
-        {ShopSubCategory.Book, LanguageController.Translation("BOOK")},
-        {ShopSubCategory.Horn, LanguageController.Translation("HORN")},
-        {ShopSubCategory.Orb, LanguageController.Translation("ORB")},
-        {ShopSubCategory.Shield, LanguageController.Translation("SHIELD")},
-        {ShopSubCategory.Torch, LanguageController.Translation("TORCH")},
-        {ShopSubCategory.Totem, LanguageController.Translation("TOTEM")},
+        {ShopSubCategory.Book, LocalizationController.Translation("BOOK")},
+        {ShopSubCategory.Horn, LocalizationController.Translation("HORN")},
+        {ShopSubCategory.Orb, LocalizationController.Translation("ORB")},
+        {ShopSubCategory.Shield, LocalizationController.Translation("SHIELD")},
+        {ShopSubCategory.Torch, LocalizationController.Translation("TORCH")},
+        {ShopSubCategory.Totem, LocalizationController.Translation("TOTEM")},
 
         #endregion Off-Hand
 
         #region Other
 
-        {ShopSubCategory.Trash, LanguageController.Translation("TRASH")},
+        {ShopSubCategory.Trash, LocalizationController.Translation("TRASH")},
 
         #endregion Other
 
         #region Product
 
-        {ShopSubCategory.Farming, LanguageController.Translation("FARMING")},
-        {ShopSubCategory.Journal, LanguageController.Translation("JOURNAL")},
+        {ShopSubCategory.Farming, LocalizationController.Translation("FARMING")},
+        {ShopSubCategory.Journal, LocalizationController.Translation("JOURNAL")},
 
         #endregion Product
 
         #region Ranged
 
-        {ShopSubCategory.Bow, LanguageController.Translation("BOW")},
-        {ShopSubCategory.Crossbow, LanguageController.Translation("CROSSBOW")},
+        {ShopSubCategory.Bow, LocalizationController.Translation("BOW")},
+        {ShopSubCategory.Crossbow, LocalizationController.Translation("CROSSBOW")},
 
         #endregion Ranged
 
         #region Resource
 
-        {ShopSubCategory.Cloth, LanguageController.Translation("CLOTH")},
-        {ShopSubCategory.Fiber, LanguageController.Translation("FIBER")},
-        {ShopSubCategory.Hide, LanguageController.Translation("HIDE")},
-        {ShopSubCategory.Leather, LanguageController.Translation("LEATHER")},
-        {ShopSubCategory.Metalbar, LanguageController.Translation("METALBAR")},
-        {ShopSubCategory.Ore, LanguageController.Translation("ORE")},
-        {ShopSubCategory.Planks, LanguageController.Translation("PLANKS")},
-        {ShopSubCategory.Wood, LanguageController.Translation("WOOD")},
-        {ShopSubCategory.Rock, LanguageController.Translation("ROCK")},
-        {ShopSubCategory.Stoneblock, LanguageController.Translation("STONEBLOCK")},
+        {ShopSubCategory.Cloth, LocalizationController.Translation("CLOTH")},
+        {ShopSubCategory.Fiber, LocalizationController.Translation("FIBER")},
+        {ShopSubCategory.Hide, LocalizationController.Translation("HIDE")},
+        {ShopSubCategory.Leather, LocalizationController.Translation("LEATHER")},
+        {ShopSubCategory.Metalbar, LocalizationController.Translation("METALBAR")},
+        {ShopSubCategory.Ore, LocalizationController.Translation("ORE")},
+        {ShopSubCategory.Planks, LocalizationController.Translation("PLANKS")},
+        {ShopSubCategory.Wood, LocalizationController.Translation("WOOD")},
+        {ShopSubCategory.Rock, LocalizationController.Translation("ROCK")},
+        {ShopSubCategory.Stoneblock, LocalizationController.Translation("STONEBLOCK")},
 
         #endregion Resource
 
         #region Token
 
-        {ShopSubCategory.ArenaSigils, LanguageController.Translation("ARENA_SIGILS")},
-        {ShopSubCategory.Event, LanguageController.Translation("EVENT")},
-        {ShopSubCategory.RoyalSigils, LanguageController.Translation("ROYAL_SIGILS")},
+        {ShopSubCategory.ArenaSigils, LocalizationController.Translation("ARENA_SIGILS")},
+        {ShopSubCategory.Event, LocalizationController.Translation("EVENT")},
+        {ShopSubCategory.RoyalSigils, LocalizationController.Translation("ROYAL_SIGILS")},
 
         #endregion Token
 
         #region Tool
 
-        {ShopSubCategory.DemolitionHammer, LanguageController.Translation("DEMOLITION_HAMMER")},
-        {ShopSubCategory.Fishing, LanguageController.Translation("FISHING_ROD")},
-        {ShopSubCategory.Pickaxe, LanguageController.Translation("PICKAXE")},
-        {ShopSubCategory.Sickle, LanguageController.Translation("SICKLE")},
-        {ShopSubCategory.SkinningKnife, LanguageController.Translation("SKINNING_KNIFE")},
-        {ShopSubCategory.StoneHammer, LanguageController.Translation("STONE_HAMMER")},
-        {ShopSubCategory.WoodAxe, LanguageController.Translation("WOOD_AXE")},
-        {ShopSubCategory.TrackingTool, LanguageController.Translation("TRACKING_TOOL")},
+        {ShopSubCategory.DemolitionHammer, LocalizationController.Translation("DEMOLITION_HAMMER")},
+        {ShopSubCategory.Fishing, LocalizationController.Translation("FISHING_ROD")},
+        {ShopSubCategory.Pickaxe, LocalizationController.Translation("PICKAXE")},
+        {ShopSubCategory.Sickle, LocalizationController.Translation("SICKLE")},
+        {ShopSubCategory.SkinningKnife, LocalizationController.Translation("SKINNING_KNIFE")},
+        {ShopSubCategory.StoneHammer, LocalizationController.Translation("STONE_HAMMER")},
+        {ShopSubCategory.WoodAxe, LocalizationController.Translation("WOOD_AXE")},
+        {ShopSubCategory.TrackingTool, LocalizationController.Translation("TRACKING_TOOL")},
 
         #endregion Tool
 
         #region Trophies
 
-        {ShopSubCategory.FiberTrophy, LanguageController.Translation("FIBER_TROPHY")},
-        {ShopSubCategory.FishTrophy, LanguageController.Translation("FISH_TROPHY")},
-        {ShopSubCategory.GeneralTrophy, LanguageController.Translation("GENERAL_TROPHY")},
-        {ShopSubCategory.HideTrophy, LanguageController.Translation("HIDE_TROPHY")},
-        {ShopSubCategory.MercenaryTrophy, LanguageController.Translation("MERCENARY_TROPHY")},
-        {ShopSubCategory.OreTrophy, LanguageController.Translation("ORE_TROPHY")},
-        {ShopSubCategory.RockTrophy, LanguageController.Translation("ROCK_TROPHY")},
-        {ShopSubCategory.WoodTrophy, LanguageController.Translation("WOOD_TROPHY")},
+        {ShopSubCategory.FiberTrophy, LocalizationController.Translation("FIBER_TROPHY")},
+        {ShopSubCategory.FishTrophy, LocalizationController.Translation("FISH_TROPHY")},
+        {ShopSubCategory.GeneralTrophy, LocalizationController.Translation("GENERAL_TROPHY")},
+        {ShopSubCategory.HideTrophy, LocalizationController.Translation("HIDE_TROPHY")},
+        {ShopSubCategory.MercenaryTrophy, LocalizationController.Translation("MERCENARY_TROPHY")},
+        {ShopSubCategory.OreTrophy, LocalizationController.Translation("ORE_TROPHY")},
+        {ShopSubCategory.RockTrophy, LocalizationController.Translation("ROCK_TROPHY")},
+        {ShopSubCategory.WoodTrophy, LocalizationController.Translation("WOOD_TROPHY")},
 
         #endregion Trophies
     };
@@ -426,30 +426,30 @@ public static class CategoryController
     public static readonly Dictionary<ShopCategory, string> CategoryNames = new()
     {
         {ShopCategory.Unknown, string.Empty},
-        {ShopCategory.Accessories, LanguageController.Translation("ACCESSORIES")},
-        {ShopCategory.Armor, LanguageController.Translation("ARMOR")},
-        {ShopCategory.Artifact, LanguageController.Translation("ARTEFACT")},
-        {ShopCategory.CityResources, LanguageController.Translation("CITY_RESOURCES")},
-        {ShopCategory.Consumables, LanguageController.Translation("CONSUMABLE")},
-        {ShopCategory.Farmable, LanguageController.Translation("FARMABLE")},
-        {ShopCategory.Furniture, LanguageController.Translation("FURNITURE")},
-        {ShopCategory.GatheringGear, LanguageController.Translation("GATHERING_GEAR")},
-        {ShopCategory.LuxuryGoods, LanguageController.Translation("LUXURY_GOODS")},
-        {ShopCategory.Magic, LanguageController.Translation("MAGIC")},
-        {ShopCategory.Materials, LanguageController.Translation("MATERIALS")},
-        {ShopCategory.Melee, LanguageController.Translation("MELEE")},
-        {ShopCategory.Mounts, LanguageController.Translation("MOUNT")},
-        {ShopCategory.OffHand, LanguageController.Translation("OFFHAND")},
-        {ShopCategory.Other, LanguageController.Translation("OTHER")},
-        {ShopCategory.Products, LanguageController.Translation("PRODUCT")},
-        {ShopCategory.Ranged, LanguageController.Translation("RANGED")},
-        {ShopCategory.Resources, LanguageController.Translation("RESOURCE")},
-        {ShopCategory.Token, LanguageController.Translation("TOKEN")},
-        {ShopCategory.Tools, LanguageController.Translation("TOOLS")},
-        {ShopCategory.Trophies, LanguageController.Translation("TROPHIES")}
+        {ShopCategory.Accessories, LocalizationController.Translation("ACCESSORIES")},
+        {ShopCategory.Armor, LocalizationController.Translation("ARMOR")},
+        {ShopCategory.Artifact, LocalizationController.Translation("ARTEFACT")},
+        {ShopCategory.CityResources, LocalizationController.Translation("CITY_RESOURCES")},
+        {ShopCategory.Consumables, LocalizationController.Translation("CONSUMABLE")},
+        {ShopCategory.Farmable, LocalizationController.Translation("FARMABLE")},
+        {ShopCategory.Furniture, LocalizationController.Translation("FURNITURE")},
+        {ShopCategory.GatheringGear, LocalizationController.Translation("GATHERING_GEAR")},
+        {ShopCategory.LuxuryGoods, LocalizationController.Translation("LUXURY_GOODS")},
+        {ShopCategory.Magic, LocalizationController.Translation("MAGIC")},
+        {ShopCategory.Materials, LocalizationController.Translation("MATERIALS")},
+        {ShopCategory.Melee, LocalizationController.Translation("MELEE")},
+        {ShopCategory.Mounts, LocalizationController.Translation("MOUNT")},
+        {ShopCategory.OffHand, LocalizationController.Translation("OFFHAND")},
+        {ShopCategory.Other, LocalizationController.Translation("OTHER")},
+        {ShopCategory.Products, LocalizationController.Translation("PRODUCT")},
+        {ShopCategory.Ranged, LocalizationController.Translation("RANGED")},
+        {ShopCategory.Resources, LocalizationController.Translation("RESOURCE")},
+        {ShopCategory.Token, LocalizationController.Translation("TOKEN")},
+        {ShopCategory.Tools, LocalizationController.Translation("TOOLS")},
+        {ShopCategory.Trophies, LocalizationController.Translation("TROPHIES")}
     };
 
-    public static readonly Dictionary<ShopCategory, string> Categories = new ()
+    public static readonly Dictionary<ShopCategory, string> Categories = new()
     {
         {ShopCategory.Unknown, string.Empty},
         {ShopCategory.Accessories, "accessories" },

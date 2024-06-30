@@ -299,13 +299,13 @@ public class DamageMeterFragment : BaseViewModel
     private ICommand _showSpells;
     public ICommand ShowSpells => _showSpells ??= new CommandHandler(PerformShowSpells, true);
 
-    public static string TranslationCombatTime => LanguageController.Translation("COMBAT_TIME");
-    public static string TranslationHealingWithoutOverhealed => LanguageController.Translation("HEALING_WITHOUT_OVERHEALED");
-    public static string TranslationOverhealedPercentageOfTotalHealing => LanguageController.Translation("OVERHEALED_PERCENTAGE_OF_TOTAL_HEALING");
-    public static string TranslationDmgPercent => LanguageController.Translation("DMG_PERCENT");
-    public static string TranslationName => LanguageController.Translation("NAME");
-    public static string TranslationDamageHeal => LanguageController.Translation("DAMAGE_HEAL");
-    public static string TranslationTicks => LanguageController.Translation("TICKS");
+    public static string TranslationCombatTime => LocalizationController.Translation("COMBAT_TIME");
+    public static string TranslationHealingWithoutOverhealed => LocalizationController.Translation("HEALING_WITHOUT_OVERHEALED");
+    public static string TranslationOverhealedPercentageOfTotalHealing => LocalizationController.Translation("OVERHEALED_PERCENTAGE_OF_TOTAL_HEALING");
+    public static string TranslationDmgPercent => LocalizationController.Translation("DMG_PERCENT");
+    public static string TranslationName => LocalizationController.Translation("NAME");
+    public static string TranslationDamageHeal => LocalizationController.Translation("DAMAGE_HEAL");
+    public static string TranslationTicks => LocalizationController.Translation("TICKS");
 
     public override bool Equals(object obj)
     {

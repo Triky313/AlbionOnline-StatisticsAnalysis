@@ -259,25 +259,25 @@ public class CraftingCalculation : BaseViewModel
 
     #endregion
 
-    public static string TranslationCalculation => LanguageController.Translation("CALCULATION");
-    public static string TranslationPossibleCrafting => LanguageController.Translation("POSSIBLE_CRAFTING");
-    public static string TranslationPossibleItemCrafting => LanguageController.Translation("POSSIBLE_ITEM_CRAFTING");
-    public static string TranslationStatementOfCost => LanguageController.Translation("STATEMENT_OF_COST");
-    public static string TranslationCraftingTax => LanguageController.Translation("CRAFTING_TAX");
-    public static string TranslationSetupFee => LanguageController.Translation("SETUP_FEE");
-    public static string TranslationAuctionsHouseTax => LanguageController.Translation("AUCTIONS_HOUSE_TAX");
-    public static string TranslationTotalJournalCosts => LanguageController.Translation("TOTAL_JOURNAL_COSTS");
-    public static string TranslationTotalCosts => LanguageController.Translation("TOTAL_COSTS");
-    public static string TranslationTotalResourceCosts => LanguageController.Translation("TOTAL_RESOURCE_COSTS");
-    public static string TranslationOtherCosts => LanguageController.Translation("OTHER_COSTS");
-    public static string TranslationTotalItemSells => LanguageController.Translation("TOTAL_ITEM_SELLS");
-    public static string TranslationTotalJournalSells => LanguageController.Translation("TOTAL_JOURNAL_SELLS");
-    public static string TranslationTotalSells => LanguageController.Translation("TOTAL_SELLS");
-    public static string TranslationGrandTotal => LanguageController.Translation("GRAND_TOTAL");
-    public static string TranslationWeight => LanguageController.Translation("WEIGHT");
-    public static string TranslationTotalResourcesWeight => LanguageController.Translation("TOTAL_RESOURCES_WEIGHT");
-    public static string TranslationTotalJournalWeight => LanguageController.Translation("TOTAL_JOURNAL_WEIGHT");
-    public static string TranslationTotalCraftedItemWeight => LanguageController.Translation("TOTAL_CRAFTED_WEIGHT");
-    public static string TranslationTotalUnfinishedCraftingWeight => LanguageController.Translation("TOTAL_UNFINISHED_CRAFTING_WEIGHT");
-    public static string TranslationTotalFinishedCraftingWeight => LanguageController.Translation("TOTAL_FINISHED_CRAFTING_WEIGHT");
+    public static string TranslationCalculation => LocalizationController.Translation("CALCULATION");
+    public static string TranslationPossibleCrafting => LocalizationController.Translation("POSSIBLE_CRAFTING");
+    public static string TranslationPossibleItemCrafting => LocalizationController.Translation("POSSIBLE_ITEM_CRAFTING");
+    public static string TranslationStatementOfCost => LocalizationController.Translation("STATEMENT_OF_COST");
+    public static string TranslationCraftingTax => LocalizationController.Translation("CRAFTING_TAX");
+    public static string TranslationSetupFee => LocalizationController.Translation("SETUP_FEE");
+    public static string TranslationAuctionsHouseTax => LocalizationController.Translation("AUCTIONS_HOUSE_TAX");
+    public static string TranslationTotalJournalCosts => LocalizationController.Translation("TOTAL_JOURNAL_COSTS");
+    public static string TranslationTotalCosts => LocalizationController.Translation("TOTAL_COSTS");
+    public static string TranslationTotalResourceCosts => LocalizationController.Translation("TOTAL_RESOURCE_COSTS");
+    public static string TranslationOtherCosts => LocalizationController.Translation("OTHER_COSTS");
+    public static string TranslationTotalItemSells => LocalizationController.Translation("TOTAL_ITEM_SELLS");
+    public static string TranslationTotalJournalSells => LocalizationController.Translation("TOTAL_JOURNAL_SELLS");
+    public static string TranslationTotalSells => LocalizationController.Translation("TOTAL_SELLS");
+    public static string TranslationGrandTotal => LocalizationController.Translation("GRAND_TOTAL");
+    public static string TranslationWeight => LocalizationController.Translation("WEIGHT");
+    public static string TranslationTotalResourcesWeight => LocalizationController.Translation("TOTAL_RESOURCES_WEIGHT");
+    public static string TranslationTotalJournalWeight => LocalizationController.Translation("TOTAL_JOURNAL_WEIGHT");
+    public static string TranslationTotalCraftedItemWeight => LocalizationController.Translation("TOTAL_CRAFTED_WEIGHT");
+    public static string TranslationTotalUnfinishedCraftingWeight => LocalizationController.Translation("TOTAL_UNFINISHED_CRAFTING_WEIGHT");
+    public static string TranslationTotalFinishedCraftingWeight => LocalizationController.Translation("TOTAL_FINISHED_CRAFTING_WEIGHT");
 }

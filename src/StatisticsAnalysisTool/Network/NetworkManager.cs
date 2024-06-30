@@ -117,7 +117,7 @@ public class NetworkManager
 
         _packetProvider.Start();
 
-        _ = ServiceLocator.Resolve<SatNotificationManager>().ShowTrackingStatusAsync(LanguageController.Translation("START_TRACKING"), LanguageController.Translation("GAME_TRACKING_IS_STARTED"));
+        _ = ServiceLocator.Resolve<SatNotificationManager>().ShowTrackingStatusAsync(LocalizationController.Translation("START_TRACKING"), LocalizationController.Translation("GAME_TRACKING_IS_STARTED"));
     }
 
     public void Stop()
@@ -126,7 +126,7 @@ public class NetworkManager
 
         _packetProvider.Stop();
 
-        _ = ServiceLocator.Resolve<SatNotificationManager>().ShowTrackingStatusAsync(LanguageController.Translation("STOP_TRACKING"), LanguageController.Translation("GAME_TRACKING_IS_STOPPED"));
+        _ = ServiceLocator.Resolve<SatNotificationManager>().ShowTrackingStatusAsync(LocalizationController.Translation("STOP_TRACKING"), LocalizationController.Translation("GAME_TRACKING_IS_STOPPED"));
     }
 
     public bool IsAnySocketActive()
