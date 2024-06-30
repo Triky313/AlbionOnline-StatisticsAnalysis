@@ -35,6 +35,6 @@ public class EventValidationViewModel : BaseViewModel
         }
     }
 
-    public static string TranslationReset => $"{LanguageController.Translation("RESET")}";
-    public static string TranslationTitle => $"{LanguageController.Translation("EVENT_VALIDATION")}";
+    public static string TranslationReset => $"{LocalizationController.Translation("RESET")}";
+    public static string TranslationTitle => $"{LocalizationController.Translation("EVENT_VALIDATION")}";
 }

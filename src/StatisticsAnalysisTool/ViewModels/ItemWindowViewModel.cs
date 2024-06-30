@@ -205,11 +205,11 @@ public class ItemWindowViewModel : BaseViewModel
 
     private void InitQualityFiltering()
     {
-        var normalQuality = new ItemWindowMainTabBindings.QualityStruct() { Name = LanguageController.Translation("NORMAL"), Quality = 1 };
-        var goodQuality = new ItemWindowMainTabBindings.QualityStruct() { Name = LanguageController.Translation("GOOD"), Quality = 2 };
-        var outstandingQuality = new ItemWindowMainTabBindings.QualityStruct() { Name = LanguageController.Translation("OUTSTANDING"), Quality = 3 };
-        var excellentQuality = new ItemWindowMainTabBindings.QualityStruct() { Name = LanguageController.Translation("EXCELLENT"), Quality = 4 };
-        var masterpieceQuality = new ItemWindowMainTabBindings.QualityStruct() { Name = LanguageController.Translation("MASTERPIECE"), Quality = 5 };
+        var normalQuality = new ItemWindowMainTabBindings.QualityStruct() { Name = LocalizationController.Translation("NORMAL"), Quality = 1 };
+        var goodQuality = new ItemWindowMainTabBindings.QualityStruct() { Name = LocalizationController.Translation("GOOD"), Quality = 2 };
+        var outstandingQuality = new ItemWindowMainTabBindings.QualityStruct() { Name = LocalizationController.Translation("OUTSTANDING"), Quality = 3 };
+        var excellentQuality = new ItemWindowMainTabBindings.QualityStruct() { Name = LocalizationController.Translation("EXCELLENT"), Quality = 4 };
+        var masterpieceQuality = new ItemWindowMainTabBindings.QualityStruct() { Name = LocalizationController.Translation("MASTERPIECE"), Quality = 5 };
 
         MainTabBindings.Qualities.Add(normalQuality);
         MainTabBindings.Qualities.Add(goodQuality);
@@ -683,27 +683,27 @@ public class ItemWindowViewModel : BaseViewModel
                                                + Assembly.GetExecutingAssembly().GetName().Name + ";component/"
                                                + "Resources/Trash.png", UriKind.Absolute));
                 SetLoadingImageToError();
-                SetErrorBar(Visibility.Visible, LanguageController.Translation("ERROR_NO_ITEM_INFO"));
+                SetErrorBar(Visibility.Visible, LocalizationController.Translation("ERROR_NO_ITEM_INFO"));
                 return;
 
             case Error.NoPrices:
                 SetLoadingImageToError();
-                SetErrorBar(Visibility.Visible, LanguageController.Translation("ERROR_PRICES_CAN_NOT_BE_LOADED"));
+                SetErrorBar(Visibility.Visible, LocalizationController.Translation("ERROR_PRICES_CAN_NOT_BE_LOADED"));
                 return;
 
             case Error.GeneralError:
                 SetLoadingImageToError();
-                SetErrorBar(Visibility.Visible, LanguageController.Translation("ERROR_GENERAL_ERROR"));
+                SetErrorBar(Visibility.Visible, LocalizationController.Translation("ERROR_GENERAL_ERROR"));
                 return;
 
             case Error.ToManyRequests:
                 SetLoadingImageToError();
-                SetErrorBar(Visibility.Visible, LanguageController.Translation("TOO_MANY_REQUESTS_CLOSE_WINDOWS_OR_WAIT"));
+                SetErrorBar(Visibility.Visible, LocalizationController.Translation("TOO_MANY_REQUESTS_CLOSE_WINDOWS_OR_WAIT"));
                 return;
 
             default:
                 SetLoadingImageToError();
-                SetErrorBar(Visibility.Visible, LanguageController.Translation("ERROR_GENERAL_ERROR"));
+                SetErrorBar(Visibility.Visible, LocalizationController.Translation("ERROR_GENERAL_ERROR"));
                 return;
         }
     }
@@ -739,7 +739,7 @@ public class ItemWindowViewModel : BaseViewModel
         try
         {
             CurrentItemPrices = await ApiController.GetCityItemPricesFromJsonAsync(Item?.UniqueName);
-            RefreshIconTooltipText = $"{LanguageController.Translation("LAST_UPDATE")}: {DateTime.UtcNow.CurrentDateTimeFormat()}";
+            RefreshIconTooltipText = $"{LocalizationController.Translation("LAST_UPDATE")}: {DateTime.UtcNow.CurrentDateTimeFormat()}";
             ErrorBarReset();
         }
         catch (TooManyRequestsException ex)

@@ -28,7 +28,7 @@ public class OtherGrabbedLootNotificationFragment : LineFragment
     public bool IsLootedFromGuildEmpty => string.IsNullOrEmpty(LootedFromGuild);
     public bool IsLootedPlayerMob => LootedFromName.ToUpper().Equals("MOB");
 
-    public static string FromTranslation => LanguageController.Translation("FROM");
-    public static string LootedTranslation => LanguageController.Translation("LOOTED");
-    public static string TranslationGuild => LanguageController.Translation("GUILD_CAP");
+    public static string FromTranslation => LocalizationController.Translation("FROM");
+    public static string LootedTranslation => LocalizationController.Translation("LOOTED");
+    public static string TranslationGuild => LocalizationController.Translation("GUILD_CAP");
 }

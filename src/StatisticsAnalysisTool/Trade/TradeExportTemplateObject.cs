@@ -46,6 +46,6 @@ public class TradeExportTemplateObject
 
     #endregion
 
-    public static string TranslationExport => LanguageController.Translation("EXPORT");
-    public static string TranslationExportTradesAsCsv => LanguageController.Translation("EXPORT_TRADES_AS_CSV");
+    public static string TranslationExport => LocalizationController.Translation("EXPORT");
+    public static string TranslationExportTradesAsCsv => LocalizationController.Translation("EXPORT_TRADES_AS_CSV");
 }

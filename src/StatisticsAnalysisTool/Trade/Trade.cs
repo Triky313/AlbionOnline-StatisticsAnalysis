@@ -50,13 +50,13 @@ public class Trade : BaseViewModel
         {
             if (Location == MarketLocation.Unknown && ClusterIndex != null && ClusterIndex.Contains("HIDEOUT"))
             {
-                return $"{ClusterIndex.Split("_")[1]} ({LanguageController.Translation("HIDEOUT")})";
+                return $"{ClusterIndex.Split("_")[1]} ({LocalizationController.Translation("HIDEOUT")})";
             }
 
             return Location switch
             {
                 MarketLocation.BlackMarket => "Black Market",
-                MarketLocation.Unknown => LanguageController.Translation("UNKNOWN"),
+                MarketLocation.Unknown => LocalizationController.Translation("UNKNOWN"),
                 _ => WorldData.GetUniqueNameOrDefault((int) Location)
             };
         }
@@ -70,11 +70,11 @@ public class Trade : BaseViewModel
         {
             return MailType switch
             {
-                MailType.MarketplaceBuyOrderFinished => LanguageController.Translation("BOUGHT"),
-                MailType.MarketplaceSellOrderFinished => LanguageController.Translation("SOLD"),
-                MailType.MarketplaceSellOrderExpired => LanguageController.Translation("SELL_EXPIRED"),
-                MailType.MarketplaceBuyOrderExpired => LanguageController.Translation("BUY_EXPIRED"),
-                _ => LanguageController.Translation("MAIL")
+                MailType.MarketplaceBuyOrderFinished => LocalizationController.Translation("BOUGHT"),
+                MailType.MarketplaceSellOrderFinished => LocalizationController.Translation("SOLD"),
+                MailType.MarketplaceSellOrderExpired => LocalizationController.Translation("SELL_EXPIRED"),
+                MailType.MarketplaceBuyOrderExpired => LocalizationController.Translation("BUY_EXPIRED"),
+                _ => LocalizationController.Translation("MAIL")
             };
         }
     }
@@ -86,24 +86,24 @@ public class Trade : BaseViewModel
             switch (Type)
             {
                 case TradeType.InstantBuy:
-                    return LanguageController.Translation("ADDED_PURCHASE");
+                    return LocalizationController.Translation("ADDED_PURCHASE");
                 case TradeType.InstantSell:
-                    return LanguageController.Translation("ADDED_SALE");
+                    return LocalizationController.Translation("ADDED_SALE");
                 case TradeType.Mail:
                     return MailType switch
                     {
-                        MailType.MarketplaceBuyOrderFinished => LanguageController.Translation("ADDED_BUY_ORDER"),
-                        MailType.MarketplaceSellOrderFinished => LanguageController.Translation("ADDED_SELL_ORDER"),
-                        MailType.MarketplaceSellOrderExpired => LanguageController.Translation("ADDED_EXPIRED_SELL_ORDER"),
-                        MailType.MarketplaceBuyOrderExpired => LanguageController.Translation("ADDED_EXPIRED_BUY_ORDER"),
-                        _ => LanguageController.Translation("ADDED_UNKNOWN_TRADE")
+                        MailType.MarketplaceBuyOrderFinished => LocalizationController.Translation("ADDED_BUY_ORDER"),
+                        MailType.MarketplaceSellOrderFinished => LocalizationController.Translation("ADDED_SELL_ORDER"),
+                        MailType.MarketplaceSellOrderExpired => LocalizationController.Translation("ADDED_EXPIRED_SELL_ORDER"),
+                        MailType.MarketplaceBuyOrderExpired => LocalizationController.Translation("ADDED_EXPIRED_BUY_ORDER"),
+                        _ => LocalizationController.Translation("ADDED_UNKNOWN_TRADE")
                     };
 
                 case TradeType.Crafting:
-                    return LanguageController.Translation("ADDED_CRAFTING");
+                    return LocalizationController.Translation("ADDED_CRAFTING");
                 case TradeType.Unknown:
                 default:
-                    return LanguageController.Translation("ADDED_UNKNOWN_TRADE");
+                    return LocalizationController.Translation("ADDED_UNKNOWN_TRADE");
             }
         }
     }
@@ -116,13 +116,13 @@ public class Trade : BaseViewModel
     public InstantBuySellContent InstantBuySellContent { get; init; } = new();
     public string TypeDescription => Type switch
     {
-        TradeType.InstantSell => LanguageController.Translation("INSTANT_SELL"),
-        TradeType.InstantBuy => LanguageController.Translation("INSTANT_BUY"),
-        TradeType.ManualSell => LanguageController.Translation("MANUAL_SELL"),
-        TradeType.ManualBuy => LanguageController.Translation("MANUAL_BUY"),
-        TradeType.Crafting => LanguageController.Translation("CRAFTING"),
-        TradeType.Mail => LanguageController.Translation("MAIL"),
-        _ => LanguageController.Translation("UNKNOWN_TRADE")
+        TradeType.InstantSell => LocalizationController.Translation("INSTANT_SELL"),
+        TradeType.InstantBuy => LocalizationController.Translation("INSTANT_BUY"),
+        TradeType.ManualSell => LocalizationController.Translation("MANUAL_SELL"),
+        TradeType.ManualBuy => LocalizationController.Translation("MANUAL_BUY"),
+        TradeType.Crafting => LocalizationController.Translation("CRAFTING"),
+        TradeType.Mail => LocalizationController.Translation("MAIL"),
+        _ => LocalizationController.Translation("UNKNOWN_TRADE")
     };
 
     #endregion
@@ -140,15 +140,15 @@ public class Trade : BaseViewModel
         return Id.CompareTo(other.Id);
     }
 
-    public static string TranslationSilver => LanguageController.Translation("SILVER");
-    public static string TranslationCostPerItem => LanguageController.Translation("COST_PER_ITEM");
-    public static string TranslationTotalCost => LanguageController.Translation("TOTAL_COST");
-    public static string TranslationTotalRevenue => LanguageController.Translation("TOTAL_REVENUE");
-    public static string TranslationTax => LanguageController.Translation("TAX");
-    public static string TranslationSetupTax => LanguageController.Translation("SETUP_TAX");
-    public static string TranslationSelectToDelete => LanguageController.Translation("SELECT_TO_DELETE");
-    public static string TranslationFrom => LanguageController.Translation("FROM");
-    public static string TranslationTotalPriceWithDeductedTaxes => LanguageController.Translation("TOTAL_PRICE_WITH_DEDUCTED_TAXES");
+    public static string TranslationSilver => LocalizationController.Translation("SILVER");
+    public static string TranslationCostPerItem => LocalizationController.Translation("COST_PER_ITEM");
+    public static string TranslationTotalCost => LocalizationController.Translation("TOTAL_COST");
+    public static string TranslationTotalRevenue => LocalizationController.Translation("TOTAL_REVENUE");
+    public static string TranslationTax => LocalizationController.Translation("TAX");
+    public static string TranslationSetupTax => LocalizationController.Translation("SETUP_TAX");
+    public static string TranslationSelectToDelete => LocalizationController.Translation("SELECT_TO_DELETE");
+    public static string TranslationFrom => LocalizationController.Translation("FROM");
+    public static string TranslationTotalPriceWithDeductedTaxes => LocalizationController.Translation("TOTAL_PRICE_WITH_DEDUCTED_TAXES");
 
     #region Commands
 

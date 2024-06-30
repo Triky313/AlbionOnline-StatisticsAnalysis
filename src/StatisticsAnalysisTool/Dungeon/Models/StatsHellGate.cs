@@ -372,25 +372,25 @@ public class StatsHellGate : BaseViewModel
         }
     }
 
-    public static string TranslationAverageAbbreviation => LanguageController.Translation("AVERAGE_ABBREVIATION");
-    public static string TranslationHourAbbreviation => LanguageController.Translation("HOUR_ABBREVIATION");
-    public static string TranslationHellGates => LanguageController.Translation("HELLGATES");
-    public static string TranslationMostValuableLoot => LanguageController.Translation("MOST_VALUABLE_LOOT");
-    public static string TranslationTotal => LanguageController.Translation("TOTAL");
-    public static string TranslationPerHour => LanguageController.Translation("PER_HOUR");
-    public static string TranslationAverage => LanguageController.Translation("AVERAGE");
-    public static string TranslationAll => LanguageController.Translation("ALL");
-    public static string TranslationEnteredDungeons => LanguageController.Translation("ENTERED_DUNGEONS");
-    public static string TranslationChestStats => LanguageController.Translation("CHEST_STATS");
-    public static string TranslationOpenedStandardChests => LanguageController.Translation("STANDARD_CHESTS");
-    public static string TranslationOpenedUncommonChests => LanguageController.Translation("UNCOMMON_CHESTS");
-    public static string TranslationOpenedRareChests => LanguageController.Translation("RARE_CHESTS");
-    public static string TranslationOpenedLegendaryChests => LanguageController.Translation("LEGENDARY_CHESTS");
-    public static string TranslationBookChestStats => LanguageController.Translation("BOOK_CHEST_STATS");
-    public static string TranslationType => LanguageController.Translation("TYPE");
-    public static string TranslationNumberOfDungeons => LanguageController.Translation("NUMBER_OF_DUNGEONS");
-    public static string TranslationKillsDeaths => $"{LanguageController.Translation("KILLS")} / {LanguageController.Translation("DEATHS")}";
-    public static string TranslationFights => LanguageController.Translation("FIGHTS");
-    public static string TranslationKills => LanguageController.Translation("KILLS");
-    public static string TranslationDeaths => LanguageController.Translation("DEATHS");
+    public static string TranslationAverageAbbreviation => LocalizationController.Translation("AVERAGE_ABBREVIATION");
+    public static string TranslationHourAbbreviation => LocalizationController.Translation("HOUR_ABBREVIATION");
+    public static string TranslationHellGates => LocalizationController.Translation("HELLGATES");
+    public static string TranslationMostValuableLoot => LocalizationController.Translation("MOST_VALUABLE_LOOT");
+    public static string TranslationTotal => LocalizationController.Translation("TOTAL");
+    public static string TranslationPerHour => LocalizationController.Translation("PER_HOUR");
+    public static string TranslationAverage => LocalizationController.Translation("AVERAGE");
+    public static string TranslationAll => LocalizationController.Translation("ALL");
+    public static string TranslationEnteredDungeons => LocalizationController.Translation("ENTERED_DUNGEONS");
+    public static string TranslationChestStats => LocalizationController.Translation("CHEST_STATS");
+    public static string TranslationOpenedStandardChests => LocalizationController.Translation("STANDARD_CHESTS");
+    public static string TranslationOpenedUncommonChests => LocalizationController.Translation("UNCOMMON_CHESTS");
+    public static string TranslationOpenedRareChests => LocalizationController.Translation("RARE_CHESTS");
+    public static string TranslationOpenedLegendaryChests => LocalizationController.Translation("LEGENDARY_CHESTS");
+    public static string TranslationBookChestStats => LocalizationController.Translation("BOOK_CHEST_STATS");
+    public static string TranslationType => LocalizationController.Translation("TYPE");
+    public static string TranslationNumberOfDungeons => LocalizationController.Translation("NUMBER_OF_DUNGEONS");
+    public static string TranslationKillsDeaths => $"{LocalizationController.Translation("KILLS")} / {LocalizationController.Translation("DEATHS")}";
+    public static string TranslationFights => LocalizationController.Translation("FIGHTS");
+    public static string TranslationKills => LocalizationController.Translation("KILLS");
+    public static string TranslationDeaths => LocalizationController.Translation("DEATHS");
 }

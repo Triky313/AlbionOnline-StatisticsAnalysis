@@ -43,8 +43,8 @@ public partial class App
 
         SettingsController.LoadSettings();
 
-        Culture.SetCulture(Culture.GetCulture(SettingsController.CurrentSettings.CurrentCultureIetfLanguageTag));
-        if (!LanguageController.Init())
+        Culture.SetCulture(Culture.GetCultureByIetfLanguageTag(SettingsController.CurrentSettings.CurrentCultureIetfLanguageTag));
+        if (!LocalizationController.Init())
         {
             _isEarlyShutdown = true;
             Current.Shutdown();
@@ -64,7 +64,7 @@ public partial class App
             Current.Shutdown();
             return;
         }
-        
+
         await BackupController.DeleteOldestBackupsIfNeededAsync();
 
         Current.ShutdownMode = ShutdownMode.OnMainWindowClose;

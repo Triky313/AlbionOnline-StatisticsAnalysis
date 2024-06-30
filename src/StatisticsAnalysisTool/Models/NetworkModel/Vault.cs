@@ -22,12 +22,12 @@ public class Vault
         {
             if (MapType is MapType.Hideout)
             {
-                return $"{Location} ({LanguageController.Translation("HIDEOUT")}) - {MainLocation}";
+                return $"{Location} ({LocalizationController.Translation("HIDEOUT")}) - {MainLocation}";
             }
 
             if (MapType is MapType.Island)
             {
-                return $"{Location} ({LanguageController.Translation("ISLAND")})";
+                return $"{Location} ({LocalizationController.Translation("ISLAND")})";
             }
 
             return Location;

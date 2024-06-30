@@ -21,6 +21,8 @@ public class Culture
 
         CultureInfo.DefaultThreadCurrentCulture = cultureInfo;
         CultureInfo.DefaultThreadCurrentUICulture = cultureInfo;
+        CultureInfo.CurrentCulture = cultureInfo;
+        CultureInfo.CurrentUICulture = cultureInfo;
 
         Application.Current.Dispatcher.Invoke(() =>
         {
@@ -34,7 +36,7 @@ public class Culture
         SettingsController.CurrentSettings.CurrentCultureIetfLanguageTag = cultureInfo.IetfLanguageTag;
     }
 
-    public static CultureInfo GetCulture(string ietfLanguageTag)
+    public static CultureInfo GetCultureByIetfLanguageTag(string ietfLanguageTag)
     {
         if (!string.IsNullOrEmpty(ietfLanguageTag))
         {

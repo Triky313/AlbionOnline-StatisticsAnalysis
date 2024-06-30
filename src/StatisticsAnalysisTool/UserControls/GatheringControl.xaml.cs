@@ -19,7 +19,7 @@ public partial class GatheringControl
 
     public void DeleteSelectedResources()
     {
-        var dialog = new DialogWindow(LanguageController.Translation("DELETE_SELECTED_RESOURCES"), LanguageController.Translation("SURE_YOU_WANT_TO_DELETE_SELECTED_RESOURCES"));
+        var dialog = new DialogWindow(LocalizationController.Translation("DELETE_SELECTED_RESOURCES"), LocalizationController.Translation("SURE_YOU_WANT_TO_DELETE_SELECTED_RESOURCES"));
         var dialogResult = dialog.ShowDialog();
 
         var vm = (MainWindowViewModel) DataContext;

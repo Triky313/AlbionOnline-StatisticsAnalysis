@@ -4,5 +4,5 @@ namespace StatisticsAnalysisTool.DamageMeter;
 
 public sealed class DamageMeterWindowTranslation
 {
-    public string Title => $"{LanguageController.Translation("DAMAGE_METER")}";
+    public string Title => $"{LocalizationController.Translation("DAMAGE_METER")}";
 }

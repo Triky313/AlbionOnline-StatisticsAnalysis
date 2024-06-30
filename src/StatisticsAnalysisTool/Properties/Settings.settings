@@ -158,5 +158,11 @@
     <Setting Name="UpdatesDirectoryName" Type="System.String" Scope="Application">
       <Value Profile="(Default)">Updates</Value>
     </Setting>
+    <Setting Name="LocalizationDirectoryName" Type="System.String" Scope="Application">
+      <Value Profile="(Default)">Localization</Value>
+    </Setting>
+    <Setting Name="LocalizationFileName" Type="System.String" Scope="Application">
+      <Value Profile="(Default)">localization.json</Value>
+    </Setting>
   </Settings>
 </SettingsFile>

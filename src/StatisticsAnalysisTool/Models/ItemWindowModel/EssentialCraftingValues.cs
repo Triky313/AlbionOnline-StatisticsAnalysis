@@ -223,14 +223,14 @@ public class EssentialCraftingValuesTemplate : BaseViewModel
         }
     }
 
-    public string TranslationSellPricePerItem => LanguageController.Translation("SELL_PRICE_PER_ITEM");
-    public string TranslationItemQuantity => LanguageController.Translation("ITEM_QUANTITY");
-    public string TranslationSetupFeePercent => LanguageController.Translation("SETUP_FEE_PERCENT");
-    public string TranslationAuctionsHouseTaxPercent => LanguageController.Translation("AUCTIONS_HOUSE_TAX_PERCENT");
-    public string TranslationUsageFeePerHundredFood => LanguageController.Translation("USAGE_FEE_PER_HUNDRED_FOOD");
-    public string TranslationCraftingBonusPercent => LanguageController.Translation("CRAFTING_BONUS_PERCENT");
-    public string TranslationCraftingWithFocus => LanguageController.Translation("CRAFTING_WITH_FOCUS");
-    public string TranslationOtherCosts => LanguageController.Translation("OTHER_COSTS");
+    public string TranslationSellPricePerItem => LocalizationController.Translation("SELL_PRICE_PER_ITEM");
+    public string TranslationItemQuantity => LocalizationController.Translation("ITEM_QUANTITY");
+    public string TranslationSetupFeePercent => LocalizationController.Translation("SETUP_FEE_PERCENT");
+    public string TranslationAuctionsHouseTaxPercent => LocalizationController.Translation("AUCTIONS_HOUSE_TAX_PERCENT");
+    public string TranslationUsageFeePerHundredFood => LocalizationController.Translation("USAGE_FEE_PER_HUNDRED_FOOD");
+    public string TranslationCraftingBonusPercent => LocalizationController.Translation("CRAFTING_BONUS_PERCENT");
+    public string TranslationCraftingWithFocus => LocalizationController.Translation("CRAFTING_WITH_FOCUS");
+    public string TranslationOtherCosts => LocalizationController.Translation("OTHER_COSTS");
 
     #endregion
 }

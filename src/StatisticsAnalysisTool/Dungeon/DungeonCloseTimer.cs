@@ -101,7 +101,7 @@ public sealed class DungeonCloseTimer : BaseViewModel
 
     public ICommand RefreshDungeonTimer => _refreshDungeonTimer ??= new CommandHandler(PerformRefreshDungeonTimer, true);
 
-    public static string TranslationSafe => LanguageController.Translation("SAFE");
-    public static string TranslationDungeonTimer => LanguageController.Translation("DUNGEON_TIMER");
-    public static string TranslationResetDungeonTimer => LanguageController.Translation("RESET_DUNGEON_TIMER");
+    public static string TranslationSafe => LocalizationController.Translation("SAFE");
+    public static string TranslationDungeonTimer => LocalizationController.Translation("DUNGEON_TIMER");
+    public static string TranslationResetDungeonTimer => LocalizationController.Translation("RESET_DUNGEON_TIMER");
 }

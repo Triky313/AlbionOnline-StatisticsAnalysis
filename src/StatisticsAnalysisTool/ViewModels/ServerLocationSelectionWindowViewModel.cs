@@ -16,24 +16,24 @@ public class ServerLocationSelectionWindowViewModel : BaseViewModel
 
     public ServerLocationSelectionWindowViewModel()
     {
-        Title = LanguageController.Translation("SELECT_SERVER_LOCATION");
-        Message = LanguageController.Translation("PLEASE_SELECT_A_SERVER_LOCATION");
+        Title = LocalizationController.Translation("SELECT_SERVER_LOCATION");
+        Message = LocalizationController.Translation("PLEASE_SELECT_A_SERVER_LOCATION");
 
         ServerLocations = new ObservableCollection<ServerInfo>()
         {
             new ()
             {
-                Name = LanguageController.Translation("AMERICA_SERVER"),
+                Name = LocalizationController.Translation("AMERICA_SERVER"),
                 ServerLocation = ServerLocation.America
             },
             new ()
             {
-                Name = LanguageController.Translation("ASIA_SERVER"),
+                Name = LocalizationController.Translation("ASIA_SERVER"),
                 ServerLocation = ServerLocation.Asia
             },
             new ()
             {
-                Name = LanguageController.Translation("EUROPE_SERVER"),
+                Name = LocalizationController.Translation("EUROPE_SERVER"),
                 ServerLocation = ServerLocation.Europe
             }
         };
@@ -107,5 +107,5 @@ public class ServerLocationSelectionWindowViewModel : BaseViewModel
         public ServerLocation ServerLocation { get; set; }
     }
 
-    public static string TranslationConfirm => LanguageController.Translation("CONFIRM");
+    public static string TranslationConfirm => LocalizationController.Translation("CONFIRM");
 }

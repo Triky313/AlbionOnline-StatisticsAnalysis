@@ -32,11 +32,11 @@ public class VaultSearchItem
     [JsonIgnore]
     public bool IsHideout => MapType == MapType.Hideout;
     [JsonIgnore]
-    public static string TranslationStorageName => LanguageController.Translation("STORAGE_NAME");
+    public static string TranslationStorageName => LocalizationController.Translation("STORAGE_NAME");
     [JsonIgnore]
-    public static string TranslationLocation => LanguageController.Translation("LOCATION");
+    public static string TranslationLocation => LocalizationController.Translation("LOCATION");
     [JsonIgnore]
-    public static string TranslationHideout => LanguageController.Translation("HIDEOUT");
+    public static string TranslationHideout => LocalizationController.Translation("HIDEOUT");
     [JsonIgnore]
-    public static string TranslationIsland => LanguageController.Translation("ISLAND");
+    public static string TranslationIsland => LocalizationController.Translation("ISLAND");
 }

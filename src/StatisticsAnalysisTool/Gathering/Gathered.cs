@@ -171,14 +171,14 @@ public class Gathered : BaseViewModel
 
     public string ClusterUniqueName => ClusterController.ComposingMapInfoString(ClusterIndex, MapType, InstanceName);
 
-    public static string TranslationIn => LanguageController.Translation("IN");
-    public static string TranslationAmountOfMiningProcesses => LanguageController.Translation("AMOUNT_OF_MINING_PROCESSES");
-    public static string TranslationStandard => LanguageController.Translation("STANDARD");
-    public static string TranslationBonus => LanguageController.Translation("BONUS");
-    public static string TranslationPremium => LanguageController.Translation("PREMIUM");
-    public static string TranslationTotal => LanguageController.Translation("TOTAL");
-    public static string TranslationSelectToDelete => LanguageController.Translation("SELECTED_TO_DELETE");
-    public static string TranslationTotalMarketValue => LanguageController.Translation("TOTAL_MARKET_VALUE");
+    public static string TranslationIn => LocalizationController.Translation("IN");
+    public static string TranslationAmountOfMiningProcesses => LocalizationController.Translation("AMOUNT_OF_MINING_PROCESSES");
+    public static string TranslationStandard => LocalizationController.Translation("STANDARD");
+    public static string TranslationBonus => LocalizationController.Translation("BONUS");
+    public static string TranslationPremium => LocalizationController.Translation("PREMIUM");
+    public static string TranslationTotal => LocalizationController.Translation("TOTAL");
+    public static string TranslationSelectToDelete => LocalizationController.Translation("SELECTED_TO_DELETE");
+    public static string TranslationTotalMarketValue => LocalizationController.Translation("TOTAL_MARKET_VALUE");
 
     public bool IsClosed
     {

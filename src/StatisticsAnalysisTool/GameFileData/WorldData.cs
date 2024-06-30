@@ -118,16 +118,16 @@ public static class WorldData
     {
         return mapType switch
         {
-            MapType.HellGate => LanguageController.Translation("HELLGATE"),
-            MapType.RandomDungeon => LanguageController.Translation("DUNGEON"),
-            MapType.CorruptedDungeon => LanguageController.Translation("CORRUPTED_LAIR"),
-            MapType.Island => LanguageController.Translation("ISLAND"),
-            MapType.Hideout => LanguageController.Translation("HIDEOUT"),
-            MapType.Expedition => LanguageController.Translation("EXPEDITION"),
-            MapType.Arena => LanguageController.Translation("ARENA"),
-            MapType.MistsDungeon => LanguageController.Translation("MISTS_DUNGEON"),
-            MapType.Mists => LanguageController.Translation("MISTS"),
-            _ => LanguageController.Translation("UNKNOWN")
+            MapType.HellGate => LocalizationController.Translation("HELLGATE"),
+            MapType.RandomDungeon => LocalizationController.Translation("DUNGEON"),
+            MapType.CorruptedDungeon => LocalizationController.Translation("CORRUPTED_LAIR"),
+            MapType.Island => LocalizationController.Translation("ISLAND"),
+            MapType.Hideout => LocalizationController.Translation("HIDEOUT"),
+            MapType.Expedition => LocalizationController.Translation("EXPEDITION"),
+            MapType.Arena => LocalizationController.Translation("ARENA"),
+            MapType.MistsDungeon => LocalizationController.Translation("MISTS_DUNGEON"),
+            MapType.Mists => LocalizationController.Translation("MISTS"),
+            _ => LocalizationController.Translation("UNKNOWN")
         };
     }
 

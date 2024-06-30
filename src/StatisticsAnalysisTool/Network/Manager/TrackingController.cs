@@ -110,7 +110,7 @@ public class TrackingController : ITrackingController
 
         if (!ApplicationCore.IsAppStartedAsAdministrator() && SettingsController.CurrentSettings.PacketProvider == PacketProviderKind.Sockets)
         {
-            _mainWindowViewModel.SetErrorBar(Visibility.Visible, LanguageController.Translation("START_APPLICATION_AS_ADMINISTRATOR"));
+            _mainWindowViewModel.SetErrorBar(Visibility.Visible, LocalizationController.Translation("START_APPLICATION_AS_ADMINISTRATOR"));
             return;
         }
 
@@ -142,7 +142,7 @@ public class TrackingController : ITrackingController
         {
             ConsoleManager.WriteLineForError(MethodBase.GetCurrentMethod()?.DeclaringType, e);
             Log.Error(e, "{message}", MethodBase.GetCurrentMethod()?.DeclaringType);
-            _mainWindowViewModel.SetErrorBar(Visibility.Visible, LanguageController.Translation("NO_LISTENING_ADAPTERS"));
+            _mainWindowViewModel.SetErrorBar(Visibility.Visible, LocalizationController.Translation("NO_LISTENING_ADAPTERS"));
         }
         catch (SocketException e)
         {
@@ -154,7 +154,7 @@ public class TrackingController : ITrackingController
         {
             ConsoleManager.WriteLineForError(MethodBase.GetCurrentMethod()?.DeclaringType, e);
             Log.Error(e, "{message}", MethodBase.GetCurrentMethod()?.DeclaringType);
-            _mainWindowViewModel.SetErrorBar(Visibility.Visible, LanguageController.Translation("PACKET_HANDLER_ERROR_MESSAGE"));
+            _mainWindowViewModel.SetErrorBar(Visibility.Visible, LocalizationController.Translation("PACKET_HANDLER_ERROR_MESSAGE"));
 
             StopTracking();
         }
@@ -446,7 +446,7 @@ public class TrackingController : ITrackingController
 
     public async Task ResetTrackingNotificationsAsync()
     {
-        var dialog = new DialogWindow(LanguageController.Translation("RESET_TRACKING_NOTIFICATIONS"), LanguageController.Translation("SURE_YOU_WANT_TO_RESET_TRACKING_NOTIFICATIONS"));
+        var dialog = new DialogWindow(LocalizationController.Translation("RESET_TRACKING_NOTIFICATIONS"), LocalizationController.Translation("SURE_YOU_WANT_TO_RESET_TRACKING_NOTIFICATIONS"));
         var dialogResult = dialog.ShowDialog();
 
         if (dialogResult is true)

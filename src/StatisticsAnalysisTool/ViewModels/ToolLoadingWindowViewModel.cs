@@ -16,5 +16,5 @@ public class ToolLoadingWindowViewModel : BaseViewModel
         }
     }
 
-    public static string TranslationLoading => LanguageController.Translation("LOADING");
+    public static string TranslationLoading => LocalizationController.Translation("LOADING");
 }

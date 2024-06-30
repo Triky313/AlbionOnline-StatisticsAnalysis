@@ -16,8 +16,8 @@ public class GameDataPreparationWindowViewModel : BaseViewModel
 
     public GameDataPreparationWindowViewModel()
     {
-        Title = LanguageController.Translation("SELECT_ALBION_ONLINE_MAIN_GAME_FOLDER");
-        Message = LanguageController.Translation("PLEASE_SELECT_A_CORRECT_ALBION_ONLINE_MAIN_GAME_FOLDER");
+        Title = LocalizationController.Translation("SELECT_ALBION_ONLINE_MAIN_GAME_FOLDER");
+        Message = LocalizationController.Translation("PLEASE_SELECT_A_CORRECT_ALBION_ONLINE_MAIN_GAME_FOLDER");
     }
 
     public void OpenPathSelection()
@@ -26,7 +26,7 @@ public class GameDataPreparationWindowViewModel : BaseViewModel
 
         var dialog = new VistaFolderBrowserDialog()
         {
-            Description = LanguageController.Translation("SELECT_ALBION_ONLINE_MAIN_GAME_FOLDER"),
+            Description = LocalizationController.Translation("SELECT_ALBION_ONLINE_MAIN_GAME_FOLDER"),
             RootFolder = Environment.SpecialFolder.Desktop,
             ShowNewFolderButton = false,
             UseDescriptionForTitle = true,
@@ -44,7 +44,7 @@ public class GameDataPreparationWindowViewModel : BaseViewModel
             }
             else
             {
-                ErrorMessage = LanguageController.Translation("PLEASE_SELECT_A_CORRECT_FOLDER");
+                ErrorMessage = LocalizationController.Translation("PLEASE_SELECT_A_CORRECT_FOLDER");
                 IsConfirmButtonEnabled = false;
             }
         }
@@ -100,6 +100,6 @@ public class GameDataPreparationWindowViewModel : BaseViewModel
         }
     }
 
-    public static string TranslationSelectMainGameFolder => LanguageController.Translation("SELECT_MAIN_GAME_FOLDER_DOTS");
-    public static string TranslationConfirm => LanguageController.Translation("CONFIRM");
+    public static string TranslationSelectMainGameFolder => LocalizationController.Translation("SELECT_MAIN_GAME_FOLDER_DOTS");
+    public static string TranslationConfirm => LocalizationController.Translation("CONFIRM");
 }

@@ -218,9 +218,9 @@ public class RequiredResource : BaseViewModel
 
     #endregion
 
-    public string TranslationCost => LanguageController.Translation("COST");
-    public string TranslationOneProductionAmount => LanguageController.Translation("ONE_PRODUCTION_AMOUNT");
-    public string TranslationTotalQuantity => LanguageController.Translation("TOTAL_QUANTITY");
-    public string TranslationTotalCost => LanguageController.Translation("TOTAL_COST");
-    public string TranslationGetPrice => LanguageController.Translation("GET_PRICE");
+    public string TranslationCost => LocalizationController.Translation("COST");
+    public string TranslationOneProductionAmount => LocalizationController.Translation("ONE_PRODUCTION_AMOUNT");
+    public string TranslationTotalQuantity => LocalizationController.Translation("TOTAL_QUANTITY");
+    public string TranslationTotalCost => LocalizationController.Translation("TOTAL_COST");
+    public string TranslationGetPrice => LocalizationController.Translation("GET_PRICE");
 }

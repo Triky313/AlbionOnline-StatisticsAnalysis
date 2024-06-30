@@ -196,14 +196,14 @@ public sealed class ClusterInfo
     {
         return clusterMode switch
         {
-            ClusterMode.Island => LanguageController.Translation("ISLAND"),
-            ClusterMode.AvalonTunnel => LanguageController.Translation("AVALON_ROAD"),
-            ClusterMode.Black => LanguageController.Translation("BLACK_ZONE"),
-            ClusterMode.Red => LanguageController.Translation("RED_ZONE"),
-            ClusterMode.Yellow => LanguageController.Translation("YELLOW_ZONE"),
-            ClusterMode.SafeArea => LanguageController.Translation("SAFE_AREA"),
-            ClusterMode.Mists => LanguageController.Translation("MISTS"),
-            ClusterMode.Unknown => LanguageController.Translation("UNKNOWN_ZONE"),
+            ClusterMode.Island => LocalizationController.Translation("ISLAND"),
+            ClusterMode.AvalonTunnel => LocalizationController.Translation("AVALON_ROAD"),
+            ClusterMode.Black => LocalizationController.Translation("BLACK_ZONE"),
+            ClusterMode.Red => LocalizationController.Translation("RED_ZONE"),
+            ClusterMode.Yellow => LocalizationController.Translation("YELLOW_ZONE"),
+            ClusterMode.SafeArea => LocalizationController.Translation("SAFE_AREA"),
+            ClusterMode.Mists => LocalizationController.Translation("MISTS"),
+            ClusterMode.Unknown => LocalizationController.Translation("UNKNOWN_ZONE"),
             _ => ""
         };
     }
@@ -353,15 +353,15 @@ public sealed class ClusterInfo
     {
         return mapType switch
         {
-            MapType.RandomDungeon => LanguageController.Translation("DUNGEON"),
-            MapType.HellGate => LanguageController.Translation("HELLGATE"),
-            MapType.CorruptedDungeon => LanguageController.Translation("CORRUPTED_DUNGEON"),
-            MapType.Island => LanguageController.Translation("ISLAND"),
-            MapType.Hideout => LanguageController.Translation("HIDEOUT"),
-            MapType.Expedition => LanguageController.Translation("EXPEDITION"),
-            MapType.Arena => LanguageController.Translation("ARENA"),
-            MapType.MistsDungeon => LanguageController.Translation("MISTS_DUNGEON"),
-            MapType.Mists => LanguageController.Translation("MISTS"),
+            MapType.RandomDungeon => LocalizationController.Translation("DUNGEON"),
+            MapType.HellGate => LocalizationController.Translation("HELLGATE"),
+            MapType.CorruptedDungeon => LocalizationController.Translation("CORRUPTED_DUNGEON"),
+            MapType.Island => LocalizationController.Translation("ISLAND"),
+            MapType.Hideout => LocalizationController.Translation("HIDEOUT"),
+            MapType.Expedition => LocalizationController.Translation("EXPEDITION"),
+            MapType.Arena => LocalizationController.Translation("ARENA"),
+            MapType.MistsDungeon => LocalizationController.Translation("MISTS_DUNGEON"),
+            MapType.Mists => LocalizationController.Translation("MISTS"),
             _ => ""
         };
     }

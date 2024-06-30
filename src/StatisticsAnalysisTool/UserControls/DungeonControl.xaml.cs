@@ -22,7 +22,7 @@ public partial class DungeonControl
 
     public void ResetDungeons()
     {
-        var dialog = new DialogWindow(LanguageController.Translation("RESET_DUNGEON_TRACKER"), LanguageController.Translation("SURE_YOU_WANT_TO_RESET_DUNGEON_TRACKER"));
+        var dialog = new DialogWindow(LocalizationController.Translation("RESET_DUNGEON_TRACKER"), LocalizationController.Translation("SURE_YOU_WANT_TO_RESET_DUNGEON_TRACKER"));
         var dialogResult = dialog.ShowDialog();
 
         if (dialogResult is true)
@@ -34,7 +34,7 @@ public partial class DungeonControl
 
     public void ResetTodaysDungeons()
     {
-        var dialog = new DialogWindow(LanguageController.Translation("RESET_TODAYS_DUNGEONS"), LanguageController.Translation("SURE_YOU_WANT_TO_RESET_DUNGEONS"));
+        var dialog = new DialogWindow(LocalizationController.Translation("RESET_TODAYS_DUNGEONS"), LocalizationController.Translation("SURE_YOU_WANT_TO_RESET_DUNGEONS"));
         var dialogResult = dialog.ShowDialog();
 
         if (dialogResult is true)
@@ -46,7 +46,7 @@ public partial class DungeonControl
 
     public async Task DeleteSelectedDungeonsAsync()
     {
-        var dialog = new DialogWindow(LanguageController.Translation("DELETE_SELECTED_DUNGEONS"), LanguageController.Translation("SURE_YOU_WANT_TO_DELETE_SELECTED_DUNGEONS"));
+        var dialog = new DialogWindow(LocalizationController.Translation("DELETE_SELECTED_DUNGEONS"), LocalizationController.Translation("SURE_YOU_WANT_TO_DELETE_SELECTED_DUNGEONS"));
         var dialogResult = dialog.ShowDialog();
 
         var vm = (MainWindowViewModel) DataContext;
@@ -64,7 +64,7 @@ public partial class DungeonControl
 
     public void DeleteZeroFameDungeons()
     {
-        var dialog = new DialogWindow(LanguageController.Translation("DELETE_ZERO_FAME_DUNGEONS"), LanguageController.Translation("SURE_YOU_WANT_TO_DELETE_ZERO_FAME_DUNGEONS"));
+        var dialog = new DialogWindow(LocalizationController.Translation("DELETE_ZERO_FAME_DUNGEONS"), LocalizationController.Translation("SURE_YOU_WANT_TO_DELETE_ZERO_FAME_DUNGEONS"));
         var dialogResult = dialog.ShowDialog();
 
         if (dialogResult is true)

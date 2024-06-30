@@ -23,7 +23,7 @@ public partial class TradeMonitoringControl
 
     public async Task DeleteSelectedTradesAsync()
     {
-        var dialog = new DialogWindow(LanguageController.Translation("DELETE_SELECTED_TRADES"), LanguageController.Translation("SURE_YOU_WANT_TO_DELETE_SELECTED_TRADES"));
+        var dialog = new DialogWindow(LocalizationController.Translation("DELETE_SELECTED_TRADES"), LocalizationController.Translation("SURE_YOU_WANT_TO_DELETE_SELECTED_TRADES"));
         var dialogResult = dialog.ShowDialog();
 
         var mainWindowViewModel = ServiceLocator.Resolve<MainWindowViewModel>();
