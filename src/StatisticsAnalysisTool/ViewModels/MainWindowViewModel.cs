@@ -12,12 +12,14 @@ using StatisticsAnalysisTool.Dungeon;
 using StatisticsAnalysisTool.Enumerations;
 using StatisticsAnalysisTool.EstimatedMarketValue;
 using StatisticsAnalysisTool.EventLogging;
+using StatisticsAnalysisTool.Guild;
 using StatisticsAnalysisTool.Localization;
 using StatisticsAnalysisTool.Models;
 using StatisticsAnalysisTool.Models.BindingModel;
 using StatisticsAnalysisTool.Models.NetworkModel;
 using StatisticsAnalysisTool.Models.TranslationModel;
 using StatisticsAnalysisTool.Network.Manager;
+using StatisticsAnalysisTool.Party;
 using StatisticsAnalysisTool.Properties;
 using StatisticsAnalysisTool.Trade;
 using StatisticsAnalysisTool.Views;
@@ -32,8 +34,6 @@ using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Data;
 using System.Windows.Media;
-using StatisticsAnalysisTool.Guild;
-using StatisticsAnalysisTool.Party;
 
 // ReSharper disable UnusedMember.Global
 
@@ -116,8 +116,7 @@ public class MainWindowViewModel : BaseViewModel
     private Visibility _statsDropDownVisibility = Visibility.Collapsed;
     private double _toolTaskProgressBarValue;
     private string _toolTaskCurrentTaskName;
-    private ToolTaskBindings _toolTaskBindings = new();
-    private GuildBindings _guildBindings = new ();
+    private GuildBindings _guildBindings = new();
     private PartyBindings _partyBindings = new();
     private string _serverTypeText;
     private bool _isDataLoaded;
@@ -940,16 +939,6 @@ public class MainWindowViewModel : BaseViewModel
         set
         {
             _dashboardBindings = value;
-            OnPropertyChanged();
-        }
-    }
-
-    public ToolTaskBindings ToolTaskBindings
-    {
-        get => _toolTaskBindings;
-        set
-        {
-            _toolTaskBindings = value;
             OnPropertyChanged();
         }
     }
