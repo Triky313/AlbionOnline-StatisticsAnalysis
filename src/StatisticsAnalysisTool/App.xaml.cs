@@ -64,8 +64,7 @@ public partial class App
             Current.Shutdown();
             return;
         }
-
-        AutoUpdateController.RemoveUpdateFiles();
+        
         await BackupController.DeleteOldestBackupsIfNeededAsync();
 
         Current.ShutdownMode = ShutdownMode.OnMainWindowClose;

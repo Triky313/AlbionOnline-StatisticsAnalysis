@@ -68,7 +68,6 @@ public partial class SettingsControl
 
     private async void CheckForUpdate_Click(object sender, RoutedEventArgs e)
     {
-        AutoUpdateController.RemoveUpdateFiles();
         await AutoUpdateController.AutoUpdateAsync(true);
     }
 
