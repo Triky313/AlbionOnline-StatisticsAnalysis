@@ -18,12 +18,6 @@
                     <fa5:ImageAwesome Icon="Solid_FileCsv" ToolTip="{Binding Translation.ExportLootToFile}" 
                                                       Foreground="{StaticResource  SolidColorBrush.Accent.Green.4}" MouseUp="BtnExportLootToFile_MouseUp" />
                 </Grid>
-                <TextBlock HorizontalAlignment="Right" TextDecorations="Underline" Foreground="{StaticResource SolidColorBrush.Accent.Blue.2}" FontSize="16" FontWeight="Bold">
-                    <Hyperlink NavigateUri="{Binding LootLoggerViewer}" RequestNavigate="Hyperlink_RequestNavigate" TextDecorations="{x:Null}" 
-                               Foreground="{StaticResource SolidColorBrush.Accent.Blue.2}">
-                        ao-loot-logger-viewer
-                    </Hyperlink>
-                </TextBlock>
             </StackPanel>
         </Grid>
         <Grid Height="auto" Width="auto" Margin="0,2,0,0" HorizontalAlignment="Left" VerticalAlignment="Top">
