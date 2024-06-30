@@ -2,6 +2,7 @@ using System.Reflection;
 using System.Runtime.InteropServices;
 using System.Runtime.Versioning;
 using System.Windows;
+using System.Runtime.CompilerServices;
 
 // Allgemeine Informationen über eine Assembly werden über die folgenden
 // Attribute gesteuert. Ändern Sie diese Attributwerte, um die Informationen zu ändern,
@@ -39,6 +40,9 @@ using System.Windows;
                                               // designspezifischen Ressourcenwörterbuch nicht gefunden werden kann.)
 )]
 
+// Tests
+[assembly: InternalsVisibleTo("StatisticsAnalysisTool.Tests")]
+
 // Versionsinformationen für eine Assembly bestehen aus den folgenden vier Werten:
 //
 //      Hauptversion
@@ -49,5 +53,5 @@ using System.Windows;
 // Sie können alle Werte angeben oder Standardwerte für die Build- und Revisionsnummern verwenden,
 // indem Sie "*" wie unten gezeigt eingeben:
 // [assembly: AssemblyVersion("1.0.*")]
-[assembly: AssemblyVersion("7.5.5.*")]
-[assembly: AssemblyFileVersion("7.5.5.0")]
+[assembly: AssemblyVersion("7.6.0.*")]
+[assembly: AssemblyFileVersion("7.6.0.0")]

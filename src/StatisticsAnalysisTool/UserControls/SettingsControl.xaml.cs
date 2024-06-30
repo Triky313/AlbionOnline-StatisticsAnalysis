@@ -40,7 +40,7 @@ public partial class SettingsControl
         }
         catch (Exception ex)
         {
-            _ = MessageBox.Show(ex.Message, LanguageController.Translation("ERROR"));
+            _ = MessageBox.Show(ex.Message, LocalizationController.Translation("ERROR"));
             ConsoleManager.WriteLineForError(MethodBase.GetCurrentMethod()?.DeclaringType, ex);
             Log.Error(ex, "{message}", MethodBase.GetCurrentMethod()?.DeclaringType);
         }
@@ -56,6 +56,11 @@ public partial class SettingsControl
         SettingsWindowViewModel.OpenConsoleWindow();
     }
 
+    private void OpenEventValidation_Click(object sender, RoutedEventArgs e)
+    {
+        SettingsWindowViewModel.OpenEventValidationWindow();
+    }
+
     private void ReloadSettings_OnIsVisibleChanged(object sender, DependencyPropertyChangedEventArgs e)
     {
         _settingsWindowViewModel.ReloadSettings();
@@ -63,7 +68,6 @@ public partial class SettingsControl
 
     private async void CheckForUpdate_Click(object sender, RoutedEventArgs e)
     {
-        AutoUpdateController.RemoveUpdateFiles();
         await AutoUpdateController.AutoUpdateAsync(true);
     }
 

@@ -27,15 +27,15 @@ public class Donation
         {
             if (string.IsNullOrEmpty(Server))
             {
-                return LanguageController.Translation("AMERICA_SERVER");
+                return LocalizationController.Translation("AMERICA_SERVER");
             }
 
             return Server switch
             {
-                "EU" => LanguageController.Translation("EUROPE_SERVER"),
-                "US" => LanguageController.Translation("AMERICA_SERVER"),
-                "ASIA" => LanguageController.Translation("ASIA_SERVER"),
-                _ => LanguageController.Translation("AMERICA_SERVER")
+                "EU" => LocalizationController.Translation("EUROPE_SERVER"),
+                "US" => LocalizationController.Translation("AMERICA_SERVER"),
+                "ASIA" => LocalizationController.Translation("ASIA_SERVER"),
+                _ => LocalizationController.Translation("AMERICA_SERVER")
             };
         }
     }
@@ -133,5 +133,5 @@ public class Donation
     }
 
     [JsonIgnore]
-    public static string TranslationSilver => LanguageController.Translation("SILVER");
+    public static string TranslationSilver => LocalizationController.Translation("SILVER");
 }

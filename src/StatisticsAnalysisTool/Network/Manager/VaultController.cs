@@ -157,7 +157,7 @@ public class VaultController
                 {
                     Guid = _currentVaultInfo.ContainerGuidList[i],
                     Icon = _currentVaultInfo.ContainerIconTags[i],
-                    Name = (_currentVaultInfo.ContainerNames[i] == "@BUILDINGS_T1_BANK") ? LanguageController.Translation("BANK") : _currentVaultInfo.ContainerNames[i]
+                    Name = (_currentVaultInfo.ContainerNames[i] == "@BUILDINGS_T1_BANK") ? LocalizationController.Translation("BANK") : _currentVaultInfo.ContainerNames[i]
                 };
 
                 var itemContainer = _vaultContainer.FirstOrDefault(x => x.PrivateContainerGuid == vaultContainer.Guid);

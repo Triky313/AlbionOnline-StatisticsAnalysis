@@ -1,5 +1,6 @@
 ﻿using StatisticsAnalysisTool.Common;
 using StatisticsAnalysisTool.Enumerations;
+using StatisticsAnalysisTool.EventValidations;
 using StatisticsAnalysisTool.Models;
 using StatisticsAnalysisTool.Models.NetworkModel;
 using System;
@@ -15,6 +16,7 @@ public class CharacterEquipmentChangedEvent
 
     public CharacterEquipmentChangedEvent(Dictionary<byte, object> parameters)
     {
+        EventValidator.IsEventValid(EventCodes.CharacterEquipmentChanged, parameters);
         ConsoleManager.WriteLineForNetworkHandler(GetType().Name, parameters);
 
         try

@@ -56,9 +56,9 @@ public static class BackupController
                 zipArchive.CreateEntryFromFile(file, entryName);
             }
 
-            ConsoleManager.WriteLineForMessage(LanguageController.Translation("BACKUP_CREATED"));
+            ConsoleManager.WriteLineForMessage(LocalizationController.Translation("BACKUP_CREATED"));
             _ = ServiceLocator.Resolve<SatNotificationManager>()
-                .ShowTrackingStatusAsync(LanguageController.Translation("BACKUP_CREATED"), LanguageController.Translation("A_BACKUP_HAS_BEEN_CREATED"));
+                .ShowTrackingStatusAsync(LocalizationController.Translation("BACKUP_CREATED"), LocalizationController.Translation("A_BACKUP_HAS_BEEN_CREATED"));
             _isBackupRunning = false;
             return true;
         }

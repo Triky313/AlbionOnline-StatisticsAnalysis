@@ -53,5 +53,5 @@ public class MainStatObject : BaseViewModel
         }
     }
 
-    public static string TranslationTotalFactionPoints => LanguageController.Translation("TOTAL_FACTION_POINTS");
+    public static string TranslationTotalFactionPoints => LocalizationController.Translation("TOTAL_FACTION_POINTS");
 }

@@ -529,19 +529,19 @@ public class TradeStatsObject : BaseViewModel
         }
     }
 
-    public static string TranslationSold => LanguageController.Translation("SOLD");
-    public static string TranslationToday => LanguageController.Translation("TODAY");
-    public static string TranslationThisWeek => LanguageController.Translation("THIS_WEEK");
-    public static string TranslationLastWeek => LanguageController.Translation("LAST_WEEK");
-    public static string TranslationMonth => LanguageController.Translation("MONTH");
-    public static string TranslationLastMonth => LanguageController.Translation("LAST_MONTH");
-    public static string TranslationYear => LanguageController.Translation("YEAR");
-    public static string TranslationTotal => LanguageController.Translation("TOTAL");
-    public static string TranslationBought => LanguageController.Translation("BOUGHT");
-    public static string TranslationTax => LanguageController.Translation("TAX");
-    public static string TranslationNetProfit => LanguageController.Translation("NET_PROFIT");
-    public static string TranslationMostExpensiveSale => LanguageController.Translation("MOST_EXPENSIVE_SALE");
-    public static string TranslationMostExpensivePurchase => LanguageController.Translation("MOST_EXPENSIVE_PURCHASE");
+    public static string TranslationSold => LocalizationController.Translation("SOLD");
+    public static string TranslationToday => LocalizationController.Translation("TODAY");
+    public static string TranslationThisWeek => LocalizationController.Translation("THIS_WEEK");
+    public static string TranslationLastWeek => LocalizationController.Translation("LAST_WEEK");
+    public static string TranslationMonth => LocalizationController.Translation("MONTH");
+    public static string TranslationLastMonth => LocalizationController.Translation("LAST_MONTH");
+    public static string TranslationYear => LocalizationController.Translation("YEAR");
+    public static string TranslationTotal => LocalizationController.Translation("TOTAL");
+    public static string TranslationBought => LocalizationController.Translation("BOUGHT");
+    public static string TranslationTax => LocalizationController.Translation("TAX");
+    public static string TranslationNetProfit => LocalizationController.Translation("NET_PROFIT");
+    public static string TranslationMostExpensiveSale => LocalizationController.Translation("MOST_EXPENSIVE_SALE");
+    public static string TranslationMostExpensivePurchase => LocalizationController.Translation("MOST_EXPENSIVE_PURCHASE");
 
-    public static string TranslationSilver => LanguageController.Translation("SILVER");
+    public static string TranslationSilver => LocalizationController.Translation("SILVER");
 }

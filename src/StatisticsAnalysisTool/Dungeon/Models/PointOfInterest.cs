@@ -104,14 +104,14 @@ public class PointOfInterest : BaseViewModel
         }
     }
 
-    public static string TranslationStandard => LanguageController.Translation("STANDARD");
-    public static string TranslationUncommon => LanguageController.Translation("UNCOMMON");
-    public static string TranslationRare => LanguageController.Translation("RARE");
-    public static string TranslationLegendary => LanguageController.Translation("LEGENDARY");
-    public static string TranslationBossChest => LanguageController.Translation("BOSS_CHEST");
-    public static string TranslationBookChest => LanguageController.Translation("BOOK_CHEST");
-    public static string TranslationCombatBuff => LanguageController.Translation("COMBAT_BUFF");
-    public static string TranslationSilverShrine => LanguageController.Translation("SILVER_SHRINE");
-    public static string TranslationFameShrine => LanguageController.Translation("FAME_SHRINE");
-    public static string TranslationLockedChest => LanguageController.Translation("LOCKED_CHEST");
+    public static string TranslationStandard => LocalizationController.Translation("STANDARD");
+    public static string TranslationUncommon => LocalizationController.Translation("UNCOMMON");
+    public static string TranslationRare => LocalizationController.Translation("RARE");
+    public static string TranslationLegendary => LocalizationController.Translation("LEGENDARY");
+    public static string TranslationBossChest => LocalizationController.Translation("BOSS_CHEST");
+    public static string TranslationBookChest => LocalizationController.Translation("BOOK_CHEST");
+    public static string TranslationCombatBuff => LocalizationController.Translation("COMBAT_BUFF");
+    public static string TranslationSilverShrine => LocalizationController.Translation("SILVER_SHRINE");
+    public static string TranslationFameShrine => LocalizationController.Translation("FAME_SHRINE");
+    public static string TranslationLockedChest => LocalizationController.Translation("LOCKED_CHEST");
 }

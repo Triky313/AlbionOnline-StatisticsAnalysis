@@ -19,7 +19,7 @@ public partial class StorageHistoryControl
 
     private void ButtonDeleteCurrentStorage_OnClick(object sender, RoutedEventArgs e)
     {
-        var dialog = new DialogWindow(LanguageController.Translation("DELETE_SELECTED_STORAGE"), LanguageController.Translation("SURE_YOU_WANT_TO_DELETE_SELECTED_STORAGE"));
+        var dialog = new DialogWindow(LocalizationController.Translation("DELETE_SELECTED_STORAGE"), LocalizationController.Translation("SURE_YOU_WANT_TO_DELETE_SELECTED_STORAGE"));
         var dialogResult = dialog.ShowDialog();
 
         var vm = (MainWindowViewModel)DataContext;

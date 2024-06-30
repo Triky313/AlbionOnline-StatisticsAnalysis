@@ -259,21 +259,21 @@ public class PartyBindings : BaseViewModel
         }
     }
 
-    public static string TranslationDescriptions => LanguageController.Translation("DESCRIPTIONS");
-    public static string TranslationPlayerIsNotInspected => LanguageController.Translation("PLAYER_IS_NOT_INSPECTED");
-    public static string TranslationItemPower => LanguageController.Translation("ITEM_POWER");
-    public static string TranslationBasicItemPower => LanguageController.Translation("BASIC_ITEM_POWER");
-    public static string TranslationConditions => LanguageController.Translation("CONDITIONS");
-    public static string TranslationMinimalItemPower => LanguageController.Translation("MINIMAL_ITEM_POWER");
-    public static string TranslationMinimalBasicItemPower => LanguageController.Translation("MINIMAL_BASIC_ITEM_POWER");
-    public static string TranslationMaximumItemPower => LanguageController.Translation("MAXIMUM_ITEM_POWER");
-    public static string TranslationMaximumBasicItemPower => LanguageController.Translation("MAXIMUM_BASIC_ITEM_POWER");
-    public static string TranslationIpOrBipBetweenMinAndMaxRange => LanguageController.Translation("IP_OR_BIP_BETWEEN_MIN_AND_MAX_RANGE");
-    public static string TranslationIpOrBipOverMaxRange => LanguageController.Translation("IP_OR_BIP_OVER_MAX_RANGE");
-    public static string TranslationIpOrBipUnderMinRange => LanguageController.Translation("IP_OR_BIP_UNDER_MIN_RANGE");
-    public static string TranslationPartyInformation => LanguageController.Translation("PARTY_INFORMATION");
-    public static string TranslationAverageIp => LanguageController.Translation("AVERAGE_IP");
-    public static string TranslationAverageBasicIp => LanguageController.Translation("AVERAGE_BIP");
-    public static string TranslationPartyBuilder => LanguageController.Translation("PARTY_BUILDER");
-    public static string TranslationDeathAlert => LanguageController.Translation("DEATH_ALERT");
+    public static string TranslationDescriptions => LocalizationController.Translation("DESCRIPTIONS");
+    public static string TranslationPlayerIsNotInspected => LocalizationController.Translation("PLAYER_IS_NOT_INSPECTED");
+    public static string TranslationItemPower => LocalizationController.Translation("ITEM_POWER");
+    public static string TranslationBasicItemPower => LocalizationController.Translation("BASIC_ITEM_POWER");
+    public static string TranslationConditions => LocalizationController.Translation("CONDITIONS");
+    public static string TranslationMinimalItemPower => LocalizationController.Translation("MINIMAL_ITEM_POWER");
+    public static string TranslationMinimalBasicItemPower => LocalizationController.Translation("MINIMAL_BASIC_ITEM_POWER");
+    public static string TranslationMaximumItemPower => LocalizationController.Translation("MAXIMUM_ITEM_POWER");
+    public static string TranslationMaximumBasicItemPower => LocalizationController.Translation("MAXIMUM_BASIC_ITEM_POWER");
+    public static string TranslationIpOrBipBetweenMinAndMaxRange => LocalizationController.Translation("IP_OR_BIP_BETWEEN_MIN_AND_MAX_RANGE");
+    public static string TranslationIpOrBipOverMaxRange => LocalizationController.Translation("IP_OR_BIP_OVER_MAX_RANGE");
+    public static string TranslationIpOrBipUnderMinRange => LocalizationController.Translation("IP_OR_BIP_UNDER_MIN_RANGE");
+    public static string TranslationPartyInformation => LocalizationController.Translation("PARTY_INFORMATION");
+    public static string TranslationAverageIp => LocalizationController.Translation("AVERAGE_IP");
+    public static string TranslationAverageBasicIp => LocalizationController.Translation("AVERAGE_BIP");
+    public static string TranslationPartyBuilder => LocalizationController.Translation("PARTY_BUILDER");
+    public static string TranslationDeathAlert => LocalizationController.Translation("DEATH_ALERT");
 }

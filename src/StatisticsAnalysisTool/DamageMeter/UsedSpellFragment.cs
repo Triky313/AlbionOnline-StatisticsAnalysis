@@ -34,7 +34,7 @@ public class UsedSpellFragment : BaseViewModel
         set
         {
             _uniqueName = value;
-            LocalizationName = UniqueName == "AUTO_ATTACK" ? LanguageController.Translation("AUTO_ATTACK") : SpellData.GetLocalizationName(_uniqueName);
+            LocalizationName = UniqueName == "AUTO_ATTACK" ? LocalizationController.Translation("AUTO_ATTACK") : SpellData.GetLocalizationName(_uniqueName);
             LocalizationDescription = SpellData.GetLocalizationDescription(_uniqueName);
             OnPropertyChanged();
         }

@@ -24,6 +24,6 @@ public class DungeonOptionsObject : BaseViewModel
         }
     }
 
-    public static string TranslationSettings => LanguageController.Translation("SETTINGS");
-    public static string TranslationDungeonClosedSoundActive => LanguageController.Translation("DUNGEON_CLOSED_SOUND_ACTIVE");
+    public static string TranslationSettings => LocalizationController.Translation("SETTINGS");
+    public static string TranslationDungeonClosedSoundActive => LocalizationController.Translation("DUNGEON_CLOSED_SOUND_ACTIVE");
 }

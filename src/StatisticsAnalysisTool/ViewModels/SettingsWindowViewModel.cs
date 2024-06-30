@@ -133,7 +133,7 @@ public class SettingsWindowViewModel : BaseViewModel
         SettingsController.CurrentSettings.SelectedAlertSound = AlertSoundSelection?.FileName ?? string.Empty;
         SettingsController.CurrentSettings.SelectedDeathAlertSound = DeathAlertSoundSelection?.FileName ?? string.Empty;
 
-        LanguageController.SetLanguage(Culture.GetCulture(LanguagesSelection.FileName));
+        Culture.SetCulture(Culture.GetCultureByIetfLanguageTag(LanguagesSelection.FileName));
 
         SettingsController.CurrentSettings.AlbionDataProjectBaseUrlWest = AlbionDataProjectBaseUrlWest;
         SettingsController.CurrentSettings.AlbionDataProjectBaseUrlEast = AlbionDataProjectBaseUrlEast;
@@ -311,11 +311,33 @@ public class SettingsWindowViewModel : BaseViewModel
         }
     }
 
+    public static void OpenEventValidationWindow()
+    {
+        try
+        {
+            if (Utilities.IsWindowOpen<EventValidationWindow>())
+            {
+                var existWindow = Application.Current.Windows.OfType<EventValidationWindow>().FirstOrDefault();
+                existWindow?.Activate();
+            }
+            else
+            {
+                var window = new EventValidationWindow();
+                window.Show();
+            }
+        }
+        catch (Exception e)
+        {
+            ConsoleManager.WriteLineForError(MethodBase.GetCurrentMethod()?.DeclaringType, e);
+            Log.Error(e, "{message}", MethodBase.GetCurrentMethod()?.DeclaringType);
+        }
+    }
+
     #region Inits
 
     private void InitLanguageFiles()
     {
-        Languages = new ObservableCollection<FileInformation>(LanguageController.InitLanguageFiles());
+        Languages = new ObservableCollection<FileInformation>(LocalizationController.GetLanguageInformation());
         LanguagesSelection = Languages.FirstOrDefault(x => x.FileName == CultureInfo.DefaultThreadCurrentCulture?.TextInfo.CultureName);
     }
 
@@ -402,13 +424,13 @@ public class SettingsWindowViewModel : BaseViewModel
         NotificationFilters.Add(new NotificationFilter(NotificationFilterType.Trade)
         {
             IsSelected = SettingsController.CurrentSettings.IsNotificationFilterTradeActive,
-            Name = LanguageController.Translation("ADDED_TRADES")
+            Name = LocalizationController.Translation("ADDED_TRADES")
         });
 
         NotificationFilters.Add(new NotificationFilter(NotificationFilterType.TrackingStatus)
         {
             IsSelected = SettingsController.CurrentSettings.IsNotificationTrackingStatusActive,
-            Name = LanguageController.Translation("TRACKING_STATUS")
+            Name = LocalizationController.Translation("TRACKING_STATUS")
         });
     }
 
@@ -426,8 +448,8 @@ public class SettingsWindowViewModel : BaseViewModel
     private void InitPacketProvider()
     {
         PacketProvider.Clear();
-        PacketProvider.Add(new SettingDataInformation { Name = $"Sockets ({LanguageController.Translation("TOOL_MUST_BE_RUN_AS_ADMIN")})", Value = (int) PacketProviderKind.Sockets });
-        PacketProvider.Add(new SettingDataInformation { Name = $"Npcap ({LanguageController.Translation("EXPERIMENTAL")})", Value = (int) PacketProviderKind.Npcap });
+        PacketProvider.Add(new SettingDataInformation { Name = $"Sockets ({LocalizationController.Translation("TOOL_MUST_BE_RUN_AS_ADMIN")})", Value = (int) PacketProviderKind.Sockets });
+        PacketProvider.Add(new SettingDataInformation { Name = $"Npcap ({LocalizationController.Translation("EXPERIMENTAL")})", Value = (int) PacketProviderKind.Npcap });
         PacketProviderSelection = PacketProvider.FirstOrDefault(x => x.Value == (int) SettingsController.CurrentSettings.PacketProvider);
     }
 
@@ -454,11 +476,11 @@ public class SettingsWindowViewModel : BaseViewModel
     private static void InitDropDownDownByDays(ICollection<SettingDataInformation> updateJsonByDays)
     {
         updateJsonByDays.Clear();
-        updateJsonByDays.Add(new SettingDataInformation { Name = LanguageController.Translation("EVERY_DAY"), Value = 1 });
-        updateJsonByDays.Add(new SettingDataInformation { Name = LanguageController.Translation("EVERY_3_DAYS"), Value = 3 });
-        updateJsonByDays.Add(new SettingDataInformation { Name = LanguageController.Translation("EVERY_7_DAYS"), Value = 7 });
-        updateJsonByDays.Add(new SettingDataInformation { Name = LanguageController.Translation("EVERY_14_DAYS"), Value = 14 });
-        updateJsonByDays.Add(new SettingDataInformation { Name = LanguageController.Translation("EVERY_28_DAYS"), Value = 28 });
+        updateJsonByDays.Add(new SettingDataInformation { Name = LocalizationController.Translation("EVERY_DAY"), Value = 1 });
+        updateJsonByDays.Add(new SettingDataInformation { Name = LocalizationController.Translation("EVERY_3_DAYS"), Value = 3 });
+        updateJsonByDays.Add(new SettingDataInformation { Name = LocalizationController.Translation("EVERY_7_DAYS"), Value = 7 });
+        updateJsonByDays.Add(new SettingDataInformation { Name = LocalizationController.Translation("EVERY_14_DAYS"), Value = 14 });
+        updateJsonByDays.Add(new SettingDataInformation { Name = LocalizationController.Translation("EVERY_28_DAYS"), Value = 28 });
     }
 
     private void InitAlertSounds()

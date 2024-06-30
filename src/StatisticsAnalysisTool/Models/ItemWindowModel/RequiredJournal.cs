@@ -191,10 +191,10 @@ public class RequiredJournal : BaseViewModel
 
     #endregion
 
-    public string TranslationRequiredJournals => LanguageController.Translation("REQUIRED_JOURNALS");
-    public string TranslationCostsPerJournal => LanguageController.Translation("COSTS_PER_JOURNAL");
-    public string TranslationRequiredJournalAmount => LanguageController.Translation("REQUIRED_JOURNAL_AMOUNT");
-    public string TranslationSellPricePerJournal => LanguageController.Translation("SELL_PRICE_PER_JOURNAL");
-    public string TranslationGetPrice => LanguageController.Translation("GET_PRICE");
-    public string TranslationTotalWeight => LanguageController.Translation("TOTAL_WEIGHT");
+    public string TranslationRequiredJournals => LocalizationController.Translation("REQUIRED_JOURNALS");
+    public string TranslationCostsPerJournal => LocalizationController.Translation("COSTS_PER_JOURNAL");
+    public string TranslationRequiredJournalAmount => LocalizationController.Translation("REQUIRED_JOURNAL_AMOUNT");
+    public string TranslationSellPricePerJournal => LocalizationController.Translation("SELL_PRICE_PER_JOURNAL");
+    public string TranslationGetPrice => LocalizationController.Translation("GET_PRICE");
+    public string TranslationTotalWeight => LocalizationController.Translation("TOTAL_WEIGHT");
 }

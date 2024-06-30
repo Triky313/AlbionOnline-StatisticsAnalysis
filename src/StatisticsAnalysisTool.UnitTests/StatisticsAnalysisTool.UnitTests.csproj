@@ -4,6 +4,7 @@
     <TargetFramework>net8.0-windows</TargetFramework>
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
+	<AssemblyName>StatisticsAnalysisTool.Tests</AssemblyName>
 
     <IsPackable>false</IsPackable>
     <IsTestProject>true</IsTestProject>

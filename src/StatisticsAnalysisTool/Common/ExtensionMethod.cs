@@ -18,7 +18,7 @@ public static class ExtensionMethod
 {
     public static string SetYesOrNo(this bool value)
     {
-        return (value) ? LanguageController.Translation("YES") : LanguageController.Translation("NO");
+        return (value) ? LocalizationController.Translation("YES") : LocalizationController.Translation("NO");
     }
 
     public static void OrderByReference<T>(this ObservableCollection<T> collection, List<T> comparison)
@@ -291,13 +291,13 @@ public static class ExtensionMethod
         var hours = timeSpan.TotalHours;
         var days = timeSpan.TotalDays;
 
-        if (minutes <= 120) return $"{minutes:N0} {LanguageController.Translation("MINUTES")}";
+        if (minutes <= 120) return $"{minutes:N0} {LocalizationController.Translation("MINUTES")}";
 
-        if (hours <= 48) return $"{hours:N0} {LanguageController.Translation("HOURS")}";
+        if (hours <= 48) return $"{hours:N0} {LocalizationController.Translation("HOURS")}";
 
-        if (days <= 365) return $"{days:N0} {LanguageController.Translation("DAYS")}";
+        if (days <= 365) return $"{days:N0} {LocalizationController.Translation("DAYS")}";
 
-        return $"{LanguageController.Translation("OVER_A_YEAR")}";
+        return $"{LocalizationController.Translation("OVER_A_YEAR")}";
     }
 
     public static ValueTimeStatus GetValueTimeStatus(this DateTime dateTime)

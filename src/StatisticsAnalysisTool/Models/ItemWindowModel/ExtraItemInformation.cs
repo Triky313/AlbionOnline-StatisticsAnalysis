@@ -18,7 +18,7 @@ public class ExtraItemInformation
         get => _shopCategory;
         set
         {
-            _shopCategory = value ?? LanguageController.Translation("UNKNOWN");
+            _shopCategory = value ?? LocalizationController.Translation("UNKNOWN");
             OnPropertyChanged();
         }
     }
@@ -28,7 +28,7 @@ public class ExtraItemInformation
         get => _shopSubCategory1;
         set
         {
-            _shopSubCategory1 = value ?? LanguageController.Translation("UNKNOWN");
+            _shopSubCategory1 = value ?? LocalizationController.Translation("UNKNOWN");
             OnPropertyChanged();
         }
     }

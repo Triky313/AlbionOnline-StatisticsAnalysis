@@ -84,8 +84,8 @@ public static class Utilities
         {
             if (!File.Exists(path))
             {
-                notifyManager?.ShowErrorAsync(LanguageController.Translation("CANNOT_START_OTHER_APP"),
-                    LanguageController.Translation("CAN_NOT_START_APP_WITH_PATH",
+                notifyManager?.ShowErrorAsync(LocalizationController.Translation("CANNOT_START_OTHER_APP"),
+                    LocalizationController.Translation("CAN_NOT_START_APP_WITH_PATH",
                         new List<string> { "path" },
                         new List<string> { path }));
                 return;
@@ -97,8 +97,8 @@ public static class Utilities
         {
             ConsoleManager.WriteLineForError(MethodBase.GetCurrentMethod()?.DeclaringType, e);
             Log.Error(e, "{message}", MethodBase.GetCurrentMethod()?.DeclaringType);
-            notifyManager?.ShowErrorAsync(LanguageController.Translation("CANNOT_START_OTHER_APP"),
-                LanguageController.Translation("CAN_NOT_START_APP_WITH_PATH",
+            notifyManager?.ShowErrorAsync(LocalizationController.Translation("CANNOT_START_OTHER_APP"),
+                LocalizationController.Translation("CAN_NOT_START_APP_WITH_PATH",
                     new List<string> { "path" },
                     new List<string> { path }));
         }

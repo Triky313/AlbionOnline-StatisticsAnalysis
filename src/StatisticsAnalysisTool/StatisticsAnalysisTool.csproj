@@ -101,41 +101,8 @@
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
     </None>
-    <Content Include="Languages\de-DE.xml">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Languages\ja-JP.xml">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Languages\zh-TW.xml">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Languages\en-US.xml">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Languages\es-ES.xml">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Languages\fr-FR.xml">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Languages\ko-KR.xml">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Languages\pl-PL.xml">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Languages\pt-BR.xml">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Languages\ru-RU.xml">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Languages\tr-TR.xml">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Languages\zh-CN.xml">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    <Content Include="Localization\localization.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="sat-icon.ico">
       <CopyToOutputDirectory>Never</CopyToOutputDirectory>
@@ -647,20 +614,20 @@
     <PackageReference Include="BinaryFormat.Udp" Version="0.1.5" />
     <PackageReference Include="Libpcap" Version="0.1.5" />
     <PackageReference Include="LiveChartsCore.SkiaSharpView.WPF" Version="2.0.0-beta.700" />
-    <PackageReference Include="Microsoft.Web.WebView2" Version="1.0.2210.55" />
-    <PackageReference Include="Autoupdater.NET.Official" Version="1.8.4" />
-    <PackageReference Include="FontAwesome5" Version="2.1.6" />
-    <PackageReference Include="Notification.Wpf" Version="7.0.0.2" />
+    <PackageReference Include="Microsoft.Web.WebView2" Version="1.0.2592.51" />
+    <PackageReference Include="Autoupdater.NET.Official" Version="1.9.1" />
+    <PackageReference Include="FontAwesome5" Version="2.1.11" />
+    <PackageReference Include="Notification.Wpf" Version="8.0.0" />
     <PackageReference Include="Ookii.Dialogs.Wpf" Version="5.0.1" />
-    <PackageReference Include="Serilog" Version="3.1.1" />
-    <PackageReference Include="Serilog.Sinks.Console" Version="5.0.1" />
-    <PackageReference Include="Serilog.Sinks.Debug" Version="2.0.0" />
-    <PackageReference Include="Serilog.Sinks.File" Version="5.0.0" />
-    <PackageReference Include="SkiaSharp" Version="2.88.6" />
+    <PackageReference Include="Serilog" Version="4.0.0" />
+    <PackageReference Include="Serilog.Sinks.Console" Version="6.0.0" />
+    <PackageReference Include="Serilog.Sinks.Debug" Version="3.0.0" />
+    <PackageReference Include="Serilog.Sinks.File" Version="6.0.0" />
+    <PackageReference Include="SkiaSharp" Version="2.88.8" />
     <PackageReference Include="System.Linq.Async" Version="6.0.1" />
-    <PackageReference Include="VirtualizingWrapPanel" Version="1.5.8" />
+    <PackageReference Include="VirtualizingWrapPanel" Version="2.0.6" />
     <PackageReference Include="Microsoft.CSharp" Version="4.7.0" />
-    <PackageReference Include="Microsoft.Windows.Compatibility" Version="8.0.0" />
+    <PackageReference Include="Microsoft.Windows.Compatibility" Version="8.0.6" />
     <PackageReference Include="System.Runtime.CompilerServices.Unsafe" Version="6.0.0" />
   </ItemGroup>
   <ItemGroup>
@@ -736,18 +703,7 @@
     <None Remove="Assets\skull_green.png" />
     <None Remove="Assets\skull_red.png" />
     <None Remove="Assets\static_chest.png" />
-    <None Remove="Languages\de-DE.xml" />
-    <None Remove="Languages\en-US.xml" />
-    <None Remove="Languages\es-ES.xml" />
-    <None Remove="Languages\fr-FR.xml" />
-    <None Remove="Languages\ja-JP.xml" />
-    <None Remove="Languages\ko-KR.xml" />
-    <None Remove="Languages\pl-PL.xml" />
-    <None Remove="Languages\pt-BR.xml" />
-    <None Remove="Languages\ru-RU.xml" />
-    <None Remove="Languages\tr-TR.xml" />
-    <None Remove="Languages\zh-CN.xml" />
-    <None Remove="Languages\zh-TW.xml" />
+    <None Remove="Localization\localization.json" />
     <None Remove="Resources\DonationIcon\ALLIGATOR1.png" />
     <None Remove="Resources\DonationIcon\ANCIENTMAMMOTH1.png" />
     <None Remove="Resources\DonationIcon\BEAR.png" />
@@ -915,6 +871,9 @@
       <XamlRuntime>$(DefaultXamlRuntime)</XamlRuntime>
     </Page>
     <Page Update="UserControls\StorageHistoryControl.xaml">
+      <XamlRuntime>$(DefaultXamlRuntime)</XamlRuntime>
+    </Page>
+    <Page Update="Views\EventValidationWindow.xaml">
       <XamlRuntime>$(DefaultXamlRuntime)</XamlRuntime>
     </Page>
     <Page Update="Views\ConsoleWindow.xaml">

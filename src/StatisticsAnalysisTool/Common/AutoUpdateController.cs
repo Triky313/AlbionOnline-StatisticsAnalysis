@@ -15,23 +15,42 @@ public static class AutoUpdateController
 {
     public static async Task AutoUpdateAsync(bool reportErrors = false)
     {
+        var updateDirPath = Path.Combine(Environment.CurrentDirectory, Settings.Default.UpdatesDirectoryName);
+        var executablePath = Path.Combine(Environment.CurrentDirectory, "StatisticsAnalysisTool.exe");
+        string currentUpdateUrl = string.Empty;
+
+        RemoveUpdateFiles(updateDirPath);
+
+        if (SettingsController.CurrentSettings.IsSuggestPreReleaseUpdatesActive && await HttpClientUtils.IsUrlAccessible(Settings.Default.AutoUpdatePreReleaseConfigUrl))
+        {
+            currentUpdateUrl = Settings.Default.AutoUpdatePreReleaseConfigUrl;
+        }
+        else if (await HttpClientUtils.IsUrlAccessible(Settings.Default.AutoUpdateConfigUrl))
+        {
+            currentUpdateUrl = Settings.Default.AutoUpdateConfigUrl;
+        }
+
+        if (string.IsNullOrEmpty(currentUpdateUrl))
+        {
+            return;
+        }
+
         try
         {
-            await HttpClientUtils.IsUrlAccessible(Settings.Default.AutoUpdatePreReleaseConfigUrl);
-            await HttpClientUtils.IsUrlAccessible(Settings.Default.AutoUpdateConfigUrl);
-
             AutoUpdater.Synchronous = true;
             AutoUpdater.ApplicationExitEvent -= AutoUpdaterApplicationExit;
 
-            AutoUpdater.Start(SettingsController.CurrentSettings.IsSuggestPreReleaseUpdatesActive
-                ? Settings.Default.AutoUpdatePreReleaseConfigUrl
-                : Settings.Default.AutoUpdateConfigUrl);
+            DirectoryController.CreateDirectoryWhenNotExists(updateDirPath);
 
-            AutoUpdater.DownloadPath = Environment.CurrentDirectory;
+            AutoUpdater.DownloadPath = updateDirPath;
+            AutoUpdater.ExecutablePath = executablePath;
             AutoUpdater.RunUpdateAsAdmin = false;
             AutoUpdater.ReportErrors = reportErrors;
             AutoUpdater.ShowSkipButton = false;
             AutoUpdater.TopMost = true;
+
+            AutoUpdater.Start(currentUpdateUrl);
+
             AutoUpdater.ApplicationExitEvent += AutoUpdaterApplicationExit;
         }
         catch (HttpRequestException e)
@@ -52,13 +71,16 @@ public static class AutoUpdateController
         Application.Current.Shutdown();
     }
 
-    public static void RemoveUpdateFiles()
+    public static void RemoveUpdateFiles(string path)
     {
-        var localFilePath = AppDomain.CurrentDomain.BaseDirectory;
+        if (!Directory.Exists(path))
+        {
+            return;
+        }
 
         try
         {
-            foreach (var filePath in Directory.GetFiles(localFilePath, "StatisticsAnalysis-AlbionOnline-*-x64.zip"))
+            foreach (var filePath in Directory.GetFiles(path, "StatisticsAnalysis-AlbionOnline-*-x64.zip"))
             {
                 if (File.Exists(filePath))
                 {

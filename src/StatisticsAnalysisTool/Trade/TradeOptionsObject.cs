@@ -17,17 +17,17 @@ public class TradeOptionsObject : BaseViewModel
 
     public TradeOptionsObject()
     {
-        var neverDeleteObject = new DeleteTradesAfterDaysStruct() { Days = 0, Name = LanguageController.Translation("DELETE_TRADES_NEVER") };
+        var neverDeleteObject = new DeleteTradesAfterDaysStruct() { Days = 0, Name = LocalizationController.Translation("DELETE_TRADES_NEVER") };
 
         DeleteTradesOlderThanSpecifiedDays.Clear();
         DeleteTradesOlderThanSpecifiedDays.Add(neverDeleteObject);
-        DeleteTradesOlderThanSpecifiedDays.Add(new DeleteTradesAfterDaysStruct() { Days = 7, Name = LanguageController.Translation("DELETE_TRADES_AFTER_7_DAYS") });
-        DeleteTradesOlderThanSpecifiedDays.Add(new DeleteTradesAfterDaysStruct() { Days = 14, Name = LanguageController.Translation("DELETE_TRADES_AFTER_14_DAYS") });
-        DeleteTradesOlderThanSpecifiedDays.Add(new DeleteTradesAfterDaysStruct() { Days = 30, Name = LanguageController.Translation("DELETE_TRADES_AFTER_30_DAYS") });
-        DeleteTradesOlderThanSpecifiedDays.Add(new DeleteTradesAfterDaysStruct() { Days = 60, Name = LanguageController.Translation("DELETE_TRADES_AFTER_60_DAYS") });
-        DeleteTradesOlderThanSpecifiedDays.Add(new DeleteTradesAfterDaysStruct() { Days = 90, Name = LanguageController.Translation("DELETE_TRADES_AFTER_90_DAYS") });
-        DeleteTradesOlderThanSpecifiedDays.Add(new DeleteTradesAfterDaysStruct() { Days = 180, Name = LanguageController.Translation("DELETE_TRADES_AFTER_180_DAYS") });
-        DeleteTradesOlderThanSpecifiedDays.Add(new DeleteTradesAfterDaysStruct() { Days = 365, Name = LanguageController.Translation("DELETE_TRADES_AFTER_365_DAYS") });
+        DeleteTradesOlderThanSpecifiedDays.Add(new DeleteTradesAfterDaysStruct() { Days = 7, Name = LocalizationController.Translation("DELETE_TRADES_AFTER_7_DAYS") });
+        DeleteTradesOlderThanSpecifiedDays.Add(new DeleteTradesAfterDaysStruct() { Days = 14, Name = LocalizationController.Translation("DELETE_TRADES_AFTER_14_DAYS") });
+        DeleteTradesOlderThanSpecifiedDays.Add(new DeleteTradesAfterDaysStruct() { Days = 30, Name = LocalizationController.Translation("DELETE_TRADES_AFTER_30_DAYS") });
+        DeleteTradesOlderThanSpecifiedDays.Add(new DeleteTradesAfterDaysStruct() { Days = 60, Name = LocalizationController.Translation("DELETE_TRADES_AFTER_60_DAYS") });
+        DeleteTradesOlderThanSpecifiedDays.Add(new DeleteTradesAfterDaysStruct() { Days = 90, Name = LocalizationController.Translation("DELETE_TRADES_AFTER_90_DAYS") });
+        DeleteTradesOlderThanSpecifiedDays.Add(new DeleteTradesAfterDaysStruct() { Days = 180, Name = LocalizationController.Translation("DELETE_TRADES_AFTER_180_DAYS") });
+        DeleteTradesOlderThanSpecifiedDays.Add(new DeleteTradesAfterDaysStruct() { Days = 365, Name = LocalizationController.Translation("DELETE_TRADES_AFTER_365_DAYS") });
 
         var deleteTradesAfterDaysSelection = DeleteTradesOlderThanSpecifiedDays.FirstOrDefault(x => x.Days == SettingsController.CurrentSettings.DeleteTradesOlderThanSpecifiedDays);
         DeleteTradesOlderThanSpecifiedDaysSelection = deleteTradesAfterDaysSelection.Name == null ? neverDeleteObject : deleteTradesAfterDaysSelection;
@@ -102,9 +102,9 @@ public class TradeOptionsObject : BaseViewModel
         }
     }
 
-    public static string TranslationTradeMonitoringActive => LanguageController.Translation("TRADE_MONITORING_ACTIVE");
-    public static string TranslationIgnoreMailsWithZeroValues => LanguageController.Translation("IGNORE_MAILS_WITH_ZERO_VALUES");
-    public static string TranslationMarketTaxRate => LanguageController.Translation("MARKET_TAX_RATE");
-    public static string TranslationMarketTaxSetupRate => LanguageController.Translation("MARKET_TAX_SETUP_RATE");
-    public static string TranslationSettings => LanguageController.Translation("SETTINGS");
+    public static string TranslationTradeMonitoringActive => LocalizationController.Translation("TRADE_MONITORING_ACTIVE");
+    public static string TranslationIgnoreMailsWithZeroValues => LocalizationController.Translation("IGNORE_MAILS_WITH_ZERO_VALUES");
+    public static string TranslationMarketTaxRate => LocalizationController.Translation("MARKET_TAX_RATE");
+    public static string TranslationMarketTaxSetupRate => LocalizationController.Translation("MARKET_TAX_SETUP_RATE");
+    public static string TranslationSettings => LocalizationController.Translation("SETTINGS");
 }

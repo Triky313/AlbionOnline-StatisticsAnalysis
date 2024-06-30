@@ -248,9 +248,9 @@ public class GatheringStats : BaseViewModel
         }
     }
 
-    public static string TranslationMostGatheredResource => LanguageController.Translation("MOST_GATHERED_RESOURCE");
-    public static string TranslationMostGatheredOnMap => LanguageController.Translation("MOST_GATHERED_ON_MAP");
-    public static string TranslationTotalResources => LanguageController.Translation("TOTAL_RESOURCES");
-    public static string TranslationTotalMiningProcesses => LanguageController.Translation("TOTAL_MINING_PROCESSES");
-    public static string TranslationResourceValue => LanguageController.Translation("RESOURCE_VALUE");
+    public static string TranslationMostGatheredResource => LocalizationController.Translation("MOST_GATHERED_RESOURCE");
+    public static string TranslationMostGatheredOnMap => LocalizationController.Translation("MOST_GATHERED_ON_MAP");
+    public static string TranslationTotalResources => LocalizationController.Translation("TOTAL_RESOURCES");
+    public static string TranslationTotalMiningProcesses => LocalizationController.Translation("TOTAL_MINING_PROCESSES");
+    public static string TranslationResourceValue => LocalizationController.Translation("RESOURCE_VALUE");
 }

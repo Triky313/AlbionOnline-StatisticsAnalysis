@@ -36,7 +36,7 @@ public class UpdateCurrencyEventHandler : EventPacketHandler<UpdateCurrencyEvent
 
     private TrackingNotification SetFactionPointsNotification(CityFaction cityFaction, double gainedFractionPoints, double bonusPremiumGainedFractionPoints)
     {
-        return new TrackingNotification(DateTime.Now, new FactionPointsNotificationFragment(LanguageController.Translation("YOU_HAVE"), AttributeStatOperator.Plus, cityFaction, gainedFractionPoints,
-            bonusPremiumGainedFractionPoints, LanguageController.Translation("FACTION_POINTS"), LanguageController.Translation("GAINED")), LoggingFilterType.Faction);
+        return new TrackingNotification(DateTime.Now, new FactionPointsNotificationFragment(LocalizationController.Translation("YOU_HAVE"), AttributeStatOperator.Plus, cityFaction, gainedFractionPoints,
+            bonusPremiumGainedFractionPoints, LocalizationController.Translation("FACTION_POINTS"), LocalizationController.Translation("GAINED")), LoggingFilterType.Faction);
     }
 }

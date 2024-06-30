@@ -56,11 +56,11 @@ public class Item
     public long AverageEstQualityValue => EstimatedMarketValueController.CalculateNearestToAverage(EstimatedMarketValues).MarketValue.IntegerValue;
     [JsonIgnore]
     public string LastEstimatedUpdateTimeString =>
-        $"{LanguageController.Translation("LAST_ESTIMATED_VALUE_UPDATE")}: {EstimatedMarketValueController.CalculateNearestToAverage(EstimatedMarketValues).Timestamp.DateTimeToLastUpdateTime()}";
+        $"{LocalizationController.Translation("LAST_ESTIMATED_VALUE_UPDATE")}: {EstimatedMarketValueController.CalculateNearestToAverage(EstimatedMarketValues).Timestamp.DateTimeToLastUpdateTime()}";
     [JsonIgnore]
     public PastTime EstimatedMarketValueStatus => EstimatedMarketValueController.CalculateNearestToAverage(EstimatedMarketValues).Timestamp.GetPastTimeEnumByDateTime();
     [JsonIgnore]
-    public string TranslationEstMarketValue => LanguageController.Translation("EST_MARKET_VALUE");
+    public string TranslationEstMarketValue => LocalizationController.Translation("EST_MARKET_VALUE");
     private string GetUniqueNameIfDebug()
     {
 #if DEBUG

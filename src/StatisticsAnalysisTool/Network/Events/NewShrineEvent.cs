@@ -1,5 +1,6 @@
 ﻿using Serilog;
 using StatisticsAnalysisTool.Common;
+using StatisticsAnalysisTool.EventValidations;
 using System;
 using System.Collections.Generic;
 using System.Reflection;
@@ -10,6 +11,7 @@ public class NewShrineEvent
 {
     public NewShrineEvent(Dictionary<byte, object> parameters)
     {
+        EventValidator.IsEventValid(EventCodes.NewShrine, parameters);
         ConsoleManager.WriteLineForNetworkHandler(GetType().Name, parameters);
 
         try

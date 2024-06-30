@@ -27,6 +27,6 @@ public class DiedEventHandler : EventPacketHandler<DiedEvent>
 
     private static TrackingNotification SetKillNotification(string died, string killedBy, string killedByGuild)
     {
-        return new TrackingNotification(DateTime.Now, new KillNotificationFragment(died, killedBy, killedByGuild, LanguageController.Translation("WAS_KILLED_BY")), LoggingFilterType.Kill);
+        return new TrackingNotification(DateTime.Now, new KillNotificationFragment(died, killedBy, killedByGuild, LocalizationController.Translation("WAS_KILLED_BY")), LoggingFilterType.Kill);
     }
 }

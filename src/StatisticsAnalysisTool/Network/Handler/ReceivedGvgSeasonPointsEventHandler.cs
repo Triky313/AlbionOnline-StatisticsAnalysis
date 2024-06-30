@@ -25,7 +25,7 @@ public class ReceivedGvgSeasonPointsEventHandler : EventPacketHandler<ReceivedGv
 
     private TrackingNotification SetSeasonPointsNotification(int seasonPoints)
     {
-        return new TrackingNotification(DateTime.Now, new SeasonPointsNotificationFragment(LanguageController.Translation("YOU_HAVE"), AttributeStatOperator.Plus, seasonPoints,
-            LanguageController.Translation("SEASON_POINTS"), LanguageController.Translation("GAINED")), LoggingFilterType.SeasonPoints);
+        return new TrackingNotification(DateTime.Now, new SeasonPointsNotificationFragment(LocalizationController.Translation("YOU_HAVE"), AttributeStatOperator.Plus, seasonPoints,
+            LocalizationController.Translation("SEASON_POINTS"), LocalizationController.Translation("GAINED")), LoggingFilterType.SeasonPoints);
     }
 }

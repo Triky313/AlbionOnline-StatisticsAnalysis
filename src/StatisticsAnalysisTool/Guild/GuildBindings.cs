@@ -129,10 +129,10 @@ public class GuildBindings : BaseViewModel
         }
     }
 
-    public string TranslationSiphonedEnergy => LanguageController.Translation("SIPHONED_ENERGY");
-    public string TranslationDeleteSelectedEntries => LanguageController.Translation("DELETE_SELECTED_ENTRIES");
-    public string TranslationSelectDeselectAll => LanguageController.Translation("SELECT_DESELECT_ALL");
-    public string TranslationLastUpdate => LanguageController.Translation("LAST_UPDATE");
-    public string TranslationLootLogChecker => LanguageController.Translation("LOOT_LOG_CHECKER");
-    public string TranslationTotal => LanguageController.Translation("TOTAL");
+    public string TranslationSiphonedEnergy => LocalizationController.Translation("SIPHONED_ENERGY");
+    public string TranslationDeleteSelectedEntries => LocalizationController.Translation("DELETE_SELECTED_ENTRIES");
+    public string TranslationSelectDeselectAll => LocalizationController.Translation("SELECT_DESELECT_ALL");
+    public string TranslationLastUpdate => LocalizationController.Translation("LAST_UPDATE");
+    public string TranslationLootLogChecker => LocalizationController.Translation("LOOT_LOG_CHECKER");
+    public string TranslationTotal => LocalizationController.Translation("TOTAL");
 }

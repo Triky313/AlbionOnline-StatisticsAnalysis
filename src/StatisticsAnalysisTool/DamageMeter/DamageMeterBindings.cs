@@ -326,7 +326,7 @@ public class DamageMeterBindings : BaseViewModel, IAsyncInitialization
             return;
         }
 
-        var dialog = new DialogWindow(LanguageController.Translation("DELETE_ALL_SNAPSHOTS"), LanguageController.Translation("SURE_YOU_WANT_TO_DELETE_ALL_SNAPSHOTS"));
+        var dialog = new DialogWindow(LocalizationController.Translation("DELETE_ALL_SNAPSHOTS"), LocalizationController.Translation("SURE_YOU_WANT_TO_DELETE_ALL_SNAPSHOTS"));
         var dialogResult = dialog.ShowDialog();
 
         if (dialogResult is true)
@@ -389,15 +389,15 @@ public class DamageMeterBindings : BaseViewModel, IAsyncInitialization
 
     #region Translations
 
-    public static string TranslationSortByDamage => LanguageController.Translation("SORT_BY_DAMAGE");
-    public static string TranslationSortByDps => LanguageController.Translation("SORT_BY_DPS");
-    public static string TranslationSortByName => LanguageController.Translation("SORT_BY_NAME");
-    public static string TranslationSortByHeal => LanguageController.Translation("SORT_BY_HEAL");
-    public static string TranslationSortByHps => LanguageController.Translation("SORT_BY_HPS");
-    public static string TranslationSnapshots => LanguageController.Translation("SNAPSHOTS");
-    public static string TranslationDeleteSelectedSnapshot => LanguageController.Translation("DELETE_SELECTED_SNAPSHOT");
-    public static string TranslationDeleteAllSnapshots => LanguageController.Translation("DELETE_ALL_SNAPSHOTS");
-    public static string TranslationTakeASnapshotOfDamageMeterDescription => LanguageController.Translation("TAKE_A_SNAPSHOT_OF_DAMAGE_METER_DESCRIPTION");
+    public static string TranslationSortByDamage => LocalizationController.Translation("SORT_BY_DAMAGE");
+    public static string TranslationSortByDps => LocalizationController.Translation("SORT_BY_DPS");
+    public static string TranslationSortByName => LocalizationController.Translation("SORT_BY_NAME");
+    public static string TranslationSortByHeal => LocalizationController.Translation("SORT_BY_HEAL");
+    public static string TranslationSortByHps => LocalizationController.Translation("SORT_BY_HPS");
+    public static string TranslationSnapshots => LocalizationController.Translation("SNAPSHOTS");
+    public static string TranslationDeleteSelectedSnapshot => LocalizationController.Translation("DELETE_SELECTED_SNAPSHOT");
+    public static string TranslationDeleteAllSnapshots => LocalizationController.Translation("DELETE_ALL_SNAPSHOTS");
+    public static string TranslationTakeASnapshotOfDamageMeterDescription => LocalizationController.Translation("TAKE_A_SNAPSHOT_OF_DAMAGE_METER_DESCRIPTION");
 
     #endregion
 

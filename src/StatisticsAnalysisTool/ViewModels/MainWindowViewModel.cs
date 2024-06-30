@@ -12,12 +12,14 @@ using StatisticsAnalysisTool.Dungeon;
 using StatisticsAnalysisTool.Enumerations;
 using StatisticsAnalysisTool.EstimatedMarketValue;
 using StatisticsAnalysisTool.EventLogging;
+using StatisticsAnalysisTool.Guild;
 using StatisticsAnalysisTool.Localization;
 using StatisticsAnalysisTool.Models;
 using StatisticsAnalysisTool.Models.BindingModel;
 using StatisticsAnalysisTool.Models.NetworkModel;
 using StatisticsAnalysisTool.Models.TranslationModel;
 using StatisticsAnalysisTool.Network.Manager;
+using StatisticsAnalysisTool.Party;
 using StatisticsAnalysisTool.Properties;
 using StatisticsAnalysisTool.Trade;
 using StatisticsAnalysisTool.Views;
@@ -32,8 +34,6 @@ using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Data;
 using System.Windows.Media;
-using StatisticsAnalysisTool.Guild;
-using StatisticsAnalysisTool.Party;
 
 // ReSharper disable UnusedMember.Global
 
@@ -116,8 +116,7 @@ public class MainWindowViewModel : BaseViewModel
     private Visibility _statsDropDownVisibility = Visibility.Collapsed;
     private double _toolTaskProgressBarValue;
     private string _toolTaskCurrentTaskName;
-    private ToolTaskBindings _toolTaskBindings = new();
-    private GuildBindings _guildBindings = new ();
+    private GuildBindings _guildBindings = new();
     private PartyBindings _partyBindings = new();
     private string _serverTypeText;
     private bool _isDataLoaded;
@@ -328,10 +327,10 @@ public class MainWindowViewModel : BaseViewModel
     {
         ServerTypeText = SettingsController.CurrentSettings.ServerLocation switch
         {
-            ServerLocation.Asia => LanguageController.Translation("ASIA_SERVER"),
-            ServerLocation.America => LanguageController.Translation("AMERICA_SERVER"),
-            ServerLocation.Europe => LanguageController.Translation("EUROPE_SERVER"),
-            _ => LanguageController.Translation("UNKNOWN_SERVER")
+            ServerLocation.Asia => LocalizationController.Translation("ASIA_SERVER"),
+            ServerLocation.America => LocalizationController.Translation("AMERICA_SERVER"),
+            ServerLocation.Europe => LocalizationController.Translation("EUROPE_SERVER"),
+            _ => LocalizationController.Translation("UNKNOWN_SERVER")
         };
     }
 
@@ -944,16 +943,6 @@ public class MainWindowViewModel : BaseViewModel
         }
     }
 
-    public ToolTaskBindings ToolTaskBindings
-    {
-        get => _toolTaskBindings;
-        set
-        {
-            _toolTaskBindings = value;
-            OnPropertyChanged();
-        }
-    }
-
     public string LoadTranslation
     {
         get => _loadTranslation;
@@ -1313,8 +1302,7 @@ public class MainWindowViewModel : BaseViewModel
             OnPropertyChanged();
         }
     }
-
-    public static string LootLoggerViewer => "https://matheus.sampaio.us/ao-loot-logger-viewer/";
+    
     public static string ItemListJsonHyperlink => "https://raw.githubusercontent.com/ao-data/ao-bin-dumps/master/formatted/items.json";
     public static string ItemsJsonHyperlink => "https://raw.githubusercontent.com/broderickhyman/ao-bin-dumps/master/items.json";
 

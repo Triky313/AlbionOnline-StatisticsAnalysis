@@ -242,7 +242,7 @@ public class LootController : ILootController
             IsTrash = false,
             ItemIndex = lootedItem.ItemIndex,
             LootedByName = _trackingController?.EntityController?.LocalUserData?.Username,
-            LootedFromName = MobController.IsMob(identifiedBody.Name) ? LanguageController.Translation("MOB") : identifiedBody.Name,
+            LootedFromName = MobController.IsMob(identifiedBody.Name) ? LocalizationController.Translation("MOB") : identifiedBody.Name,
             Quantity = lootedItem.Quantity
         });
     }
@@ -290,7 +290,6 @@ public class LootController : ILootController
         Application.Current.Dispatcher.Invoke(() =>
         {
             _mainWindowViewModel?.LoggingBindings?.TopLooters?.Add(new TopLooterObject(name, quantity, 1));
-            _mainWindowViewModel?.LoggingBindings?.TopLootersCollectionView?.Refresh();
         });
     }
 

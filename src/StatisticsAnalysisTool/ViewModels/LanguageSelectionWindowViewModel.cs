@@ -18,11 +18,11 @@ public class LanguageSelectionWindowViewModel : BaseViewModel
     {
         Title = "Select a language";
         Message = "Please select a language";
-        Languages = new ObservableCollection<FileInformation>(LanguageController.LanguageFiles);
+        Languages = new ObservableCollection<FileInformation>(LocalizationController.GetLanguageInformation());
 
         if (Languages?.Count <= 0)
         {
-            ErrorMessage = "No language files found!";
+            ErrorMessage = "No language file found!";
             IsConfirmButtonEnabled = false;
             return;
         }

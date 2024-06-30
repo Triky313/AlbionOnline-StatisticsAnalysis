@@ -958,15 +958,15 @@ public class LootedChests : BaseViewModel
 
     #endregion
 
-    public static string TranslationOpenWorld => LanguageController.Translation("OPEN_WORLD");
-    public static string TranslationStaticDungeons => LanguageController.Translation("STATIC_DUNGEONS");
-    public static string TranslationAvalonianRoads => LanguageController.Translation("AVALONIAN_ROADS");
-    public static string TranslationRandomSoloDungeons => LanguageController.Translation("RANDOM_SOLO_DUNGEONS");
-    public static string TranslationRandomGroupDungeons => LanguageController.Translation("RANDOM_GROUP_DUNGEONS");
-    public static string TranslationHellGates => LanguageController.Translation("HELLGATES");
-    public static string TranslationCorrupted => LanguageController.Translation("CORRUPTED");
-    public static string TranslationMists => LanguageController.Translation("MISTS");
-    public static string TranslationLast7Days => LanguageController.Translation("LAST_7_DAYS");
-    public static string TranslationLast30Days => LanguageController.Translation("LAST_30_DAYS");
-    public static string TranslationLast365Days => LanguageController.Translation("LAST_365_DAYS");
+    public static string TranslationOpenWorld => LocalizationController.Translation("OPEN_WORLD");
+    public static string TranslationStaticDungeons => LocalizationController.Translation("STATIC_DUNGEONS");
+    public static string TranslationAvalonianRoads => LocalizationController.Translation("AVALONIAN_ROADS");
+    public static string TranslationRandomSoloDungeons => LocalizationController.Translation("RANDOM_SOLO_DUNGEONS");
+    public static string TranslationRandomGroupDungeons => LocalizationController.Translation("RANDOM_GROUP_DUNGEONS");
+    public static string TranslationHellGates => LocalizationController.Translation("HELLGATES");
+    public static string TranslationCorrupted => LocalizationController.Translation("CORRUPTED");
+    public static string TranslationMists => LocalizationController.Translation("MISTS");
+    public static string TranslationLast7Days => LocalizationController.Translation("LAST_7_DAYS");
+    public static string TranslationLast30Days => LocalizationController.Translation("LAST_30_DAYS");
+    public static string TranslationLast365Days => LocalizationController.Translation("LAST_365_DAYS");
 }

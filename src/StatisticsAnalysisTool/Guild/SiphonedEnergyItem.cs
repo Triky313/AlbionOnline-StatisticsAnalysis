@@ -78,6 +78,6 @@ public class SiphonedEnergyItem : BaseViewModel, IEquatable<SiphonedEnergyItem>
         return HashCode.Combine(CharacterName, Quantity, Timestamp);
     }
     
-    public static string TranslationSelectToDisable => LanguageController.Translation("SELECT_TO_DISABLE");
-    public static string TranslationSelectToDelete => LanguageController.Translation("SELECT_TO_DELETE");
+    public static string TranslationSelectToDisable => LocalizationController.Translation("SELECT_TO_DISABLE");
+    public static string TranslationSelectToDelete => LocalizationController.Translation("SELECT_TO_DELETE");
 }

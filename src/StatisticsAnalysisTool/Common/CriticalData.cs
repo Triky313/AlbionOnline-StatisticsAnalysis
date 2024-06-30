@@ -1,11 +1,10 @@
-﻿using System;
+﻿using Serilog;
 using StatisticsAnalysisTool.Common.UserSettings;
 using StatisticsAnalysisTool.Enumerations;
 using StatisticsAnalysisTool.Network.Manager;
 using System.Collections.Generic;
-using System.Threading.Tasks;
 using System.Reflection;
-using Serilog;
+using System.Threading.Tasks;
 
 namespace StatisticsAnalysisTool.Common;
 
