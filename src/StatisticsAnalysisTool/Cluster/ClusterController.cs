@@ -106,6 +106,8 @@ public sealed class ClusterController
             var newCluster = new ClusterInfo(currentCluster);
             _mainWindowViewModel.EnteredCluster.Insert(0, newCluster);
             RemovesClusterIfMoreThanLimit();
+			File.AppendAllText("log.txt", newCluster.ClusterHistoryString()+"\n"));
+			
         });
     }
 
