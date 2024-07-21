@@ -65,6 +65,7 @@ public enum EventCodes
     HarvestCancel,
     HarvestFinished, // map[0:5270 1:637926215956544319 2:637926215972723131 3:4250 4:1 5:1 7:28 8:[] 9:[] 252:54] - 0: UserId, 3: ObjectId, 4:ItemId 5: Res Standard Quantity 6: Sammelbonus Res, 6: Premium Bonus Res, 8: Inhalt in der Ressource
     TakeSilver, // map[0:-57 1:2178162 2:-57 3:10000000 8:10000 252:55]
+    RemoveSilver,
     ActionOnBuildingStart,
     ActionOnBuildingCancel,
     ActionOnBuildingFinished, // Repear: [60]evInstallResourceCancel - map[0:1562 1:63802829 282167 2:442 3:454 4:2 252:60] 0: UserObjectId, 2: ActionId, 4: ActionType
@@ -243,6 +244,7 @@ public enum EventCodes
     PartyOnClusterPartyJoined,
     PartySetRoleFlag, // map[0:8 1:[-118 61 -70 72 17 -107 121 72 -102 110 20 -25 64 20 106 2] 252:225] (0: FlagType, 1: ObjectId)
     PartyInviteOrJoinPlayerEquipmentInfo,
+    PartyReadyCheckUpdate,
     SpellCooldownUpdate,
     NewHellgateExitPortal,
     NewExpeditionExit,
@@ -500,6 +502,7 @@ public enum EventCodes
     PartyStartHuntRequest,
     PartyStartHuntRequested,
     PartyStartHuntRequestAnswer,
+    PartyPlayerLeaveScheduled,
     GuildInviteDeclined,
     CancelMultiSpellSlots,
     NewVisualEventObject,
@@ -588,4 +591,6 @@ public enum EventCodes
     CastleGateSwitchUseFinished,
     FortificationBuildingWillDowngrade,
     BotCommand,
+    JournalAchievementProgressUpdate,
+    JournalClaimableRewardUpdate
 }
