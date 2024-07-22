@@ -215,14 +215,10 @@ public enum OperationCodes
     AllianceChangeGoldPaymentFlag,
     AllianceGetDetailInfo,
     GetIslandInfos,
-    AbandonMyIsland,
     BuyMyIsland,
     BuyGuildIsland,
-    AbandonGuildIsland,
     UpgradeMyIsland,
     UpgradeGuildIsland,
-    MoveMyIsland,
-    MoveGuildIsland,
     TerritoryFillNutrition,
     TeleportBack,
     PartyInvitePlayer,
@@ -253,7 +249,7 @@ public enum OperationCodes
     TreasureChestUsingStart,
     TreasureChestUsingCancel,
     UseLootChest, // <- LootLogger: https://github.com/EmeraldKnight79/AO-DU-LootLogger/blob/b1ab099e0d82bdee0a87c153f4bbae324295656e/LootLogger/PacketHandler.cs#L68
-    UseShrine = 250,
+    UseShrine,
     UseHellgateShrine,
     GetSiegeBannerInfo,
     LaborerStartJob,
@@ -300,7 +296,7 @@ public enum OperationCodes
     UsePortalEntrance,
     ResetPortalBinding,
     QueryPortalBinding,
-    ClaimPaymentTransaction = 297,
+    ClaimPaymentTransaction,
     ChangeUseFlag,
     ClientPerformanceStats,
     ExtendedHardwareStats, //  map[0:NVIDIA GeForce RTX 3090 1:AMD Ryzen 7 2700X Eight-Core Processor  2:Windows 10  (10.0.0) 64bit 3:3693 4:24348 5:16293 6:DE-DE 7:Custom 8:1746 10:-1 253:303]
@@ -309,8 +305,6 @@ public enum OperationCodes
     TerritoryClaimCancel,
     DeliverCarriableObjectStart,
     DeliverCarriableObjectCancel,
-    ClaimPowerCrystalStart,
-    ClaimPowerCrystalCancel,
     TerritoryUpgradeWithPowerCrystal,
     RequestAppStoreProducts,
     VerifyProductPurchase,
@@ -320,15 +314,15 @@ public enum OperationCodes
     SetAchievementsAutoLearn,
     DepositItemToGuildCurrency,
     WithdrawalItemFromGuildCurrency,
-    AuctionSellSpecificItemRequest = 315,
-    FishingStart = 316, // 0: EventId, 2: Used fishing rod
+    AuctionSellSpecificItemRequest,
+    FishingStart, // 0: EventId, 2: Used fishing rod
     FishingCasting,
     FishingCast,
     FishingCatch,
     FishingPull,
     FishingGiveLine,
-    FishingFinish = 322, // Request: 1: true is finished | false is failed - Response: Fishing finished
-    FishingCancel = 323, // Request: Fishing canceled
+    FishingFinish, // Request: 1: true is finished | false is failed - Response: Fishing finished
+    FishingCancel, // Request: Fishing canceled
     CreateGuildAccessTag,
     DeleteGuildAccessTag,
     RenameGuildAccessTag,
@@ -451,8 +445,8 @@ public enum OperationCodes
     GetPvpChallengeData,
     ClaimPvpChallengeWeeklyReward,
     GetPersonalMightStats,
-    AuctionGetLoadoutOffers = 446,
-    AuctionBuyLoadoutOffer = 447,
+    AuctionGetLoadoutOffers,
+    AuctionBuyLoadoutOffer,
     AccountDeletionRequest,
     AccountReactivationRequest,
     GetModerationEscalationDefiniton,
@@ -500,5 +494,11 @@ public enum OperationCodes
     ClaimDailyMightBonus,
     GetFortificationGroupInfo,
     UpgradeFortificationGroup,
+    CancelUpgradeFortificationGroup,
+    DowngradeFortificationGroup,
     GetClusterActivityChestEstimates,
+    PartyReadyCheckBegin,
+    PartyReadyCheckUpdate,
+    ClaimAlbionJournalReward,
+    TrackAlbionJournalAchievements
 }
