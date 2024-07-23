@@ -19,6 +19,7 @@ public class HealthUpdatesEventHandler : EventPacketHandler<HealthUpdatesEvent>
         foreach (HealthUpdate healthUpdate in value.HealthUpdates)
         {
             await _trackingController.CombatController.AddDamage(healthUpdate.AffectedObjectId, healthUpdate.CauserId, healthUpdate.HealthChange, healthUpdate.NewHealthValue, healthUpdate.CausingSpellIndex);
+            await _trackingController.CombatController.AddTakenDamage(healthUpdate.AffectedObjectId, healthUpdate.CauserId, healthUpdate.HealthChange, healthUpdate.NewHealthValue, healthUpdate.CausingSpellIndex);
         }
     }
 }
