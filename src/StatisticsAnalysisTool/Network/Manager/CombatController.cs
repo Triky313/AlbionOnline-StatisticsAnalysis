@@ -37,7 +37,7 @@ public class CombatController
         OnDamageUpdate += UpdateDamageMeterUiAsync;
 
 #if DEBUG
-        RunDamageMeterDebugAsync(0, 0);
+        RunDamageMeterDebugAsync(10, 10);
 #endif
     }
 
@@ -188,7 +188,7 @@ public class CombatController
             fragment.Damage = healthChangeObjectValue.Damage;
         }
 
-        if (healthChangeObjectValue?.Dps != null)
+        if (healthChangeObjectValue?.Dps is not null)
         {
             fragment.Dps = healthChangeObjectValue.Dps;
         }
@@ -200,7 +200,7 @@ public class CombatController
             fragment.Heal = healthChangeObjectValue.Heal;
         }
 
-        if (healthChangeObjectValue?.Hps != null)
+        if (healthChangeObjectValue?.Hps is not null)
         {
             fragment.Hps = healthChangeObjectValue.Hps;
         }
@@ -211,12 +211,11 @@ public class CombatController
         }
 
         // Taken Damage
-        if (healthChangeObjectValue?.Damage > 0)
+        if (healthChangeObjectValue?.TakenDamage > 0)
         {
             fragment.TakenDamageInPercent = (double) healthChangeObjectValue.TakenDamage / currentTotalTakenDamage * 100;
             fragment.TakenDamage = healthChangeObjectValue.TakenDamage;
         }
-
 
         // Spells
         await AddOrUpdateSpellFragmentAsync(fragment.Spells, healthChangeObjectValue?.Spells);
@@ -230,6 +229,9 @@ public class CombatController
             fragment.TakenDamagePercentage = entities.GetTakenDamagePercentage(healthChangeObjectValue.TakenDamage);
             fragment.OverhealedPercentageOfTotalHealing = GetOverhealedPercentageOfHealWithOverhealed(healthChangeObjectValue.Overhealed, healthChangeObjectValue.Heal);
         }
+
+        Debug.Print($"AddDamageMeterFragmentAsync - Name: {fragment.Name}, Damage: {fragment.Damage}, Heal: {fragment.Heal}, TakenDamage: {fragment.TakenDamage}");
+
     }
 
     public static double GetOverhealedPercentageOfHealWithOverhealed(double overhealed, double heal)
@@ -268,7 +270,7 @@ public class CombatController
             Overhealed = healthChangeObjectValue.Overhealed,
             OverhealedPercentageOfTotalHealing = GetOverhealedPercentageOfHealWithOverhealed(healthChangeObjectValue.Overhealed, healthChangeObjectValue.Heal),
 
-            TakenDamage = healthChangeObjectValue.Damage,
+            TakenDamage = healthChangeObjectValue.TakenDamage,
             TakenDamageInPercent = (double) healthChangeObjectValue.TakenDamage / currentTotalTakenDamage * 100,
             TakenDamagePercentage = entities.GetDamagePercentage(healthChangeObjectValue.TakenDamage),
 
@@ -277,7 +279,7 @@ public class CombatController
 
             Spells = spells
         };
-
+        
         await Application.Current.Dispatcher.InvokeAsync(() =>
         {
             damageMeter.Add(damageMeterFragment);
@@ -614,7 +616,9 @@ public class CombatController
         for (var i = 0; i < runs; i++)
         {
             var damage = Random.Next(-5000, 5000);
+            var takenDamage = Random.Next(-5000, 5000);
             await AddDamage(9999, entity.ObjectId ?? -1, damage, Random.Next(2000, 3000), Random.Next(2000, 3000));
+            await AddTakenDamage(entity.ObjectId ?? -1, 9999, takenDamage, Random.Next(2000, 3000), Random.Next(2000, 3000));
             //Debug.Print($"--- AddDamage - {entity.Name}: {damage}");
 
             await Task.Delay(Random.Next(1, 1000));

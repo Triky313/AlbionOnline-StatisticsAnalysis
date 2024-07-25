@@ -185,7 +185,7 @@
                 </Grid.InputBindings>
                 <ProgressBar common:ProgressBarSmoother.SmoothValue="{Binding TakenDamageInPercent}" Minimum="0" Maximum="100" 
                              MinHeight="40" Height="auto" Margin="3,0,2,1" VerticalAlignment="Top" Background="#00FFFFFF" BorderThickness="0" 
-                             Style="{StaticResource DamageMeter.ProgressBar.Colors}" />
+                             Foreground="{StaticResource SolidColorBrush.Weapon.TakenDamageBar}" />
                 <StackPanel Orientation="Horizontal">
                     <Grid Margin="10,0, 0, 0" HorizontalAlignment="Center" VerticalAlignment="Top">
                         <Image Source="{Binding CauserMainHand.Icon}" Style="{StaticResource DamageMeter.Icon}" />
@@ -288,12 +288,10 @@
             <Grid MinHeight="42" Height="auto">
                 <Grid.Style>
                     <Style TargetType="{x:Type Grid}">
+                        <Setter Property="Visibility" Value="Collapsed" />
                         <Style.Triggers>
-                            <DataTrigger Binding="{Binding IsDamageMeterShowing}" Value="True">
+                            <DataTrigger Binding="{Binding DamageMeterStyleFragmentType}" Value="{x:Static damageMeter:DamageMeterStyleFragmentType.Damage}">
                                 <Setter Property="Visibility" Value="Visible"/>
-                            </DataTrigger>
-                            <DataTrigger Binding="{Binding IsDamageMeterShowing}" Value="False">
-                                <Setter Property="Visibility" Value="Collapsed"/>
                             </DataTrigger>
                         </Style.Triggers>
                     </Style>
@@ -337,14 +335,54 @@
                     </TextBlock>
                 </StackPanel>
             </Grid>
-            <Grid>
+            <Grid MinHeight="42" Height="auto">
                 <Grid.Style>
                     <Style TargetType="{x:Type Grid}">
+                        <Setter Property="Visibility" Value="Collapsed" />
                         <Style.Triggers>
-                            <DataTrigger Binding="{Binding IsDamageMeterShowing}" Value="True">
-                                <Setter Property="Visibility" Value="Collapsed"/>
+                            <DataTrigger Binding="{Binding DamageMeterStyleFragmentType}" Value="{x:Static damageMeter:DamageMeterStyleFragmentType.TakenDamage}">
+                                <Setter Property="Visibility" Value="Visible"/>
                             </DataTrigger>
-                            <DataTrigger Binding="{Binding IsDamageMeterShowing}" Value="False">
+                        </Style.Triggers>
+                    </Style>
+                </Grid.Style>
+                <Grid.InputBindings>
+                    <MouseBinding MouseAction="LeftClick" Command="{Binding ShowSpells}" />
+                </Grid.InputBindings>
+                <ProgressBar common:ProgressBarSmoother.SmoothValue="{Binding TakenDamageInPercent}" Minimum="0" Maximum="100" 
+                 MinHeight="40" Height="auto" Margin="3,0,2,1" VerticalAlignment="Top" Background="#00FFFFFF" BorderThickness="0" 
+                 Foreground="{StaticResource SolidColorBrush.Weapon.TakenDamageBar}" />
+                <StackPanel Orientation="Horizontal">
+                    <Grid Margin="10,0, 0, 0" HorizontalAlignment="Center" VerticalAlignment="Top">
+                        <Image Source="{Binding CauserMainHand.Icon}" Style="{StaticResource DamageMeter.Icon}" />
+                    </Grid>
+                    <Label Foreground="{StaticResource SolidColorBrush.Weapon.Text}" Content="{Binding TakenDamagePercentage}" 
+               ContentStringFormat="{}{0:N2}%" MinWidth="55" Margin="10,5" HorizontalContentAlignment="Right" VerticalAlignment="Top" />
+                    <Label Content="{Binding Name}" MinWidth="125" MaxWidth="125" Margin="10,5, 0, 0" VerticalAlignment="Top" />
+                    <Label Foreground="{StaticResource SolidColorBrush.Weapon.Text}" Content="{Binding TakenDamageShortString}" 
+               MinWidth="100" MaxWidth="100" FontWeight="Bold" Margin="10,5, 5, 0" VerticalAlignment="Top" />
+                    <Label Foreground="{StaticResource SolidColorBrush.Weapon.Text}" Content="" MinWidth="75" MaxWidth="75" 
+               FontWeight="Bold" Margin="10,5, 50, 0" VerticalAlignment="Top" />
+                    <Grid Width="16" Height="16" Margin="0,10" VerticalAlignment="Top" ToolTip="{Binding TranslationCombatTime, FallbackValue='COMBAT_TIME'}">
+                        <fa5:ImageAwesome Icon="Regular_Clock" Foreground="{StaticResource SolidColorBrush.Text.1}" />
+                    </Grid>
+                    <TextBlock Foreground="{StaticResource SolidColorBrush.Weapon.Text}" VerticalAlignment="Top" MinWidth="75" MaxWidth="100" FontWeight="Bold" Margin="10,10,50,0">
+                        <TextBlock.Text>
+                            <MultiBinding StringFormat="{}{0:00}:{1:00}:{2:00}">
+                                <Binding Path="CombatTime.Hours" />
+                                <Binding Path="CombatTime.Minutes" />
+                                <Binding Path="CombatTime.Seconds" />
+                            </MultiBinding>
+                        </TextBlock.Text>
+                    </TextBlock>
+                </StackPanel>
+            </Grid>
+            <Grid MinHeight="42" Height="auto">
+                <Grid.Style>
+                    <Style TargetType="{x:Type Grid}">
+                        <Setter Property="Visibility" Value="Collapsed" />
+                        <Style.Triggers>
+                            <DataTrigger Binding="{Binding DamageMeterStyleFragmentType}" Value="{x:Static damageMeter:DamageMeterStyleFragmentType.Heal}">
                                 <Setter Property="Visibility" Value="Visible"/>
                             </DataTrigger>
                         </Style.Triggers>

@@ -351,48 +351,55 @@ public class DamageMeterBindings : BaseViewModel, IAsyncInitialization
         switch (DamageMeterSnapshotSortSelection.DamageMeterSortType)
         {
             case DamageMeterSortType.Damage:
-                SetIsDamageMeterSnapshotShowing(DamageMeterSnapshotSelection?.DamageMeter, true);
+                SetIsDamageMeterSnapshotShowing(DamageMeterSnapshotSelection?.DamageMeter, DamageMeterStyleFragmentType.Damage);
                 if (DamageMeterSnapshotSelection != null)
                 {
                     DamageMeterSnapshotSelection.DamageMeter = DamageMeterSnapshotSelection?.DamageMeter?.OrderByDescending(x => x.DamageInPercent).ToList();
                 }
                 return;
             case DamageMeterSortType.Dps:
-                SetIsDamageMeterSnapshotShowing(DamageMeterSnapshotSelection?.DamageMeter, true);
+                SetIsDamageMeterSnapshotShowing(DamageMeterSnapshotSelection?.DamageMeter, DamageMeterStyleFragmentType.Damage);
                 if (DamageMeterSnapshotSelection != null)
                 {
                     DamageMeterSnapshotSelection.DamageMeter = DamageMeterSnapshotSelection?.DamageMeter?.OrderByDescending(x => x.Dps).ToList();
                 }
                 return;
             case DamageMeterSortType.Name:
-                SetIsDamageMeterSnapshotShowing(DamageMeterSnapshotSelection?.DamageMeter, true);
+                SetIsDamageMeterSnapshotShowing(DamageMeterSnapshotSelection?.DamageMeter, DamageMeterStyleFragmentType.Damage);
                 if (DamageMeterSnapshotSelection != null)
                 {
                     DamageMeterSnapshotSelection.DamageMeter = DamageMeterSnapshotSelection?.DamageMeter?.OrderBy(x => x.Name).ToList();
                 }
                 return;
             case DamageMeterSortType.Heal:
-                SetIsDamageMeterSnapshotShowing(DamageMeterSnapshotSelection?.DamageMeter, false);
+                SetIsDamageMeterSnapshotShowing(DamageMeterSnapshotSelection?.DamageMeter, DamageMeterStyleFragmentType.Heal);
                 if (DamageMeterSnapshotSelection != null)
                 {
                     DamageMeterSnapshotSelection.DamageMeter = DamageMeterSnapshotSelection?.DamageMeter?.OrderByDescending(x => x.HealInPercent).ToList();
                 }
                 return;
             case DamageMeterSortType.Hps:
-                SetIsDamageMeterSnapshotShowing(DamageMeterSnapshotSelection?.DamageMeter, false);
+                SetIsDamageMeterSnapshotShowing(DamageMeterSnapshotSelection?.DamageMeter, DamageMeterStyleFragmentType.Heal);
                 if (DamageMeterSnapshotSelection != null)
                 {
                     DamageMeterSnapshotSelection.DamageMeter = DamageMeterSnapshotSelection?.DamageMeter?.OrderByDescending(x => x.Hps).ToList();
                 }
                 break;
+            case DamageMeterSortType.TakenDamage:
+                SetIsDamageMeterSnapshotShowing(DamageMeterSnapshotSelection?.DamageMeter, DamageMeterStyleFragmentType.TakenDamage);
+                if (DamageMeterSnapshotSelection != null)
+                {
+                    DamageMeterSnapshotSelection.DamageMeter = DamageMeterSnapshotSelection?.DamageMeter?.OrderByDescending(x => x.TakenDamage).ToList();
+                }
+                break;
         }
     }
-
-    private static void SetIsDamageMeterSnapshotShowing(IEnumerable<DamageMeterSnapshotFragment> damageMeter, bool isDamageMeterShowing)
+    
+    private static void SetIsDamageMeterSnapshotShowing(IEnumerable<DamageMeterSnapshotFragment> damageMeter, DamageMeterStyleFragmentType damageMeterStyleFragmentType)
     {
         foreach (var fragment in damageMeter ?? new List<DamageMeterSnapshotFragment>())
         {
-            fragment.IsDamageMeterShowing = isDamageMeterShowing;
+            fragment.DamageMeterStyleFragmentType = damageMeterStyleFragmentType;
         }
     }
 
