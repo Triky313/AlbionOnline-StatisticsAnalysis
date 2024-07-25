@@ -37248,6 +37248,19 @@
           "seg": "Ouvrir la validation d'événement"
         }
       ]
+    },
+    {
+      "tuid": "TAKEN_DAMAGE",
+      "tuv": [
+        {
+          "lang": "de-DE",
+          "seg": "Erlittener Schaden"
+        },
+        {
+          "lang": "en-US",
+          "seg": "Damage suffered"
+        }
+      ]
     }
   ]
 }

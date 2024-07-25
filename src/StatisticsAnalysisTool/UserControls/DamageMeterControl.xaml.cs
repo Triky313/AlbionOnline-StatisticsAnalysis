@@ -124,6 +124,9 @@ public partial class DamageMeterControl
             case DamageMeterSortType.Hps:
                 Clipboard.SetDataObject(vm.DamageMeterBindings?.DamageMeter?.Aggregate(output, (current, entity) => current + $"{counter++}. {entity.Name}: {entity.Hps:N2} HPS\n") ?? string.Empty);
                 break;
+            case DamageMeterSortType.TakenDamage:
+                Clipboard.SetDataObject(vm.DamageMeterBindings?.DamageMeter?.Aggregate(output, (current, entity) => current + $"{counter++}. {entity.Name}: {entity.TakenDamage}({entity.TakenDamagePercentage:N2}%)\n") ?? string.Empty);
+                break;
             case null:
                 break;
         }

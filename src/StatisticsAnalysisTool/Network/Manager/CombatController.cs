@@ -37,7 +37,7 @@ public class CombatController
         OnDamageUpdate += UpdateDamageMeterUiAsync;
 
 #if DEBUG
-        RunDamageMeterDebugAsync(0, 0);
+        RunDamageMeterDebugAsync(10, 10);
 #endif
     }
 
@@ -99,6 +99,36 @@ public class CombatController
         return Task.CompletedTask;
     }
 
+    public Task AddTakenDamage(long affectedId, long causerId, double healthChange, double newHealthValue, int causingSpellIndex)
+    {
+        var healthChangeType = GetHealthChangeType(healthChange);
+        if (!SettingsController.CurrentSettings.IsDamageMeterTrackingActive || (affectedId == causerId && healthChangeType == HealthChangeType.Damage))
+        {
+            return Task.CompletedTask;
+        }
+
+        var gameObject = _trackingController?.EntityController?.GetEntity(affectedId);
+        var gameObjectValue = gameObject?.Value;
+
+        if (gameObject?.Value is not { ObjectType: GameObjectType.Player } || !_trackingController.EntityController.IsEntityInParty(gameObject.Value.Key))
+        {
+            return Task.CompletedTask;
+        }
+
+        if (healthChangeType == HealthChangeType.Damage)
+        {
+            var damageChangeValue = (int) Math.Round(healthChange.ToPositiveFromNegativeOrZero(), MidpointRounding.AwayFromZero);
+            if (damageChangeValue <= 0)
+            {
+                return Task.CompletedTask;
+            }
+
+            gameObjectValue.TakenDamage += damageChangeValue;
+        }
+
+        return Task.CompletedTask;
+    }
+
     private static bool _isUiUpdateActive;
 
     public async void UpdateDamageMeterUiAsync(ObservableCollection<DamageMeterFragment> damageMeter, List<KeyValuePair<Guid, PlayerGameObject>> entities)
@@ -112,6 +142,7 @@ public class CombatController
 
         var currentTotalDamage = entities.GetCurrentTotalDamage();
         var currentTotalHeal = entities.GetCurrentTotalHeal();
+        var currentTotalTakenDamage = entities.GetCurrentTotalDamage();
 
         _trackingController.EntityController.DetectUsedWeapon();
 
@@ -125,11 +156,11 @@ public class CombatController
             var fragment = damageMeter.ToList().FirstOrDefault(x => x.CauserGuid == healthChangeObject.Value.UserGuid);
             if (fragment != null)
             {
-                await UpdateDamageMeterFragmentAsync(fragment, healthChangeObject, entities, currentTotalDamage, currentTotalHeal);
+                await UpdateDamageMeterFragmentAsync(fragment, healthChangeObject, entities, currentTotalDamage, currentTotalHeal, currentTotalTakenDamage);
             }
             else
             {
-                await AddDamageMeterFragmentAsync(damageMeter, healthChangeObject, entities, currentTotalDamage, currentTotalHeal).ConfigureAwait(true);
+                await AddDamageMeterFragmentAsync(damageMeter, healthChangeObject, entities, currentTotalDamage, currentTotalHeal, currentTotalTakenDamage).ConfigureAwait(true);
             }
 
             Application.Current.Dispatcher.Invoke(() => _mainWindowViewModel.DamageMeterBindings?.SetDamageMeterSort());
@@ -140,7 +171,7 @@ public class CombatController
     }
 
     private static async Task UpdateDamageMeterFragmentAsync(DamageMeterFragment fragment, KeyValuePair<Guid, PlayerGameObject> healthChangeObject,
-        List<KeyValuePair<Guid, PlayerGameObject>> entities, long currentTotalDamage, long currentTotalHeal)
+        List<KeyValuePair<Guid, PlayerGameObject>> entities, long currentTotalDamage, long currentTotalHeal, long currentTotalTakenDamage)
     {
         var healthChangeObjectValue = healthChangeObject.Value;
 
@@ -157,7 +188,7 @@ public class CombatController
             fragment.Damage = healthChangeObjectValue.Damage;
         }
 
-        if (healthChangeObjectValue?.Dps != null)
+        if (healthChangeObjectValue?.Dps is not null)
         {
             fragment.Dps = healthChangeObjectValue.Dps;
         }
@@ -169,7 +200,7 @@ public class CombatController
             fragment.Heal = healthChangeObjectValue.Heal;
         }
 
-        if (healthChangeObjectValue?.Hps != null)
+        if (healthChangeObjectValue?.Hps is not null)
         {
             fragment.Hps = healthChangeObjectValue.Hps;
         }
@@ -177,6 +208,13 @@ public class CombatController
         if (healthChangeObjectValue?.Overhealed > 0)
         {
             fragment.Overhealed = healthChangeObjectValue.Overhealed;
+        }
+
+        // Taken Damage
+        if (healthChangeObjectValue?.TakenDamage > 0)
+        {
+            fragment.TakenDamageInPercent = (double) healthChangeObjectValue.TakenDamage / currentTotalTakenDamage * 100;
+            fragment.TakenDamage = healthChangeObjectValue.TakenDamage;
         }
 
         // Spells
@@ -188,8 +226,12 @@ public class CombatController
             fragment.CombatTime = healthChangeObjectValue.CombatTime;
             fragment.DamagePercentage = entities.GetDamagePercentage(healthChangeObjectValue.Damage);
             fragment.HealPercentage = entities.GetHealPercentage(healthChangeObjectValue.Heal);
+            fragment.TakenDamagePercentage = entities.GetTakenDamagePercentage(healthChangeObjectValue.TakenDamage);
             fragment.OverhealedPercentageOfTotalHealing = GetOverhealedPercentageOfHealWithOverhealed(healthChangeObjectValue.Overhealed, healthChangeObjectValue.Heal);
         }
+
+        Debug.Print($"AddDamageMeterFragmentAsync - Name: {fragment.Name}, Damage: {fragment.Damage}, Heal: {fragment.Heal}, TakenDamage: {fragment.TakenDamage}");
+
     }
 
     public static double GetOverhealedPercentageOfHealWithOverhealed(double overhealed, double heal)
@@ -198,7 +240,7 @@ public class CombatController
     }
 
     private static async Task AddDamageMeterFragmentAsync(ICollection<DamageMeterFragment> damageMeter, KeyValuePair<Guid, PlayerGameObject> healthChangeObject,
-        List<KeyValuePair<Guid, PlayerGameObject>> entities, long currentTotalDamage, long currentTotalHeal)
+        List<KeyValuePair<Guid, PlayerGameObject>> entities, long currentTotalDamage, long currentTotalHeal, long currentTotalTakenDamage)
     {
         if (healthChangeObject.Value == null
             || (double.IsNaN(healthChangeObject.Value.Damage) && double.IsNaN(healthChangeObject.Value.Heal) && double.IsNaN(healthChangeObject.Value.Overhealed))
@@ -228,12 +270,16 @@ public class CombatController
             Overhealed = healthChangeObjectValue.Overhealed,
             OverhealedPercentageOfTotalHealing = GetOverhealedPercentageOfHealWithOverhealed(healthChangeObjectValue.Overhealed, healthChangeObjectValue.Heal),
 
+            TakenDamage = healthChangeObjectValue.TakenDamage,
+            TakenDamageInPercent = (double) healthChangeObjectValue.TakenDamage / currentTotalTakenDamage * 100,
+            TakenDamagePercentage = entities.GetDamagePercentage(healthChangeObjectValue.TakenDamage),
+
             Name = healthChangeObjectValue.Name,
             CauserMainHand = item,
 
             Spells = spells
         };
-
+        
         await Application.Current.Dispatcher.InvokeAsync(() =>
         {
             damageMeter.Add(damageMeterFragment);
@@ -330,6 +376,7 @@ public class CombatController
         _trackingController.EntityController.ResetEntitiesDamageTimes();
         _trackingController.EntityController.ResetEntitiesDamage();
         _trackingController.EntityController.ResetEntitiesHeal();
+        _trackingController.EntityController.ResetEntitiesTakeDamage();
         _trackingController.EntityController.ResetSpells();
         _trackingController.EntityController.ResetEntitiesHealAndOverhealed();
         _trackingController.EntityController.ResetEntitiesDamageStartTime();
@@ -569,7 +616,9 @@ public class CombatController
         for (var i = 0; i < runs; i++)
         {
             var damage = Random.Next(-5000, 5000);
+            var takenDamage = Random.Next(-5000, 5000);
             await AddDamage(9999, entity.ObjectId ?? -1, damage, Random.Next(2000, 3000), Random.Next(2000, 3000));
+            await AddTakenDamage(entity.ObjectId ?? -1, 9999, takenDamage, Random.Next(2000, 3000), Random.Next(2000, 3000));
             //Debug.Print($"--- AddDamage - {entity.Name}: {damage}");
 
             await Task.Delay(Random.Next(1, 1000));

@@ -525,6 +525,14 @@ public class EntityController
         }
     }
 
+    public void ResetEntitiesTakeDamage()
+    {
+        foreach (var entity in _knownEntities)
+        {
+            entity.Value.TakenDamage = 0;
+        }
+    }
+
     public void ResetSpells()
     {
         foreach (var entity in _knownEntities)
