@@ -31,8 +31,13 @@ public class DamageMeterFragment : BaseViewModel
     private TimeSpan _combatTime;
     private double _overhealedPercentageOfTotalHealing;
     private double _overhealed;
+    private long _takenDamage;
+    private string _takenDamageShortString;
+    private double _takenDamageInPercent;
+    private double _takenDamagePercentage;
+    private DamageMeterStyleFragmentType _damageMeterStyleFragmentType;
     private Visibility _spellsContainerVisibility = Visibility.Collapsed;
-    private ObservableCollection<UsedSpellFragment> _spells = new ();
+    private ObservableCollection<UsedSpellFragment> _spells = new();
 
     public DamageMeterFragment(DamageMeterFragment damageMeterFragment)
     {
@@ -48,6 +53,9 @@ public class DamageMeterFragment : BaseViewModel
         Name = damageMeterFragment.Name;
         CauserMainHand = damageMeterFragment.CauserMainHand;
         Spells = damageMeterFragment.Spells;
+        TakenDamage = damageMeterFragment.TakenDamage;
+        TakenDamageInPercent = damageMeterFragment.TakenDamageInPercent;
+        TakenDamagePercentage = damageMeterFragment.TakenDamagePercentage;
     }
 
     public DamageMeterFragment()
@@ -80,6 +88,16 @@ public class DamageMeterFragment : BaseViewModel
         set
         {
             _isDamageMeterShowing = value;
+            OnPropertyChanged();
+        }
+    }
+
+    public DamageMeterStyleFragmentType DamageMeterStyleFragmentType
+    {
+        get => _damageMeterStyleFragmentType;
+        set
+        {
+            _damageMeterStyleFragmentType = value;
             OnPropertyChanged();
         }
     }
@@ -240,6 +258,51 @@ public class DamageMeterFragment : BaseViewModel
         set
         {
             _overhealedPercentageOfTotalHealing = value;
+            OnPropertyChanged();
+        }
+    }
+
+    #endregion
+
+    #region Take Damage
+
+    public long TakenDamage
+    {
+        get => _takenDamage;
+        set
+        {
+            _takenDamage = value;
+            TakenDamageShortString = _takenDamage.ToShortNumberString();
+            OnPropertyChanged();
+        }
+    }
+
+    public string TakenDamageShortString
+    {
+        get => _takenDamageShortString;
+        private set
+        {
+            _takenDamageShortString = value;
+            OnPropertyChanged();
+        }
+    }
+
+    public double TakenDamageInPercent
+    {
+        get => _takenDamageInPercent;
+        set
+        {
+            _takenDamageInPercent = value;
+            OnPropertyChanged();
+        }
+    }
+
+    public double TakenDamagePercentage
+    {
+        get => _takenDamagePercentage;
+        set
+        {
+            _takenDamagePercentage = value;
             OnPropertyChanged();
         }
     }

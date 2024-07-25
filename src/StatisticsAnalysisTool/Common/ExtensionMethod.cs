@@ -261,6 +261,12 @@ public static class ExtensionMethod
         return playerObjects.Count <= 0 ? 0 : playerObjects.Max(x => x.Value.Heal);
     }
 
+    public static long GetCurrentTotalTakenDamage(this List<KeyValuePair<Guid, PlayerGameObject>> playerObjects)
+    {
+        return playerObjects.Count <= 0 ? 0 : playerObjects.Max(x => x.Value.TakenDamage);
+    }
+
+
     public static double GetDamagePercentage(this List<KeyValuePair<Guid, PlayerGameObject>> playerObjects, double playerDamage)
     {
         var totalDamage = playerObjects.Sum(x => x.Value.Damage);
@@ -271,6 +277,12 @@ public static class ExtensionMethod
     {
         var totalHeal = playerObjects.Sum(x => x.Value.Heal);
         return 100.00 / totalHeal * playerHeal;
+    }
+
+    public static double GetTakenDamagePercentage(this List<KeyValuePair<Guid, PlayerGameObject>> playerObjects, double playerDamage)
+    {
+        var totalTakenDamage = playerObjects.Sum(x => x.Value.TakenDamage);
+        return 100.00 / totalTakenDamage * playerDamage;
     }
 
     #endregion

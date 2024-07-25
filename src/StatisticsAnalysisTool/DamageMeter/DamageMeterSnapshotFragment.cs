@@ -16,6 +16,11 @@ public sealed class DamageMeterSnapshotFragment : BaseViewModel
     private double _dps;
     private long _heal;
     private double _hps;
+    private long _takenDamage;
+    private string _takenDamageShortString;
+    private double _takenDamageInPercent;
+    private double _takenDamagePercentage;
+    private DamageMeterStyleFragmentType _damageMeterStyleFragmentType;
     private Visibility _spellsContainerVisibility = Visibility.Collapsed;
 
     public DamageMeterSnapshotFragment(DamageMeterFragment damageMeterFragment)
@@ -31,6 +36,9 @@ public sealed class DamageMeterSnapshotFragment : BaseViewModel
         Hps = damageMeterFragment.Hps;
         HealInPercent = damageMeterFragment.HealInPercent;
         HealPercentage = damageMeterFragment.HealPercentage;
+        TakenDamage = damageMeterFragment.TakenDamage;
+        TakenDamageInPercent = damageMeterFragment.TakenDamageInPercent;
+        TakenDamagePercentage = damageMeterFragment.TakenDamagePercentage;
         CauserMainHandItemUniqueName = damageMeterFragment.CauserMainHand?.UniqueName ?? string.Empty;
         OverhealedPercentageOfTotalHealing = damageMeterFragment.OverhealedPercentageOfTotalHealing;
         Spells = damageMeterFragment.Spells.Select(x => new SpellsSnapshotFragment()
@@ -139,6 +147,61 @@ public sealed class DamageMeterSnapshotFragment : BaseViewModel
     }
 
     #endregion
+
+    #region Take Damage
+
+    public long TakenDamage
+    {
+        get => _takenDamage;
+        set
+        {
+            _takenDamage = value;
+            TakenDamageShortString = _damage.ToShortNumberString();
+            OnPropertyChanged();
+        }
+    }
+
+    public string TakenDamageShortString
+    {
+        get => _takenDamageShortString;
+        private set
+        {
+            _takenDamageShortString = value;
+            OnPropertyChanged();
+        }
+    }
+
+    public double TakenDamageInPercent
+    {
+        get => _takenDamageInPercent;
+        set
+        {
+            _takenDamageInPercent = value;
+            OnPropertyChanged();
+        }
+    }
+
+    public double TakenDamagePercentage
+    {
+        get => _takenDamagePercentage;
+        set
+        {
+            _takenDamagePercentage = value;
+            OnPropertyChanged();
+        }
+    }
+
+    #endregion
+
+    public DamageMeterStyleFragmentType DamageMeterStyleFragmentType
+    {
+        get => _damageMeterStyleFragmentType;
+        set
+        {
+            _damageMeterStyleFragmentType = value;
+            OnPropertyChanged();
+        }
+    }
 
     private void PerformShowSpells(object value)
     {

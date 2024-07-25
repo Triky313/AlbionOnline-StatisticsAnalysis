@@ -315,7 +315,8 @@
     <SolidColorBrush x:Key="SolidColorBrush.Weapon.ArcaneStaff" Color="#732653"/>
     <SolidColorBrush x:Key="SolidColorBrush.Weapon.Knuckles" Color="#914210"/>
     <SolidColorBrush x:Key="SolidColorBrush.Weapon.UnknownWeaponType" Color="#555555"/>
-    <SolidColorBrush x:Key="SolidColorBrush.Weapon.HealBar" Color="#00aa1a"/>
+    <SolidColorBrush x:Key="SolidColorBrush.Weapon.HealBar" Color="#099937"/>
+    <SolidColorBrush x:Key="SolidColorBrush.Weapon.TakenDamageBar" Color="#B01923"/>
 
     <SolidColorBrush x:Key="Solid.Color.Text.ToOldFirst" Color="{StaticResource Color.Text.ToOldFirst}"/>
     <SolidColorBrush x:Key="Solid.Color.Text.ToOldSecond" Color="{StaticResource Color.Text.ToOldSecond}"/>
