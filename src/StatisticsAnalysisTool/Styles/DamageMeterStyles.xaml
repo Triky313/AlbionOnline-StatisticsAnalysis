@@ -226,9 +226,9 @@
                     <MouseBinding MouseAction="LeftClick" Command="{Binding ShowSpells}" />
                 </Grid.InputBindings>
                 <Grid>
-                    <ProgressBar common:ProgressBarSmoother.SmoothValue="{Binding HealInPercent}" Minimum="0" Maximum="100"
-                     Height="auto" Margin="3,0,2,1" VerticalAlignment="Top" Background="#00FFFFFF" BorderThickness="0" 
-                     Style="{StaticResource DamageMeter.ProgressBar.Colors}" />
+                    <ProgressBar common:ProgressBarSmoother.SmoothValue="{Binding HealInPercent}" Minimum="0" Maximum="100" 
+                                 MinHeight="40" Height="auto" Margin="3,0,2,1" VerticalAlignment="Top" Background="#00FFFFFF" BorderThickness="0" 
+                                 Foreground="{StaticResource SolidColorBrush.Weapon.HealBar}" />
                 </Grid>
                 <StackPanel Orientation="Horizontal">
                     <Grid Margin="10,0, 0, 0" HorizontalAlignment="Center" VerticalAlignment="Top">
