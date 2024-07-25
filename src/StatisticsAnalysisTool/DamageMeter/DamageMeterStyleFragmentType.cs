@@ -1,11 +1,8 @@
 ﻿namespace StatisticsAnalysisTool.DamageMeter;
 
-public enum DamageMeterSortType
+public enum DamageMeterStyleFragmentType
 {
     Damage,
-    Dps,
-    Name,
     Heal,
-    Hps,
     TakenDamage
 }

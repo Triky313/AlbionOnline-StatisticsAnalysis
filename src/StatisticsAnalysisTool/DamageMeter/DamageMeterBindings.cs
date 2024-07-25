@@ -61,6 +61,11 @@ public class DamageMeterBindings : BaseViewModel, IAsyncInitialization
             Name = TranslationSortByHps,
             DamageMeterSortType = DamageMeterSortType.Hps
         };
+        var takenDamageStruct = new DamageMeterSortStruct
+        {
+            Name = TranslationTakenDamage,
+            DamageMeterSortType = DamageMeterSortType.TakenDamage
+        };
 
         DamageMeterSort.Clear();
         DamageMeterSort.Add(sortByDamageStruct);
@@ -68,6 +73,7 @@ public class DamageMeterBindings : BaseViewModel, IAsyncInitialization
         DamageMeterSort.Add(sortByNameStruct);
         DamageMeterSort.Add(sortByHealStruct);
         DamageMeterSort.Add(sortByHpsStruct);
+        DamageMeterSort.Add(takenDamageStruct);
         DamageMeterSortSelection = sortByDamageStruct;
 
         DamageMeterSnapshotSort.Clear();
@@ -76,6 +82,7 @@ public class DamageMeterBindings : BaseViewModel, IAsyncInitialization
         DamageMeterSnapshotSort.Add(sortByNameStruct);
         DamageMeterSnapshotSort.Add(sortByHealStruct);
         DamageMeterSnapshotSort.Add(sortByHpsStruct);
+        DamageMeterSnapshotSort.Add(takenDamageStruct);
         DamageMeterSnapshotSortSelection = sortByDamageStruct;
 
         IsSnapshotAfterMapChangeActive = SettingsController.CurrentSettings.IsSnapshotAfterMapChangeActive;
@@ -159,33 +166,37 @@ public class DamageMeterBindings : BaseViewModel, IAsyncInitialization
         switch (DamageMeterSortSelection.DamageMeterSortType)
         {
             case DamageMeterSortType.Damage:
-                SetIsDamageMeterShowing(DamageMeter, true);
+                SetIsDamageMeterShowing(DamageMeter, DamageMeterStyleFragmentType.Damage);
                 DamageMeter.OrderByReference(DamageMeter.OrderByDescending(x => x.DamageInPercent).ToList());
                 return;
             case DamageMeterSortType.Dps:
-                SetIsDamageMeterShowing(DamageMeter, true);
+                SetIsDamageMeterShowing(DamageMeter, DamageMeterStyleFragmentType.Damage);
                 DamageMeter.OrderByReference(DamageMeter.OrderByDescending(x => x.Dps).ToList());
                 return;
             case DamageMeterSortType.Name:
-                SetIsDamageMeterShowing(DamageMeter, true);
+                SetIsDamageMeterShowing(DamageMeter, DamageMeterStyleFragmentType.Damage);
                 DamageMeter.OrderByReference(DamageMeter.OrderBy(x => x.Name).ToList());
                 return;
             case DamageMeterSortType.Heal:
-                SetIsDamageMeterShowing(DamageMeter, false);
+                SetIsDamageMeterShowing(DamageMeter, DamageMeterStyleFragmentType.Heal);
                 DamageMeter.OrderByReference(DamageMeter.OrderByDescending(x => x.HealInPercent).ToList());
                 return;
             case DamageMeterSortType.Hps:
-                SetIsDamageMeterShowing(DamageMeter, false);
+                SetIsDamageMeterShowing(DamageMeter, DamageMeterStyleFragmentType.Heal);
                 DamageMeter.OrderByReference(DamageMeter.OrderByDescending(x => x.Hps).ToList());
                 break;
+            case DamageMeterSortType.TakenDamage:
+                SetIsDamageMeterShowing(DamageMeter, DamageMeterStyleFragmentType.TakenDamage);
+                DamageMeter.OrderByReference(DamageMeter.OrderByDescending(x => x.TakenDamage).ToList());
+                return;
         }
     }
 
-    private static void SetIsDamageMeterShowing(IEnumerable<DamageMeterFragment> damageMeter, bool isDamageMeterShowing)
+    private static void SetIsDamageMeterShowing(IEnumerable<DamageMeterFragment> damageMeter, DamageMeterStyleFragmentType damageMeterStyleFragmentType)
     {
         foreach (var fragment in damageMeter)
         {
-            fragment.IsDamageMeterShowing = isDamageMeterShowing;
+            fragment.DamageMeterStyleFragmentType = damageMeterStyleFragmentType;
         }
     }
 
@@ -394,6 +405,7 @@ public class DamageMeterBindings : BaseViewModel, IAsyncInitialization
     public static string TranslationSortByName => LocalizationController.Translation("SORT_BY_NAME");
     public static string TranslationSortByHeal => LocalizationController.Translation("SORT_BY_HEAL");
     public static string TranslationSortByHps => LocalizationController.Translation("SORT_BY_HPS");
+    public static string TranslationTakenDamage => LocalizationController.Translation("TAKEN_DAMAGE");
     public static string TranslationSnapshots => LocalizationController.Translation("SNAPSHOTS");
     public static string TranslationDeleteSelectedSnapshot => LocalizationController.Translation("DELETE_SELECTED_SNAPSHOT");
     public static string TranslationDeleteAllSnapshots => LocalizationController.Translation("DELETE_ALL_SNAPSHOTS");

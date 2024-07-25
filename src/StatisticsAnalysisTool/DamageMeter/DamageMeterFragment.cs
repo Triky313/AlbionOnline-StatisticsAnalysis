@@ -35,6 +35,7 @@ public class DamageMeterFragment : BaseViewModel
     private string _takenDamageShortString;
     private double _takenDamageInPercent;
     private double _takenDamagePercentage;
+    private DamageMeterStyleFragmentType _damageMeterStyleFragmentType;
     private Visibility _spellsContainerVisibility = Visibility.Collapsed;
     private ObservableCollection<UsedSpellFragment> _spells = new();
 
@@ -52,6 +53,9 @@ public class DamageMeterFragment : BaseViewModel
         Name = damageMeterFragment.Name;
         CauserMainHand = damageMeterFragment.CauserMainHand;
         Spells = damageMeterFragment.Spells;
+        TakenDamage = damageMeterFragment.TakenDamage;
+        TakenDamageInPercent = damageMeterFragment.TakenDamageInPercent;
+        TakenDamagePercentage = damageMeterFragment.TakenDamagePercentage;
     }
 
     public DamageMeterFragment()
@@ -84,6 +88,16 @@ public class DamageMeterFragment : BaseViewModel
         set
         {
             _isDamageMeterShowing = value;
+            OnPropertyChanged();
+        }
+    }
+
+    public DamageMeterStyleFragmentType DamageMeterStyleFragmentType
+    {
+        get => _damageMeterStyleFragmentType;
+        set
+        {
+            _damageMeterStyleFragmentType = value;
             OnPropertyChanged();
         }
     }
