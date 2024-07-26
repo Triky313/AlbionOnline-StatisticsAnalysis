@@ -28,9 +28,9 @@
 
     <DataTemplate x:Key="ManuallySiphonedEnergy.Template" DataType="{x:Type guild:ManuallySiphonedEnergy}">
         <Grid>
-            <StackPanel Orientation="Vertical" Margin="10,0,0,0">
+            <StackPanel Orientation="Vertical" Margin="0">
                 <Separator Background="{StaticResource SolidColorBrush.Background.2}" Height="4" Margin="0,0,0,0" VerticalAlignment="Top"/>
-                <StackPanel>
+                <StackPanel Margin="10,0,0,0">
                     <Label Content="{Binding TranslationAddOrRemoveManually, FallbackValue=ADD_OR_REMOVE_MANUALLY}" Style="{StaticResource HeaderStyle.Tracking.Title}" 
                            Margin="2,5,0,0" Foreground="{StaticResource SolidColorBrush.Accent.Blue.2}" />
 
@@ -52,7 +52,6 @@
                             <MouseBinding MouseAction="LeftClick" Command="{Binding AddManualEntryCommand}" />
                         </Button.InputBindings>
                     </Button>
-                    <Separator Background="{StaticResource SolidColorBrush.Background.2}" Height="4" VerticalAlignment="Top"/>
                 </StackPanel>
             </StackPanel>
         </Grid>

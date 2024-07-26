@@ -68,24 +68,31 @@
                         </Grid>
 
                         <Separator Background="{StaticResource SolidColorBrush.Background.2}" Height="4" Margin="0,66,0,0" VerticalAlignment="Top"/>
-                        <StackPanel Orientation="Vertical" Margin="0,68,0,0">
-                            <vwp:VirtualizingItemsControl ItemsSource="{Binding GuildBindings.SiphonedEnergyOverviewList, IsAsync=True, Mode=OneWay}" Height="240"
-                                                          ItemTemplate="{StaticResource SiphonedEnergyOverviewItemTemplate}" Background="{StaticResource SolidColorBrush.Accent.Blue.Transparent.5}"
+                        <Grid Margin="0,68,0,153" VerticalAlignment="Stretch">
+                            <vwp:VirtualizingItemsControl ItemsSource="{Binding GuildBindings.SiphonedEnergyOverviewList, IsAsync=True, Mode=OneWay}" 
+                                                          MinHeight="240" 
+                                                          Height="auto"
+                                                          VerticalContentAlignment="Stretch"
+                                                          VerticalAlignment="Stretch"
+                                                          ItemTemplate="{StaticResource SiphonedEnergyOverviewItemTemplate}" 
+                                                          Background="{StaticResource SolidColorBrush.Accent.Blue.Transparent.5}"
                                                           VirtualizingPanel.CacheLengthUnit="Item"
                                                           VirtualizingPanel.CacheLength="10,10"
                                                           VirtualizingPanel.ScrollUnit="Pixel"
                                                           VirtualizingPanel.VirtualizationMode="Recycling"
                                                           ScrollViewer.HorizontalScrollBarVisibility="Disabled"
                                                           ScrollViewer.VerticalScrollBarVisibility="Visible" />
+                        </Grid>
 
-                            <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" VerticalAlignment="Top" Height="24" Margin="20,0">
+                        <StackPanel Orientation="Vertical" VerticalAlignment="Bottom">
+                            <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" VerticalAlignment="Bottom" Height="28" Margin="0,0,20,0">
                                 <TextBlock Text="{Binding GuildBindings.TranslationTotal, StringFormat='{}{0:N0}: ', FallbackValue='TOTAL: '}" FontSize="12" 
                                            Foreground="{StaticResource SolidColorBrush.Text.4}" VerticalAlignment="Center" />
                                 <TextBlock Text="{Binding GuildBindings.TotalSiphonedEnergyQuantity, StringFormat='{}{0} ', FallbackValue=0}" FontSize="12" 
                                            Foreground="{StaticResource SolidColorBrush.Text.4}" VerticalAlignment="Center" />
                             </StackPanel>
-
-                            <ContentControl ContentTemplate="{StaticResource ManuallySiphonedEnergy.Template}" Content="{Binding GuildBindings.ManuallySiphonedEnergy}" />
+                            <ContentControl ContentTemplate="{StaticResource ManuallySiphonedEnergy.Template}" 
+                                            Content="{Binding GuildBindings.ManuallySiphonedEnergy}" VerticalAlignment="Bottom" />
                         </StackPanel>
                     </Grid>
                     <Grid Row="2">
