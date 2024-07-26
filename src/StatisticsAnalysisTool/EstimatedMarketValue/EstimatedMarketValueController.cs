@@ -13,7 +13,7 @@ namespace StatisticsAnalysisTool.EstimatedMarketValue;
 public static class EstimatedMarketValueController
 {
     private static ObservableCollection<EstimatedMarketValueObject> _estimatedMarketValueObjects = new();
-
+    
     public static void Add(int itemId, long estimatedMarketValueInternal, ItemQuality quality = ItemQuality.Unknown)
     {
         if (itemId <= 0 || estimatedMarketValueInternal <= 0)

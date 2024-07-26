@@ -37261,6 +37261,19 @@
           "seg": "Damage suffered"
         }
       ]
+    },
+    {
+      "tuid": "AVERAGE_EST_MARKET_VALUE",
+      "tuv": [
+        {
+          "lang": "de-DE",
+          "seg": "Geschätzte durchschnittlicher Markltwert"
+        },
+        {
+          "lang": "en-US",
+          "seg": "Average est. Market value"
+        }
+      ]
     }
   ]
 }

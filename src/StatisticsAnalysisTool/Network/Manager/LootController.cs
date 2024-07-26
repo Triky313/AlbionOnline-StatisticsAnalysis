@@ -93,6 +93,7 @@ public class LootController : ILootController
             Quantity = loot.Quantity,
             ItemId = item.Index,
             UniqueItemName = item.UniqueName,
+            AverageEstMarketValue = item.AverageEstMarketValue,
         });
 
         OnAddLoot?.Invoke(loot.LootedByName, loot.Quantity);
@@ -243,7 +244,7 @@ public class LootController : ILootController
             ItemIndex = lootedItem.ItemIndex,
             LootedByName = _trackingController?.EntityController?.LocalUserData?.Username,
             LootedFromName = MobController.IsMob(identifiedBody.Name) ? LocalizationController.Translation("MOB") : identifiedBody.Name,
-            Quantity = lootedItem.Quantity
+            Quantity = lootedItem.Quantity,
         });
     }
 

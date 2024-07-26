@@ -53,7 +53,7 @@ public class Item
     public List<EstQualityValue> EstimatedMarketValues { get; set; }
 
     [JsonIgnore]
-    public long AverageEstQualityValue => EstimatedMarketValueController.CalculateNearestToAverage(EstimatedMarketValues).MarketValue.IntegerValue;
+    public long AverageEstMarketValue => EstimatedMarketValueController.CalculateNearestToAverage(EstimatedMarketValues).MarketValue.IntegerValue;
     [JsonIgnore]
     public string LastEstimatedUpdateTimeString =>
         $"{LocalizationController.Translation("LAST_ESTIMATED_VALUE_UPDATE")}: {EstimatedMarketValueController.CalculateNearestToAverage(EstimatedMarketValues).Timestamp.DateTimeToLastUpdateTime()}";
