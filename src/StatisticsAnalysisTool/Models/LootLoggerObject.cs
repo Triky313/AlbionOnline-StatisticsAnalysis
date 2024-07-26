@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Globalization;
 using StatisticsAnalysisTool.Common;
+using StatisticsAnalysisTool.EstimatedMarketValue;
 
 namespace StatisticsAnalysisTool.Models;
 
@@ -21,6 +22,7 @@ public class LootLoggerObject
     public string LootedByName { get; set; }
     public string LootedByGuild { get; set; }
     public string LootedByAlliance { get; set; }
+    public long AverageEstMarketValue { get; set; }
 
     public string CsvOutput => GetCsvOutputStringWithRealItemName();
 

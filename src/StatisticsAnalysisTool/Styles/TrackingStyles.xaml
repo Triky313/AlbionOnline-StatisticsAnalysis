@@ -378,6 +378,10 @@
 
             <TextBlock Text="{Binding FromTranslation, IsAsync=True, StringFormat='{}{0} '}" Foreground="{StaticResource SolidColorBrush.Text.1}"/>
             <TextBlock Text="{Binding LootedFromName, IsAsync=True, StringFormat='{}{0} '}" Foreground="{StaticResource SolidColorBrush.Accent.Red.3}"/>
+            <StackPanel Orientation="Horizontal">
+                <Image Source="../Resources/silver.png" Height="14" Width="14" Margin="10,-10,5,0" ToolTip="{Binding TranslationAverageEstMarketValue}" />
+                <TextBlock Text="{Binding AverageEstMarketValueShortString, IsAsync=True, StringFormat='{}{0}'}" Foreground="{StaticResource SolidColorBrush.Text.1}"/>
+            </StackPanel>
             <TextBlock Text="{Binding LootedFromGuild, IsAsync=True, StringFormat='{}({0}) '}" Foreground="{StaticResource SolidColorBrush.Accent.Red.3}"
                        ToolTip="{Binding TranslationGuild}">
                 <TextBlock.Style>

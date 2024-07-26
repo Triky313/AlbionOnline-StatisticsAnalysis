@@ -26,7 +26,7 @@
                 <TextBlock TextWrapping="Wrap" Text="{Binding LocalizedNameAndEnglish}" />
                 <StackPanel Orientation="Horizontal">
                     <Image Source="../Resources/silver.png" Width="12" Height="12" ToolTip="{Binding TranslationEstMarketValue, IsAsync=True, Mode=OneWay}" />
-                    <Label Content="{Binding AverageEstQualityValue, IsAsync=True, Mode=OneWay, StringFormat=N0, ConverterCulture={x:Static glob:CultureInfo.CurrentCulture}}" 
+                    <Label Content="{Binding AverageEstMarketValue, IsAsync=True, Mode=OneWay, StringFormat=N0, ConverterCulture={x:Static glob:CultureInfo.CurrentCulture}}" 
                            ToolTip="{Binding LastEstimatedUpdateTimeString, IsAsync=True, Mode=OneWay}">
                         <Label.Style>
                             <Style TargetType="{x:Type Label}">
