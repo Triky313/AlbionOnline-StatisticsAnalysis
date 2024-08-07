@@ -1,7 +1,7 @@
 ﻿using StatisticsAnalysisTool.Network.Events;
 using StatisticsAnalysisTool.Network.Manager;
+using StatisticsAnalysisTool.StorageHistory;
 using System.Threading.Tasks;
-using StatisticsAnalysisTool.Models.NetworkModel;
 
 namespace StatisticsAnalysisTool.Network.Handler;
 

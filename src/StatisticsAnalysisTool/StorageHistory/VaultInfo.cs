@@ -1,9 +1,9 @@
-﻿using StatisticsAnalysisTool.Cluster;
-using StatisticsAnalysisTool.GameFileData;
-using System;
+﻿using System;
 using System.Collections.Generic;
+using StatisticsAnalysisTool.Cluster;
+using StatisticsAnalysisTool.GameFileData;
 
-namespace StatisticsAnalysisTool.Models.NetworkModel;
+namespace StatisticsAnalysisTool.StorageHistory;
 
 public class VaultInfo
 {

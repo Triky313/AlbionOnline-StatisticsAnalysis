@@ -1,18 +1,19 @@
 ﻿using StatisticsAnalysisTool.Common.UserSettings;
-using StatisticsAnalysisTool.Models.NetworkModel;
+using StatisticsAnalysisTool.Models;
 using StatisticsAnalysisTool.ViewModels;
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Linq;
 using System.Windows;
 using System.Windows.Data;
 
-namespace StatisticsAnalysisTool.Models.BindingModel;
+namespace StatisticsAnalysisTool.StorageHistory;
 
 public class VaultBindings : BaseViewModel
 {
-    private List<ContainerItem> _vaultContainerContent;
-    private List<Vault> _vaults;
+    private ObservableCollection<ContainerItem> _vaultContainerContent;
+    private ObservableCollection<Vault> _vaults;
     private Vault _vaultSelected;
     private List<VaultContainer> _vaultContainer;
     private VaultContainer _vaultContainerSelected;
@@ -36,7 +37,7 @@ public class VaultBindings : BaseViewModel
         }
     }
 
-    public List<Vault> Vaults
+    public ObservableCollection<Vault> Vaults
     {
         get => _vaults;
         set
@@ -73,14 +74,14 @@ public class VaultBindings : BaseViewModel
         set
         {
             _vaultContainerSelected = value;
-            VaultContainerContent = _vaultContainer?.FirstOrDefault(x => x.Guid == _vaultContainerSelected.Guid)?.Items ?? new List<ContainerItem>();
+            VaultContainerContent = _vaultContainer?.FirstOrDefault(x => x.Guid == _vaultContainerSelected.Guid)?.Items ?? new ObservableCollection<ContainerItem>();
             LastUpdate = _vaultContainerSelected?.LastUpdate ?? new DateTime(0);
             LastUpdateVisibility = _vaultContainerSelected?.LastUpdate.Ticks <= 1 ? Visibility.Hidden : Visibility.Visible;
             OnPropertyChanged();
         }
     }
 
-    public List<ContainerItem> VaultContainerContent
+    public ObservableCollection<ContainerItem> VaultContainerContent
     {
         get => _vaultContainerContent;
         set

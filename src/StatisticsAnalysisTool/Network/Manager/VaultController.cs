@@ -4,6 +4,7 @@ using StatisticsAnalysisTool.Localization;
 using StatisticsAnalysisTool.Models;
 using StatisticsAnalysisTool.Models.NetworkModel;
 using StatisticsAnalysisTool.Properties;
+using StatisticsAnalysisTool.StorageHistory;
 using StatisticsAnalysisTool.ViewModels;
 using System;
 using System.Collections.Generic;
@@ -23,23 +24,11 @@ public class VaultController
     private VaultInfo _currentVaultInfo;
     private readonly List<DiscoveredItem> _discoveredItems = new();
     private readonly List<ItemContainerObject> _vaultContainer = new();
-    private ObservableCollection<Vault> _vault = new();
-
-    private ObservableCollection<Vault> Vaults
-    {
-        get => _vault;
-        set
-        {
-            _vault = value;
-            OnVaultsChange?.Invoke();
-        }
-    }
-
+    
     public VaultController(MainWindowViewModel mainWindowViewModel)
     {
         _mainWindowViewModel = mainWindowViewModel;
-
-        OnVaultsChange += UpdateUi;
+        
         OnVaultsChange += UpdateSearchListUiAsync;
         OnVaultsRemove += UpdateSearchListUiAsync;
     }
@@ -121,11 +110,12 @@ public class VaultController
         {
             _vaultContainer?.Remove(removableContainer);
         }
-
-        _vault.Remove(vault);
+        
+        Application.Current.Dispatcher.Invoke(() =>
+        {
+            _mainWindowViewModel.VaultBindings.Vaults.Remove(vault);
+        });
         OnVaultsRemove?.Invoke();
-
-        UpdateUi();
     }
 
     private void ParseVault()
@@ -135,13 +125,17 @@ public class VaultController
             return;
         }
 
-        var removableVaultInfo = Vaults.FirstOrDefault(x => x.Location == _currentVaultInfo.UniqueClusterName);
+        var removableVaultInfo = _mainWindowViewModel.VaultBindings.Vaults.FirstOrDefault(x => x.Location == _currentVaultInfo.UniqueClusterName);
 
         if (removableVaultInfo != null)
         {
-            Vaults.Remove(removableVaultInfo);
+            Application.Current.Dispatcher.Invoke(() =>
+            {
+                _mainWindowViewModel.VaultBindings.Vaults.Remove(removableVaultInfo);
+            });
         }
 
+        // TODO: Hier Add or update und nicht remove and add
         var vault = new Vault()
         {
             Location = _currentVaultInfo.UniqueClusterName,
@@ -170,7 +164,11 @@ public class VaultController
                 vault.VaultContainer.Add(vaultContainer);
             }
 
-            Vaults.Add(vault);
+            Application.Current.Dispatcher.Invoke(() =>
+            {
+                _mainWindowViewModel.VaultBindings.Vaults.Add(vault);
+            });
+
             OnVaultsChange?.Invoke();
         }
         catch (Exception e)
@@ -205,20 +203,12 @@ public class VaultController
     }
 
     #region Ui
-
-    private void UpdateUi()
-    {
-        Application.Current.Dispatcher.Invoke(() =>
-        {
-            _mainWindowViewModel.VaultBindings.Vaults = Vaults.ToList();
-        });
-    }
-
+    
     private async void UpdateSearchListUiAsync()
     {
         var vaultSearchItem = new List<VaultSearchItem>();
 
-        await foreach (var vault in Vaults.ToList().ToAsyncEnumerable())
+        await foreach (var vault in _mainWindowViewModel.VaultBindings.Vaults.ToList().ToAsyncEnumerable())
         {
             var tempItems = new List<VaultSearchItem>();
 
@@ -326,14 +316,21 @@ public class VaultController
     public async Task LoadFromFileAsync()
     {
         FileController.TransferFileIfExistFromOldPathToUserDataDirectory(Path.Combine(AppDomain.CurrentDomain.BaseDirectory, Settings.Default.VaultsFileName));
-        Vaults = await FileController.LoadAsync<ObservableRangeCollection<Vault>>(
-            Path.Combine(AppDomain.CurrentDomain.BaseDirectory, Settings.Default.UserDataDirectoryName, Settings.Default.VaultsFileName));
+        
+        var vaultDtos = await FileController.LoadAsync<List<VaultDto>>(Path.Combine(AppDomain.CurrentDomain.BaseDirectory, Settings.Default.UserDataDirectoryName, Settings.Default.VaultsFileName));
+        _mainWindowViewModel.VaultBindings.Vaults = new ObservableCollection<Vault>(vaultDtos.Select(StorageHistoryMapping.Mapping));
     }
 
     public async Task SaveInFileAsync()
     {
         DirectoryController.CreateDirectoryWhenNotExists(Path.Combine(AppDomain.CurrentDomain.BaseDirectory, Settings.Default.UserDataDirectoryName));
-        await FileController.SaveAsync(Vaults, Path.Combine(AppDomain.CurrentDomain.BaseDirectory, Settings.Default.UserDataDirectoryName, Settings.Default.VaultsFileName));
+
+        var vaultDtosToSave = _mainWindowViewModel.VaultBindings.Vaults
+            .ToList()
+            .Select(StorageHistoryMapping.Mapping);
+
+        await FileController.SaveAsync(vaultDtosToSave,
+            Path.Combine(AppDomain.CurrentDomain.BaseDirectory, Settings.Default.UserDataDirectoryName, Settings.Default.VaultsFileName));
         Debug.Print("Vault saved");
     }
 
