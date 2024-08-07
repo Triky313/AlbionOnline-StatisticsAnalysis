@@ -293,6 +293,9 @@
     <Resource Include="Assets\preparation_folder.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Resource>
+    <Resource Include="Assets\preparation_folder_steam.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Resource>
     <Resource Include="Assets\purple_glow.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Resource>
@@ -690,6 +693,7 @@
     <None Remove="Assets\pickaxe_premium.png" />
     <None Remove="Assets\pickaxe_repeat.png" />
     <None Remove="Assets\preparation_folder.png" />
+    <None Remove="Assets\preparation_folder_steam.png" />
     <None Remove="Assets\purple_glow.png" />
     <None Remove="Assets\repair_cross.png" />
     <None Remove="Assets\sat-icon.png" />
