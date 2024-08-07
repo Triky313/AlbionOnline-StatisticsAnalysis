@@ -7,7 +7,7 @@
         xmlns:fa5="http://schemas.fontawesome.com/icons/"
         mc:Ignorable="d"
         d:DataContext="{d:DesignInstance Type=viewModels:GameDataPreparationWindowViewModel}"
-        Title="{Binding Title, FallbackValue=TITLE}" Height="350" Width="550" AllowsTransparency="True" WindowStartupLocation="CenterScreen" 
+        Title="{Binding Title, FallbackValue=TITLE}" Height="410" Width="550" AllowsTransparency="True" WindowStartupLocation="CenterScreen" 
         Background="{StaticResource SolidColorBrush.Background.1}" FontSize="{StaticResource BaseFontSize}" 
         WindowStyle="None" 
         ShowInTaskbar="True" 
@@ -30,7 +30,7 @@
         <StackPanel Orientation="Vertical" Margin="0,33,0,0">
             <TextBlock Text="{Binding Message, FallbackValue='MESSAGE'}" FontSize="20" TextAlignment="Center" HorizontalAlignment="Center" 
                        TextWrapping="Wrap" Foreground="{StaticResource SolidColorBrush.Text.1}" Height="60" />
-            <Image Source="../Assets/preparation_folder.png" Height="55" Width="123" Margin="15" />
+            <Image Source="../Assets/preparation_folder.png" Height="134" Width="331" Margin="15" />
             <TextBlock Text="{Binding ErrorMessage, FallbackValue='ERROR_MESSAGE'}" FontSize="20" TextAlignment="Center" HorizontalAlignment="Center" 
                        TextWrapping="Wrap" Foreground="{StaticResource SolidColorBrush.Accent.Red.2}" Height="60" />
             <Button Content="{Binding TranslationSelectMainGameFolder, FallbackValue='SELECT_ALBION_ONLINE_MAIN_GAME_FOLDER...'}" ContentStringFormat="{} {0} " 
