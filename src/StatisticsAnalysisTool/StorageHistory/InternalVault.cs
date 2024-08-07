@@ -1,13 +1,13 @@
-﻿using StatisticsAnalysisTool.Cluster;
-using StatisticsAnalysisTool.GameFileData;
-using System;
+﻿using System;
 using System.Collections.Generic;
+using StatisticsAnalysisTool.Cluster;
+using StatisticsAnalysisTool.GameFileData;
 
-namespace StatisticsAnalysisTool.Models.NetworkModel;
+namespace StatisticsAnalysisTool.StorageHistory;
 
-public class VaultInfo
+public class InternalVault
 {
-    public VaultInfo(long? objectId, string locationGuidString, List<Guid> containerGuidList, List<string> containerNames, List<string> containerIconTags)
+    public InternalVault(long? objectId, string locationGuidString, List<Guid> containerGuidList, List<string> containerNames, List<string> containerIconTags)
     {
         ObjectId = objectId;
         LocationGuidString = locationGuidString;
@@ -24,4 +24,5 @@ public class VaultInfo
     public MapType MapType => WorldData.GetMapType(LocationGuidString);
     public string MainLocationIndex { get; set; }
     public string UniqueClusterName { get; set; }
+    public double RepairCosts { get; set; }
 }

@@ -19,7 +19,7 @@ public class NewEquipmentItemEventHandler : EventPacketHandler<NewEquipmentItemE
     {
         if (_trackingController.IsTrackingAllowedByMainCharacter())
         {
-            _trackingController.VaultController.Add(value.Item);
+            _trackingController.VaultController.AddDiscoveredItem(value.Item);
         }
 
         _trackingController.EntityController.AddEquipmentItem(new EquipmentItemInternal
