@@ -1,4 +1,4 @@
-﻿using StatisticsAnalysisTool.ViewModels;
+using StatisticsAnalysisTool.ViewModels;
 using System;
 using System.Collections.ObjectModel;
 

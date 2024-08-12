@@ -1,4 +1,4 @@
-﻿using StatisticsAnalysisTool.Cluster;
+using StatisticsAnalysisTool.Cluster;
 using System.Collections.Generic;
 
 namespace StatisticsAnalysisTool.StorageHistory;

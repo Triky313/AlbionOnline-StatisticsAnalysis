@@ -1,7 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using StatisticsAnalysisTool.Cluster;
+﻿using StatisticsAnalysisTool.Cluster;
 using StatisticsAnalysisTool.GameFileData;
+using System;
+using System.Collections.Generic;
 
 namespace StatisticsAnalysisTool.StorageHistory;
 

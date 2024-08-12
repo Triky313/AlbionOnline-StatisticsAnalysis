@@ -1,4 +1,4 @@
-﻿using StatisticsAnalysisTool.Cluster;
+using StatisticsAnalysisTool.Cluster;
 using StatisticsAnalysisTool.Common;
 using StatisticsAnalysisTool.Localization;
 using StatisticsAnalysisTool.Models;
@@ -270,7 +270,7 @@ public class VaultController
             _mainWindowViewModel?.VaultBindings?.VaultSearchCollectionView?.Refresh();
         });
     }
-    
+
     #endregion
 
     #region Repair costs calculation

@@ -1,4 +1,4 @@
-﻿using StatisticsAnalysisTool.Common.UserSettings;
+using StatisticsAnalysisTool.Common.UserSettings;
 using StatisticsAnalysisTool.Models;
 using StatisticsAnalysisTool.ViewModels;
 using System;
@@ -23,7 +23,6 @@ public class VaultBindings : BaseViewModel
     private ListCollectionView _vaultCollectionView;
     private List<VaultSearchItem> _vaultSearchList = new();
     private string _searchText;
-    private double _repairCosts;
 
     public VaultBindings()
     {
