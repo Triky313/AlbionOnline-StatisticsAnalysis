@@ -160,7 +160,18 @@ public class VaultController
 
                 Application.Current.Dispatcher.Invoke(() =>
                 {
-                    _vaultBindings.Vaults.Add(vault);
+                    int insertIndex = 0;
+                    for (int i = 0; i < _vaultBindings.Vaults.Count; i++)
+                    {
+                        if (string.Compare(_vaultBindings.Vaults[i].LocationDisplayString, vault.LocationDisplayString, StringComparison.Ordinal) > 0)
+                        {
+                            insertIndex = i;
+                            break;
+                        }
+                        insertIndex = i + 1;
+                    }
+
+                    _vaultBindings.Vaults.Insert(insertIndex, vault);
                 });
             }
             catch (Exception e)
