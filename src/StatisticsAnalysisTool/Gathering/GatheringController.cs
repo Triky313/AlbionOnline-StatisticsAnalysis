@@ -1,4 +1,5 @@
-﻿using StatisticsAnalysisTool.Cluster;
+﻿using Serilog;
+using StatisticsAnalysisTool.Cluster;
 using StatisticsAnalysisTool.Common;
 using StatisticsAnalysisTool.Common.UserSettings;
 using StatisticsAnalysisTool.EstimatedMarketValue;
@@ -10,7 +11,6 @@ using StatisticsAnalysisTool.ViewModels;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Threading;
@@ -276,7 +276,7 @@ public class GatheringController
 
         await FileController.SaveAsync(gatheredToSave,
             Path.Combine(AppDomain.CurrentDomain.BaseDirectory, Settings.Default.UserDataDirectoryName, Settings.Default.GatheringFileName));
-        Debug.Print("Gathering saved");
+        Log.Information("Gathering saved");
     }
 
     public async Task SaveInFileAfterExceedingLimit(int limit)

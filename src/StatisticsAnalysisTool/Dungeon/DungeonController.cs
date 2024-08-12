@@ -727,7 +727,7 @@ public sealed class DungeonController
         DirectoryController.CreateDirectoryWhenNotExists(Path.Combine(AppDomain.CurrentDomain.BaseDirectory, Settings.Default.UserDataDirectoryName));
         var toSaveDungeons = _mainWindowViewModel.DungeonBindings.Dungeons.Select(DungeonMapping.Mapping).ToList();
         await FileController.SaveAsync(toSaveDungeons, Path.Combine(AppDomain.CurrentDomain.BaseDirectory, Settings.Default.UserDataDirectoryName, Settings.Default.DungeonRunsFileName));
-        Debug.Print("Dungeons saved");
+        Log.Information("Dungeons saved");
     }
 
     private async Task SaveInFileAfterExceedingLimit(int limit)

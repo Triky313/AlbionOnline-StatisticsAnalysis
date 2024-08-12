@@ -1,11 +1,11 @@
-﻿using StatisticsAnalysisTool.Common;
+﻿using Serilog;
+using StatisticsAnalysisTool.Common;
 using StatisticsAnalysisTool.Enumerations;
 using StatisticsAnalysisTool.Network.Manager;
 using StatisticsAnalysisTool.Properties;
 using StatisticsAnalysisTool.ViewModels;
 using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
@@ -83,7 +83,7 @@ public class GuildController
             Application.Current.Dispatcher.InvokeAsync(() =>
             {
                 _mainWindowViewModel.GuildBindings.SiphonedEnergyLastUpdate = DateTime.UtcNow;
-                _mainWindowViewModel.GuildBindings.SiphonedEnergyLastUpdateVisibility 
+                _mainWindowViewModel.GuildBindings.SiphonedEnergyLastUpdateVisibility
                     = _mainWindowViewModel.GuildBindings?.SiphonedEnergyLastUpdate.Ticks <= 1 ? Visibility.Hidden : Visibility.Visible;
             });
         }
@@ -166,7 +166,7 @@ public class GuildController
             SiphonedEnergies = _mainWindowViewModel.GuildBindings.SiphonedEnergyList.Select(GuildMapping.Mapping).ToList()
         },
             Path.Combine(AppDomain.CurrentDomain.BaseDirectory, Settings.Default.UserDataDirectoryName, Settings.Default.GuildFileName));
-        Debug.Print("Guild data saved");
+        Log.Information("Guild data saved");
     }
 
     #endregion

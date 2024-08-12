@@ -1,9 +1,9 @@
-﻿using StatisticsAnalysisTool.Common;
+﻿using Serilog;
+using StatisticsAnalysisTool.Common;
 using StatisticsAnalysisTool.Properties;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
@@ -13,7 +13,7 @@ namespace StatisticsAnalysisTool.EstimatedMarketValue;
 public static class EstimatedMarketValueController
 {
     private static ObservableCollection<EstimatedMarketValueObject> _estimatedMarketValueObjects = new();
-    
+
     public static void Add(int itemId, long estimatedMarketValueInternal, ItemQuality quality = ItemQuality.Unknown)
     {
         if (itemId <= 0 || estimatedMarketValueInternal <= 0)
@@ -135,7 +135,7 @@ public static class EstimatedMarketValueController
         DirectoryController.CreateDirectoryWhenNotExists(Path.Combine(AppDomain.CurrentDomain.BaseDirectory, Settings.Default.UserDataDirectoryName));
         await FileController.SaveAsync(_estimatedMarketValueObjects.ToList().Select(EstimatesMarketValueMapping.Mapping),
             Path.Combine(AppDomain.CurrentDomain.BaseDirectory, Settings.Default.UserDataDirectoryName, Settings.Default.EstimatedMarketValueFileName));
-        Debug.Print("Estimated market values saved");
+        Log.Information("Estimated market values saved");
     }
 
     #endregion

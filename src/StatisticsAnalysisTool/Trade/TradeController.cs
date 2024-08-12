@@ -268,7 +268,7 @@ public class TradeController
         DirectoryController.CreateDirectoryWhenNotExists(Path.Combine(AppDomain.CurrentDomain.BaseDirectory, Settings.Default.UserDataDirectoryName));
         await FileController.SaveAsync(_mainWindowViewModel.TradeMonitoringBindings?.Trades?.Select(TradeMapping.Mapping),
             Path.Combine(AppDomain.CurrentDomain.BaseDirectory, Settings.Default.UserDataDirectoryName, Settings.Default.TradesFileName));
-        Debug.Print("Trades saved");
+        Log.Information("Trades saved");
     }
 
     public async Task SaveInFileAfterExceedingLimit(int limit)

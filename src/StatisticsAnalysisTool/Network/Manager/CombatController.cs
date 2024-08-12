@@ -279,7 +279,7 @@ public class CombatController
 
             Spells = spells
         };
-        
+
         await Application.Current.Dispatcher.InvokeAsync(() =>
         {
             damageMeter.Add(damageMeterFragment);
@@ -681,7 +681,7 @@ public class CombatController
         DirectoryController.CreateDirectoryWhenNotExists(Path.Combine(AppDomain.CurrentDomain.BaseDirectory, Settings.Default.UserDataDirectoryName));
         await FileController.SaveAsync(_mainWindowViewModel.DamageMeterBindings?.DamageMeterSnapshots?.Select(SnapshotMapping.Mapping),
             Path.Combine(AppDomain.CurrentDomain.BaseDirectory, Settings.Default.UserDataDirectoryName, Settings.Default.DamageMeterSnapshotsFileName));
-        Debug.Print("Damage Meter snapshots saved");
+        Log.Information("Damage Meter snapshots saved");
     }
 
     #endregion
