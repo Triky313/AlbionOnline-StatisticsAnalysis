@@ -19,7 +19,7 @@ public class NewJournalItemEventHandler : EventPacketHandler<NewJournalItemEvent
     {
         if (_trackingController.IsTrackingAllowedByMainCharacter())
         {
-            _trackingController.VaultController.Add(value.Item);
+            _trackingController.VaultController.AddDiscoveredItem(value.Item);
         }
 
         EstimatedMarketValueController.Add(value.Item.ItemIndex, value.Item.EstimatedMarketValueInternal, value.Item.Quality);

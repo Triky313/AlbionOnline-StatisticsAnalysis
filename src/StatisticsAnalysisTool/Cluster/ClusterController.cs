@@ -72,8 +72,8 @@ public sealed class ClusterController
         _trackingController.CombatController.ResetDamageMeterByClusterChange();
         _trackingController.StatisticController.SetKillsDeathsValues();
         _trackingController.VaultController.ResetDiscoveredItems();
-        _trackingController.VaultController.ResetVaultContainer();
-        _trackingController.VaultController.ResetCurrentVaultInfo();
+        _trackingController.VaultController.ResetInternalVaultContainer();
+        _trackingController.VaultController.ResetCurrentInternalVault();
         _trackingController.TreasureController.RemoveTemporaryTreasures();
         _trackingController.TreasureController.UpdateLootedChestsDashboardUi();
         _trackingController.LootController.ResetLocalPlayerDiscoveredLoot();

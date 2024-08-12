@@ -469,10 +469,6 @@
                                        Foreground="{StaticResource SolidColorBrush.Accent.Red.3}" VerticalAlignment="Center" Margin="0,0,10,0" />
                         </StackPanel>
                     </StackPanel>
-                    <StackPanel Visibility="{Binding RepairCostsChestVisibility}" Orientation="Horizontal">
-                        <Label Content="Current repair costs:" Margin="5,0" />
-                        <Label Content="{Binding RepairCostsChest}" Margin="5,0" />
-                    </StackPanel>
                 </StackPanel>
             </StackPanel>
         </Grid>

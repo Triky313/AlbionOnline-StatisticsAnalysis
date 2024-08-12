@@ -2,9 +2,10 @@
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
                     xmlns:networkModel="clr-namespace:StatisticsAnalysisTool.Models.NetworkModel"
                     xmlns:guild="clr-namespace:StatisticsAnalysisTool.Guild"
-                    xmlns:common="clr-namespace:StatisticsAnalysisTool.Common">
+                    xmlns:common="clr-namespace:StatisticsAnalysisTool.Common"
+                    xmlns:storageHistory="clr-namespace:StatisticsAnalysisTool.StorageHistory">
 
-    <DataTemplate x:Key="LootLogCheck.ContainerItem.Template" DataType="{x:Type networkModel:ContainerItem}">
+    <DataTemplate x:Key="LootLogCheck.ContainerItem.Template" DataType="{x:Type storageHistory:ContainerItem}">
         <Grid Height="80" Width="80" Margin="1">
             <Grid Background="{StaticResource SolidColorBrush.Background.3}">
                 <Image Source="{Binding Item.Icon, IsAsync=True, Mode=OneWay}" Stretch="Fill" VerticalAlignment="Bottom" HorizontalAlignment="Right" />

@@ -1,7 +1,7 @@
 ﻿using StatisticsAnalysisTool.Network.Events;
 using StatisticsAnalysisTool.Network.Manager;
+using StatisticsAnalysisTool.StorageHistory;
 using System.Threading.Tasks;
-using StatisticsAnalysisTool.Models.NetworkModel;
 
 namespace StatisticsAnalysisTool.Network.Handler;
 
@@ -18,7 +18,7 @@ public class BankVaultInfoEventHandler : EventPacketHandler<BankVaultInfoEvent>
     {
         if (_trackingController.IsTrackingAllowedByMainCharacter())
         {
-            _trackingController.VaultController.SetCurrentVault(new VaultInfo(value.ObjectId, value.LocationGuidString, value.VaultGuidList, value.VaultNames, value.IconTags));
+            _trackingController.VaultController.SetCurrentVault(new InternalVault(value.ObjectId, value.LocationGuidString, value.VaultGuidList, value.VaultNames, value.IconTags));
         }
 
         await Task.CompletedTask;
