@@ -20,4 +20,5 @@ public class ItemContainerObject
     public Guid PrivateContainerGuid { get; set; }
     public Guid ContainerGuid { get; set; }
     public List<long> SlotItemIds { get; set; }
+    public double RepairCosts { get; set; }
 }

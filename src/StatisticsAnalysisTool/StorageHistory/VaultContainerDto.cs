@@ -1,13 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace StatisticsAnalysisTool.Models.NetworkModel;
+namespace StatisticsAnalysisTool.StorageHistory;
 
-public class VaultContainer
+public class VaultContainerDto
 {
     public DateTime LastUpdate { get; set; }
     public Guid Guid { get; set; }
     public string Name { get; set; }
     public string Icon { get; set; }
-    public List<ContainerItem> Items { get; set; } = new ();
+    public List<ContainerItemDto> Items { get; set; } = new();
 }

@@ -13,6 +13,7 @@ using StatisticsAnalysisTool.Guild;
 using StatisticsAnalysisTool.Localization;
 using StatisticsAnalysisTool.Network.PacketProviders;
 using StatisticsAnalysisTool.Party;
+using StatisticsAnalysisTool.StorageHistory;
 using StatisticsAnalysisTool.Trade;
 using StatisticsAnalysisTool.Trade.Mails;
 using StatisticsAnalysisTool.Trade.Market;

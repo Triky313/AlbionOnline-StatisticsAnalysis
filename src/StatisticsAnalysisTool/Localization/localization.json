@@ -37274,6 +37274,58 @@
           "seg": "Average est. Market value"
         }
       ]
+    },
+    {
+      "tuid": "STANDALONE_LAUNCHER",
+      "tuv": [
+        {
+          "lang": "de-DE",
+          "seg": "Eigenständiger Launcher"
+        },
+        {
+          "lang": "en-US",
+          "seg": "Standalone Launcher"
+        }
+      ]
+    },
+    {
+      "tuid": "STANDALONE_LAUNCHER_MESSAGE",
+      "tuv": [
+        {
+          "lang": "de-DE",
+          "seg": "Wähle den AlbionOnline Ordner aus, wo du ihn installiert hast. Zum Beispiel unter 'C:\\AlbionOnline'"
+        },
+        {
+          "lang": "en-US",
+          "seg": "Select the AlbionOnline folder where you installed it. For example, under 'C:\\AlbionOnline'"
+        }
+      ]
+    },
+    {
+      "tuid": "STEAM_LAUNCHER",
+      "tuv": [
+        {
+          "lang": "de-DE",
+          "seg": "Steam Launcher"
+        },
+        {
+          "lang": "en-US",
+          "seg": "Steam Launcher"
+        }
+      ]
+    },
+    {
+      "tuid": "STEAM_LAUNCHER_MESSAGE",
+      "tuv": [
+        {
+          "lang": "de-DE",
+          "seg": "Wähle den AlbionOnline Ordner in den steamapps aus. Meistens zu finden unter 'C:\\Program Files\\Steam\\steamapps\\common'"
+        },
+        {
+          "lang": "en-US",
+          "seg": "Select the AlbionOnline folder in the steamapps. Usually found under 'C:\\Program Files\\Steam\\steamapps\\common'"
+        }
+      ]
     }
   ]
 }

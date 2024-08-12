@@ -1,9 +1,10 @@
 ﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
                     xmlns:models="clr-namespace:StatisticsAnalysisTool.Models"
-                    xmlns:networkModel="clr-namespace:StatisticsAnalysisTool.Models.NetworkModel">
+                    xmlns:networkModel="clr-namespace:StatisticsAnalysisTool.Models.NetworkModel"
+                    xmlns:storageHistory="clr-namespace:StatisticsAnalysisTool.StorageHistory">
 
-    <DataTemplate x:Key="ContainerItemTemplate" DataType="{x:Type networkModel:ContainerItem}">
+    <DataTemplate x:Key="ContainerItemTemplate" DataType="{x:Type storageHistory:ContainerItem}">
         <Grid Height="80" Width="80" Margin="1">
             <Grid Background="{StaticResource SolidColorBrush.Background.3}">
                 <Image Source="{Binding Item.Icon, IsAsync=True, Mode=OneWay}" Stretch="Fill" VerticalAlignment="Bottom" HorizontalAlignment="Right" />

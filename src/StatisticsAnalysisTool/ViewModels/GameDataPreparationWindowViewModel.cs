@@ -102,4 +102,8 @@ public class GameDataPreparationWindowViewModel : BaseViewModel
 
     public static string TranslationSelectMainGameFolder => LocalizationController.Translation("SELECT_MAIN_GAME_FOLDER_DOTS");
     public static string TranslationConfirm => LocalizationController.Translation("CONFIRM");
+    public static string TranslationStandaloneLauncher => LocalizationController.Translation("STANDALONE_LAUNCHER");
+    public static string TranslationStandaloneLauncherMessage => LocalizationController.Translation("STANDALONE_LAUNCHER_MESSAGE");
+    public static string TranslationSteamLauncher => LocalizationController.Translation("STEAM_LAUNCHER");
+    public static string TranslationSteamLauncherMessage => LocalizationController.Translation("STEAM_LAUNCHER_MESSAGE");
 }

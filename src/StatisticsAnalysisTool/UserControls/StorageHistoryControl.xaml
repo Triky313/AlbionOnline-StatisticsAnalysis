@@ -21,11 +21,11 @@
 
         <Grid Row="0" Margin="0,0,0,6" Grid.RowSpan="2">
             <StackPanel Orientation="Horizontal" VerticalAlignment="Top" Height="30" Margin="0,0,300,0">
-                <ComboBox Height="26" Width="225" Margin="5,0" ItemsSource="{Binding VaultBindings.Vaults}" IsSynchronizedWithCurrentItem="True"
-                      SelectedValue="{Binding VaultBindings.VaultSelected}" DisplayMemberPath="LocationDisplayString" />
+                <ComboBox Height="26" Width="225" Margin="5,0" ItemsSource="{Binding VaultBindings.Vaults}" IsSynchronizedWithCurrentItem="True" 
+                          SelectedItem="{Binding VaultBindings.VaultSelected}" DisplayMemberPath="LocationDisplayString" />
 
-                <ComboBox Height="26" Width="225" Margin="5,0" ItemsSource="{Binding VaultBindings.VaultContainer}" IsSynchronizedWithCurrentItem="True"
-                      SelectedValue="{Binding VaultBindings.VaultContainerSelected}" DisplayMemberPath="Name" />
+                <ComboBox Height="26" Width="225" Margin="5,0" ItemsSource="{Binding VaultBindings.VaultContainer}" IsSynchronizedWithCurrentItem="True" 
+                          SelectedItem ="{Binding VaultBindings.VaultContainerSelected, IsAsync=True}" DisplayMemberPath="Name" />
             </StackPanel>
             <Button Content="{Binding Translation.DeleteCurrentStorage, FallbackValue=DELETE__CURRENT__STORAGE}" Height="26" MinWidth="200" 
                 Margin="0,3,5,0" HorizontalAlignment="Right" VerticalAlignment="Top" Click="ButtonDeleteCurrentStorage_OnClick" />
@@ -51,6 +51,11 @@
                     </ItemsPanelTemplate>
                 </ItemsControl.ItemsPanel>
             </vwp:VirtualizingItemsControl>
+
+            <StackPanel Orientation="Vertical" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="0,60,0,0">
+                <TextBlock Style="{StaticResource Text.Title.1}" Text="Current repair costs:" Margin="0,0,0,0" />
+                <Label Content="{Binding VaultBindings.VaultContainerSelected.RepairCosts, StringFormat='{}{0:N0}'}" FontSize="16" Margin="2,0,0,0" Padding="0" />
+            </StackPanel>
         </Grid>
 
         <Grid Row="2">
