@@ -362,7 +362,7 @@ public class VaultController
         DirectoryController.CreateDirectoryWhenNotExists(Path.Combine(AppDomain.CurrentDomain.BaseDirectory, Settings.Default.UserDataDirectoryName));
 
         var vaultDtosToSave = _vaultBindings.Vaults
-            .ToList()
+            ?.ToList()
             .Select(StorageHistoryMapping.Mapping);
 
         await FileController.SaveAsync(vaultDtosToSave,
