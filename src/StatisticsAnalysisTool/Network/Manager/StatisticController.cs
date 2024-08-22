@@ -2,7 +2,7 @@
 using LiveChartsCore.Defaults;
 using LiveChartsCore.SkiaSharpView;
 using LiveChartsCore.SkiaSharpView.Painting;
-
+using Serilog;
 using SkiaSharp;
 using StatisticsAnalysisTool.Common;
 using StatisticsAnalysisTool.Models;
@@ -11,14 +11,12 @@ using StatisticsAnalysisTool.ViewModels;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.Diagnostics;
 using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Media;
-using Serilog;
 using ValueType = StatisticsAnalysisTool.Enumerations.ValueType;
 
 namespace StatisticsAnalysisTool.Network.Manager;
@@ -242,22 +240,30 @@ public class StatisticController
     {
         var currentDate = DateTime.Now;
 
-        _mainWindowViewModel.DashboardBindings.RepairCostsToday = _dashboardStatistics?.DailyValues
-            ?.Where(x => x.ValueType == ValueType.RepairCosts
-                         && x.Date.Year == currentDate.Year
-                         && x.Date.Month == currentDate.Month
-                         && x.Date.Day == currentDate.Day)
-            .Sum(x => FixPoint.FromFloatingPointValue(x.Value).IntegerValue) ?? 0;
+        if (_dashboardStatistics?.DailyValues == null)
+        {
+            _mainWindowViewModel.DashboardBindings.RepairCostsToday = 0;
+            _mainWindowViewModel.DashboardBindings.RepairCostsLast7Days = 0;
+            _mainWindowViewModel.DashboardBindings.RepairCostsLast30Days = 0;
+            return;
+        }
 
-        _mainWindowViewModel.DashboardBindings.RepairCostsLast7Days = _dashboardStatistics?.DailyValues
-            ?.Where(x => x.ValueType == ValueType.RepairCosts
-                         && x.Date.Ticks > currentDate.AddDays(-7).Ticks)
-            .Sum(x => FixPoint.FromFloatingPointValue(x.Value).IntegerValue) ?? 0;
+        _mainWindowViewModel.DashboardBindings.RepairCostsToday = _dashboardStatistics.DailyValues
+            .Where(x => x is { ValueType: ValueType.RepairCosts }
+                        && x.Date.Year == currentDate.Year
+                        && x.Date.Month == currentDate.Month
+                        && x.Date.Day == currentDate.Day)
+            .Sum(x => FixPoint.FromFloatingPointValue(x.Value).IntegerValue);
 
-        _mainWindowViewModel.DashboardBindings.RepairCostsLast30Days = _dashboardStatistics?.DailyValues
-            ?.Where(x => x.ValueType == ValueType.RepairCosts
-                         && x.Date.Ticks > currentDate.AddDays(-30).Ticks)
-            .Sum(x => FixPoint.FromFloatingPointValue(x.Value).IntegerValue) ?? 0;
+        _mainWindowViewModel.DashboardBindings.RepairCostsLast7Days = _dashboardStatistics.DailyValues
+            .Where(x => x is { ValueType: ValueType.RepairCosts }
+                        && x.Date.Ticks > currentDate.AddDays(-7).Ticks)
+            .Sum(x => FixPoint.FromFloatingPointValue(x.Value).IntegerValue);
+
+        _mainWindowViewModel.DashboardBindings.RepairCostsLast30Days = _dashboardStatistics.DailyValues
+            .Where(x => x is { ValueType: ValueType.RepairCosts }
+                        && x.Date.Ticks > currentDate.AddDays(-30).Ticks)
+            .Sum(x => FixPoint.FromFloatingPointValue(x.Value).IntegerValue);
     }
 
     #endregion

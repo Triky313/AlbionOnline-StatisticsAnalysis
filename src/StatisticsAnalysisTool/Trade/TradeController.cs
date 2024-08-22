@@ -1,7 +1,7 @@
-﻿using StatisticsAnalysisTool.Cluster;
+﻿using Serilog;
+using StatisticsAnalysisTool.Cluster;
 using StatisticsAnalysisTool.Common;
 using StatisticsAnalysisTool.Common.UserSettings;
-using StatisticsAnalysisTool.Models;
 using StatisticsAnalysisTool.Network.Manager;
 using StatisticsAnalysisTool.Notification;
 using StatisticsAnalysisTool.Properties;
@@ -10,7 +10,6 @@ using StatisticsAnalysisTool.ViewModels;
 using System;
 using System.Collections.Generic;
 using System.Collections.Specialized;
-using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Reflection;
@@ -19,7 +18,6 @@ using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Data;
 using System.Windows.Threading;
-using Serilog;
 
 namespace StatisticsAnalysisTool.Trade;
 
@@ -47,12 +45,48 @@ public class TradeController
 
     public async Task AddTradeToBindingCollectionAsync(Trade trade)
     {
+        if (IsLastTradeTheSame(trade))
+        {
+            return;
+        }
+
         await Application.Current.Dispatcher.InvokeAsync(() =>
         {
             _mainWindowViewModel?.TradeMonitoringBindings?.Trades.Add(trade);
         });
 
         await ServiceLocator.Resolve<SatNotificationManager>().ShowTradeAsync(trade);
+    }
+
+    private Trade _lastAddedTrade;
+
+    private bool IsLastTradeTheSame(Trade trade)
+    {
+        if (_lastAddedTrade is null)
+        {
+            _lastAddedTrade = trade;
+            return false;
+        }
+
+        long ticksDifference = Math.Abs(trade.Ticks - _lastAddedTrade.Ticks);
+
+        if (ticksDifference > 500 * TimeSpan.TicksPerMillisecond)
+        {
+            _lastAddedTrade = null;
+            return false;
+        }
+
+        if (trade.Id == _lastAddedTrade.Id
+            && trade.Guid == _lastAddedTrade.Guid 
+            && trade.Type == _lastAddedTrade.Type 
+            && trade.ItemIndex == _lastAddedTrade.ItemIndex)
+        {
+            _lastAddedTrade = trade;
+            return true;
+        }
+
+        _lastAddedTrade = trade;
+        return false;
     }
 
     public async Task RemoveTradesByIdsAsync(IEnumerable<long> ids)
@@ -118,7 +152,7 @@ public class TradeController
     private long _buildingObjectId = -1;
     private Trade _upcomingTrade;
     private Trade _lastTrade;
-    private readonly HashSet<CraftingBuildingInfo> _craftingBuildingInfos = new ();
+    private readonly HashSet<CraftingBuildingInfo> _craftingBuildingInfos = new();
 
     public void RegisterBuilding(long buildingObjectId)
     {
@@ -210,9 +244,9 @@ public class TradeController
 
     public async Task TradeFinishedAsync(long userObjectId, long buildingObjectId)
     {
-        if (_upcomingTrade == _lastTrade 
-            || _trackingController.EntityController.LocalUserData.UserObjectId != userObjectId 
-            || _upcomingTrade is null 
+        if (_upcomingTrade == _lastTrade
+            || _trackingController.EntityController.LocalUserData.UserObjectId != userObjectId
+            || _upcomingTrade is null
             || _buildingObjectId != buildingObjectId)
         {
             return;
@@ -237,7 +271,7 @@ public class TradeController
                                      "AuctionEntry__AuctionType;AuctionEntry__HasBuyerFetched;AuctionEntry__HasSellerFetched;" +
                                      "AuctionEntry__ItemTypeId;AuctionEntry__EnchantmentLevel;AuctionEntry__QualityLevel;AuctionEntry__Expires;" +
                                      "InstantBuySellContent__UnitPrice;InstantBuySellContent__Quantity;InstantBuySellContent__TaxRate\n";
-            
+
             return csvHeader + string.Join(Environment.NewLine, _mainWindowViewModel?.TradeMonitoringBindings?.Trades.Select(trade => TradeMapping.Mapping(trade).CsvOutput).ToArray() ?? Array.Empty<string>());
         }
         catch (Exception e)
