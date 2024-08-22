@@ -112,7 +112,10 @@
     <DataTemplate x:Key="PartyBuilderPlayerTemplate" DataType="{x:Type party:PartyPlayer}">
         <Grid>
             <StackPanel Orientation="Vertical" Margin="0,0,0,5">
-                <StackPanel Orientation="Vertical" Background="{StaticResource SolidColorBrush.Accent.Blue.5}">
+                <Grid Background="{StaticResource SolidColorBrush.Accent.Blue.5}">
+                    <Grid.InputBindings>
+                        <MouseBinding MouseAction="LeftClick" Command="{Binding ShowSpells}" />
+                    </Grid.InputBindings>
                     <StackPanel Orientation="Horizontal">
                         <Grid Style="{StaticResource PartyBuilder.PlayerInspection.Grid}">
                             <fa5:ImageAwesome Margin="0" Icon="Solid_Eye" Foreground="{StaticResource SolidColorBrush.Accent.Yellow.1}" Style="{StaticResource PartyBuilder.Attention.Icon}" />
@@ -127,7 +130,7 @@
                             <Label Content="{Binding AverageBasicItemPower.ItemPower, IsAsync=True, Mode=OneWay, Converter={StaticResource RoundingConverter}, ConverterParameter=0}" Padding="5,5,10,0" />
                         </StackPanel>
                     </StackPanel>
-                </StackPanel>
+                </Grid>
                 <StackPanel Orientation="Horizontal" Background="{StaticResource SolidColorBrush.Accent.Blue.Transparent.4}">
                     <Image Source="{Binding MainHand.Icon, IsAsync=True, Mode=OneWay}" Style="{StaticResource PartyBuilder.Equipment.Icon}" />
                     <Image Source="{Binding OffHand.Icon, IsAsync=True, Mode=OneWay}" Style="{StaticResource PartyBuilder.Equipment.Icon}" />
@@ -139,12 +142,12 @@
                     <Image Source="{Binding BuffFood.Icon, IsAsync=True, Mode=OneWay}" Style="{StaticResource PartyBuilder.Equipment.Icon}" />
                     <Image Source="{Binding Potion.Icon, IsAsync=True, Mode=OneWay}" Style="{StaticResource PartyBuilder.Equipment.Icon}" />
                 </StackPanel>
-                <!--<StackPanel Orientation="Horizontal">
+                <StackPanel Orientation="Horizontal" Visibility="{Binding SpellsContainerVisibility}" Background="{StaticResource SolidColorBrush.Accent.Blue.Transparent.5}">
                     <ItemsControl ItemsSource="{Binding MainHandSpells}" Width="50">
                         <ItemsControl.ItemTemplate>
                             <DataTemplate>
                                 <StackPanel Orientation="Horizontal">
-                                    <Image Source="{Binding Icon, IsAsync=True, Mode=OneWay}" Style="{StaticResource PartyBuilder.Equipment.Icon}" />
+                                    <Image Source="{Binding Icon, IsAsync=True, Mode=OneWay}" Style="{StaticResource PartyBuilder.Equipment.Icon}" ToolTip="{Binding LocalizationName}" />
                                 </StackPanel>
                             </DataTemplate>
                         </ItemsControl.ItemTemplate>
@@ -153,7 +156,7 @@
                         <ItemsControl.ItemTemplate>
                             <DataTemplate>
                                 <StackPanel Orientation="Horizontal">
-                                    <Image Source="{Binding Icon, IsAsync=True, Mode=OneWay}" Style="{StaticResource PartyBuilder.Equipment.Icon}" />
+                                    <Image Source="{Binding Icon, IsAsync=True, Mode=OneWay}" Style="{StaticResource PartyBuilder.Equipment.Icon}" ToolTip="{Binding LocalizationName}" />
                                 </StackPanel>
                             </DataTemplate>
                         </ItemsControl.ItemTemplate>
@@ -162,7 +165,7 @@
                         <ItemsControl.ItemTemplate>
                             <DataTemplate>
                                 <StackPanel Orientation="Horizontal">
-                                    <Image Source="{Binding Icon, IsAsync=True, Mode=OneWay}" Style="{StaticResource PartyBuilder.Equipment.Icon}" />
+                                    <Image Source="{Binding Icon, IsAsync=True, Mode=OneWay}" Style="{StaticResource PartyBuilder.Equipment.Icon}" ToolTip="{Binding LocalizationName}" />
                                 </StackPanel>
                             </DataTemplate>
                         </ItemsControl.ItemTemplate>
@@ -171,7 +174,7 @@
                         <ItemsControl.ItemTemplate>
                             <DataTemplate>
                                 <StackPanel Orientation="Horizontal">
-                                    <Image Source="{Binding Icon, IsAsync=True, Mode=OneWay}" Style="{StaticResource PartyBuilder.Equipment.Icon}" />
+                                    <Image Source="{Binding Icon, IsAsync=True, Mode=OneWay}" Style="{StaticResource PartyBuilder.Equipment.Icon}" ToolTip="{Binding LocalizationName}" />
                                 </StackPanel>
                             </DataTemplate>
                         </ItemsControl.ItemTemplate>
@@ -180,7 +183,7 @@
                         <ItemsControl.ItemTemplate>
                             <DataTemplate>
                                 <StackPanel Orientation="Horizontal">
-                                    <Image Source="{Binding Icon, IsAsync=True, Mode=OneWay}" Style="{StaticResource PartyBuilder.Equipment.Icon}" />
+                                    <Image Source="{Binding Icon, IsAsync=True, Mode=OneWay}" Style="{StaticResource PartyBuilder.Equipment.Icon}" ToolTip="{Binding LocalizationName}" />
                                 </StackPanel>
                             </DataTemplate>
                         </ItemsControl.ItemTemplate>
@@ -189,7 +192,7 @@
                         <ItemsControl.ItemTemplate>
                             <DataTemplate>
                                 <StackPanel Orientation="Horizontal">
-                                    <Image Source="{Binding Icon, IsAsync=True, Mode=OneWay}" Style="{StaticResource PartyBuilder.Equipment.Icon}" />
+                                    <Image Source="{Binding Icon, IsAsync=True, Mode=OneWay}" Style="{StaticResource PartyBuilder.Equipment.Icon}" ToolTip="{Binding LocalizationName}" />
                                 </StackPanel>
                             </DataTemplate>
                         </ItemsControl.ItemTemplate>
@@ -198,7 +201,7 @@
                         <ItemsControl.ItemTemplate>
                             <DataTemplate>
                                 <StackPanel Orientation="Horizontal">
-                                    <Image Source="{Binding Icon, IsAsync=True, Mode=OneWay}" Style="{StaticResource PartyBuilder.Equipment.Icon}" />
+                                    <Image Source="{Binding Icon, IsAsync=True, Mode=OneWay}" Style="{StaticResource PartyBuilder.Equipment.Icon}" ToolTip="{Binding LocalizationName}" />
                                 </StackPanel>
                             </DataTemplate>
                         </ItemsControl.ItemTemplate>
@@ -207,12 +210,12 @@
                         <ItemsControl.ItemTemplate>
                             <DataTemplate>
                                 <StackPanel Orientation="Horizontal">
-                                    <Image Source="{Binding Icon, IsAsync=True, Mode=OneWay}" Style="{StaticResource PartyBuilder.Equipment.Icon}" />
+                                    <Image Source="{Binding Icon, IsAsync=True, Mode=OneWay}" Style="{StaticResource PartyBuilder.Equipment.Icon}" ToolTip="{Binding LocalizationName}" />
                                 </StackPanel>
                             </DataTemplate>
                         </ItemsControl.ItemTemplate>
                     </ItemsControl>
-                </StackPanel>-->
+                </StackPanel>
             </StackPanel>
             <StackPanel Orientation="Vertical">
                 <Label Content="{Binding LastUpdate}" ToolTip="{Binding TranslationLastUpdate}" HorizontalAlignment="Right" />

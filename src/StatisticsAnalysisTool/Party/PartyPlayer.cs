@@ -4,6 +4,8 @@ using StatisticsAnalysisTool.Models;
 using StatisticsAnalysisTool.ViewModels;
 using System;
 using System.Collections.Generic;
+using System.Windows;
+using System.Windows.Input;
 
 namespace StatisticsAnalysisTool.Party;
 
@@ -36,6 +38,7 @@ public class PartyPlayer : BaseViewModel
     private bool _isPlayerInspected;
     private DateTime _lastUpdate;
     private bool _isDeathAlertActive;
+    private Visibility _spellsContainerVisibility = Visibility.Collapsed;
     public Guid Guid { get; init; }
 
     public string Username
@@ -225,6 +228,28 @@ public class PartyPlayer : BaseViewModel
         }
     }
 
+    public DateTime LastUpdate
+    {
+        get => _lastUpdate;
+        set
+        {
+            _lastUpdate = value;
+            OnPropertyChanged();
+        }
+    }
+
+    public bool IsDeathAlertActive
+    {
+        get => _isDeathAlertActive;
+        set
+        {
+            _isDeathAlertActive = value;
+            OnPropertyChanged();
+        }
+    }
+
+    #region Spells
+
     public IEnumerable<Spell> MainHandSpells
     {
         get => _mainHandSpells;
@@ -305,25 +330,25 @@ public class PartyPlayer : BaseViewModel
         }
     }
 
-    public DateTime LastUpdate
+    public Visibility SpellsContainerVisibility
     {
-        get => _lastUpdate;
+        get => _spellsContainerVisibility;
         set
         {
-            _lastUpdate = value;
+            _spellsContainerVisibility = value;
             OnPropertyChanged();
         }
     }
 
-    public bool IsDeathAlertActive
+    #endregion
+
+    private void PerformShowSpells(object value)
     {
-        get => _isDeathAlertActive;
-        set
-        {
-            _isDeathAlertActive = value;
-            OnPropertyChanged();
-        }
+        SpellsContainerVisibility = SpellsContainerVisibility == Visibility.Visible ? Visibility.Collapsed : Visibility.Visible;
     }
+
+    private ICommand _showSpells;
+    public ICommand ShowSpells => _showSpells ??= new CommandHandler(PerformShowSpells, true);
 
     public static string TranslationItemPower => LocalizationController.Translation("ITEM_POWER");
     public static string TranslationLastUpdate => LocalizationController.Translation("LAST_UPDATE");
