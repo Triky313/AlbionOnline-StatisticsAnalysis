@@ -76,6 +76,11 @@ public partial class SettingsControl
         _settingsWindowViewModel.ResetPlayerSelectionWithSameNameInDb();
     }
 
+    private void ResetBackupStorageDirPath_Click(object sender, RoutedEventArgs e)
+    {
+        _settingsWindowViewModel.ResetBackupStorageDirPath();
+    }
+
     private void ResetPacketFilter_Click(object sender, RoutedEventArgs e)
     {
         _settingsWindowViewModel.ResetPacketFilter();

@@ -61,4 +61,5 @@ public class SettingsWindowTranslation
     public static string AnotherAppToStartPath => LocalizationController.Translation("ANOTHER_APP_TO_START_PATH");
     public static string Party => LocalizationController.Translation("PARTY");
     public static string DeathAlarmSoundUsed => LocalizationController.Translation("DEATH_ALERT_SOUND_USED");
+    public static string BackupStorageDirectoryPath => LocalizationController.Translation("BACKUP_STORAGE_DIRECTORY_PATH");
 }
