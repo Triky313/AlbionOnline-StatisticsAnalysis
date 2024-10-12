@@ -37326,6 +37326,19 @@
           "seg": "Select the AlbionOnline folder in the steamapps. Usually found under 'C:\\Program Files\\Steam\\steamapps\\common'"
         }
       ]
+    },
+    {
+      "tuid": "BACKUP_STORAGE_DIRECTORY_PATH",
+      "tuv": [
+        {
+          "lang": "de-DE",
+          "seg": "Backup Speicherverzeichnis Pfad"
+        },
+        {
+          "lang": "en-US",
+          "seg": "Backup storage directory path"
+        }
+      ]
     }
   ]
 }

@@ -19,6 +19,7 @@ public class SettingsObject
     public string MainTrackingCharacterName { get; set; }
     public int BackupIntervalByDays { get; set; } = 1;
     public int MaximumNumberOfBackups { get; set; } = 10;
+    public string BackupStorageDirectoryPath { get; set; }
     public bool IsOpenItemWindowInNewWindowChecked { get; set; } = true;
     public bool IsInfoWindowShownOnStart { get; set; } = true;
     public string SelectedAlertSound { get; set; }

@@ -7,6 +7,7 @@ using StatisticsAnalysisTool.Models;
 using StatisticsAnalysisTool.Models.TranslationModel;
 using StatisticsAnalysisTool.Network.PacketProviders;
 using StatisticsAnalysisTool.Notification;
+using StatisticsAnalysisTool.Properties;
 using StatisticsAnalysisTool.Views;
 using System;
 using System.Collections.Generic;
@@ -56,6 +57,7 @@ public class SettingsWindowViewModel : BaseViewModel
     private BitmapImage _anotherAppToStartExeIcon;
     private string _packetFilter;
     private Visibility _packetFilterVisibility = Visibility.Collapsed;
+    private string _backupStorageDirectoryPath;
 
     public SettingsWindowViewModel()
     {
@@ -81,6 +83,10 @@ public class SettingsWindowViewModel : BaseViewModel
         // Maximum number of backups
         InitMaxAmountOfBackups(MaximumNumberOfBackups);
         MaximumNumberOfBackupsSelection = MaximumNumberOfBackups.FirstOrDefault(x => x.Value == SettingsController.CurrentSettings.MaximumNumberOfBackups);
+
+        // Backup storage dir path
+        BackupStorageDirectoryPath = string.IsNullOrEmpty(SettingsController.CurrentSettings.BackupStorageDirectoryPath) 
+            ? Path.Combine(AppDomain.CurrentDomain.BaseDirectory, Settings.Default.BackupDirectoryName) : SettingsController.CurrentSettings.BackupStorageDirectoryPath;
 
         // Another app to start path
         AnotherAppToStartPath = SettingsController.CurrentSettings.AnotherAppToStartPath;
@@ -141,6 +147,7 @@ public class SettingsWindowViewModel : BaseViewModel
         SettingsController.CurrentSettings.IsSuggestPreReleaseUpdatesActive = IsSuggestPreReleaseUpdatesActive;
         SettingsController.CurrentSettings.ExactMatchPlayerNamesLineNumber = PlayerSelectionWithSameNameInDb;
 
+        SetBackupStorageDirPathIfExist(BackupStorageDirectoryPath);
         SetAppSettingsAndTranslations();
         SetNaviTabVisibilities(mainWindowViewModel);
         SetNotificationFilter();
@@ -331,6 +338,35 @@ public class SettingsWindowViewModel : BaseViewModel
             ConsoleManager.WriteLineForError(MethodBase.GetCurrentMethod()?.DeclaringType, e);
             Log.Error(e, "{message}", MethodBase.GetCurrentMethod()?.DeclaringType);
         }
+    }
+
+    private void SetBackupStorageDirPathIfExist(string newPath)
+    {
+        if (string.IsNullOrWhiteSpace(newPath))
+        {
+            BackupStorageDirectoryPath = SettingsController.CurrentSettings.BackupStorageDirectoryPath;
+            return;
+        }
+
+        if (!Directory.Exists(newPath))
+        {
+            BackupStorageDirectoryPath = SettingsController.CurrentSettings.BackupStorageDirectoryPath;
+            return;
+        }
+
+        SettingsController.CurrentSettings.BackupStorageDirectoryPath = newPath;
+    }
+
+    public void ResetBackupStorageDirPath()
+    {
+        string defaultPath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, Settings.Default.BackupDirectoryName);
+
+        if (BackupStorageDirectoryPath == defaultPath)
+        {
+            return;
+        }
+
+        BackupStorageDirectoryPath = defaultPath;
     }
 
     #region Inits
@@ -609,6 +645,17 @@ public class SettingsWindowViewModel : BaseViewModel
             OnPropertyChanged();
         }
     }
+
+    public string BackupStorageDirectoryPath
+    {
+        get => _backupStorageDirectoryPath;
+        set
+        {
+            _backupStorageDirectoryPath = value;
+            OnPropertyChanged();
+        }
+    }
+
 
     public SettingDataInformation RefreshRatesSelection
     {

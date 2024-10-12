@@ -5,9 +5,11 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:viewModels="clr-namespace:StatisticsAnalysisTool.ViewModels"
              xmlns:common="clr-namespace:StatisticsAnalysisTool.Common"
+             xmlns:validation="clr-namespace:StatisticsAnalysisTool.Common.Validation"
              mc:Ignorable="d" 
              d:DesignHeight="1600" d:DesignWidth="800"
              d:DataContext="{d:DesignInstance Type=viewModels:SettingsWindowViewModel}">
+
     <Grid IsVisibleChanged="ReloadSettings_OnIsVisibleChanged">
         <Grid Margin="0,0,0,44">
             <ScrollViewer>
@@ -181,6 +183,24 @@
                         <Label Content="{Binding Translation.MaximumNumberOfBackups, FallbackValue=MAXIMUM__NUMBER__OF__BACKUPS}" MinWidth="300" VerticalAlignment="Top" />
                         <ComboBox ItemsSource="{Binding MaximumNumberOfBackups}" SelectedItem="{Binding MaximumNumberOfBackupsSelection}" 
                                   IsSynchronizedWithCurrentItem="True" DisplayMemberPath="Name" SelectedValuePath="Value" HorizontalAlignment="Left" VerticalAlignment="Top" Width="200" Height="26" />
+                    </DockPanel>
+                    <DockPanel Margin="0,5,0,0">
+                        <Label Content="Backup Storage Directory Path" MinWidth="300" VerticalAlignment="Top" />
+                        <StackPanel Orientation="Horizontal" HorizontalAlignment="Left">
+                            <TextBox Height="40" Width="400" TextWrapping="Wrap" VerticalAlignment="Top" Margin="0,0,5,0">
+                                <TextBox.Text>
+                                    <Binding Path="BackupStorageDirectoryPath" UpdateSourceTrigger="PropertyChanged" ValidatesOnExceptions="True" NotifyOnValidationError="True">
+                                        <Binding.ValidationRules>
+                                            <validation:PathValidationRule />
+                                        </Binding.ValidationRules>
+                                    </Binding>
+                                </TextBox.Text>
+                                <TextBox.ToolTip>
+                                    <Binding Path="(Validation.Errors)[0].ErrorContent" RelativeSource="{RelativeSource Self}" />
+                                </TextBox.ToolTip>
+                            </TextBox>
+                            <Button Content="{Binding Translation.Reset, FallbackValue=RESET}" Height="24" MaxWidth="100" VerticalAlignment="Center" Click="ResetBackupStorageDirPath_Click" />
+                        </StackPanel>
                     </DockPanel>
                     <DockPanel Margin="0,5,0,0">
                         <Label MinWidth="300" VerticalAlignment="Top" />
