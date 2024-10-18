@@ -36,7 +36,7 @@ public static class BackupController
 
         _isBackupRunning = true;
         var sourceFolderPath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, Settings.Default.UserDataDirectoryName);
-        var backupDirPath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, Settings.Default.BackupDirectoryName);
+        var backupDirPath = SettingsController.CurrentSettings.BackupStorageDirectoryPath;
 
         if (!DirectoryController.CreateDirectoryWhenNotExists(backupDirPath))
         {
@@ -80,7 +80,7 @@ public static class BackupController
 
     public static bool ExistBackupOnSettingConditions()
     {
-        var backupDirPath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, Settings.Default.BackupDirectoryName);
+        var backupDirPath = SettingsController.CurrentSettings.BackupStorageDirectoryPath;
 
         if (!Directory.Exists(backupDirPath))
         {
@@ -112,7 +112,7 @@ public static class BackupController
 
     public static async Task DeleteOldestBackupsIfNeededAsync()
     {
-        var backupDirPath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, Settings.Default.BackupDirectoryName);
+        var backupDirPath = SettingsController.CurrentSettings.BackupStorageDirectoryPath;
 
         if (!Directory.Exists(backupDirPath))
         {
