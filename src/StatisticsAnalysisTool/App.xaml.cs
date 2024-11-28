@@ -15,6 +15,7 @@ using System;
 using System.IO;
 using System.Reflection;
 using System.Runtime.InteropServices;
+using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Threading;
 
@@ -37,7 +38,9 @@ public partial class App
 
         SystemInfo.LogSystemInfo();
 
-        AppDomain.CurrentDomain.UnhandledException += OnUnhandledException;
+        AppDomain.CurrentDomain.UnhandledException += CurrentDomain_UnhandledException;
+        TaskScheduler.UnobservedTaskException += TaskScheduler_UnobservedTaskException;
+        DispatcherUnhandledException += Application_DispatcherUnhandledException;
 
         await AutoUpdateController.AutoUpdateAsync();
 
@@ -112,25 +115,53 @@ public partial class App
         ServiceLocator.Register<TrackingController>(_trackingController);
     }
 
-    private static void OnUnhandledException(object sender, UnhandledExceptionEventArgs e)
+    private static void CurrentDomain_UnhandledException(object sender, UnhandledExceptionEventArgs e)
     {
         try
         {
-            Log.Fatal(e.ExceptionObject as Exception, "{message}", MethodBase.GetCurrentMethod()?.DeclaringType);
+            if (e.ExceptionObject is Exception exception)
+            {
+                Log.Fatal(exception, "Unhandled exception in {Source}", MethodBase.GetCurrentMethod()?.DeclaringType);
+            }
+            else
+            {
+                Log.Fatal("Unhandled exception object: {ExceptionObject} in {Source}", e.ExceptionObject, MethodBase.GetCurrentMethod()?.DeclaringType);
+            }
         }
         catch (Exception ex)
         {
-            Log.Fatal(ex, "{message}", MethodBase.GetCurrentMethod()?.DeclaringType);
+            Log.Fatal(ex, "Error during unhandled exception logging in {Source}", MethodBase.GetCurrentMethod()?.DeclaringType);
+        }
+        finally
+        {
+            Log.CloseAndFlush();
         }
     }
 
-    // Fixes a issue in the WPF clipboard handler.
-    // It is necessary to handle the unhandled exception in the Application.DispatcherUnhandledException event.
+    private void TaskScheduler_UnobservedTaskException(object sender, UnobservedTaskExceptionEventArgs e)
+    {
+        Log.Fatal(e.Exception, "Unhandled exception in TaskScheduler");
+        e.SetObserved();
+    }
+
     private void Application_DispatcherUnhandledException(object sender, DispatcherUnhandledExceptionEventArgs e)
     {
+        // Fixes a issue in the WPF clipboard handler.
+        // It is necessary to handle the unhandled exception in the Application.DispatcherUnhandledException event.
         if (e.Exception is COMException { ErrorCode: -2147221040 })
         {
             e.Handled = true;
+            return;
+        }
+
+        try
+        {
+            Log.Fatal(e.Exception, "Unhandled exception in UI thread");
+        }
+        finally
+        {
+            Log.CloseAndFlush();
+            e.Handled = false;
         }
     }
 
