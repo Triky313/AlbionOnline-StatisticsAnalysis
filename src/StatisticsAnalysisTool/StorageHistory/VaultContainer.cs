@@ -12,6 +12,7 @@ public class VaultContainer : BaseViewModel
     private string _icon;
     private ObservableCollection<ContainerItem> _items = new();
     private double _repairCosts;
+    private double _totalValue;
 
     public DateTime LastUpdate
     {
@@ -69,6 +70,16 @@ public class VaultContainer : BaseViewModel
         set
         {
             _repairCosts = value;
+            OnPropertyChanged();
+        }
+    }
+
+    public double TotalValue
+    {
+        get => _totalValue;
+        set
+        {
+            _totalValue = value;
             OnPropertyChanged();
         }
     }

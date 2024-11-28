@@ -26,10 +26,11 @@
                 <TextBlock TextWrapping="Wrap" Text="{Binding LocalizedNameAndEnglish}" />
                 <StackPanel Orientation="Horizontal">
                     <Image Source="../Resources/silver.png" Width="12" Height="12" ToolTip="{Binding TranslationEstMarketValue, IsAsync=True, Mode=OneWay}" />
-                    <Label Content="{Binding AverageEstMarketValue, IsAsync=True, Mode=OneWay, StringFormat=N0, ConverterCulture={x:Static glob:CultureInfo.CurrentCulture}}" 
-                           ToolTip="{Binding LastEstimatedUpdateTimeString, IsAsync=True, Mode=OneWay}">
-                        <Label.Style>
-                            <Style TargetType="{x:Type Label}">
+                    <TextBlock Text="{Binding AverageEstMarketValue, IsAsync=True, Mode=OneWay, StringFormat='{}{0:N0}', ConverterCulture={x:Static glob:CultureInfo.CurrentCulture}}" 
+                               ToolTip="{Binding LastEstimatedUpdateTimeString, IsAsync=True, Mode=OneWay}">
+                        <TextBlock.Style>
+                            <Style TargetType="{x:Type TextBlock}">
+                                <Setter Property="Margin" Value="5,0,0,0"/>
                                 <Setter Property="Foreground" Value="{StaticResource SolidColorBrush.Text.6}"/>
                                 <Style.Triggers>
                                     <DataTrigger Binding="{Binding EstimatedMarketValueStatus, IsAsync=True}" Value="{x:Static enum:PastTime.VeryVeryOld}">
@@ -55,8 +56,8 @@
                                     </DataTrigger>
                                 </Style.Triggers>
                             </Style>
-                        </Label.Style>
-                    </Label>
+                        </TextBlock.Style>
+                    </TextBlock>
                 </StackPanel>
             </StackPanel>
         </Grid>

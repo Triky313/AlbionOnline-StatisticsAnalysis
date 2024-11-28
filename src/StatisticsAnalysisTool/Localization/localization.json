@@ -37339,6 +37339,45 @@
           "seg": "Backup storage directory path"
         }
       ]
+    },
+    {
+      "tuid": "CURRENT_REPAIR_COSTS",
+      "tuv": [
+        {
+          "lang": "de-DE",
+          "seg": "Aktuelle Reparaturkosten"
+        },
+        {
+          "lang": "en-US",
+          "seg": "Current repair costs"
+        }
+      ]
+    },
+    {
+      "tuid": "SHOW_TOTAL_AVG_PRICES_ON_ITEM",
+      "tuv": [
+        {
+          "lang": "de-DE",
+          "seg": "Durchschn. Gesamtpreis auf Item anzeigen"
+        },
+        {
+          "lang": "en-US",
+          "seg": "Show total avg prices on Item"
+        }
+      ]
+    },
+    {
+      "tuid": "TOTAL_CHEST_VALUE",
+      "tuv": [
+        {
+          "lang": "de-DE",
+          "seg": "Gesamter Truhenwert"
+        },
+        {
+          "lang": "en-US",
+          "seg": "Total chest value"
+        }
+      ]
     }
   ]
 }
