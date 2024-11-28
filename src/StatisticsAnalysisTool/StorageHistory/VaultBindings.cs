@@ -7,6 +7,7 @@ using System.Collections.ObjectModel;
 using System.Linq;
 using System.Windows;
 using System.Windows.Data;
+using StatisticsAnalysisTool.Enumerations;
 
 namespace StatisticsAnalysisTool.StorageHistory;
 
@@ -23,6 +24,8 @@ public class VaultBindings : BaseViewModel
     private ListCollectionView _vaultCollectionView;
     private List<VaultSearchItem> _vaultSearchList = new();
     private string _searchText;
+    private bool _isAveragePricesDisplayedOnItem;
+    private double _totalContainerValue;
 
     public VaultBindings()
     {
@@ -82,7 +85,19 @@ public class VaultBindings : BaseViewModel
         set
         {
             _vaultContainerSelected = value;
-            VaultContainerContent = _vaultContainer?.FirstOrDefault(x => x.Guid == _vaultContainerSelected?.Guid)?.Items ?? new ObservableCollection<ContainerItem>();
+            VaultContainerContent = new ObservableCollection<ContainerItem>(
+                (_vaultContainer?.FirstOrDefault(x => x.Guid == _vaultContainerSelected?.Guid)?.Items ?? new ObservableCollection<ContainerItem>())
+                .Select(containerItem =>
+                {
+                    containerItem.AveragePricesDisplayedOnItemVisibility = 
+                        IsAveragePricesDisplayedOnItem 
+                        && containerItem.Item?.EstimatedMarketValueStatus is PastTime.New or PastTime.AlmostNew or PastTime.LittleNew or PastTime.BitOld or PastTime.Old or PastTime.VeryOld or PastTime.VeryVeryOld
+                            ? Visibility.Visible
+                            : Visibility.Collapsed;
+                    return containerItem;
+                }));
+
+            TotalContainerValue = VaultContainerContent.Sum(x => x.TotalAvgEstMarketValue);
             LastUpdate = _vaultContainerSelected?.LastUpdate ?? new DateTime(0);
             LastUpdateVisibility = _vaultContainerSelected?.LastUpdate.Ticks <= 1 ? Visibility.Hidden : Visibility.Visible;
             OnPropertyChanged();
@@ -115,6 +130,38 @@ public class VaultBindings : BaseViewModel
         set
         {
             _vaultSearchList = value;
+            OnPropertyChanged();
+        }
+    }
+
+    public bool IsAveragePricesDisplayedOnItem
+    {
+        get => _isAveragePricesDisplayedOnItem;
+        set
+        {
+            _isAveragePricesDisplayedOnItem = value;
+            foreach (ContainerItem containerItem in VaultContainerContent ?? new ObservableCollection<ContainerItem>())
+            {
+                if (IsAveragePricesDisplayedOnItem 
+                    && containerItem.Item?.EstimatedMarketValueStatus is PastTime.New or PastTime.AlmostNew or PastTime.LittleNew or PastTime.BitOld or PastTime.Old or PastTime.VeryOld or PastTime.VeryVeryOld)
+                {
+                    containerItem.AveragePricesDisplayedOnItemVisibility = Visibility.Visible;
+                }
+                else
+                {
+                    containerItem.AveragePricesDisplayedOnItemVisibility = Visibility.Collapsed;
+                }
+            }
+            OnPropertyChanged();
+        }
+    }
+
+    public double TotalContainerValue
+    {
+        get => _totalContainerValue;
+        set
+        {
+            _totalContainerValue = value;
             OnPropertyChanged();
         }
     }

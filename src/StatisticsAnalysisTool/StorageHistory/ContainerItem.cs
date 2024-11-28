@@ -1,4 +1,5 @@
-﻿using StatisticsAnalysisTool.Common;
+﻿using System.Windows;
+using StatisticsAnalysisTool.Common;
 using StatisticsAnalysisTool.Models;
 using StatisticsAnalysisTool.ViewModels;
 
@@ -8,6 +9,7 @@ public class ContainerItem : BaseViewModel
 {
     private int _itemIndex;
     private int _quantity;
+    private Visibility _averagePricesDisplayedOnItemVisibility = Visibility.Collapsed;
 
     public int ItemIndex
     {
@@ -28,5 +30,18 @@ public class ContainerItem : BaseViewModel
             OnPropertyChanged();
         }
     }
+    
+    public Visibility AveragePricesDisplayedOnItemVisibility
+    {
+        get => _averagePricesDisplayedOnItemVisibility;
+        set
+        {
+            _averagePricesDisplayedOnItemVisibility = value;
+            OnPropertyChanged();
+        }
+    }
+
     public Item Item => ItemController.GetItemByIndex(ItemIndex);
+
+    public double TotalAvgEstMarketValue => Quantity * Item?.AverageEstMarketValue ?? 0;
 }
