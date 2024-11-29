@@ -606,8 +606,12 @@ public sealed class DungeonController
                 {
                     return;
                 }
-
+                
                 var uniqueItemName = ItemController.GetUniqueNameByIndex(discoveredItem.ItemIndex);
+                if (uniqueItemName.Contains("SILVERBAG"))
+                {
+                    return;
+                }
 
                 dun.Loot.Add(new Loot()
                 {
