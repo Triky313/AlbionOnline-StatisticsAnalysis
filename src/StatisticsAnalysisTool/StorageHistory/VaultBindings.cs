@@ -8,6 +8,8 @@ using System.Linq;
 using System.Windows;
 using System.Windows.Data;
 using StatisticsAnalysisTool.Enumerations;
+using StatisticsAnalysisTool.Common;
+using System.Windows.Media.Media3D;
 
 namespace StatisticsAnalysisTool.StorageHistory;
 
@@ -26,6 +28,7 @@ public class VaultBindings : BaseViewModel
     private string _searchText;
     private bool _isAveragePricesDisplayedOnItem;
     private double _totalContainerValue;
+    private double _totalWeight;
 
     public VaultBindings()
     {
@@ -98,6 +101,7 @@ public class VaultBindings : BaseViewModel
                 }));
 
             TotalContainerValue = VaultContainerContent.Sum(x => x.TotalAvgEstMarketValue);
+            TotalWeight = VaultContainerContent.Sum(x => x.TotalWeight);
             LastUpdate = _vaultContainerSelected?.LastUpdate ?? new DateTime(0);
             LastUpdateVisibility = _vaultContainerSelected?.LastUpdate.Ticks <= 1 ? Visibility.Hidden : Visibility.Visible;
             OnPropertyChanged();
@@ -162,6 +166,16 @@ public class VaultBindings : BaseViewModel
         set
         {
             _totalContainerValue = value;
+            OnPropertyChanged();
+        }
+    }
+
+    public double TotalWeight
+    {
+        get => _totalWeight;
+        set
+        {
+            _totalWeight = value;
             OnPropertyChanged();
         }
     }

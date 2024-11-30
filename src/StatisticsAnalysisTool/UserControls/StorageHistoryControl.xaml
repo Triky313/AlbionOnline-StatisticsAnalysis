@@ -58,6 +58,11 @@
                 <TextBlock Text="{Binding VaultBindings.TotalContainerValue, StringFormat='{}{0:N0}', ConverterCulture={x:Static gl:CultureInfo.CurrentCulture}}" 
                            FontSize="16" Margin="2,0,0,10" Padding="0" Foreground="{StaticResource SolidColorBrush.Text.1}" />
 
+                <TextBlock Style="{StaticResource Text.Title.1}" Text="{Binding Translation.TotalWeight, FallbackValue=TOTAL__WEIGHT}" 
+                           Margin="0,0,0,0" TextWrapping="Wrap" MaxWidth="190" />
+                <TextBlock Text="{Binding VaultBindings.TotalWeight, StringFormat='{}{0:N0}', ConverterCulture={x:Static gl:CultureInfo.CurrentCulture}}" 
+                           FontSize="16" Margin="2,0,0,10" Padding="0" Foreground="{StaticResource SolidColorBrush.Text.1}" />
+
                 <TextBlock Style="{StaticResource Text.Title.1}" Text="{Binding Translation.CurrentRepairCosts, FallbackValue=CURRENT__REPAIR__COSTS}" 
                            Margin="0,0,0,0" TextWrapping="Wrap" MaxWidth="190" />
                 <TextBlock Text="{Binding VaultBindings.VaultContainerSelected.RepairCosts, StringFormat='{}{0:N0}', ConverterCulture={x:Static gl:CultureInfo.CurrentCulture}}" 
