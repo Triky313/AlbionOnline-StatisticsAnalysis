@@ -37378,6 +37378,19 @@
           "seg": "Total chest value"
         }
       ]
+    },
+    {
+      "tuid": "TOTAL_WEIGHT",
+      "tuv": [
+        {
+          "lang": "de-DE",
+          "seg": "Gesamtgewicht"
+        },
+        {
+          "lang": "en-US",
+          "seg": "Total weight"
+        }
+      ]
     }
   ]
 }

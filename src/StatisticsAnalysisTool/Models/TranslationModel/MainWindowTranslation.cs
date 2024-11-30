@@ -115,4 +115,5 @@ public class MainWindowTranslation
     public static string CurrentRepairCosts => LocalizationController.Translation("CURRENT_REPAIR_COSTS");
     public static string ShowTotalAvgPricesOnItem => LocalizationController.Translation("SHOW_TOTAL_AVG_PRICES_ON_ITEM");
     public static string TotalChestValue => LocalizationController.Translation("TOTAL_CHEST_VALUE");
+    public static string TotalWeight => LocalizationController.Translation("TOTAL_WEIGHT");
 }

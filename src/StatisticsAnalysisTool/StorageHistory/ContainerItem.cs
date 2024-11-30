@@ -1,4 +1,5 @@
 ﻿using System.Windows;
+using System.Windows.Media.Media3D;
 using StatisticsAnalysisTool.Common;
 using StatisticsAnalysisTool.Models;
 using StatisticsAnalysisTool.ViewModels;
@@ -44,4 +45,5 @@ public class ContainerItem : BaseViewModel
     public Item Item => ItemController.GetItemByIndex(ItemIndex);
 
     public double TotalAvgEstMarketValue => Quantity * Item?.AverageEstMarketValue ?? 0;
+    public double TotalWeight => Quantity * ItemController.GetWeight(Item?.FullItemInformation);
 }
