@@ -1,12 +1,13 @@
-﻿using System;
+﻿using Serilog;
+using StatisticsAnalysisTool.Common;
+using StatisticsAnalysisTool.Enumerations;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Net;
 using System.Net.Sockets;
 using System.Reflection;
-using Serilog;
-using StatisticsAnalysisTool.Common;
 
 namespace StatisticsAnalysisTool.Network.PacketProviders;
 
@@ -17,7 +18,7 @@ public class SocketsPacketProvider : PacketProvider
     private readonly List<IPAddress> _gateways = new();
     private byte[] _byteData = new byte[65000];
     private bool _stopReceiving;
-    
+
     public SocketsPacketProvider(IPhotonReceiver photonReceiver)
     {
         _photonReceiver = photonReceiver ?? throw new ArgumentNullException(nameof(photonReceiver));
@@ -86,6 +87,27 @@ public class SocketsPacketProvider : PacketProvider
         Socket socket = (Socket) ar.AsyncState;
         socket?.EndReceive(ar);
 
+        try
+        {
+            int bytesReceived = socket?.EndReceive(ar) ?? 0;
+            if (bytesReceived <= 0)
+            {
+                ConsoleManager.WriteLineForMessage(MethodBase.GetCurrentMethod()?.DeclaringType, "No data received.", ConsoleColorType.ErrorColor);
+                return;
+            }
+        }
+        catch (SocketException ex)
+        {
+            ConsoleManager.WriteLineForError(MethodBase.GetCurrentMethod()?.DeclaringType, ex);
+            return;
+        }
+        catch (ObjectDisposedException ex)
+        {
+            ConsoleManager.WriteLineForError(MethodBase.GetCurrentMethod()?.DeclaringType, ex);
+            return;
+        }
+
+
         using (MemoryStream buffer = new MemoryStream(_byteData))
         {
             using BinaryReader read = new BinaryReader(buffer);
@@ -137,7 +159,7 @@ public class SocketsPacketProvider : PacketProvider
             socket?.BeginReceive(_byteData, 0, _byteData.Length, SocketFlags.None, OnReceive, socket);
         }
     }
-    
+
     private static bool IsSocketActive(Socket socket)
     {
         bool part1 = socket.Poll(1000, SelectMode.SelectRead);
