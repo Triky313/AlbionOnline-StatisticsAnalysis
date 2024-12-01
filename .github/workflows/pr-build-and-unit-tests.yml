@@ -19,7 +19,7 @@ jobs:
     if: "!contains(github.event.head_commit.message, '--wip')"
     strategy:
       matrix:
-        configuration: [Debug, Release]
+        configuration: [Release]
     runs-on: windows-2022
     env:
       Solution_Name: StatisticsAnalysisTool.sln
@@ -37,6 +37,5 @@ jobs:
     - name: 🛠 dotnet build
       run: dotnet build src\StatisticsAnalysisTool --no-restore
 
-    - name: 🧪 Execute unit tests (Only debug)
-      if: ${{ matrix.configuration == 'Debug' }}
+    - name: 🧪 Execute unit tests
       run: dotnet test $env:Test_Project_Path
