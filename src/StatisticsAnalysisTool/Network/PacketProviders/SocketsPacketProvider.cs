@@ -85,7 +85,6 @@ public class SocketsPacketProvider : PacketProvider
         }
 
         Socket socket = (Socket) ar.AsyncState;
-        socket?.EndReceive(ar);
 
         try
         {
