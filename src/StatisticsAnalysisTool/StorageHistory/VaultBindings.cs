@@ -29,6 +29,7 @@ public class VaultBindings : BaseViewModel
     private bool _isAveragePricesDisplayedOnItem;
     private double _totalContainerValue;
     private double _totalWeight;
+    private double _totalVaultValue;
 
     public VaultBindings()
     {
@@ -63,6 +64,7 @@ public class VaultBindings : BaseViewModel
                 _vaultSelected?.VaultContainer?.FindAll(x => x?.LastUpdate.Ticks > 0).OrderBy(y => y.Name).ToList() ??
                 new List<VaultContainer>()
             );
+
             OnPropertyChanged();
         }
     }
@@ -101,6 +103,7 @@ public class VaultBindings : BaseViewModel
                 }));
 
             TotalContainerValue = VaultContainerContent.Sum(x => x.TotalAvgEstMarketValue);
+            TotalVaultValue = VaultSelected.VaultContainer.SelectMany(x => x.Items).Sum(x => x.TotalAvgEstMarketValue);
             TotalWeight = VaultContainerContent.Sum(x => x.TotalWeight);
             LastUpdate = _vaultContainerSelected?.LastUpdate ?? new DateTime(0);
             LastUpdateVisibility = _vaultContainerSelected?.LastUpdate.Ticks <= 1 ? Visibility.Hidden : Visibility.Visible;
@@ -166,6 +169,16 @@ public class VaultBindings : BaseViewModel
         set
         {
             _totalContainerValue = value;
+            OnPropertyChanged();
+        }
+    }
+
+    public double TotalVaultValue
+    {
+        get => _totalVaultValue;
+        set
+        {
+            _totalVaultValue = value;
             OnPropertyChanged();
         }
     }

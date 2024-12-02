@@ -37391,6 +37391,19 @@
           "seg": "Total weight"
         }
       ]
+    },
+    {
+      "tuid": "TOTAL_BANK_VALUE",
+      "tuv": [
+        {
+          "lang": "de-DE",
+          "seg": "Gesamter Bankwert"
+        },
+        {
+          "lang": "en-US",
+          "seg": "Total bank value"
+        }
+      ]
     }
   ]
 }
