@@ -19,14 +19,14 @@ public class GuildVaultInfoEvent
 
         try
         {
-            if (parameters.ContainsKey(0))
+            if (parameters.TryGetValue(0, out object objectId))
             {
-                ObjectId = parameters[0].ObjectToLong();
+                ObjectId = objectId.ObjectToLong();
             }
 
-            if (parameters.ContainsKey(1))
+            if (parameters.TryGetValue(1, out object locationGuid))
             {
-                LocationGuidString = parameters[1].ToString();
+                LocationGuidString = locationGuid.ToString();
             }
 
             if (parameters.ContainsKey(2) && parameters[2] != null)

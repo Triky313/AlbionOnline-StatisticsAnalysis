@@ -35,7 +35,7 @@ public class LootController : ILootController
         _mainWindowViewModel = mainWindowViewModel;
 
 #if DEBUG
-        _ = AddTestLootNotificationsAsync(30);
+        _ = AddTestLootNotificationsAsync(0);
 #endif
     }
 
@@ -50,6 +50,94 @@ public class LootController : ILootController
     }
 
     public event Action<string, int> OnAddLoot;
+
+    #region Loot comparator
+
+    public async Task AddLootedItemAsync(Loot loot)
+    {
+        if (loot == null || loot.IsSilver)
+        {
+            return;
+        }
+
+        if (SettingsController.CurrentSettings.IsTrackingPartyLootOnly
+            && !_trackingController.EntityController.IsEntityInParty(loot.LootedByName)
+            && !_trackingController.EntityController.IsEntityInParty(loot.LootedFromName))
+        {
+            return;
+        }
+
+        if (!_mainWindowViewModel.LoggingBindings.IsTrackingMobLoot && loot.LootedFromName.ToUpper().Equals("MOB"))
+        {
+            return;
+        }
+
+        if (IsLastLootedItem(loot))
+        {
+            return;
+        }
+
+        _lastLootedItem = loot;
+
+        var lootedByUser = _trackingController.EntityController.GetEntity(loot.LootedByName);
+        var lootedFromUser = _trackingController.EntityController.GetEntity(loot.LootedFromName);
+
+        var player = _mainWindowViewModel.LoggingBindings.LootingPlayers.FirstOrDefault(x => x.PlayerName == loot.LootedByName);
+        if (player is not null)
+        {
+            player.LootedItems.Add(new LootedItem()
+            {
+                ItemIndex = loot.ItemIndex,
+                Quantity = loot.Quantity,
+                LootedByName = loot.LootedByName,
+                LootedFromName = loot.LootedFromName,
+                LootedFromGuild = lootedFromUser?.Value?.Guild,
+                IsTrash = loot.IsTrash,
+                Status = GetLootedItemStatus(loot.ItemIndex, loot.Quantity, loot.LootedByName, loot.LootedFromName)
+            });
+        }
+        else
+        {
+            _mainWindowViewModel.LoggingBindings.LootingPlayers.Add(new LootingPlayer()
+            {
+                PlayerName = loot.LootedByName,
+                PlayerGuild = lootedByUser?.Value?.Guild,
+                PlayerAlliance = lootedByUser?.Value?.Alliance,
+                LootedItems = new ObservableCollection<LootedItem>()
+                {
+                    new ()
+                    {
+                        ItemIndex = loot.ItemIndex,
+                        Quantity = loot.Quantity,
+                        LootedByName = loot.LootedByName,
+                        LootedFromName = loot.LootedFromName,
+                        LootedFromGuild = lootedFromUser?.Value?.Guild,
+                        IsTrash = loot.IsTrash,
+                        Status = GetLootedItemStatus(loot.ItemIndex, loot.Quantity, loot.LootedByName, loot.LootedFromName)
+                    }
+                }
+            });
+        }
+
+        await Task.CompletedTask;
+    }
+
+    public LootedItemStatus GetLootedItemStatus(int itemIndex, int quantity, string lootedByName, string lootedFromName)
+    {
+        var hashCode = HashCode.Combine(itemIndex, quantity, lootedByName, lootedFromName);
+        var status = LootedItemStatus.Unknown;
+
+        var vault = _trackingController.VaultController.GetCurrentVault();
+
+        return status;
+    }
+
+    public void UpdateVault()
+    {
+        _mainWindowViewModel.LoggingBindings.CurrentVault = _trackingController.VaultController.GetCurrentVault();
+    }
+
+    #endregion
 
     public async Task AddLootAsync(Loot loot)
     {
@@ -300,7 +388,7 @@ public class LootController : ILootController
 
     private static readonly Random Random = new(DateTime.Now.Millisecond);
 
-    private async Task AddTestLootNotificationsAsync(int notificationCounter, int delay = 10000)
+    private async Task AddTestLootNotificationsAsync(int notificationCounter, int delay = 5000)
     {
         await Task.Delay(delay);
         for (var i = 0; i < notificationCounter; i++)
@@ -318,6 +406,16 @@ public class LootController : ILootController
                 IsTrash = ItemController.IsTrash(randomItem.Index),
                 ItemIndex = randomItem.Index,
                 LootedByName = TestMethods.GenerateName(3),
+                IsSilver = false,
+                Quantity = Random.Next(1, 250)
+            });
+
+            await AddLootedItemAsync(new Loot()
+            {
+                LootedFromName = TestMethods.GenerateName(4),
+                IsTrash = ItemController.IsTrash(randomItem.Index),
+                ItemIndex = randomItem.Index,
+                LootedByName = TestMethods.GenerateName(1),
                 IsSilver = false,
                 Quantity = Random.Next(1, 250)
             });

@@ -73,6 +73,7 @@ public class MainWindowTranslation
     public static string Party => LocalizationController.Translation("PARTY");
     public static string StorageHistory => LocalizationController.Translation("STORAGE_HISTORY");
     public static string Logging => LocalizationController.Translation("LOGGING");
+    public static string LootComparator => LocalizationController.Translation("LOOT_COMPARATOR");
     public static string TrackingIsActive => LocalizationController.Translation("TRACKING_IS_ACTIVE");
     public static string TrackingIsPartiallyActive => LocalizationController.Translation("TRACKING_IS_PARTIALLY_ACTIVE");
     public static string TrackingIsNotActive => LocalizationController.Translation("TRACKING_IS_NOT_ACTIVE");

@@ -4,6 +4,7 @@ using StatisticsAnalysisTool.Common;
 using StatisticsAnalysisTool.Localization;
 using StatisticsAnalysisTool.Models;
 using StatisticsAnalysisTool.Models.NetworkModel;
+using StatisticsAnalysisTool.Network.Manager;
 using StatisticsAnalysisTool.Properties;
 using StatisticsAnalysisTool.ViewModels;
 using System;
@@ -19,14 +20,16 @@ namespace StatisticsAnalysisTool.StorageHistory;
 
 public class VaultController
 {
+    private readonly TrackingController _trackingController;
     private readonly MainWindowViewModel _mainWindowViewModel;
     private InternalVault _currentInternalVault;
     private readonly List<DiscoveredItem> _discoveredItems = new();
     private readonly List<ItemContainerObject> _internalItemContainers = new();
     private readonly VaultBindings _vaultBindings;
 
-    public VaultController(MainWindowViewModel mainWindowViewModel)
+    public VaultController(TrackingController trackingController, MainWindowViewModel mainWindowViewModel)
     {
+        _trackingController = trackingController;
         _mainWindowViewModel = mainWindowViewModel;
         _vaultBindings = _mainWindowViewModel.VaultBindings;
 
@@ -343,6 +346,39 @@ public class VaultController
         {
             ConsoleManager.WriteLineForError(MethodBase.GetCurrentMethod()?.DeclaringType, e);
         }
+    }
+
+    #endregion
+
+    #region Vault Data
+
+    public Vault GetCurrentVault()
+    {
+        if (_currentInternalVault == null)
+        {
+            return new Vault();
+        }
+
+        var vault = new Vault()
+        {
+            Location = _currentInternalVault.UniqueClusterName,
+            MainLocationIndex = _currentInternalVault.MainLocationIndex,
+            MapType = _currentInternalVault.MapType
+        };
+
+        try
+        {
+            var vaultContainers = PreparationVaultContainerForUi(_internalItemContainers);
+            vault.VaultContainer.AddRange(vaultContainers);
+
+            return vault;
+        }
+        catch (Exception e)
+        {
+            ConsoleManager.WriteLineForError(MethodBase.GetCurrentMethod()?.DeclaringType, e);
+        }
+
+        return new Vault();
     }
 
     #endregion

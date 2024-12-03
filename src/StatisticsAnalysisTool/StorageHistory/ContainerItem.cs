@@ -1,8 +1,7 @@
-﻿using System.Windows;
-using System.Windows.Media.Media3D;
-using StatisticsAnalysisTool.Common;
+﻿using StatisticsAnalysisTool.Common;
 using StatisticsAnalysisTool.Models;
 using StatisticsAnalysisTool.ViewModels;
+using System.Windows;
 
 namespace StatisticsAnalysisTool.StorageHistory;
 
@@ -31,7 +30,7 @@ public class ContainerItem : BaseViewModel
             OnPropertyChanged();
         }
     }
-    
+
     public Visibility AveragePricesDisplayedOnItemVisibility
     {
         get => _averagePricesDisplayedOnItemVisibility;
