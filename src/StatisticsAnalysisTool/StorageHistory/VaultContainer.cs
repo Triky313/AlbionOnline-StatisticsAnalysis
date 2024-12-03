@@ -13,6 +13,7 @@ public class VaultContainer : BaseViewModel
     private ObservableCollection<ContainerItem> _items = new();
     private double _repairCosts;
     private double _totalValue;
+    private bool _isGuildContainer;
 
     public DateTime LastUpdate
     {
@@ -80,6 +81,16 @@ public class VaultContainer : BaseViewModel
         set
         {
             _totalValue = value;
+            OnPropertyChanged();
+        }
+    }
+
+    public bool IsGuildContainer
+    {
+        get => _isGuildContainer;
+        set
+        {
+            _isGuildContainer = value;
             OnPropertyChanged();
         }
     }
