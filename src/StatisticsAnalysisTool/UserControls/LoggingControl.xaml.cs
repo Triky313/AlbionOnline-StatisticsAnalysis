@@ -1,8 +1,10 @@
 ﻿using StatisticsAnalysisTool.Common;
 using StatisticsAnalysisTool.Network.Manager;
+using StatisticsAnalysisTool.StorageHistory;
 using StatisticsAnalysisTool.ViewModels;
 using System.Diagnostics;
 using System.Windows;
+using System.Windows.Controls;
 using System.Windows.Input;
 using System.Windows.Navigation;
 
@@ -31,10 +33,29 @@ public partial class LoggingControl
         var mainWindowViewModel = ServiceLocator.Resolve<MainWindowViewModel>();
         mainWindowViewModel?.ExportLootToFile();
     }
-
-    private void Hyperlink_RequestNavigate(object sender, RequestNavigateEventArgs e)
+    
+    private void BtnLoadVaultLogFiles_Click(object sender, RoutedEventArgs e)
     {
-        Process.Start(new ProcessStartInfo { FileName = e.Uri.AbsoluteUri, UseShellExecute = true });
+        var mainWindowViewModel = ServiceLocator.Resolve<MainWindowViewModel>();
+        mainWindowViewModel?.LoggingBindings?.OpenVaultFilePathSelection();
+    }
+
+    private void BtnLogCompare_Click(object sender, RoutedEventArgs e)
+    {
+        var mainWindowViewModel = ServiceLocator.Resolve<MainWindowViewModel>();
+        mainWindowViewModel?.LoggingBindings?.UpdateItemsStatus();
+    }
+
+    private void BtnClearVaultLogItems_Click(object sender, RoutedEventArgs e)
+    {
+        var mainWindowViewModel = ServiceLocator.Resolve<MainWindowViewModel>();
+        mainWindowViewModel?.LoggingBindings?.VaultLogItems.Clear();
+    }
+
+    private void BtnClearLootLogs_Click(object sender, RoutedEventArgs e)
+    {
+        var mainWindowViewModel = ServiceLocator.Resolve<MainWindowViewModel>();
+        mainWindowViewModel?.LoggingBindings?.LootingPlayers.Clear();
     }
 
     #endregion

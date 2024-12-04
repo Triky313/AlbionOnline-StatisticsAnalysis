@@ -4,7 +4,6 @@ using StatisticsAnalysisTool.Common;
 using StatisticsAnalysisTool.Localization;
 using StatisticsAnalysisTool.Models;
 using StatisticsAnalysisTool.Models.NetworkModel;
-using StatisticsAnalysisTool.Network.Manager;
 using StatisticsAnalysisTool.Properties;
 using StatisticsAnalysisTool.ViewModels;
 using System;
@@ -20,16 +19,14 @@ namespace StatisticsAnalysisTool.StorageHistory;
 
 public class VaultController
 {
-    private readonly TrackingController _trackingController;
     private readonly MainWindowViewModel _mainWindowViewModel;
     private InternalVault _currentInternalVault;
     private readonly List<DiscoveredItem> _discoveredItems = new();
     private readonly List<ItemContainerObject> _internalItemContainers = new();
     private readonly VaultBindings _vaultBindings;
 
-    public VaultController(TrackingController trackingController, MainWindowViewModel mainWindowViewModel)
+    public VaultController(MainWindowViewModel mainWindowViewModel)
     {
-        _trackingController = trackingController;
         _mainWindowViewModel = mainWindowViewModel;
         _vaultBindings = _mainWindowViewModel.VaultBindings;
 
@@ -68,7 +65,7 @@ public class VaultController
             _currentInternalVault = internalVault;
         }
     }
-    
+
     public void SetOrAddCurrentGuildVault(InternalVault internalVault)
     {
         if (internalVault == null)
@@ -88,16 +85,16 @@ public class VaultController
 
         if (_currentInternalVault is not null && _currentInternalVault.CompareLocationGuidStringTails(internalVault.LocationGuidString))
         {
-            _currentInternalVault.GuildContainerGuidList = internalVault.ContainerGuidList;
-            _currentInternalVault.GuildContainerIconTags = internalVault.ContainerIconTags;
-            _currentInternalVault.GuildContainerNames = internalVault.ContainerNames;
+            _currentInternalVault.GuildContainerGuidList = internalVault.GuildContainerGuidList;
+            _currentInternalVault.GuildContainerIconTags = internalVault.GuildContainerIconTags;
+            _currentInternalVault.GuildContainerNames = internalVault.GuildContainerNames;
         }
         else
         {
             _currentInternalVault = internalVault;
         }
     }
-    
+
     public void AddContainer(ItemContainerObject newContainerObject)
     {
         if (newContainerObject?.PrivateContainerGuid == default)
@@ -406,40 +403,7 @@ public class VaultController
     }
 
     #endregion
-
-    #region Vault Data
-
-    public Vault GetCurrentVault()
-    {
-        if (_currentInternalVault == null)
-        {
-            return new Vault();
-        }
-
-        var vault = new Vault()
-        {
-            Location = _currentInternalVault.UniqueClusterName,
-            MainLocationIndex = _currentInternalVault.MainLocationIndex,
-            MapType = _currentInternalVault.MapType
-        };
-
-        try
-        {
-            var vaultContainers = PreparationVaultContainerForUi(_internalItemContainers);
-            vault.VaultContainer.AddRange(vaultContainers);
-
-            return vault;
-        }
-        catch (Exception e)
-        {
-            ConsoleManager.WriteLineForError(MethodBase.GetCurrentMethod()?.DeclaringType, e);
-        }
-
-        return new Vault();
-    }
-
-    #endregion
-
+    
     #region Load / Save local file data
 
     public async Task LoadFromFileAsync()

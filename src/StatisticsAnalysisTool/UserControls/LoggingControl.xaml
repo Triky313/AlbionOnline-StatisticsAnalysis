@@ -118,9 +118,17 @@
                             <CheckBox IsChecked="{Binding LoggingBindings.IsShowingOthers, FallbackValue=true}" 
                                       Content="{Binding LoggingBindings.Translation.Others, FallbackValue=OTHERS}" />
                         </StackPanel>
-                        <ListBox ItemsSource="{Binding LoggingBindings.CurrentVault.VaultContainer}" Width="200"
-                                 SelectionMode="Extended" DisplayMemberPath="Name" SelectedValuePath="Guid" SelectedValue="{Binding LoggingBindings.SelectedContainers}"/>
-                        <Button Height="25" Padding="5,0,5,0" Content="Compare to Chests" />
+                        
+                        <StackPanel Orientation="Horizontal">
+                            <StackPanel Orientation="Vertical">
+                                <Button Height="25" Margin="10,0,0,5" Content=" Upload Chest file " VerticalAlignment="Top" Click="BtnLoadVaultLogFiles_Click" />
+                                <Button Height="25" Margin="10,0,0,5" Content=" Compare logs " VerticalAlignment="Top" Click="BtnLogCompare_Click" />
+                            </StackPanel>
+                            <StackPanel Orientation="Vertical">
+                                <Button Style="{StaticResource Style.Button.Attention}" Height="25" Margin="10,0,0,5" Content=" Delete chest logs " VerticalAlignment="Top" Click="BtnClearVaultLogItems_Click" />
+                                <Button Style="{StaticResource Style.Button.Attention}" Height="25" Margin="10,0,0,5" Content=" Delete loot logs " VerticalAlignment="Top" Click="BtnClearLootLogs_Click" />
+                            </StackPanel>
+                        </StackPanel>
                     </StackPanel>
                     <Separator Background="{StaticResource SolidColorBrush.Background.3}" Height="4" Margin="0,100,0,0" VerticalAlignment="Top"/>
                     <vwp:VirtualizingItemsControl ItemsSource="{Binding LoggingBindings.LootingPlayersCollectionView, IsAsync=True, Mode=OneWay}" Margin="0,102,0,0"

@@ -35,7 +35,7 @@ public class LootController : ILootController
         _mainWindowViewModel = mainWindowViewModel;
 
 #if DEBUG
-        _ = AddTestLootNotificationsAsync(0);
+        _ = AddTestLootNotificationsAsync(10);
 #endif
     }
 
@@ -92,8 +92,7 @@ public class LootController : ILootController
                 LootedByName = loot.LootedByName,
                 LootedFromName = loot.LootedFromName,
                 LootedFromGuild = lootedFromUser?.Value?.Guild,
-                IsTrash = loot.IsTrash,
-                Status = GetLootedItemStatus(loot.ItemIndex, loot.Quantity, loot.LootedByName, loot.LootedFromName)
+                IsTrash = loot.IsTrash
             });
         }
         else
@@ -112,8 +111,7 @@ public class LootController : ILootController
                         LootedByName = loot.LootedByName,
                         LootedFromName = loot.LootedFromName,
                         LootedFromGuild = lootedFromUser?.Value?.Guild,
-                        IsTrash = loot.IsTrash,
-                        Status = GetLootedItemStatus(loot.ItemIndex, loot.Quantity, loot.LootedByName, loot.LootedFromName)
+                        IsTrash = loot.IsTrash
                     }
                 }
             });
@@ -121,22 +119,7 @@ public class LootController : ILootController
 
         await Task.CompletedTask;
     }
-
-    public LootedItemStatus GetLootedItemStatus(int itemIndex, int quantity, string lootedByName, string lootedFromName)
-    {
-        var hashCode = HashCode.Combine(itemIndex, quantity, lootedByName, lootedFromName);
-        var status = LootedItemStatus.Unknown;
-
-        var vault = _trackingController.VaultController.GetCurrentVault();
-
-        return status;
-    }
-
-    public void UpdateVault()
-    {
-        _mainWindowViewModel.LoggingBindings.CurrentVault = _trackingController.VaultController.GetCurrentVault();
-    }
-
+    
     #endregion
 
     public async Task AddLootAsync(Loot loot)

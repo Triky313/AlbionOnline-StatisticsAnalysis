@@ -1,17 +1,22 @@
-﻿using StatisticsAnalysisTool.Common.UserSettings;
+﻿using Ookii.Dialogs.Wpf;
+using StatisticsAnalysisTool.Common;
+using StatisticsAnalysisTool.Common.UserSettings;
 using StatisticsAnalysisTool.EventLogging.Notification;
+using StatisticsAnalysisTool.Localization;
 using StatisticsAnalysisTool.Models.TranslationModel;
 using StatisticsAnalysisTool.ViewModels;
+using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Diagnostics;
+using System.Globalization;
+using System.IO;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Data;
-using StatisticsAnalysisTool.Common;
-using StatisticsAnalysisTool.StorageHistory;
 
 namespace StatisticsAnalysisTool.EventLogging;
 
@@ -27,7 +32,7 @@ public class LoggingBindings : BaseViewModel
     private ListCollectionView _topLootersCollectionView;
     private ListCollectionView _lootingPlayersCollectionView;
     private ObservableCollection<LootingPlayer> _lootingPlayers = new();
-    private LoggingTranslation _translation = new ();
+    private LoggingTranslation _translation = new();
     private CancellationTokenSource _cancellationTokenSource = new();
     private bool _isShowingLost = true;
     private bool _isShowingResolved = true;
@@ -45,8 +50,7 @@ public class LoggingBindings : BaseViewModel
     private bool _isShowingPotion = true;
     private bool _isShowingMount = true;
     private bool _isShowingOthers = true;
-    private Vault _currentVault = new ();
-    private ObservableCollection<VaultContainer> _selectedContainers = new ();
+    private ObservableCollection<VaultContainerLogItem> _vaultLogItems = new();
 
     public void Init()
     {
@@ -114,6 +118,214 @@ public class LoggingBindings : BaseViewModel
         });
     }
 
+    #region Loot comparator
+
+    public void UpdateItemsStatus()
+    {
+        // Remove all Vault items
+        foreach (var player in LootingPlayers)
+        {
+            var itemsToRemove = player.LootedItems.Where(item => item.IsItemFromVaultLog).ToList();
+            foreach (var item in itemsToRemove)
+            {
+                player.LootedItems.Remove(item);
+            }
+        }
+
+        foreach (VaultContainerLogItem logItem in VaultLogItems)
+        {
+            var lootingPlayer = LootingPlayers.FirstOrDefault(x => x.PlayerName == logItem.PlayerName);
+            var vaultLogLocalizedItem = ItemController.GetItemByLocalizedName(logItem.LocalizedName, logItem.Enchantment);
+
+            if (vaultLogLocalizedItem is null)
+            {
+                continue;
+            }
+
+            var vaultLogItem = new LootedItem()
+            {
+                UtcPickupTime = logItem.Timestamp,
+                ItemIndex = vaultLogLocalizedItem.Index,
+                IsItemFromVaultLog = true,
+                IsTrash = vaultLogLocalizedItem.ShopShopSubCategory1 == ShopSubCategory.Trash,
+                LootedByName = logItem.PlayerName,
+                Quantity = logItem.Quantity
+            };
+
+            if (lootingPlayer is not null)
+            {
+                var newItems = new List<LootedItem>();
+                if (lootingPlayer.LootedItems.Count <= 0)
+                {
+                    newItems.Add(new LootedItem
+                    {
+                        UtcPickupTime = logItem.Timestamp,
+                        ItemIndex = vaultLogLocalizedItem.Index,
+                        IsItemFromVaultLog = true,
+                        IsTrash = vaultLogLocalizedItem.ShopShopSubCategory1 == ShopSubCategory.Trash,
+                        LootedByName = logItem.PlayerName,
+                        Quantity = logItem.Quantity,
+                        Status = LootedItemStatus.Donated
+                    });
+                }
+                else
+                {
+                    foreach (LootedItem lootedItem in lootingPlayer.LootedItems)
+                    {
+                        if (lootedItem.GetHashCode() == vaultLogItem.GetHashCode())
+                        {
+                            lootedItem.Status = LootedItemStatus.Resolved;
+                        }
+                        else
+                        {
+                            newItems.Add(new LootedItem
+                            {
+                                UtcPickupTime = logItem.Timestamp,
+                                ItemIndex = vaultLogLocalizedItem.Index,
+                                IsItemFromVaultLog = true,
+                                IsTrash = vaultLogLocalizedItem.ShopShopSubCategory1 == ShopSubCategory.Trash,
+                                LootedByName = logItem.PlayerName,
+                                Quantity = logItem.Quantity,
+                                Status = LootedItemStatus.Donated
+                            });
+                        }
+                    }
+                }
+
+                foreach (var newItem in newItems)
+                {
+                    lootingPlayer.LootedItems.Add(newItem);
+                }
+            }
+            else
+            {
+                LootingPlayers.Add(new LootingPlayer()
+                {
+                    PlayerName = logItem.PlayerName,
+                    LootingPlayerVisibility = Visibility.Visible,
+                    LootedItems = new ObservableCollection<LootedItem>
+                    {
+                        new ()
+                        {
+                            UtcPickupTime = logItem.Timestamp,
+                            ItemIndex = vaultLogLocalizedItem.Index,
+                            IsItemFromVaultLog = true,
+                            IsTrash = vaultLogLocalizedItem.ShopShopSubCategory1 == ShopSubCategory.Trash,
+                            LootedByName = logItem.PlayerName,
+                            Quantity = logItem.Quantity,
+                            Status = LootedItemStatus.Donated
+                        }
+                    }
+                });
+            }
+        }
+
+        MarkLostItems(LootingPlayers);
+    }
+
+    private void MarkLostItems(ObservableCollection<LootingPlayer> lootingPlayers)
+    {
+        var itemOwnerMap = new Dictionary<int, LootingPlayer>();
+
+        foreach (var player in lootingPlayers)
+        {
+            foreach (var item in player.LootedItems)
+            {
+                itemOwnerMap[item.GetHashCode()] = player;
+            }
+        }
+
+        foreach (var player in lootingPlayers)
+        {
+            foreach (var item in player.LootedItems)
+            {
+                if (itemOwnerMap.ContainsKey(item.GetHashCode()))
+                {
+                    var originalOwner = itemOwnerMap[item.GetHashCode()];
+
+                    if (originalOwner != player)
+                    {
+                        item.Status = LootedItemStatus.Lost;
+                    }
+                }
+            }
+        }
+    }
+
+    public void OpenVaultFilePathSelection()
+    {
+        var dialog = new VistaOpenFileDialog()
+        {
+            Filter = @"CSV files (*.csv)|*.csv",
+            Title = LocalizationController.Translation("SELECT_CHEST_LOG_FILES"),
+            Multiselect = true
+        };
+
+        var result = dialog.ShowDialog();
+
+        if (result.HasValue && result.Value)
+        {
+            List<VaultContainerLogItem> items = new List<VaultContainerLogItem>();
+
+            foreach (var filePath in dialog.FileNames)
+            {
+                try
+                {
+                    var lines = File.ReadAllLines(filePath);
+                    var parsedItems = lines.Skip(1).Select(ParseCsvLine).Where(item => item != null).ToList();
+                    items.AddRange(parsedItems);
+                }
+                catch (Exception ex)
+                {
+                    Debug.Print($"Fehler beim Verarbeiten von Datei '{filePath}': {ex.Message}");
+                }
+            }
+
+            VaultLogItems = new ObservableCollection<VaultContainerLogItem>(items.Where(x => x.Quantity > 0));
+
+            Debug.Print($"Insgesamt {VaultLogItems.Count} Einträge erfolgreich geladen.");
+        }
+    }
+
+    private VaultContainerLogItem ParseCsvLine(string line)
+    {
+        try
+        {
+            var values = line.Split('\t');
+
+            if (values.Length != 6)
+            {
+                return null;
+            }
+
+            for (int i = 0; i < values.Length; i++)
+            {
+                values[i] = values[i].Trim('"');
+            }
+
+            if (values[5].Length <= 0)
+            {
+                return null;
+            }
+
+            return new VaultContainerLogItem
+            {
+                Timestamp = DateTime.ParseExact(values[0], "dd/MM/yyyy HH:mm:ss", CultureInfo.InvariantCulture),
+                PlayerName = values[1],
+                LocalizedName = values[2],
+                Enchantment = int.Parse(values[3]),
+                Quality = int.Parse(values[4]),
+                Quantity = int.Parse(values[5])
+            };
+        }
+        catch
+        {
+            return null;
+        }
+    }
+
+    #endregion
+
     #region Bindings
 
     public ObservableCollection<LootingPlayer> LootingPlayers
@@ -136,22 +348,12 @@ public class LoggingBindings : BaseViewModel
         }
     }
 
-    public Vault CurrentVault
+    public ObservableCollection<VaultContainerLogItem> VaultLogItems
     {
-        get => _currentVault;
+        get => _vaultLogItems;
         set
         {
-            _currentVault = value;
-            OnPropertyChanged();
-        }
-    }
-
-    public ObservableCollection<VaultContainer> SelectedContainers
-    {
-        get => _selectedContainers;
-        set
-        {
-            _selectedContainers = value;
+            _vaultLogItems = value;
             OnPropertyChanged();
         }
     }
@@ -444,7 +646,10 @@ public class LoggingBindings : BaseViewModel
         try
         {
             var filteredLootedItems = await Task.Run(ParallelLootedItemsFilterProcess, _cancellationTokenSource.Token);
-            LootingPlayersCollectionView = CollectionViewSource.GetDefaultView(filteredLootedItems) as ListCollectionView;
+            SetPlayerVisibility(filteredLootedItems);
+
+            var filteredAndOrderedLootedItems = filteredLootedItems.OrderByDescending(d => d.PlayerName).ToList();
+            LootingPlayersCollectionView = CollectionViewSource.GetDefaultView(filteredAndOrderedLootedItems) as ListCollectionView;
         }
         catch (TaskCanceledException)
         {
@@ -463,7 +668,7 @@ public class LoggingBindings : BaseViewModel
             {
                 state.Stop();
             }
-            
+
             foreach (var lootedItem in lootingPlayer.LootedItems.ToList())
             {
                 lootedItem.Visibility = Filter(lootedItem) ? Visibility.Visible : Visibility.Collapsed;
@@ -475,13 +680,33 @@ public class LoggingBindings : BaseViewModel
             }
         });
 
-        return result.OrderByDescending(d => d.PlayerName).ToList();
+        return result.ToList();
+    }
+
+    public void SetPlayerVisibility(List<LootingPlayer> lootingPlayers)
+    {
+        foreach (LootingPlayer lootingPlayer in lootingPlayers)
+        {
+            if (lootingPlayer.LootedItems.Count > 0 && lootingPlayer.LootedItems.All(x => x.Visibility != Visibility.Visible))
+            {
+                lootingPlayer.LootingPlayerVisibility = Visibility.Collapsed;
+            }
+            else if (lootingPlayer.LootedItems.Count <= 0)
+            {
+                lootingPlayer.LootingPlayerVisibility = Visibility.Collapsed;
+            }
+            else
+            {
+                lootingPlayer.LootingPlayerVisibility = Visibility.Visible;
+            }
+        }
     }
 
     private bool Filter(LootedItem lootedItem)
     {
         bool isStatusOkay = false;
         bool isTierOkay = false;
+        bool isTypeOkay = false;
 
         if (IsStatusOkay(lootedItem))
         {
@@ -495,10 +720,10 @@ public class LoggingBindings : BaseViewModel
 
         if (IsTypeOkay(lootedItem))
         {
-            isTierOkay = true;
+            isTypeOkay = true;
         }
 
-        return isStatusOkay && isTierOkay;
+        return isStatusOkay && isTierOkay && isTypeOkay;
     }
 
     private bool IsStatusOkay(LootedItem lootedItem)
@@ -514,6 +739,11 @@ public class LoggingBindings : BaseViewModel
         }
 
         if (_isShowingDonated && lootedItem.Status == LootedItemStatus.Donated)
+        {
+            return true;
+        }
+
+        if (lootedItem.Status == LootedItemStatus.Unknown)
         {
             return true;
         }
@@ -558,6 +788,11 @@ public class LoggingBindings : BaseViewModel
 
     private bool IsTypeOkay(LootedItem lootedItem)
     {
+        if (lootedItem.Item.ShopCategory is ShopCategory.Armor or ShopCategory.Melee or ShopCategory.Ranged or ShopCategory.Magic or ShopCategory.GatheringGear or ShopCategory.OffHand)
+        {
+            return true;
+        }
+
         if (_isShowingFood && lootedItem.Item.ShopCategory == ShopCategory.Consumables && lootedItem.Item.ShopShopSubCategory1 is ShopSubCategory.Fish or ShopSubCategory.Cooked)
         {
             return true;
@@ -573,7 +808,9 @@ public class LoggingBindings : BaseViewModel
             return true;
         }
 
-        if (_isShowingOthers && lootedItem.Item.ShopCategory == ShopCategory.Other)
+        if (_isShowingOthers && lootedItem.Item.ShopCategory is ShopCategory.Other or ShopCategory.Artifact or ShopCategory.CityResources or ShopCategory.Farmable or ShopCategory.Furniture
+            or ShopCategory.Labourers or ShopCategory.Products or ShopCategory.Materials or ShopCategory.LuxuryGoods or ShopCategory.Resources or ShopCategory.SkillBooks or ShopCategory.Token
+            or ShopCategory.Trophies or ShopCategory.Tools or ShopCategory.Unknown)
         {
             return true;
         }
@@ -582,7 +819,7 @@ public class LoggingBindings : BaseViewModel
         {
             return true;
         }
-        
+
         if (_isShowingCape && lootedItem.Item.ShopCategory == ShopCategory.Accessories && lootedItem.Item.ShopShopSubCategory1 == ShopSubCategory.Cape)
         {
             return true;

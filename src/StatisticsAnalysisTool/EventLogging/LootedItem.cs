@@ -9,7 +9,7 @@ namespace StatisticsAnalysisTool.EventLogging;
 public class LootedItem : BaseViewModel
 {
     private int _itemIndex;
-    private readonly DateTime _utcPickupTime;
+    private DateTime _utcPickupTime;
     private int _quantity;
     private string _lootedByName;
     private string _lootedFromName;
@@ -17,6 +17,7 @@ public class LootedItem : BaseViewModel
     private bool _isTrash;
     private LootedItemStatus _status = LootedItemStatus.Unknown;
     private Visibility _visibility = Visibility.Visible;
+    private bool _isItemFromVaultLog;
 
     public LootedItem()
     {
@@ -36,7 +37,7 @@ public class LootedItem : BaseViewModel
     public DateTime UtcPickupTime
     {
         get => _utcPickupTime;
-        private init
+        set
         {
             _utcPickupTime = value;
             OnPropertyChanged();
@@ -103,6 +104,16 @@ public class LootedItem : BaseViewModel
         }
     }
 
+    public bool IsItemFromVaultLog
+    {
+        get => _isItemFromVaultLog;
+        set
+        {
+            _isItemFromVaultLog = value;
+            OnPropertyChanged();
+        }
+    }
+
     public Visibility Visibility
     {
         get => _visibility;
@@ -115,7 +126,7 @@ public class LootedItem : BaseViewModel
     
     public override int GetHashCode()
     {
-        return HashCode.Combine(ItemIndex, Quantity, LootedByName, LootedFromName);
+        return HashCode.Combine(ItemIndex, Quantity, LootedByName);
     }
 
     public bool IsLootedFromGuildEmpty => string.IsNullOrEmpty(LootedFromGuild);

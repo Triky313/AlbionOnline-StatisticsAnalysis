@@ -70,7 +70,7 @@ public class TrackingController : ITrackingController
         MailController = new MailController(this, mainWindowViewModel);
         MarketController = new MarketController(this);
         TradeController = new TradeController(this, mainWindowViewModel);
-        VaultController = new VaultController(this, mainWindowViewModel);
+        VaultController = new VaultController(mainWindowViewModel);
         GatheringController = new GatheringController(this, mainWindowViewModel);
         PartyController = new PartyController(this, mainWindowViewModel);
         GuildController = new GuildController(this, mainWindowViewModel);

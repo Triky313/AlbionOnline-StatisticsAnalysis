@@ -1,8 +1,10 @@
-﻿using StatisticsAnalysisTool.Cluster;
+﻿using System;
+using StatisticsAnalysisTool.Cluster;
 using StatisticsAnalysisTool.GameFileData;
 using StatisticsAnalysisTool.Localization;
 using StatisticsAnalysisTool.ViewModels;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace StatisticsAnalysisTool.StorageHistory;
 
@@ -12,6 +14,7 @@ public class Vault : BaseViewModel
     private string _mainLocationIndex;
     private MapType _mapType;
     private List<VaultContainer> _vaultContainer = new();
+    private List<Guid> _vaultContainerGuids;
 
     public string Location
     {
@@ -52,7 +55,7 @@ public class Vault : BaseViewModel
             OnPropertyChanged();
         }
     }
-
+    
     public string MainLocation => WorldData.GetUniqueNameOrDefault(MainLocationIndex);
 
     public string LocationDisplayString
