@@ -51,6 +51,7 @@ public class LoggingBindings : BaseViewModel
     private bool _isShowingMount = true;
     private bool _isShowingOthers = true;
     private ObservableCollection<VaultContainerLogItem> _vaultLogItems = new();
+    private bool _isAllButtonsEnabled = true;
 
     public void Init()
     {
@@ -261,6 +262,7 @@ public class LoggingBindings : BaseViewModel
             Multiselect = true
         };
 
+        IsAllButtonsEnabled = false;
         var result = dialog.ShowDialog();
 
         if (result.HasValue && result.Value)
@@ -285,6 +287,8 @@ public class LoggingBindings : BaseViewModel
 
             Debug.Print($"Insgesamt {VaultLogItems.Count} Einträge erfolgreich geladen.");
         }
+
+        IsAllButtonsEnabled = false;
     }
 
     private VaultContainerLogItem ParseCsvLine(string line)
@@ -620,6 +624,16 @@ public class LoggingBindings : BaseViewModel
         }
     }
 
+    public bool IsAllButtonsEnabled
+    {
+        get => _isAllButtonsEnabled;
+        set
+        {
+            _isAllButtonsEnabled = value;
+            OnPropertyChanged();
+        }
+    }
+
     public LoggingTranslation Translation
     {
         get => _translation;
@@ -633,10 +647,10 @@ public class LoggingBindings : BaseViewModel
     #endregion
 
     #region Filter
-
+    
     public async Task UpdateFilteredLootedItemsAsync()
     {
-        if (LootingPlayers?.Count <= 0 && LootingPlayersCollectionView?.Count <= 0)
+        if (LootingPlayers is not { Count: > 0 } || LootingPlayersCollectionView == null)
         {
             return;
         }
@@ -645,22 +659,29 @@ public class LoggingBindings : BaseViewModel
 
         try
         {
-            var filteredLootedItems = await Task.Run(ParallelLootedItemsFilterProcess, _cancellationTokenSource.Token);
-            SetPlayerVisibility(filteredLootedItems);
+            await Task.Run(ParallelLootedItemsFilterProcess, _cancellationTokenSource.Token);
+            
+            LootingPlayersCollectionView.Filter = item =>
+            {
+                if (item is LootingPlayer lootingPlayer)
+                {
+                    return lootingPlayer.LootingPlayerVisibility == Visibility.Visible;
+                }
 
-            var filteredAndOrderedLootedItems = filteredLootedItems.OrderByDescending(d => d.PlayerName).ToList();
-            LootingPlayersCollectionView = CollectionViewSource.GetDefaultView(filteredAndOrderedLootedItems) as ListCollectionView;
+                return false;
+            };
+            
+            LootingPlayersCollectionView.CustomSort = new LootingPlayerComparer();
         }
         catch (TaskCanceledException)
         {
-            // ignored
+            // ignore
         }
     }
 
-    public List<LootingPlayer> ParallelLootedItemsFilterProcess()
+    public void ParallelLootedItemsFilterProcess()
     {
         var partitioner = Partitioner.Create(LootingPlayers, EnumerablePartitionerOptions.NoBuffering);
-        var result = new ConcurrentBag<LootingPlayer>();
 
         Parallel.ForEach(partitioner, (lootingPlayer, state) =>
         {
@@ -669,18 +690,16 @@ public class LoggingBindings : BaseViewModel
                 state.Stop();
             }
 
-            foreach (var lootedItem in lootingPlayer.LootedItems.ToList())
+            var itemsToProcess = lootingPlayer.LootedItems.ToList();
+
+            foreach (var lootedItem in itemsToProcess)
             {
                 lootedItem.Visibility = Filter(lootedItem) ? Visibility.Visible : Visibility.Collapsed;
             }
 
-            if (lootingPlayer.LootedItems.Count >= 1)
-            {
-                result.Add(lootingPlayer);
-            }
+            var hasVisibleItems = itemsToProcess.Any(item => item.Visibility == Visibility.Visible);
+            lootingPlayer.LootingPlayerVisibility = hasVisibleItems ? Visibility.Visible : Visibility.Collapsed;
         });
-
-        return result.ToList();
     }
 
     public void SetPlayerVisibility(List<LootingPlayer> lootingPlayers)

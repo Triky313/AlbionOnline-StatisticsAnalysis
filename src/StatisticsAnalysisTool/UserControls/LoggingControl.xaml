@@ -35,13 +35,13 @@
                             <StackPanel Orientation="Horizontal" Margin="0,5,0,5">
                                 <fa5:ImageAwesome Icon="Solid_UserCog" Foreground="{StaticResource SolidColorBrush.Text.1}" Width="20" Height="20" Margin="0,0,5,0" />
                                 <CheckBox IsChecked="{Binding IsTrackingPartyLootOnly, FallbackValue=true}" 
-                      Content="{Binding Translation.TrackPartyLootOnly, FallbackValue=TRACK__PARTY__LOOT__ONLY}" Margin="5,0,5,0" />
+                                          Content="{Binding Translation.TrackPartyLootOnly, FallbackValue=TRACK__PARTY__LOOT__ONLY}" Margin="5,0,5,0" />
                                 <CheckBox IsChecked="{Binding LoggingBindings.IsTrackingSilver, FallbackValue=true}" 
-                      Content="{Binding Translation.TrackingSilver, FallbackValue=TRACKING__SILVER}" Margin="5,0,5,0" />
+                                          Content="{Binding Translation.TrackingSilver, FallbackValue=TRACKING__SILVER}" Margin="5,0,5,0" />
                                 <CheckBox IsChecked="{Binding LoggingBindings.IsTrackingFame, FallbackValue=true}" 
-                      Content="{Binding Translation.TrackingFame, FallbackValue=TRACKING__FAME}" Margin="5,0,5,0" />
+                                          Content="{Binding Translation.TrackingFame, FallbackValue=TRACKING__FAME}" Margin="5,0,5,0" />
                                 <CheckBox IsChecked="{Binding LoggingBindings.IsTrackingMobLoot, FallbackValue=true}" 
-                      Content="{Binding Translation.TrackingMobLoot, FallbackValue=TRACKING__MOB__LOOT}" Margin="5,0,5,0" />
+                                          Content="{Binding Translation.TrackingMobLoot, FallbackValue=TRACKING__MOB__LOOT}" Margin="5,0,5,0" />
                             </StackPanel>
                             <Grid Width="auto">
                                 <fa5:ImageAwesome Icon="Solid_Trophy" Foreground="{StaticResource SolidColorBrush.Text.1}" Width="20" Height="20" Margin="0,0,5,0" 
@@ -77,7 +77,7 @@
             </TabItem>
             <TabItem Header="{Binding Translation.LootComparator, FallbackValue=LOOT__COMPARATOR}">
                 <Grid>
-                    <StackPanel Orientation="Horizontal" VerticalAlignment="Top" Margin="0,5,0,5">
+                    <StackPanel Orientation="Horizontal" VerticalAlignment="Top" Margin="0,5,0,5" IsEnabled="{Binding LoggingBindings.IsAllButtonsEnabled}">
                         <StackPanel Orientation="Vertical" MinWidth="100" Margin="0,0,10,0">
                             <CheckBox IsChecked="{Binding LoggingBindings.IsShowingLost, FallbackValue=true}" 
                                       Content="{Binding LoggingBindings.Translation.Lost, FallbackValue=LOST}" />
@@ -118,7 +118,7 @@
                             <CheckBox IsChecked="{Binding LoggingBindings.IsShowingOthers, FallbackValue=true}" 
                                       Content="{Binding LoggingBindings.Translation.Others, FallbackValue=OTHERS}" />
                         </StackPanel>
-                        
+
                         <StackPanel Orientation="Horizontal">
                             <StackPanel Orientation="Vertical">
                                 <Button Height="25" Margin="10,0,0,5" Content=" Upload Chest file " VerticalAlignment="Top" Click="BtnLoadVaultLogFiles_Click" />
