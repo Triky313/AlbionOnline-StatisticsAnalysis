@@ -17,6 +17,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Data;
+using StatisticsAnalysisTool.Models;
 
 namespace StatisticsAnalysisTool.EventLogging;
 
@@ -123,15 +124,7 @@ public class LoggingBindings : BaseViewModel
 
     public void UpdateItemsStatus()
     {
-        // Remove all Vault items
-        foreach (var player in LootingPlayers)
-        {
-            var itemsToRemove = player.LootedItems.Where(item => item.IsItemFromVaultLog).ToList();
-            foreach (var item in itemsToRemove)
-            {
-                player.LootedItems.Remove(item);
-            }
-        }
+        RemoveAllVaultItems();
 
         foreach (VaultContainerLogItem logItem in VaultLogItems)
         {
@@ -158,16 +151,7 @@ public class LoggingBindings : BaseViewModel
                 var newItems = new List<LootedItem>();
                 if (lootingPlayer.LootedItems.Count <= 0)
                 {
-                    newItems.Add(new LootedItem
-                    {
-                        UtcPickupTime = logItem.Timestamp,
-                        ItemIndex = vaultLogLocalizedItem.Index,
-                        IsItemFromVaultLog = true,
-                        IsTrash = vaultLogLocalizedItem.ShopShopSubCategory1 == ShopSubCategory.Trash,
-                        LootedByName = logItem.PlayerName,
-                        Quantity = logItem.Quantity,
-                        Status = LootedItemStatus.Donated
-                    });
+                    AddNewLootedItem(newItems, logItem, vaultLogLocalizedItem, LootedItemStatus.Donated);
                 }
                 else
                 {
@@ -179,16 +163,7 @@ public class LoggingBindings : BaseViewModel
                         }
                         else
                         {
-                            newItems.Add(new LootedItem
-                            {
-                                UtcPickupTime = logItem.Timestamp,
-                                ItemIndex = vaultLogLocalizedItem.Index,
-                                IsItemFromVaultLog = true,
-                                IsTrash = vaultLogLocalizedItem.ShopShopSubCategory1 == ShopSubCategory.Trash,
-                                LootedByName = logItem.PlayerName,
-                                Quantity = logItem.Quantity,
-                                Status = LootedItemStatus.Donated
-                            });
+                            AddNewLootedItem(newItems, logItem, vaultLogLocalizedItem, LootedItemStatus.Donated);
                         }
                     }
                 }
@@ -200,28 +175,70 @@ public class LoggingBindings : BaseViewModel
             }
             else
             {
-                LootingPlayers.Add(new LootingPlayer()
-                {
-                    PlayerName = logItem.PlayerName,
-                    LootingPlayerVisibility = Visibility.Visible,
-                    LootedItems = new ObservableCollection<LootedItem>
-                    {
-                        new ()
-                        {
-                            UtcPickupTime = logItem.Timestamp,
-                            ItemIndex = vaultLogLocalizedItem.Index,
-                            IsItemFromVaultLog = true,
-                            IsTrash = vaultLogLocalizedItem.ShopShopSubCategory1 == ShopSubCategory.Trash,
-                            LootedByName = logItem.PlayerName,
-                            Quantity = logItem.Quantity,
-                            Status = LootedItemStatus.Donated
-                        }
-                    }
-                });
+                AddNewPlayerToLootingPlayers(logItem, vaultLogLocalizedItem, LootedItemStatus.Donated);
             }
         }
 
         MarkLostItems(LootingPlayers);
+    }
+
+    private static void AddNewLootedItem(List<LootedItem> newItems, VaultContainerLogItem logItem, Item vaultLogLocalizedItem, LootedItemStatus status)
+    {
+        newItems.Add(new LootedItem
+        {
+            UtcPickupTime = logItem.Timestamp,
+            ItemIndex = vaultLogLocalizedItem.Index,
+            IsItemFromVaultLog = true,
+            IsTrash = vaultLogLocalizedItem.ShopShopSubCategory1 == ShopSubCategory.Trash,
+            LootedByName = logItem.PlayerName,
+            Quantity = logItem.Quantity,
+            Status = status
+        });
+    }
+
+    private void AddNewPlayerToLootingPlayers(VaultContainerLogItem logItem, Item vaultLogLocalizedItem, LootedItemStatus status)
+    {
+        LootingPlayers.Add(new LootingPlayer()
+        {
+            PlayerName = logItem.PlayerName,
+            LootingPlayerVisibility = Visibility.Visible,
+            LootedItems = new ObservableCollection<LootedItem>
+            {
+                new()
+                {
+                    UtcPickupTime = logItem.Timestamp,
+                    ItemIndex = vaultLogLocalizedItem.Index,
+                    IsItemFromVaultLog = true,
+                    IsTrash = vaultLogLocalizedItem.ShopShopSubCategory1 == ShopSubCategory.Trash,
+                    LootedByName = logItem.PlayerName,
+                    Quantity = logItem.Quantity,
+                    Status = status
+                }
+            }
+        });
+    }
+
+    private void RemoveAllVaultItems()
+    {
+        var playerToRemove = new List<LootingPlayer>();
+        foreach (var player in LootingPlayers)
+        {
+            var itemsToRemove = player.LootedItems.Where(item => item.IsItemFromVaultLog).ToList();
+            foreach (var item in itemsToRemove)
+            {
+                player.LootedItems.Remove(item);
+            }
+
+            if (player.LootedItems.Count <= 0)
+            {
+                playerToRemove.Add(player);
+            }
+        }
+
+        foreach (var player in playerToRemove)
+        {
+            LootingPlayers.Remove(player);
+        }
     }
 
     private void MarkLostItems(ObservableCollection<LootingPlayer> lootingPlayers)
