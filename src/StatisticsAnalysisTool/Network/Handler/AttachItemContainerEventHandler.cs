@@ -19,8 +19,7 @@ public class AttachItemContainerEventHandler : EventPacketHandler<AttachItemCont
         {
             _trackingController.VaultController.AddContainer(value.ItemContainerObject);
         }
-
-        _trackingController.LootController.UpdateVault();
+        
         _trackingController.LootController.SetCurrentItemContainer(value.ItemContainerObject);
         _trackingController.DungeonController.SetCurrentItemContainer(value.ItemContainerObject);
         await Task.CompletedTask;
