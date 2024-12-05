@@ -218,7 +218,7 @@ public class LoggingBindings : BaseViewModel
         });
     }
 
-    private void RemoveAllVaultItems()
+    public void RemoveAllVaultItems()
     {
         var playerToRemove = new List<LootingPlayer>();
         foreach (var player in LootingPlayers)
@@ -663,8 +663,8 @@ public class LoggingBindings : BaseViewModel
 
     #endregion
 
-    #region Filter
-    
+    #region Loot comparator filter
+
     public async Task UpdateFilteredLootedItemsAsync()
     {
         if (LootingPlayers is not { Count: > 0 } || LootingPlayersCollectionView == null)

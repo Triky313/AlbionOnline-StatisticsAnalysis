@@ -1,4 +1,5 @@
-﻿using StatisticsAnalysisTool.Common;
+﻿using System.Linq;
+using StatisticsAnalysisTool.Common;
 using StatisticsAnalysisTool.Network.Manager;
 using StatisticsAnalysisTool.ViewModels;
 using System.Windows;
@@ -51,6 +52,7 @@ public partial class LoggingControl
         var mainWindowViewModel = ServiceLocator.Resolve<MainWindowViewModel>();
         mainWindowViewModel.LoggingBindings.IsAllButtonsEnabled = false;
         mainWindowViewModel.LoggingBindings.VaultLogItems.Clear();
+        mainWindowViewModel.LoggingBindings.RemoveAllVaultItems();
         mainWindowViewModel.LoggingBindings.IsAllButtonsEnabled = true;
     }
 

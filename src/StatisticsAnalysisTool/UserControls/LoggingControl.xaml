@@ -121,12 +121,16 @@
 
                         <StackPanel Orientation="Horizontal">
                             <StackPanel Orientation="Vertical">
-                                <Button Height="25" Margin="10,0,0,5" Content=" Upload Chest file " VerticalAlignment="Top" Click="BtnLoadVaultLogFiles_Click" />
-                                <Button Height="25" Margin="10,0,0,5" Content=" Compare logs " VerticalAlignment="Top" Click="BtnLogCompare_Click" />
+                                <Button Height="25" Margin="10,0,0,5" Content="{Binding LoggingBindings.Translation.UploadChestFiles, FallbackValue=UPLOAD__CHEST__FILES}" 
+                                        VerticalAlignment="Top" Click="BtnLoadVaultLogFiles_Click" />
+                                <Button Height="25" Margin="10,0,0,5" Content="{Binding LoggingBindings.Translation.CompareLogs, FallbackValue=COMPARE__LOGS}" 
+                                        VerticalAlignment="Top" Click="BtnLogCompare_Click" />
                             </StackPanel>
                             <StackPanel Orientation="Vertical">
-                                <Button Style="{StaticResource Style.Button.Attention}" Height="25" Margin="10,0,0,5" Content=" Delete chest logs " VerticalAlignment="Top" Click="BtnClearVaultLogItems_Click" />
-                                <Button Style="{StaticResource Style.Button.Attention}" Height="25" Margin="10,0,0,5" Content=" Delete loot logs " VerticalAlignment="Top" Click="BtnClearLootLogs_Click" />
+                                <Button Style="{StaticResource Style.Button.Attention}" Height="25" Margin="10,0,0,5" 
+                                        Content="{Binding LoggingBindings.Translation.DeleteChestLogs, FallbackValue=DELETE__CHEST__FILE__LOGS}" VerticalAlignment="Top" Click="BtnClearVaultLogItems_Click" />
+                                <Button Style="{StaticResource Style.Button.Attention}" Height="25" Margin="10,0,0,5" 
+                                        Content="{Binding LoggingBindings.Translation.DeleteAllLogs, FallbackValue=DELETE__ALL__LOGS}" VerticalAlignment="Top" Click="BtnClearLootLogs_Click" />
                             </StackPanel>
                         </StackPanel>
                     </StackPanel>

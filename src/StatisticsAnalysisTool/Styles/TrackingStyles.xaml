@@ -779,7 +779,8 @@
     <DataTemplate x:Key="LootingPlayersTemplate" DataType="{x:Type eventLogging:LootingPlayer}">
         <Grid Width="auto" Visibility="{Binding LootingPlayerVisibility}">
             <StackPanel Orientation="Vertical" Width="auto" Margin="0,0,0,25">
-                <Label Content="{Binding PlayerName, FallbackValue='PLAYER__NAME', Mode='OneWay'}" FontSize="14" FontWeight="Bold" Height="22" Padding="0" Margin="2,0,0,0" />
+                <Label Content="{Binding PlayerName, FallbackValue='PLAYER__NAME', Mode='OneWay'}" Foreground="{StaticResource SolidColorBrush.Accent.Blue.3}" 
+                       FontSize="16" FontWeight="Bold" Height="22" Padding="0" Margin="0,0,0,0" />
                 <ItemsControl ItemsSource="{Binding LootedItems, IsAsync=True}" ItemTemplate="{StaticResource LootedItemTemplate}" Cursor="Hand">
                     <ItemsControl.ItemsPanel>
                         <ItemsPanelTemplate>
