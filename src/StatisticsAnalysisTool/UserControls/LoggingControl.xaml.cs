@@ -1,10 +1,9 @@
-﻿using StatisticsAnalysisTool.Common;
+﻿using System.Linq;
+using StatisticsAnalysisTool.Common;
 using StatisticsAnalysisTool.Network.Manager;
 using StatisticsAnalysisTool.ViewModels;
-using System.Diagnostics;
 using System.Windows;
 using System.Windows.Input;
-using System.Windows.Navigation;
 
 namespace StatisticsAnalysisTool.UserControls;
 
@@ -32,9 +31,37 @@ public partial class LoggingControl
         mainWindowViewModel?.ExportLootToFile();
     }
 
-    private void Hyperlink_RequestNavigate(object sender, RequestNavigateEventArgs e)
+    private void BtnLoadVaultLogFiles_Click(object sender, RoutedEventArgs e)
     {
-        Process.Start(new ProcessStartInfo { FileName = e.Uri.AbsoluteUri, UseShellExecute = true });
+        var mainWindowViewModel = ServiceLocator.Resolve<MainWindowViewModel>();
+        mainWindowViewModel.LoggingBindings.IsAllButtonsEnabled = false;
+        mainWindowViewModel.LoggingBindings.OpenVaultFilePathSelection();
+        mainWindowViewModel.LoggingBindings.IsAllButtonsEnabled = true;
+    }
+
+    private void BtnLogCompare_Click(object sender, RoutedEventArgs e)
+    {
+        var mainWindowViewModel = ServiceLocator.Resolve<MainWindowViewModel>();
+        mainWindowViewModel.LoggingBindings.IsAllButtonsEnabled = false;
+        mainWindowViewModel.LoggingBindings.UpdateItemsStatus();
+        mainWindowViewModel.LoggingBindings.IsAllButtonsEnabled = true;
+    }
+
+    private void BtnClearVaultLogItems_Click(object sender, RoutedEventArgs e)
+    {
+        var mainWindowViewModel = ServiceLocator.Resolve<MainWindowViewModel>();
+        mainWindowViewModel.LoggingBindings.IsAllButtonsEnabled = false;
+        mainWindowViewModel.LoggingBindings.VaultLogItems.Clear();
+        mainWindowViewModel.LoggingBindings.RemoveAllVaultItems();
+        mainWindowViewModel.LoggingBindings.IsAllButtonsEnabled = true;
+    }
+
+    private void BtnClearLootLogs_Click(object sender, RoutedEventArgs e)
+    {
+        var mainWindowViewModel = ServiceLocator.Resolve<MainWindowViewModel>();
+        mainWindowViewModel.LoggingBindings.IsAllButtonsEnabled = false;
+        mainWindowViewModel.LoggingBindings.LootingPlayers.Clear();
+        mainWindowViewModel.LoggingBindings.IsAllButtonsEnabled = true;
     }
 
     #endregion

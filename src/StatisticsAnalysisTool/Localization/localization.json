@@ -37391,6 +37391,149 @@
           "seg": "Total weight"
         }
       ]
+    },
+    {
+      "tuid": "TOTAL_BANK_VALUE",
+      "tuv": [
+        {
+          "lang": "de-DE",
+          "seg": "Gesamter Bankwert"
+        },
+        {
+          "lang": "en-US",
+          "seg": "Total bank value"
+        }
+      ]
+    },
+    {
+      "tuid": "OTHERS",
+      "tuv": [
+        {
+          "lang": "de-DE",
+          "seg": "Anderes"
+        },
+        {
+          "lang": "en-US",
+          "seg": "Others"
+        }
+      ]
+    },
+    {
+      "tuid": "LOST",
+      "tuv": [
+        {
+          "lang": "de-DE",
+          "seg": "Verloren"
+        },
+        {
+          "lang": "en-US",
+          "seg": "Lost"
+        }
+      ]
+    },
+    {
+      "tuid": "RESOLVED",
+      "tuv": [
+        {
+          "lang": "de-DE",
+          "seg": "Aufgelöst"
+        },
+        {
+          "lang": "en-US",
+          "seg": "Resolved"
+        }
+      ]
+    },
+    {
+      "tuid": "DONATED",
+      "tuv": [
+        {
+          "lang": "de-DE",
+          "seg": "Gespendet"
+        },
+        {
+          "lang": "en-US",
+          "seg": "Donated"
+        }
+      ]
+    },
+    {
+      "tuid": "LOOT_COMPARATOR",
+      "tuv": [
+        {
+          "lang": "de-DE",
+          "seg": "Loot-Vergleicher"
+        },
+        {
+          "lang": "en-US",
+          "seg": "Loot comparator"
+        }
+      ]
+    },
+    {
+      "tuid": "UPLOAD_CHEST_FILES",
+      "tuv": [
+        {
+          "lang": "de-DE",
+          "seg": "Truhen Dateien laden"
+        },
+        {
+          "lang": "en-US",
+          "seg": "Upload chest files"
+        }
+      ]
+    },
+    {
+      "tuid": "COMPARE_LOGS",
+      "tuv": [
+        {
+          "lang": "de-DE",
+          "seg": "Logs vergleichen"
+        },
+        {
+          "lang": "en-US",
+          "seg": "Compare logs"
+        }
+      ]
+    },
+    {
+      "tuid": "DELETE_CHEST_LOGS",
+      "tuv": [
+        {
+          "lang": "de-DE",
+          "seg": "Truhen logs löschen"
+        },
+        {
+          "lang": "en-US",
+          "seg": "Delete chest logs"
+        }
+      ]
+    },
+    {
+      "tuid": "DELETE_ALL_LOGS",
+      "tuv": [
+        {
+          "lang": "de-DE",
+          "seg": "Alle logs löschen"
+        },
+        {
+          "lang": "en-US",
+          "seg": "Delete all logs"
+        }
+      ]
+    },
+    {
+      "tuid": "T1_TO_T3",
+      "tuv": [
+        {
+          "lang": "de-DE",
+          "seg": "T1 - T3"
+        },
+        {
+          "lang": "en-US",
+          "seg": "T1 - T3"
+        }
+      ]
     }
   ]
 }

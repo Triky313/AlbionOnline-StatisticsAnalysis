@@ -1,7 +1,6 @@
-﻿using System;
+﻿using StatisticsAnalysisTool.Common;
+using System;
 using System.Globalization;
-using StatisticsAnalysisTool.Common;
-using StatisticsAnalysisTool.EstimatedMarketValue;
 
 namespace StatisticsAnalysisTool.Models;
 
@@ -41,7 +40,7 @@ public class LootLoggerObject
     {
         var item = ItemController.GetItemByUniqueName(UniqueItemName);
         var itemName = (string.IsNullOrEmpty(item?.LocalizedName)) ? UniqueItemName : item.LocalizedName;
-            
+
         return $"{UtcPickupTime.ToString("O", CultureInfo.InvariantCulture)};{LootedByAlliance};{LootedByGuild};{LootedByName};{UniqueItemName};{itemName.ToString(CultureInfo.InvariantCulture)}" +
                $";{Quantity};{LootedFromAlliance};{LootedFromGuild};{LootedFromName}";
     }

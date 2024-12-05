@@ -53,6 +53,11 @@
             </vwp:VirtualizingItemsControl>
 
             <StackPanel Orientation="Vertical" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="0,60,0,0">
+                <TextBlock Style="{StaticResource Text.Title.1}" Text="{Binding Translation.TotalBankValue, FallbackValue=TOTAL__BANK__VALUE}" 
+                           Margin="0,0,0,0" TextWrapping="Wrap" MaxWidth="190" />
+                <TextBlock Text="{Binding VaultBindings.TotalVaultValue, StringFormat='{}{0:N0}', ConverterCulture={x:Static gl:CultureInfo.CurrentCulture}}" 
+                           FontSize="16" Margin="2,0,0,10" Padding="0" Foreground="{StaticResource SolidColorBrush.Text.1}" />
+
                 <TextBlock Style="{StaticResource Text.Title.1}" Text="{Binding Translation.TotalChestValue, FallbackValue=TOTAL__CHEST__VALUE}" 
                            Margin="0,0,0,0" TextWrapping="Wrap" MaxWidth="190" />
                 <TextBlock Text="{Binding VaultBindings.TotalContainerValue, StringFormat='{}{0:N0}', ConverterCulture={x:Static gl:CultureInfo.CurrentCulture}}" 

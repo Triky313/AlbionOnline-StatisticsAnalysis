@@ -1,6 +1,7 @@
 using StatisticsAnalysisTool.ViewModels;
 using System;
 using System.Collections.ObjectModel;
+using System.Linq;
 
 namespace StatisticsAnalysisTool.StorageHistory;
 
@@ -13,6 +14,7 @@ public class VaultContainer : BaseViewModel
     private ObservableCollection<ContainerItem> _items = new();
     private double _repairCosts;
     private double _totalValue;
+    private bool _isGuildContainer;
 
     public DateTime LastUpdate
     {
@@ -83,4 +85,17 @@ public class VaultContainer : BaseViewModel
             OnPropertyChanged();
         }
     }
+
+    public bool IsGuildContainer
+    {
+        get => _isGuildContainer;
+        set
+        {
+            _isGuildContainer = value;
+            OnPropertyChanged();
+        }
+    }
+
+    public int ItemsCounter => Items.Count(x => x.ItemIndex > 0 && x.Quantity > 0);
+    public bool IsItemContainerEmpty => !Items.Any(x => x.ItemIndex > 0 && x.Quantity > 0);
 }

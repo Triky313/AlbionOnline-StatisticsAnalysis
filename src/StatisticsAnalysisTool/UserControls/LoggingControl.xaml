@@ -10,65 +10,141 @@
              d:DesignHeight="400" d:DesignWidth="800"
              d:DataContext="{d:DesignInstance Type=viewModels:MainWindowViewModel}">
     <Grid>
-        <Grid Height="85" Width="auto" HorizontalAlignment="Right" VerticalAlignment="Top">
-            <StackPanel VerticalAlignment="Top" HorizontalAlignment="Right" Orientation="Vertical" Margin="0,0,2,0">
-                <Button Content="{Binding Translation.ResetTrackingNotifications, FallbackValue=RESET__TRACKING__NOTIFICATIONS}" Height="26" MaxWidth="500" MinWidth="250" 
-                                        Margin="0,2,0,5" Width="auto" VerticalAlignment="Top" Click="BtnTrackingNotificationsReset_Click"  />
-                <Grid Height="26" Width="26" VerticalAlignment="Center" HorizontalAlignment="Right">
-                    <fa5:ImageAwesome Icon="Solid_FileCsv" ToolTip="{Binding Translation.ExportLootToFile}" 
-                                                      Foreground="{StaticResource  SolidColorBrush.Accent.Green.4}" MouseUp="BtnExportLootToFile_MouseUp" />
-                </Grid>
-            </StackPanel>
-        </Grid>
-        <Grid Height="auto" Width="auto" Margin="0,2,0,0" HorizontalAlignment="Left" VerticalAlignment="Top">
-            <StackPanel Orientation="Vertical" Height="100">
-                <StackPanel Orientation="Horizontal" Margin="0,5,0,5" Height="26">
-                    <fa5:ImageAwesome Icon="Solid_Filter" Foreground="{StaticResource SolidColorBrush.Text.1}" Width="20" Height="20" Margin="0,0,5,0" />
-                    <ComboBox VerticalAlignment="Center" Margin="2,0,6,0" Width="150" Height="24" ItemsSource="{Binding LoggingBindings.Filters}" 
-                              ItemTemplate="{StaticResource LoggingFilterObject}" />
+        <TabControl Background="Transparent" BorderThickness="0">
+            <TabItem Header="{Binding Translation.Logging, FallbackValue=LOGGING}">
+                <Grid>
+                    <Grid Height="85" Width="auto" HorizontalAlignment="Right" VerticalAlignment="Top">
+                        <StackPanel VerticalAlignment="Top" HorizontalAlignment="Right" Orientation="Vertical" Margin="0,0,2,0">
+                            <Button Content="{Binding Translation.ResetTrackingNotifications, FallbackValue=RESET__TRACKING__NOTIFICATIONS}" Height="26" MaxWidth="500" MinWidth="250" 
+                                Margin="0,2,0,5" Width="auto" VerticalAlignment="Top" Click="BtnTrackingNotificationsReset_Click"  />
+                            <Grid Height="26" Width="26" VerticalAlignment="Center" HorizontalAlignment="Right">
+                                <fa5:ImageAwesome Icon="Solid_FileCsv" ToolTip="{Binding Translation.ExportLootToFile}" 
+                                              Foreground="{StaticResource  SolidColorBrush.Accent.Green.4}" MouseUp="BtnExportLootToFile_MouseUp" />
+                            </Grid>
+                        </StackPanel>
+                    </Grid>
+                    <Grid Height="auto" Width="auto" Margin="0,2,0,0" HorizontalAlignment="Left" VerticalAlignment="Top">
+                        <StackPanel Orientation="Vertical" Height="100">
+                            <StackPanel Orientation="Horizontal" Margin="0,5,0,5" Height="26">
+                                <fa5:ImageAwesome Icon="Solid_Filter" Foreground="{StaticResource SolidColorBrush.Text.1}" Width="20" Height="20" Margin="0,0,5,0" />
+                                <ComboBox VerticalAlignment="Center" Margin="2,0,6,0" Width="150" Height="24" ItemsSource="{Binding LoggingBindings.Filters}" 
+                      ItemTemplate="{StaticResource LoggingFilterObject}" />
 
-                    <TextBox Text="{Binding LoggingSearchText, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Width="200" Height="24" />
-                </StackPanel>
-                <StackPanel Orientation="Horizontal" Margin="0,5,0,5">
-                    <fa5:ImageAwesome Icon="Solid_UserCog" Foreground="{StaticResource SolidColorBrush.Text.1}" Width="20" Height="20" Margin="0,0,5,0" />
-                    <CheckBox IsChecked="{Binding IsTrackingPartyLootOnly, FallbackValue=true}" 
-                              Content="{Binding Translation.TrackPartyLootOnly, FallbackValue=TRACK__PARTY__LOOT__ONLY}" Margin="5,0,5,0" />
-                    <CheckBox IsChecked="{Binding LoggingBindings.IsTrackingSilver, FallbackValue=true}" 
-                              Content="{Binding Translation.TrackingSilver, FallbackValue=TRACKING__SILVER}" Margin="5,0,5,0" />
-                    <CheckBox IsChecked="{Binding LoggingBindings.IsTrackingFame, FallbackValue=true}" 
-                              Content="{Binding Translation.TrackingFame, FallbackValue=TRACKING__FAME}" Margin="5,0,5,0" />
-                    <CheckBox IsChecked="{Binding LoggingBindings.IsTrackingMobLoot, FallbackValue=true}" 
-                              Content="{Binding Translation.TrackingMobLoot, FallbackValue=TRACKING__MOB__LOOT}" Margin="5,0,5,0" />
-                </StackPanel>
-                <Grid Width="auto">
-                    <fa5:ImageAwesome Icon="Solid_Trophy" Foreground="{StaticResource SolidColorBrush.Text.1}" Width="20" Height="20" Margin="0,0,5,0" 
-                                      HorizontalAlignment="Left" ToolTip="{Binding Translation.TopLooters, FallbackValue=TOP__LOOTERS}"/>
-                    <vwp:VirtualizingItemsControl Margin="25,0,0,0" HorizontalAlignment="Left" Height="20" Width="589" MaxWidth="400" Background="Transparent"
-                                                  ItemsSource="{Binding LoggingBindings.TopLootersCollectionView, IsAsync=True, Mode=OneWay}" ItemTemplate="{StaticResource TopLooterObjectTemplate}"              
-                                                  VirtualizingPanel.CacheLengthUnit="Item"
-                                                  VirtualizingPanel.CacheLength="5,5"
-                                                  VirtualizingPanel.ScrollUnit="Pixel"
-                                                  VirtualizingPanel.VirtualizationMode="Recycling"
-                                                  ScrollViewer.CanContentScroll="false"
-                                                  ScrollViewer.HorizontalScrollBarVisibility="Disabled"
-                                                  ScrollViewer.VerticalScrollBarVisibility="Disabled">
-                        <vwp:VirtualizingItemsControl.ItemsPanel>
-                            <ItemsPanelTemplate>
-                                <StackPanel Orientation="Horizontal"/>
-                            </ItemsPanelTemplate>
-                        </vwp:VirtualizingItemsControl.ItemsPanel>
-                    </vwp:VirtualizingItemsControl>
+                                <TextBox Text="{Binding LoggingSearchText, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Width="200" Height="24" />
+                            </StackPanel>
+                            <StackPanel Orientation="Horizontal" Margin="0,5,0,5">
+                                <fa5:ImageAwesome Icon="Solid_UserCog" Foreground="{StaticResource SolidColorBrush.Text.1}" Width="20" Height="20" Margin="0,0,5,0" />
+                                <CheckBox IsChecked="{Binding IsTrackingPartyLootOnly, FallbackValue=true}" 
+                                          Content="{Binding Translation.TrackPartyLootOnly, FallbackValue=TRACK__PARTY__LOOT__ONLY}" Margin="5,0,5,0" />
+                                <CheckBox IsChecked="{Binding LoggingBindings.IsTrackingSilver, FallbackValue=true}" 
+                                          Content="{Binding Translation.TrackingSilver, FallbackValue=TRACKING__SILVER}" Margin="5,0,5,0" />
+                                <CheckBox IsChecked="{Binding LoggingBindings.IsTrackingFame, FallbackValue=true}" 
+                                          Content="{Binding Translation.TrackingFame, FallbackValue=TRACKING__FAME}" Margin="5,0,5,0" />
+                                <CheckBox IsChecked="{Binding LoggingBindings.IsTrackingMobLoot, FallbackValue=true}" 
+                                          Content="{Binding Translation.TrackingMobLoot, FallbackValue=TRACKING__MOB__LOOT}" Margin="5,0,5,0" />
+                            </StackPanel>
+                            <Grid Width="auto">
+                                <fa5:ImageAwesome Icon="Solid_Trophy" Foreground="{StaticResource SolidColorBrush.Text.1}" Width="20" Height="20" Margin="0,0,5,0" 
+                              HorizontalAlignment="Left" ToolTip="{Binding Translation.TopLooters, FallbackValue=TOP__LOOTERS}"/>
+                                <vwp:VirtualizingItemsControl Margin="25,0,0,0" HorizontalAlignment="Left" Height="20" Width="589" MaxWidth="400" Background="Transparent"
+                                          ItemsSource="{Binding LoggingBindings.TopLootersCollectionView, IsAsync=True, Mode=OneWay}" ItemTemplate="{StaticResource TopLooterObjectTemplate}"              
+                                          VirtualizingPanel.CacheLengthUnit="Item"
+                                          VirtualizingPanel.CacheLength="5,5"
+                                          VirtualizingPanel.ScrollUnit="Pixel"
+                                          VirtualizingPanel.VirtualizationMode="Recycling"
+                                          ScrollViewer.CanContentScroll="false"
+                                          ScrollViewer.HorizontalScrollBarVisibility="Disabled"
+                                          ScrollViewer.VerticalScrollBarVisibility="Disabled">
+                                    <vwp:VirtualizingItemsControl.ItemsPanel>
+                                        <ItemsPanelTemplate>
+                                            <StackPanel Orientation="Horizontal"/>
+                                        </ItemsPanelTemplate>
+                                    </vwp:VirtualizingItemsControl.ItemsPanel>
+                                </vwp:VirtualizingItemsControl>
+                            </Grid>
+                        </StackPanel>
+                    </Grid>
+                    <Separator Background="{StaticResource SolidColorBrush.Background.3}" Height="4" Margin="0,100,0,0" VerticalAlignment="Top"/>
+                    <vwp:VirtualizingItemsControl Margin="0,104,0,40" ItemsSource="{Binding LoggingBindings.GameLoggingCollectionView, IsAsync=True, Mode=OneWay}" 
+                              ItemTemplate="{StaticResource NotificationTemplate}"              
+                              VirtualizingPanel.CacheLengthUnit="Item"
+                              VirtualizingPanel.CacheLength="10,10"
+                              VirtualizingPanel.ScrollUnit="Pixel"
+                              VirtualizingPanel.VirtualizationMode="Recycling"
+                              ScrollViewer.HorizontalScrollBarVisibility="Disabled"
+                              ScrollViewer.VerticalScrollBarVisibility="Visible" />
                 </Grid>
-            </StackPanel>
-        </Grid>
-        <Separator Background="{StaticResource SolidColorBrush.Background.3}" Height="4" Margin="0,100,0,0" VerticalAlignment="Top"/>
-        <vwp:VirtualizingItemsControl Margin="0,104,0,40" ItemsSource="{Binding LoggingBindings.GameLoggingCollectionView, IsAsync=True, Mode=OneWay}" 
-                                      ItemTemplate="{StaticResource NotificationTemplate}"              
-                                      VirtualizingPanel.CacheLengthUnit="Item"
-                                      VirtualizingPanel.CacheLength="10,10"
-                                      VirtualizingPanel.ScrollUnit="Pixel"
-                                      VirtualizingPanel.VirtualizationMode="Recycling"
-                                      ScrollViewer.HorizontalScrollBarVisibility="Disabled"
-                                      ScrollViewer.VerticalScrollBarVisibility="Visible" />
+            </TabItem>
+            <TabItem Header="{Binding Translation.LootComparator, FallbackValue=LOOT__COMPARATOR}">
+                <Grid>
+                    <StackPanel Orientation="Horizontal" VerticalAlignment="Top" Margin="0,5,0,5" IsEnabled="{Binding LoggingBindings.IsAllButtonsEnabled}">
+                        <StackPanel Orientation="Vertical" MinWidth="100" Margin="0,0,10,0">
+                            <CheckBox IsChecked="{Binding LoggingBindings.IsShowingLost, FallbackValue=true}" 
+                                      Content="{Binding LoggingBindings.Translation.Lost, FallbackValue=LOST}" />
+                            <CheckBox IsChecked="{Binding LoggingBindings.IsShowingResolved, FallbackValue=true}" 
+                                      Content="{Binding LoggingBindings.Translation.Resolved, FallbackValue=RESOLVED}" />
+                            <CheckBox IsChecked="{Binding LoggingBindings.IsShowingDonated, FallbackValue=true}" 
+                                      Content="{Binding LoggingBindings.Translation.Donated, FallbackValue=DONATED}" />
+                            <CheckBox IsChecked="{Binding LoggingBindings.IsShowingTrash, FallbackValue=true}" 
+                                      Content="{Binding LoggingBindings.Translation.Trash, FallbackValue=IS__SHOWING__TRASH}" />
+                        </StackPanel>
+                        <StackPanel Orientation="Vertical" MinWidth="100" Margin="0,0,10,0">
+                            <CheckBox IsChecked="{Binding LoggingBindings.IsShowingT1ToT3, FallbackValue=true}" 
+                                      Content="{Binding LoggingBindings.Translation.T1ToT3, FallbackValue=T1-T3}" />
+                            <CheckBox IsChecked="{Binding LoggingBindings.IsShowingT4, FallbackValue=true}" 
+                                      Content="{Binding LoggingBindings.Translation.T4, FallbackValue=T4}" />
+                            <CheckBox IsChecked="{Binding LoggingBindings.IsShowingT5, FallbackValue=true}" 
+                                      Content="{Binding LoggingBindings.Translation.T5, FallbackValue=T5}" />
+                            <CheckBox IsChecked="{Binding LoggingBindings.IsShowingT6, FallbackValue=true}" 
+                                      Content="{Binding LoggingBindings.Translation.T6, FallbackValue=T6}" />
+                        </StackPanel>
+                        <StackPanel Orientation="Vertical" MinWidth="100" Margin="0,0,10,0">
+                            <CheckBox IsChecked="{Binding LoggingBindings.IsShowingT7, FallbackValue=true}" 
+                                      Content="{Binding LoggingBindings.Translation.T7, FallbackValue=T7}" />
+                            <CheckBox IsChecked="{Binding LoggingBindings.IsShowingT8, FallbackValue=true}" 
+                                      Content="{Binding LoggingBindings.Translation.T8, FallbackValue=T8}" />
+                            <CheckBox IsChecked="{Binding LoggingBindings.IsShowingBag, FallbackValue=true}" 
+                                      Content="{Binding LoggingBindings.Translation.Bag, FallbackValue=BAG}" />
+                            <CheckBox IsChecked="{Binding LoggingBindings.IsShowingCape, FallbackValue=true}" 
+                                      Content="{Binding LoggingBindings.Translation.Cape, FallbackValue=CAPE}" />
+                        </StackPanel>
+                        <StackPanel Orientation="Vertical" MinWidth="100" Margin="0,0,10,0">
+                            <CheckBox IsChecked="{Binding LoggingBindings.IsShowingFood, FallbackValue=true}" 
+                                      Content="{Binding LoggingBindings.Translation.Food, FallbackValue=FOOD}" />
+                            <CheckBox IsChecked="{Binding LoggingBindings.IsShowingPotion, FallbackValue=true}" 
+                                      Content="{Binding LoggingBindings.Translation.Potion, FallbackValue=POTION}" />
+                            <CheckBox IsChecked="{Binding LoggingBindings.IsShowingMount, FallbackValue=true}" 
+                                      Content="{Binding LoggingBindings.Translation.Mount, FallbackValue=MOUNT}" />
+                            <CheckBox IsChecked="{Binding LoggingBindings.IsShowingOthers, FallbackValue=true}" 
+                                      Content="{Binding LoggingBindings.Translation.Others, FallbackValue=OTHERS}" />
+                        </StackPanel>
+
+                        <StackPanel Orientation="Horizontal">
+                            <StackPanel Orientation="Vertical">
+                                <Button Height="25" Margin="10,0,0,5" Content="{Binding LoggingBindings.Translation.UploadChestFiles, FallbackValue=UPLOAD__CHEST__FILES}" 
+                                        VerticalAlignment="Top" Click="BtnLoadVaultLogFiles_Click" />
+                                <Button Height="25" Margin="10,0,0,5" Content="{Binding LoggingBindings.Translation.CompareLogs, FallbackValue=COMPARE__LOGS}" 
+                                        VerticalAlignment="Top" Click="BtnLogCompare_Click" />
+                            </StackPanel>
+                            <StackPanel Orientation="Vertical">
+                                <Button Style="{StaticResource Style.Button.Attention}" Height="25" Margin="10,0,0,5" 
+                                        Content="{Binding LoggingBindings.Translation.DeleteChestLogs, FallbackValue=DELETE__CHEST__FILE__LOGS}" VerticalAlignment="Top" Click="BtnClearVaultLogItems_Click" />
+                                <Button Style="{StaticResource Style.Button.Attention}" Height="25" Margin="10,0,0,5" 
+                                        Content="{Binding LoggingBindings.Translation.DeleteAllLogs, FallbackValue=DELETE__ALL__LOGS}" VerticalAlignment="Top" Click="BtnClearLootLogs_Click" />
+                            </StackPanel>
+                        </StackPanel>
+                    </StackPanel>
+                    <Separator Background="{StaticResource SolidColorBrush.Background.3}" Height="4" Margin="0,100,0,0" VerticalAlignment="Top"/>
+                    <vwp:VirtualizingItemsControl ItemsSource="{Binding LoggingBindings.LootingPlayersCollectionView, IsAsync=True, Mode=OneWay}" Margin="0,102,0,0"
+                                                  ItemTemplate="{StaticResource LootingPlayersTemplate}"
+                                                  VirtualizingPanel.CacheLengthUnit="Item"
+                                                  VirtualizingPanel.CacheLength="10,10"
+                                                  VirtualizingPanel.ScrollUnit="Pixel"
+                                                  VirtualizingPanel.VirtualizationMode="Standard"
+                                                  ScrollViewer.HorizontalScrollBarVisibility="Disabled"
+                                                  ScrollViewer.VerticalScrollBarVisibility="Visible" />
+                </Grid>
+            </TabItem>
+        </TabControl>
     </Grid>
 </UserControl>

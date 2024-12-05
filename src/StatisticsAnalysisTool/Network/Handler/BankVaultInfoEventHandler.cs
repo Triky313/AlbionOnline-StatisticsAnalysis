@@ -18,7 +18,7 @@ public class BankVaultInfoEventHandler : EventPacketHandler<BankVaultInfoEvent>
     {
         if (_trackingController.IsTrackingAllowedByMainCharacter())
         {
-            _trackingController.VaultController.SetCurrentVault(new InternalVault(value.ObjectId, value.LocationGuidString, value.VaultGuidList, value.VaultNames, value.IconTags));
+            _trackingController.VaultController.SetOrAddCurrentVault(new InternalVault(value.ObjectId, value.LocationGuidString, value.VaultGuidList, value.VaultNames, value.IconTags));
         }
 
         await Task.CompletedTask;
