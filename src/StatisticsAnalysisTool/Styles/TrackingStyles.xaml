@@ -736,12 +736,12 @@
                                 <Setter Property="Visibility" Value="Visible" />
                             </DataTrigger>
                             <DataTrigger Binding="{Binding Status}" Value="{x:Static eventLogging:LootedItemStatus.Lost}">
-                                <Setter Property="Opacity" Value="0.4" />
-                                <Setter Property="Fill" Value="{StaticResource SolidColorBrush.Text.5}" />
+                                <Setter Property="Opacity" Value="0.6" />
+                                <Setter Property="Fill" Value="{StaticResource SolidColorBrush.Text.6}" />
                                 <Setter Property="Visibility" Value="Visible" />
                             </DataTrigger>
                             <DataTrigger Binding="{Binding Status}" Value="{x:Static eventLogging:LootedItemStatus.Donated}">
-                                <Setter Property="Opacity" Value="0.4" />
+                                <Setter Property="Opacity" Value="0.5" />
                                 <Setter Property="Fill" Value="{StaticResource SolidColorBrush.Accent.Blue.4}" />
                                 <Setter Property="Visibility" Value="Visible" />
                             </DataTrigger>

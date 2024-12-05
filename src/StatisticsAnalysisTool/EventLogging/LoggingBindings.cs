@@ -160,11 +160,11 @@ public class LoggingBindings : BaseViewModel
                         if (lootedItem.GetHashCode() == vaultLogItem.GetHashCode())
                         {
                             lootedItem.Status = LootedItemStatus.Resolved;
+                            break;
                         }
-                        else
-                        {
-                            AddNewLootedItem(newItems, logItem, vaultLogLocalizedItem, LootedItemStatus.Donated);
-                        }
+
+                        AddNewLootedItem(newItems, logItem, vaultLogLocalizedItem, LootedItemStatus.Donated);
+                        break;
                     }
                 }
 
