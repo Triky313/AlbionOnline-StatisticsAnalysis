@@ -3,6 +3,7 @@ using StatisticsAnalysisTool.Common;
 using StatisticsAnalysisTool.Common.UserSettings;
 using StatisticsAnalysisTool.EventLogging.Notification;
 using StatisticsAnalysisTool.Localization;
+using StatisticsAnalysisTool.Models;
 using StatisticsAnalysisTool.Models.TranslationModel;
 using StatisticsAnalysisTool.ViewModels;
 using System;
@@ -17,7 +18,6 @@ using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Data;
-using StatisticsAnalysisTool.Models;
 
 namespace StatisticsAnalysisTool.EventLogging;
 
@@ -243,13 +243,18 @@ public class LoggingBindings : BaseViewModel
 
     private void MarkLostItems(ObservableCollection<LootingPlayer> lootingPlayers)
     {
-        var itemOwnerMap = new Dictionary<int, LootingPlayer>();
+        var itemLootHistory = new Dictionary<int, List<(LootingPlayer Player, DateTime Timestamp)>>();
 
         foreach (var player in lootingPlayers)
         {
             foreach (var item in player.LootedItems)
             {
-                itemOwnerMap[item.GetHashCode()] = player;
+                if (!itemLootHistory.ContainsKey(item.ItemIndex))
+                {
+                    itemLootHistory[item.ItemIndex] = new List<(LootingPlayer, DateTime)>();
+                }
+
+                itemLootHistory[item.ItemIndex].Add((player, item.UtcPickupTime));
             }
         }
 
@@ -257,13 +262,19 @@ public class LoggingBindings : BaseViewModel
         {
             foreach (var item in player.LootedItems)
             {
-                if (itemOwnerMap.ContainsKey(item.GetHashCode()))
+                if (itemLootHistory.TryGetValue(item.ItemIndex, out var history))
                 {
-                    var originalOwner = itemOwnerMap[item.GetHashCode()];
+                    var sortedHistory = history.OrderBy(h => h.Timestamp).ToList();
 
-                    if (originalOwner != player)
+                    var playerIndex = sortedHistory.FindIndex(h => h.Player == player);
+
+                    if (playerIndex >= 0 && playerIndex < sortedHistory.Count - 1)
                     {
-                        item.Status = LootedItemStatus.Lost;
+                        var nextEntry = sortedHistory[playerIndex + 1];
+                        if (nextEntry.Player != player)
+                        {
+                            item.Status = LootedItemStatus.Lost;
+                        }
                     }
                 }
             }
@@ -677,7 +688,7 @@ public class LoggingBindings : BaseViewModel
         try
         {
             await Task.Run(ParallelLootedItemsFilterProcess, _cancellationTokenSource.Token);
-            
+
             LootingPlayersCollectionView.Filter = item =>
             {
                 if (item is LootingPlayer lootingPlayer)
@@ -687,7 +698,7 @@ public class LoggingBindings : BaseViewModel
 
                 return false;
             };
-            
+
             LootingPlayersCollectionView.CustomSort = new LootingPlayerComparer();
         }
         catch (TaskCanceledException)
