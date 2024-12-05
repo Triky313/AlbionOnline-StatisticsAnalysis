@@ -101,7 +101,7 @@ public class VaultBindings : BaseViewModel
                 }));
 
             TotalContainerValue = VaultContainerContent.Sum(x => x.TotalAvgEstMarketValue);
-            TotalVaultValue = VaultSelected.VaultContainer.SelectMany(x => x.Items).Sum(x => x.TotalAvgEstMarketValue);
+            TotalVaultValue = VaultSelected?.VaultContainer?.SelectMany(x => x?.Items).Sum(x => x.TotalAvgEstMarketValue) ?? 0;
             TotalWeight = VaultContainerContent.Sum(x => x.TotalWeight);
             LastUpdate = _vaultContainerSelected?.LastUpdate ?? new DateTime(0);
             LastUpdateVisibility = _vaultContainerSelected?.LastUpdate.Ticks <= 1 ? Visibility.Hidden : Visibility.Visible;

@@ -64,15 +64,29 @@ public static class ItemController
         return int.TryParse(uniqueName.Split('@')[1], out var number) ? number : 0;
     }
 
-    public static int GetItemTier(Item item)
+    public static int GetItemTier(string uniqueName)
     {
-        var itemNameTierText = item?.UniqueName?.Split('_')[0];
+        var itemNameTierText = uniqueName?.Split('_')[0];
         if (itemNameTierText != null && itemNameTierText[..1] == "T" && int.TryParse(itemNameTierText.AsSpan(1, 1), out var result))
         {
             return result;
         }
 
         return -1;
+    }
+
+    public static Item GetItemByLocalizedName(string itemName, int enchantment)
+    {
+        var matchingItems = Items.Where(item =>
+            item.LocalizedNames != null &&
+            typeof(LocalizedNames).GetProperties().Any(property =>
+            {
+                var value = property.GetValue(item.LocalizedNames) as string;
+                return string.Equals(value, itemName, StringComparison.OrdinalIgnoreCase);
+            })
+        ).ToList();
+        
+        return matchingItems.FirstOrDefault(item => item.Level == enchantment);
     }
 
     #endregion

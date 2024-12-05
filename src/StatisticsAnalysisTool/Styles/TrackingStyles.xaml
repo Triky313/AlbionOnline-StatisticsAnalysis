@@ -447,25 +447,6 @@
         <Setter Property="Foreground" Value="{StaticResource SolidColorBrush.Text.2}" />
         <Setter Property="Icon" Value="Solid_UserCircle" />
         <Style.Triggers>
-            <DataTrigger Binding="{Binding Name}" Value="krissixoxoalex">
-                <Setter Property="Margin" Value="0,0,0,1" />
-                <Setter Property="ToolTip" Value="Krissi - My love and life" />
-                <Setter Property="Icon" Value="Solid_Heart" />
-                <Setter Property="Foreground">
-                    <Setter.Value>
-                        <LinearGradientBrush StartPoint="0,0" EndPoint="1,1">
-                            <GradientStop Color="{StaticResource Color.Accent.Red.1}" Offset="0.0" />
-                            <GradientStop Color="{StaticResource Color.Accent.Red.2}" Offset="1.0" />
-                        </LinearGradientBrush>
-                    </Setter.Value>
-                </Setter>
-                <Setter Property="Effect">
-                    <Setter.Value>
-                        <DropShadowEffect BlurRadius="5" ShadowDepth="0" Opacity="0.5" Color="{StaticResource Color.Accent.Red.3}"/>
-                    </Setter.Value>
-                </Setter>
-            </DataTrigger>
-
             <DataTrigger Binding="{Binding Name}" Value="Dicky">
                 <Setter Property="Margin" Value="0,0,0,1" />
                 <Setter Property="ToolTip" Value="Dicky - Most luckiest bastard in game!" />
@@ -740,4 +721,74 @@
         </Grid>
     </DataTemplate>
 
+    <DataTemplate x:Key="LootedItemTemplate" DataType="{x:Type eventLogging:LootedItem}">
+        <Grid Height="80" Width="80" Margin="1" ToolTip="{Binding Tooltip}" Visibility="{Binding Visibility, FallbackValue=Visible}">
+            <Image Source="{Binding Item.Icon, IsAsync=True, Mode=OneWay}" Stretch="Fill" VerticalAlignment="Bottom" HorizontalAlignment="Right" />
+
+            <Rectangle VerticalAlignment="Stretch" HorizontalAlignment="Stretch">
+                <Rectangle.Style>
+                    <Style TargetType="Rectangle">
+                        <Setter Property="Opacity" Value="0.4" />
+                        <Style.Triggers>
+                            <DataTrigger Binding="{Binding Status}" Value="{x:Static eventLogging:LootedItemStatus.Resolved}">
+                                <Setter Property="Opacity" Value="0.4" />
+                                <Setter Property="Fill" Value="{StaticResource SolidColorBrush.Accent.Green.4}" />
+                                <Setter Property="Visibility" Value="Visible" />
+                            </DataTrigger>
+                            <DataTrigger Binding="{Binding Status}" Value="{x:Static eventLogging:LootedItemStatus.Lost}">
+                                <Setter Property="Opacity" Value="0.6" />
+                                <Setter Property="Fill" Value="{StaticResource SolidColorBrush.Text.6}" />
+                                <Setter Property="Visibility" Value="Visible" />
+                            </DataTrigger>
+                            <DataTrigger Binding="{Binding Status}" Value="{x:Static eventLogging:LootedItemStatus.Donated}">
+                                <Setter Property="Opacity" Value="0.5" />
+                                <Setter Property="Fill" Value="{StaticResource SolidColorBrush.Accent.Blue.4}" />
+                                <Setter Property="Visibility" Value="Visible" />
+                            </DataTrigger>
+                            <DataTrigger Binding="{Binding Status}" Value="{x:Static eventLogging:LootedItemStatus.Unknown}">
+                                <Setter Property="Opacity" Value="0.4" />
+                                <Setter Property="Fill" Value="{StaticResource SolidColorBrush.Accent.Red.4}" />
+                                <Setter Property="Visibility" Value="Visible" />
+                            </DataTrigger>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter Property="Opacity" Value="0" />
+                                <Setter Property="Visibility" Value="Visible" />
+                            </Trigger>
+                        </Style.Triggers>
+                    </Style>
+                </Rectangle.Style>
+            </Rectangle>
+
+            <Border VerticalAlignment="Bottom" HorizontalAlignment="Right">
+                <Border.Style>
+                    <Style TargetType="{x:Type Border}">
+                        <Style.Triggers>
+                            <DataTrigger Binding="{Binding Quantity}" Value="0">
+                                <Setter Property="Visibility" Value="Hidden" />
+                            </DataTrigger>
+                        </Style.Triggers>
+                    </Style>
+                </Border.Style>
+                <Viewbox StretchDirection="DownOnly" Stretch="Uniform" Width="16" Height="16" Margin="0,0,12,14">
+                    <TextBlock Text="{Binding Quantity}" Foreground="{StaticResource SolidColorBrush.Text.1}" />
+                </Viewbox>
+            </Border>
+        </Grid>
+    </DataTemplate>
+
+    <DataTemplate x:Key="LootingPlayersTemplate" DataType="{x:Type eventLogging:LootingPlayer}">
+        <Grid Width="auto" Visibility="{Binding LootingPlayerVisibility}">
+            <StackPanel Orientation="Vertical" Width="auto" Margin="0,0,0,25">
+                <Label Content="{Binding PlayerName, FallbackValue='PLAYER__NAME', Mode='OneWay'}" Foreground="{StaticResource SolidColorBrush.Accent.Blue.3}" 
+                       FontSize="16" FontWeight="Bold" Height="22" Padding="0" Margin="0,0,0,0" />
+                <ItemsControl ItemsSource="{Binding LootedItems, IsAsync=True}" ItemTemplate="{StaticResource LootedItemTemplate}" Cursor="Hand">
+                    <ItemsControl.ItemsPanel>
+                        <ItemsPanelTemplate>
+                            <WrapPanel Orientation="Horizontal" />
+                        </ItemsPanelTemplate>
+                    </ItemsControl.ItemsPanel>
+                </ItemsControl>
+            </StackPanel>
+        </Grid>
+    </DataTemplate>
 </ResourceDictionary>

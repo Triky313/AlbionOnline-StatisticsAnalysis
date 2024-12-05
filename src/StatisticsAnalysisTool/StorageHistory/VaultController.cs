@@ -37,7 +37,7 @@ public class VaultController
     public event Action OnVaultsChange;
     public event Action OnVaultsRemove;
 
-    public void SetCurrentVault(InternalVault internalVault)
+    public void SetOrAddCurrentVault(InternalVault internalVault)
     {
         if (internalVault == null)
         {
@@ -54,7 +54,45 @@ public class VaultController
             return;
         }
 
-        _currentInternalVault = internalVault;
+        if (_currentInternalVault is not null && _currentInternalVault.CompareLocationGuidStringTails(internalVault.LocationGuidString))
+        {
+            _currentInternalVault.ContainerGuidList = internalVault.ContainerGuidList;
+            _currentInternalVault.ContainerIconTags = internalVault.ContainerIconTags;
+            _currentInternalVault.ContainerNames = internalVault.ContainerNames;
+        }
+        else
+        {
+            _currentInternalVault = internalVault;
+        }
+    }
+
+    public void SetOrAddCurrentGuildVault(InternalVault internalVault)
+    {
+        if (internalVault == null)
+        {
+            _currentInternalVault = null;
+            return;
+        }
+
+        internalVault.UniqueClusterName = ClusterController.CurrentCluster.UniqueClusterName;
+        internalVault.MainLocationIndex = ClusterController.CurrentCluster.MainClusterIndex;
+
+        if (string.IsNullOrEmpty(internalVault.UniqueClusterName))
+        {
+            _currentInternalVault = null;
+            return;
+        }
+
+        if (_currentInternalVault is not null && _currentInternalVault.CompareLocationGuidStringTails(internalVault.LocationGuidString))
+        {
+            _currentInternalVault.GuildContainerGuidList = internalVault.GuildContainerGuidList;
+            _currentInternalVault.GuildContainerIconTags = internalVault.GuildContainerIconTags;
+            _currentInternalVault.GuildContainerNames = internalVault.GuildContainerNames;
+        }
+        else
+        {
+            _currentInternalVault = internalVault;
+        }
     }
 
     public void AddContainer(ItemContainerObject newContainerObject)
@@ -190,15 +228,34 @@ public class VaultController
     {
         var vaultContainers = new List<VaultContainer>();
 
-        for (var i = 0; i < _currentInternalVault.ContainerGuidList.Count; i++)
+        for (var i = 0; i < _currentInternalVault?.ContainerGuidList?.Count; i++)
         {
             var vaultContainer = new VaultContainer()
             {
                 Guid = _currentInternalVault.ContainerGuidList[i],
                 Icon = _currentInternalVault.ContainerIconTags[i],
-                Name = _currentInternalVault.ContainerNames[i] == "@BUILDINGS_T1_BANK"
-                    ? LocalizationController.Translation("BANK")
-                    : _currentInternalVault.ContainerNames[i]
+                Name = _currentInternalVault.ContainerNames[i] == "@BUILDINGS_T1_BANK" ? LocalizationController.Translation("BANK") : _currentInternalVault.ContainerNames[i]
+            };
+
+            var itemContainer = itemContainers.FirstOrDefault(x => x.PrivateContainerGuid == vaultContainer.Guid);
+            if (itemContainer != null)
+            {
+                vaultContainer.LastUpdate = itemContainer.LastUpdate;
+                SetItemsToVaultContainerForUi(itemContainer, vaultContainer, _discoveredItems);
+                vaultContainer.RepairCosts = itemContainer.RepairCosts;
+            }
+
+            vaultContainers.Add(vaultContainer);
+        }
+
+        for (var i = 0; i < _currentInternalVault?.GuildContainerGuidList?.Count; i++)
+        {
+            var vaultContainer = new VaultContainer()
+            {
+                Guid = _currentInternalVault.GuildContainerGuidList[i],
+                Icon = _currentInternalVault.GuildContainerIconTags[i],
+                Name = _currentInternalVault.GuildContainerNames[i] == "@BUILDINGS_T1_BANK" ? LocalizationController.Translation("BANK") : _currentInternalVault.GuildContainerNames[i],
+                IsGuildContainer = true
             };
 
             var itemContainer = itemContainers.FirstOrDefault(x => x.PrivateContainerGuid == vaultContainer.Guid);
@@ -346,7 +403,7 @@ public class VaultController
     }
 
     #endregion
-
+    
     #region Load / Save local file data
 
     public async Task LoadFromFileAsync()
