@@ -11,13 +11,16 @@
              d:DataContext="{d:DesignInstance Type=viewModels:MainWindowViewModel}">
     <Grid>
         <Grid ZIndex="2">
-            <TextBox HorizontalAlignment="Left" Height="25" Margin="10,10,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="200" TextChanged="TextBoxPlayerSearch_OnTextChanged" />
+            <StackPanel Orientation="Vertical" Margin="10,10,0,0">
+                <TextBox HorizontalAlignment="Left" Height="25" TextWrapping="Wrap" VerticalAlignment="Top" Width="200" TextChanged="TextBoxPlayerSearch_OnTextChanged" />
+                <ProgressBar Visibility="{Binding PlayerInformationBindings.LoadBarVisibility}" IsIndeterminate="true" Margin="0,0,0,0" Height="2" Width="200" HorizontalAlignment="Left" />
+            </StackPanel>
             <ListBox SelectionMode="Single" SelectionChanged="ListBoxUserSearch_OnSelectionChanged" 
                      Visibility="{Binding PlayerInformationBindings.ListBoxUserSearchVisibility, FallbackValue=Collapsed}" 
                      ItemsSource="{Binding PlayerInformationBindings.ListBoxUserSearchItems}" 
                      SelectedValuePath="Value" DisplayMemberPath="Name" Margin="10,35,0,0" HorizontalAlignment="Left" Width="200" MinHeight="50" MaxHeight="100" VerticalAlignment="Top"  />
             <Grid Style="{StaticResource LoadingIconGridStyle}" Margin="215,10,0,0">
-                <fa5:ImageAwesome Visibility="{Binding LoadIconVisibility}" Style="{StaticResource LoadingIconStyle}" />
+                <fa5:ImageAwesome Visibility="{Binding PlayerInformationBindings.LoadIconVisibility}" Style="{StaticResource LoadingIconStyle}" />
             </Grid>
         </Grid>
 

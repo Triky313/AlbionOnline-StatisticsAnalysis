@@ -58,7 +58,6 @@ public class MainWindowViewModel : BaseViewModel
     private Dictionary<ShopCategory, string> _itemCategories = new();
     private ICollectionView _itemsView;
     private Dictionary<ItemTier, string> _itemTiers = new();
-    private Visibility _loadIconVisibility = Visibility.Collapsed;
     private string _loadTranslation;
     private int _localImageCounter;
     private string _numberOfValuesTranslation;
@@ -270,8 +269,7 @@ public class MainWindowViewModel : BaseViewModel
         InitAlerts();
         await EstimatedMarketValueController.SetAllEstimatedMarketValuesToItemsAsync();
         LoggingBindings.Init();
-
-        LoadIconVisibility = Visibility.Hidden;
+        
         IsFilterResetEnabled = true;
         IsItemSearchCheckboxesEnabled = true;
         IsTxtSearchEnabled = true;
@@ -750,17 +748,7 @@ public class MainWindowViewModel : BaseViewModel
             OnPropertyChanged();
         }
     }
-
-    public Visibility LoadIconVisibility
-    {
-        get => _loadIconVisibility;
-        set
-        {
-            _loadIconVisibility = value;
-            OnPropertyChanged();
-        }
-    }
-
+    
     public ObservableCollection<PartyMemberCircle> PartyMemberCircles
     {
         get => _partyMemberCircles;
