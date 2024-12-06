@@ -6,6 +6,8 @@ using System.Reflection;
 using System.Threading.Tasks;
 using System.Windows;
 using Serilog;
+using System.Net;
+using StatisticsAnalysisTool.Common.UserSettings;
 
 namespace StatisticsAnalysisTool.Common;
 
@@ -62,12 +64,51 @@ public static class HttpClientUtils
         }
     }
 
-    public static async Task<bool> IsUrlAccessible(string url)
+    public static async Task<(bool IsProxyActive, bool IsAccessible)> IsUrlAccessible(string url)
     {
-        using HttpClient client = new HttpClient();
-        HttpRequestMessage request = new HttpRequestMessage(HttpMethod.Head, url);
+        if (!string.IsNullOrEmpty(SettingsController.CurrentSettings.ProxyUrlWithPort))
+        {
+            var proxy = new WebProxy(SettingsController.CurrentSettings.ProxyUrlWithPort)
+            {
+                UseDefaultCredentials = true
+            };
 
-        HttpResponseMessage response = await client.SendAsync(request);
-        return response.IsSuccessStatusCode;
+            // Try with Proxy
+            using var handlerWithProxy = new HttpClientHandler
+            {
+                Proxy = proxy,
+                UseProxy = true
+            };
+
+            if (await TryAccessUrl(url, handlerWithProxy))
+            {
+                return (true, true);
+            }
+        }
+
+        // Try without Proxy
+        using var handlerWithoutProxy = new HttpClientHandler
+        {
+            UseProxy = false
+        };
+
+        var result = await TryAccessUrl(url, handlerWithoutProxy);
+        return (false, result);
+    }
+
+    private static async Task<bool> TryAccessUrl(string url, HttpClientHandler handler)
+    {
+        try
+        {
+            using var client = new HttpClient(handler);
+            var request = new HttpRequestMessage(HttpMethod.Head, url);
+            var response = await client.SendAsync(request);
+            return response.IsSuccessStatusCode;
+        }
+        catch (Exception e)
+        {
+            Log.Error(e, "{message}", MethodBase.GetCurrentMethod()?.DeclaringType);
+            return false;
+        }
     }
 }

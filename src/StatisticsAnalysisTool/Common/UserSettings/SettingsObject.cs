@@ -101,4 +101,5 @@ public class SettingsObject
     public bool IsLootedChestsStatsVisible { get; set; } = true;
     public bool IsReSpecStatsVisible { get; set; } = true;
     public bool IsRepairCostsStatsVisible { get; set; } = true;
+    public string ProxyUrlWithPort { get; set; }
 }

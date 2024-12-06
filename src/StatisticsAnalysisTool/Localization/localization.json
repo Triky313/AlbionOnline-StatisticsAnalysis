@@ -37534,6 +37534,19 @@
           "seg": "T1 - T3"
         }
       ]
+    },
+    {
+      "tuid": "PROXY",
+      "tuv": [
+        {
+          "lang": "de-DE",
+          "seg": "Proxy"
+        },
+        {
+          "lang": "en-US",
+          "seg": "Proxy"
+        }
+      ]
     }
   ]
 }

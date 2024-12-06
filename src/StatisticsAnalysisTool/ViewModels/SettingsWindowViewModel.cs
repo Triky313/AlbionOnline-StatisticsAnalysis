@@ -58,6 +58,7 @@ public class SettingsWindowViewModel : BaseViewModel
     private string _packetFilter;
     private Visibility _packetFilterVisibility = Visibility.Collapsed;
     private string _backupStorageDirectoryPath;
+    private string _proxyUrlWithPort;
 
     public SettingsWindowViewModel()
     {
@@ -75,6 +76,9 @@ public class SettingsWindowViewModel : BaseViewModel
         InitServer();
 
         MainTrackingCharacterName = SettingsController.CurrentSettings.MainTrackingCharacterName;
+
+        // Proxy url
+        ProxyUrlWithPort = SettingsController.CurrentSettings.ProxyUrlWithPort;
 
         // Backup interval by days
         InitDropDownDownByDays(BackupIntervalByDays);
@@ -131,6 +135,7 @@ public class SettingsWindowViewModel : BaseViewModel
 
         SettingsController.CurrentSettings.AnotherAppToStartPath = AnotherAppToStartPath;
 
+        SettingsController.CurrentSettings.ProxyUrlWithPort = ProxyUrlWithPort;
         SettingsController.CurrentSettings.MainTrackingCharacterName = MainTrackingCharacterName;
         SettingsController.CurrentSettings.BackupIntervalByDays = BackupIntervalByDaysSelection.Value;
         SettingsController.CurrentSettings.MaximumNumberOfBackups = MaximumNumberOfBackupsSelection.Value;
@@ -754,6 +759,16 @@ public class SettingsWindowViewModel : BaseViewModel
         set
         {
             _mainTrackingCharacterName = value;
+            OnPropertyChanged();
+        }
+    }
+
+    public string ProxyUrlWithPort
+    {
+        get => _proxyUrlWithPort;
+        set
+        {
+            _proxyUrlWithPort = value;
             OnPropertyChanged();
         }
     }
