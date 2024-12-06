@@ -4,6 +4,7 @@ using StatisticsAnalysisTool.Common.UserSettings;
 using StatisticsAnalysisTool.Properties;
 using System;
 using System.IO;
+using System.Net;
 using System.Net.Http;
 using System.Reflection;
 using System.Threading.Tasks;
@@ -21,22 +22,34 @@ public static class AutoUpdateController
 
         RemoveUpdateFiles(updateDirPath);
 
-        if (SettingsController.CurrentSettings.IsSuggestPreReleaseUpdatesActive && await HttpClientUtils.IsUrlAccessible(Settings.Default.AutoUpdatePreReleaseConfigUrl))
-        {
-            currentUpdateUrl = Settings.Default.AutoUpdatePreReleaseConfigUrl;
-        }
-        else if (await HttpClientUtils.IsUrlAccessible(Settings.Default.AutoUpdateConfigUrl))
-        {
-            currentUpdateUrl = Settings.Default.AutoUpdateConfigUrl;
-        }
-
-        if (string.IsNullOrEmpty(currentUpdateUrl))
-        {
-            return;
-        }
-
         try
         {
+            var isUrlAccessibleResult = await HttpClientUtils.IsUrlAccessible(Settings.Default.AutoUpdatePreReleaseConfigUrl);
+
+            if (SettingsController.CurrentSettings.IsSuggestPreReleaseUpdatesActive && isUrlAccessibleResult is { IsAccessible: true, IsProxyActive: true })
+            {
+                AutoUpdater.Proxy = new WebProxy(SettingsController.CurrentSettings.ProxyUrlWithPort);
+                currentUpdateUrl = Settings.Default.AutoUpdatePreReleaseConfigUrl;
+            }
+            else if (SettingsController.CurrentSettings.IsSuggestPreReleaseUpdatesActive && isUrlAccessibleResult is { IsAccessible: true, IsProxyActive: false })
+            {
+                currentUpdateUrl = Settings.Default.AutoUpdatePreReleaseConfigUrl;
+            }
+            else if (isUrlAccessibleResult is { IsAccessible: true, IsProxyActive: true })
+            {
+                AutoUpdater.Proxy = new WebProxy(SettingsController.CurrentSettings.ProxyUrlWithPort);
+                currentUpdateUrl = Settings.Default.AutoUpdateConfigUrl;
+            }
+            else if (isUrlAccessibleResult is { IsAccessible: true, IsProxyActive: false })
+            {
+                currentUpdateUrl = Settings.Default.AutoUpdateConfigUrl;
+            }
+
+            if (string.IsNullOrEmpty(currentUpdateUrl))
+            {
+                return;
+            }
+
             AutoUpdater.Synchronous = true;
             AutoUpdater.ApplicationExitEvent -= AutoUpdaterApplicationExit;
 

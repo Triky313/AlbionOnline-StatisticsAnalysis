@@ -95,6 +95,10 @@
                         </Grid>
                         <TextBox Text="{Binding AnotherAppToStartPath}" Height="40" TextWrapping="Wrap" VerticalAlignment="Top" Margin="0,0,5,0" />
                     </DockPanel>
+                    <DockPanel Margin="0,5,0,0">
+                        <Label Content="{Binding Translation.Proxy, FallbackValue=PROXY}" MinWidth="300" VerticalAlignment="Top" />
+                        <TextBox Text="{Binding ProxyUrlWithPort}" Height="26" TextWrapping="NoWrap" MaxLength="50" VerticalAlignment="Top" Margin="0,0,5,0" />
+                    </DockPanel>
 
                     <!-- Tracking -->
                     <DockPanel Margin="0,20,0,0">

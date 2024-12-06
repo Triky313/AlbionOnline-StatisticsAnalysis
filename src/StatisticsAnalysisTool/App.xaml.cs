@@ -42,9 +42,9 @@ public partial class App
         TaskScheduler.UnobservedTaskException += TaskScheduler_UnobservedTaskException;
         DispatcherUnhandledException += Application_DispatcherUnhandledException;
 
-        await AutoUpdateController.AutoUpdateAsync();
-
         SettingsController.LoadSettings();
+
+        await AutoUpdateController.AutoUpdateAsync();
 
         Culture.SetCulture(Culture.GetCultureByIetfLanguageTag(SettingsController.CurrentSettings.CurrentCultureIetfLanguageTag));
         if (!LocalizationController.Init())

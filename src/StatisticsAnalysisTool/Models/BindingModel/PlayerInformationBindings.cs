@@ -2,6 +2,7 @@
 using StatisticsAnalysisTool.Models.NetworkModel;
 using StatisticsAnalysisTool.ViewModels;
 using System;
+using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
 using System.Threading.Tasks;
@@ -17,6 +18,7 @@ public class PlayerInformationBindings : BaseViewModel
     private Visibility _listBoxUserSearchVisibility = Visibility.Collapsed;
     private ObservableCollection<PlayerSearchStruct> _listBoxUserSearchItems = new();
     private Visibility _loadIconVisibility = Visibility.Collapsed;
+    private Visibility _loadBarVisibility = Visibility.Collapsed;
 
     public PlayerInformationBindings()
     {
@@ -57,10 +59,10 @@ public class PlayerInformationBindings : BaseViewModel
         if (!string.IsNullOrEmpty(searchText))
         {
             var users = await ApiController.GetGameInfoSearchFromJsonAsync(searchText);
-
-            foreach (var user in users.SearchPlayer)
+            
+            foreach (var user in users?.SearchPlayer ?? new List<SearchPlayerResponse>())
             {
-                ListBoxUserSearchItems.Add(new PlayerSearchStruct() { Name = user.Name, Value = user });
+                ListBoxUserSearchItems.Add(new PlayerSearchStruct { Name = user.Name, Value = user });
             }
 
             if (ListBoxUserSearchItems.Count > 0)
@@ -80,7 +82,10 @@ public class PlayerInformationBindings : BaseViewModel
     public async Task LoadPlayerDataAsync(string playerName)
     {
         ListBoxUserSearchVisibility = Visibility.Collapsed;
+
+        LoadBarVisibility = Visibility.Visible;
         PlayerModeInformation = await GetPlayerInformationAsync(playerName, false);
+        LoadBarVisibility = Visibility.Collapsed;
     }
 
     public async Task LoadLocalPlayerDataAsync(string playerName)
@@ -108,7 +113,7 @@ public class PlayerInformationBindings : BaseViewModel
             OnPropertyChanged();
         }
     }
-
+    
     public ObservableCollection<PlayerSearchStruct> ListBoxUserSearchItems
     {
         get => _listBoxUserSearchItems;
@@ -125,6 +130,16 @@ public class PlayerInformationBindings : BaseViewModel
         set
         {
             _loadIconVisibility = value;
+            OnPropertyChanged();
+        }
+    }
+
+    public Visibility LoadBarVisibility
+    {
+        get => _loadBarVisibility;
+        set
+        {
+            _loadBarVisibility = value;
             OnPropertyChanged();
         }
     }
