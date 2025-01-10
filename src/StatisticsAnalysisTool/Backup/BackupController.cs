@@ -16,17 +16,7 @@ namespace StatisticsAnalysisTool.Backup;
 public static class BackupController
 {
     private static bool _isBackupRunning;
-
-    public static bool SaveWithConditions()
-    {
-        if (!ExistBackupOnSettingConditions())
-        {
-            return Save();
-        }
-
-        return false;
-    }
-
+    
     public static bool Save()
     {
         if (_isBackupRunning)
@@ -35,14 +25,14 @@ public static class BackupController
         }
 
         _isBackupRunning = true;
-        var sourceFolderPath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, Settings.Default.UserDataDirectoryName);
-        var backupDirPath = SettingsController.CurrentSettings.BackupStorageDirectoryPath;
 
-        if (!DirectoryController.CreateDirectoryWhenNotExists(backupDirPath))
+        if (!CreateBackupDirWhenNotExist())
         {
             return false;
         }
 
+        var sourceFolderPath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, Settings.Default.UserDataDirectoryName);
+        var backupDirPath = SettingsController.CurrentSettings.BackupStorageDirectoryPath;
         var backupFilePath = Path.Combine(backupDirPath, GetBackupFileName());
 
         try
@@ -160,6 +150,29 @@ public static class BackupController
         {
             ConsoleManager.WriteLineForError(MethodBase.GetCurrentMethod()?.DeclaringType, e);
             Log.Error(e, "{message}", MethodBase.GetCurrentMethod()?.DeclaringType);
+        }
+    }
+
+    public static bool CreateBackupDirWhenNotExist()
+    {
+        try
+        {
+            string defaultPath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, Settings.Default.BackupDirectoryName);
+            var backupDirPath = SettingsController.CurrentSettings.BackupStorageDirectoryPath;
+
+            if (string.IsNullOrEmpty(backupDirPath))
+            {
+                backupDirPath = defaultPath;
+                SettingsController.CurrentSettings.BackupStorageDirectoryPath = defaultPath;
+            }
+            
+            return DirectoryController.CreateDirectoryWhenNotExists(backupDirPath);
+        }
+        catch (IOException e)
+        {
+            ConsoleManager.WriteLineForError(MethodBase.GetCurrentMethod()?.DeclaringType, e);
+            Log.Error(e, "{message}", MethodBase.GetCurrentMethod()?.DeclaringType);
+            return false;
         }
     }
 }

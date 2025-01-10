@@ -43,6 +43,7 @@ public partial class App
         DispatcherUnhandledException += Application_DispatcherUnhandledException;
 
         SettingsController.LoadSettings();
+        BackupController.CreateBackupDirWhenNotExist();
 
         await AutoUpdateController.AutoUpdateAsync();
 
