@@ -3,6 +3,7 @@ using StatisticsAnalysisTool.Cluster;
 using StatisticsAnalysisTool.Common;
 using StatisticsAnalysisTool.Dungeon.Models;
 using StatisticsAnalysisTool.Enumerations;
+using StatisticsAnalysisTool.Exceptions;
 using StatisticsAnalysisTool.GameFileData;
 using StatisticsAnalysisTool.Localization;
 using StatisticsAnalysisTool.Models.NetworkModel;
@@ -14,13 +15,11 @@ using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Collections.Specialized;
-using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Reflection;
 using System.Threading.Tasks;
 using System.Windows;
-using StatisticsAnalysisTool.Exceptions;
 using Loot = StatisticsAnalysisTool.Dungeon.Models.Loot;
 using ValueType = StatisticsAnalysisTool.Enumerations.ValueType;
 // ReSharper disable PossibleMultipleEnumeration
@@ -606,7 +605,7 @@ public sealed class DungeonController
                 {
                     return;
                 }
-                
+
                 var uniqueItemName = ItemController.GetUniqueNameByIndex(discoveredItem.ItemIndex);
                 if (uniqueItemName.Contains("SILVERBAG"))
                 {
@@ -707,7 +706,7 @@ public sealed class DungeonController
         FileController.TransferFileIfExistFromOldPathToUserDataDirectory(Path.Combine(AppDomain.CurrentDomain.BaseDirectory, Settings.Default.DungeonRunsFileName));
         var dungeons = await FileController.LoadAsync<List<DungeonDto>>(
             Path.Combine(AppDomain.CurrentDomain.BaseDirectory, Settings.Default.UserDataDirectoryName, Settings.Default.DungeonRunsFileName));
-        
+
         var dungeonsToAdd = new List<DungeonBaseFragment>();
         foreach (DungeonDto dungeonDto in dungeons)
         {
