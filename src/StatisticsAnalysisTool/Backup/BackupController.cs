@@ -153,7 +153,7 @@ public static class BackupController
         }
     }
 
-    public static bool CreateBackupDirWhenNotExist()
+    private static bool CreateBackupDirWhenNotExist()
     {
         try
         {
