@@ -8,7 +8,7 @@
                     xmlns:enumerations="clr-namespace:StatisticsAnalysisTool.Enumerations"
                     xmlns:converters="clr-namespace:StatisticsAnalysisTool.Common.Converters"
                     xmlns:cluster="clr-namespace:StatisticsAnalysisTool.Cluster"
-                    xmlns:notification1="clr-namespace:StatisticsAnalysisTool.EventLogging.Notification"
+                    xmlns:notification="clr-namespace:StatisticsAnalysisTool.EventLogging.Notification"
                     xmlns:eventLogging="clr-namespace:StatisticsAnalysisTool.EventLogging"
                     xmlns:globalization="clr-namespace:System.Globalization;assembly=System.Runtime"
                     mc:Ignorable="d">
@@ -177,7 +177,7 @@
         <Setter Property="Source" Value="../Resources/icon_daily_season_points.png"/>
     </Style>
 
-    <DataTemplate x:Key="NotificationTemplate" DataType="{x:Type notification1:TrackingNotification}">
+    <DataTemplate x:Key="NotificationTemplate" DataType="{x:Type notification:TrackingNotification}">
         <Grid Visibility="{Binding Visibility}">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="Auto" />
@@ -188,11 +188,11 @@
         </Grid>
     </DataTemplate>
 
-    <DataTemplate DataType="{x:Type notification1:TextFragment}">
+    <DataTemplate DataType="{x:Type notification:TextFragment}">
         <TextBlock Text="{Binding Text, StringFormat='{}{0} '}" TextWrapping="Wrap" Foreground="{StaticResource SolidColorBrush.Text.1}" />
     </DataTemplate>
 
-    <DataTemplate DataType="{x:Type notification1:FameNotificationFragment}">
+    <DataTemplate DataType="{x:Type notification:FameNotificationFragment}">
         <VirtualizingStackPanel VirtualizationMode="Recycling" Orientation="Horizontal">
             <TextBlock Text="{Binding StartText, StringFormat='{}{0} '}" Foreground="{StaticResource SolidColorBrush.Text.1}"/>
             <TextBlock DataContext="{Binding Operator}" Style="{StaticResource OperatorTextBlockStyle}" />
@@ -250,7 +250,7 @@
         </VirtualizingStackPanel>
     </DataTemplate>
 
-    <DataTemplate DataType="{x:Type notification1:SilverNotificationFragment}">
+    <DataTemplate DataType="{x:Type notification:SilverNotificationFragment}">
         <VirtualizingStackPanel VirtualizationMode="Recycling" Orientation="Horizontal">
             <TextBlock Text="{Binding StartText, StringFormat='{}{0} '}" Foreground="{StaticResource SolidColorBrush.Text.1}"/>
             <TextBlock DataContext="{Binding Operator}" Style="{StaticResource OperatorTextBlockStyle}" />
@@ -283,7 +283,7 @@
         </VirtualizingStackPanel>
     </DataTemplate>
 
-    <DataTemplate DataType="{x:Type notification1:FactionPointsNotificationFragment}">
+    <DataTemplate DataType="{x:Type notification:FactionPointsNotificationFragment}">
         <VirtualizingStackPanel VirtualizationMode="Recycling" Orientation="Horizontal">
             <TextBlock Text="{Binding StartText, StringFormat='{}{0} '}" Foreground="{StaticResource SolidColorBrush.Text.1}"/>
             <TextBlock DataContext="{Binding Operator}" Style="{StaticResource OperatorTextBlockStyle}" />
@@ -303,7 +303,7 @@
         </VirtualizingStackPanel>
     </DataTemplate>
 
-    <DataTemplate DataType="{x:Type notification1:FactionFlagPointsNotificationFragment}">
+    <DataTemplate DataType="{x:Type notification:FactionFlagPointsNotificationFragment}">
         <VirtualizingStackPanel VirtualizationMode="Recycling" Orientation="Horizontal">
             <TextBlock Text="{Binding StartText, StringFormat='{}{0} '}" Foreground="{StaticResource SolidColorBrush.Text.1}"/>
             <TextBlock DataContext="{Binding Operator}" Style="{StaticResource OperatorTextBlockStyle}" />
@@ -323,7 +323,7 @@
         </VirtualizingStackPanel>
     </DataTemplate>
 
-    <DataTemplate DataType="{x:Type notification1:SeasonPointsNotificationFragment}">
+    <DataTemplate DataType="{x:Type notification:SeasonPointsNotificationFragment}">
         <VirtualizingStackPanel VirtualizationMode="Recycling" Orientation="Horizontal">
             <TextBlock Text="{Binding StartText, StringFormat='{}{0} '}" Foreground="{StaticResource SolidColorBrush.Text.1}"/>
             <TextBlock DataContext="{Binding Operator}" Style="{StaticResource OperatorTextBlockStyle}" />
@@ -343,7 +343,7 @@
         </VirtualizingStackPanel>
     </DataTemplate>
 
-    <DataTemplate DataType="{x:Type notification1:CombatNotificationFragment}">
+    <DataTemplate DataType="{x:Type notification:CombatNotificationFragment}">
         <VirtualizingStackPanel VirtualizationMode="Recycling" Orientation="Horizontal">
             <TextBlock Text="{Binding CauserName, IsAsync=True, StringFormat='{}{0} '}" Foreground="{StaticResource SolidColorBrush.Text.1}"/>
             <TextBlock Text="{Binding Damage, IsAsync=True, StringFormat='{}{0:N0} '}" Foreground="{StaticResource SolidColorBrush.Accent.Blue.2}"/>
@@ -351,7 +351,7 @@
         </VirtualizingStackPanel>
     </DataTemplate>
 
-    <DataTemplate DataType="{x:Type notification1:OtherGrabbedLootNotificationFragment}">
+    <DataTemplate DataType="{x:Type notification:OtherGrabbedLootNotificationFragment}">
         <VirtualizingStackPanel VirtualizationMode="Recycling" Orientation="Horizontal">
             <TextBlock Text="{Binding LootedByName, IsAsync=True, StringFormat='{}{0} '}" Foreground="{StaticResource SolidColorBrush.Accent.Blue.3}"/>
             <TextBlock Text="{Binding LootedByGuild, IsAsync=True, StringFormat='{}({0}) '}" Foreground="{StaticResource SolidColorBrush.Accent.Blue.3}"
@@ -401,7 +401,7 @@
         </VirtualizingStackPanel>
     </DataTemplate>
 
-    <DataTemplate DataType="{x:Type notification1:KillNotificationFragment}">
+    <DataTemplate DataType="{x:Type notification:KillNotificationFragment}">
         <StackPanel Orientation="Horizontal" Height="24">
             <TextBlock Text="{Binding Died, IsAsync=True, StringFormat='{}{0} '}" Foreground="{StaticResource SolidColorBrush.Accent.Red.3}"/>
             <TextBlock Text="{Binding ValueText, IsAsync=True, StringFormat='{}{0} '}" Foreground="{StaticResource SolidColorBrush.Text.1}"/>
