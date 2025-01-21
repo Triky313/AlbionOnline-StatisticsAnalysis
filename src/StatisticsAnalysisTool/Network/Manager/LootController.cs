@@ -26,6 +26,7 @@ public class LootController : ILootController
     private ItemContainerObject _currentItemContainer;
     private readonly List<DiscoveredItem> _discoveredLoot = new();
     private Loot _lastLootedItem;
+    private Loot _lastComparedLootedItem;
 
     private const int MaxLoot = 5000;
 
@@ -72,54 +73,57 @@ public class LootController : ILootController
             return;
         }
 
-        if (IsLastLootedItem(loot))
+        if (IsLastComparedLootedItem(loot))
         {
             return;
         }
 
-        _lastLootedItem = loot;
+        _lastComparedLootedItem = loot;
 
         var lootedByUser = _trackingController.EntityController.GetEntity(loot.LootedByName);
         var lootedFromUser = _trackingController.EntityController.GetEntity(loot.LootedFromName);
 
-        var player = _mainWindowViewModel.LoggingBindings.LootingPlayers.FirstOrDefault(x => x.PlayerName == loot.LootedByName);
-        if (player is not null)
+        await Application.Current.Dispatcher.InvokeAsync(() =>
         {
-            player.LootedItems.Add(new LootedItem()
+            var player =
+                _mainWindowViewModel.LoggingBindings.LootingPlayers.FirstOrDefault(x =>
+                    x.PlayerName == loot.LootedByName);
+            if (player is not null)
             {
-                ItemIndex = loot.ItemIndex,
-                Quantity = loot.Quantity,
-                LootedByName = loot.LootedByName,
-                LootedFromName = loot.LootedFromName,
-                LootedFromGuild = lootedFromUser?.Value?.Guild,
-                IsTrash = loot.IsTrash
-            });
-        }
-        else
-        {
-            _mainWindowViewModel.LoggingBindings.LootingPlayers.Add(new LootingPlayer()
-            {
-                PlayerName = loot.LootedByName,
-                PlayerGuild = lootedByUser?.Value?.Guild,
-                PlayerAlliance = lootedByUser?.Value?.Alliance,
-                LootedItems = new ObservableCollection<LootedItem>()
+                player.LootedItems.Add(new LootedItem()
                 {
-                    new ()
+                    ItemIndex = loot.ItemIndex,
+                    Quantity = loot.Quantity,
+                    LootedByName = loot.LootedByName,
+                    LootedFromName = loot.LootedFromName,
+                    LootedFromGuild = lootedFromUser?.Value?.Guild,
+                    IsTrash = loot.IsTrash
+                });
+            }
+            else
+            {
+                _mainWindowViewModel.LoggingBindings.LootingPlayers.Add(new LootingPlayer()
+                {
+                    PlayerName = loot.LootedByName,
+                    PlayerGuild = lootedByUser?.Value?.Guild,
+                    PlayerAlliance = lootedByUser?.Value?.Alliance,
+                    LootedItems = new ObservableCollection<LootedItem>()
                     {
-                        ItemIndex = loot.ItemIndex,
-                        Quantity = loot.Quantity,
-                        LootedByName = loot.LootedByName,
-                        LootedFromName = loot.LootedFromName,
-                        LootedFromGuild = lootedFromUser?.Value?.Guild,
-                        IsTrash = loot.IsTrash
+                        new()
+                        {
+                            ItemIndex = loot.ItemIndex,
+                            Quantity = loot.Quantity,
+                            LootedByName = loot.LootedByName,
+                            LootedFromName = loot.LootedFromName,
+                            LootedFromGuild = lootedFromUser?.Value?.Guild,
+                            IsTrash = loot.IsTrash
+                        }
                     }
-                }
-            });
-        }
-
-        await Task.CompletedTask;
+                });
+            }
+        });
     }
-    
+
     #endregion
 
     public async Task AddLootAsync(Loot loot)
@@ -200,6 +204,24 @@ public class LootController : ILootController
         var lastItem = _lastLootedItem;
 
         if (_lastLootedItem == null)
+        {
+            return false;
+        }
+
+        double secondsDifference = Math.Abs((lastItem.UtcPickupTime - (loot?.UtcPickupTime ?? DateTime.MinValue)).TotalSeconds);
+        var isSameTimeArea = secondsDifference <= 2;
+
+        return lastItem.ItemIndex == loot?.ItemIndex
+               && lastItem.Quantity == loot.Quantity
+               && lastItem.LootedFromName == loot.LootedFromName
+               && isSameTimeArea;
+    }
+
+    private bool IsLastComparedLootedItem(Loot loot)
+    {
+        var lastItem = _lastComparedLootedItem;
+
+        if (_lastComparedLootedItem == null)
         {
             return false;
         }
