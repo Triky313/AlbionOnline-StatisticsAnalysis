@@ -502,5 +502,16 @@ public enum OperationCodes
     PartyReadyCheckUpdate,
     ClaimAlbionJournalReward,
     TrackAlbionJournalAchievements,
-    RequestOutlandsTeleportationUsage
+    RequestOutlandsTeleportationUsage,
+    PickupFromPiledObjectStart,
+    PickupFromPiledObjectCancel,
+    AssetOverview,
+    AssetOverviewTabs,
+    AssetOverviewTabContent,
+    AssetOverviewUnfreezeCache,
+    AssetOverviewSearch,
+    AssetOverviewSearchTabs,
+    AssetOverviewSearchTabContent,
+    AssetOverviewRecoverPlayerVault,
+    ImmortalizeKillTrophy
 }
