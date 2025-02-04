@@ -136,9 +136,6 @@ public static class ItemController
             case TransformationWeapon transformationWeapon:
                 return (transformationWeapon.CraftingRequirements ?? new List<CraftingRequirements>())
                     .Sum(craftingRequirement => GetItemValueByCraftingRequirements(craftingRequirement, level));
-            case KillTrophyItem killTrophyItem:
-                return (killTrophyItem.CraftingRequirements ?? new List<CraftingRequirements>())
-                    .Sum(craftingRequirement => GetItemValueByCraftingRequirements(craftingRequirement, level));
         }
 
         return resultItemValue;
@@ -511,7 +508,7 @@ public static class ItemController
             return crystalLeagueItem;
         }
 
-        var killTrophyItemObject = GetItemJsonObject(cleanUniqueName, new List<KillTrophyItem>() { _itemsJson.Items.KillTrophyItem });
+        var killTrophyItemObject = GetItemJsonObject(cleanUniqueName, _itemsJson.Items.KillTrophyItem);
         if (killTrophyItemObject is KillTrophyItem killTrophyItem)
         {
             killTrophyItem.ItemType = ItemType.killTrophy;
@@ -619,7 +616,7 @@ public static class ItemController
         itemTypeStructs.AddRange(_itemsJson.Items.MountSkin.Select(x => new ItemTypeStruct(x.UniqueName, x.ItemType)));
         itemTypeStructs.AddRange(_itemsJson.Items.TransformationWeapon.Select(x => new ItemTypeStruct(x.UniqueName, x.ItemType)));
         itemTypeStructs.AddRange(_itemsJson.Items.CrystalLeagueItem.Select(x => new ItemTypeStruct(x.UniqueName, x.ItemType)));
-        itemTypeStructs.Add(new ItemTypeStruct(_itemsJson.Items.KillTrophyItem.UniqueName, _itemsJson.Items.KillTrophyItem.ItemType));
+        itemTypeStructs.AddRange(_itemsJson.Items.KillTrophyItem.Select(x => new ItemTypeStruct(x.UniqueName, x.ItemType)));
 
         return itemTypeStructs.FirstOrDefault(x => x.UniqueName == itemObject.UniqueName).ItemType;
     }

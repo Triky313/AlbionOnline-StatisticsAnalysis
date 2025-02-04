@@ -1,6 +1,4 @@
-﻿using StatisticsAnalysisTool.Common.Converters;
-using System.Collections.Generic;
-using System.Text.Json.Serialization;
+﻿using System.Text.Json.Serialization;
 
 namespace StatisticsAnalysisTool.Models.ItemsJsonModel;
 
@@ -9,8 +7,14 @@ public class KillTrophyItem : ItemJsonObject
     [JsonPropertyName("@uniquename")]
     public override string UniqueName { get; set; }
 
+    [JsonPropertyName("@expiretimedays")]
+    public string ExpireTimeDays { get; set; }
+
     [JsonPropertyName("@shopcategory")]
     public string ShopCategory { get; set; }
+
+    [JsonPropertyName("@durabilitylossperdayfactor")]
+    public string DurabilityLossPerDayFactor { get; set; }
 
     [JsonPropertyName("@shopsubcategory1")]
     public string ShopSubCategory1 { get; set; }
@@ -54,7 +58,12 @@ public class KillTrophyItem : ItemJsonObject
     [JsonPropertyName("@hidefromplayeroncontext")]
     public string HideFromPlayerOnContext { get; set; }
 
-    [JsonConverter(typeof(CraftingRequirementsToCraftingRequirementsList))]
-    [JsonPropertyName("craftingrequirements")]
-    public List<CraftingRequirements> CraftingRequirements { get; set; }
+    [JsonPropertyName("@salvageable")]
+    public string Salvageable { get; set; }
+
+    [JsonPropertyName("@customizewithguildlogo")]
+    public string CustomizeWithGuildLogo { get; set; }
+
+    [JsonPropertyName("@itemvalue")]
+    public string ItemValue { get; set; }
 }
