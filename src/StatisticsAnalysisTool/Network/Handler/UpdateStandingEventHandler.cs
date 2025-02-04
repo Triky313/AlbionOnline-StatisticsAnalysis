@@ -1,20 +1,20 @@
 ﻿using StatisticsAnalysisTool.Enumerations;
-using StatisticsAnalysisTool.Network.Events;
 using StatisticsAnalysisTool.Network.Manager;
 using System.Threading.Tasks;
+using StatisticsAnalysisTool.Network.Events;
 
 namespace StatisticsAnalysisTool.Network.Handler;
 
-public class UpdateMistCityStandingEventHandler : EventPacketHandler<UpdateMistCityStandingEvent>
+public class UpdateStandingEventHandler : EventPacketHandler<UpdateStandingEvent>
 {
     private readonly TrackingController _trackingController;
 
-    public UpdateMistCityStandingEventHandler(TrackingController trackingController) : base((int) EventCodes.UpdateMistCityStanding)
+    public UpdateStandingEventHandler(TrackingController trackingController) : base((int) EventCodes.UpdateStanding)
     {
         _trackingController = trackingController;
     }
 
-    protected override async Task OnActionAsync(UpdateMistCityStandingEvent value)
+    protected override async Task OnActionAsync(UpdateStandingEvent value)
     {
         _trackingController.DungeonController?.AddValueToDungeon(value.TotalPoints.DoubleValue, ValueType.BrecilianStanding);
         await Task.CompletedTask;

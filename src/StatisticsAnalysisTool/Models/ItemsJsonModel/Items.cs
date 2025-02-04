@@ -38,5 +38,5 @@ public class Items
     [JsonPropertyName("crystalleagueitem")]
     public List<CrystalLeagueItem> CrystalLeagueItem { get; set; }
     [JsonPropertyName("killtrophy")]
-    public KillTrophyItem KillTrophyItem { get; set; }
+    public List<KillTrophyItem> KillTrophyItem { get; set; }
 }

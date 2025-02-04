@@ -77,7 +77,7 @@ public class NetworkManager
         builder.AddEventHandler(new HarvestFinishedEventHandler(trackingController));
         builder.AddEventHandler(new RewardGrantedEventHandler(trackingController));
         builder.AddEventHandler(new NewExpeditionCheckPointHandler(trackingController));
-        builder.AddEventHandler(new UpdateMistCityStandingEventHandler(trackingController));
+        builder.AddEventHandler(new UpdateStandingEventHandler(trackingController));
         builder.AddEventHandler(new CraftBuildingInfoEventHandler(trackingController));
 
         // Request
