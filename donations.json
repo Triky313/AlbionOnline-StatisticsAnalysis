@@ -4,7 +4,8 @@
 	"Amount": 52800000,
 	"RealMoneyAmount": 0,
 	"Contributor": "Fraxuz",
-	"IsDonationRealMoney": false
+	"IsDonationRealMoney": false,
+	"Server": "EU"
      },
      {
 	"Timestamp": "2024-12-18T00:00:00",
