@@ -70,7 +70,6 @@ public sealed class ClusterController
         _trackingController.TradeController.ResetCraftingBuildingInfo();
         _mainWindowViewModel.DamageMeterBindings.GetSnapshot(_mainWindowViewModel.DamageMeterBindings.IsSnapshotAfterMapChangeActive);
         _trackingController.CombatController.ResetDamageMeterByClusterChange();
-        _trackingController.StatisticController.SetKillsDeathsValues();
         _trackingController.VaultController.ResetDiscoveredItems();
         _trackingController.VaultController.ResetInternalVaultContainer();
         _trackingController.VaultController.ResetCurrentInternalVault();
