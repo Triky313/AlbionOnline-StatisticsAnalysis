@@ -57,6 +57,10 @@ public class TradeMonitoringBindings : BaseViewModel
         TradesSearchText = string.Empty;
 
         TradeCollectionView = CollectionViewSource.GetDefaultView(Trades) as ListCollectionView;
+        if (TradeCollectionView != null)
+        {
+            TradeCollectionView.Filter = null;
+        }
     }
 
     public ListCollectionView TradeCollectionView
@@ -238,27 +242,40 @@ public class TradeMonitoringBindings : BaseViewModel
 
     public async Task UpdateFilteredTradesAsync()
     {
-        if (Trades?.Count <= 0 && TradeCollectionView?.Count <= 0)
+        if (Trades?.Count <= 0)
         {
             return;
         }
 
         FilteringIsRunningIconVisibility = Visibility.Visible;
 
-        _cancellationTokenSource?.Cancel();
+        if (_cancellationTokenSource is not null)
+        {
+            await _cancellationTokenSource.CancelAsync();
+        }
         _cancellationTokenSource = new CancellationTokenSource();
 
         try
         {
             var filteredTrades = await Task.Run(ParallelTradeFilterProcess, _cancellationTokenSource.Token);
 
-            TradeCollectionView = CollectionViewSource.GetDefaultView(filteredTrades) as ListCollectionView;
-            TradeStatsObject?.SetTradeStats(TradeCollectionView?.Cast<Trade>().ToList());
+            if (Trades != null)
+            {
+                TradeCollectionView ??= CollectionViewSource.GetDefaultView(Trades) as ListCollectionView;
+            }
+
+            if (TradeCollectionView != null)
+            {
+                TradeCollectionView.Filter = obj => filteredTrades.Contains(obj as Trade);
+
+                TradeStatsObject?.SetTradeStats(TradeCollectionView?.Cast<Trade>().ToList());
+            }
+
             UpdateCurrentTradesUi(null, null);
         }
         catch (TaskCanceledException)
         {
-            // ignored
+            // Ignored
         }
         finally
         {
@@ -290,32 +307,32 @@ public class TradeMonitoringBindings : BaseViewModel
 
     private bool Filter(object obj)
     {
-        if (obj is null)
+        if (obj is not Trade trade)
         {
             return false;
         }
 
-        return obj is Trade trade2 &&
-               (TradesSearchText == null &&
-                trade2.Timestamp.Date >= DatePickerTradeFrom.Date &&
-                trade2.Timestamp.Date <= DatePickerTradeTo.Date)
-               ||
-               (obj is Trade trade &&
-                TradesSearchText != null &&
-                trade.Timestamp.Date >= DatePickerTradeFrom.Date &&
-                trade.Timestamp.Date <= DatePickerTradeTo.Date &&
-                (
-                    trade.LocationName != null && trade.LocationName.IndexOf(TradesSearchText, StringComparison.OrdinalIgnoreCase) >= 0 ||
-                    $"T{trade.Item?.Tier}.{trade.Item?.Level}".IndexOf(TradesSearchText, StringComparison.OrdinalIgnoreCase) >= 0 ||
-                    trade.MailTypeDescription.IndexOf(TradesSearchText, StringComparison.OrdinalIgnoreCase) >= 0 ||
-                    trade.Item != null && trade.Item.LocalizedName.IndexOf(TradesSearchText, StringComparison.OrdinalIgnoreCase) >= 0 ||
-                    trade.MailContent.ActualUnitPrice.ToString().IndexOf(TradesSearchText, StringComparison.OrdinalIgnoreCase) >= 0 ||
-                    trade.MailContent.TotalPrice.ToString().IndexOf(TradesSearchText, StringComparison.OrdinalIgnoreCase) >= 0 ||
-                    trade.InstantBuySellContent.UnitPrice.ToString().IndexOf(TradesSearchText, StringComparison.OrdinalIgnoreCase) >= 0 ||
-                    trade.InstantBuySellContent.TotalPrice.ToString().IndexOf(TradesSearchText, StringComparison.OrdinalIgnoreCase) >= 0 ||
-                    trade.Description?.IndexOf(TradesSearchText, StringComparison.OrdinalIgnoreCase) >= 0
-                ));
+        if (trade.Timestamp.Ticks < DatePickerTradeFrom.Ticks || trade.Timestamp.Date > DatePickerTradeTo.Date)
+        {
+            return false;
+        }
+
+        if (string.IsNullOrEmpty(TradesSearchText))
+        {
+            return true;
+        }
+
+        return (trade.LocationName?.IndexOf(TradesSearchText, StringComparison.OrdinalIgnoreCase) >= 0) ||
+               ($"T{trade.Item?.Tier}.{trade.Item?.Level}".IndexOf(TradesSearchText, StringComparison.OrdinalIgnoreCase) >= 0) ||
+               (trade.MailTypeDescription?.IndexOf(TradesSearchText, StringComparison.OrdinalIgnoreCase) >= 0) ||
+               (trade.Item?.LocalizedName?.IndexOf(TradesSearchText, StringComparison.OrdinalIgnoreCase) >= 0) ||
+               (trade.MailContent.ActualUnitPrice.ToString().IndexOf(TradesSearchText, StringComparison.OrdinalIgnoreCase) >= 0) ||
+               (trade.MailContent.TotalPrice.ToString().IndexOf(TradesSearchText, StringComparison.OrdinalIgnoreCase) >= 0) ||
+               (trade.InstantBuySellContent.UnitPrice.ToString().IndexOf(TradesSearchText, StringComparison.OrdinalIgnoreCase) >= 0) ||
+               (trade.InstantBuySellContent.TotalPrice.ToString().IndexOf(TradesSearchText, StringComparison.OrdinalIgnoreCase) >= 0) ||
+               (trade.Description?.IndexOf(TradesSearchText, StringComparison.OrdinalIgnoreCase) >= 0);
     }
+
 
     #endregion
 }
