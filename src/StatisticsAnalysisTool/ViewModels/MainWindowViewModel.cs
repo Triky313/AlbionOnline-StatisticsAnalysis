@@ -121,6 +121,7 @@ public class MainWindowViewModel : BaseViewModel
     private string _serverTypeText;
     private bool _isDataLoaded;
     private bool _isCloseButtonActive;
+    private Visibility _loadIconVisibility = Visibility.Collapsed;
 
     public MainWindowViewModel()
     {
@@ -269,7 +270,8 @@ public class MainWindowViewModel : BaseViewModel
         InitAlerts();
         await EstimatedMarketValueController.SetAllEstimatedMarketValuesToItemsAsync();
         LoggingBindings.Init();
-        
+
+        LoadIconVisibility = Visibility.Hidden;
         IsFilterResetEnabled = true;
         IsItemSearchCheckboxesEnabled = true;
         IsTxtSearchEnabled = true;
@@ -918,6 +920,16 @@ public class MainWindowViewModel : BaseViewModel
         set
         {
             _isFilterResetEnabled = value;
+            OnPropertyChanged();
+        }
+    }
+
+    public Visibility LoadIconVisibility
+    {
+        get => _loadIconVisibility;
+        set
+        {
+            _loadIconVisibility = value;
             OnPropertyChanged();
         }
     }
