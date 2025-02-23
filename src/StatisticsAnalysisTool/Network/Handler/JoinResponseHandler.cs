@@ -9,6 +9,7 @@ using StatisticsAnalysisTool.ViewModels;
 using System;
 using System.Threading.Tasks;
 using System.Windows;
+using StatisticsAnalysisTool.Models.BindingModel;
 
 namespace StatisticsAnalysisTool.Network.Handler;
 
@@ -25,7 +26,8 @@ public class JoinResponseHandler : ResponsePacketHandler<JoinResponse>
 
     protected override async Task OnActionAsync(JoinResponse value)
     {
-        await SetLocalUserData(value);
+        SetLocalUserData(value);
+        _ = SetApiUserData(value);
 
         _trackingController.ClusterController.SetJoinClusterInformation(value.MapIndex, value.MainMapIndex, value.MapGuid);
 
@@ -57,9 +59,9 @@ public class JoinResponseHandler : ResponsePacketHandler<JoinResponse>
         await _mainWindowViewModel?.PlayerInformationBindings?.LoadLocalPlayerDataAsync(value.Username)!;
     }
 
-    private async Task SetLocalUserData(JoinResponse value)
+    private void SetLocalUserData(JoinResponse value)
     {
-        await _trackingController.EntityController.LocalUserData.SetValuesAsync(new LocalUserData
+        _trackingController.EntityController.LocalUserData.SetValues(new LocalUserData
         {
             UserObjectId = value.UserObjectId,
             Guid = value.UserGuid,
@@ -76,6 +78,14 @@ public class JoinResponseHandler : ResponsePacketHandler<JoinResponse>
             AllianceName = value.AllianceName,
             IsReSpecActive = value.IsReSpecActive
         });
+    }
+
+    private async Task SetApiUserData(JoinResponse value)
+    {
+        _mainWindowViewModel.DashboardBindings.KillsDeathsText = DashboardBindings.TranslationKillsDeathsLoading;
+        await _trackingController.EntityController.LocalUserData.GetApiData(value.Username);
+        _mainWindowViewModel.DashboardBindings.KillsDeathsText = DashboardBindings.TranslationKillsDeaths;
+        _trackingController.StatisticController.SetKillsDeathsValues();
     }
 
     private async Task AddEntityAsync(Entity entity)

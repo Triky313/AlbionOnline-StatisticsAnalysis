@@ -36546,6 +36546,47 @@
       ]
     },
     {
+      "tuid": "KILLS_DEATHS_LOADING",
+      "tuv": [
+        {
+          "lang": "de-DE",
+          "seg": "Tötungen / Tode (Lädt)"
+        },
+        {
+          "lang": "en-US",
+          "seg": "Kills / Deaths (Loading)"
+        },
+        {
+          "lang": "fr-FR",
+          "seg": "Tués / Morts (Chargement)"
+        },
+        {
+          "lang": "ja-JP",
+          "seg": "キル数 / 死亡数 (読み込み中)"
+        },
+        {
+          "lang": "ko-KR",
+          "seg": "킬 / 사망 (로딩 중)"
+        },
+        {
+          "lang": "pl-PL",
+          "seg": "Zabicia / Śmierci (Ładowanie)"
+        },
+        {
+          "lang": "pt-BR",
+          "seg": "Kills / Deaths (Loading)"
+        },
+        {
+          "lang": "ru-RU",
+          "seg": "Убийства / Смерти (Загрузка)"
+        },
+        {
+          "lang": "zh-CN",
+          "seg": "击杀 / 死亡 (加载中)"
+        }
+      ]
+    },
+    {
       "tuid": "REPAIR_COSTS",
       "tuv": [
         {

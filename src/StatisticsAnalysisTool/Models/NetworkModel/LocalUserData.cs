@@ -69,10 +69,8 @@ public class LocalUserData
     public double AverageItemPowerWhenDying =>
         PlayerKillsDeaths?.Where(x => x.ObjectType == GameInfoPlayerKillsDeathsType.Death && x.Victim?.Name == Username).Select(x => x.Victim?.AverageItemPower).Sum() / PlayerKillsDeaths?.ToArray().Count(x => x.ObjectType == GameInfoPlayerKillsDeathsType.Death) ?? 0;
 
-    public async Task SetValuesAsync(LocalUserData localUserData)
+    public void SetValues(LocalUserData localUserData)
     {
-        await GetApiData(Username, localUserData.Username);
-
         UserObjectId = localUserData.UserObjectId;
         Guid = localUserData.Guid;
         InteractGuid = localUserData.InteractGuid;
@@ -89,12 +87,12 @@ public class LocalUserData
         IsReSpecActive = localUserData.IsReSpecActive;
     }
 
-    private async Task GetApiData(string currentUsername, string newUsername)
+    public async Task GetApiData(string username)
     {
-        if (currentUsername != newUsername || LastUpdate < DateTime.UtcNow.AddMinutes(-5))
+        if (LastUpdate == null || LastUpdate < DateTime.UtcNow.AddMinutes(-5))
         {
-            var info = await ApiController.GetGameInfoSearchFromJsonAsync(newUsername);
-            WebApiUserId = GetWebApiUserId(info, newUsername)?.Id;
+            var info = await ApiController.GetGameInfoSearchFromJsonAsync(username);
+            WebApiUserId = GetWebApiUserId(info, username)?.Id;
 
             await AddPlayerKillsDeathsToListAsync(await ApiController.GetGameInfoPlayerKillsDeathsFromJsonAsync(WebApiUserId, GameInfoPlayersType.Deaths), GameInfoPlayerKillsDeathsType.Death);
             await AddPlayerKillsDeathsToListAsync(await ApiController.GetGameInfoPlayerTopKillsFromJsonAsync(WebApiUserId, UnitOfTime.Month), GameInfoPlayerKillsDeathsType.Kill);
