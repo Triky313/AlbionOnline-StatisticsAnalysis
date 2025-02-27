@@ -108,8 +108,8 @@
                         <Label Content="{Binding Translation.PacketProvider, FallbackValue=PACKET_PROVIDER}" MinWidth="300" VerticalAlignment="Top" />
                         <ComboBox ItemsSource="{Binding PacketProvider}" SelectedItem="{Binding PacketProviderSelection}" IsSynchronizedWithCurrentItem="True" DisplayMemberPath="Name" 
                                   SelectedValuePath="Value" HorizontalAlignment="Left" VerticalAlignment="Top" Width="200" Height="26" />
-                        <Label Content="{Binding Translation.RestartRequired, StringFormat='{}({0})', FallbackValue=(RESTART__REQUIRED)}" 
-                               Foreground="{StaticResource SolidColorBrush.Accent.Red.3}" MinWidth="300" VerticalAlignment="Top" />
+                        <Label Content="{Binding Translation.ChangeRequiresAToolRestart, StringFormat='{}({0})', FallbackValue=(CHANGE__REQUIRES__A__TOOL__RESTART)}" 
+                               Foreground="{StaticResource SolidColorBrush.Accent.Yellow.1}" MinWidth="300" VerticalAlignment="Top" />
                     </DockPanel>
                     <DockPanel Margin="0,5,0,0" Visibility="{Binding PacketFilterVisibility}">
                         <Label Content="{Binding Translation.PacketFilter, FallbackValue=PACKET__FILTER}" MinWidth="300" VerticalAlignment="Top" />

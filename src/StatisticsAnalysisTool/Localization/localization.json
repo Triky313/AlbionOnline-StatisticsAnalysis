@@ -37588,6 +37588,19 @@
           "seg": "Proxy"
         }
       ]
+    },
+    {
+      "tuid": "CHNAGE_REQUIRES_A_TOOL_RESTART",
+      "tuv": [
+        {
+          "lang": "de-DE",
+          "seg": "Änderung benötigt einen Tool Neustart"
+        },
+        {
+          "lang": "en-US",
+          "seg": "Change requires a tool restart"
+        }
+      ]
     }
   ]
 }

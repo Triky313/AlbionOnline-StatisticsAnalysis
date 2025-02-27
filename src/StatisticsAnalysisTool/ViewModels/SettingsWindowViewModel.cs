@@ -490,7 +490,7 @@ public class SettingsWindowViewModel : BaseViewModel
     {
         PacketProvider.Clear();
         PacketProvider.Add(new SettingDataInformation { Name = $"Sockets ({LocalizationController.Translation("TOOL_MUST_BE_RUN_AS_ADMIN")})", Value = (int) PacketProviderKind.Sockets });
-        PacketProvider.Add(new SettingDataInformation { Name = $"Npcap ({LocalizationController.Translation("EXPERIMENTAL")})", Value = (int) PacketProviderKind.Npcap });
+        PacketProvider.Add(new SettingDataInformation { Name = "Npcap", Value = (int) PacketProviderKind.Npcap });
         PacketProviderSelection = PacketProvider.FirstOrDefault(x => x.Value == (int) SettingsController.CurrentSettings.PacketProvider);
     }
 

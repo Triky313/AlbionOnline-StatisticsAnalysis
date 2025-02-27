@@ -43,7 +43,7 @@ public class SettingsWindowTranslation
     public static string Notifications => LocalizationController.Translation("NOTIFICATIONS");
     public static string PacketFilter => LocalizationController.Translation("PACKET_FILTER");
     public static string PacketProvider => LocalizationController.Translation("PACKET_PROVIDER");
-    public static string RestartRequired => LocalizationController.Translation("RESTART_REQUIRED");
+    public static string ChangeRequiresAToolRestart => LocalizationController.Translation("CHNAGE_REQUIRES_A_TOOL_RESTART");
     public static string Reset => LocalizationController.Translation("RESET");
     public static string PlayerSelectionWithSameNameInDb => LocalizationController.Translation("PLAYER_SELECTION_WITH_SAME_NAME_IN_DB");
     public static string UpdateNow => LocalizationController.Translation("UPDATE_NOW");
