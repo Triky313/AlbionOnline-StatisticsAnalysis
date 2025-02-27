@@ -57,6 +57,7 @@ public class DashboardBindings : BaseViewModel
     private EFontAwesomeIcon _reSpecStatsToggleIcon;
     private Visibility _repairCostsStatsVisibility;
     private EFontAwesomeIcon _repairCostsStatsToggleIcon;
+    private string _translationKillsDeaths = TranslationKillsDeaths;
 
     public DashboardBindings()
     {
@@ -402,6 +403,16 @@ public class DashboardBindings : BaseViewModel
 
     #region Kill / Death stats
 
+    public string KillsDeathsText
+    {
+        get => _translationKillsDeaths;
+        set
+        {
+            _translationKillsDeaths = value;
+            OnPropertyChanged();
+        }
+    }
+
     public int SoloKillsToday
     {
         get => _soloKillsToday;
@@ -627,6 +638,7 @@ public class DashboardBindings : BaseViewModel
     public static string TranslationRepairCostsLast7Days => LocalizationController.Translation("REPAIR_COSTS_LAST_7_DAYS");
     public static string TranslationRepairCostsLast30Days => LocalizationController.Translation("REPAIR_COSTS_LAST_30_DAYS");
     public static string TranslationKillsDeaths => LocalizationController.Translation("KILLS_DEATHS");
+    public static string TranslationKillsDeathsLoading => LocalizationController.Translation("KILLS_DEATHS_LOADING");
     public static string TranslationLootedChests => LocalizationController.Translation("LOOTED_CHESTS");
     public static string TranslationRepairCosts => LocalizationController.Translation("REPAIR_COSTS");
 }
