@@ -8,7 +8,7 @@ public abstract class PhotonParser
     private const int CommandHeaderLength = 12;
     private const int PhotonHeaderLength = 12;
 
-    private readonly Dictionary<int, SegmentedPackage> _pendingSegments = new Dictionary<int, SegmentedPackage>();
+    private readonly Dictionary<int, SegmentedPackage> _pendingSegments = new();
 
     public void ReceivePacket(byte[] payload)
     {
@@ -18,11 +18,27 @@ public abstract class PhotonParser
         }
 
         int offset = 0;
-        NumberDeserializer.Deserialize(out short peerId, payload, ref offset);
-        ReadByte(out byte flags, payload, ref offset);
-        ReadByte(out byte commandCount, payload, ref offset);
-        NumberDeserializer.Deserialize(out int timestamp, payload, ref offset);
-        NumberDeserializer.Deserialize(out int challenge, payload, ref offset);
+
+        if (!NumberDeserializer.Deserialize(out short peerId, payload, ref offset))
+        {
+            return;
+        }
+        if (!ReadByte(out byte flags, payload, ref offset))
+        {
+            return;
+        }
+        if (!ReadByte(out byte commandCount, payload, ref offset))
+        {
+            return;
+        }
+        if (!NumberDeserializer.Deserialize(out int timestamp, payload, ref offset))
+        {
+            return;
+        }
+        if (!NumberDeserializer.Deserialize(out int challenge, payload, ref offset))
+        {
+            return;
+        }
 
         bool isEncrypted = flags == 1;
         bool isCrcEnabled = flags == 0xCC;
@@ -36,7 +52,10 @@ public abstract class PhotonParser
         if (isCrcEnabled)
         {
             int ignoredOffset = 0;
-            NumberDeserializer.Deserialize(out int crc, payload, ref ignoredOffset);
+            if (!NumberDeserializer.Deserialize(out int crc, payload, ref ignoredOffset))
+            {
+                return;
+            }
             NumberSerializer.Serialize(0, payload, ref offset);
 
             if (crc != CrcCalculator.Calculate(payload, payload.Length))
@@ -60,13 +79,28 @@ public abstract class PhotonParser
 
     private void HandleCommand(byte[] source, ref int offset)
     {
-        ReadByte(out byte commandType, source, ref offset);
-        ReadByte(out byte channelId, source, ref offset);
-        ReadByte(out byte commandFlags, source, ref offset);
+        if (!ReadByte(out byte commandType, source, ref offset))
+        {
+            return;
+        }
+        if (!ReadByte(out byte channelId, source, ref offset))
+        {
+            return;
+        }
+        if (!ReadByte(out byte commandFlags, source, ref offset))
+        {
+            return;
+        }
         // Skip 1 byte
         offset++;
-        NumberDeserializer.Deserialize(out int commandLength, source, ref offset);
-        NumberDeserializer.Deserialize(out int sequenceNumber, source, ref offset);
+        if (!NumberDeserializer.Deserialize(out int commandLength, source, ref offset))
+        {
+            return;
+        }
+        if (!NumberDeserializer.Deserialize(out int sequenceNumber, source, ref offset))
+        {
+            return;
+        }
         commandLength -= CommandHeaderLength;
 
         switch ((CommandType) commandType)
@@ -192,8 +226,16 @@ public abstract class PhotonParser
         return segmentedPackage;
     }
 
-    private static void ReadByte(out byte value, byte[] source, ref int offset)
+    private bool ReadByte(out byte value, byte[] source, ref int offset)
     {
+        value = 0;
+
+        if (offset < 0 || offset >= source.Length)
+        {
+            return false;
+        }
+
         value = source[offset++];
+        return true;
     }
 }
