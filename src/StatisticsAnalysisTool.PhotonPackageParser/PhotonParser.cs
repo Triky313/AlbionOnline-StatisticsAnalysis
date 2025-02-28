@@ -1,5 +1,5 @@
-﻿using Protocol16.Photon;
-using StatisticsAnalysisTool.Protocol16;
+﻿using StatisticsAnalysisTool.Protocol16;
+using StatisticsAnalysisTool.Protocol16.Photon;
 
 namespace StatisticsAnalysisTool.PhotonPackageParser;
 

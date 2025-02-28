@@ -1,6 +1,4 @@
-﻿using Protocol16;
-
-namespace StatisticsAnalysisTool.Protocol16;
+﻿namespace StatisticsAnalysisTool.Protocol16;
 
 internal static class Protocol16StreamExtensions
 {
