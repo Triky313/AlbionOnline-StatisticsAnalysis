@@ -37607,11 +37607,11 @@
       "tuv": [
         {
           "lang": "de-DE",
-          "seg": "Direktkauf und Verkauf-Daten sind verschlüsselt und können mit diesem Charakter nicht eingesehen werden."
+          "seg": "Direkt-Kauf und -Verkauf Daten sind verschlüsselt und können mit diesem Charakter aktuell nicht eingesehen werden."
         },
         {
           "lang": "en-US",
-          "seg": "Direct purchase and sale data is encrypted and cannot be viewed with this character."
+          "seg": "Direct purchase and sale data is encrypted and cannot currently be viewed with this character."
         }
       ]
     }
