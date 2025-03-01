@@ -136,7 +136,8 @@
                                   SelectedItem="{Binding HistoryTabBindings.QualitiesSelection, IsAsync=true}" 
                                   HorizontalAlignment="Left" DisplayMemberPath="Name" SelectedValuePath="Quality" />
                     </StackPanel>
-                    <wpf:CartesianChart Series="{Binding HistoryTabBindings.SeriesHistory, IsAsync=True}" XAxes="{Binding HistoryTabBindings.XAxesHistory}" Margin="0,30,0,0" />
+                    <wpf:CartesianChart Series="{Binding HistoryTabBindings.SeriesHistory}" XAxes="{Binding HistoryTabBindings.XAxesHistory}" 
+                                        TooltipPosition="Center" FindingStrategy="ExactMatchTakeClosest" Margin="0,30,0,0" />
                 </Grid>
             </TabItem>
             <TabItem Header="{Binding Translation.RealMoneyPrice, FallbackValue=REAL_MONEY_PRICE}">
