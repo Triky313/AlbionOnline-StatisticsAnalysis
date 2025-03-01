@@ -37601,6 +37601,19 @@
           "seg": "Change requires a tool restart"
         }
       ]
+    },
+    {
+      "tuid": "DIRECT_PURCHASE_AND_SALE_DATA_IS_ENCRYPTED",
+      "tuv": [
+        {
+          "lang": "de-DE",
+          "seg": "Direktkauf und Verkauf-Daten sind verschlüsselt und können mit diesem Charakter nicht eingesehen werden."
+        },
+        {
+          "lang": "en-US",
+          "seg": "Direct purchase and sale data is encrypted and cannot be viewed with this character."
+        }
+      ]
     }
   ]
 }

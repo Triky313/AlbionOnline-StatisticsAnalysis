@@ -242,6 +242,6 @@
             </TabItem>
         </TabControl>
 
-        <userControls:ErrorBarControl VerticalAlignment="Bottom" Visibility="{Binding ErrorBarVisibility, FallbackValue=Visible}" ErrorBarText="{Binding ErrorBarText}" />
+        <userControls:ErrorBarControl VerticalAlignment="Bottom" Visibility="{Binding ErrorBarVisibility, FallbackValue=Visible}" ErrorText="{Binding ErrorBarText}" />
     </Grid>
 </Window>

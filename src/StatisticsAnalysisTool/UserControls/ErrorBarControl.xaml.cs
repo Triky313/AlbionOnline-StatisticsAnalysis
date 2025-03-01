@@ -13,13 +13,13 @@ public partial class ErrorBarControl
         InitializeComponent();
     }
         
-    public string ErrorBarText
+    public string ErrorText
     {
-        get => (string)GetValue(ErrorBarTextProperty);
-        set => SetValue(ErrorBarTextProperty, value);
+        get => (string)GetValue(ErrorTextProperty);
+        set => SetValue(ErrorTextProperty, value);
     }
 
-    public static readonly DependencyProperty ErrorBarTextProperty = DependencyProperty.Register("ErrorBarText", typeof(string), typeof(ErrorBarControl));
+    public static readonly DependencyProperty ErrorTextProperty = DependencyProperty.Register("ErrorText", typeof(string), typeof(ErrorBarControl));
 
     private void BtnErrorBar_Click(object sender, RoutedEventArgs e)
     {
