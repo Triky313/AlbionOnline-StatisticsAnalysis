@@ -106,7 +106,7 @@ public static class ApiController
         var url = Path.Combine(GetAoDataProjectServerBaseUrlByCurrentServer(), "stats/history/");
         url += uniqueName;
         url += $"?locations={locationsString}";
-        url += $"&date={date:M-d-yy}";
+        url += $"&date={date:yy-M-d}";
         url += $"&qualities={qualitiesString}";
         url += $"&time-scale={timeScale}";
 
