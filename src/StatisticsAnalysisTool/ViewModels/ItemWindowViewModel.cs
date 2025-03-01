@@ -1015,8 +1015,7 @@ public class ItemWindowViewModel : BaseViewModel
                 Stroke = Locations.GetLocationBrush(marketHistory.Location.GetMarketLocationByLocationNameOrId(), false),
                 GeometryStroke = Locations.GetLocationBrush(marketHistory.Location.GetMarketLocationByLocationNameOrId(), false),
                 GeometryFill = Locations.GetLocationBrush(marketHistory.Location.GetMarketLocationByLocationNameOrId(), true),
-                GeometrySize = 5,
-                TooltipLabelFormatter = p => $"{p.Context.Series.Name}: {p.PrimaryValue:N0}"
+                GeometrySize = 7
             };
 
             seriesCollectionHistory.Add(lineSeries);
@@ -1026,7 +1025,7 @@ public class ItemWindowViewModel : BaseViewModel
         {
             LabelsRotation = 15,
             Labels = date,
-            Labeler = value => new DateTime((long) value).ToString(CultureInfo.CurrentCulture),
+            Labeler = (value) => new DateTime((long) value).ToString("g", CultureInfo.CurrentCulture),
             UnitWidth = TimeSpan.FromDays(1).Ticks
         });
 

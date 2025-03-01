@@ -2,26 +2,32 @@
 using StatisticsAnalysisTool.Cluster;
 using StatisticsAnalysisTool.Common;
 using StatisticsAnalysisTool.Common.UserSettings;
+using StatisticsAnalysisTool.Localization;
 using StatisticsAnalysisTool.Network.Manager;
+using StatisticsAnalysisTool.ViewModels;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
 using System.Reflection;
 using System.Threading.Tasks;
+using System.Windows;
 
 namespace StatisticsAnalysisTool.Trade.Market;
 
 public class MarketController
 {
     private readonly TrackingController _trackingController;
+    private readonly MainWindowViewModel _mainWindowViewModel;
     private ObservableCollection<AuctionEntry> _tempOffers = new();
     private ObservableCollection<AuctionEntry> _tempBuyOrders = new();
     private ObservableCollection<int> _tempNumberToBuyList = new();
+    private bool _hasEncryptionInfoBeenShownYet;
 
-    public MarketController(TrackingController trackingController)
+    public MarketController(TrackingController trackingController, MainWindowViewModel mainWindowViewModel)
     {
         _trackingController = trackingController;
+        _mainWindowViewModel = mainWindowViewModel;
     }
 
     #region Buy from market
@@ -77,6 +83,13 @@ public class MarketController
             _ = _trackingController.TradeController.AddTradeToBindingCollectionAsync(trade);
             await _trackingController.TradeController.SaveInFileAfterExceedingLimit(20);
         }
+        else if (!_hasEncryptionInfoBeenShownYet)
+        {
+            _mainWindowViewModel.InformationBarText = LocalizationController.Translation("DIRECT_PURCHASE_AND_SALE_DATA_IS_ENCRYPTED");
+            _mainWindowViewModel.InformationBarVisibility = Visibility.Visible;
+
+            _hasEncryptionInfoBeenShownYet = true;
+        }
     }
 
     public async Task AddBuyAsync(List<long> purchaseIds)
@@ -88,6 +101,19 @@ public class MarketController
 
         foreach (long purchaseId in purchaseIds)
         {
+            if (_tempOffers.Count <= 0)
+            {
+                if (!_hasEncryptionInfoBeenShownYet)
+                {
+                    _mainWindowViewModel.InformationBarText = LocalizationController.Translation("DIRECT_PURCHASE_AND_SALE_DATA_IS_ENCRYPTED");
+                    _mainWindowViewModel.InformationBarVisibility = Visibility.Visible;
+
+                    _hasEncryptionInfoBeenShownYet = true;
+                }
+
+                break;
+            }
+
             var tempOffer = _tempOffers.FirstOrDefault(x => x.Id == purchaseId);
             if (tempOffer == null)
             {

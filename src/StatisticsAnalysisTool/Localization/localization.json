@@ -37588,6 +37588,32 @@
           "seg": "Proxy"
         }
       ]
+    },
+    {
+      "tuid": "CHNAGE_REQUIRES_A_TOOL_RESTART",
+      "tuv": [
+        {
+          "lang": "de-DE",
+          "seg": "Änderung benötigt einen Tool Neustart"
+        },
+        {
+          "lang": "en-US",
+          "seg": "Change requires a tool restart"
+        }
+      ]
+    },
+    {
+      "tuid": "DIRECT_PURCHASE_AND_SALE_DATA_IS_ENCRYPTED",
+      "tuv": [
+        {
+          "lang": "de-DE",
+          "seg": "Direkt-Kauf und -Verkauf Daten sind verschlüsselt und können mit diesem Charakter aktuell nicht eingesehen werden."
+        },
+        {
+          "lang": "en-US",
+          "seg": "Direct purchase and sale data is encrypted and cannot currently be viewed with this character."
+        }
+      ]
     }
   ]
 }
