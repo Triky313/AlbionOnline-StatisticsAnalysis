@@ -24,7 +24,7 @@ public class SettingsObject
     public bool IsInfoWindowShownOnStart { get; set; } = true;
     public string SelectedAlertSound { get; set; }
     public string SelectedDeathAlertSound { get; set; }
-    public string AlbionDataProjectBaseUrlWest { get; set; } = "https://albion-online-data.com/api/v2/";
+    public string AlbionDataProjectBaseUrlWest { get; set; } = "https://west.albion-online-data.com/api/v2/";
     public string AlbionDataProjectBaseUrlEast { get; set; } = "https://east.albion-online-data.com/api/v2/";
     public string AlbionDataProjectBaseUrlEurope { get; set; } = "https://europe.albion-online-data.com/api/v2/";
     public string AlbionOnlineApiBaseUrlWest { get; set; } = "https://gameinfo.albiononline.com";
