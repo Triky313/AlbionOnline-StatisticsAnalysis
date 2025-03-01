@@ -46,6 +46,10 @@ public class MainWindowViewModel : BaseViewModel
     private double _currentMapInfoWidth;
     private string _errorBarText;
     private Visibility _errorBarVisibility = Visibility.Collapsed;
+    private string _warningBarText;
+    private Visibility _warningBarVisibility = Visibility.Collapsed;
+    private string _informationBarText;
+    private Visibility _informationBarVisibility = Visibility.Collapsed;
     private double _guildInfoWidth;
     private Visibility _isDamageMeterPopupVisible = Visibility.Hidden;
     private bool _isShowOnlyItemsWithAlertOnActive;
@@ -1254,6 +1258,16 @@ public class MainWindowViewModel : BaseViewModel
         }
     }
 
+    public string ErrorBarText
+    {
+        get => _errorBarText;
+        set
+        {
+            _errorBarText = value;
+            OnPropertyChanged();
+        }
+    }
+
     public Visibility ErrorBarVisibility
     {
         get => _errorBarVisibility;
@@ -1264,22 +1278,52 @@ public class MainWindowViewModel : BaseViewModel
         }
     }
 
+    public string WarningBarText
+    {
+        get => _warningBarText;
+        set
+        {
+            _warningBarText = value;
+            OnPropertyChanged();
+        }
+    }
+
+    public Visibility WarningBarVisibility
+    {
+        get => _warningBarVisibility;
+        set
+        {
+            _warningBarVisibility = value;
+            OnPropertyChanged();
+        }
+    }
+
+    public string InformationBarText
+    {
+        get => _informationBarText;
+        set
+        {
+            _informationBarText = value;
+            OnPropertyChanged();
+        }
+    }
+
+    public Visibility InformationBarVisibility
+    {
+        get => _informationBarVisibility;
+        set
+        {
+            _informationBarVisibility = value;
+            OnPropertyChanged();
+        }
+    }
+
     public string ServerTypeText
     {
         get => _serverTypeText;
         set
         {
             _serverTypeText = value;
-            OnPropertyChanged();
-        }
-    }
-
-    public string ErrorBarText
-    {
-        get => _errorBarText;
-        set
-        {
-            _errorBarText = value;
             OnPropertyChanged();
         }
     }

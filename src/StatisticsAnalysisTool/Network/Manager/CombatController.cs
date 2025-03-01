@@ -229,9 +229,6 @@ public class CombatController
             fragment.TakenDamagePercentage = entities.GetTakenDamagePercentage(healthChangeObjectValue.TakenDamage);
             fragment.OverhealedPercentageOfTotalHealing = GetOverhealedPercentageOfHealWithOverhealed(healthChangeObjectValue.Overhealed, healthChangeObjectValue.Heal);
         }
-
-        Debug.Print($"AddDamageMeterFragmentAsync - Name: {fragment.Name}, Damage: {fragment.Damage}, Heal: {fragment.Heal}, TakenDamage: {fragment.TakenDamage}");
-
     }
 
     public static double GetOverhealedPercentageOfHealWithOverhealed(double overhealed, double heal)

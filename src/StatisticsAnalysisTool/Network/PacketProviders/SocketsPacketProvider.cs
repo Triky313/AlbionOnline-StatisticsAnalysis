@@ -8,6 +8,7 @@ using System.Linq;
 using System.Net;
 using System.Net.Sockets;
 using System.Reflection;
+using System.Threading.Tasks;
 
 namespace StatisticsAnalysisTool.Network.PacketProviders;
 
@@ -51,7 +52,7 @@ public class SocketsPacketProvider : PacketProvider
                 continue;
             }
 
-            socket.BeginReceive(_byteData, 0, _byteData.Length, SocketFlags.None, OnReceive, socket);
+            _ = ReceiveDataAsync(socket); // Start receiving data asynchronously
 
             _sockets.Add(socket);
             ConsoleManager.WriteLineForMessage($"NetworkManager - Added Socket | AddressFamily: {socket.AddressFamily}, LocalEndPoint: {socket.LocalEndPoint}, " +
@@ -77,85 +78,74 @@ public class SocketsPacketProvider : PacketProvider
         _sockets.Clear();
     }
 
-    private void OnReceive(IAsyncResult ar)
+    private async Task ReceiveDataAsync(Socket socket)
     {
-        if (_stopReceiving)
+        while (!_stopReceiving)
         {
-            return;
-        }
-
-        Socket socket = (Socket) ar.AsyncState;
-
-        try
-        {
-            int bytesReceived = socket?.EndReceive(ar) ?? 0;
-            if (bytesReceived <= 0)
+            try
             {
-                ConsoleManager.WriteLineForMessage(MethodBase.GetCurrentMethod()?.DeclaringType, "No data received.", ConsoleColorType.ErrorColor);
-                return;
-            }
-        }
-        catch (SocketException ex)
-        {
-            ConsoleManager.WriteLineForError(MethodBase.GetCurrentMethod()?.DeclaringType, ex);
-            return;
-        }
-        catch (ObjectDisposedException ex)
-        {
-            ConsoleManager.WriteLineForError(MethodBase.GetCurrentMethod()?.DeclaringType, ex);
-            return;
-        }
-
-
-        using (MemoryStream buffer = new MemoryStream(_byteData))
-        {
-            using BinaryReader read = new BinaryReader(buffer);
-            read.BaseStream.Seek(2, SeekOrigin.Begin);
-            ushort dataLength = (ushort) IPAddress.NetworkToHostOrder(read.ReadInt16());
-
-            read.BaseStream.Seek(9, SeekOrigin.Begin);
-            int protocol = read.ReadByte();
-
-            if (protocol != 17)
-            {
-                _byteData = new byte[65000];
-                socket?.BeginReceive(_byteData, 0, _byteData.Length, SocketFlags.None, OnReceive, socket);
-                return;
-            }
-
-            read.BaseStream.Seek(20, SeekOrigin.Begin);
-
-            string srcPort = ((ushort) IPAddress.NetworkToHostOrder(read.ReadInt16())).ToString();
-            string destPort = ((ushort) IPAddress.NetworkToHostOrder(read.ReadInt16())).ToString();
-
-            if (srcPort == "5056" || destPort == "5056")
-            {
-                read.BaseStream.Seek(28, SeekOrigin.Begin);
-
-                if (dataLength >= 28)
+                int bytesReceived = await socket.ReceiveAsync(new ArraySegment<byte>(_byteData), SocketFlags.None);
+                if (bytesReceived <= 0)
                 {
-                    byte[] data = read.ReadBytes(dataLength - 28);
-                    _ = data.Reverse();
+                    ConsoleManager.WriteLineForMessage(MethodBase.GetCurrentMethod()?.DeclaringType, "No data received.", ConsoleColorType.ErrorColor);
+                    continue;
+                }
 
-                    try
-                    {
-                        // TODO: System.OverflowException: 'Arithmetic operation resulted in an overflow.'
-                        // TODO: Index was outside the bounds of the array.
-                        _photonReceiver.ReceivePacket(data);
-                    }
-                    catch
-                    {
-                        // ignored
-                    }
+                ProcessReceivedData(socket, _byteData, bytesReceived);
+            }
+            catch (SocketException ex)
+            {
+                ConsoleManager.WriteLineForError(MethodBase.GetCurrentMethod()?.DeclaringType, ex);
+            }
+            catch (ObjectDisposedException ex)
+            {
+                ConsoleManager.WriteLineForError(MethodBase.GetCurrentMethod()?.DeclaringType, ex);
+            }
+            catch (Exception ex)
+            {
+                ConsoleManager.WriteLineForError(MethodBase.GetCurrentMethod()?.DeclaringType, ex);
+            }
+        }
+    }
+
+    private void ProcessReceivedData(Socket socket, byte[] data, int bytesReceived)
+    {
+        using MemoryStream buffer = new MemoryStream(data, 0, bytesReceived);
+        using BinaryReader read = new BinaryReader(buffer);
+        read.BaseStream.Seek(2, SeekOrigin.Begin);
+        ushort dataLength = (ushort) IPAddress.NetworkToHostOrder(read.ReadInt16());
+
+        read.BaseStream.Seek(9, SeekOrigin.Begin);
+        int protocol = read.ReadByte();
+
+        if (protocol != 17)
+        {
+            return;
+        }
+
+        read.BaseStream.Seek(20, SeekOrigin.Begin);
+
+        string srcPort = ((ushort) IPAddress.NetworkToHostOrder(read.ReadInt16())).ToString();
+        string destPort = ((ushort) IPAddress.NetworkToHostOrder(read.ReadInt16())).ToString();
+
+        if (srcPort == "5056" || destPort == "5056")
+        {
+            read.BaseStream.Seek(28, SeekOrigin.Begin);
+
+            if (dataLength >= 28)
+            {
+                byte[] packetData = read.ReadBytes(dataLength - 28);
+                _ = packetData.Reverse();
+
+                try
+                {
+                    _photonReceiver.ReceivePacket(packetData);
+                }
+                catch (Exception ex)
+                {
+                    ConsoleManager.WriteLineForError(MethodBase.GetCurrentMethod()?.DeclaringType, ex);
                 }
             }
-        }
-
-        _byteData = new byte[65000];
-
-        if (!_stopReceiving)
-        {
-            socket?.BeginReceive(_byteData, 0, _byteData.Length, SocketFlags.None, OnReceive, socket);
         }
     }
 

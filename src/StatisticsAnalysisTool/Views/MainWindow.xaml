@@ -271,6 +271,10 @@
         </TabControl>
 
         <userControls:FooterControl VerticalAlignment="Bottom" Height="40" />
-        <userControls:ErrorBarControl VerticalAlignment="Bottom" Visibility="{Binding ErrorBarVisibility, FallbackValue=Collapsed}" ErrorBarText="{Binding ErrorBarText}" />
+        <StackPanel Orientation="Vertical" VerticalAlignment="Bottom">
+            <userControls:ErrorBarControl VerticalAlignment="Bottom" Visibility="{Binding ErrorBarVisibility, FallbackValue=Collapsed}" ErrorText="{Binding ErrorBarText}" />
+            <userControls:WarningBarControl VerticalAlignment="Bottom" Visibility="{Binding WarningBarVisibility, FallbackValue=Collapsed}" WarningText="{Binding WarningBarText}" />
+            <userControls:InformationBarControl VerticalAlignment="Bottom" Visibility="{Binding InformationBarVisibility, FallbackValue=Collapsed}" InformationText="{Binding InformationBarText}" />
+        </StackPanel>
     </Grid>
 </Window>
