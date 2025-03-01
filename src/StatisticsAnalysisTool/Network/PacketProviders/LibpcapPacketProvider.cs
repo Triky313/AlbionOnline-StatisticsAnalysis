@@ -106,12 +106,8 @@ public class LibpcapPacketProvider : PacketProvider
             return;
         }
 
-        // TODO: array pool?
-        // TODO: better parser?
         try
         {
-            // TODO: System.OverflowException: 'Arithmetic operation resulted in an overflow.'
-            // TODO: Index was outside the bounds of the array.
             _photonReceiver.ReceivePacket(udpPacket.Payload.ToArray());
         }
         catch
