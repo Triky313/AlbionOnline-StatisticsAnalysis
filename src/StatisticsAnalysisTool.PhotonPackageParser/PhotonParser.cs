@@ -8,7 +8,7 @@ public abstract class PhotonParser
     private const int CommandHeaderLength = 12;
     private const int PhotonHeaderLength = 12;
 
-    private readonly Dictionary<int, SegmentedPackage> _pendingSegments = new();
+    private readonly Dictionary<int, SegmentedPackage?> _pendingSegments = new();
 
     public void ReceivePacket(byte[] payload)
     {
@@ -196,7 +196,7 @@ public abstract class PhotonParser
 
     private void HandleSegmentedPayload(int startSequenceNumber, int totalLength, int fragmentLength, int fragmentOffset, byte[] source, ref int offset)
     {
-        SegmentedPackage segmentedPackage = GetSegmentedPackage(startSequenceNumber, totalLength);
+        SegmentedPackage? segmentedPackage = GetSegmentedPackage(startSequenceNumber, totalLength);
 
         Buffer.BlockCopy(source, offset, segmentedPackage.TotalPayload, fragmentOffset, fragmentLength);
         offset += fragmentLength;
@@ -209,9 +209,9 @@ public abstract class PhotonParser
         }
     }
 
-    private SegmentedPackage GetSegmentedPackage(int startSequenceNumber, int totalLength)
+    private SegmentedPackage? GetSegmentedPackage(int startSequenceNumber, int totalLength)
     {
-        if (_pendingSegments.TryGetValue(startSequenceNumber, out SegmentedPackage segmentedPackage))
+        if (_pendingSegments.TryGetValue(startSequenceNumber, out SegmentedPackage? segmentedPackage))
         {
             return segmentedPackage;
         }
