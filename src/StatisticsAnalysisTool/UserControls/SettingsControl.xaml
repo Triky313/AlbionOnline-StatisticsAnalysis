@@ -200,7 +200,9 @@
                                     </Binding>
                                 </TextBox.Text>
                                 <TextBox.ToolTip>
-                                    <Binding Path="(Validation.Errors)[0].ErrorContent" RelativeSource="{RelativeSource Self}" />
+                                    <MultiBinding Converter="{StaticResource ValidationErrorConverter}">
+                                        <Binding Path="(Validation.Errors)" RelativeSource="{RelativeSource Self}" />
+                                    </MultiBinding>
                                 </TextBox.ToolTip>
                             </TextBox>
                             <Button Content="{Binding Translation.Reset, FallbackValue=RESET}" Height="24" MaxWidth="100" VerticalAlignment="Center" Click="ResetBackupStorageDirPath_Click" />
