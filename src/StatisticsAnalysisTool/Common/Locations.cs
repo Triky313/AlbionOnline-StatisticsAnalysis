@@ -27,7 +27,8 @@ public static class Locations
         { Location.MountainCross, "Mountain Cross" },
         { Location.ArthursRest, "Arthurs Rest" },
         { Location.MerlynsRest, "Merlyns Rest" },
-        { Location.MorganasRest, "Morganas Rest" }
+        { Location.MorganasRest, "Morganas Rest" },
+        { Location.SmugglersDen, "Smugglers Den" },
     };
 
     public static readonly Dictionary<MarketLocation, string> DisplayNames = new()
@@ -53,6 +54,7 @@ public static class Locations
         { MarketLocation.ArthursRest, "Arthurs Rest" },
         { MarketLocation.MerlynsRest, "Merlyns Rest" },
         { MarketLocation.MorganasRest, "Morganas Rest" },
+        { MarketLocation.SmugglersDen, "Smuggler's Den" },
     };
 
     public static string GetParameterName(Location location)
@@ -82,6 +84,11 @@ public static class Locations
             return MarketLocation.CaerleonMarket;
         }
 
+        if (index.Contains("BLACKBANK") || index.Contains("SMUGGLER"))
+        {
+            return MarketLocation.SmugglersDen;
+        }
+
         return Enum.TryParse(index, true, out MarketLocation location) ? location : MarketLocation.Unknown;
     }
 
@@ -91,37 +98,7 @@ public static class Locations
         _ = list.Remove(MarketLocation.Unknown);
         return list;
     }
-
-    [Obsolete]
-    public static Location GetLocationByLocationNameOrId(string location)
-    {
-        return location switch
-        {
-            "Thetford" => Location.Thetford,
-            "Lymhurst" => Location.Lymhurst,
-            "Bridgewatch" => Location.Bridgewatch,
-            "Martlock" => Location.Martlock,
-            "Fort Sterling" => Location.FortSterling,
-            "0301" or "Thetford Portal" => Location.ThetfordPortal,
-            "1301" or "Lymhurst Portal" => Location.LymhurstPortal,
-            "2301" or "Bridgewatch Portal" => Location.BridgewatchPortal,
-            "3301" or "Martlock Portal" => Location.MartlockPortal,
-            "4301" or "Fort Sterling Portal" => Location.FortSterlingPortal,
-            "5000" or "5001" or "Brecilien" => Location.Brecilien,
-            "Caerleon" => Location.Caerleon,
-            "Swamp Cross" => Location.SwampCross,
-            "Forest Cross" => Location.ForestCross,
-            "Steppe Cross" => Location.SteppeCross,
-            "Highland Cross" => Location.HighlandCross,
-            "Mountain Cross" => Location.MountainCross,
-            "Arthurs Rest" => Location.ArthursRest,
-            "Merlyns Rest" => Location.MerlynsRest,
-            "Morganas Rest" => Location.MorganasRest,
-            "Black Market" => Location.BlackMarket,
-            _ => Location.Unknown,
-        };
-    }
-
+    
     public static MarketLocation GetMarketLocationByLocationNameOrId(this string location)
     {
         return location switch
@@ -170,6 +147,7 @@ public static class Locations
                 MarketLocation.MerlynsRest => GetSolidColorPaint((SolidColorBrush)Application.Current.Resources[$"SolidColorBrush.City.MerlynsRest{transparentText}"]),
                 MarketLocation.MorganasRest => GetSolidColorPaint((SolidColorBrush)Application.Current.Resources[$"SolidColorBrush.City.MorganasRest{transparentText}"]),
                 MarketLocation.BlackMarket => GetSolidColorPaint((SolidColorBrush)Application.Current.Resources[$"SolidColorBrush.City.BlackMarket{transparentText}"]),
+                MarketLocation.SmugglersDen => GetSolidColorPaint((SolidColorBrush)Application.Current.Resources[$"SolidColorBrush.City.SmugglersDen{transparentText}"]),
                 _ => new SolidColorPaint { Color = new SKColor(0, 0, 0, 0) }
             };
         }
@@ -226,7 +204,8 @@ public enum MarketLocation
     ArthursRest = 4300,
     MerlynsRest = 1012,
     MorganasRest = 0008,
-    BrecilienMarket = 5003
+    BrecilienMarket = 5003,
+    SmugglersDen
 }
 
 // TODO: Rework with correct city ID's otherwise use MarketLocation
@@ -253,7 +232,8 @@ public enum Location
     ArthursRest = 4300,
     MerlynsRest = 1012,
     MorganasRest = 0008,
-    Brecilien = 5000
+    Brecilien = 5000,
+    SmugglersDen
 }
 
 public enum LocationArea

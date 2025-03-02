@@ -1,5 +1,6 @@
 ﻿using StatisticsAnalysisTool.Common;
 using System.Text.Json.Serialization;
+using System.Windows;
 
 namespace StatisticsAnalysisTool.Trade.Mails;
 
@@ -10,6 +11,7 @@ public class MailContent
     public string UniqueItemName { get; init; }
     public long InternalTotalPrice { get; init; }
     public long InternalUnitPrice { get; init; }
+    public long InternalTotalDistanceFee { get; init; }
     public double TaxRate { get; set; }
     public double TaxSetupRate { get; set; }
     [JsonIgnore]
@@ -18,6 +20,8 @@ public class MailContent
     public FixPoint TotalPrice => FixPoint.FromInternalValue(InternalTotalPrice);
     [JsonIgnore]
     public FixPoint UnitPrice => FixPoint.FromInternalValue(InternalUnitPrice);
+    [JsonIgnore]
+    public FixPoint TotalDistanceFee => FixPoint.FromInternalValue(InternalTotalDistanceFee);
     [JsonIgnore]
     public FixPoint ActualUnitPrice => FixPoint.FromInternalValue(InternalTotalPrice).DoubleValue <= 0 || UsedQuantity <= 0
         ? FixPoint.FromFloatingPointValue(0)
@@ -31,9 +35,11 @@ public class MailContent
     public FixPoint UnitPriceWithDeductedTaxes => FixPoint.FromFloatingPointValue(FixPoint.FromInternalValue(InternalUnitPrice).DoubleValue * ((100 - TaxRate - TaxSetupRate) / 100));
     [JsonIgnore]
     public bool IsMailWithoutValues => InternalTotalPrice == 0 && UsedQuantity == 0;
+    [JsonIgnore]
+    public Visibility DistanceFeeAboveZeroVisibility => InternalTotalDistanceFee > 0 ? Visibility.Visible : Visibility.Collapsed;
 
     public string GetAsCsv()
     {
-        return $"{UsedQuantity};{Quantity};{UniqueItemName ?? ""};{TotalPrice};{UnitPrice};{TaxRate};{TaxSetupRate}";
+        return $"{UsedQuantity};{Quantity};{UniqueItemName ?? ""};{TotalPrice};{UnitPrice};{TotalDistanceFee};{TaxRate};{TaxSetupRate}";
     }
 }

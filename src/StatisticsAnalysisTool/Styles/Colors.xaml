@@ -79,6 +79,7 @@
     <Color x:Key="Color.City.MerlynsRest">#FF3A9DC7</Color>
     <Color x:Key="Color.City.MorganasRest">#FF83AF00</Color>
     <Color x:Key="Color.City.BlackMarket">#FF95233F</Color>
+    <Color x:Key="Color.City.SmugglersDen">#FFb4273a</Color>
 
     <Color x:Key="Color.City.Default.Transparent">#33323B43</Color>
     <Color x:Key="Color.City.Caerleon.Transparent">#33DE2643</Color>
@@ -92,6 +93,7 @@
     <Color x:Key="Color.City.MerlynsRest.Transparent">#333A9DC7</Color>
     <Color x:Key="Color.City.MorganasRest.Transparent">#3383AF00</Color>
     <Color x:Key="Color.City.BlackMarket.Transparent">#3395233F</Color>
+    <Color x:Key="Color.City.SmugglersDen.Transparent">#33b4273a</Color>
 
     <!-- Dungeon mode colors -->
     <Color x:Key="Dungeon.Mode.Mists.1">#7657DB</Color>
@@ -253,6 +255,7 @@
     <SolidColorBrush x:Key="SolidColorBrush.City.MerlynsRest" Color="{StaticResource Color.City.MerlynsRest}"/>
     <SolidColorBrush x:Key="SolidColorBrush.City.MorganasRest" Color="{StaticResource Color.City.MorganasRest}"/>
     <SolidColorBrush x:Key="SolidColorBrush.City.BlackMarket" Color="{StaticResource Color.City.BlackMarket}"/>
+    <SolidColorBrush x:Key="SolidColorBrush.City.SmugglersDen" Color="{StaticResource Color.City.SmugglersDen}"/>
 
     <SolidColorBrush x:Key="SolidColorBrush.City.Default.Transparent" Color="{StaticResource Color.City.Default.Transparent}"/>
     <SolidColorBrush x:Key="SolidColorBrush.City.Caerleon.Transparent" Color="{StaticResource Color.City.Caerleon.Transparent}"/>

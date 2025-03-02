@@ -55,7 +55,8 @@ public class Trade : BaseViewModel
 
             return Location switch
             {
-                MarketLocation.BlackMarket => "Black Market",
+                MarketLocation.BlackMarket => Locations.GetDisplayName(MarketLocation.BlackMarket),
+                MarketLocation.SmugglersDen => Locations.GetDisplayName(MarketLocation.SmugglersDen),
                 MarketLocation.Unknown => LocalizationController.Translation("UNKNOWN"),
                 _ => WorldData.GetUniqueNameOrDefault((int) Location)
             };
@@ -143,6 +144,7 @@ public class Trade : BaseViewModel
     public static string TranslationSilver => LocalizationController.Translation("SILVER");
     public static string TranslationCostPerItem => LocalizationController.Translation("COST_PER_ITEM");
     public static string TranslationTotalCost => LocalizationController.Translation("TOTAL_COST");
+    public static string TranslationTotalDistanceFee => LocalizationController.Translation("TOTAL_DISTANCE_FEE");
     public static string TranslationTotalRevenue => LocalizationController.Translation("TOTAL_REVENUE");
     public static string TranslationTax => LocalizationController.Translation("TAX");
     public static string TranslationSetupTax => LocalizationController.Translation("SETUP_TAX");
