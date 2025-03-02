@@ -15799,7 +15799,7 @@
       "tuv": [
         {
           "lang": "de-DE",
-          "seg": "Total ReSpec"
+          "seg": "Gesamt ReSpec"
         },
         {
           "lang": "en-US",
@@ -37612,6 +37612,19 @@
         {
           "lang": "en-US",
           "seg": "Direct purchase and sale data is encrypted and cannot currently be viewed with this character."
+        }
+      ]
+    },
+    {
+      "tuid": "TOTAL_DISTANCE_FEE",
+      "tuv": [
+        {
+          "lang": "de-DE",
+          "seg": "Gesamte Entf.-Gebühren"
+        },
+        {
+          "lang": "en-US",
+          "seg": "Total distance fee"
         }
       ]
     }
