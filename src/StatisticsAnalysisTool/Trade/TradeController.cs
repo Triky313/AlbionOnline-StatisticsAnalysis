@@ -266,11 +266,11 @@ public class TradeController
         {
             const string csvHeader = "Ticks;ClusterIndex;Description;Type;ItemName;MailTypeText;" +
                                      "MailContent__UsedQuantity;MailContent__Quantity;MailContent__UniqueItemName;MailContent__TotalPrice;MailContent__UnitPrice;" +
-                                     "MailContent__TaxRate;MailContent__TaxSetupRate;Amount;" +
-                                     "AuctionEntry__UnitPriceSilver;AuctionEntry__TotalPriceSilver;AuctionEntry__Amount;AuctionEntry__Tier;AuctionEntry__IsFinished;" +
-                                     "AuctionEntry__AuctionType;AuctionEntry__HasBuyerFetched;AuctionEntry__HasSellerFetched;" +
+                                     "MailContent__TotalDistanceFee;MailContent__TaxRate;MailContent__TaxSetupRate;Amount;" +
+                                     "AuctionEntry__UnitPriceSilver;AuctionEntry__TotalDistanceFee;AuctionEntry__TotalPriceSilver;AuctionEntry__Amount;AuctionEntry__Tier;AuctionEntry__IsFinished;" +
+                                     "AuctionEntry__AuctionType;AuctionEntry__HasBuyerFetched;AuctionEntry__HasSellerFetched;AuctionEntry__SellerName;" +
                                      "AuctionEntry__ItemTypeId;AuctionEntry__EnchantmentLevel;AuctionEntry__QualityLevel;AuctionEntry__Expires;" +
-                                     "InstantBuySellContent__UnitPrice;InstantBuySellContent__Quantity;InstantBuySellContent__TaxRate\n";
+                                     "InstantBuySellContent__UnitPrice;InstantBuySellContent__Quantity;InstantBuySellContent__TotalDistanceFee;InstantBuySellContent__TaxRate\n";
 
             return csvHeader + string.Join(Environment.NewLine, _mainWindowViewModel?.TradeMonitoringBindings?.Trades.Select(trade => TradeMapping.Mapping(trade).CsvOutput).ToArray() ?? Array.Empty<string>());
         }

@@ -8,6 +8,7 @@ public class AuctionEntry
 {
     public long Id { get; set; }
     public long UnitPriceSilver { get; set; }
+    public long TotalDistanceFee { get; set; }
     public long TotalPriceSilver { get; set; }
     public int Amount { get; set; }
     public int Tier { get; set; }
@@ -30,7 +31,7 @@ public class AuctionEntry
     {
         var expires = Expires.ToString("yyyy-MM-ddTHH:mm:ss.fffZ", CultureInfo.InvariantCulture);
 
-        return $"{FixPoint.FromInternalValue(UnitPriceSilver).IntegerValue};{FixPoint.FromInternalValue(TotalPriceSilver).IntegerValue};{Amount};{Tier};{IsFinished};{AuctionType ?? ""};" +
-               $"{HasBuyerFetched};{HasSellerFetched};{ItemTypeId ?? ""};{EnchantmentLevel};{QualityLevel};{expires}";
+        return $"{FixPoint.FromInternalValue(UnitPriceSilver).IntegerValue};{FixPoint.FromInternalValue(TotalDistanceFee).IntegerValue};{FixPoint.FromInternalValue(TotalPriceSilver).IntegerValue}" +
+               $";{Amount};{Tier};{IsFinished};{AuctionType ?? ""};{HasBuyerFetched};{HasSellerFetched};{SellerName};{ItemTypeId ?? ""};{EnchantmentLevel};{QualityLevel};{expires}";
     }
 }

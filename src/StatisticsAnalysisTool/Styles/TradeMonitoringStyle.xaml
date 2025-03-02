@@ -62,6 +62,9 @@
             <DataTrigger Binding="{Binding Location, IsAsync=True}" Value="BlackMarket">
                 <Setter Property="Foreground" Value="{StaticResource SolidColorBrush.City.BlackMarket}" />
             </DataTrigger>
+            <DataTrigger Binding="{Binding Location, IsAsync=True}" Value="SmugglersDen">
+                <Setter Property="Foreground" Value="{StaticResource SolidColorBrush.City.SmugglersDen}" />
+            </DataTrigger>
         </Style.Triggers>
     </Style>
 
@@ -589,48 +592,8 @@
                         <DockPanel>
                             <StackPanel Orientation="Horizontal">
                                 <TextBlock Text="{Binding TranslationCostPerItem, IsAsync=True}" Width="160" Foreground="{StaticResource SolidColorBrush.Text.4}" />
-                                <TextBlock Text="{Binding TranslationTotalCost, IsAsync=True, FallbackValue=TOTAL_COST}" Width="160" Foreground="{StaticResource SolidColorBrush.Text.4}">
-                                    <TextBlock.Style>
-                                        <Style TargetType="{x:Type TextBlock}">
-                                            <Setter Property="Visibility" Value="Collapsed"/>
-                                            <Style.Triggers>
-                                                <DataTrigger Binding="{Binding MailType, IsAsync=True}" Value="MarketplaceSellOrderExpired">
-                                                    <Setter Property="Visibility" Value="Collapsed"/>
-                                                </DataTrigger>
-                                                <DataTrigger Binding="{Binding MailType, IsAsync=True}" Value="MarketplaceBuyOrderExpired">
-                                                    <Setter Property="Visibility" Value="Visible"/>
-                                                </DataTrigger>
-                                                <DataTrigger Binding="{Binding MailType, IsAsync=True}" Value="MarketplaceSellOrderFinished">
-                                                    <Setter Property="Visibility" Value="Collapsed"/>
-                                                </DataTrigger>
-                                                <DataTrigger Binding="{Binding MailType, IsAsync=True}" Value="MarketplaceBuyOrderFinished">
-                                                    <Setter Property="Visibility" Value="Visible"/>
-                                                </DataTrigger>
-                                            </Style.Triggers>
-                                        </Style>
-                                    </TextBlock.Style>
-                                </TextBlock>
-                                <TextBlock Text="{Binding TranslationTotalRevenue, IsAsync=True, FallbackValue=TOTAL_REVENUE}" Width="160" Foreground="{StaticResource SolidColorBrush.Text.4}">
-                                    <TextBlock.Style>
-                                        <Style TargetType="{x:Type TextBlock}">
-                                            <Setter Property="Visibility" Value="Collapsed"/>
-                                            <Style.Triggers>
-                                                <DataTrigger Binding="{Binding MailType, IsAsync=True}" Value="MarketplaceSellOrderExpired">
-                                                    <Setter Property="Visibility" Value="Visible"/>
-                                                </DataTrigger>
-                                                <DataTrigger Binding="{Binding MailType, IsAsync=True}" Value="MarketplaceBuyOrderExpired">
-                                                    <Setter Property="Visibility" Value="Collapsed"/>
-                                                </DataTrigger>
-                                                <DataTrigger Binding="{Binding MailType, IsAsync=True}" Value="MarketplaceSellOrderFinished">
-                                                    <Setter Property="Visibility" Value="Visible"/>
-                                                </DataTrigger>
-                                                <DataTrigger Binding="{Binding MailType, IsAsync=True}" Value="MarketplaceBuyOrderFinished">
-                                                    <Setter Property="Visibility" Value="Collapsed"/>
-                                                </DataTrigger>
-                                            </Style.Triggers>
-                                        </Style>
-                                    </TextBlock.Style>
-                                </TextBlock>
+                                <TextBlock Text="{Binding TranslationTotalDistanceFee, IsAsync=True, FallbackValue=TOTAL_DISTANCE_FEE}" Width="160" 
+                                           Foreground="{StaticResource SolidColorBrush.Text.4}" Visibility="{Binding MailContent.DistanceFeeAboveZeroVisibility}" />
                                 <TextBlock Width="160" Foreground="{StaticResource SolidColorBrush.Text.4}">
                                     <TextBlock.Text>
                                         <MultiBinding StringFormat="{}{0} ({1}%)">
@@ -639,7 +602,7 @@
                                         </MultiBinding>
                                     </TextBlock.Text>
                                 </TextBlock>
-                                <TextBlock Width="110" Foreground="{StaticResource SolidColorBrush.Text.4}">
+                                <TextBlock Width="160" Foreground="{StaticResource SolidColorBrush.Text.4}">
                                     <TextBlock.Style>
                                         <Style TargetType="{x:Type TextBlock}">
                                             <Setter Property="Visibility" Value="Collapsed"/>
@@ -660,6 +623,48 @@
                                         </MultiBinding>
                                     </TextBlock.Text>
                                 </TextBlock>
+                                <TextBlock Width="160" Text="{Binding TranslationTotalCost, IsAsync=True, FallbackValue=TOTAL_COST}" Foreground="{StaticResource SolidColorBrush.Text.4}">
+                                    <TextBlock.Style>
+                                        <Style TargetType="{x:Type TextBlock}">
+                                            <Setter Property="Visibility" Value="Collapsed"/>
+                                            <Style.Triggers>
+                                                <DataTrigger Binding="{Binding MailType, IsAsync=True}" Value="MarketplaceSellOrderExpired">
+                                                    <Setter Property="Visibility" Value="Collapsed"/>
+                                                </DataTrigger>
+                                                <DataTrigger Binding="{Binding MailType, IsAsync=True}" Value="MarketplaceBuyOrderExpired">
+                                                    <Setter Property="Visibility" Value="Visible"/>
+                                                </DataTrigger>
+                                                <DataTrigger Binding="{Binding MailType, IsAsync=True}" Value="MarketplaceSellOrderFinished">
+                                                    <Setter Property="Visibility" Value="Collapsed"/>
+                                                </DataTrigger>
+                                                <DataTrigger Binding="{Binding MailType, IsAsync=True}" Value="MarketplaceBuyOrderFinished">
+                                                    <Setter Property="Visibility" Value="Visible"/>
+                                                </DataTrigger>
+                                            </Style.Triggers>
+                                        </Style>
+                                    </TextBlock.Style>
+                                </TextBlock>
+                                <TextBlock Width="160" Text="{Binding TranslationTotalRevenue, IsAsync=True, FallbackValue=TOTAL_REVENUE}" Foreground="{StaticResource SolidColorBrush.Text.4}">
+                                    <TextBlock.Style>
+                                        <Style TargetType="{x:Type TextBlock}">
+                                            <Setter Property="Visibility" Value="Collapsed"/>
+                                            <Style.Triggers>
+                                                <DataTrigger Binding="{Binding MailType, IsAsync=True}" Value="MarketplaceSellOrderExpired">
+                                                    <Setter Property="Visibility" Value="Visible"/>
+                                                </DataTrigger>
+                                                <DataTrigger Binding="{Binding MailType, IsAsync=True}" Value="MarketplaceBuyOrderExpired">
+                                                    <Setter Property="Visibility" Value="Collapsed"/>
+                                                </DataTrigger>
+                                                <DataTrigger Binding="{Binding MailType, IsAsync=True}" Value="MarketplaceSellOrderFinished">
+                                                    <Setter Property="Visibility" Value="Visible"/>
+                                                </DataTrigger>
+                                                <DataTrigger Binding="{Binding MailType, IsAsync=True}" Value="MarketplaceBuyOrderFinished">
+                                                    <Setter Property="Visibility" Value="Collapsed"/>
+                                                </DataTrigger>
+                                            </Style.Triggers>
+                                        </Style>
+                                    </TextBlock.Style>
+                                </TextBlock>
                             </StackPanel>
                             <TextBlock Style="{StaticResource Trade.City.Text}" />
                         </DockPanel>
@@ -670,28 +675,17 @@
                                     <TextBlock Text="{common:CultureAwareBinding MailContent.ActualUnitPrice.DoubleValue, IsAsync=True, StringFormat='{}{0:N0}', FallbackValue=0}" 
                                            Style="{StaticResource Mail.Text.Colors}" Margin="25,0,0,0" />
                                 </Grid>
-                                <Grid Width="160">
+                                <Grid Width="160" Visibility="{Binding MailContent.DistanceFeeAboveZeroVisibility}">
                                     <Image Style="{StaticResource Trade.Silver.Image.Style}" ToolTip="{Binding TranslationSilver, IsAsync=True}" />
-                                    <TextBlock Text="{common:CultureAwareBinding MailContent.TotalPrice.DoubleValue, IsAsync=True, StringFormat='{}{0:N0}', FallbackValue=0}" 
-                                           Style="{StaticResource Mail.Text.Colors}" Margin="25,0,0,0">
-                                        <TextBlock.ToolTip>
-                                            <TextBlock>
-                                                <TextBlock.Text>
-                                                    <MultiBinding StringFormat="{}{0}: {1:N0}">
-                                                        <Binding Path="TranslationTotalPriceWithDeductedTaxes" IsAsync="True" />
-                                                        <Binding Path="MailContent.TotalPriceWithDeductedTaxes.DoubleValue" IsAsync="True" />
-                                                    </MultiBinding>
-                                                </TextBlock.Text>
-                                            </TextBlock>
-                                        </TextBlock.ToolTip>
-                                    </TextBlock>
+                                    <TextBlock Text="{common:CultureAwareBinding MailContent.TotalDistanceFee.IntegerValue, IsAsync=True, StringFormat='{}{0:N0}', FallbackValue=0}" 
+                                               Style="{StaticResource Mail.Text.Colors}" Margin="25,0,0,0" />
                                 </Grid>
                                 <Grid Width="160">
                                     <Image Style="{StaticResource Trade.Silver.Image.Style}" ToolTip="{Binding TranslationSilver, IsAsync=True}" />
                                     <TextBlock Text="{common:CultureAwareBinding MailContent.TaxSetupPrice.DoubleValue, IsAsync=True, StringFormat='{}{0:N0}', FallbackValue=0}" 
                                                HorizontalAlignment="Left" Foreground="{StaticResource SolidColorBrush.Accent.Red.3}" Margin="25,0,0,0" />
                                 </Grid>
-                                <Grid Width="110">
+                                <Grid Width="160">
                                     <Grid.Style>
                                         <Style TargetType="{x:Type Grid}">
                                             <Setter Property="Visibility" Value="Collapsed"/>
@@ -710,6 +704,22 @@
                                                HorizontalAlignment="Left" Foreground="{StaticResource SolidColorBrush.Accent.Red.3}" Margin="25,0,0,0" />
                                 </Grid>
                             </StackPanel>
+                            <Grid Width="110">
+                                <Image Style="{StaticResource Trade.Silver.Image.Style}" ToolTip="{Binding TranslationSilver, IsAsync=True}" />
+                                <TextBlock Text="{common:CultureAwareBinding MailContent.TotalPrice.DoubleValue, IsAsync=True, StringFormat='{}{0:N0}', FallbackValue=0}" 
+                                           Style="{StaticResource Mail.Text.Colors}" Margin="25,0,0,0">
+                                    <TextBlock.ToolTip>
+                                        <TextBlock>
+                                            <TextBlock.Text>
+                                                <MultiBinding StringFormat="{}{0}: {1:N0}">
+                                                    <Binding Path="TranslationTotalPriceWithDeductedTaxes" IsAsync="True" />
+                                                    <Binding Path="MailContent.TotalPriceWithDeductedTaxes.DoubleValue" IsAsync="True" />
+                                                </MultiBinding>
+                                            </TextBlock.Text>
+                                        </TextBlock>
+                                    </TextBlock.ToolTip>
+                                </TextBlock>
+                            </Grid>
                             <Grid Margin="0 -2 0 0" Height="18" Width="18" HorizontalAlignment="Right">
                                 <CheckBox Width="auto" Height="auto" IsChecked="{Binding IsSelectedForDeletion, IsAsync=True, FallbackValue=false}" ToolTip="{Binding TranslationSelectToDelete, IsAsync=True}" />
                             </Grid>
@@ -819,6 +829,8 @@
                         <DockPanel>
                             <StackPanel Orientation="Horizontal">
                                 <TextBlock Text="{Binding TranslationCostPerItem, IsAsync=True}" Width="160" Foreground="{StaticResource SolidColorBrush.Text.4}" />
+                                <TextBlock Text="{Binding TranslationTotalDistanceFee, IsAsync=True, FallbackValue=TOTAL_DISTANCE_FEE}" Width="160" 
+                                           Foreground="{StaticResource SolidColorBrush.Text.4}" Visibility="{Binding InstantBuySellContent.DistanceFeeAboveZeroVisibility}" />
                                 <TextBlock Text="{Binding TranslationTotalCost, IsAsync=True, FallbackValue=TOTAL_COST}" Width="160" Foreground="{StaticResource SolidColorBrush.Text.4}" />
                             </StackPanel>
                             <TextBlock Style="{StaticResource Trade.City.Text}" />
@@ -829,6 +841,11 @@
                                     <Image Style="{StaticResource Trade.Silver.Image.Style}" ToolTip="{Binding TranslationSilver, IsAsync=True}" />
                                     <TextBlock Text="{common:CultureAwareBinding InstantBuySellContent.UnitPrice.IntegerValue, IsAsync=True, StringFormat='{}{0:N0}', FallbackValue=0}" 
                                            Style="{StaticResource Instant.Text.Color.Red}" Margin="25,0,0,0" />
+                                </Grid>
+                                <Grid Width="160" Visibility="{Binding InstantBuySellContent.DistanceFeeAboveZeroVisibility}">
+                                    <Image Style="{StaticResource Trade.Silver.Image.Style}" ToolTip="{Binding TranslationSilver, IsAsync=True}" />
+                                    <TextBlock Text="{common:CultureAwareBinding InstantBuySellContent.TotalDistanceFee.IntegerValue, IsAsync=True, StringFormat='{}{0:N0}', FallbackValue=0}" 
+                                               Style="{StaticResource Instant.Text.Color.Red}" Margin="25,0,0,0" />
                                 </Grid>
                                 <Grid Width="160">
                                     <Image Style="{StaticResource Trade.Silver.Image.Style}" ToolTip="{Binding TranslationSilver, IsAsync=True}" />
