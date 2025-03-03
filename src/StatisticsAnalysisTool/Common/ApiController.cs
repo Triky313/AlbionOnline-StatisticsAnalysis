@@ -97,10 +97,7 @@ public static class ApiController
 
     public static async Task<List<MarketHistoriesResponse>> GetHistoryItemPricesFromJsonAsync(string uniqueName, IList<MarketLocation> locations, DateTime? date, int quality, int timeScale = 24)
     {
-        var locationsString = locations?.Count > 0
-            ? string.Join(",", locations.Select(x => ((int) x).ToString()))
-            : "";
-
+        var locationsString = locations?.Count > 0 ? string.Join(",", locations.Select(GetApiMarketLocation)) : "";
         var qualitiesString = quality.ToString();
 
         var url = Path.Combine(GetAoDataProjectServerBaseUrlByCurrentServer(), "stats/history/");
@@ -466,6 +463,11 @@ public static class ApiController
 
     private static List<MarketHistoriesResponse> MergeCityAndPortalCity(List<MarketHistoriesResponse> values)
     {
+        foreach (MarketHistoriesResponse item in values.Where(item => item.IsSmugglersNetworkLocation()))
+        {
+            item.Location = "Smuggler's Den";
+        }
+
         var fortSterlingMarketResponses = values.Where(x => x.Location.GetMarketLocationByLocationNameOrId() is MarketLocation.FortSterlingMarket or MarketLocation.FortSterlingPortal).ToList();
         SetMarketHistoriesResponseByQuality(fortSterlingMarketResponses, values, MarketLocation.FortSterlingMarket);
 
@@ -480,6 +482,9 @@ public static class ApiController
 
         var bridgewatchMarketResponses = values.Where(x => x.Location.GetMarketLocationByLocationNameOrId() is MarketLocation.BridgewatchMarket or MarketLocation.BridgewatchPortal).ToList();
         SetMarketHistoriesResponseByQuality(bridgewatchMarketResponses, values, MarketLocation.BridgewatchMarket);
+
+        var smugglersDenResponses = values.Where(x => x.Location.GetMarketLocationByLocationNameOrId() is MarketLocation.SmugglersDen).ToList();
+        SetMarketHistoriesResponseByQuality(smugglersDenResponses, values, MarketLocation.SmugglersDen);
 
         return values;
     }
@@ -660,6 +665,28 @@ public static class ApiController
             ServerLocation.Asia => SettingsController.CurrentSettings.AlbionOnlineApiBaseUrlEast,
             ServerLocation.Europe => SettingsController.CurrentSettings.AlbionOnlineApiBaseUrlEurope,
             _ => SettingsController.CurrentSettings.AlbionOnlineApiBaseUrlWest
+        };
+    }
+
+    private static string GetApiMarketLocation(MarketLocation marketLocation)
+    {
+        return marketLocation switch
+        {
+            MarketLocation.MartlockMarket or MarketLocation.MartlockPortal => "Martlock",
+            MarketLocation.LymhurstMarket or MarketLocation.LymhurstPortal => "Lymhurst",
+            MarketLocation.BridgewatchMarket or MarketLocation.BridgewatchPortal => "Bridgewatch",
+            MarketLocation.FortSterlingMarket or MarketLocation.FortSterlingPortal => "Fort Sterling",
+            MarketLocation.ThetfordMarket or MarketLocation.ThetfordPortal => "Thetford",
+            MarketLocation.CaerleonMarket => "Caerleon",
+            MarketLocation.BrecilienMarket => "Brecilien",
+            MarketLocation.BlackMarket => "BlackMarket",
+            MarketLocation.SwampCross => "SwampCross",
+            MarketLocation.ForestCross => "ForestCross",
+            MarketLocation.SteppeCross => "SteppeCross",
+            MarketLocation.HighlandCross => "HighlandCross",
+            MarketLocation.MountainCross => "MountainCross",
+            MarketLocation.SmugglersDen => "SmugglersNetwork",
+            _ => string.Empty
         };
     }
 }

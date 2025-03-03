@@ -96,7 +96,7 @@ public static class Locations
 
         return Enum.TryParse(index, true, out MarketLocation location) ? location : MarketLocation.Unknown;
     }
-
+    
     public static List<string> GetAllMarketLocations()
     {
         return new List<string>()
@@ -118,7 +118,7 @@ public static class Locations
         };
     }
 
-    private static readonly HashSet<string> SmugglersNetworkNames = new(StringComparer.OrdinalIgnoreCase)
+    public static readonly HashSet<string> SmugglersNetworkNames = new(StringComparer.OrdinalIgnoreCase)
     {
         "Arthurs Rest Smugglers Network", "Bleachskull Desert Smugglers Network", "DeadpineForest Smugglers Network",
         "Deepwood Copse Smugglers Network", "Driftwood Hollow Smugglers Network", "Dry Basin Riverbed Smugglers Network",
