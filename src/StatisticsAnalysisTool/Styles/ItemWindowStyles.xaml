@@ -235,6 +235,16 @@
                     </Setter.Value>
                 </Setter>
             </DataTrigger>
+            <DataTrigger Binding="{Binding MarketLocation}" Value="{x:Static common:MarketLocation.SmugglersDen}">
+                <Setter Property="Background">
+                    <Setter.Value>
+                        <LinearGradientBrush EndPoint="1,0" MappingMode="RelativeToBoundingBox" StartPoint="0.5,0">
+                            <GradientStop Color="{StaticResource Color.Background.1}" Offset="1"/>
+                            <GradientStop Color="{StaticResource Color.City.SmugglersDen}"/>
+                        </LinearGradientBrush>
+                    </Setter.Value>
+                </Setter>
+            </DataTrigger>
         </Style.Triggers>
     </Style>
 

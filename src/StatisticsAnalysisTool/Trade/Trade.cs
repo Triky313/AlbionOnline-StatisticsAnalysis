@@ -58,7 +58,7 @@ public class Trade : BaseViewModel
                 MarketLocation.BlackMarket => Locations.GetDisplayName(MarketLocation.BlackMarket),
                 MarketLocation.SmugglersDen => Locations.GetDisplayName(MarketLocation.SmugglersDen),
                 MarketLocation.Unknown => LocalizationController.Translation("UNKNOWN"),
-                _ => WorldData.GetUniqueNameOrDefault((int) Location)
+                _ => WorldData.GetUniqueNameOrDefault(ClusterIndex),
             };
         }
     }

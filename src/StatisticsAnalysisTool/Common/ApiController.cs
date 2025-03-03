@@ -35,7 +35,7 @@ public static class ApiController
     ///     Returns a list of city item prices by uniqueName, locations and qualities.
     /// </summary>
     /// <exception cref="TooManyRequestsException"></exception>
-    public static async Task<List<MarketResponse>> GetCityItemPricesFromJsonAsync(string uniqueName, List<MarketLocation> marketLocations, List<int> qualities)
+    public static async Task<List<MarketResponse>> GetCityItemPricesFromJsonAsync(string uniqueName, List<string> marketLocations, List<int> qualities)
     {
         if (string.IsNullOrEmpty(uniqueName))
         {
@@ -48,7 +48,7 @@ public static class ApiController
         if (marketLocations?.Count >= 1)
         {
             url += "?locations=";
-            url = marketLocations.Aggregate(url, (current, location) => current + $"{(int) location},");
+            url = marketLocations.Aggregate(url, (current, location) => current + $"{location},");
         }
 
         if (qualities?.Count >= 1)

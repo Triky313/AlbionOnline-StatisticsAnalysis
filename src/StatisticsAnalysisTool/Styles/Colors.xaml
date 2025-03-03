@@ -269,6 +269,7 @@
     <SolidColorBrush x:Key="SolidColorBrush.City.MerlynsRest.Transparent" Color="{StaticResource Color.City.MerlynsRest.Transparent}"/>
     <SolidColorBrush x:Key="SolidColorBrush.City.MorganasRest.Transparent" Color="{StaticResource Color.City.MorganasRest.Transparent}"/>
     <SolidColorBrush x:Key="SolidColorBrush.City.BlackMarket.Transparent" Color="{StaticResource Color.City.BlackMarket.Transparent}"/>
+    <SolidColorBrush x:Key="SolidColorBrush.City.SmugglersDen.Transparent" Color="{StaticResource Color.City.SmugglersDen.Transparent}"/>
 
     <SolidColorBrush x:Key="SolidColorBrush.Dungeon.Mode.Mists.1" Color="{StaticResource Dungeon.Mode.Mists.1}"/>
     <SolidColorBrush x:Key="SolidColorBrush.Dungeon.Mode.MistsDungeon.1" Color="{StaticResource Dungeon.Mode.MistsDungeon.1}"/>
