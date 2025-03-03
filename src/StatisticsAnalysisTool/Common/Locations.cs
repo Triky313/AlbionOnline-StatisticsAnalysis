@@ -1,11 +1,10 @@
 using LiveChartsCore.SkiaSharpView.Painting;
 using SkiaSharp;
+using StatisticsAnalysisTool.GameFileData;
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Windows;
 using System.Windows.Media;
-using StatisticsAnalysisTool.GameFileData;
 
 namespace StatisticsAnalysisTool.Common;
 
@@ -72,7 +71,7 @@ public static class Locations
     {
         return DisplayNames.TryGetValue(location, out var name) ? name : null;
     }
-    
+
     public static MarketLocation GetMarketLocationByIndex(string index)
     {
         if (string.IsNullOrEmpty(index))
@@ -133,7 +132,7 @@ public static class Locations
         "Sunfang Ravine Smugglers Network", "Sunfang Wasteland Smugglers Network", "Sunkenbough Woods Smugglers Network",
         "Sunstrand Quicksands Smugglers Network", "Thirstwater Steppe Smugglers Network", "Timberscar Copse Smugglers Network",
         "Timberslope Grove Smugglers Network", "Westweald Thicket Smugglers Network", "White Peak Tundra Smugglers Network",
-        "Willowshade Hills Smugglers Network", "Willowshade Ice Marsh Smugglers Network", 
+        "Willowshade Hills Smugglers Network", "Willowshade Ice Marsh Smugglers Network",
         "BLACKBANK-2310", "BLACKBANK-0321", "BLACKBANK-0307", "BLACKBANK-4322",
         "BLACKBANK-2336", "BLACKBANK-0320", "BLACKBANK-0341", "BLACKBANK-0344",
         "BLACKBANK-0349", "BLACKBANK-0353", "BLACKBANK-1312", "BLACKBANK-1323",
@@ -144,11 +143,19 @@ public static class Locations
         "BLACKBANK-3355", "BLACKBANK-3357", "BLACKBANK-4313", "BLACKBANK-4318",
         "BLACKBANK-4345", "BLACKBANK-4351", "BLACKBANK-4357", "Smuggler's Den"
     };
-    
+
     public static MarketLocation GetMarketLocationByLocationNameOrId(this string location)
     {
+        if (string.IsNullOrEmpty(location))
+        {
+            return MarketLocation.Unknown;
+        }
+
+        var atIndex = location.LastIndexOf('@');
+        var relevantPart = atIndex >= 0 ? location.Substring(atIndex + 1) : location;
+
         // Smugglers Network
-        if (SmugglersNetworkNames.Contains(location))
+        if (SmugglersNetworkNames.Contains(relevantPart))
         {
             return MarketLocation.SmugglersDen;
         }
@@ -176,7 +183,7 @@ public static class Locations
             "4300" or "Arthurs Rest" => MarketLocation.ArthursRest,
             "1012" or "Merlyns Rest" => MarketLocation.MerlynsRest,
             "0008" or "Morganas Rest" => MarketLocation.MorganasRest,
-            "3003" or "Black Market" => MarketLocation.BlackMarket,
+            "3003" or "Black Market" or "@BLACK_MARKET" => MarketLocation.BlackMarket,
             _ => MarketLocation.Unknown,
         };
     }
@@ -189,18 +196,18 @@ public static class Locations
 
             return location switch
             {
-                MarketLocation.CaerleonMarket => GetSolidColorPaint((SolidColorBrush)Application.Current.Resources[$"SolidColorBrush.City.Caerleon{transparentText}"]),
-                MarketLocation.ThetfordMarket => GetSolidColorPaint((SolidColorBrush)Application.Current.Resources[$"SolidColorBrush.City.Thetford{transparentText}"]),
-                MarketLocation.BridgewatchMarket => GetSolidColorPaint((SolidColorBrush)Application.Current.Resources[$"SolidColorBrush.City.Bridgewatch{transparentText}"]),
-                MarketLocation.MartlockMarket => GetSolidColorPaint((SolidColorBrush)Application.Current.Resources[$"SolidColorBrush.City.Martlock{transparentText}"]),
-                MarketLocation.LymhurstMarket => GetSolidColorPaint((SolidColorBrush)Application.Current.Resources[$"SolidColorBrush.City.Lymhurst{transparentText}"]),
-                MarketLocation.FortSterlingMarket => GetSolidColorPaint((SolidColorBrush)Application.Current.Resources[$"SolidColorBrush.City.FortSterling{transparentText}"]),
-                MarketLocation.BrecilienMarket => GetSolidColorPaint((SolidColorBrush)Application.Current.Resources[$"SolidColorBrush.City.Brecilien{transparentText}"]),
-                MarketLocation.ArthursRest => GetSolidColorPaint((SolidColorBrush)Application.Current.Resources[$"SolidColorBrush.City.ArthursRest{transparentText}"]),
-                MarketLocation.MerlynsRest => GetSolidColorPaint((SolidColorBrush)Application.Current.Resources[$"SolidColorBrush.City.MerlynsRest{transparentText}"]),
-                MarketLocation.MorganasRest => GetSolidColorPaint((SolidColorBrush)Application.Current.Resources[$"SolidColorBrush.City.MorganasRest{transparentText}"]),
-                MarketLocation.BlackMarket => GetSolidColorPaint((SolidColorBrush)Application.Current.Resources[$"SolidColorBrush.City.BlackMarket{transparentText}"]),
-                MarketLocation.SmugglersDen => GetSolidColorPaint((SolidColorBrush)Application.Current.Resources[$"SolidColorBrush.City.SmugglersDen{transparentText}"]),
+                MarketLocation.CaerleonMarket => GetSolidColorPaint((SolidColorBrush) Application.Current.Resources[$"SolidColorBrush.City.Caerleon{transparentText}"]),
+                MarketLocation.ThetfordMarket => GetSolidColorPaint((SolidColorBrush) Application.Current.Resources[$"SolidColorBrush.City.Thetford{transparentText}"]),
+                MarketLocation.BridgewatchMarket => GetSolidColorPaint((SolidColorBrush) Application.Current.Resources[$"SolidColorBrush.City.Bridgewatch{transparentText}"]),
+                MarketLocation.MartlockMarket => GetSolidColorPaint((SolidColorBrush) Application.Current.Resources[$"SolidColorBrush.City.Martlock{transparentText}"]),
+                MarketLocation.LymhurstMarket => GetSolidColorPaint((SolidColorBrush) Application.Current.Resources[$"SolidColorBrush.City.Lymhurst{transparentText}"]),
+                MarketLocation.FortSterlingMarket => GetSolidColorPaint((SolidColorBrush) Application.Current.Resources[$"SolidColorBrush.City.FortSterling{transparentText}"]),
+                MarketLocation.BrecilienMarket => GetSolidColorPaint((SolidColorBrush) Application.Current.Resources[$"SolidColorBrush.City.Brecilien{transparentText}"]),
+                MarketLocation.ArthursRest => GetSolidColorPaint((SolidColorBrush) Application.Current.Resources[$"SolidColorBrush.City.ArthursRest{transparentText}"]),
+                MarketLocation.MerlynsRest => GetSolidColorPaint((SolidColorBrush) Application.Current.Resources[$"SolidColorBrush.City.MerlynsRest{transparentText}"]),
+                MarketLocation.MorganasRest => GetSolidColorPaint((SolidColorBrush) Application.Current.Resources[$"SolidColorBrush.City.MorganasRest{transparentText}"]),
+                MarketLocation.BlackMarket => GetSolidColorPaint((SolidColorBrush) Application.Current.Resources[$"SolidColorBrush.City.BlackMarket{transparentText}"]),
+                MarketLocation.SmugglersDen => GetSolidColorPaint((SolidColorBrush) Application.Current.Resources[$"SolidColorBrush.City.SmugglersDen{transparentText}"]),
                 _ => new SolidColorPaint { Color = new SKColor(0, 0, 0, 0) }
             };
         }
@@ -225,11 +232,11 @@ public static class Locations
     {
         try
         {
-            return (Color)Application.Current.Resources[$"Color.City.{location}"];
+            return (Color) Application.Current.Resources[$"Color.City.{location}"];
         }
         catch
         {
-            return (Color)Application.Current.Resources["Color.City.Default"];
+            return (Color) Application.Current.Resources["Color.City.Default"];
         }
     }
 
@@ -243,9 +250,9 @@ public static class Locations
         new (MarketLocation.BridgewatchMarket, WorldData.GetUniqueNameOrDefault("2000")),
         new (MarketLocation.CaerleonMarket, WorldData.GetUniqueNameOrDefault("3003")),
         new (MarketLocation.BrecilienMarket, WorldData.GetUniqueNameOrDefault("5000")),
-        new (MarketLocation.MerlynsRest, WorldData.GetUniqueNameOrDefault("1012")),
-        new (MarketLocation.MorganasRest, WorldData.GetUniqueNameOrDefault("0008")),
-        new (MarketLocation.ArthursRest, WorldData.GetUniqueNameOrDefault("4300")),
+        //new (MarketLocation.MerlynsRest, WorldData.GetUniqueNameOrDefault("1012")),
+        //new (MarketLocation.MorganasRest, WorldData.GetUniqueNameOrDefault("0008")),
+        //new (MarketLocation.ArthursRest, WorldData.GetUniqueNameOrDefault("4300")),
         new (MarketLocation.SmugglersDen, "Smuggler's Den")
     };
 }
