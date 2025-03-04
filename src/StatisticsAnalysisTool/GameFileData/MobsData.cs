@@ -26,11 +26,11 @@ public static class MobsData
         var mobHpInPercentOverMaxValue = 100 / mob.HitPointsMax * currentInGameMobHp;
         return mobHpInPercentOverMaxValue switch
         {
-            >= 99 and <= 101 => 0,
-            >= 115 and <= 117 => 1,
-            >= 135 and <= 137 => 2,
-            >= 157 and <= 159 => 3,
-            >= 183 and <= 185 => 4,
+            >= 99 and <= 111 => 0,
+            >= 115 and <= 127 => 1,
+            >= 135 and <= 147 => 2,
+            >= 157 and <= 174 => 3,
+            >= 183 and <= 195 => 4,
             _ => -1
         };
     }
