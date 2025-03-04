@@ -1,5 +1,4 @@
-﻿using System.Text;
-using System.Xml;
+﻿using System.Xml;
 
 namespace StatisticAnalysisTool.Extractor;
 
@@ -17,74 +16,79 @@ internal class LocalizationData : IDisposable
 
     public async Task LoadDataAsync(string mainGameFolder)
     {
-        await Task.Run(async () =>
+        var localizationBinFilePath = Path.Combine(mainGameFolder, ".\\Albion-Online_Data\\StreamingAssets\\GameData\\localization.bin");
+
+        using var localizationData = await BinaryDecrypter.DecryptAndDecompressAsync(localizationBinFilePath);
+
+        using var reader = XmlReader.Create(new MemoryStream(localizationData.ToArray()), new XmlReaderSettings
         {
-            var localizationBinFilePath = Path.Combine(mainGameFolder, ".\\Albion-Online_Data\\StreamingAssets\\GameData\\localization.bin");
-            using var localizationData = await BinaryDecrypter.DecryptAndDecompressAsync(localizationBinFilePath);
-
-            var xmlDoc = new XmlDocument();
-            xmlDoc.LoadXml(Encoding.UTF8.GetString(localizationData.ToArray()));
-
-            var rootNode = xmlDoc.LastChild?.LastChild?.ChildNodes;
-
-            if (rootNode is null)
-            {
-                return;
-            }
-
-            foreach (XmlNode node in rootNode)
-            {
-                if (node.NodeType != XmlNodeType.Element)
-                {
-                    continue;
-                }
-
-                var tuId = node.Attributes?["tuid"];
-
-                if (tuId is null)
-                {
-                    continue;
-                }
-
-                Dictionary<string, string> languages;
-
-                try
-                {
-                    languages = node.ChildNodes
-                        .Cast<XmlNode>()
-                        .ToDictionary(x => x.Attributes!["xml:lang"]!.Value, y => y.LastChild!.InnerText);
-                }
-                catch (Exception)
-                {
-                    continue;
-                }
-                
-                if (tuId.Value.StartsWith(ItemPrefix))
-                {
-                    if (tuId.Value.EndsWith(DescPostfix))
-                    {
-                        ItemLocalizedDescriptions[tuId.Value] = languages;
-                    }
-                    else
-                    {
-                        ItemLocalizedNames[tuId.Value] = languages;
-                    }
-                }
-                else if (tuId.Value.StartsWith(SpellPrefix))
-                {
-                    if (tuId.Value.EndsWith(DescPostfix))
-                    {
-                        SpellLocalizedDescriptions[tuId.Value] = languages;
-                    }
-                    else
-                    {
-                        SpellLocalizedNames[tuId.Value] = languages;
-                    }
-                }
-            }
+            Async = true
         });
 
-        GC.Collect();
+        var itemLocalizedNames = new Dictionary<string, Dictionary<string, string>>();
+        var itemLocalizedDescriptions = new Dictionary<string, Dictionary<string, string>>();
+        var spellLocalizedNames = new Dictionary<string, Dictionary<string, string>>();
+        var spellLocalizedDescriptions = new Dictionary<string, Dictionary<string, string>>();
+
+        while (await reader.ReadAsync())
+        {
+            if (reader is { NodeType: XmlNodeType.Element, Name: "node" })
+            {
+                var tuId = reader.GetAttribute("tuid");
+
+                if (string.IsNullOrEmpty(tuId))
+                {
+                    continue;
+                }
+
+                var languages = new Dictionary<string, string>();
+
+                using (var subtree = reader.ReadSubtree())
+                {
+                    while (await subtree.ReadAsync())
+                    {
+                        if (subtree is { NodeType: XmlNodeType.Element, Name: "value" })
+                        {
+                            var lang = subtree.GetAttribute("xml:lang");
+                            var text = await subtree.ReadElementContentAsStringAsync();
+
+                            if (!string.IsNullOrEmpty(lang))
+                            {
+                                languages[lang] = text;
+                            }
+                        }
+                    }
+                }
+
+                if (tuId.StartsWith(ItemPrefix))
+                {
+                    if (tuId.EndsWith(DescPostfix))
+                    {
+                        itemLocalizedDescriptions[tuId] = languages;
+                    }
+                    else
+                    {
+                        itemLocalizedNames[tuId] = languages;
+                    }
+                }
+                else if (tuId.StartsWith(SpellPrefix))
+                {
+                    if (tuId.EndsWith(DescPostfix))
+                    {
+                        spellLocalizedDescriptions[tuId] = languages;
+                    }
+                    else
+                    {
+                        spellLocalizedNames[tuId] = languages;
+                    }
+                }
+            }
+        }
+
+        ItemLocalizedNames = itemLocalizedNames;
+        ItemLocalizedDescriptions = itemLocalizedDescriptions;
+        SpellLocalizedNames = spellLocalizedNames;
+        SpellLocalizedDescriptions = spellLocalizedDescriptions;
     }
 
     public bool IsDataLoaded()
