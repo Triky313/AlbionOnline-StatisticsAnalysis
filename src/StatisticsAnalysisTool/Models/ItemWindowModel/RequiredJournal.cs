@@ -40,7 +40,7 @@ public class RequiredJournal : BaseViewModel
             _lastUpdateEmptyJournal = DateTime.UtcNow;
         }
 
-        var sellPriceMin = _marketResponseEmptyJournal?.FirstOrDefault(x => string.Equals(x?.City, Locations.GetParameterName(location), StringComparison.CurrentCultureIgnoreCase))?.SellPriceMin;
+        var sellPriceMin = _marketResponseEmptyJournal?.OrderByDescending(x => x.SellPriceMinDate).ThenByDescending(x => x.SellPriceMin).FirstOrDefault(x => x.MarketLocation == location)?.SellPriceMin;
         if (sellPriceMin != null)
         {
             CostsPerJournal = (long) sellPriceMin;
