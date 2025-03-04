@@ -151,22 +151,20 @@ public class ItemWindowViewModel : BaseViewModel
     {
         var locationFilters = new List<MainTabLocationFilterObject>
         {
-            new (MarketLocation.CaerleonMarket, Locations.GetParameterName(Location.Caerleon), true),
-            new (MarketLocation.ThetfordMarket, Locations.GetParameterName(Location.Thetford), true),
-            new (MarketLocation.FortSterlingMarket, Locations.GetParameterName(Location.FortSterling), true),
-            new (MarketLocation.LymhurstMarket, Locations.GetParameterName(Location.Lymhurst), true),
-            new (MarketLocation.BridgewatchMarket, Locations.GetParameterName(Location.Bridgewatch), true),
-            new (MarketLocation.MartlockMarket, Locations.GetParameterName(Location.Martlock), true),
-            new (MarketLocation.BrecilienMarket, Locations.GetParameterName(Location.Brecilien), true),
-            new (MarketLocation.ArthursRest, Locations.GetParameterName(Location.ArthursRest), true),
-            new (MarketLocation.MerlynsRest, Locations.GetParameterName(Location.MerlynsRest), true),
-            new (MarketLocation.MorganasRest, Locations.GetParameterName(Location.MorganasRest), true),
-            new (MarketLocation.BlackMarket, Locations.GetParameterName(Location.BlackMarket), true),
-            new (MarketLocation.ForestCross, Locations.GetParameterName(Location.ForestCross), true),
-            new (MarketLocation.SwampCross, Locations.GetParameterName(Location.SwampCross), true),
-            new (MarketLocation.SteppeCross, Locations.GetParameterName(Location.SteppeCross), true),
-            new (MarketLocation.HighlandCross, Locations.GetParameterName(Location.HighlandCross), true),
-            new (MarketLocation.MountainCross, Locations.GetParameterName(Location.MountainCross), true)
+            new (MarketLocation.CaerleonMarket, Locations.GetParameterName(MarketLocation.CaerleonMarket), true),
+            new (MarketLocation.ThetfordMarket, Locations.GetParameterName(MarketLocation.ThetfordMarket), true),
+            new (MarketLocation.FortSterlingMarket, Locations.GetParameterName(MarketLocation.FortSterlingMarket), true),
+            new (MarketLocation.LymhurstMarket, Locations.GetParameterName(MarketLocation.LymhurstMarket), true),
+            new (MarketLocation.BridgewatchMarket, Locations.GetParameterName(MarketLocation.BridgewatchMarket), true),
+            new (MarketLocation.MartlockMarket, Locations.GetParameterName(MarketLocation.MartlockMarket), true),
+            new (MarketLocation.BrecilienMarket, Locations.GetParameterName(MarketLocation.BrecilienMarket), true),
+            new (MarketLocation.BlackMarket, Locations.GetParameterName(MarketLocation.BlackMarket), true),
+            new (MarketLocation.ForestCross, Locations.GetParameterName(MarketLocation.ForestCross), true),
+            new (MarketLocation.SwampCross, Locations.GetParameterName(MarketLocation.SwampCross), true),
+            new (MarketLocation.SteppeCross, Locations.GetParameterName(MarketLocation.SteppeCross), true),
+            new (MarketLocation.HighlandCross, Locations.GetParameterName(MarketLocation.HighlandCross), true),
+            new (MarketLocation.MountainCross, Locations.GetParameterName(MarketLocation.MountainCross), true),
+            new (MarketLocation.SmugglersDen, Locations.GetParameterName(MarketLocation.SmugglersDen), true)
         };
 
         foreach (var itemWindowMainTabLocationFilter in SettingsController.CurrentSettings.ItemWindowMainTabLocationFilters)

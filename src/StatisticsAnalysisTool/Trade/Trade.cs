@@ -42,24 +42,30 @@ public class Trade : BaseViewModel
 
     public string MailTypeText { get; init; }
 
-    public MarketLocation Location => Locations.GetMarketLocationByIndex(ClusterIndex);
+    public MarketLocation Location => ClusterIndex.GetMarketLocationByLocationNameOrId();
 
     public string LocationName
     {
         get
         {
-            if (Location == MarketLocation.Unknown && ClusterIndex != null && ClusterIndex.Contains("HIDEOUT"))
+            var location = Locations.GetMarketLocationByIndex(ClusterIndex);
+
+            if (location == MarketLocation.Unknown && ClusterIndex != null && ClusterIndex.Contains("HIDEOUT"))
             {
                 return $"{ClusterIndex.Split("_")[1]} ({LocalizationController.Translation("HIDEOUT")})";
             }
 
-            return Location switch
+            if (location == MarketLocation.BlackMarket)
             {
-                MarketLocation.BlackMarket => Locations.GetDisplayName(MarketLocation.BlackMarket),
-                MarketLocation.SmugglersDen => Locations.GetDisplayName(MarketLocation.SmugglersDen),
-                MarketLocation.Unknown => LocalizationController.Translation("UNKNOWN"),
-                _ => WorldData.GetUniqueNameOrDefault((int) Location)
-            };
+                return "Black Market";
+            }
+
+            if (location == MarketLocation.SmugglersDen)
+            {
+                return "Smuggler's Den";
+            }
+
+            return WorldData.GetUniqueNameOrDefault(ClusterIndex);
         }
     }
 

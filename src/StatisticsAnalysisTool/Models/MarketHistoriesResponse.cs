@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Text.Json.Serialization;
+using StatisticsAnalysisTool.Common;
 using StatisticsAnalysisTool.Properties;
 
 namespace StatisticsAnalysisTool.Models;
@@ -18,4 +19,9 @@ public class MarketHistoriesResponse
     [JsonPropertyName("data")]
     [CanBeNull]
     public List<MarketHistoryResponse> Data { get; set; }
+
+    public bool IsSmugglersNetworkLocation()
+    {
+        return Locations.SmugglersNetworkNames.Contains(Location);
+    }
 }

@@ -1,6 +1,5 @@
 ﻿using StatisticsAnalysisTool.Common;
 using StatisticsAnalysisTool.Common.UserSettings;
-using StatisticsAnalysisTool.GameFileData;
 using StatisticsAnalysisTool.Localization;
 using StatisticsAnalysisTool.ViewModels;
 using System;
@@ -25,7 +24,7 @@ public class RequiredResource : BaseViewModel
     private readonly ItemWindowViewModel _itemWindowViewModelOld;
     private ResourceType _resourceType;
     private List<MarketResponse> _marketResponse = new();
-    private Location _itemPricesLocationSelected;
+    private MarketLocation _itemPricesLocationSelected;
     private DateTime _lastUpdate = DateTime.UtcNow.AddDays(-100);
     private double _weight;
     private double _totalWeight;
@@ -37,7 +36,7 @@ public class RequiredResource : BaseViewModel
         _itemWindowViewModelOld = itemWindowViewModelOld;
     }
 
-    private async void LoadSellPriceAsync(Location location)
+    private async void LoadSellPriceAsync(MarketLocation location)
     {
         if (_lastUpdate.AddMilliseconds(SettingsController.CurrentSettings.RefreshRate) < DateTime.UtcNow)
         {
@@ -52,21 +51,9 @@ public class RequiredResource : BaseViewModel
         }
     }
 
-    public KeyValuePair<Location, string>[] ItemPricesLocations { get; } =
-    {
-        new (Location.Martlock, WorldData.GetUniqueNameOrDefault((int)Location.Martlock)),
-        new (Location.Thetford, WorldData.GetUniqueNameOrDefault((int)Location.Thetford)),
-        new (Location.FortSterling, WorldData.GetUniqueNameOrDefault((int)Location.FortSterling)),
-        new (Location.Lymhurst, WorldData.GetUniqueNameOrDefault((int)Location.Lymhurst)),
-        new (Location.Bridgewatch, WorldData.GetUniqueNameOrDefault((int)Location.Bridgewatch)),
-        new (Location.Caerleon, WorldData.GetUniqueNameOrDefault((int)Location.Caerleon)),
-        new (Location.Brecilien, WorldData.GetUniqueNameOrDefault((int)Location.Brecilien)),
-        new (Location.MerlynsRest, WorldData.GetUniqueNameOrDefault((int)Location.MerlynsRest)),
-        new (Location.MorganasRest, WorldData.GetUniqueNameOrDefault((int)Location.MorganasRest)),
-        new (Location.ArthursRest, WorldData.GetUniqueNameOrDefault((int)Location.ArthursRest))
-    };
+    public KeyValuePair<MarketLocation, string>[] ItemPricesLocations => Locations.OnceMarketLocations;
 
-    public Location ItemPricesLocationSelected
+    public MarketLocation ItemPricesLocationSelected
     {
         get => _itemPricesLocationSelected;
         set
