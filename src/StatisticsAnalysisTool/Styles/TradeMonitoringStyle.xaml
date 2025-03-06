@@ -776,7 +776,12 @@
                                 <Grid Width="160">
                                     <Image Style="{StaticResource Trade.Silver.Image.Style}" ToolTip="{Binding TranslationSilver, IsAsync=True}" />
                                     <TextBlock Text="{common:CultureAwareBinding InstantBuySellContent.TaxPrice.DoubleValue, IsAsync=True, StringFormat='{}{0:N0}', FallbackValue=0}" 
-                                               Style="{StaticResource Instant.Text.Color.Red}" Margin="25,0,0,0">
+                                               Style="{StaticResource Instant.Text.Color.Red}" Margin="25,0,0,0"/>
+                                </Grid>
+                                <Grid Width="160">
+                                    <Image Style="{StaticResource Trade.Silver.Image.Style}" ToolTip="{Binding TranslationSilver, IsAsync=True}" />
+                                    <TextBlock Text="{common:CultureAwareBinding InstantBuySellContent.TotalPriceWithDeductedTaxes.DoubleValue, IsAsync=True, StringFormat='{}{0:N0}', FallbackValue=0}" 
+                                               Style="{StaticResource Instant.Text.Color.Green}" Margin="25,0,0,0">
                                         <TextBlock.ToolTip>
                                             <TextBlock>
                                                 <TextBlock.Text>
@@ -788,11 +793,6 @@
                                             </TextBlock>
                                         </TextBlock.ToolTip>
                                     </TextBlock>
-                                </Grid>
-                                <Grid Width="160">
-                                    <Image Style="{StaticResource Trade.Silver.Image.Style}" ToolTip="{Binding TranslationSilver, IsAsync=True}" />
-                                    <TextBlock Text="{common:CultureAwareBinding InstantBuySellContent.TotalPriceWithDeductedTaxes.DoubleValue, IsAsync=True, StringFormat='{}{0:N0}', FallbackValue=0}" 
-                                               Style="{StaticResource Instant.Text.Color.Green}" Margin="25,0,0,0" />
                                 </Grid>
                             </StackPanel>
                             <Grid Margin="0 -2 0 0" Height="18" Width="18" HorizontalAlignment="Right">
