@@ -644,7 +644,7 @@
                                         </Style>
                                     </TextBlock.Style>
                                 </TextBlock>
-                                <TextBlock Width="160" Text="{Binding TranslationTotalRevenue, IsAsync=True, FallbackValue=TOTAL_REVENUE}" Foreground="{StaticResource SolidColorBrush.Text.4}">
+                                <TextBlock Width="120" Text="{Binding TranslationTotalRevenue, IsAsync=True, FallbackValue=TOTAL_REVENUE}" Foreground="{StaticResource SolidColorBrush.Text.4}">
                                     <TextBlock.Style>
                                         <Style TargetType="{x:Type TextBlock}">
                                             <Setter Property="Visibility" Value="Collapsed"/>
@@ -704,16 +704,16 @@
                                                HorizontalAlignment="Left" Foreground="{StaticResource SolidColorBrush.Accent.Red.3}" Margin="25,0,0,0" />
                                 </Grid>
                             </StackPanel>
-                            <Grid Width="110">
+                            <Grid Width="120">
                                 <Image Style="{StaticResource Trade.Silver.Image.Style}" ToolTip="{Binding TranslationSilver, IsAsync=True}" />
-                                <TextBlock Text="{common:CultureAwareBinding MailContent.TotalPrice.DoubleValue, IsAsync=True, StringFormat='{}{0:N0}', FallbackValue=0}" 
+                                <TextBlock Text="{common:CultureAwareBinding MailContent.TotalPriceWithDeductedTaxes.DoubleValue, IsAsync=True, StringFormat='{}{0:N0}', FallbackValue=0}" 
                                            Style="{StaticResource Mail.Text.Colors}" Margin="25,0,0,0">
                                     <TextBlock.ToolTip>
                                         <TextBlock>
                                             <TextBlock.Text>
                                                 <MultiBinding StringFormat="{}{0}: {1:N0}">
-                                                    <Binding Path="TranslationTotalPriceWithDeductedTaxes" IsAsync="True" />
-                                                    <Binding Path="MailContent.TotalPriceWithDeductedTaxes.DoubleValue" IsAsync="True" />
+                                                    <Binding Path="TranslationTotalIncomeWithoutTaxDeductions" IsAsync="True" />
+                                                    <Binding Path="MailContent.TotalPrice.DoubleValue" IsAsync="True" />
                                                 </MultiBinding>
                                             </TextBlock.Text>
                                         </TextBlock>
@@ -754,8 +754,7 @@
                         <DockPanel>
                             <StackPanel Orientation="Horizontal">
                                 <TextBlock Text="{Binding TranslationCostPerItem, IsAsync=True}" Width="160" Foreground="{StaticResource SolidColorBrush.Text.4}" />
-                                <TextBlock Text="{Binding TranslationTotalRevenue, IsAsync=True, FallbackValue=TOTAL_REVENUE}" Width="160" Foreground="{StaticResource SolidColorBrush.Text.4}" />
-                                <TextBlock Width="110" Foreground="{StaticResource SolidColorBrush.Text.4}">
+                                <TextBlock Width="160" Foreground="{StaticResource SolidColorBrush.Text.4}">
                                     <TextBlock.Text>
                                         <MultiBinding StringFormat="{}{0} ({1}%)">
                                             <Binding Path="TranslationTax" IsAsync="True" />
@@ -763,6 +762,7 @@
                                         </MultiBinding>
                                     </TextBlock.Text>
                                 </TextBlock>
+                                <TextBlock Width="160" Text="{Binding TranslationTotalRevenue, IsAsync=True, FallbackValue=TOTAL_REVENUE}" Foreground="{StaticResource SolidColorBrush.Text.4}" />
                             </StackPanel>
                             <TextBlock Style="{StaticResource Trade.City.Text}" />
                         </DockPanel>
@@ -775,24 +775,24 @@
                                 </Grid>
                                 <Grid Width="160">
                                     <Image Style="{StaticResource Trade.Silver.Image.Style}" ToolTip="{Binding TranslationSilver, IsAsync=True}" />
-                                    <TextBlock Text="{common:CultureAwareBinding InstantBuySellContent.TotalPrice.DoubleValue, IsAsync=True, StringFormat='{}{0:N0}', FallbackValue=0}" 
-                                           Style="{StaticResource Instant.Text.Color.Green}" Margin="25,0,0,0" />
-                                </Grid>
-                                <Grid Width="160">
-                                    <Image Style="{StaticResource Trade.Silver.Image.Style}" ToolTip="{Binding TranslationSilver, IsAsync=True}" />
                                     <TextBlock Text="{common:CultureAwareBinding InstantBuySellContent.TaxPrice.DoubleValue, IsAsync=True, StringFormat='{}{0:N0}', FallbackValue=0}" 
                                                Style="{StaticResource Instant.Text.Color.Red}" Margin="25,0,0,0">
                                         <TextBlock.ToolTip>
                                             <TextBlock>
                                                 <TextBlock.Text>
                                                     <MultiBinding StringFormat="{}{0}: {1:N0}">
-                                                        <Binding Path="TranslationTotalPriceWithDeductedTaxes" IsAsync="True" />
-                                                        <Binding Path="InstantBuySellContent.TotalPriceWithDeductedTaxes.IntegerValue" IsAsync="True" />
+                                                        <Binding Path="TranslationTotalIncomeWithoutTaxDeductions" IsAsync="True" />
+                                                        <Binding Path="InstantBuySellContent.TotalPrice.IntegerValue" IsAsync="True" />
                                                     </MultiBinding>
                                                 </TextBlock.Text>
                                             </TextBlock>
                                         </TextBlock.ToolTip>
                                     </TextBlock>
+                                </Grid>
+                                <Grid Width="160">
+                                    <Image Style="{StaticResource Trade.Silver.Image.Style}" ToolTip="{Binding TranslationSilver, IsAsync=True}" />
+                                    <TextBlock Text="{common:CultureAwareBinding InstantBuySellContent.TotalPriceWithDeductedTaxes.DoubleValue, IsAsync=True, StringFormat='{}{0:N0}', FallbackValue=0}" 
+                                               Style="{StaticResource Instant.Text.Color.Green}" Margin="25,0,0,0" />
                                 </Grid>
                             </StackPanel>
                             <Grid Margin="0 -2 0 0" Height="18" Width="18" HorizontalAlignment="Right">
@@ -849,14 +849,14 @@
                                 </Grid>
                                 <Grid Width="160">
                                     <Image Style="{StaticResource Trade.Silver.Image.Style}" ToolTip="{Binding TranslationSilver, IsAsync=True}" />
-                                    <TextBlock Text="{common:CultureAwareBinding InstantBuySellContent.TotalPrice.DoubleValue, IsAsync=True, StringFormat='{}{0:N0}', FallbackValue=0}" 
+                                    <TextBlock Text="{common:CultureAwareBinding InstantBuySellContent.TotalPriceWithDeductedTaxes.DoubleValue, IsAsync=True, StringFormat='{}{0:N0}', FallbackValue=0}" 
                                            Style="{StaticResource Instant.Text.Color.Red}" Margin="25,0,0,0">
                                         <TextBlock.ToolTip>
                                             <TextBlock>
                                                 <TextBlock.Text>
                                                     <MultiBinding StringFormat="{}{0}: {1:N0}">
-                                                        <Binding Path="TranslationTotalPriceWithDeductedTaxes" IsAsync="True" />
-                                                        <Binding Path="MailContent.TotalPriceWithDeductedTaxes.DoubleValue" IsAsync="True" />
+                                                        <Binding Path="TranslationTotalIncomeWithoutTaxDeductions" IsAsync="True" />
+                                                        <Binding Path="MailContent.TotalPrice.DoubleValue" IsAsync="True" />
                                                     </MultiBinding>
                                                 </TextBlock.Text>
                                             </TextBlock>

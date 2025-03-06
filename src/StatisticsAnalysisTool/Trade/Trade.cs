@@ -157,6 +157,7 @@ public class Trade : BaseViewModel
     public static string TranslationSelectToDelete => LocalizationController.Translation("SELECT_TO_DELETE");
     public static string TranslationFrom => LocalizationController.Translation("FROM");
     public static string TranslationTotalPriceWithDeductedTaxes => LocalizationController.Translation("TOTAL_PRICE_WITH_DEDUCTED_TAXES");
+    public static string TranslationTotalIncomeWithoutTaxDeductions => LocalizationController.Translation("TOTAL_INCOME_WITHOUT_TAX_DEDUCTIONS");
 
     #region Commands
 

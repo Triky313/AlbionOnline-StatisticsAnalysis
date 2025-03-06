@@ -37627,6 +37627,19 @@
           "seg": "Total distance fee"
         }
       ]
+    },
+    {
+      "tuid": "TOTAL_INCOME_WITHOUT_TAX_DEDUCTIONS",
+      "tuv": [
+        {
+          "lang": "de-DE",
+          "seg": "Gesamteinnahmen ohne Steuerabzüge"
+        },
+        {
+          "lang": "en-US",
+          "seg": "Total income without tax deductions"
+        }
+      ]
     }
   ]
 }
