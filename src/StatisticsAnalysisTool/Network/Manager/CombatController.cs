@@ -11,7 +11,6 @@ using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Reflection;
@@ -53,10 +52,17 @@ public class CombatController
             return Task.CompletedTask;
         }
 
-        var gameObject = _trackingController?.EntityController?.GetEntity(causerId);
-        var gameObjectValue = gameObject?.Value;
+        var causerGameObject = _trackingController.EntityController?.GetEntity(causerId);
+        var causerGameObjectValue = causerGameObject?.Value;
 
-        if (gameObject?.Value is not { ObjectType: GameObjectType.Player } || !_trackingController.EntityController.IsEntityInParty(gameObject.Value.Key))
+        var affectedGameObject = _trackingController.EntityController?.GetEntity(affectedId);
+
+        if (_mainWindowViewModel.DamageMeterBindings.OnlyDamageToPlayersCounts && affectedGameObject?.Value is not { ObjectType: GameObjectType.Player })
+        {
+            return Task.CompletedTask;
+        }
+
+        if (causerGameObject?.Value is not { ObjectType: GameObjectType.Player } || !_trackingController.EntityController!.IsEntityInParty(causerGameObject.Value.Key))
         {
             return Task.CompletedTask;
         }
@@ -69,8 +75,8 @@ public class CombatController
                 return Task.CompletedTask;
             }
 
-            gameObjectValue.Damage += damageChangeValue;
-            AddOrUpdateSpell(causingSpellIndex, gameObjectValue, healthChangeType, damageChangeValue, gameObjectValue.CharacterEquipment?.MainHand ?? 0);
+            causerGameObjectValue.Damage += damageChangeValue;
+            AddOrUpdateSpell(causingSpellIndex, causerGameObjectValue, healthChangeType, damageChangeValue, causerGameObjectValue.CharacterEquipment?.MainHand ?? 0);
         }
 
         if (healthChangeType == HealthChangeType.Heal)
@@ -84,16 +90,16 @@ public class CombatController
             var positiveHealChangeValue = (int) Math.Round(healChangeValue, MidpointRounding.AwayFromZero);
             if (!IsMaxHealthReached(affectedId, newHealthValue))
             {
-                gameObjectValue.Heal += positiveHealChangeValue;
-                AddOrUpdateSpell(causingSpellIndex, gameObjectValue, healthChangeType, positiveHealChangeValue, gameObjectValue.CharacterEquipment?.MainHand ?? 0);
+                causerGameObjectValue.Heal += positiveHealChangeValue;
+                AddOrUpdateSpell(causingSpellIndex, causerGameObjectValue, healthChangeType, positiveHealChangeValue, causerGameObjectValue.CharacterEquipment?.MainHand ?? 0);
             }
             else
             {
-                gameObjectValue.Overhealed += positiveHealChangeValue;
+                causerGameObjectValue.Overhealed += positiveHealChangeValue;
             }
         }
 
-        gameObjectValue.CombatStart ??= DateTime.UtcNow;
+        causerGameObjectValue.CombatStart ??= DateTime.UtcNow;
 
         OnDamageUpdate?.Invoke(_mainWindowViewModel?.DamageMeterBindings?.DamageMeter, _trackingController.EntityController.GetAllEntitiesWithDamageOrHealAndInParty());
         return Task.CompletedTask;

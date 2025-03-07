@@ -112,6 +112,7 @@ public class MainWindowTranslation
     public static string SelectDeselectAll => LocalizationController.Translation("SELECT_DESELECT_ALL");
     public static string Gathering => LocalizationController.Translation("GATHERING");
     public static string CopyShortDamageMeterToTheClipboard => LocalizationController.Translation("COPY_SHORT_DAMAGE_METER_TO_THE_CLIPBOARD");
+    public static string OnlyDamageToPlayersCounts => LocalizationController.Translation("ONLY_DAMAGE_TO_PLAYERS_COUNTS");
     public static string Guild => LocalizationController.Translation("GUILD");
     public static string CurrentRepairCosts => LocalizationController.Translation("CURRENT_REPAIR_COSTS");
     public static string ShowTotalAvgPricesOnItem => LocalizationController.Translation("SHOW_TOTAL_AVG_PRICES_ON_ITEM");
