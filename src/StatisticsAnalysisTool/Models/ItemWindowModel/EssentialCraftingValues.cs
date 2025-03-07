@@ -27,7 +27,7 @@ public class EssentialCraftingValuesTemplate : BaseViewModel
 
     public readonly string UniqueName;
     private List<MarketResponse> _marketResponse = new();
-    private Location _itemPricesLocationSelected;
+    private MarketLocation _itemPricesLocationSelected;
     private DateTime _lastUpdate = DateTime.UtcNow.AddDays(-100);
     private bool _isCraftingWithFocusCheckboxEnabled;
     private bool _isCraftingBonusEnabled;
@@ -39,7 +39,7 @@ public class EssentialCraftingValuesTemplate : BaseViewModel
         UniqueName = uniqueName;
     }
 
-    private async void LoadSellPriceAsync(Location location)
+    private async void LoadSellPriceAsync(MarketLocation location)
     {
         if (_lastUpdate.AddMilliseconds(SettingsController.CurrentSettings.RefreshRate) < DateTime.UtcNow)
         {
@@ -47,7 +47,7 @@ public class EssentialCraftingValuesTemplate : BaseViewModel
             _lastUpdate = DateTime.UtcNow;
         }
 
-        if (location == Location.BlackMarket)
+        if (location == MarketLocation.BlackMarket)
         {
             var buyPriceMax = _marketResponse?.FirstOrDefault(x => string.Equals(x?.City, Locations.GetParameterName(location), StringComparison.CurrentCultureIgnoreCase))?.BuyPriceMax;
             if (buyPriceMax != null)
@@ -65,22 +65,20 @@ public class EssentialCraftingValuesTemplate : BaseViewModel
         }
     }
 
-    public KeyValuePair<Location, string>[] ItemPricesLocations { get; } =
+    public KeyValuePair<MarketLocation, string>[] ItemPricesLocations { get; } =
     {
-        new (Location.BlackMarket, WorldData.GetUniqueNameOrDefault((int)Location.BlackMarket)),
-        new (Location.Martlock, WorldData.GetUniqueNameOrDefault((int)Location.Martlock)),
-        new (Location.Thetford, WorldData.GetUniqueNameOrDefault((int)Location.Thetford)),
-        new (Location.FortSterling, WorldData.GetUniqueNameOrDefault((int)Location.FortSterling)),
-        new (Location.Lymhurst, WorldData.GetUniqueNameOrDefault((int)Location.Lymhurst)),
-        new (Location.Bridgewatch, WorldData.GetUniqueNameOrDefault((int)Location.Bridgewatch)),
-        new (Location.Caerleon, WorldData.GetUniqueNameOrDefault((int)Location.Caerleon)),
-        new (Location.Brecilien, WorldData.GetUniqueNameOrDefault((int)Location.Brecilien)),
-        new (Location.MerlynsRest, WorldData.GetUniqueNameOrDefault((int)Location.MerlynsRest)),
-        new (Location.MorganasRest, WorldData.GetUniqueNameOrDefault((int)Location.MorganasRest)),
-        new (Location.ArthursRest, WorldData.GetUniqueNameOrDefault((int)Location.ArthursRest))
+        new (MarketLocation.BlackMarket, "Black Market"),
+        new (MarketLocation.MartlockMarket, WorldData.GetUniqueNameOrDefault("3004")),
+        new (MarketLocation.ThetfordMarket, WorldData.GetUniqueNameOrDefault("0000")),
+        new (MarketLocation.FortSterlingMarket, WorldData.GetUniqueNameOrDefault("1006")),
+        new (MarketLocation.LymhurstMarket, WorldData.GetUniqueNameOrDefault("1000")),
+        new (MarketLocation.BridgewatchMarket, WorldData.GetUniqueNameOrDefault("2000")),
+        new (MarketLocation.CaerleonMarket, WorldData.GetUniqueNameOrDefault("3003")),
+        new (MarketLocation.BrecilienMarket, WorldData.GetUniqueNameOrDefault("5000")),
+        new (MarketLocation.SmugglersDen, "Smuggler's Den")
     };
 
-    public Location ItemPricesLocationSelected
+    public MarketLocation ItemPricesLocationSelected
     {
         get => _itemPricesLocationSelected;
         set

@@ -1,8 +1,8 @@
 using LiveChartsCore.SkiaSharpView.Painting;
 using SkiaSharp;
+using StatisticsAnalysisTool.GameFileData;
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Windows;
 using System.Windows.Media;
 
@@ -10,24 +10,30 @@ namespace StatisticsAnalysisTool.Common;
 
 public static class Locations
 {
-    public static readonly Dictionary<Location, string> ParameterNames = new()
+    public static readonly Dictionary<MarketLocation, string> ParameterNames = new()
     {
-        { Location.Thetford, "Thetford" },
-        { Location.SwampCross, "Swamp Cross" },
-        { Location.Lymhurst, "Lymhurst" },
-        { Location.ForestCross, "Forest Cross" },
-        { Location.Bridgewatch, "Bridgewatch" },
-        { Location.SteppeCross, "Steppe Cross" },
-        { Location.HighlandCross, "Highland Cross" },
-        { Location.BlackMarket, "Black Market" },
-        { Location.Martlock, "Martlock" },
-        { Location.Caerleon, "Caerleon" },
-        { Location.FortSterling, "Fort Sterling" },
-        { Location.Brecilien, "Brecilien" },
-        { Location.MountainCross, "Mountain Cross" },
-        { Location.ArthursRest, "Arthurs Rest" },
-        { Location.MerlynsRest, "Merlyns Rest" },
-        { Location.MorganasRest, "Morganas Rest" }
+        { MarketLocation.ThetfordMarket, "Thetford" },
+        { MarketLocation.ThetfordPortal, "Thetford" },
+        { MarketLocation.SwampCross, "Swamp Cross" },
+        { MarketLocation.LymhurstMarket, "Lymhurst" },
+        { MarketLocation.LymhurstPortal, "Lymhurst" },
+        { MarketLocation.ForestCross, "Forest Cross" },
+        { MarketLocation.BridgewatchMarket, "Bridgewatch" },
+        { MarketLocation.BridgewatchPortal, "Bridgewatch" },
+        { MarketLocation.SteppeCross, "Steppe Cross" },
+        { MarketLocation.HighlandCross, "Highland Cross" },
+        { MarketLocation.BlackMarket, "Black Market" },
+        { MarketLocation.MartlockMarket, "Martlock" },
+        { MarketLocation.MartlockPortal, "Martlock" },
+        { MarketLocation.CaerleonMarket, "Caerleon" },
+        { MarketLocation.FortSterlingMarket, "Fort Sterling" },
+        { MarketLocation.FortSterlingPortal, "Fort Sterling" },
+        { MarketLocation.BrecilienMarket, "Brecilien" },
+        { MarketLocation.MountainCross, "Mountain Cross" },
+        { MarketLocation.ArthursRest, "Arthurs Rest" },
+        { MarketLocation.MerlynsRest, "Merlyns Rest" },
+        { MarketLocation.MorganasRest, "Morganas Rest" },
+        { MarketLocation.SmugglersDen, "Smugglers Den" },
     };
 
     public static readonly Dictionary<MarketLocation, string> DisplayNames = new()
@@ -53,9 +59,10 @@ public static class Locations
         { MarketLocation.ArthursRest, "Arthurs Rest" },
         { MarketLocation.MerlynsRest, "Merlyns Rest" },
         { MarketLocation.MorganasRest, "Morganas Rest" },
+        { MarketLocation.SmugglersDen, "Smuggler's Den" },
     };
 
-    public static string GetParameterName(Location location)
+    public static string GetParameterName(MarketLocation location)
     {
         return ParameterNames.TryGetValue(location, out var name) ? name : null;
     }
@@ -64,7 +71,7 @@ public static class Locations
     {
         return DisplayNames.TryGetValue(location, out var name) ? name : null;
     }
-    
+
     public static MarketLocation GetMarketLocationByIndex(string index)
     {
         if (string.IsNullOrEmpty(index))
@@ -82,48 +89,78 @@ public static class Locations
             return MarketLocation.CaerleonMarket;
         }
 
+        if (index.Contains("BLACKBANK") || index.Contains("SMUGGLER"))
+        {
+            return MarketLocation.SmugglersDen;
+        }
+
         return Enum.TryParse(index, true, out MarketLocation location) ? location : MarketLocation.Unknown;
     }
-
-    public static List<MarketLocation> GetAllMarketLocations()
+    
+    public static List<string> GetAllMarketLocations()
     {
-        var list = Enum.GetValues(typeof(MarketLocation)).Cast<MarketLocation>().ToList();
-        _ = list.Remove(MarketLocation.Unknown);
-        return list;
-    }
-
-    [Obsolete]
-    public static Location GetLocationByLocationNameOrId(string location)
-    {
-        return location switch
+        return new List<string>()
         {
-            "Thetford" => Location.Thetford,
-            "Lymhurst" => Location.Lymhurst,
-            "Bridgewatch" => Location.Bridgewatch,
-            "Martlock" => Location.Martlock,
-            "Fort Sterling" => Location.FortSterling,
-            "0301" or "Thetford Portal" => Location.ThetfordPortal,
-            "1301" or "Lymhurst Portal" => Location.LymhurstPortal,
-            "2301" or "Bridgewatch Portal" => Location.BridgewatchPortal,
-            "3301" or "Martlock Portal" => Location.MartlockPortal,
-            "4301" or "Fort Sterling Portal" => Location.FortSterlingPortal,
-            "5000" or "5001" or "Brecilien" => Location.Brecilien,
-            "Caerleon" => Location.Caerleon,
-            "Swamp Cross" => Location.SwampCross,
-            "Forest Cross" => Location.ForestCross,
-            "Steppe Cross" => Location.SteppeCross,
-            "Highland Cross" => Location.HighlandCross,
-            "Mountain Cross" => Location.MountainCross,
-            "Arthurs Rest" => Location.ArthursRest,
-            "Merlyns Rest" => Location.MerlynsRest,
-            "Morganas Rest" => Location.MorganasRest,
-            "Black Market" => Location.BlackMarket,
-            _ => Location.Unknown,
+            "Lymhurst",
+            "Martlock",
+            "FortSterling",
+            "Thetford",
+            "Bridgewatch",
+            "Caerleon",
+            "BlackMarket",
+            "Brecilien",
+            "SwampCross",
+            "ForestCross",
+            "SteppeCross",
+            "HighlandCross",
+            "MountainCross",
+            "SmugglersNetwork"
         };
     }
 
+    public static readonly HashSet<string> SmugglersNetworkNames = new(StringComparer.OrdinalIgnoreCase)
+    {
+        "Arthurs Rest Smugglers Network", "Bleachskull Desert Smugglers Network", "DeadpineForest Smugglers Network",
+        "Deepwood Copse Smugglers Network", "Driftwood Hollow Smugglers Network", "Dry Basin Riverbed Smugglers Network",
+        "Dryvein Confluence Smugglers Network", "Everwinter Peak Smugglers Network", "Farshore Heath Smugglers Network",
+        "Floatshoal Floe Smugglers Network", "Frostspring Volcano Smugglers Network", "Gravemound Knoll Smugglers Network",
+        "Highstone Loch Smugglers Network", "Iceburn Firth Smugglers Network", "Meltwater Bog Smugglers Network",
+        "Merlyns Rest Smugglers Network", "Morganas Rest Smugglers Network", "Munten Fell Smugglers Network",
+        "Murdergulch Cross Smugglers Network", "Murdergulch Ravine Smugglers Network", "Razorrock Bank Smugglers Network",
+        "Razorrock Verge Smugglers Network", "River Copse Fount Smugglers Network", "Runnelvein Sink Smugglers Network",
+        "Scuttle Sink Marsh Smugglers Network", "Slakesands Mesa Smugglers Network", "Springsump Basin Smugglers Network",
+        "Sunfang Ravine Smugglers Network", "Sunfang Wasteland Smugglers Network", "Sunkenbough Woods Smugglers Network",
+        "Sunstrand Quicksands Smugglers Network", "Thirstwater Steppe Smugglers Network", "Timberscar Copse Smugglers Network",
+        "Timberslope Grove Smugglers Network", "Westweald Thicket Smugglers Network", "White Peak Tundra Smugglers Network",
+        "Willowshade Hills Smugglers Network", "Willowshade Ice Marsh Smugglers Network",
+        "BLACKBANK-2310", "BLACKBANK-0321", "BLACKBANK-0307", "BLACKBANK-4322",
+        "BLACKBANK-2336", "BLACKBANK-0320", "BLACKBANK-0341", "BLACKBANK-0344",
+        "BLACKBANK-0349", "BLACKBANK-0353", "BLACKBANK-1312", "BLACKBANK-1323",
+        "BLACKBANK-1339", "BLACKBANK-1342", "BLACKBANK-1343", "BLACKBANK-1348",
+        "BLACKBANK-1359", "BLACKBANK-2308", "BLACKBANK-2311", "BLACKBANK-2333",
+        "BLACKBANK-2342", "BLACKBANK-2344", "BLACKBANK-2347", "BLACKBANK-2348",
+        "BLACKBANK-3306", "BLACKBANK-3344", "BLACKBANK-3345", "BLACKBANK-3351",
+        "BLACKBANK-3355", "BLACKBANK-3357", "BLACKBANK-4313", "BLACKBANK-4318",
+        "BLACKBANK-4345", "BLACKBANK-4351", "BLACKBANK-4357", "Smuggler's Den"
+    };
+
     public static MarketLocation GetMarketLocationByLocationNameOrId(this string location)
     {
+        if (string.IsNullOrEmpty(location))
+        {
+            return MarketLocation.Unknown;
+        }
+
+        var atIndex = location.LastIndexOf('@');
+        var relevantPart = atIndex >= 0 ? location.Substring(atIndex + 1) : location;
+
+        // Smugglers Network
+        if (SmugglersNetworkNames.Contains(relevantPart))
+        {
+            return MarketLocation.SmugglersDen;
+        }
+
+        // Normal markets
         return location switch
         {
             "0007" or "Thetford" => MarketLocation.ThetfordMarket,
@@ -146,7 +183,7 @@ public static class Locations
             "4300" or "Arthurs Rest" => MarketLocation.ArthursRest,
             "1012" or "Merlyns Rest" => MarketLocation.MerlynsRest,
             "0008" or "Morganas Rest" => MarketLocation.MorganasRest,
-            "3003" or "Black Market" => MarketLocation.BlackMarket,
+            "3003" or "Black Market" or "@BLACK_MARKET" => MarketLocation.BlackMarket,
             _ => MarketLocation.Unknown,
         };
     }
@@ -159,17 +196,18 @@ public static class Locations
 
             return location switch
             {
-                MarketLocation.CaerleonMarket => GetSolidColorPaint((SolidColorBrush)Application.Current.Resources[$"SolidColorBrush.City.Caerleon{transparentText}"]),
-                MarketLocation.ThetfordMarket => GetSolidColorPaint((SolidColorBrush)Application.Current.Resources[$"SolidColorBrush.City.Thetford{transparentText}"]),
-                MarketLocation.BridgewatchMarket => GetSolidColorPaint((SolidColorBrush)Application.Current.Resources[$"SolidColorBrush.City.Bridgewatch{transparentText}"]),
-                MarketLocation.MartlockMarket => GetSolidColorPaint((SolidColorBrush)Application.Current.Resources[$"SolidColorBrush.City.Martlock{transparentText}"]),
-                MarketLocation.LymhurstMarket => GetSolidColorPaint((SolidColorBrush)Application.Current.Resources[$"SolidColorBrush.City.Lymhurst{transparentText}"]),
-                MarketLocation.FortSterlingMarket => GetSolidColorPaint((SolidColorBrush)Application.Current.Resources[$"SolidColorBrush.City.FortSterling{transparentText}"]),
-                MarketLocation.BrecilienMarket => GetSolidColorPaint((SolidColorBrush)Application.Current.Resources[$"SolidColorBrush.City.Brecilien{transparentText}"]),
-                MarketLocation.ArthursRest => GetSolidColorPaint((SolidColorBrush)Application.Current.Resources[$"SolidColorBrush.City.ArthursRest{transparentText}"]),
-                MarketLocation.MerlynsRest => GetSolidColorPaint((SolidColorBrush)Application.Current.Resources[$"SolidColorBrush.City.MerlynsRest{transparentText}"]),
-                MarketLocation.MorganasRest => GetSolidColorPaint((SolidColorBrush)Application.Current.Resources[$"SolidColorBrush.City.MorganasRest{transparentText}"]),
-                MarketLocation.BlackMarket => GetSolidColorPaint((SolidColorBrush)Application.Current.Resources[$"SolidColorBrush.City.BlackMarket{transparentText}"]),
+                MarketLocation.CaerleonMarket => GetSolidColorPaint((SolidColorBrush) Application.Current.Resources[$"SolidColorBrush.City.Caerleon{transparentText}"]),
+                MarketLocation.ThetfordMarket => GetSolidColorPaint((SolidColorBrush) Application.Current.Resources[$"SolidColorBrush.City.Thetford{transparentText}"]),
+                MarketLocation.BridgewatchMarket => GetSolidColorPaint((SolidColorBrush) Application.Current.Resources[$"SolidColorBrush.City.Bridgewatch{transparentText}"]),
+                MarketLocation.MartlockMarket => GetSolidColorPaint((SolidColorBrush) Application.Current.Resources[$"SolidColorBrush.City.Martlock{transparentText}"]),
+                MarketLocation.LymhurstMarket => GetSolidColorPaint((SolidColorBrush) Application.Current.Resources[$"SolidColorBrush.City.Lymhurst{transparentText}"]),
+                MarketLocation.FortSterlingMarket => GetSolidColorPaint((SolidColorBrush) Application.Current.Resources[$"SolidColorBrush.City.FortSterling{transparentText}"]),
+                MarketLocation.BrecilienMarket => GetSolidColorPaint((SolidColorBrush) Application.Current.Resources[$"SolidColorBrush.City.Brecilien{transparentText}"]),
+                MarketLocation.ArthursRest => GetSolidColorPaint((SolidColorBrush) Application.Current.Resources[$"SolidColorBrush.City.ArthursRest{transparentText}"]),
+                MarketLocation.MerlynsRest => GetSolidColorPaint((SolidColorBrush) Application.Current.Resources[$"SolidColorBrush.City.MerlynsRest{transparentText}"]),
+                MarketLocation.MorganasRest => GetSolidColorPaint((SolidColorBrush) Application.Current.Resources[$"SolidColorBrush.City.MorganasRest{transparentText}"]),
+                MarketLocation.BlackMarket => GetSolidColorPaint((SolidColorBrush) Application.Current.Resources[$"SolidColorBrush.City.BlackMarket{transparentText}"]),
+                MarketLocation.SmugglersDen => GetSolidColorPaint((SolidColorBrush) Application.Current.Resources[$"SolidColorBrush.City.SmugglersDen{transparentText}"]),
                 _ => new SolidColorPaint { Color = new SKColor(0, 0, 0, 0) }
             };
         }
@@ -194,66 +232,56 @@ public static class Locations
     {
         try
         {
-            return (Color)Application.Current.Resources[$"Color.City.{location}"];
+            return (Color) Application.Current.Resources[$"Color.City.{location}"];
         }
         catch
         {
-            return (Color)Application.Current.Resources["Color.City.Default"];
+            return (Color) Application.Current.Resources["Color.City.Default"];
         }
     }
+
+    public static KeyValuePair<MarketLocation, string>[] OnceMarketLocations { get; } =
+    {
+        new (MarketLocation.BlackMarket, "Black Market"),
+        new (MarketLocation.MartlockMarket, WorldData.GetUniqueNameOrDefault("3004")),
+        new (MarketLocation.ThetfordMarket, WorldData.GetUniqueNameOrDefault("0000")),
+        new (MarketLocation.FortSterlingMarket, WorldData.GetUniqueNameOrDefault("1006")),
+        new (MarketLocation.LymhurstMarket, WorldData.GetUniqueNameOrDefault("1000")),
+        new (MarketLocation.BridgewatchMarket, WorldData.GetUniqueNameOrDefault("2000")),
+        new (MarketLocation.CaerleonMarket, WorldData.GetUniqueNameOrDefault("3003")),
+        new (MarketLocation.BrecilienMarket, WorldData.GetUniqueNameOrDefault("5000")),
+        //new (MarketLocation.MerlynsRest, WorldData.GetUniqueNameOrDefault("1012")),
+        //new (MarketLocation.MorganasRest, WorldData.GetUniqueNameOrDefault("0008")),
+        //new (MarketLocation.ArthursRest, WorldData.GetUniqueNameOrDefault("4300")),
+        new (MarketLocation.SmugglersDen, "Smuggler's Den")
+    };
 }
 
 public enum MarketLocation
 {
-    Unknown = 0000,
-    SwampCross = 0004,
-    ThetfordMarket = 0007,
-    ThetfordPortal = 0301,
-    LymhurstMarket = 1002,
-    LymhurstPortal = 1301,
-    ForestCross = 1006,
-    SteppeCross = 2002,
-    BridgewatchMarket = 2004,
-    BridgewatchPortal = 2301,
-    HighlandCross = 3002,
-    BlackMarket = 3003,
-    CaerleonMarket = 3005,
-    MartlockMarket = 3008,
-    MartlockPortal = 3301,
-    FortSterlingMarket = 4002,
-    FortSterlingPortal = 4301,
-    MountainCross = 4006,
-    ArthursRest = 4300,
-    MerlynsRest = 1012,
-    MorganasRest = 0008,
-    BrecilienMarket = 5003
-}
-
-// TODO: Rework with correct city ID's otherwise use MarketLocation
-public enum Location
-{
-    Unknown = 0000,
-    SwampCross = 0004,
-    Thetford = 0007,
-    ThetfordPortal = 0301,
-    Lymhurst = 1002,
-    LymhurstPortal = 1301,
-    ForestCross = 1006,
-    SteppeCross = 2002,
-    Bridgewatch = 2004,
-    BridgewatchPortal = 2301,
-    HighlandCross = 3002,
-    BlackMarket = 3003,
-    Caerleon = 3005,
-    Martlock = 3008,
-    MartlockPortal = 3301,
-    FortSterling = 4002,
-    FortSterlingPortal = 4301,
-    MountainCross = 4006,
-    ArthursRest = 4300,
-    MerlynsRest = 1012,
-    MorganasRest = 0008,
-    Brecilien = 5000
+    Unknown,
+    SwampCross,
+    ThetfordMarket,
+    ThetfordPortal,
+    LymhurstMarket,
+    LymhurstPortal,
+    ForestCross,
+    SteppeCross,
+    BridgewatchMarket,
+    BridgewatchPortal,
+    HighlandCross,
+    BlackMarket,
+    CaerleonMarket,
+    MartlockMarket,
+    MartlockPortal,
+    FortSterlingMarket,
+    FortSterlingPortal,
+    MountainCross,
+    ArthursRest,
+    MerlynsRest,
+    MorganasRest,
+    BrecilienMarket,
+    SmugglersDen
 }
 
 public enum LocationArea

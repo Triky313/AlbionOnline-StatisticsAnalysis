@@ -67,6 +67,7 @@ public class MarketController
             {
                 Quantity = purchase.Amount,
                 InternalUnitPrice = tempOffer.UnitPriceSilver,
+                InternalDistanceFee = tempOffer.TotalDistanceFee,
                 TaxRate = SettingsController.CurrentSettings.TradeMonitoringMarketTaxRate
             };
 

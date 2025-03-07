@@ -113,9 +113,11 @@ public class MailController
         var uniqueItemName = contentObject[1];
         _ = long.TryParse(contentObject[2], out var totalPriceLong);
         _ = long.TryParse(contentObject[3], out var unitPriceLong);
+        _ = long.TryParse(contentObject[4], out var totalDistanceFeeLong);
 
         var totalPrice = FixPoint.FromInternalValue(totalPriceLong);
         var unitPrice = FixPoint.FromInternalValue(unitPriceLong);
+        var totalDistanceFee = FixPoint.FromInternalValue(totalDistanceFeeLong);
 
         return new MailContent()
         {
@@ -123,6 +125,7 @@ public class MailController
             Quantity = quantity,
             InternalTotalPrice = FixPoint.FromFloatingPointValue(totalPrice.DoubleValue / 100 * taxSetupRate + totalPrice.DoubleValue).InternalValue,
             InternalUnitPrice = FixPoint.FromFloatingPointValue(unitPrice.DoubleValue / 100 * taxSetupRate + unitPrice.DoubleValue).InternalValue,
+            InternalTotalDistanceFee = FixPoint.FromFloatingPointValue(totalDistanceFee.DoubleValue).InternalValue,
             UniqueItemName = uniqueItemName,
             TaxSetupRate = taxSetupRate
         };

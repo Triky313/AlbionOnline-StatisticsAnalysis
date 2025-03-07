@@ -85,7 +85,7 @@ public static class ItemController
                 return string.Equals(value, itemName, StringComparison.OrdinalIgnoreCase);
             })
         ).ToList();
-        
+
         return matchingItems.FirstOrDefault(item => item.Level == enchantment);
     }
 
@@ -386,7 +386,12 @@ public static class ItemController
 
     public static void SetFullItemInfoToItems()
     {
-        Parallel.ForEach(Items, item =>
+        var options = new ParallelOptions
+        {
+            MaxDegreeOfParallelism = Environment.ProcessorCount
+        };
+
+        Parallel.ForEach(Items, options, item =>
         {
             item.FullItemInformation = GetSpecificItemInfo(item.UniqueName);
             item.ShopCategory = GetShopCategory(item.UniqueName);
@@ -639,15 +644,15 @@ public static class ItemController
                 NumberHandling = JsonNumberHandling.AllowReadingFromString
                                  | JsonNumberHandling.WriteAsString,
                 Converters =
-                    {
-                        new CraftingRequirementsToCraftingRequirementsList(),
-                        new EnchantmentToEnchantmentList(),
-                        new BoolConverter()
-                    }
+            {
+                new CraftingRequirementsToCraftingRequirementsList(),
+                new EnchantmentToEnchantmentList(),
+                new BoolConverter()
+            }
             };
 
-            var localFileString = await File.ReadAllTextAsync(localFilePath, Encoding.UTF8);
-            return JsonSerializer.Deserialize<ItemsJson>(localFileString, options);
+            await using var stream = File.OpenRead(localFilePath);
+            return await JsonSerializer.DeserializeAsync<ItemsJson>(stream, options);
         }
         catch
         {

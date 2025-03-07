@@ -22,11 +22,6 @@ public static class WorldData
         return MapData?.FirstOrDefault(x => x?.Index == index)?.UniqueName;
     }
 
-    public static string GetUniqueNameOrDefault(int index)
-    {
-        return GetUniqueNameOrDefault($"{index:0000}");
-    }
-
     public static string GetUniqueNameOrDefault(string index)
     {
         var name = MapData?.FirstOrDefault(x => x.Index == index)?.UniqueName ?? index;

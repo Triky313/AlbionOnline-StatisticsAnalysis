@@ -1,5 +1,4 @@
-﻿using System.Text;
-using System.Xml;
+﻿using System.Xml;
 
 namespace StatisticAnalysisTool.Extractor;
 
@@ -17,74 +16,89 @@ internal class LocalizationData : IDisposable
 
     public async Task LoadDataAsync(string mainGameFolder)
     {
-        await Task.Run(async () =>
+        var localizationBinFilePath = Path.Combine(mainGameFolder, ".\\Albion-Online_Data\\StreamingAssets\\GameData\\localization.bin");
+
+        try
         {
-            var localizationBinFilePath = Path.Combine(mainGameFolder, ".\\Albion-Online_Data\\StreamingAssets\\GameData\\localization.bin");
             using var localizationData = await BinaryDecrypter.DecryptAndDecompressAsync(localizationBinFilePath);
 
-            var xmlDoc = new XmlDocument();
-            xmlDoc.LoadXml(Encoding.UTF8.GetString(localizationData.ToArray()));
-
-            var rootNode = xmlDoc.LastChild?.LastChild?.ChildNodes;
-
-            if (rootNode is null)
+            using var reader = XmlReader.Create(new MemoryStream(localizationData.ToArray()), new XmlReaderSettings
             {
-                return;
+                Async = true,
+                IgnoreWhitespace = true
+            });
+
+            var itemLocalizedNames = new Dictionary<string, Dictionary<string, string>>();
+            var itemLocalizedDescriptions = new Dictionary<string, Dictionary<string, string>>();
+            var spellLocalizedNames = new Dictionary<string, Dictionary<string, string>>();
+            var spellLocalizedDescriptions = new Dictionary<string, Dictionary<string, string>>();
+
+            string? currentTuId = null;
+            Dictionary<string, string> currentLanguages = null!;
+
+            while (await reader.ReadAsync())
+            {
+                switch (reader.NodeType)
+                {
+                    case XmlNodeType.Element:
+                        if (reader.Name == "tu")
+                        {
+                            currentTuId = reader.GetAttribute("tuid") ?? string.Empty;
+                            currentLanguages = new Dictionary<string, string>();
+                        }
+                        else if (reader.Name == "tuv" && currentTuId != null)
+                        {
+                            var lang = reader.GetAttribute("xml:lang");
+                            if (!string.IsNullOrEmpty(lang) && await reader.ReadAsync() && reader.Name == "seg")
+                            {
+                                var text = await reader.ReadElementContentAsStringAsync();
+                                currentLanguages![lang] = text;
+                            }
+                        }
+                        break;
+
+                    case XmlNodeType.EndElement:
+                        if (reader.Name == "tu" && currentTuId != null && currentLanguages != null)
+                        {
+                            if (currentTuId.StartsWith(ItemPrefix))
+                            {
+                                if (currentTuId.EndsWith(DescPostfix))
+                                {
+                                    itemLocalizedDescriptions[currentTuId] = currentLanguages;
+                                }
+                                else
+                                {
+                                    itemLocalizedNames[currentTuId] = currentLanguages;
+                                }
+                            }
+                            else if (currentTuId.StartsWith(SpellPrefix))
+                            {
+                                if (currentTuId.EndsWith(DescPostfix))
+                                {
+                                    spellLocalizedDescriptions[currentTuId] = currentLanguages;
+                                }
+                                else
+                                {
+                                    spellLocalizedNames[currentTuId] = currentLanguages;
+                                }
+                            }
+
+                            currentTuId = null;
+                            currentLanguages = null!;
+                        }
+                        break;
+                }
             }
 
-            foreach (XmlNode node in rootNode)
-            {
-                if (node.NodeType != XmlNodeType.Element)
-                {
-                    continue;
-                }
-
-                var tuId = node.Attributes?["tuid"];
-
-                if (tuId is null)
-                {
-                    continue;
-                }
-
-                Dictionary<string, string> languages;
-
-                try
-                {
-                    languages = node.ChildNodes
-                        .Cast<XmlNode>()
-                        .ToDictionary(x => x.Attributes!["xml:lang"]!.Value, y => y.LastChild!.InnerText);
-                }
-                catch (Exception)
-                {
-                    continue;
-                }
-                
-                if (tuId.Value.StartsWith(ItemPrefix))
-                {
-                    if (tuId.Value.EndsWith(DescPostfix))
-                    {
-                        ItemLocalizedDescriptions[tuId.Value] = languages;
-                    }
-                    else
-                    {
-                        ItemLocalizedNames[tuId.Value] = languages;
-                    }
-                }
-                else if (tuId.Value.StartsWith(SpellPrefix))
-                {
-                    if (tuId.Value.EndsWith(DescPostfix))
-                    {
-                        SpellLocalizedDescriptions[tuId.Value] = languages;
-                    }
-                    else
-                    {
-                        SpellLocalizedNames[tuId.Value] = languages;
-                    }
-                }
-            }
-        });
-
-        GC.Collect();
+            ItemLocalizedNames = itemLocalizedNames;
+            ItemLocalizedDescriptions = itemLocalizedDescriptions;
+            SpellLocalizedNames = spellLocalizedNames;
+            SpellLocalizedDescriptions = spellLocalizedDescriptions;
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine($"Error loading localization data: {ex.Message}");
+        }
     }
 
     public bool IsDataLoaded()

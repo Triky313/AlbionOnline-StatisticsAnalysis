@@ -42,23 +42,30 @@ public class Trade : BaseViewModel
 
     public string MailTypeText { get; init; }
 
-    public MarketLocation Location => Locations.GetMarketLocationByIndex(ClusterIndex);
+    public MarketLocation Location => ClusterIndex.GetMarketLocationByLocationNameOrId();
 
     public string LocationName
     {
         get
         {
-            if (Location == MarketLocation.Unknown && ClusterIndex != null && ClusterIndex.Contains("HIDEOUT"))
+            var location = Locations.GetMarketLocationByIndex(ClusterIndex);
+
+            if (location == MarketLocation.Unknown && ClusterIndex != null && ClusterIndex.Contains("HIDEOUT"))
             {
                 return $"{ClusterIndex.Split("_")[1]} ({LocalizationController.Translation("HIDEOUT")})";
             }
 
-            return Location switch
+            if (location == MarketLocation.BlackMarket)
             {
-                MarketLocation.BlackMarket => "Black Market",
-                MarketLocation.Unknown => LocalizationController.Translation("UNKNOWN"),
-                _ => WorldData.GetUniqueNameOrDefault((int) Location)
-            };
+                return "Black Market";
+            }
+
+            if (location == MarketLocation.SmugglersDen)
+            {
+                return "Smuggler's Den";
+            }
+
+            return WorldData.GetUniqueNameOrDefault(ClusterIndex);
         }
     }
 
@@ -143,12 +150,14 @@ public class Trade : BaseViewModel
     public static string TranslationSilver => LocalizationController.Translation("SILVER");
     public static string TranslationCostPerItem => LocalizationController.Translation("COST_PER_ITEM");
     public static string TranslationTotalCost => LocalizationController.Translation("TOTAL_COST");
+    public static string TranslationTotalDistanceFee => LocalizationController.Translation("TOTAL_DISTANCE_FEE");
     public static string TranslationTotalRevenue => LocalizationController.Translation("TOTAL_REVENUE");
     public static string TranslationTax => LocalizationController.Translation("TAX");
     public static string TranslationSetupTax => LocalizationController.Translation("SETUP_TAX");
     public static string TranslationSelectToDelete => LocalizationController.Translation("SELECT_TO_DELETE");
     public static string TranslationFrom => LocalizationController.Translation("FROM");
     public static string TranslationTotalPriceWithDeductedTaxes => LocalizationController.Translation("TOTAL_PRICE_WITH_DEDUCTED_TAXES");
+    public static string TranslationTotalIncomeWithoutTaxDeductions => LocalizationController.Translation("TOTAL_INCOME_WITHOUT_TAX_DEDUCTIONS");
 
     #region Commands
 

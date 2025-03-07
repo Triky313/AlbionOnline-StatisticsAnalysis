@@ -1,6 +1,5 @@
 ﻿using StatisticsAnalysisTool.Common;
 using StatisticsAnalysisTool.Common.UserSettings;
-using StatisticsAnalysisTool.GameFileData;
 using StatisticsAnalysisTool.Localization;
 using StatisticsAnalysisTool.ViewModels;
 using System;
@@ -24,27 +23,16 @@ public class RequiredJournal : BaseViewModel
     private List<MarketResponse> _marketResponseFullJournal = new();
     private DateTime _lastUpdateEmptyJournal = DateTime.UtcNow.AddDays(-100);
     private DateTime _lastUpdateFullJournal = DateTime.UtcNow.AddDays(-100);
-    private Location _itemPricesLocationEmptyJournalSelected;
-    private Location _itemPricesLocationFullJournalSelected;
+    private MarketLocation _itemPricesLocationEmptyJournalSelected;
+    private MarketLocation _itemPricesLocationFullJournalSelected;
     private double _weight;
     private double _totalWeight;
 
-    private static readonly KeyValuePair<Location, string>[] ItemPricesLocations = {
-        new (Location.Martlock, WorldData.GetUniqueNameOrDefault((int)Location.Martlock)),
-        new (Location.Thetford, WorldData.GetUniqueNameOrDefault((int)Location.Thetford)),
-        new (Location.FortSterling, WorldData.GetUniqueNameOrDefault((int)Location.FortSterling)),
-        new (Location.Lymhurst, WorldData.GetUniqueNameOrDefault((int)Location.Lymhurst)),
-        new (Location.Bridgewatch, WorldData.GetUniqueNameOrDefault((int)Location.Bridgewatch)),
-        new (Location.Caerleon, WorldData.GetUniqueNameOrDefault((int)Location.Caerleon)),
-        new (Location.Brecilien, WorldData.GetUniqueNameOrDefault((int)Location.Brecilien)),
-        new (Location.MerlynsRest, WorldData.GetUniqueNameOrDefault((int)Location.MerlynsRest)),
-        new (Location.MorganasRest, WorldData.GetUniqueNameOrDefault((int)Location.MorganasRest)),
-        new (Location.ArthursRest, WorldData.GetUniqueNameOrDefault((int)Location.ArthursRest))
-    };
+    private static readonly KeyValuePair<MarketLocation, string>[] ItemPricesLocations = Locations.OnceMarketLocations;
 
     public string UniqueName { get; set; }
 
-    private async void LoadSellPriceEmptyJournalAsync(Location location)
+    private async void LoadSellPriceEmptyJournalAsync(MarketLocation location)
     {
         if (_lastUpdateEmptyJournal.AddMilliseconds(SettingsController.CurrentSettings.RefreshRate) < DateTime.UtcNow)
         {
@@ -52,14 +40,14 @@ public class RequiredJournal : BaseViewModel
             _lastUpdateEmptyJournal = DateTime.UtcNow;
         }
 
-        var sellPriceMin = _marketResponseEmptyJournal?.FirstOrDefault(x => string.Equals(x?.City, Locations.GetParameterName(location), StringComparison.CurrentCultureIgnoreCase))?.SellPriceMin;
+        var sellPriceMin = _marketResponseEmptyJournal?.OrderByDescending(x => x.SellPriceMinDate).ThenByDescending(x => x.SellPriceMin).FirstOrDefault(x => x.MarketLocation == location)?.SellPriceMin;
         if (sellPriceMin != null)
         {
             CostsPerJournal = (long) sellPriceMin;
         }
     }
 
-    private async void LoadSellPriceFullJournalAsync(Location location)
+    private async void LoadSellPriceFullJournalAsync(MarketLocation location)
     {
         var uniqueNameFullJournal = UniqueName.Replace("EMPTY", "FULL");
         if (_lastUpdateFullJournal.AddMilliseconds(SettingsController.CurrentSettings.RefreshRate) < DateTime.UtcNow)
@@ -75,10 +63,10 @@ public class RequiredJournal : BaseViewModel
         }
     }
 
-    public KeyValuePair<Location, string>[] ItemPricesLocationsEmptyJournal => ItemPricesLocations;
-    public KeyValuePair<Location, string>[] ItemPricesLocationsFullJournal => ItemPricesLocations;
+    public KeyValuePair<MarketLocation, string>[] ItemPricesLocationsEmptyJournal => ItemPricesLocations;
+    public KeyValuePair<MarketLocation, string>[] ItemPricesLocationsFullJournal => ItemPricesLocations;
 
-    public Location ItemPricesLocationEmptyJournalSelected
+    public MarketLocation ItemPricesLocationEmptyJournalSelected
     {
         get => _itemPricesLocationEmptyJournalSelected;
         set
@@ -89,7 +77,7 @@ public class RequiredJournal : BaseViewModel
         }
     }
 
-    public Location ItemPricesLocationFullJournalSelected
+    public MarketLocation ItemPricesLocationFullJournalSelected
     {
         get => _itemPricesLocationFullJournalSelected;
         set
