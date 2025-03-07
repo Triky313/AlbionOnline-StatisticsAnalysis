@@ -59,6 +59,7 @@ public class SettingsObject
     public double PartyBuilderGridSplitterPosition { get; set; } = 125;
     public double GuildGridSplitterPosition { get; set; } = 125;
     public bool ShortDamageMeterToClipboard { get; set; }
+    public bool OnlyDamageToPlayersCounts { get; set; }
     public bool IsTradeMonitoringActive { get; set; } = true;
     public bool IgnoreMailsWithZeroValues { get; set; }
     public int DeleteTradesOlderThanSpecifiedDays { get; set; }

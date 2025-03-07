@@ -32,6 +32,7 @@ public class DamageMeterBindings : BaseViewModel, IAsyncInitialization
     private GridLength _gridSplitterPosition;
     private bool _isDamageMeterResetBeforeCombatActive;
     private bool _shortDamageMeterToClipboard;
+    private bool _onlyDamageToPlayersCounts;
     public Task Initialization { get; init; }
 
     public DamageMeterBindings()
@@ -229,6 +230,17 @@ public class DamageMeterBindings : BaseViewModel, IAsyncInitialization
         {
             _shortDamageMeterToClipboard = value;
             SettingsController.CurrentSettings.ShortDamageMeterToClipboard = ShortDamageMeterToClipboard;
+            OnPropertyChanged();
+        }
+    }
+
+    public bool OnlyDamageToPlayersCounts
+    {
+        get => _onlyDamageToPlayersCounts;
+        set
+        {
+            _onlyDamageToPlayersCounts = value;
+            SettingsController.CurrentSettings.OnlyDamageToPlayersCounts = OnlyDamageToPlayersCounts;
             OnPropertyChanged();
         }
     }

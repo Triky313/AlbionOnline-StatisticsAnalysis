@@ -37640,6 +37640,19 @@
           "seg": "Total income without tax deductions"
         }
       ]
+    },
+    {
+      "tuid": "ONLY_DAMAGE_TO_PLAYERS_COUNTS",
+      "tuv": [
+        {
+          "lang": "de-DE",
+          "seg": "Nur Schaden an Spielern wird gezählt"
+        },
+        {
+          "lang": "en-US",
+          "seg": "Only damage to players counts"
+        }
+      ]
     }
   ]
 }
