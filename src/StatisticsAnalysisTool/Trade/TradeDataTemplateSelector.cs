@@ -1,11 +1,15 @@
-﻿using System.Windows;
+﻿using StatisticsAnalysisTool.Enumerations;
+using System.Windows;
 using System.Windows.Controls;
 
 namespace StatisticsAnalysisTool.Trade;
 
 public class TradeDataTemplateSelector : DataTemplateSelector
 {
-    public DataTemplate MailTemplate { get; set; }
+    public DataTemplate MailMarketplaceBuyOrderExpiredTemplate { get; set; }
+    public DataTemplate MailMarketplaceBuyOrderFinishedTemplate { get; set; }
+    public DataTemplate MailMarketplaceSellOrderExpiredTemplate { get; set; }
+    public DataTemplate MailMarketplaceSellOrderFinishedTemplate { get; set; }
     public DataTemplate InstantSellTemplate { get; set; }
     public DataTemplate InstantBuyTemplate { get; set; }
     public DataTemplate ManualSellTemplate { get; set; }
@@ -19,9 +23,20 @@ public class TradeDataTemplateSelector : DataTemplateSelector
             return base.SelectTemplate(item, container);
         }
 
+        if (trade.Type == TradeType.Mail)
+        {
+            return trade.MailType switch
+            {
+                MailType.MarketplaceBuyOrderExpired => MailMarketplaceBuyOrderExpiredTemplate,
+                MailType.MarketplaceBuyOrderFinished => MailMarketplaceBuyOrderFinishedTemplate,
+                MailType.MarketplaceSellOrderExpired => MailMarketplaceSellOrderExpiredTemplate,
+                MailType.MarketplaceSellOrderFinished => MailMarketplaceSellOrderFinishedTemplate,
+                _ => base.SelectTemplate(item, container)
+            };
+        }
+
         return trade.Type switch
         {
-            TradeType.Mail => MailTemplate,
             TradeType.InstantBuy => InstantBuyTemplate,
             TradeType.InstantSell => InstantSellTemplate,
             TradeType.ManualSell => ManualSellTemplate,

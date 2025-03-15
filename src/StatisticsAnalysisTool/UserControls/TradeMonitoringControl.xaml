@@ -12,7 +12,10 @@
              d:DataContext="{d:DesignInstance Type=viewModels:MainWindowViewModel}">
     <UserControl.Resources>
         <trade:TradeDataTemplateSelector x:Key="TradeDataTemplateSelector"
-                                         MailTemplate="{StaticResource MailTemplate}"
+                                         MailMarketplaceBuyOrderExpiredTemplate="{StaticResource MailMarketplaceBuyOrderExpiredTemplate}"
+                                         MailMarketplaceBuyOrderFinishedTemplate="{StaticResource MailMarketplaceBuyOrderFinishedTemplate}"
+                                         MailMarketplaceSellOrderExpiredTemplate="{StaticResource MailMarketplaceSellOrderExpiredTemplate}"
+                                         MailMarketplaceSellOrderFinishedTemplate="{StaticResource MailMarketplaceSellOrderFinishedTemplate}"
                                          InstantSellTemplate="{StaticResource InstantSellTemplate}" 
                                          InstantBuyTemplate="{StaticResource InstantBuyTemplate}"
                                          ManualSellTemplate="{StaticResource ManualSellTemplate}" 

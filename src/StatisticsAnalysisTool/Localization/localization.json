@@ -37653,6 +37653,19 @@
           "seg": "Only damage to players counts"
         }
       ]
+    },
+    {
+      "tuid": "TOTAL_COST_WITHOUT_ADDED_TAXES",
+      "tuv": [
+        {
+          "lang": "de-DE",
+          "seg": "Gesamtkosten ohne Steuern"
+        },
+        {
+          "lang": "en-US",
+          "seg": "Total cost without added taxes"
+        }
+      ]
     }
   ]
 }
