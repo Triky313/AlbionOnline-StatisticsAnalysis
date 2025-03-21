@@ -194,7 +194,7 @@ public class TradeStatsObject : BaseViewModel
                     },
                     TradeStatType.BoughtToday or TradeStatType.BoughtThisWeek or TradeStatType.BoughtLastWeek or TradeStatType.BoughtMonth or TradeStatType.BoughtLastMonth or TradeStatType.BoughtYear => trade.Type switch
                     {
-                        TradeType.Mail => trade.MailContent.TotalPriceWithDeductedTaxes.IntegerValue,
+                        TradeType.Mail => trade.MailContent.TotalPrice.IntegerValue,
                         TradeType.InstantBuy => trade.InstantBuySellContent.TotalPrice.IntegerValue,
                         TradeType.ManualBuy => trade.InstantBuySellContent.TotalPrice.IntegerValue,
                         TradeType.Crafting => trade.InstantBuySellContent.TotalPrice.IntegerValue,

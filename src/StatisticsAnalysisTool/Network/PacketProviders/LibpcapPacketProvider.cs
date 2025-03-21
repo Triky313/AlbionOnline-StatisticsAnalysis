@@ -38,29 +38,37 @@ public class LibpcapPacketProvider : PacketProvider
     {
         var devices = Pcap.ListDevices();
 
+        int deviceId = 0;
         foreach (var device in devices)
         {
+            if (SettingsController.CurrentSettings.NetworkDevice > 0 && SettingsController.CurrentSettings.NetworkDevice != deviceId)
+            {
+                Log.Information("NetworkManager (npcap)[ID:{deviceId}]: manually skipping device {Device}:{DeviceDescription}",
+                    deviceId++, device.Name, device.Description);
+                continue;
+            }
+
             if (device.Type != NetworkInterfaceType.Ethernet && device.Type != NetworkInterfaceType.Wireless80211)
             {
-                Log.Information("NetworkManager (npcap): skipping device {Device}:{DeviceDescription} due to unsupported type {Devicetype}",
-                    device.Name, device.Description, device.Type);
+                Log.Information("NetworkManager (npcap)[ID:{deviceId}]: skipping device {Device}:{DeviceDescription} due to unsupported type {Devicetype}",
+                    deviceId++, device.Name, device.Description, device.Type);
                 continue;
             }
             if (device.Flags.HasFlag(PcapDeviceFlags.Loopback))
             {
-                Log.Information("NetworkManager (npcap): skipping device {Device}:{DeviceDescription} due to loopback flag",
-                    device.Name, device.Description);
+                Log.Information("NetworkManager (npcap)[ID:{deviceId}]: skipping device {Device}:{DeviceDescription} due to loopback flag",
+                    deviceId++, device.Name, device.Description);
                 continue;
             }
             if (!device.Flags.HasFlag(PcapDeviceFlags.Up))
             {
-                Log.Information("NetworkManager (npcap): skipping device {Device}:{DeviceDescription} due not being up",
-                    device.Name, device.Description);
+                Log.Information("NetworkManager (npcap)[ID:{deviceId}]: skipping device {Device}:{DeviceDescription} due not being up",
+                    deviceId++, device.Name, device.Description);
                 continue;
             }
 
-            Log.Information("NetworkManager (npcap): opening device {Device}:{DeviceDescription}",
-                device.Name, device.Description);
+            Log.Information("NetworkManager (npcap)[ID:{deviceId}]: opening device {Device}:{DeviceDescription}",
+                deviceId++, device.Name, device.Description);
             _dispatcher.OpenDevice(device, pcap =>
             {
                 pcap.NonBlocking = true;

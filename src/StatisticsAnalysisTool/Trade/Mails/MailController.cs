@@ -111,21 +111,17 @@ public class MailController
 
         _ = int.TryParse(contentObject[0], out var quantity);
         var uniqueItemName = contentObject[1];
-        _ = long.TryParse(contentObject[2], out var totalPriceLong);
-        _ = long.TryParse(contentObject[3], out var unitPriceLong);
+        _ = long.TryParse(contentObject[2], out var totalPriceWithoutTaxLong);
+        _ = long.TryParse(contentObject[3], out var unitPricePaidWithOverpaymentLong);
         _ = long.TryParse(contentObject[4], out var totalDistanceFeeLong);
-
-        var totalPrice = FixPoint.FromInternalValue(totalPriceLong);
-        var unitPrice = FixPoint.FromInternalValue(unitPriceLong);
-        var totalDistanceFee = FixPoint.FromInternalValue(totalDistanceFeeLong);
 
         return new MailContent()
         {
             UsedQuantity = quantity,
             Quantity = quantity,
-            InternalTotalPrice = FixPoint.FromFloatingPointValue(totalPrice.DoubleValue / 100 * taxSetupRate + totalPrice.DoubleValue).InternalValue,
-            InternalUnitPrice = FixPoint.FromFloatingPointValue(unitPrice.DoubleValue / 100 * taxSetupRate + unitPrice.DoubleValue).InternalValue,
-            InternalTotalDistanceFee = FixPoint.FromFloatingPointValue(totalDistanceFee.DoubleValue).InternalValue,
+            InternalTotalPriceWithoutTax = totalPriceWithoutTaxLong,
+            InternalUnitPricePaidWithOverpayment = unitPricePaidWithOverpaymentLong,
+            InternalTotalDistanceFee = totalDistanceFeeLong,
             UniqueItemName = uniqueItemName,
             TaxSetupRate = taxSetupRate
         };
@@ -142,15 +138,15 @@ public class MailController
 
         _ = int.TryParse(contentObject[0], out var quantity);
         var uniqueItemName = contentObject[1];
-        _ = long.TryParse(contentObject[2], out var totalPriceLong);
-        _ = long.TryParse(contentObject[3], out var unitPriceLong);
+        _ = long.TryParse(contentObject[2], out var totalPriceWithoutTaxLong);
+        _ = long.TryParse(contentObject[3], out var unitPricePaidWithOverpaymentLong);
 
         return new MailContent()
         {
             UsedQuantity = quantity,
             Quantity = quantity,
-            InternalTotalPrice = totalPriceLong,
-            InternalUnitPrice = unitPriceLong,
+            InternalTotalPriceWithoutTax = totalPriceWithoutTaxLong,
+            InternalUnitPricePaidWithOverpayment = unitPricePaidWithOverpaymentLong,
             UniqueItemName = uniqueItemName,
             TaxRate = taxRate,
             TaxSetupRate = taxSetupRate
@@ -168,20 +164,15 @@ public class MailController
 
         _ = int.TryParse(contentObject[0], out var usedQuantity);
         _ = int.TryParse(contentObject[1], out var quantity);
-        _ = long.TryParse(contentObject[2], out var totalPriceLong);
+        _ = long.TryParse(contentObject[2], out var totalPriceWithoutTaxLong);
         var uniqueItemName = contentObject[3];
-
-        var totalPrice = FixPoint.FromInternalValue(totalPriceLong);
-
-        // Calculation of costs
-        var singlePrice = totalPrice.DoubleValue / usedQuantity;
 
         return new MailContent()
         {
             UsedQuantity = usedQuantity,
             Quantity = quantity,
-            InternalTotalPrice = totalPriceLong,
-            InternalUnitPrice = FixPoint.FromFloatingPointValue(singlePrice).InternalValue,
+            InternalTotalPriceWithoutTax = totalPriceWithoutTaxLong,
+            InternalUnitPricePaidWithOverpayment = 0,
             UniqueItemName = uniqueItemName,
             TaxRate = taxRate,
             TaxSetupRate = taxSetupRate
@@ -200,6 +191,7 @@ public class MailController
         _ = int.TryParse(contentExpiredObject[0], out var usedExpiredQuantity);
         _ = int.TryParse(contentExpiredObject[1], out var expiredQuantity);
         _ = long.TryParse(contentExpiredObject[2], out var totalRecoveredSilverLong);
+        _ = long.TryParse(contentExpiredObject[4], out var totalDistanceFeeLong);
         var uniqueItemExpiredName = contentExpiredObject[3];
 
         var totalRecoveredSilver = FixPoint.FromInternalValue(totalRecoveredSilverLong);
@@ -214,13 +206,14 @@ public class MailController
         {
             UsedQuantity = usedExpiredQuantity,
             Quantity = expiredQuantity,
-            InternalTotalPrice = FixPoint.FromFloatingPointValue(totalPrice.DoubleValue / 100 * taxSetupRate + totalPrice.DoubleValue).InternalValue,
-            InternalUnitPrice = FixPoint.FromFloatingPointValue(unitPrice.DoubleValue / 100 * taxSetupRate + unitPrice.DoubleValue).InternalValue,
+            InternalTotalPriceWithoutTax = FixPoint.FromFloatingPointValue(totalPrice.DoubleValue / 100 * taxSetupRate + totalPrice.DoubleValue).InternalValue,
+            InternalUnitPricePaidWithOverpayment = 0,
+            InternalTotalDistanceFee = totalDistanceFeeLong,
             UniqueItemName = uniqueItemExpiredName,
             TaxSetupRate = taxSetupRate
         };
     }
-    
+
     public static MailType ConvertToMailType(string typeString)
     {
         return typeString switch
