@@ -376,7 +376,6 @@ public enum EventCodes
     NewUnlockedPersonalSeasonRewards,
     PersonalSeasonPointsGained,
     PersonalSeasonPastSeasonDataEvent,
-    EasyAntiCheatMessageToClient,
     MatchLootChestOpeningStart,
     MatchLootChestOpeningFinished,
     MatchLootChestOpeningCancel,
@@ -616,5 +615,7 @@ public enum EventCodes
     PickupFromPiledObjectReset,
     PickupFromPiledObjectFinished,
     ArmoryActivityChange,
-    NewKillTrophyFurnitureBuilding
+    NewKillTrophyFurnitureBuilding,
+    StandTimeFinished,
+    EpicAchievementAndStatsUpdate
 }
