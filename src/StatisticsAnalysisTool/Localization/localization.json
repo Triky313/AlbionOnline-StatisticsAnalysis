@@ -23331,6 +23331,10 @@
           "seg": "Redémarrage requis"
         },
         {
+          "lang": "ko-KR",
+          "seg": "재시작이 필요합니다."
+        },
+        {
           "lang": "pl-PL",
           "seg": "Wymagane ponowne uruchomienie"
         },
@@ -37586,6 +37590,10 @@
         {
           "lang": "en-US",
           "seg": "Proxy"
+        },
+        {
+          "lang": "ko-KR",
+          "seg": "프록시"
         }
       ]
     },
