@@ -4,17 +4,10 @@ using System.Threading.Tasks;
 
 namespace StatisticsAnalysisTool.Network.Handler;
 
-public class ReadMailResponseHandler : ResponsePacketHandler<ReadMailResponse>
+public class ReadMailResponseHandler(TrackingController trackingController)    : ResponsePacketHandler<ReadMailResponse>((int) OperationCodes.ReadMail)
 {
-    private readonly TrackingController _trackingController;
-
-    public ReadMailResponseHandler(TrackingController trackingController) : base((int) OperationCodes.ReadMail)
-    {
-        _trackingController = trackingController;
-    }
-
     protected override async Task OnActionAsync(ReadMailResponse value)
     {
-        await _trackingController.MailController.AddMailAsync(value.MailId, value.Content);
+        await trackingController.MailController.AddMailAsync(value.MailId, value.Content);
     }
 }
