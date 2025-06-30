@@ -9,7 +9,7 @@ namespace StatisticsAnalysisTool.Network.Operations.Responses;
 
 public class GetMailInfosResponse
 {
-    public readonly List<MailNetworkObject> MailInfos = new();
+    public readonly List<MailNetworkObject> MailInfos = [];
 
     public GetMailInfosResponse(Dictionary<byte, object> parameters)
     {
@@ -21,8 +21,8 @@ public class GetMailInfosResponse
         {
             if (!parameters.ContainsKey(0) || parameters[0] == null ||
                 !parameters.ContainsKey(3) || parameters[3] == null ||
-                !parameters.ContainsKey(6) || parameters[6] == null ||
-                !parameters.ContainsKey(10) || parameters[10] == null ||
+                !parameters.ContainsKey(7) || parameters[7] == null ||
+                !parameters.ContainsKey(11) || parameters[11] == null ||
                 !parameters[3].GetType().IsArray ||
                 (typeof(long[]).Name != parameters[3].GetType().Name &&
                  typeof(int[]).Name != parameters[3].GetType().Name))
@@ -32,7 +32,7 @@ public class GetMailInfosResponse
 
             var guid = parameters[0].ObjectToGuid();
 
-            long[] mailIdArray = { };
+            long[] mailIdArray = [];
 
             // If the mails ID's are ever below 32.767, an error will appear here, but this should not happen on the current west and east servers, since the mail ID is above it and can never come below it again.
             if (typeof(int[]).Name == parameters[3].GetType().Name)
@@ -49,9 +49,9 @@ public class GetMailInfosResponse
                 return;
             }
 
-            var subjectArray = ((string[]) parameters[6]).ToArray();
-            var mailTypeTextArray = ((string[]) parameters[10]).ToArray();
-            var timeStampArray = ((long[]) parameters[11]).ToArray();
+            var subjectArray = ((string[]) parameters[7]).ToArray();
+            var mailTypeTextArray = ((string[]) parameters[11]).ToArray();
+            var timeStampArray = ((long[]) parameters[12]).ToArray();
 
             var length = Utilities.GetHighestLength(mailIdArray, subjectArray, mailTypeTextArray);
 
