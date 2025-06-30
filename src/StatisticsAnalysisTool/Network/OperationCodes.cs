@@ -142,7 +142,6 @@ public enum OperationCodes
     GetCharacterSteamAchievements,
     GetCharacterStats,
     GetKillHistoryDetails,
-    LearnMasteryLevel,
     ReSpecAchievement,
     ChangeAvatar,
     GetRankings,
@@ -341,6 +340,8 @@ public enum OperationCodes
     LinkAccountToSteamId,
     EpicIdHasActiveAccount,
     LinkAccountToEpicId,
+    XboxIdHasActiveAccount,
+    LinkAccountToXboxToken,
     InAppConfirmPaymentGooglePlay,
     InAppConfirmPaymentAppleAppStore,
     InAppPurchaseRequest,
@@ -507,6 +508,7 @@ public enum OperationCodes
     PartyReadyCheckUpdate,
     ClaimAlbionJournalReward,
     TrackAlbionJournalAchievements,
+    TrackAlbionJournalAchievementSubCategory,
     RequestOutlandsTeleportationUsage,
     PickupFromPiledObjectStart,
     PickupFromPiledObjectCancel,
@@ -518,5 +520,11 @@ public enum OperationCodes
     AssetOverviewSearchTabs,
     AssetOverviewSearchTabContent,
     AssetOverviewRecoverPlayerVault,
-    ImmortalizeKillTrophy
+    ImmortalizeKillTrophy,
+    ArmorySearch,
+    ArmoryItemUsageStatistics,
+    ArmoryActivityUsageStatistics,
+    HellDungeonUseStaticEntrance,
+    TravelIslandShowroom,
+    GetXuids
 }
