@@ -13,6 +13,8 @@ using System.Collections.Specialized;
 using System.IO;
 using System.Linq;
 using System.Reflection;
+using System.Text.Json;
+using System.Text.Json.Nodes;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
@@ -77,8 +79,8 @@ public class TradeController
         }
 
         if (trade.Id == _lastAddedTrade.Id
-            && trade.Guid == _lastAddedTrade.Guid 
-            && trade.Type == _lastAddedTrade.Type 
+            && trade.Guid == _lastAddedTrade.Guid
+            && trade.Type == _lastAddedTrade.Type
             && trade.ItemIndex == _lastAddedTrade.ItemIndex)
         {
             _lastAddedTrade = trade;
@@ -290,9 +292,18 @@ public class TradeController
     {
         FileController.TransferFileIfExistFromOldPathToUserDataDirectory(Path.Combine(AppDomain.CurrentDomain.BaseDirectory, Settings.Default.TradesFileName));
 
-        var tradeDtos = await FileController.LoadAsync<List<TradeDto>>(
-            Path.Combine(AppDomain.CurrentDomain.BaseDirectory, Settings.Default.UserDataDirectoryName, Settings.Default.TradesFileName));
-        var trades = tradeDtos.Select(TradeMapping.Mapping).ToList();
+        string filePath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, Settings.Default.UserDataDirectoryName, Settings.Default.TradesFileName);
+
+        if (!File.Exists(filePath))
+        {
+            await SetTradesToBindings(new List<Trade>());
+            return;
+        }
+
+        string json = await File.ReadAllTextAsync(filePath);
+
+        // Migrate old trade data
+        var trades = LoadAndMigrateTrades(json);
 
         await SetTradesToBindings(trades);
     }
@@ -340,6 +351,63 @@ public class TradeController
             _mainWindowViewModel?.TradeMonitoringBindings?.TradeCollectionView?.Refresh();
             _mainWindowViewModel?.TradeMonitoringBindings?.TradeStatsObject?.SetTradeStats(enumerable);
         }, DispatcherPriority.Background, CancellationToken.None);
+    }
+
+    #endregion
+
+    #region Migrate old trade data from 02.07.2025 and older
+
+    public static List<Trade> LoadAndMigrateTrades(string json)
+    {
+        if (string.IsNullOrWhiteSpace(json))
+        {
+            return [];
+        }
+
+        if (JsonNode.Parse(json) is not JsonArray root)
+        {
+            return [];
+        }
+
+        foreach (var node in root)
+        {
+            if (node?["MailContent"] is not JsonObject mailContent)
+            {
+                continue;
+            }
+
+            if (mailContent.ContainsKey("InternalTotalPrice"))
+            {
+                var val = mailContent["InternalTotalPrice"]?.GetValue<long>() ?? 0L;
+                mailContent["InternalTotalPriceWithoutTax"] = val;
+                mailContent.Remove("InternalTotalPrice");
+            }
+
+            if (mailContent.ContainsKey("InternalUnitPrice"))
+            {
+                var val = mailContent["InternalUnitPrice"]?.GetValue<long>() ?? 0L;
+                mailContent["InternalUnitPricePaidWithOverpayment"] = val;
+                mailContent.Remove("InternalUnitPrice");
+            }
+        }
+
+        var tradeDtos = JsonSerializer.Deserialize<List<TradeDto>>(root.ToJsonString());
+        if (tradeDtos == null)
+        {
+            return [];
+        }
+
+        var trades = new List<Trade>();
+        foreach (var dto in tradeDtos)
+        {
+            var mapped = TradeMapping.Mapping(dto);
+            if (mapped != null)
+            {
+                trades.Add(mapped);
+            }
+        }
+
+        return trades;
     }
 
     #endregion
