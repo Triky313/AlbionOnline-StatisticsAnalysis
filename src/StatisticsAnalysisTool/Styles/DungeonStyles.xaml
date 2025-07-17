@@ -2777,7 +2777,8 @@
                 </Image.Style>
             </Image>
             <TextBlock Text="{Binding DiedName, IsAsync=True, Mode=OneWay}" Foreground="{StaticResource SolidColorBrush.Accent.Red.2}" Margin="2,2,2,0" />
-            <TextBlock Text="{Binding TranslationKilledBy, IsAsync=True, Mode=OneWay, FallbackValue='KILLED_BY'}" Foreground="{StaticResource SolidColorBrush.Text.1}" Margin="2,2,2,0" />
+            <TextBlock Text="{Binding TranslationKilledBy, IsAsync=True, Mode=OneWay, FallbackValue='KILLED_BY'}" 
+                       Foreground="{StaticResource SolidColorBrush.Text.1}" Margin="2,2,2,0" Visibility="{Binding KilledByVisibility}" />
             <TextBlock Text="{Binding KilledBy, IsAsync=True, Mode=OneWay}" Foreground="{StaticResource SolidColorBrush.Accent.Blue.2}" Margin="2,2,2,0" />
         </StackPanel>
     </DataTemplate>
