@@ -10,5 +10,6 @@ public enum DungeonMode
     Corrupted,
     Expedition,
     Mists,
-    MistsDungeon
+    MistsDungeon,
+    AbyssalDepths
 }

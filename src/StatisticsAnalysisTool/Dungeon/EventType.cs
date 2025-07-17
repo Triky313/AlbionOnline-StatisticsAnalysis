@@ -7,5 +7,6 @@ public enum EventType
     BookChest,
     CombatShrine,
     SilverShrine,
-    FameShrine
+    FameShrine,
+    HellDungeonShrine
 }

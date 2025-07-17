@@ -79,6 +79,7 @@ public class NetworkManager
         builder.AddEventHandler(new NewExpeditionCheckPointHandler(trackingController));
         builder.AddEventHandler(new UpdateStandingEventHandler(trackingController));
         builder.AddEventHandler(new CraftBuildingInfoEventHandler(trackingController));
+        builder.AddEventHandler(new NewHellDungeonRoomShrineObjectEventHandler(trackingController));
 
         // Request
         builder.AddRequestHandler(new InventoryMoveItemRequestHandler(trackingController));

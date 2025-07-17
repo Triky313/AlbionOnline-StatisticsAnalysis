@@ -137,6 +137,9 @@
     <Content Include="Sounds\dungeon_closed.wav">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
+    <Resource Include="Assets\abyssal_depths.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Resource>
     <Resource Include="Assets\auto_attack.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Resource>
@@ -339,6 +342,9 @@
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Resource>
     <Resource Include="Assets\static_chest.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Resources\abyssal_depths_banner.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Resource>
     <Resource Include="Resources\alert_window_background.jpg">
@@ -645,6 +651,7 @@
     <Compile Remove="Network\SilverCountUpTimer.cs" />
   </ItemGroup>
   <ItemGroup>
+    <None Remove="Assets\abyssal_depths.png" />
     <None Remove="Assets\auto_attack.png" />
     <None Remove="Assets\ava_chest.png" />
     <None Remove="Assets\bag.png" />
@@ -714,6 +721,7 @@
     <None Remove="Assets\skull_red.png" />
     <None Remove="Assets\static_chest.png" />
     <None Remove="Localization\localization.json" />
+    <None Remove="Resources\abyssal_depths_banner.png" />
     <None Remove="Resources\DonationIcon\ALLIGATOR1.png" />
     <None Remove="Resources\DonationIcon\ANCIENTMAMMOTH1.png" />
     <None Remove="Resources\DonationIcon\BEAR.png" />

@@ -96,6 +96,8 @@
     <Color x:Key="Color.City.SmugglersDen.Transparent">#33b4273a</Color>
 
     <!-- Dungeon mode colors -->
+    <Color x:Key="Dungeon.Mode.AbyssalDepths.1">#d95a37</Color>
+    <Color x:Key="Dungeon.Mode.AbyssalDepths.2">#b53b1a</Color>
     <Color x:Key="Dungeon.Mode.Mists.1">#7657DB</Color>
     <Color x:Key="Dungeon.Mode.Mists.2">#5331C4</Color>
     <Color x:Key="Dungeon.Mode.MistsDungeon.1">#7657DB</Color>
@@ -271,6 +273,7 @@
     <SolidColorBrush x:Key="SolidColorBrush.City.BlackMarket.Transparent" Color="{StaticResource Color.City.BlackMarket.Transparent}"/>
     <SolidColorBrush x:Key="SolidColorBrush.City.SmugglersDen.Transparent" Color="{StaticResource Color.City.SmugglersDen.Transparent}"/>
 
+    <SolidColorBrush x:Key="SolidColorBrush.Dungeon.Mode.AbyssalDepths.1" Color="{StaticResource Dungeon.Mode.AbyssalDepths.1}"/>
     <SolidColorBrush x:Key="SolidColorBrush.Dungeon.Mode.Mists.1" Color="{StaticResource Dungeon.Mode.Mists.1}"/>
     <SolidColorBrush x:Key="SolidColorBrush.Dungeon.Mode.MistsDungeon.1" Color="{StaticResource Dungeon.Mode.MistsDungeon.1}"/>
     <SolidColorBrush x:Key="SolidColorBrush.Dungeon.Mode.Expedition.1" Color="{StaticResource Dungeon.Mode.Expedition.1}"/>

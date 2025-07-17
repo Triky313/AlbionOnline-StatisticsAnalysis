@@ -114,4 +114,5 @@ public class PointOfInterest : BaseViewModel
     public static string TranslationSilverShrine => LocalizationController.Translation("SILVER_SHRINE");
     public static string TranslationFameShrine => LocalizationController.Translation("FAME_SHRINE");
     public static string TranslationLockedChest => LocalizationController.Translation("LOCKED_CHEST");
+    public static string TranslationUnknownChest => LocalizationController.Translation("UNKNOWN_CHEST");
 }

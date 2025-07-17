@@ -13,23 +13,16 @@ using StatisticsAnalysisTool.Models.BindingModel;
 
 namespace StatisticsAnalysisTool.Network.Handler;
 
-public class JoinResponseHandler : ResponsePacketHandler<JoinResponse>
+public class JoinResponseHandler(TrackingController trackingController) : ResponsePacketHandler<JoinResponse>((int) OperationCodes.Join)
 {
-    private readonly MainWindowViewModel _mainWindowViewModel;
-    private readonly TrackingController _trackingController;
-
-    public JoinResponseHandler(TrackingController trackingController) : base((int) OperationCodes.Join)
-    {
-        _trackingController = trackingController;
-        _mainWindowViewModel = ServiceLocator.Resolve<MainWindowViewModel>();
-    }
+    private readonly MainWindowViewModel _mainWindowViewModel = ServiceLocator.Resolve<MainWindowViewModel>();
 
     protected override async Task OnActionAsync(JoinResponse value)
     {
         SetLocalUserData(value);
         _ = SetApiUserData(value);
 
-        _trackingController.ClusterController.SetJoinClusterInformation(value.MapIndex, value.MainMapIndex, value.MapGuid);
+        trackingController.ClusterController.SetJoinClusterInformation(value.MapIndex, value.MainMapIndex, value.MapGuid);
 
         _mainWindowViewModel.UserTrackingBindings.Username = value.Username;
         _mainWindowViewModel.UserTrackingBindings.GuildName = value.GuildName;
@@ -51,7 +44,7 @@ public class JoinResponseHandler : ResponsePacketHandler<JoinResponse>
             ObjectSubType = GameObjectSubType.LocalPlayer
         });
 
-        _trackingController.DungeonController?.AddDungeonAsync(value.MapType, value.MapGuid).ConfigureAwait(false);
+        trackingController.DungeonController?.AddDungeonAsync(value.MapType, value.MapGuid).ConfigureAwait(false);
 
         ResetFameCounterByMapChangeIfActive();
         SetTrackingActivityText();
@@ -61,7 +54,7 @@ public class JoinResponseHandler : ResponsePacketHandler<JoinResponse>
 
     private void SetLocalUserData(JoinResponse value)
     {
-        _trackingController.EntityController.LocalUserData.SetValues(new LocalUserData
+        trackingController.EntityController.LocalUserData.SetValues(new LocalUserData
         {
             UserObjectId = value.UserObjectId,
             Guid = value.UserGuid,
@@ -83,9 +76,9 @@ public class JoinResponseHandler : ResponsePacketHandler<JoinResponse>
     private async Task SetApiUserData(JoinResponse value)
     {
         _mainWindowViewModel.DashboardBindings.KillsDeathsText = DashboardBindings.TranslationKillsDeathsLoading;
-        await _trackingController.EntityController.LocalUserData.GetApiData(value.Username);
+        await trackingController.EntityController.LocalUserData.GetApiData(value.Username);
         _mainWindowViewModel.DashboardBindings.KillsDeathsText = DashboardBindings.TranslationKillsDeaths;
-        _trackingController.StatisticController.SetKillsDeathsValues();
+        trackingController.StatisticController.SetKillsDeathsValues();
     }
 
     private async Task AddEntityAsync(Entity entity)
@@ -95,13 +88,13 @@ public class JoinResponseHandler : ResponsePacketHandler<JoinResponse>
             return;
         }
 
-        _trackingController.EntityController.AddEntity(entity);
-        await _trackingController.EntityController.AddToPartyAsync(entity.UserGuid);
+        trackingController.EntityController.AddEntity(entity);
+        await trackingController.EntityController.AddToPartyAsync(entity.UserGuid);
     }
 
     private void SetTrackingActivityText()
     {
-        if (_trackingController.ExistIndispensableInfos)
+        if (trackingController.ExistIndispensableInfos)
         {
             _mainWindowViewModel.TrackingActivityBindings.TrackingActiveText = MainWindowTranslation.TrackingIsActive;
             _mainWindowViewModel.TrackingActivityBindings.TrackingActivityType = TrackingIconType.On;

@@ -579,4 +579,5 @@ public abstract class DungeonBaseFragment : BaseViewModel
     public static string TranslationMists => LocalizationController.Translation("MISTS");
     public static string TranslationMistsDungeon => LocalizationController.Translation("MISTS_DUNGEON");
     public static string TranslationKilledBy => LocalizationController.Translation("KILLED_BY");
+    public static string TranslationAbyssalDepths => LocalizationController.Translation("ABYSSALDEPTHS");
 }

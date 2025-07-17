@@ -11,5 +11,6 @@ public enum Faction
     HellGate,
     Corrupted,
     Mists,
-    MistsDungeon
+    MistsDungeon,
+    AbyssalDepths
 }

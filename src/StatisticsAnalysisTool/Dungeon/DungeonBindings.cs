@@ -63,54 +63,68 @@ public class DungeonBindings : BaseViewModel
 
         SelectedStatsTimeType = DungeonStatTimeTypes.FirstOrDefault(x => x.StatTimeType == DungeonStatTimeType.Total);
 
-        DungeonStatsType = new List<StatsTypeFilterStruct>
-        {
-            new ()
+        DungeonStatsType =
+        [
+            new()
             {
                 Name = LocalizationController.Translation("TOTAL_OVERVIEW"),
                 StatsViewType = DungeonMode.Unknown
             },
-            new ()
+
+            new()
             {
                 Name = LocalizationController.Translation("SOLO_DUNGEON"),
                 StatsViewType = DungeonMode.Solo
             },
-            new ()
+
+            new()
             {
                 Name = LocalizationController.Translation("STANDARD_DUNGEON"),
                 StatsViewType = DungeonMode.Standard
             },
-            new ()
+
+            new()
             {
                 Name = LocalizationController.Translation("AVALONIAN_DUNGEON"),
                 StatsViewType = DungeonMode.Avalon
             },
-            new ()
+
+            new()
             {
                 Name = LocalizationController.Translation("CORRUPTED"),
                 StatsViewType = DungeonMode.Corrupted
             },
-            new ()
+
+            new()
             {
                 Name = LocalizationController.Translation("HELLGATE"),
                 StatsViewType = DungeonMode.HellGate
             },
-            new ()
+
+            new()
             {
                 Name = LocalizationController.Translation("HCE_EXPEDITION"),
                 StatsViewType = DungeonMode.Expedition
             },
-            new ()
+
+            new()
             {
                 Name = LocalizationController.Translation("MISTS"),
                 StatsViewType = DungeonMode.Mists
             },
-            new ()
+
+            new()
             {
                 Name = LocalizationController.Translation("MISTS_DUNGEON"),
                 StatsViewType = DungeonMode.MistsDungeon
+            },
+
+            new()
+            {
+                Name = LocalizationController.Translation("ABYSSALDEPTHS"),
+                StatsViewType = DungeonMode.AbyssalDepths
             }
-        };
+        ];
 
         SelectedDungeonStatsType = DungeonStatsType.FirstOrDefault(x => x.StatsViewType == DungeonMode.Unknown);
     }
@@ -496,6 +510,11 @@ public class DungeonBindings : BaseViewModel
             return true;
         }
 
+        if (SelectedDungeonStatsType.StatsViewType == DungeonMode.AbyssalDepths && dungeon.Mode == DungeonMode.AbyssalDepths)
+        {
+            return true;
+        }
+
         if (SelectedDungeonStatsType.StatsViewType == DungeonMode.Unknown)
         {
             return true;
@@ -537,6 +556,11 @@ public class DungeonBindings : BaseViewModel
         }
 
         if (SelectedDungeonStatsType.StatsViewType == DungeonMode.MistsDungeon && dungeon.MapType == MapType.MistsDungeon)
+        {
+            return true;
+        }
+
+        if (SelectedDungeonStatsType.StatsViewType == DungeonMode.AbyssalDepths && dungeon.MapType == MapType.AbyssalDepths)
         {
             return true;
         }
@@ -607,6 +631,11 @@ public class DungeonBindings : BaseViewModel
         {
             Stats.StatsMistsDungeon.Visibility = Visibility.Visible;
         }
+
+        if (SelectedDungeonStatsType.StatsViewType == DungeonMode.AbyssalDepths)
+        {
+            Stats.StatsAbyssalDepths.Visibility = Visibility.Visible;
+        }
     }
 
     private void SetAllStatViewsToCollapsed()
@@ -620,5 +649,6 @@ public class DungeonBindings : BaseViewModel
         Stats.StatsHellGate.Visibility = Visibility.Collapsed;
         Stats.StatsMists.Visibility = Visibility.Collapsed;
         Stats.StatsMistsDungeon.Visibility = Visibility.Collapsed;
+        Stats.StatsAbyssalDepths.Visibility = Visibility.Collapsed;
     }
 }
