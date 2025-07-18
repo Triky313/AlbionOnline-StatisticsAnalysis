@@ -72,7 +72,8 @@ public sealed class DungeonController
             && mapType is not MapType.CorruptedDungeon
             && mapType is not MapType.HellGate
             && mapType is not MapType.Mists
-            && mapType is not MapType.MistsDungeon)
+            && mapType is not MapType.MistsDungeon
+            && mapType is not MapType.AbyssalDepths)
         {
             if (AddClusterToExistDungeon(mapGuid, _lastMapGuid, out var currentDungeon))
             {
@@ -84,11 +85,11 @@ public sealed class DungeonController
                  && !ExistDungeon(_lastMapGuid)
                  && !ExistDungeon(_currentGuid)
                  || (IsDungeonCluster(mapType, mapGuid)
-                 && mapType is MapType.CorruptedDungeon or MapType.HellGate or MapType.Mists or MapType.MistsDungeon))
+                 && mapType is MapType.CorruptedDungeon or MapType.HellGate or MapType.Mists or MapType.MistsDungeon or MapType.AbyssalDepths))
         {
             UpdateDungeonSaveTimerUi(mapType);
 
-            if (mapType is MapType.CorruptedDungeon or MapType.HellGate or MapType.Mists or MapType.MistsDungeon)
+            if (mapType is MapType.CorruptedDungeon or MapType.HellGate or MapType.Mists or MapType.MistsDungeon or MapType.AbyssalDepths)
             {
                 var lastDungeon = GetDungeon(_lastMapGuid);
                 lastDungeon?.EndTimer();
@@ -107,7 +108,7 @@ public sealed class DungeonController
                  && !ExistDungeon(_lastMapGuid)
                  && ExistDungeon(_currentGuid)
                  || IsDungeonCluster(mapType, mapGuid)
-                 && mapType is MapType.CorruptedDungeon or MapType.HellGate or MapType.Mists or MapType.MistsDungeon)
+                 && mapType is MapType.CorruptedDungeon or MapType.HellGate or MapType.Mists or MapType.MistsDungeon or MapType.AbyssalDepths)
         {
             UpdateDungeonSaveTimerUi(mapType);
 
@@ -122,7 +123,7 @@ public sealed class DungeonController
             lastDungeon.EndTimer();
             lastDungeon.Status = DungeonStatus.Done;
             await SaveInFileAfterExceedingLimit(NumberOfDungeonsUntilSaved);
-            _lastGuidWithRecognizedLevel = new ObservableCollection<Guid>();
+            _lastGuidWithRecognizedLevel = [];
         }
 
         _lastMapGuid = mapGuid;
@@ -161,6 +162,9 @@ public sealed class DungeonController
             case MapType.MistsDungeon:
                 newDungeon = new MistsDungeonFragment((Guid) guid, mapType, DungeonMode.MistsDungeon, mainMapIndex, ClusterController.CurrentCluster.MistsDungeonTier);
                 break;
+            case MapType.AbyssalDepths:
+                newDungeon = new AbyssalDepthsFragment((Guid) guid, mapType, DungeonMode.AbyssalDepths, mainMapIndex);
+                break;
             default:
                 newDungeon = null;
                 break;
@@ -178,13 +182,13 @@ public sealed class DungeonController
     public void ResetDungeonsByDateAscending(DateTime date)
     {
         var dungeonsToDelete = _mainWindowViewModel.DungeonBindings.Dungeons?.Where(x => x.EnterDungeonFirstTime >= date).ToList();
-        foreach (var dungeonObject in dungeonsToDelete ?? new List<DungeonBaseFragment>())
+        foreach (var dungeonObject in dungeonsToDelete ?? [])
         {
             _mainWindowViewModel.DungeonBindings.Dungeons?.Remove(dungeonObject);
         }
 
         var trackingDungeonsToDelete = _mainWindowViewModel?.DungeonBindings?.Dungeons?.Where(x => x.EnterDungeonFirstTime >= date).ToList();
-        foreach (var dungeonObject in trackingDungeonsToDelete ?? new List<DungeonBaseFragment>())
+        foreach (var dungeonObject in trackingDungeonsToDelete ?? [])
         {
             _mainWindowViewModel?.DungeonBindings?.Dungeons?.Remove(dungeonObject);
         }
@@ -193,7 +197,7 @@ public sealed class DungeonController
     public void DeleteDungeonsWithZeroFame()
     {
         var dungeonsToDelete = _mainWindowViewModel.DungeonBindings.Dungeons?.Where(x => x.Fame <= 0 && x.Status != DungeonStatus.Active).ToList();
-        foreach (var dungeonObject in dungeonsToDelete ?? new List<DungeonBaseFragment>())
+        foreach (var dungeonObject in dungeonsToDelete ?? [])
         {
             _mainWindowViewModel.DungeonBindings.Dungeons?.Remove(dungeonObject);
         }
@@ -398,6 +402,9 @@ public sealed class DungeonController
                         break;
                     case MistsDungeonFragment mistsDungeon:
                         mistsDungeon.Add(value, valueType);
+                        break;
+                    case AbyssalDepthsFragment abyssalDepths:
+                        abyssalDepths.Add(value, valueType);
                         break;
                 }
             }
@@ -694,7 +701,7 @@ public sealed class DungeonController
 
     private static bool IsDungeonCluster(MapType mapType, Guid? mapGuid)
     {
-        return mapGuid != null && mapType is MapType.RandomDungeon or MapType.CorruptedDungeon or MapType.HellGate or MapType.Expedition or MapType.Mists or MapType.MistsDungeon;
+        return mapGuid != null && mapType is MapType.RandomDungeon or MapType.CorruptedDungeon or MapType.HellGate or MapType.Expedition or MapType.Mists or MapType.MistsDungeon or MapType.AbyssalDepths;
     }
 
     #endregion

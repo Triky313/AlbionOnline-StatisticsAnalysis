@@ -37674,6 +37674,71 @@
           "seg": "Total cost without added taxes"
         }
       ]
+    },
+    {
+      "tuid": "ABYSSALDEPTHS",
+      "tuv": [
+        {
+          "lang": "de-DE",
+          "seg": "Die Tiefen"
+        },
+        {
+          "lang": "en-US",
+          "seg": "Abyssal Depths"
+        },
+        {
+          "lang": "pl-PL",
+          "seg": "Głębiny Otchłani"
+        },
+        {
+          "lang": "ru-RU",
+          "seg": "Глубины бездны"
+        },
+        {
+          "lang": "fr-FR",
+          "seg": "Profondeurs Abyssales"
+        },
+        {
+          "lang": "pt-PT",
+          "seg": "Profundezas Abissais"
+        },
+        {
+          "lang": "es-ES",
+          "seg": "Abyssal Depths"
+        },
+        {
+          "lang": "it-IT",
+          "seg": "Profondità Abissali"
+        },
+        {
+          "lang": "ko-KO",
+          "seg": "어비설 뎁스"
+        },
+        {
+          "lang": "ja-JA",
+          "seg": "アビスの深淵"
+        },
+        {
+          "lang": "id-ID",
+          "seg": "Kedalaman Abisal"
+        },
+        {
+          "lang": "zh-CN",
+          "seg": "无底深渊"
+        },
+        {
+          "lang": "zh-TW",
+          "seg": "無底深淵"
+        },
+        {
+          "lang": "hi-HI",
+          "seg": "الأعماق السحيقة"
+        },
+        {
+          "lang": "tr-TR",
+          "seg": "Dipsiz Derinlikler"
+        }
+      ]
     }
   ]
 }

@@ -13,6 +13,11 @@ public static class DungeonData
             return DungeonMode.Unknown;
         }
 
+        if (value.Contains("HD_SHRINE_WRATH_BUFF"))
+        {
+            return DungeonMode.AbyssalDepths;
+        }
+
         if (value.Contains("CORRUPTED"))
         {
             return DungeonMode.Corrupted;
@@ -60,6 +65,11 @@ public static class DungeonData
 
     public static Faction GetFaction(string value)
     {
+        if (value.Contains("HIGHLAND_DEAD_DNG_HELL_BUFFSHRINE"))
+        {
+            return Faction.AbyssalDepths;
+        }
+
         if (value.Contains("HELLGATE"))
         {
             return Faction.HellGate;
@@ -121,7 +131,9 @@ public static class DungeonData
             return EventType.BookChest;
         }
 
-        if (value.Contains("CHEST") || value.Contains("AVALON") || value.Contains("HELL_STD_PVP") || value.Contains("HELL_HRD_PVP") || value.Contains("HELL_STD_PVE") || value.Contains("HELL_HRD_PVE"))
+        if (value.Contains("CHEST") || value.Contains("AVALON") || value.Contains("HELL_STD_PVP") 
+            || value.Contains("HELL_HRD_PVP") || value.Contains("HELL_STD_PVE") || value.Contains("HELL_HRD_PVE")
+            || value.Contains("HD_DEMON_") || value.Contains("HD_DEMON_CHEST_") || value.Contains("TREASURE_"))
         {
             return EventType.Chest;
         }

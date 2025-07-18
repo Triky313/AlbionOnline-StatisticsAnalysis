@@ -25,7 +25,7 @@ public static class WorldData
     public static string GetUniqueNameOrDefault(string index)
     {
         var name = MapData?.FirstOrDefault(x => x.Index == index)?.UniqueName ?? index;
-        var splitName = name?.Split(new[] { "@" }, StringSplitOptions.None);
+        var splitName = name?.Split(["@"], StringSplitOptions.None);
 
         if (splitName is { Length: > 0 } && name.ToLower().Contains('@'))
         {
@@ -94,7 +94,9 @@ public static class WorldData
             if (splitName.Length > 1 && index.ToLower().Contains('@'))
             {
                 var mapType = GetMapType(splitName[0]);
-                if (mapType is MapType.RandomDungeon or MapType.CorruptedDungeon or MapType.HellGate or MapType.Expedition or MapType.MistsDungeon or MapType.Mists && !string.IsNullOrEmpty(splitName[1]))
+                if (mapType is MapType.RandomDungeon or MapType.CorruptedDungeon or MapType.HellGate 
+                        or MapType.Expedition or MapType.MistsDungeon or MapType.Mists 
+                        or MapType.AbyssalDepths && !string.IsNullOrEmpty(splitName[1]))
                 {
                     var mapGuid = new Guid(splitName[1]);
                     return mapGuid;
@@ -122,6 +124,7 @@ public static class WorldData
             MapType.Arena => LocalizationController.Translation("ARENA"),
             MapType.MistsDungeon => LocalizationController.Translation("MISTS_DUNGEON"),
             MapType.Mists => LocalizationController.Translation("MISTS"),
+            MapType.AbyssalDepths => LocalizationController.Translation("ABYSSALDEPTHS"),
             _ => LocalizationController.Translation("UNKNOWN")
         };
     }
@@ -145,6 +148,8 @@ public static class WorldData
         if (index.ToUpper().Contains("MISTSDUNGEON")) return MapType.MistsDungeon;
 
         if (index.ToUpper().Contains("MISTS")) return MapType.Mists;
+
+        if (index.ToUpper().Contains("HELLDUNGEON")) return MapType.AbyssalDepths;
 
         return MapType.Unknown;
     }

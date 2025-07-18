@@ -45,6 +45,7 @@ public abstract class DungeonBaseFragment : BaseViewModel
     private Visibility _mostValuableLootVisibility = Visibility.Collapsed;
     private KillStatus _killStatus;
     private Visibility _itemsContainerVisibility = Visibility.Collapsed;
+    private Visibility _killedByVisibility = Visibility.Visible;
 
     public ObservableCollection<Guid> GuidList { get; set; }
     public string DungeonHash => $"{EnterDungeonFirstTime.Ticks}{string.Join(",", GuidList)}";
@@ -268,6 +269,17 @@ public abstract class DungeonBaseFragment : BaseViewModel
         set
         {
             _killedBy = value;
+            KilledByVisibility = string.IsNullOrEmpty(KilledBy) ? Visibility.Hidden : Visibility.Visible;
+            OnPropertyChanged();
+        }
+    }
+
+    public Visibility KilledByVisibility
+    {
+        get => _killedByVisibility;
+        set
+        {
+            _killedByVisibility = value;
             OnPropertyChanged();
         }
     }
@@ -579,4 +591,5 @@ public abstract class DungeonBaseFragment : BaseViewModel
     public static string TranslationMists => LocalizationController.Translation("MISTS");
     public static string TranslationMistsDungeon => LocalizationController.Translation("MISTS_DUNGEON");
     public static string TranslationKilledBy => LocalizationController.Translation("KILLED_BY");
+    public static string TranslationAbyssalDepths => LocalizationController.Translation("ABYSSALDEPTHS");
 }

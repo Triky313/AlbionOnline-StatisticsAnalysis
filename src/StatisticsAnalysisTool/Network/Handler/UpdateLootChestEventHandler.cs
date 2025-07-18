@@ -4,19 +4,12 @@ using StatisticsAnalysisTool.Network.Events;
 
 namespace StatisticsAnalysisTool.Network.Handler;
 
-public class UpdateLootChestEventHandler : EventPacketHandler<UpdateLootChestEvent>
+public class UpdateLootChestEventHandler(TrackingController trackingController) : EventPacketHandler<UpdateLootChestEvent>((int) EventCodes.UpdateLootChest)
 {
-    private readonly TrackingController _trackingController;
-
-    public UpdateLootChestEventHandler(TrackingController trackingController) : base((int) EventCodes.UpdateLootChest)
-    {
-        _trackingController = trackingController;
-    }
-
     protected override async Task OnActionAsync(UpdateLootChestEvent value)
     {
-        _trackingController.DungeonController?.SetDungeonChestOpen(value.ObjectId, value.PlayerGuid);
-        _trackingController?.TreasureController?.UpdateTreasure(value.ObjectId, value.PlayerGuid);
+        trackingController.DungeonController?.SetDungeonChestOpen(value.ObjectId, value.PlayerGuid);
+        trackingController?.TreasureController?.UpdateTreasure(value.ObjectId, value.PlayerGuid);
         await Task.CompletedTask;
     }
 }

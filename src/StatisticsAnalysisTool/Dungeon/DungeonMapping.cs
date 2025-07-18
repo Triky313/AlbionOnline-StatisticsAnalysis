@@ -71,6 +71,12 @@ public class DungeonMapping
             dto.Favor = mistsDungeon.Favor;
         }
 
+        if (dungeon is AbyssalDepthsFragment abyssalDepths)
+        {
+            dto.Might = abyssalDepths.Might;
+            dto.Favor = abyssalDepths.Favor;
+        }
+
         return dto;
     }
 
@@ -84,6 +90,7 @@ public class DungeonMapping
             DungeonMode.Expedition => new ExpeditionFragment(dto),
             DungeonMode.Mists => new MistsFragment(dto),
             DungeonMode.MistsDungeon => new MistsDungeonFragment(dto),
+            DungeonMode.AbyssalDepths => new AbyssalDepthsFragment(dto),
             _ => throw new MappingException("Unknown dungeon mode")
         };
     }

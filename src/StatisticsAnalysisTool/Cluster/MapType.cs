@@ -11,5 +11,6 @@ public enum MapType
     Expedition,
     Arena,
     Mists,
-    MistsDungeon
+    MistsDungeon,
+    AbyssalDepths
 }

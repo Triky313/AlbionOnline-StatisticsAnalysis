@@ -37,9 +37,9 @@ public static class MobsData
 
     private static MobJsonObject GetMobJsonObjectByIndex(int index)
     {
-        // From September 19, 2023, the in-game index will start counting from 14.
-        // The ID's were decreased by 14
-        index -= 14;
+        // From July 18, 2025, the in-game index will start counting from 15.
+        // The ID's were decreased by 15
+        index -= 15;
 
         if (index < 0)
         {

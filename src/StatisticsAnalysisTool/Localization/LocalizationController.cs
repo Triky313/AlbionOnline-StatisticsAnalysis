@@ -99,7 +99,7 @@ public class LocalizationController
 
     public static string Translation(string key, List<string> placeholders, List<string> replacements)
     {
-        var culture = CultureInfo.CurrentCulture.Name;
+        var culture = SettingsController.CurrentSettings.CurrentCultureIetfLanguageTag;
 
         try
         {

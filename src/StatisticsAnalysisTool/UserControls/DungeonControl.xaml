@@ -81,7 +81,8 @@
                                                      HellGateTemplate="{StaticResource HellGateTemplate}"
                                                      ExpeditionTemplate="{StaticResource ExpeditionTemplate}" 
                                                      MistsTemplate="{StaticResource MistsTemplate}" 
-                                                     MistsDungeonTemplate="{StaticResource MistsDungeonTemplate}" />
+                                                     MistsDungeonTemplate="{StaticResource MistsDungeonTemplate}"
+                                                     AbyssalDepthsTemplate="{StaticResource AbyssalDepthsTemplate}" />
             </Grid.Resources>
             <vwp:VirtualizingItemsControl ItemsSource="{Binding DungeonBindings.DungeonsCollectionView, IsAsync=True, Mode=OneWay}"
                                           ItemTemplateSelector="{StaticResource DungeonDataTemplateSelector}"

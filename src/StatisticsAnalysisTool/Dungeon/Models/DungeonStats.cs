@@ -19,6 +19,7 @@ public class DungeonStats : BaseViewModel
     private StatsHellGate _statsHellGate = new();
     private StatsAvalonian _statsAvalonian = new();
     private StatsTotal _statsTotal = new();
+    private StatsAbyssalDepths _statsAbyssalDepths = new();
 
     public void Set(IEnumerable<DungeonBaseFragment> dungeons)
     {
@@ -36,6 +37,7 @@ public class DungeonStats : BaseViewModel
         UpdateExpeditionStats(dungeons);
         UpdateCorruptedStats(dungeons);
         UpdateHellGateStats(dungeons);
+        UpdateAbyssalDepthsStats(dungeons);
     }
 
     public void UpdateTotalStats(List<DungeonBaseFragment> dungeons)
@@ -306,6 +308,37 @@ public class DungeonStats : BaseViewModel
         StatsHellGate.MostValuableLoot = hellGate.SelectMany(x => x.Loot).MaxBy(x => x?.EstimatedMarketValueInternal);
     }
 
+    public void UpdateAbyssalDepthsStats(List<DungeonBaseFragment> dungeons)
+    {
+        var hellGate = dungeons?.Where(x => x is AbyssalDepthsFragment).Cast<AbyssalDepthsFragment>().ToList() ?? new List<AbyssalDepthsFragment>();
+
+        StatsAbyssalDepths.RunTimeTotal = hellGate.Sum(x => x.TotalRunTimeInSeconds);
+
+        StatsAbyssalDepths.Entered = hellGate.Count;
+
+        StatsAbyssalDepths.OpenedStandardChests = hellGate.Sum(x => x.Events
+            .Count(eventObject => eventObject.Rarity == TreasureRarity.Common && eventObject.Type == EventType.Chest && eventObject.Status == ChestStatus.Open));
+        StatsAbyssalDepths.OpenedUncommonChests = hellGate.Sum(x => x.Events
+            .Count(eventObject => eventObject.Rarity == TreasureRarity.Uncommon && eventObject.Type == EventType.Chest && eventObject.Status == ChestStatus.Open));
+        StatsAbyssalDepths.OpenedRareChests = hellGate.Sum(x => x.Events
+            .Count(eventObject => eventObject.Rarity == TreasureRarity.Rare && eventObject.Type == EventType.Chest && eventObject.Status == ChestStatus.Open));
+        StatsAbyssalDepths.OpenedLegendaryChests = hellGate.Sum(x => x.Events
+            .Count(eventObject => eventObject.Rarity == TreasureRarity.Legendary && eventObject.Type == EventType.Chest && eventObject.Status == ChestStatus.Open));
+
+        StatsAbyssalDepths.Fame = hellGate.Sum(x => x.Fame);
+        StatsAbyssalDepths.ReSpec = hellGate.Sum(x => x.ReSpec);
+        StatsAbyssalDepths.Silver = hellGate.Sum(x => x.Silver);
+        StatsAbyssalDepths.Might = hellGate.Sum(x => x.Might);
+        StatsAbyssalDepths.Favor = hellGate.Sum(x => x.Favor);
+
+        StatsAbyssalDepths.Kills = hellGate.Count(x => x.KillStatus == KillStatus.OpponentDead);
+        StatsAbyssalDepths.Deaths = hellGate.Count(x => x.KillStatus == KillStatus.LocalPlayerDead);
+        StatsAbyssalDepths.Fights = hellGate.Count(x => x.KillStatus is KillStatus.LocalPlayerDead or KillStatus.OpponentDead);
+
+        StatsAbyssalDepths.LootInSilver = hellGate.SelectMany(x => x.Loot).Sum(x => FixPoint.FromInternalValue(x.EstimatedMarketValueInternal).DoubleValue);
+        StatsAbyssalDepths.MostValuableLoot = hellGate.SelectMany(x => x.Loot).MaxBy(x => x?.EstimatedMarketValueInternal);
+    }
+
     public StatsTotal StatsTotal
     {
         get => _statsTotal;
@@ -392,6 +425,16 @@ public class DungeonStats : BaseViewModel
         set
         {
             _statsHellGate = value;
+            OnPropertyChanged();
+        }
+    }
+
+    public StatsAbyssalDepths StatsAbyssalDepths
+    {
+        get => _statsAbyssalDepths;
+        set
+        {
+            _statsAbyssalDepths = value;
             OnPropertyChanged();
         }
     }
