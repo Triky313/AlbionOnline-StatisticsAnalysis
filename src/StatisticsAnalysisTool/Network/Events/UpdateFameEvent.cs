@@ -10,7 +10,7 @@ public class UpdateFameEvent
     public double BonusFactor = 1;
     public double BonusFactorInPercent;
     public FixPoint FameWithZoneMultiplier; // Fame with Zone Multiplier and without Premium
-    public byte GroupSize;
+    //public byte GroupSize;
     public bool IsPremiumBonus;
     public FixPoint SatchelFame;
     public bool IsBonusFactorActive;
@@ -43,8 +43,14 @@ public class UpdateFameEvent
 
             if (parameters.ContainsKey(3))
             {
-                GroupSize = parameters[3].ObjectToByte();
+                var zoneFame = FixPoint.FromInternalValue(parameters[3].ObjectToLong() ?? 0);
+                ZoneFame = FixPoint.FromFloatingPointValue(zoneFame.DoubleValue);
             }
+
+            //if (parameters.ContainsKey(3))
+            //{
+            //    GroupSize = parameters[3].ObjectToByte();
+            //}
 
             if (parameters.ContainsKey(4))
             {
@@ -56,14 +62,6 @@ public class UpdateFameEvent
                 IsPremiumBonus = parameters[5].ObjectToBool();
             }
 
-            if (parameters.ContainsKey(6))
-            {
-                BonusFactor = 1 + (parameters[6] as float? ?? 0);
-
-                BonusFactorInPercent = (BonusFactor - 1) * 100;
-                IsBonusFactorActive = (BonusFactorInPercent > 0);
-            }
-
             if (parameters.ContainsKey(8))
             {
                 UsedBagInsightItemIndex = parameters[8].ObjectToLong() ?? -1;
@@ -72,6 +70,19 @@ public class UpdateFameEvent
             if (parameters.ContainsKey(10))
             {
                 SatchelFame = FixPoint.FromInternalValue(parameters[10].ObjectToLong() ?? 0);
+            }
+
+            if (parameters.TryGetValue(17, out object bonusFactor))
+            {
+                BonusFactor = 1 + (bonusFactor as float? ?? 0);
+
+                BonusFactorInPercent = (BonusFactor - 1) * 100;
+                IsBonusFactorActive = (BonusFactorInPercent > 0);
+
+                if (IsBonusFactorActive)
+                {
+                    BonusFactor = 1;
+                }
             }
 
             double fameWithZoneAndPremium = 0;
@@ -92,9 +103,7 @@ public class UpdateFameEvent
                 PremiumFame = fameWithZoneAndPremium - FameWithZoneMultiplier.DoubleValue;
             }
 
-            TotalGainedFame = FameWithZoneMultiplier.DoubleValue + PremiumFame + SatchelFame.DoubleValue;
-
-            ZoneFame = FixPoint.FromFloatingPointValue((TotalGainedFame / BonusFactor) - (PremiumFame + SatchelFame.DoubleValue));
+            TotalGainedFame = (FameWithZoneMultiplier.DoubleValue + PremiumFame + SatchelFame.DoubleValue) * BonusFactor;
         }
         catch (Exception e)
         {
