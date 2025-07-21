@@ -141,7 +141,7 @@ public class LoggingBindings : BaseViewModel
                 UtcPickupTime = logItem.Timestamp,
                 ItemIndex = vaultLogLocalizedItem.Index,
                 IsItemFromVaultLog = true,
-                IsTrash = vaultLogLocalizedItem.ShopShopSubCategory1 == ShopSubCategory.Trash,
+                IsTrash = vaultLogLocalizedItem.ShopSubCategory1 == ShopSubCategory.Trash,
                 LootedByName = logItem.PlayerName,
                 Quantity = logItem.Quantity
             };
@@ -189,7 +189,7 @@ public class LoggingBindings : BaseViewModel
             UtcPickupTime = logItem.Timestamp,
             ItemIndex = vaultLogLocalizedItem.Index,
             IsItemFromVaultLog = true,
-            IsTrash = vaultLogLocalizedItem.ShopShopSubCategory1 == ShopSubCategory.Trash,
+            IsTrash = vaultLogLocalizedItem.ShopSubCategory1 == ShopSubCategory.Trash,
             LootedByName = logItem.PlayerName,
             Quantity = logItem.Quantity,
             Status = status
@@ -209,7 +209,7 @@ public class LoggingBindings : BaseViewModel
                     UtcPickupTime = logItem.Timestamp,
                     ItemIndex = vaultLogLocalizedItem.Index,
                     IsItemFromVaultLog = true,
-                    IsTrash = vaultLogLocalizedItem.ShopShopSubCategory1 == ShopSubCategory.Trash,
+                    IsTrash = vaultLogLocalizedItem.ShopSubCategory1 == ShopSubCategory.Trash,
                     LootedByName = logItem.PlayerName,
                     Quantity = logItem.Quantity,
                     Status = status
@@ -840,12 +840,12 @@ public class LoggingBindings : BaseViewModel
             return true;
         }
 
-        if (_isShowingFood && lootedItem.Item.ShopCategory == ShopCategory.Consumables && lootedItem.Item.ShopShopSubCategory1 is ShopSubCategory.Fish or ShopSubCategory.Cooked)
+        if (_isShowingFood && lootedItem.Item.ShopCategory == ShopCategory.Consumables && lootedItem.Item.ShopSubCategory1 is ShopSubCategory.Fish or ShopSubCategory.Cooked)
         {
             return true;
         }
 
-        if (_isShowingPotion && lootedItem.Item.ShopCategory == ShopCategory.Consumables && lootedItem.Item.ShopShopSubCategory1 == ShopSubCategory.Potion)
+        if (_isShowingPotion && lootedItem.Item.ShopCategory == ShopCategory.Consumables && lootedItem.Item.ShopSubCategory1 == ShopSubCategory.Potion)
         {
             return true;
         }
@@ -862,12 +862,12 @@ public class LoggingBindings : BaseViewModel
             return true;
         }
 
-        if (_isShowingBag && lootedItem.Item.ShopCategory == ShopCategory.Accessories && lootedItem.Item.ShopShopSubCategory1 == ShopSubCategory.Bag)
+        if (_isShowingBag && lootedItem.Item.ShopCategory == ShopCategory.Accessories && lootedItem.Item.ShopSubCategory1 == ShopSubCategory.Bag)
         {
             return true;
         }
 
-        if (_isShowingCape && lootedItem.Item.ShopCategory == ShopCategory.Accessories && lootedItem.Item.ShopShopSubCategory1 == ShopSubCategory.Cape)
+        if (_isShowingCape && lootedItem.Item.ShopCategory == ShopCategory.Accessories && lootedItem.Item.ShopSubCategory1 == ShopSubCategory.Cape)
         {
             return true;
         }

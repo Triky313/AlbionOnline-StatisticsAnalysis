@@ -21,4 +21,7 @@ public class LabourerContract : ItemJsonObject
 
     [JsonPropertyName("@weight")]
     public string Weight { get; set; }
+
+    [JsonPropertyName("@shopsubcategory2")]
+    public string ShopSubCategory2 { get; set; }
 }

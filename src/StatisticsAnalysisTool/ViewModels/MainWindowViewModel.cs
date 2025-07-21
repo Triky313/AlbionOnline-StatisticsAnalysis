@@ -410,7 +410,7 @@ public class MainWindowViewModel : BaseViewModel
             {
                 return (item?.LocalizedNameAndEnglish?.ToLower().Contains(SearchText?.ToLower() ?? string.Empty) ?? false)
                        && (item.ShopCategory == SelectedItemShopCategory || SelectedItemShopCategory == ShopCategory.Unknown)
-                       && (item.ShopShopSubCategory1 == SelectedItemShopSubCategory || SelectedItemShopSubCategory == ShopSubCategory.Unknown)
+                       && (item.ShopSubCategory1 == SelectedItemShopSubCategory || SelectedItemShopSubCategory == ShopSubCategory.Unknown)
                        && ((ItemTier) item.Tier == SelectedItemTier || SelectedItemTier == ItemTier.Unknown)
                        && ((ItemLevel) item.Level == SelectedItemLevel || SelectedItemLevel == ItemLevel.Unknown)
                        && item.IsAlertActive;
@@ -420,7 +420,7 @@ public class MainWindowViewModel : BaseViewModel
             {
                 return (item?.LocalizedNameAndEnglish?.ToLower().Contains(SearchText?.ToLower() ?? string.Empty) ?? false)
                        && (item.ShopCategory == SelectedItemShopCategory || SelectedItemShopCategory == ShopCategory.Unknown)
-                       && (item.ShopShopSubCategory1 == SelectedItemShopSubCategory || SelectedItemShopSubCategory == ShopSubCategory.Unknown)
+                       && (item.ShopSubCategory1 == SelectedItemShopSubCategory || SelectedItemShopSubCategory == ShopSubCategory.Unknown)
                        && ((ItemTier) item.Tier == SelectedItemTier || SelectedItemTier == ItemTier.Unknown)
                        && ((ItemLevel) item.Level == SelectedItemLevel || SelectedItemLevel == ItemLevel.Unknown)
                        && item.IsFavorite;
@@ -428,7 +428,7 @@ public class MainWindowViewModel : BaseViewModel
 
             return (item?.LocalizedNameAndEnglish?.ToLower().Contains(SearchText?.ToLower() ?? string.Empty) ?? false)
                    && (item.ShopCategory == SelectedItemShopCategory || SelectedItemShopCategory == ShopCategory.Unknown)
-                   && (item.ShopShopSubCategory1 == SelectedItemShopSubCategory || SelectedItemShopSubCategory == ShopSubCategory.Unknown)
+                   && (item.ShopSubCategory1 == SelectedItemShopSubCategory || SelectedItemShopSubCategory == ShopSubCategory.Unknown)
                    && ((ItemTier) item.Tier == SelectedItemTier || SelectedItemTier == ItemTier.Unknown)
                    && ((ItemLevel) item.Level == SelectedItemLevel || SelectedItemLevel == ItemLevel.Unknown);
         };

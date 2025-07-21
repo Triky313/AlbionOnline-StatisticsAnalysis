@@ -63,4 +63,7 @@ public class CrystalLeagueItem : ItemJsonObject
 
     //[JsonPropertyName("@uispriteoverlay1")]
     //public string Uispriteoverlay1 { get; set; }
+
+    [JsonPropertyName("@shopsubcategory2")]
+    public string ShopSubCategory2 { get; set; }
 }
