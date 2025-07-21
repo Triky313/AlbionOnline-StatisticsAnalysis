@@ -1,5 +1,13 @@
 [
      {
+	"Timestamp": "2025-07-19T00:00:00",
+	"Amount": 15000000,
+	"RealMoneyAmount": 0,
+	"Contributor": "Ecchi",
+	"IsDonationRealMoney": false,
+	"Server": "EU"
+     },
+     {
 	"Timestamp": "2025-02-08T00:00:00",
 	"Amount": 52800000,
 	"RealMoneyAmount": 0,
