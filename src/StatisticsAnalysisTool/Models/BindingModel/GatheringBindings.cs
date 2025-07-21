@@ -65,7 +65,7 @@ public class GatheringBindings : BaseViewModel
             var gatherCollection = GatheredCollection.ToList();
 
             // Hide
-            var hide = await GroupAndFilterAndSumAsync(gatherCollection, x => x?.Item?.ShopShopSubCategory1 == ShopSubCategory.Hide, GatheringStatsTimeTypeSelection);
+            var hide = await GroupAndFilterAndSumAsync(gatherCollection, x => x?.Item?.ShopSubCategory2 == ShopSubCategory.Hide, GatheringStatsTimeTypeSelection);
             await Application.Current.Dispatcher.InvokeAsync(() =>
             {
                 UpdateObservableRangeCollection(GatheringStats.GatheredHide, hide);
@@ -73,7 +73,7 @@ public class GatheringBindings : BaseViewModel
             });
 
             // Ore
-            var ore = await GroupAndFilterAndSumAsync(gatherCollection, x => x?.Item?.ShopShopSubCategory1 == ShopSubCategory.Ore, GatheringStatsTimeTypeSelection);
+            var ore = await GroupAndFilterAndSumAsync(gatherCollection, x => x?.Item?.ShopSubCategory2 == ShopSubCategory.Ore, GatheringStatsTimeTypeSelection);
             await Application.Current.Dispatcher.InvokeAsync(() =>
             {
                 UpdateObservableRangeCollection(GatheringStats.GatheredOre, ore);
@@ -81,7 +81,7 @@ public class GatheringBindings : BaseViewModel
             });
 
             // Fiber
-            var fiber = await GroupAndFilterAndSumAsync(gatherCollection, x => x?.Item?.ShopShopSubCategory1 == ShopSubCategory.Fiber, GatheringStatsTimeTypeSelection);
+            var fiber = await GroupAndFilterAndSumAsync(gatherCollection, x => x?.Item?.ShopSubCategory2 == ShopSubCategory.Fiber, GatheringStatsTimeTypeSelection);
             await Application.Current.Dispatcher.InvokeAsync(() =>
             {
                 UpdateObservableRangeCollection(GatheringStats.GatheredFiber, fiber);
@@ -89,7 +89,7 @@ public class GatheringBindings : BaseViewModel
             });
 
             // Wood
-            var wood = await GroupAndFilterAndSumAsync(gatherCollection, x => x?.Item?.ShopShopSubCategory1 == ShopSubCategory.Wood, GatheringStatsTimeTypeSelection);
+            var wood = await GroupAndFilterAndSumAsync(gatherCollection, x => x?.Item?.ShopSubCategory2 == ShopSubCategory.Wood, GatheringStatsTimeTypeSelection);
             await Application.Current.Dispatcher.InvokeAsync(() =>
             {
                 UpdateObservableRangeCollection(GatheringStats.GatheredWood, wood);
@@ -97,7 +97,7 @@ public class GatheringBindings : BaseViewModel
             });
 
             // Rock
-            var rock = await GroupAndFilterAndSumAsync(gatherCollection, x => x?.Item?.ShopShopSubCategory1 == ShopSubCategory.Rock, GatheringStatsTimeTypeSelection);
+            var rock = await GroupAndFilterAndSumAsync(gatherCollection, x => x?.Item?.ShopSubCategory2 == ShopSubCategory.Rock, GatheringStatsTimeTypeSelection);
             await Application.Current.Dispatcher.InvokeAsync(() =>
             {
                 UpdateObservableRangeCollection(GatheringStats.GatheredRock, rock);
@@ -105,7 +105,7 @@ public class GatheringBindings : BaseViewModel
             });
 
             // Fish
-            var fish = await GroupAndFilterAndSumAsync(gatherCollection, x => x?.Item?.ShopShopSubCategory1 == ShopSubCategory.Fish, GatheringStatsTimeTypeSelection, true);
+            var fish = await GroupAndFilterAndSumAsync(gatherCollection, x => x?.Item?.ShopSubCategory2 == ShopSubCategory.Fish, GatheringStatsTimeTypeSelection, true);
             await Application.Current.Dispatcher.InvokeAsync(() =>
             {
                 UpdateObservableRangeCollection(GatheringStats.GatheredFish, fish);
@@ -117,7 +117,7 @@ public class GatheringBindings : BaseViewModel
             {
                 var mostGatheredResource = gatherCollection
                     .ToList()
-                    .Where(x => IsTimestampOkayByGatheringStatsTimeType(x.TimestampDateTime, GatheringStatsTimeTypeSelection))
+                    .Where(x => IsTimestampOkayByGatheringStatsTimeType(x.TimestampDateTimeUtc, GatheringStatsTimeTypeSelection))
                     .GroupBy(x => x.UniqueName)
                     .Select(g => new Gathered
                     {
@@ -139,7 +139,7 @@ public class GatheringBindings : BaseViewModel
             // Most gathered cluster
             var mostGatheredCluster = gatherCollection
                 .ToList()
-                .Where(x => IsTimestampOkayByGatheringStatsTimeType(x.TimestampDateTime, GatheringStatsTimeTypeSelection))
+                .Where(x => IsTimestampOkayByGatheringStatsTimeType(x.TimestampDateTimeUtc, GatheringStatsTimeTypeSelection))
                 .GroupBy(x => x.ClusterIndex)
                 .Select(g => new Gathered
                 {
@@ -159,7 +159,7 @@ public class GatheringBindings : BaseViewModel
             // Most total resources
             var totalResources = gatherCollection
                 .ToList()
-                .Where(x => IsTimestampOkayByGatheringStatsTimeType(x.TimestampDateTime, GatheringStatsTimeTypeSelection))
+                .Where(x => IsTimestampOkayByGatheringStatsTimeType(x.TimestampDateTimeUtc, GatheringStatsTimeTypeSelection))
                 .Sum(x => x.GainedTotalAmount);
 
             await Application.Current.Dispatcher.InvokeAsync(() =>
@@ -170,7 +170,7 @@ public class GatheringBindings : BaseViewModel
             // Most total mining processes
             var totalMiningProcesses = gatherCollection
                 .ToList()
-                .Where(x => IsTimestampOkayByGatheringStatsTimeType(x.TimestampDateTime, GatheringStatsTimeTypeSelection))
+                .Where(x => IsTimestampOkayByGatheringStatsTimeType(x.TimestampDateTimeUtc, GatheringStatsTimeTypeSelection))
                 .Sum(x => x.MiningProcesses);
 
             await Application.Current.Dispatcher.InvokeAsync(() =>
@@ -181,7 +181,7 @@ public class GatheringBindings : BaseViewModel
             // Total gained silver
             var totalGainedSilver = gatherCollection
                 .ToList()
-                .Where(x => IsTimestampOkayByGatheringStatsTimeType(x.TimestampDateTime, GatheringStatsTimeTypeSelection))
+                .Where(x => IsTimestampOkayByGatheringStatsTimeType(x.TimestampDateTimeUtc, GatheringStatsTimeTypeSelection))
                 .Sum(x => x.TotalMarketValue.IntegerValue);
 
             await Application.Current.Dispatcher.InvokeAsync(() =>
@@ -203,7 +203,7 @@ public class GatheringBindings : BaseViewModel
             return await Task.Run(() =>
             {
                 var filteredData = gatheredData.ToList()
-                    .Where(x => IsTimestampOkayByGatheringStatsTimeType(x.TimestampDateTime, gatheringStatsTimeType))
+                    .Where(x => IsTimestampOkayByGatheringStatsTimeType(x.TimestampDateTimeUtc, gatheringStatsTimeType))
                     .ToList();
 
                 filteredData = hasBeenFished

@@ -44,7 +44,8 @@ public class Item
 
     public object FullItemInformation { get; set; }
     public ShopCategory ShopCategory { get; set; }
-    public ShopSubCategory ShopShopSubCategory1 { get; set; }
+    public ShopSubCategory ShopSubCategory1 { get; set; }
+    public ShopSubCategory ShopSubCategory2 { get; set; }
     public int AlertModeMinSellPriceIsUndercutPrice { get; set; }
     public bool IsAlertActive { get; set; }
     public bool IsFavorite { get; set; }

@@ -395,7 +395,8 @@ public static class ItemController
         {
             item.FullItemInformation = GetSpecificItemInfo(item.UniqueName);
             item.ShopCategory = GetShopCategory(item.UniqueName);
-            item.ShopShopSubCategory1 = GetShopSubCategory(item.UniqueName);
+            item.ShopSubCategory1 = GetShopSubCategory(item.UniqueName);
+            item.ShopSubCategory2 = GetShopSubCategory2(item.UniqueName);
         });
     }
 
@@ -581,6 +582,31 @@ public static class ItemController
             TransformationWeapon transformationWeapon => CategoryController.ShopSubCategoryStringToShopSubCategory(transformationWeapon.ShopSubCategory1),
             CrystalLeagueItem crystalLeagueItem => CategoryController.ShopSubCategoryStringToShopSubCategory(crystalLeagueItem.ShopSubCategory1),
             KillTrophyItem killTrophyItem => CategoryController.ShopSubCategoryStringToShopSubCategory(killTrophyItem.ShopSubCategory1),
+            _ => ShopSubCategory.Unknown
+        };
+    }
+
+    public static ShopSubCategory GetShopSubCategory2(string uniqueName)
+    {
+        var item = GetItemByUniqueName(uniqueName)?.FullItemInformation;
+
+        return item switch
+        {
+            HideoutItem hideoutItem => CategoryController.ShopSubCategoryStringToShopSubCategory(hideoutItem.ShopSubCategory2),
+            TrackingItem trackingItem => CategoryController.ShopSubCategoryStringToShopSubCategory(trackingItem.ShopSubCategory2),
+            FarmableItem farmableItem => CategoryController.ShopSubCategoryStringToShopSubCategory(farmableItem.ShopSubCategory2),
+            SimpleItem simpleItem => CategoryController.ShopSubCategoryStringToShopSubCategory(simpleItem.ShopSubCategory2),
+            ConsumableItem consumableItem => CategoryController.ShopSubCategoryStringToShopSubCategory(consumableItem.ShopSubCategory2),
+            ConsumableFromInventoryItem consumableFromInventoryItem => CategoryController.ShopSubCategoryStringToShopSubCategory(consumableFromInventoryItem.ShopSubCategory2),
+            EquipmentItem equipmentItem => CategoryController.ShopSubCategoryStringToShopSubCategory(equipmentItem.ShopSubCategory2),
+            Weapon weapon => CategoryController.ShopSubCategoryStringToShopSubCategory(weapon.ShopSubCategory2),
+            Mount mount => CategoryController.ShopSubCategoryStringToShopSubCategory(mount.ShopSubCategory2),
+            FurnitureItem furnitureItem => CategoryController.ShopSubCategoryStringToShopSubCategory(furnitureItem.ShopSubCategory2),
+            JournalItem journalItem => CategoryController.ShopSubCategoryStringToShopSubCategory(journalItem.ShopSubCategory2),
+            LabourerContract labourerContract => CategoryController.ShopSubCategoryStringToShopSubCategory(labourerContract.ShopSubCategory2),
+            TransformationWeapon transformationWeapon => CategoryController.ShopSubCategoryStringToShopSubCategory(transformationWeapon.ShopSubCategory2),
+            CrystalLeagueItem crystalLeagueItem => CategoryController.ShopSubCategoryStringToShopSubCategory(crystalLeagueItem.ShopSubCategory2),
+            KillTrophyItem killTrophyItem => CategoryController.ShopSubCategoryStringToShopSubCategory(killTrophyItem.ShopSubCategory2),
             _ => ShopSubCategory.Unknown
         };
     }

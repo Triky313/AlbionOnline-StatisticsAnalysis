@@ -62,7 +62,7 @@ public class GatheringController
             var item = ItemController.GetItemByIndex(harvestFinishedObject.ItemId);
             var gathered = new Gathered()
             {
-                Timestamp = DateTime.UtcNow.Ticks,
+                TimestampUtc = DateTime.UtcNow.Ticks,
                 UniqueName = item.UniqueName,
                 UserObjectId = harvestFinishedObject.UserObjectId,
                 ObjectId = harvestFinishedObject.ObjectId,
@@ -101,19 +101,19 @@ public class GatheringController
                 case AutoDeleteGatheringStats.NeverDelete:
                     return;
                 case AutoDeleteGatheringStats.DeleteAfter7Days:
-                    var entriesToDelete7Days = _mainWindowViewModel?.GatheringBindings?.GatheredCollection.ToList().Where(x => x.Timestamp < DateTime.UtcNow.AddDays(-7).Ticks);
+                    var entriesToDelete7Days = _mainWindowViewModel?.GatheringBindings?.GatheredCollection.ToList().Where(x => x.TimestampUtc < DateTime.UtcNow.AddDays(-7).Ticks);
                     _mainWindowViewModel?.GatheringBindings?.GatheredCollection.RemoveRange(entriesToDelete7Days);
                     break;
                 case AutoDeleteGatheringStats.DeleteAfter14Days:
-                    var entriesToDelete14Days = _mainWindowViewModel?.GatheringBindings?.GatheredCollection.ToList().Where(x => x.Timestamp < DateTime.UtcNow.AddDays(-14).Ticks);
+                    var entriesToDelete14Days = _mainWindowViewModel?.GatheringBindings?.GatheredCollection.ToList().Where(x => x.TimestampUtc < DateTime.UtcNow.AddDays(-14).Ticks);
                     _mainWindowViewModel?.GatheringBindings?.GatheredCollection.RemoveRange(entriesToDelete14Days);
                     break;
                 case AutoDeleteGatheringStats.DeleteAfter30Days:
-                    var entriesToDelete30Days = _mainWindowViewModel?.GatheringBindings?.GatheredCollection.ToList().Where(x => x.Timestamp < DateTime.UtcNow.AddDays(-30).Ticks);
+                    var entriesToDelete30Days = _mainWindowViewModel?.GatheringBindings?.GatheredCollection.ToList().Where(x => x.TimestampUtc < DateTime.UtcNow.AddDays(-30).Ticks);
                     _mainWindowViewModel?.GatheringBindings?.GatheredCollection.RemoveRange(entriesToDelete30Days);
                     break;
                 case AutoDeleteGatheringStats.DeleteAfter365Days:
-                    var entriesToDelete365Days = _mainWindowViewModel?.GatheringBindings?.GatheredCollection.ToList().Where(x => x.Timestamp < DateTime.UtcNow.AddDays(-365).Ticks);
+                    var entriesToDelete365Days = _mainWindowViewModel?.GatheringBindings?.GatheredCollection.ToList().Where(x => x.TimestampUtc < DateTime.UtcNow.AddDays(-365).Ticks);
                     _mainWindowViewModel?.GatheringBindings?.GatheredCollection.RemoveRange(entriesToDelete365Days);
                     break;
             }
@@ -210,7 +210,7 @@ public class GatheringController
 
             var gathered = new Gathered()
             {
-                Timestamp = _activeFishingEvent.CreateAt.Ticks,
+                TimestampUtc = _activeFishingEvent.CreateAt.Ticks,
                 UniqueName = fishedItem.UniqueName,
                 UserObjectId = -1,
                 ObjectId = fishingEvent.EventId + itemCount,
@@ -270,7 +270,7 @@ public class GatheringController
         DirectoryController.CreateDirectoryWhenNotExists(Path.Combine(AppDomain.CurrentDomain.BaseDirectory, Settings.Default.UserDataDirectoryName));
 
         var gatheredToSave = _mainWindowViewModel.GatheringBindings?.GatheredCollection
-            .Where(x => !safeMoreThan356Days && x.TimestampDateTime > DateTime.UtcNow.AddDays(-365) || safeMoreThan356Days)
+            .Where(x => !safeMoreThan356Days && x.TimestampDateTimeUtc > DateTime.UtcNow.AddDays(-365) || safeMoreThan356Days)
             .ToList()
             .Select(GatheringMapping.Mapping);
 

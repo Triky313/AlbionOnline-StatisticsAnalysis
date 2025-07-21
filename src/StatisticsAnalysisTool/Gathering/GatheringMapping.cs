@@ -8,7 +8,7 @@ public static class GatheringMapping
     {
         return new GatheredDto()
         {
-            Timestamp = gathered.Timestamp,
+            Timestamp = gathered.TimestampUtc,
             UniqueItemName = gathered.UniqueName,
             EstimatedMarketValueInternal = gathered.EstimatedMarketValue.InternalValue,
             GainedStandardAmount = gathered.GainedStandardAmount,
@@ -27,7 +27,7 @@ public static class GatheringMapping
     {
         return new Gathered()
         {
-            Timestamp = gathered.Timestamp,
+            TimestampUtc = gathered.Timestamp,
             UniqueName = gathered.UniqueItemName,
             EstimatedMarketValue = FixPoint.FromInternalValue(gathered.EstimatedMarketValueInternal),
             GainedStandardAmount = gathered.GainedStandardAmount,

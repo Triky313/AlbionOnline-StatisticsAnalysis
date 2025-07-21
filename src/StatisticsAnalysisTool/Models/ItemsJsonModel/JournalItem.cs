@@ -45,4 +45,7 @@ public class JournalItem : ItemJsonObject
 
     [JsonPropertyName("lootlist")]
     public LootList LootList { get; set; }
+
+    [JsonPropertyName("@shopsubcategory2")]
+    public string ShopSubCategory2 { get; set; }
 }

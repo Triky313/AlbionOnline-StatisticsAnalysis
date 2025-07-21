@@ -75,4 +75,7 @@ public class ConsumableFromInventoryItem : ItemJsonObject
 
     [JsonPropertyName("@craftingcategory")]
     public string CraftingCategory { get; set; }
+
+    [JsonPropertyName("@shopsubcategory2")]
+    public string ShopSubCategory2 { get; set; }
 }
