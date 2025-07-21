@@ -12,12 +12,12 @@ public class GatheredComparer : IComparer
             throw new ArgumentException("Not a Gathered object");
         }
 
-        if (gatheredA.Timestamp > gatheredB.Timestamp)
+        if (gatheredA.TimestampUtc > gatheredB.TimestampUtc)
         {
             return -1;
         }
 
-        if (gatheredA.Timestamp == gatheredB.Timestamp)
+        if (gatheredA.TimestampUtc == gatheredB.TimestampUtc)
         {
             return 0;
         }

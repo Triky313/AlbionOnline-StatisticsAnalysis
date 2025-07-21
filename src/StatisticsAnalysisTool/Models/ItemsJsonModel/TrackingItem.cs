@@ -77,4 +77,7 @@ public class TrackingItem : ItemJsonObject
     [JsonConverter(typeof(CraftingRequirementsToCraftingRequirementsList))]
     [JsonPropertyName("craftingrequirements")]
     public List<CraftingRequirements> CraftingRequirements { get; set; }
+
+    [JsonPropertyName("@shopsubcategory2")]
+    public string ShopSubCategory2 { get; set; }
 }

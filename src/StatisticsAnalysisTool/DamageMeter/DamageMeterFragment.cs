@@ -339,7 +339,7 @@ public class DamageMeterFragment : BaseViewModel
         set
         {
             _causerMainHand = value;
-            ShopSubCategory = CategoryController.ShopSubCategoryToShopSubCategoryString(_causerMainHand?.ShopShopSubCategory1 ?? Common.ShopSubCategory.Unknown);
+            ShopSubCategory = CategoryController.ShopSubCategoryToShopSubCategoryString(_causerMainHand?.ShopSubCategory1 ?? Common.ShopSubCategory.Unknown);
             OnPropertyChanged();
         }
     }

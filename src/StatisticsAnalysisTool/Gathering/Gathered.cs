@@ -25,14 +25,9 @@ public class Gathered : BaseViewModel
     private Item _item;
     private readonly bool _hasBeenFished;
 
-    public Gathered()
-    {
-        Guid = Guid.NewGuid();
-    }
-
-    public Guid Guid { get; init; }
-    public long Timestamp { get; init; }
-    public DateTime TimestampDateTime => new(Timestamp);
+    public Guid Guid { get; init; } = Guid.NewGuid();
+    public long TimestampUtc { get; init; }
+    public DateTime TimestampDateTimeUtc => new(TimestampUtc);
     public long ObjectId { get; init; }
     public long UserObjectId { get; init; }
 

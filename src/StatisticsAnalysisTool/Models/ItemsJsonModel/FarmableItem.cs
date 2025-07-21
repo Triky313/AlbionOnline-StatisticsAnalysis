@@ -91,4 +91,7 @@ public class FarmableItem : ItemJsonObject
 
     [JsonPropertyName("@showinmarketplace")]
     public bool ShowInMarketPlace { get; set; }
+
+    [JsonPropertyName("@shopsubcategory2")]
+    public string ShopSubCategory2 { get; set; }
 }

@@ -179,4 +179,7 @@ public class EquipmentItem : ItemJsonObject
     [JsonPropertyName("@destinycraftfamefactor")]
     public string Destinycraftfamefactor { get; set; }
     //public AssetVfxPreset AssetVfxPreset { get; set; }
+
+    [JsonPropertyName("@shopsubcategory2")]
+    public string ShopSubCategory2 { get; set; }
 }
