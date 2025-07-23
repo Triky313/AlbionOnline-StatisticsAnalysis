@@ -13,7 +13,7 @@ namespace StatisticsAnalysisTool.Network.Operations.Responses;
 
 public class AuctionGetOffersResponse
 {
-    public readonly List<AuctionEntry> AuctionEntries = new();
+    public readonly List<AuctionEntry> AuctionEntries = [];
 
     public AuctionGetOffersResponse(Dictionary<byte, object> parameters)
     {

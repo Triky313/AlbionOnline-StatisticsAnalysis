@@ -16,6 +16,7 @@ public class AuctionGetRequestsResponseHandler : ResponsePacketHandler<AuctionGe
     protected override async Task OnActionAsync(AuctionGetRequests value)
     {
         _trackingController.MarketController.AddBuyOrders(value.AuctionEntries);
+        _trackingController.MarketController.UpdateBuyOrderMarketData(value.AuctionEntries);
         await Task.CompletedTask;
     }
 }

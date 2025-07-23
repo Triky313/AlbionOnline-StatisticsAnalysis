@@ -12,6 +12,7 @@ using StatisticsAnalysisTool.Models.BindingModel;
 using StatisticsAnalysisTool.Models.ItemsJsonModel;
 using StatisticsAnalysisTool.Models.ItemWindowModel;
 using StatisticsAnalysisTool.Models.TranslationModel;
+using StatisticsAnalysisTool.Network.Manager;
 using StatisticsAnalysisTool.Views;
 using System;
 using System.Collections.Generic;
@@ -736,7 +737,12 @@ public class ItemWindowViewModel : BaseViewModel
     {
         try
         {
-            CurrentItemPrices = await ApiController.GetCityItemPricesFromJsonAsync(Item?.UniqueName);
+            var trackingController = ServiceLocator.Resolve<TrackingController>();
+            var localList = await trackingController.MarketController.GetResponsesForItem(Item?.UniqueName);
+            var apiList = await ApiController.GetCityItemPricesFromJsonAsync(Item?.UniqueName);
+
+            CurrentItemPrices = MergeMarketResponses(localList, apiList);
+
             RefreshIconTooltipText = $"{LocalizationController.Translation("LAST_UPDATE")}: {DateTime.UtcNow.CurrentDateTimeFormat()}";
             ErrorBarReset();
         }
@@ -745,6 +751,46 @@ public class ItemWindowViewModel : BaseViewModel
             SetErrorValues(Error.ToManyRequests);
             Log.Warning(ex, "{message}", MethodBase.GetCurrentMethod()?.DeclaringType);
         }
+    }
+
+    private static List<MarketResponse> MergeMarketResponses(IEnumerable<MarketResponse> localList, IEnumerable<MarketResponse> apiList)
+    {
+        var result = new Dictionary<(string ItemTypeId, string City, int QualityLevel), MarketResponse>();
+
+        void AddOrUpdate(MarketResponse response)
+        {
+            var key = (response.ItemTypeId, response.City, response.QualityLevel);
+
+            if (!result.TryGetValue(key, out var existing))
+            {
+                result[key] = response;
+                return;
+            }
+
+            var existingDate = MaxDate(existing.SellPriceMaxDate, existing.BuyPriceMaxDate);
+            var responseDate = MaxDate(response.SellPriceMaxDate, response.BuyPriceMaxDate);
+
+            if (responseDate > existingDate)
+            {
+                result[key] = response;
+            }
+        }
+
+        foreach (var response in localList)
+        {
+            AddOrUpdate(response);
+        }
+        foreach (var response in apiList)
+        {
+            AddOrUpdate(response);
+        }
+
+        return result.Values.ToList();
+    }
+
+    private static DateTime MaxDate(DateTime a, DateTime b)
+    {
+        return a > b ? a : b;
     }
 
     private static void FindBestPrice(IReadOnlyCollection<ItemPricesObject> list)

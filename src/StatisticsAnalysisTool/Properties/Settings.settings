@@ -164,5 +164,8 @@
     <Setting Name="LocalizationFileName" Type="System.String" Scope="Application">
       <Value Profile="(Default)">localization.json</Value>
     </Setting>
+    <Setting Name="MarketFileName" Type="System.String" Scope="User">
+      <Value Profile="(Default)">Market.json</Value>
+    </Setting>
   </Settings>
 </SettingsFile>
