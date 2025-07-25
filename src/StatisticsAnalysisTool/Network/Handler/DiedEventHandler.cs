@@ -22,11 +22,11 @@ public class DiedEventHandler : EventPacketHandler<DiedEvent>
     {
         _trackingController.DungeonController?.SetDiedIfInDungeon(new DiedObject(value.Died, value.KilledBy, value.KilledByGuild));
         _trackingController.PartyController.PlayerHasDied(value.Died);
-        await _trackingController.AddNotificationAsync(SetKillNotification(value.Died, value.KilledBy, value.KilledByGuild));
+        await _trackingController.AddNotificationAsync(SetKillNotification(value.Died, value.DiedPlayerGuild, value.KilledBy, value.KilledByGuild));
     }
 
-    private static TrackingNotification SetKillNotification(string died, string killedBy, string killedByGuild)
+    private static TrackingNotification SetKillNotification(string died, string diedPlayerGuild, string killedBy, string killedByGuild)
     {
-        return new TrackingNotification(DateTime.Now, new KillNotificationFragment(died, killedBy, killedByGuild, LocalizationController.Translation("WAS_KILLED_BY")), LoggingFilterType.Kill);
+        return new TrackingNotification(DateTime.Now, new KillNotificationFragment(died, diedPlayerGuild, killedBy, killedByGuild, LocalizationController.Translation("WAS_KILLED_BY")), LoggingFilterType.Kill);
     }
 }

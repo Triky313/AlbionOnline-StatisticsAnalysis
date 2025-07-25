@@ -2,20 +2,16 @@
 
 namespace StatisticsAnalysisTool.EventLogging.Notification;
 
-public class KillNotificationFragment : LineFragment
+public class KillNotificationFragment(string died, string diedPlayerGuild, string killedBy, string killedByGuild, string valueText) : LineFragment
 {
-    public KillNotificationFragment(string died, string killedBy, string killedByGuild, string valueText)
-    {
-        Died = died;
-        KilledBy = killedBy;
-        KilledByGuild = killedByGuild;
-        ValueText = valueText;
-    }
+    public string Died { get; } = died;
+    public string DiedPlayerGuild { get; } = diedPlayerGuild;
+    public string KilledBy { get; } = killedBy;
+    public string KilledByGuild { get; } = killedByGuild;
 
-    public string Died { get; }
-    public string KilledBy { get; }
-    public string KilledByGuild { get; }
     [JsonIgnore]
     public bool IsKilledByGuildEmpty => string.IsNullOrEmpty(KilledByGuild);
-    public string ValueText { get; }
+    [JsonIgnore]
+    public bool IsDiedPlayerGuildEmpty => string.IsNullOrEmpty(DiedPlayerGuild);
+    public string ValueText { get; } = valueText;
 }
