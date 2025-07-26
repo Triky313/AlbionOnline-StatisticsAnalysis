@@ -37855,6 +37855,45 @@
           "seg": "Dipsiz Derinlikler"
         }
       ]
+    },
+    {
+      "tuid": "OPERATOR",
+      "tuv": [
+        {
+          "lang": "de-DE",
+          "seg": "Operator"
+        },
+        {
+          "lang": "en-US",
+          "seg": "Operator"
+        }
+      ]
+    },
+    {
+      "tuid": "DEPOSIT",
+      "tuv": [
+        {
+          "lang": "de-DE",
+          "seg": "Einzahlen"
+        },
+        {
+          "lang": "en-US",
+          "seg": "Deposit"
+        }
+      ]
+    },
+    {
+      "tuid": "WITHDRAW",
+      "tuv": [
+        {
+          "lang": "de-DE",
+          "seg": "Auszahlen"
+        },
+        {
+          "lang": "en-US",
+          "seg": "Withdraw"
+        }
+      ]
     }
   ]
 }

@@ -11,6 +11,7 @@ public class ManuallySiphonedEnergy : BaseViewModel
 {
     private string _characterName;
     private long _quantity;
+    private EnergyOperator _selectedOperator = EnergyOperator.Deposit;
 
     public string CharacterName
     {
@@ -36,6 +37,16 @@ public class ManuallySiphonedEnergy : BaseViewModel
         }
     }
 
+    public EnergyOperator SelectedOperator
+    {
+        get => _selectedOperator;
+        set
+        {
+            _selectedOperator = value;
+            OnPropertyChanged();
+        }
+    }
+
     #region Commands
 
     public void AddManualEntry(object obj)
@@ -46,9 +57,12 @@ public class ManuallySiphonedEnergy : BaseViewModel
         }
 
         var dateTimeTicks = DateTime.UtcNow.Ticks;
-
         var trackingController = ServiceLocator.Resolve<TrackingController>();
-        trackingController?.GuildController?.AddSiphonedEnergyEntry(CharacterName, FixPoint.FromFloatingPointValue(Quantity), dateTimeTicks, true);
+
+        var isDeposit = SelectedOperator == EnergyOperator.Deposit;
+        var value = FixPoint.FromFloatingPointValue(isDeposit ? Quantity : -Quantity);
+
+        trackingController?.GuildController?.AddSiphonedEnergyEntry(CharacterName, value, dateTimeTicks, true);
     }
 
     private ICommand _addManualEntryCommand;
@@ -61,4 +75,7 @@ public class ManuallySiphonedEnergy : BaseViewModel
     public static string TranslationCharacterName => LocalizationController.Translation("CHARACTER_NAME");
     public static string TranslationAddEntry => LocalizationController.Translation("ADD_ENTRY");
     public static string TranslationQuantity => LocalizationController.Translation("QUANTITY");
+    public static string TranslationOperator => LocalizationController.Translation("OPERATOR");
+    public static string TranslationDeposit => LocalizationController.Translation("DEPOSIT");
+    public static string TranslationWithdraw => LocalizationController.Translation("WITHDRAW");
 }

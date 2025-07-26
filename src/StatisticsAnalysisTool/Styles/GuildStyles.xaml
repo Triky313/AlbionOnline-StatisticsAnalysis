@@ -41,6 +41,16 @@
                             <TextBox Text="{Binding CharacterName, UpdateSourceTrigger=PropertyChanged}" Width="auto" Height="24" VerticalContentAlignment="Center" />
                         </StackPanel>
 
+                        <StackPanel Orientation="Vertical" Width="120" Margin="5,0">
+                            <Label Content="{Binding TranslationOperator, FallbackValue=OPERATOR}" Width="auto" VerticalAlignment="Top" />
+                            <ComboBox
+                                SelectedValue="{Binding SelectedOperator, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                SelectedValuePath="Tag" Width="auto" Height="24" VerticalContentAlignment="Center">
+                                <ComboBoxItem Tag="{x:Static guild:EnergyOperator.Deposit}" Content="{Binding TranslationDeposit, FallbackValue=DEPOSIT}" />
+                                <ComboBoxItem Tag="{x:Static guild:EnergyOperator.Withdraw}" Content="{Binding TranslationWithdraw, FallbackValue=WITHDRAW}" />
+                            </ComboBox>
+                        </StackPanel>
+
                         <StackPanel Orientation="Vertical" Width="80" Margin="5,0">
                             <Label Content="{Binding TranslationQuantity, FallbackValue=QUANTITY}" Width="auto" VerticalAlignment="Top" />
                             <TextBox Text="{Binding Quantity, UpdateSourceTrigger=PropertyChanged}" Height="24" common:TextBoxHelper.OnlyNumeric="Double" />
