@@ -28,7 +28,7 @@ public static class ApiController
     public static async Task<List<MarketResponse>> GetCityItemPricesFromJsonAsync(string uniqueName)
     {
         var locations = Locations.GetAllMarketLocations();
-        return await GetCityItemPricesFromJsonAsync(uniqueName, locations, new List<int> { 1, 2, 3, 4, 5 });
+        return await GetCityItemPricesFromJsonAsync(uniqueName, locations, [1, 2, 3, 4, 5]);
     }
 
     /// <summary>

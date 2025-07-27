@@ -18,15 +18,21 @@ public class DiedEvent
                 Died = string.IsNullOrEmpty(parameters[2].ToString()) ? string.Empty : parameters[2].ToString();
             }
 
-            if (parameters.ContainsKey(4))
+            if (parameters.ContainsKey(3))
             {
-                KilledBy = string.IsNullOrEmpty(parameters[4].ToString()) ? string.Empty : parameters[4].ToString();
+                DiedPlayerGuild = string.IsNullOrEmpty(parameters[3].ToString()) ? string.Empty : parameters[3].ToString();
             }
 
-            if (parameters.ContainsKey(5))
+            if (parameters.ContainsKey(10))
             {
-                KilledByGuild = string.IsNullOrEmpty(parameters[5].ToString()) ? string.Empty : parameters[5].ToString();
+                KilledBy = string.IsNullOrEmpty(parameters[10].ToString()) ? string.Empty : parameters[10].ToString();
             }
+
+            if (parameters.ContainsKey(11))
+            {
+                KilledByGuild = string.IsNullOrEmpty(parameters[11].ToString()) ? string.Empty : parameters[11].ToString();
+            }
+
         }
         catch (Exception e)
         {
@@ -35,6 +41,8 @@ public class DiedEvent
     }
 
     public string Died { get; }
+
+    public string DiedPlayerGuild { get; }
 
     public string KilledBy { get; }
 

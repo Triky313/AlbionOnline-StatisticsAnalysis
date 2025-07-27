@@ -404,6 +404,18 @@
     <DataTemplate DataType="{x:Type notification:KillNotificationFragment}">
         <StackPanel Orientation="Horizontal" Height="24">
             <TextBlock Text="{Binding Died, IsAsync=True, StringFormat='{}{0} '}" Foreground="{StaticResource SolidColorBrush.Accent.Red.3}"/>
+            <TextBlock Text="{Binding DiedPlayerGuild, IsAsync=True, StringFormat='{} ({0})'}" Foreground="{StaticResource SolidColorBrush.Accent.Blue.3}">
+                <TextBlock.Style>
+                    <Style TargetType="{x:Type TextBlock}">
+                        <Setter Property="Visibility" Value="Visible" />
+                        <Style.Triggers>
+                            <DataTrigger Binding="{Binding IsDiedPlayerGuildEmpty}" Value="true">
+                                <Setter Property="Visibility" Value="Collapsed" />
+                            </DataTrigger>
+                        </Style.Triggers>
+                    </Style>
+                </TextBlock.Style>
+            </TextBlock>
             <TextBlock Text="{Binding ValueText, IsAsync=True, StringFormat='{}{0} '}" Foreground="{StaticResource SolidColorBrush.Text.1}"/>
             <TextBlock Text="{Binding KilledBy, IsAsync=True, StringFormat='{}{0}'}" Foreground="{StaticResource SolidColorBrush.Accent.Blue.3}"/>
             <TextBlock Text="{Binding KilledByGuild, IsAsync=True, StringFormat='{} ({0})'}" Foreground="{StaticResource SolidColorBrush.Accent.Blue.3}">

@@ -163,11 +163,11 @@ public static class Locations
         // Normal markets
         return location switch
         {
-            "0007" or "Thetford" => MarketLocation.ThetfordMarket,
-            "1002" or "Lymhurst" => MarketLocation.LymhurstMarket,
-            "2004" or "Bridgewatch" => MarketLocation.BridgewatchMarket,
-            "3008" or "Martlock" => MarketLocation.MartlockMarket,
-            "4002" or "Fort Sterling" => MarketLocation.FortSterlingMarket,
+            "0007" or "0000-HellDen" or "Thetford" => MarketLocation.ThetfordMarket,
+            "1002" or "1000-HellDen" or "Lymhurst" => MarketLocation.LymhurstMarket,
+            "2004" or "2000-HellDen" or "Bridgewatch" => MarketLocation.BridgewatchMarket,
+            "3008" or "3004-HellDen" or "Martlock" => MarketLocation.MartlockMarket,
+            "4002" or "4000-HellDen" or "Fort Sterling" => MarketLocation.FortSterlingMarket,
             "0301" or "Thetford Portal" => MarketLocation.ThetfordPortal,
             "1301" or "Lymhurst Portal" => MarketLocation.LymhurstPortal,
             "2301" or "Bridgewatch Portal" => MarketLocation.BridgewatchPortal,

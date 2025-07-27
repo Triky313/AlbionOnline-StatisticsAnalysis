@@ -42,26 +42,26 @@ public class NewCharacterEvent
                 GuildName = guildName.ToString();
             }
 
-            if (parameters.ContainsKey(38))
+            if (parameters.ContainsKey(40))
             {
-                var valueType = parameters[38].GetType();
+                var valueType = parameters[40].GetType();
                 switch (valueType.IsArray)
                 {
                     case true when typeof(byte[]).Name == valueType.Name:
                         {
-                            var values = ((byte[]) parameters[38]).ToDictionary();
+                            var values = ((byte[]) parameters[40]).ToDictionary();
                             CharacterEquipment = GetEquipment(values);
                             break;
                         }
                     case true when typeof(short[]).Name == valueType.Name:
                         {
-                            var values = ((short[]) parameters[38]).ToDictionary();
+                            var values = ((short[]) parameters[40]).ToDictionary();
                             CharacterEquipment = GetEquipment(values);
                             break;
                         }
                     case true when typeof(int[]).Name == valueType.Name:
                         {
-                            var values = ((int[]) parameters[38]).ToDictionary();
+                            var values = ((int[]) parameters[40]).ToDictionary();
                             CharacterEquipment = GetEquipment(values);
                             break;
                         }

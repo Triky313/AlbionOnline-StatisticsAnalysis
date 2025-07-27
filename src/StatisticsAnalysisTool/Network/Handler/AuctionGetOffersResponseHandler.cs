@@ -4,18 +4,12 @@ using StatisticsAnalysisTool.Network.Operations.Responses;
 
 namespace StatisticsAnalysisTool.Network.Handler;
 
-public class AuctionGetOffersResponseHandler : ResponsePacketHandler<AuctionGetOffersResponse>
+public class AuctionGetOffersResponseHandler(TrackingController trackingController) : ResponsePacketHandler<AuctionGetOffersResponse>((int) OperationCodes.AuctionGetOffers)
 {
-    private readonly TrackingController _trackingController;
-
-    public AuctionGetOffersResponseHandler(TrackingController trackingController) : base((int) OperationCodes.AuctionGetOffers)
-    {
-        _trackingController = trackingController;
-    }
-
     protected override async Task OnActionAsync(AuctionGetOffersResponse value)
     {
-        _trackingController.MarketController.AddOffers(value.AuctionEntries);
+        trackingController.MarketController.AddOffers(value.AuctionEntries);
+        trackingController.MarketController.UpdateSellOrderMarketData(value.AuctionEntries);
         await Task.CompletedTask;
     }
 }

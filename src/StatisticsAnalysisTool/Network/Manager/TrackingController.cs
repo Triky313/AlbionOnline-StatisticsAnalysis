@@ -55,7 +55,7 @@ public class TrackingController : ITrackingController
     public readonly GatheringController GatheringController;
     public readonly PartyController PartyController;
     public readonly GuildController GuildController;
-    private readonly List<LoggingFilterType> _notificationTypesFilters = new();
+    private readonly List<LoggingFilterType> _notificationTypesFilters = [];
 
     public TrackingController(MainWindowViewModel mainWindowViewModel)
     {
@@ -192,6 +192,7 @@ public class TrackingController : ITrackingController
             GatheringController.SaveInFileAsync(true),
             GuildController.SaveInFileAsync(),
             CombatController.SaveInFileAsync(),
+            MarketController.SaveInFileAsync(),
             EstimatedMarketValueController.SaveInFileAsync()
         );
     }
@@ -207,7 +208,8 @@ public class TrackingController : ITrackingController
             GatheringController.LoadFromFileAsync(),
             VaultController.LoadFromFileAsync(),
             GuildController.LoadFromFileAsync(),
-            CombatController.LoadFromFileAsync()
+            CombatController.LoadFromFileAsync(),
+            MarketController.LoadFromFileAsync()
         );
     }
 

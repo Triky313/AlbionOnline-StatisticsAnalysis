@@ -37304,6 +37304,10 @@
         {
           "lang": "en-US",
           "seg": "Damage suffered"
+        },
+        {
+          "lang": "fr-FR",
+          "seg": "Dégâts subis"
         }
       ]
     },
@@ -37317,6 +37321,10 @@
         {
           "lang": "en-US",
           "seg": "Average est. Market value"
+        },
+        {
+          "lang": "fr-FR",
+          "seg": "Valeur marchande moyenne estimée"
         }
       ]
     },
@@ -37330,6 +37338,10 @@
         {
           "lang": "en-US",
           "seg": "Standalone Launcher"
+        },
+        {
+          "lang": "fr-FR",
+          "seg": "Application indépendante"
         }
       ]
     },
@@ -37343,6 +37355,10 @@
         {
           "lang": "en-US",
           "seg": "Select the AlbionOnline folder where you installed it. For example, under 'C:\\AlbionOnline'"
+        },
+        {
+          "lang": "fr-FR",
+          "seg": "Sélectionnez le dossier d'installation d'AlbionOnline. Par exemple, dans 'C:\\AlbionOnline'"
         }
       ]
     },
@@ -37356,6 +37372,10 @@
         {
           "lang": "en-US",
           "seg": "Steam Launcher"
+        },
+        {
+          "lang": "fr-FR",
+          "seg": "Launcher Steam"
         }
       ]
     },
@@ -37369,6 +37389,10 @@
         {
           "lang": "en-US",
           "seg": "Select the AlbionOnline folder in the steamapps. Usually found under 'C:\\Program Files\\Steam\\steamapps\\common'"
+        },
+        {
+          "lang": "fr-FR",
+          "seg": "Sélectionnez le dossier AlbionOnline dans SteamApps. Il se trouve généralement dans 'C:\\Program Files\\Steam\\Steamapps\\common'"
         }
       ]
     },
@@ -37382,6 +37406,10 @@
         {
           "lang": "en-US",
           "seg": "Backup storage directory path"
+        },
+        {
+          "lang": "fr-FR",
+          "seg": "Chemin du répertoire de stockage de sauvegarde"
         }
       ]
     },
@@ -37395,6 +37423,10 @@
         {
           "lang": "en-US",
           "seg": "Current repair costs"
+        },
+        {
+          "lang": "fr-FR",
+          "seg": "Coûts actuels des réparations"
         }
       ]
     },
@@ -37408,6 +37440,10 @@
         {
           "lang": "en-US",
           "seg": "Show total avg prices on Item"
+        },
+        {
+          "lang": "fr-FR",
+          "seg": "Afficher les prix moyens totaux de l'item"
         }
       ]
     },
@@ -37421,6 +37457,10 @@
         {
           "lang": "en-US",
           "seg": "Total chest value"
+        },
+        {
+          "lang": "fr-FR",
+          "seg": "Valeur totale du coffre"
         }
       ]
     },
@@ -37434,6 +37474,10 @@
         {
           "lang": "en-US",
           "seg": "Total weight"
+        },
+        {
+          "lang": "fr-FR",
+          "seg": "Poids total"
         }
       ]
     },
@@ -37447,6 +37491,10 @@
         {
           "lang": "en-US",
           "seg": "Total bank value"
+        },
+        {
+          "lang": "fr-FR",
+          "seg": "Valeur totale de la banaque"
         }
       ]
     },
@@ -37460,6 +37508,10 @@
         {
           "lang": "en-US",
           "seg": "Others"
+        },
+        {
+          "lang": "fr-FR",
+          "seg": "Autres"
         }
       ]
     },
@@ -37473,6 +37525,10 @@
         {
           "lang": "en-US",
           "seg": "Lost"
+        },
+        {
+          "lang": "fr-FR",
+          "seg": "Perdu"
         }
       ]
     },
@@ -37486,6 +37542,10 @@
         {
           "lang": "en-US",
           "seg": "Resolved"
+        },
+        {
+          "lang": "fr-FR",
+          "seg": "Résolu"
         }
       ]
     },
@@ -37499,6 +37559,10 @@
         {
           "lang": "en-US",
           "seg": "Donated"
+        },
+        {
+          "lang": "fr-FR",
+          "seg": "Donné"
         }
       ]
     },
@@ -37512,6 +37576,10 @@
         {
           "lang": "en-US",
           "seg": "Loot comparator"
+        },
+        {
+          "lang": "fr-FR",
+          "seg": "Comparateur de butin"
         }
       ]
     },
@@ -37525,6 +37593,10 @@
         {
           "lang": "en-US",
           "seg": "Upload chest files"
+        },
+        {
+          "lang": "fr-FR",
+          "seg": "Télécharger les données"
         }
       ]
     },
@@ -37538,6 +37610,10 @@
         {
           "lang": "en-US",
           "seg": "Compare logs"
+        },
+        {
+          "lang": "fr-FR",
+          "seg": "Comparer les logs"
         }
       ]
     },
@@ -37551,6 +37627,10 @@
         {
           "lang": "en-US",
           "seg": "Delete chest logs"
+        },
+        {
+          "lang": "fr-FR",
+          "seg": "Supprimer les logs"
         }
       ]
     },
@@ -37564,6 +37644,10 @@
         {
           "lang": "en-US",
           "seg": "Delete all logs"
+        },
+        {
+          "lang": "fr-FR",
+          "seg": "Supprimer tous les logs"
         }
       ]
     },
@@ -37576,6 +37660,10 @@
         },
         {
           "lang": "en-US",
+          "seg": "T1 - T3"
+        },
+        {
+          "lang": "fr-FR",
           "seg": "T1 - T3"
         }
       ]
@@ -37594,6 +37682,10 @@
         {
           "lang": "ko-KR",
           "seg": "프록시"
+        },
+        {
+          "lang": "fr-FR",
+          "seg": "Proxy"
         }
       ]
     },
@@ -37607,6 +37699,10 @@
         {
           "lang": "en-US",
           "seg": "Change requires a tool restart"
+        },
+        {
+          "lang": "fr-FR",
+          "seg": "Le changement nécessite un redémarrage de l'application"
         }
       ]
     },
@@ -37620,6 +37716,10 @@
         {
           "lang": "en-US",
           "seg": "Direct purchase and sale data is encrypted and cannot currently be viewed with this character."
+        },
+        {
+          "lang": "fr-FR",
+          "seg": "Les données d'achat et de vente directes sont chiffrés et ne peuvent actuellement pas être visualisées avec ce personnage."
         }
       ]
     },
@@ -37633,6 +37733,10 @@
         {
           "lang": "en-US",
           "seg": "Total distance fee"
+        },
+        {
+          "lang": "fr-FR",
+          "seg": "Frais de trajet totaux"
         }
       ]
     },
@@ -37646,6 +37750,10 @@
         {
           "lang": "en-US",
           "seg": "Total income without tax deductions"
+        },
+        {
+          "lang": "fr-FR",
+          "seg": "Revenu total sans déductions de taxes"
         }
       ]
     },
@@ -37659,6 +37767,10 @@
         {
           "lang": "en-US",
           "seg": "Only damage to players counts"
+        },
+        {
+          "lang": "fr-FR",
+          "seg": "Seuls les dégâts infligés aux joueurs comptent"
         }
       ]
     },
@@ -37672,6 +37784,10 @@
         {
           "lang": "en-US",
           "seg": "Total cost without added taxes"
+        },
+        {
+          "lang": "fr-FR",
+          "seg": "Coût total sans taxes ajoutées"
         }
       ]
     },
@@ -37737,6 +37853,71 @@
         {
           "lang": "tr-TR",
           "seg": "Dipsiz Derinlikler"
+        }
+      ]
+    },
+    {
+      "tuid": "OPERATOR",
+      "tuv": [
+        {
+          "lang": "de-DE",
+          "seg": "Operator"
+        },
+        {
+          "lang": "en-US",
+          "seg": "Operator"
+        }
+      ]
+    },
+    {
+      "tuid": "DEPOSIT",
+      "tuv": [
+        {
+          "lang": "de-DE",
+          "seg": "Einzahlen"
+        },
+        {
+          "lang": "en-US",
+          "seg": "Deposit"
+        }
+      ]
+    },
+    {
+      "tuid": "WITHDRAW",
+      "tuv": [
+        {
+          "lang": "de-DE",
+          "seg": "Auszahlen"
+        },
+        {
+          "lang": "en-US",
+          "seg": "Withdraw"
+        }
+      ]
+    },
+    {
+      "tuid": "EXPORT_AS_CSV",
+      "tuv": [
+        {
+          "lang": "de-DE",
+          "seg": "Export als CSV"
+        },
+        {
+          "lang": "en-US",
+          "seg": "Export as CSV"
+        }
+      ]
+    },
+    {
+      "tuid": "EXPORT_SIPHONED_ENERGY_LIST",
+      "tuv": [
+        {
+          "lang": "de-DE",
+          "seg": "Exportiere Gesammelte Energie Liste"
+        },
+        {
+          "lang": "en-US",
+          "seg": "Export Siphoned Energy list"
         }
       ]
     }

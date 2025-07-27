@@ -29,7 +29,7 @@
 
     <DataTemplate x:Key="ManuallySiphonedEnergy.Template" DataType="{x:Type guild:ManuallySiphonedEnergy}">
         <Grid>
-            <StackPanel Orientation="Vertical" Margin="0">
+            <StackPanel Orientation="Vertical">
                 <Separator Background="{StaticResource SolidColorBrush.Background.2}" Height="4" Margin="0,0,0,0" VerticalAlignment="Top"/>
                 <StackPanel Margin="10,0,0,0">
                     <Label Content="{Binding TranslationAddOrRemoveManually, FallbackValue=ADD_OR_REMOVE_MANUALLY}" Style="{StaticResource HeaderStyle.Tracking.Title}" 
@@ -39,6 +39,16 @@
                         <StackPanel Orientation="Vertical" Width="200" Margin="0,0,5,0">
                             <Label Content="{Binding TranslationCharacterName, FallbackValue=CHARACTER_NAME}" Width="auto" VerticalAlignment="Top" />
                             <TextBox Text="{Binding CharacterName, UpdateSourceTrigger=PropertyChanged}" Width="auto" Height="24" VerticalContentAlignment="Center" />
+                        </StackPanel>
+
+                        <StackPanel Orientation="Vertical" Width="120" Margin="5,0">
+                            <Label Content="{Binding TranslationOperator, FallbackValue=OPERATOR}" Width="auto" VerticalAlignment="Top" />
+                            <ComboBox
+                                SelectedValue="{Binding SelectedOperator, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                SelectedValuePath="Tag" Width="auto" Height="24" VerticalContentAlignment="Center">
+                                <ComboBoxItem Tag="{x:Static guild:EnergyOperator.Deposit}" Content="{Binding TranslationDeposit, FallbackValue=DEPOSIT}" />
+                                <ComboBoxItem Tag="{x:Static guild:EnergyOperator.Withdraw}" Content="{Binding TranslationWithdraw, FallbackValue=WITHDRAW}" />
+                            </ComboBox>
                         </StackPanel>
 
                         <StackPanel Orientation="Vertical" Width="80" Margin="5,0">
@@ -51,6 +61,17 @@
                             Margin="0,10" Height="24" Width="200" MaxWidth="300" MinWidth="200">
                         <Button.InputBindings>
                             <MouseBinding MouseAction="LeftClick" Command="{Binding AddManualEntryCommand}" />
+                        </Button.InputBindings>
+                    </Button>
+                </StackPanel>
+                <StackPanel Margin="10,0,0,0">
+                    <Label Content="{Binding TranslationExportSiphonedEnergyList, FallbackValue=EXPORT_SIPHONED_ENERGY_LIST}" Style="{StaticResource HeaderStyle.Tracking.Title}" 
+                           Margin="2,5,0,0" Foreground="{StaticResource SolidColorBrush.Accent.Blue.2}" />
+
+                    <Button Content="{Binding TranslationExportAsCsv, FallbackValue=EXPORT_AS_CSV}" HorizontalAlignment="Left" 
+                            Margin="0,10" Height="24" Width="200" MaxWidth="300" MinWidth="200">
+                        <Button.InputBindings>
+                            <MouseBinding MouseAction="LeftClick" Command="{Binding ExportAsCsvCommand}" />
                         </Button.InputBindings>
                     </Button>
                 </StackPanel>

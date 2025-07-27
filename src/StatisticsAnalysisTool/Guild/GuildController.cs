@@ -1,6 +1,7 @@
 ﻿using Serilog;
 using StatisticsAnalysisTool.Common;
 using StatisticsAnalysisTool.Enumerations;
+using StatisticsAnalysisTool.Models;
 using StatisticsAnalysisTool.Network.Manager;
 using StatisticsAnalysisTool.Properties;
 using StatisticsAnalysisTool.ViewModels;
@@ -8,6 +9,7 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Reflection;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Data;
@@ -142,6 +144,33 @@ public class GuildController
         guildBindings.SiphonedEnergyCollectionView = CollectionViewSource.GetDefaultView(guildBindings.SiphonedEnergyList) as ListCollectionView;
 
         UpdateSiphonedEnergyOverview();
+    }
+
+    public string GetSiphonedEnergyListAsCsv()
+    {
+        try
+        {
+            const string csvHeader = "timestamp_utc;guild_name;character_name;quantity\n";
+
+            var siphonedEnergyList = _mainWindowViewModel.GuildBindings.SiphonedEnergyList;
+
+            var csvRows = siphonedEnergyList
+                .Where(x => !x.IsDisabled && !x.IsSelectedForDeletion)
+                .Select(item =>
+                    $"{item.Timestamp.ToUniversalTime():yyyy-MM-dd HH:mm:ss};" +
+                    $"{item.GuildName};" +
+                    $"{item.CharacterName};" +
+                    $"{item.Quantity.IntegerValue}"
+                );
+
+            return csvHeader + string.Join(Environment.NewLine, csvRows);
+        }
+        catch (Exception e)
+        {
+            ConsoleManager.WriteLineForError(MethodBase.GetCurrentMethod()?.DeclaringType, e);
+            Log.Error(e, "{message}", MethodBase.GetCurrentMethod()?.DeclaringType);
+            return string.Empty;
+        }
     }
 
     #region Save / Load data

@@ -68,7 +68,7 @@
                         </Grid>
 
                         <Separator Background="{StaticResource SolidColorBrush.Background.2}" Height="4" Margin="0,66,0,0" VerticalAlignment="Top"/>
-                        <Grid Margin="0,68,0,153" VerticalAlignment="Stretch">
+                        <Grid Margin="0,68,0,192" VerticalAlignment="Stretch">
                             <vwp:VirtualizingItemsControl ItemsSource="{Binding GuildBindings.SiphonedEnergyOverviewList, IsAsync=True, Mode=OneWay}" 
                                                           MinHeight="240" 
                                                           Height="auto"
@@ -85,7 +85,7 @@
                         </Grid>
 
                         <StackPanel Orientation="Vertical" VerticalAlignment="Bottom">
-                            <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" VerticalAlignment="Bottom" Height="28" Margin="0,0,20,0">
+                            <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" VerticalAlignment="Bottom" Height="28" Margin="0,10,20,0">
                                 <TextBlock Text="{Binding GuildBindings.TranslationTotal, StringFormat='{}{0:N0}: ', FallbackValue='TOTAL: '}" FontSize="12" 
                                            Foreground="{StaticResource SolidColorBrush.Text.4}" VerticalAlignment="Center" />
                                 <TextBlock Text="{Binding GuildBindings.TotalSiphonedEnergyQuantity, StringFormat='{}{0} ', FallbackValue=0}" FontSize="12" 
@@ -96,15 +96,15 @@
                         </StackPanel>
                     </Grid>
                     <Grid Row="2">
-                       <vwp:VirtualizingItemsControl Margin="0,0,0,0" ItemsSource="{Binding GuildBindings.SiphonedEnergyCollectionView, IsAsync=True, Mode=OneWay}" 
-                                          ItemTemplate="{StaticResource SiphonedEnergyItemTemplate}"
-                                          d:ItemsSource="{d:SampleData ItemCount=10}"
-                                          VirtualizingPanel.CacheLengthUnit="Item"
-                                          VirtualizingPanel.CacheLength="10,10"
-                                          VirtualizingPanel.ScrollUnit="Pixel"
-                                          VirtualizingPanel.VirtualizationMode="Recycling"
-                                          ScrollViewer.HorizontalScrollBarVisibility="Disabled"
-                                          ScrollViewer.VerticalScrollBarVisibility="Visible" />
+                        <vwp:VirtualizingItemsControl Margin="0,0,0,0" ItemsSource="{Binding GuildBindings.SiphonedEnergyCollectionView, IsAsync=True, Mode=OneWay}" 
+                                                      ItemTemplate="{StaticResource SiphonedEnergyItemTemplate}"
+                                                      d:ItemsSource="{d:SampleData ItemCount=10}"
+                                                      VirtualizingPanel.CacheLengthUnit="Item"
+                                                      VirtualizingPanel.CacheLength="10,10"
+                                                      VirtualizingPanel.ScrollUnit="Pixel"
+                                                      VirtualizingPanel.VirtualizationMode="Recycling"
+                                                      ScrollViewer.HorizontalScrollBarVisibility="Disabled"
+                                                      ScrollViewer.VerticalScrollBarVisibility="Visible" />
                     </Grid>
                 </Grid>
             </TabItem>

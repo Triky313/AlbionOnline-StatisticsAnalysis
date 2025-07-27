@@ -20,6 +20,7 @@ public class AuctionEntry
     public string SellerName { get; set; }
     public object BuyerCharacterId { get; set; }
     public object BuyerName { get; set; }
+    // ItemTypeId is Item UniqueName 
     public string ItemTypeId { get; set; }
     public string ItemGroupTypeId { get; set; }
     public int EnchantmentLevel { get; set; }
