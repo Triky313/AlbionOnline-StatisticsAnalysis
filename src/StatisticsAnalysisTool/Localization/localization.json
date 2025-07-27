@@ -37894,6 +37894,32 @@
           "seg": "Withdraw"
         }
       ]
+    },
+    {
+      "tuid": "EXPORT_AS_CSV",
+      "tuv": [
+        {
+          "lang": "de-DE",
+          "seg": "Export als CSV"
+        },
+        {
+          "lang": "en-US",
+          "seg": "Export as CSV"
+        }
+      ]
+    },
+    {
+      "tuid": "EXPORT_SIPHONED_ENERGY_LIST",
+      "tuv": [
+        {
+          "lang": "de-DE",
+          "seg": "Exportiere Gesammelte Energie Liste"
+        },
+        {
+          "lang": "en-US",
+          "seg": "Export Siphoned Energy list"
+        }
+      ]
     }
   ]
 }
