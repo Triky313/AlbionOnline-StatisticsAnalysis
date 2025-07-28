@@ -19,9 +19,9 @@ public class LibpcapPacketProvider : PacketProvider
     private readonly IPhotonReceiver _photonReceiver;
     private readonly PcapDispatcher _dispatcher;
     private CancellationTokenSource? _cts;
-    private readonly Thread _thread;
+    private Thread? _thread;
 
-    public override bool IsRunning => _thread.IsAlive;
+    public override bool IsRunning => _thread is { IsAlive: true };
 
     public LibpcapPacketProvider(IPhotonReceiver photonReceiver)
     {
@@ -78,6 +78,11 @@ public class LibpcapPacketProvider : PacketProvider
         }
 
         _cts = new CancellationTokenSource();
+        _thread = new Thread(Worker)
+        {
+            IsBackground = true
+        };
+
         _thread.Start();
     }
 
@@ -141,9 +146,10 @@ public class LibpcapPacketProvider : PacketProvider
         _dispatcher.Dispose();
 
         _cts?.Cancel();
-        _thread.Join();
+        _thread?.Join();
 
         _cts?.Dispose();
         _cts = null;
+        _thread = null;
     }
 }
