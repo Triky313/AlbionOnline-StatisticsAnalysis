@@ -175,12 +175,15 @@ public class VaultController
         if (currentVault is not null)
         {
             var vaultContainers = PreparationVaultContainerForUi(_internalItemContainers);
-
-            Application.Current.Dispatcher.Invoke(() =>
+            var containers = vaultContainers.ToList();
+            if (containers.Any())
             {
-                currentVault.VaultContainer.Clear();
-                currentVault.VaultContainer.AddRange(vaultContainers);
-            });
+                Application.Current.Dispatcher.Invoke(() =>
+                {
+                    currentVault.VaultContainer.Clear();
+                    currentVault.VaultContainer.AddRange(containers);
+                });
+            }
         }
         else
         {
@@ -194,7 +197,11 @@ public class VaultController
             try
             {
                 var vaultContainers = PreparationVaultContainerForUi(_internalItemContainers);
-                vault.VaultContainer.AddRange(vaultContainers);
+                var containers = vaultContainers.ToList();
+                if (containers.Any())
+                {
+                    vault.VaultContainer.AddRange(containers);
+                }
 
                 Application.Current.Dispatcher.Invoke(() =>
                 {
