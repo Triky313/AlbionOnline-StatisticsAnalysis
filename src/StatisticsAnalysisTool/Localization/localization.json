@@ -37866,6 +37866,10 @@
         {
           "lang": "en-US",
           "seg": "Operator"
+        },
+        {
+          "lang": "fr-FR",
+          "seg": "Opérateur"
         }
       ]
     },
@@ -37879,6 +37883,10 @@
         {
           "lang": "en-US",
           "seg": "Deposit"
+        },
+        {
+          "lang": "fr-FR",
+          "seg": "Dépôt"
         }
       ]
     },
@@ -37892,6 +37900,10 @@
         {
           "lang": "en-US",
           "seg": "Withdraw"
+        },
+        {
+          "lang": "fr-FR",
+          "seg": "Retirer"
         }
       ]
     },
@@ -37905,6 +37917,10 @@
         {
           "lang": "en-US",
           "seg": "Export as CSV"
+        },
+        {
+          "lang": "fr-FR",
+          "seg": "Exporter en CSV"
         }
       ]
     },
@@ -37918,6 +37934,10 @@
         {
           "lang": "en-US",
           "seg": "Export Siphoned Energy list"
+        },
+        {
+          "lang": "fr-FR",
+          "seg": "Liste des exportations d'énergie siphonnée"
         }
       ]
     }
