@@ -132,6 +132,12 @@
                                 <Button Style="{StaticResource Style.Button.Attention}" Height="25" Margin="10,0,0,5" 
                                         Content="{Binding LoggingBindings.Translation.DeleteAllLogs, FallbackValue=DELETE__ALL__LOGS}" VerticalAlignment="Top" Click="BtnClearLootLogs_Click" />
                             </StackPanel>
+                            <StackPanel>
+                                <Grid Height="20" Width="20" Margin="5,0,0,0" VerticalAlignment="Center"
+                                      MouseEnter="OpenLootComparatorInfoPopup_MouseEnter" MouseLeave="CloseLootComparatorInfoPopup_MouseLeave">
+                                    <fa5:ImageAwesome Icon="Solid_InfoCircle" Foreground="{StaticResource SolidColorBrush.Text.1}" />
+                                </Grid>
+                            </StackPanel>
                         </StackPanel>
                     </StackPanel>
                     <Separator Background="{StaticResource SolidColorBrush.Background.3}" Height="4" Margin="0,100,0,0" VerticalAlignment="Top"/>
@@ -146,5 +152,43 @@
                 </Grid>
             </TabItem>
         </TabControl>
+        <Grid Visibility="{Binding LoggingBindings.IsLootComparatorInfoPopupVisible, FallbackValue=Collapsed}" 
+              Margin="0,52,0,0" Background="{StaticResource SolidColorBrush.Background.2}">
+            <StackPanel CanHorizontallyScroll="False" CanVerticallyScroll="True" Margin="10,0">
+                <TextBlock Style="{StaticResource InfoDescription.Header}" Text="{Binding Translation.LootComparatorHeaderHowDoIGetTheChestLogs, FallbackValue=HOW_DO_I_GET_THE_CHEST_LOGS}" />
+                <TextBlock Text="{Binding Translation.LootComparatorDescription1, FallbackValue=Description1}" Foreground="{StaticResource SolidColorBrush.Text.1}" 
+                           FontSize="16" TextWrapping="Wrap" Width="auto" Margin="0,0,0,10" />
+                <TextBlock Text="{Binding Translation.LootComparatorDescription2, FallbackValue=Description2}" Foreground="{StaticResource SolidColorBrush.Text.1}" 
+                           FontSize="16" TextWrapping="Wrap" Width="auto" />
+                <TextBlock Text="{Binding Translation.LootComparatorDescription3, FallbackValue=Description3}" Foreground="{StaticResource SolidColorBrush.Text.1}" 
+                           FontSize="16" TextWrapping="Wrap" Width="auto" />
+                <TextBlock Text="{Binding Translation.LootComparatorDescription4, FallbackValue=Description4}" Foreground="{StaticResource SolidColorBrush.Text.1}" 
+                           FontSize="16" TextWrapping="Wrap" Width="auto" />
+                <TextBlock Text="{Binding Translation.LootComparatorDescription5, FallbackValue=Description5}" Foreground="{StaticResource SolidColorBrush.Text.1}" 
+                           FontSize="16" TextWrapping="Wrap" Width="auto" Margin="0,0,0,10" />
+                <TextBlock Text="{Binding Translation.LootComparatorDescription6, FallbackValue=Description6}" Foreground="{StaticResource SolidColorBrush.Text.1}" 
+                           FontSize="16" TextWrapping="Wrap" Width="auto" />
+                <TextBlock Text="{Binding Translation.LootComparatorDescription7, FallbackValue=Description7}" Foreground="{StaticResource SolidColorBrush.Text.1}" 
+                           FontSize="16" TextWrapping="Wrap" Width="auto" />
+                <Image Margin="0,10" Source="../Assets/loggingcomparator_description01.jpg" MaxWidth="1000" HorizontalAlignment="Left" />
+
+                <TextBlock Style="{StaticResource InfoDescription.Header}" Text="{Binding Translation.LootComparatorWhatTheItemSlotsColorsMean, FallbackValue=WHAT_THE_ITEM_SLOTS_COLORS_MEAN}" />
+                <Image Source="../Assets/loot_cpmparator_slot_gray.png" Height="50" Width="50" HorizontalAlignment="Left" />
+                <TextBlock Text="{Binding Translation.LootComparatorSlotsColorsDescriptionGray, FallbackValue=LootComparatorSlotsColorsDescriptionGray}" Foreground="{StaticResource SolidColorBrush.Text.1}" 
+                           FontSize="16" TextWrapping="Wrap" Width="auto" Margin="0,0,0,20" />
+
+                <Image Margin="0,0,0,0" Source="../Assets/loot_cpmparator_slot_green.png" Height="50" Width="50" HorizontalAlignment="Left" />
+                <TextBlock Text="{Binding Translation.LootComparatorSlotsColorsDescriptionGreen, FallbackValue=LootComparatorSlotsColorsDescriptionGreen}" Foreground="{StaticResource SolidColorBrush.Text.1}" 
+                           FontSize="16" TextWrapping="Wrap" Width="auto" Margin="0,0,0,20" />
+
+                <Image Margin="0,0,0,0" Source="../Assets/loot_cpmparator_slot_blue.png" Height="50" Width="50" HorizontalAlignment="Left" />
+                <TextBlock Text="{Binding Translation.LootComparatorSlotsColorsDescriptionBlue, FallbackValue=LootComparatorSlotsColorsDescriptionBlue}" Foreground="{StaticResource SolidColorBrush.Text.1}" 
+                           FontSize="16" TextWrapping="Wrap" Width="auto" Margin="0,0,0,20" />
+
+                <Image Margin="0,0,0,0" Source="../Assets/loot_cpmparator_slot_red.png" Height="50" Width="50" HorizontalAlignment="Left" />
+                <TextBlock Text="{Binding Translation.LootComparatorSlotsColorsDescriptionRed, FallbackValue=LootComparatorSlotsColorsDescriptionRed}" Foreground="{StaticResource SolidColorBrush.Text.1}" 
+                           FontSize="16" TextWrapping="Wrap" Width="auto" Margin="0,0,0,20" />
+            </StackPanel>
+        </Grid>
     </Grid>
 </UserControl>

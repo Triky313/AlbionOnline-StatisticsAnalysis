@@ -51,8 +51,9 @@ public class LoggingBindings : BaseViewModel
     private bool _isShowingPotion = true;
     private bool _isShowingMount = true;
     private bool _isShowingOthers = true;
-    private ObservableCollection<VaultContainerLogItem> _vaultLogItems = new();
+    private ObservableCollection<VaultContainerLogItem> _vaultLogItems = [];
     private bool _isAllButtonsEnabled = true;
+    private Visibility _isLootComparatorInfoPopupVisible = Visibility.Collapsed;
 
     public void Init()
     {
@@ -202,9 +203,9 @@ public class LoggingBindings : BaseViewModel
         {
             PlayerName = logItem.PlayerName,
             LootingPlayerVisibility = Visibility.Visible,
-            LootedItems = new ObservableCollection<LootedItem>
-            {
-                new()
+            LootedItems =
+            [
+                new LootedItem
                 {
                     UtcPickupTime = logItem.Timestamp,
                     ItemIndex = vaultLogLocalizedItem.Index,
@@ -214,7 +215,7 @@ public class LoggingBindings : BaseViewModel
                     Quantity = logItem.Quantity,
                     Status = status
                 }
-            }
+            ]
         });
     }
 
@@ -319,7 +320,7 @@ public class LoggingBindings : BaseViewModel
         IsAllButtonsEnabled = false;
     }
 
-    private VaultContainerLogItem ParseCsvLine(string line)
+    private static VaultContainerLogItem ParseCsvLine(string line)
     {
         try
         {
@@ -342,7 +343,7 @@ public class LoggingBindings : BaseViewModel
 
             return new VaultContainerLogItem
             {
-                Timestamp = DateTime.ParseExact(values[0], "dd/MM/yyyy HH:mm:ss", CultureInfo.InvariantCulture),
+                Timestamp = DateTime.ParseExact(values[0], SupportedFormats, CultureInfo.InvariantCulture, DateTimeStyles.None),
                 PlayerName = values[1],
                 LocalizedName = values[2],
                 Enchantment = int.Parse(values[3]),
@@ -355,6 +356,24 @@ public class LoggingBindings : BaseViewModel
             return null;
         }
     }
+
+    public Visibility IsLootComparatorInfoPopupVisible
+    {
+        get => _isLootComparatorInfoPopupVisible;
+        set
+        {
+            _isLootComparatorInfoPopupVisible = value;
+            OnPropertyChanged();
+        }
+    }
+
+    private static readonly string[] SupportedFormats =
+    [
+        "MM/dd/yyyy HH:mm:ss",
+        "dd/MM/yyyy HH:mm:ss",
+        "yyyy-MM-dd HH:mm:ss",
+        "dd.MM.yyyy HH:mm:ss"
+    ];
 
     #endregion
 

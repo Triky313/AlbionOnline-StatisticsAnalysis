@@ -112,4 +112,12 @@
         </StackPanel>
     </DataTemplate>
 
+    <Style x:Key="InfoDescription.Header" TargetType="{x:Type TextBlock}">
+        <Setter Property="Foreground" Value="{StaticResource SolidColorBrush.Accent.Blue.2}"/>
+        <Setter Property="FontSize" Value="24"/>
+        <Setter Property="FontWeight" Value="Bold"/>
+        <Setter Property="TextWrapping" Value="Wrap"/>
+        <Setter Property="Width" Value="auto"/>
+    </Style>
+
 </ResourceDictionary>

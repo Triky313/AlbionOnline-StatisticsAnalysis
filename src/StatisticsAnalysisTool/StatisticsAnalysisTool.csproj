@@ -224,6 +224,21 @@
     <Resource Include="Assets\heart.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Resource>
+    <Resource Include="Assets\loggingcomparator_description01.jpg">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Assets\loot_cpmparator_slot_blue.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Assets\loot_cpmparator_slot_gray.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Assets\loot_cpmparator_slot_green.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Assets\loot_cpmparator_slot_red.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Resource>
     <Resource Include="Assets\map_black_icon.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Resource>
@@ -681,6 +696,11 @@
     <None Remove="Assets\gold_glow.png" />
     <None Remove="Assets\green_glow.png" />
     <None Remove="Assets\heart.png" />
+    <None Remove="Assets\loggingcomparator_description01.jpg" />
+    <None Remove="Assets\loot_cpmparator_slot_blue.png" />
+    <None Remove="Assets\loot_cpmparator_slot_gray.png" />
+    <None Remove="Assets\loot_cpmparator_slot_green.png" />
+    <None Remove="Assets\loot_cpmparator_slot_red.png" />
     <None Remove="Assets\map_black_icon.png" />
     <None Remove="Assets\map_blue_icon.png" />
     <None Remove="Assets\map_red_icon.png" />
