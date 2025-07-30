@@ -37951,6 +37951,10 @@
         {
           "lang": "en-US",
           "seg": "How do I get the chest logs?"
+        },
+        {
+          "lang": "fr-FR",
+          "seg": "Comment obtenir les journaux de coffre ?"
         }
       ]
     },
@@ -37964,6 +37968,10 @@
         {
           "lang": "en-US",
           "seg": "To obtain the chest logs from the game, follow these steps:"
+        },
+        {
+          "lang": "fr-FR",
+          "seg": "Pour obtenir les journaux de coffre du jeu, suivez ces étapes :"
         }
       ]
     },
@@ -37977,6 +37985,10 @@
         {
           "lang": "en-US",
           "seg": "1. Click on the Actions button in your guild bank"
+        },
+        {
+          "lang": "fr-FR",
+          "seg": "1. Cliquez sur le bouton Actions dans votre banque de guilde"
         }
       ]
     },
@@ -37990,6 +38002,10 @@
         {
           "lang": "en-US",
           "seg": "2. Click on the Manage button."
+        },
+        {
+          "lang": "fr-FR",
+          "seg": "2. Cliquez sur le bouton Gérer."
         }
       ]
     },
@@ -38003,6 +38019,10 @@
         {
           "lang": "en-US",
           "seg": "3. Click on the button with the three lines."
+        },
+        {
+          "lang": "fr-FR",
+          "seg": "3. Cliquez sur le bouton avec les trois lignes."
         }
       ]
     },
@@ -38016,6 +38036,10 @@
         {
           "lang": "en-US",
           "seg": "4. Click on the Copy to clipboard button."
+        },
+        {
+          "lang": "fr-FR",
+          "seg": "4. Cliquez sur le bouton Copier vers le presse-papier."
         }
       ]
     },
@@ -38029,6 +38053,10 @@
         {
           "lang": "en-US",
           "seg": "Next, create a CSV file, i.e., a file with the extension .csv (for example, 'logs.csv'). Paste all the logs into this file and save it."
+        },
+        {
+          "lang": "fr-FR",
+          "seg": "Collez ensuite tous les journaux dans un fichier finissant par l'extension '.csv' (par exemple : 'logs.csv') et enregistrez-le."
         }
       ]
     },
@@ -38042,6 +38070,10 @@
         {
           "lang": "en-US",
           "seg": "In the tool, you can now click the Upload Chest File button and load your file."
+        },
+        {
+          "lang": "fr-FR",
+          "seg": "Dans l'outil, vous pouvez maintenant cliquer sur le bouton 'Télécharger les données' et charger votre fichier."
         }
       ]
     },
@@ -38055,6 +38087,10 @@
         {
           "lang": "en-US",
           "seg": "What the item slots colors mean?"
+        },
+        {
+          "lang": "fr-FR",
+          "seg": "Que signifient les couleurs des emplacements d'objets ?"
         }
       ]
     },
@@ -38068,6 +38104,10 @@
         {
           "lang": "en-US",
           "seg": "Items shown in greyscale indicate dissolved items. This means the items have either been lost or already deposited in a chest."
+        },
+        {
+          "lang": "fr-FR",
+          "seg": "Les objets en gris indiquent qu'ils ont été détruits. Cela signifie qu'ils ont été perdus ou déjà déposés dans un autre coffre."
         }
       ]
     },
@@ -38081,6 +38121,10 @@
         {
           "lang": "en-US",
           "seg": "Items highlighted in green mean they have been deposited in a chest."
+        },
+        {
+          "lang": "fr-FR",
+          "seg": "Les objets en vert signifient qu'ils ont été déposés dans le coffre."
         }
       ]
     },
@@ -38094,6 +38138,10 @@
         {
           "lang": "en-US",
           "seg": "The item was donated and was not previously picked up from a dead player."
+        },
+        {
+          "lang": "fr-FR",
+          "seg": "Les objets en bleu ont été donnés et n'ont pas été récupérés sur un joueur mort."
         }
       ]
     },
@@ -38107,6 +38155,10 @@
         {
           "lang": "en-US",
           "seg": "Items in red were picked up from a dead player but have not yet been deposited in a chest."
+        },
+        {
+          "lang": "fr-FR",
+          "seg": "Les objets en rouge ont été récupérés sur un joueur mort mais n'ont pas encore été déposés dans un coffre."
         }
       ]
     }
