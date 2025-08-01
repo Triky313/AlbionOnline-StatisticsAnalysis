@@ -37866,6 +37866,10 @@
         {
           "lang": "en-US",
           "seg": "Operator"
+        },
+        {
+          "lang": "fr-FR",
+          "seg": "Opérateur"
         }
       ]
     },
@@ -37879,6 +37883,10 @@
         {
           "lang": "en-US",
           "seg": "Deposit"
+        },
+        {
+          "lang": "fr-FR",
+          "seg": "Dépôt"
         }
       ]
     },
@@ -37892,6 +37900,10 @@
         {
           "lang": "en-US",
           "seg": "Withdraw"
+        },
+        {
+          "lang": "fr-FR",
+          "seg": "Retirer"
         }
       ]
     },
@@ -37905,6 +37917,10 @@
         {
           "lang": "en-US",
           "seg": "Export as CSV"
+        },
+        {
+          "lang": "fr-FR",
+          "seg": "Exporter en CSV"
         }
       ]
     },
@@ -37918,6 +37934,257 @@
         {
           "lang": "en-US",
           "seg": "Export Siphoned Energy list"
+        },
+        {
+          "lang": "fr-FR",
+          "seg": "Liste des exportations d'énergie siphonnée"
+        }
+      ]
+    },
+    {
+      "tuid": "HOW_DO_I_GET_THE_CHEST_LOGS",
+      "tuv": [
+        {
+          "lang": "de-DE",
+          "seg": "Wie erhalte ich die Truhenprotokolle?"
+        },
+        {
+          "lang": "en-US",
+          "seg": "How do I get the chest logs?"
+        },
+        {
+          "lang": "fr-FR",
+          "seg": "Comment obtenir les journaux de coffre ?"
+        }
+      ]
+    },
+    {
+      "tuid": "LOOT_COMPARATOR_DESCRIPTION_1",
+      "tuv": [
+        {
+          "lang": "de-DE",
+          "seg": "Um die Truhen Logs aus dem Spiel zu erhalten muss folgendes getan werden:"
+        },
+        {
+          "lang": "en-US",
+          "seg": "To obtain the chest logs from the game, follow these steps:"
+        },
+        {
+          "lang": "fr-FR",
+          "seg": "Pour obtenir les journaux de coffre du jeu, suivez ces étapes :"
+        }
+      ]
+    },
+    {
+      "tuid": "LOOT_COMPARATOR_DESCRIPTION_2",
+      "tuv": [
+        {
+          "lang": "de-DE",
+          "seg": "1. Klicke auf den Actions Button in deiner Gilden Bank"
+        },
+        {
+          "lang": "en-US",
+          "seg": "1. Click on the Actions button in your guild bank"
+        },
+        {
+          "lang": "fr-FR",
+          "seg": "1. Cliquez sur le bouton Actions dans votre banque de guilde"
+        }
+      ]
+    },
+    {
+      "tuid": "LOOT_COMPARATOR_DESCRIPTION_3",
+      "tuv": [
+        {
+          "lang": "de-DE",
+          "seg": "2. Klicke auf den verwalten Button"
+        },
+        {
+          "lang": "en-US",
+          "seg": "2. Click on the Manage button."
+        },
+        {
+          "lang": "fr-FR",
+          "seg": "2. Cliquez sur le bouton Gérer."
+        }
+      ]
+    },
+    {
+      "tuid": "LOOT_COMPARATOR_DESCRIPTION_4",
+      "tuv": [
+        {
+          "lang": "de-DE",
+          "seg": "3. Klicke auf den Button mit den 3 Strichen"
+        },
+        {
+          "lang": "en-US",
+          "seg": "3. Click on the button with the three lines."
+        },
+        {
+          "lang": "fr-FR",
+          "seg": "3. Cliquez sur le bouton avec les trois lignes."
+        }
+      ]
+    },
+    {
+      "tuid": "LOOT_COMPARATOR_DESCRIPTION_5",
+      "tuv": [
+        {
+          "lang": "de-DE",
+          "seg": "4. Klicke auf den Copy to clipboard Button"
+        },
+        {
+          "lang": "en-US",
+          "seg": "4. Click on the Copy to clipboard button."
+        },
+        {
+          "lang": "fr-FR",
+          "seg": "4. Cliquez sur le bouton Copier vers le presse-papier."
+        }
+      ]
+    },
+    {
+      "tuid": "LOOT_COMPARATOR_DESCRIPTION_6",
+      "tuv": [
+        {
+          "lang": "de-DE",
+          "seg": "Erstelle jetzt eine CSV Datei, also eine Datei mit der extension .csv z.B. 'logs.csv'. In diese Datei kopierst du alle logs rein und speicherst die Datei."
+        },
+        {
+          "lang": "en-US",
+          "seg": "Next, create a CSV file, i.e., a file with the extension .csv (for example, 'logs.csv'). Paste all the logs into this file and save it."
+        },
+        {
+          "lang": "fr-FR",
+          "seg": "Collez ensuite tous les journaux dans un fichier finissant par l'extension '.csv' (par exemple : 'logs.csv') et enregistrez-le."
+        }
+      ]
+    },
+    {
+      "tuid": "LOOT_COMPARATOR_DESCRIPTION_7",
+      "tuv": [
+        {
+          "lang": "de-DE",
+          "seg": "Im Tool kannst du jetzt den Button Upload Chest File anklicken und deine Datei laden."
+        },
+        {
+          "lang": "en-US",
+          "seg": "In the tool, you can now click the Upload Chest File button and load your file."
+        },
+        {
+          "lang": "fr-FR",
+          "seg": "Dans l'outil, vous pouvez maintenant cliquer sur le bouton 'Télécharger les données' et charger votre fichier."
+        }
+      ]
+    },
+    {
+      "tuid": "WHAT_THE_ITEM_SLOTS_COLORS_MEAN",
+      "tuv": [
+        {
+          "lang": "de-DE",
+          "seg": "Was bedeuten die Farben der Gegenstandslots?"
+        },
+        {
+          "lang": "en-US",
+          "seg": "What the item slots colors mean?"
+        },
+        {
+          "lang": "fr-FR",
+          "seg": "Que signifient les couleurs des emplacements d'objets ?"
+        }
+      ]
+    },
+    {
+      "tuid": "LOOT_COMPARATOR_SLOTS_COLORS_DESCRIPTION_GRAY",
+      "tuv": [
+        {
+          "lang": "de-DE",
+          "seg": "Gegenstände in Graustufen signalisieren aufgelöste Gegenstände. Dies bedeutet, dass die Gegenstände entweder verloren gegangen sind oder bereits in einer Truhe deponiert wurden."
+        },
+        {
+          "lang": "en-US",
+          "seg": "Items shown in greyscale indicate dissolved items. This means the items have either been lost or already deposited in a chest."
+        },
+        {
+          "lang": "fr-FR",
+          "seg": "Les objets en gris indiquent qu'ils ont été détruits. Cela signifie qu'ils ont été perdus ou déjà déposés dans un autre coffre."
+        }
+      ]
+    },
+    {
+      "tuid": "LOOT_COMPARATOR_SLOTS_COLORS_DESCRIPTION_GREEN",
+      "tuv": [
+        {
+          "lang": "de-DE",
+          "seg": "Gegenstände in grüner Farbe bedeuten, dass sie in einer Truhe deponiert wurden."
+        },
+        {
+          "lang": "en-US",
+          "seg": "Items highlighted in green mean they have been deposited in a chest."
+        },
+        {
+          "lang": "fr-FR",
+          "seg": "Les objets en vert signifient qu'ils ont été déposés dans le coffre."
+        }
+      ]
+    },
+    {
+      "tuid": "LOOT_COMPARATOR_SLOTS_COLORS_DESCRIPTION_BLUE",
+      "tuv": [
+        {
+          "lang": "de-DE",
+          "seg": "Gegenstand wurde gespendet, ist nicht vorher von einem toten Spieler aufgesammelt wurden."
+        },
+        {
+          "lang": "en-US",
+          "seg": "The item was donated and was not previously picked up from a dead player."
+        },
+        {
+          "lang": "fr-FR",
+          "seg": "Les objets en bleu ont été donnés et n'ont pas été récupérés sur un joueur mort."
+        }
+      ]
+    },
+    {
+      "tuid": "LOOT_COMPARATOR_SLOTS_COLORS_DESCRIPTION_RED",
+      "tuv": [
+        {
+          "lang": "de-DE",
+          "seg": "Gegenstände in Rot wurden von einem toten Spieler aufgesammelt aber noch nicht in der Truhe deponiert."
+        },
+        {
+          "lang": "en-US",
+          "seg": "Items in red were picked up from a dead player but have not yet been deposited in a chest."
+        },
+        {
+          "lang": "fr-FR",
+          "seg": "Les objets en rouge ont été récupérés sur un joueur mort mais n'ont pas encore été déposés dans un coffre."
+        }
+      ]
+    },
+    {
+      "tuid": "DATA_SAVED",
+      "tuv": [
+        {
+          "lang": "de-DE",
+          "seg": "Daten gespeichert"
+        },
+        {
+          "lang": "en-US",
+          "seg": "Data saved"
+        }
+      ]
+    },
+    {
+      "tuid": "ALL_TOOL_DATA_HAS_BEEN_SAVED",
+      "tuv": [
+        {
+          "lang": "de-DE",
+          "seg": "Alle Tool Daten wurden gespeichert."
+        },
+        {
+          "lang": "en-US",
+          "seg": "All tool data has been saved."
         }
       ]
     }

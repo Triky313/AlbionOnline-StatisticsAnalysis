@@ -8,6 +8,7 @@ using Libpcap;
 using Serilog;
 using StatisticsAnalysisTool.Common.UserSettings;
 using System;
+using System.Diagnostics;
 using System.Net.NetworkInformation;
 using System.Net.Sockets;
 using System.Threading;
@@ -19,9 +20,9 @@ public class LibpcapPacketProvider : PacketProvider
     private readonly IPhotonReceiver _photonReceiver;
     private readonly PcapDispatcher _dispatcher;
     private CancellationTokenSource? _cts;
-    private readonly Thread _thread;
+    private Thread? _thread;
 
-    public override bool IsRunning => _thread.IsAlive;
+    public override bool IsRunning => _thread is { IsAlive: true };
 
     public LibpcapPacketProvider(IPhotonReceiver photonReceiver)
     {
@@ -78,6 +79,11 @@ public class LibpcapPacketProvider : PacketProvider
         }
 
         _cts = new CancellationTokenSource();
+        _thread = new Thread(Worker)
+        {
+            IsBackground = true
+        };
+
         _thread.Start();
     }
 
@@ -126,13 +132,31 @@ public class LibpcapPacketProvider : PacketProvider
 
     private void Worker()
     {
-        while (_cts is { IsCancellationRequested: false })
+        try
         {
-            var dispatched = _dispatcher.Dispatch(50);
-            if (dispatched <= 0)
+            while (_cts is { IsCancellationRequested: false })
             {
-                Thread.Sleep(25);
+                try
+                {
+                    var dispatched = _dispatcher.Dispatch(50);
+                    if (dispatched <= 0)
+                    {
+                        Thread.Sleep(25);
+                    }
+                }
+                catch (ObjectDisposedException)
+                {
+                    break;
+                }
+                catch (InvalidOperationException)
+                {
+                    break;
+                }
             }
+        }
+        catch (Exception ex)
+        {
+            Debug.Print("Worker Exception: " + ex.Message);
         }
     }
 
@@ -141,9 +165,10 @@ public class LibpcapPacketProvider : PacketProvider
         _dispatcher.Dispose();
 
         _cts?.Cancel();
-        _thread.Join();
+        _thread?.Join();
 
         _cts?.Dispose();
         _cts = null;
+        _thread = null;
     }
 }

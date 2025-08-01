@@ -119,4 +119,19 @@ public class MainWindowTranslation
     public static string TotalChestValue => LocalizationController.Translation("TOTAL_CHEST_VALUE");
     public static string TotalBankValue => LocalizationController.Translation("TOTAL_BANK_VALUE");
     public static string TotalWeight => LocalizationController.Translation("TOTAL_WEIGHT");
+
+    public static string LootComparatorHeaderHowDoIGetTheChestLogs => LocalizationController.Translation("HOW_DO_I_GET_THE_CHEST_LOGS");
+    public static string LootComparatorDescription1 => LocalizationController.Translation("LOOT_COMPARATOR_DESCRIPTION_1");
+    public static string LootComparatorDescription2 => LocalizationController.Translation("LOOT_COMPARATOR_DESCRIPTION_2");
+    public static string LootComparatorDescription3 => LocalizationController.Translation("LOOT_COMPARATOR_DESCRIPTION_3");
+    public static string LootComparatorDescription4 => LocalizationController.Translation("LOOT_COMPARATOR_DESCRIPTION_4");
+    public static string LootComparatorDescription5 => LocalizationController.Translation("LOOT_COMPARATOR_DESCRIPTION_5");
+    public static string LootComparatorDescription6 => LocalizationController.Translation("LOOT_COMPARATOR_DESCRIPTION_6");
+    public static string LootComparatorDescription7 => LocalizationController.Translation("LOOT_COMPARATOR_DESCRIPTION_7");
+    
+    public static string LootComparatorWhatTheItemSlotsColorsMean => LocalizationController.Translation("WHAT_THE_ITEM_SLOTS_COLORS_MEAN");
+    public static string LootComparatorSlotsColorsDescriptionGray => LocalizationController.Translation("LOOT_COMPARATOR_SLOTS_COLORS_DESCRIPTION_GRAY");
+    public static string LootComparatorSlotsColorsDescriptionGreen => LocalizationController.Translation("LOOT_COMPARATOR_SLOTS_COLORS_DESCRIPTION_GREEN");
+    public static string LootComparatorSlotsColorsDescriptionBlue => LocalizationController.Translation("LOOT_COMPARATOR_SLOTS_COLORS_DESCRIPTION_BLUE");
+    public static string LootComparatorSlotsColorsDescriptionRed => LocalizationController.Translation("LOOT_COMPARATOR_SLOTS_COLORS_DESCRIPTION_RED");
 }
