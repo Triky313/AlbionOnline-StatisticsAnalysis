@@ -172,11 +172,19 @@ public partial class App
             return;
         }
 
-        _trackingController?.StopTracking();
-        CriticalData.Save();
-        if (!BackupController.ExistBackupOnSettingConditions())
+        try
         {
-            BackupController.Save();
+            _trackingController?.StopTracking();
+            CriticalData.Save();
+
+            if (!BackupController.ExistBackupOnSettingConditions())
+            {
+                BackupController.Save();
+            }
+        }
+        finally
+        {
+            Log.CloseAndFlush();
         }
     }
 
@@ -187,11 +195,19 @@ public partial class App
             return;
         }
 
-        _trackingController?.StopTracking();
-        CriticalData.Save();
-        if (!BackupController.ExistBackupOnSettingConditions())
+        try
         {
-            BackupController.Save();
+            _trackingController?.StopTracking();
+            CriticalData.Save();
+
+            if (!BackupController.ExistBackupOnSettingConditions())
+            {
+                BackupController.Save();
+            }
+        }
+        finally
+        {
+            Log.CloseAndFlush();
         }
     }
 }

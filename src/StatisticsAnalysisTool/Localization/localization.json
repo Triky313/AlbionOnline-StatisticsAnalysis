@@ -38161,6 +38161,32 @@
           "seg": "Les objets en rouge ont été récupérés sur un joueur mort mais n'ont pas encore été déposés dans un coffre."
         }
       ]
+    },
+    {
+      "tuid": "DATA_SAVED",
+      "tuv": [
+        {
+          "lang": "de-DE",
+          "seg": "Daten gespeichert"
+        },
+        {
+          "lang": "en-US",
+          "seg": "Data saved"
+        }
+      ]
+    },
+    {
+      "tuid": "ALL_TOOL_DATA_HAS_BEEN_SAVED",
+      "tuv": [
+        {
+          "lang": "de-DE",
+          "seg": "Alle Tool Daten wurden gespeichert."
+        },
+        {
+          "lang": "en-US",
+          "seg": "All tool data has been saved."
+        }
+      ]
     }
   ]
 }

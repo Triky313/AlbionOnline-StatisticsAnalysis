@@ -1,7 +1,9 @@
 ﻿using Serilog;
 using StatisticsAnalysisTool.Common.UserSettings;
 using StatisticsAnalysisTool.Enumerations;
+using StatisticsAnalysisTool.Localization;
 using StatisticsAnalysisTool.Network.Manager;
+using StatisticsAnalysisTool.Notification;
 using System.Collections.Generic;
 using System.Reflection;
 using System.Threading.Tasks;
@@ -19,7 +21,7 @@ public class CriticalData
 
     public static async Task SaveAsync()
     {
-        if (_saveOnClosing is SaveOnClosing.IsRunning or SaveOnClosing.Done)
+        if (_saveOnClosing is SaveOnClosing.IsRunning)
         {
             return;
         }
@@ -37,6 +39,8 @@ public class CriticalData
             };
 
             await Task.WhenAll(tasks);
+            _ = ServiceLocator.Resolve<SatNotificationManager>().ShowTrackingStatusAsync(LocalizationController.Translation("DATA_SAVED"), 
+                LocalizationController.Translation("ALL_TOOL_DATA_HAS_BEEN_SAVED"));
         }
         catch (KeyNotFoundException e)
         {

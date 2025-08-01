@@ -2,17 +2,12 @@
 
 namespace StatisticsAnalysisTool.Notification;
 
-public class NotificationFilter : BaseViewModel
+public class NotificationFilter(NotificationFilterType notificationFilterType) : BaseViewModel
 {
     private bool? _isSelected;
     private string _name;
 
-    public NotificationFilter(NotificationFilterType notificationFilterType)
-    {
-        NotificationFilterType = notificationFilterType;
-    }
-
-    public NotificationFilterType NotificationFilterType { get; }
+    public NotificationFilterType NotificationFilterType { get; } = notificationFilterType;
 
     public bool? IsSelected
     {

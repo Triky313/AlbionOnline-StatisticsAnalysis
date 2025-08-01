@@ -8,6 +8,7 @@ using Libpcap;
 using Serilog;
 using StatisticsAnalysisTool.Common.UserSettings;
 using System;
+using System.Diagnostics;
 using System.Net.NetworkInformation;
 using System.Net.Sockets;
 using System.Threading;
@@ -131,13 +132,31 @@ public class LibpcapPacketProvider : PacketProvider
 
     private void Worker()
     {
-        while (_cts is { IsCancellationRequested: false })
+        try
         {
-            var dispatched = _dispatcher.Dispatch(50);
-            if (dispatched <= 0)
+            while (_cts is { IsCancellationRequested: false })
             {
-                Thread.Sleep(25);
+                try
+                {
+                    var dispatched = _dispatcher.Dispatch(50);
+                    if (dispatched <= 0)
+                    {
+                        Thread.Sleep(25);
+                    }
+                }
+                catch (ObjectDisposedException)
+                {
+                    break;
+                }
+                catch (InvalidOperationException)
+                {
+                    break;
+                }
             }
+        }
+        catch (Exception ex)
+        {
+            Debug.Print("Worker Exception: " + ex.Message);
         }
     }
 

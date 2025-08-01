@@ -133,12 +133,9 @@ public sealed class ClusterController
 
     #region Save UserData
 
-    private void SaveUserData(ClusterInfo currentCluster)
+    private static void SaveUserData(ClusterInfo currentCluster)
     {
-        RateLimitedAction.Run(async void () =>
-        {
-            await CriticalData.SaveAsync();
-        });
+        RateLimitedAction.Run(CriticalData.Save);
     }
 
     #endregion
