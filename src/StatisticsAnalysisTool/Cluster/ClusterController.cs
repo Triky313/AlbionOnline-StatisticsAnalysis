@@ -32,6 +32,7 @@ public sealed class ClusterController
         OnChangeCluster += UpdateClusterTracking;
         OnChangeCluster += SetAndResetValues;
         OnChangeCluster += UpdateUserInfoUi;
+        OnChangeCluster += SaveUserData;
     }
 
     public void UnregisterEvents()
@@ -39,6 +40,7 @@ public sealed class ClusterController
         OnChangeCluster -= UpdateClusterTracking;
         OnChangeCluster -= SetAndResetValues;
         OnChangeCluster -= UpdateUserInfoUi;
+        OnChangeCluster -= SaveUserData;
     }
 
     public event Action<ClusterInfo> OnChangeCluster;
@@ -125,6 +127,18 @@ public sealed class ClusterController
         _mainWindowViewModel.UserTrackingBindings.CurrentMapInfoBinding.Tier = currentCluster.TierString;
         _mainWindowViewModel.UserTrackingBindings.CurrentMapInfoBinding.ClusterMode = currentCluster.ClusterMode;
         _mainWindowViewModel.UserTrackingBindings.CurrentMapInfoBinding.ComposingMapInfoString(currentCluster);
+    }
+
+    #endregion
+
+    #region Save UserData
+
+    private void SaveUserData(ClusterInfo currentCluster)
+    {
+        RateLimitedAction.Run(async void () =>
+        {
+            await CriticalData.SaveAsync();
+        });
     }
 
     #endregion

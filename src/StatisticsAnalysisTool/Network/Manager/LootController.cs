@@ -22,9 +22,9 @@ public class LootController : ILootController
 {
     private readonly TrackingController _trackingController;
     private readonly MainWindowViewModel _mainWindowViewModel;
-    private readonly List<LootLoggerObject> _lootLoggerObjects = new();
+    private readonly List<LootLoggerObject> _lootLoggerObjects = [];
     private ItemContainerObject _currentItemContainer;
-    private readonly List<DiscoveredItem> _discoveredLoot = new();
+    private readonly List<DiscoveredItem> _discoveredLoot = [];
     private Loot _lastLootedItem;
     private Loot _lastComparedLootedItem;
 
