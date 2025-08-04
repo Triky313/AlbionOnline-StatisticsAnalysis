@@ -38172,6 +38172,10 @@
         {
           "lang": "en-US",
           "seg": "Data saved"
+        },
+        {
+          "lang": "fr-FR",
+          "seg": "Données enregistrées"
         }
       ]
     },
@@ -38185,6 +38189,10 @@
         {
           "lang": "en-US",
           "seg": "All tool data has been saved."
+        },
+        {
+          "lang": "fr-FR",
+          "seg": "Toutes les données ont été enregistrées."
         }
       ]
     }
