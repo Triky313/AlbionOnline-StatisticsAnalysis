@@ -4,6 +4,7 @@ using StatisticsAnalysisTool.Common.UserSettings;
 using StatisticsAnalysisTool.EventLogging.Notification;
 using StatisticsAnalysisTool.Localization;
 using StatisticsAnalysisTool.Models;
+using StatisticsAnalysisTool.Models.ItemsJsonModel;
 using StatisticsAnalysisTool.Models.TranslationModel;
 using StatisticsAnalysisTool.ViewModels;
 using System;
@@ -142,7 +143,7 @@ public class LoggingBindings : BaseViewModel
                 UtcPickupTime = logItem.Timestamp,
                 ItemIndex = vaultLogLocalizedItem.Index,
                 IsItemFromVaultLog = true,
-                IsTrash = vaultLogLocalizedItem.ShopSubCategory1 == ShopSubCategory.Trash,
+                IsTrash = vaultLogLocalizedItem.FullItemInformation?.ShopSubCategory1 == "trash",
                 LootedByName = logItem.PlayerName,
                 Quantity = logItem.Quantity
             };
@@ -190,7 +191,7 @@ public class LoggingBindings : BaseViewModel
             UtcPickupTime = logItem.Timestamp,
             ItemIndex = vaultLogLocalizedItem.Index,
             IsItemFromVaultLog = true,
-            IsTrash = vaultLogLocalizedItem.ShopSubCategory1 == ShopSubCategory.Trash,
+            IsTrash = vaultLogLocalizedItem.FullItemInformation?.ShopSubCategory1 == "trash",
             LootedByName = logItem.PlayerName,
             Quantity = logItem.Quantity,
             Status = status
@@ -210,7 +211,7 @@ public class LoggingBindings : BaseViewModel
                     UtcPickupTime = logItem.Timestamp,
                     ItemIndex = vaultLogLocalizedItem.Index,
                     IsItemFromVaultLog = true,
-                    IsTrash = vaultLogLocalizedItem.ShopSubCategory1 == ShopSubCategory.Trash,
+                    IsTrash = vaultLogLocalizedItem.FullItemInformation?.ShopSubCategory1 == "trash",
                     LootedByName = logItem.PlayerName,
                     Quantity = logItem.Quantity,
                     Status = status
@@ -854,39 +855,44 @@ public class LoggingBindings : BaseViewModel
 
     private bool IsTypeOkay(LootedItem lootedItem)
     {
-        if (lootedItem.Item.ShopCategory is ShopCategory.Armor or ShopCategory.Melee or ShopCategory.Ranged or ShopCategory.Magic or ShopCategory.GatheringGear or ShopCategory.OffHand)
+        var cat = lootedItem.Item.FullItemInformation.ShopCategory;
+        var sub1 = lootedItem.Item.FullItemInformation.ShopSubCategory1;
+
+        if (cat is "armor" or "melee" or "ranged" or "magic" or "gatheringgear" or "offhand")
         {
             return true;
         }
 
-        if (_isShowingFood && lootedItem.Item.ShopCategory == ShopCategory.Consumables && lootedItem.Item.ShopSubCategory1 is ShopSubCategory.Fish or ShopSubCategory.Cooked)
+        if (_isShowingFood && cat == "consumables" && sub1 is "fish" or "cooked")
         {
             return true;
         }
 
-        if (_isShowingPotion && lootedItem.Item.ShopCategory == ShopCategory.Consumables && lootedItem.Item.ShopSubCategory1 == ShopSubCategory.Potion)
+        if (_isShowingPotion && cat == "consumables" && sub1 == "potion")
         {
             return true;
         }
 
-        if (_isShowingMount && lootedItem.Item.ShopCategory == ShopCategory.Mounts)
+        if (_isShowingMount && cat == "mounts")
         {
             return true;
         }
 
-        if (_isShowingOthers && lootedItem.Item.ShopCategory is ShopCategory.Other or ShopCategory.Artifact or ShopCategory.CityResources or ShopCategory.Farmable or ShopCategory.Furniture
-            or ShopCategory.Labourers or ShopCategory.Products or ShopCategory.Materials or ShopCategory.LuxuryGoods or ShopCategory.Resources or ShopCategory.SkillBooks or ShopCategory.Token
-            or ShopCategory.Trophies or ShopCategory.Tools or ShopCategory.Unknown)
+        if (_isShowingOthers && cat is
+                "other" or "artefacts" or "cityresources" or "farmables" or "furniture"
+                or "labourers" or "products" or "materials" or "luxurygoods"
+                or "resources" or "skillbooks" or "token" or "trophies"
+                or "tools" or "unknown")
         {
             return true;
         }
 
-        if (_isShowingBag && lootedItem.Item.ShopCategory == ShopCategory.Accessories && lootedItem.Item.ShopSubCategory1 == ShopSubCategory.Bag)
+        if (_isShowingBag && cat == "accessories" && sub1 == "bag")
         {
             return true;
         }
 
-        if (_isShowingCape && lootedItem.Item.ShopCategory == ShopCategory.Accessories && lootedItem.Item.ShopSubCategory1 == ShopSubCategory.Cape)
+        if (_isShowingCape && cat == "accessories" && sub1 == "cape")
         {
             return true;
         }

@@ -3,7 +3,6 @@ using StatisticsAnalysisTool.Common;
 using StatisticsAnalysisTool.Common.UserSettings;
 using StatisticsAnalysisTool.DamageMeter;
 using StatisticsAnalysisTool.Enumerations;
-using StatisticsAnalysisTool.Models.ItemsJsonModel;
 using StatisticsAnalysisTool.Models.NetworkModel;
 using StatisticsAnalysisTool.Properties;
 using StatisticsAnalysisTool.ViewModels;
@@ -184,7 +183,7 @@ public class CombatController
         if (healthChangeObjectValue?.CharacterEquipment?.MainHand != null)
         {
             var item = ItemController.GetItemByIndex(healthChangeObjectValue.CharacterEquipment?.MainHand);
-            fragment.CauserMainHand = ((ItemJsonObject) item?.FullItemInformation)?.ItemType is ItemType.TransformationWeapon or ItemType.Weapon ? item : null;
+            fragment.CauserMainHand = item?.FullItemInformation?.ItemType is ItemType.TransformationWeapon or ItemType.Weapon ? item : null;
         }
 
         // Damage

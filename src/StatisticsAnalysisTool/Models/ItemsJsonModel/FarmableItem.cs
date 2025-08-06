@@ -28,10 +28,10 @@ public class FarmableItem : ItemJsonObject
     public string MaxStackSize { get; set; }
 
     [JsonPropertyName("@shopcategory")]
-    public string ShopCategory { get; set; }
+    public override string ShopCategory { get; set; }
 
     [JsonPropertyName("@shopsubcategory1")]
-    public string ShopSubCategory1 { get; set; }
+    public override string ShopSubCategory1 { get; set; }
 
     [JsonPropertyName("@kind")]
     public string Kind { get; set; }
@@ -93,5 +93,8 @@ public class FarmableItem : ItemJsonObject
     public bool ShowInMarketPlace { get; set; }
 
     [JsonPropertyName("@shopsubcategory2")]
-    public string ShopSubCategory2 { get; set; }
+    public override string ShopSubCategory2 { get; set; }
+
+    [JsonPropertyName("@shopsubcategory3")]
+    public override string ShopSubCategory3 { get; set; }
 }

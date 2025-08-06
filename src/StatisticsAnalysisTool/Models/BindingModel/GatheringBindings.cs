@@ -65,7 +65,7 @@ public class GatheringBindings : BaseViewModel
             var gatherCollection = GatheredCollection.ToList();
 
             // Hide
-            var hide = await GroupAndFilterAndSumAsync(gatherCollection, x => x?.Item?.ShopSubCategory2 == ShopSubCategory.Hide, GatheringStatsTimeTypeSelection);
+            var hide = await GroupAndFilterAndSumAsync(gatherCollection, x => x?.Item?.FullItemInformation?.ShopSubCategory2 == "hide", GatheringStatsTimeTypeSelection);
             await Application.Current.Dispatcher.InvokeAsync(() =>
             {
                 UpdateObservableRangeCollection(GatheringStats.GatheredHide, hide);
@@ -73,7 +73,7 @@ public class GatheringBindings : BaseViewModel
             });
 
             // Ore
-            var ore = await GroupAndFilterAndSumAsync(gatherCollection, x => x?.Item?.ShopSubCategory2 == ShopSubCategory.Ore, GatheringStatsTimeTypeSelection);
+            var ore = await GroupAndFilterAndSumAsync(gatherCollection, x => x?.Item?.FullItemInformation?.ShopSubCategory2 == "ore", GatheringStatsTimeTypeSelection);
             await Application.Current.Dispatcher.InvokeAsync(() =>
             {
                 UpdateObservableRangeCollection(GatheringStats.GatheredOre, ore);
@@ -81,7 +81,7 @@ public class GatheringBindings : BaseViewModel
             });
 
             // Fiber
-            var fiber = await GroupAndFilterAndSumAsync(gatherCollection, x => x?.Item?.ShopSubCategory2 == ShopSubCategory.Fiber, GatheringStatsTimeTypeSelection);
+            var fiber = await GroupAndFilterAndSumAsync(gatherCollection, x => x?.Item?.FullItemInformation?.ShopSubCategory2 == "fiber", GatheringStatsTimeTypeSelection);
             await Application.Current.Dispatcher.InvokeAsync(() =>
             {
                 UpdateObservableRangeCollection(GatheringStats.GatheredFiber, fiber);
@@ -89,7 +89,7 @@ public class GatheringBindings : BaseViewModel
             });
 
             // Wood
-            var wood = await GroupAndFilterAndSumAsync(gatherCollection, x => x?.Item?.ShopSubCategory2 == ShopSubCategory.Wood, GatheringStatsTimeTypeSelection);
+            var wood = await GroupAndFilterAndSumAsync(gatherCollection, x => x?.Item?.FullItemInformation?.ShopSubCategory2 == "wood", GatheringStatsTimeTypeSelection);
             await Application.Current.Dispatcher.InvokeAsync(() =>
             {
                 UpdateObservableRangeCollection(GatheringStats.GatheredWood, wood);
@@ -97,7 +97,7 @@ public class GatheringBindings : BaseViewModel
             });
 
             // Rock
-            var rock = await GroupAndFilterAndSumAsync(gatherCollection, x => x?.Item?.ShopSubCategory2 == ShopSubCategory.Rock, GatheringStatsTimeTypeSelection);
+            var rock = await GroupAndFilterAndSumAsync(gatherCollection, x => x?.Item?.FullItemInformation?.ShopSubCategory2 == "rock", GatheringStatsTimeTypeSelection);
             await Application.Current.Dispatcher.InvokeAsync(() =>
             {
                 UpdateObservableRangeCollection(GatheringStats.GatheredRock, rock);
@@ -105,7 +105,7 @@ public class GatheringBindings : BaseViewModel
             });
 
             // Fish
-            var fish = await GroupAndFilterAndSumAsync(gatherCollection, x => x?.Item?.ShopSubCategory2 == ShopSubCategory.Fish, GatheringStatsTimeTypeSelection, true);
+            var fish = await GroupAndFilterAndSumAsync(gatherCollection, x => x?.Item?.FullItemInformation?.ShopSubCategory2 == "fish", GatheringStatsTimeTypeSelection, true);
             await Application.Current.Dispatcher.InvokeAsync(() =>
             {
                 UpdateObservableRangeCollection(GatheringStats.GatheredFish, fish);

@@ -224,7 +224,7 @@ public sealed class DamageMeterSnapshotFragment : BaseViewModel
         {
             _causerMainHandItemUniqueName = value;
             var item = ItemController.GetItemByUniqueName(_causerMainHandItemUniqueName);
-            ShopSubCategory = CategoryController.ShopSubCategoryToShopSubCategoryString(item?.ShopSubCategory1 ?? Common.ShopSubCategory.Unknown);
+            ShopSubCategory = item?.FullItemInformation?.ShopSubCategory1;
         }
     }
 

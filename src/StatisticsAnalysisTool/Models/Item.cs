@@ -2,12 +2,12 @@
 using StatisticsAnalysisTool.Enumerations;
 using StatisticsAnalysisTool.EstimatedMarketValue;
 using StatisticsAnalysisTool.Localization;
+using StatisticsAnalysisTool.Models.ItemsJsonModel;
 using System.Collections.Generic;
 using System.Globalization;
 using System.Text.Json.Serialization;
 using System.Windows;
 using System.Windows.Media.Imaging;
-using ShopCategory = StatisticsAnalysisTool.Common.ShopCategory;
 
 namespace StatisticsAnalysisTool.Models;
 
@@ -42,10 +42,7 @@ public class Item
     [JsonIgnore]
     public BitmapImage Icon => Application.Current.Dispatcher.Invoke(() => _icon ??= ImageController.GetItemImage(UniqueName));
 
-    public object FullItemInformation { get; set; }
-    public ShopCategory ShopCategory { get; set; }
-    public ShopSubCategory ShopSubCategory1 { get; set; }
-    public ShopSubCategory ShopSubCategory2 { get; set; }
+    public ItemJsonObject FullItemInformation { get; set; }
     public int AlertModeMinSellPriceIsUndercutPrice { get; set; }
     public bool IsAlertActive { get; set; }
     public bool IsFavorite { get; set; }

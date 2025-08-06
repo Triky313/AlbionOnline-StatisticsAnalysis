@@ -51,10 +51,10 @@ public class TrackingItem : ItemJsonObject
     public string Weight { get; set; }
 
     [JsonPropertyName("@shopcategory")]
-    public string ShopCategory { get; set; }
+    public override string ShopCategory { get; set; }
 
     [JsonPropertyName("@shopsubcategory1")]
-    public string ShopSubCategory1 { get; set; }
+    public override string ShopSubCategory1 { get; set; }
 
     //[JsonPropertyName("@uicraftsoundstart")]
     //public string UiCraftSoundStart { get; set; }
@@ -79,5 +79,8 @@ public class TrackingItem : ItemJsonObject
     public List<CraftingRequirements> CraftingRequirements { get; set; }
 
     [JsonPropertyName("@shopsubcategory2")]
-    public string ShopSubCategory2 { get; set; }
+    public override string ShopSubCategory2 { get; set; }
+
+    [JsonPropertyName("@shopsubcategory3")]
+    public override string ShopSubCategory3 { get; set; }
 }
