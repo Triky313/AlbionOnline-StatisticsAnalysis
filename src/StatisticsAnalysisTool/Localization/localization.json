@@ -1,4 +1,4 @@
-﻿{
+{
   "translations": [
     {
       "tuid": "LANGUAGE",
@@ -38172,6 +38172,27 @@
         {
           "lang": "en-US",
           "seg": "Data saved"
+        },
+        {
+          "lang": "fr-FR",
+          "seg": "Données enregistrées"
+        }
+      ]
+    },
+    {
+      "tuid": "ALL_TOOL_DATA_HAS_BEEN_SAVED",
+      "tuv": [
+        {
+          "lang": "de-DE",
+          "seg": "Alle Tool Daten wurden gespeichert."
+        },
+        {
+          "lang": "en-US",
+          "seg": "All tool data has been saved."
+        },
+        {
+          "lang": "fr-FR",
+          "seg": "Toutes les données ont été enregistrées."
         }
       ]
     },
