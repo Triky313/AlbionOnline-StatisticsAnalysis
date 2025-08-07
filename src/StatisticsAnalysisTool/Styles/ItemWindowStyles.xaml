@@ -484,6 +484,15 @@
                     <Label Content="{Binding TranslationTotalSells, FallbackValue=TOTAL__SELLS}" ContentStringFormat="{}{0}:" Style="{StaticResource Label.Crafting}" />
                     <Separator />
                     <Label Content="{Binding TranslationGrandTotal, FallbackValue=GRAND__TOTAL}" ContentStringFormat="{}{0}:" Style="{StaticResource Label.Crafting}" />
+
+                    <Label Content="{Binding TranslationProfitAnalysis, FallbackValue=PROFIT__ANALYSIS}" Style="{StaticResource Label.Crafting.Title}" Margin="0,5,0,0" />
+                    <Label Content="{Binding TranslationReturnOnInvestment, FallbackValue=RETURN__ON__INVESTMENT}" ContentStringFormat="{}{0}:" Style="{StaticResource Label.Crafting}" 
+                           ToolTip="{Binding TranslationReturnOnInvestmentToolTipDescription}" />
+                    <Label Content="{Binding TranslationProfitPerItem, FallbackValue=PROFIT__PER__ITEM}" ContentStringFormat="{}{0}:" Style="{StaticResource Label.Crafting}" 
+                           ToolTip="{Binding TranslationProfitPerItemToolTipDescription}" />
+                    <Label Content="{Binding TranslationBreakEvenPrice, FallbackValue=BREAK__EVEN__PRICE}" ContentStringFormat="{}{0}:" Style="{StaticResource Label.Crafting}" 
+                           ToolTip="{Binding TranslationBreakEvenPriceToolTipDescription}" />
+
                 </StackPanel>
                 <StackPanel Orientation="Vertical">
                     <Label Style="{StaticResource Label.Crafting.Title}" Margin="0,5,0,0" />
@@ -542,6 +551,35 @@
                     <Label Content="{Binding TotalSells}" ContentStringFormat="{}+ {0:N0}" Style="{StaticResource Label.Crafting}" HorizontalAlignment="Right" Foreground="{StaticResource SolidColorBrush.Accent.Green.2}" />
                     <Separator />
                     <Label Content="{Binding GrandTotal}" ContentStringFormat="{}{0:N0}" Style="{StaticResource Label.Crafting}" HorizontalAlignment="Right" FontWeight="Bold" />
+
+                    <Label Style="{StaticResource Label.Crafting.Title}" Margin="0,5,0,0" />
+                    <Label Content="{Binding ReturnOnInvestment}" ContentStringFormat="{}{0:N0} %">
+                        <Label.Style>
+                            <Style TargetType="Label" BasedOn="{StaticResource Label.Crafting}">
+                                <Setter Property="Foreground" Value="{StaticResource SolidColorBrush.Accent.Green.2}" />
+                                <Setter Property="HorizontalAlignment" Value="Right" />
+                                <Style.Triggers>
+                                    <DataTrigger Binding="{Binding IsReturnOnInvestmentNegative}" Value="True">
+                                        <Setter Property="Foreground" Value="{StaticResource SolidColorBrush.Accent.Red.2}" />
+                                    </DataTrigger>
+                                </Style.Triggers>
+                            </Style>
+                        </Label.Style>
+                    </Label>
+                    <Label Content="{Binding ProfitPerItem}" ContentStringFormat="{}{0:N0}">
+                        <Label.Style>
+                            <Style TargetType="Label" BasedOn="{StaticResource Label.Crafting}">
+                                <Setter Property="Foreground" Value="{StaticResource SolidColorBrush.Accent.Green.2}" />
+                                <Setter Property="HorizontalAlignment" Value="Right" />
+                                <Style.Triggers>
+                                    <DataTrigger Binding="{Binding IsProfitPerItemNegative}" Value="True">
+                                        <Setter Property="Foreground" Value="{StaticResource SolidColorBrush.Accent.Red.2}" />
+                                    </DataTrigger>
+                                </Style.Triggers>
+                            </Style>
+                        </Label.Style>
+                    </Label>
+                    <Label Content="{Binding BreakEvenPrice}" ContentStringFormat="{}{0:N0}" Style="{StaticResource Label.Crafting}" HorizontalAlignment="Right" />
                 </StackPanel>
             </StackPanel>
         </StackPanel>

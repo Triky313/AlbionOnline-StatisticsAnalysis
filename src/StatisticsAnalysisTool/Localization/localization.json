@@ -85515,6 +85515,97 @@
           "seg": "اليارو"
         }
       ]
+    },
+    {
+      "tuid": "PROFIT_ANALYSIS",
+      "tuv": [
+        {
+          "lang": "de-DE",
+          "seg": "Profit Analyse"
+        },
+        {
+          "lang": "en-US",
+          "seg": "Profit analysis"
+        }
+      ]
+    },
+    {
+      "tuid": "BREAK_EVEN_PRICE",
+      "tuv": [
+        {
+          "lang": "de-DE",
+          "seg": "Gewinnschwelle"
+        },
+        {
+          "lang": "en-US",
+          "seg": "Break even price"
+        }
+      ]
+    },
+    {
+      "tuid": "RETURN_ON_INVESTMENT",
+      "tuv": [
+        {
+          "lang": "de-DE",
+          "seg": "Investitionsrendite"
+        },
+        {
+          "lang": "en-US",
+          "seg": "Return on invenstment"
+        }
+      ]
+    },
+    {
+      "tuid": "PROFIT_PER_ITEM",
+      "tuv": [
+        {
+          "lang": "de-DE",
+          "seg": "Gewinn pro Item"
+        },
+        {
+          "lang": "en-US",
+          "seg": "Profit per item"
+        }
+      ]
+    },
+    {
+      "tuid": "RETURN_ON_INVESTMENT_TOOL_TIP_DESCRIPTION",
+      "tuv": [
+        {
+          "lang": "de-DE",
+          "seg": "Gewinn im Verhältnis zur Investition."
+        },
+        {
+          "lang": "en-US",
+          "seg": "Profit relative to investment."
+        }
+      ]
+    },
+    {
+      "tuid": "PROFIT_PER_ITEM_TOOL_TIP_DESCRIPTION",
+      "tuv": [
+        {
+          "lang": "de-DE",
+          "seg": "Gewinn pro verkauftem Gegenstand."
+        },
+        {
+          "lang": "en-US",
+          "seg": "Profit per item sold."
+        }
+      ]
+    },
+    {
+      "tuid": "BREAK_EVEN_PRICE_TOOL_TIP_DESCRIPTION",
+      "tuv": [
+        {
+          "lang": "de-DE",
+          "seg": "Preis ohne Verlust oder Gewinn."
+        },
+        {
+          "lang": "en-US",
+          "seg": "Price without loss or profit."
+        }
+      ]
     }
   ]
 }
