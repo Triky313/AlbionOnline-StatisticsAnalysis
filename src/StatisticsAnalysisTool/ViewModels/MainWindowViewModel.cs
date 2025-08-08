@@ -21,6 +21,7 @@ using StatisticsAnalysisTool.Models.TranslationModel;
 using StatisticsAnalysisTool.Network.Manager;
 using StatisticsAnalysisTool.Party;
 using StatisticsAnalysisTool.Properties;
+using StatisticsAnalysisTool.StorageHistory;
 using StatisticsAnalysisTool.Trade;
 using StatisticsAnalysisTool.Views;
 using System;
@@ -34,7 +35,6 @@ using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Data;
 using System.Windows.Media;
-using StatisticsAnalysisTool.StorageHistory;
 
 // ReSharper disable UnusedMember.Global
 
@@ -56,20 +56,24 @@ public class MainWindowViewModel : BaseViewModel
     private bool _isTrackingActive;
     private bool _isTrackingResetByMapChangeActive;
     private bool _isTxtSearchEnabled;
-    private Dictionary<ShopSubCategory, string> _itemSubCategories = new();
     private string _itemCounterString;
     private Dictionary<ItemLevel, string> _itemLevels = new();
-    private Dictionary<ShopCategory, string> _itemCategories = new();
+    private ObservableCollection<CategoryDropdownItem> _itemShopCategories = [];
+    private ObservableCollection<CategoryDropdownItem> _itemSubCategories1 = [];
+    private ObservableCollection<CategoryDropdownItem> _itemSubCategories2 = [];
+    private ObservableCollection<CategoryDropdownItem> _itemSubCategories3 = [];
+    private CategoryDropdownItem _selectedItemShopSubCategory1;
+    private CategoryDropdownItem _selectedItemShopSubCategory2;
+    private CategoryDropdownItem _selectedItemShopSubCategory3;
     private ICollectionView _itemsView;
     private Dictionary<ItemTier, string> _itemTiers = new();
     private string _loadTranslation;
     private int _localImageCounter;
     private string _numberOfValuesTranslation;
-    private ObservableCollection<PartyMemberCircle> _partyMemberCircles = new();
+    private ObservableCollection<PartyMemberCircle> _partyMemberCircles = [];
     private string _searchText;
-    private ShopSubCategory _selectedItemShopSubCategories;
     private ItemLevel _selectedItemLevel;
-    private ShopCategory _selectedItemShopCategories;
+    private CategoryDropdownItem _selectedItemShopCategory;
     private ItemTier _selectedItemTier;
     private MainWindowTranslation _translation;
     private string _updateTranslation;
@@ -143,8 +147,7 @@ public class MainWindowViewModel : BaseViewModel
         UnsupportedOsVisibility = Environment.OSVersion.Version.Major < 10 ? Visibility.Visible : Visibility.Collapsed;
 
         // Item search
-        ItemCategories = CategoryController.CategoryNames;
-        SelectedItemShopCategory = ShopCategory.Unknown;
+        LoadCategoriesToDropdown();
 
         ItemTiers = FrequentlyValues.ItemTiers;
         SelectedItemTier = ItemTier.Unknown;
@@ -217,8 +220,10 @@ public class MainWindowViewModel : BaseViewModel
     public void ItemFilterReset()
     {
         SearchText = string.Empty;
-        SelectedItemShopSubCategory = ShopSubCategory.Unknown;
-        SelectedItemShopCategory = ShopCategory.Unknown;
+        SelectedItemShopCategory = null;
+        SelectedItemShopSubCategory1 = null;
+        SelectedItemShopSubCategory2 = null;
+        SelectedItemShopSubCategory3 = null;
         SelectedItemLevel = ItemLevel.Unknown;
         SelectedItemTier = ItemTier.Unknown;
     }
@@ -396,6 +401,51 @@ public class MainWindowViewModel : BaseViewModel
 
     #region Item View Filters
 
+    private void LoadCategoriesToDropdown()
+    {
+        var categories = ItemController.GetRootCategories()
+            .OrderBy(cat => cat.Value, StringComparer.Ordinal)
+            .Select(cat => new CategoryDropdownItem
+            {
+                Id = cat.Id,
+                Value = cat.Value,
+                DisplayName = LocalizationController.Translation("@MARKETPLACEGUI_ROLLOUT_SHOPCATEGORY_" + cat.Id.ToUpperInvariant())
+            });
+
+        ItemShopCategories.Clear();
+        foreach (var item in categories)
+        {
+            ItemShopCategories.Add(item);
+        }
+
+        SelectedItemShopCategory = null;
+    }
+
+    private static ObservableCollection<CategoryDropdownItem> ToCategoryDropdownItems(IEnumerable<(string Id, string Value)> source)
+    {
+        if (source == null)
+        {
+            return [];
+        }
+
+        return new ObservableCollection<CategoryDropdownItem>(
+            source.Select(x =>
+            {
+                var id = x.Id ?? string.Empty;
+                var value = x.Value ?? string.Empty;
+                var translationKey = string.IsNullOrWhiteSpace(id) ? "UNKNOWN" : id.ToUpperInvariant();
+                var displayName = LocalizationController.Translation("@MARKETPLACEGUI_ROLLOUT_SHOPSUBCATEGORY_" + translationKey) ?? translationKey;
+
+                return new CategoryDropdownItem
+                {
+                    Id = id,
+                    Value = value,
+                    DisplayName = displayName
+                };
+            })
+        );
+    }
+
     private void ItemsViewFilter()
     {
         if (ItemsView == null)
@@ -403,34 +453,36 @@ public class MainWindowViewModel : BaseViewModel
             return;
         }
 
+        string search = SearchText?.ToLower() ?? string.Empty;
+
         ItemsView.Filter = i =>
         {
-            var item = i as Item;
+            if (i is not Item item)
+            {
+                return false;
+            }
+
+            bool nameMatch = item.LocalizedNameAndEnglish?.ToLower().Contains(search) ?? false;
+
+            bool catMatch = SelectedItemShopCategory == null || string.IsNullOrWhiteSpace(SelectedItemShopCategory.Id) || item.FullItemInformation?.ShopCategory == SelectedItemShopCategory.Id;
+            bool sub1Match = SelectedItemShopSubCategory1 == null || string.IsNullOrWhiteSpace(SelectedItemShopSubCategory1.Id) || item.FullItemInformation?.ShopSubCategory1 == SelectedItemShopSubCategory1.Id;
+            bool sub2Match = SelectedItemShopSubCategory2 == null || string.IsNullOrWhiteSpace(SelectedItemShopSubCategory2.Id) || item.FullItemInformation?.ShopSubCategory2 == SelectedItemShopSubCategory2.Id;
+            bool sub3Match = SelectedItemShopSubCategory3 == null || string.IsNullOrWhiteSpace(SelectedItemShopSubCategory3.Id) || item.FullItemInformation?.ShopSubCategory3 == SelectedItemShopSubCategory3.Id;
+
+            bool tierMatch = SelectedItemTier == ItemTier.Unknown || (ItemTier) item.Tier == SelectedItemTier;
+            bool levelMatch = SelectedItemLevel == ItemLevel.Unknown || (ItemLevel) item.Level == SelectedItemLevel;
+
             if (IsShowOnlyItemsWithAlertOnActive)
             {
-                return (item?.LocalizedNameAndEnglish?.ToLower().Contains(SearchText?.ToLower() ?? string.Empty) ?? false)
-                       && (item.ShopCategory == SelectedItemShopCategory || SelectedItemShopCategory == ShopCategory.Unknown)
-                       && (item.ShopSubCategory1 == SelectedItemShopSubCategory || SelectedItemShopSubCategory == ShopSubCategory.Unknown)
-                       && ((ItemTier) item.Tier == SelectedItemTier || SelectedItemTier == ItemTier.Unknown)
-                       && ((ItemLevel) item.Level == SelectedItemLevel || SelectedItemLevel == ItemLevel.Unknown)
-                       && item.IsAlertActive;
+                return nameMatch && catMatch && sub1Match && sub2Match && sub3Match && tierMatch && levelMatch && item.IsAlertActive;
             }
 
             if (IsShowOnlyFavoritesActive)
             {
-                return (item?.LocalizedNameAndEnglish?.ToLower().Contains(SearchText?.ToLower() ?? string.Empty) ?? false)
-                       && (item.ShopCategory == SelectedItemShopCategory || SelectedItemShopCategory == ShopCategory.Unknown)
-                       && (item.ShopSubCategory1 == SelectedItemShopSubCategory || SelectedItemShopSubCategory == ShopSubCategory.Unknown)
-                       && ((ItemTier) item.Tier == SelectedItemTier || SelectedItemTier == ItemTier.Unknown)
-                       && ((ItemLevel) item.Level == SelectedItemLevel || SelectedItemLevel == ItemLevel.Unknown)
-                       && item.IsFavorite;
+                return nameMatch && catMatch && sub1Match && sub2Match && sub3Match && tierMatch && levelMatch && item.IsFavorite;
             }
 
-            return (item?.LocalizedNameAndEnglish?.ToLower().Contains(SearchText?.ToLower() ?? string.Empty) ?? false)
-                   && (item.ShopCategory == SelectedItemShopCategory || SelectedItemShopCategory == ShopCategory.Unknown)
-                   && (item.ShopSubCategory1 == SelectedItemShopSubCategory || SelectedItemShopSubCategory == ShopSubCategory.Unknown)
-                   && ((ItemTier) item.Tier == SelectedItemTier || SelectedItemTier == ItemTier.Unknown)
-                   && ((ItemLevel) item.Level == SelectedItemLevel || SelectedItemLevel == ItemLevel.Unknown);
+            return nameMatch && catMatch && sub1Match && sub2Match && sub3Match && tierMatch && levelMatch;
         };
 
         SetItemCounterAsync();
@@ -710,8 +762,8 @@ public class MainWindowViewModel : BaseViewModel
 
             DamageMeterBindings.DamageMeterActivationToggleIcon = _isDamageMeterTrackingActive ? EFontAwesomeIcon.Solid_ToggleOn : EFontAwesomeIcon.Solid_ToggleOff;
 
-            var colorOn = new SolidColorBrush((Color) Application.Current.Resources["Color.Accent.Blue.2"]);
-            var colorOff = new SolidColorBrush((Color) Application.Current.Resources["Color.Text.1"]);
+            var colorOn = new SolidColorBrush((Color) Application.Current.Resources["Color.Accent.Blue.2"]!);
+            var colorOff = new SolidColorBrush((Color) Application.Current.Resources["Color.Text.1"]!);
             DamageMeterBindings.DamageMeterActivationToggleColor = _isDamageMeterTrackingActive ? colorOn : colorOff;
 
             SettingsController.CurrentSettings.IsDamageMeterTrackingActive = _isDamageMeterTrackingActive;
@@ -754,7 +806,7 @@ public class MainWindowViewModel : BaseViewModel
             OnPropertyChanged();
         }
     }
-    
+
     public ObservableCollection<PartyMemberCircle> PartyMemberCircles
     {
         get => _partyMemberCircles;
@@ -775,52 +827,129 @@ public class MainWindowViewModel : BaseViewModel
         }
     }
 
-    public Dictionary<ShopSubCategory, string> ItemSubCategories
+    public ObservableCollection<CategoryDropdownItem> ItemShopCategories
     {
-        get => _itemSubCategories;
+        get => _itemShopCategories;
         set
         {
-            var categories = value;
-            categories = new Dictionary<ShopSubCategory, string> { { ShopSubCategory.Unknown, string.Empty } }.Concat(categories)
-                .ToDictionary(k => k.Key, v => v.Value);
-            _itemSubCategories = categories;
+            _itemShopCategories = value;
             OnPropertyChanged();
         }
     }
 
-    public ShopSubCategory SelectedItemShopSubCategory
+    public CategoryDropdownItem SelectedItemShopCategory
     {
-        get => _selectedItemShopSubCategories;
+        get => _selectedItemShopCategory;
         set
         {
-            _selectedItemShopSubCategories = value;
+            _selectedItemShopCategory = value;
+
+            var subCatsRaw = ItemController.GetSubCategories1(_selectedItemShopCategory?.Id);
+            ItemSubCategories1 = ToCategoryDropdownItems(subCatsRaw);
+
+            SelectedItemShopSubCategory1 = null;
             ItemsViewFilter();
             ItemsView?.Refresh();
             OnPropertyChanged();
         }
     }
 
-    public Dictionary<ShopCategory, string> ItemCategories
+    public ObservableCollection<CategoryDropdownItem> ItemSubCategories1
     {
-        get => _itemCategories;
+        get => _itemSubCategories1;
         set
         {
-            _itemCategories = value;
+            _itemSubCategories1 = value;
             OnPropertyChanged();
         }
     }
 
-    public ShopCategory SelectedItemShopCategory
+    public CategoryDropdownItem SelectedItemShopSubCategory1
     {
-        get => _selectedItemShopCategories;
+        get => _selectedItemShopSubCategory1;
         set
         {
-            _selectedItemShopCategories = value;
-            ItemSubCategories = CategoryController.GetSubCategoriesByCategory(SelectedItemShopCategory);
-            SelectedItemShopSubCategory = ShopSubCategory.Unknown;
-            ItemsViewFilter();
-            ItemsView?.Refresh();
+            if (_selectedItemShopSubCategory1 != value)
+            {
+                _selectedItemShopSubCategory1 = value;
+
+                if (_selectedItemShopSubCategory1 != null && SelectedItemShopCategory != null)
+                {
+                    var subCats2Raw = ItemController.GetSubCategories2(SelectedItemShopCategory.Id, _selectedItemShopSubCategory1.Id);
+                    ItemSubCategories2 = ToCategoryDropdownItems(subCats2Raw);
+                }
+                else
+                {
+                    ItemSubCategories2 = [];
+                }
+
+                SelectedItemShopSubCategory2 = null;
+                ItemsViewFilter();
+                ItemsView?.Refresh();
+                OnPropertyChanged();
+            }
+        }
+    }
+
+    public ObservableCollection<CategoryDropdownItem> ItemSubCategories2
+    {
+        get => _itemSubCategories2;
+        set
+        {
+            _itemSubCategories2 = value;
             OnPropertyChanged();
+        }
+    }
+
+    public CategoryDropdownItem SelectedItemShopSubCategory2
+    {
+        get => _selectedItemShopSubCategory2;
+        set
+        {
+            if (_selectedItemShopSubCategory2 != value)
+            {
+                _selectedItemShopSubCategory2 = value;
+
+                if (_selectedItemShopSubCategory2 != null && SelectedItemShopCategory != null && SelectedItemShopSubCategory1 != null)
+                {
+                    var subCats3Raw = ItemController.GetSubCategories3(SelectedItemShopCategory.Id, SelectedItemShopSubCategory1.Id, _selectedItemShopSubCategory2.Id);
+                    ItemSubCategories3 = ToCategoryDropdownItems(subCats3Raw);
+                }
+                else
+                {
+                    ItemSubCategories3 = [];
+                }
+
+                SelectedItemShopSubCategory3 = null;
+                ItemsViewFilter();
+                ItemsView?.Refresh();
+                OnPropertyChanged();
+            }
+        }
+    }
+
+    public ObservableCollection<CategoryDropdownItem> ItemSubCategories3
+    {
+        get => _itemSubCategories3;
+        set
+        {
+            _itemSubCategories3 = value;
+            OnPropertyChanged();
+        }
+    }
+
+    public CategoryDropdownItem SelectedItemShopSubCategory3
+    {
+        get => _selectedItemShopSubCategory3;
+        set
+        {
+            if (_selectedItemShopSubCategory3 != value)
+            {
+                _selectedItemShopSubCategory3 = value;
+                ItemsViewFilter();
+                ItemsView?.Refresh();
+                OnPropertyChanged();
+            }
         }
     }
 
@@ -1347,7 +1476,7 @@ public class MainWindowViewModel : BaseViewModel
             OnPropertyChanged();
         }
     }
-    
+
     public static string ItemListJsonHyperlink => "https://raw.githubusercontent.com/ao-data/ao-bin-dumps/master/formatted/items.json";
     public static string ItemsJsonHyperlink => "https://raw.githubusercontent.com/broderickhyman/ao-bin-dumps/master/items.json";
 

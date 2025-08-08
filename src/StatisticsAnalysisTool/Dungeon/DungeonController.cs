@@ -72,8 +72,7 @@ public sealed class DungeonController
             && mapType is not MapType.CorruptedDungeon
             && mapType is not MapType.HellGate
             && mapType is not MapType.Mists
-            && mapType is not MapType.MistsDungeon
-            && mapType is not MapType.AbyssalDepths)
+            && mapType is not MapType.MistsDungeon)
         {
             if (AddClusterToExistDungeon(mapGuid, _lastMapGuid, out var currentDungeon))
             {

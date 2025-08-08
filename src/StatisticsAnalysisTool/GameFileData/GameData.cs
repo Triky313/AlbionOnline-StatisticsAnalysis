@@ -95,12 +95,12 @@ public static class GameData
                 || Extractor.IsBinFileNewer(Path.Combine(gameFilesDirPath, "items.json"), mainGameFolderPath, serverType, "items"))
             {
                 taskFactories.Add(() => extractor.ExtractIndexedItemGameDataAsync(gameFilesDirPath, "indexedItems.json"));
-                taskFactories.Add(() => extractor.ExtractGameDataAsync(gameFilesDirPath, new[] { "items" }));
+                taskFactories.Add(() => extractor.ExtractGameDataAsync(gameFilesDirPath, ["items"]));
             }
 
             if (Extractor.IsBinFileNewer(Path.Combine(gameFilesDirPath, "spells.xml"), mainGameFolderPath, serverType, "spells"))
             {
-                taskFactories.Add(() => extractor.ExtractGameDataFromXmlAsync(gameFilesDirPath, new[] { "spells" }));
+                taskFactories.Add(() => extractor.ExtractGameDataFromXmlAsync(gameFilesDirPath, ["spells"]));
                 taskFactories.Add(() => extractor.ExtractSpellGameDataAsync(gameFilesDirPath));
             }
 

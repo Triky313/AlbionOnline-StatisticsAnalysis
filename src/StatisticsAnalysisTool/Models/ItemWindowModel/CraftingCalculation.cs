@@ -27,12 +27,13 @@ public class CraftingCalculation : BaseViewModel
     private double _totalCraftedItemWeight;
     private double _totalUnfinishedCraftingWeight;
     private double _totalFinishedCraftingWeight;
+    private double _returnOnInvestment;
+    private double _breakEvenPrice;
+    private double _profitPerItem;
     private Visibility _weightValuesVisibility = Visibility.Collapsed;
-
-    private double GetTotalCosts()
-    {
-        return CraftingTax + SetupFee + AuctionsHouseTax + TotalJournalCosts + TotalResourceCosts + OtherCosts;
-    }
+    private bool _isReturnOnInvestmentNegative;
+    private bool _isBreakEvenPriceNegative;
+    private bool _isProfitPerItemNegative;
 
     public int AmountCrafted
     {
@@ -61,7 +62,6 @@ public class CraftingCalculation : BaseViewModel
         set
         {
             _possibleItemCrafting = value;
-            TotalCosts = GetTotalCosts();
             OnPropertyChanged();
         }
     }
@@ -72,7 +72,6 @@ public class CraftingCalculation : BaseViewModel
         set
         {
             _craftingTax = value;
-            TotalCosts = GetTotalCosts();
             OnPropertyChanged();
         }
     }
@@ -83,7 +82,6 @@ public class CraftingCalculation : BaseViewModel
         set
         {
             _setupFee = value;
-            TotalCosts = GetTotalCosts();
             OnPropertyChanged();
         }
     }
@@ -94,7 +92,6 @@ public class CraftingCalculation : BaseViewModel
         set
         {
             _auctionsHouseTax = value;
-            TotalCosts = GetTotalCosts();
             OnPropertyChanged();
         }
     }
@@ -105,7 +102,6 @@ public class CraftingCalculation : BaseViewModel
         set
         {
             _otherCosts = value;
-            TotalCosts = GetTotalCosts();
             OnPropertyChanged();
         }
     }
@@ -116,7 +112,6 @@ public class CraftingCalculation : BaseViewModel
         set
         {
             _totalJournalCosts = value;
-            TotalCosts = GetTotalCosts();
             OnPropertyChanged();
         }
     }
@@ -127,7 +122,6 @@ public class CraftingCalculation : BaseViewModel
         set
         {
             _totalResourceCosts = value;
-            TotalCosts = GetTotalCosts();
             OnPropertyChanged();
         }
     }
@@ -149,7 +143,6 @@ public class CraftingCalculation : BaseViewModel
         set
         {
             _totalItemSells = value;
-            TotalSells = TotalItemSells + TotalJournalSells;
             OnPropertyChanged();
         }
     }
@@ -160,7 +153,6 @@ public class CraftingCalculation : BaseViewModel
         set
         {
             _totalJournalSells = value;
-            TotalSells = TotalItemSells + TotalJournalSells;
             OnPropertyChanged();
         }
     }
@@ -246,6 +238,69 @@ public class CraftingCalculation : BaseViewModel
         }
     }
 
+    public double ReturnOnInvestment
+    {
+        get => _returnOnInvestment;
+        set
+        {
+            _returnOnInvestment = value;
+            IsReturnOnInvestmentNegative = ReturnOnInvestment < 0;
+            OnPropertyChanged();
+        }
+    }
+
+    public double BreakEvenPrice
+    {
+        get => _breakEvenPrice;
+        set
+        {
+            _breakEvenPrice = value;
+            IsBreakEvenPriceNegative = BreakEvenPrice < 0;
+            OnPropertyChanged();
+        }
+    }
+    
+    public double ProfitPerItem
+    {
+        get => _profitPerItem;
+        set
+        {
+            _profitPerItem = value;
+            IsProfitPerItemNegative = ProfitPerItem < 0;
+            OnPropertyChanged();
+        }
+    }
+    
+    public bool IsReturnOnInvestmentNegative
+    {
+        get => _isReturnOnInvestmentNegative;
+        set
+        {
+            _isReturnOnInvestmentNegative = value;
+            OnPropertyChanged();
+        }
+    }
+
+    public bool IsBreakEvenPriceNegative
+    {
+        get => _isBreakEvenPriceNegative;
+        set
+        {
+            _isBreakEvenPriceNegative = value;
+            OnPropertyChanged();
+        }
+    }
+
+    public bool IsProfitPerItemNegative
+    {
+        get => _isProfitPerItemNegative;
+        set
+        {
+            _isProfitPerItemNegative = value;
+            OnPropertyChanged();
+        }
+    }
+
     #region Commands
 
     public void FoldUnfoldWeightValues(object value)
@@ -280,4 +335,11 @@ public class CraftingCalculation : BaseViewModel
     public static string TranslationTotalCraftedItemWeight => LocalizationController.Translation("TOTAL_CRAFTED_WEIGHT");
     public static string TranslationTotalUnfinishedCraftingWeight => LocalizationController.Translation("TOTAL_UNFINISHED_CRAFTING_WEIGHT");
     public static string TranslationTotalFinishedCraftingWeight => LocalizationController.Translation("TOTAL_FINISHED_CRAFTING_WEIGHT");
+    public static string TranslationProfitAnalysis => LocalizationController.Translation("PROFIT_ANALYSIS");
+    public static string TranslationBreakEvenPrice => LocalizationController.Translation("BREAK_EVEN_PRICE");
+    public static string TranslationReturnOnInvestment => LocalizationController.Translation("RETURN_ON_INVESTMENT");
+    public static string TranslationProfitPerItem => LocalizationController.Translation("PROFIT_PER_ITEM");
+    public static string TranslationReturnOnInvestmentToolTipDescription => LocalizationController.Translation("RETURN_ON_INVESTMENT_TOOL_TIP_DESCRIPTION");
+    public static string TranslationProfitPerItemToolTipDescription => LocalizationController.Translation("PROFIT_PER_ITEM_TOOL_TIP_DESCRIPTION");
+    public static string TranslationBreakEvenPriceToolTipDescription => LocalizationController.Translation("BREAK_EVEN_PRICE_TOOL_TIP_DESCRIPTION");
 }

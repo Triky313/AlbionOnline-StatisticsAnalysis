@@ -653,6 +653,13 @@ public class ItemWindowViewModel : BaseViewModel
 
         // Amount crafted
         CraftingCalculation.AmountCrafted = EssentialCraftingValues.AmountCrafted;
+        
+        // Total sells
+        CraftingCalculation.TotalSells = CraftingCalculation.TotalItemSells + CraftingCalculation.TotalJournalSells;
+
+        // Total costs
+        CraftingCalculation.TotalCosts = CraftingCalculation.TotalResourceCosts + CraftingCalculation.CraftingTax + CraftingCalculation.SetupFee
+                                         + CraftingCalculation.AuctionsHouseTax + CraftingCalculation.TotalJournalCosts + CraftingCalculation.OtherCosts;
 
         // Weight
         var requiredResourcesWeights = RequiredResources?.Sum(x => x.TotalWeight) ?? 0;
@@ -666,6 +673,21 @@ public class ItemWindowViewModel : BaseViewModel
 
             CraftingCalculation.TotalCraftedItemWeight = possibleItemCraftingWeights;
             CraftingCalculation.TotalFinishedCraftingWeight = CraftingCalculation.TotalCraftedItemWeight;
+
+            // Return on investment
+            CraftingCalculation.ReturnOnInvestment = (CraftingCalculation.TotalCosts > 0) ? ((CraftingCalculation.TotalSells - CraftingCalculation.TotalCosts) / CraftingCalculation.TotalCosts) * 100.0 : 0.0;
+
+            // Break even price
+            var totalCraftedItems = CraftingCalculation.PossibleItemCrafting * CraftingCalculation.AmountCrafted;
+            if (totalCraftedItems == 0)
+            {
+                totalCraftedItems = 1;
+            }
+
+            CraftingCalculation.BreakEvenPrice = CraftingCalculation.TotalCosts / totalCraftedItems;
+
+            // Profit per item
+            CraftingCalculation.ProfitPerItem = (CraftingCalculation.TotalSells - CraftingCalculation.TotalCosts) / CraftingCalculation.PossibleItemCrafting;
         }
     }
 
