@@ -1,5 +1,5 @@
-﻿using System.Collections.Generic;
-using System.Linq;
+﻿using System;
+using System.Collections.Generic;
 
 namespace StatisticsAnalysisTool.Trade;
 
@@ -26,7 +26,7 @@ public class CraftingBuildingData
     {
         foreach (var craftingBuildingName in craftingBuildingNamesToCheck)
         {
-            if (CraftingBuildingNames.TryGetValue(craftingBuildingName, out string name) && input.Contains(name))
+            if (CraftingBuildingNames.TryGetValue(craftingBuildingName, out string name) && !string.IsNullOrEmpty(input) && input.ToUpper().Contains(name))
             {
                 return true;
             }
