@@ -3793,6 +3793,14 @@
                         <Grid Height="96">
                             <StackPanel Orientation="Vertical" HorizontalAlignment="Right" VerticalAlignment="Top">
                                 <StackPanel Orientation="Horizontal">
+                                    <!-- Number of floors -->
+                                    <StackPanel Orientation="Horizontal">
+                                        <fa5:ImageAwesome Icon="Solid_Dungeon" Foreground="{StaticResource SolidColorBrush.Text.1}" Height="18" 
+                                                          ToolTip="{Binding TranslationNumberOfDungeonFloors, FallbackValue=NUMBER__OF__DUNGEON__FLOORS}" />
+                                        <Label Content="{Binding NumberOfFloors, IsAsync=True, FallbackValue=0}" ContentStringFormat="{}{0}" 
+                                               VerticalAlignment="Center" Width="22" Padding="8,6,0,0" />
+                                    </StackPanel>
+
                                     <!-- Run time -->
                                     <Grid Width="18" Height="24" VerticalAlignment="Center" 
                                           ToolTip="{Binding TranslationRunTime, FallbackValue=RUN__TIME}">

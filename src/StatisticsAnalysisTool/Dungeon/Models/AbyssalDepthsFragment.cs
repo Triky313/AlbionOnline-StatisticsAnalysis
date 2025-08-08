@@ -1,6 +1,7 @@
 ﻿using StatisticsAnalysisTool.Cluster;
 using StatisticsAnalysisTool.Common;
 using System;
+using System.Collections.Specialized;
 using System.Windows;
 using ValueType = StatisticsAnalysisTool.Enumerations.ValueType;
 
@@ -13,9 +14,11 @@ public class AbyssalDepthsFragment : DungeonBaseFragment
     private double _mightPerHour;
     private double _favorPerHour;
     private Visibility _mightFavorVisibility = Visibility.Collapsed;
+    private int _numberOfFloors;
 
     public AbyssalDepthsFragment(Guid guid, MapType mapType, DungeonMode mode, string mainMapIndex) : base(guid, mapType, mode, mainMapIndex)
     {
+        GuidList.CollectionChanged += UpdateNumberOfFloors;
     }
 
     public AbyssalDepthsFragment(DungeonDto dto) : base(dto)
@@ -23,7 +26,10 @@ public class AbyssalDepthsFragment : DungeonBaseFragment
         Might = dto.Might;
         Favor = dto.Favor;
 
+        UpdateNumberOfFloors(null, null);
         UpdateValueVisibility();
+
+        GuidList.CollectionChanged += UpdateNumberOfFloors;
     }
 
     public double Might
@@ -50,6 +56,16 @@ public class AbyssalDepthsFragment : DungeonBaseFragment
     }
 
     #region Composite values that are not in the DTO
+
+    public int NumberOfFloors
+    {
+        get => _numberOfFloors;
+        set
+        {
+            _numberOfFloors = value;
+            OnPropertyChanged();
+        }
+    }
 
     public double MightPerHour
     {
@@ -82,6 +98,11 @@ public class AbyssalDepthsFragment : DungeonBaseFragment
     }
 
     #endregion
+
+    private void UpdateNumberOfFloors(object sender, NotifyCollectionChangedEventArgs e)
+    {
+        NumberOfFloors = GuidList.Count;
+    }
 
     public void Add(double value, ValueType type)
     {
