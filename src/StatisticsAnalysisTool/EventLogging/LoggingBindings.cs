@@ -124,7 +124,7 @@ public class LoggingBindings : BaseViewModel
 
     #region Loot comparator
 
-    private bool IsLootedItemFound(LootingPlayer lootingPlayer, LootedItem vaultLogItem)
+    private static bool MatchLootedItem(LootingPlayer lootingPlayer, LootedItem vaultLogItem)
     {
         foreach (LootedItem lootedItem in lootingPlayer.LootedItems)
         {
@@ -165,7 +165,7 @@ public class LoggingBindings : BaseViewModel
             if (lootingPlayer is not null)
             {
                 var newItems = new List<LootedItem>();
-                if (lootingPlayer.LootedItems.Count <= 0 || !IsLootedItemFound(lootingPlayer, vaultLogItem))
+                if (lootingPlayer.LootedItems.Count <= 0 || !MatchLootedItem(lootingPlayer, vaultLogItem))
                 {
                     AddNewLootedItem(newItems, logItem, vaultLogLocalizedItem, LootedItemStatus.Donated);
                 }
