@@ -85526,6 +85526,10 @@
         {
           "lang": "en-US",
           "seg": "Profit analysis"
+        },
+        {
+          "lang": "fr-FR",
+          "seg": "Analyse des bénéfices"
         }
       ]
     },
@@ -85539,6 +85543,10 @@
         {
           "lang": "en-US",
           "seg": "Break even price"
+        },
+        {
+          "lang": "fr-FR",
+          "seg": "Seuil de rentabilité"
         }
       ]
     },
@@ -85552,6 +85560,10 @@
         {
           "lang": "en-US",
           "seg": "Return on invenstment"
+        },
+        {
+          "lang": "fr-FR",
+          "seg": "Retour sur investissement"
         }
       ]
     },
@@ -85565,6 +85577,10 @@
         {
           "lang": "en-US",
           "seg": "Profit per item"
+        },
+        {
+          "lang": "fr-FR",
+          "seg": "Bénéfice par article"
         }
       ]
     },
@@ -85578,6 +85594,10 @@
         {
           "lang": "en-US",
           "seg": "Profit relative to investment."
+        },
+        {
+          "lang": "fr-FR",
+          "seg": "Bénéfice par rapport à l'investissement."
         }
       ]
     },
@@ -85591,6 +85611,10 @@
         {
           "lang": "en-US",
           "seg": "Profit per item sold."
+        },
+        {
+          "lang": "fr-FR",
+          "seg": "Bénéfice par article vendu."
         }
       ]
     },
@@ -85604,6 +85628,10 @@
         {
           "lang": "en-US",
           "seg": "Price without loss or profit."
+        },
+        {
+          "lang": "fr-FR",
+          "seg": "Prix sans perte ni gain."
         }
       ]
     }
