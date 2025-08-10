@@ -1,4 +1,4 @@
-﻿using Ookii.Dialogs.Wpf;
+using Ookii.Dialogs.Wpf;
 using StatisticsAnalysisTool.Common;
 using StatisticsAnalysisTool.Common.UserSettings;
 using StatisticsAnalysisTool.EventLogging.Notification;
@@ -124,47 +124,40 @@ public class LoggingBindings : BaseViewModel
 
     #region Loot comparator
 
-    private static bool MatchLootedItem(LootingPlayer lootingPlayer, LootedItem vaultLogItem)
-    {
-        foreach (LootedItem lootedItem in lootingPlayer.LootedItems)
-        {
-            if (lootedItem.GetHashCode() == vaultLogItem.GetHashCode())
-            {
-                lootedItem.Status = LootedItemStatus.Resolved;
-                return true;
-            }
-        }
-
-        return false;
-    }
-
     public void UpdateItemsStatus()
     {
         RemoveAllVaultItems();
 
-        foreach (VaultContainerLogItem logItem in VaultLogItems)
+        foreach (var logItem in VaultLogItems)
         {
-            var lootingPlayer = LootingPlayers.FirstOrDefault(x => x.PlayerName == logItem.PlayerName);
-            var vaultLogLocalizedItem = ItemController.GetItemByLocalizedName(logItem.LocalizedName, logItem.Enchantment);
+            var lootingPlayer = LootingPlayers.FirstOrDefault(x => string.Equals(x.PlayerName, logItem.PlayerName, StringComparison.OrdinalIgnoreCase));
 
+            var vaultLogLocalizedItem = ItemController.GetItemByLocalizedName(logItem.LocalizedName, logItem.Enchantment);
             if (vaultLogLocalizedItem is null)
             {
                 continue;
             }
 
-            var vaultLogItem = new LootedItem()
+            var ts = logItem.Timestamp.Kind switch
             {
-                UtcPickupTime = logItem.Timestamp,
+                DateTimeKind.Utc => logItem.Timestamp,
+                DateTimeKind.Local => logItem.Timestamp.ToUniversalTime(),
+                _ => DateTime.SpecifyKind(logItem.Timestamp, DateTimeKind.Utc)
+            };
+
+            var vaultLogItem = new LootedItem
+            {
+                UtcPickupTime = ts,
                 ItemIndex = vaultLogLocalizedItem.Index,
                 IsItemFromVaultLog = true,
-                IsTrash = vaultLogLocalizedItem.FullItemInformation?.ShopSubCategory1 == "trash",
-                LootedByName = logItem.PlayerName,
-                Quantity = logItem.Quantity
+                IsTrash = string.Equals(vaultLogLocalizedItem.FullItemInformation?.ShopSubCategory1, "trash", StringComparison.OrdinalIgnoreCase), 
+                LootedByName = logItem.PlayerName, Quantity = logItem.Quantity
             };
 
             if (lootingPlayer is not null)
             {
                 var newItems = new List<LootedItem>();
+
                 if (lootingPlayer.LootedItems.Count <= 0 || !MatchLootedItem(lootingPlayer, vaultLogItem))
                 {
                     AddNewLootedItem(newItems, logItem, vaultLogLocalizedItem, LootedItemStatus.Donated);
@@ -182,6 +175,27 @@ public class LoggingBindings : BaseViewModel
         }
 
         MarkLostItems(LootingPlayers);
+    }
+
+    private static bool MatchLootedItem(LootingPlayer lootingPlayer, LootedItem vaultLogItem, int timeToleranceSeconds = 2)
+    {
+        foreach (var lootedItem in lootingPlayer.LootedItems)
+        {
+            bool same =
+                lootedItem.ItemIndex == vaultLogItem.ItemIndex &&
+                string.Equals(lootedItem.LootedByName, vaultLogItem.LootedByName, StringComparison.OrdinalIgnoreCase) &&
+                lootedItem.Quantity == vaultLogItem.Quantity &&
+                Math.Abs((lootedItem.UtcPickupTime - vaultLogItem.UtcPickupTime).TotalSeconds) <= timeToleranceSeconds;
+
+            if (same)
+            {
+                lootedItem.Status = LootedItemStatus.Resolved;
+                lootedItem.IsItemFromVaultLog = true;
+                return true;
+            }
+        }
+
+        return false;
     }
 
     private static void AddNewLootedItem(List<LootedItem> newItems, VaultContainerLogItem logItem, Item vaultLogLocalizedItem, LootedItemStatus status)
@@ -858,41 +872,40 @@ public class LoggingBindings : BaseViewModel
         var cat = lootedItem.Item.FullItemInformation.ShopCategory;
         var sub1 = lootedItem.Item.FullItemInformation.ShopSubCategory1;
 
-        if (cat is "armor" or "melee" or "ranged" or "magic" or "gatheringgear" or "offhand")
+        if (cat is "armors" or "weapons" or "head" or "shoes" or "gathering" or "offhands")
         {
             return true;
         }
 
-        if (_isShowingFood && cat == "consumables" && sub1 is "fish" or "cooked")
+        if (_isShowingFood && cat == "consumables" && sub1 is "food" or "tomes")
         {
             return true;
         }
 
-        if (_isShowingPotion && cat == "consumables" && sub1 == "potion")
+        if (_isShowingPotion && cat == "consumables" && sub1 == "potions")
         {
             return true;
         }
 
-        if (_isShowingMount && cat == "mounts")
+        if (_isShowingMount && cat is "mounts" or "raremounts" or "battle_mount")
         {
             return true;
         }
 
         if (_isShowingOthers && cat is
-                "other" or "artefacts" or "cityresources" or "farmables" or "furniture"
-                or "labourers" or "products" or "materials" or "luxurygoods"
-                or "resources" or "skillbooks" or "token" or "trophies"
-                or "tools" or "unknown")
+                "other" or "artefacts" or "cityresources" or "furniture" or "vanity"
+                or "materials" or "resources" or "labourers" or "crafting"
+                or "token" or "trophies" or "farming" or "unknown")
         {
             return true;
         }
 
-        if (_isShowingBag && cat == "accessories" && sub1 == "bag")
+        if (_isShowingBag && cat == "accessoires" && sub1 == "bag")
         {
             return true;
         }
 
-        if (_isShowingCape && cat == "accessories" && sub1 == "cape")
+        if (_isShowingCape && cat == "accessoires" && sub1 == "cape")
         {
             return true;
         }
