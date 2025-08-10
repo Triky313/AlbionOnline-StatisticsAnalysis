@@ -124,6 +124,20 @@ public class LoggingBindings : BaseViewModel
 
     #region Loot comparator
 
+    private static bool MatchLootedItem(LootingPlayer lootingPlayer, LootedItem vaultLogItem)
+    {
+        foreach (LootedItem lootedItem in lootingPlayer.LootedItems)
+        {
+            if (lootedItem.GetHashCode() == vaultLogItem.GetHashCode())
+            {
+                lootedItem.Status = LootedItemStatus.Resolved;
+                return true;
+            }
+        }
+
+        return false;
+    }
+
     public void UpdateItemsStatus()
     {
         RemoveAllVaultItems();
@@ -151,23 +165,9 @@ public class LoggingBindings : BaseViewModel
             if (lootingPlayer is not null)
             {
                 var newItems = new List<LootedItem>();
-                if (lootingPlayer.LootedItems.Count <= 0)
+                if (lootingPlayer.LootedItems.Count <= 0 || !MatchLootedItem(lootingPlayer, vaultLogItem))
                 {
                     AddNewLootedItem(newItems, logItem, vaultLogLocalizedItem, LootedItemStatus.Donated);
-                }
-                else
-                {
-                    foreach (LootedItem lootedItem in lootingPlayer.LootedItems)
-                    {
-                        if (lootedItem.GetHashCode() == vaultLogItem.GetHashCode())
-                        {
-                            lootedItem.Status = LootedItemStatus.Resolved;
-                            break;
-                        }
-
-                        AddNewLootedItem(newItems, logItem, vaultLogLocalizedItem, LootedItemStatus.Donated);
-                        break;
-                    }
                 }
 
                 foreach (var newItem in newItems)
