@@ -23,6 +23,8 @@ public class Extractor
         await _localizationData.LoadDataAsync(_mainGameServerFolderString);
     }
 
+    public Dictionary<string, Dictionary<string, string>> GameLocalization => _localizationData.AllLocalized;
+
     public async Task ExtractIndexedItemGameDataAsync(string outputDirPath, string indexedItemsFileName)
     {
         await LoadLocationDataAsync();

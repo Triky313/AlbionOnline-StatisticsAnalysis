@@ -176,7 +176,7 @@ internal class ItemData : IDisposable
 
     private static byte[] RemoveBom(byte[] byteArray)
     {
-        byte[] utf8Bom = { 0xEF, 0xBB, 0xBF };
+        byte[] utf8Bom = [0xEF, 0xBB, 0xBF];
 
         if (byteArray.Length >= utf8Bom.Length && byteArray[0] == utf8Bom[0] && byteArray[1] == utf8Bom[1] && byteArray[2] == utf8Bom[2])
         {
