@@ -5,14 +5,12 @@ namespace StatisticAnalysisTool.Extractor;
 internal class LocalizationData : IDisposable
 {
     public const string ItemPrefix = "@ITEMS_";
-    public const string SpellPrefix = "@SPELLS_";
     public const string DescPostfix = "_DESC";
 
     public Dictionary<string, Dictionary<string, string>> ItemLocalizedNames = new();
     public Dictionary<string, Dictionary<string, string>> ItemLocalizedDescriptions = new();
 
-    public Dictionary<string, Dictionary<string, string>> SpellLocalizedNames = new();
-    public Dictionary<string, Dictionary<string, string>> SpellLocalizedDescriptions = new();
+    public Dictionary<string, Dictionary<string, string>> AllLocalized = new(StringComparer.OrdinalIgnoreCase);
 
     public async Task LoadDataAsync(string mainGameFolder)
     {
@@ -28,13 +26,12 @@ internal class LocalizationData : IDisposable
                 IgnoreWhitespace = true
             });
 
-            var itemLocalizedNames = new Dictionary<string, Dictionary<string, string>>();
-            var itemLocalizedDescriptions = new Dictionary<string, Dictionary<string, string>>();
-            var spellLocalizedNames = new Dictionary<string, Dictionary<string, string>>();
-            var spellLocalizedDescriptions = new Dictionary<string, Dictionary<string, string>>();
+            var itemLocalizedNames = new Dictionary<string, Dictionary<string, string>>(StringComparer.OrdinalIgnoreCase);
+            var itemLocalizedDescriptions = new Dictionary<string, Dictionary<string, string>>(StringComparer.OrdinalIgnoreCase);
+            var allLocalized = new Dictionary<string, Dictionary<string, string>>(StringComparer.OrdinalIgnoreCase);
 
             string? currentTuId = null;
-            Dictionary<string, string> currentLanguages = null!;
+            Dictionary<string, string>? currentLanguages = null;
 
             while (await reader.ReadAsync())
             {
@@ -44,7 +41,7 @@ internal class LocalizationData : IDisposable
                         if (reader.Name == "tu")
                         {
                             currentTuId = reader.GetAttribute("tuid") ?? string.Empty;
-                            currentLanguages = new Dictionary<string, string>();
+                            currentLanguages = new Dictionary<string, string>(StringComparer.OrdinalIgnoreCase);
                         }
                         else if (reader.Name == "tuv" && currentTuId != null)
                         {
@@ -60,9 +57,11 @@ internal class LocalizationData : IDisposable
                     case XmlNodeType.EndElement:
                         if (reader.Name == "tu" && currentTuId != null && currentLanguages != null)
                         {
-                            if (currentTuId.StartsWith(ItemPrefix))
+                            allLocalized[currentTuId] = currentLanguages;
+
+                            if (currentTuId.StartsWith(ItemPrefix, StringComparison.OrdinalIgnoreCase))
                             {
-                                if (currentTuId.EndsWith(DescPostfix))
+                                if (currentTuId.EndsWith(DescPostfix, StringComparison.OrdinalIgnoreCase))
                                 {
                                     itemLocalizedDescriptions[currentTuId] = currentLanguages;
                                 }
@@ -71,20 +70,9 @@ internal class LocalizationData : IDisposable
                                     itemLocalizedNames[currentTuId] = currentLanguages;
                                 }
                             }
-                            else if (currentTuId.StartsWith(SpellPrefix))
-                            {
-                                if (currentTuId.EndsWith(DescPostfix))
-                                {
-                                    spellLocalizedDescriptions[currentTuId] = currentLanguages;
-                                }
-                                else
-                                {
-                                    spellLocalizedNames[currentTuId] = currentLanguages;
-                                }
-                            }
 
                             currentTuId = null;
-                            currentLanguages = null!;
+                            currentLanguages = null;
                         }
                         break;
                 }
@@ -92,26 +80,25 @@ internal class LocalizationData : IDisposable
 
             ItemLocalizedNames = itemLocalizedNames;
             ItemLocalizedDescriptions = itemLocalizedDescriptions;
-            SpellLocalizedNames = spellLocalizedNames;
-            SpellLocalizedDescriptions = spellLocalizedDescriptions;
+            AllLocalized = allLocalized;
         }
         catch (Exception ex)
         {
             Console.WriteLine($"Error loading localization data: {ex.Message}");
+            AllLocalized = new(StringComparer.OrdinalIgnoreCase);
         }
     }
 
     public bool IsDataLoaded()
     {
-        return ItemLocalizedNames.Count > 0 && ItemLocalizedDescriptions.Count > 0 && SpellLocalizedNames.Count > 0 && SpellLocalizedDescriptions.Count > 0;
+        return AllLocalized.Count > 0;
     }
 
     public void Dispose()
     {
         ItemLocalizedNames.Clear();
         ItemLocalizedDescriptions.Clear();
-        SpellLocalizedNames.Clear();
-        SpellLocalizedDescriptions.Clear();
+        AllLocalized.Clear();
         GC.SuppressFinalize(this);
     }
 }

@@ -1,13 +1,11 @@
 using StatisticsAnalysisTool.Common;
-using StatisticsAnalysisTool.Common.UserSettings;
 using StatisticsAnalysisTool.GameFileData.Models;
+using StatisticsAnalysisTool.Localization;
 using StatisticsAnalysisTool.Properties;
 using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using System.Text.Json;
-using System.Text.Json.Serialization;
 using System.Threading.Tasks;
 using System.Xml.Linq;
 
@@ -16,7 +14,6 @@ namespace StatisticsAnalysisTool.GameFileData;
 public static class SpellData
 {
     private static List<GameFileDataSpell> _spells;
-    private static List<SpellLocalization> _spellLocalizations;
 
     public static string GetUniqueName(int index)
     {
@@ -52,10 +49,7 @@ public static class SpellData
             return uniqueName;
         }
 
-        var culture = SettingsController.CurrentSettings.CurrentCultureIetfLanguageTag;
-        var spellLocName = spell.LocalizedNames?.FirstOrDefault(x => string.Equals(x.Key, culture, StringComparison.CurrentCultureIgnoreCase)).Value ?? spell.UniqueName;
-
-        return spellLocName;
+        return string.IsNullOrEmpty(spell.NameLocatag) ? uniqueName : LocalizationController.Translation(spell.NameLocatag);
     }
 
     public static string GetLocalizationDescription(string uniqueName)
@@ -66,17 +60,11 @@ public static class SpellData
             return uniqueName;
         }
 
-        var culture = SettingsController.CurrentSettings.CurrentCultureIetfLanguageTag;
-        var spellLocName = spell.LocalizedDescriptions?.FirstOrDefault(x => string.Equals(x.Key, culture, StringComparison.CurrentCultureIgnoreCase)).Value ?? spell.UniqueName;
-
-        return spellLocName;
+        return string.IsNullOrEmpty(spell.DescriptionLocatag) ? uniqueName : LocalizationController.Translation(spell.DescriptionLocatag);
     }
 
     public static async Task<bool> LoadDataAsync()
     {
-        // Spells data
-        await LoadLocalizationDataAsync();
-
         var gameFilesDirPath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, Settings.Default.GameFilesDirectoryName);
         var regularDataFilePath = Path.Combine(gameFilesDirPath, Settings.Default.SpellDataFileName);
 
@@ -86,37 +74,11 @@ public static class SpellData
         }
 
         var document = XDocument.Load(regularDataFilePath);
-        _spells = BuildSpells(new List<XElement>(document.Root!.Elements()));
+        _spells = BuildSpells([.. document.Root!.Elements()]);
 
         await Task.CompletedTask;
 
-        _spellLocalizations = null;
         return _spells.Count >= 0;
-    }
-
-    public static async Task<bool> LoadLocalizationDataAsync()
-    {
-        var gameFilesDirPath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, Settings.Default.GameFilesDirectoryName);
-
-        // Spell localizations
-        var regularSpellLocDataFilePath = Path.Combine(gameFilesDirPath, Settings.Default.SpellLocalizationsFileName);
-
-        if (!File.Exists(regularSpellLocDataFilePath))
-        {
-            _spellLocalizations = new List<SpellLocalization>();
-        }
-
-        var spellLocalizations = GameData.GetSpecificDataFromJsonFileLocal<SpellLocalization>(regularSpellLocDataFilePath,
-            new JsonSerializerOptions()
-            {
-                NumberHandling = JsonNumberHandling.AllowReadingFromString,
-                ReadCommentHandling = JsonCommentHandling.Skip
-            });
-
-        _spellLocalizations = spellLocalizations;
-
-        await Task.CompletedTask;
-        return _spellLocalizations.Count >= 0;
     }
 
     public static List<GameFileDataSpell> BuildSpells(List<XElement> elements)
@@ -175,10 +137,10 @@ public static class SpellData
     private static GameFileDataSpell CreateGameFileDataSpell(int index, XElement element)
     {
         var uniqueName = element.Attribute("uniquename")?.Value ?? string.Empty;
+        var nameLocatag = element.Attribute("namelocatag")?.Value ?? string.Empty;
+        var descriptionLocatag = element.Attribute("descriptionlocatag")?.Value ?? string.Empty;
         var target = element.Attribute("target")?.Value ?? string.Empty;
         var category = element.Attribute("category")?.Value ?? string.Empty;
-
-        var spellLocalization = _spellLocalizations.FirstOrDefault(x => x.UniqueName == uniqueName) ?? new SpellLocalization();
 
         if (!string.IsNullOrEmpty(uniqueName))
         {
@@ -188,8 +150,8 @@ public static class SpellData
                 UniqueName = uniqueName,
                 Target = target,
                 Category = category,
-                LocalizedNames = spellLocalization.LocalizedNames,
-                LocalizedDescriptions = spellLocalization.LocalizedDescriptions
+                NameLocatag = nameLocatag,
+                DescriptionLocatag = descriptionLocatag
             };
         }
 

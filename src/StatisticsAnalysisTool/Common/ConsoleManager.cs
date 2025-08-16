@@ -71,13 +71,13 @@ public static class ConsoleManager
 
     public static void WriteLineForWarning(Type declaringType, Exception e)
     {
-        WriteLine(new ConsoleFragment(declaringType.ToString(), e.Message, ConsoleColorType.WarnColor));
+        WriteLine(new ConsoleFragment(declaringType?.ToString() ?? string.Empty, e?.Message ?? "Unknown exception", ConsoleColorType.WarnColor));
     }
 
     public static void WriteLineForError(Type declaringType, Exception e)
     {
-        WriteLine(new ConsoleFragment(declaringType.ToString(), e.Message, ConsoleColorType.ErrorColor));
-        WriteLine(new ConsoleFragment(string.Empty, e.StackTrace, ConsoleColorType.ErrorColor));
+        WriteLine(new ConsoleFragment(declaringType?.ToString() ?? string.Empty, e?.Message ?? "Unknown exception", ConsoleColorType.ErrorColor));
+        WriteLine(new ConsoleFragment(string.Empty, e?.StackTrace ?? string.Empty, ConsoleColorType.ErrorColor));
     }
 
     public static void WriteLineForMessage(Type declaringType, string message, ConsoleColorType consoleColorType = ConsoleColorType.Default)

@@ -41,21 +41,31 @@ public class SettingsController
             return;
         }
 
-        var localFilePath = $"{AppDomain.CurrentDomain.BaseDirectory}{Settings.Default.SettingsFileName}";
+        var localFilePath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, Settings.Default.SettingsFileName);
 
-        if (File.Exists(localFilePath))
+        try
         {
-            try
+            if (!File.Exists(localFilePath))
             {
-                var settingsString = File.ReadAllText(localFilePath, Encoding.UTF8);
-                CurrentSettings = JsonSerializer.Deserialize<SettingsObject>(settingsString);
+                CurrentSettings = new SettingsObject();
+                SaveToLocalFile();
                 _haveSettingsAlreadyBeenLoaded = true;
+                return;
             }
-            catch (Exception e)
-            {
-                ConsoleManager.WriteLineForError(MethodBase.GetCurrentMethod()?.DeclaringType, e);
-                Log.Error(e, "{message}", MethodBase.GetCurrentMethod()?.DeclaringType);
-            }
+
+            var settingsString = File.ReadAllText(localFilePath, Encoding.UTF8);
+            var loaded = JsonSerializer.Deserialize<SettingsObject>(settingsString);
+
+            CurrentSettings = loaded ?? new SettingsObject();
+            _haveSettingsAlreadyBeenLoaded = true;
+        }
+        catch (Exception e)
+        {
+            ConsoleManager.WriteLineForError(MethodBase.GetCurrentMethod()?.DeclaringType, e);
+            Log.Error(e, "{message}", MethodBase.GetCurrentMethod()?.DeclaringType);
+
+            CurrentSettings ??= new SettingsObject();
+            _haveSettingsAlreadyBeenLoaded = true;
         }
     }
 

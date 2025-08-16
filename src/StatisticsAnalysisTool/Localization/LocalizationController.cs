@@ -6,17 +6,21 @@ using StatisticsAnalysisTool.ViewModels;
 using StatisticsAnalysisTool.Views;
 using System;
 using System.Collections.Generic;
+using System.Collections.Immutable;
 using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Reflection;
 using System.Text.Json;
+using System.Threading;
+using System.Threading.Tasks;
 
 namespace StatisticsAnalysisTool.Localization;
 
 public class LocalizationController
 {
-    private static readonly Dictionary<string, Dictionary<string, string>> Translations = new();
+    private static readonly Dictionary<string, Dictionary<string, string>> Translations = new(StringComparer.OrdinalIgnoreCase);
+    private static ImmutableDictionary<string, ImmutableDictionary<string, string>> _gameLocalizations = ImmutableDictionary<string, ImmutableDictionary<string, string>>.Empty;
 
     public static bool Init()
     {
@@ -99,34 +103,41 @@ public class LocalizationController
 
     public static string Translation(string key, List<string> placeholders, List<string> replacements)
     {
-        var culture = SettingsController.CurrentSettings.CurrentCultureIetfLanguageTag;
-
-        try
+        if (string.IsNullOrEmpty(key))
         {
-            if (Translations.TryGetValue(culture, out var cultureTranslations) && cultureTranslations.TryGetValue(key, out var translation))
-            {
-                if (placeholders != null && replacements != null)
-                {
-                    if (placeholders.Count != replacements.Count)
-                    {
-                        return key;
-                    }
-
-                    for (int i = 0; i < placeholders.Count; i++)
-                    {
-                        translation = translation.Replace("{" + placeholders[i] + "}", replacements[i]);
-                    }
-                }
-
-                return !string.IsNullOrEmpty(translation) ? translation : key;
-            }
+            return key;
         }
-        catch (ArgumentNullException)
+
+        var culture = SettingsController.CurrentSettings.CurrentCultureIetfLanguageTag ?? string.Empty;
+
+        if (Translations.TryGetValue(culture, out var transForCulture) && transForCulture.TryGetValue(key, out var t1) && !string.IsNullOrEmpty(t1))
         {
-            return "TRANSLATION-ERROR";
+            return ApplyPlaceholders(t1, placeholders, replacements);
+        }
+
+        var gameLoc = Volatile.Read(ref _gameLocalizations);
+        if (gameLoc != null && gameLoc.TryGetValue(key, out var langs) && langs.TryGetValue(culture, out var t2) && !string.IsNullOrEmpty(t2))
+        {
+            return ApplyPlaceholders(t2, placeholders, replacements);
         }
 
         return key;
+    }
+
+    private static string ApplyPlaceholders(string input, List<string> placeholders, List<string> replacements)
+    {
+        if (string.IsNullOrEmpty(input) || placeholders is null || replacements is null)
+        {
+            return input;
+        }
+
+        var count = Math.Min(placeholders.Count, replacements.Count);
+        for (int i = 0; i < count; i++)
+        {
+            input = input.Replace("{" + placeholders[i] + "}", replacements[i]);
+        }
+
+        return input;
     }
 
     public static List<FileInformation> GetLanguageInformation()
@@ -174,4 +185,28 @@ public class LocalizationController
 
         return languageCoverage;
     }
+
+    #region Load game data localization
+
+    public static Task SetGameLocalizationsAsync(IReadOnlyDictionary<string, Dictionary<string, string>> allTu)
+    {
+        if (allTu is null || allTu.Count == 0)
+        {
+            Interlocked.Exchange(ref _gameLocalizations, ImmutableDictionary<string, ImmutableDictionary<string, string>>.Empty);
+            return Task.CompletedTask;
+        }
+
+        var outer = ImmutableDictionary.CreateBuilder<string, ImmutableDictionary<string, string>>(StringComparer.OrdinalIgnoreCase);
+
+        foreach (var (key, langs) in allTu)
+        {
+            var inner = langs.ToImmutableDictionary(kv => kv.Key, kv => kv.Value ?? string.Empty, StringComparer.OrdinalIgnoreCase);
+            outer[key] = inner;
+        }
+
+        Interlocked.Exchange(ref _gameLocalizations, outer.ToImmutable());
+        return Task.CompletedTask;
+    }
+
+    #endregion
 }

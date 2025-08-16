@@ -12,6 +12,7 @@ using StatisticsAnalysisTool.ViewModels;
 using StatisticsAnalysisTool.Views;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Reflection;
@@ -19,6 +20,7 @@ using System.Text;
 using System.Text.Json;
 using System.Text.Json.Serialization;
 using System.Threading.Tasks;
+using StatisticsAnalysisTool.Localization;
 
 namespace StatisticsAnalysisTool.GameFileData;
 
@@ -89,7 +91,12 @@ public static class GameData
             DirectoryController.CreateDirectoryWhenNotExists(tempDirPath);
             DirectoryController.CreateDirectoryWhenNotExists(gameFilesDirPath);
 
-            List<Func<Task>> taskFactories = new List<Func<Task>>();
+            List<Func<Task>> taskFactories = [];
+
+            if (Extractor.IsBinFileNewer(Path.Combine(gameFilesDirPath, "localization.xml"), mainGameFolderPath, serverType, "localization"))
+            {
+                taskFactories.Add(() => extractor.ExtractGameDataFromXmlAsync(gameFilesDirPath, ["localization"]));
+            }
 
             if (Extractor.IsBinFileNewer(Path.Combine(gameFilesDirPath, "indexedItems.json"), mainGameFolderPath, serverType, "items")
                 || Extractor.IsBinFileNewer(Path.Combine(gameFilesDirPath, "items.json"), mainGameFolderPath, serverType, "items"))
@@ -101,7 +108,6 @@ public static class GameData
             if (Extractor.IsBinFileNewer(Path.Combine(gameFilesDirPath, "spells.xml"), mainGameFolderPath, serverType, "spells"))
             {
                 taskFactories.Add(() => extractor.ExtractGameDataFromXmlAsync(gameFilesDirPath, ["spells"]));
-                taskFactories.Add(() => extractor.ExtractSpellGameDataAsync(gameFilesDirPath));
             }
 
             if (Extractor.IsBinFileNewer(Path.Combine(gameFilesDirPath, "mobs-modified.json"), mainGameFolderPath, serverType, "mobs"))
@@ -127,6 +133,7 @@ public static class GameData
             taskFactories.Add(MistsData.LoadDataAsync);
             taskFactories.Add(WorldData.LoadDataAsync);
             taskFactories.Add(SpellData.LoadDataAsync);
+            taskFactories.Add(() => LocalizationController.SetGameLocalizationsAsync(extractor.GameLocalization));
 
             int totalTasks = taskFactories.Count;
             int completedTasks = 0;

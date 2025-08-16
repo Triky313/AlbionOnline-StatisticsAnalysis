@@ -544,15 +544,6 @@ namespace StatisticsAnalysisTool.Properties {
         
         [global::System.Configuration.ApplicationScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("spells-localization.json")]
-        public string SpellLocalizationsFileName {
-            get {
-                return ((string)(this["SpellLocalizationsFileName"]));
-            }
-        }
-        
-        [global::System.Configuration.ApplicationScopedSettingAttribute()]
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.DefaultSettingValueAttribute("Updates")]
         public string UpdatesDirectoryName {
             get {

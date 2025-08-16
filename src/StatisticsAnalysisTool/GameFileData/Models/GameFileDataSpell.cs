@@ -1,13 +1,11 @@
-﻿using System.Collections.Generic;
-
-namespace StatisticsAnalysisTool.GameFileData.Models;
+﻿namespace StatisticsAnalysisTool.GameFileData.Models;
 
 public class GameFileDataSpell
 {
-    public int Index { get; set; }
-    public string UniqueName { get; set; }
-    public string Target { get; set; }
-    public string Category { get; set; }
-    public Dictionary<string, string> LocalizedNames { get; init; }
-    public Dictionary<string, string> LocalizedDescriptions { get; init; }
+    public int Index { get; init; }
+    public string UniqueName { get; init; }
+    public string Target { get; init; }
+    public string Category { get; init; }
+    public string NameLocatag { get; init; }
+    public string DescriptionLocatag { get; init; }
 }
