@@ -684,7 +684,14 @@ public class ItemWindowViewModel : BaseViewModel
                 totalCraftedItems = 1;
             }
 
-            CraftingCalculation.BreakEvenPrice = CraftingCalculation.TotalCosts / totalCraftedItems;
+            // All fixed costs excluding AH tax
+            var costsWithoutAhTax = CraftingCalculation.TotalResourceCosts + CraftingCalculation.CraftingTax + CraftingCalculation.SetupFee + CraftingCalculation.TotalJournalCosts + CraftingCalculation.OtherCosts;
+
+            // tax rate
+            var taxRate = EssentialCraftingValues.AuctionHouseTax / 100.0;
+
+            // Break-even-price
+            CraftingCalculation.BreakEvenPrice = (costsWithoutAhTax - CraftingCalculation.TotalJournalSells) / (totalCraftedItems * (1 - taxRate));
 
             // Profit per item
             CraftingCalculation.ProfitPerItem = (CraftingCalculation.TotalSells - CraftingCalculation.TotalCosts) / CraftingCalculation.PossibleItemCrafting;
