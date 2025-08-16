@@ -31,12 +31,6 @@ public class Extractor
         await ItemData.CreateItemDataAsync(_mainGameServerFolderString, _localizationData, outputDirPath, indexedItemsFileName);
     }
 
-    public async Task ExtractSpellGameDataAsync(string outputDirPath)
-    {
-        await LoadLocationDataAsync();
-        await SpellData.ExtractAsJsonAsync(_localizationData, outputDirPath);
-    }
-
     public async Task ExtractGameDataAsync(string outputDirPath, string[] binFileNamesToExtract)
     {
         await LoadLocationDataAsync();

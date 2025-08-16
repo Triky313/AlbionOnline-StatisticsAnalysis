@@ -96,7 +96,6 @@ public static class GameData
             if (Extractor.IsBinFileNewer(Path.Combine(gameFilesDirPath, "localization.xml"), mainGameFolderPath, serverType, "localization"))
             {
                 taskFactories.Add(() => extractor.ExtractGameDataFromXmlAsync(gameFilesDirPath, ["localization"]));
-                taskFactories.Add(() => extractor.ExtractSpellGameDataAsync(gameFilesDirPath));
             }
 
             if (Extractor.IsBinFileNewer(Path.Combine(gameFilesDirPath, "indexedItems.json"), mainGameFolderPath, serverType, "items")
@@ -109,7 +108,6 @@ public static class GameData
             if (Extractor.IsBinFileNewer(Path.Combine(gameFilesDirPath, "spells.xml"), mainGameFolderPath, serverType, "spells"))
             {
                 taskFactories.Add(() => extractor.ExtractGameDataFromXmlAsync(gameFilesDirPath, ["spells"]));
-                taskFactories.Add(() => extractor.ExtractSpellGameDataAsync(gameFilesDirPath));
             }
 
             if (Extractor.IsBinFileNewer(Path.Combine(gameFilesDirPath, "mobs-modified.json"), mainGameFolderPath, serverType, "mobs"))

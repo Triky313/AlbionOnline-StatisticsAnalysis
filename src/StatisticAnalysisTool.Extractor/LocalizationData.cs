@@ -5,13 +5,11 @@ namespace StatisticAnalysisTool.Extractor;
 internal class LocalizationData : IDisposable
 {
     public const string ItemPrefix = "@ITEMS_";
-    public const string SpellPrefix = "@SPELLS_";
     public const string DescPostfix = "_DESC";
 
+    // TODO: Use AllLocalized for all localized names and descriptions
     public Dictionary<string, Dictionary<string, string>> ItemLocalizedNames = new();
     public Dictionary<string, Dictionary<string, string>> ItemLocalizedDescriptions = new();
-    public Dictionary<string, Dictionary<string, string>> SpellLocalizedNames = new();
-    public Dictionary<string, Dictionary<string, string>> SpellLocalizedDescriptions = new();
 
     public Dictionary<string, Dictionary<string, string>> AllLocalized = new(StringComparer.OrdinalIgnoreCase);
 
@@ -31,8 +29,6 @@ internal class LocalizationData : IDisposable
 
             var itemLocalizedNames = new Dictionary<string, Dictionary<string, string>>(StringComparer.OrdinalIgnoreCase);
             var itemLocalizedDescriptions = new Dictionary<string, Dictionary<string, string>>(StringComparer.OrdinalIgnoreCase);
-            var spellLocalizedNames = new Dictionary<string, Dictionary<string, string>>(StringComparer.OrdinalIgnoreCase);
-            var spellLocalizedDescriptions = new Dictionary<string, Dictionary<string, string>>(StringComparer.OrdinalIgnoreCase);
             var allLocalized = new Dictionary<string, Dictionary<string, string>>(StringComparer.OrdinalIgnoreCase);
 
             string? currentTuId = null;
@@ -75,17 +71,6 @@ internal class LocalizationData : IDisposable
                                     itemLocalizedNames[currentTuId] = currentLanguages;
                                 }
                             }
-                            else if (currentTuId.StartsWith(SpellPrefix, StringComparison.OrdinalIgnoreCase))
-                            {
-                                if (currentTuId.EndsWith(DescPostfix, StringComparison.OrdinalIgnoreCase))
-                                {
-                                    spellLocalizedDescriptions[currentTuId] = currentLanguages;
-                                }
-                                else
-                                {
-                                    spellLocalizedNames[currentTuId] = currentLanguages;
-                                }
-                            }
 
                             currentTuId = null;
                             currentLanguages = null;
@@ -96,8 +81,6 @@ internal class LocalizationData : IDisposable
 
             ItemLocalizedNames = itemLocalizedNames;
             ItemLocalizedDescriptions = itemLocalizedDescriptions;
-            SpellLocalizedNames = spellLocalizedNames;
-            SpellLocalizedDescriptions = spellLocalizedDescriptions;
             AllLocalized = allLocalized;
         }
         catch (Exception ex)
@@ -116,8 +99,6 @@ internal class LocalizationData : IDisposable
     {
         ItemLocalizedNames.Clear();
         ItemLocalizedDescriptions.Clear();
-        SpellLocalizedNames.Clear();
-        SpellLocalizedDescriptions.Clear();
         AllLocalized.Clear();
         GC.SuppressFinalize(this);
     }
