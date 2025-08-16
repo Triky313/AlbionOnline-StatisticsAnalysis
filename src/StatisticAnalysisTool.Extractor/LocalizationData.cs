@@ -7,7 +7,6 @@ internal class LocalizationData : IDisposable
     public const string ItemPrefix = "@ITEMS_";
     public const string DescPostfix = "_DESC";
 
-    // TODO: Use AllLocalized for all localized names and descriptions
     public Dictionary<string, Dictionary<string, string>> ItemLocalizedNames = new();
     public Dictionary<string, Dictionary<string, string>> ItemLocalizedDescriptions = new();
 
