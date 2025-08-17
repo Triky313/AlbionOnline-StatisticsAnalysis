@@ -11,13 +11,12 @@ using System.Windows.Media.Imaging;
 
 namespace StatisticsAnalysisTool.Models.ItemWindowModel;
 
-public class RequiredJournal : BaseViewModel
+public class RequiredJournal(ItemWindowViewModel itemWindowViewModel) : BaseViewModel
 {
     private BitmapImage _icon;
     private string _craftingResourceName;
     private long _costsPerJournal;
     private double _requiredJournalAmount;
-    private readonly ItemWindowViewModel _itemWindowViewModel;
     private double _sellPricePerJournal;
     private List<MarketResponse> _marketResponseEmptyJournal = new();
     private List<MarketResponse> _marketResponseFullJournal = new();
@@ -88,11 +87,6 @@ public class RequiredJournal : BaseViewModel
         }
     }
 
-    public RequiredJournal(ItemWindowViewModel itemWindowViewModel)
-    {
-        _itemWindowViewModel = itemWindowViewModel;
-    }
-
     public BitmapImage Icon
     {
         get => _icon;
@@ -119,7 +113,7 @@ public class RequiredJournal : BaseViewModel
         set
         {
             _costsPerJournal = value;
-            _itemWindowViewModel.UpdateCraftingCalculationTab();
+            itemWindowViewModel.UpdateCraftingCalculationTab();
             OnPropertyChanged();
         }
     }
@@ -141,7 +135,7 @@ public class RequiredJournal : BaseViewModel
         set
         {
             _sellPricePerJournal = value;
-            _itemWindowViewModel.UpdateCraftingCalculationTab();
+            itemWindowViewModel.UpdateCraftingCalculationTab();
             OnPropertyChanged();
         }
     }

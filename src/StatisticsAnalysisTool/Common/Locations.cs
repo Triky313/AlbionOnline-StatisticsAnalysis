@@ -245,7 +245,7 @@ public static class Locations
         new (MarketLocation.BlackMarket, "Black Market"),
         new (MarketLocation.MartlockMarket, WorldData.GetUniqueNameOrDefault("3004")),
         new (MarketLocation.ThetfordMarket, WorldData.GetUniqueNameOrDefault("0000")),
-        new (MarketLocation.FortSterlingMarket, WorldData.GetUniqueNameOrDefault("1006")),
+        new (MarketLocation.FortSterlingMarket, WorldData.GetUniqueNameOrDefault("4000")),
         new (MarketLocation.LymhurstMarket, WorldData.GetUniqueNameOrDefault("1000")),
         new (MarketLocation.BridgewatchMarket, WorldData.GetUniqueNameOrDefault("2000")),
         new (MarketLocation.CaerleonMarket, WorldData.GetUniqueNameOrDefault("3003")),
