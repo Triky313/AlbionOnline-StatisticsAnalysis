@@ -13,7 +13,7 @@ public class SettingsObject
     public string CurrentCultureIetfLanguageTag { get; set; }
     public int RefreshRate { get; set; } = 10000;
     public string PacketFilter { get; set; } = "(host 5.45.187 or 5.188.125 or 193.169.238) and udp port 5056";
-    public PacketProviderKind PacketProvider { get; set; } = PacketProviderKind.Sockets;
+    public PacketProviderKind PacketProvider { get; set; } = PacketProviderKind.Npcap;
     public ServerLocation ServerLocation { get; set; } = 0; // 0: auto, 1: america, 2: asia, 3: europe
     public ServerType ServerType { get; set; } = ServerType.Live; // 0: Live, 1: Staging, 2: Playground
     public string MainTrackingCharacterName { get; set; }
