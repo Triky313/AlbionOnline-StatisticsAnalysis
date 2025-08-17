@@ -250,9 +250,6 @@ public static class Locations
         new (MarketLocation.BridgewatchMarket, WorldData.GetUniqueNameOrDefault("2000")),
         new (MarketLocation.CaerleonMarket, WorldData.GetUniqueNameOrDefault("3003")),
         new (MarketLocation.BrecilienMarket, WorldData.GetUniqueNameOrDefault("5000")),
-        //new (MarketLocation.MerlynsRest, WorldData.GetUniqueNameOrDefault("1012")),
-        //new (MarketLocation.MorganasRest, WorldData.GetUniqueNameOrDefault("0008")),
-        //new (MarketLocation.ArthursRest, WorldData.GetUniqueNameOrDefault("4300")),
         new (MarketLocation.SmugglersDen, "Smuggler's Den")
     };
 }
