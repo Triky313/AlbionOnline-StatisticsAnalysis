@@ -1,9 +1,11 @@
 ﻿using StatisticsAnalysisTool.Protocol16;
 using StatisticsAnalysisTool.Protocol16.Photon;
+using System.Buffers;
+using StatisticsAnalysisTool.Abstractions;
 
 namespace StatisticsAnalysisTool.PhotonPackageParser;
 
-public abstract class PhotonParser
+public abstract class PhotonParser : IPhotonReceiver
 {
     private const int CommandHeaderLength = 12;
     private const int PhotonHeaderLength = 12;
@@ -23,18 +25,22 @@ public abstract class PhotonParser
         {
             return;
         }
+
         if (!ReadByte(out byte flags, payload, ref offset))
         {
             return;
         }
+
         if (!ReadByte(out byte commandCount, payload, ref offset))
         {
             return;
         }
+
         if (!NumberDeserializer.Deserialize(out int timestamp, payload, ref offset))
         {
             return;
         }
+
         if (!NumberDeserializer.Deserialize(out int challenge, payload, ref offset))
         {
             return;
@@ -69,6 +75,37 @@ public abstract class PhotonParser
         {
             HandleCommand(payload, ref offset);
         }
+    }
+
+    public void ReceivePacket(ReadOnlySpan<byte> payload)
+    {
+        if (payload.IsEmpty)
+        {
+            return;
+        }
+
+        var tmp = new byte[payload.Length];
+        payload.CopyTo(tmp);
+        ReceivePacket(tmp);
+    }
+
+    public void ReceivePacket(ReadOnlySequence<byte> payload)
+    {
+        if (payload.Length == 0)
+        {
+            return;
+        }
+
+        if (payload.IsSingleSegment)
+        {
+            ReceivePacket(payload.FirstSpan);
+            return;
+        }
+
+        var len = checked((int) payload.Length);
+        var tmp = new byte[len];
+        payload.CopyTo(tmp);
+        ReceivePacket(tmp);
     }
 
     protected abstract void OnRequest(byte operationCode, Dictionary<byte, object> parameters);

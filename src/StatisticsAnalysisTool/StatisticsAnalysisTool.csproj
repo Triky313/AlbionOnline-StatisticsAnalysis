@@ -644,21 +644,23 @@
     <PackageReference Include="BinaryFormat.Udp" Version="0.1.5" />
     <PackageReference Include="Libpcap" Version="0.1.5" />
     <PackageReference Include="LiveChartsCore.SkiaSharpView.WPF" Version="2.0.0-rc5.4" />
-    <PackageReference Include="Microsoft.Web.WebView2" Version="1.0.3351.48" />
+    <PackageReference Include="Microsoft.Web.WebView2" Version="1.0.3405.78" />
     <PackageReference Include="Autoupdater.NET.Official" Version="1.9.2" />
     <PackageReference Include="FontAwesome5" Version="2.1.11" />
     <PackageReference Include="Notification.Wpf" Version="8.0.0" />
-    <PackageReference Include="NUnit" Version="4.2.2" />
     <PackageReference Include="Ookii.Dialogs.Wpf" Version="5.0.1" />
+    <PackageReference Include="OpenTK" Version="4.9.4" />
+    <PackageReference Include="OpenTK.GLWpfControl" Version="4.3.3" />
     <PackageReference Include="Serilog" Version="4.3.0" />
     <PackageReference Include="Serilog.Sinks.Console" Version="6.0.0" />
     <PackageReference Include="Serilog.Sinks.Debug" Version="3.0.0" />
     <PackageReference Include="Serilog.Sinks.File" Version="7.0.0" />
     <PackageReference Include="SkiaSharp" Version="3.119.0" />
+    <PackageReference Include="SkiaSharp.Views.WPF" Version="3.119.0" />
     <PackageReference Include="System.Linq.Async" Version="6.0.3" />
-    <PackageReference Include="VirtualizingWrapPanel" Version="2.3.0" />
+    <PackageReference Include="VirtualizingWrapPanel" Version="2.3.1" />
     <PackageReference Include="Microsoft.CSharp" Version="4.7.0" />
-    <PackageReference Include="Microsoft.Windows.Compatibility" Version="9.0.7" />
+    <PackageReference Include="Microsoft.Windows.Compatibility" Version="9.0.8" />
     <PackageReference Include="System.Runtime.CompilerServices.Unsafe" Version="6.1.2" />
   </ItemGroup>
   <ItemGroup>

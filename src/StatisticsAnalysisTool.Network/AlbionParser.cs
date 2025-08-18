@@ -2,14 +2,9 @@
 
 namespace StatisticsAnalysisTool.Network;
 
-internal sealed class AlbionParser : PhotonParser, IPhotonReceiver
+internal sealed class AlbionParser : PhotonParser
 {
-    private readonly HandlersCollection _handlers;
-
-    public AlbionParser()
-    {
-        _handlers = new HandlersCollection();
-    }
+    private readonly HandlersCollection _handlers = new();
 
     public void AddHandler<TPacket>(PacketHandler<TPacket> handler)
     {

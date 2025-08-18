@@ -1,9 +1,9 @@
 ﻿using Serilog;
+using StatisticsAnalysisTool.Abstractions;
 using StatisticsAnalysisTool.Common;
-using StatisticsAnalysisTool.Enumerations;
 using System;
+using System.Buffers.Binary;
 using System.Collections.Generic;
-using System.IO;
 using System.Linq;
 using System.Net;
 using System.Net.Sockets;
@@ -15,49 +15,53 @@ namespace StatisticsAnalysisTool.Network.PacketProviders;
 public class SocketsPacketProvider : PacketProvider
 {
     private readonly IPhotonReceiver _photonReceiver;
-    private readonly List<Socket> _sockets = new();
-    private readonly List<IPAddress> _gateways = new();
-    private byte[] _byteData = new byte[65000];
-    private bool _stopReceiving;
+    private readonly List<Socket> _sockets = [];
+    private readonly List<IPAddress> _localAddresses = [];
+    private readonly List<Task> _receiveTasks = [];
+    private volatile bool _stopReceiving;
 
     public SocketsPacketProvider(IPhotonReceiver photonReceiver)
     {
         _photonReceiver = photonReceiver ?? throw new ArgumentNullException(nameof(photonReceiver));
-        var hostEntries = GetAllHostEntries();
-        SetGateway(hostEntries);
+        _localAddresses.AddRange(GetLocalIPv4Addresses());
     }
 
-    public override bool IsRunning => _sockets.Any(IsSocketActive);
+    public override bool IsRunning => _sockets.Any(s => s is { IsBound: true });
 
     public override void Start()
     {
         _stopReceiving = false;
-        foreach (var gateway in _gateways)
+
+        foreach (var ip in _localAddresses)
         {
             var socket = new Socket(AddressFamily.InterNetwork, SocketType.Raw, ProtocolType.IP);
-            socket.Bind(new IPEndPoint(gateway, 0));
-            socket.SetSocketOption(SocketOptionLevel.IP, SocketOptionName.HeaderIncluded, true);
-
-            byte[] byTrue = { 1, 0, 0, 0 };
-            byte[] byOut = { 1, 0, 0, 0 };
-
             try
             {
+                socket.Bind(new IPEndPoint(ip, 0));
+                socket.SetSocketOption(SocketOptionLevel.IP, SocketOptionName.HeaderIncluded, true);
+
+                var byTrue = new byte[] { 1, 0, 0, 0 };
+                var byOut = new byte[4];
                 socket.IOControl(IOControlCode.ReceiveAll, byTrue, byOut);
+
+                _sockets.Add(socket);
+
+                var buffer = new byte[65535];
+                _receiveTasks.Add(Task.Run(() => ReceiveLoopAsync(socket, buffer)));
+                ConsoleManager.WriteLineForMessage(
+                    $"NetworkManager - Added Raw Socket | LocalEndPoint: {socket.LocalEndPoint}, IsBound: {socket.IsBound}, Ttl: {socket.Ttl}");
             }
             catch (SocketException e)
             {
                 ConsoleManager.WriteLineForError(MethodBase.GetCurrentMethod()?.DeclaringType, e);
-                Log.Error(e, "{message}|{socketErrorCode}", MethodBase.GetCurrentMethod()?.DeclaringType, e.SocketErrorCode);
-                continue;
+                Log.Error(e, "RawSocket bind/ioctl failed ({Error}) on {IP}", e.SocketErrorCode, ip);
+                SafeClose(socket);
             }
-
-            _ = ReceiveDataAsync(socket); // Start receiving data asynchronously
-
-            _sockets.Add(socket);
-            ConsoleManager.WriteLineForMessage($"NetworkManager - Added Socket | AddressFamily: {socket.AddressFamily}, LocalEndPoint: {socket.LocalEndPoint}, " +
-                                               $"Connected: {socket.Connected}, Available: {socket.Available}, Blocking: {socket.Blocking}, IsBound: {socket.IsBound}, " +
-                                               $"ReceiveBufferSize: {socket.ReceiveBufferSize}, SendBufferSize: {socket.SendBufferSize}, Ttl: {socket.Ttl}");
+            catch (Exception e)
+            {
+                ConsoleManager.WriteLineForError(MethodBase.GetCurrentMethod()?.DeclaringType, e);
+                SafeClose(socket);
+            }
         }
     }
 
@@ -65,41 +69,48 @@ public class SocketsPacketProvider : PacketProvider
     {
         _stopReceiving = true;
 
-        foreach (var socket in _sockets)
+        foreach (var s in _sockets)
         {
-            if (socket.Connected)
-            {
-                socket.Disconnect(true);
-            }
-
-            socket.Close();
+            SafeClose(s);
         }
 
         _sockets.Clear();
+
+        try
+        {
+            Task.WaitAll(_receiveTasks.ToArray(), TimeSpan.FromSeconds(2));
+        }
+        catch { /* ignore */ }
+
+        _receiveTasks.Clear();
     }
 
-    private async Task ReceiveDataAsync(Socket socket)
+    private async Task ReceiveLoopAsync(Socket socket, byte[] buffer)
     {
         while (!_stopReceiving)
         {
             try
             {
-                int bytesReceived = await socket.ReceiveAsync(new ArraySegment<byte>(_byteData), SocketFlags.None);
-                if (bytesReceived <= 0)
+                var mem = new ArraySegment<byte>(buffer);
+                int bytes = await socket.ReceiveAsync(mem, SocketFlags.None).ConfigureAwait(false);
+                if (bytes <= 0)
                 {
-                    ConsoleManager.WriteLineForMessage(MethodBase.GetCurrentMethod()?.DeclaringType, "No data received.", ConsoleColorType.ErrorColor);
                     continue;
                 }
 
-                ProcessReceivedData(socket, _byteData, bytesReceived);
+                ProcessPacket(buffer.AsSpan(0, bytes));
             }
             catch (SocketException ex)
             {
+                if (_stopReceiving)
+                {
+                    break;
+                }
                 ConsoleManager.WriteLineForError(MethodBase.GetCurrentMethod()?.DeclaringType, ex);
             }
-            catch (ObjectDisposedException ex)
+            catch (ObjectDisposedException)
             {
-                ConsoleManager.WriteLineForError(MethodBase.GetCurrentMethod()?.DeclaringType, ex);
+                break;
             }
             catch (Exception ex)
             {
@@ -108,78 +119,120 @@ public class SocketsPacketProvider : PacketProvider
         }
     }
 
-    private void ProcessReceivedData(Socket socket, byte[] data, int bytesReceived)
+    private void ProcessPacket(ReadOnlySpan<byte> frame)
     {
-        using MemoryStream buffer = new MemoryStream(data, 0, bytesReceived);
-        using BinaryReader read = new BinaryReader(buffer);
-        read.BaseStream.Seek(2, SeekOrigin.Begin);
-        ushort dataLength = (ushort) IPAddress.NetworkToHostOrder(read.ReadInt16());
-
-        read.BaseStream.Seek(9, SeekOrigin.Begin);
-        int protocol = read.ReadByte();
-
-        if (protocol != 17)
+        if (frame.Length < 20)
         {
             return;
         }
 
-        read.BaseStream.Seek(20, SeekOrigin.Begin);
-
-        string srcPort = ((ushort) IPAddress.NetworkToHostOrder(read.ReadInt16())).ToString();
-        string destPort = ((ushort) IPAddress.NetworkToHostOrder(read.ReadInt16())).ToString();
-
-        if (srcPort == "5056" || destPort == "5056")
+        byte verIhl = frame[0];
+        int version = verIhl >> 4;
+        if (version != 4)
         {
-            read.BaseStream.Seek(28, SeekOrigin.Begin);
+            return;
+        }
 
-            if (dataLength >= 28)
-            {
-                byte[] packetData = read.ReadBytes(dataLength - 28);
-                _ = packetData.Reverse();
+        int ihl = (verIhl & 0x0F) * 4;
+        if (ihl < 20 || frame.Length < ihl)
+        {
+            return;
+        }
 
-                try
-                {
-                    _photonReceiver.ReceivePacket(packetData);
-                }
-                catch (Exception ex)
-                {
-                    ConsoleManager.WriteLineForError(MethodBase.GetCurrentMethod()?.DeclaringType, ex);
-                }
-            }
+        // Protocol byte
+        byte proto = frame[9];
+        if (proto != 17) 
+        {
+            return;
+        }
+
+        // UDP header starts after IP header
+        if (frame.Length < ihl + 8)
+        {
+            return;
+        }
+
+        var udp = frame.Slice(ihl);
+        ushort srcPort = BinaryPrimitives.ReadUInt16BigEndian(udp);
+        ushort dstPort = BinaryPrimitives.ReadUInt16BigEndian(udp.Slice(2));
+        ushort udpLen = BinaryPrimitives.ReadUInt16BigEndian(udp.Slice(4));
+        // ushort udpCrc = BinaryPrimitives.ReadUInt16BigEndian(udp.Slice(6));
+
+        if (!PhotonPorts.Udp.Contains(srcPort) && !PhotonPorts.Udp.Contains(dstPort))
+        {
+            return;
+        }
+
+        // UDP Payload
+        int payloadOffset = ihl + 8;
+        int maxPayload = frame.Length - payloadOffset;
+        int payloadLen = Math.Min(maxPayload, Math.Max(0, udpLen - 8));
+        if (payloadLen <= 0)
+        {
+            return;
+        }
+
+        var payload = frame.Slice(payloadOffset, payloadLen);
+
+        try
+        {
+            _photonReceiver.ReceivePacket(payload);
+        }
+        catch (Exception ex)
+        {
+            ConsoleManager.WriteLineForError(MethodBase.GetCurrentMethod()?.DeclaringType, ex);
         }
     }
 
-    private static bool IsSocketActive(Socket socket)
+    private static void SafeClose(Socket s)
     {
-        bool part1 = socket.Poll(1000, SelectMode.SelectRead);
-        bool part2 = (socket.Available == 0);
-        return !part1 || !part2;
-    }
-
-    private static IEnumerable<IPHostEntry> GetAllHostEntries()
-    {
-        List<IPHostEntry> hostEntries = new List<IPHostEntry>();
-        string hostName = Dns.GetHostName();
-        IPHostEntry hostEntry = Dns.GetHostEntry(hostName);
-        hostEntries.Add(hostEntry);
-        return hostEntries;
-    }
-
-    private void SetGateway(IEnumerable<IPHostEntry> hostEntries)
-    {
-        foreach (IPAddress ip in hostEntries.SelectMany(hostEntry => hostEntry.AddressList))
+        try
         {
-            try
+            if (s.Connected)
             {
-                if (ip.AddressFamily == AddressFamily.InterNetwork)
-                {
-                    _gateways.Add(ip);
-                }
-            }
-            catch
-            {
-                // ignored
+                s.Shutdown(SocketShutdown.Both);
             }
         }
+        catch
+        {
+            // ignored
+        }
+
+        try
+        {
+            s.Close();
+        }
+        catch
+        {
+            // ignored
+        }
+
+        try
+        {
+            s.Dispose();
+        }
+        catch
+        {
+            // ignored
+        }
+    }
+
+    private static IEnumerable<IPAddress> GetLocalIPv4Addresses()
+    {
+        try
+        {
+            var host = Dns.GetHostName();
+            var entry = Dns.GetHostEntry(host);
+            return entry.AddressList.Where(a => a.AddressFamily == AddressFamily.InterNetwork).Distinct();
+        }
+        catch
+        {
+            return [];
+        }
+    }
+
+    public static class PhotonPorts
+    {
+        public static readonly HashSet<ushort> Udp = [5055, 5056, 5058];
     }
 }

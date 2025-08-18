@@ -16,7 +16,7 @@ public class TreasureControllerTests
         var method = typeof(TreasureController).GetMethod("GetRarity", BindingFlags.NonPublic | BindingFlags.Static);
         var valuesToTest = new List<Tuple<string, TreasureRarity>>
         {
-            Tuple.Create((string)null, TreasureRarity.Unknown),
+            Tuple.Create((string?)null, TreasureRarity.Unknown)!,
             Tuple.Create("", TreasureRarity.Unknown),
             Tuple.Create("SOME_STANDARD", TreasureRarity.Common),
             Tuple.Create("SOME_STANDARD_T5", TreasureRarity.Common),
@@ -40,7 +40,7 @@ public class TreasureControllerTests
         // Act and Assert
         foreach (var valueToTest in valuesToTest)
         {
-            var result = (TreasureRarity) method.Invoke(null, new object[] { valueToTest.Item1 })!;
+            var result = (TreasureRarity) method?.Invoke(null, [valueToTest.Item1])!;
             result.Should().Be(valueToTest.Item2);
         }
     }
@@ -67,7 +67,7 @@ public class TreasureControllerTests
         // Act and Assert
         foreach (var valueToTest in valuesToTest)
         {
-            var result = (TreasureType) method!.Invoke(null, new object[] { valueToTest.Item1 })!;
+            var result = (TreasureType) method!.Invoke(null, [valueToTest.Item1])!;
             result.Should().Be(valueToTest.Item2);
         }
     }
