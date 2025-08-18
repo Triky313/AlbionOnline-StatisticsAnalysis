@@ -1,13 +1,10 @@
-﻿namespace StatisticsAnalysisTool.Network;
+﻿using StatisticsAnalysisTool.Abstractions;
+
+namespace StatisticsAnalysisTool.Network;
 
 public sealed class ReceiverBuilder
 {
-    private readonly AlbionParser _parser;
-
-    public ReceiverBuilder()
-    {
-        _parser = new AlbionParser();
-    }
+    private readonly AlbionParser _parser = new();
 
     public static ReceiverBuilder Create()
     {

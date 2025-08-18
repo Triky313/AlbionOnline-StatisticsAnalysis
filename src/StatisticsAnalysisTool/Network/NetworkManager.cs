@@ -1,4 +1,5 @@
 using Serilog;
+using StatisticsAnalysisTool.Abstractions;
 using StatisticsAnalysisTool.Common;
 using StatisticsAnalysisTool.Common.UserSettings;
 using StatisticsAnalysisTool.Localization;

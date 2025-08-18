@@ -8,10 +8,11 @@ using Libpcap;
 using Serilog;
 using StatisticsAnalysisTool.Common.UserSettings;
 using System;
-using System.Diagnostics;
+using System.Collections.Generic;
 using System.Net.NetworkInformation;
 using System.Net.Sockets;
 using System.Threading;
+using StatisticsAnalysisTool.Abstractions;
 
 namespace StatisticsAnalysisTool.Network.PacketProviders;
 
@@ -75,7 +76,7 @@ public class LibpcapPacketProvider : PacketProvider
                 pcap.NonBlocking = true;
             });
 
-            _dispatcher.Filter = SettingsController.CurrentSettings.PacketFilter;
+            _dispatcher.Filter = GetEffectiveFilter();
         }
 
         _cts = new CancellationTokenSource();
@@ -89,44 +90,62 @@ public class LibpcapPacketProvider : PacketProvider
 
     private void Dispatch(Pcap pcap, ref Packet packet)
     {
-        var ethernetFrameReader = new BinaryFormatReader(packet.Data);
-        var ethernetFrame = new L2EthernetFrameShape();
-        if (!ethernetFrameReader.TryReadL2EthernetFrame(ref ethernetFrame))
+        var ethReader = new BinaryFormatReader(packet.Data);
+        var eth = new L2EthernetFrameShape();
+        if (!ethReader.TryReadL2EthernetFrame(ref eth))
         {
             return;
         }
 
-        var ipv4PacketReader = new BinaryFormatReader(ethernetFrame.Payload);
-        var ipv4Packet = new IPv4PacketShape();
-        if (!ipv4PacketReader.TryReadIPv4Packet(ref ipv4Packet))
+        var ipReader = new BinaryFormatReader(eth.Payload);
+        var ip = new IPv4PacketShape();
+        if (!ipReader.TryReadIPv4Packet(ref ip))
         {
             return;
         }
 
-        if (ipv4Packet.Protocol != (byte) ProtocolType.Udp)
+        switch ((ProtocolType) ip.Protocol)
         {
-            return;
-        }
+            case ProtocolType.Udp:
+                {
+                    var udpReader = new BinaryFormatReader(ip.Payload);
+                    var udp = new UdpPacketShape();
+                    if (!udpReader.TryReadUdpPacket(ref udp))
+                    {
+                        return;
+                    }
 
-        var udpPacketReader = new BinaryFormatReader(ipv4Packet.Payload);
-        var udpPacket = new UdpPacketShape();
-        if (!udpPacketReader.TryReadUdpPacket(ref udpPacket))
-        {
-            return;
-        }
+                    if (!PhotonPorts.Udp.Contains(udp.SourcePort) && !PhotonPorts.Udp.Contains(udp.DestinationPort))
+                    {
+                        return;
+                    }
 
-        if (udpPacket.SourcePort != 5056 && udpPacket.DestinationPort != 5056)
-        {
-            return;
-        }
+                    if (udp.Payload.Length == 0)
+                    {
+                        return;
+                    }
 
-        try
-        {
-            _photonReceiver.ReceivePacket(udpPacket.Payload.ToArray());
-        }
-        catch
-        {
-            // ignored
+                    try
+                    {
+                        _photonReceiver.ReceivePacket(udp.Payload);
+                    }
+                    catch (Exception ex)
+                    {
+                        Log.Debug(ex, "PhotonReceiver.ReceivePacket failed");
+                    }
+
+                    return;
+                }
+
+            case ProtocolType.Tcp:
+            {
+                return;
+            }
+
+            default:
+            {
+                return;
+            }
         }
     }
 
@@ -136,13 +155,10 @@ public class LibpcapPacketProvider : PacketProvider
         {
             while (_cts is { IsCancellationRequested: false })
             {
+                int dispatched;
                 try
                 {
-                    var dispatched = _dispatcher.Dispatch(50);
-                    if (dispatched <= 0)
-                    {
-                        Thread.Sleep(25);
-                    }
+                    dispatched = _dispatcher.Dispatch(50);
                 }
                 catch (ObjectDisposedException)
                 {
@@ -152,23 +168,64 @@ public class LibpcapPacketProvider : PacketProvider
                 {
                     break;
                 }
+
+                if (dispatched <= 0)
+                {
+                    _cts?.Token.WaitHandle.WaitOne(25);
+                }
             }
         }
         catch (Exception ex)
         {
-            Debug.Print("Worker Exception: " + ex.Message);
+            Log.Error(ex, "Libpcap worker crashed");
         }
     }
 
     public override void Stop()
     {
-        _dispatcher.Dispose();
+        try
+        {
+            _cts?.Cancel();
+            _dispatcher.Dispose();
+            _thread?.Join();
+        }
+        finally
+        {
+            _cts?.Dispose();
+            _cts = null;
+            _thread = null;
+        }
+    }
 
-        _cts?.Cancel();
-        _thread?.Join();
+    public static class PhotonPorts
+    {
+        public static readonly HashSet<ushort> Udp = [5055, 5056, 5058];
+        public static readonly HashSet<ushort> Tcp = [4530, 4531, 4533];
+    }
 
-        _cts?.Dispose();
-        _cts = null;
-        _thread = null;
+    public static class BpfBuilder
+    {
+        public static string BuildDefault(bool includeTcp)
+        {
+            var udp = "(udp and (port 5055 or port 5056 or port 5058))";
+            if (!includeTcp)
+            {
+                return udp;
+            }
+
+            var tcp = "(tcp and (port 4530 or port 4531 or port 4533))";
+            return $"({udp}) or ({tcp})";
+        }
+    }
+
+    private static string GetEffectiveFilter()
+    {
+        var user = SettingsController.CurrentSettings.PacketFilter;
+        if (!string.IsNullOrWhiteSpace(user))
+        {
+            return user;
+        }
+
+        return BpfBuilder.BuildDefault(includeTcp: false);
     }
 }

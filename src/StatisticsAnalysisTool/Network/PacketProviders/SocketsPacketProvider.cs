@@ -9,6 +9,7 @@ using System.Net;
 using System.Net.Sockets;
 using System.Reflection;
 using System.Threading.Tasks;
+using StatisticsAnalysisTool.Abstractions;
 
 namespace StatisticsAnalysisTool.Network.PacketProviders;
 
