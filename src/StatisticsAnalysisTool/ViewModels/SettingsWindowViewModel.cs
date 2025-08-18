@@ -210,7 +210,7 @@ public class SettingsWindowViewModel : BaseViewModel
 
     public void ResetPacketFilter()
     {
-        const string defaultFilter = "(host 5.45.187 or host 5.188.125 or 193.169.238) and udp port 5056";
+        const string defaultFilter = "(udp port 5055 or udp port 5056)";
 
         if (PacketFilter == defaultFilter)
         {
