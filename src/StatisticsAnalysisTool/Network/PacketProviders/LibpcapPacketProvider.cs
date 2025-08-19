@@ -6,13 +6,12 @@ using BinaryFormat.IPv4;
 using BinaryFormat.Udp;
 using Libpcap;
 using Serilog;
+using StatisticsAnalysisTool.Abstractions;
 using StatisticsAnalysisTool.Common.UserSettings;
 using System;
 using System.Collections.Generic;
-using System.Net.NetworkInformation;
 using System.Net.Sockets;
 using System.Threading;
-using StatisticsAnalysisTool.Abstractions;
 
 namespace StatisticsAnalysisTool.Network.PacketProviders;
 
@@ -22,74 +21,122 @@ public class LibpcapPacketProvider : PacketProvider
     private readonly PcapDispatcher _dispatcher;
     private CancellationTokenSource? _cts;
     private Thread? _thread;
+    private volatile Pcap? _activePcap;
+    private readonly bool _lockToFirstDevice = true;
 
     public override bool IsRunning => _thread is { IsAlive: true };
 
     public LibpcapPacketProvider(IPhotonReceiver photonReceiver)
     {
         _photonReceiver = photonReceiver ?? throw new ArgumentNullException(nameof(photonReceiver));
-
         _dispatcher = new PcapDispatcher(Dispatch);
-        _thread = new Thread(Worker)
-        {
-            IsBackground = true
-        };
     }
 
     public override void Start()
     {
-        var devices = Pcap.ListDevices();
-
-        int deviceId = 0;
-        foreach (var device in devices)
+        if (_thread is { IsAlive: true })
         {
-            if (SettingsController.CurrentSettings.NetworkDevice > 0 && SettingsController.CurrentSettings.NetworkDevice != deviceId)
+            return;
+        }
+
+        _activePcap = null;
+
+        _cts?.Dispose();
+        _cts = new CancellationTokenSource();
+
+        var devices = Pcap.ListDevices();
+        if (devices.Count == 0)
+        {
+            Log.Warning("Npcap: no devices found");
+            return;
+        }
+
+        var filter = GetEffectiveFilter();
+        bool hasFilter = !string.IsNullOrWhiteSpace(filter);
+
+        int configuredIndex = SettingsController.CurrentSettings.NetworkDevice;
+        int opened = 0;
+        for (int i = 0; i < devices.Count; i++)
+        {
+            var device = devices[i];
+
+            if (configuredIndex >= 0 && i != configuredIndex)
             {
-                Log.Information("NetworkManager (npcap)[ID:{deviceId}]: manually skipping device {Device}:{DeviceDescription}",
-                    deviceId++, device.Name, device.Description);
                 continue;
             }
 
-            if (device.Type != NetworkInterfaceType.Ethernet && device.Type != NetworkInterfaceType.Wireless80211)
-            {
-                Log.Information("NetworkManager (npcap)[ID:{deviceId}]: skipping device {Device}:{DeviceDescription} due to unsupported type {Devicetype}",
-                    deviceId++, device.Name, device.Description, device.Type);
-                continue;
-            }
             if (device.Flags.HasFlag(PcapDeviceFlags.Loopback))
             {
-                Log.Information("NetworkManager (npcap)[ID:{deviceId}]: skipping device {Device}:{DeviceDescription} due to loopback flag",
-                    deviceId++, device.Name, device.Description);
+                Log.Information("Npcap[ID:{Index}]: skip loopback {Name}:{Desc}", i, device.Name, device.Description);
                 continue;
             }
             if (!device.Flags.HasFlag(PcapDeviceFlags.Up))
             {
-                Log.Information("NetworkManager (npcap)[ID:{deviceId}]: skipping device {Device}:{DeviceDescription} due not being up",
-                    deviceId++, device.Name, device.Description);
+                Log.Information("Npcap[ID:{Index}]: skip down {Name}:{Desc}", i, device.Name, device.Description);
                 continue;
             }
 
-            Log.Information("NetworkManager (npcap)[ID:{deviceId}]: opening device {Device}:{DeviceDescription}",
-                deviceId++, device.Name, device.Description);
-            _dispatcher.OpenDevice(device, pcap =>
+            try
             {
-                pcap.NonBlocking = true;
-            });
+                Log.Information("Npcap[ID:{Index}]: opening {Name}:{Desc} (Type={Type}, Flags={Flags})",
+                    i, device.Name, device.Description, device.Type, device.Flags);
 
-            _dispatcher.Filter = GetEffectiveFilter();
+                _dispatcher.OpenDevice(device, pcap =>
+                {
+                    pcap.NonBlocking = true;
+                });
+
+                if (hasFilter)
+                {
+                    _dispatcher.Filter = filter!;
+                    Log.Information("Npcap[ID:{Index}]: filter set => {Filter}", i, filter);
+                }
+                else
+                {
+                    Log.Information("Npcap[ID:{Index}]: no filter (capturing all)", i);
+                }
+
+                opened++;
+
+                if (configuredIndex >= 0)
+                {
+                    break;
+                }
+            }
+            catch (Exception ex)
+            {
+                Log.Error(ex, "Npcap[ID:{Index}]: open failed for {Name}:{Desc}", i, device.Name, device.Description);
+            }
         }
 
-        _cts = new CancellationTokenSource();
-        _thread = new Thread(Worker)
+        if (opened == 0)
         {
-            IsBackground = true
-        };
+            Log.Warning("Npcap: no device opened (check NetworkDevice index or admin rights)");
+            return;
+        }
 
+        _thread = new Thread(Worker) { IsBackground = true };
         _thread.Start();
+
+        Log.Information("Npcap: capture started on {Opened} device(s), filter: {Filter}", opened, hasFilter ? filter : "<none>");
     }
+
 
     private void Dispatch(Pcap pcap, ref Packet packet)
     {
+        if (_lockToFirstDevice)
+        {
+            var current = _activePcap;
+            if (current is null)
+            {
+                _activePcap = pcap;
+            }
+            else if (!ReferenceEquals(current, pcap))
+            {
+                return;
+            }
+        }
+
         var ethReader = new BinaryFormatReader(packet.Data);
         var eth = new L2EthernetFrameShape();
         if (!ethReader.TryReadL2EthernetFrame(ref eth))
@@ -107,45 +154,57 @@ public class LibpcapPacketProvider : PacketProvider
         switch ((ProtocolType) ip.Protocol)
         {
             case ProtocolType.Udp:
+            {
+                var udpReader = new BinaryFormatReader(ip.Payload);
+                var udp = new UdpPacketShape();
+                if (!udpReader.TryReadUdpPacket(ref udp))
                 {
-                    var udpReader = new BinaryFormatReader(ip.Payload);
-                    var udp = new UdpPacketShape();
-                    if (!udpReader.TryReadUdpPacket(ref udp))
-                    {
-                        return;
-                    }
-
-                    if (!PhotonPorts.Udp.Contains(udp.SourcePort) && !PhotonPorts.Udp.Contains(udp.DestinationPort))
-                    {
-                        return;
-                    }
-
-                    if (udp.Payload.Length == 0)
-                    {
-                        return;
-                    }
-
-                    try
-                    {
-                        _photonReceiver.ReceivePacket(udp.Payload);
-                    }
-                    catch (Exception ex)
-                    {
-                        Log.Debug(ex, "PhotonReceiver.ReceivePacket failed");
-                    }
-
                     return;
                 }
 
-            case ProtocolType.Tcp:
-            {
+                if (!PhotonPorts.Udp.Contains(udp.SourcePort) && !PhotonPorts.Udp.Contains(udp.DestinationPort))
+                {
+                    return;
+                }
+
+                if (_lockToFirstDevice)
+                {
+                    var current = _activePcap;
+                    if (current is null)
+                    {
+                        _activePcap = pcap;
+                    }
+                    else if (!ReferenceEquals(current, pcap))
+                    {
+                        return;
+                    }
+                }
+
+                if (udp.Payload.Length == 0)
+                {
+                    return;
+                }
+
+                try
+                {
+                    _photonReceiver.ReceivePacket(udp.Payload);
+                }
+                catch (Exception ex)
+                {
+                    Log.Debug(ex, "PhotonReceiver.ReceivePacket failed");
+                }
                 return;
             }
 
+            case ProtocolType.Tcp:
+                {
+                    return;
+                }
+
             default:
-            {
-                return;
-            }
+                {
+                    return;
+                }
         }
     }
 
@@ -191,6 +250,7 @@ public class LibpcapPacketProvider : PacketProvider
         }
         finally
         {
+            _activePcap = null;
             _cts?.Dispose();
             _cts = null;
             _thread = null;
@@ -218,14 +278,9 @@ public class LibpcapPacketProvider : PacketProvider
         }
     }
 
-    private static string GetEffectiveFilter()
+    private static string? GetEffectiveFilter()
     {
         var user = SettingsController.CurrentSettings.PacketFilter;
-        if (!string.IsNullOrWhiteSpace(user))
-        {
-            return user;
-        }
-
-        return BpfBuilder.BuildDefault(includeTcp: false);
+        return string.IsNullOrWhiteSpace(user) ? null : user;
     }
 }
