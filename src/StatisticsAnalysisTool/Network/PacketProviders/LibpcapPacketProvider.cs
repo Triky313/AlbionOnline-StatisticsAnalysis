@@ -137,6 +137,7 @@ public class LibpcapPacketProvider : PacketProvider
             }
         }
 
+        // L2 (Ethernet)
         var ethReader = new BinaryFormatReader(packet.Data);
         var eth = new L2EthernetFrameShape();
         if (!ethReader.TryReadL2EthernetFrame(ref eth))
@@ -144,68 +145,117 @@ public class LibpcapPacketProvider : PacketProvider
             return;
         }
 
-        var ipReader = new BinaryFormatReader(eth.Payload);
-        var ip = new IPv4PacketShape();
-        if (!ipReader.TryReadIPv4Packet(ref ip))
+        ushort etherType = (ushort) ((packet.Data[12] << 8) | packet.Data[13]);
+
+        ReadOnlySpan<byte> l3 = eth.Payload;
+
+        if (etherType == 0x0800) // IPv4
+        {
+            var ipReader = new BinaryFormatReader(l3);
+            var ip4 = new IPv4PacketShape();
+            if (!ipReader.TryReadIPv4Packet(ref ip4))
+                return;
+
+            switch ((ProtocolType) ip4.Protocol)
+            {
+                case ProtocolType.Udp:
+                    HandleUdp(ip4.Payload, pcap);
+                    return;
+
+                case ProtocolType.Tcp:
+                    return;
+
+                default:
+                    return;
+            }
+        }
+
+        if (etherType == 0x86DD) // IPv6
+        {
+            if (!TryReadIPv6(l3, out byte nextHeader, out ReadOnlySpan<byte> ip6Payload))
+                return;
+
+            switch ((ProtocolType) nextHeader)
+            {
+                case ProtocolType.Udp:
+                    HandleUdp(ip6Payload, pcap);
+                    return;
+
+                case ProtocolType.Tcp:
+                    return;
+
+                default:
+                    return;
+            }
+        }
+    }
+
+    private static bool TryReadIPv6(ReadOnlySpan<byte> bytes, out byte nextHeader, out ReadOnlySpan<byte> payload)
+    {
+        nextHeader = 0;
+        payload = default;
+
+        // IPv6-Header = 40 Bytes
+        if (bytes.Length < 40)
+        {
+            return false;
+        }
+
+        // Byte 6 = Next Header
+        nextHeader = bytes[6];
+
+        // Payload from Byte 40
+        payload = bytes[40..];
+        return true;
+    }
+
+    private void HandleUdp(ReadOnlySpan<byte> l4Payload, Pcap pcap)
+    {
+        var udpReader = new BinaryFormatReader(l4Payload);
+        var udp = new UdpPacketShape();
+        if (!udpReader.TryReadUdpPacket(ref udp))
         {
             return;
         }
 
-        switch ((ProtocolType) ip.Protocol)
+        if (!PhotonPorts.Udp.Contains(udp.SourcePort) && !PhotonPorts.Udp.Contains(udp.DestinationPort))
         {
-            case ProtocolType.Udp:
+            if (!LooksLikePhoton(udp.Payload))
             {
-                var udpReader = new BinaryFormatReader(ip.Payload);
-                var udp = new UdpPacketShape();
-                if (!udpReader.TryReadUdpPacket(ref udp))
-                {
-                    return;
-                }
-
-                if (!PhotonPorts.Udp.Contains(udp.SourcePort) && !PhotonPorts.Udp.Contains(udp.DestinationPort))
-                {
-                    return;
-                }
-
-                if (_lockToFirstDevice)
-                {
-                    var current = _activePcap;
-                    if (current is null)
-                    {
-                        _activePcap = pcap;
-                    }
-                    else if (!ReferenceEquals(current, pcap))
-                    {
-                        return;
-                    }
-                }
-
-                if (udp.Payload.Length == 0)
-                {
-                    return;
-                }
-
-                try
-                {
-                    _photonReceiver.ReceivePacket(udp.Payload);
-                }
-                catch (Exception ex)
-                {
-                    Log.Debug(ex, "PhotonReceiver.ReceivePacket failed");
-                }
                 return;
             }
-
-            case ProtocolType.Tcp:
-                {
-                    return;
-                }
-
-            default:
-                {
-                    return;
-                }
         }
+
+        if (_lockToFirstDevice)
+        {
+            var current = _activePcap;
+            if (current is null) _activePcap = pcap;
+            else if (!ReferenceEquals(current, pcap)) return;
+        }
+
+        if (udp.Payload.Length == 0)
+            return;
+
+        try
+        {
+            _photonReceiver.ReceivePacket(udp.Payload);
+        }
+        catch (Exception ex)
+        {
+            Log.Debug(ex, "PhotonReceiver.ReceivePacket failed");
+        }
+    }
+
+    private static bool LooksLikePhoton(ReadOnlySpan<byte> payload)
+    {
+        if (payload.Length < 3)
+        {
+            return false;
+        }
+
+        byte b0 = payload[0];
+
+        return b0 is 0xF1 or 0xF2 or 0xFE;
     }
 
     private void Worker()
@@ -261,21 +311,6 @@ public class LibpcapPacketProvider : PacketProvider
     {
         public static readonly HashSet<ushort> Udp = [5055, 5056, 5058];
         public static readonly HashSet<ushort> Tcp = [4530, 4531, 4533];
-    }
-
-    public static class BpfBuilder
-    {
-        public static string BuildDefault(bool includeTcp)
-        {
-            var udp = "(udp and (port 5055 or port 5056 or port 5058))";
-            if (!includeTcp)
-            {
-                return udp;
-            }
-
-            var tcp = "(tcp and (port 4530 or port 4531 or port 4533))";
-            return $"({udp}) or ({tcp})";
-        }
     }
 
     private static string? GetEffectiveFilter()
