@@ -109,7 +109,7 @@ public class SocketsPacketProvider : PacketProvider
         catch (SocketException e)
         {
             ConsoleManager.WriteLineForError(MethodBase.GetCurrentMethod()?.DeclaringType, e);
-            Log.Warning(e, "RawSocket(v4) bind/ioctl failed ({Error}) on {IP} - Admin Rechte nötig?", e.SocketErrorCode, ip);
+            Log.Warning(e, "RawSocket(v4) bind/ioctl failed ({Error}) on {IP} - Admin rights required?", e.SocketErrorCode, ip);
             SafeClose(socket);
         }
         catch (Exception e)
@@ -138,13 +138,11 @@ public class SocketsPacketProvider : PacketProvider
 
             _socketsV6.Add(socket);
 
-            ConsoleManager.WriteLineForMessage(
-                $"RawSocket(v6) added | LocalEndPoint: {socket.LocalEndPoint}, IsBound: {socket.IsBound}");
+            ConsoleManager.WriteLineForMessage($"RawSocket(v6) added | LocalEndPoint: {socket.LocalEndPoint}, IsBound: {socket.IsBound}");
         }
         catch (SocketException e)
         {
-            ConsoleManager.WriteLineForError(MethodBase.GetCurrentMethod()?.DeclaringType, e);
-            Log.Warning(e, "RawSocket(v6) bind failed ({Error}) on {IP}", e.SocketErrorCode, ip);
+            ConsoleManager.WriteLineForError(MethodBase.GetCurrentMethod()?.DeclaringType, e); Log.Warning(e, "RawSocket(v6) bind failed ({Error}) on {IP}", e.SocketErrorCode, ip);
             SafeClose(socket);
         }
         catch (Exception e)
