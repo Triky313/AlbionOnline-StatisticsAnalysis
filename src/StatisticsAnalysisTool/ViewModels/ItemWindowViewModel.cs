@@ -418,7 +418,7 @@ public class ItemWindowViewModel : BaseViewModel
             case Weapon weapon when weapon.CraftingRequirements?.FirstOrDefault()?.CraftResource.Count > 0:
             case TransformationWeapon transformationWeapon when transformationWeapon.CraftingRequirements?.FirstOrDefault()?.CraftResource.Count > 0:
             case EquipmentItem equipmentItem when equipmentItem.CraftingRequirements?.FirstOrDefault()?.CraftResource.Count > 0:
-            case Mount mount when mount.CraftingRequirements?.FirstOrDefault()?.CraftResource.Count > 0:
+            case Mount mount when mount.CraftingRequirements?.FirstOrDefault()?.CraftResource != null && mount.CraftingRequirements?.FirstOrDefault()?.CraftResource.Count > 0:
             case TrackingItem trackingItem when trackingItem.CraftingRequirements?.FirstOrDefault()?.CraftResource.Count > 0:
             case ConsumableItem consumableItem when consumableItem.CraftingRequirements?.FirstOrDefault()?.CraftResource.Count > 0:
                 areResourcesAvailable = true;
