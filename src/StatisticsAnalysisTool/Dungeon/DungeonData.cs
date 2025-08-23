@@ -28,29 +28,14 @@ public static class DungeonData
             return DungeonMode.HellGate;
         }
 
-        if (value.Contains("MORGANA_SOLO_CHEST")
-            || value.Contains("KEEPER_SOLO_CHEST")
-            || value.Contains("HERETIC_SOLO_CHEST")
-            || value.Contains("UNDEAD_SOLO_CHEST")
-            || value.Contains("UNDEAD_SOLO_CHEST_BOSS_HALLOWEEN")
-            || value.Contains("MORGANA_SOLO_BOOKCHEST")
-            || value.Contains("KEEPER_SOLO_BOOKCHEST")
-            || value.Contains("HERETIC_SOLO_BOOKCHEST")
-            || value.Contains("UNDEAD_SOLO_BOOKCHEST")
+        if (value.Contains("_SOLO_")
             || value.Contains("GENERAL_SHRINE_COMBAT_BUFF"))
         {
             return DungeonMode.Solo;
         }
 
-        if (value.Contains("MORGANA_VETERAN_CHEST")
-            || value.Contains("KEEPER_VETERAN_CHEST")
-            || value.Contains("HERETIC_VETERAN_CHEST")
-            || value.Contains("UNDEAD_VETERAN_CHEST")
-            || value.Contains("UNDEAD_CHEST_BOSS_HALLOWEEN")
-            || value.Contains("MORGANA_VETERAN_BOOKCHEST")
-            || value.Contains("KEEPER_VETERAN_BOOKCHEST")
-            || value.Contains("HERETIC_VETERAN_BOOKCHEST")
-            || value.Contains("UNDEAD_VETERAN_BOOKCHEST"))
+        if (value.Contains("_VETERAN_")
+            || value.Contains("_HALLOWEEN"))
         {
             return DungeonMode.Standard;
         }
@@ -142,42 +127,28 @@ public static class DungeonData
     }
 
     #region Chest
+
     public static TreasureRarity GetChestRarity(string value)
     {
-        if (value.Contains("BOOKCHEST_STANDARD")
-            || value.Contains("CHEST_STANDARD")
-            || value.Contains("NORMAL_STANDARD")
-            || value.Contains("CHEST_BOSS_HALLOWEEN_STANDARD")
+        if (value.Contains("_STANDARD")
             || value.Contains("AVALON") && value.Contains("STANDARD"))
         {
             return TreasureRarity.Common;
         }
 
-        if (value.Contains("BOOKCHEST_UNCOMMON")
-            || value.Contains("CHEST_UNCOMMON")
-            || value.Contains("NORMAL_UNCOMMON")
-            || value.Contains("CHEST_BOSS_UNCOMMON")
-            || value.Contains("CHEST_BOSS_HALLOWEEN_UNCOMMON")
+        if (value.Contains("_UNCOMMON")
             || value.Contains("AVALON") && value.Contains("UNCOMMON"))
         {
             return TreasureRarity.Uncommon;
         }
 
-        if (value.Contains("BOOKCHEST_RARE")
-            || value.Contains("CHEST_RARE")
-            || value.Contains("NORMAL_RARE")
-            || value.Contains("CHEST_BOSS_RARE")
-            || value.Contains("CHEST_BOSS_HALLOWEEN_RARE")
+        if (value.Contains("_RARE")
             || value.Contains("AVALON") && value.Contains("RARE"))
         {
             return TreasureRarity.Rare;
         }
 
-        if (value.Contains("BOOKCHEST_LEGENDARY")
-            || value.Contains("CHEST_LEGENDARY")
-            || value.Contains("NORMAL_LEGENDARY")
-            || value.Contains("CHEST_BOSS_LEGENDARY")
-            || value.Contains("CHEST_BOSS_HALLOWEEN_LEGENDARY")
+        if (value.Contains("LEGENDARY")
             || value.Contains("AVALON") && value.Contains("LEGENDARY"))
         {
             return TreasureRarity.Legendary;
@@ -188,7 +159,7 @@ public static class DungeonData
 
     public static bool IsBossChest(string value)
     {
-        return !value.Contains("BOSS_BUFF") && value.Contains("BOSS");
+        return !value.Contains("BOSS_BUFF") && value.Contains("BOSS") || value.Contains("BOSSLAIR");
     }
 
     #endregion
