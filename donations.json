@@ -1,4 +1,44 @@
 [
+	{
+	"Timestamp": "2025-08-25T00:00:00",
+	"Amount": 8000000,
+	"RealMoneyAmount": 0,
+	"Contributor": "Grrawl",
+	"IsDonationRealMoney": false,
+	"Server": "EU"
+    },
+	{
+	"Timestamp": "2025-08-24T00:00:00",
+	"Amount": 8000000,
+	"RealMoneyAmount": 0,
+	"Contributor": "Gérow",
+	"IsDonationRealMoney": false,
+	"Server": "EU"
+    },
+	{
+	"Timestamp": "2025-08-24T00:00:00",
+	"Amount": 5000000,
+	"RealMoneyAmount": 0,
+	"Contributor": "Pawney",
+	"IsDonationRealMoney": false,
+	"Server": "EU"
+    },
+	{
+	"Timestamp": "2025-08-24T00:00:00",
+	"Amount": 10000000,
+	"RealMoneyAmount": 0,
+	"Contributor": "Legita",
+	"IsDonationRealMoney": false,
+	"Server": "EU"
+    },
+	{
+	"Timestamp": "2025-08-25T00:00:00",
+	"Amount": 10000000,
+	"RealMoneyAmount": 0,
+	"Contributor": "faxerix",
+	"IsDonationRealMoney": false,
+	"Server": "EU"
+     },
      {
 	"Timestamp": "2025-07-19T00:00:00",
 	"Amount": 15000000,
