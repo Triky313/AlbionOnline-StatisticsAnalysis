@@ -1,9 +1,8 @@
-AlbionOnline - Statistics Analysis
+AlbionOnline - 统计分析工具
 ===================
+
 [![GitHub release (with filter)](https://img.shields.io/github/v/release/Triky313/AlbionOnline-StatisticsAnalysis?style=for-the-badge&labelColor=1E2126&color=0C637F)](https://github.com/Triky313/AlbionOnline-StatisticsAnalysis/releases)
-[![GitHub all releases downloads](https://img.shields.io/github/downloads/Triky313/AlbionOnline-StatisticsAnalysis/total?style=for-the-badge&labelColor=1E2126&color=EF476F)
-](https://github.com/Triky313/AlbionOnline-StatisticsAnalysis/releases)
-[![Build + Tests Workflow Status (with event)](https://img.shields.io/github/actions/workflow/status/Triky313/AlbionOnline-StatisticsAnalysis/pr-build-and-unit-tests.yml?style=for-the-badge&label=%F0%9F%9B%A0%EF%B8%8F%20Build%20%2B%20Unit%20tests&labelColor=1E2126&color=09C3A5)](https://github.com/Triky313/AlbionOnline-StatisticsAnalysis/actions/workflows/pr-build-and-unit-tests.yml)
+[![GitHub all releases downloads](https://img.shields.io/github/downloads/Triky313/AlbionOnline-StatisticsAnalysis/total?style=for-the-badge&labelColor=1E2126&color=EF476F)](https://github.com/Triky313/AlbionOnline-StatisticsAnalysis/releases)[![Build + Tests Workflow Status (with event)](https://img.shields.io/github/actions/workflow/status/Triky313/AlbionOnline-StatisticsAnalysis/pr-build-and-unit-tests.yml?style=for-the-badge&label=%F0%9F%9B%A0%EF%B8%8F%20Build%20%2B%20Unit%20tests&labelColor=1E2126&color=09C3A5)](https://github.com/Triky313/AlbionOnline-StatisticsAnalysis/actions/workflows/pr-build-and-unit-tests.yml)
 ![GitHub commits since latest release (by date)](https://img.shields.io/github/commits-since/Triky313/AlbionOnline-StatisticsAnalysis/latest?style=for-the-badge&labelColor=1E2126&color=09C3A5)
 [![GitHub issues](https://img.shields.io/github/issues/Triky313/AlbionOnline-StatisticsAnalysis?style=for-the-badge&labelColor=1E2126&color=FBAF69)](https://github.com/Triky313/AlbionOnline-StatisticsAnalysis/issues)
 [![CodeFactor](https://www.codefactor.io/repository/github/triky313/albiononline-statisticsanalysis/badge/main?style=for-the-badge&labelColor=1E2126&color=0CB0A9)](https://www.codefactor.io/repository/github/triky313/albiononline-statisticsanalysis/overview/main)
@@ -11,79 +10,96 @@ AlbionOnline - Statistics Analysis
 [![Donate PAYPAL](https://img.shields.io/badge/paypal-donate-1e477a?style=for-the-badge&labelColor=1E2126&color=1e477a)](https://www.paypal.com/donate/?hosted_button_id=N6T3CWXYNGHKC)
 [![Support me on Patreon](https://img.shields.io/endpoint.svg?url=https%3A%2F%2Fshieldsio-patreon.vercel.app%2Fapi%3Fusername%3DTriky313%26type%3Dpatrons&style=for-the-badge)](https://patreon.com/Triky313)
 
-## [中文说明][readme-cn]
-
-A tool to easily read auction house data with a loot logger, damage meter, dungeon tracker, dungeon entry timer, crafting calculator, map history and player information
+一个方便读取拍卖行数据并包含战利品拾取记录、伤害统计、地下城追踪、地下城关闭计时器、制作计算器、地图历史记录和玩家信息的工具
 
 <p align="center" align='right'>
   <img src="https://user-images.githubusercontent.com/14247773/147143464-c36d0cba-dddb-4b34-bd2e-11e3f65e3289.png" data-canonical-src="https://user-images.githubusercontent.com/14247773/147143464-c36d0cba-dddb-4b34-bd2e-11e3f65e3289.png" width="400" height="400" />
 </p>
 
-## Getting Started
-
-### Prerequisites & Installation
-- You need **Windows 10** or higher
-- Install **.NET 9.0 Desktop Runtime** (v9.0.0 or higher) [here](https://dotnet.microsoft.com/en-us/download/dotnet/thank-you/runtime-desktop-9.0.0-windows-x64-installer) (To start the tool)
-
-**Download the Statistics Analysis Tool**
-- [**DOWNLOAD**](https://github.com/Triky313/AlbionOnline-StatisticsAnalysis/releases/download/v7.5.3/StatisticsAnalysis-AlbionOnline-v7.5.3-x64.zip)
-Unzip the `.zip` file and start `StatisticsAnalysisTool.exe` with a double click. You may not be able to see the `.exe`. Don't worry, usually it's the file with the icon.  
-[Latest release](https://github.com/Triky313/AlbionOnline-StatisticsAnalysis/releases/latest)
-
-![tool_dir](https://user-images.githubusercontent.com/14247773/170473306-4dcc629e-384e-41b2-ada8-657cabe1b472.png)
 
 
-### Tracking via socket
-If tracking is used via socket, the tool only needs to be started as an administrator for it to work fully.
+## 开始使用
 
-### Tracking via Npcap
-As an alternative there is the Npcap variant, for this Npcap must be installed, but the tool must no longer be started as administrator.
-In addition, a filtering is available for VPN users that allows IP and port filtering.
+### 前置条件与安装
 
-https://npcap.com/ (Normally the latest version should work!)
+- 您需要 **Windows 10** 或更高版本
+- 安装 **.NET 9.0 Desktop Runtime** (v9.0.0 或更高版本) [此处](https://dotnet.microsoft.com/en-us/download/dotnet/thank-you/runtime-desktop-9.0.0-windows-x64-installer) (用于启动工具)
 
-## Is This Allowed
-[Debate](https://forum.albiononline.com/index.php/Thread/124819-Regarding-3rd-Party-Software-and-Network-Traffic-aka-do-not-cheat-Update-16-45-U/) (Original link),  [Clarified](https://forum.albiononline.com/index.php/Thread/153238-DPS-METER/#:~:text=As%20noted%20on%20the%20GitHub,to%20use%20it%20without%20concern.) (2023 short CM answer)  
+**下载 Statistics Analysis 工具**
 
-✅ Only monitors
+- [**下载**](https://github.com/Triky313/AlbionOnline-StatisticsAnalysis/releases/download/v7.5.3/StatisticsAnalysis-AlbionOnline-v7.5.3-x64.zip)
+  解压 `.zip` 文件并双击启动 `StatisticsAnalysis.exe`。您可能看不到 `.exe` 扩展名。不用担心，通常是带有图标的那个文件。
 
-✅ Does not modify our game client
+  [最新版本](https://github.com/Triky313/AlbionOnline-StatisticsAnalysis/releases/latest)
 
-✅ Does not track players that are not within the player's view
+![工具目录](https://user-images.githubusercontent.com/14247773/170473306-4dcc629e-384e-41b2-ada8-657cabe1b472.png)
 
-✅ Does not have an overlay to the game
 
-## FAQ
-### Which operating system is supported?
-✅ Windows 10 and later
+### 通过 Socket 进行追踪
 
-❌ Windows XP, Vista, 7 and 8 are not supported!
+如果通过 socket 使用追踪功能，工具只需以管理员身份启动即可完全工作。
 
-❌ Linux is currently not supported!
+### 通过 Npcap 进行追踪
 
-❌ Mac is currently not supported!
+作为替代方案，有 Npcap 变体，为此必须安装 Npcap，但工具不再需要以管理员身份启动。
+此外，还为 VPN 用户提供了过滤功能，允许进行 IP 和端口过滤。
 
-### Can I use the tool with Geforce Now
-No, unfortunately this is not technically possible.
+https://npcap.com/ (通常最新版本应该可以工作！)
 
-### Can I use the tool with ExitLag or VPN?
-Yes, VPN or ExitLag can generally be used, if you use Npcap tracking
+## 使用这个工具会不会导致封号
 
-### How fast does my internet need to be?
-An internet connection with at least 1M/bit (256KB/s) download rate.
+[讨论](https://forum.albiononline.com/index.php/Thread/124819-Regarding-3rd-Party-Software-and-Network-Traffic-aka-do-not-cheat-Update-16-45-U/) (原始链接),  [澄清](https://forum.albiononline.com/index.php/Thread/153238-DPS-METER/#:~:text=As%20noted%20on%20the%20GitHub,to%20use%20it%20without%20concern.) (2023 年社区经理简短答复)
 
-### Can I use the tool even if the game is not started
-Yes, but not all features are available. 
-It is only important that you set the game server from automatic to one of your choice in the settings. Otherwise the tool does not know for which server it should load data.
+✅ 仅监视
+
+✅ 不修改我们的游戏客户端
+
+✅ 不追踪不在玩家视野内的玩家
+
+✅ 没有游戏内覆盖层
+
+## 常见问题解答
+
+### 支持哪些操作系统？
+
+✅ Windows 10 及更高版本
+
+❌ 不支持 Windows XP, Vista, 7 和 8！
+
+❌ 目前不支持 Linux！
+
+❌ 目前不支持 Mac！
+
+### 我可以在 Geforce Now 上使用该工具吗？
+
+不可以，这在技术上目前无法实现。
+
+### 我可以在使用 ExitLag 或 VPN 或 游戏加速器时使用该工具吗？
+
+可以，如果您使用 Npcap 追踪，通常可以使用 VPN 或 ExitLag。
+
+注意：如果使用游戏加速器，请使用路由加速模式，雷神加速器为模式9
+
+### 我的网速需要多快？
+
+至少需要 1M/bit (256KB/s) 下载速度的互联网连接。
+
+### 游戏未启动时我也可以使用该工具吗？
+
+可以，但并非所有功能都可用。
+重要的是，您需要在设置中将游戏服务器从自动设置为您选择的服务器。否则工具不知道应该为哪个服务器加载数据。
 
 ## WIKI
-More information can be found on the [Wiki](https://github.com/Triky313/AlbionOnline-StatisticsAnalysis/wiki) pages.
 
-## Tool website
+更多信息可以在 [Wiki](https://github.com/Triky313/AlbionOnline-StatisticsAnalysis/wiki) 页面上找到。
+
+## 工具网站
+
 [triky313.github.io/AlbionOnline-StatisticsAnalysis](https://triky313.github.io/AlbionOnline-StatisticsAnalysis/)
 
-## DONATIONS
-This project has existed since June 2019. Almost every week I put +10 hours into this project and I love it. That's why I often don't have the time to play Albion Online. So if you want to make me happy and support this project, just donate a few items or donate on Patreon.
+## 捐赠
+
+这个项目自 2019 年 6 月就已存在。我几乎每周都会投入 10+ 小时在这个项目上，并且我非常热爱它。这就是为什么我经常没有时间玩 Albion Online。如果您想支持这个项目，只需捐赠一些游戏物品或在 Patreon 上捐赠即可。
 
 [Patreon - Triky313](https://www.patreon.com/triky313)
 
@@ -93,8 +109,10 @@ This project has existed since June 2019. Almost every week I put +10 hours into
 
 <img src="https://user-images.githubusercontent.com/14247773/201472890-33a0ed70-7ef8-4804-aa84-46f0a84f3168.png" width="100" height="100" />
 
-## Contributors
+## 贡献者
+
 <!-- readme: contributors -start -->
+
 <table>
 <tr>
     <td align="center">
@@ -256,5 +274,4 @@ This project has existed since June 2019. Almost every week I put +10 hours into
     </td></tr>
 </table>
 
-[readme-cn]: https://github.com/Triky313/AlbionOnline-StatisticsAnalysis/blob/dev/README-CN.md
 <!-- readme: contributors -end -->
