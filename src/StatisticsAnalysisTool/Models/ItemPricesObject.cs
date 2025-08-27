@@ -6,6 +6,7 @@ using System;
 using System.Reflection;
 using System.Windows;
 using System.Windows.Input;
+using StatisticsAnalysisTool.Diagnostics;
 
 namespace StatisticsAnalysisTool.Models;
 
@@ -378,7 +379,7 @@ public class ItemPricesObject : BaseViewModel
         }
         catch (Exception ex)
         {
-            ConsoleManager.WriteLineForError(MethodBase.GetCurrentMethod()?.DeclaringType, ex);
+            DebugConsole.WriteError(MethodBase.GetCurrentMethod()?.DeclaringType, ex);
             Log.Error(ex, "{message}", MethodBase.GetCurrentMethod()?.DeclaringType);
         }
     }

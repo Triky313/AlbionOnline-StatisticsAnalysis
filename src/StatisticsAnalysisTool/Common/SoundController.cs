@@ -7,6 +7,7 @@ using System.IO;
 using System.Linq;
 using System.Media;
 using System.Reflection;
+using StatisticsAnalysisTool.Diagnostics;
 
 namespace StatisticsAnalysisTool.Common;
 
@@ -55,7 +56,7 @@ public static class SoundController
         }
         catch (Exception e) when (e is InvalidOperationException or UriFormatException or FileNotFoundException or ArgumentException)
         {
-            ConsoleManager.WriteLineForError(MethodBase.GetCurrentMethod()?.DeclaringType, e);
+            DebugConsole.WriteError(MethodBase.GetCurrentMethod()?.DeclaringType, e);
             Log.Error(e, "{message}", MethodBase.GetCurrentMethod()?.DeclaringType);
         }
     }
@@ -69,7 +70,7 @@ public static class SoundController
         }
         catch (Exception e) when (e is ArgumentException)
         {
-            ConsoleManager.WriteLineForError(MethodBase.GetCurrentMethod()?.DeclaringType, e);
+            DebugConsole.WriteError(MethodBase.GetCurrentMethod()?.DeclaringType, e);
             Log.Error(e, "{message}", MethodBase.GetCurrentMethod()?.DeclaringType);
             return string.Empty;
         }

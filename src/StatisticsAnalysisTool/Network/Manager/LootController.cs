@@ -14,6 +14,7 @@ using System.Linq;
 using System.Reflection;
 using System.Threading.Tasks;
 using System.Windows;
+using StatisticsAnalysisTool.Diagnostics;
 using Loot = StatisticsAnalysisTool.Models.NetworkModel.Loot;
 
 namespace StatisticsAnalysisTool.Network.Manager;
@@ -194,7 +195,7 @@ public class LootController : ILootController
         }
         catch (Exception e)
         {
-            ConsoleManager.WriteLineForError(MethodBase.GetCurrentMethod()?.DeclaringType, e);
+            DebugConsole.WriteError(MethodBase.GetCurrentMethod()?.DeclaringType, e);
             Log.Error(e, "{message}", MethodBase.GetCurrentMethod()?.DeclaringType);
         }
     }
@@ -253,7 +254,7 @@ public class LootController : ILootController
         }
         catch (Exception e)
         {
-            ConsoleManager.WriteLineForError(MethodBase.GetCurrentMethod()?.DeclaringType, e);
+            DebugConsole.WriteError(MethodBase.GetCurrentMethod()?.DeclaringType, e);
             Log.Error(e, "{message}", MethodBase.GetCurrentMethod()?.DeclaringType);
             return string.Empty;
         }

@@ -103,5 +103,6 @@ public class SettingsObject
     public bool IsReSpecStatsVisible { get; set; } = true;
     public bool IsRepairCostsStatsVisible { get; set; } = true;
     public string ProxyUrlWithPort { get; set; }
+    public string DebugConsoleFilter { get; set; }
     public int NetworkDevice { get; set; } = -1;
 }

@@ -15,6 +15,8 @@ public class RewardGrantedEventHandler : EventPacketHandler<RewardGrantedEvent>
 
     protected override async Task OnActionAsync(RewardGrantedEvent value)
     {
+
+
         _trackingController.GatheringController.AddRewardItem(value.ItemIndex, value.Quantity);
         await Task.CompletedTask;
     }

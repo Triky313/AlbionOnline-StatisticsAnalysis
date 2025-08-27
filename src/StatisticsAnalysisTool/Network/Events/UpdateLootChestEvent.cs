@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.Reflection;
+using StatisticsAnalysisTool.Diagnostics;
 
 namespace StatisticsAnalysisTool.Network.Events;
 
@@ -13,8 +14,6 @@ public class UpdateLootChestEvent
 
     public UpdateLootChestEvent(Dictionary<byte, object> parameters)
     {
-        ConsoleManager.WriteLineForNetworkHandler(GetType().Name, parameters);
-
         try
         {
             if (parameters.ContainsKey(0) && int.TryParse(parameters[0].ToString(), out var objectId))
@@ -52,7 +51,7 @@ public class UpdateLootChestEvent
         }
         catch (Exception e)
         {
-            ConsoleManager.WriteLineForError(MethodBase.GetCurrentMethod()?.DeclaringType, e);
+            DebugConsole.WriteError(MethodBase.GetCurrentMethod()?.DeclaringType, e);
         }
     }
 }

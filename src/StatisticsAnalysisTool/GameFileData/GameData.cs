@@ -20,6 +20,7 @@ using System.Text;
 using System.Text.Json;
 using System.Text.Json.Serialization;
 using System.Threading.Tasks;
+using StatisticsAnalysisTool.Diagnostics;
 using StatisticsAnalysisTool.Localization;
 
 namespace StatisticsAnalysisTool.GameFileData;
@@ -154,7 +155,7 @@ public static class GameData
         catch (Exception e)
         {
             SettingsController.CurrentSettings.MainGameFolderPath = string.Empty;
-            ConsoleManager.WriteLineForError(MethodBase.GetCurrentMethod()?.DeclaringType, e);
+            DebugConsole.WriteError(MethodBase.GetCurrentMethod()?.DeclaringType, e);
             Log.Error(e, "{message}", MethodBase.GetCurrentMethod()?.DeclaringType);
             return false;
         }
@@ -207,7 +208,7 @@ public static class GameData
         }
         catch (Exception e)
         {
-            ConsoleManager.WriteLineForError(MethodBase.GetCurrentMethod()?.DeclaringType, e);
+            DebugConsole.WriteError(MethodBase.GetCurrentMethod()?.DeclaringType, e);
             Log.Error(e, "{message}", MethodBase.GetCurrentMethod()?.DeclaringType);
             return new List<T>();
         }
@@ -243,7 +244,7 @@ public static class GameData
         }
         catch (Exception e)
         {
-            ConsoleManager.WriteLineForError(MethodBase.GetCurrentMethod()?.DeclaringType, e);
+            DebugConsole.WriteError(MethodBase.GetCurrentMethod()?.DeclaringType, e);
             Log.Error(e, "{message}", MethodBase.GetCurrentMethod()?.DeclaringType);
             return new List<T>();
         }

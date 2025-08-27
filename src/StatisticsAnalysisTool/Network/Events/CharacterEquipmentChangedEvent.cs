@@ -6,6 +6,7 @@ using StatisticsAnalysisTool.Models.NetworkModel;
 using System;
 using System.Collections.Generic;
 using System.Reflection;
+using StatisticsAnalysisTool.Diagnostics;
 
 namespace StatisticsAnalysisTool.Network.Events;
 
@@ -17,8 +18,7 @@ public class CharacterEquipmentChangedEvent
     public CharacterEquipmentChangedEvent(Dictionary<byte, object> parameters)
     {
         EventValidator.IsEventValid(EventCodes.CharacterEquipmentChanged, parameters);
-        ConsoleManager.WriteLineForNetworkHandler(GetType().Name, parameters);
-
+        
         try
         {
             ProcessObjectId(parameters);
@@ -27,7 +27,7 @@ public class CharacterEquipmentChangedEvent
         }
         catch (Exception e)
         {
-            ConsoleManager.WriteLineForError(MethodBase.GetCurrentMethod()?.DeclaringType, e);
+            DebugConsole.WriteError(MethodBase.GetCurrentMethod()?.DeclaringType, e);
         }
     }
 

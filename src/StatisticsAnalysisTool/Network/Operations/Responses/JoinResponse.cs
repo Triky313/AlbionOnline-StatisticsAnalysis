@@ -1,7 +1,7 @@
 ﻿using Serilog;
 using StatisticsAnalysisTool.Cluster;
 using StatisticsAnalysisTool.Common;
-using StatisticsAnalysisTool.Enumerations;
+using StatisticsAnalysisTool.Diagnostics;
 using StatisticsAnalysisTool.GameFileData;
 using System;
 using System.Collections.Generic;
@@ -32,31 +32,32 @@ public class JoinResponse
     public string AllianceName { get; }
     public bool IsReSpecActive { get; }
 
-    public JoinResponse(IReadOnlyDictionary<byte, object> parameters)
+    public JoinResponse(Dictionary<byte, object> parameters)
     {
         try
         {
             Debug.Print("---------- UserInformation (Response) ----------");
-            ConsoleManager.WriteLineForMessage(MethodBase.GetCurrentMethod()?.DeclaringType, "---------- UserInformation (Response) ----------", ConsoleColorType.EventMapChangeColor);
+            DebugConsole.WriteInfo(MethodBase.GetCurrentMethod()?.DeclaringType, "---------- UserInformation (Response) ----------", "#0279be");
 
             UserObjectId = null;
             if (parameters.ContainsKey(0))
             {
                 UserObjectId = parameters[0].ObjectToLong();
                 Debug.Print($"Local user ObjectId: {UserObjectId}");
-                ConsoleManager.WriteLineForMessage(MethodBase.GetCurrentMethod()?.DeclaringType, $"Local user ObjectId: {UserObjectId}", ConsoleColorType.EventMapChangeColor);
+                DebugConsole.WriteInfo(MethodBase.GetCurrentMethod()?.DeclaringType, $"Local user ObjectId: {UserObjectId}", "#0279be");
             }
 
             if (parameters.ContainsKey(1))
             {
                 UserGuid = parameters[1].ObjectToGuid();
                 Debug.Print($"Local user Guid: {UserGuid}");
-                ConsoleManager.WriteLineForMessage(MethodBase.GetCurrentMethod()?.DeclaringType, $"Local user Guid: {UserGuid}", ConsoleColorType.EventMapChangeColor);
+                DebugConsole.WriteInfo(MethodBase.GetCurrentMethod()?.DeclaringType, $"Local user Guid: {UserGuid}", "#0279be");
             }
 
             if (parameters.ContainsKey(2))
             {
                 Username = parameters[2].ToString();
+                DebugConsole.WriteInfo(MethodBase.GetCurrentMethod()?.DeclaringType, $"Username: {Username}", "#0279be");
             }
 
             if (parameters.ContainsKey(8))
@@ -64,6 +65,7 @@ public class JoinResponse
                 MapIndex = parameters[8].ToString();
                 MapType = WorldData.GetMapType(MapIndex);
                 MapGuid = WorldData.GetMapGuid(MapIndex);
+                DebugConsole.WriteInfo(MethodBase.GetCurrentMethod()?.DeclaringType, $"MapIndex: {MapIndex} | MapType: {MapType} | MapGuid: {MapGuid}", "#0279be");
             }
 
             if (parameters.ContainsKey(26))
@@ -104,7 +106,7 @@ public class JoinResponse
             if (parameters.ContainsKey(53))
             {
                 InteractGuid = parameters[53].ObjectToGuid();
-                ConsoleManager.WriteLineForMessage(MethodBase.GetCurrentMethod()?.DeclaringType, $"Local interact object Guid: {InteractGuid}", ConsoleColorType.EventMapChangeColor);
+                DebugConsole.WriteInfo(MethodBase.GetCurrentMethod()?.DeclaringType, $"Local interact object Guid: {InteractGuid}", "#0279be");
             }
 
             if (parameters.ContainsKey(57))

@@ -5,26 +5,21 @@ using System.Threading.Tasks;
 
 namespace StatisticsAnalysisTool.Network.Handler;
 
-public class NewSimpleItemEventHandler : EventPacketHandler<NewSimpleItemEvent>
+public class NewSimpleItemEventHandler(TrackingController trackingController) : EventPacketHandler<NewSimpleItemEvent>((int) EventCodes.NewSimpleItem)
 {
-    private readonly TrackingController _trackingController;
-
-    public NewSimpleItemEventHandler(TrackingController trackingController) : base((int) EventCodes.NewSimpleItem)
-    {
-        _trackingController = trackingController;
-    }
-
     protected override async Task OnActionAsync(NewSimpleItemEvent value)
     {
-        if (_trackingController.IsTrackingAllowedByMainCharacter())
+
+
+        if (trackingController.IsTrackingAllowedByMainCharacter())
         {
-            _trackingController.VaultController.AddDiscoveredItem(value.Item);
+            trackingController.VaultController.AddDiscoveredItem(value.Item);
         }
 
         EstimatedMarketValueController.Add(value.Item.ItemIndex, value.Item.EstimatedMarketValueInternal, value.Item.Quality);
-        _trackingController.LootController.AddDiscoveredItem(value.Item);
-        _trackingController.DungeonController.AddDiscoveredItem(value.Item);
-        _trackingController.GatheringController.AddFishedItem(value.Item);
+        trackingController.LootController.AddDiscoveredItem(value.Item);
+        trackingController.DungeonController.AddDiscoveredItem(value.Item);
+        trackingController.GatheringController.AddFishedItem(value.Item);
         await Task.CompletedTask;
     }
 }

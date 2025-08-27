@@ -2,6 +2,7 @@
 using StatisticsAnalysisTool.Protocol16.Photon;
 using System.Buffers;
 using StatisticsAnalysisTool.Abstractions;
+using StatisticsAnalysisTool.Diagnostics;
 
 namespace StatisticsAnalysisTool.PhotonPackageParser;
 
@@ -187,23 +188,26 @@ public abstract class PhotonParser : IPhotonReceiver
         switch ((MessageType) messageType)
         {
             case MessageType.OperationRequest:
-                {
-                    OperationRequest requestData = Protocol16Deserializer.DeserializeOperationRequest(payload);
-                    OnRequest(requestData.OperationCode, requestData.Parameters);
-                    break;
-                }
+            {
+                OperationRequest requestData = Protocol16Deserializer.DeserializeOperationRequest(payload);
+                DebugConsole.LogOperationRequest(requestData.OperationCode, requestData.Parameters);
+                OnRequest(requestData.OperationCode, requestData.Parameters);
+                break;
+            }
             case MessageType.OperationResponse:
-                {
-                    OperationResponse responseData = Protocol16Deserializer.DeserializeOperationResponse(payload);
-                    OnResponse(responseData.OperationCode, responseData.ReturnCode, responseData.DebugMessage, responseData.Parameters);
-                    break;
-                }
+            {
+                OperationResponse responseData = Protocol16Deserializer.DeserializeOperationResponse(payload);
+                DebugConsole.LogOperationResponse(responseData.OperationCode, responseData.ReturnCode, responseData.DebugMessage, responseData.Parameters);
+                OnResponse(responseData.OperationCode, responseData.ReturnCode, responseData.DebugMessage, responseData.Parameters);
+                break;
+            }
             case MessageType.Event:
-                {
-                    EventData eventData = Protocol16Deserializer.DeserializeEventData(payload);
-                    OnEvent(eventData.Code, eventData.Parameters);
-                    break;
-                }
+            {
+                EventData eventData = Protocol16Deserializer.DeserializeEventData(payload);
+                DebugConsole.LogEvent(eventData.Code, eventData.Parameters);
+                OnEvent(eventData.Code, eventData.Parameters);
+                break;
+            }
         }
     }
 

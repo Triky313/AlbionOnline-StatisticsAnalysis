@@ -10,6 +10,7 @@ using System.Linq;
 using System.Reflection;
 using System.Text.Json;
 using System.Threading.Tasks;
+using StatisticsAnalysisTool.Diagnostics;
 
 namespace StatisticsAnalysisTool.GameFileData;
 
@@ -193,7 +194,6 @@ public static class WorldData
             return ClusterType.Corrupted;
         }
 
-        ConsoleManager.WriteLineForMessage(MethodBase.GetCurrentMethod()?.DeclaringType, $"GetClusterType Unknown: {type}", ConsoleColorType.EventMapChangeColor);
         return ClusterType.Unknown;
     }
 

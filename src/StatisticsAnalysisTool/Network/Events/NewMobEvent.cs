@@ -3,6 +3,7 @@ using StatisticsAnalysisTool.EventValidations;
 using System;
 using System.Collections.Generic;
 using System.Reflection;
+using StatisticsAnalysisTool.Diagnostics;
 
 namespace StatisticsAnalysisTool.Network.Events;
 
@@ -11,8 +12,7 @@ public class NewMobEvent
     public NewMobEvent(Dictionary<byte, object> parameters)
     {
         EventValidator.IsEventValid(EventCodes.NewMob, parameters);
-        ConsoleManager.WriteLineForNetworkHandler(GetType().Name, parameters);
-
+        
         try
         {
             if (parameters.TryGetValue(0, out object objectId))
@@ -57,7 +57,7 @@ public class NewMobEvent
         }
         catch (Exception e)
         {
-            ConsoleManager.WriteLineForError(MethodBase.GetCurrentMethod()?.DeclaringType, e);
+            DebugConsole.WriteError(MethodBase.GetCurrentMethod()?.DeclaringType, e);
         }
     }
 

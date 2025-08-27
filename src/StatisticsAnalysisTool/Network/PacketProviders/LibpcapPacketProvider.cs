@@ -234,7 +234,9 @@ public class LibpcapPacketProvider : PacketProvider
         }
 
         if (udp.Payload.Length == 0)
+        {
             return;
+        }
 
         try
         {

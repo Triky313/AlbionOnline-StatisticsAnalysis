@@ -10,6 +10,7 @@ using System.IO.Compression;
 using System.Linq;
 using System.Reflection;
 using System.Threading.Tasks;
+using StatisticsAnalysisTool.Diagnostics;
 
 namespace StatisticsAnalysisTool.Backup;
 
@@ -46,7 +47,7 @@ public static class BackupController
                 zipArchive.CreateEntryFromFile(file, entryName);
             }
 
-            ConsoleManager.WriteLineForMessage(LocalizationController.Translation("BACKUP_CREATED"));
+            DebugConsole.WriteInfo(MethodBase.GetCurrentMethod()?.DeclaringType, LocalizationController.Translation("BACKUP_CREATED"));
             _ = ServiceLocator.Resolve<SatNotificationManager>()
                 .ShowTrackingStatusAsync(LocalizationController.Translation("BACKUP_CREATED"), LocalizationController.Translation("A_BACKUP_HAS_BEEN_CREATED"));
             _isBackupRunning = false;
@@ -54,7 +55,7 @@ public static class BackupController
         }
         catch (Exception e)
         {
-            ConsoleManager.WriteLineForError(MethodBase.GetCurrentMethod()?.DeclaringType, e);
+            DebugConsole.WriteError(MethodBase.GetCurrentMethod()?.DeclaringType, e);
             Log.Error(e, "{message}", MethodBase.GetCurrentMethod()?.DeclaringType);
             _isBackupRunning = false;
             return false;
@@ -135,7 +136,7 @@ public static class BackupController
         }
         catch (Exception e)
         {
-            ConsoleManager.WriteLineForError(MethodBase.GetCurrentMethod()?.DeclaringType, e);
+            DebugConsole.WriteError(MethodBase.GetCurrentMethod()?.DeclaringType, e);
             Log.Error(e, "{message}", MethodBase.GetCurrentMethod()?.DeclaringType);
         }
     }
@@ -148,7 +149,7 @@ public static class BackupController
         }
         catch (IOException e)
         {
-            ConsoleManager.WriteLineForError(MethodBase.GetCurrentMethod()?.DeclaringType, e);
+            DebugConsole.WriteError(MethodBase.GetCurrentMethod()?.DeclaringType, e);
             Log.Error(e, "{message}", MethodBase.GetCurrentMethod()?.DeclaringType);
         }
     }
@@ -170,7 +171,7 @@ public static class BackupController
         }
         catch (IOException e)
         {
-            ConsoleManager.WriteLineForError(MethodBase.GetCurrentMethod()?.DeclaringType, e);
+            DebugConsole.WriteError(MethodBase.GetCurrentMethod()?.DeclaringType, e);
             Log.Error(e, "{message}", MethodBase.GetCurrentMethod()?.DeclaringType);
             return false;
         }

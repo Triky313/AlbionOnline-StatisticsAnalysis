@@ -19,7 +19,6 @@
                 <ResourceDictionary Source="Styles/ItemSearchStyles.xaml" />
                 <ResourceDictionary Source="Styles/PlayerInformationStyles.xaml" />
 
-                <ResourceDictionary Source="Styles/ConsoleStyles.xaml" />
                 <ResourceDictionary Source="Styles/EventValidationStyles.xaml" />
                 <ResourceDictionary Source="Styles/TrackingStyles.xaml" />
                 <ResourceDictionary Source="Styles/DashboardStyles.xaml" />

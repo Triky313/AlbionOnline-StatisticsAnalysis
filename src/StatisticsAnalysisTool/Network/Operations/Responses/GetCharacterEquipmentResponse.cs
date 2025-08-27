@@ -1,8 +1,9 @@
-﻿using System;
+﻿using StatisticsAnalysisTool.Common;
+using StatisticsAnalysisTool.Diagnostics;
+using StatisticsAnalysisTool.Models.NetworkModel;
+using System;
 using System.Collections.Generic;
 using System.Reflection;
-using StatisticsAnalysisTool.Common;
-using StatisticsAnalysisTool.Models.NetworkModel;
 
 namespace StatisticsAnalysisTool.Network.Operations.Responses;
 
@@ -14,38 +15,36 @@ public class GetCharacterEquipmentResponse
 
     public GetCharacterEquipmentResponse(Dictionary<byte, object> parameters)
     {
-        ConsoleManager.WriteLineForNetworkHandler(GetType().Name, parameters);
-
         try
         {
             if (parameters.TryGetValue(0, out object guid))
             {
                 Guid = guid.ObjectToGuid() ?? Guid.Empty;
             }
-            
+
             if (parameters.ContainsKey(1))
             {
                 var valueType = parameters[1].GetType();
                 switch (valueType.IsArray)
                 {
                     case true when typeof(byte[]).Name == valueType.Name:
-                    {
-                        var values = ((byte[])parameters[1]).ToDictionary();
-                        CharacterEquipment = GetEquipment(values);
-                        break;
-                    }
+                        {
+                            var values = ((byte[]) parameters[1]).ToDictionary();
+                            CharacterEquipment = GetEquipment(values);
+                            break;
+                        }
                     case true when typeof(short[]).Name == valueType.Name:
-                    {
-                        var values = ((short[])parameters[1]).ToDictionary();
-                        CharacterEquipment = GetEquipment(values);
-                        break;
-                    }
+                        {
+                            var values = ((short[]) parameters[1]).ToDictionary();
+                            CharacterEquipment = GetEquipment(values);
+                            break;
+                        }
                     case true when typeof(int[]).Name == valueType.Name:
-                    {
-                        var values = ((int[])parameters[1]).ToDictionary();
-                        CharacterEquipment = GetEquipment(values);
-                        break;
-                    }
+                        {
+                            var values = ((int[]) parameters[1]).ToDictionary();
+                            CharacterEquipment = GetEquipment(values);
+                            break;
+                        }
                 }
 
                 if (parameters.TryGetValue(3, out object itemPower))
@@ -56,7 +55,7 @@ public class GetCharacterEquipmentResponse
         }
         catch (Exception e)
         {
-            ConsoleManager.WriteLineForError(MethodBase.GetCurrentMethod()?.DeclaringType, e);
+            DebugConsole.WriteError(MethodBase.GetCurrentMethod()?.DeclaringType, e);
         }
     }
 

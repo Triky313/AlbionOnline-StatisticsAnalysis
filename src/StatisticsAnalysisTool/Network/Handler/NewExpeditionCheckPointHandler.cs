@@ -16,6 +16,8 @@ public class NewExpeditionCheckPointHandler : EventPacketHandler<NewExpeditionCh
 
     protected override async Task OnActionAsync(NewExpeditionCheckPointEvent value)
     {
+
+
         await _trackingController.DungeonController.UpdateCheckPointAsync(new CheckPoint() { Id = value.ObjectId, Status = value.Status });
     }
 }

@@ -4,6 +4,7 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Reflection;
+using StatisticsAnalysisTool.Diagnostics;
 
 namespace StatisticsAnalysisTool.Network.Events;
 
@@ -17,8 +18,6 @@ public class PartySilverGainedEvent
 
     public PartySilverGainedEvent(Dictionary<byte, object> parameters)
     {
-        ConsoleManager.WriteLineForNetworkHandler(GetType().Name, parameters);
-
         try
         {
             foreach (var parameter in parameters) Debug.Print($"{parameter}");
@@ -33,7 +32,7 @@ public class PartySilverGainedEvent
         }
         catch (Exception e)
         {
-            ConsoleManager.WriteLineForError(MethodBase.GetCurrentMethod()?.DeclaringType, e);
+            DebugConsole.WriteError(MethodBase.GetCurrentMethod()?.DeclaringType, e);
         }
     }
 }

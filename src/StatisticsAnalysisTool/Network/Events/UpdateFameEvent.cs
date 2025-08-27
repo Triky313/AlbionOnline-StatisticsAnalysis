@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.Reflection;
+using StatisticsAnalysisTool.Diagnostics;
 
 namespace StatisticsAnalysisTool.Network.Events;
 
@@ -24,8 +25,6 @@ public class UpdateFameEvent
 
     public UpdateFameEvent(Dictionary<byte, object> parameters)
     {
-        ConsoleManager.WriteLineForNetworkHandler(GetType().Name, parameters);
-
         // Array[10] exist only by Crafting...
         try
         {
@@ -107,7 +106,7 @@ public class UpdateFameEvent
         }
         catch (Exception e)
         {
-            ConsoleManager.WriteLineForError(MethodBase.GetCurrentMethod()?.DeclaringType, e);
+            DebugConsole.WriteError(MethodBase.GetCurrentMethod()?.DeclaringType, e);
         }
     }
 }

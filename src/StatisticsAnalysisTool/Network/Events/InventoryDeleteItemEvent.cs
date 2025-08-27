@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.Reflection;
+using StatisticsAnalysisTool.Diagnostics;
 
 namespace StatisticsAnalysisTool.Network.Events;
 
@@ -11,8 +12,6 @@ public class InventoryDeleteItemEvent
 
     public InventoryDeleteItemEvent(Dictionary<byte, object> parameters)
     {
-        ConsoleManager.WriteLineForNetworkHandler(GetType().Name, parameters);
-
         try
         {
             if (parameters.ContainsKey(0))
@@ -22,7 +21,7 @@ public class InventoryDeleteItemEvent
         }
         catch (Exception e)
         {
-            ConsoleManager.WriteLineForError(MethodBase.GetCurrentMethod()?.DeclaringType, e);
+            DebugConsole.WriteError(MethodBase.GetCurrentMethod()?.DeclaringType, e);
         }
     }
 }

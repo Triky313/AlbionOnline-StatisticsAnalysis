@@ -3,6 +3,7 @@ using StatisticsAnalysisTool.Common;
 using System;
 using System.Collections.Generic;
 using System.Reflection;
+using StatisticsAnalysisTool.Diagnostics;
 
 namespace StatisticsAnalysisTool.Network.Events;
 
@@ -15,8 +16,6 @@ public class InCombatStateUpdateEvent
 
     public InCombatStateUpdateEvent(Dictionary<byte, object> parameters)
     {
-        ConsoleManager.WriteLineForNetworkHandler(GetType().Name, parameters);
-
         try
         {
             if (parameters.ContainsKey(0))
@@ -36,7 +35,7 @@ public class InCombatStateUpdateEvent
         }
         catch (Exception e)
         {
-            ConsoleManager.WriteLineForError(MethodBase.GetCurrentMethod()?.DeclaringType, e);
+            DebugConsole.WriteError(MethodBase.GetCurrentMethod()?.DeclaringType, e);
             Log.Error(e, "{message}", MethodBase.GetCurrentMethod()?.DeclaringType);
         }
     }

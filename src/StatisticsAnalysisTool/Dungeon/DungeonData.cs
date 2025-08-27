@@ -1,6 +1,7 @@
 ﻿using StatisticsAnalysisTool.Common;
 using StatisticsAnalysisTool.Enumerations;
 using System.Reflection;
+using StatisticsAnalysisTool.Diagnostics;
 
 namespace StatisticsAnalysisTool.Dungeon;
 
@@ -90,7 +91,6 @@ public static class DungeonData
             return Faction.Avalon;
         }
 
-        ConsoleManager.WriteLineForMessage(MethodBase.GetCurrentMethod()?.DeclaringType, $"GetFaction Unknown: {value}", ConsoleColorType.EventMapChangeColor);
         return Faction.Unknown;
     }
 

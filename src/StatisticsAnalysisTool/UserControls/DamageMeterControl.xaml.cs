@@ -11,6 +11,7 @@ using System.Linq;
 using System.Reflection;
 using System.Windows;
 using System.Windows.Input;
+using StatisticsAnalysisTool.Diagnostics;
 
 namespace StatisticsAnalysisTool.UserControls;
 
@@ -54,7 +55,7 @@ public partial class DamageMeterControl
         }
         catch (Exception e)
         {
-            ConsoleManager.WriteLineForError(MethodBase.GetCurrentMethod()?.DeclaringType, e);
+            DebugConsole.WriteError(MethodBase.GetCurrentMethod()?.DeclaringType, e);
             Log.Error(e, "{message}", MethodBase.GetCurrentMethod()?.DeclaringType);
         }
     }

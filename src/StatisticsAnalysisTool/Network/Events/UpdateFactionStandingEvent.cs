@@ -1,8 +1,9 @@
-﻿using System;
+﻿using StatisticsAnalysisTool.Common;
+using StatisticsAnalysisTool.Diagnostics;
+using StatisticsAnalysisTool.Enumerations;
+using System;
 using System.Collections.Generic;
 using System.Reflection;
-using StatisticsAnalysisTool.Common;
-using StatisticsAnalysisTool.Enumerations;
 
 namespace StatisticsAnalysisTool.Network.Events;
 
@@ -15,8 +16,6 @@ public class UpdateFactionStandingEvent
 
     public UpdateFactionStandingEvent(Dictionary<byte, object> parameters)
     {
-        ConsoleManager.WriteLineForNetworkHandler(GetType().Name, parameters);
-
         try
         {
             if (parameters.ContainsKey(0))
@@ -41,7 +40,7 @@ public class UpdateFactionStandingEvent
         }
         catch (Exception e)
         {
-            ConsoleManager.WriteLineForError(MethodBase.GetCurrentMethod()?.DeclaringType, e);
+            DebugConsole.WriteError(MethodBase.GetCurrentMethod()?.DeclaringType, e);
         }
     }
 

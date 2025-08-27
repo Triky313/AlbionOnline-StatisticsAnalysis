@@ -3,6 +3,7 @@ using StatisticsAnalysisTool.Models.NetworkModel;
 using System;
 using System.Collections.Generic;
 using System.Reflection;
+using StatisticsAnalysisTool.Diagnostics;
 
 namespace StatisticsAnalysisTool.Network.Events;
 
@@ -20,8 +21,6 @@ public class NewEquipmentItemEvent
 
     public NewEquipmentItemEvent(Dictionary<byte, object> parameters)
     {
-        ConsoleManager.WriteLineForNetworkHandler(GetType().Name, parameters);
-
         try
         {
             if (parameters.TryGetValue(0, out object objectId))
@@ -62,25 +61,19 @@ public class NewEquipmentItemEvent
                 {
                     var spells = ((byte[]) parameters[8]).ToDictionary();
                     foreach (var spell in spells)
-                    {
                         SpellDictionary.Add(spell.Key, spell.Value.ObjectToInt());
-                    }
                 }
                 else if (valueType.IsArray && typeof(short[]).Name == valueType.Name)
                 {
                     var spells = ((short[]) parameters[8]).ToDictionary();
                     foreach (var spell in spells)
-                    {
                         SpellDictionary.Add(spell.Key, spell.Value.ObjectToInt());
-                    }
                 }
                 else if (valueType.IsArray && typeof(int[]).Name == valueType.Name)
                 {
                     var spells = ((int[]) parameters[8]).ToDictionary();
                     foreach (var spell in spells)
-                    {
                         SpellDictionary.Add(spell.Key, spell.Value.ObjectToInt());
-                    }
                 }
             }
 
@@ -104,7 +97,7 @@ public class NewEquipmentItemEvent
         }
         catch (Exception e)
         {
-            ConsoleManager.WriteLineForError(MethodBase.GetCurrentMethod()?.DeclaringType, e);
+            DebugConsole.WriteError(MethodBase.GetCurrentMethod()?.DeclaringType, e);
         }
     }
 

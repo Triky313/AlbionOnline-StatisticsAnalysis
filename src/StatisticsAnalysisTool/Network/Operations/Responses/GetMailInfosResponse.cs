@@ -13,8 +13,6 @@ public class GetMailInfosResponse
 
     public GetMailInfosResponse(Dictionary<byte, object> parameters)
     {
-        ConsoleManager.WriteLineForNetworkHandler(GetType().Name, parameters);
-
         MailInfos.Clear();
 
         try

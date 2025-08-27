@@ -1,6 +1,6 @@
-﻿using StatisticsAnalysisTool.Network.Manager;
+﻿using StatisticsAnalysisTool.Network.Events;
+using StatisticsAnalysisTool.Network.Manager;
 using System.Threading.Tasks;
-using StatisticsAnalysisTool.Network.Events;
 
 namespace StatisticsAnalysisTool.Network.Handler;
 
@@ -8,6 +8,8 @@ public class NewLootChestEventHandler(TrackingController trackingController) : E
 {
     protected override async Task OnActionAsync(NewLootChestEvent value)
     {
+
+
         await trackingController?.DungeonController?.SetDungeonEventInformationAsync(value.ObjectId, value.UniqueName)!;
         trackingController?.TreasureController?.AddTreasure(value.ObjectId, value.UniqueName, value.UniqueNameWithLocation);
     }

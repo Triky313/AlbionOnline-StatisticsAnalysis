@@ -3,6 +3,7 @@ using StatisticsAnalysisTool.Models.NetworkModel;
 using System;
 using System.Collections.Generic;
 using System.Reflection;
+using StatisticsAnalysisTool.Diagnostics;
 
 namespace StatisticsAnalysisTool.Network.Events;
 
@@ -12,12 +13,10 @@ public class AttachItemContainerEvent
     private readonly long? _objectId;
     private readonly Guid _privateContainerGuid;
     private readonly Guid _containerGuid;
-    private readonly List<long> _containerSlots = new();
+    private readonly List<long> _containerSlots = [];
 
     public AttachItemContainerEvent(Dictionary<byte, object> parameters)
     {
-        ConsoleManager.WriteLineForNetworkHandler(GetType().Name, parameters);
-
         try
         {
             if (parameters.ContainsKey(0))
@@ -88,7 +87,7 @@ public class AttachItemContainerEvent
         }
         catch (Exception e)
         {
-            ConsoleManager.WriteLineForError(MethodBase.GetCurrentMethod()?.DeclaringType, e);
+            DebugConsole.WriteError(MethodBase.GetCurrentMethod()?.DeclaringType, e);
         }
     }
 }

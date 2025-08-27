@@ -20,6 +20,7 @@ using System.Linq;
 using System.Reflection;
 using System.Threading.Tasks;
 using System.Windows;
+using StatisticsAnalysisTool.Diagnostics;
 using Loot = StatisticsAnalysisTool.Dungeon.Models.Loot;
 using ValueType = StatisticsAnalysisTool.Enumerations.ValueType;
 // ReSharper disable PossibleMultipleEnumeration
@@ -252,7 +253,7 @@ public sealed class DungeonController
         }
         catch (Exception e)
         {
-            ConsoleManager.WriteLineForError(MethodBase.GetCurrentMethod()?.DeclaringType, e);
+            DebugConsole.WriteError(MethodBase.GetCurrentMethod()?.DeclaringType, e);
             Log.Error(e, "{message}", MethodBase.GetCurrentMethod()?.DeclaringType);
         }
     }
@@ -299,7 +300,7 @@ public sealed class DungeonController
         }
         catch (ArgumentNullException e)
         {
-            ConsoleManager.WriteLineForError(MethodBase.GetCurrentMethod()?.DeclaringType, e);
+            DebugConsole.WriteError(MethodBase.GetCurrentMethod()?.DeclaringType, e);
             Log.Error(e, "{message}", MethodBase.GetCurrentMethod()?.DeclaringType);
             return null;
         }
@@ -328,7 +329,7 @@ public sealed class DungeonController
             }
             catch (Exception e)
             {
-                ConsoleManager.WriteLineForError(MethodBase.GetCurrentMethod()?.DeclaringType, e);
+                DebugConsole.WriteError(MethodBase.GetCurrentMethod()?.DeclaringType, e);
                 Log.Error(e, "{message}", MethodBase.GetCurrentMethod()?.DeclaringType);
             }
         }
@@ -369,7 +370,7 @@ public sealed class DungeonController
         }
         catch (Exception e)
         {
-            ConsoleManager.WriteLineForError(MethodBase.GetCurrentMethod()?.DeclaringType, e);
+            DebugConsole.WriteError(MethodBase.GetCurrentMethod()?.DeclaringType, e);
             Log.Error(e, "{message}", MethodBase.GetCurrentMethod()?.DeclaringType);
         }
     }
@@ -632,7 +633,7 @@ public sealed class DungeonController
         }
         catch (Exception e)
         {
-            ConsoleManager.WriteLineForError(MethodBase.GetCurrentMethod()?.DeclaringType, e);
+            DebugConsole.WriteError(MethodBase.GetCurrentMethod()?.DeclaringType, e);
             Log.Error(e, "{message}", MethodBase.GetCurrentMethod()?.DeclaringType);
         }
     }
@@ -722,7 +723,7 @@ public sealed class DungeonController
             }
             catch (MappingException e)
             {
-                ConsoleManager.WriteLineForError(MethodBase.GetCurrentMethod()?.DeclaringType, e);
+                DebugConsole.WriteError(MethodBase.GetCurrentMethod()?.DeclaringType, e);
                 Log.Error(e, "{message}", MethodBase.GetCurrentMethod()?.DeclaringType);
             }
         }

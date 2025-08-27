@@ -18066,6 +18066,19 @@
       ]
     },
     {
+      "tuid": "CLOSE_DEBUG_CONSOLE",
+      "tuv": [
+        {
+          "lang": "de-DE",
+          "seg": "Debug-Konsole schließen"
+        },
+        {
+          "lang": "en-US",
+          "seg": "Close debug console"
+        }
+      ]
+    },
+    {
       "tuid": "CREATE_DESKTOP_SHORTCUT",
       "tuv": [
         {

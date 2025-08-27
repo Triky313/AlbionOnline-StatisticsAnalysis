@@ -29,6 +29,7 @@ using System.Reflection;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Data;
+using StatisticsAnalysisTool.Diagnostics;
 using ValueType = StatisticsAnalysisTool.Enumerations.ValueType;
 
 namespace StatisticsAnalysisTool.Network.Manager;
@@ -121,7 +122,7 @@ public class TrackingController : ITrackingController
         }
         catch (Exception e)
         {
-            ConsoleManager.WriteLineForError(MethodBase.GetCurrentMethod()?.DeclaringType, e);
+            DebugConsole.WriteError(MethodBase.GetCurrentMethod()?.DeclaringType, e);
             Log.Error(e, "{message}", MethodBase.GetCurrentMethod()?.DeclaringType);
             _mainWindowViewModel.SetErrorBar(Visibility.Visible, e.Message);
         }
@@ -141,19 +142,19 @@ public class TrackingController : ITrackingController
         }
         catch (NoListeningAdaptersException e)
         {
-            ConsoleManager.WriteLineForError(MethodBase.GetCurrentMethod()?.DeclaringType, e);
+            DebugConsole.WriteError(MethodBase.GetCurrentMethod()?.DeclaringType, e);
             Log.Error(e, "{message}", MethodBase.GetCurrentMethod()?.DeclaringType);
             _mainWindowViewModel.SetErrorBar(Visibility.Visible, LocalizationController.Translation("NO_LISTENING_ADAPTERS"));
         }
         catch (SocketException e)
         {
-            ConsoleManager.WriteLineForError(MethodBase.GetCurrentMethod()?.DeclaringType, e);
+            DebugConsole.WriteError(MethodBase.GetCurrentMethod()?.DeclaringType, e);
             Log.Error(e, "{message}|{socketErrorCode}", MethodBase.GetCurrentMethod()?.DeclaringType, e.SocketErrorCode);
             _mainWindowViewModel.SetErrorBar(Visibility.Visible, $"Socket Exception - {e.Message}");
         }
         catch (Exception e)
         {
-            ConsoleManager.WriteLineForError(MethodBase.GetCurrentMethod()?.DeclaringType, e);
+            DebugConsole.WriteError(MethodBase.GetCurrentMethod()?.DeclaringType, e);
             Log.Error(e, "{message}", MethodBase.GetCurrentMethod()?.DeclaringType);
             _mainWindowViewModel.SetErrorBar(Visibility.Visible, LocalizationController.Translation("PACKET_HANDLER_ERROR_MESSAGE"));
 

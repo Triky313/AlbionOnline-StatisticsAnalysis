@@ -18,6 +18,8 @@ using System.Runtime.InteropServices;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Threading;
+using StatisticsAnalysisTool.Diagnostics;
+using StatisticsAnalysisTool.Network;
 
 namespace StatisticsAnalysisTool;
 
@@ -34,9 +36,10 @@ public partial class App
         Current.ShutdownMode = ShutdownMode.OnExplicitShutdown;
 
         InitLogger();
-        Log.Information($"Tool started with v{Assembly.GetExecutingAssembly().GetName().Version}");
+        Log.Information("Tool started with v{Version}", Assembly.GetExecutingAssembly().GetName().Version);
 
         SystemInfo.LogSystemInfo();
+        DebugConsole.UseEnums(typeof(EventCodes), typeof(OperationCodes));
 
         AppDomain.CurrentDomain.UnhandledException += CurrentDomain_UnhandledException;
         TaskScheduler.UnobservedTaskException += TaskScheduler_UnobservedTaskException;

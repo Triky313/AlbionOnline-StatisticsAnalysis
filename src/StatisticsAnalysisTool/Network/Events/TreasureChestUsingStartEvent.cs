@@ -1,7 +1,7 @@
-﻿using StatisticsAnalysisTool.Common;
+﻿using System;
 using System.Collections.Generic;
 using System.Reflection;
-using System;
+using StatisticsAnalysisTool.Diagnostics;
 
 namespace StatisticsAnalysisTool.Network.Events;
 
@@ -11,8 +11,6 @@ public class TreasureChestUsingStartEvent
 
     public TreasureChestUsingStartEvent(Dictionary<byte, object> parameters)
     {
-        ConsoleManager.WriteLineForNetworkHandler(GetType().Name, parameters);
-
         try
         {
             if (parameters.ContainsKey(2))
@@ -22,7 +20,7 @@ public class TreasureChestUsingStartEvent
         }
         catch (Exception e)
         {
-            ConsoleManager.WriteLineForError(MethodBase.GetCurrentMethod()?.DeclaringType, e);
+            DebugConsole.WriteError(MethodBase.GetCurrentMethod()?.DeclaringType, e);
         }
     }
 }

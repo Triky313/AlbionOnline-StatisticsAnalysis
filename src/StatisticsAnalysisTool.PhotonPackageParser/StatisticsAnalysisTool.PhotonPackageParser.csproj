@@ -8,6 +8,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\StatisticsAnalysisTool.Abstractions\StatisticsAnalysisTool.Abstractions.csproj" />
+    <ProjectReference Include="..\StatisticsAnalysisTool.Diagnostics\StatisticsAnalysisTool.Diagnostics.csproj" />
     <ProjectReference Include="..\StatisticsAnalysisTool.Protocol16\StatisticsAnalysisTool.Protocol16.csproj" />
   </ItemGroup>
 

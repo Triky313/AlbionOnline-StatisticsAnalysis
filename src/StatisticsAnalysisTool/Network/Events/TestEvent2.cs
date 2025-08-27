@@ -1,4 +1,4 @@
-﻿using StatisticsAnalysisTool.Common;
+﻿using StatisticsAnalysisTool.Diagnostics;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -18,7 +18,7 @@ public class TestEvent2
         }
         catch (Exception e)
         {
-            ConsoleManager.WriteLineForError(MethodBase.GetCurrentMethod()?.DeclaringType, e);
+            DebugConsole.WriteError(MethodBase.GetCurrentMethod()?.DeclaringType, e);
         }
     }
 }

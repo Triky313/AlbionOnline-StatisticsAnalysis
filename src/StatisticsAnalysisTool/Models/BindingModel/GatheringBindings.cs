@@ -12,6 +12,7 @@ using System.Reflection;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Data;
+using StatisticsAnalysisTool.Diagnostics;
 
 namespace StatisticsAnalysisTool.Models.BindingModel;
 
@@ -191,7 +192,7 @@ public class GatheringBindings : BaseViewModel
         }
         catch (Exception ex)
         {
-            ConsoleManager.WriteLineForError(MethodBase.GetCurrentMethod()?.DeclaringType, ex);
+            DebugConsole.WriteError(MethodBase.GetCurrentMethod()?.DeclaringType, ex);
             Log.Error(ex, "{message}", MethodBase.GetCurrentMethod()?.DeclaringType);
         }
     }
@@ -229,7 +230,7 @@ public class GatheringBindings : BaseViewModel
         }
         catch (Exception e)
         {
-            ConsoleManager.WriteLineForError(MethodBase.GetCurrentMethod()?.DeclaringType, e);
+            DebugConsole.WriteError(MethodBase.GetCurrentMethod()?.DeclaringType, e);
             Log.Error(e, "{message}", MethodBase.GetCurrentMethod()?.DeclaringType);
             return new List<Gathered>();
         }

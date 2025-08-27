@@ -22,6 +22,8 @@ public class TakeSilverEventHandler : EventPacketHandler<TakeSilverEvent>
 
     protected override async Task OnActionAsync(TakeSilverEvent value)
     {
+
+
         var localEntity = _trackingController.EntityController.GetLocalEntity()?.Value;
 
         var isObjectLocalEntity = value.ObjectId != null && localEntity?.ObjectId == value.ObjectId;

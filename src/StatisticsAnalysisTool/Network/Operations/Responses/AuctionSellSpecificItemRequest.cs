@@ -1,7 +1,5 @@
 ﻿using Serilog;
 using StatisticsAnalysisTool.Common;
-using StatisticsAnalysisTool.Enumerations;
-using StatisticsAnalysisTool.Models;
 using StatisticsAnalysisTool.Trade.Market;
 using System;
 using System.Collections.Generic;
@@ -15,8 +13,6 @@ public class AuctionSellSpecificItemRequest
 
     public AuctionSellSpecificItemRequest(Dictionary<byte, object> parameters)
     {
-        ConsoleManager.WriteLine(new ConsoleFragment(GetType().Name, parameters, ConsoleColorType.EventColor));
-
         try
         {
             long objectId = -1;

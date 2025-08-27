@@ -799,10 +799,6 @@
     <ProjectReference Include="..\StatisticsAnalysisTool.Network\StatisticsAnalysisTool.Network.csproj" />
   </ItemGroup>
   <ItemGroup>
-    <Page Update="Styles\ConsoleStyles.xaml">
-      <XamlRuntime>$(DefaultXamlRuntime)</XamlRuntime>
-      <SubType>Designer</SubType>
-    </Page>
     <Page Update="Styles\DashboardStyles.xaml">
       <XamlRuntime>$(DefaultXamlRuntime)</XamlRuntime>
       <SubType>Designer</SubType>
@@ -920,10 +916,6 @@
     </Page>
     <Page Update="Views\EventValidationWindow.xaml">
       <XamlRuntime>$(DefaultXamlRuntime)</XamlRuntime>
-    </Page>
-    <Page Update="Views\ConsoleWindow.xaml">
-      <XamlRuntime>$(DefaultXamlRuntime)</XamlRuntime>
-      <SubType>Designer</SubType>
     </Page>
     <Page Update="Views\DashboardWindow.xaml">
       <XamlRuntime>$(DefaultXamlRuntime)</XamlRuntime>

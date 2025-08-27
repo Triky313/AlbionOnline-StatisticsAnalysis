@@ -17,6 +17,7 @@ using System.Text;
 using System.Text.Json;
 using System.Text.Json.Serialization;
 using System.Threading.Tasks;
+using StatisticsAnalysisTool.Diagnostics;
 using JsonSerializer = System.Text.Json.JsonSerializer;
 using Mount = StatisticsAnalysisTool.Models.ItemsJsonModel.Mount;
 
@@ -378,7 +379,7 @@ public static class ItemController
         }
         catch (Exception e)
         {
-            ConsoleManager.WriteLineForError(MethodBase.GetCurrentMethod()?.DeclaringType, e);
+            DebugConsole.WriteError(MethodBase.GetCurrentMethod()?.DeclaringType, e);
             Log.Error(e, "{message}", MethodBase.GetCurrentMethod()?.DeclaringType);
         }
     }
@@ -1005,7 +1006,7 @@ public static class ItemController
             }
             catch (Exception e)
             {
-                ConsoleManager.WriteLineForError(MethodBase.GetCurrentMethod()?.DeclaringType, e);
+                DebugConsole.WriteError(MethodBase.GetCurrentMethod()?.DeclaringType, e);
                 Log.Error(e, "{message}", MethodBase.GetCurrentMethod()?.DeclaringType);
             }
         }

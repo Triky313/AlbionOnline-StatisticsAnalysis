@@ -14,6 +14,7 @@ using System.Linq;
 using System.Reflection;
 using System.Threading.Tasks;
 using System.Windows;
+using StatisticsAnalysisTool.Diagnostics;
 
 namespace StatisticsAnalysisTool.StorageHistory;
 
@@ -221,7 +222,7 @@ public class VaultController
             }
             catch (Exception e)
             {
-                ConsoleManager.WriteLineForError(MethodBase.GetCurrentMethod()?.DeclaringType, e);
+                DebugConsole.WriteError(MethodBase.GetCurrentMethod()?.DeclaringType, e);
             }
         }
 
@@ -405,7 +406,7 @@ public class VaultController
         }
         catch (Exception e)
         {
-            ConsoleManager.WriteLineForError(MethodBase.GetCurrentMethod()?.DeclaringType, e);
+            DebugConsole.WriteError(MethodBase.GetCurrentMethod()?.DeclaringType, e);
         }
     }
 
