@@ -468,41 +468,59 @@ public static class DebugConsole
         switch (v)
         {
             case string s2:
-                if (!LooksLikePrintableString(s2))
-                {
-                    return FormatBytes(Encoding.UTF8.GetBytes(s2));
-                }
-
-                return s2;
-
+                return LooksLikePrintableString(s2) ? s2 : FormatBytes(Encoding.UTF8.GetBytes(s2));
             case bool b:
                 return b ? "true" : "false";
-
             case byte[] ba:
                 return FormatBytes(ba);
-
+            case float f:
+                return f.ToString("R", CultureInfo.InvariantCulture);
+            case double d:
+                return d.ToString("R", CultureInfo.InvariantCulture);
+            case decimal m:
+                return m.ToString(CultureInfo.InvariantCulture);
+            case byte or sbyte or short or ushort or int or uint or long or ulong:
+                return Convert.ToString(v, CultureInfo.InvariantCulture) ?? "0";
             case System.Collections.IDictionary dct:
                 {
-                    var parts = new List<string>();
+                    var entries = new List<(string k, string v)>();
                     foreach (System.Collections.DictionaryEntry de in dct)
                     {
-                        var k = Convert.ToString(de.Key, CultureInfo.InvariantCulture) ?? "";
-                        parts.Add($"{k}:{FormatValue(de.Value, depth + 1)}");
+                        var keyStr = Convert.ToString(de.Key, CultureInfo.InvariantCulture) ?? "";
+                        entries.Add((keyStr, FormatValue(de.Value, depth + 1)));
                     }
-                    return "{" + string.Join(' ', parts) + "}";
+
+                    entries.Sort((a, b) =>
+                    {
+                        if (byte.TryParse(a.k, NumberStyles.Integer, CultureInfo.InvariantCulture, out var ka) &&
+                            byte.TryParse(b.k, NumberStyles.Integer, CultureInfo.InvariantCulture, out var kb))
+                            return ka.CompareTo(kb);
+                        return string.CompareOrdinal(a.k, b.k);
+                    });
+
+                    var sb = new StringBuilder();
+                    sb.Append('{');
+                    for (int i = 0; i < entries.Count; i++)
+                    {
+                        if (i > 0)
+                        {
+                            sb.Append(' ');
+                        }
+
+                        sb.Append(entries[i].k).Append(':').Append(entries[i].v);
+                    }
+
+                    sb.Append('}');
+                    return sb.ToString();
                 }
 
             case System.Collections.IEnumerable en:
                 return FormatEnumerable(en, depth + 1);
 
             case DateTime dt:
-                return dt.ToUniversalTime().ToString("O", CultureInfo.InvariantCulture);
-
+                return dt.ToUniversalTime().ToString("s", CultureInfo.InvariantCulture);
             case DateTimeOffset dto:
-                return dto.ToUniversalTime().ToString("O", CultureInfo.InvariantCulture);
-
-            case IFormattable f:
-                return f.ToString(null, CultureInfo.InvariantCulture) ?? (v.ToString() ?? "");
+                return dto.ToUniversalTime().ToString("s", CultureInfo.InvariantCulture);
 
             default:
                 return v.ToString() ?? "";
@@ -559,8 +577,7 @@ public static class DebugConsole
         }
 
         var parts = raw.GetRange(start, end - start + 1);
-
-        return "[" + string.Join(',', parts) + "]";
+        return "[" + string.Join(' ', parts) + "]";
     }
 
     private static string FormatBytes(byte[] bytes)
