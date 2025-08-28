@@ -104,5 +104,6 @@ public class SettingsObject
     public bool IsRepairCostsStatsVisible { get; set; } = true;
     public string ProxyUrlWithPort { get; set; }
     public string DebugConsoleFilter { get; set; }
+    public bool IsOpenDebugConsoleWhenStartingTheToolChecked { get; set; } = false;
     public int NetworkDevice { get; set; } = -1;
 }

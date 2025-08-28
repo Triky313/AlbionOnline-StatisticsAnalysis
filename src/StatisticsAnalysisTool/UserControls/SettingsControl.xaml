@@ -79,25 +79,6 @@
                         <Button Content="{Binding Translation.CreateDesktopShortcut, FallbackValue=CREATE__DESKTOP__SHORTCUT}" 
                                 Height="24" VerticalAlignment="Bottom" Click="CreateDesktopShortcut_Click" />
                     </DockPanel>
-                    <DockPanel Margin="0,5,5,0">
-                        <Label MinWidth="300"/>
-                        <Button Content="{Binding Translation.OpenDebugConsole, FallbackValue=OPEN__DEBUG__CONSOLE}" Height="24" 
-                                VerticalAlignment="Bottom" Click="OpenDebugConsole_Click" />
-                    </DockPanel>
-                    <DockPanel Margin="0,5,5,0">
-                        <Label MinWidth="300"/>
-                        <Button Content="{Binding Translation.CloseDebugConsole, FallbackValue=CLOSE__DEBUG__CONSOLE}" Height="24" 
-                                VerticalAlignment="Bottom" Click="CloseDebugConsole_Click" />
-                    </DockPanel>
-                    <DockPanel Margin="0,5,0,0">
-                        <Label Content="{Binding Translation.DebugConsoleParameters, FallbackValue=DEBUG__CONSOLE__PARAMETERS}" MinWidth="300" VerticalAlignment="Top" />
-                        <TextBox Text="{Binding DebugConsoleFilter}" Height="26" TextWrapping="NoWrap" VerticalAlignment="Top" Margin="0,0,5,0" />
-                    </DockPanel>
-                    <DockPanel Margin="0,5,5,0">
-                        <Label MinWidth="300"/>
-                        <Button Content="{Binding Translation.OpenEventValidation, FallbackValue=OPEN__EVENT__VALIDATION}" Height="24" 
-                                VerticalAlignment="Bottom" Click="OpenEventValidation_Click" />
-                    </DockPanel>
                     <DockPanel Margin="0,5,0,0">
                         <Label Content="{Binding Translation.AnotherAppToStartPath, FallbackValue=ANOTHER_APP_TO_START_PATH}" MinWidth="300" VerticalAlignment="Top" />
                         <Grid Background="{StaticResource SolidColorBrush.Background.4}" Margin="0,0,5,0">
@@ -222,6 +203,34 @@
                         <Label MinWidth="300" VerticalAlignment="Top" />
                         <Button Content="{Binding Translation.BackupNow, FallbackValue=BACKUP__NOW}" MinWidth="120" IsEnabled="{Binding IsBackupNowButtonEnabled}"
                                 Margin="0,0,5,2" Height="24" MaxWidth="120" HorizontalAlignment="Left" VerticalAlignment="Center" Click="BackupNow_Click" />
+                    </DockPanel>
+
+                    <!-- Debug -->
+                    <DockPanel Margin="0,20,0,0">
+                        <Label Content="{Binding Translation.Debug, FallbackValue='DEBUG'}" FontSize="14" Foreground="{StaticResource SolidColorBrush.Accent.Blue.2}" />
+                    </DockPanel>
+                    <DockPanel Margin="0,5,5,0">
+                        <Label MinWidth="300"/>
+                        <Button Content="{Binding Translation.OpenDebugConsole, FallbackValue=OPEN__DEBUG__CONSOLE}" Height="24" 
+                                VerticalAlignment="Bottom" Click="OpenDebugConsole_Click" />
+                    </DockPanel>
+                    <DockPanel Margin="0,5,5,0">
+                        <Label MinWidth="300"/>
+                        <Button Content="{Binding Translation.CloseDebugConsole, FallbackValue=CLOSE__DEBUG__CONSOLE}" Height="24" 
+                                VerticalAlignment="Bottom" Click="CloseDebugConsole_Click" />
+                    </DockPanel>
+                    <DockPanel Margin="0,5,0,0">
+                        <Label Content="{Binding Translation.DebugConsoleParameters, FallbackValue=DEBUG__CONSOLE__PARAMETERS}" MinWidth="300" VerticalAlignment="Top" />
+                        <TextBox Text="{Binding DebugConsoleFilter}" Height="26" TextWrapping="NoWrap" VerticalAlignment="Top" Margin="0,0,5,0" />
+                    </DockPanel>
+                    <DockPanel Margin="0,5,0,0">
+                        <Label Content="{Binding Translation.OpenDebugConsoleWhenStartingTheTool, FallbackValue=OPEN__DEBUG__CONSOLE__WHEN__STARTING__THE__TOOL}" MinWidth="300" VerticalAlignment="Top" />
+                        <CheckBox IsChecked="{Binding IsOpenDebugConsoleWhenStartingTheToolChecked}" Height="21" VerticalContentAlignment="Center" />
+                    </DockPanel>
+                    <DockPanel Margin="0,5,5,0">
+                        <Label MinWidth="300"/>
+                        <Button Content="{Binding Translation.OpenEventValidation, FallbackValue=OPEN__EVENT__VALIDATION}" Height="24" 
+                                VerticalAlignment="Bottom" Click="OpenEventValidation_Click" />
                     </DockPanel>
                 </StackPanel>
             </ScrollViewer>

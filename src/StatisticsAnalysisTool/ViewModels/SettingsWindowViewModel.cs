@@ -61,6 +61,7 @@ public class SettingsWindowViewModel : BaseViewModel
     private string _backupStorageDirectoryPath;
     private string _proxyUrlWithPort;
     private string _debugConsoleFilter;
+    private bool _isOpenDebugConsoleWhenStartingTheToolChecked;
 
     public SettingsWindowViewModel()
     {
@@ -81,6 +82,7 @@ public class SettingsWindowViewModel : BaseViewModel
 
         // Debug console filter
         DebugConsoleFilter = SettingsController.CurrentSettings.DebugConsoleFilter;
+        IsOpenDebugConsoleWhenStartingTheToolChecked = SettingsController.CurrentSettings.IsOpenDebugConsoleWhenStartingTheToolChecked;
 
         // Proxy url
         ProxyUrlWithPort = SettingsController.CurrentSettings.ProxyUrlWithPort;
@@ -141,6 +143,7 @@ public class SettingsWindowViewModel : BaseViewModel
         SettingsController.CurrentSettings.AnotherAppToStartPath = AnotherAppToStartPath;
 
         SettingsController.CurrentSettings.DebugConsoleFilter = DebugConsoleFilter;
+        SettingsController.CurrentSettings.IsOpenDebugConsoleWhenStartingTheToolChecked = IsOpenDebugConsoleWhenStartingTheToolChecked;
         SettingsController.CurrentSettings.ProxyUrlWithPort = ProxyUrlWithPort;
         SettingsController.CurrentSettings.MainTrackingCharacterName = MainTrackingCharacterName;
         SettingsController.CurrentSettings.BackupIntervalByDays = BackupIntervalByDaysSelection.Value;
@@ -813,6 +816,16 @@ public class SettingsWindowViewModel : BaseViewModel
         set
         {
             _isOpenItemWindowInNewWindowChecked = value;
+            OnPropertyChanged();
+        }
+    }
+
+    public bool IsOpenDebugConsoleWhenStartingTheToolChecked
+    {
+        get => _isOpenDebugConsoleWhenStartingTheToolChecked;
+        set
+        {
+            _isOpenDebugConsoleWhenStartingTheToolChecked = value;
             OnPropertyChanged();
         }
     }

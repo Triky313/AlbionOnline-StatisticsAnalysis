@@ -1,5 +1,4 @@
 ﻿using Serilog;
-using StatisticsAnalysisTool.Diagnostics;
 using System;
 using System.IO;
 using System.Reflection;

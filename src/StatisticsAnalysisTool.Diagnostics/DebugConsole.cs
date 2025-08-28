@@ -719,23 +719,6 @@ public static class DebugConsole
         }
     }
 
-    private static int GetId(IReadOnlyDictionary<byte, object> parameters, byte fallback)
-    {
-        if (parameters.TryGetValue(252, out var v))
-        {
-            try
-            {
-                return checked((int) Convert.ToInt64(v, CultureInfo.InvariantCulture));
-            }
-            catch
-            {
-                /* ignore */
-            }
-        }
-
-        return fallback;
-    }
-
     private static void Enq(string line, ConsoleColor fallback)
     {
         if (!_enqOpen)

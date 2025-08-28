@@ -38327,6 +38327,32 @@
           "seg": "Prix sans perte ni gain."
         }
       ]
+    },
+    {
+      "tuid": "OPEN_DEBUG_CONSOLE_WHEN_STARTING_THE_TOOL",
+      "tuv": [
+        {
+          "lang": "de-DE",
+          "seg": "Debug Console beim Toolstart öffnen"
+        },
+        {
+          "lang": "en-US",
+          "seg": "Open debug console when starting the tool"
+        }
+      ]
+    },
+    {
+      "tuid": "DEBUG",
+      "tuv": [
+        {
+          "lang": "de-DE",
+          "seg": "Debug"
+        },
+        {
+          "lang": "en-US",
+          "seg": "Debug"
+        }
+      ]
     }
   ]
 }

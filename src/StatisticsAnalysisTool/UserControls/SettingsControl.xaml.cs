@@ -55,7 +55,7 @@ public partial class SettingsControl
 
     private void OpenDebugConsole_Click(object sender, RoutedEventArgs e)
     {
-        DebugConsole.Attach("SAT Photon Console");
+        DebugConsole.Attach("SAT Debug Console");
         var args = _settingsWindowViewModel.DebugConsoleFilter;
         DebugConsole.Configure(args);
     }

@@ -47,6 +47,12 @@ public partial class App
 
         SettingsController.LoadSettings();
 
+        if (SettingsController.CurrentSettings.IsOpenDebugConsoleWhenStartingTheToolChecked)
+        {
+            DebugConsole.Attach("SAT Debug Console");
+            DebugConsole.Configure(SettingsController.CurrentSettings.DebugConsoleFilter);
+        }
+
         await AutoUpdateController.AutoUpdateAsync();
 
         Culture.SetCulture(Culture.GetCultureByIetfLanguageTag(SettingsController.CurrentSettings.CurrentCultureIetfLanguageTag));
