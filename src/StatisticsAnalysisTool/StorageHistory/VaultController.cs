@@ -416,8 +416,6 @@ public class VaultController
 
     public async Task LoadFromFileAsync()
     {
-        FileController.TransferFileIfExistFromOldPathToUserDataDirectory(Path.Combine(AppDomain.CurrentDomain.BaseDirectory, Settings.Default.VaultsFileName));
-
         var vaultDtos = await FileController.LoadAsync<List<VaultDto>>(Path.Combine(AppDomain.CurrentDomain.BaseDirectory, Settings.Default.UserDataDirectoryName, Settings.Default.VaultsFileName));
         _vaultBindings.Vaults = new ObservableCollection<Vault>(vaultDtos.Select(StorageHistoryMapping.Mapping));
     }

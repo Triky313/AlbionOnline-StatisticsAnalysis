@@ -159,7 +159,6 @@ public sealed class AlertController
 
     private async Task LoadFromFileAsync()
     {
-        FileController.TransferFileIfExistFromOldPathToUserDataDirectory(Path.Combine(AppDomain.CurrentDomain.BaseDirectory, Settings.Default.ActiveAlertsFileName));
         var alertSaveObjectList = await FileController.LoadAsync<List<AlertSaveObject>>(
             Path.Combine(AppDomain.CurrentDomain.BaseDirectory, Settings.Default.UserDataDirectoryName, Settings.Default.ActiveAlertsFileName));
 

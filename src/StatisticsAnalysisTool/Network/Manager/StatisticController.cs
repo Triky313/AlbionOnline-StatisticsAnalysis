@@ -272,7 +272,6 @@ public class StatisticController
 
     public async Task LoadFromFileAsync()
     {
-        FileController.TransferFileIfExistFromOldPathToUserDataDirectory(Path.Combine(AppDomain.CurrentDomain.BaseDirectory, Settings.Default.StatsFileName));
         _dashboardStatistics = await FileController.LoadAsync<DashboardStatistics>(
             Path.Combine(AppDomain.CurrentDomain.BaseDirectory, Settings.Default.UserDataDirectoryName, Settings.Default.StatsFileName));
         UpdateRepairCostsUi();

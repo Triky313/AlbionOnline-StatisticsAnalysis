@@ -1,91 +1,136 @@
-﻿using StatisticsAnalysisTool.Properties;
+﻿using Serilog;
+using StatisticsAnalysisTool.Diagnostics;
 using System;
 using System.IO;
 using System.Reflection;
 using System.Text;
 using System.Text.Json;
+using System.Threading;
 using System.Threading.Tasks;
-using Serilog;
-using StatisticsAnalysisTool.Models;
-using System.Collections.Generic;
-using System.Linq;
-using StatisticsAnalysisTool.Diagnostics;
 
 namespace StatisticsAnalysisTool.Common;
 
 public static class FileController
 {
-    public static async Task<T> LoadAsync<T>(string localFilePath) where T : new()
+    private static readonly SemaphoreSlim IoLock = new(1, 1);
+
+    private static readonly JsonSerializerOptions JsonOptions = new()
     {
-        if (!File.Exists(localFilePath))
-        {
-            return new T();
-        }
+        NumberHandling = System.Text.Json.Serialization.JsonNumberHandling.AllowNamedFloatingPointLiterals
+    };
+
+    public static async Task<T> LoadAsync<T>(string path, Func<T, bool> validate = null) where T : new()
+    {
+        await IoLock.WaitAsync();
 
         try
         {
-            var options = new JsonSerializerOptions
+            EnsureDirectory(path);
+            var tmp = GetTmpPath(path);
+
+            if (File.Exists(tmp))
             {
-                NumberHandling = System.Text.Json.Serialization.JsonNumberHandling.AllowNamedFloatingPointLiterals
-            };
-            var localFileString = await File.ReadAllTextAsync(localFilePath, Encoding.UTF8);
-            return JsonSerializer.Deserialize<T>(localFileString, options) ?? new T();
-        }
-        catch (Exception e)
-        {
-            DebugConsole.WriteError(MethodBase.GetCurrentMethod()?.DeclaringType, e);
-            Log.Error(e, "{message}", MethodBase.GetCurrentMethod()?.DeclaringType);
+                var (ok, value) = await TryLoad<T>(tmp);
+                if (ok && PassesValidation(value, validate))
+                {
+                    File.Move(tmp, path, overwrite: true);
+                    Log.Information("Recovered from tmp and promoted to {file}.", path);
+                    return value!;
+                }
+                else
+                {
+                    SafeDelete(tmp);
+                    Log.Warning("Tmp recovery failed for {file}, deleted tmp.", path);
+                }
+            }
+
+            if (File.Exists(path))
+            {
+                var (ok, value) = await TryLoad<T>(path);
+                if (ok && PassesValidation(value, validate))
+                {
+                    return value!;
+                }
+            }
+
+            Log.Warning("Load failed for {file}. Returning default.", path);
             return new T();
+        }
+        finally
+        {
+            IoLock.Release();
         }
     }
 
-    public static async Task SaveAsync<T>(T value, string localFilePath)
+    public static async Task<bool> SaveAsync<T>(T value, string path, Func<T, bool> validate = null)
     {
+        await IoLock.WaitAsync();
         try
         {
-            var option = new JsonSerializerOptions
+            EnsureDirectory(path);
+            if (!PassesValidation(value, validate))
             {
-                NumberHandling = System.Text.Json.Serialization.JsonNumberHandling.AllowNamedFloatingPointLiterals
-            };
-            var fileString = await value.SerializeJsonStringAsync(option);
+                Log.Warning("Rejected save for {file} (validation failed).", path);
+                return false;
+            }
 
-            await using var writer = new StreamWriter(localFilePath, false, Encoding.UTF8);
-            await writer.WriteAsync(fileString);
+            var json = JsonSerializer.Serialize(value, JsonOptions);
+            var tmp = GetTmpPath(path);
+
+            await File.WriteAllTextAsync(tmp, json, Encoding.UTF8);
+
+            File.Move(tmp, path, overwrite: true);
+
+            Log.Information("Saved {file} via tmp-swap.", path);
+            return true;
         }
-        catch (Exception e)
+        catch (Exception ex)
         {
-            DebugConsole.WriteError(MethodBase.GetCurrentMethod()?.DeclaringType, e);
-            Log.Error(e, "{message}", MethodBase.GetCurrentMethod()?.DeclaringType);
+            Log.Error(ex, "SaveAsync failed for {file}", path);
+            return false;
+        }
+        finally
+        {
+            IoLock.Release();
         }
     }
 
-    public static void TransferFileIfExistFromOldPathToUserDataDirectory(string oldFilePath)
+    private static async Task<(bool ok, T value)> TryLoad<T>(string file)
     {
-        var newFilePath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, Settings.Default.UserDataDirectoryName, Path.GetFileName(oldFilePath));
-        
         try
         {
-            FileInfo oldFileInfo = new FileInfo(oldFilePath);
-            FileInfo newFileInfo = new FileInfo(newFilePath);
-
-            if (!oldFileInfo.Exists)
-            {
-                return;
-            }
-
-            if (newFileInfo.Exists && oldFileInfo.Exists && newFileInfo.LastWriteTimeUtc > oldFileInfo.LastWriteTimeUtc)
-            {
-                File.Delete(oldFilePath);
-                return;
-            }
-
-            File.Copy(oldFilePath, newFilePath, true);
-            File.Delete(oldFilePath);
+            var json = await File.ReadAllTextAsync(file, Encoding.UTF8);
+            var obj = JsonSerializer.Deserialize<T>(json, JsonOptions);
+            return (obj is not null, obj);
         }
-        catch (Exception e)
+        catch
         {
-            DebugConsole.WriteError(MethodBase.GetCurrentMethod()?.DeclaringType, e);
-            Log.Error(e, "{message}", MethodBase.GetCurrentMethod()?.DeclaringType);
+            return (false, default);
+        }
+    }
+
+    private static string GetTmpPath(string path) => path + ".tmp";
+
+    private static bool PassesValidation<T>(T value, Func<T, bool> validate) => validate == null || validate(value);
+
+    private static void EnsureDirectory(string path)
+    {
+        var dir = Path.GetDirectoryName(path);
+        if (!string.IsNullOrEmpty(dir))
+        {
+            Directory.CreateDirectory(dir);
+        }
+    }
+
+    private static void SafeDelete(string path)
+    {
+        try
+        {
+            File.Delete(path);
+        }
+        catch
+        {
+            // ignored
         }
     }
 
@@ -102,24 +147,7 @@ public static class FileController
         }
         catch (Exception e)
         {
-            DebugConsole.WriteError(MethodBase.GetCurrentMethod()?.DeclaringType, e);
             Log.Error(e, "{message}", MethodBase.GetCurrentMethod()?.DeclaringType);
         }
-    }
-
-    public static List<FileInformation> GetFileInformation(string dirPath, string extension = "*.xml")
-    {
-        if (!Directory.Exists(dirPath))
-        {
-            return new List<FileInformation>();
-        }
-
-        var files = DirectoryController.GetFiles(dirPath, extension);
-        if (files == null)
-        {
-            return new List<FileInformation>();
-        }
-
-        return files.Select(file => new FileInformation(Path.GetFileNameWithoutExtension(file), file)).ToList();
     }
 }

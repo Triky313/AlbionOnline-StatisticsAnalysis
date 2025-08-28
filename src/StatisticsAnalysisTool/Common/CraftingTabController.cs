@@ -64,9 +64,7 @@ public static class CraftingTabController
 
         _isLoading = true;
 
-        FileController.TransferFileIfExistFromOldPathToUserDataDirectory(Path.Combine(AppDomain.CurrentDomain.BaseDirectory, Settings.Default.CraftingNotesFileName));
-        CraftingNotes = await FileController.LoadAsync<List<CraftingNote>>(
-            Path.Combine(AppDomain.CurrentDomain.BaseDirectory, Settings.Default.UserDataDirectoryName, Settings.Default.CraftingNotesFileName));
+        CraftingNotes = await FileController.LoadAsync<List<CraftingNote>>(Path.Combine(AppDomain.CurrentDomain.BaseDirectory, Settings.Default.UserDataDirectoryName, Settings.Default.CraftingNotesFileName));
 
         _isLoading = false;
     }

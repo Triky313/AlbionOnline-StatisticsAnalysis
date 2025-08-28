@@ -178,8 +178,6 @@ public class GuildController
 
     public async Task LoadFromFileAsync()
     {
-        FileController.TransferFileIfExistFromOldPathToUserDataDirectory(Path.Combine(AppDomain.CurrentDomain.BaseDirectory, Settings.Default.GuildFileName));
-
         var dto = await FileController.LoadAsync<GuildDto>(
             Path.Combine(AppDomain.CurrentDomain.BaseDirectory, Settings.Default.UserDataDirectoryName, Settings.Default.GuildFileName));
         var guild = GuildMapping.Mapping(dto);

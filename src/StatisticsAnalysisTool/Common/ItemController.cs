@@ -349,10 +349,7 @@ public static class ItemController
 
     public static async Task SetFavoriteItemsFromLocalFileAsync()
     {
-        FileController.TransferFileIfExistFromOldPathToUserDataDirectory(Path.Combine(AppDomain.CurrentDomain.BaseDirectory, Settings.Default.FavoriteItemsFileName));
-        var favoriteItemList = await FileController.LoadAsync<List<string>>(
-            Path.Combine(AppDomain.CurrentDomain.BaseDirectory, Settings.Default.UserDataDirectoryName, Settings.Default.FavoriteItemsFileName));
-
+        var favoriteItemList = await FileController.LoadAsync<List<string>>(Path.Combine(AppDomain.CurrentDomain.BaseDirectory, Settings.Default.UserDataDirectoryName, Settings.Default.FavoriteItemsFileName));
         if (favoriteItemList != null)
         {
             foreach (Item item in favoriteItemList

@@ -160,7 +160,6 @@ public class LocalUserData
 
     private async Task<ObservableCollection<GameInfoPlayerKillsDeathsWithType>> LoadFromFileAsync()
     {
-        FileController.TransferFileIfExistFromOldPathToUserDataDirectory(Path.Combine(AppDomain.CurrentDomain.BaseDirectory, Settings.Default.PlayerKillsDeathsFileName));
         return await FileController.LoadAsync<ObservableCollection<GameInfoPlayerKillsDeathsWithType>>(
             Path.Combine(AppDomain.CurrentDomain.BaseDirectory, Settings.Default.UserDataDirectoryName, Settings.Default.PlayerKillsDeathsFileName));
     }
