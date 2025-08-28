@@ -23,12 +23,12 @@ public class NetworkManager
         if (SettingsController.CurrentSettings.PacketProvider == PacketProviderKind.Npcap)
         {
             _packetProvider = new LibpcapPacketProvider(photonReceiver);
-            Log.Information($"Used packet provider: {PacketProviderKind.Npcap}");
+            Log.Information("Used packet provider: {PacketProviderKind}", PacketProviderKind.Npcap);
         }
         else
         {
             _packetProvider = new SocketsPacketProvider(photonReceiver);
-            Log.Information($"Used packet provider: {PacketProviderKind.Sockets}");
+            Log.Information("Used packet provider: {PacketProviderKind}", PacketProviderKind.Sockets);
         }
     }
 
