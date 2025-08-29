@@ -1,10 +1,8 @@
-﻿using StatisticsAnalysisTool.Common;
+﻿using StatisticsAnalysisTool.Diagnostics;
 using StatisticsAnalysisTool.Models.NetworkModel;
 using System;
 using System.Collections.Generic;
 using System.Reflection;
-using StatisticsAnalysisTool.Enumerations;
-using StatisticsAnalysisTool.Models;
 
 namespace StatisticsAnalysisTool.Network.Operations.Responses;
 
@@ -20,8 +18,6 @@ public class UseLootChestResponse
 
     public UseLootChestResponse(Dictionary<byte, object> parameters)
     {
-        ConsoleManager.WriteLine(new ConsoleFragment(GetType().Name, parameters, ConsoleColorType.EventColor));
-
         try
         {
             //if (parameters.ContainsKey(0))
@@ -69,7 +65,7 @@ public class UseLootChestResponse
         }
         catch (Exception e)
         {
-            ConsoleManager.WriteLineForError(MethodBase.GetCurrentMethod()?.DeclaringType, e);
+            DebugConsole.WriteError(MethodBase.GetCurrentMethod()?.DeclaringType, e);
         }
     }
 }

@@ -1,8 +1,9 @@
-﻿using System;
+﻿using StatisticsAnalysisTool.Common;
+using StatisticsAnalysisTool.EventValidations;
+using System;
 using System.Collections.Generic;
 using System.Reflection;
-using StatisticsAnalysisTool.Common;
-using StatisticsAnalysisTool.EventValidations;
+using StatisticsAnalysisTool.Diagnostics;
 
 namespace StatisticsAnalysisTool.Network.Events;
 
@@ -25,8 +26,7 @@ public class TakeSilverEvent
     public TakeSilverEvent(Dictionary<byte, object> parameters)
     {
         EventValidator.IsEventValid(EventCodes.TakeSilver, parameters);
-        ConsoleManager.WriteLineForNetworkHandler(GetType().Name, parameters);
-
+        
         try
         {
             if (parameters.TryGetValue(0, out object objectId))
@@ -80,7 +80,7 @@ public class TakeSilverEvent
         }
         catch (Exception e)
         {
-            ConsoleManager.WriteLineForError(MethodBase.GetCurrentMethod()?.DeclaringType, e);
+            DebugConsole.WriteError(MethodBase.GetCurrentMethod()?.DeclaringType, e);
         }
     }
 }

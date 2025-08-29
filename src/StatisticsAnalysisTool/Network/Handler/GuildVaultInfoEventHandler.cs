@@ -18,7 +18,8 @@ public class GuildVaultInfoEventHandler : EventPacketHandler<GuildVaultInfoEvent
     {
         if (_trackingController.IsTrackingAllowedByMainCharacter())
         {
-            _trackingController.VaultController.SetOrAddCurrentGuildVault(new InternalVault(value.ObjectId, value.LocationGuidString, value.VaultGuidList, value.VaultNames, value.IconTags, true));
+            _trackingController.VaultController.SetOrAddCurrentGuildVault(new InternalVault(value.ObjectId,
+                value.LocationGuidString, value.VaultGuidList, value.VaultNames, value.IconTags, true));
         }
 
         await Task.CompletedTask;

@@ -22,7 +22,13 @@ public class LibpcapPacketProvider : PacketProvider
     private CancellationTokenSource? _cts;
     private Thread? _thread;
     private volatile Pcap? _activePcap;
-    private readonly bool _lockToFirstDevice = true;
+    private const bool LockToFirstDevice = true;
+    private readonly Lock _lockObj = new();
+    private readonly Dictionary<Pcap, int> _pcapScores = new();
+    private DateTime _lastValidPacketUtc = DateTime.MinValue;
+
+    private const int ScoreToLock = 1;
+    private static readonly TimeSpan LockIdleTimeout = TimeSpan.FromSeconds(20);
 
     public override bool IsRunning => _thread is { IsAlive: true };
 
@@ -124,7 +130,7 @@ public class LibpcapPacketProvider : PacketProvider
 
     private void Dispatch(Pcap pcap, ref Packet packet)
     {
-        if (_lockToFirstDevice)
+        if (LockToFirstDevice)
         {
             var current = _activePcap;
             if (current is null)
@@ -218,23 +224,22 @@ public class LibpcapPacketProvider : PacketProvider
             return;
         }
 
-        if (!PhotonPorts.Udp.Contains(udp.SourcePort) && !PhotonPorts.Udp.Contains(udp.DestinationPort))
+        bool isPhotonPort = PhotonPorts.Udp.Contains(udp.SourcePort) || PhotonPorts.Udp.Contains(udp.DestinationPort);
+        bool looksPhoton = isPhotonPort || LooksLikePhoton(udp.Payload);
+        if (!looksPhoton || udp.Payload.Length == 0)
         {
-            if (!LooksLikePhoton(udp.Payload))
-            {
-                return;
-            }
-        }
-
-        if (_lockToFirstDevice)
-        {
-            var current = _activePcap;
-            if (current is null) _activePcap = pcap;
-            else if (!ReferenceEquals(current, pcap)) return;
-        }
-
-        if (udp.Payload.Length == 0)
             return;
+        }
+
+        SelectAndMaybeLockAdapter(pcap);
+
+        var current = _activePcap;
+        if (current is not null && !ReferenceEquals(current, pcap))
+        {
+            return;
+        }
+
+        _lastValidPacketUtc = DateTime.UtcNow;
 
         try
         {
@@ -243,6 +248,38 @@ public class LibpcapPacketProvider : PacketProvider
         catch (Exception ex)
         {
             Log.Debug(ex, "PhotonReceiver.ReceivePacket failed");
+        }
+    }
+
+    private void SelectAndMaybeLockAdapter(Pcap pcap)
+    {
+        lock (_lockObj)
+        {
+            if (_activePcap is not null)
+            {
+                if (DateTime.UtcNow - _lastValidPacketUtc > LockIdleTimeout)
+                {
+                    Log.Information("Npcap: releasing locked adapter due to inactivity");
+                    _activePcap = null;
+                    _pcapScores.Clear();
+                }
+                else
+                {
+                    return;
+                }
+            }
+
+            var score = _pcapScores.GetValueOrDefault(pcap, 0);
+
+            score++;
+            _pcapScores[pcap] = score;
+
+            if (score >= ScoreToLock)
+            {
+                _activePcap = pcap;
+                _lastValidPacketUtc = DateTime.UtcNow;
+                Log.Information("Npcap: locked to adapter({device}) after {Score} valid packets", pcap.Name, score);
+            }
         }
     }
 

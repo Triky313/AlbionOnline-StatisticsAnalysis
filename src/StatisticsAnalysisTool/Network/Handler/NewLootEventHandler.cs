@@ -1,6 +1,6 @@
-﻿using StatisticsAnalysisTool.Network.Manager;
+﻿using StatisticsAnalysisTool.Network.Events;
+using StatisticsAnalysisTool.Network.Manager;
 using System.Threading.Tasks;
-using StatisticsAnalysisTool.Network.Events;
 
 namespace StatisticsAnalysisTool.Network.Handler;
 
@@ -15,9 +15,11 @@ public class NewLootEventHandler : EventPacketHandler<NewLootEvent>
 
     protected override async Task OnActionAsync(NewLootEvent value)
     {
+
+
         if (value?.ObjectId != null)
         {
-            _trackingController.LootController.SetIdentifiedBody((long)value.ObjectId, value.LootBody);
+            _trackingController.LootController.SetIdentifiedBody((long) value.ObjectId, value.LootBody);
         }
         await Task.CompletedTask;
     }

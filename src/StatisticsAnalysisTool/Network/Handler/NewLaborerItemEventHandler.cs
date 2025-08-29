@@ -16,11 +16,13 @@ public class NewLaborerItemEventHandler : EventPacketHandler<NewLaborerItemEvent
 
     protected override async Task OnActionAsync(NewLaborerItemEvent value)
     {
+
+
         if (_trackingController.IsTrackingAllowedByMainCharacter())
         {
             _trackingController.VaultController.AddDiscoveredItem(value.Item);
         }
-        
+
         EstimatedMarketValueController.Add(value.Item.ItemIndex, value.Item.EstimatedMarketValueInternal, value.Item.Quality);
         _trackingController.LootController.AddDiscoveredItem(value.Item);
         _trackingController.DungeonController.AddDiscoveredItem(value.Item);

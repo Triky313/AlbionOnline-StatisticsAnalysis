@@ -9,6 +9,7 @@ using System.Windows;
 using Serilog;
 using StatisticsAnalysisTool.Common;
 using StatisticsAnalysisTool.Common.UserSettings;
+using StatisticsAnalysisTool.Diagnostics;
 using StatisticsAnalysisTool.Exceptions;
 using StatisticsAnalysisTool.Models;
 using StatisticsAnalysisTool.Properties;
@@ -101,12 +102,12 @@ public class Alert
             }
             catch (FileNotFoundException e)
             {
-                ConsoleManager.WriteLineForError(MethodBase.GetCurrentMethod()?.DeclaringType, e);
+                DebugConsole.WriteError(MethodBase.GetCurrentMethod()?.DeclaringType, e);
                 Log.Error(e, "{message}", MethodBase.GetCurrentMethod()?.DeclaringType);
             }
             catch (TooManyRequestsException e)
             {
-                ConsoleManager.WriteLineForError(MethodBase.GetCurrentMethod()?.DeclaringType, e);
+                DebugConsole.WriteError(MethodBase.GetCurrentMethod()?.DeclaringType, e);
                 Log.Error(e, "{message}", MethodBase.GetCurrentMethod()?.DeclaringType);
                 return;
             }

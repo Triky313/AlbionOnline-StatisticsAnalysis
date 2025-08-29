@@ -7,6 +7,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
+using StatisticsAnalysisTool.Diagnostics;
 
 namespace StatisticsAnalysisTool.Network.Events;
 
@@ -17,8 +18,6 @@ public class HealthUpdatesEvent
 
     public HealthUpdatesEvent(Dictionary<byte, object> parameters)
     {
-        ConsoleManager.WriteLineForNetworkHandler(GetType().Name, parameters);
-
         try
         {
             Dictionary<int, long> causerIds = new();
@@ -86,12 +85,12 @@ public class HealthUpdatesEvent
         }
         catch (ArgumentNullException ex)
         {
-            ConsoleManager.WriteLineForError(MethodBase.GetCurrentMethod()?.DeclaringType, ex);
+            DebugConsole.WriteError(MethodBase.GetCurrentMethod()?.DeclaringType, ex);
             Log.Error(ex, "{message}", MethodBase.GetCurrentMethod()?.DeclaringType);
         }
         catch (Exception e)
         {
-            ConsoleManager.WriteLineForError(MethodBase.GetCurrentMethod()?.DeclaringType, e);
+            DebugConsole.WriteError(MethodBase.GetCurrentMethod()?.DeclaringType, e);
             Log.Error(e, "{message}", MethodBase.GetCurrentMethod()?.DeclaringType);
         }
     }

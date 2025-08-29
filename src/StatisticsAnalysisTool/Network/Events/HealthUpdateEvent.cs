@@ -6,6 +6,7 @@ using StatisticsAnalysisTool.Network.Time;
 using System;
 using System.Collections.Generic;
 using System.Reflection;
+using StatisticsAnalysisTool.Diagnostics;
 
 namespace StatisticsAnalysisTool.Network.Events;
 
@@ -24,8 +25,7 @@ public class HealthUpdateEvent
     public HealthUpdateEvent(Dictionary<byte, object> parameters)
     {
         EventValidator.IsEventValid(EventCodes.HealthUpdate, parameters);
-        ConsoleManager.WriteLineForNetworkHandler(GetType().Name, parameters);
-
+        
         try
         {
             if (parameters.TryGetValue(0, out object affectedObjectId))
@@ -70,12 +70,12 @@ public class HealthUpdateEvent
         }
         catch (ArgumentNullException ex)
         {
-            ConsoleManager.WriteLineForError(MethodBase.GetCurrentMethod()?.DeclaringType, ex);
+            DebugConsole.WriteError(MethodBase.GetCurrentMethod()?.DeclaringType, ex);
             Log.Error(ex, "{message}", MethodBase.GetCurrentMethod()?.DeclaringType);
         }
         catch (Exception e)
         {
-            ConsoleManager.WriteLineForError(MethodBase.GetCurrentMethod()?.DeclaringType, e);
+            DebugConsole.WriteError(MethodBase.GetCurrentMethod()?.DeclaringType, e);
             Log.Error(e, "{message}", MethodBase.GetCurrentMethod()?.DeclaringType);
         }
     }

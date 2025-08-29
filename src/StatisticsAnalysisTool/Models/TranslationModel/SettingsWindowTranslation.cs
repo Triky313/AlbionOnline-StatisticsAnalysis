@@ -17,7 +17,10 @@ public class SettingsWindowTranslation
     public static string ToolDirectory => LocalizationController.Translation("TOOL_DIRECTORY");
     public static string OpenToolDirectory => LocalizationController.Translation("OPEN_TOOL_DIRECTORY");
     public static string OpenDebugConsole => LocalizationController.Translation("OPEN_DEBUG_CONSOLE");
+    public static string CloseDebugConsole => LocalizationController.Translation("CLOSE_DEBUG_CONSOLE");
     public static string OpenEventValidation => LocalizationController.Translation("OPEN_EVENT_VALIDATION");
+    public static string DebugConsoleParameters => LocalizationController.Translation("DEBUG_CONSOLE_PARAMETERS");
+    public static string OpenDebugConsoleWhenStartingTheTool => LocalizationController.Translation("OPEN_DEBUG_CONSOLE_WHEN_STARTING_THE_TOOL");
     public static string CreateDesktopShortcut => LocalizationController.Translation("CREATE_DESKTOP_SHORTCUT");
     public static string AlbionDataProjectBaseUrlWest => LocalizationController.Translation("ALBION_DATA_PROJECT_BASE_URL_WEST");
     public static string AlbionDataProjectBaseUrlEast => LocalizationController.Translation("ALBION_DATA_PROJECT_BASE_URL_EAST");
@@ -52,6 +55,7 @@ public class SettingsWindowTranslation
     public static string MaximumNumberOfBackups => LocalizationController.Translation("MAXIMUM_NUMBER_OF_BACKUPS");
     public static string Generally => LocalizationController.Translation("GENERALLY");
     public static string Backup => LocalizationController.Translation("BACKUP");
+    public static string Debug => LocalizationController.Translation("DEBUG");
     public static string Tool => LocalizationController.Translation("TOOL");
     public static string Tracking => LocalizationController.Translation("TRACKING");
     public static string ItemWindow => LocalizationController.Translation("ITEM_WINDOW");

@@ -8,6 +8,8 @@ public class NewShrineEventHandler(TrackingController trackingController) : Even
 {
     protected override async Task OnActionAsync(NewShrineEvent value)
     {
+
+
         await trackingController.DungeonController?.SetDungeonEventInformationAsync(value.Id, value.UniqueName)!;
         await Task.CompletedTask;
     }

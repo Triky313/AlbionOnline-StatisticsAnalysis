@@ -1,4 +1,5 @@
 ﻿using StatisticsAnalysisTool.Common;
+using StatisticsAnalysisTool.Diagnostics;
 using StatisticsAnalysisTool.Enumerations;
 using System;
 using System.Collections.Generic;
@@ -14,8 +15,6 @@ public class ActionOnBuildingFinishedEvent
 
     public ActionOnBuildingFinishedEvent(Dictionary<byte, object> parameters)
     {
-        ConsoleManager.WriteLineForNetworkHandler(GetType().Name, parameters);
-
         try
         {
             if (parameters.TryGetValue(0, out object objectId))
@@ -36,7 +35,7 @@ public class ActionOnBuildingFinishedEvent
         }
         catch (Exception e)
         {
-            ConsoleManager.WriteLineForError(MethodBase.GetCurrentMethod()?.DeclaringType, e);
+            DebugConsole.WriteError(MethodBase.GetCurrentMethod()?.DeclaringType, e);
         }
     }
 }

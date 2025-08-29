@@ -303,7 +303,6 @@ public class TreasureController
 
     public async Task LoadFromFileAsync()
     {
-        FileController.TransferFileIfExistFromOldPathToUserDataDirectory(Path.Combine(AppDomain.CurrentDomain.BaseDirectory, Settings.Default.TreasureStatsFileName));
         _treasures = await FileController.LoadAsync<ObservableRangeCollection<Treasure>>(
             Path.Combine(AppDomain.CurrentDomain.BaseDirectory, Settings.Default.UserDataDirectoryName, Settings.Default.TreasureStatsFileName));
     }

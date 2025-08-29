@@ -1,7 +1,5 @@
 ﻿using Serilog;
 using StatisticsAnalysisTool.Common;
-using StatisticsAnalysisTool.Enumerations;
-using StatisticsAnalysisTool.Models;
 using System;
 using System.Collections.Generic;
 using System.Reflection;
@@ -16,8 +14,6 @@ public class GetGuildAccountLogsResponse
 
     public GetGuildAccountLogsResponse(Dictionary<byte, object> parameters)
     {
-        ConsoleManager.WriteLine(new ConsoleFragment(GetType().Name, parameters, ConsoleColorType.EventColor));
-
         try
         {
             if (parameters.TryGetValue(0, out object usernames))

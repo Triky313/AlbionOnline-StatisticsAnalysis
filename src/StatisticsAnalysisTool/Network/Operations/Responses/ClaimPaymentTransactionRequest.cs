@@ -1,7 +1,5 @@
 ﻿using Serilog;
 using StatisticsAnalysisTool.Common;
-using StatisticsAnalysisTool.Enumerations;
-using StatisticsAnalysisTool.Models;
 using System;
 using System.Collections.Generic;
 using System.Reflection;
@@ -14,8 +12,6 @@ public class ClaimPaymentTransactionRequest
 
     public ClaimPaymentTransactionRequest(Dictionary<byte, object> parameters)
     {
-        ConsoleManager.WriteLine(new ConsoleFragment(GetType().Name, parameters, ConsoleColorType.EventColor));
-
         try
         {
             if (parameters.ContainsKey(1))

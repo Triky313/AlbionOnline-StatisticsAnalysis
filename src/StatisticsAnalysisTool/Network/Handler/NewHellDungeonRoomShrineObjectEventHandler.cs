@@ -8,6 +8,8 @@ public class NewHellDungeonRoomShrineObjectEventHandler(TrackingController track
 {
     protected override async Task OnActionAsync(NewHellDungeonRoomShrineObjectEvent value)
     {
+
+
         await trackingController.DungeonController?.SetDungeonEventInformationAsync(value.Id, value.ObjectName)!;
         await Task.CompletedTask;
     }

@@ -22,8 +22,6 @@ public class ChangeClusterResponse
 
     public ChangeClusterResponse(Dictionary<byte, object> parameters)
     {
-        ConsoleManager.WriteLineForMessage(GetType().Name, parameters, ConsoleColorType.EventMapChangeColor);
-
         try
         {
             if (parameters.ContainsKey(0))

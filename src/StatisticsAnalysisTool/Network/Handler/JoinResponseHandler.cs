@@ -1,6 +1,7 @@
 ﻿using StatisticsAnalysisTool.Common;
 using StatisticsAnalysisTool.Common.UserSettings;
 using StatisticsAnalysisTool.Enumerations;
+using StatisticsAnalysisTool.Models.BindingModel;
 using StatisticsAnalysisTool.Models.NetworkModel;
 using StatisticsAnalysisTool.Models.TranslationModel;
 using StatisticsAnalysisTool.Network.Manager;
@@ -9,7 +10,6 @@ using StatisticsAnalysisTool.ViewModels;
 using System;
 using System.Threading.Tasks;
 using System.Windows;
-using StatisticsAnalysisTool.Models.BindingModel;
 
 namespace StatisticsAnalysisTool.Network.Handler;
 

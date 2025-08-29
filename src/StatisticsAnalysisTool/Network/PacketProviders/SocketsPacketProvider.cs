@@ -11,6 +11,7 @@ using System.Net.NetworkInformation;
 using System.Net.Sockets;
 using System.Reflection;
 using System.Threading.Tasks;
+using StatisticsAnalysisTool.Diagnostics;
 
 namespace StatisticsAnalysisTool.Network.PacketProviders;
 
@@ -104,17 +105,17 @@ public class SocketsPacketProvider : PacketProvider
 
             _socketsV4.Add(socket);
 
-            ConsoleManager.WriteLineForMessage($"RawSocket(v4) added | LocalEndPoint: {socket.LocalEndPoint}, IsBound: {socket.IsBound}, Ttl: {socket.Ttl}");
+            DebugConsole.WriteInfo(MethodBase.GetCurrentMethod()?.DeclaringType, $"RawSocket(v4) added | LocalEndPoint: {socket.LocalEndPoint}, IsBound: {socket.IsBound}, Ttl: {socket.Ttl}");
         }
         catch (SocketException e)
         {
-            ConsoleManager.WriteLineForError(MethodBase.GetCurrentMethod()?.DeclaringType, e);
+            DebugConsole.WriteError(MethodBase.GetCurrentMethod()?.DeclaringType, e);
             Log.Warning(e, "RawSocket(v4) bind/ioctl failed ({Error}) on {IP} - Admin rights required?", e.SocketErrorCode, ip);
             SafeClose(socket);
         }
         catch (Exception e)
         {
-            ConsoleManager.WriteLineForError(MethodBase.GetCurrentMethod()?.DeclaringType, e);
+            DebugConsole.WriteError(MethodBase.GetCurrentMethod()?.DeclaringType, e);
             SafeClose(socket);
         }
     }
@@ -138,16 +139,16 @@ public class SocketsPacketProvider : PacketProvider
 
             _socketsV6.Add(socket);
 
-            ConsoleManager.WriteLineForMessage($"RawSocket(v6) added | LocalEndPoint: {socket.LocalEndPoint}, IsBound: {socket.IsBound}");
+            DebugConsole.WriteInfo(MethodBase.GetCurrentMethod()?.DeclaringType, $"RawSocket(v6) added | LocalEndPoint: {socket.LocalEndPoint}, IsBound: {socket.IsBound}");
         }
         catch (SocketException e)
         {
-            ConsoleManager.WriteLineForError(MethodBase.GetCurrentMethod()?.DeclaringType, e); Log.Warning(e, "RawSocket(v6) bind failed ({Error}) on {IP}", e.SocketErrorCode, ip);
+            DebugConsole.WriteError(MethodBase.GetCurrentMethod()?.DeclaringType, e); Log.Warning(e, "RawSocket(v6) bind failed ({Error}) on {IP}", e.SocketErrorCode, ip);
             SafeClose(socket);
         }
         catch (Exception e)
         {
-            ConsoleManager.WriteLineForError(MethodBase.GetCurrentMethod()?.DeclaringType, e);
+            DebugConsole.WriteError(MethodBase.GetCurrentMethod()?.DeclaringType, e);
             SafeClose(socket);
         }
     }
@@ -167,7 +168,7 @@ public class SocketsPacketProvider : PacketProvider
             catch (SocketException ex)
             {
                 if (_stopReceiving) break;
-                ConsoleManager.WriteLineForError(MethodBase.GetCurrentMethod()?.DeclaringType, ex);
+                DebugConsole.WriteError(MethodBase.GetCurrentMethod()?.DeclaringType, ex);
             }
             catch (ObjectDisposedException)
             {
@@ -175,7 +176,7 @@ public class SocketsPacketProvider : PacketProvider
             }
             catch (Exception ex)
             {
-                ConsoleManager.WriteLineForError(MethodBase.GetCurrentMethod()?.DeclaringType, ex);
+                DebugConsole.WriteError(MethodBase.GetCurrentMethod()?.DeclaringType, ex);
             }
         }
 
@@ -347,7 +348,7 @@ public class SocketsPacketProvider : PacketProvider
         }
         catch (Exception ex)
         {
-            ConsoleManager.WriteLineForError(MethodBase.GetCurrentMethod()?.DeclaringType, ex);
+            DebugConsole.WriteError(MethodBase.GetCurrentMethod()?.DeclaringType, ex);
         }
     }
 

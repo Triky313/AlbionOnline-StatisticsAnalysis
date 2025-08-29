@@ -14,6 +14,7 @@ using System.Linq;
 using System.Reflection;
 using System.Threading.Tasks;
 using System.Windows;
+using StatisticsAnalysisTool.Diagnostics;
 
 namespace StatisticsAnalysisTool.StorageHistory;
 
@@ -221,7 +222,7 @@ public class VaultController
             }
             catch (Exception e)
             {
-                ConsoleManager.WriteLineForError(MethodBase.GetCurrentMethod()?.DeclaringType, e);
+                DebugConsole.WriteError(MethodBase.GetCurrentMethod()?.DeclaringType, e);
             }
         }
 
@@ -405,7 +406,7 @@ public class VaultController
         }
         catch (Exception e)
         {
-            ConsoleManager.WriteLineForError(MethodBase.GetCurrentMethod()?.DeclaringType, e);
+            DebugConsole.WriteError(MethodBase.GetCurrentMethod()?.DeclaringType, e);
         }
     }
 
@@ -415,8 +416,6 @@ public class VaultController
 
     public async Task LoadFromFileAsync()
     {
-        FileController.TransferFileIfExistFromOldPathToUserDataDirectory(Path.Combine(AppDomain.CurrentDomain.BaseDirectory, Settings.Default.VaultsFileName));
-
         var vaultDtos = await FileController.LoadAsync<List<VaultDto>>(Path.Combine(AppDomain.CurrentDomain.BaseDirectory, Settings.Default.UserDataDirectoryName, Settings.Default.VaultsFileName));
         _vaultBindings.Vaults = new ObservableCollection<Vault>(vaultDtos.Select(StorageHistoryMapping.Mapping));
     }

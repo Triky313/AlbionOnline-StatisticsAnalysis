@@ -1,5 +1,6 @@
 ﻿using Serilog;
 using StatisticsAnalysisTool.Common;
+using StatisticsAnalysisTool.Diagnostics;
 using System;
 using System.Collections.Generic;
 using System.Reflection;
@@ -12,8 +13,6 @@ public class FishingFinishRequest
 
     public FishingFinishRequest(Dictionary<byte, object> parameters)
     {
-        ConsoleManager.WriteLineForNetworkHandler(GetType().Name, parameters);
-
         try
         {
             if (parameters.TryGetValue(1, out object objectId))
@@ -23,7 +22,7 @@ public class FishingFinishRequest
         }
         catch (Exception e)
         {
-            ConsoleManager.WriteLineForError(MethodBase.GetCurrentMethod()?.DeclaringType, e);
+            DebugConsole.WriteError(MethodBase.GetCurrentMethod()?.DeclaringType, e);
             Log.Error(e, "{message}", MethodBase.GetCurrentMethod()?.DeclaringType);
         }
     }

@@ -1,7 +1,5 @@
-﻿using StatisticsAnalysisTool.Models.NetworkModel;
-using StatisticsAnalysisTool.Network.Manager;
+﻿using StatisticsAnalysisTool.Network.Manager;
 using StatisticsAnalysisTool.Network.Operations.Responses;
-using System;
 using System.Threading.Tasks;
 
 namespace StatisticsAnalysisTool.Network.Handler;

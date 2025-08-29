@@ -1,12 +1,9 @@
-﻿using StatisticsAnalysisTool.Common;
-using StatisticsAnalysisTool.Enumerations;
-using StatisticsAnalysisTool.Models;
+﻿using Serilog;
 using StatisticsAnalysisTool.Trade.Market;
 using System;
 using System.Collections.Generic;
 using System.Reflection;
 using System.Text.Json;
-using Serilog;
 
 namespace StatisticsAnalysisTool.Network.Operations.Responses;
 
@@ -16,8 +13,6 @@ public class AuctionGetRequests
 
     public AuctionGetRequests(Dictionary<byte, object> parameters)
     {
-        ConsoleManager.WriteLine(new ConsoleFragment(GetType().Name, parameters, ConsoleColorType.EventColor));
-
         try
         {
             if (parameters.ContainsKey(0))

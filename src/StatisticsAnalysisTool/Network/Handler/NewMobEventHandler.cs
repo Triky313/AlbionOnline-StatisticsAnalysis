@@ -15,6 +15,8 @@ public class NewMobEventHandler : EventPacketHandler<NewMobEvent>
 
     protected override async Task OnActionAsync(NewMobEvent value)
     {
+
+
         await _trackingController.DungeonController.AddTierToCurrentDungeonAsync(value.MobIndex);
         _trackingController.DungeonController.AddLevelToCurrentDungeon(value.MobIndex, value.HitPointsMax);
     }

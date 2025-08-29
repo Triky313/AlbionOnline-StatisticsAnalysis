@@ -19,6 +19,7 @@ using System.Linq;
 using System.Reflection;
 using System.Windows;
 using System.Windows.Media.Imaging;
+using StatisticsAnalysisTool.Diagnostics;
 
 namespace StatisticsAnalysisTool.ViewModels;
 
@@ -59,6 +60,8 @@ public class SettingsWindowViewModel : BaseViewModel
     private Visibility _packetFilterVisibility = Visibility.Collapsed;
     private string _backupStorageDirectoryPath;
     private string _proxyUrlWithPort;
+    private string _debugConsoleFilter;
+    private bool _isOpenDebugConsoleWhenStartingTheToolChecked;
 
     public SettingsWindowViewModel()
     {
@@ -76,6 +79,10 @@ public class SettingsWindowViewModel : BaseViewModel
         InitServer();
 
         MainTrackingCharacterName = SettingsController.CurrentSettings.MainTrackingCharacterName;
+
+        // Debug console filter
+        DebugConsoleFilter = SettingsController.CurrentSettings.DebugConsoleFilter;
+        IsOpenDebugConsoleWhenStartingTheToolChecked = SettingsController.CurrentSettings.IsOpenDebugConsoleWhenStartingTheToolChecked;
 
         // Proxy url
         ProxyUrlWithPort = SettingsController.CurrentSettings.ProxyUrlWithPort;
@@ -135,6 +142,8 @@ public class SettingsWindowViewModel : BaseViewModel
 
         SettingsController.CurrentSettings.AnotherAppToStartPath = AnotherAppToStartPath;
 
+        SettingsController.CurrentSettings.DebugConsoleFilter = DebugConsoleFilter;
+        SettingsController.CurrentSettings.IsOpenDebugConsoleWhenStartingTheToolChecked = IsOpenDebugConsoleWhenStartingTheToolChecked;
         SettingsController.CurrentSettings.ProxyUrlWithPort = ProxyUrlWithPort;
         SettingsController.CurrentSettings.MainTrackingCharacterName = MainTrackingCharacterName;
         SettingsController.CurrentSettings.BackupIntervalByDays = BackupIntervalByDaysSelection.Value;
@@ -301,28 +310,6 @@ public class SettingsWindowViewModel : BaseViewModel
         public string Value { get; set; }
     }
 
-    public static void OpenConsoleWindow()
-    {
-        try
-        {
-            if (Utilities.IsWindowOpen<ConsoleWindow>())
-            {
-                var existWindow = Application.Current.Windows.OfType<ConsoleWindow>().FirstOrDefault();
-                existWindow?.Activate();
-            }
-            else
-            {
-                var window = new ConsoleWindow();
-                window.Show();
-            }
-        }
-        catch (Exception e)
-        {
-            ConsoleManager.WriteLineForError(MethodBase.GetCurrentMethod()?.DeclaringType, e);
-            Log.Error(e, "{message}", MethodBase.GetCurrentMethod()?.DeclaringType);
-        }
-    }
-
     public static void OpenEventValidationWindow()
     {
         try
@@ -340,7 +327,7 @@ public class SettingsWindowViewModel : BaseViewModel
         }
         catch (Exception e)
         {
-            ConsoleManager.WriteLineForError(MethodBase.GetCurrentMethod()?.DeclaringType, e);
+            DebugConsole.WriteError(MethodBase.GetCurrentMethod()?.DeclaringType, e);
             Log.Error(e, "{message}", MethodBase.GetCurrentMethod()?.DeclaringType);
         }
     }
@@ -773,6 +760,16 @@ public class SettingsWindowViewModel : BaseViewModel
         }
     }
 
+    public string DebugConsoleFilter
+    {
+        get => _debugConsoleFilter;
+        set
+        {
+            _debugConsoleFilter = value;
+            OnPropertyChanged();
+        }
+    }
+
     public FileInformation LanguagesSelection
     {
         get => _languagesSelection;
@@ -819,6 +816,16 @@ public class SettingsWindowViewModel : BaseViewModel
         set
         {
             _isOpenItemWindowInNewWindowChecked = value;
+            OnPropertyChanged();
+        }
+    }
+
+    public bool IsOpenDebugConsoleWhenStartingTheToolChecked
+    {
+        get => _isOpenDebugConsoleWhenStartingTheToolChecked;
+        set
+        {
+            _isOpenDebugConsoleWhenStartingTheToolChecked = value;
             OnPropertyChanged();
         }
     }

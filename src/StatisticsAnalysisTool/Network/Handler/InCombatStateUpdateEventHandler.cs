@@ -1,6 +1,6 @@
-﻿using StatisticsAnalysisTool.Network.Manager;
+﻿using StatisticsAnalysisTool.Network.Events;
+using StatisticsAnalysisTool.Network.Manager;
 using System.Threading.Tasks;
-using StatisticsAnalysisTool.Network.Events;
 
 namespace StatisticsAnalysisTool.Network.Handler;
 
@@ -17,7 +17,7 @@ public class InCombatStateUpdateEventHandler : EventPacketHandler<InCombatStateU
     {
         if (value.ObjectId != null)
         {
-            _trackingController.CombatController.UpdateCombatMode((long)value.ObjectId, value.InActiveCombat, value.InPassiveCombat);
+            _trackingController.CombatController.UpdateCombatMode((long) value.ObjectId, value.InActiveCombat, value.InPassiveCombat);
         }
 
         await Task.CompletedTask;

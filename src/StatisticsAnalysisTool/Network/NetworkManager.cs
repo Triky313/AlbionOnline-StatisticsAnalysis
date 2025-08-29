@@ -2,11 +2,13 @@ using Serilog;
 using StatisticsAnalysisTool.Abstractions;
 using StatisticsAnalysisTool.Common;
 using StatisticsAnalysisTool.Common.UserSettings;
+using StatisticsAnalysisTool.Diagnostics;
 using StatisticsAnalysisTool.Localization;
 using StatisticsAnalysisTool.Network.Handler;
 using StatisticsAnalysisTool.Network.Manager;
 using StatisticsAnalysisTool.Network.PacketProviders;
 using StatisticsAnalysisTool.Notification;
+using System.Reflection;
 
 namespace StatisticsAnalysisTool.Network;
 
@@ -21,12 +23,12 @@ public class NetworkManager
         if (SettingsController.CurrentSettings.PacketProvider == PacketProviderKind.Npcap)
         {
             _packetProvider = new LibpcapPacketProvider(photonReceiver);
-            Log.Information($"Used packet provider: {PacketProviderKind.Npcap}");
+            Log.Information("Used packet provider: {PacketProviderKind}", PacketProviderKind.Npcap);
         }
         else
         {
             _packetProvider = new SocketsPacketProvider(photonReceiver);
-            Log.Information($"Used packet provider: {PacketProviderKind.Sockets}");
+            Log.Information("Used packet provider: {PacketProviderKind}", PacketProviderKind.Sockets);
         }
     }
 
@@ -115,7 +117,7 @@ public class NetworkManager
 
     public void Start()
     {
-        ConsoleManager.WriteLineForMessage("Start Capture");
+        DebugConsole.WriteInfo(MethodBase.GetCurrentMethod()?.DeclaringType, "Start Capture");
 
         _packetProvider.Start();
 
@@ -124,7 +126,7 @@ public class NetworkManager
 
     public void Stop()
     {
-        ConsoleManager.WriteLineForMessage("Stop Capture");
+        DebugConsole.WriteInfo(MethodBase.GetCurrentMethod()?.DeclaringType, "Stop Capture");
 
         _packetProvider.Stop();
 

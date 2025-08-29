@@ -7,6 +7,7 @@ using System.IO;
 using System.Windows.Input;
 using Microsoft.Win32;
 using Serilog;
+using StatisticsAnalysisTool.Diagnostics;
 
 namespace StatisticsAnalysisTool.Trade;
 
@@ -34,7 +35,7 @@ public class TradeExportTemplateObject
             }
             catch (Exception e)
             {
-                ConsoleManager.WriteLineForError(MethodBase.GetCurrentMethod()?.DeclaringType, e);
+                DebugConsole.WriteError(MethodBase.GetCurrentMethod()?.DeclaringType, e);
                 Log.Error(e, "{message}", MethodBase.GetCurrentMethod()?.DeclaringType);
             }
         }

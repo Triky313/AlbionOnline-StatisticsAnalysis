@@ -17,6 +17,8 @@ public class PartyPlayerJoinedEventHandler : EventPacketHandler<PartyPlayerJoine
 
     protected override async Task OnActionAsync(PartyPlayerJoinedEvent value)
     {
+
+
         _trackingController?.EntityController?.AddEntity(new Entity
         {
             UserGuid = value.UserGuid,

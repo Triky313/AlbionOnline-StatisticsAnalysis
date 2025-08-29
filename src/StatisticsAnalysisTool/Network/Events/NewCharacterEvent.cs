@@ -4,6 +4,7 @@ using StatisticsAnalysisTool.Models.NetworkModel;
 using System;
 using System.Collections.Generic;
 using System.Reflection;
+using StatisticsAnalysisTool.Diagnostics;
 
 namespace StatisticsAnalysisTool.Network.Events;
 
@@ -18,8 +19,7 @@ public class NewCharacterEvent
     public NewCharacterEvent(Dictionary<byte, object> parameters)
     {
         EventValidator.IsEventValid(EventCodes.NewCharacter, parameters);
-        ConsoleManager.WriteLineForNetworkHandler(GetType().Name, parameters);
-
+        
         try
         {
             if (parameters.TryGetValue(0, out object objectId))
@@ -70,7 +70,7 @@ public class NewCharacterEvent
         }
         catch (Exception e)
         {
-            ConsoleManager.WriteLineForError(MethodBase.GetCurrentMethod()?.DeclaringType, e);
+            DebugConsole.WriteError(MethodBase.GetCurrentMethod()?.DeclaringType, e);
         }
     }
 

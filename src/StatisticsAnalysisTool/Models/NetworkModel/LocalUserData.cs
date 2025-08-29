@@ -12,6 +12,7 @@ using System.Linq;
 using System.Reflection;
 using System.Text.Json;
 using System.Threading.Tasks;
+using StatisticsAnalysisTool.Diagnostics;
 
 namespace StatisticsAnalysisTool.Models.NetworkModel;
 
@@ -159,7 +160,6 @@ public class LocalUserData
 
     private async Task<ObservableCollection<GameInfoPlayerKillsDeathsWithType>> LoadFromFileAsync()
     {
-        FileController.TransferFileIfExistFromOldPathToUserDataDirectory(Path.Combine(AppDomain.CurrentDomain.BaseDirectory, Settings.Default.PlayerKillsDeathsFileName));
         return await FileController.LoadAsync<ObservableCollection<GameInfoPlayerKillsDeathsWithType>>(
             Path.Combine(AppDomain.CurrentDomain.BaseDirectory, Settings.Default.UserDataDirectoryName, Settings.Default.PlayerKillsDeathsFileName));
     }
@@ -175,7 +175,7 @@ public class LocalUserData
         }
         catch (Exception e)
         {
-            ConsoleManager.WriteLineForError(MethodBase.GetCurrentMethod()?.DeclaringType, e);
+            DebugConsole.WriteError(MethodBase.GetCurrentMethod()?.DeclaringType, e);
             Log.Error(e, "{message}", MethodBase.GetCurrentMethod()?.DeclaringType);
         }
     }

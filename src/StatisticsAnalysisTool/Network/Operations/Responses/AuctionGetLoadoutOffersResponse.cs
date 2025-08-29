@@ -1,13 +1,11 @@
-﻿using StatisticsAnalysisTool.Common;
-using StatisticsAnalysisTool.Enumerations;
-using StatisticsAnalysisTool.Models;
+﻿using Serilog;
+using StatisticsAnalysisTool.Diagnostics;
 using StatisticsAnalysisTool.Trade.Market;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 using System.Text.Json;
-using Serilog;
 
 namespace StatisticsAnalysisTool.Network.Operations.Responses;
 
@@ -18,8 +16,6 @@ public class AuctionGetLoadoutOffersResponse
 
     public AuctionGetLoadoutOffersResponse(Dictionary<byte, object> parameters)
     {
-        ConsoleManager.WriteLine(new ConsoleFragment(GetType().Name, parameters, ConsoleColorType.EventColor));
-
         try
         {
             if (parameters.TryGetValue(1, out object auctionEntries))
@@ -50,6 +46,7 @@ public class AuctionGetLoadoutOffersResponse
         }
         catch (Exception e)
         {
+            DebugConsole.WriteError(MethodBase.GetCurrentMethod()?.DeclaringType, e);
             Log.Error(e, "{message}", MethodBase.GetCurrentMethod()?.DeclaringType);
         }
     }

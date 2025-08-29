@@ -7,6 +7,7 @@ using System;
 using System.Diagnostics;
 using System.Reflection;
 using System.Windows;
+using StatisticsAnalysisTool.Diagnostics;
 
 namespace StatisticsAnalysisTool.Cluster;
 
@@ -62,9 +63,6 @@ public sealed class ClusterController
         }
 
         Debug.Print($"[StateHandler] Changed cluster to: Index: '{CurrentCluster.Index}' UniqueName: '{CurrentCluster.UniqueName}' ClusterType: '{CurrentCluster.ClusterMode}' MapType: '{CurrentCluster.MapType}'");
-        ConsoleManager.WriteLineForMessage(MethodBase.GetCurrentMethod()?.DeclaringType,
-            $"[StateHandler] Changed cluster to: Index: '{CurrentCluster.Index}' UniqueName: '{CurrentCluster.UniqueName}' ClusterType: '{CurrentCluster.ClusterMode}' MapType: '{CurrentCluster.MapType}'",
-            ConsoleColorType.EventMapChangeColor);
     }
 
     public void SetAndResetValues(ClusterInfo currentCluster)

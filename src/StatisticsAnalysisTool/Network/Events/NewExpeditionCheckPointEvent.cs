@@ -1,9 +1,9 @@
 ﻿using StatisticsAnalysisTool.Common;
-using StatisticsAnalysisTool.Properties;
+using StatisticsAnalysisTool.Diagnostics;
+using StatisticsAnalysisTool.Enumerations;
 using System;
 using System.Collections.Generic;
 using System.Reflection;
-using StatisticsAnalysisTool.Enumerations;
 
 namespace StatisticsAnalysisTool.Network.Events;
 
@@ -14,15 +14,6 @@ public class NewExpeditionCheckPointEvent
 
     public NewExpeditionCheckPointEvent(Dictionary<byte, object> parameters)
     {
-        if (Settings.Default.IsDebugMode)
-        {
-            ConsoleManager.WriteLineForDebug(GetType().Name, parameters);
-        }
-        else
-        {
-            ConsoleManager.WriteLineForNetworkHandler(GetType().Name, parameters);
-        }
-
         try
         {
             if (parameters.ContainsKey(0) && int.TryParse(parameters[0].ToString(), out var objectId))
@@ -37,7 +28,7 @@ public class NewExpeditionCheckPointEvent
         }
         catch (Exception e)
         {
-            ConsoleManager.WriteLineForError(MethodBase.GetCurrentMethod()?.DeclaringType, e);
+            DebugConsole.WriteError(MethodBase.GetCurrentMethod()?.DeclaringType, e);
         }
     }
 

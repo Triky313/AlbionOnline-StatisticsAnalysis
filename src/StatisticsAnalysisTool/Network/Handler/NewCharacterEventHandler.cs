@@ -1,9 +1,9 @@
 ﻿using StatisticsAnalysisTool.Enumerations;
-using StatisticsAnalysisTool.Network.Manager;
+using StatisticsAnalysisTool.Models.NetworkModel;
 using StatisticsAnalysisTool.Network.Events;
+using StatisticsAnalysisTool.Network.Manager;
 using System;
 using System.Threading.Tasks;
-using StatisticsAnalysisTool.Models.NetworkModel;
 
 namespace StatisticsAnalysisTool.Network.Handler;
 
@@ -18,6 +18,8 @@ public class NewCharacterEventHandler : EventPacketHandler<NewCharacterEvent>
 
     protected override async Task OnActionAsync(NewCharacterEvent value)
     {
+
+
         if (value.Guid != null && value.ObjectId != null)
         {
             _trackingController.EntityController.AddEntity(new Entity

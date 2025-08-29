@@ -3,7 +3,9 @@ using Serilog;
 using StatisticsAnalysisTool.Backup;
 using StatisticsAnalysisTool.Common;
 using StatisticsAnalysisTool.Common.Shortcut;
+using StatisticsAnalysisTool.Diagnostics;
 using StatisticsAnalysisTool.Localization;
+using StatisticsAnalysisTool.PhotonPackageParser;
 using StatisticsAnalysisTool.ViewModels;
 using System;
 using System.Diagnostics;
@@ -41,7 +43,7 @@ public partial class SettingsControl
         catch (Exception ex)
         {
             _ = MessageBox.Show(ex.Message, LocalizationController.Translation("ERROR"));
-            ConsoleManager.WriteLineForError(MethodBase.GetCurrentMethod()?.DeclaringType, ex);
+            DebugConsole.WriteError(MethodBase.GetCurrentMethod()?.DeclaringType, ex);
             Log.Error(ex, "{message}", MethodBase.GetCurrentMethod()?.DeclaringType);
         }
     }
@@ -53,7 +55,14 @@ public partial class SettingsControl
 
     private void OpenDebugConsole_Click(object sender, RoutedEventArgs e)
     {
-        SettingsWindowViewModel.OpenConsoleWindow();
+        DebugConsole.Attach("SAT Debug Console");
+        var args = _settingsWindowViewModel.DebugConsoleFilter;
+        DebugConsole.Configure(args);
+    }
+
+    private void CloseDebugConsole_Click(object sender, RoutedEventArgs e)
+    {
+        DebugConsole.Detach();
     }
 
     private void OpenEventValidation_Click(object sender, RoutedEventArgs e)

@@ -1,25 +1,21 @@
-﻿
+﻿using Serilog;
 using StatisticsAnalysisTool.Common;
-using StatisticsAnalysisTool.Enumerations;
-using StatisticsAnalysisTool.Models;
+using StatisticsAnalysisTool.Diagnostics;
 using StatisticsAnalysisTool.Trade.Market;
 using System;
 using System.Collections.Generic;
 using System.Reflection;
-using Serilog;
 
 namespace StatisticsAnalysisTool.Network.Operations.Responses;
 
 public class AuctionBuyOfferRequest
 {
-    
+
 
     public readonly Purchase Purchase;
 
     public AuctionBuyOfferRequest(Dictionary<byte, object> parameters)
     {
-        ConsoleManager.WriteLine(new ConsoleFragment(GetType().Name, parameters, ConsoleColorType.EventColor));
-
         try
         {
             long objectId = -1;
@@ -50,6 +46,7 @@ public class AuctionBuyOfferRequest
         }
         catch (Exception e)
         {
+            DebugConsole.WriteError(MethodBase.GetCurrentMethod()?.DeclaringType, e);
             Log.Error(e, "{message}", MethodBase.GetCurrentMethod()?.DeclaringType);
         }
     }

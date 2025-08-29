@@ -17,6 +17,7 @@ using System.Text;
 using System.Text.Json;
 using System.Text.Json.Serialization;
 using System.Threading.Tasks;
+using StatisticsAnalysisTool.Diagnostics;
 using JsonSerializer = System.Text.Json.JsonSerializer;
 using Mount = StatisticsAnalysisTool.Models.ItemsJsonModel.Mount;
 
@@ -348,10 +349,7 @@ public static class ItemController
 
     public static async Task SetFavoriteItemsFromLocalFileAsync()
     {
-        FileController.TransferFileIfExistFromOldPathToUserDataDirectory(Path.Combine(AppDomain.CurrentDomain.BaseDirectory, Settings.Default.FavoriteItemsFileName));
-        var favoriteItemList = await FileController.LoadAsync<List<string>>(
-            Path.Combine(AppDomain.CurrentDomain.BaseDirectory, Settings.Default.UserDataDirectoryName, Settings.Default.FavoriteItemsFileName));
-
+        var favoriteItemList = await FileController.LoadAsync<List<string>>(Path.Combine(AppDomain.CurrentDomain.BaseDirectory, Settings.Default.UserDataDirectoryName, Settings.Default.FavoriteItemsFileName));
         if (favoriteItemList != null)
         {
             foreach (Item item in favoriteItemList
@@ -378,7 +376,7 @@ public static class ItemController
         }
         catch (Exception e)
         {
-            ConsoleManager.WriteLineForError(MethodBase.GetCurrentMethod()?.DeclaringType, e);
+            DebugConsole.WriteError(MethodBase.GetCurrentMethod()?.DeclaringType, e);
             Log.Error(e, "{message}", MethodBase.GetCurrentMethod()?.DeclaringType);
         }
     }
@@ -1005,7 +1003,7 @@ public static class ItemController
             }
             catch (Exception e)
             {
-                ConsoleManager.WriteLineForError(MethodBase.GetCurrentMethod()?.DeclaringType, e);
+                DebugConsole.WriteError(MethodBase.GetCurrentMethod()?.DeclaringType, e);
                 Log.Error(e, "{message}", MethodBase.GetCurrentMethod()?.DeclaringType);
             }
         }

@@ -15,6 +15,8 @@ public class OtherGrabbedLootEventHandler : EventPacketHandler<GrabbedLootEvent>
 
     protected override async Task OnActionAsync(GrabbedLootEvent value)
     {
+
+
         await _trackingController.LootController.AddLootedItemAsync(value.Loot);
         await _trackingController.LootController.AddLootAsync(value.Loot);
     }

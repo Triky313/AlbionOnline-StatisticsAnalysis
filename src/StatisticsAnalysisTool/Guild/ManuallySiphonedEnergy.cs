@@ -8,6 +8,7 @@ using System;
 using System.IO;
 using System.Reflection;
 using System.Windows.Input;
+using StatisticsAnalysisTool.Diagnostics;
 
 namespace StatisticsAnalysisTool.Guild;
 
@@ -96,7 +97,7 @@ public class ManuallySiphonedEnergy : BaseViewModel
             }
             catch (Exception e)
             {
-                ConsoleManager.WriteLineForError(MethodBase.GetCurrentMethod()?.DeclaringType, e);
+                DebugConsole.WriteError(MethodBase.GetCurrentMethod()?.DeclaringType, e);
                 Log.Error(e, "{message}", MethodBase.GetCurrentMethod()?.DeclaringType);
             }
         }

@@ -25,6 +25,7 @@ using System.Timers;
 using System.Windows;
 using System.Windows.Markup;
 using System.Windows.Media.Imaging;
+using StatisticsAnalysisTool.Diagnostics;
 
 namespace StatisticsAnalysisTool.ViewModels;
 
@@ -1047,7 +1048,7 @@ public class ItemWindowViewModel : BaseViewModel
         }
         catch (TooManyRequestsException)
         {
-            ConsoleManager.WriteLineForWarning(MethodBase.GetCurrentMethod()?.DeclaringType, new TooManyRequestsException());
+            DebugConsole.WriteWarn(MethodBase.GetCurrentMethod()?.DeclaringType, new TooManyRequestsException());
             SetErrorValues(Error.ToManyRequests);
             return;
         }

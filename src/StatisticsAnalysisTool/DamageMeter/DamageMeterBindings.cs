@@ -436,7 +436,6 @@ public class DamageMeterBindings : BaseViewModel, IAsyncInitialization
 
     private async Task LoadLocalFileAsync()
     {
-        FileController.TransferFileIfExistFromOldPathToUserDataDirectory(Path.Combine(AppDomain.CurrentDomain.BaseDirectory, Settings.Default.DamageMeterSnapshotsFileName));
         DamageMeterSnapshots = await FileController.LoadAsync<List<DamageMeterSnapshot>>(
             Path.Combine(AppDomain.CurrentDomain.BaseDirectory, Settings.Default.UserDataDirectoryName, Settings.Default.DamageMeterSnapshotsFileName));
     }

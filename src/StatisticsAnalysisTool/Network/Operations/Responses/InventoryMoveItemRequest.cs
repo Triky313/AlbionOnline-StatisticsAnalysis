@@ -1,6 +1,5 @@
 ﻿using Serilog;
 using StatisticsAnalysisTool.Common;
-using StatisticsAnalysisTool.Enumerations;
 using System;
 using System.Collections.Generic;
 using System.Reflection;
@@ -16,8 +15,6 @@ public class InventoryMoveItemRequest
 
     public InventoryMoveItemRequest(Dictionary<byte, object> parameters)
     {
-        ConsoleManager.WriteLineForMessage(GetType().Name, parameters, ConsoleColorType.EventMapChangeColor);
-
         try
         {
             if (parameters.ContainsKey(0))
