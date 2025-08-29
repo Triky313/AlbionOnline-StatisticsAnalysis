@@ -38353,6 +38353,97 @@
           "seg": "Debug"
         }
       ]
+    },
+    {
+      "tuid": "NO_LISTENING_ADAPTERS",
+      "tuv": [
+        {
+          "lang": "de-DE",
+          "seg": "Es wurde kein geeigneter Netzwerkadapter gefunden. Prüfe in den Einstellungen den ausgewählten Adapter und deaktiviere ggf. VPN- oder virtuelle Adapter."
+        },
+        {
+          "lang": "en-US",
+          "seg": "No suitable network adapter was found. Check the selected adapter in Settings and consider disabling VPN or virtual adapters."
+        }
+      ]
+    },
+    {
+      "tuid": "ERR_SOCKET_FAILED_WITH_CODE",
+      "tuv": [
+        {
+          "lang": "de-DE",
+          "seg": "Socket-Start fehlgeschlagen (Code: {0}). Starte die App als Administrator oder wechsle in den Einstellungen auf \"Npcap\"."
+        },
+        {
+          "lang": "en-US",
+          "seg": "Socket start failed (code: {0}). Run the app as Administrator or switch to \"Npcap\" in Settings."
+        }
+      ]
+    },
+    {
+      "tuid": "START_APPLICATION_AS_ADMINISTRATOR",
+      "tuv": [
+        {
+          "lang": "de-DE",
+          "seg": "Bitte starte die Anwendung als Administrator."
+        },
+        {
+          "lang": "en-US",
+          "seg": "Please run the application as Administrator."
+        }
+      ]
+    },
+    {
+      "tuid": "ERR_NPCAP_DLL_MISSING",
+      "tuv": [
+        {
+          "lang": "de-DE",
+          "seg": "Npcap (wpcap.dll) wurde nicht gefunden. Bitte Npcap installieren oder reparieren (ohne WinPcap-Legacy)."
+        },
+        {
+          "lang": "en-US",
+          "seg": "Npcap (wpcap.dll) was not found. Please install or repair Npcap (without WinPcap legacy)."
+        }
+      ]
+    },
+    {
+      "tuid": "ERR_NPCAP_OPEN_FAILED",
+      "tuv": [
+        {
+          "lang": "de-DE",
+          "seg": "Npcap konnte keinen Adapter öffnen. Prüfe Administratorrechte, Firewall/VPN und den ausgewählten Adapter."
+        },
+        {
+          "lang": "en-US",
+          "seg": "Npcap could not open an adapter. Check administrator rights, firewall/VPN, and the selected adapter."
+        }
+      ]
+    },
+    {
+      "tuid": "ERR_CAPTURE_START_INVALID_OPERATION",
+      "tuv": [
+        {
+          "lang": "de-DE",
+          "seg": "Der Mitschnitt konnte im aktuellen Zustand nicht gestartet werden. Bitte Anwendung neu starten und Adapter-/Filtereinstellungen prüfen."
+        },
+        {
+          "lang": "en-US",
+          "seg": "Capture could not start in the current state. Please restart the app and verify adapter/filter settings."
+        }
+      ]
+    },
+    {
+      "tuid": "PACKET_HANDLER_ERROR_MESSAGE",
+      "tuv": [
+        {
+          "lang": "de-DE",
+          "seg": "Tracking konnte nicht gestartet werden. Bitte Installation und Einstellungen prüfen."
+        },
+        {
+          "lang": "en-US",
+          "seg": "Tracking could not be started. Please verify installation and settings."
+        }
+      ]
     }
   ]
 }

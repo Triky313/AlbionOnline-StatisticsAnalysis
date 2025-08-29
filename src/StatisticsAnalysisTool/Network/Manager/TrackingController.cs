@@ -110,7 +110,9 @@ public class TrackingController : ITrackingController
 
         _networkManager = new NetworkManager(this);
 
-        if (!ApplicationCore.IsAppStartedAsAdministrator() && SettingsController.CurrentSettings.PacketProvider == PacketProviderKind.Sockets)
+        var provider = SettingsController.CurrentSettings.PacketProvider;
+
+        if (provider == PacketProviderKind.Sockets && !ApplicationCore.IsAppStartedAsAdministrator())
         {
             _mainWindowViewModel.SetErrorBar(Visibility.Visible, LocalizationController.Translation("START_APPLICATION_AS_ADMINISTRATOR"));
             return;
@@ -119,47 +121,81 @@ public class TrackingController : ITrackingController
         try
         {
             await LoadDataAsync();
-        }
-        catch (Exception e)
-        {
-            DebugConsole.WriteError(MethodBase.GetCurrentMethod()?.DeclaringType, e);
-            Log.Error(e, "{message}", MethodBase.GetCurrentMethod()?.DeclaringType);
-            _mainWindowViewModel.SetErrorBar(Visibility.Visible, e.Message);
-        }
 
-        ClusterController?.RegisterEvents();
-        LootController?.RegisterEvents();
-        TreasureController?.RegisterEvents();
+            ClusterController?.RegisterEvents();
+            LootController?.RegisterEvents();
+            TreasureController?.RegisterEvents();
 
-        LiveStatsTracker.Start();
+            LiveStatsTracker.Start();
 
-        _mainWindowViewModel.DungeonBindings.DungeonStatsFilter = new DungeonStatsFilter(_mainWindowViewModel.DungeonBindings);
+            _mainWindowViewModel.DungeonBindings.DungeonStatsFilter =
+                new DungeonStatsFilter(_mainWindowViewModel.DungeonBindings);
 
-        try
-        {
             _networkManager.Start();
             _mainWindowViewModel.IsTrackingActive = true;
         }
-        catch (NoListeningAdaptersException e)
+        catch (Exception ex)
         {
-            DebugConsole.WriteError(MethodBase.GetCurrentMethod()?.DeclaringType, e);
-            Log.Error(e, "{message}", MethodBase.GetCurrentMethod()?.DeclaringType);
-            _mainWindowViewModel.SetErrorBar(Visibility.Visible, LocalizationController.Translation("NO_LISTENING_ADAPTERS"));
-        }
-        catch (SocketException e)
-        {
-            DebugConsole.WriteError(MethodBase.GetCurrentMethod()?.DeclaringType, e);
-            Log.Error(e, "{message}|{socketErrorCode}", MethodBase.GetCurrentMethod()?.DeclaringType, e.SocketErrorCode);
-            _mainWindowViewModel.SetErrorBar(Visibility.Visible, $"Socket Exception - {e.Message}");
-        }
-        catch (Exception e)
-        {
-            DebugConsole.WriteError(MethodBase.GetCurrentMethod()?.DeclaringType, e);
-            Log.Error(e, "{message}", MethodBase.GetCurrentMethod()?.DeclaringType);
-            _mainWindowViewModel.SetErrorBar(Visibility.Visible, LocalizationController.Translation("PACKET_HANDLER_ERROR_MESSAGE"));
+            string userMsg = GetTrackingStartErrorMessage(ex, provider);
 
-            StopTracking();
+            DebugConsole.WriteError(MethodBase.GetCurrentMethod()?.DeclaringType, ex);
+            Log.Error(ex, "StartTracking failed | provider={Provider} | admin={IsAdmin} | msg={UserMsg}", provider, ApplicationCore.IsAppStartedAsAdministrator(), userMsg);
+
+            _mainWindowViewModel.SetErrorBar(Visibility.Visible, userMsg);
+
+            try
+            {
+                StopTracking();
+            }
+            catch
+            {
+                // ignored
+            }
+
+            _mainWindowViewModel.IsTrackingActive = false;
         }
+    }
+
+    private static string GetTrackingStartErrorMessage(Exception ex, PacketProviderKind provider)
+    {
+        if (ex is NoListeningAdaptersException)
+        {
+            return LocalizationController.Translation("NO_LISTENING_ADAPTERS");
+        }
+
+        if (ex is SocketException se)
+        {
+            return string.Format(LocalizationController.Translation("ERR_SOCKET_FAILED_WITH_CODE"), se.SocketErrorCode);
+        }
+
+        if (ex is UnauthorizedAccessException)
+        {
+            return LocalizationController.Translation("START_APPLICATION_AS_ADMINISTRATOR");
+        }
+
+        if (ex is DllNotFoundException d && (d.Message.Contains("wpcap", StringComparison.OrdinalIgnoreCase) || d.Message.Contains("npcap", StringComparison.OrdinalIgnoreCase)))
+        {
+            return LocalizationController.Translation("ERR_NPCAP_DLL_MISSING");
+        }
+
+        if (ex is TypeInitializationException { InnerException: DllNotFoundException inner } &&
+            (inner.Message.Contains("wpcap", StringComparison.OrdinalIgnoreCase) ||
+             inner.Message.Contains("npcap", StringComparison.OrdinalIgnoreCase)))
+        {
+            return LocalizationController.Translation("ERR_NPCAP_DLL_MISSING");
+        }
+
+        if (ex.GetType().Name.Equals("PcapException", StringComparison.OrdinalIgnoreCase))
+        {
+            return LocalizationController.Translation("ERR_NPCAP_OPEN_FAILED");
+        }
+
+        if (ex is InvalidOperationException)
+        {
+            return LocalizationController.Translation("ERR_CAPTURE_START_INVALID_OPERATION");
+        }
+
+        return LocalizationController.Translation("PACKET_HANDLER_ERROR_MESSAGE");
     }
 
     public void StopTracking()

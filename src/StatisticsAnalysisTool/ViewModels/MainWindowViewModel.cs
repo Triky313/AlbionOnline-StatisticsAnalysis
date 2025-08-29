@@ -366,7 +366,6 @@ public class MainWindowViewModel : BaseViewModel
         }
         catch (ArgumentNullException e)
         {
-            DebugConsole.WriteError(MethodBase.GetCurrentMethod()?.DeclaringType, e);
             Log.Error(e, "{message}", MethodBase.GetCurrentMethod()?.DeclaringType);
             var catchItemWindow = new ItemWindow(item);
             catchItemWindow.Show();
@@ -392,7 +391,6 @@ public class MainWindowViewModel : BaseViewModel
             }
             catch (Exception e)
             {
-                DebugConsole.WriteError(MethodBase.GetCurrentMethod()?.DeclaringType, e);
                 Log.Error(e, "{message}", MethodBase.GetCurrentMethod()?.DeclaringType);
             }
         }
