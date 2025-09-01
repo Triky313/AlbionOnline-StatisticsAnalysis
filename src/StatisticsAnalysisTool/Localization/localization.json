@@ -15424,59 +15424,6 @@
       ]
     },
     {
-      "tuid": "PACKET_HANDLER_ERROR_MESSAGE",
-      "tuv": [
-        {
-          "lang": "de-DE",
-          "seg": "Ein Fehler beim Tracking ist aufgetreten. Ist Npcap installiert? https://nmap.org/npcap"
-        },
-        {
-          "lang": "en-US",
-          "seg": "A tracking error occurred. Is Npcap installed? https://nmap.org/npcap"
-        },
-        {
-          "lang": "es-ES",
-          "seg": "Se ha producido un error de seguimiento. ¿Está instalado Npcap? https://nmap.org/npcap"
-        },
-        {
-          "lang": "fr-FR",
-          "seg": "Une erreur de Traqueur s'est produite. Npcap est-il installé ? https://nmap.org/npcap"
-        },
-        {
-          "lang": "ja-JP",
-          "seg": "追跡エラーが発生しました。 Npcapはインストールされていますか? https://nmap.org/npcap"
-        },
-        {
-          "lang": "ko-KR",
-          "seg": "추적 오류가 발생했습니다. Npcap이 설치되어 있나요? https://nmap.org/npcap"
-        },
-        {
-          "lang": "pl-PL",
-          "seg": "Wystąpił błąd śledzenia. Czy jest zainstalowany Npcap? https://nmap.org/npcap"
-        },
-        {
-          "lang": "pt-BR",
-          "seg": "Ocorreu um erro de rastreio. O NPCAP está instalado? https://nmap.org/npcap"
-        },
-        {
-          "lang": "ru-RU",
-          "seg": "Произошла ошибка отслеживания. Npcap установлен? https://nmap.org/npcap"
-        },
-        {
-          "lang": "tr-TR",
-          "seg": "Bir hata oluştu, izlemenin yeniden başlatılması gerekiyor."
-        },
-        {
-          "lang": "zh-CN",
-          "seg": "发生了一个追踪错误。是否安装了Npcap？ https://nmap.org/npcap"
-        },
-        {
-          "lang": "zh-TW",
-          "seg": "發生了一個追蹤錯誤。是否安裝了 Npcap？ https://nmap.org/npcap"
-        }
-      ]
-    },
-    {
       "tuid": "YOU_HAVE",
       "tuv": [
         {
