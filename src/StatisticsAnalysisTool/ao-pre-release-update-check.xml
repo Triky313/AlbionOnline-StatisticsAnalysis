@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <item>
-	<version>8.5.13.0</version>
-	<url>https://github.com/Triky313/AlbionOnline-StatisticsAnalysis/releases/download/v8.5.13/StatisticsAnalysis-AlbionOnline-v8.5.13-x64.zip</url>
+	<version>8.5.14.0</version>
+	<url>https://github.com/Triky313/AlbionOnline-StatisticsAnalysis/releases/download/v8.5.14/StatisticsAnalysis-AlbionOnline-v8.5.14-x64.zip</url>
 	<changelog>https://github.com/Triky313/AlbionOnline-StatisticsAnalysis/releases</changelog>
 	<mandatory>false</mandatory>
 </item>
