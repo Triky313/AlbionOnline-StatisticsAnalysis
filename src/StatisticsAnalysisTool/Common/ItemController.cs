@@ -1,5 +1,6 @@
 using Serilog;
 using StatisticsAnalysisTool.Common.Converters;
+using StatisticsAnalysisTool.Diagnostics;
 using StatisticsAnalysisTool.Enumerations;
 using StatisticsAnalysisTool.EstimatedMarketValue;
 using StatisticsAnalysisTool.Models;
@@ -17,7 +18,6 @@ using System.Text;
 using System.Text.Json;
 using System.Text.Json.Serialization;
 using System.Threading.Tasks;
-using StatisticsAnalysisTool.Diagnostics;
 using JsonSerializer = System.Text.Json.JsonSerializer;
 using Mount = StatisticsAnalysisTool.Models.ItemsJsonModel.Mount;
 
@@ -376,7 +376,6 @@ public static class ItemController
         }
         catch (Exception e)
         {
-            DebugConsole.WriteError(MethodBase.GetCurrentMethod()?.DeclaringType, e);
             Log.Error(e, "{message}", MethodBase.GetCurrentMethod()?.DeclaringType);
         }
     }
@@ -392,19 +391,16 @@ public static class ItemController
             MaxDegreeOfParallelism = Environment.ProcessorCount
         };
 
-        Parallel.ForEach(Items, options, item =>
-        {
-            GetSpecificItemInfo(item);
-        });
+        Parallel.ForEach(Items, options, GetSpecificItemInfo);
     }
 
-    private static bool GetSpecificItemInfo(Item item)
+    private static void GetSpecificItemInfo(Item item)
     {
         var cleanUniqueName = GetCleanUniqueName(item.UniqueName);
 
         if (!IsItemsJsonLoaded())
         {
-            return false;
+            return;
         }
 
         var hideoutItemObject = GetItemJsonObject(cleanUniqueName, [_itemsJson.Items.HideoutItem]);
@@ -413,7 +409,7 @@ public static class ItemController
             hideoutItem.ItemType = ItemType.Hideout;
             item.FullItemInformation = hideoutItem;
 
-            return true;
+            return;
         }
 
         var trackingItemObject = GetItemJsonObject(cleanUniqueName, _itemsJson.Items.TrackingItem);
@@ -422,7 +418,7 @@ public static class ItemController
             trackingItem.ItemType = ItemType.TrackingItem;
             item.FullItemInformation = trackingItem;
 
-            return true;
+            return;
         }
 
         var farmableItemObject = GetItemJsonObject(cleanUniqueName, _itemsJson.Items.FarmableItem);
@@ -431,7 +427,7 @@ public static class ItemController
             farmableItem.ItemType = ItemType.Farmable;
             item.FullItemInformation = farmableItem;
 
-            return true;
+            return;
         }
 
         var simpleItemObject = GetItemJsonObject(cleanUniqueName, _itemsJson.Items.SimpleItem);
@@ -440,7 +436,7 @@ public static class ItemController
             simpleItem.ItemType = ItemType.Simple;
             item.FullItemInformation = simpleItem;
 
-            return true;
+            return;
         }
 
         var consumableItemObject = GetItemJsonObject(cleanUniqueName, _itemsJson.Items.ConsumableItem);
@@ -449,7 +445,7 @@ public static class ItemController
             consumableItem.ItemType = ItemType.Consumable;
             item.FullItemInformation = consumableItem;
 
-            return true;
+            return;
         }
 
         var consumableFromInventoryItemObject = GetItemJsonObject(cleanUniqueName, _itemsJson.Items.ConsumableFromInventoryItem);
@@ -458,7 +454,7 @@ public static class ItemController
             consumableFromInventoryItem.ItemType = ItemType.ConsumableFromInventory;
             item.FullItemInformation = consumableFromInventoryItem;
 
-            return true;
+            return;
         }
 
         var equipmentItemObject = GetItemJsonObject(cleanUniqueName, _itemsJson.Items.EquipmentItem);
@@ -467,7 +463,7 @@ public static class ItemController
             equipmentItem.ItemType = ItemType.Equipment;
             item.FullItemInformation = equipmentItem;
 
-            return true;
+            return;
         }
 
         var weaponObject = GetItemJsonObject(cleanUniqueName, _itemsJson.Items.Weapon);
@@ -476,7 +472,7 @@ public static class ItemController
             weapon.ItemType = ItemType.Weapon;
             item.FullItemInformation = weapon;
 
-            return true;
+            return;
         }
 
         var mountObject = GetItemJsonObject(cleanUniqueName, _itemsJson.Items.Mount);
@@ -485,7 +481,7 @@ public static class ItemController
             mount.ItemType = ItemType.Mount;
             item.FullItemInformation = mount;
 
-            return true;
+            return;
         }
 
         var furnitureItemObject = GetItemJsonObject(cleanUniqueName, _itemsJson.Items.FurnitureItem);
@@ -494,7 +490,7 @@ public static class ItemController
             furnitureItem.ItemType = ItemType.Furniture;
             item.FullItemInformation = furnitureItem;
 
-            return true;
+            return;
         }
 
         var journalItemObject = GetItemJsonObject(cleanUniqueName, _itemsJson.Items.JournalItem);
@@ -503,7 +499,7 @@ public static class ItemController
             journalItem.ItemType = ItemType.Journal;
             item.FullItemInformation = journalItem;
 
-            return true;
+            return;
         }
 
         var labourerContractObject = GetItemJsonObject(cleanUniqueName, _itemsJson.Items.LabourerContract);
@@ -512,7 +508,7 @@ public static class ItemController
             labourerContract.ItemType = ItemType.LabourerContract;
             item.FullItemInformation = labourerContract;
 
-            return true;
+            return;
         }
 
         var mountSkinObject = GetItemJsonObject(cleanUniqueName, _itemsJson.Items.MountSkin);
@@ -521,7 +517,7 @@ public static class ItemController
             mountSkin.ItemType = ItemType.MountSkin;
             item.FullItemInformation = mountSkin;
 
-            return true;
+            return;
         }
 
         var transformationWeaponItemObject = GetItemJsonObject(cleanUniqueName, _itemsJson.Items.TransformationWeapon);
@@ -530,7 +526,7 @@ public static class ItemController
             transformationWeapon.ItemType = ItemType.TransformationWeapon;
             item.FullItemInformation = transformationWeapon;
 
-            return true;
+            return;
         }
 
         var crystalLeagueItemObject = GetItemJsonObject(cleanUniqueName, _itemsJson.Items.CrystalLeagueItem);
@@ -539,7 +535,7 @@ public static class ItemController
             crystalLeagueItem.ItemType = ItemType.CrystalLeague;
             item.FullItemInformation = crystalLeagueItem;
 
-            return true;
+            return;
         }
 
         var killTrophyItemObject = GetItemJsonObject(cleanUniqueName, _itemsJson.Items.KillTrophyItem);
@@ -548,10 +544,8 @@ public static class ItemController
             killTrophyItem.ItemType = ItemType.killTrophy;
             item.FullItemInformation = killTrophyItem;
 
-            return true;
+            return;
         }
-
-        return false;
     }
 
     private static object GetItemJsonObject<T>(string uniqueName, List<T> itemJsonObjects)
