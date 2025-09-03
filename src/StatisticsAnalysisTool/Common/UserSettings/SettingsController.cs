@@ -2,19 +2,20 @@
 using StatisticsAnalysisTool.Properties;
 using System;
 using System.IO;
-using System.Reflection;
-using System.Text;
 using System.Text.Json;
+using System.Threading.Tasks;
 using System.Windows;
-using StatisticsAnalysisTool.Diagnostics;
 
 namespace StatisticsAnalysisTool.Common.UserSettings;
 
-public class SettingsController
+public static class SettingsController
 {
-    public static SettingsObject CurrentSettings = new();
+    public static SettingsObject CurrentSettings { get; private set; } = new();
 
     private static bool _haveSettingsAlreadyBeenLoaded;
+
+    private static string SettingsFilePath =>
+        Path.Combine(AppDomain.CurrentDomain.BaseDirectory, Settings.Default.SettingsFileName);
 
     public static void SetWindowSettings(WindowState windowState, double height, double width, double left, double top)
     {
@@ -31,58 +32,111 @@ public class SettingsController
 
     public static void SaveSettings()
     {
-        SaveToLocalFile();
-        ItemController.SaveFavoriteItemsToLocalFile();
+        try
+        {
+            var ok = FileController.SaveAsync(CurrentSettings, SettingsFilePath, ValidateSettings).GetAwaiter().GetResult();
+
+            if (!ok)
+            {
+                Log.Warning("Settings save rejected or failed for {file}", SettingsFilePath);
+            }
+        }
+        catch (Exception e)
+        {
+            Log.Error(e, "SaveSettings failed for {file}", SettingsFilePath);
+        }
     }
 
-    public static void LoadSettings()
+    public static async Task LoadSettingsAsync()
     {
         if (_haveSettingsAlreadyBeenLoaded)
         {
             return;
         }
 
-        var localFilePath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, Settings.Default.SettingsFileName);
-
         try
         {
-            if (!File.Exists(localFilePath))
+            var loaded = await FileController.LoadAsync<SettingsObject>(SettingsFilePath, ValidateSettings) ?? new SettingsObject();
+
+            CurrentSettings = loaded;
+            _haveSettingsAlreadyBeenLoaded = true;
+
+            if (File.Exists(SettingsFilePath) && !IsFileEmpty(SettingsFilePath))
             {
-                CurrentSettings = new SettingsObject();
-                SaveToLocalFile();
-                _haveSettingsAlreadyBeenLoaded = true;
                 return;
             }
 
-            var settingsString = File.ReadAllText(localFilePath, Encoding.UTF8);
-            var loaded = JsonSerializer.Deserialize<SettingsObject>(settingsString);
+            var ok = await FileController.SaveAsync(CurrentSettings, SettingsFilePath, ValidateSettings);
 
-            CurrentSettings = loaded ?? new SettingsObject();
+            if (!ok)
+            {
+                Log.Warning("Failed to write default settings to {file}", SettingsFilePath);
+            }
+        }
+        catch (JsonException je)
+        {
+            Log.Warning(je, "Invalid JSON in settings file {file}", SettingsFilePath);
+
+            CurrentSettings = new SettingsObject();
             _haveSettingsAlreadyBeenLoaded = true;
+
+            TrySaveDefault();
         }
         catch (Exception e)
         {
-            DebugConsole.WriteError(MethodBase.GetCurrentMethod()?.DeclaringType, e);
-            Log.Error(e, "{message}", MethodBase.GetCurrentMethod()?.DeclaringType);
+            Log.Error(e, "LoadSettings failed for {file}", SettingsFilePath);
 
             CurrentSettings ??= new SettingsObject();
             _haveSettingsAlreadyBeenLoaded = true;
+
+            TrySaveDefault();
         }
     }
 
-    private static void SaveToLocalFile()
-    {
-        var localFilePath = $"{AppDomain.CurrentDomain.BaseDirectory}{Settings.Default.SettingsFileName}";
+    #region Helper
 
+    private static bool ValidateSettings(SettingsObject s)
+    {
+        if (s is null) return false;
+
+        if (Invalid(s.MainWindowHeight) || Invalid(s.MainWindowWidth) || Invalid(s.MainWindowLeftPosition) || Invalid(s.MainWindowTopPosition))
+        {
+            return false;
+        }
+
+        return true;
+
+        bool Invalid(double v) => double.IsNaN(v) || double.IsInfinity(v);
+    }
+
+    private static bool IsFileEmpty(string path)
+    {
         try
         {
-            var fileString = JsonSerializer.Serialize(CurrentSettings);
-            File.WriteAllText(localFilePath, fileString, Encoding.UTF8);
+            var info = new FileInfo(path);
+            return !info.Exists || info.Length == 0;
         }
-        catch (Exception e)
+        catch
         {
-            DebugConsole.WriteError(MethodBase.GetCurrentMethod()?.DeclaringType, e);
-            Log.Error(e, "{message}", MethodBase.GetCurrentMethod()?.DeclaringType);
+            return true;
         }
     }
+
+    private static void TrySaveDefault()
+    {
+        try
+        {
+            var ok = FileController.SaveAsync(CurrentSettings, SettingsFilePath, ValidateSettings).GetAwaiter().GetResult();
+            if (!ok)
+            {
+                Log.Warning("Could not persist default settings to {file}", SettingsFilePath);
+            }
+        }
+        catch (Exception ex)
+        {
+            Log.Error(ex, "Error while persisting default settings to {file}", SettingsFilePath);
+        }
+    }
+
+    #endregion
 }

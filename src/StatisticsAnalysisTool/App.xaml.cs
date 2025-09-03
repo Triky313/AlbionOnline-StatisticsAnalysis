@@ -45,7 +45,7 @@ public partial class App
         TaskScheduler.UnobservedTaskException += TaskScheduler_UnobservedTaskException;
         DispatcherUnhandledException += Application_DispatcherUnhandledException;
 
-        SettingsController.LoadSettings();
+        await SettingsController.LoadSettingsAsync();
 
         if (SettingsController.CurrentSettings.IsOpenDebugConsoleWhenStartingTheToolChecked)
         {
