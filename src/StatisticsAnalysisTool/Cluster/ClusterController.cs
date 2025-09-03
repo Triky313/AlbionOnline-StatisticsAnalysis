@@ -5,9 +5,7 @@ using StatisticsAnalysisTool.Network.Manager;
 using StatisticsAnalysisTool.ViewModels;
 using System;
 using System.Diagnostics;
-using System.Reflection;
 using System.Windows;
-using StatisticsAnalysisTool.Diagnostics;
 
 namespace StatisticsAnalysisTool.Cluster;
 

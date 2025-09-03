@@ -34,41 +34,41 @@ public class SettingsObject
     public double MainWindowWidth { get; set; } = 100;
     public double MainWindowLeftPosition { get; set; } = 0;
     public double MainWindowTopPosition { get; set; } = 0;
-    public bool MainWindowMaximized { get; set; }
-    public bool IsTrackingResetByMapChangeActive { get; set; }
-    public bool IsMainTrackerFilterSilver { get; set; }
-    public bool IsMainTrackerFilterFame { get; set; }
-    public bool IsMainTrackerFilterFaction { get; set; }
-    public bool IsMainTrackerFilterSeasonPoints { get; set; }
+    public bool MainWindowMaximized { get; set; } = false;
+    public bool IsTrackingResetByMapChangeActive { get; set; } = false;
+    public bool IsMainTrackerFilterSilver { get; set; } = false;
+    public bool IsMainTrackerFilterFame { get; set; } = false;
+    public bool IsMainTrackerFilterFaction { get; set; } = false;
+    public bool IsMainTrackerFilterSeasonPoints { get; set; } = false;
     public bool IsMainTrackerFilterEquipmentLoot { get; set; } = true;
     public bool IsMainTrackerFilterConsumableLoot { get; set; } = true;
     public bool IsMainTrackerFilterSimpleLoot { get; set; } = true;
     public bool IsMainTrackerFilterUnknownLoot { get; set; } = true;
-    public bool IsMainTrackerFilterKill { get; set; }
+    public bool IsMainTrackerFilterKill { get; set; } = false;
     public bool IsDamageMeterTrackingActive { get; set; } = true;
-    public bool IsTrackingPartyLootOnly { get; set; }
-    public bool IsTrackingSilver { get; set; }
-    public bool IsTrackingFame { get; set; }
-    public bool IsTrackingMobLoot { get; set; }
-    public bool IsSuggestPreReleaseUpdatesActive { get; set; }
-    public bool IsLootFromMobShown { get; set; }
+    public bool IsTrackingPartyLootOnly { get; set; } = false;
+    public bool IsTrackingSilver { get; set; } = false;
+    public bool IsTrackingFame { get; set; } = false;
+    public bool IsTrackingMobLoot { get; set; } = false;
+    public bool IsSuggestPreReleaseUpdatesActive { get; set; } = false;
+    public bool IsLootFromMobShown { get; set; } = false;
     public double MailMonitoringGridSplitterPosition { get; set; } = 125;
     public double DungeonsGridSplitterPosition { get; set; } = 125;
     public double StorageHistoryGridSplitterPosition { get; set; } = 125;
     public double DamageMeterGridSplitterPosition { get; set; } = 125;
     public double PartyBuilderGridSplitterPosition { get; set; } = 125;
     public double GuildGridSplitterPosition { get; set; } = 125;
-    public bool ShortDamageMeterToClipboard { get; set; }
-    public bool OnlyDamageToPlayersCounts { get; set; }
+    public bool ShortDamageMeterToClipboard { get; set; } = false;
+    public bool OnlyDamageToPlayersCounts { get; set; } = false;
     public bool IsTradeMonitoringActive { get; set; } = true;
-    public bool IgnoreMailsWithZeroValues { get; set; }
+    public bool IgnoreMailsWithZeroValues { get; set; } = false;
     public int DeleteTradesOlderThanSpecifiedDays { get; set; }
     public bool IsSnapshotAfterMapChangeActive { get; set; }
     public bool IsDamageMeterResetByMapChangeActive { get; set; }
     public bool IsDamageMeterResetBeforeCombatActive { get; set; }
     public double TradeMonitoringMarketTaxRate { get; set; } = 4;
     public double TradeMonitoringMarketTaxSetupRate { get; set; } = 2.5;
-    public bool IsDungeonClosedSoundActive { get; set; }
+    public bool IsDungeonClosedSoundActive { get; set; } = false;
     public int ItemWindowMainTabQualitySelection { get; set; }
     public int ItemWindowHistoryTabQualitySelection { get; set; }
     public List<MainTabLocationFilterSettingsObject> ItemWindowMainTabLocationFilters { get; set; } = new();

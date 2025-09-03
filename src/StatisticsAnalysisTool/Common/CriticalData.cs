@@ -35,7 +35,8 @@ public class CriticalData
             var tasks = new List<Task>
             {
                 Task.Run(SettingsController.SaveSettings),
-                Task.Run(async () => { await trackingController?.SaveDataAsync()!; })
+                Task.Run(async () => { await trackingController?.SaveDataAsync()!; }),
+                Task.Run(ItemController.SaveFavoriteItemsToLocalFile)
             };
 
             await Task.WhenAll(tasks);
