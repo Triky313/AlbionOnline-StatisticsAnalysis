@@ -25,11 +25,9 @@ using System.ComponentModel;
 using System.Diagnostics;
 using System.Linq;
 using System.Net.Sockets;
-using System.Reflection;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Data;
-using StatisticsAnalysisTool.Diagnostics;
 using ValueType = StatisticsAnalysisTool.Enumerations.ValueType;
 
 namespace StatisticsAnalysisTool.Network.Manager;
@@ -136,9 +134,8 @@ public class TrackingController : ITrackingController
         }
         catch (Exception ex)
         {
-            string userMsg = GetTrackingStartErrorMessage(ex, provider);
+            string userMsg = GetTrackingStartErrorMessage(ex);
 
-            DebugConsole.WriteError(MethodBase.GetCurrentMethod()?.DeclaringType, ex);
             Log.Error(ex, "StartTracking failed | provider={Provider} | admin={IsAdmin} | msg={UserMsg}", provider, ApplicationCore.IsAppStartedAsAdministrator(), userMsg);
 
             _mainWindowViewModel.SetErrorBar(Visibility.Visible, userMsg);
@@ -156,7 +153,7 @@ public class TrackingController : ITrackingController
         }
     }
 
-    private static string GetTrackingStartErrorMessage(Exception ex, PacketProviderKind provider)
+    private static string GetTrackingStartErrorMessage(Exception ex)
     {
         if (ex is NoListeningAdaptersException)
         {
