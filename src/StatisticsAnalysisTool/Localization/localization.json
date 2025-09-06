@@ -18022,6 +18022,10 @@
         {
           "lang": "en-US",
           "seg": "Close debug console"
+        },
+        {
+          "lang": "fr-FR",
+          "seg": "Fermer la console de debug"
         }
       ]
     },
@@ -38285,6 +38289,10 @@
         {
           "lang": "en-US",
           "seg": "Open debug console when starting the tool"
+        },
+        {
+          "lang": "fr-FR",
+          "seg": "Ouvrir la console de debug au démarrage"
         }
       ]
     },
@@ -38297,6 +38305,10 @@
         },
         {
           "lang": "en-US",
+          "seg": "Debug"
+        },
+        {
+          "lang": "fr-FR",
           "seg": "Debug"
         }
       ]
@@ -38311,6 +38323,10 @@
         {
           "lang": "en-US",
           "seg": "No suitable network adapter was found. Check the selected adapter in Settings and consider disabling VPN or virtual adapters."
+        },
+        {
+          "lang": "fr-FR",
+          "seg": "Aucune carte réseau appropriée n'a été trouvée. Vérifiez la carte sélectionnée dans les Paramètres et envisagez de désactiver le VPN ou les cartes réseau virtuelles."
         }
       ]
     },
@@ -38324,6 +38340,10 @@
         {
           "lang": "en-US",
           "seg": "Socket start failed (code: {0}). Run the app as Administrator or switch to \"Npcap\" in Settings."
+        },
+        {
+          "lang": "fr-FR",
+          "seg": "Échec du démarrage du socket (code: {0}). Exécutez l'application en tant qu'administrateur ou passez à \"Npcap\" dans les paramètres."
         }
       ]
     },
@@ -38337,6 +38357,10 @@
         {
           "lang": "en-US",
           "seg": "Please run the application as Administrator."
+        },
+        {
+          "lang": "fr-FR",
+          "seg": "Veuillez exécuter l'application en tant qu'administrateur."
         }
       ]
     },
@@ -38350,6 +38374,10 @@
         {
           "lang": "en-US",
           "seg": "Npcap (wpcap.dll) was not found. Please install or repair Npcap (without WinPcap legacy)."
+        },
+        {
+          "lang": "fr-FR",
+          "seg": "Impossible de trouver Npcap (wpcap.dll). Veuillez installer ou réparer Npcap (sans l'ancien WinPcap)."
         }
       ]
     },
@@ -38363,6 +38391,10 @@
         {
           "lang": "en-US",
           "seg": "Npcap could not open an adapter. Check administrator rights, firewall/VPN, and the selected adapter."
+        },
+        {
+          "lang": "fr-FR",
+          "seg": "Npcap n'a pas pu ouvrir d'adaptateur. Vérifiez les droits d'administrateur, le pare-feu/VPN et l'adaptateur sélectionné."
         }
       ]
     },
@@ -38376,6 +38408,10 @@
         {
           "lang": "en-US",
           "seg": "Capture could not start in the current state. Please restart the app and verify adapter/filter settings."
+        },
+        {
+          "lang": "fr-FR",
+          "seg": "Impossible de démarrer la capture dans l'état actuel. Veuillez redémarrer l'application et vérifier les paramètres de l'adaptateur et/ou du filtre."
         }
       ]
     },
@@ -38389,6 +38425,10 @@
         {
           "lang": "en-US",
           "seg": "Tracking could not be started. Please verify installation and settings."
+        },
+        {
+          "lang": "fr-FR",
+          "seg": "Impossible de démarrer le suivi. Veuillez vérifier l'installation et les paramètres."
         }
       ]
     }
