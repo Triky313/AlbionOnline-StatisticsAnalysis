@@ -17,7 +17,7 @@ A tool to easily read auction house data with a loot logger, damage meter, dunge
   <img src="https://user-images.githubusercontent.com/14247773/147143464-c36d0cba-dddb-4b34-bd2e-11e3f65e3289.png" data-canonical-src="https://user-images.githubusercontent.com/14247773/147143464-c36d0cba-dddb-4b34-bd2e-11e3f65e3289.png" width="400" height="400" />
 </p>
 
-## Getting Started
+## Getting Started provaaaaaaaaaaaaaasdasda
 
 ### Prerequisites & Installation
 - You need **Windows 10** or higher
