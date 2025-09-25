@@ -343,7 +343,7 @@ public class TradeController
 
     private async Task SetTradesToBindings(IEnumerable<Trade> trades)
     {
-        await Dispatcher.CurrentDispatcher.InvokeAsync(() =>
+        await Application.Current.Dispatcher.InvokeAsync(() =>
         {
             var enumerable = trades as Trade[] ?? trades.ToArray();
             _mainWindowViewModel?.TradeMonitoringBindings?.Trades?.AddRange(enumerable.AsEnumerable());
