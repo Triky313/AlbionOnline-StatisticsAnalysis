@@ -306,7 +306,7 @@ public class GatheringController
 
     private async Task SetGatheredToBindings(IEnumerable<Gathered> gathered)
     {
-        await Dispatcher.CurrentDispatcher.InvokeAsync(() =>
+        await Application.Current.Dispatcher.InvokeAsync(() =>
         {
             var enumerable = gathered as Gathered[] ?? gathered.ToArray();
             _mainWindowViewModel?.GatheringBindings?.GatheredCollection?.AddRange(enumerable.AsEnumerable());
