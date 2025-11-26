@@ -114,22 +114,22 @@ public class JoinResponse
                 GuildName = string.IsNullOrEmpty(parameters[57].ToString()) ? string.Empty : parameters[57].ToString();
             }
 
-            if (parameters.ContainsKey(64))
+            if (parameters.ContainsKey(65))
             {
-                MainMapIndex = string.IsNullOrEmpty(parameters[64].ToString()) ? string.Empty : parameters[64].ToString();
+                MainMapIndex = string.IsNullOrEmpty(parameters[65].ToString()) ? string.Empty : parameters[65].ToString();
             }
 
             // Temporarily removed until value is found
             PlayTimeInSeconds = 0;
 
-            if (parameters.ContainsKey(77))
+            if (parameters.ContainsKey(78))
             {
-                AllianceName = string.IsNullOrEmpty(parameters[77].ToString()) ? string.Empty : parameters[77].ToString();
+                AllianceName = string.IsNullOrEmpty(parameters[78].ToString()) ? string.Empty : parameters[78].ToString();
             }
 
-            if (parameters.ContainsKey(94))
+            if (parameters.ContainsKey(98))
             {
-                IsReSpecActive = parameters[94].ObjectToBool();
+                IsReSpecActive = parameters[98].ObjectToBool();
             }
         }
         catch (Exception e)
