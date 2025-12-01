@@ -12,12 +12,14 @@ public class PartyJoinedEvent
 
     public PartyJoinedEvent(Dictionary<byte, object> parameters)
     {
+        // INFO: parameters[4] is PartyLead
+
         try
         {
             if (parameters.ContainsKey(0) && parameters[0] != null)
             {
-                var partyUsersByteArrays = ((object[]) parameters[4]).ToDictionary();
-                var partyUserNameArray = ((string[]) parameters[5]).ToDictionary();
+                var partyUsersByteArrays = ((object[]) parameters[5]).ToDictionary();
+                var partyUserNameArray = ((string[]) parameters[6]).ToDictionary();
 
                 for (var i = 0; i < partyUsersByteArrays.Count; i++)
                 {
