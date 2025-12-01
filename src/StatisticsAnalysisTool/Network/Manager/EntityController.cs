@@ -206,7 +206,10 @@ public class EntityController
             else
             {
                 var entity = GetEntity(notNullGuid);
-                entity.Value?.IsInParty = false;
+                if (entity.Value != null)
+                {
+                    entity.Value.IsInParty = false;
+                }
             }
 
             await SetPartyMemberUiAsync();
@@ -228,9 +231,9 @@ public class EntityController
     public async Task AddLocalEntityToPartyAsync()
     {
         var localEntity = GetLocalEntity();
-        if (localEntity != null)
+        if (localEntity?.Value != null)
         {
-            localEntity.Value.Value?.IsInParty = true;
+            localEntity.Value.Value.IsInParty = true;
             await SetPartyMemberUiAsync();
             await _trackingController?.PartyController?.UpdatePartyAsync()!;
         }
