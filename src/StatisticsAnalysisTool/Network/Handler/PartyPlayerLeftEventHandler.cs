@@ -15,8 +15,6 @@ public class PartyPlayerLeftEventHandler : EventPacketHandler<PartyPlayerLeftEve
 
     protected override async Task OnActionAsync(PartyPlayerLeftEvent value)
     {
-
-
         await _trackingController.EntityController.RemoveFromPartyAsync(value.UserGuid);
     }
 }

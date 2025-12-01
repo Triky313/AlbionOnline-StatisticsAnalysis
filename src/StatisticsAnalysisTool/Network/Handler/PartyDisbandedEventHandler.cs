@@ -15,8 +15,6 @@ public class PartyDisbandedEventHandler : EventPacketHandler<PartyDisbandedEvent
 
     protected override async Task OnActionAsync(PartyDisbandedEvent value)
     {
-
-
         await _trackingController.EntityController.ResetPartyMemberAsync();
         await _trackingController.EntityController.AddLocalEntityToPartyAsync();
     }
