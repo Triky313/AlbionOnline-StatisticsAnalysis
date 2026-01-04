@@ -22,7 +22,6 @@ public class LibpcapPacketProvider : PacketProvider
     private CancellationTokenSource? _cts;
     private Thread? _thread;
     private volatile Pcap? _activePcap;
-    private const bool LockToFirstDevice = true;
     private readonly Lock _lockObj = new();
     private readonly Dictionary<Pcap, int> _pcapScores = new();
     private DateTime _lastValidPacketUtc = DateTime.MinValue;
@@ -140,17 +139,10 @@ public class LibpcapPacketProvider : PacketProvider
 
     private void Dispatch(Pcap pcap, ref Packet packet)
     {
-        if (LockToFirstDevice)
+        var current = _activePcap;
+        if (current is not null && !ReferenceEquals(current, pcap))
         {
-            var current = _activePcap;
-            if (current is null)
-            {
-                _activePcap = pcap;
-            }
-            else if (!ReferenceEquals(current, pcap))
-            {
-                return;
-            }
+            return;
         }
 
         // L2 (Ethernet)
