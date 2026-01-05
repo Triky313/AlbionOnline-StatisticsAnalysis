@@ -20,6 +20,7 @@ using System.Windows;
 using System.Windows.Threading;
 using StatisticsAnalysisTool.Diagnostics;
 using StatisticsAnalysisTool.Network;
+using StatisticsAnalysisTool.UserControls;
 
 namespace StatisticsAnalysisTool;
 
@@ -33,62 +34,83 @@ public partial class App
     {
         base.OnStartup(e);
 
-        Current.ShutdownMode = ShutdownMode.OnExplicitShutdown;
-
-        InitLogger();
-        Log.Information("Tool started with v{Version}", Assembly.GetExecutingAssembly().GetName().Version);
-
-        SystemInfo.LogSystemInfo();
-        DebugConsole.UseEnums(typeof(EventCodes), typeof(OperationCodes));
-
-        AppDomain.CurrentDomain.UnhandledException += CurrentDomain_UnhandledException;
-        TaskScheduler.UnobservedTaskException += TaskScheduler_UnobservedTaskException;
-        DispatcherUnhandledException += Application_DispatcherUnhandledException;
-
-        await SettingsController.LoadSettingsAsync();
-
-        if (SettingsController.CurrentSettings.IsOpenDebugConsoleWhenStartingTheToolChecked)
+        try
         {
-            DebugConsole.Attach("SAT Debug Console");
-            DebugConsole.Configure(SettingsController.CurrentSettings.DebugConsoleFilter);
+            Current.ShutdownMode = ShutdownMode.OnExplicitShutdown;
+
+            InitLogger();
+            Log.Information("Tool started with v{Version}", Assembly.GetExecutingAssembly().GetName().Version);
+
+            SystemInfo.LogSystemInfo();
+            DebugConsole.UseEnums(typeof(EventCodes), typeof(OperationCodes));
+
+            AppDomain.CurrentDomain.UnhandledException += CurrentDomain_UnhandledException;
+            TaskScheduler.UnobservedTaskException += TaskScheduler_UnobservedTaskException;
+            DispatcherUnhandledException += Application_DispatcherUnhandledException;
+
+            await SettingsController.LoadSettingsAsync();
+
+            if (SettingsController.CurrentSettings.IsOpenDebugConsoleWhenStartingTheToolChecked)
+            {
+                DebugConsole.Attach("SAT Debug Console");
+                DebugConsole.Configure(SettingsController.CurrentSettings.DebugConsoleFilter);
+            }
+
+            await AutoUpdateController.AutoUpdateAsync();
+
+            Culture.SetCulture(Culture.GetCultureByIetfLanguageTag(SettingsController.CurrentSettings.CurrentCultureIetfLanguageTag));
+            if (!LocalizationController.Init())
+            {
+                _isEarlyShutdown = true;
+                Current.Shutdown();
+                return;
+            }
+
+            if (SettingsController.CurrentSettings.ServerLocation != ServerLocation.America
+                && SettingsController.CurrentSettings.ServerLocation != ServerLocation.Asia
+                && SettingsController.CurrentSettings.ServerLocation != ServerLocation.Europe)
+            {
+                Server.SetServerLocationWithDialogAsync();
+            }
+
+            if (!await GameData.InitializeMainGameDataFilesAsync(SettingsController.CurrentSettings.ServerType))
+            {
+                _isEarlyShutdown = true;
+                Current.Shutdown();
+                return;
+            }
+
+            await BackupController.DeleteOldestBackupsIfNeededAsync();
+
+            Current.ShutdownMode = ShutdownMode.OnMainWindowClose;
+
+            RegisterServicesEarly();
+            Current.MainWindow = new MainWindow(_mainWindowViewModel);
+            RegisterServicesLate();
+
+            await _mainWindowViewModel.InitMainWindowDataAsync();
+            Current.MainWindow.Show();
+
+            Utilities.AnotherAppToStart(SettingsController.CurrentSettings.AnotherAppToStartPath);
         }
-
-        await AutoUpdateController.AutoUpdateAsync();
-
-        Culture.SetCulture(Culture.GetCultureByIetfLanguageTag(SettingsController.CurrentSettings.CurrentCultureIetfLanguageTag));
-        if (!LocalizationController.Init())
+        catch (Exception ex)
         {
             _isEarlyShutdown = true;
+            try
+            {
+                Log.Fatal(ex, "An unexpected fatal error has occurred.");
+                MessageBox.Show("An unexpected error has occurred.",
+                    "Statistics Analysis Tool",
+                    MessageBoxButton.OK,
+                    MessageBoxImage.Error);
+            }
+            finally
+            {
+                await Log.CloseAndFlushAsync();
+            }
+
             Current.Shutdown();
-            return;
         }
-
-        if (SettingsController.CurrentSettings.ServerLocation != ServerLocation.America
-            && SettingsController.CurrentSettings.ServerLocation != ServerLocation.Asia
-            && SettingsController.CurrentSettings.ServerLocation != ServerLocation.Europe)
-        {
-            Server.SetServerLocationWithDialogAsync();
-        }
-
-        if (!await GameData.InitializeMainGameDataFilesAsync(SettingsController.CurrentSettings.ServerType))
-        {
-            _isEarlyShutdown = true;
-            Current.Shutdown();
-            return;
-        }
-
-        await BackupController.DeleteOldestBackupsIfNeededAsync();
-
-        Current.ShutdownMode = ShutdownMode.OnMainWindowClose;
-
-        RegisterServicesEarly();
-        Current.MainWindow = new MainWindow(_mainWindowViewModel);
-        RegisterServicesLate();
-
-        await _mainWindowViewModel.InitMainWindowDataAsync();
-        Current.MainWindow.Show();
-
-        Utilities.AnotherAppToStart(SettingsController.CurrentSettings.AnotherAppToStartPath);
     }
 
     private static void InitLogger()
