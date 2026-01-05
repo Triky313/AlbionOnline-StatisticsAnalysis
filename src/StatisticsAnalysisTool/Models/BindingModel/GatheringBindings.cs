@@ -281,7 +281,7 @@ public class GatheringBindings : BaseViewModel
             GatheringStatsTimeType.Month
                 when dateTime.Year != dateTimeUtcNow.Year || dateTime.Month != dateTimeUtcNow.Month => false,
             GatheringStatsTimeType.Year
-                when dateTime.Year != dateTimeUtcNow.Year => false,
+                when dateTime < dateTimeUtcNow.AddDays(-365) || dateTime > dateTimeUtcNow => false,
             GatheringStatsTimeType.Unknown => false,
             _ => true
         };
