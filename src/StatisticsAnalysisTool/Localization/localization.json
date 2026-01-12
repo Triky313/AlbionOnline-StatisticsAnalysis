@@ -38420,11 +38420,11 @@
       "tuv": [
         {
           "lang": "de-DE",
-          "seg": "Tracking konnte nicht gestartet werden. Bitte Installation und Einstellungen prüfen."
+          "seg": "Tracking konnte nicht gestartet werden. Bitte Installation und Einstellungen prüfen. (Installiere NPcap korrekt!)"
         },
         {
           "lang": "en-US",
-          "seg": "Tracking could not be started. Please verify installation and settings."
+          "seg": "Tracking could not be started. Please verify installation and settings. (Install NPcap correct!)"
         },
         {
           "lang": "fr-FR",
