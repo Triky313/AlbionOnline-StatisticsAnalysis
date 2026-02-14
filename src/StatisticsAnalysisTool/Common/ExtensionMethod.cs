@@ -93,60 +93,57 @@ public static class ExtensionMethod
 
     #region Object to
 
-    extension(object value)
+    public static Guid? ObjectToGuid(this object value)
     {
-        public Guid? ObjectToGuid()
+        try
         {
-            try
+            if (value is IEnumerable valueEnumerable)
             {
-                if (value is IEnumerable valueEnumerable)
-                {
-                    var myBytes = valueEnumerable.OfType<byte>().ToArray();
-                    return new Guid(myBytes);
-                }
+                var myBytes = valueEnumerable.OfType<byte>().ToArray();
+                return new Guid(myBytes);
             }
-            catch
-            {
-                return null;
-            }
-
+        }
+        catch
+        {
             return null;
         }
 
-        public ulong? ObjectToUlong()
-        {
-            return value as byte? ?? value as ushort? ?? value as uint? ?? value as ulong?;
-        }
+        return null;
+    }
 
-        public long? ObjectToLong()
-        {
-            return value as byte? ?? value as short? ?? value as int? ?? value as long?;
-        }
+    public static ulong? ObjectToUlong(this object value)
+    {
+        return value as byte? ?? value as ushort? ?? value as uint? ?? value as ulong?;
+    }
 
-        public int ObjectToInt()
-        {
-            return value as byte? ?? value as short? ?? value as int? ?? 0;
-        }
+    public static long? ObjectToLong(this object value)
+    {
+        return value as byte? ?? value as short? ?? value as int? ?? value as long?;
+    }
 
-        public short ObjectToShort()
-        {
-            return value as byte? ?? value as short? ?? 0;
-        }
+    public static int ObjectToInt(this object value)
+    {
+        return value as byte? ?? value as short? ?? value as int? ?? 0;
+    }
 
-        public byte ObjectToByte()
-        {
-            return value as byte? ?? 0;
-        }
+    public static short ObjectToShort(this object value)
+    {
+        return value as byte? ?? value as short? ?? 0;
+    }
 
-        public bool ObjectToBool()
-        {
-            return value as bool? ?? false;
-        }
+    public static byte ObjectToByte(this object value)
+    {
+        return value as byte? ?? 0;
+    }
 
-        public double ObjectToDouble()
-        {
-            return value as float? ?? value as double? ?? 0;
-        }
+    public static bool ObjectToBool(this object value)
+    {
+        return value as bool? ?? false;
+    }
+
+    public static double ObjectToDouble(this object value)
+    {
+        return value as float? ?? value as double? ?? 0;
     }
 
     public static Dictionary<int, T> ToDictionary<T>(this T[] array)
