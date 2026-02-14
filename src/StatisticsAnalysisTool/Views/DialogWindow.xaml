@@ -32,8 +32,16 @@
             <Button x:Name="CloseButton" Style="{StaticResource WindowButtonStyle}" Content="r" Margin="-2,0,0,0" Click="CloseButton_Click" />
         </Grid>
         <Grid Margin="10,38,10,54">
-            <TextBlock Text="{Binding Message, FallbackValue=MESSAGE}" FontSize="20" TextAlignment="Center" HorizontalAlignment="Center" VerticalAlignment="Center" 
-                       TextWrapping="Wrap" Foreground="{StaticResource SolidColorBrush.Text.1}" />
+            <StackPanel VerticalAlignment="Center">
+                <TextBlock Text="{Binding Message, FallbackValue=MESSAGE}" FontSize="20" TextAlignment="Center" HorizontalAlignment="Center"
+                           TextWrapping="Wrap" Foreground="{StaticResource SolidColorBrush.Text.1}" />
+                <TextBlock Margin="0,8,0,0" FontSize="18" TextAlignment="Center" HorizontalAlignment="Center"
+                           TextWrapping="Wrap" Foreground="{StaticResource SolidColorBrush.Accent.Blue.3}" Visibility="{Binding UrlVisibility}">
+                    <Hyperlink NavigateUri="{Binding Url}" RequestNavigate="Hyperlink_RequestNavigate">
+                        <Run Text="{Binding UrlText}" />
+                    </Hyperlink>
+                </TextBlock>
+            </StackPanel>
         </Grid>
         <Grid Visibility="{Binding YesNoVisibility}">
             <Button Content="{Binding Translation.Yes, FallbackValue=YES}" FontSize="18" FontWeight="Bold" Height="34" Width="200" VerticalAlignment="Bottom" 

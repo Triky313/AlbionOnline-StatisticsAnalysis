@@ -23,11 +23,21 @@ public static class ExtensionMethod
 
     public static void OrderByReference<T>(this ObservableCollection<T> collection, List<T> comparison)
     {
-        for (var i = 0; i < comparison.Count; i++)
+        if (collection == null || comparison == null)
         {
-            if (!comparison.ElementAt(i).Equals(collection.ElementAt(i)))
+            return;
+        }
+
+        var maxCount = Math.Min(collection.Count, comparison.Count);
+        for (var i = 0; i < maxCount; i++)
+        {
+            if (!EqualityComparer<T>.Default.Equals(comparison[i], collection[i]))
             {
-                collection.Move(collection.IndexOf(comparison[i]), i);
+                var index = collection.IndexOf(comparison[i]);
+                if (index >= 0)
+                {
+                    collection.Move(index, i);
+                }
             }
         }
     }
@@ -73,66 +83,79 @@ public static class ExtensionMethod
 
     public static bool HasProperty(this object obj, string propertyName)
     {
+        if (obj == null || string.IsNullOrWhiteSpace(propertyName))
+        {
+            return false;
+        }
+
         return obj.GetType().GetProperty(propertyName) != null;
     }
 
     #region Object to
 
-    public static Guid? ObjectToGuid(this object value)
+    extension(object value)
     {
-        try
+        public Guid? ObjectToGuid()
         {
-            if (value is IEnumerable valueEnumerable)
+            try
             {
-                var myBytes = valueEnumerable.OfType<byte>().ToArray();
-                return new Guid(myBytes);
+                if (value is IEnumerable valueEnumerable)
+                {
+                    var myBytes = valueEnumerable.OfType<byte>().ToArray();
+                    return new Guid(myBytes);
+                }
             }
-        }
-        catch
-        {
+            catch
+            {
+                return null;
+            }
+
             return null;
         }
 
-        return null;
-    }
+        public ulong? ObjectToUlong()
+        {
+            return value as byte? ?? value as ushort? ?? value as uint? ?? value as ulong?;
+        }
 
-    public static ulong? ObjectToUlong(this object value)
-    {
-        return value as byte? ?? value as ushort? ?? value as uint? ?? value as ulong?;
-    }
+        public long? ObjectToLong()
+        {
+            return value as byte? ?? value as short? ?? value as int? ?? value as long?;
+        }
 
-    public static long? ObjectToLong(this object value)
-    {
-        return value as byte? ?? value as short? ?? value as int? ?? value as long?;
-    }
+        public int ObjectToInt()
+        {
+            return value as byte? ?? value as short? ?? value as int? ?? 0;
+        }
 
-    public static int ObjectToInt(this object value)
-    {
-        return value as byte? ?? value as short? ?? value as int? ?? 0;
-    }
+        public short ObjectToShort()
+        {
+            return value as byte? ?? value as short? ?? 0;
+        }
 
-    public static short ObjectToShort(this object value)
-    {
-        return value as byte? ?? value as short? ?? 0;
-    }
+        public byte ObjectToByte()
+        {
+            return value as byte? ?? 0;
+        }
 
-    public static byte ObjectToByte(this object value)
-    {
-        return value as byte? ?? 0;
-    }
+        public bool ObjectToBool()
+        {
+            return value as bool? ?? false;
+        }
 
-    public static bool ObjectToBool(this object value)
-    {
-        return value as bool? ?? false;
-    }
-
-    public static double ObjectToDouble(this object value)
-    {
-        return value as float? ?? value as double? ?? 0;
+        public double ObjectToDouble()
+        {
+            return value as float? ?? value as double? ?? 0;
+        }
     }
 
     public static Dictionary<int, T> ToDictionary<T>(this T[] array)
     {
+        if (array == null)
+        {
+            return new Dictionary<int, T>();
+        }
+
         var dict = new Dictionary<int, T>();
         for (int i = 0; i < array.Length; i++)
         {

@@ -13,11 +13,16 @@ public class DialogWindowViewModel : BaseViewModel
     private Visibility _yesNoVisibility = Visibility.Collapsed;
     private Visibility _errorTypeVisibility = Visibility.Collapsed;
     private string _okButtonText = "Ok";
+    private string _url;
+    private string _urlText;
 
-    public DialogWindowViewModel(string title, string message, DialogType type)
+
+    public DialogWindowViewModel(string title, string message, DialogType type, string url = null, string urlText = null)
     {
         Title = title;
         Message = message;
+        Url = url;
+        UrlText = string.IsNullOrWhiteSpace(urlText) ? url : urlText;
         Type = type;
     }
 
@@ -57,6 +62,7 @@ public class DialogWindowViewModel : BaseViewModel
                     ErrorTypeVisibility = Visibility.Collapsed;
                     YesNoVisibility = Visibility.Visible;
                     break;
+                case DialogType.Ok:
                 case DialogType.Error:
                     YesNoVisibility = Visibility.Collapsed;
                     ErrorTypeVisibility = Visibility.Visible;
@@ -96,6 +102,29 @@ public class DialogWindowViewModel : BaseViewModel
             OnPropertyChanged();
         }
     }
+
+    public string Url
+    {
+        get => _url;
+        set
+        {
+            _url = value;
+            OnPropertyChanged();
+            OnPropertyChanged(nameof(UrlVisibility));
+        }
+    }
+
+    public string UrlText
+    {
+        get => _urlText;
+        set
+        {
+            _urlText = value;
+            OnPropertyChanged();
+        }
+    }
+
+    public Visibility UrlVisibility => string.IsNullOrWhiteSpace(Url) ? Visibility.Collapsed : Visibility.Visible;
 
     public DialogWindowTranslation Translation
     {
