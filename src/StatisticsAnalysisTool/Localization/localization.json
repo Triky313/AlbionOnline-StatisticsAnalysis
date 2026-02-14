@@ -38431,6 +38431,57 @@
           "seg": "Impossible de démarrer le suivi. Veuillez vérifier l'installation et les paramètres."
         }
       ]
+    },
+    {
+      "tuid": "NPCAP_INFO_DIALOG_TITLE",
+      "tuv": [
+        {
+          "lang": "de-DE",
+          "seg": "Npcap Hinweis"
+        },
+        {
+          "lang": "en-US",
+          "seg": "Npcap notice"
+        },
+        {
+          "lang": "fr-FR",
+          "seg": "Information Npcap"
+        }
+      ]
+    },
+    {
+      "tuid": "NPCAP_INFO_DIALOG_MESSAGE",
+      "tuv": [
+        {
+          "lang": "de-DE",
+          "seg": "Wenn du für die Netzwerkübertragung Npcap nutzen willst, musst du Npcap installieren!"
+        },
+        {
+          "lang": "en-US",
+          "seg": "If you want to use Npcap for network transmission, you must install Npcap!"
+        },
+        {
+          "lang": "fr-FR",
+          "seg": "Si vous souhaitez utiliser Npcap pour la transmission réseau, vous devez installer Npcap !"
+        }
+      ]
+    },
+    {
+      "tuid": "NPCAP_INFO_DIALOG_LINK_TEXT",
+      "tuv": [
+        {
+          "lang": "de-DE",
+          "seg": "Npcap herunterladen (npcap.com)"
+        },
+        {
+          "lang": "en-US",
+          "seg": "Download Npcap (npcap.com)"
+        },
+        {
+          "lang": "fr-FR",
+          "seg": "Télécharger Npcap (npcap.com)"
+        }
+      ]
     }
   ]
 }

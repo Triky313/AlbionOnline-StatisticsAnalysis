@@ -4,9 +4,11 @@ using Serilog.Events;
 using StatisticsAnalysisTool.Backup;
 using StatisticsAnalysisTool.Common;
 using StatisticsAnalysisTool.Common.UserSettings;
+using StatisticsAnalysisTool.Diagnostics;
 using StatisticsAnalysisTool.Enumerations;
 using StatisticsAnalysisTool.GameFileData;
 using StatisticsAnalysisTool.Localization;
+using StatisticsAnalysisTool.Network;
 using StatisticsAnalysisTool.Network.Manager;
 using StatisticsAnalysisTool.Notification;
 using StatisticsAnalysisTool.ViewModels;
@@ -18,9 +20,6 @@ using System.Runtime.InteropServices;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Threading;
-using StatisticsAnalysisTool.Diagnostics;
-using StatisticsAnalysisTool.Network;
-using StatisticsAnalysisTool.UserControls;
 
 namespace StatisticsAnalysisTool;
 
@@ -80,6 +79,8 @@ public partial class App
                 return;
             }
 
+            ShowNpcapInfoDialogOnFirstStart();
+
             await BackupController.DeleteOldestBackupsIfNeededAsync();
 
             Current.ShutdownMode = ShutdownMode.OnMainWindowClose;
@@ -112,6 +113,27 @@ public partial class App
             Current.Shutdown();
         }
     }
+
+    private static void ShowNpcapInfoDialogOnFirstStart()
+    {
+        if (!SettingsController.CurrentSettings.IsNpcapInfoDialogShownOnStart)
+        {
+            return;
+        }
+
+        var dialog = new DialogWindow(
+            LocalizationController.Translation("NPCAP_INFO_DIALOG_TITLE"),
+            LocalizationController.Translation("NPCAP_INFO_DIALOG_MESSAGE"),
+            DialogType.Ok,
+            "https://npcap.com/",
+            LocalizationController.Translation("NPCAP_INFO_DIALOG_LINK_TEXT"));
+
+
+        dialog.ShowDialog();
+
+        SettingsController.CurrentSettings.IsNpcapInfoDialogShownOnStart = false;
+    }
+
 
     private static void InitLogger()
     {

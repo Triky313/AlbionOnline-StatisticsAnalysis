@@ -3,16 +3,17 @@ using StatisticAnalysisTool.Extractor;
 using StatisticAnalysisTool.Extractor.Enums;
 using StatisticsAnalysisTool.Common;
 using StatisticsAnalysisTool.Common.UserSettings;
+using StatisticsAnalysisTool.Diagnostics;
 using StatisticsAnalysisTool.Dungeon;
 using StatisticsAnalysisTool.Dungeon.Models;
 using StatisticsAnalysisTool.GameFileData.Models;
+using StatisticsAnalysisTool.Localization;
 using StatisticsAnalysisTool.Models;
 using StatisticsAnalysisTool.Properties;
 using StatisticsAnalysisTool.ViewModels;
 using StatisticsAnalysisTool.Views;
 using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Reflection;
@@ -20,8 +21,6 @@ using System.Text;
 using System.Text.Json;
 using System.Text.Json.Serialization;
 using System.Threading.Tasks;
-using StatisticsAnalysisTool.Diagnostics;
-using StatisticsAnalysisTool.Localization;
 
 namespace StatisticsAnalysisTool.GameFileData;
 

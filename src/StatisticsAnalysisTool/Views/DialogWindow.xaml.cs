@@ -1,7 +1,9 @@
-﻿using StatisticsAnalysisTool.ViewModels;
+﻿using StatisticsAnalysisTool.Enumerations;
+using StatisticsAnalysisTool.ViewModels;
+using System.Diagnostics;
 using System.Windows;
 using System.Windows.Input;
-using StatisticsAnalysisTool.Enumerations;
+using System.Windows.Navigation;
 
 namespace StatisticsAnalysisTool.Views;
 
@@ -12,11 +14,15 @@ public partial class DialogWindow
 {
     public readonly DialogWindowViewModel DialogWindowViewModel;
 
-    public DialogWindow(string title, string message, DialogType type = DialogType.YesNo)
+    public DialogWindow(string title, string message, DialogType type = DialogType.YesNo) : this(title, message, type, null)
+    {
+    }
+
+    public DialogWindow(string title, string message, DialogType type, string url, string urlText = null)
     {
         InitializeComponent();
 
-        DialogWindowViewModel = new DialogWindowViewModel(title, message, type);
+        DialogWindowViewModel = new DialogWindowViewModel(title, message, type, url, urlText);
         DataContext = DialogWindowViewModel;
     }
 
@@ -39,6 +45,16 @@ public partial class DialogWindow
         DialogWindowViewModel.Canceled = true;
         DialogResult = false;
         Close();
+    }
+
+    private void Hyperlink_RequestNavigate(object sender, RequestNavigateEventArgs e)
+    {
+        Process.Start(new ProcessStartInfo(e.Uri.AbsoluteUri)
+        {
+            UseShellExecute = true
+        });
+
+        e.Handled = true;
     }
 
     private void Hotbar_MouseDown(object sender, MouseButtonEventArgs e)
