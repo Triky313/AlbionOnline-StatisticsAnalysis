@@ -13,6 +13,8 @@ public static class ShortcutController
         link.SetDescription("Statistics Analysis Tool");
         link.SetPath(Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "StatisticsAnalysisTool.exe"));
 
+        link.SetWorkingDirectory(AppDomain.CurrentDomain.BaseDirectory);
+
         // ReSharper disable once SuspiciousTypeConversion.Global
         var file = (IPersistFile)link;
         string desktopPath = Environment.GetFolderPath(Environment.SpecialFolder.DesktopDirectory);
