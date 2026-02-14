@@ -312,7 +312,13 @@ public class TradeMonitoringBindings : BaseViewModel
             return false;
         }
 
-        if (trade.Timestamp.Ticks < DatePickerTradeFrom.Ticks || trade.Timestamp.Date > DatePickerTradeTo.Date)
+        if (trade.Ticks < DateTime.MinValue.Ticks || trade.Ticks > DateTime.MaxValue.Ticks)
+        {
+            return false;
+        }
+
+        var timestamp = new DateTime(trade.Ticks);
+        if (timestamp.Ticks < DatePickerTradeFrom.Ticks || timestamp.Date > DatePickerTradeTo.Date)
         {
             return false;
         }
@@ -326,13 +332,12 @@ public class TradeMonitoringBindings : BaseViewModel
                ($"T{trade.Item?.Tier}.{trade.Item?.Level}".IndexOf(TradesSearchText, StringComparison.OrdinalIgnoreCase) >= 0) ||
                (trade.MailTypeDescription?.IndexOf(TradesSearchText, StringComparison.OrdinalIgnoreCase) >= 0) ||
                (trade.Item?.LocalizedName?.IndexOf(TradesSearchText, StringComparison.OrdinalIgnoreCase) >= 0) ||
-               (trade.MailContent.UnitPriceWithoutTax.ToString().IndexOf(TradesSearchText, StringComparison.OrdinalIgnoreCase) >= 0) ||
-               (trade.MailContent.TotalPrice.ToString().IndexOf(TradesSearchText, StringComparison.OrdinalIgnoreCase) >= 0) ||
-               (trade.InstantBuySellContent.UnitPrice.ToString().IndexOf(TradesSearchText, StringComparison.OrdinalIgnoreCase) >= 0) ||
-               (trade.InstantBuySellContent.TotalPrice.ToString().IndexOf(TradesSearchText, StringComparison.OrdinalIgnoreCase) >= 0) ||
+               (trade.MailContent?.UnitPriceWithoutTax.ToString().IndexOf(TradesSearchText, StringComparison.OrdinalIgnoreCase) >= 0) ||
+               (trade.MailContent?.TotalPrice.ToString().IndexOf(TradesSearchText, StringComparison.OrdinalIgnoreCase) >= 0) ||
+               (trade.InstantBuySellContent?.UnitPrice.ToString().IndexOf(TradesSearchText, StringComparison.OrdinalIgnoreCase) >= 0) ||
+               (trade.InstantBuySellContent?.TotalPrice.ToString().IndexOf(TradesSearchText, StringComparison.OrdinalIgnoreCase) >= 0) ||
                (trade.Description?.IndexOf(TradesSearchText, StringComparison.OrdinalIgnoreCase) >= 0);
     }
-
 
     #endregion
 }
