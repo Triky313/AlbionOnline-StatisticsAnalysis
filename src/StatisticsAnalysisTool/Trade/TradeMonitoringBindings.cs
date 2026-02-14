@@ -59,7 +59,11 @@ public class TradeMonitoringBindings : BaseViewModel
         TradesSearchText = string.Empty;
 
         TradeCollectionView = CollectionViewSource.GetDefaultView(Trades) as ListCollectionView;
-        TradeCollectionView?.Filter = null;
+        if (TradeCollectionView != null)
+        {
+            TradeCollectionView.Filter = null;
+        }
+
     }
 
     public ListCollectionView TradeCollectionView
