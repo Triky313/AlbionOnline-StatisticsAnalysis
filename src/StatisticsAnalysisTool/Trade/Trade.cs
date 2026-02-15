@@ -49,10 +49,11 @@ public class Trade : BaseViewModel
         get
         {
             var location = Locations.GetMarketLocationByIndex(ClusterIndex);
-
-            if (location == MarketLocation.Unknown && ClusterIndex != null && ClusterIndex.Contains("HIDEOUT"))
+            if (location == MarketLocation.Unknown && !string.IsNullOrEmpty(ClusterIndex) && ClusterIndex.Contains("HIDEOUT"))
             {
-                return $"{ClusterIndex.Split("_")[1]} ({LocalizationController.Translation("HIDEOUT")})";
+                var parts = ClusterIndex.Split('_');
+                var hideoutName = parts.Length > 1 ? parts[1] : ClusterIndex;
+                return $"{hideoutName} ({LocalizationController.Translation("HIDEOUT")})";
             }
 
             if (location == MarketLocation.BlackMarket)
