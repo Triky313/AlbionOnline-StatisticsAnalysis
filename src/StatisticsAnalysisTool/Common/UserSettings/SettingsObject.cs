@@ -102,6 +102,7 @@ public class SettingsObject
     public bool IsLootedChestsStatsVisible { get; set; } = true;
     public bool IsReSpecStatsVisible { get; set; } = true;
     public bool IsRepairCostsStatsVisible { get; set; } = true;
+    public bool IsLifetimeStatsVisible { get; set; } = true;
     public string ProxyUrlWithPort { get; set; }
     public string DebugConsoleFilter { get; set; }
     public bool IsOpenDebugConsoleWhenStartingTheToolChecked { get; set; } = false;

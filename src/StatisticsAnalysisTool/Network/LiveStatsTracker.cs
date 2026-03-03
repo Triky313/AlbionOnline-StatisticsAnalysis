@@ -88,8 +88,10 @@ public class LiveStatsTracker
     private readonly SlidingWindow _favorWin = new();
     private readonly SlidingWindow _respecCostWin = new();
     private readonly SlidingWindow _factionPointsWin = new();
+    private readonly SlidingWindow _gatheringValueWin = new();
 
     private DateTime _sessionStartUtc;
+    public DateTime SessionStartUtc => _sessionStartUtc;
     private double _totalGainedFameInSession;
     private double _totalGainedReSpecInSession;
     private double _totalGainedSilverInSession;
@@ -97,6 +99,7 @@ public class LiveStatsTracker
     private double _totalGainedFavorInSession;
     private double _totalPaidSilverForReSpecInSession;
     private double _totalGainedFactionPointsInSession;
+    private double _totalGatheredValueInSession;
 
     private CityFaction _currentCityFaction = CityFaction.Unknown;
 
@@ -152,6 +155,11 @@ public class LiveStatsTracker
                 _favorWin.Add(value, now);
                 break;
 
+            case ValueType.GatheringValue:
+                _totalGatheredValueInSession += value;
+                _gatheringValueWin.Add(value, now);
+                break;
+
             case ValueType.PaidSilverForReSpec:
                 _totalPaidSilverForReSpecInSession += value;
                 _respecCostWin.Add(value, now);
@@ -188,6 +196,7 @@ public class LiveStatsTracker
         _favorWin.Clear();
         _respecCostWin.Clear();
         _factionPointsWin.Clear();
+        _gatheringValueWin.Clear();
 
         _totalGainedFameInSession = 0;
         _totalGainedReSpecInSession = 0;
@@ -196,6 +205,7 @@ public class LiveStatsTracker
         _totalGainedFavorInSession = 0;
         _totalPaidSilverForReSpecInSession = 0;
         _totalGainedFactionPointsInSession = 0;
+        _totalGatheredValueInSession = 0;
         _currentCityFaction = CityFaction.Unknown;
 
         _mainWindowViewModel.DashboardBindings.Reset();
@@ -231,6 +241,7 @@ public class LiveStatsTracker
         var (favorSum, favorSec) = _favorWin.Snapshot(now);
         var (respecCostSum, respecCostSec) = _respecCostWin.Snapshot(now);
         var (factionSum, factionSec) = _factionPointsWin.Snapshot(now);
+        var (gatheringSum, gatheringSec) = _gatheringValueWin.Snapshot(now);
 
         // Per hour
         _mainWindowViewModel.DashboardBindings.FamePerHour = fameSum * 3600.0 / fameSec;
@@ -239,6 +250,8 @@ public class LiveStatsTracker
         _mainWindowViewModel.DashboardBindings.MightPerHour = mightSum * 3600.0 / mightSec;
         _mainWindowViewModel.DashboardBindings.FavorPerHour = favorSum * 3600.0 / favorSec;
         _mainWindowViewModel.DashboardBindings.SilverCostForReSpecHour = respecCostSum * 3600.0 / respecCostSec;
+        _mainWindowViewModel.DashboardBindings.TotalGatheredValueInSession = _totalGatheredValueInSession;
+        _mainWindowViewModel.DashboardBindings.GatheringValuePerHour = gatheringSum * 3600.0 / gatheringSec;
 
         var factionPointStat = _mainWindowViewModel.FactionPointStats.FirstOrDefault();
         if (factionPointStat != null)
@@ -248,8 +261,15 @@ public class LiveStatsTracker
             factionPointStat.Value = _totalGainedFactionPointsInSession;
         }
 
-        // Session-Timer
+        // Session-Timer — uses total hours so sessions longer than 24h display correctly
         var duration = now - _sessionStartUtc;
-        _mainWindowViewModel.MainTrackerTimer = duration.ToString("hh\\:mm\\:ss");
+        _mainWindowViewModel.MainTrackerTimer = $"{(int) duration.TotalHours:D2}:{duration.Minutes:D2}:{duration.Seconds:D2}";
+
+        if (_trackingController.IsTrackingAllowedByMainCharacter())
+        {
+            _trackingController.StatisticController?.AddActiveTime(2);
+        }
+
+        _trackingController.StatisticController?.UpdateLifetimeStatsUi();
     }
 }

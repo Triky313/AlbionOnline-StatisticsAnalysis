@@ -108,6 +108,16 @@
                 </StackPanel>
                 <ContentControl Visibility="{Binding DashboardBindings.RepairCostsStatsVisibility}" Margin="3" 
                                 Content="{Binding DashboardBindings}" ContentTemplate="{StaticResource RepairCostsTemplate}" />
+
+                <!-- Lifetime Stats -->
+                <StackPanel Orientation="Horizontal" Height="20" Background="{StaticResource SolidColorBrush.Background.3}" MouseLeftButtonDown="LifetimeStatsToggle_OnMouseLeftButtonDown">
+                    <fa5:ImageAwesome Icon="{Binding DashboardBindings.LifetimeStatsToggleIcon, FallbackValue='Solid_Minus'}" 
+                                      Foreground="{StaticResource SolidColorBrush.Text.1}" Height="14" Width="14" Margin="10,0" VerticalAlignment="Center" />
+                    <TextBlock Text="{Binding DashboardBindings.TranslationLifetimeStats, FallbackValue='LIFETIME_STATS'}" 
+                               Foreground="{StaticResource SolidColorBrush.Accent.Blue.3}" FontSize="16" VerticalAlignment="Center" />
+                </StackPanel>
+                <ContentControl Visibility="{Binding DashboardBindings.LifetimeStatsVisibility}" Margin="3"
+                                Content="{Binding DashboardBindings.LifetimeStats}" ContentTemplate="{StaticResource LifetimeStatsTemplate}" />
             </StackPanel>
         </ScrollViewer>
     </Grid>
