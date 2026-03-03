@@ -26,7 +26,7 @@ public class EssentialCraftingValuesTemplate : BaseViewModel
     public List<MarketResponse> CurrentCityPrices { get; set; }
 
     public readonly string UniqueName;
-    private List<MarketResponse> _marketResponse = new();
+    private List<MarketResponse> _marketResponse = [];
     private MarketLocation _itemPricesLocationSelected;
     private DateTime _lastUpdate = DateTime.UtcNow.AddDays(-100);
     private bool _isCraftingWithFocusCheckboxEnabled;
