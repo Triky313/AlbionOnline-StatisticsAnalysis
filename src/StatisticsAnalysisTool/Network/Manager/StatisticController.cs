@@ -24,8 +24,6 @@ namespace StatisticsAnalysisTool.Network.Manager;
 
 public class StatisticController
 {
-
-
     private readonly TrackingController _trackingController;
     private readonly MainWindowViewModel _mainWindowViewModel;
     private readonly List<ValueType> _valueTypes = new()
