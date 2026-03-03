@@ -299,13 +299,52 @@ public class TradeController
             return;
         }
 
-        string json = await File.ReadAllTextAsync(filePath);
+        try
+        {
+            string json = await File.ReadAllTextAsync(filePath);
 
-        // Migrate old trade data
-        var trades = LoadAndMigrateTrades(json);
+            // Migrate old trade data
+            var trades = LoadAndMigrateTrades(json);
+            await SetTradesToBindings(trades);
+        }
+        catch (JsonException e)
+        {
+            string backupPath = BackupCorruptedTradeFile(filePath);
+            var message = backupPath is null
+                ? $"Trades could not be loaded due to invalid JSON content: {filePath}."
+                : $"Trades could not be loaded due to invalid JSON content: {filePath}. Corrupted file was backed up to: {backupPath}.";
 
-        await SetTradesToBindings(trades);
+            DebugConsole.WriteWarn(MethodBase.GetCurrentMethod()?.DeclaringType, new InvalidDataException(message, e));
+            Log.Warning(e, "{message}", message);
+            await SetTradesToBindings([]);
+        }
+        catch (Exception e)
+        {
+            DebugConsole.WriteError(MethodBase.GetCurrentMethod()?.DeclaringType, e);
+            Log.Error(e, "{message}", MethodBase.GetCurrentMethod()?.DeclaringType);
+            await SetTradesToBindings([]);
+        }
     }
+
+    private static string BackupCorruptedTradeFile(string filePath)
+    {
+        try
+        {
+            if (!File.Exists(filePath))
+            {
+                return null;
+            }
+
+            var backupPath = $"{filePath}.corrupt.{DateTime.UtcNow:yyyyMMddHHmmss}";
+            File.Move(filePath, backupPath, overwrite: false);
+            return backupPath;
+        }
+        catch
+        {
+            return null;
+        }
+    }
+
 
     public async Task SaveInFileAsync()
     {
