@@ -475,8 +475,9 @@ public enum EventCodes
     XignCodeEvent,
     BatchUseItemStart,
     BatchUseItemEnd,
-    RedZoneEventClusterStatus,
     RedZonePlayerNotification,
+    RedZoneEventCheatCleanup,
+    RedZoneFortressEventChestOpened,
     RedZoneWorldEvent,
     FactionWarfareStats,
     UpdateFactionBalanceFactors,
@@ -664,5 +665,8 @@ public enum EventCodes
     FactionFortressFightFinishedInRemoteClusterEvent,
     FactionDuchySupplyWarDefensiveVictoryEvent,
     FactionDuchyReconnectedFromCutoffEvent,
-    FactionFortressCutoffFightCancelledByClusterOwnerChangeEvent
+    FactionFortressCutoffFightCancelledByClusterOwnerChangeEvent,
+    FactionDuchyEnteredCutoffStateEvent,
+    RedZoneEventStandings,
+    NewFactionBattleStandardDeliveryStation
 }

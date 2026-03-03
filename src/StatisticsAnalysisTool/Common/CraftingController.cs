@@ -183,6 +183,11 @@ public static class CraftingController
                         var itemValue = ItemController.GetItemValue(item.FullItemInformation, item.Level);
                         return itemQuantity * (foodValue / 44.44 / 100) * (itemValue * 5);
                     }
+                case TrackingItem trackingItem:
+                    {
+                        var resources = GetTotalAmountResources(trackingItem.CraftingRequirements);
+                        return itemQuantity * GetSetupFeePerFoodConsumed(foodValue, resources, (ItemTier) item.Tier, (ItemLevel) item.Level, trackingItem.CraftingRequirements?.FirstOrDefault()?.CraftResource);
+                    }
             }
 
             return 0;
