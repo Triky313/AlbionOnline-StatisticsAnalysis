@@ -299,13 +299,13 @@ public class StatisticController
         stats.ReSpecToday = SumValue(ValueType.ReSpec, todayStart, now);
         stats.MightToday = SumValue(ValueType.Might, todayStart, now);
         stats.FavorToday = SumValue(ValueType.Favor, todayStart, now);
-        stats.FactionFameToday = SumValue(ValueType.FactionFame, todayStart, now);
+        stats.FactionPointsToday = SumValue(ValueType.FactionPoints, todayStart, now);
         stats.FameTodayPerHour = PerHour(stats.FameToday, todayHours);
         stats.SilverTodayPerHour = PerHour(stats.SilverToday, todayHours);
         stats.ReSpecTodayPerHour = PerHour(stats.ReSpecToday, todayHours);
         stats.MightTodayPerHour = PerHour(stats.MightToday, todayHours);
         stats.FavorTodayPerHour = PerHour(stats.FavorToday, todayHours);
-        stats.FactionFameTodayPerHour = PerHour(stats.FactionFameToday, todayHours);
+        stats.FactionPointsTodayPerHour = PerHour(stats.FactionPointsToday, todayHours);
         stats.GatheringValueToday = SumValue(ValueType.GatheringValue, todayStart, now);
         stats.GatheringValueTodayPerHour = PerHour(stats.GatheringValueToday, todayHours);
 
@@ -316,13 +316,13 @@ public class StatisticController
         stats.ReSpecThisWeek = SumValue(ValueType.ReSpec, thisWeekStart, now);
         stats.MightThisWeek = SumValue(ValueType.Might, thisWeekStart, now);
         stats.FavorThisWeek = SumValue(ValueType.Favor, thisWeekStart, now);
-        stats.FactionFameThisWeek = SumValue(ValueType.FactionFame, thisWeekStart, now);
+        stats.FactionPointsThisWeek = SumValue(ValueType.FactionPoints, thisWeekStart, now);
         stats.FameThisWeekPerHour = PerHour(stats.FameThisWeek, thisWeekHours);
         stats.SilverThisWeekPerHour = PerHour(stats.SilverThisWeek, thisWeekHours);
         stats.ReSpecThisWeekPerHour = PerHour(stats.ReSpecThisWeek, thisWeekHours);
         stats.MightThisWeekPerHour = PerHour(stats.MightThisWeek, thisWeekHours);
         stats.FavorThisWeekPerHour = PerHour(stats.FavorThisWeek, thisWeekHours);
-        stats.FactionFameThisWeekPerHour = PerHour(stats.FactionFameThisWeek, thisWeekHours);
+        stats.FactionPointsThisWeekPerHour = PerHour(stats.FactionPointsThisWeek, thisWeekHours);
         stats.GatheringValueThisWeek = SumValue(ValueType.GatheringValue, thisWeekStart, now);
         stats.GatheringValueThisWeekPerHour = PerHour(stats.GatheringValueThisWeek, thisWeekHours);
 
@@ -333,13 +333,13 @@ public class StatisticController
         stats.ReSpecLastWeek = SumValue(ValueType.ReSpec, lastWeekStart, lastWeekEnd);
         stats.MightLastWeek = SumValue(ValueType.Might, lastWeekStart, lastWeekEnd);
         stats.FavorLastWeek = SumValue(ValueType.Favor, lastWeekStart, lastWeekEnd);
-        stats.FactionFameLastWeek = SumValue(ValueType.FactionFame, lastWeekStart, lastWeekEnd);
+        stats.FactionPointsLastWeek = SumValue(ValueType.FactionPoints, lastWeekStart, lastWeekEnd);
         stats.FameLastWeekPerHour = PerHour(stats.FameLastWeek, lastWeekHours);
         stats.SilverLastWeekPerHour = PerHour(stats.SilverLastWeek, lastWeekHours);
         stats.ReSpecLastWeekPerHour = PerHour(stats.ReSpecLastWeek, lastWeekHours);
         stats.MightLastWeekPerHour = PerHour(stats.MightLastWeek, lastWeekHours);
         stats.FavorLastWeekPerHour = PerHour(stats.FavorLastWeek, lastWeekHours);
-        stats.FactionFameLastWeekPerHour = PerHour(stats.FactionFameLastWeek, lastWeekHours);
+        stats.FactionPointsLastWeekPerHour = PerHour(stats.FactionPointsLastWeek, lastWeekHours);
         stats.GatheringValueLastWeek = SumValue(ValueType.GatheringValue, lastWeekStart, lastWeekEnd);
         stats.GatheringValueLastWeekPerHour = PerHour(stats.GatheringValueLastWeek, lastWeekHours);
 
@@ -350,13 +350,13 @@ public class StatisticController
         stats.ReSpecThisMonth = SumValue(ValueType.ReSpec, thisMonthStart, now);
         stats.MightThisMonth = SumValue(ValueType.Might, thisMonthStart, now);
         stats.FavorThisMonth = SumValue(ValueType.Favor, thisMonthStart, now);
-        stats.FactionFameThisMonth = SumValue(ValueType.FactionFame, thisMonthStart, now);
+        stats.FactionPointsThisMonth = SumValue(ValueType.FactionPoints, thisMonthStart, now);
         stats.FameThisMonthPerHour = PerHour(stats.FameThisMonth, thisMonthHours);
         stats.SilverThisMonthPerHour = PerHour(stats.SilverThisMonth, thisMonthHours);
         stats.ReSpecThisMonthPerHour = PerHour(stats.ReSpecThisMonth, thisMonthHours);
         stats.MightThisMonthPerHour = PerHour(stats.MightThisMonth, thisMonthHours);
         stats.FavorThisMonthPerHour = PerHour(stats.FavorThisMonth, thisMonthHours);
-        stats.FactionFameThisMonthPerHour = PerHour(stats.FactionFameThisMonth, thisMonthHours);
+        stats.FactionPointsThisMonthPerHour = PerHour(stats.FactionPointsThisMonth, thisMonthHours);
         stats.GatheringValueThisMonth = SumValue(ValueType.GatheringValue, thisMonthStart, now);
         stats.GatheringValueThisMonthPerHour = PerHour(stats.GatheringValueThisMonth, thisMonthHours);
 
@@ -367,13 +367,13 @@ public class StatisticController
         stats.ReSpecLastMonth = SumValue(ValueType.ReSpec, lastMonthStart, lastMonthEnd);
         stats.MightLastMonth = SumValue(ValueType.Might, lastMonthStart, lastMonthEnd);
         stats.FavorLastMonth = SumValue(ValueType.Favor, lastMonthStart, lastMonthEnd);
-        stats.FactionFameLastMonth = SumValue(ValueType.FactionFame, lastMonthStart, lastMonthEnd);
+        stats.FactionPointsLastMonth = SumValue(ValueType.FactionPoints, lastMonthStart, lastMonthEnd);
         stats.FameLastMonthPerHour = PerHour(stats.FameLastMonth, lastMonthHours);
         stats.SilverLastMonthPerHour = PerHour(stats.SilverLastMonth, lastMonthHours);
         stats.ReSpecLastMonthPerHour = PerHour(stats.ReSpecLastMonth, lastMonthHours);
         stats.MightLastMonthPerHour = PerHour(stats.MightLastMonth, lastMonthHours);
         stats.FavorLastMonthPerHour = PerHour(stats.FavorLastMonth, lastMonthHours);
-        stats.FactionFameLastMonthPerHour = PerHour(stats.FactionFameLastMonth, lastMonthHours);
+        stats.FactionPointsLastMonthPerHour = PerHour(stats.FactionPointsLastMonth, lastMonthHours);
         stats.GatheringValueLastMonth = SumValue(ValueType.GatheringValue, lastMonthStart, lastMonthEnd);
         stats.GatheringValueLastMonthPerHour = PerHour(stats.GatheringValueLastMonth, lastMonthHours);
 
@@ -384,13 +384,13 @@ public class StatisticController
         stats.ReSpecThisYear = SumValue(ValueType.ReSpec, thisYearStart, now);
         stats.MightThisYear = SumValue(ValueType.Might, thisYearStart, now);
         stats.FavorThisYear = SumValue(ValueType.Favor, thisYearStart, now);
-        stats.FactionFameThisYear = SumValue(ValueType.FactionFame, thisYearStart, now);
+        stats.FactionPointsThisYear = SumValue(ValueType.FactionPoints, thisYearStart, now);
         stats.FameThisYearPerHour = PerHour(stats.FameThisYear, thisYearHours);
         stats.SilverThisYearPerHour = PerHour(stats.SilverThisYear, thisYearHours);
         stats.ReSpecThisYearPerHour = PerHour(stats.ReSpecThisYear, thisYearHours);
         stats.MightThisYearPerHour = PerHour(stats.MightThisYear, thisYearHours);
         stats.FavorThisYearPerHour = PerHour(stats.FavorThisYear, thisYearHours);
-        stats.FactionFameThisYearPerHour = PerHour(stats.FactionFameThisYear, thisYearHours);
+        stats.FactionPointsThisYearPerHour = PerHour(stats.FactionPointsThisYear, thisYearHours);
         stats.GatheringValueThisYear = SumValue(ValueType.GatheringValue, thisYearStart, now);
         stats.GatheringValueThisYearPerHour = PerHour(stats.GatheringValueThisYear, thisYearHours);
 
@@ -401,13 +401,13 @@ public class StatisticController
         stats.ReSpecTotal = SumValue(ValueType.ReSpec, DateTime.MinValue, now);
         stats.MightTotal = SumValue(ValueType.Might, DateTime.MinValue, now);
         stats.FavorTotal = SumValue(ValueType.Favor, DateTime.MinValue, now);
-        stats.FactionFameTotal = SumValue(ValueType.FactionFame, DateTime.MinValue, now);
+        stats.FactionPointsTotal = SumValue(ValueType.FactionPoints, DateTime.MinValue, now);
         stats.FameTotalPerHour = PerHour(stats.FameTotal, totalHours);
         stats.SilverTotalPerHour = PerHour(stats.SilverTotal, totalHours);
         stats.ReSpecTotalPerHour = PerHour(stats.ReSpecTotal, totalHours);
         stats.MightTotalPerHour = PerHour(stats.MightTotal, totalHours);
         stats.FavorTotalPerHour = PerHour(stats.FavorTotal, totalHours);
-        stats.FactionFameTotalPerHour = PerHour(stats.FactionFameTotal, totalHours);
+        stats.FactionPointsTotalPerHour = PerHour(stats.FactionPointsTotal, totalHours);
         stats.GatheringValueTotal = SumValue(ValueType.GatheringValue, DateTime.MinValue, now);
         stats.GatheringValueTotalPerHour = PerHour(stats.GatheringValueTotal, totalHours);
 
@@ -419,13 +419,13 @@ public class StatisticController
         stats.FavorSession = bindings.TotalGainedFavorInSession;
         stats.GatheringValueSession = bindings.TotalGatheredValueInSession;
         stats.GatheringValueSessionPerHour = bindings.GatheringValuePerHour;
-        stats.FactionFameSession = 0;
+        stats.FactionPointsSession = _mainWindowViewModel.FactionPointStats.FirstOrDefault()?.Value ?? 0;
         stats.FameSessionPerHour = bindings.FamePerHour;
         stats.SilverSessionPerHour = bindings.SilverPerHour;
         stats.ReSpecSessionPerHour = bindings.ReSpecPointsPerHour;
         stats.MightSessionPerHour = bindings.MightPerHour;
         stats.FavorSessionPerHour = bindings.FavorPerHour;
-        stats.FactionFameSessionPerHour = 0;
+        stats.FactionPointsSessionPerHour = _mainWindowViewModel.FactionPointStats.FirstOrDefault()?.ValuePerHour ?? 0;
         stats.CityFaction = _mainWindowViewModel.FactionPointStats.FirstOrDefault()?.CityFaction ?? CityFaction.Unknown;
 
         // Active time labels per period

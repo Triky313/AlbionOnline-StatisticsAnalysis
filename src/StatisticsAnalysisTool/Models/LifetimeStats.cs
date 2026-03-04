@@ -16,7 +16,7 @@ public class LifetimeStats : BaseViewModel
     private double _reSpecToday;
     private double _mightToday;
     private double _favorToday;
-    private double _factionFameToday;
+    private double _factionPointsToday;
     private double _gatheringValueToday;
 
     #endregion
@@ -28,7 +28,7 @@ public class LifetimeStats : BaseViewModel
     private double _reSpecThisWeek;
     private double _mightThisWeek;
     private double _favorThisWeek;
-    private double _factionFameThisWeek;
+    private double _factionPointsThisWeek;
     private double _gatheringValueThisWeek;
 
     #endregion
@@ -40,7 +40,7 @@ public class LifetimeStats : BaseViewModel
     private double _reSpecLastWeek;
     private double _mightLastWeek;
     private double _favorLastWeek;
-    private double _factionFameLastWeek;
+    private double _factionPointsLastWeek;
     private double _gatheringValueLastWeek;
 
     #endregion
@@ -52,7 +52,7 @@ public class LifetimeStats : BaseViewModel
     private double _reSpecThisMonth;
     private double _mightThisMonth;
     private double _favorThisMonth;
-    private double _factionFameThisMonth;
+    private double _factionPointsThisMonth;
     private double _gatheringValueThisMonth;
 
     #endregion
@@ -64,7 +64,7 @@ public class LifetimeStats : BaseViewModel
     private double _reSpecLastMonth;
     private double _mightLastMonth;
     private double _favorLastMonth;
-    private double _factionFameLastMonth;
+    private double _factionPointsLastMonth;
     private double _gatheringValueLastMonth;
 
     #endregion
@@ -76,7 +76,7 @@ public class LifetimeStats : BaseViewModel
     private double _reSpecThisYear;
     private double _mightThisYear;
     private double _favorThisYear;
-    private double _factionFameThisYear;
+    private double _factionPointsThisYear;
     private double _gatheringValueThisYear;
 
     #endregion
@@ -88,7 +88,7 @@ public class LifetimeStats : BaseViewModel
     private double _reSpecTotal;
     private double _mightTotal;
     private double _favorTotal;
-    private double _factionFameTotal;
+    private double _factionPointsTotal;
     private double _gatheringValueTotal;
 
     #endregion
@@ -125,10 +125,10 @@ public class LifetimeStats : BaseViewModel
         set { _favorToday = value; OnPropertyChanged(); }
     }
 
-    public double FactionFameToday
+    public double FactionPointsToday
     {
-        get => _factionFameToday;
-        set { _factionFameToday = value; OnPropertyChanged(); }
+        get => _factionPointsToday;
+        set { _factionPointsToday = value; OnPropertyChanged(); }
     }
 
     public double GatheringValueToday
@@ -171,10 +171,10 @@ public class LifetimeStats : BaseViewModel
         set { _favorThisWeek = value; OnPropertyChanged(); }
     }
 
-    public double FactionFameThisWeek
+    public double FactionPointsThisWeek
     {
-        get => _factionFameThisWeek;
-        set { _factionFameThisWeek = value; OnPropertyChanged(); }
+        get => _factionPointsThisWeek;
+        set { _factionPointsThisWeek = value; OnPropertyChanged(); }
     }
 
     public double GatheringValueThisWeek
@@ -217,10 +217,10 @@ public class LifetimeStats : BaseViewModel
         set { _favorLastWeek = value; OnPropertyChanged(); }
     }
 
-    public double FactionFameLastWeek
+    public double FactionPointsLastWeek
     {
-        get => _factionFameLastWeek;
-        set { _factionFameLastWeek = value; OnPropertyChanged(); }
+        get => _factionPointsLastWeek;
+        set { _factionPointsLastWeek = value; OnPropertyChanged(); }
     }
 
     public double GatheringValueLastWeek
@@ -263,10 +263,10 @@ public class LifetimeStats : BaseViewModel
         set { _favorThisMonth = value; OnPropertyChanged(); }
     }
 
-    public double FactionFameThisMonth
+    public double FactionPointsThisMonth
     {
-        get => _factionFameThisMonth;
-        set { _factionFameThisMonth = value; OnPropertyChanged(); }
+        get => _factionPointsThisMonth;
+        set { _factionPointsThisMonth = value; OnPropertyChanged(); }
     }
 
     public double GatheringValueThisMonth
@@ -309,10 +309,10 @@ public class LifetimeStats : BaseViewModel
         set { _favorLastMonth = value; OnPropertyChanged(); }
     }
 
-    public double FactionFameLastMonth
+    public double FactionPointsLastMonth
     {
-        get => _factionFameLastMonth;
-        set { _factionFameLastMonth = value; OnPropertyChanged(); }
+        get => _factionPointsLastMonth;
+        set { _factionPointsLastMonth = value; OnPropertyChanged(); }
     }
 
     public double GatheringValueLastMonth
@@ -355,10 +355,10 @@ public class LifetimeStats : BaseViewModel
         set { _favorThisYear = value; OnPropertyChanged(); }
     }
 
-    public double FactionFameThisYear
+    public double FactionPointsThisYear
     {
-        get => _factionFameThisYear;
-        set { _factionFameThisYear = value; OnPropertyChanged(); }
+        get => _factionPointsThisYear;
+        set { _factionPointsThisYear = value; OnPropertyChanged(); }
     }
 
     public double GatheringValueThisYear
@@ -401,10 +401,10 @@ public class LifetimeStats : BaseViewModel
         set { _favorTotal = value; OnPropertyChanged(); }
     }
 
-    public double FactionFameTotal
+    public double FactionPointsTotal
     {
-        get => _factionFameTotal;
-        set { _factionFameTotal = value; OnPropertyChanged(); }
+        get => _factionPointsTotal;
+        set { _factionPointsTotal = value; OnPropertyChanged(); }
     }
 
     public double GatheringValueTotal
@@ -445,7 +445,7 @@ public class LifetimeStats : BaseViewModel
     private double _reSpecTodayPerHour;
     private double _mightTodayPerHour;
     private double _favorTodayPerHour;
-    private double _factionFameTodayPerHour;
+    private double _factionPointsTodayPerHour;
     private double _gatheringValueTodayPerHour;
 
     #endregion
@@ -457,7 +457,7 @@ public class LifetimeStats : BaseViewModel
     private double _reSpecThisWeekPerHour;
     private double _mightThisWeekPerHour;
     private double _favorThisWeekPerHour;
-    private double _factionFameThisWeekPerHour;
+    private double _factionPointsThisWeekPerHour;
     private double _gatheringValueThisWeekPerHour;
 
     #endregion
@@ -469,7 +469,7 @@ public class LifetimeStats : BaseViewModel
     private double _reSpecLastWeekPerHour;
     private double _mightLastWeekPerHour;
     private double _favorLastWeekPerHour;
-    private double _factionFameLastWeekPerHour;
+    private double _factionPointsLastWeekPerHour;
     private double _gatheringValueLastWeekPerHour;
 
     #endregion
@@ -481,7 +481,7 @@ public class LifetimeStats : BaseViewModel
     private double _reSpecThisMonthPerHour;
     private double _mightThisMonthPerHour;
     private double _favorThisMonthPerHour;
-    private double _factionFameThisMonthPerHour;
+    private double _factionPointsThisMonthPerHour;
     private double _gatheringValueThisMonthPerHour;
 
     #endregion
@@ -493,7 +493,7 @@ public class LifetimeStats : BaseViewModel
     private double _reSpecLastMonthPerHour;
     private double _mightLastMonthPerHour;
     private double _favorLastMonthPerHour;
-    private double _factionFameLastMonthPerHour;
+    private double _factionPointsLastMonthPerHour;
     private double _gatheringValueLastMonthPerHour;
 
     #endregion
@@ -505,7 +505,7 @@ public class LifetimeStats : BaseViewModel
     private double _reSpecThisYearPerHour;
     private double _mightThisYearPerHour;
     private double _favorThisYearPerHour;
-    private double _factionFameThisYearPerHour;
+    private double _factionPointsThisYearPerHour;
     private double _gatheringValueThisYearPerHour;
 
     #endregion
@@ -517,7 +517,7 @@ public class LifetimeStats : BaseViewModel
     private double _reSpecTotalPerHour;
     private double _mightTotalPerHour;
     private double _favorTotalPerHour;
-    private double _factionFameTotalPerHour;
+    private double _factionPointsTotalPerHour;
     private double _gatheringValueTotalPerHour;
 
     #endregion
@@ -529,13 +529,13 @@ public class LifetimeStats : BaseViewModel
     private double _reSpecSession;
     private double _mightSession;
     private double _favorSession;
-    private double _factionFameSession;
+    private double _factionPointsSession;
     private double _fameSessionPerHour;
     private double _silverSessionPerHour;
     private double _reSpecSessionPerHour;
     private double _mightSessionPerHour;
     private double _favorSessionPerHour;
-    private double _factionFameSessionPerHour;
+    private double _factionPointsSessionPerHour;
     private double _gatheringValueSession;
     private double _gatheringValueSessionPerHour;
     private CityFaction _cityFaction;
@@ -557,7 +557,7 @@ public class LifetimeStats : BaseViewModel
     public double ReSpecTodayPerHour { get => _reSpecTodayPerHour; set { _reSpecTodayPerHour = value; OnPropertyChanged(); } }
     public double MightTodayPerHour { get => _mightTodayPerHour; set { _mightTodayPerHour = value; OnPropertyChanged(); } }
     public double FavorTodayPerHour { get => _favorTodayPerHour; set { _favorTodayPerHour = value; OnPropertyChanged(); } }
-    public double FactionFameTodayPerHour { get => _factionFameTodayPerHour; set { _factionFameTodayPerHour = value; OnPropertyChanged(); } }
+    public double FactionPointsTodayPerHour { get => _factionPointsTodayPerHour; set { _factionPointsTodayPerHour = value; OnPropertyChanged(); } }
     public double GatheringValueTodayPerHour { get => _gatheringValueTodayPerHour; set { _gatheringValueTodayPerHour = value; OnPropertyChanged(); } }
 
     #endregion
@@ -569,7 +569,7 @@ public class LifetimeStats : BaseViewModel
     public double ReSpecThisWeekPerHour { get => _reSpecThisWeekPerHour; set { _reSpecThisWeekPerHour = value; OnPropertyChanged(); } }
     public double MightThisWeekPerHour { get => _mightThisWeekPerHour; set { _mightThisWeekPerHour = value; OnPropertyChanged(); } }
     public double FavorThisWeekPerHour { get => _favorThisWeekPerHour; set { _favorThisWeekPerHour = value; OnPropertyChanged(); } }
-    public double FactionFameThisWeekPerHour { get => _factionFameThisWeekPerHour; set { _factionFameThisWeekPerHour = value; OnPropertyChanged(); } }
+    public double FactionPointsThisWeekPerHour { get => _factionPointsThisWeekPerHour; set { _factionPointsThisWeekPerHour = value; OnPropertyChanged(); } }
     public double GatheringValueThisWeekPerHour { get => _gatheringValueThisWeekPerHour; set { _gatheringValueThisWeekPerHour = value; OnPropertyChanged(); } }
 
     #endregion
@@ -581,7 +581,7 @@ public class LifetimeStats : BaseViewModel
     public double ReSpecLastWeekPerHour { get => _reSpecLastWeekPerHour; set { _reSpecLastWeekPerHour = value; OnPropertyChanged(); } }
     public double MightLastWeekPerHour { get => _mightLastWeekPerHour; set { _mightLastWeekPerHour = value; OnPropertyChanged(); } }
     public double FavorLastWeekPerHour { get => _favorLastWeekPerHour; set { _favorLastWeekPerHour = value; OnPropertyChanged(); } }
-    public double FactionFameLastWeekPerHour { get => _factionFameLastWeekPerHour; set { _factionFameLastWeekPerHour = value; OnPropertyChanged(); } }
+    public double FactionPointsLastWeekPerHour { get => _factionPointsLastWeekPerHour; set { _factionPointsLastWeekPerHour = value; OnPropertyChanged(); } }
     public double GatheringValueLastWeekPerHour { get => _gatheringValueLastWeekPerHour; set { _gatheringValueLastWeekPerHour = value; OnPropertyChanged(); } }
 
     #endregion
@@ -593,7 +593,7 @@ public class LifetimeStats : BaseViewModel
     public double ReSpecThisMonthPerHour { get => _reSpecThisMonthPerHour; set { _reSpecThisMonthPerHour = value; OnPropertyChanged(); } }
     public double MightThisMonthPerHour { get => _mightThisMonthPerHour; set { _mightThisMonthPerHour = value; OnPropertyChanged(); } }
     public double FavorThisMonthPerHour { get => _favorThisMonthPerHour; set { _favorThisMonthPerHour = value; OnPropertyChanged(); } }
-    public double FactionFameThisMonthPerHour { get => _factionFameThisMonthPerHour; set { _factionFameThisMonthPerHour = value; OnPropertyChanged(); } }
+    public double FactionPointsThisMonthPerHour { get => _factionPointsThisMonthPerHour; set { _factionPointsThisMonthPerHour = value; OnPropertyChanged(); } }
     public double GatheringValueThisMonthPerHour { get => _gatheringValueThisMonthPerHour; set { _gatheringValueThisMonthPerHour = value; OnPropertyChanged(); } }
 
     #endregion
@@ -605,7 +605,7 @@ public class LifetimeStats : BaseViewModel
     public double ReSpecLastMonthPerHour { get => _reSpecLastMonthPerHour; set { _reSpecLastMonthPerHour = value; OnPropertyChanged(); } }
     public double MightLastMonthPerHour { get => _mightLastMonthPerHour; set { _mightLastMonthPerHour = value; OnPropertyChanged(); } }
     public double FavorLastMonthPerHour { get => _favorLastMonthPerHour; set { _favorLastMonthPerHour = value; OnPropertyChanged(); } }
-    public double FactionFameLastMonthPerHour { get => _factionFameLastMonthPerHour; set { _factionFameLastMonthPerHour = value; OnPropertyChanged(); } }
+    public double FactionPointsLastMonthPerHour { get => _factionPointsLastMonthPerHour; set { _factionPointsLastMonthPerHour = value; OnPropertyChanged(); } }
     public double GatheringValueLastMonthPerHour { get => _gatheringValueLastMonthPerHour; set { _gatheringValueLastMonthPerHour = value; OnPropertyChanged(); } }
 
     #endregion
@@ -617,7 +617,7 @@ public class LifetimeStats : BaseViewModel
     public double ReSpecThisYearPerHour { get => _reSpecThisYearPerHour; set { _reSpecThisYearPerHour = value; OnPropertyChanged(); } }
     public double MightThisYearPerHour { get => _mightThisYearPerHour; set { _mightThisYearPerHour = value; OnPropertyChanged(); } }
     public double FavorThisYearPerHour { get => _favorThisYearPerHour; set { _favorThisYearPerHour = value; OnPropertyChanged(); } }
-    public double FactionFameThisYearPerHour { get => _factionFameThisYearPerHour; set { _factionFameThisYearPerHour = value; OnPropertyChanged(); } }
+    public double FactionPointsThisYearPerHour { get => _factionPointsThisYearPerHour; set { _factionPointsThisYearPerHour = value; OnPropertyChanged(); } }
     public double GatheringValueThisYearPerHour { get => _gatheringValueThisYearPerHour; set { _gatheringValueThisYearPerHour = value; OnPropertyChanged(); } }
 
     #endregion
@@ -629,7 +629,7 @@ public class LifetimeStats : BaseViewModel
     public double ReSpecTotalPerHour { get => _reSpecTotalPerHour; set { _reSpecTotalPerHour = value; OnPropertyChanged(); } }
     public double MightTotalPerHour { get => _mightTotalPerHour; set { _mightTotalPerHour = value; OnPropertyChanged(); } }
     public double FavorTotalPerHour { get => _favorTotalPerHour; set { _favorTotalPerHour = value; OnPropertyChanged(); } }
-    public double FactionFameTotalPerHour { get => _factionFameTotalPerHour; set { _factionFameTotalPerHour = value; OnPropertyChanged(); } }
+    public double FactionPointsTotalPerHour { get => _factionPointsTotalPerHour; set { _factionPointsTotalPerHour = value; OnPropertyChanged(); } }
     public double GatheringValueTotalPerHour { get => _gatheringValueTotalPerHour; set { _gatheringValueTotalPerHour = value; OnPropertyChanged(); } }
 
     #endregion
@@ -641,13 +641,13 @@ public class LifetimeStats : BaseViewModel
     public double ReSpecSession { get => _reSpecSession; set { _reSpecSession = value; OnPropertyChanged(); } }
     public double MightSession { get => _mightSession; set { _mightSession = value; OnPropertyChanged(); } }
     public double FavorSession { get => _favorSession; set { _favorSession = value; OnPropertyChanged(); } }
-    public double FactionFameSession { get => _factionFameSession; set { _factionFameSession = value; OnPropertyChanged(); } }
+    public double FactionPointsSession { get => _factionPointsSession; set { _factionPointsSession = value; OnPropertyChanged(); } }
     public double FameSessionPerHour { get => _fameSessionPerHour; set { _fameSessionPerHour = value; OnPropertyChanged(); } }
     public double SilverSessionPerHour { get => _silverSessionPerHour; set { _silverSessionPerHour = value; OnPropertyChanged(); } }
     public double ReSpecSessionPerHour { get => _reSpecSessionPerHour; set { _reSpecSessionPerHour = value; OnPropertyChanged(); } }
     public double MightSessionPerHour { get => _mightSessionPerHour; set { _mightSessionPerHour = value; OnPropertyChanged(); } }
     public double FavorSessionPerHour { get => _favorSessionPerHour; set { _favorSessionPerHour = value; OnPropertyChanged(); } }
-    public double FactionFameSessionPerHour { get => _factionFameSessionPerHour; set { _factionFameSessionPerHour = value; OnPropertyChanged(); } }
+    public double FactionPointsSessionPerHour { get => _factionPointsSessionPerHour; set { _factionPointsSessionPerHour = value; OnPropertyChanged(); } }
     public double GatheringValueSession { get => _gatheringValueSession; set { _gatheringValueSession = value; OnPropertyChanged(); } }
     public double GatheringValueSessionPerHour { get => _gatheringValueSessionPerHour; set { _gatheringValueSessionPerHour = value; OnPropertyChanged(); } }
     public CityFaction CityFaction { get => _cityFaction; set { _cityFaction = value; OnPropertyChanged(); } }

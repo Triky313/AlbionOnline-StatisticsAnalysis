@@ -601,8 +601,8 @@
                 <TextBlock Text="{Binding FavorSessionPerHour, Converter={StaticResource ShortNumberConverter}, StringFormat='{}{0}/h', FallbackValue=0/h}" Style="{StaticResource LifetimeStats.SubValue}"/>
             </StackPanel>
             <StackPanel Grid.Row="1" Grid.Column="6" HorizontalAlignment="Center" VerticalAlignment="Center">
-                <TextBlock Text="{Binding FactionFameSession, Converter={StaticResource ShortNumberConverter}, FallbackValue=0}" Style="{StaticResource LifetimeStats.Value}"/>
-                <TextBlock Text="{Binding FactionFameSessionPerHour, Converter={StaticResource ShortNumberConverter}, StringFormat='{}{0}/h', FallbackValue=0/h}" Style="{StaticResource LifetimeStats.SubValue}"/>
+                <TextBlock Text="{Binding FactionPointsSession, Converter={StaticResource ShortNumberConverter}, FallbackValue=0}" Style="{StaticResource LifetimeStats.Value}"/>
+                <TextBlock Text="{Binding FactionPointsSessionPerHour, Converter={StaticResource ShortNumberConverter}, StringFormat='{}{0}/h', FallbackValue=0/h}" Style="{StaticResource LifetimeStats.SubValue}"/>
             </StackPanel>
             <StackPanel Grid.Row="1" Grid.Column="7" HorizontalAlignment="Center" VerticalAlignment="Center">
                 <TextBlock Text="{Binding GatheringValueSession, Converter={StaticResource ShortNumberConverter}, FallbackValue=0}" Style="{StaticResource LifetimeStats.Value}"/>
@@ -635,8 +635,8 @@
                 <TextBlock Text="{Binding FavorTodayPerHour, Converter={StaticResource ShortNumberConverter}, StringFormat='{}{0}/h', FallbackValue=0/h}" Style="{StaticResource LifetimeStats.SubValue}"/>
             </StackPanel>
             <StackPanel Grid.Row="2" Grid.Column="6" HorizontalAlignment="Center" VerticalAlignment="Center">
-                <TextBlock Text="{Binding FactionFameToday, Converter={StaticResource ShortNumberConverter}, FallbackValue=0}" Style="{StaticResource LifetimeStats.Value}"/>
-                <TextBlock Text="{Binding FactionFameTodayPerHour, Converter={StaticResource ShortNumberConverter}, StringFormat='{}{0}/h', FallbackValue=0/h}" Style="{StaticResource LifetimeStats.SubValue}"/>
+                <TextBlock Text="{Binding FactionPointsToday, Converter={StaticResource ShortNumberConverter}, FallbackValue=0}" Style="{StaticResource LifetimeStats.Value}"/>
+                <TextBlock Text="{Binding FactionPointsTodayPerHour, Converter={StaticResource ShortNumberConverter}, StringFormat='{}{0}/h', FallbackValue=0/h}" Style="{StaticResource LifetimeStats.SubValue}"/>
             </StackPanel>
             <StackPanel Grid.Row="2" Grid.Column="7" HorizontalAlignment="Center" VerticalAlignment="Center">
                 <TextBlock Text="{Binding GatheringValueToday, Converter={StaticResource ShortNumberConverter}, FallbackValue=0}" Style="{StaticResource LifetimeStats.Value}"/>
@@ -669,8 +669,8 @@
                 <TextBlock Text="{Binding FavorThisWeekPerHour, Converter={StaticResource ShortNumberConverter}, StringFormat='{}{0}/h', FallbackValue=0/h}" Style="{StaticResource LifetimeStats.SubValue}"/>
             </StackPanel>
             <StackPanel Grid.Row="3" Grid.Column="6" HorizontalAlignment="Center" VerticalAlignment="Center">
-                <TextBlock Text="{Binding FactionFameThisWeek, Converter={StaticResource ShortNumberConverter}, FallbackValue=0}" Style="{StaticResource LifetimeStats.Value}"/>
-                <TextBlock Text="{Binding FactionFameThisWeekPerHour, Converter={StaticResource ShortNumberConverter}, StringFormat='{}{0}/h', FallbackValue=0/h}" Style="{StaticResource LifetimeStats.SubValue}"/>
+                <TextBlock Text="{Binding FactionPointsThisWeek, Converter={StaticResource ShortNumberConverter}, FallbackValue=0}" Style="{StaticResource LifetimeStats.Value}"/>
+                <TextBlock Text="{Binding FactionPointsThisWeekPerHour, Converter={StaticResource ShortNumberConverter}, StringFormat='{}{0}/h', FallbackValue=0/h}" Style="{StaticResource LifetimeStats.SubValue}"/>
             </StackPanel>
             <StackPanel Grid.Row="3" Grid.Column="7" HorizontalAlignment="Center" VerticalAlignment="Center">
                 <TextBlock Text="{Binding GatheringValueThisWeek, Converter={StaticResource ShortNumberConverter}, FallbackValue=0}" Style="{StaticResource LifetimeStats.Value}"/>
@@ -703,8 +703,8 @@
                 <TextBlock Text="{Binding FavorLastWeekPerHour, Converter={StaticResource ShortNumberConverter}, StringFormat='{}{0}/h', FallbackValue=0/h}" Style="{StaticResource LifetimeStats.SubValue}"/>
             </StackPanel>
             <StackPanel Grid.Row="4" Grid.Column="6" HorizontalAlignment="Center" VerticalAlignment="Center">
-                <TextBlock Text="{Binding FactionFameLastWeek, Converter={StaticResource ShortNumberConverter}, FallbackValue=0}" Style="{StaticResource LifetimeStats.Value}"/>
-                <TextBlock Text="{Binding FactionFameLastWeekPerHour, Converter={StaticResource ShortNumberConverter}, StringFormat='{}{0}/h', FallbackValue=0/h}" Style="{StaticResource LifetimeStats.SubValue}"/>
+                <TextBlock Text="{Binding FactionPointsLastWeek, Converter={StaticResource ShortNumberConverter}, FallbackValue=0}" Style="{StaticResource LifetimeStats.Value}"/>
+                <TextBlock Text="{Binding FactionPointsLastWeekPerHour, Converter={StaticResource ShortNumberConverter}, StringFormat='{}{0}/h', FallbackValue=0/h}" Style="{StaticResource LifetimeStats.SubValue}"/>
             </StackPanel>
             <StackPanel Grid.Row="4" Grid.Column="7" HorizontalAlignment="Center" VerticalAlignment="Center">
                 <TextBlock Text="{Binding GatheringValueLastWeek, Converter={StaticResource ShortNumberConverter}, FallbackValue=0}" Style="{StaticResource LifetimeStats.Value}"/>
@@ -737,8 +737,8 @@
                 <TextBlock Text="{Binding FavorThisMonthPerHour, Converter={StaticResource ShortNumberConverter}, StringFormat='{}{0}/h', FallbackValue=0/h}" Style="{StaticResource LifetimeStats.SubValue}"/>
             </StackPanel>
             <StackPanel Grid.Row="5" Grid.Column="6" HorizontalAlignment="Center" VerticalAlignment="Center">
-                <TextBlock Text="{Binding FactionFameThisMonth, Converter={StaticResource ShortNumberConverter}, FallbackValue=0}" Style="{StaticResource LifetimeStats.Value}"/>
-                <TextBlock Text="{Binding FactionFameThisMonthPerHour, Converter={StaticResource ShortNumberConverter}, StringFormat='{}{0}/h', FallbackValue=0/h}" Style="{StaticResource LifetimeStats.SubValue}"/>
+                <TextBlock Text="{Binding FactionPointsThisMonth, Converter={StaticResource ShortNumberConverter}, FallbackValue=0}" Style="{StaticResource LifetimeStats.Value}"/>
+                <TextBlock Text="{Binding FactionPointsThisMonthPerHour, Converter={StaticResource ShortNumberConverter}, StringFormat='{}{0}/h', FallbackValue=0/h}" Style="{StaticResource LifetimeStats.SubValue}"/>
             </StackPanel>
             <StackPanel Grid.Row="5" Grid.Column="7" HorizontalAlignment="Center" VerticalAlignment="Center">
                 <TextBlock Text="{Binding GatheringValueThisMonth, Converter={StaticResource ShortNumberConverter}, FallbackValue=0}" Style="{StaticResource LifetimeStats.Value}"/>
@@ -771,8 +771,8 @@
                 <TextBlock Text="{Binding FavorLastMonthPerHour, Converter={StaticResource ShortNumberConverter}, StringFormat='{}{0}/h', FallbackValue=0/h}" Style="{StaticResource LifetimeStats.SubValue}"/>
             </StackPanel>
             <StackPanel Grid.Row="6" Grid.Column="6" HorizontalAlignment="Center" VerticalAlignment="Center">
-                <TextBlock Text="{Binding FactionFameLastMonth, Converter={StaticResource ShortNumberConverter}, FallbackValue=0}" Style="{StaticResource LifetimeStats.Value}"/>
-                <TextBlock Text="{Binding FactionFameLastMonthPerHour, Converter={StaticResource ShortNumberConverter}, StringFormat='{}{0}/h', FallbackValue=0/h}" Style="{StaticResource LifetimeStats.SubValue}"/>
+                <TextBlock Text="{Binding FactionPointsLastMonth, Converter={StaticResource ShortNumberConverter}, FallbackValue=0}" Style="{StaticResource LifetimeStats.Value}"/>
+                <TextBlock Text="{Binding FactionPointsLastMonthPerHour, Converter={StaticResource ShortNumberConverter}, StringFormat='{}{0}/h', FallbackValue=0/h}" Style="{StaticResource LifetimeStats.SubValue}"/>
             </StackPanel>
             <StackPanel Grid.Row="6" Grid.Column="7" HorizontalAlignment="Center" VerticalAlignment="Center">
                 <TextBlock Text="{Binding GatheringValueLastMonth, Converter={StaticResource ShortNumberConverter}, FallbackValue=0}" Style="{StaticResource LifetimeStats.Value}"/>
@@ -805,8 +805,8 @@
                 <TextBlock Text="{Binding FavorThisYearPerHour, Converter={StaticResource ShortNumberConverter}, StringFormat='{}{0}/h', FallbackValue=0/h}" Style="{StaticResource LifetimeStats.SubValue}"/>
             </StackPanel>
             <StackPanel Grid.Row="7" Grid.Column="6" HorizontalAlignment="Center" VerticalAlignment="Center">
-                <TextBlock Text="{Binding FactionFameThisYear, Converter={StaticResource ShortNumberConverter}, FallbackValue=0}" Style="{StaticResource LifetimeStats.Value}"/>
-                <TextBlock Text="{Binding FactionFameThisYearPerHour, Converter={StaticResource ShortNumberConverter}, StringFormat='{}{0}/h', FallbackValue=0/h}" Style="{StaticResource LifetimeStats.SubValue}"/>
+                <TextBlock Text="{Binding FactionPointsThisYear, Converter={StaticResource ShortNumberConverter}, FallbackValue=0}" Style="{StaticResource LifetimeStats.Value}"/>
+                <TextBlock Text="{Binding FactionPointsThisYearPerHour, Converter={StaticResource ShortNumberConverter}, StringFormat='{}{0}/h', FallbackValue=0/h}" Style="{StaticResource LifetimeStats.SubValue}"/>
             </StackPanel>
             <StackPanel Grid.Row="7" Grid.Column="7" HorizontalAlignment="Center" VerticalAlignment="Center">
                 <TextBlock Text="{Binding GatheringValueThisYear, Converter={StaticResource ShortNumberConverter}, FallbackValue=0}" Style="{StaticResource LifetimeStats.Value}"/>
@@ -839,8 +839,8 @@
                 <TextBlock Text="{Binding FavorTotalPerHour, Converter={StaticResource ShortNumberConverter}, StringFormat='{}{0}/h', FallbackValue=0/h}" Style="{StaticResource LifetimeStats.SubValue}"/>
             </StackPanel>
             <StackPanel Grid.Row="8" Grid.Column="6" HorizontalAlignment="Center" VerticalAlignment="Center">
-                <TextBlock Text="{Binding FactionFameTotal, Converter={StaticResource ShortNumberConverter}, FallbackValue=0}" Style="{StaticResource LifetimeStats.Value}" FontWeight="SemiBold"/>
-                <TextBlock Text="{Binding FactionFameTotalPerHour, Converter={StaticResource ShortNumberConverter}, StringFormat='{}{0}/h', FallbackValue=0/h}" Style="{StaticResource LifetimeStats.SubValue}"/>
+                <TextBlock Text="{Binding FactionPointsTotal, Converter={StaticResource ShortNumberConverter}, FallbackValue=0}" Style="{StaticResource LifetimeStats.Value}" FontWeight="SemiBold"/>
+                <TextBlock Text="{Binding FactionPointsTotalPerHour, Converter={StaticResource ShortNumberConverter}, StringFormat='{}{0}/h', FallbackValue=0/h}" Style="{StaticResource LifetimeStats.SubValue}"/>
             </StackPanel>
             <StackPanel Grid.Row="8" Grid.Column="7" HorizontalAlignment="Center" VerticalAlignment="Center">
                 <TextBlock Text="{Binding GatheringValueTotal, Converter={StaticResource ShortNumberConverter}, FallbackValue=0}" Style="{StaticResource LifetimeStats.Value}" FontWeight="SemiBold"/>
