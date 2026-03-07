@@ -117,4 +117,19 @@ public partial class DashboardControl
             vm.DashboardBindings.RepairCostsStatsToggleIcon = EFontAwesomeIcon.Solid_Minus;
         }
     }
+
+    private void LifetimeStatsToggle_OnMouseLeftButtonDown(object sender, MouseButtonEventArgs e)
+    {
+        var vm = (MainWindowViewModel) DataContext;
+        if (vm.DashboardBindings.LifetimeStatsVisibility == Visibility.Visible)
+        {
+            vm.DashboardBindings.LifetimeStatsVisibility = Visibility.Collapsed;
+            vm.DashboardBindings.LifetimeStatsToggleIcon = EFontAwesomeIcon.Solid_Plus;
+        }
+        else
+        {
+            vm.DashboardBindings.LifetimeStatsVisibility = Visibility.Visible;
+            vm.DashboardBindings.LifetimeStatsToggleIcon = EFontAwesomeIcon.Solid_Minus;
+        }
+    }
 }

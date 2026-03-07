@@ -24877,6 +24877,55 @@
       ]
     },
     {
+      "tuid": "SESSION",
+      "tuv": [
+        {
+          "lang": "de-DE",
+          "seg": "Sitzung"
+        },
+        {
+          "lang": "en-US",
+          "seg": "Session"
+        },
+        {
+          "lang": "es-ES",
+          "seg": "Sesión"
+        },
+        {
+          "lang": "fr-FR",
+          "seg": "Session"
+        },
+        {
+          "lang": "ja-JP",
+          "seg": "セッション"
+        },
+        {
+          "lang": "ko-KR",
+          "seg": "세션"
+        },
+        {
+          "lang": "pl-PL",
+          "seg": "Sesja"
+        },
+        {
+          "lang": "pt-BR",
+          "seg": "Sessão"
+        },
+        {
+          "lang": "ru-RU",
+          "seg": "Сессия"
+        },
+        {
+          "lang": "tr-TR",
+          "seg": "Oturum"
+        },
+        {
+          "lang": "zh-CN",
+          "seg": "本次会话"
+        }
+      ]
+    },
+    {
       "tuid": "TODAY",
       "tuv": [
         {
@@ -36551,6 +36600,51 @@
         {
           "lang": "zh-CN",
           "seg": "击杀 / 死亡 (加载中)"
+        }
+      ]
+    },
+    {
+      "tuid": "LIFETIME_STATS",
+      "tuv": [
+        {
+          "lang": "de-DE",
+          "seg": "Lebenszeitleistung"
+        },
+        {
+          "lang": "en-US",
+          "seg": "Lifetime Stats"
+        },
+        {
+          "lang": "es-ES",
+          "seg": "Estadísticas de por vida"
+        },
+        {
+          "lang": "fr-FR",
+          "seg": "Statistiques à vie"
+        },
+        {
+          "lang": "ko-KR",
+          "seg": "평생 통계"
+        },
+        {
+          "lang": "pl-PL",
+          "seg": "Statystyki całego okresu"
+        },
+        {
+          "lang": "pt-BR",
+          "seg": "Estatísticas vitalícias"
+        },
+        {
+          "lang": "ru-RU",
+          "seg": "Статистика за всё время"
+        },
+        {
+          "lang": "tr-TR",
+          "seg": "Tüm Zamanlar"
+        },
+        {
+          "lang": "zh-CN",
+          "seg": "终生统计"
         }
       ]
     },

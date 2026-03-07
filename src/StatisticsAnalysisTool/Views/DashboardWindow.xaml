@@ -78,6 +78,10 @@
                         <Grid>
                             <ContentControl Margin="3" Content="{Binding DashboardBindings}" ContentTemplate="{StaticResource RepairCostsTemplate}" />
                         </Grid>
+                        <Separator Background="{StaticResource SolidColorBrush.Background.3}" Height="4" Margin="0,2,0,2" />
+                        <Grid>
+                            <ContentControl Margin="3" Content="{Binding DashboardBindings.LifetimeStats}" ContentTemplate="{StaticResource LifetimeStatsTemplate}" />
+                        </Grid>
                     </StackPanel>
                 </Grid>
             </ScrollViewer>

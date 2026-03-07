@@ -5,7 +5,9 @@ using StatisticsAnalysisTool.Common.UserSettings;
 using StatisticsAnalysisTool.EstimatedMarketValue;
 using StatisticsAnalysisTool.Models;
 using StatisticsAnalysisTool.Models.NetworkModel;
+using StatisticsAnalysisTool.Enumerations;
 using StatisticsAnalysisTool.Network.Manager;
+using ValueType = StatisticsAnalysisTool.Enumerations.ValueType;
 using StatisticsAnalysisTool.Properties;
 using StatisticsAnalysisTool.ViewModels;
 using System;
@@ -56,17 +58,22 @@ public class GatheringController
             existingGatheredObject.GainedBonusAmount += harvestFinishedObject.CollectorBonusAmount;
             existingGatheredObject.GainedPremiumBonusAmount += harvestFinishedObject.PremiumBonusAmount;
             existingGatheredObject.MiningProcesses++;
+            var amountDelta = harvestFinishedObject.StandardAmount + harvestFinishedObject.CollectorBonusAmount + harvestFinishedObject.PremiumBonusAmount;
+            var valueDelta = FixPoint.FromFloatingPointValue(amountDelta * existingGatheredObject.EstimatedMarketValue.IntegerValue).DoubleValue;
+            _trackingController.StatisticController?.AddValue(ValueType.GatheringValue, valueDelta);
+            _trackingController.LiveStatsTracker?.Add(ValueType.GatheringValue, valueDelta);
         }
         else
         {
             var item = ItemController.GetItemByIndex(harvestFinishedObject.ItemId);
+            var emv = EstimatedMarketValueController.CalculateNearestToAverage(item.EstimatedMarketValues).MarketValue;
             var gathered = new Gathered()
             {
                 TimestampUtc = DateTime.UtcNow.Ticks,
                 UniqueName = item.UniqueName,
                 UserObjectId = harvestFinishedObject.UserObjectId,
                 ObjectId = harvestFinishedObject.ObjectId,
-                EstimatedMarketValue = EstimatedMarketValueController.CalculateNearestToAverage(item.EstimatedMarketValues).MarketValue,
+                EstimatedMarketValue = emv,
                 GainedStandardAmount = harvestFinishedObject.StandardAmount,
                 GainedBonusAmount = harvestFinishedObject.CollectorBonusAmount,
                 GainedPremiumBonusAmount = harvestFinishedObject.PremiumBonusAmount,
@@ -75,6 +82,13 @@ public class GatheringController
                 InstanceName = ClusterController.CurrentCluster.InstanceName,
                 MiningProcesses = 1
             };
+
+            // Emit value for the first harvest of this node so it is counted
+            // in the same way the Gathering tab's TotalMarketValue sum does.
+            var totalAmount = harvestFinishedObject.StandardAmount + harvestFinishedObject.CollectorBonusAmount + harvestFinishedObject.PremiumBonusAmount;
+            var initialValue = FixPoint.FromFloatingPointValue(totalAmount * emv.IntegerValue).DoubleValue;
+            _trackingController.StatisticController?.AddValue(ValueType.GatheringValue, initialValue);
+            _trackingController.LiveStatsTracker?.Add(ValueType.GatheringValue, initialValue);
 
             AddGatheredToBindingCollection(gathered);
             await RemoveEntriesByAutoDeleteDateAsync();
@@ -226,6 +240,10 @@ public class GatheringController
             };
 
             AddGatheredToBindingCollection(gathered);
+
+            var fishedValue = gathered.TotalMarketValue.DoubleValue;
+            _trackingController.StatisticController?.AddValue(ValueType.GatheringValue, fishedValue);
+            _trackingController.LiveStatsTracker?.Add(ValueType.GatheringValue, fishedValue);
             itemCount++;
         }
 

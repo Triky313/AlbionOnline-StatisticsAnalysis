@@ -24,6 +24,8 @@ public class DashboardBindings : BaseViewModel
     private double _totalGainedMightInSession;
     private double _totalGainedFavorInSession;
     private double _totalSilverCostForReSpecInSession;
+    private double _totalGatheredValueInSession;
+    private double _gatheringValuePerHour;
     private double _highestValue;
     private double _fameInPercent;
     private double _silverInPercent;
@@ -57,6 +59,9 @@ public class DashboardBindings : BaseViewModel
     private EFontAwesomeIcon _reSpecStatsToggleIcon;
     private Visibility _repairCostsStatsVisibility;
     private EFontAwesomeIcon _repairCostsStatsToggleIcon;
+    private LifetimeStats _lifetimeStats = new();
+    private Visibility _lifetimeStatsVisibility;
+    private EFontAwesomeIcon _lifetimeStatsToggleIcon;
     private string _translationKillsDeaths = TranslationKillsDeaths;
 
     public DashboardBindings()
@@ -74,6 +79,9 @@ public class DashboardBindings : BaseViewModel
 
         RepairCostsStatsVisibility = SettingsController.CurrentSettings.IsRepairCostsStatsVisible ? Visibility.Visible : Visibility.Collapsed;
         RepairCostsStatsToggleIcon = SettingsController.CurrentSettings.IsRepairCostsStatsVisible ? EFontAwesomeIcon.Solid_Minus : EFontAwesomeIcon.Solid_Plus;
+
+        LifetimeStatsVisibility = SettingsController.CurrentSettings.IsLifetimeStatsVisible ? Visibility.Visible : Visibility.Collapsed;
+        LifetimeStatsToggleIcon = SettingsController.CurrentSettings.IsLifetimeStatsVisible ? EFontAwesomeIcon.Solid_Minus : EFontAwesomeIcon.Solid_Plus;
     }
 
     #region Toggle
@@ -162,6 +170,27 @@ public class DashboardBindings : BaseViewModel
         }
     }
 
+    public Visibility LifetimeStatsVisibility
+    {
+        get => _lifetimeStatsVisibility;
+        set
+        {
+            _lifetimeStatsVisibility = value;
+            SettingsController.CurrentSettings.IsLifetimeStatsVisible = value == Visibility.Visible;
+            OnPropertyChanged();
+        }
+    }
+
+    public EFontAwesomeIcon LifetimeStatsToggleIcon
+    {
+        get => _lifetimeStatsToggleIcon;
+        set
+        {
+            _lifetimeStatsToggleIcon = value;
+            OnPropertyChanged();
+        }
+    }
+
     #endregion
 
     #region Fame / Respec / Silver / Might / Faction
@@ -195,6 +224,8 @@ public class DashboardBindings : BaseViewModel
         TotalGainedReSpecPointsInSession = 0;
         TotalGainedMightInSession = 0;
         TotalGainedFavorInSession = 0;
+        TotalGatheredValueInSession = 0;
+        GatheringValuePerHour = 0;
     }
 
     #region Per hour values
@@ -255,6 +286,16 @@ public class DashboardBindings : BaseViewModel
         set
         {
             _favorPerHour = value;
+            OnPropertyChanged();
+        }
+    }
+
+    public double GatheringValuePerHour
+    {
+        get => _gatheringValuePerHour;
+        set
+        {
+            _gatheringValuePerHour = value;
             OnPropertyChanged();
         }
     }
@@ -383,6 +424,16 @@ public class DashboardBindings : BaseViewModel
             _totalGainedFavorInSession = value;
             HighestValue = GetHighestValue();
             FavorInPercent = _totalGainedFavorInSession / HighestValue * 100;
+            OnPropertyChanged();
+        }
+    }
+
+    public double TotalGatheredValueInSession
+    {
+        get => _totalGatheredValueInSession;
+        set
+        {
+            _totalGatheredValueInSession = value;
             OnPropertyChanged();
         }
     }
@@ -559,6 +610,20 @@ public class DashboardBindings : BaseViewModel
 
     #endregion
 
+    #region Lifetime stats
+
+    public LifetimeStats LifetimeStats
+    {
+        get => _lifetimeStats;
+        set
+        {
+            _lifetimeStats = value;
+            OnPropertyChanged();
+        }
+    }
+
+    #endregion
+
     #region Repair costs
 
     public long RepairCostsToday
@@ -641,4 +706,5 @@ public class DashboardBindings : BaseViewModel
     public static string TranslationKillsDeathsLoading => LocalizationController.Translation("KILLS_DEATHS_LOADING");
     public static string TranslationLootedChests => LocalizationController.Translation("LOOTED_CHESTS");
     public static string TranslationRepairCosts => LocalizationController.Translation("REPAIR_COSTS");
+    public static string TranslationLifetimeStats => LocalizationController.Translation("LIFETIME_STATS");
 }

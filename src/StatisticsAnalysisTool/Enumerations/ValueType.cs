@@ -11,5 +11,7 @@ public enum ValueType
     Favor,
     RepairCosts,
     PaidSilverForReSpec,
-    BrecilianStanding
+    BrecilianStanding,
+    ActiveTime = 100,
+    GatheringValue = 101
 }
