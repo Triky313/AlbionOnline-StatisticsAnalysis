@@ -13,7 +13,6 @@ namespace StatisticsAnalysisTool.Models;
 
 public class Item
 {
-    private BitmapImage _icon;
     public string LocalizationNameVariable { get; set; }
     public string LocalizationDescriptionVariable { get; set; }
     public LocalizedNames LocalizedNames { get; set; }
@@ -40,7 +39,7 @@ public class Item
     }
 
     [JsonIgnore]
-    public BitmapImage Icon => Application.Current.Dispatcher.Invoke(() => _icon ??= ImageController.GetItemImage(UniqueName));
+    public BitmapImage Icon => Application.Current.Dispatcher.Invoke(() => ImageController.GetItemImage(UniqueName));
 
     public ItemJsonObject FullItemInformation { get; set; }
     public int AlertModeMinSellPriceIsUndercutPrice { get; set; }
