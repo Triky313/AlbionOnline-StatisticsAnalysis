@@ -10,7 +10,6 @@ namespace StatisticsAnalysisTool.DamageMeter;
 
 public class SpellsSnapshotFragment : BaseViewModel
 {
-    private BitmapImage _icon;
     private Item _item;
 
     public int SpellIndex { get; set; }
@@ -28,5 +27,5 @@ public class SpellsSnapshotFragment : BaseViewModel
     public string LocalizationDescription => SpellData.GetLocalizationDescription(UniqueName);
 
     public Item Item => Application.Current.Dispatcher.Invoke(() => _item ??= ItemController.GetItemByIndex(ItemIndex));
-    public BitmapImage Icon => Application.Current.Dispatcher.Invoke(() => _icon ??= ImageController.GetSpellImage(UniqueName));
+    public BitmapImage Icon => Application.Current.Dispatcher.Invoke(() => ImageController.GetSpellImage(UniqueName));
 }

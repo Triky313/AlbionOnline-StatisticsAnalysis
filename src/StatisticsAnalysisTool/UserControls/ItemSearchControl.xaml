@@ -47,7 +47,10 @@
         <userControls:ItemSearchImageCounterControl VerticalAlignment="Top" HorizontalAlignment="Right" LocalImageCounter="{Binding LocalImageCounter}" 
                                                     ItemCounterString="{Binding ItemCounterString}" />
 
-        <ListView SnapsToDevicePixels="True" ItemsSource="{Binding ItemsView}" ItemContainerStyle="{StaticResource {x:Type ListViewItem}}" 
+        <ListView SnapsToDevicePixels="True" ItemsSource="{Binding ItemsView}" ItemContainerStyle="{StaticResource {x:Type ListViewItem}}"
+                  ScrollViewer.CanContentScroll="True"
+                  VirtualizingPanel.IsVirtualizing="True"
+                  VirtualizingPanel.VirtualizationMode="Recycling"
                   Margin="0,90,0,0" SelectionMode="Single" MouseDoubleClick="LvItems_MouseDoubleClick" d:ItemsSource="{d:SampleData ItemCount=5}">
             <ListView.View>
                 <GridView>

@@ -13,7 +13,6 @@ public class UsedSpellFragment : BaseViewModel
 {
     private string _uniqueName;
     private long _damageHealValue;
-    private BitmapImage _icon;
     private string _damageHealShortString;
     private string _target;
     private string _category;
@@ -162,5 +161,5 @@ public class UsedSpellFragment : BaseViewModel
         }
     }
 
-    public BitmapImage Icon => Application.Current.Dispatcher.Invoke(() => _icon ??= ImageController.GetSpellImage(UniqueName));
+    public BitmapImage Icon => Application.Current.Dispatcher.Invoke(() => ImageController.GetSpellImage(UniqueName));
 }
