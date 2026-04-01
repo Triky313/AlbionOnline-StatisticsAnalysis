@@ -38450,6 +38450,97 @@
       ]
     },
     {
+      "tuid": "NO_UPDATE_AVAILABLE_MESSAGE",
+      "tuv": [
+        {
+          "lang": "de-DE",
+          "seg": "Es ist derzeit kein Update verfügbar."
+        },
+        {
+          "lang": "en-US",
+          "seg": "There is no update available at the moment."
+        }
+      ]
+    },
+    {
+      "tuid": "NO_UPDATE_AVAILABLE_TITLE",
+      "tuv": [
+        {
+          "lang": "de-DE",
+          "seg": "Kein Update verfügbar"
+        },
+        {
+          "lang": "en-US",
+          "seg": "No Update Available"
+        }
+      ]
+    },
+    {
+      "tuid": "UPDATE_AVAILABLE_REQUIRED_MESSAGE",
+      "tuv": [
+        {
+          "lang": "de-DE",
+          "seg": "Es ist eine neue Version {0} verfügbar. Du verwendest aktuell Version {1}. Dieses Update ist erforderlich. Drüccke auf OK, um das Update zu starten."
+        },
+        {
+          "lang": "en-US",
+          "seg": "There is a new version {0} available. You are currently using version {1}. This update is required. Press OK to begin updating the application."
+        }
+      ]
+    },
+    {
+      "tuid": "UPDATE_AVAILABLE_OPTIONAL_MESSAGE",
+      "tuv": [
+        {
+          "lang": "de-DE",
+          "seg": "Es ist eine neue Version {0} verfügbar. Du verwendest aktuell Version {1}. Möchtest du die Anwendung jetzt aktualisieren?"
+        },
+        {
+          "lang": "en-US",
+          "seg": "There is a new version {0} available. You are currently using version {1}. Do you want to update the application now?"
+        }
+      ]
+    },
+    {
+      "tuid": "UPDATE_AVAILABLE_TITLE",
+      "tuv": [
+        {
+          "lang": "de-DE",
+          "seg": "Update verfügbar"
+        },
+        {
+          "lang": "en-US",
+          "seg": "Update Available"
+        }
+      ]
+    },
+    {
+      "tuid": "UPDATE_CHECK_FAILED_MESSAGE",
+      "tuv": [
+        {
+          "lang": "de-DE",
+          "seg": "Der Update-Server konnte nicht erreicht werden. Bitte prüfe deine Internetverbindung und versuche es später erneut."
+        },
+        {
+          "lang": "en-US",
+          "seg": "There is a problem reaching the update server. Please check your internet connection and try again later."
+        }
+      ]
+    },
+    {
+      "tuid": "UPDATE_CHECK_FAILED_TITLE",
+      "tuv": [
+        {
+          "lang": "de-DE",
+          "seg": "Update-Prüfung fehlgeschlagen"
+        },
+        {
+          "lang": "en-US",
+          "seg": "Update Check Failed"
+        }
+      ]
+    },
+    {
       "tuid": "NPCAP_INFO_DIALOG_MESSAGE",
       "tuv": [
         {
