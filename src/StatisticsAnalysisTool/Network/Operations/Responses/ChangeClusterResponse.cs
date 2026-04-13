@@ -27,7 +27,7 @@ public class ChangeClusterResponse
             if (parameters.ContainsKey(0))
             {
                 var clusterString = string.IsNullOrEmpty(parameters[0].ToString()) ? string.Empty : parameters[0].ToString();
-                var splitName = clusterString?.Split(new[] { "@" }, StringSplitOptions.RemoveEmptyEntries);
+                var splitName = clusterString?.Split(["@"], StringSplitOptions.RemoveEmptyEntries);
 
                 if (splitName?.Length > 1 && clusterString.ToLower().Contains('@'))
                 {
