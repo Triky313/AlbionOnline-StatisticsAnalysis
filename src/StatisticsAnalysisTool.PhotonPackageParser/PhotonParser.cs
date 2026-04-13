@@ -11,7 +11,7 @@ public abstract class PhotonParser : IPhotonReceiver
     private const int CommandHeaderLength = 12;
     private const int PhotonHeaderLength = 12;
 
-    private readonly Dictionary<int, SegmentedPackage?> _pendingSegments = new();
+    private readonly Dictionary<int, SegmentedPackage> _pendingSegments = new();
 
     public void ReceivePacket(byte[] payload)
     {
@@ -213,18 +213,38 @@ public abstract class PhotonParser : IPhotonReceiver
 
     private void HandleSendFragment(byte[] source, ref int offset, ref int commandLength)
     {
-        NumberDeserializer.Deserialize(out int startSequenceNumber, source, ref offset);
+        if (!NumberDeserializer.Deserialize(out int startSequenceNumber, source, ref offset))
+        {
+            return;
+        }
         commandLength -= 4;
-        NumberDeserializer.Deserialize(out int _, source, ref offset);
+        if (!NumberDeserializer.Deserialize(out int _, source, ref offset))
+        {
+            return;
+        }
         commandLength -= 4;
-        NumberDeserializer.Deserialize(out int _, source, ref offset);
+        if (!NumberDeserializer.Deserialize(out int _, source, ref offset))
+        {
+            return;
+        }
         commandLength -= 4;
-        NumberDeserializer.Deserialize(out int totalLength, source, ref offset);
+        if (!NumberDeserializer.Deserialize(out int totalLength, source, ref offset))
+        {
+            return;
+        }
         commandLength -= 4;
-        NumberDeserializer.Deserialize(out int fragmentOffset, source, ref offset);
+        if (!NumberDeserializer.Deserialize(out int fragmentOffset, source, ref offset))
+        {
+            return;
+        }
         commandLength -= 4;
 
         int fragmentLength = commandLength;
+        if (totalLength <= 0 || fragmentLength <= 0)
+        {
+            return;
+        }
+
         HandleSegmentedPayload(startSequenceNumber, totalLength, fragmentLength, fragmentOffset, source, ref offset);
     }
 
@@ -237,31 +257,66 @@ public abstract class PhotonParser : IPhotonReceiver
 
     private void HandleSegmentedPayload(int startSequenceNumber, int totalLength, int fragmentLength, int fragmentOffset, byte[] source, ref int offset)
     {
-        SegmentedPackage? segmentedPackage = GetSegmentedPackage(startSequenceNumber, totalLength);
+        SegmentedPackage segmentedPackage = GetSegmentedPackage(startSequenceNumber, totalLength);
+
+        if (fragmentOffset < 0 || fragmentLength <= 0 || fragmentOffset > segmentedPackage.TotalLength)
+        {
+            _pendingSegments.Remove(startSequenceNumber);
+            return;
+        }
+
+        if (fragmentLength > segmentedPackage.TotalLength - fragmentOffset)
+        {
+            _pendingSegments.Remove(startSequenceNumber);
+            return;
+        }
+
+        if (offset < 0 || offset > source.Length || fragmentLength > source.Length - offset)
+        {
+            _pendingSegments.Remove(startSequenceNumber);
+            return;
+        }
 
         Buffer.BlockCopy(source, offset, segmentedPackage.TotalPayload, fragmentOffset, fragmentLength);
         offset += fragmentLength;
-        segmentedPackage.BytesWritten += fragmentLength;
 
-        if (segmentedPackage.BytesWritten >= segmentedPackage.TotalLength)
+        int fragmentEnd = fragmentOffset + fragmentLength;
+        for (int index = fragmentOffset; index < fragmentEnd; index++)
+        {
+            if (segmentedPackage.ReceivedBytes[index])
+            {
+                continue;
+            }
+
+            segmentedPackage.ReceivedBytes[index] = true;
+            segmentedPackage.ReceivedBytesCount++;
+        }
+
+        if (segmentedPackage.ReceivedBytesCount >= segmentedPackage.TotalLength)
         {
             _pendingSegments.Remove(startSequenceNumber);
             HandleFinishedSegmentedPackage(segmentedPackage.TotalPayload);
         }
     }
 
-    private SegmentedPackage? GetSegmentedPackage(int startSequenceNumber, int totalLength)
+    private SegmentedPackage GetSegmentedPackage(int startSequenceNumber, int totalLength)
     {
         if (_pendingSegments.TryGetValue(startSequenceNumber, out SegmentedPackage? segmentedPackage))
         {
-            return segmentedPackage;
+            if (segmentedPackage != null && segmentedPackage.TotalLength != totalLength)
+            {
+                _pendingSegments.Remove(startSequenceNumber);
+                segmentedPackage = new SegmentedPackage(totalLength);
+                _pendingSegments.Add(startSequenceNumber, segmentedPackage);
+            }
+
+            if (segmentedPackage != null)
+            {
+                return segmentedPackage;
+            }
         }
 
-        segmentedPackage = new SegmentedPackage
-        {
-            TotalLength = totalLength,
-            TotalPayload = new byte[totalLength],
-        };
+        segmentedPackage = new SegmentedPackage(totalLength);
         _pendingSegments.Add(startSequenceNumber, segmentedPackage);
 
         return segmentedPackage;

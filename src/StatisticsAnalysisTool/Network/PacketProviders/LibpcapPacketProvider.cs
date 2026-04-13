@@ -159,6 +159,11 @@ public class LibpcapPacketProvider : PacketProvider
 
         if (etherType == 0x0800) // IPv4
         {
+            if (IsFragmentedIPv4(l3))
+            {
+                return;
+            }
+
             var ipReader = new BinaryFormatReader(l3);
             var ip4 = new IPv4PacketShape();
             if (!ipReader.TryReadIPv4Packet(ref ip4))
@@ -196,6 +201,20 @@ public class LibpcapPacketProvider : PacketProvider
                     return;
             }
         }
+    }
+
+    private static bool IsFragmentedIPv4(ReadOnlySpan<byte> bytes)
+    {
+        if (bytes.Length < 8)
+        {
+            return true;
+        }
+
+        ushort flagsAndFragmentOffset = (ushort) ((bytes[6] << 8) | bytes[7]);
+        bool hasMoreFragments = (flagsAndFragmentOffset & 0x2000) != 0;
+        int fragmentOffset = (flagsAndFragmentOffset & 0x1FFF) * 8;
+
+        return hasMoreFragments || fragmentOffset != 0;
     }
 
     private static bool TryReadIPv6(ReadOnlySpan<byte> bytes, out byte nextHeader, out ReadOnlySpan<byte> payload)

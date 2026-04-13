@@ -1,6 +1,6 @@
 ﻿using Serilog;
 using StatisticsAnalysisTool.Abstractions;
-using StatisticsAnalysisTool.Common;
+using StatisticsAnalysisTool.Diagnostics;
 using System;
 using System.Buffers.Binary;
 using System.Collections.Concurrent;
@@ -11,13 +11,12 @@ using System.Net.NetworkInformation;
 using System.Net.Sockets;
 using System.Reflection;
 using System.Threading.Tasks;
-using StatisticsAnalysisTool.Diagnostics;
 
 namespace StatisticsAnalysisTool.Network.PacketProviders;
 
-public class SocketsPacketProvider : PacketProvider
+public class SocketsPacketProvider(IPhotonReceiver photonReceiver) : PacketProvider
 {
-    private readonly IPhotonReceiver _photonReceiver;
+    private readonly IPhotonReceiver _photonReceiver = photonReceiver ?? throw new ArgumentNullException(nameof(photonReceiver));
 
     private readonly List<Socket> _socketsV4 = [];
     private readonly List<Socket> _socketsV6 = [];
@@ -25,11 +24,6 @@ public class SocketsPacketProvider : PacketProvider
     private readonly List<Task> _receiveTasks = [];
     private readonly ConcurrentBag<byte[]> _buffers = [];
     private volatile bool _stopReceiving;
-
-    public SocketsPacketProvider(IPhotonReceiver photonReceiver)
-    {
-        _photonReceiver = photonReceiver ?? throw new ArgumentNullException(nameof(photonReceiver));
-    }
 
     public override bool IsRunning => _socketsV4.Any(s => s is { IsBound: true }) || _socketsV6.Any(s => s is { IsBound: true });
 
@@ -216,8 +210,9 @@ public class SocketsPacketProvider : PacketProvider
         }
 
         ushort flagsFrag = BinaryPrimitives.ReadUInt16BigEndian(frame.Slice(6, 2));
+        bool hasMoreFragments = (flagsFrag & 0x2000) != 0;
         int fragOffset = (flagsFrag & 0x1FFF) * 8; // under 13 Bits
-        if (fragOffset != 0)
+        if (hasMoreFragments || fragOffset != 0)
         {
             return;
         }
