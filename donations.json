@@ -1,5 +1,13 @@
 [
 	{
+	"Timestamp": "2025-08-29T00:00:00",
+	"Amount": 50000000,
+	"RealMoneyAmount": 0,
+	"Contributor": "TheplotsY",
+	"IsDonationRealMoney": false,
+	"Server": "EU"
+    },
+	{
 	"Timestamp": "2025-08-25T00:00:00",
 	"Amount": 8000000,
 	"RealMoneyAmount": 0,
