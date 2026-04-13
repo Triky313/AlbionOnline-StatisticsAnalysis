@@ -1,6 +1,6 @@
+using StatisticsAnalysisTool.Protocol18.Photon;
 using System.Collections;
 using System.Text;
-using StatisticsAnalysisTool.Protocol18.Photon;
 
 namespace StatisticsAnalysisTool.Protocol18;
 
@@ -720,17 +720,11 @@ public static class Protocol18Deserializer
     }
 }
 
-internal sealed class Protocol18CustomType
+internal sealed class Protocol18CustomType(byte typeCode, byte[] data)
 {
-    public byte TypeCode { get; }
+    public byte TypeCode { get; } = typeCode;
 
-    public byte[] Data { get; }
-
-    public Protocol18CustomType(byte typeCode, byte[] data)
-    {
-        TypeCode = typeCode;
-        Data = data;
-    }
+    public byte[] Data { get; } = data;
 
     public override string ToString()
     {

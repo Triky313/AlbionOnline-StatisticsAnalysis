@@ -22,7 +22,7 @@ public abstract class PhotonParser : IPhotonReceiver
 
         int offset = 0;
 
-        if (!NumberDeserializer.Deserialize(out short peerId, payload, ref offset))
+        if (!NumberDeserializer.Deserialize(out short _, payload, ref offset))
         {
             return;
         }
@@ -37,12 +37,12 @@ public abstract class PhotonParser : IPhotonReceiver
             return;
         }
 
-        if (!NumberDeserializer.Deserialize(out int timestamp, payload, ref offset))
+        if (!NumberDeserializer.Deserialize(out int _, payload, ref offset))
         {
             return;
         }
 
-        if (!NumberDeserializer.Deserialize(out int challenge, payload, ref offset))
+        if (!NumberDeserializer.Deserialize(out int _, payload, ref offset))
         {
             return;
         }
@@ -121,11 +121,11 @@ public abstract class PhotonParser : IPhotonReceiver
         {
             return;
         }
-        if (!ReadByte(out byte channelId, source, ref offset))
+        if (!ReadByte(out byte _, source, ref offset))
         {
             return;
         }
-        if (!ReadByte(out byte commandFlags, source, ref offset))
+        if (!ReadByte(out byte _, source, ref offset))
         {
             return;
         }
@@ -135,7 +135,7 @@ public abstract class PhotonParser : IPhotonReceiver
         {
             return;
         }
-        if (!NumberDeserializer.Deserialize(out int sequenceNumber, source, ref offset))
+        if (!NumberDeserializer.Deserialize(out int _, source, ref offset))
         {
             return;
         }
@@ -215,9 +215,9 @@ public abstract class PhotonParser : IPhotonReceiver
     {
         NumberDeserializer.Deserialize(out int startSequenceNumber, source, ref offset);
         commandLength -= 4;
-        NumberDeserializer.Deserialize(out int fragmentCount, source, ref offset);
+        NumberDeserializer.Deserialize(out int _, source, ref offset);
         commandLength -= 4;
-        NumberDeserializer.Deserialize(out int fragmentNumber, source, ref offset);
+        NumberDeserializer.Deserialize(out int _, source, ref offset);
         commandLength -= 4;
         NumberDeserializer.Deserialize(out int totalLength, source, ref offset);
         commandLength -= 4;
