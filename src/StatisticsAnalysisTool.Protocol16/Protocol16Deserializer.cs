@@ -1,70 +1,92 @@
-﻿using System.Collections;
+using System.Collections;
 using System.Text;
 using StatisticsAnalysisTool.Protocol16.Photon;
 
 namespace StatisticsAnalysisTool.Protocol16;
 
-public static class Protocol16Deserializer
+public static class Protocol18Deserializer
 {
-    private static readonly ThreadLocal<byte[]> _byteBuffer = new ThreadLocal<byte[]>(() => new byte[sizeof(long)]);
-    #region methods
+    private const byte MaxSlimCustomTypeCode = 228;
 
-    public static object Deserialize(Protocol16Stream input)
+    private static readonly ThreadLocal<byte[]> ScalarBuffer = new(() => new byte[sizeof(long)]);
+
+    private static readonly byte[] BoolMasks =
     {
-        return Deserialize(input, (byte) input.ReadByte());
+        1,
+        2,
+        4,
+        8,
+        16,
+        32,
+        64,
+        128,
+    };
+
+    public static object? Deserialize(Protocol16Stream input)
+    {
+        return Deserialize(input, ReadByte(input));
     }
 
-    public static object Deserialize(Protocol16Stream input, byte typeCode)
+    public static object? Deserialize(Protocol16Stream input, byte typeCode)
     {
-        switch ((Protocol16Type) typeCode)
+        if (typeCode >= (byte) Protocol18Type.CustomTypeSlim && typeCode <= MaxSlimCustomTypeCode)
         {
-            case Protocol16Type.Unknown:
-            case Protocol16Type.Null:
-                return null;
-            case Protocol16Type.Dictionary:
-                return DeserializeDictionary(input);
-            case Protocol16Type.StringArray:
-                return DeserializeStringArray(input);
-            case Protocol16Type.Byte:
-                return DeserializeByte(input);
-            case Protocol16Type.Double:
-                return DeserializeDouble(input);
-            case Protocol16Type.EventData:
-                return DeserializeEventData(input);
-            case Protocol16Type.Float:
-                return DeserializeFloat(input);
-            case Protocol16Type.Integer:
-                return DeserializeInteger(input);
-            case Protocol16Type.Hashtable:
-                return DeserializeHashtable(input);
-            case Protocol16Type.Short:
-                return DeserializeShort(input);
-            case Protocol16Type.Long:
-                return DeserializeLong(input);
-            case Protocol16Type.IntegerArray:
-                return DeserializeIntArray(input);
-            case Protocol16Type.Boolean:
-                return DeserializeBoolean(input);
-            case Protocol16Type.OperationResponse:
-                return DeserializeOperationResponse(input);
-            case Protocol16Type.OperationRequest:
-                return DeserializeOperationRequest(input);
-            case Protocol16Type.String:
-                return DeserializeString(input);
-            case Protocol16Type.ByteArray:
-                return DeserializeByteArray(input);
-            case Protocol16Type.Array:
-                return DeserializeArray(input);
-            case Protocol16Type.ObjectArray:
-                return DeserializeObjectArray(input);
-            default:
-                throw new ArgumentException($"Type code: {typeCode} not implemented.");
+            return DeserializeCustomType(input, typeCode);
         }
+
+        return (Protocol18Type) typeCode switch
+        {
+            Protocol18Type.Boolean => DeserializeBoolean(input),
+            Protocol18Type.Byte => ReadByte(input),
+            Protocol18Type.Short => DeserializeShort(input),
+            Protocol18Type.Float => DeserializeFloat(input),
+            Protocol18Type.Double => DeserializeDouble(input),
+            Protocol18Type.String => DeserializeString(input),
+            Protocol18Type.Null => null,
+            Protocol18Type.CompressedInt => ReadCompressedInt32(input),
+            Protocol18Type.CompressedLong => ReadCompressedInt64(input),
+            Protocol18Type.Int1 => ReadInt1(input, signNegative: false),
+            Protocol18Type.Int1Negative => ReadInt1(input, signNegative: true),
+            Protocol18Type.Int2 => ReadInt2(input, signNegative: false),
+            Protocol18Type.Int2Negative => ReadInt2(input, signNegative: true),
+            Protocol18Type.Long1 => ReadLong1(input, signNegative: false),
+            Protocol18Type.Long1Negative => ReadLong1(input, signNegative: true),
+            Protocol18Type.Long2 => ReadLong2(input, signNegative: false),
+            Protocol18Type.Long2Negative => ReadLong2(input, signNegative: true),
+            Protocol18Type.Custom => DeserializeCustomType(input),
+            Protocol18Type.Dictionary => DeserializeDictionary(input),
+            Protocol18Type.Hashtable => DeserializeHashtable(input),
+            Protocol18Type.ObjectArray => DeserializeObjectArray(input),
+            Protocol18Type.OperationRequest => DeserializeOperationRequest(input),
+            Protocol18Type.OperationResponse => DeserializeOperationResponse(input),
+            Protocol18Type.EventData => DeserializeEventData(input),
+            Protocol18Type.BooleanFalse => false,
+            Protocol18Type.BooleanTrue => true,
+            Protocol18Type.ShortZero => (short) 0,
+            Protocol18Type.IntZero => 0,
+            Protocol18Type.LongZero => 0L,
+            Protocol18Type.FloatZero => 0f,
+            Protocol18Type.DoubleZero => 0d,
+            Protocol18Type.ByteZero => (byte) 0,
+            Protocol18Type.Array => DeserializeArrayInArray(input),
+            Protocol18Type.BooleanArray => DeserializeBooleanArray(input),
+            Protocol18Type.ByteArray => DeserializeByteArray(input),
+            Protocol18Type.ShortArray => DeserializeShortArray(input),
+            Protocol18Type.FloatArray => DeserializeFloatArray(input),
+            Protocol18Type.DoubleArray => DeserializeDoubleArray(input),
+            Protocol18Type.StringArray => DeserializeStringArray(input),
+            Protocol18Type.CompressedIntArray => DeserializeCompressedIntArray(input),
+            Protocol18Type.CompressedLongArray => DeserializeCompressedLongArray(input),
+            Protocol18Type.CustomTypeArray => DeserializeCustomTypeArray(input),
+            Protocol18Type.DictionaryArray => DeserializeDictionaryArray(input),
+            Protocol18Type.HashtableArray => DeserializeHashtableArray(input),
+            _ => throw new ArgumentException($"Protocol18 type code {typeCode} is not supported."),
+        };
     }
 
     public static OperationRequest DeserializeOperationRequest(Protocol16Stream input)
     {
-        byte operationCode = DeserializeByte(input);
+        byte operationCode = ReadByte(input);
         Dictionary<byte, object> parameters = DeserializeParameterTable(input);
 
         return new OperationRequest(operationCode, parameters);
@@ -72,9 +94,9 @@ public static class Protocol16Deserializer
 
     public static OperationResponse DeserializeOperationResponse(Protocol16Stream input)
     {
-        byte operationCode = DeserializeByte(input);
+        byte operationCode = ReadByte(input);
         short returnCode = DeserializeShort(input);
-        string debugMessage = (Deserialize(input, DeserializeByte(input)) as string);
+        string debugMessage = Deserialize(input, ReadByte(input)) as string ?? string.Empty;
         Dictionary<byte, object> parameters = DeserializeParameterTable(input);
 
         return new OperationResponse(operationCode, returnCode, debugMessage, parameters);
@@ -82,144 +104,46 @@ public static class Protocol16Deserializer
 
     public static EventData DeserializeEventData(Protocol16Stream input)
     {
-        byte code = DeserializeByte(input);
+        byte code = ReadByte(input);
         Dictionary<byte, object> parameters = DeserializeParameterTable(input);
 
         return new EventData(code, parameters);
     }
-    #endregion
 
-    #region private methods
-    private static Type GetTypeOfCode(byte typeCode)
+    public static short DeserializeShort(Protocol16Stream input)
     {
-        switch ((Protocol16Type) typeCode)
-        {
-            case Protocol16Type.Unknown:
-            case Protocol16Type.Null:
-                return typeof(object);
-            case Protocol16Type.Dictionary:
-                return typeof(IDictionary);
-            case Protocol16Type.StringArray:
-                return typeof(string[]);
-            case Protocol16Type.Byte:
-                return typeof(byte);
-            case Protocol16Type.Double:
-                return typeof(double);
-            case Protocol16Type.EventData:
-                return typeof(EventData);
-            case Protocol16Type.Float:
-                return typeof(float);
-            case Protocol16Type.Integer:
-                return typeof(int);
-            case Protocol16Type.Short:
-                return typeof(short);
-            case Protocol16Type.Long:
-                return typeof(long);
-            case Protocol16Type.IntegerArray:
-                return typeof(int[]);
-            case Protocol16Type.Boolean:
-                return typeof(bool);
-            case Protocol16Type.OperationResponse:
-                return typeof(OperationResponse);
-            case Protocol16Type.OperationRequest:
-                return typeof(OperationRequest);
-            case Protocol16Type.String:
-                return typeof(string);
-            case Protocol16Type.ByteArray:
-                return typeof(byte[]);
-            case Protocol16Type.Array:
-                return typeof(Array);
-            case Protocol16Type.ObjectArray:
-                return typeof(object[]);
-            default:
-                throw new ArgumentException($"Type code: {typeCode} not implemented.");
-        }
-    }
+        byte[] buffer = GetScalarBuffer();
+        ReadExactly(input, buffer, sizeof(short));
 
-    private static byte DeserializeByte(Stream stream)
-    {
-        return (byte) stream.ReadByte();
+        return (short) (buffer[0] | (buffer[1] << 8));
     }
 
     private static bool DeserializeBoolean(Stream input)
     {
-        return input.ReadByte() != 0;
-    }
-
-    public static short DeserializeShort(Protocol16Stream input)
-    {
-        var buffer = _byteBuffer.Value;
-        _ = input.Read(buffer, 0, sizeof(short));
-
-        return (short) (buffer[0] << 8 | buffer[1]);
-    }
-
-    private static int DeserializeInteger(Stream input)
-    {
-        var buffer = _byteBuffer.Value;
-        _ = input.Read(buffer, 0, sizeof(int));
-
-        return buffer[0] << 24 | buffer[1] << 16 | buffer[2] << 8 | buffer[3];
-    }
-
-    private static object DeserializeHashtable(Protocol16Stream input)
-    {
-        int size = DeserializeShort(input);
-        var output = new Hashtable(size);
-        DeserializeDictionaryElements(input, output, size, (byte) Protocol16Type.Unknown, (byte) Protocol16Type.Unknown);
-        return output;
-    }
-
-    private static long DeserializeLong(Stream input)
-    {
-        var buffer = _byteBuffer.Value;
-        _ = input.Read(buffer, 0, sizeof(long));
-
-        if (BitConverter.IsLittleEndian)
-        {
-            return (long) buffer[0] << 56 | (long) buffer[1] << 48 | (long) buffer[2] << 40 | (long) buffer[3] << 32 | (long) buffer[4] << 24 | (long) buffer[5] << 16 | (long) buffer[6] << 8 | buffer[7];
-        }
-
-        return BitConverter.ToInt64(buffer, 0);
+        return ReadByte(input) != 0;
     }
 
     private static float DeserializeFloat(Stream input)
     {
-        var buffer = _byteBuffer.Value;
-        _ = input.Read(buffer, 0, sizeof(float));
+        byte[] buffer = GetScalarBuffer();
+        ReadExactly(input, buffer, sizeof(float));
 
-        if (BitConverter.IsLittleEndian)
+        if (!BitConverter.IsLittleEndian)
         {
-            byte b0 = buffer[0];
-            byte b1 = buffer[1];
-            buffer[0] = buffer[3];
-            buffer[1] = buffer[2];
-            buffer[2] = b1;
-            buffer[3] = b0;
+            Array.Reverse(buffer, 0, sizeof(float));
         }
 
         return BitConverter.ToSingle(buffer, 0);
     }
 
-    private static double DeserializeDouble(Protocol16Stream input)
+    private static double DeserializeDouble(Stream input)
     {
-        var buffer = _byteBuffer.Value;
-        _ = input.Read(buffer, 0, sizeof(double));
+        byte[] buffer = GetScalarBuffer();
+        ReadExactly(input, buffer, sizeof(double));
 
-        if (BitConverter.IsLittleEndian)
+        if (!BitConverter.IsLittleEndian)
         {
-            byte b0 = buffer[0];
-            byte b1 = buffer[1];
-            byte b2 = buffer[2];
-            byte b3 = buffer[3];
-            buffer[0] = buffer[7];
-            buffer[1] = buffer[6];
-            buffer[2] = buffer[5];
-            buffer[3] = buffer[4];
-            buffer[4] = b3;
-            buffer[5] = b2;
-            buffer[6] = b1;
-            buffer[7] = b0;
+            Array.Reverse(buffer, 0, sizeof(double));
         }
 
         return BitConverter.ToDouble(buffer, 0);
@@ -227,37 +151,123 @@ public static class Protocol16Deserializer
 
     private static string DeserializeString(Protocol16Stream input)
     {
-        int stringSize = DeserializeShort(input);
-        if (stringSize == 0)
+        int stringLength = checked((int) ReadCompressedUInt32(input));
+        if (stringLength == 0)
         {
             return string.Empty;
         }
 
-        var buffer = new byte[stringSize];
+        byte[] buffer = new byte[stringLength];
+        ReadExactly(input, buffer, stringLength);
 
-        _ = input.Read(buffer, 0, stringSize);
-
-        return Encoding.UTF8.GetString(buffer, 0, stringSize);
+        return Encoding.UTF8.GetString(buffer, 0, stringLength);
     }
 
     private static byte[] DeserializeByteArray(Protocol16Stream input)
     {
-        int arraySize = DeserializeInteger(input);
+        int arrayLength = checked((int) ReadCompressedUInt32(input));
+        if (arrayLength == 0)
+        {
+            return [];
+        }
 
-        var buffer = new byte[arraySize];
-        _ = input.Read(buffer, 0, arraySize);
+        byte[] buffer = new byte[arrayLength];
+        ReadExactly(input, buffer, arrayLength);
 
         return buffer;
     }
 
-    private static int[] DeserializeIntArray(Protocol16Stream input)
+    private static short[] DeserializeShortArray(Protocol16Stream input)
     {
-        int arraySize = DeserializeInteger(input);
-
-        var array = new int[arraySize];
-        for (int i = 0; i < arraySize; i++)
+        int arrayLength = checked((int) ReadCompressedUInt32(input));
+        var array = new short[arrayLength];
+        for (int i = 0; i < arrayLength; i++)
         {
-            array[i] = DeserializeInteger(input);
+            array[i] = DeserializeShort(input);
+        }
+
+        return array;
+    }
+
+    private static float[] DeserializeFloatArray(Protocol16Stream input)
+    {
+        int arrayLength = checked((int) ReadCompressedUInt32(input));
+        int byteLength = checked(arrayLength * sizeof(float));
+        var array = new float[arrayLength];
+        if (byteLength == 0)
+        {
+            return array;
+        }
+
+        byte[] buffer = new byte[byteLength];
+        ReadExactly(input, buffer, byteLength);
+
+        if (!BitConverter.IsLittleEndian)
+        {
+            for (int i = 0; i < byteLength; i += sizeof(float))
+            {
+                Array.Reverse(buffer, i, sizeof(float));
+            }
+        }
+
+        Buffer.BlockCopy(buffer, 0, array, 0, byteLength);
+        return array;
+    }
+
+    private static double[] DeserializeDoubleArray(Protocol16Stream input)
+    {
+        int arrayLength = checked((int) ReadCompressedUInt32(input));
+        int byteLength = checked(arrayLength * sizeof(double));
+        var array = new double[arrayLength];
+        if (byteLength == 0)
+        {
+            return array;
+        }
+
+        byte[] buffer = new byte[byteLength];
+        ReadExactly(input, buffer, byteLength);
+
+        if (!BitConverter.IsLittleEndian)
+        {
+            for (int i = 0; i < byteLength; i += sizeof(double))
+            {
+                Array.Reverse(buffer, i, sizeof(double));
+            }
+        }
+
+        Buffer.BlockCopy(buffer, 0, array, 0, byteLength);
+        return array;
+    }
+
+    private static bool[] DeserializeBooleanArray(Protocol16Stream input)
+    {
+        int arrayLength = checked((int) ReadCompressedUInt32(input));
+        var array = new bool[arrayLength];
+        int fullByteCount = arrayLength / 8;
+        int index = 0;
+
+        for (int i = 0; i < fullByteCount; i++)
+        {
+            byte value = ReadByte(input);
+            array[index++] = (value & 1) == 1;
+            array[index++] = (value & 2) == 2;
+            array[index++] = (value & 4) == 4;
+            array[index++] = (value & 8) == 8;
+            array[index++] = (value & 16) == 16;
+            array[index++] = (value & 32) == 32;
+            array[index++] = (value & 64) == 64;
+            array[index++] = (value & 128) == 128;
+        }
+
+        if (index < arrayLength)
+        {
+            byte value = ReadByte(input);
+            int bitIndex = 0;
+            while (index < arrayLength)
+            {
+                array[index++] = (value & BoolMasks[bitIndex]) == BoolMasks[bitIndex];
+                bitIndex++;
+            }
         }
 
         return array;
@@ -265,10 +275,9 @@ public static class Protocol16Deserializer
 
     private static string[] DeserializeStringArray(Protocol16Stream input)
     {
-        int arraySize = DeserializeShort(input);
-
-        var array = new string[arraySize];
-        for (int i = 0; i < arraySize; i++)
+        int arrayLength = checked((int) ReadCompressedUInt32(input));
+        var array = new string[arrayLength];
+        for (int i = 0; i < arrayLength; i++)
         {
             array[i] = DeserializeString(input);
         }
@@ -276,166 +285,488 @@ public static class Protocol16Deserializer
         return array;
     }
 
-    private static object[] DeserializeObjectArray(Protocol16Stream input)
+    private static int[] DeserializeCompressedIntArray(Protocol16Stream input)
     {
-        int arraySize = DeserializeShort(input);
-
-        var array = new object[arraySize];
-        for (int i = 0; i < arraySize; i++)
+        int arrayLength = checked((int) ReadCompressedUInt32(input));
+        var array = new int[arrayLength];
+        for (int i = 0; i < arrayLength; i++)
         {
-            byte typeCode = (byte) input.ReadByte();
-            array[i] = Deserialize(input, typeCode);
+            array[i] = ReadCompressedInt32(input);
         }
 
         return array;
     }
 
-    private static IDictionary DeserializeDictionary(Protocol16Stream input)
+    private static long[] DeserializeCompressedLongArray(Protocol16Stream input)
     {
-        byte keyTypeCode = (byte) input.ReadByte();
-        byte valueTypeCode = (byte) input.ReadByte();
-        int dictionarySize = DeserializeShort(input);
-        Type keyType = GetTypeOfCode(keyTypeCode);
-        Type valueType = GetTypeOfCode(valueTypeCode);
-        Type dictionaryType = typeof(Dictionary<,>).MakeGenericType(new Type[]
+        int arrayLength = checked((int) ReadCompressedUInt32(input));
+        var array = new long[arrayLength];
+        for (int i = 0; i < arrayLength; i++)
         {
-                keyType,
-                valueType
-        });
+            array[i] = ReadCompressedInt64(input);
+        }
 
-        IDictionary output = Activator.CreateInstance(dictionaryType) as IDictionary;
-        DeserializeDictionaryElements(input, output, dictionarySize, keyTypeCode, valueTypeCode);
+        return array;
+    }
+
+    private static object[] DeserializeObjectArray(Protocol16Stream input)
+    {
+        int arrayLength = checked((int) ReadCompressedUInt32(input));
+        var array = new object[arrayLength];
+        for (int i = 0; i < arrayLength; i++)
+        {
+            array[i] = Deserialize(input)!;
+        }
+
+        return array;
+    }
+
+    private static Hashtable[] DeserializeHashtableArray(Protocol16Stream input)
+    {
+        int arrayLength = checked((int) ReadCompressedUInt32(input));
+        var array = new Hashtable[arrayLength];
+        for (int i = 0; i < arrayLength; i++)
+        {
+            array[i] = DeserializeHashtable(input);
+        }
+
+        return array;
+    }
+
+    private static IDictionary[] DeserializeDictionaryArray(Protocol16Stream input)
+    {
+        Type dictionaryType = DeserializeDictionaryType(input, out Protocol18Type keyTypeCode, out Protocol18Type valueTypeCode);
+        int arrayLength = checked((int) ReadCompressedUInt32(input));
+        var array = (IDictionary[]) Array.CreateInstance(dictionaryType, arrayLength);
+
+        for (int i = 0; i < arrayLength; i++)
+        {
+            if (Activator.CreateInstance(dictionaryType) is not IDictionary dictionary)
+            {
+                throw new InvalidOperationException($"Could not create dictionary type '{dictionaryType}'.");
+            }
+
+            DeserializeDictionaryElements(input, dictionary, keyTypeCode, valueTypeCode);
+            array[i] = dictionary;
+        }
+
+        return array;
+    }
+
+    private static Array? DeserializeArrayInArray(Protocol16Stream input)
+    {
+        int arrayLength = checked((int) ReadCompressedUInt32(input));
+        Array? result = null;
+        Type? resultType = null;
+
+        for (int i = 0; i < arrayLength; i++)
+        {
+            object? value = Deserialize(input);
+            if (value is not Array nestedArray)
+            {
+                continue;
+            }
+
+            if (result == null)
+            {
+                resultType = nestedArray.GetType();
+                result = Array.CreateInstance(resultType, arrayLength);
+            }
+
+            if (resultType != null && resultType.IsAssignableFrom(nestedArray.GetType()))
+            {
+                result.SetValue(nestedArray, i);
+            }
+        }
+
+        return result;
+    }
+
+    private static Hashtable DeserializeHashtable(Protocol16Stream input)
+    {
+        int size = checked((int) ReadCompressedUInt32(input));
+        var output = new Hashtable(size);
+
+        for (int i = 0; i < size; i++)
+        {
+            object? key = Deserialize(input);
+            object? value = Deserialize(input);
+            if (key != null)
+            {
+                output[key] = value;
+            }
+        }
+
         return output;
     }
 
-    private static void DeserializeDictionaryElements(Protocol16Stream input, IDictionary output, int dictionarySize, byte keyTypeCode, byte valueTypeCode)
+    private static IDictionary DeserializeDictionary(Protocol16Stream input)
     {
-        for (int i = 0; i < dictionarySize; i++)
+        Type dictionaryType = DeserializeDictionaryType(input, out Protocol18Type keyTypeCode, out Protocol18Type valueTypeCode);
+        if (Activator.CreateInstance(dictionaryType) is not IDictionary dictionary)
         {
-            object key = Deserialize(input, (keyTypeCode == 0 || keyTypeCode == 42) ? ((byte) input.ReadByte()) : keyTypeCode);
-            object value = Deserialize(input, (valueTypeCode == 0 || valueTypeCode == 42) ? ((byte) input.ReadByte()) : valueTypeCode);
-            output.Add(key, value);
+            throw new InvalidOperationException($"Could not create dictionary type '{dictionaryType}'.");
         }
+
+        DeserializeDictionaryElements(input, dictionary, keyTypeCode, valueTypeCode);
+        return dictionary;
     }
 
-    private static void DeserializeDictionaryArray(Protocol16Stream input, short size, out Array result)
+    private static void DeserializeDictionaryElements(Protocol16Stream input, IDictionary dictionary, Protocol18Type keyTypeCode, Protocol18Type valueTypeCode)
     {
-        var type = DeserializeDictionaryType(input, out var keyTypeCode, out var valueTypeCode);
-        result = Array.CreateInstance(type, size);
-
-        for (short i = 0; i < size; i++)
+        int size = checked((int) ReadCompressedUInt32(input));
+        for (int i = 0; i < size; i++)
         {
-            if (!(Activator.CreateInstance(type) is IDictionary dictionary))
+            object? key = keyTypeCode == Protocol18Type.Unknown
+                ? Deserialize(input)
+                : Deserialize(input, (byte) keyTypeCode);
+            object? value = valueTypeCode == Protocol18Type.Unknown
+                ? Deserialize(input)
+                : Deserialize(input, (byte) valueTypeCode);
+
+            if (key != null)
             {
-                return;
-            }
-            var arraySize = DeserializeShort(input);
-            for (var j = 0; j < arraySize; j++)
-            {
-                object key;
-                if (keyTypeCode > 0)
-                {
-                    key = Deserialize(input, keyTypeCode);
-                }
-                else
-                {
-                    byte nextKeyTypeCode = (byte) input.ReadByte();
-                    key = Deserialize(input, nextKeyTypeCode);
-                }
-                object value;
-                if (valueTypeCode > 0)
-                {
-                    value = Deserialize(input, valueTypeCode);
-                }
-                else
-                {
-                    byte nextValueTypeCode = (byte) input.ReadByte();
-                    value = Deserialize(input, nextValueTypeCode);
-                }
                 dictionary.Add(key, value);
             }
-            result.SetValue(dictionary, i);
         }
     }
 
-    private static Array DeserializeArray(Protocol16Stream input)
+    private static Type DeserializeDictionaryType(Protocol16Stream input, out Protocol18Type keyTypeCode, out Protocol18Type valueTypeCode)
     {
-        short size = DeserializeShort(input);
-        byte typeCode = (byte) input.ReadByte();
-        switch ((Protocol16Type) typeCode)
+        keyTypeCode = (Protocol18Type) ReadByte(input);
+        valueTypeCode = (Protocol18Type) ReadByte(input);
+
+        Type keyType = keyTypeCode == Protocol18Type.Unknown
+            ? typeof(object)
+            : GetAllowedDictionaryKeyType(keyTypeCode);
+
+        Type valueType = valueTypeCode switch
         {
-            case Protocol16Type.Array:
-                {
-                    Array array = DeserializeArray(input);
-                    Type arrayType = array.GetType();
-                    Array result = Array.CreateInstance(arrayType, size);
-                    result.SetValue(array, 0);
-                    for (short i = 1; i < size; i++)
-                    {
-                        array = DeserializeArray(input);
-                        result.SetValue(array, i);
-                    }
+            Protocol18Type.Unknown => typeof(object),
+            Protocol18Type.Dictionary => DeserializeDictionaryType(input),
+            Protocol18Type.Array => GetDictionaryArrayType(input),
+            Protocol18Type.ObjectArray => typeof(object[]),
+            Protocol18Type.HashtableArray => typeof(Hashtable[]),
+            _ => GetClrArrayType(valueTypeCode),
+        };
 
-                    return result;
-                }
-            case Protocol16Type.ByteArray:
-                {
-                    byte[][] array = new byte[size][];
-                    for (short i = 0; i < size; i++)
-                    {
-                        array[i] = DeserializeByteArray(input);
-                    }
-
-                    return array;
-                }
-            case Protocol16Type.Dictionary:
-                {
-                    DeserializeDictionaryArray(input, size, out Array result);
-
-                    return result;
-                }
-            default:
-                {
-                    Type arrayType = GetTypeOfCode(typeCode);
-                    Array result = Array.CreateInstance(arrayType, size);
-
-                    for (short i = 0; i < size; i++)
-                    {
-                        result.SetValue(Deserialize(input, typeCode), i);
-                    }
-
-                    return result;
-                }
+        if (valueTypeCode == Protocol18Type.Array)
+        {
+            valueTypeCode = Protocol18Type.Unknown;
         }
+
+        return typeof(Dictionary<,>).MakeGenericType(keyType, valueType);
     }
 
-    private static Type DeserializeDictionaryType(Protocol16Stream input, out byte keyTypeCode, out byte valueTypeCode)
+    private static Type DeserializeDictionaryType(Protocol16Stream input)
     {
-        keyTypeCode = (byte) input.ReadByte();
-        valueTypeCode = (byte) input.ReadByte();
-        Type keyType = GetTypeOfCode(keyTypeCode);
-        Type valueType = GetTypeOfCode(valueTypeCode);
+        Protocol18Type keyTypeCode = (Protocol18Type) ReadByte(input);
+        Protocol18Type valueTypeCode = (Protocol18Type) ReadByte(input);
 
-        return typeof(Dictionary<,>).MakeGenericType(new Type[]
+        Type keyType = keyTypeCode == Protocol18Type.Unknown
+            ? typeof(object)
+            : GetAllowedDictionaryKeyType(keyTypeCode);
+
+        Type valueType = valueTypeCode switch
         {
-                keyType,
-                valueType
-        });
+            Protocol18Type.Unknown => typeof(object),
+            Protocol18Type.Dictionary => DeserializeDictionaryType(input),
+            Protocol18Type.Array => GetDictionaryArrayType(input),
+            _ => GetClrArrayType(valueTypeCode),
+        };
+
+        return typeof(Dictionary<,>).MakeGenericType(keyType, valueType);
+    }
+
+    private static Type GetDictionaryArrayType(Protocol16Stream input)
+    {
+        Protocol18Type typeCode = (Protocol18Type) ReadByte(input);
+        int nestedArrayDepth = 0;
+
+        while (typeCode == Protocol18Type.Array)
+        {
+            nestedArrayDepth++;
+            typeCode = (Protocol18Type) ReadByte(input);
+        }
+
+        Type arrayType = GetClrArrayType(typeCode).MakeArrayType();
+        for (int i = 0; i < nestedArrayDepth; i++)
+        {
+            arrayType = arrayType.MakeArrayType();
+        }
+
+        return arrayType;
+    }
+
+    private static Type GetAllowedDictionaryKeyType(Protocol18Type typeCode)
+    {
+        return typeCode switch
+        {
+            Protocol18Type.Byte or Protocol18Type.ByteZero => typeof(byte),
+            Protocol18Type.Short or Protocol18Type.ShortZero => typeof(short),
+            Protocol18Type.Float or Protocol18Type.FloatZero => typeof(float),
+            Protocol18Type.Double or Protocol18Type.DoubleZero => typeof(double),
+            Protocol18Type.String => typeof(string),
+            Protocol18Type.CompressedInt or Protocol18Type.Int1 or Protocol18Type.Int1Negative or Protocol18Type.Int2 or Protocol18Type.Int2Negative or Protocol18Type.IntZero => typeof(int),
+            Protocol18Type.CompressedLong or Protocol18Type.Long1 or Protocol18Type.Long1Negative or Protocol18Type.Long2 or Protocol18Type.Long2Negative or Protocol18Type.LongZero => typeof(long),
+            _ => throw new InvalidDataException($"Protocol18 type '{typeCode}' is not valid as a dictionary key."),
+        };
+    }
+
+    private static Type GetClrArrayType(Protocol18Type typeCode)
+    {
+        return typeCode switch
+        {
+            Protocol18Type.Boolean or Protocol18Type.BooleanFalse or Protocol18Type.BooleanTrue => typeof(bool),
+            Protocol18Type.Byte or Protocol18Type.ByteZero => typeof(byte),
+            Protocol18Type.Short or Protocol18Type.ShortZero => typeof(short),
+            Protocol18Type.Float or Protocol18Type.FloatZero => typeof(float),
+            Protocol18Type.Double or Protocol18Type.DoubleZero => typeof(double),
+            Protocol18Type.String => typeof(string),
+            Protocol18Type.CompressedInt or Protocol18Type.Int1 or Protocol18Type.Int1Negative or Protocol18Type.Int2 or Protocol18Type.Int2Negative or Protocol18Type.IntZero => typeof(int),
+            Protocol18Type.CompressedLong or Protocol18Type.Long1 or Protocol18Type.Long1Negative or Protocol18Type.Long2 or Protocol18Type.Long2Negative or Protocol18Type.LongZero => typeof(long),
+            Protocol18Type.Hashtable => typeof(Hashtable),
+            Protocol18Type.OperationRequest => typeof(OperationRequest),
+            Protocol18Type.OperationResponse => typeof(OperationResponse),
+            Protocol18Type.EventData => typeof(EventData),
+            Protocol18Type.BooleanArray => typeof(bool[]),
+            Protocol18Type.ByteArray => typeof(byte[]),
+            Protocol18Type.ShortArray => typeof(short[]),
+            Protocol18Type.FloatArray => typeof(float[]),
+            Protocol18Type.DoubleArray => typeof(double[]),
+            Protocol18Type.StringArray => typeof(string[]),
+            Protocol18Type.ObjectArray => typeof(object[]),
+            Protocol18Type.HashtableArray => typeof(Hashtable[]),
+            Protocol18Type.CompressedIntArray => typeof(int[]),
+            Protocol18Type.CompressedLongArray => typeof(long[]),
+            _ => throw new InvalidDataException($"Protocol18 type '{typeCode}' cannot be mapped to a CLR array type."),
+        };
     }
 
     private static Dictionary<byte, object> DeserializeParameterTable(Protocol16Stream input)
     {
-        int dictionarySize = DeserializeShort(input);
-        var dictionary = new Dictionary<byte, object>(dictionarySize);
-        for (int i = 0; i < dictionarySize; i++)
+        int size = ReadByte(input);
+        var parameters = new Dictionary<byte, object>(size);
+        for (int i = 0; i < size; i++)
         {
-            byte key = (byte) input.ReadByte();
-            byte valueTypeCode = (byte) input.ReadByte();
-            object value = Deserialize(input, valueTypeCode);
-            dictionary[key] = value;
+            byte key = ReadByte(input);
+            byte valueTypeCode = ReadByte(input);
+            parameters[key] = Deserialize(input, valueTypeCode)!;
         }
 
-        return dictionary;
+        return parameters;
     }
-    #endregion
+
+    private static Protocol18CustomType DeserializeCustomType(Protocol16Stream input, byte slimTypeCode = 0)
+    {
+        byte typeCode = slimTypeCode == 0
+            ? ReadByte(input)
+            : (byte) (slimTypeCode - (byte) Protocol18Type.CustomTypeSlim);
+        int length = checked((int) ReadCompressedUInt32(input));
+        byte[] data = ReadBytes(input, length);
+
+        return new Protocol18CustomType(typeCode, data);
+    }
+
+    private static Protocol18CustomType[] DeserializeCustomTypeArray(Protocol16Stream input)
+    {
+        int arrayLength = checked((int) ReadCompressedUInt32(input));
+        byte typeCode = ReadByte(input);
+        var array = new Protocol18CustomType[arrayLength];
+
+        for (int i = 0; i < arrayLength; i++)
+        {
+            int length = checked((int) ReadCompressedUInt32(input));
+            byte[] data = ReadBytes(input, length);
+            array[i] = new Protocol18CustomType(typeCode, data);
+        }
+
+        return array;
+    }
+
+    private static int ReadInt1(Stream input, bool signNegative)
+    {
+        int value = ReadByte(input);
+        return signNegative ? -value : value;
+    }
+
+    private static int ReadInt2(Protocol16Stream input, bool signNegative)
+    {
+        int value = ReadUShort(input);
+        return signNegative ? -value : value;
+    }
+
+    private static long ReadLong1(Stream input, bool signNegative)
+    {
+        long value = ReadByte(input);
+        return signNegative ? -value : value;
+    }
+
+    private static long ReadLong2(Protocol16Stream input, bool signNegative)
+    {
+        long value = ReadUShort(input);
+        return signNegative ? -value : value;
+    }
+
+    private static int ReadCompressedInt32(Protocol16Stream input)
+    {
+        return DecodeZigZag32(ReadCompressedUInt32(input));
+    }
+
+    private static long ReadCompressedInt64(Protocol16Stream input)
+    {
+        return DecodeZigZag64(ReadCompressedUInt64(input));
+    }
+
+    private static uint ReadCompressedUInt32(Protocol16Stream input)
+    {
+        uint value = 0;
+        int shift = 0;
+
+        while (shift != 35)
+        {
+            byte current = ReadByte(input);
+            value |= (uint) (current & 0x7F) << shift;
+            shift += 7;
+
+            if ((current & 0x80) == 0)
+            {
+                return value;
+            }
+        }
+
+        return value;
+    }
+
+    private static ulong ReadCompressedUInt64(Protocol16Stream input)
+    {
+        ulong value = 0;
+        int shift = 0;
+
+        while (shift != 70)
+        {
+            byte current = ReadByte(input);
+            value |= (ulong) (current & 0x7F) << shift;
+            shift += 7;
+
+            if ((current & 0x80) == 0)
+            {
+                return value;
+            }
+        }
+
+        return value;
+    }
+
+    private static ushort ReadUShort(Protocol16Stream input)
+    {
+        byte[] buffer = GetScalarBuffer();
+        ReadExactly(input, buffer, sizeof(ushort));
+
+        return (ushort) (buffer[0] | (buffer[1] << 8));
+    }
+
+    private static byte ReadByte(Stream input)
+    {
+        int value = input.ReadByte();
+        if (value < 0)
+        {
+            throw new EndOfStreamException("Failed to read a byte from the Protocol18 payload.");
+        }
+
+        return (byte) value;
+    }
+
+    private static byte[] ReadBytes(Stream input, int length)
+    {
+        if (length == 0)
+        {
+            return [];
+        }
+
+        byte[] buffer = new byte[length];
+        ReadExactly(input, buffer, length);
+        return buffer;
+    }
+
+    private static void ReadExactly(Stream input, byte[] buffer, int count)
+    {
+        int offset = 0;
+        while (offset < count)
+        {
+            int read = input.Read(buffer, offset, count - offset);
+            if (read <= 0)
+            {
+                throw new EndOfStreamException($"Failed to read {count} bytes from the Protocol18 payload.");
+            }
+
+            offset += read;
+        }
+    }
+
+    private static byte[] GetScalarBuffer()
+    {
+        return ScalarBuffer.Value ?? throw new InvalidOperationException("The scalar Protocol18 buffer could not be created.");
+    }
+
+    private static int DecodeZigZag32(uint value)
+    {
+        return (int) ((value >> 1) ^ (0u - (value & 1u)));
+    }
+
+    private static long DecodeZigZag64(ulong value)
+    {
+        return (long) ((value >> 1) ^ (0UL - (value & 1UL)));
+    }
+}
+
+public static class Protocol16Deserializer
+{
+    public static object? Deserialize(Protocol16Stream input)
+    {
+        return Protocol18Deserializer.Deserialize(input);
+    }
+
+    public static object? Deserialize(Protocol16Stream input, byte typeCode)
+    {
+        return Protocol18Deserializer.Deserialize(input, typeCode);
+    }
+
+    public static OperationRequest DeserializeOperationRequest(Protocol16Stream input)
+    {
+        return Protocol18Deserializer.DeserializeOperationRequest(input);
+    }
+
+    public static OperationResponse DeserializeOperationResponse(Protocol16Stream input)
+    {
+        return Protocol18Deserializer.DeserializeOperationResponse(input);
+    }
+
+    public static EventData DeserializeEventData(Protocol16Stream input)
+    {
+        return Protocol18Deserializer.DeserializeEventData(input);
+    }
+
+    public static short DeserializeShort(Protocol16Stream input)
+    {
+        return Protocol18Deserializer.DeserializeShort(input);
+    }
+}
+
+internal sealed class Protocol18CustomType
+{
+    public byte TypeCode { get; }
+
+    public byte[] Data { get; }
+
+    public Protocol18CustomType(byte typeCode, byte[] data)
+    {
+        TypeCode = typeCode;
+        Data = data;
+    }
+
+    public override string ToString()
+    {
+        return $"Protocol18CustomType({TypeCode}, {Data.Length} bytes)";
+    }
 }

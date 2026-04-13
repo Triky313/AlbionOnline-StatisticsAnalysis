@@ -189,21 +189,21 @@ public abstract class PhotonParser : IPhotonReceiver
         {
             case MessageType.OperationRequest:
             {
-                OperationRequest requestData = Protocol16Deserializer.DeserializeOperationRequest(payload);
+                OperationRequest requestData = Protocol18Deserializer.DeserializeOperationRequest(payload);
                 DebugConsole.LogOperationRequest(requestData.OperationCode, requestData.Parameters);
                 OnRequest(requestData.OperationCode, requestData.Parameters);
                 break;
             }
             case MessageType.OperationResponse:
             {
-                OperationResponse responseData = Protocol16Deserializer.DeserializeOperationResponse(payload);
+                OperationResponse responseData = Protocol18Deserializer.DeserializeOperationResponse(payload);
                 DebugConsole.LogOperationResponse(responseData.OperationCode, responseData.ReturnCode, responseData.DebugMessage, responseData.Parameters);
                 OnResponse(responseData.OperationCode, responseData.ReturnCode, responseData.DebugMessage, responseData.Parameters);
                 break;
             }
             case MessageType.Event:
             {
-                EventData eventData = Protocol16Deserializer.DeserializeEventData(payload);
+                EventData eventData = Protocol18Deserializer.DeserializeEventData(payload);
                 DebugConsole.LogEvent(eventData.Code, eventData.Parameters);
                 OnEvent(eventData.Code, eventData.Parameters);
                 break;
