@@ -1,4 +1,4 @@
-﻿namespace StatisticsAnalysisTool.Protocol16.Photon;
+namespace StatisticsAnalysisTool.Protocol18.Photon;
 
 public class NumberDeserializer
 {

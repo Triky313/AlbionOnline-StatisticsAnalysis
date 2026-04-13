@@ -1,8 +1,8 @@
-﻿using StatisticsAnalysisTool.Protocol16;
-using StatisticsAnalysisTool.Protocol16.Photon;
-using System.Buffers;
 using StatisticsAnalysisTool.Abstractions;
 using StatisticsAnalysisTool.Diagnostics;
+using StatisticsAnalysisTool.Protocol18;
+using StatisticsAnalysisTool.Protocol18.Photon;
+using System.Buffers;
 
 namespace StatisticsAnalysisTool.PhotonPackageParser;
 
@@ -180,7 +180,7 @@ public abstract class PhotonParser : IPhotonReceiver
         commandLength--;
 
         int operationLength = commandLength;
-        var payload = new Protocol16Stream(operationLength);
+        var payload = new Protocol18Stream(operationLength);
         payload.Write(source, offset, operationLength);
         payload.Seek(0L, SeekOrigin.Begin);
 
@@ -188,26 +188,26 @@ public abstract class PhotonParser : IPhotonReceiver
         switch ((MessageType) messageType)
         {
             case MessageType.OperationRequest:
-            {
-                OperationRequest requestData = Protocol18Deserializer.DeserializeOperationRequest(payload);
-                DebugConsole.LogOperationRequest(requestData.OperationCode, requestData.Parameters);
-                OnRequest(requestData.OperationCode, requestData.Parameters);
-                break;
-            }
+                {
+                    OperationRequest requestData = Protocol18Deserializer.DeserializeOperationRequest(payload);
+                    DebugConsole.LogOperationRequest(requestData.OperationCode, requestData.Parameters);
+                    OnRequest(requestData.OperationCode, requestData.Parameters);
+                    break;
+                }
             case MessageType.OperationResponse:
-            {
-                OperationResponse responseData = Protocol18Deserializer.DeserializeOperationResponse(payload);
-                DebugConsole.LogOperationResponse(responseData.OperationCode, responseData.ReturnCode, responseData.DebugMessage, responseData.Parameters);
-                OnResponse(responseData.OperationCode, responseData.ReturnCode, responseData.DebugMessage, responseData.Parameters);
-                break;
-            }
+                {
+                    OperationResponse responseData = Protocol18Deserializer.DeserializeOperationResponse(payload);
+                    DebugConsole.LogOperationResponse(responseData.OperationCode, responseData.ReturnCode, responseData.DebugMessage, responseData.Parameters);
+                    OnResponse(responseData.OperationCode, responseData.ReturnCode, responseData.DebugMessage, responseData.Parameters);
+                    break;
+                }
             case MessageType.Event:
-            {
-                EventData eventData = Protocol18Deserializer.DeserializeEventData(payload);
-                DebugConsole.LogEvent(eventData.Code, eventData.Parameters);
-                OnEvent(eventData.Code, eventData.Parameters);
-                break;
-            }
+                {
+                    EventData eventData = Protocol18Deserializer.DeserializeEventData(payload);
+                    DebugConsole.LogEvent(eventData.Code, eventData.Parameters);
+                    OnEvent(eventData.Code, eventData.Parameters);
+                    break;
+                }
         }
     }
 

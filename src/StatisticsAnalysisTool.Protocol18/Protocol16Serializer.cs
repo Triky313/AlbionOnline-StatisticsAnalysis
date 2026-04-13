@@ -1,17 +1,17 @@
-﻿using StatisticsAnalysisTool.Protocol16.Photon;
+using StatisticsAnalysisTool.Protocol18.Photon;
 using System.Collections;
 using System.Text;
 
-namespace StatisticsAnalysisTool.Protocol16;
+namespace StatisticsAnalysisTool.Protocol18;
 
 public static class Protocol16Serializer
 {
-    private static readonly ThreadLocal<byte[]> _byteBuffer = new ThreadLocal<byte[]>(() => new byte[sizeof(long)]);
-    private static readonly ThreadLocal<long[]> _longBuffer = new ThreadLocal<long[]>(() => new long[1]);
-    private static readonly ThreadLocal<float[]> _floatBuffer = new ThreadLocal<float[]>(() => new float[1]);
-    private static readonly ThreadLocal<double[]> _doubleBuffer = new ThreadLocal<double[]>(() => new double[1]);
+    private static readonly ThreadLocal<byte[]> ByteBuffer = new(() => new byte[sizeof(long)]);
+    private static readonly ThreadLocal<long[]> LongBuffer = new(() => new long[1]);
+    private static readonly ThreadLocal<float[]> FloatBuffer = new(() => new float[1]);
+    private static readonly ThreadLocal<double[]> DoubleBuffer = new(() => new double[1]);
 
-    public static void Serialize(Protocol16Stream output, object obj, bool writeTypeCode)
+    public static void Serialize(Protocol18Stream output, object obj, bool writeTypeCode)
     {
         if (obj == null)
         {
@@ -80,7 +80,7 @@ public static class Protocol16Serializer
         throw new ArgumentException($"Cannot serialize objects of type {obj.GetType()} / System.TypeCode: {Type.GetTypeCode(obj.GetType())}");
     }
 
-    private static void SerializeArraySegment(Protocol16Stream output, ArraySegment<byte> arraySegment, bool writeTypeCode)
+    private static void SerializeArraySegment(Protocol18Stream output, ArraySegment<byte> arraySegment, bool writeTypeCode)
     {
         output.WriteTypeCodeIfTrue(Protocol16Type.ByteArray, writeTypeCode);
         SerializeInteger(output, arraySegment.Count, false);
@@ -90,31 +90,31 @@ public static class Protocol16Serializer
         }
     }
 
-    private static void SerializeBoolean(Protocol16Stream output, bool value, bool writeTypeCode)
+    private static void SerializeBoolean(Protocol18Stream output, bool value, bool writeTypeCode)
     {
         output.WriteTypeCodeIfTrue(Protocol16Type.Boolean, writeTypeCode);
         output.WriteByte(value ? (byte) 1 : (byte) 0);
     }
 
-    private static void SerializeByte(Protocol16Stream output, byte value, bool writeTypeCode)
+    private static void SerializeByte(Protocol18Stream output, byte value, bool writeTypeCode)
     {
         output.WriteTypeCodeIfTrue(Protocol16Type.Byte, writeTypeCode);
         output.WriteByte(value);
     }
 
-    private static void SerializeShort(Protocol16Stream output, short value, bool writeTypeCode)
+    private static void SerializeShort(Protocol18Stream output, short value, bool writeTypeCode)
     {
         output.WriteTypeCodeIfTrue(Protocol16Type.Short, writeTypeCode);
-        var buffer = _byteBuffer.Value;
+        var buffer = ByteBuffer.Value;
         buffer[0] = (byte) (value >> 8);
         buffer[1] = (byte) (value);
         output.Write(buffer, 0, sizeof(short));
     }
 
-    private static void SerializeInteger(Protocol16Stream output, int value, bool writeTypeCode)
+    private static void SerializeInteger(Protocol18Stream output, int value, bool writeTypeCode)
     {
         output.WriteTypeCodeIfTrue(Protocol16Type.Integer, writeTypeCode);
-        var buffer = _byteBuffer.Value;
+        var buffer = ByteBuffer.Value;
         buffer[0] = (byte) (value >> 24);
         buffer[1] = (byte) (value >> 16);
         buffer[2] = (byte) (value >> 8);
@@ -122,12 +122,12 @@ public static class Protocol16Serializer
         output.Write(buffer, 0, sizeof(int));
     }
 
-    private static void SerializeLong(Protocol16Stream output, long value, bool writeTypeCode)
+    private static void SerializeLong(Protocol18Stream output, long value, bool writeTypeCode)
     {
         output.WriteTypeCodeIfTrue(Protocol16Type.Long, writeTypeCode);
-        var longBuffer = _longBuffer.Value;
+        var longBuffer = LongBuffer.Value;
         longBuffer[0] = value;
-        var buffer = _byteBuffer.Value;
+        var buffer = ByteBuffer.Value;
         Buffer.BlockCopy(longBuffer, 0, buffer, 0, sizeof(long));
         if (BitConverter.IsLittleEndian)
         {
@@ -147,12 +147,12 @@ public static class Protocol16Serializer
         output.Write(buffer, 0, sizeof(long));
     }
 
-    private static void SerializeFloat(Protocol16Stream output, float value, bool writeTypeCode)
+    private static void SerializeFloat(Protocol18Stream output, float value, bool writeTypeCode)
     {
         output.WriteTypeCodeIfTrue(Protocol16Type.Float, writeTypeCode);
-        var floatBuffer = _floatBuffer.Value;
+        var floatBuffer = FloatBuffer.Value;
         floatBuffer[0] = value;
-        var buffer = _byteBuffer.Value;
+        var buffer = ByteBuffer.Value;
         Buffer.BlockCopy(floatBuffer, 0, buffer, 0, sizeof(float));
         if (BitConverter.IsLittleEndian)
         {
@@ -166,12 +166,12 @@ public static class Protocol16Serializer
         output.Write(buffer, 0, sizeof(float));
     }
 
-    private static void SerializeDouble(Protocol16Stream output, double value, bool writeTypeCode)
+    private static void SerializeDouble(Protocol18Stream output, double value, bool writeTypeCode)
     {
         output.WriteTypeCodeIfTrue(Protocol16Type.Double, writeTypeCode);
-        var doubleBuffer = _doubleBuffer.Value;
+        var doubleBuffer = DoubleBuffer.Value;
         doubleBuffer[0] = value;
-        var buffer = _byteBuffer.Value;
+        var buffer = ByteBuffer.Value;
         Buffer.BlockCopy(doubleBuffer, 0, buffer, 0, sizeof(double));
         if (BitConverter.IsLittleEndian)
         {
@@ -191,7 +191,7 @@ public static class Protocol16Serializer
         output.Write(buffer, 0, sizeof(double));
     }
 
-    private static void SerializeIntArray(Protocol16Stream output, int[] ints, bool writeTypeCode)
+    private static void SerializeIntArray(Protocol18Stream output, int[] ints, bool writeTypeCode)
     {
         output.WriteTypeCodeIfTrue(Protocol16Type.IntegerArray, writeTypeCode);
         SerializeInteger(output, ints.Length, false);
@@ -207,7 +207,7 @@ public static class Protocol16Serializer
         output.Write(array, 0, array.Length);
     }
 
-    private static void SerializeString(Protocol16Stream output, string value, bool writeTypeCode)
+    private static void SerializeString(Protocol18Stream output, string value, bool writeTypeCode)
     {
         output.WriteTypeCodeIfTrue(Protocol16Type.String, writeTypeCode);
         byte[] bytes = Encoding.UTF8.GetBytes(value);
@@ -219,7 +219,7 @@ public static class Protocol16Serializer
         output.Write(bytes, 0, bytes.Length);
     }
 
-    private static void SerializeStringArray(Protocol16Stream output, string[] strings, bool writeTypeCode)
+    private static void SerializeStringArray(Protocol18Stream output, string[] strings, bool writeTypeCode)
     {
         if (strings.Length > short.MaxValue)
         {
@@ -233,14 +233,14 @@ public static class Protocol16Serializer
         }
     }
 
-    private static void SerializeEventData(Protocol16Stream output, EventData data, bool writeTypeCode)
+    private static void SerializeEventData(Protocol18Stream output, EventData data, bool writeTypeCode)
     {
         output.WriteTypeCodeIfTrue(Protocol16Type.EventData, writeTypeCode);
         output.WriteByte(data.Code);
         SerializeParameterTable(output, data.Parameters);
     }
 
-    private static void SerializeOperationResponse(Protocol16Stream output, OperationResponse data, bool writeTypeCode)
+    private static void SerializeOperationResponse(Protocol18Stream output, OperationResponse data, bool writeTypeCode)
     {
         output.WriteTypeCodeIfTrue(Protocol16Type.OperationResponse, writeTypeCode);
         output.WriteByte(data.OperationCode);
@@ -257,14 +257,14 @@ public static class Protocol16Serializer
         SerializeParameterTable(output, data.Parameters);
     }
 
-    private static void SerializeOperationRequest(Protocol16Stream output, OperationRequest data, bool writeTypeCode)
+    private static void SerializeOperationRequest(Protocol18Stream output, OperationRequest data, bool writeTypeCode)
     {
         output.WriteTypeCodeIfTrue(Protocol16Type.OperationRequest, writeTypeCode);
         output.WriteByte(data.OperationCode);
         SerializeParameterTable(output, data.Parameters);
     }
 
-    private static void SerializeParameterTable(Protocol16Stream output, Dictionary<byte, object> parameters)
+    private static void SerializeParameterTable(Protocol18Stream output, Dictionary<byte, object> parameters)
     {
         if (parameters == null || parameters.Count == 0)
         {
@@ -280,14 +280,14 @@ public static class Protocol16Serializer
         }
     }
 
-    private static void SerializeByteArray(Protocol16Stream output, byte[] obj, bool writeTypeCode)
+    private static void SerializeByteArray(Protocol18Stream output, byte[] obj, bool writeTypeCode)
     {
         output.WriteTypeCodeIfTrue(Protocol16Type.ByteArray, writeTypeCode);
         SerializeInteger(output, obj.Length, false);
         output.Write(obj, 0, obj.Length);
     }
 
-    private static void SerializeAnyArray(Protocol16Stream output, Array array, bool writeTypeCode, Protocol16Type arrayType)
+    private static void SerializeAnyArray(Protocol18Stream output, Array array, bool writeTypeCode, Protocol16Type arrayType)
     {
         if (arrayType == Protocol16Type.ObjectArray)
         {
@@ -333,7 +333,7 @@ public static class Protocol16Serializer
 
     }
 
-    private static void SerializeArrayWithSameElements(Protocol16Stream output, Array array, bool writeTypeCode)
+    private static void SerializeArrayWithSameElements(Protocol18Stream output, Array array, bool writeTypeCode)
     {
         if (array.Length > short.MaxValue)
         {
@@ -342,7 +342,7 @@ public static class Protocol16Serializer
         output.WriteTypeCodeIfTrue(Protocol16Type.Array, writeTypeCode);
         SerializeShort(output, (short) array.Length, false);
 
-        Type elementType = array.GetType().GetElementType();
+        Type? elementType = array.GetType().GetElementType();
 
         Protocol16Type protocol16Type = TypeCodeToProtocol16Type(elementType);
         if (protocol16Type == Protocol16Type.Unknown)
@@ -369,7 +369,7 @@ public static class Protocol16Serializer
         }
     }
 
-    private static void SerializeObjectArray(Protocol16Stream output, object[] objects, bool writeTypeCode)
+    private static void SerializeObjectArray(Protocol18Stream output, object[] objects, bool writeTypeCode)
     {
         if (objects.Length > short.MaxValue)
         {
@@ -382,13 +382,13 @@ public static class Protocol16Serializer
             Serialize(output, s, true);
         }
     }
-    private static void SerializeHashtable(Protocol16Stream output, Hashtable hashtable, bool writeTypeCode)
+    private static void SerializeHashtable(Protocol18Stream output, Hashtable hashtable, bool writeTypeCode)
     {
         output.WriteTypeCodeIfTrue(Protocol16Type.Hashtable, writeTypeCode);
         SerializeDictionaryElements(output, hashtable, true, true);
     }
 
-    private static void SerializeDictionary(Protocol16Stream output, IDictionary dictionary, bool writeTypeCode)
+    private static void SerializeDictionary(Protocol18Stream output, IDictionary dictionary, bool writeTypeCode)
     {
         output.WriteTypeCodeIfTrue(Protocol16Type.Dictionary, writeTypeCode);
 
@@ -396,7 +396,7 @@ public static class Protocol16Serializer
         SerializeDictionaryElements(output, dictionary, writeKeyCode, writeValueCode);
     }
 
-    private static void SerializeDictionaryHeader(Protocol16Stream output, Type dictionaryType, out bool writeKeyCode, out bool writeValueCode)
+    private static void SerializeDictionaryHeader(Protocol18Stream output, Type dictionaryType, out bool writeKeyCode, out bool writeValueCode)
     {
         Type[] genericArguments = dictionaryType.GetGenericArguments();
         writeKeyCode = (genericArguments[0] == typeof(object));
@@ -433,7 +433,7 @@ public static class Protocol16Serializer
         }
     }
 
-    private static void SerializeDictionaryElements(Protocol16Stream output, IDictionary data, bool writeKeyCode, bool writeValueCode)
+    private static void SerializeDictionaryElements(Protocol18Stream output, IDictionary data, bool writeKeyCode, bool writeValueCode)
     {
         if (data.Count > short.MaxValue)
         {

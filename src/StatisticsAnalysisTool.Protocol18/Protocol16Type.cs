@@ -1,4 +1,4 @@
-﻿namespace StatisticsAnalysisTool.Protocol16;
+namespace StatisticsAnalysisTool.Protocol18;
 
 internal enum Protocol16Type : byte
 {

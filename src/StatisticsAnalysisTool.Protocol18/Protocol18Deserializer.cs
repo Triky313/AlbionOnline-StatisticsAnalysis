@@ -1,8 +1,8 @@
 using System.Collections;
 using System.Text;
-using StatisticsAnalysisTool.Protocol16.Photon;
+using StatisticsAnalysisTool.Protocol18.Photon;
 
-namespace StatisticsAnalysisTool.Protocol16;
+namespace StatisticsAnalysisTool.Protocol18;
 
 public static class Protocol18Deserializer
 {
@@ -11,7 +11,7 @@ public static class Protocol18Deserializer
     private static readonly ThreadLocal<byte[]> ScalarBuffer = new(() => new byte[sizeof(long)]);
 
     private static readonly byte[] BoolMasks =
-    {
+    [
         1,
         2,
         4,
@@ -19,15 +19,15 @@ public static class Protocol18Deserializer
         16,
         32,
         64,
-        128,
-    };
+        128
+    ];
 
-    public static object? Deserialize(Protocol16Stream input)
+    public static object? Deserialize(Protocol18Stream input)
     {
         return Deserialize(input, ReadByte(input));
     }
 
-    public static object? Deserialize(Protocol16Stream input, byte typeCode)
+    public static object? Deserialize(Protocol18Stream input, byte typeCode)
     {
         if (typeCode >= (byte) Protocol18Type.CustomTypeSlim && typeCode <= MaxSlimCustomTypeCode)
         {
@@ -84,7 +84,7 @@ public static class Protocol18Deserializer
         };
     }
 
-    public static OperationRequest DeserializeOperationRequest(Protocol16Stream input)
+    public static OperationRequest DeserializeOperationRequest(Protocol18Stream input)
     {
         byte operationCode = ReadByte(input);
         Dictionary<byte, object> parameters = DeserializeParameterTable(input);
@@ -92,7 +92,7 @@ public static class Protocol18Deserializer
         return new OperationRequest(operationCode, parameters);
     }
 
-    public static OperationResponse DeserializeOperationResponse(Protocol16Stream input)
+    public static OperationResponse DeserializeOperationResponse(Protocol18Stream input)
     {
         byte operationCode = ReadByte(input);
         short returnCode = DeserializeShort(input);
@@ -102,7 +102,7 @@ public static class Protocol18Deserializer
         return new OperationResponse(operationCode, returnCode, debugMessage, parameters);
     }
 
-    public static EventData DeserializeEventData(Protocol16Stream input)
+    public static EventData DeserializeEventData(Protocol18Stream input)
     {
         byte code = ReadByte(input);
         Dictionary<byte, object> parameters = DeserializeParameterTable(input);
@@ -110,7 +110,7 @@ public static class Protocol18Deserializer
         return new EventData(code, parameters);
     }
 
-    public static short DeserializeShort(Protocol16Stream input)
+    public static short DeserializeShort(Protocol18Stream input)
     {
         byte[] buffer = GetScalarBuffer();
         ReadExactly(input, buffer, sizeof(short));
@@ -149,7 +149,7 @@ public static class Protocol18Deserializer
         return BitConverter.ToDouble(buffer, 0);
     }
 
-    private static string DeserializeString(Protocol16Stream input)
+    private static string DeserializeString(Protocol18Stream input)
     {
         int stringLength = checked((int) ReadCompressedUInt32(input));
         if (stringLength == 0)
@@ -163,7 +163,7 @@ public static class Protocol18Deserializer
         return Encoding.UTF8.GetString(buffer, 0, stringLength);
     }
 
-    private static byte[] DeserializeByteArray(Protocol16Stream input)
+    private static byte[] DeserializeByteArray(Protocol18Stream input)
     {
         int arrayLength = checked((int) ReadCompressedUInt32(input));
         if (arrayLength == 0)
@@ -177,7 +177,7 @@ public static class Protocol18Deserializer
         return buffer;
     }
 
-    private static short[] DeserializeShortArray(Protocol16Stream input)
+    private static short[] DeserializeShortArray(Protocol18Stream input)
     {
         int arrayLength = checked((int) ReadCompressedUInt32(input));
         var array = new short[arrayLength];
@@ -189,7 +189,7 @@ public static class Protocol18Deserializer
         return array;
     }
 
-    private static float[] DeserializeFloatArray(Protocol16Stream input)
+    private static float[] DeserializeFloatArray(Protocol18Stream input)
     {
         int arrayLength = checked((int) ReadCompressedUInt32(input));
         int byteLength = checked(arrayLength * sizeof(float));
@@ -214,7 +214,7 @@ public static class Protocol18Deserializer
         return array;
     }
 
-    private static double[] DeserializeDoubleArray(Protocol16Stream input)
+    private static double[] DeserializeDoubleArray(Protocol18Stream input)
     {
         int arrayLength = checked((int) ReadCompressedUInt32(input));
         int byteLength = checked(arrayLength * sizeof(double));
@@ -239,7 +239,7 @@ public static class Protocol18Deserializer
         return array;
     }
 
-    private static bool[] DeserializeBooleanArray(Protocol16Stream input)
+    private static bool[] DeserializeBooleanArray(Protocol18Stream input)
     {
         int arrayLength = checked((int) ReadCompressedUInt32(input));
         var array = new bool[arrayLength];
@@ -273,7 +273,7 @@ public static class Protocol18Deserializer
         return array;
     }
 
-    private static string[] DeserializeStringArray(Protocol16Stream input)
+    private static string[] DeserializeStringArray(Protocol18Stream input)
     {
         int arrayLength = checked((int) ReadCompressedUInt32(input));
         var array = new string[arrayLength];
@@ -285,7 +285,7 @@ public static class Protocol18Deserializer
         return array;
     }
 
-    private static int[] DeserializeCompressedIntArray(Protocol16Stream input)
+    private static int[] DeserializeCompressedIntArray(Protocol18Stream input)
     {
         int arrayLength = checked((int) ReadCompressedUInt32(input));
         var array = new int[arrayLength];
@@ -297,7 +297,7 @@ public static class Protocol18Deserializer
         return array;
     }
 
-    private static long[] DeserializeCompressedLongArray(Protocol16Stream input)
+    private static long[] DeserializeCompressedLongArray(Protocol18Stream input)
     {
         int arrayLength = checked((int) ReadCompressedUInt32(input));
         var array = new long[arrayLength];
@@ -309,7 +309,7 @@ public static class Protocol18Deserializer
         return array;
     }
 
-    private static object[] DeserializeObjectArray(Protocol16Stream input)
+    private static object[] DeserializeObjectArray(Protocol18Stream input)
     {
         int arrayLength = checked((int) ReadCompressedUInt32(input));
         var array = new object[arrayLength];
@@ -321,7 +321,7 @@ public static class Protocol18Deserializer
         return array;
     }
 
-    private static Hashtable[] DeserializeHashtableArray(Protocol16Stream input)
+    private static Hashtable[] DeserializeHashtableArray(Protocol18Stream input)
     {
         int arrayLength = checked((int) ReadCompressedUInt32(input));
         var array = new Hashtable[arrayLength];
@@ -333,7 +333,7 @@ public static class Protocol18Deserializer
         return array;
     }
 
-    private static IDictionary[] DeserializeDictionaryArray(Protocol16Stream input)
+    private static IDictionary[] DeserializeDictionaryArray(Protocol18Stream input)
     {
         Type dictionaryType = DeserializeDictionaryType(input, out Protocol18Type keyTypeCode, out Protocol18Type valueTypeCode);
         int arrayLength = checked((int) ReadCompressedUInt32(input));
@@ -353,7 +353,7 @@ public static class Protocol18Deserializer
         return array;
     }
 
-    private static Array? DeserializeArrayInArray(Protocol16Stream input)
+    private static Array? DeserializeArrayInArray(Protocol18Stream input)
     {
         int arrayLength = checked((int) ReadCompressedUInt32(input));
         Array? result = null;
@@ -382,7 +382,7 @@ public static class Protocol18Deserializer
         return result;
     }
 
-    private static Hashtable DeserializeHashtable(Protocol16Stream input)
+    private static Hashtable DeserializeHashtable(Protocol18Stream input)
     {
         int size = checked((int) ReadCompressedUInt32(input));
         var output = new Hashtable(size);
@@ -400,7 +400,7 @@ public static class Protocol18Deserializer
         return output;
     }
 
-    private static IDictionary DeserializeDictionary(Protocol16Stream input)
+    private static IDictionary DeserializeDictionary(Protocol18Stream input)
     {
         Type dictionaryType = DeserializeDictionaryType(input, out Protocol18Type keyTypeCode, out Protocol18Type valueTypeCode);
         if (Activator.CreateInstance(dictionaryType) is not IDictionary dictionary)
@@ -412,7 +412,7 @@ public static class Protocol18Deserializer
         return dictionary;
     }
 
-    private static void DeserializeDictionaryElements(Protocol16Stream input, IDictionary dictionary, Protocol18Type keyTypeCode, Protocol18Type valueTypeCode)
+    private static void DeserializeDictionaryElements(Protocol18Stream input, IDictionary dictionary, Protocol18Type keyTypeCode, Protocol18Type valueTypeCode)
     {
         int size = checked((int) ReadCompressedUInt32(input));
         for (int i = 0; i < size; i++)
@@ -431,7 +431,7 @@ public static class Protocol18Deserializer
         }
     }
 
-    private static Type DeserializeDictionaryType(Protocol16Stream input, out Protocol18Type keyTypeCode, out Protocol18Type valueTypeCode)
+    private static Type DeserializeDictionaryType(Protocol18Stream input, out Protocol18Type keyTypeCode, out Protocol18Type valueTypeCode)
     {
         keyTypeCode = (Protocol18Type) ReadByte(input);
         valueTypeCode = (Protocol18Type) ReadByte(input);
@@ -458,7 +458,7 @@ public static class Protocol18Deserializer
         return typeof(Dictionary<,>).MakeGenericType(keyType, valueType);
     }
 
-    private static Type DeserializeDictionaryType(Protocol16Stream input)
+    private static Type DeserializeDictionaryType(Protocol18Stream input)
     {
         Protocol18Type keyTypeCode = (Protocol18Type) ReadByte(input);
         Protocol18Type valueTypeCode = (Protocol18Type) ReadByte(input);
@@ -478,7 +478,7 @@ public static class Protocol18Deserializer
         return typeof(Dictionary<,>).MakeGenericType(keyType, valueType);
     }
 
-    private static Type GetDictionaryArrayType(Protocol16Stream input)
+    private static Type GetDictionaryArrayType(Protocol18Stream input)
     {
         Protocol18Type typeCode = (Protocol18Type) ReadByte(input);
         int nestedArrayDepth = 0;
@@ -543,7 +543,7 @@ public static class Protocol18Deserializer
         };
     }
 
-    private static Dictionary<byte, object> DeserializeParameterTable(Protocol16Stream input)
+    private static Dictionary<byte, object> DeserializeParameterTable(Protocol18Stream input)
     {
         int size = ReadByte(input);
         var parameters = new Dictionary<byte, object>(size);
@@ -557,7 +557,7 @@ public static class Protocol18Deserializer
         return parameters;
     }
 
-    private static Protocol18CustomType DeserializeCustomType(Protocol16Stream input, byte slimTypeCode = 0)
+    private static Protocol18CustomType DeserializeCustomType(Protocol18Stream input, byte slimTypeCode = 0)
     {
         byte typeCode = slimTypeCode == 0
             ? ReadByte(input)
@@ -568,7 +568,7 @@ public static class Protocol18Deserializer
         return new Protocol18CustomType(typeCode, data);
     }
 
-    private static Protocol18CustomType[] DeserializeCustomTypeArray(Protocol16Stream input)
+    private static Protocol18CustomType[] DeserializeCustomTypeArray(Protocol18Stream input)
     {
         int arrayLength = checked((int) ReadCompressedUInt32(input));
         byte typeCode = ReadByte(input);
@@ -590,7 +590,7 @@ public static class Protocol18Deserializer
         return signNegative ? -value : value;
     }
 
-    private static int ReadInt2(Protocol16Stream input, bool signNegative)
+    private static int ReadInt2(Protocol18Stream input, bool signNegative)
     {
         int value = ReadUShort(input);
         return signNegative ? -value : value;
@@ -602,23 +602,23 @@ public static class Protocol18Deserializer
         return signNegative ? -value : value;
     }
 
-    private static long ReadLong2(Protocol16Stream input, bool signNegative)
+    private static long ReadLong2(Protocol18Stream input, bool signNegative)
     {
         long value = ReadUShort(input);
         return signNegative ? -value : value;
     }
 
-    private static int ReadCompressedInt32(Protocol16Stream input)
+    private static int ReadCompressedInt32(Protocol18Stream input)
     {
         return DecodeZigZag32(ReadCompressedUInt32(input));
     }
 
-    private static long ReadCompressedInt64(Protocol16Stream input)
+    private static long ReadCompressedInt64(Protocol18Stream input)
     {
         return DecodeZigZag64(ReadCompressedUInt64(input));
     }
 
-    private static uint ReadCompressedUInt32(Protocol16Stream input)
+    private static uint ReadCompressedUInt32(Protocol18Stream input)
     {
         uint value = 0;
         int shift = 0;
@@ -638,7 +638,7 @@ public static class Protocol18Deserializer
         return value;
     }
 
-    private static ulong ReadCompressedUInt64(Protocol16Stream input)
+    private static ulong ReadCompressedUInt64(Protocol18Stream input)
     {
         ulong value = 0;
         int shift = 0;
@@ -658,7 +658,7 @@ public static class Protocol18Deserializer
         return value;
     }
 
-    private static ushort ReadUShort(Protocol16Stream input)
+    private static ushort ReadUShort(Protocol18Stream input)
     {
         byte[] buffer = GetScalarBuffer();
         ReadExactly(input, buffer, sizeof(ushort));
@@ -717,39 +717,6 @@ public static class Protocol18Deserializer
     private static long DecodeZigZag64(ulong value)
     {
         return (long) ((value >> 1) ^ (0UL - (value & 1UL)));
-    }
-}
-
-public static class Protocol16Deserializer
-{
-    public static object? Deserialize(Protocol16Stream input)
-    {
-        return Protocol18Deserializer.Deserialize(input);
-    }
-
-    public static object? Deserialize(Protocol16Stream input, byte typeCode)
-    {
-        return Protocol18Deserializer.Deserialize(input, typeCode);
-    }
-
-    public static OperationRequest DeserializeOperationRequest(Protocol16Stream input)
-    {
-        return Protocol18Deserializer.DeserializeOperationRequest(input);
-    }
-
-    public static OperationResponse DeserializeOperationResponse(Protocol16Stream input)
-    {
-        return Protocol18Deserializer.DeserializeOperationResponse(input);
-    }
-
-    public static EventData DeserializeEventData(Protocol16Stream input)
-    {
-        return Protocol18Deserializer.DeserializeEventData(input);
-    }
-
-    public static short DeserializeShort(Protocol16Stream input)
-    {
-        return Protocol18Deserializer.DeserializeShort(input);
     }
 }
 
