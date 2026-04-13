@@ -1,4 +1,5 @@
-﻿using StatisticsAnalysisTool.PhotonPackageParser;
+using StatisticsAnalysisTool.PhotonPackageParser;
+using System.Globalization;
 
 namespace StatisticsAnalysisTool.Network;
 
@@ -55,25 +56,28 @@ internal sealed class AlbionParser : PhotonParser
 
     private static short ParseOperationCode(Dictionary<byte, object> parameters)
     {
-        if (!parameters.TryGetValue(253, out object value))
-        {
-            // Other values are returned as -1 code.
-            //throw new InvalidOperationException();
-            return -1;
-        }
-
-        return (short) value;
+        return ParsePhotonCode(parameters, 253);
     }
 
     private static short ParseEventCode(Dictionary<byte, object> parameters)
     {
-        if (!parameters.TryGetValue(252, out object value))
+        return ParsePhotonCode(parameters, 252);
+    }
+
+    private static short ParsePhotonCode(Dictionary<byte, object> parameters, byte parameterKey)
+    {
+        if (!parameters.TryGetValue(parameterKey, out object value))
         {
-            // Other values are returned as -1 code.
-            //throw new InvalidOperationException();
             return -1;
         }
 
-        return (short) value;
+        try
+        {
+            return checked((short) Convert.ToInt32(value, CultureInfo.InvariantCulture));
+        }
+        catch
+        {
+            return -1;
+        }
     }
 }

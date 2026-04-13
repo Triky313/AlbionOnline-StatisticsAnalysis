@@ -17,7 +17,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "StatisticsAnalysisTool.Unit
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "StatisticsAnalysisTool.PhotonPackageParser", "StatisticsAnalysisTool.PhotonPackageParser\StatisticsAnalysisTool.PhotonPackageParser.csproj", "{5968EA4C-D000-47AE-AB3D-CBDAC5AE8041}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "StatisticsAnalysisTool.Protocol16", "StatisticsAnalysisTool.Protocol16\StatisticsAnalysisTool.Protocol16.csproj", "{1867083A-9AF5-4AA2-AB82-5C5BEC21F373}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "StatisticsAnalysisTool.Protocol18", "StatisticsAnalysisTool.Protocol18\StatisticsAnalysisTool.Protocol18.csproj", "{1867083A-9AF5-4AA2-AB82-5C5BEC21F373}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "StatisticsAnalysisTool.Abstractions", "StatisticsAnalysisTool.Abstractions\StatisticsAnalysisTool.Abstractions.csproj", "{13CC466B-40D0-4CDA-B315-7866E15DA9F9}"
 EndProject

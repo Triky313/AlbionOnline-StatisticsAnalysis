@@ -1,8 +1,14 @@
-﻿namespace StatisticsAnalysisTool.PhotonPackageParser;
+using System.Collections;
 
-internal class SegmentedPackage
+namespace StatisticsAnalysisTool.PhotonPackageParser;
+
+internal sealed class SegmentedPackage(int totalLength)
 {
-    public int TotalLength;
-    public int BytesWritten;
-    public byte[] TotalPayload;
+    public int TotalLength { get; } = totalLength;
+
+    public int ReceivedBytesCount { get; set; }
+
+    public byte[] TotalPayload { get; } = new byte[totalLength];
+
+    public BitArray ReceivedBytes { get; } = new(totalLength);
 }

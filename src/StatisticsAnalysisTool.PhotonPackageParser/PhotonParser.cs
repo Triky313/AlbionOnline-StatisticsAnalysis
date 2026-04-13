@@ -1,8 +1,8 @@
-﻿using StatisticsAnalysisTool.Protocol16;
-using StatisticsAnalysisTool.Protocol16.Photon;
-using System.Buffers;
 using StatisticsAnalysisTool.Abstractions;
 using StatisticsAnalysisTool.Diagnostics;
+using StatisticsAnalysisTool.Protocol18;
+using StatisticsAnalysisTool.Protocol18.Photon;
+using System.Buffers;
 
 namespace StatisticsAnalysisTool.PhotonPackageParser;
 
@@ -11,7 +11,7 @@ public abstract class PhotonParser : IPhotonReceiver
     private const int CommandHeaderLength = 12;
     private const int PhotonHeaderLength = 12;
 
-    private readonly Dictionary<int, SegmentedPackage?> _pendingSegments = new();
+    private readonly Dictionary<int, SegmentedPackage> _pendingSegments = new();
 
     public void ReceivePacket(byte[] payload)
     {
@@ -22,7 +22,7 @@ public abstract class PhotonParser : IPhotonReceiver
 
         int offset = 0;
 
-        if (!NumberDeserializer.Deserialize(out short peerId, payload, ref offset))
+        if (!NumberDeserializer.Deserialize(out short _, payload, ref offset))
         {
             return;
         }
@@ -37,12 +37,12 @@ public abstract class PhotonParser : IPhotonReceiver
             return;
         }
 
-        if (!NumberDeserializer.Deserialize(out int timestamp, payload, ref offset))
+        if (!NumberDeserializer.Deserialize(out int _, payload, ref offset))
         {
             return;
         }
 
-        if (!NumberDeserializer.Deserialize(out int challenge, payload, ref offset))
+        if (!NumberDeserializer.Deserialize(out int _, payload, ref offset))
         {
             return;
         }
@@ -121,11 +121,11 @@ public abstract class PhotonParser : IPhotonReceiver
         {
             return;
         }
-        if (!ReadByte(out byte channelId, source, ref offset))
+        if (!ReadByte(out byte _, source, ref offset))
         {
             return;
         }
-        if (!ReadByte(out byte commandFlags, source, ref offset))
+        if (!ReadByte(out byte _, source, ref offset))
         {
             return;
         }
@@ -135,7 +135,7 @@ public abstract class PhotonParser : IPhotonReceiver
         {
             return;
         }
-        if (!NumberDeserializer.Deserialize(out int sequenceNumber, source, ref offset))
+        if (!NumberDeserializer.Deserialize(out int _, source, ref offset))
         {
             return;
         }
@@ -180,7 +180,7 @@ public abstract class PhotonParser : IPhotonReceiver
         commandLength--;
 
         int operationLength = commandLength;
-        var payload = new Protocol16Stream(operationLength);
+        var payload = new Protocol18Stream(operationLength);
         payload.Write(source, offset, operationLength);
         payload.Seek(0L, SeekOrigin.Begin);
 
@@ -188,43 +188,63 @@ public abstract class PhotonParser : IPhotonReceiver
         switch ((MessageType) messageType)
         {
             case MessageType.OperationRequest:
-            {
-                OperationRequest requestData = Protocol16Deserializer.DeserializeOperationRequest(payload);
-                DebugConsole.LogOperationRequest(requestData.OperationCode, requestData.Parameters);
-                OnRequest(requestData.OperationCode, requestData.Parameters);
-                break;
-            }
+                {
+                    OperationRequest requestData = Protocol18Deserializer.DeserializeOperationRequest(payload);
+                    DebugConsole.LogOperationRequest(requestData.OperationCode, requestData.Parameters);
+                    OnRequest(requestData.OperationCode, requestData.Parameters);
+                    break;
+                }
             case MessageType.OperationResponse:
-            {
-                OperationResponse responseData = Protocol16Deserializer.DeserializeOperationResponse(payload);
-                DebugConsole.LogOperationResponse(responseData.OperationCode, responseData.ReturnCode, responseData.DebugMessage, responseData.Parameters);
-                OnResponse(responseData.OperationCode, responseData.ReturnCode, responseData.DebugMessage, responseData.Parameters);
-                break;
-            }
+                {
+                    OperationResponse responseData = Protocol18Deserializer.DeserializeOperationResponse(payload);
+                    DebugConsole.LogOperationResponse(responseData.OperationCode, responseData.ReturnCode, responseData.DebugMessage, responseData.Parameters);
+                    OnResponse(responseData.OperationCode, responseData.ReturnCode, responseData.DebugMessage, responseData.Parameters);
+                    break;
+                }
             case MessageType.Event:
-            {
-                EventData eventData = Protocol16Deserializer.DeserializeEventData(payload);
-                DebugConsole.LogEvent(eventData.Code, eventData.Parameters);
-                OnEvent(eventData.Code, eventData.Parameters);
-                break;
-            }
+                {
+                    EventData eventData = Protocol18Deserializer.DeserializeEventData(payload);
+                    DebugConsole.LogEvent(eventData.Code, eventData.Parameters);
+                    OnEvent(eventData.Code, eventData.Parameters);
+                    break;
+                }
         }
     }
 
     private void HandleSendFragment(byte[] source, ref int offset, ref int commandLength)
     {
-        NumberDeserializer.Deserialize(out int startSequenceNumber, source, ref offset);
+        if (!NumberDeserializer.Deserialize(out int startSequenceNumber, source, ref offset))
+        {
+            return;
+        }
         commandLength -= 4;
-        NumberDeserializer.Deserialize(out int fragmentCount, source, ref offset);
+        if (!NumberDeserializer.Deserialize(out int _, source, ref offset))
+        {
+            return;
+        }
         commandLength -= 4;
-        NumberDeserializer.Deserialize(out int fragmentNumber, source, ref offset);
+        if (!NumberDeserializer.Deserialize(out int _, source, ref offset))
+        {
+            return;
+        }
         commandLength -= 4;
-        NumberDeserializer.Deserialize(out int totalLength, source, ref offset);
+        if (!NumberDeserializer.Deserialize(out int totalLength, source, ref offset))
+        {
+            return;
+        }
         commandLength -= 4;
-        NumberDeserializer.Deserialize(out int fragmentOffset, source, ref offset);
+        if (!NumberDeserializer.Deserialize(out int fragmentOffset, source, ref offset))
+        {
+            return;
+        }
         commandLength -= 4;
 
         int fragmentLength = commandLength;
+        if (totalLength <= 0 || fragmentLength <= 0)
+        {
+            return;
+        }
+
         HandleSegmentedPayload(startSequenceNumber, totalLength, fragmentLength, fragmentOffset, source, ref offset);
     }
 
@@ -237,31 +257,66 @@ public abstract class PhotonParser : IPhotonReceiver
 
     private void HandleSegmentedPayload(int startSequenceNumber, int totalLength, int fragmentLength, int fragmentOffset, byte[] source, ref int offset)
     {
-        SegmentedPackage? segmentedPackage = GetSegmentedPackage(startSequenceNumber, totalLength);
+        SegmentedPackage segmentedPackage = GetSegmentedPackage(startSequenceNumber, totalLength);
+
+        if (fragmentOffset < 0 || fragmentLength <= 0 || fragmentOffset > segmentedPackage.TotalLength)
+        {
+            _pendingSegments.Remove(startSequenceNumber);
+            return;
+        }
+
+        if (fragmentLength > segmentedPackage.TotalLength - fragmentOffset)
+        {
+            _pendingSegments.Remove(startSequenceNumber);
+            return;
+        }
+
+        if (offset < 0 || offset > source.Length || fragmentLength > source.Length - offset)
+        {
+            _pendingSegments.Remove(startSequenceNumber);
+            return;
+        }
 
         Buffer.BlockCopy(source, offset, segmentedPackage.TotalPayload, fragmentOffset, fragmentLength);
         offset += fragmentLength;
-        segmentedPackage.BytesWritten += fragmentLength;
 
-        if (segmentedPackage.BytesWritten >= segmentedPackage.TotalLength)
+        int fragmentEnd = fragmentOffset + fragmentLength;
+        for (int index = fragmentOffset; index < fragmentEnd; index++)
+        {
+            if (segmentedPackage.ReceivedBytes[index])
+            {
+                continue;
+            }
+
+            segmentedPackage.ReceivedBytes[index] = true;
+            segmentedPackage.ReceivedBytesCount++;
+        }
+
+        if (segmentedPackage.ReceivedBytesCount >= segmentedPackage.TotalLength)
         {
             _pendingSegments.Remove(startSequenceNumber);
             HandleFinishedSegmentedPackage(segmentedPackage.TotalPayload);
         }
     }
 
-    private SegmentedPackage? GetSegmentedPackage(int startSequenceNumber, int totalLength)
+    private SegmentedPackage GetSegmentedPackage(int startSequenceNumber, int totalLength)
     {
         if (_pendingSegments.TryGetValue(startSequenceNumber, out SegmentedPackage? segmentedPackage))
         {
-            return segmentedPackage;
+            if (segmentedPackage != null && segmentedPackage.TotalLength != totalLength)
+            {
+                _pendingSegments.Remove(startSequenceNumber);
+                segmentedPackage = new SegmentedPackage(totalLength);
+                _pendingSegments.Add(startSequenceNumber, segmentedPackage);
+            }
+
+            if (segmentedPackage != null)
+            {
+                return segmentedPackage;
+            }
         }
 
-        segmentedPackage = new SegmentedPackage
-        {
-            TotalLength = totalLength,
-            TotalPayload = new byte[totalLength],
-        };
+        segmentedPackage = new SegmentedPackage(totalLength);
         _pendingSegments.Add(startSequenceNumber, segmentedPackage);
 
         return segmentedPackage;

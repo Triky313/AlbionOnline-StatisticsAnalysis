@@ -1,5 +1,5 @@
-﻿namespace StatisticsAnalysisTool.Protocol16;
-public class Protocol16Stream : Stream
+namespace StatisticsAnalysisTool.Protocol18;
+public class Protocol18Stream : Stream
 {
     private byte[] _buffer;
     private int _position;
@@ -10,12 +10,12 @@ public class Protocol16Stream : Stream
     public override bool CanWrite => true;
     public override long Length => _length;
 
-    public Protocol16Stream(int size = 0)
+    public Protocol18Stream(int size = 0)
     {
         _buffer = new byte[size];
     }
 
-    public Protocol16Stream(byte[] buffer)
+    public Protocol18Stream(byte[] buffer)
     {
         _buffer = buffer;
         _length = buffer.Length;
