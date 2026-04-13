@@ -60,7 +60,7 @@ public class JoinResponse
                 DebugConsole.WriteInfo(MethodBase.GetCurrentMethod()?.DeclaringType, $"Username: {Username}", "#0279be");
             }
 
-            if (parameters.TryGetValue(11, out object mapIndex))
+            if (parameters.TryGetValue(8, out object mapIndex))
             {
                 MapIndex = mapIndex.ToString();
                 MapType = WorldData.GetMapType(MapIndex);
