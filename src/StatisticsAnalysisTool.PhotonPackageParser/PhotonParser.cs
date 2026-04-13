@@ -1,8 +1,8 @@
-﻿using StatisticsAnalysisTool.Protocol16;
-using StatisticsAnalysisTool.Protocol16.Photon;
-using System.Buffers;
 using StatisticsAnalysisTool.Abstractions;
 using StatisticsAnalysisTool.Diagnostics;
+using StatisticsAnalysisTool.Protocol18;
+using StatisticsAnalysisTool.Protocol18.Photon;
+using System.Buffers;
 
 namespace StatisticsAnalysisTool.PhotonPackageParser;
 
@@ -22,7 +22,7 @@ public abstract class PhotonParser : IPhotonReceiver
 
         int offset = 0;
 
-        if (!NumberDeserializer.Deserialize(out short peerId, payload, ref offset))
+        if (!NumberDeserializer.Deserialize(out short _, payload, ref offset))
         {
             return;
         }
@@ -37,12 +37,12 @@ public abstract class PhotonParser : IPhotonReceiver
             return;
         }
 
-        if (!NumberDeserializer.Deserialize(out int timestamp, payload, ref offset))
+        if (!NumberDeserializer.Deserialize(out int _, payload, ref offset))
         {
             return;
         }
 
-        if (!NumberDeserializer.Deserialize(out int challenge, payload, ref offset))
+        if (!NumberDeserializer.Deserialize(out int _, payload, ref offset))
         {
             return;
         }
@@ -121,11 +121,11 @@ public abstract class PhotonParser : IPhotonReceiver
         {
             return;
         }
-        if (!ReadByte(out byte channelId, source, ref offset))
+        if (!ReadByte(out byte _, source, ref offset))
         {
             return;
         }
-        if (!ReadByte(out byte commandFlags, source, ref offset))
+        if (!ReadByte(out byte _, source, ref offset))
         {
             return;
         }
@@ -135,7 +135,7 @@ public abstract class PhotonParser : IPhotonReceiver
         {
             return;
         }
-        if (!NumberDeserializer.Deserialize(out int sequenceNumber, source, ref offset))
+        if (!NumberDeserializer.Deserialize(out int _, source, ref offset))
         {
             return;
         }
@@ -180,7 +180,7 @@ public abstract class PhotonParser : IPhotonReceiver
         commandLength--;
 
         int operationLength = commandLength;
-        var payload = new Protocol16Stream(operationLength);
+        var payload = new Protocol18Stream(operationLength);
         payload.Write(source, offset, operationLength);
         payload.Seek(0L, SeekOrigin.Begin);
 
@@ -188,26 +188,26 @@ public abstract class PhotonParser : IPhotonReceiver
         switch ((MessageType) messageType)
         {
             case MessageType.OperationRequest:
-            {
-                OperationRequest requestData = Protocol16Deserializer.DeserializeOperationRequest(payload);
-                DebugConsole.LogOperationRequest(requestData.OperationCode, requestData.Parameters);
-                OnRequest(requestData.OperationCode, requestData.Parameters);
-                break;
-            }
+                {
+                    OperationRequest requestData = Protocol18Deserializer.DeserializeOperationRequest(payload);
+                    DebugConsole.LogOperationRequest(requestData.OperationCode, requestData.Parameters);
+                    OnRequest(requestData.OperationCode, requestData.Parameters);
+                    break;
+                }
             case MessageType.OperationResponse:
-            {
-                OperationResponse responseData = Protocol16Deserializer.DeserializeOperationResponse(payload);
-                DebugConsole.LogOperationResponse(responseData.OperationCode, responseData.ReturnCode, responseData.DebugMessage, responseData.Parameters);
-                OnResponse(responseData.OperationCode, responseData.ReturnCode, responseData.DebugMessage, responseData.Parameters);
-                break;
-            }
+                {
+                    OperationResponse responseData = Protocol18Deserializer.DeserializeOperationResponse(payload);
+                    DebugConsole.LogOperationResponse(responseData.OperationCode, responseData.ReturnCode, responseData.DebugMessage, responseData.Parameters);
+                    OnResponse(responseData.OperationCode, responseData.ReturnCode, responseData.DebugMessage, responseData.Parameters);
+                    break;
+                }
             case MessageType.Event:
-            {
-                EventData eventData = Protocol16Deserializer.DeserializeEventData(payload);
-                DebugConsole.LogEvent(eventData.Code, eventData.Parameters);
-                OnEvent(eventData.Code, eventData.Parameters);
-                break;
-            }
+                {
+                    EventData eventData = Protocol18Deserializer.DeserializeEventData(payload);
+                    DebugConsole.LogEvent(eventData.Code, eventData.Parameters);
+                    OnEvent(eventData.Code, eventData.Parameters);
+                    break;
+                }
         }
     }
 
@@ -215,9 +215,9 @@ public abstract class PhotonParser : IPhotonReceiver
     {
         NumberDeserializer.Deserialize(out int startSequenceNumber, source, ref offset);
         commandLength -= 4;
-        NumberDeserializer.Deserialize(out int fragmentCount, source, ref offset);
+        NumberDeserializer.Deserialize(out int _, source, ref offset);
         commandLength -= 4;
-        NumberDeserializer.Deserialize(out int fragmentNumber, source, ref offset);
+        NumberDeserializer.Deserialize(out int _, source, ref offset);
         commandLength -= 4;
         NumberDeserializer.Deserialize(out int totalLength, source, ref offset);
         commandLength -= 4;
