@@ -8,49 +8,44 @@ namespace StatisticsAnalysisTool.Models;
 
 public class CurrentMapInfoBinding : BaseViewModel
 {
-    private Visibility _currentMapInformationVisibility;
-    private string _displayedClusterName;
-    private string _tier;
-    private ClusterMode _clusterMode;
-
     public ClusterInfo ClusterInfo { get; set; }
 
     public string DisplayedClusterName
     {
-        get => _displayedClusterName;
+        get;
         set
         {
-            _displayedClusterName = value;
+            field = value;
             OnPropertyChanged();
         }
     }
 
     public ClusterMode ClusterMode
     {
-        get => _clusterMode;
+        get;
         set
         {
-            _clusterMode = value;
+            field = value;
             OnPropertyChanged();
         }
     }
 
     public string Tier
     {
-        get => _tier;
+        get;
         set
         {
-            _tier = value;
+            field = value;
             OnPropertyChanged();
         }
     }
 
     public Visibility CurrentMapInformationVisibility
     {
-        get => _currentMapInformationVisibility;
+        get;
         set
         {
-            _currentMapInformationVisibility = value;
+            field = value;
             OnPropertyChanged();
         }
     }

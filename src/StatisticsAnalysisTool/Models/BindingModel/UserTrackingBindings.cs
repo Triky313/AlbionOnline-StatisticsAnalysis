@@ -5,83 +5,75 @@ namespace StatisticsAnalysisTool.Models.BindingModel;
 
 public class UserTrackingBindings : BaseViewModel
 {
-    private string _username;
-    private string _guildName;
-    private string _allianceName;
-    private Visibility _usernameInformationVisibility;
-    private Visibility _guildInformationVisibility;
-    private Visibility _allianceInformationVisibility;
-    private CurrentMapInfoBinding _currentMapInfoBinding = new();
-
     public string Username
     {
-        get => _username;
+        get;
         set
         {
-            _username = value;
-            UsernameInformationVisibility = !string.IsNullOrEmpty(_username) ? Visibility.Visible : Visibility.Collapsed;
+            field = value;
+            UsernameInformationVisibility = !string.IsNullOrEmpty(field) ? Visibility.Visible : Visibility.Collapsed;
             OnPropertyChanged();
         }
     }
 
     public string GuildName
     {
-        get => _guildName;
+        get;
         set
         {
-            _guildName = value;
-            GuildInformationVisibility = !string.IsNullOrEmpty(_guildName) ? Visibility.Visible : Visibility.Collapsed;
+            field = value;
+            GuildInformationVisibility = !string.IsNullOrEmpty(field) ? Visibility.Visible : Visibility.Collapsed;
             OnPropertyChanged();
         }
     }
 
     public string AllianceName
     {
-        get => _allianceName;
+        get;
         set
         {
-            _allianceName = value;
-            AllianceInformationVisibility = !string.IsNullOrEmpty(_allianceName) ? Visibility.Visible : Visibility.Collapsed;
+            field = value;
+            AllianceInformationVisibility = !string.IsNullOrEmpty(field) ? Visibility.Visible : Visibility.Collapsed;
             OnPropertyChanged();
         }
     }
 
     public CurrentMapInfoBinding CurrentMapInfoBinding
     {
-        get => _currentMapInfoBinding;
+        get;
         set
         {
-            _currentMapInfoBinding = value;
+            field = value;
             OnPropertyChanged();
         }
-    }
+    } = new();
 
     public Visibility UsernameInformationVisibility
     {
-        get => _usernameInformationVisibility;
+        get;
         set
         {
-            _usernameInformationVisibility = value;
+            field = value;
             OnPropertyChanged();
         }
     }
 
     public Visibility GuildInformationVisibility
     {
-        get => _guildInformationVisibility;
+        get;
         set
         {
-            _guildInformationVisibility = value;
+            field = value;
             OnPropertyChanged();
         }
     }
 
     public Visibility AllianceInformationVisibility
     {
-        get => _allianceInformationVisibility;
+        get;
         set
         {
-            _allianceInformationVisibility = value;
+            field = value;
             OnPropertyChanged();
         }
     }
