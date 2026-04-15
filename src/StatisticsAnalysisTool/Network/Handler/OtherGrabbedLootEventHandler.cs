@@ -4,20 +4,11 @@ using System.Threading.Tasks;
 
 namespace StatisticsAnalysisTool.Network.Handler;
 
-public class OtherGrabbedLootEventHandler : EventPacketHandler<GrabbedLootEvent>
+public class OtherGrabbedLootEventHandler(TrackingController trackingController) : EventPacketHandler<GrabbedLootEvent>((int) EventCodes.OtherGrabbedLoot)
 {
-    private readonly TrackingController _trackingController;
-
-    public OtherGrabbedLootEventHandler(TrackingController trackingController) : base((int) EventCodes.OtherGrabbedLoot)
-    {
-        _trackingController = trackingController;
-    }
-
     protected override async Task OnActionAsync(GrabbedLootEvent value)
     {
-
-
-        await _trackingController.LootController.AddLootedItemAsync(value.Loot);
-        await _trackingController.LootController.AddLootAsync(value.Loot);
+        await trackingController.LootController.AddLootedItemAsync(value.Loot);
+        await trackingController.LootController.AddLootAsync(value.Loot);
     }
 }
