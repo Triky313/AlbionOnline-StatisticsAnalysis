@@ -122,9 +122,9 @@ public class JoinResponse
             // Temporarily removed until value is found
             PlayTimeInSeconds = 0;
 
-            if (parameters.ContainsKey(80))
+            if (parameters.ContainsKey(79))
             {
-                AllianceName = string.IsNullOrEmpty(parameters[80].ToString()) ? string.Empty : parameters[80].ToString();
+                AllianceName = string.IsNullOrEmpty(parameters[79].ToString()) ? string.Empty : parameters[79].ToString();
             }
 
             if (parameters.ContainsKey(98))
