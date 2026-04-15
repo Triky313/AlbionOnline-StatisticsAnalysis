@@ -1,6 +1,7 @@
 using Serilog;
 using StatisticsAnalysisTool.Common;
 using StatisticsAnalysisTool.Common.UserSettings;
+using StatisticsAnalysisTool.Diagnostics;
 using StatisticsAnalysisTool.EventLogging;
 using StatisticsAnalysisTool.EventLogging.Notification;
 using StatisticsAnalysisTool.Localization;
@@ -14,8 +15,6 @@ using System.Linq;
 using System.Reflection;
 using System.Threading.Tasks;
 using System.Windows;
-using StatisticsAnalysisTool.Diagnostics;
-using Loot = StatisticsAnalysisTool.Models.NetworkModel.Loot;
 
 namespace StatisticsAnalysisTool.Network.Manager;
 

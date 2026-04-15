@@ -4,19 +4,10 @@ using System.Threading.Tasks;
 
 namespace StatisticsAnalysisTool.Network.Handler;
 
-public class PartyJoinedEventHandler : EventPacketHandler<PartyJoinedEvent>
+public class PartyJoinedEventHandler(TrackingController trackingController) : EventPacketHandler<PartyJoinedEvent>((int) EventCodes.PartyJoined)
 {
-    private readonly TrackingController _trackingController;
-
-    public PartyJoinedEventHandler(TrackingController trackingController) : base((int) EventCodes.PartyJoined)
-    {
-        _trackingController = trackingController;
-    }
-
     protected override async Task OnActionAsync(PartyJoinedEvent value)
     {
-
-
-        await _trackingController.EntityController.SetPartyAsync(value.PartyUsers);
+        await trackingController.EntityController.SetPartyAsync(value.PartyUsers);
     }
 }
