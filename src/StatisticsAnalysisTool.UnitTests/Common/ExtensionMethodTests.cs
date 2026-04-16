@@ -161,6 +161,46 @@ public class ExtensionMethodTests
     }
 
     [Test]
+    public void ObjectToByte_WithIntValue_ReturnsByteValue()
+    {
+        var value = (object) 3;
+
+        var result = value.ObjectToByte();
+
+        result.Should().Be((byte) 3);
+    }
+
+    [Test]
+    public void ObjectToByte_WithShortValue_ReturnsByteValue()
+    {
+        var value = (object) (short) 3;
+
+        var result = value.ObjectToByte();
+
+        result.Should().Be((byte) 3);
+    }
+
+    [Test]
+    public void ObjectToByte_WithLongValue_ReturnsByteValue()
+    {
+        var value = (object) 3L;
+
+        var result = value.ObjectToByte();
+
+        result.Should().Be((byte) 3);
+    }
+
+    [Test]
+    public void ObjectToByte_WithOutOfRangeValue_ReturnsZero()
+    {
+        var value = (object) 300;
+
+        var result = value.ObjectToByte();
+
+        result.Should().Be((byte) 0);
+    }
+
+    [Test]
     public void GetShortNumber_ReturnsCorrectStringForVariousInputs()
     {
         // Arrange

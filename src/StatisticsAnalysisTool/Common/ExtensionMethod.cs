@@ -133,7 +133,14 @@ public static class ExtensionMethod
 
     public static byte ObjectToByte(this object value)
     {
-        return value as byte? ?? 0;
+        return value switch
+        {
+            byte byteValue => byteValue,
+            short shortValue when shortValue >= byte.MinValue && shortValue <= byte.MaxValue => (byte) shortValue,
+            int intValue when intValue >= byte.MinValue && intValue <= byte.MaxValue => (byte) intValue,
+            long longValue when longValue >= byte.MinValue && longValue <= byte.MaxValue => (byte) longValue,
+            _ => 0
+        };
     }
 
     public static bool ObjectToBool(this object value)

@@ -329,3 +329,5 @@ ASALocalRun/
 .mfractor/
 
 *.bak
+
+.codex-dotnet/

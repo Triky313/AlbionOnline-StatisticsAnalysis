@@ -27,10 +27,10 @@ public class StatisticController
 
     private readonly TrackingController _trackingController;
     private readonly MainWindowViewModel _mainWindowViewModel;
-    private readonly List<ValueType> _valueTypes = new()
-    {
+    private readonly List<ValueType> _valueTypes =
+    [
         ValueType.Fame, ValueType.Silver, ValueType.ReSpec, ValueType.FactionFame, ValueType.FactionPoints, ValueType.Might, ValueType.Favor, ValueType.RepairCosts
-    };
+    ];
 
     private DateTime _lastChartUpdate;
     private DashboardStatistics _dashboardStatistics = new();
