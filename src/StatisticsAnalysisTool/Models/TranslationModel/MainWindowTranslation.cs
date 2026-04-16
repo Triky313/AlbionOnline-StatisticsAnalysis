@@ -55,6 +55,7 @@ public class MainWindowTranslation
     public static string SimpleLoot => LocalizationController.Translation("SIMPLE_LOOT");
     public static string UnknownLoot => LocalizationController.Translation("UNKNOWN_LOOT");
     public static string OpenExtendedDamageMeterWindow => LocalizationController.Translation("OPEN_EXTENDED_DAMAGE_METER_WINDOW");
+    public static string OpenExtendedDashboardWindow => LocalizationController.Translation("OPEN_EXTENDED_DASHBOARD_WINDOW");
     public static string CopyToClipboard => LocalizationController.Translation("COPY_TO_CLIPBOARD");
     public static string MapHistory => LocalizationController.Translation("MAP_HISTORY");
     public static string DamageMeterOnOff => LocalizationController.Translation("DAMAGE_METER_ON_OFF");

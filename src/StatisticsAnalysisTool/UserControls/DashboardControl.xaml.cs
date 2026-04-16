@@ -8,6 +8,7 @@ using System;
 using System.Linq;
 using System.Reflection;
 using System.Windows;
+using System.Windows.Controls;
 using System.Windows.Input;
 using StatisticsAnalysisTool.Diagnostics;
 
@@ -35,7 +36,7 @@ public partial class DashboardControl
             else
             {
                 var vm = (MainWindowViewModel) DataContext;
-                var itemWindow = new DashboardWindow(vm?.DashboardBindings, vm?.FactionPointStats);
+                var itemWindow = new DashboardWindow(vm);
                 itemWindow.Show();
             }
         }
@@ -116,5 +117,37 @@ public partial class DashboardControl
             vm.DashboardBindings.RepairCostsStatsVisibility = Visibility.Visible;
             vm.DashboardBindings.RepairCostsStatsToggleIcon = EFontAwesomeIcon.Solid_Minus;
         }
+    }
+
+    private void ActivityChartToggle_OnMouseLeftButtonDown(object sender, MouseButtonEventArgs e)
+    {
+        var vm = (MainWindowViewModel) DataContext;
+        if (vm.DashboardBindings.ActivityChartVisibility == Visibility.Visible)
+        {
+            vm.DashboardBindings.ActivityChartVisibility = Visibility.Collapsed;
+            vm.DashboardBindings.ActivityChartToggleIcon = EFontAwesomeIcon.Solid_Plus;
+        }
+        else
+        {
+            vm.DashboardBindings.ActivityChartVisibility = Visibility.Visible;
+            vm.DashboardBindings.ActivityChartToggleIcon = EFontAwesomeIcon.Solid_Minus;
+            RefreshDailyChart();
+        }
+    }
+
+    private void DashboardChartRange_SelectionChanged(object sender, SelectionChangedEventArgs e)
+    {
+        RefreshDailyChart();
+    }
+
+    private void DashboardChartSeriesVisibility_Changed(object sender, RoutedEventArgs e)
+    {
+        RefreshDailyChart();
+    }
+
+    private static void RefreshDailyChart()
+    {
+        var trackingController = ServiceLocator.Resolve<TrackingController>();
+        trackingController?.StatisticController?.UpdateDailyChart(true);
     }
 }

@@ -3,7 +3,9 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:models="clr-namespace:StatisticsAnalysisTool.Models"
         xmlns:viewModels="clr-namespace:StatisticsAnalysisTool.ViewModels"
+        xmlns:wpf="clr-namespace:LiveChartsCore.SkiaSharpView.WPF;assembly=LiveChartsCore.SkiaSharpView.WPF"
         mc:Ignorable="d"
         Title="{Binding DashboardBindings.TranslationTitle, FallbackValue=DASHBOARD}" 
         Height="500" Width="650" MinHeight="450" MinWidth="600" 
@@ -14,7 +16,7 @@
         BorderBrush="{StaticResource SolidColorBrush.Background.3}"
         AllowsTransparency="True"
         d:DesignHeight="1400" d:DesignWidth="600"
-        d:DataContext="{d:DesignInstance Type=viewModels:DashboardWindowViewModel}">
+        d:DataContext="{d:DesignInstance Type=viewModels:MainWindowViewModel}">
     <Grid Background="{StaticResource SolidColorBrush.Background.1}">
         <Grid ZIndex="1" Height="33" VerticalAlignment="Top" Background="{StaticResource SolidColorBrush.Background.2}" MouseDown="Hotbar_MouseDown" MouseLeftButtonDown="Grid_MouseLeftButtonDown">
             <Label Content="{Binding DashboardBindings.TranslationTitle, FallbackValue=DASHBOARD}" Margin="0,0,91,0" VerticalAlignment="Top" Height="33" FontSize="16" 
@@ -77,6 +79,55 @@
                         <Separator Background="{StaticResource SolidColorBrush.Background.3}" Height="4" Margin="0,2,0,2" />
                         <Grid>
                             <ContentControl Margin="3" Content="{Binding DashboardBindings}" ContentTemplate="{StaticResource RepairCostsTemplate}" />
+                        </Grid>
+                        <Separator Background="{StaticResource SolidColorBrush.Background.3}" Height="4" Margin="0,2,0,2" />
+                        <Grid Margin="10,6,10,16">
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="Auto" />
+                                <RowDefinition Height="Auto" />
+                                <RowDefinition Height="300" />
+                            </Grid.RowDefinitions>
+                            <StackPanel Grid.Row="0" Orientation="Horizontal" HorizontalAlignment="Left">
+                                <TextBlock Text="{Binding DashboardBindings.TranslationActivityChart, FallbackValue='HISTORY'}"
+                                           Foreground="{StaticResource SolidColorBrush.Text.1}" VerticalAlignment="Center" Margin="0,0,8,0" />
+                                <ComboBox Width="180"
+                                          Height="26"
+                                          ItemsSource="{Binding DashboardChartRanges}"
+                                          SelectedItem="{Binding SelectedDashboardChartRange, Mode=TwoWay}"
+                                          DisplayMemberPath="Name"
+                                          SelectionChanged="DashboardChartRange_SelectionChanged" />
+                            </StackPanel>
+                            <ItemsControl Grid.Row="1" Margin="0,10,0,10" ItemsSource="{Binding DashboardChartSeriesFilters}">
+                                <ItemsControl.ItemsPanel>
+                                    <ItemsPanelTemplate>
+                                        <WrapPanel />
+                                    </ItemsPanelTemplate>
+                                </ItemsControl.ItemsPanel>
+                                <ItemsControl.ItemTemplate>
+                                    <DataTemplate DataType="{x:Type models:DashboardChartSeriesFilter}">
+                                        <Border BorderBrush="{StaticResource SolidColorBrush.Background.4}"
+                                                BorderThickness="1"
+                                                Margin="0,0,8,8"
+                                                Padding="8,4"
+                                                Background="{StaticResource SolidColorBrush.Background.2}">
+                                            <StackPanel Orientation="Horizontal">
+                                                <Rectangle Width="10" Height="10" Fill="{Binding Brush}" Margin="0,0,6,0" VerticalAlignment="Center" />
+                                                <CheckBox Content="{Binding Name}"
+                                                          IsChecked="{Binding IsSelected, Mode=TwoWay}"
+                                                          Checked="DashboardChartSeriesVisibility_Changed"
+                                                          Unchecked="DashboardChartSeriesVisibility_Changed"
+                                                          VerticalAlignment="Center" />
+                                            </StackPanel>
+                                        </Border>
+                                    </DataTemplate>
+                                </ItemsControl.ItemTemplate>
+                            </ItemsControl>
+                            <wpf:CartesianChart Grid.Row="2"
+                                                Series="{Binding SeriesDashboardHourValues}"
+                                                XAxes="{Binding XAxesDashboardHourValues}"
+                                                TooltipPosition="Center"
+                                                FindingStrategy="ExactMatchTakeClosest"
+                                                LegendPosition="Hidden" />
                         </Grid>
                     </StackPanel>
                 </Grid>
