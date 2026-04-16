@@ -134,7 +134,8 @@ public class StatisticController
                 Stroke = GetValueTypeBrush(selectedSeriesFilter.ValueType, false),
                 GeometryStroke = GetValueTypeBrush(selectedSeriesFilter.ValueType, false),
                 GeometryFill = GetValueTypeBrush(selectedSeriesFilter.ValueType, false),
-                GeometrySize = 5
+                GeometrySize = 5,
+                YToolTipLabelFormatter = chartPoint => Math.Round(chartPoint.Coordinate.PrimaryValue).ToString("F0", CultureInfo.CurrentCulture)
             };
 
             seriesCollection.Add(lineSeries);
