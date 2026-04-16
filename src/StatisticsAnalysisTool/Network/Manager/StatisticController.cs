@@ -6,7 +6,6 @@ using Serilog;
 using SkiaSharp;
 using StatisticsAnalysisTool.Common;
 using StatisticsAnalysisTool.Models;
-using StatisticsAnalysisTool.Models.BindingModel;
 using StatisticsAnalysisTool.Properties;
 using StatisticsAnalysisTool.ViewModels;
 using System;
