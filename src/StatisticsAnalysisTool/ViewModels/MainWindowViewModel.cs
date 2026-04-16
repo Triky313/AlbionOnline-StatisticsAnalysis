@@ -36,6 +36,7 @@ using System.Windows;
 using System.Windows.Data;
 using System.Windows.Media;
 using StatisticsAnalysisTool.Diagnostics;
+using ValueType = StatisticsAnalysisTool.Enumerations.ValueType;
 
 // ReSharper disable UnusedMember.Global
 
@@ -90,6 +91,9 @@ public class MainWindowViewModel : BaseViewModel
     private bool _isTrackingPartyLootOnly;
     private Axis[] _xAxesDashboardHourValues;
     private ObservableCollection<ISeries> _seriesDashboardHourValues;
+    private ObservableCollection<DashboardChartRangeOption> _dashboardChartRanges = [];
+    private DashboardChartRangeOption _selectedDashboardChartRange;
+    private ObservableCollection<DashboardChartSeriesFilter> _dashboardChartSeriesFilters = [];
     private DashboardBindings _dashboardBindings = new();
     private string _loggingSearchText;
     private Visibility _toolTasksVisibility = Visibility.Collapsed;
@@ -136,7 +140,60 @@ public class MainWindowViewModel : BaseViewModel
     {
         UpgradeSettings();
         SetUiElements();
+        InitDashboardChart();
         Translation = new MainWindowTranslation();
+    }
+
+    private void InitDashboardChart()
+    {
+        DashboardChartRanges = new ObservableCollection<DashboardChartRangeOption>(DashboardChartRangeOption.CreateDefault());
+        SelectedDashboardChartRange = DashboardChartRanges.FirstOrDefault();
+
+        DashboardChartSeriesFilters =
+        [
+            new DashboardChartSeriesFilter()
+            {
+                ValueType = ValueType.Fame,
+                Name = DashboardBindings.TranslationFame,
+                Brush = DashboardChartSeriesFilter.GetBrush(ValueType.Fame)
+            },
+            new DashboardChartSeriesFilter()
+            {
+                ValueType = ValueType.Silver,
+                Name = DashboardBindings.TranslationSilver,
+                Brush = DashboardChartSeriesFilter.GetBrush(ValueType.Silver)
+            },
+            new DashboardChartSeriesFilter()
+            {
+                ValueType = ValueType.ReSpec,
+                Name = DashboardBindings.TranslationReSpec,
+                Brush = DashboardChartSeriesFilter.GetBrush(ValueType.ReSpec)
+            },
+            new DashboardChartSeriesFilter()
+            {
+                ValueType = ValueType.FactionFame,
+                Name = $"{DashboardBindings.TranslationFaction} {DashboardBindings.TranslationFame}",
+                Brush = DashboardChartSeriesFilter.GetBrush(ValueType.FactionFame)
+            },
+            new DashboardChartSeriesFilter()
+            {
+                ValueType = ValueType.FactionPoints,
+                Name = DashboardBindings.TranslationFactionPoints,
+                Brush = DashboardChartSeriesFilter.GetBrush(ValueType.FactionPoints)
+            },
+            new DashboardChartSeriesFilter()
+            {
+                ValueType = ValueType.Might,
+                Name = DashboardBindings.TranslationMight,
+                Brush = DashboardChartSeriesFilter.GetBrush(ValueType.Might)
+            },
+            new DashboardChartSeriesFilter()
+            {
+                ValueType = ValueType.Favor,
+                Name = DashboardBindings.TranslationFavor,
+                Brush = DashboardChartSeriesFilter.GetBrush(ValueType.Favor)
+            }
+        ];
     }
 
     public void SetUiElements()
@@ -1132,6 +1189,36 @@ public class MainWindowViewModel : BaseViewModel
         set
         {
             _xAxesDashboardHourValues = value;
+            OnPropertyChanged();
+        }
+    }
+
+    public ObservableCollection<DashboardChartRangeOption> DashboardChartRanges
+    {
+        get => _dashboardChartRanges;
+        set
+        {
+            _dashboardChartRanges = value;
+            OnPropertyChanged();
+        }
+    }
+
+    public DashboardChartRangeOption SelectedDashboardChartRange
+    {
+        get => _selectedDashboardChartRange;
+        set
+        {
+            _selectedDashboardChartRange = value;
+            OnPropertyChanged();
+        }
+    }
+
+    public ObservableCollection<DashboardChartSeriesFilter> DashboardChartSeriesFilters
+    {
+        get => _dashboardChartSeriesFilters;
+        set
+        {
+            _dashboardChartSeriesFilters = value;
             OnPropertyChanged();
         }
     }

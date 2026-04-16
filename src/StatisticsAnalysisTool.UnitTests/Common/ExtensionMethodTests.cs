@@ -1,4 +1,4 @@
-﻿using FluentAssertions;
+using FluentAssertions;
 using NUnit.Framework;
 using StatisticsAnalysisTool.Common;
 using System.Collections.ObjectModel;
@@ -141,6 +141,16 @@ public class ExtensionMethodTests
     }
 
     [Test]
+    public void ObjectToLong_WithUnsignedIntValue_ReturnLongValue()
+    {
+        var value = (object) 15u;
+
+        var result = value.ObjectToLong();
+
+        result.Should().Be(15L);
+    }
+
+    [Test]
     public void ObjectToInt_WithInvalidValues_ReturnIntValue()
     {
         var value = (object) 15;
@@ -158,6 +168,86 @@ public class ExtensionMethodTests
         int? expected = 0;
 
         result.Should().Be(expected);
+    }
+
+    [Test]
+    public void ObjectToInt_WithLongValueInRange_ReturnIntValue()
+    {
+        var value = (object) 15L;
+
+        var result = value.ObjectToInt();
+
+        result.Should().Be(15);
+    }
+
+    [Test]
+    public void ObjectToShort_WithIntValueInRange_ReturnShortValue()
+    {
+        var value = (object) 15;
+
+        var result = value.ObjectToShort();
+
+        result.Should().Be((short) 15);
+    }
+
+    [Test]
+    public void ObjectToDouble_WithIntValue_ReturnDoubleValue()
+    {
+        var value = (object) 15;
+
+        var result = value.ObjectToDouble();
+
+        result.Should().Be(15d);
+    }
+
+    [Test]
+    public void ObjectToUlong_WithPositiveLongValue_ReturnUlongValue()
+    {
+        var value = (object) 15L;
+
+        var result = value.ObjectToUlong();
+
+        result.Should().Be(15UL);
+    }
+
+    [Test]
+    public void ObjectToByte_WithIntValue_ReturnsByteValue()
+    {
+        var value = (object) 3;
+
+        var result = value.ObjectToByte();
+
+        result.Should().Be((byte) 3);
+    }
+
+    [Test]
+    public void ObjectToByte_WithShortValue_ReturnsByteValue()
+    {
+        var value = (object) (short) 3;
+
+        var result = value.ObjectToByte();
+
+        result.Should().Be((byte) 3);
+    }
+
+    [Test]
+    public void ObjectToByte_WithLongValue_ReturnsByteValue()
+    {
+        var value = (object) 3L;
+
+        var result = value.ObjectToByte();
+
+        result.Should().Be((byte) 3);
+    }
+
+    [Test]
+    public void ObjectToByte_WithOutOfRangeValue_ReturnsZero()
+    {
+        var value = (object) 300;
+
+        var result = value.ObjectToByte();
+
+        result.Should().Be((byte) 0);
     }
 
     [Test]
@@ -270,5 +360,35 @@ public class ExtensionMethodTests
 
         // Assert
         result.Should().Be(3600);
+    }
+
+    [Test]
+    public void IsInBounds_WithLastValidIndex_ReturnsTrue()
+    {
+        var values = new List<int> { 1, 2, 3 };
+
+        var result = values.IsInBounds(2);
+
+        result.Should().BeTrue();
+    }
+
+    [Test]
+    public void IsInBounds_WithIndexOutsideCollection_ReturnsFalse()
+    {
+        var values = new List<int> { 1, 2, 3 };
+
+        var result = values.IsInBounds(3);
+
+        result.Should().BeFalse();
+    }
+
+    [Test]
+    public void ToDictionary_WithNullEnumerable_ReturnsEmptyDictionary()
+    {
+        IEnumerable<int> values = null!;
+
+        var result = values.ToDictionary();
+
+        result.Should().BeEmpty();
     }
 }

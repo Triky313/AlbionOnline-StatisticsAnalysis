@@ -44,6 +44,11 @@ public static class ExtensionMethod
 
     public static Dictionary<int, T> ToDictionary<T>(this IEnumerable<T> array)
     {
+        if (array == null)
+        {
+            return new Dictionary<int, T>();
+        }
+
         return array
             .Select((v, i) => new { Key = i, Value = v })
             .ToDictionary(o => o.Key, o => o.Value);
@@ -113,27 +118,70 @@ public static class ExtensionMethod
 
     public static ulong? ObjectToUlong(this object value)
     {
-        return value as byte? ?? value as ushort? ?? value as uint? ?? value as ulong?;
+        return value switch
+        {
+            byte byteValue => byteValue,
+            ushort ushortValue => ushortValue,
+            uint uintValue => uintValue,
+            ulong ulongValue => ulongValue,
+            short shortValue when shortValue >= 0 => (ulong) shortValue,
+            int intValue when intValue >= 0 => (ulong) intValue,
+            long longValue when longValue >= 0 => (ulong) longValue,
+            _ => null
+        };
     }
 
     public static long? ObjectToLong(this object value)
     {
-        return value as byte? ?? value as short? ?? value as int? ?? value as long?;
+        return value switch
+        {
+            byte byteValue => byteValue,
+            short shortValue => shortValue,
+            ushort ushortValue => ushortValue,
+            int intValue => intValue,
+            uint uintValue => uintValue,
+            long longValue => longValue,
+            _ => null
+        };
     }
 
     public static int ObjectToInt(this object value)
     {
-        return value as byte? ?? value as short? ?? value as int? ?? 0;
+        return value switch
+        {
+            byte byteValue => byteValue,
+            short shortValue => shortValue,
+            ushort ushortValue when ushortValue <= int.MaxValue => ushortValue,
+            int intValue => intValue,
+            uint uintValue when uintValue <= int.MaxValue => (int) uintValue,
+            long longValue when longValue >= int.MinValue && longValue <= int.MaxValue => (int) longValue,
+            _ => 0
+        };
     }
 
     public static short ObjectToShort(this object value)
     {
-        return value as byte? ?? value as short? ?? 0;
+        return value switch
+        {
+            byte byteValue => byteValue,
+            short shortValue => shortValue,
+            ushort ushortValue when ushortValue <= short.MaxValue => (short) ushortValue,
+            int intValue when intValue >= short.MinValue && intValue <= short.MaxValue => (short) intValue,
+            long longValue when longValue >= short.MinValue && longValue <= short.MaxValue => (short) longValue,
+            _ => 0
+        };
     }
 
     public static byte ObjectToByte(this object value)
     {
-        return value as byte? ?? 0;
+        return value switch
+        {
+            byte byteValue => byteValue,
+            short shortValue when shortValue >= byte.MinValue && shortValue <= byte.MaxValue => (byte) shortValue,
+            int intValue when intValue >= byte.MinValue && intValue <= byte.MaxValue => (byte) intValue,
+            long longValue when longValue >= byte.MinValue && longValue <= byte.MaxValue => (byte) longValue,
+            _ => 0
+        };
     }
 
     public static bool ObjectToBool(this object value)
@@ -143,7 +191,18 @@ public static class ExtensionMethod
 
     public static double ObjectToDouble(this object value)
     {
-        return value as float? ?? value as double? ?? 0;
+        return value switch
+        {
+            byte byteValue => byteValue,
+            short shortValue => shortValue,
+            ushort ushortValue => ushortValue,
+            int intValue => intValue,
+            uint uintValue => uintValue,
+            long longValue => longValue,
+            float floatValue => floatValue,
+            double doubleValue => doubleValue,
+            _ => 0
+        };
     }
 
     public static Dictionary<int, T> ToDictionary<T>(this T[] array)
@@ -438,7 +497,12 @@ public static class ExtensionMethod
 
     public static bool IsInBounds<T>(this IEnumerable<T> array, long index)
     {
-        return index >= 0 && index < array.Count() - 1;
+        if (array == null)
+        {
+            return false;
+        }
+
+        return index >= 0 && index < array.Count();
     }
 
     public static void SortByDescending<T, TKey>(this ObservableCollection<T> collection, Func<T, TKey> keySelector)

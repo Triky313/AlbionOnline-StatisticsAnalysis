@@ -57,6 +57,8 @@ public class DashboardBindings : BaseViewModel
     private EFontAwesomeIcon _reSpecStatsToggleIcon;
     private Visibility _repairCostsStatsVisibility;
     private EFontAwesomeIcon _repairCostsStatsToggleIcon;
+    private Visibility _activityChartVisibility;
+    private EFontAwesomeIcon _activityChartToggleIcon;
     private string _translationKillsDeaths = TranslationKillsDeaths;
 
     public DashboardBindings()
@@ -74,6 +76,9 @@ public class DashboardBindings : BaseViewModel
 
         RepairCostsStatsVisibility = SettingsController.CurrentSettings.IsRepairCostsStatsVisible ? Visibility.Visible : Visibility.Collapsed;
         RepairCostsStatsToggleIcon = SettingsController.CurrentSettings.IsRepairCostsStatsVisible ? EFontAwesomeIcon.Solid_Minus : EFontAwesomeIcon.Solid_Plus;
+
+        ActivityChartVisibility = SettingsController.CurrentSettings.IsActivityChartVisible ? Visibility.Visible : Visibility.Collapsed;
+        ActivityChartToggleIcon = SettingsController.CurrentSettings.IsActivityChartVisible ? EFontAwesomeIcon.Solid_Minus : EFontAwesomeIcon.Solid_Plus;
     }
 
     #region Toggle
@@ -158,6 +163,27 @@ public class DashboardBindings : BaseViewModel
         set
         {
             _repairCostsStatsToggleIcon = value;
+            OnPropertyChanged();
+        }
+    }
+
+    public Visibility ActivityChartVisibility
+    {
+        get => _activityChartVisibility;
+        set
+        {
+            _activityChartVisibility = value;
+            SettingsController.CurrentSettings.IsActivityChartVisible = value == Visibility.Visible;
+            OnPropertyChanged();
+        }
+    }
+
+    public EFontAwesomeIcon ActivityChartToggleIcon
+    {
+        get => _activityChartToggleIcon;
+        set
+        {
+            _activityChartToggleIcon = value;
             OnPropertyChanged();
         }
     }
@@ -641,4 +667,6 @@ public class DashboardBindings : BaseViewModel
     public static string TranslationKillsDeathsLoading => LocalizationController.Translation("KILLS_DEATHS_LOADING");
     public static string TranslationLootedChests => LocalizationController.Translation("LOOTED_CHESTS");
     public static string TranslationRepairCosts => LocalizationController.Translation("REPAIR_COSTS");
+    public static string TranslationActivityChart => LocalizationController.Translation("HISTORY");
+    public static string TranslationFactionPoints => LocalizationController.Translation("FACTION_POINTS");
 }

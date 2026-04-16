@@ -1,10 +1,9 @@
-﻿using System.Collections.ObjectModel;
-using StatisticsAnalysisTool.Models;
+using StatisticsAnalysisTool.Common;
+using StatisticsAnalysisTool.Network.Manager;
 using StatisticsAnalysisTool.ViewModels;
 using System.Windows;
+using System.Windows.Controls;
 using System.Windows.Input;
-using StatisticsAnalysisTool.Common;
-using StatisticsAnalysisTool.Models.BindingModel;
 
 namespace StatisticsAnalysisTool.Views;
 
@@ -15,10 +14,10 @@ public partial class DashboardWindow
 {
     private static bool _isWindowMaximized;
 
-    public DashboardWindow(DashboardBindings dashboardBindings, ObservableCollection<MainStatObject> factionPointStats)
+    public DashboardWindow(MainWindowViewModel mainWindowViewModel)
     {
         InitializeComponent();
-        DataContext = new DashboardWindowViewModel(dashboardBindings, factionPointStats);
+        DataContext = mainWindowViewModel;
     }
 
     private void CloseButton_Click(object sender, RoutedEventArgs e) => Close();
@@ -45,7 +44,9 @@ public partial class DashboardWindow
     private void Hotbar_MouseDown(object sender, MouseButtonEventArgs e)
     {
         if (e.ChangedButton == MouseButton.Left)
+        {
             DragMove();
+        }
     }
 
     private void Grid_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
@@ -56,6 +57,25 @@ public partial class DashboardWindow
             return;
         }
 
-        if (e.ClickCount == 2 && WindowState == WindowState.Maximized) WindowState = WindowState.Normal;
+        if (e.ClickCount == 2 && WindowState == WindowState.Maximized)
+        {
+            WindowState = WindowState.Normal;
+        }
+    }
+
+    private void DashboardChartRange_SelectionChanged(object sender, SelectionChangedEventArgs e)
+    {
+        RefreshDailyChart();
+    }
+
+    private void DashboardChartSeriesVisibility_Changed(object sender, RoutedEventArgs e)
+    {
+        RefreshDailyChart();
+    }
+
+    private static void RefreshDailyChart()
+    {
+        var trackingController = ServiceLocator.Resolve<TrackingController>();
+        trackingController?.StatisticController?.UpdateDailyChart(true);
     }
 }

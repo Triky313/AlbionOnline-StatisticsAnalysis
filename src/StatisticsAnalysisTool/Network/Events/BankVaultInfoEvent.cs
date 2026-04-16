@@ -1,70 +1,149 @@
-﻿using StatisticsAnalysisTool.Common;
+using StatisticsAnalysisTool.Common;
+using StatisticsAnalysisTool.Diagnostics;
 using System;
 using System.Collections.Generic;
 using System.Reflection;
-using StatisticsAnalysisTool.Diagnostics;
 
 namespace StatisticsAnalysisTool.Network.Events;
 
 public class BankVaultInfoEvent
 {
+    private const int GuidByteLength = 16;
+
     public long? ObjectId;
     public string LocationGuidString;
-    public List<Guid> VaultGuidList = new();
-    public List<string> VaultNames = new();
-    public List<string> IconTags = new();
+    public List<Guid> VaultGuidList = [];
+    public List<string> VaultNames = [];
+    public List<string> IconTags = [];
+    public List<int> VaultColors = [];
 
     public BankVaultInfoEvent(Dictionary<byte, object> parameters)
     {
         try
         {
-            if (parameters.ContainsKey(0))
+            if (parameters.TryGetValue(0, out object objectId))
             {
-                ObjectId = parameters[0].ObjectToLong();
+                ObjectId = objectId.ObjectToLong();
             }
 
-            if (parameters.ContainsKey(1))
+            if (parameters.TryGetValue(1, out object locationGuid))
             {
-                LocationGuidString = parameters[1].ToString();
+                LocationGuidString = locationGuid.ToString();
             }
 
-            if (parameters.ContainsKey(2) && parameters[2] != null)
+            if (parameters.TryGetValue(2, out object vaultGuids))
             {
-                var vaultGuidArray = ((object[])parameters[2]).ToDictionary();
-
-                for (var i = 0; i < vaultGuidArray.Count; i++)
-                {
-                    var guid = vaultGuidArray[i].ObjectToGuid();
-                    if (guid != null)
-                    {
-                        VaultGuidList.Add((Guid)guid);
-                    }
-                }
+                VaultGuidList = GetVaultGuids(vaultGuids);
             }
 
-            if (parameters.ContainsKey(3) && parameters[3] != null)
+            if (parameters.TryGetValue(3, out object vaultNames))
             {
-                var vaultNameArray = ((object[])parameters[3]).ToDictionary();
-
-                for (var i = 0; i < vaultNameArray.Count; i++)
-                {
-                    VaultNames.Add(vaultNameArray[i].ToString());
-                }
+                VaultNames = GetStringValues(vaultNames);
             }
 
-            if (parameters.ContainsKey(4) && parameters[4] != null)
+            if (parameters.TryGetValue(4, out object iconTags))
             {
-                var iconTagArray = ((object[])parameters[4]).ToDictionary();
+                IconTags = GetStringValues(iconTags);
+            }
 
-                for (var i = 0; i < iconTagArray.Count; i++)
-                {
-                    IconTags.Add(iconTagArray[i].ToString());
-                }
+            if (parameters.TryGetValue(5, out object vaultColors))
+            {
+                VaultColors = GetIntValues(vaultColors);
             }
         }
         catch (Exception e)
         {
             DebugConsole.WriteError(MethodBase.GetCurrentMethod()?.DeclaringType, e);
         }
+    }
+
+    private static List<Guid> GetVaultGuids(object parameter)
+    {
+        if (parameter is byte[] vaultGuidBytes)
+        {
+            return GetVaultGuidsFromBytes(vaultGuidBytes);
+        }
+
+        if (parameter is object[] vaultGuidArray)
+        {
+            return GetVaultGuidsFromObjects(vaultGuidArray);
+        }
+
+        return new List<Guid>();
+    }
+
+    private static List<Guid> GetVaultGuidsFromBytes(byte[] vaultGuidBytes)
+    {
+        var vaultGuids = new List<Guid>();
+        var vaultCount = vaultGuidBytes.Length / GuidByteLength;
+
+        for (var i = 0; i < vaultCount; i++)
+        {
+            var guidBytes = new byte[GuidByteLength];
+            Array.Copy(vaultGuidBytes, i * GuidByteLength, guidBytes, 0, GuidByteLength);
+            vaultGuids.Add(new Guid(guidBytes));
+        }
+
+        return vaultGuids;
+    }
+
+    private static List<Guid> GetVaultGuidsFromObjects(object[] vaultGuidArray)
+    {
+        var vaultGuids = new List<Guid>();
+
+        foreach (var vaultGuid in vaultGuidArray)
+        {
+            var guid = vaultGuid.ObjectToGuid();
+            if (guid != null)
+            {
+                vaultGuids.Add(guid.Value);
+            }
+        }
+
+        return vaultGuids;
+    }
+
+    private static List<string> GetStringValues(object parameter)
+    {
+        if (parameter is string[] stringArray)
+        {
+            return new List<string>(stringArray);
+        }
+
+        if (parameter is object[] objectArray)
+        {
+            var values = new List<string>();
+
+            foreach (var item in objectArray)
+            {
+                values.Add(item?.ToString() ?? string.Empty);
+            }
+
+            return values;
+        }
+
+        return new List<string>();
+    }
+
+    private static List<int> GetIntValues(object parameter)
+    {
+        if (parameter is int[] intArray)
+        {
+            return new List<int>(intArray);
+        }
+
+        if (parameter is object[] objectArray)
+        {
+            var values = new List<int>();
+
+            foreach (var item in objectArray)
+            {
+                values.Add(item.ObjectToInt());
+            }
+
+            return values;
+        }
+
+        return new List<int>();
     }
 }

@@ -20042,6 +20042,19 @@
       ]
     },
     {
+      "tuid": "OPEN_EXTENDED_DASHBOARD_WINDOW",
+      "tuv": [
+        {
+          "lang": "de-DE",
+          "seg": "Öffne externes Dashboard Fenster"
+        },
+        {
+          "lang": "en-US",
+          "seg": "Open extended dashboard window"
+        }
+      ]
+    },
+    {
       "tuid": "COPY_TO_CLIPBOARD",
       "tuv": [
         {

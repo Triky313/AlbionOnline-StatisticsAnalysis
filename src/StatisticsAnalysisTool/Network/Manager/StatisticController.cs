@@ -1,4 +1,4 @@
-﻿using LiveChartsCore;
+using LiveChartsCore;
 using LiveChartsCore.Defaults;
 using LiveChartsCore.SkiaSharpView;
 using LiveChartsCore.SkiaSharpView.Painting;
@@ -14,7 +14,6 @@ using System.Collections.ObjectModel;
 using System.Globalization;
 using System.IO;
 using System.Linq;
-using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Media;
 using ValueType = StatisticsAnalysisTool.Enumerations.ValueType;
@@ -23,14 +22,18 @@ namespace StatisticsAnalysisTool.Network.Manager;
 
 public class StatisticController
 {
-
-
     private readonly TrackingController _trackingController;
     private readonly MainWindowViewModel _mainWindowViewModel;
-    private readonly List<ValueType> _valueTypes = new()
-    {
-        ValueType.Fame, ValueType.Silver, ValueType.ReSpec, ValueType.FactionFame, ValueType.FactionPoints, ValueType.Might, ValueType.Favor, ValueType.RepairCosts
-    };
+    private readonly List<ValueType> _chartValueTypes =
+    [
+        ValueType.Fame,
+        ValueType.Silver,
+        ValueType.ReSpec,
+        ValueType.FactionFame,
+        ValueType.FactionPoints,
+        ValueType.Might,
+        ValueType.Favor
+    ];
 
     private DateTime _lastChartUpdate;
     private DashboardStatistics _dashboardStatistics = new();
@@ -41,33 +44,11 @@ public class StatisticController
     {
         _trackingController = trackingController;
         _mainWindowViewModel = mainWindowViewModel;
-        InitStartHourValues();
 
         OnAddValue += UpdateRepairCostsUi;
     }
 
     #region Dashboard
-
-    private void InitStartHourValues()
-    {
-        foreach (var valueType in _valueTypes)
-        {
-            var dashboardHourObject = new DashboardHourObject()
-            {
-                Type = valueType
-            };
-
-            var dateTimeNow = DateTime.Now;
-            for (var i = 0; i < 23; i++)
-            {
-                dashboardHourObject.HourValues.Add(new DashboardHourValues()
-                {
-                    Date = new DateTime(dateTimeNow.Year, dateTimeNow.Month, dateTimeNow.Day, i, 0, 0),
-                    Value = 0f
-                });
-            }
-        }
-    }
 
     public void AddValue(ValueType valueType, double gainedValue)
     {
@@ -76,95 +57,147 @@ public class StatisticController
             return;
         }
 
-        _dashboardStatistics.Add(new DailyValues(valueType, gainedValue, DateTime.Now));
+        var now = DateTime.Now;
+
+        _dashboardStatistics.Add(new DailyValues(valueType, gainedValue, now));
+
+        if (_chartValueTypes.Contains(valueType))
+        {
+            _dashboardStatistics.Add(new HourlyValues(valueType, gainedValue, now));
+            UpdateDailyChart();
+        }
+
         OnAddValue?.Invoke();
     }
 
-    private void UpdateDailyChart(ObservableCollection<DashboardHourObject> stats)
+    public void UpdateDailyChart(bool forceUpdate = false)
     {
-        if (!IsUpdateChartAllowed())
+        if (!IsUpdateChartAllowed(forceUpdate))
         {
             return;
         }
 
-        var date = new List<string>();
-        var seriesCollection = new ObservableCollection<ISeries>();
-        var xAxes = new ObservableCollection<Axis>();
-
-        foreach (var dashboardHourObject in stats)
+        var selectedRange = _mainWindowViewModel.SelectedDashboardChartRange;
+        if (selectedRange == null)
         {
-            var amount = new ObservableCollection<ObservablePoint>();
+            return;
+        }
 
-            var counter = 0;
-            foreach (var data in dashboardHourObject.HourValues.OrderBy(x => x.Date).ToList())
+        var selectedSeriesFilters = (_mainWindowViewModel.DashboardChartSeriesFilters ?? [])
+            .Where(x => x.IsSelected)
+            .ToList();
+
+        var chartBuckets = selectedRange.UseHourlyValues
+            ? CreateHourlyBuckets(selectedRange.BucketCount)
+            : CreateDailyBuckets(selectedRange.BucketCount);
+
+        var xAxes = new[]
+        {
+            new Axis()
             {
-                if (!date.Exists(x => x.Contains(data.Date.ToString("g", CultureInfo.CurrentCulture))))
-                {
-                    date.Add(data.Date.ToString("g", CultureInfo.CurrentCulture));
-                }
+                LabelsRotation = 15,
+                Labels = chartBuckets.Select(x => x.Label).ToArray()
+            }
+        };
 
-                amount.Add(new ObservablePoint(counter++, data.Value));
+        if (selectedSeriesFilters.Count == 0)
+        {
+            _mainWindowViewModel.XAxesDashboardHourValues = xAxes;
+            _mainWindowViewModel.SeriesDashboardHourValues = [];
+            _lastChartUpdate = DateTime.Now;
+            return;
+        }
+
+        var seriesCollection = new ObservableCollection<ISeries>();
+
+        foreach (var selectedSeriesFilter in selectedSeriesFilters)
+        {
+            var valuesLookup = selectedRange.UseHourlyValues
+                ? GetHourlyValuesLookup(selectedSeriesFilter.ValueType)
+                : GetDailyValuesLookup(selectedSeriesFilter.ValueType);
+
+            var points = new ObservableCollection<ObservablePoint>();
+
+            for (var i = 0; i < chartBuckets.Count; i++)
+            {
+                var chartBucket = chartBuckets[i];
+                var value = valuesLookup.GetValueOrDefault(chartBucket.Start);
+                points.Add(new ObservablePoint(i, value));
             }
 
             var lineSeries = new LineSeries<ObservablePoint>
             {
-                Name = dashboardHourObject.Type.ToString(),
-                Values = amount,
-                Fill = new SolidColorPaint
-                {
-                    Color = new SKColor(0, 0, 0, 0)
-                },
-                Stroke = GetValueTypeBrush(dashboardHourObject.Type, false),
-                GeometryStroke = GetValueTypeBrush(dashboardHourObject.Type, false),
-                GeometryFill = GetValueTypeBrush(dashboardHourObject.Type, true),
-                GeometrySize = 5
+                Name = selectedSeriesFilter.Name,
+                Values = points,
+                Fill = GetValueTypeBrush(selectedSeriesFilter.ValueType, true),
+                Stroke = GetValueTypeBrush(selectedSeriesFilter.ValueType, false),
+                GeometryStroke = GetValueTypeBrush(selectedSeriesFilter.ValueType, false),
+                GeometryFill = GetValueTypeBrush(selectedSeriesFilter.ValueType, false),
+                GeometrySize = 5,
+                YToolTipLabelFormatter = chartPoint => Math.Round(chartPoint.Coordinate.PrimaryValue).ToString("F0", CultureInfo.CurrentCulture)
             };
 
             seriesCollection.Add(lineSeries);
         }
 
-        xAxes.Add(new Axis()
-        {
-            LabelsRotation = 15,
-            Labels = date,
-            Labeler = value => new DateTime((long) value).ToString(CultureInfo.CurrentCulture),
-            UnitWidth = TimeSpan.FromHours(1).Ticks
-        });
-
-        _mainWindowViewModel.XAxesDashboardHourValues = xAxes.ToArray();
+        _mainWindowViewModel.XAxesDashboardHourValues = xAxes;
         _mainWindowViewModel.SeriesDashboardHourValues = seriesCollection;
 
         _lastChartUpdate = DateTime.Now;
-
-        // TODO: Bar chart for Fame, ReSpec etc.
-        //var series = new ISeries[]
-        //{
-        //    new ColumnSeries<double>
-        //    {
-        //        Values = new double[] {2, 5, 4}
-        //    },
-        //    new ColumnSeries<double>
-        //    {
-        //        Values = new double[] {2, 5, 4}
-        //    }
-        //};
-
-        //_mainWindowViewModel.SeriesDashboardFameDailyValues = series;
-
-        //var axis = new[]
-        //{
-        //    new Axis
-        //    {
-        //        Labels = new [] {"08.04.2022", "07.04.2022", "06.04.2022"},
-        //        LabelsRotation = 15
-        //    }
-        //};
-
-        //_mainWindowViewModel.XAxesDashboardFameDailyValues = axis;
     }
 
-    private bool IsUpdateChartAllowed()
+    private static List<ChartBucket> CreateHourlyBuckets(int bucketCount)
     {
+        var buckets = new List<ChartBucket>(bucketCount);
+        var currentHour = DateTime.Now;
+        currentHour = new DateTime(currentHour.Year, currentHour.Month, currentHour.Day, currentHour.Hour, 0, 0);
+
+        for (var i = bucketCount - 1; i >= 0; i--)
+        {
+            var start = currentHour.AddHours(-i);
+            buckets.Add(new ChartBucket(start, start.ToString("dd.MM HH:mm", CultureInfo.CurrentCulture)));
+        }
+
+        return buckets;
+    }
+
+    private static List<ChartBucket> CreateDailyBuckets(int bucketCount)
+    {
+        var buckets = new List<ChartBucket>(bucketCount);
+        var currentDay = DateTime.Now.Date;
+
+        for (var i = bucketCount - 1; i >= 0; i--)
+        {
+            var start = currentDay.AddDays(-i);
+            buckets.Add(new ChartBucket(start, start.ToString("d", CultureInfo.CurrentCulture)));
+        }
+
+        return buckets;
+    }
+
+    private Dictionary<DateTime, double> GetHourlyValuesLookup(ValueType valueType)
+    {
+        return (_dashboardStatistics.HourlyValues ?? [])
+            .Where(x => x.ValueType == valueType)
+            .GroupBy(x => x.Date)
+            .ToDictionary(x => x.Key, x => x.Sum(v => v.Value));
+    }
+
+    private Dictionary<DateTime, double> GetDailyValuesLookup(ValueType valueType)
+    {
+        return (_dashboardStatistics.DailyValues ?? [])
+            .Where(x => x.ValueType == valueType)
+            .GroupBy(x => x.Date.Date)
+            .ToDictionary(x => x.Key, x => x.Sum(v => v.Value));
+    }
+
+    private bool IsUpdateChartAllowed(bool forceUpdate)
+    {
+        if (forceUpdate)
+        {
+            return true;
+        }
+
         return DateTime.Now > _lastChartUpdate.AddSeconds(20);
     }
 
@@ -174,17 +207,17 @@ public class StatisticController
         {
             if (transparent)
             {
-                var scbt = (SolidColorBrush) Application.Current.Resources[$"SolidColorBrush.Value.{valueType}.Transparent"];
+                var transparentBrush = (SolidColorBrush) Application.Current.Resources[$"SolidColorBrush.Value.{valueType}.Transparent"];
                 return new SolidColorPaint
                 {
-                    Color = new SKColor(scbt.Color.R, scbt.Color.G, scbt.Color.B, scbt.Color.A)
+                    Color = new SKColor(transparentBrush.Color.R, transparentBrush.Color.G, transparentBrush.Color.B, transparentBrush.Color.A)
                 };
             }
 
-            var scb = (SolidColorBrush) Application.Current.Resources[$"SolidColorBrush.Value.{valueType}"];
+            var brush = (SolidColorBrush) Application.Current.Resources[$"SolidColorBrush.Value.{valueType}"];
             return new SolidColorPaint
             {
-                Color = new SKColor(scb.Color.R, scb.Color.G, scb.Color.B, scb.Color.A)
+                Color = new SKColor(brush.Color.R, brush.Color.G, brush.Color.B, brush.Color.A)
             };
         }
         catch
@@ -196,17 +229,23 @@ public class StatisticController
         }
     }
 
-    private class DashboardHourObject
+    private sealed class ChartBucket
     {
-        public ValueType Type { get; init; }
-        public ObservableCollection<DashboardHourValues> HourValues { get; } = new();
-    }
+        public ChartBucket(DateTime start, string label)
+        {
+            Start = start;
+            Label = label;
+        }
 
-    private class DashboardHourValues
-    {
-        public double Value { get; set; }
-        public DateTime Date { get; init; }
-        public int Hour => Date.Hour;
+        public DateTime Start
+        {
+            get;
+        }
+
+        public string Label
+        {
+            get;
+        }
     }
 
     #endregion
@@ -270,14 +309,20 @@ public class StatisticController
 
     #region Load / Save local file data
 
-    public async Task LoadFromFileAsync()
+    public async System.Threading.Tasks.Task LoadFromFileAsync()
     {
         _dashboardStatistics = await FileController.LoadAsync<DashboardStatistics>(
             Path.Combine(AppDomain.CurrentDomain.BaseDirectory, Settings.Default.UserDataDirectoryName, Settings.Default.StatsFileName));
+
+        _dashboardStatistics ??= new DashboardStatistics();
+        _dashboardStatistics.DailyValues ??= [];
+        _dashboardStatistics.HourlyValues ??= [];
+
         UpdateRepairCostsUi();
+        UpdateDailyChart(true);
     }
 
-    public async Task SaveInFileAsync()
+    public async System.Threading.Tasks.Task SaveInFileAsync()
     {
         DirectoryController.CreateDirectoryWhenNotExists(Path.Combine(AppDomain.CurrentDomain.BaseDirectory, Settings.Default.UserDataDirectoryName));
         await FileController.SaveAsync(_dashboardStatistics, Path.Combine(AppDomain.CurrentDomain.BaseDirectory, Settings.Default.UserDataDirectoryName, Settings.Default.StatsFileName));

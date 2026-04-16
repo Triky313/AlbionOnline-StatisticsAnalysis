@@ -7,6 +7,7 @@
              xmlns:fa5="http://schemas.fontawesome.com/icons/"
              xmlns:glob="clr-namespace:System.Globalization;assembly=System.Runtime"
              xmlns:models="clr-namespace:StatisticsAnalysisTool.Models"
+             xmlns:wpf="clr-namespace:LiveChartsCore.SkiaSharpView.WPF;assembly=LiveChartsCore.SkiaSharpView.WPF"
              mc:Ignorable="d" 
              d:DesignHeight="1400" d:DesignWidth="800"
              d:DataContext="{d:DesignInstance Type=viewModels:MainWindowViewModel}">
@@ -64,7 +65,7 @@
                             <CheckBox IsChecked="{Binding IsTrackingResetByMapChangeActive}" Content="{Binding Translation.MapChangeReset, FallbackValue=MAP__CHANGE__RESET}"/>
                         </StackPanel>
                         <Grid Height="20" Width="20" Margin="5,3,5,0" HorizontalAlignment="Right" VerticalAlignment="Top" 
-                              ToolTip="{Binding Translation.OpenExtendedDamageMeterWindow, FallbackValue=OPEN__EXTENDED__DAMAGE__METER__WINDOW}" MouseUp="OpenDashboardWindow_MouseUp">
+                              ToolTip="{Binding Translation.OpenExtendedDashboardWindow, FallbackValue=OPEN__EXTENDED__DAMAGE__METER__WINDOW}" MouseUp="OpenDashboardWindow_MouseUp">
                             <fa5:ImageAwesome Icon="Solid_Expand" Foreground="{StaticResource SolidColorBrush.Text.1}" />
                         </Grid>
                     </StackPanel>
@@ -108,6 +109,65 @@
                 </StackPanel>
                 <ContentControl Visibility="{Binding DashboardBindings.RepairCostsStatsVisibility}" Margin="3" 
                                 Content="{Binding DashboardBindings}" ContentTemplate="{StaticResource RepairCostsTemplate}" />
+
+                <!-- Activity chart -->
+                <StackPanel Orientation="Horizontal" Height="20" Background="{StaticResource SolidColorBrush.Background.3}" MouseLeftButtonDown="ActivityChartToggle_OnMouseLeftButtonDown">
+                    <fa5:ImageAwesome Icon="{Binding DashboardBindings.ActivityChartToggleIcon, FallbackValue='Solid_Minus'}"
+                                      Foreground="{StaticResource SolidColorBrush.Text.1}" Height="14" Width="14" Margin="10,0" VerticalAlignment="Center" />
+                    <TextBlock Text="{Binding DashboardBindings.TranslationActivityChart, FallbackValue='HISTORY'}"
+                               Foreground="{StaticResource SolidColorBrush.Accent.Blue.3}" FontSize="16" VerticalAlignment="Center" />
+                </StackPanel>
+                <Grid Visibility="{Binding DashboardBindings.ActivityChartVisibility}" Margin="10,6,10,16">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="300" />
+                    </Grid.RowDefinitions>
+
+                    <StackPanel Grid.Row="0" Orientation="Horizontal" HorizontalAlignment="Left">
+                        <TextBlock Text="{Binding DashboardBindings.TranslationActivityChart, FallbackValue='HISTORY'}"
+                                   Foreground="{StaticResource SolidColorBrush.Text.1}" VerticalAlignment="Center" Margin="0,0,8,0" />
+                        <ComboBox Width="180"
+                                  Height="26"
+                                  ItemsSource="{Binding DashboardChartRanges}"
+                                  SelectedItem="{Binding SelectedDashboardChartRange, Mode=TwoWay}"
+                                  DisplayMemberPath="Name"
+                                  SelectionChanged="DashboardChartRange_SelectionChanged" />
+                    </StackPanel>
+
+                    <ItemsControl Grid.Row="1" Margin="0,10,0,10" ItemsSource="{Binding DashboardChartSeriesFilters}">
+                        <ItemsControl.ItemsPanel>
+                            <ItemsPanelTemplate>
+                                <WrapPanel />
+                            </ItemsPanelTemplate>
+                        </ItemsControl.ItemsPanel>
+                        <ItemsControl.ItemTemplate>
+                            <DataTemplate DataType="{x:Type models:DashboardChartSeriesFilter}">
+                                <Border BorderBrush="{StaticResource SolidColorBrush.Background.4}"
+                                        BorderThickness="1"
+                                        Margin="0,0,8,8"
+                                        Padding="8,4"
+                                        Background="{StaticResource SolidColorBrush.Background.2}">
+                                    <StackPanel Orientation="Horizontal">
+                                        <Rectangle Width="10" Height="10" Fill="{Binding Brush}" Margin="0,0,6,0" VerticalAlignment="Center" />
+                                        <CheckBox Content="{Binding Name}"
+                                                  IsChecked="{Binding IsSelected, Mode=TwoWay}"
+                                                  Checked="DashboardChartSeriesVisibility_Changed"
+                                                  Unchecked="DashboardChartSeriesVisibility_Changed"
+                                                  VerticalAlignment="Center" />
+                                    </StackPanel>
+                                </Border>
+                            </DataTemplate>
+                        </ItemsControl.ItemTemplate>
+                    </ItemsControl>
+
+                    <wpf:CartesianChart Grid.Row="2"
+                                        Series="{Binding SeriesDashboardHourValues}"
+                                        XAxes="{Binding XAxesDashboardHourValues}"
+                                        TooltipPosition="Center"
+                                        FindingStrategy="ExactMatchTakeClosest"
+                                        LegendPosition="Hidden" />
+                </Grid>
             </StackPanel>
         </ScrollViewer>
     </Grid>

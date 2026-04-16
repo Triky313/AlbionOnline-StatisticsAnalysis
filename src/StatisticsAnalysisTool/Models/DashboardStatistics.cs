@@ -9,6 +9,7 @@ namespace StatisticsAnalysisTool.Models;
 public class DashboardStatistics
 {
     public List<DailyValues> DailyValues { get; set; } = new();
+    public List<HourlyValues> HourlyValues { get; set; } = new();
 
     [JsonIgnore]
     private bool _wasExecuted;
@@ -32,6 +33,26 @@ public class DashboardStatistics
         RemoveData(DateTime.UtcNow.Date.AddDays(Settings.Default.KeepDashboardStatisticsForDays));
     }
 
+    public void Add(HourlyValues hourlyValues)
+    {
+        var existingHourlyValue = HourlyValues
+            .FirstOrDefault(x => x.Date == hourlyValues.Date && x.ValueType == hourlyValues.ValueType);
+
+        if (existingHourlyValue == null)
+        {
+            HourlyValues.Add(hourlyValues);
+        }
+        else
+        {
+            lock (existingHourlyValue)
+            {
+                existingHourlyValue.Add(hourlyValues);
+            }
+        }
+
+        RemoveData(DateTime.UtcNow.Date.AddDays(Settings.Default.KeepDashboardStatisticsForDays));
+    }
+
     private void RemoveData(DateTime afterDateDataWillBeDeleted)
     {
         if (_wasExecuted)
@@ -40,6 +61,7 @@ public class DashboardStatistics
         }
 
         DailyValues.RemoveAll(x => x.Date.Date < afterDateDataWillBeDeleted.Date);
+        HourlyValues.RemoveAll(x => x.Date < afterDateDataWillBeDeleted);
 
         _wasExecuted = true;
     }
