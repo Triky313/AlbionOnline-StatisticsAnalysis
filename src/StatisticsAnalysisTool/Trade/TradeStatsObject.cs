@@ -89,30 +89,24 @@ public class TradeStatsObject : BaseViewModel
             .Where(x => x.MailType is MailType.MarketplaceSellOrderFinished or MailType.MarketplaceSellOrderExpired || x.Type == TradeType.InstantSell)
             .MaxBy(x =>
             {
-                switch (x.Type)
+                return x.Type switch
                 {
-                    case TradeType.Mail:
-                        return x.MailContent.TotalPrice.IntegerValue;
-                    case TradeType.InstantBuy:
-                        return x.InstantBuySellContent.TotalPrice.IntegerValue;
-                    default:
-                        return 0;
-                }
+                    TradeType.Mail => x.MailContent.TotalPrice.IntegerValue,
+                    TradeType.InstantSell => x.InstantBuySellContent.TotalPrice.IntegerValue,
+                    _ => 0
+                };
             });
 
         MostExpensivePurchasedItem = trades
             .Where(x => x.MailType is MailType.MarketplaceBuyOrderFinished or MailType.MarketplaceBuyOrderExpired || x.Type == TradeType.InstantBuy)
             .MaxBy(x =>
             {
-                switch (x.Type)
+                return x.Type switch
                 {
-                    case TradeType.Mail:
-                        return x.MailContent.TotalPrice.IntegerValue;
-                    case TradeType.InstantBuy:
-                        return x.InstantBuySellContent.TotalPrice.IntegerValue;
-                    default:
-                        return 0;
-                }
+                    TradeType.Mail => x.MailContent.TotalPrice.IntegerValue,
+                    TradeType.InstantBuy => x.InstantBuySellContent.TotalPrice.IntegerValue,
+                    _ => 0
+                };
             });
     }
 
