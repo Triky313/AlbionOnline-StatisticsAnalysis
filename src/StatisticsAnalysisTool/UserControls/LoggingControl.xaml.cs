@@ -1,4 +1,4 @@
-﻿using StatisticsAnalysisTool.Common;
+using StatisticsAnalysisTool.Common;
 using StatisticsAnalysisTool.Network.Manager;
 using StatisticsAnalysisTool.ViewModels;
 using System.Windows;
@@ -63,16 +63,10 @@ public partial class LoggingControl
         mainWindowViewModel.LoggingBindings.IsAllButtonsEnabled = true;
     }
 
-    private void OpenLootComparatorInfoPopup_MouseEnter(object sender, MouseEventArgs e)
+    private void ToggleLootComparatorInfoPopup_MouseUp(object sender, MouseButtonEventArgs e)
     {
         var vm = (MainWindowViewModel) DataContext;
-        vm.LoggingBindings.IsLootComparatorInfoPopupVisible = Visibility.Visible;
-    }
-
-    private void CloseLootComparatorInfoPopup_MouseLeave(object sender, MouseEventArgs e)
-    {
-        var vm = (MainWindowViewModel) DataContext;
-        vm.LoggingBindings.IsLootComparatorInfoPopupVisible = Visibility.Collapsed;
+        vm.LoggingBindings.ToggleLootComparatorInfoPopupVisibility();
     }
 
     #endregion

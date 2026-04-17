@@ -382,6 +382,11 @@ public class LoggingBindings : BaseViewModel
         }
     }
 
+    public void ToggleLootComparatorInfoPopupVisibility()
+    {
+        IsLootComparatorInfoPopupVisible = IsLootComparatorInfoPopupVisible == Visibility.Visible ? Visibility.Collapsed : Visibility.Visible;
+    }
+
     private static readonly string[] SupportedFormats =
     [
         "MM/dd/yyyy HH:mm:ss",
