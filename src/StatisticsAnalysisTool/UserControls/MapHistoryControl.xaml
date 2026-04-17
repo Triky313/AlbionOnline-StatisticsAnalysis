@@ -11,9 +11,9 @@
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="30" />
-            <RowDefinition Height="4" />
+            <RowDefinition Height="5" />
             <RowDefinition Height="28" />
-            <RowDefinition Height="4" />
+            <RowDefinition Height="1" />
             <RowDefinition Height="*" />
         </Grid.RowDefinitions>
 
@@ -26,9 +26,7 @@
                 VerticalAlignment="Top"
                 Click="BtnDeleteAllMapHistoryEntries_Click" />
 
-        <Border Grid.Row="2"
-                Background="{StaticResource SolidColorBrush.Background.4}"
-                Padding="0,2,0,0">
+        <Border Grid.Row="2" Background="{StaticResource SolidColorBrush.Background.3}">
             <Grid>
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="140" />
@@ -55,7 +53,6 @@
         </Border>
 
         <vwp:VirtualizingItemsControl Grid.Row="4"
-                                      Margin="0,4,0,0"
                                       ItemsSource="{Binding EnteredCluster, IsAsync=True, Mode=OneWay}"
                                       ItemTemplate="{StaticResource ClusterInfoTemplate}"
                                       VirtualizingPanel.CacheLengthUnit="Item"
