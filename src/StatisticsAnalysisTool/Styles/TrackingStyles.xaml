@@ -643,7 +643,7 @@
             </Grid.Style>
             <StackPanel Orientation="Vertical">
                 <StackPanel Orientation="Horizontal">
-                    <Label MinWidth="125" VerticalAlignment="Center" FontSize="12" Margin="0 0 5 0" Foreground="{StaticResource SolidColorBrush.Text.1}">
+                    <Label Width="140" VerticalAlignment="Center" FontSize="12" Foreground="{StaticResource SolidColorBrush.Text.1}">
                         <Label.Content>
                             <TextBlock>
                                 <TextBlock.Text>
@@ -654,15 +654,11 @@
                             </TextBlock>
                         </Label.Content>
                     </Label>
-                    <Label Content="{Binding TierRomanString}" FontSize="12" Foreground="{StaticResource SolidColorBrush.Text.1}" 
-                               MinWidth="30" MaxWidth="30" Margin="5,0, 0, 0" />
-                    <Label Content="{Binding  ClusterHistoryString1}" FontSize="12" Foreground="{StaticResource SolidColorBrush.Text.1}" 
-                               MinWidth="150" MaxWidth="200" Margin="5,0, 0, 0" />
-                    <Label Content="{Binding  ClusterHistoryString2}" FontSize="12" Foreground="{StaticResource SolidColorBrush.Text.1}" 
-                               MinWidth="150" MaxWidth="200" Margin="5,0, 0, 0" />
-                    <Label Content="{Binding  ClusterHistoryString3}" FontSize="12" Foreground="{StaticResource SolidColorBrush.Text.1}" 
-                               MinWidth="150" MaxWidth="200" Margin="5,0, 0, 0" />
-                    <TextBox Text="" MinWidth="150" MaxWidth="150" Background="{StaticResource SolidColorBrush.Value.Silver.Transparent}" BorderThickness="0" />
+                    <Label Content="{Binding TierRomanString}" FontSize="12" Foreground="{StaticResource SolidColorBrush.Text.1}" Width="30" />
+                    <Label Content="{Binding  ClusterHistoryString1}" FontSize="12" Foreground="{StaticResource SolidColorBrush.Text.1}" Width="155" />
+                    <Label Content="{Binding  ClusterHistoryString2}" FontSize="12" Foreground="{StaticResource SolidColorBrush.Text.1}" Width="155" />
+                    <Label Content="{Binding  ClusterHistoryString3}" FontSize="12" Foreground="{StaticResource SolidColorBrush.Text.1}" Width="155" />
+                    <TextBox Text="" Width="155" Background="{StaticResource SolidColorBrush.Value.Silver.Transparent}" BorderThickness="0" />
                 </StackPanel>
                 <ItemsControl ItemsSource="{Binding MapMarkers, IsAsync=True}" ItemTemplate="{StaticResource MapMarkerIconTemplate}">
                     <ItemsControl.ItemsPanel>

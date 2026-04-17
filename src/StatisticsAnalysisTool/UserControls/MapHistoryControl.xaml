@@ -12,6 +12,8 @@
         <Grid.RowDefinitions>
             <RowDefinition Height="30" />
             <RowDefinition Height="4" />
+            <RowDefinition Height="28" />
+            <RowDefinition Height="4" />
             <RowDefinition Height="*" />
         </Grid.RowDefinitions>
 
@@ -24,9 +26,35 @@
                 VerticalAlignment="Top"
                 Click="BtnDeleteAllMapHistoryEntries_Click" />
 
-        <Separator Grid.Row="1" Background="{StaticResource SolidColorBrush.Background.3}" Height="4" Margin="0,0,0,0" VerticalAlignment="Top"/>
+        <Border Grid.Row="2"
+                Background="{StaticResource SolidColorBrush.Background.4}"
+                Padding="0,2,0,0">
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="140" />
+                    <ColumnDefinition Width="35" />
+                    <ColumnDefinition Width="155" />
+                    <ColumnDefinition Width="155" />
+                    <ColumnDefinition Width="155" />
+                    <ColumnDefinition Width="155" />
+                </Grid.ColumnDefinitions>
 
-        <vwp:VirtualizingItemsControl Grid.Row="2"
+                <TextBlock Grid.Column="0" Text="{Binding Translation.Time, FallbackValue=TIME}" Margin="5,0,0,0" VerticalAlignment="Center" FontSize="12" FontWeight="Bold"
+                           Foreground="{StaticResource SolidColorBrush.Text.1}" />
+                <TextBlock Grid.Column="1" Text="{Binding Translation.Tier, FallbackValue=TIER}" VerticalAlignment="Center" FontSize="12" FontWeight="Bold"
+                           Foreground="{StaticResource SolidColorBrush.Text.1}" />
+                <TextBlock Grid.Column="2" Text="{Binding Translation.Zone, FallbackValue=ZONE}" VerticalAlignment="Center" FontSize="12" FontWeight="Bold"
+                           Foreground="{StaticResource SolidColorBrush.Text.1}" />
+                <TextBlock Grid.Column="3" Text="{Binding Translation.Name, FallbackValue=NAME}" VerticalAlignment="Center" FontSize="12" FontWeight="Bold" 
+                           Foreground="{StaticResource SolidColorBrush.Text.1}" />
+                <TextBlock Grid.Column="4" Text="{Binding Translation.Type, FallbackValue=TYPE}" VerticalAlignment="Center" FontSize="12" FontWeight="Bold"
+                           Foreground="{StaticResource SolidColorBrush.Text.1}" />
+                <TextBlock Grid.Column="5" Text="{Binding Translation.Note, FallbackValue=NOTE}" VerticalAlignment="Center" FontSize="12" FontWeight="Bold"
+                           Foreground="{StaticResource SolidColorBrush.Text.1}" />
+            </Grid>
+        </Border>
+
+        <vwp:VirtualizingItemsControl Grid.Row="4"
                                       Margin="0,4,0,0"
                                       ItemsSource="{Binding EnteredCluster, IsAsync=True, Mode=OneWay}"
                                       ItemTemplate="{StaticResource ClusterInfoTemplate}"

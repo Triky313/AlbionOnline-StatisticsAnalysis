@@ -38651,6 +38651,71 @@
           "seg": "Are you sure you want to delete all map history entries?"
         }
       ]
+    },
+    {
+      "tuid": "TIME",
+      "tuv": [
+        {
+          "lang": "de-DE",
+          "seg": "Zeit"
+        },
+        {
+          "lang": "en-US",
+          "seg": "Time"
+        }
+      ]
+    },
+    {
+      "tuid": "TIER",
+      "tuv": [
+        {
+          "lang": "de-DE",
+          "seg": "Tier"
+        },
+        {
+          "lang": "en-US",
+          "seg": "Tier"
+        }
+      ]
+    },
+    {
+      "tuid": "ZONE",
+      "tuv": [
+        {
+          "lang": "de-DE",
+          "seg": "Zone"
+        },
+        {
+          "lang": "en-US",
+          "seg": "Zone"
+        }
+      ]
+    },
+    {
+      "tuid": "TYPE",
+      "tuv": [
+        {
+          "lang": "de-DE",
+          "seg": "Typ"
+        },
+        {
+          "lang": "en-US",
+          "seg": "Type"
+        }
+      ]
+    },
+    {
+      "tuid": "NOTE",
+      "tuv": [
+        {
+          "lang": "de-DE",
+          "seg": "Notiz"
+        },
+        {
+          "lang": "en-US",
+          "seg": "Note"
+        }
+      ]
     }
   ]
 }
