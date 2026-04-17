@@ -1,10 +1,17 @@
+using Serilog;
 using StatisticsAnalysisTool.Common;
 using StatisticsAnalysisTool.Enumerations;
 using StatisticsAnalysisTool.GameFileData;
 using StatisticsAnalysisTool.Network.Manager;
+using StatisticsAnalysisTool.Properties;
 using StatisticsAnalysisTool.ViewModels;
 using System;
+using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Diagnostics;
+using System.IO;
+using System.Linq;
+using System.Threading.Tasks;
 using System.Windows;
 
 namespace StatisticsAnalysisTool.Cluster;
@@ -132,6 +139,42 @@ public sealed class ClusterController
     private static void SaveUserData(ClusterInfo currentCluster)
     {
         RateLimitedAction.Run(CriticalData.Save);
+    }
+
+    #endregion
+
+    #region Save / Load data
+
+    public async Task LoadMapHistoryFromFileAsync()
+    {
+        var clusterInfoDtos = await FileController.LoadAsync<List<ClusterInfoDto>>(GetMapHistoryFilePath());
+        var enteredClusters = clusterInfoDtos
+            .Take(MaxEnteredCluster)
+            .Select(ClusterInfoMapping.Mapping)
+            .ToList();
+
+        await Application.Current.Dispatcher.InvokeAsync(() =>
+        {
+            _mainWindowViewModel.EnteredCluster = new ObservableCollection<ClusterInfo>(enteredClusters);
+        });
+    }
+
+    public async Task SaveInFileAsync()
+    {
+        DirectoryController.CreateDirectoryWhenNotExists(Path.Combine(AppDomain.CurrentDomain.BaseDirectory, Settings.Default.UserDataDirectoryName));
+
+        var clusterHistoryToSave = _mainWindowViewModel.EnteredCluster
+            .Take(MaxEnteredCluster)
+            .Select(ClusterInfoMapping.Mapping)
+            .ToList();
+
+        await FileController.SaveAsync(clusterHistoryToSave, GetMapHistoryFilePath());
+        Log.Information("Map history saved");
+    }
+
+    private static string GetMapHistoryFilePath()
+    {
+        return Path.Combine(AppDomain.CurrentDomain.BaseDirectory, Settings.Default.UserDataDirectoryName, Settings.Default.MapHistoryFileName);
     }
 
     #endregion

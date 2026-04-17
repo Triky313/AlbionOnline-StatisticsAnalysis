@@ -164,5 +164,8 @@
     <Setting Name="MarketFileName" Type="System.String" Scope="User">
       <Value Profile="(Default)">Market.json</Value>
     </Setting>
+    <Setting Name="MapHistoryFileName" Type="System.String" Scope="User">
+      <Value Profile="(Default)">Maphistory.json</Value>
+    </Setting>
   </Settings>
 </SettingsFile>

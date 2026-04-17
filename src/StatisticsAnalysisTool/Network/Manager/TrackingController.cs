@@ -227,6 +227,7 @@ public class TrackingController : ITrackingController
             GuildController.SaveInFileAsync(),
             CombatController.SaveInFileAsync(),
             MarketController.SaveInFileAsync(),
+            ClusterController.SaveInFileAsync(),
             EstimatedMarketValueController.SaveInFileAsync()
         );
     }
@@ -243,7 +244,8 @@ public class TrackingController : ITrackingController
             VaultController.LoadFromFileAsync(),
             GuildController.LoadFromFileAsync(),
             CombatController.LoadFromFileAsync(),
-            MarketController.LoadFromFileAsync()
+            MarketController.LoadFromFileAsync(),
+            ClusterController.LoadMapHistoryFromFileAsync()
         );
     }
 
