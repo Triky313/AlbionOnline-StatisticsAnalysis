@@ -239,13 +239,7 @@
             </TabItem>
             <TabItem Visibility="{Binding MapHistoryTabVisibility, Mode=OneWay}" Header="{Binding Translation.MapHistory, FallbackValue=MAP__HISTORY}">
                 <Grid Style="{StaticResource TabItemGridStyle}">
-                    <vwp:VirtualizingItemsControl ItemsSource="{Binding EnteredCluster, IsAsync=True, Mode=OneWay}" ItemTemplate="{StaticResource ClusterInfoTemplate}"              
-                                                  VirtualizingPanel.CacheLengthUnit="Item"
-                                                  VirtualizingPanel.CacheLength="10,10"
-                                                  VirtualizingPanel.ScrollUnit="Pixel"
-                                                  VirtualizingPanel.VirtualizationMode="Recycling"
-                                                  ScrollViewer.HorizontalScrollBarVisibility="Disabled"
-                                                  ScrollViewer.VerticalScrollBarVisibility="Visible" />
+                    <userControls:MapHistoryControl DataContext="{Binding RelativeSource={RelativeSource AncestorType=Window}, Path=DataContext}" />
                 </Grid>
             </TabItem>
             <TabItem Visibility="{Binding PlayerInformationTabVisibility, Mode=OneWay}" Header="{Binding Translation.PlayerInformation, FallbackValue=PLAYER__INFORMATION}">

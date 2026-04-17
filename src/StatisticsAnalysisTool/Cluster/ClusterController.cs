@@ -172,6 +172,17 @@ public sealed class ClusterController
         Log.Information("Map history saved");
     }
 
+    public async Task ClearMapHistoryAsync()
+    {
+        await Application.Current.Dispatcher.InvokeAsync(() =>
+        {
+            _mainWindowViewModel.EnteredCluster.Clear();
+        });
+
+        await SaveInFileAsync();
+        Log.Information("Map history cleared");
+    }
+
     private static string GetMapHistoryFilePath()
     {
         return Path.Combine(AppDomain.CurrentDomain.BaseDirectory, Settings.Default.UserDataDirectoryName, Settings.Default.MapHistoryFileName);

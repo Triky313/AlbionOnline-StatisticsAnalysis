@@ -1,0 +1,40 @@
+<UserControl x:Class="StatisticsAnalysisTool.UserControls.MapHistoryControl"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:viewModels="clr-namespace:StatisticsAnalysisTool.ViewModels"
+             xmlns:vwp="clr-namespace:WpfToolkit.Controls;assembly=VirtualizingWrapPanel"
+             mc:Ignorable="d"
+             d:DesignHeight="450" d:DesignWidth="800"
+             d:DataContext="{d:DesignInstance Type=viewModels:MainWindowViewModel}">
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="30" />
+            <RowDefinition Height="4" />
+            <RowDefinition Height="*" />
+        </Grid.RowDefinitions>
+
+        <Button Grid.Row="0"
+                Content="{Binding Translation.DeleteAllMapHistoryEntries, FallbackValue=DELETE__ALL__MAP__HISTORY__ENTRIES}"
+                Height="26"
+                MinWidth="220"
+                Margin="0,3,5,0"
+                HorizontalAlignment="Right"
+                VerticalAlignment="Top"
+                Click="BtnDeleteAllMapHistoryEntries_Click" />
+
+        <Separator Grid.Row="1" Background="{StaticResource SolidColorBrush.Background.3}" Height="4" Margin="0,0,0,0" VerticalAlignment="Top"/>
+
+        <vwp:VirtualizingItemsControl Grid.Row="2"
+                                      Margin="0,4,0,0"
+                                      ItemsSource="{Binding EnteredCluster, IsAsync=True, Mode=OneWay}"
+                                      ItemTemplate="{StaticResource ClusterInfoTemplate}"
+                                      VirtualizingPanel.CacheLengthUnit="Item"
+                                      VirtualizingPanel.CacheLength="10,10"
+                                      VirtualizingPanel.ScrollUnit="Pixel"
+                                      VirtualizingPanel.VirtualizationMode="Recycling"
+                                      ScrollViewer.HorizontalScrollBarVisibility="Disabled"
+                                      ScrollViewer.VerticalScrollBarVisibility="Visible" />
+    </Grid>
+</UserControl>

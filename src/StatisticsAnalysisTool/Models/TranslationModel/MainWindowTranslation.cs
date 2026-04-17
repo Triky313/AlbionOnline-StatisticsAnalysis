@@ -101,6 +101,7 @@ public class MainWindowTranslation
     public static string AverageItemPowerWhenDying => LocalizationController.Translation("AVERAGE_ITEM_POWER_WHEN_DYING");
     public static string DeleteSelectedTrades => LocalizationController.Translation("DELETE_SELECTED_TRADES");
     public static string DeleteSelectedResources => LocalizationController.Translation("DELETE_SELECTED_RESOURCES");
+    public static string DeleteAllMapHistoryEntries => LocalizationController.Translation("DELETE_ALL_MAP_HISTORY_ENTRIES");
     public static string TradeMonitoringDescription1 => LocalizationController.Translation("TRADE_MONITORING_DESCRIPTION1");
     public static string SiphonedEnergyDescription1 => LocalizationController.Translation("SIPHONED_ENERGY_DESCRIPTION1");
     public static string SiphonedEnergyDescription2 => LocalizationController.Translation("SIPHONED_ENERGY_DESCRIPTION2");

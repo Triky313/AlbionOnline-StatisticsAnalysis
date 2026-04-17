@@ -38625,6 +38625,32 @@
           "seg": "Item prices: Prices below the item names in the list are average values taken directly from the game and update when items are viewed in-game."
         }
       ]
+    },
+    {
+      "tuid": "DELETE_ALL_MAP_HISTORY_ENTRIES",
+      "tuv": [
+        {
+          "lang": "de-DE",
+          "seg": "Alle Kartenverlaufs-Eintraege loeschen"
+        },
+        {
+          "lang": "en-US",
+          "seg": "Delete all map history entries"
+        }
+      ]
+    },
+    {
+      "tuid": "SURE_YOU_WANT_TO_DELETE_ALL_MAP_HISTORY_ENTRIES",
+      "tuv": [
+        {
+          "lang": "de-DE",
+          "seg": "Moechtest du wirklich alle Kartenverlaufs-Eintraege loeschen?"
+        },
+        {
+          "lang": "en-US",
+          "seg": "Are you sure you want to delete all map history entries?"
+        }
+      ]
     }
   ]
 }
