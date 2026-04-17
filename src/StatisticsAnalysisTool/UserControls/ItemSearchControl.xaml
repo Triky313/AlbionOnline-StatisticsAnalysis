@@ -1,4 +1,4 @@
-﻿<UserControl x:Class="StatisticsAnalysisTool.UserControls.ItemSearchControl"
+<UserControl x:Class="StatisticsAnalysisTool.UserControls.ItemSearchControl"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
@@ -44,8 +44,14 @@
             </StackPanel>
         </StackPanel>
 
-        <userControls:ItemSearchImageCounterControl VerticalAlignment="Top" HorizontalAlignment="Right" LocalImageCounter="{Binding LocalImageCounter}" 
-                                                    ItemCounterString="{Binding ItemCounterString}" />
+        <StackPanel Orientation="Vertical" VerticalAlignment="Top" HorizontalAlignment="Right">
+            <userControls:ItemSearchImageCounterControl LocalImageCounter="{Binding LocalImageCounter}"
+                                                        ItemCounterString="{Binding ItemCounterString}" />
+            <Grid Height="20" Width="20" Margin="0,4,10,0" HorizontalAlignment="Right" VerticalAlignment="Top"
+                  MouseEnter="OpenItemSearchInfoPopup_MouseEnter" MouseLeave="CloseItemSearchInfoPopup_MouseLeave">
+                <fa5:ImageAwesome Icon="Solid_InfoCircle" Foreground="{StaticResource SolidColorBrush.Text.1}" />
+            </Grid>
+        </StackPanel>
 
         <ListView SnapsToDevicePixels="True" ItemsSource="{Binding ItemsView}" ItemContainerStyle="{StaticResource {x:Type ListViewItem}}"
                   ScrollViewer.CanContentScroll="True"
@@ -87,5 +93,34 @@
                 </GridView>
             </ListView.View>
         </ListView>
+
+        <Grid Visibility="{Binding IsItemSearchPopupVisible, FallbackValue=Hidden}" Margin="0,90,0,0" Background="{StaticResource SolidColorBrush.Background.2}">
+            <StackPanel CanHorizontallyScroll="False" CanVerticallyScroll="True" Margin="10,0">
+                <DockPanel Margin="0,0,0,16">
+                    <Grid Height="16" Width="16" Margin="0,3,10,0" VerticalAlignment="Top">
+                        <fa5:ImageAwesome Icon="Regular_DotCircle" Foreground="{StaticResource SolidColorBrush.Accent.Blue.3}" />
+                    </Grid>
+                    <TextBlock Text="{Binding Translation.ItemSearchDescription1, FallbackValue='Item Info Fenster: Das Item Info Fenster kann via Doppelklick auf dem Item selbst in der Liste geoeffnet werden.'}"
+                               Foreground="{StaticResource SolidColorBrush.Text.1}"
+                               FontSize="16" TextWrapping="Wrap" Width="auto" />
+                </DockPanel>
+                <DockPanel Margin="0,0,0,16">
+                    <Grid Height="16" Width="16" Margin="0,3,10,0" VerticalAlignment="Top">
+                        <fa5:ImageAwesome Icon="Regular_DotCircle" Foreground="{StaticResource SolidColorBrush.Accent.Blue.3}" />
+                    </Grid>
+                    <TextBlock Text="{Binding Translation.ItemSearchDescription2, FallbackValue='Item Alarm: Trage einen Wert in der Unterbieten Spalte ein und aktiviere den Alarm dann in der Ist Alarm aktiv Spalte.'}"
+                               Foreground="{StaticResource SolidColorBrush.Text.1}"
+                               FontSize="16" TextWrapping="Wrap" Width="auto" />
+                </DockPanel>
+                <DockPanel Margin="0,0,0,16">
+                    <Grid Height="16" Width="16" Margin="0,3,10,0" VerticalAlignment="Top">
+                        <fa5:ImageAwesome Icon="Regular_DotCircle" Foreground="{StaticResource SolidColorBrush.Accent.Blue.3}" />
+                    </Grid>
+                    <TextBlock Text="{Binding Translation.ItemSearchDescription3, FallbackValue='Item Preise: Preise unter den Item Namen in der Liste sind Durchschnittswerte direkt aus dem Spiel und passen sich an, wenn Items im Spiel angesehen werden.'}"
+                               Foreground="{StaticResource SolidColorBrush.Text.1}"
+                               FontSize="16" TextWrapping="Wrap" Width="auto" />
+                </DockPanel>
+            </StackPanel>
+        </Grid>
     </Grid>
 </UserControl>

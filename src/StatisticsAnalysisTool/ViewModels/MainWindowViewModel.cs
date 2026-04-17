@@ -54,6 +54,7 @@ public class MainWindowViewModel : BaseViewModel
     private Visibility _informationBarVisibility = Visibility.Collapsed;
     private double _guildInfoWidth;
     private Visibility _isDamageMeterPopupVisible = Visibility.Hidden;
+    private Visibility _isItemSearchPopupVisible = Visibility.Hidden;
     private bool _isShowOnlyItemsWithAlertOnActive;
     private bool _isTrackingActive;
     private bool _isTrackingResetByMapChangeActive;
@@ -841,6 +842,16 @@ public class MainWindowViewModel : BaseViewModel
 
             ItemsViewFilter();
             ItemsView?.Refresh();
+            OnPropertyChanged();
+        }
+    }
+
+    public Visibility IsItemSearchPopupVisible
+    {
+        get => _isItemSearchPopupVisible;
+        set
+        {
+            _isItemSearchPopupVisible = value;
             OnPropertyChanged();
         }
     }

@@ -38,6 +38,9 @@ public class MainWindowTranslation
     public static string DamageMeter => LocalizationController.Translation("DAMAGE_METER");
     public static string DamageMeterDescription1 => LocalizationController.Translation("DAMAGE_METER_DESCRIPTION_1");
     public static string DamageMeterDescription2 => LocalizationController.Translation("DAMAGE_METER_DESCRIPTION_2");
+    public static string ItemSearchDescription1 => LocalizationController.Translation("ITEM_SEARCH_DESCRIPTION_1");
+    public static string ItemSearchDescription2 => LocalizationController.Translation("ITEM_SEARCH_DESCRIPTION_2");
+    public static string ItemSearchDescription3 => LocalizationController.Translation("ITEM_SEARCH_DESCRIPTION_3");
     public static string ResetDamageMeter => LocalizationController.Translation("RESET_DAMAGE_METER");
     public static string Settings => LocalizationController.Translation("SETTINGS");
     public static string Favorite => LocalizationController.Translation("FAVORITE");

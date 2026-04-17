@@ -1,5 +1,6 @@
-﻿using StatisticsAnalysisTool.Models;
+using StatisticsAnalysisTool.Models;
 using StatisticsAnalysisTool.ViewModels;
+using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
 
@@ -33,6 +34,18 @@ public partial class ItemSearchControl
     {
         var vm = (MainWindowViewModel) DataContext;
         vm?.ToggleAlertSender(sender);
+    }
+
+    private void OpenItemSearchInfoPopup_MouseEnter(object sender, MouseEventArgs e)
+    {
+        var vm = (MainWindowViewModel) DataContext;
+        vm.IsItemSearchPopupVisible = Visibility.Visible;
+    }
+
+    private void CloseItemSearchInfoPopup_MouseLeave(object sender, MouseEventArgs e)
+    {
+        var vm = (MainWindowViewModel) DataContext;
+        vm.IsItemSearchPopupVisible = Visibility.Hidden;
     }
 
     #endregion
