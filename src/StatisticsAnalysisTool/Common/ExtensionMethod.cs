@@ -154,7 +154,7 @@ public static class ExtensionMethod
             ushort ushortValue when ushortValue <= int.MaxValue => ushortValue,
             int intValue => intValue,
             uint uintValue when uintValue <= int.MaxValue => (int) uintValue,
-            long longValue when longValue >= int.MinValue && longValue <= int.MaxValue => (int) longValue,
+            long longValue when longValue is >= int.MinValue and <= int.MaxValue => (int) longValue,
             _ => 0
         };
     }
@@ -166,8 +166,8 @@ public static class ExtensionMethod
             byte byteValue => byteValue,
             short shortValue => shortValue,
             ushort ushortValue when ushortValue <= short.MaxValue => (short) ushortValue,
-            int intValue when intValue >= short.MinValue && intValue <= short.MaxValue => (short) intValue,
-            long longValue when longValue >= short.MinValue && longValue <= short.MaxValue => (short) longValue,
+            int intValue when intValue is >= short.MinValue and <= short.MaxValue => (short) intValue,
+            long longValue when longValue is >= short.MinValue and <= short.MaxValue => (short) longValue,
             _ => 0
         };
     }
@@ -177,9 +177,9 @@ public static class ExtensionMethod
         return value switch
         {
             byte byteValue => byteValue,
-            short shortValue when shortValue >= byte.MinValue && shortValue <= byte.MaxValue => (byte) shortValue,
-            int intValue when intValue >= byte.MinValue && intValue <= byte.MaxValue => (byte) intValue,
-            long longValue when longValue >= byte.MinValue && longValue <= byte.MaxValue => (byte) longValue,
+            short shortValue when shortValue is >= byte.MinValue and <= byte.MaxValue => (byte) shortValue,
+            int intValue when intValue is >= byte.MinValue and <= byte.MaxValue => (byte) intValue,
+            long longValue when longValue is >= byte.MinValue and <= byte.MaxValue => (byte) longValue,
             _ => 0
         };
     }
