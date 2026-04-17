@@ -1,4 +1,4 @@
-﻿using StatisticsAnalysisTool.Common;
+using StatisticsAnalysisTool.Common;
 using StatisticsAnalysisTool.Localization;
 using StatisticsAnalysisTool.ViewModels;
 using System.Windows;
@@ -28,6 +28,13 @@ public class GatheringStats : BaseViewModel
     private long _gainedSilverByWood;
     private long _totalGainedSilverString;
     private long _gainedSilverByFish;
+    private double _gainedSilverPerHourByHide;
+    private double _gainedSilverPerHourByOre;
+    private double _gainedSilverPerHourByRock;
+    private double _gainedSilverPerHourByFiber;
+    private double _gainedSilverPerHourByWood;
+    private double _gainedSilverPerHourByFish;
+    private double _totalGainedSilverPerHour;
 
     public GatheringFilterType GatheringFilterType
     {
@@ -238,6 +245,76 @@ public class GatheringStats : BaseViewModel
         }
     }
 
+    public double GainedSilverPerHourByHide
+    {
+        get => _gainedSilverPerHourByHide;
+        set
+        {
+            _gainedSilverPerHourByHide = value;
+            OnPropertyChanged();
+        }
+    }
+
+    public double GainedSilverPerHourByOre
+    {
+        get => _gainedSilverPerHourByOre;
+        set
+        {
+            _gainedSilverPerHourByOre = value;
+            OnPropertyChanged();
+        }
+    }
+
+    public double GainedSilverPerHourByRock
+    {
+        get => _gainedSilverPerHourByRock;
+        set
+        {
+            _gainedSilverPerHourByRock = value;
+            OnPropertyChanged();
+        }
+    }
+
+    public double GainedSilverPerHourByFiber
+    {
+        get => _gainedSilverPerHourByFiber;
+        set
+        {
+            _gainedSilverPerHourByFiber = value;
+            OnPropertyChanged();
+        }
+    }
+
+    public double GainedSilverPerHourByWood
+    {
+        get => _gainedSilverPerHourByWood;
+        set
+        {
+            _gainedSilverPerHourByWood = value;
+            OnPropertyChanged();
+        }
+    }
+
+    public double GainedSilverPerHourByFish
+    {
+        get => _gainedSilverPerHourByFish;
+        set
+        {
+            _gainedSilverPerHourByFish = value;
+            OnPropertyChanged();
+        }
+    }
+
+    public double TotalGainedSilverPerHour
+    {
+        get => _totalGainedSilverPerHour;
+        set
+        {
+            _totalGainedSilverPerHour = value;
+            OnPropertyChanged();
+        }
+    }
+
     public long TotalGainedSilverString
     {
         get => _totalGainedSilverString;
@@ -253,4 +330,5 @@ public class GatheringStats : BaseViewModel
     public static string TranslationTotalResources => LocalizationController.Translation("TOTAL_RESOURCES");
     public static string TranslationTotalMiningProcesses => LocalizationController.Translation("TOTAL_MINING_PROCESSES");
     public static string TranslationResourceValue => LocalizationController.Translation("RESOURCE_VALUE");
+    public static string TranslationPerHour => LocalizationController.Translation("PER_HOUR");
 }
