@@ -6,14 +6,9 @@ namespace StatisticsAnalysisTool.Models;
 
 public class LootLoggerObject
 {
-    public LootLoggerObject()
-    {
-        UtcPickupTime = DateTime.UtcNow;
-    }
-
     public int ItemId { get; set; }
     public string UniqueItemName { get; set; }
-    public DateTime UtcPickupTime { get; }
+    public DateTime UtcPickupTime { get; } = DateTime.UtcNow;
     public int Quantity { get; set; }
     public string LootedFromName { get; set; }
     public string LootedFromGuild { get; set; }
