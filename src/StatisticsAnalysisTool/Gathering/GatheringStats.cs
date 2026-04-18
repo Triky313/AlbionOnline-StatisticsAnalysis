@@ -1,6 +1,9 @@
+using LiveChartsCore;
+using LiveChartsCore.SkiaSharpView;
 using StatisticsAnalysisTool.Common;
 using StatisticsAnalysisTool.Localization;
 using StatisticsAnalysisTool.ViewModels;
+using System.Collections.ObjectModel;
 using System.Windows;
 
 namespace StatisticsAnalysisTool.Gathering;
@@ -35,6 +38,14 @@ public class GatheringStats : BaseViewModel
     private double _gainedSilverPerHourByWood;
     private double _gainedSilverPerHourByFish;
     private double _totalGainedSilverPerHour;
+    private ObservableCollection<GatheringChartSeriesFilter> _resourceChartSeriesFilters = new();
+    private ObservableCollection<ISeries> _resourceChartSeries = [];
+    private Axis[] _resourceChartXAxes = [];
+
+    public GatheringStats()
+    {
+        ResourceChartSeriesFilters = new ObservableCollection<GatheringChartSeriesFilter>(GatheringChartSeriesFilter.CreateDefault());
+    }
 
     public GatheringFilterType GatheringFilterType
     {
@@ -325,10 +336,41 @@ public class GatheringStats : BaseViewModel
         }
     }
 
+    public ObservableCollection<GatheringChartSeriesFilter> ResourceChartSeriesFilters
+    {
+        get => _resourceChartSeriesFilters;
+        set
+        {
+            _resourceChartSeriesFilters = value;
+            OnPropertyChanged();
+        }
+    }
+
+    public ObservableCollection<ISeries> ResourceChartSeries
+    {
+        get => _resourceChartSeries;
+        set
+        {
+            _resourceChartSeries = value;
+            OnPropertyChanged();
+        }
+    }
+
+    public Axis[] ResourceChartXAxes
+    {
+        get => _resourceChartXAxes;
+        set
+        {
+            _resourceChartXAxes = value;
+            OnPropertyChanged();
+        }
+    }
+
     public static string TranslationMostGatheredResource => LocalizationController.Translation("MOST_GATHERED_RESOURCE");
     public static string TranslationMostGatheredOnMap => LocalizationController.Translation("MOST_GATHERED_ON_MAP");
     public static string TranslationTotalResources => LocalizationController.Translation("TOTAL_RESOURCES");
     public static string TranslationTotalMiningProcesses => LocalizationController.Translation("TOTAL_MINING_PROCESSES");
     public static string TranslationResourceValue => LocalizationController.Translation("RESOURCE_VALUE");
     public static string TranslationPerHour => LocalizationController.Translation("PER_HOUR");
+    public static string TranslationHistory => LocalizationController.Translation("HISTORY");
 }

@@ -2,6 +2,7 @@
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
                     xmlns:gathering="clr-namespace:StatisticsAnalysisTool.Gathering"
                     xmlns:controls="clr-namespace:WpfToolkit.Controls;assembly=VirtualizingWrapPanel"
+                    xmlns:wpf="clr-namespace:LiveChartsCore.SkiaSharpView.WPF;assembly=LiveChartsCore.SkiaSharpView.WPF"
                     xmlns:glob="clr-namespace:System.Globalization;assembly=System.Runtime">
     
     <Style x:Key="Style.Image.Resource" TargetType="Image">
@@ -356,6 +357,37 @@
 
                 <TextBlock Style="{StaticResource Gathering.Stats.TitleText}" Text="{Binding TranslationTotalMiningProcesses}" />
                 <TextBlock Text="{Binding TotalMiningProcesses, IsAsync=True}" Style="{StaticResource Gathering.TextBlock.CollectionFragment.Numbers}" />
+
+                <TextBlock Style="{StaticResource Gathering.Stats.TitleText}" Text="{Binding TranslationHistory}" Margin="0,10,0,0" />
+                <ItemsControl Margin="0,5,0,10" ItemsSource="{Binding ResourceChartSeriesFilters}">
+                    <ItemsControl.ItemsPanel>
+                        <ItemsPanelTemplate>
+                            <WrapPanel />
+                        </ItemsPanelTemplate>
+                    </ItemsControl.ItemsPanel>
+                    <ItemsControl.ItemTemplate>
+                        <DataTemplate DataType="{x:Type gathering:GatheringChartSeriesFilter}">
+                            <Border BorderBrush="{StaticResource SolidColorBrush.Background.4}"
+                                    BorderThickness="1"
+                                    Margin="0,0,8,8"
+                                    Padding="8,4"
+                                    Background="{StaticResource SolidColorBrush.Background.2}">
+                                <StackPanel Orientation="Horizontal">
+                                    <Rectangle Width="10" Height="10" Fill="{Binding Brush}" Margin="0,0,6,0" VerticalAlignment="Center" />
+                                    <CheckBox Content="{Binding Name}"
+                                              IsChecked="{Binding IsSelected, Mode=TwoWay}"
+                                              VerticalAlignment="Center" />
+                                </StackPanel>
+                            </Border>
+                        </DataTemplate>
+                    </ItemsControl.ItemTemplate>
+                </ItemsControl>
+                <wpf:CartesianChart Height="300"
+                                    Series="{Binding ResourceChartSeries}"
+                                    XAxes="{Binding ResourceChartXAxes}"
+                                    TooltipPosition="Center"
+                                    FindingStrategy="ExactMatchTakeClosest"
+                                    LegendPosition="Hidden" />
             </StackPanel>
         </Grid>
     </DataTemplate>
