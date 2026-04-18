@@ -359,6 +359,13 @@
                 <TextBlock Text="{Binding TotalMiningProcesses, IsAsync=True}" Style="{StaticResource Gathering.TextBlock.CollectionFragment.Numbers}" />
 
                 <TextBlock Style="{StaticResource Gathering.Stats.TitleText}" Text="{Binding TranslationHistory}" Margin="0,10,0,0" />
+                <StackPanel Orientation="Horizontal" Margin="0,5,0,0">
+                    <ComboBox Width="250" Height="26"
+                              ItemsSource="{Binding ResourceChartValueTypes}"
+                              SelectedValue="{Binding SelectedResourceChartValueType, Mode=TwoWay}"
+                              SelectedValuePath="GatheringChartValueType"
+                              DisplayMemberPath="Name" />
+                </StackPanel>
                 <ItemsControl Margin="0,5,0,10" ItemsSource="{Binding ResourceChartSeriesFilters}">
                     <ItemsControl.ItemsPanel>
                         <ItemsPanelTemplate>
@@ -367,16 +374,11 @@
                     </ItemsControl.ItemsPanel>
                     <ItemsControl.ItemTemplate>
                         <DataTemplate DataType="{x:Type gathering:GatheringChartSeriesFilter}">
-                            <Border BorderBrush="{StaticResource SolidColorBrush.Background.4}"
-                                    BorderThickness="1"
-                                    Margin="0,0,8,8"
-                                    Padding="8,4"
+                            <Border BorderBrush="{StaticResource SolidColorBrush.Background.4}" BorderThickness="1" Margin="0,0,8,8" Padding="8,4"
                                     Background="{StaticResource SolidColorBrush.Background.2}">
                                 <StackPanel Orientation="Horizontal">
                                     <Rectangle Width="10" Height="10" Fill="{Binding Brush}" Margin="0,0,6,0" VerticalAlignment="Center" />
-                                    <CheckBox Content="{Binding Name}"
-                                              IsChecked="{Binding IsSelected, Mode=TwoWay}"
-                                              VerticalAlignment="Center" />
+                                    <CheckBox Content="{Binding Name}" IsChecked="{Binding IsSelected, Mode=TwoWay}" VerticalAlignment="Center" />
                                 </StackPanel>
                             </Border>
                         </DataTemplate>

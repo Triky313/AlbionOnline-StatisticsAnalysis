@@ -55,6 +55,8 @@ public class GatheringBindings : BaseViewModel
             resourceChartSeriesFilter.PropertyChanged += ResourceChartSeriesFilter_PropertyChanged;
         }
 
+        GatheringStats.PropertyChanged += GatheringStats_PropertyChanged;
+
         GatheredCollectionView = CollectionViewSource.GetDefaultView(GatheredCollection) as ListCollectionView;
 
         if (GatheredCollectionView != null)
@@ -382,7 +384,7 @@ public class GatheringBindings : BaseViewModel
             var valuesLookup = gatheredData
                 .Where(x => GetGatheringResourceType(x) == selectedSeriesFilter.ResourceType)
                 .GroupBy(x => AlignTimestampToBucketStart(x.TimestampDateTimeUtc, GatheringStatsTimeTypeSelection))
-                .ToDictionary(x => x.Key, x => (double) x.Sum(v => v.GainedTotalAmount));
+                .ToDictionary(x => x.Key, x => GetChartMetricValue(x, GatheringStats.SelectedResourceChartValueType));
 
             var points = new ObservableCollection<ObservablePoint>();
 
@@ -481,6 +483,15 @@ public class GatheringBindings : BaseViewModel
         };
     }
 
+    private static double GetChartMetricValue(IEnumerable<Gathered> gatheredEntries, GatheringChartValueType chartValueType)
+    {
+        return chartValueType switch
+        {
+            GatheringChartValueType.ResourceSilverValue => gatheredEntries.Sum(x => (double) x.TotalMarketValue.IntegerValue),
+            _ => gatheredEntries.Sum(x => (double) x.GainedTotalAmount)
+        };
+    }
+
     private static GatheringTimeRange GetTimeRange(GatheringStatsTimeType gatheringStatsTimeType)
     {
         var currentDay = DateTime.UtcNow.Date;
@@ -521,6 +532,16 @@ public class GatheringBindings : BaseViewModel
                 Color = new SKColor(0, 0, 0, 0)
             };
         }
+    }
+
+    private void GatheringStats_PropertyChanged(object sender, PropertyChangedEventArgs e)
+    {
+        if (e.PropertyName != nameof(GatheringStats.SelectedResourceChartValueType))
+        {
+            return;
+        }
+
+        UpdateStats();
     }
 
     private readonly record struct ChartBucket(DateTime Start, string Label);

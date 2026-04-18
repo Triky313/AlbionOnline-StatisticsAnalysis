@@ -168,14 +168,14 @@
     <Color x:Key="Color.Resource.Fiber">#FFF9C74F</Color>
     <Color x:Key="Color.Resource.Hide">#FF43AA8B</Color>
     <Color x:Key="Color.Resource.Ore">#FFF94144</Color>
-    <Color x:Key="Color.Resource.Rock">#FF577590</Color>
+    <Color x:Key="Color.Resource.Rock">#FF81568F</Color>
     <Color x:Key="Color.Resource.Fishing">#FF277DA1</Color>
 
     <Color x:Key="Color.Resource.Wood.Transparent">#33F3722C</Color>
     <Color x:Key="Color.Resource.Fiber.Transparent">#33F9C74F</Color>
     <Color x:Key="Color.Resource.Hide.Transparent">#3343AA8B</Color>
     <Color x:Key="Color.Resource.Ore.Transparent">#33F94144</Color>
-    <Color x:Key="Color.Resource.Rock.Transparent">#33577590</Color>
+    <Color x:Key="Color.Resource.Rock.Transparent">#3381568F</Color>
     <Color x:Key="Color.Resource.Fishing.Transparent">#33277DA1</Color>
 
     <!-- Time value color -->

@@ -4,6 +4,7 @@ using StatisticsAnalysisTool.Common;
 using StatisticsAnalysisTool.Localization;
 using StatisticsAnalysisTool.ViewModels;
 using System.Collections.ObjectModel;
+using System.Collections.Generic;
 using System.Windows;
 
 namespace StatisticsAnalysisTool.Gathering;
@@ -41,6 +42,7 @@ public class GatheringStats : BaseViewModel
     private ObservableCollection<GatheringChartSeriesFilter> _resourceChartSeriesFilters = new();
     private ObservableCollection<ISeries> _resourceChartSeries = [];
     private Axis[] _resourceChartXAxes = [];
+    private GatheringChartValueType _selectedResourceChartValueType = GatheringChartValueType.ResourceAmount;
 
     public GatheringStats()
     {
@@ -366,6 +368,30 @@ public class GatheringStats : BaseViewModel
         }
     }
 
+    public GatheringChartValueType SelectedResourceChartValueType
+    {
+        get => _selectedResourceChartValueType;
+        set
+        {
+            _selectedResourceChartValueType = value;
+            OnPropertyChanged();
+        }
+    }
+
+    public List<GatheringChartValueFilterStruct> ResourceChartValueTypes { get; } =
+    [
+        new GatheringChartValueFilterStruct
+        {
+            Name = LocalizationController.Translation("GATHERING_CHART_VALUE_RESOURCE_AMOUNT"),
+            GatheringChartValueType = GatheringChartValueType.ResourceAmount
+        },
+        new GatheringChartValueFilterStruct
+        {
+            Name = LocalizationController.Translation("GATHERING_CHART_VALUE_RESOURCE_SILVER_VALUE"),
+            GatheringChartValueType = GatheringChartValueType.ResourceSilverValue
+        }
+    ];
+
     public static string TranslationMostGatheredResource => LocalizationController.Translation("MOST_GATHERED_RESOURCE");
     public static string TranslationMostGatheredOnMap => LocalizationController.Translation("MOST_GATHERED_ON_MAP");
     public static string TranslationTotalResources => LocalizationController.Translation("TOTAL_RESOURCES");
@@ -373,4 +399,5 @@ public class GatheringStats : BaseViewModel
     public static string TranslationResourceValue => LocalizationController.Translation("RESOURCE_VALUE");
     public static string TranslationPerHour => LocalizationController.Translation("PER_HOUR");
     public static string TranslationHistory => LocalizationController.Translation("HISTORY");
+    public static string TranslationChartValue => LocalizationController.Translation("GATHERING_CHART_VALUE_TYPE");
 }

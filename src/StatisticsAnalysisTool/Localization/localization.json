@@ -38716,6 +38716,32 @@
           "seg": "Note"
         }
       ]
+    },
+    {
+      "tuid": "GATHERING_CHART_VALUE_RESOURCE_AMOUNT",
+      "tuv": [
+        {
+          "lang": "de-DE",
+          "seg": "Anzahl gesammelter Ressourcen"
+        },
+        {
+          "lang": "en-US",
+          "seg": "Number of gathered resources"
+        }
+      ]
+    },
+    {
+      "tuid": "GATHERING_CHART_VALUE_RESOURCE_SILVER_VALUE",
+      "tuv": [
+        {
+          "lang": "de-DE",
+          "seg": "Gesamt-Silberwert der Ressourcen"
+        },
+        {
+          "lang": "en-US",
+          "seg": "Total silver value of resources"
+        }
+      ]
     }
   ]
 }
