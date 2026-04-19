@@ -61,9 +61,7 @@ internal class ItemData : IDisposable
                 {
                     Index = index.ToString(),
                     UniqueName = uniqueName + enchantment,
-                    LocalizationDescriptionVariable = description != null
-                        ? description.Value
-                        : LocalizationData.ItemPrefix + uniqueName + LocalizationData.DescPostfix,
+                    LocalizationDescriptionVariable = description != null ? description.Value : LocalizationData.ItemPrefix + uniqueName + LocalizationData.DescPostfix,
                     LocalizationNameVariable = localizationNameVariable
                 };
 
