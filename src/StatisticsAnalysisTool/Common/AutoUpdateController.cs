@@ -12,6 +12,7 @@ using StatisticsAnalysisTool.Views;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Diagnostics;
 using System.Globalization;
 using System.IO;
 using System.Linq;
@@ -550,10 +551,8 @@ public static class AutoUpdateController
 
     private static SparkleUpdater CreateSparkleUpdater(AutoUpdateConfiguration configuration)
     {
-        var sparkleUpdater = new SparkleUpdater(
-            configuration.AppCastUrl,
-            CreateSignatureVerifier(),
-            Assembly.GetExecutingAssembly().Location)
+        var executablePath = ResolveExecutablePath();
+        var sparkleUpdater = new SparkleUpdater(configuration.AppCastUrl, CreateSignatureVerifier(), executablePath)
         {
             RelaunchAfterUpdate = true,
             CustomInstallerArguments = CreateInstallerArguments(),
@@ -582,6 +581,29 @@ public static class AutoUpdateController
         }
 
         return sparkleUpdater;
+    }
+
+    private static string ResolveExecutablePath()
+    {
+        if (!string.IsNullOrWhiteSpace(Environment.ProcessPath))
+        {
+            return Path.GetFullPath(Environment.ProcessPath);
+        }
+
+        var currentProcessPath = Process.GetCurrentProcess().MainModule?.FileName;
+        if (!string.IsNullOrWhiteSpace(currentProcessPath))
+        {
+            return Path.GetFullPath(currentProcessPath);
+        }
+
+        var processName = Process.GetCurrentProcess().ProcessName;
+        var fallbackPath = Path.Combine(AppContext.BaseDirectory, $"{processName}.exe");
+        if (File.Exists(fallbackPath))
+        {
+            return Path.GetFullPath(fallbackPath);
+        }
+
+        throw new InvalidOperationException("Unable to resolve the current executable path for auto update.");
     }
 
     private static Ed25519Checker CreateSignatureVerifier()
