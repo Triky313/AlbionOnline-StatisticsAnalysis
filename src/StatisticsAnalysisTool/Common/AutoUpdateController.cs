@@ -2,87 +2,62 @@ using NetSparkleUpdater;
 using NetSparkleUpdater.Downloaders;
 using NetSparkleUpdater.Enums;
 using NetSparkleUpdater.SignatureVerifiers;
-using NetSparkleUpdater.UI.WPF;
 using Serilog;
 using StatisticsAnalysisTool.Common.UserSettings;
 using StatisticsAnalysisTool.Diagnostics;
 using StatisticsAnalysisTool.Localization;
 using StatisticsAnalysisTool.Properties;
+using StatisticsAnalysisTool.ViewModels;
+using StatisticsAnalysisTool.Views;
 using System;
+using System.Collections.Generic;
+using System.Collections.ObjectModel;
+using System.Globalization;
 using System.IO;
+using System.Linq;
 using System.Net;
 using System.Net.Http;
+using System.Net.Http.Headers;
 using System.Reflection;
+using System.Text.Json;
+using System.Text.Json.Serialization;
+using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
+using System.Windows.Media;
 
 namespace StatisticsAnalysisTool.Common;
 
 public static class AutoUpdateController
 {
-    private static readonly object SyncRoot = new();
+    private const string GitHubApiBaseUrl = "https://api.github.com/repos/triky313/AlbionOnline-StatisticsAnalysis/releases/tags/";
+
+    private static readonly Lock SyncRoot = new();
+    private static readonly JsonSerializerOptions JsonSerializerOptions = new() { PropertyNameCaseInsensitive = true };
+
     private static SparkleUpdater _sparkleUpdater;
     private static AutoUpdateConfiguration _currentConfiguration;
-    private static bool _isBackgroundLoopStarted;
+    private static bool _isStartupCheckCompleted;
+    private static bool _isUpdateCheckRunning;
 
     public static async Task StartBackgroundUpdateLoopAsync()
     {
-        try
+        lock (SyncRoot)
         {
-            var sparkleUpdater = await EnsureSparkleUpdaterAsync();
-            if (sparkleUpdater == null)
+            if (_isStartupCheckCompleted)
             {
                 return;
             }
 
-            lock (SyncRoot)
-            {
-                if (_isBackgroundLoopStarted)
-                {
-                    return;
-                }
+            _isStartupCheckCompleted = true;
+        }
 
-                sparkleUpdater.StartLoop(true);
-                _isBackgroundLoopStarted = true;
-            }
-        }
-        catch (HttpRequestException e)
-        {
-            DebugConsole.WriteError(MethodBase.GetCurrentMethod()?.DeclaringType, e);
-            Log.Warning(e, "{message}", MethodBase.GetCurrentMethod()?.DeclaringType);
-        }
-        catch (Exception e)
-        {
-            DebugConsole.WriteError(MethodBase.GetCurrentMethod()?.DeclaringType, e);
-            Log.Error(e, "{message}", MethodBase.GetCurrentMethod()?.DeclaringType);
-        }
+        await CheckForUpdatesInternalAsync(UpdateCheckSource.Startup);
     }
 
     public static async Task CheckForUpdatesAsync()
     {
-        try
-        {
-            var sparkleUpdater = await EnsureSparkleUpdaterAsync();
-            if (sparkleUpdater == null)
-            {
-                ShowUpdateCheckFailedMessage();
-                return;
-            }
-
-            await sparkleUpdater.CheckForUpdatesAtUserRequest(false);
-        }
-        catch (HttpRequestException e)
-        {
-            DebugConsole.WriteError(MethodBase.GetCurrentMethod()?.DeclaringType, e);
-            Log.Warning(e, "{message}", MethodBase.GetCurrentMethod()?.DeclaringType);
-            ShowUpdateCheckFailedMessage();
-        }
-        catch (Exception e)
-        {
-            DebugConsole.WriteError(MethodBase.GetCurrentMethod()?.DeclaringType, e);
-            Log.Error(e, "{message}", MethodBase.GetCurrentMethod()?.DeclaringType);
-            ShowExceptionMessage(e);
-        }
+        await CheckForUpdatesInternalAsync(UpdateCheckSource.Manual);
     }
 
     public static void Dispose()
@@ -91,6 +66,460 @@ public static class AutoUpdateController
         {
             DisposeUpdater();
         }
+    }
+
+    private static async Task CheckForUpdatesInternalAsync(UpdateCheckSource checkSource)
+    {
+        if (!TryBeginUpdateCheck())
+        {
+            return;
+        }
+
+        try
+        {
+            var sparkleUpdater = await EnsureSparkleUpdaterAsync();
+            if (sparkleUpdater == null)
+            {
+                if (checkSource == UpdateCheckSource.Manual)
+                {
+                    ShowUpdateCheckFailedMessage();
+                }
+
+                return;
+            }
+
+            var updateInfo = await sparkleUpdater.CheckForUpdatesQuietly();
+            switch (updateInfo.Status)
+            {
+                case UpdateStatus.UpdateAvailable:
+                    {
+                        var updateItem = SelectUpdate(updateInfo.Updates);
+                        if (updateItem == null)
+                        {
+                            if (checkSource == UpdateCheckSource.Manual)
+                            {
+                                ShowNoUpdateAvailableMessage();
+                            }
+
+                            return;
+                        }
+
+                        var releaseInfo = await TryLoadGitHubReleaseInfoAsync(updateItem);
+                        await ShowUpdateWindowAsync(sparkleUpdater, updateItem, releaseInfo);
+                        return;
+                    }
+                case UpdateStatus.UpdateNotAvailable:
+                    if (checkSource == UpdateCheckSource.Manual)
+                    {
+                        ShowNoUpdateAvailableMessage();
+                    }
+
+                    return;
+                case UpdateStatus.UserSkipped:
+                    return;
+                case UpdateStatus.CouldNotDetermine:
+                    if (checkSource == UpdateCheckSource.Manual)
+                    {
+                        ShowUpdateCheckFailedMessage();
+                    }
+
+                    return;
+                default:
+                    if (checkSource == UpdateCheckSource.Manual)
+                    {
+                        ShowUpdateCheckFailedMessage();
+                    }
+
+                    return;
+            }
+        }
+        catch (HttpRequestException e)
+        {
+            DebugConsole.WriteError(MethodBase.GetCurrentMethod()?.DeclaringType, e);
+            Log.Warning(e, "{message}", MethodBase.GetCurrentMethod()?.DeclaringType);
+
+            if (checkSource == UpdateCheckSource.Manual)
+            {
+                ShowUpdateCheckFailedMessage();
+            }
+        }
+        catch (Exception e)
+        {
+            DebugConsole.WriteError(MethodBase.GetCurrentMethod()?.DeclaringType, e);
+            Log.Error(e, "{message}", MethodBase.GetCurrentMethod()?.DeclaringType);
+
+            if (checkSource == UpdateCheckSource.Manual)
+            {
+                ShowExceptionMessage(e);
+            }
+        }
+        finally
+        {
+            EndUpdateCheck();
+        }
+    }
+
+    private static bool TryBeginUpdateCheck()
+    {
+        lock (SyncRoot)
+        {
+            if (_isUpdateCheckRunning)
+            {
+                return false;
+            }
+
+            _isUpdateCheckRunning = true;
+            return true;
+        }
+    }
+
+    private static void EndUpdateCheck()
+    {
+        lock (SyncRoot)
+        {
+            _isUpdateCheckRunning = false;
+        }
+    }
+
+    private static Task ShowUpdateWindowAsync(
+        SparkleUpdater sparkleUpdater,
+        AppCastItem updateItem,
+        GitHubReleaseInfo releaseInfo)
+    {
+        var viewModel = CreateUpdateWindowViewModel(updateItem, releaseInfo);
+        var updateWindow = new UpdateWindow(viewModel, () => DownloadAndInstallUpdateAsync(sparkleUpdater, updateItem, viewModel));
+        updateWindow.ShowDialog();
+        return Task.CompletedTask;
+    }
+
+    private static UpdateWindowViewModel CreateUpdateWindowViewModel(AppCastItem updateItem, GitHubReleaseInfo releaseInfo)
+    {
+        var currentVersion = Assembly.GetExecutingAssembly().GetName().Version;
+        var updateVersion = GetDisplayVersion(updateItem.Version, includeRevision: false);
+        var currentVersionText = currentVersion != null
+            ? currentVersion.ToString()
+            : "0.0.0.0";
+
+        var sections = CreateSections(releaseInfo);
+        var releaseTitle = !string.IsNullOrWhiteSpace(releaseInfo?.Title)
+            ? releaseInfo.Title
+            : $"{GetProductTitle()} v{updateVersion}";
+
+        var releaseDateText = releaseInfo?.PublishedAt?.ToLocalTime().ToString("D", CultureInfo.CurrentCulture) ?? string.Empty;
+
+        return new UpdateWindowViewModel(
+            LocalizationController.Translation("UPDATE_AVAILABLE_TITLE"),
+            $"{GetProductTitle()} update available",
+            string.Format(
+                CultureInfo.CurrentCulture,
+                LocalizationController.Translation("UPDATE_AVAILABLE_OPTIONAL_MESSAGE"),
+                updateVersion,
+                currentVersionText),
+            releaseTitle,
+            $"v{updateVersion}",
+            releaseDateText,
+            sections.Count > 0,
+            sections,
+            GetRemindLaterText(),
+            LocalizationController.Translation("UPDATE_NOW"));
+    }
+
+    private static ObservableCollection<UpdateNoteSectionViewModel> CreateSections(GitHubReleaseInfo releaseInfo)
+    {
+        if (string.IsNullOrWhiteSpace(releaseInfo?.Body))
+        {
+            return [];
+        }
+
+        var sections = ParseReleaseNotes(releaseInfo.Body)
+            .Where(section => section.Items.Count > 0)
+            .Select(section => new UpdateNoteSectionViewModel(
+                section.Title,
+                GetSectionBrush(section.Title),
+                new ObservableCollection<string>(section.Items)))
+            .ToList();
+
+        return new ObservableCollection<UpdateNoteSectionViewModel>(sections);
+    }
+
+    private static Brush GetSectionBrush(string title)
+    {
+        var normalizedTitle = title?.Trim() ?? string.Empty;
+
+        if (string.Equals(normalizedTitle, "Added", StringComparison.OrdinalIgnoreCase))
+        {
+            return GetBrush("SolidColorBrush.Accent.Green.3");
+        }
+
+        if (string.Equals(normalizedTitle, "Changed", StringComparison.OrdinalIgnoreCase))
+        {
+            return GetBrush("SolidColorBrush.Accent.Yellow.1");
+        }
+
+        if (string.Equals(normalizedTitle, "Fixed", StringComparison.OrdinalIgnoreCase))
+        {
+            return GetBrush("SolidColorBrush.Accent.Red.3");
+        }
+
+        return GetBrush("SolidColorBrush.Accent.Blue.3");
+    }
+
+    private static Brush GetBrush(string resourceKey)
+    {
+        if (Application.Current?.Resources[resourceKey] is Brush brush)
+        {
+            return brush;
+        }
+
+        return Brushes.White;
+    }
+
+    private static List<ReleaseNoteSection> ParseReleaseNotes(string releaseBody)
+    {
+        var sections = new List<ReleaseNoteSection>();
+        ReleaseNoteSection currentSection = null;
+
+        var lines = releaseBody.Replace("\r\n", "\n", StringComparison.Ordinal).Split('\n');
+        foreach (var rawLine in lines)
+        {
+            var line = rawLine.Trim();
+            if (string.IsNullOrWhiteSpace(line))
+            {
+                continue;
+            }
+
+            if (line.StartsWith("**Full Changelog**", StringComparison.OrdinalIgnoreCase))
+            {
+                continue;
+            }
+
+            if (line.StartsWith("### ", StringComparison.Ordinal))
+            {
+                currentSection = new ReleaseNoteSection(line[4..].Trim());
+                sections.Add(currentSection);
+                continue;
+            }
+
+            if (line.StartsWith("* ", StringComparison.Ordinal) || line.StartsWith("- ", StringComparison.Ordinal))
+            {
+                currentSection ??= CreateFallbackSection(sections);
+                currentSection.Items.Add(line[2..].Trim());
+                continue;
+            }
+
+            currentSection ??= CreateFallbackSection(sections);
+            currentSection.Items.Add(line);
+        }
+
+        return sections;
+    }
+
+    private static ReleaseNoteSection CreateFallbackSection(ICollection<ReleaseNoteSection> sections)
+    {
+        var section = new ReleaseNoteSection(string.Empty);
+        sections.Add(section);
+        return section;
+    }
+
+    private static async Task<bool> DownloadAndInstallUpdateAsync(
+        SparkleUpdater sparkleUpdater,
+        AppCastItem updateItem,
+        UpdateWindowViewModel viewModel)
+    {
+        try
+        {
+            viewModel.IsBusy = true;
+            viewModel.StatusText = GetDownloadingStatusText();
+            viewModel.ActionButtonText = GetDownloadingButtonText();
+
+            await sparkleUpdater.InitAndBeginDownload(updateItem);
+            return true;
+        }
+        catch (HttpRequestException e)
+        {
+            DebugConsole.WriteError(MethodBase.GetCurrentMethod()?.DeclaringType, e);
+            Log.Warning(e, "{message}", MethodBase.GetCurrentMethod()?.DeclaringType);
+            viewModel.StatusText = LocalizationController.Translation("UPDATE_CHECK_FAILED_MESSAGE");
+        }
+        catch (Exception e)
+        {
+            DebugConsole.WriteError(MethodBase.GetCurrentMethod()?.DeclaringType, e);
+            Log.Error(e, "{message}", MethodBase.GetCurrentMethod()?.DeclaringType);
+            viewModel.StatusText = e.Message;
+        }
+
+        viewModel.IsBusy = false;
+        viewModel.ActionButtonText = LocalizationController.Translation("UPDATE_NOW");
+        return false;
+    }
+
+    private static AppCastItem SelectUpdate(IReadOnlyList<AppCastItem> updates)
+    {
+        if (updates == null || updates.Count == 0)
+        {
+            return null;
+        }
+
+        return updates
+            .OrderByDescending(update => ParseAppCastVersion(update.Version))
+            .ThenByDescending(update => update.Version)
+            .FirstOrDefault();
+    }
+
+    private static async Task<GitHubReleaseInfo> TryLoadGitHubReleaseInfoAsync(AppCastItem updateItem)
+    {
+        var configuration = _currentConfiguration;
+        if (configuration == null)
+        {
+            return null;
+        }
+
+        var tagVersion = GetTagVersion(updateItem.Version);
+        if (string.IsNullOrWhiteSpace(tagVersion))
+        {
+            return null;
+        }
+
+        try
+        {
+            using var httpClient = CreateGitHubHttpClient(configuration.ProxyUrl);
+            using var requestMessage = new HttpRequestMessage(HttpMethod.Get, $"{GitHubApiBaseUrl}v{tagVersion}");
+            using var response = await httpClient.SendAsync(requestMessage);
+
+            if (response.StatusCode == HttpStatusCode.NotFound)
+            {
+                return null;
+            }
+
+            response.EnsureSuccessStatusCode();
+
+            var json = await response.Content.ReadAsStringAsync();
+            var releaseResponse = JsonSerializer.Deserialize<GitHubReleaseResponse>(json, JsonSerializerOptions);
+            if (releaseResponse == null)
+            {
+                return null;
+            }
+
+            return new GitHubReleaseInfo(
+                releaseResponse.Name,
+                releaseResponse.Body,
+                releaseResponse.PublishedAt);
+        }
+        catch (Exception e) when (e is HttpRequestException or TaskCanceledException or JsonException)
+        {
+            DebugConsole.WriteError(MethodBase.GetCurrentMethod()?.DeclaringType, e);
+            Log.Warning(e, "Failed to load GitHub release notes for version {Version}", tagVersion);
+            return null;
+        }
+    }
+
+    private static HttpClient CreateGitHubHttpClient(string proxyUrl)
+    {
+        var handler = CreateHttpClientHandler(proxyUrl);
+        var httpClient = new HttpClient(handler, disposeHandler: true);
+        httpClient.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/vnd.github+json"));
+        httpClient.DefaultRequestHeaders.Add("X-GitHub-Api-Version", "2022-11-28");
+        httpClient.DefaultRequestHeaders.UserAgent.ParseAdd($"{GetProductTitle().Replace(" ", string.Empty, StringComparison.Ordinal)}/{GetCurrentFileVersion()}");
+        return httpClient;
+    }
+
+    private static string GetCurrentFileVersion()
+    {
+        return Assembly.GetExecutingAssembly().GetName().Version?.ToString() ?? "0.0.0.0";
+    }
+
+    private static string GetTagVersion(string versionText)
+    {
+        var version = ParseAppCastVersion(versionText);
+        if (version == null)
+        {
+            return versionText?.Trim().TrimStart('v') ?? string.Empty;
+        }
+
+        var parts = new List<int>
+            {
+                version.Major,
+                version.Minor
+            };
+
+        if (version.Build >= 0)
+        {
+            parts.Add(version.Build);
+        }
+
+        if (version.Revision > 0)
+        {
+            parts.Add(version.Revision);
+        }
+
+        return string.Join(".", parts);
+    }
+
+    private static string GetDisplayVersion(string versionText, bool includeRevision)
+    {
+        var version = ParseAppCastVersion(versionText);
+        if (version == null)
+        {
+            return string.IsNullOrWhiteSpace(versionText)
+                ? "0.0.0"
+                : versionText.Trim().TrimStart('v');
+        }
+
+        if (includeRevision)
+        {
+            return version.ToString();
+        }
+
+        if (version.Build < 0)
+        {
+            return $"{version.Major}.{version.Minor}";
+        }
+
+        return $"{version.Major}.{version.Minor}.{version.Build}";
+    }
+
+    private static Version ParseAppCastVersion(string versionText)
+    {
+        if (string.IsNullOrWhiteSpace(versionText))
+        {
+            return null;
+        }
+
+        var normalizedText = versionText.Trim().TrimStart('v');
+        var versionCore = normalizedText.Split('-', '+')[0];
+
+        return Version.TryParse(versionCore, out var version)
+            ? version
+            : null;
+    }
+
+    private static string GetProductTitle()
+    {
+        var attribute = Assembly.GetExecutingAssembly().GetCustomAttribute<AssemblyTitleAttribute>();
+        return string.IsNullOrWhiteSpace(attribute?.Title)
+            ? "Statistics Analysis Tool"
+            : attribute.Title;
+    }
+
+    private static string GetRemindLaterText()
+    {
+        return CultureInfo.CurrentUICulture.TwoLetterISOLanguageName.Equals("de", StringComparison.OrdinalIgnoreCase)
+            ? "Spaeter erinnern"
+            : "Remind me later";
+    }
+
+    private static string GetDownloadingStatusText()
+    {
+        return CultureInfo.CurrentUICulture.TwoLetterISOLanguageName.Equals("de", StringComparison.OrdinalIgnoreCase)
+            ? "Update wird heruntergeladen und vorbereitet..."
+            : "Downloading and preparing the update...";
+    }
+
+    private static string GetDownloadingButtonText()
+    {
+        return CultureInfo.CurrentUICulture.TwoLetterISOLanguageName.Equals("de", StringComparison.OrdinalIgnoreCase)
+            ? "Wird geladen..."
+            : "Downloading...";
     }
 
     private static async Task<SparkleUpdater> EnsureSparkleUpdaterAsync()
@@ -110,19 +539,10 @@ public static class AutoUpdateController
                 return _sparkleUpdater;
             }
 
-            var shouldRestartBackgroundLoop = _isBackgroundLoopStarted;
-
             DisposeUpdater();
 
             _sparkleUpdater = CreateSparkleUpdater(configuration);
             _currentConfiguration = configuration;
-            _isBackgroundLoopStarted = false;
-
-            if (shouldRestartBackgroundLoop)
-            {
-                _sparkleUpdater.StartLoop(false);
-                _isBackgroundLoopStarted = true;
-            }
 
             return _sparkleUpdater;
         }
@@ -133,13 +553,21 @@ public static class AutoUpdateController
         var sparkleUpdater = new SparkleUpdater(
             configuration.AppCastUrl,
             CreateSignatureVerifier(),
-            Assembly.GetExecutingAssembly().Location,
-            CreateUiFactory())
+            Assembly.GetExecutingAssembly().Location)
         {
             RelaunchAfterUpdate = true,
             CustomInstallerArguments = CreateInstallerArguments(),
             CheckServerFileName = false,
-            UseNotificationToast = false
+            UseNotificationToast = false,
+            UserInteractionMode = UserInteractionMode.DownloadAndInstall
+        };
+
+        sparkleUpdater.CloseApplication += () =>
+        {
+            Application.Current?.Dispatcher.Invoke(() =>
+            {
+                Application.Current.Shutdown();
+            });
         };
 
         if (configuration.IsProxyEnabled)
@@ -154,14 +582,6 @@ public static class AutoUpdateController
         }
 
         return sparkleUpdater;
-    }
-
-    private static UIFactory CreateUiFactory()
-    {
-        return new UIFactory
-        {
-            HideSkipButton = true
-        };
     }
 
     private static Ed25519Checker CreateSignatureVerifier()
@@ -197,14 +617,20 @@ public static class AutoUpdateController
         if (_sparkleUpdater == null)
         {
             _currentConfiguration = null;
-            _isBackgroundLoopStarted = false;
             return;
         }
 
         _sparkleUpdater.Dispose();
         _sparkleUpdater = null;
         _currentConfiguration = null;
-        _isBackgroundLoopStarted = false;
+    }
+
+    private static void ShowNoUpdateAvailableMessage()
+    {
+        _ = MessageBox.Show(LocalizationController.Translation("NO_UPDATE_AVAILABLE_MESSAGE"),
+            LocalizationController.Translation("NO_UPDATE_AVAILABLE_TITLE"),
+            MessageBoxButton.OK,
+            MessageBoxImage.Information);
     }
 
     private static void ShowUpdateCheckFailedMessage()
@@ -223,6 +649,26 @@ public static class AutoUpdateController
             MessageBoxImage.Error);
     }
 
+    private static HttpClientHandler CreateHttpClientHandler(string proxyUrl)
+    {
+        var handler = new HttpClientHandler();
+
+        if (string.IsNullOrWhiteSpace(proxyUrl))
+        {
+            handler.UseProxy = false;
+            return handler;
+        }
+
+        handler.Proxy = new WebProxy(proxyUrl)
+        {
+            UseDefaultCredentials = true
+        };
+        handler.UseProxy = true;
+        handler.DefaultProxyCredentials = CredentialCache.DefaultCredentials;
+
+        return handler;
+    }
+
     private sealed class AutoUpdateConfiguration
     {
         public AutoUpdateConfiguration(string appCastUrl, string proxyUrl)
@@ -231,9 +677,15 @@ public static class AutoUpdateController
             ProxyUrl = proxyUrl;
         }
 
-        public string AppCastUrl { get; }
+        public string AppCastUrl
+        {
+            get;
+        }
 
-        public string ProxyUrl { get; }
+        public string ProxyUrl
+        {
+            get;
+        }
 
         public bool IsProxyEnabled => !string.IsNullOrWhiteSpace(ProxyUrl);
 
@@ -245,83 +697,51 @@ public static class AutoUpdateController
         }
     }
 
-    private sealed class ProxyAwareAppCastDataDownloader : WebRequestAppCastDataDownloader
+    private sealed class ProxyAwareAppCastDataDownloader(string proxyUrl) : WebRequestAppCastDataDownloader
     {
-        private readonly string _proxyUrl;
-
-        public ProxyAwareAppCastDataDownloader(string proxyUrl)
-        {
-            _proxyUrl = proxyUrl;
-        }
-
         protected override HttpClient CreateHttpClient()
         {
-            return CreateHttpClient(CreateHandler());
-        }
-
-        protected override HttpClient CreateHttpClient(HttpClientHandler handler)
-        {
-            return base.CreateHttpClient(handler);
-        }
-
-        private HttpClientHandler CreateHandler()
-        {
-            var handler = new HttpClientHandler();
-
-            if (string.IsNullOrWhiteSpace(_proxyUrl))
-            {
-                handler.UseProxy = false;
-                return handler;
-            }
-
-            handler.Proxy = new WebProxy(_proxyUrl)
-            {
-                UseDefaultCredentials = true
-            };
-            handler.UseProxy = true;
-            handler.DefaultProxyCredentials = CredentialCache.DefaultCredentials;
-
-            return handler;
+            return CreateHttpClient(CreateHttpClientHandler(proxyUrl));
         }
     }
 
-    private sealed class ProxyAwareUpdateDownloader : WebFileDownloader
+    private sealed class ProxyAwareUpdateDownloader(string proxyUrl) : WebFileDownloader
     {
-        private readonly string _proxyUrl;
-
-        public ProxyAwareUpdateDownloader(string proxyUrl)
-        {
-            _proxyUrl = proxyUrl;
-        }
-
         protected override HttpClient CreateHttpClient()
         {
-            return CreateHttpClient(CreateHandler());
+            return CreateHttpClient(CreateHttpClientHandler(proxyUrl));
         }
+    }
 
-        protected override HttpClient CreateHttpClient(HttpClientHandler handler)
-        {
-            return base.CreateHttpClient(handler);
-        }
+    private sealed class ReleaseNoteSection(string title)
+    {
+        public string Title { get; } = title ?? string.Empty;
 
-        private HttpClientHandler CreateHandler()
-        {
-            var handler = new HttpClientHandler();
+        public List<string> Items { get; } = [];
+    }
 
-            if (string.IsNullOrWhiteSpace(_proxyUrl))
-            {
-                handler.UseProxy = false;
-                return handler;
-            }
+    private sealed class GitHubReleaseInfo(string title, string body, DateTimeOffset? publishedAt)
+    {
+        public string Title { get; } = title ?? string.Empty;
+        public string Body { get; } = body ?? string.Empty;
+        public DateTimeOffset? PublishedAt { get; } = publishedAt;
+    }
 
-            handler.Proxy = new WebProxy(_proxyUrl)
-            {
-                UseDefaultCredentials = true
-            };
-            handler.UseProxy = true;
-            handler.DefaultProxyCredentials = CredentialCache.DefaultCredentials;
+    private sealed class GitHubReleaseResponse
+    {
+        [JsonPropertyName("name")]
+        public string Name { get; init; }
 
-            return handler;
-        }
+        [JsonPropertyName("body")]
+        public string Body { get; init; }
+
+        [JsonPropertyName("published_at")]
+        public DateTimeOffset? PublishedAt { get; init; }
+    }
+
+    private enum UpdateCheckSource
+    {
+        Startup,
+        Manual
     }
 }
