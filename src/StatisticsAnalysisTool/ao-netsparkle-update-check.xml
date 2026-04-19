@@ -11,41 +11,45 @@
 			<title>Statistics Analysis Tool v9.0.0</title>
 			<description>
 				<![CDATA[
-        <h3>Added</h3>
-        <ul>
-            <li>Guild and alliance information is now displayed in loot tracking</li>
-            <li>A gathering history chart with filtering options has been added</li>
-            <li>Map history now supports selecting entries and copying names to the clipboard</li>
-            <li>Column headers have been added to the map history for better clarity</li>
-            <li>An option to clear the map history has been added</li>
-            <li>Silver per hour statistics have been added to gathering tracking</li>
-            <li>An info popup has been added to the item search</li>
-        </ul>
+					<div style="font-family: Segoe UI, Arial, sans-serif;">
 
-        <h3>Changed</h3>
-        <ul>
-            <li>Map history is now saved and restored between sessions</li>
-            <li>The info popup interaction in the loot comparator tab has been changed from hover to click and improved for readability</li>
-        </ul>
+					<h3 style="color: green;">Added</h3>
+					<ul>
+						<li>Guild and alliance information is now displayed in loot tracking</li>
+						<li>A gathering history chart with filtering options has been added</li>
+						<li>Map history now supports selecting entries and copying names to the clipboard</li>
+						<li>Column headers have been added to the map history for better clarity</li>
+						<li>An option to clear the map history has been added</li>
+						<li>Silver per hour statistics have been added to gathering tracking</li>
+						<li>An info popup has been added to the item search</li>
+					</ul>
 
-        <h3>Fixed</h3>
-        <ul>
-            <li>The AODP API URL has been fixed</li>
-            <li>Trade statistics now correctly handle instant buy and sell transactions</li>
-        </ul>
+					<h3 style="color: orange;">Changed</h3>
+					<ul>
+						<li>Map history is now saved and restored between sessions</li>
+						<li>The info popup interaction in the loot comparator tab has been changed from hover to click and improved for readability</li>
+					</ul>
 
-        <h3>Technical</h3>
-        <ul>
-            <li>The update system has been replaced with NetSparkle</li>
-            <li>Automated installer creation has been added</li>
-        </ul>
+					<h3 style="color: red;">Fixed</h3>
+					<ul>
+						<li>The AODP API URL has been fixed</li>
+						<li>Trade statistics now correctly handle instant buy and sell transactions</li>
+					</ul>
 
-        <h3>Misc</h3>
-        <ul>
-            <li>UI improvements</li>
-            <li>General cleanup and internal improvements</li>
-        </ul>
-        ]]>
+					<h3>Technical</h3>
+					<ul>
+						<li>The update system has been replaced with NetSparkle</li>
+						<li>Automated installer creation has been added</li>
+					</ul>
+
+					<h3>Misc</h3>
+					<ul>
+						<li>UI improvements</li>
+						<li>General cleanup and internal improvements</li>
+					</ul>
+
+					</div>
+				]]>
 			</description>
 			<pubDate>Sun, 19 Apr 2026 00:00:00 +0000</pubDate>
 			<enclosure url="https://github.com/Triky313/AlbionOnline-StatisticsAnalysis/releases/download/v9.0.0/StatisticsAnalysis-AlbionOnline-v9.0.0-x64-setup.exe"
