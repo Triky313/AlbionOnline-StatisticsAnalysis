@@ -389,7 +389,9 @@
                                     XAxes="{Binding ResourceChartXAxes}"
                                     TooltipPosition="Center"
                                     FindingStrategy="ExactMatchTakeClosest"
-                                    LegendPosition="Hidden" />
+                                    LegendPosition="Hidden"
+                                    Background="Transparent"
+                                    DrawMarginFrame="{x:Null}" />
             </StackPanel>
         </Grid>
     </DataTemplate>

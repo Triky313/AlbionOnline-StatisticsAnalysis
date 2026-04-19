@@ -166,7 +166,9 @@
                                         XAxes="{Binding XAxesDashboardHourValues}"
                                         TooltipPosition="Center"
                                         FindingStrategy="ExactMatchTakeClosest"
-                                        LegendPosition="Hidden" />
+                                        LegendPosition="Hidden"
+                                        Background="Transparent"
+                                        DrawMarginFrame="{x:Null}" />
                 </Grid>
             </StackPanel>
         </ScrollViewer>
