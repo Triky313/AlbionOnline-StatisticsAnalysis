@@ -1,4 +1,4 @@
-﻿
+
 using Serilog;
 using StatisticsAnalysisTool.Backup;
 using StatisticsAnalysisTool.Common;
@@ -77,7 +77,7 @@ public partial class SettingsControl
 
     private async void CheckForUpdate_Click(object sender, RoutedEventArgs e)
     {
-        await AutoUpdateController.AutoUpdateAsync(true);
+        await AutoUpdateController.CheckForUpdatesAsync();
     }
 
     private void ResetPlayerSelectionWithSameNameInDb_Click(object sender, RoutedEventArgs e)

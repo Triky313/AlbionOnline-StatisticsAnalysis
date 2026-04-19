@@ -1,4 +1,4 @@
-﻿using Notification.Wpf;
+using Notification.Wpf;
 using Serilog;
 using Serilog.Events;
 using StatisticsAnalysisTool.Backup;
@@ -55,8 +55,6 @@ public partial class App
                 DebugConsole.Configure(SettingsController.CurrentSettings.DebugConsoleFilter);
             }
 
-            await AutoUpdateController.AutoUpdateAsync();
-
             Culture.SetCulture(Culture.GetCultureByIetfLanguageTag(SettingsController.CurrentSettings.CurrentCultureIetfLanguageTag));
             if (!LocalizationController.Init())
             {
@@ -91,6 +89,8 @@ public partial class App
 
             await _mainWindowViewModel.InitMainWindowDataAsync();
             Current.MainWindow.Show();
+
+            await AutoUpdateController.StartBackgroundUpdateLoopAsync();
 
             Utilities.AnotherAppToStart(SettingsController.CurrentSettings.AnotherAppToStartPath);
         }
@@ -227,6 +227,7 @@ public partial class App
 
         try
         {
+            AutoUpdateController.Dispose();
             _trackingController?.StopTracking();
             CriticalData.Save();
 
@@ -250,6 +251,7 @@ public partial class App
 
         try
         {
+            AutoUpdateController.Dispose();
             _trackingController?.StopTracking();
             CriticalData.Save();
 
