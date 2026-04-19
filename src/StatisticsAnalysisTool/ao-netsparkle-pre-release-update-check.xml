@@ -8,7 +8,6 @@
 				<h3>Added</h3>
 				<ul>
 					<li>Guild and alliance information is now displayed in loot tracking</li>
-					<li>A toggle has been added to switch between resource amount and silver value in the gathering chart</li>
 					<li>A gathering history chart with filtering options has been added</li>
 					<li>Map history now supports selecting entries and copying names to the clipboard</li>
 					<li>Column headers have been added to the map history for better clarity</li>
@@ -20,7 +19,7 @@
 				<h3>Changed</h3>
 				<ul>
 					<li>Map history is now saved and restored between sessions</li>
-					<li>The info popup interaction has been changed from hover to click and improved for readability</li>
+					<li>The info popup interaction in loot comparator tab has been changed from hover to click and improved for readability</li>
 				</ul>
 
 				<h3>Fixed</h3>
