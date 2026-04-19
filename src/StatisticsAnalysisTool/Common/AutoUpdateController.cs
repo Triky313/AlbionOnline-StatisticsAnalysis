@@ -1,4 +1,8 @@
-using AutoUpdaterDotNET;
+using NetSparkleUpdater;
+using NetSparkleUpdater.Downloaders;
+using NetSparkleUpdater.Enums;
+using NetSparkleUpdater.SignatureVerifiers;
+using NetSparkleUpdater.UI.WPF;
 using Serilog;
 using StatisticsAnalysisTool.Common.UserSettings;
 using StatisticsAnalysisTool.Diagnostics;
@@ -16,70 +20,30 @@ namespace StatisticsAnalysisTool.Common;
 
 public static class AutoUpdateController
 {
-    public static async Task AutoUpdateAsync(bool reportErrors = false)
+    private static readonly object SyncRoot = new();
+    private static SparkleUpdater _sparkleUpdater;
+    private static AutoUpdateConfiguration _currentConfiguration;
+    private static bool _isBackgroundLoopStarted;
+
+    public static async Task StartBackgroundUpdateLoopAsync()
     {
-        var updateDirPath = Path.Combine(Environment.CurrentDirectory, Settings.Default.UpdatesDirectoryName);
-        var executablePath = Path.Combine(Environment.CurrentDirectory, "StatisticsAnalysisTool.exe");
-        string currentUpdateUrl = string.Empty;
-
-        RemoveUpdateFiles(updateDirPath);
-
         try
         {
-            AutoUpdater.Proxy = null;
-            var isUrlAccessibleResult = await HttpClientUtils.IsUrlAccessible(Settings.Default.AutoUpdatePreReleaseConfigUrl);
-
-            if (SettingsController.CurrentSettings.IsSuggestPreReleaseUpdatesActive && isUrlAccessibleResult is { IsAccessible: true, IsProxyActive: true })
-            {
-                AutoUpdater.Proxy = new WebProxy(SettingsController.CurrentSettings.ProxyUrlWithPort);
-                currentUpdateUrl = Settings.Default.AutoUpdatePreReleaseConfigUrl;
-            }
-            else if (SettingsController.CurrentSettings.IsSuggestPreReleaseUpdatesActive && isUrlAccessibleResult is { IsAccessible: true, IsProxyActive: false })
-            {
-                currentUpdateUrl = Settings.Default.AutoUpdatePreReleaseConfigUrl;
-            }
-            else if (isUrlAccessibleResult is { IsAccessible: true, IsProxyActive: true })
-            {
-                AutoUpdater.Proxy = new WebProxy(SettingsController.CurrentSettings.ProxyUrlWithPort);
-                currentUpdateUrl = Settings.Default.AutoUpdateConfigUrl;
-            }
-            else if (isUrlAccessibleResult is { IsAccessible: true, IsProxyActive: false })
-            {
-                currentUpdateUrl = Settings.Default.AutoUpdateConfigUrl;
-            }
-
-            if (string.IsNullOrEmpty(currentUpdateUrl))
+            var sparkleUpdater = await EnsureSparkleUpdaterAsync();
+            if (sparkleUpdater == null)
             {
                 return;
             }
 
-            AutoUpdater.Synchronous = true;
-            AutoUpdater.ApplicationExitEvent -= AutoUpdaterApplicationExit;
-            AutoUpdater.CheckForUpdateEvent -= AutoUpdaterOnCheckForUpdateEvent;
-
-            DirectoryController.CreateDirectoryWhenNotExists(updateDirPath);
-
-            AutoUpdater.DownloadPath = updateDirPath;
-            AutoUpdater.ExecutablePath = executablePath;
-            AutoUpdater.RunUpdateAsAdmin = false;
-            AutoUpdater.ReportErrors = reportErrors;
-            AutoUpdater.ShowSkipButton = false;
-            AutoUpdater.TopMost = true;
-
-            if (reportErrors)
+            lock (SyncRoot)
             {
-                AutoUpdater.CheckForUpdateEvent += AutoUpdaterOnCheckForUpdateEvent;
-            }
-            else
-            {
-                AutoUpdater.ApplicationExitEvent += AutoUpdaterApplicationExit;
-            }
+                if (_isBackgroundLoopStarted)
+                {
+                    return;
+                }
 
-            AutoUpdater.Start(currentUpdateUrl);
-
-            if (reportErrors)
-            {
-                AutoUpdater.CheckForUpdateEvent -= AutoUpdaterOnCheckForUpdateEvent;
+                sparkleUpdater.StartLoop(true);
+                _isBackgroundLoopStarted = true;
             }
         }
         catch (HttpRequestException e)
@@ -94,102 +58,270 @@ public static class AutoUpdateController
         }
     }
 
-    private static void AutoUpdaterOnCheckForUpdateEvent(UpdateInfoEventArgs args)
+    public static async Task CheckForUpdatesAsync()
     {
-        if (args.Error == null)
+        try
         {
-            if (!args.IsUpdateAvailable)
+            var sparkleUpdater = await EnsureSparkleUpdaterAsync();
+            if (sparkleUpdater == null)
             {
-                _ = MessageBox.Show(LocalizationController.Translation("NO_UPDATE_AVAILABLE_MESSAGE"),
-                    LocalizationController.Translation("NO_UPDATE_AVAILABLE_TITLE"),
-                    MessageBoxButton.OK,
-                    MessageBoxImage.Information);
+                ShowUpdateCheckFailedMessage();
                 return;
             }
 
-            var isMandatoryUpdate = args.Mandatory?.Value == true;
-            var message = isMandatoryUpdate
-                ? string.Format(LocalizationController.Translation("UPDATE_AVAILABLE_REQUIRED_MESSAGE"), args.CurrentVersion, args.InstalledVersion)
-                : string.Format(LocalizationController.Translation("UPDATE_AVAILABLE_OPTIONAL_MESSAGE"), args.CurrentVersion, args.InstalledVersion);
-            var title = LocalizationController.Translation("UPDATE_AVAILABLE_TITLE");
-            var button = isMandatoryUpdate ? MessageBoxButton.OK : MessageBoxButton.YesNo;
-            var result = MessageBox.Show(message, title, button, MessageBoxImage.Information);
+            await sparkleUpdater.CheckForUpdatesAtUserRequest(false);
+        }
+        catch (HttpRequestException e)
+        {
+            DebugConsole.WriteError(MethodBase.GetCurrentMethod()?.DeclaringType, e);
+            Log.Warning(e, "{message}", MethodBase.GetCurrentMethod()?.DeclaringType);
+            ShowUpdateCheckFailedMessage();
+        }
+        catch (Exception e)
+        {
+            DebugConsole.WriteError(MethodBase.GetCurrentMethod()?.DeclaringType, e);
+            Log.Error(e, "{message}", MethodBase.GetCurrentMethod()?.DeclaringType);
+            ShowExceptionMessage(e);
+        }
+    }
 
-            if (result == MessageBoxResult.Yes || result == MessageBoxResult.OK)
+    public static void Dispose()
+    {
+        lock (SyncRoot)
+        {
+            DisposeUpdater();
+        }
+    }
+
+    private static async Task<SparkleUpdater> EnsureSparkleUpdaterAsync()
+    {
+        var configuration = await CreateConfigurationAsync();
+        if (configuration == null)
+        {
+            return null;
+        }
+
+        lock (SyncRoot)
+        {
+            if (_sparkleUpdater != null
+                && _currentConfiguration != null
+                && _currentConfiguration.IsSameAs(configuration))
             {
-                StartDownload(args);
+                return _sparkleUpdater;
             }
 
-            return;
-        }
+            var shouldRestartBackgroundLoop = _isBackgroundLoopStarted;
 
-        if (args.Error is WebException)
+            DisposeUpdater();
+
+            _sparkleUpdater = CreateSparkleUpdater(configuration);
+            _currentConfiguration = configuration;
+            _isBackgroundLoopStarted = false;
+
+            if (shouldRestartBackgroundLoop)
+            {
+                _sparkleUpdater.StartLoop(false);
+                _isBackgroundLoopStarted = true;
+            }
+
+            return _sparkleUpdater;
+        }
+    }
+
+    private static SparkleUpdater CreateSparkleUpdater(AutoUpdateConfiguration configuration)
+    {
+        var sparkleUpdater = new SparkleUpdater(
+            configuration.AppCastUrl,
+            CreateSignatureVerifier(),
+            Assembly.GetExecutingAssembly().Location,
+            CreateUiFactory())
         {
-            _ = MessageBox.Show(LocalizationController.Translation("UPDATE_CHECK_FAILED_MESSAGE"),
-                LocalizationController.Translation("UPDATE_CHECK_FAILED_TITLE"),
-                MessageBoxButton.OK,
-                MessageBoxImage.Error);
+            RelaunchAfterUpdate = true,
+            CustomInstallerArguments = CreateInstallerArguments(),
+            CheckServerFileName = false,
+            UseNotificationToast = false
+        };
+
+        if (configuration.IsProxyEnabled)
+        {
+            sparkleUpdater.AppCastDataDownloader = new ProxyAwareAppCastDataDownloader(configuration.ProxyUrl);
+            sparkleUpdater.UpdateDownloader = new ProxyAwareUpdateDownloader(configuration.ProxyUrl);
+        }
+        else
+        {
+            sparkleUpdater.AppCastDataDownloader = new ProxyAwareAppCastDataDownloader(string.Empty);
+            sparkleUpdater.UpdateDownloader = new ProxyAwareUpdateDownloader(string.Empty);
+        }
+
+        return sparkleUpdater;
+    }
+
+    private static UIFactory CreateUiFactory()
+    {
+        return new UIFactory
+        {
+            HideSkipButton = true
+        };
+    }
+
+    private static Ed25519Checker CreateSignatureVerifier()
+    {
+        return new Ed25519Checker(SecurityMode.Unsafe, string.Empty, string.Empty, false, 32768);
+    }
+
+    private static string CreateInstallerArguments()
+    {
+        var toolDirectory = AppDomain.CurrentDomain.BaseDirectory.TrimEnd(Path.DirectorySeparatorChar, Path.AltDirectorySeparatorChar);
+        return $"/VERYSILENT /SUPPRESSMSGBOXES /NORESTART /SP- /DIR=\"{toolDirectory}\"";
+    }
+
+    private static async Task<AutoUpdateConfiguration> CreateConfigurationAsync()
+    {
+        var appCastUrl = SettingsController.CurrentSettings.IsSuggestPreReleaseUpdatesActive
+            ? Settings.Default.AutoUpdatePreReleaseConfigUrl
+            : Settings.Default.AutoUpdateConfigUrl;
+
+        var accessibilityResult = await HttpClientUtils.IsUrlAccessible(appCastUrl);
+        if (!accessibilityResult.IsAccessible)
+        {
+            return null;
+        }
+
+        return new AutoUpdateConfiguration(
+            appCastUrl,
+            accessibilityResult.IsProxyActive ? SettingsController.CurrentSettings.ProxyUrlWithPort : string.Empty);
+    }
+
+    private static void DisposeUpdater()
+    {
+        if (_sparkleUpdater == null)
+        {
+            _currentConfiguration = null;
+            _isBackgroundLoopStarted = false;
             return;
         }
 
-        _ = MessageBox.Show(args.Error.Message,
-            args.Error.GetType().ToString(),
+        _sparkleUpdater.Dispose();
+        _sparkleUpdater = null;
+        _currentConfiguration = null;
+        _isBackgroundLoopStarted = false;
+    }
+
+    private static void ShowUpdateCheckFailedMessage()
+    {
+        _ = MessageBox.Show(LocalizationController.Translation("UPDATE_CHECK_FAILED_MESSAGE"),
+            LocalizationController.Translation("UPDATE_CHECK_FAILED_TITLE"),
             MessageBoxButton.OK,
             MessageBoxImage.Error);
     }
 
-    private static void StartDownload(UpdateInfoEventArgs args)
+    private static void ShowExceptionMessage(Exception exception)
     {
-        try
+        _ = MessageBox.Show(exception.Message,
+            exception.GetType().ToString(),
+            MessageBoxButton.OK,
+            MessageBoxImage.Error);
+    }
+
+    private sealed class AutoUpdateConfiguration
+    {
+        public AutoUpdateConfiguration(string appCastUrl, string proxyUrl)
         {
-            if (AutoUpdater.DownloadUpdate(args))
-            {
-                AutoUpdaterApplicationExit();
-            }
+            AppCastUrl = appCastUrl;
+            ProxyUrl = proxyUrl;
         }
-        catch (Exception e)
+
+        public string AppCastUrl { get; }
+
+        public string ProxyUrl { get; }
+
+        public bool IsProxyEnabled => !string.IsNullOrWhiteSpace(ProxyUrl);
+
+        public bool IsSameAs(AutoUpdateConfiguration other)
         {
-            DebugConsole.WriteError(MethodBase.GetCurrentMethod()?.DeclaringType, e);
-            Log.Error(e, "{message}", MethodBase.GetCurrentMethod()?.DeclaringType);
-            _ = MessageBox.Show(e.Message,
-                e.GetType().ToString(),
-                MessageBoxButton.OK,
-                MessageBoxImage.Error);
+            return other != null
+                   && string.Equals(AppCastUrl, other.AppCastUrl, StringComparison.OrdinalIgnoreCase)
+                   && string.Equals(ProxyUrl, other.ProxyUrl, StringComparison.OrdinalIgnoreCase);
         }
     }
 
-    private static void AutoUpdaterApplicationExit()
+    private sealed class ProxyAwareAppCastDataDownloader : WebRequestAppCastDataDownloader
     {
-        AutoUpdater.ApplicationExitEvent -= AutoUpdaterApplicationExit;
-        Application.Current.Shutdown();
+        private readonly string _proxyUrl;
+
+        public ProxyAwareAppCastDataDownloader(string proxyUrl)
+        {
+            _proxyUrl = proxyUrl;
+        }
+
+        protected override HttpClient CreateHttpClient()
+        {
+            return CreateHttpClient(CreateHandler());
+        }
+
+        protected override HttpClient CreateHttpClient(HttpClientHandler handler)
+        {
+            return base.CreateHttpClient(handler);
+        }
+
+        private HttpClientHandler CreateHandler()
+        {
+            var handler = new HttpClientHandler();
+
+            if (string.IsNullOrWhiteSpace(_proxyUrl))
+            {
+                handler.UseProxy = false;
+                return handler;
+            }
+
+            handler.Proxy = new WebProxy(_proxyUrl)
+            {
+                UseDefaultCredentials = true
+            };
+            handler.UseProxy = true;
+            handler.DefaultProxyCredentials = CredentialCache.DefaultCredentials;
+
+            return handler;
+        }
     }
 
-    public static void RemoveUpdateFiles(string path)
+    private sealed class ProxyAwareUpdateDownloader : WebFileDownloader
     {
-        if (!Directory.Exists(path))
+        private readonly string _proxyUrl;
+
+        public ProxyAwareUpdateDownloader(string proxyUrl)
         {
-            return;
+            _proxyUrl = proxyUrl;
         }
 
-        try
+        protected override HttpClient CreateHttpClient()
         {
-            foreach (var filePath in Directory.GetFiles(path, "StatisticsAnalysis-AlbionOnline-*-x64.zip"))
+            return CreateHttpClient(CreateHandler());
+        }
+
+        protected override HttpClient CreateHttpClient(HttpClientHandler handler)
+        {
+            return base.CreateHttpClient(handler);
+        }
+
+        private HttpClientHandler CreateHandler()
+        {
+            var handler = new HttpClientHandler();
+
+            if (string.IsNullOrWhiteSpace(_proxyUrl))
             {
-                if (File.Exists(filePath))
-                {
-                    File.Delete(filePath);
-                }
+                handler.UseProxy = false;
+                return handler;
             }
-        }
-        catch (Exception ex) when (ex is DirectoryNotFoundException or UnauthorizedAccessException or PathTooLongException)
-        {
-            DebugConsole.WriteError(MethodBase.GetCurrentMethod()?.DeclaringType, ex);
-            Log.Warning(ex, "{message}", MethodBase.GetCurrentMethod()?.DeclaringType);
-        }
-        catch (Exception e)
-        {
-            DebugConsole.WriteError(MethodBase.GetCurrentMethod()?.DeclaringType, e);
-            Log.Error(e, "{message}", MethodBase.GetCurrentMethod()?.DeclaringType);
+
+            handler.Proxy = new WebProxy(_proxyUrl)
+            {
+                UseDefaultCredentials = true
+            };
+            handler.UseProxy = true;
+            handler.DefaultProxyCredentials = CredentialCache.DefaultCredentials;
+
+            return handler;
         }
     }
 }

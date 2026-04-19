@@ -1,4 +1,4 @@
-﻿<Project Sdk="Microsoft.NET.Sdk">
+<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
     <TargetFramework>net9.0-windows</TargetFramework>
     <OutputType>WinExe</OutputType>
@@ -645,7 +645,7 @@
     <PackageReference Include="Libpcap" Version="0.1.5" />
     <PackageReference Include="LiveChartsCore.SkiaSharpView.WPF" Version="2.0.0-rc5.4" />
     <PackageReference Include="Microsoft.Web.WebView2" Version="1.0.3719.77" />
-    <PackageReference Include="Autoupdater.NET.Official" Version="1.9.2" />
+    <PackageReference Include="NetSparkleUpdater.UI.WPF" Version="3.0.4" />
     <PackageReference Include="FontAwesome5" Version="2.1.11" />
     <PackageReference Include="Notification.Wpf" Version="8.0.0" />
     <PackageReference Include="Ookii.Dialogs.Wpf" Version="5.0.1" />
