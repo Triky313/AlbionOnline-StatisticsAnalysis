@@ -335,53 +335,69 @@ public class TrackingController : ITrackingController
     {
         try
         {
-            if (!string.IsNullOrEmpty(text))
-            {
-                await _mainWindowViewModel?.LoggingBindings?.TrackingNotifications?.ToAsyncEnumerable().ForEachAsync(d =>
-                {
-                    d.Visibility = Visibility.Collapsed;
-                })!;
+            string searchText = text?.Trim();
 
-                await _mainWindowViewModel?.LoggingBindings?.TrackingNotifications?.ToAsyncEnumerable().Where(x =>
-                    (_notificationTypesFilters?.Contains(x.Type) ?? true)
-                    &&
-                    (x.Fragment is OtherGrabbedLootNotificationFragment fragment &&
-                     (fragment.LootedByName.ToLower().Contains(text.ToLower())
-                      || fragment.LocalizedName.ToLower().Contains(text.ToLower())
-                      || fragment.LootedFromName.ToLower().Contains(text.ToLower())
-                     )
-                     ||
-                     x.Fragment is KillNotificationFragment killFragment &&
-                     (killFragment.Died.ToLower().Contains(text.ToLower())
-                      || killFragment.KilledBy.ToLower().Contains(text.ToLower())
-                     )
-                    )
-                    && (IsLootFromMobShown || x.Fragment is OtherGrabbedLootNotificationFragment { IsLootedPlayerMob: false } or not OtherGrabbedLootNotificationFragment)
-                ).ForEachAsync(d =>
-                {
-                    d.Visibility = Visibility.Visible;
-                })!;
-            }
-            else
+            await Application.Current.Dispatcher.InvokeAsync(() =>
             {
-                await _mainWindowViewModel?.LoggingBindings?.TrackingNotifications?.ToAsyncEnumerable().ForEachAsync(d =>
+                var notifications = _mainWindowViewModel?.LoggingBindings?.TrackingNotifications;
+                if (notifications == null)
                 {
-                    d.Visibility = Visibility.Collapsed;
-                })!;
+                    return;
+                }
 
-                await _mainWindowViewModel?.LoggingBindings?.TrackingNotifications?.Where(x =>
-                    (_notificationTypesFilters?.Contains(x.Type) ?? false)
-                    && (IsLootFromMobShown || x.Fragment is OtherGrabbedLootNotificationFragment { IsLootedPlayerMob: false } or not OtherGrabbedLootNotificationFragment)
-                ).ToAsyncEnumerable().ForEachAsync(d =>
+                bool hasSearchText = !string.IsNullOrWhiteSpace(searchText);
+
+                foreach (var notification in notifications)
                 {
-                    d.Visibility = Visibility.Visible;
-                })!;
-            }
+                    bool isVisible = MatchesNotificationFilters(notification)
+                                     && (!hasSearchText || MatchesNotificationSearch(notification, searchText));
+
+                    notification.Visibility = isVisible ? Visibility.Visible : Visibility.Collapsed;
+                }
+            });
         }
         catch (Exception)
         {
             // ignore
         }
+    }
+
+    private bool MatchesNotificationFilters(TrackingNotification notification)
+    {
+        if (notification == null)
+        {
+            return false;
+        }
+
+        return (_notificationTypesFilters?.Contains(notification.Type) ?? false)
+               && (IsLootFromMobShown || notification.Fragment is OtherGrabbedLootNotificationFragment { IsLootedPlayerMob: false } or not OtherGrabbedLootNotificationFragment);
+    }
+
+    private static bool MatchesNotificationSearch(TrackingNotification notification, string searchText)
+    {
+        if (notification?.Fragment == null || string.IsNullOrWhiteSpace(searchText))
+        {
+            return false;
+        }
+
+        return notification.Fragment switch
+        {
+            OtherGrabbedLootNotificationFragment fragment =>
+                ContainsIgnoreCase(fragment.LootedByName, searchText)
+                || ContainsIgnoreCase(fragment.LocalizedName, searchText)
+                || ContainsIgnoreCase(fragment.LootedFromName, searchText),
+            KillNotificationFragment fragment =>
+                ContainsIgnoreCase(fragment.Died, searchText)
+                || ContainsIgnoreCase(fragment.KilledBy, searchText),
+            _ => false
+        };
+    }
+
+    private static bool ContainsIgnoreCase(string source, string value)
+    {
+        return !string.IsNullOrEmpty(source)
+               && !string.IsNullOrEmpty(value)
+               && source.IndexOf(value, StringComparison.OrdinalIgnoreCase) >= 0;
     }
 
     private void SetNotificationFilteredVisibility(TrackingNotification trackingNotification)
