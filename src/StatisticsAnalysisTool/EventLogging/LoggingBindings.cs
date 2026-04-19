@@ -4,7 +4,6 @@ using StatisticsAnalysisTool.Common.UserSettings;
 using StatisticsAnalysisTool.EventLogging.Notification;
 using StatisticsAnalysisTool.Localization;
 using StatisticsAnalysisTool.Models;
-using StatisticsAnalysisTool.Models.ItemsJsonModel;
 using StatisticsAnalysisTool.Models.TranslationModel;
 using StatisticsAnalysisTool.ViewModels;
 using System;
@@ -150,7 +149,7 @@ public class LoggingBindings : BaseViewModel
                 UtcPickupTime = ts,
                 ItemIndex = vaultLogLocalizedItem.Index,
                 IsItemFromVaultLog = true,
-                IsTrash = string.Equals(vaultLogLocalizedItem.FullItemInformation?.ShopSubCategory1, "trash", StringComparison.OrdinalIgnoreCase), 
+                IsTrash = string.Equals(vaultLogLocalizedItem.FullItemInformation?.ShopSubCategory1, "trash", StringComparison.OrdinalIgnoreCase),
                 LootedByName = logItem.PlayerName, Quantity = logItem.Quantity
             };
 
@@ -380,6 +379,11 @@ public class LoggingBindings : BaseViewModel
             _isLootComparatorInfoPopupVisible = value;
             OnPropertyChanged();
         }
+    }
+
+    public void ToggleLootComparatorInfoPopupVisibility()
+    {
+        IsLootComparatorInfoPopupVisible = IsLootComparatorInfoPopupVisible == Visibility.Visible ? Visibility.Collapsed : Visibility.Visible;
     }
 
     private static readonly string[] SupportedFormats =

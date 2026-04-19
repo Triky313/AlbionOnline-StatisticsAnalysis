@@ -1,12 +1,14 @@
-name: 🔥 Create Release file by newest tag
+name: Create Release Assets By Newest Tag
 
 on:
   push:
     tags:
-      - 'v*'
+      - "v*"
+
+permissions:
+  contents: write
 
 jobs:
-
   build-application:
     name: Build and release application
     runs-on: windows-latest
@@ -14,24 +16,99 @@ jobs:
       Project_File_Path: src\StatisticsAnalysisTool\StatisticsAnalysisTool.csproj
 
     steps:
-    - name: 🛒 Checkout main branch
-      uses: actions/checkout@v3
-      with:
-        ref: main
+      - name: Checkout tagged commit
+        uses: actions/checkout@v4
 
-    - name: 🚧 Publish StatisticsAnalysisTool application in directory
-      run: |
-          dotnet publish $env:Project_File_Path -c Release -p:Platform=x64 -p:PublishDir=bin\Release -p:PublishProtocol=FileSystem -p:TargetFramework=net9.0-windows -p:RuntimeIdentifier=win-x64 -p:SelfContained=false -p:PublishSingleFile=true -p:PublishReadyToRun=false
-    
-    - name: 🛠 Create release zip file
-      uses: vimtor/action-zip@v1
-      with:
-        files: src\StatisticsAnalysisTool\bin\Release
-        dest: StatisticsAnalysis-AlbionOnline-${{ github.ref_name }}-x64.zip
+      - name: Setup .NET
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: 9.0.x
 
-    - name: 🚀 Upload release zip file to newest tag
-      uses: softprops/action-gh-release@v1
-      if: startsWith(github.ref, 'refs/tags/')
-      with:
-        files: |
-          StatisticsAnalysis-AlbionOnline-${{ github.ref_name }}-x64.zip
+      - name: Prepare release variables
+        shell: pwsh
+        run: |
+          $tagName = "${{ github.ref_name }}"
+          $version = $tagName.TrimStart("v")
+
+          "TAG_NAME=$tagName" | Out-File -FilePath $env:GITHUB_ENV -Encoding utf8 -Append
+          "APP_VERSION=$version" | Out-File -FilePath $env:GITHUB_ENV -Encoding utf8 -Append
+
+      - name: Publish StatisticsAnalysisTool application
+        shell: pwsh
+        run: |
+          dotnet publish $env:Project_File_Path `
+            -c Release `
+            -p:Platform=x64 `
+            -p:PublishDir=bin\Release\publish\ `
+            -p:PublishProtocol=FileSystem `
+            -p:TargetFramework=net9.0-windows `
+            -p:RuntimeIdentifier=win-x64 `
+            -p:SelfContained=false `
+            -p:PublishSingleFile=true `
+            -p:PublishReadyToRun=false
+
+      - name: Create release zip file
+        uses: vimtor/action-zip@v1
+        with:
+          files: src\StatisticsAnalysisTool\bin\Release\publish
+          dest: StatisticsAnalysis-AlbionOnline-${{ github.ref_name }}-windows-x64.zip
+
+      - name: Create temporary installer script
+        shell: pwsh
+        run: |
+          @'
+          #define MyAppName "Statistics Analysis Tool"
+          #define MyAppPublisher "Aaron Schultz"
+          #define MyAppExeName "StatisticsAnalysisTool.exe"
+          #define MyAppId "{{6D7ED979-FC39-4D6A-83A4-6493E2C61A16}}"
+
+          #ifndef MyAppVersion
+            #define MyAppVersion "0.0.0"
+          #endif
+
+          [Setup]
+          AppId={#MyAppId}
+          AppName={#MyAppName}
+          AppVersion={#MyAppVersion}
+          AppPublisher={#MyAppPublisher}
+          AppPublisherURL=https://github.com/Triky313/AlbionOnline-StatisticsAnalysis
+          DefaultDirName={localappdata}\Programs\Statistics Analysis Tool
+          UsePreviousAppDir=yes
+          DisableProgramGroupPage=yes
+          PrivilegesRequired=lowest
+          ArchitecturesAllowed=x64compatible
+          ArchitecturesInstallIn64BitMode=x64compatible
+          Compression=lzma
+          SolidCompression=yes
+          WizardStyle=modern
+          CloseApplications=yes
+          CloseApplicationsFilter={#MyAppExeName}
+          RestartApplications=no
+          Uninstallable=no
+          CreateUninstallRegKey=no
+          OutputDir=.
+          OutputBaseFilename=StatisticsAnalysis-AlbionOnline-v{#MyAppVersion}-windows-x64
+          SetupIconFile=src\StatisticsAnalysisTool\sat-icon.ico
+          VersionInfoVersion={#MyAppVersion}
+          VersionInfoProductVersion={#MyAppVersion}
+
+          [Languages]
+          Name: "english"; MessagesFile: "compiler:Default.isl"
+
+          [Files]
+          Source: "src\StatisticsAnalysisTool\bin\Release\publish\*"; DestDir: "{app}"; Flags: ignoreversion recursesubdirs createallsubdirs
+          '@ | Set-Content -Path release-installer.iss -Encoding utf8
+
+      - name: Build release setup file
+        uses: Minionguyjpro/Inno-Setup-Action@v1.2.5
+        with:
+          path: release-installer.iss
+          options: /DMyAppVersion=${{ env.APP_VERSION }}
+
+      - name: Upload release files to newest tag
+        uses: softprops/action-gh-release@v1
+        if: startsWith(github.ref, 'refs/tags/')
+        with:
+          files: |
+            StatisticsAnalysis-AlbionOnline-${{ github.ref_name }}-windows-x64.zip
+            StatisticsAnalysis-AlbionOnline-${{ github.ref_name }}-windows-x64.exe

@@ -1,18 +1,26 @@
-﻿using Serilog;
+using LiveChartsCore;
+using LiveChartsCore.Defaults;
+using LiveChartsCore.SkiaSharpView;
+using LiveChartsCore.SkiaSharpView.Painting;
+using Serilog;
+using SkiaSharp;
 using StatisticsAnalysisTool.Common;
 using StatisticsAnalysisTool.Common.UserSettings;
+using StatisticsAnalysisTool.Diagnostics;
 using StatisticsAnalysisTool.Gathering;
 using StatisticsAnalysisTool.Localization;
 using StatisticsAnalysisTool.ViewModels;
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Collections.Specialized;
+using System.ComponentModel;
+using System.Globalization;
 using System.Linq;
 using System.Reflection;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Data;
-using StatisticsAnalysisTool.Diagnostics;
 
 namespace StatisticsAnalysisTool.Models.BindingModel;
 
@@ -42,6 +50,13 @@ public class GatheringBindings : BaseViewModel
         IsGatheringActive = SettingsController.CurrentSettings.IsGatheringActive;
         AutoDeleteStatsByDateSelection = SettingsController.CurrentSettings.AutoDeleteGatheringStats;
 
+        foreach (var resourceChartSeriesFilter in GatheringStats.ResourceChartSeriesFilters)
+        {
+            resourceChartSeriesFilter.PropertyChanged += ResourceChartSeriesFilter_PropertyChanged;
+        }
+
+        GatheringStats.PropertyChanged += GatheringStats_PropertyChanged;
+
         GatheredCollectionView = CollectionViewSource.GetDefaultView(GatheredCollection) as ListCollectionView;
 
         if (GatheredCollectionView != null)
@@ -64,61 +79,73 @@ public class GatheringBindings : BaseViewModel
         try
         {
             var gatherCollection = GatheredCollection.ToList();
+            var filteredGatherCollection = GetGatheredEntriesByTimeFilter(gatherCollection, GatheringStatsTimeTypeSelection);
+
+            var hideEntries = FilterGatheredEntries(filteredGatherCollection, GatheringResourceType.Hide);
+            var oreEntries = FilterGatheredEntries(filteredGatherCollection, GatheringResourceType.Ore);
+            var fiberEntries = FilterGatheredEntries(filteredGatherCollection, GatheringResourceType.Fiber);
+            var woodEntries = FilterGatheredEntries(filteredGatherCollection, GatheringResourceType.Wood);
+            var rockEntries = FilterGatheredEntries(filteredGatherCollection, GatheringResourceType.Rock);
+            var fishEntries = FilterGatheredEntries(filteredGatherCollection, GatheringResourceType.Fishing);
 
             // Hide
-            var hide = await GroupAndFilterAndSumAsync(gatherCollection, x => x?.Item?.FullItemInformation?.ShopSubCategory2 == "hide", GatheringStatsTimeTypeSelection);
+            var hide = await GroupAndSumAsync(hideEntries);
             await Application.Current.Dispatcher.InvokeAsync(() =>
             {
                 UpdateObservableRangeCollection(GatheringStats.GatheredHide, hide);
                 GatheringStats.GainedSilverByHide = hide.Sum(x => x.TotalMarketValue.IntegerValue);
+                GatheringStats.GainedSilverPerHourByHide = CalculateSilverPerHour(hideEntries);
             });
 
             // Ore
-            var ore = await GroupAndFilterAndSumAsync(gatherCollection, x => x?.Item?.FullItemInformation?.ShopSubCategory2 == "ore", GatheringStatsTimeTypeSelection);
+            var ore = await GroupAndSumAsync(oreEntries);
             await Application.Current.Dispatcher.InvokeAsync(() =>
             {
                 UpdateObservableRangeCollection(GatheringStats.GatheredOre, ore);
                 GatheringStats.GainedSilverByOre = ore.Sum(x => x.TotalMarketValue.IntegerValue);
+                GatheringStats.GainedSilverPerHourByOre = CalculateSilverPerHour(oreEntries);
             });
 
             // Fiber
-            var fiber = await GroupAndFilterAndSumAsync(gatherCollection, x => x?.Item?.FullItemInformation?.ShopSubCategory2 == "fiber", GatheringStatsTimeTypeSelection);
+            var fiber = await GroupAndSumAsync(fiberEntries);
             await Application.Current.Dispatcher.InvokeAsync(() =>
             {
                 UpdateObservableRangeCollection(GatheringStats.GatheredFiber, fiber);
                 GatheringStats.GainedSilverByFiber = fiber.Sum(x => x.TotalMarketValue.IntegerValue);
+                GatheringStats.GainedSilverPerHourByFiber = CalculateSilverPerHour(fiberEntries);
             });
 
             // Wood
-            var wood = await GroupAndFilterAndSumAsync(gatherCollection, x => x?.Item?.FullItemInformation?.ShopSubCategory2 == "wood", GatheringStatsTimeTypeSelection);
+            var wood = await GroupAndSumAsync(woodEntries);
             await Application.Current.Dispatcher.InvokeAsync(() =>
             {
                 UpdateObservableRangeCollection(GatheringStats.GatheredWood, wood);
                 GatheringStats.GainedSilverByWood = wood.Sum(x => x.TotalMarketValue.IntegerValue);
+                GatheringStats.GainedSilverPerHourByWood = CalculateSilverPerHour(woodEntries);
             });
 
             // Rock
-            var rock = await GroupAndFilterAndSumAsync(gatherCollection, x => x?.Item?.FullItemInformation?.ShopSubCategory2 == "rock", GatheringStatsTimeTypeSelection);
+            var rock = await GroupAndSumAsync(rockEntries);
             await Application.Current.Dispatcher.InvokeAsync(() =>
             {
                 UpdateObservableRangeCollection(GatheringStats.GatheredRock, rock);
                 GatheringStats.GainedSilverByRock = rock.Sum(x => x.TotalMarketValue.IntegerValue);
+                GatheringStats.GainedSilverPerHourByRock = CalculateSilverPerHour(rockEntries);
             });
 
             // Fish
-            var fish = await GroupAndFilterAndSumAsync(gatherCollection, x => x?.Item?.FullItemInformation?.ShopSubCategory2 == "fish", GatheringStatsTimeTypeSelection, true);
+            var fish = await GroupAndSumAsync(fishEntries, true);
             await Application.Current.Dispatcher.InvokeAsync(() =>
             {
                 UpdateObservableRangeCollection(GatheringStats.GatheredFish, fish);
                 GatheringStats.GainedSilverByFish = fish.Sum(x => x.TotalMarketValue.IntegerValue);
+                GatheringStats.GainedSilverPerHourByFish = CalculateSilverPerHour(fishEntries);
             });
 
             // Most gathered resource
-            if (gatherCollection.Any(x => x?.GainedTotalAmount != null))
+            if (filteredGatherCollection.Any(x => x?.GainedTotalAmount != null))
             {
-                var mostGatheredResource = gatherCollection
-                    .ToList()
-                    .Where(x => IsTimestampOkayByGatheringStatsTimeType(x.TimestampDateTimeUtc, GatheringStatsTimeTypeSelection))
+                var mostGatheredResource = filteredGatherCollection
                     .GroupBy(x => x.UniqueName)
                     .Select(g => new Gathered
                     {
@@ -138,9 +165,7 @@ public class GatheringBindings : BaseViewModel
             }
 
             // Most gathered cluster
-            var mostGatheredCluster = gatherCollection
-                .ToList()
-                .Where(x => IsTimestampOkayByGatheringStatsTimeType(x.TimestampDateTimeUtc, GatheringStatsTimeTypeSelection))
+            var mostGatheredCluster = filteredGatherCollection
                 .GroupBy(x => x.ClusterIndex)
                 .Select(g => new Gathered
                 {
@@ -158,9 +183,7 @@ public class GatheringBindings : BaseViewModel
             });
 
             // Most total resources
-            var totalResources = gatherCollection
-                .ToList()
-                .Where(x => IsTimestampOkayByGatheringStatsTimeType(x.TimestampDateTimeUtc, GatheringStatsTimeTypeSelection))
+            var totalResources = filteredGatherCollection
                 .Sum(x => x.GainedTotalAmount);
 
             await Application.Current.Dispatcher.InvokeAsync(() =>
@@ -169,9 +192,7 @@ public class GatheringBindings : BaseViewModel
             });
 
             // Most total mining processes
-            var totalMiningProcesses = gatherCollection
-                .ToList()
-                .Where(x => IsTimestampOkayByGatheringStatsTimeType(x.TimestampDateTimeUtc, GatheringStatsTimeTypeSelection))
+            var totalMiningProcesses = filteredGatherCollection
                 .Sum(x => x.MiningProcesses);
 
             await Application.Current.Dispatcher.InvokeAsync(() =>
@@ -180,15 +201,16 @@ public class GatheringBindings : BaseViewModel
             });
 
             // Total gained silver
-            var totalGainedSilver = gatherCollection
-                .ToList()
-                .Where(x => IsTimestampOkayByGatheringStatsTimeType(x.TimestampDateTimeUtc, GatheringStatsTimeTypeSelection))
+            var totalGainedSilver = filteredGatherCollection
                 .Sum(x => x.TotalMarketValue.IntegerValue);
 
             await Application.Current.Dispatcher.InvokeAsync(() =>
             {
                 GatheringStats.TotalGainedSilverString = totalGainedSilver;
+                GatheringStats.TotalGainedSilverPerHour = CalculateSilverPerHour(filteredGatherCollection);
             });
+
+            UpdateResourceChart(filteredGatherCollection);
         }
         catch (Exception ex)
         {
@@ -197,21 +219,33 @@ public class GatheringBindings : BaseViewModel
         }
     }
 
-    private static async Task<List<Gathered>> GroupAndFilterAndSumAsync(IEnumerable<Gathered> gatheredData, Func<Gathered, bool> filter, GatheringStatsTimeType gatheringStatsTimeType, bool hasBeenFished = false)
+    private static List<Gathered> GetGatheredEntriesByTimeFilter(IEnumerable<Gathered> gatheredData, GatheringStatsTimeType gatheringStatsTimeType)
+    {
+        if (gatheringStatsTimeType == GatheringStatsTimeType.Total)
+        {
+            return gatheredData.ToList();
+        }
+
+        var timeRange = GetTimeRange(gatheringStatsTimeType);
+        return gatheredData
+            .Where(x => timeRange.Contains(x.TimestampDateTimeUtc))
+            .ToList();
+    }
+
+    private static List<Gathered> FilterGatheredEntries(IEnumerable<Gathered> gatheredData, GatheringResourceType resourceType)
+    {
+        return gatheredData
+            .Where(x => GetGatheringResourceType(x) == resourceType)
+            .ToList();
+    }
+
+    private static async Task<List<Gathered>> GroupAndSumAsync(IEnumerable<Gathered> gatheredData, bool hasBeenFished = false)
     {
         try
         {
             return await Task.Run(() =>
             {
-                var filteredData = gatheredData.ToList()
-                    .Where(x => IsTimestampOkayByGatheringStatsTimeType(x.TimestampDateTimeUtc, gatheringStatsTimeType))
-                    .ToList();
-
-                filteredData = hasBeenFished
-                    ? filteredData.Where(x => x.HasBeenFished).ToList()
-                    : filteredData.Where(filter).Where(x => x.HasBeenFished == false).ToList();
-
-                var groupedData = filteredData.GroupBy(x => x.UniqueName)
+                var groupedData = gatheredData.GroupBy(x => x.UniqueName)
                     .Select(g => new Gathered()
                     {
                         UniqueName = g.Key,
@@ -236,6 +270,23 @@ public class GatheringBindings : BaseViewModel
         }
     }
 
+    private static double CalculateSilverPerHour(IEnumerable<Gathered> gatheredData)
+    {
+        var gatheredEntries = gatheredData
+            .OrderBy(x => x.TimestampDateTimeUtc)
+            .ToList();
+
+        if (gatheredEntries.Count == 0)
+        {
+            return 0;
+        }
+
+        var totalSilver = gatheredEntries.Sum(x => x.TotalMarketValue.IntegerValue);
+        var durationInSeconds = Math.Max(3600d, (gatheredEntries[^1].TimestampDateTimeUtc - gatheredEntries[0].TimestampDateTimeUtc).TotalSeconds);
+
+        return ((double) totalSilver).GetValuePerHour(durationInSeconds);
+    }
+
     private static void UpdateObservableRangeCollection(ICollection<Gathered> target, IEnumerable<Gathered> source)
     {
         var targetDictionary = target.ToDictionary(x => x.UniqueName);
@@ -246,7 +297,7 @@ public class GatheringBindings : BaseViewModel
             {
                 existingItem.GainedStandardAmount = item.GainedStandardAmount;
                 existingItem.GainedBonusAmount = item.GainedBonusAmount;
-                existingItem.GainedBonusAmount = item.GainedBonusAmount;
+                existingItem.GainedPremiumBonusAmount = item.GainedPremiumBonusAmount;
                 existingItem.GainedTotalAmount = item.GainedTotalAmount;
                 existingItem.GainedFame = item.GainedFame;
                 existingItem.MiningProcesses = item.MiningProcesses;
@@ -269,24 +320,12 @@ public class GatheringBindings : BaseViewModel
 
     public static bool IsTimestampOkayByGatheringStatsTimeType(DateTime dateTime, GatheringStatsTimeType gatheringStatsTimeType)
     {
-        var dateTimeUtcNow = DateTime.UtcNow;
-        var result = gatheringStatsTimeType switch
+        if (gatheringStatsTimeType == GatheringStatsTimeType.Total)
         {
-            GatheringStatsTimeType.Today
-                when dateTime.Year != dateTimeUtcNow.Year || dateTime.Date.DayOfYear != dateTimeUtcNow.DayOfYear => false,
-            GatheringStatsTimeType.ThisWeek
-                when dateTime.Year != dateTimeUtcNow.Year || !dateTime.Date.IsDateInWeekOfYear(dateTimeUtcNow) => false,
-            GatheringStatsTimeType.LastWeek
-                when dateTime.Year != dateTimeUtcNow.Year || !dateTime.Date.IsDateInWeekOfYear(dateTimeUtcNow.AddDays(-7)) => false,
-            GatheringStatsTimeType.Month
-                when dateTime.Year != dateTimeUtcNow.Year || dateTime.Month != dateTimeUtcNow.Month => false,
-            GatheringStatsTimeType.Year
-                when dateTime < dateTimeUtcNow.AddDays(-365) || dateTime > dateTimeUtcNow => false,
-            GatheringStatsTimeType.Unknown => false,
-            _ => true
-        };
+            return true;
+        }
 
-        return result;
+        return GetTimeRange(gatheringStatsTimeType).Contains(dateTime);
     }
 
     public async Task RemoveResourcesByIdsAsync(IEnumerable<Guid> guids)
@@ -300,6 +339,221 @@ public class GatheringBindings : BaseViewModel
 
             UpdateStats();
         });
+    }
+
+    private void ResourceChartSeriesFilter_PropertyChanged(object sender, PropertyChangedEventArgs e)
+    {
+        if (e.PropertyName != nameof(GatheringChartSeriesFilter.IsSelected))
+        {
+            return;
+        }
+
+        UpdateStats();
+    }
+
+    private void UpdateResourceChart(IEnumerable<Gathered> gatheredData)
+    {
+        var chartBuckets = CreateChartBuckets(GatheringStatsTimeTypeSelection);
+        var xAxes = new[]
+        {
+            new Axis
+            {
+                LabelsRotation = 15,
+                Labels = chartBuckets.Select(x => x.Label).ToArray()
+            }
+        };
+
+        var selectedSeriesFilters = GatheringStats.ResourceChartSeriesFilters
+            .Where(x => x.IsSelected)
+            .ToList();
+
+        if (selectedSeriesFilters.Count == 0 || chartBuckets.Count == 0)
+        {
+            Application.Current.Dispatcher.Invoke(() =>
+            {
+                GatheringStats.ResourceChartXAxes = xAxes;
+                GatheringStats.ResourceChartSeries = [];
+            });
+            return;
+        }
+
+        var seriesCollection = new ObservableCollection<ISeries>();
+
+        foreach (var selectedSeriesFilter in selectedSeriesFilters)
+        {
+            var valuesLookup = gatheredData
+                .Where(x => GetGatheringResourceType(x) == selectedSeriesFilter.ResourceType)
+                .GroupBy(x => AlignTimestampToBucketStart(x.TimestampDateTimeUtc, GatheringStatsTimeTypeSelection))
+                .ToDictionary(x => x.Key, x => GetChartMetricValue(x, GatheringStats.SelectedResourceChartValueType));
+
+            var points = new ObservableCollection<ObservablePoint>();
+
+            for (var i = 0; i < chartBuckets.Count; i++)
+            {
+                var chartBucket = chartBuckets[i];
+                var value = valuesLookup.GetValueOrDefault(chartBucket.Start);
+                points.Add(new ObservablePoint(i, value));
+            }
+
+            var lineSeries = new LineSeries<ObservablePoint>
+            {
+                Name = selectedSeriesFilter.Name,
+                Values = points,
+                Fill = GetResourceTypeBrush(selectedSeriesFilter.ResourceType, true),
+                Stroke = GetResourceTypeBrush(selectedSeriesFilter.ResourceType, false),
+                GeometryStroke = GetResourceTypeBrush(selectedSeriesFilter.ResourceType, false),
+                GeometryFill = GetResourceTypeBrush(selectedSeriesFilter.ResourceType, false),
+                GeometrySize = 5,
+                YToolTipLabelFormatter = chartPoint => Math.Round(chartPoint.Coordinate.PrimaryValue).ToString("F0", CultureInfo.CurrentCulture)
+            };
+
+            seriesCollection.Add(lineSeries);
+        }
+
+        Application.Current.Dispatcher.Invoke(() =>
+        {
+            GatheringStats.ResourceChartXAxes = xAxes;
+            GatheringStats.ResourceChartSeries = seriesCollection;
+        });
+    }
+
+    private static List<ChartBucket> CreateChartBuckets(GatheringStatsTimeType gatheringStatsTimeType)
+    {
+        var timeRange = GetTimeRange(gatheringStatsTimeType);
+        if (timeRange.BucketCount <= 0)
+        {
+            return [];
+        }
+
+        var buckets = new List<ChartBucket>(timeRange.BucketCount);
+        for (var i = 0; i < timeRange.BucketCount; i++)
+        {
+            var start = timeRange.Start.AddTicks(timeRange.BucketSize.Ticks * i);
+            buckets.Add(new ChartBucket(start, GetBucketLabel(start, i, timeRange.BucketCount, gatheringStatsTimeType)));
+        }
+
+        return buckets;
+    }
+
+    private static string GetBucketLabel(DateTime start, int index, int totalBucketCount, GatheringStatsTimeType gatheringStatsTimeType)
+    {
+        return gatheringStatsTimeType switch
+        {
+            GatheringStatsTimeType.Today => index % 2 == 0 || index == totalBucketCount - 1 ? start.ToString("HH:mm", CultureInfo.CurrentCulture) : string.Empty,
+            GatheringStatsTimeType.ThisWeek or GatheringStatsTimeType.LastWeek => start.ToString("ddd", CultureInfo.CurrentCulture),
+            GatheringStatsTimeType.Month => index % 5 == 0 || index == totalBucketCount - 1 ? start.ToString("dd.MM", CultureInfo.CurrentCulture) : string.Empty,
+            GatheringStatsTimeType.Year => start.Day == 1 || index == 0 || index == totalBucketCount - 1 ? start.ToString("MMM yy", CultureInfo.CurrentCulture) : string.Empty,
+            _ => start.ToString("g", CultureInfo.CurrentCulture)
+        };
+    }
+
+    private static DateTime AlignTimestampToBucketStart(DateTime timestamp, GatheringStatsTimeType gatheringStatsTimeType)
+    {
+        return gatheringStatsTimeType switch
+        {
+            GatheringStatsTimeType.Today => new DateTime(timestamp.Year, timestamp.Month, timestamp.Day, timestamp.Hour, 0, 0),
+            GatheringStatsTimeType.ThisWeek => timestamp.Date,
+            GatheringStatsTimeType.LastWeek => timestamp.Date,
+            GatheringStatsTimeType.Month => timestamp.Date,
+            GatheringStatsTimeType.Year => timestamp.Date,
+            _ => timestamp.Date
+        };
+    }
+
+    private static GatheringResourceType GetGatheringResourceType(Gathered gathered)
+    {
+        if (gathered == null)
+        {
+            return GatheringResourceType.Unknown;
+        }
+
+        if (gathered.HasBeenFished)
+        {
+            return GatheringResourceType.Fishing;
+        }
+
+        return gathered.Item?.FullItemInformation?.ShopSubCategory2?.ToLowerInvariant() switch
+        {
+            "wood" => GatheringResourceType.Wood,
+            "fiber" => GatheringResourceType.Fiber,
+            "hide" => GatheringResourceType.Hide,
+            "ore" => GatheringResourceType.Ore,
+            "rock" => GatheringResourceType.Rock,
+            _ => GatheringResourceType.Unknown
+        };
+    }
+
+    private static double GetChartMetricValue(IEnumerable<Gathered> gatheredEntries, GatheringChartValueType chartValueType)
+    {
+        return chartValueType switch
+        {
+            GatheringChartValueType.ResourceSilverValue => gatheredEntries.Sum(x => (double) x.TotalMarketValue.IntegerValue),
+            _ => gatheredEntries.Sum(x => (double) x.GainedTotalAmount)
+        };
+    }
+
+    private static GatheringTimeRange GetTimeRange(GatheringStatsTimeType gatheringStatsTimeType)
+    {
+        var currentDay = DateTime.UtcNow.Date;
+        var startOfThisWeek = GetStartOfIsoWeek(currentDay);
+
+        return gatheringStatsTimeType switch
+        {
+            GatheringStatsTimeType.Today => new GatheringTimeRange(currentDay, currentDay.AddDays(1), 24, TimeSpan.FromHours(1)),
+            GatheringStatsTimeType.ThisWeek => new GatheringTimeRange(startOfThisWeek, startOfThisWeek.AddDays(7), 7, TimeSpan.FromDays(1)),
+            GatheringStatsTimeType.LastWeek => new GatheringTimeRange(startOfThisWeek.AddDays(-7), startOfThisWeek, 7, TimeSpan.FromDays(1)),
+            GatheringStatsTimeType.Month => new GatheringTimeRange(currentDay.AddDays(-29), currentDay.AddDays(1), 30, TimeSpan.FromDays(1)),
+            GatheringStatsTimeType.Year => new GatheringTimeRange(currentDay.AddDays(-364), currentDay.AddDays(1), 365, TimeSpan.FromDays(1)),
+            _ => GatheringTimeRange.Empty
+        };
+    }
+
+    private static DateTime GetStartOfIsoWeek(DateTime dateTime)
+    {
+        var diff = (7 + (dateTime.DayOfWeek - DayOfWeek.Monday)) % 7;
+        return dateTime.AddDays(-diff).Date;
+    }
+
+    private static SolidColorPaint GetResourceTypeBrush(GatheringResourceType resourceType, bool transparent)
+    {
+        try
+        {
+            var resourceKey = transparent ? $"SolidColorBrush.Resource.{resourceType}.Transparent" : $"SolidColorBrush.Resource.{resourceType}";
+            var brush = (System.Windows.Media.SolidColorBrush) Application.Current.Resources[resourceKey];
+            return new SolidColorPaint
+            {
+                Color = new SKColor(brush.Color.R, brush.Color.G, brush.Color.B, brush.Color.A)
+            };
+        }
+        catch
+        {
+            return new SolidColorPaint
+            {
+                Color = new SKColor(0, 0, 0, 0)
+            };
+        }
+    }
+
+    private void GatheringStats_PropertyChanged(object sender, PropertyChangedEventArgs e)
+    {
+        if (e.PropertyName != nameof(GatheringStats.SelectedResourceChartValueType))
+        {
+            return;
+        }
+
+        UpdateStats();
+    }
+
+    private readonly record struct ChartBucket(DateTime Start, string Label);
+
+    private readonly record struct GatheringTimeRange(DateTime Start, DateTime End, int BucketCount, TimeSpan BucketSize)
+    {
+        public static GatheringTimeRange Empty => new(DateTime.MinValue, DateTime.MinValue, 0, TimeSpan.Zero);
+
+        public bool Contains(DateTime timestamp)
+        {
+            return timestamp >= Start && timestamp < End;
+        }
     }
 
     #region Bindings

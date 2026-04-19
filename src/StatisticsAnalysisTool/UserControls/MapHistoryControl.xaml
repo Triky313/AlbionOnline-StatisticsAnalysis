@@ -1,0 +1,74 @@
+<UserControl x:Class="StatisticsAnalysisTool.UserControls.MapHistoryControl"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:viewModels="clr-namespace:StatisticsAnalysisTool.ViewModels"
+             xmlns:vwp="clr-namespace:WpfToolkit.Controls;assembly=VirtualizingWrapPanel"
+             mc:Ignorable="d"
+             d:DesignHeight="450" d:DesignWidth="800"
+             d:DataContext="{d:DesignInstance Type=viewModels:MainWindowViewModel}">
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="30" />
+            <RowDefinition Height="5" />
+            <RowDefinition Height="28" />
+            <RowDefinition Height="1" />
+            <RowDefinition Height="*" />
+        </Grid.RowDefinitions>
+
+        <StackPanel Grid.Row="0"
+                    Orientation="Horizontal"
+                    HorizontalAlignment="Right"
+                    VerticalAlignment="Top">
+            <Button x:Name="BtnCopySelectedMapHistoryToClipboard"
+                    Content="{Binding Translation.CopyToClipboard, FallbackValue=COPY__TO__CLIPBOARD}"
+                    Height="26"
+                    MinWidth="180"
+                    Margin="0,3,5,0"
+                    IsEnabled="False"
+                    Click="BtnCopySelectedMapHistoryToClipboard_Click" />
+            <Button Content="{Binding Translation.DeleteAllMapHistoryEntries, FallbackValue=DELETE__ALL__MAP__HISTORY__ENTRIES}"
+                    Height="26"
+                    MinWidth="220"
+                    Margin="0,3,5,0"
+                    Click="BtnDeleteAllMapHistoryEntries_Click" />
+        </StackPanel>
+
+        <Border Grid.Row="2" Background="{StaticResource SolidColorBrush.Background.3}">
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="140" />
+                    <ColumnDefinition Width="35" />
+                    <ColumnDefinition Width="155" />
+                    <ColumnDefinition Width="155" />
+                    <ColumnDefinition Width="155" />
+                    <ColumnDefinition Width="155" />
+                </Grid.ColumnDefinitions>
+
+                <TextBlock Grid.Column="0" Text="{Binding Translation.Time, FallbackValue=TIME}" Margin="5,0,0,0" VerticalAlignment="Center" FontSize="12" FontWeight="Bold"
+                           Foreground="{StaticResource SolidColorBrush.Text.1}" />
+                <TextBlock Grid.Column="1" Text="{Binding Translation.Tier, FallbackValue=TIER}" VerticalAlignment="Center" FontSize="12" FontWeight="Bold"
+                           Foreground="{StaticResource SolidColorBrush.Text.1}" />
+                <TextBlock Grid.Column="2" Text="{Binding Translation.Zone, FallbackValue=ZONE}" VerticalAlignment="Center" FontSize="12" FontWeight="Bold"
+                           Foreground="{StaticResource SolidColorBrush.Text.1}" />
+                <TextBlock Grid.Column="3" Text="{Binding Translation.Name, FallbackValue=NAME}" VerticalAlignment="Center" FontSize="12" FontWeight="Bold" 
+                           Foreground="{StaticResource SolidColorBrush.Text.1}" />
+                <TextBlock Grid.Column="4" Text="{Binding Translation.Type, FallbackValue=TYPE}" VerticalAlignment="Center" FontSize="12" FontWeight="Bold"
+                           Foreground="{StaticResource SolidColorBrush.Text.1}" />
+                <TextBlock Grid.Column="5" Text="{Binding Translation.Note, FallbackValue=NOTE}" VerticalAlignment="Center" FontSize="12" FontWeight="Bold"
+                           Foreground="{StaticResource SolidColorBrush.Text.1}" />
+            </Grid>
+        </Border>
+
+        <vwp:VirtualizingItemsControl Grid.Row="4"
+                                      ItemsSource="{Binding EnteredCluster, IsAsync=True, Mode=OneWay}"
+                                      ItemTemplate="{StaticResource ClusterInfoTemplate}"
+                                      VirtualizingPanel.CacheLengthUnit="Item"
+                                      VirtualizingPanel.CacheLength="10,10"
+                                      VirtualizingPanel.ScrollUnit="Pixel"
+                                      VirtualizingPanel.VirtualizationMode="Recycling"
+                                      ScrollViewer.HorizontalScrollBarVisibility="Disabled"
+                                      ScrollViewer.VerticalScrollBarVisibility="Visible" />
+    </Grid>
+</UserControl>

@@ -163,6 +163,21 @@
     <Color x:Key="Color.Value.Might.Transparent">#3360AEE2</Color>
     <Color x:Key="Color.Value.Favor.Transparent">#331D70A2</Color>
 
+    <!-- Gathering resource colors -->
+    <Color x:Key="Color.Resource.Wood">#FFF3722C</Color>
+    <Color x:Key="Color.Resource.Fiber">#FFF9C74F</Color>
+    <Color x:Key="Color.Resource.Hide">#FF43AA8B</Color>
+    <Color x:Key="Color.Resource.Ore">#FFF94144</Color>
+    <Color x:Key="Color.Resource.Rock">#FF81568F</Color>
+    <Color x:Key="Color.Resource.Fishing">#FF277DA1</Color>
+
+    <Color x:Key="Color.Resource.Wood.Transparent">#33F3722C</Color>
+    <Color x:Key="Color.Resource.Fiber.Transparent">#33F9C74F</Color>
+    <Color x:Key="Color.Resource.Hide.Transparent">#3343AA8B</Color>
+    <Color x:Key="Color.Resource.Ore.Transparent">#33F94144</Color>
+    <Color x:Key="Color.Resource.Rock.Transparent">#3381568F</Color>
+    <Color x:Key="Color.Resource.Fishing.Transparent">#33277DA1</Color>
+
     <!-- Time value color -->
     <Color x:Key="TimeValue.PastTime.1">#FF08997A</Color>
     <Color x:Key="TimeValue.PastTime.2">#FF76A130</Color>
@@ -307,6 +322,20 @@
     <SolidColorBrush x:Key="SolidColorBrush.Value.FactionPoints.Transparent" Color="{StaticResource Color.Value.FactionPoints.Transparent}"/>
     <SolidColorBrush x:Key="SolidColorBrush.Value.Might.Transparent" Color="{StaticResource Color.Value.Might.Transparent}"/>
     <SolidColorBrush x:Key="SolidColorBrush.Value.Favor.Transparent" Color="{StaticResource Color.Value.Favor.Transparent}"/>
+
+    <SolidColorBrush x:Key="SolidColorBrush.Resource.Wood" Color="{StaticResource Color.Resource.Wood}"/>
+    <SolidColorBrush x:Key="SolidColorBrush.Resource.Fiber" Color="{StaticResource Color.Resource.Fiber}"/>
+    <SolidColorBrush x:Key="SolidColorBrush.Resource.Hide" Color="{StaticResource Color.Resource.Hide}"/>
+    <SolidColorBrush x:Key="SolidColorBrush.Resource.Ore" Color="{StaticResource Color.Resource.Ore}"/>
+    <SolidColorBrush x:Key="SolidColorBrush.Resource.Rock" Color="{StaticResource Color.Resource.Rock}"/>
+    <SolidColorBrush x:Key="SolidColorBrush.Resource.Fishing" Color="{StaticResource Color.Resource.Fishing}"/>
+
+    <SolidColorBrush x:Key="SolidColorBrush.Resource.Wood.Transparent" Color="{StaticResource Color.Resource.Wood.Transparent}"/>
+    <SolidColorBrush x:Key="SolidColorBrush.Resource.Fiber.Transparent" Color="{StaticResource Color.Resource.Fiber.Transparent}"/>
+    <SolidColorBrush x:Key="SolidColorBrush.Resource.Hide.Transparent" Color="{StaticResource Color.Resource.Hide.Transparent}"/>
+    <SolidColorBrush x:Key="SolidColorBrush.Resource.Ore.Transparent" Color="{StaticResource Color.Resource.Ore.Transparent}"/>
+    <SolidColorBrush x:Key="SolidColorBrush.Resource.Rock.Transparent" Color="{StaticResource Color.Resource.Rock.Transparent}"/>
+    <SolidColorBrush x:Key="SolidColorBrush.Resource.Fishing.Transparent" Color="{StaticResource Color.Resource.Fishing.Transparent}"/>
 
     <SolidColorBrush x:Key="SolidColorBrush.Weapon.Text" Color="#fafafa"/>
     <SolidColorBrush x:Key="SolidColorBrush.Weapon.Sword" Color="#FAA307"/>

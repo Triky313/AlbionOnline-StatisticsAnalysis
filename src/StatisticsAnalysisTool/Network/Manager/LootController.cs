@@ -90,6 +90,7 @@ public class LootController : ILootController
                     x.PlayerName == loot.LootedByName);
             if (player is not null)
             {
+                UpdateLootingPlayerAffiliations(player, lootedByUser?.Value);
                 player.LootedItems.Add(new LootedItem()
                 {
                     ItemIndex = loot.ItemIndex,
@@ -365,6 +366,24 @@ public class LootController : ILootController
     {
         var item = _discoveredLoot?.FirstOrDefault(x => x.ObjectId == objectId);
         return item?.ItemIndex > -1 ? ItemController.GetItemByIndex(item.ItemIndex) : null;
+    }
+
+    private static void UpdateLootingPlayerAffiliations(LootingPlayer lootingPlayer, PlayerGameObject playerGameObject)
+    {
+        if (lootingPlayer == null || playerGameObject == null)
+        {
+            return;
+        }
+
+        if (!string.IsNullOrWhiteSpace(playerGameObject.Guild))
+        {
+            lootingPlayer.PlayerGuild = playerGameObject.Guild;
+        }
+
+        if (!string.IsNullOrWhiteSpace(playerGameObject.Alliance))
+        {
+            lootingPlayer.PlayerAlliance = playerGameObject.Alliance;
+        }
     }
 
     #endregion

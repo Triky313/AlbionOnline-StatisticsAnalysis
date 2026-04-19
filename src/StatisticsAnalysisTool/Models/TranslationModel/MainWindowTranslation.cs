@@ -8,7 +8,12 @@ public class MainWindowTranslation
     public static string NumberOfValues => LocalizationController.Translation("NUMBER_OF_VALUES");
     public static string Load => LocalizationController.Translation("LOAD");
     public static string Icon => LocalizationController.Translation("ICON");
+    public static string Time => LocalizationController.Translation("TIME");
+    public static string Tier => LocalizationController.Translation("TIER");
+    public static string Zone => LocalizationController.Translation("ZONE");
     public static string Name => LocalizationController.Translation("NAME");
+    public static string Type => LocalizationController.Translation("TYPE");
+    public static string Note => LocalizationController.Translation("NOTE");
     public static string ShowOnlyItemsWithAlertOn => LocalizationController.Translation("SHOW_ONLY_ITEMS_WITH_ALERT_ON");
     public static string ShowOnlyFavorites => LocalizationController.Translation("SHOW_ONLY_FAVORITES");
     public static string IsAlertActive => LocalizationController.Translation("IS_ALERT_ACTIVATE");
@@ -38,6 +43,9 @@ public class MainWindowTranslation
     public static string DamageMeter => LocalizationController.Translation("DAMAGE_METER");
     public static string DamageMeterDescription1 => LocalizationController.Translation("DAMAGE_METER_DESCRIPTION_1");
     public static string DamageMeterDescription2 => LocalizationController.Translation("DAMAGE_METER_DESCRIPTION_2");
+    public static string ItemSearchDescription1 => LocalizationController.Translation("ITEM_SEARCH_DESCRIPTION_1");
+    public static string ItemSearchDescription2 => LocalizationController.Translation("ITEM_SEARCH_DESCRIPTION_2");
+    public static string ItemSearchDescription3 => LocalizationController.Translation("ITEM_SEARCH_DESCRIPTION_3");
     public static string ResetDamageMeter => LocalizationController.Translation("RESET_DAMAGE_METER");
     public static string Settings => LocalizationController.Translation("SETTINGS");
     public static string Favorite => LocalizationController.Translation("FAVORITE");
@@ -98,6 +106,7 @@ public class MainWindowTranslation
     public static string AverageItemPowerWhenDying => LocalizationController.Translation("AVERAGE_ITEM_POWER_WHEN_DYING");
     public static string DeleteSelectedTrades => LocalizationController.Translation("DELETE_SELECTED_TRADES");
     public static string DeleteSelectedResources => LocalizationController.Translation("DELETE_SELECTED_RESOURCES");
+    public static string DeleteAllMapHistoryEntries => LocalizationController.Translation("DELETE_ALL_MAP_HISTORY_ENTRIES");
     public static string TradeMonitoringDescription1 => LocalizationController.Translation("TRADE_MONITORING_DESCRIPTION1");
     public static string SiphonedEnergyDescription1 => LocalizationController.Translation("SIPHONED_ENERGY_DESCRIPTION1");
     public static string SiphonedEnergyDescription2 => LocalizationController.Translation("SIPHONED_ENERGY_DESCRIPTION2");

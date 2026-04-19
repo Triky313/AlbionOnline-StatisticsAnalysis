@@ -38586,6 +38586,162 @@
           "seg": "Télécharger Npcap (npcap.com)"
         }
       ]
+    },
+    {
+      "tuid": "ITEM_SEARCH_DESCRIPTION_1",
+      "tuv": [
+        {
+          "lang": "de-DE",
+          "seg": "Item Info Fenster: Das Item Info Fenster kann via Doppelklick auf dem Item selbst in der Liste geöffnet werden."
+        },
+        {
+          "lang": "en-US",
+          "seg": "Item info window: The item info window can be opened by double-clicking the item directly in the list."
+        }
+      ]
+    },
+    {
+      "tuid": "ITEM_SEARCH_DESCRIPTION_2",
+      "tuv": [
+        {
+          "lang": "de-DE",
+          "seg": "Item Alarm: Trage einen Wert in der Unterbieten Spalte ein und aktiviere den Alarm dann in der Ist Alarm aktiv Spalte."
+        },
+        {
+          "lang": "en-US",
+          "seg": "Item alarm: Enter a value in the undercutting column and then activate the alarm in the is alarm active column."
+        }
+      ]
+    },
+    {
+      "tuid": "ITEM_SEARCH_DESCRIPTION_3",
+      "tuv": [
+        {
+          "lang": "de-DE",
+          "seg": "Item Preise: Preise unter den Item Namen in der Liste sind Durchschnittswerte direkt aus dem Spiel und passen sich an, wenn Items im Spiel angesehen werden."
+        },
+        {
+          "lang": "en-US",
+          "seg": "Item prices: Prices below the item names in the list are average values taken directly from the game and update when items are viewed in-game."
+        }
+      ]
+    },
+    {
+      "tuid": "DELETE_ALL_MAP_HISTORY_ENTRIES",
+      "tuv": [
+        {
+          "lang": "de-DE",
+          "seg": "Alle Kartenverlaufs-Eintraege loeschen"
+        },
+        {
+          "lang": "en-US",
+          "seg": "Delete all map history entries"
+        }
+      ]
+    },
+    {
+      "tuid": "SURE_YOU_WANT_TO_DELETE_ALL_MAP_HISTORY_ENTRIES",
+      "tuv": [
+        {
+          "lang": "de-DE",
+          "seg": "Moechtest du wirklich alle Kartenverlaufs-Eintraege loeschen?"
+        },
+        {
+          "lang": "en-US",
+          "seg": "Are you sure you want to delete all map history entries?"
+        }
+      ]
+    },
+    {
+      "tuid": "TIME",
+      "tuv": [
+        {
+          "lang": "de-DE",
+          "seg": "Zeit"
+        },
+        {
+          "lang": "en-US",
+          "seg": "Time"
+        }
+      ]
+    },
+    {
+      "tuid": "TIER",
+      "tuv": [
+        {
+          "lang": "de-DE",
+          "seg": "Tier"
+        },
+        {
+          "lang": "en-US",
+          "seg": "Tier"
+        }
+      ]
+    },
+    {
+      "tuid": "ZONE",
+      "tuv": [
+        {
+          "lang": "de-DE",
+          "seg": "Zone"
+        },
+        {
+          "lang": "en-US",
+          "seg": "Zone"
+        }
+      ]
+    },
+    {
+      "tuid": "TYPE",
+      "tuv": [
+        {
+          "lang": "de-DE",
+          "seg": "Typ"
+        },
+        {
+          "lang": "en-US",
+          "seg": "Type"
+        }
+      ]
+    },
+    {
+      "tuid": "NOTE",
+      "tuv": [
+        {
+          "lang": "de-DE",
+          "seg": "Notiz"
+        },
+        {
+          "lang": "en-US",
+          "seg": "Note"
+        }
+      ]
+    },
+    {
+      "tuid": "GATHERING_CHART_VALUE_RESOURCE_AMOUNT",
+      "tuv": [
+        {
+          "lang": "de-DE",
+          "seg": "Anzahl gesammelter Ressourcen"
+        },
+        {
+          "lang": "en-US",
+          "seg": "Number of gathered resources"
+        }
+      ]
+    },
+    {
+      "tuid": "GATHERING_CHART_VALUE_RESOURCE_SILVER_VALUE",
+      "tuv": [
+        {
+          "lang": "de-DE",
+          "seg": "Gesamt-Silberwert der Ressourcen"
+        },
+        {
+          "lang": "en-US",
+          "seg": "Total silver value of resources"
+        }
+      ]
     }
   ]
 }

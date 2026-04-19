@@ -1,4 +1,5 @@
-﻿using StatisticsAnalysisTool.ViewModels;
+using StatisticsAnalysisTool.ViewModels;
+using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Windows;
 
@@ -19,6 +20,7 @@ public class LootingPlayer : BaseViewModel
         {
             _playerName = value;
             OnPropertyChanged();
+            OnPropertyChanged(nameof(DisplayName));
         }
     }
 
@@ -29,6 +31,7 @@ public class LootingPlayer : BaseViewModel
         {
             _playerGuild = value;
             OnPropertyChanged();
+            OnPropertyChanged(nameof(DisplayName));
         }
     }
 
@@ -39,9 +42,13 @@ public class LootingPlayer : BaseViewModel
         {
             _playerAlliance = value;
             OnPropertyChanged();
+            OnPropertyChanged(nameof(DisplayName));
         }
     }
-    
+
+    public string DisplayName
+        => BuildDisplayName();
+
     public ObservableCollection<LootedItem> LootedItems
     {
         get => _lootedItems;
@@ -60,5 +67,27 @@ public class LootingPlayer : BaseViewModel
             _lootingPlayerVisibility = value;
             OnPropertyChanged();
         }
+    }
+
+    private string BuildDisplayName()
+    {
+        if (string.IsNullOrWhiteSpace(PlayerName))
+        {
+            return string.Empty;
+        }
+
+        List<string> affiliations = [];
+
+        if (!string.IsNullOrWhiteSpace(PlayerGuild))
+        {
+            affiliations.Add(PlayerGuild);
+        }
+
+        if (!string.IsNullOrWhiteSpace(PlayerAlliance))
+        {
+            affiliations.Add(PlayerAlliance);
+        }
+
+        return affiliations.Count > 0 ? $"{PlayerName} ({string.Join(", ", affiliations)})" : PlayerName;
     }
 }

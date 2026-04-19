@@ -1,5 +1,6 @@
 ﻿using Serilog;
 using StatisticsAnalysisTool.Common.UserSettings;
+using StatisticsAnalysisTool.Diagnostics;
 using StatisticsAnalysisTool.Enumerations;
 using StatisticsAnalysisTool.Exceptions;
 using StatisticsAnalysisTool.Models;
@@ -16,7 +17,6 @@ using System.Net.Http.Headers;
 using System.Reflection;
 using System.Text.Json;
 using System.Threading.Tasks;
-using StatisticsAnalysisTool.Diagnostics;
 
 namespace StatisticsAnalysisTool.Common;
 
@@ -104,14 +104,12 @@ public static class ApiController
         var url = Path.Combine(GetAoDataProjectServerBaseUrlByCurrentServer(), "stats/history/");
         url += uniqueName;
         url += $"?locations={locationsString}";
-        url += $"&date={date:yy-M-d}";
+        url += $"&date={date:yyyy-M-d}";
         url += $"&qualities={qualitiesString}";
         url += $"&time-scale={timeScale}";
 
-        using var clientHandler = new HttpClientHandler
-        {
-            SslProtocols = System.Security.Authentication.SslProtocols.Tls13 | System.Security.Authentication.SslProtocols.Tls12,
-        };
+        using var clientHandler = new HttpClientHandler();
+        clientHandler.SslProtocols = System.Security.Authentication.SslProtocols.Tls13 | System.Security.Authentication.SslProtocols.Tls12;
         clientHandler.ServerCertificateCustomValidationCallback = (_, _, _, _) => true;
 
         using var client = new HttpClient(clientHandler);

@@ -1,13 +1,20 @@
 ﻿using StatisticsAnalysisTool.Enumerations;
 using StatisticsAnalysisTool.GameFileData;
 using StatisticsAnalysisTool.Localization;
+using StatisticsAnalysisTool.Common;
+using StatisticsAnalysisTool.ViewModels;
 using System;
 using System.Collections.Generic;
+using System.Windows.Input;
 
 namespace StatisticsAnalysisTool.Cluster;
 
-public sealed class ClusterInfo
+public sealed class ClusterInfo : BaseViewModel
 {
+    private bool _isSelectedInMapHistory;
+    private string _mapHistoryNote = string.Empty;
+    private ICommand _toggleMapHistorySelectionCommand;
+
     public bool ClusterInfoFullyAvailable { get; set; }
 
     // Change cluster data
@@ -37,6 +44,61 @@ public sealed class ClusterInfo
     public MistsRarity MistsRarity { get; private set; }
     public List<MapMarkerType> MapMarkers => WorldData.GetMapMarkers(Index);
 
+    public bool IsSelectedInMapHistory
+    {
+        get => _isSelectedInMapHistory;
+        set
+        {
+            _isSelectedInMapHistory = value;
+            OnPropertyChanged();
+        }
+    }
+
+    public string MapHistoryNote
+    {
+        get => _mapHistoryNote;
+        set
+        {
+            _mapHistoryNote = value;
+            OnPropertyChanged();
+        }
+    }
+
+    public string MapHistoryClipboardName
+    {
+        get
+        {
+            if (!string.IsNullOrWhiteSpace(ClusterHistoryString2))
+            {
+                return ClusterHistoryString2;
+            }
+
+            if (!string.IsNullOrWhiteSpace(UniqueClusterName))
+            {
+                return UniqueClusterName;
+            }
+
+            if (!string.IsNullOrWhiteSpace(UniqueName))
+            {
+                return UniqueName;
+            }
+
+            if (!string.IsNullOrWhiteSpace(MapTypeString))
+            {
+                return MapTypeString;
+            }
+
+            if (!string.IsNullOrWhiteSpace(ClusterHistoryString1))
+            {
+                return ClusterHistoryString1;
+            }
+
+            return Index ?? string.Empty;
+        }
+    }
+
+    public ICommand ToggleMapHistorySelectionCommand => _toggleMapHistorySelectionCommand ??= new CommandHandler(ToggleMapHistorySelection, true);
+
     public ClusterInfo()
     {
     }
@@ -61,6 +123,7 @@ public sealed class ClusterInfo
         ClusterMode = clusterInfo.ClusterMode;
         AvalonTunnelType = clusterInfo.AvalonTunnelType;
         MapTypeString = clusterInfo.MapTypeString;
+        MapHistoryNote = clusterInfo.MapHistoryNote;
         ClusterHistoryString();
     }
 
@@ -130,6 +193,11 @@ public sealed class ClusterInfo
             ClusterHistoryString2 = UniqueName;
             ClusterHistoryString3 = AvalonTunnelType.ToString();
         }
+    }
+
+    private void ToggleMapHistorySelection(object _)
+    {
+        IsSelectedInMapHistory = !IsSelectedInMapHistory;
     }
 
     private MistsRarity GetMistsRarity(byte[] infoArray)

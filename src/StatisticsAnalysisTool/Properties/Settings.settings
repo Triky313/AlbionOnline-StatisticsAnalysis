@@ -15,7 +15,7 @@
       <Value Profile="(Default)">https://www.paypal.com/donate/?hosted_button_id=N6T3CWXYNGHKC</Value>
     </Setting>
     <Setting Name="AutoUpdateConfigUrl" Type="System.String" Scope="Application">
-      <Value Profile="(Default)">https://raw.githubusercontent.com/Triky313/AlbionOnline-StatisticsAnalysis/main/src/StatisticsAnalysisTool/ao-update-check.xml</Value>
+      <Value Profile="(Default)">https://raw.githubusercontent.com/Triky313/AlbionOnline-StatisticsAnalysis/main/src/StatisticsAnalysisTool/ao-netsparkle-update-check.xml</Value>
     </Setting>
     <Setting Name="DefaultLanguageCultureName" Type="System.String" Scope="Application">
       <Value Profile="(Default)">en-US</Value>
@@ -63,7 +63,7 @@
       <Value Profile="(Default)">Items.json</Value>
     </Setting>
     <Setting Name="AutoUpdatePreReleaseConfigUrl" Type="System.String" Scope="Application">
-      <Value Profile="(Default)">https://raw.githubusercontent.com/Triky313/AlbionOnline-StatisticsAnalysis/main/src/StatisticsAnalysisTool/ao-pre-release-update-check.xml</Value>
+      <Value Profile="(Default)">https://raw.githubusercontent.com/Triky313/AlbionOnline-StatisticsAnalysis/main/src/StatisticsAnalysisTool/ao-netsparkle-pre-release-update-check.xml</Value>
     </Setting>
     <Setting Name="StatsFileName" Type="System.String" Scope="User">
       <Value Profile="(Default)">Stats.json</Value>
@@ -163,6 +163,9 @@
     </Setting>
     <Setting Name="MarketFileName" Type="System.String" Scope="User">
       <Value Profile="(Default)">Market.json</Value>
+    </Setting>
+    <Setting Name="MapHistoryFileName" Type="System.String" Scope="User">
+      <Value Profile="(Default)">Maphistory.json</Value>
     </Setting>
   </Settings>
 </SettingsFile>
