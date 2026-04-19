@@ -1,4 +1,4 @@
-name: Create Release Assets By Newest Tag
+name: 🔥 Create Release Assets By Newest Tag
 
 on:
   push:
@@ -16,7 +16,7 @@ jobs:
       Project_File_Path: src\StatisticsAnalysisTool\StatisticsAnalysisTool.csproj
 
     steps:
-      - name: Checkout tagged commit
+      - name: 🛒 Checkout tagged commit
         uses: actions/checkout@v4
 
       - name: Setup .NET 10 SDK
@@ -25,7 +25,7 @@ jobs:
           dotnet-version: 10.0.x
           global-json-file: src/global.json
 
-      - name: Prepare release variables
+      - name: 🚧 Prepare release variables
         shell: pwsh
         run: |
           $tagName = "${{ github.ref_name }}"
@@ -34,7 +34,7 @@ jobs:
           "TAG_NAME=$tagName" | Out-File -FilePath $env:GITHUB_ENV -Encoding utf8 -Append
           "APP_VERSION=$version" | Out-File -FilePath $env:GITHUB_ENV -Encoding utf8 -Append
 
-      - name: Publish StatisticsAnalysisTool application
+      - name: 🛠 Publish StatisticsAnalysisTool application
         shell: pwsh
         run: |
           dotnet publish $env:Project_File_Path `
@@ -48,13 +48,13 @@ jobs:
             -p:PublishSingleFile=true `
             -p:PublishReadyToRun=false
 
-      - name: Create release zip file
+      - name: 🛠 Create release zip file
         uses: vimtor/action-zip@v1
         with:
           files: src\StatisticsAnalysisTool\bin\Release\publish
           dest: StatisticsAnalysis-AlbionOnline-${{ github.ref_name }}-windows-x64.zip
 
-      - name: Create temporary installer script
+      - name: 🛠 Create temporary installer script
         shell: pwsh
         run: |
           @'
@@ -100,13 +100,13 @@ jobs:
           Source: "src\StatisticsAnalysisTool\bin\Release\publish\*"; DestDir: "{app}"; Flags: ignoreversion recursesubdirs createallsubdirs
           '@ | Set-Content -Path release-installer.iss -Encoding utf8
 
-      - name: Build release setup file
+      - name: 🛠 Build release setup file
         uses: Minionguyjpro/Inno-Setup-Action@v1.2.5
         with:
           path: release-installer.iss
           options: /DMyAppVersion=${{ env.APP_VERSION }}
 
-      - name: Upload release files to newest tag
+      - name: 🚀 Upload release files to newest tag
         uses: softprops/action-gh-release@v1
         if: startsWith(github.ref, 'refs/tags/')
         with:
