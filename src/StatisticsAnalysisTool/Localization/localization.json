@@ -20051,6 +20051,10 @@
         {
           "lang": "en-US",
           "seg": "Open extended dashboard window"
+        },
+        {
+          "lang": "fr-FR",
+          "seg": "Ouvrir la fenêtre du tableau de bord étendu"
         }
       ]
     },
@@ -38472,6 +38476,10 @@
         {
           "lang": "en-US",
           "seg": "There is no update available at the moment."
+        },
+        {
+          "lang": "fr-FR",
+          "seg": "Aucune mise à jour n'est disponible pour le moment."
         }
       ]
     },
@@ -38485,6 +38493,10 @@
         {
           "lang": "en-US",
           "seg": "No Update Available"
+        },
+        {
+          "lang": "fr-FR",
+          "seg": "Aucune mise à jour disponible"
         }
       ]
     },
@@ -38498,6 +38510,10 @@
         {
           "lang": "en-US",
           "seg": "There is a new version {0} available. You are currently using version {1}. This update is required. Press OK to begin updating the application."
+        },
+        {
+          "lang": "fr-FR",
+          "seg": "Une nouvelle version {0} est disponible. Vous utilisez actuellement la version {1}. Cette mise à jour est requise. Appuyez sur OK pour lancer la mise à jour de l'application."
         }
       ]
     },
@@ -38511,6 +38527,10 @@
         {
           "lang": "en-US",
           "seg": "There is a new version {0} available. You are currently using version {1}. Do you want to update the application now?"
+        },
+        {
+          "lang": "fr-FR",
+          "seg": "Une nouvelle version {0} est disponible. Vous utilisez actuellement la version {1}. Voulez-vous mettre à jour l'application maintenant ?"
         }
       ]
     },
@@ -38524,6 +38544,10 @@
         {
           "lang": "en-US",
           "seg": "Update Available"
+        },
+        {
+          "lang": "fr-FR",
+          "seg": "Mise à jour disponible"
         }
       ]
     },
@@ -38537,6 +38561,10 @@
         {
           "lang": "en-US",
           "seg": "There is a problem reaching the update server. Please check your internet connection and try again later."
+        },
+        {
+          "lang": "fr-FR",
+          "seg": "Impossible de joindre le serveur de mise à jour. Veuillez vérifier votre connexion Internet et réessayer plus tard."
         }
       ]
     },
@@ -38550,6 +38578,10 @@
         {
           "lang": "en-US",
           "seg": "Update Check Failed"
+        },
+        {
+          "lang": "fr-FR",
+          "seg": "Échec de la vérification des mises à jour"
         }
       ]
     },
@@ -38597,6 +38629,10 @@
         {
           "lang": "en-US",
           "seg": "Item info window: The item info window can be opened by double-clicking the item directly in the list."
+        },
+        {
+          "lang": "fr-FR",
+          "seg": "Fenêtre d'information de l'objet : la fenêtre d'information de l'objet peut être ouverte en double-cliquant directement sur l'objet dans la liste."
         }
       ]
     },
@@ -38610,6 +38646,10 @@
         {
           "lang": "en-US",
           "seg": "Item alarm: Enter a value in the undercutting column and then activate the alarm in the is alarm active column."
+        },
+        {
+          "lang": "fr-FR",
+          "seg": "Alerte d'objet : saisissez une valeur dans la colonne de sous-cotation, puis activez l'alerte dans la colonne indiquant si l'alarme est active."
         }
       ]
     },
@@ -38623,6 +38663,10 @@
         {
           "lang": "en-US",
           "seg": "Item prices: Prices below the item names in the list are average values taken directly from the game and update when items are viewed in-game."
+        },
+        {
+          "lang": "fr-FR",
+          "seg": "Prix des objets : les prix affichés sous les noms d'objets dans la liste sont des valeurs moyennes issues directement du jeu et se mettent à jour lorsque les objets sont consultés en jeu."
         }
       ]
     },
@@ -38636,6 +38680,10 @@
         {
           "lang": "en-US",
           "seg": "Delete all map history entries"
+        },
+        {
+          "lang": "fr-FR",
+          "seg": "Supprimer toutes les entrées de l'historique de carte"
         }
       ]
     },
@@ -38649,6 +38697,10 @@
         {
           "lang": "en-US",
           "seg": "Are you sure you want to delete all map history entries?"
+        },
+        {
+          "lang": "fr-FR",
+          "seg": "Voulez-vous vraiment supprimer toutes les entrées de l'historique de carte ?"
         }
       ]
     },
@@ -38662,6 +38714,10 @@
         {
           "lang": "en-US",
           "seg": "Time"
+        },
+        {
+          "lang": "fr-FR",
+          "seg": "Temps"
         }
       ]
     },
@@ -38675,6 +38731,10 @@
         {
           "lang": "en-US",
           "seg": "Tier"
+        },
+        {
+          "lang": "fr-FR",
+          "seg": "Palier"
         }
       ]
     },
@@ -38687,6 +38747,10 @@
         },
         {
           "lang": "en-US",
+          "seg": "Zone"
+        },
+        {
+          "lang": "fr-FR",
           "seg": "Zone"
         }
       ]
@@ -38701,6 +38765,10 @@
         {
           "lang": "en-US",
           "seg": "Type"
+        },
+        {
+          "lang": "fr-FR",
+          "seg": "Type"
         }
       ]
     },
@@ -38713,6 +38781,10 @@
         },
         {
           "lang": "en-US",
+          "seg": "Note"
+        },
+        {
+          "lang": "fr-FR",
           "seg": "Note"
         }
       ]
@@ -38727,6 +38799,10 @@
         {
           "lang": "en-US",
           "seg": "Number of gathered resources"
+        },
+        {
+          "lang": "fr-FR",
+          "seg": "Nombre de ressources récoltées"
         }
       ]
     },
@@ -38740,6 +38816,10 @@
         {
           "lang": "en-US",
           "seg": "Total silver value of resources"
+        },
+        {
+          "lang": "fr-FR",
+          "seg": "Valeur totale en argent des ressources"
         }
       ]
     }
