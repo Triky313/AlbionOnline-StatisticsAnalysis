@@ -19,10 +19,11 @@ jobs:
       - name: Checkout tagged commit
         uses: actions/checkout@v4
 
-      - name: Setup .NET
-        uses: actions/setup-dotnet@v4
+      - name: Setup .NET 10 SDK
+        uses: actions/setup-dotnet@v5
         with:
-          dotnet-version: 9.0.x
+          dotnet-version: 10.0.x
+          global-json-file: src/global.json
 
       - name: Prepare release variables
         shell: pwsh
@@ -41,7 +42,7 @@ jobs:
             -p:Platform=x64 `
             -p:PublishDir=bin\Release\publish\ `
             -p:PublishProtocol=FileSystem `
-            -p:TargetFramework=net9.0-windows `
+            -p:TargetFramework=net10.0-windows `
             -p:RuntimeIdentifier=win-x64 `
             -p:SelfContained=false `
             -p:PublishSingleFile=true `

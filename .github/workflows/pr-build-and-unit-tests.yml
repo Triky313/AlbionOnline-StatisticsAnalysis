@@ -1,4 +1,4 @@
-name: 🛠️ Build + Unit tests
+name: Build + Unit tests
 
 on:
   pull_request:
@@ -6,15 +6,14 @@ on:
     branches:
       - dev
   push:
-    branches: [ main ]
+    branches: [main]
     paths-ignore:
-      - '**/*.md'
-      - '**/*.gitignore'
-      - '**/*.gitattributes'
-      - '**/donations.json'
+      - "**/*.md"
+      - "**/*.gitignore"
+      - "**/*.gitattributes"
+      - "**/donations.json"
 
 jobs:
-
   build:
     if: "!contains(github.event.head_commit.message, '--wip')"
     strategy:
@@ -22,20 +21,26 @@ jobs:
         configuration: [Release]
     runs-on: windows-2022
     env:
-      Solution_Name: StatisticsAnalysisTool.sln
+      Solution_Path: src\StatisticsAnalysisTool.sln
       Test_Project_Path: src\StatisticsAnalysisTool.UnitTests\StatisticsAnalysisTool.UnitTests.csproj
 
     steps:
-    - name: 🛒 Checkout
-      uses: actions/checkout@v3
-      with:
-        fetch-depth: 0
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
 
-    - name: 🏗 dotnet restore
-      run: dotnet restore src\StatisticsAnalysisTool
-      
-    - name: 🛠 dotnet build
-      run: dotnet build src\StatisticsAnalysisTool --no-restore
+      - name: Setup .NET 10 SDK
+        uses: actions/setup-dotnet@v5
+        with:
+          dotnet-version: 10.0.x
+          global-json-file: src/global.json
 
-    - name: 🧪 Execute unit tests
-      run: dotnet test $env:Test_Project_Path
+      - name: dotnet restore
+        run: dotnet restore $env:Solution_Path
+
+      - name: dotnet build
+        run: dotnet build $env:Solution_Path --configuration ${{ matrix.configuration }} --no-restore
+
+      - name: Execute unit tests
+        run: dotnet test $env:Test_Project_Path --configuration ${{ matrix.configuration }} --no-build

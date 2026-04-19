@@ -1,7 +1,7 @@
-﻿<Project Sdk="Microsoft.NET.Sdk">
+<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFramework>net9.0-windows</TargetFramework>
+    <TargetFramework>net10.0-windows</TargetFramework>
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
 	<AssemblyName>StatisticsAnalysisTool.Tests</AssemblyName>
@@ -24,7 +24,7 @@
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
     <PackageReference Include="OpenTK" Version="4.9.4" />
-    <PackageReference Include="OpenTK.GLWpfControl" Version="4.3.4" />
+    <PackageReference Include="OpenTK.GLWpfControl" Version="4.3.6" />
   </ItemGroup>
 
   <ItemGroup>
