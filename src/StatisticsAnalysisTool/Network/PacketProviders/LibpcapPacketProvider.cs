@@ -318,6 +318,8 @@ public class LibpcapPacketProvider : PacketProvider
 
     private void Worker()
     {
+        const int ConsecutiveErrorsBeforeEscalation = 20;
+
         try
         {
             var dispatcher = _dispatcher;
@@ -326,12 +328,15 @@ public class LibpcapPacketProvider : PacketProvider
                 return;
             }
 
+            int consecutiveDispatchErrors = 0;
+
             while (_cts is { IsCancellationRequested: false })
             {
                 int dispatched;
                 try
                 {
                     dispatched = dispatcher.Dispatch(50);
+                    consecutiveDispatchErrors = 0;
                 }
                 catch (ObjectDisposedException)
                 {
@@ -340,6 +345,22 @@ public class LibpcapPacketProvider : PacketProvider
                 catch (InvalidOperationException)
                 {
                     break;
+                }
+                catch (PcapException ex)
+                {
+                    // A transient error on one pcap instance must not kill the whole capture
+                    // (e.g. VPN/virtual adapter flapping). Back off briefly and keep running.
+                    consecutiveDispatchErrors++;
+                    if (consecutiveDispatchErrors == ConsecutiveErrorsBeforeEscalation)
+                    {
+                        Log.Error(ex, "Libpcap: pcap_dispatch failing repeatedly ({Count}x); capture may be degraded", consecutiveDispatchErrors);
+                    }
+                    else
+                    {
+                        Log.Warning(ex, "Libpcap: pcap_dispatch failed, retrying (attempt {Count})", consecutiveDispatchErrors);
+                    }
+                    _cts?.Token.WaitHandle.WaitOne(250);
+                    continue;
                 }
 
                 if (dispatched <= 0)
