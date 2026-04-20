@@ -14,4 +14,5 @@ public sealed class ClusterInfoDto
     public byte[] DungeonInformation { get; set; }
     public Tier MistsDungeonTier { get; set; }
     public string MainClusterIndex { get; set; }
+    public string MapHistoryNote { get; set; } = string.Empty;
 }

@@ -18,7 +18,7 @@ namespace StatisticsAnalysisTool.Cluster;
 
 public sealed class ClusterController
 {
-    private const int MaxEnteredCluster = 500;
+    private const int MaxEnteredCluster = 1000;
 
     private readonly TrackingController _trackingController;
     private readonly MainWindowViewModel _mainWindowViewModel;
@@ -115,7 +115,7 @@ public sealed class ClusterController
 
     private void RemovesClusterIfMoreThanLimit()
     {
-        if (_mainWindowViewModel?.EnteredCluster?.Count > MaxEnteredCluster)
+        while (_mainWindowViewModel?.EnteredCluster?.Count > MaxEnteredCluster)
         {
             _mainWindowViewModel?.EnteredCluster?.RemoveAt(_mainWindowViewModel.EnteredCluster.Count - 1);
         }
@@ -147,9 +147,11 @@ public sealed class ClusterController
 
     public async Task LoadMapHistoryFromFileAsync()
     {
-        var clusterInfoDtos = await FileController.LoadAsync<List<ClusterInfoDto>>(GetMapHistoryFilePath());
-        var enteredClusters = clusterInfoDtos
+        var clusterInfoDtos = await FileController.LoadAsync<List<ClusterInfoDto>>(GetMapHistoryFilePath()) ?? [];
+        var trimmedClusterInfoDtos = clusterInfoDtos
             .Take(MaxEnteredCluster)
+            .ToList();
+        var enteredClusters = trimmedClusterInfoDtos
             .Select(ClusterInfoMapping.Mapping)
             .ToList();
 
@@ -157,6 +159,12 @@ public sealed class ClusterController
         {
             _mainWindowViewModel.EnteredCluster = new ObservableCollection<ClusterInfo>(enteredClusters);
         });
+
+        if (clusterInfoDtos.Count > MaxEnteredCluster)
+        {
+            await FileController.SaveAsync(trimmedClusterInfoDtos, GetMapHistoryFilePath());
+            Log.Information("Map history trimmed to {MaxEnteredCluster} entries while loading", MaxEnteredCluster);
+        }
     }
 
     public async Task SaveInFileAsync()
