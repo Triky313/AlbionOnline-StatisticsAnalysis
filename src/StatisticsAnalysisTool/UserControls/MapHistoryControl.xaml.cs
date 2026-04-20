@@ -57,7 +57,7 @@ public partial class MapHistoryControl
         var selectedEntries = _mainWindowViewModel?.EnteredCluster?
             .Where(x => x.IsSelectedInMapHistory)
             .OrderBy(x => x.Entered)
-            .Select(x => x.MapHistoryClipboardName)
+            .Select(x => x.MapHistoryClipboardText)
             .Where(x => !string.IsNullOrWhiteSpace(x))
             .ToList();
 

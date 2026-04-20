@@ -97,6 +97,26 @@ public sealed class ClusterInfo : BaseViewModel
         }
     }
 
+    public string MapHistoryClipboardText
+    {
+        get
+        {
+            var mapHistoryClipboardName = MapHistoryClipboardName;
+
+            if (string.IsNullOrWhiteSpace(mapHistoryClipboardName))
+            {
+                return string.Empty;
+            }
+
+            if (string.IsNullOrWhiteSpace(MapHistoryNote))
+            {
+                return mapHistoryClipboardName;
+            }
+
+            return $"{mapHistoryClipboardName} [{MapHistoryNote.Trim()}]";
+        }
+    }
+
     public ICommand ToggleMapHistorySelectionCommand => _toggleMapHistorySelectionCommand ??= new CommandHandler(ToggleMapHistorySelection, true);
 
     public ClusterInfo()
