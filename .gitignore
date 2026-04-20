@@ -331,3 +331,5 @@ ASALocalRun/
 *.bak
 
 .codex-dotnet/
+
+.codex/
