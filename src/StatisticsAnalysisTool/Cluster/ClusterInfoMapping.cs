@@ -14,7 +14,8 @@ public static class ClusterInfoMapping
             WorldMapDataType = clusterInfo.WorldMapDataType,
             DungeonInformation = clusterInfo.DungeonInformation,
             MistsDungeonTier = clusterInfo.MistsDungeonTier,
-            MainClusterIndex = clusterInfo.MainClusterIndex
+            MainClusterIndex = clusterInfo.MainClusterIndex,
+            MapHistoryNote = clusterInfo.MapHistoryNote
         };
     }
 
@@ -33,6 +34,7 @@ public static class ClusterInfoMapping
             clusterInfoDto.MistsDungeonTier);
 
         clusterInfo.Entered = clusterInfoDto.Entered;
+        clusterInfo.MapHistoryNote = clusterInfoDto.MapHistoryNote ?? string.Empty;
         clusterInfo.SetJoinClusterInfo(clusterInfoDto.Index, clusterInfoDto.MainClusterIndex, clusterInfoDto.Guid);
         clusterInfo.ClusterInfoFullyAvailable = true;
 
