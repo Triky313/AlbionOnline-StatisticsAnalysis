@@ -6,6 +6,7 @@
              xmlns:viewModels="clr-namespace:StatisticsAnalysisTool.ViewModels"
              xmlns:controls="clr-namespace:WpfToolkit.Controls;assembly=VirtualizingWrapPanel"
              xmlns:gathering="clr-namespace:StatisticsAnalysisTool.Gathering"
+             xmlns:wpf="clr-namespace:LiveChartsCore.SkiaSharpView.WPF;assembly=LiveChartsCore.SkiaSharpView.WPF"
              xmlns:fa5="http://schemas.fontawesome.com/icons/"
              mc:Ignorable="d" 
              d:DesignHeight="800" d:DesignWidth="800"
@@ -64,9 +65,9 @@
             <Grid Row="0" Margin="0,22,0,6" Grid.RowSpan="2">
                 <ScrollViewer>
                     <Grid>
-                        <ContentControl Content="{Binding GatheringBindings.GatheringStats}" ContentTemplate="{StaticResource GenerallyTemplate}">
-                            <ContentControl.Style>
-                                <Style TargetType="{x:Type ContentControl}">
+                        <StackPanel>
+                            <StackPanel.Style>
+                                <Style TargetType="{x:Type StackPanel}">
                                     <Setter Property="Visibility" Value="Collapsed"/>
                                     <Style.Triggers>
                                         <DataTrigger Binding="{Binding GatheringBindings.SelectedGatheringFilter}" Value="{x:Static gathering:GatheringFilterType.Generally}">
@@ -74,8 +75,60 @@
                                         </DataTrigger>
                                     </Style.Triggers>
                                 </Style>
-                            </ContentControl.Style>
-                        </ContentControl>
+                            </StackPanel.Style>
+                            <ContentControl Content="{Binding GatheringBindings.GatheringStats}" ContentTemplate="{StaticResource GenerallyTemplate}" />
+                            <Grid>
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="Auto" />
+                                    <RowDefinition Height="Auto" />
+                                    <RowDefinition Height="Auto" />
+                                    <RowDefinition Height="300" />
+                                </Grid.RowDefinitions>
+                                <TextBlock Grid.Row="0"
+                                           Style="{StaticResource Gathering.Stats.TitleText}"
+                                           Text="{x:Static gathering:GatheringStats.TranslationHistory}"
+                                           Margin="0,10,0,0" />
+                                <StackPanel Grid.Row="1" Orientation="Horizontal" Margin="0,5,0,0">
+                                    <ComboBox Width="250"
+                                              Height="26"
+                                              ItemsSource="{Binding GatheringBindings.GatheringStats.ResourceChartValueTypes}"
+                                              SelectedValue="{Binding GatheringBindings.GatheringStats.SelectedResourceChartValueType, Mode=TwoWay}"
+                                              SelectedValuePath="GatheringChartValueType"
+                                              DisplayMemberPath="Name" />
+                                </StackPanel>
+                                <ItemsControl Grid.Row="2"
+                                              Margin="0,5,0,10"
+                                              ItemsSource="{Binding GatheringBindings.GatheringStats.ResourceChartSeriesFilters}">
+                                    <ItemsControl.ItemsPanel>
+                                        <ItemsPanelTemplate>
+                                            <WrapPanel />
+                                        </ItemsPanelTemplate>
+                                    </ItemsControl.ItemsPanel>
+                                    <ItemsControl.ItemTemplate>
+                                        <DataTemplate DataType="{x:Type gathering:GatheringChartSeriesFilter}">
+                                            <Border BorderBrush="{StaticResource SolidColorBrush.Background.4}"
+                                                    BorderThickness="1"
+                                                    Margin="0,0,8,8"
+                                                    Padding="8,4"
+                                                    Background="{StaticResource SolidColorBrush.Background.2}">
+                                                <StackPanel Orientation="Horizontal">
+                                                    <Rectangle Width="10" Height="10" Fill="{Binding Brush}" Margin="0,0,6,0" VerticalAlignment="Center" />
+                                                    <CheckBox Content="{Binding Name}" IsChecked="{Binding IsSelected, Mode=TwoWay}" VerticalAlignment="Center" />
+                                                </StackPanel>
+                                            </Border>
+                                        </DataTemplate>
+                                    </ItemsControl.ItemTemplate>
+                                </ItemsControl>
+                                <wpf:CartesianChart Grid.Row="3"
+                                                    Series="{Binding GatheringBindings.GatheringStats.ResourceChartSeries}"
+                                                    XAxes="{Binding GatheringBindings.GatheringStats.ResourceChartXAxes}"
+                                                    TooltipPosition="Center"
+                                                    FindingStrategy="ExactMatchTakeClosest"
+                                                    LegendPosition="Hidden"
+                                                    Background="Transparent"
+                                                    DrawMarginFrame="{x:Null}" />
+                            </Grid>
+                        </StackPanel>
                         <ContentControl Content="{Binding GatheringBindings.GatheringStats}" ContentTemplate="{StaticResource WoodTemplate}">
                             <ContentControl.Style>
                                 <Style TargetType="{x:Type ContentControl}">
