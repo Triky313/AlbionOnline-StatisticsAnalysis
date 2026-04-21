@@ -284,7 +284,7 @@ public sealed class ClusterInfo : BaseViewModel
             return;
         }
 
-        if (IsDungeonMapType(MapType))
+        if (IsInstancedMapType(MapType))
         {
             ClusterHistoryString1 = MapTypeString;
             ClusterHistoryString2 = GetMainClusterName();
@@ -292,7 +292,7 @@ public sealed class ClusterInfo : BaseViewModel
             return;
         }
 
-        if (MapType is MapType.Arena or MapType.Mists)
+        if (MapType is MapType.Arena)
         {
             ClusterHistoryString1 = MapTypeString;
             ClusterHistoryString2 = string.Empty;
@@ -556,12 +556,13 @@ public sealed class ClusterInfo : BaseViewModel
         };
     }
 
-    private static bool IsDungeonMapType(MapType mapType)
+    private static bool IsInstancedMapType(MapType mapType)
     {
         return mapType is MapType.RandomDungeon
             or MapType.CorruptedDungeon
             or MapType.Expedition
             or MapType.HellGate
+            or MapType.Mists
             or MapType.MistsDungeon
             or MapType.AbyssalDepths;
     }
