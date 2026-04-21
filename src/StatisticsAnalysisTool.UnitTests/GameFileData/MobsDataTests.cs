@@ -1,5 +1,6 @@
 using FluentAssertions;
 using NUnit.Framework;
+using StatisticsAnalysisTool.Enumerations;
 using StatisticsAnalysisTool.GameFileData;
 using StatisticsAnalysisTool.GameFileData.Models;
 using System.Reflection;
@@ -18,6 +19,30 @@ public class MobsDataTests
                 UniqueName = "T6_MOB_RD_MORGANA_SOLDIER",
                 Tier = 6,
                 HitPointsMax = 1328
+            },
+            new MobJsonObject
+            {
+                UniqueName = "T5_MOB_RD_UNDEAD_MAGE",
+                Tier = 5,
+                HitPointsMax = 923
+            },
+            new MobJsonObject
+            {
+                UniqueName = "T7_MOB_RD_MORGANA_BOSS",
+                Tier = 7,
+                HitPointsMax = 12000
+            },
+            new MobJsonObject
+            {
+                UniqueName = "T7_MOB_RD_MORGANA_SUMMON",
+                Tier = 7,
+                HitPointsMax = 1000
+            },
+            new MobJsonObject
+            {
+                UniqueName = "T7_MOB_ROAMING_MORGANA_SOLDIER",
+                Tier = 7,
+                HitPointsMax = 1328
             }
         ]);
     }
@@ -34,6 +59,46 @@ public class MobsDataTests
         var result = MobsData.GetMobTierByIndex(15);
 
         result.Should().Be(6);
+    }
+
+    [Test]
+    public void GetRandomDungeonMobTierByIndex_WithReliableRandomDungeonMob_ReturnsDungeonTier()
+    {
+        var result = MobsData.GetRandomDungeonMobTierByIndex(15);
+
+        result.Should().Be(5);
+    }
+
+    [Test]
+    public void GetRandomDungeonMobTierByIndex_WithUserUndeadDungeonMob_ReturnsDungeonTierFour()
+    {
+        var result = MobsData.GetRandomDungeonMobTierByIndex(16);
+
+        result.Should().Be(4);
+    }
+
+    [Test]
+    public void GetRandomDungeonMobTierByIndex_WithBoss_ReturnsUnknown()
+    {
+        var result = MobsData.GetRandomDungeonMobTierByIndex(17);
+
+        result.Should().Be((int) Tier.Unknown);
+    }
+
+    [Test]
+    public void GetRandomDungeonMobTierByIndex_WithSummon_ReturnsUnknown()
+    {
+        var result = MobsData.GetRandomDungeonMobTierByIndex(18);
+
+        result.Should().Be((int) Tier.Unknown);
+    }
+
+    [Test]
+    public void GetRandomDungeonMobTierByIndex_WithNonRandomDungeonMob_ReturnsUnknown()
+    {
+        var result = MobsData.GetRandomDungeonMobTierByIndex(19);
+
+        result.Should().Be((int) Tier.Unknown);
     }
 
     [Test]

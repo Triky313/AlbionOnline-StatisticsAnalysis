@@ -1,4 +1,5 @@
 using StatisticsAnalysisTool.Common;
+using StatisticsAnalysisTool.Enumerations;
 using StatisticsAnalysisTool.GameFileData.Models;
 using StatisticsAnalysisTool.Properties;
 using System;
@@ -17,6 +18,17 @@ public static class MobsData
     public static int GetMobTierByIndex(int index)
     {
         return GetMobJsonObjectByIndex(index).Tier;
+    }
+
+    public static int GetRandomDungeonMobTierByIndex(int index)
+    {
+        var mob = GetMobJsonObjectByIndex(index);
+        if (!IsReliableRandomDungeonTierMob(mob))
+        {
+            return (int) Tier.Unknown;
+        }
+
+        return mob.Tier - 1;
     }
 
     public static int GetMobLevelByIndex(int index, double currentInGameMobHp)
@@ -48,6 +60,26 @@ public static class MobsData
         }
 
         return _mobs.IsInBounds(index) ? _mobs?.ElementAt(index) : new MobJsonObject();
+    }
+
+    private static bool IsReliableRandomDungeonTierMob(MobJsonObject mob)
+    {
+        if (mob?.Tier is < 1 or > 8 || string.IsNullOrWhiteSpace(mob.UniqueName))
+        {
+            return false;
+        }
+
+        var uniqueName = mob.UniqueName.ToUpperInvariant();
+        if (!uniqueName.Contains("_MOB_RD_"))
+        {
+            return false;
+        }
+
+        return !uniqueName.Contains("_BOSS")
+            && !uniqueName.Contains("_MINIBOSS")
+            && !uniqueName.Contains("_SUMMON")
+            && !uniqueName.Contains("_UNATTACKABLE")
+            && !uniqueName.Contains("_TRAP");
     }
 
     public static async Task<bool> LoadDataAsync()

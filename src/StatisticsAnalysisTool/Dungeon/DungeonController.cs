@@ -521,10 +521,21 @@ public sealed class DungeonController
         {
             await Application.Current.Dispatcher.InvokeAsync(() =>
             {
-                var mobTier = (Tier) MobsData.GetMobTierByIndex((int) mobIndex);
                 var dun = _mainWindowViewModel.DungeonBindings.Dungeons?.FirstOrDefault(x => x.GuidList.Contains(currentGuid) && x.Status == DungeonStatus.Active);
-                if (dun == null || dun.Tier >= mobTier)
+                if (dun == null)
                 {
+                    return;
+                }
+
+                var mobTier = GetTierFromMob(dun.MapType, (int) mobIndex);
+                if (mobTier == Tier.Unknown)
+                {
+                    return;
+                }
+
+                if (dun.MapType == MapType.RandomDungeon)
+                {
+                    SetRandomDungeonTier(dun, mobTier);
                     return;
                 }
 
@@ -535,6 +546,25 @@ public sealed class DungeonController
         {
             // ignored
         }
+    }
+
+    private static Tier GetTierFromMob(MapType mapType, int mobIndex)
+    {
+        return mapType switch
+        {
+            MapType.RandomDungeon => (Tier) MobsData.GetRandomDungeonMobTierByIndex(mobIndex),
+            _ => (Tier) MobsData.GetMobTierByIndex(mobIndex)
+        };
+    }
+
+    private static void SetRandomDungeonTier(DungeonBaseFragment dungeon, Tier mobTier)
+    {
+        if (dungeon.Tier != Tier.Unknown && dungeon.Tier <= mobTier)
+        {
+            return;
+        }
+
+        dungeon.Tier = mobTier;
     }
 
     #endregion
