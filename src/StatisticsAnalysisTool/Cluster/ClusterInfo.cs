@@ -1,4 +1,4 @@
-﻿using StatisticsAnalysisTool.Common;
+using StatisticsAnalysisTool.Common;
 using StatisticsAnalysisTool.Enumerations;
 using StatisticsAnalysisTool.GameFileData;
 using StatisticsAnalysisTool.Localization;
@@ -209,7 +209,15 @@ public sealed class ClusterInfo : BaseViewModel
             return;
         }
 
-        if (MapType is MapType.Arena or MapType.CorruptedDungeon or MapType.RandomDungeon or MapType.Expedition or MapType.HellGate or MapType.MistsDungeon or MapType.Mists)
+        if (IsDungeonMapType(MapType))
+        {
+            ClusterHistoryString1 = MapTypeString;
+            ClusterHistoryString2 = GetMainClusterName();
+            ClusterHistoryString3 = string.Empty;
+            return;
+        }
+
+        if (MapType is MapType.Arena or MapType.Mists)
         {
             ClusterHistoryString1 = MapTypeString;
             ClusterHistoryString2 = string.Empty;
@@ -468,7 +476,28 @@ public sealed class ClusterInfo : BaseViewModel
             MapType.Arena => LocalizationController.Translation("ARENA"),
             MapType.MistsDungeon => LocalizationController.Translation("MISTS_DUNGEON"),
             MapType.Mists => LocalizationController.Translation("MISTS"),
+            MapType.AbyssalDepths => LocalizationController.Translation("ABYSSALDEPTHS"),
             _ => ""
         };
+    }
+
+    private static bool IsDungeonMapType(MapType mapType)
+    {
+        return mapType is MapType.RandomDungeon
+            or MapType.CorruptedDungeon
+            or MapType.Expedition
+            or MapType.HellGate
+            or MapType.MistsDungeon
+            or MapType.AbyssalDepths;
+    }
+
+    private string GetMainClusterName()
+    {
+        if (string.IsNullOrWhiteSpace(MainClusterIndex))
+        {
+            return string.Empty;
+        }
+
+        return WorldData.GetUniqueNameOrDefault(MainClusterIndex) ?? MainClusterIndex;
     }
 }
