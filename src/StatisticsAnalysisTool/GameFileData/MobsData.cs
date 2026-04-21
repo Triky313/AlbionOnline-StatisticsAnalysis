@@ -13,6 +13,11 @@ namespace StatisticsAnalysisTool.GameFileData;
 
 public static class MobsData
 {
+    private const double LevelZeroUpperHpPercent = 93;
+    private const double LevelOneUpperHpPercent = 109;
+    private const double LevelTwoUpperHpPercent = 125;
+    private const double LevelThreeUpperHpPercent = 146;
+    private const double LevelFourUpperHpPercent = 220;
     private static IEnumerable<MobJsonObject> _mobs;
 
     public static int GetMobTierByIndex(int index)
@@ -35,14 +40,35 @@ public static class MobsData
     {
         var mob = GetMobJsonObjectByIndex(index);
 
+        return GetMobLevel(mob, currentInGameMobHp);
+    }
+
+    public static int GetRandomDungeonMobLevelByIndex(int index, double currentInGameMobHp)
+    {
+        var mob = GetMobJsonObjectByIndex(index);
+        if (!IsReliableRandomDungeonTierMob(mob))
+        {
+            return -1;
+        }
+
+        return GetMobLevel(mob, currentInGameMobHp);
+    }
+
+    private static int GetMobLevel(MobJsonObject mob, double currentInGameMobHp)
+    {
+        if (mob?.HitPointsMax <= 0 || currentInGameMobHp <= 0)
+        {
+            return -1;
+        }
+
         var mobHpInPercentOverMaxValue = 100 / mob.HitPointsMax * currentInGameMobHp;
         return mobHpInPercentOverMaxValue switch
         {
-            >= 80 and <= 92 => 0,
-            >= 99 and <= 111 => 1,
-            >= 115 and <= 127 => 2,
-            >= 135 and <= 147 => 3,
-            >= 155 and <= 174 => 4,
+            < LevelZeroUpperHpPercent => 0,
+            < LevelOneUpperHpPercent => 1,
+            < LevelTwoUpperHpPercent => 2,
+            < LevelThreeUpperHpPercent => 3,
+            <= LevelFourUpperHpPercent => 4,
             _ => -1
         };
     }

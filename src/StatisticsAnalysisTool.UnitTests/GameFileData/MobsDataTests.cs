@@ -109,6 +109,24 @@ public class MobsDataTests
         result.Should().Be(4);
     }
 
+    [Test]
+    public void GetRandomDungeonMobLevelByIndex_WithLevelTwoBonus_ReturnsLevelTwo()
+    {
+        var levelTwoHitPoints = 1328 * 136 / 116d;
+
+        var result = MobsData.GetRandomDungeonMobLevelByIndex(15, levelTwoHitPoints);
+
+        result.Should().Be(2);
+    }
+
+    [Test]
+    public void GetRandomDungeonMobLevelByIndex_WithUserLevelFourUndeadMob_ReturnsLevelFour()
+    {
+        var result = MobsData.GetRandomDungeonMobLevelByIndex(16, 1494);
+
+        result.Should().Be(4);
+    }
+
     [TestCase(84, 0)]
     [TestCase(105, 1)]
     [TestCase(121, 2)]

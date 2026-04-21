@@ -38,7 +38,6 @@ public sealed class DungeonController
     private Guid? _lastMapGuid;
     private int _addDungeonCounter;
     private readonly List<DiscoveredItem> _discoveredLoot = new();
-    private ObservableCollection<Guid> _lastGuidWithRecognizedLevel = new();
 
     public DungeonController(TrackingController trackingController, MainWindowViewModel mainWindowViewModel)
     {
@@ -123,7 +122,6 @@ public sealed class DungeonController
             lastDungeon.EndTimer();
             lastDungeon.Status = DungeonStatus.Done;
             await SaveInFileAfterExceedingLimit(NumberOfDungeonsUntilSaved);
-            _lastGuidWithRecognizedLevel = [];
         }
 
         _lastMapGuid = mapGuid;
@@ -453,11 +451,6 @@ public sealed class DungeonController
             return;
         }
 
-        if (_lastGuidWithRecognizedLevel.Contains(currentGuid))
-        {
-            return;
-        }
-
         if (mobIndex is null || ClusterController.CurrentCluster.Guid != currentGuid)
         {
             return;
@@ -483,11 +476,10 @@ public sealed class DungeonController
                     return;
                 }
 
-                randomDungeon.Level = randomDungeon.Level < 0 ? MobsData.GetMobLevelByIndex((int) mobIndex, hitPointsMax) : randomDungeon.Level;
-
-                if (randomDungeon.Level > 0)
+                var level = GetLevelFromMob(randomDungeon.MapType, (int) mobIndex, hitPointsMax);
+                if (level > randomDungeon.Level)
                 {
-                    _lastGuidWithRecognizedLevel = dun.GuidList;
+                    randomDungeon.Level = level;
                 }
             });
         }
@@ -546,6 +538,15 @@ public sealed class DungeonController
         {
             // ignored
         }
+    }
+
+    private static int GetLevelFromMob(MapType mapType, int mobIndex, double hitPointsMax)
+    {
+        return mapType switch
+        {
+            MapType.RandomDungeon => MobsData.GetRandomDungeonMobLevelByIndex(mobIndex, hitPointsMax),
+            _ => MobsData.GetMobLevelByIndex(mobIndex, hitPointsMax)
+        };
     }
 
     private static Tier GetTierFromMob(MapType mapType, int mobIndex)
