@@ -1,7 +1,7 @@
-﻿using StatisticsAnalysisTool.Enumerations;
+﻿using StatisticsAnalysisTool.Common;
+using StatisticsAnalysisTool.Enumerations;
 using StatisticsAnalysisTool.GameFileData;
 using StatisticsAnalysisTool.Localization;
-using StatisticsAnalysisTool.Common;
 using StatisticsAnalysisTool.ViewModels;
 using System;
 using System.Collections.Generic;
@@ -168,12 +168,30 @@ public sealed class ClusterInfo : BaseViewModel
         MapTypeString = GetMapTypeName(MapType);
     }
 
-    public void SetJoinClusterInfo(string index, string mainClusterIndex, Guid? mapGuid)
+    public void SetJoinClusterInfo(string index, string mainClusterIndex, Guid? mapGuid, MapType mapType)
     {
-        Guid = mapGuid;
-        MainClusterIndex ??= mainClusterIndex;
-        WorldJsonType = WorldData.GetWorldJsonTypeByIndex(index) ?? WorldData.GetWorldJsonTypeByIndex(mainClusterIndex) ?? string.Empty;
-        File = WorldData.GetFileByIndex(index) ?? WorldData.GetFileByIndex(mainClusterIndex) ?? string.Empty;
+        if (!string.IsNullOrWhiteSpace(index))
+        {
+            Index = index;
+        }
+
+        if (mapGuid is not null)
+        {
+            Guid = mapGuid;
+        }
+
+        if (mapType is not MapType.Unknown)
+        {
+            MapType = mapType;
+        }
+
+        MainClusterIndex = string.IsNullOrWhiteSpace(mainClusterIndex) ? Index : mainClusterIndex;
+
+        WorldJsonType = WorldData.GetWorldJsonTypeByIndex(Index) ?? WorldData.GetWorldJsonTypeByIndex(MainClusterIndex) ?? string.Empty;
+        File = WorldData.GetFileByIndex(Index) ?? WorldData.GetFileByIndex(MainClusterIndex) ?? string.Empty;
+        UniqueName = WorldData.GetUniqueNameOrNull(Index);
+        UniqueClusterName = WorldData.GetUniqueNameOrDefault(Index) ?? InstanceName ?? string.Empty;
+        MapTypeString = GetMapTypeName(MapType);
 
         Tier = GetTier(File);
         ClusterMode = GetClusterType(WorldJsonType);

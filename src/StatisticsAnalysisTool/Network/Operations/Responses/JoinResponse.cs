@@ -1,4 +1,4 @@
-﻿using Serilog;
+using Serilog;
 using StatisticsAnalysisTool.Cluster;
 using StatisticsAnalysisTool.Common;
 using StatisticsAnalysisTool.Diagnostics;
@@ -114,10 +114,8 @@ public class JoinResponse
                 GuildName = string.IsNullOrEmpty(parameters[58].ToString()) ? string.Empty : parameters[58].ToString();
             }
 
-            if (parameters.ContainsKey(66))
-            {
-                MainMapIndex = string.IsNullOrEmpty(parameters[66].ToString()) ? string.Empty : parameters[66].ToString();
-            }
+            MainMapIndex = GetMainMapIndex(parameters, MapIndex, MapType);
+            DebugConsole.WriteInfo(MethodBase.GetCurrentMethod()?.DeclaringType, $"MainMapIndex: {MainMapIndex}", "#0279be");
 
             // Temporarily removed until value is found
             PlayTimeInSeconds = 0;
@@ -136,5 +134,40 @@ public class JoinResponse
         {
             Log.Error(e, "{message}", MethodBase.GetCurrentMethod()?.DeclaringType);
         }
+    }
+
+    private static string GetMainMapIndex(Dictionary<byte, object> parameters, string mapIndex, MapType mapType)
+    {
+        if (IsInstancedMap(mapType))
+        {
+            var sourceClusterIndex = GetStringParameter(parameters, 65);
+            if (!string.IsNullOrWhiteSpace(sourceClusterIndex))
+            {
+                return sourceClusterIndex;
+            }
+        }
+
+        return mapIndex ?? string.Empty;
+    }
+
+    private static bool IsInstancedMap(MapType mapType)
+    {
+        return mapType is MapType.RandomDungeon
+            or MapType.CorruptedDungeon
+            or MapType.HellGate
+            or MapType.Expedition
+            or MapType.Mists
+            or MapType.MistsDungeon
+            or MapType.AbyssalDepths;
+    }
+
+    private static string GetStringParameter(Dictionary<byte, object> parameters, byte key)
+    {
+        if (!parameters.TryGetValue(key, out object value))
+        {
+            return string.Empty;
+        }
+
+        return value?.ToString() ?? string.Empty;
     }
 }

@@ -35,7 +35,7 @@ public static class ClusterInfoMapping
 
         clusterInfo.Entered = clusterInfoDto.Entered;
         clusterInfo.MapHistoryNote = clusterInfoDto.MapHistoryNote ?? string.Empty;
-        clusterInfo.SetJoinClusterInfo(clusterInfoDto.Index, clusterInfoDto.MainClusterIndex, clusterInfoDto.Guid);
+        clusterInfo.SetJoinClusterInfo(clusterInfoDto.Index, clusterInfoDto.MainClusterIndex, clusterInfoDto.Guid, clusterInfoDto.MapType);
         clusterInfo.ClusterInfoFullyAvailable = true;
 
         return clusterInfo;
