@@ -12,6 +12,8 @@ namespace StatisticsAnalysisTool.Cluster;
 public sealed class ClusterInfo : BaseViewModel
 {
     private bool _isSelectedInMapHistory;
+    private Tier _randomDungeonTier = Tier.Unknown;
+    private int _randomDungeonLevel = -1;
     private string _mapHistoryNote = string.Empty;
     private ICommand _toggleMapHistorySelectionCommand;
 
@@ -43,6 +45,43 @@ public sealed class ClusterInfo : BaseViewModel
     public string ClusterHistoryString3 { get; private set; }
     public MistsRarity MistsRarity { get; private set; }
     public List<MapMarkerType> MapMarkers => WorldData.GetMapMarkers(Index);
+
+    public Tier RandomDungeonTier
+    {
+        get => _randomDungeonTier;
+        private set
+        {
+            if (_randomDungeonTier == value)
+            {
+                return;
+            }
+
+            _randomDungeonTier = value;
+            OnPropertyChanged();
+            OnPropertyChanged(nameof(RandomDungeonTierLevelToolTip));
+        }
+    }
+
+    public int RandomDungeonLevel
+    {
+        get => _randomDungeonLevel;
+        private set
+        {
+            if (_randomDungeonLevel == value)
+            {
+                return;
+            }
+
+            _randomDungeonLevel = value;
+            OnPropertyChanged();
+            OnPropertyChanged(nameof(HasRandomDungeonLevelIcon));
+            OnPropertyChanged(nameof(RandomDungeonTierLevelToolTip));
+        }
+    }
+
+    public bool HasRandomDungeonLevelIcon => MapType == MapType.RandomDungeon && RandomDungeonLevel is >= 0 and <= 4;
+
+    public string RandomDungeonTierLevelToolTip => $"T{GetRandomDungeonTierString()}.{GetRandomDungeonLevelString()}";
 
     public bool IsSelectedInMapHistory
     {
@@ -144,6 +183,7 @@ public sealed class ClusterInfo : BaseViewModel
         AvalonTunnelType = clusterInfo.AvalonTunnelType;
         MapTypeString = clusterInfo.MapTypeString;
         MapHistoryNote = clusterInfo.MapHistoryNote;
+        SetRandomDungeonTrackingInfo(clusterInfo.RandomDungeonTier, clusterInfo.RandomDungeonLevel);
         ClusterHistoryString();
     }
 
@@ -158,6 +198,7 @@ public sealed class ClusterInfo : BaseViewModel
         DungeonInformation = dungeonInformation;
         MistsDungeonTier = mistsDungeonTier;
         MistsRarity = GetMistsRarity(dungeonInformation);
+        ResetRandomDungeonTrackingInfo();
 
         MainClusterIndex = mainClusterIndex;
         WorldJsonType = null;
@@ -197,6 +238,30 @@ public sealed class ClusterInfo : BaseViewModel
         ClusterMode = GetClusterType(WorldJsonType);
         AvalonTunnelType = GetTunnelType(WorldJsonType);
         ClusterHistoryString();
+    }
+
+    public void SetRandomDungeonTrackingInfo(Tier randomDungeonTier, int randomDungeonLevel)
+    {
+        if (MapType != MapType.RandomDungeon)
+        {
+            return;
+        }
+
+        if (randomDungeonTier != Tier.Unknown)
+        {
+            RandomDungeonTier = randomDungeonTier;
+        }
+
+        if (randomDungeonLevel >= 0)
+        {
+            RandomDungeonLevel = randomDungeonLevel;
+        }
+    }
+
+    private void ResetRandomDungeonTrackingInfo()
+    {
+        RandomDungeonTier = Tier.Unknown;
+        RandomDungeonLevel = -1;
     }
 
     public void ClusterHistoryString()
@@ -499,5 +564,25 @@ public sealed class ClusterInfo : BaseViewModel
         }
 
         return WorldData.GetUniqueNameOrDefault(MainClusterIndex) ?? MainClusterIndex;
+    }
+
+    private string GetRandomDungeonTierString()
+    {
+        if (RandomDungeonTier == Tier.Unknown)
+        {
+            return "?";
+        }
+
+        return ((int) RandomDungeonTier).ToString();
+    }
+
+    private string GetRandomDungeonLevelString()
+    {
+        if (RandomDungeonLevel is < 0 or > 4)
+        {
+            return "?";
+        }
+
+        return RandomDungeonLevel.ToString();
     }
 }

@@ -480,6 +480,7 @@ public sealed class DungeonController
                 if (level > randomDungeon.Level)
                 {
                     randomDungeon.Level = level;
+                    UpdateCurrentMapHistoryRandomDungeonInformation(randomDungeon);
                 }
             });
         }
@@ -527,7 +528,13 @@ public sealed class DungeonController
 
                 if (dun.MapType == MapType.RandomDungeon)
                 {
+                    var previousTier = dun.Tier;
                     SetRandomDungeonTier(dun, mobTier);
+                    if (dun.Tier != previousTier && dun is RandomDungeonFragment randomDungeon)
+                    {
+                        UpdateCurrentMapHistoryRandomDungeonInformation(randomDungeon);
+                    }
+
                     return;
                 }
 
@@ -566,6 +573,11 @@ public sealed class DungeonController
         }
 
         dungeon.Tier = mobTier;
+    }
+
+    private void UpdateCurrentMapHistoryRandomDungeonInformation(RandomDungeonFragment randomDungeon)
+    {
+        _trackingController.ClusterController.UpdateCurrentMapHistoryRandomDungeonInformation(randomDungeon.Tier, randomDungeon.Level);
     }
 
     #endregion

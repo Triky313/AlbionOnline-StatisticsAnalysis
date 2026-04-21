@@ -670,7 +670,36 @@
                                 </Label.Content>
                             </Label>
                             <Label Content="{Binding TierRomanString}" FontSize="12" Foreground="{StaticResource SolidColorBrush.Text.1}" Width="30" />
-                            <Label Content="{Binding ClusterHistoryString1}" FontSize="12" Foreground="{StaticResource SolidColorBrush.Text.1}" Width="155" />
+                            <StackPanel Orientation="Horizontal" Width="155">
+                                <Label Content="{Binding ClusterHistoryString1}" FontSize="12" Foreground="{StaticResource SolidColorBrush.Text.1}" />
+                                <Image Height="18" Width="16" ToolTip="{Binding RandomDungeonTierLevelToolTip}">
+                                    <Image.Style>
+                                        <Style TargetType="{x:Type Image}">
+                                            <Setter Property="Visibility" Value="Collapsed" />
+                                            <Style.Triggers>
+                                                <DataTrigger Binding="{Binding HasRandomDungeonLevelIcon}" Value="True">
+                                                    <Setter Property="Visibility" Value="Visible" />
+                                                </DataTrigger>
+                                                <DataTrigger Binding="{Binding RandomDungeonLevel}" Value="0">
+                                                    <Setter Property="Source" Value="../Assets/butterfly_common.png" />
+                                                </DataTrigger>
+                                                <DataTrigger Binding="{Binding RandomDungeonLevel}" Value="1">
+                                                    <Setter Property="Source" Value="../Assets/butterfly_uncommon.png" />
+                                                </DataTrigger>
+                                                <DataTrigger Binding="{Binding RandomDungeonLevel}" Value="2">
+                                                    <Setter Property="Source" Value="../Assets/butterfly_rare.png" />
+                                                </DataTrigger>
+                                                <DataTrigger Binding="{Binding RandomDungeonLevel}" Value="3">
+                                                    <Setter Property="Source" Value="../Assets/butterfly_epic.png" />
+                                                </DataTrigger>
+                                                <DataTrigger Binding="{Binding RandomDungeonLevel}" Value="4">
+                                                    <Setter Property="Source" Value="../Assets/butterfly_legendary.png" />
+                                                </DataTrigger>
+                                            </Style.Triggers>
+                                        </Style>
+                                    </Image.Style>
+                                </Image>
+                            </StackPanel>
                             <Label Content="{Binding ClusterHistoryString2}" FontSize="12" Foreground="{StaticResource SolidColorBrush.Text.1}" Width="155" />
                             <Label Content="{Binding ClusterHistoryString3}" FontSize="12" Foreground="{StaticResource SolidColorBrush.Text.1}" Width="155" />
                         </StackPanel>

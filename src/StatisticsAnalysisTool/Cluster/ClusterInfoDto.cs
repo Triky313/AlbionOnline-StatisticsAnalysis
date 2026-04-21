@@ -13,6 +13,8 @@ public sealed class ClusterInfoDto
     public string WorldMapDataType { get; set; }
     public byte[] DungeonInformation { get; set; }
     public Tier MistsDungeonTier { get; set; }
+    public Tier RandomDungeonTier { get; set; } = Tier.Unknown;
+    public int RandomDungeonLevel { get; set; } = -1;
     public string MainClusterIndex { get; set; }
     public string MapHistoryNote { get; set; } = string.Empty;
 }

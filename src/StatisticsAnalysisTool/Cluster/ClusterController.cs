@@ -122,6 +122,35 @@ public sealed class ClusterController
         }
     }
 
+    public void UpdateCurrentMapHistoryRandomDungeonInformation(Tier randomDungeonTier, int randomDungeonLevel)
+    {
+        if (CurrentCluster.MapType != MapType.RandomDungeon)
+        {
+            return;
+        }
+
+        CurrentCluster.SetRandomDungeonTrackingInfo(randomDungeonTier, randomDungeonLevel);
+
+        if (Application.Current.Dispatcher.CheckAccess())
+        {
+            UpdateCurrentMapHistoryRandomDungeonInformationOnUiThread(randomDungeonTier, randomDungeonLevel);
+            return;
+        }
+
+        _ = Application.Current.Dispatcher.InvokeAsync(() => UpdateCurrentMapHistoryRandomDungeonInformationOnUiThread(randomDungeonTier, randomDungeonLevel));
+    }
+
+    private void UpdateCurrentMapHistoryRandomDungeonInformationOnUiThread(Tier randomDungeonTier, int randomDungeonLevel)
+    {
+        if (_mainWindowViewModel?.EnteredCluster is null)
+        {
+            return;
+        }
+
+        var currentHistoryEntry = _mainWindowViewModel.EnteredCluster.FirstOrDefault(x => x.Guid == CurrentCluster.Guid && x.MapType == MapType.RandomDungeon);
+        currentHistoryEntry?.SetRandomDungeonTrackingInfo(randomDungeonTier, randomDungeonLevel);
+    }
+
     #endregion
 
     #region Ui
