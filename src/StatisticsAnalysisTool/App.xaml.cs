@@ -227,6 +227,7 @@ public partial class App
 
         try
         {
+            ServiceLocator.Resolve<SatNotificationManager>().StopShowingNotifications();
             AutoUpdateController.Dispose();
             _trackingController?.StopTracking();
             CriticalData.Save();
@@ -251,6 +252,7 @@ public partial class App
 
         try
         {
+            ServiceLocator.Resolve<SatNotificationManager>().StopShowingNotifications();
             AutoUpdateController.Dispose();
             _trackingController?.StopTracking();
             CriticalData.Save();
