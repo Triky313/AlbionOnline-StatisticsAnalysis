@@ -59,6 +59,8 @@ public sealed class ClusterInfo : BaseViewModel
             _randomDungeonTier = value;
             OnPropertyChanged();
             OnPropertyChanged(nameof(RandomDungeonTierLevelToolTip));
+            OnPropertyChanged(nameof(MapHistoryClipboardName));
+            OnPropertyChanged(nameof(MapHistoryClipboardText));
         }
     }
 
@@ -76,6 +78,8 @@ public sealed class ClusterInfo : BaseViewModel
             OnPropertyChanged();
             OnPropertyChanged(nameof(HasRandomDungeonLevelIcon));
             OnPropertyChanged(nameof(RandomDungeonTierLevelToolTip));
+            OnPropertyChanged(nameof(MapHistoryClipboardName));
+            OnPropertyChanged(nameof(MapHistoryClipboardText));
         }
     }
 
@@ -107,6 +111,12 @@ public sealed class ClusterInfo : BaseViewModel
     {
         get
         {
+            var instanceClipboardName = GetInstanceMapHistoryClipboardName();
+            if (!string.IsNullOrWhiteSpace(instanceClipboardName))
+            {
+                return instanceClipboardName;
+            }
+
             if (!string.IsNullOrWhiteSpace(ClusterHistoryString2))
             {
                 return ClusterHistoryString2;
@@ -564,6 +574,32 @@ public sealed class ClusterInfo : BaseViewModel
         }
 
         return WorldData.GetUniqueNameOrDefault(MainClusterIndex) ?? MainClusterIndex;
+    }
+
+    private string GetInstanceMapHistoryClipboardName()
+    {
+        return MapType switch
+        {
+            MapType.RandomDungeon => ComposeInstanceClipboardName($"{RandomDungeonTierLevelToolTip} Dungeon"),
+            MapType.Mists => ComposeInstanceClipboardName("Mists"),
+            MapType.Expedition => ComposeInstanceClipboardName("Expedition"),
+            MapType.CorruptedDungeon => ComposeInstanceClipboardName("Corrupted Dungeon"),
+            MapType.HellGate => ComposeInstanceClipboardName("HellGate"),
+            MapType.AbyssalDepths => ComposeInstanceClipboardName("AbyssalDepths"),
+            _ => string.Empty
+        };
+    }
+
+    private string ComposeInstanceClipboardName(string instanceName)
+    {
+        var mainClusterName = GetMainClusterName();
+
+        if (string.IsNullOrWhiteSpace(mainClusterName) || mainClusterName.StartsWith("@"))
+        {
+            return $"({instanceName})";
+        }
+
+        return $"{mainClusterName} ({instanceName})";
     }
 
     private string GetRandomDungeonTierString()
