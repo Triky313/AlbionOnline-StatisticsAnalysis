@@ -4,12 +4,14 @@ using System;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Media;
+using System.Windows.Threading;
 
 namespace StatisticsAnalysisTool.Notification;
 
 public class SatNotificationManager
 {
     private readonly NotificationManager _notificationManager;
+    private volatile bool _isShuttingDown;
 
     public SatNotificationManager(NotificationManager notificationManager)
     {
@@ -26,139 +28,115 @@ public class SatNotificationManager
     public async Task ShowSuccessAsync(string title, string message)
     {
         if (!SettingsController.CurrentSettings.IsNotificationTrackingStatusActive
-            || ForegroundText1 == null
-            || BackgroundBlue == null)
+            || _isShuttingDown)
         {
             return;
         }
 
-        try
-        {
-            await Application.Current.Dispatcher.InvokeAsync(() =>
-            {
-                var content = new NotificationContent
-                {
-                    Title = title,
-                    Message = message,
-                    Type = NotificationType.Success,
-                    TrimType = NotificationTextTrimType.AttachIfMoreRows,
-                    RowsCount = 1,
-                    CloseOnClick = true,
-                    Foreground = ForegroundText1,
-                    Background = BackgroundGreen
-                };
-
-                _notificationManager.Show(content);
-            });
-        }
-        catch (TaskCanceledException)
-        {
-            // ignore
-        }
+        await ShowNotificationAsync(title, message, NotificationType.Success, 1, "SolidColorBrush.Notification.Background.Green");
     }
 
     public async Task ShowErrorAsync(string title, string message)
     {
         if (!SettingsController.CurrentSettings.IsNotificationTrackingStatusActive
-            || ForegroundText1 == null
-            || BackgroundBlue == null)
+            || _isShuttingDown)
         {
             return;
         }
 
-        try
-        {
-            await Application.Current.Dispatcher.InvokeAsync(() =>
-            {
-                var content = new NotificationContent
-                {
-                    Title = title,
-                    Message = message,
-                    Type = NotificationType.Error,
-                    TrimType = NotificationTextTrimType.AttachIfMoreRows,
-                    RowsCount = 3,
-                    CloseOnClick = true,
-                    Foreground = ForegroundText1,
-                    Background = BackgroundRed
-                };
-
-                _notificationManager.Show(content);
-            });
-        }
-        catch (TaskCanceledException)
-        {
-            // ignore
-        }
+        await ShowNotificationAsync(title, message, NotificationType.Error, 3, "SolidColorBrush.Notification.Background.Red");
     }
 
     public async Task ShowTrackingStatusAsync(string title, string message)
     {
         if (!SettingsController.CurrentSettings.IsNotificationTrackingStatusActive
-            || ForegroundText1 == null
-            || BackgroundBlue == null)
+            || _isShuttingDown)
         {
             return;
         }
 
-        try
-        {
-            await Application.Current.Dispatcher.InvokeAsync(() =>
-            {
-                var content = new NotificationContent
-                {
-                    Title = title,
-                    Message = message,
-                    Type = NotificationType.Information,
-                    TrimType = NotificationTextTrimType.AttachIfMoreRows,
-                    RowsCount = 1,
-                    CloseOnClick = true,
-                    Foreground = ForegroundText1,
-                    Background = BackgroundBlue
-                };
-
-                _notificationManager.Show(content);
-            });
-        }
-        catch (TaskCanceledException)
-        {
-            // ignore
-        }
+        await ShowNotificationAsync(title, message, NotificationType.Information, 1, "SolidColorBrush.Notification.Background.Blue");
     }
 
     public async Task ShowTradeAsync(Trade.Trade trade)
     {
         if (!SettingsController.CurrentSettings.IsNotificationFilterTradeActive
             || trade == null
-            || ForegroundText1 == null
-            || BackgroundBlue == null
-            || Application.Current == null)
+            || _isShuttingDown)
+        {
+            return;
+        }
+
+        await ShowNotificationAsync(trade.TradeNotificationTitleText, $"{trade.LocationName} - {trade.Item?.LocalizedName}", NotificationType.Success, 2, "SolidColorBrush.Notification.Background.Green");
+    }
+
+    public void StopShowingNotifications()
+    {
+        _isShuttingDown = true;
+    }
+
+    private async Task ShowNotificationAsync(string title, string message, NotificationType notificationType, uint rowsCount, string backgroundResourceKey)
+    {
+        if (!TryGetActiveDispatcher(out Dispatcher dispatcher))
         {
             return;
         }
 
         try
         {
-            await Application.Current.Dispatcher.InvokeAsync(() =>
+            await dispatcher.InvokeAsync(() =>
             {
+                if (_isShuttingDown
+                    || dispatcher.HasShutdownStarted
+                    || dispatcher.HasShutdownFinished
+                    || !TryGetBrush("SolidColorBrush.Text.1", out SolidColorBrush foreground)
+                    || !TryGetBrush(backgroundResourceKey, out SolidColorBrush background))
+                {
+                    return;
+                }
+
                 var content = new NotificationContent
                 {
-                    Title = trade.TradeNotificationTitleText,
-                    Message = $"{trade.LocationName} - {trade.Item?.LocalizedName}",
-                    Type = NotificationType.Success,
+                    Title = title,
+                    Message = message,
+                    Type = notificationType,
                     TrimType = NotificationTextTrimType.AttachIfMoreRows,
-                    RowsCount = 2,
+                    RowsCount = rowsCount,
                     CloseOnClick = true,
-                    Foreground = ForegroundText1,
-                    Background = BackgroundGreen
+                    Foreground = foreground,
+                    Background = background
                 };
 
                 _notificationManager.Show(content);
             });
         }
-        catch (TaskCanceledException)
+        catch (OperationCanceledException)
         {
-            // ignore
         }
+    }
+
+    private bool TryGetActiveDispatcher(out Dispatcher dispatcher)
+    {
+        dispatcher = Application.Current?.Dispatcher;
+        return !_isShuttingDown
+               && dispatcher != null
+               && !dispatcher.HasShutdownStarted
+               && !dispatcher.HasShutdownFinished;
+    }
+
+    private static bool TryGetBrush(string resourceKey, out SolidColorBrush brush)
+    {
+        brush = null;
+
+        if (Application.Current == null
+            || !Application.Current.Resources.Contains(resourceKey)
+            || Application.Current.Resources[resourceKey] is not SolidColorBrush resourceBrush)
+        {
+            return false;
+        }
+
+        brush = resourceBrush;
+        return true;
     }
 
     #region Test

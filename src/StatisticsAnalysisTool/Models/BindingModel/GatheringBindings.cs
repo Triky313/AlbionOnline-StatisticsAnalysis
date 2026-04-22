@@ -404,7 +404,7 @@ public class GatheringBindings : BaseViewModel
                 GeometryStroke = GetResourceTypeBrush(selectedSeriesFilter.ResourceType, false),
                 GeometryFill = GetResourceTypeBrush(selectedSeriesFilter.ResourceType, false),
                 GeometrySize = 5,
-                YToolTipLabelFormatter = chartPoint => Math.Round(chartPoint.Coordinate.PrimaryValue).ToString("F0", CultureInfo.CurrentCulture)
+                YToolTipLabelFormatter = chartPoint => chartPoint.Coordinate.PrimaryValue.ToChartTooltipNumberString()
             };
 
             seriesCollection.Add(lineSeries);

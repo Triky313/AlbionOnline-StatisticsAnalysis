@@ -607,11 +607,18 @@ public static class ItemController
     {
         var localFilePath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, Settings.Default.GameFilesDirectoryName, Settings.Default.ItemsJsonFileName);
         _itemsJson = await GetItemsJsonFromLocal(localFilePath);
+
+        if (!IsItemsJsonLoaded())
+        {
+            ShopCategories = null;
+            return false;
+        }
+
         SetFullItemInfoToItems();
 
         SetCategories(_itemsJson);
 
-        return _itemsJson?.Items != null;
+        return true;
     }
 
     private static async Task<ItemsJson> GetItemsJsonFromLocal(string localFilePath)
@@ -631,7 +638,7 @@ public static class ItemController
             };
 
             await using var stream = File.OpenRead(localFilePath);
-            return await JsonSerializer.DeserializeAsync<ItemsJson>(stream, options);
+            return await JsonSerializer.DeserializeAsync<ItemsJson>(stream, options) ?? new ItemsJson();
         }
         catch
         {
@@ -980,7 +987,7 @@ public static class ItemController
 
     private static void SetCategories(ItemsJson itemsJson)
     {
-        ShopCategories = itemsJson.Items.ShopCategories;
+        ShopCategories = itemsJson?.Items?.ShopCategories;
     }
 
     #endregion

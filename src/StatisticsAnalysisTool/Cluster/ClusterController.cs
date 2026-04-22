@@ -57,9 +57,10 @@ public sealed class ClusterController
         CurrentCluster.SetClusterInfo(mapType, mapGuid, clusterIndex, instanceName, worldMapDataType, dungeonInformation, mainClusterIndex, mistsDungeonTier);
     }
 
-    public void SetJoinClusterInformation(string index, string mainClusterIndex, Guid? mapGuid)
+    public void SetJoinClusterInformation(string index, string mainClusterIndex, Guid? mapGuid, MapType mapType)
     {
-        CurrentCluster.SetJoinClusterInfo(index, mainClusterIndex, mapGuid);
+        CurrentCluster.SetJoinClusterInfo(index, mainClusterIndex, mapGuid, mapType);
+        CurrentCluster.Entered = DateTime.UtcNow;
         CurrentCluster.ClusterInfoFullyAvailable = true;
 
         if (_trackingController.IsTrackingAllowedByMainCharacter())
@@ -119,6 +120,35 @@ public sealed class ClusterController
         {
             _mainWindowViewModel?.EnteredCluster?.RemoveAt(_mainWindowViewModel.EnteredCluster.Count - 1);
         }
+    }
+
+    public void UpdateCurrentMapHistoryRandomDungeonInformation(Tier randomDungeonTier, int randomDungeonLevel)
+    {
+        if (CurrentCluster.MapType != MapType.RandomDungeon)
+        {
+            return;
+        }
+
+        CurrentCluster.SetRandomDungeonTrackingInfo(randomDungeonTier, randomDungeonLevel);
+
+        if (Application.Current.Dispatcher.CheckAccess())
+        {
+            UpdateCurrentMapHistoryRandomDungeonInformationOnUiThread(randomDungeonTier, randomDungeonLevel);
+            return;
+        }
+
+        _ = Application.Current.Dispatcher.InvokeAsync(() => UpdateCurrentMapHistoryRandomDungeonInformationOnUiThread(randomDungeonTier, randomDungeonLevel));
+    }
+
+    private void UpdateCurrentMapHistoryRandomDungeonInformationOnUiThread(Tier randomDungeonTier, int randomDungeonLevel)
+    {
+        if (_mainWindowViewModel?.EnteredCluster is null)
+        {
+            return;
+        }
+
+        var currentHistoryEntry = _mainWindowViewModel.EnteredCluster.FirstOrDefault(x => x.Guid == CurrentCluster.Guid && x.MapType == MapType.RandomDungeon);
+        currentHistoryEntry?.SetRandomDungeonTrackingInfo(randomDungeonTier, randomDungeonLevel);
     }
 
     #endregion

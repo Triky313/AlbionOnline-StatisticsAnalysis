@@ -38,7 +38,6 @@ public sealed class DungeonController
     private Guid? _lastMapGuid;
     private int _addDungeonCounter;
     private readonly List<DiscoveredItem> _discoveredLoot = new();
-    private ObservableCollection<Guid> _lastGuidWithRecognizedLevel = new();
 
     public DungeonController(TrackingController trackingController, MainWindowViewModel mainWindowViewModel)
     {
@@ -123,7 +122,6 @@ public sealed class DungeonController
             lastDungeon.EndTimer();
             lastDungeon.Status = DungeonStatus.Done;
             await SaveInFileAfterExceedingLimit(NumberOfDungeonsUntilSaved);
-            _lastGuidWithRecognizedLevel = [];
         }
 
         _lastMapGuid = mapGuid;
@@ -453,11 +451,6 @@ public sealed class DungeonController
             return;
         }
 
-        if (_lastGuidWithRecognizedLevel.Contains(currentGuid))
-        {
-            return;
-        }
-
         if (mobIndex is null || ClusterController.CurrentCluster.Guid != currentGuid)
         {
             return;
@@ -483,11 +476,11 @@ public sealed class DungeonController
                     return;
                 }
 
-                randomDungeon.Level = randomDungeon.Level < 0 ? MobsData.GetMobLevelByIndex((int) mobIndex, hitPointsMax) : randomDungeon.Level;
-
-                if (randomDungeon.Level > 0)
+                var level = GetLevelFromMob(randomDungeon.MapType, (int) mobIndex, hitPointsMax);
+                if (level > randomDungeon.Level)
                 {
-                    _lastGuidWithRecognizedLevel = dun.GuidList;
+                    randomDungeon.Level = level;
+                    UpdateCurrentMapHistoryRandomDungeonInformation(randomDungeon);
                 }
             });
         }
@@ -521,10 +514,27 @@ public sealed class DungeonController
         {
             await Application.Current.Dispatcher.InvokeAsync(() =>
             {
-                var mobTier = (Tier) MobsData.GetMobTierByIndex((int) mobIndex);
                 var dun = _mainWindowViewModel.DungeonBindings.Dungeons?.FirstOrDefault(x => x.GuidList.Contains(currentGuid) && x.Status == DungeonStatus.Active);
-                if (dun == null || dun.Tier >= mobTier)
+                if (dun == null)
                 {
+                    return;
+                }
+
+                var mobTier = GetTierFromMob(dun.MapType, (int) mobIndex);
+                if (mobTier == Tier.Unknown)
+                {
+                    return;
+                }
+
+                if (dun.MapType == MapType.RandomDungeon)
+                {
+                    var previousTier = dun.Tier;
+                    SetRandomDungeonTier(dun, mobTier);
+                    if (dun.Tier != previousTier && dun is RandomDungeonFragment randomDungeon)
+                    {
+                        UpdateCurrentMapHistoryRandomDungeonInformation(randomDungeon);
+                    }
+
                     return;
                 }
 
@@ -535,6 +545,39 @@ public sealed class DungeonController
         {
             // ignored
         }
+    }
+
+    private static int GetLevelFromMob(MapType mapType, int mobIndex, double hitPointsMax)
+    {
+        return mapType switch
+        {
+            MapType.RandomDungeon => MobsData.GetRandomDungeonMobLevelByIndex(mobIndex, hitPointsMax),
+            _ => MobsData.GetMobLevelByIndex(mobIndex, hitPointsMax)
+        };
+    }
+
+    private static Tier GetTierFromMob(MapType mapType, int mobIndex)
+    {
+        return mapType switch
+        {
+            MapType.RandomDungeon => (Tier) MobsData.GetRandomDungeonMobTierByIndex(mobIndex),
+            _ => (Tier) MobsData.GetMobTierByIndex(mobIndex)
+        };
+    }
+
+    private static void SetRandomDungeonTier(DungeonBaseFragment dungeon, Tier mobTier)
+    {
+        if (dungeon.Tier != Tier.Unknown && dungeon.Tier <= mobTier)
+        {
+            return;
+        }
+
+        dungeon.Tier = mobTier;
+    }
+
+    private void UpdateCurrentMapHistoryRandomDungeonInformation(RandomDungeonFragment randomDungeon)
+    {
+        _trackingController.ClusterController.UpdateCurrentMapHistoryRandomDungeonInformation(randomDungeon.Tier, randomDungeon.Level);
     }
 
     #endregion

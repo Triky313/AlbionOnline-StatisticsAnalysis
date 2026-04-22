@@ -1,7 +1,7 @@
-﻿using StatisticsAnalysisTool.Enumerations;
+using StatisticsAnalysisTool.Common;
+using StatisticsAnalysisTool.Enumerations;
 using StatisticsAnalysisTool.GameFileData;
 using StatisticsAnalysisTool.Localization;
-using StatisticsAnalysisTool.Common;
 using StatisticsAnalysisTool.ViewModels;
 using System;
 using System.Collections.Generic;
@@ -12,6 +12,8 @@ namespace StatisticsAnalysisTool.Cluster;
 public sealed class ClusterInfo : BaseViewModel
 {
     private bool _isSelectedInMapHistory;
+    private Tier _randomDungeonTier = Tier.Unknown;
+    private int _randomDungeonLevel = -1;
     private string _mapHistoryNote = string.Empty;
     private ICommand _toggleMapHistorySelectionCommand;
 
@@ -44,6 +46,47 @@ public sealed class ClusterInfo : BaseViewModel
     public MistsRarity MistsRarity { get; private set; }
     public List<MapMarkerType> MapMarkers => WorldData.GetMapMarkers(Index);
 
+    public Tier RandomDungeonTier
+    {
+        get => _randomDungeonTier;
+        private set
+        {
+            if (_randomDungeonTier == value)
+            {
+                return;
+            }
+
+            _randomDungeonTier = value;
+            OnPropertyChanged();
+            OnPropertyChanged(nameof(RandomDungeonTierLevelToolTip));
+            OnPropertyChanged(nameof(MapHistoryClipboardName));
+            OnPropertyChanged(nameof(MapHistoryClipboardText));
+        }
+    }
+
+    public int RandomDungeonLevel
+    {
+        get => _randomDungeonLevel;
+        private set
+        {
+            if (_randomDungeonLevel == value)
+            {
+                return;
+            }
+
+            _randomDungeonLevel = value;
+            OnPropertyChanged();
+            OnPropertyChanged(nameof(HasRandomDungeonLevelIcon));
+            OnPropertyChanged(nameof(RandomDungeonTierLevelToolTip));
+            OnPropertyChanged(nameof(MapHistoryClipboardName));
+            OnPropertyChanged(nameof(MapHistoryClipboardText));
+        }
+    }
+
+    public bool HasRandomDungeonLevelIcon => MapType == MapType.RandomDungeon && RandomDungeonLevel is >= 0 and <= 4;
+
+    public string RandomDungeonTierLevelToolTip => $"T{GetRandomDungeonTierString()}.{GetRandomDungeonLevelString()}";
+
     public bool IsSelectedInMapHistory
     {
         get => _isSelectedInMapHistory;
@@ -68,6 +111,12 @@ public sealed class ClusterInfo : BaseViewModel
     {
         get
         {
+            var instanceClipboardName = GetInstanceMapHistoryClipboardName();
+            if (!string.IsNullOrWhiteSpace(instanceClipboardName))
+            {
+                return instanceClipboardName;
+            }
+
             if (!string.IsNullOrWhiteSpace(ClusterHistoryString2))
             {
                 return ClusterHistoryString2;
@@ -144,6 +193,7 @@ public sealed class ClusterInfo : BaseViewModel
         AvalonTunnelType = clusterInfo.AvalonTunnelType;
         MapTypeString = clusterInfo.MapTypeString;
         MapHistoryNote = clusterInfo.MapHistoryNote;
+        SetRandomDungeonTrackingInfo(clusterInfo.RandomDungeonTier, clusterInfo.RandomDungeonLevel);
         ClusterHistoryString();
     }
 
@@ -158,6 +208,7 @@ public sealed class ClusterInfo : BaseViewModel
         DungeonInformation = dungeonInformation;
         MistsDungeonTier = mistsDungeonTier;
         MistsRarity = GetMistsRarity(dungeonInformation);
+        ResetRandomDungeonTrackingInfo();
 
         MainClusterIndex = mainClusterIndex;
         WorldJsonType = null;
@@ -168,17 +219,59 @@ public sealed class ClusterInfo : BaseViewModel
         MapTypeString = GetMapTypeName(MapType);
     }
 
-    public void SetJoinClusterInfo(string index, string mainClusterIndex, Guid? mapGuid)
+    public void SetJoinClusterInfo(string index, string mainClusterIndex, Guid? mapGuid, MapType mapType)
     {
-        Guid = mapGuid;
-        MainClusterIndex ??= mainClusterIndex;
-        WorldJsonType = WorldData.GetWorldJsonTypeByIndex(index) ?? WorldData.GetWorldJsonTypeByIndex(mainClusterIndex) ?? string.Empty;
-        File = WorldData.GetFileByIndex(index) ?? WorldData.GetFileByIndex(mainClusterIndex) ?? string.Empty;
+        if (!string.IsNullOrWhiteSpace(index))
+        {
+            Index = index;
+        }
+
+        if (mapGuid is not null)
+        {
+            Guid = mapGuid;
+        }
+
+        if (mapType is not MapType.Unknown)
+        {
+            MapType = mapType;
+        }
+
+        MainClusterIndex = string.IsNullOrWhiteSpace(mainClusterIndex) ? Index : mainClusterIndex;
+
+        WorldJsonType = WorldData.GetWorldJsonTypeByIndex(Index) ?? WorldData.GetWorldJsonTypeByIndex(MainClusterIndex) ?? string.Empty;
+        File = WorldData.GetFileByIndex(Index) ?? WorldData.GetFileByIndex(MainClusterIndex) ?? string.Empty;
+        UniqueName = WorldData.GetUniqueNameOrNull(Index);
+        UniqueClusterName = WorldData.GetUniqueNameOrDefault(Index) ?? InstanceName ?? string.Empty;
+        MapTypeString = GetMapTypeName(MapType);
 
         Tier = GetTier(File);
         ClusterMode = GetClusterType(WorldJsonType);
         AvalonTunnelType = GetTunnelType(WorldJsonType);
         ClusterHistoryString();
+    }
+
+    public void SetRandomDungeonTrackingInfo(Tier randomDungeonTier, int randomDungeonLevel)
+    {
+        if (MapType != MapType.RandomDungeon)
+        {
+            return;
+        }
+
+        if (randomDungeonTier != Tier.Unknown)
+        {
+            RandomDungeonTier = randomDungeonTier;
+        }
+
+        if (randomDungeonLevel >= 0)
+        {
+            RandomDungeonLevel = randomDungeonLevel;
+        }
+    }
+
+    private void ResetRandomDungeonTrackingInfo()
+    {
+        RandomDungeonTier = Tier.Unknown;
+        RandomDungeonLevel = -1;
     }
 
     public void ClusterHistoryString()
@@ -191,7 +284,15 @@ public sealed class ClusterInfo : BaseViewModel
             return;
         }
 
-        if (MapType is MapType.Arena or MapType.CorruptedDungeon or MapType.RandomDungeon or MapType.Expedition or MapType.HellGate or MapType.MistsDungeon or MapType.Mists)
+        if (IsInstancedMapType(MapType))
+        {
+            ClusterHistoryString1 = MapTypeString;
+            ClusterHistoryString2 = GetMainClusterName();
+            ClusterHistoryString3 = string.Empty;
+            return;
+        }
+
+        if (MapType is MapType.Arena)
         {
             ClusterHistoryString1 = MapTypeString;
             ClusterHistoryString2 = string.Empty;
@@ -450,7 +551,75 @@ public sealed class ClusterInfo : BaseViewModel
             MapType.Arena => LocalizationController.Translation("ARENA"),
             MapType.MistsDungeon => LocalizationController.Translation("MISTS_DUNGEON"),
             MapType.Mists => LocalizationController.Translation("MISTS"),
+            MapType.AbyssalDepths => LocalizationController.Translation("ABYSSALDEPTHS"),
             _ => ""
         };
+    }
+
+    private static bool IsInstancedMapType(MapType mapType)
+    {
+        return mapType is MapType.RandomDungeon
+            or MapType.CorruptedDungeon
+            or MapType.Expedition
+            or MapType.HellGate
+            or MapType.Mists
+            or MapType.MistsDungeon
+            or MapType.AbyssalDepths;
+    }
+
+    private string GetMainClusterName()
+    {
+        if (string.IsNullOrWhiteSpace(MainClusterIndex))
+        {
+            return string.Empty;
+        }
+
+        return WorldData.GetUniqueNameOrDefault(MainClusterIndex) ?? MainClusterIndex;
+    }
+
+    private string GetInstanceMapHistoryClipboardName()
+    {
+        return MapType switch
+        {
+            MapType.RandomDungeon => ComposeInstanceClipboardName($"{RandomDungeonTierLevelToolTip} Dungeon"),
+            MapType.Mists => ComposeInstanceClipboardName("Mists"),
+            MapType.Expedition => ComposeInstanceClipboardName("Expedition"),
+            MapType.CorruptedDungeon => ComposeInstanceClipboardName("Corrupted Dungeon"),
+            MapType.HellGate => ComposeInstanceClipboardName("HellGate"),
+            MapType.AbyssalDepths => ComposeInstanceClipboardName("AbyssalDepths"),
+            _ => string.Empty
+        };
+    }
+
+    private string ComposeInstanceClipboardName(string instanceName)
+    {
+        var mainClusterName = GetMainClusterName();
+
+        if (string.IsNullOrWhiteSpace(mainClusterName) || mainClusterName.StartsWith("@"))
+        {
+            return $"({instanceName})";
+        }
+
+        return $"{mainClusterName} ({instanceName})";
+    }
+
+    private string GetRandomDungeonTierString()
+    {
+        if (RandomDungeonTier == Tier.Unknown)
+        {
+            return "?";
+        }
+
+        return ((int) RandomDungeonTier).ToString();
+    }
+
+    private string GetRandomDungeonLevelString()
+    {
+        if (RandomDungeonLevel is < 0 or > 4)
+        {
+            return "?";
+        }
+
+        return RandomDungeonLevel.ToString();
     }
 }

@@ -1,4 +1,4 @@
-﻿using LiveChartsCore;
+using LiveChartsCore;
 using LiveChartsCore.Defaults;
 using LiveChartsCore.SkiaSharpView;
 using Serilog;
@@ -56,6 +56,7 @@ public class ItemWindowViewModel : BaseViewModel
     private List<MarketResponse> _currentItemPrices = new();
     private ExtraItemInformation _extraItemInformation = new();
     private string _errorBarText;
+    private Exception _errorBarException;
     private string _refreshIconTooltipText;
     private ObservableCollection<MainTabLocationFilterObject> _locationFilters;
     private int _tabControlSelectedIndex = -1;
@@ -748,9 +749,10 @@ public class ItemWindowViewModel : BaseViewModel
         IsTaskProgressbarIndeterminate = true;
     }
 
-    private void SetErrorBar(Visibility visibility, string errorMessage)
+    private void SetErrorBar(Visibility visibility, string errorMessage, Exception exception = null)
     {
         ErrorBarText = errorMessage;
+        ErrorBarException = exception;
         ErrorBarVisibility = visibility;
     }
 
@@ -1089,7 +1091,8 @@ public class ItemWindowViewModel : BaseViewModel
                 Stroke = Locations.GetLocationBrush(marketHistory.Location.GetMarketLocationByLocationNameOrId(), false),
                 GeometryStroke = Locations.GetLocationBrush(marketHistory.Location.GetMarketLocationByLocationNameOrId(), false),
                 GeometryFill = Locations.GetLocationBrush(marketHistory.Location.GetMarketLocationByLocationNameOrId(), true),
-                GeometrySize = 7
+                GeometrySize = 7,
+                YToolTipLabelFormatter = chartPoint => chartPoint.Coordinate.PrimaryValue.ToChartTooltipNumberString()
             };
 
             seriesCollectionHistory.Add(lineSeries);
@@ -1307,6 +1310,16 @@ public class ItemWindowViewModel : BaseViewModel
         set
         {
             _errorBarText = value;
+            OnPropertyChanged();
+        }
+    }
+
+    public Exception ErrorBarException
+    {
+        get => _errorBarException;
+        set
+        {
+            _errorBarException = value;
             OnPropertyChanged();
         }
     }

@@ -5,13 +5,23 @@
     <Style x:Key="Grid.Error.Bar" TargetType="Grid">
         <Setter Property="Background" Value="{StaticResource SolidColorBrush.Accent.Red.2}"/>
         <Setter Property="VerticalAlignment" Value="Bottom"/>
-        <Setter Property="Height" Value="35"/>
+        <Setter Property="Height" Value="70"/>
     </Style>
 
-    <Style x:Key="Grid.Error.Bar.Label" TargetType="Label">
+    <Style x:Key="Grid.Error.Bar.Label" TargetType="TextBlock">
         <Setter Property="Foreground" Value="{StaticResource SolidColorBrush.Text.1}"/>
-        <Setter Property="Margin" Value="10,0,40,0"/>
+        <Setter Property="Margin" Value="10,9,40,0"/>
         <Setter Property="VerticalAlignment" Value="Center"/>
+        <Setter Property="TextWrapping" Value="NoWrap"/>
+        <Setter Property="TextTrimming" Value="CharacterEllipsis"/>
+    </Style>
+
+    <Style x:Key="Grid.Error.Bar.CopyLink" TargetType="TextBlock">
+        <Setter Property="Foreground" Value="{StaticResource SolidColorBrush.Text.1}"/>
+        <Setter Property="Margin" Value="10,0,40,8"/>
+        <Setter Property="VerticalAlignment" Value="Center"/>
+        <Setter Property="Cursor" Value="Hand"/>
+        <Setter Property="TextDecorations" Value="Underline"/>
     </Style>
 
     <Style TargetType="{x:Type Button}" x:Key="Window.Error.Bar.Button.Style">
@@ -59,13 +69,23 @@
     <Style x:Key="Grid.Warning.Bar" TargetType="Grid">
         <Setter Property="Background" Value="{StaticResource SolidColorBrush.Accent.Yellow.3}"/>
         <Setter Property="VerticalAlignment" Value="Bottom"/>
-        <Setter Property="Height" Value="35"/>
+        <Setter Property="Height" Value="70"/>
     </Style>
 
-    <Style x:Key="Grid.Warning.Bar.Label" TargetType="Label">
+    <Style x:Key="Grid.Warning.Bar.Label" TargetType="TextBlock">
         <Setter Property="Foreground" Value="{StaticResource SolidColorBrush.Text.1}"/>
-        <Setter Property="Margin" Value="10,0,40,0"/>
+        <Setter Property="Margin" Value="10,9,40,0"/>
         <Setter Property="VerticalAlignment" Value="Center"/>
+        <Setter Property="TextWrapping" Value="NoWrap"/>
+        <Setter Property="TextTrimming" Value="CharacterEllipsis"/>
+    </Style>
+
+    <Style x:Key="Grid.Warning.Bar.CopyLink" TargetType="TextBlock">
+        <Setter Property="Foreground" Value="{StaticResource SolidColorBrush.Text.1}"/>
+        <Setter Property="Margin" Value="10,0,40,8"/>
+        <Setter Property="VerticalAlignment" Value="Center"/>
+        <Setter Property="Cursor" Value="Hand"/>
+        <Setter Property="TextDecorations" Value="Underline"/>
     </Style>
 
     <Style TargetType="{x:Type Button}" x:Key="Window.Warning.Bar.Button.Style">
@@ -114,13 +134,23 @@
     <Style x:Key="Grid.Information.Bar" TargetType="Grid">
         <Setter Property="Background" Value="{StaticResource SolidColorBrush.Accent.Blue.3}"/>
         <Setter Property="VerticalAlignment" Value="Bottom"/>
-        <Setter Property="Height" Value="35"/>
+        <Setter Property="Height" Value="70"/>
     </Style>
 
-    <Style x:Key="Grid.Information.Bar.Label" TargetType="Label">
+    <Style x:Key="Grid.Information.Bar.Label" TargetType="TextBlock">
         <Setter Property="Foreground" Value="{StaticResource SolidColorBrush.Text.1}"/>
-        <Setter Property="Margin" Value="10,0,40,0"/>
+        <Setter Property="Margin" Value="10,9,40,0"/>
         <Setter Property="VerticalAlignment" Value="Center"/>
+        <Setter Property="TextWrapping" Value="NoWrap"/>
+        <Setter Property="TextTrimming" Value="CharacterEllipsis"/>
+    </Style>
+
+    <Style x:Key="Grid.Information.Bar.CopyLink" TargetType="TextBlock">
+        <Setter Property="Foreground" Value="{StaticResource SolidColorBrush.Text.1}"/>
+        <Setter Property="Margin" Value="10,0,40,8"/>
+        <Setter Property="VerticalAlignment" Value="Center"/>
+        <Setter Property="Cursor" Value="Hand"/>
+        <Setter Property="TextDecorations" Value="Underline"/>
     </Style>
 
     <Style TargetType="{x:Type Button}" x:Key="Window.Information.Bar.Button.Style">

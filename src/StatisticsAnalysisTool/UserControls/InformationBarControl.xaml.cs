@@ -1,5 +1,7 @@
-﻿using StatisticsAnalysisTool.ViewModels;
+using StatisticsAnalysisTool.HintBar;
+using StatisticsAnalysisTool.ViewModels;
 using System.Windows;
+using System.Windows.Input;
 
 namespace StatisticsAnalysisTool.UserControls;
 
@@ -12,10 +14,10 @@ public partial class InformationBarControl
     {
         InitializeComponent();
     }
-        
+
     public string InformationText
     {
-        get => (string)GetValue(InformationTextProperty);
+        get => (string) GetValue(InformationTextProperty);
         set => SetValue(InformationTextProperty, value);
     }
 
@@ -25,10 +27,16 @@ public partial class InformationBarControl
     {
         Application.Current.Dispatcher.Invoke(() =>
         {
-            var mainWindowViewModel = (MainWindowViewModel) DataContext;
-            
-            mainWindowViewModel.InformationBarText = string.Empty;
-            mainWindowViewModel.InformationBarVisibility = Visibility.Collapsed;
+            if (DataContext is MainWindowViewModel mainWindowViewModel)
+            {
+                mainWindowViewModel.InformationBarText = string.Empty;
+                mainWindowViewModel.InformationBarVisibility = Visibility.Collapsed;
+            }
         });
+    }
+
+    private void CopyToClipboard_MouseLeftButtonUp(object sender, MouseButtonEventArgs e)
+    {
+        HintBarClipboard.Copy("Information", InformationText);
     }
 }

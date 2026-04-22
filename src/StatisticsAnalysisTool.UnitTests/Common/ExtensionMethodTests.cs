@@ -391,4 +391,42 @@ public class ExtensionMethodTests
 
         result.Should().BeEmpty();
     }
+
+    [Test]
+    public void ToChartTooltipNumberString_WithGermanCulture_UsesGermanGroupSeparator()
+    {
+        var currentCulture = CultureInfo.CurrentCulture;
+
+        try
+        {
+            CultureInfo.CurrentCulture = CultureInfo.GetCultureInfo("de-DE");
+
+            var result = 1000000d.ToChartTooltipNumberString();
+
+            result.Should().Be("1.000.000");
+        }
+        finally
+        {
+            CultureInfo.CurrentCulture = currentCulture;
+        }
+    }
+
+    [Test]
+    public void ToChartTooltipNumberString_WithEnglishCulture_UsesEnglishGroupSeparator()
+    {
+        var currentCulture = CultureInfo.CurrentCulture;
+
+        try
+        {
+            CultureInfo.CurrentCulture = CultureInfo.GetCultureInfo("en-US");
+
+            var result = 1000000d.ToChartTooltipNumberString();
+
+            result.Should().Be("1,000,000");
+        }
+        finally
+        {
+            CultureInfo.CurrentCulture = currentCulture;
+        }
+    }
 }

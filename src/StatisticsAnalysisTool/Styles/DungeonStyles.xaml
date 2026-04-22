@@ -2667,16 +2667,16 @@
                 <Setter Property="Foreground" Value="{StaticResource SolidColorBrush.Text.3}" />
             </DataTrigger>
             <DataTrigger Binding="{Binding Level, IsAsync=True, Mode=OneWay}" Value="1">
-                <Setter Property="Foreground" Value="{StaticResource SolidColorBrush.Text.2}" />
-            </DataTrigger>
-            <DataTrigger Binding="{Binding Level, IsAsync=True, Mode=OneWay}" Value="2">
                 <Setter Property="Foreground" Value="{StaticResource SolidColorBrush.Item.Level.Color.1}" />
             </DataTrigger>
-            <DataTrigger Binding="{Binding Level, IsAsync=True, Mode=OneWay}" Value="3">
+            <DataTrigger Binding="{Binding Level, IsAsync=True, Mode=OneWay}" Value="2">
                 <Setter Property="Foreground" Value="{StaticResource SolidColorBrush.Item.Level.Color.2}" />
             </DataTrigger>
-            <DataTrigger Binding="{Binding Level, IsAsync=True, Mode=OneWay}" Value="4">
+            <DataTrigger Binding="{Binding Level, IsAsync=True, Mode=OneWay}" Value="3">
                 <Setter Property="Foreground" Value="{StaticResource SolidColorBrush.Item.Level.Color.3}" />
+            </DataTrigger>
+            <DataTrigger Binding="{Binding Level, IsAsync=True, Mode=OneWay}" Value="4">
+                <Setter Property="Foreground" Value="{StaticResource SolidColorBrush.Item.Level.Color.4}" />
             </DataTrigger>
         </Style.Triggers>
     </Style>

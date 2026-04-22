@@ -1,4 +1,5 @@
 using StatisticsAnalysisTool.Common;
+using StatisticsAnalysisTool.Enumerations;
 using StatisticsAnalysisTool.GameFileData.Models;
 using StatisticsAnalysisTool.Properties;
 using System;
@@ -12,6 +13,11 @@ namespace StatisticsAnalysisTool.GameFileData;
 
 public static class MobsData
 {
+    private const double LevelZeroUpperHpPercent = 93;
+    private const double LevelOneUpperHpPercent = 109;
+    private const double LevelTwoUpperHpPercent = 125;
+    private const double LevelThreeUpperHpPercent = 146;
+    private const double LevelFourUpperHpPercent = 220;
     private static IEnumerable<MobJsonObject> _mobs;
 
     public static int GetMobTierByIndex(int index)
@@ -19,18 +25,50 @@ public static class MobsData
         return GetMobJsonObjectByIndex(index).Tier;
     }
 
+    public static int GetRandomDungeonMobTierByIndex(int index)
+    {
+        var mob = GetMobJsonObjectByIndex(index);
+        if (!IsReliableRandomDungeonTierMob(mob))
+        {
+            return (int) Tier.Unknown;
+        }
+
+        return mob.Tier - 1;
+    }
+
     public static int GetMobLevelByIndex(int index, double currentInGameMobHp)
     {
         var mob = GetMobJsonObjectByIndex(index);
 
+        return GetMobLevel(mob, currentInGameMobHp);
+    }
+
+    public static int GetRandomDungeonMobLevelByIndex(int index, double currentInGameMobHp)
+    {
+        var mob = GetMobJsonObjectByIndex(index);
+        if (!IsReliableRandomDungeonTierMob(mob))
+        {
+            return -1;
+        }
+
+        return GetMobLevel(mob, currentInGameMobHp);
+    }
+
+    private static int GetMobLevel(MobJsonObject mob, double currentInGameMobHp)
+    {
+        if (mob?.HitPointsMax <= 0 || currentInGameMobHp <= 0)
+        {
+            return -1;
+        }
+
         var mobHpInPercentOverMaxValue = 100 / mob.HitPointsMax * currentInGameMobHp;
         return mobHpInPercentOverMaxValue switch
         {
-            >= 99 and <= 111 => 0,
-            >= 115 and <= 127 => 1,
-            >= 135 and <= 147 => 2,
-            >= 157 and <= 174 => 3,
-            >= 183 and <= 195 => 4,
+            < LevelZeroUpperHpPercent => 0,
+            < LevelOneUpperHpPercent => 1,
+            < LevelTwoUpperHpPercent => 2,
+            < LevelThreeUpperHpPercent => 3,
+            <= LevelFourUpperHpPercent => 4,
             _ => -1
         };
     }
@@ -48,6 +86,26 @@ public static class MobsData
         }
 
         return _mobs.IsInBounds(index) ? _mobs?.ElementAt(index) : new MobJsonObject();
+    }
+
+    private static bool IsReliableRandomDungeonTierMob(MobJsonObject mob)
+    {
+        if (mob?.Tier is < 1 or > 8 || string.IsNullOrWhiteSpace(mob.UniqueName))
+        {
+            return false;
+        }
+
+        var uniqueName = mob.UniqueName.ToUpperInvariant();
+        if (!uniqueName.Contains("_MOB_RD_"))
+        {
+            return false;
+        }
+
+        return !uniqueName.Contains("_BOSS")
+            && !uniqueName.Contains("_MINIBOSS")
+            && !uniqueName.Contains("_SUMMON")
+            && !uniqueName.Contains("_UNATTACKABLE")
+            && !uniqueName.Contains("_TRAP");
     }
 
     public static async Task<bool> LoadDataAsync()

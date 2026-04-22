@@ -14,6 +14,8 @@ public static class ClusterInfoMapping
             WorldMapDataType = clusterInfo.WorldMapDataType,
             DungeonInformation = clusterInfo.DungeonInformation,
             MistsDungeonTier = clusterInfo.MistsDungeonTier,
+            RandomDungeonTier = clusterInfo.RandomDungeonTier,
+            RandomDungeonLevel = clusterInfo.RandomDungeonLevel,
             MainClusterIndex = clusterInfo.MainClusterIndex,
             MapHistoryNote = clusterInfo.MapHistoryNote
         };
@@ -35,7 +37,8 @@ public static class ClusterInfoMapping
 
         clusterInfo.Entered = clusterInfoDto.Entered;
         clusterInfo.MapHistoryNote = clusterInfoDto.MapHistoryNote ?? string.Empty;
-        clusterInfo.SetJoinClusterInfo(clusterInfoDto.Index, clusterInfoDto.MainClusterIndex, clusterInfoDto.Guid);
+        clusterInfo.SetJoinClusterInfo(clusterInfoDto.Index, clusterInfoDto.MainClusterIndex, clusterInfoDto.Guid, clusterInfoDto.MapType);
+        clusterInfo.SetRandomDungeonTrackingInfo(clusterInfoDto.RandomDungeonTier, clusterInfoDto.RandomDungeonLevel);
         clusterInfo.ClusterInfoFullyAvailable = true;
 
         return clusterInfo;

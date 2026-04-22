@@ -22,7 +22,7 @@ public class JoinResponseHandler(TrackingController trackingController) : Respon
         SetLocalUserData(value);
         _ = SetApiUserData(value);
 
-        trackingController.ClusterController.SetJoinClusterInformation(value.MapIndex, value.MainMapIndex, value.MapGuid);
+        trackingController.ClusterController.SetJoinClusterInformation(value.MapIndex, value.MainMapIndex, value.MapGuid, value.MapType);
 
         _mainWindowViewModel.UserTrackingBindings.Username = value.Username;
         _mainWindowViewModel.UserTrackingBindings.GuildName = value.GuildName;

@@ -138,7 +138,7 @@ public class TrackingController : ITrackingController
 
             Log.Error(ex, "StartTracking failed | provider={Provider} | admin={IsAdmin} | msg={UserMsg}", provider, ApplicationCore.IsAppStartedAsAdministrator(), userMsg);
 
-            _mainWindowViewModel.SetErrorBar(Visibility.Visible, userMsg);
+            _mainWindowViewModel.SetErrorBar(Visibility.Visible, userMsg, ex);
 
             try
             {
