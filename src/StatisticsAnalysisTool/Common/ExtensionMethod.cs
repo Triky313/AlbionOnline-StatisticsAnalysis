@@ -267,6 +267,21 @@ public static class ExtensionMethod
         }
     }
 
+    public static string ToChartTooltipNumberString(this double value)
+    {
+        if (double.IsNaN(value))
+        {
+            return 0d.ToString("N0", CultureInfo.CurrentCulture);
+        }
+
+        if (double.IsInfinity(value))
+        {
+            return double.MaxValue.ToString("N0", CultureInfo.CurrentCulture);
+        }
+
+        return Math.Round(value).ToString("N0", CultureInfo.CurrentCulture);
+    }
+
     public static string GetShortNumber(this decimal num, CultureInfo culture = null)
     {
         culture ??= CultureInfo.CurrentCulture;

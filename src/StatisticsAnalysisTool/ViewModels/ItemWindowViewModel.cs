@@ -1091,7 +1091,8 @@ public class ItemWindowViewModel : BaseViewModel
                 Stroke = Locations.GetLocationBrush(marketHistory.Location.GetMarketLocationByLocationNameOrId(), false),
                 GeometryStroke = Locations.GetLocationBrush(marketHistory.Location.GetMarketLocationByLocationNameOrId(), false),
                 GeometryFill = Locations.GetLocationBrush(marketHistory.Location.GetMarketLocationByLocationNameOrId(), true),
-                GeometrySize = 7
+                GeometrySize = 7,
+                YToolTipLabelFormatter = chartPoint => chartPoint.Coordinate.PrimaryValue.ToChartTooltipNumberString()
             };
 
             seriesCollectionHistory.Add(lineSeries);
