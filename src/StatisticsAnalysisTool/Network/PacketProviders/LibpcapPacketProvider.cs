@@ -1,4 +1,4 @@
-﻿#nullable enable
+#nullable enable
 
 using BinaryFormat;
 using BinaryFormat.EthernetFrame;
@@ -28,6 +28,8 @@ public class LibpcapPacketProvider : PacketProvider
 
     private const int ScoreToLock = 1;
     private static readonly TimeSpan LockIdleTimeout = TimeSpan.FromSeconds(20);
+    private static readonly TimeSpan DispatchErrorBackoff = TimeSpan.FromMilliseconds(250);
+    private const int ConsecutiveDispatchErrorsBeforeEscalation = 20;
 
     public override bool IsRunning => _thread is { IsAlive: true };
 
@@ -326,12 +328,15 @@ public class LibpcapPacketProvider : PacketProvider
                 return;
             }
 
+            var consecutiveDispatchErrors = 0;
+
             while (_cts is { IsCancellationRequested: false })
             {
                 int dispatched;
                 try
                 {
                     dispatched = dispatcher.Dispatch(50);
+                    consecutiveDispatchErrors = 0;
                 }
                 catch (ObjectDisposedException)
                 {
@@ -340,6 +345,13 @@ public class LibpcapPacketProvider : PacketProvider
                 catch (InvalidOperationException)
                 {
                     break;
+                }
+                catch (PcapException ex)
+                {
+                    consecutiveDispatchErrors++;
+                    LogDispatchError(ex, consecutiveDispatchErrors);
+                    _cts?.Token.WaitHandle.WaitOne(DispatchErrorBackoff);
+                    continue;
                 }
 
                 if (dispatched <= 0)
@@ -351,6 +363,20 @@ public class LibpcapPacketProvider : PacketProvider
         catch (Exception ex)
         {
             Log.Error(ex, "Libpcap worker crashed");
+        }
+    }
+
+    private static void LogDispatchError(PcapException ex, int consecutiveDispatchErrors)
+    {
+        if (consecutiveDispatchErrors == ConsecutiveDispatchErrorsBeforeEscalation)
+        {
+            Log.Error(ex, "Libpcap: pcap_dispatch failing repeatedly ({Count}x); capture may be degraded", consecutiveDispatchErrors);
+            return;
+        }
+
+        if (consecutiveDispatchErrors < ConsecutiveDispatchErrorsBeforeEscalation)
+        {
+            Log.Warning(ex, "Libpcap: pcap_dispatch failed, retrying (attempt {Count})", consecutiveDispatchErrors);
         }
     }
 
