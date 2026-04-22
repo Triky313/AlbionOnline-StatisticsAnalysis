@@ -11,6 +11,16 @@ namespace StatisticsAnalysisTool.UnitTests.Common;
 public class ItemControllerTests
 {
     [Test]
+    public async Task LoadItemsDataAsync_WithMissingItemsJson_ReturnFalse()
+    {
+        ItemController.Items = [];
+
+        var result = await ItemController.LoadItemsDataAsync();
+
+        result.Should().BeFalse();
+    }
+
+    [Test]
     public void GetItemByIndex_WithValidValue_ReturnTrue()
     {
         var receivedItem1 = new Item() { Index = 114 };
