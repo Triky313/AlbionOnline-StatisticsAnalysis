@@ -6,7 +6,6 @@
         xmlns:fa5="http://schemas.fontawesome.com/icons/"
         xmlns:userControls="clr-namespace:StatisticsAnalysisTool.UserControls"
         xmlns:viewModels="clr-namespace:StatisticsAnalysisTool.ViewModels"
-        xmlns:vwp="clr-namespace:WpfToolkit.Controls;assembly=VirtualizingWrapPanel"
         xmlns:glob="clr-namespace:System.Globalization;assembly=System.Runtime"
         mc:Ignorable="d"
         d:DesignHeight="650" d:DesignWidth="1000"
@@ -266,7 +265,7 @@
 
         <userControls:FooterControl VerticalAlignment="Bottom" Height="40" />
         <StackPanel Orientation="Vertical" VerticalAlignment="Bottom">
-            <userControls:ErrorBarControl VerticalAlignment="Bottom" Visibility="{Binding ErrorBarVisibility, FallbackValue=Collapsed}" ErrorText="{Binding ErrorBarText}" />
+            <userControls:ErrorBarControl VerticalAlignment="Bottom" Visibility="{Binding ErrorBarVisibility, FallbackValue=Collapsed}" ErrorText="{Binding ErrorBarText}" ErrorException="{Binding ErrorBarException}" />
             <userControls:WarningBarControl VerticalAlignment="Bottom" Visibility="{Binding WarningBarVisibility, FallbackValue=Collapsed}" WarningText="{Binding WarningBarText}" />
             <userControls:InformationBarControl VerticalAlignment="Bottom" Visibility="{Binding InformationBarVisibility, FallbackValue=Collapsed}" InformationText="{Binding InformationBarText}" />
         </StackPanel>

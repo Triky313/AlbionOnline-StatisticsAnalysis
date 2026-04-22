@@ -1,5 +1,7 @@
-﻿using StatisticsAnalysisTool.ViewModels;
+using StatisticsAnalysisTool.HintBar;
+using StatisticsAnalysisTool.ViewModels;
 using System.Windows;
+using System.Windows.Input;
 
 namespace StatisticsAnalysisTool.UserControls;
 
@@ -12,10 +14,10 @@ public partial class WarningBarControl
     {
         InitializeComponent();
     }
-        
+
     public string WarningText
     {
-        get => (string)GetValue(WarningTextProperty);
+        get => (string) GetValue(WarningTextProperty);
         set => SetValue(WarningTextProperty, value);
     }
 
@@ -25,10 +27,16 @@ public partial class WarningBarControl
     {
         Application.Current.Dispatcher.Invoke(() =>
         {
-            var mainWindowViewModel = (MainWindowViewModel) DataContext;
-
-            mainWindowViewModel.WarningBarText = string.Empty;
-            mainWindowViewModel.WarningBarVisibility = Visibility.Collapsed;
+            if (DataContext is MainWindowViewModel mainWindowViewModel)
+            {
+                mainWindowViewModel.WarningBarText = string.Empty;
+                mainWindowViewModel.WarningBarVisibility = Visibility.Collapsed;
+            }
         });
+    }
+
+    private void CopyToClipboard_MouseLeftButtonUp(object sender, MouseButtonEventArgs e)
+    {
+        HintBarClipboard.Copy("Warning", WarningText);
     }
 }

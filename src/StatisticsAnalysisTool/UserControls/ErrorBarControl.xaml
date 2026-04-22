@@ -1,15 +1,27 @@
 ﻿<UserControl x:Class="StatisticsAnalysisTool.UserControls.ErrorBarControl"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
-             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
-             mc:Ignorable="d" 
-             d:DesignHeight="50" d:DesignWidth="800" 
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             mc:Ignorable="d"
+             d:DesignHeight="70" d:DesignWidth="800"
              d:DataContext="{d:DesignData ErrorBarControl}">
 
     <Grid ZIndex="3" Style="{StaticResource Grid.Error.Bar}">
-        <Button Style="{StaticResource Window.Error.Bar.Button.Style}" Click="BtnErrorBar_Click" />
-        <Label Style="{StaticResource Grid.Error.Bar.Label}" Content="{Binding ErrorBarText, FallbackValue=ERROR}" />
+        <Button Panel.ZIndex="1" Style="{StaticResource Window.Error.Bar.Button.Style}" Click="BtnErrorBar_Click" />
+        <Grid>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="35" />
+                <RowDefinition Height="35" />
+            </Grid.RowDefinitions>
+            <TextBlock Grid.Row="0"
+                       Style="{StaticResource Grid.Error.Bar.Label}"
+                       Text="{Binding ErrorText, RelativeSource={RelativeSource AncestorType=UserControl}, FallbackValue=ERROR}" />
+            <TextBlock Grid.Row="1"
+                       Style="{StaticResource Grid.Error.Bar.CopyLink}"
+                       Text="Copy to clipboard"
+                       MouseLeftButtonUp="CopyToClipboard_MouseLeftButtonUp" />
+        </Grid>
         <Border BorderThickness="1,0,0,0" BorderBrush="{StaticResource SolidColorBrush.Accent.Red.1}" />
         <Border BorderThickness="0,1,0,0" BorderBrush="{StaticResource SolidColorBrush.Accent.Red.1}" />
         <Border BorderThickness="0,0,1,0" BorderBrush="{StaticResource SolidColorBrush.Accent.Red.5}" />
