@@ -207,6 +207,13 @@ public partial class App
             return;
         }
 
+        if (IsRecoverableLiveChartsTickerException(e.Exception))
+        {
+            Log.Warning(e.Exception, "Ignored a recoverable LiveCharts ticker disposal exception.");
+            e.Handled = true;
+            return;
+        }
+
         try
         {
             Log.Fatal(e.Exception, "Unhandled exception in UI thread");
@@ -216,6 +223,27 @@ public partial class App
             Log.CloseAndFlush();
             e.Handled = false;
         }
+    }
+
+    private static bool IsRecoverableLiveChartsTickerException(Exception exception)
+    {
+        if (exception is not NullReferenceException)
+        {
+            return false;
+        }
+
+        var stackTrace = exception.StackTrace;
+        if (string.IsNullOrWhiteSpace(stackTrace))
+        {
+            return false;
+        }
+
+        return stackTrace.Contains(
+                "LiveChartsCore.SkiaSharpView.WPF.Rendering.CompositionTargetTicker.DisposeTicker",
+                StringComparison.Ordinal)
+            && stackTrace.Contains(
+                "LiveChartsCore.Motion.MotionCanvasComposer.Dispose",
+                StringComparison.Ordinal);
     }
 
     protected override void OnExit(ExitEventArgs e)

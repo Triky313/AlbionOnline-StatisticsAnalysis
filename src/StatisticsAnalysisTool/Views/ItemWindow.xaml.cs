@@ -14,12 +14,18 @@ namespace StatisticsAnalysisTool.Views;
 /// </summary>
 public partial class ItemWindow
 {
-    private bool _isWindowMaximized;
+    private readonly WindowChromeController _windowChromeController;
     private readonly ItemWindowViewModel _itemWindowViewModel;
 
     public ItemWindow(Item item)
     {
-        InitializeComponent(); 
+        InitializeComponent();
+        _windowChromeController = new WindowChromeController(
+            this,
+            MaximizedButton,
+            ResizeMode.CanResize,
+            ResizeMode.NoResize,
+            topmostOnMaximize: true);
         _itemWindowViewModel = new ItemWindowViewModel(this, item);
         DataContext = _itemWindowViewModel;
     }
@@ -36,10 +42,7 @@ public partial class ItemWindow
 
     private void Hotbar_MouseDown(object sender, MouseButtonEventArgs e)
     {
-        if (e?.ChangedButton == MouseButton.Left)
-        {
-            DragMove();
-        }
+        _windowChromeController.DragMoveOnMouseDown(e);
     }
 
     private void CloseButton_Click(object sender, RoutedEventArgs e)
@@ -53,52 +56,12 @@ public partial class ItemWindow
 
     private void MaximizeButton_Click(object sender, RoutedEventArgs e)
     {
-        if (_isWindowMaximized)
-        {
-            RestoreWindow();
-        }
-        else
-        {
-            MaximizeWindow();
-        }
+        _windowChromeController.ToggleMaximize();
     }
 
     private void Grid_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
     {
-        if (e.ClickCount == 2)
-        {
-            if (_isWindowMaximized)
-            {
-                RestoreWindow();
-            }
-            else
-            {
-                MaximizeWindow();
-            }
-        }
-    }
-
-    private void MaximizeWindow()
-    {
-        WindowState = WindowState.Maximized;
-        _isWindowMaximized = true;
-        var screen = System.Windows.Forms.Screen.FromHandle(new System.Windows.Interop.WindowInteropHelper(this).Handle);
-        MaxHeight = screen.WorkingArea.Height;
-
-        Visibility = Visibility.Hidden;
-        Topmost = true;
-        ResizeMode = ResizeMode.NoResize;
-        Visibility = Visibility.Visible;
-        MaximizedButton.Content = 2;
-    }
-
-    private void RestoreWindow()
-    {
-        WindowState = WindowState.Normal;
-        _isWindowMaximized = false;
-        Topmost = false;
-        ResizeMode = ResizeMode.CanResize;
-        MaximizedButton.Content = 1;
+        _windowChromeController.ToggleMaximizeOnDoubleClick(e);
     }
 
     private void RefreshSpin_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)

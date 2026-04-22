@@ -12,11 +12,16 @@ namespace StatisticsAnalysisTool.Views;
 /// </summary>
 public partial class DamageMeterWindow
 {
-    private static bool _isWindowMaximized;
+    private readonly WindowChromeController _windowChromeController;
 
     public DamageMeterWindow(ObservableCollection<DamageMeterFragment> damageMeter)
     {
         InitializeComponent();
+        _windowChromeController = new WindowChromeController(
+            this,
+            MaximizedButton,
+            ResizeMode.CanResizeWithGrip,
+            centerOnRestore: true);
         DataContext = new DamageMeterWindowViewModel(damageMeter);
     }
 
@@ -26,35 +31,16 @@ public partial class DamageMeterWindow
 
     private void MaximizedButton_Click(object sender, RoutedEventArgs e)
     {
-        if (_isWindowMaximized)
-        {
-            WindowState = WindowState.Normal;
-            Utilities.CenterWindowOnScreen(this);
-            MaximizedButton.Content = 1;
-            _isWindowMaximized = false;
-        }
-        else
-        {
-            WindowState = WindowState.Maximized;
-            MaximizedButton.Content = 2;
-            _isWindowMaximized = true;
-        }
+        _windowChromeController.ToggleMaximize();
     }
 
     private void Hotbar_MouseDown(object sender, MouseButtonEventArgs e)
     {
-        if (e.ChangedButton == MouseButton.Left)
-            DragMove();
+        _windowChromeController.DragMoveOnMouseDown(e);
     }
 
     private void Grid_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
     {
-        if (e.ClickCount == 2 && WindowState == WindowState.Normal)
-        {
-            WindowState = WindowState.Maximized;
-            return;
-        }
-
-        if (e.ClickCount == 2 && WindowState == WindowState.Maximized) WindowState = WindowState.Normal;
+        _windowChromeController.ToggleMaximizeOnDoubleClick(e);
     }
 }

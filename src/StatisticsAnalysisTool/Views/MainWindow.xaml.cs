@@ -1,10 +1,9 @@
-﻿using Serilog;
+using Serilog;
 using StatisticsAnalysisTool.Common;
 using StatisticsAnalysisTool.Common.UserSettings;
 using StatisticsAnalysisTool.Network.Manager;
 using StatisticsAnalysisTool.ViewModels;
 using System;
-using System.Reflection;
 using System.Windows;
 using System.Windows.Input;
 
@@ -16,11 +15,16 @@ namespace StatisticsAnalysisTool.Views;
 public partial class MainWindow
 {
     private readonly MainWindowViewModel _mainWindowViewModel;
-    private static bool _isWindowMaximized;
+    private readonly WindowChromeController _windowChromeController;
 
     public MainWindow(MainWindowViewModel mainWindowViewModel)
     {
         InitializeComponent();
+        _windowChromeController = new WindowChromeController(
+            this,
+            MaximizedButton,
+            ResizeMode.CanResizeWithGrip,
+            ResizeMode.NoResize);
         InitWindow();
         _mainWindowViewModel = mainWindowViewModel;
         DataContext = _mainWindowViewModel;
@@ -45,19 +49,7 @@ public partial class MainWindow
 
     private void Hotbar_MouseDown(object sender, MouseButtonEventArgs e)
     {
-        if (e.ChangedButton != MouseButton.Left || e.ButtonState != MouseButtonState.Pressed)
-        {
-            return;
-        }
-
-        try
-        {
-            DragMove();
-        }
-        catch (Exception ex)
-        {
-            Log.Error(ex, "{message}", MethodBase.GetCurrentMethod()?.DeclaringType);
-        }
+        _windowChromeController.DragMoveOnMouseDown(e);
     }
 
     private void CloseButton_Click(object sender, RoutedEventArgs e)
@@ -77,50 +69,12 @@ public partial class MainWindow
 
     private void MaximizeButton_Click(object sender, RoutedEventArgs e)
     {
-        if (_isWindowMaximized)
-        {
-            RestoreWindow();
-        }
-        else
-        {
-            MaximizeWindow();
-        }
+        _windowChromeController.ToggleMaximize();
     }
 
     private void Grid_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
     {
-        if (e.ClickCount == 2)
-        {
-            if (_isWindowMaximized)
-            {
-                RestoreWindow();
-            }
-            else
-            {
-                MaximizeWindow();
-            }
-        }
-    }
-
-    private void MaximizeWindow()
-    {
-        WindowState = WindowState.Maximized;
-        _isWindowMaximized = true;
-        var screen = System.Windows.Forms.Screen.FromHandle(new System.Windows.Interop.WindowInteropHelper(this).Handle);
-        MaxHeight = screen.WorkingArea.Height;
-
-        Visibility = Visibility.Hidden;
-        ResizeMode = ResizeMode.NoResize;
-        Visibility = Visibility.Visible;
-        MaximizedButton.Content = 2;
-    }
-
-    private void RestoreWindow()
-    {
-        WindowState = WindowState.Normal;
-        _isWindowMaximized = false;
-        ResizeMode = ResizeMode.CanResizeWithGrip;
-        MaximizedButton.Content = 1;
+        _windowChromeController.ToggleMaximizeOnDoubleClick(e);
     }
 
     private void CopyPartyToClipboard_PreviewMouseDown(object sender, MouseButtonEventArgs e)
