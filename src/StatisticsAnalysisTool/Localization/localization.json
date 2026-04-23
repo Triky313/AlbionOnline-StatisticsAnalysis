@@ -5566,6 +5566,59 @@
       ]
     },
     {
+      "tuid": "OKAY",
+      "tuv": [
+        {
+          "lang": "de-DE",
+          "seg": "Okay"
+        },
+        {
+          "lang": "en-US",
+          "seg": "Okay"
+        },
+        {
+          "lang": "es-ES",
+          "seg": "Okay"
+        },
+        {
+          "lang": "fr-FR",
+          "seg": "Okay"
+        },
+        {
+          "lang": "ja-JP",
+          "seg": "Okay"
+        },
+        {
+          "lang": "ko-KR",
+          "seg": "Okay"
+        },
+        {
+          "lang": "pl-PL",
+          "seg": "Okay"
+        },
+        {
+          "lang": "pt-BR",
+          "seg": "Okay"
+        },
+        {
+          "lang": "ru-RU",
+          "seg": "Okay"
+        },
+        {
+          "lang": "tr-TR",
+          "seg": "Okay"
+        },
+        {
+          "lang": "zh-CN",
+          "seg": "Okay"
+        },
+        {
+          "lang": "zh-TW",
+          "seg": "Okay"
+        }
+      ]
+    },
+    {
       "tuid": "NO",
       "tuv": [
         {
@@ -38480,51 +38533,51 @@
       "tuv": [
         {
           "lang": "de-DE",
-          "seg": "Npcap-Hinweis"
+          "seg": "Information für das Netzwerk-Tracking"
         },
         {
           "lang": "en-US",
-          "seg": "Npcap notice"
+          "seg": "Information for Network Tracking"
         },
         {
           "lang": "es-ES",
-          "seg": "Aviso de Npcap"
+          "seg": "Información para el seguimiento de red"
         },
         {
           "lang": "fr-FR",
-          "seg": "Information Npcap"
+          "seg": "Information pour le suivi réseau"
         },
         {
           "lang": "ja-JP",
-          "seg": "Npcap に関するお知らせ"
+          "seg": "ネットワーク追跡の情報"
         },
         {
           "lang": "ko-KR",
-          "seg": "Npcap 안내"
+          "seg": "네트워크 추적 정보"
         },
         {
           "lang": "pl-PL",
-          "seg": "Informacja o Npcap"
+          "seg": "Informacje o śledzeniu sieci"
         },
         {
           "lang": "pt-BR",
-          "seg": "Aviso do Npcap"
+          "seg": "Informações sobre o rastreamento de rede"
         },
         {
           "lang": "ru-RU",
-          "seg": "Уведомление Npcap"
+          "seg": "Информация о сетевом отслеживании"
         },
         {
           "lang": "tr-TR",
-          "seg": "Npcap bildirimi"
+          "seg": "Ağ izleme bilgisi"
         },
         {
           "lang": "zh-CN",
-          "seg": "Npcap 提示"
+          "seg": "网络追踪信息"
         },
         {
           "lang": "zh-TW",
-          "seg": "Npcap 提示"
+          "seg": "網路追蹤資訊"
         }
       ]
     },
@@ -38652,51 +38705,51 @@
       "tuv": [
         {
           "lang": "de-DE",
-          "seg": "Npcap wird für die Netzwerkerfassung benötigt. Bitte installiere Npcap, um diese Funktion zu nutzen."
+          "seg": "Im Netzwerk-Tracking-Modus gilt: Wenn du den Npcap-Modus verwendest, musst du Npcap installieren. Wenn du Sockets verwendest, benötigst du kein Npcap."
         },
         {
           "lang": "en-US",
-          "seg": "Npcap is required for network capture. Please install Npcap to use this feature."
+          "seg": "In Network Tracking Mode: If you use Npcap Mode, you must install Npcap. If you use Sockets, you do not need Npcap."
         },
         {
           "lang": "es-ES",
-          "seg": "Npcap es necesario para la captura de red. Instala Npcap para usar esta función."
+          "seg": "En el modo de seguimiento de red: si usas el modo Npcap, debes instalar Npcap. Si usas Sockets, no necesitas Npcap."
         },
         {
           "lang": "fr-FR",
-          "seg": "Npcap est requis pour la capture réseau. Veuillez installer Npcap pour utiliser cette fonctionnalité."
+          "seg": "En mode de suivi réseau : si vous utilisez le mode Npcap, vous devez installer Npcap. Si vous utilisez Sockets, vous n'avez pas besoin de Npcap."
         },
         {
           "lang": "ja-JP",
-          "seg": "ネットワークキャプチャには Npcap が必要です。この機能を使用するには Npcap をインストールしてください。"
+          "seg": "ネットワーク追跡モードでは、Npcap モードを使用する場合は Npcap をインストールする必要があります。Sockets を使用する場合は、Npcap は必要ありません。"
         },
         {
           "lang": "ko-KR",
-          "seg": "네트워크 캡처에는 Npcap이 필요합니다. 이 기능을 사용하려면 Npcap을 설치하세요."
+          "seg": "네트워크 추적 모드에서는 Npcap 모드를 사용하면 Npcap을 설치해야 합니다. Sockets를 사용하면 Npcap이 필요하지 않습니다."
         },
         {
           "lang": "pl-PL",
-          "seg": "Npcap jest wymagany do przechwytywania ruchu sieciowego. Zainstaluj Npcap, aby użyć tej funkcji."
+          "seg": "W trybie śledzenia sieci: jeśli używasz trybu Npcap, musisz zainstalować Npcap. Jeśli używasz Sockets, Npcap nie jest potrzebny."
         },
         {
           "lang": "pt-BR",
-          "seg": "O Npcap é necessário para a captura de rede. Instale o Npcap para usar este recurso."
+          "seg": "No modo de rastreamento de rede: se você usar o modo Npcap, precisa instalar o Npcap. Se usar Sockets, não precisa de Npcap."
         },
         {
           "lang": "ru-RU",
-          "seg": "Для захвата сетевого трафика требуется Npcap. Установите Npcap, чтобы использовать эту функцию."
+          "seg": "В режиме отслеживания сети: если вы используете режим Npcap, необходимо установить Npcap. Если вы используете Sockets, Npcap не нужен."
         },
         {
           "lang": "tr-TR",
-          "seg": "Ağ yakalama için Npcap gereklidir. Bu özelliği kullanmak için Npcap'i yükleyin."
+          "seg": "Ağ izleme modunda: Npcap Modunu kullanıyorsanız Npcap yüklemelisiniz. Sockets kullanıyorsanız Npcap gerekmez."
         },
         {
           "lang": "zh-CN",
-          "seg": "网络捕获需要 Npcap。请安装 Npcap 以使用此功能。"
+          "seg": "在网络追踪模式下：如果你使用 Npcap 模式，就必须安装 Npcap。如果你使用 Sockets，则不需要 Npcap。"
         },
         {
           "lang": "zh-TW",
-          "seg": "網路擷取需要 Npcap。請安裝 Npcap 以使用此功能。"
+          "seg": "在網路追蹤模式下：如果你使用 Npcap 模式，就必須安裝 Npcap。如果你使用 Sockets，則不需要 Npcap。"
         }
       ]
     },

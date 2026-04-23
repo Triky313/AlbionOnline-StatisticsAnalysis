@@ -11,8 +11,9 @@ public class DialogWindowViewModel : BaseViewModel
     private DialogWindowTranslation _dialogWindowTranslation = new();
     private DialogType _type;
     private Visibility _yesNoVisibility = Visibility.Collapsed;
+    private Visibility _infoTypeVisibility = Visibility.Collapsed;
     private Visibility _errorTypeVisibility = Visibility.Collapsed;
-    private string _okButtonText = "Ok";
+    private string _okButtonText = "Okay";
     private string _url;
     private string _urlText;
 
@@ -59,14 +60,21 @@ public class DialogWindowViewModel : BaseViewModel
             switch (_type)
             {
                 case DialogType.YesNo:
+                    InfoTypeVisibility = Visibility.Collapsed;
                     ErrorTypeVisibility = Visibility.Collapsed;
                     YesNoVisibility = Visibility.Visible;
                     break;
                 case DialogType.Ok:
+                    YesNoVisibility = Visibility.Collapsed;
+                    InfoTypeVisibility = Visibility.Visible;
+                    ErrorTypeVisibility = Visibility.Collapsed;
+                    OkButtonText = Translation.Okay;
+                    break;
                 case DialogType.Error:
                     YesNoVisibility = Visibility.Collapsed;
+                    InfoTypeVisibility = Visibility.Collapsed;
                     ErrorTypeVisibility = Visibility.Visible;
-                    OkButtonText = "Ok";
+                    OkButtonText = Translation.Okay;
                     break;
             }
             OnPropertyChanged();
@@ -79,6 +87,16 @@ public class DialogWindowViewModel : BaseViewModel
         set
         {
             _yesNoVisibility = value;
+            OnPropertyChanged();
+        }
+    }
+
+    public Visibility InfoTypeVisibility
+    {
+        get => _infoTypeVisibility;
+        set
+        {
+            _infoTypeVisibility = value;
             OnPropertyChanged();
         }
     }
