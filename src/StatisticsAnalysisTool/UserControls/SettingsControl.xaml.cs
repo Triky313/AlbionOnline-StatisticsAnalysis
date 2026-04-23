@@ -29,9 +29,9 @@ public partial class SettingsControl
         DataContext = _settingsWindowViewModel;
     }
 
-    private void BtnSave_Click(object sender, RoutedEventArgs e)
+    private async void BtnSave_Click(object sender, RoutedEventArgs e)
     {
-        _settingsWindowViewModel.SaveSettings();
+        await _settingsWindowViewModel.SaveSettingsAsync();
     }
 
     private void OpenToolDirectory_Click(object sender, RoutedEventArgs e)
@@ -93,6 +93,11 @@ public partial class SettingsControl
     private void ResetPacketFilter_Click(object sender, RoutedEventArgs e)
     {
         _settingsWindowViewModel.ResetPacketFilter();
+    }
+
+    private async void RestartNetworkTracking_Click(object sender, RoutedEventArgs e)
+    {
+        await SettingsWindowViewModel.RestartNetworkTrackingAsync();
     }
 
     private async void BackupNow_Click(object sender, RoutedEventArgs e)

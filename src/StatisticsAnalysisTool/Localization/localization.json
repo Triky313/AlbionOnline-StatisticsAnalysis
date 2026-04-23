@@ -37015,6 +37015,32 @@
       ]
     },
     {
+      "tuid": "NETWORK_ADAPTERS",
+      "tuv": [
+        {
+          "lang": "de-DE",
+          "seg": "Netzwerkadapter"
+        },
+        {
+          "lang": "en-US",
+          "seg": "Network adapters"
+        }
+      ]
+    },
+    {
+      "tuid": "RESTART_NETWORK_TRACKING",
+      "tuv": [
+        {
+          "lang": "de-DE",
+          "seg": "Netzwerktracking neu starten"
+        },
+        {
+          "lang": "en-US",
+          "seg": "Restart network tracking"
+        }
+      ]
+    },
+    {
       "tuid": "TOOL_MUST_BE_RUN_AS_ADMIN",
       "tuv": [
         {

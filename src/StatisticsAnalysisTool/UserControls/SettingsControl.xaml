@@ -109,7 +109,24 @@
                             <Button Content="{Binding Translation.Reset, FallbackValue=RESET}" Height="24" MaxWidth="120" VerticalAlignment="Center" Click="ResetPacketFilter_Click" />
                         </StackPanel>
                     </DockPanel>
-                    <DockPanel Margin="0,5,0,0">
+                    <DockPanel Margin="0,5,0,0" Visibility="{Binding NetworkDevicesVisibility}">
+                        <Label Content="{Binding Translation.NetworkAdapters, FallbackValue=NETWORK__ADAPTERS}" MinWidth="300" VerticalAlignment="Top" />
+                        <ComboBox ItemsSource="{Binding NetworkDevices}" HorizontalAlignment="Left" VerticalAlignment="Top" Width="420" Height="26">
+                            <ComboBox.ItemTemplate>
+                                <DataTemplate>
+                                    <StackPanel Orientation="Horizontal">
+                                        <CheckBox IsChecked="{Binding IsSelected}" Width="20" VerticalAlignment="Top" />
+                                        <TextBlock Text="{Binding Name}" Width="360" TextWrapping="Wrap" />
+                                    </StackPanel>
+                                </DataTemplate>
+                            </ComboBox.ItemTemplate>
+                        </ComboBox>
+                    </DockPanel>
+                    <DockPanel Margin="0,0,5,0">
+                        <Label MinWidth="300"/>
+                        <Button Content="{Binding Translation.RestartNetworkTracking, FallbackValue=RESTART__NETWORK__TRACKING}" Height="24" VerticalAlignment="Bottom" Click="RestartNetworkTracking_Click" />
+                    </DockPanel>
+                    <DockPanel Margin="0,20,0,0">
                         <Label Content="{Binding Translation.SetServer, FallbackValue=SET__SERVER}" MinWidth="300" VerticalAlignment="Top" />
                         <ComboBox ItemsSource="{Binding Server}" SelectedItem="{Binding ServerSelection}" IsSynchronizedWithCurrentItem="True" DisplayMemberPath="Name" 
                                   SelectedValuePath="Value" HorizontalAlignment="Left" VerticalAlignment="Top" Width="200" Height="26" />
