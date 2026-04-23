@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Reflection;
 using StatisticsAnalysisTool.Diagnostics;
+using StatisticsAnalysisTool.StorageHistory;
 
 namespace StatisticsAnalysisTool.Network.Events;
 
@@ -10,9 +11,9 @@ public class GuildVaultInfoEvent
 {
     public long? ObjectId;
     public string LocationGuidString;
-    public List<Guid> VaultGuidList = new();
-    public List<string> VaultNames = new();
-    public List<string> IconTags = new();
+    public List<Guid> VaultGuidList = [];
+    public List<string> VaultNames = [];
+    public List<string> IconTags = [];
 
     public GuildVaultInfoEvent(Dictionary<byte, object> parameters)
     {
@@ -28,38 +29,19 @@ public class GuildVaultInfoEvent
                 LocationGuidString = locationGuid.ToString();
             }
 
-            if (parameters.ContainsKey(2) && parameters[2] != null)
+            if (parameters.TryGetValue(2, out object vaultGuids))
             {
-                var vaultGuidArray = ((object[])parameters[2]).ToDictionary();
-
-                for (var i = 0; i < vaultGuidArray.Count; i++)
-                {
-                    var guid = vaultGuidArray[i].ObjectToGuid();
-                    if (guid != null)
-                    {
-                        VaultGuidList.Add((Guid)guid);
-                    }
-                }
+                VaultGuidList = VaultInfoParser.GetGuids(vaultGuids);
             }
 
-            if (parameters.ContainsKey(3) && parameters[3] != null)
+            if (parameters.TryGetValue(3, out object vaultNames))
             {
-                var vaultNameArray = ((object[])parameters[3]).ToDictionary();
-
-                for (var i = 0; i < vaultNameArray.Count; i++)
-                {
-                    VaultNames.Add(vaultNameArray[i].ToString());
-                }
+                VaultNames = VaultInfoParser.GetStrings(vaultNames);
             }
 
-            if (parameters.ContainsKey(4) && parameters[4] != null)
+            if (parameters.TryGetValue(4, out object iconTags))
             {
-                var iconTagArray = ((object[])parameters[4]).ToDictionary();
-
-                for (var i = 0; i < iconTagArray.Count; i++)
-                {
-                    IconTags.Add(iconTagArray[i].ToString());
-                }
+                IconTags = VaultInfoParser.GetStrings(iconTags);
             }
         }
         catch (Exception e)

@@ -1,4 +1,4 @@
-﻿#nullable enable
+#nullable enable
 
 using BinaryFormat;
 using BinaryFormat.EthernetFrame;
@@ -10,6 +10,7 @@ using StatisticsAnalysisTool.Abstractions;
 using StatisticsAnalysisTool.Common.UserSettings;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Net.Sockets;
 using System.Threading;
 
@@ -28,6 +29,9 @@ public class LibpcapPacketProvider : PacketProvider
 
     private const int ScoreToLock = 1;
     private static readonly TimeSpan LockIdleTimeout = TimeSpan.FromSeconds(20);
+    private static readonly TimeSpan DispatchErrorBackoff = TimeSpan.FromMilliseconds(250);
+    private static readonly TimeSpan StopThreadJoinTimeout = TimeSpan.FromSeconds(2);
+    private const int ConsecutiveDispatchErrorsBeforeEscalation = 20;
 
     public override bool IsRunning => _thread is { IsAlive: true };
 
@@ -70,12 +74,19 @@ public class LibpcapPacketProvider : PacketProvider
         bool hasFilter = !string.IsNullOrWhiteSpace(filter);
 
         int configuredIndex = SettingsController.CurrentSettings.NetworkDevice;
+        var configuredDevices = SettingsController.CurrentSettings.NetworkDevices ?? new List<NetworkDeviceSettingsObject>();
+        bool hasConfiguredDevices = configuredDevices.Count > 0;
+        var selectedDeviceIdentifiers = configuredDevices
+            .Where(x => x?.IsSelected == true && !string.IsNullOrWhiteSpace(x.Identifier))
+            .Select(x => x.Identifier)
+            .ToHashSet(StringComparer.OrdinalIgnoreCase);
+
         int opened = 0;
         for (int i = 0; i < devices.Count; i++)
         {
             var device = devices[i];
 
-            if (configuredIndex >= 0 && i != configuredIndex)
+            if (!hasConfiguredDevices && configuredIndex >= 0 && i != configuredIndex)
             {
                 continue;
             }
@@ -88,6 +99,12 @@ public class LibpcapPacketProvider : PacketProvider
             if (!device.Flags.HasFlag(PcapDeviceFlags.Up))
             {
                 Log.Information("Npcap[ID:{Index}]: skip down {Name}:{Desc}", i, device.Name, device.Description);
+                continue;
+            }
+
+            if (hasConfiguredDevices && !selectedDeviceIdentifiers.Contains(device.Name))
+            {
+                Log.Information("Npcap[ID:{Index}]: skip disabled {Name}:{Desc}", i, device.Name, device.Description);
                 continue;
             }
 
@@ -113,7 +130,7 @@ public class LibpcapPacketProvider : PacketProvider
 
                 opened++;
 
-                if (configuredIndex >= 0)
+                if (!hasConfiguredDevices && configuredIndex >= 0)
                 {
                     break;
                 }
@@ -326,12 +343,15 @@ public class LibpcapPacketProvider : PacketProvider
                 return;
             }
 
+            var consecutiveDispatchErrors = 0;
+
             while (_cts is { IsCancellationRequested: false })
             {
                 int dispatched;
                 try
                 {
                     dispatched = dispatcher.Dispatch(50);
+                    consecutiveDispatchErrors = 0;
                 }
                 catch (ObjectDisposedException)
                 {
@@ -340,6 +360,13 @@ public class LibpcapPacketProvider : PacketProvider
                 catch (InvalidOperationException)
                 {
                     break;
+                }
+                catch (PcapException ex)
+                {
+                    consecutiveDispatchErrors++;
+                    LogDispatchError(ex, consecutiveDispatchErrors);
+                    _cts?.Token.WaitHandle.WaitOne(DispatchErrorBackoff);
+                    continue;
                 }
 
                 if (dispatched <= 0)
@@ -354,13 +381,31 @@ public class LibpcapPacketProvider : PacketProvider
         }
     }
 
+    private static void LogDispatchError(PcapException ex, int consecutiveDispatchErrors)
+    {
+        if (consecutiveDispatchErrors == ConsecutiveDispatchErrorsBeforeEscalation)
+        {
+            Log.Error(ex, "Libpcap: pcap_dispatch failing repeatedly ({Count}x); capture may be degraded", consecutiveDispatchErrors);
+            return;
+        }
+
+        if (consecutiveDispatchErrors < ConsecutiveDispatchErrorsBeforeEscalation)
+        {
+            Log.Warning(ex, "Libpcap: pcap_dispatch failed, retrying (attempt {Count})", consecutiveDispatchErrors);
+        }
+    }
+
     public override void Stop()
     {
         try
         {
             _cts?.Cancel();
             _dispatcher?.Dispose();
-            _thread?.Join();
+
+            if (_thread is { IsAlive: true } && !_thread.Join(StopThreadJoinTimeout))
+            {
+                Log.Warning("Npcap: worker did not stop within {TimeoutMs} ms", StopThreadJoinTimeout.TotalMilliseconds);
+            }
         }
         finally
         {
@@ -376,6 +421,40 @@ public class LibpcapPacketProvider : PacketProvider
     {
         public static readonly HashSet<ushort> Udp = [5055, 5056, 5058];
         public static readonly HashSet<ushort> Tcp = [4530, 4531, 4533];
+    }
+
+    public static IReadOnlyList<NetworkDeviceInformation> GetAvailableNetworkDevices()
+    {
+        var result = new List<NetworkDeviceInformation>();
+        var devices = Pcap.ListDevices();
+
+        for (int i = 0; i < devices.Count; i++)
+        {
+            var device = devices[i];
+
+            if (device.Flags.HasFlag(PcapDeviceFlags.Loopback))
+            {
+                continue;
+            }
+
+            if (!device.Flags.HasFlag(PcapDeviceFlags.Up))
+            {
+                continue;
+            }
+
+            var name = string.IsNullOrWhiteSpace(device.Description)
+                ? device.Name
+                : $"{device.Description} ({device.Name})";
+
+            result.Add(new NetworkDeviceInformation
+            {
+                Identifier = device.Name,
+                Name = name,
+                Index = i
+            });
+        }
+
+        return result;
     }
 
     private static string? GetEffectiveFilter()

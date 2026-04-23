@@ -37015,6 +37015,32 @@
       ]
     },
     {
+      "tuid": "NETWORK_ADAPTERS",
+      "tuv": [
+        {
+          "lang": "de-DE",
+          "seg": "Netzwerkadapter"
+        },
+        {
+          "lang": "en-US",
+          "seg": "Network adapters"
+        }
+      ]
+    },
+    {
+      "tuid": "RESTART_NETWORK_TRACKING",
+      "tuv": [
+        {
+          "lang": "de-DE",
+          "seg": "Netzwerktracking neu starten"
+        },
+        {
+          "lang": "en-US",
+          "seg": "Restart network tracking"
+        }
+      ]
+    },
+    {
       "tuid": "TOOL_MUST_BE_RUN_AS_ADMIN",
       "tuv": [
         {
@@ -38454,15 +38480,51 @@
       "tuv": [
         {
           "lang": "de-DE",
-          "seg": "Npcap Hinweis"
+          "seg": "Npcap-Hinweis"
         },
         {
           "lang": "en-US",
           "seg": "Npcap notice"
         },
         {
+          "lang": "es-ES",
+          "seg": "Aviso de Npcap"
+        },
+        {
           "lang": "fr-FR",
           "seg": "Information Npcap"
+        },
+        {
+          "lang": "ja-JP",
+          "seg": "Npcap に関するお知らせ"
+        },
+        {
+          "lang": "ko-KR",
+          "seg": "Npcap 안내"
+        },
+        {
+          "lang": "pl-PL",
+          "seg": "Informacja o Npcap"
+        },
+        {
+          "lang": "pt-BR",
+          "seg": "Aviso do Npcap"
+        },
+        {
+          "lang": "ru-RU",
+          "seg": "Уведомление Npcap"
+        },
+        {
+          "lang": "tr-TR",
+          "seg": "Npcap bildirimi"
+        },
+        {
+          "lang": "zh-CN",
+          "seg": "Npcap 提示"
+        },
+        {
+          "lang": "zh-TW",
+          "seg": "Npcap 提示"
         }
       ]
     },
@@ -38590,15 +38652,51 @@
       "tuv": [
         {
           "lang": "de-DE",
-          "seg": "Wenn du für die Netzwerkübertragung Npcap nutzen willst, musst du Npcap installieren!"
+          "seg": "Npcap wird für die Netzwerkerfassung benötigt. Bitte installiere Npcap, um diese Funktion zu nutzen."
         },
         {
           "lang": "en-US",
-          "seg": "If you want to use Npcap for network transmission, you must install Npcap!"
+          "seg": "Npcap is required for network capture. Please install Npcap to use this feature."
+        },
+        {
+          "lang": "es-ES",
+          "seg": "Npcap es necesario para la captura de red. Instala Npcap para usar esta función."
         },
         {
           "lang": "fr-FR",
-          "seg": "Si vous souhaitez utiliser Npcap pour la transmission réseau, vous devez installer Npcap !"
+          "seg": "Npcap est requis pour la capture réseau. Veuillez installer Npcap pour utiliser cette fonctionnalité."
+        },
+        {
+          "lang": "ja-JP",
+          "seg": "ネットワークキャプチャには Npcap が必要です。この機能を使用するには Npcap をインストールしてください。"
+        },
+        {
+          "lang": "ko-KR",
+          "seg": "네트워크 캡처에는 Npcap이 필요합니다. 이 기능을 사용하려면 Npcap을 설치하세요."
+        },
+        {
+          "lang": "pl-PL",
+          "seg": "Npcap jest wymagany do przechwytywania ruchu sieciowego. Zainstaluj Npcap, aby użyć tej funkcji."
+        },
+        {
+          "lang": "pt-BR",
+          "seg": "O Npcap é necessário para a captura de rede. Instale o Npcap para usar este recurso."
+        },
+        {
+          "lang": "ru-RU",
+          "seg": "Для захвата сетевого трафика требуется Npcap. Установите Npcap, чтобы использовать эту функцию."
+        },
+        {
+          "lang": "tr-TR",
+          "seg": "Ağ yakalama için Npcap gereklidir. Bu özelliği kullanmak için Npcap'i yükleyin."
+        },
+        {
+          "lang": "zh-CN",
+          "seg": "网络捕获需要 Npcap。请安装 Npcap 以使用此功能。"
+        },
+        {
+          "lang": "zh-TW",
+          "seg": "網路擷取需要 Npcap。請安裝 Npcap 以使用此功能。"
         }
       ]
     },
@@ -38614,8 +38712,44 @@
           "seg": "Download Npcap (npcap.com)"
         },
         {
+          "lang": "es-ES",
+          "seg": "Descargar Npcap (npcap.com)"
+        },
+        {
           "lang": "fr-FR",
           "seg": "Télécharger Npcap (npcap.com)"
+        },
+        {
+          "lang": "ja-JP",
+          "seg": "Npcap をダウンロード (npcap.com)"
+        },
+        {
+          "lang": "ko-KR",
+          "seg": "Npcap 다운로드 (npcap.com)"
+        },
+        {
+          "lang": "pl-PL",
+          "seg": "Pobierz Npcap (npcap.com)"
+        },
+        {
+          "lang": "pt-BR",
+          "seg": "Baixar Npcap (npcap.com)"
+        },
+        {
+          "lang": "ru-RU",
+          "seg": "Скачать Npcap (npcap.com)"
+        },
+        {
+          "lang": "tr-TR",
+          "seg": "Npcap'i indir (npcap.com)"
+        },
+        {
+          "lang": "zh-CN",
+          "seg": "下载 Npcap (npcap.com)"
+        },
+        {
+          "lang": "zh-TW",
+          "seg": "下載 Npcap (npcap.com)"
         }
       ]
     },

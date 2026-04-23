@@ -32,9 +32,14 @@ public static class SettingsController
 
     public static void SaveSettings()
     {
+        SaveSettingsAsync().ConfigureAwait(false).GetAwaiter().GetResult();
+    }
+
+    public static async Task SaveSettingsAsync()
+    {
         try
         {
-            var ok = FileController.SaveAsync(CurrentSettings, SettingsFilePath, ValidateSettings).GetAwaiter().GetResult();
+            var ok = await FileController.SaveAsync(CurrentSettings, SettingsFilePath, ValidateSettings).ConfigureAwait(false);
 
             if (!ok)
             {
@@ -56,7 +61,7 @@ public static class SettingsController
 
         try
         {
-            var loaded = await FileController.LoadAsync<SettingsObject>(SettingsFilePath, ValidateSettings) ?? new SettingsObject();
+            var loaded = await FileController.LoadAsync<SettingsObject>(SettingsFilePath, ValidateSettings).ConfigureAwait(false) ?? new SettingsObject();
 
             CurrentSettings = loaded;
             _haveSettingsAlreadyBeenLoaded = true;
@@ -66,7 +71,7 @@ public static class SettingsController
                 return;
             }
 
-            var ok = await FileController.SaveAsync(CurrentSettings, SettingsFilePath, ValidateSettings);
+            var ok = await FileController.SaveAsync(CurrentSettings, SettingsFilePath, ValidateSettings).ConfigureAwait(false);
 
             if (!ok)
             {
@@ -126,7 +131,7 @@ public static class SettingsController
     {
         try
         {
-            var ok = FileController.SaveAsync(CurrentSettings, SettingsFilePath, ValidateSettings).GetAwaiter().GetResult();
+            var ok = FileController.SaveAsync(CurrentSettings, SettingsFilePath, ValidateSettings).ConfigureAwait(false).GetAwaiter().GetResult();
             if (!ok)
             {
                 Log.Warning("Could not persist default settings to {file}", SettingsFilePath);

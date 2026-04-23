@@ -215,6 +215,20 @@ public class TrackingController : ITrackingController
         Debug.Print("Stopped tracking");
     }
 
+    public async Task RestartTrackingAsync()
+    {
+        var wasTrackingActive = _mainWindowViewModel.IsTrackingActive;
+
+        StopTracking();
+
+        if (!wasTrackingActive)
+        {
+            return;
+        }
+
+        await StartTrackingAsync();
+    }
+
     public async Task SaveDataAsync()
     {
         await Task.WhenAll(

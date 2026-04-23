@@ -1,4 +1,4 @@
-﻿using Serilog;
+using Serilog;
 using System;
 using System.IO;
 using System.Reflection;
@@ -20,7 +20,7 @@ public static class FileController
 
     public static async Task<T> LoadAsync<T>(string path, Func<T, bool> validate = null) where T : new()
     {
-        await IoLock.WaitAsync();
+        await IoLock.WaitAsync().ConfigureAwait(false);
 
         try
         {
@@ -29,7 +29,7 @@ public static class FileController
 
             if (File.Exists(tmp))
             {
-                var (ok, value) = await TryLoad<T>(tmp);
+                var (ok, value) = await TryLoad<T>(tmp).ConfigureAwait(false);
                 if (ok && PassesValidation(value, validate))
                 {
                     File.Move(tmp, path, overwrite: true);
@@ -45,7 +45,7 @@ public static class FileController
 
             if (File.Exists(path))
             {
-                var (ok, value) = await TryLoad<T>(path);
+                var (ok, value) = await TryLoad<T>(path).ConfigureAwait(false);
                 if (ok && PassesValidation(value, validate))
                 {
                     return value!;
@@ -63,7 +63,7 @@ public static class FileController
 
     public static async Task<bool> SaveAsync<T>(T value, string path, Func<T, bool> validate = null)
     {
-        await IoLock.WaitAsync();
+        await IoLock.WaitAsync().ConfigureAwait(false);
         try
         {
             EnsureDirectory(path);
@@ -76,7 +76,7 @@ public static class FileController
             var json = JsonSerializer.Serialize(value, JsonOptions);
             var tmp = GetTmpPath(path);
 
-            await File.WriteAllTextAsync(tmp, json, Encoding.UTF8);
+            await File.WriteAllTextAsync(tmp, json, Encoding.UTF8).ConfigureAwait(false);
 
             File.Move(tmp, path, overwrite: true);
 
@@ -98,7 +98,7 @@ public static class FileController
     {
         try
         {
-            var json = await File.ReadAllTextAsync(file, Encoding.UTF8);
+            var json = await File.ReadAllTextAsync(file, Encoding.UTF8).ConfigureAwait(false);
             var obj = JsonSerializer.Deserialize<T>(json, JsonOptions);
             return (obj is not null, obj);
         }

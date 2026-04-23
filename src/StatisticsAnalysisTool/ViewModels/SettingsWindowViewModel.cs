@@ -1,4 +1,4 @@
-﻿using Serilog;
+using Serilog;
 using StatisticsAnalysisTool.Common;
 using StatisticsAnalysisTool.Common.UserSettings;
 using StatisticsAnalysisTool.Enumerations;
@@ -20,6 +20,8 @@ using System.Reflection;
 using System.Windows;
 using System.Windows.Media.Imaging;
 using StatisticsAnalysisTool.Diagnostics;
+using StatisticsAnalysisTool.Network.Manager;
+using System.Threading.Tasks;
 
 namespace StatisticsAnalysisTool.ViewModels;
 
@@ -58,6 +60,8 @@ public class SettingsWindowViewModel : BaseViewModel
     private BitmapImage _anotherAppToStartExeIcon;
     private string _packetFilter;
     private Visibility _packetFilterVisibility = Visibility.Collapsed;
+    private ObservableCollection<NetworkDeviceFilter> _networkDevices = new();
+    private Visibility _networkDevicesVisibility = Visibility.Collapsed;
     private string _backupStorageDirectoryPath;
     private string _proxyUrlWithPort;
     private string _debugConsoleFilter;
@@ -76,6 +80,7 @@ public class SettingsWindowViewModel : BaseViewModel
         InitNotificationAreas();
         InitRefreshRate();
         InitPacketProvider();
+        InitNetworkDevices();
         InitServer();
 
         MainTrackingCharacterName = SettingsController.CurrentSettings.MainTrackingCharacterName;
@@ -129,15 +134,19 @@ public class SettingsWindowViewModel : BaseViewModel
         SetIconSourceToAnotherAppToStart();
     }
 
-    public void SaveSettings()
+    public async Task SaveSettingsAsync()
     {
         var mainWindowViewModel = ServiceLocator.Resolve<MainWindowViewModel>();
+        var oldPacketProvider = SettingsController.CurrentSettings.PacketProvider;
+        var oldPacketFilter = SettingsController.CurrentSettings.PacketFilter;
+        var oldNetworkDevices = GetNetworkDeviceSettingsSnapshot(SettingsController.CurrentSettings.NetworkDevices);
 
         SettingsController.CurrentSettings.RefreshRate = RefreshRatesSelection.Value;
 
         SettingsController.CurrentSettings.PacketProvider = (PacketProviderKind) PacketProviderSelection.Value;
         SettingsController.CurrentSettings.ServerLocation = (ServerLocation) ServerSelection.Value;
         SetPacketFilter();
+        SetNetworkDevices();
         mainWindowViewModel.UpdateServerTypeLabel();
 
         SettingsController.CurrentSettings.AnotherAppToStartPath = AnotherAppToStartPath;
@@ -166,6 +175,18 @@ public class SettingsWindowViewModel : BaseViewModel
         SetNaviTabVisibilities(mainWindowViewModel);
         SetNotificationFilter();
         SetIconSourceToAnotherAppToStart();
+
+        await SettingsController.SaveSettingsAsync();
+
+        if (HaveNetworkTrackingSettingsChanged(oldPacketProvider, oldPacketFilter, oldNetworkDevices))
+        {
+            await RestartNetworkTrackingAsync();
+        }
+    }
+
+    public void SaveSettings()
+    {
+        _ = SaveSettingsAsync();
     }
 
     public void ReloadSettings()
@@ -215,6 +236,53 @@ public class SettingsWindowViewModel : BaseViewModel
         }
 
         SettingsController.CurrentSettings.PacketFilter = PacketFilter ?? string.Empty;
+    }
+
+    private void SetNetworkDevices()
+    {
+        if (NetworkDevices.Count == 0)
+        {
+            return;
+        }
+
+        SettingsController.CurrentSettings.NetworkDevices = NetworkDevices
+            .Where(x => !string.IsNullOrWhiteSpace(x.Identifier))
+            .Select(x => new NetworkDeviceSettingsObject
+            {
+                Identifier = x.Identifier,
+                Name = x.Name,
+                IsSelected = x.IsSelected == true
+            })
+            .ToList();
+    }
+
+    private static string GetNetworkDeviceSettingsSnapshot(IEnumerable<NetworkDeviceSettingsObject> networkDevices)
+    {
+        return string.Join("|", (networkDevices ?? [])
+            .Where(x => !string.IsNullOrWhiteSpace(x?.Identifier))
+            .OrderBy(x => x.Identifier, StringComparer.OrdinalIgnoreCase)
+            .Select(x => $"{x.Identifier}:{x.IsSelected}"));
+    }
+
+    private bool HaveNetworkTrackingSettingsChanged(PacketProviderKind oldPacketProvider, string oldPacketFilter, string oldNetworkDevices)
+    {
+        var newNetworkDevices = GetNetworkDeviceSettingsSnapshot(SettingsController.CurrentSettings.NetworkDevices);
+
+        return oldPacketProvider != SettingsController.CurrentSettings.PacketProvider
+               || !string.Equals(oldPacketFilter, SettingsController.CurrentSettings.PacketFilter, StringComparison.Ordinal)
+               || !string.Equals(oldNetworkDevices, newNetworkDevices, StringComparison.Ordinal);
+    }
+
+    public static async Task RestartNetworkTrackingAsync()
+    {
+        var trackingController = ServiceLocator.Resolve<TrackingController>();
+
+        if (trackingController is null)
+        {
+            return;
+        }
+
+        await trackingController.RestartTrackingAsync();
     }
 
     public void ResetPacketFilter()
@@ -481,6 +549,56 @@ public class SettingsWindowViewModel : BaseViewModel
         PacketProviderSelection = PacketProvider.FirstOrDefault(x => x.Value == (int) SettingsController.CurrentSettings.PacketProvider);
     }
 
+    private void InitNetworkDevices()
+    {
+        NetworkDevices.Clear();
+
+        try
+        {
+            var availableDevices = LibpcapPacketProvider.GetAvailableNetworkDevices();
+            var configuredDevices = SettingsController.CurrentSettings.NetworkDevices ?? new List<NetworkDeviceSettingsObject>();
+            var configuredByIdentifier = configuredDevices
+                .Where(x => !string.IsNullOrWhiteSpace(x?.Identifier))
+                .GroupBy(x => x.Identifier, StringComparer.OrdinalIgnoreCase)
+                .ToDictionary(x => x.Key, x => x.First(), StringComparer.OrdinalIgnoreCase);
+
+            bool hasConfiguredDevices = configuredByIdentifier.Count > 0;
+            int legacyNetworkDeviceIndex = SettingsController.CurrentSettings.NetworkDevice;
+
+            foreach (var availableDevice in availableDevices)
+            {
+                bool isSelected;
+
+                if (hasConfiguredDevices && configuredByIdentifier.TryGetValue(availableDevice.Identifier, out var configuredDevice))
+                {
+                    isSelected = configuredDevice.IsSelected;
+                }
+                else if (!hasConfiguredDevices && legacyNetworkDeviceIndex >= 0)
+                {
+                    isSelected = availableDevice.Index == legacyNetworkDeviceIndex;
+                }
+                else
+                {
+                    isSelected = true;
+                }
+
+                NetworkDevices.Add(new NetworkDeviceFilter
+                {
+                    Identifier = availableDevice.Identifier,
+                    Index = availableDevice.Index,
+                    IsSelected = isSelected,
+                    Name = availableDevice.Name
+                });
+            }
+
+            SetNetworkDevices();
+        }
+        catch (Exception e)
+        {
+            Log.Warning(e, "Network devices could not be loaded from Npcap");
+        }
+    }
+
     private void InitServer()
     {
         Server.Clear();
@@ -676,6 +794,7 @@ public class SettingsWindowViewModel : BaseViewModel
         {
             _packetProviderSelection = value;
             PacketFilterVisibility = _packetProviderSelection.Value == 2 ? Visibility.Visible : Visibility.Collapsed;
+            NetworkDevicesVisibility = _packetProviderSelection.Value == 2 ? Visibility.Visible : Visibility.Collapsed;
             OnPropertyChanged();
         }
     }
@@ -696,6 +815,26 @@ public class SettingsWindowViewModel : BaseViewModel
         set
         {
             _packetFilterVisibility = value;
+            OnPropertyChanged();
+        }
+    }
+
+    public Visibility NetworkDevicesVisibility
+    {
+        get => _networkDevicesVisibility;
+        set
+        {
+            _networkDevicesVisibility = value;
+            OnPropertyChanged();
+        }
+    }
+
+    public ObservableCollection<NetworkDeviceFilter> NetworkDevices
+    {
+        get => _networkDevices;
+        set
+        {
+            _networkDevices = value;
             OnPropertyChanged();
         }
     }
