@@ -209,7 +209,10 @@ public static class AutoUpdateController
 
         return new UpdateWindowViewModel(
             LocalizationController.Translation("UPDATE_AVAILABLE_TITLE"),
-            $"{GetProductTitle()} update available",
+            string.Format(
+                CultureInfo.CurrentCulture,
+                LocalizationController.Translation("UPDATE_AVAILABLE_HEADLINE"),
+                GetProductTitle()),
             string.Format(
                 CultureInfo.CurrentCulture,
                 LocalizationController.Translation("UPDATE_AVAILABLE_OPTIONAL_MESSAGE"),
@@ -669,19 +672,17 @@ public static class AutoUpdateController
 
     private static string GetRemindLaterText()
     {
-        return CultureInfo.CurrentUICulture.TwoLetterISOLanguageName.Equals("de", StringComparison.OrdinalIgnoreCase) ? "Spaeter erinnern" : "Remind me later";
+        return LocalizationController.Translation("UPDATE_REMIND_LATER");
     }
 
     private static string GetDownloadingStatusText()
     {
-        return CultureInfo.CurrentUICulture.TwoLetterISOLanguageName.Equals("de", StringComparison.OrdinalIgnoreCase)
-            ? "Update wird heruntergeladen und vorbereitet..."
-            : "Downloading and preparing the update...";
+        return LocalizationController.Translation("UPDATE_DOWNLOADING_STATUS");
     }
 
     private static string GetDownloadingButtonText()
     {
-        return CultureInfo.CurrentUICulture.TwoLetterISOLanguageName.Equals("de", StringComparison.OrdinalIgnoreCase) ? "Wird geladen..." : "Downloading...";
+        return LocalizationController.Translation("UPDATE_DOWNLOADING_BUTTON");
     }
 
     private static async Task<SparkleUpdater> EnsureSparkleUpdaterAsync()

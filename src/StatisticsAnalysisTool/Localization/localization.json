@@ -38667,6 +38667,74 @@
       ]
     },
     {
+      "tuid": "UPDATE_AVAILABLE_HEADLINE",
+      "tuv": [
+        {
+          "lang": "de-DE",
+          "seg": "{0} Update verfuegbar"
+        },
+        {
+          "lang": "en-US",
+          "seg": "{0} update available"
+        },
+        {
+          "lang": "fr-FR",
+          "seg": "Mise a jour disponible pour {0}"
+        }
+      ]
+    },
+    {
+      "tuid": "UPDATE_REMIND_LATER",
+      "tuv": [
+        {
+          "lang": "de-DE",
+          "seg": "Spaeter erinnern"
+        },
+        {
+          "lang": "en-US",
+          "seg": "Remind me later"
+        },
+        {
+          "lang": "fr-FR",
+          "seg": "Me le rappeler plus tard"
+        }
+      ]
+    },
+    {
+      "tuid": "UPDATE_DOWNLOADING_STATUS",
+      "tuv": [
+        {
+          "lang": "de-DE",
+          "seg": "Update wird heruntergeladen und vorbereitet..."
+        },
+        {
+          "lang": "en-US",
+          "seg": "Downloading and preparing the update..."
+        },
+        {
+          "lang": "fr-FR",
+          "seg": "Telechargement et preparation de la mise a jour..."
+        }
+      ]
+    },
+    {
+      "tuid": "UPDATE_DOWNLOADING_BUTTON",
+      "tuv": [
+        {
+          "lang": "de-DE",
+          "seg": "Wird geladen..."
+        },
+        {
+          "lang": "en-US",
+          "seg": "Downloading..."
+        },
+        {
+          "lang": "fr-FR",
+          "seg": "Telechargement..."
+        }
+      ]
+    },
+    {
       "tuid": "UPDATE_CHECK_FAILED_MESSAGE",
       "tuv": [
         {
