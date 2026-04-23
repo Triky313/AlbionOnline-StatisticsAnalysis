@@ -110,18 +110,57 @@ public class LocalizationController
 
         var culture = SettingsController.CurrentSettings.CurrentCultureIetfLanguageTag ?? string.Empty;
 
-        if (Translations.TryGetValue(culture, out var transForCulture) && transForCulture.TryGetValue(key, out var t1) && !string.IsNullOrEmpty(t1))
+        if (TryGetTranslationText(culture, key, out var translationText))
         {
-            return ApplyPlaceholders(t1, placeholders, replacements);
-        }
-
-        var gameLoc = Volatile.Read(ref _gameLocalizations);
-        if (gameLoc != null && gameLoc.TryGetValue(key, out var langs) && langs.TryGetValue(culture, out var t2) && !string.IsNullOrEmpty(t2))
-        {
-            return ApplyPlaceholders(t2, placeholders, replacements);
+            return ApplyPlaceholders(translationText, placeholders, replacements);
         }
 
         return key;
+    }
+
+    private static bool TryGetTranslationText(string culture, string key, out string translationText)
+    {
+        translationText = string.Empty;
+        var defaultLanguage = Settings.Default.DefaultLanguageCultureName;
+
+        if (TryGetConfiguredTranslationText(culture, key, out translationText))
+        {
+            return true;
+        }
+
+        if (!string.IsNullOrWhiteSpace(defaultLanguage)
+            && !string.Equals(culture, defaultLanguage, StringComparison.OrdinalIgnoreCase)
+            && TryGetConfiguredTranslationText(defaultLanguage, key, out translationText))
+        {
+            return true;
+        }
+
+        return false;
+    }
+
+    private static bool TryGetConfiguredTranslationText(string culture, string key, out string translationText)
+    {
+        translationText = string.Empty;
+
+        if (Translations.TryGetValue(culture, out var transForCulture)
+            && transForCulture.TryGetValue(key, out var directTranslation)
+            && !string.IsNullOrEmpty(directTranslation))
+        {
+            translationText = directTranslation;
+            return true;
+        }
+
+        var gameLoc = Volatile.Read(ref _gameLocalizations);
+        if (gameLoc != null
+            && gameLoc.TryGetValue(key, out var languageTranslations)
+            && languageTranslations.TryGetValue(culture, out var gameTranslation)
+            && !string.IsNullOrEmpty(gameTranslation))
+        {
+            translationText = gameTranslation;
+            return true;
+        }
+
+        return false;
     }
 
     private static string ApplyPlaceholders(string input, List<string> placeholders, List<string> replacements)
