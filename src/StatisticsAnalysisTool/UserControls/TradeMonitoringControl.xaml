@@ -7,6 +7,7 @@
              xmlns:viewModels="clr-namespace:StatisticsAnalysisTool.ViewModels"
              xmlns:vwp="clr-namespace:WpfToolkit.Controls;assembly=VirtualizingWrapPanel"
              xmlns:trade="clr-namespace:StatisticsAnalysisTool.Trade"
+             xmlns:wpf="clr-namespace:LiveChartsCore.SkiaSharpView.WPF;assembly=LiveChartsCore.SkiaSharpView.WPF"
              mc:Ignorable="d" 
              d:DesignHeight="1950" d:DesignWidth="800"
              d:DataContext="{d:DesignInstance Type=viewModels:MainWindowViewModel}">
@@ -131,7 +132,40 @@
                 </Grid>
             </TabItem>
             <TabItem Header="{Binding Translation.Statistics, FallbackValue=STATISTICS}">
-                <Grid />
+                <Grid Margin="10,10,10,10">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="*" />
+                    </Grid.RowDefinitions>
+
+                    <TextBlock Grid.Row="0"
+                               Text="{Binding TradeMonitoringBindings.ProfitOverTimeChartTitle, FallbackValue=PROFIT_OVER_TIME}"
+                               Foreground="{StaticResource SolidColorBrush.Text.1}"
+                               FontSize="18"
+                               FontWeight="SemiBold" />
+
+                    <StackPanel Grid.Row="1" Orientation="Horizontal" Margin="0,10,0,10">
+                        <ComboBox Width="140"
+                                  Height="24"
+                                  ItemsSource="{Binding TradeMonitoringBindings.ProfitOverTimeAggregationFilters}"
+                                  SelectedValue="{Binding TradeMonitoringBindings.SelectedProfitOverTimeAggregation, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                  SelectedValuePath="Key"
+                                  DisplayMemberPath="Value"
+                                  SelectionChanged="ProfitOverTimeAggregation_OnSelectionChanged" />
+                    </StackPanel>
+
+                    <Border Grid.Row="2" BorderBrush="{StaticResource SolidColorBrush.Background.4}">
+                        <wpf:CartesianChart Series="{Binding TradeMonitoringBindings.ProfitOverTimeSeries}"
+                                            XAxes="{Binding TradeMonitoringBindings.ProfitOverTimeXAxes}"
+                                            YAxes="{Binding TradeMonitoringBindings.ProfitOverTimeYAxes}"
+                                            TooltipPosition="Center"
+                                            FindingStrategy="ExactMatchTakeClosest"
+                                            LegendPosition="Hidden"
+                                            Background="Transparent"
+                                            DrawMarginFrame="{x:Null}" />
+                    </Border>
+                </Grid>
             </TabItem>
         </TabControl>
 

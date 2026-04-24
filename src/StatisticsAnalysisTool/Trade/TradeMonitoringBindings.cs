@@ -1,4 +1,9 @@
-﻿using StatisticsAnalysisTool.Common;
+using LiveChartsCore;
+using LiveChartsCore.Defaults;
+using LiveChartsCore.SkiaSharpView;
+using LiveChartsCore.SkiaSharpView.Painting;
+using SkiaSharp;
+using StatisticsAnalysisTool.Common;
 using StatisticsAnalysisTool.Common.UserSettings;
 using StatisticsAnalysisTool.Localization;
 using StatisticsAnalysisTool.ViewModels;
@@ -6,18 +11,23 @@ using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Collections.Specialized;
+using System.Collections.ObjectModel;
 using System.Globalization;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Data;
+using System.Windows.Media;
 
 namespace StatisticsAnalysisTool.Trade;
 
 public class TradeMonitoringBindings : BaseViewModel
 {
+    private const int TargetVisibleProfitOverTimeLabels = 10;
     private readonly record struct TradeFilterContext(long FromTicks, long ToTicks, string SearchText, long? SearchNumber, int Tier, MarketLocation Location);
+
+    private readonly TradeProfitTimeSeriesService _tradeProfitTimeSeriesService = new();
     private ListCollectionView _tradeCollectionView;
     private ObservableRangeCollection<Trade> _trades = new();
     private string _tradesSearchText;
@@ -35,11 +45,26 @@ public class TradeMonitoringBindings : BaseViewModel
     private TradeExportTemplateObject _tradeExportTemplateObject = new();
     private int _selectedTierFilter;
     private MarketLocation _selectedLocationFilter = MarketLocation.Unknown;
+    private TradeProfitTimeAggregation _selectedProfitOverTimeAggregation = TradeProfitTimeAggregation.Day;
+    private TradeProfitTimeAggregation _effectiveProfitOverTimeAggregation = TradeProfitTimeAggregation.Day;
+    private ObservableCollection<ISeries> _profitOverTimeSeries = [];
+    private Axis[] _profitOverTimeXAxes = [];
+    private Axis[] _profitOverTimeYAxes =
+    [
+        new Axis
+        {
+            LabelsRotation = 0,
+            Labeler = value => value.ToShortNumberString()
+        }
+    ];
+    private IReadOnlyList<TradeProfitTimeSeriesPoint> _profitOverTimePoints = [];
+    private string _profitOverTimeChartTitle = LocalizationController.Translation("PROFIT_OVER_TIME");
 
     public TradeMonitoringBindings()
     {
         TierFilters = BuildTierFilters();
         LocationFilters = BuildLocationFilters();
+        ProfitOverTimeAggregationFilters = BuildProfitOverTimeAggregationFilters();
         TradeCollectionView = CollectionViewSource.GetDefaultView(Trades) as ListCollectionView;
 
         if (TradeCollectionView != null)
@@ -73,8 +98,10 @@ public class TradeMonitoringBindings : BaseViewModel
         }
 
         TradeCollectionView.Filter = null;
-        TradeStatsObject?.SetTradeStats(TradeCollectionView.Cast<Trade>().ToList());
+        var filteredTrades = TradeCollectionView.Cast<Trade>().ToList();
+        TradeStatsObject?.SetTradeStats(filteredTrades);
         UpdateCurrentTradesUi(null, EventArgs.Empty);
+        _ = UpdateProfitOverTimeChartAsync(filteredTrades);
     }
 
     public ListCollectionView TradeCollectionView
@@ -107,7 +134,10 @@ public class TradeMonitoringBindings : BaseViewModel
         }
     }
 
-    public IReadOnlyList<KeyValuePair<int, string>> TierFilters { get; }
+    public IReadOnlyList<KeyValuePair<int, string>> TierFilters
+    {
+        get;
+    }
 
     public int SelectedTierFilter
     {
@@ -119,7 +149,10 @@ public class TradeMonitoringBindings : BaseViewModel
         }
     }
 
-    public IReadOnlyList<KeyValuePair<MarketLocation, string>> LocationFilters { get; }
+    public IReadOnlyList<KeyValuePair<MarketLocation, string>> LocationFilters
+    {
+        get;
+    }
 
     public MarketLocation SelectedLocationFilter
     {
@@ -127,6 +160,76 @@ public class TradeMonitoringBindings : BaseViewModel
         set
         {
             _selectedLocationFilter = value;
+            OnPropertyChanged();
+        }
+    }
+
+    public IReadOnlyList<KeyValuePair<TradeProfitTimeAggregation, string>> ProfitOverTimeAggregationFilters
+    {
+        get;
+    }
+
+    public TradeProfitTimeAggregation SelectedProfitOverTimeAggregation
+    {
+        get => _selectedProfitOverTimeAggregation;
+        set
+        {
+            if (_selectedProfitOverTimeAggregation == value)
+            {
+                return;
+            }
+
+            _selectedProfitOverTimeAggregation = value;
+            OnPropertyChanged();
+        }
+    }
+
+    public TradeProfitTimeAggregation EffectiveProfitOverTimeAggregation
+    {
+        get => _effectiveProfitOverTimeAggregation;
+        set
+        {
+            _effectiveProfitOverTimeAggregation = value;
+            OnPropertyChanged();
+        }
+    }
+
+    public ObservableCollection<ISeries> ProfitOverTimeSeries
+    {
+        get => _profitOverTimeSeries;
+        set
+        {
+            _profitOverTimeSeries = value;
+            OnPropertyChanged();
+        }
+    }
+
+    public Axis[] ProfitOverTimeXAxes
+    {
+        get => _profitOverTimeXAxes;
+        set
+        {
+            _profitOverTimeXAxes = value;
+            OnPropertyChanged();
+        }
+    }
+
+    public Axis[] ProfitOverTimeYAxes
+    {
+        get => _profitOverTimeYAxes;
+        set
+        {
+            _profitOverTimeYAxes = value;
+            OnPropertyChanged();
+        }
+    }
+
+    public string ProfitOverTimeChartTitle
+    {
+        get => _profitOverTimeChartTitle;
+        set
+        {
+            _profitOverTimeChartTitle = value;
             OnPropertyChanged();
         }
     }
@@ -268,7 +371,7 @@ public class TradeMonitoringBindings : BaseViewModel
     {
         Application.Current.Dispatcher.InvokeAsync(() =>
         {
-            CurrentTradeCounts = TradeCollectionView.Count;
+            CurrentTradeCounts = TradeCollectionView?.Count ?? 0;
         });
     }
 
@@ -280,7 +383,7 @@ public class TradeMonitoringBindings : BaseViewModel
 
     public async Task UpdateFilteredTradesAsync()
     {
-        if (Trades?.Count <= 0)
+        if (Trades == null)
         {
             return;
         }
@@ -291,25 +394,31 @@ public class TradeMonitoringBindings : BaseViewModel
         {
             await _cancellationTokenSource.CancelAsync();
         }
+
         _cancellationTokenSource = new CancellationTokenSource();
 
         try
         {
-            var filteredTrades = await Task.Run(ParallelTradeFilterProcess, _cancellationTokenSource.Token);
-
-            if (Trades != null)
+            List<Trade> filteredTrades;
+            if (Trades.Count <= 0)
             {
-                TradeCollectionView ??= CollectionViewSource.GetDefaultView(Trades) as ListCollectionView;
+                filteredTrades = [];
             }
+            else
+            {
+                filteredTrades = await Task.Run(ParallelTradeFilterProcess, _cancellationTokenSource.Token);
+            }
+
+            TradeCollectionView ??= CollectionViewSource.GetDefaultView(Trades) as ListCollectionView;
 
             if (TradeCollectionView != null)
             {
                 var filteredTradeSet = filteredTrades.ToHashSet();
                 TradeCollectionView.Filter = obj => obj is Trade trade && filteredTradeSet.Contains(trade);
-
-                TradeStatsObject?.SetTradeStats(TradeCollectionView?.Cast<Trade>().ToList());
+                TradeStatsObject?.SetTradeStats(TradeCollectionView.Cast<Trade>().ToList());
             }
 
+            await UpdateProfitOverTimeChartAsync(filteredTrades);
             UpdateCurrentTradesUi(null, null);
         }
         catch (TaskCanceledException)
@@ -345,6 +454,24 @@ public class TradeMonitoringBindings : BaseViewModel
         return result.OrderByDescending(d => d.Ticks).ToList();
     }
 
+    public async Task UpdateProfitOverTimeChartAsync(IEnumerable<Trade> filteredTrades = null)
+    {
+        var tradeSnapshot = filteredTrades?.ToList() ?? GetFilteredTradeSnapshot();
+        var chartResult = await Task.Run(() =>
+        {
+            return _tradeProfitTimeSeriesService.BuildTimeSeries(
+                tradeSnapshot,
+                DatePickerTradeFrom.Date,
+                DatePickerTradeTo.Date,
+                SelectedProfitOverTimeAggregation);
+        });
+
+        await Application.Current.Dispatcher.InvokeAsync(() =>
+        {
+            ApplyProfitOverTimeChart(chartResult);
+        });
+    }
+
     private TradeFilterContext BuildFilterContext()
     {
         var searchText = TradesSearchText?.Trim() ?? string.Empty;
@@ -352,7 +479,13 @@ public class TradeMonitoringBindings : BaseViewModel
         var toDate = DatePickerTradeTo.Date;
         var toTicks = toDate == DateTime.MaxValue.Date ? DateTime.MaxValue.Ticks : toDate.AddDays(1).AddTicks(-1).Ticks;
 
-        return new TradeFilterContext(DatePickerTradeFrom.Ticks, toTicks, searchText, hasNumericSearch ? searchNumber : null, SelectedTierFilter, SelectedLocationFilter);
+        return new TradeFilterContext(
+            DatePickerTradeFrom.Ticks,
+            toTicks,
+            searchText,
+            hasNumericSearch ? searchNumber : null,
+            SelectedTierFilter,
+            SelectedLocationFilter);
     }
 
     private bool Filter(object obj, TradeFilterContext context)
@@ -429,6 +562,18 @@ public class TradeMonitoringBindings : BaseViewModel
         return filters;
     }
 
+    private static IReadOnlyList<KeyValuePair<TradeProfitTimeAggregation, string>> BuildProfitOverTimeAggregationFilters()
+    {
+        return new List<KeyValuePair<TradeProfitTimeAggregation, string>>
+        {
+            new(TradeProfitTimeAggregation.Hour, LocalizationController.Translation("HOUR")),
+            new(TradeProfitTimeAggregation.Day, LocalizationController.Translation("DAY")),
+            new(TradeProfitTimeAggregation.Week, LocalizationController.Translation("WEEK")),
+            new(TradeProfitTimeAggregation.Month, LocalizationController.Translation("MONTH")),
+            new(TradeProfitTimeAggregation.Year, LocalizationController.Translation("YEAR"))
+        };
+    }
+
     private static bool MatchesTierFilter(Trade trade, int selectedTier)
     {
         if (selectedTier <= 0)
@@ -448,6 +593,119 @@ public class TradeMonitoringBindings : BaseViewModel
         }
 
         return trade.Location == selectedLocation;
+    }
+
+    private List<Trade> GetFilteredTradeSnapshot()
+    {
+        if (TradeCollectionView == null)
+        {
+            return Trades?.ToList() ?? [];
+        }
+
+        return TradeCollectionView.Cast<Trade>().ToList();
+    }
+
+    private void ApplyProfitOverTimeChart(TradeProfitTimeSeriesResult chartResult)
+    {
+        _profitOverTimePoints = chartResult.Points ?? [];
+        EffectiveProfitOverTimeAggregation = chartResult.EffectiveAggregation;
+        ProfitOverTimeChartTitle = LocalizationController.Translation("PROFIT_OVER_TIME");
+
+        ProfitOverTimeXAxes =
+        [
+            new Axis
+            {
+                LabelsRotation = 15,
+                Labels = BuildProfitOverTimeLabels(_profitOverTimePoints, chartResult.EffectiveAggregation, chartResult.BucketStepSize)
+            }
+        ];
+
+        if (_profitOverTimePoints.Count == 0)
+        {
+            ProfitOverTimeSeries = [];
+            return;
+        }
+
+        ProfitOverTimeSeries =
+        [
+            CreateProfitOverTimeSeries(isPositiveSeries: true, "SolidColorBrush.Accent.Blue.3"),
+            CreateProfitOverTimeSeries(isPositiveSeries: false, "SolidColorBrush.Accent.Red.4")
+        ];
+    }
+
+    private ISeries CreateProfitOverTimeSeries(bool isPositiveSeries, string resourceKey)
+    {
+        var values = new ObservableCollection<double>();
+
+        for (var i = 0; i < _profitOverTimePoints.Count; i++)
+        {
+            var point = _profitOverTimePoints[i];
+            var value = point.NetProfit;
+            values.Add(isPositiveSeries
+                ? Math.Max(0d, value)
+                : Math.Min(0d, value));
+        }
+
+        var fill = CreatePaint(resourceKey);
+
+        return new ColumnSeries<double>
+        {
+            Name = string.Empty,
+            Values = values,
+            Stroke = null,
+            Fill = fill,
+            MaxBarWidth = 6,
+            YToolTipLabelFormatter = chartPoint => chartPoint.Coordinate.PrimaryValue.ToChartTooltipNumberString()
+        };
+    }
+
+    private static string[] BuildProfitOverTimeLabels(IReadOnlyList<TradeProfitTimeSeriesPoint> points, TradeProfitTimeAggregation aggregation, int bucketStepSize)
+    {
+        if (points == null || points.Count == 0)
+        {
+            return [];
+        }
+
+        var labelStep = Math.Max(1, (int) Math.Ceiling(points.Count / (double) TargetVisibleProfitOverTimeLabels));
+        var labels = new string[points.Count];
+
+        for (var i = 0; i < points.Count; i++)
+        {
+            labels[i] = i % labelStep == 0 || i == points.Count - 1
+                ? FormatAxisLabel(points[i], aggregation, bucketStepSize)
+                : string.Empty;
+        }
+
+        return labels;
+    }
+
+    private static string FormatAxisLabel(TradeProfitTimeSeriesPoint point, TradeProfitTimeAggregation aggregation, int bucketStepSize)
+    {
+        return aggregation switch
+        {
+            TradeProfitTimeAggregation.Hour => point.PeriodStart.ToString("HH:mm", CultureInfo.CurrentCulture),
+            TradeProfitTimeAggregation.Day => point.PeriodStart.ToString("HH:mm", CultureInfo.CurrentCulture),
+            TradeProfitTimeAggregation.Week => point.PeriodStart.ToString("dd.MM", CultureInfo.CurrentCulture),
+            TradeProfitTimeAggregation.Month => point.PeriodStart.ToString("MM.yy", CultureInfo.CurrentCulture),
+            TradeProfitTimeAggregation.Year => point.PeriodStart.ToString("MM.yy", CultureInfo.CurrentCulture),
+            _ => point.PeriodStart.ToString("g", CultureInfo.CurrentCulture)
+        };
+    }
+
+    private static SolidColorPaint CreatePaint(string resourceKey)
+    {
+        if (Application.Current.Resources[resourceKey] is SolidColorBrush brush)
+        {
+            return new SolidColorPaint
+            {
+                Color = new SKColor(brush.Color.R, brush.Color.G, brush.Color.B, brush.Color.A)
+            };
+        }
+
+        return new SolidColorPaint
+        {
+            Color = new SKColor(0, 0, 0, 0)
+        };
     }
 
     #endregion

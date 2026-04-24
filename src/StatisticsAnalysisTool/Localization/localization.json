@@ -39090,6 +39090,71 @@
           "seg": "Valeur totale en argent des ressources"
         }
       ]
+    },
+    {
+      "tuid": "AGGREGATION",
+      "tuv": [
+        {
+          "lang": "de-DE",
+          "seg": "Aggregation"
+        },
+        {
+          "lang": "en-US",
+          "seg": "Aggregation"
+        }
+      ]
+    },
+    {
+      "tuid": "AUTO",
+      "tuv": [
+        {
+          "lang": "de-DE",
+          "seg": "Auto"
+        },
+        {
+          "lang": "en-US",
+          "seg": "Auto"
+        }
+      ]
+    },
+    {
+      "tuid": "HOUR",
+      "tuv": [
+        {
+          "lang": "de-DE",
+          "seg": "Stunde"
+        },
+        {
+          "lang": "en-US",
+          "seg": "Hour"
+        }
+      ]
+    },
+    {
+      "tuid": "PROFIT_OVER_TIME",
+      "tuv": [
+        {
+          "lang": "de-DE",
+          "seg": "Gewinn über Zeit"
+        },
+        {
+          "lang": "en-US",
+          "seg": "Profit over Time"
+        }
+      ]
+    },
+    {
+      "tuid": "TRADE_COUNT",
+      "tuv": [
+        {
+          "lang": "de-DE",
+          "seg": "Anzahl Trades"
+        },
+        {
+          "lang": "en-US",
+          "seg": "Trade count"
+        }
+      ]
     }
   ]
 }

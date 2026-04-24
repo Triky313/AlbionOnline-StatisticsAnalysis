@@ -1,6 +1,7 @@
 ﻿using StatisticsAnalysisTool.Common;
 using StatisticsAnalysisTool.Localization;
 using StatisticsAnalysisTool.Network.Manager;
+using StatisticsAnalysisTool.Trade;
 using StatisticsAnalysisTool.ViewModels;
 using StatisticsAnalysisTool.Views;
 using System.Linq;
@@ -105,6 +106,21 @@ public partial class TradeMonitoringControl
         }
 
         await vm.TradeMonitoringBindings.UpdateFilteredTradesAsync();
+    }
+
+    private async void ProfitOverTimeAggregation_OnSelectionChanged(object sender, SelectionChangedEventArgs e)
+    {
+        if (DataContext is not MainWindowViewModel vm)
+        {
+            return;
+        }
+
+        if (sender is ComboBox { SelectedValue: TradeProfitTimeAggregation aggregation })
+        {
+            vm.TradeMonitoringBindings.SelectedProfitOverTimeAggregation = aggregation;
+        }
+
+        await vm.TradeMonitoringBindings.UpdateProfitOverTimeChartAsync();
     }
 
     private void FilterReset_MouseUp(object sender, MouseButtonEventArgs e)
