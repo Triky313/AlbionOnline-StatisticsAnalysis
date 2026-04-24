@@ -4,6 +4,7 @@ using StatisticsAnalysisTool.Network.Manager;
 using StatisticsAnalysisTool.Trade;
 using StatisticsAnalysisTool.ViewModels;
 using StatisticsAnalysisTool.Views;
+using System;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Windows;
@@ -127,6 +128,30 @@ public partial class TradeMonitoringControl
     {
         var vm = (MainWindowViewModel) DataContext;
         vm.TradeMonitoringBindings?.ItemFilterReset();
+    }
+
+    private void TopItemRankingList_OnPreviewMouseWheel(object sender, MouseWheelEventArgs e)
+    {
+        if (TopItemRankingScrollViewer == null)
+        {
+            return;
+        }
+
+        var scrollSteps = Math.Max(1, Math.Abs(e.Delta) / Mouse.MouseWheelDeltaForOneLine);
+
+        for (var i = 0; i < scrollSteps; i++)
+        {
+            if (e.Delta > 0)
+            {
+                TopItemRankingScrollViewer.LineUp();
+            }
+            else
+            {
+                TopItemRankingScrollViewer.LineDown();
+            }
+        }
+
+        e.Handled = true;
     }
 
     #endregion

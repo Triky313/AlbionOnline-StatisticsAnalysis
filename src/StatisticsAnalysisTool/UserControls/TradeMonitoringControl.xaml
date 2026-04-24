@@ -192,7 +192,8 @@
                 </Grid>
             </TabItem>
             <TabItem Header="{Binding Translation.TopItemRanking, FallbackValue=TOP_ITEM_RANKING}">
-                <ScrollViewer Margin="10,10,10,10"
+                <ScrollViewer x:Name="TopItemRankingScrollViewer"
+                              Margin="10,10,10,10"
                               HorizontalScrollBarVisibility="Disabled"
                               VerticalScrollBarVisibility="Auto">
                     <StackPanel Orientation="Vertical">
@@ -211,8 +212,11 @@
                                 <ListBox Grid.Row="1"
                                          Background="Transparent"
                                          BorderThickness="0"
+                                         Focusable="False"
+                                         IsTabStop="False"
                                          Margin="0,12,0,0"
                                          ItemsSource="{Binding TradeMonitoringBindings.TopItemsByProfit}"
+                                         PreviewMouseWheel="TopItemRankingList_OnPreviewMouseWheel"
                                          ScrollViewer.HorizontalScrollBarVisibility="Disabled"
                                          ScrollViewer.VerticalScrollBarVisibility="Disabled"
                                          ItemTemplate="{StaticResource TradeItemRankingEntryTemplate}" />
@@ -229,8 +233,9 @@
                                 <TextBlock Text="{Binding Translation.TopItemsByRoi, FallbackValue=TOP_ITEMS_BY_ROI}"
                                            Foreground="{StaticResource SolidColorBrush.Text.1}" FontSize="16" FontWeight="SemiBold" />
 
-                                <ListBox Grid.Row="1" Background="Transparent" BorderThickness="0" Margin="0,12,0,0"
+                                <ListBox Grid.Row="1" Background="Transparent" BorderThickness="0" Focusable="False" IsTabStop="False" Margin="0,12,0,0"
                                          ItemsSource="{Binding TradeMonitoringBindings.TopItemsByRoi}"
+                                         PreviewMouseWheel="TopItemRankingList_OnPreviewMouseWheel"
                                          ScrollViewer.HorizontalScrollBarVisibility="Disabled" ScrollViewer.VerticalScrollBarVisibility="Disabled"
                                          ItemTemplate="{StaticResource TradeItemRankingEntryTemplate}" />
                             </Grid>
@@ -247,8 +252,9 @@
                                            Foreground="{StaticResource SolidColorBrush.Text.1}" FontSize="16" FontWeight="SemiBold" />
 
                                 <ListBox Grid.Row="1" 
-                                         Background="Transparent" BorderThickness="0" Margin="0,12,0,0"
+                                         Background="Transparent" BorderThickness="0" Focusable="False" IsTabStop="False" Margin="0,12,0,0"
                                          ItemsSource="{Binding TradeMonitoringBindings.TopItemsByVolume}" 
+                                         PreviewMouseWheel="TopItemRankingList_OnPreviewMouseWheel"
                                          ScrollViewer.HorizontalScrollBarVisibility="Disabled" ScrollViewer.VerticalScrollBarVisibility="Disabled"
                                          ItemTemplate="{StaticResource TradeItemRankingEntryTemplate}" />
                             </Grid>
