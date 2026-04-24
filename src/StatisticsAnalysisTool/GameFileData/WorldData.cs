@@ -226,7 +226,7 @@ public static class WorldData
             new JsonSerializerOptions()
             {
                 ReadCommentHandling = JsonCommentHandling.Skip
-            });
+            }).ConfigureAwait(false);
 
         MapData = data;
         return data.Count >= 0;

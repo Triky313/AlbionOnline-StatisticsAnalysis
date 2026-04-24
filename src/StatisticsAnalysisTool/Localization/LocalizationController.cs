@@ -1,4 +1,4 @@
-﻿using Serilog;
+using Serilog;
 using StatisticsAnalysisTool.Common.UserSettings;
 using StatisticsAnalysisTool.Models;
 using StatisticsAnalysisTool.Properties;
@@ -14,6 +14,7 @@ using System.Reflection;
 using System.Text.Json;
 using System.Threading;
 using System.Threading.Tasks;
+using System.Xml;
 
 namespace StatisticsAnalysisTool.Localization;
 
@@ -229,10 +230,77 @@ public class LocalizationController
 
     public static Task SetGameLocalizationsAsync(IReadOnlyDictionary<string, Dictionary<string, string>> allTu)
     {
+        return Task.Run(() => SetGameLocalizations(allTu));
+    }
+
+    public static async Task SetGameLocalizationsFromXmlFileAsync(string filePath)
+    {
+        if (!File.Exists(filePath))
+        {
+            Interlocked.Exchange(ref _gameLocalizations, ImmutableDictionary<string, ImmutableDictionary<string, string>>.Empty);
+            return;
+        }
+
+        var allTu = new Dictionary<string, Dictionary<string, string>>(StringComparer.OrdinalIgnoreCase);
+
+        await using var stream = new FileStream(
+            filePath,
+            FileMode.Open,
+            FileAccess.Read,
+            FileShare.Read,
+            65536,
+            FileOptions.Asynchronous | FileOptions.SequentialScan);
+
+        using var reader = XmlReader.Create(stream, new XmlReaderSettings
+        {
+            Async = true,
+            IgnoreWhitespace = true
+        });
+
+        string currentTuId = null;
+        Dictionary<string, string> currentLanguages = null;
+
+        while (await reader.ReadAsync().ConfigureAwait(false))
+        {
+            switch (reader.NodeType)
+            {
+                case XmlNodeType.Element:
+                    if (reader.Name == "tu")
+                    {
+                        currentTuId = reader.GetAttribute("tuid") ?? string.Empty;
+                        currentLanguages = new Dictionary<string, string>(StringComparer.OrdinalIgnoreCase);
+                    }
+                    else if (reader.Name == "tuv" && currentTuId != null)
+                    {
+                        var lang = reader.GetAttribute("xml:lang");
+                        if (!string.IsNullOrEmpty(lang) && await reader.ReadAsync().ConfigureAwait(false) && reader.Name == "seg")
+                        {
+                            var text = await reader.ReadElementContentAsStringAsync().ConfigureAwait(false);
+                            currentLanguages![lang] = text;
+                        }
+                    }
+                    break;
+
+                case XmlNodeType.EndElement:
+                    if (reader.Name == "tu" && currentTuId != null && currentLanguages != null)
+                    {
+                        allTu[currentTuId] = currentLanguages;
+                        currentTuId = null;
+                        currentLanguages = null;
+                    }
+                    break;
+            }
+        }
+
+        await SetGameLocalizationsAsync(allTu).ConfigureAwait(false);
+    }
+
+    private static void SetGameLocalizations(IReadOnlyDictionary<string, Dictionary<string, string>> allTu)
+    {
         if (allTu is null || allTu.Count == 0)
         {
             Interlocked.Exchange(ref _gameLocalizations, ImmutableDictionary<string, ImmutableDictionary<string, string>>.Empty);
-            return Task.CompletedTask;
+            return;
         }
 
         var outer = ImmutableDictionary.CreateBuilder<string, ImmutableDictionary<string, string>>(StringComparer.OrdinalIgnoreCase);
@@ -244,7 +312,6 @@ public class LocalizationController
         }
 
         Interlocked.Exchange(ref _gameLocalizations, outer.ToImmutable());
-        return Task.CompletedTask;
     }
 
     #endregion

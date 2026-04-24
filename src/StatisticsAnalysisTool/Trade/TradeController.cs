@@ -1,4 +1,4 @@
-﻿using Serilog;
+using Serilog;
 using StatisticsAnalysisTool.Cluster;
 using StatisticsAnalysisTool.Common;
 using StatisticsAnalysisTool.Common.UserSettings;
@@ -402,6 +402,12 @@ public class TradeController
             return [];
         }
 
+        if (!ContainsLegacyTradeProperties(json))
+        {
+            var currentTradeDtos = JsonSerializer.Deserialize<List<TradeDto>>(json);
+            return MapTradeDtos(currentTradeDtos);
+        }
+
         if (JsonNode.Parse(json) is not JsonArray root)
         {
             return [];
@@ -430,6 +436,17 @@ public class TradeController
         }
 
         var tradeDtos = JsonSerializer.Deserialize<List<TradeDto>>(root.ToJsonString());
+        return MapTradeDtos(tradeDtos);
+    }
+
+    private static bool ContainsLegacyTradeProperties(string json)
+    {
+        return json.Contains("\"InternalTotalPrice\"", StringComparison.Ordinal)
+               || json.Contains("\"InternalUnitPrice\"", StringComparison.Ordinal);
+    }
+
+    private static List<Trade> MapTradeDtos(IEnumerable<TradeDto> tradeDtos)
+    {
         if (tradeDtos == null)
         {
             return [];

@@ -1,5 +1,6 @@
 using Serilog;
 using System;
+using System.Collections.Concurrent;
 using System.IO;
 using System.Reflection;
 using System.Text;
@@ -11,7 +12,8 @@ namespace StatisticsAnalysisTool.Common;
 
 public static class FileController
 {
-    private static readonly SemaphoreSlim IoLock = new(1, 1);
+    private const int FileBufferSize = 65536;
+    private static readonly ConcurrentDictionary<string, SemaphoreSlim> FileLocks = new(StringComparer.OrdinalIgnoreCase);
 
     private static readonly JsonSerializerOptions JsonOptions = new()
     {
@@ -20,7 +22,8 @@ public static class FileController
 
     public static async Task<T> LoadAsync<T>(string path, Func<T, bool> validate = null) where T : new()
     {
-        await IoLock.WaitAsync().ConfigureAwait(false);
+        var fileLock = GetFileLock(path);
+        await fileLock.WaitAsync().ConfigureAwait(false);
 
         try
         {
@@ -57,13 +60,15 @@ public static class FileController
         }
         finally
         {
-            IoLock.Release();
+            fileLock.Release();
         }
     }
 
     public static async Task<bool> SaveAsync<T>(T value, string path, Func<T, bool> validate = null)
     {
-        await IoLock.WaitAsync().ConfigureAwait(false);
+        var fileLock = GetFileLock(path);
+        await fileLock.WaitAsync().ConfigureAwait(false);
+
         try
         {
             EnsureDirectory(path);
@@ -73,10 +78,12 @@ public static class FileController
                 return false;
             }
 
-            var json = JsonSerializer.Serialize(value, JsonOptions);
             var tmp = GetTmpPath(path);
 
-            await File.WriteAllTextAsync(tmp, json, Encoding.UTF8).ConfigureAwait(false);
+            await using (var stream = CreateWriteStream(tmp))
+            {
+                await JsonSerializer.SerializeAsync(stream, value, JsonOptions).ConfigureAwait(false);
+            }
 
             File.Move(tmp, path, overwrite: true);
 
@@ -90,7 +97,7 @@ public static class FileController
         }
         finally
         {
-            IoLock.Release();
+            fileLock.Release();
         }
     }
 
@@ -98,14 +105,42 @@ public static class FileController
     {
         try
         {
-            var json = await File.ReadAllTextAsync(file, Encoding.UTF8).ConfigureAwait(false);
-            var obj = JsonSerializer.Deserialize<T>(json, JsonOptions);
+            await using var stream = CreateReadStream(file);
+            var obj = await JsonSerializer.DeserializeAsync<T>(stream, JsonOptions).ConfigureAwait(false);
             return (obj is not null, obj);
         }
         catch
         {
             return (false, default);
         }
+    }
+
+    private static SemaphoreSlim GetFileLock(string path)
+    {
+        var fullPath = Path.GetFullPath(path);
+        return FileLocks.GetOrAdd(fullPath, _ => new SemaphoreSlim(1, 1));
+    }
+
+    private static FileStream CreateReadStream(string path)
+    {
+        return new FileStream(
+            path,
+            FileMode.Open,
+            FileAccess.Read,
+            FileShare.Read,
+            FileBufferSize,
+            FileOptions.Asynchronous | FileOptions.SequentialScan);
+    }
+
+    private static FileStream CreateWriteStream(string path)
+    {
+        return new FileStream(
+            path,
+            FileMode.Create,
+            FileAccess.Write,
+            FileShare.None,
+            FileBufferSize,
+            FileOptions.Asynchronous | FileOptions.SequentialScan);
     }
 
     private static string GetTmpPath(string path) => path + ".tmp";

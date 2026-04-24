@@ -26,35 +26,21 @@ namespace StatisticsAnalysisTool.GameFileData;
 
 public static class GameData
 {
+    private const int FileBufferSize = 65536;
+
     public static async Task<bool> InitializeMainGameDataFilesAsync(ServerType serverType)
     {
         if (string.IsNullOrEmpty(SettingsController.CurrentSettings.MainGameFolderPath))
         {
-            var result = await GetMainGameDataWithDialogAsync(serverType);
-            if (!result)
-            {
-                return false;
-            }
-        }
-        else if (!string.IsNullOrEmpty(SettingsController.CurrentSettings.MainGameFolderPath)
-                 && Extractor.IsBinFileNewer(
-                     Path.Combine(AppDomain.CurrentDomain.BaseDirectory, Settings.Default.IndexedItemsFileName),
-                     SettingsController.CurrentSettings.MainGameFolderPath, serverType, "items"))
-        {
-            await GetMainGameDataAsync(SettingsController.CurrentSettings.MainGameFolderPath, serverType);
-            return true;
+            return await GetMainGameDataWithDialogAsync(serverType);
         }
 
         if (!Extractor.IsValidMainGameFolder(SettingsController.CurrentSettings?.MainGameFolderPath ?? string.Empty, serverType))
         {
-            var result = await GetMainGameDataWithDialogAsync(serverType);
-            if (!result)
-            {
-                return false;
-            }
+            return await GetMainGameDataWithDialogAsync(serverType);
         }
 
-        return true;
+        return await GetMainGameDataAsync(SettingsController.CurrentSettings?.MainGameFolderPath, serverType);
     }
 
     public static async Task<bool> GetMainGameDataWithDialogAsync(ServerType serverType)
@@ -76,38 +62,41 @@ public static class GameData
 
     public static async Task<bool> GetMainGameDataAsync(string mainGameFolderPath, ServerType serverType)
     {
+        Extractor extractor = null;
+        ToolLoadingWindow toolLoadingWindow = null;
+
         try
         {
             var toolLoadingWindowViewModel = new ToolLoadingWindowViewModel();
-            var toolLoadingWindow = new ToolLoadingWindow(toolLoadingWindowViewModel);
+            toolLoadingWindow = new ToolLoadingWindow(toolLoadingWindowViewModel);
             toolLoadingWindow.Show();
 
             var tempDirPath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, Settings.Default.TempDirecoryName);
             var gameFilesDirPath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, Settings.Default.GameFilesDirectoryName);
 
-            var extractor = new Extractor(mainGameFolderPath, serverType);
+            extractor = new Extractor(mainGameFolderPath, serverType);
             var fileNamesToLoad = new List<string>();
 
             DirectoryController.CreateDirectoryWhenNotExists(tempDirPath);
             DirectoryController.CreateDirectoryWhenNotExists(gameFilesDirPath);
 
-            List<Func<Task>> taskFactories = [];
+            List<Func<Task>> extractionTaskFactories = [];
 
             if (Extractor.IsBinFileNewer(Path.Combine(gameFilesDirPath, "localization.xml"), mainGameFolderPath, serverType, "localization"))
             {
-                taskFactories.Add(() => extractor.ExtractGameDataFromXmlAsync(gameFilesDirPath, ["localization"]));
+                extractionTaskFactories.Add(() => extractor.ExtractGameDataFromXmlAsync(gameFilesDirPath, ["localization"]));
             }
 
             if (Extractor.IsBinFileNewer(Path.Combine(gameFilesDirPath, "indexedItems.json"), mainGameFolderPath, serverType, "items")
                 || Extractor.IsBinFileNewer(Path.Combine(gameFilesDirPath, "items.json"), mainGameFolderPath, serverType, "items"))
             {
-                taskFactories.Add(() => extractor.ExtractIndexedItemGameDataAsync(gameFilesDirPath, "indexedItems.json"));
-                taskFactories.Add(() => extractor.ExtractGameDataAsync(gameFilesDirPath, ["items"]));
+                extractionTaskFactories.Add(() => extractor.ExtractIndexedItemGameDataAsync(gameFilesDirPath, "indexedItems.json"));
+                extractionTaskFactories.Add(() => extractor.ExtractGameDataAsync(gameFilesDirPath, ["items"]));
             }
 
             if (Extractor.IsBinFileNewer(Path.Combine(gameFilesDirPath, "spells.xml"), mainGameFolderPath, serverType, "spells"))
             {
-                taskFactories.Add(() => extractor.ExtractGameDataFromXmlAsync(gameFilesDirPath, ["spells"]));
+                extractionTaskFactories.Add(() => extractor.ExtractGameDataFromXmlAsync(gameFilesDirPath, ["spells"]));
             }
 
             if (Extractor.IsBinFileNewer(Path.Combine(gameFilesDirPath, "mobs-modified.json"), mainGameFolderPath, serverType, "mobs"))
@@ -125,29 +114,37 @@ public static class GameData
                 fileNamesToLoad.Add("mists");
             }
 
+            if (fileNamesToLoad.Count > 0)
+            {
+                extractionTaskFactories.Add(() => extractor.ExtractGameDataAsync(tempDirPath, fileNamesToLoad.ToArray()));
+            }
 
-            taskFactories.Add(() => extractor.ExtractGameDataAsync(tempDirPath, fileNamesToLoad.ToArray()));
-            taskFactories.Add(ItemController.LoadIndexedItemsDataAsync);
-            taskFactories.Add(ItemController.LoadItemsDataAsync);
-            taskFactories.Add(MobsData.LoadDataAsync);
-            taskFactories.Add(MistsData.LoadDataAsync);
-            taskFactories.Add(WorldData.LoadDataAsync);
-            taskFactories.Add(SpellData.LoadDataAsync);
-            taskFactories.Add(() => LocalizationController.SetGameLocalizationsAsync(extractor.GameLocalization));
+            List<Func<Task>> loadTaskFactories =
+            [
+                LoadItemGameDataAsync,
+                async () => await MobsData.LoadDataAsync().ConfigureAwait(false),
+                async () => await MistsData.LoadDataAsync().ConfigureAwait(false),
+                async () => await WorldData.LoadDataAsync().ConfigureAwait(false),
+                async () => await SpellData.LoadDataAsync().ConfigureAwait(false),
+                () => LoadGameLocalizationsAsync(extractor, gameFilesDirPath)
+            ];
 
-            int totalTasks = taskFactories.Count;
+            int totalTasks = extractionTaskFactories.Count + loadTaskFactories.Count;
             int completedTasks = 0;
 
-            foreach (var taskFactory in taskFactories)
+            void UpdateProgress()
             {
-                await taskFactory();
-
                 completedTasks++;
                 toolLoadingWindowViewModel.ProgressBarValue = (completedTasks / (double) totalTasks) * 100;
             }
 
-            extractor.Dispose();
-            toolLoadingWindow.Close();
+            foreach (var taskFactory in extractionTaskFactories)
+            {
+                await taskFactory();
+                UpdateProgress();
+            }
+
+            await RunTaskFactoriesInParallelAsync(loadTaskFactories, UpdateProgress);
 
             return true;
         }
@@ -157,6 +154,43 @@ public static class GameData
             DebugConsole.WriteError(MethodBase.GetCurrentMethod()?.DeclaringType, e);
             Log.Error(e, "{message}", MethodBase.GetCurrentMethod()?.DeclaringType);
             return false;
+        }
+        finally
+        {
+            extractor?.Dispose();
+            toolLoadingWindow?.Close();
+        }
+    }
+
+    private static async Task LoadItemGameDataAsync()
+    {
+        await ItemController.LoadIndexedItemsDataAsync().ConfigureAwait(false);
+        await ItemController.LoadItemsDataAsync().ConfigureAwait(false);
+    }
+
+    private static async Task LoadGameLocalizationsAsync(Extractor extractor, string gameFilesDirPath)
+    {
+        if (extractor.GameLocalization.Count > 0)
+        {
+            await LocalizationController.SetGameLocalizationsAsync(extractor.GameLocalization).ConfigureAwait(false);
+            return;
+        }
+
+        var localizationFilePath = Path.Combine(gameFilesDirPath, "localization.xml");
+        await LocalizationController.SetGameLocalizationsFromXmlFileAsync(localizationFilePath).ConfigureAwait(false);
+    }
+
+    private static async Task RunTaskFactoriesInParallelAsync(IReadOnlyCollection<Func<Task>> taskFactories, Action onTaskCompleted)
+    {
+        var runningTasks = taskFactories.Select(taskFactory => taskFactory()).ToList();
+
+        while (runningTasks.Count > 0)
+        {
+            var completedTask = await Task.WhenAny(runningTasks);
+            runningTasks.Remove(completedTask);
+
+            await completedTask;
+            onTaskCompleted();
         }
     }
 
@@ -179,10 +213,16 @@ public static class GameData
 
         if (File.Exists(tempFilePath))
         {
-            var fullDataJson = GetDataFromFullJsonFileLocal<T, TRoot>(tempFilePath);
+            var fullDataJson = await GetDataFromFullJsonFileLocalAsync<T, TRoot>(tempFilePath).ConfigureAwait(false);
             if (fullDataJson?.Count > 1)
             {
-                await FileController.SaveAsync(fullDataJson, regularDataFilePath);
+                var saveSucceeded = await FileController.SaveAsync(fullDataJson, regularDataFilePath).ConfigureAwait(false);
+                if (saveSucceeded)
+                {
+                    FileController.DeleteFile(tempFilePath);
+                }
+
+                return fullDataJson;
             }
         }
 
@@ -192,7 +232,7 @@ public static class GameData
             ReadCommentHandling = JsonCommentHandling.Skip
         };
 
-        var data = GetSpecificDataFromJsonFileLocal<T>(regularDataFilePath, jsonSerializerOptions);
+        var data = await GetSpecificDataFromJsonFileLocalAsync<T>(regularDataFilePath, jsonSerializerOptions).ConfigureAwait(false);
         FileController.DeleteFile(tempFilePath);
 
         return data;
@@ -213,7 +253,22 @@ public static class GameData
         }
     }
 
-    private static List<T> GetDataFromFullJsonFileLocal<T, TRoot>(string localFilePath)
+    private static async Task<List<T>> GetSpecificDataFromJsonFileLocalAsync<T>(string localFilePath, JsonSerializerOptions options)
+    {
+        try
+        {
+            await using var stream = CreateReadStream(localFilePath);
+            return await JsonSerializer.DeserializeAsync<List<T>>(stream, options).ConfigureAwait(false) ?? new List<T>();
+        }
+        catch (Exception e)
+        {
+            DebugConsole.WriteError(MethodBase.GetCurrentMethod()?.DeclaringType, e);
+            Log.Error(e, "{message}", MethodBase.GetCurrentMethod()?.DeclaringType);
+            return new List<T>();
+        }
+    }
+
+    private static async Task<List<T>> GetDataFromFullJsonFileLocalAsync<T, TRoot>(string localFilePath)
     {
         try
         {
@@ -223,14 +278,14 @@ public static class GameData
                 ReadCommentHandling = JsonCommentHandling.Skip
             };
 
-            var localString = File.ReadAllText(localFilePath, Encoding.UTF8);
-            var rootObject = JsonSerializer.Deserialize<TRoot>(localString, options);
+            await using var stream = CreateReadStream(localFilePath);
+            var rootObject = await JsonSerializer.DeserializeAsync<TRoot>(stream, options).ConfigureAwait(false);
 
             return rootObject switch
             {
-                MobJsonRootObject mobRootObject => mobRootObject.Mobs?.Mob as List<T> ?? new List<T>(),
-                LootChestRoot lootChestRoot => lootChestRoot.LootChests?.LootChest as List<T> ?? new List<T>(),
-                WorldJsonRootObject worldJsonRoot => worldJsonRoot.World?.Clusters?.Cluster as List<T> ?? new List<T>(),
+                MobJsonRootObject mobRootObject => mobRootObject.Mobs?.Mob as List<T> ?? [],
+                LootChestRoot lootChestRoot => lootChestRoot.LootChests?.LootChest as List<T> ?? [],
+                WorldJsonRootObject worldJsonRoot => worldJsonRoot.World?.Clusters?.Cluster as List<T> ?? [],
                 MistsJsonRootObject mistsJsonRoot => mistsJsonRoot.Mists?.MistsMaps?.MapSet?.SelectMany(x => x.Map).Select(map => new MistsJsonObject
                 {
                     Id = map.Id,
@@ -247,5 +302,16 @@ public static class GameData
             Log.Error(e, "{message}", MethodBase.GetCurrentMethod()?.DeclaringType);
             return new List<T>();
         }
+    }
+
+    private static FileStream CreateReadStream(string path)
+    {
+        return new FileStream(
+            path,
+            FileMode.Open,
+            FileAccess.Read,
+            FileShare.Read,
+            FileBufferSize,
+            FileOptions.Asynchronous | FileOptions.SequentialScan);
     }
 }

@@ -117,7 +117,7 @@ public static class MobsData
             {
                 NumberHandling = JsonNumberHandling.AllowReadingFromString,
                 ReadCommentHandling = JsonCommentHandling.Skip
-            });
+            }).ConfigureAwait(false);
 
         _mobs = mobs;
         return mobs.Count >= 0;

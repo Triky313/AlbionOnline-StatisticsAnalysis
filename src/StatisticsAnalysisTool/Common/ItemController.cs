@@ -8,12 +8,12 @@ using StatisticsAnalysisTool.Models.ItemsJsonModel;
 using StatisticsAnalysisTool.Properties;
 using System;
 using System.Collections.Generic;
+using System.Collections.Specialized;
 using System.Collections.ObjectModel;
 using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Reflection;
-using System.Runtime.InteropServices;
 using System.Text;
 using System.Text.Json;
 using System.Text.Json.Serialization;
@@ -25,10 +25,19 @@ namespace StatisticsAnalysisTool.Common;
 
 public static class ItemController
 {
+    private const int FileBufferSize = 65536;
+
     public static ObservableCollection<Item> Items = [];
     public static ShopCategories ShopCategories { get; private set; }
 
     private static ItemsJson _itemsJson;
+    private static readonly object ItemLookupLock = new();
+    private static ObservableCollection<Item> _cachedItemsSource;
+    private static int _cachedItemsCount = -1;
+    private static Dictionary<int, Item> _itemsByIndex = new();
+    private static Dictionary<string, Item> _itemsByUniqueName = new(StringComparer.Ordinal);
+    private static Dictionary<string, Item> _itemsByCleanUniqueName = new(StringComparer.Ordinal);
+    private static Dictionary<string, ItemJsonObject> _itemInfoByUniqueName = new(StringComparer.Ordinal);
 
     #region General
 
@@ -280,33 +289,46 @@ public static class ItemController
 
     public static Item GetItemByIndex(int? index)
     {
-        return index == null ? null : Items?.FirstOrDefault(i => i.Index == index);
+        if (index == null)
+        {
+            return null;
+        }
+
+        EnsureItemLookupIsCurrent();
+        return _itemsByIndex.GetValueOrDefault((int) index);
     }
 
     public static string GetItemUniqueNameByIndex(int? index)
     {
-        return index == null ? null : Items?.FirstOrDefault(i => i.Index == index)?.UniqueName ?? string.Empty;
+        return GetItemByIndex(index)?.UniqueName ?? string.Empty;
     }
 
     public static Item GetItemByUniqueName(string uniqueName)
     {
-        return Items?.FirstOrDefault(i => i.UniqueName == uniqueName) ?? Items?.FirstOrDefault(i => GetCleanUniqueName(i.UniqueName) == uniqueName);
+        if (string.IsNullOrEmpty(uniqueName))
+        {
+            return null;
+        }
+
+        EnsureItemLookupIsCurrent();
+        return _itemsByUniqueName.GetValueOrDefault(uniqueName) ?? _itemsByCleanUniqueName.GetValueOrDefault(uniqueName);
     }
 
     public static string GetUniqueNameByIndex(int index)
     {
-        return Items?.FirstOrDefault(i => i.Index == index)?.UniqueName ?? string.Empty;
+        return GetItemByIndex(index)?.UniqueName ?? string.Empty;
     }
 
     public static bool IsTrash(int index)
     {
-        var item = Items.FirstOrDefault(i => i.Index == index);
+        var item = GetItemByIndex(index);
         return (item != null && item.UniqueName.Contains("TRASH")) || item == null;
     }
 
     public static async Task<bool> LoadIndexedItemsDataAsync()
     {
-        Items = await GetIndexedItemsFromLocal();
+        Items = await GetIndexedItemsFromLocal().ConfigureAwait(false);
+        RebuildItemLookup(Items);
         return Items?.Count > 0;
     }
 
@@ -320,21 +342,26 @@ public static class ItemController
                                  JsonNumberHandling.WriteAsString
             };
 
-            var localFilePath = await File.ReadAllTextAsync(
-                Path.Combine(AppDomain.CurrentDomain.BaseDirectory, Settings.Default.GameFilesDirectoryName, Settings.Default.IndexedItemsFileName), Encoding.UTF8);
+            var localFilePath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, Settings.Default.GameFilesDirectoryName, Settings.Default.IndexedItemsFileName);
 
-            var deserializedItems = JsonSerializer.Deserialize<ObservableCollection<ItemListObject>>(localFilePath, options);
+            await using var stream = CreateReadStream(localFilePath);
+            var deserializedItems = await JsonSerializer.DeserializeAsync<ObservableCollection<ItemListObject>>(stream, options).ConfigureAwait(false);
             return ConvertItemJsonObjectToItem(deserializedItems);
         }
         catch
         {
-            DeleteLocalFile($"{AppDomain.CurrentDomain.BaseDirectory}{Settings.Default.IndexedItemsFileName}");
+            DeleteLocalFile(Path.Combine(AppDomain.CurrentDomain.BaseDirectory, Settings.Default.GameFilesDirectoryName, Settings.Default.IndexedItemsFileName));
             return new ObservableCollection<Item>();
         }
     }
 
     private static ObservableCollection<Item> ConvertItemJsonObjectToItem(IEnumerable<ItemListObject> itemJsonObjectList)
     {
+        if (itemJsonObjectList == null)
+        {
+            return [];
+        }
+
         var result = itemJsonObjectList.Select(item => new Item
         {
             LocalizationNameVariable = item.LocalizationNameVariable,
@@ -353,8 +380,7 @@ public static class ItemController
         if (favoriteItemList != null)
         {
             foreach (Item item in favoriteItemList
-                         .Select(uniqueName =>
-                             Items.FirstOrDefault(i => i.UniqueName == uniqueName))
+                         .Select(GetItemByUniqueName)
                          .Where(item => item != null))
             {
                 item.IsFavorite = true;
@@ -386,227 +412,85 @@ public static class ItemController
 
     public static void SetFullItemInfoToItems()
     {
-        var options = new ParallelOptions
-        {
-            MaxDegreeOfParallelism = Environment.ProcessorCount
-        };
-
-        Parallel.ForEach(Items, options, GetSpecificItemInfo);
-    }
-
-    private static void GetSpecificItemInfo(Item item)
-    {
-        var cleanUniqueName = GetCleanUniqueName(item.UniqueName);
-
         if (!IsItemsJsonLoaded())
         {
             return;
         }
 
-        var hideoutItemObject = GetItemJsonObject(cleanUniqueName, [_itemsJson.Items.HideoutItem]);
-        if (hideoutItemObject is HideoutItem hideoutItem)
+        _itemInfoByUniqueName = BuildItemInfoLookup(_itemsJson.Items);
+
+        foreach (var item in Items ?? [])
         {
-            hideoutItem.ItemType = ItemType.Hideout;
-            item.FullItemInformation = hideoutItem;
-
-            return;
-        }
-
-        var trackingItemObject = GetItemJsonObject(cleanUniqueName, _itemsJson.Items.TrackingItem);
-        if (trackingItemObject is TrackingItem trackingItem)
-        {
-            trackingItem.ItemType = ItemType.TrackingItem;
-            item.FullItemInformation = trackingItem;
-
-            return;
-        }
-
-        var farmableItemObject = GetItemJsonObject(cleanUniqueName, _itemsJson.Items.FarmableItem);
-        if (farmableItemObject is FarmableItem farmableItem)
-        {
-            farmableItem.ItemType = ItemType.Farmable;
-            item.FullItemInformation = farmableItem;
-
-            return;
-        }
-
-        var simpleItemObject = GetItemJsonObject(cleanUniqueName, _itemsJson.Items.SimpleItem);
-        if (simpleItemObject is SimpleItem simpleItem)
-        {
-            simpleItem.ItemType = ItemType.Simple;
-            item.FullItemInformation = simpleItem;
-
-            return;
-        }
-
-        var consumableItemObject = GetItemJsonObject(cleanUniqueName, _itemsJson.Items.ConsumableItem);
-        if (consumableItemObject is ConsumableItem consumableItem)
-        {
-            consumableItem.ItemType = ItemType.Consumable;
-            item.FullItemInformation = consumableItem;
-
-            return;
-        }
-
-        var consumableFromInventoryItemObject = GetItemJsonObject(cleanUniqueName, _itemsJson.Items.ConsumableFromInventoryItem);
-        if (consumableFromInventoryItemObject is ConsumableFromInventoryItem consumableFromInventoryItem)
-        {
-            consumableFromInventoryItem.ItemType = ItemType.ConsumableFromInventory;
-            item.FullItemInformation = consumableFromInventoryItem;
-
-            return;
-        }
-
-        var equipmentItemObject = GetItemJsonObject(cleanUniqueName, _itemsJson.Items.EquipmentItem);
-        if (equipmentItemObject is EquipmentItem equipmentItem)
-        {
-            equipmentItem.ItemType = ItemType.Equipment;
-            item.FullItemInformation = equipmentItem;
-
-            return;
-        }
-
-        var weaponObject = GetItemJsonObject(cleanUniqueName, _itemsJson.Items.Weapon);
-        if (weaponObject is Weapon weapon)
-        {
-            weapon.ItemType = ItemType.Weapon;
-            item.FullItemInformation = weapon;
-
-            return;
-        }
-
-        var mountObject = GetItemJsonObject(cleanUniqueName, _itemsJson.Items.Mount);
-        if (mountObject is Mount mount)
-        {
-            mount.ItemType = ItemType.Mount;
-            item.FullItemInformation = mount;
-
-            return;
-        }
-
-        var furnitureItemObject = GetItemJsonObject(cleanUniqueName, _itemsJson.Items.FurnitureItem);
-        if (furnitureItemObject is FurnitureItem furnitureItem)
-        {
-            furnitureItem.ItemType = ItemType.Furniture;
-            item.FullItemInformation = furnitureItem;
-
-            return;
-        }
-
-        var journalItemObject = GetItemJsonObject(cleanUniqueName, _itemsJson.Items.JournalItem);
-        if (journalItemObject is JournalItem journalItem)
-        {
-            journalItem.ItemType = ItemType.Journal;
-            item.FullItemInformation = journalItem;
-
-            return;
-        }
-
-        var labourerContractObject = GetItemJsonObject(cleanUniqueName, _itemsJson.Items.LabourerContract);
-        if (labourerContractObject is LabourerContract labourerContract)
-        {
-            labourerContract.ItemType = ItemType.LabourerContract;
-            item.FullItemInformation = labourerContract;
-
-            return;
-        }
-
-        var mountSkinObject = GetItemJsonObject(cleanUniqueName, _itemsJson.Items.MountSkin);
-        if (mountSkinObject is MountSkin mountSkin)
-        {
-            mountSkin.ItemType = ItemType.MountSkin;
-            item.FullItemInformation = mountSkin;
-
-            return;
-        }
-
-        var transformationWeaponItemObject = GetItemJsonObject(cleanUniqueName, _itemsJson.Items.TransformationWeapon);
-        if (transformationWeaponItemObject is TransformationWeapon transformationWeapon)
-        {
-            transformationWeapon.ItemType = ItemType.TransformationWeapon;
-            item.FullItemInformation = transformationWeapon;
-
-            return;
-        }
-
-        var crystalLeagueItemObject = GetItemJsonObject(cleanUniqueName, _itemsJson.Items.CrystalLeagueItem);
-        if (crystalLeagueItemObject is CrystalLeagueItem crystalLeagueItem)
-        {
-            crystalLeagueItem.ItemType = ItemType.CrystalLeague;
-            item.FullItemInformation = crystalLeagueItem;
-
-            return;
-        }
-
-        var killTrophyItemObject = GetItemJsonObject(cleanUniqueName, _itemsJson.Items.KillTrophyItem);
-        if (killTrophyItemObject is KillTrophyItem killTrophyItem)
-        {
-            killTrophyItem.ItemType = ItemType.killTrophy;
-            item.FullItemInformation = killTrophyItem;
-
-            return;
-        }
-    }
-
-    private static object GetItemJsonObject<T>(string uniqueName, List<T> itemJsonObjects)
-    {
-        var itemAsSpan = CollectionsMarshal.AsSpan(itemJsonObjects);
-        foreach (var itemJsonObject in itemAsSpan)
-        {
-            if (itemJsonObject is ItemJsonObject item && item.UniqueName == uniqueName)
+            if (string.IsNullOrEmpty(item?.UniqueName))
             {
-                return item;
+                continue;
+            }
+
+            var cleanUniqueName = GetCleanUniqueName(item.UniqueName);
+            if (_itemInfoByUniqueName.TryGetValue(cleanUniqueName, out var itemInfo))
+            {
+                item.FullItemInformation = itemInfo;
             }
         }
-
-        return null;
-    }
-
-    public struct ItemTypeStruct
-    {
-        public ItemTypeStruct(string uniqueName, ItemType itemType)
-        {
-            UniqueName = uniqueName;
-            ItemType = itemType;
-        }
-
-        public string UniqueName { get; }
-        public ItemType ItemType { get; }
     }
 
     public static ItemType GetItemType(int index)
     {
-        var itemObject = Items?.FirstOrDefault(i => i.Index == index);
+        return GetItemByIndex(index)?.FullItemInformation?.ItemType ?? ItemType.Unknown;
+    }
 
-        if (itemObject == null || _itemsJson?.Items == null)
+    private static Dictionary<string, ItemJsonObject> BuildItemInfoLookup(Items items)
+    {
+        var itemInfoLookup = new Dictionary<string, ItemJsonObject>(StringComparer.Ordinal);
+
+        AddItemInfo(itemInfoLookup, items.HideoutItem, ItemType.Hideout);
+        AddItemInfos(itemInfoLookup, items.TrackingItem, ItemType.TrackingItem);
+        AddItemInfos(itemInfoLookup, items.FarmableItem, ItemType.Farmable);
+        AddItemInfos(itemInfoLookup, items.SimpleItem, ItemType.Simple);
+        AddItemInfos(itemInfoLookup, items.ConsumableItem, ItemType.Consumable);
+        AddItemInfos(itemInfoLookup, items.ConsumableFromInventoryItem, ItemType.ConsumableFromInventory);
+        AddItemInfos(itemInfoLookup, items.EquipmentItem, ItemType.Equipment);
+        AddItemInfos(itemInfoLookup, items.Weapon, ItemType.Weapon);
+        AddItemInfos(itemInfoLookup, items.Mount, ItemType.Mount);
+        AddItemInfos(itemInfoLookup, items.FurnitureItem, ItemType.Furniture);
+        AddItemInfos(itemInfoLookup, items.JournalItem, ItemType.Journal);
+        AddItemInfos(itemInfoLookup, items.LabourerContract, ItemType.LabourerContract);
+        AddItemInfos(itemInfoLookup, items.MountSkin, ItemType.MountSkin);
+        AddItemInfos(itemInfoLookup, items.TransformationWeapon, ItemType.TransformationWeapon);
+        AddItemInfos(itemInfoLookup, items.CrystalLeagueItem, ItemType.CrystalLeague);
+        AddItemInfos(itemInfoLookup, items.KillTrophyItem, ItemType.killTrophy);
+
+        return itemInfoLookup;
+    }
+
+    private static void AddItemInfos<T>(Dictionary<string, ItemJsonObject> target, IEnumerable<T> source, ItemType itemType) where T : ItemJsonObject
+    {
+        if (source == null)
         {
-            return ItemType.Unknown;
+            return;
         }
 
-        var itemTypeStructs = new List<ItemTypeStruct> { new(_itemsJson.Items.HideoutItem.UniqueName, ItemType.Hideout) };
-        itemTypeStructs.AddRange(_itemsJson.Items.TrackingItem.Select(x => new ItemTypeStruct(x.UniqueName, x.ItemType)));
-        itemTypeStructs.AddRange(_itemsJson.Items.FarmableItem.Select(x => new ItemTypeStruct(x.UniqueName, x.ItemType)));
-        itemTypeStructs.AddRange(_itemsJson.Items.SimpleItem.Select(x => new ItemTypeStruct(x.UniqueName, x.ItemType)));
-        itemTypeStructs.AddRange(_itemsJson.Items.ConsumableItem.Select(x => new ItemTypeStruct(x.UniqueName, x.ItemType)));
-        itemTypeStructs.AddRange(_itemsJson.Items.ConsumableFromInventoryItem.Select(x => new ItemTypeStruct(x.UniqueName, x.ItemType)));
-        itemTypeStructs.AddRange(_itemsJson.Items.EquipmentItem.Select(x => new ItemTypeStruct(x.UniqueName, x.ItemType)));
-        itemTypeStructs.AddRange(_itemsJson.Items.Weapon.Select(x => new ItemTypeStruct(x.UniqueName, x.ItemType)));
-        itemTypeStructs.AddRange(_itemsJson.Items.Mount.Select(x => new ItemTypeStruct(x.UniqueName, x.ItemType)));
-        itemTypeStructs.AddRange(_itemsJson.Items.FurnitureItem.Select(x => new ItemTypeStruct(x.UniqueName, x.ItemType)));
-        itemTypeStructs.AddRange(_itemsJson.Items.JournalItem.Select(x => new ItemTypeStruct(x.UniqueName, x.ItemType)));
-        itemTypeStructs.AddRange(_itemsJson.Items.LabourerContract.Select(x => new ItemTypeStruct(x.UniqueName, x.ItemType)));
-        itemTypeStructs.AddRange(_itemsJson.Items.MountSkin.Select(x => new ItemTypeStruct(x.UniqueName, x.ItemType)));
-        itemTypeStructs.AddRange(_itemsJson.Items.TransformationWeapon.Select(x => new ItemTypeStruct(x.UniqueName, x.ItemType)));
-        itemTypeStructs.AddRange(_itemsJson.Items.CrystalLeagueItem.Select(x => new ItemTypeStruct(x.UniqueName, x.ItemType)));
-        itemTypeStructs.AddRange(_itemsJson.Items.KillTrophyItem.Select(x => new ItemTypeStruct(x.UniqueName, x.ItemType)));
+        foreach (var item in source)
+        {
+            AddItemInfo(target, item, itemType);
+        }
+    }
 
-        return itemTypeStructs.FirstOrDefault(x => x.UniqueName == itemObject.UniqueName).ItemType;
+    private static void AddItemInfo<T>(Dictionary<string, ItemJsonObject> target, T item, ItemType itemType) where T : ItemJsonObject
+    {
+        if (string.IsNullOrEmpty(item?.UniqueName))
+        {
+            return;
+        }
+
+        item.ItemType = itemType;
+        target.TryAdd(item.UniqueName, item);
     }
 
     public static async Task<bool> LoadItemsDataAsync()
     {
         var localFilePath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, Settings.Default.GameFilesDirectoryName, Settings.Default.ItemsJsonFileName);
-        _itemsJson = await GetItemsJsonFromLocal(localFilePath);
+        _itemsJson = await GetItemsJsonFromLocal(localFilePath).ConfigureAwait(false);
 
         if (!IsItemsJsonLoaded())
         {
@@ -637,8 +521,8 @@ public static class ItemController
             }
             };
 
-            await using var stream = File.OpenRead(localFilePath);
-            return await JsonSerializer.DeserializeAsync<ItemsJson>(stream, options) ?? new ItemsJson();
+            await using var stream = CreateReadStream(localFilePath);
+            return await JsonSerializer.DeserializeAsync<ItemsJson>(stream, options).ConfigureAwait(false) ?? new ItemsJson();
         }
         catch
         {
@@ -993,6 +877,89 @@ public static class ItemController
     #endregion
 
     #region Util methods
+
+    private static void EnsureItemLookupIsCurrent()
+    {
+        var items = Items;
+        var itemCount = items?.Count ?? 0;
+
+        if (ReferenceEquals(_cachedItemsSource, items) && _cachedItemsCount == itemCount)
+        {
+            return;
+        }
+
+        RebuildItemLookup(items);
+    }
+
+    private static void RebuildItemLookup(ObservableCollection<Item> items)
+    {
+        lock (ItemLookupLock)
+        {
+            var itemCount = items?.Count ?? 0;
+            if (ReferenceEquals(_cachedItemsSource, items) && _cachedItemsCount == itemCount)
+            {
+                return;
+            }
+
+            if (_cachedItemsSource != null)
+            {
+                _cachedItemsSource.CollectionChanged -= ItemsCollectionChanged;
+            }
+
+            _cachedItemsSource = items;
+
+            if (_cachedItemsSource != null)
+            {
+                _cachedItemsSource.CollectionChanged += ItemsCollectionChanged;
+            }
+
+            var itemsByIndex = new Dictionary<int, Item>();
+            var itemsByUniqueName = new Dictionary<string, Item>(StringComparer.Ordinal);
+            var itemsByCleanUniqueName = new Dictionary<string, Item>(StringComparer.Ordinal);
+
+            foreach (var item in items ?? [])
+            {
+                if (item == null)
+                {
+                    continue;
+                }
+
+                itemsByIndex.TryAdd(item.Index, item);
+
+                if (string.IsNullOrEmpty(item.UniqueName))
+                {
+                    continue;
+                }
+
+                itemsByUniqueName.TryAdd(item.UniqueName, item);
+                itemsByCleanUniqueName.TryAdd(GetCleanUniqueName(item.UniqueName), item);
+            }
+
+            _itemsByIndex = itemsByIndex;
+            _itemsByUniqueName = itemsByUniqueName;
+            _itemsByCleanUniqueName = itemsByCleanUniqueName;
+            _cachedItemsCount = itemCount;
+        }
+    }
+
+    private static void ItemsCollectionChanged(object sender, NotifyCollectionChangedEventArgs e)
+    {
+        lock (ItemLookupLock)
+        {
+            _cachedItemsCount = -1;
+        }
+    }
+
+    private static FileStream CreateReadStream(string path)
+    {
+        return new FileStream(
+            path,
+            FileMode.Open,
+            FileAccess.Read,
+            FileShare.Read,
+            FileBufferSize,
+            FileOptions.Asynchronous | FileOptions.SequentialScan);
+    }
 
     private static void DeleteLocalFile(string localFileString)
     {
