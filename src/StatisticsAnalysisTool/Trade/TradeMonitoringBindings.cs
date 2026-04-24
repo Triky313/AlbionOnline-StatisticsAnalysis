@@ -1,5 +1,6 @@
 ﻿using StatisticsAnalysisTool.Common;
 using StatisticsAnalysisTool.Common.UserSettings;
+using StatisticsAnalysisTool.Localization;
 using StatisticsAnalysisTool.ViewModels;
 using System;
 using System.Collections.Concurrent;
@@ -16,7 +17,7 @@ namespace StatisticsAnalysisTool.Trade;
 
 public class TradeMonitoringBindings : BaseViewModel
 {
-    private readonly record struct TradeFilterContext(long FromTicks, long ToTicks, string SearchText, long? SearchNumber);
+    private readonly record struct TradeFilterContext(long FromTicks, long ToTicks, string SearchText, long? SearchNumber, int Tier, MarketLocation Location);
     private ListCollectionView _tradeCollectionView;
     private ObservableRangeCollection<Trade> _trades = new();
     private string _tradesSearchText;
@@ -32,9 +33,13 @@ public class TradeMonitoringBindings : BaseViewModel
     private bool _isDeleteTradesButtonEnabled = true;
     private Visibility _filteringIsRunningIconVisibility = Visibility.Collapsed;
     private TradeExportTemplateObject _tradeExportTemplateObject = new();
+    private int _selectedTierFilter;
+    private MarketLocation _selectedLocationFilter = MarketLocation.Unknown;
 
     public TradeMonitoringBindings()
     {
+        TierFilters = BuildTierFilters();
+        LocationFilters = BuildLocationFilters();
         TradeCollectionView = CollectionViewSource.GetDefaultView(Trades) as ListCollectionView;
 
         if (TradeCollectionView != null)
@@ -54,13 +59,22 @@ public class TradeMonitoringBindings : BaseViewModel
 
     public void ItemFilterReset()
     {
-        _datePickerTradeFrom = new DateTime(2017, 1, 1);
-        _datePickerTradeTo = DateTime.UtcNow.AddDays(1);
+        DatePickerTradeFrom = new DateTime(2017, 1, 1);
+        DatePickerTradeTo = DateTime.UtcNow.AddDays(1);
         TradesSearchText = string.Empty;
+        SelectedTierFilter = 0;
+        SelectedLocationFilter = MarketLocation.Unknown;
 
-        TradeCollectionView = CollectionViewSource.GetDefaultView(Trades) as ListCollectionView;
-        TradeCollectionView?.Filter = null;
+        TradeCollectionView ??= CollectionViewSource.GetDefaultView(Trades) as ListCollectionView;
 
+        if (TradeCollectionView == null)
+        {
+            return;
+        }
+
+        TradeCollectionView.Filter = null;
+        TradeStatsObject?.SetTradeStats(TradeCollectionView.Cast<Trade>().ToList());
+        UpdateCurrentTradesUi(null, EventArgs.Empty);
     }
 
     public ListCollectionView TradeCollectionView
@@ -89,6 +103,30 @@ public class TradeMonitoringBindings : BaseViewModel
         set
         {
             _tradesSearchText = value;
+            OnPropertyChanged();
+        }
+    }
+
+    public IReadOnlyList<KeyValuePair<int, string>> TierFilters { get; }
+
+    public int SelectedTierFilter
+    {
+        get => _selectedTierFilter;
+        set
+        {
+            _selectedTierFilter = value;
+            OnPropertyChanged();
+        }
+    }
+
+    public IReadOnlyList<KeyValuePair<MarketLocation, string>> LocationFilters { get; }
+
+    public MarketLocation SelectedLocationFilter
+    {
+        get => _selectedLocationFilter;
+        set
+        {
+            _selectedLocationFilter = value;
             OnPropertyChanged();
         }
     }
@@ -314,7 +352,7 @@ public class TradeMonitoringBindings : BaseViewModel
         var toDate = DatePickerTradeTo.Date;
         var toTicks = toDate == DateTime.MaxValue.Date ? DateTime.MaxValue.Ticks : toDate.AddDays(1).AddTicks(-1).Ticks;
 
-        return new TradeFilterContext(DatePickerTradeFrom.Ticks, toTicks, searchText, hasNumericSearch ? searchNumber : null);
+        return new TradeFilterContext(DatePickerTradeFrom.Ticks, toTicks, searchText, hasNumericSearch ? searchNumber : null, SelectedTierFilter, SelectedLocationFilter);
     }
 
     private bool Filter(object obj, TradeFilterContext context)
@@ -325,6 +363,16 @@ public class TradeMonitoringBindings : BaseViewModel
         }
 
         if (trade.Ticks < context.FromTicks || trade.Ticks > context.ToTicks)
+        {
+            return false;
+        }
+
+        if (!MatchesTierFilter(trade, context.Tier))
+        {
+            return false;
+        }
+
+        if (!MatchesLocationFilter(trade, context.Location))
         {
             return false;
         }
@@ -351,6 +399,55 @@ public class TradeMonitoringBindings : BaseViewModel
                (trade.InstantBuySellContent?.UnitPrice.ToString().IndexOf(context.SearchText, StringComparison.OrdinalIgnoreCase) >= 0) ||
                (trade.InstantBuySellContent?.TotalPrice.ToString().IndexOf(context.SearchText, StringComparison.OrdinalIgnoreCase) >= 0) ||
                (trade.Description?.IndexOf(context.SearchText, StringComparison.OrdinalIgnoreCase) >= 0);
+    }
+
+    private static IReadOnlyList<KeyValuePair<int, string>> BuildTierFilters()
+    {
+        return new List<KeyValuePair<int, string>>
+        {
+            new(0, LocalizationController.Translation("ALL")),
+            new(1, "T1"),
+            new(2, "T2"),
+            new(3, "T3"),
+            new(4, "T4"),
+            new(5, "T5"),
+            new(6, "T6"),
+            new(7, "T7"),
+            new(8, "T8")
+        };
+    }
+
+    private static IReadOnlyList<KeyValuePair<MarketLocation, string>> BuildLocationFilters()
+    {
+        var filters = new List<KeyValuePair<MarketLocation, string>>
+        {
+            new(MarketLocation.Unknown, LocalizationController.Translation("ALL"))
+        };
+
+        filters.AddRange(Locations.OnceMarketLocations.Select(location => new KeyValuePair<MarketLocation, string>(location.Key, location.Value)));
+
+        return filters;
+    }
+
+    private static bool MatchesTierFilter(Trade trade, int selectedTier)
+    {
+        if (selectedTier <= 0)
+        {
+            return true;
+        }
+
+        var itemTier = trade.Item?.Tier ?? 0;
+        return itemTier == selectedTier;
+    }
+
+    private static bool MatchesLocationFilter(Trade trade, MarketLocation selectedLocation)
+    {
+        if (selectedLocation == MarketLocation.Unknown)
+        {
+            return true;
+        }
+
+        return trade.Location == selectedLocation;
     }
 
     #endregion

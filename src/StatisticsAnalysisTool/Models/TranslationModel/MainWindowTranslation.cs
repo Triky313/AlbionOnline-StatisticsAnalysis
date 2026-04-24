@@ -10,6 +10,7 @@ public class MainWindowTranslation
     public static string Icon => LocalizationController.Translation("ICON");
     public static string Time => LocalizationController.Translation("TIME");
     public static string Tier => LocalizationController.Translation("TIER");
+    public static string Location => LocalizationController.Translation("LOCATION");
     public static string Zone => LocalizationController.Translation("ZONE");
     public static string Name => LocalizationController.Translation("NAME");
     public static string Type => LocalizationController.Translation("TYPE");
@@ -87,6 +88,7 @@ public class MainWindowTranslation
     public static string TrackingIsPartiallyActive => LocalizationController.Translation("TRACKING_IS_PARTIALLY_ACTIVE");
     public static string TrackingIsNotActive => LocalizationController.Translation("TRACKING_IS_NOT_ACTIVE");
     public static string Dashboard => LocalizationController.Translation("DASHBOARD");
+    public static string Statistics => LocalizationController.Translation("STATISTICS");
     public static string ShowLootFromMobs => LocalizationController.Translation("SHOW_LOOT_FROM_MOBS");
     public static string ShowKills => LocalizationController.Translation("SHOW_KILLS");
     public static string TrackingMobLoot => LocalizationController.Translation("TRACKING_MOB_LOOT");

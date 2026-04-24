@@ -4983,6 +4983,19 @@
       ]
     },
     {
+      "tuid": "STATISTICS",
+      "tuv": [
+        {
+          "lang": "de-DE",
+          "seg": "Statistiken"
+        },
+        {
+          "lang": "en-US",
+          "seg": "Statistics"
+        }
+      ]
+    },
+    {
       "tuid": "HISTORY",
       "tuv": [
         {
