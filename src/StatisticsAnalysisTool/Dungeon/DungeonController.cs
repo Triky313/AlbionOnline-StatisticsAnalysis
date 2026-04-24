@@ -1,6 +1,7 @@
 using Serilog;
 using StatisticsAnalysisTool.Cluster;
 using StatisticsAnalysisTool.Common;
+using StatisticsAnalysisTool.Diagnostics;
 using StatisticsAnalysisTool.Dungeon.Models;
 using StatisticsAnalysisTool.Enumerations;
 using StatisticsAnalysisTool.Exceptions;
@@ -13,14 +14,12 @@ using StatisticsAnalysisTool.ViewModels;
 using StatisticsAnalysisTool.Views;
 using System;
 using System.Collections.Generic;
-using System.Collections.ObjectModel;
 using System.Collections.Specialized;
 using System.IO;
 using System.Linq;
 using System.Reflection;
 using System.Threading.Tasks;
 using System.Windows;
-using StatisticsAnalysisTool.Diagnostics;
 using Loot = StatisticsAnalysisTool.Dungeon.Models.Loot;
 using ValueType = StatisticsAnalysisTool.Enumerations.ValueType;
 // ReSharper disable PossibleMultipleEnumeration
@@ -456,16 +455,6 @@ public sealed class DungeonController
             return;
         }
 
-        //if (ClusterController.CurrentCluster.MapType != MapType.Expedition
-        //    && ClusterController.CurrentCluster.MapType != MapType.CorruptedDungeon
-        //    && ClusterController.CurrentCluster.MapType != MapType.HellGate
-        //    && ClusterController.CurrentCluster.MapType != MapType.RandomDungeon
-        //    && ClusterController.CurrentCluster.MapType != MapType.Mists
-        //    && ClusterController.CurrentCluster.MapType != MapType.MistsDungeon)
-        //{
-        //    return;
-        //}
-
         try
         {
             Application.Current.Dispatcher.Invoke(() =>
@@ -501,14 +490,6 @@ public sealed class DungeonController
         {
             return;
         }
-
-        //if (ClusterController.CurrentCluster.MapType != MapType.Expedition
-        //    && ClusterController.CurrentCluster.MapType != MapType.CorruptedDungeon
-        //    && ClusterController.CurrentCluster.MapType != MapType.HellGate
-        //    && ClusterController.CurrentCluster.MapType != MapType.RandomDungeon)
-        //{
-        //    return;
-        //}
 
         try
         {

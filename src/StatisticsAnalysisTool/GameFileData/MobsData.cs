@@ -90,7 +90,7 @@ public static class MobsData
 
     private static bool IsReliableRandomDungeonTierMob(MobJsonObject mob)
     {
-        if (mob?.Tier is < 1 or > 8 || string.IsNullOrWhiteSpace(mob.UniqueName))
+        if (mob?.Tier is < 1 or > 8 || string.IsNullOrWhiteSpace(mob?.UniqueName))
         {
             return false;
         }
