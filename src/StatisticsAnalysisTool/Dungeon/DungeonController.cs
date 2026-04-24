@@ -466,31 +466,36 @@ public sealed class DungeonController
 
     public void UpdateCurrentDungeonLevel(DungeonBaseFragment dungeon, string sourceClusterIndex, WorldPosition? worldPosition)
     {
+        if (dungeon is not RandomDungeonFragment { IsLevelLockedFromEntrance: false } randomDungeon)
+        {
+            return;
+        }
+
+        if (string.IsNullOrWhiteSpace(sourceClusterIndex) || worldPosition is not { } sourceWorldPosition)
+        {
+            return;
+        }
+
         lock (_discoveredRandomDungeonExits)
         {
-            var foundedRandomDungeonExit = _discoveredRandomDungeonExits
-                .FirstOrDefault(x => x.SourceClusterIndex == sourceClusterIndex
-                                     && x.SourceExitPosition?.X == worldPosition?.X
-                                     && x.SourceExitPosition?.Y == worldPosition?.Y);
-
-            if (foundedRandomDungeonExit?.HasVisibleLevel == true)
+            var discoveredRandomDungeonExit = FindDiscoveredRandomDungeonExit(sourceClusterIndex, sourceWorldPosition);
+            if (discoveredRandomDungeonExit?.HasVisibleLevel != true)
             {
-                if (dungeon is RandomDungeonFragment { IsLevelLockedFromEntrance: false } randomDungeon)
-                {
-                    randomDungeon.TrySetLevelFromEntrance(foundedRandomDungeonExit.Level);
-                }
+                return;
             }
+
+            randomDungeon.TrySetLevelFromEntrance(discoveredRandomDungeonExit.Level);
         }
     }
 
     public void UpdateCurrentDungeonLevel(int? mobIndex, double hitPointsMax)
     {
-        if (_currentGuid is not { } currentGuid)
+        if (_currentGuid is not { } currentDungeonGuid || mobIndex is null)
         {
             return;
         }
 
-        if (mobIndex is null || ClusterController.CurrentCluster.Guid != currentGuid)
+        if (ClusterController.CurrentCluster.Guid != currentDungeonGuid)
         {
             return;
         }
@@ -499,22 +504,42 @@ public sealed class DungeonController
         {
             Application.Current.Dispatcher.Invoke(() =>
             {
-                var dun = _mainWindowViewModel.DungeonBindings.Dungeons?.FirstOrDefault(x => x.GuidList.Contains(currentGuid) && x.Status == DungeonStatus.Active);
-                if (dun is RandomDungeonFragment { IsLevelLockedFromEntrance: false } randomDungeon)
-                {
-                    var level = GetLevelFromMob(randomDungeon.MapType, (int) mobIndex, hitPointsMax);
-                    if (level > randomDungeon.Level)
-                    {
-                        randomDungeon.TrySetLevelFromMob(level);
-                        UpdateCurrentMapHistoryRandomDungeonInformation(randomDungeon);
-                    }
-                }
+                TryUpdateCurrentDungeonLevelFromMob(currentDungeonGuid, mobIndex.Value, hitPointsMax);
             });
         }
-        catch
+        catch (Exception e)
         {
-            // ignored
+            DebugConsole.WriteError(MethodBase.GetCurrentMethod()?.DeclaringType, e);
+            Log.Error(e, "{message}", MethodBase.GetCurrentMethod()?.DeclaringType);
         }
+    }
+
+    private RandomDungeonExitInfo FindDiscoveredRandomDungeonExit(string sourceClusterIndex, WorldPosition worldPosition)
+    {
+        return _discoveredRandomDungeonExits.FirstOrDefault(x =>
+            x.SourceClusterIndex == sourceClusterIndex
+            && x.SourceExitPosition is { } sourceExitPosition
+            && sourceExitPosition.X.Equals(worldPosition.X)
+            && sourceExitPosition.Y.Equals(worldPosition.Y));
+    }
+
+    private void TryUpdateCurrentDungeonLevelFromMob(Guid currentDungeonGuid, int mobIndex, double hitPointsMax)
+    {
+        var activeDungeon = _mainWindowViewModel.DungeonBindings.Dungeons?
+            .FirstOrDefault(x => x.GuidList.Contains(currentDungeonGuid) && x.Status == DungeonStatus.Active);
+
+        if (activeDungeon is not RandomDungeonFragment { IsLevelLockedFromEntrance: false } randomDungeon)
+        {
+            return;
+        }
+
+        var level = GetLevelFromMob(randomDungeon.MapType, mobIndex, hitPointsMax);
+        if (!randomDungeon.TrySetLevelFromMob(level))
+        {
+            return;
+        }
+
+        UpdateCurrentMapHistoryRandomDungeonInformation(randomDungeon);
     }
 
     private static int GetLevelFromMob(MapType mapType, int mobIndex, double hitPointsMax)
