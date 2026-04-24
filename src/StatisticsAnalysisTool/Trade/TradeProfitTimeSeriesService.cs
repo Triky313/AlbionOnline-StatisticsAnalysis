@@ -1,4 +1,3 @@
-using StatisticsAnalysisTool.Enumerations;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -7,6 +6,8 @@ namespace StatisticsAnalysisTool.Trade;
 
 public sealed class TradeProfitTimeSeriesService
 {
+    private readonly TradeAnalyticsValueService _tradeAnalyticsValueService = new();
+
     private enum TradeProfitTimeBucketUnit
     {
         Minute,
@@ -43,7 +44,7 @@ public sealed class TradeProfitTimeSeriesService
                 continue;
             }
 
-            var tradeValues = GetTradeValues(trade);
+            var tradeValues = _tradeAnalyticsValueService.GetBreakdown(trade);
             bucket.Sold += tradeValues.Sold;
             bucket.Bought += tradeValues.Bought;
             bucket.Tax += tradeValues.Tax;
@@ -144,47 +145,6 @@ public sealed class TradeProfitTimeSeriesService
         };
     }
 
-    private static TradeProfitValues GetTradeValues(Trade trade)
-    {
-        if (trade == null)
-        {
-            return TradeProfitValues.Empty;
-        }
-
-        return trade.Type switch
-        {
-            TradeType.Mail when trade.MailType is MailType.MarketplaceSellOrderFinished or MailType.MarketplaceSellOrderExpired => new TradeProfitValues(
-                trade.MailContent.TotalPrice.IntegerValue,
-                0d,
-                trade.MailContent.TaxSetupPrice.IntegerValue + trade.MailContent.TaxPrice.IntegerValue),
-            TradeType.Mail when trade.MailType is MailType.MarketplaceBuyOrderFinished or MailType.MarketplaceBuyOrderExpired => new TradeProfitValues(
-                0d,
-                trade.MailContent.TotalPrice.IntegerValue,
-                trade.MailContent.TaxSetupPrice.IntegerValue + trade.MailContent.TaxPrice.IntegerValue),
-            TradeType.InstantSell => new TradeProfitValues(
-                trade.InstantBuySellContent.TotalPrice.IntegerValue,
-                0d,
-                trade.InstantBuySellContent.TaxPrice.IntegerValue),
-            TradeType.InstantBuy => new TradeProfitValues(
-                0d,
-                trade.InstantBuySellContent.TotalPrice.IntegerValue,
-                0d),
-            TradeType.ManualSell => new TradeProfitValues(
-                trade.InstantBuySellContent.TotalPrice.IntegerValue,
-                0d,
-                0d),
-            TradeType.ManualBuy => new TradeProfitValues(
-                0d,
-                trade.InstantBuySellContent.TotalPrice.IntegerValue,
-                0d),
-            TradeType.Crafting => new TradeProfitValues(
-                0d,
-                trade.InstantBuySellContent.TotalPrice.IntegerValue,
-                0d),
-            _ => TradeProfitValues.Empty
-        };
-    }
-
     private sealed class TradeProfitBucketAccumulator(DateTime periodStart, DateTime periodEnd)
     {
         public DateTime PeriodStart { get; } = periodStart;
@@ -198,9 +158,4 @@ public sealed class TradeProfitTimeSeriesService
     }
 
     private readonly record struct TradeProfitBucketPeriod(DateTime PeriodStart, DateTime PeriodEnd);
-
-    private readonly record struct TradeProfitValues(double Sold, double Bought, double Tax)
-    {
-        public static TradeProfitValues Empty => new(0d, 0d, 0d);
-    }
 }

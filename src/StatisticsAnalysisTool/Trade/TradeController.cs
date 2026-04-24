@@ -18,7 +18,6 @@ using System.Text.Json.Nodes;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
-using System.Windows.Data;
 using System.Windows.Threading;
 using StatisticsAnalysisTool.Diagnostics;
 
@@ -124,7 +123,7 @@ public class TradeController
         var tradeBindings = _mainWindowViewModel.TradeMonitoringBindings;
         tradeBindings.Trades.Clear();
         tradeBindings.Trades.AddRange(updatedList);
-        tradeBindings.TradeCollectionView = CollectionViewSource.GetDefaultView(tradeBindings.Trades) as ListCollectionView;
+        tradeBindings.EnsureTradeCollectionViewInitialized();
         await tradeBindings.UpdateFilteredTradesAsync();
 
         tradeBindings.TradeStatsObject.SetTradeStats(tradeBindings.TradeCollectionView?.Cast<Trade>().ToList());

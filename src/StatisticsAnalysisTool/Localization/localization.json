@@ -39155,6 +39155,71 @@
           "seg": "Trade count"
         }
       ]
+    },
+    {
+      "tuid": "TOP_ITEM_RANKING",
+      "tuv": [
+        {
+          "lang": "de-DE",
+          "seg": "Top Item Ranking"
+        },
+        {
+          "lang": "en-US",
+          "seg": "Top Item Ranking"
+        }
+      ]
+    },
+    {
+      "tuid": "TOP_ITEMS_BY_PROFIT",
+      "tuv": [
+        {
+          "lang": "de-DE",
+          "seg": "Top Items nach Profit"
+        },
+        {
+          "lang": "en-US",
+          "seg": "Top Items by Profit"
+        }
+      ]
+    },
+    {
+      "tuid": "TOP_ITEMS_BY_ROI",
+      "tuv": [
+        {
+          "lang": "de-DE",
+          "seg": "Top Items nach ROI"
+        },
+        {
+          "lang": "en-US",
+          "seg": "Top Items by ROI"
+        }
+      ]
+    },
+    {
+      "tuid": "TOP_ITEMS_BY_VOLUME",
+      "tuv": [
+        {
+          "lang": "de-DE",
+          "seg": "Top Items nach Volumen"
+        },
+        {
+          "lang": "en-US",
+          "seg": "Top Items by Volume"
+        }
+      ]
+    },
+    {
+      "tuid": "ROI",
+      "tuv": [
+        {
+          "lang": "de-DE",
+          "seg": "ROI"
+        },
+        {
+          "lang": "en-US",
+          "seg": "ROI"
+        }
+      ]
     }
   ]
 }

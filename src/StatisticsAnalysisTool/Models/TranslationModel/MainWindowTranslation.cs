@@ -93,6 +93,13 @@ public class MainWindowTranslation
     public static string Dashboard => LocalizationController.Translation("DASHBOARD");
     public static string Statistics => LocalizationController.Translation("STATISTICS");
     public static string ProfitOverTime => LocalizationController.Translation("PROFIT_OVER_TIME");
+    public static string TopItemRanking => LocalizationController.Translation("TOP_ITEM_RANKING");
+    public static string TopItemsByProfit => LocalizationController.Translation("TOP_ITEMS_BY_PROFIT");
+    public static string TopItemsByRoi => LocalizationController.Translation("TOP_ITEMS_BY_ROI");
+    public static string TopItemsByVolume => LocalizationController.Translation("TOP_ITEMS_BY_VOLUME");
+    public static string NetProfit => LocalizationController.Translation("NET_PROFIT");
+    public static string Roi => LocalizationController.Translation("ROI");
+    public static string Quantity => LocalizationController.Translation("QUANTITY");
     public static string ShowLootFromMobs => LocalizationController.Translation("SHOW_LOOT_FROM_MOBS");
     public static string ShowKills => LocalizationController.Translation("SHOW_KILLS");
     public static string TrackingMobLoot => LocalizationController.Translation("TRACKING_MOB_LOOT");

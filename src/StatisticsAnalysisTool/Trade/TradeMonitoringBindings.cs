@@ -24,8 +24,11 @@ namespace StatisticsAnalysisTool.Trade;
 public class TradeMonitoringBindings : BaseViewModel
 {
     private const int TargetVisibleProfitOverTimeLabels = 10;
+    private const int TopItemRankingLimit = 10;
     private readonly record struct TradeFilterContext(long FromTicks, long ToTicks, string SearchText, long? SearchNumber, int Tier, MarketLocation Location);
+    private readonly record struct TradeFilterExecutionContext(List<Trade> TradesSnapshot, TradeFilterContext FilterContext);
     private readonly TradeProfitTimeSeriesService _tradeProfitTimeSeriesService = new();
+    private readonly TradeItemRankingService _tradeItemRankingService = new();
     private IReadOnlyList<TradeProfitTimeSeriesPoint> _profitOverTimePoints = [];
 
     public TradeMonitoringBindings()
@@ -33,18 +36,8 @@ public class TradeMonitoringBindings : BaseViewModel
         TierFilters = BuildTierFilters();
         LocationFilters = BuildLocationFilters();
         ProfitOverTimeAggregationFilters = BuildProfitOverTimeAggregationFilters();
-        TradeCollectionView = CollectionViewSource.GetDefaultView(Trades) as ListCollectionView;
-
-        if (TradeCollectionView != null)
-        {
-            Trades.CollectionChanged += UpdateTotalTradesUi;
-            TradeCollectionView.CurrentChanged += UpdateCurrentTradesUi;
-
-            TradeCollectionView.IsLiveSorting = true;
-            TradeCollectionView.IsLiveFiltering = true;
-            TradeCollectionView.CustomSort = new TradeComparer();
-            TradeCollectionView.Refresh();
-        }
+        Trades.CollectionChanged += UpdateTotalTradesUi;
+        EnsureTradeCollectionViewInitialized();
 
         DatePickerTradeFrom = SettingsController.CurrentSettings.TradeMonitoringDatePickerTradeFrom;
         DatePickerTradeTo = SettingsController.CurrentSettings.TradeMonitoringDatePickerTradeTo;
@@ -58,7 +51,7 @@ public class TradeMonitoringBindings : BaseViewModel
         SelectedTierFilter = 0;
         SelectedLocationFilter = MarketLocation.Unknown;
 
-        TradeCollectionView ??= CollectionViewSource.GetDefaultView(Trades) as ListCollectionView;
+        EnsureTradeCollectionViewInitialized();
 
         if (TradeCollectionView == null)
         {
@@ -69,7 +62,7 @@ public class TradeMonitoringBindings : BaseViewModel
         var filteredTrades = TradeCollectionView.Cast<Trade>().ToList();
         TradeStatsObject?.SetTradeStats(filteredTrades);
         UpdateCurrentTradesUi(null, EventArgs.Empty);
-        _ = UpdateProfitOverTimeChartAsync(filteredTrades);
+        _ = UpdateStatisticViewsAsync(filteredTrades);
     }
 
     public ListCollectionView TradeCollectionView
@@ -163,6 +156,36 @@ public class TradeMonitoringBindings : BaseViewModel
     } = TradeProfitTimeAggregation.Day;
 
     public ObservableCollection<ISeries> ProfitOverTimeSeries
+    {
+        get;
+        set
+        {
+            field = value;
+            OnPropertyChanged();
+        }
+    } = [];
+
+    public ObservableCollection<TradeItemRankingEntry> TopItemsByProfit
+    {
+        get;
+        set
+        {
+            field = value;
+            OnPropertyChanged();
+        }
+    } = [];
+
+    public ObservableCollection<TradeItemRankingEntry> TopItemsByRoi
+    {
+        get;
+        set
+        {
+            field = value;
+            OnPropertyChanged();
+        }
+    } = [];
+
+    public ObservableCollection<TradeItemRankingEntry> TopItemsByVolume
     {
         get;
         set
@@ -358,80 +381,158 @@ public class TradeMonitoringBindings : BaseViewModel
 
     public async Task UpdateFilteredTradesAsync()
     {
-        if (Trades == null)
+        CancellationTokenSource previousCancellationTokenSource = null;
+        CancellationTokenSource currentCancellationTokenSource = null;
+        TradeFilterExecutionContext? executionContext = null;
+
+        await RunOnUiThreadAsync(() =>
+        {
+            if (Trades == null)
+            {
+                return;
+            }
+
+            FilteringIsRunningIconVisibility = Visibility.Visible;
+            previousCancellationTokenSource = _cancellationTokenSource;
+            currentCancellationTokenSource = new CancellationTokenSource();
+            _cancellationTokenSource = currentCancellationTokenSource;
+            executionContext = new TradeFilterExecutionContext(Trades.ToList(), BuildFilterContext());
+        });
+
+        if (executionContext == null || currentCancellationTokenSource == null)
         {
             return;
         }
 
-        FilteringIsRunningIconVisibility = Visibility.Visible;
-
-        if (_cancellationTokenSource is not null)
+        if (previousCancellationTokenSource is not null)
         {
-            await _cancellationTokenSource.CancelAsync();
+            await previousCancellationTokenSource.CancelAsync();
+            previousCancellationTokenSource.Dispose();
         }
-
-        _cancellationTokenSource = new CancellationTokenSource();
 
         try
         {
-            List<Trade> filteredTrades;
-            if (Trades.Count <= 0)
+            var filteredTrades = executionContext.Value.TradesSnapshot.Count <= 0
+                ? []
+                : await Task.Run(() => ParallelTradeFilterProcess(
+                    executionContext.Value.TradesSnapshot,
+                    executionContext.Value.FilterContext,
+                    currentCancellationTokenSource.Token), CancellationToken.None);
+
+            if (currentCancellationTokenSource.IsCancellationRequested)
             {
-                filteredTrades = [];
-            }
-            else
-            {
-                filteredTrades = await Task.Run(ParallelTradeFilterProcess, _cancellationTokenSource.Token);
+                return;
             }
 
-            TradeCollectionView ??= CollectionViewSource.GetDefaultView(Trades) as ListCollectionView;
-
-            if (TradeCollectionView != null)
+            await RunOnUiThreadAsync(() =>
             {
+                EnsureTradeCollectionViewInitialized();
+
+                if (TradeCollectionView == null)
+                {
+                    return;
+                }
+
                 var filteredTradeSet = filteredTrades.ToHashSet();
                 TradeCollectionView.Filter = obj => obj is Trade trade && filteredTradeSet.Contains(trade);
                 TradeStatsObject?.SetTradeStats(TradeCollectionView.Cast<Trade>().ToList());
+                CurrentTradeCounts = TradeCollectionView.Count;
+            });
+
+            if (currentCancellationTokenSource.IsCancellationRequested)
+            {
+                return;
             }
 
-            await UpdateProfitOverTimeChartAsync(filteredTrades);
-            UpdateCurrentTradesUi(null, null);
+            await UpdateStatisticViewsAsync(filteredTrades);
         }
-        catch (TaskCanceledException)
+        catch (OperationCanceledException) when (currentCancellationTokenSource.IsCancellationRequested)
         {
             // Ignored
         }
         finally
         {
-            FilteringIsRunningIconVisibility = Visibility.Collapsed;
+            await RunOnUiThreadAsync(() =>
+            {
+                if (!ReferenceEquals(_cancellationTokenSource, currentCancellationTokenSource))
+                {
+                    return;
+                }
+
+                FilteringIsRunningIconVisibility = Visibility.Collapsed;
+                _cancellationTokenSource = null;
+            });
+
+            currentCancellationTokenSource.Dispose();
         }
     }
 
-    public List<Trade> ParallelTradeFilterProcess()
+    public void EnsureTradeCollectionViewInitialized()
     {
-        var context = BuildFilterContext();
-        var partitioner = Partitioner.Create(Trades, EnumerablePartitionerOptions.NoBuffering);
+        ConfigureTradeCollectionView(CollectionViewSource.GetDefaultView(Trades) as ListCollectionView);
+    }
+
+    private void ConfigureTradeCollectionView(ListCollectionView tradeCollectionView)
+    {
+        if (ReferenceEquals(TradeCollectionView, tradeCollectionView))
+        {
+            return;
+        }
+
+        if (TradeCollectionView != null)
+        {
+            TradeCollectionView.CurrentChanged -= UpdateCurrentTradesUi;
+        }
+
+        TradeCollectionView = tradeCollectionView;
+
+        if (TradeCollectionView == null)
+        {
+            return;
+        }
+
+        TradeCollectionView.CurrentChanged += UpdateCurrentTradesUi;
+        TradeCollectionView.IsLiveSorting = true;
+        TradeCollectionView.IsLiveFiltering = true;
+        TradeCollectionView.CustomSort = new TradeComparer();
+        TradeCollectionView.Refresh();
+    }
+
+    private static List<Trade> ParallelTradeFilterProcess(IEnumerable<Trade> trades, TradeFilterContext context, CancellationToken cancellationToken)
+    {
+        if (cancellationToken.IsCancellationRequested)
+        {
+            return [];
+        }
+
+        var partitioner = Partitioner.Create(trades, EnumerablePartitionerOptions.NoBuffering);
         var result = new ConcurrentBag<Trade>();
 
-        Parallel.ForEach(partitioner, (tradeBatch, state) =>
+        Parallel.ForEach(partitioner, (trade, state) =>
         {
-            if (_cancellationTokenSource.Token.IsCancellationRequested)
+            if (cancellationToken.IsCancellationRequested)
             {
-                FilteringIsRunningIconVisibility = Visibility.Collapsed;
                 state.Stop();
+                return;
             }
 
-            if (Filter(tradeBatch, context))
+            if (Filter(trade, context))
             {
-                result.Add(tradeBatch);
+                result.Add(trade);
             }
         });
+
+        if (cancellationToken.IsCancellationRequested)
+        {
+            return [];
+        }
 
         return result.OrderByDescending(d => d.Ticks).ToList();
     }
 
     public async Task UpdateProfitOverTimeChartAsync(IEnumerable<Trade> filteredTrades = null)
     {
-        var tradeSnapshot = filteredTrades?.ToList() ?? GetFilteredTradeSnapshot();
+        var tradeSnapshot = filteredTrades?.ToList() ?? await GetFilteredTradeSnapshotAsync();
         var chartResult = await Task.Run(() =>
         {
             return _tradeProfitTimeSeriesService.BuildTimeSeries(
@@ -445,6 +546,28 @@ public class TradeMonitoringBindings : BaseViewModel
         {
             ApplyProfitOverTimeChart(chartResult);
         });
+    }
+
+    public async Task UpdateTopItemRankingsAsync(IEnumerable<Trade> filteredTrades = null)
+    {
+        var tradeSnapshot = filteredTrades?.ToList() ?? await GetFilteredTradeSnapshotAsync();
+        var rankingResult = await Task.Run(() => _tradeItemRankingService.BuildRankings(tradeSnapshot, TopItemRankingLimit));
+
+        await Application.Current.Dispatcher.InvokeAsync(() =>
+        {
+            TopItemsByProfit = [.. rankingResult.TopItemsByProfit];
+            TopItemsByRoi = [.. rankingResult.TopItemsByRoi];
+            TopItemsByVolume = [.. rankingResult.TopItemsByVolume];
+        });
+    }
+
+    private async Task UpdateStatisticViewsAsync(IEnumerable<Trade> filteredTrades = null)
+    {
+        var tradeSnapshot = filteredTrades?.ToList() ?? await GetFilteredTradeSnapshotAsync();
+
+        await Task.WhenAll(
+            UpdateProfitOverTimeChartAsync(tradeSnapshot),
+            UpdateTopItemRankingsAsync(tradeSnapshot));
     }
 
     private TradeFilterContext BuildFilterContext()
@@ -463,7 +586,7 @@ public class TradeMonitoringBindings : BaseViewModel
             SelectedLocationFilter);
     }
 
-    private bool Filter(object obj, TradeFilterContext context)
+    private static bool Filter(object obj, TradeFilterContext context)
     {
         if (obj is not Trade trade)
         {
@@ -570,14 +693,17 @@ public class TradeMonitoringBindings : BaseViewModel
         return trade.Location == selectedLocation;
     }
 
-    private List<Trade> GetFilteredTradeSnapshot()
+    private Task<List<Trade>> GetFilteredTradeSnapshotAsync()
     {
-        if (TradeCollectionView == null)
+        return RunOnUiThreadAsync(() =>
         {
-            return Trades?.ToList() ?? [];
-        }
+            if (TradeCollectionView == null)
+            {
+                return Trades?.ToList() ?? [];
+            }
 
-        return TradeCollectionView.Cast<Trade>().ToList();
+            return TradeCollectionView.Cast<Trade>().ToList();
+        });
     }
 
     private void ApplyProfitOverTimeChart(TradeProfitTimeSeriesResult chartResult)
@@ -616,9 +742,7 @@ public class TradeMonitoringBindings : BaseViewModel
         {
             var point = _profitOverTimePoints[i];
             var value = point.NetProfit;
-            values.Add(isPositiveSeries
-                ? Math.Max(0d, value)
-                : Math.Min(0d, value));
+            values.Add(isPositiveSeries ? Math.Max(0d, value) : Math.Min(0d, value));
         }
 
         var fill = CreatePaint(resourceKey);

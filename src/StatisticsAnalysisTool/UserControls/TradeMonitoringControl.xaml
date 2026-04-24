@@ -22,6 +22,30 @@
                                          ManualSellTemplate="{StaticResource ManualSellTemplate}" 
                                          ManualBuyTemplate="{StaticResource ManualBuyTemplate}" 
                                          CraftingTemplate="{StaticResource CraftingTemplate}" />
+
+        <DataTemplate x:Key="TradeItemRankingEntryTemplate" DataType="{x:Type trade:TradeItemRankingEntry}">
+            <Grid Margin="0,2,0,2">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="25" />
+                    <ColumnDefinition Width="38" />
+                    <ColumnDefinition Width="*" />
+                </Grid.ColumnDefinitions>
+
+                <TextBlock Text="{Binding RankDisplay}" Foreground="{StaticResource SolidColorBrush.Text.3}" VerticalAlignment="Top" />
+
+                <Border Grid.Column="1" Width="38" Height="38" VerticalAlignment="Center">
+                    <Image Source="{Binding ItemIcon}" Width="38" Height="38" Stretch="Uniform" />
+                </Border>
+
+                <StackPanel Grid.Column="2" Margin="5,0,0,0" Orientation="Vertical">
+                    <StackPanel Orientation="Horizontal">
+                        <TextBlock Text="{Binding TierLevelDisplay}" Margin="0,0,5,0" FontWeight="SemiBold" Foreground="{StaticResource SolidColorBrush.Text.2}" />
+                        <TextBlock Text="{Binding ItemName}" Foreground="{StaticResource SolidColorBrush.Text.2}" FontWeight="SemiBold" TextTrimming="CharacterEllipsis" />
+                    </StackPanel>
+                    <TextBlock Text="{Binding HighlightValueDisplay}" Margin="0,2,0,0" Foreground="{StaticResource SolidColorBrush.Accent.Blue.3}" />
+                </StackPanel>
+            </Grid>
+        </DataTemplate>
     </UserControl.Resources>
     <Grid>
         <Grid Margin="0,0,0,0" Height="96" VerticalAlignment="Top">
@@ -166,6 +190,71 @@
                                             DrawMarginFrame="{x:Null}" />
                     </Border>
                 </Grid>
+            </TabItem>
+            <TabItem Header="{Binding Translation.TopItemRanking, FallbackValue=TOP_ITEM_RANKING}">
+                <ScrollViewer Margin="10,10,10,10"
+                              HorizontalScrollBarVisibility="Disabled"
+                              VerticalScrollBarVisibility="Auto">
+                    <StackPanel Orientation="Vertical">
+                        <Border Margin="0,0,0,10">
+                            <Grid>
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="Auto" />
+                                    <RowDefinition Height="*" />
+                                </Grid.RowDefinitions>
+
+                                <TextBlock Text="{Binding Translation.TopItemsByProfit, FallbackValue=TOP_ITEMS_BY_PROFIT}"
+                                           Foreground="{StaticResource SolidColorBrush.Text.1}"
+                                           FontSize="16"
+                                           FontWeight="SemiBold" />
+
+                                <ListBox Grid.Row="1"
+                                         Background="Transparent"
+                                         BorderThickness="0"
+                                         Margin="0,12,0,0"
+                                         ItemsSource="{Binding TradeMonitoringBindings.TopItemsByProfit}"
+                                         ScrollViewer.HorizontalScrollBarVisibility="Disabled"
+                                         ScrollViewer.VerticalScrollBarVisibility="Disabled"
+                                         ItemTemplate="{StaticResource TradeItemRankingEntryTemplate}" />
+                            </Grid>
+                        </Border>
+                        <Separator Background="{StaticResource SolidColorBrush.Accent.Blue.5}" Height="4" Margin="0" VerticalAlignment="Top"/>
+                        <Border Margin="0,0,0,10">
+                            <Grid>
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="Auto" />
+                                    <RowDefinition Height="*" />
+                                </Grid.RowDefinitions>
+
+                                <TextBlock Text="{Binding Translation.TopItemsByRoi, FallbackValue=TOP_ITEMS_BY_ROI}"
+                                           Foreground="{StaticResource SolidColorBrush.Text.1}" FontSize="16" FontWeight="SemiBold" />
+
+                                <ListBox Grid.Row="1" Background="Transparent" BorderThickness="0" Margin="0,12,0,0"
+                                         ItemsSource="{Binding TradeMonitoringBindings.TopItemsByRoi}"
+                                         ScrollViewer.HorizontalScrollBarVisibility="Disabled" ScrollViewer.VerticalScrollBarVisibility="Disabled"
+                                         ItemTemplate="{StaticResource TradeItemRankingEntryTemplate}" />
+                            </Grid>
+                        </Border>
+                        <Separator Background="{StaticResource SolidColorBrush.Accent.Blue.5}" Height="4" Margin="0" VerticalAlignment="Top"/>
+                        <Border>
+                            <Grid>
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="Auto" />
+                                    <RowDefinition Height="*" />
+                                </Grid.RowDefinitions>
+
+                                <TextBlock Text="{Binding Translation.TopItemsByVolume, FallbackValue=TOP_ITEMS_BY_VOLUME}"
+                                           Foreground="{StaticResource SolidColorBrush.Text.1}" FontSize="16" FontWeight="SemiBold" />
+
+                                <ListBox Grid.Row="1" 
+                                         Background="Transparent" BorderThickness="0" Margin="0,12,0,0"
+                                         ItemsSource="{Binding TradeMonitoringBindings.TopItemsByVolume}" 
+                                         ScrollViewer.HorizontalScrollBarVisibility="Disabled" ScrollViewer.VerticalScrollBarVisibility="Disabled"
+                                         ItemTemplate="{StaticResource TradeItemRankingEntryTemplate}" />
+                            </Grid>
+                        </Border>
+                    </StackPanel>
+                </ScrollViewer>
             </TabItem>
         </TabControl>
 
