@@ -11,12 +11,6 @@ namespace StatisticsAnalysisTool.Cluster;
 
 public sealed class ClusterInfo : BaseViewModel
 {
-    private bool _isSelectedInMapHistory;
-    private Tier _randomDungeonTier = Tier.Unknown;
-    private int _randomDungeonLevel = -1;
-    private string _mapHistoryNote = string.Empty;
-    private ICommand _toggleMapHistorySelectionCommand;
-
     public bool ClusterInfoFullyAvailable { get; set; }
 
     // Change cluster data
@@ -30,7 +24,7 @@ public sealed class ClusterInfo : BaseViewModel
     public Tier MistsDungeonTier { get; set; }
 
     // Join data
-    public string MainClusterIndex { get; set; }
+    public string SourceClusterIndex { get; set; }
     public string WorldJsonType { get; private set; }
     public string File { get; private set; }
 
@@ -48,40 +42,40 @@ public sealed class ClusterInfo : BaseViewModel
 
     public Tier RandomDungeonTier
     {
-        get => _randomDungeonTier;
+        get;
         private set
         {
-            if (_randomDungeonTier == value)
+            if (field == value)
             {
                 return;
             }
 
-            _randomDungeonTier = value;
+            field = value;
             OnPropertyChanged();
             OnPropertyChanged(nameof(RandomDungeonTierLevelToolTip));
             OnPropertyChanged(nameof(MapHistoryClipboardName));
             OnPropertyChanged(nameof(MapHistoryClipboardText));
         }
-    }
+    } = Tier.Unknown;
 
     public int RandomDungeonLevel
     {
-        get => _randomDungeonLevel;
+        get;
         private set
         {
-            if (_randomDungeonLevel == value)
+            if (field == value)
             {
                 return;
             }
 
-            _randomDungeonLevel = value;
+            field = value;
             OnPropertyChanged();
             OnPropertyChanged(nameof(HasRandomDungeonLevelIcon));
             OnPropertyChanged(nameof(RandomDungeonTierLevelToolTip));
             OnPropertyChanged(nameof(MapHistoryClipboardName));
             OnPropertyChanged(nameof(MapHistoryClipboardText));
         }
-    }
+    } = -1;
 
     public bool HasRandomDungeonLevelIcon => MapType == MapType.RandomDungeon && RandomDungeonLevel is >= 0 and <= 4;
 
@@ -89,23 +83,23 @@ public sealed class ClusterInfo : BaseViewModel
 
     public bool IsSelectedInMapHistory
     {
-        get => _isSelectedInMapHistory;
+        get;
         set
         {
-            _isSelectedInMapHistory = value;
+            field = value;
             OnPropertyChanged();
         }
     }
 
     public string MapHistoryNote
     {
-        get => _mapHistoryNote;
+        get;
         set
         {
-            _mapHistoryNote = value;
+            field = value;
             OnPropertyChanged();
         }
-    }
+    } = string.Empty;
 
     public string MapHistoryClipboardName
     {
@@ -166,7 +160,7 @@ public sealed class ClusterInfo : BaseViewModel
         }
     }
 
-    public ICommand ToggleMapHistorySelectionCommand => _toggleMapHistorySelectionCommand ??= new CommandHandler(ToggleMapHistorySelection, true);
+    public ICommand ToggleMapHistorySelectionCommand => field ??= new CommandHandler(ToggleMapHistorySelection, true);
 
     public ClusterInfo()
     {
@@ -182,7 +176,7 @@ public sealed class ClusterInfo : BaseViewModel
         InstanceName = clusterInfo.InstanceName;
         WorldMapDataType = clusterInfo.WorldMapDataType;
         DungeonInformation = clusterInfo.DungeonInformation;
-        MainClusterIndex = clusterInfo.MainClusterIndex;
+        SourceClusterIndex = clusterInfo.SourceClusterIndex;
         WorldJsonType = clusterInfo.WorldJsonType;
         File = clusterInfo.File;
         UniqueName = clusterInfo.UniqueName;
@@ -210,7 +204,7 @@ public sealed class ClusterInfo : BaseViewModel
         MistsRarity = GetMistsRarity(dungeonInformation);
         ResetRandomDungeonTrackingInfo();
 
-        MainClusterIndex = mainClusterIndex;
+        SourceClusterIndex = mainClusterIndex;
         WorldJsonType = null;
         File = null;
 
@@ -219,7 +213,7 @@ public sealed class ClusterInfo : BaseViewModel
         MapTypeString = GetMapTypeName(MapType);
     }
 
-    public void SetJoinClusterInfo(string index, string mainClusterIndex, Guid? mapGuid, MapType mapType)
+    public void SetJoinClusterInfo(string index, string sourceClusterIndex, Guid? mapGuid, MapType mapType)
     {
         if (!string.IsNullOrWhiteSpace(index))
         {
@@ -236,10 +230,10 @@ public sealed class ClusterInfo : BaseViewModel
             MapType = mapType;
         }
 
-        MainClusterIndex = string.IsNullOrWhiteSpace(mainClusterIndex) ? Index : mainClusterIndex;
+        SourceClusterIndex = string.IsNullOrWhiteSpace(sourceClusterIndex) ? Index : sourceClusterIndex;
 
-        WorldJsonType = WorldData.GetWorldJsonTypeByIndex(Index) ?? WorldData.GetWorldJsonTypeByIndex(MainClusterIndex) ?? string.Empty;
-        File = WorldData.GetFileByIndex(Index) ?? WorldData.GetFileByIndex(MainClusterIndex) ?? string.Empty;
+        WorldJsonType = WorldData.GetWorldJsonTypeByIndex(Index) ?? WorldData.GetWorldJsonTypeByIndex(SourceClusterIndex) ?? string.Empty;
+        File = WorldData.GetFileByIndex(Index) ?? WorldData.GetFileByIndex(SourceClusterIndex) ?? string.Empty;
         UniqueName = WorldData.GetUniqueNameOrNull(Index);
         UniqueClusterName = WorldData.GetUniqueNameOrDefault(Index) ?? InstanceName ?? string.Empty;
         MapTypeString = GetMapTypeName(MapType);
@@ -355,7 +349,6 @@ public sealed class ClusterInfo : BaseViewModel
                 Tier.T6 => "VI",
                 Tier.T7 => "VII",
                 Tier.T8 => "VIII",
-                Tier.Unknown => "?",
                 _ => "?"
             };
         }
@@ -375,7 +368,6 @@ public sealed class ClusterInfo : BaseViewModel
                 Tier.T6 => "T6",
                 Tier.T7 => "T7",
                 Tier.T8 => "T8",
-                Tier.Unknown => "T?",
                 _ => "T?"
             };
         }
@@ -569,12 +561,12 @@ public sealed class ClusterInfo : BaseViewModel
 
     private string GetMainClusterName()
     {
-        if (string.IsNullOrWhiteSpace(MainClusterIndex))
+        if (string.IsNullOrWhiteSpace(SourceClusterIndex))
         {
             return string.Empty;
         }
 
-        return WorldData.GetUniqueNameOrDefault(MainClusterIndex) ?? MainClusterIndex;
+        return WorldData.GetUniqueNameOrDefault(SourceClusterIndex) ?? SourceClusterIndex;
     }
 
     private string GetInstanceMapHistoryClipboardName()

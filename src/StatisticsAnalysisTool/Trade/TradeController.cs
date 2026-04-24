@@ -210,7 +210,7 @@ public class TradeController
                 Ticks = dateTimeTicks,
                 Type = TradeType.Crafting,
                 Id = dateTimeTicks,
-                ClusterIndex = ClusterController.CurrentCluster.MainClusterIndex ?? ClusterController.CurrentCluster.Index,
+                ClusterIndex = ClusterController.CurrentCluster.SourceClusterIndex ?? ClusterController.CurrentCluster.Index,
                 Guid = Guid.NewGuid(),
                 ItemIndex = itemIndex,
                 InstantBuySellContent = new InstantBuySellContent()
@@ -232,7 +232,7 @@ public class TradeController
                 Ticks = dateTimeTicks,
                 Type = TradeType.InstantBuy,
                 Id = dateTimeTicks,
-                ClusterIndex = ClusterController.CurrentCluster.MainClusterIndex ?? ClusterController.CurrentCluster.Index,
+                ClusterIndex = ClusterController.CurrentCluster.SourceClusterIndex ?? ClusterController.CurrentCluster.Index,
                 Guid = Guid.NewGuid(),
                 ItemIndex = itemIndex,
                 InstantBuySellContent = new InstantBuySellContent()
