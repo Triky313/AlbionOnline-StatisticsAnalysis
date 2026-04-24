@@ -1,5 +1,4 @@
 using LiveChartsCore;
-using LiveChartsCore.Defaults;
 using LiveChartsCore.SkiaSharpView;
 using LiveChartsCore.SkiaSharpView.Painting;
 using SkiaSharp;
@@ -10,8 +9,8 @@ using StatisticsAnalysisTool.ViewModels;
 using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
-using System.Collections.Specialized;
 using System.Collections.ObjectModel;
+using System.Collections.Specialized;
 using System.Globalization;
 using System.Linq;
 using System.Threading;
@@ -26,39 +25,8 @@ public class TradeMonitoringBindings : BaseViewModel
 {
     private const int TargetVisibleProfitOverTimeLabels = 10;
     private readonly record struct TradeFilterContext(long FromTicks, long ToTicks, string SearchText, long? SearchNumber, int Tier, MarketLocation Location);
-
     private readonly TradeProfitTimeSeriesService _tradeProfitTimeSeriesService = new();
-    private ListCollectionView _tradeCollectionView;
-    private ObservableRangeCollection<Trade> _trades = new();
-    private string _tradesSearchText;
-    private DateTime _datePickerTradeFrom = new(2017, 1, 1);
-    private DateTime _datePickerTradeTo = DateTime.UtcNow.AddDays(1);
-    private TradeStatsObject _tradeStatsObject = new();
-    private TradeOptionsObject _tradeOptionsObject = new();
-    private Visibility _isTradeMonitoringPopupVisible = Visibility.Collapsed;
-    private GridLength _gridSplitterPosition = GridLength.Auto;
-    private int _totalTradeCounts;
-    private int _currentTradeCounts;
-    private ManuallyTradeMenuObject _tradeManuallyMenuObject = new();
-    private bool _isDeleteTradesButtonEnabled = true;
-    private Visibility _filteringIsRunningIconVisibility = Visibility.Collapsed;
-    private TradeExportTemplateObject _tradeExportTemplateObject = new();
-    private int _selectedTierFilter;
-    private MarketLocation _selectedLocationFilter = MarketLocation.Unknown;
-    private TradeProfitTimeAggregation _selectedProfitOverTimeAggregation = TradeProfitTimeAggregation.Day;
-    private TradeProfitTimeAggregation _effectiveProfitOverTimeAggregation = TradeProfitTimeAggregation.Day;
-    private ObservableCollection<ISeries> _profitOverTimeSeries = [];
-    private Axis[] _profitOverTimeXAxes = [];
-    private Axis[] _profitOverTimeYAxes =
-    [
-        new Axis
-        {
-            LabelsRotation = 0,
-            Labeler = value => value.ToShortNumberString()
-        }
-    ];
     private IReadOnlyList<TradeProfitTimeSeriesPoint> _profitOverTimePoints = [];
-    private string _profitOverTimeChartTitle = LocalizationController.Translation("PROFIT_OVER_TIME");
 
     public TradeMonitoringBindings()
     {
@@ -106,30 +74,30 @@ public class TradeMonitoringBindings : BaseViewModel
 
     public ListCollectionView TradeCollectionView
     {
-        get => _tradeCollectionView;
+        get;
         set
         {
-            _tradeCollectionView = value;
+            field = value;
             OnPropertyChanged();
         }
     }
 
     public ObservableRangeCollection<Trade> Trades
     {
-        get => _trades;
+        get;
         set
         {
-            _trades = value;
+            field = value;
             OnPropertyChanged();
         }
-    }
+    } = [];
 
     public string TradesSearchText
     {
-        get => _tradesSearchText;
+        get;
         set
         {
-            _tradesSearchText = value;
+            field = value;
             OnPropertyChanged();
         }
     }
@@ -141,10 +109,10 @@ public class TradeMonitoringBindings : BaseViewModel
 
     public int SelectedTierFilter
     {
-        get => _selectedTierFilter;
+        get;
         set
         {
-            _selectedTierFilter = value;
+            field = value;
             OnPropertyChanged();
         }
     }
@@ -156,13 +124,13 @@ public class TradeMonitoringBindings : BaseViewModel
 
     public MarketLocation SelectedLocationFilter
     {
-        get => _selectedLocationFilter;
+        get;
         set
         {
-            _selectedLocationFilter = value;
+            field = value;
             OnPropertyChanged();
         }
-    }
+    } = MarketLocation.Unknown;
 
     public IReadOnlyList<KeyValuePair<TradeProfitTimeAggregation, string>> ProfitOverTimeAggregationFilters
     {
@@ -171,191 +139,198 @@ public class TradeMonitoringBindings : BaseViewModel
 
     public TradeProfitTimeAggregation SelectedProfitOverTimeAggregation
     {
-        get => _selectedProfitOverTimeAggregation;
+        get;
         set
         {
-            if (_selectedProfitOverTimeAggregation == value)
+            if (field == value)
             {
                 return;
             }
 
-            _selectedProfitOverTimeAggregation = value;
+            field = value;
             OnPropertyChanged();
         }
-    }
+    } = TradeProfitTimeAggregation.Day;
 
     public TradeProfitTimeAggregation EffectiveProfitOverTimeAggregation
     {
-        get => _effectiveProfitOverTimeAggregation;
+        get;
         set
         {
-            _effectiveProfitOverTimeAggregation = value;
+            field = value;
             OnPropertyChanged();
         }
-    }
+    } = TradeProfitTimeAggregation.Day;
 
     public ObservableCollection<ISeries> ProfitOverTimeSeries
     {
-        get => _profitOverTimeSeries;
+        get;
         set
         {
-            _profitOverTimeSeries = value;
+            field = value;
             OnPropertyChanged();
         }
-    }
+    } = [];
 
     public Axis[] ProfitOverTimeXAxes
     {
-        get => _profitOverTimeXAxes;
+        get;
         set
         {
-            _profitOverTimeXAxes = value;
+            field = value;
             OnPropertyChanged();
         }
-    }
+    } = [];
 
     public Axis[] ProfitOverTimeYAxes
     {
-        get => _profitOverTimeYAxes;
+        get;
         set
         {
-            _profitOverTimeYAxes = value;
+            field = value;
             OnPropertyChanged();
         }
-    }
+    } =
+    [
+        new Axis
+        {
+            LabelsRotation = 0,
+            Labeler = value => value.ToShortNumberString()
+        }
+    ];
 
     public string ProfitOverTimeChartTitle
     {
-        get => _profitOverTimeChartTitle;
+        get;
         set
         {
-            _profitOverTimeChartTitle = value;
+            field = value;
             OnPropertyChanged();
         }
-    }
+    } = LocalizationController.Translation("PROFIT_OVER_TIME");
 
     public DateTime DatePickerTradeFrom
     {
-        get => _datePickerTradeFrom;
+        get;
         set
         {
-            _datePickerTradeFrom = value;
-            SettingsController.CurrentSettings.TradeMonitoringDatePickerTradeFrom = _datePickerTradeFrom;
+            field = value;
+            SettingsController.CurrentSettings.TradeMonitoringDatePickerTradeFrom = field;
             OnPropertyChanged();
         }
-    }
+    } = new(2017, 1, 1);
 
     public DateTime DatePickerTradeTo
     {
-        get => _datePickerTradeTo;
+        get;
         set
         {
-            _datePickerTradeTo = value;
-            SettingsController.CurrentSettings.TradeMonitoringDatePickerTradeTo = _datePickerTradeTo;
+            field = value;
+            SettingsController.CurrentSettings.TradeMonitoringDatePickerTradeTo = field;
             OnPropertyChanged();
         }
-    }
+    } = DateTime.UtcNow.AddDays(1);
 
     public bool IsDeleteTradesButtonEnabled
     {
-        get => _isDeleteTradesButtonEnabled;
+        get;
         set
         {
-            _isDeleteTradesButtonEnabled = value;
+            field = value;
             OnPropertyChanged();
         }
-    }
+    } = true;
 
     public TradeStatsObject TradeStatsObject
     {
-        get => _tradeStatsObject;
+        get;
         set
         {
-            _tradeStatsObject = value;
+            field = value;
             OnPropertyChanged();
         }
-    }
+    } = new();
 
     public ManuallyTradeMenuObject ManuallyTradeMenuObject
     {
-        get => _tradeManuallyMenuObject;
+        get;
         set
         {
-            _tradeManuallyMenuObject = value;
+            field = value;
             OnPropertyChanged();
         }
-    }
+    } = new();
 
     public TradeExportTemplateObject TradeExportTemplateObject
     {
-        get => _tradeExportTemplateObject;
+        get;
         set
         {
-            _tradeExportTemplateObject = value;
+            field = value;
             OnPropertyChanged();
         }
-    }
+    } = new();
 
     public TradeOptionsObject TradeOptionsObject
     {
-        get => _tradeOptionsObject;
+        get;
         set
         {
-            _tradeOptionsObject = value;
+            field = value;
             OnPropertyChanged();
         }
-    }
+    } = new();
 
     public int TotalTradeCounts
     {
-        get => _totalTradeCounts;
+        get;
         set
         {
-            _totalTradeCounts = value;
+            field = value;
             OnPropertyChanged();
         }
     }
 
     public int CurrentTradeCounts
     {
-        get => _currentTradeCounts;
+        get;
         set
         {
-            _currentTradeCounts = value;
+            field = value;
             OnPropertyChanged();
         }
     }
 
     public Visibility IsTradeMonitoringPopupVisible
     {
-        get => _isTradeMonitoringPopupVisible;
+        get;
         set
         {
-            _isTradeMonitoringPopupVisible = value;
+            field = value;
             OnPropertyChanged();
         }
-    }
+    } = Visibility.Collapsed;
 
     public GridLength GridSplitterPosition
     {
-        get => _gridSplitterPosition;
+        get;
         set
         {
-            _gridSplitterPosition = value;
-            SettingsController.CurrentSettings.MailMonitoringGridSplitterPosition = _gridSplitterPosition.Value;
+            field = value;
+            SettingsController.CurrentSettings.MailMonitoringGridSplitterPosition = field.Value;
             OnPropertyChanged();
         }
-    }
+    } = GridLength.Auto;
 
     public Visibility FilteringIsRunningIconVisibility
     {
-        get => _filteringIsRunningIconVisibility;
+        get;
         set
         {
-            _filteringIsRunningIconVisibility = value;
+            field = value;
             OnPropertyChanged();
         }
-    }
+    } = Visibility.Collapsed;
 
     #region Update ui
 
@@ -654,7 +629,7 @@ public class TradeMonitoringBindings : BaseViewModel
             Values = values,
             Stroke = null,
             Fill = fill,
-            MaxBarWidth = 6,
+            MaxBarWidth = 20,
             YToolTipLabelFormatter = chartPoint => chartPoint.Coordinate.PrimaryValue.ToChartTooltipNumberString()
         };
     }
@@ -671,9 +646,7 @@ public class TradeMonitoringBindings : BaseViewModel
 
         for (var i = 0; i < points.Count; i++)
         {
-            labels[i] = i % labelStep == 0 || i == points.Count - 1
-                ? FormatAxisLabel(points[i], aggregation, bucketStepSize)
-                : string.Empty;
+            labels[i] = i % labelStep == 0 || i == points.Count - 1 ? FormatAxisLabel(points[i], aggregation, bucketStepSize) : string.Empty;
         }
 
         return labels;
