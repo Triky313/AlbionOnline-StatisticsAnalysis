@@ -16,7 +16,7 @@ public static class ClusterInfoMapping
             MistsDungeonTier = clusterInfo.MistsDungeonTier,
             RandomDungeonTier = clusterInfo.RandomDungeonTier,
             RandomDungeonLevel = clusterInfo.RandomDungeonLevel,
-            MainClusterIndex = clusterInfo.MainClusterIndex,
+            MainClusterIndex = clusterInfo.SourceClusterIndex,
             MapHistoryNote = clusterInfo.MapHistoryNote
         };
     }

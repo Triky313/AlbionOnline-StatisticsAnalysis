@@ -7,6 +7,8 @@
              xmlns:viewModels="clr-namespace:StatisticsAnalysisTool.ViewModels"
              xmlns:vwp="clr-namespace:WpfToolkit.Controls;assembly=VirtualizingWrapPanel"
              xmlns:trade="clr-namespace:StatisticsAnalysisTool.Trade"
+             xmlns:skia="clr-namespace:SkiaSharp.Views.WPF;assembly=SkiaSharp.Views.WPF"
+             xmlns:wpf="clr-namespace:LiveChartsCore.SkiaSharpView.WPF;assembly=LiveChartsCore.SkiaSharpView.WPF"
              mc:Ignorable="d" 
              d:DesignHeight="1950" d:DesignWidth="800"
              d:DataContext="{d:DesignInstance Type=viewModels:MainWindowViewModel}">
@@ -21,10 +23,115 @@
                                          ManualSellTemplate="{StaticResource ManualSellTemplate}" 
                                          ManualBuyTemplate="{StaticResource ManualBuyTemplate}" 
                                          CraftingTemplate="{StaticResource CraftingTemplate}" />
+
+        <DataTemplate x:Key="TradeItemRankingEntryTemplate" DataType="{x:Type trade:TradeItemRankingEntry}">
+            <Grid Margin="0,2,0,2">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="25" />
+                    <ColumnDefinition Width="38" />
+                    <ColumnDefinition Width="*" />
+                </Grid.ColumnDefinitions>
+
+                <TextBlock Text="{Binding RankDisplay}" Foreground="{StaticResource SolidColorBrush.Text.3}" VerticalAlignment="Top" />
+
+                <Border Grid.Column="1" Width="38" Height="38" VerticalAlignment="Center">
+                    <Image Source="{Binding ItemIcon}" Width="38" Height="38" Stretch="Uniform" />
+                </Border>
+
+                <StackPanel Grid.Column="2" Margin="5,0,0,0" Orientation="Vertical">
+                    <StackPanel Orientation="Horizontal">
+                        <TextBlock Text="{Binding TierLevelDisplay}" Margin="0,0,5,0" FontWeight="SemiBold" Foreground="{StaticResource SolidColorBrush.Text.2}" />
+                        <TextBlock Text="{Binding ItemName}" Foreground="{StaticResource SolidColorBrush.Text.2}" FontWeight="SemiBold" TextTrimming="CharacterEllipsis" />
+                    </StackPanel>
+                    <TextBlock Text="{Binding HighlightValueDisplay}" Margin="0,2,0,0">
+                        <TextBlock.Style>
+                            <Style TargetType="TextBlock">
+                                <Setter Property="Foreground" Value="{StaticResource SolidColorBrush.Accent.Green.3}" />
+                                <Style.Triggers>
+                                    <DataTrigger Binding="{Binding IsHighlightValueNegative}" Value="True">
+                                        <Setter Property="Foreground" Value="{StaticResource SolidColorBrush.Accent.Red.3}" />
+                                    </DataTrigger>
+                                </Style.Triggers>
+                            </Style>
+                        </TextBlock.Style>
+                    </TextBlock>
+                </StackPanel>
+            </Grid>
+        </DataTemplate>
+
+        <DataTemplate x:Key="TradeTransferRankingEntryTemplate" DataType="{x:Type trade:TradeItemRankingEntry}">
+            <Grid Margin="0,2,0,2">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="25" />
+                    <ColumnDefinition Width="38" />
+                    <ColumnDefinition Width="*" />
+                </Grid.ColumnDefinitions>
+
+                <TextBlock Text="{Binding RankDisplay}" Foreground="{StaticResource SolidColorBrush.Text.3}" VerticalAlignment="Top" />
+
+                <Border Grid.Column="1" Width="38" Height="38" VerticalAlignment="Center">
+                    <Image Source="{Binding ItemIcon}" Width="38" Height="38" Stretch="Uniform" />
+                </Border>
+
+                <StackPanel Grid.Column="2" Margin="5,0,0,0" Orientation="Vertical">
+                    <StackPanel Orientation="Horizontal">
+                        <TextBlock Text="{Binding TransferQuantityPrefixDisplay}" Margin="0,0,5,0" FontWeight="SemiBold" Foreground="{StaticResource SolidColorBrush.Text.2}" />
+                        <TextBlock Text="{Binding TierLevelDisplay}" Margin="0,0,5,0" FontWeight="SemiBold" Foreground="{StaticResource SolidColorBrush.Text.2}" />
+                        <TextBlock Text="{Binding ItemName}" Foreground="{StaticResource SolidColorBrush.Text.2}" FontWeight="SemiBold" TextTrimming="CharacterEllipsis" />
+                    </StackPanel>
+                    <TextBlock Text="{Binding HighlightValueDisplay}" Margin="0,2,0,0">
+                        <TextBlock.Style>
+                            <Style TargetType="TextBlock">
+                                <Setter Property="Foreground" Value="{StaticResource SolidColorBrush.Accent.Green.3}" />
+                                <Style.Triggers>
+                                    <DataTrigger Binding="{Binding IsHighlightValueNegative}" Value="True">
+                                        <Setter Property="Foreground" Value="{StaticResource SolidColorBrush.Accent.Red.3}" />
+                                    </DataTrigger>
+                                </Style.Triggers>
+                            </Style>
+                        </TextBlock.Style>
+                    </TextBlock>
+                </StackPanel>
+            </Grid>
+        </DataTemplate>
+
+        <DataTemplate x:Key="TradeVolumeRankingEntryTemplate" DataType="{x:Type trade:TradeItemRankingEntry}">
+            <Grid Margin="0,2,0,2">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="25" />
+                    <ColumnDefinition Width="38" />
+                    <ColumnDefinition Width="*" />
+                </Grid.ColumnDefinitions>
+
+                <TextBlock Text="{Binding RankDisplay}" Foreground="{StaticResource SolidColorBrush.Text.3}" VerticalAlignment="Top" />
+
+                <Border Grid.Column="1" Width="38" Height="38" VerticalAlignment="Center">
+                    <Image Source="{Binding ItemIcon}" Width="38" Height="38" Stretch="Uniform" />
+                </Border>
+
+                <StackPanel Grid.Column="2" Margin="5,0,0,0" Orientation="Vertical">
+                    <StackPanel Orientation="Horizontal">
+                        <TextBlock Text="{Binding TierLevelDisplay}" Margin="0,0,5,0" FontWeight="SemiBold" Foreground="{StaticResource SolidColorBrush.Text.2}" />
+                        <TextBlock Text="{Binding ItemName}" Foreground="{StaticResource SolidColorBrush.Text.2}" FontWeight="SemiBold" TextTrimming="CharacterEllipsis" />
+                    </StackPanel>
+                    <TextBlock Text="{Binding HighlightValueDisplay}" Margin="0,2,0,0" Foreground="{StaticResource SolidColorBrush.Accent.Blue.3}" />
+                </StackPanel>
+            </Grid>
+        </DataTemplate>
     </UserControl.Resources>
     <Grid>
-        <Grid Margin="0,0,0,0" Height="66" VerticalAlignment="Top">
-            <StackPanel Orientation="Horizontal" MaxWidth="400" Height="30" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="10,6,0,0">
+        <Grid Margin="0,0,0,0" Height="96" VerticalAlignment="Top">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="30" />
+                <RowDefinition Height="30" />
+                <RowDefinition Height="30" />
+            </Grid.RowDefinitions>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="Auto" />
+            </Grid.ColumnDefinitions>
+
+            <StackPanel Grid.Row="0" Grid.Column="0" Orientation="Horizontal" VerticalAlignment="Top" Margin="10,6,10,0">
                 <fa5:ImageAwesome Icon="Solid_Filter" Foreground="{StaticResource SolidColorBrush.Text.1}" Width="20" Height="20" Margin="0,0,5,0" />
                 <TextBox Text="{Binding TradeMonitoringBindings.TradesSearchText, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" TextChanged="SearchText_TextChanged" 
                          Width="200" Height="24" HorizontalAlignment="Left" />
@@ -32,7 +139,32 @@
                 <fa5:ImageAwesome Visibility="{Binding TradeMonitoringBindings.FilteringIsRunningIconVisibility}" Margin="5,0" Height="20" 
                                   Style="{StaticResource LoadingIconStyle}" />
             </StackPanel>
-            <StackPanel Orientation="Vertical" Height="60" HorizontalAlignment="Right" VerticalAlignment="Top" Margin="0,6,3,0">
+            <StackPanel Grid.Row="1" Grid.Column="0" Orientation="Horizontal" VerticalAlignment="Top" Margin="35,6,10,0">
+                <ComboBox Width="80"
+                          Height="24"
+                          ItemsSource="{Binding TradeMonitoringBindings.TierFilters}"
+                          SelectedValue="{Binding TradeMonitoringBindings.SelectedTierFilter, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                          SelectedValuePath="Key"
+                          DisplayMemberPath="Value"
+                          SelectionChanged="FilterSelection_OnSelectionChanged" />
+                <ComboBox Width="90"
+                          Margin="10,0,0,0"
+                          Height="24"
+                          ItemsSource="{Binding TradeMonitoringBindings.LevelFilters}"
+                          SelectedValue="{Binding TradeMonitoringBindings.SelectedLevelFilter, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                          SelectedValuePath="Key"
+                          DisplayMemberPath="Value"
+                          SelectionChanged="FilterSelection_OnSelectionChanged" />
+                <ComboBox Width="170"
+                          Margin="10,0,0,0"
+                          Height="24"
+                          ItemsSource="{Binding TradeMonitoringBindings.LocationFilters}"
+                          SelectedValue="{Binding TradeMonitoringBindings.SelectedLocationFilter, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                          SelectedValuePath="Key"
+                          DisplayMemberPath="Value"
+                          SelectionChanged="FilterSelection_OnSelectionChanged" />
+            </StackPanel>
+            <StackPanel Grid.Row="0" Grid.Column="1" Grid.RowSpan="3" Orientation="Vertical" Height="60" HorizontalAlignment="Right" VerticalAlignment="Top" Margin="0,6,3,0">
                 <StackPanel Orientation="Horizontal" MaxWidth="300" Height="30" HorizontalAlignment="Right" VerticalAlignment="Top">
                     <Button Content="{Binding Translation.DeleteSelectedTrades, FallbackValue=DELETE__SELECTED__TRADES}" Margin="5,0,0,0"
                             Height="24" Width="200" MaxWidth="300" MinWidth="200" IsEnabled="{Binding TradeMonitoringBindings.IsDeleteTradesButtonEnabled}" Click="BtnDeleteSelectedMails_Click" />
@@ -46,7 +178,7 @@
                             Height="24" Width="200" MaxWidth="300" MinWidth="200" Click="BtnSelectSwitchAllMails_Click" />
                 </StackPanel>
             </StackPanel>
-            <StackPanel Orientation="Horizontal" HorizontalAlignment="Left" Height="30" Margin="35,36,0,0">
+            <StackPanel Grid.Row="2" Grid.Column="0" Orientation="Horizontal" HorizontalAlignment="Left" Height="30" Margin="35,6,0,0">
                 <DatePicker HorizontalAlignment="Left" VerticalAlignment="Center" SelectedDate="{Binding TradeMonitoringBindings.DatePickerTradeFrom}" SelectedDateChanged="DatePicker_OnSelectedDateChanged" 
                             Background="Transparent" BorderThickness="0" Margin="0,0,0,0" />
                 <TextBlock Text="{Binding Translation.To, StringFormat='{}{0} ', FallbackValue=TO}" VerticalAlignment="Center" Foreground="{StaticResource SolidColorBrush.Text.1}" />
@@ -54,52 +186,272 @@
                             Background="Transparent" BorderThickness="0" Margin="6,0,0,0" />
             </StackPanel>
         </Grid>
-        <Separator Background="{StaticResource SolidColorBrush.Background.2}" Height="4" Margin="0,67,0,0" VerticalAlignment="Top"/>
+        <Separator Background="{StaticResource SolidColorBrush.Background.2}" Height="4" Margin="0,97,0,0" VerticalAlignment="Top"/>
 
-        <Grid Margin="0,70,0,0">
-            <Grid.RowDefinitions>
-                <RowDefinition Height="*"/>
-                <RowDefinition Height="5"/>
-                <RowDefinition Height="{Binding TradeMonitoringBindings.GridSplitterPosition ,Mode=TwoWay, FallbackValue=*}"/>
-            </Grid.RowDefinitions>
+        <TabControl Margin="0,100,0,0" Background="Transparent" BorderThickness="0">
+            <TabItem Header="{Binding Translation.TradeOverview, FallbackValue=TRADE_OVERVIEW}">
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="*"/>
+                        <RowDefinition Height="5"/>
+                        <RowDefinition Height="{Binding TradeMonitoringBindings.GridSplitterPosition ,Mode=TwoWay, FallbackValue=*}"/>
+                    </Grid.RowDefinitions>
 
-            <GridSplitter Grid.Row="1" ResizeDirection="Rows" ResizeBehavior="PreviousAndNext" HorizontalAlignment="Stretch" Margin="0,0,1,1" Background="{StaticResource SolidColorBrush.Accent.Blue.4}" />
+                    <GridSplitter Grid.Row="1" ResizeDirection="Rows" ResizeBehavior="PreviousAndNext" HorizontalAlignment="Stretch" Margin="0,0,1,1" Background="{StaticResource SolidColorBrush.Accent.Blue.4}" />
 
-            <Grid Row="0" Margin="0,5,0,6" Grid.RowSpan="2">
-                <ScrollViewer>
+                    <Grid Row="0" Margin="0,5,0,6" Grid.RowSpan="2">
+                        <ScrollViewer>
+                            <StackPanel Orientation="Vertical">
+                                <ContentControl Margin="0,0,0,0" ContentTemplate="{StaticResource MailStatsObjectTemplate}" Content="{Binding TradeMonitoringBindings.TradeStatsObject}" />
+                                <ContentControl Margin="0,0,0,0" ContentTemplate="{StaticResource MailOptionsObjectTemplate}" Content="{Binding TradeMonitoringBindings.TradeOptionsObject}" />
+                                <ContentControl Margin="0,0,0,0" ContentTemplate="{StaticResource ManuallyMailMenuTemplate}" Content="{Binding TradeMonitoringBindings.ManuallyTradeMenuObject}" />
+                                <ContentControl Margin="0,0,0,0" ContentTemplate="{StaticResource TradeExportTemplate}" Content="{Binding TradeMonitoringBindings.TradeExportTemplateObject}" />
+                            </StackPanel>
+                        </ScrollViewer>
+                        <StackPanel Orientation="Horizontal" Height="28" VerticalAlignment="Bottom" HorizontalAlignment="Right">
+                            <TextBlock Margin="0,0,10,0" Foreground="{StaticResource SolidColorBrush.Text.3}" VerticalAlignment="Center">
+                                <TextBlock.Text>
+                                    <MultiBinding StringFormat="{}{0} / {1}" FallbackValue="0 / 0">
+                                        <Binding Path="TradeMonitoringBindings.CurrentTradeCounts" IsAsync="True" Mode="OneWay" />
+                                        <Binding Path="TradeMonitoringBindings.TotalTradeCounts" IsAsync="True" Mode="OneWay" />
+                                    </MultiBinding>
+                                </TextBlock.Text>
+                            </TextBlock>
+                            <Grid Height="16" Width="16" Margin="0,0,27,0" VerticalAlignment="Center">
+                                <fa5:ImageAwesome Icon="Solid_ListAlt" Foreground="{StaticResource SolidColorBrush.Text.3}" />
+                            </Grid>
+                        </StackPanel>
+                    </Grid>
+
+                    <Grid Row="2">
+                        <vwp:VirtualizingItemsControl ItemsSource="{Binding TradeMonitoringBindings.TradeCollectionView, IsAsync=True, Mode=OneWay}"
+                                                      ItemTemplateSelector="{StaticResource TradeDataTemplateSelector}"
+                                                      VirtualizingPanel.CacheLengthUnit="Item"
+                                                      VirtualizingPanel.CacheLength="10,10"
+                                                      VirtualizingPanel.ScrollUnit="Pixel"
+                                                      VirtualizingPanel.VirtualizationMode="Recycling"
+                                                      ScrollViewer.HorizontalScrollBarVisibility="Disabled"
+                                                      ScrollViewer.VerticalScrollBarVisibility="Visible" />
+                    </Grid>
+                </Grid>
+            </TabItem>
+            <TabItem Header="{Binding Translation.Diagrams, FallbackValue=DIAGRAMS}">
+                <ScrollViewer x:Name="DiagramsScrollViewer"
+                              Margin="10,10,10,10"
+                              HorizontalScrollBarVisibility="Disabled"
+                              VerticalScrollBarVisibility="Auto">
                     <StackPanel Orientation="Vertical">
-                        <ContentControl Margin="0,0,0,0" ContentTemplate="{StaticResource MailStatsObjectTemplate}" Content="{Binding TradeMonitoringBindings.TradeStatsObject}" />
-                        <ContentControl Margin="0,0,0,0" ContentTemplate="{StaticResource MailOptionsObjectTemplate}" Content="{Binding TradeMonitoringBindings.TradeOptionsObject}" />
-                        <ContentControl Margin="0,0,0,0" ContentTemplate="{StaticResource ManuallyMailMenuTemplate}" Content="{Binding TradeMonitoringBindings.ManuallyTradeMenuObject}" />
-                        <ContentControl Margin="0,0,0,0" ContentTemplate="{StaticResource TradeExportTemplate}" Content="{Binding TradeMonitoringBindings.TradeExportTemplateObject}" />
+                        <Border Margin="0,0,0,10">
+                            <Grid>
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="Auto" />
+                                    <RowDefinition Height="Auto" />
+                                    <RowDefinition Height="*" />
+                                </Grid.RowDefinitions>
+
+                                <TextBlock Grid.Row="0"
+                                           Text="{Binding TradeMonitoringBindings.ProfitOverTimeChartTitle, FallbackValue=PROFIT_OVER_TIME}"
+                                           Foreground="{StaticResource SolidColorBrush.Text.1}"
+                                           FontSize="18"
+                                           FontWeight="SemiBold" />
+
+                                <StackPanel Grid.Row="1" Orientation="Horizontal" Margin="0,10,0,10">
+                                    <ComboBox Width="140"
+                                              Height="24"
+                                              ItemsSource="{Binding TradeMonitoringBindings.ProfitOverTimeAggregationFilters}"
+                                              SelectedValue="{Binding TradeMonitoringBindings.SelectedProfitOverTimeAggregation, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                              SelectedValuePath="Key"
+                                              DisplayMemberPath="Value"
+                                              SelectionChanged="ProfitOverTimeAggregation_OnSelectionChanged" />
+                                </StackPanel>
+
+                                <Border Grid.Row="2" Height="320" BorderBrush="{StaticResource SolidColorBrush.Background.4}">
+                                    <wpf:CartesianChart Series="{Binding TradeMonitoringBindings.ProfitOverTimeSeries}"
+                                                        XAxes="{Binding TradeMonitoringBindings.ProfitOverTimeXAxes}"
+                                                        YAxes="{Binding TradeMonitoringBindings.ProfitOverTimeYAxes}"
+                                                        TooltipPosition="Center"
+                                                        FindingStrategy="ExactMatchTakeClosest"
+                                                        LegendPosition="Hidden"
+                                                        Background="Transparent"
+                                                        PreviewMouseWheel="DiagramsChart_OnPreviewMouseWheel"
+                                                        DrawMarginFrame="{x:Null}" />
+                                </Border>
+                            </Grid>
+                        </Border>
+
+                        <Separator Background="{StaticResource SolidColorBrush.Accent.Blue.5}" Height="4" Margin="0,0,0,10" VerticalAlignment="Top" />
+
+                        <Border>
+                            <Grid>
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="Auto" />
+                                    <RowDefinition Height="Auto" />
+                                    <RowDefinition Height="*" />
+                                </Grid.RowDefinitions>
+
+                                <TextBlock Grid.Row="0"
+                                           Text="{Binding TradeMonitoringBindings.ProfitByTimeOfDayChartTitle, FallbackValue=PROFIT_BY_TIME_OF_DAY}"
+                                           Foreground="{StaticResource SolidColorBrush.Text.1}"
+                                           FontSize="18"
+                                           FontWeight="SemiBold" />
+
+                                <StackPanel Grid.Row="1" Orientation="Horizontal" Margin="0,10,0,10">
+                                    <ComboBox Width="140"
+                                              Height="24"
+                                              Margin="10,0,0,0"
+                                              ItemsSource="{Binding TradeMonitoringBindings.ProfitByTimeOfDayChartModeFilters}"
+                                              SelectedValue="{Binding TradeMonitoringBindings.SelectedProfitByTimeOfDayChartMode, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                              SelectedValuePath="Key"
+                                              DisplayMemberPath="Value"
+                                              SelectionChanged="ProfitByTimeOfDayChartMode_OnSelectionChanged" />
+                                    <ComboBox Width="210"
+                                              Height="24"
+                                              Margin="10,0,0,0"
+                                              ItemsSource="{Binding TradeMonitoringBindings.ProfitByTimeOfDayMetricFilters}"
+                                              SelectedValue="{Binding TradeMonitoringBindings.SelectedProfitByTimeOfDayMetric, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                              SelectedValuePath="Key"
+                                              DisplayMemberPath="Value"
+                                              SelectionChanged="ProfitByTimeOfDayMetric_OnSelectionChanged" />
+                                </StackPanel>
+
+                                <Grid Grid.Row="2">
+                                    <Border Height="380" BorderBrush="{StaticResource SolidColorBrush.Background.4}"
+                                            Visibility="{Binding TradeMonitoringBindings.ProfitByTimeOfDayHeatmapVisibility}">
+                                        <skia:SKElement x:Name="ProfitByTimeOfDayHeatmap"
+                                                        PaintSurface="ProfitByTimeOfDayHeatmap_OnPaintSurface"
+                                                        MouseMove="ProfitByTimeOfDayHeatmap_OnMouseMove"
+                                                        MouseLeave="ProfitByTimeOfDayHeatmap_OnMouseLeave"
+                                                        PreviewMouseWheel="DiagramsChart_OnPreviewMouseWheel" />
+                                    </Border>
+
+                                    <Border Height="380"
+                                            BorderBrush="{StaticResource SolidColorBrush.Background.4}"
+                                            Visibility="{Binding TradeMonitoringBindings.ProfitByTimeOfDayBarChartVisibility}">
+                                        <wpf:CartesianChart Series="{Binding TradeMonitoringBindings.ProfitByTimeOfDaySeries}"
+                                                            XAxes="{Binding TradeMonitoringBindings.ProfitByTimeOfDayXAxes}"
+                                                            YAxes="{Binding TradeMonitoringBindings.ProfitByTimeOfDayYAxes}"
+                                                            TooltipPosition="Center"
+                                                            FindingStrategy="ExactMatchTakeClosest"
+                                                            LegendPosition="Hidden"
+                                                            Background="Transparent"
+                                                            PreviewMouseWheel="DiagramsChart_OnPreviewMouseWheel"
+                                                            DrawMarginFrame="{x:Null}" />
+                                    </Border>
+                                </Grid>
+                            </Grid>
+                        </Border>
                     </StackPanel>
                 </ScrollViewer>
-                <StackPanel Orientation="Horizontal" Height="28" VerticalAlignment="Bottom" HorizontalAlignment="Right">
-                    <TextBlock Margin="0,0,10,0" Foreground="{StaticResource SolidColorBrush.Text.3}" VerticalAlignment="Center">
-                        <TextBlock.Text>
-                            <MultiBinding StringFormat="{}{0} / {1}" FallbackValue="0 / 0">
-                                <Binding Path="TradeMonitoringBindings.CurrentTradeCounts" IsAsync="True" Mode="OneWay" />
-                                <Binding Path="TradeMonitoringBindings.TotalTradeCounts" IsAsync="True" Mode="OneWay" />
-                            </MultiBinding>
-                        </TextBlock.Text>
-                    </TextBlock>
-                    <Grid Height="16" Width="16" Margin="0,0,27,0" VerticalAlignment="Center">
-                        <fa5:ImageAwesome Icon="Solid_ListAlt" Foreground="{StaticResource SolidColorBrush.Text.3}" />
-                    </Grid>
-                </StackPanel>
-            </Grid>
+            </TabItem>
+            <TabItem Header="{Binding Translation.TopItemRanking, FallbackValue=TOP_ITEM_RANKING}">
+                <ScrollViewer x:Name="TopItemRankingScrollViewer"
+                              Margin="10,10,10,10"
+                              HorizontalScrollBarVisibility="Disabled"
+                              VerticalScrollBarVisibility="Auto">
+                    <StackPanel Orientation="Vertical">
+                        <Border Margin="0,0,0,10">
+                            <Grid>
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="Auto" />
+                                    <RowDefinition Height="*" />
+                                </Grid.RowDefinitions>
 
-            <Grid Row="2">
-                <vwp:VirtualizingItemsControl ItemsSource="{Binding TradeMonitoringBindings.TradeCollectionView, IsAsync=True, Mode=OneWay}"
-                                              ItemTemplateSelector="{StaticResource TradeDataTemplateSelector}"
-                                              VirtualizingPanel.CacheLengthUnit="Item"
-                                              VirtualizingPanel.CacheLength="10,10"
-                                              VirtualizingPanel.ScrollUnit="Pixel"
-                                              VirtualizingPanel.VirtualizationMode="Recycling"
-                                              ScrollViewer.HorizontalScrollBarVisibility="Disabled"
-                                              ScrollViewer.VerticalScrollBarVisibility="Visible" />
-            </Grid>
-        </Grid>
+                                <TextBlock Text="{Binding Translation.TopTransferByProfit, FallbackValue=TOP_TRANSFER_BY_PROFIT}"
+                                           Foreground="{StaticResource SolidColorBrush.Text.1}"
+                                           FontSize="16"
+                                           FontWeight="SemiBold" />
+
+                                <ListBox Grid.Row="1"
+                                         Background="Transparent"
+                                         BorderThickness="0"
+                                         Focusable="False"
+                                         IsTabStop="False"
+                                         Margin="0,12,0,0"
+                                         ItemsSource="{Binding TradeMonitoringBindings.TopItemsByProfit}"
+                                         PreviewMouseWheel="TopItemRankingList_OnPreviewMouseWheel"
+                                         ScrollViewer.HorizontalScrollBarVisibility="Disabled"
+                                         ScrollViewer.VerticalScrollBarVisibility="Disabled"
+                                         ItemTemplate="{StaticResource TradeTransferRankingEntryTemplate}" />
+                            </Grid>
+                        </Border>
+                        <Separator Background="{StaticResource SolidColorBrush.Accent.Blue.5}" Height="4" Margin="0" VerticalAlignment="Top"/>
+                        <Border Margin="0,0,0,10">
+                            <Grid>
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="Auto" />
+                                    <RowDefinition Height="*" />
+                                </Grid.RowDefinitions>
+
+                                <TextBlock Text="{Binding Translation.TopTransferByLoss, FallbackValue=TOP_TRANSFER_BY_LOSS}"
+                                           Foreground="{StaticResource SolidColorBrush.Text.1}" FontSize="16" FontWeight="SemiBold" />
+
+                                <ListBox Grid.Row="1" Background="Transparent" BorderThickness="0" Focusable="False" IsTabStop="False" Margin="0,12,0,0"
+                                         ItemsSource="{Binding TradeMonitoringBindings.TopItemsByLoss}"
+                                         PreviewMouseWheel="TopItemRankingList_OnPreviewMouseWheel"
+                                         ScrollViewer.HorizontalScrollBarVisibility="Disabled" ScrollViewer.VerticalScrollBarVisibility="Disabled"
+                                         ItemTemplate="{StaticResource TradeTransferRankingEntryTemplate}" />
+                            </Grid>
+                        </Border>
+                        <Separator Background="{StaticResource SolidColorBrush.Accent.Blue.5}" Height="4" Margin="0" VerticalAlignment="Top"/>
+                        <Border Margin="0,0,0,10">
+                            <Grid>
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="Auto" />
+                                    <RowDefinition Height="*" />
+                                </Grid.RowDefinitions>
+
+                                <TextBlock Text="{Binding Translation.TopItemsByRoi, FallbackValue=TOP_ITEMS_BY_ROI}"
+                                           Foreground="{StaticResource SolidColorBrush.Text.1}" FontSize="16" FontWeight="SemiBold" />
+
+                                <ListBox Grid.Row="1" Background="Transparent" BorderThickness="0" Focusable="False" IsTabStop="False" Margin="0,12,0,0"
+                                         ItemsSource="{Binding TradeMonitoringBindings.TopItemsByRoi}"
+                                         PreviewMouseWheel="TopItemRankingList_OnPreviewMouseWheel"
+                                         ScrollViewer.HorizontalScrollBarVisibility="Disabled" ScrollViewer.VerticalScrollBarVisibility="Disabled"
+                                         ItemTemplate="{StaticResource TradeItemRankingEntryTemplate}" />
+                            </Grid>
+                        </Border>
+                        <Separator Background="{StaticResource SolidColorBrush.Accent.Blue.5}" Height="4" Margin="0" VerticalAlignment="Top"/>
+                        <Border Margin="0,0,0,10">
+                            <Grid>
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="Auto" />
+                                    <RowDefinition Height="*" />
+                                </Grid.RowDefinitions>
+
+                                <TextBlock Text="{Binding Translation.TopSoldItemsByVolume, FallbackValue=TOP_SOLD_ITEMS_BY_VOLUME}"
+                                           Foreground="{StaticResource SolidColorBrush.Text.1}" FontSize="16" FontWeight="SemiBold" />
+
+                                <ListBox Grid.Row="1"
+                                         Background="Transparent" BorderThickness="0" Focusable="False" IsTabStop="False" Margin="0,12,0,0"
+                                         ItemsSource="{Binding TradeMonitoringBindings.TopSoldItemsByVolume}"
+                                         PreviewMouseWheel="TopItemRankingList_OnPreviewMouseWheel"
+                                         ScrollViewer.HorizontalScrollBarVisibility="Disabled" ScrollViewer.VerticalScrollBarVisibility="Disabled"
+                                         ItemTemplate="{StaticResource TradeVolumeRankingEntryTemplate}" />
+                            </Grid>
+                        </Border>
+                        <Separator Background="{StaticResource SolidColorBrush.Accent.Blue.5}" Height="4" Margin="0" VerticalAlignment="Top"/>
+                        <Border>
+                            <Grid>
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="Auto" />
+                                    <RowDefinition Height="*" />
+                                </Grid.RowDefinitions>
+
+                                <TextBlock Text="{Binding Translation.TopBoughtItemsByVolume, FallbackValue=TOP_BOUGHT_ITEMS_BY_VOLUME}"
+                                           Foreground="{StaticResource SolidColorBrush.Text.1}" FontSize="16" FontWeight="SemiBold" />
+
+                                <ListBox Grid.Row="1" 
+                                         Background="Transparent" BorderThickness="0" Focusable="False" IsTabStop="False" Margin="0,12,0,0"
+                                         ItemsSource="{Binding TradeMonitoringBindings.TopBoughtItemsByVolume}" 
+                                         PreviewMouseWheel="TopItemRankingList_OnPreviewMouseWheel"
+                                         ScrollViewer.HorizontalScrollBarVisibility="Disabled" ScrollViewer.VerticalScrollBarVisibility="Disabled"
+                                         ItemTemplate="{StaticResource TradeVolumeRankingEntryTemplate}" />
+                            </Grid>
+                        </Border>
+                    </StackPanel>
+                </ScrollViewer>
+            </TabItem>
+        </TabControl>
 
         <Grid Visibility="{Binding TradeMonitoringBindings.IsTradeMonitoringPopupVisible, FallbackValue=Hidden}" 
               Margin="0,35,0,0" Background="{StaticResource SolidColorBrush.Background.2}">

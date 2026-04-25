@@ -3,6 +3,7 @@ using StatisticsAnalysisTool.Cluster;
 using StatisticsAnalysisTool.Common;
 using StatisticsAnalysisTool.Diagnostics;
 using StatisticsAnalysisTool.GameFileData;
+using StatisticsAnalysisTool.Models.NetworkModel;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -27,7 +28,8 @@ public class JoinResponse
     public FixPoint Gold { get; }
     public Guid? InteractGuid { get; }
     public string GuildName { get; }
-    public string MainMapIndex { get; set; }
+    public WorldPosition? SourceExitPosition { get; }
+    public string SourceClusterIndex { get; set; } = string.Empty;
     public int PlayTimeInSeconds { get; set; }
     public string AllianceName { get; }
     public bool IsReSpecActive { get; }
@@ -114,8 +116,17 @@ public class JoinResponse
                 GuildName = string.IsNullOrEmpty(parameters[58].ToString()) ? string.Empty : parameters[58].ToString();
             }
 
-            MainMapIndex = GetMainMapIndex(parameters, MapIndex, MapType);
-            DebugConsole.WriteInfo(MethodBase.GetCurrentMethod()?.DeclaringType, $"MainMapIndex: {MainMapIndex}", "#0279be");
+            if (parameters.TryGetValue(64, out object positionObj))
+            {
+                SourceExitPosition = ParseWorldPosition(positionObj);
+            }
+
+            if (parameters.TryGetValue(65, out object sourceClusterIndex))
+            {
+                SourceClusterIndex = sourceClusterIndex.ToString();
+            }
+
+            DebugConsole.WriteInfo(MethodBase.GetCurrentMethod()?.DeclaringType, $"SourceClusterIndex: {SourceClusterIndex}", "#0279be");
 
             // Temporarily removed until value is found
             PlayTimeInSeconds = 0;
@@ -135,39 +146,24 @@ public class JoinResponse
             Log.Error(e, "{message}", MethodBase.GetCurrentMethod()?.DeclaringType);
         }
     }
-
-    private static string GetMainMapIndex(Dictionary<byte, object> parameters, string mapIndex, MapType mapType)
+    
+    private static WorldPosition? ParseWorldPosition(object value)
     {
-        if (IsInstancedMap(mapType))
+        if (value is float[] { Length: >= 2 } floatArray)
         {
-            var sourceClusterIndex = GetStringParameter(parameters, 65);
-            if (!string.IsNullOrWhiteSpace(sourceClusterIndex))
-            {
-                return sourceClusterIndex;
-            }
+            return new WorldPosition(floatArray[0], floatArray[1]);
         }
 
-        return mapIndex ?? string.Empty;
-    }
-
-    private static bool IsInstancedMap(MapType mapType)
-    {
-        return mapType is MapType.RandomDungeon
-            or MapType.CorruptedDungeon
-            or MapType.HellGate
-            or MapType.Expedition
-            or MapType.Mists
-            or MapType.MistsDungeon
-            or MapType.AbyssalDepths;
-    }
-
-    private static string GetStringParameter(Dictionary<byte, object> parameters, byte key)
-    {
-        if (!parameters.TryGetValue(key, out object value))
+        if (value is double[] { Length: >= 2 } doubleArray)
         {
-            return string.Empty;
+            return new WorldPosition((float) doubleArray[0], (float) doubleArray[1]);
         }
 
-        return value?.ToString() ?? string.Empty;
+        if (value is object[] { Length: >= 2 } objArray)
+        {
+            return new WorldPosition(Convert.ToSingle(objArray[0]), Convert.ToSingle(objArray[1]));
+        }
+
+        return null;
     }
 }

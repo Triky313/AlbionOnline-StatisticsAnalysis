@@ -1,4 +1,4 @@
-﻿using Serilog;
+using Serilog;
 using StatisticsAnalysisTool.Common.UserSettings;
 using StatisticsAnalysisTool.Models;
 using StatisticsAnalysisTool.Properties;
@@ -14,6 +14,7 @@ using System.Reflection;
 using System.Text.Json;
 using System.Threading;
 using System.Threading.Tasks;
+using System.Xml;
 
 namespace StatisticsAnalysisTool.Localization;
 
@@ -110,18 +111,57 @@ public class LocalizationController
 
         var culture = SettingsController.CurrentSettings.CurrentCultureIetfLanguageTag ?? string.Empty;
 
-        if (Translations.TryGetValue(culture, out var transForCulture) && transForCulture.TryGetValue(key, out var t1) && !string.IsNullOrEmpty(t1))
+        if (TryGetTranslationText(culture, key, out var translationText))
         {
-            return ApplyPlaceholders(t1, placeholders, replacements);
-        }
-
-        var gameLoc = Volatile.Read(ref _gameLocalizations);
-        if (gameLoc != null && gameLoc.TryGetValue(key, out var langs) && langs.TryGetValue(culture, out var t2) && !string.IsNullOrEmpty(t2))
-        {
-            return ApplyPlaceholders(t2, placeholders, replacements);
+            return ApplyPlaceholders(translationText, placeholders, replacements);
         }
 
         return key;
+    }
+
+    private static bool TryGetTranslationText(string culture, string key, out string translationText)
+    {
+        translationText = string.Empty;
+        var defaultLanguage = Settings.Default.DefaultLanguageCultureName;
+
+        if (TryGetConfiguredTranslationText(culture, key, out translationText))
+        {
+            return true;
+        }
+
+        if (!string.IsNullOrWhiteSpace(defaultLanguage)
+            && !string.Equals(culture, defaultLanguage, StringComparison.OrdinalIgnoreCase)
+            && TryGetConfiguredTranslationText(defaultLanguage, key, out translationText))
+        {
+            return true;
+        }
+
+        return false;
+    }
+
+    private static bool TryGetConfiguredTranslationText(string culture, string key, out string translationText)
+    {
+        translationText = string.Empty;
+
+        if (Translations.TryGetValue(culture, out var transForCulture)
+            && transForCulture.TryGetValue(key, out var directTranslation)
+            && !string.IsNullOrEmpty(directTranslation))
+        {
+            translationText = directTranslation;
+            return true;
+        }
+
+        var gameLoc = Volatile.Read(ref _gameLocalizations);
+        if (gameLoc != null
+            && gameLoc.TryGetValue(key, out var languageTranslations)
+            && languageTranslations.TryGetValue(culture, out var gameTranslation)
+            && !string.IsNullOrEmpty(gameTranslation))
+        {
+            translationText = gameTranslation;
+            return true;
+        }
+
+        return false;
     }
 
     private static string ApplyPlaceholders(string input, List<string> placeholders, List<string> replacements)
@@ -190,10 +230,77 @@ public class LocalizationController
 
     public static Task SetGameLocalizationsAsync(IReadOnlyDictionary<string, Dictionary<string, string>> allTu)
     {
+        return Task.Run(() => SetGameLocalizations(allTu));
+    }
+
+    public static async Task SetGameLocalizationsFromXmlFileAsync(string filePath)
+    {
+        if (!File.Exists(filePath))
+        {
+            Interlocked.Exchange(ref _gameLocalizations, ImmutableDictionary<string, ImmutableDictionary<string, string>>.Empty);
+            return;
+        }
+
+        var allTu = new Dictionary<string, Dictionary<string, string>>(StringComparer.OrdinalIgnoreCase);
+
+        await using var stream = new FileStream(
+            filePath,
+            FileMode.Open,
+            FileAccess.Read,
+            FileShare.Read,
+            65536,
+            FileOptions.Asynchronous | FileOptions.SequentialScan);
+
+        using var reader = XmlReader.Create(stream, new XmlReaderSettings
+        {
+            Async = true,
+            IgnoreWhitespace = true
+        });
+
+        string currentTuId = null;
+        Dictionary<string, string> currentLanguages = null;
+
+        while (await reader.ReadAsync().ConfigureAwait(false))
+        {
+            switch (reader.NodeType)
+            {
+                case XmlNodeType.Element:
+                    if (reader.Name == "tu")
+                    {
+                        currentTuId = reader.GetAttribute("tuid") ?? string.Empty;
+                        currentLanguages = new Dictionary<string, string>(StringComparer.OrdinalIgnoreCase);
+                    }
+                    else if (reader.Name == "tuv" && currentTuId != null)
+                    {
+                        var lang = reader.GetAttribute("xml:lang");
+                        if (!string.IsNullOrEmpty(lang) && await reader.ReadAsync().ConfigureAwait(false) && reader.Name == "seg")
+                        {
+                            var text = await reader.ReadElementContentAsStringAsync().ConfigureAwait(false);
+                            currentLanguages![lang] = text;
+                        }
+                    }
+                    break;
+
+                case XmlNodeType.EndElement:
+                    if (reader.Name == "tu" && currentTuId != null && currentLanguages != null)
+                    {
+                        allTu[currentTuId] = currentLanguages;
+                        currentTuId = null;
+                        currentLanguages = null;
+                    }
+                    break;
+            }
+        }
+
+        await SetGameLocalizationsAsync(allTu).ConfigureAwait(false);
+    }
+
+    private static void SetGameLocalizations(IReadOnlyDictionary<string, Dictionary<string, string>> allTu)
+    {
         if (allTu is null || allTu.Count == 0)
         {
             Interlocked.Exchange(ref _gameLocalizations, ImmutableDictionary<string, ImmutableDictionary<string, string>>.Empty);
-            return Task.CompletedTask;
+            return;
         }
 
         var outer = ImmutableDictionary.CreateBuilder<string, ImmutableDictionary<string, string>>(StringComparer.OrdinalIgnoreCase);
@@ -205,7 +312,6 @@ public class LocalizationController
         }
 
         Interlocked.Exchange(ref _gameLocalizations, outer.ToImmutable());
-        return Task.CompletedTask;
     }
 
     #endregion

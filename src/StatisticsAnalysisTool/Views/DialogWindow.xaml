@@ -24,6 +24,10 @@
                 <fa5:ImageAwesome Icon="Solid_ExclamationTriangle" Foreground="{StaticResource SolidColorBrush.Accent.Blue.3}" />
             </Grid>
             <Grid Margin="10,3,0,0" Width="26" Height="26" VerticalAlignment="Top" HorizontalAlignment="Left" 
+                  Visibility="{Binding InfoTypeVisibility, FallbackValue=Collapsed}">
+                <fa5:ImageAwesome Icon="Solid_InfoCircle" Foreground="{StaticResource SolidColorBrush.Accent.Blue.3}" />
+            </Grid>
+            <Grid Margin="10,3,0,0" Width="26" Height="26" VerticalAlignment="Top" HorizontalAlignment="Left" 
                   Visibility="{Binding ErrorTypeVisibility, FallbackValue=Collapsed}">
                 <fa5:ImageAwesome Icon="Solid_ExclamationTriangle" Foreground="{StaticResource SolidColorBrush.Accent.Red.3}" />
             </Grid>
@@ -48,6 +52,10 @@
                     Margin="10,0,0,10" HorizontalAlignment="Left" Style="{StaticResource Style.Button.Attention}" Click="BtnOk_Click" />
             <Button Content="{Binding Translation.No, FallbackValue=NO}" FontSize="18" FontWeight="Bold" Height="34" Width="200" VerticalAlignment="Bottom" 
                     Margin="0,0,10,10" HorizontalAlignment="Right" Click="BtnCancel_Click" />
+        </Grid>
+        <Grid Visibility="{Binding InfoTypeVisibility, FallbackValue=Collapsed}">
+            <Button Content="{Binding OkButtonText, FallbackValue=Okay}" 
+                    FontSize="18" FontWeight="Bold" Height="34" Width="200" VerticalAlignment="Bottom" Margin="0,0,10,10" HorizontalAlignment="Center" Click="BtnOk_Click" />
         </Grid>
         <Grid Visibility="{Binding ErrorTypeVisibility, FallbackValue=Collapsed}">
             <Button Content="{Binding OkButtonText, FallbackValue=OK}" Style="{StaticResource Style.Button.Attention}" 

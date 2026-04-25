@@ -43,7 +43,7 @@ public static class MobsData
         return GetMobLevel(mob, currentInGameMobHp);
     }
 
-    public static int GetRandomDungeonMobLevelByIndex(int index, double currentInGameMobHp)
+    public static int GetRandomDungeonMobLevelByIndex(int index, double inGameHitPointsMax)
     {
         var mob = GetMobJsonObjectByIndex(index);
         if (!IsReliableRandomDungeonTierMob(mob))
@@ -51,26 +51,31 @@ public static class MobsData
             return -1;
         }
 
-        return GetMobLevel(mob, currentInGameMobHp);
+        return GetMobLevel(mob, inGameHitPointsMax);
     }
 
-    private static int GetMobLevel(MobJsonObject mob, double currentInGameMobHp)
+    private static int GetMobLevel(MobJsonObject mob, double inGameHitPointsMax)
     {
-        if (mob?.HitPointsMax <= 0 || currentInGameMobHp <= 0)
+        if (mob?.HitPointsMax <= 0 || inGameHitPointsMax <= 0)
         {
             return -1;
         }
 
-        var mobHpInPercentOverMaxValue = 100 / mob.HitPointsMax * currentInGameMobHp;
-        return mobHpInPercentOverMaxValue switch
+        if (mob != null)
         {
-            < LevelZeroUpperHpPercent => 0,
-            < LevelOneUpperHpPercent => 1,
-            < LevelTwoUpperHpPercent => 2,
-            < LevelThreeUpperHpPercent => 3,
-            <= LevelFourUpperHpPercent => 4,
-            _ => -1
-        };
+            var mobHpInPercentOverMaxValue = 100 / mob.HitPointsMax * inGameHitPointsMax;
+            return mobHpInPercentOverMaxValue switch
+            {
+                < LevelZeroUpperHpPercent => 0,
+                < LevelOneUpperHpPercent => 1,
+                < LevelTwoUpperHpPercent => 2,
+                < LevelThreeUpperHpPercent => 3,
+                <= LevelFourUpperHpPercent => 4,
+                _ => -1
+            };
+        }
+
+        return -1;
     }
 
     private static MobJsonObject GetMobJsonObjectByIndex(int index)
@@ -90,7 +95,7 @@ public static class MobsData
 
     private static bool IsReliableRandomDungeonTierMob(MobJsonObject mob)
     {
-        if (mob?.Tier is < 1 or > 8 || string.IsNullOrWhiteSpace(mob.UniqueName))
+        if (mob?.Tier is < 1 or > 8 || string.IsNullOrWhiteSpace(mob?.UniqueName))
         {
             return false;
         }
@@ -117,7 +122,7 @@ public static class MobsData
             {
                 NumberHandling = JsonNumberHandling.AllowReadingFromString,
                 ReadCommentHandling = JsonCommentHandling.Skip
-            });
+            }).ConfigureAwait(false);
 
         _mobs = mobs;
         return mobs.Count >= 0;

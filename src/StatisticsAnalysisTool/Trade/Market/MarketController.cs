@@ -74,7 +74,7 @@ public class MarketController(TrackingController trackingController, MainWindowV
                 Ticks = DateTime.UtcNow.Ticks,
                 Type = TradeType.InstantBuy,
                 Id = purchase.AuctionId,
-                ClusterIndex = ClusterController.CurrentCluster.MainClusterIndex ?? ClusterController.CurrentCluster.Index,
+                ClusterIndex = ClusterController.CurrentCluster.SourceClusterIndex ?? ClusterController.CurrentCluster.Index,
                 AuctionEntry = tempOffer,
                 InstantBuySellContent = instantBuySellContent
             };
@@ -138,7 +138,7 @@ public class MarketController(TrackingController trackingController, MainWindowV
                 Ticks = DateTime.UtcNow.Ticks,
                 Type = TradeType.InstantBuy,
                 Id = purchaseId,
-                ClusterIndex = ClusterController.CurrentCluster.MainClusterIndex ?? ClusterController.CurrentCluster.Index,
+                ClusterIndex = ClusterController.CurrentCluster.SourceClusterIndex ?? ClusterController.CurrentCluster.Index,
                 AuctionEntry = tempOffer,
                 InstantBuySellContent = instantBuySellContent
             };
@@ -211,7 +211,7 @@ public class MarketController(TrackingController trackingController, MainWindowV
                 Ticks = DateTime.UtcNow.Ticks,
                 Type = TradeType.InstantSell,
                 Id = sale.AuctionId,
-                ClusterIndex = ClusterController.CurrentCluster.MainClusterIndex ?? ClusterController.CurrentCluster.Index,
+                ClusterIndex = ClusterController.CurrentCluster.SourceClusterIndex ?? ClusterController.CurrentCluster.Index,
                 AuctionEntry = tempBuyOrder,
                 InstantBuySellContent = instantBuySellContent
             };

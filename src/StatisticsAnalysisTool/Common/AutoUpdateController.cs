@@ -31,7 +31,8 @@ namespace StatisticsAnalysisTool.Common;
 
 public static class AutoUpdateController
 {
-    private const string GitHubApiBaseUrl = "https://api.github.com/repos/triky313/AlbionOnline-StatisticsAnalysis/releases/tags/";
+    private const string GitHubReleaseByTagApiBaseUrl = "https://api.github.com/repos/triky313/AlbionOnline-StatisticsAnalysis/releases/tags/";
+    private const string GitHubReleasesApiUrl = "https://api.github.com/repos/triky313/AlbionOnline-StatisticsAnalysis/releases?per_page=100";
 
     private static readonly Lock SyncRoot = new();
     private static readonly JsonSerializerOptions JsonSerializerOptions = new() { PropertyNameCaseInsensitive = true };
@@ -105,8 +106,9 @@ public static class AutoUpdateController
                             return;
                         }
 
-                        var releaseInfo = await TryLoadGitHubReleaseInfoAsync(updateItem);
-                        await ShowUpdateWindowAsync(sparkleUpdater, updateItem, releaseInfo);
+                        var currentVersion = GetCurrentAssemblyVersion();
+                        var releaseInfos = await LoadGitHubReleaseInfosAsync(updateItem, currentVersion);
+                        await ShowUpdateWindowAsync(sparkleUpdater, updateItem, releaseInfos, currentVersion);
                         return;
                     }
                 case UpdateStatus.UpdateNotAvailable:
@@ -185,44 +187,62 @@ public static class AutoUpdateController
     private static Task ShowUpdateWindowAsync(
         SparkleUpdater sparkleUpdater,
         AppCastItem updateItem,
-        GitHubReleaseInfo releaseInfo)
+        IReadOnlyList<GitHubReleaseInfo> releaseInfos,
+        Version currentVersion)
     {
-        var viewModel = CreateUpdateWindowViewModel(updateItem, releaseInfo);
+        var viewModel = CreateUpdateWindowViewModel(updateItem, releaseInfos, currentVersion);
         var updateWindow = new UpdateWindow(viewModel, () => DownloadAndInstallUpdateAsync(sparkleUpdater, updateItem, viewModel));
         updateWindow.ShowDialog();
         return Task.CompletedTask;
     }
 
-    private static UpdateWindowViewModel CreateUpdateWindowViewModel(AppCastItem updateItem, GitHubReleaseInfo releaseInfo)
+    private static UpdateWindowViewModel CreateUpdateWindowViewModel(AppCastItem updateItem, IReadOnlyList<GitHubReleaseInfo> releaseInfos, Version currentVersion)
     {
-        var currentVersion = Assembly.GetExecutingAssembly().GetName().Version;
         var updateVersion = GetDisplayVersion(updateItem.Version, includeRevision: false);
-        var currentVersionText = currentVersion != null
-            ? currentVersion.ToString()
-            : "0.0.0.0";
-
-        var sections = CreateSections(releaseInfo);
-        var releaseTitle = !string.IsNullOrWhiteSpace(releaseInfo?.Title)
-            ? releaseInfo.Title
-            : $"{GetProductTitle()} v{updateVersion}";
-
-        var releaseDateText = releaseInfo?.PublishedAt?.ToLocalTime().ToString("D", CultureInfo.CurrentCulture) ?? string.Empty;
+        var currentVersionText = currentVersion?.ToString() ?? "0.0.0.0";
+        var effectiveReleaseInfos = releaseInfos ?? [];
+        var latestReleaseInfo = effectiveReleaseInfos.FirstOrDefault();
+        var releaseNoteGroups = CreateReleaseNoteGroups(effectiveReleaseInfos);
+        var releaseTitle = GetPrimaryReleaseTitle(latestReleaseInfo, updateVersion);
+        var releaseVersionText = GetPrimaryReleaseVersionText(latestReleaseInfo, updateVersion);
+        var releaseDateText = GetReleaseDateText(latestReleaseInfo);
 
         return new UpdateWindowViewModel(
             LocalizationController.Translation("UPDATE_AVAILABLE_TITLE"),
-            $"{GetProductTitle()} update available",
+            string.Format(
+                CultureInfo.CurrentCulture,
+                LocalizationController.Translation("UPDATE_AVAILABLE_HEADLINE"),
+                GetProductTitle()),
             string.Format(
                 CultureInfo.CurrentCulture,
                 LocalizationController.Translation("UPDATE_AVAILABLE_OPTIONAL_MESSAGE"),
                 updateVersion,
                 currentVersionText),
             releaseTitle,
-            $"v{updateVersion}",
+            releaseVersionText,
             releaseDateText,
-            sections.Count > 0,
-            sections,
+            releaseNoteGroups.Count > 0,
+            releaseNoteGroups,
             GetRemindLaterText(),
             LocalizationController.Translation("UPDATE_NOW"));
+    }
+
+    private static string GetPrimaryReleaseTitle(GitHubReleaseInfo releaseInfo, string updateVersion)
+    {
+        if (!string.IsNullOrWhiteSpace(releaseInfo?.Title))
+        {
+            return releaseInfo.Title;
+        }
+
+        return $"{GetProductTitle()} v{updateVersion}";
+    }
+
+    private static string GetPrimaryReleaseVersionText(GitHubReleaseInfo releaseInfo, string updateVersion)
+    {
+        var releaseVersionText = GetReleaseVersionText(releaseInfo);
+        return string.IsNullOrWhiteSpace(releaseVersionText)
+            ? $"v{updateVersion}"
+            : releaseVersionText;
     }
 
     private static ObservableCollection<UpdateNoteSectionViewModel> CreateSections(GitHubReleaseInfo releaseInfo)
@@ -241,6 +261,60 @@ public static class AutoUpdateController
             .ToList();
 
         return new ObservableCollection<UpdateNoteSectionViewModel>(sections);
+    }
+
+    private static ObservableCollection<UpdateReleaseNoteGroupViewModel> CreateReleaseNoteGroups(IEnumerable<GitHubReleaseInfo> releaseInfos)
+    {
+        if (releaseInfos == null)
+        {
+            return [];
+        }
+
+        var releaseNoteGroups = releaseInfos
+            .Select(CreateReleaseNoteGroup)
+            .Where(group => group != null)
+            .ToList();
+
+        return new ObservableCollection<UpdateReleaseNoteGroupViewModel>(releaseNoteGroups);
+    }
+
+    private static UpdateReleaseNoteGroupViewModel CreateReleaseNoteGroup(GitHubReleaseInfo releaseInfo)
+    {
+        var sections = CreateSections(releaseInfo);
+        if (sections.Count == 0)
+        {
+            return null;
+        }
+
+        var title = !string.IsNullOrWhiteSpace(releaseInfo.Title)
+            ? releaseInfo.Title
+            : GetReleaseVersionText(releaseInfo);
+
+        return new UpdateReleaseNoteGroupViewModel(
+            title,
+            GetReleaseVersionText(releaseInfo),
+            GetReleaseDateText(releaseInfo),
+            sections);
+    }
+
+    private static string GetReleaseVersionText(GitHubReleaseInfo releaseInfo)
+    {
+        if (releaseInfo?.Version != null)
+        {
+            return $"v{GetDisplayVersion(releaseInfo.Version, includeRevision: false)}";
+        }
+
+        if (string.IsNullOrWhiteSpace(releaseInfo?.TagName))
+        {
+            return string.Empty;
+        }
+
+        return $"v{GetDisplayVersion(releaseInfo.TagName, includeRevision: false)}";
+    }
+
+    private static string GetReleaseDateText(GitHubReleaseInfo releaseInfo)
+    {
+        return releaseInfo?.PublishedAt?.ToLocalTime().ToString("D", CultureInfo.CurrentCulture) ?? string.Empty;
     }
 
     private static Brush GetSectionBrush(string title)
@@ -322,10 +396,7 @@ public static class AutoUpdateController
         return section;
     }
 
-    private static async Task<bool> DownloadAndInstallUpdateAsync(
-        SparkleUpdater sparkleUpdater,
-        AppCastItem updateItem,
-        UpdateWindowViewModel viewModel)
+    private static async Task<bool> DownloadAndInstallUpdateAsync(SparkleUpdater sparkleUpdater, AppCastItem updateItem, UpdateWindowViewModel viewModel)
     {
         try
         {
@@ -367,6 +438,73 @@ public static class AutoUpdateController
             .FirstOrDefault();
     }
 
+    private static async Task<IReadOnlyList<GitHubReleaseInfo>> LoadGitHubReleaseInfosAsync(AppCastItem selectedUpdateItem, Version currentVersion)
+    {
+        var selectedUpdateVersion = ParseAppCastVersion(selectedUpdateItem?.Version);
+        if (selectedUpdateVersion != null)
+        {
+            var releaseInfos = await TryLoadGitHubReleaseInfosAsync(currentVersion, selectedUpdateVersion);
+            if (releaseInfos != null)
+            {
+                return releaseInfos;
+            }
+        }
+
+        var fallbackReleaseInfo = await TryLoadGitHubReleaseInfoAsync(selectedUpdateItem);
+        return fallbackReleaseInfo != null
+            ? [fallbackReleaseInfo]
+            : [];
+    }
+
+    private static async Task<IReadOnlyList<GitHubReleaseInfo>> TryLoadGitHubReleaseInfosAsync(Version currentVersion, Version selectedUpdateVersion)
+    {
+        var configuration = _currentConfiguration;
+        if (configuration == null)
+        {
+            return [];
+        }
+
+        try
+        {
+            using var httpClient = CreateGitHubHttpClient(configuration.ProxyUrl);
+            using var requestMessage = new HttpRequestMessage(HttpMethod.Get, GitHubReleasesApiUrl);
+            using var response = await httpClient.SendAsync(requestMessage);
+            response.EnsureSuccessStatusCode();
+
+            var json = await response.Content.ReadAsStringAsync();
+            var releaseResponses = JsonSerializer.Deserialize<List<GitHubReleaseResponse>>(json, JsonSerializerOptions);
+            if (releaseResponses == null || releaseResponses.Count == 0)
+            {
+                return [];
+            }
+
+            return releaseResponses
+                .Select(releaseResponse => CreateGitHubReleaseInfo(releaseResponse))
+                .Where(releaseInfo => releaseInfo?.Version != null)
+                .Where(releaseInfo => releaseInfo.Version > currentVersion && releaseInfo.Version <= selectedUpdateVersion)
+                .GroupBy(releaseInfo => releaseInfo.Version)
+                .Select(SelectPreferredRelease)
+                .OrderByDescending(releaseInfo => releaseInfo.Version)
+                .ThenByDescending(releaseInfo => releaseInfo.PublishedAt ?? DateTimeOffset.MinValue)
+                .ToList();
+        }
+        catch (Exception e) when (e is HttpRequestException or TaskCanceledException or JsonException)
+        {
+            DebugConsole.WriteError(MethodBase.GetCurrentMethod()?.DeclaringType, e);
+            Log.Warning(e, "Failed to load GitHub release notes list for versions {CurrentVersion} to {SelectedUpdateVersion}", currentVersion, selectedUpdateVersion);
+            return null;
+        }
+    }
+
+    private static GitHubReleaseInfo SelectPreferredRelease(IGrouping<Version, GitHubReleaseInfo> releaseGroup)
+    {
+        return releaseGroup
+            .OrderBy(releaseInfo => releaseInfo.IsPreRelease)
+            .ThenByDescending(releaseInfo => releaseInfo.PublishedAt ?? DateTimeOffset.MinValue)
+            .ThenByDescending(releaseInfo => releaseInfo.TagName)
+            .First();
+    }
+
     private static async Task<GitHubReleaseInfo> TryLoadGitHubReleaseInfoAsync(AppCastItem updateItem)
     {
         var configuration = _currentConfiguration;
@@ -384,7 +522,7 @@ public static class AutoUpdateController
         try
         {
             using var httpClient = CreateGitHubHttpClient(configuration.ProxyUrl);
-            using var requestMessage = new HttpRequestMessage(HttpMethod.Get, $"{GitHubApiBaseUrl}v{tagVersion}");
+            using var requestMessage = new HttpRequestMessage(HttpMethod.Get, $"{GitHubReleaseByTagApiBaseUrl}v{tagVersion}");
             using var response = await httpClient.SendAsync(requestMessage);
 
             if (response.StatusCode == HttpStatusCode.NotFound)
@@ -401,10 +539,7 @@ public static class AutoUpdateController
                 return null;
             }
 
-            return new GitHubReleaseInfo(
-                releaseResponse.Name,
-                releaseResponse.Body,
-                releaseResponse.PublishedAt);
+            return CreateGitHubReleaseInfo(releaseResponse, ParseAppCastVersion(updateItem.Version));
         }
         catch (Exception e) when (e is HttpRequestException or TaskCanceledException or JsonException)
         {
@@ -412,6 +547,28 @@ public static class AutoUpdateController
             Log.Warning(e, "Failed to load GitHub release notes for version {Version}", tagVersion);
             return null;
         }
+    }
+
+    private static GitHubReleaseInfo CreateGitHubReleaseInfo(GitHubReleaseResponse releaseResponse, Version fallbackVersion = null)
+    {
+        if (releaseResponse == null)
+        {
+            return null;
+        }
+
+        var releaseVersion = ParseAppCastVersion(releaseResponse.TagName) ?? fallbackVersion;
+        if (releaseVersion == null)
+        {
+            return null;
+        }
+
+        return new GitHubReleaseInfo(
+            releaseVersion,
+            releaseResponse.TagName,
+            releaseResponse.Name,
+            releaseResponse.Body,
+            releaseResponse.PublishedAt,
+            releaseResponse.PreRelease);
     }
 
     private static HttpClient CreateGitHubHttpClient(string proxyUrl)
@@ -426,7 +583,12 @@ public static class AutoUpdateController
 
     private static string GetCurrentFileVersion()
     {
-        return Assembly.GetExecutingAssembly().GetName().Version?.ToString() ?? "0.0.0.0";
+        return GetCurrentAssemblyVersion()?.ToString() ?? "0.0.0.0";
+    }
+
+    private static Version GetCurrentAssemblyVersion()
+    {
+        return Assembly.GetExecutingAssembly().GetName().Version ?? new Version(0, 0, 0, 0);
     }
 
     private static string GetTagVersion(string versionText)
@@ -466,6 +628,16 @@ public static class AutoUpdateController
                 : versionText.Trim().TrimStart('v');
         }
 
+        return GetDisplayVersion(version, includeRevision);
+    }
+
+    private static string GetDisplayVersion(Version version, bool includeRevision)
+    {
+        if (version == null)
+        {
+            return "0.0.0";
+        }
+
         if (includeRevision)
         {
             return version.ToString();
@@ -489,38 +661,28 @@ public static class AutoUpdateController
         var normalizedText = versionText.Trim().TrimStart('v');
         var versionCore = normalizedText.Split('-', '+')[0];
 
-        return Version.TryParse(versionCore, out var version)
-            ? version
-            : null;
+        return Version.TryParse(versionCore, out var version) ? version : null;
     }
 
     private static string GetProductTitle()
     {
         var attribute = Assembly.GetExecutingAssembly().GetCustomAttribute<AssemblyTitleAttribute>();
-        return string.IsNullOrWhiteSpace(attribute?.Title)
-            ? "Statistics Analysis Tool"
-            : attribute.Title;
+        return string.IsNullOrWhiteSpace(attribute?.Title) ? "Statistics Analysis Tool" : attribute.Title;
     }
 
     private static string GetRemindLaterText()
     {
-        return CultureInfo.CurrentUICulture.TwoLetterISOLanguageName.Equals("de", StringComparison.OrdinalIgnoreCase)
-            ? "Spaeter erinnern"
-            : "Remind me later";
+        return LocalizationController.Translation("UPDATE_REMIND_LATER");
     }
 
     private static string GetDownloadingStatusText()
     {
-        return CultureInfo.CurrentUICulture.TwoLetterISOLanguageName.Equals("de", StringComparison.OrdinalIgnoreCase)
-            ? "Update wird heruntergeladen und vorbereitet..."
-            : "Downloading and preparing the update...";
+        return LocalizationController.Translation("UPDATE_DOWNLOADING_STATUS");
     }
 
     private static string GetDownloadingButtonText()
     {
-        return CultureInfo.CurrentUICulture.TwoLetterISOLanguageName.Equals("de", StringComparison.OrdinalIgnoreCase)
-            ? "Wird geladen..."
-            : "Downloading...";
+        return LocalizationController.Translation("UPDATE_DOWNLOADING_BUTTON");
     }
 
     private static async Task<SparkleUpdater> EnsureSparkleUpdaterAsync()
@@ -742,15 +904,27 @@ public static class AutoUpdateController
         public List<string> Items { get; } = [];
     }
 
-    private sealed class GitHubReleaseInfo(string title, string body, DateTimeOffset? publishedAt)
+    private sealed class GitHubReleaseInfo(
+        Version version,
+        string tagName,
+        string title,
+        string body,
+        DateTimeOffset? publishedAt,
+        bool isPreRelease)
     {
+        public Version Version { get; } = version;
+        public string TagName { get; } = tagName ?? string.Empty;
         public string Title { get; } = title ?? string.Empty;
         public string Body { get; } = body ?? string.Empty;
         public DateTimeOffset? PublishedAt { get; } = publishedAt;
+        public bool IsPreRelease { get; } = isPreRelease;
     }
 
     private sealed class GitHubReleaseResponse
     {
+        [JsonPropertyName("tag_name")]
+        public string TagName { get; init; }
+
         [JsonPropertyName("name")]
         public string Name { get; init; }
 
@@ -759,6 +933,9 @@ public static class AutoUpdateController
 
         [JsonPropertyName("published_at")]
         public DateTimeOffset? PublishedAt { get; init; }
+
+        [JsonPropertyName("prerelease")]
+        public bool PreRelease { get; init; }
     }
 
     private enum UpdateCheckSource

@@ -71,12 +71,14 @@ public static class SpellData
         if (!File.Exists(regularDataFilePath))
         {
             _spells = new List<GameFileDataSpell>();
+            return false;
         }
 
-        var document = XDocument.Load(regularDataFilePath);
-        _spells = BuildSpells([.. document.Root!.Elements()]);
-
-        await Task.CompletedTask;
+        _spells = await Task.Run(() =>
+        {
+            var document = XDocument.Load(regularDataFilePath);
+            return BuildSpells([.. document.Root!.Elements()]);
+        }).ConfigureAwait(false);
 
         return _spells.Count >= 0;
     }

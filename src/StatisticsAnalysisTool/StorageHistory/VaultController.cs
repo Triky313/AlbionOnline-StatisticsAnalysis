@@ -47,7 +47,7 @@ public class VaultController
         }
 
         internalVault.UniqueClusterName = ClusterController.CurrentCluster.UniqueClusterName;
-        internalVault.MainLocationIndex = ClusterController.CurrentCluster.MainClusterIndex;
+        internalVault.MainLocationIndex = ClusterController.CurrentCluster.SourceClusterIndex;
 
         if (string.IsNullOrEmpty(internalVault.UniqueClusterName))
         {
@@ -76,7 +76,7 @@ public class VaultController
         }
 
         internalVault.UniqueClusterName = ClusterController.CurrentCluster.UniqueClusterName;
-        internalVault.MainLocationIndex = ClusterController.CurrentCluster.MainClusterIndex;
+        internalVault.MainLocationIndex = ClusterController.CurrentCluster.SourceClusterIndex;
 
         if (string.IsNullOrEmpty(internalVault.UniqueClusterName))
         {

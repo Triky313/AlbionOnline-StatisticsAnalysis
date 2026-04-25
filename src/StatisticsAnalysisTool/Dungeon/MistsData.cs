@@ -1,4 +1,4 @@
-﻿using StatisticsAnalysisTool.Common;
+using StatisticsAnalysisTool.Common;
 using StatisticsAnalysisTool.Dungeon.Models;
 using StatisticsAnalysisTool.GameFileData;
 using StatisticsAnalysisTool.Properties;
@@ -36,7 +36,7 @@ public sealed class MistsData
             {
                 NumberHandling = JsonNumberHandling.AllowReadingFromString,
                 ReadCommentHandling = JsonCommentHandling.Skip
-            });
+            }).ConfigureAwait(false);
 
         _mists = mists;
         return mists.Count >= 0;

@@ -64,12 +64,12 @@ public static class Locations
 
     public static string GetParameterName(MarketLocation location)
     {
-        return ParameterNames.TryGetValue(location, out var name) ? name : null;
+        return ParameterNames.GetValueOrDefault(location);
     }
 
     public static string GetDisplayName(MarketLocation location)
     {
-        return DisplayNames.TryGetValue(location, out var name) ? name : null;
+        return DisplayNames.GetValueOrDefault(location);
     }
 
     public static MarketLocation GetMarketLocationByIndex(string index)

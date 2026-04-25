@@ -10,20 +10,7 @@ namespace StatisticsAnalysisTool.Dungeon.Models;
 
 public class RandomDungeonFragment : DungeonBaseFragment
 {
-    private int _level = -1;
-    private double _might;
-    private double _favor;
-    private double _factionCoins;
-    private double _factionFlags;
-    private CityFaction _cityFaction = CityFaction.Unknown;
-    private int _numberOfFloors;
-    private Visibility _mightFavorVisibility = Visibility.Collapsed;
-    private Visibility _factionPointsVisibility = Visibility.Collapsed;
-    private double _mightPerHour;
-    private double _favorPerHour;
-    private double _factionCoinsPerHour;
-    private double _factionFlagsPerHour;
-    private string _levelString = "?";
+    public bool IsLevelLockedFromEntrance { get; private set; }
 
     public RandomDungeonFragment(Guid guid, MapType mapType, DungeonMode mode, string mainMapIndex) : base(guid, mapType, mode, mainMapIndex)
     {
@@ -47,22 +34,24 @@ public class RandomDungeonFragment : DungeonBaseFragment
 
     public int Level
     {
-        get => _level;
-        set
+        get;
+        private set
         {
-            _level = value;
-            LevelString = SetLevelString(_level);
+            field = value;
+            LevelString = SetLevelString(field);
             OnPropertyChanged();
         }
-    }
+    } = -1;
 
     public double Might
     {
-        get => _might;
+        get;
         set
         {
-            _might = value;
-            MightPerHour = value.GetValuePerHour(TotalRunTimeInSeconds <= 0 ? (DateTime.UtcNow - EnterDungeonFirstTime).Seconds : TotalRunTimeInSeconds);
+            field = value;
+            MightPerHour = value.GetValuePerHour(TotalRunTimeInSeconds <= 0
+                ? (DateTime.UtcNow - EnterDungeonFirstTime).Seconds
+                : TotalRunTimeInSeconds);
             UpdateValueVisibility();
             OnPropertyChanged();
         }
@@ -70,11 +59,13 @@ public class RandomDungeonFragment : DungeonBaseFragment
 
     public double Favor
     {
-        get => _favor;
+        get;
         set
         {
-            _favor = value;
-            FavorPerHour = value.GetValuePerHour(TotalRunTimeInSeconds <= 0 ? (DateTime.UtcNow - EnterDungeonFirstTime).Seconds : TotalRunTimeInSeconds);
+            field = value;
+            FavorPerHour = value.GetValuePerHour(TotalRunTimeInSeconds <= 0
+                ? (DateTime.UtcNow - EnterDungeonFirstTime).Seconds
+                : TotalRunTimeInSeconds);
             UpdateValueVisibility();
             OnPropertyChanged();
         }
@@ -82,11 +73,13 @@ public class RandomDungeonFragment : DungeonBaseFragment
 
     public double FactionCoins
     {
-        get => _factionCoins;
+        get;
         set
         {
-            _factionCoins = value;
-            FactionCoinsPerHour = value.GetValuePerHour(TotalRunTimeInSeconds <= 0 ? (DateTime.UtcNow - EnterDungeonFirstTime).Seconds : TotalRunTimeInSeconds);
+            field = value;
+            FactionCoinsPerHour = value.GetValuePerHour(TotalRunTimeInSeconds <= 0
+                ? (DateTime.UtcNow - EnterDungeonFirstTime).Seconds
+                : TotalRunTimeInSeconds);
             UpdateValueVisibility();
             OnPropertyChanged();
         }
@@ -94,106 +87,108 @@ public class RandomDungeonFragment : DungeonBaseFragment
 
     public double FactionFlags
     {
-        get => _factionFlags;
+        get;
         set
         {
-            _factionFlags = value;
-            FactionFlagsPerHour = value.GetValuePerHour(TotalRunTimeInSeconds <= 0 ? (DateTime.UtcNow - EnterDungeonFirstTime).Seconds : TotalRunTimeInSeconds);
+            field = value;
+            FactionFlagsPerHour = value.GetValuePerHour(TotalRunTimeInSeconds <= 0
+                ? (DateTime.UtcNow - EnterDungeonFirstTime).Seconds
+                : TotalRunTimeInSeconds);
             OnPropertyChanged();
         }
     }
 
     public CityFaction CityFaction
     {
-        get => _cityFaction;
+        get;
         set
         {
-            _cityFaction = value;
+            field = value;
             OnPropertyChanged();
         }
-    }
+    } = CityFaction.Unknown;
 
     #region Composite values that are not in the DTO
 
     public int NumberOfFloors
     {
-        get => _numberOfFloors;
+        get;
         set
         {
-            _numberOfFloors = value;
+            field = value;
             OnPropertyChanged();
         }
     }
 
     public Visibility MightFavorVisibility
     {
-        get => _mightFavorVisibility;
+        get;
         set
         {
-            _mightFavorVisibility = value;
+            field = value;
             OnPropertyChanged();
         }
-    }
+    } = Visibility.Collapsed;
 
     public Visibility FactionPointsVisibility
     {
-        get => _factionPointsVisibility;
+        get;
         set
         {
-            _factionPointsVisibility = value;
+            field = value;
             OnPropertyChanged();
         }
-    }
+    } = Visibility.Collapsed;
 
     public double MightPerHour
     {
-        get => double.IsNaN(_mightPerHour) ? 0 : _mightPerHour;
+        get => double.IsNaN(field) ? 0 : field;
         private set
         {
-            _mightPerHour = value;
+            field = value;
             OnPropertyChanged();
         }
     }
 
     public double FavorPerHour
     {
-        get => double.IsNaN(_favorPerHour) ? 0 : _favorPerHour;
+        get => double.IsNaN(field) ? 0 : field;
         private set
         {
-            _favorPerHour = value;
+            field = value;
             OnPropertyChanged();
         }
     }
 
     public double FactionCoinsPerHour
     {
-        get => double.IsNaN(_factionCoinsPerHour) ? 0 : _factionCoinsPerHour;
+        get => double.IsNaN(field) ? 0 : field;
         private set
         {
-            _factionCoinsPerHour = value;
+            field = value;
             OnPropertyChanged();
         }
     }
 
     public double FactionFlagsPerHour
     {
-        get => double.IsNaN(_factionFlagsPerHour) ? 0 : _factionFlagsPerHour;
+        get => double.IsNaN(field) ? 0 : field;
         private set
         {
-            _factionFlagsPerHour = value;
+            field = value;
             OnPropertyChanged();
         }
     }
 
     public string LevelString
     {
-        get => _levelString;
+        get;
         private set
         {
-            _levelString = value;
+            field = value;
             OnPropertyChanged();
         }
-    }
+    } = "?";
 
     #endregion
 
@@ -216,7 +211,6 @@ public class RandomDungeonFragment : DungeonBaseFragment
         }
     }
 
-    // Flat-Map: 16% (green), .1-Map 36% (blue), .2-Map 58% (purple), .3-Map 84% (gold)
     private static string SetLevelString(int level)
     {
         var levelString = level switch
@@ -265,5 +259,33 @@ public class RandomDungeonFragment : DungeonBaseFragment
                 Favor += value;
                 return;
         }
+    }
+
+    public bool TrySetLevelFromEntrance(int level)
+    {
+        if (level is < 0 or > 4)
+        {
+            return false;
+        }
+
+        IsLevelLockedFromEntrance = true;
+        if (Level == level)
+        {
+            return false;
+        }
+
+        Level = level;
+        return true;
+    }
+
+    public bool TrySetLevelFromMob(int level)
+    {
+        if (IsLevelLockedFromEntrance || level is < 0 or > 4 || level <= Level)
+        {
+            return false;
+        }
+
+        Level = level;
+        return true;
     }
 }

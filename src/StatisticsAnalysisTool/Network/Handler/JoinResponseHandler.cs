@@ -22,7 +22,7 @@ public class JoinResponseHandler(TrackingController trackingController) : Respon
         SetLocalUserData(value);
         _ = SetApiUserData(value);
 
-        trackingController.ClusterController.SetJoinClusterInformation(value.MapIndex, value.MainMapIndex, value.MapGuid, value.MapType);
+        trackingController.ClusterController.SetJoinClusterInformation(value.MapIndex, value.SourceClusterIndex, value.MapGuid, value.MapType);
 
         _mainWindowViewModel.UserTrackingBindings.Username = value.Username;
         _mainWindowViewModel.UserTrackingBindings.GuildName = value.GuildName;
@@ -44,7 +44,7 @@ public class JoinResponseHandler(TrackingController trackingController) : Respon
             ObjectSubType = GameObjectSubType.LocalPlayer
         });
 
-        trackingController.DungeonController?.AddDungeonAsync(value.MapType, value.MapGuid).ConfigureAwait(false);
+        trackingController.DungeonController?.AddDungeonAsync(value.MapType, value.MapGuid, value.SourceClusterIndex, value.SourceExitPosition).ConfigureAwait(false);
 
         ResetFameCounterByMapChangeIfActive();
         SetTrackingActivityText();
@@ -66,7 +66,7 @@ public class JoinResponseHandler(TrackingController trackingController) : Respon
             Silver = value.Silver,
             Gold = value.Gold,
             GuildName = value.GuildName,
-            MainMapIndex = value.MainMapIndex,
+            MainMapIndex = value.SourceClusterIndex,
             PlayTimeInSeconds = value.PlayTimeInSeconds,
             AllianceName = value.AllianceName,
             IsReSpecActive = value.IsReSpecActive

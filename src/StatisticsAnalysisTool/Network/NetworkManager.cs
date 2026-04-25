@@ -83,6 +83,7 @@ public class NetworkManager
         builder.AddEventHandler(new UpdateStandingEventHandler(trackingController));
         builder.AddEventHandler(new CraftBuildingInfoEventHandler(trackingController));
         builder.AddEventHandler(new NewHellDungeonRoomShrineObjectEventHandler(trackingController));
+        builder.AddEventHandler(new NewRandomDungeonExitEventHandler(trackingController));
 
         // Request
         builder.AddRequestHandler(new InventoryMoveItemRequestHandler(trackingController));
@@ -97,6 +98,7 @@ public class NetworkManager
         builder.AddRequestHandler(new FishingFinishRequestHandler(trackingController));
         builder.AddRequestHandler(new FishingCancelRequestHandler(trackingController));
         builder.AddRequestHandler(new GetGuildAccountLogsRequestHandler(trackingController));
+        builder.AddRequestHandler(new ChangeClusterRequestHandler(trackingController));
 
         // Response
         builder.AddResponseHandler(new ChangeClusterResponseHandler(trackingController));

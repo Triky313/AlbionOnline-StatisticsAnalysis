@@ -1,10 +1,12 @@
 using Serilog;
 using StatisticsAnalysisTool.Common;
 using StatisticsAnalysisTool.Common.UserSettings;
+using StatisticsAnalysisTool.Diagnostics;
 using StatisticsAnalysisTool.Enumerations;
 using StatisticsAnalysisTool.Localization;
 using StatisticsAnalysisTool.Models;
 using StatisticsAnalysisTool.Models.TranslationModel;
+using StatisticsAnalysisTool.Network.Manager;
 using StatisticsAnalysisTool.Network.PacketProviders;
 using StatisticsAnalysisTool.Notification;
 using StatisticsAnalysisTool.Properties;
@@ -17,55 +19,18 @@ using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Reflection;
+using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Media.Imaging;
-using StatisticsAnalysisTool.Diagnostics;
-using StatisticsAnalysisTool.Network.Manager;
-using System.Threading.Tasks;
 
 namespace StatisticsAnalysisTool.ViewModels;
 
 public class SettingsWindowViewModel : BaseViewModel
 {
-    private static ObservableCollection<FileInformation> _languages = new();
+    private static ObservableCollection<FileInformation> _languages = [];
     private static FileInformation _languagesSelection;
-    private static ObservableCollection<SettingDataInformation> _refreshRates = new();
+    private static ObservableCollection<SettingDataInformation> _refreshRates = [];
     private static SettingDataInformation _refreshRatesSelection;
-
-    private ObservableCollection<FileInformation> _alertSounds = new();
-    private ObservableCollection<FileInformation> _deathAlertSounds = new();
-    private FileInformation _alertSoundSelection;
-    private FileInformation _deathAlertSoundSelection;
-    private bool _isOpenItemWindowInNewWindowChecked;
-    private bool _showInfoWindowOnStartChecked;
-    private SettingsWindowTranslation _translation;
-    private string _albionDataProjectBaseUrlWest;
-    private string _albionDataProjectBaseUrlEast;
-    private string _albionDataProjectBaseUrlEurope;
-    private ObservableCollection<SettingDataInformation> _backupIntervalByDays = new();
-    private ObservableCollection<SettingDataInformation> _maximumNumberOfBackups = new();
-    private bool _isSuggestPreReleaseUpdatesActive;
-    private string _mainTrackingCharacterName;
-    private ObservableCollection<TabVisibilityFilter> _tabVisibilities = new();
-    private SettingDataInformation _packetProviderSelection;
-    private ObservableCollection<SettingDataInformation> _packetProvider = new();
-    private SettingDataInformation _serverSelection;
-    private ObservableCollection<SettingDataInformation> _server = new();
-    private ObservableCollection<NotificationFilter> _notificationFilters = new();
-    private short _playerSelectionWithSameNameInDb;
-    private bool _isBackupNowButtonEnabled = true;
-    private SettingDataInformation _backupIntervalByDaysSelection;
-    private SettingDataInformation _maximumNumberOfBackupsSelection;
-    private string _anotherAppToStartPath;
-    private BitmapImage _anotherAppToStartExeIcon;
-    private string _packetFilter;
-    private Visibility _packetFilterVisibility = Visibility.Collapsed;
-    private ObservableCollection<NetworkDeviceFilter> _networkDevices = new();
-    private Visibility _networkDevicesVisibility = Visibility.Collapsed;
-    private string _backupStorageDirectoryPath;
-    private string _proxyUrlWithPort;
-    private string _debugConsoleFilter;
-    private bool _isOpenDebugConsoleWhenStartingTheToolChecked;
 
     public SettingsWindowViewModel()
     {
@@ -101,7 +66,7 @@ public class SettingsWindowViewModel : BaseViewModel
         MaximumNumberOfBackupsSelection = MaximumNumberOfBackups.FirstOrDefault(x => x.Value == SettingsController.CurrentSettings.MaximumNumberOfBackups);
 
         // Backup storage dir path
-        BackupStorageDirectoryPath = string.IsNullOrEmpty(SettingsController.CurrentSettings.BackupStorageDirectoryPath) 
+        BackupStorageDirectoryPath = string.IsNullOrEmpty(SettingsController.CurrentSettings.BackupStorageDirectoryPath)
             ? Path.Combine(AppDomain.CurrentDomain.BaseDirectory, Settings.Default.BackupDirectoryName) : SettingsController.CurrentSettings.BackupStorageDirectoryPath;
 
         // Another app to start path
@@ -658,110 +623,110 @@ public class SettingsWindowViewModel : BaseViewModel
 
     public ObservableCollection<NotificationFilter> NotificationFilters
     {
-        get => _notificationFilters;
+        get;
         set
         {
-            _notificationFilters = value;
+            field = value;
             OnPropertyChanged();
         }
-    }
+    } = new();
 
     public ObservableCollection<TabVisibilityFilter> TabVisibilities
     {
-        get => _tabVisibilities;
+        get;
         set
         {
-            _tabVisibilities = value;
+            field = value;
             OnPropertyChanged();
         }
-    }
+    } = new();
 
     public ObservableCollection<FileInformation> AlertSounds
     {
-        get => _alertSounds;
+        get;
         set
         {
-            _alertSounds = value;
+            field = value;
             OnPropertyChanged();
         }
-    }
+    } = new();
 
     public ObservableCollection<FileInformation> DeathAlertSounds
     {
-        get => _deathAlertSounds;
+        get;
         set
         {
-            _deathAlertSounds = value;
+            field = value;
             OnPropertyChanged();
         }
-    }
+    } = new();
 
     public FileInformation AlertSoundSelection
     {
-        get => _alertSoundSelection;
+        get;
         set
         {
-            _alertSoundSelection = value;
+            field = value;
             OnPropertyChanged();
         }
     }
 
     public FileInformation DeathAlertSoundSelection
     {
-        get => _deathAlertSoundSelection;
+        get;
         set
         {
-            _deathAlertSoundSelection = value;
+            field = value;
             OnPropertyChanged();
         }
     }
 
     public SettingDataInformation BackupIntervalByDaysSelection
     {
-        get => _backupIntervalByDaysSelection;
+        get;
         set
         {
-            _backupIntervalByDaysSelection = value;
+            field = value;
             OnPropertyChanged();
         }
     }
 
     public SettingDataInformation MaximumNumberOfBackupsSelection
     {
-        get => _maximumNumberOfBackupsSelection;
+        get;
         set
         {
-            _maximumNumberOfBackupsSelection = value;
+            field = value;
             OnPropertyChanged();
         }
     }
 
     public ObservableCollection<SettingDataInformation> BackupIntervalByDays
     {
-        get => _backupIntervalByDays;
+        get;
         set
         {
-            _backupIntervalByDays = value;
+            field = value;
             OnPropertyChanged();
         }
-    }
+    } = new();
 
     public ObservableCollection<SettingDataInformation> MaximumNumberOfBackups
     {
-        get => _maximumNumberOfBackups;
+        get;
         set
         {
-            _maximumNumberOfBackups = value;
+            field = value;
             OnPropertyChanged();
         }
-    }
+    } = new();
 
     public string BackupStorageDirectoryPath
     {
-        get => _backupStorageDirectoryPath;
+        get;
         set
         {
-            _backupStorageDirectoryPath = value;
+            field = value;
             OnPropertyChanged();
         }
     }
@@ -789,122 +754,122 @@ public class SettingsWindowViewModel : BaseViewModel
 
     public SettingDataInformation PacketProviderSelection
     {
-        get => _packetProviderSelection;
+        get;
         set
         {
-            _packetProviderSelection = value;
-            PacketFilterVisibility = _packetProviderSelection.Value == 2 ? Visibility.Visible : Visibility.Collapsed;
-            NetworkDevicesVisibility = _packetProviderSelection.Value == 2 ? Visibility.Visible : Visibility.Collapsed;
+            field = value;
+            PacketFilterVisibility = field.Value == 2 ? Visibility.Visible : Visibility.Collapsed;
+            NetworkDevicesVisibility = field.Value == 2 ? Visibility.Visible : Visibility.Collapsed;
             OnPropertyChanged();
         }
     }
 
     public ObservableCollection<SettingDataInformation> PacketProvider
     {
-        get => _packetProvider;
+        get;
         set
         {
-            _packetProvider = value;
+            field = value;
             OnPropertyChanged();
         }
-    }
+    } = new();
 
     public Visibility PacketFilterVisibility
     {
-        get => _packetFilterVisibility;
+        get;
         set
         {
-            _packetFilterVisibility = value;
+            field = value;
             OnPropertyChanged();
         }
-    }
+    } = Visibility.Collapsed;
 
     public Visibility NetworkDevicesVisibility
     {
-        get => _networkDevicesVisibility;
+        get;
         set
         {
-            _networkDevicesVisibility = value;
+            field = value;
             OnPropertyChanged();
         }
-    }
+    } = Visibility.Collapsed;
 
     public ObservableCollection<NetworkDeviceFilter> NetworkDevices
     {
-        get => _networkDevices;
+        get;
         set
         {
-            _networkDevices = value;
+            field = value;
             OnPropertyChanged();
         }
-    }
+    } = new();
 
     public SettingDataInformation ServerSelection
     {
-        get => _serverSelection;
+        get;
         set
         {
-            _serverSelection = value;
+            field = value;
             OnPropertyChanged();
         }
     }
 
     public ObservableCollection<SettingDataInformation> Server
     {
-        get => _server;
+        get;
         set
         {
-            _server = value;
+            field = value;
             OnPropertyChanged();
         }
-    }
+    } = new();
 
     public string PacketFilter
     {
-        get => _packetFilter;
+        get;
         set
         {
-            _packetFilter = value;
+            field = value;
             OnPropertyChanged();
         }
     }
 
     public short PlayerSelectionWithSameNameInDb
     {
-        get => _playerSelectionWithSameNameInDb;
+        get;
         set
         {
-            _playerSelectionWithSameNameInDb = value;
+            field = value;
             OnPropertyChanged();
         }
     }
 
     public string MainTrackingCharacterName
     {
-        get => _mainTrackingCharacterName;
+        get;
         set
         {
-            _mainTrackingCharacterName = value;
+            field = value;
             OnPropertyChanged();
         }
     }
 
     public string ProxyUrlWithPort
     {
-        get => _proxyUrlWithPort;
+        get;
         set
         {
-            _proxyUrlWithPort = value;
+            field = value;
             OnPropertyChanged();
         }
     }
 
     public string DebugConsoleFilter
     {
-        get => _debugConsoleFilter;
+        get;
         set
         {
-            _debugConsoleFilter = value;
+            field = value;
             OnPropertyChanged();
         }
     }
@@ -931,110 +896,110 @@ public class SettingsWindowViewModel : BaseViewModel
 
     public string AnotherAppToStartPath
     {
-        get => _anotherAppToStartPath;
+        get;
         set
         {
-            _anotherAppToStartPath = value;
+            field = value;
             OnPropertyChanged();
         }
     }
 
     public SettingsWindowTranslation Translation
     {
-        get => _translation;
+        get;
         set
         {
-            _translation = value;
+            field = value;
             OnPropertyChanged();
         }
     }
 
     public bool IsOpenItemWindowInNewWindowChecked
     {
-        get => _isOpenItemWindowInNewWindowChecked;
+        get;
         set
         {
-            _isOpenItemWindowInNewWindowChecked = value;
+            field = value;
             OnPropertyChanged();
         }
     }
 
     public bool IsOpenDebugConsoleWhenStartingTheToolChecked
     {
-        get => _isOpenDebugConsoleWhenStartingTheToolChecked;
+        get;
         set
         {
-            _isOpenDebugConsoleWhenStartingTheToolChecked = value;
+            field = value;
             OnPropertyChanged();
         }
     }
 
     public bool ShowInfoWindowOnStartChecked
     {
-        get => _showInfoWindowOnStartChecked;
+        get;
         set
         {
-            _showInfoWindowOnStartChecked = value;
+            field = value;
             OnPropertyChanged();
         }
     }
 
     public string AlbionDataProjectBaseUrlWest
     {
-        get => _albionDataProjectBaseUrlWest;
+        get;
         set
         {
-            _albionDataProjectBaseUrlWest = value;
+            field = value;
             OnPropertyChanged();
         }
     }
 
     public string AlbionDataProjectBaseUrlEast
     {
-        get => _albionDataProjectBaseUrlEast;
+        get;
         set
         {
-            _albionDataProjectBaseUrlEast = value;
+            field = value;
             OnPropertyChanged();
         }
     }
 
     public string AlbionDataProjectBaseUrlEurope
     {
-        get => _albionDataProjectBaseUrlEurope;
+        get;
         set
         {
-            _albionDataProjectBaseUrlEurope = value;
+            field = value;
             OnPropertyChanged();
         }
     }
 
     public bool IsSuggestPreReleaseUpdatesActive
     {
-        get => _isSuggestPreReleaseUpdatesActive;
+        get;
         set
         {
-            _isSuggestPreReleaseUpdatesActive = value;
+            field = value;
             OnPropertyChanged();
         }
     }
 
     public bool IsBackupNowButtonEnabled
     {
-        get => _isBackupNowButtonEnabled;
+        get;
         set
         {
-            _isBackupNowButtonEnabled = value;
+            field = value;
             OnPropertyChanged();
         }
-    }
+    } = true;
 
     public BitmapImage AnotherAppToStartExeIcon
     {
-        get => _anotherAppToStartExeIcon;
+        get;
         set
         {
-            _anotherAppToStartExeIcon = value;
+            field = value;
             OnPropertyChanged();
         }
     }

@@ -87,23 +87,52 @@
                         </Border>
 
                         <ScrollViewer Grid.Row="1" VerticalScrollBarVisibility="Auto">
-                            <ItemsControl Margin="16,14,16,16" ItemsSource="{Binding Sections}">
+                            <ItemsControl Margin="16,14,16,16" ItemsSource="{Binding ReleaseNoteGroups}">
                                 <ItemsControl.ItemTemplate>
-                                    <DataTemplate DataType="{x:Type viewModels:UpdateNoteSectionViewModel}">
-                                        <StackPanel Margin="0,0,0,16">
-                                            <TextBlock Text="{Binding Title}" FontSize="17" FontWeight="Bold" Foreground="{Binding TitleBrush}"
-                                                       Visibility="{Binding HasTitle, Converter={StaticResource BooleanToVisibilityConverter}}" />
-                                            <ItemsControl Margin="0,8,0,0" ItemsSource="{Binding Items}">
-                                                <ItemsControl.ItemTemplate>
-                                                    <DataTemplate>
-                                                        <TextBlock Margin="0,0,0,6" Foreground="{StaticResource SolidColorBrush.Text.2}" TextWrapping="Wrap">
-                                                            <Run Text="- " />
-                                                            <Run Text="{Binding Path=., Mode=OneWay}" />
-                                                        </TextBlock>
-                                                    </DataTemplate>
-                                                </ItemsControl.ItemTemplate>
-                                            </ItemsControl>
-                                        </StackPanel>
+                                    <DataTemplate DataType="{x:Type viewModels:UpdateReleaseNoteGroupViewModel}">
+                                        <Border Margin="0,0,0,14" Padding="14" Background="{StaticResource SolidColorBrush.Background.2}"
+                                                BorderBrush="{StaticResource SolidColorBrush.Background.4}" BorderThickness="1">
+                                            <StackPanel>
+                                                <Grid>
+                                                    <Grid.ColumnDefinitions>
+                                                        <ColumnDefinition Width="*" />
+                                                        <ColumnDefinition Width="Auto" />
+                                                    </Grid.ColumnDefinitions>
+
+                                                    <StackPanel Grid.Column="0">
+                                                        <TextBlock Text="{Binding Title}" FontSize="18" FontWeight="SemiBold"
+                                                                   Foreground="{StaticResource SolidColorBrush.Text.1}" TextWrapping="Wrap" />
+                                                        <TextBlock Margin="0,4,0,0" Text="{Binding VersionText}" FontSize="15"
+                                                                   Foreground="{StaticResource SolidColorBrush.Accent.Blue.2}" />
+                                                    </StackPanel>
+
+                                                    <TextBlock Grid.Column="1" Margin="20,0,0,0" VerticalAlignment="Top" Text="{Binding ReleaseDateText}"
+                                                               FontSize="14" Foreground="{StaticResource SolidColorBrush.Text.4}"
+                                                               Visibility="{Binding HasReleaseDateText, Converter={StaticResource BooleanToVisibilityConverter}}" />
+                                                </Grid>
+
+                                                <ItemsControl Margin="0,14,0,0" ItemsSource="{Binding Sections}">
+                                                    <ItemsControl.ItemTemplate>
+                                                        <DataTemplate DataType="{x:Type viewModels:UpdateNoteSectionViewModel}">
+                                                            <StackPanel Margin="0,0,0,16">
+                                                                <TextBlock Text="{Binding Title}" FontSize="17" FontWeight="Bold" Foreground="{Binding TitleBrush}"
+                                                                           Visibility="{Binding HasTitle, Converter={StaticResource BooleanToVisibilityConverter}}" />
+                                                                <ItemsControl Margin="0,8,0,0" ItemsSource="{Binding Items}">
+                                                                    <ItemsControl.ItemTemplate>
+                                                                        <DataTemplate>
+                                                                            <TextBlock Margin="0,0,0,6" Foreground="{StaticResource SolidColorBrush.Text.2}" TextWrapping="Wrap">
+                                                                                <Run Text="- " />
+                                                                                <Run Text="{Binding Path=., Mode=OneWay}" />
+                                                                            </TextBlock>
+                                                                        </DataTemplate>
+                                                                    </ItemsControl.ItemTemplate>
+                                                                </ItemsControl>
+                                                            </StackPanel>
+                                                        </DataTemplate>
+                                                    </ItemsControl.ItemTemplate>
+                                                </ItemsControl>
+                                            </StackPanel>
+                                        </Border>
                                     </DataTemplate>
                                 </ItemsControl.ItemTemplate>
                             </ItemsControl>

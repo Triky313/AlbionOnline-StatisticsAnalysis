@@ -57,9 +57,9 @@ public sealed class ClusterController
         CurrentCluster.SetClusterInfo(mapType, mapGuid, clusterIndex, instanceName, worldMapDataType, dungeonInformation, mainClusterIndex, mistsDungeonTier);
     }
 
-    public void SetJoinClusterInformation(string index, string mainClusterIndex, Guid? mapGuid, MapType mapType)
+    public void SetJoinClusterInformation(string index, string sourceClusterIndex, Guid? mapGuid, MapType mapType)
     {
-        CurrentCluster.SetJoinClusterInfo(index, mainClusterIndex, mapGuid, mapType);
+        CurrentCluster.SetJoinClusterInfo(index, sourceClusterIndex, mapGuid, mapType);
         CurrentCluster.Entered = DateTime.UtcNow;
         CurrentCluster.ClusterInfoFullyAvailable = true;
 
