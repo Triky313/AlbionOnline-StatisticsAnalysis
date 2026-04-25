@@ -28,6 +28,7 @@ public sealed class TradeItemRankingService
                     .ThenByDescending(x => x.SoldQuantity)
                     .ThenBy(x => x.ItemName, StringComparer.CurrentCultureIgnoreCase),
                 maxEntries,
+                entry => entry.NetProfit,
                 entry => entry.NetProfitDisplay),
             TopItemsByLoss = BuildRanking(
                 itemRankings
@@ -36,6 +37,7 @@ public sealed class TradeItemRankingService
                     .ThenByDescending(x => x.BoughtQuantity)
                     .ThenBy(x => x.ItemName, StringComparer.CurrentCultureIgnoreCase),
                 maxEntries,
+                entry => entry.NetProfit,
                 entry => entry.NetProfitDisplay),
             TopItemsByRoi = BuildRanking(
                 itemRankings
@@ -44,6 +46,7 @@ public sealed class TradeItemRankingService
                     .ThenByDescending(x => x.NetProfit)
                     .ThenBy(x => x.ItemName, StringComparer.CurrentCultureIgnoreCase),
                 maxEntries,
+                entry => entry.Roi,
                 entry => entry.RoiDisplay),
             TopSoldItemsByVolume = BuildRanking(
                 itemRankings
@@ -52,6 +55,7 @@ public sealed class TradeItemRankingService
                     .ThenByDescending(x => x.NetProfit)
                     .ThenBy(x => x.ItemName, StringComparer.CurrentCultureIgnoreCase),
                 maxEntries,
+                entry => entry.SoldQuantity,
                 entry => entry.SoldQuantityDisplay),
             TopBoughtItemsByVolume = BuildRanking(
                 itemRankings
@@ -60,6 +64,7 @@ public sealed class TradeItemRankingService
                     .ThenByDescending(x => x.NetProfit)
                     .ThenBy(x => x.ItemName, StringComparer.CurrentCultureIgnoreCase),
                 maxEntries,
+                entry => entry.BoughtQuantity,
                 entry => entry.BoughtQuantityDisplay)
         };
     }
@@ -112,7 +117,8 @@ public sealed class TradeItemRankingService
     private static IReadOnlyList<TradeItemRankingEntry> BuildRanking(
         IEnumerable<TradeItemRankingEntry> entries,
         int maxEntries,
-        Func<TradeItemRankingEntry, string> highlightValueSelector)
+        Func<TradeItemRankingEntry, double> highlightNumericValueSelector,
+        Func<TradeItemRankingEntry, string> highlightValueDisplaySelector)
     {
         return entries
             .Take(Math.Max(1, maxEntries))
@@ -128,7 +134,8 @@ public sealed class TradeItemRankingService
                 SoldQuantity = entry.SoldQuantity,
                 BoughtQuantity = entry.BoughtQuantity,
                 TradeCount = entry.TradeCount,
-                HighlightValueDisplay = highlightValueSelector(entry)
+                HighlightValue = highlightNumericValueSelector(entry),
+                HighlightValueDisplay = highlightValueDisplaySelector(entry)
             })
             .ToList();
     }

@@ -42,7 +42,18 @@
                         <TextBlock Text="{Binding TierLevelDisplay}" Margin="0,0,5,0" FontWeight="SemiBold" Foreground="{StaticResource SolidColorBrush.Text.2}" />
                         <TextBlock Text="{Binding ItemName}" Foreground="{StaticResource SolidColorBrush.Text.2}" FontWeight="SemiBold" TextTrimming="CharacterEllipsis" />
                     </StackPanel>
-                    <TextBlock Text="{Binding HighlightValueDisplay}" Margin="0,2,0,0" Foreground="{StaticResource SolidColorBrush.Accent.Blue.3}" />
+                    <TextBlock Text="{Binding HighlightValueDisplay}" Margin="0,2,0,0">
+                        <TextBlock.Style>
+                            <Style TargetType="TextBlock">
+                                <Setter Property="Foreground" Value="{StaticResource SolidColorBrush.Accent.Green.3}" />
+                                <Style.Triggers>
+                                    <DataTrigger Binding="{Binding IsHighlightValueNegative}" Value="True">
+                                        <Setter Property="Foreground" Value="{StaticResource SolidColorBrush.Accent.Red.3}" />
+                                    </DataTrigger>
+                                </Style.Triggers>
+                            </Style>
+                        </TextBlock.Style>
+                    </TextBlock>
                 </StackPanel>
             </Grid>
         </DataTemplate>
