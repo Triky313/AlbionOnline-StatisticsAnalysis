@@ -15,11 +15,13 @@ public sealed class TradeItemRankingEntry
     public double Roi { get; init; }
     public double InvestedCapital { get; init; }
     public long SoldQuantity { get; init; }
+    public long BoughtQuantity { get; init; }
     public int TradeCount { get; init; }
     public string RankDisplay => $"{Rank}.";
     public BitmapImage ItemIcon => Application.Current.Dispatcher.Invoke(() => ImageController.GetItemImage(ItemUniqueName, 48, 48));
     public string NetProfitDisplay => NetProfit.ToChartTooltipNumberString();
     public string RoiDisplay => $"{Roi.ToString("N2", CultureInfo.CurrentCulture)} %";
     public string SoldQuantityDisplay => SoldQuantity.ToString("N0", CultureInfo.CurrentCulture);
+    public string BoughtQuantityDisplay => BoughtQuantity.ToString("N0", CultureInfo.CurrentCulture);
     public string HighlightValueDisplay { get; init; } = string.Empty;
 }

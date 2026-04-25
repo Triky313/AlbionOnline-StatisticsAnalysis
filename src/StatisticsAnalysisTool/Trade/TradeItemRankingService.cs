@@ -23,9 +23,17 @@ public sealed class TradeItemRankingService
         {
             TopItemsByProfit = BuildRanking(
                 itemRankings
-                    .Where(x => x.NetProfit != 0d)
+                    .Where(x => x.NetProfit > 0d)
                     .OrderByDescending(x => x.NetProfit)
                     .ThenByDescending(x => x.SoldQuantity)
+                    .ThenBy(x => x.ItemName, StringComparer.CurrentCultureIgnoreCase),
+                maxEntries,
+                entry => entry.NetProfitDisplay),
+            TopItemsByLoss = BuildRanking(
+                itemRankings
+                    .Where(x => x.NetProfit < 0d)
+                    .OrderBy(x => x.NetProfit)
+                    .ThenByDescending(x => x.BoughtQuantity)
                     .ThenBy(x => x.ItemName, StringComparer.CurrentCultureIgnoreCase),
                 maxEntries,
                 entry => entry.NetProfitDisplay),
@@ -37,14 +45,22 @@ public sealed class TradeItemRankingService
                     .ThenBy(x => x.ItemName, StringComparer.CurrentCultureIgnoreCase),
                 maxEntries,
                 entry => entry.RoiDisplay),
-            TopItemsByVolume = BuildRanking(
+            TopSoldItemsByVolume = BuildRanking(
                 itemRankings
                     .Where(x => x.SoldQuantity > 0)
                     .OrderByDescending(x => x.SoldQuantity)
                     .ThenByDescending(x => x.NetProfit)
                     .ThenBy(x => x.ItemName, StringComparer.CurrentCultureIgnoreCase),
                 maxEntries,
-                entry => entry.SoldQuantityDisplay)
+                entry => entry.SoldQuantityDisplay),
+            TopBoughtItemsByVolume = BuildRanking(
+                itemRankings
+                    .Where(x => x.BoughtQuantity > 0)
+                    .OrderByDescending(x => x.BoughtQuantity)
+                    .ThenByDescending(x => x.NetProfit)
+                    .ThenBy(x => x.ItemName, StringComparer.CurrentCultureIgnoreCase),
+                maxEntries,
+                entry => entry.BoughtQuantityDisplay)
         };
     }
 
@@ -72,6 +88,7 @@ public sealed class TradeItemRankingService
         accumulator.Bought += tradeBreakdown.Bought;
         accumulator.Tax += tradeBreakdown.Tax;
         accumulator.SoldQuantity += tradeBreakdown.SoldQuantity;
+        accumulator.BoughtQuantity += tradeBreakdown.BoughtQuantity;
         accumulator.TradeCount++;
 
         if (string.IsNullOrWhiteSpace(accumulator.ItemName))
@@ -109,6 +126,7 @@ public sealed class TradeItemRankingService
                 Roi = entry.Roi,
                 InvestedCapital = entry.InvestedCapital,
                 SoldQuantity = entry.SoldQuantity,
+                BoughtQuantity = entry.BoughtQuantity,
                 TradeCount = entry.TradeCount,
                 HighlightValueDisplay = highlightValueSelector(entry)
             })
@@ -130,6 +148,7 @@ public sealed class TradeItemRankingService
             Roi = roi,
             InvestedCapital = investedCapital,
             SoldQuantity = accumulator.SoldQuantity,
+            BoughtQuantity = accumulator.BoughtQuantity,
             TradeCount = accumulator.TradeCount
         };
     }
@@ -171,6 +190,8 @@ public sealed class TradeItemRankingService
         public double Tax { get; set; }
 
         public long SoldQuantity { get; set; }
+
+        public long BoughtQuantity { get; set; }
 
         public int TradeCount { get; set; }
     }

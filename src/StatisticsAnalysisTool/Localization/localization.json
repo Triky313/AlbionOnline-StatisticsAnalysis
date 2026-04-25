@@ -4996,6 +4996,32 @@
       ]
     },
     {
+      "tuid": "TRADE_OVERVIEW",
+      "tuv": [
+        {
+          "lang": "de-DE",
+          "seg": "Handelsübersicht"
+        },
+        {
+          "lang": "en-US",
+          "seg": "Trade Overview"
+        }
+      ]
+    },
+    {
+      "tuid": "DIAGRAMS",
+      "tuv": [
+        {
+          "lang": "de-DE",
+          "seg": "Diagramme"
+        },
+        {
+          "lang": "en-US",
+          "seg": "Diagrams"
+        }
+      ]
+    },
+    {
       "tuid": "HISTORY",
       "tuv": [
         {
@@ -39183,6 +39209,19 @@
       ]
     },
     {
+      "tuid": "TOP_ITEMS_BY_LOSS",
+      "tuv": [
+        {
+          "lang": "de-DE",
+          "seg": "Top Items nach Verlust"
+        },
+        {
+          "lang": "en-US",
+          "seg": "Top Items by Loss"
+        }
+      ]
+    },
+    {
       "tuid": "TOP_ITEMS_BY_ROI",
       "tuv": [
         {
@@ -39196,15 +39235,28 @@
       ]
     },
     {
-      "tuid": "TOP_ITEMS_BY_VOLUME",
+      "tuid": "TOP_SOLD_ITEMS_BY_VOLUME",
       "tuv": [
         {
           "lang": "de-DE",
-          "seg": "Top Items nach Volumen"
+          "seg": "Top verkaufte Items nach Volumen"
         },
         {
           "lang": "en-US",
-          "seg": "Top Items by Volume"
+          "seg": "Top sold items by volume"
+        }
+      ]
+    },
+    {
+      "tuid": "TOP_BOUGHT_ITEMS_BY_VOLUME",
+      "tuv": [
+        {
+          "lang": "de-DE",
+          "seg": "Top gekaufte Items nach Volumen"
+        },
+        {
+          "lang": "en-US",
+          "seg": "Top bought items by volume"
         }
       ]
     },

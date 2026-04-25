@@ -25,7 +25,7 @@ public class TradeMonitoringBindings : BaseViewModel
 {
     private const int TargetVisibleProfitOverTimeLabels = 10;
     private const int TopItemRankingLimit = 10;
-    private readonly record struct TradeFilterContext(long FromTicks, long ToTicks, string SearchText, long? SearchNumber, int Tier, MarketLocation Location);
+    private readonly record struct TradeFilterContext(long FromTicks, long ToTicks, string SearchText, long? SearchNumber, int Tier, int Level, MarketLocation Location);
     private readonly record struct TradeFilterExecutionContext(List<Trade> TradesSnapshot, TradeFilterContext FilterContext);
     private readonly TradeProfitTimeSeriesService _tradeProfitTimeSeriesService = new();
     private readonly TradeItemRankingService _tradeItemRankingService = new();
@@ -34,6 +34,7 @@ public class TradeMonitoringBindings : BaseViewModel
     public TradeMonitoringBindings()
     {
         TierFilters = BuildTierFilters();
+        LevelFilters = BuildLevelFilters();
         LocationFilters = BuildLocationFilters();
         ProfitOverTimeAggregationFilters = BuildProfitOverTimeAggregationFilters();
         Trades.CollectionChanged += UpdateTotalTradesUi;
@@ -49,6 +50,7 @@ public class TradeMonitoringBindings : BaseViewModel
         DatePickerTradeTo = DateTime.UtcNow.AddDays(1);
         TradesSearchText = string.Empty;
         SelectedTierFilter = 0;
+        SelectedLevelFilter = -1;
         SelectedLocationFilter = MarketLocation.Unknown;
 
         EnsureTradeCollectionViewInitialized();
@@ -109,6 +111,21 @@ public class TradeMonitoringBindings : BaseViewModel
             OnPropertyChanged();
         }
     }
+
+    public IReadOnlyList<KeyValuePair<int, string>> LevelFilters
+    {
+        get;
+    }
+
+    public int SelectedLevelFilter
+    {
+        get;
+        set
+        {
+            field = value;
+            OnPropertyChanged();
+        }
+    } = -1;
 
     public IReadOnlyList<KeyValuePair<MarketLocation, string>> LocationFilters
     {
@@ -175,6 +192,16 @@ public class TradeMonitoringBindings : BaseViewModel
         }
     } = [];
 
+    public ObservableCollection<TradeItemRankingEntry> TopItemsByLoss
+    {
+        get;
+        set
+        {
+            field = value;
+            OnPropertyChanged();
+        }
+    } = [];
+
     public ObservableCollection<TradeItemRankingEntry> TopItemsByRoi
     {
         get;
@@ -185,7 +212,17 @@ public class TradeMonitoringBindings : BaseViewModel
         }
     } = [];
 
-    public ObservableCollection<TradeItemRankingEntry> TopItemsByVolume
+    public ObservableCollection<TradeItemRankingEntry> TopSoldItemsByVolume
+    {
+        get;
+        set
+        {
+            field = value;
+            OnPropertyChanged();
+        }
+    } = [];
+
+    public ObservableCollection<TradeItemRankingEntry> TopBoughtItemsByVolume
     {
         get;
         set
@@ -564,8 +601,10 @@ public class TradeMonitoringBindings : BaseViewModel
         await Application.Current.Dispatcher.InvokeAsync(() =>
         {
             TopItemsByProfit = [.. rankingResult.TopItemsByProfit];
+            TopItemsByLoss = [.. rankingResult.TopItemsByLoss];
             TopItemsByRoi = [.. rankingResult.TopItemsByRoi];
-            TopItemsByVolume = [.. rankingResult.TopItemsByVolume];
+            TopSoldItemsByVolume = [.. rankingResult.TopSoldItemsByVolume];
+            TopBoughtItemsByVolume = [.. rankingResult.TopBoughtItemsByVolume];
         });
     }
 
@@ -591,6 +630,7 @@ public class TradeMonitoringBindings : BaseViewModel
             searchText,
             hasNumericSearch ? searchNumber : null,
             SelectedTierFilter,
+            SelectedLevelFilter,
             SelectedLocationFilter);
     }
 
@@ -607,6 +647,11 @@ public class TradeMonitoringBindings : BaseViewModel
         }
 
         if (!MatchesTierFilter(trade, context.Tier))
+        {
+            return false;
+        }
+
+        if (!MatchesLevelFilter(trade, context.Level))
         {
             return false;
         }
@@ -656,6 +701,21 @@ public class TradeMonitoringBindings : BaseViewModel
         };
     }
 
+    private static IReadOnlyList<KeyValuePair<int, string>> BuildLevelFilters()
+    {
+        var levelText = LocalizationController.Translation("LEVEL");
+
+        return new List<KeyValuePair<int, string>>
+        {
+            new(-1, LocalizationController.Translation("ALL")),
+            new(0, $"{levelText} 0"),
+            new(1, $"{levelText} 1"),
+            new(2, $"{levelText} 2"),
+            new(3, $"{levelText} 3"),
+            new(4, $"{levelText} 4")
+        };
+    }
+
     private static IReadOnlyList<KeyValuePair<MarketLocation, string>> BuildLocationFilters()
     {
         var filters = new List<KeyValuePair<MarketLocation, string>>
@@ -689,6 +749,16 @@ public class TradeMonitoringBindings : BaseViewModel
 
         var itemTier = trade.Item?.Tier ?? 0;
         return itemTier == selectedTier;
+    }
+
+    private static bool MatchesLevelFilter(Trade trade, int selectedLevel)
+    {
+        if (selectedLevel < 0)
+        {
+            return true;
+        }
+
+        return trade.Item?.Level == selectedLevel;
     }
 
     private static bool MatchesLocationFilter(Trade trade, MarketLocation selectedLocation)

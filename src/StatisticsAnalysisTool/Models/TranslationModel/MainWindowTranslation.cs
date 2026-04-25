@@ -13,6 +13,7 @@ public class MainWindowTranslation
     public static string Auto => LocalizationController.Translation("AUTO");
     public static string Hour => LocalizationController.Translation("HOUR");
     public static string Tier => LocalizationController.Translation("TIER");
+    public static string Level => LocalizationController.Translation("LEVEL");
     public static string Location => LocalizationController.Translation("LOCATION");
     public static string Zone => LocalizationController.Translation("ZONE");
     public static string Name => LocalizationController.Translation("NAME");
@@ -91,12 +92,15 @@ public class MainWindowTranslation
     public static string TrackingIsPartiallyActive => LocalizationController.Translation("TRACKING_IS_PARTIALLY_ACTIVE");
     public static string TrackingIsNotActive => LocalizationController.Translation("TRACKING_IS_NOT_ACTIVE");
     public static string Dashboard => LocalizationController.Translation("DASHBOARD");
-    public static string Statistics => LocalizationController.Translation("STATISTICS");
+    public static string TradeOverview => LocalizationController.Translation("TRADE_OVERVIEW");
+    public static string Diagrams => LocalizationController.Translation("DIAGRAMS");
     public static string ProfitOverTime => LocalizationController.Translation("PROFIT_OVER_TIME");
     public static string TopItemRanking => LocalizationController.Translation("TOP_ITEM_RANKING");
     public static string TopItemsByProfit => LocalizationController.Translation("TOP_ITEMS_BY_PROFIT");
+    public static string TopItemsByLoss => LocalizationController.Translation("TOP_ITEMS_BY_LOSS");
     public static string TopItemsByRoi => LocalizationController.Translation("TOP_ITEMS_BY_ROI");
-    public static string TopItemsByVolume => LocalizationController.Translation("TOP_ITEMS_BY_VOLUME");
+    public static string TopSoldItemsByVolume => LocalizationController.Translation("TOP_SOLD_ITEMS_BY_VOLUME");
+    public static string TopBoughtItemsByVolume => LocalizationController.Translation("TOP_BOUGHT_ITEMS_BY_VOLUME");
     public static string NetProfit => LocalizationController.Translation("NET_PROFIT");
     public static string Roi => LocalizationController.Translation("ROI");
     public static string Quantity => LocalizationController.Translation("QUANTITY");

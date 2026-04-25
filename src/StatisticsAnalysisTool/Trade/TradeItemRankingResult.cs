@@ -10,13 +10,25 @@ public sealed class TradeItemRankingResult
         init;
     } = [];
 
+    public IReadOnlyList<TradeItemRankingEntry> TopItemsByLoss
+    {
+        get;
+        init;
+    } = [];
+
     public IReadOnlyList<TradeItemRankingEntry> TopItemsByRoi
     {
         get;
         init;
     } = [];
 
-    public IReadOnlyList<TradeItemRankingEntry> TopItemsByVolume
+    public IReadOnlyList<TradeItemRankingEntry> TopSoldItemsByVolume
+    {
+        get;
+        init;
+    } = [];
+
+    public IReadOnlyList<TradeItemRankingEntry> TopBoughtItemsByVolume
     {
         get;
         init;
