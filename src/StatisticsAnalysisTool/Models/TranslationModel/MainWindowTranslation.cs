@@ -15,6 +15,10 @@ public class MainWindowTranslation
     public static string Tier => LocalizationController.Translation("TIER");
     public static string Level => LocalizationController.Translation("LEVEL");
     public static string Location => LocalizationController.Translation("LOCATION");
+    public static string Display => LocalizationController.Translation("DISPLAY");
+    public static string Metric => LocalizationController.Translation("METRIC");
+    public static string Heatmap => LocalizationController.Translation("HEATMAP");
+    public static string HourlyBars => LocalizationController.Translation("HOURLY_BARS");
     public static string Zone => LocalizationController.Translation("ZONE");
     public static string Name => LocalizationController.Translation("NAME");
     public static string Type => LocalizationController.Translation("TYPE");
@@ -95,6 +99,7 @@ public class MainWindowTranslation
     public static string TradeOverview => LocalizationController.Translation("TRADE_OVERVIEW");
     public static string Diagrams => LocalizationController.Translation("DIAGRAMS");
     public static string ProfitOverTime => LocalizationController.Translation("PROFIT_OVER_TIME");
+    public static string ProfitByTimeOfDay => LocalizationController.Translation("PROFIT_BY_TIME_OF_DAY");
     public static string TopItemRanking => LocalizationController.Translation("TOP_ITEM_RANKING");
     public static string TopTransferByProfit => LocalizationController.Translation("TOP_TRANSFER_BY_PROFIT");
     public static string TopTransferByLoss => LocalizationController.Translation("TOP_TRANSFER_BY_LOSS");
@@ -103,6 +108,8 @@ public class MainWindowTranslation
     public static string TopBoughtItemsByVolume => LocalizationController.Translation("TOP_BOUGHT_ITEMS_BY_VOLUME");
     public static string NetProfit => LocalizationController.Translation("NET_PROFIT");
     public static string Roi => LocalizationController.Translation("ROI");
+    public static string AverageProfitPerTrade => LocalizationController.Translation("AVERAGE_PROFIT_PER_TRADE");
+    public static string TradeCount => LocalizationController.Translation("TRADE_COUNT");
     public static string Quantity => LocalizationController.Translation("QUANTITY");
     public static string ShowLootFromMobs => LocalizationController.Translation("SHOW_LOOT_FROM_MOBS");
     public static string ShowKills => LocalizationController.Translation("SHOW_KILLS");

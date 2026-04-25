@@ -24,12 +24,16 @@ namespace StatisticsAnalysisTool.Trade;
 public class TradeMonitoringBindings : BaseViewModel
 {
     private const int TargetVisibleProfitOverTimeLabels = 10;
+    private const int ProfitByTimeOfDayHourCount = 24;
     private const int TopItemRankingLimit = 10;
     private readonly record struct TradeFilterContext(long FromTicks, long ToTicks, string SearchText, long? SearchNumber, int Tier, int Level, MarketLocation Location);
     private readonly record struct TradeFilterExecutionContext(List<Trade> TradesSnapshot, TradeFilterContext FilterContext);
     private readonly TradeProfitTimeSeriesService _tradeProfitTimeSeriesService = new();
+    private readonly TradeProfitTimeOfDayService _tradeProfitTimeOfDayService = new();
     private readonly TradeItemRankingService _tradeItemRankingService = new();
     private IReadOnlyList<TradeProfitTimeSeriesPoint> _profitOverTimePoints = [];
+    private IReadOnlyList<TradeProfitTimeOfDayPoint> _profitByTimeOfDayHourlyPoints = [];
+    private TradeProfitTimeOfDayResult _profitByTimeOfDayResult = new();
 
     public TradeMonitoringBindings()
     {
@@ -37,11 +41,14 @@ public class TradeMonitoringBindings : BaseViewModel
         LevelFilters = BuildLevelFilters();
         LocationFilters = BuildLocationFilters();
         ProfitOverTimeAggregationFilters = BuildProfitOverTimeAggregationFilters();
+        ProfitByTimeOfDayChartModeFilters = BuildProfitByTimeOfDayChartModeFilters();
+        ProfitByTimeOfDayMetricFilters = BuildProfitByTimeOfDayMetricFilters();
         Trades.CollectionChanged += UpdateTotalTradesUi;
         EnsureTradeCollectionViewInitialized();
 
         DatePickerTradeFrom = SettingsController.CurrentSettings.TradeMonitoringDatePickerTradeFrom;
         DatePickerTradeTo = SettingsController.CurrentSettings.TradeMonitoringDatePickerTradeTo;
+        UpdateProfitByTimeOfDayModeVisibility();
     }
 
     public void ItemFilterReset()
@@ -147,6 +154,16 @@ public class TradeMonitoringBindings : BaseViewModel
         get;
     }
 
+    public IReadOnlyList<KeyValuePair<TradeTimeOfDayChartMode, string>> ProfitByTimeOfDayChartModeFilters
+    {
+        get;
+    }
+
+    public IReadOnlyList<KeyValuePair<TradeTimeOfDayMetric, string>> ProfitByTimeOfDayMetricFilters
+    {
+        get;
+    }
+
     public TradeProfitTimeAggregation SelectedProfitOverTimeAggregation
     {
         get;
@@ -172,7 +189,48 @@ public class TradeMonitoringBindings : BaseViewModel
         }
     } = TradeProfitTimeAggregation.Day;
 
+    public TradeTimeOfDayChartMode SelectedProfitByTimeOfDayChartMode
+    {
+        get;
+        set
+        {
+            if (field == value)
+            {
+                return;
+            }
+
+            field = value;
+            UpdateProfitByTimeOfDayModeVisibility();
+            OnPropertyChanged();
+        }
+    } = TradeTimeOfDayChartMode.Heatmap;
+
+    public TradeTimeOfDayMetric SelectedProfitByTimeOfDayMetric
+    {
+        get;
+        set
+        {
+            if (field == value)
+            {
+                return;
+            }
+
+            field = value;
+            OnPropertyChanged();
+        }
+    } = TradeTimeOfDayMetric.NetProfit;
+
     public ObservableCollection<ISeries> ProfitOverTimeSeries
+    {
+        get;
+        set
+        {
+            field = value;
+            OnPropertyChanged();
+        }
+    } = [];
+
+    public ObservableCollection<ISeries> ProfitByTimeOfDaySeries
     {
         get;
         set
@@ -242,6 +300,32 @@ public class TradeMonitoringBindings : BaseViewModel
         }
     } = [];
 
+    public Axis[] ProfitByTimeOfDayXAxes
+    {
+        get;
+        set
+        {
+            field = value;
+            OnPropertyChanged();
+        }
+    } = [];
+
+    public Axis[] ProfitByTimeOfDayYAxes
+    {
+        get;
+        set
+        {
+            field = value;
+            OnPropertyChanged();
+        }
+    } =
+    [
+        new Axis
+        {
+            LabelsRotation = 0
+        }
+    ];
+
     public Axis[] ProfitOverTimeYAxes
     {
         get;
@@ -268,6 +352,46 @@ public class TradeMonitoringBindings : BaseViewModel
             OnPropertyChanged();
         }
     } = LocalizationController.Translation("PROFIT_OVER_TIME");
+
+    public string ProfitByTimeOfDayChartTitle
+    {
+        get;
+        set
+        {
+            field = value;
+            OnPropertyChanged();
+        }
+    } = LocalizationController.Translation("PROFIT_BY_TIME_OF_DAY");
+
+    public IReadOnlyList<TradeProfitTimeOfDayPoint> ProfitByTimeOfDayHeatmapPoints
+    {
+        get;
+        set
+        {
+            field = value;
+            OnPropertyChanged();
+        }
+    } = [];
+
+    public Visibility ProfitByTimeOfDayHeatmapVisibility
+    {
+        get;
+        set
+        {
+            field = value;
+            OnPropertyChanged();
+        }
+    } = Visibility.Visible;
+
+    public Visibility ProfitByTimeOfDayBarChartVisibility
+    {
+        get;
+        set
+        {
+            field = value;
+            OnPropertyChanged();
+        }
+    } = Visibility.Collapsed;
 
     public DateTime DatePickerTradeFrom
     {
@@ -593,6 +717,17 @@ public class TradeMonitoringBindings : BaseViewModel
         });
     }
 
+    public async Task UpdateProfitByTimeOfDayChartAsync(IEnumerable<Trade> filteredTrades = null)
+    {
+        var tradeSnapshot = filteredTrades?.ToList() ?? await GetFilteredTradeSnapshotAsync();
+        var chartResult = await Task.Run(() => _tradeProfitTimeOfDayService.Build(tradeSnapshot));
+
+        await Application.Current.Dispatcher.InvokeAsync(() =>
+        {
+            ApplyProfitByTimeOfDayChart(chartResult);
+        });
+    }
+
     public async Task UpdateTopItemRankingsAsync(IEnumerable<Trade> filteredTrades = null)
     {
         var tradeSnapshot = filteredTrades?.ToList() ?? await GetFilteredTradeSnapshotAsync();
@@ -614,6 +749,7 @@ public class TradeMonitoringBindings : BaseViewModel
 
         await Task.WhenAll(
             UpdateProfitOverTimeChartAsync(tradeSnapshot),
+            UpdateProfitByTimeOfDayChartAsync(tradeSnapshot),
             UpdateTopItemRankingsAsync(tradeSnapshot));
     }
 
@@ -740,6 +876,25 @@ public class TradeMonitoringBindings : BaseViewModel
         };
     }
 
+    private static IReadOnlyList<KeyValuePair<TradeTimeOfDayChartMode, string>> BuildProfitByTimeOfDayChartModeFilters()
+    {
+        return new List<KeyValuePair<TradeTimeOfDayChartMode, string>>
+        {
+            new(TradeTimeOfDayChartMode.Heatmap, LocalizationController.Translation("HEATMAP")),
+            new(TradeTimeOfDayChartMode.HourlyBars, LocalizationController.Translation("HOURLY_BARS"))
+        };
+    }
+
+    private static IReadOnlyList<KeyValuePair<TradeTimeOfDayMetric, string>> BuildProfitByTimeOfDayMetricFilters()
+    {
+        return new List<KeyValuePair<TradeTimeOfDayMetric, string>>
+        {
+            new(TradeTimeOfDayMetric.NetProfit, LocalizationController.Translation("NET_PROFIT")),
+            new(TradeTimeOfDayMetric.AverageProfitPerTrade, LocalizationController.Translation("AVERAGE_PROFIT_PER_TRADE")),
+            new(TradeTimeOfDayMetric.TradeCount, LocalizationController.Translation("TRADE_COUNT"))
+        };
+    }
+
     private static bool MatchesTierFilter(Trade trade, int selectedTier)
     {
         if (selectedTier <= 0)
@@ -810,6 +965,143 @@ public class TradeMonitoringBindings : BaseViewModel
             CreateProfitOverTimeSeries(isPositiveSeries: true, "SolidColorBrush.Accent.Blue.3"),
             CreateProfitOverTimeSeries(isPositiveSeries: false, "SolidColorBrush.Accent.Red.4")
         ];
+    }
+
+    public void RefreshProfitByTimeOfDayPresentation()
+    {
+        ApplyProfitByTimeOfDayChart(_profitByTimeOfDayResult);
+    }
+
+    public TradeProfitTimeOfDayPoint GetProfitByTimeOfDayHeatmapPoint(DayOfWeek dayOfWeek, int hour)
+    {
+        return ProfitByTimeOfDayHeatmapPoints.FirstOrDefault(x => x.DayOfWeek == dayOfWeek && x.Hour == hour);
+    }
+
+    public string FormatProfitByTimeOfDayTooltip(TradeProfitTimeOfDayPoint point)
+    {
+        if (point == null)
+        {
+            return string.Empty;
+        }
+
+        var lineBreak = Environment.NewLine;
+        var periodLabel = $"{point.Hour:00}:00 - {((point.Hour + 1) % ProfitByTimeOfDayHourCount):00}:00";
+        var dayLabel = point.DayOfWeek.HasValue
+            ? $"{CultureInfo.CurrentCulture.DateTimeFormat.GetDayName(point.DayOfWeek.Value)}{lineBreak}"
+            : string.Empty;
+
+        return
+            $"{dayLabel}{periodLabel}{lineBreak}" +
+            $"{LocalizationController.Translation("NET_PROFIT")}: {point.NetProfit.ToChartTooltipNumberString()}{lineBreak}" +
+            $"{LocalizationController.Translation("AVERAGE_PROFIT_PER_TRADE")}: {point.AverageNetProfitPerTrade.ToChartTooltipNumberString()}{lineBreak}" +
+            $"{LocalizationController.Translation("TRADE_COUNT")}: {point.TradeCount.ToString("N0", CultureInfo.CurrentCulture)}{lineBreak}" +
+            $"{LocalizationController.Translation("SOLD")}: {point.Sold.ToChartTooltipNumberString()}{lineBreak}" +
+            $"{LocalizationController.Translation("BOUGHT")}: {point.Bought.ToChartTooltipNumberString()}{lineBreak}" +
+            $"{LocalizationController.Translation("TAX")}: {point.Tax.ToChartTooltipNumberString()}";
+    }
+
+    private void ApplyProfitByTimeOfDayChart(TradeProfitTimeOfDayResult chartResult)
+    {
+        _profitByTimeOfDayResult = chartResult ?? new TradeProfitTimeOfDayResult();
+        ProfitByTimeOfDayHeatmapPoints = _profitByTimeOfDayResult.HeatmapPoints ?? [];
+        _profitByTimeOfDayHourlyPoints = _profitByTimeOfDayResult.HourlyPoints ?? [];
+        ProfitByTimeOfDayChartTitle = LocalizationController.Translation("PROFIT_BY_TIME_OF_DAY");
+
+        ProfitByTimeOfDayXAxes =
+        [
+            new Axis
+            {
+                LabelsRotation = 0,
+                Labels = Enumerable.Range(0, ProfitByTimeOfDayHourCount)
+                    .Select(hour => hour.ToString("00", CultureInfo.CurrentCulture))
+                    .ToArray()
+            }
+        ];
+
+        ProfitByTimeOfDayYAxes =
+        [
+            new Axis
+            {
+                LabelsRotation = 0,
+                Labeler = BuildProfitByTimeOfDayAxisLabeler()
+            }
+        ];
+
+        UpdateProfitByTimeOfDayModeVisibility();
+        ProfitByTimeOfDaySeries = BuildProfitByTimeOfDaySeries();
+    }
+
+    private ObservableCollection<ISeries> BuildProfitByTimeOfDaySeries()
+    {
+        if (_profitByTimeOfDayHourlyPoints.Count == 0)
+        {
+            return new ObservableCollection<ISeries>();
+        }
+
+        var metricValues = _profitByTimeOfDayHourlyPoints
+            .Select(GetProfitByTimeOfDayMetricValue)
+            .ToList();
+
+        var hasNegativeValues = metricValues.Any(value => value < 0d);
+        if (!hasNegativeValues)
+        {
+            return new ObservableCollection<ISeries>
+            {
+                CreateProfitByTimeOfDayBarSeries(isPositiveSeries: true, "SolidColorBrush.Accent.Green.3")
+            };
+        }
+
+        return new ObservableCollection<ISeries>
+        {
+            CreateProfitByTimeOfDayBarSeries(isPositiveSeries: true, "SolidColorBrush.Accent.Green.3"),
+            CreateProfitByTimeOfDayBarSeries(isPositiveSeries: false, "SolidColorBrush.Accent.Red.3")
+        };
+    }
+
+    private ISeries CreateProfitByTimeOfDayBarSeries(bool isPositiveSeries, string resourceKey)
+    {
+        var values = new ObservableCollection<double>();
+
+        for (var index = 0; index < _profitByTimeOfDayHourlyPoints.Count; index++)
+        {
+            var value = GetProfitByTimeOfDayMetricValue(_profitByTimeOfDayHourlyPoints[index]);
+            values.Add(isPositiveSeries ? Math.Max(0d, value) : Math.Min(0d, value));
+        }
+
+        return new ColumnSeries<double>
+        {
+            Name = string.Empty,
+            Values = values,
+            Stroke = null,
+            Fill = CreatePaint(resourceKey),
+            MaxBarWidth = 18,
+            YToolTipLabelFormatter = chartPoint =>
+            {
+                var index = (int) Math.Round(chartPoint.Coordinate.SecondaryValue);
+                return index >= 0 && index < _profitByTimeOfDayHourlyPoints.Count
+                    ? FormatProfitByTimeOfDayTooltip(_profitByTimeOfDayHourlyPoints[index])
+                    : string.Empty;
+            }
+        };
+    }
+
+    private Func<double, string> BuildProfitByTimeOfDayAxisLabeler()
+    {
+        return SelectedProfitByTimeOfDayMetric == TradeTimeOfDayMetric.TradeCount
+            ? value => Math.Round(value).ToString("N0", CultureInfo.CurrentCulture)
+            : value => value.ToShortNumberString();
+    }
+
+    private double GetProfitByTimeOfDayMetricValue(TradeProfitTimeOfDayPoint point)
+    {
+        return point?.GetMetricValue(SelectedProfitByTimeOfDayMetric) ?? 0d;
+    }
+
+    private void UpdateProfitByTimeOfDayModeVisibility()
+    {
+        var isHeatmapVisible = SelectedProfitByTimeOfDayChartMode == TradeTimeOfDayChartMode.Heatmap;
+        ProfitByTimeOfDayHeatmapVisibility = isHeatmapVisible ? Visibility.Visible : Visibility.Collapsed;
+        ProfitByTimeOfDayBarChartVisibility = isHeatmapVisible ? Visibility.Collapsed : Visibility.Visible;
     }
 
     private ISeries CreateProfitOverTimeSeries(bool isPositiveSeries, string resourceKey)

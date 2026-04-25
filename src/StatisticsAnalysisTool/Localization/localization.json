@@ -39170,6 +39170,84 @@
       ]
     },
     {
+      "tuid": "PROFIT_BY_TIME_OF_DAY",
+      "tuv": [
+        {
+          "lang": "de-DE",
+          "seg": "Gewinn nach Tageszeit"
+        },
+        {
+          "lang": "en-US",
+          "seg": "Profit by Time of Day"
+        }
+      ]
+    },
+    {
+      "tuid": "DISPLAY",
+      "tuv": [
+        {
+          "lang": "de-DE",
+          "seg": "Darstellung"
+        },
+        {
+          "lang": "en-US",
+          "seg": "Display"
+        }
+      ]
+    },
+    {
+      "tuid": "METRIC",
+      "tuv": [
+        {
+          "lang": "de-DE",
+          "seg": "Metrik"
+        },
+        {
+          "lang": "en-US",
+          "seg": "Metric"
+        }
+      ]
+    },
+    {
+      "tuid": "HEATMAP",
+      "tuv": [
+        {
+          "lang": "de-DE",
+          "seg": "Heatmap"
+        },
+        {
+          "lang": "en-US",
+          "seg": "Heatmap"
+        }
+      ]
+    },
+    {
+      "tuid": "HOURLY_BARS",
+      "tuv": [
+        {
+          "lang": "de-DE",
+          "seg": "Stündliche Balken"
+        },
+        {
+          "lang": "en-US",
+          "seg": "Hourly Bars"
+        }
+      ]
+    },
+    {
+      "tuid": "AVERAGE_PROFIT_PER_TRADE",
+      "tuv": [
+        {
+          "lang": "de-DE",
+          "seg": "Durchschnittlicher Profit pro Trade"
+        },
+        {
+          "lang": "en-US",
+          "seg": "Average Profit per Trade"
+        }
+      ]
+    },
+    {
       "tuid": "TRADE_COUNT",
       "tuv": [
         {
