@@ -57,6 +57,42 @@
                 </StackPanel>
             </Grid>
         </DataTemplate>
+
+        <DataTemplate x:Key="TradeTransferRankingEntryTemplate" DataType="{x:Type trade:TradeItemRankingEntry}">
+            <Grid Margin="0,2,0,2">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="25" />
+                    <ColumnDefinition Width="38" />
+                    <ColumnDefinition Width="*" />
+                </Grid.ColumnDefinitions>
+
+                <TextBlock Text="{Binding RankDisplay}" Foreground="{StaticResource SolidColorBrush.Text.3}" VerticalAlignment="Top" />
+
+                <Border Grid.Column="1" Width="38" Height="38" VerticalAlignment="Center">
+                    <Image Source="{Binding ItemIcon}" Width="38" Height="38" Stretch="Uniform" />
+                </Border>
+
+                <StackPanel Grid.Column="2" Margin="5,0,0,0" Orientation="Vertical">
+                    <StackPanel Orientation="Horizontal">
+                        <TextBlock Text="{Binding TransferQuantityPrefixDisplay}" Margin="0,0,5,0" FontWeight="SemiBold" Foreground="{StaticResource SolidColorBrush.Text.2}" />
+                        <TextBlock Text="{Binding TierLevelDisplay}" Margin="0,0,5,0" FontWeight="SemiBold" Foreground="{StaticResource SolidColorBrush.Text.2}" />
+                        <TextBlock Text="{Binding ItemName}" Foreground="{StaticResource SolidColorBrush.Text.2}" FontWeight="SemiBold" TextTrimming="CharacterEllipsis" />
+                    </StackPanel>
+                    <TextBlock Text="{Binding HighlightValueDisplay}" Margin="0,2,0,0">
+                        <TextBlock.Style>
+                            <Style TargetType="TextBlock">
+                                <Setter Property="Foreground" Value="{StaticResource SolidColorBrush.Accent.Green.3}" />
+                                <Style.Triggers>
+                                    <DataTrigger Binding="{Binding IsHighlightValueNegative}" Value="True">
+                                        <Setter Property="Foreground" Value="{StaticResource SolidColorBrush.Accent.Red.3}" />
+                                    </DataTrigger>
+                                </Style.Triggers>
+                            </Style>
+                        </TextBlock.Style>
+                    </TextBlock>
+                </StackPanel>
+            </Grid>
+        </DataTemplate>
     </UserControl.Resources>
     <Grid>
         <Grid Margin="0,0,0,0" Height="96" VerticalAlignment="Top">
@@ -223,7 +259,7 @@
                                     <RowDefinition Height="*" />
                                 </Grid.RowDefinitions>
 
-                                <TextBlock Text="{Binding Translation.TopItemsByProfit, FallbackValue=TOP_ITEMS_BY_PROFIT}"
+                                <TextBlock Text="{Binding Translation.TopTransferByProfit, FallbackValue=TOP_TRANSFER_BY_PROFIT}"
                                            Foreground="{StaticResource SolidColorBrush.Text.1}"
                                            FontSize="16"
                                            FontWeight="SemiBold" />
@@ -238,7 +274,7 @@
                                          PreviewMouseWheel="TopItemRankingList_OnPreviewMouseWheel"
                                          ScrollViewer.HorizontalScrollBarVisibility="Disabled"
                                          ScrollViewer.VerticalScrollBarVisibility="Disabled"
-                                         ItemTemplate="{StaticResource TradeItemRankingEntryTemplate}" />
+                                         ItemTemplate="{StaticResource TradeTransferRankingEntryTemplate}" />
                             </Grid>
                         </Border>
                         <Separator Background="{StaticResource SolidColorBrush.Accent.Blue.5}" Height="4" Margin="0" VerticalAlignment="Top"/>
@@ -249,14 +285,14 @@
                                     <RowDefinition Height="*" />
                                 </Grid.RowDefinitions>
 
-                                <TextBlock Text="{Binding Translation.TopItemsByLoss, FallbackValue=TOP_ITEMS_BY_LOSS}"
+                                <TextBlock Text="{Binding Translation.TopTransferByLoss, FallbackValue=TOP_TRANSFER_BY_LOSS}"
                                            Foreground="{StaticResource SolidColorBrush.Text.1}" FontSize="16" FontWeight="SemiBold" />
 
                                 <ListBox Grid.Row="1" Background="Transparent" BorderThickness="0" Focusable="False" IsTabStop="False" Margin="0,12,0,0"
                                          ItemsSource="{Binding TradeMonitoringBindings.TopItemsByLoss}"
                                          PreviewMouseWheel="TopItemRankingList_OnPreviewMouseWheel"
                                          ScrollViewer.HorizontalScrollBarVisibility="Disabled" ScrollViewer.VerticalScrollBarVisibility="Disabled"
-                                         ItemTemplate="{StaticResource TradeItemRankingEntryTemplate}" />
+                                         ItemTemplate="{StaticResource TradeTransferRankingEntryTemplate}" />
                             </Grid>
                         </Border>
                         <Separator Background="{StaticResource SolidColorBrush.Accent.Blue.5}" Height="4" Margin="0" VerticalAlignment="Top"/>

@@ -96,8 +96,8 @@ public class MainWindowTranslation
     public static string Diagrams => LocalizationController.Translation("DIAGRAMS");
     public static string ProfitOverTime => LocalizationController.Translation("PROFIT_OVER_TIME");
     public static string TopItemRanking => LocalizationController.Translation("TOP_ITEM_RANKING");
-    public static string TopItemsByProfit => LocalizationController.Translation("TOP_ITEMS_BY_PROFIT");
-    public static string TopItemsByLoss => LocalizationController.Translation("TOP_ITEMS_BY_LOSS");
+    public static string TopTransferByProfit => LocalizationController.Translation("TOP_TRANSFER_BY_PROFIT");
+    public static string TopTransferByLoss => LocalizationController.Translation("TOP_TRANSFER_BY_LOSS");
     public static string TopItemsByRoi => LocalizationController.Translation("TOP_ITEMS_BY_ROI");
     public static string TopSoldItemsByVolume => LocalizationController.Translation("TOP_SOLD_ITEMS_BY_VOLUME");
     public static string TopBoughtItemsByVolume => LocalizationController.Translation("TOP_BOUGHT_ITEMS_BY_VOLUME");

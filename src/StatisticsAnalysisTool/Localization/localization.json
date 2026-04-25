@@ -39196,28 +39196,28 @@
       ]
     },
     {
-      "tuid": "TOP_ITEMS_BY_PROFIT",
+      "tuid": "TOP_TRANSFER_BY_PROFIT",
       "tuv": [
         {
           "lang": "de-DE",
-          "seg": "Top Items nach Profit"
+          "seg": "Top Transfers nach Profit"
         },
         {
           "lang": "en-US",
-          "seg": "Top Items by Profit"
+          "seg": "Top Transfer by Profit"
         }
       ]
     },
     {
-      "tuid": "TOP_ITEMS_BY_LOSS",
+      "tuid": "TOP_TRANSFER_BY_LOSS",
       "tuv": [
         {
           "lang": "de-DE",
-          "seg": "Top Items nach Verlust"
+          "seg": "Top Transfers nach Verlust"
         },
         {
           "lang": "en-US",
-          "seg": "Top Items by Loss"
+          "seg": "Top Transfer by Loss"
         }
       ]
     },

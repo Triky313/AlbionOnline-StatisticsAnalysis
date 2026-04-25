@@ -1,6 +1,8 @@
 using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
+using StatisticsAnalysisTool.Localization;
 
 namespace StatisticsAnalysisTool.Trade;
 
@@ -10,11 +12,25 @@ public sealed class TradeItemRankingService
 
     public TradeItemRankingResult BuildRankings(IEnumerable<Trade> trades, int maxEntries)
     {
-        var itemRankings = (trades ?? [])
-            .Where(x => x != null)
-            .Aggregate(
-                new Dictionary<string, TradeItemRankingAccumulator>(StringComparer.OrdinalIgnoreCase),
-                AggregateTrade)
+        var tradeEntries = new List<TradeItemRankingEntry>();
+        var aggregatedItemRankings = new Dictionary<string, TradeItemRankingAccumulator>(StringComparer.OrdinalIgnoreCase);
+
+        foreach (var trade in trades ?? [])
+        {
+            if (trade == null)
+            {
+                continue;
+            }
+
+            AggregateTrade(aggregatedItemRankings, trade);
+
+            if (TryCreateSingleTradeEntry(trade, out var tradeEntry))
+            {
+                tradeEntries.Add(tradeEntry);
+            }
+        }
+
+        var itemRankings = aggregatedItemRankings
             .Values
             .Select(CreateEntryBase)
             .ToList();
@@ -22,7 +38,7 @@ public sealed class TradeItemRankingService
         return new TradeItemRankingResult
         {
             TopItemsByProfit = BuildRanking(
-                itemRankings
+                tradeEntries
                     .Where(x => x.NetProfit > 0d)
                     .OrderByDescending(x => x.NetProfit)
                     .ThenByDescending(x => x.SoldQuantity)
@@ -31,7 +47,7 @@ public sealed class TradeItemRankingService
                 entry => entry.NetProfit,
                 entry => entry.NetProfitDisplay),
             TopItemsByLoss = BuildRanking(
-                itemRankings
+                tradeEntries
                     .Where(x => x.NetProfit < 0d)
                     .OrderBy(x => x.NetProfit)
                     .ThenByDescending(x => x.BoughtQuantity)
@@ -41,13 +57,13 @@ public sealed class TradeItemRankingService
                 entry => entry.NetProfitDisplay),
             TopItemsByRoi = BuildRanking(
                 itemRankings
-                    .Where(x => x.InvestedCapital > 0d)
+                    .Where(x => x.BoughtQuantity > 0 && x.InvestedCapital > 0d)
                     .OrderByDescending(x => x.Roi)
                     .ThenByDescending(x => x.NetProfit)
                     .ThenBy(x => x.ItemName, StringComparer.CurrentCultureIgnoreCase),
                 maxEntries,
                 entry => entry.Roi,
-                entry => entry.RoiDisplay),
+                CreateRoiHighlightDisplay),
             TopSoldItemsByVolume = BuildRanking(
                 itemRankings
                     .Where(x => x.SoldQuantity > 0)
@@ -114,6 +130,37 @@ public sealed class TradeItemRankingService
         return rankings;
     }
 
+    private bool TryCreateSingleTradeEntry(Trade trade, out TradeItemRankingEntry entry)
+    {
+        var itemKey = ResolveItemKey(trade);
+        if (string.IsNullOrWhiteSpace(itemKey))
+        {
+            entry = new TradeItemRankingEntry();
+            return false;
+        }
+
+        var tradeItemMetadata = ResolveItemMetadata(trade, itemKey);
+        var tradeBreakdown = _tradeAnalyticsValueService.GetBreakdown(trade);
+        var netProfit = tradeBreakdown.Sold - tradeBreakdown.Bought - tradeBreakdown.Tax;
+        var investedCapital = tradeBreakdown.Bought + tradeBreakdown.Tax;
+        var roi = investedCapital > 0d ? netProfit / investedCapital * 100d : 0d;
+
+        entry = new TradeItemRankingEntry
+        {
+            ItemUniqueName = tradeItemMetadata.ItemUniqueName,
+            ItemName = tradeItemMetadata.ItemName,
+            TierLevelDisplay = tradeItemMetadata.TierLevelDisplay,
+            NetProfit = netProfit,
+            Roi = roi,
+            InvestedCapital = investedCapital,
+            SoldQuantity = tradeBreakdown.SoldQuantity,
+            BoughtQuantity = tradeBreakdown.BoughtQuantity,
+            TradeCount = 1
+        };
+
+        return true;
+    }
+
     private static IReadOnlyList<TradeItemRankingEntry> BuildRanking(
         IEnumerable<TradeItemRankingEntry> entries,
         int maxEntries,
@@ -158,6 +205,13 @@ public sealed class TradeItemRankingService
             BoughtQuantity = accumulator.BoughtQuantity,
             TradeCount = accumulator.TradeCount
         };
+    }
+
+    private static string CreateRoiHighlightDisplay(TradeItemRankingEntry entry)
+    {
+        var soldText = LocalizationController.Translation("SOLD").ToLower(CultureInfo.CurrentCulture);
+        var boughtText = LocalizationController.Translation("BOUGHT").ToLower(CultureInfo.CurrentCulture);
+        return $"{entry.RoiDisplay} ({entry.SoldQuantityDisplay} {soldText} | {entry.BoughtQuantityDisplay} {boughtText})";
     }
 
     private static string ResolveItemKey(Trade trade)

@@ -24,6 +24,8 @@ public sealed class TradeItemRankingEntry
     public string RoiDisplay => $"{Roi.ToString("N2", CultureInfo.CurrentCulture)} %";
     public string SoldQuantityDisplay => SoldQuantity.ToString("N0", CultureInfo.CurrentCulture);
     public string BoughtQuantityDisplay => BoughtQuantity.ToString("N0", CultureInfo.CurrentCulture);
+    public long TransferQuantity => SoldQuantity > 0 ? SoldQuantity : BoughtQuantity;
+    public string TransferQuantityPrefixDisplay => $"{TransferQuantity.ToString("N0", CultureInfo.CurrentCulture)}x";
     public string HighlightValueDisplay { get; init; } = string.Empty;
     public bool IsHighlightValueNegative => HighlightValue < 0d;
 }
