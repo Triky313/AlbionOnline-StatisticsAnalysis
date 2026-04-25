@@ -8,16 +8,16 @@
 		<language>en</language>
 
 		<item>
-			<title>Statistics Analysis Tool v9.0.2</title>
+			<title>Statistics Analysis Tool v9.0.3</title>
 			<description>
 				<![CDATA[
-				<a href="https://github.com/Triky313/AlbionOnline-StatisticsAnalysis/releases/tag/v9.0.2"> View full patch notes on GitHub </a>
+				<a href="https://github.com/Triky313/AlbionOnline-StatisticsAnalysis/releases/tag/v9.0.3"> View full patch notes on GitHub </a>
 				]]>
 			</description>
 			<pubDate>Sun, 19 Apr 2026 00:00:00 +0000</pubDate>
-			<enclosure url="https://github.com/Triky313/AlbionOnline-StatisticsAnalysis/releases/download/v9.0.2/StatisticsAnalysis-AlbionOnline-v9.0.2-windows-x64.exe"
-					   sparkle:version="9.0.2"
-					   sparkle:shortVersionString="9.0.2"
+			<enclosure url="https://github.com/Triky313/AlbionOnline-StatisticsAnalysis/releases/download/v9.0.3/StatisticsAnalysis-AlbionOnline-v9.0.3-windows-x64.exe"
+					   sparkle:version="9.0.3"
+					   sparkle:shortVersionString="9.0.3"
 					   sparkle:os="windows-x64"
 					   length="0"
 					   type="application/octet-stream" />
