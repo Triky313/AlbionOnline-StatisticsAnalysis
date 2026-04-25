@@ -6,7 +6,7 @@ public sealed class TradeAnalyticsValueService
 {
     public TradeAnalyticsValueBreakdown GetBreakdown(Trade trade)
     {
-        if (trade == null)
+        if (trade == null || !IsRelevantForAnalytics(trade))
         {
             return TradeAnalyticsValueBreakdown.Empty;
         }
@@ -57,6 +57,16 @@ public sealed class TradeAnalyticsValueService
                 trade.InstantBuySellContent.Quantity),
             _ => TradeAnalyticsValueBreakdown.Empty
         };
+    }
+
+    private static bool IsRelevantForAnalytics(Trade trade)
+    {
+        if (trade.Type != TradeType.Mail)
+        {
+            return true;
+        }
+
+        return trade.MailType is not MailType.MarketplaceBuyOrderExpired and not MailType.MarketplaceSellOrderExpired;
     }
 
     private static int GetMailQuantity(Trade trade)
