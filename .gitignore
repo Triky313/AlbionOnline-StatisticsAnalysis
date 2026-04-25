@@ -335,3 +335,5 @@ ASALocalRun/
 .codex/
 
 .dotnet/
+
+.build-verify/

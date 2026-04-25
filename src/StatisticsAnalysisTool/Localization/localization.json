@@ -4983,6 +4983,45 @@
       ]
     },
     {
+      "tuid": "STATISTICS",
+      "tuv": [
+        {
+          "lang": "de-DE",
+          "seg": "Statistiken"
+        },
+        {
+          "lang": "en-US",
+          "seg": "Statistics"
+        }
+      ]
+    },
+    {
+      "tuid": "TRADE_OVERVIEW",
+      "tuv": [
+        {
+          "lang": "de-DE",
+          "seg": "Handelsübersicht"
+        },
+        {
+          "lang": "en-US",
+          "seg": "Trade Overview"
+        }
+      ]
+    },
+    {
+      "tuid": "DIAGRAMS",
+      "tuv": [
+        {
+          "lang": "de-DE",
+          "seg": "Diagramme"
+        },
+        {
+          "lang": "en-US",
+          "seg": "Diagrams"
+        }
+      ]
+    },
+    {
       "tuid": "HISTORY",
       "tuv": [
         {
@@ -39075,6 +39114,240 @@
         {
           "lang": "fr-FR",
           "seg": "Valeur totale en argent des ressources"
+        }
+      ]
+    },
+    {
+      "tuid": "AGGREGATION",
+      "tuv": [
+        {
+          "lang": "de-DE",
+          "seg": "Aggregation"
+        },
+        {
+          "lang": "en-US",
+          "seg": "Aggregation"
+        }
+      ]
+    },
+    {
+      "tuid": "AUTO",
+      "tuv": [
+        {
+          "lang": "de-DE",
+          "seg": "Auto"
+        },
+        {
+          "lang": "en-US",
+          "seg": "Auto"
+        }
+      ]
+    },
+    {
+      "tuid": "HOUR",
+      "tuv": [
+        {
+          "lang": "de-DE",
+          "seg": "Stunde"
+        },
+        {
+          "lang": "en-US",
+          "seg": "Hour"
+        }
+      ]
+    },
+    {
+      "tuid": "PROFIT_OVER_TIME",
+      "tuv": [
+        {
+          "lang": "de-DE",
+          "seg": "Gewinn über Zeit"
+        },
+        {
+          "lang": "en-US",
+          "seg": "Profit over Time"
+        }
+      ]
+    },
+    {
+      "tuid": "PROFIT_BY_TIME_OF_DAY",
+      "tuv": [
+        {
+          "lang": "de-DE",
+          "seg": "Gewinn nach Tageszeit"
+        },
+        {
+          "lang": "en-US",
+          "seg": "Profit by Time of Day"
+        }
+      ]
+    },
+    {
+      "tuid": "DISPLAY",
+      "tuv": [
+        {
+          "lang": "de-DE",
+          "seg": "Darstellung"
+        },
+        {
+          "lang": "en-US",
+          "seg": "Display"
+        }
+      ]
+    },
+    {
+      "tuid": "METRIC",
+      "tuv": [
+        {
+          "lang": "de-DE",
+          "seg": "Metrik"
+        },
+        {
+          "lang": "en-US",
+          "seg": "Metric"
+        }
+      ]
+    },
+    {
+      "tuid": "HEATMAP",
+      "tuv": [
+        {
+          "lang": "de-DE",
+          "seg": "Heatmap"
+        },
+        {
+          "lang": "en-US",
+          "seg": "Heatmap"
+        }
+      ]
+    },
+    {
+      "tuid": "HOURLY_BARS",
+      "tuv": [
+        {
+          "lang": "de-DE",
+          "seg": "Stündliche Balken"
+        },
+        {
+          "lang": "en-US",
+          "seg": "Hourly Bars"
+        }
+      ]
+    },
+    {
+      "tuid": "AVERAGE_PROFIT_PER_TRADE",
+      "tuv": [
+        {
+          "lang": "de-DE",
+          "seg": "Durchschnittlicher Profit pro Trade"
+        },
+        {
+          "lang": "en-US",
+          "seg": "Average Profit per Trade"
+        }
+      ]
+    },
+    {
+      "tuid": "TRADE_COUNT",
+      "tuv": [
+        {
+          "lang": "de-DE",
+          "seg": "Anzahl Trades"
+        },
+        {
+          "lang": "en-US",
+          "seg": "Trade count"
+        }
+      ]
+    },
+    {
+      "tuid": "TOP_ITEM_RANKING",
+      "tuv": [
+        {
+          "lang": "de-DE",
+          "seg": "Top Item Ranking"
+        },
+        {
+          "lang": "en-US",
+          "seg": "Top Item Ranking"
+        }
+      ]
+    },
+    {
+      "tuid": "TOP_TRANSFER_BY_PROFIT",
+      "tuv": [
+        {
+          "lang": "de-DE",
+          "seg": "Top Transfers nach Profit"
+        },
+        {
+          "lang": "en-US",
+          "seg": "Top Transfer by Profit"
+        }
+      ]
+    },
+    {
+      "tuid": "TOP_TRANSFER_BY_LOSS",
+      "tuv": [
+        {
+          "lang": "de-DE",
+          "seg": "Top Transfers nach Verlust"
+        },
+        {
+          "lang": "en-US",
+          "seg": "Top Transfer by Loss"
+        }
+      ]
+    },
+    {
+      "tuid": "TOP_ITEMS_BY_ROI",
+      "tuv": [
+        {
+          "lang": "de-DE",
+          "seg": "Top Items nach ROI"
+        },
+        {
+          "lang": "en-US",
+          "seg": "Top Items by ROI"
+        }
+      ]
+    },
+    {
+      "tuid": "TOP_SOLD_ITEMS_BY_VOLUME",
+      "tuv": [
+        {
+          "lang": "de-DE",
+          "seg": "Top verkaufte Items nach Volumen"
+        },
+        {
+          "lang": "en-US",
+          "seg": "Top sold items by volume"
+        }
+      ]
+    },
+    {
+      "tuid": "TOP_BOUGHT_ITEMS_BY_VOLUME",
+      "tuv": [
+        {
+          "lang": "de-DE",
+          "seg": "Top gekaufte Items nach Volumen"
+        },
+        {
+          "lang": "en-US",
+          "seg": "Top bought items by volume"
+        }
+      ]
+    },
+    {
+      "tuid": "ROI",
+      "tuv": [
+        {
+          "lang": "de-DE",
+          "seg": "ROI"
+        },
+        {
+          "lang": "en-US",
+          "seg": "ROI"
         }
       ]
     }

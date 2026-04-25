@@ -18,7 +18,6 @@ using System.Text.Json.Nodes;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
-using System.Windows.Data;
 using System.Windows.Threading;
 using StatisticsAnalysisTool.Diagnostics;
 
@@ -57,6 +56,11 @@ public class TradeController
         {
             _mainWindowViewModel?.TradeMonitoringBindings?.Trades.Add(trade);
         });
+
+        if (_mainWindowViewModel?.TradeMonitoringBindings != null)
+        {
+            await _mainWindowViewModel.TradeMonitoringBindings.UpdateFilteredTradesAsync();
+        }
 
         await ServiceLocator.Resolve<SatNotificationManager>().ShowTradeAsync(trade);
     }
@@ -119,7 +123,7 @@ public class TradeController
         var tradeBindings = _mainWindowViewModel.TradeMonitoringBindings;
         tradeBindings.Trades.Clear();
         tradeBindings.Trades.AddRange(updatedList);
-        tradeBindings.TradeCollectionView = CollectionViewSource.GetDefaultView(tradeBindings.Trades) as ListCollectionView;
+        tradeBindings.EnsureTradeCollectionViewInitialized();
         await tradeBindings.UpdateFilteredTradesAsync();
 
         tradeBindings.TradeStatsObject.SetTradeStats(tradeBindings.TradeCollectionView?.Cast<Trade>().ToList());
@@ -148,6 +152,11 @@ public class TradeController
             _mainWindowViewModel?.TradeMonitoringBindings?.UpdateTotalTradesUi(null, null);
             _mainWindowViewModel?.TradeMonitoringBindings?.UpdateCurrentTradesUi(null, null);
         });
+
+        if (_mainWindowViewModel?.TradeMonitoringBindings != null)
+        {
+            await _mainWindowViewModel.TradeMonitoringBindings.UpdateFilteredTradesAsync();
+        }
     }
 
     #region Merchant buy and crafting costs 
@@ -389,6 +398,11 @@ public class TradeController
             _mainWindowViewModel?.TradeMonitoringBindings?.TradeCollectionView?.Refresh();
             _mainWindowViewModel?.TradeMonitoringBindings?.TradeStatsObject?.SetTradeStats(enumerable);
         }, DispatcherPriority.Background, CancellationToken.None);
+
+        if (_mainWindowViewModel?.TradeMonitoringBindings != null)
+        {
+            await _mainWindowViewModel.TradeMonitoringBindings.UpdateFilteredTradesAsync();
+        }
     }
 
     #endregion
