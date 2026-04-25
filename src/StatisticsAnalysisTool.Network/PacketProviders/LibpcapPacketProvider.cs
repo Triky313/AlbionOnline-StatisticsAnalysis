@@ -7,7 +7,6 @@ using BinaryFormat.Udp;
 using Libpcap;
 using Serilog;
 using StatisticsAnalysisTool.Abstractions;
-using StatisticsAnalysisTool.Common.UserSettings;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -16,15 +15,17 @@ using System.Threading;
 
 namespace StatisticsAnalysisTool.Network.PacketProviders;
 
-public class LibpcapPacketProvider : PacketProvider
+public sealed class LibpcapPacketProvider : PacketProvider
 {
     private readonly IPhotonReceiver _photonReceiver;
+    private readonly NetworkCaptureOptions _options;
+    private readonly Lock _lockObj = new();
+    private readonly Dictionary<Pcap, int> _pcapScores = new();
+
     private PcapDispatcher? _dispatcher;
     private CancellationTokenSource? _cts;
     private Thread? _thread;
     private volatile Pcap? _activePcap;
-    private readonly Lock _lockObj = new();
-    private readonly Dictionary<Pcap, int> _pcapScores = new();
     private DateTime _lastValidPacketUtc = DateTime.MinValue;
 
     private const int ScoreToLock = 1;
@@ -35,9 +36,10 @@ public class LibpcapPacketProvider : PacketProvider
 
     public override bool IsRunning => _thread is { IsAlive: true };
 
-    public LibpcapPacketProvider(IPhotonReceiver photonReceiver)
+    public LibpcapPacketProvider(IPhotonReceiver photonReceiver, NetworkCaptureOptions options)
     {
         _photonReceiver = photonReceiver ?? throw new ArgumentNullException(nameof(photonReceiver));
+        _options = options ?? throw new ArgumentNullException(nameof(options));
         _dispatcher = new PcapDispatcher(Dispatch);
     }
 
@@ -49,6 +51,8 @@ public class LibpcapPacketProvider : PacketProvider
         }
 
         _activePcap = null;
+        _pcapScores.Clear();
+        UpdateActiveAdapterName(null);
 
         _dispatcher?.Dispose();
         _dispatcher = new PcapDispatcher(Dispatch);
@@ -56,35 +60,35 @@ public class LibpcapPacketProvider : PacketProvider
         _cts?.Dispose();
         _cts = new CancellationTokenSource();
 
-        var dispatcher = _dispatcher;
+        PcapDispatcher? dispatcher = _dispatcher;
         if (dispatcher is null)
         {
-            Log.Warning("Npcap: dispatcher unavailable, capture cannot start");
-            return;
+            throw new NetworkCaptureException("Npcap dispatcher is unavailable.");
         }
 
         var devices = Pcap.ListDevices();
         if (devices.Count == 0)
         {
-            Log.Warning("Npcap: no devices found");
-            return;
+            throw new NetworkCaptureException("No network adapters were found for Npcap capture.");
         }
 
-        var filter = GetEffectiveFilter();
+        string? filter = GetEffectiveFilter();
         bool hasFilter = !string.IsNullOrWhiteSpace(filter);
 
-        int configuredIndex = SettingsController.CurrentSettings.NetworkDevice;
-        var configuredDevices = SettingsController.CurrentSettings.NetworkDevices ?? new List<NetworkDeviceSettingsObject>();
+        int configuredIndex = _options.LegacyNetworkDeviceIndex;
+        IReadOnlyList<ConfiguredNetworkDevice> configuredDevices = _options.NetworkDevices;
         bool hasConfiguredDevices = configuredDevices.Count > 0;
-        var selectedDeviceIdentifiers = configuredDevices
-            .Where(x => x?.IsSelected == true && !string.IsNullOrWhiteSpace(x.Identifier))
+        HashSet<string> selectedDeviceIdentifiers = configuredDevices
+            .Where(x => x.IsSelected && !string.IsNullOrWhiteSpace(x.Identifier))
             .Select(x => x.Identifier)
             .ToHashSet(StringComparer.OrdinalIgnoreCase);
 
         int opened = 0;
+        Exception? lastOpenException = null;
+
         for (int i = 0; i < devices.Count; i++)
         {
-            var device = devices[i];
+            PcapDevice device = devices[i];
 
             if (!hasConfiguredDevices && configuredIndex >= 0 && i != configuredIndex)
             {
@@ -96,6 +100,7 @@ public class LibpcapPacketProvider : PacketProvider
                 Log.Information("Npcap[ID:{Index}]: skip loopback {Name}:{Desc}", i, device.Name, device.Description);
                 continue;
             }
+
             if (!device.Flags.HasFlag(PcapDeviceFlags.Up))
             {
                 Log.Information("Npcap[ID:{Index}]: skip down {Name}:{Desc}", i, device.Name, device.Description);
@@ -111,7 +116,11 @@ public class LibpcapPacketProvider : PacketProvider
             try
             {
                 Log.Information("Npcap[ID:{Index}]: opening {Name}:{Desc} (Type={Type}, Flags={Flags})",
-                    i, device.Name, device.Description, device.Type, device.Flags);
+                    i,
+                    device.Name,
+                    device.Description,
+                    device.Type,
+                    device.Flags);
 
                 dispatcher.OpenDevice(device, pcap =>
                 {
@@ -137,83 +146,85 @@ public class LibpcapPacketProvider : PacketProvider
             }
             catch (Exception ex)
             {
+                lastOpenException = ex;
                 Log.Error(ex, "Npcap[ID:{Index}]: open failed for {Name}:{Desc}", i, device.Name, device.Description);
             }
         }
 
         if (opened == 0)
         {
-            Log.Warning("Npcap: no device opened (check NetworkDevice index or admin rights)");
-            return;
+            throw lastOpenException is null
+                ? new NetworkCaptureException("Npcap could not open a network adapter. Check administrator rights, firewall/VPN, and the selected adapter.")
+                : new NetworkCaptureException("Npcap could not open a network adapter. Check administrator rights, firewall/VPN, and the selected adapter.", lastOpenException);
         }
 
-        _thread = new Thread(Worker) { IsBackground = true };
+        _thread = new Thread(Worker)
+        {
+            IsBackground = true
+        };
         _thread.Start();
 
         Log.Information("Npcap: capture started on {Opened} device(s), filter: {Filter}", opened, hasFilter ? filter : "<none>");
     }
 
-
     private void Dispatch(Pcap pcap, ref Packet packet)
     {
-        var current = _activePcap;
+        Pcap? current = _activePcap;
         if (current is not null && !ReferenceEquals(current, pcap))
         {
             return;
         }
 
-        // L2 (Ethernet)
-        var ethReader = new BinaryFormatReader(packet.Data);
-        var eth = new L2EthernetFrameShape();
+        BinaryFormatReader ethReader = new(packet.Data);
+        L2EthernetFrameShape eth = new();
         if (!ethReader.TryReadL2EthernetFrame(ref eth))
         {
             return;
         }
 
-        ushort etherType = (ushort) ((packet.Data[12] << 8) | packet.Data[13]);
-
+        ushort etherType = (ushort)((packet.Data[12] << 8) | packet.Data[13]);
         ReadOnlySpan<byte> l3 = eth.Payload;
 
-        if (etherType == 0x0800) // IPv4
+        if (etherType == 0x0800)
         {
             if (IsFragmentedIPv4(l3))
             {
                 return;
             }
 
-            var ipReader = new BinaryFormatReader(l3);
-            var ip4 = new IPv4PacketShape();
+            BinaryFormatReader ipReader = new(l3);
+            IPv4PacketShape ip4 = new();
             if (!ipReader.TryReadIPv4Packet(ref ip4))
+            {
                 return;
+            }
 
-            switch ((ProtocolType) ip4.Protocol)
+            switch ((ProtocolType)ip4.Protocol)
             {
                 case ProtocolType.Udp:
                     HandleUdp(ip4.Payload, pcap);
                     return;
-
                 case ProtocolType.Tcp:
                     return;
-
                 default:
                     return;
             }
         }
 
-        if (etherType == 0x86DD) // IPv6
+        if (etherType == 0x86DD)
         {
             if (!TryReadIPv6(l3, out byte nextHeader, out ReadOnlySpan<byte> ip6Payload))
+            {
                 return;
+            }
 
-            switch ((ProtocolType) nextHeader)
+            switch ((ProtocolType)nextHeader)
             {
                 case ProtocolType.Udp:
                     HandleUdp(ip6Payload, pcap);
                     return;
-
                 case ProtocolType.Tcp:
                     return;
-
                 default:
                     return;
             }
@@ -227,7 +238,7 @@ public class LibpcapPacketProvider : PacketProvider
             return true;
         }
 
-        ushort flagsAndFragmentOffset = (ushort) ((bytes[6] << 8) | bytes[7]);
+        ushort flagsAndFragmentOffset = (ushort)((bytes[6] << 8) | bytes[7]);
         bool hasMoreFragments = (flagsAndFragmentOffset & 0x2000) != 0;
         int fragmentOffset = (flagsAndFragmentOffset & 0x1FFF) * 8;
 
@@ -239,24 +250,20 @@ public class LibpcapPacketProvider : PacketProvider
         nextHeader = 0;
         payload = default;
 
-        // IPv6-Header = 40 Bytes
         if (bytes.Length < 40)
         {
             return false;
         }
 
-        // Byte 6 = Next Header
         nextHeader = bytes[6];
-
-        // Payload from Byte 40
         payload = bytes[40..];
         return true;
     }
 
     private void HandleUdp(ReadOnlySpan<byte> l4Payload, Pcap pcap)
     {
-        var udpReader = new BinaryFormatReader(l4Payload);
-        var udp = new UdpPacketShape();
+        BinaryFormatReader udpReader = new(l4Payload);
+        UdpPacketShape udp = new();
         if (!udpReader.TryReadUdpPacket(ref udp))
         {
             return;
@@ -271,7 +278,7 @@ public class LibpcapPacketProvider : PacketProvider
 
         SelectAndMaybeLockAdapter(pcap);
 
-        var current = _activePcap;
+        Pcap? current = _activePcap;
         if (current is not null && !ReferenceEquals(current, pcap))
         {
             return;
@@ -300,6 +307,7 @@ public class LibpcapPacketProvider : PacketProvider
                     Log.Information("Npcap: releasing locked adapter due to inactivity");
                     _activePcap = null;
                     _pcapScores.Clear();
+                    UpdateActiveAdapterName(null);
                 }
                 else
                 {
@@ -307,8 +315,7 @@ public class LibpcapPacketProvider : PacketProvider
                 }
             }
 
-            var score = _pcapScores.GetValueOrDefault(pcap, 0);
-
+            int score = _pcapScores.GetValueOrDefault(pcap, 0);
             score++;
             _pcapScores[pcap] = score;
 
@@ -316,6 +323,7 @@ public class LibpcapPacketProvider : PacketProvider
             {
                 _activePcap = pcap;
                 _lastValidPacketUtc = DateTime.UtcNow;
+                UpdateActiveAdapterName(pcap.Name);
                 Log.Information("Npcap: locked to adapter({device}) after {Score} valid packets", pcap.Name, score);
             }
         }
@@ -329,7 +337,6 @@ public class LibpcapPacketProvider : PacketProvider
         }
 
         byte b0 = payload[0];
-
         return b0 is 0xF1 or 0xF2 or 0xFE;
     }
 
@@ -337,13 +344,13 @@ public class LibpcapPacketProvider : PacketProvider
     {
         try
         {
-            var dispatcher = _dispatcher;
+            PcapDispatcher? dispatcher = _dispatcher;
             if (dispatcher is null)
             {
                 return;
             }
 
-            var consecutiveDispatchErrors = 0;
+            int consecutiveDispatchErrors = 0;
 
             while (_cts is { IsCancellationRequested: false })
             {
@@ -410,6 +417,10 @@ public class LibpcapPacketProvider : PacketProvider
         finally
         {
             _activePcap = null;
+            _pcapScores.Clear();
+            _lastValidPacketUtc = DateTime.MinValue;
+            UpdateActiveAdapterName(null);
+
             _cts?.Dispose();
             _cts = null;
             _thread = null;
@@ -425,12 +436,12 @@ public class LibpcapPacketProvider : PacketProvider
 
     public static IReadOnlyList<NetworkDeviceInformation> GetAvailableNetworkDevices()
     {
-        var result = new List<NetworkDeviceInformation>();
+        List<NetworkDeviceInformation> result = [];
         var devices = Pcap.ListDevices();
 
         for (int i = 0; i < devices.Count; i++)
         {
-            var device = devices[i];
+            PcapDevice device = devices[i];
 
             if (device.Flags.HasFlag(PcapDeviceFlags.Loopback))
             {
@@ -442,7 +453,7 @@ public class LibpcapPacketProvider : PacketProvider
                 continue;
             }
 
-            var name = string.IsNullOrWhiteSpace(device.Description)
+            string name = string.IsNullOrWhiteSpace(device.Description)
                 ? device.Name
                 : $"{device.Description} ({device.Name})";
 
@@ -457,9 +468,8 @@ public class LibpcapPacketProvider : PacketProvider
         return result;
     }
 
-    private static string? GetEffectiveFilter()
+    private string? GetEffectiveFilter()
     {
-        var user = SettingsController.CurrentSettings.PacketFilter;
-        return string.IsNullOrWhiteSpace(user) ? null : user;
+        return string.IsNullOrWhiteSpace(_options.PacketFilter) ? null : _options.PacketFilter;
     }
 }

@@ -8,6 +8,8 @@ using StatisticsAnalysisTool.Network.Handler;
 using StatisticsAnalysisTool.Network.Manager;
 using StatisticsAnalysisTool.Network.PacketProviders;
 using StatisticsAnalysisTool.Notification;
+using System.Collections.Generic;
+using System.Linq;
 using System.Reflection;
 
 namespace StatisticsAnalysisTool.Network;
@@ -19,17 +21,9 @@ public class NetworkManager
     public NetworkManager(TrackingController trackingController)
     {
         IPhotonReceiver photonReceiver = Build(trackingController);
-
-        if (SettingsController.CurrentSettings.PacketProvider == PacketProviderKind.Npcap)
-        {
-            _packetProvider = new LibpcapPacketProvider(photonReceiver);
-            Log.Information("Used packet provider: {PacketProviderKind}", PacketProviderKind.Npcap);
-        }
-        else
-        {
-            _packetProvider = new SocketsPacketProvider(photonReceiver);
-            Log.Information("Used packet provider: {PacketProviderKind}", PacketProviderKind.Sockets);
-        }
+        NetworkCaptureOptions captureOptions = CreateCaptureOptions();
+        _packetProvider = PacketProviderFactory.Create(photonReceiver, captureOptions);
+        Log.Information("Used packet provider: {PacketProviderKind}", captureOptions.PacketProvider);
     }
 
     private static IPhotonReceiver Build(TrackingController trackingController)
@@ -123,7 +117,10 @@ public class NetworkManager
 
         _packetProvider.Start();
 
-        _ = ServiceLocator.Resolve<SatNotificationManager>().ShowTrackingStatusAsync(LocalizationController.Translation("START_TRACKING"), LocalizationController.Translation("GAME_TRACKING_IS_STARTED"));
+        if (ServiceLocator.IsServiceInDictionary<SatNotificationManager>())
+        {
+            _ = ServiceLocator.Resolve<SatNotificationManager>().ShowTrackingStatusAsync(LocalizationController.Translation("START_TRACKING"), LocalizationController.Translation("GAME_TRACKING_IS_STARTED"));
+        }
     }
 
     public void Stop()
@@ -132,11 +129,34 @@ public class NetworkManager
 
         _packetProvider.Stop();
 
-        _ = ServiceLocator.Resolve<SatNotificationManager>().ShowTrackingStatusAsync(LocalizationController.Translation("STOP_TRACKING"), LocalizationController.Translation("GAME_TRACKING_IS_STOPPED"));
+        if (ServiceLocator.IsServiceInDictionary<SatNotificationManager>())
+        {
+            _ = ServiceLocator.Resolve<SatNotificationManager>().ShowTrackingStatusAsync(LocalizationController.Translation("STOP_TRACKING"), LocalizationController.Translation("GAME_TRACKING_IS_STOPPED"));
+        }
     }
 
     public bool IsAnySocketActive()
     {
         return _packetProvider.IsRunning;
+    }
+
+    private static NetworkCaptureOptions CreateCaptureOptions()
+    {
+        List<NetworkDeviceSettingsObject> configuredDevices = SettingsController.CurrentSettings.NetworkDevices ?? new List<NetworkDeviceSettingsObject>();
+
+        return new NetworkCaptureOptions
+        {
+            PacketProvider = SettingsController.CurrentSettings.PacketProvider,
+            PacketFilter = SettingsController.CurrentSettings.PacketFilter ?? string.Empty,
+            LegacyNetworkDeviceIndex = SettingsController.CurrentSettings.NetworkDevice,
+            NetworkDevices = configuredDevices
+                .Select(x => new ConfiguredNetworkDevice
+                {
+                    Identifier = x.Identifier ?? string.Empty,
+                    IsSelected = x.IsSelected,
+                    Name = x.Name ?? string.Empty
+                })
+                .ToList()
+        };
     }
 }

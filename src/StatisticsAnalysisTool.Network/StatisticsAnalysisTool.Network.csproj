@@ -5,6 +5,14 @@
     <Nullable>warnings</Nullable>
   </PropertyGroup>
   <ItemGroup>
+    <ProjectReference Include="..\StatisticsAnalysisTool.Diagnostics\StatisticsAnalysisTool.Diagnostics.csproj" />
     <ProjectReference Include="..\StatisticsAnalysisTool.PhotonPackageParser\StatisticsAnalysisTool.PhotonPackageParser.csproj" />
+  </ItemGroup>
+  <ItemGroup>
+    <PackageReference Include="BinaryFormat.EthernetFrame" Version="0.1.5" />
+    <PackageReference Include="BinaryFormat.IPv4" Version="0.1.5" />
+    <PackageReference Include="BinaryFormat.Udp" Version="0.1.5" />
+    <PackageReference Include="Libpcap" Version="0.1.5" />
+    <PackageReference Include="Serilog" Version="4.3.1" />
   </ItemGroup>
 </Project>

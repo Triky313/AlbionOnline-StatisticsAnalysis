@@ -192,6 +192,11 @@ public class TrackingController : ITrackingController
             return LocalizationController.Translation("ERR_CAPTURE_START_INVALID_OPERATION");
         }
 
+        if (ex is NetworkCaptureException networkCaptureException && !string.IsNullOrWhiteSpace(networkCaptureException.Message))
+        {
+            return networkCaptureException.Message;
+        }
+
         return LocalizationController.Translation("PACKET_HANDLER_ERROR_MESSAGE");
     }
 

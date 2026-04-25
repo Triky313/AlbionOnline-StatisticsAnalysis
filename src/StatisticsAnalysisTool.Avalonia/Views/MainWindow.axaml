@@ -1,0 +1,190 @@
+<Window xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:vm="using:StatisticsAnalysisTool.Avalonia.ViewModels"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        mc:Ignorable="d"
+        d:DesignWidth="1180"
+        d:DesignHeight="760"
+        x:Class="StatisticsAnalysisTool.Avalonia.Views.MainWindow"
+        x:DataType="vm:MainWindowViewModel"
+        Icon="/Assets/sat-icon.ico"
+        Title="StatisticsAnalysisTool.Avalonia"
+        MinWidth="980"
+        MinHeight="640"
+        Width="1180"
+        Height="760"
+        Background="Transparent"
+        BorderThickness="1,1,1,1"
+        CanResize="True"
+        TransparencyLevelHint="AcrylicBlur"
+        ExtendClientAreaToDecorationsHint="True">
+
+    <Design.DataContext>
+        <vm:MainWindowViewModel/>
+    </Design.DataContext>
+
+    <Grid RowDefinitions="Auto,*" ColumnDefinitions="360,*" Margin="16">
+        <Border Grid.Row="0"
+                Grid.Column="0"
+                Grid.ColumnSpan="2"
+                Padding="16"
+                CornerRadius="8"
+                Background="#1D1F23"
+                BorderBrush="#31343A"
+                BorderThickness="1">
+            <Grid ColumnDefinitions="*,Auto"
+                  RowDefinitions="Auto,Auto,Auto,Auto,Auto"
+                  >
+                <StackPanel Grid.Row="0" Grid.Column="0" Spacing="4">
+                    <TextBlock Text="Albion Online Tracking"
+                               FontSize="24"
+                               FontWeight="SemiBold"/>
+                    <TextBlock Text="Minimal network capture control using the existing packet provider and parser pipeline."
+                               Opacity="0.78"
+                               TextWrapping="Wrap"/>
+                </StackPanel>
+
+                <StackPanel Grid.Row="0"
+                            Grid.RowSpan="4"
+                            Grid.Column="1"
+                            Orientation="Horizontal"
+                            Spacing="8"
+                            Margin="16,0,0,0"
+                            VerticalAlignment="Top">
+                    <Button Content="Start Tracking"
+                            Command="{Binding StartTrackingCommand}"
+                            IsEnabled="{Binding CanStartTracking}"/>
+                    <Button Content="Stop Tracking"
+                            Command="{Binding StopTrackingCommand}"
+                            IsEnabled="{Binding CanStopTracking}"/>
+                    <Button Content="Restart Tracking"
+                            Command="{Binding RestartTrackingCommand}"
+                            IsEnabled="{Binding CanRestartTracking}"/>
+                </StackPanel>
+
+                <Grid Grid.Row="1" Grid.Column="0" ColumnDefinitions="Auto,*" Margin="0,6,0,0">
+                    <TextBlock Text="Status:" FontWeight="SemiBold"/>
+                    <TextBlock Grid.Column="1" Text="{Binding TrackingStatus}" Margin="8,0,0,0" />
+                </Grid>
+
+                <Grid Grid.Row="2" Grid.Column="0" ColumnDefinitions="Auto,*" Margin="0,2,0,0">
+                    <TextBlock Text="Configured Adapter:" FontWeight="SemiBold"/>
+                    <TextBlock Grid.Column="1"
+                               Margin="8,0,0,0"
+                               Text="{Binding SelectedAdapter}"
+                               TextWrapping="Wrap"/>
+                </Grid>
+
+                <Grid Grid.Row="3" Grid.Column="0" ColumnDefinitions="Auto,*" Margin="0,2,0,0">
+                    <TextBlock Text="Active Adapter:" FontWeight="SemiBold"/>
+                    <TextBlock Grid.Column="1"
+                               Margin="8,0,0,0"
+                               Text="{Binding ActiveAdapter}"
+                               TextWrapping="Wrap"/>
+                </Grid>
+
+                <TextBlock Grid.Row="4"
+                           Grid.Column="0"
+                           Grid.ColumnSpan="2"
+                           Foreground="#E57373"
+                           Text="{Binding LastError}"
+                           TextWrapping="Wrap"/>
+            </Grid>
+        </Border>
+
+        <StackPanel Grid.Row="1" Grid.Column="0" Spacing="12" Margin="0,16,16,0">
+            <Border Padding="16"
+                    CornerRadius="8"
+                    Background="#17191D"
+                    BorderBrush="#31343A"
+                    BorderThickness="1">
+                <StackPanel Spacing="12">
+                    <TextBlock Text="Capture Configuration"
+                               FontSize="18"
+                               FontWeight="SemiBold"/>
+
+                    <StackPanel Spacing="6">
+                        <TextBlock Text="Packet Provider" FontWeight="SemiBold"/>
+                        <ComboBox ItemsSource="{Binding PacketProviders}"
+                                  SelectedItem="{Binding SelectedPacketProvider}"/>
+                    </StackPanel>
+
+                    <StackPanel Spacing="6">
+                        <TextBlock Text="Available Network Adapters" FontWeight="SemiBold"/>
+                        <TextBlock Text="Npcap selection is only relevant for the Npcap provider."
+                                   Opacity="0.72"
+                                   TextWrapping="Wrap"/>
+                        <Border BorderBrush="#31343A"
+                                BorderThickness="1"
+                                CornerRadius="6"
+                                Padding="8">
+                            <ScrollViewer Height="220"
+                                          IsEnabled="{Binding IsNpcapProviderSelected}">
+                                <ItemsControl ItemsSource="{Binding AvailableAdapters}">
+                                    <ItemsControl.ItemTemplate>
+                                        <DataTemplate x:DataType="vm:NetworkAdapterItemViewModel">
+                                            <CheckBox Content="{Binding Name}"
+                                                      IsChecked="{Binding IsSelected}"
+                                                      Margin="0,4,0,4"/>
+                                        </DataTemplate>
+                                    </ItemsControl.ItemTemplate>
+                                </ItemsControl>
+                            </ScrollViewer>
+                        </Border>
+                    </StackPanel>
+                </StackPanel>
+            </Border>
+
+            <Border Padding="16"
+                    CornerRadius="8"
+                    Background="#17191D"
+                    BorderBrush="#31343A"
+                    BorderThickness="1">
+                <StackPanel Spacing="10">
+                    <TextBlock Text="Packet Activity"
+                               FontSize="18"
+                               FontWeight="SemiBold"/>
+                    <TextBlock Text="{Binding PacketSummary}" TextWrapping="Wrap"/>
+                    <Grid ColumnDefinitions="Auto,*">
+                        <TextBlock Text="Last Packet:" FontWeight="SemiBold"/>
+                        <TextBlock Grid.Column="1"
+                                   Margin="8,0,0,0"
+                                   Text="{Binding LastPacket}"
+                                   TextWrapping="Wrap"/>
+                    </Grid>
+                </StackPanel>
+            </Border>
+        </StackPanel>
+
+        <Border Grid.Row="1"
+                Grid.Column="1"
+                Margin="0,16,0,0"
+                Padding="16"
+                CornerRadius="8"
+                Background="#17191D"
+                BorderBrush="#31343A"
+                BorderThickness="1">
+            <Grid RowDefinitions="Auto,*">
+                <TextBlock Grid.Row="0"
+                           Text="Tracking Log"
+                           FontSize="18"
+                           FontWeight="SemiBold"/>
+                <ListBox Grid.Row="1"
+                         ItemsSource="{Binding LogLines}"
+                         Margin="0,12,0,0"
+                         BorderThickness="0"
+                         Background="Transparent">
+                    <ListBox.ItemTemplate>
+                        <DataTemplate>
+                            <TextBlock Text="{Binding .}"
+                                       FontFamily="Consolas"
+                                       TextWrapping="Wrap"
+                                       Margin="0,4,0,4"/>
+                        </DataTemplate>
+                    </ListBox.ItemTemplate>
+                </ListBox>
+            </Grid>
+        </Border>
+    </Grid>
+</Window>

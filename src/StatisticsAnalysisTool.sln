@@ -23,6 +23,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "StatisticsAnalysisTool.Abst
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "StatisticsAnalysisTool.Diagnostics", "StatisticsAnalysisTool.Diagnostics\StatisticsAnalysisTool.Diagnostics.csproj", "{70EF2238-49F0-4AAF-8517-B0CE24EB0DF7}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "StatisticsAnalysisTool.Avalonia", "StatisticsAnalysisTool.Avalonia\StatisticsAnalysisTool.Avalonia.csproj", "{69F6D569-E247-4738-A081-A2C29629D577}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -129,6 +131,18 @@ Global
 		{70EF2238-49F0-4AAF-8517-B0CE24EB0DF7}.Release|x64.Build.0 = Release|Any CPU
 		{70EF2238-49F0-4AAF-8517-B0CE24EB0DF7}.Release|x86.ActiveCfg = Release|Any CPU
 		{70EF2238-49F0-4AAF-8517-B0CE24EB0DF7}.Release|x86.Build.0 = Release|Any CPU
+		{69F6D569-E247-4738-A081-A2C29629D577}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{69F6D569-E247-4738-A081-A2C29629D577}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{69F6D569-E247-4738-A081-A2C29629D577}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{69F6D569-E247-4738-A081-A2C29629D577}.Debug|x64.Build.0 = Debug|Any CPU
+		{69F6D569-E247-4738-A081-A2C29629D577}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{69F6D569-E247-4738-A081-A2C29629D577}.Debug|x86.Build.0 = Debug|Any CPU
+		{69F6D569-E247-4738-A081-A2C29629D577}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{69F6D569-E247-4738-A081-A2C29629D577}.Release|Any CPU.Build.0 = Release|Any CPU
+		{69F6D569-E247-4738-A081-A2C29629D577}.Release|x64.ActiveCfg = Release|Any CPU
+		{69F6D569-E247-4738-A081-A2C29629D577}.Release|x64.Build.0 = Release|Any CPU
+		{69F6D569-E247-4738-A081-A2C29629D577}.Release|x86.ActiveCfg = Release|Any CPU
+		{69F6D569-E247-4738-A081-A2C29629D577}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
