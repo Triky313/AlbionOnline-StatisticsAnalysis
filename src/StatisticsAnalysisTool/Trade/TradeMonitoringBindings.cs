@@ -383,6 +383,7 @@ public class TradeMonitoringBindings : BaseViewModel
     {
         CancellationTokenSource previousCancellationTokenSource = null;
         CancellationTokenSource currentCancellationTokenSource = null;
+        CancellationToken currentCancellationToken = CancellationToken.None;
         TradeFilterExecutionContext? executionContext = null;
 
         await RunOnUiThreadAsync(() =>
@@ -395,6 +396,7 @@ public class TradeMonitoringBindings : BaseViewModel
             FilteringIsRunningIconVisibility = Visibility.Visible;
             previousCancellationTokenSource = _cancellationTokenSource;
             currentCancellationTokenSource = new CancellationTokenSource();
+            currentCancellationToken = currentCancellationTokenSource.Token;
             _cancellationTokenSource = currentCancellationTokenSource;
             executionContext = new TradeFilterExecutionContext(Trades.ToList(), BuildFilterContext());
         });
@@ -406,8 +408,14 @@ public class TradeMonitoringBindings : BaseViewModel
 
         if (previousCancellationTokenSource is not null)
         {
-            await previousCancellationTokenSource.CancelAsync();
-            previousCancellationTokenSource.Dispose();
+            try
+            {
+                await previousCancellationTokenSource.CancelAsync();
+            }
+            catch (ObjectDisposedException)
+            {
+                // Ignored
+            }
         }
 
         try
@@ -417,9 +425,9 @@ public class TradeMonitoringBindings : BaseViewModel
                 : await Task.Run(() => ParallelTradeFilterProcess(
                     executionContext.Value.TradesSnapshot,
                     executionContext.Value.FilterContext,
-                    currentCancellationTokenSource.Token), CancellationToken.None);
+                    currentCancellationToken), CancellationToken.None);
 
-            if (currentCancellationTokenSource.IsCancellationRequested)
+            if (currentCancellationToken.IsCancellationRequested)
             {
                 return;
             }
@@ -439,14 +447,14 @@ public class TradeMonitoringBindings : BaseViewModel
                 CurrentTradeCounts = TradeCollectionView.Count;
             });
 
-            if (currentCancellationTokenSource.IsCancellationRequested)
+            if (currentCancellationToken.IsCancellationRequested)
             {
                 return;
             }
 
             await UpdateStatisticViewsAsync(filteredTrades);
         }
-        catch (OperationCanceledException) when (currentCancellationTokenSource.IsCancellationRequested)
+        catch (OperationCanceledException) when (currentCancellationToken.IsCancellationRequested)
         {
             // Ignored
         }
