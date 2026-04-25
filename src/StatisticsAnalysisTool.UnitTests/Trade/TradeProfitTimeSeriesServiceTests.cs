@@ -1,3 +1,5 @@
+using System;
+using System.Linq;
 using FluentAssertions;
 using NUnit.Framework;
 using StatisticsAnalysisTool.Enumerations;
@@ -12,19 +14,47 @@ public class TradeProfitTimeSeriesServiceTests
 {
     private readonly TradeProfitTimeSeriesService _service = new();
 
+    [TestCase(TradeProfitTimeAggregation.Hour, 60)]
+    [TestCase(TradeProfitTimeAggregation.Day, 24)]
+    [TestCase(TradeProfitTimeAggregation.Week, 7)]
+    [TestCase(TradeProfitTimeAggregation.Month, 31)]
+    [TestCase(TradeProfitTimeAggregation.Year, 12)]
+    public void BuildTimeSeries_WithManualAggregation_ReturnsExpectedFixedBucketCount(TradeProfitTimeAggregation aggregation, int expectedBucketCount)
+    {
+        var from = new DateTime(2026, 4, 1);
+        var to = new DateTime(2026, 4, 3);
+
+        var result = _service.BuildTimeSeries([], from, to, aggregation);
+
+        result.EffectiveAggregation.Should().Be(aggregation);
+        result.Points.Should().HaveCount(expectedBucketCount);
+        result.Points.Should().OnlyContain(point => point.NetProfit == 0d && point.TradeCount == 0);
+    }
+
     [Test]
-    public void BuildTimeSeries_WithEmptyTradeList_ReturnsZeroBucketsForSelectedRange()
+    public void BuildTimeSeries_WithDayAggregation_AnchorsBucketsAtRangeEndDay()
     {
         var from = new DateTime(2026, 4, 1);
         var to = new DateTime(2026, 4, 3);
 
         var result = _service.BuildTimeSeries([], from, to, TradeProfitTimeAggregation.Day);
 
-        result.EffectiveAggregation.Should().Be(TradeProfitTimeAggregation.Day);
-        result.Points.Should().HaveCount(3);
-        result.Points.Should().OnlyContain(x => x.NetProfit == 0d && x.TradeCount == 0);
-        result.Points[0].PeriodStart.Should().Be(from);
+        result.Points[0].PeriodStart.Should().Be(new DateTime(2026, 4, 3, 0, 0, 0));
         result.Points[^1].PeriodEnd.Should().Be(new DateTime(2026, 4, 3, 23, 59, 59, 999).AddTicks(9999));
+    }
+
+    [Test]
+    public void BuildTimeSeries_WithYearAggregation_AnchorsBucketsAtRangeEndMonth()
+    {
+        var from = new DateTime(2024, 1, 1);
+        var to = new DateTime(2026, 4, 25);
+
+        var result = _service.BuildTimeSeries([], from, to, TradeProfitTimeAggregation.Year);
+
+        result.EffectiveAggregation.Should().Be(TradeProfitTimeAggregation.Year);
+        result.Points.Should().HaveCount(12);
+        result.Points[0].PeriodStart.Should().Be(new DateTime(2025, 5, 1));
+        result.Points[^1].PeriodEnd.Should().Be(new DateTime(2026, 4, 30, 23, 59, 59, 999).AddTicks(9999));
     }
 
     [Test]
@@ -40,19 +70,7 @@ public class TradeProfitTimeSeriesServiceTests
     }
 
     [Test]
-    public void BuildTimeSeries_WithManualAggregationAbovePointLimit_FallsBackToCoarserAggregation()
-    {
-        var from = new DateTime(2020, 1, 1);
-        var to = new DateTime(2021, 12, 31);
-
-        var result = _service.BuildTimeSeries([], from, to, TradeProfitTimeAggregation.Day);
-
-        result.EffectiveAggregation.Should().Be(TradeProfitTimeAggregation.Week);
-        result.Points.Count.Should().BeLessThanOrEqualTo(TradeProfitTimeSeriesService.MaxVisiblePoints);
-    }
-
-    [Test]
-    public void BuildTimeSeries_WithMixedTrades_GroupsSoldBoughtTaxAndNetProfitCorrectly()
+    public void BuildTimeSeries_WithMixedTradesAndWeekAggregation_GroupsSoldBoughtTaxAndNetProfitCorrectly()
     {
         var from = new DateTime(2026, 4, 1);
         var to = new DateTime(2026, 4, 2);
@@ -65,22 +83,26 @@ public class TradeProfitTimeSeriesServiceTests
             CreateCrafting(new DateTime(2026, 4, 2, 18, 0, 0), 150)
         };
 
-        var result = _service.BuildTimeSeries(trades, from, to, TradeProfitTimeAggregation.Day);
+        var result = _service.BuildTimeSeries(trades, from, to, TradeProfitTimeAggregation.Week);
+        var firstOfAprilBucket = result.Points.Single(point => point.PeriodStart == new DateTime(2026, 4, 1));
+        var secondOfAprilBucket = result.Points.Single(point => point.PeriodStart == new DateTime(2026, 4, 2));
 
-        result.Points.Should().HaveCount(2);
-        result.Points[0].Sold.Should().Be(1_500);
-        result.Points[0].Bought.Should().Be(400);
-        result.Points[0].Tax.Should().Be(105);
-        result.Points[0].NetProfit.Should().Be(995);
-        result.Points[0].TradeCount.Should().Be(3);
-        result.Points[0].AverageProfitPerTrade.Should().BeApproximately(331.6666667, 0.0001);
+        result.Points.Should().HaveCount(7);
+        result.Points.Count(point => point.TradeCount > 0).Should().Be(2);
 
-        result.Points[1].Sold.Should().Be(0);
-        result.Points[1].Bought.Should().Be(450);
-        result.Points[1].Tax.Should().Be(0);
-        result.Points[1].NetProfit.Should().Be(-450);
-        result.Points[1].TradeCount.Should().Be(2);
-        result.Points[1].CumulativeNetProfit.Should().Be(545);
+        firstOfAprilBucket.Sold.Should().Be(1_500);
+        firstOfAprilBucket.Bought.Should().Be(400);
+        firstOfAprilBucket.Tax.Should().Be(805);
+        firstOfAprilBucket.NetProfit.Should().Be(295);
+        firstOfAprilBucket.TradeCount.Should().Be(3);
+        firstOfAprilBucket.AverageProfitPerTrade.Should().BeApproximately(98.3333333, 0.0001);
+
+        secondOfAprilBucket.Sold.Should().Be(0);
+        secondOfAprilBucket.Bought.Should().Be(450);
+        secondOfAprilBucket.Tax.Should().Be(0);
+        secondOfAprilBucket.NetProfit.Should().Be(-450);
+        secondOfAprilBucket.TradeCount.Should().Be(2);
+        secondOfAprilBucket.CumulativeNetProfit.Should().Be(-155);
     }
 
     [Test]
@@ -101,7 +123,7 @@ public class TradeProfitTimeSeriesServiceTests
             Id = timestamp.Ticks,
             Ticks = timestamp.Ticks,
             Type = TradeType.Mail,
-            MailTypeText = MailType.MarketplaceSellOrderFinished.ToString(),
+            MailTypeText = "MARKETPLACE_SELLORDER_FINISHED_SUMMARY",
             MailContent = new MailContent
             {
                 InternalTotalPriceWithoutTax = totalPrice * 10_000,
@@ -119,7 +141,7 @@ public class TradeProfitTimeSeriesServiceTests
             Id = timestamp.Ticks,
             Ticks = timestamp.Ticks,
             Type = TradeType.Mail,
-            MailTypeText = MailType.MarketplaceBuyOrderFinished.ToString(),
+            MailTypeText = "MARKETPLACE_BUYORDER_FINISHED_SUMMARY",
             MailContent = new MailContent
             {
                 InternalTotalPriceWithoutTax = totalPrice * 10_000,
