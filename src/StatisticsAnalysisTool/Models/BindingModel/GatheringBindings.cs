@@ -348,7 +348,13 @@ public class GatheringBindings : BaseViewModel
             return;
         }
 
-        UpdateStats();
+        UpdateResourceChart();
+    }
+
+    private void UpdateResourceChart()
+    {
+        var filteredGatherCollection = GetGatheredEntriesByTimeFilter(GatheredCollection.ToList(), GatheringStatsTimeTypeSelection);
+        UpdateResourceChart(filteredGatherCollection);
     }
 
     private void UpdateResourceChart(IEnumerable<Gathered> gatheredData)
@@ -546,7 +552,7 @@ public class GatheringBindings : BaseViewModel
             return;
         }
 
-        UpdateStats();
+        UpdateResourceChart();
     }
 
     private readonly record struct ChartBucket(DateTime Start, string Label);
@@ -630,9 +636,13 @@ public class GatheringBindings : BaseViewModel
         get => _selectedGatheringFilter;
         set
         {
+            if (_selectedGatheringFilter == value)
+            {
+                return;
+            }
+
             _selectedGatheringFilter = value;
             GatheringStats.GatheringFilterType = value;
-            UpdateStats();
             OnPropertyChanged();
         }
     }
@@ -676,6 +686,11 @@ public class GatheringBindings : BaseViewModel
         get => _gatheringStatsTimeTypeSelection;
         set
         {
+            if (_gatheringStatsTimeTypeSelection == value)
+            {
+                return;
+            }
+
             _gatheringStatsTimeTypeSelection = value;
             UpdateStats();
             OnPropertyChanged();
