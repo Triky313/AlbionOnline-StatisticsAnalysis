@@ -439,6 +439,7 @@ public class GatheringBindings : BaseViewModel
     {
         return gatheringStatsTimeType switch
         {
+            GatheringStatsTimeType.Hour => index % 10 == 0 || index == totalBucketCount - 1 ? start.ToString("HH:mm", CultureInfo.CurrentCulture) : string.Empty,
             GatheringStatsTimeType.Today => index % 2 == 0 || index == totalBucketCount - 1 ? start.ToString("HH:mm", CultureInfo.CurrentCulture) : string.Empty,
             GatheringStatsTimeType.ThisWeek or GatheringStatsTimeType.LastWeek => start.ToString("ddd", CultureInfo.CurrentCulture),
             GatheringStatsTimeType.Month => index % 5 == 0 || index == totalBucketCount - 1 ? start.ToString("dd.MM", CultureInfo.CurrentCulture) : string.Empty,
@@ -451,6 +452,7 @@ public class GatheringBindings : BaseViewModel
     {
         return gatheringStatsTimeType switch
         {
+            GatheringStatsTimeType.Hour => new DateTime(timestamp.Year, timestamp.Month, timestamp.Day, timestamp.Hour, timestamp.Minute, 0),
             GatheringStatsTimeType.Today => new DateTime(timestamp.Year, timestamp.Month, timestamp.Day, timestamp.Hour, 0, 0),
             GatheringStatsTimeType.ThisWeek => timestamp.Date,
             GatheringStatsTimeType.LastWeek => timestamp.Date,
@@ -494,11 +496,14 @@ public class GatheringBindings : BaseViewModel
 
     private static GatheringTimeRange GetTimeRange(GatheringStatsTimeType gatheringStatsTimeType)
     {
-        var currentDay = DateTime.UtcNow.Date;
+        var currentUtc = DateTime.UtcNow;
+        var currentDay = currentUtc.Date;
+        var currentMinute = new DateTime(currentUtc.Year, currentUtc.Month, currentUtc.Day, currentUtc.Hour, currentUtc.Minute, 0);
         var startOfThisWeek = GetStartOfIsoWeek(currentDay);
 
         return gatheringStatsTimeType switch
         {
+            GatheringStatsTimeType.Hour => new GatheringTimeRange(currentMinute.AddHours(-1), currentMinute.AddMinutes(1), 61, TimeSpan.FromMinutes(1)),
             GatheringStatsTimeType.Today => new GatheringTimeRange(currentDay, currentDay.AddDays(1), 24, TimeSpan.FromHours(1)),
             GatheringStatsTimeType.ThisWeek => new GatheringTimeRange(startOfThisWeek, startOfThisWeek.AddDays(7), 7, TimeSpan.FromDays(1)),
             GatheringStatsTimeType.LastWeek => new GatheringTimeRange(startOfThisWeek.AddDays(-7), startOfThisWeek, 7, TimeSpan.FromDays(1)),
@@ -634,6 +639,11 @@ public class GatheringBindings : BaseViewModel
 
     public List<GatheringStatsFilterStruct> GatheringStatsTimeTypes { get; } = new()
     {
+        new GatheringStatsFilterStruct
+        {
+            Name = LocalizationController.Translation("HOUR"),
+            GatheringStatsTimeType = GatheringStatsTimeType.Hour
+        },
         new GatheringStatsFilterStruct
         {
             Name = LocalizationController.Translation("TODAY"),
