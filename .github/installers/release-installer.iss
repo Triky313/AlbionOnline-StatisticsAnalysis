@@ -26,9 +26,9 @@ WizardStyle=modern
 CloseApplications=yes
 CloseApplicationsFilter={#MyAppExeName}
 RestartApplications=no
-OutputDir=.
+OutputDir=..\..
 OutputBaseFilename=StatisticsAnalysis-AlbionOnline-v{#MyAppVersion}-windows-x64
-SetupIconFile=src\StatisticsAnalysisTool\sat-icon.ico
+SetupIconFile=..\..\src\StatisticsAnalysisTool\sat-icon.ico
 VersionInfoVersion={#MyAppVersion}
 VersionInfoProductVersion={#MyAppVersion}
 
@@ -43,7 +43,7 @@ Name: "{app}"; Permissions: users-modify
 Name: "{app}\UserData"; Permissions: users-modify; Flags: uninsneveruninstall
 
 [Files]
-Source: "src\StatisticsAnalysisTool\bin\Release\publish\*"; DestDir: "{app}"; Flags: ignoreversion recursesubdirs createallsubdirs
+Source: "..\..\src\StatisticsAnalysisTool\bin\Release\publish\*"; DestDir: "{app}"; Flags: ignoreversion recursesubdirs createallsubdirs
 
 [Icons]
 Name: "{group}\{#MyAppName}"; Filename: "{app}\{#MyAppExeName}"; WorkingDir: "{app}"; IconFilename: "{app}\{#MyAppExeName}"
