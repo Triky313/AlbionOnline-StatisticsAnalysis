@@ -6,18 +6,6 @@ namespace StatisticsAnalysisTool.ViewModels;
 
 public class DialogWindowViewModel : BaseViewModel
 {
-    private string _title;
-    private string _message;
-    private DialogWindowTranslation _dialogWindowTranslation = new();
-    private DialogType _type;
-    private Visibility _yesNoVisibility = Visibility.Collapsed;
-    private Visibility _infoTypeVisibility = Visibility.Collapsed;
-    private Visibility _errorTypeVisibility = Visibility.Collapsed;
-    private string _okButtonText = "Okay";
-    private string _url;
-    private string _urlText;
-
-
     public DialogWindowViewModel(string title, string message, DialogType type, string url = null, string urlText = null)
     {
         Title = title;
@@ -33,31 +21,31 @@ public class DialogWindowViewModel : BaseViewModel
 
     public string Title
     {
-        get => _title;
+        get;
         set
         {
-            _title = value;
+            field = value;
             OnPropertyChanged();
         }
     }
 
     public string Message
     {
-        get => _message;
+        get;
         set
         {
-            _message = value;
+            field = value;
             OnPropertyChanged();
         }
     }
 
     public DialogType Type
     {
-        get => _type;
+        get;
         set
         {
-            _type = value;
-            switch (_type)
+            field = value;
+            switch (field)
             {
                 case DialogType.YesNo:
                     InfoTypeVisibility = Visibility.Collapsed;
@@ -77,56 +65,57 @@ public class DialogWindowViewModel : BaseViewModel
                     OkButtonText = Translation.Okay;
                     break;
             }
+
             OnPropertyChanged();
         }
     }
 
     public Visibility YesNoVisibility
     {
-        get => _yesNoVisibility;
+        get;
         set
         {
-            _yesNoVisibility = value;
+            field = value;
             OnPropertyChanged();
         }
-    }
+    } = Visibility.Collapsed;
 
     public Visibility InfoTypeVisibility
     {
-        get => _infoTypeVisibility;
+        get;
         set
         {
-            _infoTypeVisibility = value;
+            field = value;
             OnPropertyChanged();
         }
-    }
+    } = Visibility.Collapsed;
 
     public Visibility ErrorTypeVisibility
     {
-        get => _errorTypeVisibility;
+        get;
         set
         {
-            _errorTypeVisibility = value;
+            field = value;
             OnPropertyChanged();
         }
-    }
+    } = Visibility.Collapsed;
 
     public string OkButtonText
     {
-        get => _okButtonText;
+        get;
         set
         {
-            _okButtonText = value;
+            field = value;
             OnPropertyChanged();
         }
-    }
+    } = "Okay";
 
     public string Url
     {
-        get => _url;
+        get;
         set
         {
-            _url = value;
+            field = value;
             OnPropertyChanged();
             OnPropertyChanged(nameof(UrlVisibility));
         }
@@ -134,10 +123,10 @@ public class DialogWindowViewModel : BaseViewModel
 
     public string UrlText
     {
-        get => _urlText;
+        get;
         set
         {
-            _urlText = value;
+            field = value;
             OnPropertyChanged();
         }
     }
@@ -146,13 +135,13 @@ public class DialogWindowViewModel : BaseViewModel
 
     public DialogWindowTranslation Translation
     {
-        get => _dialogWindowTranslation;
+        get;
         set
         {
-            _dialogWindowTranslation = value;
+            field = value;
             OnPropertyChanged();
         }
-    }
+    } = new();
 
     #endregion
 }

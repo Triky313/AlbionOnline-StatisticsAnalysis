@@ -126,8 +126,8 @@ public partial class App
             LocalizationController.Translation("NPCAP_INFO_DIALOG_MESSAGE"),
             DialogType.Ok,
             "https://npcap.com/",
-            LocalizationController.Translation("NPCAP_INFO_DIALOG_LINK_TEXT"));
-
+            LocalizationController.Translation("NPCAP_INFO_DIALOG_LINK_TEXT"),
+            300d);
 
         dialog.ShowDialog();
 
