@@ -1,8 +1,9 @@
-﻿namespace StatisticsAnalysisTool.Gathering;
+namespace StatisticsAnalysisTool.Gathering;
 
 public enum GatheringStatsTimeType
 {
     Unknown,
+    Hour,
     Today,
     ThisWeek,
     LastWeek,

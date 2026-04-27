@@ -16,47 +16,53 @@ public sealed class TradeProfitTimeSeriesService
         Month
     }
 
-    private readonly record struct TradeProfitTimeSeriesConfiguration(TradeProfitTimeAggregation EffectiveAggregation, TradeProfitTimeBucketUnit BucketUnit, int BucketCount);
+    private static readonly TradeProfitTimeAggregation[] AutoAggregationOrder =
+    [
+        TradeProfitTimeAggregation.Hour,
+        TradeProfitTimeAggregation.Day,
+        TradeProfitTimeAggregation.Week,
+        TradeProfitTimeAggregation.Month
+    ];
 
     public const int MaxVisiblePoints = 365;
 
     public TradeProfitTimeSeriesResult BuildTimeSeries(IEnumerable<Trade> trades, DateTime rangeStart, DateTime rangeEndInclusive, TradeProfitTimeAggregation requestedAggregation)
     {
-        var configuration = ResolveConfiguration(requestedAggregation);
-        var filteredTrades = (trades ?? [])
-            .Where(x => x != null)
-            .OrderBy(x => x.Timestamp)
+        var normalizedRange = NormalizeRange(rangeStart, rangeEndInclusive);
+        var configuration = ResolveConfiguration(requestedAggregation, normalizedRange);
+        var bucketPeriods = configuration.UseFixedWindow
+            ? CreateFixedWindowBucketPeriods(normalizedRange, configuration)
+            : CreateRangeBucketPeriods(normalizedRange, configuration);
+        var buckets = bucketPeriods
+            .Select(period => new TradeProfitBucketAccumulator(period.PeriodStart, period.PeriodEnd))
             .ToList();
 
-        var latestTimestamp = filteredTrades.Count > 0 ? filteredTrades[^1].Timestamp : ResolveFallbackTimestamp(rangeStart, rangeEndInclusive);
-
-        var latestBucketStart = AlignToBucketStart(latestTimestamp, configuration.BucketUnit);
-        var bucketPeriods = CreateBucketPeriods(latestBucketStart, configuration);
-        var buckets = bucketPeriods.ToDictionary(
-            x => x.PeriodStart,
-            x => new TradeProfitBucketAccumulator(x.PeriodStart, x.PeriodEnd));
+        var filteredTrades = (trades ?? [])
+            .Where(trade => trade != null)
+            .Where(trade => trade.Timestamp >= normalizedRange.RangeStartInclusive && trade.Timestamp < normalizedRange.RangeEndExclusive)
+            .OrderBy(trade => trade.Timestamp)
+            .ToList();
 
         foreach (var trade in filteredTrades)
         {
-            var bucketKey = AlignToBucketStart(trade.Timestamp, configuration.BucketUnit);
-            if (!buckets.TryGetValue(bucketKey, out var bucket))
+            if (!TryGetBucketIndex(bucketPeriods, trade.Timestamp, out var bucketIndex))
             {
                 continue;
             }
 
             var tradeValues = _tradeAnalyticsValueService.GetBreakdown(trade);
-            bucket.Sold += tradeValues.Sold;
-            bucket.Bought += tradeValues.Bought;
-            bucket.Tax += tradeValues.Tax;
-            bucket.TradeCount++;
+            buckets[bucketIndex].Sold += tradeValues.Sold;
+            buckets[bucketIndex].Bought += tradeValues.Bought;
+            buckets[bucketIndex].Tax += tradeValues.Tax;
+            buckets[bucketIndex].TradeCount++;
         }
 
         var points = new List<TradeProfitTimeSeriesPoint>(bucketPeriods.Count);
         var cumulativeNetProfit = 0d;
 
-        foreach (var bucketPeriod in bucketPeriods)
+        for (var index = 0; index < buckets.Count; index++)
         {
-            var bucket = buckets[bucketPeriod.PeriodStart];
+            var bucket = buckets[index];
             cumulativeNetProfit += bucket.NetProfit;
 
             points.Add(new TradeProfitTimeSeriesPoint
@@ -78,47 +84,163 @@ public sealed class TradeProfitTimeSeriesService
             Points = points,
             RequestedAggregation = requestedAggregation,
             EffectiveAggregation = configuration.EffectiveAggregation,
-            BucketStepSize = 1
+            BucketStepSize = configuration.BucketStepSize
         };
     }
 
-    private static TradeProfitTimeSeriesConfiguration ResolveConfiguration(TradeProfitTimeAggregation requestedAggregation)
+    private static TradeProfitTimeSeriesConfiguration ResolveConfiguration(TradeProfitTimeAggregation requestedAggregation, TradeProfitTimeSeriesRange range)
+    {
+        return requestedAggregation == TradeProfitTimeAggregation.Auto
+            ? ResolveAutoConfiguration(range)
+            : ResolveFixedWindowConfiguration(requestedAggregation);
+    }
+
+    private static TradeProfitTimeSeriesConfiguration ResolveFixedWindowConfiguration(TradeProfitTimeAggregation requestedAggregation)
     {
         return requestedAggregation switch
         {
-            TradeProfitTimeAggregation.Hour => new TradeProfitTimeSeriesConfiguration(TradeProfitTimeAggregation.Hour, TradeProfitTimeBucketUnit.Minute, 60),
-            TradeProfitTimeAggregation.Day => new TradeProfitTimeSeriesConfiguration(TradeProfitTimeAggregation.Day, TradeProfitTimeBucketUnit.Hour, 24),
-            TradeProfitTimeAggregation.Week => new TradeProfitTimeSeriesConfiguration(TradeProfitTimeAggregation.Week, TradeProfitTimeBucketUnit.Day, 7),
-            TradeProfitTimeAggregation.Month => new TradeProfitTimeSeriesConfiguration(TradeProfitTimeAggregation.Month, TradeProfitTimeBucketUnit.Month, 4),
-            TradeProfitTimeAggregation.Year => new TradeProfitTimeSeriesConfiguration(TradeProfitTimeAggregation.Year, TradeProfitTimeBucketUnit.Month, 12),
-            _ => new TradeProfitTimeSeriesConfiguration(TradeProfitTimeAggregation.Day, TradeProfitTimeBucketUnit.Hour, 24)
+            TradeProfitTimeAggregation.Hour => new TradeProfitTimeSeriesConfiguration(TradeProfitTimeAggregation.Hour, TradeProfitTimeBucketUnit.Minute, 60, 1, true),
+            TradeProfitTimeAggregation.Day => new TradeProfitTimeSeriesConfiguration(TradeProfitTimeAggregation.Day, TradeProfitTimeBucketUnit.Hour, 24, 1, true),
+            TradeProfitTimeAggregation.Week => new TradeProfitTimeSeriesConfiguration(TradeProfitTimeAggregation.Week, TradeProfitTimeBucketUnit.Day, 7, 1, true),
+            TradeProfitTimeAggregation.Month => new TradeProfitTimeSeriesConfiguration(TradeProfitTimeAggregation.Month, TradeProfitTimeBucketUnit.Day, 31, 1, true),
+            TradeProfitTimeAggregation.Year => new TradeProfitTimeSeriesConfiguration(TradeProfitTimeAggregation.Year, TradeProfitTimeBucketUnit.Month, 12, 1, true),
+            _ => new TradeProfitTimeSeriesConfiguration(TradeProfitTimeAggregation.Day, TradeProfitTimeBucketUnit.Hour, 24, 1, true)
         };
     }
 
-    private static DateTime ResolveFallbackTimestamp(DateTime rangeStart, DateTime rangeEndInclusive)
+    private static TradeProfitTimeSeriesConfiguration ResolveAutoConfiguration(TradeProfitTimeSeriesRange range)
     {
-        if (rangeEndInclusive >= rangeStart)
+        foreach (var aggregation in AutoAggregationOrder)
         {
-            return rangeEndInclusive;
+            var candidate = ResolveAutoCandidateConfiguration(aggregation);
+            var bucketCount = CountBuckets(range, candidate.BucketUnit, candidate.BucketStepSize);
+            if (bucketCount <= MaxVisiblePoints)
+            {
+                return candidate;
+            }
         }
 
-        return rangeStart;
+        var fallbackConfiguration = ResolveAutoCandidateConfiguration(TradeProfitTimeAggregation.Month);
+        var fallbackBucketCount = CountBuckets(range, fallbackConfiguration.BucketUnit, fallbackConfiguration.BucketStepSize);
+        var fallbackStepSize = Math.Max(1, (int)Math.Ceiling(fallbackBucketCount / (double)MaxVisiblePoints));
+
+        return fallbackConfiguration with
+        {
+            BucketStepSize = fallbackStepSize
+        };
     }
 
-    private static List<TradeProfitBucketPeriod> CreateBucketPeriods(DateTime latestBucketStart, TradeProfitTimeSeriesConfiguration configuration)
+    private static TradeProfitTimeSeriesConfiguration ResolveAutoCandidateConfiguration(TradeProfitTimeAggregation aggregation)
     {
+        return aggregation switch
+        {
+            TradeProfitTimeAggregation.Hour => new TradeProfitTimeSeriesConfiguration(TradeProfitTimeAggregation.Hour, TradeProfitTimeBucketUnit.Hour, 0, 1, false),
+            TradeProfitTimeAggregation.Day => new TradeProfitTimeSeriesConfiguration(TradeProfitTimeAggregation.Day, TradeProfitTimeBucketUnit.Day, 0, 1, false),
+            TradeProfitTimeAggregation.Week => new TradeProfitTimeSeriesConfiguration(TradeProfitTimeAggregation.Week, TradeProfitTimeBucketUnit.Day, 0, 7, false),
+            TradeProfitTimeAggregation.Month => new TradeProfitTimeSeriesConfiguration(TradeProfitTimeAggregation.Month, TradeProfitTimeBucketUnit.Month, 0, 1, false),
+            _ => new TradeProfitTimeSeriesConfiguration(TradeProfitTimeAggregation.Day, TradeProfitTimeBucketUnit.Day, 0, 1, false)
+        };
+    }
+
+    private static TradeProfitTimeSeriesRange NormalizeRange(DateTime rangeStart, DateTime rangeEndInclusive)
+    {
+        var orderedStart = rangeStart <= rangeEndInclusive ? rangeStart : rangeEndInclusive;
+        var orderedEnd = rangeEndInclusive >= rangeStart ? rangeEndInclusive : rangeStart;
+        var normalizedStart = orderedStart.Date;
+        var normalizedEndInclusive = orderedEnd.Date;
+        var normalizedEndExclusive = normalizedEndInclusive == DateTime.MaxValue.Date
+            ? DateTime.MaxValue
+            : normalizedEndInclusive.AddDays(1);
+
+        if (normalizedEndExclusive <= normalizedStart)
+        {
+            normalizedEndExclusive = normalizedStart.AddDays(1);
+        }
+
+        return new TradeProfitTimeSeriesRange(normalizedStart, normalizedEndExclusive);
+    }
+
+    private static int CountBuckets(TradeProfitTimeSeriesRange range, TradeProfitTimeBucketUnit bucketUnit, int bucketStepSize)
+    {
+        var bucketCount = 0;
+        var currentStart = AlignToBucketStart(range.RangeStartInclusive, bucketUnit);
+
+        while (currentStart < range.RangeEndExclusive)
+        {
+            currentStart = AddBucket(currentStart, bucketUnit, bucketStepSize);
+            bucketCount++;
+        }
+
+        return bucketCount;
+    }
+
+    private static List<TradeProfitBucketPeriod> CreateFixedWindowBucketPeriods(TradeProfitTimeSeriesRange range, TradeProfitTimeSeriesConfiguration configuration)
+    {
+        var latestTimestamp = range.RangeEndExclusive == DateTime.MaxValue
+            ? DateTime.MaxValue.AddTicks(-1)
+            : range.RangeEndExclusive.AddTicks(-1);
+        var latestBucketStart = AlignToBucketStart(latestTimestamp, configuration.BucketUnit);
+        var firstBucketStart = AddBucket(latestBucketStart, configuration.BucketUnit, -((configuration.BucketCount - 1) * configuration.BucketStepSize));
         var periods = new List<TradeProfitBucketPeriod>(configuration.BucketCount);
-        var firstBucketStart = AddBucket(latestBucketStart, configuration.BucketUnit, -(configuration.BucketCount - 1));
 
         for (var index = 0; index < configuration.BucketCount; index++)
         {
-            var periodStart = AddBucket(firstBucketStart, configuration.BucketUnit, index);
-            var periodEnd = AddBucket(periodStart, configuration.BucketUnit, 1);
-
+            var periodStart = AddBucket(firstBucketStart, configuration.BucketUnit, index * configuration.BucketStepSize);
+            var periodEnd = AddBucket(periodStart, configuration.BucketUnit, configuration.BucketStepSize);
             periods.Add(new TradeProfitBucketPeriod(periodStart, periodEnd));
         }
 
         return periods;
+    }
+
+    private static List<TradeProfitBucketPeriod> CreateRangeBucketPeriods(TradeProfitTimeSeriesRange range, TradeProfitTimeSeriesConfiguration configuration)
+    {
+        var periods = new List<TradeProfitBucketPeriod>();
+        var currentStart = AlignToBucketStart(range.RangeStartInclusive, configuration.BucketUnit);
+
+        while (currentStart < range.RangeEndExclusive)
+        {
+            var nextStart = AddBucket(currentStart, configuration.BucketUnit, configuration.BucketStepSize);
+            if (nextStart > range.RangeEndExclusive)
+            {
+                nextStart = range.RangeEndExclusive;
+            }
+
+            periods.Add(new TradeProfitBucketPeriod(currentStart, nextStart));
+            currentStart = nextStart;
+        }
+
+        return periods;
+    }
+
+    private static bool TryGetBucketIndex(IReadOnlyList<TradeProfitBucketPeriod> bucketPeriods, DateTime timestamp, out int bucketIndex)
+    {
+        var lowerBound = 0;
+        var upperBound = bucketPeriods.Count - 1;
+
+        while (lowerBound <= upperBound)
+        {
+            var middleIndex = lowerBound + ((upperBound - lowerBound) / 2);
+            var bucket = bucketPeriods[middleIndex];
+
+            if (timestamp < bucket.PeriodStart)
+            {
+                upperBound = middleIndex - 1;
+                continue;
+            }
+
+            if (timestamp >= bucket.PeriodEnd)
+            {
+                lowerBound = middleIndex + 1;
+                continue;
+            }
+
+            bucketIndex = middleIndex;
+            return true;
+        }
+
+        bucketIndex = -1;
+        return false;
     }
 
     private static DateTime AlignToBucketStart(DateTime timestamp, TradeProfitTimeBucketUnit bucketUnit)
@@ -157,5 +279,13 @@ public sealed class TradeProfitTimeSeriesService
         public double NetProfit => Sold - Bought - Tax;
     }
 
+    private readonly record struct TradeProfitTimeSeriesConfiguration(
+        TradeProfitTimeAggregation EffectiveAggregation,
+        TradeProfitTimeBucketUnit BucketUnit,
+        int BucketCount,
+        int BucketStepSize,
+        bool UseFixedWindow);
+
+    private readonly record struct TradeProfitTimeSeriesRange(DateTime RangeStartInclusive, DateTime RangeEndExclusive);
     private readonly record struct TradeProfitBucketPeriod(DateTime PeriodStart, DateTime PeriodEnd);
 }

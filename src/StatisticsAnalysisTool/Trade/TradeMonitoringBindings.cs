@@ -1153,7 +1153,7 @@ public class TradeMonitoringBindings : BaseViewModel
             TradeProfitTimeAggregation.Hour => point.PeriodStart.ToString("HH:mm", CultureInfo.CurrentCulture),
             TradeProfitTimeAggregation.Day => point.PeriodStart.ToString("HH:mm", CultureInfo.CurrentCulture),
             TradeProfitTimeAggregation.Week => point.PeriodStart.ToString("dd.MM", CultureInfo.CurrentCulture),
-            TradeProfitTimeAggregation.Month => point.PeriodStart.ToString("MM.yy", CultureInfo.CurrentCulture),
+            TradeProfitTimeAggregation.Month => point.PeriodStart.ToString("dd.MM", CultureInfo.CurrentCulture),
             TradeProfitTimeAggregation.Year => point.PeriodStart.ToString("MM.yy", CultureInfo.CurrentCulture),
             _ => point.PeriodStart.ToString("g", CultureInfo.CurrentCulture)
         };

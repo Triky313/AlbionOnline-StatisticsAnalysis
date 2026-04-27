@@ -22,17 +22,15 @@ public class Trade : BaseViewModel
     public int ItemIndex { get; init; } = -1;
     public string UniqueClusterName => WorldData.GetUniqueNameOrDefault(ClusterIndex);
 
-    private bool? _isSelectedForDeletion = false;
-
     public bool? IsSelectedForDeletion
     {
-        get => _isSelectedForDeletion;
+        get;
         set
         {
-            _isSelectedForDeletion = value;
+            field = value;
             OnPropertyChanged();
         }
-    }
+    } = false;
 
     public Item Item => ItemController.GetItemByIndex(ItemIndex) ?? ItemController.GetItemByUniqueName(MailContent?.UniqueItemName) ?? ItemController.GetItemByUniqueName(AuctionEntry?.ItemTypeId);
 

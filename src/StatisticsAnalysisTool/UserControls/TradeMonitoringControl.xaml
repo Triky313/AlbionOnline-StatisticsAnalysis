@@ -60,9 +60,9 @@
         </DataTemplate>
 
         <DataTemplate x:Key="TradeTransferRankingEntryTemplate" DataType="{x:Type trade:TradeItemRankingEntry}">
-            <Grid Margin="0,2,0,2">
+            <Grid Margin="0,0,0,2">
                 <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="25" />
+                    <ColumnDefinition Width="20" />
                     <ColumnDefinition Width="38" />
                     <ColumnDefinition Width="*" />
                 </Grid.ColumnDefinitions>
@@ -344,10 +344,7 @@
                 </ScrollViewer>
             </TabItem>
             <TabItem Header="{Binding Translation.TopItemRanking, FallbackValue=TOP_ITEM_RANKING}">
-                <ScrollViewer x:Name="TopItemRankingScrollViewer"
-                              Margin="10,10,10,10"
-                              HorizontalScrollBarVisibility="Disabled"
-                              VerticalScrollBarVisibility="Auto">
+                <ScrollViewer x:Name="TopItemRankingScrollViewer" Margin="10,0,0,0" HorizontalScrollBarVisibility="Disabled" VerticalScrollBarVisibility="Auto">
                     <StackPanel Orientation="Vertical">
                         <Border Margin="0,0,0,10">
                             <Grid>
@@ -366,6 +363,7 @@
                                          BorderThickness="0"
                                          Focusable="False"
                                          IsTabStop="False"
+                                         IsHitTestVisible="False"
                                          Margin="0,12,0,0"
                                          ItemsSource="{Binding TradeMonitoringBindings.TopItemsByProfit}"
                                          PreviewMouseWheel="TopItemRankingList_OnPreviewMouseWheel"
@@ -387,7 +385,7 @@
 
                                 <ListBox Grid.Row="1" Background="Transparent" BorderThickness="0" Focusable="False" IsTabStop="False" Margin="0,12,0,0"
                                          ItemsSource="{Binding TradeMonitoringBindings.TopItemsByLoss}"
-                                         PreviewMouseWheel="TopItemRankingList_OnPreviewMouseWheel"
+                                         PreviewMouseWheel="TopItemRankingList_OnPreviewMouseWheel" IsHitTestVisible="False"
                                          ScrollViewer.HorizontalScrollBarVisibility="Disabled" ScrollViewer.VerticalScrollBarVisibility="Disabled"
                                          ItemTemplate="{StaticResource TradeTransferRankingEntryTemplate}" />
                             </Grid>
@@ -405,7 +403,7 @@
 
                                 <ListBox Grid.Row="1" Background="Transparent" BorderThickness="0" Focusable="False" IsTabStop="False" Margin="0,12,0,0"
                                          ItemsSource="{Binding TradeMonitoringBindings.TopItemsByRoi}"
-                                         PreviewMouseWheel="TopItemRankingList_OnPreviewMouseWheel"
+                                         PreviewMouseWheel="TopItemRankingList_OnPreviewMouseWheel" IsHitTestVisible="False"
                                          ScrollViewer.HorizontalScrollBarVisibility="Disabled" ScrollViewer.VerticalScrollBarVisibility="Disabled"
                                          ItemTemplate="{StaticResource TradeItemRankingEntryTemplate}" />
                             </Grid>
@@ -424,7 +422,7 @@
                                 <ListBox Grid.Row="1"
                                          Background="Transparent" BorderThickness="0" Focusable="False" IsTabStop="False" Margin="0,12,0,0"
                                          ItemsSource="{Binding TradeMonitoringBindings.TopSoldItemsByVolume}"
-                                         PreviewMouseWheel="TopItemRankingList_OnPreviewMouseWheel"
+                                         PreviewMouseWheel="TopItemRankingList_OnPreviewMouseWheel" IsHitTestVisible="False"
                                          ScrollViewer.HorizontalScrollBarVisibility="Disabled" ScrollViewer.VerticalScrollBarVisibility="Disabled"
                                          ItemTemplate="{StaticResource TradeVolumeRankingEntryTemplate}" />
                             </Grid>
@@ -443,7 +441,7 @@
                                 <ListBox Grid.Row="1" 
                                          Background="Transparent" BorderThickness="0" Focusable="False" IsTabStop="False" Margin="0,12,0,0"
                                          ItemsSource="{Binding TradeMonitoringBindings.TopBoughtItemsByVolume}" 
-                                         PreviewMouseWheel="TopItemRankingList_OnPreviewMouseWheel"
+                                         PreviewMouseWheel="TopItemRankingList_OnPreviewMouseWheel" IsHitTestVisible="False"
                                          ScrollViewer.HorizontalScrollBarVisibility="Disabled" ScrollViewer.VerticalScrollBarVisibility="Disabled"
                                          ItemTemplate="{StaticResource TradeVolumeRankingEntryTemplate}" />
                             </Grid>
