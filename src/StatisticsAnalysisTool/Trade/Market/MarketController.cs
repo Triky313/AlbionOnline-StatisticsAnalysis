@@ -2,6 +2,7 @@
 using StatisticsAnalysisTool.Cluster;
 using StatisticsAnalysisTool.Common;
 using StatisticsAnalysisTool.Common.UserSettings;
+using StatisticsAnalysisTool.Diagnostics;
 using StatisticsAnalysisTool.Localization;
 using StatisticsAnalysisTool.Models;
 using StatisticsAnalysisTool.Network.Manager;
@@ -15,7 +16,6 @@ using System.Linq;
 using System.Reflection;
 using System.Threading.Tasks;
 using System.Windows;
-using StatisticsAnalysisTool.Diagnostics;
 
 namespace StatisticsAnalysisTool.Trade.Market;
 
@@ -28,7 +28,7 @@ public class MarketController(TrackingController trackingController, MainWindowV
 
     private Dictionary<(string UniqueName, MarketLocation Location, int QualityLevel), MarketResponse> _marketResponses = new();
 
-    #region Buy from market
+    #region Buy tracking
 
     public void AddOffers(IEnumerable<AuctionEntry> auctionOffers)
     {
@@ -149,16 +149,6 @@ public class MarketController(TrackingController trackingController, MainWindowV
         await trackingController.TradeController.SaveInFileAfterExceedingLimit(20);
     }
 
-    public void ResetTempOffers()
-    {
-        _tempOffers.Clear();
-    }
-
-    public void ResetTempNumberToBuyList()
-    {
-        _tempNumberToBuyList.Clear();
-    }
-
     private int GetQuantityOfTempNumberToBuyList(IList<long> purchaseIds, long currentPurchaseId)
     {
         try
@@ -175,9 +165,19 @@ public class MarketController(TrackingController trackingController, MainWindowV
         return 0;
     }
 
+    public void ResetTempOffers()
+    {
+        _tempOffers.Clear();
+    }
+
+    public void ResetTempNumberToBuyList()
+    {
+        _tempNumberToBuyList.Clear();
+    }
+
     #endregion
 
-    #region Sell to market
+    #region Sell tracking
 
     public void AddBuyOrders(IEnumerable<AuctionEntry> auctionOrders)
     {
@@ -228,7 +228,7 @@ public class MarketController(TrackingController trackingController, MainWindowV
 
     #endregion
 
-    #region Market price tracking
+    #region Market data
 
     public void UpdateSellOrderMarketData(IEnumerable<AuctionEntry> auctionOffers)
     {
@@ -264,16 +264,7 @@ public class MarketController(TrackingController trackingController, MainWindowV
             }
             else
             {
-                if (response.SellPriceMin == 0 || sellPrice < response.SellPriceMin || created > response.SellPriceMinDate)
-                {
-                    response.SellPriceMin = sellPrice;
-                    response.SellPriceMinDate = created;
-                }
-                if (sellPrice > response.SellPriceMax || created > response.SellPriceMaxDate)
-                {
-                    response.SellPriceMax = sellPrice;
-                    response.SellPriceMaxDate = created;
-                }
+                UpdateSellPriceRange(response, sellPrice, created);
             }
         }
     }
@@ -312,16 +303,7 @@ public class MarketController(TrackingController trackingController, MainWindowV
             }
             else
             {
-                if (response.BuyPriceMin == 0 || buyPrice < response.BuyPriceMin || created > response.BuyPriceMinDate)
-                {
-                    response.BuyPriceMin = buyPrice;
-                    response.BuyPriceMinDate = created;
-                }
-                if (buyPrice > response.BuyPriceMax || created > response.BuyPriceMaxDate)
-                {
-                    response.BuyPriceMax = buyPrice;
-                    response.BuyPriceMaxDate = created;
-                }
+                UpdateBuyPriceRange(response, buyPrice, created);
             }
         }
     }
@@ -342,23 +324,24 @@ public class MarketController(TrackingController trackingController, MainWindowV
 
     public async Task LoadFromFileAsync()
     {
-        var marketDto = await FileController.LoadAsync<List<MarketDto>>(Path.Combine(AppDomain.CurrentDomain.BaseDirectory, Settings.Default.UserDataDirectoryName, Settings.Default.MarketFileName));
-        _marketResponses = marketDto.ToDictionary(
-            dto => (dto.UniqueName, dto.City.GetMarketLocationByLocationNameOrId(), dto.QualityLevel),
-            dto => new MarketResponse
+        var marketDtos = await FileController.LoadAsync<List<MarketDto>>(Path.Combine(AppDomain.CurrentDomain.BaseDirectory, Settings.Default.UserDataDirectoryName, Settings.Default.MarketFileName));
+
+        _marketResponses = new Dictionary<(string UniqueName, MarketLocation Location, int QualityLevel), MarketResponse>();
+
+        int ignoredDuplicateCount = 0;
+        foreach (var marketDto in marketDtos)
+        {
+            var marketResponse = MarketMapping.Mapping(marketDto);
+            if (!TryAddLoadedMarketResponse(marketResponse))
             {
-                ItemTypeId = dto.UniqueName,
-                City = dto.City,
-                QualityLevel = dto.QualityLevel,
-                SellPriceMin = dto.SellPriceMin,
-                SellPriceMinDate = dto.SellPriceMinDate,
-                SellPriceMax = dto.SellPriceMax,
-                SellPriceMaxDate = dto.SellPriceMaxDate,
-                BuyPriceMin = dto.BuyPriceMin,
-                BuyPriceMinDate = dto.BuyPriceMinDate,
-                BuyPriceMax = dto.BuyPriceMax,
-                BuyPriceMaxDate = dto.BuyPriceMaxDate
-            });
+                ignoredDuplicateCount++;
+            }
+        }
+
+        if (ignoredDuplicateCount > 0)
+        {
+            Log.Warning("{count} duplicate market entries were ignored while loading {file}.", ignoredDuplicateCount, Settings.Default.MarketFileName);
+        }
     }
 
     public async Task SaveInFileAsync()
@@ -379,6 +362,99 @@ public class MarketController(TrackingController trackingController, MainWindowV
 
         await FileController.SaveAsync(marketData, Path.Combine(AppDomain.CurrentDomain.BaseDirectory, Settings.Default.UserDataDirectoryName, Settings.Default.MarketFileName));
         Log.Information("Market data saved");
+    }
+
+    #endregion
+
+    #region Persistence helpers
+
+    private bool TryAddLoadedMarketResponse(MarketResponse marketResponse)
+    {
+        var key = CreateMarketResponseKey(marketResponse.ItemTypeId, marketResponse.City, marketResponse.QualityLevel);
+        if (!_marketResponses.TryGetValue(key, out var existingResponse))
+        {
+            _marketResponses[key] = marketResponse;
+            return true;
+        }
+
+        if (AreEquivalentExceptCity(existingResponse, marketResponse))
+        {
+            return false;
+        }
+
+        MergeMarketResponse(existingResponse, marketResponse);
+        return true;
+    }
+
+    private static (string UniqueName, MarketLocation Location, int QualityLevel) CreateMarketResponseKey(string uniqueName, string city, int qualityLevel)
+    {
+        return (uniqueName, city.GetMarketLocationByLocationNameOrId(), qualityLevel);
+    }
+
+    private static bool AreEquivalentExceptCity(MarketResponse left, MarketResponse right)
+    {
+        return string.Equals(left.ItemTypeId, right.ItemTypeId, StringComparison.Ordinal)
+               && left.QualityLevel == right.QualityLevel
+               && left.SellPriceMin == right.SellPriceMin
+               && left.SellPriceMinDate == right.SellPriceMinDate
+               && left.SellPriceMax == right.SellPriceMax
+               && left.SellPriceMaxDate == right.SellPriceMaxDate
+               && left.BuyPriceMin == right.BuyPriceMin
+               && left.BuyPriceMinDate == right.BuyPriceMinDate
+               && left.BuyPriceMax == right.BuyPriceMax
+               && left.BuyPriceMaxDate == right.BuyPriceMaxDate;
+    }
+
+    private static void MergeMarketResponse(MarketResponse target, MarketResponse source)
+    {
+        UpdateSellPriceRange(target, source.SellPriceMin, source.SellPriceMinDate);
+        UpdateSellPriceRange(target, source.SellPriceMax, source.SellPriceMaxDate);
+        UpdateBuyPriceRange(target, source.BuyPriceMin, source.BuyPriceMinDate);
+        UpdateBuyPriceRange(target, source.BuyPriceMax, source.BuyPriceMaxDate);
+    }
+
+    #endregion
+
+    #region Market response helpers
+
+    private static void UpdateSellPriceRange(MarketResponse response, ulong sellPrice, DateTime created)
+    {
+        if (sellPrice <= 0)
+        {
+            return;
+        }
+
+        if (response.SellPriceMin == 0 || sellPrice < response.SellPriceMin || created > response.SellPriceMinDate)
+        {
+            response.SellPriceMin = sellPrice;
+            response.SellPriceMinDate = created;
+        }
+
+        if (sellPrice > response.SellPriceMax || created > response.SellPriceMaxDate)
+        {
+            response.SellPriceMax = sellPrice;
+            response.SellPriceMaxDate = created;
+        }
+    }
+
+    private static void UpdateBuyPriceRange(MarketResponse response, ulong buyPrice, DateTime created)
+    {
+        if (buyPrice <= 0)
+        {
+            return;
+        }
+
+        if (response.BuyPriceMin == 0 || buyPrice < response.BuyPriceMin || created > response.BuyPriceMinDate)
+        {
+            response.BuyPriceMin = buyPrice;
+            response.BuyPriceMinDate = created;
+        }
+
+        if (buyPrice > response.BuyPriceMax || created > response.BuyPriceMaxDate)
+        {
+            response.BuyPriceMax = buyPrice;
+            response.BuyPriceMaxDate = created;
+        }
     }
 
     #endregion
