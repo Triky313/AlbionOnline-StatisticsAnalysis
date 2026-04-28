@@ -1,5 +1,4 @@
 ﻿using Serilog;
-using StatisticsAnalysisTool.Properties;
 using System;
 using System.IO;
 using System.Text.Json;
@@ -14,8 +13,7 @@ public static class SettingsController
 
     private static bool _haveSettingsAlreadyBeenLoaded;
 
-    private static string SettingsFilePath =>
-        Path.Combine(AppDomain.CurrentDomain.BaseDirectory, Settings.Default.SettingsFileName);
+    private static string SettingsFilePath => AppDataPaths.SettingsFile;
 
     public static void SetWindowSettings(WindowState windowState, double height, double width, double left, double top)
     {
@@ -64,6 +62,7 @@ public static class SettingsController
             var loaded = await FileController.LoadAsync<SettingsObject>(SettingsFilePath, ValidateSettings).ConfigureAwait(false) ?? new SettingsObject();
 
             CurrentSettings = loaded;
+            NormalizeRuntimePaths();
             _haveSettingsAlreadyBeenLoaded = true;
 
             if (File.Exists(SettingsFilePath) && !IsFileEmpty(SettingsFilePath))
@@ -83,6 +82,7 @@ public static class SettingsController
             Log.Warning(je, "Invalid JSON in settings file {file}", SettingsFilePath);
 
             CurrentSettings = new SettingsObject();
+            NormalizeRuntimePaths();
             _haveSettingsAlreadyBeenLoaded = true;
 
             TrySaveDefault();
@@ -92,6 +92,7 @@ public static class SettingsController
             Log.Error(e, "LoadSettings failed for {file}", SettingsFilePath);
 
             CurrentSettings ??= new SettingsObject();
+            NormalizeRuntimePaths();
             _haveSettingsAlreadyBeenLoaded = true;
 
             TrySaveDefault();
@@ -112,6 +113,11 @@ public static class SettingsController
         return true;
 
         bool Invalid(double v) => double.IsNaN(v) || double.IsInfinity(v);
+    }
+
+    private static void NormalizeRuntimePaths()
+    {
+        CurrentSettings.BackupStorageDirectoryPath = AppDataPaths.BackupsDirectory;
     }
 
     private static bool IsFileEmpty(string path)

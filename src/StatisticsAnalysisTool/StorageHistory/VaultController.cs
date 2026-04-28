@@ -416,20 +416,20 @@ public class VaultController
 
     public async Task LoadFromFileAsync()
     {
-        var vaultDtos = await FileController.LoadAsync<List<VaultDto>>(Path.Combine(AppDomain.CurrentDomain.BaseDirectory, Settings.Default.UserDataDirectoryName, Settings.Default.VaultsFileName));
+        var vaultDtos = await FileController.LoadAsync<List<VaultDto>>(AppDataPaths.UserDataFile(Settings.Default.VaultsFileName));
         _vaultBindings.Vaults = new ObservableCollection<Vault>(vaultDtos.Select(StorageHistoryMapping.Mapping));
     }
 
     public async Task SaveInFileAsync()
     {
-        DirectoryController.CreateDirectoryWhenNotExists(Path.Combine(AppDomain.CurrentDomain.BaseDirectory, Settings.Default.UserDataDirectoryName));
+        DirectoryController.CreateDirectoryWhenNotExists(AppDataPaths.UserDataDirectory);
 
         var vaultDtosToSave = _vaultBindings.Vaults
             ?.ToList()
             .Select(StorageHistoryMapping.Mapping) ?? Enumerable.Empty<VaultDto>();
 
         await FileController.SaveAsync(vaultDtosToSave,
-            Path.Combine(AppDomain.CurrentDomain.BaseDirectory, Settings.Default.UserDataDirectoryName, Settings.Default.VaultsFileName));
+            AppDataPaths.UserDataFile(Settings.Default.VaultsFileName));
         Log.Information("Vault saved");
     }
 

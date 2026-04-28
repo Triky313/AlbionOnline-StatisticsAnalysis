@@ -1,4 +1,4 @@
-﻿using Serilog;
+using Serilog;
 using StatisticsAnalysisTool.Common;
 using StatisticsAnalysisTool.Properties;
 using System;
@@ -124,7 +124,7 @@ public static class EstimatedMarketValueController
     public static async Task LoadFromFileAsync()
     {
         var estimatedMarketValueDtos = await FileController.LoadAsync<List<EstimatedMarketValueDto>>(
-            Path.Combine(AppDomain.CurrentDomain.BaseDirectory, Settings.Default.UserDataDirectoryName, Settings.Default.EstimatedMarketValueFileName));
+            AppDataPaths.UserDataFile(Settings.Default.EstimatedMarketValueFileName));
 
         var estimatedMarketValueObjects = estimatedMarketValueDtos.Where(x => x.EstimatedMarketValueDtos != null).Select(EstimatesMarketValueMapping.Mapping).ToList();
         _estimatedMarketValueObjects = new ObservableCollection<EstimatedMarketValueObject>(estimatedMarketValueObjects);
@@ -132,9 +132,9 @@ public static class EstimatedMarketValueController
 
     public static async Task SaveInFileAsync()
     {
-        DirectoryController.CreateDirectoryWhenNotExists(Path.Combine(AppDomain.CurrentDomain.BaseDirectory, Settings.Default.UserDataDirectoryName));
+        DirectoryController.CreateDirectoryWhenNotExists(AppDataPaths.UserDataDirectory);
         await FileController.SaveAsync(_estimatedMarketValueObjects.ToList().Select(EstimatesMarketValueMapping.Mapping),
-            Path.Combine(AppDomain.CurrentDomain.BaseDirectory, Settings.Default.UserDataDirectoryName, Settings.Default.EstimatedMarketValueFileName));
+            AppDataPaths.UserDataFile(Settings.Default.EstimatedMarketValueFileName));
         Log.Information("Estimated market values saved");
     }
 

@@ -672,7 +672,7 @@ public class CombatController
     public async Task LoadFromFileAsync()
     {
         var dto = await FileController.LoadAsync<List<DamageMeterSnapshotDto>>(
-            Path.Combine(AppDomain.CurrentDomain.BaseDirectory, Settings.Default.UserDataDirectoryName, Settings.Default.DamageMeterSnapshotsFileName));
+            AppDataPaths.UserDataFile(Settings.Default.DamageMeterSnapshotsFileName));
         var damageMeterSnapshot = dto.Select(SnapshotMapping.Mapping);
 
         _mainWindowViewModel.DamageMeterBindings.DamageMeterSnapshots = damageMeterSnapshot.ToList();
@@ -680,9 +680,9 @@ public class CombatController
 
     public async Task SaveInFileAsync()
     {
-        DirectoryController.CreateDirectoryWhenNotExists(Path.Combine(AppDomain.CurrentDomain.BaseDirectory, Settings.Default.UserDataDirectoryName));
+        DirectoryController.CreateDirectoryWhenNotExists(AppDataPaths.UserDataDirectory);
         await FileController.SaveAsync(_mainWindowViewModel.DamageMeterBindings?.DamageMeterSnapshots?.Select(SnapshotMapping.Mapping),
-            Path.Combine(AppDomain.CurrentDomain.BaseDirectory, Settings.Default.UserDataDirectoryName, Settings.Default.DamageMeterSnapshotsFileName));
+            AppDataPaths.UserDataFile(Settings.Default.DamageMeterSnapshotsFileName));
         Log.Information("Damage Meter snapshots saved");
     }
 

@@ -1,4 +1,4 @@
-﻿using Serilog;
+using Serilog;
 using StatisticsAnalysisTool.Common;
 using StatisticsAnalysisTool.Models;
 using StatisticsAnalysisTool.Properties;
@@ -160,7 +160,7 @@ public sealed class AlertController
     private async Task LoadFromFileAsync()
     {
         var alertSaveObjectList = await FileController.LoadAsync<List<AlertSaveObject>>(
-            Path.Combine(AppDomain.CurrentDomain.BaseDirectory, Settings.Default.UserDataDirectoryName, Settings.Default.ActiveAlertsFileName));
+            AppDataPaths.UserDataFile(Settings.Default.ActiveAlertsFileName));
 
         if (alertSaveObjectList != null)
         {
@@ -173,7 +173,7 @@ public sealed class AlertController
 
     private void SaveActiveAlertsToLocalFile()
     {
-        var localFilePath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, Settings.Default.UserDataDirectoryName, Settings.Default.ActiveAlertsFileName);
+        var localFilePath = AppDataPaths.UserDataFile(Settings.Default.ActiveAlertsFileName);
         var activeItemAlerts = _alerts.Select(alert => new AlertSaveObject
         { UniqueName = alert.Item.UniqueName, MinSellUndercutPrice = alert.AlertModeMinSellPriceIsUndercutPrice }).ToList();
         var fileString = JsonSerializer.Serialize(activeItemAlerts);

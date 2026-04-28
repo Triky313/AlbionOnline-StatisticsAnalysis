@@ -814,7 +814,7 @@ public sealed class DungeonController
     public async Task LoadDungeonFromFileAsync()
     {
         var dungeons = await FileController.LoadAsync<List<DungeonDto>>(
-            Path.Combine(AppDomain.CurrentDomain.BaseDirectory, Settings.Default.UserDataDirectoryName, Settings.Default.DungeonRunsFileName));
+            AppDataPaths.UserDataFile(Settings.Default.DungeonRunsFileName));
 
         var dungeonsToAdd = new List<DungeonBaseFragment>();
         foreach (DungeonDto dungeonDto in dungeons)
@@ -836,9 +836,9 @@ public sealed class DungeonController
 
     public async Task SaveInFileAsync()
     {
-        DirectoryController.CreateDirectoryWhenNotExists(Path.Combine(AppDomain.CurrentDomain.BaseDirectory, Settings.Default.UserDataDirectoryName));
+        DirectoryController.CreateDirectoryWhenNotExists(AppDataPaths.UserDataDirectory);
         var toSaveDungeons = _mainWindowViewModel.DungeonBindings.Dungeons.Select(DungeonMapping.Mapping).ToList();
-        await FileController.SaveAsync(toSaveDungeons, Path.Combine(AppDomain.CurrentDomain.BaseDirectory, Settings.Default.UserDataDirectoryName, Settings.Default.DungeonRunsFileName));
+        await FileController.SaveAsync(toSaveDungeons, AppDataPaths.UserDataFile(Settings.Default.DungeonRunsFileName));
         Log.Information("Dungeons saved");
     }
 

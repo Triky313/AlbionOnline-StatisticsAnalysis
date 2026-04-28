@@ -1,4 +1,4 @@
-﻿using Serilog;
+using Serilog;
 using StatisticsAnalysisTool.Common;
 using StatisticsAnalysisTool.Enumerations;
 using StatisticsAnalysisTool.Models;
@@ -179,7 +179,7 @@ public class GuildController
     public async Task LoadFromFileAsync()
     {
         var dto = await FileController.LoadAsync<GuildDto>(
-            Path.Combine(AppDomain.CurrentDomain.BaseDirectory, Settings.Default.UserDataDirectoryName, Settings.Default.GuildFileName));
+            AppDataPaths.UserDataFile(Settings.Default.GuildFileName));
         var guild = GuildMapping.Mapping(dto);
 
         _mainWindowViewModel.GuildBindings.SiphonedEnergyList.AddRange(guild.SiphonedEnergies);
@@ -188,12 +188,12 @@ public class GuildController
 
     public async Task SaveInFileAsync()
     {
-        DirectoryController.CreateDirectoryWhenNotExists(Path.Combine(AppDomain.CurrentDomain.BaseDirectory, Settings.Default.UserDataDirectoryName));
+        DirectoryController.CreateDirectoryWhenNotExists(AppDataPaths.UserDataDirectory);
         await FileController.SaveAsync(new GuildDto()
         {
             SiphonedEnergies = _mainWindowViewModel.GuildBindings.SiphonedEnergyList.Select(GuildMapping.Mapping).ToList()
         },
-            Path.Combine(AppDomain.CurrentDomain.BaseDirectory, Settings.Default.UserDataDirectoryName, Settings.Default.GuildFileName));
+            AppDataPaths.UserDataFile(Settings.Default.GuildFileName));
         Log.Information("Guild data saved");
     }
 

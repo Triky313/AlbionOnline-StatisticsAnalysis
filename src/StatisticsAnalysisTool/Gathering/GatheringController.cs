@@ -1,4 +1,4 @@
-﻿using Serilog;
+using Serilog;
 using StatisticsAnalysisTool.Cluster;
 using StatisticsAnalysisTool.Common;
 using StatisticsAnalysisTool.Common.UserSettings;
@@ -260,14 +260,14 @@ public class GatheringController
 
     public async Task LoadFromFileAsync()
     {
-        var gatheredDtos = await FileController.LoadAsync<List<GatheredDto>>(Path.Combine(AppDomain.CurrentDomain.BaseDirectory, Settings.Default.UserDataDirectoryName, Settings.Default.GatheringFileName));
+        var gatheredDtos = await FileController.LoadAsync<List<GatheredDto>>(AppDataPaths.UserDataFile(Settings.Default.GatheringFileName));
         var gathered = gatheredDtos.Select(GatheringMapping.Mapping).ToList();
         await SetGatheredToBindings(gathered);
     }
 
     public async Task SaveInFileAsync(bool safeMoreThan356Days = false)
     {
-        DirectoryController.CreateDirectoryWhenNotExists(Path.Combine(AppDomain.CurrentDomain.BaseDirectory, Settings.Default.UserDataDirectoryName));
+        DirectoryController.CreateDirectoryWhenNotExists(AppDataPaths.UserDataDirectory);
 
         var gatheredToSave = _mainWindowViewModel.GatheringBindings?.GatheredCollection
             .Where(x => !safeMoreThan356Days && x.TimestampDateTimeUtc > DateTime.UtcNow.AddDays(-365) || safeMoreThan356Days)
@@ -275,7 +275,7 @@ public class GatheringController
             .Select(GatheringMapping.Mapping);
 
         await FileController.SaveAsync(gatheredToSave,
-            Path.Combine(AppDomain.CurrentDomain.BaseDirectory, Settings.Default.UserDataDirectoryName, Settings.Default.GatheringFileName));
+            AppDataPaths.UserDataFile(Settings.Default.GatheringFileName));
         Log.Information("Gathering saved");
     }
 
@@ -299,8 +299,8 @@ public class GatheringController
             return;
         }
 
-        DirectoryController.CreateDirectoryWhenNotExists(Path.Combine(AppDomain.CurrentDomain.BaseDirectory, Settings.Default.UserDataDirectoryName));
-        await FileController.SaveAsync(gatheredDtos, Path.Combine(AppDomain.CurrentDomain.BaseDirectory, Settings.Default.UserDataDirectoryName, Settings.Default.GatheringFileName));
+        DirectoryController.CreateDirectoryWhenNotExists(AppDataPaths.UserDataDirectory);
+        await FileController.SaveAsync(gatheredDtos, AppDataPaths.UserDataFile(Settings.Default.GatheringFileName));
         _gatheredCounter = 0;
     }
 

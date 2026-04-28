@@ -1,4 +1,4 @@
-﻿using Serilog;
+using Serilog;
 using StatisticsAnalysisTool.Common;
 using StatisticsAnalysisTool.Common.UserSettings;
 using StatisticsAnalysisTool.Enumerations;
@@ -161,12 +161,12 @@ public class LocalUserData
     private async Task<ObservableCollection<GameInfoPlayerKillsDeathsWithType>> LoadFromFileAsync()
     {
         return await FileController.LoadAsync<ObservableCollection<GameInfoPlayerKillsDeathsWithType>>(
-            Path.Combine(AppDomain.CurrentDomain.BaseDirectory, Settings.Default.UserDataDirectoryName, Settings.Default.PlayerKillsDeathsFileName));
+            AppDataPaths.UserDataFile(Settings.Default.PlayerKillsDeathsFileName));
     }
 
     private async Task SaveInFileAsync()
     {
-        var localFilePath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, Settings.Default.UserDataDirectoryName, Settings.Default.PlayerKillsDeathsFileName);
+        var localFilePath = AppDataPaths.UserDataFile(Settings.Default.PlayerKillsDeathsFileName);
 
         try
         {

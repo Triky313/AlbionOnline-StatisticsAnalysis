@@ -1,4 +1,4 @@
-﻿using StatisticsAnalysisTool.Models;
+using StatisticsAnalysisTool.Models;
 using StatisticsAnalysisTool.Properties;
 using System;
 using System.Collections.Generic;
@@ -64,7 +64,7 @@ public static class CraftingTabController
 
         _isLoading = true;
 
-        CraftingNotes = await FileController.LoadAsync<List<CraftingNote>>(Path.Combine(AppDomain.CurrentDomain.BaseDirectory, Settings.Default.UserDataDirectoryName, Settings.Default.CraftingNotesFileName));
+        CraftingNotes = await FileController.LoadAsync<List<CraftingNote>>(AppDataPaths.UserDataFile(Settings.Default.CraftingNotesFileName));
 
         _isLoading = false;
     }
@@ -78,7 +78,7 @@ public static class CraftingTabController
 
         _isSaving = true;
 
-        var localFilePath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, Settings.Default.UserDataDirectoryName, Settings.Default.CraftingNotesFileName);
+        var localFilePath = AppDataPaths.UserDataFile(Settings.Default.CraftingNotesFileName);
 
         try
         {

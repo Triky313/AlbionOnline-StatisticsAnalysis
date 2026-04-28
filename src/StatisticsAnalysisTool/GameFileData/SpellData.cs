@@ -65,7 +65,7 @@ public static class SpellData
 
     public static async Task<bool> LoadDataAsync()
     {
-        var gameFilesDirPath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, Settings.Default.GameFilesDirectoryName);
+        var gameFilesDirPath = AppDataPaths.GameFilesDirectory;
         var regularDataFilePath = Path.Combine(gameFilesDirPath, Settings.Default.SpellDataFileName);
 
         if (!File.Exists(regularDataFilePath))

@@ -300,7 +300,7 @@ public class TradeController
 
     public async Task LoadFromFileAsync()
     {
-        string filePath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, Settings.Default.UserDataDirectoryName, Settings.Default.TradesFileName);
+        string filePath = AppDataPaths.UserDataFile(Settings.Default.TradesFileName);
 
         if (!File.Exists(filePath))
         {
@@ -357,9 +357,9 @@ public class TradeController
 
     public async Task SaveInFileAsync()
     {
-        DirectoryController.CreateDirectoryWhenNotExists(Path.Combine(AppDomain.CurrentDomain.BaseDirectory, Settings.Default.UserDataDirectoryName));
+        DirectoryController.CreateDirectoryWhenNotExists(AppDataPaths.UserDataDirectory);
         await FileController.SaveAsync(_mainWindowViewModel.TradeMonitoringBindings?.Trades?.Select(TradeMapping.Mapping),
-            Path.Combine(AppDomain.CurrentDomain.BaseDirectory, Settings.Default.UserDataDirectoryName, Settings.Default.TradesFileName));
+            AppDataPaths.UserDataFile(Settings.Default.TradesFileName));
         Log.Information("Trades saved");
     }
 
@@ -383,9 +383,9 @@ public class TradeController
             return;
         }
 
-        DirectoryController.CreateDirectoryWhenNotExists(Path.Combine(AppDomain.CurrentDomain.BaseDirectory, Settings.Default.UserDataDirectoryName));
+        DirectoryController.CreateDirectoryWhenNotExists(AppDataPaths.UserDataDirectory);
         await FileController.SaveAsync(tradeDtos,
-            Path.Combine(AppDomain.CurrentDomain.BaseDirectory, Settings.Default.UserDataDirectoryName, Settings.Default.TradesFileName));
+            AppDataPaths.UserDataFile(Settings.Default.TradesFileName));
         _tradeCounter = 0;
     }
 

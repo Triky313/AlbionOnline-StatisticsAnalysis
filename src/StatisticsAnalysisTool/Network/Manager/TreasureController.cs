@@ -304,13 +304,13 @@ public class TreasureController
     public async Task LoadFromFileAsync()
     {
         _treasures = await FileController.LoadAsync<ObservableRangeCollection<Treasure>>(
-            Path.Combine(AppDomain.CurrentDomain.BaseDirectory, Settings.Default.UserDataDirectoryName, Settings.Default.TreasureStatsFileName));
+            AppDataPaths.UserDataFile(Settings.Default.TreasureStatsFileName));
     }
 
     public async Task SaveInFileAsync()
     {
-        DirectoryController.CreateDirectoryWhenNotExists(Path.Combine(AppDomain.CurrentDomain.BaseDirectory, Settings.Default.UserDataDirectoryName));
-        await FileController.SaveAsync(_treasures, Path.Combine(AppDomain.CurrentDomain.BaseDirectory, Settings.Default.UserDataDirectoryName, Settings.Default.TreasureStatsFileName));
+        DirectoryController.CreateDirectoryWhenNotExists(AppDataPaths.UserDataDirectory);
+        await FileController.SaveAsync(_treasures, AppDataPaths.UserDataFile(Settings.Default.TreasureStatsFileName));
         Log.Information("Treasure saved");
     }
 

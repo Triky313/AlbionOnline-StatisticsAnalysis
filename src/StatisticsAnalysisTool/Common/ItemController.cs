@@ -342,7 +342,7 @@ public static class ItemController
                                  JsonNumberHandling.WriteAsString
             };
 
-            var localFilePath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, Settings.Default.GameFilesDirectoryName, Settings.Default.IndexedItemsFileName);
+            var localFilePath = AppDataPaths.GameFile(Settings.Default.IndexedItemsFileName);
 
             await using var stream = CreateReadStream(localFilePath);
             var deserializedItems = await JsonSerializer.DeserializeAsync<ObservableCollection<ItemListObject>>(stream, options).ConfigureAwait(false);
@@ -350,7 +350,7 @@ public static class ItemController
         }
         catch
         {
-            DeleteLocalFile(Path.Combine(AppDomain.CurrentDomain.BaseDirectory, Settings.Default.GameFilesDirectoryName, Settings.Default.IndexedItemsFileName));
+            DeleteLocalFile(AppDataPaths.GameFile(Settings.Default.IndexedItemsFileName));
             return new ObservableCollection<Item>();
         }
     }
@@ -376,7 +376,7 @@ public static class ItemController
 
     public static async Task SetFavoriteItemsFromLocalFileAsync()
     {
-        var favoriteItemList = await FileController.LoadAsync<List<string>>(Path.Combine(AppDomain.CurrentDomain.BaseDirectory, Settings.Default.UserDataDirectoryName, Settings.Default.FavoriteItemsFileName));
+        var favoriteItemList = await FileController.LoadAsync<List<string>>(AppDataPaths.UserDataFile(Settings.Default.FavoriteItemsFileName));
         if (favoriteItemList != null)
         {
             foreach (Item item in favoriteItemList
@@ -390,8 +390,8 @@ public static class ItemController
 
     public static void SaveFavoriteItemsToLocalFile()
     {
-        DirectoryController.CreateDirectoryWhenNotExists(Path.Combine(AppDomain.CurrentDomain.BaseDirectory, Settings.Default.UserDataDirectoryName));
-        var localFilePath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, Settings.Default.UserDataDirectoryName, Settings.Default.FavoriteItemsFileName);
+        DirectoryController.CreateDirectoryWhenNotExists(AppDataPaths.UserDataDirectory);
+        var localFilePath = AppDataPaths.UserDataFile(Settings.Default.FavoriteItemsFileName);
         var favoriteItems = Items?.Where(x => x.IsFavorite);
         var toSaveFavoriteItems = favoriteItems?.Select(x => x.UniqueName);
         var fileString = JsonSerializer.Serialize(toSaveFavoriteItems);
@@ -489,7 +489,7 @@ public static class ItemController
 
     public static async Task<bool> LoadItemsDataAsync()
     {
-        var localFilePath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, Settings.Default.GameFilesDirectoryName, Settings.Default.ItemsJsonFileName);
+        var localFilePath = AppDataPaths.GameFile(Settings.Default.ItemsJsonFileName);
         _itemsJson = await GetItemsJsonFromLocal(localFilePath).ConfigureAwait(false);
 
         if (!IsItemsJsonLoaded())

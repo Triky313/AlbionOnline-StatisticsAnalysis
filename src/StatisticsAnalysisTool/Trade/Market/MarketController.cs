@@ -1,4 +1,4 @@
-﻿using Serilog;
+using Serilog;
 using StatisticsAnalysisTool.Cluster;
 using StatisticsAnalysisTool.Common;
 using StatisticsAnalysisTool.Common.UserSettings;
@@ -324,7 +324,7 @@ public class MarketController(TrackingController trackingController, MainWindowV
 
     public async Task LoadFromFileAsync()
     {
-        var marketDtos = await FileController.LoadAsync<List<MarketDto>>(Path.Combine(AppDomain.CurrentDomain.BaseDirectory, Settings.Default.UserDataDirectoryName, Settings.Default.MarketFileName));
+        var marketDtos = await FileController.LoadAsync<List<MarketDto>>(AppDataPaths.UserDataFile(Settings.Default.MarketFileName));
 
         _marketResponses = new Dictionary<(string UniqueName, MarketLocation Location, int QualityLevel), MarketResponse>();
 
@@ -346,7 +346,7 @@ public class MarketController(TrackingController trackingController, MainWindowV
 
     public async Task SaveInFileAsync()
     {
-        DirectoryController.CreateDirectoryWhenNotExists(Path.Combine(AppDomain.CurrentDomain.BaseDirectory, Settings.Default.UserDataDirectoryName));
+        DirectoryController.CreateDirectoryWhenNotExists(AppDataPaths.UserDataDirectory);
 
         DateTime now = DateTime.UtcNow;
 
@@ -360,7 +360,7 @@ public class MarketController(TrackingController trackingController, MainWindowV
             .Select(MarketMapping.Mapping)
             .ToList();
 
-        await FileController.SaveAsync(marketData, Path.Combine(AppDomain.CurrentDomain.BaseDirectory, Settings.Default.UserDataDirectoryName, Settings.Default.MarketFileName));
+        await FileController.SaveAsync(marketData, AppDataPaths.UserDataFile(Settings.Default.MarketFileName));
         Log.Information("Market data saved");
     }
 

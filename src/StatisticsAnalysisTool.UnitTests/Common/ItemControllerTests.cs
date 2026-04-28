@@ -2,7 +2,9 @@
 using NUnit.Framework;
 using StatisticsAnalysisTool.Common;
 using StatisticsAnalysisTool.Models;
+using System;
 using System.Collections.ObjectModel;
+using System.IO;
 
 
 namespace StatisticsAnalysisTool.UnitTests.Common;
@@ -13,11 +15,24 @@ public class ItemControllerTests
     [Test]
     public async Task LoadItemsDataAsync_WithMissingItemsJson_ReturnFalse()
     {
-        ItemController.Items = [];
+        var tempRuntimePath = Path.Combine(Path.GetTempPath(), "StatisticsAnalysisTool.Tests", Guid.NewGuid().ToString("N"));
+        using var _ = AppDataPaths.UseRuntimeBaseDirectoryForTests(tempRuntimePath);
 
-        var result = await ItemController.LoadItemsDataAsync();
+        try
+        {
+            ItemController.Items = [];
 
-        result.Should().BeFalse();
+            var result = await ItemController.LoadItemsDataAsync();
+
+            result.Should().BeFalse();
+        }
+        finally
+        {
+            if (Directory.Exists(tempRuntimePath))
+            {
+                Directory.Delete(tempRuntimePath, recursive: true);
+            }
+        }
     }
 
     [Test]
