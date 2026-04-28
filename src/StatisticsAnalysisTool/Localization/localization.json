@@ -23330,12 +23330,40 @@
           "seg": "Отслеживание почти работает (Пожалуйста, смените локацию!)"
         },
         {
+          "lang": "tr-TR",
+          "seg": "Takip kısmen etkin (Lütfen bölgeyi değiştirin!)"
+        },
+        {
           "lang": "zh-CN",
           "seg": "追踪功能受限（请切换地图！）"
         },
         {
           "lang": "zh-TW",
           "seg": "追蹤功能受限（請切換地圖！）"
+        },
+        {
+          "lang": "pt-PT",
+          "seg": "O rastreamento está parcialmente ativo (Por favor, mude de zona!)"
+        },
+        {
+          "lang": "it-IT",
+          "seg": "Il tracciamento è parzialmente attivo (Per favore, cambia zona!)"
+        },
+        {
+          "lang": "ko-KO",
+          "seg": "추적이 부분적으로 활성화되었습니다 (지역을 변경해 주세요!)"
+        },
+        {
+          "lang": "ja-JA",
+          "seg": "トラッキングは部分的にアクティブです (ゾーンを変更してください!)"
+        },
+        {
+          "lang": "id-ID",
+          "seg": "Pelacakan aktif sebagian (Silakan ganti zona!)"
+        },
+        {
+          "lang": "hi-HI",
+          "seg": "ट्रैकिंग आंशिक रूप से सक्रिय है (कृपया ज़ोन बदलें!)"
         }
       ]
     },

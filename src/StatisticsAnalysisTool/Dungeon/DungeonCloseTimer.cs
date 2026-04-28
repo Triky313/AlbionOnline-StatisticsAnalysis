@@ -79,7 +79,7 @@ public sealed class DungeonCloseTimer : BaseViewModel
 
             if (SettingsController.CurrentSettings.IsDungeonClosedSoundActive)
             {
-                SoundController.PlayAlertSound(Path.Combine(AppDomain.CurrentDomain.BaseDirectory, Settings.Default.SoundDirectoryName, Settings.Default.DungeonClosedSoundFileName));
+                SoundController.PlayAlertSound(AppDataPaths.SoundFile(Settings.Default.DungeonClosedSoundFileName));
             }
 
             _dispatcherTimer.Stop();

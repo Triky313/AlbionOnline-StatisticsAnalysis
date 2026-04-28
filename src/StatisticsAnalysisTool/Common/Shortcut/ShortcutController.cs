@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.IO;
 using System.Runtime.InteropServices.ComTypes;
 
@@ -11,9 +11,9 @@ public static class ShortcutController
         // ReSharper disable once SuspiciousTypeConversion.Global
         var link = (IShellLink)new ShellLink();
         link.SetDescription("Statistics Analysis Tool");
-        link.SetPath(Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "StatisticsAnalysisTool.exe"));
+        link.SetPath(AppDataPaths.ExecutableFile);
 
-        link.SetWorkingDirectory(AppDomain.CurrentDomain.BaseDirectory);
+        link.SetWorkingDirectory(AppDataPaths.InstallationDirectory);
 
         // ReSharper disable once SuspiciousTypeConversion.Global
         var file = (IPersistFile)link;

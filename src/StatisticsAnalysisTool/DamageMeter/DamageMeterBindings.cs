@@ -1,4 +1,4 @@
-﻿using FontAwesome5;
+using FontAwesome5;
 using StatisticsAnalysisTool.Common;
 using StatisticsAnalysisTool.Common.UserSettings;
 using StatisticsAnalysisTool.Localization;
@@ -437,7 +437,7 @@ public class DamageMeterBindings : BaseViewModel, IAsyncInitialization
     private async Task LoadLocalFileAsync()
     {
         DamageMeterSnapshots = await FileController.LoadAsync<List<DamageMeterSnapshot>>(
-            Path.Combine(AppDomain.CurrentDomain.BaseDirectory, Settings.Default.UserDataDirectoryName, Settings.Default.DamageMeterSnapshotsFileName));
+            AppDataPaths.UserDataFile(Settings.Default.DamageMeterSnapshotsFileName));
     }
 
     #endregion

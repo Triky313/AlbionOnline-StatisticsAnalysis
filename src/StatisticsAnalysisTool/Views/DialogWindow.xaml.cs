@@ -1,4 +1,4 @@
-﻿using StatisticsAnalysisTool.Enumerations;
+using StatisticsAnalysisTool.Enumerations;
 using StatisticsAnalysisTool.ViewModels;
 using System.Diagnostics;
 using System.Windows;
@@ -12,18 +12,27 @@ namespace StatisticsAnalysisTool.Views;
 /// </summary>
 public partial class DialogWindow
 {
+    private const double DefaultDialogHeight = 200d;
+
     public readonly DialogWindowViewModel DialogWindowViewModel;
 
     public DialogWindow(string title, string message, DialogType type = DialogType.YesNo) : this(title, message, type, null)
     {
     }
 
-    public DialogWindow(string title, string message, DialogType type, string url, string urlText = null)
+    public DialogWindow(string title, string message, DialogType type, string url, string urlText = null, double? maxDynamicHeight = null)
     {
         InitializeComponent();
 
         DialogWindowViewModel = new DialogWindowViewModel(title, message, type, url, urlText);
         DataContext = DialogWindowViewModel;
+
+        if (maxDynamicHeight.HasValue)
+        {
+            MinHeight = DefaultDialogHeight;
+            MaxHeight = maxDynamicHeight.Value;
+            SizeToContent = SizeToContent.Height;
+        }
     }
 
     private void BtnCancel_Click(object sender, RoutedEventArgs e)
@@ -60,7 +69,9 @@ public partial class DialogWindow
     private void Hotbar_MouseDown(object sender, MouseButtonEventArgs e)
     {
         if (e.ChangedButton == MouseButton.Left)
+        {
             DragMove();
+        }
     }
 
     private void Grid_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)

@@ -66,8 +66,7 @@ public class SettingsWindowViewModel : BaseViewModel
         MaximumNumberOfBackupsSelection = MaximumNumberOfBackups.FirstOrDefault(x => x.Value == SettingsController.CurrentSettings.MaximumNumberOfBackups);
 
         // Backup storage dir path
-        BackupStorageDirectoryPath = string.IsNullOrEmpty(SettingsController.CurrentSettings.BackupStorageDirectoryPath)
-            ? Path.Combine(AppDomain.CurrentDomain.BaseDirectory, Settings.Default.BackupDirectoryName) : SettingsController.CurrentSettings.BackupStorageDirectoryPath;
+        BackupStorageDirectoryPath = AppDataPaths.BackupsDirectory;
 
         // Another app to start path
         AnotherAppToStartPath = SettingsController.CurrentSettings.AnotherAppToStartPath;
@@ -135,7 +134,7 @@ public class SettingsWindowViewModel : BaseViewModel
         SettingsController.CurrentSettings.IsSuggestPreReleaseUpdatesActive = IsSuggestPreReleaseUpdatesActive;
         SettingsController.CurrentSettings.ExactMatchPlayerNamesLineNumber = PlayerSelectionWithSameNameInDb;
 
-        SetBackupStorageDirPathIfExist(BackupStorageDirectoryPath);
+        SetBackupStorageDirPath();
         SetAppSettingsAndTranslations();
         SetNaviTabVisibilities(mainWindowViewModel);
         SetNotificationFilter();
@@ -365,33 +364,20 @@ public class SettingsWindowViewModel : BaseViewModel
         }
     }
 
-    private void SetBackupStorageDirPathIfExist(string newPath)
+    private void SetBackupStorageDirPath()
     {
-        if (string.IsNullOrWhiteSpace(newPath))
-        {
-            BackupStorageDirectoryPath = SettingsController.CurrentSettings.BackupStorageDirectoryPath;
-            return;
-        }
-
-        if (!Directory.Exists(newPath))
-        {
-            BackupStorageDirectoryPath = SettingsController.CurrentSettings.BackupStorageDirectoryPath;
-            return;
-        }
-
-        SettingsController.CurrentSettings.BackupStorageDirectoryPath = newPath;
+        BackupStorageDirectoryPath = AppDataPaths.BackupsDirectory;
+        SettingsController.CurrentSettings.BackupStorageDirectoryPath = AppDataPaths.BackupsDirectory;
     }
 
     public void ResetBackupStorageDirPath()
     {
-        string defaultPath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, Settings.Default.BackupDirectoryName);
-
-        if (BackupStorageDirectoryPath == defaultPath)
+        if (BackupStorageDirectoryPath == AppDataPaths.BackupsDirectory)
         {
             return;
         }
 
-        BackupStorageDirectoryPath = defaultPath;
+        BackupStorageDirectoryPath = AppDataPaths.BackupsDirectory;
     }
 
     #region Inits
@@ -1004,7 +990,7 @@ public class SettingsWindowViewModel : BaseViewModel
         }
     }
 
-    public string ToolDirectory => AppDomain.CurrentDomain.BaseDirectory;
+    public string ToolDirectory => AppDataPaths.InstallationDirectory;
 
     #endregion Bindings
 }

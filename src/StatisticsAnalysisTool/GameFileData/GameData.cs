@@ -71,8 +71,8 @@ public static class GameData
             toolLoadingWindow = new ToolLoadingWindow(toolLoadingWindowViewModel);
             toolLoadingWindow.Show();
 
-            var tempDirPath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, Settings.Default.TempDirecoryName);
-            var gameFilesDirPath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, Settings.Default.GameFilesDirectoryName);
+            var tempDirPath = AppDataPaths.TempDirectory;
+            var gameFilesDirPath = AppDataPaths.GameFilesDirectory;
 
             extractor = new Extractor(mainGameFolderPath, serverType);
             var fileNamesToLoad = new List<string>();
@@ -196,9 +196,9 @@ public static class GameData
 
     public static async Task<List<T>> LoadDataAsync<T, TRoot>(string tempFileName, string regularDataFileName, JsonSerializerOptions jsonSerializerOptions) where T : new()
     {
-        var tempDirPath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, Settings.Default.TempDirecoryName);
+        var tempDirPath = AppDataPaths.TempDirectory;
         var tempFilePath = Path.Combine(tempDirPath, tempFileName);
-        var gameFilesDirPath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, Settings.Default.GameFilesDirectoryName);
+        var gameFilesDirPath = AppDataPaths.GameFilesDirectory;
         var regularDataFilePath = Path.Combine(gameFilesDirPath, regularDataFileName);
 
         if (!DirectoryController.CreateDirectoryWhenNotExists(tempDirPath))

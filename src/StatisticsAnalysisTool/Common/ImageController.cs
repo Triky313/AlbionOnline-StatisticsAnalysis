@@ -14,8 +14,8 @@ namespace StatisticsAnalysisTool.Common;
 
 internal static class ImageController
 {
-    private static readonly string ItemImagesDirectory = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, Settings.Default.ImageResources);
-    private static readonly string SpellImagesDirectory = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, Settings.Default.SpellImageResources);
+    private static readonly string ItemImagesDirectory = AppDataPaths.ImageResourcesDirectory;
+    private static readonly string SpellImagesDirectory = AppDataPaths.SpellImageResourcesDirectory;
     private static readonly string DefaultItemImagePath = @"pack://application:,,,/" + Assembly.GetExecutingAssembly().GetName().Name + ";component/" + "Resources/Trash.png";
     private static readonly Lock CacheLock = new();
     private static readonly Dictionary<string, WeakReference<BitmapImage>> CachedImages = new(StringComparer.Ordinal);

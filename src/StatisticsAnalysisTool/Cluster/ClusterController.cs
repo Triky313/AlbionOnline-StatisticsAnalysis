@@ -199,7 +199,7 @@ public sealed class ClusterController
 
     public async Task SaveInFileAsync()
     {
-        DirectoryController.CreateDirectoryWhenNotExists(Path.Combine(AppDomain.CurrentDomain.BaseDirectory, Settings.Default.UserDataDirectoryName));
+        DirectoryController.CreateDirectoryWhenNotExists(AppDataPaths.UserDataDirectory);
 
         var clusterHistoryToSave = _mainWindowViewModel.EnteredCluster
             .Take(MaxEnteredCluster)
@@ -223,7 +223,7 @@ public sealed class ClusterController
 
     private static string GetMapHistoryFilePath()
     {
-        return Path.Combine(AppDomain.CurrentDomain.BaseDirectory, Settings.Default.UserDataDirectoryName, Settings.Default.MapHistoryFileName);
+        return AppDataPaths.UserDataFile(Settings.Default.MapHistoryFileName);
     }
 
     #endregion

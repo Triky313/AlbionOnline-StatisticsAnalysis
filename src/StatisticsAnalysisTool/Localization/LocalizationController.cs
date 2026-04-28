@@ -1,4 +1,5 @@
 using Serilog;
+using StatisticsAnalysisTool.Common;
 using StatisticsAnalysisTool.Common.UserSettings;
 using StatisticsAnalysisTool.Models;
 using StatisticsAnalysisTool.Properties;
@@ -25,7 +26,7 @@ public class LocalizationController
 
     public static bool Init()
     {
-        var jsonFilePath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, Settings.Default.LocalizationDirectoryName, Settings.Default.LocalizationFileName);
+        var jsonFilePath = AppDataPaths.LocalizationFile;
 
         if (!File.Exists(jsonFilePath))
         {

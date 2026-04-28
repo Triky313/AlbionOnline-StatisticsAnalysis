@@ -22,7 +22,7 @@ public static class SoundController
             return;
         }
 
-        var soundFilePath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, Settings.Default.SoundDirectoryName);
+        var soundFilePath = AppDataPaths.SoundDirectory;
 
         if (!Directory.Exists(soundFilePath))
         {

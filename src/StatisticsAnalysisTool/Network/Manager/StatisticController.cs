@@ -312,7 +312,7 @@ public class StatisticController
     public async System.Threading.Tasks.Task LoadFromFileAsync()
     {
         _dashboardStatistics = await FileController.LoadAsync<DashboardStatistics>(
-            Path.Combine(AppDomain.CurrentDomain.BaseDirectory, Settings.Default.UserDataDirectoryName, Settings.Default.StatsFileName));
+            AppDataPaths.UserDataFile(Settings.Default.StatsFileName));
 
         _dashboardStatistics ??= new DashboardStatistics();
         _dashboardStatistics.DailyValues ??= [];
@@ -324,8 +324,8 @@ public class StatisticController
 
     public async System.Threading.Tasks.Task SaveInFileAsync()
     {
-        DirectoryController.CreateDirectoryWhenNotExists(Path.Combine(AppDomain.CurrentDomain.BaseDirectory, Settings.Default.UserDataDirectoryName));
-        await FileController.SaveAsync(_dashboardStatistics, Path.Combine(AppDomain.CurrentDomain.BaseDirectory, Settings.Default.UserDataDirectoryName, Settings.Default.StatsFileName));
+        DirectoryController.CreateDirectoryWhenNotExists(AppDataPaths.UserDataDirectory);
+        await FileController.SaveAsync(_dashboardStatistics, AppDataPaths.UserDataFile(Settings.Default.StatsFileName));
         Log.Information("Statistics saved");
     }
 

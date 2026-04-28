@@ -14,7 +14,6 @@ using StatisticsAnalysisTool.Notification;
 using StatisticsAnalysisTool.ViewModels;
 using StatisticsAnalysisTool.Views;
 using System;
-using System.IO;
 using System.Reflection;
 using System.Runtime.InteropServices;
 using System.Threading.Tasks;
@@ -37,7 +36,11 @@ public partial class App
         {
             Current.ShutdownMode = ShutdownMode.OnExplicitShutdown;
 
+            AppDataPaths.EnsureBaseDirectory();
+            var migrationMessages = AppDataMigration.MigrateLegacyRuntimeData();
+            AppDataPaths.EnsureRuntimeDirectories();
             InitLogger();
+            AppDataMigration.LogMessages(migrationMessages);
             Log.Information("Tool started with v{Version}", Assembly.GetExecutingAssembly().GetName().Version);
 
             SystemInfo.LogSystemInfo();
@@ -126,8 +129,8 @@ public partial class App
             LocalizationController.Translation("NPCAP_INFO_DIALOG_MESSAGE"),
             DialogType.Ok,
             "https://npcap.com/",
-            LocalizationController.Translation("NPCAP_INFO_DIALOG_LINK_TEXT"));
-
+            LocalizationController.Translation("NPCAP_INFO_DIALOG_LINK_TEXT"),
+            300d);
 
         dialog.ShowDialog();
 
@@ -137,13 +140,10 @@ public partial class App
 
     private static void InitLogger()
     {
-        const string logFolderName = "logs";
-        DirectoryController.CreateDirectoryWhenNotExists(Path.Combine(AppDomain.CurrentDomain.BaseDirectory, logFolderName));
-
         Log.Logger = new LoggerConfiguration()
             .WriteTo.Console()
             .WriteTo.File(
-                Path.Combine(logFolderName, "sat-.logs"),
+                AppDataPaths.LogFilePattern,
                 rollingInterval: RollingInterval.Day,
                 retainedFileCountLimit: 7,
                 restrictedToMinimumLevel: LogEventLevel.Information)

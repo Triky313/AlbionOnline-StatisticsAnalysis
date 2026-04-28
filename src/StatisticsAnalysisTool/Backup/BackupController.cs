@@ -32,8 +32,8 @@ public static class BackupController
             return false;
         }
 
-        var sourceFolderPath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, Settings.Default.UserDataDirectoryName);
-        var backupDirPath = SettingsController.CurrentSettings.BackupStorageDirectoryPath;
+        var sourceFolderPath = AppDataPaths.UserDataDirectory;
+        var backupDirPath = AppDataPaths.BackupsDirectory;
         var backupFilePath = Path.Combine(backupDirPath, GetBackupFileName());
 
         try
@@ -71,7 +71,7 @@ public static class BackupController
 
     public static bool ExistBackupOnSettingConditions()
     {
-        var backupDirPath = SettingsController.CurrentSettings.BackupStorageDirectoryPath;
+        var backupDirPath = AppDataPaths.BackupsDirectory;
 
         if (!Directory.Exists(backupDirPath))
         {
@@ -103,7 +103,7 @@ public static class BackupController
 
     public static async Task DeleteOldestBackupsIfNeededAsync()
     {
-        var backupDirPath = SettingsController.CurrentSettings.BackupStorageDirectoryPath;
+        var backupDirPath = AppDataPaths.BackupsDirectory;
 
         if (!Directory.Exists(backupDirPath))
         {
@@ -158,13 +158,11 @@ public static class BackupController
     {
         try
         {
-            string defaultPath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, Settings.Default.BackupDirectoryName);
-            var backupDirPath = SettingsController.CurrentSettings.BackupStorageDirectoryPath;
+            var backupDirPath = AppDataPaths.BackupsDirectory;
 
-            if (string.IsNullOrEmpty(backupDirPath))
+            if (string.IsNullOrEmpty(SettingsController.CurrentSettings.BackupStorageDirectoryPath))
             {
-                backupDirPath = defaultPath;
-                SettingsController.CurrentSettings.BackupStorageDirectoryPath = defaultPath;
+                SettingsController.CurrentSettings.BackupStorageDirectoryPath = backupDirPath;
             }
             
             return DirectoryController.CreateDirectoryWhenNotExists(backupDirPath);
