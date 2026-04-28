@@ -8,28 +8,12 @@ namespace StatisticsAnalysisTool.GameFileData.Converter;
 
 public class MarkerToMarkersListConverter : JsonConverter<List<Marker>>
 {
+    public override bool HandleNull => true;
+
     public override List<Marker> Read(ref Utf8JsonReader reader, Type typeToConvert, JsonSerializerOptions options)
     {
-        var markers = new List<Marker>();
-
-        try
-        {
-            if (reader.TokenType == JsonTokenType.StartArray)
-            {
-                return ReadArray(ref reader);
-            }
-
-            if (reader.TokenType == JsonTokenType.StartObject)
-            {
-                return ReadObject(ref reader);
-            }
-
-            throw new JsonException("Invalid JSON format for Marker");
-        }
-        catch (Exception)
-        {
-            return markers;
-        }
+        using var jsonDocument = JsonDocument.ParseValue(ref reader);
+        return ReadMarkers(jsonDocument.RootElement);
     }
 
     public override void Write(Utf8JsonWriter writer, List<Marker> value, JsonSerializerOptions options)
@@ -48,86 +32,50 @@ public class MarkerToMarkersListConverter : JsonConverter<List<Marker>>
         writer.WriteEndArray();
     }
 
-    private List<Marker> ReadArray(ref Utf8JsonReader reader)
+    private static List<Marker> ReadMarkers(JsonElement element)
     {
         var markers = new List<Marker>();
 
-        while (reader.Read())
+        switch (element.ValueKind)
         {
-            if (reader.TokenType == JsonTokenType.EndArray)
-            {
+            case JsonValueKind.Array:
+                foreach (var markerElement in element.EnumerateArray())
+                {
+                    AddMarker(markers, markerElement);
+                }
+
                 return markers;
-            }
-
-            if (reader.TokenType == JsonTokenType.StartObject)
-            {
-                var marker = ReadMarker(ref reader);
-                markers.Add(marker);
-            }
+            case JsonValueKind.Object:
+                AddMarker(markers, element);
+                return markers;
+            case JsonValueKind.Null:
+            case JsonValueKind.Undefined:
+                return markers;
+            default:
+                throw new JsonException("Invalid JSON format for Marker");
         }
-
-        throw new JsonException("Invalid JSON format for Marker");
     }
 
-    private Marker ReadMarker(ref Utf8JsonReader reader)
+    private static void AddMarker(List<Marker> markers, JsonElement element)
     {
-        var marker = new Marker();
-
-        while (reader.Read())
+        if (element.ValueKind != JsonValueKind.Object)
         {
-            if (reader.TokenType == JsonTokenType.EndObject)
-            {
-                return marker;
-            }
-
-            if (reader.TokenType == JsonTokenType.PropertyName)
-            {
-                var propertyName = reader.GetString();
-
-                if (propertyName == "@type")
-                {
-                    reader.Read();
-                    marker.Type = reader.GetString();
-                }
-                else
-                {
-                    reader.Skip();
-                }
-            }
+            throw new JsonException("Invalid JSON format for Marker");
         }
 
-        throw new JsonException("Invalid JSON format for Marker");
-    }
-
-    private List<Marker> ReadObject(ref Utf8JsonReader reader)
-    {
-        var markers = new List<Marker>();
-
-        while (reader.Read())
+        if (!element.TryGetProperty("@type", out var typeElement))
         {
-            if (reader.TokenType == JsonTokenType.EndObject)
-            {
-                return markers;
-            }
-
-            if (reader.TokenType == JsonTokenType.PropertyName)
-            {
-                var propertyName = reader.GetString();
-
-                if (propertyName == "@type")
-                {
-                    reader.Read();
-                    var type = reader.GetString();
-                    var marker = new Marker { Type = type };
-                    markers.Add(marker);
-                }
-                else
-                {
-                    reader.Skip();
-                }
-            }
+            return;
         }
 
-        throw new JsonException("Invalid JSON format for Marker");
+        if (typeElement.ValueKind != JsonValueKind.String)
+        {
+            throw new JsonException("Invalid JSON format for Marker");
+        }
+
+        markers.Add(new Marker
+        {
+            Type = typeElement.GetString()
+        });
     }
 }
