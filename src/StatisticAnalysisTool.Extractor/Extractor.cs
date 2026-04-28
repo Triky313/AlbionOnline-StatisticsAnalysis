@@ -61,15 +61,20 @@ public class Extractor
         {
             string mainGameFolderPath = Path.Combine(mainGameFolder, GetServerTypeString(serverType));
             var binFilePath = Path.Combine(ExtractorUtilities.GetBinFilePath(mainGameFolderPath), $"{binFileName}.bin");
-            var toolFileDateTime = File.GetLastWriteTime(toolFilePath);
 
             if (!File.Exists(binFilePath))
             {
                 return false;
             }
 
+            if (!File.Exists(toolFilePath))
+            {
+                return true;
+            }
+
             try
             {
+                var toolFileDateTime = File.GetLastWriteTime(toolFilePath);
                 if (File.GetLastWriteTime(binFilePath) > toolFileDateTime)
                 {
                     return true;

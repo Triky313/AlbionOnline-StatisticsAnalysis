@@ -214,7 +214,7 @@ public static class GameData
         if (File.Exists(tempFilePath))
         {
             var fullDataJson = await GetDataFromFullJsonFileLocalAsync<T, TRoot>(tempFilePath).ConfigureAwait(false);
-            if (fullDataJson?.Count > 1)
+            if (fullDataJson?.Count > 0)
             {
                 var saveSucceeded = await FileController.SaveAsync(fullDataJson, regularDataFilePath).ConfigureAwait(false);
                 if (saveSucceeded)
