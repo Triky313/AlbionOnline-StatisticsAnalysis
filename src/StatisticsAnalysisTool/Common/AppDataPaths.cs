@@ -8,6 +8,7 @@ public static class AppDataPaths
 {
     private const string AppDataFolderName = "StatisticsAnalysisTool";
     private const string InstancesDirectoryName = "Instances";
+    private const string LegacyDefaultDirectoryName = "Default";
     private const string BackupsDirectoryName = "Backups";
     private const string UserDataDirectoryName = "UserData";
     private const string TempDirectoryName = "temp";
@@ -22,6 +23,8 @@ public static class AppDataPaths
     private const string LocalizationFileName = "localization.json";
     private const string ExecutableFileName = "StatisticsAnalysisTool.exe";
     private static string _runtimeBaseDirectoryOverride;
+    private static string _installationDirectoryOverride;
+    private static string _legacyDefaultDirectoryOverride;
 
     public static string BaseDirectory { get; } = Path.Combine(
         Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData),
@@ -29,13 +32,15 @@ public static class AppDataPaths
 
     public static string InstancesDirectory => Path.Combine(BaseDirectory, InstancesDirectoryName);
 
+    public static string LegacyDefaultDirectory => _legacyDefaultDirectoryOverride ?? Path.Combine(BaseDirectory, LegacyDefaultDirectoryName);
+
     public static string Root => Path.Combine(
         InstancesDirectory,
         AppInstance.InstanceId);
 
     public static string RuntimeBaseDirectory => _runtimeBaseDirectoryOverride ?? Root;
 
-    public static string InstallationDirectory => AppContext.BaseDirectory;
+    public static string InstallationDirectory => _installationDirectoryOverride ?? AppContext.BaseDirectory;
 
     public static string Backups => Path.Combine(RuntimeBaseDirectory, BackupsDirectoryName);
 
@@ -136,11 +141,46 @@ public static class AppDataPaths
 
     public static string LegacySettingsFile => Path.Combine(InstallationDirectory, SettingsFileName);
 
+    public static string LegacyDefaultBackupsDirectory => Path.Combine(LegacyDefaultDirectory, BackupsDirectoryName);
+
+    public static string LegacyDefaultUserDataDirectory => Path.Combine(LegacyDefaultDirectory, UserDataDirectoryName);
+
+    public static string LegacyDefaultTempDirectory => Path.Combine(LegacyDefaultDirectory, TempDirectoryName);
+
+    public static string LegacyDefaultSpellImageResourcesDirectory => Path.Combine(LegacyDefaultDirectory, SpellImageResourcesDirectoryName);
+
+    public static string LegacyDefaultLogsDirectory => Path.Combine(LegacyDefaultDirectory, LogsDirectoryName);
+
+    public static string LegacyDefaultImageResourcesDirectory => Path.Combine(LegacyDefaultDirectory, ImageResourcesDirectoryName);
+
+    public static string LegacyDefaultGameFilesDirectory => Path.Combine(LegacyDefaultDirectory, GameFilesDirectoryName);
+
+    public static string LegacyDefaultSettingsFile => Path.Combine(LegacyDefaultDirectory, SettingsFileName);
+
     internal static IDisposable UseRuntimeBaseDirectoryForTests(string runtimeBaseDirectory)
     {
         var previousRuntimeBaseDirectoryOverride = _runtimeBaseDirectoryOverride;
         _runtimeBaseDirectoryOverride = runtimeBaseDirectory;
         return new RuntimeBaseDirectoryOverrideScope(previousRuntimeBaseDirectoryOverride);
+    }
+
+    internal static IDisposable UsePathOverridesForTests(
+        string runtimeBaseDirectory,
+        string installationDirectory,
+        string legacyDefaultDirectory)
+    {
+        var previousRuntimeBaseDirectoryOverride = _runtimeBaseDirectoryOverride;
+        var previousInstallationDirectoryOverride = _installationDirectoryOverride;
+        var previousLegacyDefaultDirectoryOverride = _legacyDefaultDirectoryOverride;
+
+        _runtimeBaseDirectoryOverride = runtimeBaseDirectory;
+        _installationDirectoryOverride = installationDirectory;
+        _legacyDefaultDirectoryOverride = legacyDefaultDirectory;
+
+        return new PathOverrideScope(
+            previousRuntimeBaseDirectoryOverride,
+            previousInstallationDirectoryOverride,
+            previousLegacyDefaultDirectoryOverride);
     }
 
     public static void EnsureBaseDirectory()
@@ -176,6 +216,37 @@ public static class AppDataPaths
             }
 
             _runtimeBaseDirectoryOverride = _previousRuntimeBaseDirectoryOverride;
+            _isDisposed = true;
+        }
+    }
+
+    private sealed class PathOverrideScope : IDisposable
+    {
+        private readonly string _previousRuntimeBaseDirectoryOverride;
+        private readonly string _previousInstallationDirectoryOverride;
+        private readonly string _previousLegacyDefaultDirectoryOverride;
+        private bool _isDisposed;
+
+        public PathOverrideScope(
+            string previousRuntimeBaseDirectoryOverride,
+            string previousInstallationDirectoryOverride,
+            string previousLegacyDefaultDirectoryOverride)
+        {
+            _previousRuntimeBaseDirectoryOverride = previousRuntimeBaseDirectoryOverride;
+            _previousInstallationDirectoryOverride = previousInstallationDirectoryOverride;
+            _previousLegacyDefaultDirectoryOverride = previousLegacyDefaultDirectoryOverride;
+        }
+
+        public void Dispose()
+        {
+            if (_isDisposed)
+            {
+                return;
+            }
+
+            _runtimeBaseDirectoryOverride = _previousRuntimeBaseDirectoryOverride;
+            _installationDirectoryOverride = _previousInstallationDirectoryOverride;
+            _legacyDefaultDirectoryOverride = _previousLegacyDefaultDirectoryOverride;
             _isDisposed = true;
         }
     }
