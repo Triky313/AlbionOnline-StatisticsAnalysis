@@ -7,7 +7,7 @@ namespace StatisticsAnalysisTool.Common;
 public static class AppDataPaths
 {
     private const string AppDataFolderName = "StatisticsAnalysisTool";
-    private const string DebugDirectoryName = "Debug";
+    private const string InstancesDirectoryName = "Instances";
     private const string BackupsDirectoryName = "Backups";
     private const string UserDataDirectoryName = "UserData";
     private const string TempDirectoryName = "temp";
@@ -23,45 +23,53 @@ public static class AppDataPaths
     private const string ExecutableFileName = "StatisticsAnalysisTool.exe";
     private static string _runtimeBaseDirectoryOverride;
 
-    public static string BaseDirectory { get; } = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), AppDataFolderName);
+    public static string BaseDirectory { get; } = Path.Combine(
+        Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData),
+        AppDataFolderName);
 
-    public static string BaseDebugDirectory { get; } = Path.Combine(BaseDirectory, DebugDirectoryName);
+    public static string InstancesDirectory => Path.Combine(BaseDirectory, InstancesDirectoryName);
 
-    public static string RuntimeBaseDirectory => _runtimeBaseDirectoryOverride ?? (IsDebugBuild ? BaseDebugDirectory : BaseDirectory);
+    public static string Root => Path.Combine(
+        InstancesDirectory,
+        AppInstance.InstanceId);
 
-    public static string InstallationDirectory => AppDomain.CurrentDomain.BaseDirectory;
+    public static string RuntimeBaseDirectory => _runtimeBaseDirectoryOverride ?? Root;
 
-    public static string BackupsDirectory => Path.Combine(RuntimeBaseDirectory, BackupsDirectoryName);
+    public static string InstallationDirectory => AppContext.BaseDirectory;
 
-    public static string UserDataDirectory => Path.Combine(RuntimeBaseDirectory, UserDataDirectoryName);
+    public static string Backups => Path.Combine(RuntimeBaseDirectory, BackupsDirectoryName);
 
-    public static string TempDirectory => Path.Combine(RuntimeBaseDirectory, TempDirectoryName);
+    public static string UserData => Path.Combine(RuntimeBaseDirectory, UserDataDirectoryName);
 
-    public static string SpellImageResourcesDirectory => Path.Combine(RuntimeBaseDirectory, SpellImageResourcesDirectoryName);
+    public static string Temp => Path.Combine(RuntimeBaseDirectory, TempDirectoryName);
 
-    public static string LogsDirectory => Path.Combine(RuntimeBaseDirectory, LogsDirectoryName);
+    public static string SpellImageResources => Path.Combine(RuntimeBaseDirectory, SpellImageResourcesDirectoryName);
 
-    public static string ImageResourcesDirectory => Path.Combine(RuntimeBaseDirectory, ImageResourcesDirectoryName);
+    public static string Logs => Path.Combine(RuntimeBaseDirectory, LogsDirectoryName);
 
-    public static string GameFilesDirectory => Path.Combine(RuntimeBaseDirectory, GameFilesDirectoryName);
+    public static string ImageResources => Path.Combine(RuntimeBaseDirectory, ImageResourcesDirectoryName);
+
+    public static string GameFiles => Path.Combine(RuntimeBaseDirectory, GameFilesDirectoryName);
 
     public static string SettingsFile => Path.Combine(RuntimeBaseDirectory, SettingsFileName);
+
+    public static string BackupsDirectory => Backups;
+
+    public static string UserDataDirectory => UserData;
+
+    public static string TempDirectory => Temp;
+
+    public static string SpellImageResourcesDirectory => SpellImageResources;
+
+    public static string LogsDirectory => Logs;
+
+    public static string ImageResourcesDirectory => ImageResources;
+
+    public static string GameFilesDirectory => GameFiles;
 
     public static string LogFilePattern => Path.Combine(LogsDirectory, LogFilePatternName);
 
     public static string SoundDirectory => InstallationFile(SoundDirectoryName);
-
-    public static bool IsDebugBuild
-    {
-        get
-        {
-#if DEBUG
-            return true;
-#else
-            return false;
-#endif
-        }
-    }
 
     public static string SoundFile(string fileName)
     {

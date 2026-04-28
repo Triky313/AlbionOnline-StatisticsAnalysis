@@ -34,15 +34,6 @@ namespace StatisticsAnalysisTool.Properties {
         
         [global::System.Configuration.ApplicationScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("ImageResources")]
-        public string ImageResources {
-            get {
-                return ((string)(this["ImageResources"]));
-            }
-        }
-        
-        [global::System.Configuration.ApplicationScopedSettingAttribute()]
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.DefaultSettingValueAttribute("IndexedItems.json")]
         public string IndexedItemsFileName {
             get {
@@ -189,24 +180,6 @@ namespace StatisticsAnalysisTool.Properties {
             }
             set {
                 this["FavoriteItemsFileName"] = value;
-            }
-        }
-        
-        [global::System.Configuration.ApplicationScopedSettingAttribute()]
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("GameFiles")]
-        public string GameFilesDirectoryName {
-            get {
-                return ((string)(this["GameFilesDirectoryName"]));
-            }
-        }
-        
-        [global::System.Configuration.ApplicationScopedSettingAttribute()]
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("Settings.json")]
-        public string SettingsFileName {
-            get {
-                return ((string)(this["SettingsFileName"]));
             }
         }
         
@@ -392,15 +365,6 @@ namespace StatisticsAnalysisTool.Properties {
             }
         }
         
-        [global::System.Configuration.ApplicationScopedSettingAttribute()]
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("temp")]
-        public string TempDirecoryName {
-            get {
-                return ((string)(this["TempDirecoryName"]));
-            }
-        }
-        
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.DefaultSettingValueAttribute("https://github.com/sponsors/Triky313")]
@@ -422,18 +386,6 @@ namespace StatisticsAnalysisTool.Properties {
             }
             set {
                 this["TradesFileName"] = value;
-            }
-        }
-        
-        [global::System.Configuration.UserScopedSettingAttribute()]
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("UserData")]
-        public string UserDataDirectoryName {
-            get {
-                return ((string)(this["UserDataDirectoryName"]));
-            }
-            set {
-                this["UserDataDirectoryName"] = value;
             }
         }
         
@@ -491,24 +443,6 @@ namespace StatisticsAnalysisTool.Properties {
         public string SpellDataFileName {
             get {
                 return ((string)(this["SpellDataFileName"]));
-            }
-        }
-        
-        [global::System.Configuration.ApplicationScopedSettingAttribute()]
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("SpellImageResources")]
-        public string SpellImageResources {
-            get {
-                return ((string)(this["SpellImageResources"]));
-            }
-        }
-        
-        [global::System.Configuration.ApplicationScopedSettingAttribute()]
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("Backups")]
-        public string BackupDirectoryName {
-            get {
-                return ((string)(this["BackupDirectoryName"]));
             }
         }
         

@@ -5,9 +5,6 @@
     <Setting Name="LanguageDirectoryName" Type="System.String" Scope="Application">
       <Value Profile="(Default)">Languages</Value>
     </Setting>
-    <Setting Name="ImageResources" Type="System.String" Scope="Application">
-      <Value Profile="(Default)">ImageResources</Value>
-    </Setting>
     <Setting Name="IndexedItemsFileName" Type="System.String" Scope="Application">
       <Value Profile="(Default)">IndexedItems.json</Value>
     </Setting>
@@ -49,12 +46,6 @@
     </Setting>
     <Setting Name="FavoriteItemsFileName" Type="System.String" Scope="User">
       <Value Profile="(Default)">FavoriteItems.json</Value>
-    </Setting>
-    <Setting Name="GameFilesDirectoryName" Type="System.String" Scope="Application">
-      <Value Profile="(Default)">GameFiles</Value>
-    </Setting>
-    <Setting Name="SettingsFileName" Type="System.String" Scope="Application">
-      <Value Profile="(Default)">Settings.json</Value>
     </Setting>
     <Setting Name="ItemSpriteToJournalFileName" Type="System.String" Scope="User">
       <Value Profile="(Default)">ItemSpriteToJournal.json</Value>
@@ -107,17 +98,11 @@
     <Setting Name="IsContainerRepairCostsVisible" Type="System.Boolean" Scope="Application">
       <Value Profile="(Default)">False</Value>
     </Setting>
-    <Setting Name="TempDirecoryName" Type="System.String" Scope="Application">
-      <Value Profile="(Default)">temp</Value>
-    </Setting>
     <Setting Name="GitHubSponsorsUrl" Type="System.String" Scope="User">
       <Value Profile="(Default)">https://github.com/sponsors/Triky313</Value>
     </Setting>
     <Setting Name="TradesFileName" Type="System.String" Scope="User">
       <Value Profile="(Default)">Trades.json</Value>
-    </Setting>
-    <Setting Name="UserDataDirectoryName" Type="System.String" Scope="User">
-      <Value Profile="(Default)">UserData</Value>
     </Setting>
     <Setting Name="GatheringFileName" Type="System.String" Scope="Application">
       <Value Profile="(Default)">Gathering.json</Value>
@@ -136,12 +121,6 @@
     </Setting>
     <Setting Name="SpellDataFileName" Type="System.String" Scope="Application">
       <Value Profile="(Default)">spells.xml</Value>
-    </Setting>
-    <Setting Name="SpellImageResources" Type="System.String" Scope="Application">
-      <Value Profile="(Default)">SpellImageResources</Value>
-    </Setting>
-    <Setting Name="BackupDirectoryName" Type="System.String" Scope="Application">
-      <Value Profile="(Default)">Backups</Value>
     </Setting>
     <Setting Name="MistsDataFileName" Type="System.String" Scope="Application">
       <Value Profile="(Default)">mists.json</Value>

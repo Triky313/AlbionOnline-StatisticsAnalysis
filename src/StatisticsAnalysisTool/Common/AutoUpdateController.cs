@@ -759,7 +759,7 @@ public static class AutoUpdateController
         }
 
         var processName = Process.GetCurrentProcess().ProcessName;
-        var fallbackPath = Path.Combine(AppContext.BaseDirectory, $"{processName}.exe");
+        var fallbackPath = AppDataPaths.InstallationFile($"{processName}.exe");
         if (File.Exists(fallbackPath))
         {
             return Path.GetFullPath(fallbackPath);
