@@ -14,6 +14,7 @@ using StatisticsAnalysisTool.Notification;
 using StatisticsAnalysisTool.ViewModels;
 using StatisticsAnalysisTool.Views;
 using System;
+using System.Diagnostics;
 using System.Reflection;
 using System.Runtime.InteropServices;
 using System.Threading.Tasks;
@@ -48,7 +49,6 @@ public partial class App
 
             AppDomain.CurrentDomain.UnhandledException += CurrentDomain_UnhandledException;
             TaskScheduler.UnobservedTaskException += TaskScheduler_UnobservedTaskException;
-            DispatcherUnhandledException += Application_DispatcherUnhandledException;
 
             await SettingsController.LoadSettingsAsync();
 
@@ -201,7 +201,8 @@ public partial class App
     {
         // Fixes a issue in the WPF clipboard handler.
         // It is necessary to handle the unhandled exception in the Application.DispatcherUnhandledException event.
-        if (e.Exception is COMException { ErrorCode: -2147221040 })
+        if (e.Exception is COMException comException
+            && comException.ErrorCode == -2147221040)
         {
             e.Handled = true;
             return;
@@ -209,7 +210,7 @@ public partial class App
 
         if (IsRecoverableLiveChartsTickerException(e.Exception))
         {
-            Log.Warning(e.Exception, "Ignored a recoverable LiveCharts ticker disposal exception.");
+            Log.Debug(e.Exception, "Ignored a recoverable LiveCharts ticker disposal exception.");
             e.Handled = true;
             return;
         }
@@ -232,18 +233,25 @@ public partial class App
             return false;
         }
 
-        var stackTrace = exception.StackTrace;
-        if (string.IsNullOrWhiteSpace(stackTrace))
+        var stackTrace = new StackTrace(exception, false);
+        return ContainsStackFrame(stackTrace, "LiveChartsCore.SkiaSharpView.WPF.Rendering.CompositionTargetTicker", "DisposeTicker")
+            && ContainsStackFrame(stackTrace, "LiveChartsCore.Motion.MotionCanvasComposer", "Dispose");
+    }
+
+    private static bool ContainsStackFrame(StackTrace stackTrace, string typeName, string methodName)
+    {
+        foreach (var frame in stackTrace.GetFrames())
         {
-            return false;
+            var method = frame.GetMethod();
+            if (method?.Name == methodName
+                && method != null
+                && method.DeclaringType?.FullName == typeName)
+            {
+                return true;
+            }
         }
 
-        return stackTrace.Contains(
-                "LiveChartsCore.SkiaSharpView.WPF.Rendering.CompositionTargetTicker.DisposeTicker",
-                StringComparison.Ordinal)
-            && stackTrace.Contains(
-                "LiveChartsCore.Motion.MotionCanvasComposer.Dispose",
-                StringComparison.Ordinal);
+        return false;
     }
 
     protected override void OnExit(ExitEventArgs e)
