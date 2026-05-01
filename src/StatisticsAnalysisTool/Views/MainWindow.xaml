@@ -8,7 +8,7 @@
         xmlns:viewModels="clr-namespace:StatisticsAnalysisTool.ViewModels"
         xmlns:glob="clr-namespace:System.Globalization;assembly=System.Runtime"
         mc:Ignorable="d"
-        d:DesignHeight="650" d:DesignWidth="1000"
+        d:DesignHeight="750" d:DesignWidth="1000"
         Title="AlbionOnline - StatisticsAnalysisTool"
         Closing="MainWindow_OnClosing"
         d:DataContext="{d:DesignInstance Type=viewModels:MainWindowViewModel}"
@@ -245,6 +245,9 @@
                 <Grid Style="{StaticResource TabItemGridStyle}">
                     <userControls:PlayerInformationControl />
                 </Grid>
+            </TabItem>
+            <TabItem Visibility="{Binding GameDataTabVisibility, Mode=OneWay}" Header="{Binding Translation.GameData, FallbackValue=GAME__DATA}">
+                <Grid Style="{StaticResource TabItemGridStyle}" />
             </TabItem>
             <TabItem Style="{StaticResource ItemContainerDonationStyle}" Header="{Binding Translation.Donations, FallbackValue=DONATIONS}">
                 <Grid Style="{StaticResource TabItemGridStyle}">

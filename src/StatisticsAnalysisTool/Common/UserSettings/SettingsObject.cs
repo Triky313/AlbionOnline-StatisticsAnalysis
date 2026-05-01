@@ -85,6 +85,7 @@ public class SettingsObject
     public bool IsStorageHistoryNaviTabActive { get; set; } = true;
     public bool IsMapHistoryNaviTabActive { get; set; } = true;
     public bool IsPlayerInformationNaviTabActive { get; set; } = true;
+    public bool IsGameDataNaviTabActive { get; set; } = true;
     public bool IsGuildTabActive { get; set; } = true;
     public bool IsNotificationFilterTradeActive { get; set; } = false;
     public bool IsNotificationTrackingStatusActive { get; set; } = false;

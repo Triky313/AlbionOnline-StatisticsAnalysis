@@ -87,6 +87,7 @@ public class MainWindowTranslation
     public static string ItemSearch => LocalizationController.Translation("ITEM_SEARCH");
     public static string Dungeons => LocalizationController.Translation("DUNGEONS");
     public static string PlayerInformation => LocalizationController.Translation("PLAYER_INFORMATION");
+    public static string GameData => LocalizationController.Translation("GAME_DATA");
     public static string TradeMonitoring => LocalizationController.Translation("TRADE_MONITORING");
     public static string Party => LocalizationController.Translation("PARTY");
     public static string StorageHistory => LocalizationController.Translation("STORAGE_HISTORY");

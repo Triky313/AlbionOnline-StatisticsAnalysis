@@ -126,6 +126,7 @@ public class MainWindowViewModel : BaseViewModel
     private Visibility _storageHistoryTabVisibility = Visibility.Visible;
     private Visibility _mapHistoryTabVisibility = Visibility.Visible;
     private Visibility _playerInformationTabVisibility = Visibility.Visible;
+    private Visibility _gameDataTabVisibility = Visibility.Visible;
     private Visibility _guildTabVisibility = Visibility.Visible;
     private Visibility _toolTaskFrontViewVisibility = Visibility.Collapsed;
     private Visibility _statsDropDownVisibility = Visibility.Collapsed;
@@ -1422,6 +1423,16 @@ public class MainWindowViewModel : BaseViewModel
         set
         {
             _playerInformationTabVisibility = value;
+            OnPropertyChanged();
+        }
+    }
+
+    public Visibility GameDataTabVisibility
+    {
+        get => _gameDataTabVisibility;
+        set
+        {
+            _gameDataTabVisibility = value;
             OnPropertyChanged();
         }
     }

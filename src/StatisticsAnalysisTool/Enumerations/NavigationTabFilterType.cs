@@ -1,4 +1,4 @@
-﻿namespace StatisticsAnalysisTool.Enumerations;
+namespace StatisticsAnalysisTool.Enumerations;
 
 public enum NavigationTabFilterType
 {
@@ -14,5 +14,6 @@ public enum NavigationTabFilterType
     Party,
     StorageHistory,
     MapHistory,
-    PlayerInformation
+    PlayerInformation,
+    GameData
 }
