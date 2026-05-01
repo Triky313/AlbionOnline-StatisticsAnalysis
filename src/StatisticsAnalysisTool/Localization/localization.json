@@ -2137,7 +2137,7 @@
         },
         {
           "lang": "fr-FR",
-          "seg": "Double value exists in the language file"
+          "seg": "Les informations complètes sur l'article sont disponibles localement"
         },
         {
           "lang": "ja-JP",
@@ -5780,7 +5780,7 @@
         },
         {
           "lang": "fr-FR",
-          "seg": "Informations"
+          "seg": "Les informations complètes sur l'article sont disponibles localement"
         },
         {
           "lang": "ja-JP",
@@ -6098,7 +6098,7 @@
         },
         {
           "lang": "fr-FR",
-          "seg": "Charger toutes les objets"
+          "seg": "Afficher toutes les informations sur l'objet"
         },
         {
           "lang": "ja-JP",
@@ -6628,7 +6628,7 @@
         },
         {
           "lang": "fr-FR",
-          "seg": "Chaussuresen plaques"
+          "seg": "Chaussures en plaques"
         },
         {
           "lang": "ja-JP",
@@ -7582,7 +7582,7 @@
         },
         {
           "lang": "fr-FR",
-          "seg": "Autres"
+          "seg": "Autre"
         },
         {
           "lang": "ja-JP",
@@ -14737,7 +14737,7 @@
         },
         {
           "lang": "fr-FR",
-          "seg": "à"
+          "seg": "dans"
         },
         {
           "lang": "ja-JP",
@@ -16274,7 +16274,7 @@
         },
         {
           "lang": "fr-FR",
-          "seg": "Arene"
+          "seg": "Arène"
         },
         {
           "lang": "ja-JP",
@@ -17065,7 +17065,7 @@
         },
         {
           "lang": "fr-FR",
-          "seg": "Legendaire"
+          "seg": "Légendaire"
         },
         {
           "lang": "ja-JP",
@@ -18827,7 +18827,7 @@
         },
         {
           "lang": "fr-FR",
-          "seg": "Supprimer donjon"
+          "seg": "Supprimer le donjon"
         },
         {
           "lang": "ja-JP",
@@ -22127,7 +22127,7 @@
         },
         {
           "lang": "fr-FR",
-          "seg": "Calculat"
+          "seg": "Estimation"
         },
         {
           "lang": "ja-JP",
@@ -22764,7 +22764,7 @@
         },
         {
           "lang": "fr-FR",
-          "seg": "Grand total"
+          "seg": "Montant Total"
         },
         {
           "lang": "ja-JP",
@@ -25226,7 +25226,7 @@
         },
         {
           "lang": "fr-FR",
-          "seg": "Victime en solo"
+          "seg": "Victimes en solo"
         },
         {
           "lang": "ja-JP",
@@ -25859,7 +25859,7 @@
         },
         {
           "lang": "fr-FR",
-          "seg": "Buy expired"
+          "seg": "Achats expirés"
         },
         {
           "lang": "ja-JP",
