@@ -1,3 +1,4 @@
+using StatisticsAnalysisTool.GameFileData.Converter;
 using System.Text.Json.Serialization;
 
 namespace StatisticsAnalysisTool.GameFileData.Models;
@@ -14,6 +15,7 @@ public class LootChestJsonObject
     public string Faction { get; set; } = string.Empty;
 
     [JsonPropertyName("@alertradius")]
+    [JsonConverter(typeof(FlexibleDoubleJsonConverter))]
     public double AlertRadius { get; set; }
 
     [JsonPropertyName("@spell")]

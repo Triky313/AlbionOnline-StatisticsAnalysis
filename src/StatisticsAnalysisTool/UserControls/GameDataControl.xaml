@@ -1,0 +1,161 @@
+<UserControl x:Class="StatisticsAnalysisTool.UserControls.GameDataControl"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:viewModels="clr-namespace:StatisticsAnalysisTool.ViewModels"
+             mc:Ignorable="d"
+             d:DesignHeight="450"
+             d:DesignWidth="800"
+             d:DataContext="{d:DesignInstance Type=viewModels:GameDataViewModel}">
+    <UserControl.Resources>
+        <DataTemplate x:Key="LootItemIconTemplate">
+            <Border Width="58"
+                    Height="58"
+                    Margin="2"
+                    Background="{StaticResource SolidColorBrush.Background.3}"
+                    SnapsToDevicePixels="True"
+                    ToolTip="{Binding ToolTip}">
+                <Image Width="52"
+                       Height="52"
+                       Source="{Binding Icon, IsAsync=True, Mode=OneWay}"
+                       Stretch="Uniform"
+                       RenderOptions.BitmapScalingMode="LowQuality" />
+            </Border>
+        </DataTemplate>
+
+        <Style x:Key="LazyExpanderContentStyle"
+               TargetType="{x:Type ContentControl}">
+            <Setter Property="Content"
+                    Value="{x:Null}" />
+            <Style.Triggers>
+                <DataTrigger Binding="{Binding IsExpanded, RelativeSource={RelativeSource AncestorType=Expander}}"
+                             Value="True">
+                    <Setter Property="Content"
+                            Value="{Binding}" />
+                </DataTrigger>
+            </Style.Triggers>
+        </Style>
+
+        <DataTemplate x:Key="LootPoolContentTemplate">
+            <ScrollViewer Margin="18,4,0,6"
+                          MaxHeight="420"
+                          HorizontalScrollBarVisibility="Disabled"
+                          VerticalScrollBarVisibility="Auto">
+                <ItemsControl ItemsSource="{Binding Items}"
+                              ItemTemplate="{StaticResource LootItemIconTemplate}"
+                              HorizontalAlignment="Stretch">
+                    <ItemsControl.ItemsPanel>
+                        <ItemsPanelTemplate>
+                            <WrapPanel Orientation="Horizontal"
+                                       HorizontalAlignment="Left" />
+                        </ItemsPanelTemplate>
+                    </ItemsControl.ItemsPanel>
+                </ItemsControl>
+            </ScrollViewer>
+        </DataTemplate>
+
+        <DataTemplate x:Key="LootPoolTemplate">
+            <Expander Header="{Binding Header}"
+                      IsExpanded="False"
+                      Margin="0,2,0,2"
+                      Foreground="{StaticResource SolidColorBrush.Text.1}">
+                <ContentControl Style="{StaticResource LazyExpanderContentStyle}"
+                                ContentTemplate="{StaticResource LootPoolContentTemplate}" />
+            </Expander>
+        </DataTemplate>
+
+        <DataTemplate x:Key="LootTierContentTemplate">
+            <ItemsControl ItemsSource="{Binding Pools}"
+                          ItemTemplate="{StaticResource LootPoolTemplate}"
+                          Margin="18,2,0,4" />
+        </DataTemplate>
+
+        <DataTemplate x:Key="LootTierTemplate">
+            <Expander Header="{Binding Header}"
+                      IsExpanded="False"
+                      Margin="0,2,0,2"
+                      Foreground="{StaticResource SolidColorBrush.Text.1}">
+                <ContentControl Style="{StaticResource LazyExpanderContentStyle}"
+                                ContentTemplate="{StaticResource LootTierContentTemplate}" />
+            </Expander>
+        </DataTemplate>
+
+        <DataTemplate x:Key="LootRareStateContentTemplate">
+            <ItemsControl ItemsSource="{Binding Tiers}"
+                          ItemTemplate="{StaticResource LootTierTemplate}"
+                          Margin="18,2,0,4" />
+        </DataTemplate>
+
+        <DataTemplate x:Key="LootRareStateTemplate">
+            <Expander Header="{Binding Header}"
+                      IsExpanded="False"
+                      Margin="0,2,0,2"
+                      Foreground="{StaticResource SolidColorBrush.Text.1}">
+                <ContentControl Style="{StaticResource LazyExpanderContentStyle}"
+                                ContentTemplate="{StaticResource LootRareStateContentTemplate}" />
+            </Expander>
+        </DataTemplate>
+
+        <DataTemplate x:Key="LootChestContentTemplate">
+            <StackPanel Margin="18,4,0,0">
+                <TextBlock Text="{Binding Prefab, StringFormat='Prefab: {0}'}"
+                           Foreground="{StaticResource SolidColorBrush.Text.4}"
+                           Margin="0,0,0,4" />
+                <ItemsControl ItemsSource="{Binding RareStates}"
+                              ItemTemplate="{StaticResource LootRareStateTemplate}" />
+            </StackPanel>
+        </DataTemplate>
+
+        <DataTemplate x:Key="LootChestTemplate">
+            <Border Style="{StaticResource Container.Border}"
+                    Margin="4"
+                    Padding="8">
+                <Expander Header="{Binding Header}"
+                          IsExpanded="False"
+                          Foreground="{StaticResource SolidColorBrush.Text.1}">
+                    <ContentControl Style="{StaticResource LazyExpanderContentStyle}"
+                                    ContentTemplate="{StaticResource LootChestContentTemplate}" />
+                </Expander>
+            </Border>
+        </DataTemplate>
+    </UserControl.Resources>
+
+    <Grid>
+        <TabControl>
+            <TabItem Header="Loot Chests">
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="34" />
+                        <RowDefinition Height="*" />
+                    </Grid.RowDefinitions>
+
+                    <DockPanel Grid.Row="0"
+                               LastChildFill="False"
+                               Margin="5,3,5,3">
+                        <TextBlock Text="{Binding LootChestStatus}"
+                                   VerticalAlignment="Center"
+                                   Foreground="{StaticResource SolidColorBrush.Text.4}" />
+                    </DockPanel>
+
+                    <ListBox Grid.Row="1"
+                             ItemsSource="{Binding LootChests}"
+                             ItemTemplate="{StaticResource LootChestTemplate}"
+                             Background="Transparent"
+                             BorderThickness="0"
+                             ScrollViewer.HorizontalScrollBarVisibility="Disabled"
+                             ScrollViewer.VerticalScrollBarVisibility="Auto"
+                             VirtualizingPanel.IsVirtualizing="True"
+                             VirtualizingPanel.VirtualizationMode="Recycling">
+                        <ListBox.ItemContainerStyle>
+                            <Style TargetType="{x:Type ListBoxItem}">
+                                <Setter Property="HorizontalContentAlignment"
+                                        Value="Stretch" />
+                            </Style>
+                        </ListBox.ItemContainerStyle>
+                    </ListBox>
+                </Grid>
+            </TabItem>
+        </TabControl>
+    </Grid>
+</UserControl>

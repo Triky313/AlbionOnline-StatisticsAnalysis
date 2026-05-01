@@ -21,6 +21,10 @@ public class LootListJsonObject
     [JsonConverter(typeof(SingleOrArrayConverter<LootListReferenceJsonObject>))]
     public List<LootListReferenceJsonObject> LootListReference { get; set; } = [];
 
+    [JsonPropertyName("OR")]
+    [JsonConverter(typeof(SingleOrArrayConverter<LootOrJsonObject>))]
+    public List<LootOrJsonObject> Or { get; set; } = [];
+
     [JsonExtensionData]
     public Dictionary<string, JsonElement> AdditionalData { get; set; } = [];
 }

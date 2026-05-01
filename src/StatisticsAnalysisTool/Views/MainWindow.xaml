@@ -247,7 +247,9 @@
                 </Grid>
             </TabItem>
             <TabItem Visibility="{Binding GameDataTabVisibility, Mode=OneWay}" Header="{Binding Translation.GameData, FallbackValue=GAME__DATA}">
-                <Grid Style="{StaticResource TabItemGridStyle}" />
+                <Grid Style="{StaticResource TabItemGridStyle}">
+                    <userControls:GameDataControl />
+                </Grid>
             </TabItem>
             <TabItem Style="{StaticResource ItemContainerDonationStyle}" Header="{Binding Translation.Donations, FallbackValue=DONATIONS}">
                 <Grid Style="{StaticResource TabItemGridStyle}">

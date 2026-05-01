@@ -1,3 +1,4 @@
+using StatisticsAnalysisTool.GameFileData.Converter;
 using System.Text.Json.Serialization;
 
 namespace StatisticsAnalysisTool.GameFileData.Models;
@@ -8,6 +9,7 @@ public class LootChestRareState
     public string State { get; set; } = string.Empty;
 
     [JsonPropertyName("@weight")]
+    [JsonConverter(typeof(FlexibleDoubleJsonConverter))]
     public double Weight { get; set; }
 
     [JsonPropertyName("@spawnsoundevent")]

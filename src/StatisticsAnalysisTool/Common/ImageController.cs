@@ -132,6 +132,12 @@ internal static class ImageController
             return null;
         }
 
+        if (freeze && !webImage.IsFrozen)
+        {
+            SaveImageLocal(webImage, downloadKey, localFilePath, localDirectory);
+            return null;
+        }
+
         CacheImage(cacheKey, webImage);
         SaveImageLocal(webImage, downloadKey, localFilePath, localDirectory);
         return webImage;
@@ -151,10 +157,7 @@ internal static class ImageController
             bmp.StreamSource = fileStream;
             bmp.EndInit();
 
-            if (freeze || !bmp.IsFrozen)
-            {
-                bmp.Freeze();
-            }
+            TryFreeze(bmp, freeze || !bmp.IsFrozen);
 
             return bmp;
         }
@@ -242,10 +245,7 @@ internal static class ImageController
             userImage.UriSource = new Uri(webPath);
             userImage.EndInit();
 
-            if (freeze)
-            {
-                userImage.Freeze();
-            }
+            TryFreeze(userImage, freeze);
 
             return userImage;
         }
@@ -255,6 +255,22 @@ internal static class ImageController
             DebugConsole.WriteError(MethodBase.GetCurrentMethod()?.DeclaringType, e);
             Log.Error($"{MethodBase.GetCurrentMethod()?.DeclaringType}: {e.Message}");
             return null;
+        }
+    }
+
+    private static void TryFreeze(BitmapSource image, bool freeze)
+    {
+        if (!freeze || image == null || image.IsFrozen || !image.CanFreeze)
+        {
+            return;
+        }
+
+        try
+        {
+            image.Freeze();
+        }
+        catch (InvalidOperationException)
+        {
         }
     }
 

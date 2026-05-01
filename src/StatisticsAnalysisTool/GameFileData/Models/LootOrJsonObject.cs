@@ -4,11 +4,15 @@ using System.Text.Json.Serialization;
 
 namespace StatisticsAnalysisTool.GameFileData.Models;
 
-public class LootChestLoot
+public class LootOrJsonObject
 {
-    [JsonPropertyName("LootByTier")]
-    [JsonConverter(typeof(SingleOrArrayConverter<LootByTierJsonObject>))]
-    public List<LootByTierJsonObject> LootByTier { get; set; } = [];
+    [JsonPropertyName("@weight")]
+    [JsonConverter(typeof(FlexibleDoubleJsonConverter))]
+    public double Weight { get; set; }
+
+    [JsonPropertyName("@chance")]
+    [JsonConverter(typeof(FlexibleDoubleJsonConverter))]
+    public double Chance { get; set; }
 
     [JsonPropertyName("Item")]
     [JsonConverter(typeof(SingleOrArrayConverter<LootItemJsonObject>))]
@@ -17,4 +21,8 @@ public class LootChestLoot
     [JsonPropertyName("LootListReference")]
     [JsonConverter(typeof(SingleOrArrayConverter<LootListReferenceJsonObject>))]
     public List<LootListReferenceJsonObject> LootListReference { get; set; } = [];
+
+    [JsonPropertyName("OR")]
+    [JsonConverter(typeof(SingleOrArrayConverter<LootOrJsonObject>))]
+    public List<LootOrJsonObject> Or { get; set; } = [];
 }
