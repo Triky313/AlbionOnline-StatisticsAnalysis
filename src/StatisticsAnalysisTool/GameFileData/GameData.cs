@@ -8,7 +8,6 @@ using StatisticsAnalysisTool.Dungeon;
 using StatisticsAnalysisTool.Dungeon.Models;
 using StatisticsAnalysisTool.GameFileData.Models;
 using StatisticsAnalysisTool.Localization;
-using StatisticsAnalysisTool.Models;
 using StatisticsAnalysisTool.Properties;
 using StatisticsAnalysisTool.ViewModels;
 using StatisticsAnalysisTool.Views;
@@ -114,6 +113,16 @@ public static class GameData
                 fileNamesToLoad.Add("mists");
             }
 
+            if (Extractor.IsBinFileNewer(Path.Combine(gameFilesDirPath, Settings.Default.LootChestDataFileName), mainGameFolderPath, serverType, "lootchests"))
+            {
+                fileNamesToLoad.Add("lootchests");
+            }
+
+            if (Extractor.IsBinFileNewer(Path.Combine(gameFilesDirPath, Settings.Default.LootDataFileName), mainGameFolderPath, serverType, "loot"))
+            {
+                fileNamesToLoad.Add("loot");
+            }
+
             if (fileNamesToLoad.Count > 0)
             {
                 extractionTaskFactories.Add(() => extractor.ExtractGameDataAsync(tempDirPath, fileNamesToLoad.ToArray()));
@@ -126,6 +135,8 @@ public static class GameData
                 async () => await MistsData.LoadDataAsync().ConfigureAwait(false),
                 async () => await WorldData.LoadDataAsync().ConfigureAwait(false),
                 async () => await SpellData.LoadDataAsync().ConfigureAwait(false),
+                async () => await LootChestsData.LoadDataAsync().ConfigureAwait(false),
+                async () => await LootData.LoadDataAsync().ConfigureAwait(false),
                 () => LoadGameLocalizationsAsync(extractor, gameFilesDirPath)
             ];
 
@@ -232,8 +243,20 @@ public static class GameData
             ReadCommentHandling = JsonCommentHandling.Skip
         };
 
-        var data = await GetSpecificDataFromJsonFileLocalAsync<T>(regularDataFilePath, jsonSerializerOptions).ConfigureAwait(false);
+        var data = await GetSpecificDataFromJsonFileLocalAsync<T>(regularDataFilePath, jsonSerializerOptions, false).ConfigureAwait(false);
         FileController.DeleteFile(tempFilePath);
+
+        if (data.Count > 0 || !File.Exists(regularDataFilePath))
+        {
+            return data;
+        }
+
+        var fullRegularDataJson = await GetDataFromFullJsonFileLocalAsync<T, TRoot>(regularDataFilePath).ConfigureAwait(false);
+        if (fullRegularDataJson.Count > 0)
+        {
+            await FileController.SaveAsync(fullRegularDataJson, regularDataFilePath).ConfigureAwait(false);
+            return fullRegularDataJson;
+        }
 
         return data;
     }
@@ -253,7 +276,7 @@ public static class GameData
         }
     }
 
-    private static async Task<List<T>> GetSpecificDataFromJsonFileLocalAsync<T>(string localFilePath, JsonSerializerOptions options)
+    private static async Task<List<T>> GetSpecificDataFromJsonFileLocalAsync<T>(string localFilePath, JsonSerializerOptions options, bool logErrors = true)
     {
         try
         {
@@ -262,8 +285,12 @@ public static class GameData
         }
         catch (Exception e)
         {
-            DebugConsole.WriteError(MethodBase.GetCurrentMethod()?.DeclaringType, e);
-            Log.Error(e, "{message}", MethodBase.GetCurrentMethod()?.DeclaringType);
+            if (logErrors)
+            {
+                DebugConsole.WriteError(MethodBase.GetCurrentMethod()?.DeclaringType, e);
+                Log.Error(e, "{message}", MethodBase.GetCurrentMethod()?.DeclaringType);
+            }
+
             return new List<T>();
         }
     }
@@ -284,7 +311,8 @@ public static class GameData
             return rootObject switch
             {
                 MobJsonRootObject mobRootObject => mobRootObject.Mobs?.Mob as List<T> ?? [],
-                LootChestRoot lootChestRoot => lootChestRoot.LootChests?.LootChest as List<T> ?? [],
+                LootChestJsonRootObject lootChestRoot => lootChestRoot.LootChests?.LootChest as List<T> ?? [],
+                LootJsonRootObject lootRoot => lootRoot.LootDefinition?.Lootlist as List<T> ?? [],
                 WorldJsonRootObject worldJsonRoot => worldJsonRoot.World?.Clusters?.Cluster as List<T> ?? [],
                 MistsJsonRootObject mistsJsonRoot => mistsJsonRoot.Mists?.MistsMaps?.MapSet?.SelectMany(x => x.Map).Select(map => new MistsJsonObject
                 {

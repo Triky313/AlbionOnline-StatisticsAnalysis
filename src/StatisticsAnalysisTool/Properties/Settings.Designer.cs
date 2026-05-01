@@ -346,6 +346,15 @@ namespace StatisticsAnalysisTool.Properties {
                 return ((string)(this["MobDataFileName"]));
             }
         }
+
+        [global::System.Configuration.ApplicationScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("loot.json")]
+        public string LootDataFileName {
+            get {
+                return ((string)(this["LootDataFileName"]));
+            }
+        }
         
         [global::System.Configuration.ApplicationScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]

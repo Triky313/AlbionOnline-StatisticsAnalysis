@@ -92,6 +92,9 @@
     <Setting Name="MobDataFileName" Type="System.String" Scope="Application">
       <Value Profile="(Default)">mobs.json</Value>
     </Setting>
+    <Setting Name="LootDataFileName" Type="System.String" Scope="Application">
+      <Value Profile="(Default)">loot.json</Value>
+    </Setting>
     <Setting Name="DungeonClosedSoundFileName" Type="System.String" Scope="Application">
       <Value Profile="(Default)">dungeon_closed.wav</Value>
     </Setting>
