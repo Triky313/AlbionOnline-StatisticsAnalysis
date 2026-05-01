@@ -9,29 +9,17 @@ using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Diagnostics;
-using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Windows;
 
 namespace StatisticsAnalysisTool.Cluster;
 
-public sealed class ClusterController
+public sealed class ClusterController(TrackingController trackingController, MainWindowViewModel mainWindowViewModel)
 {
     private const int MaxEnteredCluster = 1000;
 
-    private readonly TrackingController _trackingController;
-    private readonly MainWindowViewModel _mainWindowViewModel;
-
     public static ClusterInfo CurrentCluster { get; } = new();
-
-    public ClusterController(TrackingController trackingController, MainWindowViewModel mainWindowViewModel)
-    {
-        _trackingController = trackingController;
-        _mainWindowViewModel = mainWindowViewModel;
-
-        CreateRandomClusterInfosForTracking(0);
-    }
 
     public void RegisterEvents()
     {
@@ -51,10 +39,10 @@ public sealed class ClusterController
 
     public event Action<ClusterInfo> OnChangeCluster;
 
-    public void ChangeClusterInformation(MapType mapType, Guid? mapGuid, string clusterIndex, string instanceName, string worldMapDataType, byte[] dungeonInformation, string mainClusterIndex, Tier mistsDungeonTier)
+    public void ChangeClusterInformation(MapType mapType, Guid? mapGuid, string clusterIndex, string instanceName, string worldMapDataType, byte[] dungeonInformation, string mainClusterIndex)
     {
         CurrentCluster.ClusterInfoFullyAvailable = false;
-        CurrentCluster.SetClusterInfo(mapType, mapGuid, clusterIndex, instanceName, worldMapDataType, dungeonInformation, mainClusterIndex, mistsDungeonTier);
+        CurrentCluster.SetClusterInfo(mapType, mapGuid, clusterIndex, instanceName, worldMapDataType, dungeonInformation, mainClusterIndex);
     }
 
     public void SetJoinClusterInformation(string index, string sourceClusterIndex, Guid? mapGuid, MapType mapType)
@@ -63,7 +51,7 @@ public sealed class ClusterController
         CurrentCluster.Entered = DateTime.UtcNow;
         CurrentCluster.ClusterInfoFullyAvailable = true;
 
-        if (_trackingController.IsTrackingAllowedByMainCharacter())
+        if (trackingController.IsTrackingAllowedByMainCharacter())
         {
             OnChangeCluster?.Invoke(CurrentCluster);
         }
@@ -73,19 +61,19 @@ public sealed class ClusterController
 
     public void SetAndResetValues(ClusterInfo currentCluster)
     {
-        _trackingController.TradeController.ResetCraftingBuildingInfo();
-        _mainWindowViewModel.DamageMeterBindings.GetSnapshot(_mainWindowViewModel.DamageMeterBindings.IsSnapshotAfterMapChangeActive);
-        _trackingController.CombatController.ResetDamageMeterByClusterChange();
-        _trackingController.VaultController.ResetDiscoveredItems();
-        _trackingController.VaultController.ResetInternalVaultContainer();
-        _trackingController.VaultController.ResetCurrentInternalVault();
-        _trackingController.TreasureController.RemoveTemporaryTreasures();
-        _trackingController.TreasureController.UpdateLootedChestsDashboardUi();
-        _trackingController.LootController.ResetLocalPlayerDiscoveredLoot();
-        _trackingController.LootController.ResetIdentifiedBodies();
-        _ = _trackingController.TradeController.RemoveTradesByDaysInSettingsAsync();
-        _ = _trackingController.GatheringController.SetGatheredResourcesClosedAsync();
-        _trackingController.PartyController.UpdateIsPlayerInspectedToFalse();
+        trackingController.TradeController.ResetCraftingBuildingInfo();
+        mainWindowViewModel.DamageMeterBindings.GetSnapshot(mainWindowViewModel.DamageMeterBindings.IsSnapshotAfterMapChangeActive);
+        trackingController.CombatController.ResetDamageMeterByClusterChange();
+        trackingController.VaultController.ResetDiscoveredItems();
+        trackingController.VaultController.ResetInternalVaultContainer();
+        trackingController.VaultController.ResetCurrentInternalVault();
+        trackingController.TreasureController.RemoveTemporaryTreasures();
+        trackingController.TreasureController.UpdateLootedChestsDashboardUi();
+        trackingController.LootController.ResetLocalPlayerDiscoveredLoot();
+        trackingController.LootController.ResetIdentifiedBodies();
+        _ = trackingController.TradeController.RemoveTradesByDaysInSettingsAsync();
+        _ = trackingController.GatheringController.SetGatheredResourcesClosedAsync();
+        trackingController.PartyController.UpdateIsPlayerInspectedToFalse();
     }
 
     public static string ComposingMapInfoString(string index, MapType mapType, string instanceName)
@@ -109,16 +97,16 @@ public sealed class ClusterController
         await Application.Current.Dispatcher.InvokeAsync(() =>
         {
             var newCluster = new ClusterInfo(currentCluster);
-            _mainWindowViewModel.EnteredCluster.Insert(0, newCluster);
+            mainWindowViewModel.EnteredCluster.Insert(0, newCluster);
             RemovesClusterIfMoreThanLimit();
         });
     }
 
     private void RemovesClusterIfMoreThanLimit()
     {
-        while (_mainWindowViewModel?.EnteredCluster?.Count > MaxEnteredCluster)
+        while (mainWindowViewModel?.EnteredCluster?.Count > MaxEnteredCluster)
         {
-            _mainWindowViewModel?.EnteredCluster?.RemoveAt(_mainWindowViewModel.EnteredCluster.Count - 1);
+            mainWindowViewModel?.EnteredCluster?.RemoveAt(mainWindowViewModel.EnteredCluster.Count - 1);
         }
     }
 
@@ -142,12 +130,12 @@ public sealed class ClusterController
 
     private void UpdateCurrentMapHistoryRandomDungeonInformationOnUiThread(Tier randomDungeonTier, int randomDungeonLevel)
     {
-        if (_mainWindowViewModel?.EnteredCluster is null)
+        if (mainWindowViewModel?.EnteredCluster is null)
         {
             return;
         }
 
-        var currentHistoryEntry = _mainWindowViewModel.EnteredCluster.FirstOrDefault(x => x.Guid == CurrentCluster.Guid && x.MapType == MapType.RandomDungeon);
+        var currentHistoryEntry = mainWindowViewModel.EnteredCluster.FirstOrDefault(x => x.Guid == CurrentCluster.Guid && x.MapType == MapType.RandomDungeon);
         currentHistoryEntry?.SetRandomDungeonTrackingInfo(randomDungeonTier, randomDungeonLevel);
     }
 
@@ -157,9 +145,9 @@ public sealed class ClusterController
 
     public void UpdateUserInfoUi(ClusterInfo currentCluster)
     {
-        _mainWindowViewModel.UserTrackingBindings.CurrentMapInfoBinding.Tier = currentCluster.TierString;
-        _mainWindowViewModel.UserTrackingBindings.CurrentMapInfoBinding.ClusterMode = currentCluster.ClusterMode;
-        _mainWindowViewModel.UserTrackingBindings.CurrentMapInfoBinding.ComposingMapInfoString(currentCluster);
+        mainWindowViewModel.UserTrackingBindings.CurrentMapInfoBinding.Tier = currentCluster.TierString;
+        mainWindowViewModel.UserTrackingBindings.CurrentMapInfoBinding.ClusterMode = currentCluster.ClusterMode;
+        mainWindowViewModel.UserTrackingBindings.CurrentMapInfoBinding.ComposingMapInfoString(currentCluster);
     }
 
     #endregion
@@ -187,7 +175,7 @@ public sealed class ClusterController
 
         await Application.Current.Dispatcher.InvokeAsync(() =>
         {
-            _mainWindowViewModel.EnteredCluster = new ObservableCollection<ClusterInfo>(enteredClusters);
+            mainWindowViewModel.EnteredCluster = new ObservableCollection<ClusterInfo>(enteredClusters);
         });
 
         if (clusterInfoDtos.Count > MaxEnteredCluster)
@@ -201,7 +189,7 @@ public sealed class ClusterController
     {
         DirectoryController.CreateDirectoryWhenNotExists(AppDataPaths.UserDataDirectory);
 
-        var clusterHistoryToSave = _mainWindowViewModel.EnteredCluster
+        var clusterHistoryToSave = mainWindowViewModel.EnteredCluster
             .Take(MaxEnteredCluster)
             .Select(ClusterInfoMapping.Mapping)
             .ToList();
@@ -214,7 +202,7 @@ public sealed class ClusterController
     {
         await Application.Current.Dispatcher.InvokeAsync(() =>
         {
-            _mainWindowViewModel.EnteredCluster.Clear();
+            mainWindowViewModel.EnteredCluster.Clear();
         });
 
         await SaveInFileAsync();
@@ -224,31 +212,6 @@ public sealed class ClusterController
     private static string GetMapHistoryFilePath()
     {
         return AppDataPaths.UserDataFile(Settings.Default.MapHistoryFileName);
-    }
-
-    #endregion
-
-    #region Test methods
-
-    private static readonly Random Random = new();
-
-    private static T RandomEnumValue<T>()
-    {
-        var v = Enum.GetValues(typeof(T));
-        return (T) v.GetValue(Random.Next(v.Length));
-    }
-
-    private void CreateRandomClusterInfosForTracking(int runs)
-    {
-        for (var i = 0; i < runs; i++)
-        {
-            var clusterInfo = new ClusterInfo();
-            var value = RandomEnumValue<MapType>();
-
-            clusterInfo.SetClusterInfo(value, Guid.NewGuid(), "3000", "Meine Super Insel", "@ISLAND", null, "4001", Tier.T7);
-
-            UpdateClusterTracking(clusterInfo);
-        }
     }
 
     #endregion

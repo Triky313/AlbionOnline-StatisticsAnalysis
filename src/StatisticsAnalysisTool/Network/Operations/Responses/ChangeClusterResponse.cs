@@ -1,7 +1,5 @@
 ﻿using Serilog;
 using StatisticsAnalysisTool.Cluster;
-using StatisticsAnalysisTool.Common;
-using StatisticsAnalysisTool.Enumerations;
 using StatisticsAnalysisTool.GameFileData;
 using System;
 using System.Collections.Generic;
@@ -18,7 +16,6 @@ public class ChangeClusterResponse
     public string IslandName;
     public byte[] DungeonInformation;
     public string MainClusterIndex;
-    public Tier MistsDungeonTier;
 
     public ChangeClusterResponse(Dictionary<byte, object> parameters)
     {
@@ -45,28 +42,19 @@ public class ChangeClusterResponse
                 }
             }
 
-            // TODO: Old stuff, delete this!
             if (parameters.ContainsKey(1))
             {
                 WorldMapDataType = string.IsNullOrEmpty(parameters[1].ToString()) ? string.Empty : parameters[1].ToString();
             }
 
-            // TODO: Old stuff, delete this!
             if (parameters.ContainsKey(2))
             {
                 IslandName = string.IsNullOrEmpty(parameters[2].ToString()) ? string.Empty : parameters[2].ToString();
             }
 
-            // TODO: Old stuff, delete this!
             if (parameters.TryGetValue(3, out object dungeonInfo))
             {
                 DungeonInformation = ((byte[]) dungeonInfo).ToArray();
-            }
-
-            // TODO: Old stuff, delete this!
-            if (parameters.TryGetValue(5, out object mistsDungeonTier))
-            {
-                MistsDungeonTier = WorldData.GetTier(mistsDungeonTier.ObjectToInt());
             }
         }
         catch (Exception e)
