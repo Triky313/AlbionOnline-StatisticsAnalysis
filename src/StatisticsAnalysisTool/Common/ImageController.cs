@@ -1,6 +1,5 @@
 using Serilog;
 using StatisticsAnalysisTool.Diagnostics;
-using StatisticsAnalysisTool.Properties;
 using System;
 using System.Collections.Generic;
 using System.IO;

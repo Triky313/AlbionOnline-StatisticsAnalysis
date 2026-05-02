@@ -78,6 +78,19 @@ public class ExtensionMethodTests
     }
 
     [Test]
+    public void ToTimerString_ReturnsTotalHoursForTimeSpanInput()
+    {
+        // Arrange
+        var span = new TimeSpan(1, 1, 2, 3);
+
+        // Act
+        var result = span.ToTimerString();
+
+        // Assert
+        result.Should().Be("25:02:03");
+    }
+
+    [Test]
     public void ToTimerString_ReturnsFormattedStringForIntInput()
     {
         // Arrange
@@ -88,6 +101,19 @@ public class ExtensionMethodTests
 
         // Assert
         result.Should().Be("01:02:03");
+    }
+
+    [Test]
+    public void ToTimerString_ReturnsTotalHoursForIntInput()
+    {
+        // Arrange
+        var seconds = 90061;
+
+        // Act
+        var result = seconds.ToTimerString();
+
+        // Assert
+        result.Should().Be("25:01:01");
     }
 
     [Test]
