@@ -38,6 +38,14 @@ public partial class LoggingControl
         mainWindowViewModel.LoggingBindings.IsAllButtonsEnabled = true;
     }
 
+    private void BtnAddLootLogFiles_Click(object sender, RoutedEventArgs e)
+    {
+        var mainWindowViewModel = ServiceLocator.Resolve<MainWindowViewModel>();
+        mainWindowViewModel.LoggingBindings.IsAllButtonsEnabled = false;
+        mainWindowViewModel.LoggingBindings.OpenLootLogFilePathSelection();
+        mainWindowViewModel.LoggingBindings.IsAllButtonsEnabled = true;
+    }
+
     private void BtnLogCompare_Click(object sender, RoutedEventArgs e)
     {
         var mainWindowViewModel = ServiceLocator.Resolve<MainWindowViewModel>();

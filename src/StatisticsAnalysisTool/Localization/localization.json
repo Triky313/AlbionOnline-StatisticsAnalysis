@@ -37728,6 +37728,32 @@
       ]
     },
     {
+      "tuid": "ADD_LOOT_LOG_FILES",
+      "tuv": [
+        {
+          "lang": "de-DE",
+          "seg": "Loot Logs hinzugefügt"
+        },
+        {
+          "lang": "en-US",
+          "seg": "Add loot log files"
+        }
+      ]
+    },
+    {
+      "tuid": "SELECT_LOOT_LOG_FILES",
+      "tuv": [
+        {
+          "lang": "de-DE",
+          "seg": "Loot Log Dateien auswählen"
+        },
+        {
+          "lang": "en-US",
+          "seg": "Select loot log files"
+        }
+      ]
+    },
+    {
       "tuid": "COMPARE_LOGS",
       "tuv": [
         {
