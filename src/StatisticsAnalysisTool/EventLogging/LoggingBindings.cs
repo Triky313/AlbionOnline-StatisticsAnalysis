@@ -1,4 +1,5 @@
 using Ookii.Dialogs.Wpf;
+using Microsoft.VisualBasic.FileIO;
 using StatisticsAnalysisTool.Common;
 using StatisticsAnalysisTool.Common.UserSettings;
 using StatisticsAnalysisTool.EventLogging.Notification;
@@ -54,6 +55,7 @@ public class LoggingBindings : BaseViewModel
     private ObservableCollection<VaultContainerLogItem> _vaultLogItems = [];
     private bool _isAllButtonsEnabled = true;
     private Visibility _isLootComparatorInfoPopupVisible = Visibility.Collapsed;
+    private const int LootLogTimeToleranceSeconds = 2;
 
     public void Init()
     {
@@ -322,16 +324,244 @@ public class LoggingBindings : BaseViewModel
                 }
                 catch (Exception ex)
                 {
-                    Debug.Print($"Fehler beim Verarbeiten von Datei '{filePath}': {ex.Message}");
+                    Debug.Print($"Error processing chest log file '{filePath}': {ex.Message}");
                 }
             }
 
             VaultLogItems = new ObservableCollection<VaultContainerLogItem>(items.Where(x => x.Quantity > 0));
 
-            Debug.Print($"Insgesamt {VaultLogItems.Count} Einträge erfolgreich geladen.");
+            Debug.Print($"Loaded {VaultLogItems.Count} chest log entries.");
         }
 
+        IsAllButtonsEnabled = true;
+    }
+
+    public void OpenLootLogFilePathSelection()
+    {
+        var dialog = new VistaOpenFileDialog()
+        {
+            Filter = @"CSV files (*.csv)|*.csv",
+            Title = LocalizationController.Translation("SELECT_LOOT_LOG_FILES"),
+            Multiselect = true
+        };
+
         IsAllButtonsEnabled = false;
+        var result = dialog.ShowDialog();
+
+        if (result.HasValue && result.Value)
+        {
+            var addedItems = AddLootLogFiles(dialog.FileNames);
+            Debug.Print($"Imported {addedItems} loot log entries.");
+            _ = UpdateFilteredLootedItemsAsync();
+        }
+
+        IsAllButtonsEnabled = true;
+    }
+
+    private int AddLootLogFiles(IEnumerable<string> filePaths)
+    {
+        var addedItems = 0;
+
+        foreach (var filePath in filePaths)
+        {
+            try
+            {
+                foreach (var lootLogItem in ReadLootLogFile(filePath))
+                {
+                    if (TryAddLootLogItem(lootLogItem))
+                    {
+                        addedItems++;
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                Debug.Print($"Error processing loot log file '{filePath}': {ex.Message}");
+            }
+        }
+
+        return addedItems;
+    }
+
+    private static IEnumerable<ImportedLootLogItem> ReadLootLogFile(string filePath)
+    {
+        using var parser = new TextFieldParser(filePath)
+        {
+            TextFieldType = FieldType.Delimited,
+            HasFieldsEnclosedInQuotes = true,
+            TrimWhiteSpace = false
+        };
+
+        parser.SetDelimiters(";");
+
+        if (!parser.EndOfData)
+        {
+            parser.ReadFields();
+        }
+
+        while (!parser.EndOfData)
+        {
+            var values = parser.ReadFields();
+            if (TryParseLootLogFields(values, out var lootLogItem))
+            {
+                yield return lootLogItem;
+            }
+        }
+    }
+
+    private static bool TryParseLootLogFields(string[] values, out ImportedLootLogItem lootLogItem)
+    {
+        lootLogItem = null;
+
+        if (values is not { Length: >= 10 })
+        {
+            return false;
+        }
+
+        if (!TryParseLootLogTimestamp(values[0], out var utcPickupTime))
+        {
+            return false;
+        }
+
+        if (!int.TryParse(values[6], NumberStyles.Integer, CultureInfo.InvariantCulture, out var quantity) || quantity <= 0)
+        {
+            return false;
+        }
+
+        var item = GetLootLogItem(values[4], values[5]);
+        if (item is null)
+        {
+            return false;
+        }
+
+        lootLogItem = new ImportedLootLogItem
+        {
+            UtcPickupTime = utcPickupTime,
+            LootedByAlliance = values[1],
+            LootedByGuild = values[2],
+            LootedByName = values[3],
+            Item = item,
+            Quantity = quantity,
+            LootedFromAlliance = values[7],
+            LootedFromGuild = values[8],
+            LootedFromName = values[9]
+        };
+
+        return !string.IsNullOrWhiteSpace(lootLogItem.LootedByName);
+    }
+
+    private static bool TryParseLootLogTimestamp(string value, out DateTime utcPickupTime)
+    {
+        utcPickupTime = DateTime.MinValue;
+
+        if (DateTimeOffset.TryParse(value, CultureInfo.InvariantCulture, DateTimeStyles.AssumeUniversal, out var dateTimeOffset))
+        {
+            utcPickupTime = dateTimeOffset.UtcDateTime;
+            return true;
+        }
+
+        if (DateTime.TryParseExact(value, SupportedFormats, CultureInfo.InvariantCulture, DateTimeStyles.AssumeUniversal | DateTimeStyles.AdjustToUniversal, out var dateTime))
+        {
+            utcPickupTime = dateTime;
+            return true;
+        }
+
+        if (DateTime.TryParse(value, CultureInfo.InvariantCulture, DateTimeStyles.AssumeUniversal | DateTimeStyles.AdjustToUniversal, out dateTime))
+        {
+            utcPickupTime = dateTime;
+            return true;
+        }
+
+        return false;
+    }
+
+    private static Item GetLootLogItem(string itemIdentifier, string itemName)
+    {
+        if (int.TryParse(itemIdentifier, NumberStyles.Integer, CultureInfo.InvariantCulture, out var itemIndex))
+        {
+            return ItemController.GetItemByIndex(itemIndex);
+        }
+
+        var item = ItemController.GetItemByUniqueName(itemIdentifier);
+        if (item is not null)
+        {
+            return item;
+        }
+
+        var enchantment = ItemController.GetItemLevel(itemIdentifier);
+        return ItemController.GetItemByLocalizedName(itemName, enchantment);
+    }
+
+    private bool TryAddLootLogItem(ImportedLootLogItem lootLogItem)
+    {
+        if (IsDuplicateLootLogItem(lootLogItem))
+        {
+            return false;
+        }
+
+        var lootingPlayer = LootingPlayers.FirstOrDefault(x => string.Equals(x.PlayerName, lootLogItem.LootedByName, StringComparison.OrdinalIgnoreCase));
+        if (lootingPlayer is not null)
+        {
+            UpdateLootingPlayerAffiliations(lootingPlayer, lootLogItem);
+            lootingPlayer.LootedItems.Add(CreateLootedItem(lootLogItem));
+            return true;
+        }
+
+        LootingPlayers.Add(new LootingPlayer()
+        {
+            PlayerName = lootLogItem.LootedByName,
+            PlayerGuild = lootLogItem.LootedByGuild,
+            PlayerAlliance = lootLogItem.LootedByAlliance,
+            LootingPlayerVisibility = Visibility.Visible,
+            LootedItems =
+            [
+                CreateLootedItem(lootLogItem)
+            ]
+        });
+
+        return true;
+    }
+
+    private bool IsDuplicateLootLogItem(ImportedLootLogItem lootLogItem)
+    {
+        return LootingPlayers
+            .SelectMany(player => player.LootedItems)
+            .Where(item => !item.IsItemFromVaultLog)
+            .Any(item => IsSameLootLogItem(item, lootLogItem));
+    }
+
+    private static bool IsSameLootLogItem(LootedItem lootedItem, ImportedLootLogItem lootLogItem)
+    {
+        return lootedItem.ItemIndex == lootLogItem.Item.Index
+               && lootedItem.Quantity == lootLogItem.Quantity
+               && Math.Abs((lootedItem.UtcPickupTime - lootLogItem.UtcPickupTime).TotalSeconds) <= LootLogTimeToleranceSeconds;
+    }
+
+    private static LootedItem CreateLootedItem(ImportedLootLogItem lootLogItem)
+    {
+        return new LootedItem
+        {
+            UtcPickupTime = lootLogItem.UtcPickupTime,
+            ItemIndex = lootLogItem.Item.Index,
+            Quantity = lootLogItem.Quantity,
+            LootedByName = lootLogItem.LootedByName,
+            LootedFromName = lootLogItem.LootedFromName,
+            LootedFromGuild = lootLogItem.LootedFromGuild,
+            IsTrash = string.Equals(lootLogItem.Item.FullItemInformation?.ShopSubCategory1, "trash", StringComparison.OrdinalIgnoreCase)
+        };
+    }
+
+    private static void UpdateLootingPlayerAffiliations(LootingPlayer lootingPlayer, ImportedLootLogItem lootLogItem)
+    {
+        if (string.IsNullOrWhiteSpace(lootingPlayer.PlayerGuild) && !string.IsNullOrWhiteSpace(lootLogItem.LootedByGuild))
+        {
+            lootingPlayer.PlayerGuild = lootLogItem.LootedByGuild;
+        }
+
+        if (string.IsNullOrWhiteSpace(lootingPlayer.PlayerAlliance) && !string.IsNullOrWhiteSpace(lootLogItem.LootedByAlliance))
+        {
+            lootingPlayer.PlayerAlliance = lootLogItem.LootedByAlliance;
+        }
     }
 
     private static VaultContainerLogItem ParseCsvLine(string line)
@@ -386,6 +616,47 @@ public class LoggingBindings : BaseViewModel
         IsLootComparatorInfoPopupVisible = IsLootComparatorInfoPopupVisible == Visibility.Visible ? Visibility.Collapsed : Visibility.Visible;
     }
 
+    public string StatusFilterSummary => BuildFilterSummary(LoggingTranslation.FilterStatus, CountSelectedFilters(IsShowingLost, IsShowingResolved, IsShowingDonated, IsShowingTrash), 4);
+    public string TierFilterSummary => BuildFilterSummary(LoggingTranslation.FilterTier, CountSelectedFilters(IsShowingT1ToT3, IsShowingT4, IsShowingT5, IsShowingT6, IsShowingT7, IsShowingT8), 6);
+    public string TypeFilterSummary => BuildFilterSummary(LoggingTranslation.FilterType, CountSelectedFilters(IsShowingFood, IsShowingPotion, IsShowingBag, IsShowingCape, IsShowingMount, IsShowingOthers), 6);
+
+    private static string BuildFilterSummary(string filterName, int selectedCount, int totalCount)
+    {
+        var selectedText = selectedCount switch
+        {
+            0 => LoggingTranslation.FilterNone,
+            var count when count == totalCount => LoggingTranslation.FilterAll,
+            _ => LocalizationController.Translation("LOOT_FILTER_SELECTED_COUNT",
+                ["COUNT"],
+                [selectedCount.ToString(CultureInfo.InvariantCulture)])
+        };
+
+        return $"{filterName}: {selectedText}";
+    }
+
+    private static int CountSelectedFilters(params bool[] values)
+    {
+        return values.Count(value => value);
+    }
+
+    private void NotifyStatusFilterChanged()
+    {
+        _ = UpdateFilteredLootedItemsAsync();
+        OnPropertyChanged(nameof(StatusFilterSummary));
+    }
+
+    private void NotifyTierFilterChanged()
+    {
+        _ = UpdateFilteredLootedItemsAsync();
+        OnPropertyChanged(nameof(TierFilterSummary));
+    }
+
+    private void NotifyTypeFilterChanged()
+    {
+        _ = UpdateFilteredLootedItemsAsync();
+        OnPropertyChanged(nameof(TypeFilterSummary));
+    }
+
     private static readonly string[] SupportedFormats =
     [
         "MM/dd/yyyy HH:mm:ss",
@@ -393,6 +664,19 @@ public class LoggingBindings : BaseViewModel
         "yyyy-MM-dd HH:mm:ss",
         "dd.MM.yyyy HH:mm:ss"
     ];
+
+    private sealed class ImportedLootLogItem
+    {
+        public DateTime UtcPickupTime { get; init; }
+        public string LootedByAlliance { get; init; }
+        public string LootedByGuild { get; init; }
+        public string LootedByName { get; init; }
+        public Item Item { get; init; }
+        public int Quantity { get; init; }
+        public string LootedFromAlliance { get; init; }
+        public string LootedFromGuild { get; init; }
+        public string LootedFromName { get; init; }
+    }
 
     #endregion
 
@@ -520,8 +804,8 @@ public class LoggingBindings : BaseViewModel
         set
         {
             _isShowingLost = value;
-            _ = UpdateFilteredLootedItemsAsync();
             OnPropertyChanged();
+            NotifyStatusFilterChanged();
         }
     }
 
@@ -531,8 +815,8 @@ public class LoggingBindings : BaseViewModel
         set
         {
             _isShowingResolved = value;
-            _ = UpdateFilteredLootedItemsAsync();
             OnPropertyChanged();
+            NotifyStatusFilterChanged();
         }
     }
 
@@ -542,8 +826,8 @@ public class LoggingBindings : BaseViewModel
         set
         {
             _isShowingDonated = value;
-            _ = UpdateFilteredLootedItemsAsync();
             OnPropertyChanged();
+            NotifyStatusFilterChanged();
         }
     }
 
@@ -553,8 +837,8 @@ public class LoggingBindings : BaseViewModel
         set
         {
             _isShowingTrash = value;
-            _ = UpdateFilteredLootedItemsAsync();
             OnPropertyChanged();
+            NotifyStatusFilterChanged();
         }
     }
 
@@ -564,8 +848,8 @@ public class LoggingBindings : BaseViewModel
         set
         {
             _isShowingT1ToT3 = value;
-            _ = UpdateFilteredLootedItemsAsync();
             OnPropertyChanged();
+            NotifyTierFilterChanged();
         }
     }
 
@@ -575,8 +859,8 @@ public class LoggingBindings : BaseViewModel
         set
         {
             _isShowingT4 = value;
-            _ = UpdateFilteredLootedItemsAsync();
             OnPropertyChanged();
+            NotifyTierFilterChanged();
         }
     }
 
@@ -586,8 +870,8 @@ public class LoggingBindings : BaseViewModel
         set
         {
             _isShowingT5 = value;
-            _ = UpdateFilteredLootedItemsAsync();
             OnPropertyChanged();
+            NotifyTierFilterChanged();
         }
     }
 
@@ -597,8 +881,8 @@ public class LoggingBindings : BaseViewModel
         set
         {
             _isShowingT6 = value;
-            _ = UpdateFilteredLootedItemsAsync();
             OnPropertyChanged();
+            NotifyTierFilterChanged();
         }
     }
 
@@ -608,8 +892,8 @@ public class LoggingBindings : BaseViewModel
         set
         {
             _isShowingT7 = value;
-            _ = UpdateFilteredLootedItemsAsync();
             OnPropertyChanged();
+            NotifyTierFilterChanged();
         }
     }
 
@@ -619,8 +903,8 @@ public class LoggingBindings : BaseViewModel
         set
         {
             _isShowingT8 = value;
-            _ = UpdateFilteredLootedItemsAsync();
             OnPropertyChanged();
+            NotifyTierFilterChanged();
         }
     }
 
@@ -630,8 +914,8 @@ public class LoggingBindings : BaseViewModel
         set
         {
             _isShowingBag = value;
-            _ = UpdateFilteredLootedItemsAsync();
             OnPropertyChanged();
+            NotifyTypeFilterChanged();
         }
     }
 
@@ -641,8 +925,8 @@ public class LoggingBindings : BaseViewModel
         set
         {
             _isShowingCape = value;
-            _ = UpdateFilteredLootedItemsAsync();
             OnPropertyChanged();
+            NotifyTypeFilterChanged();
         }
     }
 
@@ -652,8 +936,8 @@ public class LoggingBindings : BaseViewModel
         set
         {
             _isShowingFood = value;
-            _ = UpdateFilteredLootedItemsAsync();
             OnPropertyChanged();
+            NotifyTypeFilterChanged();
         }
     }
 
@@ -663,8 +947,8 @@ public class LoggingBindings : BaseViewModel
         set
         {
             _isShowingPotion = value;
-            _ = UpdateFilteredLootedItemsAsync();
             OnPropertyChanged();
+            NotifyTypeFilterChanged();
         }
     }
 
@@ -674,8 +958,8 @@ public class LoggingBindings : BaseViewModel
         set
         {
             _isShowingMount = value;
-            _ = UpdateFilteredLootedItemsAsync();
             OnPropertyChanged();
+            NotifyTypeFilterChanged();
         }
     }
 
@@ -685,8 +969,8 @@ public class LoggingBindings : BaseViewModel
         set
         {
             _isShowingOthers = value;
-            _ = UpdateFilteredLootedItemsAsync();
             OnPropertyChanged();
+            NotifyTypeFilterChanged();
         }
     }
 

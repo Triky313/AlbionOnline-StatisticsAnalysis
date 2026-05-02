@@ -37728,6 +37728,110 @@
       ]
     },
     {
+      "tuid": "ADD_LOOT_LOG_FILES",
+      "tuv": [
+        {
+          "lang": "de-DE",
+          "seg": "Loot Logs hinzugefügt"
+        },
+        {
+          "lang": "en-US",
+          "seg": "Add loot log files"
+        }
+      ]
+    },
+    {
+      "tuid": "SELECT_LOOT_LOG_FILES",
+      "tuv": [
+        {
+          "lang": "de-DE",
+          "seg": "Loot Log Dateien auswählen"
+        },
+        {
+          "lang": "en-US",
+          "seg": "Select loot log files"
+        }
+      ]
+    },
+    {
+      "tuid": "LOOT_FILTER_STATUS",
+      "tuv": [
+        {
+          "lang": "de-DE",
+          "seg": "Status"
+        },
+        {
+          "lang": "en-US",
+          "seg": "Status"
+        }
+      ]
+    },
+    {
+      "tuid": "LOOT_FILTER_TIER",
+      "tuv": [
+        {
+          "lang": "de-DE",
+          "seg": "Tier"
+        },
+        {
+          "lang": "en-US",
+          "seg": "Tier"
+        }
+      ]
+    },
+    {
+      "tuid": "LOOT_FILTER_TYPE",
+      "tuv": [
+        {
+          "lang": "de-DE",
+          "seg": "Typ"
+        },
+        {
+          "lang": "en-US",
+          "seg": "Type"
+        }
+      ]
+    },
+    {
+      "tuid": "LOOT_FILTER_ALL",
+      "tuv": [
+        {
+          "lang": "de-DE",
+          "seg": "Alle"
+        },
+        {
+          "lang": "en-US",
+          "seg": "All"
+        }
+      ]
+    },
+    {
+      "tuid": "LOOT_FILTER_NONE",
+      "tuv": [
+        {
+          "lang": "de-DE",
+          "seg": "Keine"
+        },
+        {
+          "lang": "en-US",
+          "seg": "None"
+        }
+      ]
+    },
+    {
+      "tuid": "LOOT_FILTER_SELECTED_COUNT",
+      "tuv": [
+        {
+          "lang": "de-DE",
+          "seg": "{COUNT} ausgew\u00e4hlt"
+        },
+        {
+          "lang": "en-US",
+          "seg": "{COUNT} selected"
+        }
+      ]
+    },
+    {
       "tuid": "COMPARE_LOGS",
       "tuv": [
         {
@@ -38201,6 +38305,32 @@
         {
           "lang": "fr-FR",
           "seg": "Dans l'outil, vous pouvez maintenant cliquer sur le bouton 'Télécharger les données' et charger votre fichier."
+        }
+      ]
+    },
+    {
+      "tuid": "LOOT_COMPARATOR_HEADER_LOOT_LOG_FILES",
+      "tuv": [
+        {
+          "lang": "de-DE",
+          "seg": "Loot-Log-Dateien"
+        },
+        {
+          "lang": "en-US",
+          "seg": "Loot log files"
+        }
+      ]
+    },
+    {
+      "tuid": "LOOT_COMPARATOR_DESCRIPTION_8",
+      "tuv": [
+        {
+          "lang": "de-DE",
+          "seg": "Loot-Log-Dateien k\u00f6nnen im Logging-Tab \u00fcber den gr\u00fcnen CSV-Button gespeichert werden. Diese Datei kann anschlie\u00dfend in einem anderen Tool hinzugef\u00fcgt werden."
+        },
+        {
+          "lang": "en-US",
+          "seg": "Loot log files can be saved in the Logging tab using the green CSV button. This file can then be added in another tool."
         }
       ]
     },

@@ -1,24 +1,65 @@
 <UserControl x:Class="StatisticsAnalysisTool.UserControls.LoggingControl"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:fa5="http://schemas.fontawesome.com/icons/"
              xmlns:vwp="clr-namespace:WpfToolkit.Controls;assembly=VirtualizingWrapPanel"
              xmlns:viewModels="clr-namespace:StatisticsAnalysisTool.ViewModels"
-             mc:Ignorable="d" 
+             mc:Ignorable="d"
              d:DesignHeight="400" d:DesignWidth="800"
              d:DataContext="{d:DesignInstance Type=viewModels:MainWindowViewModel}">
+    <UserControl.Resources>
+        <Style x:Key="LootComparator.FilterButton" TargetType="{x:Type ToggleButton}">
+            <Setter Property="SnapsToDevicePixels" Value="true" />
+            <Setter Property="OverridesDefaultStyle" Value="true" />
+            <Setter Property="FocusVisualStyle" Value="{StaticResource ButtonFocusVisual}" />
+            <Setter Property="MinHeight" Value="25" />
+            <Setter Property="MinWidth" Value="115" />
+            <Setter Property="Foreground" Value="{StaticResource SolidColorBrush.Text.1}" />
+            <Setter Property="Background" Value="{StaticResource SolidColorBrush.Background.2}" />
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="{x:Type ToggleButton}">
+                        <Border x:Name="Border" Background="{TemplateBinding Background}"
+                                BorderBrush="{StaticResource SolidColorBrush.Text.1}" BorderThickness="1"
+                                TextBlock.Foreground="{TemplateBinding Foreground}">
+                            <DockPanel Margin="7,2">
+                                <TextBlock Text="&#xE70D;" FontFamily="Segoe MDL2 Assets" FontSize="8" Margin="8,0,0,0"
+                                           VerticalAlignment="Center" DockPanel.Dock="Right" />
+                                <ContentPresenter HorizontalAlignment="Left" VerticalAlignment="Center" RecognizesAccessKey="True" />
+                            </DockPanel>
+                        </Border>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter TargetName="Border" Property="Background" Value="{StaticResource SolidColorBrush.Background.3}" />
+                                <Setter TargetName="Border" Property="BorderBrush" Value="{StaticResource SolidColorBrush.Accent.Blue.2}" />
+                            </Trigger>
+                            <Trigger Property="IsChecked" Value="True">
+                                <Setter TargetName="Border" Property="Background" Value="{StaticResource SolidColorBrush.Background.3}" />
+                                <Setter TargetName="Border" Property="BorderBrush" Value="{StaticResource SolidColorBrush.Accent.Blue.2}" />
+                            </Trigger>
+                            <Trigger Property="IsEnabled" Value="False">
+                                <Setter TargetName="Border" Property="Background" Value="{StaticResource SolidColorBrush.Text.6}" />
+                                <Setter TargetName="Border" Property="BorderBrush" Value="{StaticResource SolidColorBrush.Text.4}" />
+                                <Setter Property="Foreground" Value="{StaticResource SolidColorBrush.Text.4}" />
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+    </UserControl.Resources>
     <Grid>
         <TabControl Background="Transparent" BorderThickness="0">
             <TabItem Header="{Binding Translation.Logging, FallbackValue=LOGGING}">
                 <Grid>
                     <Grid Height="85" Width="auto" HorizontalAlignment="Right" VerticalAlignment="Top">
                         <StackPanel VerticalAlignment="Top" HorizontalAlignment="Right" Orientation="Vertical" Margin="0,0,2,0">
-                            <Button Content="{Binding Translation.ResetTrackingNotifications, FallbackValue=RESET__TRACKING__NOTIFICATIONS}" Height="26" MaxWidth="500" MinWidth="250" 
+                            <Button Content="{Binding Translation.ResetTrackingNotifications, FallbackValue=RESET__TRACKING__NOTIFICATIONS}" Height="26" MaxWidth="500" MinWidth="250"
                                 Margin="0,2,0,5" Width="auto" VerticalAlignment="Top" Click="BtnTrackingNotificationsReset_Click"  />
                             <Grid Height="26" Width="26" VerticalAlignment="Center" HorizontalAlignment="Right">
-                                <fa5:ImageAwesome Icon="Solid_FileCsv" ToolTip="{Binding Translation.ExportLootToFile}" 
+                                <fa5:ImageAwesome Icon="Solid_FileCsv" ToolTip="{Binding Translation.ExportLootToFile}"
                                               Foreground="{StaticResource  SolidColorBrush.Accent.Green.4}" MouseUp="BtnExportLootToFile_MouseUp" />
                             </Grid>
                         </StackPanel>
@@ -27,27 +68,27 @@
                         <StackPanel Orientation="Vertical" Height="100">
                             <StackPanel Orientation="Horizontal" Margin="0,5,0,5" Height="26">
                                 <fa5:ImageAwesome Icon="Solid_Filter" Foreground="{StaticResource SolidColorBrush.Text.1}" Width="20" Height="20" Margin="0,0,5,0" />
-                                <ComboBox VerticalAlignment="Center" Margin="2,0,6,0" Width="150" Height="24" ItemsSource="{Binding LoggingBindings.Filters}" 
+                                <ComboBox VerticalAlignment="Center" Margin="2,0,6,0" Width="150" Height="24" ItemsSource="{Binding LoggingBindings.Filters}"
                       ItemTemplate="{StaticResource LoggingFilterObject}" />
 
                                 <TextBox Text="{Binding LoggingSearchText, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Width="200" Height="24" />
                             </StackPanel>
                             <StackPanel Orientation="Horizontal" Margin="0,5,0,5">
                                 <fa5:ImageAwesome Icon="Solid_UserCog" Foreground="{StaticResource SolidColorBrush.Text.1}" Width="20" Height="20" Margin="0,0,5,0" />
-                                <CheckBox IsChecked="{Binding IsTrackingPartyLootOnly, FallbackValue=true}" 
+                                <CheckBox IsChecked="{Binding IsTrackingPartyLootOnly, FallbackValue=true}"
                                           Content="{Binding Translation.TrackPartyLootOnly, FallbackValue=TRACK__PARTY__LOOT__ONLY}" Margin="5,0,5,0" />
-                                <CheckBox IsChecked="{Binding LoggingBindings.IsTrackingSilver, FallbackValue=true}" 
+                                <CheckBox IsChecked="{Binding LoggingBindings.IsTrackingSilver, FallbackValue=true}"
                                           Content="{Binding Translation.TrackingSilver, FallbackValue=TRACKING__SILVER}" Margin="5,0,5,0" />
-                                <CheckBox IsChecked="{Binding LoggingBindings.IsTrackingFame, FallbackValue=true}" 
+                                <CheckBox IsChecked="{Binding LoggingBindings.IsTrackingFame, FallbackValue=true}"
                                           Content="{Binding Translation.TrackingFame, FallbackValue=TRACKING__FAME}" Margin="5,0,5,0" />
-                                <CheckBox IsChecked="{Binding LoggingBindings.IsTrackingMobLoot, FallbackValue=true}" 
+                                <CheckBox IsChecked="{Binding LoggingBindings.IsTrackingMobLoot, FallbackValue=true}"
                                           Content="{Binding Translation.TrackingMobLoot, FallbackValue=TRACKING__MOB__LOOT}" Margin="5,0,5,0" />
                             </StackPanel>
                             <Grid Width="auto">
-                                <fa5:ImageAwesome Icon="Solid_Trophy" Foreground="{StaticResource SolidColorBrush.Text.1}" Width="20" Height="20" Margin="0,0,5,0" 
+                                <fa5:ImageAwesome Icon="Solid_Trophy" Foreground="{StaticResource SolidColorBrush.Text.1}" Width="20" Height="20" Margin="0,0,5,0"
                               HorizontalAlignment="Left" ToolTip="{Binding Translation.TopLooters, FallbackValue=TOP__LOOTERS}"/>
                                 <vwp:VirtualizingItemsControl Margin="25,0,0,0" HorizontalAlignment="Left" Height="20" Width="589" MaxWidth="400" Background="Transparent"
-                                          ItemsSource="{Binding LoggingBindings.TopLootersCollectionView, IsAsync=True, Mode=OneWay}" ItemTemplate="{StaticResource TopLooterObjectTemplate}"              
+                                          ItemsSource="{Binding LoggingBindings.TopLootersCollectionView, IsAsync=True, Mode=OneWay}" ItemTemplate="{StaticResource TopLooterObjectTemplate}"
                                           VirtualizingPanel.CacheLengthUnit="Item"
                                           VirtualizingPanel.CacheLength="5,5"
                                           VirtualizingPanel.ScrollUnit="Pixel"
@@ -65,8 +106,8 @@
                         </StackPanel>
                     </Grid>
                     <Separator Background="{StaticResource SolidColorBrush.Background.3}" Height="4" Margin="0,100,0,0" VerticalAlignment="Top"/>
-                    <vwp:VirtualizingItemsControl Margin="0,104,0,40" ItemsSource="{Binding LoggingBindings.GameLoggingCollectionView, IsAsync=True, Mode=OneWay}" 
-                              ItemTemplate="{StaticResource NotificationTemplate}"              
+                    <vwp:VirtualizingItemsControl Margin="0,104,0,40" ItemsSource="{Binding LoggingBindings.GameLoggingCollectionView, IsAsync=True, Mode=OneWay}"
+                              ItemTemplate="{StaticResource NotificationTemplate}"
                               VirtualizingPanel.CacheLengthUnit="Item"
                               VirtualizingPanel.CacheLength="10,10"
                               VirtualizingPanel.ScrollUnit="Pixel"
@@ -78,64 +119,106 @@
             <TabItem Header="{Binding Translation.LootComparator, FallbackValue=LOOT__COMPARATOR}">
                 <Grid>
                     <StackPanel Orientation="Horizontal" VerticalAlignment="Top" Margin="0,5,0,5" IsEnabled="{Binding LoggingBindings.IsAllButtonsEnabled}">
-                        <StackPanel Orientation="Vertical" MinWidth="100" Margin="0,0,10,0">
-                            <CheckBox IsChecked="{Binding LoggingBindings.IsShowingLost, FallbackValue=true}" 
-                                      Content="{Binding LoggingBindings.Translation.Lost, FallbackValue=LOST}" />
-                            <CheckBox IsChecked="{Binding LoggingBindings.IsShowingResolved, FallbackValue=true}" 
-                                      Content="{Binding LoggingBindings.Translation.Resolved, FallbackValue=RESOLVED}" />
-                            <CheckBox IsChecked="{Binding LoggingBindings.IsShowingDonated, FallbackValue=true}" 
-                                      Content="{Binding LoggingBindings.Translation.Donated, FallbackValue=DONATED}" />
-                            <CheckBox IsChecked="{Binding LoggingBindings.IsShowingTrash, FallbackValue=true}" 
-                                      Content="{Binding LoggingBindings.Translation.Trash, FallbackValue=IS__SHOWING__TRASH}" />
-                        </StackPanel>
-                        <StackPanel Orientation="Vertical" MinWidth="100" Margin="0,0,10,0">
-                            <CheckBox IsChecked="{Binding LoggingBindings.IsShowingT1ToT3, FallbackValue=true}" 
-                                      Content="{Binding LoggingBindings.Translation.T1ToT3, FallbackValue=T1-T3}" />
-                            <CheckBox IsChecked="{Binding LoggingBindings.IsShowingT4, FallbackValue=true}" 
-                                      Content="{Binding LoggingBindings.Translation.T4, FallbackValue=T4}" />
-                            <CheckBox IsChecked="{Binding LoggingBindings.IsShowingT5, FallbackValue=true}" 
-                                      Content="{Binding LoggingBindings.Translation.T5, FallbackValue=T5}" />
-                            <CheckBox IsChecked="{Binding LoggingBindings.IsShowingT6, FallbackValue=true}" 
-                                      Content="{Binding LoggingBindings.Translation.T6, FallbackValue=T6}" />
-                        </StackPanel>
-                        <StackPanel Orientation="Vertical" MinWidth="100" Margin="0,0,10,0">
-                            <CheckBox IsChecked="{Binding LoggingBindings.IsShowingT7, FallbackValue=true}" 
-                                      Content="{Binding LoggingBindings.Translation.T7, FallbackValue=T7}" />
-                            <CheckBox IsChecked="{Binding LoggingBindings.IsShowingT8, FallbackValue=true}" 
-                                      Content="{Binding LoggingBindings.Translation.T8, FallbackValue=T8}" />
-                            <CheckBox IsChecked="{Binding LoggingBindings.IsShowingBag, FallbackValue=true}" 
-                                      Content="{Binding LoggingBindings.Translation.Bag, FallbackValue=BAG}" />
-                            <CheckBox IsChecked="{Binding LoggingBindings.IsShowingCape, FallbackValue=true}" 
-                                      Content="{Binding LoggingBindings.Translation.Cape, FallbackValue=CAPE}" />
-                        </StackPanel>
-                        <StackPanel Orientation="Vertical" MinWidth="100" Margin="0,0,10,0">
-                            <CheckBox IsChecked="{Binding LoggingBindings.IsShowingFood, FallbackValue=true}" 
-                                      Content="{Binding LoggingBindings.Translation.Food, FallbackValue=FOOD}" />
-                            <CheckBox IsChecked="{Binding LoggingBindings.IsShowingPotion, FallbackValue=true}" 
-                                      Content="{Binding LoggingBindings.Translation.Potion, FallbackValue=POTION}" />
-                            <CheckBox IsChecked="{Binding LoggingBindings.IsShowingMount, FallbackValue=true}" 
-                                      Content="{Binding LoggingBindings.Translation.Mount, FallbackValue=MOUNT}" />
-                            <CheckBox IsChecked="{Binding LoggingBindings.IsShowingOthers, FallbackValue=true}" 
-                                      Content="{Binding LoggingBindings.Translation.Others, FallbackValue=OTHERS}" />
+                        <StackPanel Orientation="Horizontal" Margin="0,0,12,0" VerticalAlignment="Top">
+                            <StackPanel Margin="0,0,6,0">
+                                <ToggleButton x:Name="StatusFilterButton" Style="{StaticResource LootComparator.FilterButton}"
+                                              Content="{Binding LoggingBindings.StatusFilterSummary, FallbackValue='Status: All'}" />
+                                <Popup PlacementTarget="{Binding ElementName=StatusFilterButton}"
+                                       IsOpen="{Binding IsChecked, ElementName=StatusFilterButton, Mode=TwoWay}"
+                                       Placement="Bottom" StaysOpen="False" AllowsTransparency="True" PopupAnimation="Fade">
+                                    <Border DataContext="{Binding PlacementTarget.DataContext, RelativeSource={RelativeSource AncestorType={x:Type Popup}}}"
+                                            Background="{StaticResource SolidColorBrush.Background.2}" BorderBrush="{StaticResource SolidColorBrush.Accent.Blue.4}"
+                                            BorderThickness="1" Padding="8">
+                                        <StackPanel MinWidth="130">
+                                            <CheckBox IsChecked="{Binding LoggingBindings.IsShowingLost, FallbackValue=true}"
+                                                      Content="{Binding LoggingBindings.Translation.Lost, FallbackValue=LOST}" />
+                                            <CheckBox IsChecked="{Binding LoggingBindings.IsShowingResolved, FallbackValue=true}"
+                                                      Content="{Binding LoggingBindings.Translation.Resolved, FallbackValue=RESOLVED}" />
+                                            <CheckBox IsChecked="{Binding LoggingBindings.IsShowingDonated, FallbackValue=true}"
+                                                      Content="{Binding LoggingBindings.Translation.Donated, FallbackValue=DONATED}" />
+                                            <CheckBox IsChecked="{Binding LoggingBindings.IsShowingTrash, FallbackValue=true}"
+                                                      Content="{Binding LoggingBindings.Translation.Trash, FallbackValue=TRASH}" />
+                                        </StackPanel>
+                                    </Border>
+                                </Popup>
+                            </StackPanel>
+
+                            <StackPanel Margin="0,0,6,0">
+                                <ToggleButton x:Name="TierFilterButton" Style="{StaticResource LootComparator.FilterButton}"
+                                              Content="{Binding LoggingBindings.TierFilterSummary, FallbackValue='Tier: All'}" />
+                                <Popup PlacementTarget="{Binding ElementName=TierFilterButton}"
+                                       IsOpen="{Binding IsChecked, ElementName=TierFilterButton, Mode=TwoWay}"
+                                       Placement="Bottom" StaysOpen="False" AllowsTransparency="True" PopupAnimation="Fade">
+                                    <Border DataContext="{Binding PlacementTarget.DataContext, RelativeSource={RelativeSource AncestorType={x:Type Popup}}}"
+                                            Background="{StaticResource SolidColorBrush.Background.2}" BorderBrush="{StaticResource SolidColorBrush.Accent.Blue.4}"
+                                            BorderThickness="1" Padding="8">
+                                        <StackPanel MinWidth="130">
+                                            <CheckBox IsChecked="{Binding LoggingBindings.IsShowingT1ToT3, FallbackValue=true}"
+                                                      Content="{Binding LoggingBindings.Translation.T1ToT3, FallbackValue=T1-T3}" />
+                                            <CheckBox IsChecked="{Binding LoggingBindings.IsShowingT4, FallbackValue=true}"
+                                                      Content="{Binding LoggingBindings.Translation.T4, FallbackValue=T4}" />
+                                            <CheckBox IsChecked="{Binding LoggingBindings.IsShowingT5, FallbackValue=true}"
+                                                      Content="{Binding LoggingBindings.Translation.T5, FallbackValue=T5}" />
+                                            <CheckBox IsChecked="{Binding LoggingBindings.IsShowingT6, FallbackValue=true}"
+                                                      Content="{Binding LoggingBindings.Translation.T6, FallbackValue=T6}" />
+                                            <CheckBox IsChecked="{Binding LoggingBindings.IsShowingT7, FallbackValue=true}"
+                                                      Content="{Binding LoggingBindings.Translation.T7, FallbackValue=T7}" />
+                                            <CheckBox IsChecked="{Binding LoggingBindings.IsShowingT8, FallbackValue=true}"
+                                                      Content="{Binding LoggingBindings.Translation.T8, FallbackValue=T8}" />
+                                        </StackPanel>
+                                    </Border>
+                                </Popup>
+                            </StackPanel>
+
+                            <StackPanel>
+                                <ToggleButton x:Name="TypeFilterButton" Style="{StaticResource LootComparator.FilterButton}"
+                                              Content="{Binding LoggingBindings.TypeFilterSummary, FallbackValue='Type: All'}" />
+                                <Popup PlacementTarget="{Binding ElementName=TypeFilterButton}"
+                                       IsOpen="{Binding IsChecked, ElementName=TypeFilterButton, Mode=TwoWay}"
+                                       Placement="Bottom" StaysOpen="False" AllowsTransparency="True" PopupAnimation="Fade">
+                                    <Border DataContext="{Binding PlacementTarget.DataContext, RelativeSource={RelativeSource AncestorType={x:Type Popup}}}"
+                                            Background="{StaticResource SolidColorBrush.Background.2}" BorderBrush="{StaticResource SolidColorBrush.Accent.Blue.4}"
+                                            BorderThickness="1" Padding="8">
+                                        <StackPanel MinWidth="130">
+                                            <CheckBox IsChecked="{Binding LoggingBindings.IsShowingFood, FallbackValue=true}"
+                                                      Content="{Binding LoggingBindings.Translation.Food, FallbackValue=FOOD}" />
+                                            <CheckBox IsChecked="{Binding LoggingBindings.IsShowingPotion, FallbackValue=true}"
+                                                      Content="{Binding LoggingBindings.Translation.Potion, FallbackValue=POTION}" />
+                                            <CheckBox IsChecked="{Binding LoggingBindings.IsShowingBag, FallbackValue=true}"
+                                                      Content="{Binding LoggingBindings.Translation.Bag, FallbackValue=BAG}" />
+                                            <CheckBox IsChecked="{Binding LoggingBindings.IsShowingCape, FallbackValue=true}"
+                                                      Content="{Binding LoggingBindings.Translation.Cape, FallbackValue=CAPE}" />
+                                            <CheckBox IsChecked="{Binding LoggingBindings.IsShowingMount, FallbackValue=true}"
+                                                      Content="{Binding LoggingBindings.Translation.Mount, FallbackValue=MOUNT}" />
+                                            <CheckBox IsChecked="{Binding LoggingBindings.IsShowingOthers, FallbackValue=true}"
+                                                      Content="{Binding LoggingBindings.Translation.Others, FallbackValue=OTHERS}" />
+                                        </StackPanel>
+                                    </Border>
+                                </Popup>
+                            </StackPanel>
                         </StackPanel>
 
-                        <StackPanel Orientation="Horizontal">
+                        <Separator Background="{StaticResource SolidColorBrush.Background.3}" Width="1" Height="82" Margin="0,0,2,0" />
+
+                        <StackPanel Orientation="Horizontal" Margin="0,0,0,0">
                             <StackPanel Orientation="Vertical">
-                                <Button Height="25" Margin="10,0,0,5" Content="{Binding LoggingBindings.Translation.UploadChestFiles, FallbackValue=UPLOAD__CHEST__FILES}" 
+                                <Button MinWidth="150" Height="25" Margin="0,0,0,5" Padding="10,0" Content="{Binding LoggingBindings.Translation.UploadChestFiles, FallbackValue=UPLOAD__CHEST__FILES}"
                                         VerticalAlignment="Top" Click="BtnLoadVaultLogFiles_Click" />
-                                <Button Height="25" Margin="10,0,0,5" Content="{Binding LoggingBindings.Translation.CompareLogs, FallbackValue=COMPARE__LOGS}" 
+                                <Button MinWidth="150" Height="25" Margin="0,0,0,5" Padding="10,0" Content="{Binding LoggingBindings.Translation.AddLootLogFiles, FallbackValue=ADD__LOOT__LOG__FILES}"
+                                        VerticalAlignment="Top" Click="BtnAddLootLogFiles_Click" />
+                                <Button MinWidth="150" Height="25" Margin="00,0,0,5" Padding="10,0" Content="{Binding LoggingBindings.Translation.CompareLogs, FallbackValue=COMPARE__LOGS}"
                                         VerticalAlignment="Top" Click="BtnLogCompare_Click" />
                             </StackPanel>
+                            <Separator Background="{StaticResource SolidColorBrush.Background.3}" Width="1" Height="50" Margin="10,0,0,0" VerticalAlignment="Top" />
                             <StackPanel Orientation="Vertical">
-                                <Button Style="{StaticResource Style.Button.Attention}" Height="25" Margin="10,0,0,5" 
+                                <Button Style="{StaticResource Style.Button.Attention}" MinWidth="150" Height="25" Margin="10,0,0,5"
                                         Content="{Binding LoggingBindings.Translation.DeleteChestLogs, FallbackValue=DELETE__CHEST__FILE__LOGS}" VerticalAlignment="Top" Click="BtnClearVaultLogItems_Click" />
-                                <Button Style="{StaticResource Style.Button.Attention}" Height="25" Margin="10,0,0,5" 
+                                <Button Style="{StaticResource Style.Button.Attention}" MinWidth="150" Height="25" Margin="10,0,0,5"
                                         Content="{Binding LoggingBindings.Translation.DeleteAllLogs, FallbackValue=DELETE__ALL__LOGS}" VerticalAlignment="Top" Click="BtnClearLootLogs_Click" />
                             </StackPanel>
                             <StackPanel>
                                 <Grid Height="20" Width="20" Margin="5,0,0,0" VerticalAlignment="Center"
-                                      Cursor="Hand"
-                                      MouseUp="ToggleLootComparatorInfoPopup_MouseUp">
+                                      Cursor="Hand" MouseUp="ToggleLootComparatorInfoPopup_MouseUp">
                                     <fa5:ImageAwesome Icon="Solid_InfoCircle" Foreground="{StaticResource SolidColorBrush.Text.1}" />
                                 </Grid>
                             </StackPanel>
@@ -153,7 +236,7 @@
                 </Grid>
             </TabItem>
         </TabControl>
-        <ScrollViewer Visibility="{Binding LoggingBindings.IsLootComparatorInfoPopupVisible, FallbackValue=Collapsed}" 
+        <ScrollViewer Visibility="{Binding LoggingBindings.IsLootComparatorInfoPopupVisible, FallbackValue=Collapsed}"
                       Margin="0,52,0,0"
                       Background="{StaticResource SolidColorBrush.Background.2}"
                       HorizontalScrollBarVisibility="Disabled"
@@ -162,37 +245,41 @@
                       PanningMode="VerticalOnly">
             <StackPanel Margin="10,0">
                 <TextBlock Style="{StaticResource InfoDescription.Header}" Text="{Binding Translation.LootComparatorHeaderHowDoIGetTheChestLogs, FallbackValue=HOW_DO_I_GET_THE_CHEST_LOGS}" />
-                <TextBlock Text="{Binding Translation.LootComparatorDescription1, FallbackValue=Description1}" Foreground="{StaticResource SolidColorBrush.Text.1}" 
+                <TextBlock Text="{Binding Translation.LootComparatorDescription1, FallbackValue=Description1}" Foreground="{StaticResource SolidColorBrush.Text.1}"
                            FontSize="16" TextWrapping="Wrap" Width="auto" Margin="0,0,0,10" />
-                <TextBlock Text="{Binding Translation.LootComparatorDescription2, FallbackValue=Description2}" Foreground="{StaticResource SolidColorBrush.Text.1}" 
+                <TextBlock Text="{Binding Translation.LootComparatorDescription2, FallbackValue=Description2}" Foreground="{StaticResource SolidColorBrush.Text.1}"
                            FontSize="16" TextWrapping="Wrap" Width="auto" />
-                <TextBlock Text="{Binding Translation.LootComparatorDescription3, FallbackValue=Description3}" Foreground="{StaticResource SolidColorBrush.Text.1}" 
+                <TextBlock Text="{Binding Translation.LootComparatorDescription3, FallbackValue=Description3}" Foreground="{StaticResource SolidColorBrush.Text.1}"
                            FontSize="16" TextWrapping="Wrap" Width="auto" />
-                <TextBlock Text="{Binding Translation.LootComparatorDescription4, FallbackValue=Description4}" Foreground="{StaticResource SolidColorBrush.Text.1}" 
+                <TextBlock Text="{Binding Translation.LootComparatorDescription4, FallbackValue=Description4}" Foreground="{StaticResource SolidColorBrush.Text.1}"
                            FontSize="16" TextWrapping="Wrap" Width="auto" />
-                <TextBlock Text="{Binding Translation.LootComparatorDescription5, FallbackValue=Description5}" Foreground="{StaticResource SolidColorBrush.Text.1}" 
+                <TextBlock Text="{Binding Translation.LootComparatorDescription5, FallbackValue=Description5}" Foreground="{StaticResource SolidColorBrush.Text.1}"
                            FontSize="16" TextWrapping="Wrap" Width="auto" Margin="0,0,0,10" />
-                <TextBlock Text="{Binding Translation.LootComparatorDescription6, FallbackValue=Description6}" Foreground="{StaticResource SolidColorBrush.Text.1}" 
+                <TextBlock Text="{Binding Translation.LootComparatorDescription6, FallbackValue=Description6}" Foreground="{StaticResource SolidColorBrush.Text.1}"
                            FontSize="16" TextWrapping="Wrap" Width="auto" />
-                <TextBlock Text="{Binding Translation.LootComparatorDescription7, FallbackValue=Description7}" Foreground="{StaticResource SolidColorBrush.Text.1}" 
+                <TextBlock Text="{Binding Translation.LootComparatorDescription7, FallbackValue=Description7}" Foreground="{StaticResource SolidColorBrush.Text.1}"
                            FontSize="16" TextWrapping="Wrap" Width="auto" />
                 <Image Margin="0,10" Source="../Assets/loggingcomparator_description01.jpg" MaxWidth="1000" HorizontalAlignment="Left" />
 
                 <TextBlock Style="{StaticResource InfoDescription.Header}" Text="{Binding Translation.LootComparatorWhatTheItemSlotsColorsMean, FallbackValue=WHAT_THE_ITEM_SLOTS_COLORS_MEAN}" />
                 <Image Source="../Assets/loot_cpmparator_slot_gray.png" Height="50" Width="50" HorizontalAlignment="Left" />
-                <TextBlock Text="{Binding Translation.LootComparatorSlotsColorsDescriptionGray, FallbackValue=LootComparatorSlotsColorsDescriptionGray}" Foreground="{StaticResource SolidColorBrush.Text.1}" 
+                <TextBlock Text="{Binding Translation.LootComparatorSlotsColorsDescriptionGray, FallbackValue=LootComparatorSlotsColorsDescriptionGray}" Foreground="{StaticResource SolidColorBrush.Text.1}"
                            FontSize="16" TextWrapping="Wrap" Width="auto" Margin="0,0,0,20" />
 
                 <Image Margin="0,0,0,0" Source="../Assets/loot_cpmparator_slot_green.png" Height="50" Width="50" HorizontalAlignment="Left" />
-                <TextBlock Text="{Binding Translation.LootComparatorSlotsColorsDescriptionGreen, FallbackValue=LootComparatorSlotsColorsDescriptionGreen}" Foreground="{StaticResource SolidColorBrush.Text.1}" 
+                <TextBlock Text="{Binding Translation.LootComparatorSlotsColorsDescriptionGreen, FallbackValue=LootComparatorSlotsColorsDescriptionGreen}" Foreground="{StaticResource SolidColorBrush.Text.1}"
                            FontSize="16" TextWrapping="Wrap" Width="auto" Margin="0,0,0,20" />
 
                 <Image Margin="0,0,0,0" Source="../Assets/loot_cpmparator_slot_blue.png" Height="50" Width="50" HorizontalAlignment="Left" />
-                <TextBlock Text="{Binding Translation.LootComparatorSlotsColorsDescriptionBlue, FallbackValue=LootComparatorSlotsColorsDescriptionBlue}" Foreground="{StaticResource SolidColorBrush.Text.1}" 
+                <TextBlock Text="{Binding Translation.LootComparatorSlotsColorsDescriptionBlue, FallbackValue=LootComparatorSlotsColorsDescriptionBlue}" Foreground="{StaticResource SolidColorBrush.Text.1}"
                            FontSize="16" TextWrapping="Wrap" Width="auto" Margin="0,0,0,20" />
 
                 <Image Margin="0,0,0,0" Source="../Assets/loot_cpmparator_slot_red.png" Height="50" Width="50" HorizontalAlignment="Left" />
-                <TextBlock Text="{Binding Translation.LootComparatorSlotsColorsDescriptionRed, FallbackValue=LootComparatorSlotsColorsDescriptionRed}" Foreground="{StaticResource SolidColorBrush.Text.1}" 
+                <TextBlock Text="{Binding Translation.LootComparatorSlotsColorsDescriptionRed, FallbackValue=LootComparatorSlotsColorsDescriptionRed}" Foreground="{StaticResource SolidColorBrush.Text.1}"
+                           FontSize="16" TextWrapping="Wrap" Width="auto" Margin="0,0,0,20" />
+
+                <TextBlock Style="{StaticResource InfoDescription.Header}" Text="{Binding Translation.LootComparatorHeaderLootLogFiles, FallbackValue=LOOT_LOG_FILES}" />
+                <TextBlock Text="{Binding Translation.LootComparatorDescription8, FallbackValue=Description8}" Foreground="{StaticResource SolidColorBrush.Text.1}"
                            FontSize="16" TextWrapping="Wrap" Width="auto" Margin="0,0,0,20" />
             </StackPanel>
         </ScrollViewer>
