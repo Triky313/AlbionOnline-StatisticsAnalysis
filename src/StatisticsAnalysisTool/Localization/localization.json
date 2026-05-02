@@ -38231,6 +38231,32 @@
       ]
     },
     {
+      "tuid": "LOOT_COMPARATOR_HEADER_LOOT_LOG_FILES",
+      "tuv": [
+        {
+          "lang": "de-DE",
+          "seg": "Loot-Log-Dateien"
+        },
+        {
+          "lang": "en-US",
+          "seg": "Loot log files"
+        }
+      ]
+    },
+    {
+      "tuid": "LOOT_COMPARATOR_DESCRIPTION_8",
+      "tuv": [
+        {
+          "lang": "de-DE",
+          "seg": "Loot-Log-Dateien k\u00f6nnen im Logging-Tab \u00fcber den gr\u00fcnen CSV-Button gespeichert werden. Diese Datei kann anschlie\u00dfend in einem anderen Tool hinzugef\u00fcgt werden."
+        },
+        {
+          "lang": "en-US",
+          "seg": "Loot log files can be saved in the Logging tab using the green CSV button. This file can then be added in another tool."
+        }
+      ]
+    },
+    {
       "tuid": "WHAT_THE_ITEM_SLOTS_COLORS_MEAN",
       "tuv": [
         {

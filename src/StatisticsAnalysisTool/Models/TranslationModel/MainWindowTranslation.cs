@@ -162,7 +162,9 @@ public class MainWindowTranslation
     public static string LootComparatorDescription5 => LocalizationController.Translation("LOOT_COMPARATOR_DESCRIPTION_5");
     public static string LootComparatorDescription6 => LocalizationController.Translation("LOOT_COMPARATOR_DESCRIPTION_6");
     public static string LootComparatorDescription7 => LocalizationController.Translation("LOOT_COMPARATOR_DESCRIPTION_7");
-    
+    public static string LootComparatorHeaderLootLogFiles => LocalizationController.Translation("LOOT_COMPARATOR_HEADER_LOOT_LOG_FILES");
+    public static string LootComparatorDescription8 => LocalizationController.Translation("LOOT_COMPARATOR_DESCRIPTION_8");
+
     public static string LootComparatorWhatTheItemSlotsColorsMean => LocalizationController.Translation("WHAT_THE_ITEM_SLOTS_COLORS_MEAN");
     public static string LootComparatorSlotsColorsDescriptionGray => LocalizationController.Translation("LOOT_COMPARATOR_SLOTS_COLORS_DESCRIPTION_GRAY");
     public static string LootComparatorSlotsColorsDescriptionGreen => LocalizationController.Translation("LOOT_COMPARATOR_SLOTS_COLORS_DESCRIPTION_GREEN");

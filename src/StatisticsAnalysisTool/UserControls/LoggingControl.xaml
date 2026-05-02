@@ -196,6 +196,10 @@
                 <Image Margin="0,0,0,0" Source="../Assets/loot_cpmparator_slot_red.png" Height="50" Width="50" HorizontalAlignment="Left" />
                 <TextBlock Text="{Binding Translation.LootComparatorSlotsColorsDescriptionRed, FallbackValue=LootComparatorSlotsColorsDescriptionRed}" Foreground="{StaticResource SolidColorBrush.Text.1}"
                            FontSize="16" TextWrapping="Wrap" Width="auto" Margin="0,0,0,20" />
+
+                <TextBlock Style="{StaticResource InfoDescription.Header}" Text="{Binding Translation.LootComparatorHeaderLootLogFiles, FallbackValue=LOOT_LOG_FILES}" />
+                <TextBlock Text="{Binding Translation.LootComparatorDescription8, FallbackValue=Description8}" Foreground="{StaticResource SolidColorBrush.Text.1}"
+                           FontSize="16" TextWrapping="Wrap" Width="auto" Margin="0,0,0,20" />
             </StackPanel>
         </ScrollViewer>
     </Grid>
