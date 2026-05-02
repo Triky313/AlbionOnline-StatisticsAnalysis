@@ -37754,6 +37754,84 @@
       ]
     },
     {
+      "tuid": "LOOT_FILTER_STATUS",
+      "tuv": [
+        {
+          "lang": "de-DE",
+          "seg": "Status"
+        },
+        {
+          "lang": "en-US",
+          "seg": "Status"
+        }
+      ]
+    },
+    {
+      "tuid": "LOOT_FILTER_TIER",
+      "tuv": [
+        {
+          "lang": "de-DE",
+          "seg": "Tier"
+        },
+        {
+          "lang": "en-US",
+          "seg": "Tier"
+        }
+      ]
+    },
+    {
+      "tuid": "LOOT_FILTER_TYPE",
+      "tuv": [
+        {
+          "lang": "de-DE",
+          "seg": "Typ"
+        },
+        {
+          "lang": "en-US",
+          "seg": "Type"
+        }
+      ]
+    },
+    {
+      "tuid": "LOOT_FILTER_ALL",
+      "tuv": [
+        {
+          "lang": "de-DE",
+          "seg": "Alle"
+        },
+        {
+          "lang": "en-US",
+          "seg": "All"
+        }
+      ]
+    },
+    {
+      "tuid": "LOOT_FILTER_NONE",
+      "tuv": [
+        {
+          "lang": "de-DE",
+          "seg": "Keine"
+        },
+        {
+          "lang": "en-US",
+          "seg": "None"
+        }
+      ]
+    },
+    {
+      "tuid": "LOOT_FILTER_SELECTED_COUNT",
+      "tuv": [
+        {
+          "lang": "de-DE",
+          "seg": "{COUNT} ausgew\u00e4hlt"
+        },
+        {
+          "lang": "en-US",
+          "seg": "{COUNT} selected"
+        }
+      ]
+    },
+    {
       "tuid": "COMPARE_LOGS",
       "tuv": [
         {

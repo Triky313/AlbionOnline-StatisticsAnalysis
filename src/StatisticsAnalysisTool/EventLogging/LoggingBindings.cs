@@ -616,6 +616,47 @@ public class LoggingBindings : BaseViewModel
         IsLootComparatorInfoPopupVisible = IsLootComparatorInfoPopupVisible == Visibility.Visible ? Visibility.Collapsed : Visibility.Visible;
     }
 
+    public string StatusFilterSummary => BuildFilterSummary(LoggingTranslation.FilterStatus, CountSelectedFilters(IsShowingLost, IsShowingResolved, IsShowingDonated, IsShowingTrash), 4);
+    public string TierFilterSummary => BuildFilterSummary(LoggingTranslation.FilterTier, CountSelectedFilters(IsShowingT1ToT3, IsShowingT4, IsShowingT5, IsShowingT6, IsShowingT7, IsShowingT8), 6);
+    public string TypeFilterSummary => BuildFilterSummary(LoggingTranslation.FilterType, CountSelectedFilters(IsShowingFood, IsShowingPotion, IsShowingBag, IsShowingCape, IsShowingMount, IsShowingOthers), 6);
+
+    private static string BuildFilterSummary(string filterName, int selectedCount, int totalCount)
+    {
+        var selectedText = selectedCount switch
+        {
+            0 => LoggingTranslation.FilterNone,
+            var count when count == totalCount => LoggingTranslation.FilterAll,
+            _ => LocalizationController.Translation("LOOT_FILTER_SELECTED_COUNT",
+                ["COUNT"],
+                [selectedCount.ToString(CultureInfo.InvariantCulture)])
+        };
+
+        return $"{filterName}: {selectedText}";
+    }
+
+    private static int CountSelectedFilters(params bool[] values)
+    {
+        return values.Count(value => value);
+    }
+
+    private void NotifyStatusFilterChanged()
+    {
+        _ = UpdateFilteredLootedItemsAsync();
+        OnPropertyChanged(nameof(StatusFilterSummary));
+    }
+
+    private void NotifyTierFilterChanged()
+    {
+        _ = UpdateFilteredLootedItemsAsync();
+        OnPropertyChanged(nameof(TierFilterSummary));
+    }
+
+    private void NotifyTypeFilterChanged()
+    {
+        _ = UpdateFilteredLootedItemsAsync();
+        OnPropertyChanged(nameof(TypeFilterSummary));
+    }
+
     private static readonly string[] SupportedFormats =
     [
         "MM/dd/yyyy HH:mm:ss",
@@ -763,8 +804,8 @@ public class LoggingBindings : BaseViewModel
         set
         {
             _isShowingLost = value;
-            _ = UpdateFilteredLootedItemsAsync();
             OnPropertyChanged();
+            NotifyStatusFilterChanged();
         }
     }
 
@@ -774,8 +815,8 @@ public class LoggingBindings : BaseViewModel
         set
         {
             _isShowingResolved = value;
-            _ = UpdateFilteredLootedItemsAsync();
             OnPropertyChanged();
+            NotifyStatusFilterChanged();
         }
     }
 
@@ -785,8 +826,8 @@ public class LoggingBindings : BaseViewModel
         set
         {
             _isShowingDonated = value;
-            _ = UpdateFilteredLootedItemsAsync();
             OnPropertyChanged();
+            NotifyStatusFilterChanged();
         }
     }
 
@@ -796,8 +837,8 @@ public class LoggingBindings : BaseViewModel
         set
         {
             _isShowingTrash = value;
-            _ = UpdateFilteredLootedItemsAsync();
             OnPropertyChanged();
+            NotifyStatusFilterChanged();
         }
     }
 
@@ -807,8 +848,8 @@ public class LoggingBindings : BaseViewModel
         set
         {
             _isShowingT1ToT3 = value;
-            _ = UpdateFilteredLootedItemsAsync();
             OnPropertyChanged();
+            NotifyTierFilterChanged();
         }
     }
 
@@ -818,8 +859,8 @@ public class LoggingBindings : BaseViewModel
         set
         {
             _isShowingT4 = value;
-            _ = UpdateFilteredLootedItemsAsync();
             OnPropertyChanged();
+            NotifyTierFilterChanged();
         }
     }
 
@@ -829,8 +870,8 @@ public class LoggingBindings : BaseViewModel
         set
         {
             _isShowingT5 = value;
-            _ = UpdateFilteredLootedItemsAsync();
             OnPropertyChanged();
+            NotifyTierFilterChanged();
         }
     }
 
@@ -840,8 +881,8 @@ public class LoggingBindings : BaseViewModel
         set
         {
             _isShowingT6 = value;
-            _ = UpdateFilteredLootedItemsAsync();
             OnPropertyChanged();
+            NotifyTierFilterChanged();
         }
     }
 
@@ -851,8 +892,8 @@ public class LoggingBindings : BaseViewModel
         set
         {
             _isShowingT7 = value;
-            _ = UpdateFilteredLootedItemsAsync();
             OnPropertyChanged();
+            NotifyTierFilterChanged();
         }
     }
 
@@ -862,8 +903,8 @@ public class LoggingBindings : BaseViewModel
         set
         {
             _isShowingT8 = value;
-            _ = UpdateFilteredLootedItemsAsync();
             OnPropertyChanged();
+            NotifyTierFilterChanged();
         }
     }
 
@@ -873,8 +914,8 @@ public class LoggingBindings : BaseViewModel
         set
         {
             _isShowingBag = value;
-            _ = UpdateFilteredLootedItemsAsync();
             OnPropertyChanged();
+            NotifyTypeFilterChanged();
         }
     }
 
@@ -884,8 +925,8 @@ public class LoggingBindings : BaseViewModel
         set
         {
             _isShowingCape = value;
-            _ = UpdateFilteredLootedItemsAsync();
             OnPropertyChanged();
+            NotifyTypeFilterChanged();
         }
     }
 
@@ -895,8 +936,8 @@ public class LoggingBindings : BaseViewModel
         set
         {
             _isShowingFood = value;
-            _ = UpdateFilteredLootedItemsAsync();
             OnPropertyChanged();
+            NotifyTypeFilterChanged();
         }
     }
 
@@ -906,8 +947,8 @@ public class LoggingBindings : BaseViewModel
         set
         {
             _isShowingPotion = value;
-            _ = UpdateFilteredLootedItemsAsync();
             OnPropertyChanged();
+            NotifyTypeFilterChanged();
         }
     }
 
@@ -917,8 +958,8 @@ public class LoggingBindings : BaseViewModel
         set
         {
             _isShowingMount = value;
-            _ = UpdateFilteredLootedItemsAsync();
             OnPropertyChanged();
+            NotifyTypeFilterChanged();
         }
     }
 
@@ -928,8 +969,8 @@ public class LoggingBindings : BaseViewModel
         set
         {
             _isShowingOthers = value;
-            _ = UpdateFilteredLootedItemsAsync();
             OnPropertyChanged();
+            NotifyTypeFilterChanged();
         }
     }
 
