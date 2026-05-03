@@ -821,7 +821,6 @@ public class TradeMonitoringBindings : BaseViewModel
                (trade.InstantBuySellContent?.UnitPrice.ToString().IndexOf(context.SearchText, StringComparison.OrdinalIgnoreCase) >= 0) ||
                (trade.InstantBuySellContent?.TotalPrice.ToString().IndexOf(context.SearchText, StringComparison.OrdinalIgnoreCase) >= 0) ||
                (trade.PlayerTradeContent?.PartnerName?.IndexOf(context.SearchText, StringComparison.OrdinalIgnoreCase) >= 0) ||
-               (trade.PlayerTradeContent?.IslandName?.IndexOf(context.SearchText, StringComparison.OrdinalIgnoreCase) >= 0) ||
                (trade.PlayerTradeContent?.Silver.ToString().IndexOf(context.SearchText, StringComparison.OrdinalIgnoreCase) >= 0) ||
                (trade.Description?.IndexOf(context.SearchText, StringComparison.OrdinalIgnoreCase) >= 0);
     }

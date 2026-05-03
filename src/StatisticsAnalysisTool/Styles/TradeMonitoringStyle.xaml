@@ -1,4 +1,4 @@
-﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
                     xmlns:common="clr-namespace:StatisticsAnalysisTool.Common"
                     xmlns:trade="clr-namespace:StatisticsAnalysisTool.Trade"
@@ -144,6 +144,27 @@
     <Style TargetType="TextBlock" x:Key="Crafting.Text.Color.Orange">
         <Setter Property="HorizontalAlignment" Value="Left" />
         <Setter Property="Foreground" Value="{StaticResource SolidColorBrush.Accent.Orange.3}" />
+    </Style>
+
+    <Style TargetType="Grid" x:Key="PlayerTrade.Type.Colors">
+        <Setter Property="Width" Value="3" />
+        <Setter Property="HorizontalAlignment" Value="Left" />
+        <Setter Property="Background" Value="{StaticResource SolidColorBrush.Accent.Green.3}" />
+        <Style.Triggers>
+            <DataTrigger Binding="{Binding Type, IsAsync=True}" Value="PlayerTradeOutgoing">
+                <Setter Property="Background" Value="{StaticResource SolidColorBrush.Accent.Red.3}" />
+            </DataTrigger>
+        </Style.Triggers>
+    </Style>
+
+    <Style TargetType="TextBlock" x:Key="PlayerTrade.Text.Color">
+        <Setter Property="HorizontalAlignment" Value="Left" />
+        <Setter Property="Foreground" Value="{StaticResource SolidColorBrush.Accent.Green.3}" />
+        <Style.Triggers>
+            <DataTrigger Binding="{Binding Type, IsAsync=True}" Value="PlayerTradeOutgoing">
+                <Setter Property="Foreground" Value="{StaticResource SolidColorBrush.Accent.Red.3}" />
+            </DataTrigger>
+        </Style.Triggers>
     </Style>
 
     <Style TargetType="Image" x:Key="Trade.Silver.Image.Style">
@@ -465,9 +486,14 @@
                         </StackPanel>
                     </StackPanel>
                     
-                    <ComboBox Width="200" Height="26" Margin="0,5,0,5" ItemsSource="{Binding DeleteTradesOlderThanSpecifiedDays}" 
-                              SelectedItem="{Binding DeleteTradesOlderThanSpecifiedDaysSelection, IsAsync=true}" 
-                              HorizontalAlignment="Left" DisplayMemberPath="Name" SelectedValuePath="Days" />
+                    <StackPanel Orientation="Horizontal" Margin="0,5,0,5">
+                        <ComboBox Width="200" Height="26" ItemsSource="{Binding DeleteTradesOlderThanSpecifiedDays}"
+                                  SelectedItem="{Binding DeleteTradesOlderThanSpecifiedDaysSelection, IsAsync=true}"
+                                  HorizontalAlignment="Left" DisplayMemberPath="Name" SelectedValuePath="Days" />
+                        <CheckBox IsChecked="{Binding IsPlayerTradeMonitoringActive}"
+                                  Content="{Binding TranslationPlayerTradeMonitoringActive, FallbackValue=PERSONAL__TRADES__ACTIVE}"
+                                  HorizontalContentAlignment="Left" Margin="15,4,0,0" VerticalAlignment="Top" HorizontalAlignment="Left" MinWidth="180"/>
+                    </StackPanel>
                     <Grid Height="25"/>
                 </StackPanel>
             </StackPanel>
@@ -1289,6 +1315,55 @@
                                         </TextBlock.ToolTip>
                                     </TextBlock>
                                 </Grid>
+                            </StackPanel>
+                            <Grid Margin="0 -2 0 0" Height="18" Width="18" HorizontalAlignment="Right">
+                                <CheckBox Width="auto" Height="auto" IsChecked="{Binding IsSelectedForDeletion, IsAsync=True, FallbackValue=false}" ToolTip="{Binding TranslationSelectToDelete, IsAsync=True}" />
+                            </Grid>
+                        </DockPanel>
+                    </StackPanel>
+                </DockPanel>
+            </Border>
+        </Grid>
+    </DataTemplate>
+
+    <DataTemplate x:Key="PlayerTradeTemplate" DataType="{x:Type trade:Trade}">
+        <Grid Height="50">
+            <Grid.InputBindings>
+                <MouseBinding MouseAction="LeftDoubleClick" Command="{Binding OpenItemWindowCommand}" />
+            </Grid.InputBindings>
+            <Grid Style="{StaticResource PlayerTrade.Type.Colors}" />
+            <Border Style="{StaticResource Container.Border}">
+                <DockPanel VerticalAlignment="Top" HorizontalAlignment="Stretch" Margin="5,0,10,0">
+                    <Grid Margin="0,0, 5, 0" HorizontalAlignment="Center" VerticalAlignment="Center">
+                        <Image Source="{Binding Item.Icon, IsAsync=True, Mode=OneWay}" Style="{StaticResource Trade.Icon}" Visibility="{Binding PlayerTradeContent.ItemIconVisibility}" />
+                        <Image Source="../Resources/silver.png" Style="{StaticResource Trade.Icon}" Visibility="{Binding PlayerTradeContent.SilverIconVisibility}" />
+                    </Grid>
+                    <StackPanel Orientation="Vertical">
+                        <DockPanel>
+                            <StackPanel Orientation="Horizontal">
+                                <TextBlock Text="{Binding PlayerTradeContent.DirectionText, IsAsync=True, StringFormat='{}{0}: ', FallbackValue=TRADE}" Style="{StaticResource PlayerTrade.Text.Color}" />
+                                <StackPanel Orientation="Horizontal" Visibility="{Binding PlayerTradeContent.ItemIconVisibility}">
+                                    <TextBlock Text="{Binding PlayerTradeContent.QuantityText, IsAsync=True}" FontWeight="Bold" Margin="0,0,3,0" Style="{StaticResource PlayerTrade.Text.Color}" />
+                                    <TextBlock Style="{StaticResource Trade.Text.Tier}" />
+                                    <TextBlock Text="{Binding Item.LocalizedName, IsAsync=True}" Foreground="{StaticResource SolidColorBrush.Text.1}" />
+                                </StackPanel>
+                                <TextBlock Text="{Binding TranslationSilver, IsAsync=True}" Foreground="{StaticResource SolidColorBrush.Text.1}" Visibility="{Binding PlayerTradeContent.SilverIconVisibility}" />
+                            </StackPanel>
+                            <TextBlock Text="{Binding Timestamp, IsAsync=True, StringFormat='{}{0}'}" TextAlignment="Right" Foreground="{StaticResource SolidColorBrush.Text.1}"/>
+                        </DockPanel>
+                        <DockPanel>
+                            <StackPanel Orientation="Horizontal">
+                                <TextBlock Text="{Binding PlayerTradeContent.PartnerDirectionText, IsAsync=True, StringFormat='{}{0} ', FallbackValue=FROM}" Foreground="{StaticResource SolidColorBrush.Text.4}" />
+                                <TextBlock Text="{Binding PlayerTradeContent.PartnerName, IsAsync=True}" Foreground="{StaticResource SolidColorBrush.Accent.Blue.1}" />
+                            </StackPanel>
+                            <TextBlock Style="{StaticResource Trade.City.Text}" />
+                        </DockPanel>
+                        <DockPanel>
+                            <StackPanel Orientation="Horizontal">
+                                <StackPanel Orientation="Horizontal" Visibility="{Binding PlayerTradeContent.SilverIconVisibility}">
+                                    <Image Style="{StaticResource Trade.Silver.Image.Style}" ToolTip="{Binding TranslationSilver, IsAsync=True}" Margin="0,0,5,0" />
+                                    <TextBlock Text="{Binding PlayerTradeContent.SilverText, IsAsync=True}" Style="{StaticResource PlayerTrade.Text.Color}" />
+                                </StackPanel>
                             </StackPanel>
                             <Grid Margin="0 -2 0 0" Height="18" Width="18" HorizontalAlignment="Right">
                                 <CheckBox Width="auto" Height="auto" IsChecked="{Binding IsSelectedForDeletion, IsAsync=True, FallbackValue=false}" ToolTip="{Binding TranslationSelectToDelete, IsAsync=True}" />

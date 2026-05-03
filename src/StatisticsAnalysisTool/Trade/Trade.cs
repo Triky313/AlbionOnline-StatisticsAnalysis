@@ -1,4 +1,4 @@
-﻿using StatisticsAnalysisTool.Common;
+using StatisticsAnalysisTool.Common;
 using StatisticsAnalysisTool.Enumerations;
 using StatisticsAnalysisTool.GameFileData;
 using StatisticsAnalysisTool.Localization;
@@ -14,6 +14,8 @@ namespace StatisticsAnalysisTool.Trade;
 
 public class Trade : BaseViewModel
 {
+    public const string PlayerTradeIslandClusterIndexPrefix = "ISLAND_";
+
     public long Id { get; init; }
     public long Ticks { get; init; }
     public DateTime Timestamp => new(Ticks);
@@ -55,6 +57,11 @@ public class Trade : BaseViewModel
                 return $"{hideoutName} ({LocalizationController.Translation("HIDEOUT")})";
             }
 
+            if (location == MarketLocation.Unknown && TryGetIslandLocationName(out var islandName))
+            {
+                return $"{LocalizationController.Translation("ISLAND")}: {islandName}";
+            }
+
             if (location == MarketLocation.BlackMarket)
             {
                 return "Black Market";
@@ -67,6 +74,20 @@ public class Trade : BaseViewModel
 
             return WorldData.GetUniqueNameOrDefault(ClusterIndex);
         }
+    }
+
+    private bool TryGetIslandLocationName(out string islandName)
+    {
+        islandName = string.Empty;
+
+        if (string.IsNullOrWhiteSpace(ClusterIndex)
+            || !ClusterIndex.StartsWith(PlayerTradeIslandClusterIndexPrefix, StringComparison.OrdinalIgnoreCase))
+        {
+            return false;
+        }
+
+        islandName = ClusterIndex[PlayerTradeIslandClusterIndexPrefix.Length..];
+        return !string.IsNullOrWhiteSpace(islandName);
     }
 
     public MailType MailType => MailController.ConvertToMailType(MailTypeText);
@@ -162,7 +183,6 @@ public class Trade : BaseViewModel
     public static string TranslationSetupTax => LocalizationController.Translation("SETUP_TAX");
     public static string TranslationSelectToDelete => LocalizationController.Translation("SELECT_TO_DELETE");
     public static string TranslationFrom => LocalizationController.Translation("FROM");
-    public static string TranslationIsland => LocalizationController.Translation("ISLAND");
     public static string TranslationTotalPriceWithDeductedTaxes => LocalizationController.Translation("TOTAL_PRICE_WITH_DEDUCTED_TAXES");
     public static string TranslationTotalIncomeWithoutTaxDeductions => LocalizationController.Translation("TOTAL_INCOME_WITHOUT_TAX_DEDUCTIONS");
     public static string TranslationTotalCostWithoutAddedTaxes => LocalizationController.Translation("TOTAL_COST_WITHOUT_ADDED_TAXES");

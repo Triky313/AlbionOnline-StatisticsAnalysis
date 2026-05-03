@@ -12,7 +12,6 @@ public sealed class PlayerTradeContent
     public bool IsSilver { get; init; }
     public int Quantity { get; init; }
     public long InternalSilver { get; init; }
-    public string IslandName { get; init; } = string.Empty;
 
     [JsonIgnore]
     public bool IsIncoming => Direction == PlayerTradeDirection.Incoming;
@@ -37,7 +36,4 @@ public sealed class PlayerTradeContent
 
     [JsonIgnore]
     public Visibility SilverIconVisibility => IsSilver ? Visibility.Visible : Visibility.Collapsed;
-
-    [JsonIgnore]
-    public Visibility IslandNameVisibility => string.IsNullOrWhiteSpace(IslandName) ? Visibility.Collapsed : Visibility.Visible;
 }

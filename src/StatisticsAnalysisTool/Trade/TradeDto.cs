@@ -92,9 +92,9 @@ public class TradeDto
     {
         if (PlayerTradeContent == null)
         {
-            return ";;;;;";
+            return ";;;;";
         }
 
-        return $"{PlayerTradeContent.PartnerName};{PlayerTradeContent.Direction};{PlayerTradeContent.IsSilver};{PlayerTradeContent.Quantity};{PlayerTradeContent.Silver.IntegerValue};{PlayerTradeContent.IslandName}";
+        return $"{PlayerTradeContent.PartnerName};{PlayerTradeContent.Direction};{PlayerTradeContent.IsSilver};{PlayerTradeContent.Quantity};{PlayerTradeContent.Silver.IntegerValue}";
     }
 }

@@ -369,35 +369,34 @@ public class TradeController
     private List<Trade> CreatePlayerTrades(PlayerTradeSession session, long baseTicks)
     {
         var trades = new List<Trade>();
-        var clusterIndex = ClusterController.CurrentCluster.SourceClusterIndex ?? ClusterController.CurrentCluster.Index;
+        var clusterIndex = GetCurrentPlayerTradeClusterIndex();
         var partnerName = NormalizePlayerTradePartnerName(session.PartnerName);
-        var islandName = GetCurrentIslandName();
         var index = 0;
 
         foreach (var item in session.LastUpdate.PartnerItems)
         {
-            trades.Add(CreatePlayerTradeItem(baseTicks, index++, clusterIndex, partnerName, islandName, PlayerTradeDirection.Incoming, item));
+            trades.Add(CreatePlayerTradeItem(baseTicks, index++, clusterIndex, partnerName, PlayerTradeDirection.Incoming, item));
         }
 
         foreach (var item in session.LastUpdate.LocalItems)
         {
-            trades.Add(CreatePlayerTradeItem(baseTicks, index++, clusterIndex, partnerName, islandName, PlayerTradeDirection.Outgoing, item));
+            trades.Add(CreatePlayerTradeItem(baseTicks, index++, clusterIndex, partnerName, PlayerTradeDirection.Outgoing, item));
         }
 
         if (session.LastUpdate.PartnerSilverInternal > 0)
         {
-            trades.Add(CreatePlayerTradeSilver(baseTicks, index++, clusterIndex, partnerName, islandName, PlayerTradeDirection.Incoming, session.LastUpdate.PartnerSilverInternal));
+            trades.Add(CreatePlayerTradeSilver(baseTicks, index++, clusterIndex, partnerName, PlayerTradeDirection.Incoming, session.LastUpdate.PartnerSilverInternal));
         }
 
         if (session.LastUpdate.LocalSilverInternal > 0)
         {
-            trades.Add(CreatePlayerTradeSilver(baseTicks, index++, clusterIndex, partnerName, islandName, PlayerTradeDirection.Outgoing, session.LastUpdate.LocalSilverInternal));
+            trades.Add(CreatePlayerTradeSilver(baseTicks, index++, clusterIndex, partnerName, PlayerTradeDirection.Outgoing, session.LastUpdate.LocalSilverInternal));
         }
 
         return trades;
     }
 
-    private static Trade CreatePlayerTradeItem(long baseTicks, int index, string clusterIndex, string partnerName, string islandName, PlayerTradeDirection direction, PlayerTradeItem item)
+    private static Trade CreatePlayerTradeItem(long baseTicks, int index, string clusterIndex, string partnerName, PlayerTradeDirection direction, PlayerTradeItem item)
     {
         return new Trade
         {
@@ -410,7 +409,6 @@ public class TradeController
             PlayerTradeContent = new PlayerTradeContent
             {
                 PartnerName = partnerName,
-                IslandName = islandName,
                 Direction = direction,
                 Quantity = item.Quantity,
                 IsSilver = false
@@ -418,7 +416,7 @@ public class TradeController
         };
     }
 
-    private static Trade CreatePlayerTradeSilver(long baseTicks, int index, string clusterIndex, string partnerName, string islandName, PlayerTradeDirection direction, long internalSilver)
+    private static Trade CreatePlayerTradeSilver(long baseTicks, int index, string clusterIndex, string partnerName, PlayerTradeDirection direction, long internalSilver)
     {
         return new Trade
         {
@@ -430,7 +428,6 @@ public class TradeController
             PlayerTradeContent = new PlayerTradeContent
             {
                 PartnerName = partnerName,
-                IslandName = islandName,
                 Direction = direction,
                 Quantity = 1,
                 InternalSilver = internalSilver,
@@ -444,14 +441,17 @@ public class TradeController
         return baseTicks + index;
     }
 
-    private static string GetCurrentIslandName()
+    private static string GetCurrentPlayerTradeClusterIndex()
     {
-        if (ClusterController.CurrentCluster.MapType != MapType.Island)
+        if (ClusterController.CurrentCluster.MapType == MapType.Island
+            && !string.IsNullOrWhiteSpace(ClusterController.CurrentCluster.InstanceName))
         {
-            return string.Empty;
+            return $"{Trade.PlayerTradeIslandClusterIndexPrefix}{ClusterController.CurrentCluster.InstanceName}";
         }
 
-        return ClusterController.CurrentCluster.InstanceName ?? string.Empty;
+        return ClusterController.CurrentCluster.SourceClusterIndex
+               ?? ClusterController.CurrentCluster.Index
+               ?? string.Empty;
     }
 
     private static bool IsPlayerTradeMonitoringActive()
@@ -486,7 +486,7 @@ public class TradeController
                                      "AuctionEntry__AuctionType;AuctionEntry__HasBuyerFetched;AuctionEntry__HasSellerFetched;AuctionEntry__SellerName;" +
                                      "AuctionEntry__ItemTypeId;AuctionEntry__EnchantmentLevel;AuctionEntry__QualityLevel;AuctionEntry__Expires;" +
                                      "InstantBuySellContent__UnitPrice;InstantBuySellContent__Quantity;InstantBuySellContent__TotalDistanceFee;InstantBuySellContent__TaxRate;" +
-                                     "PlayerTradeContent__PartnerName;PlayerTradeContent__Direction;PlayerTradeContent__IsSilver;PlayerTradeContent__Quantity;PlayerTradeContent__Silver;PlayerTradeContent__IslandName\n";
+                                     "PlayerTradeContent__PartnerName;PlayerTradeContent__Direction;PlayerTradeContent__IsSilver;PlayerTradeContent__Quantity;PlayerTradeContent__Silver\n";
 
             return csvHeader + string.Join(Environment.NewLine, _mainWindowViewModel?.TradeMonitoringBindings?.Trades.Select(trade => TradeMapping.Mapping(trade).CsvOutput).ToArray() ?? Array.Empty<string>());
         }
