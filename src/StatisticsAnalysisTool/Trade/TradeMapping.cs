@@ -1,4 +1,4 @@
-﻿using StatisticsAnalysisTool.Trade.Mails;
+using StatisticsAnalysisTool.Trade.Mails;
 using StatisticsAnalysisTool.Trade.Market;
 using System;
 
@@ -67,6 +67,17 @@ public static class TradeMapping
                 Description = trade.Description,
                 ItemIndex = trade.ItemIndex
             },
+            TradeType.PlayerTradeIncoming or TradeType.PlayerTradeOutgoing => new TradeDto()
+            {
+                Type = trade.Type,
+                Id = trade.Id,
+                Ticks = trade.Ticks,
+                ClusterIndex = trade.ClusterIndex,
+                Description = trade.Description,
+                ItemIndex = trade.ItemIndex,
+                Guid = trade.Guid,
+                PlayerTradeContent = trade.PlayerTradeContent
+            },
             _ => throw new ArgumentOutOfRangeException()
         };
     }
@@ -131,6 +142,17 @@ public static class TradeMapping
                 InstantBuySellContent = trade.InstantBuySellContent ?? new InstantBuySellContent(),
                 Description = trade.Description,
                 ItemIndex = trade.ItemIndex
+            },
+            TradeType.PlayerTradeIncoming or TradeType.PlayerTradeOutgoing => new Trade()
+            {
+                Type = trade.Type,
+                Id = trade.Id,
+                Ticks = trade.Ticks,
+                ClusterIndex = trade.ClusterIndex,
+                Description = trade.Description,
+                ItemIndex = trade.ItemIndex,
+                Guid = trade.Guid,
+                PlayerTradeContent = trade.PlayerTradeContent ?? new PlayerTrades.PlayerTradeContent()
             },
             TradeType.Unknown => null,
             _ => null

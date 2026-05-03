@@ -1,4 +1,4 @@
-﻿using StatisticsAnalysisTool.Common.UserSettings;
+using StatisticsAnalysisTool.Common.UserSettings;
 using StatisticsAnalysisTool.Localization;
 using StatisticsAnalysisTool.ViewModels;
 using System.Collections.Generic;
@@ -9,6 +9,7 @@ namespace StatisticsAnalysisTool.Trade;
 public class TradeOptionsObject : BaseViewModel
 {
     private bool _isTradeMonitoringActive = true;
+    private bool _isPlayerTradeMonitoringActive = true;
     private List<DeleteTradesAfterDaysStruct> _deleteTradesOlderThanSpecifiedDays = new();
     private DeleteTradesAfterDaysStruct _damageMeterSortSelection;
     private bool _ignoreMailsWithZeroValues;
@@ -33,6 +34,7 @@ public class TradeOptionsObject : BaseViewModel
         DeleteTradesOlderThanSpecifiedDaysSelection = deleteTradesAfterDaysSelection.Name == null ? neverDeleteObject : deleteTradesAfterDaysSelection;
 
         IsTradeMonitoringActive = SettingsController.CurrentSettings.IsTradeMonitoringActive;
+        IsPlayerTradeMonitoringActive = SettingsController.CurrentSettings.IsPlayerTradeMonitoringActive;
         IgnoreMailsWithZeroValues = SettingsController.CurrentSettings.IgnoreMailsWithZeroValues;
         MarketTaxRate = SettingsController.CurrentSettings.TradeMonitoringMarketTaxRate;
         MarketTaxSetupRate = SettingsController.CurrentSettings.TradeMonitoringMarketTaxSetupRate;
@@ -56,6 +58,17 @@ public class TradeOptionsObject : BaseViewModel
         {
             _ignoreMailsWithZeroValues = value;
             SettingsController.CurrentSettings.IgnoreMailsWithZeroValues = _ignoreMailsWithZeroValues;
+            OnPropertyChanged();
+        }
+    }
+
+    public bool IsPlayerTradeMonitoringActive
+    {
+        get => _isPlayerTradeMonitoringActive;
+        set
+        {
+            _isPlayerTradeMonitoringActive = value;
+            SettingsController.CurrentSettings.IsPlayerTradeMonitoringActive = _isPlayerTradeMonitoringActive;
             OnPropertyChanged();
         }
     }
@@ -103,6 +116,7 @@ public class TradeOptionsObject : BaseViewModel
     }
 
     public static string TranslationTradeMonitoringActive => LocalizationController.Translation("TRADE_MONITORING_ACTIVE");
+    public static string TranslationPlayerTradeMonitoringActive => LocalizationController.Translation("PLAYER_TRADE_MONITORING_ACTIVE");
     public static string TranslationIgnoreMailsWithZeroValues => LocalizationController.Translation("IGNORE_MAILS_WITH_ZERO_VALUES");
     public static string TranslationMarketTaxRate => LocalizationController.Translation("MARKET_TAX_RATE");
     public static string TranslationMarketTaxSetupRate => LocalizationController.Translation("MARKET_TAX_SETUP_RATE");

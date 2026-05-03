@@ -5,6 +5,7 @@ using StatisticsAnalysisTool.Localization;
 using StatisticsAnalysisTool.Models;
 using StatisticsAnalysisTool.Trade.Mails;
 using StatisticsAnalysisTool.Trade.Market;
+using StatisticsAnalysisTool.Trade.PlayerTrades;
 using StatisticsAnalysisTool.ViewModels;
 using System;
 using System.Windows.Input;
@@ -107,6 +108,10 @@ public class Trade : BaseViewModel
 
                 case TradeType.Crafting:
                     return LocalizationController.Translation("ADDED_CRAFTING");
+                case TradeType.PlayerTradeIncoming:
+                    return LocalizationController.Translation("ADDED_SALE");
+                case TradeType.PlayerTradeOutgoing:
+                    return LocalizationController.Translation("ADDED_PURCHASE");
                 case TradeType.Unknown:
                 default:
                     return LocalizationController.Translation("ADDED_UNKNOWN_TRADE");
@@ -120,6 +125,7 @@ public class Trade : BaseViewModel
 
     public AuctionEntry AuctionEntry { get; init; }
     public InstantBuySellContent InstantBuySellContent { get; init; } = new();
+    public PlayerTradeContent PlayerTradeContent { get; init; } = new();
     public string TypeDescription => Type switch
     {
         TradeType.InstantSell => LocalizationController.Translation("INSTANT_SELL"),
@@ -128,6 +134,7 @@ public class Trade : BaseViewModel
         TradeType.ManualBuy => LocalizationController.Translation("MANUAL_BUY"),
         TradeType.Crafting => LocalizationController.Translation("CRAFTING"),
         TradeType.Mail => LocalizationController.Translation("MAIL"),
+        TradeType.PlayerTradeIncoming or TradeType.PlayerTradeOutgoing => $"{LocalizationController.Translation("TRADE")} {LocalizationController.Translation("PLAYER")}",
         _ => LocalizationController.Translation("UNKNOWN_TRADE")
     };
 
@@ -155,6 +162,7 @@ public class Trade : BaseViewModel
     public static string TranslationSetupTax => LocalizationController.Translation("SETUP_TAX");
     public static string TranslationSelectToDelete => LocalizationController.Translation("SELECT_TO_DELETE");
     public static string TranslationFrom => LocalizationController.Translation("FROM");
+    public static string TranslationIsland => LocalizationController.Translation("ISLAND");
     public static string TranslationTotalPriceWithDeductedTaxes => LocalizationController.Translation("TOTAL_PRICE_WITH_DEDUCTED_TAXES");
     public static string TranslationTotalIncomeWithoutTaxDeductions => LocalizationController.Translation("TOTAL_INCOME_WITHOUT_TAX_DEDUCTIONS");
     public static string TranslationTotalCostWithoutAddedTaxes => LocalizationController.Translation("TOTAL_COST_WITHOUT_ADDED_TAXES");

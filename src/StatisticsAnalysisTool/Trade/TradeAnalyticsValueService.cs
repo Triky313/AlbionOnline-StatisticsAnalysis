@@ -55,6 +55,18 @@ public sealed class TradeAnalyticsValueService
                 0d,
                 0,
                 trade.InstantBuySellContent.Quantity),
+            TradeType.PlayerTradeIncoming => new TradeAnalyticsValueBreakdown(
+                trade.PlayerTradeContent.IsSilver ? trade.PlayerTradeContent.Silver.IntegerValue : 0d,
+                0d,
+                0d,
+                trade.PlayerTradeContent.IsSilver ? 0 : trade.PlayerTradeContent.Quantity,
+                0),
+            TradeType.PlayerTradeOutgoing => new TradeAnalyticsValueBreakdown(
+                0d,
+                trade.PlayerTradeContent.IsSilver ? trade.PlayerTradeContent.Silver.IntegerValue : 0d,
+                0d,
+                0,
+                trade.PlayerTradeContent.IsSilver ? 0 : trade.PlayerTradeContent.Quantity),
             _ => TradeAnalyticsValueBreakdown.Empty
         };
     }

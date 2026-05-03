@@ -39508,6 +39508,45 @@
           "seg": "ROI"
         }
       ]
+    },
+    {
+      "tuid": "PLAYER_TRADE_RECEIVED",
+      "tuv": [
+        {
+          "lang": "de-DE",
+          "seg": "Erhalten"
+        },
+        {
+          "lang": "en-US",
+          "seg": "Received"
+        }
+      ]
+    },
+    {
+      "tuid": "PLAYER_TRADE_GIVEN",
+      "tuv": [
+        {
+          "lang": "de-DE",
+          "seg": "Abgegeben"
+        },
+        {
+          "lang": "en-US",
+          "seg": "Given"
+        }
+      ]
+    },
+    {
+      "tuid": "PLAYER_TRADE_MONITORING_ACTIVE",
+      "tuv": [
+        {
+          "lang": "de-DE",
+          "seg": "Persönliche Trades erkennen"
+        },
+        {
+          "lang": "en-US",
+          "seg": "Recognize personal trades"
+        }
+      ]
     }
   ]
 }
