@@ -2137,7 +2137,7 @@
         },
         {
           "lang": "fr-FR",
-          "seg": "Double value exists in the language file"
+          "seg": "Les informations complètes sur l'article sont disponibles localement"
         },
         {
           "lang": "ja-JP",
@@ -5780,7 +5780,7 @@
         },
         {
           "lang": "fr-FR",
-          "seg": "Informations"
+          "seg": "Les informations complètes sur l'article sont disponibles localement"
         },
         {
           "lang": "ja-JP",
@@ -6098,7 +6098,7 @@
         },
         {
           "lang": "fr-FR",
-          "seg": "Charger toutes les objets"
+          "seg": "Afficher toutes les informations sur l'objet"
         },
         {
           "lang": "ja-JP",
@@ -6628,7 +6628,7 @@
         },
         {
           "lang": "fr-FR",
-          "seg": "Chaussuresen plaques"
+          "seg": "Chaussures en plaques"
         },
         {
           "lang": "ja-JP",
@@ -7582,7 +7582,7 @@
         },
         {
           "lang": "fr-FR",
-          "seg": "Autres"
+          "seg": "Autre"
         },
         {
           "lang": "ja-JP",
@@ -14737,7 +14737,7 @@
         },
         {
           "lang": "fr-FR",
-          "seg": "à"
+          "seg": "dans"
         },
         {
           "lang": "ja-JP",
@@ -16274,7 +16274,7 @@
         },
         {
           "lang": "fr-FR",
-          "seg": "Arene"
+          "seg": "Arène"
         },
         {
           "lang": "ja-JP",
@@ -17065,7 +17065,7 @@
         },
         {
           "lang": "fr-FR",
-          "seg": "Legendaire"
+          "seg": "Légendaire"
         },
         {
           "lang": "ja-JP",
@@ -18827,7 +18827,7 @@
         },
         {
           "lang": "fr-FR",
-          "seg": "Supprimer donjon"
+          "seg": "Supprimer le donjon"
         },
         {
           "lang": "ja-JP",
@@ -22127,7 +22127,7 @@
         },
         {
           "lang": "fr-FR",
-          "seg": "Calculat"
+          "seg": "Estimation"
         },
         {
           "lang": "ja-JP",
@@ -22764,7 +22764,7 @@
         },
         {
           "lang": "fr-FR",
-          "seg": "Grand total"
+          "seg": "Montant Total"
         },
         {
           "lang": "ja-JP",
@@ -25226,7 +25226,7 @@
         },
         {
           "lang": "fr-FR",
-          "seg": "Victime en solo"
+          "seg": "Victimes en solo"
         },
         {
           "lang": "ja-JP",
@@ -25859,7 +25859,7 @@
         },
         {
           "lang": "fr-FR",
-          "seg": "Buy expired"
+          "seg": "Achats expirés"
         },
         {
           "lang": "ja-JP",
@@ -37728,6 +37728,110 @@
       ]
     },
     {
+      "tuid": "ADD_LOOT_LOG_FILES",
+      "tuv": [
+        {
+          "lang": "de-DE",
+          "seg": "Loot Logs hinzugefügt"
+        },
+        {
+          "lang": "en-US",
+          "seg": "Add loot log files"
+        }
+      ]
+    },
+    {
+      "tuid": "SELECT_LOOT_LOG_FILES",
+      "tuv": [
+        {
+          "lang": "de-DE",
+          "seg": "Loot Log Dateien auswählen"
+        },
+        {
+          "lang": "en-US",
+          "seg": "Select loot log files"
+        }
+      ]
+    },
+    {
+      "tuid": "LOOT_FILTER_STATUS",
+      "tuv": [
+        {
+          "lang": "de-DE",
+          "seg": "Status"
+        },
+        {
+          "lang": "en-US",
+          "seg": "Status"
+        }
+      ]
+    },
+    {
+      "tuid": "LOOT_FILTER_TIER",
+      "tuv": [
+        {
+          "lang": "de-DE",
+          "seg": "Tier"
+        },
+        {
+          "lang": "en-US",
+          "seg": "Tier"
+        }
+      ]
+    },
+    {
+      "tuid": "LOOT_FILTER_TYPE",
+      "tuv": [
+        {
+          "lang": "de-DE",
+          "seg": "Typ"
+        },
+        {
+          "lang": "en-US",
+          "seg": "Type"
+        }
+      ]
+    },
+    {
+      "tuid": "LOOT_FILTER_ALL",
+      "tuv": [
+        {
+          "lang": "de-DE",
+          "seg": "Alle"
+        },
+        {
+          "lang": "en-US",
+          "seg": "All"
+        }
+      ]
+    },
+    {
+      "tuid": "LOOT_FILTER_NONE",
+      "tuv": [
+        {
+          "lang": "de-DE",
+          "seg": "Keine"
+        },
+        {
+          "lang": "en-US",
+          "seg": "None"
+        }
+      ]
+    },
+    {
+      "tuid": "LOOT_FILTER_SELECTED_COUNT",
+      "tuv": [
+        {
+          "lang": "de-DE",
+          "seg": "{COUNT} ausgew\u00e4hlt"
+        },
+        {
+          "lang": "en-US",
+          "seg": "{COUNT} selected"
+        }
+      ]
+    },
+    {
       "tuid": "COMPARE_LOGS",
       "tuv": [
         {
@@ -38201,6 +38305,32 @@
         {
           "lang": "fr-FR",
           "seg": "Dans l'outil, vous pouvez maintenant cliquer sur le bouton 'Télécharger les données' et charger votre fichier."
+        }
+      ]
+    },
+    {
+      "tuid": "LOOT_COMPARATOR_HEADER_LOOT_LOG_FILES",
+      "tuv": [
+        {
+          "lang": "de-DE",
+          "seg": "Loot-Log-Dateien"
+        },
+        {
+          "lang": "en-US",
+          "seg": "Loot log files"
+        }
+      ]
+    },
+    {
+      "tuid": "LOOT_COMPARATOR_DESCRIPTION_8",
+      "tuv": [
+        {
+          "lang": "de-DE",
+          "seg": "Loot-Log-Dateien k\u00f6nnen im Logging-Tab \u00fcber den gr\u00fcnen CSV-Button gespeichert werden. Diese Datei kann anschlie\u00dfend in einem anderen Tool hinzugef\u00fcgt werden."
+        },
+        {
+          "lang": "en-US",
+          "seg": "Loot log files can be saved in the Logging tab using the green CSV button. This file can then be added in another tool."
         }
       ]
     },
@@ -39376,6 +39506,45 @@
         {
           "lang": "en-US",
           "seg": "ROI"
+        }
+      ]
+    },
+    {
+      "tuid": "PLAYER_TRADE_RECEIVED",
+      "tuv": [
+        {
+          "lang": "de-DE",
+          "seg": "Erhalten"
+        },
+        {
+          "lang": "en-US",
+          "seg": "Received"
+        }
+      ]
+    },
+    {
+      "tuid": "PLAYER_TRADE_GIVEN",
+      "tuv": [
+        {
+          "lang": "de-DE",
+          "seg": "Abgegeben"
+        },
+        {
+          "lang": "en-US",
+          "seg": "Given"
+        }
+      ]
+    },
+    {
+      "tuid": "PLAYER_TRADE_MONITORING_ACTIVE",
+      "tuv": [
+        {
+          "lang": "de-DE",
+          "seg": "Persönliche Trades erkennen"
+        },
+        {
+          "lang": "en-US",
+          "seg": "Recognize personal trades"
         }
       ]
     }

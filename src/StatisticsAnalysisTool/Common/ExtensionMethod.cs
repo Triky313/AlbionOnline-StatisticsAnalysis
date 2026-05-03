@@ -56,13 +56,14 @@ public static class ExtensionMethod
 
     public static string ToTimerString(this TimeSpan span)
     {
-        return $"{span.Hours:00}:{span.Minutes:00}:{span.Seconds:00}";
+        var hours = (span.Days * 24) + span.Hours;
+        return $"{hours:00}:{span.Minutes:00}:{span.Seconds:00}";
     }
 
     public static string ToTimerString(this int seconds)
     {
         var span = new TimeSpan(0, 0, 0, seconds);
-        return $"{span.Hours:00}:{span.Minutes:00}:{span.Seconds:00}";
+        return span.ToTimerString();
     }
 
     public static Visibility BoolToVisibility(this bool status)

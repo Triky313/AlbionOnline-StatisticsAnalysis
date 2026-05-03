@@ -1,10 +1,11 @@
-﻿using StatisticsAnalysisTool.Common;
+using StatisticsAnalysisTool.Common;
 using StatisticsAnalysisTool.Enumerations;
 using StatisticsAnalysisTool.GameFileData;
 using StatisticsAnalysisTool.Localization;
 using StatisticsAnalysisTool.Models;
 using StatisticsAnalysisTool.Trade.Mails;
 using StatisticsAnalysisTool.Trade.Market;
+using StatisticsAnalysisTool.Trade.PlayerTrades;
 using StatisticsAnalysisTool.ViewModels;
 using System;
 using System.Windows.Input;
@@ -13,6 +14,8 @@ namespace StatisticsAnalysisTool.Trade;
 
 public class Trade : BaseViewModel
 {
+    public const string PlayerTradeIslandClusterIndexPrefix = "ISLAND_";
+
     public long Id { get; init; }
     public long Ticks { get; init; }
     public DateTime Timestamp => new(Ticks);
@@ -54,6 +57,11 @@ public class Trade : BaseViewModel
                 return $"{hideoutName} ({LocalizationController.Translation("HIDEOUT")})";
             }
 
+            if (location == MarketLocation.Unknown && TryGetIslandLocationName(out var islandName))
+            {
+                return $"{LocalizationController.Translation("ISLAND")}: {islandName}";
+            }
+
             if (location == MarketLocation.BlackMarket)
             {
                 return "Black Market";
@@ -66,6 +74,20 @@ public class Trade : BaseViewModel
 
             return WorldData.GetUniqueNameOrDefault(ClusterIndex);
         }
+    }
+
+    private bool TryGetIslandLocationName(out string islandName)
+    {
+        islandName = string.Empty;
+
+        if (string.IsNullOrWhiteSpace(ClusterIndex)
+            || !ClusterIndex.StartsWith(PlayerTradeIslandClusterIndexPrefix, StringComparison.OrdinalIgnoreCase))
+        {
+            return false;
+        }
+
+        islandName = ClusterIndex[PlayerTradeIslandClusterIndexPrefix.Length..];
+        return !string.IsNullOrWhiteSpace(islandName);
     }
 
     public MailType MailType => MailController.ConvertToMailType(MailTypeText);
@@ -107,6 +129,10 @@ public class Trade : BaseViewModel
 
                 case TradeType.Crafting:
                     return LocalizationController.Translation("ADDED_CRAFTING");
+                case TradeType.PlayerTradeIncoming:
+                    return LocalizationController.Translation("ADDED_SALE");
+                case TradeType.PlayerTradeOutgoing:
+                    return LocalizationController.Translation("ADDED_PURCHASE");
                 case TradeType.Unknown:
                 default:
                     return LocalizationController.Translation("ADDED_UNKNOWN_TRADE");
@@ -120,6 +146,7 @@ public class Trade : BaseViewModel
 
     public AuctionEntry AuctionEntry { get; init; }
     public InstantBuySellContent InstantBuySellContent { get; init; } = new();
+    public PlayerTradeContent PlayerTradeContent { get; init; } = new();
     public string TypeDescription => Type switch
     {
         TradeType.InstantSell => LocalizationController.Translation("INSTANT_SELL"),
@@ -128,6 +155,7 @@ public class Trade : BaseViewModel
         TradeType.ManualBuy => LocalizationController.Translation("MANUAL_BUY"),
         TradeType.Crafting => LocalizationController.Translation("CRAFTING"),
         TradeType.Mail => LocalizationController.Translation("MAIL"),
+        TradeType.PlayerTradeIncoming or TradeType.PlayerTradeOutgoing => $"{LocalizationController.Translation("TRADE")} {LocalizationController.Translation("PLAYER")}",
         _ => LocalizationController.Translation("UNKNOWN_TRADE")
     };
 

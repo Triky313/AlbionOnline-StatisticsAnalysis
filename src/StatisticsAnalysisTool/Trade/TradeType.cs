@@ -1,4 +1,4 @@
-﻿namespace StatisticsAnalysisTool.Trade;
+namespace StatisticsAnalysisTool.Trade;
 
 public enum TradeType
 {
@@ -8,5 +8,7 @@ public enum TradeType
     InstantBuy,
     ManualSell,
     ManualBuy,
-    Crafting
+    Crafting,
+    PlayerTradeIncoming,
+    PlayerTradeOutgoing
 }

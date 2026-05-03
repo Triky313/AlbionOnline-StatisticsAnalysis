@@ -32,8 +32,7 @@ public static class ClusterInfoMapping
             clusterInfoDto.InstanceName,
             clusterInfoDto.WorldMapDataType,
             clusterInfoDto.DungeonInformation,
-            clusterInfoDto.MainClusterIndex,
-            clusterInfoDto.MistsDungeonTier);
+            clusterInfoDto.MainClusterIndex);
 
         clusterInfo.Entered = clusterInfoDto.Entered;
         clusterInfo.MapHistoryNote = clusterInfoDto.MapHistoryNote ?? string.Empty;

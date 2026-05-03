@@ -61,6 +61,7 @@ public class SettingsObject
     public bool ShortDamageMeterToClipboard { get; set; } = false;
     public bool OnlyDamageToPlayersCounts { get; set; } = false;
     public bool IsTradeMonitoringActive { get; set; } = true;
+    public bool IsPlayerTradeMonitoringActive { get; set; } = true;
     public bool IgnoreMailsWithZeroValues { get; set; } = false;
     public int DeleteTradesOlderThanSpecifiedDays { get; set; }
     public bool IsSnapshotAfterMapChangeActive { get; set; }

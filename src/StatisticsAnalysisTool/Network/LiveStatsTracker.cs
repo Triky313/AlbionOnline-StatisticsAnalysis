@@ -1,4 +1,5 @@
-﻿using StatisticsAnalysisTool.Enumerations;
+using StatisticsAnalysisTool.Enumerations;
+using StatisticsAnalysisTool.Common;
 using StatisticsAnalysisTool.Network.Manager;
 using StatisticsAnalysisTool.ViewModels;
 using System;
@@ -250,6 +251,6 @@ public class LiveStatsTracker
 
         // Session-Timer
         var duration = now - _sessionStartUtc;
-        _mainWindowViewModel.MainTrackerTimer = duration.ToString("hh\\:mm\\:ss");
+        _mainWindowViewModel.MainTrackerTimer = duration.ToTimerString();
     }
 }

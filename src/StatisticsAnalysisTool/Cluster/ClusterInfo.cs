@@ -191,7 +191,7 @@ public sealed class ClusterInfo : BaseViewModel
         ClusterHistoryString();
     }
 
-    public void SetClusterInfo(MapType mapType, Guid? mapGuid, string clusterIndex, string instanceName, string worldMapDataType, byte[] dungeonInformation, string mainClusterIndex, Tier mistsDungeonTier)
+    public void SetClusterInfo(MapType mapType, Guid? mapGuid, string clusterIndex, string instanceName, string worldMapDataType, byte[] dungeonInformation, string mainClusterIndex)
     {
         Entered = DateTime.UtcNow;
         MapType = mapType;
@@ -200,7 +200,6 @@ public sealed class ClusterInfo : BaseViewModel
         InstanceName = instanceName;
         WorldMapDataType = worldMapDataType;
         DungeonInformation = dungeonInformation;
-        MistsDungeonTier = mistsDungeonTier;
         MistsRarity = GetMistsRarity(dungeonInformation);
         ResetRandomDungeonTrackingInfo();
 
