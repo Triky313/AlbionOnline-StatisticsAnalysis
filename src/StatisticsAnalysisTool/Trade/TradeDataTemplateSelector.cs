@@ -1,4 +1,4 @@
-﻿using StatisticsAnalysisTool.Enumerations;
+using StatisticsAnalysisTool.Enumerations;
 using System.Windows;
 using System.Windows.Controls;
 
@@ -15,6 +15,7 @@ public class TradeDataTemplateSelector : DataTemplateSelector
     public DataTemplate ManualSellTemplate { get; set; }
     public DataTemplate ManualBuyTemplate { get; set; }
     public DataTemplate CraftingTemplate { get; set; }
+    public DataTemplate PlayerTradeTemplate { get; set; }
 
     public override DataTemplate SelectTemplate(object item, DependencyObject container)
     {
@@ -42,6 +43,7 @@ public class TradeDataTemplateSelector : DataTemplateSelector
             TradeType.ManualSell => ManualSellTemplate,
             TradeType.ManualBuy => ManualBuyTemplate,
             TradeType.Crafting => CraftingTemplate,
+            TradeType.PlayerTradeIncoming or TradeType.PlayerTradeOutgoing => PlayerTradeTemplate,
             _ => base.SelectTemplate(item, container)
         };
     }

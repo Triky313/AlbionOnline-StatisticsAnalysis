@@ -22,7 +22,8 @@
                                          InstantBuyTemplate="{StaticResource InstantBuyTemplate}"
                                          ManualSellTemplate="{StaticResource ManualSellTemplate}" 
                                          ManualBuyTemplate="{StaticResource ManualBuyTemplate}" 
-                                         CraftingTemplate="{StaticResource CraftingTemplate}" />
+                                         CraftingTemplate="{StaticResource CraftingTemplate}"
+                                         PlayerTradeTemplate="{StaticResource PlayerTradeTemplate}" />
 
         <DataTemplate x:Key="TradeItemRankingEntryTemplate" DataType="{x:Type trade:TradeItemRankingEntry}">
             <Grid Margin="0,2,0,2">

@@ -6,6 +6,7 @@ using StatisticsAnalysisTool.Network.Manager;
 using StatisticsAnalysisTool.Notification;
 using StatisticsAnalysisTool.Properties;
 using StatisticsAnalysisTool.Trade.Market;
+using StatisticsAnalysisTool.Trade.PlayerTrades;
 using StatisticsAnalysisTool.ViewModels;
 using System;
 using System.Collections.Generic;
@@ -27,6 +28,7 @@ public class TradeController
 {
     private readonly TrackingController _trackingController;
     private readonly MainWindowViewModel _mainWindowViewModel;
+    private readonly Dictionary<long, PlayerTradeSession> _playerTradeSessions = new();
     private int _tradeCounter;
 
     public TradeController(TrackingController trackingController, MainWindowViewModel mainWindowViewModel)
@@ -270,6 +272,207 @@ public class TradeController
 
     #endregion
 
+    #region Player trades
+
+    public void RegisterPlayerTradeSession(long tradeId, string partnerName)
+    {
+        if (!IsPlayerTradeMonitoringActive() || tradeId <= 0)
+        {
+            return;
+        }
+
+        lock (_playerTradeSessions)
+        {
+            if (_playerTradeSessions.TryGetValue(tradeId, out var existingSession))
+            {
+                existingSession.PartnerName = NormalizePlayerTradePartnerName(partnerName);
+                return;
+            }
+
+            _playerTradeSessions.Add(tradeId, new PlayerTradeSession(tradeId, NormalizePlayerTradePartnerName(partnerName)));
+        }
+    }
+
+    public void UpdatePlayerTrade(PlayerTradeUpdate update)
+    {
+        if (!IsPlayerTradeMonitoringActive() || update?.TradeId <= 0)
+        {
+            return;
+        }
+
+        lock (_playerTradeSessions)
+        {
+            if (!_playerTradeSessions.TryGetValue(update.TradeId, out var session))
+            {
+                session = new PlayerTradeSession(update.TradeId, string.Empty);
+                _playerTradeSessions.Add(update.TradeId, session);
+            }
+
+            if (session.LastUpdate == null || update.Revision >= session.LastUpdate.Revision)
+            {
+                session.LastUpdate = update;
+            }
+        }
+    }
+
+    public void RemovePlayerTradeSession(long tradeId)
+    {
+        if (tradeId <= 0)
+        {
+            return;
+        }
+
+        lock (_playerTradeSessions)
+        {
+            _playerTradeSessions.Remove(tradeId);
+        }
+    }
+
+    public async Task PlayerTradeFinishedAsync(long tradeId)
+    {
+        if (tradeId <= 0)
+        {
+            return;
+        }
+
+        PlayerTradeSession session;
+        lock (_playerTradeSessions)
+        {
+            if (!_playerTradeSessions.Remove(tradeId, out session))
+            {
+                return;
+            }
+        }
+
+        if (!IsPlayerTradeMonitoringActive())
+        {
+            return;
+        }
+
+        if (session.LastUpdate == null)
+        {
+            return;
+        }
+
+        var trades = CreatePlayerTrades(session, DateTime.UtcNow.Ticks);
+        foreach (var trade in trades)
+        {
+            await AddTradeToBindingCollectionAsync(trade);
+        }
+
+        if (trades.Count > 0)
+        {
+            await SaveInFileAfterExceedingLimit(10);
+        }
+    }
+
+    private List<Trade> CreatePlayerTrades(PlayerTradeSession session, long baseTicks)
+    {
+        var trades = new List<Trade>();
+        var clusterIndex = GetCurrentPlayerTradeClusterIndex();
+        var partnerName = NormalizePlayerTradePartnerName(session.PartnerName);
+        var index = 0;
+
+        foreach (var item in session.LastUpdate.PartnerItems)
+        {
+            trades.Add(CreatePlayerTradeItem(baseTicks, index++, clusterIndex, partnerName, PlayerTradeDirection.Incoming, item));
+        }
+
+        foreach (var item in session.LastUpdate.LocalItems)
+        {
+            trades.Add(CreatePlayerTradeItem(baseTicks, index++, clusterIndex, partnerName, PlayerTradeDirection.Outgoing, item));
+        }
+
+        if (session.LastUpdate.PartnerSilverInternal > 0)
+        {
+            trades.Add(CreatePlayerTradeSilver(baseTicks, index++, clusterIndex, partnerName, PlayerTradeDirection.Incoming, session.LastUpdate.PartnerSilverInternal));
+        }
+
+        if (session.LastUpdate.LocalSilverInternal > 0)
+        {
+            trades.Add(CreatePlayerTradeSilver(baseTicks, index++, clusterIndex, partnerName, PlayerTradeDirection.Outgoing, session.LastUpdate.LocalSilverInternal));
+        }
+
+        return trades;
+    }
+
+    private static Trade CreatePlayerTradeItem(long baseTicks, int index, string clusterIndex, string partnerName, PlayerTradeDirection direction, PlayerTradeItem item)
+    {
+        return new Trade
+        {
+            Id = CreatePlayerTradeEntryId(baseTicks, index),
+            Ticks = baseTicks + index,
+            Type = direction == PlayerTradeDirection.Incoming ? TradeType.PlayerTradeIncoming : TradeType.PlayerTradeOutgoing,
+            ClusterIndex = clusterIndex,
+            Guid = Guid.NewGuid(),
+            ItemIndex = item.ItemIndex,
+            PlayerTradeContent = new PlayerTradeContent
+            {
+                PartnerName = partnerName,
+                Direction = direction,
+                Quantity = item.Quantity,
+                IsSilver = false
+            }
+        };
+    }
+
+    private static Trade CreatePlayerTradeSilver(long baseTicks, int index, string clusterIndex, string partnerName, PlayerTradeDirection direction, long internalSilver)
+    {
+        return new Trade
+        {
+            Id = CreatePlayerTradeEntryId(baseTicks, index),
+            Ticks = baseTicks + index,
+            Type = direction == PlayerTradeDirection.Incoming ? TradeType.PlayerTradeIncoming : TradeType.PlayerTradeOutgoing,
+            ClusterIndex = clusterIndex,
+            Guid = Guid.NewGuid(),
+            PlayerTradeContent = new PlayerTradeContent
+            {
+                PartnerName = partnerName,
+                Direction = direction,
+                Quantity = 1,
+                InternalSilver = internalSilver,
+                IsSilver = true
+            }
+        };
+    }
+
+    private static long CreatePlayerTradeEntryId(long baseTicks, int index)
+    {
+        return baseTicks + index;
+    }
+
+    private static string GetCurrentPlayerTradeClusterIndex()
+    {
+        if (ClusterController.CurrentCluster.MapType == MapType.Island
+            && !string.IsNullOrWhiteSpace(ClusterController.CurrentCluster.InstanceName))
+        {
+            return $"{Trade.PlayerTradeIslandClusterIndexPrefix}{ClusterController.CurrentCluster.InstanceName}";
+        }
+
+        return ClusterController.CurrentCluster.SourceClusterIndex
+               ?? ClusterController.CurrentCluster.Index
+               ?? string.Empty;
+    }
+
+    private static bool IsPlayerTradeMonitoringActive()
+    {
+        return SettingsController.CurrentSettings.IsTradeMonitoringActive
+               && SettingsController.CurrentSettings.IsPlayerTradeMonitoringActive;
+    }
+
+    private string NormalizePlayerTradePartnerName(string partnerName)
+    {
+        var localUsername = _trackingController.EntityController.LocalUserData.Username;
+        if (string.Equals(partnerName, localUsername, StringComparison.OrdinalIgnoreCase))
+        {
+            return string.Empty;
+        }
+
+        return partnerName ?? string.Empty;
+    }
+
+    #endregion
+
     #region Export
 
     public string GetTradesAsCsv()
@@ -282,7 +485,8 @@ public class TradeController
                                      "AuctionEntry__UnitPriceSilver;AuctionEntry__TotalDistanceFee;AuctionEntry__TotalPriceSilver;AuctionEntry__Amount;AuctionEntry__Tier;AuctionEntry__IsFinished;" +
                                      "AuctionEntry__AuctionType;AuctionEntry__HasBuyerFetched;AuctionEntry__HasSellerFetched;AuctionEntry__SellerName;" +
                                      "AuctionEntry__ItemTypeId;AuctionEntry__EnchantmentLevel;AuctionEntry__QualityLevel;AuctionEntry__Expires;" +
-                                     "InstantBuySellContent__UnitPrice;InstantBuySellContent__Quantity;InstantBuySellContent__TotalDistanceFee;InstantBuySellContent__TaxRate\n";
+                                     "InstantBuySellContent__UnitPrice;InstantBuySellContent__Quantity;InstantBuySellContent__TotalDistanceFee;InstantBuySellContent__TaxRate;" +
+                                     "PlayerTradeContent__PartnerName;PlayerTradeContent__Direction;PlayerTradeContent__IsSilver;PlayerTradeContent__Quantity;PlayerTradeContent__Silver\n";
 
             return csvHeader + string.Join(Environment.NewLine, _mainWindowViewModel?.TradeMonitoringBindings?.Trades.Select(trade => TradeMapping.Mapping(trade).CsvOutput).ToArray() ?? Array.Empty<string>());
         }

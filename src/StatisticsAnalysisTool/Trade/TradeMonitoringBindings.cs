@@ -807,7 +807,9 @@ public class TradeMonitoringBindings : BaseViewModel
             return trade.MailContent?.UnitPriceWithoutTax.IntegerValue == searchNumber ||
                    trade.MailContent?.TotalPrice.IntegerValue == searchNumber ||
                    trade.InstantBuySellContent?.UnitPrice.IntegerValue == searchNumber ||
-                   trade.InstantBuySellContent?.TotalPrice.IntegerValue == searchNumber;
+                   trade.InstantBuySellContent?.TotalPrice.IntegerValue == searchNumber ||
+                   trade.PlayerTradeContent?.Silver.IntegerValue == searchNumber ||
+                   trade.PlayerTradeContent?.Quantity == searchNumber;
         }
 
         return (trade.LocationName?.IndexOf(context.SearchText, StringComparison.OrdinalIgnoreCase) >= 0) ||
@@ -818,6 +820,8 @@ public class TradeMonitoringBindings : BaseViewModel
                (trade.MailContent?.TotalPrice.ToString().IndexOf(context.SearchText, StringComparison.OrdinalIgnoreCase) >= 0) ||
                (trade.InstantBuySellContent?.UnitPrice.ToString().IndexOf(context.SearchText, StringComparison.OrdinalIgnoreCase) >= 0) ||
                (trade.InstantBuySellContent?.TotalPrice.ToString().IndexOf(context.SearchText, StringComparison.OrdinalIgnoreCase) >= 0) ||
+               (trade.PlayerTradeContent?.PartnerName?.IndexOf(context.SearchText, StringComparison.OrdinalIgnoreCase) >= 0) ||
+               (trade.PlayerTradeContent?.Silver.ToString().IndexOf(context.SearchText, StringComparison.OrdinalIgnoreCase) >= 0) ||
                (trade.Description?.IndexOf(context.SearchText, StringComparison.OrdinalIgnoreCase) >= 0);
     }
 

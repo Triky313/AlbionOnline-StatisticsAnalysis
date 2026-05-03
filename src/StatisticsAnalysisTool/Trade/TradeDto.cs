@@ -1,6 +1,7 @@
-﻿using StatisticsAnalysisTool.Common;
+using StatisticsAnalysisTool.Common;
 using StatisticsAnalysisTool.Trade.Mails;
 using StatisticsAnalysisTool.Trade.Market;
+using StatisticsAnalysisTool.Trade.PlayerTrades;
 using System;
 using System.Globalization;
 
@@ -28,6 +29,7 @@ public class TradeDto
     public int Amount { get; init; }
     public AuctionEntry AuctionEntry { get; init; }
     public InstantBuySellContent InstantBuySellContent { get; init; }
+    public PlayerTradeContent PlayerTradeContent { get; init; }
     #endregion
 
     public string CsvOutput => GetCsvOutputStringWithRealItemName();
@@ -56,6 +58,11 @@ public class TradeDto
                 itemName = (string.IsNullOrEmpty(instantItem?.LocalizedName)) ? instantItem?.UniqueName ?? "UNKNOWN_ITEM" : instantItem.LocalizedName;
                 break;
             }
+            case TradeType.PlayerTradeIncoming or TradeType.PlayerTradeOutgoing when PlayerTradeContent?.IsSilver == true:
+            {
+                itemName = StatisticsAnalysisTool.Localization.LocalizationController.Translation("SILVER");
+                break;
+            }
             default:
             {
                 var item = ItemController.GetItemByIndex(ItemIndex);
@@ -78,6 +85,16 @@ public class TradeDto
         var utcTime = new DateTime(Ticks, DateTimeKind.Utc).ToString("yyyy-MM-ddTHH:mm:ss.fffZ", CultureInfo.InvariantCulture);
 
         return $"{utcTime};{ClusterIndex ?? ""};{Description ?? ""};{Type.ToString()};{itemName.ToString(CultureInfo.InvariantCulture)}" +
-               $";{MailTypeText ?? ""};{mailContentCsvString};{Amount};{AuctionEntry?.GetAsCsv()};{InstantBuySellContent?.GetAsCsv()}";
+               $";{MailTypeText ?? ""};{mailContentCsvString};{Amount};{AuctionEntry?.GetAsCsv()};{InstantBuySellContent?.GetAsCsv()};{GetPlayerTradeContentCsv()}";
+    }
+
+    private string GetPlayerTradeContentCsv()
+    {
+        if (PlayerTradeContent == null)
+        {
+            return ";;;;";
+        }
+
+        return $"{PlayerTradeContent.PartnerName};{PlayerTradeContent.Direction};{PlayerTradeContent.IsSilver};{PlayerTradeContent.Quantity};{PlayerTradeContent.Silver.IntegerValue}";
     }
 }

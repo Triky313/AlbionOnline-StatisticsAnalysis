@@ -84,6 +84,9 @@ public class NetworkManager
         builder.AddEventHandler(new CraftBuildingInfoEventHandler(trackingController));
         builder.AddEventHandler(new NewHellDungeonRoomShrineObjectEventHandler(trackingController));
         builder.AddEventHandler(new NewRandomDungeonExitEventHandler(trackingController));
+        builder.AddEventHandler(new PlayerTradeUpdateEventHandler(trackingController));
+        builder.AddEventHandler(new PlayerTradeFinishedEventHandler(trackingController));
+        builder.AddEventHandler(new PlayerTradeCancelEventHandler(trackingController));
 
         // Request
         builder.AddRequestHandler(new InventoryMoveItemRequestHandler(trackingController));
@@ -113,6 +116,7 @@ public class NetworkManager
         builder.AddResponseHandler(new AuctionGetLoadoutOffersResponseHandler(trackingController));
         builder.AddResponseHandler(new AuctionBuyLoadoutOfferResponseHandler(trackingController));
         builder.AddResponseHandler(new GetGuildAccountLogsResponseHandler(trackingController));
+        builder.AddResponseHandler(new InviteToPlayerTradeResponseHandler(trackingController));
 
         return builder.Build();
     }

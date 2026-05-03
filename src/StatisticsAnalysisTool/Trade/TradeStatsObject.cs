@@ -1,4 +1,4 @@
-﻿using StatisticsAnalysisTool.Common;
+using StatisticsAnalysisTool.Common;
 using StatisticsAnalysisTool.Enumerations;
 using StatisticsAnalysisTool.Localization;
 using StatisticsAnalysisTool.ViewModels;
@@ -146,6 +146,7 @@ public class TradeStatsObject : BaseViewModel
                             case TradeType.Mail when trade.MailType is MailType.MarketplaceSellOrderFinished or MailType.MarketplaceSellOrderExpired:
                             case TradeType.InstantSell:
                             case TradeType.ManualSell:
+                            case TradeType.PlayerTradeIncoming:
                                 return true;
                         }
                         break;
@@ -157,6 +158,7 @@ public class TradeStatsObject : BaseViewModel
                             case TradeType.InstantBuy:
                             case TradeType.ManualBuy:
                             case TradeType.Crafting:
+                            case TradeType.PlayerTradeOutgoing:
                                 return true;
                         }
                         break;
@@ -184,6 +186,7 @@ public class TradeStatsObject : BaseViewModel
                         TradeType.Mail => trade.MailContent.TotalPrice.IntegerValue,
                         TradeType.InstantSell => trade.InstantBuySellContent.TotalPrice.IntegerValue,
                         TradeType.ManualSell => trade.InstantBuySellContent.TotalPrice.IntegerValue,
+                        TradeType.PlayerTradeIncoming => trade.PlayerTradeContent.IsSilver ? trade.PlayerTradeContent.Silver.IntegerValue : 0,
                         _ => 0
                     },
                     TradeStatType.BoughtToday or TradeStatType.BoughtThisWeek or TradeStatType.BoughtLastWeek or TradeStatType.BoughtMonth or TradeStatType.BoughtLastMonth or TradeStatType.BoughtYear => trade.Type switch
@@ -192,6 +195,7 @@ public class TradeStatsObject : BaseViewModel
                         TradeType.InstantBuy => trade.InstantBuySellContent.TotalPrice.IntegerValue,
                         TradeType.ManualBuy => trade.InstantBuySellContent.TotalPrice.IntegerValue,
                         TradeType.Crafting => trade.InstantBuySellContent.TotalPrice.IntegerValue,
+                        TradeType.PlayerTradeOutgoing => trade.PlayerTradeContent.IsSilver ? trade.PlayerTradeContent.Silver.IntegerValue : 0,
                         _ => 0
                     },
                     TradeStatType.TaxesToday or TradeStatType.TaxesThisWeek or TradeStatType.TaxesLastWeek or TradeStatType.TaxesMonth or TradeStatType.TaxesLastMonth or TradeStatType.TaxesYear
@@ -206,6 +210,7 @@ public class TradeStatsObject : BaseViewModel
                         TradeType.Mail => trade.MailContent.TotalPrice.IntegerValue,
                         TradeType.InstantSell => trade.InstantBuySellContent.TotalPrice.IntegerValue,
                         TradeType.ManualSell => trade.InstantBuySellContent.TotalPrice.IntegerValue,
+                        TradeType.PlayerTradeIncoming => trade.PlayerTradeContent.IsSilver ? trade.PlayerTradeContent.Silver.IntegerValue : 0,
                         _ => 0
                     },
                     TradeStatType.BoughtTotal => trade.Type switch
@@ -214,6 +219,7 @@ public class TradeStatsObject : BaseViewModel
                         TradeType.InstantBuy => trade.InstantBuySellContent.TotalPrice.IntegerValue,
                         TradeType.ManualBuy => trade.InstantBuySellContent.TotalPrice.IntegerValue,
                         TradeType.Crafting => trade.InstantBuySellContent.TotalPrice.IntegerValue,
+                        TradeType.PlayerTradeOutgoing => trade.PlayerTradeContent.IsSilver ? trade.PlayerTradeContent.Silver.IntegerValue : 0,
                         _ => 0
                     },
                     _ => 0
