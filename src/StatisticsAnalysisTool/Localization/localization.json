@@ -1607,7 +1607,7 @@
         },
         {
           "lang": "fr-FR",
-          "seg": "Icone"
+          "seg": "Icône"
         },
         {
           "lang": "ja-JP",
@@ -1713,7 +1713,7 @@
         },
         {
           "lang": "fr-FR",
-          "seg": "Tier"
+          "seg": "Tiers"
         },
         {
           "lang": "ja-JP",
@@ -1766,7 +1766,7 @@
         },
         {
           "lang": "fr-FR",
-          "seg": "Enchatement"
+          "seg": "Enchantement"
         },
         {
           "lang": "ja-JP",
@@ -3091,7 +3091,7 @@
         },
         {
           "lang": "fr-FR",
-          "seg": "Puissance d'objet moyenne"
+          "seg": "Puissance moyenne de l'objet"
         },
         {
           "lang": "ja-JP",
@@ -3197,7 +3197,7 @@
         },
         {
           "lang": "fr-FR",
-          "seg": "Id de Guilde"
+          "seg": "Id de la Guilde"
         },
         {
           "lang": "ja-JP",
@@ -3303,7 +3303,7 @@
         },
         {
           "lang": "fr-FR",
-          "seg": "Id d'Alliance"
+          "seg": "Id de l'Alliance"
         },
         {
           "lang": "ja-JP",
@@ -4992,6 +4992,10 @@
         {
           "lang": "en-US",
           "seg": "Statistics"
+        },
+		{
+          "lang": "fr-FR",
+          "seg": "Statistiques"
         }
       ]
     },
@@ -5005,6 +5009,10 @@
         {
           "lang": "en-US",
           "seg": "Trade Overview"
+        },
+		{
+          "lang": "fr-FR",
+          "seg": "Aperçu des transactions"
         }
       ]
     },
@@ -5018,6 +5026,10 @@
         {
           "lang": "en-US",
           "seg": "Diagrams"
+        },
+		{
+          "lang": "fr-FR",
+          "seg": "Diagramme"
         }
       ]
     },
@@ -5462,7 +5474,7 @@
         },
         {
           "lang": "fr-FR",
-          "seg": "Type d'objets"
+          "seg": "Type d'objet"
         },
         {
           "lang": "ja-JP",
@@ -5727,7 +5739,7 @@
         },
         {
           "lang": "fr-FR",
-          "seg": "Nom de catégorie"
+          "seg": "Nom de la catégorie"
         },
         {
           "lang": "ja-JP",
@@ -5992,7 +6004,7 @@
         },
         {
           "lang": "fr-FR",
-          "seg": "Recherche sur toutes les informations"
+          "seg": "Recherche d'informations complètes de l'objet"
         },
         {
           "lang": "ja-JP",
@@ -6045,7 +6057,7 @@
         },
         {
           "lang": "fr-FR",
-          "seg": "Intervalle de mise à jour des informations de l'objet"
+          "seg": "Intervalle de mise à jour des informations complètes de l'objet (en jours)"
         },
         {
           "lang": "ja-JP",
@@ -6098,7 +6110,7 @@
         },
         {
           "lang": "fr-FR",
-          "seg": "Afficher toutes les informations sur l'objet"
+          "seg": "Afficher toutes les informations de l'objet"
         },
         {
           "lang": "ja-JP",
@@ -6310,7 +6322,7 @@
         },
         {
           "lang": "fr-FR",
-          "seg": "Chaussure en tissu"
+          "seg": "Chaussures en tissu"
         },
         {
           "lang": "ja-JP",
@@ -6469,7 +6481,7 @@
         },
         {
           "lang": "fr-FR",
-          "seg": "Chaussure en cuir"
+          "seg": "Chaussures en cuir"
         },
         {
           "lang": "ja-JP",
@@ -7688,7 +7700,7 @@
         },
         {
           "lang": "fr-FR",
-          "seg": "Tomes de perspicacité"
+          "seg": "Tome de perspicacité"
         },
         {
           "lang": "ja-JP",
@@ -7741,7 +7753,7 @@
         },
         {
           "lang": "fr-FR",
-          "seg": "Cosmétiques"
+          "seg": "Cosmétique"
         },
         {
           "lang": "ja-JP",
@@ -8112,7 +8124,7 @@
         },
         {
           "lang": "fr-FR",
-          "seg": "Drapreau"
+          "seg": "Drapeau"
         },
         {
           "lang": "ja-JP",
@@ -8157,7 +8169,7 @@
         },
         {
           "lang": "en-US",
-          "seg": "HereticFurniture"
+          "seg": "Heretic Furniture"
         },
         {
           "lang": "es-ES",
@@ -16168,7 +16180,7 @@
         },
         {
           "lang": "fr-FR",
-          "seg": "CARTE COURANTE"
+          "seg": "CARTE ACTUELLE"
         },
         {
           "lang": "ja-JP",
@@ -17754,7 +17766,7 @@
         },
         {
           "lang": "fr-FR",
-          "seg": "Trier par soin par seconde"
+          "seg": "Trier par soins par seconde"
         },
         {
           "lang": "ja-JP",
@@ -17807,7 +17819,7 @@
         },
         {
           "lang": "fr-FR",
-          "seg": "Points de Réputation de Faction"
+          "seg": "Points de Drapeau de Faction"
         },
         {
           "lang": "ja-JP",
@@ -21686,7 +21698,7 @@
         },
         {
           "lang": "fr-FR",
-          "seg": "Fabrication avec focus"
+          "seg": "Fabrication avec focalisation"
         },
         {
           "lang": "ja-JP",
@@ -22274,7 +22286,7 @@
         },
         {
           "lang": "fr-FR",
-          "seg": "Déclaration de coût"
+          "seg": "Rapport des coûts"
         },
         {
           "lang": "ja-JP",
@@ -23609,7 +23621,7 @@
         },
         {
           "lang": "fr-FR",
-          "seg": "Frais d'utilisation par 100 nourriture"
+          "seg": "Frais d'utilisation par 100 objets de nourriture"
         },
         {
           "lang": "ja-JP",
@@ -24050,7 +24062,7 @@
         },
         {
           "lang": "fr-FR",
-          "seg": "Donjon respé"
+          "seg": "Donjon ReSpéc"
         },
         {
           "lang": "ja-JP",
@@ -24148,7 +24160,7 @@
         },
         {
           "lang": "fr-FR",
-          "seg": "Donjon renommée par heure"
+          "seg": "Renommée de Donjon par heure"
         },
         {
           "lang": "ja-JP",
@@ -24197,7 +24209,7 @@
         },
         {
           "lang": "fr-FR",
-          "seg": "Donjon respé par heure"
+          "seg": "ReSpéc par heure dans un Donjon"
         },
         {
           "lang": "ja-JP",
@@ -24246,7 +24258,7 @@
         },
         {
           "lang": "fr-FR",
-          "seg": "Donjon argent par heure"
+          "seg": "Argent par heure dans un Donjon"
         },
         {
           "lang": "ja-JP",
@@ -24344,7 +24356,7 @@
         },
         {
           "lang": "fr-FR",
-          "seg": "Réputation de faction"
+          "seg": "Drapeaux de faction"
         },
         {
           "lang": "ja-JP",
@@ -24393,7 +24405,7 @@
         },
         {
           "lang": "fr-FR",
-          "seg": "Réputation de faction par heure"
+          "seg": "Drapeaux de faction par heure"
         },
         {
           "lang": "ja-JP",
@@ -25761,7 +25773,7 @@
         },
         {
           "lang": "fr-FR",
-          "seg": "Ventes total"
+          "seg": "Ventes totales"
         },
         {
           "lang": "ja-JP",
@@ -25908,7 +25920,7 @@
         },
         {
           "lang": "fr-FR",
-          "seg": "AU"
+          "seg": "jusqu'à"
         },
         {
           "lang": "ja-JP",
@@ -28211,7 +28223,7 @@
         },
         {
           "lang": "fr-FR",
-          "seg": "Ignorer les mails avec 0 valeur"
+          "seg": "Ignorer les mails avec 0 en valeur"
         },
         {
           "lang": "ja-JP",
@@ -28554,7 +28566,7 @@
         },
         {
           "lang": "fr-FR",
-          "seg": "Statistiques de donjon"
+          "seg": "Statistiques des donjons"
         },
         {
           "lang": "ja-JP",
@@ -29240,7 +29252,7 @@
         },
         {
           "lang": "fr-FR",
-          "seg": "poids total de fabrication"
+          "seg": "Poids total de fabrication"
         },
         {
           "lang": "ja-JP",
@@ -29338,7 +29350,7 @@
         },
         {
           "lang": "fr-FR",
-          "seg": "Poids total de fabrication fini"
+          "seg": "Poids total de fabrication finie"
         },
         {
           "lang": "ja-JP",
@@ -31290,7 +31302,7 @@
         },
         {
           "lang": "fr-FR",
-          "seg": "Récolte activé"
+          "seg": "Récolte activéé"
         },
         {
           "lang": "ja-JP",
@@ -32827,7 +32839,7 @@
         },
         {
           "lang": "fr-FR",
-          "seg": "Ajout d'une transaction inconnu"
+          "seg": "Ajout d'une transaction inconnue"
         },
         {
           "lang": "ja-JP",
@@ -33072,7 +33084,7 @@
         },
         {
           "lang": "fr-FR",
-          "seg": "Transaction ajoutées"
+          "seg": "Transactions ajoutées"
         },
         {
           "lang": "ja-JP",
@@ -36433,7 +36445,7 @@
         },
         {
           "lang": "fr-FR",
-          "seg": "Aperçu tota"
+          "seg": "Aperçu général"
         },
         {
           "lang": "ja-JP",
@@ -37144,6 +37156,10 @@
         {
           "lang": "en-US",
           "seg": "Network adapters"
+        },
+        {
+          "lang": "fr-FR",
+          "seg": "Interfaces réseau"
         }
       ]
     },
@@ -37157,6 +37173,10 @@
         {
           "lang": "en-US",
           "seg": "Restart network tracking"
+        },
+        {
+          "lang": "fr-FR",
+          "seg": "Redémarrer le suivi du réseau"
         }
       ]
     },
@@ -37202,7 +37222,7 @@
         },
         {
           "lang": "fr-FR",
-          "seg": "Ajout d'un craft"
+          "seg": "Ajout d'une fabrication"
         },
         {
           "lang": "ko-KR",
@@ -37570,7 +37590,7 @@
         },
         {
           "lang": "fr-FR",
-          "seg": "Afficher les prix moyens totaux de l'item"
+          "seg": "Afficher les prix moyens totaux de l'objet"
         }
       ]
     },
@@ -37621,7 +37641,7 @@
         },
         {
           "lang": "fr-FR",
-          "seg": "Valeur totale de la banaque"
+          "seg": "Valeur totale de la banque"
         }
       ]
     },
@@ -37737,6 +37757,10 @@
         {
           "lang": "en-US",
           "seg": "Add loot log files"
+        },
+        {
+          "lang": "fr-FR",
+          "seg": "Ajout des journaux de butin"
         }
       ]
     },
@@ -37750,6 +37774,10 @@
         {
           "lang": "en-US",
           "seg": "Select loot log files"
+        },
+        {
+          "lang": "fr-FR",
+          "seg": "Sélectionner les fichiers des journaux de butin"
         }
       ]
     },
@@ -37763,6 +37791,10 @@
         {
           "lang": "en-US",
           "seg": "Status"
+        },
+        {
+          "lang": "fr-FR",
+          "seg": "Statut"
         }
       ]
     },
@@ -37776,6 +37808,10 @@
         {
           "lang": "en-US",
           "seg": "Tier"
+        },
+        {
+          "lang": "fr-FR",
+          "seg": "Tiers"
         }
       ]
     },
@@ -37788,6 +37824,10 @@
         },
         {
           "lang": "en-US",
+          "seg": "Type"
+        },
+        {
+          "lang": "fr-FR",
           "seg": "Type"
         }
       ]
@@ -37802,6 +37842,10 @@
         {
           "lang": "en-US",
           "seg": "All"
+        },
+        {
+          "lang": "fr-FR",
+          "seg": "Tout"
         }
       ]
     },
@@ -37815,6 +37859,10 @@
         {
           "lang": "en-US",
           "seg": "None"
+        },
+        {
+          "lang": "fr-FR",
+          "seg": "Aucun"
         }
       ]
     },
@@ -37828,6 +37876,10 @@
         {
           "lang": "en-US",
           "seg": "{COUNT} selected"
+        },
+        {
+          "lang": "fr-FR",
+          "seg": "{COUNT} sélectionné"
         }
       ]
     },
@@ -37967,7 +38019,7 @@
         },
         {
           "lang": "fr-FR",
-          "seg": "Frais de trajet totaux"
+          "seg": "Total des frais de trajet"
         }
       ]
     },
@@ -38318,6 +38370,10 @@
         {
           "lang": "en-US",
           "seg": "Loot log files"
+        },
+        {
+          "lang": "fr-FR",
+          "seg": "Fichiers journaux de butin"
         }
       ]
     },
@@ -38331,6 +38387,10 @@
         {
           "lang": "en-US",
           "seg": "Loot log files can be saved in the Logging tab using the green CSV button. This file can then be added in another tool."
+        },
+        {
+          "lang": "fr-FR",
+          "seg": "Les fichiers journaux de butin peuvent être enregistrés dans l'onglet « Journalisation » à l'aide du bouton CSV vert. Ce fichier peut ensuite être importé dans un autre outil."
         }
       ]
     },
@@ -39186,7 +39246,7 @@
         },
         {
           "lang": "fr-FR",
-          "seg": "Palier"
+          "seg": "Tiers"
         }
       ]
     },
@@ -39285,6 +39345,10 @@
         {
           "lang": "en-US",
           "seg": "Aggregation"
+        },
+        {
+          "lang": "fr-FR",
+          "seg": "Agrégation"
         }
       ]
     },
@@ -39297,6 +39361,10 @@
         },
         {
           "lang": "en-US",
+          "seg": "Auto"
+        },
+        {
+          "lang": "fr-FR",
           "seg": "Auto"
         }
       ]
@@ -39311,6 +39379,10 @@
         {
           "lang": "en-US",
           "seg": "Hour"
+        },
+        {
+          "lang": "fr-FR",
+          "seg": "Heure"
         }
       ]
     },
@@ -39324,6 +39396,10 @@
         {
           "lang": "en-US",
           "seg": "Profit over Time"
+        },
+        {
+          "lang": "fr-FR",
+          "seg": "Profit au fils du temps"
         }
       ]
     },
@@ -39337,6 +39413,10 @@
         {
           "lang": "en-US",
           "seg": "Profit by Time of Day"
+        },
+        {
+          "lang": "fr-FR",
+          "seg": "Profit selon l'heure de la journée"
         }
       ]
     },
@@ -39350,6 +39430,10 @@
         {
           "lang": "en-US",
           "seg": "Display"
+        },
+        {
+          "lang": "fr-FR",
+          "seg": "Afficher"
         }
       ]
     },
@@ -39363,6 +39447,10 @@
         {
           "lang": "en-US",
           "seg": "Metric"
+        },
+        {
+          "lang": "fr-FR",
+          "seg": "Système métrique"
         }
       ]
     },
@@ -39376,6 +39464,10 @@
         {
           "lang": "en-US",
           "seg": "Heatmap"
+        },
+        {
+          "lang": "fr-FR",
+          "seg": "Carte thermique"
         }
       ]
     },
@@ -39389,6 +39481,10 @@
         {
           "lang": "en-US",
           "seg": "Hourly Bars"
+        },
+        {
+          "lang": "fr-FR",
+          "seg": "Barres horaires"
         }
       ]
     },
@@ -39402,6 +39498,10 @@
         {
           "lang": "en-US",
           "seg": "Average Profit per Trade"
+        },
+        {
+          "lang": "fr-FR",
+          "seg": "Profit moyen par transaction"
         }
       ]
     },
@@ -39415,6 +39515,10 @@
         {
           "lang": "en-US",
           "seg": "Trade count"
+        },
+        {
+          "lang": "fr-FR",
+          "seg": "Nombre de transactions"
         }
       ]
     },
@@ -39428,6 +39532,10 @@
         {
           "lang": "en-US",
           "seg": "Top Item Ranking"
+        },
+        {
+          "lang": "fr-FR",
+          "seg": "Classement des articles les plus populaires"
         }
       ]
     },
@@ -39441,6 +39549,10 @@
         {
           "lang": "en-US",
           "seg": "Top Transfer by Profit"
+        },
+        {
+          "lang": "fr-FR",
+          "seg": "Meilleur transfert en termes de profit"
         }
       ]
     },
@@ -39454,6 +39566,10 @@
         {
           "lang": "en-US",
           "seg": "Top Transfer by Loss"
+        },
+        {
+          "lang": "fr-FR",
+          "seg": "Meilleur transfert par perte"
         }
       ]
     },
@@ -39467,6 +39583,10 @@
         {
           "lang": "en-US",
           "seg": "Top Items by ROI"
+        },
+        {
+          "lang": "fr-FR",
+          "seg": "Meilleurs articles par ROI (Retour Sur Investissement)"
         }
       ]
     },
@@ -39480,6 +39600,10 @@
         {
           "lang": "en-US",
           "seg": "Top sold items by volume"
+        },
+        {
+          "lang": "fr-FR",
+          "seg": "Objets les plus vendus en volume"
         }
       ]
     },
@@ -39493,6 +39617,10 @@
         {
           "lang": "en-US",
           "seg": "Top bought items by volume"
+        },
+        {
+          "lang": "fr-FR",
+          "seg": "Objets les plus achetés en volume"
         }
       ]
     },
@@ -39506,6 +39634,10 @@
         {
           "lang": "en-US",
           "seg": "ROI"
+        },
+        {
+          "lang": "fr-FR",
+          "seg": "ROI (Retour Sur Investissement)"
         }
       ]
     },
@@ -39519,6 +39651,10 @@
         {
           "lang": "en-US",
           "seg": "Received"
+        },
+        {
+          "lang": "fr-FR",
+          "seg": "Reçu"
         }
       ]
     },
@@ -39532,6 +39668,10 @@
         {
           "lang": "en-US",
           "seg": "Given"
+        },
+        {
+          "lang": "fr-FR",
+          "seg": "Donné"
         }
       ]
     },
@@ -39545,6 +39685,10 @@
         {
           "lang": "en-US",
           "seg": "Recognize personal trades"
+        },
+        {
+          "lang": "fr-FR",
+          "seg": "Identifier ses propres transactions"
         }
       ]
     }
