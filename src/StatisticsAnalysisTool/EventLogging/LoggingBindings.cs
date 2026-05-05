@@ -360,7 +360,7 @@ public class LoggingBindings : BaseViewModel
         IsAllButtonsEnabled = true;
     }
 
-    private int AddLootLogFiles(IEnumerable<string> filePaths)
+    internal int AddLootLogFiles(IEnumerable<string> filePaths)
     {
         var addedItems = 0;
 
@@ -536,6 +536,7 @@ public class LoggingBindings : BaseViewModel
     {
         return lootedItem.ItemIndex == lootLogItem.Item.Index
                && lootedItem.Quantity == lootLogItem.Quantity
+               && string.Equals(lootedItem.LootedByName, lootLogItem.LootedByName, StringComparison.OrdinalIgnoreCase)
                && Math.Abs((lootedItem.UtcPickupTime - lootLogItem.UtcPickupTime).TotalSeconds) <= LootLogTimeToleranceSeconds;
     }
 
