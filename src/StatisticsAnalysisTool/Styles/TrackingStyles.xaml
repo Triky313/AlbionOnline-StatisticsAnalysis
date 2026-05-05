@@ -32,6 +32,34 @@
         </Style.Triggers>
     </Style>
 
+    <Style x:Key="LootComparator.RemovePlayerButton" TargetType="{x:Type Button}">
+        <Setter Property="Width" Value="18" />
+        <Setter Property="Height" Value="18" />
+        <Setter Property="Margin" Value="6,1,0,0" />
+        <Setter Property="Padding" Value="0" />
+        <Setter Property="Background" Value="Transparent" />
+        <Setter Property="BorderThickness" Value="0" />
+        <Setter Property="Cursor" Value="Hand" />
+        <Setter Property="Focusable" Value="False" />
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="{x:Type Button}">
+                    <Border Background="{TemplateBinding Background}">
+                        <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center" />
+                    </Border>
+                    <ControlTemplate.Triggers>
+                        <Trigger Property="IsMouseOver" Value="True">
+                            <Setter Property="Opacity" Value="0.75" />
+                        </Trigger>
+                        <Trigger Property="IsPressed" Value="True">
+                            <Setter Property="Opacity" Value="0.55" />
+                        </Trigger>
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
     <!-- Chest icons -->
     <Style TargetType="Image" x:Key="Icon.Chest.Standard.Close" >
         <Setter Property="Source" Value="../Resources/chest_close_standard.png"/>
@@ -835,8 +863,16 @@
     <DataTemplate x:Key="LootingPlayersTemplate" DataType="{x:Type eventLogging:LootingPlayer}">
         <Grid Width="auto" Visibility="{Binding LootingPlayerVisibility}">
             <StackPanel Orientation="Vertical" Width="auto" Margin="0,0,0,25">
-                <Label Content="{Binding DisplayName, FallbackValue='PLAYER__NAME', Mode='OneWay'}" Foreground="{StaticResource SolidColorBrush.Accent.Blue.3}" 
-                       FontSize="16" FontWeight="Bold" Height="22" Padding="0" Margin="0,0,0,0" />
+                <StackPanel Orientation="Horizontal" Height="22">
+                    <Label Content="{Binding DisplayName, FallbackValue='PLAYER__NAME', Mode='OneWay'}" Foreground="{StaticResource SolidColorBrush.Accent.Blue.3}"
+                           FontSize="16" FontWeight="Bold" Height="22" Padding="0" Margin="0,0,0,0" />
+                    <Button Style="{StaticResource LootComparator.RemovePlayerButton}"
+                            Command="{Binding DataContext.LoggingBindings.RemoveLootingPlayerCommand, RelativeSource={RelativeSource AncestorType={x:Type UserControl}}}"
+                            CommandParameter="{Binding}"
+                            ToolTip="{Binding DataContext.LoggingBindings.Translation.RemovePlayerFromLootComparator, RelativeSource={RelativeSource AncestorType={x:Type UserControl}}, FallbackValue=Remove player}">
+                        <fa5:ImageAwesome Icon="Solid_Times" Foreground="{StaticResource SolidColorBrush.Accent.Red.3}" Width="10" Height="10" />
+                    </Button>
+                </StackPanel>
                 <ItemsControl ItemsSource="{Binding LootedItems, IsAsync=True}" ItemTemplate="{StaticResource LootedItemTemplate}" Cursor="Hand">
                     <ItemsControl.ItemsPanel>
                         <ItemsPanelTemplate>

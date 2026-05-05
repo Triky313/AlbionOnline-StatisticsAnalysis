@@ -19,6 +19,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Data;
+using System.Windows.Input;
 
 namespace StatisticsAnalysisTool.EventLogging;
 
@@ -55,6 +56,7 @@ public class LoggingBindings : BaseViewModel
     private ObservableCollection<VaultContainerLogItem> _vaultLogItems = [];
     private bool _isAllButtonsEnabled = true;
     private Visibility _isLootComparatorInfoPopupVisible = Visibility.Collapsed;
+    private ICommand _removeLootingPlayerCommand;
     private const int LootLogTimeToleranceSeconds = 2;
 
     public void Init()
@@ -616,6 +618,45 @@ public class LoggingBindings : BaseViewModel
         IsLootComparatorInfoPopupVisible = IsLootComparatorInfoPopupVisible == Visibility.Visible ? Visibility.Collapsed : Visibility.Visible;
     }
 
+    private void RemoveLootingPlayer(object value)
+    {
+        if (value is not LootingPlayer lootingPlayer)
+        {
+            return;
+        }
+
+        RemoveLootingPlayer(lootingPlayer);
+    }
+
+    public void RemoveLootingPlayer(LootingPlayer lootingPlayer)
+    {
+        if (lootingPlayer is null)
+        {
+            return;
+        }
+
+        RemoveVaultLogItemsForPlayer(lootingPlayer.PlayerName);
+        LootingPlayers.Remove(lootingPlayer);
+        LootingPlayersCollectionView?.Refresh();
+    }
+
+    private void RemoveVaultLogItemsForPlayer(string playerName)
+    {
+        if (string.IsNullOrWhiteSpace(playerName))
+        {
+            return;
+        }
+
+        var vaultItemsToRemove = VaultLogItems
+            .Where(item => string.Equals(item.PlayerName, playerName, StringComparison.OrdinalIgnoreCase))
+            .ToList();
+
+        foreach (var vaultItem in vaultItemsToRemove)
+        {
+            VaultLogItems.Remove(vaultItem);
+        }
+    }
+
     public string StatusFilterSummary => BuildFilterSummary(LoggingTranslation.FilterStatus, CountSelectedFilters(IsShowingLost, IsShowingResolved, IsShowingDonated, IsShowingTrash), 4);
     public string TierFilterSummary => BuildFilterSummary(LoggingTranslation.FilterTier, CountSelectedFilters(IsShowingT1ToT3, IsShowingT4, IsShowingT5, IsShowingT6, IsShowingT7, IsShowingT8), 6);
     public string TypeFilterSummary => BuildFilterSummary(LoggingTranslation.FilterType, CountSelectedFilters(IsShowingFood, IsShowingPotion, IsShowingBag, IsShowingCape, IsShowingMount, IsShowingOthers), 6);
@@ -993,6 +1034,8 @@ public class LoggingBindings : BaseViewModel
             OnPropertyChanged();
         }
     }
+
+    public ICommand RemoveLootingPlayerCommand => _removeLootingPlayerCommand ??= new CommandHandler(RemoveLootingPlayer, true);
 
     #endregion
 

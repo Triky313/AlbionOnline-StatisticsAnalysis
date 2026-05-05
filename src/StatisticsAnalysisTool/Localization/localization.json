@@ -37935,6 +37935,23 @@
       ]
     },
     {
+      "tuid": "REMOVE_PLAYER_FROM_LOOT_COMPARATOR",
+      "tuv": [
+        {
+          "lang": "de-DE",
+          "seg": "Spieler aus Loot Comparator entfernen"
+        },
+        {
+          "lang": "en-US",
+          "seg": "Remove player from loot comparator"
+        },
+        {
+          "lang": "fr-FR",
+          "seg": "Retirer le joueur du comparateur de butin"
+        }
+      ]
+    },
+    {
       "tuid": "T1_TO_T3",
       "tuv": [
         {
