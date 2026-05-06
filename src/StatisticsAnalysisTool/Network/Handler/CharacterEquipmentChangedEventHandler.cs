@@ -4,20 +4,13 @@ using System.Threading.Tasks;
 
 namespace StatisticsAnalysisTool.Network.Handler;
 
-public class CharacterEquipmentChangedEventHandler : EventPacketHandler<CharacterEquipmentChangedEvent>
+public class CharacterEquipmentChangedEventHandler(TrackingController trackingController) : EventPacketHandler<CharacterEquipmentChangedEvent>((int) EventCodes.CharacterEquipmentChanged)
 {
-    private readonly TrackingController _trackingController;
-
-    public CharacterEquipmentChangedEventHandler(TrackingController trackingController) : base((int) EventCodes.CharacterEquipmentChanged)
-    {
-        _trackingController = trackingController;
-    }
-
     protected override async Task OnActionAsync(CharacterEquipmentChangedEvent value)
     {
         if (value.ObjectId != null)
         {
-            await _trackingController.EntityController.SetCharacterEquipmentAsync((long) value.ObjectId, value.CharacterEquipment);
+            await trackingController.EntityController.SetCharacterEquipmentAsync((long) value.ObjectId, value.CharacterEquipment);
         }
     }
 }

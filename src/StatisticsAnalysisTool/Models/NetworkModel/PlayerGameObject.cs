@@ -8,11 +8,6 @@ namespace StatisticsAnalysisTool.Models.NetworkModel;
 
 public class PlayerGameObject : GameObject
 {
-    private CharacterEquipment _characterEquipment;
-    private readonly Guid _userGuid;
-    private Guid? _interactGuid;
-    private List<ActionInterval> _combatTimes = new();
-
     public PlayerGameObject(long? objectId)
     {
         ObjectId ??= objectId;
@@ -20,48 +15,55 @@ public class PlayerGameObject : GameObject
     }
 
     public long LastUpdate { get; private set; }
+
     public Guid UserGuid
     {
-        get => _userGuid;
+        get;
         init
         {
-            _userGuid = value;
+            field = value;
             LastUpdate = DateTime.UtcNow.Ticks;
         }
     }
+
     public Guid? InteractGuid
     {
-        get => _interactGuid;
+        get;
         set
         {
-            _interactGuid = value;
+            field = value;
             LastUpdate = DateTime.UtcNow.Ticks;
         }
     }
+
     public string Name { get; set; } = "Unknown";
     public string Guild { get; set; }
     public string Alliance { get; set; }
     public bool IsInParty { get; set; }
     public double ItemPower { get; set; }
+
     public CharacterEquipment CharacterEquipment
     {
-        get => _characterEquipment;
+        get;
         set
         {
-            _characterEquipment = value;
+            field = value;
             LastUpdate = DateTime.UtcNow.Ticks;
         }
     }
+
     public DateTime? CombatStart { get; set; }
+
     public List<ActionInterval> CombatTimes
     {
-        get => _combatTimes;
+        get;
         set
         {
-            _combatTimes = value;
+            field = value;
             LastUpdate = DateTime.UtcNow.Ticks;
         }
-    }
+    } = [];
+
     public TimeSpan CombatTime { get; set; } = new(1);
     public long Damage { get; set; }
     public long Heal { get; set; }

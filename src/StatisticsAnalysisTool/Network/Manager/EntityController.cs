@@ -1,5 +1,6 @@
 ﻿using Serilog;
 using StatisticsAnalysisTool.Common;
+using StatisticsAnalysisTool.DamageMeter;
 using StatisticsAnalysisTool.Enumerations;
 using StatisticsAnalysisTool.Models;
 using StatisticsAnalysisTool.Models.NetworkModel;
@@ -13,7 +14,6 @@ using System.Linq;
 using System.Reflection;
 using System.Threading.Tasks;
 using System.Windows;
-using StatisticsAnalysisTool.DamageMeter;
 
 namespace StatisticsAnalysisTool.Network.Manager;
 
@@ -21,8 +21,8 @@ public class EntityController
 {
     private readonly ConcurrentDictionary<Guid, PlayerGameObject> _knownEntities = new();
     private readonly MainWindowViewModel _mainWindowViewModel;
-    private readonly ObservableCollection<EquipmentItemInternal> _newEquipmentItems = new();
-    private readonly ObservableCollection<SpellEffect> _spellEffects = new();
+    private readonly ObservableCollection<EquipmentItemInternal> _newEquipmentItems = [];
+    private readonly ObservableCollection<SpellEffect> _spellEffects = [];
     private readonly ConcurrentDictionary<long, CharacterEquipmentData> _tempCharacterEquipmentData = new();
     private double _lastLocalEntityGuildTaxInPercent;
     private double _lastLocalEntityClusterTaxInPercent;

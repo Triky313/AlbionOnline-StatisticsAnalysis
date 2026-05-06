@@ -7,22 +7,15 @@ using System.Threading.Tasks;
 
 namespace StatisticsAnalysisTool.Network.Handler;
 
-public class NewCharacterEventHandler : EventPacketHandler<NewCharacterEvent>
+public class NewCharacterEventHandler(TrackingController trackingController) : EventPacketHandler<NewCharacterEvent>((int) EventCodes.NewCharacter)
 {
-    private readonly TrackingController _trackingController;
-
-    public NewCharacterEventHandler(TrackingController trackingController) : base((int) EventCodes.NewCharacter)
-    {
-        _trackingController = trackingController;
-    }
-
     protected override async Task OnActionAsync(NewCharacterEvent value)
     {
 
 
         if (value.Guid != null && value.ObjectId != null)
         {
-            _trackingController.EntityController.AddEntity(new Entity
+            trackingController.EntityController.AddEntity(new Entity
             {
                 ObjectId = value.ObjectId,
                 UserGuid = value.Guid ?? Guid.Empty,
