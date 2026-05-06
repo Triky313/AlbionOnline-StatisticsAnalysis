@@ -1,4 +1,4 @@
-﻿using Serilog;
+using Serilog;
 using StatisticsAnalysisTool.Common;
 using StatisticsAnalysisTool.DamageMeter;
 using StatisticsAnalysisTool.Enumerations;

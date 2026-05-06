@@ -3,6 +3,8 @@ using StatisticsAnalysisTool.Common;
 using StatisticsAnalysisTool.Common.UserSettings;
 using StatisticsAnalysisTool.DamageMeter;
 using StatisticsAnalysisTool.Enumerations;
+using StatisticsAnalysisTool.GameFileData;
+using StatisticsAnalysisTool.Models.ItemsJsonModel;
 using StatisticsAnalysisTool.Models.NetworkModel;
 using StatisticsAnalysisTool.Properties;
 using StatisticsAnalysisTool.ViewModels;
@@ -10,7 +12,6 @@ using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.IO;
 using System.Linq;
 using System.Reflection;
 using System.Threading.Tasks;
@@ -75,7 +76,7 @@ public class CombatController
             }
 
             causerGameObjectValue.Damage += damageChangeValue;
-            AddOrUpdateSpell(causingSpellIndex, causerGameObjectValue, healthChangeType, damageChangeValue, causerGameObjectValue.CharacterEquipment?.MainHand ?? 0);
+            AddOrUpdateSpell(causingSpellIndex, causerGameObjectValue, healthChangeType, damageChangeValue);
         }
 
         if (healthChangeType == HealthChangeType.Heal)
@@ -90,7 +91,7 @@ public class CombatController
             if (!IsMaxHealthReached(affectedId, newHealthValue))
             {
                 causerGameObjectValue.Heal += positiveHealChangeValue;
-                AddOrUpdateSpell(causingSpellIndex, causerGameObjectValue, healthChangeType, positiveHealChangeValue, causerGameObjectValue.CharacterEquipment?.MainHand ?? 0);
+                AddOrUpdateSpell(causingSpellIndex, causerGameObjectValue, healthChangeType, positiveHealChangeValue);
             }
             else
             {
@@ -445,7 +446,7 @@ public class CombatController
         return false;
     }
 
-    private void AddOrUpdateSpell(int causingSpellIndex, PlayerGameObject playerGameObject, HealthChangeType healthChangeType, int healthChangeValue, int itemIndex)
+    private void AddOrUpdateSpell(int causingSpellIndex, PlayerGameObject playerGameObject, HealthChangeType healthChangeType, int healthChangeValue)
     {
         if (causingSpellIndex <= 0)
         {
@@ -470,11 +471,17 @@ public class CombatController
             return;
         }
 
+        var itemIndex = GetSpellItemIndex(causingSpellIndex, playerGameObject);
         var spell = playerGameObject.Spells.FirstOrDefault(x => x.SpellIndex == causingSpellIndex && x.HealthChangeType == healthChangeType);
         if (spell is not null)
         {
             spell.HealthChangeType = healthChangeType;
             spell.DamageHealValue += healthChangeValue;
+            if (itemIndex > 0)
+            {
+                spell.ItemIndex = itemIndex;
+            }
+
             spell.Ticks++;
         }
         else
@@ -487,6 +494,104 @@ public class CombatController
                 Ticks = 1
             });
         }
+    }
+
+    private int GetSpellItemIndex(int causingSpellIndex, PlayerGameObject playerGameObject)
+    {
+        var equipment = playerGameObject.CharacterEquipment;
+        if (equipment is null)
+        {
+            return 0;
+        }
+
+        var causingSpellUniqueName = SpellData.GetUniqueName(causingSpellIndex);
+        var spellSlot = equipment.ActiveSpells.LastOrDefault(x => IsMatchingSpell(causingSpellIndex, causingSpellUniqueName, x.Value));
+        if (spellSlot is null)
+        {
+            var slotType = GetSlotTypeBySpellUniqueName(causingSpellUniqueName);
+            return slotType == SlotType.Unknown ? equipment.MainHand : GetItemIndexBySlotType(equipment, slotType);
+        }
+
+        return spellSlot.ItemIndex > 0 ? GetBasePotionItemIndex(spellSlot.ItemIndex) : GetItemIndexBySlotType(equipment, spellSlot.SlotType);
+    }
+
+    private static bool IsMatchingSpell(int causingSpellIndex, string causingSpellUniqueName, int slotSpellIndex)
+    {
+        if (slotSpellIndex == causingSpellIndex)
+        {
+            return true;
+        }
+
+        var slotSpellUniqueName = SpellData.GetUniqueName(slotSpellIndex);
+        return !string.IsNullOrWhiteSpace(causingSpellUniqueName)
+               && !string.IsNullOrWhiteSpace(slotSpellUniqueName)
+               && causingSpellUniqueName.StartsWith(slotSpellUniqueName, StringComparison.OrdinalIgnoreCase);
+    }
+
+    private static SlotType GetSlotTypeBySpellUniqueName(string spellUniqueName)
+    {
+        if (string.IsNullOrWhiteSpace(spellUniqueName))
+        {
+            return SlotType.Unknown;
+        }
+
+        if (spellUniqueName.StartsWith("PASSIVECAPE_", StringComparison.OrdinalIgnoreCase)
+            || spellUniqueName.StartsWith("PASSIVE_CAPE_", StringComparison.OrdinalIgnoreCase)
+            || spellUniqueName.StartsWith("CAPE_", StringComparison.OrdinalIgnoreCase))
+        {
+            return SlotType.Cape;
+        }
+
+        if (spellUniqueName.StartsWith("POTION_", StringComparison.OrdinalIgnoreCase))
+        {
+            return SlotType.Potion;
+        }
+
+        if (spellUniqueName.StartsWith("FOOD_", StringComparison.OrdinalIgnoreCase))
+        {
+            return SlotType.Food;
+        }
+
+        return SlotType.Unknown;
+    }
+
+    private static int GetItemIndexBySlotType(CharacterEquipment equipment, SlotType slotType)
+    {
+        var itemIndex = slotType switch
+        {
+            SlotType.MainHand => equipment.MainHand,
+            SlotType.OffHand => equipment.OffHand,
+            SlotType.Cape => equipment.Cape,
+            SlotType.Bag => equipment.Bag,
+            SlotType.Armor => equipment.Chest,
+            SlotType.Head => equipment.Head,
+            SlotType.Shoes => equipment.Shoes,
+            SlotType.Mount => equipment.Mount,
+            SlotType.Potion => equipment.Potion,
+            SlotType.Food => equipment.BuffFood,
+            _ => equipment.MainHand
+        };
+
+        return slotType == SlotType.Potion ? GetBasePotionItemIndex(itemIndex) : itemIndex;
+    }
+
+    private static int GetBasePotionItemIndex(int itemIndex)
+    {
+        if (itemIndex <= 0)
+        {
+            return 0;
+        }
+
+        var item = ItemController.GetItemByIndex(itemIndex);
+        if (item == null
+            || item.Level == 0
+            || item.FullItemInformation is not ConsumableItem consumableItem
+            || consumableItem.SlotTypeEnum != SlotType.Potion)
+        {
+            return itemIndex;
+        }
+
+        return ItemController.GetItemByUniqueName(ItemController.GetCleanUniqueName(item.UniqueName))?.Index ?? itemIndex;
     }
 
     private static async Task AddOrUpdateSpellFragmentAsync(ObservableCollection<UsedSpellFragment> spellsFragments, IReadOnlyCollection<UsedSpell> spells)
@@ -504,6 +609,7 @@ public class CombatController
 
                 if (existingFragment != null)
                 {
+                    existingFragment.ItemIndex = spell.ItemIndex;
                     existingFragment.DamageHealValue = spell.DamageHealValue;
                     existingFragment.Ticks = spell.Ticks;
                     existingFragment.DamageInPercent = (maxDamage != 0) ? (double) spell.DamageHealValue / maxDamage * 100 : 0;
