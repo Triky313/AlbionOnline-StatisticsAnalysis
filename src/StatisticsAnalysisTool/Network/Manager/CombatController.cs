@@ -21,9 +21,15 @@ namespace StatisticsAnalysisTool.Network.Manager;
 
 public class CombatController
 {
+    private const int DamageStatsUiUpdateIntervalInMilliseconds = 1000;
     private readonly MainWindowViewModel _mainWindowViewModel;
     private readonly TrackingController _trackingController;
+    private readonly DamageStatsTracker _damageStatsTracker = new();
+    private readonly object _damageStatsUiUpdateLock = new();
     private bool _combatModeWasCombatOver;
+    private bool _isDamageStatsUiUpdateActive;
+    private DateTime _lastDamageStatsUiUpdate;
+    private int _damageStatsVersion;
     public CombatEventTracker CombatEventTracker { get; }
 
     public CombatController(TrackingController trackingController, MainWindowViewModel mainWindowViewModel)
@@ -81,6 +87,7 @@ public class CombatController
             causerGameObjectValue.Damage += damageChangeValue;
             AddOrUpdateSpell(causingSpellIndex, causerGameObjectValue, healthChangeType, damageChangeValue);
             CombatEventTracker.AddHealthContribution(CombatEventValueType.Damage, causerId, affectedId, damageChangeValue, causingSpellIndex);
+            _damageStatsTracker.RecordDamage(causerId, causerGameObjectValue.Name, affectedId, damageChangeValue, newHealthValue);
         }
 
         if (healthChangeType == HealthChangeType.Heal)
@@ -97,16 +104,19 @@ public class CombatController
                 causerGameObjectValue.Heal += positiveHealChangeValue;
                 AddOrUpdateSpell(causingSpellIndex, causerGameObjectValue, healthChangeType, positiveHealChangeValue);
                 CombatEventTracker.AddHealthContribution(CombatEventValueType.Heal, causerId, affectedId, positiveHealChangeValue, causingSpellIndex);
+                _damageStatsTracker.RecordHeal(causerId, causerGameObjectValue.Name, positiveHealChangeValue);
             }
             else
             {
                 causerGameObjectValue.Overhealed += positiveHealChangeValue;
+                _damageStatsTracker.RecordOverheal(causerId, causerGameObjectValue.Name, positiveHealChangeValue);
             }
         }
 
         causerGameObjectValue.CombatStart ??= DateTime.UtcNow;
 
         OnDamageUpdate?.Invoke(_mainWindowViewModel?.DamageMeterBindings?.DamageMeter, _trackingController.EntityController.GetAllEntitiesWithDamageOrHealAndInParty());
+        UpdateDamageStatsUiIfAllowed();
         return Task.CompletedTask;
     }
 
@@ -382,6 +392,14 @@ public class CombatController
 
     public void ResetDamageMeter()
     {
+        lock (_damageStatsUiUpdateLock)
+        {
+            _damageStatsVersion++;
+            _isDamageStatsUiUpdateActive = false;
+            _lastDamageStatsUiUpdate = DateTime.MinValue;
+        }
+
+        _damageStatsTracker.Clear();
         _trackingController.EntityController.ResetEntitiesDamageTimes();
         _trackingController.EntityController.ResetEntitiesDamage();
         _trackingController.EntityController.ResetEntitiesHeal();
@@ -393,6 +411,7 @@ public class CombatController
         Application.Current?.Dispatcher?.InvokeAsync(() =>
         {
             _mainWindowViewModel?.DamageMeterBindings?.DamageMeter?.Clear();
+            _mainWindowViewModel?.DamageMeterBindings?.ClearDamageStats();
         });
     }
 
@@ -450,6 +469,69 @@ public class CombatController
         }
 
         return false;
+    }
+
+    private void UpdateDamageStatsUiIfAllowed()
+    {
+        if (!IsDamageStatsUiUpdateAllowed())
+        {
+            return;
+        }
+
+        var activePlayerObjectIds = _trackingController.EntityController
+            .GetAllEntitiesWithDamageOrHealAndInParty()
+            .Select(x => x.Value.ObjectId)
+            .Where(x => x is not null)
+            .Select(x => x!.Value)
+            .ToList();
+        var snapshot = _damageStatsTracker.CreateSnapshot(activePlayerObjectIds);
+        int damageStatsVersion;
+
+        lock (_damageStatsUiUpdateLock)
+        {
+            damageStatsVersion = _damageStatsVersion;
+        }
+
+        _ = Application.Current.Dispatcher.InvokeAsync(() =>
+        {
+            var canApplySnapshot = false;
+
+            lock (_damageStatsUiUpdateLock)
+            {
+                canApplySnapshot = damageStatsVersion == _damageStatsVersion;
+            }
+
+            if (canApplySnapshot)
+            {
+                _mainWindowViewModel.DamageMeterBindings.SetDamageStats(snapshot);
+            }
+
+            lock (_damageStatsUiUpdateLock)
+            {
+                _isDamageStatsUiUpdateActive = false;
+            }
+        });
+    }
+
+    private bool IsDamageStatsUiUpdateAllowed()
+    {
+        lock (_damageStatsUiUpdateLock)
+        {
+            if (_isDamageStatsUiUpdateActive)
+            {
+                return false;
+            }
+
+            var currentDateTime = DateTime.UtcNow;
+            if (currentDateTime.Subtract(_lastDamageStatsUiUpdate).TotalMilliseconds < DamageStatsUiUpdateIntervalInMilliseconds)
+            {
+                return false;
+            }
+
+            _isDamageStatsUiUpdateActive = true;
+            _lastDamageStatsUiUpdate = currentDateTime;
+            return true;
+        }
     }
 
     private void AddOrUpdateSpell(int causingSpellIndex, PlayerGameObject playerGameObject, HealthChangeType healthChangeType, int healthChangeValue)

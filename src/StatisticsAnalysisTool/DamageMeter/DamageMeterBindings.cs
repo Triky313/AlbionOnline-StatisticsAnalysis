@@ -33,6 +33,13 @@ public class DamageMeterBindings : BaseViewModel, IAsyncInitialization
     private bool _isDamageMeterResetBeforeCombatActive;
     private bool _shortDamageMeterToClipboard;
     private bool _onlyDamageToPlayersCounts;
+    private ObservableCollection<DamageStatsEntry> _topSingleHits = [];
+    private ObservableCollection<DamageStatsEntry> _topSingleHeals = [];
+    private ObservableCollection<DamageStatsEntry> _topLastHits = [];
+    private ObservableCollection<DamageStatsEntry> _topOverheals = [];
+    private ObservableCollection<DamageStatsEntry> _topBurstDamageFiveSeconds = [];
+    private ObservableCollection<DamageStatsEntry> _topBurstDamageTenSeconds = [];
+    private ObservableCollection<DamageStatsEntry> _topAttackedTargets = [];
     public Task Initialization { get; init; }
 
     public DamageMeterBindings()
@@ -243,6 +250,98 @@ public class DamageMeterBindings : BaseViewModel, IAsyncInitialization
             SettingsController.CurrentSettings.OnlyDamageToPlayersCounts = OnlyDamageToPlayersCounts;
             OnPropertyChanged();
         }
+    }
+
+    #endregion
+
+    #region Damage Stats
+
+    public ObservableCollection<DamageStatsEntry> TopSingleHits
+    {
+        get => _topSingleHits;
+        set
+        {
+            _topSingleHits = value;
+            OnPropertyChanged();
+        }
+    }
+
+    public ObservableCollection<DamageStatsEntry> TopSingleHeals
+    {
+        get => _topSingleHeals;
+        set
+        {
+            _topSingleHeals = value;
+            OnPropertyChanged();
+        }
+    }
+
+    public ObservableCollection<DamageStatsEntry> TopLastHits
+    {
+        get => _topLastHits;
+        set
+        {
+            _topLastHits = value;
+            OnPropertyChanged();
+        }
+    }
+
+    public ObservableCollection<DamageStatsEntry> TopOverheals
+    {
+        get => _topOverheals;
+        set
+        {
+            _topOverheals = value;
+            OnPropertyChanged();
+        }
+    }
+
+    public ObservableCollection<DamageStatsEntry> TopBurstDamageFiveSeconds
+    {
+        get => _topBurstDamageFiveSeconds;
+        set
+        {
+            _topBurstDamageFiveSeconds = value;
+            OnPropertyChanged();
+        }
+    }
+
+    public ObservableCollection<DamageStatsEntry> TopBurstDamageTenSeconds
+    {
+        get => _topBurstDamageTenSeconds;
+        set
+        {
+            _topBurstDamageTenSeconds = value;
+            OnPropertyChanged();
+        }
+    }
+
+    public ObservableCollection<DamageStatsEntry> TopAttackedTargets
+    {
+        get => _topAttackedTargets;
+        set
+        {
+            _topAttackedTargets = value;
+            OnPropertyChanged();
+        }
+    }
+
+    public void SetDamageStats(DamageStatsSnapshot snapshot)
+    {
+        snapshot ??= DamageStatsSnapshot.Empty;
+
+        TopSingleHits = new ObservableCollection<DamageStatsEntry>(snapshot.TopSingleHits);
+        TopSingleHeals = new ObservableCollection<DamageStatsEntry>(snapshot.TopSingleHeals);
+        TopLastHits = new ObservableCollection<DamageStatsEntry>(snapshot.TopLastHits);
+        TopOverheals = new ObservableCollection<DamageStatsEntry>(snapshot.TopOverheals);
+        TopBurstDamageFiveSeconds = new ObservableCollection<DamageStatsEntry>(snapshot.TopBurstDamageFiveSeconds);
+        TopBurstDamageTenSeconds = new ObservableCollection<DamageStatsEntry>(snapshot.TopBurstDamageTenSeconds);
+        TopAttackedTargets = new ObservableCollection<DamageStatsEntry>(snapshot.TopAttackedTargets);
+    }
+
+    public void ClearDamageStats()
+    {
+        SetDamageStats(DamageStatsSnapshot.Empty);
     }
 
     #endregion
