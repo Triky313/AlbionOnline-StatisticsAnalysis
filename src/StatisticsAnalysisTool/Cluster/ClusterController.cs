@@ -61,6 +61,7 @@ public sealed class ClusterController(TrackingController trackingController, Mai
 
     public void SetAndResetValues(ClusterInfo currentCluster)
     {
+        trackingController.CombatController.CombatEventTracker.OnClusterChanged();
         trackingController.TradeController.ResetCraftingBuildingInfo();
         mainWindowViewModel.DamageMeterBindings.GetSnapshot(mainWindowViewModel.DamageMeterBindings.IsSnapshotAfterMapChangeActive);
         trackingController.CombatController.ResetDamageMeterByClusterChange();

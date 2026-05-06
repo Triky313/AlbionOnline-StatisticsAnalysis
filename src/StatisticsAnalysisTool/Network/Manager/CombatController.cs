@@ -24,15 +24,18 @@ public class CombatController
     private readonly MainWindowViewModel _mainWindowViewModel;
     private readonly TrackingController _trackingController;
     private bool _combatModeWasCombatOver;
+    public CombatEventTracker CombatEventTracker { get; }
 
     public CombatController(TrackingController trackingController, MainWindowViewModel mainWindowViewModel)
     {
         _trackingController = trackingController;
         _mainWindowViewModel = mainWindowViewModel;
+        CombatEventTracker = new CombatEventTracker(trackingController);
 
         OnChangeCombatMode += AddCombatTime;
         OnChangeCombatMode += SetLastCombatMode;
         OnChangeCombatMode += ResetDamageMeterBeforeCombatStart;
+        OnChangeCombatMode += CombatEventTracker.OnCombatStateUpdate;
         OnDamageUpdate += UpdateDamageMeterUiAsync;
 
 #if DEBUG
@@ -77,6 +80,7 @@ public class CombatController
 
             causerGameObjectValue.Damage += damageChangeValue;
             AddOrUpdateSpell(causingSpellIndex, causerGameObjectValue, healthChangeType, damageChangeValue);
+            CombatEventTracker.AddHealthContribution(CombatEventValueType.Damage, causerId, affectedId, damageChangeValue, causingSpellIndex);
         }
 
         if (healthChangeType == HealthChangeType.Heal)
@@ -92,6 +96,7 @@ public class CombatController
             {
                 causerGameObjectValue.Heal += positiveHealChangeValue;
                 AddOrUpdateSpell(causingSpellIndex, causerGameObjectValue, healthChangeType, positiveHealChangeValue);
+                CombatEventTracker.AddHealthContribution(CombatEventValueType.Heal, causerId, affectedId, positiveHealChangeValue, causingSpellIndex);
             }
             else
             {
@@ -130,6 +135,7 @@ public class CombatController
             }
 
             gameObjectValue.TakenDamage += damageChangeValue;
+            CombatEventTracker.AddHealthContribution(CombatEventValueType.TakenDamage, causerId, affectedId, damageChangeValue, causingSpellIndex);
         }
 
         return Task.CompletedTask;
