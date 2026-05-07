@@ -11,6 +11,7 @@ public sealed class DamageMeterSnapshot : BaseViewModel
     private DateTime _timestamp;
     private List<DamageMeterSnapshotFragment> _damageMeter = new();
     private DamageStatsSnapshot _damageStats = DamageStatsSnapshot.Empty;
+    private DamageMeterYourStatsSnapshot _yourStats = DamageMeterYourStatsSnapshot.Empty;
 
     public DamageMeterSnapshot()
     {
@@ -46,6 +47,16 @@ public sealed class DamageMeterSnapshot : BaseViewModel
         set
         {
             _damageStats = value ?? DamageStatsSnapshot.Empty;
+            OnPropertyChanged();
+        }
+    }
+
+    public DamageMeterYourStatsSnapshot YourStats
+    {
+        get => _yourStats;
+        set
+        {
+            _yourStats = value ?? DamageMeterYourStatsSnapshot.Empty;
             OnPropertyChanged();
         }
     }

@@ -39762,6 +39762,331 @@
       ]
     },
     {
+      "tuid": "TOP_STATS",
+      "tuv": [
+        {
+          "lang": "de-DE",
+          "seg": "Top Stats"
+        },
+        {
+          "lang": "en-US",
+          "seg": "Top Stats"
+        }
+      ]
+    },
+    {
+      "tuid": "YOUR_STATS",
+      "tuv": [
+        {
+          "lang": "de-DE",
+          "seg": "Deine Stats"
+        },
+        {
+          "lang": "en-US",
+          "seg": "Your Stats"
+        }
+      ]
+    },
+    {
+      "tuid": "NO_LOCAL_DAMAGE_STATS_AVAILABLE",
+      "tuv": [
+        {
+          "lang": "de-DE",
+          "seg": "Keine lokalen Schadensdaten vorhanden"
+        },
+        {
+          "lang": "en-US",
+          "seg": "No local damage data available"
+        }
+      ]
+    },
+    {
+      "tuid": "TOTAL_DAMAGE",
+      "tuv": [
+        {
+          "lang": "de-DE",
+          "seg": "Gesamtschaden"
+        },
+        {
+          "lang": "en-US",
+          "seg": "Total damage"
+        }
+      ]
+    },
+    {
+      "tuid": "YOUR_STATS_DAMAGE_SECTION",
+      "tuv": [
+        {
+          "lang": "de-DE",
+          "seg": "Schaden"
+        },
+        {
+          "lang": "en-US",
+          "seg": "Damage"
+        }
+      ]
+    },
+    {
+      "tuid": "YOUR_STATS_HEALING_SECTION",
+      "tuv": [
+        {
+          "lang": "de-DE",
+          "seg": "Heilung"
+        },
+        {
+          "lang": "en-US",
+          "seg": "Healing"
+        }
+      ]
+    },
+    {
+      "tuid": "YOUR_STATS_DEFENSE_SECTION",
+      "tuv": [
+        {
+          "lang": "de-DE",
+          "seg": "Verteidigung"
+        },
+        {
+          "lang": "en-US",
+          "seg": "Defense"
+        }
+      ]
+    },
+    {
+      "tuid": "YOUR_STATS_COMBAT_SECTION",
+      "tuv": [
+        {
+          "lang": "de-DE",
+          "seg": "Kampf"
+        },
+        {
+          "lang": "en-US",
+          "seg": "Combat"
+        }
+      ]
+    },
+    {
+      "tuid": "TOTAL_DPS",
+      "tuv": [
+        {
+          "lang": "de-DE",
+          "seg": "Total DPS"
+        },
+        {
+          "lang": "en-US",
+          "seg": "Total DPS"
+        }
+      ]
+    },
+    {
+      "tuid": "PEAK_DPS_3_SECONDS",
+      "tuv": [
+        {
+          "lang": "de-DE",
+          "seg": "Peak DPS 3s"
+        },
+        {
+          "lang": "en-US",
+          "seg": "Peak DPS 3s"
+        }
+      ]
+    },
+    {
+      "tuid": "PEAK_DPS_5_SECONDS",
+      "tuv": [
+        {
+          "lang": "de-DE",
+          "seg": "Peak DPS 5s"
+        },
+        {
+          "lang": "en-US",
+          "seg": "Peak DPS 5s"
+        }
+      ]
+    },
+    {
+      "tuid": "PEAK_DPS_10_SECONDS",
+      "tuv": [
+        {
+          "lang": "de-DE",
+          "seg": "Peak DPS 10s"
+        },
+        {
+          "lang": "en-US",
+          "seg": "Peak DPS 10s"
+        }
+      ]
+    },
+    {
+      "tuid": "BIGGEST_HIT",
+      "tuv": [
+        {
+          "lang": "de-DE",
+          "seg": "Größter Treffer"
+        },
+        {
+          "lang": "en-US",
+          "seg": "Biggest Hit"
+        }
+      ]
+    },
+    {
+      "tuid": "TOTAL_HEALING",
+      "tuv": [
+        {
+          "lang": "de-DE",
+          "seg": "Gesamtheilung"
+        },
+        {
+          "lang": "en-US",
+          "seg": "Total Healing"
+        }
+      ]
+    },
+    {
+      "tuid": "EFFECTIVE_HEALING",
+      "tuv": [
+        {
+          "lang": "de-DE",
+          "seg": "Effektive Heilung"
+        },
+        {
+          "lang": "en-US",
+          "seg": "Effective Healing"
+        }
+      ]
+    },
+    {
+      "tuid": "OVERHEAL_PERCENT",
+      "tuv": [
+        {
+          "lang": "de-DE",
+          "seg": "Overheal %"
+        },
+        {
+          "lang": "en-US",
+          "seg": "Overheal %"
+        }
+      ]
+    },
+    {
+      "tuid": "DAMAGE_TAKEN",
+      "tuv": [
+        {
+          "lang": "de-DE",
+          "seg": "Genommener Schaden"
+        },
+        {
+          "lang": "en-US",
+          "seg": "Damage Taken"
+        }
+      ]
+    },
+    {
+      "tuid": "BIGGEST_DAMAGE_TAKEN_BY_SPELL_TOP_3",
+      "tuv": [
+        {
+          "lang": "de-DE",
+          "seg": "Genommener Schaden nach Spell"
+        },
+        {
+          "lang": "en-US",
+          "seg": "Biggest Damage Taken by Spell"
+        }
+      ]
+    },
+    {
+      "tuid": "DTPS",
+      "tuv": [
+        {
+          "lang": "de-DE",
+          "seg": "DTPS"
+        },
+        {
+          "lang": "en-US",
+          "seg": "DTPS"
+        }
+      ]
+    },
+    {
+      "tuid": "DTPS_TOOLTIP",
+      "tuv": [
+        {
+          "lang": "de-DE",
+          "seg": "DTPS ist eingehender Schaden pro Sekunde: Damage Taken / aktive Combat-Time."
+        },
+        {
+          "lang": "en-US",
+          "seg": "DTPS is incoming damage per second: Damage Taken / active combat time."
+        }
+      ]
+    },
+    {
+      "tuid": "FIGHT_COUNT",
+      "tuv": [
+        {
+          "lang": "de-DE",
+          "seg": "Fight Count"
+        },
+        {
+          "lang": "en-US",
+          "seg": "Fight Count"
+        }
+      ]
+    },
+    {
+      "tuid": "AVERAGE_FIGHT_DURATION",
+      "tuv": [
+        {
+          "lang": "de-DE",
+          "seg": "Durchschnittliche Kampfzeit"
+        },
+        {
+          "lang": "en-US",
+          "seg": "Average Fight Duration"
+        }
+      ]
+    },
+    {
+      "tuid": "PVE_DAMAGE",
+      "tuv": [
+        {
+          "lang": "de-DE",
+          "seg": "PvE Schaden"
+        },
+        {
+          "lang": "en-US",
+          "seg": "PvE Damage"
+        }
+      ]
+    },
+    {
+      "tuid": "PVP_DAMAGE",
+      "tuv": [
+        {
+          "lang": "de-DE",
+          "seg": "PvP Schaden"
+        },
+        {
+          "lang": "en-US",
+          "seg": "PvP Damage"
+        }
+      ]
+    },
+    {
+      "tuid": "HEALING_TARGETS_TOP_3",
+      "tuv": [
+        {
+          "lang": "de-DE",
+          "seg": "Heilungsziele"
+        },
+        {
+          "lang": "en-US",
+          "seg": "Healing Targets"
+        }
+      ]
+    },
+    {
       "tuid": "BIGGEST_SINGLE_HIT_TOP_5",
       "tuv": [
         {

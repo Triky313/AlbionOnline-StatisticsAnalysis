@@ -8,4 +8,5 @@ public sealed class DamageMeterSnapshotDto
     public DateTime Timestamp { get; set; }
     public List<DamageMeterSnapshotFragmentDto> DamageMeter { get; set; }
     public DamageStatsSnapshot DamageStats { get; set; }
+    public DamageMeterYourStatsSnapshot YourStats { get; set; }
 }

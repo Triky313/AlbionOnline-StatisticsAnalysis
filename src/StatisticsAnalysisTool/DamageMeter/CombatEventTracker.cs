@@ -133,6 +133,16 @@ public sealed class CombatEventTracker(TrackingController trackingController)
         }
     }
 
+    public void ClearCombatEvents()
+    {
+        lock (_syncLock)
+        {
+            EndActiveCombatEvent();
+            _combatEvents.Clear();
+            _partyPlayersInCombat.Clear();
+        }
+    }
+
     private CombatMobCacheEntry CreateMobCacheEntry(NewMobEvent newMobEvent, long mobObjectId, string clusterKey, DateTime now, MobJsonObject mobData)
     {
         return new CombatMobCacheEntry

@@ -401,6 +401,7 @@ public class CombatController
         }
 
         _damageStatsTracker.Clear();
+        CombatEventTracker.ClearCombatEvents();
         _trackingController.EntityController.ResetEntitiesDamageTimes();
         _trackingController.EntityController.ResetEntitiesDamage();
         _trackingController.EntityController.ResetEntitiesHeal();
@@ -517,7 +518,9 @@ public class CombatController
 
             if (canApplySnapshot)
             {
+                _mainWindowViewModel.DamageMeterBindings.SetLocalPlayer(_trackingController.EntityController.LocalUserData.Guid, _trackingController.EntityController.LocalUserData.Username);
                 _mainWindowViewModel.DamageMeterBindings.SetDamageStats(snapshot);
+                _mainWindowViewModel.DamageMeterBindings.SetYourStats(CreateYourStatsSnapshot());
             }
 
             lock (_damageStatsUiUpdateLock)
@@ -543,6 +546,41 @@ public class CombatController
             TopBurstDamageTenSeconds = trackerSnapshot.TopBurstDamageTenSeconds,
             TopAttackedTargets = trackerSnapshot.TopAttackedTargets
         };
+    }
+
+    private DamageMeterYourStatsSnapshot CreateYourStatsSnapshot()
+    {
+        var localUserData = _trackingController.EntityController.LocalUserData;
+        PlayerGameObject localPlayer = null;
+
+        if (localUserData.Guid.HasValue)
+        {
+            localPlayer = _trackingController.EntityController.GetEntity(localUserData.Guid.Value).Value;
+        }
+
+        if (localPlayer == null && localUserData.UserObjectId.HasValue)
+        {
+            localPlayer = _trackingController.EntityController.GetEntity(localUserData.UserObjectId.Value)?.Value;
+        }
+
+        return DamageMeterYourStatsSnapshotFactory.FromLiveData(localPlayer, CombatEventTracker.CombatEvents, ResolveObjectName);
+    }
+
+    private string ResolveObjectName(long objectId)
+    {
+        var entity = _trackingController.EntityController.GetEntity(objectId);
+        if (entity.HasValue && !string.IsNullOrWhiteSpace(entity.Value.Value.Name))
+        {
+            return entity.Value.Value.Name;
+        }
+
+        var mob = CombatEventTracker.KnownMobs.FirstOrDefault(x => x.MobObjectId == objectId);
+        if (mob != null)
+        {
+            return mob.MobName ?? mob.UniqueName;
+        }
+
+        return objectId.ToString();
     }
 
     private bool IsDamageStatsUiUpdateAllowed()

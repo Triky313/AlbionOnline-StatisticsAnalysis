@@ -35,6 +35,10 @@ public class DamageMeterBindings : BaseViewModel, IAsyncInitialization
     private bool _onlyDamageToPlayersCounts;
     private DamageStatsSnapshot _currentDamageStats = DamageStatsSnapshot.Empty;
     private DamageStatsSnapshot _snapshotDamageStats = DamageStatsSnapshot.Empty;
+    private DamageMeterYourStatsSnapshot _currentYourStats = DamageMeterYourStatsSnapshot.Empty;
+    private DamageMeterYourStatsSnapshot _snapshotYourStats = DamageMeterYourStatsSnapshot.Empty;
+    private Guid? _localPlayerGuid;
+    private string _localPlayerName = string.Empty;
     private ObservableCollection<DamageStatsEntry> _topSingleHits = [];
     private ObservableCollection<DamageStatsEntry> _topSingleHeals = [];
     private ObservableCollection<DamageStatsEntry> _topLastHits = [];
@@ -357,6 +361,7 @@ public class DamageMeterBindings : BaseViewModel, IAsyncInitialization
     public void ClearDamageStats()
     {
         SetDamageStats(DamageStatsSnapshot.Empty);
+        CurrentYourStats = DamageMeterYourStatsSnapshot.Empty;
     }
 
     public DamageStatsSnapshot CurrentDamageStats
@@ -377,6 +382,38 @@ public class DamageMeterBindings : BaseViewModel, IAsyncInitialization
             _snapshotDamageStats = value ?? DamageStatsSnapshot.Empty;
             OnPropertyChanged();
         }
+    }
+
+    public DamageMeterYourStatsSnapshot CurrentYourStats
+    {
+        get => _currentYourStats;
+        set
+        {
+            _currentYourStats = value ?? DamageMeterYourStatsSnapshot.Empty;
+            OnPropertyChanged();
+        }
+    }
+
+    public DamageMeterYourStatsSnapshot SnapshotYourStats
+    {
+        get => _snapshotYourStats;
+        set
+        {
+            _snapshotYourStats = value ?? DamageMeterYourStatsSnapshot.Empty;
+            OnPropertyChanged();
+        }
+    }
+
+    public void SetLocalPlayer(Guid? localPlayerGuid, string localPlayerName)
+    {
+        _localPlayerGuid = localPlayerGuid;
+        _localPlayerName = localPlayerName ?? string.Empty;
+        SetSnapshotYourStats();
+    }
+
+    public void SetYourStats(DamageMeterYourStatsSnapshot snapshot)
+    {
+        CurrentYourStats = snapshot ?? DamageMeterYourStatsSnapshot.Empty;
     }
 
     #endregion
@@ -448,6 +485,7 @@ public class DamageMeterBindings : BaseViewModel, IAsyncInitialization
         }
 
         damageMeterSnapshot.DamageStats = DamageStatsSnapshotFactory.Clone(CurrentDamageStats);
+        damageMeterSnapshot.YourStats = DamageMeterYourStatsSnapshotFactory.Clone(CurrentYourStats);
         DamageMeterSnapshots?.Add(damageMeterSnapshot);
 
         Application.Current.Dispatcher.Invoke(() =>
@@ -559,6 +597,15 @@ public class DamageMeterBindings : BaseViewModel, IAsyncInitialization
     {
         SnapshotDamageStats = DamageMeterSnapshotSelection?.DamageStats
                               ?? DamageStatsSnapshotFactory.FromSnapshotFragments(DamageMeterSnapshotSelection?.DamageMeter);
+        SetSnapshotYourStats();
+    }
+
+    private void SetSnapshotYourStats()
+    {
+        var snapshotYourStats = DamageMeterSnapshotSelection?.YourStats;
+        SnapshotYourStats = snapshotYourStats?.HasData == true
+            ? snapshotYourStats
+            : DamageMeterYourStatsSnapshotFactory.FromSnapshotFragments(DamageMeterSnapshotSelection?.DamageMeter, _localPlayerGuid, _localPlayerName);
     }
 
     #endregion
@@ -579,6 +626,32 @@ public class DamageMeterBindings : BaseViewModel, IAsyncInitialization
     public static string TranslationLive => LocalizationController.Translation("LIVE");
     public static string TranslationMeter => LocalizationController.Translation("METER");
     public static string TranslationStats => LocalizationController.Translation("STATS");
+    public static string TranslationTopStats => LocalizationController.Translation("TOP_STATS");
+    public static string TranslationYourStats => LocalizationController.Translation("YOUR_STATS");
+    public static string TranslationNoLocalDamageStatsAvailable => LocalizationController.Translation("NO_LOCAL_DAMAGE_STATS_AVAILABLE");
+    public static string TranslationYourStatsDamageSection => LocalizationController.Translation("YOUR_STATS_DAMAGE_SECTION");
+    public static string TranslationYourStatsHealingSection => LocalizationController.Translation("YOUR_STATS_HEALING_SECTION");
+    public static string TranslationYourStatsDefenseSection => LocalizationController.Translation("YOUR_STATS_DEFENSE_SECTION");
+    public static string TranslationYourStatsCombatSection => LocalizationController.Translation("YOUR_STATS_COMBAT_SECTION");
+    public static string TranslationTotalDamage => LocalizationController.Translation("TOTAL_DAMAGE");
+    public static string TranslationTotalDps => LocalizationController.Translation("TOTAL_DPS");
+    public static string TranslationPeakDpsThreeSeconds => LocalizationController.Translation("PEAK_DPS_3_SECONDS");
+    public static string TranslationPeakDpsFiveSeconds => LocalizationController.Translation("PEAK_DPS_5_SECONDS");
+    public static string TranslationPeakDpsTenSeconds => LocalizationController.Translation("PEAK_DPS_10_SECONDS");
+    public static string TranslationBiggestHit => LocalizationController.Translation("BIGGEST_HIT");
+    public static string TranslationTotalHealing => LocalizationController.Translation("TOTAL_HEALING");
+    public static string TranslationEffectiveHealing => LocalizationController.Translation("EFFECTIVE_HEALING");
+    public static string TranslationOverhealPercent => LocalizationController.Translation("OVERHEAL_PERCENT");
+    public static string TranslationDamageTaken => LocalizationController.Translation("DAMAGE_TAKEN");
+    public static string TranslationBiggestDamageTakenBySpellTopThree => LocalizationController.Translation("BIGGEST_DAMAGE_TAKEN_BY_SPELL_TOP_3");
+    public static string TranslationDtps => LocalizationController.Translation("DTPS");
+    public static string TranslationDtpsTooltip => LocalizationController.Translation("DTPS_TOOLTIP");
+    public static string TranslationCombatTime => LocalizationController.Translation("COMBAT_TIME");
+    public static string TranslationFightCount => LocalizationController.Translation("FIGHT_COUNT");
+    public static string TranslationAverageFightDuration => LocalizationController.Translation("AVERAGE_FIGHT_DURATION");
+    public static string TranslationPveDamage => LocalizationController.Translation("PVE_DAMAGE");
+    public static string TranslationPvpDamage => LocalizationController.Translation("PVP_DAMAGE");
+    public static string TranslationHealingTargetsTopThree => LocalizationController.Translation("HEALING_TARGETS_TOP_3");
     public static string TranslationBiggestSingleHitTop5 => LocalizationController.Translation("BIGGEST_SINGLE_HIT_TOP_5");
     public static string TranslationBiggestSingleHealTop5 => LocalizationController.Translation("BIGGEST_SINGLE_HEAL_TOP_5");
     public static string TranslationLastHitsTop5 => LocalizationController.Translation("LAST_HITS_TOP_5");

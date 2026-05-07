@@ -10,7 +10,8 @@ public static class SnapshotMapping
         {
             Timestamp = snapshot.Timestamp,
             DamageMeter = snapshot.DamageMeter?.Select(Mapping).ToList(),
-            DamageStats = DamageStatsSnapshotFactory.Clone(snapshot.DamageStats)
+            DamageStats = DamageStatsSnapshotFactory.Clone(snapshot.DamageStats),
+            YourStats = DamageMeterYourStatsSnapshotFactory.Clone(snapshot.YourStats)
         };
     }
 
@@ -22,7 +23,8 @@ public static class SnapshotMapping
         {
             Timestamp = snapshotDto.Timestamp,
             DamageMeter = damageMeter,
-            DamageStats = snapshotDto.DamageStats ?? DamageStatsSnapshotFactory.FromSnapshotFragments(damageMeter)
+            DamageStats = snapshotDto.DamageStats ?? DamageStatsSnapshotFactory.FromSnapshotFragments(damageMeter),
+            YourStats = snapshotDto.YourStats ?? DamageMeterYourStatsSnapshotFactory.FromSnapshotFragments(damageMeter, null, string.Empty)
         };
     }
 
