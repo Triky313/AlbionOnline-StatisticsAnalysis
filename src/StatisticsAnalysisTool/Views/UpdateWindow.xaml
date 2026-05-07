@@ -160,8 +160,8 @@
                     <ProgressBar Grid.Column="0" Height="6" Margin="0,0,20,0" IsIndeterminate="{Binding IsBusy}"
                                  Visibility="{Binding IsBusy, Converter={StaticResource BooleanToVisibilityConverter}}" />
                     <Button Grid.Column="1" Width="150" Height="36" Margin="0,0,10,0" Click="RemindLater_Click"
-                            Content="{Binding PostponeButtonText}" IsEnabled="{Binding AreButtonsEnabled}" />
-                    <Button Grid.Column="2" Width="170" Height="36" Click="DownloadInstall_Click" Content="{Binding ActionButtonText}"
+                            Content="{Binding PostponeButtonText, FallbackValue=REMIND__LATER}" IsEnabled="{Binding AreButtonsEnabled}" />
+                    <Button Grid.Column="2" Width="170" Height="36" Click="DownloadInstall_Click" Content="{Binding ActionButtonText, FallbackValue=DOWNLOAD__INSTALL}"
                             IsEnabled="{Binding AreButtonsEnabled}" Style="{StaticResource Style.Button.Attention}" />
                 </Grid>
             </Grid>

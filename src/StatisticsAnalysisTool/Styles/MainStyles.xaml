@@ -759,6 +759,8 @@
         </Setter>
     </Style>
 
+    <Style TargetType="{x:Type Button}" x:Key="Style.Button.Danger" BasedOn="{StaticResource Style.Button.Attention}" />
+
     <Style TargetType="Border" x:Key="Container.Border">
         <Setter Property="BorderThickness" Value="0,0,0,1" />
         <Setter Property="BorderBrush" Value="{StaticResource SolidColorBrush.Background.4}" />

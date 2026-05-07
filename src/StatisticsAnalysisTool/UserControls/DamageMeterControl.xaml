@@ -175,7 +175,7 @@
                                     <StackPanel VerticalAlignment="Center" HorizontalAlignment="Right" Orientation="Vertical">
                                         <StackPanel Orientation="Horizontal">
                                             <Button Content="{Binding Translation.ResetDamageMeter, FallbackValue=RESET__DAMAGE__METER}" Height="26" MaxWidth="500" MinWidth="200" 
-                                        Margin="0" Width="auto" VerticalAlignment="Top" Click="BtnDamageMeterReset_Click" />
+                                                    Style="{StaticResource Style.Button.Danger}" Margin="0" Width="auto" VerticalAlignment="Top" Click="BtnDamageMeterReset_Click" />
                                         </StackPanel>
                                         <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" Margin="0,5,0,0">
                                             <Grid Height="20" Width="20" Margin="5,0,5,0" HorizontalAlignment="Right" VerticalAlignment="Center" 
@@ -250,8 +250,7 @@
                                   SelectedItem="{Binding DamageMeterBindings.DamageMeterSnapshotSortSelection}" 
                                   IsSynchronizedWithCurrentItem="True" DisplayMemberPath="Name" SelectedValuePath="DamageMeterSortType" />
                         <Button Content="{Binding DamageMeterBindings.TranslationDeleteSelectedSnapshot, FallbackValue=DELETE__SELECTED__SNAPSHOT}" 
-                                Background="{StaticResource SolidColorBrush.Accent.Red.3}"
-                                MaxWidth="500" MinWidth="200" Margin="5,0,5,0" Click="BtnDeleteSelectedSnapshot_Click" />
+                                MaxWidth="500" MinWidth="200" Margin="5,0,5,0" Style="{StaticResource Style.Button.Danger}" Click="BtnDeleteSelectedSnapshot_Click" />
                         <Grid Height="20" Width="20" Margin="5,0,5,0" HorizontalAlignment="Right" VerticalAlignment="Center" 
                               ToolTip="{Binding DamageMeterBindings.TranslationDeleteAllSnapshots, FallbackValue=DELETE__ALL__SNAPSHOTS}" MouseUp="DeleteAllDamageMeterSnapshots_MouseUp">
                             <fa5:ImageAwesome Icon="Regular_TrashAlt" Foreground="{StaticResource SolidColorBrush.Accent.Red.5}" />
