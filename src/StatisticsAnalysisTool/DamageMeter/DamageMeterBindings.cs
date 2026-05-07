@@ -1,4 +1,5 @@
 using FontAwesome5;
+using StatisticsAnalysisTool.Cluster;
 using StatisticsAnalysisTool.Common;
 using StatisticsAnalysisTool.Common.UserSettings;
 using StatisticsAnalysisTool.Localization;
@@ -464,7 +465,7 @@ public class DamageMeterBindings : BaseViewModel, IAsyncInitialization
         }
     }
 
-    public void GetSnapshot(bool takeSnapshot = true)
+    public void GetSnapshot(bool takeSnapshot = true, string location = null, bool isAutoSave = false)
     {
         if (!takeSnapshot)
         {
@@ -478,7 +479,12 @@ public class DamageMeterBindings : BaseViewModel, IAsyncInitialization
 
         var snapshots = DamageMeterSnapshots;
 
-        var damageMeterSnapshot = new DamageMeterSnapshot();
+        var damageMeterSnapshot = new DamageMeterSnapshot
+        {
+            Location = string.IsNullOrWhiteSpace(location) ? DamageMeterSnapshotLocationResolver.Resolve(ClusterController.CurrentCluster) : location,
+            IsAutoSave = isAutoSave
+        };
+
         foreach (var damageMeterFragment in DamageMeter)
         {
             damageMeterSnapshot.DamageMeter.Add(new DamageMeterSnapshotFragment(damageMeterFragment));

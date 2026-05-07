@@ -39387,6 +39387,23 @@
       ]
     },
     {
+      "tuid": "AUTOSAVE",
+      "tuv": [
+        {
+          "lang": "de-DE",
+          "seg": "autosave"
+        },
+        {
+          "lang": "en-US",
+          "seg": "autosave"
+        },
+        {
+          "lang": "fr-FR",
+          "seg": "autosave"
+        }
+      ]
+    },
+    {
       "tuid": "HOUR",
       "tuv": [
         {

@@ -9,6 +9,8 @@ public static class SnapshotMapping
         return new DamageMeterSnapshotDto()
         {
             Timestamp = snapshot.Timestamp,
+            Location = snapshot.Location,
+            IsAutoSave = snapshot.IsAutoSave,
             DamageMeter = snapshot.DamageMeter?.Select(Mapping).ToList(),
             DamageStats = DamageStatsSnapshotFactory.Clone(snapshot.DamageStats),
             YourStats = DamageMeterYourStatsSnapshotFactory.Clone(snapshot.YourStats)
@@ -22,6 +24,8 @@ public static class SnapshotMapping
         return new DamageMeterSnapshot()
         {
             Timestamp = snapshotDto.Timestamp,
+            Location = snapshotDto.Location,
+            IsAutoSave = snapshotDto.IsAutoSave,
             DamageMeter = damageMeter,
             DamageStats = snapshotDto.DamageStats ?? DamageStatsSnapshotFactory.FromSnapshotFragments(damageMeter),
             YourStats = snapshotDto.YourStats ?? DamageMeterYourStatsSnapshotFactory.FromSnapshotFragments(damageMeter, null, string.Empty)

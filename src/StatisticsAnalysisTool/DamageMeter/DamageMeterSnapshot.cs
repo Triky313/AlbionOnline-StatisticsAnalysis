@@ -1,4 +1,5 @@
 using StatisticsAnalysisTool.ViewModels;
+using StatisticsAnalysisTool.Localization;
 using System;
 using System.Collections.Generic;
 using System.Globalization;
@@ -12,6 +13,8 @@ public sealed class DamageMeterSnapshot : BaseViewModel
     private List<DamageMeterSnapshotFragment> _damageMeter = new();
     private DamageStatsSnapshot _damageStats = DamageStatsSnapshot.Empty;
     private DamageMeterYourStatsSnapshot _yourStats = DamageMeterYourStatsSnapshot.Empty;
+    private string _location = string.Empty;
+    private bool _isAutoSave;
 
     public DamageMeterSnapshot()
     {
@@ -29,7 +32,46 @@ public sealed class DamageMeterSnapshot : BaseViewModel
     }
 
     [JsonIgnore]
-    public string TimestampString => Timestamp.ToString(CultureInfo.DefaultThreadCurrentCulture);
+    public string TimestampString
+    {
+        get
+        {
+            var displayName = Timestamp.ToString(CultureInfo.DefaultThreadCurrentCulture);
+            if (!string.IsNullOrWhiteSpace(Location))
+            {
+                displayName = $"{displayName} - {Location}";
+            }
+
+            if (IsAutoSave)
+            {
+                displayName = $"{displayName} - {LocalizationController.Translation("AUTOSAVE")}";
+            }
+
+            return displayName;
+        }
+    }
+
+    public string Location
+    {
+        get => _location;
+        set
+        {
+            _location = value ?? string.Empty;
+            OnPropertyChanged();
+            OnPropertyChanged(nameof(TimestampString));
+        }
+    }
+
+    public bool IsAutoSave
+    {
+        get => _isAutoSave;
+        set
+        {
+            _isAutoSave = value;
+            OnPropertyChanged();
+            OnPropertyChanged(nameof(TimestampString));
+        }
+    }
 
     public List<DamageMeterSnapshotFragment> DamageMeter
     {
