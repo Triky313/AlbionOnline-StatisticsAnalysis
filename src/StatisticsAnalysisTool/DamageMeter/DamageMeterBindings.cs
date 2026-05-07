@@ -33,6 +33,8 @@ public class DamageMeterBindings : BaseViewModel, IAsyncInitialization
     private bool _isDamageMeterResetBeforeCombatActive;
     private bool _shortDamageMeterToClipboard;
     private bool _onlyDamageToPlayersCounts;
+    private DamageStatsSnapshot _currentDamageStats = DamageStatsSnapshot.Empty;
+    private DamageStatsSnapshot _snapshotDamageStats = DamageStatsSnapshot.Empty;
     private ObservableCollection<DamageStatsEntry> _topSingleHits = [];
     private ObservableCollection<DamageStatsEntry> _topSingleHeals = [];
     private ObservableCollection<DamageStatsEntry> _topLastHits = [];
@@ -340,6 +342,7 @@ public class DamageMeterBindings : BaseViewModel, IAsyncInitialization
     public void SetDamageStats(DamageStatsSnapshot snapshot)
     {
         snapshot ??= DamageStatsSnapshot.Empty;
+        CurrentDamageStats = snapshot;
 
         TopSingleHits = new ObservableCollection<DamageStatsEntry>(snapshot.TopSingleHits);
         TopSingleHeals = new ObservableCollection<DamageStatsEntry>(snapshot.TopSingleHeals);
@@ -354,6 +357,26 @@ public class DamageMeterBindings : BaseViewModel, IAsyncInitialization
     public void ClearDamageStats()
     {
         SetDamageStats(DamageStatsSnapshot.Empty);
+    }
+
+    public DamageStatsSnapshot CurrentDamageStats
+    {
+        get => _currentDamageStats;
+        set
+        {
+            _currentDamageStats = value ?? DamageStatsSnapshot.Empty;
+            OnPropertyChanged();
+        }
+    }
+
+    public DamageStatsSnapshot SnapshotDamageStats
+    {
+        get => _snapshotDamageStats;
+        set
+        {
+            _snapshotDamageStats = value ?? DamageStatsSnapshot.Empty;
+            OnPropertyChanged();
+        }
     }
 
     #endregion
@@ -377,6 +400,7 @@ public class DamageMeterBindings : BaseViewModel, IAsyncInitialization
         {
             _damageMeterSnapshotSelection = value;
             SetDamageMeterSnapshotSort();
+            SetSnapshotDamageStats();
             OnPropertyChanged();
         }
     }
@@ -423,11 +447,13 @@ public class DamageMeterBindings : BaseViewModel, IAsyncInitialization
             damageMeterSnapshot.DamageMeter.Add(new DamageMeterSnapshotFragment(damageMeterFragment));
         }
 
+        damageMeterSnapshot.DamageStats = DamageStatsSnapshotFactory.Clone(CurrentDamageStats);
         DamageMeterSnapshots?.Add(damageMeterSnapshot);
 
         Application.Current.Dispatcher.Invoke(() =>
         {
             DamageMeterSnapshots = snapshots.OrderByDescending(x => x.Timestamp).ToList();
+            DamageMeterSnapshotSelection = DamageMeterSnapshots.FirstOrDefault();
         });
     }
 
@@ -451,6 +477,8 @@ public class DamageMeterBindings : BaseViewModel, IAsyncInitialization
         }
 
         DamageMeterSnapshots = DamageMeterSnapshots?.ToList();
+        DamageMeterSnapshotSelection = DamageMeterSnapshots?.FirstOrDefault();
+        SetSnapshotDamageStats();
     }
 
     public void DeleteAllSnapshots()
@@ -466,6 +494,7 @@ public class DamageMeterBindings : BaseViewModel, IAsyncInitialization
         if (dialogResult is true)
         {
             DamageMeterSnapshots = new List<DamageMeterSnapshot>();
+            DamageMeterSnapshotSelection = null;
         }
     }
 
@@ -526,6 +555,12 @@ public class DamageMeterBindings : BaseViewModel, IAsyncInitialization
         }
     }
 
+    private void SetSnapshotDamageStats()
+    {
+        SnapshotDamageStats = DamageMeterSnapshotSelection?.DamageStats
+                              ?? DamageStatsSnapshotFactory.FromSnapshotFragments(DamageMeterSnapshotSelection?.DamageMeter);
+    }
+
     #endregion
 
     #region Translations
@@ -541,6 +576,9 @@ public class DamageMeterBindings : BaseViewModel, IAsyncInitialization
     public static string TranslationDeleteAllSnapshots => LocalizationController.Translation("DELETE_ALL_SNAPSHOTS");
     public static string TranslationTakeASnapshotOfDamageMeterDescription => LocalizationController.Translation("TAKE_A_SNAPSHOT_OF_DAMAGE_METER_DESCRIPTION");
     public static string TranslationDamageStats => LocalizationController.Translation("DAMAGE_STATS");
+    public static string TranslationLive => LocalizationController.Translation("LIVE");
+    public static string TranslationMeter => LocalizationController.Translation("METER");
+    public static string TranslationStats => LocalizationController.Translation("STATS");
     public static string TranslationBiggestSingleHitTop5 => LocalizationController.Translation("BIGGEST_SINGLE_HIT_TOP_5");
     public static string TranslationBiggestSingleHealTop5 => LocalizationController.Translation("BIGGEST_SINGLE_HEAL_TOP_5");
     public static string TranslationLastHitsTop5 => LocalizationController.Translation("LAST_HITS_TOP_5");

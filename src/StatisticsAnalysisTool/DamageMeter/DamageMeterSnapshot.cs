@@ -1,4 +1,4 @@
-﻿using StatisticsAnalysisTool.ViewModels;
+using StatisticsAnalysisTool.ViewModels;
 using System;
 using System.Collections.Generic;
 using System.Globalization;
@@ -10,6 +10,7 @@ public sealed class DamageMeterSnapshot : BaseViewModel
 {
     private DateTime _timestamp;
     private List<DamageMeterSnapshotFragment> _damageMeter = new();
+    private DamageStatsSnapshot _damageStats = DamageStatsSnapshot.Empty;
 
     public DamageMeterSnapshot()
     {
@@ -35,6 +36,16 @@ public sealed class DamageMeterSnapshot : BaseViewModel
         set
         {
             _damageMeter = value;
+            OnPropertyChanged();
+        }
+    }
+
+    public DamageStatsSnapshot DamageStats
+    {
+        get => _damageStats;
+        set
+        {
+            _damageStats = value ?? DamageStatsSnapshot.Empty;
             OnPropertyChanged();
         }
     }

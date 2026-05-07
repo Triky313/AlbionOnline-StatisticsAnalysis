@@ -39723,6 +39723,45 @@
       ]
     },
     {
+      "tuid": "LIVE",
+      "tuv": [
+        {
+          "lang": "de-DE",
+          "seg": "Live"
+        },
+        {
+          "lang": "en-US",
+          "seg": "Live"
+        }
+      ]
+    },
+    {
+      "tuid": "METER",
+      "tuv": [
+        {
+          "lang": "de-DE",
+          "seg": "Meter"
+        },
+        {
+          "lang": "en-US",
+          "seg": "Meter"
+        }
+      ]
+    },
+    {
+      "tuid": "STATS",
+      "tuv": [
+        {
+          "lang": "de-DE",
+          "seg": "Stats"
+        },
+        {
+          "lang": "en-US",
+          "seg": "Stats"
+        }
+      ]
+    },
+    {
       "tuid": "BIGGEST_SINGLE_HIT_TOP_5",
       "tuv": [
         {

@@ -22,7 +22,6 @@ namespace StatisticsAnalysisTool.Network.Manager;
 public class CombatController
 {
     private const int DamageStatsUiUpdateIntervalInMilliseconds = 1000;
-    private const int DamageStatsTopCount = 5;
     private readonly MainWindowViewModel _mainWindowViewModel;
     private readonly TrackingController _trackingController;
     private readonly DamageStatsTracker _damageStatsTracker = new();
@@ -539,28 +538,11 @@ public class CombatController
             TopSingleHeals = trackerSnapshot.TopSingleHeals,
             TopLastHits = trackerSnapshot.TopLastHits,
             TopOverheals = trackerSnapshot.TopOverheals,
-            TopTakenDamage = CreateTopTakenDamageEntries(activeEntities),
+            TopTakenDamage = DamageStatsSnapshotFactory.CreateTopTakenDamageEntries(activeEntities.Select(x => x.Value)),
             TopBurstDamageFiveSeconds = trackerSnapshot.TopBurstDamageFiveSeconds,
             TopBurstDamageTenSeconds = trackerSnapshot.TopBurstDamageTenSeconds,
             TopAttackedTargets = trackerSnapshot.TopAttackedTargets
         };
-    }
-
-    private static IReadOnlyList<DamageStatsEntry> CreateTopTakenDamageEntries(IEnumerable<KeyValuePair<Guid, PlayerGameObject>> activeEntities)
-    {
-        var rank = 1;
-        return activeEntities
-            .Where(x => x.Value.TakenDamage > 0)
-            .OrderByDescending(x => x.Value.TakenDamage)
-            .ThenBy(x => x.Value.Name)
-            .Take(DamageStatsTopCount)
-            .Select(x => new DamageStatsEntry
-            {
-                Rank = rank++,
-                PlayerName = x.Value.Name,
-                Value = x.Value.TakenDamage
-            })
-            .ToList();
     }
 
     private bool IsDamageStatsUiUpdateAllowed()
