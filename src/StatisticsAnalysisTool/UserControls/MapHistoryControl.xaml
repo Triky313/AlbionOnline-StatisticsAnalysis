@@ -17,22 +17,13 @@
             <RowDefinition Height="*" />
         </Grid.RowDefinitions>
 
-        <StackPanel Grid.Row="0"
-                    Orientation="Horizontal"
-                    HorizontalAlignment="Right"
-                    VerticalAlignment="Top">
+        <StackPanel Grid.Row="0" Orientation="Horizontal" HorizontalAlignment="Right" VerticalAlignment="Top">
             <Button x:Name="BtnCopySelectedMapHistoryToClipboard"
                     Content="{Binding Translation.CopyToClipboard, FallbackValue=COPY__TO__CLIPBOARD}"
-                    Height="26"
-                    MinWidth="180"
-                    Margin="0,3,5,0"
-                    IsEnabled="False"
+                    Height="26" MinWidth="180" Margin="0,3,5,0" IsEnabled="False"
                     Click="BtnCopySelectedMapHistoryToClipboard_Click" />
             <Button Content="{Binding Translation.DeleteAllMapHistoryEntries, FallbackValue=DELETE__ALL__MAP__HISTORY__ENTRIES}"
-                    Height="26"
-                    MinWidth="220"
-                    Margin="0,3,5,0"
-                    Click="BtnDeleteAllMapHistoryEntries_Click" />
+                    Style="{StaticResource Style.Button.Danger}" Height="26" MinWidth="220" Margin="0,3,5,0" Click="BtnDeleteAllMapHistoryEntries_Click" />
         </StackPanel>
 
         <Border Grid.Row="2" Background="{StaticResource SolidColorBrush.Background.3}">

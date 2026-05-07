@@ -1,4 +1,4 @@
-﻿using StatisticsAnalysisTool.Network.Events;
+using StatisticsAnalysisTool.Network.Events;
 using StatisticsAnalysisTool.Network.Manager;
 using System.Threading.Tasks;
 
@@ -8,6 +8,7 @@ public class NewMobEventHandler(TrackingController trackingController) : EventPa
 {
     protected override async Task OnActionAsync(NewMobEvent value)
     {
+        trackingController.CombatController.CombatEventTracker.TrackNewMob(value);
         await trackingController.DungeonController.AddTierToCurrentDungeonAsync(value.MobIndex);
         trackingController.DungeonController.UpdateCurrentDungeonLevel(value.MobIndex, value.HitPointsMax);
     }
