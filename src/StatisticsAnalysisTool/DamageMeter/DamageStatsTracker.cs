@@ -70,11 +70,12 @@ public sealed class DamageStatsTracker
         }
     }
 
-    public DamageStatsSnapshot CreateSnapshot(IEnumerable<long> activePlayerObjectIds)
+    public DamageStatsSnapshot CreateSnapshot(IEnumerable<long> activePlayerObjectIds, IEnumerable<long> healingPlayerObjectIds)
     {
         lock (_syncLock)
         {
             var activePlayerIds = activePlayerObjectIds?.ToHashSet() ?? [];
+            var healingPlayerIds = healingPlayerObjectIds?.ToHashSet() ?? [];
             if (activePlayerIds.Count <= 0)
             {
                 return DamageStatsSnapshot.Empty;
@@ -87,7 +88,7 @@ public sealed class DamageStatsTracker
             return new DamageStatsSnapshot
             {
                 TopSingleHits = CreateTopEntries(players, x => x.BiggestHit),
-                TopSingleHeals = CreateTopEntries(players, x => x.BiggestHeal),
+                TopSingleHeals = CreateTopEntries(players.Where(x => healingPlayerIds.Contains(x.PlayerObjectId)), x => x.BiggestHeal),
                 TopLastHits = CreateTopEntries(players, x => x.LastHitTargetObjectIds.Count),
                 TopOverheals = CreateTopEntries(players, x => x.Overheal),
                 TopBurstDamageFiveSeconds = CreateBurstDamageEntries(activePlayerIds, TimeSpan.FromSeconds(5)),

@@ -492,7 +492,14 @@ public class CombatController
             .Select(x => x!.Value)
             .ToList();
 
-        var snapshot = CreateDamageStatsSnapshot(_damageStatsTracker.CreateSnapshot(activePlayerObjectIds), activeEntities);
+        var healingPlayerObjectIds = activeEntities
+            .Where(x => x.Value.Heal > 0)
+            .Select(x => x.Value.ObjectId)
+            .Where(x => x is not null)
+            .Select(x => x!.Value)
+            .ToList();
+
+        var snapshot = CreateDamageStatsSnapshot(_damageStatsTracker.CreateSnapshot(activePlayerObjectIds, healingPlayerObjectIds), activeEntities);
         int damageStatsVersion;
 
         lock (_damageStatsUiUpdateLock)
