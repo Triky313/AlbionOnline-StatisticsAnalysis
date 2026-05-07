@@ -46,7 +46,7 @@
                                 <StackPanel Orientation="Horizontal" MaxWidth="300" Height="30" HorizontalAlignment="Right" VerticalAlignment="Top">
                                     <Button Content="{Binding GuildBindings.TranslationDeleteSelectedEntries, FallbackValue=DELETE__SELECTED__ENTRIES}" Margin="5,0,0,0"
                                         Height="24" Width="200" MaxWidth="300" MinWidth="200" IsEnabled="{Binding TradeMonitoringBindings.IsDeleteTradesButtonEnabled}" 
-                                        Click="BtnDeleteSelectedSiphonedEnergyEntries_Click" />
+                                        Style="{StaticResource Style.Button.Danger}" Click="BtnDeleteSelectedSiphonedEnergyEntries_Click" />
                                     <Grid Height="20" Width="20" Margin="5,0,0,0" VerticalAlignment="Center"
                                           MouseEnter="OpenSiphonedEnergyInfoPopup_MouseEnter" MouseLeave="CloseSiphonedEnergyInfoPopup_MouseLeave">
                                         <fa5:ImageAwesome Icon="Solid_InfoCircle" Foreground="{StaticResource SolidColorBrush.Text.1}" />

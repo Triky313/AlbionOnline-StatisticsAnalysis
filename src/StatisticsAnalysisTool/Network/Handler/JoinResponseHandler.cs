@@ -1,4 +1,4 @@
-﻿using StatisticsAnalysisTool.Common;
+using StatisticsAnalysisTool.Common;
 using StatisticsAnalysisTool.Common.UserSettings;
 using StatisticsAnalysisTool.Enumerations;
 using StatisticsAnalysisTool.Models.BindingModel;
@@ -71,6 +71,8 @@ public class JoinResponseHandler(TrackingController trackingController) : Respon
             AllianceName = value.AllianceName,
             IsReSpecActive = value.IsReSpecActive
         });
+
+        _mainWindowViewModel.DamageMeterBindings.SetLocalPlayer(value.UserGuid, value.Username);
     }
 
     private async Task SetApiUserData(JoinResponse value)

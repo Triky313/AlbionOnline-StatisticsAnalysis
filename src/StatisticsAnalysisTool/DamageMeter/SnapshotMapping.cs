@@ -1,4 +1,4 @@
-﻿using System.Linq;
+using System.Linq;
 
 namespace StatisticsAnalysisTool.DamageMeter;
 
@@ -9,16 +9,26 @@ public static class SnapshotMapping
         return new DamageMeterSnapshotDto()
         {
             Timestamp = snapshot.Timestamp,
-            DamageMeter = snapshot.DamageMeter.Select(Mapping).ToList()
+            Location = snapshot.Location,
+            IsAutoSave = snapshot.IsAutoSave,
+            DamageMeter = snapshot.DamageMeter?.Select(Mapping).ToList(),
+            DamageStats = DamageStatsSnapshotFactory.Clone(snapshot.DamageStats),
+            YourStats = DamageMeterYourStatsSnapshotFactory.Clone(snapshot.YourStats)
         };
     }
 
     public static DamageMeterSnapshot Mapping(DamageMeterSnapshotDto snapshotDto)
     {
+        var damageMeter = snapshotDto.DamageMeter?.Select(Mapping).ToList() ?? [];
+
         return new DamageMeterSnapshot()
         {
             Timestamp = snapshotDto.Timestamp,
-            DamageMeter = snapshotDto.DamageMeter.Select(Mapping).ToList()
+            Location = snapshotDto.Location,
+            IsAutoSave = snapshotDto.IsAutoSave,
+            DamageMeter = damageMeter,
+            DamageStats = snapshotDto.DamageStats ?? DamageStatsSnapshotFactory.FromSnapshotFragments(damageMeter),
+            YourStats = snapshotDto.YourStats ?? DamageMeterYourStatsSnapshotFactory.FromSnapshotFragments(damageMeter, null, string.Empty)
         };
     }
 

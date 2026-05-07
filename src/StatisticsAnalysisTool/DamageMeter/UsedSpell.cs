@@ -1,4 +1,4 @@
-﻿using StatisticsAnalysisTool.Enumerations;
+using StatisticsAnalysisTool.Enumerations;
 using StatisticsAnalysisTool.GameFileData;
 
 namespace StatisticsAnalysisTool.DamageMeter;
@@ -17,7 +17,7 @@ public class UsedSpell
     }
 
     public int SpellIndex { get; init; }
-    public int ItemIndex { get; init; }
+    public int ItemIndex { get; set; }
     public string UniqueName { get; init; }
     public string Target { get; init; }
     public string Category { get; init; }

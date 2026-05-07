@@ -28,7 +28,7 @@
                           SelectedItem ="{Binding VaultBindings.VaultContainerSelected, IsAsync=True}" DisplayMemberPath="Name" />
             </StackPanel>
             <Button Content="{Binding Translation.DeleteCurrentStorage, FallbackValue=DELETE__CURRENT__STORAGE}" Height="26" MinWidth="200" 
-                Margin="0,3,5,0" HorizontalAlignment="Right" VerticalAlignment="Top" Click="ButtonDeleteCurrentStorage_OnClick" />
+                Margin="0,3,5,0" HorizontalAlignment="Right" VerticalAlignment="Top" Style="{StaticResource Style.Button.Danger}" Click="ButtonDeleteCurrentStorage_OnClick" />
             <StackPanel Orientation="Horizontal" VerticalAlignment="Top" Height="30" Margin="0,32,0,0">
                 <StackPanel Orientation="Horizontal" HorizontalAlignment="Left" Visibility="{Binding VaultBindings.LastUpdateVisibility}">
                     <TextBlock Text="{Binding Translation.LastUpdate, StringFormat='{}{0:N0}: ', FallbackValue=LAST_UPDATE:}" FontSize="12" 

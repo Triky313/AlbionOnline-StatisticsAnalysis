@@ -30,4 +30,5 @@ public class LoggingTranslation
     public static string CompareLogs => LocalizationController.Translation("COMPARE_LOGS");
     public static string DeleteChestLogs => LocalizationController.Translation("DELETE_CHEST_LOGS");
     public static string DeleteAllLogs => LocalizationController.Translation("DELETE_ALL_LOGS");
+    public static string RemovePlayerFromLootComparator => LocalizationController.Translation("REMOVE_PLAYER_FROM_LOOT_COMPARATOR");
 }

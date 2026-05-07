@@ -1,5 +1,6 @@
 using Serilog;
 using StatisticsAnalysisTool.Common;
+using StatisticsAnalysisTool.DamageMeter;
 using StatisticsAnalysisTool.Enumerations;
 using StatisticsAnalysisTool.GameFileData;
 using StatisticsAnalysisTool.Network.Manager;
@@ -18,6 +19,7 @@ namespace StatisticsAnalysisTool.Cluster;
 public sealed class ClusterController(TrackingController trackingController, MainWindowViewModel mainWindowViewModel)
 {
     private const int MaxEnteredCluster = 1000;
+    private string _snapshotLocationBeforeClusterChange = string.Empty;
 
     public static ClusterInfo CurrentCluster { get; } = new();
 
@@ -47,6 +49,7 @@ public sealed class ClusterController(TrackingController trackingController, Mai
 
     public void SetJoinClusterInformation(string index, string sourceClusterIndex, Guid? mapGuid, MapType mapType)
     {
+        _snapshotLocationBeforeClusterChange = DamageMeterSnapshotLocationResolver.Resolve(CurrentCluster);
         CurrentCluster.SetJoinClusterInfo(index, sourceClusterIndex, mapGuid, mapType);
         CurrentCluster.Entered = DateTime.UtcNow;
         CurrentCluster.ClusterInfoFullyAvailable = true;
@@ -61,8 +64,12 @@ public sealed class ClusterController(TrackingController trackingController, Mai
 
     public void SetAndResetValues(ClusterInfo currentCluster)
     {
+        trackingController.CombatController.CombatEventTracker.OnClusterChanged();
         trackingController.TradeController.ResetCraftingBuildingInfo();
-        mainWindowViewModel.DamageMeterBindings.GetSnapshot(mainWindowViewModel.DamageMeterBindings.IsSnapshotAfterMapChangeActive);
+        mainWindowViewModel.DamageMeterBindings.GetSnapshot(
+            mainWindowViewModel.DamageMeterBindings.IsSnapshotAfterMapChangeActive,
+            _snapshotLocationBeforeClusterChange,
+            true);
         trackingController.CombatController.ResetDamageMeterByClusterChange();
         trackingController.VaultController.ResetDiscoveredItems();
         trackingController.VaultController.ResetInternalVaultContainer();

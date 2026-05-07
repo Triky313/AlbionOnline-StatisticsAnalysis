@@ -43,6 +43,33 @@ public static class MobsData
         return GetMobLevel(mob, currentInGameMobHp);
     }
 
+    public static MobJsonObject GetMobByIndexOrDefault(int index)
+    {
+        return GetMobJsonObjectByIndex(index);
+    }
+
+    public static MobJsonObject GetMobByUniqueNameOrDefault(string uniqueName)
+    {
+        if (string.IsNullOrWhiteSpace(uniqueName))
+        {
+            return new MobJsonObject();
+        }
+
+        return _mobs?.FirstOrDefault(x => string.Equals(x.UniqueName, uniqueName, StringComparison.OrdinalIgnoreCase))
+               ?? new MobJsonObject();
+    }
+
+    public static MobJsonObject GetMobByHitPointsMaxOrDefault(double hitPointsMax)
+    {
+        if (hitPointsMax <= 0)
+        {
+            return new MobJsonObject();
+        }
+
+        return _mobs?.FirstOrDefault(x => Math.Abs(x.HitPointsMax - hitPointsMax) < 0.01)
+               ?? new MobJsonObject();
+    }
+
     public static int GetRandomDungeonMobLevelByIndex(int index, double inGameHitPointsMax)
     {
         var mob = GetMobJsonObjectByIndex(index);

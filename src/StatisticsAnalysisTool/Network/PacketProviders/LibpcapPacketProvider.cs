@@ -24,50 +24,102 @@ public class LibpcapPacketProvider : PacketProvider
     private Thread? _thread;
     private volatile Pcap? _activePcap;
     private readonly Lock _lockObj = new();
+    private readonly Lock _dispatcherLock = new();
     private readonly Dictionary<Pcap, int> _pcapScores = new();
     private DateTime _lastValidPacketUtc = DateTime.MinValue;
+    private DateTime _lastRecoveryFailureLogUtc = DateTime.MinValue;
 
     private const int ScoreToLock = 1;
     private static readonly TimeSpan LockIdleTimeout = TimeSpan.FromSeconds(20);
     private static readonly TimeSpan DispatchErrorBackoff = TimeSpan.FromMilliseconds(250);
+    private static readonly TimeSpan CaptureRecoveryBackoff = TimeSpan.FromSeconds(2);
+    private static readonly TimeSpan RecoveryFailureLogInterval = TimeSpan.FromSeconds(30);
     private static readonly TimeSpan StopThreadJoinTimeout = TimeSpan.FromSeconds(2);
+    private const int ConsecutiveDispatchErrorsBeforeRecovery = 3;
     private const int ConsecutiveDispatchErrorsBeforeEscalation = 20;
 
-    public override bool IsRunning => _thread is { IsAlive: true };
+    public override bool IsRunning
+    {
+        get
+        {
+            return _thread?.IsAlive == true;
+        }
+    }
 
     public LibpcapPacketProvider(IPhotonReceiver photonReceiver)
     {
         _photonReceiver = photonReceiver ?? throw new ArgumentNullException(nameof(photonReceiver));
-        _dispatcher = new PcapDispatcher(Dispatch);
     }
 
     public override void Start()
     {
-        if (_thread is { IsAlive: true })
+        if (_thread?.IsAlive == true)
         {
             return;
         }
 
-        _activePcap = null;
+        ResetAdapterSelection();
 
-        _dispatcher?.Dispose();
-        _dispatcher = new PcapDispatcher(Dispatch);
+        lock (_dispatcherLock)
+        {
+            _dispatcher?.Dispose();
+            _dispatcher = null;
+        }
 
         _cts?.Dispose();
         _cts = new CancellationTokenSource();
 
-        var dispatcher = _dispatcher;
-        if (dispatcher is null)
+        var dispatcher = CreateDispatcher();
+        int opened;
+
+        try
         {
-            Log.Warning("Npcap: dispatcher unavailable, capture cannot start");
+            opened = OpenConfiguredDevices(dispatcher, true);
+        }
+        catch
+        {
+            dispatcher.Dispose();
+            throw;
+        }
+
+        if (opened == 0)
+        {
+            dispatcher.Dispose();
+            Log.Warning("Npcap: no device opened (check NetworkDevice index or admin rights)");
             return;
         }
 
+        lock (_dispatcherLock)
+        {
+            _dispatcher = dispatcher;
+        }
+
+        _thread = new Thread(Worker)
+        {
+            IsBackground = true
+        };
+        _thread.Start();
+
+        var filter = GetEffectiveFilter();
+        Log.Information("Npcap: capture started on {Opened} device(s), filter: {Filter}", opened, string.IsNullOrWhiteSpace(filter) ? "<none>" : filter);
+    }
+
+    private PcapDispatcher CreateDispatcher()
+    {
+        return new PcapDispatcher(Dispatch);
+    }
+
+    private int OpenConfiguredDevices(PcapDispatcher dispatcher, bool logDeviceDetails)
+    {
         var devices = Pcap.ListDevices();
         if (devices.Count == 0)
         {
-            Log.Warning("Npcap: no devices found");
-            return;
+            if (logDeviceDetails)
+            {
+                Log.Warning("Npcap: no devices found");
+            }
+
+            return 0;
         }
 
         var filter = GetEffectiveFilter();
@@ -93,25 +145,41 @@ public class LibpcapPacketProvider : PacketProvider
 
             if (device.Flags.HasFlag(PcapDeviceFlags.Loopback))
             {
-                Log.Information("Npcap[ID:{Index}]: skip loopback {Name}:{Desc}", i, device.Name, device.Description);
+                if (logDeviceDetails)
+                {
+                    Log.Information("Npcap[ID:{Index}]: skip loopback {Name}:{Desc}", i, device.Name, device.Description);
+                }
+
                 continue;
             }
+
             if (!device.Flags.HasFlag(PcapDeviceFlags.Up))
             {
-                Log.Information("Npcap[ID:{Index}]: skip down {Name}:{Desc}", i, device.Name, device.Description);
+                if (logDeviceDetails)
+                {
+                    Log.Information("Npcap[ID:{Index}]: skip down {Name}:{Desc}", i, device.Name, device.Description);
+                }
+
                 continue;
             }
 
             if (hasConfiguredDevices && !selectedDeviceIdentifiers.Contains(device.Name))
             {
-                Log.Information("Npcap[ID:{Index}]: skip disabled {Name}:{Desc}", i, device.Name, device.Description);
+                if (logDeviceDetails)
+                {
+                    Log.Information("Npcap[ID:{Index}]: skip disabled {Name}:{Desc}", i, device.Name, device.Description);
+                }
+
                 continue;
             }
 
             try
             {
-                Log.Information("Npcap[ID:{Index}]: opening {Name}:{Desc} (Type={Type}, Flags={Flags})",
-                    i, device.Name, device.Description, device.Type, device.Flags);
+                if (logDeviceDetails)
+                {
+                    Log.Information("Npcap[ID:{Index}]: opening {Name}:{Desc} (Type={Type}, Flags={Flags})",
+                        i, device.Name, device.Description, device.Type, device.Flags);
+                }
 
                 dispatcher.OpenDevice(device, pcap =>
                 {
@@ -121,11 +189,17 @@ public class LibpcapPacketProvider : PacketProvider
                 if (hasFilter)
                 {
                     dispatcher.Filter = filter!;
-                    Log.Information("Npcap[ID:{Index}]: filter set => {Filter}", i, filter);
+                    if (logDeviceDetails)
+                    {
+                        Log.Information("Npcap[ID:{Index}]: filter set => {Filter}", i, filter);
+                    }
                 }
                 else
                 {
-                    Log.Information("Npcap[ID:{Index}]: no filter (capturing all)", i);
+                    if (logDeviceDetails)
+                    {
+                        Log.Information("Npcap[ID:{Index}]: no filter (capturing all)", i);
+                    }
                 }
 
                 opened++;
@@ -137,20 +211,18 @@ public class LibpcapPacketProvider : PacketProvider
             }
             catch (Exception ex)
             {
-                Log.Error(ex, "Npcap[ID:{Index}]: open failed for {Name}:{Desc}", i, device.Name, device.Description);
+                if (logDeviceDetails)
+                {
+                    Log.Error(ex, "Npcap[ID:{Index}]: open failed for {Name}:{Desc}", i, device.Name, device.Description);
+                }
+                else
+                {
+                    Log.Debug(ex, "Npcap[ID:{Index}]: recovery open failed for {Name}:{Desc}", i, device.Name, device.Description);
+                }
             }
         }
 
-        if (opened == 0)
-        {
-            Log.Warning("Npcap: no device opened (check NetworkDevice index or admin rights)");
-            return;
-        }
-
-        _thread = new Thread(Worker) { IsBackground = true };
-        _thread.Start();
-
-        Log.Information("Npcap: capture started on {Opened} device(s), filter: {Filter}", opened, hasFilter ? filter : "<none>");
+        return opened;
     }
 
 
@@ -337,16 +409,23 @@ public class LibpcapPacketProvider : PacketProvider
     {
         try
         {
-            var dispatcher = _dispatcher;
-            if (dispatcher is null)
-            {
-                return;
-            }
-
             var consecutiveDispatchErrors = 0;
 
-            while (_cts is { IsCancellationRequested: false })
+            while (!IsCaptureCancellationRequested())
             {
+                PcapDispatcher? dispatcher;
+                lock (_dispatcherLock)
+                {
+                    dispatcher = _dispatcher;
+                }
+
+                if (dispatcher is null)
+                {
+                    TryRecoverDispatcher(null);
+                    _cts?.Token.WaitHandle.WaitOne(CaptureRecoveryBackoff);
+                    continue;
+                }
+
                 int dispatched;
                 try
                 {
@@ -365,6 +444,19 @@ public class LibpcapPacketProvider : PacketProvider
                 {
                     consecutiveDispatchErrors++;
                     LogDispatchError(ex, consecutiveDispatchErrors);
+
+                    if (consecutiveDispatchErrors >= ConsecutiveDispatchErrorsBeforeRecovery)
+                    {
+                        if (TryRecoverDispatcher(dispatcher))
+                        {
+                            consecutiveDispatchErrors = 0;
+                            continue;
+                        }
+
+                        _cts?.Token.WaitHandle.WaitOne(CaptureRecoveryBackoff);
+                        continue;
+                    }
+
                     _cts?.Token.WaitHandle.WaitOne(DispatchErrorBackoff);
                     continue;
                 }
@@ -378,6 +470,136 @@ public class LibpcapPacketProvider : PacketProvider
         catch (Exception ex)
         {
             Log.Error(ex, "Libpcap worker crashed");
+        }
+    }
+
+    private bool IsCaptureCancellationRequested()
+    {
+        var cts = _cts;
+        return cts is null || cts.IsCancellationRequested;
+    }
+
+    private bool TryRecoverDispatcher(PcapDispatcher? failedDispatcher)
+    {
+        var cts = _cts;
+        if (cts is null || cts.IsCancellationRequested)
+        {
+            return false;
+        }
+
+        ResetAdapterSelection();
+
+        PcapDispatcher? replacement = null;
+        var opened = 0;
+
+        try
+        {
+            replacement = CreateDispatcher();
+            opened = OpenConfiguredDevices(replacement, false);
+
+            if (opened == 0)
+            {
+                replacement.Dispose();
+                replacement = null;
+            }
+        }
+        catch (Exception ex)
+        {
+            replacement?.Dispose();
+            ClearFailedDispatcher(failedDispatcher);
+            LogRecoveryRetryWarning("Npcap: capture recovery failed while reopening devices", ex);
+            return false;
+        }
+
+        PcapDispatcher? dispatcherToDispose = null;
+
+        lock (_dispatcherLock)
+        {
+            if (cts.IsCancellationRequested)
+            {
+                replacement?.Dispose();
+                return false;
+            }
+
+            if (failedDispatcher is null)
+            {
+                if (_dispatcher is not null)
+                {
+                    replacement?.Dispose();
+                    return false;
+                }
+            }
+            else if (!ReferenceEquals(_dispatcher, failedDispatcher))
+            {
+                replacement?.Dispose();
+                return false;
+            }
+
+            dispatcherToDispose = _dispatcher;
+            _dispatcher = replacement;
+        }
+
+        dispatcherToDispose?.Dispose();
+
+        if (replacement is null)
+        {
+            LogRecoveryRetryWarning("Npcap: capture recovery found no usable devices; retrying", null);
+            return false;
+        }
+
+        _lastRecoveryFailureLogUtc = DateTime.MinValue;
+        Log.Information("Npcap: capture recovered on {Opened} device(s)", opened);
+        return true;
+    }
+
+    private void ClearFailedDispatcher(PcapDispatcher? failedDispatcher)
+    {
+        if (failedDispatcher is null)
+        {
+            return;
+        }
+
+        PcapDispatcher? dispatcherToDispose = null;
+
+        lock (_dispatcherLock)
+        {
+            if (ReferenceEquals(_dispatcher, failedDispatcher))
+            {
+                dispatcherToDispose = _dispatcher;
+                _dispatcher = null;
+            }
+        }
+
+        dispatcherToDispose?.Dispose();
+    }
+
+    private void LogRecoveryRetryWarning(string message, Exception? exception)
+    {
+        var now = DateTime.UtcNow;
+
+        if (now - _lastRecoveryFailureLogUtc < RecoveryFailureLogInterval)
+        {
+            return;
+        }
+
+        _lastRecoveryFailureLogUtc = now;
+
+        if (exception is null)
+        {
+            Log.Warning(message);
+            return;
+        }
+
+        Log.Warning(exception, message);
+    }
+
+    private void ResetAdapterSelection()
+    {
+        lock (_lockObj)
+        {
+            _activePcap = null;
+            _pcapScores.Clear();
+            _lastValidPacketUtc = DateTime.MinValue;
         }
     }
 
@@ -400,20 +622,24 @@ public class LibpcapPacketProvider : PacketProvider
         try
         {
             _cts?.Cancel();
-            _dispatcher?.Dispose();
 
-            if (_thread is { IsAlive: true } && !_thread.Join(StopThreadJoinTimeout))
+            lock (_dispatcherLock)
+            {
+                _dispatcher?.Dispose();
+                _dispatcher = null;
+            }
+
+            if (_thread?.IsAlive == true && !_thread.Join(StopThreadJoinTimeout))
             {
                 Log.Warning("Npcap: worker did not stop within {TimeoutMs} ms", StopThreadJoinTimeout.TotalMilliseconds);
             }
         }
         finally
         {
-            _activePcap = null;
+            ResetAdapterSelection();
             _cts?.Dispose();
             _cts = null;
             _thread = null;
-            _dispatcher = null;
         }
     }
 

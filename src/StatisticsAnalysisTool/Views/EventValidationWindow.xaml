@@ -28,7 +28,7 @@
 
         <Grid Margin="0,33,-1,0">
             <StackPanel Orientation="Horizontal" VerticalAlignment="Top" Height="30">
-                <Button Content="{Binding TranslationReset, FallbackValue=RESET}" Margin="5,0,0,0"
+                <Button Content="{Binding TranslationReset, FallbackValue=RESET}" Margin="5,0,0,0" Style="{StaticResource Style.Button.Danger}"
                         Height="26" MaxWidth="200" MinWidth="80" Click="BtnResetConsole_Click" />
             </StackPanel>
             <controls:VirtualizingItemsControl Margin="0,30,0,0" ItemsSource="{Binding EventValidationCollectionView, IsAsync=True, Mode=OneWay}"
