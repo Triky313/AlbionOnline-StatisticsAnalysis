@@ -37556,7 +37556,7 @@
         },
         {
           "lang": "fr-FR",
-          "seg": "Chemin du répertoire de stockage de sauvegarde"
+          "seg": "Répertoire de stockage de sauvegarde"
         }
       ]
     },
@@ -39736,6 +39736,10 @@
         {
           "lang": "en-US",
           "seg": "Damage Stats"
+        },
+        {
+          "lang": "fr-FR",
+          "seg": "Stats de Dégâts"
         }
       ]
     },
@@ -39748,6 +39752,10 @@
         },
         {
           "lang": "en-US",
+          "seg": "Live"
+        },
+        {
+          "lang": "fr-FR",
           "seg": "Live"
         }
       ]
@@ -39762,6 +39770,10 @@
         {
           "lang": "en-US",
           "seg": "Meter"
+        },
+        {
+          "lang": "fr-FR",
+          "seg": "Compteur"
         }
       ]
     },
@@ -39774,6 +39786,10 @@
         },
         {
           "lang": "en-US",
+          "seg": "Stats"
+        },
+        {
+          "lang": "fr-FR",
           "seg": "Stats"
         }
       ]
@@ -39788,6 +39804,10 @@
         {
           "lang": "en-US",
           "seg": "Top Stats"
+        },
+        {
+          "lang": "fr-FR",
+          "seg": "Top Stats"
         }
       ]
     },
@@ -39801,6 +39821,10 @@
         {
           "lang": "en-US",
           "seg": "Your Stats"
+        },
+        {
+          "lang": "fr-FR",
+          "seg": "Vos Stats"
         }
       ]
     },
@@ -39814,6 +39838,10 @@
         {
           "lang": "en-US",
           "seg": "No local damage data available"
+        },
+        {
+          "lang": "fr-FR",
+          "seg": "Aucune donnée locale sur les dégâts n'est disponible"
         }
       ]
     },
@@ -39827,6 +39855,10 @@
         {
           "lang": "en-US",
           "seg": "Total damage"
+        },
+        {
+          "lang": "fr-FR",
+          "seg": "Total des dégâts"
         }
       ]
     },
@@ -39840,6 +39872,10 @@
         {
           "lang": "en-US",
           "seg": "Damage"
+        },
+        {
+          "lang": "fr-FR",
+          "seg": "Dégâts"
         }
       ]
     },
@@ -39853,6 +39889,10 @@
         {
           "lang": "en-US",
           "seg": "Healing"
+        },
+        {
+          "lang": "fr-FR",
+          "seg": "Soins"
         }
       ]
     },
@@ -39866,6 +39906,10 @@
         {
           "lang": "en-US",
           "seg": "Defense"
+        },
+        {
+          "lang": "fr-FR",
+          "seg": "Défense"
         }
       ]
     },
@@ -39878,6 +39922,10 @@
         },
         {
           "lang": "en-US",
+          "seg": "Combat"
+        },
+        {
+          "lang": "fr-FR",
           "seg": "Combat"
         }
       ]
@@ -39892,6 +39940,10 @@
         {
           "lang": "en-US",
           "seg": "Total DPS"
+        },
+        {
+          "lang": "fr-FR",
+          "seg": "Total DPS"
         }
       ]
     },
@@ -39904,6 +39956,10 @@
         },
         {
           "lang": "en-US",
+          "seg": "Peak DPS 3s"
+        },
+        {
+          "lang": "fr-FR",
           "seg": "Peak DPS 3s"
         }
       ]
@@ -39918,6 +39974,10 @@
         {
           "lang": "en-US",
           "seg": "Peak DPS 5s"
+        },
+        {
+          "lang": "fr-FR",
+          "seg": "Peak DPS 5s"
         }
       ]
     },
@@ -39930,6 +39990,10 @@
         },
         {
           "lang": "en-US",
+          "seg": "Peak DPS 10s"
+        },
+        {
+          "lang": "fr-FR",
           "seg": "Peak DPS 10s"
         }
       ]
@@ -39944,6 +40008,10 @@
         {
           "lang": "en-US",
           "seg": "Biggest Hit"
+        },
+        {
+          "lang": "fr-FR",
+          "seg": "Le plus gros coup"
         }
       ]
     },
@@ -39957,6 +40025,10 @@
         {
           "lang": "en-US",
           "seg": "Total Healing"
+        },
+        {
+          "lang": "fr-FR",
+          "seg": "Total des Soins"
         }
       ]
     },
@@ -39970,6 +40042,10 @@
         {
           "lang": "en-US",
           "seg": "Effective Healing"
+        },
+        {
+          "lang": "fr-FR",
+          "seg": "Efficacité des Soins"
         }
       ]
     },
@@ -39982,6 +40058,10 @@
         },
         {
           "lang": "en-US",
+          "seg": "Overheal %"
+        },
+        {
+          "lang": "fr-FR",
           "seg": "Overheal %"
         }
       ]
@@ -39996,6 +40076,10 @@
         {
           "lang": "en-US",
           "seg": "Damage Taken"
+        },
+        {
+          "lang": "fr-FR",
+          "seg": "Dégâts subis"
         }
       ]
     },
@@ -40009,6 +40093,10 @@
         {
           "lang": "en-US",
           "seg": "Biggest Damage Taken by Spell"
+        },
+        {
+          "lang": "fr-FR",
+          "seg": "Dégâts les plus importants subis par un sort"
         }
       ]
     },
@@ -40021,6 +40109,10 @@
         },
         {
           "lang": "en-US",
+          "seg": "DTPS"
+        },
+        {
+          "lang": "fr-FR",
           "seg": "DTPS"
         }
       ]
@@ -40035,6 +40127,10 @@
         {
           "lang": "en-US",
           "seg": "DTPS is incoming damage per second: Damage Taken / active combat time."
+        },
+        {
+          "lang": "fr-FR",
+          "seg": "Le DTPS correspond aux dégâts subis par seconde : dégâts subis / durée du combat."
         }
       ]
     },
@@ -40048,6 +40144,10 @@
         {
           "lang": "en-US",
           "seg": "Fight Count"
+        },
+        {
+          "lang": "fr-FR",
+          "seg": "Nombre de combats"
         }
       ]
     },
@@ -40061,6 +40161,10 @@
         {
           "lang": "en-US",
           "seg": "Average Fight Duration"
+        },
+        {
+          "lang": "fr-FR",
+          "seg": "Durée moyenne d'un combat"
         }
       ]
     },
@@ -40074,6 +40178,10 @@
         {
           "lang": "en-US",
           "seg": "PvE Damage"
+        },
+        {
+          "lang": "fr-FR",
+          "seg": "Dégâts PvE"
         }
       ]
     },
@@ -40087,6 +40195,10 @@
         {
           "lang": "en-US",
           "seg": "PvP Damage"
+        },
+        {
+          "lang": "fr-FR",
+          "seg": "Dégâts PvP"
         }
       ]
     },
@@ -40100,6 +40212,10 @@
         {
           "lang": "en-US",
           "seg": "Healing Targets"
+        },
+        {
+          "lang": "fr-FR",
+          "seg": "Cibles de Soins"
         }
       ]
     },
@@ -40113,6 +40229,10 @@
         {
           "lang": "en-US",
           "seg": "Biggest single hit - TOP 5"
+        },
+        {
+          "lang": "fr-FR",
+          "seg": "Le plus gros coup en une fois - TOP 5"
         }
       ]
     },
@@ -40126,6 +40246,10 @@
         {
           "lang": "en-US",
           "seg": "Biggest single heal - TOP 5"
+        },
+        {
+          "lang": "fr-FR",
+          "seg": "Le plus gros soin en une fois - TOP 5"
         }
       ]
     },
@@ -40139,6 +40263,10 @@
         {
           "lang": "en-US",
           "seg": "Last hits - TOP 5"
+        },
+        {
+          "lang": "fr-FR",
+          "seg": "Dernier coup - TOP 5"
         }
       ]
     },
@@ -40151,6 +40279,10 @@
         },
         {
           "lang": "en-US",
+          "seg": "Overheal - TOP 5"
+        },
+        {
+          "lang": "fr-FR",
           "seg": "Overheal - TOP 5"
         }
       ]
@@ -40165,6 +40297,10 @@
         {
           "lang": "en-US",
           "seg": "Damage taken - TOP 5"
+        },
+        {
+          "lang": "fr-FR",
+          "seg": "Dégâts subis - TOP 5"
         }
       ]
     },
@@ -40177,6 +40313,10 @@
         },
         {
           "lang": "en-US",
+          "seg": "Burst Damage 5 seconds - TOP 5"
+        },
+        {
+          "lang": "fr-FR",
           "seg": "Burst Damage 5 seconds - TOP 5"
         }
       ]
@@ -40191,6 +40331,10 @@
         {
           "lang": "en-US",
           "seg": "Burst Damage 10 seconds - TOP 5"
+        },
+        {
+          "lang": "fr-FR",
+          "seg": "Burst Damage 10 seconds - TOP 5"
         }
       ]
     },
@@ -40204,6 +40348,10 @@
         {
           "lang": "en-US",
           "seg": "Attacked mobs / players - TOP 5"
+        },
+        {
+          "lang": "fr-FR",
+          "seg": "Monstres / Joueurs attaqués - TOP 5"
         }
       ]
     }
