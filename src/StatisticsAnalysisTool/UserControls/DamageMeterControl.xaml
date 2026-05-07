@@ -389,9 +389,6 @@
                                   ItemsSource="{Binding DamageMeterBindings.DamageMeterSnapshots}" 
                                   SelectedItem="{Binding DamageMeterBindings.DamageMeterSnapshotSelection}" 
                                   IsSynchronizedWithCurrentItem="True" DisplayMemberPath="TimestampString" SelectedValuePath="DamageMeter" />
-                        <ComboBox Width="200" Height="26" ItemsSource="{Binding DamageMeterBindings.DamageMeterSnapshotSort}" 
-                                  SelectedItem="{Binding DamageMeterBindings.DamageMeterSnapshotSortSelection}" 
-                                  IsSynchronizedWithCurrentItem="True" DisplayMemberPath="Name" SelectedValuePath="DamageMeterSortType" />
                         <Button Content="{Binding DamageMeterBindings.TranslationDeleteSelectedSnapshot, FallbackValue=DELETE__SELECTED__SNAPSHOT}" 
                                 MaxWidth="500" MinWidth="200" Margin="5,0,5,0" Style="{StaticResource Style.Button.Danger}" Click="BtnDeleteSelectedSnapshot_Click" />
                         <Grid Height="20" Width="20" Margin="5,0,5,0" HorizontalAlignment="Right" VerticalAlignment="Center" 
@@ -406,8 +403,20 @@
                     <Separator Grid.Row="1" Background="{StaticResource SolidColorBrush.Background.2}" Height="4" VerticalAlignment="Top"/>
                     <TabControl Grid.Row="2" Background="Transparent" BorderThickness="0">
                         <TabItem Header="{Binding DamageMeterBindings.TranslationMeter, FallbackValue=METER}">
-                            <ItemsControl ItemsSource="{Binding DamageMeterBindings.DamageMeterSnapshotSelection.DamageMeter, IsAsync=True, Mode=OneWay}"
-                                          ItemTemplate="{StaticResource DamageMeterSnapshotFragmentTemplate}" />
+                            <Grid>
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="30"/>
+                                    <RowDefinition Height="*"/>
+                                </Grid.RowDefinitions>
+                                <ComboBox Grid.Row="0" Width="200" Height="26" HorizontalAlignment="Left"
+                                          ItemsSource="{Binding DamageMeterBindings.DamageMeterSnapshotSort}"
+                                          SelectedItem="{Binding DamageMeterBindings.DamageMeterSnapshotSortSelection}"
+                                          IsSynchronizedWithCurrentItem="True" DisplayMemberPath="Name" SelectedValuePath="DamageMeterSortType" />
+                                <ScrollViewer Grid.Row="1" Margin="-3,0,0,0">
+                                    <ItemsControl ItemsSource="{Binding DamageMeterBindings.DamageMeterSnapshotSelection.DamageMeter, IsAsync=True, Mode=OneWay}"
+                                                  ItemTemplate="{StaticResource DamageMeterSnapshotFragmentTemplate}" />
+                                </ScrollViewer>
+                            </Grid>
                         </TabItem>
                         <TabItem Header="{Binding DamageMeterBindings.TranslationTopStats, FallbackValue=TOP_STATS}">
                             <ContentControl Content="{Binding DamageMeterBindings.SnapshotDamageStats}" ContentTemplate="{StaticResource DamageStatsSnapshotTemplate}" />
