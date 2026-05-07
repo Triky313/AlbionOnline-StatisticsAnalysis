@@ -10,6 +10,7 @@ public sealed class DamageStatsSnapshot
     public IReadOnlyList<DamageStatsEntry> TopSingleHeals { get; init; } = [];
     public IReadOnlyList<DamageStatsEntry> TopLastHits { get; init; } = [];
     public IReadOnlyList<DamageStatsEntry> TopOverheals { get; init; } = [];
+    public IReadOnlyList<DamageStatsEntry> TopTakenDamage { get; init; } = [];
     public IReadOnlyList<DamageStatsEntry> TopBurstDamageFiveSeconds { get; init; } = [];
     public IReadOnlyList<DamageStatsEntry> TopBurstDamageTenSeconds { get; init; } = [];
     public IReadOnlyList<DamageStatsEntry> TopAttackedTargets { get; init; } = [];

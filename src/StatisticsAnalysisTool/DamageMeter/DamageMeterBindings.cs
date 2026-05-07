@@ -37,6 +37,7 @@ public class DamageMeterBindings : BaseViewModel, IAsyncInitialization
     private ObservableCollection<DamageStatsEntry> _topSingleHeals = [];
     private ObservableCollection<DamageStatsEntry> _topLastHits = [];
     private ObservableCollection<DamageStatsEntry> _topOverheals = [];
+    private ObservableCollection<DamageStatsEntry> _topTakenDamage = [];
     private ObservableCollection<DamageStatsEntry> _topBurstDamageFiveSeconds = [];
     private ObservableCollection<DamageStatsEntry> _topBurstDamageTenSeconds = [];
     private ObservableCollection<DamageStatsEntry> _topAttackedTargets = [];
@@ -296,6 +297,16 @@ public class DamageMeterBindings : BaseViewModel, IAsyncInitialization
         }
     }
 
+    public ObservableCollection<DamageStatsEntry> TopTakenDamage
+    {
+        get => _topTakenDamage;
+        set
+        {
+            _topTakenDamage = value;
+            OnPropertyChanged();
+        }
+    }
+
     public ObservableCollection<DamageStatsEntry> TopBurstDamageFiveSeconds
     {
         get => _topBurstDamageFiveSeconds;
@@ -334,6 +345,7 @@ public class DamageMeterBindings : BaseViewModel, IAsyncInitialization
         TopSingleHeals = new ObservableCollection<DamageStatsEntry>(snapshot.TopSingleHeals);
         TopLastHits = new ObservableCollection<DamageStatsEntry>(snapshot.TopLastHits);
         TopOverheals = new ObservableCollection<DamageStatsEntry>(snapshot.TopOverheals);
+        TopTakenDamage = new ObservableCollection<DamageStatsEntry>(snapshot.TopTakenDamage);
         TopBurstDamageFiveSeconds = new ObservableCollection<DamageStatsEntry>(snapshot.TopBurstDamageFiveSeconds);
         TopBurstDamageTenSeconds = new ObservableCollection<DamageStatsEntry>(snapshot.TopBurstDamageTenSeconds);
         TopAttackedTargets = new ObservableCollection<DamageStatsEntry>(snapshot.TopAttackedTargets);
@@ -528,6 +540,15 @@ public class DamageMeterBindings : BaseViewModel, IAsyncInitialization
     public static string TranslationDeleteSelectedSnapshot => LocalizationController.Translation("DELETE_SELECTED_SNAPSHOT");
     public static string TranslationDeleteAllSnapshots => LocalizationController.Translation("DELETE_ALL_SNAPSHOTS");
     public static string TranslationTakeASnapshotOfDamageMeterDescription => LocalizationController.Translation("TAKE_A_SNAPSHOT_OF_DAMAGE_METER_DESCRIPTION");
+    public static string TranslationDamageStats => LocalizationController.Translation("DAMAGE_STATS");
+    public static string TranslationBiggestSingleHitTop5 => LocalizationController.Translation("BIGGEST_SINGLE_HIT_TOP_5");
+    public static string TranslationBiggestSingleHealTop5 => LocalizationController.Translation("BIGGEST_SINGLE_HEAL_TOP_5");
+    public static string TranslationLastHitsTop5 => LocalizationController.Translation("LAST_HITS_TOP_5");
+    public static string TranslationOverhealTop5 => LocalizationController.Translation("OVERHEAL_TOP_5");
+    public static string TranslationDamageTakenTop5 => LocalizationController.Translation("DAMAGE_TAKEN_TOP_5");
+    public static string TranslationBurstDamageFiveSecondsTop5 => LocalizationController.Translation("BURST_DAMAGE_5_SECONDS_TOP_5");
+    public static string TranslationBurstDamageTenSecondsTop5 => LocalizationController.Translation("BURST_DAMAGE_10_SECONDS_TOP_5");
+    public static string TranslationAttackedMobsPlayersTop5 => LocalizationController.Translation("ATTACKED_MOBS_PLAYERS_TOP_5");
 
     #endregion
 

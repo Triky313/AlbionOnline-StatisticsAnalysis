@@ -15,10 +15,10 @@
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="20"/>
                     <ColumnDefinition Width="*"/>
-                    <ColumnDefinition Width="90"/>
+                    <ColumnDefinition Width="120"/>
                 </Grid.ColumnDefinitions>
-                <TextBlock Grid.Column="0" Text="{Binding Rank, StringFormat='{}{0}.'}" Foreground="{StaticResource SolidColorBrush.Text.2}" FontWeight="Bold" />
-                <TextBlock Grid.Column="1" Text="{Binding PlayerName}" Foreground="{StaticResource SolidColorBrush.Text.1}" TextTrimming="CharacterEllipsis" />
+                <TextBlock Grid.Column="0" Text="{Binding Rank, StringFormat='{}{0}.'}" Foreground="{StaticResource SolidColorBrush.Text.2}" FontSize="14" FontWeight="Bold" />
+                <TextBlock Grid.Column="1" Text="{Binding PlayerName}" Foreground="{StaticResource SolidColorBrush.Text.1}" FontSize="14" TextTrimming="CharacterEllipsis" />
                 <TextBlock Grid.Column="2" Text="{Binding ValueString}" Foreground="{StaticResource SolidColorBrush.Accent.Blue.2}" HorizontalAlignment="Right" />
             </Grid>
         </DataTemplate>
@@ -160,7 +160,7 @@
                     </Grid>
                 </Grid>
             </TabItem>
-            <TabItem Header="Damage Stats">
+            <TabItem Header="{Binding DamageMeterBindings.TranslationDamageStats, FallbackValue=DAMAGE_STATS}">
                 <ScrollViewer Margin="0,5,0,0">
                     <ItemsControl>
                         <ItemsControl.ItemsPanel>
@@ -168,45 +168,59 @@
                                 <UniformGrid Columns="2"/>
                             </ItemsPanelTemplate>
                         </ItemsControl.ItemsPanel>
-                        <Border Margin="4" Padding="5" Background="{StaticResource SolidColorBrush.Background.2}" BorderBrush="{StaticResource SolidColorBrush.Accent.Blue.4}" BorderThickness="0,1,0,0">
+                        <Border Margin="4" Padding="5" BorderBrush="{StaticResource SolidColorBrush.Accent.Blue.4}" BorderThickness="0,1,0,0">
                             <DockPanel LastChildFill="True">
-                                <TextBlock DockPanel.Dock="Top" Text="Biggest single hit - TOP 5" Foreground="{StaticResource SolidColorBrush.Accent.Blue.2}" FontWeight="Bold" Margin="0,0,0,6" />
+                                <TextBlock DockPanel.Dock="Top" Text="{Binding DamageMeterBindings.TranslationBiggestSingleHitTop5, FallbackValue=BIGGEST_SINGLE_HIT_TOP_5}" 
+                                           Foreground="{StaticResource SolidColorBrush.Accent.Red.1}" FontWeight="Bold" Margin="0,0,0,2" FontSize="14" />
                                 <ItemsControl ItemsSource="{Binding DamageMeterBindings.TopSingleHits}" ItemTemplate="{StaticResource DamageStatsEntryTemplate}" />
                             </DockPanel>
                         </Border>
-                        <Border Margin="4" Padding="5" Background="{StaticResource SolidColorBrush.Background.2}" BorderBrush="{StaticResource SolidColorBrush.Accent.Blue.4}" BorderThickness="0,1,0,0">
+                        <Border Margin="4" Padding="5" BorderBrush="{StaticResource SolidColorBrush.Accent.Blue.4}" BorderThickness="0,1,0,0">
                             <DockPanel LastChildFill="True">
-                                <TextBlock DockPanel.Dock="Top" Text="Biggest single heal - TOP 5" Foreground="{StaticResource SolidColorBrush.Accent.Blue.2}" FontWeight="Bold" Margin="0,0,0,6" />
+                                <TextBlock DockPanel.Dock="Top" Text="{Binding DamageMeterBindings.TranslationBiggestSingleHealTop5, FallbackValue=BIGGEST_SINGLE_HEAL_TOP_5}" 
+                                           Foreground="{StaticResource SolidColorBrush.Accent.Green.2}" FontWeight="Bold" Margin="0,0,0,2" FontSize="14" />
                                 <ItemsControl ItemsSource="{Binding DamageMeterBindings.TopSingleHeals}" ItemTemplate="{StaticResource DamageStatsEntryTemplate}" />
                             </DockPanel>
                         </Border>
-                        <Border Margin="4" Padding="5" Background="{StaticResource SolidColorBrush.Background.2}" BorderBrush="{StaticResource SolidColorBrush.Accent.Blue.4}" BorderThickness="0,1,0,0">
+                        <Border Margin="4" Padding="5" BorderBrush="{StaticResource SolidColorBrush.Accent.Blue.4}" BorderThickness="0,1,0,0">
                             <DockPanel LastChildFill="True">
-                                <TextBlock DockPanel.Dock="Top" Text="Last hits - TOP 5" Foreground="{StaticResource SolidColorBrush.Accent.Blue.2}" FontWeight="Bold" Margin="0,0,0,6" />
+                                <TextBlock DockPanel.Dock="Top" Text="{Binding DamageMeterBindings.TranslationLastHitsTop5, FallbackValue=LAST_HITS_TOP_5}" 
+                                           Foreground="{StaticResource SolidColorBrush.Accent.Red.2}" FontWeight="Bold" Margin="0,0,0,2" FontSize="14" />
                                 <ItemsControl ItemsSource="{Binding DamageMeterBindings.TopLastHits}" ItemTemplate="{StaticResource DamageStatsEntryTemplate}" />
                             </DockPanel>
                         </Border>
-                        <Border Margin="4" Padding="5" Background="{StaticResource SolidColorBrush.Background.2}" BorderBrush="{StaticResource SolidColorBrush.Accent.Blue.4}" BorderThickness="0,1,0,0">
+                        <Border Margin="4" Padding="5" BorderBrush="{StaticResource SolidColorBrush.Accent.Blue.4}" BorderThickness="0,1,0,0">
                             <DockPanel LastChildFill="True">
-                                <TextBlock DockPanel.Dock="Top" Text="Overheal - TOP 5" Foreground="{StaticResource SolidColorBrush.Accent.Blue.2}" FontWeight="Bold" Margin="0,0,0,6" />
+                                <TextBlock DockPanel.Dock="Top" Text="{Binding DamageMeterBindings.TranslationOverhealTop5, FallbackValue=OVERHEAL_TOP_5}" 
+                                           Foreground="{StaticResource SolidColorBrush.Accent.Green.5}" FontWeight="Bold" Margin="0,0,0,2" FontSize="14" />
                                 <ItemsControl ItemsSource="{Binding DamageMeterBindings.TopOverheals}" ItemTemplate="{StaticResource DamageStatsEntryTemplate}" />
                             </DockPanel>
                         </Border>
-                        <Border Margin="4" Padding="5" Background="{StaticResource SolidColorBrush.Background.2}" BorderBrush="{StaticResource SolidColorBrush.Accent.Blue.4}" BorderThickness="0,1,0,0">
+                        <Border Margin="4" Padding="5" BorderBrush="{StaticResource SolidColorBrush.Accent.Blue.4}" BorderThickness="0,1,0,0">
                             <DockPanel LastChildFill="True">
-                                <TextBlock DockPanel.Dock="Top" Text="Burst Damage 5 seconds - TOP 5" Foreground="{StaticResource SolidColorBrush.Accent.Blue.2}" FontWeight="Bold" Margin="0,0,0,6" />
+                                <TextBlock DockPanel.Dock="Top" Text="{Binding DamageMeterBindings.TranslationDamageTakenTop5, FallbackValue=DAMAGE_TAKEN_TOP_5}" 
+                                           Foreground="{StaticResource SolidColorBrush.Accent.Red.5}" FontWeight="Bold" Margin="0,0,0,2" FontSize="14" />
+                                <ItemsControl ItemsSource="{Binding DamageMeterBindings.TopTakenDamage}" ItemTemplate="{StaticResource DamageStatsEntryTemplate}" />
+                            </DockPanel>
+                        </Border>
+                        <Border Margin="4" Padding="5" BorderBrush="{StaticResource SolidColorBrush.Accent.Blue.4}" BorderThickness="0,1,0,0">
+                            <DockPanel LastChildFill="True">
+                                <TextBlock DockPanel.Dock="Top" Text="{Binding DamageMeterBindings.TranslationBurstDamageFiveSecondsTop5, FallbackValue=BURST_DAMAGE_5_SECONDS_TOP_5}" 
+                                           Foreground="{StaticResource SolidColorBrush.Accent.Red.3}" FontWeight="Bold" Margin="0,0,0,2" FontSize="14" />
                                 <ItemsControl ItemsSource="{Binding DamageMeterBindings.TopBurstDamageFiveSeconds}" ItemTemplate="{StaticResource DamageStatsEntryTemplate}" />
                             </DockPanel>
                         </Border>
-                        <Border Margin="4" Padding="5" Background="{StaticResource SolidColorBrush.Background.2}" BorderBrush="{StaticResource SolidColorBrush.Accent.Blue.4}" BorderThickness="0,1,0,0">
+                        <Border Margin="4" Padding="5" BorderBrush="{StaticResource SolidColorBrush.Accent.Blue.4}" BorderThickness="0,1,0,0">
                             <DockPanel LastChildFill="True">
-                                <TextBlock DockPanel.Dock="Top" Text="Burst Damage 10 seconds - TOP 5" Foreground="{StaticResource SolidColorBrush.Accent.Blue.2}" FontWeight="Bold" Margin="0,0,0,6" />
+                                <TextBlock DockPanel.Dock="Top" Text="{Binding DamageMeterBindings.TranslationBurstDamageTenSecondsTop5, FallbackValue=BURST_DAMAGE_10_SECONDS_TOP_5}" 
+                                           Foreground="{StaticResource SolidColorBrush.Accent.Red.3}" FontWeight="Bold" Margin="0,0,0,2" FontSize="14" />
                                 <ItemsControl ItemsSource="{Binding DamageMeterBindings.TopBurstDamageTenSeconds}" ItemTemplate="{StaticResource DamageStatsEntryTemplate}" />
                             </DockPanel>
                         </Border>
-                        <Border Margin="4" Padding="5" Background="{StaticResource SolidColorBrush.Background.2}" BorderBrush="{StaticResource SolidColorBrush.Accent.Blue.4}" BorderThickness="0,1,0,0">
+                        <Border Margin="4" Padding="5" BorderBrush="{StaticResource SolidColorBrush.Accent.Blue.4}" BorderThickness="0,1,0,0">
                             <DockPanel LastChildFill="True">
-                                <TextBlock DockPanel.Dock="Top" Text="Attacked mobs / players - TOP 5" Foreground="{StaticResource SolidColorBrush.Accent.Blue.2}" FontWeight="Bold" Margin="0,0,0,6" />
+                                <TextBlock DockPanel.Dock="Top" Text="{Binding DamageMeterBindings.TranslationAttackedMobsPlayersTop5, FallbackValue=ATTACKED_MOBS_PLAYERS_TOP_5}" 
+                                           Foreground="{StaticResource SolidColorBrush.Accent.Blue.2}" FontWeight="Bold" Margin="0,0,0,2" FontSize="14" />
                                 <ItemsControl ItemsSource="{Binding DamageMeterBindings.TopAttackedTargets}" ItemTemplate="{StaticResource DamageStatsEntryTemplate}" />
                             </DockPanel>
                         </Border>

@@ -22,6 +22,7 @@ namespace StatisticsAnalysisTool.Network.Manager;
 public class CombatController
 {
     private const int DamageStatsUiUpdateIntervalInMilliseconds = 1000;
+    private const int DamageStatsTopCount = 5;
     private readonly MainWindowViewModel _mainWindowViewModel;
     private readonly TrackingController _trackingController;
     private readonly DamageStatsTracker _damageStatsTracker = new();
@@ -148,6 +149,7 @@ public class CombatController
             CombatEventTracker.AddHealthContribution(CombatEventValueType.TakenDamage, causerId, affectedId, damageChangeValue, causingSpellIndex);
         }
 
+        UpdateDamageStatsUiIfAllowed();
         return Task.CompletedTask;
     }
 
@@ -478,13 +480,19 @@ public class CombatController
             return;
         }
 
-        var activePlayerObjectIds = _trackingController.EntityController
-            .GetAllEntitiesWithDamageOrHealAndInParty()
+        var activeEntities = _trackingController.EntityController
+            .GetAllEntities()
+            .Where(x => _trackingController.EntityController.IsEntityInParty(x.Key))
+            .Where(x => x.Value.Damage > 0 || x.Value.Heal > 0 || x.Value.Overhealed > 0 || x.Value.TakenDamage > 0)
+            .ToList();
+
+        var activePlayerObjectIds = activeEntities
             .Select(x => x.Value.ObjectId)
             .Where(x => x is not null)
             .Select(x => x!.Value)
             .ToList();
-        var snapshot = _damageStatsTracker.CreateSnapshot(activePlayerObjectIds);
+
+        var snapshot = CreateDamageStatsSnapshot(_damageStatsTracker.CreateSnapshot(activePlayerObjectIds), activeEntities);
         int damageStatsVersion;
 
         lock (_damageStatsUiUpdateLock)
@@ -511,6 +519,41 @@ public class CombatController
                 _isDamageStatsUiUpdateActive = false;
             }
         });
+    }
+
+    private static DamageStatsSnapshot CreateDamageStatsSnapshot(
+        DamageStatsSnapshot trackerSnapshot,
+        IReadOnlyCollection<KeyValuePair<Guid, PlayerGameObject>> activeEntities
+    )
+    {
+        return new DamageStatsSnapshot
+        {
+            TopSingleHits = trackerSnapshot.TopSingleHits,
+            TopSingleHeals = trackerSnapshot.TopSingleHeals,
+            TopLastHits = trackerSnapshot.TopLastHits,
+            TopOverheals = trackerSnapshot.TopOverheals,
+            TopTakenDamage = CreateTopTakenDamageEntries(activeEntities),
+            TopBurstDamageFiveSeconds = trackerSnapshot.TopBurstDamageFiveSeconds,
+            TopBurstDamageTenSeconds = trackerSnapshot.TopBurstDamageTenSeconds,
+            TopAttackedTargets = trackerSnapshot.TopAttackedTargets
+        };
+    }
+
+    private static IReadOnlyList<DamageStatsEntry> CreateTopTakenDamageEntries(IEnumerable<KeyValuePair<Guid, PlayerGameObject>> activeEntities)
+    {
+        var rank = 1;
+        return activeEntities
+            .Where(x => x.Value.TakenDamage > 0)
+            .OrderByDescending(x => x.Value.TakenDamage)
+            .ThenBy(x => x.Value.Name)
+            .Take(DamageStatsTopCount)
+            .Select(x => new DamageStatsEntry
+            {
+                Rank = rank++,
+                PlayerName = x.Value.Name,
+                Value = x.Value.TakenDamage
+            })
+            .ToList();
     }
 
     private bool IsDamageStatsUiUpdateAllowed()

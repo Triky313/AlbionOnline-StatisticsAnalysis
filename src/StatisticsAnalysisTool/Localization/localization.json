@@ -39708,6 +39708,123 @@
           "seg": "Identifier ses propres transactions"
         }
       ]
+    },
+    {
+      "tuid": "DAMAGE_STATS",
+      "tuv": [
+        {
+          "lang": "de-DE",
+          "seg": "Schadens-Stats"
+        },
+        {
+          "lang": "en-US",
+          "seg": "Damage Stats"
+        }
+      ]
+    },
+    {
+      "tuid": "BIGGEST_SINGLE_HIT_TOP_5",
+      "tuv": [
+        {
+          "lang": "de-DE",
+          "seg": "Größter einzelner Treffer - TOP 5"
+        },
+        {
+          "lang": "en-US",
+          "seg": "Biggest single hit - TOP 5"
+        }
+      ]
+    },
+    {
+      "tuid": "BIGGEST_SINGLE_HEAL_TOP_5",
+      "tuv": [
+        {
+          "lang": "de-DE",
+          "seg": "Größter einzelner Heal - TOP 5"
+        },
+        {
+          "lang": "en-US",
+          "seg": "Biggest single heal - TOP 5"
+        }
+      ]
+    },
+    {
+      "tuid": "LAST_HITS_TOP_5",
+      "tuv": [
+        {
+          "lang": "de-DE",
+          "seg": "Letzte Treffer - TOP 5"
+        },
+        {
+          "lang": "en-US",
+          "seg": "Last hits - TOP 5"
+        }
+      ]
+    },
+    {
+      "tuid": "OVERHEAL_TOP_5",
+      "tuv": [
+        {
+          "lang": "de-DE",
+          "seg": "Überheilung - TOP 5"
+        },
+        {
+          "lang": "en-US",
+          "seg": "Overheal - TOP 5"
+        }
+      ]
+    },
+    {
+      "tuid": "DAMAGE_TAKEN_TOP_5",
+      "tuv": [
+        {
+          "lang": "de-DE",
+          "seg": "Genommener Schaden - TOP 5"
+        },
+        {
+          "lang": "en-US",
+          "seg": "Damage taken - TOP 5"
+        }
+      ]
+    },
+    {
+      "tuid": "BURST_DAMAGE_5_SECONDS_TOP_5",
+      "tuv": [
+        {
+          "lang": "de-DE",
+          "seg": "Burst Schaden 5 Sekunden - TOP 5"
+        },
+        {
+          "lang": "en-US",
+          "seg": "Burst Damage 5 seconds - TOP 5"
+        }
+      ]
+    },
+    {
+      "tuid": "BURST_DAMAGE_10_SECONDS_TOP_5",
+      "tuv": [
+        {
+          "lang": "de-DE",
+          "seg": "Burst Schaden 10 Sekunden - TOP 5"
+        },
+        {
+          "lang": "en-US",
+          "seg": "Burst Damage 10 seconds - TOP 5"
+        }
+      ]
+    },
+    {
+      "tuid": "ATTACKED_MOBS_PLAYERS_TOP_5",
+      "tuv": [
+        {
+          "lang": "de-DE",
+          "seg": "Angegriffene Mobs / Spieler - TOP 5"
+        },
+        {
+          "lang": "en-US",
+          "seg": "Attacked mobs / players - TOP 5"
+        }
+      ]
     }
   ]
 }
