@@ -35,8 +35,8 @@ public class LibpcapPacketProvider : PacketProvider
     private static readonly TimeSpan CaptureRecoveryBackoff = TimeSpan.FromSeconds(2);
     private static readonly TimeSpan RecoveryFailureLogInterval = TimeSpan.FromSeconds(30);
     private static readonly TimeSpan StopThreadJoinTimeout = TimeSpan.FromSeconds(2);
-    private const int ConsecutiveDispatchErrorsBeforeRecovery = 3;
     private const int ConsecutiveDispatchErrorsBeforeEscalation = 20;
+    private const int ConsecutiveDispatchErrorsBeforeRecovery = ConsecutiveDispatchErrorsBeforeEscalation;
 
     public override bool IsRunning
     {
@@ -506,8 +506,13 @@ public class LibpcapPacketProvider : PacketProvider
         catch (Exception ex)
         {
             replacement?.Dispose();
-            ClearFailedDispatcher(failedDispatcher);
             LogRecoveryRetryWarning("Npcap: capture recovery failed while reopening devices", ex);
+            return false;
+        }
+
+        if (replacement is null)
+        {
+            LogRecoveryRetryWarning("Npcap: capture recovery found no usable devices; retrying", null);
             return false;
         }
 
@@ -517,7 +522,7 @@ public class LibpcapPacketProvider : PacketProvider
         {
             if (cts.IsCancellationRequested)
             {
-                replacement?.Dispose();
+                replacement.Dispose();
                 return false;
             }
 
@@ -525,13 +530,13 @@ public class LibpcapPacketProvider : PacketProvider
             {
                 if (_dispatcher is not null)
                 {
-                    replacement?.Dispose();
+                    replacement.Dispose();
                     return false;
                 }
             }
             else if (!ReferenceEquals(_dispatcher, failedDispatcher))
             {
-                replacement?.Dispose();
+                replacement.Dispose();
                 return false;
             }
 
@@ -541,36 +546,9 @@ public class LibpcapPacketProvider : PacketProvider
 
         dispatcherToDispose?.Dispose();
 
-        if (replacement is null)
-        {
-            LogRecoveryRetryWarning("Npcap: capture recovery found no usable devices; retrying", null);
-            return false;
-        }
-
         _lastRecoveryFailureLogUtc = DateTime.MinValue;
         Log.Information("Npcap: capture recovered on {Opened} device(s)", opened);
         return true;
-    }
-
-    private void ClearFailedDispatcher(PcapDispatcher? failedDispatcher)
-    {
-        if (failedDispatcher is null)
-        {
-            return;
-        }
-
-        PcapDispatcher? dispatcherToDispose = null;
-
-        lock (_dispatcherLock)
-        {
-            if (ReferenceEquals(_dispatcher, failedDispatcher))
-            {
-                dispatcherToDispose = _dispatcher;
-                _dispatcher = null;
-            }
-        }
-
-        dispatcherToDispose?.Dispose();
     }
 
     private void LogRecoveryRetryWarning(string message, Exception? exception)
