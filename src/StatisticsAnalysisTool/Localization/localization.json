@@ -4996,6 +4996,10 @@
 		{
           "lang": "fr-FR",
           "seg": "Statistiques"
+        },
+        {
+          "lang": "ru-RU",
+          "seg": "Статистика"
         }
       ]
     },
@@ -5013,6 +5017,10 @@
 		{
           "lang": "fr-FR",
           "seg": "Aperçu des transactions"
+        },
+        {
+          "lang": "ru-RU",
+          "seg": "Обзор торговли"
         }
       ]
     },
@@ -5030,6 +5038,10 @@
 		{
           "lang": "fr-FR",
           "seg": "Diagramme"
+        },
+        {
+          "lang": "ru-RU",
+          "seg": "Диаграммы"
         }
       ]
     },
@@ -18130,6 +18142,10 @@
         {
           "lang": "fr-FR",
           "seg": "Fermer la console de debug"
+        },
+        {
+          "lang": "ru-RU",
+          "seg": "Закрыть консоль отладки"
         }
       ]
     },
@@ -20159,6 +20175,10 @@
         {
           "lang": "fr-FR",
           "seg": "Ouvrir la fenêtre du tableau de bord étendu"
+        },
+        {
+          "lang": "ru-RU",
+          "seg": "Откройте расширенное окно панели мониторинга"
         }
       ]
     },
@@ -23454,6 +23474,10 @@
         {
           "lang": "zh-CN",
           "seg": "需要重启"
+        },
+        {
+          "lang": "ru-RU",
+          "seg": "Требуется перезагрузка"
         }
       ]
     },
@@ -30992,6 +31016,10 @@
         {
           "lang": "zh-TW",
           "seg": "交易"
+        },
+        {
+          "lang": "ru-RU",
+          "seg": "Торговля"
         }
       ]
     },
@@ -32185,6 +32213,10 @@
         {
           "lang": "pl-PL",
           "seg": "Europe Server"
+        },
+        {
+          "lang": "ru-RU",
+          "seg": "Europe Server"
         }
       ]
     },
@@ -32304,6 +32336,10 @@
         {
           "lang": "pl-PL",
           "seg": "Baza danych projektu Albion URL Europe"
+        },
+        {
+          "lang": "ru-RU",
+          "seg": "URL-адрес базы данных проекта Albion data project в ЕВРОПЕ"
         }
       ]
     },
@@ -32525,6 +32561,10 @@
         {
           "lang": "zh-CN",
           "seg": "手动设置服务器"
+        },
+        {
+          "lang": "ru-RU",
+          "seg": "Set server"
         }
       ]
     },
@@ -36766,6 +36806,10 @@
         {
           "lang": "zh-CN",
           "seg": "1. 首先选中右边的第三栏；"
+        },
+        {
+          "lang": "ru-RU",
+          "seg": "1. сначала выберите 3-ю вкладку с правой стороны."
         }
       ]
     },
@@ -36795,6 +36839,10 @@
         {
           "lang": "zh-CN",
           "seg": "2. 在搜索选项中选择虹吸能量；"
+        },
+        {
+          "lang": "ru-RU",
+          "seg": "2. выберите выкаченная энергия в поиске"
         }
       ]
     },
@@ -36824,6 +36872,10 @@
         {
           "lang": "zh-CN",
           "seg": "3. 选择要追踪的时间来决定追踪的虹吸条目多少；"
+        },
+        {
+          "lang": "ru-RU",
+          "seg": "3. выберите время для отслеживания большего или меньшего количества записей"
         }
       ]
     },
@@ -36853,6 +36905,10 @@
         {
           "lang": "zh-CN",
           "seg": "4. 每一页都要被打开一次才能被全部追踪到。"
+        },
+        {
+          "lang": "ru-RU",
+          "seg": "4. каждая страница должна вызываться индивидуально, чтобы ее можно было отследить."
         }
       ]
     },
@@ -36882,6 +36938,10 @@
         {
           "lang": "zh-CN",
           "seg": "公会管理"
+        },
+        {
+          "lang": "ru-RU",
+          "seg": "Гильдия"
         }
       ]
     },
@@ -36911,6 +36971,10 @@
         {
           "lang": "zh-CN",
           "seg": "删除选中的条目"
+        },
+        {
+          "lang": "ru-RU",
+          "seg": "Удалить выбранные записи"
         }
       ]
     },
@@ -36940,6 +37004,10 @@
         {
           "lang": "zh-CN",
           "seg": "确定要删除选中的条目？"
+        },
+        {
+          "lang": "ru-RU",
+          "seg": "Вы уверены, что хотите удалить выбранные записи?"
         }
       ]
     },
@@ -36969,6 +37037,10 @@
         {
           "lang": "zh-CN",
           "seg": "角色名字"
+        },
+        {
+          "lang": "ru-RU",
+          "seg": "Имя персонажа"
         }
       ]
     },
@@ -36998,6 +37070,10 @@
         {
           "lang": "zh-CN",
           "seg": "数量"
+        },
+        {
+          "lang": "ru-RU",
+          "seg": "Количество"
         }
       ]
     },
@@ -37027,6 +37103,10 @@
         {
           "lang": "zh-CN",
           "seg": "添加条目"
+        },
+        {
+          "lang": "ru-RU",
+          "seg": "Добавить запись"
         }
       ]
     },
@@ -37056,6 +37136,10 @@
         {
           "lang": "zh-CN",
           "seg": "手动添加或删除"
+        },
+        {
+          "lang": "ru-RU",
+          "seg": "Добавление или удаление вручную"
         }
       ]
     },
@@ -37085,6 +37169,10 @@
         {
           "lang": "zh-CN",
           "seg": "选中以禁用"
+        },
+        {
+          "lang": "ru-RU",
+          "seg": "Выберите, чтобы отключить"
         }
       ]
     },
@@ -37114,6 +37202,10 @@
         {
           "lang": "zh-CN",
           "seg": "虹吸能量"
+        },
+        {
+          "lang": "ru-RU",
+          "seg": "Выкаченная энерги"
         }
       ]
     },
@@ -37143,6 +37235,10 @@
         {
           "lang": "zh-CN",
           "seg": "工具包来源"
+        },
+        {
+          "lang": "ru-RU",
+          "seg": "Поставщик пакетов"
         }
       ]
     },
@@ -37160,6 +37256,10 @@
         {
           "lang": "fr-FR",
           "seg": "Interfaces réseau"
+        },
+        {
+          "lang": "ru-RU",
+          "seg": "Сетевые адаптеры"
         }
       ]
     },
@@ -37177,6 +37277,10 @@
         {
           "lang": "fr-FR",
           "seg": "Redémarrer le suivi du réseau"
+        },
+        {
+          "lang": "ru-RU",
+          "seg": "Перезапустить отслеживание сети"
         }
       ]
     },
@@ -37206,6 +37310,10 @@
         {
           "lang": "zh-CN",
           "seg": "必须以管理员身份运行工具"
+        },
+        {
+          "lang": "ru-RU",
+          "seg": "Инструмент должен быть запущен от имени администратора"
         }
       ]
     },
@@ -37235,6 +37343,10 @@
         {
           "lang": "zh-CN",
           "seg": "已添加的制造"
+        },
+        {
+          "lang": "ru-RU",
+          "seg": "Добавлен крафтинг"
         }
       ]
     },
@@ -37256,6 +37368,10 @@
         {
           "lang": "zh-CN",
           "seg": "队伍管理"
+        },
+        {
+          "lang": "ru-RU",
+          "seg": "Группа"
         }
       ]
     },
@@ -37277,6 +37393,10 @@
         {
           "lang": "zh-CN",
           "seg": "死亡警报"
+        },
+        {
+          "lang": "ru-RU",
+          "seg": "Оповещения о смерти"
         }
       ]
     },
@@ -37298,6 +37418,10 @@
         {
           "lang": "zh-CN",
           "seg": "选择死亡警报"
+        },
+        {
+          "lang": "ru-RU",
+          "seg": "Выберите для оповещения о смерти"
         }
       ]
     },
@@ -37319,6 +37443,10 @@
         {
           "lang": "zh-CN",
           "seg": "使用的死亡警报音效"
+        },
+        {
+          "lang": "ru-RU",
+          "seg": "Используемый звук предупреждения о смерти"
         }
       ]
     },
@@ -37336,6 +37464,10 @@
         {
           "lang": "fr-FR",
           "seg": "DÉGATS%"
+        },
+        {
+          "lang": "ru-RU",
+          "seg": "DMG%"
         }
       ]
     },
@@ -37353,6 +37485,10 @@
         {
           "lang": "fr-FR",
           "seg": "DÉGATS/SOINS"
+        },
+        {
+          "lang": "ru-RU",
+          "seg": "DMG/HEAL"
         }
       ]
     },
@@ -37369,6 +37505,10 @@
         },
         {
           "lang": "fr-FR",
+          "seg": "Ticks"
+        },
+        {
+          "lang": "ru-RU",
           "seg": "Ticks"
         }
       ]
@@ -37387,6 +37527,10 @@
         {
           "lang": "fr-FR",
           "seg": "Attaque automatique"
+        },
+        {
+          "lang": "ru-RU",
+          "seg": "Авто атака"
         }
       ]
     },
@@ -37404,6 +37548,10 @@
         {
           "lang": "fr-FR",
           "seg": "Exporter les échanges en CSV"
+        },
+        {
+          "lang": "ru-RU",
+          "seg": "Экспортные сделок в CSV"
         }
       ]
     },
@@ -37421,6 +37569,10 @@
         {
           "lang": "fr-FR",
           "seg": "Validation d'événement"
+        },
+        {
+          "lang": "ru-RU",
+          "seg": "Проверка событий"
         }
       ]
     },
@@ -37438,6 +37590,10 @@
         {
           "lang": "fr-FR",
           "seg": "Ouvrir la validation d'événement"
+        },
+        {
+          "lang": "ru-RU",
+          "seg": "Открыть проверку событий"
         }
       ]
     },
@@ -37455,6 +37611,10 @@
         {
           "lang": "fr-FR",
           "seg": "Dégâts subis"
+        },
+        {
+          "lang": "ru-RU",
+          "seg": "Причиненный ущерб"
         }
       ]
     },
@@ -37472,6 +37632,10 @@
         {
           "lang": "fr-FR",
           "seg": "Valeur marchande moyenne estimée"
+        },
+        {
+          "lang": "ru-RU",
+          "seg": "Средняя оценка. Рыночная стоимость"
         }
       ]
     },
@@ -37489,6 +37653,10 @@
         {
           "lang": "fr-FR",
           "seg": "Application indépendante"
+        },
+        {
+          "lang": "ru-RU",
+          "seg": "Автономный лаунчер"
         }
       ]
     },
@@ -37506,6 +37674,10 @@
         {
           "lang": "fr-FR",
           "seg": "Sélectionnez le dossier d'installation d'AlbionOnline. Par exemple, dans 'C:\\AlbionOnline'"
+        },
+        {
+          "lang": "ru-RU",
+          "seg": "Выберите папку AlbionOnline, в которую вы ее установили. Например, в разделе 'C:\\AlbionOnline'"
         }
       ]
     },
@@ -37523,6 +37695,10 @@
         {
           "lang": "fr-FR",
           "seg": "Launcher Steam"
+        },
+        {
+          "lang": "ru-RU",
+          "seg": "Steam Launcher"
         }
       ]
     },
@@ -37540,6 +37716,10 @@
         {
           "lang": "fr-FR",
           "seg": "Sélectionnez le dossier AlbionOnline dans SteamApps. Il se trouve généralement dans 'C:\\Program Files\\Steam\\Steamapps\\common'"
+        },
+        {
+          "lang": "ru-RU",
+          "seg": "Выберите папку AlbionOnline в steamapps. Обычно она находится в разделе 'C:\\Program Files\\Steam\\Steamapps\\common'."
         }
       ]
     },
@@ -37557,6 +37737,10 @@
         {
           "lang": "fr-FR",
           "seg": "Chemin du répertoire de stockage de sauvegarde"
+        },
+        {
+          "lang": "ru-RU",
+          "seg": "Путь к каталогу хранилища резервных копий"
         }
       ]
     },
@@ -37574,6 +37758,10 @@
         {
           "lang": "fr-FR",
           "seg": "Coûts actuels des réparations"
+        },
+        {
+          "lang": "ru-RU",
+          "seg": "Текущие затраты на ремонт"
         }
       ]
     },
@@ -37591,6 +37779,10 @@
         {
           "lang": "fr-FR",
           "seg": "Afficher les prix moyens totaux de l'objet"
+        },
+        {
+          "lang": "ru-RU",
+          "seg": "Показать общие средние цены на товар"
         }
       ]
     },
@@ -37608,6 +37800,10 @@
         {
           "lang": "fr-FR",
           "seg": "Valeur totale du coffre"
+        },
+        {
+          "lang": "ru-RU",
+          "seg": "Общая стоимость вкладки"
         }
       ]
     },
@@ -37625,6 +37821,10 @@
         {
           "lang": "fr-FR",
           "seg": "Poids total"
+        },
+        {
+          "lang": "ru-RU",
+          "seg": "Общий вес"
         }
       ]
     },
@@ -37642,6 +37842,10 @@
         {
           "lang": "fr-FR",
           "seg": "Valeur totale de la banque"
+        },
+        {
+          "lang": "ru-RU",
+          "seg": "Общая стоимость банка"
         }
       ]
     },
@@ -37659,6 +37863,10 @@
         {
           "lang": "fr-FR",
           "seg": "Autres"
+        },
+        {
+          "lang": "ru-RU",
+          "seg": "Другие"
         }
       ]
     },
@@ -37676,6 +37884,10 @@
         {
           "lang": "fr-FR",
           "seg": "Perdu"
+        },
+        {
+          "lang": "ru-RU",
+          "seg": "Потерянный"
         }
       ]
     },
@@ -37693,6 +37905,10 @@
         {
           "lang": "fr-FR",
           "seg": "Résolu"
+        },
+        {
+          "lang": "ru-RU",
+          "seg": "Решенный"
         }
       ]
     },
@@ -37710,6 +37926,10 @@
         {
           "lang": "fr-FR",
           "seg": "Donné"
+        },
+        {
+          "lang": "ru-RU",
+          "seg": "Пожертвованный"
         }
       ]
     },
@@ -37727,6 +37947,10 @@
         {
           "lang": "fr-FR",
           "seg": "Comparateur de butin"
+        },
+        {
+          "lang": "ru-RU",
+          "seg": "Компаратор добычи"
         }
       ]
     },
@@ -37744,6 +37968,10 @@
         {
           "lang": "fr-FR",
           "seg": "Télécharger les données"
+        },
+        {
+          "lang": "ru-RU",
+          "seg": "Загрузить файлы журнал сундука"
         }
       ]
     },
@@ -37761,6 +37989,10 @@
         {
           "lang": "fr-FR",
           "seg": "Ajout des journaux de butin"
+        },
+        {
+          "lang": "ru-RU",
+          "seg": "Добавить файлы журнала добычи"
         }
       ]
     },
@@ -37778,6 +38010,10 @@
         {
           "lang": "fr-FR",
           "seg": "Sélectionner les fichiers des journaux de butin"
+        },
+        {
+          "lang": "ru-RU",
+          "seg": "Выбрать файлы журнала добычи"
         }
       ]
     },
@@ -37795,6 +38031,10 @@
         {
           "lang": "fr-FR",
           "seg": "Statut"
+        },
+        {
+          "lang": "ru-RU",
+          "seg": "Статус"
         }
       ]
     },
@@ -37812,6 +38052,10 @@
         {
           "lang": "fr-FR",
           "seg": "Tiers"
+        },
+        {
+          "lang": "ru-RU",
+          "seg": "Уровнь"
         }
       ]
     },
@@ -37829,6 +38073,10 @@
         {
           "lang": "fr-FR",
           "seg": "Type"
+        },
+        {
+          "lang": "ru-RU",
+          "seg": "Тип"
         }
       ]
     },
@@ -37846,6 +38094,10 @@
         {
           "lang": "fr-FR",
           "seg": "Tout"
+        },
+        {
+          "lang": "ru-RU",
+          "seg": "Все"
         }
       ]
     },
@@ -37863,6 +38115,10 @@
         {
           "lang": "fr-FR",
           "seg": "Aucun"
+        },
+        {
+          "lang": "ru-RU",
+          "seg": "Ничто"
         }
       ]
     },
@@ -37880,6 +38136,10 @@
         {
           "lang": "fr-FR",
           "seg": "{COUNT} sélectionné"
+        },
+        {
+          "lang": "ru-RU",
+          "seg": "{COUNT} выбрано"
         }
       ]
     },
@@ -37897,6 +38157,10 @@
         {
           "lang": "fr-FR",
           "seg": "Comparer les logs"
+        },
+        {
+          "lang": "ru-RU",
+          "seg": "Сравнение журналов"
         }
       ]
     },
@@ -37914,6 +38178,10 @@
         {
           "lang": "fr-FR",
           "seg": "Supprimer les logs"
+        },
+        {
+          "lang": "ru-RU",
+          "seg": "Удалить журналы сундука"
         }
       ]
     },
@@ -37931,6 +38199,10 @@
         {
           "lang": "fr-FR",
           "seg": "Supprimer tous les logs"
+        },
+        {
+          "lang": "ru-RU",
+          "seg": "Удалить все журналы"
         }
       ]
     },
@@ -37948,6 +38220,10 @@
         {
           "lang": "fr-FR",
           "seg": "Retirer le joueur du comparateur de butin"
+        },
+        {
+          "lang": "ru-RU",
+          "seg": "Удалить игрока из списка сравнения добычи"
         }
       ]
     },
@@ -37964,6 +38240,10 @@
         },
         {
           "lang": "fr-FR",
+          "seg": "T1 - T3"
+        },
+        {
+          "lang": "ru-RU",
           "seg": "T1 - T3"
         }
       ]
@@ -37986,6 +38266,10 @@
         {
           "lang": "fr-FR",
           "seg": "Proxy"
+        },
+        {
+          "lang": "ru-RU",
+          "seg": "Прокси"
         }
       ]
     },
@@ -38003,6 +38287,10 @@
         {
           "lang": "fr-FR",
           "seg": "Le changement nécessite un redémarrage de l'application"
+        },
+        {
+          "lang": "ru-RU",
+          "seg": "Изменение требует перезапуска инструмента"
         }
       ]
     },
@@ -38020,6 +38308,10 @@
         {
           "lang": "fr-FR",
           "seg": "Les données d'achat et de vente directes sont chiffrés et ne peuvent actuellement pas être visualisées avec ce personnage."
+        },
+        {
+          "lang": "ru-RU",
+          "seg": "Данные о прямых покупках и продажах зашифрованы и в настоящее время не могут быть просмотрены с помощью этого символа."
         }
       ]
     },
@@ -38037,6 +38329,10 @@
         {
           "lang": "fr-FR",
           "seg": "Total des frais de trajet"
+        },
+        {
+          "lang": "ru-RU",
+          "seg": "Общая плата за дистанцию"
         }
       ]
     },
@@ -38054,6 +38350,10 @@
         {
           "lang": "fr-FR",
           "seg": "Revenu total sans déductions de taxes"
+        },
+        {
+          "lang": "ru-RU",
+          "seg": "Общий доход без учета налоговых вычетов"
         }
       ]
     },
@@ -38071,6 +38371,10 @@
         {
           "lang": "fr-FR",
           "seg": "Seuls les dégâts infligés aux joueurs comptent"
+        },
+        {
+          "lang": "ru-RU",
+          "seg": "Учитывается только урон, нанесенный игрокам"
         }
       ]
     },
@@ -38088,6 +38392,10 @@
         {
           "lang": "fr-FR",
           "seg": "Coût total sans taxes ajoutées"
+        },
+        {
+          "lang": "ru-RU",
+          "seg": "Общая стоимость без учета налогов на добавленную стоимость"
         }
       ]
     },
@@ -38170,6 +38478,10 @@
         {
           "lang": "fr-FR",
           "seg": "Opérateur"
+        },
+        {
+          "lang": "ru-RU",
+          "seg": "Оператор"
         }
       ]
     },
@@ -38187,6 +38499,10 @@
         {
           "lang": "fr-FR",
           "seg": "Dépôt"
+        },
+        {
+          "lang": "ru-RU",
+          "seg": "Депозит"
         }
       ]
     },
@@ -38204,6 +38520,10 @@
         {
           "lang": "fr-FR",
           "seg": "Retirer"
+        },
+        {
+          "lang": "ru-RU",
+          "seg": "Выводить"
         }
       ]
     },
@@ -38221,6 +38541,10 @@
         {
           "lang": "fr-FR",
           "seg": "Exporter en CSV"
+        },
+        {
+          "lang": "ru-RU",
+          "seg": "Экспорт в CSV"
         }
       ]
     },
@@ -38238,6 +38562,10 @@
         {
           "lang": "fr-FR",
           "seg": "Liste des exportations d'énergie siphonnée"
+        },
+        {
+          "lang": "ru-RU",
+          "seg": "Экспорт списка Выкаченной энергии"
         }
       ]
     },
@@ -38255,6 +38583,10 @@
         {
           "lang": "fr-FR",
           "seg": "Comment obtenir les journaux de coffre ?"
+        },
+        {
+          "lang": "ru-RU",
+          "seg": "Как мне получить логи сундука?"
         }
       ]
     },
@@ -38272,6 +38604,10 @@
         {
           "lang": "fr-FR",
           "seg": "Pour obtenir les journaux de coffre du jeu, suivez ces étapes :"
+        },
+        {
+          "lang": "ru-RU",
+          "seg": "Чтобы получить логи сундуков из игры, выполните следующие действия:"
         }
       ]
     },
@@ -38289,6 +38625,10 @@
         {
           "lang": "fr-FR",
           "seg": "1. Cliquez sur le bouton Actions dans votre banque de guilde"
+        },
+        {
+          "lang": "ru-RU",
+          "seg": "1. Нажмите на кнопку Действия в вашем банке гильдии."
         }
       ]
     },
@@ -38306,6 +38646,10 @@
         {
           "lang": "fr-FR",
           "seg": "2. Cliquez sur le bouton Gérer."
+        },
+        {
+          "lang": "ru-RU",
+          "seg": "2. Нажмите на кнопку Управление."
         }
       ]
     },
@@ -38323,6 +38667,10 @@
         {
           "lang": "fr-FR",
           "seg": "3. Cliquez sur le bouton avec les trois lignes."
+        },
+        {
+          "lang": "ru-RU",
+          "seg": "3. Нажмите на кнопку с тремя строчками."
         }
       ]
     },
@@ -38340,6 +38688,10 @@
         {
           "lang": "fr-FR",
           "seg": "4. Cliquez sur le bouton Copier vers le presse-papier."
+        },
+        {
+          "lang": "ru-RU",
+          "seg": "4. Нажмите на кнопку Копировать в буфер обмена."
         }
       ]
     },
@@ -38357,6 +38709,10 @@
         {
           "lang": "fr-FR",
           "seg": "Collez ensuite tous les journaux dans un fichier finissant par l'extension '.csv' (par exemple : 'logs.csv') et enregistrez-le."
+        },
+        {
+          "lang": "ru-RU",
+          "seg": "Затем создайте CSV-файл, то есть файл с расширением .csv (например, 'logs.csv'). Вставьте все журналы в этот файл и сохраните его."
         }
       ]
     },
@@ -38374,6 +38730,10 @@
         {
           "lang": "fr-FR",
           "seg": "Dans l'outil, vous pouvez maintenant cliquer sur le bouton 'Télécharger les données' et charger votre fichier."
+        },
+        {
+          "lang": "ru-RU",
+          "seg": "Теперь в этом инструменте вы можете нажать кнопку 'Загрузить файл сундука' и загрузить свой файл."
         }
       ]
     },
@@ -38391,6 +38751,10 @@
         {
           "lang": "fr-FR",
           "seg": "Fichiers journaux de butin"
+        },
+        {
+          "lang": "ru-RU",
+          "seg": "Файлы журнала добычи"
         }
       ]
     },
@@ -38408,6 +38772,10 @@
         {
           "lang": "fr-FR",
           "seg": "Les fichiers journaux de butin peuvent être enregistrés dans l'onglet « Journalisation » à l'aide du bouton CSV vert. Ce fichier peut ensuite être importé dans un autre outil."
+        },
+        {
+          "lang": "ru-RU",
+          "seg": "Файлы журнала добычи можно сохранить на вкладке Ведение журнала с помощью зеленой кнопки CSV. Затем этот файл можно добавить в другой инструмент."
         }
       ]
     },
@@ -38425,6 +38793,10 @@
         {
           "lang": "fr-FR",
           "seg": "Que signifient les couleurs des emplacements d'objets ?"
+        },
+        {
+          "lang": "ru-RU",
+          "seg": "Что означают цвета слотов для предметов?"
         }
       ]
     },
@@ -38442,6 +38814,10 @@
         {
           "lang": "fr-FR",
           "seg": "Les objets en gris indiquent qu'ils ont été détruits. Cela signifie qu'ils ont été perdus ou déjà déposés dans un autre coffre."
+        },
+        {
+          "lang": "ru-RU",
+          "seg": "Предметы, выделенные оттенками серого, означают исчезнувшие предметы. Это означает, что предметы были либо потеряны, либо уже помещены в сундук."
         }
       ]
     },
@@ -38459,6 +38835,10 @@
         {
           "lang": "fr-FR",
           "seg": "Les objets en vert signifient qu'ils ont été déposés dans le coffre."
+        },
+        {
+          "lang": "ru-RU",
+          "seg": "Предметы, выделенные зеленым цветом, означают, что они были помещены в сундук."
         }
       ]
     },
@@ -38476,6 +38856,10 @@
         {
           "lang": "fr-FR",
           "seg": "Les objets en bleu ont été donnés et n'ont pas été récupérés sur un joueur mort."
+        },
+        {
+          "lang": "ru-RU",
+          "seg": "Предмет был подарен и ранее не был подобран с тела погибшего игрока."
         }
       ]
     },
@@ -38493,6 +38877,10 @@
         {
           "lang": "fr-FR",
           "seg": "Les objets en rouge ont été récupérés sur un joueur mort mais n'ont pas encore été déposés dans un coffre."
+        },
+        {
+          "lang": "ru-RU",
+          "seg": "Предметы, отмеченные красным, были подобраны с убитого игрока, но еще не сложены в сундук."
         }
       ]
     },
@@ -38510,6 +38898,10 @@
         {
           "lang": "fr-FR",
           "seg": "Données enregistrées"
+        },
+        {
+          "lang": "ru-RU",
+          "seg": "Data saved"
         }
       ]
     },
@@ -38527,6 +38919,10 @@
         {
           "lang": "fr-FR",
           "seg": "Toutes les données ont été enregistrées."
+        },
+        {
+          "lang": "ru-RU",
+          "seg": "Все данные об инструменте сохранены."
         }
       ]
     },
@@ -38544,6 +38940,10 @@
         {
           "lang": "fr-FR",
           "seg": "Analyse des bénéfices"
+        },
+        {
+          "lang": "ru-RU",
+          "seg": "Анализ прибыли"
         }
       ]
     },
@@ -38561,6 +38961,10 @@
         {
           "lang": "fr-FR",
           "seg": "Seuil de rentabilité"
+        },
+        {
+          "lang": "ru-RU",
+          "seg": "Безубыточная цена"
         }
       ]
     },
@@ -38578,6 +38982,10 @@
         {
           "lang": "fr-FR",
           "seg": "Retour sur investissement"
+        },
+        {
+          "lang": "ru-RU",
+          "seg": "Окупаемость инвестиций"
         }
       ]
     },
@@ -38595,6 +39003,10 @@
         {
           "lang": "fr-FR",
           "seg": "Bénéfice par article"
+        },
+        {
+          "lang": "ru-RU",
+          "seg": "Прибыль на единицу продукции"
         }
       ]
     },
@@ -38612,6 +39024,10 @@
         {
           "lang": "fr-FR",
           "seg": "Bénéfice par rapport à l'investissement."
+        },
+        {
+          "lang": "ru-RU",
+          "seg": "Прибыль по отношению к инвестициям."
         }
       ]
     },
@@ -38629,6 +39045,10 @@
         {
           "lang": "fr-FR",
           "seg": "Bénéfice par article vendu."
+        },
+        {
+          "lang": "ru-RU",
+          "seg": "Прибыль с проданного товара."
         }
       ]
     },
@@ -38646,6 +39066,10 @@
         {
           "lang": "fr-FR",
           "seg": "Prix sans perte ni gain."
+        },
+        {
+          "lang": "ru-RU",
+          "seg": "Цена без убытка и прибыли."
         }
       ]
     },
@@ -38663,6 +39087,10 @@
         {
           "lang": "fr-FR",
           "seg": "Ouvrir la console de debug au démarrage"
+        },
+        {
+          "lang": "ru-RU",
+          "seg": "Откройте консоль отладки при запуске инструмента"
         }
       ]
     },
@@ -38680,6 +39108,10 @@
         {
           "lang": "fr-FR",
           "seg": "Debug"
+        },
+        {
+          "lang": "ru-RU",
+          "seg": "Отладка"
         }
       ]
     },
@@ -38697,6 +39129,10 @@
         {
           "lang": "fr-FR",
           "seg": "Aucune carte réseau appropriée n'a été trouvée. Vérifiez la carte sélectionnée dans les Paramètres et envisagez de désactiver le VPN ou les cartes réseau virtuelles."
+        },
+        {
+          "lang": "ru-RU",
+          "seg": "Не найден подходящий сетевой адаптер. Проверьте выбранный адаптер в настройках и попробуйте отключить VPN или виртуальные адаптеры."
         }
       ]
     },
@@ -38714,6 +39150,10 @@
         {
           "lang": "fr-FR",
           "seg": "Échec du démarrage du socket (code: {0}). Exécutez l'application en tant qu'administrateur ou passez à \"Npcap\" dans les paramètres."
+        },
+        {
+          "lang": "ru-RU",
+          "seg": "Не удалось запустить сокет (код: {0}). Запустите приложение от имени администратора или выберите \"Npcap\" в настройках."
         }
       ]
     },
@@ -38731,6 +39171,10 @@
         {
           "lang": "fr-FR",
           "seg": "Veuillez exécuter l'application en tant qu'administrateur."
+        },
+        {
+          "lang": "ru-RU",
+          "seg": "Пожалуйста, запустите приложение от имени администратора."
         }
       ]
     },
@@ -38748,6 +39192,10 @@
         {
           "lang": "fr-FR",
           "seg": "Impossible de trouver Npcap (wpcap.dll). Veuillez installer ou réparer Npcap (sans l'ancien WinPcap)."
+        },
+        {
+          "lang": "ru-RU",
+          "seg": "Npcap (wpcap.dll) не найден. Пожалуйста, установите или восстановите Npcap (без устаревшей версии WinPcap)."
         }
       ]
     },
@@ -38765,6 +39213,10 @@
         {
           "lang": "fr-FR",
           "seg": "Npcap n'a pas pu ouvrir d'adaptateur. Vérifiez les droits d'administrateur, le pare-feu/VPN et l'adaptateur sélectionné."
+        },
+        {
+          "lang": "ru-RU",
+          "seg": "Npcap не удалось открыть адаптер. Проверьте права администратора, брандмауэр/VPN и выбранный адаптер."
         }
       ]
     },
@@ -38782,6 +39234,10 @@
         {
           "lang": "fr-FR",
           "seg": "Impossible de démarrer la capture dans l'état actuel. Veuillez redémarrer l'application et vérifier les paramètres de l'adaptateur et/ou du filtre."
+        },
+        {
+          "lang": "ru-RU",
+          "seg": "В текущем состоянии не удалось запустить захват. Пожалуйста, перезапустите приложение и проверьте настройки адаптера/фильтра."
         }
       ]
     },
@@ -38799,6 +39255,10 @@
         {
           "lang": "fr-FR",
           "seg": "Impossible de démarrer le suivi. Veuillez vérifier l'installation et les paramètres."
+        },
+        {
+          "lang": "ru-RU",
+          "seg": "Не удалось запустить отслеживание. Пожалуйста, проверьте установку и настройки. (Установите NPcap правильно!)"
         }
       ]
     },
@@ -38869,6 +39329,10 @@
         {
           "lang": "fr-FR",
           "seg": "Aucune mise à jour n'est disponible pour le moment."
+        },
+        {
+          "lang": "ru-RU",
+          "seg": "На данный момент обновлений нет."
         }
       ]
     },
@@ -38886,6 +39350,10 @@
         {
           "lang": "fr-FR",
           "seg": "Aucune mise à jour disponible"
+        },
+        {
+          "lang": "ru-RU",
+          "seg": "Обновление недоступно"
         }
       ]
     },
@@ -38903,6 +39371,10 @@
         {
           "lang": "fr-FR",
           "seg": "Une nouvelle version {0} est disponible. Vous utilisez actuellement la version {1}. Cette mise à jour est requise. Appuyez sur OK pour lancer la mise à jour de l'application."
+        },
+        {
+          "lang": "ru-RU",
+          "seg": "Доступна новая версия {0}. В настоящее время вы используете версию {1}. Требуется обновление. Нажмите «ОК», чтобы начать обновление приложения."
         }
       ]
     },
@@ -38920,6 +39392,10 @@
         {
           "lang": "fr-FR",
           "seg": "Une nouvelle version {0} est disponible. Vous utilisez actuellement la version {1}. Voulez-vous mettre à jour l'application maintenant ?"
+        },
+        {
+          "lang": "ru-RU",
+          "seg": "Доступна новая версия {0}. В настоящее время вы используете версию {1}. Хотите обновить приложение прямо сейчас?"
         }
       ]
     },
@@ -38937,6 +39413,10 @@
         {
           "lang": "fr-FR",
           "seg": "Mise à jour disponible"
+        },
+        {
+          "lang": "ru-RU",
+          "seg": "Доступно обновление"
         }
       ]
     },
@@ -38954,6 +39434,10 @@
         {
           "lang": "fr-FR",
           "seg": "Mise a jour disponible pour {0}"
+        },
+        {
+          "lang": "ru-RU",
+          "seg": "доступно обновление {0}"
         }
       ]
     },
@@ -38971,6 +39455,10 @@
         {
           "lang": "fr-FR",
           "seg": "Me le rappeler plus tard"
+        },
+        {
+          "lang": "ru-RU",
+          "seg": "Напомнить позже"
         }
       ]
     },
@@ -38988,6 +39476,10 @@
         {
           "lang": "fr-FR",
           "seg": "Telechargement et preparation de la mise a jour..."
+        },
+        {
+          "lang": "ru-RU",
+          "seg": "Загружаю и подготавливаю обновление..."
         }
       ]
     },
@@ -39005,6 +39497,10 @@
         {
           "lang": "fr-FR",
           "seg": "Telechargement..."
+        },
+        {
+          "lang": "ru-RU",
+          "seg": "Загружается..."
         }
       ]
     },
@@ -39022,6 +39518,10 @@
         {
           "lang": "fr-FR",
           "seg": "Impossible de joindre le serveur de mise à jour. Veuillez vérifier votre connexion Internet et réessayer plus tard."
+        },
+        {
+          "lang": "ru-RU",
+          "seg": "Не удалось подключиться к серверу обновлений. Пожалуйста, проверьте подключение к Интернету и повторите попытку позже."
         }
       ]
     },
@@ -39039,6 +39539,10 @@
         {
           "lang": "fr-FR",
           "seg": "Échec de la vérification des mises à jour"
+        },
+        {
+          "lang": "ru-RU",
+          "seg": "Ошибка при проверке обновлений"
         }
       ]
     },
@@ -39162,6 +39666,10 @@
         {
           "lang": "fr-FR",
           "seg": "Fenêtre d'information de l'objet : la fenêtre d'information de l'objet peut être ouverte en double-cliquant directement sur l'objet dans la liste."
+        },
+        {
+          "lang": "ru-RU",
+          "seg": "Окно с информацией о предмете: окно с информацией о предмете можно открыть, дважды щелкнув по нему в списке."
         }
       ]
     },
@@ -39179,6 +39687,10 @@
         {
           "lang": "fr-FR",
           "seg": "Alerte d'objet : saisissez une valeur dans la colonne de sous-cotation, puis activez l'alerte dans la colonne indiquant si l'alarme est active."
+        },
+        {
+          "lang": "ru-RU",
+          "seg": "Оповещение о предмете: введите значение в столбце «Подрезка», а затем активируйте оповещение в столбце «Активно ли оповещение»."
         }
       ]
     },
@@ -39196,6 +39708,10 @@
         {
           "lang": "fr-FR",
           "seg": "Prix des objets : les prix affichés sous les noms d'objets dans la liste sont des valeurs moyennes issues directement du jeu et se mettent à jour lorsque les objets sont consultés en jeu."
+        },
+        {
+          "lang": "ru-RU",
+          "seg": "Цены на предметы: цены под названиями предметов в списке — это средние значения, взятые непосредственно из игры. Они обновляются при просмотре предметов в игре."
         }
       ]
     },
@@ -39213,6 +39729,10 @@
         {
           "lang": "fr-FR",
           "seg": "Supprimer toutes les entrées de l'historique de carte"
+        },
+        {
+          "lang": "ru-RU",
+          "seg": "Удалить все записи в истории карт"
         }
       ]
     },
@@ -39230,6 +39750,10 @@
         {
           "lang": "fr-FR",
           "seg": "Voulez-vous vraiment supprimer toutes les entrées de l'historique de carte ?"
+        },
+        {
+          "lang": "ru-RU",
+          "seg": "Вы уверены, что хотите удалить все записи в истории карт?"
         }
       ]
     },
@@ -39247,6 +39771,10 @@
         {
           "lang": "fr-FR",
           "seg": "Temps"
+        },
+        {
+          "lang": "ru-RU",
+          "seg": "Время"
         }
       ]
     },
@@ -39264,6 +39792,10 @@
         {
           "lang": "fr-FR",
           "seg": "Tiers"
+        },
+        {
+          "lang": "ru-RU",
+          "seg": "Уровень"
         }
       ]
     },
@@ -39281,6 +39813,10 @@
         {
           "lang": "fr-FR",
           "seg": "Zone"
+        },
+        {
+          "lang": "ru-RU",
+          "seg": "Локация"
         }
       ]
     },
@@ -39298,6 +39834,10 @@
         {
           "lang": "fr-FR",
           "seg": "Type"
+        },
+        {
+          "lang": "ru-RU",
+          "seg": "Тип"
         }
       ]
     },
@@ -39315,6 +39855,10 @@
         {
           "lang": "fr-FR",
           "seg": "Note"
+        },
+        {
+          "lang": "ru-RU",
+          "seg": "Примечание"
         }
       ]
     },
@@ -39332,6 +39876,10 @@
         {
           "lang": "fr-FR",
           "seg": "Nombre de ressources récoltées"
+        },
+        {
+          "lang": "ru-RU",
+          "seg": "Количество собранных ресурсов"
         }
       ]
     },
@@ -39349,6 +39897,10 @@
         {
           "lang": "fr-FR",
           "seg": "Valeur totale en argent des ressources"
+        },
+        {
+          "lang": "ru-RU",
+          "seg": "Общая стоимость ресурсов в серебре"
         }
       ]
     },
@@ -39366,6 +39918,10 @@
         {
           "lang": "fr-FR",
           "seg": "Agrégation"
+        },
+        {
+          "lang": "ru-RU",
+          "seg": "Агрегация"
         }
       ]
     },
@@ -39383,6 +39939,10 @@
         {
           "lang": "fr-FR",
           "seg": "Auto"
+        },
+        {
+          "lang": "ru-RU",
+          "seg": "Авто"
         }
       ]
     },
@@ -39400,6 +39960,10 @@
         {
           "lang": "fr-FR",
           "seg": "autosave"
+        },
+        {
+          "lang": "ru-RU",
+          "seg": "автосохранение"
         }
       ]
     },
@@ -39417,6 +39981,10 @@
         {
           "lang": "fr-FR",
           "seg": "Heure"
+        },
+        {
+          "lang": "ru-RU",
+          "seg": "Час"
         }
       ]
     },
@@ -39434,6 +40002,10 @@
         {
           "lang": "fr-FR",
           "seg": "Profit au fils du temps"
+        },
+        {
+          "lang": "ru-RU",
+          "seg": "Прибыль с течением времени"
         }
       ]
     },
@@ -39451,6 +40023,10 @@
         {
           "lang": "fr-FR",
           "seg": "Profit selon l'heure de la journée"
+        },
+        {
+          "lang": "ru-RU",
+          "seg": "Прибыль в зависимости от времени суток"
         }
       ]
     },
@@ -39468,6 +40044,10 @@
         {
           "lang": "fr-FR",
           "seg": "Afficher"
+        },
+        {
+          "lang": "ru-RU",
+          "seg": "Дисплей"
         }
       ]
     },
@@ -39485,6 +40065,10 @@
         {
           "lang": "fr-FR",
           "seg": "Système métrique"
+        },
+        {
+          "lang": "ru-RU",
+          "seg": "Метрика"
         }
       ]
     },
@@ -39502,6 +40086,10 @@
         {
           "lang": "fr-FR",
           "seg": "Carte thermique"
+        },
+        {
+          "lang": "ru-RU",
+          "seg": "Тепловая карта"
         }
       ]
     },
@@ -39519,6 +40107,10 @@
         {
           "lang": "fr-FR",
           "seg": "Barres horaires"
+        },
+        {
+          "lang": "ru-RU",
+          "seg": "Часовые столбцы"
         }
       ]
     },
@@ -39536,6 +40128,10 @@
         {
           "lang": "fr-FR",
           "seg": "Profit moyen par transaction"
+        },
+        {
+          "lang": "ru-RU",
+          "seg": "Средняя прибыль на сделку"
         }
       ]
     },
@@ -39553,6 +40149,10 @@
         {
           "lang": "fr-FR",
           "seg": "Nombre de transactions"
+        },
+        {
+          "lang": "ru-RU",
+          "seg": "Количество сделок"
         }
       ]
     },
@@ -39570,6 +40170,10 @@
         {
           "lang": "fr-FR",
           "seg": "Classement des articles les plus populaires"
+        },
+        {
+          "lang": "ru-RU",
+          "seg": "Рейтинг лучших товаров"
         }
       ]
     },
@@ -39587,6 +40191,10 @@
         {
           "lang": "fr-FR",
           "seg": "Meilleur transfert en termes de profit"
+        },
+        {
+          "lang": "ru-RU",
+          "seg": "Максимальный Перемещения по прибыли"
         }
       ]
     },
@@ -39604,6 +40212,10 @@
         {
           "lang": "fr-FR",
           "seg": "Meilleur transfert par perte"
+        },
+        {
+          "lang": "ru-RU",
+          "seg": "Максимальный Перемещения по потерям"
         }
       ]
     },
@@ -39621,6 +40233,10 @@
         {
           "lang": "fr-FR",
           "seg": "Meilleurs articles par ROI (Retour Sur Investissement)"
+        },
+        {
+          "lang": "ru-RU",
+          "seg": "Лучшие товары по рентабельност (ROI)"
         }
       ]
     },
@@ -39638,6 +40254,10 @@
         {
           "lang": "fr-FR",
           "seg": "Objets les plus vendus en volume"
+        },
+        {
+          "lang": "ru-RU",
+          "seg": "Самые продаваемые товары по объему продаж"
         }
       ]
     },
@@ -39655,6 +40275,10 @@
         {
           "lang": "fr-FR",
           "seg": "Objets les plus achetés en volume"
+        },
+        {
+          "lang": "ru-RU",
+          "seg": "Самые популярные товары по объему покупок"
         }
       ]
     },
@@ -39672,6 +40296,10 @@
         {
           "lang": "fr-FR",
           "seg": "ROI (Retour Sur Investissement)"
+        },
+        {
+          "lang": "ru-RU",
+          "seg": "ROI"
         }
       ]
     },
@@ -39689,6 +40317,10 @@
         {
           "lang": "fr-FR",
           "seg": "Reçu"
+        },
+        {
+          "lang": "ru-RU",
+          "seg": "Полученный"
         }
       ]
     },
@@ -39706,6 +40338,10 @@
         {
           "lang": "fr-FR",
           "seg": "Donné"
+        },
+        {
+          "lang": "ru-RU",
+          "seg": "Дано"
         }
       ]
     },
@@ -39723,6 +40359,10 @@
         {
           "lang": "fr-FR",
           "seg": "Identifier ses propres transactions"
+        },
+        {
+          "lang": "ru-RU",
+          "seg": "Распознавать личные сделки"
         }
       ]
     },
@@ -39736,6 +40376,10 @@
         {
           "lang": "en-US",
           "seg": "Damage Stats"
+        },
+        {
+          "lang": "ru-RU",
+          "seg": "Статистика урона"
         }
       ]
     },
@@ -39748,6 +40392,10 @@
         },
         {
           "lang": "en-US",
+          "seg": "Live"
+        },
+        {
+          "lang": "ru-RU",
           "seg": "Live"
         }
       ]
@@ -39762,6 +40410,10 @@
         {
           "lang": "en-US",
           "seg": "Meter"
+        },
+        {
+          "lang": "ru-RU",
+          "seg": "Метер"
         }
       ]
     },
@@ -39775,6 +40427,10 @@
         {
           "lang": "en-US",
           "seg": "Stats"
+        },
+        {
+          "lang": "ru-RU",
+          "seg": "Статистика"
         }
       ]
     },
@@ -39788,6 +40444,10 @@
         {
           "lang": "en-US",
           "seg": "Top Stats"
+        },
+        {
+          "lang": "ru-RU",
+          "seg": "Лучшая статистика"
         }
       ]
     },
@@ -39801,6 +40461,10 @@
         {
           "lang": "en-US",
           "seg": "Your Stats"
+        },
+        {
+          "lang": "ru-RU",
+          "seg": "Ваша статистика"
         }
       ]
     },
@@ -39814,6 +40478,10 @@
         {
           "lang": "en-US",
           "seg": "No local damage data available"
+        },
+        {
+          "lang": "ru-RU",
+          "seg": "Нет данных о уроне в этой области"
         }
       ]
     },
@@ -39827,6 +40495,10 @@
         {
           "lang": "en-US",
           "seg": "Total damage"
+        },
+        {
+          "lang": "ru-RU",
+          "seg": "Общий урон"
         }
       ]
     },
@@ -39840,6 +40512,10 @@
         {
           "lang": "en-US",
           "seg": "Damage"
+        },
+        {
+          "lang": "ru-RU",
+          "seg": "Урон"
         }
       ]
     },
@@ -39853,6 +40529,10 @@
         {
           "lang": "en-US",
           "seg": "Healing"
+        },
+        {
+          "lang": "ru-RU",
+          "seg": "Лечение"
         }
       ]
     },
@@ -39866,6 +40546,10 @@
         {
           "lang": "en-US",
           "seg": "Defense"
+        },
+        {
+          "lang": "ru-RU",
+          "seg": "Защита"
         }
       ]
     },
@@ -39879,6 +40563,10 @@
         {
           "lang": "en-US",
           "seg": "Combat"
+        },
+        {
+          "lang": "ru-RU",
+          "seg": "Бой"
         }
       ]
     },
@@ -39892,6 +40580,10 @@
         {
           "lang": "en-US",
           "seg": "Total DPS"
+        },
+        {
+          "lang": "ru-RU",
+          "seg": "Общий DPS"
         }
       ]
     },
@@ -39905,6 +40597,10 @@
         {
           "lang": "en-US",
           "seg": "Peak DPS 3s"
+        },
+        {
+          "lang": "ru-RU",
+          "seg": "Пиковый DPS 3s"
         }
       ]
     },
@@ -39918,6 +40614,10 @@
         {
           "lang": "en-US",
           "seg": "Peak DPS 5s"
+        },
+        {
+          "lang": "ru-RU",
+          "seg": "Пиковый DPS 5s"
         }
       ]
     },
@@ -39931,6 +40631,10 @@
         {
           "lang": "en-US",
           "seg": "Peak DPS 10s"
+        },
+        {
+          "lang": "ru-RU",
+          "seg": "Пиковый DPS 10s"
         }
       ]
     },
@@ -39944,6 +40648,10 @@
         {
           "lang": "en-US",
           "seg": "Biggest Hit"
+        },
+        {
+          "lang": "ru-RU",
+          "seg": "Самый большой урон"
         }
       ]
     },
@@ -39957,6 +40665,10 @@
         {
           "lang": "en-US",
           "seg": "Total Healing"
+        },
+        {
+          "lang": "ru-RU",
+          "seg": "Общее исцеление"
         }
       ]
     },
@@ -39970,6 +40682,10 @@
         {
           "lang": "en-US",
           "seg": "Effective Healing"
+        },
+        {
+          "lang": "ru-RU",
+          "seg": "Эффективное исцеление"
         }
       ]
     },
@@ -39983,6 +40699,10 @@
         {
           "lang": "en-US",
           "seg": "Overheal %"
+        },
+        {
+          "lang": "ru-RU",
+          "seg": "Избыточное лечение %"
         }
       ]
     },
@@ -39996,6 +40716,10 @@
         {
           "lang": "en-US",
           "seg": "Damage Taken"
+        },
+        {
+          "lang": "ru-RU",
+          "seg": "Нанесенный урон"
         }
       ]
     },
@@ -40009,6 +40733,10 @@
         {
           "lang": "en-US",
           "seg": "Biggest Damage Taken by Spell"
+        },
+        {
+          "lang": "ru-RU",
+          "seg": "Самый большой урон, наносимый заклинанием"
         }
       ]
     },
@@ -40021,6 +40749,10 @@
         },
         {
           "lang": "en-US",
+          "seg": "DTPS"
+        },
+        {
+          "lang": "ru-RU",
           "seg": "DTPS"
         }
       ]
@@ -40035,6 +40767,10 @@
         {
           "lang": "en-US",
           "seg": "DTPS is incoming damage per second: Damage Taken / active combat time."
+        },
+        {
+          "lang": "ru-RU",
+          "seg": "DTPS - это получаемый урон в секунду: полученный урон / время активного боя."
         }
       ]
     },
@@ -40048,6 +40784,10 @@
         {
           "lang": "en-US",
           "seg": "Fight Count"
+        },
+        {
+          "lang": "ru-RU",
+          "seg": "Количество боев"
         }
       ]
     },
@@ -40061,6 +40801,10 @@
         {
           "lang": "en-US",
           "seg": "Average Fight Duration"
+        },
+        {
+          "lang": "ru-RU",
+          "seg": "Средняя продолжительность боя"
         }
       ]
     },
@@ -40074,6 +40818,10 @@
         {
           "lang": "en-US",
           "seg": "PvE Damage"
+        },
+        {
+          "lang": "ru-RU",
+          "seg": "PvE Урон"
         }
       ]
     },
@@ -40087,6 +40835,10 @@
         {
           "lang": "en-US",
           "seg": "PvP Damage"
+        },
+        {
+          "lang": "ru-RU",
+          "seg": "PvP Урон"
         }
       ]
     },
@@ -40100,6 +40852,10 @@
         {
           "lang": "en-US",
           "seg": "Healing Targets"
+        },
+        {
+          "lang": "ru-RU",
+          "seg": "Цели Исцеления"
         }
       ]
     },
@@ -40113,6 +40869,10 @@
         {
           "lang": "en-US",
           "seg": "Biggest single hit - TOP 5"
+        },
+        {
+          "lang": "ru-RU",
+          "seg": "Самый большой единичный урон - TOP 5"
         }
       ]
     },
@@ -40126,6 +40886,10 @@
         {
           "lang": "en-US",
           "seg": "Biggest single heal - TOP 5"
+        },
+        {
+          "lang": "ru-RU",
+          "seg": "Самый большой единичное исцеление - TOP 5"
         }
       ]
     },
@@ -40139,6 +40903,10 @@
         {
           "lang": "en-US",
           "seg": "Last hits - TOP 5"
+        },
+        {
+          "lang": "ru-RU",
+          "seg": "Последний урон - TOP 5"
         }
       ]
     },
@@ -40152,6 +40920,10 @@
         {
           "lang": "en-US",
           "seg": "Overheal - TOP 5"
+        },
+        {
+          "lang": "ru-RU",
+          "seg": "Избыточное лечение - TOP 5"
         }
       ]
     },
@@ -40165,6 +40937,10 @@
         {
           "lang": "en-US",
           "seg": "Damage taken - TOP 5"
+        },
+        {
+          "lang": "ru-RU",
+          "seg": "Нанесенный урон - TOP 5"
         }
       ]
     },
@@ -40178,6 +40954,10 @@
         {
           "lang": "en-US",
           "seg": "Burst Damage 5 seconds - TOP 5"
+        },
+        {
+          "lang": "ru-RU",
+          "seg": "Мгновенный урон за 5 секунд - TOP 5"
         }
       ]
     },
@@ -40191,6 +40971,10 @@
         {
           "lang": "en-US",
           "seg": "Burst Damage 10 seconds - TOP 5"
+        },
+        {
+          "lang": "ru-RU",
+          "seg": "Мгновенный урон за 10 секунд - TOP 5"
         }
       ]
     },
@@ -40204,6 +40988,10 @@
         {
           "lang": "en-US",
           "seg": "Attacked mobs / players - TOP 5"
+        },
+        {
+          "lang": "ru-RU",
+          "seg": "Атакованные мобы / игроки - TOP 5"
         }
       ]
     }
