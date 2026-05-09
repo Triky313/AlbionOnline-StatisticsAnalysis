@@ -8,10 +8,10 @@ public sealed class DamageStatsTracker
 {
     private const int TopCount = 5;
     private readonly object _syncLock = new();
-    private readonly Dictionary<long, DamageStatsPlayer> _players = new();
+    private readonly Dictionary<Guid, DamageStatsPlayer> _players = new();
     private readonly List<DamageStatsEvent> _damageEvents = [];
 
-    public void RecordDamage(long playerObjectId, string playerName, long targetObjectId, long value, double newHealthValue)
+    public void RecordDamage(Guid playerGuid, string playerName, long targetObjectId, long value, double newHealthValue)
     {
         if (value <= 0)
         {
@@ -20,7 +20,7 @@ public sealed class DamageStatsTracker
 
         lock (_syncLock)
         {
-            var player = GetOrAddPlayer(playerObjectId, playerName);
+            var player = GetOrAddPlayer(playerGuid, playerName);
             player.BiggestHit = Math.Max(player.BiggestHit, value);
             if (targetObjectId > 0)
             {
@@ -35,14 +35,14 @@ public sealed class DamageStatsTracker
             _damageEvents.Add(new DamageStatsEvent
             {
                 Timestamp = DateTime.UtcNow,
-                PlayerObjectId = playerObjectId,
+                PlayerGuid = playerGuid,
                 TargetObjectId = targetObjectId,
                 Value = value
             });
         }
     }
 
-    public void RecordHeal(long playerObjectId, string playerName, long value)
+    public void RecordHeal(Guid playerGuid, string playerName, long value)
     {
         if (value <= 0)
         {
@@ -51,12 +51,12 @@ public sealed class DamageStatsTracker
 
         lock (_syncLock)
         {
-            var player = GetOrAddPlayer(playerObjectId, playerName);
+            var player = GetOrAddPlayer(playerGuid, playerName);
             player.BiggestHeal = Math.Max(player.BiggestHeal, value);
         }
     }
 
-    public void RecordOverheal(long playerObjectId, string playerName, long value)
+    public void RecordOverheal(Guid playerGuid, string playerName, long value)
     {
         if (value <= 0)
         {
@@ -65,34 +65,34 @@ public sealed class DamageStatsTracker
 
         lock (_syncLock)
         {
-            var player = GetOrAddPlayer(playerObjectId, playerName);
+            var player = GetOrAddPlayer(playerGuid, playerName);
             player.Overheal += value;
         }
     }
 
-    public DamageStatsSnapshot CreateSnapshot(IEnumerable<long> activePlayerObjectIds, IEnumerable<long> healingPlayerObjectIds)
+    public DamageStatsSnapshot CreateSnapshot(IEnumerable<Guid> activePlayerGuids, IEnumerable<Guid> healingPlayerGuids)
     {
         lock (_syncLock)
         {
-            var activePlayerIds = activePlayerObjectIds?.ToHashSet() ?? [];
-            var healingPlayerIds = healingPlayerObjectIds?.ToHashSet() ?? [];
-            if (activePlayerIds.Count <= 0)
+            var activePlayers = activePlayerGuids?.ToHashSet() ?? [];
+            var healingPlayers = healingPlayerGuids?.ToHashSet() ?? [];
+            if (activePlayers.Count <= 0)
             {
                 return DamageStatsSnapshot.Empty;
             }
 
             var players = _players.Values
-                .Where(x => activePlayerIds.Contains(x.PlayerObjectId))
+                .Where(x => activePlayers.Contains(x.PlayerGuid))
                 .ToList();
 
             return new DamageStatsSnapshot
             {
                 TopSingleHits = CreateTopEntries(players, x => x.BiggestHit),
-                TopSingleHeals = CreateTopEntries(players.Where(x => healingPlayerIds.Contains(x.PlayerObjectId)), x => x.BiggestHeal),
+                TopSingleHeals = CreateTopEntries(players.Where(x => healingPlayers.Contains(x.PlayerGuid)), x => x.BiggestHeal),
                 TopLastHits = CreateTopEntries(players, x => x.LastHitTargetObjectIds.Count),
                 TopOverheals = CreateTopEntries(players, x => x.Overheal),
-                TopBurstDamageFiveSeconds = CreateBurstDamageEntries(activePlayerIds, TimeSpan.FromSeconds(5)),
-                TopBurstDamageTenSeconds = CreateBurstDamageEntries(activePlayerIds, TimeSpan.FromSeconds(10)),
+                TopBurstDamageFiveSeconds = CreateBurstDamageEntries(activePlayers, TimeSpan.FromSeconds(5)),
+                TopBurstDamageTenSeconds = CreateBurstDamageEntries(activePlayers, TimeSpan.FromSeconds(10)),
                 TopAttackedTargets = CreateTopEntries(players, x => x.AttackedTargetObjectIds.Count)
             };
         }
@@ -107,9 +107,9 @@ public sealed class DamageStatsTracker
         }
     }
 
-    private DamageStatsPlayer GetOrAddPlayer(long playerObjectId, string playerName)
+    private DamageStatsPlayer GetOrAddPlayer(Guid playerGuid, string playerName)
     {
-        if (_players.TryGetValue(playerObjectId, out var player))
+        if (_players.TryGetValue(playerGuid, out var player))
         {
             player.PlayerName = playerName;
             return player;
@@ -117,11 +117,11 @@ public sealed class DamageStatsTracker
 
         player = new DamageStatsPlayer
         {
-            PlayerObjectId = playerObjectId,
+            PlayerGuid = playerGuid,
             PlayerName = playerName
         };
 
-        _players.Add(playerObjectId, player);
+        _players.Add(playerGuid, player);
         return player;
     }
 
@@ -147,12 +147,12 @@ public sealed class DamageStatsTracker
             .ToList();
     }
 
-    private IReadOnlyList<DamageStatsEntry> CreateBurstDamageEntries(IReadOnlySet<long> activePlayerObjectIds, TimeSpan window)
+    private IReadOnlyList<DamageStatsEntry> CreateBurstDamageEntries(IReadOnlySet<Guid> activePlayerGuids, TimeSpan window)
     {
         var rank = 1;
         return _damageEvents
-            .Where(x => activePlayerObjectIds.Contains(x.PlayerObjectId))
-            .GroupBy(x => x.PlayerObjectId)
+            .Where(x => activePlayerGuids.Contains(x.PlayerGuid))
+            .GroupBy(x => x.PlayerGuid)
             .Select(x => new DamageStatsEntry
             {
                 PlayerName = GetPlayerName(x.Key),
@@ -171,9 +171,9 @@ public sealed class DamageStatsTracker
             .ToList();
     }
 
-    private string GetPlayerName(long playerObjectId)
+    private string GetPlayerName(Guid playerGuid)
     {
-        return _players.TryGetValue(playerObjectId, out var player) ? player.PlayerName : string.Empty;
+        return _players.TryGetValue(playerGuid, out var player) ? player.PlayerName : string.Empty;
     }
 
     private static long GetHighestBurstDamage(IReadOnlyList<DamageStatsEvent> events, TimeSpan window)

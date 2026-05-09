@@ -1,5 +1,5 @@
-using Ookii.Dialogs.Wpf;
 using Microsoft.VisualBasic.FileIO;
+using Ookii.Dialogs.Wpf;
 using StatisticsAnalysisTool.Common;
 using StatisticsAnalysisTool.Common.UserSettings;
 using StatisticsAnalysisTool.EventLogging.Notification;
@@ -25,17 +25,6 @@ namespace StatisticsAnalysisTool.EventLogging;
 
 public class LoggingBindings : BaseViewModel
 {
-    private ListCollectionView _gameLoggingCollectionView;
-    private ObservableCollection<TrackingNotification> _trackingNotifications = new();
-    private ObservableCollection<TopLooterObject> _topLooters = new();
-    private bool _isTrackingSilver;
-    private bool _isTrackingFame;
-    private bool _isTrackingMobLoot;
-    private ObservableCollection<LoggingFilterObject> _filters = new();
-    private ListCollectionView _topLootersCollectionView;
-    private ListCollectionView _lootingPlayersCollectionView;
-    private ObservableCollection<LootingPlayer> _lootingPlayers = new();
-    private LoggingTranslation _translation = new();
     private CancellationTokenSource _cancellationTokenSource = new();
     private bool _isShowingLost = true;
     private bool _isShowingResolved = true;
@@ -53,10 +42,6 @@ public class LoggingBindings : BaseViewModel
     private bool _isShowingPotion = true;
     private bool _isShowingMount = true;
     private bool _isShowingOthers = true;
-    private ObservableCollection<VaultContainerLogItem> _vaultLogItems = [];
-    private bool _isAllButtonsEnabled = true;
-    private Visibility _isLootComparatorInfoPopupVisible = Visibility.Collapsed;
-    private ICommand _removeLootingPlayerCommand;
     private const int LootLogTimeToleranceSeconds = 2;
 
     public void Init()
@@ -387,12 +372,10 @@ public class LoggingBindings : BaseViewModel
 
     private static IEnumerable<ImportedLootLogItem> ReadLootLogFile(string filePath)
     {
-        using var parser = new TextFieldParser(filePath)
-        {
-            TextFieldType = FieldType.Delimited,
-            HasFieldsEnclosedInQuotes = true,
-            TrimWhiteSpace = false
-        };
+        using var parser = new TextFieldParser(filePath);
+        parser.TextFieldType = FieldType.Delimited;
+        parser.HasFieldsEnclosedInQuotes = true;
+        parser.TrimWhiteSpace = false;
 
         parser.SetDelimiters(";");
 
@@ -606,13 +589,13 @@ public class LoggingBindings : BaseViewModel
 
     public Visibility IsLootComparatorInfoPopupVisible
     {
-        get => _isLootComparatorInfoPopupVisible;
+        get;
         set
         {
-            _isLootComparatorInfoPopupVisible = value;
+            field = value;
             OnPropertyChanged();
         }
-    }
+    } = Visibility.Collapsed;
 
     public void ToggleLootComparatorInfoPopupVisibility()
     {
@@ -726,119 +709,119 @@ public class LoggingBindings : BaseViewModel
 
     public ObservableCollection<LootingPlayer> LootingPlayers
     {
-        get => _lootingPlayers;
+        get;
         set
         {
-            _lootingPlayers = value;
+            field = value;
             OnPropertyChanged();
         }
-    }
+    } = new();
 
     public ListCollectionView LootingPlayersCollectionView
     {
-        get => _lootingPlayersCollectionView;
+        get;
         set
         {
-            _lootingPlayersCollectionView = value;
+            field = value;
             OnPropertyChanged();
         }
     }
 
     public ObservableCollection<VaultContainerLogItem> VaultLogItems
     {
-        get => _vaultLogItems;
+        get;
         set
         {
-            _vaultLogItems = value;
+            field = value;
             OnPropertyChanged();
         }
-    }
+    } = [];
 
     public ListCollectionView GameLoggingCollectionView
     {
-        get => _gameLoggingCollectionView;
+        get;
         set
         {
-            _gameLoggingCollectionView = value;
+            field = value;
             OnPropertyChanged();
         }
     }
 
     public ObservableCollection<TrackingNotification> TrackingNotifications
     {
-        get => _trackingNotifications;
+        get;
         set
         {
-            _trackingNotifications = value;
+            field = value;
             OnPropertyChanged();
         }
-    }
+    } = new();
 
     public ListCollectionView TopLootersCollectionView
     {
-        get => _topLootersCollectionView;
+        get;
         set
         {
-            _topLootersCollectionView = value;
+            field = value;
             OnPropertyChanged();
         }
     }
 
     public ObservableCollection<TopLooterObject> TopLooters
     {
-        get => _topLooters;
+        get;
         set
         {
-            _topLooters = value;
+            field = value;
             OnPropertyChanged();
         }
-    }
+    } = new();
 
     public bool IsTrackingSilver
     {
-        get => _isTrackingSilver;
+        get;
         set
         {
-            _isTrackingSilver = value;
+            field = value;
 
-            SettingsController.CurrentSettings.IsTrackingSilver = _isTrackingSilver;
+            SettingsController.CurrentSettings.IsTrackingSilver = field;
             OnPropertyChanged();
         }
     }
 
     public bool IsTrackingFame
     {
-        get => _isTrackingFame;
+        get;
         set
         {
-            _isTrackingFame = value;
+            field = value;
 
-            SettingsController.CurrentSettings.IsTrackingFame = _isTrackingFame;
+            SettingsController.CurrentSettings.IsTrackingFame = field;
             OnPropertyChanged();
         }
     }
 
     public bool IsTrackingMobLoot
     {
-        get => _isTrackingMobLoot;
+        get;
         set
         {
-            _isTrackingMobLoot = value;
+            field = value;
 
-            SettingsController.CurrentSettings.IsTrackingMobLoot = _isTrackingMobLoot;
+            SettingsController.CurrentSettings.IsTrackingMobLoot = field;
             OnPropertyChanged();
         }
     }
 
     public ObservableCollection<LoggingFilterObject> Filters
     {
-        get => _filters;
+        get;
         set
         {
-            _filters = value;
+            field = value;
             OnPropertyChanged();
         }
-    }
+    } = new();
 
     public bool IsShowingLost
     {
@@ -1018,25 +1001,25 @@ public class LoggingBindings : BaseViewModel
 
     public bool IsAllButtonsEnabled
     {
-        get => _isAllButtonsEnabled;
+        get;
         set
         {
-            _isAllButtonsEnabled = value;
+            field = value;
             OnPropertyChanged();
         }
-    }
+    } = true;
 
     public LoggingTranslation Translation
     {
-        get => _translation;
+        get;
         set
         {
-            _translation = value;
+            field = value;
             OnPropertyChanged();
         }
-    }
+    } = new();
 
-    public ICommand RemoveLootingPlayerCommand => _removeLootingPlayerCommand ??= new CommandHandler(RemoveLootingPlayer, true);
+    public ICommand RemoveLootingPlayerCommand => field ??= new CommandHandler(RemoveLootingPlayer, true);
 
     #endregion
 
@@ -1117,30 +1100,16 @@ public class LoggingBindings : BaseViewModel
 
     private bool Filter(LootedItem lootedItem)
     {
-        bool isStatusOkay = false;
-        bool isTierOkay = false;
-        bool isTypeOkay = false;
-
-        if (IsStatusOkay(lootedItem))
-        {
-            isStatusOkay = true;
-        }
-
-        if (IsTierOkay(lootedItem))
-        {
-            isTierOkay = true;
-        }
-
-        if (IsTypeOkay(lootedItem))
-        {
-            isTypeOkay = true;
-        }
-
-        return isStatusOkay && isTierOkay && isTypeOkay;
+        return IsStatusOkay(lootedItem) && IsTierOkay(lootedItem) && IsTypeOkay(lootedItem);
     }
 
     private bool IsStatusOkay(LootedItem lootedItem)
     {
+        if (lootedItem.IsTrash)
+        {
+            return _isShowingTrash;
+        }
+
         if (_isShowingLost && lootedItem.Status == LootedItemStatus.Lost)
         {
             return true;
@@ -1201,6 +1170,11 @@ public class LoggingBindings : BaseViewModel
 
     private bool IsTypeOkay(LootedItem lootedItem)
     {
+        if (lootedItem.IsTrash)
+        {
+            return true;
+        }
+
         var cat = lootedItem.Item.FullItemInformation.ShopCategory;
         var sub1 = lootedItem.Item.FullItemInformation.ShopSubCategory1;
 
@@ -1238,11 +1212,6 @@ public class LoggingBindings : BaseViewModel
         }
 
         if (_isShowingCape && cat == "accessoires" && sub1 == "cape")
-        {
-            return true;
-        }
-
-        if (_isShowingTrash && lootedItem.IsTrash)
         {
             return true;
         }

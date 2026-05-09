@@ -87,7 +87,7 @@ public class CombatController
             causerGameObjectValue.Damage += damageChangeValue;
             AddOrUpdateSpell(causingSpellIndex, causerGameObjectValue, healthChangeType, damageChangeValue);
             CombatEventTracker.AddHealthContribution(CombatEventValueType.Damage, causerId, affectedId, damageChangeValue, causingSpellIndex);
-            _damageStatsTracker.RecordDamage(causerId, causerGameObjectValue.Name, affectedId, damageChangeValue, newHealthValue);
+            _damageStatsTracker.RecordDamage(causerGameObject.Value.Key, causerGameObjectValue.Name, affectedId, damageChangeValue, newHealthValue);
         }
 
         if (healthChangeType == HealthChangeType.Heal)
@@ -104,12 +104,12 @@ public class CombatController
                 causerGameObjectValue.Heal += positiveHealChangeValue;
                 AddOrUpdateSpell(causingSpellIndex, causerGameObjectValue, healthChangeType, positiveHealChangeValue);
                 CombatEventTracker.AddHealthContribution(CombatEventValueType.Heal, causerId, affectedId, positiveHealChangeValue, causingSpellIndex);
-                _damageStatsTracker.RecordHeal(causerId, causerGameObjectValue.Name, positiveHealChangeValue);
+                _damageStatsTracker.RecordHeal(causerGameObject.Value.Key, causerGameObjectValue.Name, positiveHealChangeValue);
             }
             else
             {
                 causerGameObjectValue.Overhealed += positiveHealChangeValue;
-                _damageStatsTracker.RecordOverheal(causerId, causerGameObjectValue.Name, positiveHealChangeValue);
+                _damageStatsTracker.RecordOverheal(causerGameObject.Value.Key, causerGameObjectValue.Name, positiveHealChangeValue);
             }
         }
 
@@ -486,20 +486,16 @@ public class CombatController
             .Where(x => x.Value.Damage > 0 || x.Value.Heal > 0 || x.Value.Overhealed > 0 || x.Value.TakenDamage > 0)
             .ToList();
 
-        var activePlayerObjectIds = activeEntities
-            .Select(x => x.Value.ObjectId)
-            .Where(x => x is not null)
-            .Select(x => x!.Value)
+        var activePlayerGuids = activeEntities
+            .Select(x => x.Key)
             .ToList();
 
-        var healingPlayerObjectIds = activeEntities
+        var healingPlayerGuids = activeEntities
             .Where(x => x.Value.Heal > 0)
-            .Select(x => x.Value.ObjectId)
-            .Where(x => x is not null)
-            .Select(x => x!.Value)
+            .Select(x => x.Key)
             .ToList();
 
-        var snapshot = CreateDamageStatsSnapshot(_damageStatsTracker.CreateSnapshot(activePlayerObjectIds, healingPlayerObjectIds), activeEntities);
+        var snapshot = CreateDamageStatsSnapshot(_damageStatsTracker.CreateSnapshot(activePlayerGuids, healingPlayerGuids), activeEntities);
         int damageStatsVersion;
 
         lock (_damageStatsUiUpdateLock)
