@@ -33,6 +33,7 @@ public static class AutoUpdateController
 {
     private const string GitHubReleaseByTagApiBaseUrl = "https://api.github.com/repos/triky313/AlbionOnline-StatisticsAnalysis/releases/tags/";
     private const string GitHubReleasesApiUrl = "https://api.github.com/repos/triky313/AlbionOnline-StatisticsAnalysis/releases?per_page=100";
+    private static readonly TimeSpan BackgroundUpdateCheckInterval = TimeSpan.FromMinutes(30);
 
     private static readonly Lock SyncRoot = new();
     private static readonly JsonSerializerOptions JsonSerializerOptions = new() { PropertyNameCaseInsensitive = true };
@@ -41,20 +42,38 @@ public static class AutoUpdateController
     private static AutoUpdateConfiguration _currentConfiguration;
     private static bool _isStartupCheckCompleted;
     private static bool _isUpdateCheckRunning;
+    private static CancellationTokenSource _backgroundUpdateCancellationTokenSource;
+    private static Task _backgroundUpdateTask;
+    private static PendingUpdateInfo _pendingUpdateInfo;
 
-    public static async Task StartBackgroundUpdateLoopAsync()
+    public static event Action<bool> UpdateAvailabilityChanged;
+
+    public static bool IsUpdateAvailable
+    {
+        get
+        {
+            lock (SyncRoot)
+            {
+                return _pendingUpdateInfo != null;
+            }
+        }
+    }
+
+    public static Task StartBackgroundUpdateLoopAsync()
     {
         lock (SyncRoot)
         {
             if (_isStartupCheckCompleted)
             {
-                return;
+                return Task.CompletedTask;
             }
 
             _isStartupCheckCompleted = true;
+            _backgroundUpdateCancellationTokenSource = new CancellationTokenSource();
+            _backgroundUpdateTask = RunBackgroundUpdateLoopAsync(_backgroundUpdateCancellationTokenSource.Token);
         }
 
-        await CheckForUpdatesInternalAsync(UpdateCheckSource.Startup);
+        return Task.CompletedTask;
     }
 
     public static async Task CheckForUpdatesAsync()
@@ -62,11 +81,69 @@ public static class AutoUpdateController
         await CheckForUpdatesInternalAsync(UpdateCheckSource.Manual);
     }
 
-    public static void Dispose()
+    public static async Task ShowAvailableUpdateWindowAsync()
     {
+        PendingUpdateInfo pendingUpdateInfo;
+
         lock (SyncRoot)
         {
+            pendingUpdateInfo = _pendingUpdateInfo;
+        }
+
+        if (pendingUpdateInfo == null)
+        {
+            return;
+        }
+
+        var sparkleUpdater = await EnsureSparkleUpdaterAsync();
+        if (sparkleUpdater == null)
+        {
+            ShowUpdateCheckFailedMessage();
+            return;
+        }
+
+        await ShowUpdateWindowAsync(
+            sparkleUpdater,
+            pendingUpdateInfo.UpdateItem,
+            pendingUpdateInfo.ReleaseInfos,
+            pendingUpdateInfo.CurrentVersion);
+    }
+
+    public static void Dispose()
+    {
+        CancellationTokenSource cancellationTokenSource;
+
+        lock (SyncRoot)
+        {
+            cancellationTokenSource = _backgroundUpdateCancellationTokenSource;
+            _backgroundUpdateCancellationTokenSource = null;
+            _backgroundUpdateTask = null;
             DisposeUpdater();
+        }
+
+        cancellationTokenSource?.Cancel();
+        cancellationTokenSource?.Dispose();
+    }
+
+    private static async Task RunBackgroundUpdateLoopAsync(CancellationToken cancellationToken)
+    {
+        try
+        {
+            await CheckForUpdatesInternalAsync(UpdateCheckSource.Startup);
+
+            using var timer = new PeriodicTimer(BackgroundUpdateCheckInterval);
+            while (await timer.WaitForNextTickAsync(cancellationToken))
+            {
+                await CheckForUpdatesInternalAsync(UpdateCheckSource.Background);
+            }
+        }
+        catch (OperationCanceledException)
+        {
+        }
+        catch (Exception e)
+        {
+            DebugConsole.WriteError(MethodBase.GetCurrentMethod()?.DeclaringType, e);
+            Log.Error(e, "Background update loop stopped unexpectedly.");
         }
     }
 
@@ -108,10 +185,18 @@ public static class AutoUpdateController
 
                         var currentVersion = GetCurrentAssemblyVersion();
                         var releaseInfos = await LoadGitHubReleaseInfosAsync(updateItem, currentVersion);
-                        await ShowUpdateWindowAsync(sparkleUpdater, updateItem, releaseInfos, currentVersion);
+                        SetAvailableUpdate(new PendingUpdateInfo(updateItem, releaseInfos, currentVersion));
+
+                        if (checkSource == UpdateCheckSource.Manual)
+                        {
+                            await ShowUpdateWindowAsync(sparkleUpdater, updateItem, releaseInfos, currentVersion);
+                        }
+
                         return;
                     }
                 case UpdateStatus.UpdateNotAvailable:
+                    ClearAvailableUpdate();
+
                     if (checkSource == UpdateCheckSource.Manual)
                     {
                         ShowNoUpdateAvailableMessage();
@@ -181,6 +266,41 @@ public static class AutoUpdateController
         lock (SyncRoot)
         {
             _isUpdateCheckRunning = false;
+        }
+    }
+
+    private static void SetAvailableUpdate(PendingUpdateInfo pendingUpdateInfo)
+    {
+        var shouldNotify = false;
+
+        lock (SyncRoot)
+        {
+            shouldNotify = _pendingUpdateInfo == null;
+            _pendingUpdateInfo = pendingUpdateInfo;
+        }
+
+        if (shouldNotify)
+        {
+            UpdateAvailabilityChanged?.Invoke(true);
+        }
+    }
+
+    private static void ClearAvailableUpdate()
+    {
+        var shouldNotify = false;
+
+        lock (SyncRoot)
+        {
+            if (_pendingUpdateInfo != null)
+            {
+                shouldNotify = true;
+                _pendingUpdateInfo = null;
+            }
+        }
+
+        if (shouldNotify)
+        {
+            UpdateAvailabilityChanged?.Invoke(false);
         }
     }
 
@@ -920,6 +1040,31 @@ public static class AutoUpdateController
         public bool IsPreRelease { get; } = isPreRelease;
     }
 
+    private sealed class PendingUpdateInfo
+    {
+        public PendingUpdateInfo(AppCastItem updateItem, IReadOnlyList<GitHubReleaseInfo> releaseInfos, Version currentVersion)
+        {
+            UpdateItem = updateItem;
+            ReleaseInfos = releaseInfos ?? [];
+            CurrentVersion = currentVersion;
+        }
+
+        public AppCastItem UpdateItem
+        {
+            get;
+        }
+
+        public IReadOnlyList<GitHubReleaseInfo> ReleaseInfos
+        {
+            get;
+        }
+
+        public Version CurrentVersion
+        {
+            get;
+        }
+    }
+
     private sealed class GitHubReleaseResponse
     {
         [JsonPropertyName("tag_name")]
@@ -941,6 +1086,7 @@ public static class AutoUpdateController
     private enum UpdateCheckSource
     {
         Startup,
+        Background,
         Manual
     }
 }
