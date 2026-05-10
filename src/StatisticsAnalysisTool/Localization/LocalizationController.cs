@@ -283,7 +283,7 @@ public class LocalizationController
                     break;
 
                 case XmlNodeType.EndElement:
-                    if (reader.Name == "tu" && currentTuId != null && currentLanguages != null)
+                    if (reader.Name == "tu" && currentTuId != null)
                     {
                         allTu[currentTuId] = currentLanguages;
                         currentTuId = null;
