@@ -173,6 +173,7 @@ public class SettingsWindowViewModel : BaseViewModel
         SettingsController.CurrentSettings.IsDamageMeterNaviTabActive = TabVisibilities?.FirstOrDefault(x => x?.NavigationTabFilterType == NavigationTabFilterType.DamageMeter)?.IsSelected ?? true;
         SettingsController.CurrentSettings.IsTradeMonitoringNaviTabActive = TabVisibilities?.FirstOrDefault(x => x?.NavigationTabFilterType == NavigationTabFilterType.TradeMonitoring)?.IsSelected ?? true;
         SettingsController.CurrentSettings.IsGatheringNaviTabActive = TabVisibilities?.FirstOrDefault(x => x?.NavigationTabFilterType == NavigationTabFilterType.Gathering)?.IsSelected ?? true;
+        SettingsController.CurrentSettings.IsCraftingNaviTabActive = TabVisibilities?.FirstOrDefault(x => x?.NavigationTabFilterType == NavigationTabFilterType.Crafting)?.IsSelected ?? true;
         SettingsController.CurrentSettings.IsPartyNaviTabActive = TabVisibilities?.FirstOrDefault(x => x?.NavigationTabFilterType == NavigationTabFilterType.Party)?.IsSelected ?? true;
         SettingsController.CurrentSettings.IsStorageHistoryNaviTabActive = TabVisibilities?.FirstOrDefault(x => x?.NavigationTabFilterType == NavigationTabFilterType.StorageHistory)?.IsSelected ?? true;
         SettingsController.CurrentSettings.IsMapHistoryNaviTabActive = TabVisibilities?.FirstOrDefault(x => x?.NavigationTabFilterType == NavigationTabFilterType.MapHistory)?.IsSelected ?? true;
@@ -185,6 +186,7 @@ public class SettingsWindowViewModel : BaseViewModel
         mainWindowViewModel.DamageMeterTabVisibility = SettingsController.CurrentSettings.IsDamageMeterNaviTabActive.BoolToVisibility();
         mainWindowViewModel.TradeMonitoringTabVisibility = SettingsController.CurrentSettings.IsTradeMonitoringNaviTabActive.BoolToVisibility();
         mainWindowViewModel.GatheringTabVisibility = SettingsController.CurrentSettings.IsGatheringNaviTabActive.BoolToVisibility();
+        mainWindowViewModel.CraftingTabVisibility = SettingsController.CurrentSettings.IsCraftingNaviTabActive.BoolToVisibility();
         mainWindowViewModel.PartyTabVisibility = SettingsController.CurrentSettings.IsPartyNaviTabActive.BoolToVisibility();
         mainWindowViewModel.StorageHistoryTabVisibility = SettingsController.CurrentSettings.IsStorageHistoryNaviTabActive.BoolToVisibility();
         mainWindowViewModel.MapHistoryTabVisibility = SettingsController.CurrentSettings.IsMapHistoryNaviTabActive.BoolToVisibility();
@@ -430,6 +432,11 @@ public class SettingsWindowViewModel : BaseViewModel
             IsSelected = SettingsController.CurrentSettings.IsGatheringNaviTabActive,
             Name = MainWindowTranslation.Gathering
         });
+        TabVisibilities.Add(new TabVisibilityFilter(NavigationTabFilterType.Crafting)
+        {
+            IsSelected = SettingsController.CurrentSettings.IsCraftingNaviTabActive,
+            Name = MainWindowTranslation.Crafting
+        });
         TabVisibilities.Add(new TabVisibilityFilter(NavigationTabFilterType.Party)
         {
             IsSelected = SettingsController.CurrentSettings.IsPartyNaviTabActive,
@@ -459,6 +466,7 @@ public class SettingsWindowViewModel : BaseViewModel
         mainWindowViewModel.DamageMeterTabVisibility = SettingsController.CurrentSettings.IsDamageMeterNaviTabActive.BoolToVisibility();
         mainWindowViewModel.TradeMonitoringTabVisibility = SettingsController.CurrentSettings.IsTradeMonitoringNaviTabActive.BoolToVisibility();
         mainWindowViewModel.GatheringTabVisibility = SettingsController.CurrentSettings.IsGatheringNaviTabActive.BoolToVisibility();
+        mainWindowViewModel.CraftingTabVisibility = SettingsController.CurrentSettings.IsCraftingNaviTabActive.BoolToVisibility();
         mainWindowViewModel.PartyTabVisibility = SettingsController.CurrentSettings.IsPartyNaviTabActive.BoolToVisibility();
         mainWindowViewModel.StorageHistoryTabVisibility = SettingsController.CurrentSettings.IsStorageHistoryNaviTabActive.BoolToVisibility();
         mainWindowViewModel.MapHistoryTabVisibility = SettingsController.CurrentSettings.IsMapHistoryNaviTabActive.BoolToVisibility();

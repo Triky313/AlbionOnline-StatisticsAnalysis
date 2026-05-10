@@ -122,6 +122,7 @@ public class MainWindowViewModel : BaseViewModel
     private Visibility _damageMeterTabVisibility = Visibility.Visible;
     private Visibility _tradeMonitoringTabVisibility = Visibility.Visible;
     private Visibility _gatheringTabVisibility = Visibility.Visible;
+    private Visibility _craftingTabVisibility = Visibility.Visible;
     private Visibility _partyTabVisibility = Visibility.Visible;
     private Visibility _storageHistoryTabVisibility = Visibility.Visible;
     private Visibility _mapHistoryTabVisibility = Visibility.Visible;
@@ -1382,6 +1383,16 @@ public class MainWindowViewModel : BaseViewModel
         set
         {
             _gatheringTabVisibility = value;
+            OnPropertyChanged();
+        }
+    }
+
+    public Visibility CraftingTabVisibility
+    {
+        get => _craftingTabVisibility;
+        set
+        {
+            _craftingTabVisibility = value;
             OnPropertyChanged();
         }
     }
