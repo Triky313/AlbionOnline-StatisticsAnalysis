@@ -16,6 +16,7 @@ public class SettingsWindowTranslation
     public static string AlarmSoundUsed => LocalizationController.Translation("ALARM_SOUND_USED");
     public static string ToolDirectory => LocalizationController.Translation("TOOL_DIRECTORY");
     public static string OpenToolDirectory => LocalizationController.Translation("OPEN_TOOL_DIRECTORY");
+    public static string OpenUserDataDirectory => LocalizationController.Translation("OPEN_USER_DATA_DIRECTORY");
     public static string OpenDebugConsole => LocalizationController.Translation("OPEN_DEBUG_CONSOLE");
     public static string CloseDebugConsole => LocalizationController.Translation("CLOSE_DEBUG_CONSOLE");
     public static string OpenEventValidation => LocalizationController.Translation("OPEN_EVENT_VALIDATION");

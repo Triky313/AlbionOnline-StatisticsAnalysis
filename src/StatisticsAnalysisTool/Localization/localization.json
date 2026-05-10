@@ -18080,6 +18080,19 @@
       ]
     },
     {
+      "tuid": "OPEN_USER_DATA_DIRECTORY",
+      "tuv": [
+        {
+          "lang": "de-DE",
+          "seg": "UserData-Verzeichnis öffnen"
+        },
+        {
+          "lang": "en-US",
+          "seg": "Open userData directory"
+        }
+      ]
+    },
+    {
       "tuid": "OPEN_DEBUG_CONSOLE",
       "tuv": [
         {

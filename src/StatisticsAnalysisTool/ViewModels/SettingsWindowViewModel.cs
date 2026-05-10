@@ -992,5 +992,7 @@ public class SettingsWindowViewModel : BaseViewModel
 
     public string ToolDirectory => AppDataPaths.InstallationDirectory;
 
+    public string UserDataDirectory => AppDataPaths.UserDataDirectory;
+
     #endregion Bindings
 }
