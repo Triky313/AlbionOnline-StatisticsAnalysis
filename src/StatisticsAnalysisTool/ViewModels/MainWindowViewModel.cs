@@ -7,6 +7,7 @@ using StatisticsAnalysisTool.Alert;
 using StatisticsAnalysisTool.Cluster;
 using StatisticsAnalysisTool.Common;
 using StatisticsAnalysisTool.Common.UserSettings;
+using StatisticsAnalysisTool.Crafting;
 using StatisticsAnalysisTool.DamageMeter;
 using StatisticsAnalysisTool.Dungeon;
 using StatisticsAnalysisTool.Enumerations;
@@ -115,6 +116,7 @@ public class MainWindowViewModel : BaseViewModel
     private LoggingBindings _loggingBindings = new();
     private PlayerInformationBindings _playerInformationBindings = new();
     private GatheringBindings _gatheringBindings = new();
+    private CraftingBindings _craftingBindings = new();
     private Visibility _dashboardTabVisibility = Visibility.Visible;
     private Visibility _itemSearchTabVisibility = Visibility.Visible;
     private Visibility _loggingTabVisibility = Visibility.Visible;
@@ -670,6 +672,16 @@ public class MainWindowViewModel : BaseViewModel
         set
         {
             _gatheringBindings = value;
+            OnPropertyChanged();
+        }
+    }
+
+    public CraftingBindings CraftingBindings
+    {
+        get => _craftingBindings;
+        set
+        {
+            _craftingBindings = value;
             OnPropertyChanged();
         }
     }

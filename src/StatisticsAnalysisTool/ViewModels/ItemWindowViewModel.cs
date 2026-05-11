@@ -124,7 +124,6 @@ public class ItemWindowViewModel : BaseViewModel
         InitMainTabLocationFiltering();
         InitQualityFiltering();
         InitExtraItemInformation();
-        await InitCraftingTabAsync();
 
         if (Application.Current.Dispatcher == null)
         {
@@ -147,7 +146,6 @@ public class ItemWindowViewModel : BaseViewModel
         QualityTabBindings = new ItemWindowQualityTabBindings();
         HistoryTabBindings = new ItemWindowHistoryTabBindings(this);
         RealMoneyTabBindings = new ItemWindowRealMoneyTabBindings(this);
-        CraftingTabBindings = new ItemWindowCraftingTabBindings();
     }
 
     private void InitMainTabLocationFiltering()

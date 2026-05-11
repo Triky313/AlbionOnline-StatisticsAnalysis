@@ -184,64 +184,6 @@
                     </Grid>
                 </ScrollViewer>
             </TabItem>
-
-            <TabItem Visibility="{Binding CraftingTabVisibility}" Header="{Binding Translation.Crafting, FallbackValue=CRAFTING}">
-                <Grid>
-                    <Grid Height="20" Width="20" ZIndex="2" Margin="0,0,20,0" HorizontalAlignment="Right" VerticalAlignment="Top" MouseUp="CraftingInfoPopup_MouseUp">
-                        <fa5:ImageAwesome Icon="Solid_InfoCircle" Foreground="{StaticResource SolidColorBrush.Text.1}" />
-                    </Grid>
-                    <ScrollViewer CanContentScroll="True" HorizontalScrollBarVisibility="Auto">
-                        <Grid Background="Transparent">
-                            <StackPanel Orientation="Vertical">
-                                <StackPanel Orientation="Horizontal">
-                                    <ContentControl ContentTemplate="{StaticResource EssentialCraftingValuesTemplate}" Content="{Binding EssentialCraftingValues}" />
-                                    <Separator Style="{StaticResource {x:Static ToolBar.SeparatorStyleKey}}" />
-                                    <StackPanel>
-                                        <Label Margin="5,10,5,0" Content="{Binding Translation.RequiredResources, FallbackValue=REQUIRED__RESOURCES}" Style="{StaticResource Label.Crafting}" />
-                                        <ItemsControl ItemsSource="{Binding RequiredResources, IsAsync=True}" ItemTemplate="{StaticResource RequiredResourceTemplate}" />
-                                    </StackPanel>
-                                    <Separator Style="{StaticResource {x:Static ToolBar.SeparatorStyleKey}}" />
-                                    <ContentControl Visibility="{Binding RequiredJournalVisibility}" 
-                                                    ContentTemplate="{StaticResource RequiredJournalTemplate}" Content="{Binding RequiredJournal}" />
-                                    <Separator Style="{StaticResource {x:Static ToolBar.SeparatorStyleKey}}" />
-                                    <ContentControl ContentTemplate="{StaticResource CraftingCalculationTemplate}" Content="{Binding CraftingCalculation}" />
-                                </StackPanel>
-                                <Grid Margin="10,0">
-                                    <Label Content="{Binding Translation.Notes, FallbackValue=NOTES}" ContentStringFormat="{}{0:N2}" Style="{StaticResource Label.Crafting}" VerticalAlignment="Top" />
-                                    <TextBox Text="{Binding CraftingNotes}" Style="{StaticResource TextBox.Crafting}" TextWrapping="Wrap" MaxLength="500"
-                                         VerticalAlignment="Top" Height="60" Width="500" MaxWidth="500" Margin="0,22,0,0" LostFocus="LabelNotes_OnLostFocus" />
-                                </Grid>
-                            </StackPanel>
-                        </Grid>
-                    </ScrollViewer>
-                    <ScrollViewer Visibility="{Binding CraftingTabBindings.CraftingInfoPopupVisibility, FallbackValue=Hidden}" 
-                                  Background="{StaticResource SolidColorBrush.Background.2}" HorizontalScrollBarVisibility="Disabled">
-                        <StackPanel CanHorizontallyScroll="False" CanVerticallyScroll="True" Margin="10,0">
-                            <DockPanel Margin="0,0,0,10">
-                                <fa5:ImageAwesome Icon="Regular_DotCircle" Foreground="{StaticResource SolidColorBrush.Accent.Blue.3}" 
-                                                  Height="16" Width="16" Margin="0,3,10,0" VerticalAlignment="Top" />
-                                <StackPanel Orientation="Vertical">
-                                    <TextBlock Text="{Binding Translation.CraftingInfoDescription1}" Style="{StaticResource InfoDescription.TextBlock}" />
-                                    <TextBlock Text="{Binding Translation.CraftingInfoDescription2}" Style="{StaticResource InfoDescription.TextBlock}" />
-                                    <TextBlock Margin="0" />
-                                    <TextBlock Text="{Binding Translation.CraftingInfoDescription3}" Style="{StaticResource InfoDescription.TextBlock}" />
-                                    <Image Source="../Assets/crafting_description_image001.png" HorizontalAlignment="Left" Height="380" Margin="0" VerticalAlignment="Top" Width="auto" />
-                                </StackPanel>
-                            </DockPanel>
-
-                            <DockPanel Margin="0,0,0,10">
-                                <fa5:ImageAwesome Icon="Regular_DotCircle" Foreground="{StaticResource SolidColorBrush.Accent.Blue.3}" 
-                                                  Height="16" Width="16" Margin="0,3,10,0" VerticalAlignment="Top" />
-                                <StackPanel Orientation="Vertical">
-                                    <TextBlock Text="{Binding Translation.CraftingInfoDescription4}" Style="{StaticResource InfoDescription.TextBlock}" />
-                                    <TextBlock Text="{Binding Translation.CraftingInfoDescription5}" Style="{StaticResource InfoDescription.TextBlock}" />
-                                    <Image Source="../Assets/crafting_description_image002.png" HorizontalAlignment="Left" Height="200" Margin="0" VerticalAlignment="Top" Width="auto" />
-                                </StackPanel>
-                            </DockPanel>
-                        </StackPanel>
-                    </ScrollViewer>
-                </Grid>
-            </TabItem>
         </TabControl>
 
         <userControls:ErrorBarControl VerticalAlignment="Bottom" Visibility="{Binding ErrorBarVisibility, FallbackValue=Visible}" ErrorText="{Binding ErrorBarText}" ErrorException="{Binding ErrorBarException}" />
