@@ -15,6 +15,9 @@ public class SavedCrafting : BaseViewModel
     public int AmountCrafted { get; set; } = 1;
     public bool UsesFocus { get; set; }
     public decimal ReturnRatePercent { get; set; }
+    public decimal DailyBonusPercent { get; set; }
+    public string CraftingLocationId { get; set; }
+    public string CraftingLocationName { get; set; }
     public string CraftingContext { get; set; }
     public decimal StationFee { get; set; }
     public decimal SalesTaxPercent { get; set; }
@@ -26,8 +29,10 @@ public class SavedCrafting : BaseViewModel
     public DateTime LastChangedUtc { get; set; } = DateTime.UtcNow;
     public decimal NetMaterialCosts { get; set; }
     public decimal Profit { get; set; }
+
     [JsonIgnore]
     public BitmapImage Icon { get; set; }
+
     [JsonIgnore]
     public bool IsProfitNegative => Profit < 0m;
 
@@ -37,5 +42,11 @@ public class SavedCrafting : BaseViewModel
                              + (UsesFocus ? "Focus" : "No focus")
                              + " | "
                              + ReturnRatePercent.ToString("N2")
-                             + "% RRR";
+                             + "% RRR"
+                             + (DailyBonusPercent <= 0m
+                                 ? string.Empty
+                                 : " | Daily " + DailyBonusPercent.ToString("N0") + "%")
+                             + (string.IsNullOrWhiteSpace(CraftingLocationName)
+                                 ? string.Empty
+                                 : " | " + CraftingLocationName);
 }

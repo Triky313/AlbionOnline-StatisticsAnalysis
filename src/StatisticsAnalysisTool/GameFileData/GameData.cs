@@ -109,6 +109,11 @@ public static class GameData
                 fileNamesToLoad.Add("cluster\\world");
             }
 
+            if (Extractor.IsBinFileNewer(Path.Combine(gameFilesDirPath, CraftingLocationData.ModifiedFileName), mainGameFolderPath, serverType, "craftingmodifiers"))
+            {
+                fileNamesToLoad.Add("craftingmodifiers");
+            }
+
             if (Extractor.IsBinFileNewer(Path.Combine(gameFilesDirPath, "mists-modified.json"), mainGameFolderPath, serverType, "mists"))
             {
                 fileNamesToLoad.Add("mists");
@@ -125,6 +130,7 @@ public static class GameData
                 async () => await MobsData.LoadDataAsync().ConfigureAwait(false),
                 async () => await MistsData.LoadDataAsync().ConfigureAwait(false),
                 async () => await WorldData.LoadDataAsync().ConfigureAwait(false),
+                async () => await CraftingLocationData.LoadDataAsync().ConfigureAwait(false),
                 async () => await SpellData.LoadDataAsync().ConfigureAwait(false),
                 () => LoadGameLocalizationsAsync(extractor, gameFilesDirPath)
             ];
@@ -286,6 +292,7 @@ public static class GameData
                 MobJsonRootObject mobRootObject => mobRootObject.Mobs?.Mob as List<T> ?? [],
                 LootChestRoot lootChestRoot => lootChestRoot.LootChests?.LootChest as List<T> ?? [],
                 WorldJsonRootObject worldJsonRoot => worldJsonRoot.World?.Clusters?.Cluster as List<T> ?? [],
+                CraftingModifiersRootObject craftingModifiersRootObject => craftingModifiersRootObject.CraftingModifiers?.CraftingLocation as List<T> ?? [],
                 MistsJsonRootObject mistsJsonRoot => mistsJsonRoot.Mists?.MistsMaps?.MapSet?.SelectMany(x => x.Map).Select(map => new MistsJsonObject
                 {
                     Id = map.Id,

@@ -14,7 +14,7 @@ public class CraftingRecipeResolver
 {
     public bool IsCraftable(Item item)
     {
-        return GetCraftingRequirements(item)?.CraftResource.Count > 0;
+        return GetCraftingRequirements(item)?.CraftResource?.Count > 0;
     }
 
     public int GetAmountCrafted(Item item)

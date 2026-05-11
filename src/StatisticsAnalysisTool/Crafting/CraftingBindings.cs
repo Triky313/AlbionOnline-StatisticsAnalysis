@@ -1,6 +1,7 @@
 using Serilog;
 using StatisticsAnalysisTool.Common;
 using StatisticsAnalysisTool.Diagnostics;
+using StatisticsAnalysisTool.GameFileData;
 using StatisticsAnalysisTool.Models;
 using StatisticsAnalysisTool.ViewModels;
 using System;
@@ -21,6 +22,7 @@ public class CraftingBindings : BaseViewModel
     private readonly CraftingRecipeResolver _recipeResolver = new();
     private readonly CraftingController _controller = new();
     private string _itemSearchText;
+    private string _craftingLocationSearchText;
     private int _amountCrafted = 1;
     private bool _isLoading;
 
@@ -32,6 +34,8 @@ public class CraftingBindings : BaseViewModel
             .ToList());
         CraftableItemsView = CollectionViewSource.GetDefaultView(CraftableItems);
         CraftableItemsView.Filter = FilterCraftableItem;
+        SelectedDailyBonus = DailyBonusOptions.First();
+        RefreshCraftingLocations(null);
 
         _ = LoadAsync();
     }
@@ -64,6 +68,43 @@ public class CraftingBindings : BaseViewModel
         get;
     }
     = [];
+
+    public ObservableCollection<CraftingLocationOption> CraftingLocations
+    {
+        get;
+    }
+    = [];
+
+    public ObservableCollection<CraftingLocationOption> ListBoxCraftingLocationItems
+    {
+        get;
+    }
+    = [];
+
+    public CraftingDailyBonusOption[] DailyBonusOptions
+    {
+        get;
+    }
+    =
+    [
+        new CraftingDailyBonusOption
+        {
+            Name = "None",
+            BonusPercent = 0m
+        }
+        ,
+        new CraftingDailyBonusOption
+        {
+            Name = "10%",
+            BonusPercent = 10m
+        }
+        ,
+        new CraftingDailyBonusOption
+        {
+            Name = "20%",
+            BonusPercent = 20m
+        }
+    ];
 
     public KeyValuePair<MarketLocation, string>[] MarketLocations
     {
@@ -127,6 +168,27 @@ public class CraftingBindings : BaseViewModel
         }
     }
 
+    public string CraftingLocationSearchText
+    {
+        get => _craftingLocationSearchText;
+        set
+        {
+            _craftingLocationSearchText = value;
+            UpdateCraftingLocationListBox(value);
+            OnPropertyChanged();
+        }
+    }
+
+    public bool IsCraftingLocationPopupOpen
+    {
+        get;
+        set
+        {
+            field = value;
+            OnPropertyChanged();
+        }
+    }
+
     public ItemTier SelectedItemTier
     {
         get;
@@ -137,7 +199,8 @@ public class CraftingBindings : BaseViewModel
             UpdateItemSearchListBox(ItemSearchText);
             OnPropertyChanged();
         }
-    } = ItemTier.Unknown;
+    }
+    = ItemTier.Unknown;
 
     public ItemLevel SelectedItemLevel
     {
@@ -149,7 +212,8 @@ public class CraftingBindings : BaseViewModel
             UpdateItemSearchListBox(ItemSearchText);
             OnPropertyChanged();
         }
-    } = ItemLevel.Unknown;
+    }
+    = ItemLevel.Unknown;
 
     public int CraftingRuns
     {
@@ -160,7 +224,8 @@ public class CraftingBindings : BaseViewModel
             Recalculate();
             OnPropertyChanged();
         }
-    } = 1;
+    }
+    = 1;
 
     public bool UsesFocus
     {
@@ -184,6 +249,40 @@ public class CraftingBindings : BaseViewModel
         }
     }
 
+    public CraftingLocationOption SelectedCraftingLocation
+    {
+        get;
+        set
+        {
+            field = value;
+            OnPropertyChanged();
+            OnPropertyChanged(nameof(SelectedCraftingLocationBonusSummary));
+        }
+    }
+
+    public CraftingDailyBonusOption SelectedDailyBonus
+    {
+        get;
+        set
+        {
+            field = value ?? DailyBonusOptions.First();
+            ApplySelectedCraftingLocationReturnRate();
+            OnPropertyChanged();
+            OnPropertyChanged(nameof(SelectedCraftingLocationBonusSummary));
+        }
+    }
+
+    public string SelectedCraftingLocationBonusSummary => SelectedCraftingLocation == null
+        ? string.Empty
+        : "Bonus "
+          + EffectiveCraftingBonusPercent.ToString("N2")
+          + "% | expected RRR "
+          + GetSelectedCraftingLocationReturnRate().ToString("N2")
+          + "%";
+
+    public decimal EffectiveCraftingBonusPercent => (SelectedCraftingLocation?.TotalProductionBonusPercent ?? 0m)
+                                                    + (SelectedDailyBonus?.BonusPercent ?? 0m);
+
     public MarketLocation SelectedMarketLocation
     {
         get;
@@ -192,7 +291,8 @@ public class CraftingBindings : BaseViewModel
             field = value;
             OnPropertyChanged();
         }
-    } = MarketLocation.CaerleonMarket;
+    }
+    = MarketLocation.CaerleonMarket;
 
     public decimal StationFee
     {
@@ -214,7 +314,8 @@ public class CraftingBindings : BaseViewModel
             Recalculate();
             OnPropertyChanged();
         }
-    } = 4m;
+    }
+    = 4m;
 
     public decimal OtherCosts
     {
@@ -279,7 +380,8 @@ public class CraftingBindings : BaseViewModel
             field = value;
             OnPropertyChanged();
         }
-    } = new();
+    }
+    = new();
 
     public string StatusText
     {
@@ -316,6 +418,25 @@ public class CraftingBindings : BaseViewModel
         OnPropertyChanged(nameof(ItemSearchText));
         SelectedItem = searchResult.Value;
         IsItemSearchPopupOpen = false;
+    }
+
+    public void OpenCraftingLocationSearch()
+    {
+        UpdateCraftingLocationListBox(CraftingLocationSearchText);
+    }
+
+    public void SelectCraftingLocation(CraftingLocationOption location)
+    {
+        if (location == null)
+        {
+            return;
+        }
+
+        SelectedCraftingLocation = location;
+        _craftingLocationSearchText = location.DisplayName;
+        OnPropertyChanged(nameof(CraftingLocationSearchText));
+        IsCraftingLocationPopupOpen = false;
+        ApplySelectedCraftingLocationReturnRate();
     }
 
     public async Task LoadAsync()
@@ -372,10 +493,43 @@ public class CraftingBindings : BaseViewModel
         IsItemSearchPopupOpen = ListBoxItemSearchItems.Count > 0;
     }
 
+    private void UpdateCraftingLocationListBox(string searchText)
+    {
+        ListBoxCraftingLocationItems.Clear();
+
+        var locations = CraftingLocations
+            .Where(x => CraftingLocationMatchesSearchText(x, searchText))
+            .Take(20)
+            .ToList();
+
+        foreach (var location in locations)
+        {
+            ListBoxCraftingLocationItems.Add(location);
+        }
+
+        IsCraftingLocationPopupOpen = ListBoxCraftingLocationItems.Count > 0;
+    }
+
     private static bool ItemMatchesSearchText(Item item, string searchText)
     {
         return (item.LocalizedNameAndEnglish ?? item.UniqueName ?? string.Empty)
             .Contains(searchText, StringComparison.OrdinalIgnoreCase);
+    }
+
+    private static bool CraftingLocationMatchesSearchText(CraftingLocationOption location, string searchText)
+    {
+        if (location == null)
+        {
+            return false;
+        }
+
+        if (string.IsNullOrWhiteSpace(searchText))
+        {
+            return true;
+        }
+
+        return (location.DisplayName ?? string.Empty).Contains(searchText, StringComparison.OrdinalIgnoreCase)
+               || (location.ClusterId ?? string.Empty).Contains(searchText, StringComparison.OrdinalIgnoreCase);
     }
 
     private bool ItemMatchesFilter(Item item)
@@ -394,6 +548,7 @@ public class CraftingBindings : BaseViewModel
         }
 
         _amountCrafted = _recipeResolver.GetAmountCrafted(item);
+        RefreshCraftingLocations(item, SelectedCraftingLocation?.ClusterId);
         Resources.Clear();
 
         foreach (var resource in _recipeResolver.GetResources(item))
@@ -404,6 +559,45 @@ public class CraftingBindings : BaseViewModel
         Journal = _recipeResolver.GetJournal(item);
         Notes = await Common.CraftingTabController.GetNoteAsync(item.UniqueName);
         Recalculate();
+    }
+
+    private void RefreshCraftingLocations(Item item, string selectedClusterId = null)
+    {
+        var locations = CraftingLocationData.GetCraftingLocations(item);
+        var selectedId = selectedClusterId ?? SelectedCraftingLocation?.ClusterId;
+
+        CraftingLocations.Clear();
+
+        foreach (var location in locations)
+        {
+            CraftingLocations.Add(location);
+        }
+
+        SelectedCraftingLocation = CraftingLocations.FirstOrDefault(x => string.Equals(x.ClusterId, selectedId, StringComparison.OrdinalIgnoreCase))
+                                   ?? CraftingLocations.FirstOrDefault(x => string.Equals(x.ClusterId, "3003", StringComparison.OrdinalIgnoreCase))
+                                   ?? CraftingLocations.FirstOrDefault();
+        _craftingLocationSearchText = SelectedCraftingLocation?.DisplayName;
+        OnPropertyChanged(nameof(CraftingLocationSearchText));
+        ApplySelectedCraftingLocationReturnRate();
+        UpdateCraftingLocationListBox(_craftingLocationSearchText);
+        IsCraftingLocationPopupOpen = false;
+    }
+
+    private void ApplySelectedCraftingLocationReturnRate()
+    {
+        if (_isLoading)
+        {
+            OnPropertyChanged(nameof(SelectedCraftingLocationBonusSummary));
+            return;
+        }
+
+        ReturnRatePercent = GetSelectedCraftingLocationReturnRate();
+        OnPropertyChanged(nameof(SelectedCraftingLocationBonusSummary));
+    }
+
+    private decimal GetSelectedCraftingLocationReturnRate()
+    {
+        return CraftingLocationData.GetExpectedReturnRatePercent(EffectiveCraftingBonusPercent);
     }
 
     private void AddResource(CraftingResourceEntry resource)
@@ -539,6 +733,9 @@ public class CraftingBindings : BaseViewModel
             AmountCrafted = Math.Max(1, _amountCrafted),
             UsesFocus = UsesFocus,
             ReturnRatePercent = ReturnRatePercent,
+            DailyBonusPercent = SelectedDailyBonus?.BonusPercent ?? 0m,
+            CraftingLocationId = SelectedCraftingLocation?.ClusterId,
+            CraftingLocationName = SelectedCraftingLocation?.DisplayName,
             CraftingContext = Locations.GetParameterName(SelectedMarketLocation),
             StationFee = StationFee,
             SalesTaxPercent = SalesTaxPercent,
@@ -601,7 +798,10 @@ public class CraftingBindings : BaseViewModel
         CraftingRuns = Math.Max(1, savedCrafting.CraftingRuns);
         _amountCrafted = Math.Max(1, savedCrafting.AmountCrafted);
         UsesFocus = savedCrafting.UsesFocus;
+        SelectedDailyBonus = DailyBonusOptions.FirstOrDefault(x => x.BonusPercent == savedCrafting.DailyBonusPercent)
+                             ?? DailyBonusOptions.First();
         ReturnRatePercent = savedCrafting.ReturnRatePercent;
+        RefreshCraftingLocations(SelectedItem, savedCrafting.CraftingLocationId);
         SelectedMarketLocation = (savedCrafting.CraftingContext ?? string.Empty).GetMarketLocationByLocationNameOrId();
         StationFee = savedCrafting.StationFee;
         SalesTaxPercent = savedCrafting.SalesTaxPercent;
@@ -638,6 +838,7 @@ public class CraftingBindings : BaseViewModel
 
         CraftingRuns = 1;
         UsesFocus = false;
+        SelectedDailyBonus = DailyBonusOptions.First();
         ReturnRatePercent = 0m;
         StationFee = 0m;
         SalesTaxPercent = 4m;

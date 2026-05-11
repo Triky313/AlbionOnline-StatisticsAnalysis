@@ -1,4 +1,5 @@
 using StatisticsAnalysisTool.Crafting;
+using StatisticsAnalysisTool.GameFileData;
 using StatisticsAnalysisTool.ViewModels;
 using System.Windows.Controls;
 
@@ -50,5 +51,36 @@ public partial class CraftingControl
 
         mainWindowViewModel.CraftingBindings.SelectItemSearchResult(searchResult);
         listBox.SelectedItem = null;
+    }
+
+    private void ListBoxCraftingLocation_OnSelectionChanged(object sender, SelectionChangedEventArgs e)
+    {
+        if (DataContext is not MainWindowViewModel mainWindowViewModel)
+        {
+            return;
+        }
+
+        if (sender is not ListBox listBox)
+        {
+            return;
+        }
+
+        if (listBox.SelectedItem is not CraftingLocationOption location)
+        {
+            return;
+        }
+
+        mainWindowViewModel.CraftingBindings.SelectCraftingLocation(location);
+        listBox.SelectedItem = null;
+    }
+
+    private void CraftingLocationSearch_OnGotKeyboardFocus(object sender, System.Windows.Input.KeyboardFocusChangedEventArgs e)
+    {
+        if (DataContext is not MainWindowViewModel mainWindowViewModel)
+        {
+            return;
+        }
+
+        mainWindowViewModel.CraftingBindings.OpenCraftingLocationSearch();
     }
 }
