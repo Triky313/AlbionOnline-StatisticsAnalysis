@@ -35,6 +35,7 @@ public class CraftingBindings : BaseViewModel
         CraftableItemsView = CollectionViewSource.GetDefaultView(CraftableItems);
         CraftableItemsView.Filter = FilterCraftableItem;
         SelectedDailyBonus = DailyBonusOptions.First();
+        SelectedHideoutBonus = HideoutBonusOptions.First();
         RefreshCraftingLocations(null);
 
         _ = LoadAsync();
@@ -105,6 +106,12 @@ public class CraftingBindings : BaseViewModel
             BonusPercent = 20m
         }
     ];
+
+    public CraftingHideoutBonusOption[] HideoutBonusOptions
+    {
+        get;
+    }
+    = HideoutData.GetHideoutBonusOptions();
 
     public KeyValuePair<MarketLocation, string>[] MarketLocations
     {
@@ -272,6 +279,18 @@ public class CraftingBindings : BaseViewModel
         }
     }
 
+    public CraftingHideoutBonusOption SelectedHideoutBonus
+    {
+        get;
+        set
+        {
+            field = value ?? HideoutBonusOptions.First();
+            ApplySelectedCraftingLocationReturnRate();
+            OnPropertyChanged();
+            OnPropertyChanged(nameof(SelectedCraftingLocationBonusSummary));
+        }
+    }
+
     public string SelectedCraftingLocationBonusSummary => SelectedCraftingLocation == null
         ? string.Empty
         : "Bonus "
@@ -281,7 +300,8 @@ public class CraftingBindings : BaseViewModel
           + "%";
 
     public decimal EffectiveCraftingBonusPercent => (SelectedCraftingLocation?.TotalProductionBonusPercent ?? 0m)
-                                                    + (SelectedDailyBonus?.BonusPercent ?? 0m);
+                                                    + (SelectedDailyBonus?.BonusPercent ?? 0m)
+                                                    + GetSelectedHideoutBonusPercent();
 
     public MarketLocation SelectedMarketLocation
     {
@@ -600,6 +620,31 @@ public class CraftingBindings : BaseViewModel
         return CraftingLocationData.GetExpectedReturnRatePercent(EffectiveCraftingBonusPercent);
     }
 
+    private decimal GetSelectedHideoutBonusPercent()
+    {
+        if (SelectedHideoutBonus == null || !IsHideoutCraftingLocation())
+        {
+            return 0m;
+        }
+
+        return SelectedHideoutBonus.GetBonusPercent(ShouldApplySpecialistHideoutBonus());
+    }
+
+    private bool IsHideoutCraftingLocation()
+    {
+        var clusterType = SelectedCraftingLocation?.ClusterType ?? string.Empty;
+        var clusterId = SelectedCraftingLocation?.ClusterId ?? string.Empty;
+
+        return clusterType.Contains("OPENPVP_BLACK", StringComparison.OrdinalIgnoreCase)
+               || clusterType.Contains("TUNNEL", StringComparison.OrdinalIgnoreCase)
+               || clusterId.StartsWith("TNL-", StringComparison.OrdinalIgnoreCase);
+    }
+
+    private bool ShouldApplySpecialistHideoutBonus()
+    {
+        return (SelectedCraftingLocation?.MatchingModifierPercent ?? 0m) > 0m;
+    }
+
     private void AddResource(CraftingResourceEntry resource)
     {
         resource.ValuesChanged = Recalculate;
@@ -734,6 +779,9 @@ public class CraftingBindings : BaseViewModel
             UsesFocus = UsesFocus,
             ReturnRatePercent = ReturnRatePercent,
             DailyBonusPercent = SelectedDailyBonus?.BonusPercent ?? 0m,
+            HideoutBonusLevel = SelectedHideoutBonus?.Level ?? 0,
+            HideoutGeneralistBonusPercent = SelectedHideoutBonus?.GeneralistBonusPercent ?? 0m,
+            HideoutSpecialistBonusPercent = SelectedHideoutBonus?.SpecialistBonusPercent ?? 0m,
             CraftingLocationId = SelectedCraftingLocation?.ClusterId,
             CraftingLocationName = SelectedCraftingLocation?.DisplayName,
             CraftingContext = Locations.GetParameterName(SelectedMarketLocation),
@@ -800,6 +848,8 @@ public class CraftingBindings : BaseViewModel
         UsesFocus = savedCrafting.UsesFocus;
         SelectedDailyBonus = DailyBonusOptions.FirstOrDefault(x => x.BonusPercent == savedCrafting.DailyBonusPercent)
                              ?? DailyBonusOptions.First();
+        SelectedHideoutBonus = HideoutBonusOptions.FirstOrDefault(x => x.Level == savedCrafting.HideoutBonusLevel)
+                               ?? HideoutBonusOptions.First();
         ReturnRatePercent = savedCrafting.ReturnRatePercent;
         RefreshCraftingLocations(SelectedItem, savedCrafting.CraftingLocationId);
         SelectedMarketLocation = (savedCrafting.CraftingContext ?? string.Empty).GetMarketLocationByLocationNameOrId();
@@ -839,6 +889,7 @@ public class CraftingBindings : BaseViewModel
         CraftingRuns = 1;
         UsesFocus = false;
         SelectedDailyBonus = DailyBonusOptions.First();
+        SelectedHideoutBonus = HideoutBonusOptions.First();
         ReturnRatePercent = 0m;
         StationFee = 0m;
         SalesTaxPercent = 4m;

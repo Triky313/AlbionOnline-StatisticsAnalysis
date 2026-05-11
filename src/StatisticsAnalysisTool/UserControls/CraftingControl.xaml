@@ -94,6 +94,14 @@
                                   Width="90"
                                   Height="24" />
                     </StackPanel>
+                    <StackPanel Orientation="Horizontal" Margin="0,0,0,5">
+                        <TextBlock Text="Hideout bonus" Foreground="{StaticResource SolidColorBrush.Text.2}" Width="105" VerticalAlignment="Center" />
+                        <ComboBox ItemsSource="{Binding CraftingBindings.HideoutBonusOptions}"
+                                  SelectedItem="{Binding CraftingBindings.SelectedHideoutBonus, Mode=TwoWay}"
+                                  DisplayMemberPath="Name"
+                                  Width="90"
+                                  Height="24" />
+                    </StackPanel>
                     <StackPanel Orientation="Horizontal" Margin="0,0,0,5" Panel.ZIndex="10">
                         <TextBlock Text="Crafting location" Foreground="{StaticResource SolidColorBrush.Text.2}" Width="105" VerticalAlignment="Center" />
                         <Grid>

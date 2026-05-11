@@ -16,6 +16,9 @@ public class SavedCrafting : BaseViewModel
     public bool UsesFocus { get; set; }
     public decimal ReturnRatePercent { get; set; }
     public decimal DailyBonusPercent { get; set; }
+    public int HideoutBonusLevel { get; set; }
+    public decimal HideoutGeneralistBonusPercent { get; set; }
+    public decimal HideoutSpecialistBonusPercent { get; set; }
     public string CraftingLocationId { get; set; }
     public string CraftingLocationName { get; set; }
     public string CraftingContext { get; set; }
@@ -46,6 +49,9 @@ public class SavedCrafting : BaseViewModel
                              + (DailyBonusPercent <= 0m
                                  ? string.Empty
                                  : " | Daily " + DailyBonusPercent.ToString("N0") + "%")
+                             + (HideoutBonusLevel <= 0
+                                 ? string.Empty
+                                 : " | Hideout L" + HideoutBonusLevel)
                              + (string.IsNullOrWhiteSpace(CraftingLocationName)
                                  ? string.Empty
                                  : " | " + CraftingLocationName);
