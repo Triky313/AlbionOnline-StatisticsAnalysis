@@ -742,27 +742,34 @@ public class CraftingBindings : BaseViewModel
 
     private async void SaveCurrentAsync()
     {
-        if (SelectedItem == null)
+        try
         {
-            StatusText = "Select an item before saving.";
-            return;
-        }
+            if (SelectedItem == null)
+            {
+                StatusText = "Select an item before saving.";
+                return;
+            }
 
-        var savedCrafting = CreateSavedCrafting();
-        var existing = SavedCraftings.FirstOrDefault(x => x.Id == savedCrafting.Id);
-        if (existing != null)
-        {
-            var index = SavedCraftings.IndexOf(existing);
-            SavedCraftings[index] = savedCrafting;
-        }
-        else
-        {
-            SavedCraftings.Insert(0, savedCrafting);
-        }
+            var savedCrafting = CreateSavedCrafting();
+            var existing = SavedCraftings.FirstOrDefault(x => x.Id == savedCrafting.Id);
+            if (existing != null)
+            {
+                var index = SavedCraftings.IndexOf(existing);
+                SavedCraftings[index] = savedCrafting;
+            }
+            else
+            {
+                SavedCraftings.Insert(0, savedCrafting);
+            }
 
-        await _controller.SaveAsync(SavedCraftings);
-        SelectedSavedCrafting = savedCrafting;
-        StatusText = "Crafting saved.";
+            await _controller.SaveAsync(SavedCraftings);
+            SelectedSavedCrafting = savedCrafting;
+            StatusText = "Crafting saved.";
+        }
+        catch (Exception e)
+        {
+            Log.Error(e, "Error saving crafting");
+        }
     }
 
     private SavedCrafting CreateSavedCrafting()

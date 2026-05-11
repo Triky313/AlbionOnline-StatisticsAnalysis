@@ -207,7 +207,7 @@
 
                 <StackPanel Grid.Row="1" Grid.Column="1" Orientation="Vertical" Margin="10,0">
                     <TextBlock Text="Resources" Foreground="{StaticResource SolidColorBrush.Accent.Blue.2}" FontSize="16" FontWeight="SemiBold" Margin="0,0,0,8" />
-                    <ListView ItemsSource="{Binding CraftingBindings.Resources}" Height="260" MinWidth="620">
+                    <ListView ItemsSource="{Binding CraftingBindings.Resources}" MinHeight="150" MinWidth="620">
                         <ListView.View>
                             <GridView>
                                 <GridViewColumn Header="Icon" Width="45">
@@ -220,7 +220,7 @@
                                 <GridViewColumn Header="Resource" Width="210" DisplayMemberBinding="{Binding DisplayName}" />
                                 <GridViewColumn Header="Type" Width="85" DisplayMemberBinding="{Binding ResourceKindText}" />
                                 <GridViewColumn Header="Gross" Width="80" DisplayMemberBinding="{Binding GrossQuantity}" />
-                                <GridViewColumn Header="Expected return" Width="105" DisplayMemberBinding="{Binding ExpectedReturnQuantity}" />
+                                <GridViewColumn Header="Expected return" Width="115" DisplayMemberBinding="{Binding ExpectedReturnQuantity}" />
                                 <GridViewColumn Header="Net" Width="80" DisplayMemberBinding="{Binding NetQuantity}" />
                                 <GridViewColumn Header="Price" Width="90">
                                     <GridViewColumn.CellTemplate>
@@ -276,7 +276,8 @@
                     </Grid>
 
                     <TextBlock Text="Notes" Foreground="{StaticResource SolidColorBrush.Accent.Blue.2}" FontSize="16" FontWeight="SemiBold" Margin="0,12,0,4" />
-                    <TextBox Text="{Binding CraftingBindings.Notes, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Height="85" MinWidth="620" TextWrapping="Wrap" AcceptsReturn="True" />
+                    <TextBox Text="{Binding CraftingBindings.Notes, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Height="52" MinWidth="620" 
+                             TextWrapping="Wrap" AcceptsReturn="True" VerticalContentAlignment="Top" />
                 </StackPanel>
             </Grid>
         </ScrollViewer>
