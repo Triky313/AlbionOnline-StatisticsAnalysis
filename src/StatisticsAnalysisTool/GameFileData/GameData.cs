@@ -9,7 +9,6 @@ using StatisticsAnalysisTool.Dungeon.Models;
 using StatisticsAnalysisTool.GameFileData.Models;
 using StatisticsAnalysisTool.Localization;
 using StatisticsAnalysisTool.Models;
-using StatisticsAnalysisTool.Properties;
 using StatisticsAnalysisTool.ViewModels;
 using StatisticsAnalysisTool.Views;
 using System;
