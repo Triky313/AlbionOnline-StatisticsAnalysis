@@ -41155,6 +41155,1085 @@
           "seg": "Атакованные мобы / игроки - TOP 5"
         }
       ]
+    },
+        {
+        "tuid": "NUMBER_OF_RUNS",
+        "tuv": [
+            {
+                "lang": "de-DE",
+                "seg": "Anzahl Runs"
+            },
+            {
+                "lang": "en-US",
+                "seg": "Number of runs"
+            }
+        ]
+    },
+    {
+        "tuid": "FOCUS",
+        "tuv": [
+            {
+                "lang": "de-DE",
+                "seg": "Fokus"
+            },
+            {
+                "lang": "en-US",
+                "seg": "Focus"
+            }
+        ]
+    },
+    {
+        "tuid": "DAILY_BONUS_RRR",
+        "tuv": [
+            {
+                "lang": "de-DE",
+                "seg": "Tagesbonus RRR"
+            },
+            {
+                "lang": "en-US",
+                "seg": "Daily bonus RRR"
+            }
+        ]
+    },
+    {
+        "tuid": "HIDEOUT_BONUS",
+        "tuv": [
+            {
+                "lang": "de-DE",
+                "seg": "Hideout-Bonus"
+            },
+            {
+                "lang": "en-US",
+                "seg": "Hideout bonus"
+            }
+        ]
+    },
+    {
+        "tuid": "CRAFTING_LOCATION",
+        "tuv": [
+            {
+                "lang": "de-DE",
+                "seg": "Crafting-Ort"
+            },
+            {
+                "lang": "en-US",
+                "seg": "Crafting location"
+            }
+        ]
+    },
+    {
+        "tuid": "RETURN_RATE_PERCENT",
+        "tuv": [
+            {
+                "lang": "de-DE",
+                "seg": "Return Rate %"
+            },
+            {
+                "lang": "en-US",
+                "seg": "Return rate %"
+            }
+        ]
+    },
+    {
+        "tuid": "PRICE_MARKET",
+        "tuv": [
+            {
+                "lang": "de-DE",
+                "seg": "Preismarkt"
+            },
+            {
+                "lang": "en-US",
+                "seg": "Price market"
+            }
+        ]
+    },
+    {
+        "tuid": "STATION_FEE",
+        "tuv": [
+            {
+                "lang": "de-DE",
+                "seg": "Stationsgebühr"
+            },
+            {
+                "lang": "en-US",
+                "seg": "Station fee"
+            }
+        ]
+    },
+    {
+        "tuid": "CRAFTING_STATION_FEE_TOOLTIP",
+        "tuv": [
+            {
+                "lang": "de-DE",
+                "seg": "Nutzungsgebühr / 100 Nahrung"
+            },
+            {
+                "lang": "en-US",
+                "seg": "Usage fee / 100 food"
+            }
+        ]
+    },
+    {
+        "tuid": "SALES_TAX_PERCENT",
+        "tuv": [
+            {
+                "lang": "de-DE",
+                "seg": "Verkaufssteuer %"
+            },
+            {
+                "lang": "en-US",
+                "seg": "Sales tax %"
+            }
+        ]
+    },
+    {
+        "tuid": "SELL_PRICE",
+        "tuv": [
+            {
+                "lang": "de-DE",
+                "seg": "Verkaufspreis"
+            },
+            {
+                "lang": "en-US",
+                "seg": "Sell price"
+            }
+        ]
+    },
+    {
+        "tuid": "NEW",
+        "tuv": [
+            {
+                "lang": "de-DE",
+                "seg": "Neu"
+            },
+            {
+                "lang": "en-US",
+                "seg": "New"
+            }
+        ]
+    },
+    {
+        "tuid": "DELETE",
+        "tuv": [
+            {
+                "lang": "de-DE",
+                "seg": "Löschen"
+            },
+            {
+                "lang": "en-US",
+                "seg": "Delete"
+            }
+        ]
+    },
+    {
+        "tuid": "PRICES",
+        "tuv": [
+            {
+                "lang": "de-DE",
+                "seg": "Preise"
+            },
+            {
+                "lang": "en-US",
+                "seg": "Prices"
+            }
+        ]
+    },
+    {
+        "tuid": "RESOURCES",
+        "tuv": [
+            {
+                "lang": "de-DE",
+                "seg": "Ressourcen"
+            },
+            {
+                "lang": "en-US",
+                "seg": "Resources"
+            }
+        ]
+    },
+    {
+        "tuid": "GROSS",
+        "tuv": [
+            {
+                "lang": "de-DE",
+                "seg": "Brutto"
+            },
+            {
+                "lang": "en-US",
+                "seg": "Gross"
+            }
+        ]
+    },
+    {
+        "tuid": "EXPECTED_RETURN",
+        "tuv": [
+            {
+                "lang": "de-DE",
+                "seg": "Erwarteter Return"
+            },
+            {
+                "lang": "en-US",
+                "seg": "Expected return"
+            }
+        ]
+    },
+    {
+        "tuid": "NET",
+        "tuv": [
+            {
+                "lang": "de-DE",
+                "seg": "Netto"
+            },
+            {
+                "lang": "en-US",
+                "seg": "Net"
+            }
+        ]
+    },
+    {
+        "tuid": "PRICE",
+        "tuv": [
+            {
+                "lang": "de-DE",
+                "seg": "Preis"
+            },
+            {
+                "lang": "en-US",
+                "seg": "Price"
+            }
+        ]
+    },
+    {
+        "tuid": "NET_COST",
+        "tuv": [
+            {
+                "lang": "de-DE",
+                "seg": "Nettokosten"
+            },
+            {
+                "lang": "en-US",
+                "seg": "Net cost"
+            }
+        ]
+    },
+    {
+        "tuid": "JOURNALS",
+        "tuv": [
+            {
+                "lang": "de-DE",
+                "seg": "Journale"
+            },
+            {
+                "lang": "en-US",
+                "seg": "Journals"
+            }
+        ]
+    },
+    {
+        "tuid": "EMPTY_PRICE",
+        "tuv": [
+            {
+                "lang": "de-DE",
+                "seg": "Preis leer"
+            },
+            {
+                "lang": "en-US",
+                "seg": "Empty price"
+            }
+        ]
+    },
+    {
+        "tuid": "FULL_PRICE",
+        "tuv": [
+            {
+                "lang": "de-DE",
+                "seg": "Preis voll"
+            },
+            {
+                "lang": "en-US",
+                "seg": "Full price"
+            }
+        ]
+    },
+    {
+        "tuid": "EMPTY",
+        "tuv": [
+            {
+                "lang": "de-DE",
+                "seg": "Leer"
+            },
+            {
+                "lang": "en-US",
+                "seg": "Empty"
+            }
+        ]
+    },
+    {
+        "tuid": "FULL",
+        "tuv": [
+            {
+                "lang": "de-DE",
+                "seg": "Voll"
+            },
+            {
+                "lang": "en-US",
+                "seg": "Full"
+            }
+        ]
+    },
+    {
+        "tuid": "PARTIAL",
+        "tuv": [
+            {
+                "lang": "de-DE",
+                "seg": "Teilfortschritt"
+            },
+            {
+                "lang": "en-US",
+                "seg": "Partial"
+            }
+        ]
+    },
+    {
+        "tuid": "RESULTS",
+        "tuv": [
+            {
+                "lang": "de-DE",
+                "seg": "Ergebnisse"
+            },
+            {
+                "lang": "en-US",
+                "seg": "Results"
+            }
+        ]
+    },
+    {
+        "tuid": "OUTPUT",
+        "tuv": [
+            {
+                "lang": "de-DE",
+                "seg": "Output"
+            },
+            {
+                "lang": "en-US",
+                "seg": "Output"
+            }
+        ]
+    },
+    {
+        "tuid": "SALES_NET",
+        "tuv": [
+            {
+                "lang": "de-DE",
+                "seg": "Verkauf netto"
+            },
+            {
+                "lang": "en-US",
+                "seg": "Sales net"
+            }
+        ]
+    },
+    {
+        "tuid": "GROSS_MATERIALS",
+        "tuv": [
+            {
+                "lang": "de-DE",
+                "seg": "Material brutto"
+            },
+            {
+                "lang": "en-US",
+                "seg": "Gross materials"
+            }
+        ]
+    },
+    {
+        "tuid": "NET_MATERIALS",
+        "tuv": [
+            {
+                "lang": "de-DE",
+                "seg": "Material netto"
+            },
+            {
+                "lang": "en-US",
+                "seg": "Net materials"
+            }
+        ]
+    },
+    {
+        "tuid": "NON_RETURNABLE",
+        "tuv": [
+            {
+                "lang": "de-DE",
+                "seg": "Nicht returnbar"
+            },
+            {
+                "lang": "en-US",
+                "seg": "Non-returnable"
+            }
+        ]
+    },
+    {
+        "tuid": "STATION",
+        "tuv": [
+            {
+                "lang": "de-DE",
+                "seg": "Station"
+            },
+            {
+                "lang": "en-US",
+                "seg": "Station"
+            }
+        ]
+    },
+    {
+        "tuid": "JOURNAL_COSTS",
+        "tuv": [
+            {
+                "lang": "de-DE",
+                "seg": "Journalkosten"
+            },
+            {
+                "lang": "en-US",
+                "seg": "Journal costs"
+            }
+        ]
+    },
+    {
+        "tuid": "JOURNAL_REVENUE",
+        "tuv": [
+            {
+                "lang": "de-DE",
+                "seg": "Journalerlös"
+            },
+            {
+                "lang": "en-US",
+                "seg": "Journal revenue"
+            }
+        ]
+    },
+    {
+        "tuid": "WEIGHT_BEFORE",
+        "tuv": [
+            {
+                "lang": "de-DE",
+                "seg": "Gewicht vorher"
+            },
+            {
+                "lang": "en-US",
+                "seg": "Weight before"
+            }
+        ]
+    },
+    {
+        "tuid": "WEIGHT_AFTER",
+        "tuv": [
+            {
+                "lang": "de-DE",
+                "seg": "Gewicht nachher"
+            },
+            {
+                "lang": "en-US",
+                "seg": "Weight after"
+            }
+        ]
+    },
+    {
+        "tuid": "SAVED_CRAFTINGS",
+        "tuv": [
+            {
+                "lang": "de-DE",
+                "seg": "Gespeicherte Craftings"
+            },
+            {
+                "lang": "en-US",
+                "seg": "Saved craftings"
+            }
+        ]
+    },
+    {
+        "tuid": "ITEM",
+        "tuv": [
+            {
+                "lang": "de-DE",
+                "seg": "Item"
+            },
+            {
+                "lang": "en-US",
+                "seg": "Item"
+            }
+        ]
+    },
+    {
+        "tuid": "DETAILS",
+        "tuv": [
+            {
+                "lang": "de-DE",
+                "seg": "Details"
+            },
+            {
+                "lang": "en-US",
+                "seg": "Details"
+            }
+        ]
+    },
+    {
+        "tuid": "MAIN_COSTS",
+        "tuv": [
+            {
+                "lang": "de-DE",
+                "seg": "Hauptkosten"
+            },
+            {
+                "lang": "en-US",
+                "seg": "Main costs"
+            }
+        ]
+    },
+    {
+        "tuid": "CHANGED",
+        "tuv": [
+            {
+                "lang": "de-DE",
+                "seg": "Geändert"
+            },
+            {
+                "lang": "en-US",
+                "seg": "Changed"
+            }
+        ]
+    },
+    {
+        "tuid": "NONE",
+        "tuv": [
+            {
+                "lang": "de-DE",
+                "seg": "Keine"
+            },
+            {
+                "lang": "en-US",
+                "seg": "None"
+            }
+        ]
+    },
+    {
+        "tuid": "EXPECTED_RRR",
+        "tuv": [
+            {
+                "lang": "de-DE",
+                "seg": "Erwartete RRR"
+            },
+            {
+                "lang": "en-US",
+                "seg": "Expected RRR"
+            }
+        ]
+    },
+    {
+        "tuid": "NO_FOCUS",
+        "tuv": [
+            {
+                "lang": "de-DE",
+                "seg": "Kein Fokus"
+            },
+            {
+                "lang": "en-US",
+                "seg": "No focus"
+            }
+        ]
+    },
+    {
+        "tuid": "DAILY",
+        "tuv": [
+            {
+                "lang": "de-DE",
+                "seg": "Täglich"
+            },
+            {
+                "lang": "en-US",
+                "seg": "Daily"
+            }
+        ]
+    },
+    {
+        "tuid": "RUNS",
+        "tuv": [
+            {
+                "lang": "de-DE",
+                "seg": "Runs"
+            },
+            {
+                "lang": "en-US",
+                "seg": "runs"
+            }
+        ]
+    },
+    {
+        "tuid": "CRAFTING_SELECT_ITEM_BEFORE_SAVING",
+        "tuv": [
+            {
+                "lang": "de-DE",
+                "seg": "Wähle vor dem Speichern ein Item aus."
+            },
+            {
+                "lang": "en-US",
+                "seg": "Select an item before saving."
+            }
+        ]
+    },
+    {
+        "tuid": "CRAFTING_SAVED",
+        "tuv": [
+            {
+                "lang": "de-DE",
+                "seg": "Crafting gespeichert."
+            },
+            {
+                "lang": "en-US",
+                "seg": "Crafting saved."
+            }
+        ]
+    },
+    {
+        "tuid": "CRAFTING_DELETED",
+        "tuv": [
+            {
+                "lang": "de-DE",
+                "seg": "Crafting gelöscht."
+            },
+            {
+                "lang": "en-US",
+                "seg": "Crafting deleted."
+            }
+        ]
+    },
+    {
+        "tuid": "CRAFTING_LOADED",
+        "tuv": [
+            {
+                "lang": "de-DE",
+                "seg": "Crafting geladen."
+            },
+            {
+                "lang": "en-US",
+                "seg": "Crafting loaded."
+            }
+        ]
+    },
+    {
+        "tuid": "CRAFTING_NEW_STARTED",
+        "tuv": [
+            {
+                "lang": "de-DE",
+                "seg": "Neues Crafting gestartet."
+            },
+            {
+                "lang": "en-US",
+                "seg": "New crafting started."
+            }
+        ]
+    },
+    {
+        "tuid": "CRAFTING_SELECT_ITEM_BEFORE_LOADING_PRICES",
+        "tuv": [
+            {
+                "lang": "de-DE",
+                "seg": "Wähle vor dem Laden der Preise ein Item aus."
+            },
+            {
+                "lang": "en-US",
+                "seg": "Select an item before loading prices."
+            }
+        ]
+    },
+    {
+        "tuid": "CRAFTING_MARKET_PRICES_LOADED",
+        "tuv": [
+            {
+                "lang": "de-DE",
+                "seg": "Marktpreise geladen."
+            },
+            {
+                "lang": "en-US",
+                "seg": "Market prices loaded."
+            }
+        ]
+    },
+    {
+        "tuid": "CRAFTING_MARKET_PRICES_COULD_NOT_BE_LOADED",
+        "tuv": [
+            {
+                "lang": "de-DE",
+                "seg": "Marktpreise konnten nicht geladen werden."
+            },
+            {
+                "lang": "en-US",
+                "seg": "Market prices could not be loaded."
+            }
+        ]
+    },
+    {
+        "tuid": "CRAFTING_RESOURCE_KIND_STANDARD",
+        "tuv": [
+            {
+                "lang": "de-DE",
+                "seg": "Standard"
+            },
+            {
+                "lang": "en-US",
+                "seg": "Standard"
+            }
+        ]
+    },
+    {
+        "tuid": "CRAFTING_RESOURCE_KIND_ARTEFACT",
+        "tuv": [
+            {
+                "lang": "de-DE",
+                "seg": "Artefakt"
+            },
+            {
+                "lang": "en-US",
+                "seg": "Artefact"
+            }
+        ]
+    },
+    {
+        "tuid": "CRAFTING_RESOURCE_KIND_ALCHEMY",
+        "tuv": [
+            {
+                "lang": "de-DE",
+                "seg": "Alchemie"
+            },
+            {
+                "lang": "en-US",
+                "seg": "Alchemy"
+            }
+        ]
+    },
+    {
+        "tuid": "CRAFTING_RESOURCE_KIND_AVALONIAN_ENERGY",
+        "tuv": [
+            {
+                "lang": "de-DE",
+                "seg": "Avalonische Energie"
+            },
+            {
+                "lang": "en-US",
+                "seg": "Avalonian energy"
+            }
+        ]
+    },
+    {
+        "tuid": "CRAFTING_RESOURCE_KIND_TOME_OF_INSIGHT",
+        "tuv": [
+            {
+                "lang": "de-DE",
+                "seg": "Buch der Erkenntnis"
+            },
+            {
+                "lang": "en-US",
+                "seg": "Tome of insight"
+            }
+        ]
+    },
+    {
+        "tuid": "CRAFTING_RESOURCE_KIND_ESSENCE",
+        "tuv": [
+            {
+                "lang": "de-DE",
+                "seg": "Essenz"
+            },
+            {
+                "lang": "en-US",
+                "seg": "Essence"
+            }
+        ]
+    },
+    {
+        "tuid": "CRAFTING_RESOURCE_KIND_SPECIAL",
+        "tuv": [
+            {
+                "lang": "de-DE",
+                "seg": "Spezialressource"
+            },
+            {
+                "lang": "en-US",
+                "seg": "Special"
+            }
+        ]
+    },
+    {
+        "tuid": "SALES_GROSS",
+        "tuv": [
+            {
+                "lang": "de-DE",
+                "seg": "Verkauf brutto"
+            },
+            {
+                "lang": "en-US",
+                "seg": "Sales gross"
+            }
+        ]
+    },
+    {
+        "tuid": "SALES_TAX",
+        "tuv": [
+            {
+                "lang": "de-DE",
+                "seg": "Verkaufssteuer"
+            },
+            {
+                "lang": "en-US",
+                "seg": "Sales tax"
+            }
+        ]
+    },
+    {
+        "tuid": "TOTAL_COSTS",
+        "tuv": [
+            {
+                "lang": "de-DE",
+                "seg": "Gesamtkosten"
+            },
+            {
+                "lang": "en-US",
+                "seg": "Total costs"
+            }
+        ]
+    },
+    {
+        "tuid": "CRAFTING_RESULT_OUTPUT_TOOLTIP",
+        "tuv": [
+            {
+                "lang": "de-DE",
+                "seg": "Anzahl der Items, die aus den angegebenen Crafting Runs entstehen."
+            },
+            {
+                "lang": "en-US",
+                "seg": "Number of items produced by the entered crafting runs."
+            }
+        ]
+    },
+    {
+        "tuid": "CRAFTING_RESULT_PROFIT_TOOLTIP",
+        "tuv": [
+            {
+                "lang": "de-DE",
+                "seg": "Gewinn nach Materialkosten, Stationskosten, sonstigen Kosten, Steuern sowie Journal-Kosten und Journal-Erlösen."
+            },
+            {
+                "lang": "en-US",
+                "seg": "Profit after material costs, station costs, other costs, taxes, journal costs, and journal revenue."
+            }
+        ]
+    },
+    {
+        "tuid": "CRAFTING_RESULT_PROFIT_PER_ITEM_TOOLTIP",
+        "tuv": [
+            {
+                "lang": "de-DE",
+                "seg": "Gewinn geteilt durch die erzeugte Output-Menge."
+            },
+            {
+                "lang": "en-US",
+                "seg": "Profit divided by the produced output quantity."
+            }
+        ]
+    },
+    {
+        "tuid": "CRAFTING_RESULT_ROI_TOOLTIP",
+        "tuv": [
+            {
+                "lang": "de-DE",
+                "seg": "Gewinn im Verhältnis zu den gesamten eingesetzten Kosten."
+            },
+            {
+                "lang": "en-US",
+                "seg": "Profit relative to total invested costs."
+            }
+        ]
+    },
+    {
+        "tuid": "CRAFTING_RESULT_BREAK_EVEN_TOOLTIP",
+        "tuv": [
+            {
+                "lang": "de-DE",
+                "seg": "Mindestverkaufspreis pro Item, bei dem weder Gewinn noch Verlust entsteht."
+            },
+            {
+                "lang": "en-US",
+                "seg": "Minimum sell price per item where profit is zero."
+            }
+        ]
+    },
+    {
+        "tuid": "CRAFTING_RESULT_SALES_GROSS_TOOLTIP",
+        "tuv": [
+            {
+                "lang": "de-DE",
+                "seg": "Verkaufserl\u00f6s vor Abzug der Verkaufssteuer."
+            },
+            {
+                "lang": "en-US",
+                "seg": "Sales revenue before sales tax."
+            }
+        ]
+    },
+    {
+        "tuid": "CRAFTING_RESULT_SALES_TAX_TOOLTIP",
+        "tuv": [
+            {
+                "lang": "de-DE",
+                "seg": "Abgezogene Verkaufssteuer auf den Bruttoverkauf."
+            },
+            {
+                "lang": "en-US",
+                "seg": "Sales tax deducted from gross sales."
+            }
+        ]
+    },
+    {
+        "tuid": "CRAFTING_RESULT_SALES_NET_TOOLTIP",
+        "tuv": [
+            {
+                "lang": "de-DE",
+                "seg": "Verkaufserlös nach Abzug der Verkaufssteuer."
+            },
+            {
+                "lang": "en-US",
+                "seg": "Sales revenue after sales tax."
+            }
+        ]
+    },
+    {
+        "tuid": "CRAFTING_RESULT_TOTAL_COSTS_TOOLTIP",
+        "tuv": [
+            {
+                "lang": "de-DE",
+                "seg": "Gesamte eingesetzte Kosten aus Nettomaterial, Stationskosten, Journalkosten und sonstigen Kosten."
+            },
+            {
+                "lang": "en-US",
+                "seg": "Total invested costs from net materials, station costs, journal costs, and other costs."
+            }
+        ]
+    },
+    {
+        "tuid": "CRAFTING_RESULT_GROSS_MATERIALS_TOOLTIP",
+        "tuv": [
+            {
+                "lang": "de-DE",
+                "seg": "Materialkosten vor Resource Return Rate."
+            },
+            {
+                "lang": "en-US",
+                "seg": "Material costs before resource return rate."
+            }
+        ]
+    },
+    {
+        "tuid": "CRAFTING_RESULT_NET_MATERIALS_TOOLTIP",
+        "tuv": [
+            {
+                "lang": "de-DE",
+                "seg": "Materialkosten nach erwarteter Resource Return Rate."
+            },
+            {
+                "lang": "en-US",
+                "seg": "Material costs after expected resource return rate."
+            }
+        ]
+    },
+    {
+        "tuid": "CRAFTING_RESULT_NON_RETURNABLE_TOOLTIP",
+        "tuv": [
+            {
+                "lang": "de-DE",
+                "seg": "Kosten für Ressourcen, die nicht durch Resource Return zurückgegeben werden."
+            },
+            {
+                "lang": "en-US",
+                "seg": "Costs for resources that are not returned by resource return."
+            }
+        ]
+    },
+    {
+        "tuid": "CRAFTING_RESULT_STATION_TOOLTIP",
+        "tuv": [
+            {
+                "lang": "de-DE",
+                "seg": "Berechnete Stationskosten aus Nutzungsgebühr pro 100 Nahrung und verbrauchter Nahrung des Items."
+            },
+            {
+                "lang": "en-US",
+                "seg": "Calculated station cost from usage fee per 100 food and the item's consumed food."
+            }
+        ]
+    },
+    {
+        "tuid": "CRAFTING_RESULT_OTHER_COSTS_TOOLTIP",
+        "tuv": [
+            {
+                "lang": "de-DE",
+                "seg": "Manuell eingetragene Zusatzkosten, die in Gewinn, ROI und Gewinnschwelle einflie\u00dfen."
+            },
+            {
+                "lang": "en-US",
+                "seg": "Manually entered additional costs included in profit, ROI, and break-even price."
+            }
+        ]
+    },
+    {
+        "tuid": "CRAFTING_RESULT_JOURNAL_COSTS_TOOLTIP",
+        "tuv": [
+            {
+                "lang": "de-DE",
+                "seg": "Kosten der benötigten leeren Journale."
+            },
+            {
+                "lang": "en-US",
+                "seg": "Costs of the required empty journals."
+            }
+        ]
+    },
+    {
+        "tuid": "CRAFTING_RESULT_JOURNAL_REVENUE_TOOLTIP",
+        "tuv": [
+            {
+                "lang": "de-DE",
+                "seg": "Erwarteter Erlös aus vollen Journalen."
+            },
+            {
+                "lang": "en-US",
+                "seg": "Expected revenue from full journals."
+            }
+        ]
+    },
+    {
+        "tuid": "CRAFTING_RESULT_WEIGHT_BEFORE_TOOLTIP",
+        "tuv": [
+            {
+                "lang": "de-DE",
+                "seg": "Gesamtgewicht der Ressourcen und Journale vor dem Crafting."
+            },
+            {
+                "lang": "en-US",
+                "seg": "Total weight of resources and journals before crafting."
+            }
+        ]
+    },
+    {
+        "tuid": "CRAFTING_RESULT_WEIGHT_AFTER_TOOLTIP",
+        "tuv": [
+            {
+                "lang": "de-DE",
+                "seg": "Gesamtgewicht der hergestellten Items und Journale nach dem Crafting."
+            },
+            {
+                "lang": "en-US",
+                "seg": "Total weight of crafted items and journals after crafting."
+            }
+        ]
     }
   ]
 }

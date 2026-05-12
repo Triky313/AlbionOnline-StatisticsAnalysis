@@ -47,12 +47,6 @@ public class ItemWindowViewModel : BaseViewModel
     private bool _isTaskProgressbarIndeterminate;
     private XmlLanguage _itemListViewLanguage = XmlLanguage.GetLanguage(CultureInfo.DefaultThreadCurrentCulture?.IetfLanguageTag ?? string.Empty);
     private double _refreshRateInMilliseconds = 10;
-    private RequiredJournal _requiredJournal;
-    private EssentialCraftingValuesTemplate _essentialCraftingValues;
-    private ObservableCollection<RequiredResource> _requiredResources = new();
-    private Visibility _requiredJournalVisibility = Visibility.Collapsed;
-    private Visibility _craftingTabVisibility = Visibility.Collapsed;
-    private string _craftingNotes;
     private List<MarketResponse> _currentItemPrices = new();
     private ExtraItemInformation _extraItemInformation = new();
     private string _errorBarText;
@@ -64,21 +58,6 @@ public class ItemWindowViewModel : BaseViewModel
     private ItemWindowQualityTabBindings _qualityTabBindings;
     private ItemWindowHistoryTabBindings _historyTabBindings;
     private ItemWindowRealMoneyTabBindings _realMoneyTabBindings;
-    private ItemWindowCraftingTabBindings _craftingTabBindings;
-
-    private CraftingCalculation _craftingCalculation = new()
-    {
-        AuctionsHouseTax = 0.0d,
-        CraftingTax = 0.0d,
-        PossibleItemCrafting = 0.0d,
-        SetupFee = 0.0d,
-        TotalCosts = 0.0,
-        TotalJournalCosts = 0.0d,
-        TotalItemSells = 0.0d,
-        TotalJournalSells = 0.0d,
-        TotalResourceCosts = 0.0d,
-        GrandTotal = 0.0d
-    };
 
     public enum Error
     {
@@ -124,7 +103,6 @@ public class ItemWindowViewModel : BaseViewModel
         InitMainTabLocationFiltering();
         InitQualityFiltering();
         InitExtraItemInformation();
-        await InitCraftingTabAsync();
 
         if (Application.Current.Dispatcher == null)
         {
@@ -147,7 +125,6 @@ public class ItemWindowViewModel : BaseViewModel
         QualityTabBindings = new ItemWindowQualityTabBindings();
         HistoryTabBindings = new ItemWindowHistoryTabBindings(this);
         RealMoneyTabBindings = new ItemWindowRealMoneyTabBindings(this);
-        CraftingTabBindings = new ItemWindowCraftingTabBindings();
     }
 
     private void InitMainTabLocationFiltering()
@@ -408,299 +385,6 @@ public class ItemWindowViewModel : BaseViewModel
     }
 
     #endregion
-
-    #region Crafting tab
-
-    private async Task InitCraftingTabAsync()
-    {
-        var areResourcesAvailable = false;
-
-        switch (Item?.FullItemInformation)
-        {
-            case Weapon weapon when weapon.CraftingRequirements?.FirstOrDefault()?.CraftResource.Count > 0:
-            case TransformationWeapon transformationWeapon when transformationWeapon.CraftingRequirements?.FirstOrDefault()?.CraftResource.Count > 0:
-            case EquipmentItem equipmentItem when equipmentItem.CraftingRequirements?.FirstOrDefault()?.CraftResource.Count > 0:
-            case Mount mount when mount.CraftingRequirements?.FirstOrDefault()?.CraftResource != null && mount.CraftingRequirements?.FirstOrDefault()?.CraftResource.Count > 0:
-            case TrackingItem trackingItem when trackingItem.CraftingRequirements?.FirstOrDefault()?.CraftResource.Count > 0:
-            case ConsumableItem consumableItem when consumableItem.CraftingRequirements?.FirstOrDefault()?.CraftResource.Count > 0:
-                areResourcesAvailable = true;
-                break;
-        }
-
-        if (areResourcesAvailable)
-        {
-            CraftingTabVisibility = Visibility.Visible;
-
-            EssentialCraftingValues = new EssentialCraftingValuesTemplate(this, CurrentItemPrices, Item?.UniqueName);
-            SetJournalInfo();
-            await SetRequiredResourcesAsync();
-            CraftingNotes = await CraftingTabController.GetNoteAsync(Item?.UniqueName);
-            IsFocusCheckboxEnabled(Item?.FullItemInformation);
-        }
-    }
-
-    private void IsFocusCheckboxEnabled(object fullItemInfo)
-    {
-        if (fullItemInfo is EquipmentItem equipmentItem)
-        {
-            if (int.TryParse(equipmentItem.CraftingRequirements?.FirstOrDefault()?.CraftingFocus, NumberStyles.Any,
-                    CultureInfo.InvariantCulture, out int craftingFocusNumber) && (craftingFocusNumber <= 0))
-            {
-                EssentialCraftingValues.IsCraftingWithFocusCheckboxEnabled = false;
-                EssentialCraftingValues.IsCraftingBonusEnabled = false;
-                EssentialCraftingValues.CraftingBonus = 100;
-            }
-            else
-            {
-                EssentialCraftingValues.IsCraftingWithFocusCheckboxEnabled = true;
-                EssentialCraftingValues.IsCraftingBonusEnabled = true;
-            }
-        }
-        else
-        {
-            EssentialCraftingValues.IsCraftingWithFocusCheckboxEnabled = true;
-            EssentialCraftingValues.IsCraftingBonusEnabled = true;
-            EssentialCraftingValues.CraftingBonus = 133;
-        }
-    }
-
-    private void SetJournalInfo()
-    {
-        var craftingJournalType = Item?.FullItemInformation switch
-        {
-            Weapon weapon => CraftingController.GetCraftingJournalItem(Item.Tier, weapon.CraftingJournalType),
-            TransformationWeapon transformationWeapon => CraftingController.GetCraftingJournalItem(Item.Tier, transformationWeapon.CraftingJournalType),
-            EquipmentItem equipmentItem => CraftingController.GetCraftingJournalItem(Item.Tier, equipmentItem.CraftingJournalType),
-            TrackingItem trackingItem => CraftingController.GetCraftingJournalItem(Item.Tier, trackingItem.CraftingJournalType),
-            _ => null
-        };
-
-        if (craftingJournalType == null)
-        {
-            return;
-        }
-
-        RequiredJournalVisibility = Visibility.Visible;
-
-        var fullItemInformation = ItemController.GetItemByUniqueName(ItemController.GetGeneralJournalName(craftingJournalType.UniqueName))?.FullItemInformation;
-
-        RequiredJournal = new RequiredJournal(this)
-        {
-            UniqueName = craftingJournalType.UniqueName,
-            CostsPerJournal = 0,
-            CraftingResourceName = craftingJournalType.LocalizedName,
-            Icon = craftingJournalType.Icon,
-            Weight = ItemController.GetWeight(fullItemInformation),
-            RequiredJournalAmount = CraftingController.GetRequiredJournalAmount(Item, CraftingCalculation.PossibleItemCrafting),
-            SellPricePerJournal = 0
-        };
-    }
-
-    private async Task SetRequiredResourcesAsync()
-    {
-        var currentItemEnchantmentLevel = Item.Level;
-        List<CraftingRequirements> craftingRequirements = null;
-
-        var enchantments = Item?.FullItemInformation switch
-        {
-            Weapon weapon => weapon.Enchantments,
-            EquipmentItem equipmentItem => equipmentItem.Enchantments,
-            ConsumableItem consumableItem => consumableItem.Enchantments,
-            TransformationWeapon transformationWeapon => transformationWeapon.Enchantments,
-            _ => null
-        };
-
-        var enchantment = enchantments?.Enchantment?.FirstOrDefault(x => x.EnchantmentLevelInteger == currentItemEnchantmentLevel);
-
-        if (enchantment != null)
-        {
-            craftingRequirements = enchantment.CraftingRequirements;
-        }
-
-        craftingRequirements ??= Item?.FullItemInformation switch
-        {
-            Weapon weapon => weapon.CraftingRequirements,
-            TransformationWeapon transformationWeapon => transformationWeapon.CraftingRequirements,
-            EquipmentItem equipmentItem => equipmentItem.CraftingRequirements,
-            Mount mount => mount.CraftingRequirements,
-            ConsumableItem consumableItem => consumableItem.CraftingRequirements,
-            TrackingItem trackingItem => trackingItem.CraftingRequirements,
-            _ => null
-        };
-
-        if (craftingRequirements?.FirstOrDefault()?.CraftResource == null)
-        {
-            return;
-        }
-
-        if (int.TryParse(craftingRequirements.FirstOrDefault()?.AmountCrafted, out var amountCrafted))
-        {
-            EssentialCraftingValues.AmountCrafted = amountCrafted;
-        }
-
-        await foreach (var craftResource in craftingRequirements
-                           .SelectMany(x => x.CraftResource)
-                           .ToList()
-                           .GroupBy(x => x.UniqueName)
-                           .Select(grp => grp.FirstOrDefault())
-                           .ToAsyncEnumerable())
-        {
-            var item = GetSuitableResourceItem(craftResource.UniqueName);
-            var craftingQuantity = (long) Math.Round(item?.UniqueName?.ToUpper().Contains("ARTEFACT") ?? false
-            ? CraftingCalculation.PossibleItemCrafting
-                : EssentialCraftingValues.CraftingItemQuantity, MidpointRounding.ToPositiveInfinity);
-
-            RequiredResources.Add(new RequiredResource(this)
-            {
-                CraftingResourceName = item?.LocalizedName,
-                UniqueName = item?.UniqueName,
-                OneProductionAmount = craftResource.Count,
-                Icon = item?.Icon,
-                ResourceCost = 0,
-                Weight = ItemController.GetWeight(item?.FullItemInformation),
-                CraftingQuantity = craftingQuantity,
-                ResourceType = GetResourceType(item),
-                IsTomeOfInsightResource = item?.UniqueName?.ToUpper().Contains("SKILLBOOK_STANDARD") ?? false,
-                IsAvalonianEnergy = item?.UniqueName?.ToUpper().Contains("QUESTITEM_TOKEN_AVALON") ?? false
-            });
-        }
-    }
-
-    private static ResourceType GetResourceType(Item item)
-    {
-        if (item?.FullItemInformation is SimpleItem { ResourceType: "ESSENCE" })
-        {
-            return ResourceType.Essence;
-        }
-
-        if (item?.UniqueName?.ToUpper().Contains("ARTEFACT") ?? false)
-        {
-            return ResourceType.Artefact;
-        }
-
-        return ResourceType.Unknown;
-    }
-
-    private Item GetSuitableResourceItem(string uniqueName)
-    {
-        var item = ItemController.GetItemByUniqueName(uniqueName);
-
-        if (item == null)
-        {
-            var suitableUniqueName = $"{uniqueName}_LEVEL{Item.Level}@{Item.Level}";
-            item = ItemController.GetItemByUniqueName(suitableUniqueName);
-        }
-
-        return item;
-    }
-
-    public void UpdateCraftingCalculationTab()
-    {
-        if (EssentialCraftingValues == null || CraftingCalculation == null)
-        {
-            return;
-        }
-
-        // PossibleItem crafting
-        var possibleItemCrafting = EssentialCraftingValues.CraftingItemQuantity / 100d * EssentialCraftingValues.CraftingBonus * ((EssentialCraftingValues.IsCraftingWithFocus)
-            ? ((23.1d / 100d) + 1d) : 1d);
-
-        // Crafting quantity
-        if (RequiredResources?.Count > 0)
-        {
-            foreach (var requiredResource in RequiredResources.ToList())
-            {
-                if (requiredResource.ResourceType is ResourceType.Artefact or ResourceType.Essence || requiredResource.IsTomeOfInsightResource || requiredResource.IsAvalonianEnergy)
-                {
-                    requiredResource.CraftingQuantity = (long) Math.Round(possibleItemCrafting, MidpointRounding.ToNegativeInfinity);
-                    continue;
-                }
-
-                requiredResource.CraftingQuantity = EssentialCraftingValues.CraftingItemQuantity;
-            }
-        }
-
-        CraftingCalculation.PossibleItemCrafting = Math.Round(possibleItemCrafting, MidpointRounding.ToNegativeInfinity);
-
-        // Crafting (Usage) tax
-        CraftingCalculation.CraftingTax = CraftingController.GetCraftingTax(EssentialCraftingValues.UsageFeePerHundredFood, Item, CraftingCalculation.PossibleItemCrafting);
-
-        // Setup fee
-        CraftingCalculation.SetupFee = CraftingController.GetSetupFeeCalculation(EssentialCraftingValues.CraftingItemQuantity, EssentialCraftingValues.SetupFee, EssentialCraftingValues.SellPricePerItem);
-
-        // Auctions house tax
-        CraftingCalculation.AuctionsHouseTax =
-            EssentialCraftingValues.SellPricePerItem * Convert.ToInt64(EssentialCraftingValues.CraftingItemQuantity) / 100.00 * Convert.ToInt64(EssentialCraftingValues.AuctionHouseTax);
-
-        // Total resource costs
-        CraftingCalculation.TotalResourceCosts = RequiredResources?.Sum(x => x.TotalCost) ?? 0;
-
-        // Other costs
-        CraftingCalculation.OtherCosts = EssentialCraftingValues.OtherCosts;
-
-        // Total item sells
-        CraftingCalculation.TotalItemSells = EssentialCraftingValues.SellPricePerItem * (CraftingCalculation.PossibleItemCrafting * EssentialCraftingValues.AmountCrafted);
-
-        if (RequiredJournal != null)
-        {
-            // Required journal amount
-            RequiredJournal.RequiredJournalAmount = CraftingController.GetRequiredJournalAmount(Item, Math.Round(possibleItemCrafting, MidpointRounding.ToNegativeInfinity));
-
-            // Total journal costs
-            CraftingCalculation.TotalJournalCosts = RequiredJournal.CostsPerJournal * RequiredJournal.RequiredJournalAmount;
-
-            // Total journal sells
-            CraftingCalculation.TotalJournalSells = RequiredJournal.RequiredJournalAmount * RequiredJournal.SellPricePerJournal;
-        }
-
-        // Amount crafted
-        CraftingCalculation.AmountCrafted = EssentialCraftingValues.AmountCrafted;
-        
-        // Total sells
-        CraftingCalculation.TotalSells = CraftingCalculation.TotalItemSells + CraftingCalculation.TotalJournalSells;
-
-        // Total costs
-        CraftingCalculation.TotalCosts = CraftingCalculation.TotalResourceCosts + CraftingCalculation.CraftingTax + CraftingCalculation.SetupFee
-                                         + CraftingCalculation.AuctionsHouseTax + CraftingCalculation.TotalJournalCosts + CraftingCalculation.OtherCosts;
-
-        // Weight
-        var requiredResourcesWeights = RequiredResources?.Sum(x => x.TotalWeight) ?? 0;
-        var possibleItemCraftingWeights = CraftingCalculation?.PossibleItemCrafting * ItemController.GetWeight(Item?.FullItemInformation) ?? 0;
-
-        if (CraftingCalculation != null)
-        {
-            CraftingCalculation.TotalResourcesWeight = requiredResourcesWeights;
-            CraftingCalculation.TotalRequiredJournalWeight = RequiredJournal?.TotalWeight ?? 0;
-            CraftingCalculation.TotalUnfinishedCraftingWeight = CraftingCalculation.TotalResourcesWeight + CraftingCalculation.TotalRequiredJournalWeight;
-
-            CraftingCalculation.TotalCraftedItemWeight = possibleItemCraftingWeights;
-            CraftingCalculation.TotalFinishedCraftingWeight = CraftingCalculation.TotalCraftedItemWeight;
-
-            // Return on investment
-            CraftingCalculation.ReturnOnInvestment = (CraftingCalculation.TotalCosts > 0) ? ((CraftingCalculation.TotalSells - CraftingCalculation.TotalCosts) / CraftingCalculation.TotalCosts) * 100.0 : 0.0;
-
-            // Break even price
-            var totalCraftedItems = CraftingCalculation.PossibleItemCrafting * CraftingCalculation.AmountCrafted;
-            if (totalCraftedItems == 0)
-            {
-                totalCraftedItems = 1;
-            }
-
-            // All fixed costs excluding AH tax
-            var costsWithoutAhTax = CraftingCalculation.TotalResourceCosts + CraftingCalculation.CraftingTax + CraftingCalculation.SetupFee + CraftingCalculation.TotalJournalCosts + CraftingCalculation.OtherCosts;
-
-            // tax rate
-            var taxRate = EssentialCraftingValues.AuctionHouseTax / 100.0;
-
-            // Break-even-price
-            CraftingCalculation.BreakEvenPrice = (costsWithoutAhTax - CraftingCalculation.TotalJournalSells) / (totalCraftedItems * (1 - taxRate));
-
-            // Profit per item
-            CraftingCalculation.ProfitPerItem = (CraftingCalculation.TotalSells - CraftingCalculation.TotalCosts) / CraftingCalculation.PossibleItemCrafting;
-        }
-    }
-
-    #endregion Crafting tab
 
     #region Error methods
 
@@ -1214,86 +898,6 @@ public class ItemWindowViewModel : BaseViewModel
         }
     }
 
-    public ItemWindowCraftingTabBindings CraftingTabBindings
-    {
-        get => _craftingTabBindings;
-        set
-        {
-            _craftingTabBindings = value;
-            OnPropertyChanged();
-        }
-    }
-
-    public RequiredJournal RequiredJournal
-    {
-        get => _requiredJournal;
-        set
-        {
-            _requiredJournal = value;
-            OnPropertyChanged();
-        }
-    }
-
-    public CraftingCalculation CraftingCalculation
-    {
-        get => _craftingCalculation;
-        set
-        {
-            _craftingCalculation = value;
-            OnPropertyChanged();
-        }
-    }
-
-    public EssentialCraftingValuesTemplate EssentialCraftingValues
-    {
-        get => _essentialCraftingValues;
-        set
-        {
-            _essentialCraftingValues = value;
-            OnPropertyChanged();
-        }
-    }
-
-    public ObservableCollection<RequiredResource> RequiredResources
-    {
-        get => _requiredResources;
-        set
-        {
-            _requiredResources = value;
-            OnPropertyChanged();
-        }
-    }
-
-    public string CraftingNotes
-    {
-        get => _craftingNotes;
-        set
-        {
-            _craftingNotes = value;
-            OnPropertyChanged();
-        }
-    }
-
-    public Visibility RequiredJournalVisibility
-    {
-        get => _requiredJournalVisibility;
-        set
-        {
-            _requiredJournalVisibility = value;
-            OnPropertyChanged();
-        }
-    }
-
-    public Visibility CraftingTabVisibility
-    {
-        get => _craftingTabVisibility;
-        set
-        {
-            _craftingTabVisibility = value;
-            OnPropertyChanged();
-        }
-    }
-
     public Visibility ErrorBarVisibility
     {
         get => _errorBarVisibility;
@@ -1330,11 +934,6 @@ public class ItemWindowViewModel : BaseViewModel
         set
         {
             _currentItemPrices = value;
-            if (EssentialCraftingValues != null)
-            {
-                EssentialCraftingValues.CurrentCityPrices = value;
-            }
-
             OnPropertyChanged();
         }
     }
