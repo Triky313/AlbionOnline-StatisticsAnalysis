@@ -21,7 +21,8 @@ public class CraftingCalculator
             OutputQuantity = outputQuantity,
             ReturnRatePercent = Math.Clamp(input.ReturnRatePercent, 0m, 100m),
             UsesFocus = input.UsesFocus,
-            StationFee = RoundSilver(input.StationFee),
+            NutritionConsumed = RoundQuantity(Math.Max(0m, input.NutritionConsumedPerRun) * craftingRuns),
+            StationFee = CalculateStationFee(input.StationFee, input.NutritionConsumedPerRun, craftingRuns),
             OtherCosts = RoundSilver(input.OtherCosts)
         }
         ;
@@ -82,6 +83,16 @@ public class CraftingCalculator
                                      + (result.Journal?.TotalJournalWeight ?? 0d);
 
         return result;
+    }
+
+    private static decimal CalculateStationFee(decimal usageFeePerHundredNutrition, decimal nutritionConsumedPerRun, int craftingRuns)
+    {
+        if (usageFeePerHundredNutrition <= 0m || nutritionConsumedPerRun <= 0m || craftingRuns <= 0)
+        {
+            return 0m;
+        }
+
+        return RoundSilver(usageFeePerHundredNutrition * nutritionConsumedPerRun * craftingRuns / 100m);
     }
 
     private static decimal GetExpectedReturnQuantity(CraftingResourceInput resource, decimal grossQuantity, int craftingRuns, decimal returnRate)

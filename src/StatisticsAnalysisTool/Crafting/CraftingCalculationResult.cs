@@ -71,6 +71,12 @@ public class CraftingCalculationResult
         set;
     }
 
+    public decimal NutritionConsumed
+    {
+        get;
+        set;
+    }
+
     public decimal SalesTax
     {
         get;

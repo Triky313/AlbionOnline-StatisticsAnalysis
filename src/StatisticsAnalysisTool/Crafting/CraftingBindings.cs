@@ -21,6 +21,7 @@ public class CraftingBindings : BaseViewModel
 {
     private readonly CraftingCalculator _calculator = new();
     private readonly CraftingRecipeResolver _recipeResolver = new();
+    private readonly CraftingStationFeeService _stationFeeService = new();
     private readonly CraftingController _controller = new();
     private string _itemSearchText;
     private string _craftingLocationSearchText;
@@ -754,6 +755,7 @@ public class CraftingBindings : BaseViewModel
             UsesFocus = UsesFocus,
             OutputUnitPrice = OutputUnitPrice,
             StationFee = StationFee,
+            NutritionConsumedPerRun = _stationFeeService.GetNutritionConsumedPerRun(SelectedItem),
             SalesTaxPercent = SalesTaxPercent,
             OtherCosts = OtherCosts,
             OutputUnitWeight = ItemController.GetWeight(SelectedItem?.FullItemInformation),
@@ -1157,6 +1159,7 @@ public class CraftingBindings : BaseViewModel
             UsesFocus = crafting.UsesFocus,
             OutputUnitPrice = crafting.OutputUnitPrice,
             StationFee = crafting.StationFee,
+            NutritionConsumedPerRun = _stationFeeService.GetNutritionConsumedPerRun(item),
             SalesTaxPercent = crafting.SalesTaxPercent,
             OtherCosts = crafting.OtherCosts,
             OutputUnitWeight = ItemController.GetWeight(item?.FullItemInformation),

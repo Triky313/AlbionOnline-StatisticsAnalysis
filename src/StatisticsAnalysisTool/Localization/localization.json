@@ -41252,11 +41252,11 @@
         "tuv": [
             {
                 "lang": "de-DE",
-                "seg": "Stationskosten"
+                "seg": "Nutzungsgebühr / 100 Nahrung"
             },
             {
                 "lang": "en-US",
-                "seg": "Station fee"
+                "seg": "Usage fee / 100 food"
             }
         ]
     },
@@ -42071,11 +42071,11 @@
         "tuv": [
             {
                 "lang": "de-DE",
-                "seg": "Eingegebene Crafting- oder Stationskosten für dieses Crafting."
+                "seg": "Berechnete Stationskosten aus Nutzungsgebühr pro 100 Nahrung und verbrauchter Nahrung des Items."
             },
             {
                 "lang": "en-US",
-                "seg": "Entered crafting or station costs for this crafting."
+                "seg": "Calculated station cost from usage fee per 100 food and the item's consumed food."
             }
         ]
     },
