@@ -5,6 +5,7 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:viewModels="clr-namespace:StatisticsAnalysisTool.ViewModels"
              xmlns:common="clr-namespace:StatisticsAnalysisTool.Common"
+             xmlns:crafting="clr-namespace:StatisticsAnalysisTool.Crafting"
              mc:Ignorable="d"
              d:DesignHeight="900"
              d:DesignWidth="1200"
@@ -262,56 +263,26 @@
                     <ListView ItemsSource="{Binding CraftingBindings.Resources}" MinHeight="150" MinWidth="620">
                         <ListView.View>
                             <GridView>
-                                <GridViewColumn Width="45">
-                                    <GridViewColumn.Header>
-                                        <TextBlock Text="{Binding DataContext.CraftingBindings.TranslationIcon, RelativeSource={RelativeSource AncestorType={x:Type ListView}}, FallbackValue=ICON}" />
-                                    </GridViewColumn.Header>
+                                <GridViewColumn Header="{x:Static crafting:CraftingBindings.TranslationIcon}" Width="45">
                                     <GridViewColumn.CellTemplate>
                                         <DataTemplate>
                                             <Image Source="{Binding Icon}" Width="32" Height="32" />
                                         </DataTemplate>
                                     </GridViewColumn.CellTemplate>
                                 </GridViewColumn>
-                                <GridViewColumn Width="210" DisplayMemberBinding="{Binding DisplayName}">
-                                    <GridViewColumn.Header>
-                                        <TextBlock Text="{Binding DataContext.CraftingBindings.TranslationResource, RelativeSource={RelativeSource AncestorType={x:Type ListView}}, FallbackValue=RESOURCE}" />
-                                    </GridViewColumn.Header>
-                                </GridViewColumn>
-                                <GridViewColumn Width="85" DisplayMemberBinding="{Binding ResourceKindText}">
-                                    <GridViewColumn.Header>
-                                        <TextBlock Text="{Binding DataContext.CraftingBindings.TranslationType, RelativeSource={RelativeSource AncestorType={x:Type ListView}}, FallbackValue=TYPE}" />
-                                    </GridViewColumn.Header>
-                                </GridViewColumn>
-                                <GridViewColumn Width="80" DisplayMemberBinding="{Binding GrossQuantity}">
-                                    <GridViewColumn.Header>
-                                        <TextBlock Text="{Binding DataContext.CraftingBindings.TranslationGross, RelativeSource={RelativeSource AncestorType={x:Type ListView}}, FallbackValue=GROSS}" />
-                                    </GridViewColumn.Header>
-                                </GridViewColumn>
-                                <GridViewColumn Width="115" DisplayMemberBinding="{Binding ExpectedReturnQuantity}">
-                                    <GridViewColumn.Header>
-                                        <TextBlock Text="{Binding DataContext.CraftingBindings.TranslationExpectedReturn, RelativeSource={RelativeSource AncestorType={x:Type ListView}}, FallbackValue=EXPECTED_RETURN}" />
-                                    </GridViewColumn.Header>
-                                </GridViewColumn>
-                                <GridViewColumn Width="80" DisplayMemberBinding="{Binding NetQuantity}">
-                                    <GridViewColumn.Header>
-                                        <TextBlock Text="{Binding DataContext.CraftingBindings.TranslationNet, RelativeSource={RelativeSource AncestorType={x:Type ListView}}, FallbackValue=NET}" />
-                                    </GridViewColumn.Header>
-                                </GridViewColumn>
-                                <GridViewColumn Width="90">
-                                    <GridViewColumn.Header>
-                                        <TextBlock Text="{Binding DataContext.CraftingBindings.TranslationPrice, RelativeSource={RelativeSource AncestorType={x:Type ListView}}, FallbackValue=PRICE}" />
-                                    </GridViewColumn.Header>
+                                <GridViewColumn Header="{x:Static crafting:CraftingBindings.TranslationResource}" Width="210" DisplayMemberBinding="{Binding DisplayName}" />
+                                <GridViewColumn Header="{x:Static crafting:CraftingBindings.TranslationType}" Width="85" DisplayMemberBinding="{Binding ResourceKindText}" />
+                                <GridViewColumn Header="{x:Static crafting:CraftingBindings.TranslationGross}" Width="80" DisplayMemberBinding="{Binding GrossQuantity}" />
+                                <GridViewColumn Header="{x:Static crafting:CraftingBindings.TranslationExpectedReturn}" Width="115" DisplayMemberBinding="{Binding ExpectedReturnQuantity}" />
+                                <GridViewColumn Header="{x:Static crafting:CraftingBindings.TranslationNet}" Width="80" DisplayMemberBinding="{Binding NetQuantity}" />
+                                <GridViewColumn Header="{x:Static crafting:CraftingBindings.TranslationPrice}" Width="90">
                                     <GridViewColumn.CellTemplate>
                                         <DataTemplate>
                                             <TextBox Text="{Binding UnitPrice, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Width="78" Height="22" common:TextBoxHelper.OnlyNumeric="Double" />
                                         </DataTemplate>
                                     </GridViewColumn.CellTemplate>
                                 </GridViewColumn>
-                                <GridViewColumn Width="90" DisplayMemberBinding="{Binding NetCost}">
-                                    <GridViewColumn.Header>
-                                        <TextBlock Text="{Binding DataContext.CraftingBindings.TranslationNetCost, RelativeSource={RelativeSource AncestorType={x:Type ListView}}, FallbackValue=NET_COST}" />
-                                    </GridViewColumn.Header>
-                                </GridViewColumn>
+                                <GridViewColumn Header="{x:Static crafting:CraftingBindings.TranslationNetCost}" Width="90" DisplayMemberBinding="{Binding NetCost}" />
                             </GridView>
                         </ListView.View>
                     </ListView>
@@ -498,46 +469,19 @@
                       Margin="0,28,0,0">
                 <ListView.View>
                     <GridView>
-                        <GridViewColumn Width="45">
-                            <GridViewColumn.Header>
-                                <TextBlock Text="{Binding DataContext.CraftingBindings.TranslationIcon, RelativeSource={RelativeSource AncestorType={x:Type ListView}}, FallbackValue=ICON}" />
-                            </GridViewColumn.Header>
+                        <GridViewColumn Header="{x:Static crafting:CraftingBindings.TranslationIcon}" Width="45">
                             <GridViewColumn.CellTemplate>
                                 <DataTemplate>
                                     <Image Source="{Binding Icon}" Width="32" Height="32" />
                                 </DataTemplate>
                             </GridViewColumn.CellTemplate>
                         </GridViewColumn>
-                        <GridViewColumn Width="260" DisplayMemberBinding="{Binding ItemName}">
-                            <GridViewColumn.Header>
-                                <TextBlock Text="{Binding DataContext.CraftingBindings.TranslationItem, RelativeSource={RelativeSource AncestorType={x:Type ListView}}, FallbackValue=ITEM}" />
-                            </GridViewColumn.Header>
-                        </GridViewColumn>
-                        <GridViewColumn Width="260" DisplayMemberBinding="{Binding Summary}">
-                            <GridViewColumn.Header>
-                                <TextBlock Text="{Binding DataContext.CraftingBindings.TranslationDetails, RelativeSource={RelativeSource AncestorType={x:Type ListView}}, FallbackValue=DETAILS}" />
-                            </GridViewColumn.Header>
-                        </GridViewColumn>
-                        <GridViewColumn Width="110" DisplayMemberBinding="{Binding NetMaterialCosts}">
-                            <GridViewColumn.Header>
-                                <TextBlock Text="{Binding DataContext.CraftingBindings.TranslationMainCosts, RelativeSource={RelativeSource AncestorType={x:Type ListView}}, FallbackValue=MAIN_COSTS}" />
-                            </GridViewColumn.Header>
-                        </GridViewColumn>
-                        <GridViewColumn Width="110" DisplayMemberBinding="{Binding Profit}">
-                            <GridViewColumn.Header>
-                                <TextBlock Text="{Binding DataContext.CraftingBindings.TranslationProfit, RelativeSource={RelativeSource AncestorType={x:Type ListView}}, FallbackValue=PROFIT}" />
-                            </GridViewColumn.Header>
-                        </GridViewColumn>
-                        <GridViewColumn Width="170" DisplayMemberBinding="{Binding LastChangedUtc}">
-                            <GridViewColumn.Header>
-                                <TextBlock Text="{Binding DataContext.CraftingBindings.TranslationChanged, RelativeSource={RelativeSource AncestorType={x:Type ListView}}, FallbackValue=CHANGED}" />
-                            </GridViewColumn.Header>
-                        </GridViewColumn>
-                        <GridViewColumn Width="360" DisplayMemberBinding="{Binding Notes}">
-                            <GridViewColumn.Header>
-                                <TextBlock Text="{Binding DataContext.CraftingBindings.TranslationNotes, RelativeSource={RelativeSource AncestorType={x:Type ListView}}, FallbackValue=NOTES}" />
-                            </GridViewColumn.Header>
-                        </GridViewColumn>
+                        <GridViewColumn Header="{x:Static crafting:CraftingBindings.TranslationItem}" Width="260" DisplayMemberBinding="{Binding ItemName}" />
+                        <GridViewColumn Header="{x:Static crafting:CraftingBindings.TranslationDetails}" Width="260" DisplayMemberBinding="{Binding Summary}" />
+                        <GridViewColumn Header="{x:Static crafting:CraftingBindings.TranslationMainCosts}" Width="110" DisplayMemberBinding="{Binding NetMaterialCosts}" />
+                        <GridViewColumn Header="{x:Static crafting:CraftingBindings.TranslationProfit}" Width="110" DisplayMemberBinding="{Binding Profit}" />
+                        <GridViewColumn Header="{x:Static crafting:CraftingBindings.TranslationChanged}" Width="170" DisplayMemberBinding="{Binding LastChangedUtc}" />
+                        <GridViewColumn Header="{x:Static crafting:CraftingBindings.TranslationNotes}" Width="360" DisplayMemberBinding="{Binding Notes}" />
                     </GridView>
                 </ListView.View>
             </ListView>
