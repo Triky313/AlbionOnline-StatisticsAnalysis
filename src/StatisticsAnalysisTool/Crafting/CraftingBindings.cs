@@ -292,7 +292,7 @@ public class CraftingBindings : BaseViewModel
         }
     }
 
-    public string SelectedCraftingLocationBonusSummary => 
+    public string SelectedCraftingLocationBonusSummary =>
         SelectedCraftingLocation == null ? string.Empty : TranslationBonus + " " + EffectiveCraftingBonusPercent.ToString("N2") + "%"
                          + (UsesFocus ? " | " + TranslationFocus + " +" + CraftingLocationData.FocusProductionBonusPercent.ToString("N2") + "%" : string.Empty)
                          + "\n" + TranslationExpectedRrr + " " + GetSelectedCraftingLocationReturnRate().ToString("N2") + "%";
@@ -872,6 +872,7 @@ public class CraftingBindings : BaseViewModel
             LastChangedUtc = DateTime.UtcNow,
             NetMaterialCosts = Calculation.NetMaterialCosts,
             Profit = Calculation.Profit,
+            BreakEvenPrice = Calculation.BreakEvenPrice,
             Icon = SelectedItem?.Icon
         }
         ;
@@ -1091,6 +1092,66 @@ public class CraftingBindings : BaseViewModel
         }
 
         PrepareJournal(crafting.Journal);
+        RefreshSavedCraftingSummaryValues(crafting, item);
+    }
+
+    private void RefreshSavedCraftingSummaryValues(SavedCrafting crafting, Item item)
+    {
+        if (crafting == null)
+        {
+            return;
+        }
+
+        var result = _calculator.Calculate(new CraftingCalculationInput
+        {
+            ItemUniqueName = crafting.ItemUniqueName,
+            ItemName = crafting.ItemName,
+            CraftingRuns = Math.Max(1, crafting.CraftingRuns),
+            AmountCrafted = Math.Max(1, crafting.AmountCrafted),
+            ReturnRatePercent = crafting.ReturnRatePercent,
+            UsesFocus = crafting.UsesFocus,
+            OutputUnitPrice = crafting.OutputUnitPrice,
+            StationFee = crafting.StationFee,
+            SalesTaxPercent = crafting.SalesTaxPercent,
+            OtherCosts = crafting.OtherCosts,
+            OutputUnitWeight = ItemController.GetWeight(item?.FullItemInformation),
+            Resources = (crafting.Resources ?? [])
+                .Select(x =>
+                {
+                    return new CraftingResourceInput
+                    {
+                        UniqueName = x.UniqueName,
+                        DisplayName = x.DisplayName,
+                        QuantityPerRun = x.QuantityPerRun,
+                        UnitPrice = x.UnitPrice,
+                        UnitWeight = x.UnitWeight,
+                        IsReturnable = x.IsReturnable,
+                        MaxReturnQuantityPerRun = x.MaxReturnQuantityPerRun,
+                        ResourceKind = x.ResourceKind
+                    }
+                    ;
+                }
+                )
+                .ToList(),
+            Journal = crafting.Journal == null
+                ? null
+                : new CraftingJournalInput
+                {
+                    EmptyJournalUniqueName = crafting.Journal.EmptyJournalUniqueName,
+                    FullJournalUniqueName = crafting.Journal.FullJournalUniqueName,
+                    DisplayName = crafting.Journal.DisplayName,
+                    FamePerRun = crafting.Journal.FamePerRun,
+                    MaxFamePerJournal = crafting.Journal.MaxFamePerJournal,
+                    EmptyJournalPrice = crafting.Journal.EmptyJournalPrice,
+                    FullJournalPrice = crafting.Journal.FullJournalPrice,
+                    UnitWeight = crafting.Journal.UnitWeight
+                }
+        }
+        );
+
+        crafting.NetMaterialCosts = result.NetMaterialCosts;
+        crafting.Profit = result.Profit;
+        crafting.BreakEvenPrice = result.BreakEvenPrice;
     }
 
     private static void PrepareResource(CraftingResourceEntry resource)

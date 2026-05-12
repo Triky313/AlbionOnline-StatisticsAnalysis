@@ -158,6 +158,12 @@ public class SavedCrafting : BaseViewModel
         set;
     }
 
+    public decimal BreakEvenPrice
+    {
+        get;
+        set;
+    }
+
     [JsonIgnore]
     public BitmapImage Icon
     {
@@ -166,7 +172,22 @@ public class SavedCrafting : BaseViewModel
     }
 
     [JsonIgnore]
+    public bool IsNetMaterialCostsPositive => NetMaterialCosts > 0m;
+
+    [JsonIgnore]
+    public bool IsNetMaterialCostsNegative => NetMaterialCosts < 0m;
+
+    [JsonIgnore]
+    public bool IsProfitPositive => Profit > 0m;
+
+    [JsonIgnore]
     public bool IsProfitNegative => Profit < 0m;
+
+    [JsonIgnore]
+    public bool IsBreakEvenPricePositive => BreakEvenPrice > 0m;
+
+    [JsonIgnore]
+    public bool IsBreakEvenPriceNegative => BreakEvenPrice < 0m;
 
     [JsonIgnore]
     public string Summary => CraftingRuns

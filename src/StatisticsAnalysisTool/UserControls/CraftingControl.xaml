@@ -88,6 +88,39 @@
                 </DataTrigger>
             </Style.Triggers>
         </Style>
+        <Style x:Key="SavedCraftingCellText" TargetType="{x:Type TextBlock}">
+            <Setter Property="Foreground" Value="{StaticResource SolidColorBrush.Text.1}" />
+            <Setter Property="TextWrapping" Value="Wrap" />
+            <Setter Property="TextTrimming" Value="CharacterEllipsis" />
+            <Setter Property="VerticalAlignment" Value="Center" />
+        </Style>
+        <Style x:Key="SavedCraftingNetCostText" TargetType="{x:Type TextBlock}" BasedOn="{StaticResource SavedCraftingCellText}">
+            <Style.Triggers>
+                <DataTrigger Binding="{Binding IsNetMaterialCostsPositive}" Value="True">
+                    <Setter Property="Foreground" Value="{StaticResource SolidColorBrush.Accent.Green.2}" />
+                </DataTrigger>
+                <DataTrigger Binding="{Binding IsNetMaterialCostsNegative}" Value="True">
+                    <Setter Property="Foreground" Value="{StaticResource SolidColorBrush.Accent.Red.2}" />
+                </DataTrigger>
+            </Style.Triggers>
+        </Style>
+        <Style x:Key="SavedCraftingProfitText" TargetType="{x:Type TextBlock}" BasedOn="{StaticResource SavedCraftingCellText}">
+            <Style.Triggers>
+                <DataTrigger Binding="{Binding IsProfitPositive}" Value="True">
+                    <Setter Property="Foreground" Value="{StaticResource SolidColorBrush.Accent.Green.2}" />
+                </DataTrigger>
+                <DataTrigger Binding="{Binding IsProfitNegative}" Value="True">
+                    <Setter Property="Foreground" Value="{StaticResource SolidColorBrush.Accent.Red.2}" />
+                </DataTrigger>
+            </Style.Triggers>
+        </Style>
+        <Style x:Key="SavedCraftingBreakEvenText" TargetType="{x:Type TextBlock}" BasedOn="{StaticResource SavedCraftingCellText}">
+            <Setter Property="Foreground" Value="{StaticResource SolidColorBrush.Accent.Yellow.1}" />
+        </Style>
+        <Style x:Key="SavedCraftingListViewItem" TargetType="{x:Type ListViewItem}" BasedOn="{StaticResource {x:Type ListViewItem}}">
+            <Setter Property="MinHeight" Value="50" />
+            <Setter Property="VerticalContentAlignment" Value="Center" />
+        </Style>
     </UserControl.Resources>
     <Grid>
         <Grid.RowDefinitions>
@@ -292,7 +325,7 @@
                                         </DataTemplate>
                                     </GridViewColumn.CellTemplate>
                                 </GridViewColumn>
-                                <GridViewColumn Header="{x:Static crafting:CraftingBindings.TranslationNetCost}" Width="90" DisplayMemberBinding="{Binding NetCost}" />
+                                <GridViewColumn Header="{x:Static crafting:CraftingBindings.TranslationNetCost}" Width="90" DisplayMemberBinding="{Binding NetCost, StringFormat={}{0:N0}}" />
                             </GridView>
                         </ListView.View>
                     </ListView>
@@ -348,12 +381,12 @@
                             <StackPanel Orientation="Horizontal">
                                 <TextBlock Text="{Binding CraftingBindings.TranslationCosts, Mode=OneWay, FallbackValue=COSTS}" Foreground="{StaticResource SolidColorBrush.Text.1}" />
                                 <TextBlock Text=": " Foreground="{StaticResource SolidColorBrush.Text.1}" />
-                                <TextBlock Text="{Binding CraftingBindings.Journal.TotalEmptyJournalCosts, Mode=OneWay, StringFormat={}{0:N2}, FallbackValue=0.00}" Foreground="{StaticResource SolidColorBrush.Text.1}" />
+                                <TextBlock Text="{Binding CraftingBindings.Journal.TotalEmptyJournalCosts, Mode=OneWay, StringFormat={}{0:N0}, FallbackValue=0}" Foreground="{StaticResource SolidColorBrush.Text.1}" />
                             </StackPanel>
                             <StackPanel Orientation="Horizontal">
                                 <TextBlock Text="{Binding CraftingBindings.TranslationRevenue, Mode=OneWay, FallbackValue=REVENUE}" Foreground="{StaticResource SolidColorBrush.Text.1}" />
                                 <TextBlock Text=": " Foreground="{StaticResource SolidColorBrush.Text.1}" />
-                                <TextBlock Text="{Binding CraftingBindings.Journal.TotalFullJournalRevenue, Mode=OneWay, StringFormat={}{0:N2}, FallbackValue=0.00}" Foreground="{StaticResource SolidColorBrush.Text.1}" />
+                                <TextBlock Text="{Binding CraftingBindings.Journal.TotalFullJournalRevenue, Mode=OneWay, StringFormat={}{0:N0}, FallbackValue=0}" Foreground="{StaticResource SolidColorBrush.Text.1}" />
                             </StackPanel>
                         </UniformGrid>
                     </Grid>
@@ -383,13 +416,13 @@
                                 <Border Style="{StaticResource CraftingResultTile}" ToolTip="{Binding CraftingBindings.TranslationProfitTooltip}">
                                     <StackPanel>
                                         <TextBlock Text="{Binding CraftingBindings.TranslationProfit, FallbackValue=PROFIT}" Style="{StaticResource CraftingResultLabel}" />
-                                        <TextBlock Text="{Binding CraftingBindings.Calculation.Profit, StringFormat={}{0:N2}, FallbackValue=0.00}" Style="{StaticResource CraftingResultProfitValue}" />
+                                        <TextBlock Text="{Binding CraftingBindings.Calculation.Profit, StringFormat={}{0:N0}, FallbackValue=0}" Style="{StaticResource CraftingResultProfitValue}" />
                                     </StackPanel>
                                 </Border>
                                 <Border Style="{StaticResource CraftingResultTile}" ToolTip="{Binding CraftingBindings.TranslationProfitPerItemTooltip}">
                                     <StackPanel>
                                         <TextBlock Text="{Binding CraftingBindings.TranslationProfitPerItem, FallbackValue=PROFIT_PER_ITEM}" Style="{StaticResource CraftingResultLabel}" />
-                                        <TextBlock Text="{Binding CraftingBindings.Calculation.ProfitPerItem, StringFormat={}{0:N2}, FallbackValue=0.00}" Style="{StaticResource CraftingResultProfitPerItemValue}" />
+                                        <TextBlock Text="{Binding CraftingBindings.Calculation.ProfitPerItem, StringFormat={}{0:N0}, FallbackValue=0}" Style="{StaticResource CraftingResultProfitPerItemValue}" />
                                     </StackPanel>
                                 </Border>
                                 <Border Style="{StaticResource CraftingResultTile}" ToolTip="{Binding CraftingBindings.TranslationRoiTooltip}">
@@ -401,13 +434,13 @@
                                 <Border Style="{StaticResource CraftingResultTile}" ToolTip="{Binding CraftingBindings.TranslationBreakEvenTooltip}">
                                     <StackPanel>
                                         <TextBlock Text="{Binding CraftingBindings.TranslationBreakEven, FallbackValue=BREAK_EVEN}" Style="{StaticResource CraftingResultLabel}" />
-                                        <TextBlock Text="{Binding CraftingBindings.Calculation.BreakEvenPrice, StringFormat={}{0:N2}, FallbackValue=0.00}" Style="{StaticResource CraftingResultBreakEvenValue}" />
+                                        <TextBlock Text="{Binding CraftingBindings.Calculation.BreakEvenPrice, StringFormat={}{0:N0}, FallbackValue=0}" Style="{StaticResource CraftingResultBreakEvenValue}" />
                                     </StackPanel>
                                 </Border>
                                 <Border Style="{StaticResource CraftingResultTile}" ToolTip="{Binding CraftingBindings.TranslationSalesNetTooltip}">
                                     <StackPanel>
                                         <TextBlock Text="{Binding CraftingBindings.TranslationSalesNet, FallbackValue=SALES_NET}" Style="{StaticResource CraftingResultLabel}" />
-                                        <TextBlock Text="{Binding CraftingBindings.Calculation.SalesRevenueNet, StringFormat={}{0:N2}, FallbackValue=0.00}" Style="{StaticResource CraftingResultRevenueValue}" />
+                                        <TextBlock Text="{Binding CraftingBindings.Calculation.SalesRevenueNet, StringFormat={}{0:N0}, FallbackValue=0}" Style="{StaticResource CraftingResultRevenueValue}" />
                                     </StackPanel>
                                 </Border>
                             </StackPanel>
@@ -415,25 +448,25 @@
                                 <Border Style="{StaticResource CraftingResultTile}" ToolTip="{Binding CraftingBindings.TranslationGrossMaterialsTooltip}">
                                     <StackPanel>
                                         <TextBlock Text="{Binding CraftingBindings.TranslationGrossMaterials, FallbackValue=GROSS_MATERIALS}" Style="{StaticResource CraftingResultLabel}" />
-                                        <TextBlock Text="{Binding CraftingBindings.Calculation.GrossMaterialCosts, StringFormat={}{0:N2}, FallbackValue=0.00}" Style="{StaticResource CraftingResultCostValue}" />
+                                        <TextBlock Text="{Binding CraftingBindings.Calculation.GrossMaterialCosts, StringFormat={}{0:N0}, FallbackValue=0}" Style="{StaticResource CraftingResultCostValue}" />
                                     </StackPanel>
                                 </Border>
                                 <Border Style="{StaticResource CraftingResultTile}" ToolTip="{Binding CraftingBindings.TranslationNetMaterialsTooltip}">
                                     <StackPanel>
                                         <TextBlock Text="{Binding CraftingBindings.TranslationNetMaterials, FallbackValue=NET_MATERIALS}" Style="{StaticResource CraftingResultLabel}" />
-                                        <TextBlock Text="{Binding CraftingBindings.Calculation.NetMaterialCosts, StringFormat={}{0:N2}, FallbackValue=0.00}" Style="{StaticResource CraftingResultCostValue}" />
+                                        <TextBlock Text="{Binding CraftingBindings.Calculation.NetMaterialCosts, StringFormat={}{0:N0}, FallbackValue=0}" Style="{StaticResource CraftingResultCostValue}" />
                                     </StackPanel>
                                 </Border>
                                 <Border Style="{StaticResource CraftingResultTile}" ToolTip="{Binding CraftingBindings.TranslationNonReturnableTooltip}">
                                     <StackPanel>
                                         <TextBlock Text="{Binding CraftingBindings.TranslationNonReturnable, FallbackValue=NON_RETURNABLE}" Style="{StaticResource CraftingResultLabel}" />
-                                        <TextBlock Text="{Binding CraftingBindings.Calculation.NonReturnableMaterialCosts, StringFormat={}{0:N2}, FallbackValue=0.00}" Style="{StaticResource CraftingResultCostValue}" />
+                                        <TextBlock Text="{Binding CraftingBindings.Calculation.NonReturnableMaterialCosts, StringFormat={}{0:N0}, FallbackValue=0}" Style="{StaticResource CraftingResultCostValue}" />
                                     </StackPanel>
                                 </Border>
                                 <Border Style="{StaticResource CraftingResultTile}" ToolTip="{Binding CraftingBindings.TranslationStationTooltip}">
                                     <StackPanel>
                                         <TextBlock Text="{Binding CraftingBindings.TranslationStation, FallbackValue=STATION}" Style="{StaticResource CraftingResultLabel}" />
-                                        <TextBlock Text="{Binding CraftingBindings.Calculation.StationFee, StringFormat={}{0:N2}, FallbackValue=0.00}" Style="{StaticResource CraftingResultCostValue}" />
+                                        <TextBlock Text="{Binding CraftingBindings.Calculation.StationFee, StringFormat={}{0:N0}, FallbackValue=0}" Style="{StaticResource CraftingResultCostValue}" />
                                     </StackPanel>
                                 </Border>
                             </StackPanel>
@@ -441,13 +474,13 @@
                                 <Border Style="{StaticResource CraftingResultTile}" ToolTip="{Binding CraftingBindings.TranslationJournalCostsTooltip}">
                                     <StackPanel>
                                         <TextBlock Text="{Binding CraftingBindings.TranslationJournalCosts, FallbackValue=JOURNAL_COSTS}" Style="{StaticResource CraftingResultLabel}" />
-                                        <TextBlock Text="{Binding CraftingBindings.Calculation.JournalCosts, StringFormat={}{0:N2}, FallbackValue=0.00}" Style="{StaticResource CraftingResultCostValue}" />
+                                        <TextBlock Text="{Binding CraftingBindings.Calculation.JournalCosts, StringFormat={}{0:N0}, FallbackValue=0}" Style="{StaticResource CraftingResultCostValue}" />
                                     </StackPanel>
                                 </Border>
                                 <Border Style="{StaticResource CraftingResultTile}" ToolTip="{Binding CraftingBindings.TranslationJournalRevenueTooltip}">
                                     <StackPanel>
                                         <TextBlock Text="{Binding CraftingBindings.TranslationJournalRevenue, FallbackValue=JOURNAL_REVENUE}" Style="{StaticResource CraftingResultLabel}" />
-                                        <TextBlock Text="{Binding CraftingBindings.Calculation.JournalRevenue, StringFormat={}{0:N2}, FallbackValue=0.00}" Style="{StaticResource CraftingResultRevenueValue}" />
+                                        <TextBlock Text="{Binding CraftingBindings.Calculation.JournalRevenue, StringFormat={}{0:N0}, FallbackValue=0}" Style="{StaticResource CraftingResultRevenueValue}" />
                                     </StackPanel>
                                 </Border>
                                 <Border Style="{StaticResource CraftingResultTile}" ToolTip="{Binding CraftingBindings.TranslationWeightBeforeTooltip}">
@@ -476,22 +509,60 @@
             <ListView ItemsSource="{Binding CraftingBindings.SavedCraftings}"
                       SelectedItem="{Binding CraftingBindings.SelectedSavedCrafting, Mode=TwoWay}"
                       SelectionChanged="SavedCraftings_OnSelectionChanged"
-                      Margin="0,28,0,0">
+                      Margin="0,28,0,0"
+                      ItemContainerStyle="{StaticResource SavedCraftingListViewItem}">
                 <ListView.View>
                     <GridView>
-                        <GridViewColumn Header="{x:Static crafting:CraftingBindings.TranslationIcon}" Width="45">
+                        <GridViewColumn Header="{x:Static crafting:CraftingBindings.TranslationIcon}" Width="65">
                             <GridViewColumn.CellTemplate>
                                 <DataTemplate>
-                                    <Image Source="{Binding Icon}" Width="32" Height="32" />
+                                    <Image Source="{Binding Icon}" Width="50" Height="50" />
                                 </DataTemplate>
                             </GridViewColumn.CellTemplate>
                         </GridViewColumn>
-                        <GridViewColumn Header="{x:Static crafting:CraftingBindings.TranslationItem}" Width="260" DisplayMemberBinding="{Binding ItemName}" />
-                        <GridViewColumn Header="{x:Static crafting:CraftingBindings.TranslationDetails}" Width="300" DisplayMemberBinding="{Binding Summary}" />
-                        <GridViewColumn Header="{x:Static crafting:CraftingBindings.TranslationMainCosts}" Width="110" DisplayMemberBinding="{Binding NetMaterialCosts}" />
-                        <GridViewColumn Header="{x:Static crafting:CraftingBindings.TranslationProfit}" Width="110" DisplayMemberBinding="{Binding Profit}" />
-                        <GridViewColumn Header="{x:Static crafting:CraftingBindings.TranslationChanged}" Width="170" DisplayMemberBinding="{Binding LastChangedUtc}" />
-                        <GridViewColumn Header="{x:Static crafting:CraftingBindings.TranslationNotes}" Width="360" DisplayMemberBinding="{Binding Notes}" />
+                        <GridViewColumn Header="{x:Static crafting:CraftingBindings.TranslationItem}" Width="260">
+                            <GridViewColumn.CellTemplate>
+                                <DataTemplate>
+                                    <TextBlock Text="{Binding ItemName}" Style="{StaticResource SavedCraftingCellText}" MaxHeight="40" />
+                                </DataTemplate>
+                            </GridViewColumn.CellTemplate>
+                        </GridViewColumn>
+                        <GridViewColumn Header="{x:Static crafting:CraftingBindings.TranslationDetails}" Width="300">
+                            <GridViewColumn.CellTemplate>
+                                <DataTemplate>
+                                    <TextBlock Text="{Binding Summary}" Style="{StaticResource SavedCraftingCellText}" MaxHeight="40" />
+                                </DataTemplate>
+                            </GridViewColumn.CellTemplate>
+                        </GridViewColumn>
+                        <GridViewColumn Header="{x:Static crafting:CraftingBindings.TranslationMainCosts}" Width="110">
+                            <GridViewColumn.CellTemplate>
+                                <DataTemplate>
+                                    <TextBlock Text="{Binding NetMaterialCosts, StringFormat={}{0:N0}}" Style="{StaticResource SavedCraftingNetCostText}" />
+                                </DataTemplate>
+                            </GridViewColumn.CellTemplate>
+                        </GridViewColumn>
+                        <GridViewColumn Header="{x:Static crafting:CraftingBindings.TranslationProfit}" Width="110">
+                            <GridViewColumn.CellTemplate>
+                                <DataTemplate>
+                                    <TextBlock Text="{Binding Profit, StringFormat={}{0:N0}}" Style="{StaticResource SavedCraftingProfitText}" />
+                                </DataTemplate>
+                            </GridViewColumn.CellTemplate>
+                        </GridViewColumn>
+                        <GridViewColumn Header="{x:Static crafting:CraftingBindings.TranslationBreakEven}" Width="120">
+                            <GridViewColumn.CellTemplate>
+                                <DataTemplate>
+                                    <TextBlock Text="{Binding BreakEvenPrice, StringFormat={}{0:N0}}" Style="{StaticResource SavedCraftingBreakEvenText}" />
+                                </DataTemplate>
+                            </GridViewColumn.CellTemplate>
+                        </GridViewColumn>
+                        <GridViewColumn Header="{x:Static crafting:CraftingBindings.TranslationChanged}" Width="150" DisplayMemberBinding="{Binding LastChangedUtc}" />
+                        <GridViewColumn Header="{x:Static crafting:CraftingBindings.TranslationNotes}" Width="360">
+                            <GridViewColumn.CellTemplate>
+                                <DataTemplate>
+                                    <TextBlock Text="{Binding Notes}" Style="{StaticResource SavedCraftingCellText}" MaxHeight="40" />
+                                </DataTemplate>
+                            </GridViewColumn.CellTemplate>
+                        </GridViewColumn>
                     </GridView>
                 </ListView.View>
             </ListView>
