@@ -292,24 +292,12 @@ public class CraftingBindings : BaseViewModel
         }
     }
 
-    public string SelectedCraftingLocationBonusSummary => SelectedCraftingLocation == null
-        ? string.Empty
-        : TranslationBonus
-          + " "
-          + EffectiveCraftingBonusPercent.ToString("N2")
-          + "%"
-          + (UsesFocus
-              ? " | " + TranslationFocus + " +" + CraftingLocationData.FocusProductionBonusPercent.ToString("N2") + "%"
-              : string.Empty)
-          + " | "
-          + TranslationExpectedRrr
-          + " "
-          + GetSelectedCraftingLocationReturnRate().ToString("N2")
-          + "%";
+    public string SelectedCraftingLocationBonusSummary => 
+        SelectedCraftingLocation == null ? string.Empty : TranslationBonus + " " + EffectiveCraftingBonusPercent.ToString("N2") + "%"
+                         + (UsesFocus ? " | " + TranslationFocus + " +" + CraftingLocationData.FocusProductionBonusPercent.ToString("N2") + "%" : string.Empty)
+                         + "\n" + TranslationExpectedRrr + " " + GetSelectedCraftingLocationReturnRate().ToString("N2") + "%";
 
-    public decimal EffectiveCraftingBonusPercent => (SelectedCraftingLocation?.TotalProductionBonusPercent ?? 0m)
-                                                    + (SelectedDailyBonus?.BonusPercent ?? 0m)
-                                                    + GetSelectedHideoutBonusPercent();
+    public decimal EffectiveCraftingBonusPercent => (SelectedCraftingLocation?.TotalProductionBonusPercent ?? 0m) + (SelectedDailyBonus?.BonusPercent ?? 0m) + GetSelectedHideoutBonusPercent();
 
     public MarketLocation SelectedMarketLocation
     {
