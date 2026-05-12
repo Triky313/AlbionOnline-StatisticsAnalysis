@@ -119,7 +119,6 @@ public class CraftingBindings : BaseViewModel
     }
     =
     [
-        new(MarketLocation.BlackMarket, "Black Market"),
         .. Locations.OnceMarketLocations
     ];
 
