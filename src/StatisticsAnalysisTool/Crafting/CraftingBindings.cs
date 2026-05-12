@@ -473,6 +473,8 @@ public class CraftingBindings : BaseViewModel
     public static string TranslationReturnRatePercent => LocalizationController.Translation("RETURN_RATE_PERCENT");
     public static string TranslationRevenue => LocalizationController.Translation("REVENUE");
     public static string TranslationRoi => LocalizationController.Translation("ROI");
+    public static string TranslationSalesGross => LocalizationController.Translation("SALES_GROSS");
+    public static string TranslationSalesTax => LocalizationController.Translation("SALES_TAX");
     public static string TranslationSalesNet => LocalizationController.Translation("SALES_NET");
     public static string TranslationSalesTaxPercent => LocalizationController.Translation("SALES_TAX_PERCENT");
     public static string TranslationSave => LocalizationController.Translation("SAVE");
@@ -481,6 +483,7 @@ public class CraftingBindings : BaseViewModel
     public static string TranslationStation => LocalizationController.Translation("STATION");
     public static string TranslationStationFee => LocalizationController.Translation("STATION_FEE");
     public static string TranslationStationFeeTooltip => LocalizationController.Translation("CRAFTING_STATION_FEE_TOOLTIP");
+    public static string TranslationTotalCosts => LocalizationController.Translation("TOTAL_COSTS");
     public static string TranslationType => LocalizationController.Translation("TYPE");
     public static string TranslationWeightAfter => LocalizationController.Translation("WEIGHT_AFTER");
     public static string TranslationWeightBefore => LocalizationController.Translation("WEIGHT_BEFORE");
@@ -492,11 +495,15 @@ public class CraftingBindings : BaseViewModel
     public static string TranslationNetMaterialsTooltip => LocalizationController.Translation("CRAFTING_RESULT_NET_MATERIALS_TOOLTIP");
     public static string TranslationNonReturnableTooltip => LocalizationController.Translation("CRAFTING_RESULT_NON_RETURNABLE_TOOLTIP");
     public static string TranslationOutputTooltip => LocalizationController.Translation("CRAFTING_RESULT_OUTPUT_TOOLTIP");
+    public static string TranslationOtherCostsTooltip => LocalizationController.Translation("CRAFTING_RESULT_OTHER_COSTS_TOOLTIP");
     public static string TranslationProfitPerItemTooltip => LocalizationController.Translation("CRAFTING_RESULT_PROFIT_PER_ITEM_TOOLTIP");
     public static string TranslationProfitTooltip => LocalizationController.Translation("CRAFTING_RESULT_PROFIT_TOOLTIP");
     public static string TranslationRoiTooltip => LocalizationController.Translation("CRAFTING_RESULT_ROI_TOOLTIP");
+    public static string TranslationSalesGrossTooltip => LocalizationController.Translation("CRAFTING_RESULT_SALES_GROSS_TOOLTIP");
     public static string TranslationSalesNetTooltip => LocalizationController.Translation("CRAFTING_RESULT_SALES_NET_TOOLTIP");
+    public static string TranslationSalesTaxTooltip => LocalizationController.Translation("CRAFTING_RESULT_SALES_TAX_TOOLTIP");
     public static string TranslationStationTooltip => LocalizationController.Translation("CRAFTING_RESULT_STATION_TOOLTIP");
+    public static string TranslationTotalCostsTooltip => LocalizationController.Translation("CRAFTING_RESULT_TOTAL_COSTS_TOOLTIP");
     public static string TranslationWeightAfterTooltip => LocalizationController.Translation("CRAFTING_RESULT_WEIGHT_AFTER_TOOLTIP");
     public static string TranslationWeightBeforeTooltip => LocalizationController.Translation("CRAFTING_RESULT_WEIGHT_BEFORE_TOOLTIP");
 

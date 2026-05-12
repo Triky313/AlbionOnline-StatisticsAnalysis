@@ -298,10 +298,10 @@
                     </DockPanel>
 
                     <StackPanel Orientation="Horizontal" Margin="0,0,0,8">
-                        <Button Content="{Binding CraftingBindings.TranslationNew, FallbackValue=NEW}" Width="58" Height="24" Command="{Binding CraftingBindings.NewCommand}" />
-                        <Button Content="{Binding CraftingBindings.TranslationSave, FallbackValue=SAVE}" Width="58" Height="24" Margin="5,0,0,0" Command="{Binding CraftingBindings.SaveCommand}" />
-                        <Button Content="{Binding CraftingBindings.TranslationDelete, FallbackValue=DELETE}" Width="58" Height="24" Margin="5,0,0,0" Command="{Binding CraftingBindings.DeleteCommand}" />
-                        <Button Content="{Binding CraftingBindings.TranslationPrices, FallbackValue=PRICES}" Width="58" Height="24" Margin="5,0,0,0" Command="{Binding CraftingBindings.LoadPricesCommand}" />
+                        <Button Content="{Binding CraftingBindings.TranslationNew, FallbackValue=NEW}" Width="80" Height="24" Command="{Binding CraftingBindings.NewCommand}" />
+                        <Button Content="{Binding CraftingBindings.TranslationSave, FallbackValue=SAVE}" Width="80" Height="24" Margin="5,0,0,0" Command="{Binding CraftingBindings.SaveCommand}" />
+                        <Button Content="{Binding CraftingBindings.TranslationDelete, FallbackValue=DELETE}" Width="80" Height="24" Margin="5,0,0,0" Command="{Binding CraftingBindings.DeleteCommand}" />
+                        <Button Content="{Binding CraftingBindings.TranslationPrices, FallbackValue=PRICES}" Width="80" Height="24" Margin="5,0,0,0" Command="{Binding CraftingBindings.LoadPricesCommand}" />
                     </StackPanel>
 
                     <TextBlock Text="{Binding CraftingBindings.StatusText}" Foreground="{StaticResource SolidColorBrush.Text.3}" TextWrapping="Wrap" />
@@ -443,6 +443,18 @@
                                         <TextBlock Text="{Binding CraftingBindings.Calculation.OutputQuantity, StringFormat={}{0:N0}, FallbackValue=0}" Style="{StaticResource CraftingResultInfoValue}" />
                                     </StackPanel>
                                 </Border>
+                                <Border Style="{StaticResource CraftingResultTile}" ToolTip="{Binding CraftingBindings.TranslationSalesNetTooltip}">
+                                    <StackPanel>
+                                        <TextBlock Text="{Binding CraftingBindings.TranslationSalesNet, FallbackValue=SALES_NET}" Style="{StaticResource CraftingResultLabel}" />
+                                        <TextBlock Text="{Binding CraftingBindings.Calculation.SalesRevenueNet, StringFormat={}{0:N0}, FallbackValue=0}" Style="{StaticResource CraftingResultRevenueValue}" />
+                                    </StackPanel>
+                                </Border>
+                                <Border Style="{StaticResource CraftingResultTile}" ToolTip="{Binding CraftingBindings.TranslationTotalCostsTooltip}">
+                                    <StackPanel>
+                                        <TextBlock Text="{Binding CraftingBindings.TranslationTotalCosts, FallbackValue=TOTAL_COSTS}" Style="{StaticResource CraftingResultLabel}" />
+                                        <TextBlock Text="{Binding CraftingBindings.Calculation.TotalCosts, StringFormat={}{0:N0}, FallbackValue=0}" Style="{StaticResource CraftingResultCostValue}" />
+                                    </StackPanel>
+                                </Border>
                                 <Border Style="{StaticResource CraftingResultTile}" ToolTip="{Binding CraftingBindings.TranslationProfitTooltip}">
                                     <StackPanel>
                                         <TextBlock Text="{Binding CraftingBindings.TranslationProfit, FallbackValue=PROFIT}" Style="{StaticResource CraftingResultLabel}" />
@@ -465,12 +477,6 @@
                                     <StackPanel>
                                         <TextBlock Text="{Binding CraftingBindings.TranslationBreakEven, FallbackValue=BREAK_EVEN}" Style="{StaticResource CraftingResultLabel}" />
                                         <TextBlock Text="{Binding CraftingBindings.Calculation.BreakEvenPrice, StringFormat={}{0:N0}, FallbackValue=0}" Style="{StaticResource CraftingResultBreakEvenValue}" />
-                                    </StackPanel>
-                                </Border>
-                                <Border Style="{StaticResource CraftingResultTile}" ToolTip="{Binding CraftingBindings.TranslationSalesNetTooltip}">
-                                    <StackPanel>
-                                        <TextBlock Text="{Binding CraftingBindings.TranslationSalesNet, FallbackValue=SALES_NET}" Style="{StaticResource CraftingResultLabel}" />
-                                        <TextBlock Text="{Binding CraftingBindings.Calculation.SalesRevenueNet, StringFormat={}{0:N0}, FallbackValue=0}" Style="{StaticResource CraftingResultRevenueValue}" />
                                     </StackPanel>
                                 </Border>
                             </StackPanel>
@@ -499,8 +505,12 @@
                                         <TextBlock Text="{Binding CraftingBindings.Calculation.StationFee, StringFormat={}{0:N0}, FallbackValue=0}" Style="{StaticResource CraftingResultCostValue}" />
                                     </StackPanel>
                                 </Border>
-                            </StackPanel>
-                            <StackPanel Orientation="Horizontal" Margin="0,2">
+                                <Border Style="{StaticResource CraftingResultTile}" ToolTip="{Binding CraftingBindings.TranslationOtherCostsTooltip}">
+                                    <StackPanel>
+                                        <TextBlock Text="{Binding CraftingBindings.TranslationOtherCosts, FallbackValue=OTHER_COSTS}" Style="{StaticResource CraftingResultLabel}" />
+                                        <TextBlock Text="{Binding CraftingBindings.Calculation.OtherCosts, StringFormat={}{0:N0}, FallbackValue=0}" Style="{StaticResource CraftingResultCostValue}" />
+                                    </StackPanel>
+                                </Border>
                                 <Border Style="{StaticResource CraftingResultTile}" ToolTip="{Binding CraftingBindings.TranslationJournalCostsTooltip}">
                                     <StackPanel>
                                         <TextBlock Text="{Binding CraftingBindings.TranslationJournalCosts, FallbackValue=JOURNAL_COSTS}" Style="{StaticResource CraftingResultLabel}" />
@@ -511,6 +521,20 @@
                                     <StackPanel>
                                         <TextBlock Text="{Binding CraftingBindings.TranslationJournalRevenue, FallbackValue=JOURNAL_REVENUE}" Style="{StaticResource CraftingResultLabel}" />
                                         <TextBlock Text="{Binding CraftingBindings.Calculation.JournalRevenue, StringFormat={}{0:N0}, FallbackValue=0}" Style="{StaticResource CraftingResultRevenueValue}" />
+                                    </StackPanel>
+                                </Border>
+                            </StackPanel>
+                            <StackPanel Orientation="Horizontal" Margin="0,2">
+                                <Border Style="{StaticResource CraftingResultTile}" ToolTip="{Binding CraftingBindings.TranslationSalesGrossTooltip}">
+                                    <StackPanel>
+                                        <TextBlock Text="{Binding CraftingBindings.TranslationSalesGross, FallbackValue=SALES_GROSS}" Style="{StaticResource CraftingResultLabel}" />
+                                        <TextBlock Text="{Binding CraftingBindings.Calculation.SalesRevenueGross, StringFormat={}{0:N0}, FallbackValue=0}" Style="{StaticResource CraftingResultRevenueValue}" />
+                                    </StackPanel>
+                                </Border>
+                                <Border Style="{StaticResource CraftingResultTile}" ToolTip="{Binding CraftingBindings.TranslationSalesTaxTooltip}">
+                                    <StackPanel>
+                                        <TextBlock Text="{Binding CraftingBindings.TranslationSalesTax, FallbackValue=SALES_TAX}" Style="{StaticResource CraftingResultLabel}" />
+                                        <TextBlock Text="{Binding CraftingBindings.Calculation.SalesTax, StringFormat={}{0:N0}, FallbackValue=0}" Style="{StaticResource CraftingResultCostValue}" />
                                     </StackPanel>
                                 </Border>
                                 <Border Style="{StaticResource CraftingResultTile}" ToolTip="{Binding CraftingBindings.TranslationWeightBeforeTooltip}">
