@@ -74,6 +74,27 @@ public partial class CraftingControl
         listBox.SelectedItem = null;
     }
 
+    private void ListBoxSellPrice_OnSelectionChanged(object sender, SelectionChangedEventArgs e)
+    {
+        if (DataContext is not MainWindowViewModel mainWindowViewModel)
+        {
+            return;
+        }
+
+        if (sender is not ListBox listBox)
+        {
+            return;
+        }
+
+        if (listBox.SelectedItem is not CraftingSellPriceOption sellPriceOption)
+        {
+            return;
+        }
+
+        mainWindowViewModel.CraftingBindings.SelectSellPriceOption(sellPriceOption);
+        listBox.SelectedItem = null;
+    }
+
     private void CraftingLocationSearch_OnGotKeyboardFocus(object sender, System.Windows.Input.KeyboardFocusChangedEventArgs e)
     {
         if (DataContext is not MainWindowViewModel mainWindowViewModel)
@@ -82,5 +103,25 @@ public partial class CraftingControl
         }
 
         mainWindowViewModel.CraftingBindings.OpenCraftingLocationSearch();
+    }
+
+    private void OutputUnitPrice_OnGotKeyboardFocus(object sender, System.Windows.Input.KeyboardFocusChangedEventArgs e)
+    {
+        if (DataContext is not MainWindowViewModel mainWindowViewModel)
+        {
+            return;
+        }
+
+        mainWindowViewModel.CraftingBindings.OpenSellPriceOptions();
+    }
+
+    private void OutputUnitPrice_OnPreviewMouseLeftButtonUp(object sender, System.Windows.Input.MouseButtonEventArgs e)
+    {
+        if (DataContext is not MainWindowViewModel mainWindowViewModel)
+        {
+            return;
+        }
+
+        mainWindowViewModel.CraftingBindings.OpenSellPriceOptions();
     }
 }

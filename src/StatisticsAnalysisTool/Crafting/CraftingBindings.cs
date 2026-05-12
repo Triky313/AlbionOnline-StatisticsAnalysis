@@ -1,6 +1,7 @@
 using Serilog;
 using StatisticsAnalysisTool.Common;
 using StatisticsAnalysisTool.Diagnostics;
+using StatisticsAnalysisTool.Enumerations;
 using StatisticsAnalysisTool.GameFileData;
 using StatisticsAnalysisTool.Localization;
 using StatisticsAnalysisTool.Models;
@@ -19,12 +20,31 @@ namespace StatisticsAnalysisTool.Crafting;
 
 public class CraftingBindings : BaseViewModel
 {
+    private static readonly MarketLocation[] SellPriceMarketLocations =
+    [
+        MarketLocation.BlackMarket,
+        MarketLocation.MartlockMarket,
+        MarketLocation.ThetfordMarket,
+        MarketLocation.FortSterlingMarket,
+        MarketLocation.LymhurstMarket,
+        MarketLocation.BridgewatchMarket,
+        MarketLocation.CaerleonMarket,
+        MarketLocation.BrecilienMarket,
+        MarketLocation.SwampCross,
+        MarketLocation.ForestCross,
+        MarketLocation.SteppeCross,
+        MarketLocation.HighlandCross,
+        MarketLocation.MountainCross,
+        MarketLocation.SmugglersDen
+    ];
+
     private readonly CraftingCalculator _calculator = new();
     private readonly CraftingRecipeResolver _recipeResolver = new();
     private readonly CraftingStationFeeService _stationFeeService = new();
     private readonly SavedCraftingController _controller = new();
     private string _itemSearchText;
     private string _craftingLocationSearchText;
+    private string _sellPriceOptionsItemUniqueName = string.Empty;
     private int _amountCrafted = 1;
     private bool _isLoading;
 
@@ -79,6 +99,12 @@ public class CraftingBindings : BaseViewModel
     = [];
 
     public ObservableCollection<CraftingLocationOption> ListBoxCraftingLocationItems
+    {
+        get;
+    }
+    = [];
+
+    public ObservableCollection<CraftingSellPriceOption> SellPriceOptions
     {
         get;
     }
@@ -140,6 +166,7 @@ public class CraftingBindings : BaseViewModel
 
             field = value;
             OnPropertyChanged();
+            ClearSellPriceOptions();
             _ = ApplySelectedItemAsync(value);
         }
     }
@@ -194,6 +221,16 @@ public class CraftingBindings : BaseViewModel
     }
 
     public bool IsCraftingLocationPopupOpen
+    {
+        get;
+        set
+        {
+            field = value;
+            OnPropertyChanged();
+        }
+    }
+
+    public bool IsSellPricePopupOpen
     {
         get;
         set
@@ -541,6 +578,45 @@ public class CraftingBindings : BaseViewModel
         ApplySelectedCraftingLocationReturnRate();
     }
 
+    public async void OpenSellPriceOptions()
+    {
+        try
+        {
+            if (SelectedItem == null)
+            {
+                SellPriceOptions.Clear();
+                IsSellPricePopupOpen = false;
+                return;
+            }
+
+            if (string.Equals(_sellPriceOptionsItemUniqueName, SelectedItem.UniqueName, StringComparison.Ordinal)
+                && SellPriceOptions.Count > 0)
+            {
+                IsSellPricePopupOpen = true;
+                return;
+            }
+
+            await LoadSellPriceOptionsAsync();
+        }
+        catch (Exception e)
+        {
+            DebugConsole.WriteError(MethodBase.GetCurrentMethod()?.DeclaringType, e);
+            Log.Error(e, "Sell price options could not be loaded");
+            IsSellPricePopupOpen = false;
+        }
+    }
+
+    public void SelectSellPriceOption(CraftingSellPriceOption sellPriceOption)
+    {
+        if (sellPriceOption == null)
+        {
+            return;
+        }
+
+        OutputUnitPrice = sellPriceOption.Price;
+        IsSellPricePopupOpen = false;
+    }
+
     public async Task LoadAsync()
     {
         var craftings = await _controller.LoadAsync();
@@ -859,6 +935,121 @@ public class CraftingBindings : BaseViewModel
         {
             Log.Error(e, "Error saving crafting");
         }
+    }
+
+    private async Task LoadSellPriceOptionsAsync()
+    {
+        var selectedItem = SelectedItem;
+        if (selectedItem == null)
+        {
+            return;
+        }
+
+        var itemUniqueName = selectedItem.UniqueName;
+        var prices = await ApiController.GetCityItemPricesFromJsonAsync(itemUniqueName).ConfigureAwait(true) ?? [];
+
+        if (!string.Equals(SelectedItem?.UniqueName, itemUniqueName, StringComparison.Ordinal))
+        {
+            return;
+        }
+
+        SellPriceOptions.Clear();
+
+        foreach (var location in SellPriceMarketLocations)
+        {
+            var priceOptionValue = GetSellPriceOptionValue(prices, location);
+            SellPriceOptions.Add(new CraftingSellPriceOption
+            {
+                Location = location,
+                LocationName = Locations.GetDisplayName(location),
+                Price = priceOptionValue.Price,
+                PriceDate = priceOptionValue.PriceDate,
+                PriceDateStatus = priceOptionValue.PriceDateStatus
+            }
+            );
+        }
+
+        _sellPriceOptionsItemUniqueName = itemUniqueName;
+        IsSellPricePopupOpen = SellPriceOptions.Count > 0;
+    }
+
+    private void ClearSellPriceOptions()
+    {
+        _sellPriceOptionsItemUniqueName = string.Empty;
+        SellPriceOptions.Clear();
+        IsSellPricePopupOpen = false;
+    }
+
+    private static CraftingSellPriceOptionValue GetSellPriceOptionValue(IEnumerable<MarketResponse> prices, MarketLocation location)
+    {
+        var locationPrices = prices
+            .Where(x => GetMarketLocationFromPrice(x) == location)
+            .ToList();
+
+        if (locationPrices.Count == 0)
+        {
+            return CraftingSellPriceOptionValue.Empty;
+        }
+
+        if (location == MarketLocation.BlackMarket)
+        {
+            var blackMarketPrice = locationPrices
+                .OrderByDescending(x => x.BuyPriceMax)
+                .ThenByDescending(x => x.BuyPriceMaxDate)
+                .FirstOrDefault();
+
+            return CreateSellPriceOptionValue(blackMarketPrice?.BuyPriceMax ?? 0ul, blackMarketPrice?.BuyPriceMaxDate ?? DateTime.MinValue);
+        }
+
+        var sellPrice = locationPrices
+            .Where(x => x.SellPriceMin > 0)
+            .OrderBy(x => x.SellPriceMin)
+            .ThenByDescending(x => x.SellPriceMinDate)
+            .FirstOrDefault();
+
+        return CreateSellPriceOptionValue(sellPrice?.SellPriceMin ?? 0ul, sellPrice?.SellPriceMinDate ?? DateTime.MinValue);
+    }
+
+    private static CraftingSellPriceOptionValue CreateSellPriceOptionValue(ulong price, DateTime priceDate)
+    {
+        if (price <= 0 || priceDate == DateTime.MinValue)
+        {
+            return CraftingSellPriceOptionValue.Empty;
+        }
+
+        return new CraftingSellPriceOptionValue((decimal) price, priceDate, priceDate.GetValueTimeStatus());
+    }
+
+    private readonly record struct CraftingSellPriceOptionValue(decimal Price, DateTime PriceDate, ValueTimeStatus PriceDateStatus)
+    {
+        public static CraftingSellPriceOptionValue Empty => new(0m, DateTime.MinValue, ValueTimeStatus.NoValue);
+    }
+
+    private static MarketLocation GetMarketLocationFromPrice(MarketResponse price)
+    {
+        if (price == null)
+        {
+            return MarketLocation.Unknown;
+        }
+
+        var marketLocation = price.MarketLocation;
+        if (marketLocation != MarketLocation.Unknown)
+        {
+            return marketLocation;
+        }
+
+        return price.City switch
+        {
+            "BlackMarket" => MarketLocation.BlackMarket,
+            "FortSterling" => MarketLocation.FortSterlingMarket,
+            "SwampCross" => MarketLocation.SwampCross,
+            "ForestCross" => MarketLocation.ForestCross,
+            "SteppeCross" => MarketLocation.SteppeCross,
+            "HighlandCross" => MarketLocation.HighlandCross,
+            "MountainCross" => MarketLocation.MountainCross,
+            "SmugglersNetwork" => MarketLocation.SmugglersDen,
+            _ => MarketLocation.Unknown
+        };
     }
 
     private SavedCrafting CreateSavedCrafting()
