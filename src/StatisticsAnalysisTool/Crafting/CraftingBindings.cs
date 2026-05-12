@@ -159,6 +159,12 @@ public class CraftingBindings : BaseViewModel
         set
         {
             _itemSearchText = value;
+
+            if (!_isLoading && SelectedItem != null && !string.Equals(SelectedItem.LocalizedName, value, StringComparison.Ordinal))
+            {
+                SelectedItem = null;
+            }
+
             CraftableItemsView?.Refresh();
             UpdateItemSearchListBox(value);
             OnPropertyChanged();
@@ -415,8 +421,6 @@ public class CraftingBindings : BaseViewModel
 
     public ICommand DeleteCommand => field ??= new CommandHandler(_ => DeleteSelectedAsync(), true);
 
-    public ICommand ResetCommand => field ??= new CommandHandler(_ => ResetEditor(), true);
-
     public ICommand LoadSelectedCommand => field ??= new CommandHandler(LoadSelectedCrafting, true);
 
     public ICommand LoadPricesCommand => field ??= new CommandHandler(_ => LoadPricesAsync(), true);
@@ -464,7 +468,6 @@ public class CraftingBindings : BaseViewModel
     public static string TranslationProfitPerItem => LocalizationController.Translation("PROFIT_PER_ITEM");
     public static string TranslationResource => LocalizationController.Translation("RESOURCE");
     public static string TranslationResources => LocalizationController.Translation("RESOURCES");
-    public static string TranslationReset => LocalizationController.Translation("RESET");
     public static string TranslationResults => LocalizationController.Translation("RESULTS");
     public static string TranslationReturnRatePercent => LocalizationController.Translation("RETURN_RATE_PERCENT");
     public static string TranslationRevenue => LocalizationController.Translation("REVENUE");
@@ -632,8 +635,14 @@ public class CraftingBindings : BaseViewModel
 
     private async Task ApplySelectedItemAsync(Item item)
     {
-        if (_isLoading || item == null)
+        if (_isLoading)
         {
+            return;
+        }
+
+        if (item == null)
+        {
+            ClearSelectedItemData();
             return;
         }
 
@@ -814,7 +823,7 @@ public class CraftingBindings : BaseViewModel
     {
         try
         {
-            if (SelectedItem == null)
+            if (!CanSaveCurrentCrafting())
             {
                 StatusText = LocalizationController.Translation("CRAFTING_SELECT_ITEM_BEFORE_SAVING");
                 return;
@@ -921,6 +930,10 @@ public class CraftingBindings : BaseViewModel
         _isLoading = true;
 
         SelectedItem = ItemController.GetItemByUniqueName(savedCrafting.ItemUniqueName);
+        _itemSearchText = SelectedItem?.LocalizedName ?? savedCrafting.ItemName ?? string.Empty;
+        OnPropertyChanged(nameof(ItemSearchText));
+        IsItemSearchPopupOpen = false;
+        ListBoxItemSearchItems.Clear();
         CraftingRuns = Math.Max(1, savedCrafting.CraftingRuns);
         _amountCrafted = Math.Max(1, savedCrafting.AmountCrafted);
         UsesFocus = savedCrafting.UsesFocus;
@@ -956,14 +969,27 @@ public class CraftingBindings : BaseViewModel
     private void NewCrafting()
     {
         SelectedSavedCrafting = null;
-        ResetEditor();
+        ClearEditorForNewCrafting();
         StatusText = LocalizationController.Translation("CRAFTING_NEW_STARTED");
     }
 
-    private void ResetEditor()
+    private void ClearEditorForNewCrafting()
     {
         _isLoading = true;
 
+        SelectedItem = null;
+        _itemSearchText = string.Empty;
+        OnPropertyChanged(nameof(ItemSearchText));
+        IsItemSearchPopupOpen = false;
+        ListBoxItemSearchItems.Clear();
+        _craftingLocationSearchText = string.Empty;
+        OnPropertyChanged(nameof(CraftingLocationSearchText));
+        IsCraftingLocationPopupOpen = false;
+        ListBoxCraftingLocationItems.Clear();
+        CraftingLocations.Clear();
+        SelectedCraftingLocation = null;
+        Resources.Clear();
+        Journal = null;
         CraftingRuns = 1;
         UsesFocus = false;
         SelectedDailyBonus = DailyBonusOptions.First();
@@ -974,9 +1000,28 @@ public class CraftingBindings : BaseViewModel
         OtherCosts = 0m;
         OutputUnitPrice = 0m;
         Notes = string.Empty;
+        _amountCrafted = 1;
 
         _isLoading = false;
-        _ = ApplySelectedItemAsync(SelectedItem);
+        Calculation = new CraftingCalculationResult();
+    }
+
+    private void ClearSelectedItemData()
+    {
+        Resources.Clear();
+        Journal = null;
+        CraftingLocations.Clear();
+        ListBoxCraftingLocationItems.Clear();
+        _craftingLocationSearchText = string.Empty;
+        OnPropertyChanged(nameof(CraftingLocationSearchText));
+        SelectedCraftingLocation = null;
+        _amountCrafted = 1;
+        Calculation = new CraftingCalculationResult();
+    }
+
+    private bool CanSaveCurrentCrafting()
+    {
+        return SelectedItem != null && !string.IsNullOrWhiteSpace(ItemSearchText);
     }
 
     private async void LoadPricesAsync()

@@ -294,7 +294,6 @@
                         <Button Content="{Binding CraftingBindings.TranslationNew, FallbackValue=NEW}" Width="58" Height="24" Command="{Binding CraftingBindings.NewCommand}" />
                         <Button Content="{Binding CraftingBindings.TranslationSave, FallbackValue=SAVE}" Width="58" Height="24" Margin="5,0,0,0" Command="{Binding CraftingBindings.SaveCommand}" />
                         <Button Content="{Binding CraftingBindings.TranslationDelete, FallbackValue=DELETE}" Width="58" Height="24" Margin="5,0,0,0" Command="{Binding CraftingBindings.DeleteCommand}" />
-                        <Button Content="{Binding CraftingBindings.TranslationReset, FallbackValue=RESET}" Width="58" Height="24" Margin="5,0,0,0" Command="{Binding CraftingBindings.ResetCommand}" />
                         <Button Content="{Binding CraftingBindings.TranslationPrices, FallbackValue=PRICES}" Width="58" Height="24" Margin="5,0,0,0" Command="{Binding CraftingBindings.LoadPricesCommand}" />
                     </StackPanel>
 
@@ -556,7 +555,7 @@
                             </GridViewColumn.CellTemplate>
                         </GridViewColumn>
                         <GridViewColumn Header="{x:Static crafting:CraftingBindings.TranslationChanged}" Width="150" DisplayMemberBinding="{Binding LastChangedUtc}" />
-                        <GridViewColumn Header="{x:Static crafting:CraftingBindings.TranslationNotes}" Width="360">
+                        <GridViewColumn Header="{x:Static crafting:CraftingBindings.TranslationNotes}" Width="300">
                             <GridViewColumn.CellTemplate>
                                 <DataTemplate>
                                     <TextBlock Text="{Binding Notes}" Style="{StaticResource SavedCraftingCellText}" MaxHeight="40" />
