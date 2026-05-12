@@ -240,8 +240,9 @@ public class CraftingBindings : BaseViewModel
         set
         {
             field = value;
-            Recalculate();
+            ApplySelectedCraftingLocationReturnRate();
             OnPropertyChanged();
+            OnPropertyChanged(nameof(SelectedCraftingLocationBonusSummary));
         }
     }
 
@@ -295,7 +296,11 @@ public class CraftingBindings : BaseViewModel
         ? string.Empty
         : "Bonus "
           + EffectiveCraftingBonusPercent.ToString("N2")
-          + "% | expected RRR "
+          + "%"
+          + (UsesFocus
+              ? " | Focus +" + CraftingLocationData.FocusProductionBonusPercent.ToString("N2") + "%"
+              : string.Empty)
+          + " | expected RRR "
           + GetSelectedCraftingLocationReturnRate().ToString("N2")
           + "%";
 
@@ -617,7 +622,7 @@ public class CraftingBindings : BaseViewModel
 
     private decimal GetSelectedCraftingLocationReturnRate()
     {
-        return CraftingLocationData.GetExpectedReturnRatePercent(EffectiveCraftingBonusPercent);
+        return CraftingLocationData.GetExpectedReturnRatePercent(EffectiveCraftingBonusPercent, UsesFocus);
     }
 
     private decimal GetSelectedHideoutBonusPercent()

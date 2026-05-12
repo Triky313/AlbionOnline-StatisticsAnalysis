@@ -14,6 +14,7 @@ public static class CraftingLocationData
 {
     public const string SourceFileName = "craftingmodifiers.json";
     public const string ModifiedFileName = "craftingmodifiers-modified.json";
+    public const decimal FocusProductionBonusPercent = 59m;
 
     private static readonly Dictionary<string, string> BiomeCodes = new(StringComparer.OrdinalIgnoreCase)
     {
@@ -91,6 +92,14 @@ public static class CraftingLocationData
         }
 
         return Math.Round(productionBonus / (1m + productionBonus) * 100m, 2, MidpointRounding.AwayFromZero);
+    }
+
+    public static decimal GetExpectedReturnRatePercent(decimal productionBonusPercent, bool usesFocus)
+    {
+        return GetExpectedReturnRatePercent(productionBonusPercent
+                                            + (usesFocus
+                                                ? FocusProductionBonusPercent
+                                                : 0m));
     }
 
     internal static IDisposable UseLocationsForTests(List<CraftingModifierLocationObject> locations)
