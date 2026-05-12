@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace StatisticsAnalysisTool.Crafting;
 
-public class CraftingController
+public class SavedCraftingController
 {
     private const string CraftingsFileName = "Craftings.json";
 

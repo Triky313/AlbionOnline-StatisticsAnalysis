@@ -117,6 +117,13 @@
         <Style x:Key="SavedCraftingBreakEvenText" TargetType="{x:Type TextBlock}" BasedOn="{StaticResource SavedCraftingCellText}">
             <Setter Property="Foreground" Value="{StaticResource SolidColorBrush.Accent.Yellow.1}" />
         </Style>
+        <Style x:Key="CraftingResourceQuantityText" TargetType="{x:Type TextBlock}">
+            <Setter Property="Foreground" Value="{StaticResource SolidColorBrush.Text.1}" />
+            <Setter Property="VerticalAlignment" Value="Center" />
+        </Style>
+        <Style x:Key="CraftingResourceCostText" TargetType="{x:Type TextBlock}" BasedOn="{StaticResource CraftingResourceQuantityText}">
+            <Setter Property="Foreground" Value="{StaticResource SolidColorBrush.Accent.Red.2}" />
+        </Style>
         <Style x:Key="SavedCraftingListViewItem" TargetType="{x:Type ListViewItem}" BasedOn="{StaticResource {x:Type ListViewItem}}">
             <Setter Property="MinHeight" Value="50" />
             <Setter Property="VerticalContentAlignment" Value="Center" />
@@ -314,9 +321,27 @@
                                 </GridViewColumn>
                                 <GridViewColumn Header="{x:Static crafting:CraftingBindings.TranslationResource}" Width="210" DisplayMemberBinding="{Binding DisplayName}" />
                                 <GridViewColumn Header="{x:Static crafting:CraftingBindings.TranslationType}" Width="125" DisplayMemberBinding="{Binding ResourceKindText}" />
-                                <GridViewColumn Header="{x:Static crafting:CraftingBindings.TranslationGross}" Width="80" DisplayMemberBinding="{Binding GrossQuantity}" />
-                                <GridViewColumn Header="{x:Static crafting:CraftingBindings.TranslationExpectedReturn}" Width="115" DisplayMemberBinding="{Binding ExpectedReturnQuantity}" />
-                                <GridViewColumn Header="{x:Static crafting:CraftingBindings.TranslationNet}" Width="80" DisplayMemberBinding="{Binding NetQuantity}" />
+                                <GridViewColumn Header="{x:Static crafting:CraftingBindings.TranslationGross}" Width="80">
+                                    <GridViewColumn.CellTemplate>
+                                        <DataTemplate>
+                                            <TextBlock Text="{Binding GrossQuantity, StringFormat={}{0:#,0.##}}" Style="{StaticResource CraftingResourceQuantityText}" />
+                                        </DataTemplate>
+                                    </GridViewColumn.CellTemplate>
+                                </GridViewColumn>
+                                <GridViewColumn Header="{x:Static crafting:CraftingBindings.TranslationExpectedReturn}" Width="115">
+                                    <GridViewColumn.CellTemplate>
+                                        <DataTemplate>
+                                            <TextBlock Text="{Binding ExpectedReturnQuantity, StringFormat={}{0:#,0.##}}" Style="{StaticResource CraftingResourceQuantityText}" />
+                                        </DataTemplate>
+                                    </GridViewColumn.CellTemplate>
+                                </GridViewColumn>
+                                <GridViewColumn Header="{x:Static crafting:CraftingBindings.TranslationNet}" Width="80">
+                                    <GridViewColumn.CellTemplate>
+                                        <DataTemplate>
+                                            <TextBlock Text="{Binding NetQuantity, StringFormat={}{0:#,0.##}}" Style="{StaticResource CraftingResourceQuantityText}" />
+                                        </DataTemplate>
+                                    </GridViewColumn.CellTemplate>
+                                </GridViewColumn>
                                 <GridViewColumn Header="{x:Static crafting:CraftingBindings.TranslationPrice}" Width="90">
                                     <GridViewColumn.CellTemplate>
                                         <DataTemplate>
@@ -324,7 +349,13 @@
                                         </DataTemplate>
                                     </GridViewColumn.CellTemplate>
                                 </GridViewColumn>
-                                <GridViewColumn Header="{x:Static crafting:CraftingBindings.TranslationNetCost}" Width="90" DisplayMemberBinding="{Binding NetCost, StringFormat={}{0:N0}}" />
+                                <GridViewColumn Header="{x:Static crafting:CraftingBindings.TranslationNetCost}" Width="90">
+                                    <GridViewColumn.CellTemplate>
+                                        <DataTemplate>
+                                            <TextBlock Text="{Binding NetCost, StringFormat={}{0:N0}}" Style="{StaticResource CraftingResourceCostText}" />
+                                        </DataTemplate>
+                                    </GridViewColumn.CellTemplate>
+                                </GridViewColumn>
                             </GridView>
                         </ListView.View>
                     </ListView>

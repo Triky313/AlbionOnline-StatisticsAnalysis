@@ -22,7 +22,7 @@ public class CraftingBindings : BaseViewModel
     private readonly CraftingCalculator _calculator = new();
     private readonly CraftingRecipeResolver _recipeResolver = new();
     private readonly CraftingStationFeeService _stationFeeService = new();
-    private readonly CraftingController _controller = new();
+    private readonly SavedCraftingController _controller = new();
     private string _itemSearchText;
     private string _craftingLocationSearchText;
     private int _amountCrafted = 1;

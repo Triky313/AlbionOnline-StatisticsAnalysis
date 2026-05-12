@@ -6,7 +6,6 @@ using System;
 using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
-using CommonCraftingController = StatisticsAnalysisTool.Common.CraftingController;
 
 namespace StatisticsAnalysisTool.Crafting;
 
@@ -54,10 +53,10 @@ public class CraftingRecipeResolver
 
         var journalItem = item.FullItemInformation switch
         {
-            Weapon weapon => CommonCraftingController.GetCraftingJournalItem(item.Tier, weapon.CraftingJournalType),
-            TransformationWeapon transformationWeapon => CommonCraftingController.GetCraftingJournalItem(item.Tier, transformationWeapon.CraftingJournalType),
-            EquipmentItem equipmentItem => CommonCraftingController.GetCraftingJournalItem(item.Tier, equipmentItem.CraftingJournalType),
-            TrackingItem trackingItem => CommonCraftingController.GetCraftingJournalItem(item.Tier, trackingItem.CraftingJournalType),
+            Weapon weapon => CraftingController.GetCraftingJournalItem(item.Tier, weapon.CraftingJournalType),
+            TransformationWeapon transformationWeapon => CraftingController.GetCraftingJournalItem(item.Tier, transformationWeapon.CraftingJournalType),
+            EquipmentItem equipmentItem => CraftingController.GetCraftingJournalItem(item.Tier, equipmentItem.CraftingJournalType),
+            TrackingItem trackingItem => CraftingController.GetCraftingJournalItem(item.Tier, trackingItem.CraftingJournalType),
             _ => null
         }
         ;
@@ -70,8 +69,8 @@ public class CraftingRecipeResolver
         var generalJournalName = ItemController.GetGeneralJournalName(journalItem.UniqueName);
         var fullJournalUniqueName = journalItem.UniqueName.Replace("_EMPTY", "_FULL", StringComparison.Ordinal);
         var generalJournalItem = ItemController.GetItemByUniqueName(generalJournalName);
-        var resources = CommonCraftingController.GetTotalAmountResources([GetCraftingRequirements(item)]);
-        var famePerRun = CommonCraftingController.GetTotalBaseFame(resources, (ItemTier) item.Tier, (ItemLevel) item.Level);
+        var resources = CraftingController.GetTotalAmountResources([GetCraftingRequirements(item)]);
+        var famePerRun = CraftingController.GetTotalBaseFame(resources, (ItemTier) item.Tier, (ItemLevel) item.Level);
         var maxFamePerJournal = GetMaxJournalFame(item.Tier);
 
         if (famePerRun <= 0d || maxFamePerJournal <= 0m)
@@ -206,7 +205,7 @@ public class CraftingRecipeResolver
             return CraftingResourceKind.TomeOfInsight;
         }
 
-        if (item?.FullItemInformation is SimpleItem {ResourceType: "ESSENCE"})
+        if (item?.FullItemInformation is SimpleItem { ResourceType: "ESSENCE" })
         {
             return CraftingResourceKind.Essence;
         }
