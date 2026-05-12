@@ -9,6 +9,77 @@
              d:DesignHeight="900"
              d:DesignWidth="1200"
              d:DataContext="{d:DesignInstance Type=viewModels:MainWindowViewModel}">
+    <UserControl.Resources>
+        <Style x:Key="CraftingResultTile" TargetType="{x:Type Border}">
+            <Setter Property="Background" Value="{StaticResource SolidColorBrush.Background.2}" />
+            <Setter Property="BorderBrush" Value="{StaticResource SolidColorBrush.Background.4}" />
+            <Setter Property="BorderThickness" Value="1" />
+            <Setter Property="CornerRadius" Value="1" />
+            <Setter Property="Height" Value="55" />
+            <Setter Property="MinWidth" Value="120" />
+            <Setter Property="Padding" Value="5,5" />
+            <Setter Property="Margin" Value="0,0,5,0" />
+        </Style>
+        <Style x:Key="CraftingResultLabel" TargetType="{x:Type TextBlock}">
+            <Setter Property="Foreground" Value="{StaticResource SolidColorBrush.Text.4}" />
+            <Setter Property="FontSize" Value="12" />
+            <Setter Property="HorizontalAlignment" Value="Center" />
+            <Setter Property="TextAlignment" Value="Center" />
+            <Setter Property="TextWrapping" Value="NoWrap" />
+            <Setter Property="TextTrimming" Value="CharacterEllipsis" />
+        </Style>
+        <Style x:Key="CraftingResultValue" TargetType="{x:Type TextBlock}">
+            <Setter Property="Foreground" Value="{StaticResource SolidColorBrush.Text.1}" />
+            <Setter Property="FontSize" Value="18" />
+            <Setter Property="FontWeight" Value="SemiBold" />
+            <Setter Property="HorizontalAlignment" Value="Center" />
+            <Setter Property="Margin" Value="0,2,0,0" />
+            <Setter Property="TextAlignment" Value="Center" />
+            <Setter Property="TextTrimming" Value="CharacterEllipsis" />
+        </Style>
+        <Style x:Key="CraftingResultCostValue" TargetType="{x:Type TextBlock}" BasedOn="{StaticResource CraftingResultValue}">
+            <Setter Property="Foreground" Value="{StaticResource SolidColorBrush.Accent.Orange.2}" />
+        </Style>
+        <Style x:Key="CraftingResultRevenueValue" TargetType="{x:Type TextBlock}" BasedOn="{StaticResource CraftingResultValue}">
+            <Setter Property="Foreground" Value="{StaticResource SolidColorBrush.Accent.Green.2}" />
+        </Style>
+        <Style x:Key="CraftingResultInfoValue" TargetType="{x:Type TextBlock}" BasedOn="{StaticResource CraftingResultValue}">
+            <Setter Property="Foreground" Value="{StaticResource SolidColorBrush.Accent.Blue.2}" />
+        </Style>
+        <Style x:Key="CraftingResultBreakEvenValue" TargetType="{x:Type TextBlock}" BasedOn="{StaticResource CraftingResultValue}">
+            <Setter Property="Foreground" Value="{StaticResource SolidColorBrush.Accent.Yellow.1}" />
+        </Style>
+        <Style x:Key="CraftingResultProfitValue" TargetType="{x:Type TextBlock}" BasedOn="{StaticResource CraftingResultValue}">
+            <Style.Triggers>
+                <DataTrigger Binding="{Binding CraftingBindings.Calculation.IsProfitPositive}" Value="True">
+                    <Setter Property="Foreground" Value="{StaticResource SolidColorBrush.Accent.Green.2}" />
+                </DataTrigger>
+                <DataTrigger Binding="{Binding CraftingBindings.Calculation.IsProfitNegative}" Value="True">
+                    <Setter Property="Foreground" Value="{StaticResource SolidColorBrush.Accent.Red.2}" />
+                </DataTrigger>
+            </Style.Triggers>
+        </Style>
+        <Style x:Key="CraftingResultRoiValue" TargetType="{x:Type TextBlock}" BasedOn="{StaticResource CraftingResultValue}">
+            <Style.Triggers>
+                <DataTrigger Binding="{Binding CraftingBindings.Calculation.IsRoiPositive}" Value="True">
+                    <Setter Property="Foreground" Value="{StaticResource SolidColorBrush.Accent.Green.2}" />
+                </DataTrigger>
+                <DataTrigger Binding="{Binding CraftingBindings.Calculation.IsRoiNegative}" Value="True">
+                    <Setter Property="Foreground" Value="{StaticResource SolidColorBrush.Accent.Red.2}" />
+                </DataTrigger>
+            </Style.Triggers>
+        </Style>
+        <Style x:Key="CraftingResultProfitPerItemValue" TargetType="{x:Type TextBlock}" BasedOn="{StaticResource CraftingResultValue}">
+            <Style.Triggers>
+                <DataTrigger Binding="{Binding CraftingBindings.Calculation.IsProfitPerItemPositive}" Value="True">
+                    <Setter Property="Foreground" Value="{StaticResource SolidColorBrush.Accent.Green.2}" />
+                </DataTrigger>
+                <DataTrigger Binding="{Binding CraftingBindings.Calculation.IsProfitPerItemNegative}" Value="True">
+                    <Setter Property="Foreground" Value="{StaticResource SolidColorBrush.Accent.Red.2}" />
+                </DataTrigger>
+            </Style.Triggers>
+        </Style>
+    </UserControl.Resources>
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="2*" />
@@ -20,10 +91,11 @@
             <Grid Margin="10">
                 <Grid.RowDefinitions>
                     <RowDefinition Height="Auto" />
-                    <RowDefinition Height="*" />
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
                 </Grid.RowDefinitions>
                 <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="340" />
+                    <ColumnDefinition Width="Auto" MinWidth="285" />
                     <ColumnDefinition Width="*" />
                 </Grid.ColumnDefinitions>
 
@@ -76,38 +148,35 @@
                 </Grid>
 
                 <StackPanel Grid.Row="1" Grid.Column="0" Orientation="Vertical">
-                    <TextBlock Text="Crafting" Foreground="{StaticResource SolidColorBrush.Accent.Blue.2}" FontSize="16" FontWeight="SemiBold" Margin="0,0,0,8" />
+                    <TextBlock Text="{Binding CraftingBindings.TranslationCrafting, FallbackValue=CRAFTING}" Foreground="{StaticResource SolidColorBrush.Accent.Blue.2}" FontSize="16" FontWeight="SemiBold" Margin="0,0,0,8" />
 
                     <StackPanel Orientation="Horizontal" Margin="0,0,0,5">
-                        <TextBlock Text="Number of runs" Foreground="{StaticResource SolidColorBrush.Text.2}" Width="105" VerticalAlignment="Center" />
-                        <TextBox Text="{Binding CraftingBindings.CraftingRuns, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Width="90" Height="24" common:TextBoxHelper.OnlyNumeric="Natural" />
+                        <TextBlock Text="{Binding CraftingBindings.TranslationNumberOfRuns, FallbackValue=NUMBER_OF_RUNS}" Foreground="{StaticResource SolidColorBrush.Text.2}" Width="105" VerticalAlignment="Center" />
+                        <TextBox Text="{Binding CraftingBindings.CraftingRuns, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                 Width="90" Height="24" common:TextBoxHelper.OnlyNumeric="Natural" />
                     </StackPanel>
                     <StackPanel Orientation="Horizontal" Margin="0,0,0,5">
-                        <TextBlock Text="Focus" Foreground="{StaticResource SolidColorBrush.Text.2}" Width="105" VerticalAlignment="Center" />
+                        <TextBlock Text="{Binding CraftingBindings.TranslationFocus, FallbackValue=FOCUS}" Foreground="{StaticResource SolidColorBrush.Text.2}" Width="105" VerticalAlignment="Center" />
                         <CheckBox IsChecked="{Binding CraftingBindings.UsesFocus, Mode=TwoWay}" VerticalAlignment="Center" />
                     </StackPanel>
                     <StackPanel Orientation="Horizontal" Margin="0,0,0,5">
-                        <TextBlock Text="Daily bonus RRR" Foreground="{StaticResource SolidColorBrush.Text.2}" Width="105" VerticalAlignment="Center" />
+                        <TextBlock Text="{Binding CraftingBindings.TranslationDailyBonusRrr, FallbackValue=DAILY_BONUS_RRR}" Foreground="{StaticResource SolidColorBrush.Text.2}" Width="105" VerticalAlignment="Center" />
                         <ComboBox ItemsSource="{Binding CraftingBindings.DailyBonusOptions}"
                                   SelectedItem="{Binding CraftingBindings.SelectedDailyBonus, Mode=TwoWay}"
-                                  DisplayMemberPath="Name"
-                                  Width="90"
-                                  Height="24" />
+                                  DisplayMemberPath="Name" Width="90" Height="24" />
                     </StackPanel>
                     <StackPanel Orientation="Horizontal" Margin="0,0,0,5">
-                        <TextBlock Text="Hideout bonus" Foreground="{StaticResource SolidColorBrush.Text.2}" Width="105" VerticalAlignment="Center" />
+                        <TextBlock Text="{Binding CraftingBindings.TranslationHideoutBonus, FallbackValue=HIDEOUT_BONUS}" Foreground="{StaticResource SolidColorBrush.Text.2}" Width="105" VerticalAlignment="Center" />
                         <ComboBox ItemsSource="{Binding CraftingBindings.HideoutBonusOptions}"
                                   SelectedItem="{Binding CraftingBindings.SelectedHideoutBonus, Mode=TwoWay}"
-                                  DisplayMemberPath="Name"
-                                  Width="90"
-                                  Height="24" />
+                                  DisplayMemberPath="Name" Width="90" Height="24" />
                     </StackPanel>
                     <StackPanel Orientation="Horizontal" Margin="0,0,0,5" Panel.ZIndex="10">
-                        <TextBlock Text="Crafting location" Foreground="{StaticResource SolidColorBrush.Text.2}" Width="105" VerticalAlignment="Center" />
+                        <TextBlock Text="{Binding CraftingBindings.TranslationCraftingLocation, FallbackValue=CRAFTING_LOCATION}" Foreground="{StaticResource SolidColorBrush.Text.2}" Width="105" VerticalAlignment="Center" />
                         <Grid>
                             <TextBox x:Name="CraftingLocationSearchTextBox"
                                      Text="{Binding CraftingBindings.CraftingLocationSearchText, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                                     Width="220"
+                                     MinWidth="160"
                                      Height="24"
                                      TextWrapping="NoWrap"
                                      GotKeyboardFocus="CraftingLocationSearch_OnGotKeyboardFocus" />
@@ -145,91 +214,104 @@
                             </Popup>
                         </Grid>
                     </StackPanel>
-                    <TextBlock Text="{Binding CraftingBindings.SelectedCraftingLocationBonusSummary}" Foreground="{StaticResource SolidColorBrush.Text.3}" Margin="105,0,0,5" TextWrapping="Wrap" />
+                    <TextBlock Text="{Binding CraftingBindings.SelectedCraftingLocationBonusSummary}" Foreground="{StaticResource SolidColorBrush.Text.3}"
+                               Margin="105,0,0,5" TextWrapping="Wrap" />
                     <StackPanel Orientation="Horizontal" Margin="0,0,0,5">
-                        <TextBlock Text="Return rate %" Foreground="{StaticResource SolidColorBrush.Text.2}" Width="105" VerticalAlignment="Center" />
+                        <TextBlock Text="{Binding CraftingBindings.TranslationReturnRatePercent, FallbackValue=RETURN_RATE_PERCENT}" Foreground="{StaticResource SolidColorBrush.Text.2}" Width="105" VerticalAlignment="Center" />
                         <TextBox Text="{Binding CraftingBindings.ReturnRatePercent, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Width="90" Height="24" common:TextBoxHelper.OnlyNumeric="Double" />
                     </StackPanel>
                     <StackPanel Orientation="Horizontal" Margin="0,0,0,5">
-                        <TextBlock Text="Price market" Foreground="{StaticResource SolidColorBrush.Text.2}" Width="105" VerticalAlignment="Center" />
+                        <TextBlock Text="{Binding CraftingBindings.TranslationPriceMarket, FallbackValue=PRICE_MARKET}" Foreground="{StaticResource SolidColorBrush.Text.2}" Width="105" VerticalAlignment="Center" />
                         <ComboBox ItemsSource="{Binding CraftingBindings.MarketLocations}"
                                   SelectedValue="{Binding CraftingBindings.SelectedMarketLocation, Mode=TwoWay}"
-                                  SelectedValuePath="Key"
-                                  DisplayMemberPath="Value"
-                                  Width="180"
-                                  Height="24" />
+                                  SelectedValuePath="Key" DisplayMemberPath="Value" Width="180" Height="24" />
                     </StackPanel>
                     <StackPanel Orientation="Horizontal" Margin="0,0,0,5">
-                        <TextBlock Text="Station fee" Foreground="{StaticResource SolidColorBrush.Text.2}" Width="105" VerticalAlignment="Center" />
+                        <TextBlock Text="{Binding CraftingBindings.TranslationStationFee, FallbackValue=STATION_FEE}" Foreground="{StaticResource SolidColorBrush.Text.2}" Width="105" VerticalAlignment="Center" />
                         <TextBox Text="{Binding CraftingBindings.StationFee, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Width="90" Height="24" common:TextBoxHelper.OnlyNumeric="Double" />
                     </StackPanel>
                     <StackPanel Orientation="Horizontal" Margin="0,0,0,5">
-                        <TextBlock Text="Sales tax %" Foreground="{StaticResource SolidColorBrush.Text.2}" Width="105" VerticalAlignment="Center" />
-                        <TextBox Text="{Binding CraftingBindings.SalesTaxPercent, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Width="90" Height="24" common:TextBoxHelper.OnlyNumeric="Double" />
+                        <TextBlock Text="{Binding CraftingBindings.TranslationSalesTaxPercent, FallbackValue=SALES_TAX_PERCENT}" Foreground="{StaticResource SolidColorBrush.Text.2}" Width="105" VerticalAlignment="Center" />
+                        <TextBox Text="{Binding CraftingBindings.SalesTaxPercent, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                 Width="90" Height="24" common:TextBoxHelper.OnlyNumeric="Double" />
                     </StackPanel>
                     <StackPanel Orientation="Horizontal" Margin="0,0,0,5">
-                        <TextBlock Text="Other costs" Foreground="{StaticResource SolidColorBrush.Text.2}" Width="105" VerticalAlignment="Center" />
-                        <TextBox Text="{Binding CraftingBindings.OtherCosts, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Width="90" Height="24" common:TextBoxHelper.OnlyNumeric="Double" />
+                        <TextBlock Text="{Binding CraftingBindings.TranslationOtherCosts, FallbackValue=OTHER_COSTS}" Foreground="{StaticResource SolidColorBrush.Text.2}" Width="105" VerticalAlignment="Center" />
+                        <TextBox Text="{Binding CraftingBindings.OtherCosts, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                 Width="90" Height="24" common:TextBoxHelper.OnlyNumeric="Double" />
                     </StackPanel>
                     <StackPanel Orientation="Horizontal" Margin="0,0,0,10">
-                        <TextBlock Text="Sell price" Foreground="{StaticResource SolidColorBrush.Text.2}" Width="105" VerticalAlignment="Center" />
-                        <TextBox Text="{Binding CraftingBindings.OutputUnitPrice, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Width="90" Height="24" common:TextBoxHelper.OnlyNumeric="Double" />
+                        <TextBlock Text="{Binding CraftingBindings.TranslationSellPrice, FallbackValue=SELL_PRICE}" Foreground="{StaticResource SolidColorBrush.Text.2}" Width="105" VerticalAlignment="Center" />
+                        <TextBox Text="{Binding CraftingBindings.OutputUnitPrice, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                 Width="90" Height="24" common:TextBoxHelper.OnlyNumeric="Double" />
                     </StackPanel>
 
                     <StackPanel Orientation="Horizontal" Margin="0,0,0,8">
-                        <Button Content="New" Width="58" Height="24" Command="{Binding CraftingBindings.NewCommand}" />
-                        <Button Content="Save" Width="58" Height="24" Margin="5,0,0,0" Command="{Binding CraftingBindings.SaveCommand}" />
-                        <Button Content="Delete" Width="58" Height="24" Margin="5,0,0,0" Command="{Binding CraftingBindings.DeleteCommand}" />
-                        <Button Content="Reset" Width="58" Height="24" Margin="5,0,0,0" Command="{Binding CraftingBindings.ResetCommand}" />
-                        <Button Content="Prices" Width="58" Height="24" Margin="5,0,0,0" Command="{Binding CraftingBindings.LoadPricesCommand}" />
+                        <Button Content="{Binding CraftingBindings.TranslationNew, FallbackValue=NEW}" Width="58" Height="24" Command="{Binding CraftingBindings.NewCommand}" />
+                        <Button Content="{Binding CraftingBindings.TranslationSave, FallbackValue=SAVE}" Width="58" Height="24" Margin="5,0,0,0" Command="{Binding CraftingBindings.SaveCommand}" />
+                        <Button Content="{Binding CraftingBindings.TranslationDelete, FallbackValue=DELETE}" Width="58" Height="24" Margin="5,0,0,0" Command="{Binding CraftingBindings.DeleteCommand}" />
+                        <Button Content="{Binding CraftingBindings.TranslationReset, FallbackValue=RESET}" Width="58" Height="24" Margin="5,0,0,0" Command="{Binding CraftingBindings.ResetCommand}" />
+                        <Button Content="{Binding CraftingBindings.TranslationPrices, FallbackValue=PRICES}" Width="58" Height="24" Margin="5,0,0,0" Command="{Binding CraftingBindings.LoadPricesCommand}" />
                     </StackPanel>
 
                     <TextBlock Text="{Binding CraftingBindings.StatusText}" Foreground="{StaticResource SolidColorBrush.Text.3}" TextWrapping="Wrap" />
-
-                    <TextBlock Text="Result" Foreground="{StaticResource SolidColorBrush.Accent.Blue.2}" FontSize="16" FontWeight="SemiBold" Margin="0,14,0,8" />
-                    <UniformGrid Columns="1">
-                        <TextBlock Text="{Binding CraftingBindings.Calculation.OutputQuantity, StringFormat=Output: {0}, FallbackValue=OUTPUT_QUANTITY}" Foreground="{StaticResource SolidColorBrush.Text.1}" />
-                        <TextBlock Text="{Binding CraftingBindings.Calculation.GrossMaterialCosts, StringFormat=Gross materials: {0:N2}, FallbackValue=GROSS_MATERIAL_COSTS}" Foreground="{StaticResource SolidColorBrush.Text.1}" />
-                        <TextBlock Text="{Binding CraftingBindings.Calculation.NetMaterialCosts, StringFormat=Net materials: {0:N2}, FallbackValue=NET_MATERIAL_COSTS}" Foreground="{StaticResource SolidColorBrush.Text.1}" />
-                        <TextBlock Text="{Binding CraftingBindings.Calculation.NonReturnableMaterialCosts, StringFormat=Non-returnable: {0:N2}, FallbackValue=NON_RETURNABLE_MATERIAL_COSTS}" Foreground="{StaticResource SolidColorBrush.Text.1}" />
-                        <TextBlock Text="{Binding CraftingBindings.Calculation.StationFee, StringFormat=Station: {0:N2}, FallbackValue=STATION_FEE}" Foreground="{StaticResource SolidColorBrush.Text.1}" />
-                        <TextBlock Text="{Binding CraftingBindings.Calculation.JournalCosts, StringFormat=Journal costs: {0:N2}, FallbackValue=JOURNAL_COSTS}" Foreground="{StaticResource SolidColorBrush.Text.1}" />
-                        <TextBlock Text="{Binding CraftingBindings.Calculation.JournalRevenue, StringFormat=Journal revenue: {0:N2}, FallbackValue=JOURNAL_REVENUE}" Foreground="{StaticResource SolidColorBrush.Text.1}" />
-                        <TextBlock Text="{Binding CraftingBindings.Calculation.SalesRevenueNet, StringFormat=Sales net: {0:N2}, FallbackValue=SALES_REVENUE_NET}" Foreground="{StaticResource SolidColorBrush.Text.1}" />
-                        <TextBlock Text="{Binding CraftingBindings.Calculation.Profit, StringFormat=Profit: {0:N2}, FallbackValue=PROFIT}" Foreground="{StaticResource SolidColorBrush.Text.1}" FontWeight="Bold" />
-                        <TextBlock Text="{Binding CraftingBindings.Calculation.RoiPercent, StringFormat=ROI: {0:N2}%, FallbackValue=ROI_PERCENT}" Foreground="{StaticResource SolidColorBrush.Text.1}" />
-                        <TextBlock Text="{Binding CraftingBindings.Calculation.BreakEvenPrice, StringFormat=Break-even: {0:N2}, FallbackValue=BREAK_EVEN_PRICE}" Foreground="{StaticResource SolidColorBrush.Text.1}" />
-                        <TextBlock Text="{Binding CraftingBindings.Calculation.ProfitPerItem, StringFormat=Profit/item: {0:N2}, FallbackValue=PROFIT_PER_ITEM}" Foreground="{StaticResource SolidColorBrush.Text.1}" />
-                        <TextBlock Text="{Binding CraftingBindings.Calculation.WeightBeforeCrafting, StringFormat=Weight before: {0:N2}, FallbackValue=WEIGHT_BEFORE_CRAFTING}" Foreground="{StaticResource SolidColorBrush.Text.1}" />
-                        <TextBlock Text="{Binding CraftingBindings.Calculation.WeightAfterCrafting, StringFormat=Weight after: {0:N2}, FallbackValue=WEIGHT_AFTER_CRAFTING}" Foreground="{StaticResource SolidColorBrush.Text.1}" />
-                    </UniformGrid>
                 </StackPanel>
 
                 <StackPanel Grid.Row="1" Grid.Column="1" Orientation="Vertical" Margin="10,0">
-                    <TextBlock Text="Resources" Foreground="{StaticResource SolidColorBrush.Accent.Blue.2}" FontSize="16" FontWeight="SemiBold" Margin="0,0,0,8" />
+                    <TextBlock Text="{Binding CraftingBindings.TranslationResources, FallbackValue=RESOURCES}" Foreground="{StaticResource SolidColorBrush.Accent.Blue.2}" FontSize="16" FontWeight="SemiBold" Margin="0,0,0,8" />
                     <ListView ItemsSource="{Binding CraftingBindings.Resources}" MinHeight="150" MinWidth="620">
                         <ListView.View>
                             <GridView>
-                                <GridViewColumn Header="Icon" Width="45">
+                                <GridViewColumn Width="45">
+                                    <GridViewColumn.Header>
+                                        <TextBlock Text="{Binding DataContext.CraftingBindings.TranslationIcon, RelativeSource={RelativeSource AncestorType={x:Type ListView}}, FallbackValue=ICON}" />
+                                    </GridViewColumn.Header>
                                     <GridViewColumn.CellTemplate>
                                         <DataTemplate>
                                             <Image Source="{Binding Icon}" Width="32" Height="32" />
                                         </DataTemplate>
                                     </GridViewColumn.CellTemplate>
                                 </GridViewColumn>
-                                <GridViewColumn Header="Resource" Width="210" DisplayMemberBinding="{Binding DisplayName}" />
-                                <GridViewColumn Header="Type" Width="85" DisplayMemberBinding="{Binding ResourceKindText}" />
-                                <GridViewColumn Header="Gross" Width="80" DisplayMemberBinding="{Binding GrossQuantity}" />
-                                <GridViewColumn Header="Expected return" Width="115" DisplayMemberBinding="{Binding ExpectedReturnQuantity}" />
-                                <GridViewColumn Header="Net" Width="80" DisplayMemberBinding="{Binding NetQuantity}" />
-                                <GridViewColumn Header="Price" Width="90">
+                                <GridViewColumn Width="210" DisplayMemberBinding="{Binding DisplayName}">
+                                    <GridViewColumn.Header>
+                                        <TextBlock Text="{Binding DataContext.CraftingBindings.TranslationResource, RelativeSource={RelativeSource AncestorType={x:Type ListView}}, FallbackValue=RESOURCE}" />
+                                    </GridViewColumn.Header>
+                                </GridViewColumn>
+                                <GridViewColumn Width="85" DisplayMemberBinding="{Binding ResourceKindText}">
+                                    <GridViewColumn.Header>
+                                        <TextBlock Text="{Binding DataContext.CraftingBindings.TranslationType, RelativeSource={RelativeSource AncestorType={x:Type ListView}}, FallbackValue=TYPE}" />
+                                    </GridViewColumn.Header>
+                                </GridViewColumn>
+                                <GridViewColumn Width="80" DisplayMemberBinding="{Binding GrossQuantity}">
+                                    <GridViewColumn.Header>
+                                        <TextBlock Text="{Binding DataContext.CraftingBindings.TranslationGross, RelativeSource={RelativeSource AncestorType={x:Type ListView}}, FallbackValue=GROSS}" />
+                                    </GridViewColumn.Header>
+                                </GridViewColumn>
+                                <GridViewColumn Width="115" DisplayMemberBinding="{Binding ExpectedReturnQuantity}">
+                                    <GridViewColumn.Header>
+                                        <TextBlock Text="{Binding DataContext.CraftingBindings.TranslationExpectedReturn, RelativeSource={RelativeSource AncestorType={x:Type ListView}}, FallbackValue=EXPECTED_RETURN}" />
+                                    </GridViewColumn.Header>
+                                </GridViewColumn>
+                                <GridViewColumn Width="80" DisplayMemberBinding="{Binding NetQuantity}">
+                                    <GridViewColumn.Header>
+                                        <TextBlock Text="{Binding DataContext.CraftingBindings.TranslationNet, RelativeSource={RelativeSource AncestorType={x:Type ListView}}, FallbackValue=NET}" />
+                                    </GridViewColumn.Header>
+                                </GridViewColumn>
+                                <GridViewColumn Width="90">
+                                    <GridViewColumn.Header>
+                                        <TextBlock Text="{Binding DataContext.CraftingBindings.TranslationPrice, RelativeSource={RelativeSource AncestorType={x:Type ListView}}, FallbackValue=PRICE}" />
+                                    </GridViewColumn.Header>
                                     <GridViewColumn.CellTemplate>
                                         <DataTemplate>
                                             <TextBox Text="{Binding UnitPrice, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Width="78" Height="22" common:TextBoxHelper.OnlyNumeric="Double" />
                                         </DataTemplate>
                                     </GridViewColumn.CellTemplate>
                                 </GridViewColumn>
-                                <GridViewColumn Header="Net cost" Width="90" DisplayMemberBinding="{Binding NetCost}" />
+                                <GridViewColumn Width="90" DisplayMemberBinding="{Binding NetCost}">
+                                    <GridViewColumn.Header>
+                                        <TextBlock Text="{Binding DataContext.CraftingBindings.TranslationNetCost, RelativeSource={RelativeSource AncestorType={x:Type ListView}}, FallbackValue=NET_COST}" />
+                                    </GridViewColumn.Header>
+                                </GridViewColumn>
                             </GridView>
                         </ListView.View>
                     </ListView>
@@ -251,60 +333,211 @@
                         </Grid.ColumnDefinitions>
 
                         <StackPanel Grid.Column="0" Orientation="Vertical">
-                            <TextBlock Text="Journals" Foreground="{StaticResource SolidColorBrush.Accent.Blue.2}" FontSize="16" FontWeight="SemiBold" Margin="0,0,0,8" />
+                            <TextBlock Text="{Binding CraftingBindings.TranslationJournals, FallbackValue=JOURNALS}" Foreground="{StaticResource SolidColorBrush.Accent.Blue.2}" FontSize="16" FontWeight="SemiBold" Margin="0,0,0,8" />
                             <StackPanel Orientation="Horizontal">
                                 <Image Source="{Binding CraftingBindings.Journal.Icon}" Width="36" Height="36" />
                                 <TextBlock Text="{Binding CraftingBindings.Journal.DisplayName}" Foreground="{StaticResource SolidColorBrush.Text.1}" VerticalAlignment="Center" Margin="8,0,0,0" TextWrapping="Wrap" />
                             </StackPanel>
                             <StackPanel Orientation="Horizontal" Margin="0,6,0,0">
-                                <TextBlock Text="Empty price" Foreground="{StaticResource SolidColorBrush.Text.2}" Width="95" VerticalAlignment="Center" />
+                                <TextBlock Text="{Binding CraftingBindings.TranslationEmptyPrice, FallbackValue=EMPTY_PRICE}" Foreground="{StaticResource SolidColorBrush.Text.2}" Width="95" VerticalAlignment="Center" />
                                 <TextBox Text="{Binding CraftingBindings.Journal.EmptyJournalPrice, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Width="90" Height="22" common:TextBoxHelper.OnlyNumeric="Double" />
                             </StackPanel>
                             <StackPanel Orientation="Horizontal" Margin="0,4,0,0">
-                                <TextBlock Text="Full price" Foreground="{StaticResource SolidColorBrush.Text.2}" Width="95" VerticalAlignment="Center" />
+                                <TextBlock Text="{Binding CraftingBindings.TranslationFullPrice, FallbackValue=FULL_PRICE}" Foreground="{StaticResource SolidColorBrush.Text.2}" Width="95" VerticalAlignment="Center" />
                                 <TextBox Text="{Binding CraftingBindings.Journal.FullJournalPrice, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Width="90" Height="22" common:TextBoxHelper.OnlyNumeric="Double" />
                             </StackPanel>
                         </StackPanel>
 
                         <UniformGrid Grid.Column="1" Columns="3" Rows="2" Margin="10,26,0,0">
-                            <TextBlock Text="{Binding CraftingBindings.Journal.RequiredEmptyJournals, StringFormat=Empty: {0}}" Foreground="{StaticResource SolidColorBrush.Text.1}" />
-                            <TextBlock Text="{Binding CraftingBindings.Journal.ExpectedFullJournals, StringFormat=Full: {0}}" Foreground="{StaticResource SolidColorBrush.Text.1}" />
-                            <TextBlock Text="{Binding CraftingBindings.Journal.PartialJournalPercent, StringFormat=Partial: {0:N2}%}" Foreground="{StaticResource SolidColorBrush.Text.1}" />
-                            <TextBlock Text="{Binding CraftingBindings.Journal.TotalEmptyJournalCosts, StringFormat=Costs: {0:N2}}" Foreground="{StaticResource SolidColorBrush.Text.1}" />
-                            <TextBlock Text="{Binding CraftingBindings.Journal.TotalFullJournalRevenue, StringFormat=Revenue: {0:N2}}" Foreground="{StaticResource SolidColorBrush.Text.1}" />
+                            <StackPanel Orientation="Horizontal">
+                                <TextBlock Text="{Binding CraftingBindings.TranslationEmpty, Mode=OneWay, FallbackValue=EMPTY}" Foreground="{StaticResource SolidColorBrush.Text.1}" />
+                                <TextBlock Text=": " Foreground="{StaticResource SolidColorBrush.Text.1}" />
+                                <TextBlock Text="{Binding CraftingBindings.Journal.RequiredEmptyJournals, Mode=OneWay, FallbackValue=0}" Foreground="{StaticResource SolidColorBrush.Text.1}" />
+                            </StackPanel>
+                            <StackPanel Orientation="Horizontal">
+                                <TextBlock Text="{Binding CraftingBindings.TranslationFull, Mode=OneWay, FallbackValue=FULL}" Foreground="{StaticResource SolidColorBrush.Text.1}" />
+                                <TextBlock Text=": " Foreground="{StaticResource SolidColorBrush.Text.1}" />
+                                <TextBlock Text="{Binding CraftingBindings.Journal.ExpectedFullJournals, Mode=OneWay, FallbackValue=0}" Foreground="{StaticResource SolidColorBrush.Text.1}" />
+                            </StackPanel>
+                            <StackPanel Orientation="Horizontal">
+                                <TextBlock Text="{Binding CraftingBindings.TranslationPartial, Mode=OneWay, FallbackValue=PARTIAL}" Foreground="{StaticResource SolidColorBrush.Text.1}" />
+                                <TextBlock Text=": " Foreground="{StaticResource SolidColorBrush.Text.1}" />
+                                <TextBlock Text="{Binding CraftingBindings.Journal.PartialJournalPercent, Mode=OneWay, StringFormat={}{0:N2}%, FallbackValue=0.00%}" Foreground="{StaticResource SolidColorBrush.Text.1}" />
+                            </StackPanel>
+                            <StackPanel Orientation="Horizontal">
+                                <TextBlock Text="{Binding CraftingBindings.TranslationCosts, Mode=OneWay, FallbackValue=COSTS}" Foreground="{StaticResource SolidColorBrush.Text.1}" />
+                                <TextBlock Text=": " Foreground="{StaticResource SolidColorBrush.Text.1}" />
+                                <TextBlock Text="{Binding CraftingBindings.Journal.TotalEmptyJournalCosts, Mode=OneWay, StringFormat={}{0:N2}, FallbackValue=0.00}" Foreground="{StaticResource SolidColorBrush.Text.1}" />
+                            </StackPanel>
+                            <StackPanel Orientation="Horizontal">
+                                <TextBlock Text="{Binding CraftingBindings.TranslationRevenue, Mode=OneWay, FallbackValue=REVENUE}" Foreground="{StaticResource SolidColorBrush.Text.1}" />
+                                <TextBlock Text=": " Foreground="{StaticResource SolidColorBrush.Text.1}" />
+                                <TextBlock Text="{Binding CraftingBindings.Journal.TotalFullJournalRevenue, Mode=OneWay, StringFormat={}{0:N2}, FallbackValue=0.00}" Foreground="{StaticResource SolidColorBrush.Text.1}" />
+                            </StackPanel>
                         </UniformGrid>
                     </Grid>
 
-                    <TextBlock Text="Notes" Foreground="{StaticResource SolidColorBrush.Accent.Blue.2}" FontSize="16" FontWeight="SemiBold" Margin="0,12,0,4" />
-                    <TextBox Text="{Binding CraftingBindings.Notes, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Height="52" MinWidth="620" 
+                    <TextBlock Text="{Binding CraftingBindings.TranslationNotes, FallbackValue=NOTES}" Foreground="{StaticResource SolidColorBrush.Accent.Blue.2}" FontSize="16" FontWeight="SemiBold" Margin="0,12,0,4" />
+                    <TextBox Text="{Binding CraftingBindings.Notes, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Height="52" MinWidth="620"
                              TextWrapping="Wrap" AcceptsReturn="True" VerticalContentAlignment="Top" />
                 </StackPanel>
+
+                <Grid Grid.Row="2" Grid.ColumnSpan="2" Margin="0,14,0,0">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="Auto" />
+                    </Grid.RowDefinitions>
+
+                    <TextBlock Text="{Binding CraftingBindings.TranslationResults, FallbackValue=RESULTS}" Foreground="{StaticResource SolidColorBrush.Accent.Blue.2}" FontSize="16" FontWeight="SemiBold" Margin="0,0,0,8" />
+
+                    <WrapPanel Grid.Row="1">
+                        <StackPanel Orientation="Vertical">
+                            <StackPanel Orientation="Horizontal" Margin="0,2">
+                                <Border Style="{StaticResource CraftingResultTile}" ToolTip="{Binding CraftingBindings.TranslationOutputTooltip}">
+                                    <StackPanel>
+                                        <TextBlock Text="{Binding CraftingBindings.TranslationOutput, FallbackValue=OUTPUT}" Style="{StaticResource CraftingResultLabel}" />
+                                        <TextBlock Text="{Binding CraftingBindings.Calculation.OutputQuantity, StringFormat={}{0:N0}, FallbackValue=0}" Style="{StaticResource CraftingResultInfoValue}" />
+                                    </StackPanel>
+                                </Border>
+                                <Border Style="{StaticResource CraftingResultTile}" ToolTip="{Binding CraftingBindings.TranslationProfitTooltip}">
+                                    <StackPanel>
+                                        <TextBlock Text="{Binding CraftingBindings.TranslationProfit, FallbackValue=PROFIT}" Style="{StaticResource CraftingResultLabel}" />
+                                        <TextBlock Text="{Binding CraftingBindings.Calculation.Profit, StringFormat={}{0:N2}, FallbackValue=0.00}" Style="{StaticResource CraftingResultProfitValue}" />
+                                    </StackPanel>
+                                </Border>
+                                <Border Style="{StaticResource CraftingResultTile}" ToolTip="{Binding CraftingBindings.TranslationProfitPerItemTooltip}">
+                                    <StackPanel>
+                                        <TextBlock Text="{Binding CraftingBindings.TranslationProfitPerItem, FallbackValue=PROFIT_PER_ITEM}" Style="{StaticResource CraftingResultLabel}" />
+                                        <TextBlock Text="{Binding CraftingBindings.Calculation.ProfitPerItem, StringFormat={}{0:N2}, FallbackValue=0.00}" Style="{StaticResource CraftingResultProfitPerItemValue}" />
+                                    </StackPanel>
+                                </Border>
+                                <Border Style="{StaticResource CraftingResultTile}" ToolTip="{Binding CraftingBindings.TranslationRoiTooltip}">
+                                    <StackPanel>
+                                        <TextBlock Text="{Binding CraftingBindings.TranslationRoi, FallbackValue=ROI}" Style="{StaticResource CraftingResultLabel}" />
+                                        <TextBlock Text="{Binding CraftingBindings.Calculation.RoiPercent, StringFormat={}{0:N2}%, FallbackValue=0.00%}" Style="{StaticResource CraftingResultRoiValue}" />
+                                    </StackPanel>
+                                </Border>
+                                <Border Style="{StaticResource CraftingResultTile}" ToolTip="{Binding CraftingBindings.TranslationBreakEvenTooltip}">
+                                    <StackPanel>
+                                        <TextBlock Text="{Binding CraftingBindings.TranslationBreakEven, FallbackValue=BREAK_EVEN}" Style="{StaticResource CraftingResultLabel}" />
+                                        <TextBlock Text="{Binding CraftingBindings.Calculation.BreakEvenPrice, StringFormat={}{0:N2}, FallbackValue=0.00}" Style="{StaticResource CraftingResultBreakEvenValue}" />
+                                    </StackPanel>
+                                </Border>
+                                <Border Style="{StaticResource CraftingResultTile}" ToolTip="{Binding CraftingBindings.TranslationSalesNetTooltip}">
+                                    <StackPanel>
+                                        <TextBlock Text="{Binding CraftingBindings.TranslationSalesNet, FallbackValue=SALES_NET}" Style="{StaticResource CraftingResultLabel}" />
+                                        <TextBlock Text="{Binding CraftingBindings.Calculation.SalesRevenueNet, StringFormat={}{0:N2}, FallbackValue=0.00}" Style="{StaticResource CraftingResultRevenueValue}" />
+                                    </StackPanel>
+                                </Border>
+                            </StackPanel>
+                            <StackPanel Orientation="Horizontal" Margin="0,2">
+                                <Border Style="{StaticResource CraftingResultTile}" ToolTip="{Binding CraftingBindings.TranslationGrossMaterialsTooltip}">
+                                    <StackPanel>
+                                        <TextBlock Text="{Binding CraftingBindings.TranslationGrossMaterials, FallbackValue=GROSS_MATERIALS}" Style="{StaticResource CraftingResultLabel}" />
+                                        <TextBlock Text="{Binding CraftingBindings.Calculation.GrossMaterialCosts, StringFormat={}{0:N2}, FallbackValue=0.00}" Style="{StaticResource CraftingResultCostValue}" />
+                                    </StackPanel>
+                                </Border>
+                                <Border Style="{StaticResource CraftingResultTile}" ToolTip="{Binding CraftingBindings.TranslationNetMaterialsTooltip}">
+                                    <StackPanel>
+                                        <TextBlock Text="{Binding CraftingBindings.TranslationNetMaterials, FallbackValue=NET_MATERIALS}" Style="{StaticResource CraftingResultLabel}" />
+                                        <TextBlock Text="{Binding CraftingBindings.Calculation.NetMaterialCosts, StringFormat={}{0:N2}, FallbackValue=0.00}" Style="{StaticResource CraftingResultCostValue}" />
+                                    </StackPanel>
+                                </Border>
+                                <Border Style="{StaticResource CraftingResultTile}" ToolTip="{Binding CraftingBindings.TranslationNonReturnableTooltip}">
+                                    <StackPanel>
+                                        <TextBlock Text="{Binding CraftingBindings.TranslationNonReturnable, FallbackValue=NON_RETURNABLE}" Style="{StaticResource CraftingResultLabel}" />
+                                        <TextBlock Text="{Binding CraftingBindings.Calculation.NonReturnableMaterialCosts, StringFormat={}{0:N2}, FallbackValue=0.00}" Style="{StaticResource CraftingResultCostValue}" />
+                                    </StackPanel>
+                                </Border>
+                                <Border Style="{StaticResource CraftingResultTile}" ToolTip="{Binding CraftingBindings.TranslationStationTooltip}">
+                                    <StackPanel>
+                                        <TextBlock Text="{Binding CraftingBindings.TranslationStation, FallbackValue=STATION}" Style="{StaticResource CraftingResultLabel}" />
+                                        <TextBlock Text="{Binding CraftingBindings.Calculation.StationFee, StringFormat={}{0:N2}, FallbackValue=0.00}" Style="{StaticResource CraftingResultCostValue}" />
+                                    </StackPanel>
+                                </Border>
+                            </StackPanel>
+                            <StackPanel Orientation="Horizontal" Margin="0,2">
+                                <Border Style="{StaticResource CraftingResultTile}" ToolTip="{Binding CraftingBindings.TranslationJournalCostsTooltip}">
+                                    <StackPanel>
+                                        <TextBlock Text="{Binding CraftingBindings.TranslationJournalCosts, FallbackValue=JOURNAL_COSTS}" Style="{StaticResource CraftingResultLabel}" />
+                                        <TextBlock Text="{Binding CraftingBindings.Calculation.JournalCosts, StringFormat={}{0:N2}, FallbackValue=0.00}" Style="{StaticResource CraftingResultCostValue}" />
+                                    </StackPanel>
+                                </Border>
+                                <Border Style="{StaticResource CraftingResultTile}" ToolTip="{Binding CraftingBindings.TranslationJournalRevenueTooltip}">
+                                    <StackPanel>
+                                        <TextBlock Text="{Binding CraftingBindings.TranslationJournalRevenue, FallbackValue=JOURNAL_REVENUE}" Style="{StaticResource CraftingResultLabel}" />
+                                        <TextBlock Text="{Binding CraftingBindings.Calculation.JournalRevenue, StringFormat={}{0:N2}, FallbackValue=0.00}" Style="{StaticResource CraftingResultRevenueValue}" />
+                                    </StackPanel>
+                                </Border>
+                                <Border Style="{StaticResource CraftingResultTile}" ToolTip="{Binding CraftingBindings.TranslationWeightBeforeTooltip}">
+                                    <StackPanel>
+                                        <TextBlock Text="{Binding CraftingBindings.TranslationWeightBefore, FallbackValue=WEIGHT_BEFORE}" Style="{StaticResource CraftingResultLabel}" />
+                                        <TextBlock Text="{Binding CraftingBindings.Calculation.WeightBeforeCrafting, StringFormat={}{0:N2}, FallbackValue=0.00}" Style="{StaticResource CraftingResultValue}" />
+                                    </StackPanel>
+                                </Border>
+                                <Border Style="{StaticResource CraftingResultTile}" ToolTip="{Binding CraftingBindings.TranslationWeightAfterTooltip}">
+                                    <StackPanel>
+                                        <TextBlock Text="{Binding CraftingBindings.TranslationWeightAfter, FallbackValue=WEIGHT_AFTER}" Style="{StaticResource CraftingResultLabel}" />
+                                        <TextBlock Text="{Binding CraftingBindings.Calculation.WeightAfterCrafting, StringFormat={}{0:N2}, FallbackValue=0.00}" Style="{StaticResource CraftingResultValue}" />
+                                    </StackPanel>
+                                </Border>
+                            </StackPanel>
+                        </StackPanel>
+                    </WrapPanel>
+                </Grid>
             </Grid>
         </ScrollViewer>
 
         <GridSplitter Grid.Row="1" ResizeDirection="Rows" ResizeBehavior="PreviousAndNext" HorizontalAlignment="Stretch" Background="{StaticResource SolidColorBrush.Accent.Blue.4}" />
 
         <Grid Grid.Row="2" Margin="10,5,10,10">
-            <TextBlock Text="Saved craftings" Foreground="{StaticResource SolidColorBrush.Accent.Blue.2}" FontSize="16" FontWeight="SemiBold" Margin="0,0,0,8" />
+            <TextBlock Text="{Binding CraftingBindings.TranslationSavedCraftings, FallbackValue=SAVED_CRAFTINGS}" Foreground="{StaticResource SolidColorBrush.Accent.Blue.2}" FontSize="16" FontWeight="SemiBold" Margin="0,0,0,8" />
             <ListView ItemsSource="{Binding CraftingBindings.SavedCraftings}"
                       SelectedItem="{Binding CraftingBindings.SelectedSavedCrafting, Mode=TwoWay}"
                       SelectionChanged="SavedCraftings_OnSelectionChanged"
                       Margin="0,28,0,0">
                 <ListView.View>
                     <GridView>
-                        <GridViewColumn Header="Icon" Width="45">
+                        <GridViewColumn Width="45">
+                            <GridViewColumn.Header>
+                                <TextBlock Text="{Binding DataContext.CraftingBindings.TranslationIcon, RelativeSource={RelativeSource AncestorType={x:Type ListView}}, FallbackValue=ICON}" />
+                            </GridViewColumn.Header>
                             <GridViewColumn.CellTemplate>
                                 <DataTemplate>
                                     <Image Source="{Binding Icon}" Width="32" Height="32" />
                                 </DataTemplate>
                             </GridViewColumn.CellTemplate>
                         </GridViewColumn>
-                        <GridViewColumn Header="Item" Width="260" DisplayMemberBinding="{Binding ItemName}" />
-                        <GridViewColumn Header="Details" Width="260" DisplayMemberBinding="{Binding Summary}" />
-                        <GridViewColumn Header="Main costs" Width="110" DisplayMemberBinding="{Binding NetMaterialCosts}" />
-                        <GridViewColumn Header="Profit" Width="110" DisplayMemberBinding="{Binding Profit}" />
-                        <GridViewColumn Header="Changed" Width="170" DisplayMemberBinding="{Binding LastChangedUtc}" />
-                        <GridViewColumn Header="Notes" Width="360" DisplayMemberBinding="{Binding Notes}" />
+                        <GridViewColumn Width="260" DisplayMemberBinding="{Binding ItemName}">
+                            <GridViewColumn.Header>
+                                <TextBlock Text="{Binding DataContext.CraftingBindings.TranslationItem, RelativeSource={RelativeSource AncestorType={x:Type ListView}}, FallbackValue=ITEM}" />
+                            </GridViewColumn.Header>
+                        </GridViewColumn>
+                        <GridViewColumn Width="260" DisplayMemberBinding="{Binding Summary}">
+                            <GridViewColumn.Header>
+                                <TextBlock Text="{Binding DataContext.CraftingBindings.TranslationDetails, RelativeSource={RelativeSource AncestorType={x:Type ListView}}, FallbackValue=DETAILS}" />
+                            </GridViewColumn.Header>
+                        </GridViewColumn>
+                        <GridViewColumn Width="110" DisplayMemberBinding="{Binding NetMaterialCosts}">
+                            <GridViewColumn.Header>
+                                <TextBlock Text="{Binding DataContext.CraftingBindings.TranslationMainCosts, RelativeSource={RelativeSource AncestorType={x:Type ListView}}, FallbackValue=MAIN_COSTS}" />
+                            </GridViewColumn.Header>
+                        </GridViewColumn>
+                        <GridViewColumn Width="110" DisplayMemberBinding="{Binding Profit}">
+                            <GridViewColumn.Header>
+                                <TextBlock Text="{Binding DataContext.CraftingBindings.TranslationProfit, RelativeSource={RelativeSource AncestorType={x:Type ListView}}, FallbackValue=PROFIT}" />
+                            </GridViewColumn.Header>
+                        </GridViewColumn>
+                        <GridViewColumn Width="170" DisplayMemberBinding="{Binding LastChangedUtc}">
+                            <GridViewColumn.Header>
+                                <TextBlock Text="{Binding DataContext.CraftingBindings.TranslationChanged, RelativeSource={RelativeSource AncestorType={x:Type ListView}}, FallbackValue=CHANGED}" />
+                            </GridViewColumn.Header>
+                        </GridViewColumn>
+                        <GridViewColumn Width="360" DisplayMemberBinding="{Binding Notes}">
+                            <GridViewColumn.Header>
+                                <TextBlock Text="{Binding DataContext.CraftingBindings.TranslationNotes, RelativeSource={RelativeSource AncestorType={x:Type ListView}}, FallbackValue=NOTES}" />
+                            </GridViewColumn.Header>
+                        </GridViewColumn>
                     </GridView>
                 </ListView.View>
             </ListView>

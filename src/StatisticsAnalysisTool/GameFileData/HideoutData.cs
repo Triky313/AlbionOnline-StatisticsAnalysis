@@ -1,5 +1,6 @@
 using StatisticsAnalysisTool.Crafting;
 using StatisticsAnalysisTool.GameFileData.Models;
+using StatisticsAnalysisTool.Localization;
 using System;
 using System.Collections.Generic;
 using System.Globalization;
@@ -37,7 +38,7 @@ public static class HideoutData
         {
             new()
             {
-                Name = "None",
+                Name = LocalizationController.Translation("NONE"),
                 Level = 0
             }
         }
@@ -64,7 +65,7 @@ public static class HideoutData
 
         return new CraftingHideoutBonusOption
         {
-            Name = "Level " + level,
+            Name = LocalizationController.Translation("LEVEL") + " " + level,
             Level = level,
             GeneralistBonusPercent = ParsePercent(powerLevel.GeneralistCraftingBonus),
             SpecialistBonusPercent = ParsePercent(powerLevel.SpecialistCraftingBonus)

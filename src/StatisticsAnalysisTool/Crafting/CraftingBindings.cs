@@ -2,6 +2,7 @@ using Serilog;
 using StatisticsAnalysisTool.Common;
 using StatisticsAnalysisTool.Diagnostics;
 using StatisticsAnalysisTool.GameFileData;
+using StatisticsAnalysisTool.Localization;
 using StatisticsAnalysisTool.Models;
 using StatisticsAnalysisTool.ViewModels;
 using System;
@@ -90,7 +91,7 @@ public class CraftingBindings : BaseViewModel
     [
         new CraftingDailyBonusOption
         {
-            Name = "None",
+            Name = TranslationNone,
             BonusPercent = 0m
         }
         ,
@@ -293,13 +294,16 @@ public class CraftingBindings : BaseViewModel
 
     public string SelectedCraftingLocationBonusSummary => SelectedCraftingLocation == null
         ? string.Empty
-        : "Bonus "
+        : TranslationBonus
+          + " "
           + EffectiveCraftingBonusPercent.ToString("N2")
           + "%"
           + (UsesFocus
-              ? " | Focus +" + CraftingLocationData.FocusProductionBonusPercent.ToString("N2") + "%"
+              ? " | " + TranslationFocus + " +" + CraftingLocationData.FocusProductionBonusPercent.ToString("N2") + "%"
               : string.Empty)
-          + " | expected RRR "
+          + " | "
+          + TranslationExpectedRrr
+          + " "
           + GetSelectedCraftingLocationReturnRate().ToString("N2")
           + "%";
 
@@ -428,6 +432,80 @@ public class CraftingBindings : BaseViewModel
     public ICommand LoadSelectedCommand => field ??= new CommandHandler(LoadSelectedCrafting, true);
 
     public ICommand LoadPricesCommand => field ??= new CommandHandler(_ => LoadPricesAsync(), true);
+
+    public static string TranslationBreakEven => LocalizationController.Translation("BREAK_EVEN_PRICE");
+    public static string TranslationBonus => LocalizationController.Translation("BONUS");
+    public static string TranslationChanged => LocalizationController.Translation("CHANGED");
+    public static string TranslationCosts => LocalizationController.Translation("COSTS");
+    public static string TranslationCrafting => LocalizationController.Translation("CRAFTING");
+    public static string TranslationCraftingLocation => LocalizationController.Translation("CRAFTING_LOCATION");
+    public static string TranslationDailyBonusRrr => LocalizationController.Translation("DAILY_BONUS_RRR");
+    public static string TranslationDelete => LocalizationController.Translation("DELETE");
+    public static string TranslationDetails => LocalizationController.Translation("DETAILS");
+    public static string TranslationEmpty => LocalizationController.Translation("EMPTY");
+    public static string TranslationEmptyPrice => LocalizationController.Translation("EMPTY_PRICE");
+    public static string TranslationExpectedReturn => LocalizationController.Translation("EXPECTED_RETURN");
+    public static string TranslationExpectedRrr => LocalizationController.Translation("EXPECTED_RRR");
+    public static string TranslationFocus => LocalizationController.Translation("FOCUS");
+    public static string TranslationFull => LocalizationController.Translation("FULL");
+    public static string TranslationFullPrice => LocalizationController.Translation("FULL_PRICE");
+    public static string TranslationGross => LocalizationController.Translation("GROSS");
+    public static string TranslationGrossMaterials => LocalizationController.Translation("GROSS_MATERIALS");
+    public static string TranslationHideoutBonus => LocalizationController.Translation("HIDEOUT_BONUS");
+    public static string TranslationIcon => LocalizationController.Translation("ICON");
+    public static string TranslationItem => LocalizationController.Translation("ITEM");
+    public static string TranslationJournalCosts => LocalizationController.Translation("JOURNAL_COSTS");
+    public static string TranslationJournalRevenue => LocalizationController.Translation("JOURNAL_REVENUE");
+    public static string TranslationJournals => LocalizationController.Translation("JOURNALS");
+    public static string TranslationMainCosts => LocalizationController.Translation("MAIN_COSTS");
+    public static string TranslationNet => LocalizationController.Translation("NET");
+    public static string TranslationNetCost => LocalizationController.Translation("NET_COST");
+    public static string TranslationNetMaterials => LocalizationController.Translation("NET_MATERIALS");
+    public static string TranslationNew => LocalizationController.Translation("NEW");
+    public static string TranslationNone => LocalizationController.Translation("NONE");
+    public static string TranslationNonReturnable => LocalizationController.Translation("NON_RETURNABLE");
+    public static string TranslationNotes => LocalizationController.Translation("NOTES");
+    public static string TranslationNumberOfRuns => LocalizationController.Translation("NUMBER_OF_RUNS");
+    public static string TranslationOtherCosts => LocalizationController.Translation("OTHER_COSTS");
+    public static string TranslationOutput => LocalizationController.Translation("OUTPUT");
+    public static string TranslationPartial => LocalizationController.Translation("PARTIAL");
+    public static string TranslationPrice => LocalizationController.Translation("PRICE");
+    public static string TranslationPriceMarket => LocalizationController.Translation("PRICE_MARKET");
+    public static string TranslationPrices => LocalizationController.Translation("PRICES");
+    public static string TranslationProfit => LocalizationController.Translation("PROFIT");
+    public static string TranslationProfitPerItem => LocalizationController.Translation("PROFIT_PER_ITEM");
+    public static string TranslationResource => LocalizationController.Translation("RESOURCE");
+    public static string TranslationResources => LocalizationController.Translation("RESOURCES");
+    public static string TranslationReset => LocalizationController.Translation("RESET");
+    public static string TranslationResults => LocalizationController.Translation("RESULTS");
+    public static string TranslationReturnRatePercent => LocalizationController.Translation("RETURN_RATE_PERCENT");
+    public static string TranslationRevenue => LocalizationController.Translation("REVENUE");
+    public static string TranslationRoi => LocalizationController.Translation("ROI");
+    public static string TranslationSalesNet => LocalizationController.Translation("SALES_NET");
+    public static string TranslationSalesTaxPercent => LocalizationController.Translation("SALES_TAX_PERCENT");
+    public static string TranslationSave => LocalizationController.Translation("SAVE");
+    public static string TranslationSavedCraftings => LocalizationController.Translation("SAVED_CRAFTINGS");
+    public static string TranslationSellPrice => LocalizationController.Translation("SELL_PRICE");
+    public static string TranslationStation => LocalizationController.Translation("STATION");
+    public static string TranslationStationFee => LocalizationController.Translation("STATION_FEE");
+    public static string TranslationType => LocalizationController.Translation("TYPE");
+    public static string TranslationWeightAfter => LocalizationController.Translation("WEIGHT_AFTER");
+    public static string TranslationWeightBefore => LocalizationController.Translation("WEIGHT_BEFORE");
+
+    public static string TranslationBreakEvenTooltip => LocalizationController.Translation("CRAFTING_RESULT_BREAK_EVEN_TOOLTIP");
+    public static string TranslationGrossMaterialsTooltip => LocalizationController.Translation("CRAFTING_RESULT_GROSS_MATERIALS_TOOLTIP");
+    public static string TranslationJournalCostsTooltip => LocalizationController.Translation("CRAFTING_RESULT_JOURNAL_COSTS_TOOLTIP");
+    public static string TranslationJournalRevenueTooltip => LocalizationController.Translation("CRAFTING_RESULT_JOURNAL_REVENUE_TOOLTIP");
+    public static string TranslationNetMaterialsTooltip => LocalizationController.Translation("CRAFTING_RESULT_NET_MATERIALS_TOOLTIP");
+    public static string TranslationNonReturnableTooltip => LocalizationController.Translation("CRAFTING_RESULT_NON_RETURNABLE_TOOLTIP");
+    public static string TranslationOutputTooltip => LocalizationController.Translation("CRAFTING_RESULT_OUTPUT_TOOLTIP");
+    public static string TranslationProfitPerItemTooltip => LocalizationController.Translation("CRAFTING_RESULT_PROFIT_PER_ITEM_TOOLTIP");
+    public static string TranslationProfitTooltip => LocalizationController.Translation("CRAFTING_RESULT_PROFIT_TOOLTIP");
+    public static string TranslationRoiTooltip => LocalizationController.Translation("CRAFTING_RESULT_ROI_TOOLTIP");
+    public static string TranslationSalesNetTooltip => LocalizationController.Translation("CRAFTING_RESULT_SALES_NET_TOOLTIP");
+    public static string TranslationStationTooltip => LocalizationController.Translation("CRAFTING_RESULT_STATION_TOOLTIP");
+    public static string TranslationWeightAfterTooltip => LocalizationController.Translation("CRAFTING_RESULT_WEIGHT_AFTER_TOOLTIP");
+    public static string TranslationWeightBeforeTooltip => LocalizationController.Translation("CRAFTING_RESULT_WEIGHT_BEFORE_TOOLTIP");
 
     public bool HasJournal => Journal != null;
 
@@ -750,7 +828,7 @@ public class CraftingBindings : BaseViewModel
         {
             if (SelectedItem == null)
             {
-                StatusText = "Select an item before saving.";
+                StatusText = LocalizationController.Translation("CRAFTING_SELECT_ITEM_BEFORE_SAVING");
                 return;
             }
 
@@ -768,7 +846,7 @@ public class CraftingBindings : BaseViewModel
 
             await _controller.SaveAsync(SavedCraftings);
             SelectedSavedCrafting = savedCrafting;
-            StatusText = "Crafting saved.";
+            StatusText = LocalizationController.Translation("CRAFTING_SAVED");
         }
         catch (Exception e)
         {
@@ -826,7 +904,7 @@ public class CraftingBindings : BaseViewModel
             SavedCraftings.Remove(SelectedSavedCrafting);
             SelectedSavedCrafting = null;
             await _controller.SaveAsync(SavedCraftings);
-            StatusText = "Crafting deleted.";
+            StatusText = LocalizationController.Translation("CRAFTING_DELETED");
         }
         catch (Exception e)
         {
@@ -883,14 +961,14 @@ public class CraftingBindings : BaseViewModel
 
         _isLoading = false;
         Recalculate();
-        StatusText = "Crafting loaded.";
+        StatusText = LocalizationController.Translation("CRAFTING_LOADED");
     }
 
     private void NewCrafting()
     {
         SelectedSavedCrafting = null;
         ResetEditor();
-        StatusText = "New crafting started.";
+        StatusText = LocalizationController.Translation("CRAFTING_NEW_STARTED");
     }
 
     private void ResetEditor()
@@ -918,7 +996,7 @@ public class CraftingBindings : BaseViewModel
         {
             if (SelectedItem == null)
             {
-                StatusText = "Select an item before loading prices.";
+                StatusText = LocalizationController.Translation("CRAFTING_SELECT_ITEM_BEFORE_LOADING_PRICES");
                 return;
             }
 
@@ -937,13 +1015,13 @@ public class CraftingBindings : BaseViewModel
                     Journal.FullJournalPrice = await LoadPriceAsync(Journal.FullJournalUniqueName, SelectedMarketLocation, false);
                 }
 
-                StatusText = "Market prices loaded.";
+                StatusText = LocalizationController.Translation("CRAFTING_MARKET_PRICES_LOADED");
             }
             catch (Exception e)
             {
                 DebugConsole.WriteError(MethodBase.GetCurrentMethod()?.DeclaringType, e);
                 Log.Error(e, "Crafting market prices could not be loaded");
-                StatusText = "Market prices could not be loaded.";
+                StatusText = LocalizationController.Translation("CRAFTING_MARKET_PRICES_COULD_NOT_BE_LOADED");
             }
         }
         catch (Exception e)

@@ -1,3 +1,5 @@
+using StatisticsAnalysisTool.Localization;
+
 namespace StatisticsAnalysisTool.GameFileData;
 
 public class CraftingLocationOption
@@ -12,13 +14,14 @@ public class CraftingLocationOption
 
     public decimal ExpectedReturnRatePercent => CraftingLocationData.GetExpectedReturnRatePercent(TotalProductionBonusPercent);
 
-    public string DisplayText => string.IsNullOrWhiteSpace(DisplayName)
-        ? ClusterId
-        : DisplayName + " (" + ExpectedReturnRatePercent.ToString("N2") + "% RRR)";
+    public string DisplayText => string.IsNullOrWhiteSpace(DisplayName) ? ClusterId : DisplayName + " (" + ExpectedReturnRatePercent.ToString("N2") + "% RRR)";
 
-    public string BonusSummary => "Bonus "
+    public string BonusSummary => LocalizationController.Translation("BONUS")
+                                  + " "
                                   + TotalProductionBonusPercent.ToString("N2")
-                                  + "% | expected RRR "
+                                  + "% | "
+                                  + LocalizationController.Translation("EXPECTED_RRR")
+                                  + " "
                                   + ExpectedReturnRatePercent.ToString("N2")
                                   + "%";
 }

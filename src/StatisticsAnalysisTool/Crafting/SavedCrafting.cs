@@ -1,3 +1,4 @@
+using StatisticsAnalysisTool.Localization;
 using StatisticsAnalysisTool.ViewModels;
 using System;
 using System.Collections.Generic;
@@ -8,50 +9,182 @@ namespace StatisticsAnalysisTool.Crafting;
 
 public class SavedCrafting : BaseViewModel
 {
-    public Guid Id { get; set; } = Guid.NewGuid();
-    public string ItemUniqueName { get; set; }
-    public string ItemName { get; set; }
-    public int CraftingRuns { get; set; } = 1;
-    public int AmountCrafted { get; set; } = 1;
-    public bool UsesFocus { get; set; }
-    public decimal ReturnRatePercent { get; set; }
-    public decimal DailyBonusPercent { get; set; }
-    public int HideoutBonusLevel { get; set; }
-    public decimal HideoutGeneralistBonusPercent { get; set; }
-    public decimal HideoutSpecialistBonusPercent { get; set; }
-    public string CraftingLocationId { get; set; }
-    public string CraftingLocationName { get; set; }
-    public string CraftingContext { get; set; }
-    public decimal StationFee { get; set; }
-    public decimal SalesTaxPercent { get; set; }
-    public decimal OtherCosts { get; set; }
-    public decimal OutputUnitPrice { get; set; }
-    public string Notes { get; set; }
-    public List<CraftingResourceEntry> Resources { get; set; } = [];
-    public CraftingJournalEntry Journal { get; set; }
-    public DateTime LastChangedUtc { get; set; } = DateTime.UtcNow;
-    public decimal NetMaterialCosts { get; set; }
-    public decimal Profit { get; set; }
+    public Guid Id
+    {
+        get;
+        set;
+    }
+    = Guid.NewGuid();
+
+    public string ItemUniqueName
+    {
+        get;
+        set;
+    }
+
+    public string ItemName
+    {
+        get;
+        set;
+    }
+
+    public int CraftingRuns
+    {
+        get;
+        set;
+    }
+    = 1;
+
+    public int AmountCrafted
+    {
+        get;
+        set;
+    }
+    = 1;
+
+    public bool UsesFocus
+    {
+        get;
+        set;
+    }
+
+    public decimal ReturnRatePercent
+    {
+        get;
+        set;
+    }
+
+    public decimal DailyBonusPercent
+    {
+        get;
+        set;
+    }
+
+    public int HideoutBonusLevel
+    {
+        get;
+        set;
+    }
+
+    public decimal HideoutGeneralistBonusPercent
+    {
+        get;
+        set;
+    }
+
+    public decimal HideoutSpecialistBonusPercent
+    {
+        get;
+        set;
+    }
+
+    public string CraftingLocationId
+    {
+        get;
+        set;
+    }
+
+    public string CraftingLocationName
+    {
+        get;
+        set;
+    }
+
+    public string CraftingContext
+    {
+        get;
+        set;
+    }
+
+    public decimal StationFee
+    {
+        get;
+        set;
+    }
+
+    public decimal SalesTaxPercent
+    {
+        get;
+        set;
+    }
+
+    public decimal OtherCosts
+    {
+        get;
+        set;
+    }
+
+    public decimal OutputUnitPrice
+    {
+        get;
+        set;
+    }
+
+    public string Notes
+    {
+        get;
+        set;
+    }
+
+    public List<CraftingResourceEntry> Resources
+    {
+        get;
+        set;
+    }
+    = [];
+
+    public CraftingJournalEntry Journal
+    {
+        get;
+        set;
+    }
+
+    public DateTime LastChangedUtc
+    {
+        get;
+        set;
+    }
+    = DateTime.UtcNow;
+
+    public decimal NetMaterialCosts
+    {
+        get;
+        set;
+    }
+
+    public decimal Profit
+    {
+        get;
+        set;
+    }
 
     [JsonIgnore]
-    public BitmapImage Icon { get; set; }
+    public BitmapImage Icon
+    {
+        get;
+        set;
+    }
 
     [JsonIgnore]
     public bool IsProfitNegative => Profit < 0m;
 
     [JsonIgnore]
     public string Summary => CraftingRuns
-                             + " runs | "
-                             + (UsesFocus ? "Focus" : "No focus")
+                             + " "
+                             + LocalizationController.Translation("RUNS")
+                             + " | "
+                             + (UsesFocus
+                                 ? LocalizationController.Translation("FOCUS")
+                                 : LocalizationController.Translation("NO_FOCUS"))
                              + " | "
                              + ReturnRatePercent.ToString("N2")
                              + "% RRR"
                              + (DailyBonusPercent <= 0m
                                  ? string.Empty
-                                 : " | Daily " + DailyBonusPercent.ToString("N0") + "%")
+                                 : " | " + LocalizationController.Translation("DAILY") + " " + DailyBonusPercent.ToString("N0") + "%")
                              + (HideoutBonusLevel <= 0
                                  ? string.Empty
-                                 : " | Hideout L" + HideoutBonusLevel)
+                                 : " | " + LocalizationController.Translation("HIDEOUT") + " L" + HideoutBonusLevel)
                              + (string.IsNullOrWhiteSpace(CraftingLocationName)
                                  ? string.Empty
                                  : " | " + CraftingLocationName);
