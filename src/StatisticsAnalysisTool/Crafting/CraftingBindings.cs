@@ -480,6 +480,7 @@ public class CraftingBindings : BaseViewModel
     public static string TranslationSellPrice => LocalizationController.Translation("SELL_PRICE");
     public static string TranslationStation => LocalizationController.Translation("STATION");
     public static string TranslationStationFee => LocalizationController.Translation("STATION_FEE");
+    public static string TranslationStationFeeTooltip => LocalizationController.Translation("CRAFTING_STATION_FEE_TOOLTIP");
     public static string TranslationType => LocalizationController.Translation("TYPE");
     public static string TranslationWeightAfter => LocalizationController.Translation("WEIGHT_AFTER");
     public static string TranslationWeightBefore => LocalizationController.Translation("WEIGHT_BEFORE");

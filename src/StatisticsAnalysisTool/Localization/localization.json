@@ -41252,6 +41252,19 @@
         "tuv": [
             {
                 "lang": "de-DE",
+                "seg": "Stationsgebühr"
+            },
+            {
+                "lang": "en-US",
+                "seg": "Station fee"
+            }
+        ]
+    },
+    {
+        "tuid": "CRAFTING_STATION_FEE_TOOLTIP",
+        "tuv": [
+            {
+                "lang": "de-DE",
                 "seg": "Nutzungsgebühr / 100 Nahrung"
             },
             {
