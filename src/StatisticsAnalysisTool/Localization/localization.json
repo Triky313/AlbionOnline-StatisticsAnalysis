@@ -11634,7 +11634,7 @@
         },
         {
           "lang": "fr-FR",
-          "seg": "Journal"
+          "seg": "Registre"
         },
         {
           "lang": "ja-JP",
@@ -18089,6 +18089,10 @@
         {
           "lang": "en-US",
           "seg": "Open userData directory"
+        },
+        {
+          "lang": "fr-FR",
+          "seg": "Ouvrir le répertoire UserData"
         }
       ]
     },
@@ -21437,7 +21441,7 @@
         },
         {
           "lang": "fr-FR",
-          "seg": "Prix de vente par journal"
+          "seg": "Prix de vente par registre"
         },
         {
           "lang": "ja-JP",
@@ -21829,7 +21833,7 @@
         },
         {
           "lang": "fr-FR",
-          "seg": "Journaux requis"
+          "seg": "Registres requis"
         },
         {
           "lang": "ja-JP",
@@ -21878,7 +21882,7 @@
         },
         {
           "lang": "fr-FR",
-          "seg": "Coût par journal"
+          "seg": "Coût par registre"
         },
         {
           "lang": "ja-JP",
@@ -21927,7 +21931,7 @@
         },
         {
           "lang": "fr-FR",
-          "seg": "Quantité de journaux requis"
+          "seg": "Quantité de registres requis"
         },
         {
           "lang": "ja-JP",
@@ -22515,7 +22519,7 @@
         },
         {
           "lang": "fr-FR",
-          "seg": "Coûts totaux des journaux"
+          "seg": "Coûts totaux des registres"
         },
         {
           "lang": "ja-JP",
@@ -22711,7 +22715,7 @@
         },
         {
           "lang": "fr-FR",
-          "seg": "Total des ventes des journaux"
+          "seg": "Total des ventes des registres"
         },
         {
           "lang": "ja-JP",
@@ -29240,7 +29244,7 @@
         },
         {
           "lang": "fr-FR",
-          "seg": "Poids total des journaux"
+          "seg": "Poids total des registres"
         },
         {
           "lang": "ja-JP",
@@ -41166,6 +41170,10 @@
             {
                 "lang": "en-US",
                 "seg": "Number of runs"
+            },
+            {
+                "lang": "fr-FR",
+                "seg": "Nombre de tours"
             }
         ]
     },
@@ -41179,6 +41187,10 @@
             {
                 "lang": "en-US",
                 "seg": "Focus"
+            },
+            {
+                "lang": "fr-FR",
+                "seg": "Focalisation"
             }
         ]
     },
@@ -41192,6 +41204,10 @@
             {
                 "lang": "en-US",
                 "seg": "Daily bonus RRR"
+            },
+            {
+                "lang": "fr-FR",
+                "seg": "Bonus Quotidien RRR"
             }
         ]
     },
@@ -41205,6 +41221,10 @@
             {
                 "lang": "en-US",
                 "seg": "Hideout bonus"
+            },
+            {
+                "lang": "fr-FR",
+                "seg": "Bonus Hideout (HO)"
             }
         ]
     },
@@ -41218,6 +41238,10 @@
             {
                 "lang": "en-US",
                 "seg": "Crafting location"
+            },
+            {
+                "lang": "fr-FR",
+                "seg": "Emplacement de fabrication"
             }
         ]
     },
@@ -41231,6 +41255,10 @@
             {
                 "lang": "en-US",
                 "seg": "Return rate %"
+            },
+            {
+                "lang": "fr-FR",
+                "seg": "Taux de retour %"
             }
         ]
     },
@@ -41244,6 +41272,10 @@
             {
                 "lang": "en-US",
                 "seg": "Price market"
+            },
+            {
+                "lang": "fr-FR",
+                "seg": "Prix du marché"
             }
         ]
     },
@@ -41257,6 +41289,10 @@
             {
                 "lang": "en-US",
                 "seg": "Station fee"
+            },
+            {
+                "lang": "fr-FR",
+                "seg": "Frais de Station"
             }
         ]
     },
@@ -41270,6 +41306,10 @@
             {
                 "lang": "en-US",
                 "seg": "Usage fee / 100 food"
+            },
+            {
+                "lang": "fr-FR",
+                "seg": "Frais d'utilisation / 100 nourritures"
             }
         ]
     },
@@ -41283,6 +41323,10 @@
             {
                 "lang": "en-US",
                 "seg": "Sales tax %"
+            },
+            {
+                "lang": "fr-FR",
+                "seg": "Taxe de ventes %"
             }
         ]
     },
@@ -41296,6 +41340,10 @@
             {
                 "lang": "en-US",
                 "seg": "Sell price"
+            },
+            {
+                "lang": "fr-FR",
+                "seg": "Prix de vente"
             }
         ]
     },
@@ -41309,6 +41357,10 @@
             {
                 "lang": "en-US",
                 "seg": "New"
+            },
+            {
+                "lang": "fr-FR",
+                "seg": "Nouveau"
             }
         ]
     },
@@ -41322,6 +41374,10 @@
             {
                 "lang": "en-US",
                 "seg": "Delete"
+            },
+            {
+                "lang": "fr-FR",
+                "seg": "Supprimer"
             }
         ]
     },
@@ -41335,6 +41391,10 @@
             {
                 "lang": "en-US",
                 "seg": "Prices"
+            },
+            {
+                "lang": "fr-FR",
+                "seg": "Prix"
             }
         ]
     },
@@ -41347,6 +41407,10 @@
             },
             {
                 "lang": "en-US",
+                "seg": "Resources"
+            },
+            {
+                "lang": "fr-FR",
                 "seg": "Resources"
             }
         ]
@@ -41361,6 +41425,10 @@
             {
                 "lang": "en-US",
                 "seg": "Gross"
+            },
+            {
+                "lang": "fr-FR",
+                "seg": "Brut"
             }
         ]
     },
@@ -41374,6 +41442,10 @@
             {
                 "lang": "en-US",
                 "seg": "Expected return"
+            },
+            {
+                "lang": "fr-FR",
+                "seg": "Rendement attendu"
             }
         ]
     },
@@ -41386,6 +41458,10 @@
             },
             {
                 "lang": "en-US",
+                "seg": "Net"
+            },
+            {
+                "lang": "fr-FR",
                 "seg": "Net"
             }
         ]
@@ -41400,6 +41476,10 @@
             {
                 "lang": "en-US",
                 "seg": "Price"
+            },
+            {
+                "lang": "fr-FR",
+                "seg": "Prix"
             }
         ]
     },
@@ -41413,6 +41493,10 @@
             {
                 "lang": "en-US",
                 "seg": "Net cost"
+            },
+            {
+                "lang": "fr-FR",
+                "seg": "Coût net"
             }
         ]
     },
@@ -41426,6 +41510,10 @@
             {
                 "lang": "en-US",
                 "seg": "Journals"
+            },
+            {
+                "lang": "fr-FR",
+                "seg": "Registres"
             }
         ]
     },
@@ -41439,6 +41527,10 @@
             {
                 "lang": "en-US",
                 "seg": "Empty price"
+            },
+            {
+                "lang": "fr-FR",
+                "seg": "Prix vide"
             }
         ]
     },
@@ -41452,6 +41544,10 @@
             {
                 "lang": "en-US",
                 "seg": "Full price"
+            },
+            {
+                "lang": "fr-FR",
+                "seg": "Prix total"
             }
         ]
     },
@@ -41465,6 +41561,10 @@
             {
                 "lang": "en-US",
                 "seg": "Empty"
+            },
+            {
+                "lang": "fr-FR",
+                "seg": "Vide"
             }
         ]
     },
@@ -41478,6 +41578,10 @@
             {
                 "lang": "en-US",
                 "seg": "Full"
+            },
+            {
+                "lang": "fr-FR",
+                "seg": "Complet"
             }
         ]
     },
@@ -41491,6 +41595,10 @@
             {
                 "lang": "en-US",
                 "seg": "Partial"
+            },
+            {
+                "lang": "fr-FR",
+                "seg": "Partiel"
             }
         ]
     },
@@ -41504,6 +41612,10 @@
             {
                 "lang": "en-US",
                 "seg": "Results"
+            },
+            {
+                "lang": "fr-FR",
+                "seg": "Résultats"
             }
         ]
     },
@@ -41517,6 +41629,10 @@
             {
                 "lang": "en-US",
                 "seg": "Output"
+            },
+            {
+                "lang": "fr-FR",
+                "seg": "Sortie"
             }
         ]
     },
@@ -41530,6 +41646,10 @@
             {
                 "lang": "en-US",
                 "seg": "Sales net"
+            },
+            {
+                "lang": "fr-FR",
+                "seg": "Chiffre d'affaires net"
             }
         ]
     },
@@ -41543,6 +41663,10 @@
             {
                 "lang": "en-US",
                 "seg": "Gross materials"
+            },
+            {
+                "lang": "fr-FR",
+                "seg": "Matériau Brut"
             }
         ]
     },
@@ -41556,6 +41680,10 @@
             {
                 "lang": "en-US",
                 "seg": "Net materials"
+            },
+            {
+                "lang": "fr-FR",
+                "seg": "Matériau Net"
             }
         ]
     },
@@ -41569,6 +41697,10 @@
             {
                 "lang": "en-US",
                 "seg": "Non-returnable"
+            },
+            {
+                "lang": "fr-FR",
+                "seg": "Non retournable"
             }
         ]
     },
@@ -41581,6 +41713,10 @@
             },
             {
                 "lang": "en-US",
+                "seg": "Station"
+            },
+            {
+                "lang": "fr-FR",
                 "seg": "Station"
             }
         ]
@@ -41595,6 +41731,10 @@
             {
                 "lang": "en-US",
                 "seg": "Journal costs"
+            },
+            {
+                "lang": "fr-FR",
+                "seg": "Frais de registres"
             }
         ]
     },
@@ -41608,6 +41748,10 @@
             {
                 "lang": "en-US",
                 "seg": "Journal revenue"
+            },
+            {
+                "lang": "fr-FR",
+                "seg": "Recette des registres"
             }
         ]
     },
@@ -41621,6 +41765,10 @@
             {
                 "lang": "en-US",
                 "seg": "Weight before"
+            },
+            {
+                "lang": "fr-FR",
+                "seg": "Poids avant"
             }
         ]
     },
@@ -41634,6 +41782,10 @@
             {
                 "lang": "en-US",
                 "seg": "Weight after"
+            },
+            {
+                "lang": "fr-FR",
+                "seg": "Poids après"
             }
         ]
     },
@@ -41647,6 +41799,10 @@
             {
                 "lang": "en-US",
                 "seg": "Saved craftings"
+            },
+            {
+                "lang": "fr-FR",
+                "seg": "Frabrications enregistrées"
             }
         ]
     },
@@ -41660,6 +41816,10 @@
             {
                 "lang": "en-US",
                 "seg": "Item"
+            },
+            {
+                "lang": "fr-FR",
+                "seg": "Objet"
             }
         ]
     },
@@ -41673,6 +41833,10 @@
             {
                 "lang": "en-US",
                 "seg": "Details"
+            },
+            {
+                "lang": "fr-FR",
+                "seg": "Détails"
             }
         ]
     },
@@ -41686,6 +41850,10 @@
             {
                 "lang": "en-US",
                 "seg": "Main costs"
+            },
+            {
+                "lang": "fr-FR",
+                "seg": "Coûts principaux"
             }
         ]
     },
@@ -41699,6 +41867,10 @@
             {
                 "lang": "en-US",
                 "seg": "Changed"
+            },
+            {
+                "lang": "fr-FR",
+                "seg": "Modifié"
             }
         ]
     },
@@ -41712,6 +41884,10 @@
             {
                 "lang": "en-US",
                 "seg": "None"
+            },
+            {
+                "lang": "fr-FR",
+                "seg": "Aucun(e)"
             }
         ]
     },
@@ -41725,6 +41901,10 @@
             {
                 "lang": "en-US",
                 "seg": "Expected RRR"
+            },
+            {
+                "lang": "fr-FR",
+                "seg": "RRR Prévu"
             }
         ]
     },
@@ -41738,6 +41918,10 @@
             {
                 "lang": "en-US",
                 "seg": "No focus"
+            },
+            {
+                "lang": "fr-FR",
+                "seg": "Pas de focalisation"
             }
         ]
     },
@@ -41751,6 +41935,10 @@
             {
                 "lang": "en-US",
                 "seg": "Daily"
+            },
+            {
+                "lang": "fr-FR",
+                "seg": "Quotidien"
             }
         ]
     },
@@ -41764,6 +41952,10 @@
             {
                 "lang": "en-US",
                 "seg": "runs"
+            },
+            {
+                "lang": "fr-FR",
+                "seg": "tours"
             }
         ]
     },
@@ -41777,6 +41969,10 @@
             {
                 "lang": "en-US",
                 "seg": "Select an item before saving."
+            },
+            {
+                "lang": "fr-FR",
+                "seg": "Sélectionnez un objet avant d'enregistrer."
             }
         ]
     },
@@ -41790,6 +41986,10 @@
             {
                 "lang": "en-US",
                 "seg": "Crafting saved."
+            },
+            {
+                "lang": "fr-FR",
+                "seg": "Fabrications enregistrées."
             }
         ]
     },
@@ -41803,6 +42003,10 @@
             {
                 "lang": "en-US",
                 "seg": "Crafting deleted."
+            },
+            {
+                "lang": "fr-FR",
+                "seg": "Fabrications supprimées."
             }
         ]
     },
@@ -41816,6 +42020,10 @@
             {
                 "lang": "en-US",
                 "seg": "Crafting loaded."
+            },
+            {
+                "lang": "fr-FR",
+                "seg": "Fabrications chargées."
             }
         ]
     },
@@ -41829,6 +42037,10 @@
             {
                 "lang": "en-US",
                 "seg": "New crafting started."
+            },
+            {
+                "lang": "fr-FR",
+                "seg": "Nouvelle fabrications lancée."
             }
         ]
     },
@@ -41842,6 +42054,10 @@
             {
                 "lang": "en-US",
                 "seg": "Select an item before loading prices."
+            },
+            {
+                "lang": "fr-FR",
+                "seg": "Sélectionnez un objet avant d'afficher les prix."
             }
         ]
     },
@@ -41855,6 +42071,10 @@
             {
                 "lang": "en-US",
                 "seg": "Market prices loaded."
+            },
+            {
+                "lang": "fr-FR",
+                "seg": "Sélectionnez un objet avant d'afficher les prix."
             }
         ]
     },
@@ -41868,6 +42088,10 @@
             {
                 "lang": "en-US",
                 "seg": "Market prices could not be loaded."
+            },
+            {
+                "lang": "fr-FR",
+                "seg": "Sélectionnez un objet avant d'afficher les prix."
             }
         ]
     },
@@ -41880,6 +42104,10 @@
             },
             {
                 "lang": "en-US",
+                "seg": "Standard"
+            },
+            {
+                "lang": "fr-FR",
                 "seg": "Standard"
             }
         ]
@@ -41894,6 +42122,10 @@
             {
                 "lang": "en-US",
                 "seg": "Artefact"
+            },
+            {
+                "lang": "fr-FR",
+                "seg": "Artefact"
             }
         ]
     },
@@ -41907,6 +42139,10 @@
             {
                 "lang": "en-US",
                 "seg": "Alchemy"
+            },
+            {
+                "lang": "fr-FR",
+                "seg": "Alchimie"
             }
         ]
     },
@@ -41920,6 +42156,10 @@
             {
                 "lang": "en-US",
                 "seg": "Avalonian energy"
+            },
+            {
+                "lang": "fr-FR",
+                "seg": "Energie Avalonienne"
             }
         ]
     },
@@ -41933,6 +42173,10 @@
             {
                 "lang": "en-US",
                 "seg": "Tome of insight"
+            },
+            {
+                "lang": "fr-FR",
+                "seg": "Livre de perspicacité"
             }
         ]
     },
@@ -41945,6 +42189,10 @@
             },
             {
                 "lang": "en-US",
+                "seg": "Essence"
+            },
+            {
+                "lang": "fr-FR",
                 "seg": "Essence"
             }
         ]
@@ -41959,6 +42207,10 @@
             {
                 "lang": "en-US",
                 "seg": "Special"
+            },
+            {
+                "lang": "fr-FR",
+                "seg": "Spéciale"
             }
         ]
     },
@@ -41972,6 +42224,10 @@
             {
                 "lang": "en-US",
                 "seg": "Sales gross"
+            },
+            {
+                "lang": "fr-FR",
+                "seg": "Chiffre d'affaires brut"
             }
         ]
     },
@@ -41985,6 +42241,10 @@
             {
                 "lang": "en-US",
                 "seg": "Sales tax"
+            },
+            {
+                "lang": "fr-FR",
+                "seg": "Taxe sur les ventes"
             }
         ]
     },
@@ -41998,6 +42258,10 @@
             {
                 "lang": "en-US",
                 "seg": "Total costs"
+            },
+            {
+                "lang": "fr-FR",
+                "seg": "Coûts totaux"
             }
         ]
     },
@@ -42011,6 +42275,10 @@
             {
                 "lang": "en-US",
                 "seg": "Number of items produced by the entered crafting runs."
+            },
+            {
+                "lang": "fr-FR",
+                "seg": "Nombre d'objets produits lors des sessions de fabrication indiquées."
             }
         ]
     },
@@ -42024,6 +42292,10 @@
             {
                 "lang": "en-US",
                 "seg": "Profit after material costs, station costs, other costs, taxes, journal costs, and journal revenue."
+            },
+            {
+                "lang": "fr-FR",
+                "seg": "Bénéfice après déduction des coûts des matières premières, des frais de station, des autres coûts, des taxes, des coûts liés aux registres et des recettes provenant des registres."
             }
         ]
     },
@@ -42037,6 +42309,10 @@
             {
                 "lang": "en-US",
                 "seg": "Profit divided by the produced output quantity."
+            },
+            {
+                "lang": "fr-FR",
+                "seg": "Bénéfice après déduction des coûts des matières premières, des frais de station, des autres coûts, des taxes, des coûts liés aux registres et des recettes provenant des registres."
             }
         ]
     },
@@ -42050,6 +42326,10 @@
             {
                 "lang": "en-US",
                 "seg": "Profit relative to total invested costs."
+            },
+            {
+                "lang": "fr-FR",
+                "seg": "Bénéfice par rapport au total des coûts d'investissement."
             }
         ]
     },
@@ -42063,6 +42343,10 @@
             {
                 "lang": "en-US",
                 "seg": "Minimum sell price per item where profit is zero."
+            },
+            {
+                "lang": "fr-FR",
+                "seg": "Prix de vente minimum par objet pour lequel le bénéfice est nul."
             }
         ]
     },
@@ -42076,6 +42360,10 @@
             {
                 "lang": "en-US",
                 "seg": "Sales revenue before sales tax."
+            },
+            {
+                "lang": "fr-FR",
+                "seg": "Chiffre d'affaires hors taxes."
             }
         ]
     },
@@ -42089,6 +42377,10 @@
             {
                 "lang": "en-US",
                 "seg": "Sales tax deducted from gross sales."
+            },
+            {
+                "lang": "fr-FR",
+                "seg": "Chiffre d'affaires hors taxes."
             }
         ]
     },
@@ -42102,6 +42394,10 @@
             {
                 "lang": "en-US",
                 "seg": "Sales revenue after sales tax."
+            },
+            {
+                "lang": "fr-FR",
+                "seg": "Recette après déduction des texes."
             }
         ]
     },
@@ -42115,6 +42411,10 @@
             {
                 "lang": "en-US",
                 "seg": "Total invested costs from net materials, station costs, journal costs, and other costs."
+            },
+            {
+                "lang": "fr-FR",
+                "seg": "Total des coûts engagés, comprenant les coûts nets des matériaux, les coûts liés aux stations, les coûts liés aux registres et les autres coûts."
             }
         ]
     },
@@ -42128,6 +42428,10 @@
             {
                 "lang": "en-US",
                 "seg": "Material costs before resource return rate."
+            },
+            {
+                "lang": "fr-FR",
+                "seg": "Coûts des matériaux avant prise en compte du taux de récupération des ressources."
             }
         ]
     },
@@ -42141,6 +42445,10 @@
             {
                 "lang": "en-US",
                 "seg": "Material costs after expected resource return rate."
+            },
+            {
+                "lang": "fr-FR",
+                "seg": "Coûts des matériaux après prise en compte du taux de rendement prévu des ressources."
             }
         ]
     },
@@ -42154,6 +42462,10 @@
             {
                 "lang": "en-US",
                 "seg": "Costs for resources that are not returned by resource return."
+            },
+            {
+                "lang": "fr-FR",
+                "seg": "Frais liés aux ressources qui ne sont pas restituées dans le processus de restitution des ressources."
             }
         ]
     },
@@ -42167,6 +42479,10 @@
             {
                 "lang": "en-US",
                 "seg": "Calculated station cost from usage fee per 100 food and the item's consumed food."
+            },
+            {
+                "lang": "fr-FR",
+                "seg": "Coût de la station calculé à partir du tarif d'utilisation par 100 unités de nourriture et de la quantité de nourriture consommée par l'objet."
             }
         ]
     },
@@ -42180,6 +42496,10 @@
             {
                 "lang": "en-US",
                 "seg": "Manually entered additional costs included in profit, ROI, and break-even price."
+            },
+            {
+                "lang": "fr-FR",
+                "seg": "Les coûts supplémentaires saisis manuellement sont pris en compte dans le bénéfice, le retour sur investissement et le prix d'équilibre."
             }
         ]
     },
@@ -42193,6 +42513,10 @@
             {
                 "lang": "en-US",
                 "seg": "Costs of the required empty journals."
+            },
+            {
+                "lang": "fr-FR",
+                "seg": "Coût des registres vides nécessaires."
             }
         ]
     },
@@ -42206,6 +42530,10 @@
             {
                 "lang": "en-US",
                 "seg": "Expected revenue from full journals."
+            },
+            {
+                "lang": "fr-FR",
+                "seg": "Chiffre d'affaires prévu pour les registres complets."
             }
         ]
     },
@@ -42219,6 +42547,10 @@
             {
                 "lang": "en-US",
                 "seg": "Total weight of resources and journals before crafting."
+            },
+            {
+                "lang": "fr-FR",
+                "seg": "Poids total des ressources et des registres avant la fabrication."
             }
         ]
     },
@@ -42232,6 +42564,10 @@
             {
                 "lang": "en-US",
                 "seg": "Total weight of crafted items and journals after crafting."
+            },
+            {
+                "lang": "fr-FR",
+                "seg": "Poids total des objets fabriqués et des registres après la fabrication."
             }
         ]
     }
