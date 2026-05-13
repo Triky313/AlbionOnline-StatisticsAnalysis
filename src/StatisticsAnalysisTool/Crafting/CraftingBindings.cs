@@ -657,7 +657,7 @@ public class CraftingBindings : BaseViewModel
 
         foreach (var item in CraftableItems
                      .Where(x => ItemMatchesFilter(x) && ItemMatchesSearchText(x, searchText))
-                     .Take(25))
+                     .Take(30))
         {
             ListBoxItemSearchItems.Add(new CraftingItemSearchResult
             {
