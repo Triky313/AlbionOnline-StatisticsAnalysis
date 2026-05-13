@@ -151,54 +151,90 @@ public class MainWindowViewModel : BaseViewModel
 
     private void InitDashboardChart()
     {
-        DashboardChartRanges = new ObservableCollection<DashboardChartRangeOption>(DashboardChartRangeOption.CreateDefault());
-        SelectedDashboardChartRange = DashboardChartRanges.FirstOrDefault();
+        RefreshDashboardChartTranslations();
+    }
 
-        DashboardChartSeriesFilters =
+    public void RefreshLocalization()
+    {
+        Translation = new MainWindowTranslation();
+        UpdateServerTypeLabel();
+        RefreshDashboardChartTranslations();
+        RefreshItemCategoryTranslations();
+        TradeMonitoringBindings.RefreshLocalization();
+        RefreshTrackingActivityText();
+    }
+
+    private void RefreshDashboardChartTranslations()
+    {
+        var selectedDashboardChartRange = SelectedDashboardChartRange;
+        var selectedDashboardChartSeriesFilters = DashboardChartSeriesFilters.ToDictionary(x => x.ValueType, x => x.IsSelected);
+
+        DashboardChartRanges = new ObservableCollection<DashboardChartRangeOption>(DashboardChartRangeOption.CreateDefault());
+        SelectedDashboardChartRange = selectedDashboardChartRange is null
+            ? DashboardChartRanges.FirstOrDefault()
+            : DashboardChartRanges.FirstOrDefault(x => x.BucketCount == selectedDashboardChartRange.BucketCount
+                                                       && x.UseHourlyValues == selectedDashboardChartRange.UseHourlyValues)
+              ?? DashboardChartRanges.FirstOrDefault();
+
+        DashboardChartSeriesFilters = new ObservableCollection<DashboardChartSeriesFilter>(CreateDashboardChartSeriesFilters(selectedDashboardChartSeriesFilters));
+    }
+
+    private static IEnumerable<DashboardChartSeriesFilter> CreateDashboardChartSeriesFilters(IReadOnlyDictionary<ValueType, bool> selectedFilters)
+    {
+        return
         [
-            new DashboardChartSeriesFilter()
-            {
-                ValueType = ValueType.Fame,
-                Name = DashboardBindings.TranslationFame,
-                Brush = DashboardChartSeriesFilter.GetBrush(ValueType.Fame)
-            },
-            new DashboardChartSeriesFilter()
-            {
-                ValueType = ValueType.Silver,
-                Name = DashboardBindings.TranslationSilver,
-                Brush = DashboardChartSeriesFilter.GetBrush(ValueType.Silver)
-            },
-            new DashboardChartSeriesFilter()
-            {
-                ValueType = ValueType.ReSpec,
-                Name = DashboardBindings.TranslationReSpec,
-                Brush = DashboardChartSeriesFilter.GetBrush(ValueType.ReSpec)
-            },
-            new DashboardChartSeriesFilter()
-            {
-                ValueType = ValueType.FactionFame,
-                Name = $"{DashboardBindings.TranslationFaction} {DashboardBindings.TranslationFame}",
-                Brush = DashboardChartSeriesFilter.GetBrush(ValueType.FactionFame)
-            },
-            new DashboardChartSeriesFilter()
-            {
-                ValueType = ValueType.FactionPoints,
-                Name = DashboardBindings.TranslationFactionPoints,
-                Brush = DashboardChartSeriesFilter.GetBrush(ValueType.FactionPoints)
-            },
-            new DashboardChartSeriesFilter()
-            {
-                ValueType = ValueType.Might,
-                Name = DashboardBindings.TranslationMight,
-                Brush = DashboardChartSeriesFilter.GetBrush(ValueType.Might)
-            },
-            new DashboardChartSeriesFilter()
-            {
-                ValueType = ValueType.Favor,
-                Name = DashboardBindings.TranslationFavor,
-                Brush = DashboardChartSeriesFilter.GetBrush(ValueType.Favor)
-            }
+            CreateDashboardChartSeriesFilter(ValueType.Fame, DashboardBindings.TranslationFame, selectedFilters),
+            CreateDashboardChartSeriesFilter(ValueType.Silver, DashboardBindings.TranslationSilver, selectedFilters),
+            CreateDashboardChartSeriesFilter(ValueType.ReSpec, DashboardBindings.TranslationReSpec, selectedFilters),
+            CreateDashboardChartSeriesFilter(ValueType.FactionFame, $"{DashboardBindings.TranslationFaction} {DashboardBindings.TranslationFame}", selectedFilters),
+            CreateDashboardChartSeriesFilter(ValueType.FactionPoints, DashboardBindings.TranslationFactionPoints, selectedFilters),
+            CreateDashboardChartSeriesFilter(ValueType.Might, DashboardBindings.TranslationMight, selectedFilters),
+            CreateDashboardChartSeriesFilter(ValueType.Favor, DashboardBindings.TranslationFavor, selectedFilters)
         ];
+    }
+
+    private static DashboardChartSeriesFilter CreateDashboardChartSeriesFilter(ValueType valueType, string name, IReadOnlyDictionary<ValueType, bool> selectedFilters)
+    {
+        return new DashboardChartSeriesFilter()
+        {
+            ValueType = valueType,
+            Name = name,
+            Brush = DashboardChartSeriesFilter.GetBrush(valueType),
+            IsSelected = !selectedFilters.TryGetValue(valueType, out var isSelected) || isSelected
+        };
+    }
+
+    private void RefreshItemCategoryTranslations()
+    {
+        var selectedCategoryId = SelectedItemShopCategory?.Id;
+        var selectedSubCategory1Id = SelectedItemShopSubCategory1?.Id;
+        var selectedSubCategory2Id = SelectedItemShopSubCategory2?.Id;
+        var selectedSubCategory3Id = SelectedItemShopSubCategory3?.Id;
+
+        LoadCategoriesToDropdown();
+
+        SelectedItemShopCategory = FindCategoryDropdownItem(ItemShopCategories, selectedCategoryId);
+        SelectedItemShopSubCategory1 = FindCategoryDropdownItem(ItemSubCategories1, selectedSubCategory1Id);
+        SelectedItemShopSubCategory2 = FindCategoryDropdownItem(ItemSubCategories2, selectedSubCategory2Id);
+        SelectedItemShopSubCategory3 = FindCategoryDropdownItem(ItemSubCategories3, selectedSubCategory3Id);
+    }
+
+    private static CategoryDropdownItem FindCategoryDropdownItem(IEnumerable<CategoryDropdownItem> items, string id)
+    {
+        return string.IsNullOrWhiteSpace(id)
+            ? null
+            : items.FirstOrDefault(x => string.Equals(x.Id, id, StringComparison.OrdinalIgnoreCase));
+    }
+
+    private void RefreshTrackingActivityText()
+    {
+        TrackingActivityBindings.TrackingActiveText = TrackingActivityBindings.TrackingActivityType switch
+        {
+            TrackingIconType.Partially => MainWindowTranslation.TrackingIsPartiallyActive,
+            TrackingIconType.On => MainWindowTranslation.TrackingIsActive,
+            TrackingIconType.Off => MainWindowTranslation.TrackingIsNotActive,
+            _ => TrackingActivityBindings.TrackingActiveText
+        };
     }
 
     public void SetUiElements()

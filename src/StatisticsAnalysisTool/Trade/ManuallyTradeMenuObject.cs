@@ -5,64 +5,81 @@ using StatisticsAnalysisTool.Trade.Market;
 using StatisticsAnalysisTool.ViewModels;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Windows.Input;
 
 namespace StatisticsAnalysisTool.Trade;
 
 public class ManuallyTradeMenuObject : BaseViewModel
 {
-    private List<ManuallyTradeTypeStruct> _manuallyTradeTypes = new();
-    private ManuallyTradeTypeStruct _manuallyTradeTypeSelection;
-    private string _description;
-    private long _value;
-
     public ManuallyTradeMenuObject()
     {
-        ManuallyTradeTypes.Clear();
-        ManuallyTradeTypes.Add(new ManuallyTradeTypeStruct() { Type = TradeType.ManualSell, Name = LocalizationController.Translation("SOLD") });
-        ManuallyTradeTypes.Add(new ManuallyTradeTypeStruct() { Type = TradeType.ManualBuy, Name = LocalizationController.Translation("BOUGHT") });
+        RefreshManuallyTradeTypes();
+    }
+
+    public void RefreshLocalization()
+    {
+        RefreshManuallyTradeTypes();
+        OnPropertyChanged(nameof(TranslationDescription));
+        OnPropertyChanged(nameof(TranslationAddTradeManually));
+        OnPropertyChanged(nameof(TranslationValue));
+        OnPropertyChanged(nameof(TranslationAddTrade));
+    }
+
+    private void RefreshManuallyTradeTypes()
+    {
+        var selectedTradeType = ManuallyTradeTypeSelection.Type;
+        var manuallyTradeTypes = new List<ManuallyTradeTypeStruct>
+        {
+            new() { Type = TradeType.ManualSell, Name = LocalizationController.Translation("SOLD") },
+            new() { Type = TradeType.ManualBuy, Name = LocalizationController.Translation("BOUGHT") }
+        };
+
+        ManuallyTradeTypes = manuallyTradeTypes;
+        ManuallyTradeTypeSelection = manuallyTradeTypes.FirstOrDefault(x => x.Type == selectedTradeType);
     }
 
     public List<ManuallyTradeTypeStruct> ManuallyTradeTypes
     {
-        get => _manuallyTradeTypes;
+        get;
         set
         {
-            _manuallyTradeTypes = value;
+            field = value;
             OnPropertyChanged();
         }
-    }
+    } = new();
 
     public ManuallyTradeTypeStruct ManuallyTradeTypeSelection
     {
-        get => _manuallyTradeTypeSelection;
+        get;
         set
         {
-            _manuallyTradeTypeSelection = value;
+            field = value;
             OnPropertyChanged();
         }
     }
 
     public string Description
     {
-        get => _description;
+        get;
         set
         {
-            _description = value;
+            field = value;
             OnPropertyChanged();
         }
     }
 
     public long Value
     {
-        get => _value;
+        get;
         set
         {
             if (value > 9_000_000_000_000)
             {
-                _value = 9_000_000_000_000;
+                field = 9_000_000_000_000;
             }
-            _value = value;
+
+            field = value;
             OnPropertyChanged();
         }
     }

@@ -111,7 +111,6 @@ public class SettingsWindowViewModel : BaseViewModel
         SettingsController.CurrentSettings.ServerLocation = (ServerLocation) ServerSelection.Value;
         SetPacketFilter();
         SetNetworkDevices();
-        mainWindowViewModel.UpdateServerTypeLabel();
 
         SettingsController.CurrentSettings.AnotherAppToStartPath = AnotherAppToStartPath;
 
@@ -135,8 +134,8 @@ public class SettingsWindowViewModel : BaseViewModel
         SettingsController.CurrentSettings.ExactMatchPlayerNamesLineNumber = PlayerSelectionWithSameNameInDb;
 
         SetBackupStorageDirPath();
-        SetAppSettingsAndTranslations();
         SetNaviTabVisibilities(mainWindowViewModel);
+        RefreshLocalization(mainWindowViewModel);
         SetNotificationFilter();
         SetIconSourceToAnotherAppToStart();
 
@@ -158,9 +157,58 @@ public class SettingsWindowViewModel : BaseViewModel
         MainTrackingCharacterName = SettingsController.CurrentSettings.MainTrackingCharacterName;
     }
 
-    private void SetAppSettingsAndTranslations()
+    private void RefreshLocalization(MainWindowViewModel mainWindowViewModel)
     {
         Translation = new SettingsWindowTranslation();
+        RefreshNaviTabVisibilityNames();
+        RefreshNotificationFilterNames();
+        InitRefreshRate();
+        InitPacketProvider();
+        InitServer();
+        InitDropDownDownByDays(BackupIntervalByDays);
+        BackupIntervalByDaysSelection = BackupIntervalByDays.FirstOrDefault(x => x.Value == SettingsController.CurrentSettings.BackupIntervalByDays);
+        mainWindowViewModel.RefreshLocalization();
+    }
+
+    private void RefreshNaviTabVisibilityNames()
+    {
+        SetNaviTabVisibilityName(NavigationTabFilterType.Dashboard, MainWindowTranslation.Dashboard);
+        SetNaviTabVisibilityName(NavigationTabFilterType.ItemSearch, MainWindowTranslation.ItemSearch);
+        SetNaviTabVisibilityName(NavigationTabFilterType.Logging, MainWindowTranslation.Logging);
+        SetNaviTabVisibilityName(NavigationTabFilterType.Guild, MainWindowTranslation.Guild);
+        SetNaviTabVisibilityName(NavigationTabFilterType.Dungeons, MainWindowTranslation.Dungeons);
+        SetNaviTabVisibilityName(NavigationTabFilterType.DamageMeter, MainWindowTranslation.DamageMeter);
+        SetNaviTabVisibilityName(NavigationTabFilterType.TradeMonitoring, MainWindowTranslation.TradeMonitoring);
+        SetNaviTabVisibilityName(NavigationTabFilterType.Gathering, MainWindowTranslation.Gathering);
+        SetNaviTabVisibilityName(NavigationTabFilterType.Crafting, MainWindowTranslation.Crafting);
+        SetNaviTabVisibilityName(NavigationTabFilterType.Party, MainWindowTranslation.Party);
+        SetNaviTabVisibilityName(NavigationTabFilterType.StorageHistory, MainWindowTranslation.StorageHistory);
+        SetNaviTabVisibilityName(NavigationTabFilterType.MapHistory, MainWindowTranslation.MapHistory);
+        SetNaviTabVisibilityName(NavigationTabFilterType.PlayerInformation, MainWindowTranslation.PlayerInformation);
+    }
+
+    private void SetNaviTabVisibilityName(NavigationTabFilterType navigationTabFilterType, string name)
+    {
+        var tabVisibility = TabVisibilities.FirstOrDefault(x => x.NavigationTabFilterType == navigationTabFilterType);
+        if (tabVisibility != null)
+        {
+            tabVisibility.Name = name;
+        }
+    }
+
+    private void RefreshNotificationFilterNames()
+    {
+        SetNotificationFilterName(NotificationFilterType.Trade, LocalizationController.Translation("ADDED_TRADES"));
+        SetNotificationFilterName(NotificationFilterType.TrackingStatus, LocalizationController.Translation("TRACKING_STATUS"));
+    }
+
+    private void SetNotificationFilterName(NotificationFilterType notificationFilterType, string name)
+    {
+        var notificationFilter = NotificationFilters.FirstOrDefault(x => x.NotificationFilterType == notificationFilterType);
+        if (notificationFilter != null)
+        {
+            notificationFilter.Name = name;
+        }
     }
 
     private void SetNaviTabVisibilities(MainWindowViewModel mainWindowViewModel)
