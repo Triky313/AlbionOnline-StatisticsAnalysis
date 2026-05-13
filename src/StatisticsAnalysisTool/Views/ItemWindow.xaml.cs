@@ -32,8 +32,6 @@ public partial class ItemWindow
 
     private void ItemWindow_OnClosing(object sender, CancelEventArgs e)
     {
-        CraftingTabController.SaveInFile();
-
         var vm = (ItemWindowViewModel)DataContext;
         vm?.RemoveLocationFiltersEvents();
         vm?.RemoveTimerAsync();
@@ -68,23 +66,6 @@ public partial class ItemWindow
     {
         var vm = (ItemWindowViewModel)DataContext;
         vm?.AutoUpdateSwitcher();
-    }
-
-    private void CraftingInfoPopup_MouseUp(object sender, MouseEventArgs e)
-    {
-        var vm = (ItemWindowViewModel)DataContext;
-        vm?.CraftingTabBindings?.SetInfoPopupVisibility();
-    }
-
-    private void LabelNotes_OnLostFocus(object sender, RoutedEventArgs e)
-    {
-        if (sender is not TextBox textBox)
-        {
-            return;
-        }
-
-        var vm = (ItemWindowViewModel)DataContext;
-        _ = CraftingTabController.AddNoteAsync(vm?.Item.UniqueName, textBox.Text);
     }
 
     private ListSortDirection _lastDirection = ListSortDirection.Ascending;

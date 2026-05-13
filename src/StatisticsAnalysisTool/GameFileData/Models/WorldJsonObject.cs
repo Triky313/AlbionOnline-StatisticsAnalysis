@@ -16,6 +16,12 @@ public class WorldJsonObject
     [JsonPropertyName("@file")]
     public string File { get; set; }
 
+    [JsonPropertyName("@enabled")]
+    public string Enabled { get; set; }
+
+    [JsonPropertyName("@rareresourcedistribution")]
+    public string RareResourceDistribution { get; set; }
+
     [JsonPropertyName("minimapmarkers")]
     public MiniMapMarkers MiniMapMarkers { get; set; }
 }

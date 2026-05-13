@@ -84,6 +84,7 @@ public class NetworkManager
         builder.AddEventHandler(new CraftBuildingInfoEventHandler(trackingController));
         builder.AddEventHandler(new NewHellDungeonRoomShrineObjectEventHandler(trackingController));
         builder.AddEventHandler(new NewRandomDungeonExitEventHandler(trackingController));
+        builder.AddEventHandler(new InvitationPlayerTradeEventHandler(trackingController));
         builder.AddEventHandler(new PlayerTradeUpdateEventHandler(trackingController));
         builder.AddEventHandler(new PlayerTradeFinishedEventHandler(trackingController));
         builder.AddEventHandler(new PlayerTradeCancelEventHandler(trackingController));

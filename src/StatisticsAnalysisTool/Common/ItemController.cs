@@ -351,7 +351,7 @@ public static class ItemController
         catch
         {
             DeleteLocalFile(AppDataPaths.GameFile(Settings.Default.IndexedItemsFileName));
-            return new ObservableCollection<Item>();
+            return [];
         }
     }
 

@@ -1,5 +1,4 @@
-﻿using StatisticsAnalysisTool.Localization;
-using System;
+using StatisticsAnalysisTool.Localization;
 
 namespace StatisticsAnalysisTool.Models.TranslationModel;
 
@@ -46,15 +45,7 @@ public class ItemWindowTranslation
     public static string RealMoneyPrice => LocalizationController.Translation("REAL_MONEY_PRICE");
     public static string AveragePrices => LocalizationController.Translation("AVERAGE_PRICES");
     public static string AveragePricesTooltip => LocalizationController.Translation("AVERAGE_PRICES_TOOLTIP");
-    public static string RequiredResources => LocalizationController.Translation("REQUIRED_RESOURCES");
-    public static string Crafting => LocalizationController.Translation("CRAFTING");
     public static string ShopCategory => LocalizationController.Translation("SHOP_CATEGORY");
     public static string ShopSubCategory => LocalizationController.Translation("SHOP_SUB_CATEGORY");
     public static string CanBeOvercharged => LocalizationController.Translation("CAN_BE_OVERCHARGED");
-    public static string Notes => LocalizationController.Translation("NOTES");
-    public static string CraftingInfoDescription1 => LocalizationController.Translation("CRAFTING_INFO_DESCRIPTION_1");
-    public static string CraftingInfoDescription2 => LocalizationController.Translation("CRAFTING_INFO_DESCRIPTION_2");
-    public static string CraftingInfoDescription3 => LocalizationController.Translation("CRAFTING_INFO_DESCRIPTION_3");
-    public static string CraftingInfoDescription4 => LocalizationController.Translation("CRAFTING_INFO_DESCRIPTION_4");
-    public static string CraftingInfoDescription5 => LocalizationController.Translation("CRAFTING_INFO_DESCRIPTION_5");
 }

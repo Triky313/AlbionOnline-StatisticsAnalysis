@@ -9,6 +9,7 @@ using StatisticsAnalysisTool.PhotonPackageParser;
 using StatisticsAnalysisTool.ViewModels;
 using System;
 using System.Diagnostics;
+using System.IO;
 using System.Reflection;
 using System.Threading.Tasks;
 using System.Windows;
@@ -36,9 +37,25 @@ public partial class SettingsControl
 
     private void OpenToolDirectory_Click(object sender, RoutedEventArgs e)
     {
+        OpenDirectory(_settingsWindowViewModel.ToolDirectory);
+    }
+
+    private void OpenUserDataDirectory_Click(object sender, RoutedEventArgs e)
+    {
+        OpenDirectory(_settingsWindowViewModel.UserDataDirectory);
+    }
+
+    private static void OpenDirectory(string directoryPath)
+    {
         try
         {
-            _ = Process.Start(new ProcessStartInfo { FileName = _settingsWindowViewModel.ToolDirectory, UseShellExecute = true });
+            Directory.CreateDirectory(directoryPath);
+
+            _ = Process.Start(new ProcessStartInfo
+            {
+                FileName = directoryPath,
+                UseShellExecute = true
+            });
         }
         catch (Exception ex)
         {

@@ -82,6 +82,7 @@ public class SettingsObject
     public bool IsDamageMeterNaviTabActive { get; set; } = true;
     public bool IsTradeMonitoringNaviTabActive { get; set; } = true;
     public bool IsGatheringNaviTabActive { get; set; } = true;
+    public bool IsCraftingNaviTabActive { get; set; } = true;
     public bool IsPartyNaviTabActive { get; set; } = true;
     public bool IsStorageHistoryNaviTabActive { get; set; } = true;
     public bool IsMapHistoryNaviTabActive { get; set; } = true;
