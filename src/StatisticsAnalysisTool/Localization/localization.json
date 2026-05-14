@@ -20,8 +20,28 @@
           "seg": "Langue"
         },
         {
+          "lang": "hi-HI",
+          "seg": "भाषा"
+        },
+        {
+          "lang": "id-ID",
+          "seg": "Bahasa"
+        },
+        {
+          "lang": "it-IT",
+          "seg": "Lingua"
+        },
+        {
+          "lang": "ja-JA",
+          "seg": "言語"
+        },
+        {
           "lang": "ja-JP",
           "seg": "言語"
+        },
+        {
+          "lang": "ko-KO",
+          "seg": "언어"
         },
         {
           "lang": "ko-KR",
@@ -36,6 +56,10 @@
           "seg": "Linguagem"
         },
         {
+          "lang": "pt-PT",
+          "seg": "Língua"
+        },
+        {
           "lang": "ru-RU",
           "seg": "Язык"
         },
@@ -45,11 +69,11 @@
         },
         {
           "lang": "zh-CN",
-          "seg": "语言："
+          "seg": "语言"
         },
         {
           "lang": "zh-TW",
-          "seg": "語言："
+          "seg": "語言"
         }
       ]
     },
@@ -42568,6 +42592,227 @@
             {
                 "lang": "fr-FR",
                 "seg": "Poids total des objets fabriqués et des registres après la fabrication."
+            }
+        ]
+    },
+    {
+        "tuid": "FIRSTSTART_GUIDE_TITLE",
+        "tuv": [
+            {
+                "lang": "de-DE",
+                "seg": "Einrichtungsassistent"
+            },
+            {
+                "lang": "en-US",
+                "seg": "Setup guide"
+            }
+        ]
+    },
+    {
+        "tuid": "FIRST_START_GUIDE_TITLE",
+        "tuv": [
+            {
+                "lang": "de-DE",
+                "seg": "Einrichtungsassistent"
+            },
+            {
+                "lang": "en-US",
+                "seg": "Setup guide"
+            }
+        ]
+    },
+    {
+        "tuid": "FIRST_START_GUIDE_LANGUAGE_DESCRIPTION",
+        "tuv": [
+            {
+                "lang": "de-DE",
+                "seg": "Wähle die Sprache aus, in der das Tool angezeigt werden soll."
+            },
+            {
+                "lang": "en-US",
+                "seg": "Choose the language the tool should use."
+            }
+        ]
+    },
+    {
+        "tuid": "FIRST_START_GUIDE_SELECT_LANGUAGE_VALIDATION",
+        "tuv": [
+            {
+                "lang": "de-DE",
+                "seg": "Bitte wähle eine Sprache aus."
+            },
+            {
+                "lang": "en-US",
+                "seg": "Please select a language."
+            }
+        ]
+    },
+    {
+        "tuid": "FIRST_START_GUIDE_TRACKING_MODE_TITLE",
+        "tuv": [
+            {
+                "lang": "de-DE",
+                "seg": "Tracking-Modus"
+            },
+            {
+                "lang": "en-US",
+                "seg": "Tracking mode"
+            }
+        ]
+    },
+    {
+        "tuid": "FIRST_START_GUIDE_TRACKING_MODE_DESCRIPTION",
+        "tuv": [
+            {
+                "lang": "de-DE",
+                "seg": "Wähle, wie das Tool den Netzwerkverkehr von Albion Online erfassen soll."
+            },
+            {
+                "lang": "en-US",
+                "seg": "Choose how the tool should capture Albion Online network traffic."
+            }
+        ]
+    },
+    {
+        "tuid": "FIRST_START_GUIDE_TRACKING_MODE_DIFFERENCE",
+        "tuv": [
+            {
+                "lang": "de-DE",
+                "seg": "NPCap nutzt einen Netzwerktreiber und ist für den Einstieg in den meisten Fällen die bessere Wahl. Socket nutzt Windows-Raw-Sockets und benötigt keine NPCap-Installation, muss dafür aber als Administrator gestartet werden."
+            },
+            {
+                "lang": "en-US",
+                "seg": "NPCap uses a network driver and is usually the better first choice for most users. Socket uses Windows raw sockets and does not require NPCap, but the tool must be started as Administrator."
+            }
+        ]
+    },
+    {
+        "tuid": "FIRST_START_GUIDE_NPCAP_OPTION",
+        "tuv": [
+            {
+                "lang": "de-DE",
+                "seg": "NPCap"
+            },
+            {
+                "lang": "en-US",
+                "seg": "NPCap"
+            }
+        ]
+    },
+    {
+        "tuid": "FIRST_START_GUIDE_SOCKETS_OPTION",
+        "tuv": [
+            {
+                "lang": "de-DE",
+                "seg": "Socket"
+            },
+            {
+                "lang": "en-US",
+                "seg": "Socket"
+            }
+        ]
+    },
+    {
+        "tuid": "FIRST_START_GUIDE_NPCAP_INSTRUCTION",
+        "tuv": [
+            {
+                "lang": "de-DE",
+                "seg": "Für NPCap musst du NPCap installieren."
+            },
+            {
+                "lang": "en-US",
+                "seg": "For NPCap, install NPCap."
+            }
+        ]
+    },
+    {
+        "tuid": "FIRST_START_GUIDE_NPCAP_DOWNLOAD_LINK",
+        "tuv": [
+            {
+                "lang": "de-DE",
+                "seg": "NPCap herunterladen"
+            },
+            {
+                "lang": "en-US",
+                "seg": "Download NPCap"
+            }
+        ]
+    },
+    {
+        "tuid": "FIRST_START_GUIDE_SOCKETS_INSTRUCTION",
+        "tuv": [
+            {
+                "lang": "de-DE",
+                "seg": "Für Socket musst du dieses Tool als Administrator starten."
+            },
+            {
+                "lang": "en-US",
+                "seg": "For Socket, start this tool as Administrator."
+            }
+        ]
+    },
+    {
+        "tuid": "FIRST_START_GUIDE_SELECT_TRACKING_MODE_VALIDATION",
+        "tuv": [
+            {
+                "lang": "de-DE",
+                "seg": "Bitte wähle einen Tracking-Modus aus."
+            },
+            {
+                "lang": "en-US",
+                "seg": "Please select a tracking mode."
+            }
+        ]
+    },
+    {
+        "tuid": "FIRST_START_GUIDE_NAVIGATION_TABS_DESCRIPTION",
+        "tuv": [
+            {
+                "lang": "de-DE",
+                "seg": "Wähle aus, welche Navigation-Tabs du sehen möchtest."
+            },
+            {
+                "lang": "en-US",
+                "seg": "Select the navigation tabs you want to see."
+            }
+        ]
+    },
+    {
+        "tuid": "FIRST_START_GUIDE_BACK",
+        "tuv": [
+            {
+                "lang": "de-DE",
+                "seg": "Zurück"
+            },
+            {
+                "lang": "en-US",
+                "seg": "Back"
+            }
+        ]
+    },
+    {
+        "tuid": "FIRST_START_GUIDE_NEXT",
+        "tuv": [
+            {
+                "lang": "de-DE",
+                "seg": "Weiter"
+            },
+            {
+                "lang": "en-US",
+                "seg": "Next"
+            }
+        ]
+    },
+    {
+        "tuid": "FIRST_START_GUIDE_FINISH",
+        "tuv": [
+            {
+                "lang": "de-DE",
+                "seg": "Fertigstellen"
+            },
+            {
+                "lang": "en-US",
+                "seg": "Finish"
             }
         ]
     }

@@ -11,6 +11,7 @@ namespace StatisticsAnalysisTool.Common.UserSettings;
 public class SettingsObject
 {
     public string CurrentCultureIetfLanguageTag { get; set; }
+    public bool HasCompletedFirstStartGuide { get; set; } = false;
     public int RefreshRate { get; set; } = 10000;
     public string PacketFilter { get; set; } = "(ip or ip6) and (udp and (port 5055 or port 5056 or port 5058))";
     public PacketProviderKind PacketProvider { get; set; } = PacketProviderKind.Npcap;
