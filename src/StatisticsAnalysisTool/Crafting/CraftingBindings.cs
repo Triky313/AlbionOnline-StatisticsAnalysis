@@ -687,6 +687,11 @@ public class CraftingBindings : BaseViewModel
         IsSellPricePopupOpen = false;
     }
 
+    public void CloseSellPriceOptions()
+    {
+        IsSellPricePopupOpen = false;
+    }
+
     public async Task LoadAsync()
     {
         var craftings = await _controller.LoadAsync();

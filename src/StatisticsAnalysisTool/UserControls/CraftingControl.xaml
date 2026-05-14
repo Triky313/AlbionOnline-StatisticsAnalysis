@@ -152,7 +152,7 @@
             <Setter Property="VerticalContentAlignment" Value="Center" />
         </Style>
     </UserControl.Resources>
-    <Grid>
+    <Grid PreviewMouseDown="CraftingControl_OnPreviewMouseDown">
         <Grid.RowDefinitions>
             <RowDefinition Height="2*" />
             <RowDefinition Height="5" />
@@ -329,6 +329,7 @@
                                      VerticalAlignment="Top"
                                      common:TextBoxHelper.OnlyNumeric="Double"
                                      GotKeyboardFocus="OutputUnitPrice_OnGotKeyboardFocus"
+                                     LostKeyboardFocus="OutputUnitPrice_OnLostKeyboardFocus"
                                      PreviewMouseLeftButtonUp="OutputUnitPrice_OnPreviewMouseLeftButtonUp" />
                             <Popup PlacementTarget="{Binding ElementName=OutputUnitPriceTextBox}"
                                    Placement="Bottom"
@@ -342,7 +343,8 @@
                                         BorderThickness="1"
                                         Width="230"
                                         MaxHeight="360">
-                                    <ListBox SelectionMode="Single"
+                                    <ListBox x:Name="SellPriceOptionsListBox"
+                                             SelectionMode="Single"
                                              SelectionChanged="ListBoxSellPrice_OnSelectionChanged"
                                              ItemsSource="{Binding CraftingBindings.SellPriceOptions}"
                                              Width="230"

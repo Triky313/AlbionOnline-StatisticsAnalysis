@@ -1,7 +1,10 @@
 using StatisticsAnalysisTool.Crafting;
 using StatisticsAnalysisTool.GameFileData;
 using StatisticsAnalysisTool.ViewModels;
+using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Input;
+using System.Windows.Media;
 
 namespace StatisticsAnalysisTool.UserControls;
 
@@ -115,7 +118,20 @@ public partial class CraftingControl
         mainWindowViewModel.CraftingBindings.OpenSellPriceOptions();
     }
 
-    private void OutputUnitPrice_OnPreviewMouseLeftButtonUp(object sender, System.Windows.Input.MouseButtonEventArgs e)
+    private void OutputUnitPrice_OnLostKeyboardFocus(object sender, KeyboardFocusChangedEventArgs e)
+    {
+        var newFocus = e.NewFocus as DependencyObject;
+
+        if (IsElementOrChildOf(newFocus, OutputUnitPriceTextBox)
+            || IsElementOrChildOf(newFocus, SellPriceOptionsListBox))
+        {
+            return;
+        }
+
+        CloseSellPriceOptions();
+    }
+
+    private void OutputUnitPrice_OnPreviewMouseLeftButtonUp(object sender, MouseButtonEventArgs e)
     {
         if (DataContext is not MainWindowViewModel mainWindowViewModel)
         {
@@ -123,5 +139,51 @@ public partial class CraftingControl
         }
 
         mainWindowViewModel.CraftingBindings.OpenSellPriceOptions();
+    }
+
+    private void CraftingControl_OnPreviewMouseDown(object sender, MouseButtonEventArgs e)
+    {
+        if (IsElementOrChildOf(e.OriginalSource as DependencyObject, OutputUnitPriceTextBox))
+        {
+            return;
+        }
+
+        CloseSellPriceOptions();
+    }
+
+    private void CloseSellPriceOptions()
+    {
+        if (DataContext is not MainWindowViewModel mainWindowViewModel)
+        {
+            return;
+        }
+
+        mainWindowViewModel.CraftingBindings.CloseSellPriceOptions();
+    }
+
+    private static bool IsElementOrChildOf(DependencyObject source, DependencyObject parent)
+    {
+        while (source != null)
+        {
+            if (ReferenceEquals(source, parent))
+            {
+                return true;
+            }
+
+            source = GetParent(source);
+        }
+
+        return false;
+    }
+
+    private static DependencyObject GetParent(DependencyObject source)
+    {
+        if (source is Visual
+            || source is System.Windows.Media.Media3D.Visual3D)
+        {
+            return VisualTreeHelper.GetParent(source);
+        }
+
+        return LogicalTreeHelper.GetParent(source);
     }
 }
