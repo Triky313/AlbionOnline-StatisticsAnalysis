@@ -41525,6 +41525,142 @@
         ]
     },
     {
+        "tuid": "CRAFTING_RESOURCE_ICON_COLUMN_TOOLTIP",
+        "tuv": [
+            {
+                "lang": "de-DE",
+                "seg": "Zeigt das Icon der Ressource."
+            },
+            {
+                "lang": "en-US",
+                "seg": "Shows the resource icon."
+            },
+            {
+                "lang": "fr-FR",
+                "seg": "Affiche l'icone de la ressource."
+            }
+        ]
+    },
+    {
+        "tuid": "CRAFTING_RESOURCE_NAME_COLUMN_TOOLTIP",
+        "tuv": [
+            {
+                "lang": "de-DE",
+                "seg": "Name der benoetigten Ressource."
+            },
+            {
+                "lang": "en-US",
+                "seg": "Name of the required resource."
+            },
+            {
+                "lang": "fr-FR",
+                "seg": "Nom de la ressource requise."
+            }
+        ]
+    },
+    {
+        "tuid": "CRAFTING_RESOURCE_TYPE_COLUMN_TOOLTIP",
+        "tuv": [
+            {
+                "lang": "de-DE",
+                "seg": "Typ der Ressource, zum Beispiel returnbar, nicht returnbar oder Spezialressource."
+            },
+            {
+                "lang": "en-US",
+                "seg": "Resource type, for example returnable, non-returnable, or special resource."
+            },
+            {
+                "lang": "fr-FR",
+                "seg": "Type de ressource, par exemple retournable, non retournable ou speciale."
+            }
+        ]
+    },
+    {
+        "tuid": "CRAFTING_RESOURCE_GROSS_COLUMN_TOOLTIP",
+        "tuv": [
+            {
+                "lang": "de-DE",
+                "seg": "Bruttobedarf vor Resource Return."
+            },
+            {
+                "lang": "en-US",
+                "seg": "Gross requirement before resource return."
+            },
+            {
+                "lang": "fr-FR",
+                "seg": "Besoin brut avant le retour des ressources."
+            }
+        ]
+    },
+    {
+        "tuid": "CRAFTING_RESOURCE_EXPECTED_RETURN_COLUMN_TOOLTIP",
+        "tuv": [
+            {
+                "lang": "de-DE",
+                "seg": "Erwartete Rueckgabe durch die Resource Return Rate."
+            },
+            {
+                "lang": "en-US",
+                "seg": "Expected return from the resource return rate."
+            },
+            {
+                "lang": "fr-FR",
+                "seg": "Retour attendu par le taux de retour des ressources."
+            }
+        ]
+    },
+    {
+        "tuid": "CRAFTING_RESOURCE_NET_COLUMN_TOOLTIP",
+        "tuv": [
+            {
+                "lang": "de-DE",
+                "seg": "Nettoverbrauch nach erwarteter Rueckgabe."
+            },
+            {
+                "lang": "en-US",
+                "seg": "Net consumption after expected return."
+            },
+            {
+                "lang": "fr-FR",
+                "seg": "Consommation nette apres le retour attendu."
+            }
+        ]
+    },
+    {
+        "tuid": "CRAFTING_RESOURCE_PRICE_COLUMN_TOOLTIP",
+        "tuv": [
+            {
+                "lang": "de-DE",
+                "seg": "Silberpreis pro Ressourceneinheit."
+            },
+            {
+                "lang": "en-US",
+                "seg": "Silver price per resource unit."
+            },
+            {
+                "lang": "fr-FR",
+                "seg": "Prix en argent par unite de ressource."
+            }
+        ]
+    },
+    {
+        "tuid": "CRAFTING_RESOURCE_NET_COST_COLUMN_TOOLTIP",
+        "tuv": [
+            {
+                "lang": "de-DE",
+                "seg": "Silberkosten nach erwarteter Rueckgabe."
+            },
+            {
+                "lang": "en-US",
+                "seg": "Silver cost after expected return."
+            },
+            {
+                "lang": "fr-FR",
+                "seg": "Cout en argent apres le retour attendu."
+            }
+        ]
+    },
+    {
         "tuid": "JOURNALS",
         "tuv": [
             {

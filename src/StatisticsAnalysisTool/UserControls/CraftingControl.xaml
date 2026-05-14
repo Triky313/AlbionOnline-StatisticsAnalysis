@@ -380,15 +380,37 @@
                         <ListView.View>
                             <GridView>
                                 <GridViewColumn Header="{x:Static crafting:CraftingBindings.TranslationIcon}" Width="45">
+                                    <GridViewColumn.HeaderContainerStyle>
+                                        <Style TargetType="{x:Type GridViewColumnHeader}" BasedOn="{StaticResource {x:Type GridViewColumnHeader}}">
+                                            <Setter Property="ToolTip" Value="{x:Static crafting:CraftingBindings.TranslationResourceIconColumnTooltip}" />
+                                        </Style>
+                                    </GridViewColumn.HeaderContainerStyle>
                                     <GridViewColumn.CellTemplate>
                                         <DataTemplate>
                                             <Image Source="{Binding Icon}" Width="32" Height="32" />
                                         </DataTemplate>
                                     </GridViewColumn.CellTemplate>
                                 </GridViewColumn>
-                                <GridViewColumn Header="{x:Static crafting:CraftingBindings.TranslationResource}" Width="210" DisplayMemberBinding="{Binding DisplayName}" />
-                                <GridViewColumn Header="{x:Static crafting:CraftingBindings.TranslationType}" Width="125" DisplayMemberBinding="{Binding ResourceKindText}" />
+                                <GridViewColumn Header="{x:Static crafting:CraftingBindings.TranslationResource}" Width="210" DisplayMemberBinding="{Binding DisplayName}">
+                                    <GridViewColumn.HeaderContainerStyle>
+                                        <Style TargetType="{x:Type GridViewColumnHeader}" BasedOn="{StaticResource {x:Type GridViewColumnHeader}}">
+                                            <Setter Property="ToolTip" Value="{x:Static crafting:CraftingBindings.TranslationResourceNameColumnTooltip}" />
+                                        </Style>
+                                    </GridViewColumn.HeaderContainerStyle>
+                                </GridViewColumn>
+                                <GridViewColumn Header="{x:Static crafting:CraftingBindings.TranslationType}" Width="125" DisplayMemberBinding="{Binding ResourceKindText}">
+                                    <GridViewColumn.HeaderContainerStyle>
+                                        <Style TargetType="{x:Type GridViewColumnHeader}" BasedOn="{StaticResource {x:Type GridViewColumnHeader}}">
+                                            <Setter Property="ToolTip" Value="{x:Static crafting:CraftingBindings.TranslationResourceTypeColumnTooltip}" />
+                                        </Style>
+                                    </GridViewColumn.HeaderContainerStyle>
+                                </GridViewColumn>
                                 <GridViewColumn Header="{x:Static crafting:CraftingBindings.TranslationGross}" Width="80">
+                                    <GridViewColumn.HeaderContainerStyle>
+                                        <Style TargetType="{x:Type GridViewColumnHeader}" BasedOn="{StaticResource {x:Type GridViewColumnHeader}}">
+                                            <Setter Property="ToolTip" Value="{x:Static crafting:CraftingBindings.TranslationResourceGrossColumnTooltip}" />
+                                        </Style>
+                                    </GridViewColumn.HeaderContainerStyle>
                                     <GridViewColumn.CellTemplate>
                                         <DataTemplate>
                                             <TextBlock Text="{Binding GrossQuantity, StringFormat={}{0:#,0.##}}" Style="{StaticResource CraftingResourceQuantityText}" />
@@ -396,6 +418,11 @@
                                     </GridViewColumn.CellTemplate>
                                 </GridViewColumn>
                                 <GridViewColumn Header="{x:Static crafting:CraftingBindings.TranslationExpectedReturn}" Width="115">
+                                    <GridViewColumn.HeaderContainerStyle>
+                                        <Style TargetType="{x:Type GridViewColumnHeader}" BasedOn="{StaticResource {x:Type GridViewColumnHeader}}">
+                                            <Setter Property="ToolTip" Value="{x:Static crafting:CraftingBindings.TranslationResourceExpectedReturnColumnTooltip}" />
+                                        </Style>
+                                    </GridViewColumn.HeaderContainerStyle>
                                     <GridViewColumn.CellTemplate>
                                         <DataTemplate>
                                             <TextBlock Text="{Binding ExpectedReturnQuantity, StringFormat={}{0:#,0.##}}" Style="{StaticResource CraftingResourceQuantityText}" />
@@ -403,20 +430,35 @@
                                     </GridViewColumn.CellTemplate>
                                 </GridViewColumn>
                                 <GridViewColumn Header="{x:Static crafting:CraftingBindings.TranslationNet}" Width="80">
+                                    <GridViewColumn.HeaderContainerStyle>
+                                        <Style TargetType="{x:Type GridViewColumnHeader}" BasedOn="{StaticResource {x:Type GridViewColumnHeader}}">
+                                            <Setter Property="ToolTip" Value="{x:Static crafting:CraftingBindings.TranslationResourceNetColumnTooltip}" />
+                                        </Style>
+                                    </GridViewColumn.HeaderContainerStyle>
                                     <GridViewColumn.CellTemplate>
                                         <DataTemplate>
                                             <TextBlock Text="{Binding NetQuantity, StringFormat={}{0:#,0.##}}" Style="{StaticResource CraftingResourceQuantityText}" />
                                         </DataTemplate>
                                     </GridViewColumn.CellTemplate>
                                 </GridViewColumn>
-                                <GridViewColumn Header="{x:Static crafting:CraftingBindings.TranslationPrice}" Width="90">
+                                <GridViewColumn Header="{x:Static crafting:CraftingBindings.TranslationPrice}" Width="110">
+                                    <GridViewColumn.HeaderContainerStyle>
+                                        <Style TargetType="{x:Type GridViewColumnHeader}" BasedOn="{StaticResource {x:Type GridViewColumnHeader}}">
+                                            <Setter Property="ToolTip" Value="{x:Static crafting:CraftingBindings.TranslationResourcePriceColumnTooltip}" />
+                                        </Style>
+                                    </GridViewColumn.HeaderContainerStyle>
                                     <GridViewColumn.CellTemplate>
                                         <DataTemplate>
                                             <TextBox Text="{Binding UnitPrice, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Width="78" Height="22" common:TextBoxHelper.OnlyNumeric="Double" />
                                         </DataTemplate>
                                     </GridViewColumn.CellTemplate>
                                 </GridViewColumn>
-                                <GridViewColumn Header="{x:Static crafting:CraftingBindings.TranslationNetCost}" Width="90">
+                                <GridViewColumn Header="{x:Static crafting:CraftingBindings.TranslationNetCost}" Width="110">
+                                    <GridViewColumn.HeaderContainerStyle>
+                                        <Style TargetType="{x:Type GridViewColumnHeader}" BasedOn="{StaticResource {x:Type GridViewColumnHeader}}">
+                                            <Setter Property="ToolTip" Value="{x:Static crafting:CraftingBindings.TranslationResourceNetCostColumnTooltip}" />
+                                        </Style>
+                                    </GridViewColumn.HeaderContainerStyle>
                                     <GridViewColumn.CellTemplate>
                                         <DataTemplate>
                                             <TextBlock Text="{Binding NetCost, StringFormat={}{0:N0}}" Style="{StaticResource CraftingResourceCostText}" />

@@ -586,6 +586,7 @@ public class CraftingBindings : BaseViewModel
     public static string TranslationSavedCraftings => LocalizationController.Translation("SAVED_CRAFTINGS");
     public static string TranslationSellPrice => LocalizationController.Translation("SELL_PRICE");
     public static string TranslationSetupFee => LocalizationController.Translation("SETUP_FEE");
+    public static string TranslationSilver => LocalizationController.Translation("SILVER");
     public static string TranslationStation => LocalizationController.Translation("STATION");
     public static string TranslationStationFee => LocalizationController.Translation("STATION_FEE");
     public static string TranslationStationFeeTooltip => LocalizationController.Translation("CRAFTING_STATION_FEE_TOOLTIP");
@@ -613,6 +614,14 @@ public class CraftingBindings : BaseViewModel
     public static string TranslationTotalCostsTooltip => LocalizationController.Translation("CRAFTING_RESULT_TOTAL_COSTS_TOOLTIP");
     public static string TranslationWeightAfterTooltip => LocalizationController.Translation("CRAFTING_RESULT_WEIGHT_AFTER_TOOLTIP");
     public static string TranslationWeightBeforeTooltip => LocalizationController.Translation("CRAFTING_RESULT_WEIGHT_BEFORE_TOOLTIP");
+    public static string TranslationResourceIconColumnTooltip => LocalizationController.Translation("CRAFTING_RESOURCE_ICON_COLUMN_TOOLTIP");
+    public static string TranslationResourceNameColumnTooltip => LocalizationController.Translation("CRAFTING_RESOURCE_NAME_COLUMN_TOOLTIP");
+    public static string TranslationResourceTypeColumnTooltip => LocalizationController.Translation("CRAFTING_RESOURCE_TYPE_COLUMN_TOOLTIP");
+    public static string TranslationResourceGrossColumnTooltip => LocalizationController.Translation("CRAFTING_RESOURCE_GROSS_COLUMN_TOOLTIP");
+    public static string TranslationResourceExpectedReturnColumnTooltip => LocalizationController.Translation("CRAFTING_RESOURCE_EXPECTED_RETURN_COLUMN_TOOLTIP");
+    public static string TranslationResourceNetColumnTooltip => LocalizationController.Translation("CRAFTING_RESOURCE_NET_COLUMN_TOOLTIP");
+    public static string TranslationResourcePriceColumnTooltip => LocalizationController.Translation("CRAFTING_RESOURCE_PRICE_COLUMN_TOOLTIP");
+    public static string TranslationResourceNetCostColumnTooltip => LocalizationController.Translation("CRAFTING_RESOURCE_NET_COST_COLUMN_TOOLTIP");
 
     public bool HasJournal => Journal != null;
 
