@@ -38,11 +38,20 @@ public class CraftingSellPriceOption
     }
     = ValueTimeStatus.NoValue;
 
+    public string PriceRankIndicator
+    {
+        get;
+        init;
+    }
+    = string.Empty;
+
     public string DisplayText
     {
         get
         {
-            return $"{LocationName}: {Price.ToString("N0", CultureInfo.CurrentCulture)}";
+            var rankIndicator = string.IsNullOrWhiteSpace(PriceRankIndicator) ? string.Empty : " " + PriceRankIndicator;
+
+            return $"{LocationName}: {Price.ToString("N0", CultureInfo.CurrentCulture)}{rankIndicator}";
         }
     }
 

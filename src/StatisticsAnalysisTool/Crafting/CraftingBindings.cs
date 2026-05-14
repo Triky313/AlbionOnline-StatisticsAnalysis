@@ -710,7 +710,7 @@ public class CraftingBindings : BaseViewModel
                 return;
             }
 
-            await LoadPriceOptionsAsync(resource.UniqueName, resource.PriceOptions);
+            await LoadPriceOptionsAsync(resource.UniqueName, resource.PriceOptions, CraftingPricePreference.LowerIsBetter);
             CloseAllPriceOptionPopups();
             resource.IsPricePopupOpen = resource.PriceOptions.Count > 0;
         }
@@ -742,7 +742,7 @@ public class CraftingBindings : BaseViewModel
                 return;
             }
 
-            await LoadPriceOptionsAsync(Journal.EmptyJournalUniqueName, Journal.EmptyJournalPriceOptions);
+            await LoadPriceOptionsAsync(Journal.EmptyJournalUniqueName, Journal.EmptyJournalPriceOptions, CraftingPricePreference.LowerIsBetter);
             CloseAllPriceOptionPopups();
             Journal.IsEmptyJournalPricePopupOpen = Journal.EmptyJournalPriceOptions.Count > 0;
         }
@@ -767,7 +767,7 @@ public class CraftingBindings : BaseViewModel
                 return;
             }
 
-            await LoadPriceOptionsAsync(Journal.FullJournalUniqueName, Journal.FullJournalPriceOptions);
+            await LoadPriceOptionsAsync(Journal.FullJournalUniqueName, Journal.FullJournalPriceOptions, CraftingPricePreference.HigherIsBetter);
             CloseAllPriceOptionPopups();
             Journal.IsFullJournalPricePopupOpen = Journal.FullJournalPriceOptions.Count > 0;
         }
@@ -1272,13 +1272,16 @@ public class CraftingBindings : BaseViewModel
             return;
         }
 
-        await LoadPriceOptionsAsync(itemUniqueName, SellPriceOptions);
+        await LoadPriceOptionsAsync(itemUniqueName, SellPriceOptions, CraftingPricePreference.HigherIsBetter);
 
         _sellPriceOptionsItemUniqueName = itemUniqueName;
         IsSellPricePopupOpen = SellPriceOptions.Count > 0;
     }
 
-    private static async Task LoadPriceOptionsAsync(string itemUniqueName, ObservableCollection<CraftingSellPriceOption> target)
+    private static async Task LoadPriceOptionsAsync(
+        string itemUniqueName,
+        ObservableCollection<CraftingSellPriceOption> target,
+        CraftingPricePreference pricePreference)
     {
         if (target == null)
         {
@@ -1286,12 +1289,12 @@ public class CraftingBindings : BaseViewModel
         }
 
         var prices = await ApiController.GetCityItemPricesFromJsonAsync(itemUniqueName).ConfigureAwait(true) ?? [];
-        target.Clear();
+        var priceOptions = new List<CraftingSellPriceOption>();
 
         foreach (var location in SellPriceMarketLocations)
         {
             var priceOptionValue = GetSellPriceOptionValue(prices, location);
-            target.Add(new CraftingSellPriceOption
+            priceOptions.Add(new CraftingSellPriceOption
             {
                 Location = location,
                 LocationName = Locations.GetDisplayName(location),
@@ -1300,6 +1303,49 @@ public class CraftingBindings : BaseViewModel
                 PriceDateStatus = priceOptionValue.PriceDateStatus
             }
             );
+        }
+
+        target.Clear();
+
+        foreach (var priceOption in ApplyPriceRankIndicators(priceOptions, pricePreference))
+        {
+            target.Add(priceOption);
+        }
+    }
+
+    private static IEnumerable<CraftingSellPriceOption> ApplyPriceRankIndicators(
+        IEnumerable<CraftingSellPriceOption> priceOptions,
+        CraftingPricePreference pricePreference)
+    {
+        var priceOptionsWithValue = priceOptions
+            .Where(x => x.Price > 0m);
+
+        var orderedPriceOptions = pricePreference == CraftingPricePreference.LowerIsBetter
+            ? priceOptionsWithValue.OrderBy(x => x.Price).ThenByDescending(x => x.PriceDate)
+            : priceOptionsWithValue.OrderByDescending(x => x.Price).ThenByDescending(x => x.PriceDate);
+
+        var bestPrices = orderedPriceOptions
+            .Take(3)
+            .Select((x, index) => new
+            {
+                x.Location,
+                Indicator = new string('<', 3 - index)
+            }
+            )
+            .ToDictionary(x => x.Location, x => x.Indicator);
+
+        foreach (var priceOption in priceOptions)
+        {
+            yield return new CraftingSellPriceOption
+            {
+                Location = priceOption.Location,
+                LocationName = priceOption.LocationName,
+                Price = priceOption.Price,
+                PriceDate = priceOption.PriceDate,
+                PriceDateStatus = priceOption.PriceDateStatus,
+                PriceRankIndicator = bestPrices.TryGetValue(priceOption.Location, out var indicator) ? indicator : string.Empty
+            }
+            ;
         }
     }
 
