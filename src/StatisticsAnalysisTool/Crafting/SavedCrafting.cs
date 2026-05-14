@@ -16,160 +16,33 @@ public class SavedCrafting : BaseViewModel
     }
     = Guid.NewGuid();
 
-    public string ItemUniqueName
-    {
-        get;
-        set;
-    }
-
-    public string ItemName
-    {
-        get;
-        set;
-    }
-
-    public int CraftingRuns
-    {
-        get;
-        set;
-    }
-    = 1;
-
-    public int AmountCrafted
-    {
-        get;
-        set;
-    }
-    = 1;
-
-    public bool UsesFocus
-    {
-        get;
-        set;
-    }
-
-    public decimal ReturnRatePercent
-    {
-        get;
-        set;
-    }
-
-    public decimal DailyBonusPercent
-    {
-        get;
-        set;
-    }
-
-    public int HideoutBonusLevel
-    {
-        get;
-        set;
-    }
-
-    public decimal HideoutGeneralistBonusPercent
-    {
-        get;
-        set;
-    }
-
-    public decimal HideoutSpecialistBonusPercent
-    {
-        get;
-        set;
-    }
-
-    public string CraftingLocationId
-    {
-        get;
-        set;
-    }
-
-    public string CraftingLocationName
-    {
-        get;
-        set;
-    }
-
-    public string CraftingContext
-    {
-        get;
-        set;
-    }
-
-    public decimal StationFee
-    {
-        get;
-        set;
-    }
-
-    public decimal SalesTaxPercent
-    {
-        get;
-        set;
-    }
-
-    public decimal OtherCosts
-    {
-        get;
-        set;
-    }
-
-    public decimal OutputUnitPrice
-    {
-        get;
-        set;
-    }
-
-    public string Notes
-    {
-        get;
-        set;
-    }
-
-    public List<CraftingResourceEntry> Resources
-    {
-        get;
-        set;
-    }
-    = [];
-
-    public CraftingJournalEntry Journal
-    {
-        get;
-        set;
-    }
-
-    public DateTime LastChangedUtc
-    {
-        get;
-        set;
-    }
-    = DateTime.UtcNow;
-
-    public decimal NetMaterialCosts
-    {
-        get;
-        set;
-    }
-
-    public decimal Profit
-    {
-        get;
-        set;
-    }
-
-    public decimal BreakEvenPrice
-    {
-        get;
-        set;
-    }
-
+    public string ItemUniqueName { get; set; }
+    public string ItemName { get; set; }
+    public int CraftingRuns { get; set; } = 1;
+    public int AmountCrafted { get; set; } = 1;
+    public bool UsesFocus { get; set; }
+    public decimal ReturnRatePercent { get; set; }
+    public decimal DailyBonusPercent { get; set; }
+    public int HideoutBonusLevel { get; set; }
+    public decimal HideoutGeneralistBonusPercent { get; set; }
+    public decimal HideoutSpecialistBonusPercent { get; set; }
+    public string CraftingLocationId { get; set; }
+    public string CraftingLocationName { get; set; }
+    public string CraftingContext { get; set; }
+    public decimal StationFee { get; set; }
+    public decimal SalesTaxPercent { get; set; } = 4.0m;
+    public decimal SetupFeePercent { get; set; } = 2.5m;
+    public decimal OtherCosts { get; set; }
+    public decimal OutputUnitPrice { get; set; }
+    public string Notes { get; set; }
+    public List<CraftingResourceEntry> Resources { get; set; } = [];
+    public CraftingJournalEntry Journal { get; set; }
+    public DateTime LastChangedUtc { get; set; } = DateTime.UtcNow;
+    public decimal NetMaterialCosts { get; set; }
+    public decimal Profit { get; set; }
+    public decimal BreakEvenPrice { get; set; }
     [JsonIgnore]
-    public BitmapImage Icon
-    {
-        get;
-        set;
-    }
+    public BitmapImage Icon { get; set; }
 
     [JsonIgnore]
     public bool IsNetMaterialCostsPositive => NetMaterialCosts > 0m;

@@ -64,7 +64,8 @@ public class CraftingCalculator
         result.NonReturnableMaterialCosts = RoundSilver(result.Resources.Where(x => !x.IsReturnable).Sum(x => x.NetCost));
         result.SalesRevenueGross = RoundSilver(outputQuantity * input.OutputUnitPrice);
         result.SalesTax = RoundSilver(result.SalesRevenueGross * Math.Clamp(input.SalesTaxPercent, 0m, 100m) / 100m);
-        result.SalesRevenueNet = RoundSilver(result.SalesRevenueGross - result.SalesTax);
+        result.SetupFee = RoundSilver(result.SalesRevenueGross * Math.Clamp(input.SetupFeePercent, 0m, 100m) / 100m);
+        result.SalesRevenueNet = RoundSilver(result.SalesRevenueGross - result.SalesTax - result.SetupFee);
         result.Journal = CalculateJournal(input.Journal, craftingRuns);
         result.JournalCosts = result.Journal?.TotalEmptyJournalCosts ?? 0m;
         result.JournalRevenue = result.Journal?.TotalFullJournalRevenue ?? 0m;
@@ -73,7 +74,7 @@ public class CraftingCalculator
         result.RoiPercent = result.TotalCosts > 0m
             ? RoundPercent(result.Profit / result.TotalCosts * 100m)
             : 0m;
-        result.BreakEvenPrice = CalculateBreakEvenPrice(result, input.SalesTaxPercent);
+        result.BreakEvenPrice = CalculateBreakEvenPrice(result, input.SalesTaxPercent, input.SetupFeePercent);
         result.ProfitPerItem = outputQuantity > 0
             ? RoundSilver(result.Profit / outputQuantity)
             : 0m;
@@ -143,14 +144,14 @@ public class CraftingCalculator
         };
     }
 
-    private static decimal CalculateBreakEvenPrice(CraftingCalculationResult result, decimal salesTaxPercent)
+    private static decimal CalculateBreakEvenPrice(CraftingCalculationResult result, decimal salesTaxPercent, decimal setupFeePercent)
     {
         if (result.OutputQuantity <= 0)
         {
             return 0m;
         }
 
-        var taxMultiplier = 1m - Math.Clamp(salesTaxPercent, 0m, 100m) / 100m;
+        var taxMultiplier = 1m - (Math.Clamp(salesTaxPercent, 0m, 100m) + Math.Clamp(setupFeePercent, 0m, 100m)) / 100m;
         if (taxMultiplier <= 0m)
         {
             return 0m;

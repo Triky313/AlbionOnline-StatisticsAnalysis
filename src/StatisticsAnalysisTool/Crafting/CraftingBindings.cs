@@ -10,6 +10,7 @@ using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
+using System.Globalization;
 using System.Linq;
 using System.Reflection;
 using System.Threading.Tasks;
@@ -47,6 +48,10 @@ public class CraftingBindings : BaseViewModel
     private string _sellPriceOptionsItemUniqueName = string.Empty;
     private int _amountCrafted = 1;
     private bool _isLoading;
+    private bool _isUpdatingPercentInputText;
+    private string _returnRatePercentText = FormatPercentInput(0m);
+    private string _salesTaxPercentText = FormatPercentInput(4m);
+    private string _setupFeePercentText = FormatPercentInput(2.5m);
 
     public CraftingBindings()
     {
@@ -296,7 +301,24 @@ public class CraftingBindings : BaseViewModel
         set
         {
             field = Math.Clamp(value, 0m, 100m);
+            UpdatePercentInputText(nameof(ReturnRatePercentText), field);
             Recalculate();
+            OnPropertyChanged();
+        }
+    }
+
+    public string ReturnRatePercentText
+    {
+        get => _returnRatePercentText;
+        set
+        {
+            if (_returnRatePercentText == value)
+            {
+                return;
+            }
+
+            _returnRatePercentText = value;
+            UpdatePercentValueFromInput(value, percent => ReturnRatePercent = percent);
             OnPropertyChanged();
         }
     }
@@ -371,11 +393,57 @@ public class CraftingBindings : BaseViewModel
         set
         {
             field = Math.Clamp(value, 0m, 100m);
+            UpdatePercentInputText(nameof(SalesTaxPercentText), field);
             Recalculate();
             OnPropertyChanged();
         }
     }
     = 4m;
+
+    public string SalesTaxPercentText
+    {
+        get => _salesTaxPercentText;
+        set
+        {
+            if (_salesTaxPercentText == value)
+            {
+                return;
+            }
+
+            _salesTaxPercentText = value;
+            UpdatePercentValueFromInput(value, percent => SalesTaxPercent = percent);
+            OnPropertyChanged();
+        }
+    }
+
+    public decimal SetupFeePercent
+    {
+        get;
+        set
+        {
+            field = Math.Clamp(value, 0m, 100m);
+            UpdatePercentInputText(nameof(SetupFeePercentText), field);
+            Recalculate();
+            OnPropertyChanged();
+        }
+    }
+    = 2.5m;
+
+    public string SetupFeePercentText
+    {
+        get => _setupFeePercentText;
+        set
+        {
+            if (_setupFeePercentText == value)
+            {
+                return;
+            }
+
+            _setupFeePercentText = value;
+            UpdatePercentValueFromInput(value, percent => SetupFeePercent = percent);
+            OnPropertyChanged();
+        }
+    }
 
     public decimal OtherCosts
     {
@@ -517,6 +585,7 @@ public class CraftingBindings : BaseViewModel
     public static string TranslationSave => LocalizationController.Translation("SAVE");
     public static string TranslationSavedCraftings => LocalizationController.Translation("SAVED_CRAFTINGS");
     public static string TranslationSellPrice => LocalizationController.Translation("SELL_PRICE");
+    public static string TranslationSetupFee => LocalizationController.Translation("SETUP_FEE");
     public static string TranslationStation => LocalizationController.Translation("STATION");
     public static string TranslationStationFee => LocalizationController.Translation("STATION_FEE");
     public static string TranslationStationFeeTooltip => LocalizationController.Translation("CRAFTING_STATION_FEE_TOOLTIP");
@@ -539,6 +608,7 @@ public class CraftingBindings : BaseViewModel
     public static string TranslationSalesGrossTooltip => LocalizationController.Translation("CRAFTING_RESULT_SALES_GROSS_TOOLTIP");
     public static string TranslationSalesNetTooltip => LocalizationController.Translation("CRAFTING_RESULT_SALES_NET_TOOLTIP");
     public static string TranslationSalesTaxTooltip => LocalizationController.Translation("CRAFTING_RESULT_SALES_TAX_TOOLTIP");
+    public static string TranslationSetupFeeTooltip => LocalizationController.Translation("CRAFTING_RESULT_SETUP_FEE_TOOLTIP");
     public static string TranslationStationTooltip => LocalizationController.Translation("CRAFTING_RESULT_STATION_TOOLTIP");
     public static string TranslationTotalCostsTooltip => LocalizationController.Translation("CRAFTING_RESULT_TOTAL_COSTS_TOOLTIP");
     public static string TranslationWeightAfterTooltip => LocalizationController.Translation("CRAFTING_RESULT_WEIGHT_AFTER_TOOLTIP");
@@ -809,6 +879,119 @@ public class CraftingBindings : BaseViewModel
         return (SelectedCraftingLocation?.MatchingModifierPercent ?? 0m) > 0m;
     }
 
+    private void UpdatePercentValueFromInput(string text, Action<decimal> updateValue)
+    {
+        if (_isUpdatingPercentInputText || IsPendingDecimalInput(text))
+        {
+            return;
+        }
+
+        if (TryParseDecimalInput(text, out var value))
+        {
+            updateValue(value);
+        }
+    }
+
+    private void UpdatePercentInputText(string propertyName, decimal value)
+    {
+        if (_isUpdatingPercentInputText)
+        {
+            return;
+        }
+
+        var text = FormatPercentInput(value);
+        var changed = false;
+
+        switch (propertyName)
+        {
+            case nameof(ReturnRatePercentText) when _returnRatePercentText != text:
+                _returnRatePercentText = text;
+                changed = true;
+                break;
+
+            case nameof(SalesTaxPercentText) when _salesTaxPercentText != text:
+                _salesTaxPercentText = text;
+                changed = true;
+                break;
+
+            case nameof(SetupFeePercentText) when _setupFeePercentText != text:
+                _setupFeePercentText = text;
+                changed = true;
+                break;
+        }
+
+        if (!changed)
+        {
+            return;
+        }
+
+        try
+        {
+            _isUpdatingPercentInputText = true;
+            OnPropertyChanged(propertyName);
+        }
+        finally
+        {
+            _isUpdatingPercentInputText = false;
+        }
+    }
+
+    private static bool TryParseDecimalInput(string text, out decimal value)
+    {
+        const NumberStyles numberStyles = NumberStyles.AllowLeadingSign
+                                         | NumberStyles.AllowDecimalPoint
+                                         | NumberStyles.AllowLeadingWhite
+                                         | NumberStyles.AllowTrailingWhite;
+
+        if (decimal.TryParse(text, numberStyles, CultureInfo.CurrentCulture, out value))
+        {
+            return true;
+        }
+
+        return decimal.TryParse(NormalizeDecimalSeparator(text), numberStyles, CultureInfo.CurrentCulture, out value);
+    }
+
+    private static bool IsPendingDecimalInput(string text)
+    {
+        if (string.IsNullOrWhiteSpace(text))
+        {
+            return false;
+        }
+
+        return GetDecimalSeparators().Any(text.EndsWith);
+    }
+
+    private static string NormalizeDecimalSeparator(string text)
+    {
+        var decimalSeparator = CultureInfo.CurrentCulture.NumberFormat.NumberDecimalSeparator;
+        var alternateDecimalSeparator = decimalSeparator == "," ? "." : ",";
+
+        if (text.Contains(decimalSeparator, StringComparison.Ordinal)
+            || !text.Contains(alternateDecimalSeparator, StringComparison.Ordinal))
+        {
+            return text;
+        }
+
+        return text.Replace(alternateDecimalSeparator, decimalSeparator);
+    }
+
+    private static string FormatPercentInput(decimal value)
+    {
+        return value.ToString("0.##", CultureInfo.CurrentCulture);
+    }
+
+    private static string[] GetDecimalSeparators()
+    {
+        var decimalSeparator = CultureInfo.CurrentCulture.NumberFormat.NumberDecimalSeparator;
+
+        return decimalSeparator switch
+        {
+            "," => [",", "."],
+            "." => [".", ","],
+            _ => [decimalSeparator, ",", "."]
+        };
+    }
+
     private void AddResource(CraftingResourceEntry resource)
     {
         resource.ValuesChanged = Recalculate;
@@ -841,6 +1024,7 @@ public class CraftingBindings : BaseViewModel
             StationFee = StationFee,
             NutritionConsumedPerRun = _stationFeeService.GetNutritionConsumedPerRun(SelectedItem),
             SalesTaxPercent = SalesTaxPercent,
+            SetupFeePercent = SetupFeePercent,
             OtherCosts = OtherCosts,
             OutputUnitWeight = ItemController.GetWeight(SelectedItem?.FullItemInformation),
             Resources = Resources
@@ -1074,6 +1258,7 @@ public class CraftingBindings : BaseViewModel
             CraftingContext = Locations.GetParameterName(SelectedMarketLocation),
             StationFee = StationFee,
             SalesTaxPercent = SalesTaxPercent,
+            SetupFeePercent = SetupFeePercent,
             OtherCosts = OtherCosts,
             OutputUnitPrice = OutputUnitPrice,
             Notes = Notes,
@@ -1147,6 +1332,7 @@ public class CraftingBindings : BaseViewModel
         SelectedMarketLocation = (savedCrafting.CraftingContext ?? string.Empty).GetMarketLocationByLocationNameOrId();
         StationFee = savedCrafting.StationFee;
         SalesTaxPercent = savedCrafting.SalesTaxPercent;
+        SetupFeePercent = savedCrafting.SetupFeePercent;
         OtherCosts = savedCrafting.OtherCosts;
         OutputUnitPrice = savedCrafting.OutputUnitPrice;
         Notes = savedCrafting.Notes;
@@ -1198,6 +1384,7 @@ public class CraftingBindings : BaseViewModel
         ReturnRatePercent = 0m;
         StationFee = 0m;
         SalesTaxPercent = 4m;
+        SetupFeePercent = 2.5m;
         OtherCosts = 0m;
         OutputUnitPrice = 0m;
         Notes = string.Empty;
@@ -1360,6 +1547,7 @@ public class CraftingBindings : BaseViewModel
             StationFee = crafting.StationFee,
             NutritionConsumedPerRun = _stationFeeService.GetNutritionConsumedPerRun(item),
             SalesTaxPercent = crafting.SalesTaxPercent,
+            SetupFeePercent = crafting.SetupFeePercent,
             OtherCosts = crafting.OtherCosts,
             OutputUnitWeight = ItemController.GetWeight(item?.FullItemInformation),
             Resources = (crafting.Resources ?? [])

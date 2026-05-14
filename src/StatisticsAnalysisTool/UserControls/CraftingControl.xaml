@@ -292,7 +292,7 @@
                     </DockPanel>
                     <DockPanel LastChildFill="False" Margin="0,0,0,5">
                         <TextBlock Text="{Binding CraftingBindings.TranslationReturnRatePercent, FallbackValue=RETURN_RATE_PERCENT}" Style="{StaticResource CraftingEditorLabel}" />
-                        <TextBox Text="{Binding CraftingBindings.ReturnRatePercent, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Width="90" Height="24" VerticalAlignment="Top" common:TextBoxHelper.OnlyNumeric="Double" />
+                        <TextBox Text="{Binding CraftingBindings.ReturnRatePercentText, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Width="90" Height="24" VerticalAlignment="Top" common:TextBoxHelper.OnlyNumeric="Double" />
                     </DockPanel>
                     <DockPanel LastChildFill="False" Margin="0,0,0,5">
                         <TextBlock Text="{Binding CraftingBindings.TranslationPriceMarket, FallbackValue=PRICE_MARKET}" Style="{StaticResource CraftingEditorLabel}" />
@@ -306,7 +306,12 @@
                     </DockPanel>
                     <DockPanel LastChildFill="False" Margin="0,0,0,5">
                         <TextBlock Text="{Binding CraftingBindings.TranslationSalesTaxPercent, FallbackValue=SALES_TAX_PERCENT}" Style="{StaticResource CraftingEditorLabel}" />
-                        <TextBox Text="{Binding CraftingBindings.SalesTaxPercent, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                        <TextBox Text="{Binding CraftingBindings.SalesTaxPercentText, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                 Width="90" Height="24" VerticalAlignment="Top" common:TextBoxHelper.OnlyNumeric="Double" />
+                    </DockPanel>
+                    <DockPanel LastChildFill="False" Margin="0,0,0,5">
+                        <TextBlock Text="{Binding CraftingBindings.TranslationSetupFee, FallbackValue=SETUP_FEE}" Style="{StaticResource CraftingEditorLabel}" />
+                        <TextBox Text="{Binding CraftingBindings.SetupFeePercentText, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                  Width="90" Height="24" VerticalAlignment="Top" common:TextBoxHelper.OnlyNumeric="Double" />
                     </DockPanel>
                     <DockPanel LastChildFill="False" Margin="0,0,0,5">
@@ -595,6 +600,12 @@
                                     <StackPanel>
                                         <TextBlock Text="{Binding CraftingBindings.TranslationSalesTax, FallbackValue=SALES_TAX}" Style="{StaticResource CraftingResultLabel}" />
                                         <TextBlock Text="{Binding CraftingBindings.Calculation.SalesTax, StringFormat={}{0:N0}, FallbackValue=0}" Style="{StaticResource CraftingResultCostValue}" />
+                                    </StackPanel>
+                                </Border>
+                                <Border Style="{StaticResource CraftingResultTile}" ToolTip="{Binding CraftingBindings.TranslationSetupFeeTooltip}">
+                                    <StackPanel>
+                                        <TextBlock Text="{Binding CraftingBindings.TranslationSetupFee, FallbackValue=SETUP_FEE}" Style="{StaticResource CraftingResultLabel}" />
+                                        <TextBlock Text="{Binding CraftingBindings.Calculation.SetupFee, StringFormat={}{0:N0}, FallbackValue=0}" Style="{StaticResource CraftingResultCostValue}" />
                                     </StackPanel>
                                 </Border>
                                 <Border Style="{StaticResource CraftingResultTile}" ToolTip="{Binding CraftingBindings.TranslationWeightBeforeTooltip}">

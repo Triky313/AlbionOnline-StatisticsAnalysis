@@ -22437,7 +22437,7 @@
         },
         {
           "lang": "en-US",
-          "seg": "Auctions house setup fee"
+          "seg": "Setup fee"
         },
         {
           "lang": "es-ES",
@@ -42417,11 +42417,28 @@
             },
             {
                 "lang": "en-US",
-                "seg": "Sales revenue after sales tax."
+                "seg": "Sales revenue after sales tax and setup fee."
             },
             {
                 "lang": "fr-FR",
                 "seg": "Recette après déduction des texes."
+            }
+        ]
+    },
+    {
+        "tuid": "CRAFTING_RESULT_SETUP_FEE_TOOLTIP",
+        "tuv": [
+            {
+                "lang": "de-DE",
+                "seg": "Abgezogene Setup Fee auf den Bruttoverkauf."
+            },
+            {
+                "lang": "en-US",
+                "seg": "Setup fee deducted from gross sales."
+            },
+            {
+                "lang": "fr-FR",
+                "seg": "Frais d'installation dÃƒÂ©duits du chiffre d'affaires brut."
             }
         ]
     },
