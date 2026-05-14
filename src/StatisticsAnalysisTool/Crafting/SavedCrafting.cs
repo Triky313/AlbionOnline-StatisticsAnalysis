@@ -39,22 +39,24 @@ public class SavedCrafting : BaseViewModel
     public CraftingJournalEntry Journal { get; set; }
     public DateTime LastChangedUtc { get; set; } = DateTime.UtcNow;
     public decimal NetMaterialCosts { get; set; }
+    public decimal TotalCosts { get; set; }
     public decimal Profit { get; set; }
+    public decimal ProfitPerItem { get; set; }
     public decimal BreakEvenPrice { get; set; }
     [JsonIgnore]
     public BitmapImage Icon { get; set; }
-
-    [JsonIgnore]
-    public bool IsNetMaterialCostsPositive => NetMaterialCosts > 0m;
-
-    [JsonIgnore]
-    public bool IsNetMaterialCostsNegative => NetMaterialCosts < 0m;
 
     [JsonIgnore]
     public bool IsProfitPositive => Profit > 0m;
 
     [JsonIgnore]
     public bool IsProfitNegative => Profit < 0m;
+
+    [JsonIgnore]
+    public bool IsProfitPerItemPositive => ProfitPerItem > 0m;
+
+    [JsonIgnore]
+    public bool IsProfitPerItemNegative => ProfitPerItem < 0m;
 
     [JsonIgnore]
     public bool IsBreakEvenPricePositive => BreakEvenPrice > 0m;

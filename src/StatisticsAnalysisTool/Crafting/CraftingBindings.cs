@@ -1412,7 +1412,9 @@ public class CraftingBindings : BaseViewModel
             Journal = CloneJournal(Journal),
             LastChangedUtc = DateTime.UtcNow,
             NetMaterialCosts = Calculation.NetMaterialCosts,
+            TotalCosts = Calculation.TotalCosts,
             Profit = Calculation.Profit,
+            ProfitPerItem = Calculation.ProfitPerItem,
             BreakEvenPrice = Calculation.BreakEvenPrice,
             Icon = SelectedItem?.Icon
         }
@@ -1731,7 +1733,9 @@ public class CraftingBindings : BaseViewModel
         );
 
         crafting.NetMaterialCosts = result.NetMaterialCosts;
+        crafting.TotalCosts = result.TotalCosts;
         crafting.Profit = result.Profit;
+        crafting.ProfitPerItem = result.ProfitPerItem;
         crafting.BreakEvenPrice = result.BreakEvenPrice;
     }
 
