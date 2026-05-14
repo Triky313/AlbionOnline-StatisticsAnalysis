@@ -36288,7 +36288,7 @@
       "tuv": [
         {
           "lang": "de-DE",
-          "seg": "Type"
+          "seg": "Typ"
         },
         {
           "lang": "en-US",
@@ -36588,43 +36588,6 @@
         {
           "lang": "zh-CN",
           "seg": "上月"
-        }
-      ]
-    },
-    {
-      "tuid": "START_APPLICATION_AS_ADMINISTRATOR",
-      "tuv": [
-        {
-          "lang": "de-DE",
-          "seg": "Starte Anwendung als Administrator"
-        },
-        {
-          "lang": "en-US",
-          "seg": "Start application as administrator"
-        },
-        {
-          "lang": "fr-FR",
-          "seg": "Démarrer l'application en tant qu'administrateur"
-        },
-        {
-          "lang": "ko-KR",
-          "seg": "관리자 권한으로 시작"
-        },
-        {
-          "lang": "pl-PL",
-          "seg": "Uruchom aplikację jako administrator"
-        },
-        {
-          "lang": "pt-BR",
-          "seg": "Inicie o aplicativo como administrador"
-        },
-        {
-          "lang": "ru-RU",
-          "seg": "Запустите приложение от имени Администратора"
-        },
-        {
-          "lang": "zh-CN",
-          "seg": "以管理员方式运行应用"
         }
       ]
     },
@@ -39858,27 +39821,6 @@
         {
           "lang": "ru-RU",
           "seg": "Локация"
-        }
-      ]
-    },
-    {
-      "tuid": "TYPE",
-      "tuv": [
-        {
-          "lang": "de-DE",
-          "seg": "Typ"
-        },
-        {
-          "lang": "en-US",
-          "seg": "Type"
-        },
-        {
-          "lang": "fr-FR",
-          "seg": "Type"
-        },
-        {
-          "lang": "ru-RU",
-          "seg": "Тип"
         }
       ]
     },
