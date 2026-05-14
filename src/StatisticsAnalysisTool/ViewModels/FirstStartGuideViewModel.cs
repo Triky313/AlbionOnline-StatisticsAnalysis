@@ -33,6 +33,8 @@ public class FirstStartGuideViewModel : BaseViewModel
     {
         LanguageOptions = new ObservableCollection<FirstStartGuideLanguageOption>(
             LocalizationController.GetLanguageInformation()
+                .OrderBy(x => GetLanguageSortOrder(x.FileName))
+                .ThenBy(x => x.FileName, StringComparer.OrdinalIgnoreCase)
                 .Select((x, index) => new FirstStartGuideLanguageOption(x, LocalizationController.TranslationForCulture("LANGUAGE", x.FileName), index % 5)));
         ServerLocations = new ObservableCollection<ServerLocationSelectionWindowViewModel.ServerInfo>();
         StepIndicators = new ObservableCollection<FirstStartGuideStepIndicator>(
@@ -340,6 +342,21 @@ public class FirstStartGuideViewModel : BaseViewModel
         return LanguageOptions.FirstOrDefault(x => string.Equals(x.Language.FileName, currentCulture, StringComparison.OrdinalIgnoreCase))
                ?? LanguageOptions.FirstOrDefault(x => string.Equals(x.Language.FileName, "en-US", StringComparison.OrdinalIgnoreCase))
                ?? LanguageOptions.FirstOrDefault();
+    }
+
+    private static int GetLanguageSortOrder(string ietfLanguageTag)
+    {
+        if (string.Equals(ietfLanguageTag, "en-US", StringComparison.OrdinalIgnoreCase))
+        {
+            return 0;
+        }
+
+        if (string.Equals(ietfLanguageTag, "de-DE", StringComparison.OrdinalIgnoreCase))
+        {
+            return 1;
+        }
+
+        return 2;
     }
 
     private void RefreshLocalizedContent()
