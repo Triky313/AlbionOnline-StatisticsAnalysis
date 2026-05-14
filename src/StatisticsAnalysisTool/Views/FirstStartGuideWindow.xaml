@@ -248,6 +248,34 @@
                         </Border>
                     </StackPanel>
                 </Grid>
+
+                <ScrollViewer Visibility="{Binding NavigationTabsStepVisibility}" VerticalScrollBarVisibility="Auto">
+                    <ItemsControl ItemsSource="{Binding NavigationTabOptions}"
+                                  Width="520"
+                                  HorizontalAlignment="Center">
+                        <ItemsControl.ItemsPanel>
+                            <ItemsPanelTemplate>
+                                <WrapPanel />
+                            </ItemsPanelTemplate>
+                        </ItemsControl.ItemsPanel>
+                        <ItemsControl.ItemTemplate>
+                            <DataTemplate>
+                                <Border Width="250"
+                                        Margin="5"
+                                        Padding="10"
+                                        BorderBrush="{StaticResource SolidColorBrush.Background.4}"
+                                        BorderThickness="1"
+                                        Background="{StaticResource SolidColorBrush.Background.3}">
+                                    <CheckBox IsChecked="{Binding IsSelected, Mode=TwoWay}"
+                                              Content="{Binding Name}"
+                                              Foreground="{StaticResource SolidColorBrush.Text.1}"
+                                              FontSize="14"
+                                              VerticalContentAlignment="Center" />
+                                </Border>
+                            </DataTemplate>
+                        </ItemsControl.ItemTemplate>
+                    </ItemsControl>
+                </ScrollViewer>
             </Grid>
         </Grid>
 

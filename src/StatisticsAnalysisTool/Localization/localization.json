@@ -42765,6 +42765,19 @@
         ]
     },
     {
+        "tuid": "FIRST_START_GUIDE_NAVIGATION_TABS_DESCRIPTION",
+        "tuv": [
+            {
+                "lang": "de-DE",
+                "seg": "Wähle aus, welche Navigation-Tabs du sehen möchtest."
+            },
+            {
+                "lang": "en-US",
+                "seg": "Select the navigation tabs you want to see."
+            }
+        ]
+    },
+    {
         "tuid": "FIRST_START_GUIDE_BACK",
         "tuv": [
             {

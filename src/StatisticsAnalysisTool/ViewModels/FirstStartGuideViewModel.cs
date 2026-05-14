@@ -4,6 +4,7 @@ using StatisticAnalysisTool.Extractor;
 using StatisticsAnalysisTool.Common.UserSettings;
 using StatisticsAnalysisTool.Enumerations;
 using StatisticsAnalysisTool.Localization;
+using StatisticsAnalysisTool.Models.TranslationModel;
 using StatisticsAnalysisTool.Network.PacketProviders;
 using System;
 using System.Collections.ObjectModel;
@@ -19,7 +20,8 @@ public class FirstStartGuideViewModel : BaseViewModel
     private const int ServerStepIndex = 1;
     private const int GameFolderStepIndex = 2;
     private const int TrackingModeStepIndex = 3;
-    private const int TotalStepCount = 4;
+    private const int NavigationTabsStepIndex = 4;
+    private const int TotalStepCount = 5;
 
     private FirstStartGuideLanguageOption _selectedLanguageOption;
     private ServerLocationSelectionWindowViewModel.ServerInfo _selectedServerLocation;
@@ -37,12 +39,14 @@ public class FirstStartGuideViewModel : BaseViewModel
                 .ThenBy(x => x.FileName, StringComparer.OrdinalIgnoreCase)
                 .Select((x, index) => new FirstStartGuideLanguageOption(x, LocalizationController.TranslationForCulture("LANGUAGE", x.FileName), index % 5)));
         ServerLocations = new ObservableCollection<ServerLocationSelectionWindowViewModel.ServerInfo>();
+        NavigationTabOptions = new ObservableCollection<FirstStartGuideNavigationTabOption>();
         StepIndicators = new ObservableCollection<FirstStartGuideStepIndicator>(
             Enumerable.Range(0, TotalStepCount).Select(x => new FirstStartGuideStepIndicator(x)));
 
         SelectedLanguageOption = GetInitialLanguageOption();
         MainGameFolderPath = SettingsController.CurrentSettings.MainGameFolderPath ?? string.Empty;
         SelectedPacketProvider = SettingsController.CurrentSettings.PacketProvider;
+        InitNavigationTabOptions();
 
         RefreshLocalizedContent();
         RefreshStepState();
@@ -52,6 +56,7 @@ public class FirstStartGuideViewModel : BaseViewModel
 
     public ObservableCollection<FirstStartGuideLanguageOption> LanguageOptions { get; }
     public ObservableCollection<ServerLocationSelectionWindowViewModel.ServerInfo> ServerLocations { get; }
+    public ObservableCollection<FirstStartGuideNavigationTabOption> NavigationTabOptions { get; }
     public ObservableCollection<FirstStartGuideStepIndicator> StepIndicators { get; }
 
     public string WindowTitle => LocalizationController.Translation("FIRST_START_GUIDE_TITLE");
@@ -74,6 +79,7 @@ public class FirstStartGuideViewModel : BaseViewModel
     public string SocketsOptionText => LocalizationController.Translation("FIRST_START_GUIDE_SOCKETS_OPTION");
     public string NpcapDownloadLinkText => LocalizationController.Translation("FIRST_START_GUIDE_NPCAP_DOWNLOAD_LINK");
     public string TrackingModeDifferenceText { get; private set; }
+    public string NavigationTabsStepDescription { get; private set; }
     public string TrackingModeInstructionText => SelectedPacketProvider switch
     {
         PacketProviderKind.Npcap => LocalizationController.Translation("FIRST_START_GUIDE_NPCAP_INSTRUCTION"),
@@ -186,8 +192,9 @@ public class FirstStartGuideViewModel : BaseViewModel
     public Visibility ServerStepVisibility => CurrentStepIndex == ServerStepIndex ? Visibility.Visible : Visibility.Collapsed;
     public Visibility GameFolderStepVisibility => CurrentStepIndex == GameFolderStepIndex ? Visibility.Visible : Visibility.Collapsed;
     public Visibility TrackingModeStepVisibility => CurrentStepIndex == TrackingModeStepIndex ? Visibility.Visible : Visibility.Collapsed;
-    public Visibility NextButtonVisibility => CurrentStepIndex < TrackingModeStepIndex ? Visibility.Visible : Visibility.Collapsed;
-    public Visibility FinishButtonVisibility => CurrentStepIndex == TrackingModeStepIndex ? Visibility.Visible : Visibility.Collapsed;
+    public Visibility NavigationTabsStepVisibility => CurrentStepIndex == NavigationTabsStepIndex ? Visibility.Visible : Visibility.Collapsed;
+    public Visibility NextButtonVisibility => CurrentStepIndex < NavigationTabsStepIndex ? Visibility.Visible : Visibility.Collapsed;
+    public Visibility FinishButtonVisibility => CurrentStepIndex == NavigationTabsStepIndex ? Visibility.Visible : Visibility.Collapsed;
     public Visibility ErrorVisibility => string.IsNullOrWhiteSpace(ErrorMessage) ? Visibility.Collapsed : Visibility.Visible;
     public Visibility NpcapWarningVisibility => IsNpcapSelected && !string.IsNullOrWhiteSpace(NpcapWarningText) ? Visibility.Visible : Visibility.Collapsed;
     public Visibility NpcapDownloadLinkVisibility => IsNpcapSelected ? Visibility.Visible : Visibility.Collapsed;
@@ -199,7 +206,7 @@ public class FirstStartGuideViewModel : BaseViewModel
             return false;
         }
 
-        CurrentStepIndex = Math.Min(CurrentStepIndex + 1, TrackingModeStepIndex);
+        CurrentStepIndex = Math.Min(CurrentStepIndex + 1, NavigationTabsStepIndex);
         ErrorMessage = string.Empty;
         return true;
     }
@@ -275,6 +282,7 @@ public class FirstStartGuideViewModel : BaseViewModel
             ServerStepIndex => await SaveServerStepAsync().ConfigureAwait(true),
             GameFolderStepIndex => await SaveGameFolderStepAsync().ConfigureAwait(true),
             TrackingModeStepIndex => await SaveTrackingModeStepAsync().ConfigureAwait(true),
+            NavigationTabsStepIndex => await SaveNavigationTabsStepAsync().ConfigureAwait(true),
             _ => false
         };
     }
@@ -336,6 +344,26 @@ public class FirstStartGuideViewModel : BaseViewModel
         return true;
     }
 
+    private async Task<bool> SaveNavigationTabsStepAsync()
+    {
+        SettingsController.CurrentSettings.IsDashboardNaviTabActive = IsNavigationTabVisible(NavigationTabFilterType.Dashboard);
+        SettingsController.CurrentSettings.IsItemSearchNaviTabActive = IsNavigationTabVisible(NavigationTabFilterType.ItemSearch);
+        SettingsController.CurrentSettings.IsLoggingNaviTabActive = IsNavigationTabVisible(NavigationTabFilterType.Logging);
+        SettingsController.CurrentSettings.IsGuildTabActive = IsNavigationTabVisible(NavigationTabFilterType.Guild);
+        SettingsController.CurrentSettings.IsDungeonsNaviTabActive = IsNavigationTabVisible(NavigationTabFilterType.Dungeons);
+        SettingsController.CurrentSettings.IsDamageMeterNaviTabActive = IsNavigationTabVisible(NavigationTabFilterType.DamageMeter);
+        SettingsController.CurrentSettings.IsTradeMonitoringNaviTabActive = IsNavigationTabVisible(NavigationTabFilterType.TradeMonitoring);
+        SettingsController.CurrentSettings.IsGatheringNaviTabActive = IsNavigationTabVisible(NavigationTabFilterType.Gathering);
+        SettingsController.CurrentSettings.IsCraftingNaviTabActive = IsNavigationTabVisible(NavigationTabFilterType.Crafting);
+        SettingsController.CurrentSettings.IsPartyNaviTabActive = IsNavigationTabVisible(NavigationTabFilterType.Party);
+        SettingsController.CurrentSettings.IsStorageHistoryNaviTabActive = IsNavigationTabVisible(NavigationTabFilterType.StorageHistory);
+        SettingsController.CurrentSettings.IsMapHistoryNaviTabActive = IsNavigationTabVisible(NavigationTabFilterType.MapHistory);
+        SettingsController.CurrentSettings.IsPlayerInformationNaviTabActive = IsNavigationTabVisible(NavigationTabFilterType.PlayerInformation);
+
+        await SettingsController.SaveSettingsAsync().ConfigureAwait(true);
+        return true;
+    }
+
     private FirstStartGuideLanguageOption GetInitialLanguageOption()
     {
         var currentCulture = SettingsController.CurrentSettings.CurrentCultureIetfLanguageTag;
@@ -367,11 +395,13 @@ public class FirstStartGuideViewModel : BaseViewModel
         ServerStepDescription = LocalizationController.Translation("PLEASE_SELECT_A_SERVER_LOCATION");
         GameFolderStepDescription = LocalizationController.Translation("PLEASE_SELECT_A_CORRECT_ALBION_ONLINE_MAIN_GAME_FOLDER");
         TrackingModeDifferenceText = LocalizationController.Translation("FIRST_START_GUIDE_TRACKING_MODE_DIFFERENCE");
+        NavigationTabsStepDescription = LocalizationController.Translation("FIRST_START_GUIDE_NAVIGATION_TABS_DESCRIPTION");
         NpcapWarningText = GetNpcapWarningText();
         StandaloneLauncherTitle = GameDataPreparationWindowViewModel.TranslationStandaloneLauncher;
         StandaloneLauncherMessage = GameDataPreparationWindowViewModel.TranslationStandaloneLauncherMessage;
         SteamLauncherTitle = GameDataPreparationWindowViewModel.TranslationSteamLauncher;
         SteamLauncherMessage = GameDataPreparationWindowViewModel.TranslationSteamLauncherMessage;
+        RefreshNavigationTabNames();
 
         CurrentStepTitle = CurrentStepIndex switch
         {
@@ -379,6 +409,7 @@ public class FirstStartGuideViewModel : BaseViewModel
             ServerStepIndex => LocalizationController.Translation("SELECT_SERVER_LOCATION"),
             GameFolderStepIndex => LocalizationController.Translation("SELECT_ALBION_ONLINE_MAIN_GAME_FOLDER"),
             TrackingModeStepIndex => LocalizationController.Translation("FIRST_START_GUIDE_TRACKING_MODE_TITLE"),
+            NavigationTabsStepIndex => LocalizationController.Translation("NAVIGATION_TAB_VISIBILITY"),
             _ => WindowTitle
         };
 
@@ -388,6 +419,7 @@ public class FirstStartGuideViewModel : BaseViewModel
             ServerStepIndex => ServerStepDescription,
             GameFolderStepIndex => GameFolderStepDescription,
             TrackingModeStepIndex => LocalizationController.Translation("FIRST_START_GUIDE_TRACKING_MODE_DESCRIPTION"),
+            NavigationTabsStepIndex => NavigationTabsStepDescription,
             _ => string.Empty
         };
 
@@ -402,6 +434,7 @@ public class FirstStartGuideViewModel : BaseViewModel
         OnPropertyChanged(nameof(ServerStepDescription));
         OnPropertyChanged(nameof(GameFolderStepDescription));
         OnPropertyChanged(nameof(TrackingModeDifferenceText));
+        OnPropertyChanged(nameof(NavigationTabsStepDescription));
         OnPropertyChanged(nameof(TrackingModeInstructionText));
         OnPropertyChanged(nameof(NpcapWarningText));
         OnPropertyChanged(nameof(StandaloneLauncherTitle));
@@ -463,8 +496,69 @@ public class FirstStartGuideViewModel : BaseViewModel
         OnPropertyChanged(nameof(ServerStepVisibility));
         OnPropertyChanged(nameof(GameFolderStepVisibility));
         OnPropertyChanged(nameof(TrackingModeStepVisibility));
+        OnPropertyChanged(nameof(NavigationTabsStepVisibility));
         OnPropertyChanged(nameof(NextButtonVisibility));
         OnPropertyChanged(nameof(FinishButtonVisibility));
+    }
+
+    private void InitNavigationTabOptions()
+    {
+        NavigationTabOptions.Add(CreateNavigationTabOption(NavigationTabFilterType.Dashboard, SettingsController.CurrentSettings.IsDashboardNaviTabActive));
+        NavigationTabOptions.Add(CreateNavigationTabOption(NavigationTabFilterType.ItemSearch, SettingsController.CurrentSettings.IsItemSearchNaviTabActive));
+        NavigationTabOptions.Add(CreateNavigationTabOption(NavigationTabFilterType.Logging, SettingsController.CurrentSettings.IsLoggingNaviTabActive));
+        NavigationTabOptions.Add(CreateNavigationTabOption(NavigationTabFilterType.Guild, SettingsController.CurrentSettings.IsGuildTabActive));
+        NavigationTabOptions.Add(CreateNavigationTabOption(NavigationTabFilterType.Dungeons, SettingsController.CurrentSettings.IsDungeonsNaviTabActive));
+        NavigationTabOptions.Add(CreateNavigationTabOption(NavigationTabFilterType.DamageMeter, SettingsController.CurrentSettings.IsDamageMeterNaviTabActive));
+        NavigationTabOptions.Add(CreateNavigationTabOption(NavigationTabFilterType.TradeMonitoring, SettingsController.CurrentSettings.IsTradeMonitoringNaviTabActive));
+        NavigationTabOptions.Add(CreateNavigationTabOption(NavigationTabFilterType.Gathering, SettingsController.CurrentSettings.IsGatheringNaviTabActive));
+        NavigationTabOptions.Add(CreateNavigationTabOption(NavigationTabFilterType.Crafting, SettingsController.CurrentSettings.IsCraftingNaviTabActive));
+        NavigationTabOptions.Add(CreateNavigationTabOption(NavigationTabFilterType.Party, SettingsController.CurrentSettings.IsPartyNaviTabActive));
+        NavigationTabOptions.Add(CreateNavigationTabOption(NavigationTabFilterType.StorageHistory, SettingsController.CurrentSettings.IsStorageHistoryNaviTabActive));
+        NavigationTabOptions.Add(CreateNavigationTabOption(NavigationTabFilterType.MapHistory, SettingsController.CurrentSettings.IsMapHistoryNaviTabActive));
+        NavigationTabOptions.Add(CreateNavigationTabOption(NavigationTabFilterType.PlayerInformation, SettingsController.CurrentSettings.IsPlayerInformationNaviTabActive));
+    }
+
+    private FirstStartGuideNavigationTabOption CreateNavigationTabOption(NavigationTabFilterType navigationTabFilterType, bool isVisible)
+    {
+        return new FirstStartGuideNavigationTabOption(navigationTabFilterType)
+        {
+            IsSelected = isVisible,
+            Name = GetNavigationTabName(navigationTabFilterType)
+        };
+    }
+
+    private void RefreshNavigationTabNames()
+    {
+        foreach (var navigationTabOption in NavigationTabOptions)
+        {
+            navigationTabOption.Name = GetNavigationTabName(navigationTabOption.NavigationTabFilterType);
+        }
+    }
+
+    private bool IsNavigationTabVisible(NavigationTabFilterType navigationTabFilterType)
+    {
+        return NavigationTabOptions.FirstOrDefault(x => x.NavigationTabFilterType == navigationTabFilterType)?.IsSelected ?? true;
+    }
+
+    private static string GetNavigationTabName(NavigationTabFilterType navigationTabFilterType)
+    {
+        return navigationTabFilterType switch
+        {
+            NavigationTabFilterType.Dashboard => MainWindowTranslation.Dashboard,
+            NavigationTabFilterType.ItemSearch => MainWindowTranslation.ItemSearch,
+            NavigationTabFilterType.Logging => MainWindowTranslation.Logging,
+            NavigationTabFilterType.Guild => MainWindowTranslation.Guild,
+            NavigationTabFilterType.Dungeons => MainWindowTranslation.Dungeons,
+            NavigationTabFilterType.DamageMeter => MainWindowTranslation.DamageMeter,
+            NavigationTabFilterType.TradeMonitoring => MainWindowTranslation.TradeMonitoring,
+            NavigationTabFilterType.Gathering => MainWindowTranslation.Gathering,
+            NavigationTabFilterType.Crafting => MainWindowTranslation.Crafting,
+            NavigationTabFilterType.Party => MainWindowTranslation.Party,
+            NavigationTabFilterType.StorageHistory => MainWindowTranslation.StorageHistory,
+            NavigationTabFilterType.MapHistory => MainWindowTranslation.MapHistory,
+            NavigationTabFilterType.PlayerInformation => MainWindowTranslation.PlayerInformation,
+            _ => string.Empty
+        };
     }
 
     private void RefreshLanguageSelectionState()
