@@ -330,6 +330,7 @@
                                      common:TextBoxHelper.OnlyNumeric="Double"
                                      GotKeyboardFocus="OutputUnitPrice_OnGotKeyboardFocus"
                                      LostKeyboardFocus="OutputUnitPrice_OnLostKeyboardFocus"
+                                     PreviewMouseLeftButtonDown="PriceTextBox_OnPreviewMouseLeftButtonDown"
                                      PreviewMouseLeftButtonUp="OutputUnitPrice_OnPreviewMouseLeftButtonUp" />
                             <Popup PlacementTarget="{Binding ElementName=OutputUnitPriceTextBox}"
                                    Placement="Bottom"
@@ -367,7 +368,8 @@
                     <StackPanel Orientation="Horizontal" Margin="0,0,0,8">
                         <Button Content="{Binding CraftingBindings.TranslationNew, FallbackValue=NEW}" Width="80" Height="24" Command="{Binding CraftingBindings.NewCommand}" />
                         <Button Content="{Binding CraftingBindings.TranslationSave, FallbackValue=SAVE}" Width="80" Height="24" Margin="5,0,0,0" Command="{Binding CraftingBindings.SaveCommand}" />
-                        <Button Content="{Binding CraftingBindings.TranslationDelete, FallbackValue=DELETE}" Width="80" Height="24" Margin="5,0,0,0" Command="{Binding CraftingBindings.DeleteCommand}" />
+                        <Button Content="{Binding CraftingBindings.TranslationDelete, FallbackValue=DELETE}" Width="80" Height="24" Margin="5,0,0,0"
+                                Style="{StaticResource Style.Button.Danger}" Command="{Binding CraftingBindings.DeleteCommand}" />
                         <Button Content="{Binding CraftingBindings.TranslationPrices, FallbackValue=PRICES}" Width="80" Height="24" Margin="5,0,0,0" Command="{Binding CraftingBindings.LoadPricesCommand}" />
                     </StackPanel>
 
@@ -449,7 +451,46 @@
                                     </GridViewColumn.HeaderContainerStyle>
                                     <GridViewColumn.CellTemplate>
                                         <DataTemplate>
-                                            <TextBox Text="{Binding UnitPrice, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Width="78" Height="22" common:TextBoxHelper.OnlyNumeric="Double" />
+                                            <Grid>
+                                                <TextBox x:Name="ResourceUnitPriceTextBox"
+                                                         Text="{Binding UnitPrice, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                                         Width="78"
+                                                         Height="22"
+                                                         common:TextBoxHelper.OnlyNumeric="Double"
+                                                         GotKeyboardFocus="ResourcePrice_OnGotKeyboardFocus"
+                                                         PreviewMouseLeftButtonDown="PriceTextBox_OnPreviewMouseLeftButtonDown"
+                                                         PreviewMouseLeftButtonUp="ResourcePrice_OnPreviewMouseLeftButtonUp" />
+                                                <Popup PlacementTarget="{Binding ElementName=ResourceUnitPriceTextBox}"
+                                                       Placement="Bottom"
+                                                       IsOpen="{Binding IsPricePopupOpen, Mode=TwoWay}"
+                                                       StaysOpen="False"
+                                                       AllowsTransparency="True"
+                                                       PopupAnimation="Slide">
+                                                    <Border DataContext="{Binding PlacementTarget.DataContext, RelativeSource={RelativeSource AncestorType={x:Type Popup}}}"
+                                                            Background="{StaticResource SolidColorBrush.Background.2}"
+                                                            BorderBrush="{StaticResource SolidColorBrush.Accent.Blue.4}"
+                                                            BorderThickness="1"
+                                                            Width="230"
+                                                            MaxHeight="360">
+                                                        <ListBox SelectionMode="Single"
+                                                                 SelectionChanged="ListBoxResourcePrice_OnSelectionChanged"
+                                                                 ItemsSource="{Binding PriceOptions}"
+                                                                 Tag="{Binding}"
+                                                                 Width="230"
+                                                                 MinHeight="38"
+                                                                 MaxHeight="360"
+                                                                 BorderThickness="0"
+                                                                 ScrollViewer.HorizontalScrollBarVisibility="Disabled"
+                                                                 ScrollViewer.VerticalScrollBarVisibility="Auto">
+                                                            <ListBox.ItemTemplate>
+                                                                <DataTemplate>
+                                                                    <TextBlock Text="{Binding DisplayText}" ToolTip="{Binding UpdateDateTimeText}" Style="{StaticResource CraftingSellPriceOptionText}" />
+                                                                </DataTemplate>
+                                                            </ListBox.ItemTemplate>
+                                                        </ListBox>
+                                                    </Border>
+                                                </Popup>
+                                            </Grid>
                                         </DataTemplate>
                                     </GridViewColumn.CellTemplate>
                                 </GridViewColumn>
@@ -493,11 +534,87 @@
                             </StackPanel>
                             <StackPanel Orientation="Horizontal" Margin="0,6,0,0">
                                 <TextBlock Text="{Binding CraftingBindings.TranslationEmptyPrice, FallbackValue=EMPTY_PRICE}" Foreground="{StaticResource SolidColorBrush.Text.2}" Width="95" VerticalAlignment="Center" />
-                                <TextBox Text="{Binding CraftingBindings.Journal.EmptyJournalPrice, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Width="90" Height="22" common:TextBoxHelper.OnlyNumeric="Double" />
+                                <Grid>
+                                    <TextBox x:Name="EmptyJournalPriceTextBox"
+                                             Text="{Binding CraftingBindings.Journal.EmptyJournalPrice, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                             Width="90"
+                                             Height="22"
+                                             common:TextBoxHelper.OnlyNumeric="Double"
+                                             GotKeyboardFocus="JournalEmptyPrice_OnGotKeyboardFocus"
+                                             PreviewMouseLeftButtonDown="PriceTextBox_OnPreviewMouseLeftButtonDown"
+                                             PreviewMouseLeftButtonUp="JournalEmptyPrice_OnPreviewMouseLeftButtonUp" />
+                                    <Popup PlacementTarget="{Binding ElementName=EmptyJournalPriceTextBox}"
+                                           Placement="Bottom"
+                                           IsOpen="{Binding CraftingBindings.Journal.IsEmptyJournalPricePopupOpen, Mode=TwoWay}"
+                                           StaysOpen="False"
+                                           AllowsTransparency="True"
+                                           PopupAnimation="Slide">
+                                        <Border DataContext="{Binding PlacementTarget.DataContext, RelativeSource={RelativeSource AncestorType={x:Type Popup}}}"
+                                                Background="{StaticResource SolidColorBrush.Background.2}"
+                                                BorderBrush="{StaticResource SolidColorBrush.Accent.Blue.4}"
+                                                BorderThickness="1"
+                                                Width="230"
+                                                MaxHeight="360">
+                                            <ListBox SelectionMode="Single"
+                                                     SelectionChanged="ListBoxJournalEmptyPrice_OnSelectionChanged"
+                                                     ItemsSource="{Binding CraftingBindings.Journal.EmptyJournalPriceOptions}"
+                                                     Width="230"
+                                                     MinHeight="38"
+                                                     MaxHeight="360"
+                                                     BorderThickness="0"
+                                                     ScrollViewer.HorizontalScrollBarVisibility="Disabled"
+                                                     ScrollViewer.VerticalScrollBarVisibility="Auto">
+                                                <ListBox.ItemTemplate>
+                                                    <DataTemplate>
+                                                        <TextBlock Text="{Binding DisplayText}" ToolTip="{Binding UpdateDateTimeText}" Style="{StaticResource CraftingSellPriceOptionText}" />
+                                                    </DataTemplate>
+                                                </ListBox.ItemTemplate>
+                                            </ListBox>
+                                        </Border>
+                                    </Popup>
+                                </Grid>
                             </StackPanel>
                             <StackPanel Orientation="Horizontal" Margin="0,4,0,0">
                                 <TextBlock Text="{Binding CraftingBindings.TranslationFullPrice, FallbackValue=FULL_PRICE}" Foreground="{StaticResource SolidColorBrush.Text.2}" Width="95" VerticalAlignment="Center" />
-                                <TextBox Text="{Binding CraftingBindings.Journal.FullJournalPrice, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Width="90" Height="22" common:TextBoxHelper.OnlyNumeric="Double" />
+                                <Grid>
+                                    <TextBox x:Name="FullJournalPriceTextBox"
+                                             Text="{Binding CraftingBindings.Journal.FullJournalPrice, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                             Width="90"
+                                             Height="22"
+                                             common:TextBoxHelper.OnlyNumeric="Double"
+                                             GotKeyboardFocus="JournalFullPrice_OnGotKeyboardFocus"
+                                             PreviewMouseLeftButtonDown="PriceTextBox_OnPreviewMouseLeftButtonDown"
+                                             PreviewMouseLeftButtonUp="JournalFullPrice_OnPreviewMouseLeftButtonUp" />
+                                    <Popup PlacementTarget="{Binding ElementName=FullJournalPriceTextBox}"
+                                           Placement="Bottom"
+                                           IsOpen="{Binding CraftingBindings.Journal.IsFullJournalPricePopupOpen, Mode=TwoWay}"
+                                           StaysOpen="False"
+                                           AllowsTransparency="True"
+                                           PopupAnimation="Slide">
+                                        <Border DataContext="{Binding PlacementTarget.DataContext, RelativeSource={RelativeSource AncestorType={x:Type Popup}}}"
+                                                Background="{StaticResource SolidColorBrush.Background.2}"
+                                                BorderBrush="{StaticResource SolidColorBrush.Accent.Blue.4}"
+                                                BorderThickness="1"
+                                                Width="230"
+                                                MaxHeight="360">
+                                            <ListBox SelectionMode="Single"
+                                                     SelectionChanged="ListBoxJournalFullPrice_OnSelectionChanged"
+                                                     ItemsSource="{Binding CraftingBindings.Journal.FullJournalPriceOptions}"
+                                                     Width="230"
+                                                     MinHeight="38"
+                                                     MaxHeight="360"
+                                                     BorderThickness="0"
+                                                     ScrollViewer.HorizontalScrollBarVisibility="Disabled"
+                                                     ScrollViewer.VerticalScrollBarVisibility="Auto">
+                                                <ListBox.ItemTemplate>
+                                                    <DataTemplate>
+                                                        <TextBlock Text="{Binding DisplayText}" ToolTip="{Binding UpdateDateTimeText}" Style="{StaticResource CraftingSellPriceOptionText}" />
+                                                    </DataTemplate>
+                                                </ListBox.ItemTemplate>
+                                            </ListBox>
+                                        </Border>
+                                    </Popup>
+                                </Grid>
                             </StackPanel>
                         </StackPanel>
 

@@ -701,6 +701,128 @@ public class CraftingBindings : BaseViewModel
         IsSellPricePopupOpen = false;
     }
 
+    public async void OpenResourcePriceOptions(CraftingResourceEntry resource)
+    {
+        try
+        {
+            if (resource == null || string.IsNullOrWhiteSpace(resource.UniqueName))
+            {
+                return;
+            }
+
+            await LoadPriceOptionsAsync(resource.UniqueName, resource.PriceOptions);
+            CloseAllPriceOptionPopups();
+            resource.IsPricePopupOpen = resource.PriceOptions.Count > 0;
+        }
+        catch (Exception e)
+        {
+            DebugConsole.WriteError(MethodBase.GetCurrentMethod()?.DeclaringType, e);
+            Log.Error(e, "Resource price options could not be loaded");
+            resource.IsPricePopupOpen = false;
+        }
+    }
+
+    public void SelectResourcePriceOption(CraftingResourceEntry resource, CraftingSellPriceOption priceOption)
+    {
+        if (resource == null || priceOption == null)
+        {
+            return;
+        }
+
+        resource.UnitPrice = priceOption.Price;
+        resource.IsPricePopupOpen = false;
+    }
+
+    public async void OpenJournalEmptyPriceOptions()
+    {
+        try
+        {
+            if (Journal == null || string.IsNullOrWhiteSpace(Journal.EmptyJournalUniqueName))
+            {
+                return;
+            }
+
+            await LoadPriceOptionsAsync(Journal.EmptyJournalUniqueName, Journal.EmptyJournalPriceOptions);
+            CloseAllPriceOptionPopups();
+            Journal.IsEmptyJournalPricePopupOpen = Journal.EmptyJournalPriceOptions.Count > 0;
+        }
+        catch (Exception e)
+        {
+            DebugConsole.WriteError(MethodBase.GetCurrentMethod()?.DeclaringType, e);
+            Log.Error(e, "Empty journal price options could not be loaded");
+
+            if (Journal != null)
+            {
+                Journal.IsEmptyJournalPricePopupOpen = false;
+            }
+        }
+    }
+
+    public async void OpenJournalFullPriceOptions()
+    {
+        try
+        {
+            if (Journal == null || string.IsNullOrWhiteSpace(Journal.FullJournalUniqueName))
+            {
+                return;
+            }
+
+            await LoadPriceOptionsAsync(Journal.FullJournalUniqueName, Journal.FullJournalPriceOptions);
+            CloseAllPriceOptionPopups();
+            Journal.IsFullJournalPricePopupOpen = Journal.FullJournalPriceOptions.Count > 0;
+        }
+        catch (Exception e)
+        {
+            DebugConsole.WriteError(MethodBase.GetCurrentMethod()?.DeclaringType, e);
+            Log.Error(e, "Full journal price options could not be loaded");
+
+            if (Journal != null)
+            {
+                Journal.IsFullJournalPricePopupOpen = false;
+            }
+        }
+    }
+
+    public void SelectJournalEmptyPriceOption(CraftingSellPriceOption priceOption)
+    {
+        if (Journal == null || priceOption == null)
+        {
+            return;
+        }
+
+        Journal.EmptyJournalPrice = priceOption.Price;
+        Journal.IsEmptyJournalPricePopupOpen = false;
+    }
+
+    public void SelectJournalFullPriceOption(CraftingSellPriceOption priceOption)
+    {
+        if (Journal == null || priceOption == null)
+        {
+            return;
+        }
+
+        Journal.FullJournalPrice = priceOption.Price;
+        Journal.IsFullJournalPricePopupOpen = false;
+    }
+
+    public void CloseAllPriceOptionPopups()
+    {
+        IsSellPricePopupOpen = false;
+
+        foreach (var resource in Resources)
+        {
+            resource.IsPricePopupOpen = false;
+        }
+
+        if (Journal == null)
+        {
+            return;
+        }
+
+        Journal.IsEmptyJournalPricePopupOpen = false;
+        Journal.IsFullJournalPricePopupOpen = false;
+    }
+
     public async Task LoadAsync()
     {
         var craftings = await _controller.LoadAsync();
@@ -1144,19 +1266,32 @@ public class CraftingBindings : BaseViewModel
         }
 
         var itemUniqueName = selectedItem.UniqueName;
-        var prices = await ApiController.GetCityItemPricesFromJsonAsync(itemUniqueName).ConfigureAwait(true) ?? [];
 
         if (!string.Equals(SelectedItem?.UniqueName, itemUniqueName, StringComparison.Ordinal))
         {
             return;
         }
 
-        SellPriceOptions.Clear();
+        await LoadPriceOptionsAsync(itemUniqueName, SellPriceOptions);
+
+        _sellPriceOptionsItemUniqueName = itemUniqueName;
+        IsSellPricePopupOpen = SellPriceOptions.Count > 0;
+    }
+
+    private static async Task LoadPriceOptionsAsync(string itemUniqueName, ObservableCollection<CraftingSellPriceOption> target)
+    {
+        if (target == null)
+        {
+            return;
+        }
+
+        var prices = await ApiController.GetCityItemPricesFromJsonAsync(itemUniqueName).ConfigureAwait(true) ?? [];
+        target.Clear();
 
         foreach (var location in SellPriceMarketLocations)
         {
             var priceOptionValue = GetSellPriceOptionValue(prices, location);
-            SellPriceOptions.Add(new CraftingSellPriceOption
+            target.Add(new CraftingSellPriceOption
             {
                 Location = location,
                 LocationName = Locations.GetDisplayName(location),
@@ -1166,9 +1301,6 @@ public class CraftingBindings : BaseViewModel
             }
             );
         }
-
-        _sellPriceOptionsItemUniqueName = itemUniqueName;
-        IsSellPricePopupOpen = SellPriceOptions.Count > 0;
     }
 
     private void ClearSellPriceOptions()

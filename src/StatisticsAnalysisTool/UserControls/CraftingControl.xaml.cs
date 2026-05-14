@@ -10,6 +10,8 @@ namespace StatisticsAnalysisTool.UserControls;
 
 public partial class CraftingControl
 {
+    private bool _wasPriceTextBoxFocusedOnMouseDown;
+
     public CraftingControl()
     {
         InitializeComponent();
@@ -98,6 +100,74 @@ public partial class CraftingControl
         listBox.SelectedItem = null;
     }
 
+    private void ListBoxResourcePrice_OnSelectionChanged(object sender, SelectionChangedEventArgs e)
+    {
+        if (DataContext is not MainWindowViewModel mainWindowViewModel)
+        {
+            return;
+        }
+
+        if (sender is not ListBox listBox)
+        {
+            return;
+        }
+
+        if (listBox.Tag is not CraftingResourceEntry resource)
+        {
+            return;
+        }
+
+        if (listBox.SelectedItem is not CraftingSellPriceOption priceOption)
+        {
+            return;
+        }
+
+        mainWindowViewModel.CraftingBindings.SelectResourcePriceOption(resource, priceOption);
+        listBox.SelectedItem = null;
+    }
+
+    private void ListBoxJournalEmptyPrice_OnSelectionChanged(object sender, SelectionChangedEventArgs e)
+    {
+        if (DataContext is not MainWindowViewModel mainWindowViewModel)
+        {
+            return;
+        }
+
+        if (sender is not ListBox listBox)
+        {
+            return;
+        }
+
+        if (listBox.SelectedItem is not CraftingSellPriceOption priceOption)
+        {
+            return;
+        }
+
+        mainWindowViewModel.CraftingBindings.SelectJournalEmptyPriceOption(priceOption);
+        listBox.SelectedItem = null;
+    }
+
+    private void ListBoxJournalFullPrice_OnSelectionChanged(object sender, SelectionChangedEventArgs e)
+    {
+        if (DataContext is not MainWindowViewModel mainWindowViewModel)
+        {
+            return;
+        }
+
+        if (sender is not ListBox listBox)
+        {
+            return;
+        }
+
+        if (listBox.SelectedItem is not CraftingSellPriceOption priceOption)
+        {
+            return;
+        }
+
+        mainWindowViewModel.CraftingBindings.SelectJournalFullPriceOption(priceOption);
+        listBox.SelectedItem = null;
+    }
+
     private void CraftingLocationSearch_OnGotKeyboardFocus(object sender, System.Windows.Input.KeyboardFocusChangedEventArgs e)
     {
         if (DataContext is not MainWindowViewModel mainWindowViewModel)
@@ -133,6 +203,11 @@ public partial class CraftingControl
 
     private void OutputUnitPrice_OnPreviewMouseLeftButtonUp(object sender, MouseButtonEventArgs e)
     {
+        if (!ShouldOpenPricePopupOnMouseLeftButtonUp(sender))
+        {
+            return;
+        }
+
         if (DataContext is not MainWindowViewModel mainWindowViewModel)
         {
             return;
@@ -141,14 +216,119 @@ public partial class CraftingControl
         mainWindowViewModel.CraftingBindings.OpenSellPriceOptions();
     }
 
+    private void ResourcePrice_OnGotKeyboardFocus(object sender, KeyboardFocusChangedEventArgs e)
+    {
+        OpenResourcePriceOptions(sender);
+    }
+
+    private void ResourcePrice_OnPreviewMouseLeftButtonUp(object sender, MouseButtonEventArgs e)
+    {
+        if (!ShouldOpenPricePopupOnMouseLeftButtonUp(sender))
+        {
+            return;
+        }
+
+        OpenResourcePriceOptions(sender);
+    }
+
+    private void JournalEmptyPrice_OnGotKeyboardFocus(object sender, KeyboardFocusChangedEventArgs e)
+    {
+        if (DataContext is not MainWindowViewModel mainWindowViewModel)
+        {
+            return;
+        }
+
+        mainWindowViewModel.CraftingBindings.OpenJournalEmptyPriceOptions();
+    }
+
+    private void JournalEmptyPrice_OnPreviewMouseLeftButtonUp(object sender, MouseButtonEventArgs e)
+    {
+        if (!ShouldOpenPricePopupOnMouseLeftButtonUp(sender))
+        {
+            return;
+        }
+
+        if (DataContext is not MainWindowViewModel mainWindowViewModel)
+        {
+            return;
+        }
+
+        mainWindowViewModel.CraftingBindings.OpenJournalEmptyPriceOptions();
+    }
+
+    private void JournalFullPrice_OnGotKeyboardFocus(object sender, KeyboardFocusChangedEventArgs e)
+    {
+        if (DataContext is not MainWindowViewModel mainWindowViewModel)
+        {
+            return;
+        }
+
+        mainWindowViewModel.CraftingBindings.OpenJournalFullPriceOptions();
+    }
+
+    private void JournalFullPrice_OnPreviewMouseLeftButtonUp(object sender, MouseButtonEventArgs e)
+    {
+        if (!ShouldOpenPricePopupOnMouseLeftButtonUp(sender))
+        {
+            return;
+        }
+
+        if (DataContext is not MainWindowViewModel mainWindowViewModel)
+        {
+            return;
+        }
+
+        mainWindowViewModel.CraftingBindings.OpenJournalFullPriceOptions();
+    }
+
+    private void PriceTextBox_OnPreviewMouseLeftButtonDown(object sender, MouseButtonEventArgs e)
+    {
+        _wasPriceTextBoxFocusedOnMouseDown = sender is FrameworkElement frameworkElement
+                                            && frameworkElement.IsKeyboardFocusWithin;
+    }
+
     private void CraftingControl_OnPreviewMouseDown(object sender, MouseButtonEventArgs e)
     {
-        if (IsElementOrChildOf(e.OriginalSource as DependencyObject, OutputUnitPriceTextBox))
+        var source = e.OriginalSource as DependencyObject;
+
+        if (IsElementOrChildOf(source, OutputUnitPriceTextBox)
+            || IsPriceOptionPopupClick(source))
         {
             return;
         }
 
         CloseSellPriceOptions();
+    }
+
+    private void OpenResourcePriceOptions(object sender)
+    {
+        if (DataContext is not MainWindowViewModel mainWindowViewModel)
+        {
+            return;
+        }
+
+        if (sender is not FrameworkElement frameworkElement)
+        {
+            return;
+        }
+
+        if (frameworkElement.DataContext is not CraftingResourceEntry resource)
+        {
+            return;
+        }
+
+        mainWindowViewModel.CraftingBindings.OpenResourcePriceOptions(resource);
+    }
+
+    private bool ShouldOpenPricePopupOnMouseLeftButtonUp(object sender)
+    {
+        var shouldOpen = sender is FrameworkElement frameworkElement
+                         && frameworkElement.IsKeyboardFocusWithin
+                         && _wasPriceTextBoxFocusedOnMouseDown;
+
+        _wasPriceTextBoxFocusedOnMouseDown = false;
+
+        return shouldOpen;
     }
 
     private void CloseSellPriceOptions()
@@ -158,7 +338,7 @@ public partial class CraftingControl
             return;
         }
 
-        mainWindowViewModel.CraftingBindings.CloseSellPriceOptions();
+        mainWindowViewModel.CraftingBindings.CloseAllPriceOptionPopups();
     }
 
     private static bool IsElementOrChildOf(DependencyObject source, DependencyObject parent)
@@ -166,6 +346,28 @@ public partial class CraftingControl
         while (source != null)
         {
             if (ReferenceEquals(source, parent))
+            {
+                return true;
+            }
+
+            source = GetParent(source);
+        }
+
+        return false;
+    }
+
+    private static bool IsPriceOptionPopupClick(DependencyObject source)
+    {
+        while (source != null)
+        {
+            if (source is FrameworkElement { DataContext: CraftingSellPriceOption })
+            {
+                return true;
+            }
+
+            if (source is ListBox listBox
+                && listBox.Items.Count > 0
+                && listBox.Items[0] is CraftingSellPriceOption)
             {
                 return true;
             }

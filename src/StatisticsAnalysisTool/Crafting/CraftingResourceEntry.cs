@@ -1,6 +1,7 @@
 using StatisticsAnalysisTool.Localization;
 using StatisticsAnalysisTool.ViewModels;
 using System;
+using System.Collections.ObjectModel;
 using System.Text.Json.Serialization;
 using System.Windows.Media.Imaging;
 
@@ -38,6 +39,24 @@ public class CraftingResourceEntry : BaseViewModel
 
     [JsonIgnore]
     public BitmapImage Icon { get; set; }
+
+    [JsonIgnore]
+    public ObservableCollection<CraftingSellPriceOption> PriceOptions
+    {
+        get;
+    }
+    = [];
+
+    [JsonIgnore]
+    public bool IsPricePopupOpen
+    {
+        get;
+        set
+        {
+            field = value;
+            OnPropertyChanged();
+        }
+    }
 
     public decimal UnitPrice
     {
