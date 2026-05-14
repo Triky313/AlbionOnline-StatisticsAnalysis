@@ -40,6 +40,11 @@ public class LocalizationController
             return false;
         }
 
+        if (!SettingsController.CurrentSettings.HasCompletedFirstStartGuide)
+        {
+            return true;
+        }
+
         if (SetLanguageWithDialogWindow())
         {
             return true;
@@ -101,6 +106,21 @@ public class LocalizationController
     public static string Translation(string key)
     {
         return Translation(key, null, null);
+    }
+
+    public static string TranslationForCulture(string key, string culture)
+    {
+        if (string.IsNullOrEmpty(key))
+        {
+            return key;
+        }
+
+        if (TryGetTranslationText(culture ?? string.Empty, key, out var translationText))
+        {
+            return translationText;
+        }
+
+        return key;
     }
 
     public static string Translation(string key, List<string> placeholders, List<string> replacements)
