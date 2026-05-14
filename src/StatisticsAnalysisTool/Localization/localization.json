@@ -42700,6 +42700,10 @@
             {
                 "lang": "en-US",
                 "seg": "Setup guide"
+            },
+            {
+                "lang": "fr-FR",
+                "seg": "Assistant de configuration"
             }
         ]
     },
@@ -42713,6 +42717,10 @@
             {
                 "lang": "en-US",
                 "seg": "Setup guide"
+            },
+            {
+                "lang": "fr-FR",
+                "seg": "Assistant de configuration"
             }
         ]
     },
@@ -42726,6 +42734,10 @@
             {
                 "lang": "en-US",
                 "seg": "Choose the language the tool should use."
+            },
+            {
+                "lang": "fr-FR",
+                "seg": "Choisissez la langue que l'outil doit utiliser."
             }
         ]
     },
@@ -42739,6 +42751,10 @@
             {
                 "lang": "en-US",
                 "seg": "Please select a language."
+            },
+            {
+                "lang": "fr-FR",
+                "seg": "Veuillez sélectionner une langue."
             }
         ]
     },
@@ -42752,6 +42768,10 @@
             {
                 "lang": "en-US",
                 "seg": "Tracking mode"
+            },
+            {
+                "lang": "fr-FR",
+                "seg": "Mode suivi"
             }
         ]
     },
@@ -42765,6 +42785,10 @@
             {
                 "lang": "en-US",
                 "seg": "Choose how the tool should capture Albion Online network traffic."
+            },
+            {
+                "lang": "fr-FR",
+                "seg": "Choisissez comment l'outil doit capturer le trafic réseau d'Albion Online."
             }
         ]
     },
@@ -42778,6 +42802,10 @@
             {
                 "lang": "en-US",
                 "seg": "NPCap uses a network driver and is usually the better first choice for most users. Socket uses Windows raw sockets and does not require NPCap, but the tool must be started as Administrator."
+            },
+            {
+                "lang": "fr-FR",
+                "seg": "NPCap utilise un pilote réseau et constitue généralement le meilleur choix pour la plupart des utilisateurs. Socket utilise les sockets bruts de Windows et ne nécessite pas NPCap, mais l'outil doit être lancé en tant qu'administrateur."
             }
         ]
     },
@@ -42790,6 +42818,10 @@
             },
             {
                 "lang": "en-US",
+                "seg": "NPCap"
+            },
+            {
+                "lang": "fr-FR",
                 "seg": "NPCap"
             }
         ]
@@ -42804,6 +42836,10 @@
             {
                 "lang": "en-US",
                 "seg": "Socket"
+            },
+            {
+                "lang": "fr-FR",
+                "seg": "Socket"
             }
         ]
     },
@@ -42817,6 +42853,10 @@
             {
                 "lang": "en-US",
                 "seg": "For NPCap, install NPCap."
+            },
+            {
+                "lang": "fr-FR",
+                "seg": "Pour NPCap, installez NPCap"
             }
         ]
     },
@@ -42830,6 +42870,10 @@
             {
                 "lang": "en-US",
                 "seg": "Download NPCap"
+            },
+            {
+                "lang": "fr-FR",
+                "seg": "Téléchargez NPCap"
             }
         ]
     },
@@ -42843,6 +42887,10 @@
             {
                 "lang": "en-US",
                 "seg": "For Socket, start this tool as Administrator."
+            },
+            {
+                "lang": "fr-FR",
+                "seg": "Pour Socket, démarrez l'application en tant qu'Administrateur"
             }
         ]
     },
@@ -42856,6 +42904,10 @@
             {
                 "lang": "en-US",
                 "seg": "Please select a tracking mode."
+            },
+            {
+                "lang": "fr-FR",
+                "seg": "Veuillez sélectionner un mode de suivi."
             }
         ]
     },
@@ -42869,6 +42921,10 @@
             {
                 "lang": "en-US",
                 "seg": "Select the navigation tabs you want to see."
+            },
+            {
+                "lang": "fr-FR",
+                "seg": "Sélectionnez les onglets de navigation que vous souhaitez afficher."
             }
         ]
     },
@@ -42882,6 +42938,10 @@
             {
                 "lang": "en-US",
                 "seg": "Back"
+            },
+            {
+                "lang": "fr-FR",
+                "seg": "Retour"
             }
         ]
     },
@@ -42895,6 +42955,10 @@
             {
                 "lang": "en-US",
                 "seg": "Next"
+            },
+            {
+                "lang": "fr-FR",
+                "seg": "Suivant"
             }
         ]
     },
@@ -42908,6 +42972,10 @@
             {
                 "lang": "en-US",
                 "seg": "Finish"
+            },
+            {
+                "lang": "fr-FR",
+                "seg": "Terminer"
             }
         ]
     }
