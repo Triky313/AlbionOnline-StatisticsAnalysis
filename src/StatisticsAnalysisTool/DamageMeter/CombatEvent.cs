@@ -105,4 +105,69 @@ public sealed class CombatEvent
         LastEventTime = endTime;
         IsActive = false;
     }
+
+    internal CombatEvent Clone()
+    {
+        var combatEvent = new CombatEvent
+        {
+            CombatEventId = CombatEventId,
+            ClusterKey = ClusterKey,
+            ClusterName = ClusterName,
+            StartTime = StartTime,
+            EndTime = EndTime,
+            LastEventTime = LastEventTime,
+            IsActive = IsActive,
+            IsImplicit = IsImplicit,
+            Damage = Damage,
+            Heal = Heal,
+            TakenDamage = TakenDamage
+        };
+
+        foreach (var playerObjectId in PlayerObjectIds)
+        {
+            combatEvent.PlayerObjectIds.Add(playerObjectId);
+        }
+
+        foreach (var mobObjectId in MobObjectIds)
+        {
+            combatEvent.MobObjectIds.Add(mobObjectId);
+        }
+
+        foreach (var knownMob in KnownMobs)
+        {
+            combatEvent.KnownMobs.Add(knownMob);
+        }
+
+        foreach (var contribution in Contributions)
+        {
+            combatEvent.Contributions.Add(new CombatEventContribution
+            {
+                CombatEventId = contribution.CombatEventId,
+                Timestamp = contribution.Timestamp,
+                ValueType = contribution.ValueType,
+                SourceObjectId = contribution.SourceObjectId,
+                TargetObjectId = contribution.TargetObjectId,
+                Value = contribution.Value,
+                CausingSpellIndex = contribution.CausingSpellIndex
+            });
+        }
+
+        foreach (var participant in _participants.Values)
+        {
+            var participantClone = new CombatEventParticipant
+            {
+                ObjectId = participant.ObjectId,
+                Name = participant.Name,
+                IsPlayer = participant.IsPlayer,
+                IsMob = participant.IsMob
+            };
+
+            participantClone.AddValue(CombatEventValueType.Damage, participant.Damage);
+            participantClone.AddValue(CombatEventValueType.Heal, participant.Heal);
+            participantClone.AddValue(CombatEventValueType.TakenDamage, participant.TakenDamage);
+            combatEvent._participants.Add(participantClone.ObjectId, participantClone);
+        }
+
+        return combatEvent;
+    }
 }
