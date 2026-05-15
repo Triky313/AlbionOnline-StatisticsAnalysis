@@ -164,8 +164,10 @@ public class LootController : ILootController
         {
             LootedFromName = loot.LootedFromName,
             LootedFromGuild = lootedFromUser?.Value?.Guild,
+            LootedFromAlliance = lootedFromUser?.Value?.Alliance,
             LootedByName = loot.LootedByName,
             LootedByGuild = lootedByUser?.Value?.Guild,
+            LootedByAlliance = lootedByUser?.Value?.Alliance,
             Quantity = loot.Quantity,
             ItemId = item.Index,
             UniqueItemName = item.UniqueName,
@@ -245,11 +247,24 @@ public class LootController : ILootController
         });
     }
 
+    public async Task AddKillDeathAsync(string died, string diedPlayerGuild, string killedBy, string killedByGuild)
+    {
+        _lootLoggerObjects.Add(new LootLoggerObject
+        {
+            Died = died,
+            DiedPlayerGuild = diedPlayerGuild,
+            KilledBy = killedBy,
+            KilledByGuild = killedByGuild
+        });
+
+        await RemoveLootIfMoreThanLimitAsync(MaxLoot);
+    }
+
     public string GetLootLoggerObjectsAsCsv()
     {
         try
         {
-            const string csvHeader = "timestamp_utc;looted_by__alliance;looted_by__guild;looted_by__name;item_id;item_name;quantity;looted_from__alliance;looted_from__guild;looted_from__name\n";
+            const string csvHeader = "timestamp_utc;looted_by__alliance;looted_by__guild;looted_by__name;item_id;item_name;quantity;looted_from__alliance;looted_from__guild;looted_from__name;died;died_player_guild;killed_by;killed_by_guild\n";
             return csvHeader + string.Join(Environment.NewLine, _lootLoggerObjects.Select(loot => loot.CsvOutput).ToArray());
         }
         catch (Exception e)

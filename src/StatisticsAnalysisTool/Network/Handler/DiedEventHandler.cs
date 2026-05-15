@@ -1,4 +1,4 @@
-﻿using StatisticsAnalysisTool.EventLogging;
+using StatisticsAnalysisTool.EventLogging;
 using StatisticsAnalysisTool.EventLogging.Notification;
 using StatisticsAnalysisTool.Localization;
 using StatisticsAnalysisTool.Models.NetworkModel;
@@ -22,6 +22,7 @@ public class DiedEventHandler : EventPacketHandler<DiedEvent>
     {
         _trackingController.DungeonController?.SetDiedIfInDungeon(new DiedObject(value.Died, value.KilledBy, value.KilledByGuild));
         _trackingController.PartyController.PlayerHasDied(value.Died);
+        await _trackingController.LootController.AddKillDeathAsync(value.Died, value.DiedPlayerGuild, value.KilledBy, value.KilledByGuild);
         await _trackingController.AddNotificationAsync(SetKillNotification(value.Died, value.DiedPlayerGuild, value.KilledBy, value.KilledByGuild));
     }
 
