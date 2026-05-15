@@ -10,6 +10,7 @@ using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
+using System.Globalization;
 using System.Linq;
 using System.Reflection;
 using System.Threading.Tasks;
@@ -47,6 +48,10 @@ public class CraftingBindings : BaseViewModel
     private string _sellPriceOptionsItemUniqueName = string.Empty;
     private int _amountCrafted = 1;
     private bool _isLoading;
+    private bool _isUpdatingPercentInputText;
+    private string _returnRatePercentText = FormatPercentInput(0m);
+    private string _salesTaxPercentText = FormatPercentInput(4m);
+    private string _setupFeePercentText = FormatPercentInput(2.5m);
 
     public CraftingBindings()
     {
@@ -296,7 +301,24 @@ public class CraftingBindings : BaseViewModel
         set
         {
             field = Math.Clamp(value, 0m, 100m);
+            UpdatePercentInputText(nameof(ReturnRatePercentText), field);
             Recalculate();
+            OnPropertyChanged();
+        }
+    }
+
+    public string ReturnRatePercentText
+    {
+        get => _returnRatePercentText;
+        set
+        {
+            if (_returnRatePercentText == value)
+            {
+                return;
+            }
+
+            _returnRatePercentText = value;
+            UpdatePercentValueFromInput(value, percent => ReturnRatePercent = percent);
             OnPropertyChanged();
         }
     }
@@ -371,11 +393,57 @@ public class CraftingBindings : BaseViewModel
         set
         {
             field = Math.Clamp(value, 0m, 100m);
+            UpdatePercentInputText(nameof(SalesTaxPercentText), field);
             Recalculate();
             OnPropertyChanged();
         }
     }
     = 4m;
+
+    public string SalesTaxPercentText
+    {
+        get => _salesTaxPercentText;
+        set
+        {
+            if (_salesTaxPercentText == value)
+            {
+                return;
+            }
+
+            _salesTaxPercentText = value;
+            UpdatePercentValueFromInput(value, percent => SalesTaxPercent = percent);
+            OnPropertyChanged();
+        }
+    }
+
+    public decimal SetupFeePercent
+    {
+        get;
+        set
+        {
+            field = Math.Clamp(value, 0m, 100m);
+            UpdatePercentInputText(nameof(SetupFeePercentText), field);
+            Recalculate();
+            OnPropertyChanged();
+        }
+    }
+    = 2.5m;
+
+    public string SetupFeePercentText
+    {
+        get => _setupFeePercentText;
+        set
+        {
+            if (_setupFeePercentText == value)
+            {
+                return;
+            }
+
+            _setupFeePercentText = value;
+            UpdatePercentValueFromInput(value, percent => SetupFeePercent = percent);
+            OnPropertyChanged();
+        }
+    }
 
     public decimal OtherCosts
     {
@@ -517,6 +585,8 @@ public class CraftingBindings : BaseViewModel
     public static string TranslationSave => LocalizationController.Translation("SAVE");
     public static string TranslationSavedCraftings => LocalizationController.Translation("SAVED_CRAFTINGS");
     public static string TranslationSellPrice => LocalizationController.Translation("SELL_PRICE");
+    public static string TranslationSetupFee => LocalizationController.Translation("SETUP_FEE");
+    public static string TranslationSilver => LocalizationController.Translation("SILVER");
     public static string TranslationStation => LocalizationController.Translation("STATION");
     public static string TranslationStationFee => LocalizationController.Translation("STATION_FEE");
     public static string TranslationStationFeeTooltip => LocalizationController.Translation("CRAFTING_STATION_FEE_TOOLTIP");
@@ -539,10 +609,19 @@ public class CraftingBindings : BaseViewModel
     public static string TranslationSalesGrossTooltip => LocalizationController.Translation("CRAFTING_RESULT_SALES_GROSS_TOOLTIP");
     public static string TranslationSalesNetTooltip => LocalizationController.Translation("CRAFTING_RESULT_SALES_NET_TOOLTIP");
     public static string TranslationSalesTaxTooltip => LocalizationController.Translation("CRAFTING_RESULT_SALES_TAX_TOOLTIP");
+    public static string TranslationSetupFeeTooltip => LocalizationController.Translation("CRAFTING_RESULT_SETUP_FEE_TOOLTIP");
     public static string TranslationStationTooltip => LocalizationController.Translation("CRAFTING_RESULT_STATION_TOOLTIP");
     public static string TranslationTotalCostsTooltip => LocalizationController.Translation("CRAFTING_RESULT_TOTAL_COSTS_TOOLTIP");
     public static string TranslationWeightAfterTooltip => LocalizationController.Translation("CRAFTING_RESULT_WEIGHT_AFTER_TOOLTIP");
     public static string TranslationWeightBeforeTooltip => LocalizationController.Translation("CRAFTING_RESULT_WEIGHT_BEFORE_TOOLTIP");
+    public static string TranslationResourceIconColumnTooltip => LocalizationController.Translation("CRAFTING_RESOURCE_ICON_COLUMN_TOOLTIP");
+    public static string TranslationResourceNameColumnTooltip => LocalizationController.Translation("CRAFTING_RESOURCE_NAME_COLUMN_TOOLTIP");
+    public static string TranslationResourceTypeColumnTooltip => LocalizationController.Translation("CRAFTING_RESOURCE_TYPE_COLUMN_TOOLTIP");
+    public static string TranslationResourceGrossColumnTooltip => LocalizationController.Translation("CRAFTING_RESOURCE_GROSS_COLUMN_TOOLTIP");
+    public static string TranslationResourceExpectedReturnColumnTooltip => LocalizationController.Translation("CRAFTING_RESOURCE_EXPECTED_RETURN_COLUMN_TOOLTIP");
+    public static string TranslationResourceNetColumnTooltip => LocalizationController.Translation("CRAFTING_RESOURCE_NET_COLUMN_TOOLTIP");
+    public static string TranslationResourcePriceColumnTooltip => LocalizationController.Translation("CRAFTING_RESOURCE_PRICE_COLUMN_TOOLTIP");
+    public static string TranslationResourceNetCostColumnTooltip => LocalizationController.Translation("CRAFTING_RESOURCE_NET_COST_COLUMN_TOOLTIP");
 
     public bool HasJournal => Journal != null;
 
@@ -617,6 +696,133 @@ public class CraftingBindings : BaseViewModel
         IsSellPricePopupOpen = false;
     }
 
+    public void CloseSellPriceOptions()
+    {
+        IsSellPricePopupOpen = false;
+    }
+
+    public async void OpenResourcePriceOptions(CraftingResourceEntry resource)
+    {
+        try
+        {
+            if (resource == null || string.IsNullOrWhiteSpace(resource.UniqueName))
+            {
+                return;
+            }
+
+            await LoadPriceOptionsAsync(resource.UniqueName, resource.PriceOptions, CraftingPricePreference.LowerIsBetter);
+            CloseAllPriceOptionPopups();
+            resource.IsPricePopupOpen = resource.PriceOptions.Count > 0;
+        }
+        catch (Exception e)
+        {
+            DebugConsole.WriteError(MethodBase.GetCurrentMethod()?.DeclaringType, e);
+            Log.Error(e, "Resource price options could not be loaded");
+            resource.IsPricePopupOpen = false;
+        }
+    }
+
+    public void SelectResourcePriceOption(CraftingResourceEntry resource, CraftingSellPriceOption priceOption)
+    {
+        if (resource == null || priceOption == null)
+        {
+            return;
+        }
+
+        resource.UnitPrice = priceOption.Price;
+        resource.IsPricePopupOpen = false;
+    }
+
+    public async void OpenJournalEmptyPriceOptions()
+    {
+        try
+        {
+            if (Journal == null || string.IsNullOrWhiteSpace(Journal.EmptyJournalUniqueName))
+            {
+                return;
+            }
+
+            await LoadPriceOptionsAsync(Journal.EmptyJournalUniqueName, Journal.EmptyJournalPriceOptions, CraftingPricePreference.LowerIsBetter);
+            CloseAllPriceOptionPopups();
+            Journal.IsEmptyJournalPricePopupOpen = Journal.EmptyJournalPriceOptions.Count > 0;
+        }
+        catch (Exception e)
+        {
+            DebugConsole.WriteError(MethodBase.GetCurrentMethod()?.DeclaringType, e);
+            Log.Error(e, "Empty journal price options could not be loaded");
+
+            if (Journal != null)
+            {
+                Journal.IsEmptyJournalPricePopupOpen = false;
+            }
+        }
+    }
+
+    public async void OpenJournalFullPriceOptions()
+    {
+        try
+        {
+            if (Journal == null || string.IsNullOrWhiteSpace(Journal.FullJournalUniqueName))
+            {
+                return;
+            }
+
+            await LoadPriceOptionsAsync(Journal.FullJournalUniqueName, Journal.FullJournalPriceOptions, CraftingPricePreference.HigherIsBetter);
+            CloseAllPriceOptionPopups();
+            Journal.IsFullJournalPricePopupOpen = Journal.FullJournalPriceOptions.Count > 0;
+        }
+        catch (Exception e)
+        {
+            DebugConsole.WriteError(MethodBase.GetCurrentMethod()?.DeclaringType, e);
+            Log.Error(e, "Full journal price options could not be loaded");
+
+            if (Journal != null)
+            {
+                Journal.IsFullJournalPricePopupOpen = false;
+            }
+        }
+    }
+
+    public void SelectJournalEmptyPriceOption(CraftingSellPriceOption priceOption)
+    {
+        if (Journal == null || priceOption == null)
+        {
+            return;
+        }
+
+        Journal.EmptyJournalPrice = priceOption.Price;
+        Journal.IsEmptyJournalPricePopupOpen = false;
+    }
+
+    public void SelectJournalFullPriceOption(CraftingSellPriceOption priceOption)
+    {
+        if (Journal == null || priceOption == null)
+        {
+            return;
+        }
+
+        Journal.FullJournalPrice = priceOption.Price;
+        Journal.IsFullJournalPricePopupOpen = false;
+    }
+
+    public void CloseAllPriceOptionPopups()
+    {
+        IsSellPricePopupOpen = false;
+
+        foreach (var resource in Resources)
+        {
+            resource.IsPricePopupOpen = false;
+        }
+
+        if (Journal == null)
+        {
+            return;
+        }
+
+        Journal.IsEmptyJournalPricePopupOpen = false;
+        Journal.IsFullJournalPricePopupOpen = false;
+    }
+
     public async Task LoadAsync()
     {
         var craftings = await _controller.LoadAsync();
@@ -657,7 +863,7 @@ public class CraftingBindings : BaseViewModel
 
         foreach (var item in CraftableItems
                      .Where(x => ItemMatchesFilter(x) && ItemMatchesSearchText(x, searchText))
-                     .Take(25))
+                     .Take(30))
         {
             ListBoxItemSearchItems.Add(new CraftingItemSearchResult
             {
@@ -809,6 +1015,119 @@ public class CraftingBindings : BaseViewModel
         return (SelectedCraftingLocation?.MatchingModifierPercent ?? 0m) > 0m;
     }
 
+    private void UpdatePercentValueFromInput(string text, Action<decimal> updateValue)
+    {
+        if (_isUpdatingPercentInputText || IsPendingDecimalInput(text))
+        {
+            return;
+        }
+
+        if (TryParseDecimalInput(text, out var value))
+        {
+            updateValue(value);
+        }
+    }
+
+    private void UpdatePercentInputText(string propertyName, decimal value)
+    {
+        if (_isUpdatingPercentInputText)
+        {
+            return;
+        }
+
+        var text = FormatPercentInput(value);
+        var changed = false;
+
+        switch (propertyName)
+        {
+            case nameof(ReturnRatePercentText) when _returnRatePercentText != text:
+                _returnRatePercentText = text;
+                changed = true;
+                break;
+
+            case nameof(SalesTaxPercentText) when _salesTaxPercentText != text:
+                _salesTaxPercentText = text;
+                changed = true;
+                break;
+
+            case nameof(SetupFeePercentText) when _setupFeePercentText != text:
+                _setupFeePercentText = text;
+                changed = true;
+                break;
+        }
+
+        if (!changed)
+        {
+            return;
+        }
+
+        try
+        {
+            _isUpdatingPercentInputText = true;
+            OnPropertyChanged(propertyName);
+        }
+        finally
+        {
+            _isUpdatingPercentInputText = false;
+        }
+    }
+
+    private static bool TryParseDecimalInput(string text, out decimal value)
+    {
+        const NumberStyles numberStyles = NumberStyles.AllowLeadingSign
+                                         | NumberStyles.AllowDecimalPoint
+                                         | NumberStyles.AllowLeadingWhite
+                                         | NumberStyles.AllowTrailingWhite;
+
+        if (decimal.TryParse(text, numberStyles, CultureInfo.CurrentCulture, out value))
+        {
+            return true;
+        }
+
+        return decimal.TryParse(NormalizeDecimalSeparator(text), numberStyles, CultureInfo.CurrentCulture, out value);
+    }
+
+    private static bool IsPendingDecimalInput(string text)
+    {
+        if (string.IsNullOrWhiteSpace(text))
+        {
+            return false;
+        }
+
+        return GetDecimalSeparators().Any(text.EndsWith);
+    }
+
+    private static string NormalizeDecimalSeparator(string text)
+    {
+        var decimalSeparator = CultureInfo.CurrentCulture.NumberFormat.NumberDecimalSeparator;
+        var alternateDecimalSeparator = decimalSeparator == "," ? "." : ",";
+
+        if (text.Contains(decimalSeparator, StringComparison.Ordinal)
+            || !text.Contains(alternateDecimalSeparator, StringComparison.Ordinal))
+        {
+            return text;
+        }
+
+        return text.Replace(alternateDecimalSeparator, decimalSeparator);
+    }
+
+    private static string FormatPercentInput(decimal value)
+    {
+        return value.ToString("0.##", CultureInfo.CurrentCulture);
+    }
+
+    private static string[] GetDecimalSeparators()
+    {
+        var decimalSeparator = CultureInfo.CurrentCulture.NumberFormat.NumberDecimalSeparator;
+
+        return decimalSeparator switch
+        {
+            "," => [",", "."],
+            "." => [".", ","],
+            _ => [decimalSeparator, ",", "."]
+        };
+    }
+
     private void AddResource(CraftingResourceEntry resource)
     {
         resource.ValuesChanged = Recalculate;
@@ -841,6 +1160,7 @@ public class CraftingBindings : BaseViewModel
             StationFee = StationFee,
             NutritionConsumedPerRun = _stationFeeService.GetNutritionConsumedPerRun(SelectedItem),
             SalesTaxPercent = SalesTaxPercent,
+            SetupFeePercent = SetupFeePercent,
             OtherCosts = OtherCosts,
             OutputUnitWeight = ItemController.GetWeight(SelectedItem?.FullItemInformation),
             Resources = Resources
@@ -946,19 +1266,35 @@ public class CraftingBindings : BaseViewModel
         }
 
         var itemUniqueName = selectedItem.UniqueName;
-        var prices = await ApiController.GetCityItemPricesFromJsonAsync(itemUniqueName).ConfigureAwait(true) ?? [];
 
         if (!string.Equals(SelectedItem?.UniqueName, itemUniqueName, StringComparison.Ordinal))
         {
             return;
         }
 
-        SellPriceOptions.Clear();
+        await LoadPriceOptionsAsync(itemUniqueName, SellPriceOptions, CraftingPricePreference.HigherIsBetter);
+
+        _sellPriceOptionsItemUniqueName = itemUniqueName;
+        IsSellPricePopupOpen = SellPriceOptions.Count > 0;
+    }
+
+    private static async Task LoadPriceOptionsAsync(
+        string itemUniqueName,
+        ObservableCollection<CraftingSellPriceOption> target,
+        CraftingPricePreference pricePreference)
+    {
+        if (target == null)
+        {
+            return;
+        }
+
+        var prices = await ApiController.GetCityItemPricesFromJsonAsync(itemUniqueName).ConfigureAwait(true) ?? [];
+        var priceOptions = new List<CraftingSellPriceOption>();
 
         foreach (var location in SellPriceMarketLocations)
         {
             var priceOptionValue = GetSellPriceOptionValue(prices, location);
-            SellPriceOptions.Add(new CraftingSellPriceOption
+            priceOptions.Add(new CraftingSellPriceOption
             {
                 Location = location,
                 LocationName = Locations.GetDisplayName(location),
@@ -969,8 +1305,48 @@ public class CraftingBindings : BaseViewModel
             );
         }
 
-        _sellPriceOptionsItemUniqueName = itemUniqueName;
-        IsSellPricePopupOpen = SellPriceOptions.Count > 0;
+        target.Clear();
+
+        foreach (var priceOption in ApplyPriceRankIndicators(priceOptions, pricePreference))
+        {
+            target.Add(priceOption);
+        }
+    }
+
+    private static IEnumerable<CraftingSellPriceOption> ApplyPriceRankIndicators(
+        IEnumerable<CraftingSellPriceOption> priceOptions,
+        CraftingPricePreference pricePreference)
+    {
+        var priceOptionsWithValue = priceOptions
+            .Where(x => x.Price > 0m);
+
+        var orderedPriceOptions = pricePreference == CraftingPricePreference.LowerIsBetter
+            ? priceOptionsWithValue.OrderBy(x => x.Price).ThenByDescending(x => x.PriceDate)
+            : priceOptionsWithValue.OrderByDescending(x => x.Price).ThenByDescending(x => x.PriceDate);
+
+        var bestPrices = orderedPriceOptions
+            .Take(3)
+            .Select((x, index) => new
+            {
+                x.Location,
+                Indicator = new string('<', 3 - index)
+            }
+            )
+            .ToDictionary(x => x.Location, x => x.Indicator);
+
+        foreach (var priceOption in priceOptions)
+        {
+            yield return new CraftingSellPriceOption
+            {
+                Location = priceOption.Location,
+                LocationName = priceOption.LocationName,
+                Price = priceOption.Price,
+                PriceDate = priceOption.PriceDate,
+                PriceDateStatus = priceOption.PriceDateStatus,
+                PriceRankIndicator = bestPrices.TryGetValue(priceOption.Location, out var indicator) ? indicator : string.Empty
+            }
+            ;
+        }
     }
 
     private void ClearSellPriceOptions()
@@ -1074,6 +1450,7 @@ public class CraftingBindings : BaseViewModel
             CraftingContext = Locations.GetParameterName(SelectedMarketLocation),
             StationFee = StationFee,
             SalesTaxPercent = SalesTaxPercent,
+            SetupFeePercent = SetupFeePercent,
             OtherCosts = OtherCosts,
             OutputUnitPrice = OutputUnitPrice,
             Notes = Notes,
@@ -1081,7 +1458,9 @@ public class CraftingBindings : BaseViewModel
             Journal = CloneJournal(Journal),
             LastChangedUtc = DateTime.UtcNow,
             NetMaterialCosts = Calculation.NetMaterialCosts,
+            TotalCosts = Calculation.TotalCosts,
             Profit = Calculation.Profit,
+            ProfitPerItem = Calculation.ProfitPerItem,
             BreakEvenPrice = Calculation.BreakEvenPrice,
             Icon = SelectedItem?.Icon
         }
@@ -1147,6 +1526,7 @@ public class CraftingBindings : BaseViewModel
         SelectedMarketLocation = (savedCrafting.CraftingContext ?? string.Empty).GetMarketLocationByLocationNameOrId();
         StationFee = savedCrafting.StationFee;
         SalesTaxPercent = savedCrafting.SalesTaxPercent;
+        SetupFeePercent = savedCrafting.SetupFeePercent;
         OtherCosts = savedCrafting.OtherCosts;
         OutputUnitPrice = savedCrafting.OutputUnitPrice;
         Notes = savedCrafting.Notes;
@@ -1198,6 +1578,7 @@ public class CraftingBindings : BaseViewModel
         ReturnRatePercent = 0m;
         StationFee = 0m;
         SalesTaxPercent = 4m;
+        SetupFeePercent = 2.5m;
         OtherCosts = 0m;
         OutputUnitPrice = 0m;
         Notes = string.Empty;
@@ -1360,6 +1741,7 @@ public class CraftingBindings : BaseViewModel
             StationFee = crafting.StationFee,
             NutritionConsumedPerRun = _stationFeeService.GetNutritionConsumedPerRun(item),
             SalesTaxPercent = crafting.SalesTaxPercent,
+            SetupFeePercent = crafting.SetupFeePercent,
             OtherCosts = crafting.OtherCosts,
             OutputUnitWeight = ItemController.GetWeight(item?.FullItemInformation),
             Resources = (crafting.Resources ?? [])
@@ -1397,7 +1779,9 @@ public class CraftingBindings : BaseViewModel
         );
 
         crafting.NetMaterialCosts = result.NetMaterialCosts;
+        crafting.TotalCosts = result.TotalCosts;
         crafting.Profit = result.Profit;
+        crafting.ProfitPerItem = result.ProfitPerItem;
         crafting.BreakEvenPrice = result.BreakEvenPrice;
     }
 

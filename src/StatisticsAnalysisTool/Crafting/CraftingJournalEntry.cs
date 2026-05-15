@@ -1,5 +1,6 @@
 using StatisticsAnalysisTool.ViewModels;
 using System;
+using System.Collections.ObjectModel;
 using System.Text.Json.Serialization;
 using System.Windows.Media.Imaging;
 
@@ -18,6 +19,42 @@ public class CraftingJournalEntry : BaseViewModel
 
     [JsonIgnore]
     public BitmapImage Icon { get; set; }
+
+    [JsonIgnore]
+    public ObservableCollection<CraftingSellPriceOption> EmptyJournalPriceOptions
+    {
+        get;
+    }
+    = [];
+
+    [JsonIgnore]
+    public ObservableCollection<CraftingSellPriceOption> FullJournalPriceOptions
+    {
+        get;
+    }
+    = [];
+
+    [JsonIgnore]
+    public bool IsEmptyJournalPricePopupOpen
+    {
+        get;
+        set
+        {
+            field = value;
+            OnPropertyChanged();
+        }
+    }
+
+    [JsonIgnore]
+    public bool IsFullJournalPricePopupOpen
+    {
+        get;
+        set
+        {
+            field = value;
+            OnPropertyChanged();
+        }
+    }
 
     public decimal EmptyJournalPrice
     {

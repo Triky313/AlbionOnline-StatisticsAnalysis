@@ -29,7 +29,7 @@ public sealed class CombatEventTracker(TrackingController trackingController)
         {
             lock (_syncLock)
             {
-                return _combatEvents.ToList();
+                return _combatEvents.Select(x => x.Clone()).ToList();
             }
         }
     }

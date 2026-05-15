@@ -34,6 +34,7 @@ public class TradeMonitoringBindings : BaseViewModel
     private IReadOnlyList<TradeProfitTimeSeriesPoint> _profitOverTimePoints = [];
     private IReadOnlyList<TradeProfitTimeOfDayPoint> _profitByTimeOfDayHourlyPoints = [];
     private TradeProfitTimeOfDayResult _profitByTimeOfDayResult = new();
+    private int _profitOverTimeBucketStepSize = 1;
 
     public TradeMonitoringBindings()
     {
@@ -49,6 +50,40 @@ public class TradeMonitoringBindings : BaseViewModel
         DatePickerTradeFrom = SettingsController.CurrentSettings.TradeMonitoringDatePickerTradeFrom;
         DatePickerTradeTo = SettingsController.CurrentSettings.TradeMonitoringDatePickerTradeTo;
         UpdateProfitByTimeOfDayModeVisibility();
+    }
+
+    public void RefreshLocalization()
+    {
+        var selectedTierFilter = SelectedTierFilter;
+        var selectedLevelFilter = SelectedLevelFilter;
+        var selectedLocationFilter = SelectedLocationFilter;
+        var selectedProfitOverTimeAggregation = SelectedProfitOverTimeAggregation;
+        var selectedProfitByTimeOfDayChartMode = SelectedProfitByTimeOfDayChartMode;
+        var selectedProfitByTimeOfDayMetric = SelectedProfitByTimeOfDayMetric;
+
+        TierFilters = BuildTierFilters();
+        LevelFilters = BuildLevelFilters();
+        LocationFilters = BuildLocationFilters();
+        ProfitOverTimeAggregationFilters = BuildProfitOverTimeAggregationFilters();
+        ProfitByTimeOfDayChartModeFilters = BuildProfitByTimeOfDayChartModeFilters();
+        ProfitByTimeOfDayMetricFilters = BuildProfitByTimeOfDayMetricFilters();
+
+        SelectedTierFilter = selectedTierFilter;
+        SelectedLevelFilter = selectedLevelFilter;
+        SelectedLocationFilter = selectedLocationFilter;
+        SelectedProfitOverTimeAggregation = selectedProfitOverTimeAggregation;
+        SelectedProfitByTimeOfDayChartMode = selectedProfitByTimeOfDayChartMode;
+        SelectedProfitByTimeOfDayMetric = selectedProfitByTimeOfDayMetric;
+
+        TradeStatsObject.RefreshLocalization();
+        TradeOptionsObject.RefreshLocalization();
+        ManuallyTradeMenuObject.RefreshLocalization();
+        TradeExportTemplateObject.RefreshLocalization();
+
+        ProfitOverTimeChartTitle = LocalizationController.Translation("PROFIT_OVER_TIME");
+        ProfitByTimeOfDayChartTitle = LocalizationController.Translation("PROFIT_BY_TIME_OF_DAY");
+        RefreshProfitOverTimeAxisLabels();
+        RefreshProfitByTimeOfDayPresentation();
     }
 
     public void ItemFilterReset()
@@ -107,6 +142,11 @@ public class TradeMonitoringBindings : BaseViewModel
     public IReadOnlyList<KeyValuePair<int, string>> TierFilters
     {
         get;
+        private set
+        {
+            field = value;
+            OnPropertyChanged();
+        }
     }
 
     public int SelectedTierFilter
@@ -122,6 +162,11 @@ public class TradeMonitoringBindings : BaseViewModel
     public IReadOnlyList<KeyValuePair<int, string>> LevelFilters
     {
         get;
+        private set
+        {
+            field = value;
+            OnPropertyChanged();
+        }
     }
 
     public int SelectedLevelFilter
@@ -137,6 +182,11 @@ public class TradeMonitoringBindings : BaseViewModel
     public IReadOnlyList<KeyValuePair<MarketLocation, string>> LocationFilters
     {
         get;
+        private set
+        {
+            field = value;
+            OnPropertyChanged();
+        }
     }
 
     public MarketLocation SelectedLocationFilter
@@ -152,16 +202,31 @@ public class TradeMonitoringBindings : BaseViewModel
     public IReadOnlyList<KeyValuePair<TradeProfitTimeAggregation, string>> ProfitOverTimeAggregationFilters
     {
         get;
+        private set
+        {
+            field = value;
+            OnPropertyChanged();
+        }
     }
 
     public IReadOnlyList<KeyValuePair<TradeTimeOfDayChartMode, string>> ProfitByTimeOfDayChartModeFilters
     {
         get;
+        private set
+        {
+            field = value;
+            OnPropertyChanged();
+        }
     }
 
     public IReadOnlyList<KeyValuePair<TradeTimeOfDayMetric, string>> ProfitByTimeOfDayMetricFilters
     {
         get;
+        private set
+        {
+            field = value;
+            OnPropertyChanged();
+        }
     }
 
     public TradeProfitTimeAggregation SelectedProfitOverTimeAggregation
@@ -946,6 +1011,7 @@ public class TradeMonitoringBindings : BaseViewModel
     private void ApplyProfitOverTimeChart(TradeProfitTimeSeriesResult chartResult)
     {
         _profitOverTimePoints = chartResult.Points ?? [];
+        _profitOverTimeBucketStepSize = chartResult.BucketStepSize;
         EffectiveProfitOverTimeAggregation = chartResult.EffectiveAggregation;
         ProfitOverTimeChartTitle = LocalizationController.Translation("PROFIT_OVER_TIME");
 
@@ -968,6 +1034,18 @@ public class TradeMonitoringBindings : BaseViewModel
         [
             CreateProfitOverTimeSeries(isPositiveSeries: true, "SolidColorBrush.Accent.Blue.3"),
             CreateProfitOverTimeSeries(isPositiveSeries: false, "SolidColorBrush.Accent.Red.4")
+        ];
+    }
+
+    private void RefreshProfitOverTimeAxisLabels()
+    {
+        ProfitOverTimeXAxes =
+        [
+            new Axis
+            {
+                LabelsRotation = 15,
+                Labels = BuildProfitOverTimeLabels(_profitOverTimePoints, EffectiveProfitOverTimeAggregation, _profitOverTimeBucketStepSize)
+            }
         ];
     }
 

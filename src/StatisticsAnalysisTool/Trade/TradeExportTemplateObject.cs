@@ -1,4 +1,4 @@
-﻿using StatisticsAnalysisTool.Common;
+using StatisticsAnalysisTool.Common;
 using StatisticsAnalysisTool.Localization;
 using StatisticsAnalysisTool.Network.Manager;
 using System.Reflection;
@@ -8,10 +8,11 @@ using System.Windows.Input;
 using Microsoft.Win32;
 using Serilog;
 using StatisticsAnalysisTool.Diagnostics;
+using StatisticsAnalysisTool.ViewModels;
 
 namespace StatisticsAnalysisTool.Trade;
 
-public class TradeExportTemplateObject
+public class TradeExportTemplateObject : BaseViewModel
 {
 
     #region Commands
@@ -46,6 +47,12 @@ public class TradeExportTemplateObject
     public ICommand TradeExportCommand => _tradeExportCommand ??= new CommandHandler(TradeExport, true);
 
     #endregion
+
+    public void RefreshLocalization()
+    {
+        OnPropertyChanged(nameof(TranslationExport));
+        OnPropertyChanged(nameof(TranslationExportTradesAsCsv));
+    }
 
     public static string TranslationExport => LocalizationController.Translation("EXPORT");
     public static string TranslationExportTradesAsCsv => LocalizationController.Translation("EXPORT_TRADES_AS_CSV");

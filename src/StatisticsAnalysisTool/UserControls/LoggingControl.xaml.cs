@@ -30,6 +30,12 @@ public partial class LoggingControl
         mainWindowViewModel?.ExportLootToFile();
     }
 
+    private void BtnExportLootToJsonFile_MouseUp(object sender, MouseEventArgs e)
+    {
+        var mainWindowViewModel = ServiceLocator.Resolve<MainWindowViewModel>();
+        mainWindowViewModel?.ExportLootToJsonFile();
+    }
+
     private void BtnLoadVaultLogFiles_Click(object sender, RoutedEventArgs e)
     {
         var mainWindowViewModel = ServiceLocator.Resolve<MainWindowViewModel>();

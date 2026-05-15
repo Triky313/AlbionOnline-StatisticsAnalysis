@@ -83,6 +83,12 @@ public class CraftingCalculationResult
         set;
     }
 
+    public decimal SetupFee
+    {
+        get;
+        set;
+    }
+
     public decimal OtherCosts
     {
         get;

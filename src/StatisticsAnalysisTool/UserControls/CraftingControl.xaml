@@ -95,15 +95,8 @@
             <Setter Property="TextTrimming" Value="CharacterEllipsis" />
             <Setter Property="VerticalAlignment" Value="Center" />
         </Style>
-        <Style x:Key="SavedCraftingNetCostText" TargetType="{x:Type TextBlock}" BasedOn="{StaticResource SavedCraftingCellText}">
-            <Style.Triggers>
-                <DataTrigger Binding="{Binding IsNetMaterialCostsPositive}" Value="True">
-                    <Setter Property="Foreground" Value="{StaticResource SolidColorBrush.Accent.Green.2}" />
-                </DataTrigger>
-                <DataTrigger Binding="{Binding IsNetMaterialCostsNegative}" Value="True">
-                    <Setter Property="Foreground" Value="{StaticResource SolidColorBrush.Accent.Red.2}" />
-                </DataTrigger>
-            </Style.Triggers>
+        <Style x:Key="SavedCraftingCostText" TargetType="{x:Type TextBlock}" BasedOn="{StaticResource SavedCraftingCellText}">
+            <Setter Property="Foreground" Value="{StaticResource SolidColorBrush.Accent.Red.2}" />
         </Style>
         <Style x:Key="SavedCraftingProfitText" TargetType="{x:Type TextBlock}" BasedOn="{StaticResource SavedCraftingCellText}">
             <Style.Triggers>
@@ -111,6 +104,16 @@
                     <Setter Property="Foreground" Value="{StaticResource SolidColorBrush.Accent.Green.2}" />
                 </DataTrigger>
                 <DataTrigger Binding="{Binding IsProfitNegative}" Value="True">
+                    <Setter Property="Foreground" Value="{StaticResource SolidColorBrush.Accent.Red.2}" />
+                </DataTrigger>
+            </Style.Triggers>
+        </Style>
+        <Style x:Key="SavedCraftingProfitPerItemText" TargetType="{x:Type TextBlock}" BasedOn="{StaticResource SavedCraftingCellText}">
+            <Style.Triggers>
+                <DataTrigger Binding="{Binding IsProfitPerItemPositive}" Value="True">
+                    <Setter Property="Foreground" Value="{StaticResource SolidColorBrush.Accent.Green.2}" />
+                </DataTrigger>
+                <DataTrigger Binding="{Binding IsProfitPerItemNegative}" Value="True">
                     <Setter Property="Foreground" Value="{StaticResource SolidColorBrush.Accent.Red.2}" />
                 </DataTrigger>
             </Style.Triggers>
@@ -152,7 +155,7 @@
             <Setter Property="VerticalContentAlignment" Value="Center" />
         </Style>
     </UserControl.Resources>
-    <Grid>
+    <Grid PreviewMouseDown="CraftingControl_OnPreviewMouseDown">
         <Grid.RowDefinitions>
             <RowDefinition Height="2*" />
             <RowDefinition Height="5" />
@@ -292,7 +295,7 @@
                     </DockPanel>
                     <DockPanel LastChildFill="False" Margin="0,0,0,5">
                         <TextBlock Text="{Binding CraftingBindings.TranslationReturnRatePercent, FallbackValue=RETURN_RATE_PERCENT}" Style="{StaticResource CraftingEditorLabel}" />
-                        <TextBox Text="{Binding CraftingBindings.ReturnRatePercent, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Width="90" Height="24" VerticalAlignment="Top" common:TextBoxHelper.OnlyNumeric="Double" />
+                        <TextBox Text="{Binding CraftingBindings.ReturnRatePercentText, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Width="90" Height="24" VerticalAlignment="Top" common:TextBoxHelper.OnlyNumeric="Double" />
                     </DockPanel>
                     <DockPanel LastChildFill="False" Margin="0,0,0,5">
                         <TextBlock Text="{Binding CraftingBindings.TranslationPriceMarket, FallbackValue=PRICE_MARKET}" Style="{StaticResource CraftingEditorLabel}" />
@@ -306,7 +309,12 @@
                     </DockPanel>
                     <DockPanel LastChildFill="False" Margin="0,0,0,5">
                         <TextBlock Text="{Binding CraftingBindings.TranslationSalesTaxPercent, FallbackValue=SALES_TAX_PERCENT}" Style="{StaticResource CraftingEditorLabel}" />
-                        <TextBox Text="{Binding CraftingBindings.SalesTaxPercent, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                        <TextBox Text="{Binding CraftingBindings.SalesTaxPercentText, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                 Width="90" Height="24" VerticalAlignment="Top" common:TextBoxHelper.OnlyNumeric="Double" />
+                    </DockPanel>
+                    <DockPanel LastChildFill="False" Margin="0,0,0,5">
+                        <TextBlock Text="{Binding CraftingBindings.TranslationSetupFee, FallbackValue=SETUP_FEE}" Style="{StaticResource CraftingEditorLabel}" />
+                        <TextBox Text="{Binding CraftingBindings.SetupFeePercentText, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                  Width="90" Height="24" VerticalAlignment="Top" common:TextBoxHelper.OnlyNumeric="Double" />
                     </DockPanel>
                     <DockPanel LastChildFill="False" Margin="0,0,0,5">
@@ -324,6 +332,8 @@
                                      VerticalAlignment="Top"
                                      common:TextBoxHelper.OnlyNumeric="Double"
                                      GotKeyboardFocus="OutputUnitPrice_OnGotKeyboardFocus"
+                                     LostKeyboardFocus="OutputUnitPrice_OnLostKeyboardFocus"
+                                     PreviewMouseLeftButtonDown="PriceTextBox_OnPreviewMouseLeftButtonDown"
                                      PreviewMouseLeftButtonUp="OutputUnitPrice_OnPreviewMouseLeftButtonUp" />
                             <Popup PlacementTarget="{Binding ElementName=OutputUnitPriceTextBox}"
                                    Placement="Bottom"
@@ -337,7 +347,8 @@
                                         BorderThickness="1"
                                         Width="230"
                                         MaxHeight="360">
-                                    <ListBox SelectionMode="Single"
+                                    <ListBox x:Name="SellPriceOptionsListBox"
+                                             SelectionMode="Single"
                                              SelectionChanged="ListBoxSellPrice_OnSelectionChanged"
                                              ItemsSource="{Binding CraftingBindings.SellPriceOptions}"
                                              Width="230"
@@ -360,7 +371,8 @@
                     <StackPanel Orientation="Horizontal" Margin="0,0,0,8">
                         <Button Content="{Binding CraftingBindings.TranslationNew, FallbackValue=NEW}" Width="80" Height="24" Command="{Binding CraftingBindings.NewCommand}" />
                         <Button Content="{Binding CraftingBindings.TranslationSave, FallbackValue=SAVE}" Width="80" Height="24" Margin="5,0,0,0" Command="{Binding CraftingBindings.SaveCommand}" />
-                        <Button Content="{Binding CraftingBindings.TranslationDelete, FallbackValue=DELETE}" Width="80" Height="24" Margin="5,0,0,0" Command="{Binding CraftingBindings.DeleteCommand}" />
+                        <Button Content="{Binding CraftingBindings.TranslationDelete, FallbackValue=DELETE}" Width="80" Height="24" Margin="5,0,0,0"
+                                Style="{StaticResource Style.Button.Danger}" Command="{Binding CraftingBindings.DeleteCommand}" />
                         <Button Content="{Binding CraftingBindings.TranslationPrices, FallbackValue=PRICES}" Width="80" Height="24" Margin="5,0,0,0" Command="{Binding CraftingBindings.LoadPricesCommand}" />
                     </StackPanel>
 
@@ -373,15 +385,37 @@
                         <ListView.View>
                             <GridView>
                                 <GridViewColumn Header="{x:Static crafting:CraftingBindings.TranslationIcon}" Width="45">
+                                    <GridViewColumn.HeaderContainerStyle>
+                                        <Style TargetType="{x:Type GridViewColumnHeader}" BasedOn="{StaticResource {x:Type GridViewColumnHeader}}">
+                                            <Setter Property="ToolTip" Value="{x:Static crafting:CraftingBindings.TranslationResourceIconColumnTooltip}" />
+                                        </Style>
+                                    </GridViewColumn.HeaderContainerStyle>
                                     <GridViewColumn.CellTemplate>
                                         <DataTemplate>
                                             <Image Source="{Binding Icon}" Width="32" Height="32" />
                                         </DataTemplate>
                                     </GridViewColumn.CellTemplate>
                                 </GridViewColumn>
-                                <GridViewColumn Header="{x:Static crafting:CraftingBindings.TranslationResource}" Width="210" DisplayMemberBinding="{Binding DisplayName}" />
-                                <GridViewColumn Header="{x:Static crafting:CraftingBindings.TranslationType}" Width="125" DisplayMemberBinding="{Binding ResourceKindText}" />
+                                <GridViewColumn Header="{x:Static crafting:CraftingBindings.TranslationResource}" Width="210" DisplayMemberBinding="{Binding DisplayName}">
+                                    <GridViewColumn.HeaderContainerStyle>
+                                        <Style TargetType="{x:Type GridViewColumnHeader}" BasedOn="{StaticResource {x:Type GridViewColumnHeader}}">
+                                            <Setter Property="ToolTip" Value="{x:Static crafting:CraftingBindings.TranslationResourceNameColumnTooltip}" />
+                                        </Style>
+                                    </GridViewColumn.HeaderContainerStyle>
+                                </GridViewColumn>
+                                <GridViewColumn Header="{x:Static crafting:CraftingBindings.TranslationType}" Width="125" DisplayMemberBinding="{Binding ResourceKindText}">
+                                    <GridViewColumn.HeaderContainerStyle>
+                                        <Style TargetType="{x:Type GridViewColumnHeader}" BasedOn="{StaticResource {x:Type GridViewColumnHeader}}">
+                                            <Setter Property="ToolTip" Value="{x:Static crafting:CraftingBindings.TranslationResourceTypeColumnTooltip}" />
+                                        </Style>
+                                    </GridViewColumn.HeaderContainerStyle>
+                                </GridViewColumn>
                                 <GridViewColumn Header="{x:Static crafting:CraftingBindings.TranslationGross}" Width="80">
+                                    <GridViewColumn.HeaderContainerStyle>
+                                        <Style TargetType="{x:Type GridViewColumnHeader}" BasedOn="{StaticResource {x:Type GridViewColumnHeader}}">
+                                            <Setter Property="ToolTip" Value="{x:Static crafting:CraftingBindings.TranslationResourceGrossColumnTooltip}" />
+                                        </Style>
+                                    </GridViewColumn.HeaderContainerStyle>
                                     <GridViewColumn.CellTemplate>
                                         <DataTemplate>
                                             <TextBlock Text="{Binding GrossQuantity, StringFormat={}{0:#,0.##}}" Style="{StaticResource CraftingResourceQuantityText}" />
@@ -389,6 +423,11 @@
                                     </GridViewColumn.CellTemplate>
                                 </GridViewColumn>
                                 <GridViewColumn Header="{x:Static crafting:CraftingBindings.TranslationExpectedReturn}" Width="115">
+                                    <GridViewColumn.HeaderContainerStyle>
+                                        <Style TargetType="{x:Type GridViewColumnHeader}" BasedOn="{StaticResource {x:Type GridViewColumnHeader}}">
+                                            <Setter Property="ToolTip" Value="{x:Static crafting:CraftingBindings.TranslationResourceExpectedReturnColumnTooltip}" />
+                                        </Style>
+                                    </GridViewColumn.HeaderContainerStyle>
                                     <GridViewColumn.CellTemplate>
                                         <DataTemplate>
                                             <TextBlock Text="{Binding ExpectedReturnQuantity, StringFormat={}{0:#,0.##}}" Style="{StaticResource CraftingResourceQuantityText}" />
@@ -396,20 +435,74 @@
                                     </GridViewColumn.CellTemplate>
                                 </GridViewColumn>
                                 <GridViewColumn Header="{x:Static crafting:CraftingBindings.TranslationNet}" Width="80">
+                                    <GridViewColumn.HeaderContainerStyle>
+                                        <Style TargetType="{x:Type GridViewColumnHeader}" BasedOn="{StaticResource {x:Type GridViewColumnHeader}}">
+                                            <Setter Property="ToolTip" Value="{x:Static crafting:CraftingBindings.TranslationResourceNetColumnTooltip}" />
+                                        </Style>
+                                    </GridViewColumn.HeaderContainerStyle>
                                     <GridViewColumn.CellTemplate>
                                         <DataTemplate>
                                             <TextBlock Text="{Binding NetQuantity, StringFormat={}{0:#,0.##}}" Style="{StaticResource CraftingResourceQuantityText}" />
                                         </DataTemplate>
                                     </GridViewColumn.CellTemplate>
                                 </GridViewColumn>
-                                <GridViewColumn Header="{x:Static crafting:CraftingBindings.TranslationPrice}" Width="90">
+                                <GridViewColumn Header="{x:Static crafting:CraftingBindings.TranslationPrice}" Width="110">
+                                    <GridViewColumn.HeaderContainerStyle>
+                                        <Style TargetType="{x:Type GridViewColumnHeader}" BasedOn="{StaticResource {x:Type GridViewColumnHeader}}">
+                                            <Setter Property="ToolTip" Value="{x:Static crafting:CraftingBindings.TranslationResourcePriceColumnTooltip}" />
+                                        </Style>
+                                    </GridViewColumn.HeaderContainerStyle>
                                     <GridViewColumn.CellTemplate>
                                         <DataTemplate>
-                                            <TextBox Text="{Binding UnitPrice, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Width="78" Height="22" common:TextBoxHelper.OnlyNumeric="Double" />
+                                            <Grid>
+                                                <TextBox x:Name="ResourceUnitPriceTextBox"
+                                                         Text="{Binding UnitPrice, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                                         Width="78"
+                                                         Height="22"
+                                                         common:TextBoxHelper.OnlyNumeric="Double"
+                                                         GotKeyboardFocus="ResourcePrice_OnGotKeyboardFocus"
+                                                         PreviewMouseLeftButtonDown="PriceTextBox_OnPreviewMouseLeftButtonDown"
+                                                         PreviewMouseLeftButtonUp="ResourcePrice_OnPreviewMouseLeftButtonUp" />
+                                                <Popup PlacementTarget="{Binding ElementName=ResourceUnitPriceTextBox}"
+                                                       Placement="Bottom"
+                                                       IsOpen="{Binding IsPricePopupOpen, Mode=TwoWay}"
+                                                       StaysOpen="False"
+                                                       AllowsTransparency="True"
+                                                       PopupAnimation="Slide">
+                                                    <Border DataContext="{Binding PlacementTarget.DataContext, RelativeSource={RelativeSource AncestorType={x:Type Popup}}}"
+                                                            Background="{StaticResource SolidColorBrush.Background.2}"
+                                                            BorderBrush="{StaticResource SolidColorBrush.Accent.Blue.4}"
+                                                            BorderThickness="1"
+                                                            Width="230"
+                                                            MaxHeight="360">
+                                                        <ListBox SelectionMode="Single"
+                                                                 SelectionChanged="ListBoxResourcePrice_OnSelectionChanged"
+                                                                 ItemsSource="{Binding PriceOptions}"
+                                                                 Tag="{Binding}"
+                                                                 Width="230"
+                                                                 MinHeight="38"
+                                                                 MaxHeight="360"
+                                                                 BorderThickness="0"
+                                                                 ScrollViewer.HorizontalScrollBarVisibility="Disabled"
+                                                                 ScrollViewer.VerticalScrollBarVisibility="Auto">
+                                                            <ListBox.ItemTemplate>
+                                                                <DataTemplate>
+                                                                    <TextBlock Text="{Binding DisplayText}" ToolTip="{Binding UpdateDateTimeText}" Style="{StaticResource CraftingSellPriceOptionText}" />
+                                                                </DataTemplate>
+                                                            </ListBox.ItemTemplate>
+                                                        </ListBox>
+                                                    </Border>
+                                                </Popup>
+                                            </Grid>
                                         </DataTemplate>
                                     </GridViewColumn.CellTemplate>
                                 </GridViewColumn>
-                                <GridViewColumn Header="{x:Static crafting:CraftingBindings.TranslationNetCost}" Width="90">
+                                <GridViewColumn Header="{x:Static crafting:CraftingBindings.TranslationNetCost}" Width="110">
+                                    <GridViewColumn.HeaderContainerStyle>
+                                        <Style TargetType="{x:Type GridViewColumnHeader}" BasedOn="{StaticResource {x:Type GridViewColumnHeader}}">
+                                            <Setter Property="ToolTip" Value="{x:Static crafting:CraftingBindings.TranslationResourceNetCostColumnTooltip}" />
+                                        </Style>
+                                    </GridViewColumn.HeaderContainerStyle>
                                     <GridViewColumn.CellTemplate>
                                         <DataTemplate>
                                             <TextBlock Text="{Binding NetCost, StringFormat={}{0:N0}}" Style="{StaticResource CraftingResourceCostText}" />
@@ -444,11 +537,87 @@
                             </StackPanel>
                             <StackPanel Orientation="Horizontal" Margin="0,6,0,0">
                                 <TextBlock Text="{Binding CraftingBindings.TranslationEmptyPrice, FallbackValue=EMPTY_PRICE}" Foreground="{StaticResource SolidColorBrush.Text.2}" Width="95" VerticalAlignment="Center" />
-                                <TextBox Text="{Binding CraftingBindings.Journal.EmptyJournalPrice, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Width="90" Height="22" common:TextBoxHelper.OnlyNumeric="Double" />
+                                <Grid>
+                                    <TextBox x:Name="EmptyJournalPriceTextBox"
+                                             Text="{Binding CraftingBindings.Journal.EmptyJournalPrice, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                             Width="90"
+                                             Height="22"
+                                             common:TextBoxHelper.OnlyNumeric="Double"
+                                             GotKeyboardFocus="JournalEmptyPrice_OnGotKeyboardFocus"
+                                             PreviewMouseLeftButtonDown="PriceTextBox_OnPreviewMouseLeftButtonDown"
+                                             PreviewMouseLeftButtonUp="JournalEmptyPrice_OnPreviewMouseLeftButtonUp" />
+                                    <Popup PlacementTarget="{Binding ElementName=EmptyJournalPriceTextBox}"
+                                           Placement="Bottom"
+                                           IsOpen="{Binding CraftingBindings.Journal.IsEmptyJournalPricePopupOpen, Mode=TwoWay}"
+                                           StaysOpen="False"
+                                           AllowsTransparency="True"
+                                           PopupAnimation="Slide">
+                                        <Border DataContext="{Binding PlacementTarget.DataContext, RelativeSource={RelativeSource AncestorType={x:Type Popup}}}"
+                                                Background="{StaticResource SolidColorBrush.Background.2}"
+                                                BorderBrush="{StaticResource SolidColorBrush.Accent.Blue.4}"
+                                                BorderThickness="1"
+                                                Width="230"
+                                                MaxHeight="360">
+                                            <ListBox SelectionMode="Single"
+                                                     SelectionChanged="ListBoxJournalEmptyPrice_OnSelectionChanged"
+                                                     ItemsSource="{Binding CraftingBindings.Journal.EmptyJournalPriceOptions}"
+                                                     Width="230"
+                                                     MinHeight="38"
+                                                     MaxHeight="360"
+                                                     BorderThickness="0"
+                                                     ScrollViewer.HorizontalScrollBarVisibility="Disabled"
+                                                     ScrollViewer.VerticalScrollBarVisibility="Auto">
+                                                <ListBox.ItemTemplate>
+                                                    <DataTemplate>
+                                                        <TextBlock Text="{Binding DisplayText}" ToolTip="{Binding UpdateDateTimeText}" Style="{StaticResource CraftingSellPriceOptionText}" />
+                                                    </DataTemplate>
+                                                </ListBox.ItemTemplate>
+                                            </ListBox>
+                                        </Border>
+                                    </Popup>
+                                </Grid>
                             </StackPanel>
                             <StackPanel Orientation="Horizontal" Margin="0,4,0,0">
                                 <TextBlock Text="{Binding CraftingBindings.TranslationFullPrice, FallbackValue=FULL_PRICE}" Foreground="{StaticResource SolidColorBrush.Text.2}" Width="95" VerticalAlignment="Center" />
-                                <TextBox Text="{Binding CraftingBindings.Journal.FullJournalPrice, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Width="90" Height="22" common:TextBoxHelper.OnlyNumeric="Double" />
+                                <Grid>
+                                    <TextBox x:Name="FullJournalPriceTextBox"
+                                             Text="{Binding CraftingBindings.Journal.FullJournalPrice, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                             Width="90"
+                                             Height="22"
+                                             common:TextBoxHelper.OnlyNumeric="Double"
+                                             GotKeyboardFocus="JournalFullPrice_OnGotKeyboardFocus"
+                                             PreviewMouseLeftButtonDown="PriceTextBox_OnPreviewMouseLeftButtonDown"
+                                             PreviewMouseLeftButtonUp="JournalFullPrice_OnPreviewMouseLeftButtonUp" />
+                                    <Popup PlacementTarget="{Binding ElementName=FullJournalPriceTextBox}"
+                                           Placement="Bottom"
+                                           IsOpen="{Binding CraftingBindings.Journal.IsFullJournalPricePopupOpen, Mode=TwoWay}"
+                                           StaysOpen="False"
+                                           AllowsTransparency="True"
+                                           PopupAnimation="Slide">
+                                        <Border DataContext="{Binding PlacementTarget.DataContext, RelativeSource={RelativeSource AncestorType={x:Type Popup}}}"
+                                                Background="{StaticResource SolidColorBrush.Background.2}"
+                                                BorderBrush="{StaticResource SolidColorBrush.Accent.Blue.4}"
+                                                BorderThickness="1"
+                                                Width="230"
+                                                MaxHeight="360">
+                                            <ListBox SelectionMode="Single"
+                                                     SelectionChanged="ListBoxJournalFullPrice_OnSelectionChanged"
+                                                     ItemsSource="{Binding CraftingBindings.Journal.FullJournalPriceOptions}"
+                                                     Width="230"
+                                                     MinHeight="38"
+                                                     MaxHeight="360"
+                                                     BorderThickness="0"
+                                                     ScrollViewer.HorizontalScrollBarVisibility="Disabled"
+                                                     ScrollViewer.VerticalScrollBarVisibility="Auto">
+                                                <ListBox.ItemTemplate>
+                                                    <DataTemplate>
+                                                        <TextBlock Text="{Binding DisplayText}" ToolTip="{Binding UpdateDateTimeText}" Style="{StaticResource CraftingSellPriceOptionText}" />
+                                                    </DataTemplate>
+                                                </ListBox.ItemTemplate>
+                                            </ListBox>
+                                        </Border>
+                                    </Popup>
+                                </Grid>
                             </StackPanel>
                         </StackPanel>
 
@@ -503,16 +672,16 @@
                                         <TextBlock Text="{Binding CraftingBindings.Calculation.OutputQuantity, StringFormat={}{0:N0}, FallbackValue=0}" Style="{StaticResource CraftingResultInfoValue}" />
                                     </StackPanel>
                                 </Border>
-                                <Border Style="{StaticResource CraftingResultTile}" ToolTip="{Binding CraftingBindings.TranslationSalesNetTooltip}">
-                                    <StackPanel>
-                                        <TextBlock Text="{Binding CraftingBindings.TranslationSalesNet, FallbackValue=SALES_NET}" Style="{StaticResource CraftingResultLabel}" />
-                                        <TextBlock Text="{Binding CraftingBindings.Calculation.SalesRevenueNet, StringFormat={}{0:N0}, FallbackValue=0}" Style="{StaticResource CraftingResultRevenueValue}" />
-                                    </StackPanel>
-                                </Border>
                                 <Border Style="{StaticResource CraftingResultTile}" ToolTip="{Binding CraftingBindings.TranslationTotalCostsTooltip}">
                                     <StackPanel>
                                         <TextBlock Text="{Binding CraftingBindings.TranslationTotalCosts, FallbackValue=TOTAL_COSTS}" Style="{StaticResource CraftingResultLabel}" />
                                         <TextBlock Text="{Binding CraftingBindings.Calculation.TotalCosts, StringFormat={}{0:N0}, FallbackValue=0}" Style="{StaticResource CraftingResultCostValue}" />
+                                    </StackPanel>
+                                </Border>
+                                <Border Style="{StaticResource CraftingResultTile}" ToolTip="{Binding CraftingBindings.TranslationSalesNetTooltip}">
+                                    <StackPanel>
+                                        <TextBlock Text="{Binding CraftingBindings.TranslationSalesNet, FallbackValue=SALES_NET}" Style="{StaticResource CraftingResultLabel}" />
+                                        <TextBlock Text="{Binding CraftingBindings.Calculation.SalesRevenueNet, StringFormat={}{0:N0}, FallbackValue=0}" Style="{StaticResource CraftingResultRevenueValue}" />
                                     </StackPanel>
                                 </Border>
                                 <Border Style="{StaticResource CraftingResultTile}" ToolTip="{Binding CraftingBindings.TranslationProfitTooltip}">
@@ -597,6 +766,12 @@
                                         <TextBlock Text="{Binding CraftingBindings.Calculation.SalesTax, StringFormat={}{0:N0}, FallbackValue=0}" Style="{StaticResource CraftingResultCostValue}" />
                                     </StackPanel>
                                 </Border>
+                                <Border Style="{StaticResource CraftingResultTile}" ToolTip="{Binding CraftingBindings.TranslationSetupFeeTooltip}">
+                                    <StackPanel>
+                                        <TextBlock Text="{Binding CraftingBindings.TranslationSetupFee, FallbackValue=SETUP_FEE}" Style="{StaticResource CraftingResultLabel}" />
+                                        <TextBlock Text="{Binding CraftingBindings.Calculation.SetupFee, StringFormat={}{0:N0}, FallbackValue=0}" Style="{StaticResource CraftingResultCostValue}" />
+                                    </StackPanel>
+                                </Border>
                                 <Border Style="{StaticResource CraftingResultTile}" ToolTip="{Binding CraftingBindings.TranslationWeightBeforeTooltip}">
                                     <StackPanel>
                                         <TextBlock Text="{Binding CraftingBindings.TranslationWeightBefore, FallbackValue=WEIGHT_BEFORE}" Style="{StaticResource CraftingResultLabel}" />
@@ -648,10 +823,10 @@
                                 </DataTemplate>
                             </GridViewColumn.CellTemplate>
                         </GridViewColumn>
-                        <GridViewColumn Header="{x:Static crafting:CraftingBindings.TranslationMainCosts}" Width="110">
+                        <GridViewColumn Header="{x:Static crafting:CraftingBindings.TranslationTotalCosts}" Width="110">
                             <GridViewColumn.CellTemplate>
                                 <DataTemplate>
-                                    <TextBlock Text="{Binding NetMaterialCosts, StringFormat={}{0:N0}}" Style="{StaticResource SavedCraftingNetCostText}" />
+                                    <TextBlock Text="{Binding TotalCosts, StringFormat={}{0:N0}}" Style="{StaticResource SavedCraftingCostText}" />
                                 </DataTemplate>
                             </GridViewColumn.CellTemplate>
                         </GridViewColumn>
@@ -659,6 +834,13 @@
                             <GridViewColumn.CellTemplate>
                                 <DataTemplate>
                                     <TextBlock Text="{Binding Profit, StringFormat={}{0:N0}}" Style="{StaticResource SavedCraftingProfitText}" />
+                                </DataTemplate>
+                            </GridViewColumn.CellTemplate>
+                        </GridViewColumn>
+                        <GridViewColumn Header="{x:Static crafting:CraftingBindings.TranslationProfitPerItem}" Width="125">
+                            <GridViewColumn.CellTemplate>
+                                <DataTemplate>
+                                    <TextBlock Text="{Binding ProfitPerItem, StringFormat={}{0:N0}}" Style="{StaticResource SavedCraftingProfitPerItemText}" />
                                 </DataTemplate>
                             </GridViewColumn.CellTemplate>
                         </GridViewColumn>

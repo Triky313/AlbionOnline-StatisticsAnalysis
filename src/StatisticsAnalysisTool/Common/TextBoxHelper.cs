@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Windows;
+using System.Globalization;
 using System.Windows.Controls;
 using System.Windows.Input;
 
@@ -117,7 +118,7 @@ public static class TextBoxHelper
         {
             case NumericFormat.Double:
                 {
-                    if (double.TryParse(newText, out double number))
+                    if (IsValidDoubleInput(newText, out double number))
                     {
                         switch (evenOddConstraint)
                         {
@@ -262,7 +263,7 @@ public static class TextBoxHelper
             {
                 case NumericFormat.Double:
                     {
-                        if (double.TryParse(newText, out var number))
+                        if (IsValidDoubleInput(newText, out var number))
                         {
                             switch (evenOddConstraint)
                             {
@@ -410,7 +411,7 @@ public static class TextBoxHelper
         {
             case NumericFormat.Double:
                 {
-                    if (double.TryParse(textBox.Text, out double number))
+                    if (IsValidDoubleInput(textBox.Text, out double number))
                     {
                         switch (evenOddConstraint)
                         {
@@ -539,5 +540,91 @@ public static class TextBoxHelper
                     break;
                 }
         }
+    }
+
+    private static bool IsValidDoubleInput(string text, out double number)
+    {
+        if (TryParseDoubleInput(text, out number))
+        {
+            return true;
+        }
+
+        if (IsPendingDecimalInput(text))
+        {
+            number = 0d;
+            return true;
+        }
+
+        return false;
+    }
+
+    private static bool IsPendingDecimalInput(string text)
+    {
+        if (string.IsNullOrWhiteSpace(text))
+        {
+            return false;
+        }
+
+        foreach (var decimalSeparator in GetDecimalSeparators())
+        {
+            if (!text.EndsWith(decimalSeparator, StringComparison.Ordinal))
+            {
+                continue;
+            }
+
+            var numberPart = text[..^decimalSeparator.Length];
+            if (string.IsNullOrWhiteSpace(numberPart))
+            {
+                return true;
+            }
+
+            if (TryParseDoubleInput(numberPart, out _))
+            {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
+    private static string[] GetDecimalSeparators()
+    {
+        var cultureDecimalSeparator = CultureInfo.CurrentCulture.NumberFormat.NumberDecimalSeparator;
+
+        return cultureDecimalSeparator switch
+        {
+            "," => [",", "."],
+            "." => [".", ","],
+            _ => [cultureDecimalSeparator, ",", "."]
+        };
+    }
+
+    private static bool TryParseDoubleInput(string text, out double number)
+    {
+        const NumberStyles numberStyles = NumberStyles.AllowLeadingSign
+                                         | NumberStyles.AllowDecimalPoint
+                                         | NumberStyles.AllowLeadingWhite
+                                         | NumberStyles.AllowTrailingWhite;
+
+        if (double.TryParse(text, numberStyles, CultureInfo.CurrentCulture, out number))
+        {
+            return true;
+        }
+
+        return double.TryParse(NormalizeDecimalSeparator(text), numberStyles, CultureInfo.CurrentCulture, out number);
+    }
+
+    private static string NormalizeDecimalSeparator(string text)
+    {
+        var decimalSeparator = CultureInfo.CurrentCulture.NumberFormat.NumberDecimalSeparator;
+        var alternateDecimalSeparator = decimalSeparator == "," ? "." : ",";
+
+        if (text.Contains(decimalSeparator, StringComparison.Ordinal)
+            || !text.Contains(alternateDecimalSeparator, StringComparison.Ordinal))
+        {
+            return text;
+        }
+
+        return text.Replace(alternateDecimalSeparator, decimalSeparator);
     }
 }

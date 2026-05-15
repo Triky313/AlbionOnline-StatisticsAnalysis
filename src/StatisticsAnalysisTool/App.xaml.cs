@@ -66,6 +66,13 @@ public partial class App
                 return;
             }
 
+            if (!ShowFirstStartGuideIfNeeded())
+            {
+                _isEarlyShutdown = true;
+                Current.Shutdown();
+                return;
+            }
+
             if (SettingsController.CurrentSettings.ServerLocation != ServerLocation.America
                 && SettingsController.CurrentSettings.ServerLocation != ServerLocation.Asia
                 && SettingsController.CurrentSettings.ServerLocation != ServerLocation.Europe)
@@ -135,6 +142,27 @@ public partial class App
         dialog.ShowDialog();
 
         SettingsController.CurrentSettings.IsNpcapInfoDialogShownOnStart = false;
+    }
+
+    private static bool ShowFirstStartGuideIfNeeded()
+    {
+        if (SettingsController.CurrentSettings.HasCompletedFirstStartGuide)
+        {
+            return true;
+        }
+
+        Log.Information("First start guide opened.");
+        var dialog = new FirstStartGuideWindow();
+        var result = dialog.ShowDialog();
+
+        if (result is true)
+        {
+            Log.Information("First start guide completed.");
+            return true;
+        }
+
+        Log.Information("First start guide closed before completion.");
+        return false;
     }
 
 

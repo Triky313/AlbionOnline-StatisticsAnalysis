@@ -480,22 +480,6 @@ public class CombatController
             return;
         }
 
-        var activeEntities = _trackingController.EntityController
-            .GetAllEntities()
-            .Where(x => _trackingController.EntityController.IsEntityInParty(x.Key))
-            .Where(x => x.Value.Damage > 0 || x.Value.Heal > 0 || x.Value.Overhealed > 0 || x.Value.TakenDamage > 0)
-            .ToList();
-
-        var activePlayerGuids = activeEntities
-            .Select(x => x.Key)
-            .ToList();
-
-        var healingPlayerGuids = activeEntities
-            .Where(x => x.Value.Heal > 0)
-            .Select(x => x.Key)
-            .ToList();
-
-        var snapshot = CreateDamageStatsSnapshot(_damageStatsTracker.CreateSnapshot(activePlayerGuids, healingPlayerGuids), activeEntities);
         int damageStatsVersion;
 
         lock (_damageStatsUiUpdateLock)
@@ -503,27 +487,59 @@ public class CombatController
             damageStatsVersion = _damageStatsVersion;
         }
 
-        _ = Application.Current.Dispatcher.InvokeAsync(() =>
+        _ = UpdateDamageStatsUiAsync(damageStatsVersion);
+    }
+
+    private async Task UpdateDamageStatsUiAsync(int damageStatsVersion)
+    {
+        try
         {
-            var canApplySnapshot = false;
+            var activeEntities = _trackingController.EntityController
+                .GetAllEntities()
+                .Where(x => _trackingController.EntityController.IsEntityInParty(x.Key))
+                .Where(x => x.Value.Damage > 0 || x.Value.Heal > 0 || x.Value.Overhealed > 0 || x.Value.TakenDamage > 0)
+                .ToList();
 
-            lock (_damageStatsUiUpdateLock)
+            var activePlayerGuids = activeEntities
+                .Select(x => x.Key)
+                .ToList();
+
+            var healingPlayerGuids = activeEntities
+                .Where(x => x.Value.Heal > 0)
+                .Select(x => x.Key)
+                .ToList();
+
+            var damageStatsSnapshot = CreateDamageStatsSnapshot(_damageStatsTracker.CreateSnapshot(activePlayerGuids, healingPlayerGuids), activeEntities);
+            var yourStatsSnapshot = CreateYourStatsSnapshot();
+
+            await Application.Current.Dispatcher.InvokeAsync(() =>
             {
-                canApplySnapshot = damageStatsVersion == _damageStatsVersion;
-            }
+                var canApplySnapshot = false;
 
-            if (canApplySnapshot)
-            {
-                _mainWindowViewModel.DamageMeterBindings.SetLocalPlayer(_trackingController.EntityController.LocalUserData.Guid, _trackingController.EntityController.LocalUserData.Username);
-                _mainWindowViewModel.DamageMeterBindings.SetDamageStats(snapshot);
-                _mainWindowViewModel.DamageMeterBindings.SetYourStats(CreateYourStatsSnapshot());
-            }
+                lock (_damageStatsUiUpdateLock)
+                {
+                    canApplySnapshot = damageStatsVersion == _damageStatsVersion;
+                }
 
+                if (canApplySnapshot)
+                {
+                    _mainWindowViewModel.DamageMeterBindings.SetLocalPlayer(_trackingController.EntityController.LocalUserData.Guid, _trackingController.EntityController.LocalUserData.Username);
+                    _mainWindowViewModel.DamageMeterBindings.SetDamageStats(damageStatsSnapshot);
+                    _mainWindowViewModel.DamageMeterBindings.SetYourStats(yourStatsSnapshot);
+                }
+            });
+        }
+        catch (Exception e)
+        {
+            Log.Warning(e, "Damage stats UI update failed");
+        }
+        finally
+        {
             lock (_damageStatsUiUpdateLock)
             {
                 _isDamageStatsUiUpdateActive = false;
             }
-        });
+        }
     }
 
     private static DamageStatsSnapshot CreateDamageStatsSnapshot(

@@ -66,6 +66,13 @@ public class CraftingCalculationInput
         set;
     }
 
+    public decimal SetupFeePercent
+    {
+        get;
+        set;
+    }
+    = 2.5m;
+
     public decimal OtherCosts
     {
         get;

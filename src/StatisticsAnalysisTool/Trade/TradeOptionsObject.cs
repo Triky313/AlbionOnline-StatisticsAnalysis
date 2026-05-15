@@ -18,26 +18,48 @@ public class TradeOptionsObject : BaseViewModel
 
     public TradeOptionsObject()
     {
-        var neverDeleteObject = new DeleteTradesAfterDaysStruct() { Days = 0, Name = LocalizationController.Translation("DELETE_TRADES_NEVER") };
-
-        DeleteTradesOlderThanSpecifiedDays.Clear();
-        DeleteTradesOlderThanSpecifiedDays.Add(neverDeleteObject);
-        DeleteTradesOlderThanSpecifiedDays.Add(new DeleteTradesAfterDaysStruct() { Days = 7, Name = LocalizationController.Translation("DELETE_TRADES_AFTER_7_DAYS") });
-        DeleteTradesOlderThanSpecifiedDays.Add(new DeleteTradesAfterDaysStruct() { Days = 14, Name = LocalizationController.Translation("DELETE_TRADES_AFTER_14_DAYS") });
-        DeleteTradesOlderThanSpecifiedDays.Add(new DeleteTradesAfterDaysStruct() { Days = 30, Name = LocalizationController.Translation("DELETE_TRADES_AFTER_30_DAYS") });
-        DeleteTradesOlderThanSpecifiedDays.Add(new DeleteTradesAfterDaysStruct() { Days = 60, Name = LocalizationController.Translation("DELETE_TRADES_AFTER_60_DAYS") });
-        DeleteTradesOlderThanSpecifiedDays.Add(new DeleteTradesAfterDaysStruct() { Days = 90, Name = LocalizationController.Translation("DELETE_TRADES_AFTER_90_DAYS") });
-        DeleteTradesOlderThanSpecifiedDays.Add(new DeleteTradesAfterDaysStruct() { Days = 180, Name = LocalizationController.Translation("DELETE_TRADES_AFTER_180_DAYS") });
-        DeleteTradesOlderThanSpecifiedDays.Add(new DeleteTradesAfterDaysStruct() { Days = 365, Name = LocalizationController.Translation("DELETE_TRADES_AFTER_365_DAYS") });
-
-        var deleteTradesAfterDaysSelection = DeleteTradesOlderThanSpecifiedDays.FirstOrDefault(x => x.Days == SettingsController.CurrentSettings.DeleteTradesOlderThanSpecifiedDays);
-        DeleteTradesOlderThanSpecifiedDaysSelection = deleteTradesAfterDaysSelection.Name == null ? neverDeleteObject : deleteTradesAfterDaysSelection;
-
+        RefreshDeleteTradesOlderThanSpecifiedDays(SettingsController.CurrentSettings.DeleteTradesOlderThanSpecifiedDays);
         IsTradeMonitoringActive = SettingsController.CurrentSettings.IsTradeMonitoringActive;
         IsPlayerTradeMonitoringActive = SettingsController.CurrentSettings.IsPlayerTradeMonitoringActive;
         IgnoreMailsWithZeroValues = SettingsController.CurrentSettings.IgnoreMailsWithZeroValues;
         MarketTaxRate = SettingsController.CurrentSettings.TradeMonitoringMarketTaxRate;
         MarketTaxSetupRate = SettingsController.CurrentSettings.TradeMonitoringMarketTaxSetupRate;
+    }
+
+    public void RefreshLocalization()
+    {
+        RefreshDeleteTradesOlderThanSpecifiedDays(DeleteTradesOlderThanSpecifiedDaysSelection.Days);
+        OnPropertyChanged(nameof(TranslationTradeMonitoringActive));
+        OnPropertyChanged(nameof(TranslationPlayerTradeMonitoringActive));
+        OnPropertyChanged(nameof(TranslationIgnoreMailsWithZeroValues));
+        OnPropertyChanged(nameof(TranslationMarketTaxRate));
+        OnPropertyChanged(nameof(TranslationMarketTaxSetupRate));
+        OnPropertyChanged(nameof(TranslationSettings));
+    }
+
+    private void RefreshDeleteTradesOlderThanSpecifiedDays(int selectedDays)
+    {
+        var deleteTradesOlderThanSpecifiedDays = BuildDeleteTradesOlderThanSpecifiedDays();
+        var neverDeleteObject = deleteTradesOlderThanSpecifiedDays.First();
+        var deleteTradesAfterDaysSelection = deleteTradesOlderThanSpecifiedDays.FirstOrDefault(x => x.Days == selectedDays);
+
+        DeleteTradesOlderThanSpecifiedDays = deleteTradesOlderThanSpecifiedDays;
+        DeleteTradesOlderThanSpecifiedDaysSelection = deleteTradesAfterDaysSelection.Name == null ? neverDeleteObject : deleteTradesAfterDaysSelection;
+    }
+
+    private static List<DeleteTradesAfterDaysStruct> BuildDeleteTradesOlderThanSpecifiedDays()
+    {
+        return
+        [
+            new DeleteTradesAfterDaysStruct() { Days = 0, Name = LocalizationController.Translation("DELETE_TRADES_NEVER") },
+            new DeleteTradesAfterDaysStruct() { Days = 7, Name = LocalizationController.Translation("DELETE_TRADES_AFTER_7_DAYS") },
+            new DeleteTradesAfterDaysStruct() { Days = 14, Name = LocalizationController.Translation("DELETE_TRADES_AFTER_14_DAYS") },
+            new DeleteTradesAfterDaysStruct() { Days = 30, Name = LocalizationController.Translation("DELETE_TRADES_AFTER_30_DAYS") },
+            new DeleteTradesAfterDaysStruct() { Days = 60, Name = LocalizationController.Translation("DELETE_TRADES_AFTER_60_DAYS") },
+            new DeleteTradesAfterDaysStruct() { Days = 90, Name = LocalizationController.Translation("DELETE_TRADES_AFTER_90_DAYS") },
+            new DeleteTradesAfterDaysStruct() { Days = 180, Name = LocalizationController.Translation("DELETE_TRADES_AFTER_180_DAYS") },
+            new DeleteTradesAfterDaysStruct() { Days = 365, Name = LocalizationController.Translation("DELETE_TRADES_AFTER_365_DAYS") }
+        ];
     }
 
     public bool IsTradeMonitoringActive

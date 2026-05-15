@@ -58,10 +58,16 @@
                         <StackPanel VerticalAlignment="Top" HorizontalAlignment="Right" Orientation="Vertical" Margin="0,0,2,0">
                             <Button Content="{Binding Translation.ResetTrackingNotifications, FallbackValue=RESET__TRACKING__NOTIFICATIONS}" Height="26" MaxWidth="500" MinWidth="250"
                                 Margin="0,2,0,5" Width="auto" VerticalAlignment="Top" Style="{StaticResource Style.Button.Danger}" Click="BtnTrackingNotificationsReset_Click"  />
-                            <Grid Height="26" Width="26" VerticalAlignment="Center" HorizontalAlignment="Right">
-                                <fa5:ImageAwesome Icon="Solid_FileCsv" ToolTip="{Binding Translation.ExportLootToFile}"
-                                              Foreground="{StaticResource  SolidColorBrush.Accent.Green.4}" MouseUp="BtnExportLootToFile_MouseUp" />
-                            </Grid>
+                            <StackPanel Orientation="Horizontal" VerticalAlignment="Center" HorizontalAlignment="Right">
+                                <Grid Height="26" Width="26" VerticalAlignment="Center" HorizontalAlignment="Right">
+                                    <fa5:ImageAwesome Icon="Solid_FileCsv" ToolTip="{Binding Translation.ExportLootToFile}"
+                                                      Foreground="{StaticResource SolidColorBrush.Accent.Green.4}" MouseUp="BtnExportLootToFile_MouseUp" />
+                                </Grid>
+                                <Grid Height="26" Width="26" Margin="6,0,0,0" VerticalAlignment="Center" HorizontalAlignment="Right">
+                                    <fa5:ImageAwesome Icon="Solid_FileCode" ToolTip="{Binding Translation.ExportLootToJsonFile}"
+                                                      Foreground="{StaticResource SolidColorBrush.Accent.Green.4}" MouseUp="BtnExportLootToJsonFile_MouseUp" />
+                                </Grid>
+                            </StackPanel>
                         </StackPanel>
                     </Grid>
                     <Grid Height="auto" Width="auto" Margin="0,2,0,0" HorizontalAlignment="Left" VerticalAlignment="Top">

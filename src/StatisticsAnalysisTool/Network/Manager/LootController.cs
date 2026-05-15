@@ -13,6 +13,7 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
 using System.Reflection;
+using System.Text.Json;
 using System.Threading.Tasks;
 using System.Windows;
 
@@ -164,8 +165,10 @@ public class LootController : ILootController
         {
             LootedFromName = loot.LootedFromName,
             LootedFromGuild = lootedFromUser?.Value?.Guild,
+            LootedFromAlliance = lootedFromUser?.Value?.Alliance,
             LootedByName = loot.LootedByName,
             LootedByGuild = lootedByUser?.Value?.Guild,
+            LootedByAlliance = lootedByUser?.Value?.Alliance,
             Quantity = loot.Quantity,
             ItemId = item.Index,
             UniqueItemName = item.UniqueName,
@@ -245,12 +248,49 @@ public class LootController : ILootController
         });
     }
 
+    public async Task AddKillDeathAsync(string died, string diedPlayerGuild, string killedBy, string killedByGuild)
+    {
+        _lootLoggerObjects.Add(new LootLoggerObject
+        {
+            Died = died,
+            DiedPlayerGuild = diedPlayerGuild,
+            KilledBy = killedBy,
+            KilledByGuild = killedByGuild
+        });
+
+        await RemoveLootIfMoreThanLimitAsync(MaxLoot);
+    }
+
     public string GetLootLoggerObjectsAsCsv()
     {
         try
         {
-            const string csvHeader = "timestamp_utc;looted_by__alliance;looted_by__guild;looted_by__name;item_id;item_name;quantity;looted_from__alliance;looted_from__guild;looted_from__name\n";
+            const string csvHeader = "timestamp_utc;looted_by__alliance;looted_by__guild;looted_by__name;item_id;item_name;quantity;looted_from__alliance;looted_from__guild;looted_from__name;died;died_player_guild;killed_by;killed_by_guild\n";
             return csvHeader + string.Join(Environment.NewLine, _lootLoggerObjects.Select(loot => loot.CsvOutput).ToArray());
+        }
+        catch (Exception e)
+        {
+            DebugConsole.WriteError(MethodBase.GetCurrentMethod()?.DeclaringType, e);
+            Log.Error(e, "{message}", MethodBase.GetCurrentMethod()?.DeclaringType);
+            return string.Empty;
+        }
+    }
+
+    public string GetLootLoggerObjectsAsJson()
+    {
+        try
+        {
+            var export = new
+            {
+                schema_version = 1,
+                exported_at_utc = DateTime.UtcNow,
+                entries = _lootLoggerObjects.Select(loot => loot.JsonOutput).ToArray()
+            };
+
+            return JsonSerializer.Serialize(export, new JsonSerializerOptions
+            {
+                WriteIndented = true
+            });
         }
         catch (Exception e)
         {
