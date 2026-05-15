@@ -1757,7 +1757,7 @@
         },
         {
           "lang": "ru-RU",
-          "seg": "Тир"
+          "seg": "Уровень"
         },
         {
           "lang": "tr-TR",
@@ -33255,11 +33255,11 @@
       "tuv": [
         {
           "lang": "de-DE",
-          "seg": "Keine trackbaren Adapter"
+          "seg": "Es wurde kein geeigneter Netzwerkadapter gefunden. Prüfe in den Einstellungen den ausgewählten Adapter und deaktiviere ggf. VPN- oder virtuelle Adapter."
         },
         {
           "lang": "en-US",
-          "seg": "No listening adapters"
+          "seg": "No suitable network adapter was found. Check the selected adapter in Settings and consider disabling VPN or virtual adapters."
         },
         {
           "lang": "es-ES",
@@ -33267,7 +33267,7 @@
         },
         {
           "lang": "fr-FR",
-          "seg": "Pas d'interface d'écoute"
+          "seg": "Aucune carte réseau appropriée n'a été trouvée. Vérifiez la carte sélectionnée dans les Paramètres et envisagez de désactiver le VPN ou les cartes réseau virtuelles."
         },
         {
           "lang": "ja-JP",
@@ -33287,7 +33287,7 @@
         },
         {
           "lang": "ru-RU",
-          "seg": "Нет прослушиваемых адаптеров"
+          "seg": "Не найден подходящий сетевой адаптер. Проверьте выбранный адаптер в настройках и попробуйте отключить VPN или виртуальные адаптеры."
         },
         {
           "lang": "zh-CN",
@@ -39124,27 +39124,6 @@
       ]
     },
     {
-      "tuid": "NO_LISTENING_ADAPTERS",
-      "tuv": [
-        {
-          "lang": "de-DE",
-          "seg": "Es wurde kein geeigneter Netzwerkadapter gefunden. Prüfe in den Einstellungen den ausgewählten Adapter und deaktiviere ggf. VPN- oder virtuelle Adapter."
-        },
-        {
-          "lang": "en-US",
-          "seg": "No suitable network adapter was found. Check the selected adapter in Settings and consider disabling VPN or virtual adapters."
-        },
-        {
-          "lang": "fr-FR",
-          "seg": "Aucune carte réseau appropriée n'a été trouvée. Vérifiez la carte sélectionnée dans les Paramètres et envisagez de désactiver le VPN ou les cartes réseau virtuelles."
-        },
-        {
-          "lang": "ru-RU",
-          "seg": "Не найден подходящий сетевой адаптер. Проверьте выбранный адаптер в настройках и попробуйте отключить VPN или виртуальные адаптеры."
-        }
-      ]
-    },
-    {
       "tuid": "ERR_SOCKET_FAILED_WITH_CODE",
       "tuv": [
         {
@@ -39787,27 +39766,6 @@
       ]
     },
     {
-      "tuid": "TIER",
-      "tuv": [
-        {
-          "lang": "de-DE",
-          "seg": "Tier"
-        },
-        {
-          "lang": "en-US",
-          "seg": "Tier"
-        },
-        {
-          "lang": "fr-FR",
-          "seg": "Tiers"
-        },
-        {
-          "lang": "ru-RU",
-          "seg": "Уровень"
-        }
-      ]
-    },
-    {
       "tuid": "ZONE",
       "tuv": [
         {
@@ -39825,27 +39783,6 @@
         {
           "lang": "ru-RU",
           "seg": "Локация"
-        }
-      ]
-    },
-    {
-      "tuid": "NOTE",
-      "tuv": [
-        {
-          "lang": "de-DE",
-          "seg": "Notiz"
-        },
-        {
-          "lang": "en-US",
-          "seg": "Note"
-        },
-        {
-          "lang": "fr-FR",
-          "seg": "Note"
-        },
-        {
-          "lang": "ru-RU",
-          "seg": "Примечание"
         }
       ]
     },
@@ -42639,27 +42576,6 @@
         {
           "lang": "ru-RU",
           "seg": "Налог с продаж"
-        }
-      ]
-    },
-    {
-      "tuid": "TOTAL_COSTS",
-      "tuv": [
-        {
-          "lang": "de-DE",
-          "seg": "Gesamtkosten"
-        },
-        {
-          "lang": "en-US",
-          "seg": "Total costs"
-        },
-        {
-          "lang": "fr-FR",
-          "seg": "Coûts totaux"
-        },
-        {
-          "lang": "ru-RU",
-          "seg": "Общие затраты"
         }
       ]
     },
