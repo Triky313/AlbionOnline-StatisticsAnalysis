@@ -21244,7 +21244,7 @@
         },
         {
           "lang": "ru-RU",
-          "seg": "Экспорт лута в .csv файл"
+          "seg": "Экспорт лута в CVS файл"
         },
         {
           "lang": "zh-CN",
@@ -21270,7 +21270,11 @@
         {
           "lang": "fr-FR",
           "seg": "Exporter le butin dans un fichier JSON"
-        }
+        },
+        {
+          "lang": "ru-RU",
+          "seg": "Экспорт лута в JSON файл"
+        },
       ]
     },
     {
@@ -32626,7 +32630,7 @@
         },
         {
           "lang": "ru-RU",
-          "seg": "Set server"
+          "seg": "Выбор сервера"
         }
       ]
     },
