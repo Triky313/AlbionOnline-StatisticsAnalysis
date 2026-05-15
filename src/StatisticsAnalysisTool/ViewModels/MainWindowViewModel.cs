@@ -495,6 +495,30 @@ public class MainWindowViewModel : BaseViewModel
         }
     }
 
+    public void ExportLootToJsonFile()
+    {
+        var dialog = new SaveFileDialog
+        {
+            FileName = $"log-{DateTime.UtcNow:yyyy-MM-dd-hh-mm-ss}utc",
+            DefaultExt = ".json",
+            Filter = "JSON documents (.json)|*.json"
+        };
+
+        var result = dialog.ShowDialog();
+        if (result == true)
+        {
+            try
+            {
+                var trackingController = ServiceLocator.Resolve<TrackingController>();
+                File.WriteAllText(dialog.FileName, trackingController?.LootController?.GetLootLoggerObjectsAsJson());
+            }
+            catch (Exception e)
+            {
+                Log.Error(e, "{message}", MethodBase.GetCurrentMethod()?.DeclaringType);
+            }
+        }
+    }
+
     #endregion
 
     #region Item View Filters

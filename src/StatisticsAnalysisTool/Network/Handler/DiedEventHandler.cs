@@ -9,21 +9,14 @@ using System.Threading.Tasks;
 
 namespace StatisticsAnalysisTool.Network.Handler;
 
-public class DiedEventHandler : EventPacketHandler<DiedEvent>
+public class DiedEventHandler(TrackingController trackingController) : EventPacketHandler<DiedEvent>((int) EventCodes.Died)
 {
-    private readonly TrackingController _trackingController;
-
-    public DiedEventHandler(TrackingController trackingController) : base((int) EventCodes.Died)
-    {
-        _trackingController = trackingController;
-    }
-
     protected override async Task OnActionAsync(DiedEvent value)
     {
-        _trackingController.DungeonController?.SetDiedIfInDungeon(new DiedObject(value.Died, value.KilledBy, value.KilledByGuild));
-        _trackingController.PartyController.PlayerHasDied(value.Died);
-        await _trackingController.LootController.AddKillDeathAsync(value.Died, value.DiedPlayerGuild, value.KilledBy, value.KilledByGuild);
-        await _trackingController.AddNotificationAsync(SetKillNotification(value.Died, value.DiedPlayerGuild, value.KilledBy, value.KilledByGuild));
+        trackingController.DungeonController?.SetDiedIfInDungeon(new DiedObject(value.Died, value.KilledBy, value.KilledByGuild));
+        trackingController.PartyController.PlayerHasDied(value.Died);
+        await trackingController.LootController.AddKillDeathAsync(value.Died, value.DiedPlayerGuild, value.KilledBy, value.KilledByGuild);
+        await trackingController.AddNotificationAsync(SetKillNotification(value.Died, value.DiedPlayerGuild, value.KilledBy, value.KilledByGuild));
     }
 
     private static TrackingNotification SetKillNotification(string died, string diedPlayerGuild, string killedBy, string killedByGuild)

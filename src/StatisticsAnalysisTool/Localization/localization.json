@@ -21208,11 +21208,11 @@
       "tuv": [
         {
           "lang": "de-DE",
-          "seg": "Exportiere Loot in Datei"
+          "seg": "Loot als CSV-Datei exportieren"
         },
         {
           "lang": "en-US",
-          "seg": "Export loot to file"
+          "seg": "Export loot as CSV file"
         },
         {
           "lang": "es-ES",
@@ -21220,7 +21220,7 @@
         },
         {
           "lang": "fr-FR",
-          "seg": "Exporter le butin vers un fichier"
+          "seg": "Exporter le butin dans un fichier CSV"
         },
         {
           "lang": "ja-JP",
@@ -21249,6 +21249,23 @@
         {
           "lang": "zh-TW",
           "seg": "將戰利品匯出到檔案中"
+        }
+      ]
+    },
+    {
+      "tuid": "EXPORT_LOOT_TO_JSON_FILE",
+      "tuv": [
+        {
+          "lang": "de-DE",
+          "seg": "Loot als JSON-Datei exportieren"
+        },
+        {
+          "lang": "en-US",
+          "seg": "Export loot as JSON file"
+        },
+        {
+          "lang": "fr-FR",
+          "seg": "Exporter le butin dans un fichier JSON"
         }
       ]
     },
