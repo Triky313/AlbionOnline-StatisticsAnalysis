@@ -18117,6 +18117,10 @@
         {
           "lang": "fr-FR",
           "seg": "Ouvrir le répertoire UserData"
+        },
+        {
+          "lang": "ru-RU",
+          "seg": "Откройте каталог пользовательских данных"
         }
       ]
     },
@@ -41140,6 +41144,10 @@
         {
           "lang": "fr-FR",
           "seg": "Nombre de tours"
+        },
+        {
+          "lang": "ru-RU",
+          "seg": "Количество запусков"
         }
       ]
     },
@@ -41157,6 +41165,10 @@
         {
           "lang": "fr-FR",
           "seg": "Focalisation"
+        },
+        {
+          "lang": "ru-RU",
+          "seg": "Фокусировка"
         }
       ]
     },
@@ -41174,6 +41186,10 @@
         {
           "lang": "fr-FR",
           "seg": "Bonus Quotidien RRR"
+        },
+        {
+          "lang": "ru-RU",
+          "seg": "Ежедневный бонус RRR"
         }
       ]
     },
@@ -41191,6 +41207,10 @@
         {
           "lang": "fr-FR",
           "seg": "Bonus Hideout (HO)"
+        },
+        {
+          "lang": "ru-RU",
+          "seg": "Бонус за укрытие"
         }
       ]
     },
@@ -41208,6 +41228,10 @@
         {
           "lang": "fr-FR",
           "seg": "Emplacement de fabrication"
+        },
+        {
+          "lang": "ru-RU",
+          "seg": "Локация для крафта"
         }
       ]
     },
@@ -41225,6 +41249,10 @@
         {
           "lang": "fr-FR",
           "seg": "Taux de retour %"
+        },
+        {
+          "lang": "ru-RU",
+          "seg": "Возврат ресурсов %"
         }
       ]
     },
@@ -41242,6 +41270,10 @@
         {
           "lang": "fr-FR",
           "seg": "Prix du marché"
+        },
+        {
+          "lang": "ru-RU",
+          "seg": "Рыночная цена"
         }
       ]
     },
@@ -41259,6 +41291,10 @@
         {
           "lang": "fr-FR",
           "seg": "Frais de Station"
+        },
+        {
+          "lang": "ru-RU",
+          "seg": "Плата за использование"
         }
       ]
     },
@@ -41276,6 +41312,10 @@
         {
           "lang": "fr-FR",
           "seg": "Frais d'utilisation / 100 nourritures"
+        },
+        {
+          "lang": "ru-RU",
+          "seg": "Плата за использование / 100 еды"
         }
       ]
     },
@@ -41293,6 +41333,10 @@
         {
           "lang": "fr-FR",
           "seg": "Taxe de ventes %"
+        },
+        {
+          "lang": "ru-RU",
+          "seg": "Налог на продажу %"
         }
       ]
     },
@@ -41310,6 +41354,10 @@
         {
           "lang": "fr-FR",
           "seg": "Prix de vente"
+        },
+        {
+          "lang": "ru-RU",
+          "seg": "Цена продажи"
         }
       ]
     },
@@ -41327,6 +41375,10 @@
         {
           "lang": "fr-FR",
           "seg": "Nouveau"
+        },
+        {
+          "lang": "ru-RU",
+          "seg": "Новый"
         }
       ]
     },
@@ -41344,6 +41396,10 @@
         {
           "lang": "fr-FR",
           "seg": "Supprimer"
+        },
+        {
+          "lang": "ru-RU",
+          "seg": "Удалить"
         }
       ]
     },
@@ -41361,6 +41417,10 @@
         {
           "lang": "fr-FR",
           "seg": "Prix"
+        },
+        {
+          "lang": "ru-RU",
+          "seg": "Цены"
         }
       ]
     },
@@ -41378,6 +41438,10 @@
         {
           "lang": "fr-FR",
           "seg": "Resources"
+        },
+        {
+          "lang": "ru-RU",
+          "seg": "Ресурсы"
         }
       ]
     },
@@ -41395,6 +41459,10 @@
         {
           "lang": "fr-FR",
           "seg": "Brut"
+        },
+        {
+          "lang": "ru-RU",
+          "seg": "Валовой"
         }
       ]
     },
@@ -41412,6 +41480,10 @@
         {
           "lang": "fr-FR",
           "seg": "Rendement attendu"
+        },
+        {
+          "lang": "ru-RU",
+          "seg": "Ожидаемый возврат"
         }
       ]
     },
@@ -41429,6 +41501,10 @@
         {
           "lang": "fr-FR",
           "seg": "Net"
+        },
+        {
+          "lang": "ru-RU",
+          "seg": "Чистые затраты"
         }
       ]
     },
@@ -41446,6 +41522,10 @@
         {
           "lang": "fr-FR",
           "seg": "Prix"
+        },
+        {
+          "lang": "ru-RU",
+          "seg": "Цена"
         }
       ]
     },
@@ -41463,6 +41543,10 @@
         {
           "lang": "fr-FR",
           "seg": "Coût net"
+        },
+        {
+          "lang": "ru-RU",
+          "seg": "Чистая стоимость"
         }
       ]
     },
@@ -41480,6 +41564,10 @@
         {
           "lang": "fr-FR",
           "seg": "Affiche l'icone de la ressource."
+        },
+        {
+          "lang": "ru-RU",
+          "seg": "Показывает значок ресурса."
         }
       ]
     },
@@ -41497,6 +41585,10 @@
         {
           "lang": "fr-FR",
           "seg": "Nom de la ressource requise."
+        },
+        {
+          "lang": "ru-RU",
+          "seg": "Название необходимого ресурса."
         }
       ]
     },
@@ -41514,6 +41606,10 @@
         {
           "lang": "fr-FR",
           "seg": "Type de ressource, par exemple retournable, non retournable ou speciale."
+        },
+        {
+          "lang": "ru-RU",
+          "seg": "Тип ресурса, например возвращаемый, невозвращаемый или специальный ресурс."
         }
       ]
     },
@@ -41531,6 +41627,10 @@
         {
           "lang": "fr-FR",
           "seg": "Besoin brut avant le retour des ressources."
+        },
+        {
+          "lang": "ru-RU",
+          "seg": "Общая потребность до возврата ресурсов."
         }
       ]
     },
@@ -41548,6 +41648,10 @@
         {
           "lang": "fr-FR",
           "seg": "Retour attendu par le taux de retour des ressources."
+        },
+        {
+          "lang": "ru-RU",
+          "seg": "Ожидаемая доходность от ресурса."
         }
       ]
     },
@@ -41565,6 +41669,10 @@
         {
           "lang": "fr-FR",
           "seg": "Consommation nette apres le retour attendu."
+        },
+        {
+          "lang": "ru-RU",
+          "seg": "Чистое потребление после ожидаемого возврата."
         }
       ]
     },
@@ -41582,6 +41690,10 @@
         {
           "lang": "fr-FR",
           "seg": "Prix en argent par unite de ressource."
+        },
+        {
+          "lang": "ru-RU",
+          "seg": "Цена серебра за единицу ресурса."
         }
       ]
     },
@@ -41599,6 +41711,10 @@
         {
           "lang": "fr-FR",
           "seg": "Cout en argent apres le retour attendu."
+        },
+        {
+          "lang": "ru-RU",
+          "seg": "Стоимость в серебре после ожидаемого возврата."
         }
       ]
     },
@@ -41616,6 +41732,10 @@
         {
           "lang": "fr-FR",
           "seg": "Registres"
+        },
+        {
+          "lang": "ru-RU",
+          "seg": "Журналы"
         }
       ]
     },
@@ -41633,6 +41753,10 @@
         {
           "lang": "fr-FR",
           "seg": "Prix vide"
+        },
+        {
+          "lang": "ru-RU",
+          "seg": "Пустая цена"
         }
       ]
     },
@@ -41650,6 +41774,10 @@
         {
           "lang": "fr-FR",
           "seg": "Prix total"
+        },
+        {
+          "lang": "ru-RU",
+          "seg": "Полная стоимость"
         }
       ]
     },
@@ -41667,6 +41795,10 @@
         {
           "lang": "fr-FR",
           "seg": "Vide"
+        },
+        {
+          "lang": "ru-RU",
+          "seg": "Пустой"
         }
       ]
     },
@@ -41684,6 +41816,10 @@
         {
           "lang": "fr-FR",
           "seg": "Complet"
+        },
+        {
+          "lang": "ru-RU",
+          "seg": "Полный"
         }
       ]
     },
@@ -41701,6 +41837,10 @@
         {
           "lang": "fr-FR",
           "seg": "Partiel"
+        },
+        {
+          "lang": "ru-RU",
+          "seg": "Неплоный"
         }
       ]
     },
@@ -41718,6 +41858,10 @@
         {
           "lang": "fr-FR",
           "seg": "Résultats"
+        },
+        {
+          "lang": "ru-RU",
+          "seg": "Результаты"
         }
       ]
     },
@@ -41735,6 +41879,10 @@
         {
           "lang": "fr-FR",
           "seg": "Sortie"
+        },
+        {
+          "lang": "ru-RU",
+          "seg": "Выпуск"
         }
       ]
     },
@@ -41752,6 +41900,10 @@
         {
           "lang": "fr-FR",
           "seg": "Chiffre d'affaires net"
+        },
+        {
+          "lang": "ru-RU",
+          "seg": "Чистый объем продаж"
         }
       ]
     },
@@ -41769,6 +41921,10 @@
         {
           "lang": "fr-FR",
           "seg": "Matériau Brut"
+        },
+        {
+          "lang": "ru-RU",
+          "seg": "Валовые материалы"
         }
       ]
     },
@@ -41786,6 +41942,10 @@
         {
           "lang": "fr-FR",
           "seg": "Matériau Net"
+        },
+        {
+          "lang": "ru-RU",
+          "seg": "Чистые материалы"
         }
       ]
     },
@@ -41803,6 +41963,10 @@
         {
           "lang": "fr-FR",
           "seg": "Non retournable"
+        },
+        {
+          "lang": "ru-RU",
+          "seg": "Не подлежит возврату"
         }
       ]
     },
@@ -41820,6 +41984,10 @@
         {
           "lang": "fr-FR",
           "seg": "Station"
+        },
+        {
+          "lang": "ru-RU",
+          "seg": "Станок"
         }
       ]
     },
@@ -41837,6 +42005,10 @@
         {
           "lang": "fr-FR",
           "seg": "Frais de registres"
+        },
+        {
+          "lang": "ru-RU",
+          "seg": "Стоймость журналов"
         }
       ]
     },
@@ -41854,6 +42026,10 @@
         {
           "lang": "fr-FR",
           "seg": "Recette des registres"
+        },
+        {
+          "lang": "ru-RU",
+          "seg": "Выручка журнала"
         }
       ]
     },
@@ -41871,6 +42047,10 @@
         {
           "lang": "fr-FR",
           "seg": "Poids avant"
+        },
+        {
+          "lang": "ru-RU",
+          "seg": "Вес до"
         }
       ]
     },
@@ -41888,6 +42068,10 @@
         {
           "lang": "fr-FR",
           "seg": "Poids après"
+        },
+        {
+          "lang": "ru-RU",
+          "seg": "Вес после"
         }
       ]
     },
@@ -41905,6 +42089,10 @@
         {
           "lang": "fr-FR",
           "seg": "Frabrications enregistrées"
+        },
+        {
+          "lang": "ru-RU",
+          "seg": "Сохраненные крафты"
         }
       ]
     },
@@ -41922,6 +42110,10 @@
         {
           "lang": "fr-FR",
           "seg": "Objet"
+        },
+        {
+          "lang": "ru-RU",
+          "seg": "Предмет"
         }
       ]
     },
@@ -41939,6 +42131,10 @@
         {
           "lang": "fr-FR",
           "seg": "Détails"
+        },
+        {
+          "lang": "ru-RU",
+          "seg": "Подробности"
         }
       ]
     },
@@ -41956,6 +42152,10 @@
         {
           "lang": "fr-FR",
           "seg": "Coûts principaux"
+        },
+        {
+          "lang": "ru-RU",
+          "seg": "Основные затраты"
         }
       ]
     },
@@ -41973,6 +42173,10 @@
         {
           "lang": "fr-FR",
           "seg": "Modifié"
+        },
+        {
+          "lang": "ru-RU",
+          "seg": "Измененный"
         }
       ]
     },
@@ -41990,6 +42194,10 @@
         {
           "lang": "fr-FR",
           "seg": "Aucun(e)"
+        },
+        {
+          "lang": "ru-RU",
+          "seg": "Ничто"
         }
       ]
     },
@@ -42007,6 +42215,10 @@
         {
           "lang": "fr-FR",
           "seg": "RRR Prévu"
+        },
+        {
+          "lang": "ru-RU",
+          "seg": "Ожидаемый RRR"
         }
       ]
     },
@@ -42024,6 +42236,10 @@
         {
           "lang": "fr-FR",
           "seg": "Pas de focalisation"
+        },
+        {
+          "lang": "ru-RU",
+          "seg": "Без фокусировки"
         }
       ]
     },
@@ -42041,6 +42257,10 @@
         {
           "lang": "fr-FR",
           "seg": "Quotidien"
+        },
+        {
+          "lang": "ru-RU",
+          "seg": "Ежедневный"
         }
       ]
     },
@@ -42058,6 +42278,10 @@
         {
           "lang": "fr-FR",
           "seg": "tours"
+        },
+        {
+          "lang": "ru-RU",
+          "seg": "запусков"
         }
       ]
     },
@@ -42075,6 +42299,10 @@
         {
           "lang": "fr-FR",
           "seg": "Sélectionnez un objet avant d'enregistrer."
+        },
+        {
+          "lang": "ru-RU",
+          "seg": "Выберите элемент перед сохранением."
         }
       ]
     },
@@ -42092,6 +42320,10 @@
         {
           "lang": "fr-FR",
           "seg": "Fabrications enregistrées."
+        },
+        {
+          "lang": "ru-RU",
+          "seg": "Крафт сохранен."
         }
       ]
     },
@@ -42109,6 +42341,10 @@
         {
           "lang": "fr-FR",
           "seg": "Fabrications supprimées."
+        },
+        {
+          "lang": "ru-RU",
+          "seg": "Крафтинг удален."
         }
       ]
     },
@@ -42126,6 +42362,10 @@
         {
           "lang": "fr-FR",
           "seg": "Fabrications chargées."
+        },
+        {
+          "lang": "ru-RU",
+          "seg": "Крафтинг загружен."
         }
       ]
     },
@@ -42143,6 +42383,10 @@
         {
           "lang": "fr-FR",
           "seg": "Nouvelle fabrications lancée."
+        },
+        {
+          "lang": "ru-RU",
+          "seg": "Начался новый крафт."
         }
       ]
     },
@@ -42160,6 +42404,10 @@
         {
           "lang": "fr-FR",
           "seg": "Sélectionnez un objet avant d'afficher les prix."
+        },
+        {
+          "lang": "ru-RU",
+          "seg": "Выберите товар перед загрузкой цен."
         }
       ]
     },
@@ -42177,6 +42425,10 @@
         {
           "lang": "fr-FR",
           "seg": "Sélectionnez un objet avant d'afficher les prix."
+        },
+        {
+          "lang": "ru-RU",
+          "seg": "Загружены рыночные цены."
         }
       ]
     },
@@ -42194,6 +42446,10 @@
         {
           "lang": "fr-FR",
           "seg": "Sélectionnez un objet avant d'afficher les prix."
+        },
+        {
+          "lang": "ru-RU",
+          "seg": "Рыночные цены не удалось загрузить."
         }
       ]
     },
@@ -42211,6 +42467,10 @@
         {
           "lang": "fr-FR",
           "seg": "Standard"
+        },
+        {
+          "lang": "ru-RU",
+          "seg": "Стандарт"
         }
       ]
     },
@@ -42228,6 +42488,10 @@
         {
           "lang": "fr-FR",
           "seg": "Artefact"
+        },
+        {
+          "lang": "ru-RU",
+          "seg": "Артефакт"
         }
       ]
     },
@@ -42245,6 +42509,10 @@
         {
           "lang": "fr-FR",
           "seg": "Alchimie"
+        },
+        {
+          "lang": "ru-RU",
+          "seg": "Алхимия"
         }
       ]
     },
@@ -42262,6 +42530,10 @@
         {
           "lang": "fr-FR",
           "seg": "Energie Avalonienne"
+        },
+        {
+          "lang": "ru-RU",
+          "seg": "Авалонская энергия"
         }
       ]
     },
@@ -42279,6 +42551,10 @@
         {
           "lang": "fr-FR",
           "seg": "Livre de perspicacité"
+        },
+        {
+          "lang": "ru-RU",
+          "seg": "Tome of insight"
         }
       ]
     },
@@ -42296,6 +42572,10 @@
         {
           "lang": "fr-FR",
           "seg": "Essence"
+        },
+        {
+          "lang": "ru-RU",
+          "seg": "Экстракт"
         }
       ]
     },
@@ -42313,6 +42593,10 @@
         {
           "lang": "fr-FR",
           "seg": "Spéciale"
+        },
+        {
+          "lang": "ru-RU",
+          "seg": "Особый"
         }
       ]
     },
@@ -42330,6 +42614,10 @@
         {
           "lang": "fr-FR",
           "seg": "Chiffre d'affaires brut"
+        },
+        {
+          "lang": "ru-RU",
+          "seg": "Валовой объем продаж"
         }
       ]
     },
@@ -42347,6 +42635,10 @@
         {
           "lang": "fr-FR",
           "seg": "Taxe sur les ventes"
+        },
+        {
+          "lang": "ru-RU",
+          "seg": "Налог с продаж"
         }
       ]
     },
@@ -42364,6 +42656,10 @@
         {
           "lang": "fr-FR",
           "seg": "Coûts totaux"
+        },
+        {
+          "lang": "ru-RU",
+          "seg": "Общие затраты"
         }
       ]
     },
@@ -42381,6 +42677,10 @@
         {
           "lang": "fr-FR",
           "seg": "Nombre d'objets produits lors des sessions de fabrication indiquées."
+        },
+        {
+          "lang": "ru-RU",
+          "seg": "Количество предметов, полученных в результате крафта."
         }
       ]
     },
@@ -42398,6 +42698,10 @@
         {
           "lang": "fr-FR",
           "seg": "Bénéfice après déduction des coûts des matières premières, des frais de station, des autres coûts, des taxes, des coûts liés aux registres et des recettes provenant des registres."
+        },
+        {
+          "lang": "ru-RU",
+          "seg": "Прибыль после вычета материальных затрат, расходов на содержание станции, прочих расходов, налогов, расходов на ведение журнала и доходов от его публикации."
         }
       ]
     },
@@ -42415,6 +42719,10 @@
         {
           "lang": "fr-FR",
           "seg": "Bénéfice après déduction des coûts des matières premières, des frais de station, des autres coûts, des taxes, des coûts liés aux registres et des recettes provenant des registres."
+        },
+        {
+          "lang": "ru-RU",
+          "seg": "Прибыль, деленная на объем произведенной продукции."
         }
       ]
     },
@@ -42432,6 +42740,10 @@
         {
           "lang": "fr-FR",
           "seg": "Bénéfice par rapport au total des coûts d'investissement."
+        },
+        {
+          "lang": "ru-RU",
+          "seg": "Прибыль по отношению к общим инвестиционным затратам."
         }
       ]
     },
@@ -42449,6 +42761,10 @@
         {
           "lang": "fr-FR",
           "seg": "Prix de vente minimum par objet pour lequel le bénéfice est nul."
+        },
+        {
+          "lang": "ru-RU",
+          "seg": "Минимальная цена продажи за единицу товара, при которой прибыль равна нулю."
         }
       ]
     },
@@ -42466,6 +42782,10 @@
         {
           "lang": "fr-FR",
           "seg": "Chiffre d'affaires hors taxes."
+        },
+        {
+          "lang": "ru-RU",
+          "seg": "Выручка от продаж до вычета налога с продаж."
         }
       ]
     },
@@ -42483,6 +42803,10 @@
         {
           "lang": "fr-FR",
           "seg": "Chiffre d'affaires hors taxes."
+        },
+        {
+          "lang": "ru-RU",
+          "seg": "Налог с продаж вычитается из валового объема продаж."
         }
       ]
     },
@@ -42500,6 +42824,10 @@
         {
           "lang": "fr-FR",
           "seg": "Recette après déduction des texes."
+        },
+        {
+          "lang": "ru-RU",
+          "seg": "Выручка от продаж за вычетом налога с продаж."
         }
       ]
     },
@@ -42517,6 +42845,10 @@
         {
           "lang": "fr-FR",
           "seg": "Frais d'installation dÃƒÂ©duits du chiffre d'affaires brut."
+        },
+        {
+          "lang": "ru-RU",
+          "seg": "Плата за установку вычитается из общего объема продаж."
         }
       ]
     },
@@ -42534,6 +42866,10 @@
         {
           "lang": "fr-FR",
           "seg": "Total des coûts engagés, comprenant les coûts nets des matériaux, les coûts liés aux stations, les coûts liés aux registres et les autres coûts."
+        },
+        {
+          "lang": "ru-RU",
+          "seg": "Общие затраты на сырье, расходы на станции, расходы на ведение журнала и прочие расходы."
         }
       ]
     },
@@ -42551,6 +42887,10 @@
         {
           "lang": "fr-FR",
           "seg": "Coûts des matériaux avant prise en compte du taux de récupération des ressources."
+        },
+        {
+          "lang": "ru-RU",
+          "seg": "Материальные затраты до коэффициента возврата ресурсов."
         }
       ]
     },
@@ -42568,6 +42908,10 @@
         {
           "lang": "fr-FR",
           "seg": "Coûts des matériaux après prise en compte du taux de rendement prévu des ressources."
+        },
+        {
+          "lang": "ru-RU",
+          "seg": "Материальные затраты после ожидаемого коэффициента возврата ресурсов."
         }
       ]
     },
@@ -42585,6 +42929,10 @@
         {
           "lang": "fr-FR",
           "seg": "Frais liés aux ressources qui ne sont pas restituées dans le processus de restitution des ressources."
+        },
+        {
+          "lang": "ru-RU",
+          "seg": "Затраты на ресурсы, которые не были возвращены."
         }
       ]
     },
@@ -42602,6 +42950,10 @@
         {
           "lang": "fr-FR",
           "seg": "Coût de la station calculé à partir du tarif d'utilisation par 100 unités de nourriture et de la quantité de nourriture consommée par l'objet."
+        },
+        {
+          "lang": "ru-RU",
+          "seg": "Рассчитанная стоимость станка с учетом платы за использование из расчета на 100 единиц еды и количества съеденной пищи."
         }
       ]
     },
@@ -42619,6 +42971,10 @@
         {
           "lang": "fr-FR",
           "seg": "Les coûts supplémentaires saisis manuellement sont pris en compte dans le bénéfice, le retour sur investissement et le prix d'équilibre."
+        },
+        {
+          "lang": "ru-RU",
+          "seg": "Введены вручную дополнительные расходы, учитываемые при расчете прибыли, рентабельности инвестиций и цены безубыточности."
         }
       ]
     },
@@ -42636,6 +42992,10 @@
         {
           "lang": "fr-FR",
           "seg": "Coût des registres vides nécessaires."
+        },
+        {
+          "lang": "ru-RU",
+          "seg": "Стоимость необходимых пустых журналов."
         }
       ]
     },
@@ -42653,6 +43013,10 @@
         {
           "lang": "fr-FR",
           "seg": "Chiffre d'affaires prévu pour les registres complets."
+        },
+        {
+          "lang": "ru-RU",
+          "seg": "Ожидаемый доход от продажи полных журналов."
         }
       ]
     },
@@ -42670,6 +43034,10 @@
         {
           "lang": "fr-FR",
           "seg": "Poids total des ressources et des registres avant la fabrication."
+        },
+        {
+          "lang": "ru-RU",
+          "seg": "Общий вес ресурсов и журналов до начала крафта."
         }
       ]
     },
@@ -42687,6 +43055,10 @@
         {
           "lang": "fr-FR",
           "seg": "Poids total des objets fabriqués et des registres après la fabrication."
+        },
+        {
+          "lang": "ru-RU",
+          "seg": "Общий вес созданных предметов и журналов после крафта."
         }
       ]
     },
@@ -42704,6 +43076,10 @@
         {
           "lang": "fr-FR",
           "seg": "Assistant de configuration"
+        },
+        {
+          "lang": "ru-RU",
+          "seg": "Руководство по настройке"
         }
       ]
     },
@@ -42721,6 +43097,10 @@
         {
           "lang": "fr-FR",
           "seg": "Assistant de configuration"
+        },
+        {
+          "lang": "ru-RU",
+          "seg": "Руководство по настройке"
         }
       ]
     },
@@ -42738,6 +43118,10 @@
         {
           "lang": "fr-FR",
           "seg": "Choisissez la langue que l'outil doit utiliser."
+        },
+        {
+          "lang": "ru-RU",
+          "seg": "Выберите язык, на котором будет работать инструмент."
         }
       ]
     },
@@ -42755,6 +43139,10 @@
         {
           "lang": "fr-FR",
           "seg": "Veuillez sélectionner une langue."
+        },
+        {
+          "lang": "ru-RU",
+          "seg": "Пожалуйста, выберите язык."
         }
       ]
     },
@@ -42772,6 +43160,10 @@
         {
           "lang": "fr-FR",
           "seg": "Mode suivi"
+        },
+        {
+          "lang": "ru-RU",
+          "seg": "Режим отслеживания"
         }
       ]
     },
@@ -42789,6 +43181,10 @@
         {
           "lang": "fr-FR",
           "seg": "Choisissez comment l'outil doit capturer le trafic réseau d'Albion Online."
+        },
+        {
+          "lang": "ru-RU",
+          "seg": "Выберите способ сбора сетевого трафика Albion Online с помощью этого инструмента."
         }
       ]
     },
@@ -42806,6 +43202,10 @@
         {
           "lang": "fr-FR",
           "seg": "NPCap utilise un pilote réseau et constitue généralement le meilleur choix pour la plupart des utilisateurs. Socket utilise les sockets bruts de Windows et ne nécessite pas NPCap, mais l'outil doit être lancé en tant qu'administrateur."
+        },
+        {
+          "lang": "ru-RU",
+          "seg": "NPCap использует сетевой драйвер и, как правило, является оптимальным выбором для большинства пользователей. Socket использует необработанные сокеты Windows и не требует установки NPCap, но программу необходимо запускать от имени администратора."
         }
       ]
     },
@@ -42822,6 +43222,10 @@
         },
         {
           "lang": "fr-FR",
+          "seg": "NPCap"
+        },
+        {
+          "lang": "ru-RU",
           "seg": "NPCap"
         }
       ]
@@ -42840,6 +43244,10 @@
         {
           "lang": "fr-FR",
           "seg": "Socket"
+        },
+        {
+          "lang": "ru-RU",
+          "seg": "Socket"
         }
       ]
     },
@@ -42857,6 +43265,10 @@
         {
           "lang": "fr-FR",
           "seg": "Pour NPCap, installez NPCap"
+        },
+        {
+          "lang": "ru-RU",
+          "seg": "Для NPCap установите NPCap."
         }
       ]
     },
@@ -42874,6 +43286,10 @@
         {
           "lang": "fr-FR",
           "seg": "Téléchargez NPCap"
+        },
+        {
+          "lang": "ru-RU",
+          "seg": "Скачать NPCap"
         }
       ]
     },
@@ -42891,6 +43307,10 @@
         {
           "lang": "fr-FR",
           "seg": "Pour Socket, démarrez l'application en tant qu'Administrateur"
+        },
+        {
+          "lang": "ru-RU",
+          "seg": "Для работы с Socket запустите этот инструмент от имени администратора."
         }
       ]
     },
@@ -42908,6 +43328,10 @@
         {
           "lang": "fr-FR",
           "seg": "Veuillez sélectionner un mode de suivi."
+        },
+        {
+          "lang": "ru-RU",
+          "seg": "Пожалуйста, выберите режим отслеживания."
         }
       ]
     },
@@ -42925,6 +43349,10 @@
         {
           "lang": "fr-FR",
           "seg": "Sélectionnez les onglets de navigation que vous souhaitez afficher."
+        },
+        {
+          "lang": "ru-RU",
+          "seg": "Выберите вкладки навигации, которые хотите видеть."
         }
       ]
     },
@@ -42942,6 +43370,10 @@
         {
           "lang": "fr-FR",
           "seg": "Retour"
+        },
+        {
+          "lang": "ru-RU",
+          "seg": "Назад"
         }
       ]
     },
@@ -42959,6 +43391,10 @@
         {
           "lang": "fr-FR",
           "seg": "Suivant"
+        },
+        {
+          "lang": "ru-RU",
+          "seg": "Дальше"
         }
       ]
     },
@@ -42976,6 +43412,10 @@
         {
           "lang": "fr-FR",
           "seg": "Terminer"
+        },
+        {
+          "lang": "ru-RU",
+          "seg": "Завершить"
         }
       ]
     }
