@@ -1,6 +1,7 @@
 using FluentAssertions;
 using NUnit.Framework;
 using StatisticsAnalysisTool.Common;
+using StatisticsAnalysisTool.EstimatedMarketValue;
 using StatisticsAnalysisTool.Models;
 using StatisticsAnalysisTool.Models.ItemsJsonModel;
 using StatisticsAnalysisTool.EventLogging;
@@ -171,7 +172,49 @@ public class LoggingBindingsTests
         bindings.LootingPlayers[0].LootingPlayerVisibility.Should().Be(Visibility.Visible);
     }
 
+    [Test]
+    public void TotalEstimatedMarketValue_WithZeroValues_IgnoresZeroValueItems()
+    {
+        ItemController.Items = new ObservableCollection<Item>()
+        {
+            CreateItem(1, "T4_VALUABLE_TEST", "other", "misc", 100),
+            CreateItem(2, "T4_ZERO_VALUE_TEST", "other", "misc", 0),
+            CreateItem(3, "T4_OTHER_VALUE_TEST", "other", "misc", 50)
+        };
+
+        var lootingPlayer = new LootingPlayer()
+        {
+            PlayerName = "Bob",
+            LootedItems = new ObservableCollection<LootedItem>()
+            {
+                new()
+                {
+                    ItemIndex = 1,
+                    Quantity = 2
+                },
+                new()
+                {
+                    ItemIndex = 2,
+                    Quantity = 10
+                },
+                new()
+                {
+                    ItemIndex = 3,
+                    Quantity = 1
+                }
+            }
+        };
+
+        lootingPlayer.TotalEstimatedMarketValue.Should().Be(250);
+        lootingPlayer.TotalEstimatedMarketValueVisibility.Should().Be(Visibility.Visible);
+    }
+
     private static Item CreateItem(int index, string uniqueName, string shopCategory, string shopSubCategory1)
+    {
+        return CreateItem(index, uniqueName, shopCategory, shopSubCategory1, 0);
+    }
+
+    private static Item CreateItem(int index, string uniqueName, string shopCategory, string shopSubCategory1, long estimatedMarketValue)
     {
         return new Item()
         {
@@ -186,7 +229,16 @@ public class LoggingBindingsTests
                 UniqueName = uniqueName,
                 ShopCategory = shopCategory,
                 ShopSubCategory1 = shopSubCategory1
-            }
+            },
+            EstimatedMarketValues =
+            [
+                new EstQualityValue()
+                {
+                    Timestamp = DateTime.UtcNow,
+                    MarketValue = FixPoint.FromFloatingPointValue(estimatedMarketValue),
+                    Quality = ItemQuality.Normal
+                }
+            ]
         };
     }
 }

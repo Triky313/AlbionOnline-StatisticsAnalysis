@@ -39,16 +39,18 @@ public class LootLoggerObject
     // 'Died'                (can be empty),
     // 'DiedPlayerGuild'     (can be empty),
     // 'KilledBy'            (can be empty),
-    // 'KilledByGuild'       (can be empty)
+    // 'KilledByGuild'       (can be empty),
+    // 'AverageEstMarketValue' (can be empty for kill entries)
     private string GetCsvOutputStringWithRealItemName()
     {
         var uniqueItemName = UniqueItemName ?? string.Empty;
         var item = string.IsNullOrWhiteSpace(uniqueItemName) ? null : ItemController.GetItemByUniqueName(uniqueItemName);
         var itemName = string.IsNullOrEmpty(item?.LocalizedName) ? uniqueItemName : item.LocalizedName;
         var quantity = string.IsNullOrWhiteSpace(uniqueItemName) ? string.Empty : Quantity.ToString(CultureInfo.InvariantCulture);
+        var averageEstMarketValue = string.IsNullOrWhiteSpace(uniqueItemName) ? string.Empty : AverageEstMarketValue.ToString(CultureInfo.InvariantCulture);
 
         return $"{UtcPickupTime.ToString("O", CultureInfo.InvariantCulture)};{LootedByAlliance ?? string.Empty};{LootedByGuild ?? string.Empty};{LootedByName ?? string.Empty};{uniqueItemName};{itemName.ToString(CultureInfo.InvariantCulture)}" +
-               $";{quantity};{LootedFromAlliance ?? string.Empty};{LootedFromGuild ?? string.Empty};{LootedFromName ?? string.Empty};{Died ?? string.Empty};{DiedPlayerGuild ?? string.Empty};{KilledBy ?? string.Empty};{KilledByGuild ?? string.Empty}";
+               $";{quantity};{LootedFromAlliance ?? string.Empty};{LootedFromGuild ?? string.Empty};{LootedFromName ?? string.Empty};{Died ?? string.Empty};{DiedPlayerGuild ?? string.Empty};{KilledBy ?? string.Empty};{KilledByGuild ?? string.Empty};{averageEstMarketValue}";
     }
 
     // JSON export format:
@@ -92,7 +94,8 @@ public class LootLoggerObject
                 item = new
                 {
                     id = uniqueItemName,
-                    quantity = Quantity
+                    quantity = Quantity,
+                    average_est_market_value = AverageEstMarketValue
                 },
                 looted_from = new
                 {

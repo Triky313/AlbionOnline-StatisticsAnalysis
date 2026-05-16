@@ -265,7 +265,7 @@ public class LootController : ILootController
     {
         try
         {
-            const string csvHeader = "timestamp_utc;looted_by__alliance;looted_by__guild;looted_by__name;item_id;item_name;quantity;looted_from__alliance;looted_from__guild;looted_from__name;died;died_player_guild;killed_by;killed_by_guild\n";
+            const string csvHeader = "timestamp_utc;looted_by__alliance;looted_by__guild;looted_by__name;item_id;item_name;quantity;looted_from__alliance;looted_from__guild;looted_from__name;died;died_player_guild;killed_by;killed_by_guild;average_est_market_value\n";
             return csvHeader + string.Join(Environment.NewLine, _lootLoggerObjects.Select(loot => loot.CsvOutput).ToArray());
         }
         catch (Exception e)
@@ -282,7 +282,7 @@ public class LootController : ILootController
         {
             var export = new
             {
-                schema_version = 1,
+                schema_version = 2,
                 exported_at_utc = DateTime.UtcNow,
                 entries = _lootLoggerObjects.Select(loot => loot.JsonOutput).ToArray()
             };
