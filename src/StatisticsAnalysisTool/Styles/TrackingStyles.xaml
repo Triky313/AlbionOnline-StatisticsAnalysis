@@ -526,7 +526,7 @@
     <DataTemplate x:Key="LoggingFilterObject" DataType="{x:Type eventLogging:LoggingFilterObject}">
         <StackPanel Orientation="Horizontal">
             <CheckBox IsChecked="{Binding IsSelected}" Width="20" VerticalAlignment="Top" />
-            <TextBlock Text="{Binding Name}" Width="100" TextWrapping="Wrap" />
+            <TextBlock Text="{Binding Name}" Foreground="{StaticResource SolidColorBrush.Text.1}" />
         </StackPanel>
     </DataTemplate>
 

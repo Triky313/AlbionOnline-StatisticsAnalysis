@@ -20,6 +20,10 @@ public class LoggingTranslation
     public static string Potion => LocalizationController.Translation("POTION");
     public static string Mount => LocalizationController.Translation("MOUNT");
     public static string Others => LocalizationController.Translation("OTHERS");
+    public static string Filter => LocalizationController.Translation("FILTER");
+    public static string Tracking => LocalizationController.Translation("TRACKING");
+    public static string Notifications => LocalizationController.Translation("NOTIFICATIONS");
+    public static string Stats => LocalizationController.Translation("STATS");
     public static string FilterStatus => LocalizationController.Translation("LOOT_FILTER_STATUS");
     public static string FilterTier => LocalizationController.Translation("LOOT_FILTER_TIER");
     public static string FilterType => LocalizationController.Translation("LOOT_FILTER_TYPE");

@@ -15,8 +15,12 @@ public class DiedEventHandler(TrackingController trackingController) : EventPack
     {
         trackingController.DungeonController?.SetDiedIfInDungeon(new DiedObject(value.Died, value.KilledBy, value.KilledByGuild));
         trackingController.PartyController.PlayerHasDied(value.Died);
-        await trackingController.LootController.AddKillDeathAsync(value.Died, value.DiedPlayerGuild, value.KilledBy, value.KilledByGuild);
-        await trackingController.AddNotificationAsync(SetKillNotification(value.Died, value.DiedPlayerGuild, value.KilledBy, value.KilledByGuild));
+
+        if (trackingController.IsKillTrackingEnabled)
+        {
+            await trackingController.LootController.AddKillDeathAsync(value.Died, value.DiedPlayerGuild, value.KilledBy, value.KilledByGuild);
+            await trackingController.AddNotificationAsync(SetKillNotification(value.Died, value.DiedPlayerGuild, value.KilledBy, value.KilledByGuild));
+        }
     }
 
     private static TrackingNotification SetKillNotification(string died, string diedPlayerGuild, string killedBy, string killedByGuild)

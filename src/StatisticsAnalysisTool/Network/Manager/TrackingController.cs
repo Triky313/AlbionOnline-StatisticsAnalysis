@@ -85,10 +85,11 @@ public class TrackingController : ITrackingController
         await StartTrackingAsync();
 
         _mainWindowViewModel.IsDamageMeterTrackingActive = SettingsController.CurrentSettings.IsDamageMeterTrackingActive;
-        _mainWindowViewModel.IsTrackingPartyLootOnly = SettingsController.CurrentSettings.IsTrackingPartyLootOnly;
+        _mainWindowViewModel.LoggingBindings.IsTrackingPartyLootOnly = SettingsController.CurrentSettings.IsTrackingPartyLootOnly;
         _mainWindowViewModel.LoggingBindings.IsTrackingSilver = SettingsController.CurrentSettings.IsTrackingSilver;
         _mainWindowViewModel.LoggingBindings.IsTrackingFame = SettingsController.CurrentSettings.IsTrackingFame;
         _mainWindowViewModel.LoggingBindings.IsTrackingMobLoot = SettingsController.CurrentSettings.IsTrackingMobLoot;
+        _mainWindowViewModel.LoggingBindings.IsTrackingKill = SettingsController.CurrentSettings.IsTrackingKill;
 
         _mainWindowViewModel.LoggingBindings.GameLoggingCollectionView = CollectionViewSource.GetDefaultView(_mainWindowViewModel.LoggingBindings.TrackingNotifications) as ListCollectionView;
         if (_mainWindowViewModel.LoggingBindings?.GameLoggingCollectionView != null)
@@ -292,6 +293,11 @@ public class TrackingController : ITrackingController
             return;
         }
 
+        if (!_mainWindowViewModel.LoggingBindings.IsTrackingKill && item.Type == LoggingFilterType.Kill)
+        {
+            return;
+        }
+
         if (!_mainWindowViewModel.LoggingBindings.IsTrackingMobLoot && item.Fragment is OtherGrabbedLootNotificationFragment { IsLootedPlayerMob: true })
         {
             return;
@@ -470,6 +476,8 @@ public class TrackingController : ITrackingController
     }
 
     public bool IsLootFromMobShown { get; set; }
+
+    public bool IsKillTrackingEnabled => _mainWindowViewModel?.LoggingBindings?.IsTrackingKill ?? false;
 
     private static bool _isRemovesUnnecessaryNotificationsActive;
     private DateTime _lastRemovesUnnecessaryNotifications;

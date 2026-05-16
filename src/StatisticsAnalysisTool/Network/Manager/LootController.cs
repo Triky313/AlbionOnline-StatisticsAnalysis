@@ -1,6 +1,5 @@
 using Serilog;
 using StatisticsAnalysisTool.Common;
-using StatisticsAnalysisTool.Common.UserSettings;
 using StatisticsAnalysisTool.Diagnostics;
 using StatisticsAnalysisTool.EventLogging;
 using StatisticsAnalysisTool.EventLogging.Notification;
@@ -62,7 +61,7 @@ public class LootController : ILootController
             return;
         }
 
-        if (SettingsController.CurrentSettings.IsTrackingPartyLootOnly
+        if (_mainWindowViewModel.LoggingBindings.IsTrackingPartyLootOnly
             && !_trackingController.EntityController.IsEntityInParty(loot.LootedByName)
             && !_trackingController.EntityController.IsEntityInParty(loot.LootedFromName))
         {
@@ -135,7 +134,7 @@ public class LootController : ILootController
             return;
         }
 
-        if (SettingsController.CurrentSettings.IsTrackingPartyLootOnly
+        if (_mainWindowViewModel.LoggingBindings.IsTrackingPartyLootOnly
             && !_trackingController.EntityController.IsEntityInParty(loot.LootedByName)
             && !_trackingController.EntityController.IsEntityInParty(loot.LootedFromName))
         {

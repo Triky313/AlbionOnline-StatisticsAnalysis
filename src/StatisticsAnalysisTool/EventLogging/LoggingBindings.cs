@@ -11,6 +11,7 @@ using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.ComponentModel;
 using System.Diagnostics;
 using System.Globalization;
 using System.IO;
@@ -55,59 +56,85 @@ public class LoggingBindings : BaseViewModel
             TopLootersCollectionView.CustomSort = new TopLooterComparer();
         }
 
-        Filters.Add(new LoggingFilterObject(LoggingFilterType.Fame)
+        ClearFilters();
+
+        AddFilter(new LoggingFilterObject(LoggingFilterType.Fame)
         {
             IsSelected = SettingsController.CurrentSettings.IsMainTrackerFilterFame,
             Name = MainWindowTranslation.Fame
         });
 
-        Filters.Add(new LoggingFilterObject(LoggingFilterType.Silver)
+        AddFilter(new LoggingFilterObject(LoggingFilterType.Silver)
         {
             IsSelected = SettingsController.CurrentSettings.IsMainTrackerFilterSilver,
             Name = MainWindowTranslation.Silver
         });
 
-        Filters.Add(new LoggingFilterObject(LoggingFilterType.Faction)
+        AddFilter(new LoggingFilterObject(LoggingFilterType.Faction)
         {
             IsSelected = SettingsController.CurrentSettings.IsMainTrackerFilterFaction,
             Name = MainWindowTranslation.Faction
         });
 
-        Filters.Add(new LoggingFilterObject(LoggingFilterType.ConsumableLoot)
+        AddFilter(new LoggingFilterObject(LoggingFilterType.ConsumableLoot)
         {
             IsSelected = SettingsController.CurrentSettings.IsMainTrackerFilterConsumableLoot,
             Name = MainWindowTranslation.ConsumableLoot
         });
 
-        Filters.Add(new LoggingFilterObject(LoggingFilterType.EquipmentLoot)
+        AddFilter(new LoggingFilterObject(LoggingFilterType.EquipmentLoot)
         {
             IsSelected = SettingsController.CurrentSettings.IsMainTrackerFilterEquipmentLoot,
             Name = MainWindowTranslation.EquipmentLoot
         });
 
-        Filters.Add(new LoggingFilterObject(LoggingFilterType.SimpleLoot)
+        AddFilter(new LoggingFilterObject(LoggingFilterType.SimpleLoot)
         {
             IsSelected = SettingsController.CurrentSettings.IsMainTrackerFilterSimpleLoot,
             Name = MainWindowTranslation.SimpleLoot
         });
 
-        Filters.Add(new LoggingFilterObject(LoggingFilterType.UnknownLoot)
+        AddFilter(new LoggingFilterObject(LoggingFilterType.UnknownLoot)
         {
             IsSelected = SettingsController.CurrentSettings.IsMainTrackerFilterUnknownLoot,
             Name = MainWindowTranslation.UnknownLoot
         });
 
-        Filters.Add(new LoggingFilterObject(LoggingFilterType.ShowLootFromMob)
+        AddFilter(new LoggingFilterObject(LoggingFilterType.ShowLootFromMob)
         {
             IsSelected = SettingsController.CurrentSettings.IsLootFromMobShown,
             Name = MainWindowTranslation.ShowLootFromMobs
         });
 
-        Filters.Add(new LoggingFilterObject(LoggingFilterType.Kill)
+        AddFilter(new LoggingFilterObject(LoggingFilterType.Kill)
         {
             IsSelected = SettingsController.CurrentSettings.IsMainTrackerFilterKill,
             Name = MainWindowTranslation.ShowKills
         });
+    }
+
+    private void AddFilter(LoggingFilterObject filter)
+    {
+        filter.PropertyChanged += FilterPropertyChanged;
+        Filters.Add(filter);
+    }
+
+    private void ClearFilters()
+    {
+        foreach (var filter in Filters)
+        {
+            filter.PropertyChanged -= FilterPropertyChanged;
+        }
+
+        Filters.Clear();
+    }
+
+    private void FilterPropertyChanged(object sender, PropertyChangedEventArgs args)
+    {
+        if (args.PropertyName == nameof(LoggingFilterObject.IsSelected))
+        {
+            OnPropertyChanged(nameof(NotificationFilterSummary));
+        }
     }
 
     #region Loot comparator
@@ -644,6 +671,8 @@ public class LoggingBindings : BaseViewModel
     public string StatusFilterSummary => BuildFilterSummary(LoggingTranslation.FilterStatus, CountSelectedFilters(IsShowingLost, IsShowingResolved, IsShowingDonated, IsShowingTrash), 4);
     public string TierFilterSummary => BuildFilterSummary(LoggingTranslation.FilterTier, CountSelectedFilters(IsShowingT1ToT3, IsShowingT4, IsShowingT5, IsShowingT6, IsShowingT7, IsShowingT8), 6);
     public string TypeFilterSummary => BuildFilterSummary(LoggingTranslation.FilterType, CountSelectedFilters(IsShowingFood, IsShowingPotion, IsShowingBag, IsShowingCape, IsShowingMount, IsShowingOthers), 6);
+    public string NotificationFilterSummary => BuildFilterSummary(LoggingTranslation.Filter, Filters.Count(filter => filter.IsSelected == true), Filters.Count);
+    public string TrackingSummary => BuildFilterSummary(LoggingTranslation.Tracking, CountSelectedFilters(IsTrackingPartyLootOnly, IsTrackingSilver, IsTrackingFame, IsTrackingMobLoot, IsTrackingKill), 5);
 
     private static string BuildFilterSummary(string filterName, int selectedCount, int totalCount)
     {
@@ -786,6 +815,7 @@ public class LoggingBindings : BaseViewModel
 
             SettingsController.CurrentSettings.IsTrackingSilver = field;
             OnPropertyChanged();
+            OnPropertyChanged(nameof(TrackingSummary));
         }
     }
 
@@ -798,6 +828,7 @@ public class LoggingBindings : BaseViewModel
 
             SettingsController.CurrentSettings.IsTrackingFame = field;
             OnPropertyChanged();
+            OnPropertyChanged(nameof(TrackingSummary));
         }
     }
 
@@ -810,6 +841,33 @@ public class LoggingBindings : BaseViewModel
 
             SettingsController.CurrentSettings.IsTrackingMobLoot = field;
             OnPropertyChanged();
+            OnPropertyChanged(nameof(TrackingSummary));
+        }
+    }
+
+    public bool IsTrackingPartyLootOnly
+    {
+        get;
+        set
+        {
+            field = value;
+
+            SettingsController.CurrentSettings.IsTrackingPartyLootOnly = field;
+            OnPropertyChanged();
+            OnPropertyChanged(nameof(TrackingSummary));
+        }
+    }
+
+    public bool IsTrackingKill
+    {
+        get;
+        set
+        {
+            field = value;
+
+            SettingsController.CurrentSettings.IsTrackingKill = field;
+            OnPropertyChanged();
+            OnPropertyChanged(nameof(TrackingSummary));
         }
     }
 
