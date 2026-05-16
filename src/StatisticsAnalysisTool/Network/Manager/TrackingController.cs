@@ -23,7 +23,6 @@ using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Diagnostics;
-using System.Linq;
 using System.Net.Sockets;
 using System.Threading.Tasks;
 using System.Windows;
@@ -38,6 +37,7 @@ public class TrackingController : ITrackingController
 
     private NetworkManager _networkManager;
     private readonly MainWindowViewModel _mainWindowViewModel;
+    private string _currentNotificationSearchText = string.Empty;
 
     public readonly LiveStatsTracker LiveStatsTracker;
     public readonly CombatController CombatController;
@@ -93,9 +93,8 @@ public class TrackingController : ITrackingController
         _mainWindowViewModel.LoggingBindings.GameLoggingCollectionView = CollectionViewSource.GetDefaultView(_mainWindowViewModel.LoggingBindings.TrackingNotifications) as ListCollectionView;
         if (_mainWindowViewModel.LoggingBindings?.GameLoggingCollectionView != null)
         {
-            _mainWindowViewModel.LoggingBindings.GameLoggingCollectionView.IsLiveSorting = true;
-            _mainWindowViewModel.LoggingBindings.GameLoggingCollectionView.IsLiveFiltering = true;
-            _mainWindowViewModel.LoggingBindings.GameLoggingCollectionView.SortDescriptions.Add(new SortDescription(nameof(DateTime), ListSortDirection.Descending));
+            _mainWindowViewModel.LoggingBindings.GameLoggingCollectionView.Filter = IsNotificationVisible;
+            _mainWindowViewModel.LoggingBindings.GameLoggingCollectionView.SortDescriptions.Add(new SortDescription(nameof(TrackingNotification.DateTime), ListSortDirection.Descending));
         }
     }
 
@@ -298,15 +297,12 @@ public class TrackingController : ITrackingController
             return;
         }
 
-        SetNotificationFilteredVisibility(item);
-
         await Application.Current.Dispatcher.InvokeAsync(delegate
         {
-            _mainWindowViewModel?.LoggingBindings?.TrackingNotifications.Insert(0, item);
+            _mainWindowViewModel?.LoggingBindings?.TrackingNotifications.Add(item);
         });
 
         await RemovesUnnecessaryNotificationsAsync();
-        await SetNotificationTypesAsync();
     }
 
     private async Task RemovesUnnecessaryNotificationsAsync()
@@ -318,21 +314,19 @@ public class TrackingController : ITrackingController
 
         _isRemovesUnnecessaryNotificationsActive = true;
 
-        int? numberToBeRemoved = _mainWindowViewModel?.LoggingBindings?.TrackingNotifications?.Count - MaxNotifications;
-        if (numberToBeRemoved is > 0)
+        await Application.Current.Dispatcher.InvokeAsync(() =>
         {
-            var notifications = _mainWindowViewModel?.LoggingBindings?.TrackingNotifications?.ToList().OrderBy(x => x?.DateTime).Take((int) numberToBeRemoved).ToAsyncEnumerable();
-            if (notifications != null)
+            var notifications = _mainWindowViewModel?.LoggingBindings?.TrackingNotifications;
+            if (notifications == null)
             {
-                await foreach (var notification in notifications)
-                {
-                    await Application.Current.Dispatcher.InvokeAsync(() =>
-                    {
-                        _ = _mainWindowViewModel?.LoggingBindings?.TrackingNotifications.Remove(notification);
-                    });
-                }
+                return;
             }
-        }
+
+            while (notifications.Count > MaxNotifications)
+            {
+                notifications.RemoveAt(0);
+            }
+        });
 
         _isRemovesUnnecessaryNotificationsActive = false;
     }
@@ -349,31 +343,35 @@ public class TrackingController : ITrackingController
     {
         try
         {
-            string searchText = text?.Trim();
+            _currentNotificationSearchText = text?.Trim() ?? string.Empty;
 
             await Application.Current.Dispatcher.InvokeAsync(() =>
             {
-                var notifications = _mainWindowViewModel?.LoggingBindings?.TrackingNotifications;
-                if (notifications == null)
+                var view = _mainWindowViewModel?.LoggingBindings?.GameLoggingCollectionView;
+                if (view == null)
                 {
                     return;
                 }
 
-                bool hasSearchText = !string.IsNullOrWhiteSpace(searchText);
-
-                foreach (var notification in notifications)
-                {
-                    bool isVisible = MatchesNotificationFilters(notification)
-                                     && (!hasSearchText || MatchesNotificationSearch(notification, searchText));
-
-                    notification.Visibility = isVisible ? Visibility.Visible : Visibility.Collapsed;
-                }
+                view.Refresh();
             });
         }
         catch (Exception)
         {
             // ignore
         }
+    }
+
+    private bool IsNotificationVisible(object item)
+    {
+        if (item is not TrackingNotification notification)
+        {
+            return false;
+        }
+
+        return MatchesNotificationFilters(notification)
+               && (string.IsNullOrWhiteSpace(_currentNotificationSearchText)
+                   || MatchesNotificationSearch(notification, _currentNotificationSearchText));
     }
 
     private bool MatchesNotificationFilters(TrackingNotification notification)
@@ -414,16 +412,6 @@ public class TrackingController : ITrackingController
                && source.IndexOf(value, StringComparison.OrdinalIgnoreCase) >= 0;
     }
 
-    private void SetNotificationFilteredVisibility(TrackingNotification trackingNotification)
-    {
-        trackingNotification.Visibility = IsNotificationFiltered(trackingNotification) ? Visibility.Collapsed : Visibility.Visible;
-    }
-
-    private bool IsNotificationFiltered(TrackingNotification trackingNotification)
-    {
-        return !_notificationTypesFilters?.Exists(x => x == trackingNotification.Type) ?? false;
-    }
-
     public void UpdateFilterType(LoggingFilterType notificationType, bool isSelected)
     {
         if (notificationType == LoggingFilterType.ShowLootFromMob)
@@ -441,6 +429,7 @@ public class TrackingController : ITrackingController
         }
 
         UpdateLoggingFilterSettings(notificationType, isSelected);
+        _ = NotificationUiFilteringAsync(_currentNotificationSearchText);
     }
 
     private static void UpdateLoggingFilterSettings(LoggingFilterType notificationType, bool isSelected)
@@ -481,21 +470,6 @@ public class TrackingController : ITrackingController
     }
 
     public bool IsLootFromMobShown { get; set; }
-
-    private async Task SetNotificationTypesAsync()
-    {
-        await Application.Current.Dispatcher.InvokeAsync(async () =>
-        {
-            var notifications = _mainWindowViewModel?.LoggingBindings?.TrackingNotifications?.ToAsyncEnumerable();
-            if (notifications != null)
-            {
-                await foreach (var notification in notifications)
-                {
-                    notification.SetType();
-                }
-            }
-        });
-    }
 
     private static bool _isRemovesUnnecessaryNotificationsActive;
     private DateTime _lastRemovesUnnecessaryNotifications;

@@ -207,7 +207,7 @@
     </Style>
 
     <DataTemplate x:Key="NotificationTemplate" DataType="{x:Type notification:TrackingNotification}">
-        <Grid Visibility="{Binding Visibility}">
+        <Grid>
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="Auto" />
                 <ColumnDefinition />

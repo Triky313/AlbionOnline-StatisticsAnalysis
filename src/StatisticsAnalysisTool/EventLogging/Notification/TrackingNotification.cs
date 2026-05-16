@@ -1,8 +1,7 @@
-﻿using StatisticsAnalysisTool.Common;
+using StatisticsAnalysisTool.Common;
 using StatisticsAnalysisTool.Enumerations;
 using StatisticsAnalysisTool.ViewModels;
 using System;
-using System.Windows;
 
 namespace StatisticsAnalysisTool.EventLogging.Notification;
 
@@ -11,7 +10,6 @@ public class TrackingNotification : BaseViewModel
     private const int SetTypesMaxTries = 3;
 
     private LoggingFilterType _type;
-    private Visibility _visibility;
     private readonly int _itemIndex;
     private int _trySetTypeCounter;
 
@@ -45,16 +43,6 @@ public class TrackingNotification : BaseViewModel
     }
 
     public Guid InstanceId { get; }
-
-    public Visibility Visibility
-    {
-        get => _visibility;
-        set
-        {
-            _visibility = value;
-            OnPropertyChanged();
-        }
-    }
 
     public void SetType(bool forceSetType = false)
     {
