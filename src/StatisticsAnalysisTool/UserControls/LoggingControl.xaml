@@ -5,6 +5,7 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:fa5="http://schemas.fontawesome.com/icons/"
              xmlns:vwp="clr-namespace:WpfToolkit.Controls;assembly=VirtualizingWrapPanel"
+             xmlns:eventLogging="clr-namespace:StatisticsAnalysisTool.EventLogging"
              xmlns:viewModels="clr-namespace:StatisticsAnalysisTool.ViewModels"
              mc:Ignorable="d"
              d:DesignHeight="400" d:DesignWidth="900"
@@ -49,6 +50,148 @@
                 </Setter.Value>
             </Setter>
         </Style>
+
+        <DataTemplate x:Key="LootLoggerStatsEntryTemplate" DataType="{x:Type eventLogging:LootLoggerStatsEntry}">
+            <StackPanel Margin="0,0,0,5">
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="24"/>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="120"/>
+                    </Grid.ColumnDefinitions>
+                    <TextBlock Grid.Column="0" Text="{Binding Rank, StringFormat='{}{0}.'}"
+                               Foreground="{StaticResource SolidColorBrush.Text.2}" FontSize="15" FontWeight="Bold" />
+                    <TextBlock Grid.Column="1" Text="{Binding Name}"
+                               Foreground="{StaticResource SolidColorBrush.Text.1}" FontSize="15" TextTrimming="CharacterEllipsis" />
+                    <TextBlock Grid.Column="2" Text="{Binding ValueString}"
+                               Foreground="{Binding Foreground, RelativeSource={RelativeSource AncestorType={x:Type ItemsControl}}}"
+                               HorizontalAlignment="Right" FontSize="15" FontWeight="Bold" />
+                </Grid>
+                <TextBlock Margin="24,-1,0,0" Foreground="{StaticResource SolidColorBrush.Text.3}" FontSize="13"
+                           Visibility="{Binding DetailVisibility}" TextTrimming="CharacterEllipsis">
+                    <TextBlock.Text>
+                        <MultiBinding StringFormat="{}{0}: {1}">
+                            <Binding Path="DataContext.LoggingBindings.Translation.Killer" RelativeSource="{RelativeSource AncestorType={x:Type UserControl}}" FallbackValue="Killer" />
+                            <Binding Path="Detail" />
+                        </MultiBinding>
+                    </TextBlock.Text>
+                </TextBlock>
+            </StackPanel>
+        </DataTemplate>
+
+        <DataTemplate x:Key="LootLoggerStatsDetailEntryTemplate" DataType="{x:Type eventLogging:LootLoggerStatsEntry}">
+            <StackPanel>
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="20"/>
+                        <ColumnDefinition Width="46"/>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="120"/>
+                    </Grid.ColumnDefinitions>
+                    <TextBlock Grid.Column="0" Text="{Binding Rank, StringFormat='{}{0}.'}" Foreground="{StaticResource SolidColorBrush.Text.2}" 
+                               FontSize="20" FontWeight="Bold" VerticalAlignment="Center" />
+                    <Image Grid.Column="1" Source="{Binding Icon}" Width="36" Height="36" Stretch="Fill" Margin="0,4,0,0"
+                           Visibility="{Binding IconVisibility}" VerticalAlignment="Center" HorizontalAlignment="Center" />
+                    <StackPanel Grid.Column="2" VerticalAlignment="Center" HorizontalAlignment="Left">
+                        <TextBlock Text="{Binding Name}" Foreground="{StaticResource SolidColorBrush.Text.1}" FontSize="16" TextTrimming="CharacterEllipsis" />
+                        <TextBlock Foreground="{StaticResource SolidColorBrush.Accent.Blue.1}" FontSize="12" 
+                                   Visibility="{Binding DetailVisibility}" Text="{Binding Detail}" TextTrimming="CharacterEllipsis" />
+                    </StackPanel>
+                    <TextBlock Grid.Column="3" Text="{Binding ValueString}" 
+                               Foreground="{Binding Foreground, RelativeSource={RelativeSource AncestorType={x:Type ItemsControl}}}" 
+                               HorizontalAlignment="Right" VerticalAlignment="Center" FontSize="20" FontWeight="Bold" />
+                </Grid>
+            </StackPanel>
+        </DataTemplate>
+
+        <DataTemplate x:Key="LootLoggerStatsTemplate" DataType="{x:Type eventLogging:LootLoggerStats}">
+            <Grid Margin="0,5,0,0">
+                <ScrollViewer Visibility="{Binding ContentVisibility}">
+                    <UniformGrid Columns="2">
+                        <Border Margin="0,2,10,4" Padding="4,3" BorderBrush="{StaticResource SolidColorBrush.Accent.Yellow.3}" BorderThickness="0,1,0,0">
+                            <DockPanel LastChildFill="True">
+                                <TextBlock DockPanel.Dock="Top" Text="{Binding DataContext.LoggingBindings.Translation.LootStats, RelativeSource={RelativeSource AncestorType={x:Type UserControl}}, FallbackValue='Loot'}"
+                                           Foreground="{StaticResource SolidColorBrush.Accent.Yellow.3}" FontWeight="Bold" Margin="0,0,0,2" FontSize="14" />
+                                <Grid>
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="*"/>
+                                        <ColumnDefinition Width="125"/>
+                                    </Grid.ColumnDefinitions>
+                                    <Grid.RowDefinitions>
+                                        <RowDefinition Height="Auto"/>
+                                        <RowDefinition Height="Auto"/>
+                                    </Grid.RowDefinitions>
+                                    <TextBlock Grid.Row="0" Grid.Column="0" Text="{Binding DataContext.LoggingBindings.Translation.TotalLootValue, RelativeSource={RelativeSource AncestorType={x:Type UserControl}}, FallbackValue='Total Loot Value'}"
+                                               Foreground="{StaticResource SolidColorBrush.Text.1}" FontSize="14" Margin="0,0,0,2" />
+                                    <TextBlock Grid.Row="0" Grid.Column="1" Text="{Binding TotalLootValue}" Foreground="{StaticResource SolidColorBrush.Accent.Yellow.3}"
+                                               HorizontalAlignment="Right" FontSize="15" FontWeight="Bold" Margin="0,0,0,2" />
+                                    <TextBlock Grid.Row="1" Grid.Column="0" Text="{Binding DataContext.LoggingBindings.Translation.LootValuePerHour, RelativeSource={RelativeSource AncestorType={x:Type UserControl}}, FallbackValue='Loot Value per Hour'}"
+                                               Foreground="{StaticResource SolidColorBrush.Text.1}" FontSize="14" />
+                                    <TextBlock Grid.Row="1" Grid.Column="1" Text="{Binding LootValuePerHour}" Foreground="{StaticResource SolidColorBrush.Accent.Yellow.3}"
+                                               HorizontalAlignment="Right" FontSize="15" FontWeight="Bold" />
+                                </Grid>
+                            </DockPanel>
+                        </Border>
+
+                        <Border Margin="10,2,0,8" Padding="5" BorderBrush="{StaticResource SolidColorBrush.Accent.Yellow.3}" BorderThickness="0,1,0,0">
+                            <DockPanel LastChildFill="True">
+                                <TextBlock DockPanel.Dock="Top" Text="{Binding DataContext.LoggingBindings.Translation.BestSingleLoot, RelativeSource={RelativeSource AncestorType={x:Type UserControl}}, FallbackValue='Best Single Item'}"
+                                           Foreground="{StaticResource SolidColorBrush.Accent.Yellow.3}" FontWeight="Bold" Margin="0,0,0,5" FontSize="15" />
+                                <ItemsControl ItemsSource="{Binding BestSingleLoots}" ItemTemplate="{StaticResource LootLoggerStatsDetailEntryTemplate}"
+                                              Foreground="{StaticResource SolidColorBrush.Accent.Yellow.3}" />
+                            </DockPanel>
+                        </Border>
+
+                        <Border Margin="0,2,10,8" Padding="5" BorderBrush="{StaticResource SolidColorBrush.Value.Silver}" BorderThickness="0,1,0,0">
+                            <DockPanel LastChildFill="True">
+                                <TextBlock DockPanel.Dock="Top" Text="{Binding DataContext.LoggingBindings.Translation.HighestKillValue, RelativeSource={RelativeSource AncestorType={x:Type UserControl}}, FallbackValue='Highest Kill Value'}"
+                                           Foreground="{StaticResource SolidColorBrush.Value.Silver}" FontWeight="Bold" Margin="0,0,0,5" FontSize="15" />
+                                <ItemsControl ItemsSource="{Binding HighestKillValues}" ItemTemplate="{StaticResource LootLoggerStatsEntryTemplate}"
+                                              Foreground="{StaticResource SolidColorBrush.Value.Silver}" />
+                            </DockPanel>
+                        </Border>
+
+                        <Border Margin="10,2,0,8" Padding="5" BorderBrush="{StaticResource SolidColorBrush.Accent.Green.3}" BorderThickness="0,1,0,0">
+                            <DockPanel LastChildFill="True">
+                                <TextBlock DockPanel.Dock="Top" Text="{Binding DataContext.LoggingBindings.Translation.HighestLootedValue, RelativeSource={RelativeSource AncestorType={x:Type UserControl}}, FallbackValue='Highest Looted Value'}"
+                                           Foreground="{StaticResource SolidColorBrush.Accent.Green.3}" FontWeight="Bold" Margin="0,0,0,5" FontSize="15" />
+                                <ItemsControl ItemsSource="{Binding HighestLootedValues}" ItemTemplate="{StaticResource LootLoggerStatsEntryTemplate}"
+                                              Foreground="{StaticResource SolidColorBrush.Accent.Green.3}" />
+                            </DockPanel>
+                        </Border>
+
+                        <Border Margin="0,2,10,8" Padding="5" BorderBrush="{StaticResource SolidColorBrush.Accent.Blue.2}" BorderThickness="0,1,0,0">
+                            <DockPanel LastChildFill="True">
+                                <TextBlock DockPanel.Dock="Top" Text="{Binding DataContext.LoggingBindings.Translation.MostLootedItems, RelativeSource={RelativeSource AncestorType={x:Type UserControl}}, FallbackValue='Most Looted Items'}"
+                                           Foreground="{StaticResource SolidColorBrush.Accent.Blue.2}" FontWeight="Bold" Margin="0,0,0,5" FontSize="15" />
+                                <ItemsControl ItemsSource="{Binding MostLootedItems}" ItemTemplate="{StaticResource LootLoggerStatsEntryTemplate}"
+                                              Foreground="{StaticResource SolidColorBrush.Accent.Blue.2}" />
+                            </DockPanel>
+                        </Border>
+
+                        <Border Margin="10,2,0,8" Padding="5" BorderBrush="{StaticResource SolidColorBrush.Accent.Red.2}" BorderThickness="0,1,0,0">
+                            <DockPanel LastChildFill="True">
+                                <TextBlock DockPanel.Dock="Top" Text="{Binding DataContext.LoggingBindings.Translation.MostKills, RelativeSource={RelativeSource AncestorType={x:Type UserControl}}, FallbackValue='Most Kills'}"
+                                           Foreground="{StaticResource SolidColorBrush.Accent.Red.2}" FontWeight="Bold" Margin="0,0,0,5" FontSize="15" />
+                                <ItemsControl ItemsSource="{Binding MostKills}" ItemTemplate="{StaticResource LootLoggerStatsEntryTemplate}"
+                                              Foreground="{StaticResource SolidColorBrush.Accent.Red.2}" />
+                            </DockPanel>
+                        </Border>
+
+                        <Border Margin="0,2,10,8" Padding="5" BorderBrush="{StaticResource SolidColorBrush.Accent.Orange.3}" BorderThickness="0,1,0,0">
+                            <DockPanel LastChildFill="True">
+                                <TextBlock DockPanel.Dock="Top" Text="{Binding DataContext.LoggingBindings.Translation.MostDeaths, RelativeSource={RelativeSource AncestorType={x:Type UserControl}}, FallbackValue='Most Deaths'}"
+                                           Foreground="{StaticResource SolidColorBrush.Accent.Orange.3}" FontWeight="Bold" Margin="0,0,0,5" FontSize="15" />
+                                <ItemsControl ItemsSource="{Binding MostDeaths}" ItemTemplate="{StaticResource LootLoggerStatsEntryTemplate}"
+                                              Foreground="{StaticResource SolidColorBrush.Accent.Orange.3}" />
+                            </DockPanel>
+                        </Border>
+                    </UniformGrid>
+                </ScrollViewer>
+                <TextBlock Text="{Binding DataContext.LoggingBindings.Translation.NoLootLoggerStatsAvailable, RelativeSource={RelativeSource AncestorType={x:Type UserControl}}, FallbackValue='No Loot Logger stats available yet.'}"
+                           Visibility="{Binding EmptyVisibility}" Foreground="{StaticResource SolidColorBrush.Text.2}" FontSize="15" Margin="5" />
+            </Grid>
+        </DataTemplate>
     </UserControl.Resources>
     <Grid>
         <TabControl Background="Transparent" BorderThickness="0">
@@ -78,7 +221,7 @@
                                 </Popup>
                             </StackPanel>
 
-                            <StackPanel Margin="0,0,6,0">
+                            <StackPanel Margin="0,0,6,0" Orientation="Horizontal">
                                 <ToggleButton x:Name="TrackingSettingsButton" Style="{StaticResource Logging.DropdownButton}"
                                               Content="{Binding LoggingBindings.TrackingSummary, FallbackValue='Tracking: All'}" />
                                 <Popup PlacementTarget="{Binding ElementName=TrackingSettingsButton}"
@@ -101,21 +244,21 @@
                                         </StackPanel>
                                     </Border>
                                 </Popup>
-                            </StackPanel>
 
-                            <Grid Height="24" Width="24" Margin="5,0,5,0" VerticalAlignment="Center">
-                                <fa5:ImageAwesome Icon="Solid_FileCsv" ToolTip="{Binding Translation.ExportLootToFile}"
-                                                  Foreground="{StaticResource SolidColorBrush.Accent.Green.4}" MouseUp="BtnExportLootToFile_MouseUp" />
-                            </Grid>
-                            <Grid Height="24" Width="24" Margin="5,0,0,0" VerticalAlignment="Center">
-                                <fa5:ImageAwesome Icon="Solid_FileCode" ToolTip="{Binding Translation.ExportLootToJsonFile}"
-                                                  Foreground="{StaticResource SolidColorBrush.Accent.Green.4}" MouseUp="BtnExportLootToJsonFile_MouseUp" />
-                            </Grid>
+                                <Grid Height="24" Width="24" Margin="5,0,5,0" VerticalAlignment="Center">
+                                    <fa5:ImageAwesome Icon="Solid_FileCsv" ToolTip="{Binding Translation.ExportLootToFile}"
+                                                      Foreground="{StaticResource SolidColorBrush.Accent.Green.4}" MouseUp="BtnExportLootToFile_MouseUp" />
+                                </Grid>
+                                <Grid Height="24" Width="24" Margin="5,0,0,0" VerticalAlignment="Center">
+                                    <fa5:ImageAwesome Icon="Solid_FileCode" ToolTip="{Binding Translation.ExportLootToJsonFile}"
+                                                      Foreground="{StaticResource SolidColorBrush.Accent.Green.4}" MouseUp="BtnExportLootToJsonFile_MouseUp" />
+                                </Grid>
+                            </StackPanel>
                         </WrapPanel>
 
                         <StackPanel VerticalAlignment="Center" HorizontalAlignment="Right" Orientation="Horizontal" Margin="0,0,5,0">
                             <Button Content="{Binding Translation.ResetTrackingNotifications, FallbackValue=RESET__TRACKING__NOTIFICATIONS}"
-                                    Height="26" MaxWidth="500" MinWidth="250" Margin="0,0,0,5"
+                                    Height="26" MaxWidth="500" MinWidth="210" Margin="0,0,0,5"
                                     Width="Auto" VerticalAlignment="Top" Style="{StaticResource Style.Button.Danger}"
                                     Click="BtnTrackingNotificationsReset_Click" />
                         </StackPanel>
@@ -160,7 +303,7 @@
                             </ListBox>
                         </TabItem>
                         <TabItem Header="{Binding LoggingBindings.Translation.Stats, FallbackValue=STATS}">
-                            <Grid />
+                            <ContentControl Content="{Binding LoggingBindings.LootLoggerStats}" ContentTemplate="{StaticResource LootLoggerStatsTemplate}" />
                         </TabItem>
                     </TabControl>
                 </Grid>

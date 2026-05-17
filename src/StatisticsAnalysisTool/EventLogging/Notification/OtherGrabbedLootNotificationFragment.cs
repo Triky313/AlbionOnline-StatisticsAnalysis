@@ -1,7 +1,7 @@
-﻿using StatisticsAnalysisTool.Localization;
+using StatisticsAnalysisTool.Common;
+using StatisticsAnalysisTool.Localization;
 using StatisticsAnalysisTool.Models;
 using System.Windows.Media.Imaging;
-using StatisticsAnalysisTool.Common;
 
 namespace StatisticsAnalysisTool.EventLogging.Notification;
 
@@ -17,6 +17,8 @@ public class OtherGrabbedLootNotificationFragment : LineFragment
         Icon = item.Icon;
         Quantity = quantity;
         AverageEstMarketValue = item.AverageEstMarketValue;
+        AverageEstMarketValueShortString = AverageEstMarketValue.ToShortNumberString();
+        EstimatedMarketValueDisplayString = GetEstimatedMarketValueDisplayString(quantity, AverageEstMarketValue, AverageEstMarketValueShortString);
     }
 
     public string LootedByName { get; }
@@ -26,7 +28,8 @@ public class OtherGrabbedLootNotificationFragment : LineFragment
     public BitmapImage Icon { get; }
     public int Quantity { get; }
     public long AverageEstMarketValue { get; set; }
-    public string AverageEstMarketValueShortString => AverageEstMarketValue.ToShortNumberString();
+    public string AverageEstMarketValueShortString { get; }
+    public string EstimatedMarketValueDisplayString { get; }
     public string LootedFromName { get; }
     public string LootedFromGuild { get; }
     public bool IsLootedFromGuildEmpty => string.IsNullOrEmpty(LootedFromGuild);
@@ -36,4 +39,16 @@ public class OtherGrabbedLootNotificationFragment : LineFragment
     public static string LootedTranslation => LocalizationController.Translation("LOOTED");
     public static string TranslationGuild => LocalizationController.Translation("GUILD_CAP");
     public static string TranslationAverageEstMarketValue => LocalizationController.Translation("AVERAGE_EST_MARKET_VALUE");
+
+    private static string GetEstimatedMarketValueDisplayString(int quantity, long averageEstMarketValue, string averageEstMarketValueShortString)
+    {
+        if (quantity <= 1)
+        {
+            return averageEstMarketValueShortString;
+        }
+
+        return LocalizationController.Translation("LOOT_NOTIFICATION_UNIT_PRICE_FORMAT",
+            ["TOTAL_VALUE", "UNIT_PRICE"],
+            [((double) averageEstMarketValue * quantity).ToShortNumberString(), averageEstMarketValueShortString]);
+    }
 }

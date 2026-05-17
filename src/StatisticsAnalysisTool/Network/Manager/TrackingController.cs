@@ -308,6 +308,8 @@ public class TrackingController : ITrackingController
             _mainWindowViewModel?.LoggingBindings?.TrackingNotifications.Add(item);
         });
 
+        _mainWindowViewModel?.LoggingBindings?.LootLoggerStats?.RecordNotification(item);
+
         await RemovesUnnecessaryNotificationsAsync();
     }
 
@@ -360,6 +362,7 @@ public class TrackingController : ITrackingController
                 }
 
                 view.Refresh();
+                _mainWindowViewModel?.LoggingBindings?.LootLoggerStats?.Refresh();
             });
         }
         catch (Exception)

@@ -174,6 +174,8 @@ public class LootController : ILootController
             AverageEstMarketValue = item.AverageEstMarketValue,
         });
 
+        _mainWindowViewModel.LoggingBindings.LootLoggerStats.RecordLoot(loot, item);
+
         OnAddLoot?.Invoke(loot.LootedByName, loot.Quantity);
 
         await RemoveLootIfMoreThanLimitAsync(MaxLoot);
@@ -244,6 +246,7 @@ public class LootController : ILootController
         Application.Current.Dispatcher.Invoke(() =>
         {
             _mainWindowViewModel?.LoggingBindings?.TopLooters?.Clear();
+            _mainWindowViewModel?.LoggingBindings?.LootLoggerStats?.Reset();
         });
     }
 
@@ -256,6 +259,8 @@ public class LootController : ILootController
             KilledBy = killedBy,
             KilledByGuild = killedByGuild
         });
+
+        _mainWindowViewModel.LoggingBindings.LootLoggerStats.RecordKillDeath(died, killedBy);
 
         await RemoveLootIfMoreThanLimitAsync(MaxLoot);
     }

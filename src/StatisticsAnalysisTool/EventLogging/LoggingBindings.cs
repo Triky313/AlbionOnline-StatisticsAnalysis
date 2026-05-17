@@ -786,6 +786,16 @@ public class LoggingBindings : BaseViewModel
         }
     } = new();
 
+    public LootLoggerStats LootLoggerStats
+    {
+        get;
+        set
+        {
+            field = value;
+            OnPropertyChanged();
+        }
+    } = new();
+
     public ListCollectionView TopLootersCollectionView
     {
         get;
