@@ -111,7 +111,7 @@
                         <Border Margin="0,2,10,4" Padding="4,3" BorderBrush="{StaticResource SolidColorBrush.Accent.Yellow.3}" BorderThickness="0,1,0,0">
                             <DockPanel LastChildFill="True">
                                 <TextBlock DockPanel.Dock="Top" Text="{Binding DataContext.LoggingBindings.Translation.LootStats, RelativeSource={RelativeSource AncestorType={x:Type UserControl}}, FallbackValue='Loot'}"
-                                           Foreground="{StaticResource SolidColorBrush.Accent.Yellow.3}" FontWeight="Bold" Margin="0,0,0,2" FontSize="14" />
+                                           Foreground="{StaticResource SolidColorBrush.Accent.Yellow.3}" FontWeight="Bold" Margin="0,0,0,2" FontSize="16" />
                                 <Grid>
                                     <Grid.ColumnDefinitions>
                                         <ColumnDefinition Width="*"/>
@@ -136,7 +136,7 @@
                         <Border Margin="10,2,0,8" Padding="5" BorderBrush="{StaticResource SolidColorBrush.Accent.Yellow.3}" BorderThickness="0,1,0,0">
                             <DockPanel LastChildFill="True">
                                 <TextBlock DockPanel.Dock="Top" Text="{Binding DataContext.LoggingBindings.Translation.BestSingleLoot, RelativeSource={RelativeSource AncestorType={x:Type UserControl}}, FallbackValue='Best Single Item'}"
-                                           Foreground="{StaticResource SolidColorBrush.Accent.Yellow.3}" FontWeight="Bold" Margin="0,0,0,5" FontSize="15" />
+                                           Foreground="{StaticResource SolidColorBrush.Accent.Yellow.3}" FontWeight="Bold" Margin="0,0,0,5" FontSize="16" />
                                 <ItemsControl ItemsSource="{Binding BestSingleLoots}" ItemTemplate="{StaticResource LootLoggerStatsDetailEntryTemplate}"
                                               Foreground="{StaticResource SolidColorBrush.Accent.Yellow.3}" />
                             </DockPanel>
@@ -145,7 +145,7 @@
                         <Border Margin="0,2,10,8" Padding="5" BorderBrush="{StaticResource SolidColorBrush.Value.Silver}" BorderThickness="0,1,0,0">
                             <DockPanel LastChildFill="True">
                                 <TextBlock DockPanel.Dock="Top" Text="{Binding DataContext.LoggingBindings.Translation.HighestKillValue, RelativeSource={RelativeSource AncestorType={x:Type UserControl}}, FallbackValue='Highest Kill Value'}"
-                                           Foreground="{StaticResource SolidColorBrush.Value.Silver}" FontWeight="Bold" Margin="0,0,0,5" FontSize="15" />
+                                           Foreground="{StaticResource SolidColorBrush.Value.Silver}" FontWeight="Bold" Margin="0,0,0,5" FontSize="16" />
                                 <ItemsControl ItemsSource="{Binding HighestKillValues}" ItemTemplate="{StaticResource LootLoggerStatsEntryTemplate}"
                                               Foreground="{StaticResource SolidColorBrush.Value.Silver}" />
                             </DockPanel>
@@ -154,7 +154,7 @@
                         <Border Margin="10,2,0,8" Padding="5" BorderBrush="{StaticResource SolidColorBrush.Accent.Green.3}" BorderThickness="0,1,0,0">
                             <DockPanel LastChildFill="True">
                                 <TextBlock DockPanel.Dock="Top" Text="{Binding DataContext.LoggingBindings.Translation.HighestLootedValue, RelativeSource={RelativeSource AncestorType={x:Type UserControl}}, FallbackValue='Highest Looted Value'}"
-                                           Foreground="{StaticResource SolidColorBrush.Accent.Green.3}" FontWeight="Bold" Margin="0,0,0,5" FontSize="15" />
+                                           Foreground="{StaticResource SolidColorBrush.Accent.Green.3}" FontWeight="Bold" Margin="0,0,0,5" FontSize="16" />
                                 <ItemsControl ItemsSource="{Binding HighestLootedValues}" ItemTemplate="{StaticResource LootLoggerStatsEntryTemplate}"
                                               Foreground="{StaticResource SolidColorBrush.Accent.Green.3}" />
                             </DockPanel>
@@ -163,7 +163,7 @@
                         <Border Margin="0,2,10,8" Padding="5" BorderBrush="{StaticResource SolidColorBrush.Accent.Blue.2}" BorderThickness="0,1,0,0">
                             <DockPanel LastChildFill="True">
                                 <TextBlock DockPanel.Dock="Top" Text="{Binding DataContext.LoggingBindings.Translation.MostLootedItems, RelativeSource={RelativeSource AncestorType={x:Type UserControl}}, FallbackValue='Most Looted Items'}"
-                                           Foreground="{StaticResource SolidColorBrush.Accent.Blue.2}" FontWeight="Bold" Margin="0,0,0,5" FontSize="15" />
+                                           Foreground="{StaticResource SolidColorBrush.Accent.Blue.2}" FontWeight="Bold" Margin="0,0,0,5" FontSize="16" />
                                 <ItemsControl ItemsSource="{Binding MostLootedItems}" ItemTemplate="{StaticResource LootLoggerStatsEntryTemplate}"
                                               Foreground="{StaticResource SolidColorBrush.Accent.Blue.2}" />
                             </DockPanel>
@@ -172,7 +172,7 @@
                         <Border Margin="10,2,0,8" Padding="5" BorderBrush="{StaticResource SolidColorBrush.Accent.Red.2}" BorderThickness="0,1,0,0">
                             <DockPanel LastChildFill="True">
                                 <TextBlock DockPanel.Dock="Top" Text="{Binding DataContext.LoggingBindings.Translation.MostKills, RelativeSource={RelativeSource AncestorType={x:Type UserControl}}, FallbackValue='Most Kills'}"
-                                           Foreground="{StaticResource SolidColorBrush.Accent.Red.2}" FontWeight="Bold" Margin="0,0,0,5" FontSize="15" />
+                                           Foreground="{StaticResource SolidColorBrush.Accent.Red.2}" FontWeight="Bold" Margin="0,0,0,5" FontSize="16" />
                                 <ItemsControl ItemsSource="{Binding MostKills}" ItemTemplate="{StaticResource LootLoggerStatsEntryTemplate}"
                                               Foreground="{StaticResource SolidColorBrush.Accent.Red.2}" />
                             </DockPanel>
@@ -181,7 +181,7 @@
                         <Border Margin="0,2,10,8" Padding="5" BorderBrush="{StaticResource SolidColorBrush.Accent.Orange.3}" BorderThickness="0,1,0,0">
                             <DockPanel LastChildFill="True">
                                 <TextBlock DockPanel.Dock="Top" Text="{Binding DataContext.LoggingBindings.Translation.MostDeaths, RelativeSource={RelativeSource AncestorType={x:Type UserControl}}, FallbackValue='Most Deaths'}"
-                                           Foreground="{StaticResource SolidColorBrush.Accent.Orange.3}" FontWeight="Bold" Margin="0,0,0,5" FontSize="15" />
+                                           Foreground="{StaticResource SolidColorBrush.Accent.Orange.3}" FontWeight="Bold" Margin="0,0,0,5" FontSize="16" />
                                 <ItemsControl ItemsSource="{Binding MostDeaths}" ItemTemplate="{StaticResource LootLoggerStatsEntryTemplate}"
                                               Foreground="{StaticResource SolidColorBrush.Accent.Orange.3}" />
                             </DockPanel>
