@@ -43355,6 +43355,338 @@
           "seg": "Завершить"
         }
       ]
+    },
+    {
+      "tuid": "LOOT_NOTIFICATION_UNIT_PRICE_FORMAT",
+      "tuv": [
+        {
+          "lang": "de-DE",
+          "seg": "{TOTAL_VALUE} (à {UNIT_PRICE})"
+        },
+        {
+          "lang": "en-US",
+          "seg": "{TOTAL_VALUE} (each {UNIT_PRICE})"
+        },
+        {
+          "lang": "es-ES",
+          "seg": "{TOTAL_VALUE} (c/u {UNIT_PRICE})"
+        },
+        {
+          "lang": "fr-FR",
+          "seg": "{TOTAL_VALUE} (à {UNIT_PRICE})"
+        },
+        {
+          "lang": "ja-JP",
+          "seg": "{TOTAL_VALUE} (単価 {UNIT_PRICE})"
+        },
+        {
+          "lang": "ko-KR",
+          "seg": "{TOTAL_VALUE} (개당 {UNIT_PRICE})"
+        },
+        {
+          "lang": "pl-PL",
+          "seg": "{TOTAL_VALUE} (po {UNIT_PRICE})"
+        },
+        {
+          "lang": "pt-BR",
+          "seg": "{TOTAL_VALUE} (cada {UNIT_PRICE})"
+        },
+        {
+          "lang": "ru-RU",
+          "seg": "{TOTAL_VALUE} (за шт. {UNIT_PRICE})"
+        },
+        {
+          "lang": "zh-CN",
+          "seg": "{TOTAL_VALUE} (单价 {UNIT_PRICE})"
+        },
+        {
+          "lang": "zh-TW",
+          "seg": "{TOTAL_VALUE} (單價 {UNIT_PRICE})"
+        }
+      ]
+    },
+    {
+      "tuid": "LOOT_LOGGER_STATS",
+      "tuv": [
+        {
+          "lang": "de-DE",
+          "seg": "Loot Logger Stats"
+        },
+        {
+          "lang": "en-US",
+          "seg": "Loot Logger Stats"
+        }
+      ]
+    },
+    {
+      "tuid": "LOOT_STATS",
+      "tuv": [
+        {
+          "lang": "de-DE",
+          "seg": "Loot"
+        },
+        {
+          "lang": "en-US",
+          "seg": "Loot"
+        }
+      ]
+    },
+    {
+      "tuid": "SILVER_STATS",
+      "tuv": [
+        {
+          "lang": "de-DE",
+          "seg": "Silber"
+        },
+        {
+          "lang": "en-US",
+          "seg": "Silver"
+        }
+      ]
+    },
+    {
+      "tuid": "FAME_STATS",
+      "tuv": [
+        {
+          "lang": "de-DE",
+          "seg": "Fame"
+        },
+        {
+          "lang": "en-US",
+          "seg": "Fame"
+        }
+      ]
+    },
+    {
+      "tuid": "FACTION_STATS",
+      "tuv": [
+        {
+          "lang": "de-DE",
+          "seg": "Fraktion"
+        },
+        {
+          "lang": "en-US",
+          "seg": "Faction"
+        }
+      ]
+    },
+    {
+      "tuid": "LOOT_LOGGER_PER_HOUR_VALUE_FORMAT",
+      "tuv": [
+        {
+          "lang": "de-DE",
+          "seg": "{VALUE}/Std."
+        },
+        {
+          "lang": "en-US",
+          "seg": "{VALUE}/h"
+        },
+        {
+          "lang": "es-ES",
+          "seg": "{VALUE}/h"
+        },
+        {
+          "lang": "fr-FR",
+          "seg": "{VALUE}/h"
+        },
+        {
+          "lang": "ja-JP",
+          "seg": "{VALUE}/h"
+        },
+        {
+          "lang": "ko-KR",
+          "seg": "{VALUE}/h"
+        },
+        {
+          "lang": "pl-PL",
+          "seg": "{VALUE}/h"
+        },
+        {
+          "lang": "pt-BR",
+          "seg": "{VALUE}/h"
+        },
+        {
+          "lang": "ru-RU",
+          "seg": "{VALUE}/h"
+        },
+        {
+          "lang": "zh-CN",
+          "seg": "{VALUE}/h"
+        },
+        {
+          "lang": "zh-TW",
+          "seg": "{VALUE}/h"
+        }
+      ]
+    },
+    {
+      "tuid": "LOOT_VALUE_PER_HOUR",
+      "tuv": [
+        {
+          "lang": "de-DE",
+          "seg": "Lootwert pro Stunde"
+        },
+        {
+          "lang": "en-US",
+          "seg": "Loot Value per Hour"
+        }
+      ]
+    },
+    {
+      "tuid": "FAME_PER_HOUR",
+      "tuv": [
+        {
+          "lang": "de-DE",
+          "seg": "Fame pro Stunde"
+        },
+        {
+          "lang": "en-US",
+          "seg": "Fame per Hour"
+        }
+      ]
+    },
+    {
+      "tuid": "SILVER_PER_HOUR",
+      "tuv": [
+        {
+          "lang": "de-DE",
+          "seg": "Silber pro Stunde"
+        },
+        {
+          "lang": "en-US",
+          "seg": "Silver per Hour"
+        }
+      ]
+    },
+    {
+      "tuid": "FACTION_POINTS_TOTAL",
+      "tuv": [
+        {
+          "lang": "de-DE",
+          "seg": "Fraktionspunkte gesamt"
+        },
+        {
+          "lang": "en-US",
+          "seg": "Faction Points total"
+        }
+      ]
+    },
+    {
+      "tuid": "FACTION_POINTS_PER_HOUR",
+      "tuv": [
+        {
+          "lang": "de-DE",
+          "seg": "Fraktionspunkte pro Stunde"
+        },
+        {
+          "lang": "en-US",
+          "seg": "Faction Points per Hour"
+        }
+      ]
+    },
+    {
+      "tuid": "BEST_SINGLE_LOOT",
+      "tuv": [
+        {
+          "lang": "de-DE",
+          "seg": "Bestes Einzelitem"
+        },
+        {
+          "lang": "en-US",
+          "seg": "Best Single Item"
+        }
+      ]
+    },
+    {
+      "tuid": "HIGHEST_LOOTED_VALUE",
+      "tuv": [
+        {
+          "lang": "de-DE",
+          "seg": "Höchster gelooteter Wert"
+        },
+        {
+          "lang": "en-US",
+          "seg": "Highest Looted Value"
+        }
+      ]
+    },
+    {
+      "tuid": "MOST_LOOTED_ITEMS",
+      "tuv": [
+        {
+          "lang": "de-DE",
+          "seg": "Meiste gelootete Items"
+        },
+        {
+          "lang": "en-US",
+          "seg": "Most Looted Items"
+        }
+      ]
+    },
+    {
+      "tuid": "MOST_KILLS",
+      "tuv": [
+        {
+          "lang": "de-DE",
+          "seg": "Meiste Kills"
+        },
+        {
+          "lang": "en-US",
+          "seg": "Most Kills"
+        }
+      ]
+    },
+    {
+      "tuid": "MOST_DEATHS",
+      "tuv": [
+        {
+          "lang": "de-DE",
+          "seg": "Meiste Tode"
+        },
+        {
+          "lang": "en-US",
+          "seg": "Most Deaths"
+        }
+      ]
+    },
+    {
+      "tuid": "HIGHEST_KILL_VALUE",
+      "tuv": [
+        {
+          "lang": "de-DE",
+          "seg": "Höchster Kill-Wert"
+        },
+        {
+          "lang": "en-US",
+          "seg": "Highest Kill Value"
+        }
+      ]
+    },
+    {
+      "tuid": "KILLER",
+      "tuv": [
+        {
+          "lang": "de-DE",
+          "seg": "Killer"
+        },
+        {
+          "lang": "en-US",
+          "seg": "Killer"
+        }
+      ]
+    },
+    {
+      "tuid": "NO_LOOT_LOGGER_STATS_AVAILABLE",
+      "tuv": [
+        {
+          "lang": "de-DE",
+          "seg": "Noch keine Loot Logger Stats verfuegbar."
+        },
+        {
+          "lang": "en-US",
+          "seg": "No Loot Logger stats available yet."
+        }
+      ]
     }
   ]
 }

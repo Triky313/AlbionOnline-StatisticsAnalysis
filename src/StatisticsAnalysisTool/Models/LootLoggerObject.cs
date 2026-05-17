@@ -20,6 +20,7 @@ public class LootLoggerObject
     public string DiedPlayerGuild { get; set; }
     public string KilledBy { get; set; }
     public string KilledByGuild { get; set; }
+    public string ClusterName { get; set; }
     public long AverageEstMarketValue { get; set; }
 
     public string CsvOutput => GetCsvOutputStringWithRealItemName();
@@ -40,7 +41,8 @@ public class LootLoggerObject
     // 'DiedPlayerGuild'     (can be empty),
     // 'KilledBy'            (can be empty),
     // 'KilledByGuild'       (can be empty),
-    // 'AverageEstMarketValue' (can be empty for kill entries)
+    // 'AverageEstMarketValue' (can be empty for kill entries),
+    // 'Cluster'             (can be empty)
     private string GetCsvOutputStringWithRealItemName()
     {
         var uniqueItemName = UniqueItemName ?? string.Empty;
@@ -50,22 +52,24 @@ public class LootLoggerObject
         var averageEstMarketValue = string.IsNullOrWhiteSpace(uniqueItemName) ? string.Empty : AverageEstMarketValue.ToString(CultureInfo.InvariantCulture);
 
         return $"{UtcPickupTime.ToString("O", CultureInfo.InvariantCulture)};{LootedByAlliance ?? string.Empty};{LootedByGuild ?? string.Empty};{LootedByName ?? string.Empty};{uniqueItemName};{itemName.ToString(CultureInfo.InvariantCulture)}" +
-               $";{quantity};{LootedFromAlliance ?? string.Empty};{LootedFromGuild ?? string.Empty};{LootedFromName ?? string.Empty};{Died ?? string.Empty};{DiedPlayerGuild ?? string.Empty};{KilledBy ?? string.Empty};{KilledByGuild ?? string.Empty};{averageEstMarketValue}";
+               $";{quantity};{LootedFromAlliance ?? string.Empty};{LootedFromGuild ?? string.Empty};{LootedFromName ?? string.Empty};{Died ?? string.Empty};{DiedPlayerGuild ?? string.Empty};{KilledBy ?? string.Empty};{KilledByGuild ?? string.Empty};{averageEstMarketValue};{ClusterName ?? string.Empty}";
     }
 
     // JSON export format:
     // root object contains 'schema_version', 'exported_at_utc', and 'entries'.
-    // each entry contains 'timestamp_utc' and 'type'.
+    // each entry contains 'timestamp_utc', 'cluster', and 'type'.
     // loot entries contain a 'loot' object with 'looted_by', 'item', and 'looted_from'; item.id is the unique item name.
     // kill entries contain a 'kill' object with 'died', 'died_player_guild', 'killed_by', and 'killed_by_guild'.
     private object GetJsonOutputObject()
     {
         var timestampUtc = UtcPickupTime.ToString("O", CultureInfo.InvariantCulture);
+        var clusterName = ClusterName ?? string.Empty;
         if (IsKillEntry)
         {
             return new
             {
                 timestamp_utc = timestampUtc,
+                cluster = clusterName,
                 type = "kill",
                 kill = new
                 {
@@ -82,6 +86,7 @@ public class LootLoggerObject
         return new
         {
             timestamp_utc = timestampUtc,
+            cluster = clusterName,
             type = "loot",
             loot = new
             {

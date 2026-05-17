@@ -207,13 +207,15 @@
     </Style>
 
     <DataTemplate x:Key="NotificationTemplate" DataType="{x:Type notification:TrackingNotification}">
-        <Grid Visibility="{Binding Visibility}">
+        <Grid>
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="Auto" />
-                <ColumnDefinition />
+                <ColumnDefinition Width="Auto" />
+                <ColumnDefinition Width="*" />
             </Grid.ColumnDefinitions>
             <TextBlock Grid.Column="0" Margin="3" Text="{Binding DateTime, StringFormat=[hh:mm:ss]}" Foreground="{StaticResource SolidColorBrush.Text.1}" />
-            <ContentControl Grid.Column="1" Margin="3" Content="{Binding Fragment}" />
+            <TextBlock Grid.Column="1" Margin="3" Text="{Binding ClusterDisplayText}" Visibility="{Binding ClusterDisplayVisibility}" Foreground="{StaticResource SolidColorBrush.Text.2}" />
+            <ContentControl Grid.Column="2" Margin="3" Content="{Binding Fragment}" />
         </Grid>
     </DataTemplate>
 
@@ -409,7 +411,7 @@
             <TextBlock Text="{Binding LootedFromName, IsAsync=True, StringFormat='{}{0} '}" Foreground="{StaticResource SolidColorBrush.Accent.Red.3}"/>
             <StackPanel Orientation="Horizontal">
                 <Image Source="../Resources/silver.png" Height="14" Width="14" Margin="10,-10,5,0" ToolTip="{Binding TranslationAverageEstMarketValue}" />
-                <TextBlock Text="{Binding AverageEstMarketValueShortString, IsAsync=True, StringFormat='{}{0}'}" Foreground="{StaticResource SolidColorBrush.Text.1}"/>
+                <TextBlock Text="{Binding EstimatedMarketValueDisplayString, IsAsync=True, StringFormat='{}{0}'}" Foreground="{StaticResource SolidColorBrush.Text.1}"/>
             </StackPanel>
             <TextBlock Text="{Binding LootedFromGuild, IsAsync=True, StringFormat='{}({0}) '}" Foreground="{StaticResource SolidColorBrush.Accent.Red.3}"
                        ToolTip="{Binding TranslationGuild}">
@@ -526,7 +528,7 @@
     <DataTemplate x:Key="LoggingFilterObject" DataType="{x:Type eventLogging:LoggingFilterObject}">
         <StackPanel Orientation="Horizontal">
             <CheckBox IsChecked="{Binding IsSelected}" Width="20" VerticalAlignment="Top" />
-            <TextBlock Text="{Binding Name}" Width="100" TextWrapping="Wrap" />
+            <TextBlock Text="{Binding Name}" Foreground="{StaticResource SolidColorBrush.Text.1}" />
         </StackPanel>
     </DataTemplate>
 

@@ -1,4 +1,4 @@
-﻿using StatisticsAnalysisTool.Common;
+using StatisticsAnalysisTool.Common;
 using StatisticsAnalysisTool.Enumerations;
 using StatisticsAnalysisTool.ViewModels;
 using System;
@@ -11,7 +11,6 @@ public class TrackingNotification : BaseViewModel
     private const int SetTypesMaxTries = 3;
 
     private LoggingFilterType _type;
-    private Visibility _visibility;
     private readonly int _itemIndex;
     private int _trySetTypeCounter;
 
@@ -33,6 +32,9 @@ public class TrackingNotification : BaseViewModel
 
     public DateTime DateTime { get; }
     public LineFragment Fragment { get; }
+    public string ClusterName { get; private set; } = string.Empty;
+    public string ClusterDisplayText => string.IsNullOrWhiteSpace(ClusterName) ? string.Empty : $"[{ClusterName}]";
+    public Visibility ClusterDisplayVisibility => string.IsNullOrWhiteSpace(ClusterName) ? Visibility.Collapsed : Visibility.Visible;
 
     public LoggingFilterType Type
     {
@@ -46,14 +48,18 @@ public class TrackingNotification : BaseViewModel
 
     public Guid InstanceId { get; }
 
-    public Visibility Visibility
+    public void SetClusterName(string clusterName)
     {
-        get => _visibility;
-        set
+        var normalizedClusterName = clusterName?.Trim() ?? string.Empty;
+        if (ClusterName == normalizedClusterName)
         {
-            _visibility = value;
-            OnPropertyChanged();
+            return;
         }
+
+        ClusterName = normalizedClusterName;
+        OnPropertyChanged(nameof(ClusterName));
+        OnPropertyChanged(nameof(ClusterDisplayText));
+        OnPropertyChanged(nameof(ClusterDisplayVisibility));
     }
 
     public void SetType(bool forceSetType = false)
