@@ -443,15 +443,24 @@ public class TradeController
 
     private static string GetCurrentPlayerTradeClusterIndex()
     {
-        if (ClusterController.CurrentCluster.MapType == MapType.Island
-            && !string.IsNullOrWhiteSpace(ClusterController.CurrentCluster.InstanceName))
+        var currentCluster = ClusterController.CurrentCluster;
+        var mainClusterIndex = currentCluster.SourceClusterIndex
+                               ?? currentCluster.Index
+                               ?? string.Empty;
+
+        if (currentCluster.MapType == MapType.Hideout
+            && !string.IsNullOrWhiteSpace(currentCluster.InstanceName))
         {
-            return $"{Trade.PlayerTradeIslandClusterIndexPrefix}{ClusterController.CurrentCluster.InstanceName}";
+            return Trade.CreatePlayerTradeLocationClusterIndex(MapType.Hideout, currentCluster.InstanceName, mainClusterIndex);
         }
 
-        return ClusterController.CurrentCluster.SourceClusterIndex
-               ?? ClusterController.CurrentCluster.Index
-               ?? string.Empty;
+        if (currentCluster.MapType == MapType.Island
+            && !string.IsNullOrWhiteSpace(currentCluster.InstanceName))
+        {
+            return Trade.CreatePlayerTradeLocationClusterIndex(MapType.Island, currentCluster.InstanceName, mainClusterIndex);
+        }
+
+        return mainClusterIndex;
     }
 
     private static bool IsPlayerTradeMonitoringActive()

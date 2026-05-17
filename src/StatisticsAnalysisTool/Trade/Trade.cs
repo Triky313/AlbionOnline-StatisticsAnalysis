@@ -1,3 +1,4 @@
+using StatisticsAnalysisTool.Cluster;
 using StatisticsAnalysisTool.Common;
 using StatisticsAnalysisTool.Enumerations;
 using StatisticsAnalysisTool.GameFileData;
@@ -15,6 +16,9 @@ namespace StatisticsAnalysisTool.Trade;
 public class Trade : BaseViewModel
 {
     public const string PlayerTradeIslandClusterIndexPrefix = "ISLAND_";
+    private const string PlayerTradeEncodedIslandClusterIndexPrefix = "PLAYER_TRADE_ISLAND|";
+    private const string PlayerTradeEncodedHideoutClusterIndexPrefix = "PLAYER_TRADE_HIDEOUT|";
+    private const char PlayerTradeLocationSeparator = '|';
 
     public long Id { get; init; }
     public long Ticks { get; init; }
@@ -49,6 +53,11 @@ public class Trade : BaseViewModel
     {
         get
         {
+            if (TryGetPlayerTradeLocationName(out var playerTradeLocationName))
+            {
+                return playerTradeLocationName;
+            }
+
             var location = Locations.GetMarketLocationByIndex(ClusterIndex);
             if (location == MarketLocation.Unknown && !string.IsNullOrEmpty(ClusterIndex) && ClusterIndex.Contains("HIDEOUT"))
             {
@@ -74,6 +83,106 @@ public class Trade : BaseViewModel
 
             return WorldData.GetUniqueNameOrDefault(ClusterIndex);
         }
+    }
+
+    public static string CreatePlayerTradeLocationClusterIndex(MapType mapType, string locationName, string mainClusterIndex)
+    {
+        var prefix = mapType switch
+        {
+            MapType.Hideout => PlayerTradeEncodedHideoutClusterIndexPrefix,
+            MapType.Island => PlayerTradeEncodedIslandClusterIndexPrefix,
+            _ => string.Empty
+        };
+
+        if (string.IsNullOrEmpty(prefix))
+        {
+            return mainClusterIndex ?? string.Empty;
+        }
+
+        return $"{prefix}{EscapePlayerTradeLocationPart(locationName)}{PlayerTradeLocationSeparator}{EscapePlayerTradeLocationPart(mainClusterIndex)}";
+    }
+
+    private bool TryGetPlayerTradeLocationName(out string locationName)
+    {
+        if (TryGetEncodedPlayerTradeLocation(PlayerTradeEncodedHideoutClusterIndexPrefix, out var hideoutName, out var hideoutMainClusterIndex))
+        {
+            locationName = ComposePlayerTradeLocationName("HIDEOUT", hideoutName, hideoutMainClusterIndex);
+            return true;
+        }
+
+        if (TryGetEncodedPlayerTradeLocation(PlayerTradeEncodedIslandClusterIndexPrefix, out var islandName, out var islandMainClusterIndex))
+        {
+            locationName = ComposePlayerTradeLocationName("ISLAND", islandName, islandMainClusterIndex);
+            return true;
+        }
+
+        if (TryGetIslandLocationName(out var legacyIslandName))
+        {
+            locationName = ComposePlayerTradeLocationName("ISLAND", legacyIslandName, string.Empty);
+            return true;
+        }
+
+        locationName = string.Empty;
+        return false;
+    }
+
+    private bool TryGetEncodedPlayerTradeLocation(string prefix, out string locationName, out string mainClusterIndex)
+    {
+        locationName = string.Empty;
+        mainClusterIndex = string.Empty;
+
+        if (string.IsNullOrWhiteSpace(ClusterIndex)
+            || !ClusterIndex.StartsWith(prefix, StringComparison.OrdinalIgnoreCase))
+        {
+            return false;
+        }
+
+        var payload = ClusterIndex[prefix.Length..];
+        var parts = payload.Split([PlayerTradeLocationSeparator], 2);
+
+        locationName = UnescapePlayerTradeLocationPart(parts.Length > 0 ? parts[0] : string.Empty);
+        mainClusterIndex = UnescapePlayerTradeLocationPart(parts.Length > 1 ? parts[1] : string.Empty);
+
+        return !string.IsNullOrWhiteSpace(locationName)
+               || !string.IsNullOrWhiteSpace(mainClusterIndex);
+    }
+
+    private static string ComposePlayerTradeLocationName(string locationTranslationKey, string locationName, string mainClusterIndex)
+    {
+        var locationType = LocalizationController.Translation(locationTranslationKey);
+        var normalizedLocationName = locationName?.Trim() ?? string.Empty;
+        var mainClusterName = GetMainClusterName(mainClusterIndex);
+
+        if (string.IsNullOrWhiteSpace(normalizedLocationName))
+        {
+            return string.IsNullOrWhiteSpace(mainClusterName)
+                ? locationType
+                : $"{locationType} ({mainClusterName})";
+        }
+
+        return string.IsNullOrWhiteSpace(mainClusterName)
+            ? $"{locationType} - {normalizedLocationName}"
+            : $"{locationType} - {normalizedLocationName} ({mainClusterName})";
+    }
+
+    private static string GetMainClusterName(string mainClusterIndex)
+    {
+        if (string.IsNullOrWhiteSpace(mainClusterIndex))
+        {
+            return string.Empty;
+        }
+
+        return WorldData.GetUniqueNameOrDefault(mainClusterIndex) ?? mainClusterIndex;
+    }
+
+    private static string EscapePlayerTradeLocationPart(string value)
+    {
+        return Uri.EscapeDataString(value?.Trim() ?? string.Empty);
+    }
+
+    private static string UnescapePlayerTradeLocationPart(string value)
+    {
+        return string.IsNullOrEmpty(value) ? string.Empty : Uri.UnescapeDataString(value);
     }
 
     private bool TryGetIslandLocationName(out string islandName)
