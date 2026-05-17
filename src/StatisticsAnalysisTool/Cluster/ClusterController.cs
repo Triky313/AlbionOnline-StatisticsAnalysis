@@ -97,6 +97,21 @@ public sealed class ClusterController(TrackingController trackingController, Mai
         return $"{currentMapName} {islandName}";
     }
 
+    public static string GetCurrentClusterDisplayName()
+    {
+        return GetClusterDisplayName(CurrentCluster);
+    }
+
+    public static string GetClusterDisplayName(ClusterInfo clusterInfo)
+    {
+        if (clusterInfo == null)
+        {
+            return string.Empty;
+        }
+
+        return ComposingMapInfoString(clusterInfo.Index, clusterInfo.MapType, clusterInfo.InstanceName).Trim();
+    }
+
     #region Cluster history
 
     private async void UpdateClusterTracking(ClusterInfo currentCluster)

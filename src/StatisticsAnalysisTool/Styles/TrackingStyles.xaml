@@ -210,10 +210,12 @@
         <Grid>
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="Auto" />
-                <ColumnDefinition />
+                <ColumnDefinition Width="Auto" />
+                <ColumnDefinition Width="*" />
             </Grid.ColumnDefinitions>
             <TextBlock Grid.Column="0" Margin="3" Text="{Binding DateTime, StringFormat=[hh:mm:ss]}" Foreground="{StaticResource SolidColorBrush.Text.1}" />
-            <ContentControl Grid.Column="1" Margin="3" Content="{Binding Fragment}" />
+            <TextBlock Grid.Column="1" Margin="3" Text="{Binding ClusterDisplayText}" Visibility="{Binding ClusterDisplayVisibility}" Foreground="{StaticResource SolidColorBrush.Text.2}" />
+            <ContentControl Grid.Column="2" Margin="3" Content="{Binding Fragment}" />
         </Grid>
     </DataTemplate>
 

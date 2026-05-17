@@ -271,6 +271,11 @@ public class TrackingController : ITrackingController
 
     public async Task AddNotificationAsync(TrackingNotification item)
     {
+        if (string.IsNullOrWhiteSpace(item.ClusterName))
+        {
+            item.SetClusterName(StatisticsAnalysisTool.Cluster.ClusterController.GetCurrentClusterDisplayName());
+        }
+
         item.SetType();
 
         if (!IsTrackingAllowedByMainCharacter() && item.Type is LoggingFilterType.Fame or LoggingFilterType.Silver or LoggingFilterType.Faction)

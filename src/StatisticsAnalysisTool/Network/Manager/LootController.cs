@@ -1,4 +1,5 @@
 using Serilog;
+using StatisticsAnalysisTool.Cluster;
 using StatisticsAnalysisTool.Common;
 using StatisticsAnalysisTool.Diagnostics;
 using StatisticsAnalysisTool.EventLogging;
@@ -156,8 +157,10 @@ public class LootController : ILootController
         var item = ItemController.GetItemByIndex(loot.ItemIndex);
         var lootedByUser = _trackingController.EntityController.GetEntity(loot.LootedByName);
         var lootedFromUser = _trackingController.EntityController.GetEntity(loot.LootedFromName);
+        var clusterName = ClusterController.GetCurrentClusterDisplayName();
 
         var notification = SetNotificationAsync(loot.LootedByName, loot.LootedFromName, lootedByUser?.Value?.Guild, lootedFromUser?.Value?.Guild, item, loot.Quantity);
+        notification.SetClusterName(clusterName);
         await _trackingController.AddNotificationAsync(notification);
 
         _lootLoggerObjects.Add(new LootLoggerObject
@@ -172,6 +175,7 @@ public class LootController : ILootController
             ItemId = item.Index,
             UniqueItemName = item.UniqueName,
             AverageEstMarketValue = item.AverageEstMarketValue,
+            ClusterName = clusterName
         });
 
         _mainWindowViewModel.LoggingBindings.LootLoggerStats.RecordLoot(loot, item);
@@ -250,14 +254,15 @@ public class LootController : ILootController
         });
     }
 
-    public async Task AddKillDeathAsync(string died, string diedPlayerGuild, string killedBy, string killedByGuild)
+    public async Task AddKillDeathAsync(string died, string diedPlayerGuild, string killedBy, string killedByGuild, string clusterName)
     {
         _lootLoggerObjects.Add(new LootLoggerObject
         {
             Died = died,
             DiedPlayerGuild = diedPlayerGuild,
             KilledBy = killedBy,
-            KilledByGuild = killedByGuild
+            KilledByGuild = killedByGuild,
+            ClusterName = clusterName
         });
 
         _mainWindowViewModel.LoggingBindings.LootLoggerStats.RecordKillDeath(died, killedBy);
@@ -269,7 +274,7 @@ public class LootController : ILootController
     {
         try
         {
-            const string csvHeader = "timestamp_utc;looted_by__alliance;looted_by__guild;looted_by__name;item_id;item_name;quantity;looted_from__alliance;looted_from__guild;looted_from__name;died;died_player_guild;killed_by;killed_by_guild;average_est_market_value\n";
+            const string csvHeader = "timestamp_utc;looted_by__alliance;looted_by__guild;looted_by__name;item_id;item_name;quantity;looted_from__alliance;looted_from__guild;looted_from__name;died;died_player_guild;killed_by;killed_by_guild;average_est_market_value;cluster\n";
             return csvHeader + string.Join(Environment.NewLine, _lootLoggerObjects.Select(loot => loot.CsvOutput).ToArray());
         }
         catch (Exception e)
