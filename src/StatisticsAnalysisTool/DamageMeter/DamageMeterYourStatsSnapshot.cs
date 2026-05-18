@@ -1,10 +1,13 @@
 using System.Collections.Generic;
-using System.Windows;
 
 namespace StatisticsAnalysisTool.DamageMeter;
 
 public sealed class DamageMeterYourStatsSnapshot
 {
+    private const string ZeroValue = "0";
+    private const string ZeroPercent = "0.00%";
+    private const string ZeroDuration = "0:00";
+
     public static DamageMeterYourStatsSnapshot Empty
     {
         get;
@@ -18,57 +21,57 @@ public sealed class DamageMeterYourStatsSnapshot
     public string TotalDamage
     {
         get; init;
-    } = string.Empty;
+    } = ZeroValue;
 
     public string TotalDps
     {
         get; init;
-    } = string.Empty;
+    } = ZeroValue;
 
     public string PeakDpsThreeSeconds
     {
         get; init;
-    } = string.Empty;
+    } = ZeroValue;
 
     public string PeakDpsFiveSeconds
     {
         get; init;
-    } = string.Empty;
+    } = ZeroValue;
 
     public string PeakDpsTenSeconds
     {
         get; init;
-    } = string.Empty;
+    } = ZeroValue;
 
     public string BiggestHit
     {
         get; init;
-    } = string.Empty;
+    } = ZeroValue;
 
     public string PveDamage
     {
         get; init;
-    } = string.Empty;
+    } = ZeroValue;
 
     public string PvpDamage
     {
         get; init;
-    } = string.Empty;
+    } = ZeroValue;
 
     public string TotalHealing
     {
         get; init;
-    } = string.Empty;
+    } = ZeroValue;
 
     public string EffectiveHealing
     {
         get; init;
-    } = string.Empty;
+    } = ZeroValue;
 
     public string OverhealPercent
     {
         get; init;
-    } = string.Empty;
+    } = ZeroPercent;
 
     public IReadOnlyList<DamageMeterYourStatsTopEntry> TopHealingTargets
     {
@@ -78,12 +81,12 @@ public sealed class DamageMeterYourStatsSnapshot
     public string DamageTaken
     {
         get; init;
-    } = string.Empty;
+    } = ZeroValue;
 
     public string Dtps
     {
         get; init;
-    } = string.Empty;
+    } = ZeroValue;
 
     public IReadOnlyList<DamageMeterYourStatsTopEntry> TopDamageTakenBySpell
     {
@@ -93,18 +96,15 @@ public sealed class DamageMeterYourStatsSnapshot
     public string CombatTime
     {
         get; init;
-    } = string.Empty;
+    } = ZeroDuration;
 
     public string FightCount
     {
         get; init;
-    } = string.Empty;
+    } = ZeroValue;
 
     public string AverageFightDuration
     {
         get; init;
-    } = string.Empty;
-
-    public Visibility ContentVisibility => HasData ? Visibility.Visible : Visibility.Collapsed;
-    public Visibility EmptyVisibility => HasData ? Visibility.Collapsed : Visibility.Visible;
+    } = ZeroDuration;
 }

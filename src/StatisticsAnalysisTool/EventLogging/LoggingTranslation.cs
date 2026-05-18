@@ -46,7 +46,6 @@ public class LoggingTranslation
     public static string MostDeaths => LocalizationController.Translation("MOST_DEATHS");
     public static string HighestKillValue => LocalizationController.Translation("HIGHEST_KILL_VALUE");
     public static string Killer => LocalizationController.Translation("KILLER");
-    public static string NoLootLoggerStatsAvailable => LocalizationController.Translation("NO_LOOT_LOGGER_STATS_AVAILABLE");
     public static string FilterStatus => LocalizationController.Translation("LOOT_FILTER_STATUS");
     public static string FilterTier => LocalizationController.Translation("LOOT_FILTER_TIER");
     public static string FilterType => LocalizationController.Translation("LOOT_FILTER_TYPE");

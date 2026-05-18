@@ -106,7 +106,7 @@
 
         <DataTemplate x:Key="LootLoggerStatsTemplate" DataType="{x:Type eventLogging:LootLoggerStats}">
             <Grid Margin="0,5,0,0">
-                <ScrollViewer Visibility="{Binding ContentVisibility}">
+                <ScrollViewer>
                     <UniformGrid Columns="2">
                         <Border Margin="0,2,10,4" Padding="4,3" BorderBrush="{StaticResource SolidColorBrush.Accent.Yellow.3}" BorderThickness="0,1,0,0">
                             <DockPanel LastChildFill="True">
@@ -188,8 +188,6 @@
                         </Border>
                     </UniformGrid>
                 </ScrollViewer>
-                <TextBlock Text="{Binding DataContext.LoggingBindings.Translation.NoLootLoggerStatsAvailable, RelativeSource={RelativeSource AncestorType={x:Type UserControl}}, FallbackValue='No Loot Logger stats available yet.'}"
-                           Visibility="{Binding EmptyVisibility}" Foreground="{StaticResource SolidColorBrush.Text.2}" FontSize="15" Margin="5" />
             </Grid>
         </DataTemplate>
     </UserControl.Resources>

@@ -634,7 +634,6 @@ public class DamageMeterBindings : BaseViewModel, IAsyncInitialization
     public static string TranslationStats => LocalizationController.Translation("STATS");
     public static string TranslationTopStats => LocalizationController.Translation("TOP_STATS");
     public static string TranslationYourStats => LocalizationController.Translation("YOUR_STATS");
-    public static string TranslationNoLocalDamageStatsAvailable => LocalizationController.Translation("NO_LOCAL_DAMAGE_STATS_AVAILABLE");
     public static string TranslationYourStatsDamageSection => LocalizationController.Translation("YOUR_STATS_DAMAGE_SECTION");
     public static string TranslationYourStatsHealingSection => LocalizationController.Translation("YOUR_STATS_HEALING_SECTION");
     public static string TranslationYourStatsDefenseSection => LocalizationController.Translation("YOUR_STATS_DEFENSE_SECTION");

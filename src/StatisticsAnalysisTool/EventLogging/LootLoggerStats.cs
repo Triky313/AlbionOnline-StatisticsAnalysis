@@ -11,7 +11,6 @@ using System.Linq;
 using System.Runtime.CompilerServices;
 using System.Threading;
 using System.Threading.Tasks;
-using System.Windows;
 using System.Windows.Media.Imaging;
 
 namespace StatisticsAnalysisTool.EventLogging;
@@ -188,18 +187,8 @@ public sealed class LootLoggerStats : BaseViewModel
     public bool HasData
     {
         get;
-        private set
-        {
-            if (SetProperty(ref field, value))
-            {
-                OnPropertyChanged(nameof(ContentVisibility));
-                OnPropertyChanged(nameof(EmptyVisibility));
-            }
-        }
+        private set => SetProperty(ref field, value);
     }
-
-    public Visibility ContentVisibility => HasData ? Visibility.Visible : Visibility.Collapsed;
-    public Visibility EmptyVisibility => HasData ? Visibility.Collapsed : Visibility.Visible;
 
     public string TotalLootValue
     {
