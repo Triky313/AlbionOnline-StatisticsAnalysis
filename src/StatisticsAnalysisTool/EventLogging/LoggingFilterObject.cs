@@ -1,4 +1,4 @@
-﻿using StatisticsAnalysisTool.Common;
+using StatisticsAnalysisTool.Common;
 using StatisticsAnalysisTool.Network.Manager;
 using StatisticsAnalysisTool.ViewModels;
 using System.Collections.Generic;
@@ -21,11 +21,9 @@ public class LoggingFilterObject : BaseViewModel
     {
         try
         {
-            var loggingSearchText = ServiceLocator.Resolve<MainWindowViewModel>()?.LoggingSearchText;
             var trackingController = ServiceLocator.Resolve<TrackingController>();
 
             trackingController?.UpdateFilterType(LoggingFilterType, IsSelected ?? false);
-            trackingController?.NotificationUiFilteringAsync(loggingSearchText);
         }
         catch (KeyNotFoundException)
         {

@@ -48,7 +48,7 @@ public class TradeMonitoringBindings : BaseViewModel
         EnsureTradeCollectionViewInitialized();
 
         DatePickerTradeFrom = SettingsController.CurrentSettings.TradeMonitoringDatePickerTradeFrom;
-        DatePickerTradeTo = SettingsController.CurrentSettings.TradeMonitoringDatePickerTradeTo;
+        DatePickerTradeTo = DateTime.UtcNow.AddDays(1);
         UpdateProfitByTimeOfDayModeVisibility();
     }
 
@@ -667,8 +667,8 @@ public class TradeMonitoringBindings : BaseViewModel
                     return;
                 }
 
-                var filteredTradeSet = filteredTrades.ToHashSet();
-                TradeCollectionView.Filter = obj => obj is Trade trade && filteredTradeSet.Contains(trade);
+                var filterContext = executionContext.Value.FilterContext;
+                TradeCollectionView.Filter = obj => Filter(obj, filterContext);
                 TradeStatsObject?.SetTradeStats(TradeCollectionView.Cast<Trade>().ToList());
                 CurrentTradeCounts = TradeCollectionView.Count;
             });

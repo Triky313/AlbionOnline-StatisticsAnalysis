@@ -9,7 +9,7 @@
              xmlns:enum="clr-namespace:StatisticsAnalysisTool.Enumerations"
              mc:Ignorable="d"
              d:DesignHeight="1100"
-             d:DesignWidth="1200"
+             d:DesignWidth="1300"
              d:DataContext="{d:DesignInstance Type=viewModels:MainWindowViewModel}">
     <UserControl.Resources>
         <Style x:Key="CraftingResultTile" TargetType="{x:Type Border}">
@@ -127,6 +127,9 @@
         </Style>
         <Style x:Key="CraftingResourceCostText" TargetType="{x:Type TextBlock}" BasedOn="{StaticResource CraftingResourceQuantityText}">
             <Setter Property="Foreground" Value="{StaticResource SolidColorBrush.Accent.Red.2}" />
+        </Style>
+        <Style x:Key="CraftingResourceNetQuantityText" TargetType="{x:Type TextBlock}" BasedOn="{StaticResource CraftingResourceQuantityText}">
+            <Setter Property="Foreground" Value="{StaticResource SolidColorBrush.Accent.Yellow.3}" />
         </Style>
         <Style x:Key="CraftingSellPriceOptionText" TargetType="{x:Type TextBlock}">
             <Setter Property="Foreground" Value="{StaticResource SolidColorBrush.Text.7}" />
@@ -396,7 +399,7 @@
                                         </DataTemplate>
                                     </GridViewColumn.CellTemplate>
                                 </GridViewColumn>
-                                <GridViewColumn Header="{x:Static crafting:CraftingBindings.TranslationResource}" Width="210" DisplayMemberBinding="{Binding DisplayName}">
+                                <GridViewColumn Header="{x:Static crafting:CraftingBindings.TranslationResource}" Width="250" DisplayMemberBinding="{Binding DisplayName}">
                                     <GridViewColumn.HeaderContainerStyle>
                                         <Style TargetType="{x:Type GridViewColumnHeader}" BasedOn="{StaticResource {x:Type GridViewColumnHeader}}">
                                             <Setter Property="ToolTip" Value="{x:Static crafting:CraftingBindings.TranslationResourceNameColumnTooltip}" />
@@ -442,7 +445,7 @@
                                     </GridViewColumn.HeaderContainerStyle>
                                     <GridViewColumn.CellTemplate>
                                         <DataTemplate>
-                                            <TextBlock Text="{Binding NetQuantity, StringFormat={}{0:#,0.##}}" Style="{StaticResource CraftingResourceQuantityText}" />
+                                            <TextBlock Text="{Binding NetQuantity, StringFormat={}{0:#,0.##}}" Style="{StaticResource CraftingResourceNetQuantityText}" />
                                         </DataTemplate>
                                     </GridViewColumn.CellTemplate>
                                 </GridViewColumn>
@@ -505,7 +508,10 @@
                                     </GridViewColumn.HeaderContainerStyle>
                                     <GridViewColumn.CellTemplate>
                                         <DataTemplate>
-                                            <TextBlock Text="{Binding NetCost, StringFormat={}{0:N0}}" Style="{StaticResource CraftingResourceCostText}" />
+                                            <StackPanel Orientation="Horizontal">
+                                                <TextBlock Text="{Binding NetCost, StringFormat={}{0:N0}}" Style="{StaticResource CraftingResourceCostText}" />
+                                                <Image Style="{StaticResource Icon.Silver}" Margin="5,0,0,0" VerticalAlignment="Center" />
+                                            </StackPanel>
                                         </DataTemplate>
                                     </GridViewColumn.CellTemplate>
                                 </GridViewColumn>
@@ -525,27 +531,51 @@
                             </Style>
                         </Grid.Style>
                         <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="260" />
+                            <ColumnDefinition Width="320" />
                             <ColumnDefinition Width="*" />
                         </Grid.ColumnDefinitions>
 
                         <StackPanel Grid.Column="0" Orientation="Vertical">
-                            <TextBlock Text="{Binding CraftingBindings.TranslationJournals, FallbackValue=JOURNALS}" Foreground="{StaticResource SolidColorBrush.Accent.Blue.2}" FontSize="16" FontWeight="SemiBold" Margin="0,0,0,8" />
+                            <TextBlock Text="{Binding CraftingBindings.TranslationJournals, FallbackValue=JOURNALS}" Foreground="{StaticResource SolidColorBrush.Accent.Blue.2}" 
+                                       FontSize="16" FontWeight="SemiBold" Margin="0,0,0,8" />
                             <StackPanel Orientation="Horizontal">
                                 <Image Source="{Binding CraftingBindings.Journal.Icon}" Width="36" Height="36" />
-                                <TextBlock Text="{Binding CraftingBindings.Journal.DisplayName}" Foreground="{StaticResource SolidColorBrush.Text.1}" VerticalAlignment="Center" Margin="8,0,0,0" TextWrapping="Wrap" />
+                                <StackPanel Orientation="Vertical" Margin="10,0,0,0" >
+                                    <TextBlock Text="{Binding CraftingBindings.Journal.DisplayName}" Foreground="{StaticResource SolidColorBrush.Text.1}" 
+                                               VerticalAlignment="Top" TextWrapping="Wrap" />
+                                    <StackPanel Orientation="Horizontal">
+                                        <StackPanel Orientation="Horizontal" MinWidth="80">
+                                            <TextBlock Text="{Binding CraftingBindings.TranslationEmpty, Mode=OneWay, FallbackValue=EMPTY}" 
+                                                       Foreground="{StaticResource SolidColorBrush.Accent.Blue.1}" />
+                                            <TextBlock Text=": " Foreground="{StaticResource SolidColorBrush.Accent.Blue.1}" />
+                                            <TextBlock Text="{Binding CraftingBindings.Journal.RequiredEmptyJournals, Mode=OneWay, FallbackValue=0}" 
+                                                       Foreground="{StaticResource SolidColorBrush.Accent.Yellow.3}" FontWeight="Bold" />
+                                        </StackPanel>
+                                        <StackPanel Orientation="Horizontal" MinWidth="80">
+                                            <TextBlock Text="{Binding CraftingBindings.TranslationFull, Mode=OneWay, FallbackValue=FULL}" 
+                                                       Foreground="{StaticResource SolidColorBrush.Accent.Blue.1}" />
+                                            <TextBlock Text=": " Foreground="{StaticResource SolidColorBrush.Accent.Blue.1}" />
+                                            <TextBlock Text="{Binding CraftingBindings.Journal.ExpectedFullJournals, Mode=OneWay, FallbackValue=0}" 
+                                                       Foreground="{StaticResource SolidColorBrush.Text.1}" />
+                                        </StackPanel>
+                                        <StackPanel Orientation="Horizontal" MinWidth="120">
+                                            <TextBlock Text="{Binding CraftingBindings.TranslationPartial, Mode=OneWay, FallbackValue=PARTIAL}" 
+                                                       Foreground="{StaticResource SolidColorBrush.Accent.Blue.1}" />
+                                            <TextBlock Text=": " Foreground="{StaticResource SolidColorBrush.Accent.Blue.1}" />
+                                            <TextBlock Text="{Binding CraftingBindings.Journal.PartialJournalPercent, Mode=OneWay, StringFormat={}{0:N2}%, FallbackValue=0.00%}" 
+                                                       Foreground="{StaticResource SolidColorBrush.Text.1}" />
+                                        </StackPanel>
+                                    </StackPanel>
+                                </StackPanel>
                             </StackPanel>
-                            <StackPanel Orientation="Horizontal" Margin="0,6,0,0">
-                                <TextBlock Text="{Binding CraftingBindings.TranslationEmptyPrice, FallbackValue=EMPTY_PRICE}" Foreground="{StaticResource SolidColorBrush.Text.2}" Width="95" VerticalAlignment="Center" />
-                                <Grid>
-                                    <TextBox x:Name="EmptyJournalPriceTextBox"
-                                             Text="{Binding CraftingBindings.Journal.EmptyJournalPrice, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                                             Width="90"
-                                             Height="22"
-                                             common:TextBoxHelper.OnlyNumeric="Double"
-                                             GotKeyboardFocus="JournalEmptyPrice_OnGotKeyboardFocus"
-                                             PreviewMouseLeftButtonDown="PriceTextBox_OnPreviewMouseLeftButtonDown"
-                                             PreviewMouseLeftButtonUp="JournalEmptyPrice_OnPreviewMouseLeftButtonUp" />
+                            <StackPanel Orientation="Horizontal">
+                                <TextBlock Text="{Binding CraftingBindings.TranslationEmptyPrice, FallbackValue=EMPTY_PRICE}" Foreground="{StaticResource SolidColorBrush.Text.1}" 
+                                           MinWidth="80" VerticalAlignment="Center" />
+                                <Grid MinWidth="120">
+                                    <TextBox x:Name="EmptyJournalPriceTextBox" HorizontalAlignment="Left"
+                                             Text="{Binding CraftingBindings.Journal.EmptyJournalPrice, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" 
+                                             Width="90" Height="22" common:TextBoxHelper.OnlyNumeric="Double" GotKeyboardFocus="JournalEmptyPrice_OnGotKeyboardFocus"
+                                             PreviewMouseLeftButtonDown="PriceTextBox_OnPreviewMouseLeftButtonDown" PreviewMouseLeftButtonUp="JournalEmptyPrice_OnPreviewMouseLeftButtonUp" />
                                     <Popup PlacementTarget="{Binding ElementName=EmptyJournalPriceTextBox}"
                                            Placement="Bottom"
                                            IsOpen="{Binding CraftingBindings.Journal.IsEmptyJournalPricePopupOpen, Mode=TwoWay}"
@@ -576,39 +606,32 @@
                                         </Border>
                                     </Popup>
                                 </Grid>
+                                <StackPanel Orientation="Horizontal" HorizontalAlignment="Left" MinWidth="300">
+                                    <TextBlock Text="{Binding CraftingBindings.TranslationCosts, Mode=OneWay, FallbackValue=COSTS}" Foreground="{StaticResource SolidColorBrush.Text.1}" />
+                                    <TextBlock Text=": " Foreground="{StaticResource SolidColorBrush.Text.1}" />
+                                    <TextBlock Text="{Binding CraftingBindings.Journal.TotalEmptyJournalCosts, Mode=OneWay, StringFormat={}{0:N0}, FallbackValue=0}" 
+                                               Foreground="{StaticResource SolidColorBrush.Accent.Red.2}" />
+                                </StackPanel>
                             </StackPanel>
-                            <StackPanel Orientation="Horizontal" Margin="0,4,0,0">
-                                <TextBlock Text="{Binding CraftingBindings.TranslationFullPrice, FallbackValue=FULL_PRICE}" Foreground="{StaticResource SolidColorBrush.Text.2}" Width="95" VerticalAlignment="Center" />
-                                <Grid>
-                                    <TextBox x:Name="FullJournalPriceTextBox"
+                            <StackPanel Orientation="Horizontal" Margin="0,5,0,0">
+                                <TextBlock Text="{Binding CraftingBindings.TranslationFullPrice, FallbackValue=FULL_PRICE}" Foreground="{StaticResource SolidColorBrush.Text.2}" 
+                                           VerticalAlignment="Center" MinWidth="80" />
+                                <Grid MinWidth="120">
+                                    <TextBox x:Name="FullJournalPriceTextBox" HorizontalAlignment="Left" 
                                              Text="{Binding CraftingBindings.Journal.FullJournalPrice, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                                             Width="90"
-                                             Height="22"
-                                             common:TextBoxHelper.OnlyNumeric="Double"
-                                             GotKeyboardFocus="JournalFullPrice_OnGotKeyboardFocus"
-                                             PreviewMouseLeftButtonDown="PriceTextBox_OnPreviewMouseLeftButtonDown"
-                                             PreviewMouseLeftButtonUp="JournalFullPrice_OnPreviewMouseLeftButtonUp" />
+                                             Width="90" Height="22" common:TextBoxHelper.OnlyNumeric="Double" GotKeyboardFocus="JournalFullPrice_OnGotKeyboardFocus"
+                                             PreviewMouseLeftButtonDown="PriceTextBox_OnPreviewMouseLeftButtonDown" PreviewMouseLeftButtonUp="JournalFullPrice_OnPreviewMouseLeftButtonUp" />
                                     <Popup PlacementTarget="{Binding ElementName=FullJournalPriceTextBox}"
-                                           Placement="Bottom"
-                                           IsOpen="{Binding CraftingBindings.Journal.IsFullJournalPricePopupOpen, Mode=TwoWay}"
-                                           StaysOpen="False"
-                                           AllowsTransparency="True"
-                                           PopupAnimation="Slide">
+                                           Placement="Bottom" IsOpen="{Binding CraftingBindings.Journal.IsFullJournalPricePopupOpen, Mode=TwoWay}"
+                                           StaysOpen="False" AllowsTransparency="True" PopupAnimation="Slide">
                                         <Border DataContext="{Binding PlacementTarget.DataContext, RelativeSource={RelativeSource AncestorType={x:Type Popup}}}"
                                                 Background="{StaticResource SolidColorBrush.Background.2}"
                                                 BorderBrush="{StaticResource SolidColorBrush.Accent.Blue.4}"
-                                                BorderThickness="1"
-                                                Width="230"
-                                                MaxHeight="360">
+                                                BorderThickness="1" Width="230" MaxHeight="360">
                                             <ListBox SelectionMode="Single"
                                                      SelectionChanged="ListBoxJournalFullPrice_OnSelectionChanged"
-                                                     ItemsSource="{Binding CraftingBindings.Journal.FullJournalPriceOptions}"
-                                                     Width="230"
-                                                     MinHeight="38"
-                                                     MaxHeight="360"
-                                                     BorderThickness="0"
-                                                     ScrollViewer.HorizontalScrollBarVisibility="Disabled"
-                                                     ScrollViewer.VerticalScrollBarVisibility="Auto">
+                                                     ItemsSource="{Binding CraftingBindings.Journal.FullJournalPriceOptions}" Width="230" MinHeight="38" 
+                                                     MaxHeight="360" BorderThickness="0" ScrollViewer.HorizontalScrollBarVisibility="Disabled" ScrollViewer.VerticalScrollBarVisibility="Auto">
                                                 <ListBox.ItemTemplate>
                                                     <DataTemplate>
                                                         <TextBlock Text="{Binding DisplayText}" ToolTip="{Binding UpdateDateTimeText}" Style="{StaticResource CraftingSellPriceOptionText}" />
@@ -618,36 +641,15 @@
                                         </Border>
                                     </Popup>
                                 </Grid>
+                                <StackPanel Orientation="Horizontal" HorizontalAlignment="Left" MinWidth="300">
+                                    <TextBlock Text="{Binding CraftingBindings.TranslationRevenue, Mode=OneWay, FallbackValue=REVENUE}" 
+                                               Foreground="{StaticResource SolidColorBrush.Text.1}" HorizontalAlignment="Left" />
+                                    <TextBlock Text=": " Foreground="{StaticResource SolidColorBrush.Text.1}" />
+                                    <TextBlock Text="{Binding CraftingBindings.Journal.TotalFullJournalRevenue, Mode=OneWay, StringFormat={}{0:N0}, FallbackValue=0}" 
+                                               Foreground="{StaticResource SolidColorBrush.Accent.Green.2}" />
+                                </StackPanel>
                             </StackPanel>
                         </StackPanel>
-
-                        <UniformGrid Grid.Column="1" Columns="3" Rows="2" Margin="10,26,0,0">
-                            <StackPanel Orientation="Horizontal">
-                                <TextBlock Text="{Binding CraftingBindings.TranslationEmpty, Mode=OneWay, FallbackValue=EMPTY}" Foreground="{StaticResource SolidColorBrush.Text.1}" />
-                                <TextBlock Text=": " Foreground="{StaticResource SolidColorBrush.Text.1}" />
-                                <TextBlock Text="{Binding CraftingBindings.Journal.RequiredEmptyJournals, Mode=OneWay, FallbackValue=0}" Foreground="{StaticResource SolidColorBrush.Text.1}" />
-                            </StackPanel>
-                            <StackPanel Orientation="Horizontal">
-                                <TextBlock Text="{Binding CraftingBindings.TranslationFull, Mode=OneWay, FallbackValue=FULL}" Foreground="{StaticResource SolidColorBrush.Text.1}" />
-                                <TextBlock Text=": " Foreground="{StaticResource SolidColorBrush.Text.1}" />
-                                <TextBlock Text="{Binding CraftingBindings.Journal.ExpectedFullJournals, Mode=OneWay, FallbackValue=0}" Foreground="{StaticResource SolidColorBrush.Text.1}" />
-                            </StackPanel>
-                            <StackPanel Orientation="Horizontal">
-                                <TextBlock Text="{Binding CraftingBindings.TranslationPartial, Mode=OneWay, FallbackValue=PARTIAL}" Foreground="{StaticResource SolidColorBrush.Text.1}" />
-                                <TextBlock Text=": " Foreground="{StaticResource SolidColorBrush.Text.1}" />
-                                <TextBlock Text="{Binding CraftingBindings.Journal.PartialJournalPercent, Mode=OneWay, StringFormat={}{0:N2}%, FallbackValue=0.00%}" Foreground="{StaticResource SolidColorBrush.Text.1}" />
-                            </StackPanel>
-                            <StackPanel Orientation="Horizontal">
-                                <TextBlock Text="{Binding CraftingBindings.TranslationCosts, Mode=OneWay, FallbackValue=COSTS}" Foreground="{StaticResource SolidColorBrush.Text.1}" />
-                                <TextBlock Text=": " Foreground="{StaticResource SolidColorBrush.Text.1}" />
-                                <TextBlock Text="{Binding CraftingBindings.Journal.TotalEmptyJournalCosts, Mode=OneWay, StringFormat={}{0:N0}, FallbackValue=0}" Foreground="{StaticResource SolidColorBrush.Text.1}" />
-                            </StackPanel>
-                            <StackPanel Orientation="Horizontal">
-                                <TextBlock Text="{Binding CraftingBindings.TranslationRevenue, Mode=OneWay, FallbackValue=REVENUE}" Foreground="{StaticResource SolidColorBrush.Text.1}" />
-                                <TextBlock Text=": " Foreground="{StaticResource SolidColorBrush.Text.1}" />
-                                <TextBlock Text="{Binding CraftingBindings.Journal.TotalFullJournalRevenue, Mode=OneWay, StringFormat={}{0:N0}, FallbackValue=0}" Foreground="{StaticResource SolidColorBrush.Text.1}" />
-                            </StackPanel>
-                        </UniformGrid>
                     </Grid>
 
                     <TextBlock Text="{Binding CraftingBindings.TranslationNotes, FallbackValue=NOTES}" Foreground="{StaticResource SolidColorBrush.Accent.Blue.2}" FontSize="16" FontWeight="SemiBold" Margin="0,12,0,4" />
@@ -655,7 +657,7 @@
                              TextWrapping="Wrap" AcceptsReturn="True" VerticalContentAlignment="Top" />
                 </StackPanel>
 
-                <Grid Grid.Row="2" Grid.ColumnSpan="2" Margin="0,14,0,0">
+                <Grid Grid.Row="2" Grid.ColumnSpan="2" Grid.Column="0" Margin="0,14,0,0">
                     <Grid.RowDefinitions>
                         <RowDefinition Height="Auto" />
                         <RowDefinition Height="Auto" />

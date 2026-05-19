@@ -1,3 +1,4 @@
+using StatisticsAnalysisTool.Cluster;
 using StatisticsAnalysisTool.EventLogging;
 using StatisticsAnalysisTool.EventLogging.Notification;
 using StatisticsAnalysisTool.Localization;
@@ -15,12 +16,20 @@ public class DiedEventHandler(TrackingController trackingController) : EventPack
     {
         trackingController.DungeonController?.SetDiedIfInDungeon(new DiedObject(value.Died, value.KilledBy, value.KilledByGuild));
         trackingController.PartyController.PlayerHasDied(value.Died);
-        await trackingController.LootController.AddKillDeathAsync(value.Died, value.DiedPlayerGuild, value.KilledBy, value.KilledByGuild);
-        await trackingController.AddNotificationAsync(SetKillNotification(value.Died, value.DiedPlayerGuild, value.KilledBy, value.KilledByGuild));
+
+        if (trackingController.IsKillTrackingEnabled)
+        {
+            var clusterName = ClusterController.GetCurrentClusterDisplayName();
+            await trackingController.LootController.AddKillDeathAsync(value.Died, value.DiedPlayerGuild, value.KilledBy, value.KilledByGuild, clusterName);
+            await trackingController.AddNotificationAsync(SetKillNotification(value.Died, value.DiedPlayerGuild, value.KilledBy, value.KilledByGuild, clusterName));
+        }
     }
 
-    private static TrackingNotification SetKillNotification(string died, string diedPlayerGuild, string killedBy, string killedByGuild)
+    private static TrackingNotification SetKillNotification(string died, string diedPlayerGuild, string killedBy, string killedByGuild, string clusterName)
     {
-        return new TrackingNotification(DateTime.Now, new KillNotificationFragment(died, diedPlayerGuild, killedBy, killedByGuild, LocalizationController.Translation("WAS_KILLED_BY")), LoggingFilterType.Kill);
+        var notification = new TrackingNotification(DateTime.Now, new KillNotificationFragment(died, diedPlayerGuild, killedBy, killedByGuild, LocalizationController.Translation("WAS_KILLED_BY")), LoggingFilterType.Kill);
+        notification.SetClusterName(clusterName);
+
+        return notification;
     }
 }

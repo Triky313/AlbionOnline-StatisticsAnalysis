@@ -1,6 +1,5 @@
-﻿using StatisticsAnalysisTool.Cluster;
+using StatisticsAnalysisTool.Cluster;
 using StatisticsAnalysisTool.Enumerations;
-using StatisticsAnalysisTool.GameFileData;
 using StatisticsAnalysisTool.ViewModels;
 using System.Windows;
 
@@ -57,17 +56,9 @@ public class CurrentMapInfoBinding : BaseViewModel
 
     public void ComposingMapInfoString(ClusterInfo clusterInfo)
     {
-        var currentMapName = WorldData.GetUniqueNameOrDefault(clusterInfo.Index);
-
-        if (string.IsNullOrEmpty(currentMapName))
-        {
-            currentMapName = WorldData.GetMapNameByMapType(clusterInfo.MapType);
-        }
+        var currentMapName = ClusterController.GetClusterDisplayName(clusterInfo);
 
         CurrentMapInformationVisibility = !string.IsNullOrEmpty(currentMapName) ? Visibility.Visible : Visibility.Collapsed;
-
-        string islandName = !string.IsNullOrEmpty(clusterInfo.InstanceName) ? $"({clusterInfo.InstanceName})" : string.Empty;
-
-        DisplayedClusterName = $"{currentMapName} {islandName}";
+        DisplayedClusterName = currentMapName;
     }
 }

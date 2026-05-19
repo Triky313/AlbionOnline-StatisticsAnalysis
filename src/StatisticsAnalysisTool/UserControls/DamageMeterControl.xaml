@@ -17,9 +17,9 @@
                     <ColumnDefinition Width="*"/>
                     <ColumnDefinition Width="120"/>
                 </Grid.ColumnDefinitions>
-                <TextBlock Grid.Column="0" Text="{Binding Rank, StringFormat='{}{0}.'}" Foreground="{StaticResource SolidColorBrush.Text.2}" FontSize="14" FontWeight="Bold" />
+                <TextBlock Grid.Column="0" Text="{Binding Rank, StringFormat='{}{0}.'}" Foreground="{StaticResource SolidColorBrush.Text.2}" FontSize="18" FontWeight="Bold" />
                 <TextBlock Grid.Column="1" Text="{Binding PlayerName}" Foreground="{StaticResource SolidColorBrush.Text.1}" FontSize="14" TextTrimming="CharacterEllipsis" />
-                <TextBlock Grid.Column="2" Text="{Binding ValueString}" Foreground="{Binding Foreground, RelativeSource={RelativeSource AncestorType={x:Type ItemsControl}}}" HorizontalAlignment="Right" />
+                <TextBlock Grid.Column="2" Text="{Binding ValueString}" Foreground="{Binding Foreground, RelativeSource={RelativeSource AncestorType={x:Type ItemsControl}}}" HorizontalAlignment="Right" FontSize="15" FontWeight="Bold" />
             </Grid>
         </DataTemplate>
         <DataTemplate x:Key="YourStatsTopEntryTemplate" DataType="{x:Type damageMeter:DamageMeterYourStatsTopEntry}">
@@ -31,7 +31,7 @@
                 </Grid.ColumnDefinitions>
                 <TextBlock Grid.Column="0" Text="{Binding Rank, StringFormat='{}{0}.'}" Foreground="{StaticResource SolidColorBrush.Text.2}" FontSize="14" FontWeight="Bold" />
                 <TextBlock Grid.Column="1" Text="{Binding Name}" Foreground="{StaticResource SolidColorBrush.Text.1}" FontSize="14" TextTrimming="CharacterEllipsis" />
-                <TextBlock Grid.Column="2" Text="{Binding ValueString}" Foreground="{StaticResource SolidColorBrush.Accent.Blue.2}" HorizontalAlignment="Right" FontWeight="Bold" />
+                <TextBlock Grid.Column="2" Text="{Binding ValueString}" Foreground="{StaticResource SolidColorBrush.Accent.Blue.2}" HorizontalAlignment="Right" FontSize="15" FontWeight="Bold" />
             </Grid>
         </DataTemplate>
         <DataTemplate x:Key="YourStatsHealingTopEntryTemplate" DataType="{x:Type damageMeter:DamageMeterYourStatsTopEntry}">
@@ -43,17 +43,17 @@
                 </Grid.ColumnDefinitions>
                 <TextBlock Grid.Column="0" Text="{Binding Rank, StringFormat='{}{0}.'}" Foreground="{StaticResource SolidColorBrush.Text.2}" FontSize="14" FontWeight="Bold" />
                 <TextBlock Grid.Column="1" Text="{Binding Name}" Foreground="{StaticResource SolidColorBrush.Text.1}" FontSize="14" TextTrimming="CharacterEllipsis" />
-                <TextBlock Grid.Column="2" Text="{Binding ValueString}" Foreground="{StaticResource SolidColorBrush.Accent.Green.3}" HorizontalAlignment="Right" FontWeight="Bold" />
+                <TextBlock Grid.Column="2" Text="{Binding ValueString}" Foreground="{StaticResource SolidColorBrush.Accent.Green.3}" HorizontalAlignment="Right" FontSize="16" FontWeight="Bold" />
             </Grid>
         </DataTemplate>
         <DataTemplate x:Key="YourStatsSnapshotTemplate" DataType="{x:Type damageMeter:DamageMeterYourStatsSnapshot}">
             <Grid Margin="0,5,0,0">
-                <ScrollViewer Visibility="{Binding ContentVisibility}">
+                <ScrollViewer>
                     <UniformGrid Columns="2">
                         <Border Margin="0,2,10,8" Padding="5" BorderBrush="{StaticResource SolidColorBrush.Accent.Red.2}" BorderThickness="0,1,0,0">
                             <DockPanel LastChildFill="True">
                                 <TextBlock DockPanel.Dock="Top" Text="{Binding DataContext.DamageMeterBindings.TranslationYourStatsDamageSection, RelativeSource={RelativeSource AncestorType={x:Type UserControl}}, FallbackValue=YOUR_STATS_DAMAGE_SECTION}"
-                                           Foreground="{StaticResource SolidColorBrush.Accent.Red.2}" FontWeight="Bold" Margin="0,0,0,4" FontSize="14" />
+                                           Foreground="{StaticResource SolidColorBrush.Accent.Red.2}" FontWeight="Bold" Margin="0,0,0,4" FontSize="16" />
                                 <Grid>
                                     <Grid.ColumnDefinitions>
                                         <ColumnDefinition Width="*"/>
@@ -72,42 +72,42 @@
                                     <TextBlock Grid.Row="0" Grid.Column="0" Text="{Binding DataContext.DamageMeterBindings.TranslationTotalDamage, RelativeSource={RelativeSource AncestorType={x:Type UserControl}}, FallbackValue=TOTAL_DAMAGE}"
                                                Foreground="{StaticResource SolidColorBrush.Text.1}" FontSize="14" Margin="0,0,0,5" />
                                     <TextBlock Grid.Row="0" Grid.Column="1" Text="{Binding TotalDamage}" Foreground="{StaticResource SolidColorBrush.Accent.Red.2}"
-                                               HorizontalAlignment="Right" FontWeight="Bold" Margin="0,0,0,5" />
+                                               HorizontalAlignment="Right" FontWeight="Bold" Margin="0,0,0,5" FontSize="16" />
                                     <TextBlock Grid.Row="1" Grid.Column="0" Text="{Binding DataContext.DamageMeterBindings.TranslationTotalDps, RelativeSource={RelativeSource AncestorType={x:Type UserControl}}, FallbackValue=TOTAL_DPS}"
                                                Foreground="{StaticResource SolidColorBrush.Text.1}" FontSize="14" Margin="0,0,0,5" />
                                     <TextBlock Grid.Row="1" Grid.Column="1" Text="{Binding TotalDps}" Foreground="{StaticResource SolidColorBrush.Accent.Red.2}"
-                                               HorizontalAlignment="Right" FontWeight="Bold" Margin="0,0,0,5" />
+                                               HorizontalAlignment="Right" FontWeight="Bold" Margin="0,0,0,5" FontSize="16" />
                                     <TextBlock Grid.Row="2" Grid.Column="0" Text="{Binding DataContext.DamageMeterBindings.TranslationPeakDpsThreeSeconds, RelativeSource={RelativeSource AncestorType={x:Type UserControl}}, FallbackValue=PEAK_DPS_3_SECONDS}"
                                                Foreground="{StaticResource SolidColorBrush.Text.1}" FontSize="14" Margin="0,0,0,5" />
                                     <TextBlock Grid.Row="2" Grid.Column="1" Text="{Binding PeakDpsThreeSeconds}" Foreground="{StaticResource SolidColorBrush.Accent.Red.2}"
-                                               HorizontalAlignment="Right" FontWeight="Bold" Margin="0,0,0,5" />
+                                               HorizontalAlignment="Right" FontWeight="Bold" Margin="0,0,0,5" FontSize="16" />
                                     <TextBlock Grid.Row="3" Grid.Column="0" Text="{Binding DataContext.DamageMeterBindings.TranslationPeakDpsFiveSeconds, RelativeSource={RelativeSource AncestorType={x:Type UserControl}}, FallbackValue=PEAK_DPS_5_SECONDS}"
                                                Foreground="{StaticResource SolidColorBrush.Text.1}" FontSize="14" Margin="0,0,0,5" />
                                     <TextBlock Grid.Row="3" Grid.Column="1" Text="{Binding PeakDpsFiveSeconds}" Foreground="{StaticResource SolidColorBrush.Accent.Red.2}"
-                                               HorizontalAlignment="Right" FontWeight="Bold" Margin="0,0,0,5" />
+                                               HorizontalAlignment="Right" FontWeight="Bold" Margin="0,0,0,5" FontSize="16" />
                                     <TextBlock Grid.Row="4" Grid.Column="0" Text="{Binding DataContext.DamageMeterBindings.TranslationPeakDpsTenSeconds, RelativeSource={RelativeSource AncestorType={x:Type UserControl}}, FallbackValue=PEAK_DPS_10_SECONDS}"
                                                Foreground="{StaticResource SolidColorBrush.Text.1}" FontSize="14" Margin="0,0,0,5" />
                                     <TextBlock Grid.Row="4" Grid.Column="1" Text="{Binding PeakDpsTenSeconds}" Foreground="{StaticResource SolidColorBrush.Accent.Red.2}"
-                                               HorizontalAlignment="Right" FontWeight="Bold" Margin="0,0,0,5" />
+                                               HorizontalAlignment="Right" FontWeight="Bold" Margin="0,0,0,5" FontSize="16" />
                                     <TextBlock Grid.Row="5" Grid.Column="0" Text="{Binding DataContext.DamageMeterBindings.TranslationBiggestHit, RelativeSource={RelativeSource AncestorType={x:Type UserControl}}, FallbackValue=BIGGEST_HIT}"
                                                Foreground="{StaticResource SolidColorBrush.Text.1}" FontSize="14" Margin="0,0,0,5" />
                                     <TextBlock Grid.Row="5" Grid.Column="1" Text="{Binding BiggestHit}" Foreground="{StaticResource SolidColorBrush.Accent.Red.2}"
-                                               HorizontalAlignment="Right" FontWeight="Bold" Margin="0,0,0,5" />
+                                               HorizontalAlignment="Right" FontWeight="Bold" Margin="0,0,0,5" FontSize="16" />
                                     <TextBlock Grid.Row="6" Grid.Column="0" Text="{Binding DataContext.DamageMeterBindings.TranslationPveDamage, RelativeSource={RelativeSource AncestorType={x:Type UserControl}}, FallbackValue=PVE_DAMAGE}"
                                                Foreground="{StaticResource SolidColorBrush.Text.1}" FontSize="14" Margin="0,0,0,5" />
                                     <TextBlock Grid.Row="6" Grid.Column="1" Text="{Binding PveDamage}" Foreground="{StaticResource SolidColorBrush.Accent.Red.2}"
-                                               HorizontalAlignment="Right" FontWeight="Bold" Margin="0,0,0,5" />
+                                               HorizontalAlignment="Right" FontWeight="Bold" Margin="0,0,0,5" FontSize="16" />
                                     <TextBlock Grid.Row="7" Grid.Column="0" Text="{Binding DataContext.DamageMeterBindings.TranslationPvpDamage, RelativeSource={RelativeSource AncestorType={x:Type UserControl}}, FallbackValue=PVP_DAMAGE}"
                                                Foreground="{StaticResource SolidColorBrush.Text.1}" FontSize="14" />
                                     <TextBlock Grid.Row="7" Grid.Column="1" Text="{Binding PvpDamage}" Foreground="{StaticResource SolidColorBrush.Accent.Red.2}"
-                                               HorizontalAlignment="Right" FontWeight="Bold" />
+                                               HorizontalAlignment="Right" FontWeight="Bold" FontSize="16" />
                                 </Grid>
                             </DockPanel>
                         </Border>
                         <Border Margin="10,2,0,8" Padding="5" BorderBrush="{StaticResource SolidColorBrush.Accent.Green.3}" BorderThickness="0,1,0,0">
                             <DockPanel LastChildFill="True">
                                 <TextBlock DockPanel.Dock="Top" Text="{Binding DataContext.DamageMeterBindings.TranslationYourStatsHealingSection, RelativeSource={RelativeSource AncestorType={x:Type UserControl}}, FallbackValue=YOUR_STATS_HEALING_SECTION}"
-                                           Foreground="{StaticResource SolidColorBrush.Accent.Green.3}" FontWeight="Bold" Margin="0,0,0,4" FontSize="14" />
+                                           Foreground="{StaticResource SolidColorBrush.Accent.Green.3}" FontWeight="Bold" Margin="0,0,0,4" FontSize="16" />
                                 <StackPanel>
                                     <Grid>
                                         <Grid.ColumnDefinitions>
@@ -120,14 +120,14 @@
                                             <RowDefinition Height="Auto"/>
                                         </Grid.RowDefinitions>
                                         <TextBlock Grid.Row="0" Grid.Column="0" Text="{Binding DataContext.DamageMeterBindings.TranslationTotalHealing, RelativeSource={RelativeSource AncestorType={x:Type UserControl}}, FallbackValue=TOTAL_HEALING}" Foreground="{StaticResource SolidColorBrush.Text.1}" FontSize="14" Margin="0,0,0,5" />
-                                        <TextBlock Grid.Row="0" Grid.Column="1" Text="{Binding TotalHealing}" Foreground="{StaticResource SolidColorBrush.Accent.Green.3}" HorizontalAlignment="Right" FontWeight="Bold" Margin="0,0,0,5" />
+                                        <TextBlock Grid.Row="0" Grid.Column="1" Text="{Binding TotalHealing}" Foreground="{StaticResource SolidColorBrush.Accent.Green.3}" HorizontalAlignment="Right" FontWeight="Bold" Margin="0,0,0,5" FontSize="16" />
                                         <TextBlock Grid.Row="1" Grid.Column="0" Text="{Binding DataContext.DamageMeterBindings.TranslationEffectiveHealing, RelativeSource={RelativeSource AncestorType={x:Type UserControl}}, FallbackValue=EFFECTIVE_HEALING}" Foreground="{StaticResource SolidColorBrush.Text.1}" FontSize="14" Margin="0,0,0,5" />
-                                        <TextBlock Grid.Row="1" Grid.Column="1" Text="{Binding EffectiveHealing}" Foreground="{StaticResource SolidColorBrush.Accent.Green.3}" HorizontalAlignment="Right" FontWeight="Bold" Margin="0,0,0,5" />
+                                        <TextBlock Grid.Row="1" Grid.Column="1" Text="{Binding EffectiveHealing}" Foreground="{StaticResource SolidColorBrush.Accent.Green.3}" HorizontalAlignment="Right" FontWeight="Bold" Margin="0,0,0,5" FontSize="16" />
                                         <TextBlock Grid.Row="2" Grid.Column="0" Text="{Binding DataContext.DamageMeterBindings.TranslationOverhealPercent, RelativeSource={RelativeSource AncestorType={x:Type UserControl}}, FallbackValue=OVERHEAL_PERCENT}" Foreground="{StaticResource SolidColorBrush.Text.1}" FontSize="14" Margin="0,0,0,5" />
-                                        <TextBlock Grid.Row="2" Grid.Column="1" Text="{Binding OverhealPercent}" Foreground="{StaticResource SolidColorBrush.Accent.Green.3}" HorizontalAlignment="Right" FontWeight="Bold" Margin="0,0,0,5" />
+                                        <TextBlock Grid.Row="2" Grid.Column="1" Text="{Binding OverhealPercent}" Foreground="{StaticResource SolidColorBrush.Accent.Green.3}" HorizontalAlignment="Right" FontWeight="Bold" Margin="0,0,0,5" FontSize="16" />
                                     </Grid>
                                     <TextBlock Text="{Binding DataContext.DamageMeterBindings.TranslationHealingTargetsTopThree, RelativeSource={RelativeSource AncestorType={x:Type UserControl}}, FallbackValue=HEALING_TARGETS_TOP_3}"
-                                               Foreground="{StaticResource SolidColorBrush.Text.3}" FontWeight="Bold" Margin="0,7,0,3" FontSize="14" />
+                                               Foreground="{StaticResource SolidColorBrush.Text.3}" FontWeight="Bold" Margin="0,7,0,3" FontSize="16" />
                                     <ItemsControl ItemsSource="{Binding TopHealingTargets}" ItemTemplate="{StaticResource YourStatsHealingTopEntryTemplate}" />
                                 </StackPanel>
                             </DockPanel>
@@ -135,7 +135,7 @@
                         <Border Margin="0,2,10,8" Padding="5" BorderBrush="{StaticResource SolidColorBrush.Accent.Blue.4}" BorderThickness="0,1,0,0">
                             <DockPanel LastChildFill="True">
                                 <TextBlock DockPanel.Dock="Top" Text="{Binding DataContext.DamageMeterBindings.TranslationYourStatsDefenseSection, RelativeSource={RelativeSource AncestorType={x:Type UserControl}}, FallbackValue=YOUR_STATS_DEFENSE_SECTION}"
-                                           Foreground="{StaticResource SolidColorBrush.Accent.Blue.2}" FontWeight="Bold" Margin="0,0,0,4" FontSize="14" />
+                                           Foreground="{StaticResource SolidColorBrush.Accent.Blue.2}" FontWeight="Bold" Margin="0,0,0,4" FontSize="16" />
                                 <StackPanel>
                                     <Grid>
                                         <Grid.ColumnDefinitions>
@@ -146,10 +146,14 @@
                                             <RowDefinition Height="Auto"/>
                                             <RowDefinition Height="Auto"/>
                                         </Grid.RowDefinitions>
-                                        <TextBlock Grid.Row="0" Grid.Column="0" Text="{Binding DataContext.DamageMeterBindings.TranslationDamageTaken, RelativeSource={RelativeSource AncestorType={x:Type UserControl}}, FallbackValue=DAMAGE_TAKEN}" Foreground="{StaticResource SolidColorBrush.Text.1}" FontSize="14" Margin="0,0,0,5" />
-                                        <TextBlock Grid.Row="0" Grid.Column="1" Text="{Binding DamageTaken}" Foreground="{StaticResource SolidColorBrush.Accent.Blue.2}" HorizontalAlignment="Right" FontWeight="Bold" Margin="0,0,0,5" />
-                                        <TextBlock Grid.Row="1" Grid.Column="0" Text="{Binding DataContext.DamageMeterBindings.TranslationDtps, RelativeSource={RelativeSource AncestorType={x:Type UserControl}}, FallbackValue=DTPS}" ToolTip="{Binding DataContext.DamageMeterBindings.TranslationDtpsTooltip, RelativeSource={RelativeSource AncestorType={x:Type UserControl}}, FallbackValue=DTPS_TOOLTIP}" Foreground="{StaticResource SolidColorBrush.Text.1}" FontSize="14" Margin="0,0,0,5" />
-                                        <TextBlock Grid.Row="1" Grid.Column="1" Text="{Binding Dtps}" ToolTip="{Binding DataContext.DamageMeterBindings.TranslationDtpsTooltip, RelativeSource={RelativeSource AncestorType={x:Type UserControl}}, FallbackValue=DTPS_TOOLTIP}" Foreground="{StaticResource SolidColorBrush.Accent.Blue.2}" HorizontalAlignment="Right" FontWeight="Bold" Margin="0,0,0,5" />
+                                        <TextBlock Grid.Row="0" Grid.Column="0" Text="{Binding DataContext.DamageMeterBindings.TranslationDamageTaken, RelativeSource={RelativeSource AncestorType={x:Type UserControl}}, FallbackValue=DAMAGE_TAKEN}" 
+                                                   Foreground="{StaticResource SolidColorBrush.Text.1}" FontSize="14" Margin="0,0,0,5" />
+                                        <TextBlock Grid.Row="0" Grid.Column="1" Text="{Binding DamageTaken}" Foreground="{StaticResource SolidColorBrush.Accent.Blue.2}" 
+                                                   HorizontalAlignment="Right" FontWeight="Bold" Margin="0,0,0,5" FontSize="16" />
+                                        <TextBlock Grid.Row="1" Grid.Column="0" Text="{Binding DataContext.DamageMeterBindings.TranslationDtps, RelativeSource={RelativeSource AncestorType={x:Type UserControl}}, FallbackValue=DTPS}" ToolTip="{Binding DataContext.DamageMeterBindings.TranslationDtpsTooltip, RelativeSource={RelativeSource AncestorType={x:Type UserControl}}, FallbackValue=DTPS_TOOLTIP}" 
+                                                   Foreground="{StaticResource SolidColorBrush.Text.1}" FontSize="14" Margin="0,0,0,5" />
+                                        <TextBlock Grid.Row="1" Grid.Column="1" Text="{Binding Dtps}" ToolTip="{Binding DataContext.DamageMeterBindings.TranslationDtpsTooltip, RelativeSource={RelativeSource AncestorType={x:Type UserControl}}, FallbackValue=DTPS_TOOLTIP}" 
+                                                   Foreground="{StaticResource SolidColorBrush.Accent.Blue.2}" HorizontalAlignment="Right" FontWeight="Bold" Margin="0,0,0,5" FontSize="16" />
                                     </Grid>
                                     <TextBlock Text="{Binding DataContext.DamageMeterBindings.TranslationBiggestDamageTakenBySpellTopThree, RelativeSource={RelativeSource AncestorType={x:Type UserControl}}, FallbackValue=BIGGEST_DAMAGE_TAKEN_BY_SPELL_TOP_3}"
                                                Foreground="{StaticResource SolidColorBrush.Text.2}" FontWeight="Bold" Margin="0,7,0,3" FontSize="14" />
@@ -160,7 +164,7 @@
                         <Border Margin="10,2,0,8" Padding="5" BorderBrush="{StaticResource SolidColorBrush.Accent.Yellow.3}" BorderThickness="0,1,0,0">
                             <DockPanel LastChildFill="True">
                                 <TextBlock DockPanel.Dock="Top" Text="{Binding DataContext.DamageMeterBindings.TranslationYourStatsCombatSection, RelativeSource={RelativeSource AncestorType={x:Type UserControl}}, FallbackValue=YOUR_STATS_COMBAT_SECTION}"
-                                           Foreground="{StaticResource SolidColorBrush.Accent.Yellow.3}" FontWeight="Bold" Margin="0,0,0,4" FontSize="14" />
+                                           Foreground="{StaticResource SolidColorBrush.Accent.Yellow.3}" FontWeight="Bold" Margin="0,0,0,4" FontSize="16" />
                                 <Grid>
                                     <Grid.ColumnDefinitions>
                                         <ColumnDefinition Width="*"/>
@@ -172,18 +176,19 @@
                                         <RowDefinition Height="Auto"/>
                                     </Grid.RowDefinitions>
                                     <TextBlock Grid.Row="0" Grid.Column="0" Text="{Binding DataContext.DamageMeterBindings.TranslationCombatTime, RelativeSource={RelativeSource AncestorType={x:Type UserControl}}, FallbackValue=COMBAT_TIME}" Foreground="{StaticResource SolidColorBrush.Text.1}" FontSize="14" Margin="0,0,0,5" />
-                                    <TextBlock Grid.Row="0" Grid.Column="1" Text="{Binding CombatTime}" Foreground="{StaticResource SolidColorBrush.Accent.Yellow.3}" HorizontalAlignment="Right" FontWeight="Bold" Margin="0,0,0,5" />
+                                    <TextBlock Grid.Row="0" Grid.Column="1" Text="{Binding CombatTime}" Foreground="{StaticResource SolidColorBrush.Accent.Yellow.3}" 
+                                               HorizontalAlignment="Right" FontWeight="Bold" Margin="0,0,0,5" FontSize="16" />
                                     <TextBlock Grid.Row="1" Grid.Column="0" Text="{Binding DataContext.DamageMeterBindings.TranslationFightCount, RelativeSource={RelativeSource AncestorType={x:Type UserControl}}, FallbackValue=FIGHT_COUNT}" Foreground="{StaticResource SolidColorBrush.Text.1}" FontSize="14" Margin="0,0,0,5" />
-                                    <TextBlock Grid.Row="1" Grid.Column="1" Text="{Binding FightCount}" Foreground="{StaticResource SolidColorBrush.Accent.Yellow.3}" HorizontalAlignment="Right" FontWeight="Bold" Margin="0,0,0,5" />
+                                    <TextBlock Grid.Row="1" Grid.Column="1" Text="{Binding FightCount}" Foreground="{StaticResource SolidColorBrush.Accent.Yellow.3}" 
+                                               HorizontalAlignment="Right" FontWeight="Bold" Margin="0,0,0,5" FontSize="16" />
                                     <TextBlock Grid.Row="2" Grid.Column="0" Text="{Binding DataContext.DamageMeterBindings.TranslationAverageFightDuration, RelativeSource={RelativeSource AncestorType={x:Type UserControl}}, FallbackValue=AVERAGE_FIGHT_DURATION}" Foreground="{StaticResource SolidColorBrush.Text.1}" FontSize="14" />
-                                    <TextBlock Grid.Row="2" Grid.Column="1" Text="{Binding AverageFightDuration}" Foreground="{StaticResource SolidColorBrush.Accent.Yellow.3}" HorizontalAlignment="Right" FontWeight="Bold" />
+                                    <TextBlock Grid.Row="2" Grid.Column="1" Text="{Binding AverageFightDuration}" Foreground="{StaticResource SolidColorBrush.Accent.Yellow.3}" 
+                                               HorizontalAlignment="Right" FontWeight="Bold" FontSize="16" />
                                 </Grid>
                             </DockPanel>
                         </Border>
                     </UniformGrid>
                 </ScrollViewer>
-                <TextBlock Text="{Binding DataContext.DamageMeterBindings.TranslationNoLocalDamageStatsAvailable, RelativeSource={RelativeSource AncestorType={x:Type UserControl}}, FallbackValue=NO_LOCAL_DAMAGE_STATS_AVAILABLE}"
-                           Visibility="{Binding EmptyVisibility}" Foreground="{StaticResource SolidColorBrush.Text.2}" FontSize="14" Margin="5" />
             </Grid>
         </DataTemplate>
         <DataTemplate x:Key="DamageStatsSnapshotTemplate" DataType="{x:Type damageMeter:DamageStatsSnapshot}">
