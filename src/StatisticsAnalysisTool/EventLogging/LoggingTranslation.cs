@@ -52,6 +52,9 @@ public class LoggingTranslation
     public static string FilterAll => LocalizationController.Translation("LOOT_FILTER_ALL");
     public static string FilterNone => LocalizationController.Translation("LOOT_FILTER_NONE");
     public static string UploadChestFiles => LocalizationController.Translation("UPLOAD_CHEST_FILES");
+    public static string ChestLogTextInput => LocalizationController.Translation("CHEST_LOG_TEXT_INPUT");
+    public static string ChestLogTextPlaceholder => LocalizationController.Translation("CHEST_LOG_TEXT_PLACEHOLDER");
+    public static string LoadChestLogText => LocalizationController.Translation("LOAD_CHEST_LOG_TEXT");
     public static string AddLootLogFiles => LocalizationController.Translation("ADD_LOOT_LOG_FILES");
     public static string CompareLogs => LocalizationController.Translation("COMPARE_LOGS");
     public static string DeleteChestLogs => LocalizationController.Translation("DELETE_CHEST_LOGS");

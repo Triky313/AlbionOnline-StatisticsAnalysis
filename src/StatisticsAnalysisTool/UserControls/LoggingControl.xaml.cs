@@ -44,6 +44,19 @@ public partial class LoggingControl
         mainWindowViewModel.LoggingBindings.IsAllButtonsEnabled = true;
     }
 
+    private void BtnLoadVaultLogText_Click(object sender, RoutedEventArgs e)
+    {
+        var mainWindowViewModel = ServiceLocator.Resolve<MainWindowViewModel>();
+        mainWindowViewModel.LoggingBindings.IsAllButtonsEnabled = false;
+        var addedItems = mainWindowViewModel.LoggingBindings.AddVaultLogText(mainWindowViewModel.LoggingBindings.ChestLogText);
+        if (addedItems > 0)
+        {
+            mainWindowViewModel.LoggingBindings.ChestLogText = string.Empty;
+        }
+
+        mainWindowViewModel.LoggingBindings.IsAllButtonsEnabled = true;
+    }
+
     private void BtnAddLootLogFiles_Click(object sender, RoutedEventArgs e)
     {
         var mainWindowViewModel = ServiceLocator.Resolve<MainWindowViewModel>();
@@ -64,8 +77,7 @@ public partial class LoggingControl
     {
         var mainWindowViewModel = ServiceLocator.Resolve<MainWindowViewModel>();
         mainWindowViewModel.LoggingBindings.IsAllButtonsEnabled = false;
-        mainWindowViewModel.LoggingBindings.VaultLogItems.Clear();
-        mainWindowViewModel.LoggingBindings.RemoveAllVaultItems();
+        mainWindowViewModel.LoggingBindings.ClearVaultLogs();
         mainWindowViewModel.LoggingBindings.IsAllButtonsEnabled = true;
     }
 
@@ -73,7 +85,7 @@ public partial class LoggingControl
     {
         var mainWindowViewModel = ServiceLocator.Resolve<MainWindowViewModel>();
         mainWindowViewModel.LoggingBindings.IsAllButtonsEnabled = false;
-        mainWindowViewModel.LoggingBindings.LootingPlayers.Clear();
+        mainWindowViewModel.LoggingBindings.ClearLootLogs();
         mainWindowViewModel.LoggingBindings.IsAllButtonsEnabled = true;
     }
 

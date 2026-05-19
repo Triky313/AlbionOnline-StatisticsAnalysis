@@ -6,6 +6,7 @@ using System.Collections.Specialized;
 using System.ComponentModel;
 using System.Linq;
 using System.Windows;
+using System.Windows.Data;
 
 namespace StatisticsAnalysisTool.EventLogging;
 
@@ -15,6 +16,7 @@ public class LootingPlayer : BaseViewModel
     private string _playerGuild;
     private string _playerAlliance;
     private ObservableCollection<LootedItem> _lootedItems = new();
+    private readonly object _lootedItemsSyncRoot = new();
     private Visibility _lootingPlayerVisibility = Visibility.Visible;
 
     public LootingPlayer()
@@ -82,7 +84,7 @@ public class LootingPlayer : BaseViewModel
     }
 
     public long TotalEstimatedMarketValue
-        => LootedItems
+        => GetLootedItemsSnapshot()
             .Select(item => item.Quantity * (item.Item?.AverageEstMarketValue ?? 0))
             .Where(estimatedMarketValue => estimatedMarketValue > 0)
             .Sum();
@@ -115,6 +117,54 @@ public class LootingPlayer : BaseViewModel
         return affiliations.Count > 0 ? $"{PlayerName} ({string.Join(", ", affiliations)})" : PlayerName;
     }
 
+    public int LootedItemCount
+    {
+        get
+        {
+            lock (_lootedItemsSyncRoot)
+            {
+                return _lootedItems.Count;
+            }
+        }
+    }
+
+    public List<LootedItem> GetLootedItemsSnapshot()
+    {
+        lock (_lootedItemsSyncRoot)
+        {
+            return _lootedItems.ToList();
+        }
+    }
+
+    public void AddLootedItem(LootedItem lootedItem)
+    {
+        if (lootedItem is null)
+        {
+            return;
+        }
+
+        lock (_lootedItemsSyncRoot)
+        {
+            _lootedItems.Add(lootedItem);
+        }
+    }
+
+    public void RemoveLootedItems(IEnumerable<LootedItem> lootedItems)
+    {
+        if (lootedItems is null)
+        {
+            return;
+        }
+
+        foreach (var lootedItem in lootedItems.ToList())
+        {
+            lock (_lootedItemsSyncRoot)
+            {
+                _lootedItems.Remove(lootedItem);
+            }
+        }
+    }
+
     private void SubscribeLootedItems(ObservableCollection<LootedItem> lootedItems)
     {
         if (lootedItems is null)
@@ -122,10 +172,14 @@ public class LootingPlayer : BaseViewModel
             return;
         }
 
+        BindingOperations.EnableCollectionSynchronization(lootedItems, _lootedItemsSyncRoot);
         lootedItems.CollectionChanged += LootedItemsCollectionChanged;
-        foreach (var lootedItem in lootedItems)
+        lock (_lootedItemsSyncRoot)
         {
-            lootedItem.PropertyChanged += LootedItemPropertyChanged;
+            foreach (var lootedItem in lootedItems)
+            {
+                lootedItem.PropertyChanged += LootedItemPropertyChanged;
+            }
         }
     }
 
@@ -137,9 +191,13 @@ public class LootingPlayer : BaseViewModel
         }
 
         lootedItems.CollectionChanged -= LootedItemsCollectionChanged;
-        foreach (var lootedItem in lootedItems)
+        BindingOperations.DisableCollectionSynchronization(lootedItems);
+        lock (_lootedItemsSyncRoot)
         {
-            lootedItem.PropertyChanged -= LootedItemPropertyChanged;
+            foreach (var lootedItem in lootedItems)
+            {
+                lootedItem.PropertyChanged -= LootedItemPropertyChanged;
+            }
         }
     }
 

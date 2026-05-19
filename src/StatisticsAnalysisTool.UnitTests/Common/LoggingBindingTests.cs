@@ -26,10 +26,11 @@ public class LoggingBindingsTests
     public void UpdateItemsStatus_WithValidValue()
     {
         var bindings = new LoggingBindings();
+        var lootTime = new DateTime(2026, 5, 19, 8, 48, 13, DateTimeKind.Utc);
 
         var vaultLogItem = new VaultContainerLogItem()
         {
-            Timestamp = DateTime.Now,
+            Timestamp = lootTime.AddHours(1),
             PlayerName = "Bob",
             LocalizedName = "ITEM_3",
             Enchantment = 0,
@@ -38,6 +39,7 @@ public class LoggingBindingsTests
         };
         var lootedItem1 = new LootedItem()
         {
+            UtcPickupTime = lootTime,
             ItemIndex = 1,
             Quantity = 1,
             LootedByName = "Bob",
@@ -47,6 +49,7 @@ public class LoggingBindingsTests
         };
         var lootedItem2 = new LootedItem()
         {
+            UtcPickupTime = lootTime,
             ItemIndex = 2,
             Quantity = 1,
             LootedByName = "Bob",
@@ -57,6 +60,7 @@ public class LoggingBindingsTests
         // This is the matched vaulted item
         var lootedItem3 = new LootedItem()
         {
+            UtcPickupTime = lootTime,
             ItemIndex = 3,
             Quantity = 1,
             LootedByName = "Bob",
@@ -117,6 +121,117 @@ public class LoggingBindingsTests
     }
 
     [Test]
+    public void UpdateItemsStatus_WithChestLogAfterLootTime_ResolvesItemRegardlessOfTimeDistance()
+    {
+        var lootTime = new DateTime(2026, 5, 19, 8, 48, 13, DateTimeKind.Utc);
+        var bindings = new LoggingBindings()
+        {
+            VaultLogItems = new ObservableCollection<VaultContainerLogItem>
+            {
+                new()
+                {
+                    Timestamp = lootTime.AddHours(10),
+                    PlayerName = "Triky313",
+                    LocalizedName = "Kiefernholz",
+                    Enchantment = 0,
+                    Quality = 1,
+                    Quantity = 8
+                }
+            },
+            LootingPlayers = new ObservableCollection<LootingPlayer>
+            {
+                new()
+                {
+                    PlayerName = "Triky313",
+                    LootedItems = new ObservableCollection<LootedItem>
+                    {
+                        new()
+                        {
+                            UtcPickupTime = lootTime,
+                            ItemIndex = 4,
+                            Quantity = 8,
+                            LootedByName = "Triky313",
+                            IsTrash = false
+                        }
+                    }
+                }
+            }
+        };
+
+        ItemController.Items = new ObservableCollection<Item>
+        {
+            new()
+            {
+                Index = 4,
+                UniqueName = "T4_WOOD",
+                LocalizedNames = new LocalizedNames { EnUs = "Pine Logs", DeDe = "Kiefernholz" }
+            }
+        };
+
+        bindings.UpdateItemsStatus();
+
+        var lootedItems = bindings.LootingPlayers[0].LootedItems;
+        lootedItems.Should().HaveCount(1);
+        lootedItems[0].Status.Should().Be(LootedItemStatus.Resolved);
+    }
+
+    [Test]
+    public void UpdateItemsStatus_WithChestLogBeforeLootTime_DoesNotResolveItem()
+    {
+        var lootTime = new DateTime(2026, 5, 19, 8, 48, 13, DateTimeKind.Utc);
+        var bindings = new LoggingBindings()
+        {
+            VaultLogItems = new ObservableCollection<VaultContainerLogItem>
+            {
+                new()
+                {
+                    Timestamp = lootTime.AddMinutes(-1),
+                    PlayerName = "Triky313",
+                    LocalizedName = "Kiefernholz",
+                    Enchantment = 0,
+                    Quality = 1,
+                    Quantity = 8
+                }
+            },
+            LootingPlayers = new ObservableCollection<LootingPlayer>
+            {
+                new()
+                {
+                    PlayerName = "Triky313",
+                    LootedItems = new ObservableCollection<LootedItem>
+                    {
+                        new()
+                        {
+                            UtcPickupTime = lootTime,
+                            ItemIndex = 4,
+                            Quantity = 8,
+                            LootedByName = "Triky313",
+                            IsTrash = false
+                        }
+                    }
+                }
+            }
+        };
+
+        ItemController.Items = new ObservableCollection<Item>
+        {
+            new()
+            {
+                Index = 4,
+                UniqueName = "T4_WOOD",
+                LocalizedNames = new LocalizedNames { EnUs = "Pine Logs", DeDe = "Kiefernholz" }
+            }
+        };
+
+        bindings.UpdateItemsStatus();
+
+        var lootedItems = bindings.LootingPlayers[0].LootedItems;
+        lootedItems.Should().HaveCount(2);
+        lootedItems[0].Status.Should().Be(LootedItemStatus.Unknown);
+        lootedItems[1].Status.Should().Be(LootedItemStatus.Donated);
+    }
+
+    [Test]
     public void ParallelLootedItemsFilterProcess_WithTrashStatusDisabled_HidesTrashItems()
     {
         var trashItem = new LootedItem()
@@ -170,6 +285,46 @@ public class LoggingBindingsTests
         trashItem.Visibility.Should().Be(Visibility.Collapsed);
         regularItem.Visibility.Should().Be(Visibility.Visible);
         bindings.LootingPlayers[0].LootingPlayerVisibility.Should().Be(Visibility.Visible);
+    }
+
+    [Test]
+    public void AddVaultLogText_WithPastedChestLog_LoadsPositiveQuantityItems()
+    {
+        var bindings = new LoggingBindings();
+        var chestLogText = string.Join(Environment.NewLine,
+            "\"Datum\"\t\"Spieler\"\t\"Gegenstand\"\t\"Verzauberung\"\t\"Qualitat\"\t\"Anzahl\"",
+            "\"05/17/2026 23:31:19\"\t\"Triky313\"\t\"Seltenes robustes Fell\"\t\"2\"\t\"1\"\t\"1\"",
+            "\"05/17/2026 23:31:18\"\t\"Triky313\"\t\"Ungewohnliches schweres Fell\"\t\"1\"\t\"1\"\t\"14\"",
+            "\"05/15/2026 11:52:37\"\t\"faxerix\"\t\"Transportmammut des Altesten\"\t\"0\"\t\"4\"\t\"-1\"");
+
+        var loadedItems = bindings.AddVaultLogText(chestLogText);
+
+        loadedItems.Should().Be(2);
+        bindings.VaultLogItems.Should().HaveCount(2);
+        bindings.VaultLogItems[0].PlayerName.Should().Be("Triky313");
+        bindings.VaultLogItems[0].LocalizedName.Should().Be("Seltenes robustes Fell");
+        bindings.VaultLogItems[0].Enchantment.Should().Be(2);
+        bindings.VaultLogItems[0].Quality.Should().Be(1);
+        bindings.VaultLogItems[0].Quantity.Should().Be(1);
+        bindings.VaultLogItems[1].Quantity.Should().Be(14);
+    }
+
+    [Test]
+    public void AddVaultLogText_WithMultiplePastedChestLogs_AppendsItems()
+    {
+        var bindings = new LoggingBindings();
+        var firstChestLogText = string.Join(Environment.NewLine,
+            "\"Datum\"\t\"Spieler\"\t\"Gegenstand\"\t\"Verzauberung\"\t\"Qualitat\"\t\"Anzahl\"",
+            "\"05/17/2026 23:31:19\"\t\"Triky313\"\t\"Seltenes robustes Fell\"\t\"2\"\t\"1\"\t\"1\"");
+        var secondChestLogText = string.Join(Environment.NewLine,
+            "\"Datum\"\t\"Spieler\"\t\"Gegenstand\"\t\"Verzauberung\"\t\"Qualitat\"\t\"Anzahl\"",
+            "\"05/17/2026 23:31:18\"\t\"Triky313\"\t\"Ungewohnliches schweres Fell\"\t\"1\"\t\"1\"\t\"14\"");
+
+        bindings.AddVaultLogText(firstChestLogText).Should().Be(1);
+        bindings.AddVaultLogText(secondChestLogText).Should().Be(1);
+
+        bindings.VaultLogItems.Should().HaveCount(2);
+        bindings.ChestLogCount.Should().Be(2);
     }
 
     [Test]

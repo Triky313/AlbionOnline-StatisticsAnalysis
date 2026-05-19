@@ -142,8 +142,9 @@ public class LoggingBindings : BaseViewModel
     public void UpdateItemsStatus()
     {
         RemoveAllVaultItems();
+        ResetLootLogItemStatuses();
 
-        foreach (var logItem in VaultLogItems)
+        foreach (var logItem in VaultLogItems.ToList())
         {
             var lootingPlayer = LootingPlayers.FirstOrDefault(x => string.Equals(x.PlayerName, logItem.PlayerName, StringComparison.OrdinalIgnoreCase));
 
@@ -153,16 +154,11 @@ public class LoggingBindings : BaseViewModel
                 continue;
             }
 
-            var ts = logItem.Timestamp.Kind switch
-            {
-                DateTimeKind.Utc => logItem.Timestamp,
-                DateTimeKind.Local => logItem.Timestamp.ToUniversalTime(),
-                _ => DateTime.SpecifyKind(logItem.Timestamp, DateTimeKind.Utc)
-            };
+            var utcTimestamp = ToUtc(logItem.Timestamp);
 
             var vaultLogItem = new LootedItem
             {
-                UtcPickupTime = ts,
+                UtcPickupTime = utcTimestamp,
                 ItemIndex = vaultLogLocalizedItem.Index,
                 IsItemFromVaultLog = true,
                 IsTrash = string.Equals(vaultLogLocalizedItem.FullItemInformation?.ShopSubCategory1, "trash", StringComparison.OrdinalIgnoreCase),
@@ -173,14 +169,14 @@ public class LoggingBindings : BaseViewModel
             {
                 var newItems = new List<LootedItem>();
 
-                if (lootingPlayer.LootedItems.Count <= 0 || !MatchLootedItem(lootingPlayer, vaultLogItem))
+                if (lootingPlayer.LootedItemCount <= 0 || !MatchLootedItem(lootingPlayer, vaultLogItem))
                 {
                     AddNewLootedItem(newItems, logItem, vaultLogLocalizedItem, LootedItemStatus.Donated);
                 }
 
                 foreach (var newItem in newItems)
                 {
-                    lootingPlayer.LootedItems.Add(newItem);
+                    lootingPlayer.AddLootedItem(newItem);
                 }
             }
             else
@@ -190,34 +186,35 @@ public class LoggingBindings : BaseViewModel
         }
 
         MarkLostItems(LootingPlayers);
+        RefreshLootComparatorLogCounts();
     }
 
-    private static bool MatchLootedItem(LootingPlayer lootingPlayer, LootedItem vaultLogItem, int timeToleranceSeconds = 2)
+    private static bool MatchLootedItem(LootingPlayer lootingPlayer, LootedItem vaultLogItem)
     {
-        foreach (var lootedItem in lootingPlayer.LootedItems)
-        {
-            bool same =
-                lootedItem.ItemIndex == vaultLogItem.ItemIndex &&
-                string.Equals(lootedItem.LootedByName, vaultLogItem.LootedByName, StringComparison.OrdinalIgnoreCase) &&
-                lootedItem.Quantity == vaultLogItem.Quantity &&
-                Math.Abs((lootedItem.UtcPickupTime - vaultLogItem.UtcPickupTime).TotalSeconds) <= timeToleranceSeconds;
+        var matchedItem = lootingPlayer.GetLootedItemsSnapshot()
+            .Where(lootedItem => !lootedItem.IsItemFromVaultLog)
+            .Where(lootedItem => lootedItem.Status != LootedItemStatus.Resolved)
+            .Where(lootedItem => lootedItem.ItemIndex == vaultLogItem.ItemIndex)
+            .Where(lootedItem => string.Equals(lootedItem.LootedByName, vaultLogItem.LootedByName, StringComparison.OrdinalIgnoreCase))
+            .Where(lootedItem => lootedItem.Quantity == vaultLogItem.Quantity)
+            .Where(lootedItem => ToUtc(lootedItem.UtcPickupTime) <= vaultLogItem.UtcPickupTime)
+            .OrderByDescending(lootedItem => ToUtc(lootedItem.UtcPickupTime))
+            .FirstOrDefault();
 
-            if (same)
-            {
-                lootedItem.Status = LootedItemStatus.Resolved;
-                lootedItem.IsItemFromVaultLog = true;
-                return true;
-            }
+        if (matchedItem is null)
+        {
+            return false;
         }
 
-        return false;
+        matchedItem.Status = LootedItemStatus.Resolved;
+        return true;
     }
 
     private static void AddNewLootedItem(List<LootedItem> newItems, VaultContainerLogItem logItem, Item vaultLogLocalizedItem, LootedItemStatus status)
     {
         newItems.Add(new LootedItem
         {
-            UtcPickupTime = logItem.Timestamp,
+            UtcPickupTime = ToUtc(logItem.Timestamp),
             ItemIndex = vaultLogLocalizedItem.Index,
             IsItemFromVaultLog = true,
             IsTrash = vaultLogLocalizedItem.FullItemInformation?.ShopSubCategory1 == "trash",
@@ -237,7 +234,7 @@ public class LoggingBindings : BaseViewModel
             [
                 new LootedItem
                 {
-                    UtcPickupTime = logItem.Timestamp,
+                    UtcPickupTime = ToUtc(logItem.Timestamp),
                     ItemIndex = vaultLogLocalizedItem.Index,
                     IsItemFromVaultLog = true,
                     IsTrash = vaultLogLocalizedItem.FullItemInformation?.ShopSubCategory1 == "trash",
@@ -252,15 +249,12 @@ public class LoggingBindings : BaseViewModel
     public void RemoveAllVaultItems()
     {
         var playerToRemove = new List<LootingPlayer>();
-        foreach (var player in LootingPlayers)
+        foreach (var player in LootingPlayers.ToList())
         {
-            var itemsToRemove = player.LootedItems.Where(item => item.IsItemFromVaultLog).ToList();
-            foreach (var item in itemsToRemove)
-            {
-                player.LootedItems.Remove(item);
-            }
+            var itemsToRemove = player.GetLootedItemsSnapshot().Where(item => item.IsItemFromVaultLog).ToList();
+            player.RemoveLootedItems(itemsToRemove);
 
-            if (player.LootedItems.Count <= 0)
+            if (player.LootedItemCount <= 0)
             {
                 playerToRemove.Add(player);
             }
@@ -272,13 +266,41 @@ public class LoggingBindings : BaseViewModel
         }
     }
 
+    private void ResetLootLogItemStatuses()
+    {
+        foreach (var player in LootingPlayers.ToList())
+        {
+            foreach (var item in player.GetLootedItemsSnapshot())
+            {
+                if (!item.IsItemFromVaultLog)
+                {
+                    item.Status = LootedItemStatus.Unknown;
+                }
+            }
+        }
+    }
+
+    public void ClearVaultLogs()
+    {
+        VaultLogItems.Clear();
+        RemoveAllVaultItems();
+        ResetLootLogItemStatuses();
+        RefreshLootComparatorLogCounts();
+    }
+
+    public void ClearLootLogs()
+    {
+        LootingPlayers.Clear();
+        RefreshLootComparatorLogCounts();
+    }
+
     private void MarkLostItems(ObservableCollection<LootingPlayer> lootingPlayers)
     {
         var itemLootHistory = new Dictionary<int, List<(LootingPlayer Player, DateTime Timestamp)>>();
 
         foreach (var player in lootingPlayers)
         {
-            foreach (var item in player.LootedItems)
+            foreach (var item in player.GetLootedItemsSnapshot())
             {
                 if (!itemLootHistory.ContainsKey(item.ItemIndex))
                 {
@@ -291,7 +313,7 @@ public class LoggingBindings : BaseViewModel
 
         foreach (var player in lootingPlayers)
         {
-            foreach (var item in player.LootedItems)
+            foreach (var item in player.GetLootedItemsSnapshot())
             {
                 if (itemLootHistory.TryGetValue(item.ItemIndex, out var history))
                 {
@@ -332,9 +354,7 @@ public class LoggingBindings : BaseViewModel
             {
                 try
                 {
-                    var lines = File.ReadAllLines(filePath);
-                    var parsedItems = lines.Skip(1).Select(ParseCsvLine).Where(item => item != null).ToList();
-                    items.AddRange(parsedItems);
+                    items.AddRange(ReadVaultLogText(File.ReadAllText(filePath)));
                 }
                 catch (Exception ex)
                 {
@@ -342,12 +362,22 @@ public class LoggingBindings : BaseViewModel
                 }
             }
 
-            VaultLogItems = new ObservableCollection<VaultContainerLogItem>(items.Where(x => x.Quantity > 0));
+            ReplaceVaultLogItems(items);
 
             Debug.Print($"Loaded {VaultLogItems.Count} chest log entries.");
         }
 
         IsAllButtonsEnabled = true;
+    }
+
+    public int AddVaultLogText(string chestLogText)
+    {
+        var items = ReadVaultLogText(chestLogText).ToList();
+        var addedItems = AddVaultLogItems(items);
+
+        Debug.Print($"Added {addedItems} chest log entries from pasted chest log text.");
+
+        return addedItems;
     }
 
     public void OpenLootLogFilePathSelection()
@@ -394,6 +424,7 @@ public class LoggingBindings : BaseViewModel
             }
         }
 
+        RefreshLootComparatorLogCounts();
         return addedItems;
     }
 
@@ -515,7 +546,7 @@ public class LoggingBindings : BaseViewModel
         if (lootingPlayer is not null)
         {
             UpdateLootingPlayerAffiliations(lootingPlayer, lootLogItem);
-            lootingPlayer.LootedItems.Add(CreateLootedItem(lootLogItem));
+            lootingPlayer.AddLootedItem(CreateLootedItem(lootLogItem));
             return true;
         }
 
@@ -537,7 +568,7 @@ public class LoggingBindings : BaseViewModel
     private bool IsDuplicateLootLogItem(ImportedLootLogItem lootLogItem)
     {
         return LootingPlayers
-            .SelectMany(player => player.LootedItems)
+            .SelectMany(player => player.GetLootedItemsSnapshot())
             .Where(item => !item.IsItemFromVaultLog)
             .Any(item => IsSameLootLogItem(item, lootLogItem));
     }
@@ -577,20 +608,59 @@ public class LoggingBindings : BaseViewModel
         }
     }
 
-    private static VaultContainerLogItem ParseCsvLine(string line)
+    private static IEnumerable<VaultContainerLogItem> ReadVaultLogText(string chestLogText)
+    {
+        if (string.IsNullOrWhiteSpace(chestLogText))
+        {
+            return [];
+        }
+
+        using var reader = new StringReader(chestLogText);
+        List<VaultContainerLogItem> items = [];
+        var isFirstDataLine = true;
+
+        while (reader.ReadLine() is { } line)
+        {
+            if (string.IsNullOrWhiteSpace(line))
+            {
+                continue;
+            }
+
+            if (isFirstDataLine && IsVaultLogHeader(line))
+            {
+                isFirstDataLine = false;
+                continue;
+            }
+
+            isFirstDataLine = false;
+            var item = ParseVaultLogLine(line);
+            if (item is not null)
+            {
+                items.Add(item);
+            }
+        }
+
+        return items;
+    }
+
+    private static bool IsVaultLogHeader(string line)
+    {
+        var values = SplitVaultLogLine(line);
+        return values.Length >= 6
+               && string.Equals(values[0], "Datum", StringComparison.OrdinalIgnoreCase)
+               && string.Equals(values[1], "Spieler", StringComparison.OrdinalIgnoreCase)
+               && string.Equals(values[2], "Gegenstand", StringComparison.OrdinalIgnoreCase);
+    }
+
+    private static VaultContainerLogItem ParseVaultLogLine(string line)
     {
         try
         {
-            var values = line.Split('\t');
+            var values = SplitVaultLogLine(line);
 
             if (values.Length != 6)
             {
                 return null;
-            }
-
-            for (int i = 0; i < values.Length; i++)
-            {
-                values[i] = values[i].Trim('"');
             }
 
             if (values[5].Length <= 0)
@@ -598,9 +668,14 @@ public class LoggingBindings : BaseViewModel
                 return null;
             }
 
+            if (!TryParseVaultLogTimestamp(values[0], out var utcTimestamp))
+            {
+                return null;
+            }
+
             return new VaultContainerLogItem
             {
-                Timestamp = DateTime.ParseExact(values[0], SupportedFormats, CultureInfo.InvariantCulture, DateTimeStyles.None),
+                Timestamp = utcTimestamp,
                 PlayerName = values[1],
                 LocalizedName = values[2],
                 Enchantment = int.Parse(values[3]),
@@ -612,6 +687,59 @@ public class LoggingBindings : BaseViewModel
         {
             return null;
         }
+    }
+
+    private static bool TryParseVaultLogTimestamp(string value, out DateTime utcTimestamp)
+    {
+        utcTimestamp = DateTime.MinValue;
+
+        if (!DateTime.TryParseExact(value, SupportedFormats, CultureInfo.InvariantCulture, DateTimeStyles.AssumeLocal, out var localTimestamp))
+        {
+            return false;
+        }
+
+        utcTimestamp = ToUtc(localTimestamp);
+        return true;
+    }
+
+    private static DateTime ToUtc(DateTime timestamp)
+    {
+        return timestamp.Kind switch
+        {
+            DateTimeKind.Utc => timestamp,
+            DateTimeKind.Local => timestamp.ToUniversalTime(),
+            _ => DateTime.SpecifyKind(timestamp, DateTimeKind.Local).ToUniversalTime()
+        };
+    }
+
+    private static string[] SplitVaultLogLine(string line)
+    {
+        var values = line.Split('\t');
+
+        for (int i = 0; i < values.Length; i++)
+        {
+            values[i] = values[i].Trim().Trim('"');
+        }
+
+        return values;
+    }
+
+    private void ReplaceVaultLogItems(IEnumerable<VaultContainerLogItem> items)
+    {
+        VaultLogItems = new ObservableCollection<VaultContainerLogItem>(items.Where(x => x.Quantity > 0));
+        RefreshLootComparatorLogCounts();
+    }
+
+    private int AddVaultLogItems(IEnumerable<VaultContainerLogItem> items)
+    {
+        var validItems = items.Where(x => x.Quantity > 0).ToList();
+        foreach (var item in validItems)
+        {
+            VaultLogItems.Add(item);
+        }
+
+        RefreshLootComparatorLogCounts();
+        return validItems.Count;
     }
 
     public Visibility IsLootComparatorInfoPopupVisible
@@ -649,6 +777,7 @@ public class LoggingBindings : BaseViewModel
         RemoveVaultLogItemsForPlayer(lootingPlayer.PlayerName);
         LootingPlayers.Remove(lootingPlayer);
         LootingPlayersCollectionView?.Refresh();
+        RefreshLootComparatorLogCounts();
     }
 
     private void RemoveVaultLogItemsForPlayer(string playerName)
@@ -673,6 +802,11 @@ public class LoggingBindings : BaseViewModel
     public string TypeFilterSummary => BuildFilterSummary(LoggingTranslation.FilterType, CountSelectedFilters(IsShowingFood, IsShowingPotion, IsShowingBag, IsShowingCape, IsShowingMount, IsShowingOthers), 6);
     public string NotificationFilterSummary => BuildFilterSummary(LoggingTranslation.Filter, Filters.Count(filter => filter.IsSelected == true), Filters.Count);
     public string TrackingSummary => BuildFilterSummary(LoggingTranslation.Tracking, CountSelectedFilters(IsTrackingPartyLootOnly, IsTrackingSilver, IsTrackingFame, IsTrackingMobLoot, IsTrackingKill), 5);
+    public int ChestLogCount => VaultLogItems.Count;
+    public int LootLogCount => LootingPlayers.Sum(player => player.GetLootedItemsSnapshot().Count(item => !item.IsItemFromVaultLog));
+    public string LootComparatorLogCountSummary => LocalizationController.Translation("LOOT_COMPARATOR_LOG_COUNT_SUMMARY",
+        ["CHEST_COUNT", "LOOT_COUNT"],
+        [ChestLogCount.ToString(CultureInfo.InvariantCulture), LootLogCount.ToString(CultureInfo.InvariantCulture)]);
 
     private static string BuildFilterSummary(string filterName, int selectedCount, int totalCount)
     {
@@ -686,6 +820,13 @@ public class LoggingBindings : BaseViewModel
         };
 
         return $"{filterName}: {selectedText}";
+    }
+
+    public void RefreshLootComparatorLogCounts()
+    {
+        OnPropertyChanged(nameof(ChestLogCount));
+        OnPropertyChanged(nameof(LootLogCount));
+        OnPropertyChanged(nameof(LootComparatorLogCountSummary));
     }
 
     private static int CountSelectedFilters(params bool[] values)
@@ -765,6 +906,16 @@ public class LoggingBindings : BaseViewModel
             OnPropertyChanged();
         }
     } = [];
+
+    public string ChestLogText
+    {
+        get;
+        set
+        {
+            field = value;
+            OnPropertyChanged();
+        }
+    } = string.Empty;
 
     public ListCollectionView GameLoggingCollectionView
     {
@@ -1135,7 +1286,7 @@ public class LoggingBindings : BaseViewModel
                 state.Stop();
             }
 
-            var itemsToProcess = lootingPlayer.LootedItems.ToList();
+            var itemsToProcess = lootingPlayer.GetLootedItemsSnapshot();
 
             foreach (var lootedItem in itemsToProcess)
             {
@@ -1151,11 +1302,12 @@ public class LoggingBindings : BaseViewModel
     {
         foreach (LootingPlayer lootingPlayer in lootingPlayers)
         {
-            if (lootingPlayer.LootedItems.Count > 0 && lootingPlayer.LootedItems.All(x => x.Visibility != Visibility.Visible))
+            var lootedItems = lootingPlayer.GetLootedItemsSnapshot();
+            if (lootedItems.Count > 0 && lootedItems.All(x => x.Visibility != Visibility.Visible))
             {
                 lootingPlayer.LootingPlayerVisibility = Visibility.Collapsed;
             }
-            else if (lootingPlayer.LootedItems.Count <= 0)
+            else if (lootedItems.Count <= 0)
             {
                 lootingPlayer.LootingPlayerVisibility = Visibility.Collapsed;
             }
