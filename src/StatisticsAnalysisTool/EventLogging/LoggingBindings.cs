@@ -39,6 +39,8 @@ public class LoggingBindings : BaseViewModel
     private bool _isShowingT8 = true;
     private bool _isShowingBag = true;
     private bool _isShowingCape = true;
+    private bool _isShowingWeapon = true;
+    private bool _isShowingArmor = true;
     private bool _isShowingFood = true;
     private bool _isShowingPotion = true;
     private bool _isShowingMount = true;
@@ -829,7 +831,7 @@ public class LoggingBindings : BaseViewModel
 
     public string StatusFilterSummary => BuildFilterSummary(LoggingTranslation.FilterStatus, CountSelectedFilters(IsShowingLost, IsShowingResolved, IsShowingDonated, IsShowingTrash), 4);
     public string TierFilterSummary => BuildFilterSummary(LoggingTranslation.FilterTier, CountSelectedFilters(IsShowingT1ToT3, IsShowingT4, IsShowingT5, IsShowingT6, IsShowingT7, IsShowingT8), 6);
-    public string TypeFilterSummary => BuildFilterSummary(LoggingTranslation.FilterType, CountSelectedFilters(IsShowingFood, IsShowingPotion, IsShowingBag, IsShowingCape, IsShowingMount, IsShowingOthers), 6);
+    public string TypeFilterSummary => BuildFilterSummary(LoggingTranslation.FilterType, CountSelectedFilters(IsShowingFood, IsShowingPotion, IsShowingBag, IsShowingCape, IsShowingWeapon, IsShowingArmor, IsShowingMount, IsShowingOthers), 8);
     public string NotificationFilterSummary => BuildFilterSummary(LoggingTranslation.Filter, Filters.Count(filter => filter.IsSelected == true), Filters.Count);
     public string TrackingSummary => BuildFilterSummary(LoggingTranslation.Tracking, CountSelectedFilters(IsTrackingPartyLootOnly, IsTrackingSilver, IsTrackingFame, IsTrackingMobLoot, IsTrackingKill), 5);
     public int ChestLogCount => _chestLogSourceCount;
@@ -1206,6 +1208,28 @@ public class LoggingBindings : BaseViewModel
         }
     }
 
+    public bool IsShowingWeapon
+    {
+        get => _isShowingWeapon;
+        set
+        {
+            _isShowingWeapon = value;
+            OnPropertyChanged();
+            NotifyTypeFilterChanged();
+        }
+    }
+
+    public bool IsShowingArmor
+    {
+        get => _isShowingArmor;
+        set
+        {
+            _isShowingArmor = value;
+            OnPropertyChanged();
+            NotifyTypeFilterChanged();
+        }
+    }
+
     public bool IsShowingFood
     {
         get => _isShowingFood;
@@ -1455,11 +1479,20 @@ public class LoggingBindings : BaseViewModel
             return true;
         }
 
+        if (_isShowingWeapon && cat is "weapons" or "offhands")
+        {
+            return true;
+        }
+
+        if (_isShowingArmor && cat is "armors" or "head" or "shoes" or "gathering")
+        {
+            return true;
+        }
+
         if (_isShowingOthers && cat is
                 "other" or "artefacts" or "cityresources" or "furniture" or "vanity"
                 or "materials" or "resources" or "labourers" or "crafting"
-                or "token" or "trophies" or "farming" or "unknown"
-                or "armors" or "weapons" or "head" or "shoes" or "gathering" or "offhands")
+                or "token" or "trophies" or "farming" or "unknown")
         {
             return true;
         }

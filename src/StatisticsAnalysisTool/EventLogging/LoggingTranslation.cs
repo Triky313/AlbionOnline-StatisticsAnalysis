@@ -16,6 +16,8 @@ public class LoggingTranslation
     public static string T8 => LocalizationController.Translation("T8");
     public static string Bag => LocalizationController.Translation("BAG");
     public static string Cape => LocalizationController.Translation("CAPE");
+    public static string Weapon => LocalizationController.Translation("WEAPON");
+    public static string Armor => LocalizationController.Translation("ARMOR");
     public static string Food => LocalizationController.Translation("FOOD");
     public static string Potion => LocalizationController.Translation("POTION");
     public static string Mount => LocalizationController.Translation("MOUNT");

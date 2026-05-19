@@ -13338,6 +13338,19 @@
       ]
     },
     {
+      "tuid": "WEAPON",
+      "tuv": [
+        {
+          "lang": "de-DE",
+          "seg": "Waffe"
+        },
+        {
+          "lang": "en-US",
+          "seg": "Weapon"
+        }
+      ]
+    },
+    {
       "tuid": "ARMOR",
       "tuv": [
         {

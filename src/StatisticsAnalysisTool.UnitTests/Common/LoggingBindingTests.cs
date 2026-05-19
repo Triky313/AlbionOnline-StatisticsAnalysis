@@ -397,6 +397,54 @@ public class LoggingBindingsTests
     }
 
     [Test]
+    public void ParallelLootedItemsFilterProcess_WithWeaponFilterDisabled_HidesWeaponItemsOnly()
+    {
+        var weaponItem = CreateLootedItem(1);
+        var armorItem = CreateLootedItem(2);
+
+        var bindings = new LoggingBindings()
+        {
+            IsShowingWeapon = false,
+            LootingPlayers = CreateSinglePlayerLootingPlayers(weaponItem, armorItem)
+        };
+
+        ItemController.Items = new ObservableCollection<Item>()
+        {
+            CreateItem(1, "T4_MAIN_SWORD", "weapons", "sword"),
+            CreateItem(2, "T4_ARMOR_CLOTH_SET1", "armors", "cloth_armor")
+        };
+
+        bindings.ParallelLootedItemsFilterProcess();
+
+        weaponItem.Visibility.Should().Be(Visibility.Collapsed);
+        armorItem.Visibility.Should().Be(Visibility.Visible);
+    }
+
+    [Test]
+    public void ParallelLootedItemsFilterProcess_WithArmorFilterDisabled_HidesArmorItemsOnly()
+    {
+        var weaponItem = CreateLootedItem(1);
+        var armorItem = CreateLootedItem(2);
+
+        var bindings = new LoggingBindings()
+        {
+            IsShowingArmor = false,
+            LootingPlayers = CreateSinglePlayerLootingPlayers(weaponItem, armorItem)
+        };
+
+        ItemController.Items = new ObservableCollection<Item>()
+        {
+            CreateItem(1, "T4_MAIN_SWORD", "weapons", "sword"),
+            CreateItem(2, "T4_ARMOR_CLOTH_SET1", "armors", "cloth_armor")
+        };
+
+        bindings.ParallelLootedItemsFilterProcess();
+
+        weaponItem.Visibility.Should().Be(Visibility.Visible);
+        armorItem.Visibility.Should().Be(Visibility.Collapsed);
+    }
+
+    [Test]
     public void AddVaultLogText_WithPastedChestLog_LoadsPositiveQuantityItems()
     {
         var bindings = new LoggingBindings();
@@ -503,6 +551,30 @@ public class LoggingBindingsTests
                     Quality = ItemQuality.Normal
                 }
             ]
+        };
+    }
+
+    private static LootedItem CreateLootedItem(int itemIndex)
+    {
+        return new LootedItem()
+        {
+            ItemIndex = itemIndex,
+            Quantity = 1,
+            LootedByName = "Bob",
+            LootedFromName = "Alice",
+            LootedFromGuild = "Alice's Guild"
+        };
+    }
+
+    private static ObservableCollection<LootingPlayer> CreateSinglePlayerLootingPlayers(params LootedItem[] lootedItems)
+    {
+        return new ObservableCollection<LootingPlayer>()
+        {
+            new()
+            {
+                PlayerName = "Bob",
+                LootedItems = new ObservableCollection<LootedItem>(lootedItems)
+            }
         };
     }
 

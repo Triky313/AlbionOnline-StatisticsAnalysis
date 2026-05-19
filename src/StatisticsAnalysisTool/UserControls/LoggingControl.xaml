@@ -423,9 +423,13 @@
                                                           Content="{Binding LoggingBindings.Translation.Potion, FallbackValue=POTION}" />
                                                 <CheckBox IsChecked="{Binding LoggingBindings.IsShowingBag, FallbackValue=true}" 
                                                           Content="{Binding LoggingBindings.Translation.Bag, FallbackValue=BAG}" />
-                                                <CheckBox IsChecked="{Binding LoggingBindings.IsShowingCape, FallbackValue=true}" 
+                                                <CheckBox IsChecked="{Binding LoggingBindings.IsShowingCape, FallbackValue=true}"
                                                           Content="{Binding LoggingBindings.Translation.Cape, FallbackValue=CAPE}" />
-                                                <CheckBox IsChecked="{Binding LoggingBindings.IsShowingMount, FallbackValue=true}" 
+                                                <CheckBox IsChecked="{Binding LoggingBindings.IsShowingWeapon, FallbackValue=true}"
+                                                          Content="{Binding LoggingBindings.Translation.Weapon, FallbackValue=WEAPON}" />
+                                                <CheckBox IsChecked="{Binding LoggingBindings.IsShowingArmor, FallbackValue=true}"
+                                                          Content="{Binding LoggingBindings.Translation.Armor, FallbackValue=ARMOR}" />
+                                                <CheckBox IsChecked="{Binding LoggingBindings.IsShowingMount, FallbackValue=true}"
                                                           Content="{Binding LoggingBindings.Translation.Mount, FallbackValue=MOUNT}" />
                                                 <CheckBox IsChecked="{Binding LoggingBindings.IsShowingOthers, FallbackValue=true}" 
                                                           Content="{Binding LoggingBindings.Translation.Others, FallbackValue=OTHERS}" />
