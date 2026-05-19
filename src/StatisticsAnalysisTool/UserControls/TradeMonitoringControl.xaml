@@ -9,6 +9,7 @@
              xmlns:trade="clr-namespace:StatisticsAnalysisTool.Trade"
              xmlns:skia="clr-namespace:SkiaSharp.Views.WPF;assembly=SkiaSharp.Views.WPF"
              xmlns:wpf="clr-namespace:LiveChartsCore.SkiaSharpView.WPF;assembly=LiveChartsCore.SkiaSharpView.WPF"
+             xmlns:primitives="clr-namespace:System.Windows.Controls.Primitives;assembly=PresentationFramework"
              mc:Ignorable="d" 
              d:DesignHeight="1950" d:DesignWidth="800"
              d:DataContext="{d:DesignInstance Type=viewModels:MainWindowViewModel}">
@@ -24,6 +25,32 @@
                                          ManualBuyTemplate="{StaticResource ManualBuyTemplate}" 
                                          CraftingTemplate="{StaticResource CraftingTemplate}"
                                          PlayerTradeTemplate="{StaticResource PlayerTradeTemplate}" />
+
+        <Style x:Key="TradeMonitoring.DatePicker" TargetType="{x:Type DatePicker}">
+            <Setter Property="Height" Value="26" />
+            <Setter Property="Foreground" Value="{StaticResource SolidColorBrush.Text.1}" />
+            <Setter Property="Background" Value="{StaticResource SolidColorBrush.Background.7}" />
+            <Setter Property="BorderBrush" Value="{StaticResource SolidColorBrush.Text.5}" />
+            <Setter Property="BorderThickness" Value="1" />
+            <Setter Property="VerticalContentAlignment" Value="Center" />
+        </Style>
+
+        <Style TargetType="{x:Type primitives:DatePickerTextBox}">
+            <Setter Property="Foreground" Value="{StaticResource SolidColorBrush.Text.1}" />
+            <Setter Property="Background" Value="{StaticResource SolidColorBrush.Background.7}" />
+            <Setter Property="BorderBrush" Value="{StaticResource SolidColorBrush.Text.5}" />
+            <Setter Property="BorderThickness" Value="0" />
+            <Setter Property="VerticalContentAlignment" Value="Center" />
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="{x:Type primitives:DatePickerTextBox}">
+                        <Grid Background="{TemplateBinding Background}" SnapsToDevicePixels="True">
+                            <ScrollViewer x:Name="PART_ContentHost" Margin="5,0,0,0" VerticalAlignment="Center" />
+                        </Grid>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
 
         <DataTemplate x:Key="TradeItemRankingEntryTemplate" DataType="{x:Type trade:TradeItemRankingEntry}">
             <Grid Margin="0,2,0,2">
@@ -180,11 +207,11 @@
                 </StackPanel>
             </StackPanel>
             <StackPanel Grid.Row="2" Grid.Column="0" Orientation="Horizontal" HorizontalAlignment="Left" Height="30" Margin="35,6,0,0">
-                <DatePicker HorizontalAlignment="Left" VerticalAlignment="Center" SelectedDate="{Binding TradeMonitoringBindings.DatePickerTradeFrom}" SelectedDateChanged="DatePicker_OnSelectedDateChanged" 
-                            Background="Transparent" BorderThickness="0" Margin="0,0,0,0" />
-                <TextBlock Text="{Binding Translation.To, StringFormat='{}{0} ', FallbackValue=TO}" VerticalAlignment="Center" Foreground="{StaticResource SolidColorBrush.Text.1}" />
-                <DatePicker HorizontalAlignment="Left" VerticalAlignment="Center" SelectedDate="{Binding TradeMonitoringBindings.DatePickerTradeTo}" SelectedDateChanged="DatePicker_OnSelectedDateChanged" 
-                            Background="Transparent" BorderThickness="0" Margin="6,0,0,0" />
+                <DatePicker SelectedDate="{Binding TradeMonitoringBindings.DatePickerTradeFrom}" SelectedDateChanged="DatePicker_OnSelectedDateChanged" 
+                            Style="{StaticResource TradeMonitoring.DatePicker}" Margin="0,0,0,0" />
+                <TextBlock Text="{Binding Translation.To, StringFormat='{}{0} ', FallbackValue=TO}" VerticalAlignment="Center" Foreground="{StaticResource SolidColorBrush.Text.1}" Margin="5,0,0,0" />
+                <DatePicker SelectedDate="{Binding TradeMonitoringBindings.DatePickerTradeTo}" SelectedDateChanged="DatePicker_OnSelectedDateChanged" 
+                            Style="{StaticResource TradeMonitoring.DatePicker}" Margin="5,0,0,0" />
             </StackPanel>
         </Grid>
         <Separator Background="{StaticResource SolidColorBrush.Background.2}" Height="4" Margin="0,97,0,0" VerticalAlignment="Top"/>
