@@ -38005,6 +38005,58 @@
       ]
     },
     {
+      "tuid": "LOAD_CHEST_LOG_TEXT",
+      "tuv": [
+        {
+          "lang": "de-DE",
+          "seg": "Chest Logs hinzufügen"
+        },
+        {
+          "lang": "en-US",
+          "seg": "Add chest logs"
+        }
+      ]
+    },
+    {
+      "tuid": "CHEST_LOG_TEXT_PLACEHOLDER",
+      "tuv": [
+        {
+          "lang": "de-DE",
+          "seg": "Chest Log hier einfügen"
+        },
+        {
+          "lang": "en-US",
+          "seg": "Paste chest log here"
+        }
+      ]
+    },
+    {
+      "tuid": "LOOT_COMPARATOR_LOG_COUNT_SUMMARY",
+      "tuv": [
+        {
+          "lang": "de-DE",
+          "seg": "{CHEST_COUNT} Chest-Dateien | {LOOT_COUNT} Loot-Log-Dateien"
+        },
+        {
+          "lang": "en-US",
+          "seg": "{CHEST_COUNT} chest files | {LOOT_COUNT} loot log files"
+        }
+      ]
+    },
+    {
+      "tuid": "LOOT_COMPARATOR_LOG_COUNT_TOOLTIP",
+      "tuv": [
+        {
+          "lang": "de-DE",
+          "seg": "Zählt geladene Chest-Log-Dateien plus valide Chest-Text-Imports und Loot-Log-Dateien, aus denen mindestens ein Loot-Eintrag übernommen wurde."
+        },
+        {
+          "lang": "en-US",
+          "seg": "Counts loaded chest log files plus valid chest text imports and loot log files that added at least one loot entry."
+        }
+      ]
+    },
+    {
       "tuid": "ADD_LOOT_LOG_FILES",
       "tuv": [
         {

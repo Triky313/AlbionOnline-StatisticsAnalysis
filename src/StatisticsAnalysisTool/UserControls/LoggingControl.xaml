@@ -395,33 +395,38 @@
                             </StackPanel>
 
                             <StackPanel Orientation="Vertical" Margin="0,5,0,0">
-                                <Label Content="CHEST LOG"/>
-                                <TextBox Text="{Binding LoggingBindings.ChestLogText, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                                         AcceptsReturn="True" AcceptsTab="True" Width="320" Height="50" TextWrapping="NoWrap" HorizontalAlignment="Left" 
-                                         VerticalContentAlignment="Top" HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Auto" />
-                                <TextBlock Text="{Binding LoggingBindings.Translation.ChestLogTextPlaceholder, FallbackValue=Paste chest log here}"
-                                           Foreground="{StaticResource SolidColorBrush.Text.5}"
-                                           Opacity="0.55"
-                                           Margin="6,4,0,0"
-                                           IsHitTestVisible="False"
-                                           Focusable="False">
-                                    <TextBlock.Style>
-                                        <Style TargetType="{x:Type TextBlock}">
-                                            <Setter Property="Visibility" Value="Collapsed" />
-                                            <Style.Triggers>
-                                                <DataTrigger Binding="{Binding LoggingBindings.ChestLogText}" Value="">
-                                                    <Setter Property="Visibility" Value="Visible" />
-                                                </DataTrigger>
-                                            </Style.Triggers>
-                                        </Style>
-                                    </TextBlock.Style>
-                                </TextBlock>
+                                <TextBlock Text="{Binding LoggingBindings.LootComparatorLogCountSummary, FallbackValue='0 chest files | 0 loot log files'}"
+                                           ToolTip="{Binding LoggingBindings.LootComparatorLogCountTooltip, FallbackValue='Shows how many chest log sources and loot log files were added.'}"
+                                           Foreground="{StaticResource SolidColorBrush.Text.3}" FontSize="13"
+                                           Margin="5,0,0,3" VerticalAlignment="Center" />
+                                <Grid Width="320" Height="50" HorizontalAlignment="Left">
+                                    <TextBox Text="{Binding LoggingBindings.ChestLogText, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                             AcceptsReturn="True" AcceptsTab="True" TextWrapping="NoWrap"
+                                             VerticalContentAlignment="Top" HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Auto" />
+                                    <TextBlock Text="{Binding LoggingBindings.Translation.ChestLogTextPlaceholder, FallbackValue=Paste chest log here}"
+                                               Foreground="{StaticResource SolidColorBrush.Text.5}"
+                                               Opacity="0.55"
+                                               Margin="6,4,0,0"
+                                               IsHitTestVisible="False"
+                                               Focusable="False">
+                                        <TextBlock.Style>
+                                            <Style TargetType="{x:Type TextBlock}">
+                                                <Setter Property="Visibility" Value="Collapsed" />
+                                                <Style.Triggers>
+                                                    <DataTrigger Binding="{Binding LoggingBindings.ChestLogText}" Value="">
+                                                        <Setter Property="Visibility" Value="Visible" />
+                                                    </DataTrigger>
+                                                </Style.Triggers>
+                                            </Style>
+                                        </TextBlock.Style>
+                                    </TextBlock>
+                                </Grid>
 
                                 <StackPanel Orientation="Horizontal" Margin="0,5,0,0">
-                                    <Button MinWidth="150" Height="25" Margin="5,0" Padding="10,0" Foreground="{StaticResource SolidColorBrush.Accent.Yellow.1}"
+                                    <Button MinWidth="150" Height="25" Margin="0,0,5,0" Padding="10,0" 
                                             Content="{Binding LoggingBindings.Translation.LoadChestLogText, FallbackValue=LOAD__CHEST__LOG__TEXT}" 
                                             Click="BtnLoadVaultLogText_Click" />
-                                    <Button MinWidth="150" Height="25" Margin="5,0" Padding="10,0" Foreground="{StaticResource SolidColorBrush.Accent.Yellow.1}"
+                                    <Button MinWidth="150" Height="25" Margin="5,0" Padding="10,0" 
                                             Content="{Binding LoggingBindings.Translation.UploadChestFiles, FallbackValue=UPLOAD__CHEST__FILES}"
                                             VerticalAlignment="Top" Click="BtnLoadVaultLogFiles_Click" />
                                     <Button MinWidth="150" Height="25" Margin="5,0" Padding="10,0" 
@@ -447,18 +452,6 @@
                             <Button MinWidth="150" Height="50" Margin="0,0,30,0" 
                                     Content="{Binding LoggingBindings.Translation.CompareLogs, FallbackValue=COMPARE__LOGS}" FontSize="20" Click="BtnLogCompare_Click" />
                         </StackPanel>
-                    </StackPanel>
-                    <StackPanel Grid.Row="1" Width="620" HorizontalAlignment="Left" Margin="0,0,0,8" IsEnabled="{Binding LoggingBindings.IsAllButtonsEnabled}">
-                        <DockPanel Margin="0,0,0,4">
-                            <StackPanel Orientation="Horizontal">
-                                <TextBlock Text="{Binding LoggingBindings.Translation.ChestLogTextInput, FallbackValue=CHEST__LOG__TEXT__INPUT}"
-                                           Foreground="{StaticResource SolidColorBrush.Text.1}" FontSize="14" FontWeight="SemiBold"
-                                           VerticalAlignment="Center" />
-                                <TextBlock Text="{Binding LoggingBindings.LootComparatorLogCountSummary, FallbackValue='Chest logs: 0 | Loot logs: 0'}"
-                                           Foreground="{StaticResource SolidColorBrush.Text.3}" FontSize="13"
-                                           Margin="14,1,0,0" VerticalAlignment="Center" />
-                            </StackPanel>
-                        </DockPanel>
                     </StackPanel>
                     <Separator Grid.Row="2" Background="{StaticResource SolidColorBrush.Background.3}" Height="4" />
                     <vwp:VirtualizingItemsControl Grid.Row="3" ItemsSource="{Binding LoggingBindings.LootingPlayersCollectionView, IsAsync=True, Mode=OneWay}"

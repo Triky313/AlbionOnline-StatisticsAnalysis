@@ -44,6 +44,8 @@ public class LoggingBindings : BaseViewModel
     private bool _isShowingMount = true;
     private bool _isShowingOthers = true;
     private const int LootLogTimeToleranceSeconds = 2;
+    private int _chestLogSourceCount;
+    private int _lootLogFileCount;
 
     public void Init()
     {
@@ -283,6 +285,7 @@ public class LoggingBindings : BaseViewModel
     public void ClearVaultLogs()
     {
         VaultLogItems.Clear();
+        _chestLogSourceCount = 0;
         RemoveAllVaultItems();
         ResetLootLogItemStatuses();
         RefreshLootComparatorLogCounts();
@@ -291,6 +294,7 @@ public class LoggingBindings : BaseViewModel
     public void ClearLootLogs()
     {
         LootingPlayers.Clear();
+        _lootLogFileCount = 0;
         RefreshLootComparatorLogCounts();
     }
 
@@ -348,32 +352,50 @@ public class LoggingBindings : BaseViewModel
 
         if (result.HasValue && result.Value)
         {
-            List<VaultContainerLogItem> items = new List<VaultContainerLogItem>();
+            var loadedFiles = LoadVaultLogFiles(dialog.FileNames);
 
-            foreach (var filePath in dialog.FileNames)
-            {
-                try
-                {
-                    items.AddRange(ReadVaultLogText(File.ReadAllText(filePath)));
-                }
-                catch (Exception ex)
-                {
-                    Debug.Print($"Error processing chest log file '{filePath}': {ex.Message}");
-                }
-            }
-
-            ReplaceVaultLogItems(items);
-
-            Debug.Print($"Loaded {VaultLogItems.Count} chest log entries.");
+            Debug.Print($"Loaded {loadedFiles} chest log files with {VaultLogItems.Count} chest log entries.");
         }
 
         IsAllButtonsEnabled = true;
+    }
+
+    internal int LoadVaultLogFiles(IEnumerable<string> filePaths)
+    {
+        List<VaultContainerLogItem> items = new List<VaultContainerLogItem>();
+        var loadedFiles = 0;
+
+        foreach (var filePath in filePaths)
+        {
+            try
+            {
+                var fileItems = ReadVaultLogText(File.ReadAllText(filePath)).ToList();
+                if (fileItems.Any(item => item.Quantity > 0))
+                {
+                    loadedFiles++;
+                }
+
+                items.AddRange(fileItems);
+            }
+            catch (Exception ex)
+            {
+                Debug.Print($"Error processing chest log file '{filePath}': {ex.Message}");
+            }
+        }
+
+        ReplaceVaultLogItems(items, loadedFiles);
+        return loadedFiles;
     }
 
     public int AddVaultLogText(string chestLogText)
     {
         var items = ReadVaultLogText(chestLogText).ToList();
         var addedItems = AddVaultLogItems(items);
+        if (addedItems > 0)
+        {
+            _chestLogSourceCount++;
+            RefreshLootComparatorLogCounts();
+        }
 
         Debug.Print($"Added {addedItems} chest log entries from pasted chest log text.");
 
@@ -410,12 +432,19 @@ public class LoggingBindings : BaseViewModel
         {
             try
             {
+                var fileAddedItems = 0;
                 foreach (var lootLogItem in ReadLootLogFile(filePath))
                 {
                     if (TryAddLootLogItem(lootLogItem))
                     {
                         addedItems++;
+                        fileAddedItems++;
                     }
+                }
+
+                if (fileAddedItems > 0)
+                {
+                    _lootLogFileCount++;
                 }
             }
             catch (Exception ex)
@@ -724,9 +753,10 @@ public class LoggingBindings : BaseViewModel
         return values;
     }
 
-    private void ReplaceVaultLogItems(IEnumerable<VaultContainerLogItem> items)
+    private void ReplaceVaultLogItems(IEnumerable<VaultContainerLogItem> items, int sourceCount)
     {
         VaultLogItems = new ObservableCollection<VaultContainerLogItem>(items.Where(x => x.Quantity > 0));
+        _chestLogSourceCount = sourceCount;
         RefreshLootComparatorLogCounts();
     }
 
@@ -738,7 +768,6 @@ public class LoggingBindings : BaseViewModel
             VaultLogItems.Add(item);
         }
 
-        RefreshLootComparatorLogCounts();
         return validItems.Count;
     }
 
@@ -802,11 +831,12 @@ public class LoggingBindings : BaseViewModel
     public string TypeFilterSummary => BuildFilterSummary(LoggingTranslation.FilterType, CountSelectedFilters(IsShowingFood, IsShowingPotion, IsShowingBag, IsShowingCape, IsShowingMount, IsShowingOthers), 6);
     public string NotificationFilterSummary => BuildFilterSummary(LoggingTranslation.Filter, Filters.Count(filter => filter.IsSelected == true), Filters.Count);
     public string TrackingSummary => BuildFilterSummary(LoggingTranslation.Tracking, CountSelectedFilters(IsTrackingPartyLootOnly, IsTrackingSilver, IsTrackingFame, IsTrackingMobLoot, IsTrackingKill), 5);
-    public int ChestLogCount => VaultLogItems.Count;
-    public int LootLogCount => LootingPlayers.Sum(player => player.GetLootedItemsSnapshot().Count(item => !item.IsItemFromVaultLog));
+    public int ChestLogCount => _chestLogSourceCount;
+    public int LootLogCount => _lootLogFileCount;
     public string LootComparatorLogCountSummary => LocalizationController.Translation("LOOT_COMPARATOR_LOG_COUNT_SUMMARY",
         ["CHEST_COUNT", "LOOT_COUNT"],
         [ChestLogCount.ToString(CultureInfo.InvariantCulture), LootLogCount.ToString(CultureInfo.InvariantCulture)]);
+    public string LootComparatorLogCountTooltip => LocalizationController.Translation("LOOT_COMPARATOR_LOG_COUNT_TOOLTIP");
 
     private static string BuildFilterSummary(string filterName, int selectedCount, int totalCount)
     {
@@ -827,6 +857,7 @@ public class LoggingBindings : BaseViewModel
         OnPropertyChanged(nameof(ChestLogCount));
         OnPropertyChanged(nameof(LootLogCount));
         OnPropertyChanged(nameof(LootComparatorLogCountSummary));
+        OnPropertyChanged(nameof(LootComparatorLogCountTooltip));
     }
 
     private static int CountSelectedFilters(params bool[] values)
