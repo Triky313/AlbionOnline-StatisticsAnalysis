@@ -38,8 +38,8 @@ public class CraftingRecipeResolver
 
         return craftingRequirements.CraftResource
             .Where(x => !string.IsNullOrWhiteSpace(x.UniqueName))
-            .GroupBy(x => x.UniqueName, StringComparer.Ordinal)
-            .Select(x => CreateResourceEntry(item, x.Key, x.ToList()))
+            .GroupBy(x => (x.UniqueName, EnchantmentLevel: GetResourceEnchantmentLevel(x)))
+            .Select(x => CreateResourceEntry(item, x.Key.UniqueName, x.Key.EnchantmentLevel, x.ToList()))
             .Where(x => x != null)
             .ToList();
     }
@@ -125,9 +125,9 @@ public class CraftingRecipeResolver
         };
     }
 
-    private static CraftingResourceEntry CreateResourceEntry(Item craftedItem, string uniqueName, List<CraftResource> resources)
+    private static CraftingResourceEntry CreateResourceEntry(Item craftedItem, string uniqueName, int? resourceEnchantmentLevel, List<CraftResource> resources)
     {
-        var item = GetSuitableResourceItem(uniqueName, craftedItem.Level);
+        var item = GetSuitableResourceItem(uniqueName, resourceEnchantmentLevel, craftedItem.Level);
         if (item == null)
         {
             return null;
@@ -164,16 +164,55 @@ public class CraftingRecipeResolver
         return null;
     }
 
-    private static Item GetSuitableResourceItem(string uniqueName, int craftedItemLevel)
+    private static int? GetResourceEnchantmentLevel(CraftResource craftResource)
     {
+        if (int.TryParse(craftResource?.EnchantmentLevel, NumberStyles.Integer, CultureInfo.InvariantCulture, out var enchantmentLevel))
+        {
+            return enchantmentLevel > 0 ? enchantmentLevel : null;
+        }
+
+        return null;
+    }
+
+    internal static Item GetSuitableResourceItem(string uniqueName, int? resourceEnchantmentLevel, int craftedItemLevel)
+    {
+        if (resourceEnchantmentLevel is > 0 && !HasEnchantmentSuffix(uniqueName))
+        {
+            var enchantedResourceItem = GetEnchantedResourceItem(uniqueName, resourceEnchantmentLevel.Value);
+            if (enchantedResourceItem != null)
+            {
+                return enchantedResourceItem;
+            }
+        }
+
         var item = ItemController.GetItemByUniqueName(uniqueName);
         if (item != null)
         {
             return item;
         }
 
-        var suitableUniqueName = uniqueName + "_LEVEL" + craftedItemLevel + "@" + craftedItemLevel;
-        return ItemController.GetItemByUniqueName(suitableUniqueName);
+        return GetEnchantedResourceItem(uniqueName, craftedItemLevel);
+    }
+
+    private static bool HasEnchantmentSuffix(string uniqueName)
+    {
+        return uniqueName.Contains('@', StringComparison.Ordinal) || uniqueName.Contains("_LEVEL", StringComparison.Ordinal);
+    }
+
+    private static Item GetEnchantedResourceItem(string uniqueName, int enchantmentLevel)
+    {
+        return ItemController.GetItemByUniqueName(GetEnchantedEquipmentUniqueName(uniqueName, enchantmentLevel))
+               ?? ItemController.GetItemByUniqueName(GetEnchantedMaterialUniqueName(uniqueName, enchantmentLevel));
+    }
+
+    private static string GetEnchantedEquipmentUniqueName(string uniqueName, int enchantmentLevel)
+    {
+        return uniqueName + "@" + enchantmentLevel;
+    }
+
+    private static string GetEnchantedMaterialUniqueName(string uniqueName, int enchantmentLevel)
+    {
+        return uniqueName + "_LEVEL" + enchantmentLevel + "@" + enchantmentLevel;
     }
 
     private static CraftingResourceKind GetResourceKind(Item item)
