@@ -254,6 +254,16 @@ public class LoggingBindingsTests
             IsTrash = false,
             Status = LootedItemStatus.Resolved
         };
+        var lostItem = new LootedItem()
+        {
+            ItemIndex = 3,
+            Quantity = 1,
+            LootedByName = "Bob",
+            LootedFromName = "Alice",
+            LootedFromGuild = "Alice's Guild",
+            IsTrash = false,
+            Status = LootedItemStatus.Lost
+        };
 
         var bindings = new LoggingBindings()
         {
@@ -268,7 +278,8 @@ public class LoggingBindingsTests
                     LootedItems = new ObservableCollection<LootedItem>()
                     {
                         trashItem,
-                        regularItem
+                        regularItem,
+                        lostItem
                     }
                 }
             }
@@ -277,13 +288,69 @@ public class LoggingBindingsTests
         ItemController.Items = new ObservableCollection<Item>()
         {
             CreateItem(1, "T4_TRASH_TEST", "other", "trash"),
-            CreateItem(2, "T4_REGULAR_TEST", "other", "misc")
+            CreateItem(2, "T4_REGULAR_TEST", "other", "misc"),
+            CreateItem(3, "T4_LOST_TEST", "other", "misc")
         };
 
         bindings.ParallelLootedItemsFilterProcess();
 
         trashItem.Visibility.Should().Be(Visibility.Collapsed);
         regularItem.Visibility.Should().Be(Visibility.Visible);
+        lostItem.Visibility.Should().Be(Visibility.Visible);
+        bindings.LootingPlayers[0].LootingPlayerVisibility.Should().Be(Visibility.Visible);
+    }
+
+    [Test]
+    public void ParallelLootedItemsFilterProcess_WithResolvedStatusDisabled_KeepsLostItemsVisible()
+    {
+        var lostItem = new LootedItem()
+        {
+            ItemIndex = 1,
+            Quantity = 1,
+            LootedByName = "Bob",
+            LootedFromName = "Alice",
+            LootedFromGuild = "Alice's Guild",
+            IsTrash = false,
+            Status = LootedItemStatus.Lost
+        };
+        var resolvedItem = new LootedItem()
+        {
+            ItemIndex = 2,
+            Quantity = 1,
+            LootedByName = "Bob",
+            LootedFromName = "Alice",
+            LootedFromGuild = "Alice's Guild",
+            IsTrash = false,
+            Status = LootedItemStatus.Resolved
+        };
+
+        var bindings = new LoggingBindings()
+        {
+            IsShowingResolved = false,
+            LootingPlayers = new ObservableCollection<LootingPlayer>()
+            {
+                new()
+                {
+                    PlayerName = "Bob",
+                    LootedItems = new ObservableCollection<LootedItem>()
+                    {
+                        lostItem,
+                        resolvedItem
+                    }
+                }
+            }
+        };
+
+        ItemController.Items = new ObservableCollection<Item>()
+        {
+            CreateItem(1, "T4_LOST_TEST", "other", "misc"),
+            CreateItem(2, "T4_RESOLVED_TEST", "other", "misc")
+        };
+
+        bindings.ParallelLootedItemsFilterProcess();
+
+        lostItem.Visibility.Should().Be(Visibility.Visible);
+        resolvedItem.Visibility.Should().Be(Visibility.Collapsed);
         bindings.LootingPlayers[0].LootingPlayerVisibility.Should().Be(Visibility.Visible);
     }
 

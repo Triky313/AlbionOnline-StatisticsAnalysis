@@ -1379,37 +1379,19 @@ public class LoggingBindings : BaseViewModel
 
     private bool IsStatusOkay(LootedItem lootedItem)
     {
-        if (lootedItem.IsTrash)
+        if (lootedItem.IsTrash && !_isShowingTrash)
         {
-            return _isShowingTrash;
+            return false;
         }
 
-        if (_isShowingLost && lootedItem.Status == LootedItemStatus.Lost)
+        return lootedItem.Status switch
         {
-            return true;
-        }
-
-        if (_isShowingResolved && lootedItem.Status == LootedItemStatus.Resolved)
-        {
-            return true;
-        }
-
-        if (_isShowingDonated && lootedItem.Status == LootedItemStatus.Donated)
-        {
-            return true;
-        }
-
-        if (lootedItem.Status == LootedItemStatus.Unknown)
-        {
-            return IsAllStatusFiltersEnabled();
-        }
-
-        return false;
-    }
-
-    private bool IsAllStatusFiltersEnabled()
-    {
-        return _isShowingLost && _isShowingResolved && _isShowingDonated && _isShowingTrash;
+            LootedItemStatus.Lost => _isShowingLost,
+            LootedItemStatus.Resolved => _isShowingResolved,
+            LootedItemStatus.Donated => _isShowingDonated,
+            LootedItemStatus.Unknown => true,
+            _ => true
+        };
     }
 
     private bool IsTierOkay(LootedItem lootedItem)
