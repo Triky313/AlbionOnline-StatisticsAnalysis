@@ -188,6 +188,7 @@ public class LoggingBindings : BaseViewModel
         }
 
         MarkLostItems(LootingPlayers);
+        ApplyLootComparatorFilters();
         RefreshLootComparatorLogCounts();
     }
 
@@ -1277,7 +1278,7 @@ public class LoggingBindings : BaseViewModel
 
     public async Task UpdateFilteredLootedItemsAsync()
     {
-        if (LootingPlayers is not { Count: > 0 } || LootingPlayersCollectionView == null)
+        if (LootingPlayers is not { Count: > 0 })
         {
             return;
         }
@@ -1287,23 +1288,45 @@ public class LoggingBindings : BaseViewModel
         try
         {
             await Task.Run(ParallelLootedItemsFilterProcess, _cancellationTokenSource.Token);
-
-            LootingPlayersCollectionView.Filter = item =>
-            {
-                if (item is LootingPlayer lootingPlayer)
-                {
-                    return lootingPlayer.LootingPlayerVisibility == Visibility.Visible;
-                }
-
-                return false;
-            };
-
-            LootingPlayersCollectionView.CustomSort = new LootingPlayerComparer();
+            ApplyLootingPlayersCollectionViewFilter();
         }
         catch (TaskCanceledException)
         {
             // ignore
         }
+    }
+
+    private void ApplyLootComparatorFilters()
+    {
+        if (LootingPlayers is not { Count: > 0 })
+        {
+            return;
+        }
+
+        _cancellationTokenSource = new CancellationTokenSource();
+        ParallelLootedItemsFilterProcess();
+        ApplyLootingPlayersCollectionViewFilter();
+    }
+
+    private void ApplyLootingPlayersCollectionViewFilter()
+    {
+        if (LootingPlayersCollectionView == null)
+        {
+            return;
+        }
+
+        LootingPlayersCollectionView.Filter = item =>
+        {
+            if (item is LootingPlayer lootingPlayer)
+            {
+                return lootingPlayer.LootingPlayerVisibility == Visibility.Visible;
+            }
+
+            return false;
+        };
+
+        LootingPlayersCollectionView.CustomSort = new LootingPlayerComparer();
+        LootingPlayersCollectionView.Refresh();
     }
 
     public void ParallelLootedItemsFilterProcess()
@@ -1378,10 +1401,15 @@ public class LoggingBindings : BaseViewModel
 
         if (lootedItem.Status == LootedItemStatus.Unknown)
         {
-            return true;
+            return IsAllStatusFiltersEnabled();
         }
 
         return false;
+    }
+
+    private bool IsAllStatusFiltersEnabled()
+    {
+        return _isShowingLost && _isShowingResolved && _isShowingDonated && _isShowingTrash;
     }
 
     private bool IsTierOkay(LootedItem lootedItem)
@@ -1421,18 +1449,14 @@ public class LoggingBindings : BaseViewModel
 
     private bool IsTypeOkay(LootedItem lootedItem)
     {
-        if (lootedItem.IsTrash)
+        var itemInformation = lootedItem.Item.FullItemInformation;
+        if (itemInformation == null)
         {
-            return true;
+            return _isShowingOthers;
         }
 
-        var cat = lootedItem.Item.FullItemInformation.ShopCategory;
-        var sub1 = lootedItem.Item.FullItemInformation.ShopSubCategory1;
-
-        if (cat is "armors" or "weapons" or "head" or "shoes" or "gathering" or "offhands")
-        {
-            return true;
-        }
+        var cat = itemInformation.ShopCategory;
+        var sub1 = itemInformation.ShopSubCategory1;
 
         if (_isShowingFood && cat == "consumables" && sub1 is "food" or "tomes")
         {
@@ -1452,7 +1476,8 @@ public class LoggingBindings : BaseViewModel
         if (_isShowingOthers && cat is
                 "other" or "artefacts" or "cityresources" or "furniture" or "vanity"
                 or "materials" or "resources" or "labourers" or "crafting"
-                or "token" or "trophies" or "farming" or "unknown")
+                or "token" or "trophies" or "farming" or "unknown"
+                or "armors" or "weapons" or "head" or "shoes" or "gathering" or "offhands")
         {
             return true;
         }

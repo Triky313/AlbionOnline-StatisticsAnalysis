@@ -288,6 +288,48 @@ public class LoggingBindingsTests
     }
 
     [Test]
+    public void UpdateItemsStatus_WithResolvedFilterDisabled_AppliesStatusFilter()
+    {
+        var bindings = CreateSingleMatchedWoodComparatorBindings();
+        bindings.IsShowingResolved = false;
+
+        bindings.UpdateItemsStatus();
+
+        var lootedItem = bindings.LootingPlayers[0].LootedItems[0];
+        lootedItem.Status.Should().Be(LootedItemStatus.Resolved);
+        lootedItem.Visibility.Should().Be(Visibility.Collapsed);
+        bindings.LootingPlayers[0].LootingPlayerVisibility.Should().Be(Visibility.Collapsed);
+    }
+
+    [Test]
+    public void UpdateItemsStatus_WithT4FilterDisabled_AppliesTierFilter()
+    {
+        var bindings = CreateSingleMatchedWoodComparatorBindings();
+        bindings.IsShowingT4 = false;
+
+        bindings.UpdateItemsStatus();
+
+        var lootedItem = bindings.LootingPlayers[0].LootedItems[0];
+        lootedItem.Status.Should().Be(LootedItemStatus.Resolved);
+        lootedItem.Visibility.Should().Be(Visibility.Collapsed);
+        bindings.LootingPlayers[0].LootingPlayerVisibility.Should().Be(Visibility.Collapsed);
+    }
+
+    [Test]
+    public void UpdateItemsStatus_WithOthersFilterDisabled_AppliesTypeFilter()
+    {
+        var bindings = CreateSingleMatchedWoodComparatorBindings();
+        bindings.IsShowingOthers = false;
+
+        bindings.UpdateItemsStatus();
+
+        var lootedItem = bindings.LootingPlayers[0].LootedItems[0];
+        lootedItem.Status.Should().Be(LootedItemStatus.Resolved);
+        lootedItem.Visibility.Should().Be(Visibility.Collapsed);
+        bindings.LootingPlayers[0].LootingPlayerVisibility.Should().Be(Visibility.Collapsed);
+    }
+
+    [Test]
     public void AddVaultLogText_WithPastedChestLog_LoadsPositiveQuantityItems()
     {
         var bindings = new LoggingBindings();
@@ -394,6 +436,50 @@ public class LoggingBindingsTests
                     Quality = ItemQuality.Normal
                 }
             ]
+        };
+    }
+
+    private static LoggingBindings CreateSingleMatchedWoodComparatorBindings()
+    {
+        var lootTime = new DateTime(2026, 5, 19, 8, 48, 13, DateTimeKind.Utc);
+
+        ItemController.Items = new ObservableCollection<Item>()
+        {
+            CreateItem(4, "T4_WOOD", "resources", "wood")
+        };
+
+        return new LoggingBindings()
+        {
+            VaultLogItems = new ObservableCollection<VaultContainerLogItem>
+            {
+                new()
+                {
+                    Timestamp = lootTime.AddMinutes(10),
+                    PlayerName = "Triky313",
+                    LocalizedName = "T4_WOOD",
+                    Enchantment = 0,
+                    Quality = 1,
+                    Quantity = 8
+                }
+            },
+            LootingPlayers = new ObservableCollection<LootingPlayer>
+            {
+                new()
+                {
+                    PlayerName = "Triky313",
+                    LootedItems = new ObservableCollection<LootedItem>
+                    {
+                        new()
+                        {
+                            UtcPickupTime = lootTime,
+                            ItemIndex = 4,
+                            Quantity = 8,
+                            LootedByName = "Triky313",
+                            IsTrash = false
+                        }
+                    }
+                }
+            }
         };
     }
 }
