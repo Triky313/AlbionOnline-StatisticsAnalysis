@@ -51,6 +51,47 @@
             </Setter>
         </Style>
 
+        <Style x:Key="Logging.ImportButton" TargetType="{x:Type Button}">
+            <Setter Property="SnapsToDevicePixels" Value="true" />
+            <Setter Property="OverridesDefaultStyle" Value="true" />
+            <Setter Property="FocusVisualStyle" Value="{StaticResource ButtonFocusVisual}" />
+            <Setter Property="MinHeight" Value="18px" />
+            <Setter Property="MinWidth" Value="40px" />
+            <Setter Property="Foreground" Value="{StaticResource SolidColorBrush.Text.7}" />
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="{x:Type Button}">
+                        <Border x:Name="Border" Background="{TemplateBinding Background}" TextBlock.Foreground="{TemplateBinding Foreground}">
+                            <ContentPresenter Margin="2"
+                                              HorizontalAlignment="Center"
+                                              VerticalAlignment="Center"
+                                              RecognizesAccessKey="True" />
+                        </Border>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter TargetName="Border" Property="Opacity" Value="0.88" />
+                            </Trigger>
+                            <Trigger Property="IsPressed" Value="True">
+                                <Setter TargetName="Border" Property="Opacity" Value="0.72" />
+                            </Trigger>
+                            <Trigger Property="IsEnabled" Value="False">
+                                <Setter TargetName="Border" Property="Background" Value="{StaticResource SolidColorBrush.Text.6}" />
+                                <Setter Property="Foreground" Value="{StaticResource SolidColorBrush.Text.4}" />
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
+        <Style x:Key="Logging.ImportButton.Yellow" TargetType="{x:Type Button}" BasedOn="{StaticResource Logging.ImportButton}">
+            <Setter Property="Background" Value="{StaticResource SolidColorBrush.Accent.Yellow.1}" />
+        </Style>
+
+        <Style x:Key="Logging.ImportButton.Orange" TargetType="{x:Type Button}" BasedOn="{StaticResource Logging.ImportButton}">
+            <Setter Property="Background" Value="{StaticResource SolidColorBrush.Accent.Orange.2}" />
+        </Style>
+
         <DataTemplate x:Key="LootLoggerStatsEntryTemplate" DataType="{x:Type eventLogging:LootLoggerStatsEntry}">
             <StackPanel Margin="0,0,0,5">
                 <Grid>
@@ -423,14 +464,14 @@
                                 </Grid>
 
                                 <StackPanel Orientation="Horizontal" Margin="0,5,0,0">
-                                    <Button MinWidth="150" Height="25" Margin="0,0,5,0" Padding="10,0" 
-                                            Content="{Binding LoggingBindings.Translation.LoadChestLogText, FallbackValue=LOAD__CHEST__LOG__TEXT}" 
+                                    <Button Style="{StaticResource Logging.ImportButton.Yellow}" MinWidth="150" Height="25" Margin="0,0,5,0" Padding="10,0"
+                                            Content="{Binding LoggingBindings.Translation.LoadChestLogText, FallbackValue=LOAD__CHEST__LOG__TEXT}"
                                             Click="BtnLoadVaultLogText_Click" />
-                                    <Button MinWidth="150" Height="25" Margin="5,0" Padding="10,0" 
+                                    <Button Style="{StaticResource Logging.ImportButton.Yellow}" MinWidth="150" Height="25" Margin="5,0" Padding="10,0"
                                             Content="{Binding LoggingBindings.Translation.UploadChestFiles, FallbackValue=UPLOAD__CHEST__FILES}"
                                             VerticalAlignment="Top" Click="BtnLoadVaultLogFiles_Click" />
-                                    <Button MinWidth="150" Height="25" Margin="5,0" Padding="10,0" 
-                                            Content="{Binding LoggingBindings.Translation.AddLootLogFiles, FallbackValue=ADD__LOOT__LOG__FILES}" VerticalAlignment="Top" 
+                                    <Button Style="{StaticResource Logging.ImportButton.Orange}" MinWidth="150" Height="25" Margin="5,0" Padding="10,0"
+                                            Content="{Binding LoggingBindings.Translation.AddLootLogFiles, FallbackValue=ADD__LOOT__LOG__FILES}" VerticalAlignment="Top"
                                             Click="BtnAddLootLogFiles_Click" />
                                 </StackPanel>
                             </StackPanel>
