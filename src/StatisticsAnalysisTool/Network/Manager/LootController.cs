@@ -92,7 +92,7 @@ public class LootController : ILootController
             if (player is not null)
             {
                 UpdateLootingPlayerAffiliations(player, lootedByUser?.Value);
-                player.LootedItems.Add(new LootedItem()
+                player.AddLootedItem(new LootedItem()
                 {
                     ItemIndex = loot.ItemIndex,
                     Quantity = loot.Quantity,
@@ -123,6 +123,8 @@ public class LootController : ILootController
                     }
                 });
             }
+
+            _mainWindowViewModel.LoggingBindings.RefreshLootComparatorLogCounts();
         });
     }
 

@@ -16,6 +16,8 @@ public class LoggingTranslation
     public static string T8 => LocalizationController.Translation("T8");
     public static string Bag => LocalizationController.Translation("BAG");
     public static string Cape => LocalizationController.Translation("CAPE");
+    public static string Weapon => LocalizationController.Translation("WEAPON");
+    public static string Armor => LocalizationController.Translation("ARMOR");
     public static string Food => LocalizationController.Translation("FOOD");
     public static string Potion => LocalizationController.Translation("POTION");
     public static string Mount => LocalizationController.Translation("MOUNT");
@@ -52,6 +54,8 @@ public class LoggingTranslation
     public static string FilterAll => LocalizationController.Translation("LOOT_FILTER_ALL");
     public static string FilterNone => LocalizationController.Translation("LOOT_FILTER_NONE");
     public static string UploadChestFiles => LocalizationController.Translation("UPLOAD_CHEST_FILES");
+    public static string ChestLogTextPlaceholder => LocalizationController.Translation("CHEST_LOG_TEXT_PLACEHOLDER");
+    public static string LoadChestLogText => LocalizationController.Translation("LOAD_CHEST_LOG_TEXT");
     public static string AddLootLogFiles => LocalizationController.Translation("ADD_LOOT_LOG_FILES");
     public static string CompareLogs => LocalizationController.Translation("COMPARE_LOGS");
     public static string DeleteChestLogs => LocalizationController.Translation("DELETE_CHEST_LOGS");
