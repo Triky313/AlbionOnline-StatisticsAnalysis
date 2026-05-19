@@ -13347,6 +13347,10 @@
         {
           "lang": "en-US",
           "seg": "Weapon"
+        },
+        {
+          "lang": "fr-FR",
+          "seg": "Arme"
         }
       ]
     },
@@ -38027,6 +38031,10 @@
         {
           "lang": "en-US",
           "seg": "Add chest logs"
+        },
+        {
+          "lang": "fr-FR",
+          "seg": "Ajouter des Chest Logs"
         }
       ]
     },
@@ -38040,6 +38048,10 @@
         {
           "lang": "en-US",
           "seg": "Paste chest log here"
+        },
+        {
+          "lang": "fr-FR",
+          "seg": "Collez ici le Chest Log"
         }
       ]
     },
@@ -38053,6 +38065,10 @@
         {
           "lang": "en-US",
           "seg": "{CHEST_COUNT} chest files | {LOOT_COUNT} loot log files"
+        },
+        {
+          "lang": "fr-FR",
+          "seg": "{CHEST_COUNT} fichiers Chest | {LOOT_COUNT} fichiers Loot-log"
         }
       ]
     },
@@ -38066,6 +38082,10 @@
         {
           "lang": "en-US",
           "seg": "Counts loaded chest log files plus valid chest text imports and loot log files that added at least one loot entry."
+        },
+        {
+          "lang": "fr-FR",
+          "seg": "Compte les fichiers Chest-Log chargés, ainsi que les importations de texte de coffres valides et les fichiers de Loot-Log contenant au moins une entrée de butin."
         }
       ]
     },
@@ -38078,7 +38098,11 @@
         },
         {
           "lang": "en-US",
-          "seg": "Invalid chest log file skipped: {FILE_NAME}"
+          "seg": "Invalid Chest-Log file skipped: {FILE_NAME}"
+        },
+        {
+          "lang": "fr-FR",
+          "seg": "Fichier de Chest-Log non valide ignoré: {FILE_NAME}"
         }
       ]
     },
@@ -38092,6 +38116,10 @@
         {
           "lang": "en-US",
           "seg": "Invalid chest log text was not loaded."
+        },
+        {
+          "lang": "fr-FR",
+          "seg": "Le texte du Chest-Log n'a pas pu être chargé."
         }
       ]
     },
@@ -38105,6 +38133,10 @@
         {
           "lang": "en-US",
           "seg": "Invalid loot log file skipped: {FILE_NAME}"
+        },
+        {
+          "lang": "fr-FR",
+          "seg": "Le fichier Loot-Log non valide ignoré: {FILE_NAME}"
         }
       ]
     },
@@ -43519,6 +43551,10 @@
         {
           "lang": "en-US",
           "seg": "Loot Logger Stats"
+        },
+        {
+          "lang": "fr-FR",
+          "seg": "Loot Logger Stats"
         }
       ]
     },
@@ -43531,6 +43567,10 @@
         },
         {
           "lang": "en-US",
+          "seg": "Loot"
+        },
+        {
+          "lang": "fr-FR",
           "seg": "Loot"
         }
       ]
@@ -43545,6 +43585,10 @@
         {
           "lang": "en-US",
           "seg": "Silver"
+        },
+        {
+          "lang": "fr-FR",
+          "seg": "Argent"
         }
       ]
     },
@@ -43558,6 +43602,10 @@
         {
           "lang": "en-US",
           "seg": "Fame"
+        },
+        {
+          "lang": "fr-FR",
+          "seg": "Renommée"
         }
       ]
     },
@@ -43570,6 +43618,10 @@
         },
         {
           "lang": "en-US",
+          "seg": "Faction"
+        },
+        {
+          "lang": "fr-FR",
           "seg": "Faction"
         }
       ]
@@ -43633,6 +43685,10 @@
         {
           "lang": "en-US",
           "seg": "Loot Value per Hour"
+        },
+        {
+          "lang": "fr-FR",
+          "seg": "Valeur du butin par heure"
         }
       ]
     },
@@ -43646,6 +43702,10 @@
         {
           "lang": "en-US",
           "seg": "Fame per Hour"
+        },
+        {
+          "lang": "fr-FR",
+          "seg": "Renommée par Heure"
         }
       ]
     },
@@ -43659,6 +43719,10 @@
         {
           "lang": "en-US",
           "seg": "Silver per Hour"
+        },
+        {
+          "lang": "fr-FR",
+          "seg": "Argent par Heure"
         }
       ]
     },
@@ -43672,6 +43736,10 @@
         {
           "lang": "en-US",
           "seg": "Faction Points total"
+        },
+        {
+          "lang": "fr-FR",
+          "seg": "Total des Points de Faction"
         }
       ]
     },
@@ -43685,6 +43753,10 @@
         {
           "lang": "en-US",
           "seg": "Faction Points per Hour"
+        },
+        {
+          "lang": "fr-FR",
+          "seg": "Points de Faction par Heure"
         }
       ]
     },
@@ -43698,6 +43770,10 @@
         {
           "lang": "en-US",
           "seg": "Best Single Item"
+        },
+        {
+          "lang": "fr-FR",
+          "seg": "Meilleur Objet"
         }
       ]
     },
@@ -43711,6 +43787,10 @@
         {
           "lang": "en-US",
           "seg": "Highest Looted Value"
+        },
+        {
+          "lang": "fr-FR",
+          "seg": "Valeur maximale de butin"
         }
       ]
     },
@@ -43724,6 +43804,10 @@
         {
           "lang": "en-US",
           "seg": "Most Looted Items"
+        },
+        {
+          "lang": "fr-FR",
+          "seg": "Meilleurs Objets Obtenus"
         }
       ]
     },
@@ -43737,6 +43821,10 @@
         {
           "lang": "en-US",
           "seg": "Most Kills"
+        },
+        {
+          "lang": "fr-FR",
+          "seg": "Le plus grand nombre de Kills"
         }
       ]
     },
@@ -43750,6 +43838,10 @@
         {
           "lang": "en-US",
           "seg": "Most Deaths"
+        },
+        {
+          "lang": "fr-FR",
+          "seg": "Le plus grand nombre de Morts"
         }
       ]
     },
@@ -43763,6 +43855,10 @@
         {
           "lang": "en-US",
           "seg": "Highest Kill Value"
+        },
+        {
+          "lang": "fr-FR",
+          "seg": "Meilleur valeur de Kill"
         }
       ]
     },
@@ -43776,6 +43872,10 @@
         {
           "lang": "en-US",
           "seg": "Killer"
+        },
+        {
+          "lang": "fr-FR",
+          "seg": "Tueur"
         }
       ]
     },
@@ -43789,6 +43889,10 @@
         {
           "lang": "en-US",
           "seg": "No Loot Logger stats available yet."
+        },
+        {
+          "lang": "fr-FR",
+          "seg": "Aucune statistique de Loot Logger n'est encore disponible."
         }
       ]
     }
