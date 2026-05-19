@@ -38070,6 +38070,45 @@
       ]
     },
     {
+      "tuid": "LOOT_COMPARATOR_INVALID_CHEST_LOG_FILE",
+      "tuv": [
+        {
+          "lang": "de-DE",
+          "seg": "Ungültige Chest-Log-Datei wurde übersprungen: {FILE_NAME}"
+        },
+        {
+          "lang": "en-US",
+          "seg": "Invalid chest log file skipped: {FILE_NAME}"
+        }
+      ]
+    },
+    {
+      "tuid": "LOOT_COMPARATOR_INVALID_CHEST_LOG_TEXT",
+      "tuv": [
+        {
+          "lang": "de-DE",
+          "seg": "Ungültiger Chest-Log-Text wurde nicht geladen."
+        },
+        {
+          "lang": "en-US",
+          "seg": "Invalid chest log text was not loaded."
+        }
+      ]
+    },
+    {
+      "tuid": "LOOT_COMPARATOR_INVALID_LOOT_LOG_FILE",
+      "tuv": [
+        {
+          "lang": "de-DE",
+          "seg": "Ungültige Loot-Log-Datei wurde übersprungen: {FILE_NAME}"
+        },
+        {
+          "lang": "en-US",
+          "seg": "Invalid loot log file skipped: {FILE_NAME}"
+        }
+      ]
+    },
+    {
       "tuid": "ADD_LOOT_LOG_FILES",
       "tuv": [
         {

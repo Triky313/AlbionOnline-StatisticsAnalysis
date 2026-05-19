@@ -1,4 +1,3 @@
-using Microsoft.VisualBasic.FileIO;
 using Ookii.Dialogs.Wpf;
 using StatisticsAnalysisTool.Common;
 using StatisticsAnalysisTool.Common.UserSettings;
@@ -16,6 +15,7 @@ using System.Diagnostics;
 using System.Globalization;
 using System.IO;
 using System.Linq;
+using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
@@ -46,6 +46,19 @@ public class LoggingBindings : BaseViewModel
     private bool _isShowingMount = true;
     private bool _isShowingOthers = true;
     private const int LootLogTimeToleranceSeconds = 2;
+    private static readonly string[] LootLogHeaderColumns =
+    [
+        "timestamp_utc",
+        "looted_by__alliance",
+        "looted_by__guild",
+        "looted_by__name",
+        "item_id",
+        "item_name",
+        "quantity",
+        "looted_from__alliance",
+        "looted_from__guild",
+        "looted_from__name"
+    ];
     private int _chestLogSourceCount;
     private int _lootLogFileCount;
 
@@ -367,12 +380,18 @@ public class LoggingBindings : BaseViewModel
     {
         List<VaultContainerLogItem> items = new List<VaultContainerLogItem>();
         var loadedFiles = 0;
+        ClearLootComparatorImportEventLine();
 
         foreach (var filePath in filePaths)
         {
             try
             {
-                var fileItems = ReadVaultLogText(File.ReadAllText(filePath)).ToList();
+                if (!TryReadVaultLogText(File.ReadAllText(filePath), out var fileItems))
+                {
+                    SetLootComparatorImportEventLine("LOOT_COMPARATOR_INVALID_CHEST_LOG_FILE", Path.GetFileName(filePath));
+                    continue;
+                }
+
                 if (fileItems.Any(item => item.Quantity > 0))
                 {
                     loadedFiles++;
@@ -383,6 +402,7 @@ public class LoggingBindings : BaseViewModel
             catch (Exception ex)
             {
                 Debug.Print($"Error processing chest log file '{filePath}': {ex.Message}");
+                SetLootComparatorImportEventLine("LOOT_COMPARATOR_INVALID_CHEST_LOG_FILE", Path.GetFileName(filePath));
             }
         }
 
@@ -392,7 +412,14 @@ public class LoggingBindings : BaseViewModel
 
     public int AddVaultLogText(string chestLogText)
     {
-        var items = ReadVaultLogText(chestLogText).ToList();
+        ClearLootComparatorImportEventLine();
+        if (!TryReadVaultLogText(chestLogText, out var items))
+        {
+            SetLootComparatorImportEventLine(LocalizationController.Translation("LOOT_COMPARATOR_INVALID_CHEST_LOG_TEXT"));
+            Debug.Print("Rejected chest log text because it does not match the expected chest log format.");
+            return 0;
+        }
+
         var addedItems = AddVaultLogItems(items);
         if (addedItems > 0)
         {
@@ -430,13 +457,20 @@ public class LoggingBindings : BaseViewModel
     internal int AddLootLogFiles(IEnumerable<string> filePaths)
     {
         var addedItems = 0;
+        ClearLootComparatorImportEventLine();
 
         foreach (var filePath in filePaths)
         {
             try
             {
                 var fileAddedItems = 0;
-                foreach (var lootLogItem in ReadLootLogFile(filePath))
+                if (!TryReadLootLogFile(filePath, out var lootLogItems))
+                {
+                    SetLootComparatorImportEventLine("LOOT_COMPARATOR_INVALID_LOOT_LOG_FILE", Path.GetFileName(filePath));
+                    continue;
+                }
+
+                foreach (var lootLogItem in lootLogItems)
                 {
                     if (TryAddLootLogItem(lootLogItem))
                     {
@@ -453,6 +487,7 @@ public class LoggingBindings : BaseViewModel
             catch (Exception ex)
             {
                 Debug.Print($"Error processing loot log file '{filePath}': {ex.Message}");
+                SetLootComparatorImportEventLine("LOOT_COMPARATOR_INVALID_LOOT_LOG_FILE", Path.GetFileName(filePath));
             }
         }
 
@@ -460,28 +495,51 @@ public class LoggingBindings : BaseViewModel
         return addedItems;
     }
 
-    private static IEnumerable<ImportedLootLogItem> ReadLootLogFile(string filePath)
+    private static bool TryReadLootLogFile(string filePath, out List<ImportedLootLogItem> lootLogItems)
     {
-        using var parser = new TextFieldParser(filePath);
-        parser.TextFieldType = FieldType.Delimited;
-        parser.HasFieldsEnclosedInQuotes = true;
-        parser.TrimWhiteSpace = false;
+        lootLogItems = [];
+        var isHeaderLine = true;
 
-        parser.SetDelimiters(";");
-
-        if (!parser.EndOfData)
+        foreach (var line in File.ReadLines(filePath))
         {
-            parser.ReadFields();
-        }
-
-        while (!parser.EndOfData)
-        {
-            var values = parser.ReadFields();
-            if (TryParseLootLogFields(values, out var lootLogItem))
+            if (string.IsNullOrWhiteSpace(line))
             {
-                yield return lootLogItem;
+                continue;
             }
+
+            if (!TrySplitDelimitedLine(line, ';', out var values))
+            {
+                return false;
+            }
+
+            if (isHeaderLine)
+            {
+                if (!IsLootLogHeader(values))
+                {
+                    return false;
+                }
+
+                isHeaderLine = false;
+                continue;
+            }
+
+            if (!TryParseLootLogFields(values, out var lootLogItem))
+            {
+                return false;
+            }
+
+            lootLogItems.Add(lootLogItem);
         }
+
+        return !isHeaderLine && lootLogItems.Count > 0;
+    }
+
+    private static bool IsLootLogHeader(string[] values)
+    {
+        return values.Length >= LootLogHeaderColumns.Length
+               && LootLogHeaderColumns
+                   .Select((columnName, index) => string.Equals(values[index], columnName, StringComparison.OrdinalIgnoreCase))
+                   .All(isMatchingColumn => isMatchingColumn);
     }
 
     private static bool TryParseLootLogFields(string[] values, out ImportedLootLogItem lootLogItem)
@@ -642,14 +700,21 @@ public class LoggingBindings : BaseViewModel
 
     private static IEnumerable<VaultContainerLogItem> ReadVaultLogText(string chestLogText)
     {
+        return TryReadVaultLogText(chestLogText, out var items) ? items : [];
+    }
+
+    private static bool TryReadVaultLogText(string chestLogText, out List<VaultContainerLogItem> items)
+    {
+        items = [];
+
         if (string.IsNullOrWhiteSpace(chestLogText))
         {
-            return [];
+            return false;
         }
 
         using var reader = new StringReader(chestLogText);
-        List<VaultContainerLogItem> items = [];
         var isFirstDataLine = true;
+        var hasDataLine = false;
 
         while (reader.ReadLine() is { } line)
         {
@@ -665,14 +730,16 @@ public class LoggingBindings : BaseViewModel
             }
 
             isFirstDataLine = false;
-            var item = ParseVaultLogLine(line);
-            if (item is not null)
+            hasDataLine = true;
+            if (!TryParseVaultLogLine(line, out var item))
             {
-                items.Add(item);
+                return false;
             }
+
+            items.Add(item);
         }
 
-        return items;
+        return hasDataLine;
     }
 
     private static bool IsVaultLogHeader(string line)
@@ -684,41 +751,52 @@ public class LoggingBindings : BaseViewModel
                && string.Equals(values[2], "Gegenstand", StringComparison.OrdinalIgnoreCase);
     }
 
-    private static VaultContainerLogItem ParseVaultLogLine(string line)
+    private static bool TryParseVaultLogLine(string line, out VaultContainerLogItem item)
     {
-        try
+        item = null;
+        var values = SplitVaultLogLine(line);
+
+        if (values.Length != 6)
         {
-            var values = SplitVaultLogLine(line);
-
-            if (values.Length != 6)
-            {
-                return null;
-            }
-
-            if (values[5].Length <= 0)
-            {
-                return null;
-            }
-
-            if (!TryParseVaultLogTimestamp(values[0], out var utcTimestamp))
-            {
-                return null;
-            }
-
-            return new VaultContainerLogItem
-            {
-                Timestamp = utcTimestamp,
-                PlayerName = values[1],
-                LocalizedName = values[2],
-                Enchantment = int.Parse(values[3]),
-                Quality = int.Parse(values[4]),
-                Quantity = int.Parse(values[5])
-            };
+            return false;
         }
-        catch
+
+        if (values[5].Length <= 0)
         {
-            return null;
+            return false;
         }
+
+        if (!TryParseVaultLogTimestamp(values[0], out var utcTimestamp))
+        {
+            return false;
+        }
+
+        if (!int.TryParse(values[3], NumberStyles.Integer, CultureInfo.InvariantCulture, out var enchantment))
+        {
+            return false;
+        }
+
+        if (!int.TryParse(values[4], NumberStyles.Integer, CultureInfo.InvariantCulture, out var quality))
+        {
+            return false;
+        }
+
+        if (!int.TryParse(values[5], NumberStyles.Integer, CultureInfo.InvariantCulture, out var quantity))
+        {
+            return false;
+        }
+
+        item = new VaultContainerLogItem
+        {
+            Timestamp = utcTimestamp,
+            PlayerName = values[1],
+            LocalizedName = values[2],
+            Enchantment = enchantment,
+            Quality = quality,
+            Quantity = quantity
+        };
+
+        return !string.IsNullOrWhiteSpace(item.PlayerName) && !string.IsNullOrWhiteSpace(item.LocalizedName);
     }
 
     private static bool TryParseVaultLogTimestamp(string value, out DateTime utcTimestamp)
@@ -754,6 +832,50 @@ public class LoggingBindings : BaseViewModel
         }
 
         return values;
+    }
+
+    private static bool TrySplitDelimitedLine(string line, char delimiter, out string[] values)
+    {
+        values = [];
+        List<string> fields = [];
+        var currentField = new StringBuilder();
+        var isInsideQuotes = false;
+
+        for (var i = 0; i < line.Length; i++)
+        {
+            var currentChar = line[i];
+
+            if (currentChar == '"')
+            {
+                if (isInsideQuotes && i + 1 < line.Length && line[i + 1] == '"')
+                {
+                    currentField.Append('"');
+                    i++;
+                    continue;
+                }
+
+                isInsideQuotes = !isInsideQuotes;
+                continue;
+            }
+
+            if (currentChar == delimiter && !isInsideQuotes)
+            {
+                fields.Add(currentField.ToString());
+                currentField.Clear();
+                continue;
+            }
+
+            currentField.Append(currentChar);
+        }
+
+        if (isInsideQuotes)
+        {
+            return false;
+        }
+
+        fields.Add(currentField.ToString());
+        values = fields.ToArray();
+        return true;
     }
 
     private void ReplaceVaultLogItems(IEnumerable<VaultContainerLogItem> items, int sourceCount)
@@ -863,6 +985,25 @@ public class LoggingBindings : BaseViewModel
         OnPropertyChanged(nameof(LootComparatorLogCountTooltip));
     }
 
+    private void ClearLootComparatorImportEventLine()
+    {
+        SetLootComparatorImportEventLine(string.Empty);
+    }
+
+    private void SetLootComparatorImportEventLine(string translationKey, string fileName)
+    {
+        var message = LocalizationController.Translation(translationKey,
+            ["FILE_NAME"],
+            [fileName]);
+
+        SetLootComparatorImportEventLine(message == translationKey ? $"{translationKey}: {fileName}" : message);
+    }
+
+    private void SetLootComparatorImportEventLine(string message)
+    {
+        LootComparatorImportEventLine = message;
+    }
+
     private static int CountSelectedFilters(params bool[] values)
     {
         return values.Count(value => value);
@@ -950,6 +1091,19 @@ public class LoggingBindings : BaseViewModel
             OnPropertyChanged();
         }
     } = string.Empty;
+
+    public string LootComparatorImportEventLine
+    {
+        get;
+        set
+        {
+            field = value;
+            OnPropertyChanged();
+            OnPropertyChanged(nameof(LootComparatorImportEventLineVisibility));
+        }
+    } = string.Empty;
+
+    public Visibility LootComparatorImportEventLineVisibility => string.IsNullOrWhiteSpace(LootComparatorImportEventLine) ? Visibility.Collapsed : Visibility.Visible;
 
     public ListCollectionView GameLoggingCollectionView
     {

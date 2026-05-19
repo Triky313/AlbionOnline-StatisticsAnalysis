@@ -478,6 +478,13 @@
                                             Content="{Binding LoggingBindings.Translation.AddLootLogFiles, FallbackValue=ADD__LOOT__LOG__FILES}" VerticalAlignment="Top"
                                             Click="BtnAddLootLogFiles_Click" />
                                 </StackPanel>
+                                <TextBlock Text="{Binding LoggingBindings.LootComparatorImportEventLine}"
+                                           Visibility="{Binding LoggingBindings.LootComparatorImportEventLineVisibility}"
+                                           Foreground="{StaticResource SolidColorBrush.Accent.Red.2}"
+                                           FontSize="12"
+                                           Margin="0,4,0,0"
+                                           TextWrapping="Wrap"
+                                           MaxWidth="480" />
                             </StackPanel>
                         </StackPanel>
 

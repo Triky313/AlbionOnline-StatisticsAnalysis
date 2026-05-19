@@ -485,6 +485,70 @@ public class LoggingBindingsTests
     }
 
     [Test]
+    public void AddVaultLogText_WithInvalidFormat_SkipsTextAndSetsImportEventLine()
+    {
+        var bindings = new LoggingBindings();
+
+        bindings.AddVaultLogText("not a valid chest log").Should().Be(0);
+
+        bindings.VaultLogItems.Should().BeEmpty();
+        bindings.ChestLogCount.Should().Be(0);
+        bindings.LootComparatorImportEventLine.Should().NotBeNullOrWhiteSpace();
+        bindings.LootComparatorImportEventLineVisibility.Should().Be(Visibility.Visible);
+    }
+
+    [Test]
+    public void LoadVaultLogFiles_WithInvalidFormatFile_SkipsFileAndSetsImportEventLine()
+    {
+        var bindings = new LoggingBindings();
+        var filePath = Path.GetTempFileName();
+
+        try
+        {
+            File.WriteAllText(filePath, "timestamp_utc;looted_by__name;item_id;quantity");
+
+            bindings.LoadVaultLogFiles([filePath]).Should().Be(0);
+
+            bindings.VaultLogItems.Should().BeEmpty();
+            bindings.ChestLogCount.Should().Be(0);
+            bindings.LootComparatorImportEventLine.Should().Contain(Path.GetFileName(filePath));
+            bindings.LootComparatorImportEventLineVisibility.Should().Be(Visibility.Visible);
+        }
+        finally
+        {
+            File.Delete(filePath);
+        }
+    }
+
+    [Test]
+    public void AddLootLogFiles_WithInvalidFormatFile_SkipsFileAndSetsImportEventLine()
+    {
+        ItemController.Items = new ObservableCollection<Item>()
+        {
+            CreateItem(1, "T4_WOOD", "other", "misc")
+        };
+
+        var bindings = new LoggingBindings();
+        var filePath = Path.GetTempFileName();
+
+        try
+        {
+            File.WriteAllText(filePath, "\"broken;csv");
+
+            bindings.AddLootLogFiles([filePath]).Should().Be(0);
+
+            bindings.LootingPlayers.Should().BeEmpty();
+            bindings.LootLogCount.Should().Be(0);
+            bindings.LootComparatorImportEventLine.Should().Contain(Path.GetFileName(filePath));
+            bindings.LootComparatorImportEventLineVisibility.Should().Be(Visibility.Visible);
+        }
+        finally
+        {
+            File.Delete(filePath);
+        }
+    }
+
+    [Test]
     public void TotalEstimatedMarketValue_WithZeroValues_IgnoresZeroValueItems()
     {
         ItemController.Items = new ObservableCollection<Item>()
