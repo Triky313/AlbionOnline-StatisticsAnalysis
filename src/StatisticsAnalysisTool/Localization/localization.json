@@ -18216,6 +18216,27 @@
       ]
     },
     {
+      "tuid": "DEBUG_CONSOLE_PARAMETERS",
+      "tuv": [
+        {
+          "lang": "de-DE",
+          "seg": "Debug-Konsolenparameter"
+        },
+        {
+          "lang": "en-US",
+          "seg": "Debug console parameters"
+        },
+        {
+          "lang": "fr-FR",
+          "seg": "Paramètres de la console de débogage"
+        },
+        {
+          "lang": "ru-RU",
+          "seg": "Параметры консоли отладки"
+        }
+      ]
+    },
+    {
       "tuid": "CREATE_DESKTOP_SHORTCUT",
       "tuv": [
         {
@@ -35210,6 +35231,27 @@
         {
           "lang": "zh-CN",
           "seg": "最大备份数量"
+        }
+      ]
+    },
+    {
+      "tuid": "BACKUP_STORAGE_DIRECTORY_PATH",
+      "tuv": [
+        {
+          "lang": "de-DE",
+          "seg": "Pfad zum Sicherungsspeicherverzeichnis"
+        },
+        {
+          "lang": "en-US",
+          "seg": "Backup Storage Directory Path"
+        },
+        {
+          "lang": "fr-FR",
+          "seg": "Chemin d'accès au répertoire de stockage de sauvegarde"
+        },
+        {
+          "lang": "ru-RU",
+          "seg": "Путь к каталогу хранилища резервных копий"
         }
       ]
     },

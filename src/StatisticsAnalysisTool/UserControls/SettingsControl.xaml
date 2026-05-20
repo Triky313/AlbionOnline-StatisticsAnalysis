@@ -201,7 +201,7 @@
                                   IsSynchronizedWithCurrentItem="True" DisplayMemberPath="Name" SelectedValuePath="Value" HorizontalAlignment="Left" VerticalAlignment="Top" Width="200" Height="26" />
                     </DockPanel>
                     <DockPanel Margin="0,5,0,0">
-                        <Label Content="Backup Storage Directory Path" MinWidth="300" VerticalAlignment="Top" />
+                        <Label Content="{Binding Translation.BackupStorageDirectoryPath, FallbackValue=BACKUP__STORAGE__DIRECTORY__PATH}" MinWidth="300" VerticalAlignment="Top" />
                         <StackPanel Orientation="Horizontal" HorizontalAlignment="Left">
                             <TextBox Height="40" Width="400" TextWrapping="Wrap" VerticalAlignment="Top" Margin="0,0,5,0">
                                 <TextBox.Text>
