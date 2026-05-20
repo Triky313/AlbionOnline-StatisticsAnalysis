@@ -13351,6 +13351,10 @@
         {
           "lang": "fr-FR",
           "seg": "Arme"
+        },
+        {
+          "lang": "ru-RU",
+          "seg": "Оружие"
         }
       ]
     },
@@ -32217,7 +32221,7 @@
         },
         {
           "lang": "ru-RU",
-          "seg": "Западный Альбион"
+          "seg": "Америка Сервер"
         },
         {
           "lang": "zh-CN",
@@ -32266,7 +32270,7 @@
         },
         {
           "lang": "ru-RU",
-          "seg": "Восточный Альбион"
+          "seg": "Азия Сервер"
         },
         {
           "lang": "zh-CN",
@@ -32299,7 +32303,7 @@
         },
         {
           "lang": "ru-RU",
-          "seg": "Europe Server"
+          "seg": "Европа Сервер"
         }
       ]
     },
@@ -32340,7 +32344,7 @@
         },
         {
           "lang": "ru-RU",
-          "seg": "Ссылка на Albion data project WEST"
+          "seg": "Ссылка на Albion data project Америке"
         },
         {
           "lang": "zh-CN",
@@ -32389,7 +32393,7 @@
         },
         {
           "lang": "ru-RU",
-          "seg": "Ссылка на Albion data project EAST"
+          "seg": "Ссылка на Albion data project Азии"
         },
         {
           "lang": "zh-CN",
@@ -32422,7 +32426,7 @@
         },
         {
           "lang": "ru-RU",
-          "seg": "URL-адрес базы данных проекта Albion data project в ЕВРОПЕ"
+          "seg": "Ссылка на Albion data project Европы"
         }
       ]
     },
@@ -38035,6 +38039,10 @@
         {
           "lang": "fr-FR",
           "seg": "Ajouter des Chest Logs"
+        },
+        {
+          "lang": "ru-RU",
+          "seg": "Добавьте логи сундука"
         }
       ]
     },
@@ -38052,6 +38060,10 @@
         {
           "lang": "fr-FR",
           "seg": "Collez ici le Chest Log"
+        },
+        {
+          "lang": "ru-RU",
+          "seg": "Вставьте сюда логи сундука"
         }
       ]
     },
@@ -38069,6 +38081,10 @@
         {
           "lang": "fr-FR",
           "seg": "{CHEST_COUNT} fichiers Chest | {LOOT_COUNT} fichiers Loot-log"
+        },
+        {
+          "lang": "ru-RU",
+          "seg": "{CHEST_COUNT} файлов с сундуками | {LOOT_COUNT} файлов с логами добычи"
         }
       ]
     },
@@ -38086,6 +38102,10 @@
         {
           "lang": "fr-FR",
           "seg": "Compte les fichiers Chest-Log chargés, ainsi que les importations de texte de coffres valides et les fichiers de Loot-Log contenant au moins une entrée de butin."
+        },
+        {
+          "lang": "ru-RU",
+          "seg": "Подсчитывает количество загруженных файлов с логами сундуков, а также количество импортированных файлов с текстом сундуков и логов добычи, в которых есть хотя бы одна запись о добыче."
         }
       ]
     },
@@ -38103,6 +38123,10 @@
         {
           "lang": "fr-FR",
           "seg": "Fichier de Chest-Log non valide ignoré: {FILE_NAME}"
+        },
+        {
+          "lang": "ru-RU",
+          "seg": "Неверный файл лога сундука пропущен: {FILE_NAME}"
         }
       ]
     },
@@ -38120,6 +38144,10 @@
         {
           "lang": "fr-FR",
           "seg": "Le texte du Chest-Log n'a pas pu être chargé."
+        },
+        {
+          "lang": "ru-RU",
+          "seg": "Неверный текст в логе сундука."
         }
       ]
     },
@@ -38137,6 +38165,10 @@
         {
           "lang": "fr-FR",
           "seg": "Le fichier Loot-Log non valide ignoré: {FILE_NAME}"
+        },
+        {
+          "lang": "ru-RU",
+          "seg": "Пропущен недействительный файл журнала добычи: {FILE_NAME}"
         }
       ]
     },
@@ -43555,6 +43587,10 @@
         {
           "lang": "fr-FR",
           "seg": "Loot Logger Stats"
+        },
+        {
+          "lang": "ru-RU",
+          "seg": "Статистика Логгера лута"
         }
       ]
     },
@@ -43572,6 +43608,10 @@
         {
           "lang": "fr-FR",
           "seg": "Loot"
+        },
+        {
+          "lang": "ru-RU",
+          "seg": "Добыча"
         }
       ]
     },
@@ -43589,6 +43629,10 @@
         {
           "lang": "fr-FR",
           "seg": "Argent"
+        },
+        {
+          "lang": "ru-RU",
+          "seg": "Серебро"
         }
       ]
     },
@@ -43606,6 +43650,10 @@
         {
           "lang": "fr-FR",
           "seg": "Renommée"
+        },
+        {
+          "lang": "ru-RU",
+          "seg": "Слава"
         }
       ]
     },
@@ -43623,6 +43671,10 @@
         {
           "lang": "fr-FR",
           "seg": "Faction"
+        },
+        {
+          "lang": "ru-RU",
+          "seg": "Фракция"
         }
       ]
     },
@@ -43689,6 +43741,10 @@
         {
           "lang": "fr-FR",
           "seg": "Valeur du butin par heure"
+        },
+        {
+          "lang": "ru-RU",
+          "seg": "Стоимость добычи в час"
         }
       ]
     },
@@ -43706,6 +43762,10 @@
         {
           "lang": "fr-FR",
           "seg": "Renommée par Heure"
+        },
+        {
+          "lang": "ru-RU",
+          "seg": "Слава в час"
         }
       ]
     },
@@ -43723,6 +43783,10 @@
         {
           "lang": "fr-FR",
           "seg": "Argent par Heure"
+        },
+        {
+          "lang": "ru-RU",
+          "seg": "Серебро в час"
         }
       ]
     },
@@ -43740,6 +43804,10 @@
         {
           "lang": "fr-FR",
           "seg": "Total des Points de Faction"
+        },
+        {
+          "lang": "ru-RU",
+          "seg": "Общее количество очков фракции"
         }
       ]
     },
@@ -43757,6 +43825,10 @@
         {
           "lang": "fr-FR",
           "seg": "Points de Faction par Heure"
+        },
+        {
+          "lang": "ru-RU",
+          "seg": "Очки фракции в час"
         }
       ]
     },
@@ -43774,6 +43846,10 @@
         {
           "lang": "fr-FR",
           "seg": "Meilleur Objet"
+        },
+        {
+          "lang": "ru-RU",
+          "seg": "Лучший отдельный предмет"
         }
       ]
     },
@@ -43791,6 +43867,10 @@
         {
           "lang": "fr-FR",
           "seg": "Valeur maximale de butin"
+        },
+        {
+          "lang": "ru-RU",
+          "seg": "Самая высокая залутанная ценность"
         }
       ]
     },
@@ -43808,6 +43888,10 @@
         {
           "lang": "fr-FR",
           "seg": "Meilleurs Objets Obtenus"
+        },
+        {
+          "lang": "ru-RU",
+          "seg": "Наибольшее количество залутанных предметов"
         }
       ]
     },
@@ -43825,6 +43909,10 @@
         {
           "lang": "fr-FR",
           "seg": "Le plus grand nombre de Kills"
+        },
+        {
+          "lang": "ru-RU",
+          "seg": "Большинство убийств"
         }
       ]
     },
@@ -43842,6 +43930,10 @@
         {
           "lang": "fr-FR",
           "seg": "Le plus grand nombre de Morts"
+        },
+        {
+          "lang": "ru-RU",
+          "seg": "Большинство смертей"
         }
       ]
     },
@@ -43859,6 +43951,10 @@
         {
           "lang": "fr-FR",
           "seg": "Meilleur valeur de Kill"
+        },
+        {
+          "lang": "ru-RU",
+          "seg": "Самое большое число убийств"
         }
       ]
     },
@@ -43876,6 +43972,10 @@
         {
           "lang": "fr-FR",
           "seg": "Tueur"
+        },
+        {
+          "lang": "ru-RU",
+          "seg": "Убийца"
         }
       ]
     },
@@ -43893,6 +43993,10 @@
         {
           "lang": "fr-FR",
           "seg": "Aucune statistique de Loot Logger n'est encore disponible."
+        },
+        {
+          "lang": "ru-RU",
+          "seg": "Статистика Логгера лута пока недоступна."
         }
       ]
     }
