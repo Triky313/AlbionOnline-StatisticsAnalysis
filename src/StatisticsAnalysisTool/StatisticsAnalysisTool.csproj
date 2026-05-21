@@ -365,6 +365,9 @@
     <Resource Include="Assets\static_chest.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Resource>
+    <Resource Include="Assets\Navigation\*.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Resource>
     <Resource Include="Resources\abyssal_depths_banner.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Resource>
@@ -751,6 +754,7 @@
     <None Remove="Assets\skull_green.png" />
     <None Remove="Assets\skull_red.png" />
     <None Remove="Assets\static_chest.png" />
+    <None Remove="Assets\Navigation\*.png" />
     <None Remove="Localization\localization.json" />
     <None Remove="Resources\abyssal_depths_banner.png" />
     <None Remove="Resources\DonationIcon\ALLIGATOR1.png" />

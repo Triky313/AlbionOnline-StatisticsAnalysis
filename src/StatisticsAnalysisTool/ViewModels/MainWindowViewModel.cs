@@ -130,6 +130,7 @@ public class MainWindowViewModel : BaseViewModel
     private Visibility _mapHistoryTabVisibility = Visibility.Visible;
     private Visibility _playerInformationTabVisibility = Visibility.Visible;
     private Visibility _guildTabVisibility = Visibility.Visible;
+    private bool _isNavigationMenuOpen = true;
     private Visibility _toolTaskFrontViewVisibility = Visibility.Collapsed;
     private Visibility _statsDropDownVisibility = Visibility.Collapsed;
     private double _toolTaskProgressBarValue;
@@ -1506,6 +1507,30 @@ public class MainWindowViewModel : BaseViewModel
         {
             _playerInformationTabVisibility = value;
             OnPropertyChanged();
+        }
+    }
+
+    public bool IsNavigationMenuOpen
+    {
+        get => _isNavigationMenuOpen;
+        set
+        {
+            if (_isNavigationMenuOpen == value)
+            {
+                return;
+            }
+
+            _isNavigationMenuOpen = value;
+            OnPropertyChanged();
+            OnPropertyChanged(nameof(NavigationMenuWidth));
+        }
+    }
+
+    public double NavigationMenuWidth
+    {
+        get
+        {
+            return IsNavigationMenuOpen ? 190 : 64;
         }
     }
 
