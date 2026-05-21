@@ -91,7 +91,7 @@
                             <TextBlock Name="Pipe" Foreground="{StaticResource SolidColorBrush.Accent.Blue.4}" FontWeight="Bold" Text="|"
                                        VerticalAlignment="Center" Padding="5,0,0,3" FontSize="16" />
                             <Grid Name="Icon" Width="32" Height="32" Margin="10,4,9,4" Visibility="Collapsed">
-                                <Rectangle Name="IconMask" Fill="{StaticResource SolidColorBrush.Accent.Yellow.1}">
+                                <Rectangle Name="IconMask" Fill="{StaticResource SolidColorBrush.Accent.Yellow.2}">
                                     <Rectangle.OpacityMask>
                                         <ImageBrush ImageSource="{Binding Tag, RelativeSource={RelativeSource TemplatedParent}}" Stretch="Uniform" />
                                     </Rectangle.OpacityMask>
@@ -110,7 +110,7 @@
                         <Trigger Property="IsSelected" Value="False">
                             <Setter TargetName="Pipe" Property="Visibility" Value="Hidden" />
                             <Setter TargetName="Text" Property="Foreground" Value="{StaticResource SolidColorBrush.Accent.Yellow.2}" />
-                            <Setter TargetName="IconMask" Property="Fill" Value="{StaticResource SolidColorBrush.Accent.Yellow.1}" />
+                            <Setter TargetName="IconMask" Property="Fill" Value="{StaticResource SolidColorBrush.Accent.Yellow.2}" />
                         </Trigger>
                         <DataTrigger Binding="{Binding DataContext.IsNavigationMenuOpen, RelativeSource={RelativeSource AncestorType=TabControl}}" Value="False">
                             <Setter TargetName="Icon" Property="Visibility" Value="Visible" />
@@ -132,13 +132,17 @@
                         <StackPanel Orientation="Horizontal" Margin="0">
                             <TextBlock Name="Pipe" Foreground="{StaticResource SolidColorBrush.Accent.Blue.4}" FontWeight="Bold" Text="|"
                                        VerticalAlignment="Center" Padding="5,0,0,3" FontSize="16" />
-                            <Image Name="Icon"
-                                   Width="32"
-                                   Height="32"
-                                   Margin="10,4,9,4"
-                                   Visibility="Collapsed"
-                                   Source="{Binding Tag, RelativeSource={RelativeSource TemplatedParent}}"
-                                   Stretch="Uniform" />
+                            <Grid Name="Icon" Width="32" Height="32" Margin="10,4,9,4" Visibility="Collapsed">
+                                <Rectangle Name="IconMask" Fill="{StaticResource SolidColorBrush.Accent.Red.7}">
+                                    <Rectangle.OpacityMask>
+                                        <ImageBrush ImageSource="{Binding Tag, RelativeSource={RelativeSource TemplatedParent}}" Stretch="Uniform" />
+                                    </Rectangle.OpacityMask>
+                                </Rectangle>
+                                <Image Name="OriginalIcon"
+                                       Visibility="Collapsed"
+                                       Source="{Binding Tag, RelativeSource={RelativeSource TemplatedParent}}"
+                                       Stretch="Uniform" />
+                            </Grid>
                             <Label Name="Text" Height="40" Content="{TemplateBinding Header}" Foreground="{StaticResource SolidColorBrush.Accent.Red.7}"
                                    FontSize="16" VerticalContentAlignment="Center" Margin="5,0" />
                         </StackPanel>
@@ -147,10 +151,14 @@
                         <Trigger Property="IsSelected" Value="True">
                             <Setter TargetName="Pipe" Property="Visibility" Value="Visible" />
                             <Setter TargetName="Text" Property="Foreground" Value="{StaticResource SolidColorBrush.Accent.Red.1}" />
+                            <Setter TargetName="IconMask" Property="Visibility" Value="Collapsed" />
+                            <Setter TargetName="OriginalIcon" Property="Visibility" Value="Visible" />
                         </Trigger>
                         <Trigger Property="IsSelected" Value="False">
                             <Setter TargetName="Pipe" Property="Visibility" Value="Hidden" />
                             <Setter TargetName="Text" Property="Foreground" Value="{StaticResource SolidColorBrush.Accent.Red.7}" />
+                            <Setter TargetName="IconMask" Property="Visibility" Value="Visible" />
+                            <Setter TargetName="OriginalIcon" Property="Visibility" Value="Collapsed" />
                         </Trigger>
                         <DataTrigger Binding="{Binding DataContext.IsNavigationMenuOpen, RelativeSource={RelativeSource AncestorType=TabControl}}" Value="False">
                             <Setter TargetName="Icon" Property="Visibility" Value="Visible" />
@@ -178,7 +186,7 @@
                             <DockPanel>
                                 <ToggleButton DockPanel.Dock="Top"
                                               Style="{StaticResource NavigationMenuToggleButtonStyle}"
-                                              IsChecked="{Binding DataContext.IsNavigationMenuOpen, RelativeSource={RelativeSource TemplatedParent}, Mode=TwoWay}"
+                                              IsChecked="{Binding DataContext.IsNavigationMenuOpen, RelativeSource={RelativeSource AncestorType=TabControl}, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                               ToolTip="Toggle navigation menu" />
                                 <ScrollViewer HorizontalScrollBarVisibility="Disabled"
                                               VerticalScrollBarVisibility="Auto">

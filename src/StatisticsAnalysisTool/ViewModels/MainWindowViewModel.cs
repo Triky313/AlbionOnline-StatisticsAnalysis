@@ -261,6 +261,7 @@ public class MainWindowViewModel : BaseViewModel
         UserTrackingBindings.AllianceInformationVisibility = Visibility.Hidden;
         UserTrackingBindings.CurrentMapInfoBinding.CurrentMapInformationVisibility = Visibility.Hidden;
 
+        IsNavigationMenuOpen = SettingsController.CurrentSettings.IsNavigationMenuOpen;
         IsTrackingResetByMapChangeActive = SettingsController.CurrentSettings.IsTrackingResetByMapChangeActive;
 
         // Dungeons
@@ -1521,6 +1522,7 @@ public class MainWindowViewModel : BaseViewModel
             }
 
             _isNavigationMenuOpen = value;
+            SettingsController.CurrentSettings.IsNavigationMenuOpen = _isNavigationMenuOpen;
             OnPropertyChanged();
             OnPropertyChanged(nameof(NavigationMenuWidth));
         }
