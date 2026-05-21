@@ -1,4 +1,4 @@
-﻿using StatisticsAnalysisTool.Common;
+using StatisticsAnalysisTool.Common;
 using StatisticsAnalysisTool.Models;
 using StatisticsAnalysisTool.Models.TranslationModel;
 using StatisticsAnalysisTool.Properties;
@@ -12,17 +12,10 @@ namespace StatisticsAnalysisTool.ViewModels;
 
 public class DonationViewModel : BaseViewModel
 {
-    private DonationTranslation _translation;
-    private List<Donation> _topDonationsAllTime;
-    private List<Donation> _topDonationsThisMonth;
-    private Visibility _donationsAllTimeVisibility = Visibility.Collapsed;
-    private Visibility _noTopDonationsVisibility = Visibility.Visible;
-    private Visibility _donationsThisMonthVisibility = Visibility.Collapsed;
-    private Visibility _noDonationsThisMonthVisibility = Visibility.Visible;
-    private List<Donation> _donations = new();
-    private List<Donation> _topRealMoneyDonations;
-    private Visibility _topRealMoneyDonationsVisibility = Visibility.Collapsed;
-    private Visibility _noTopRealMoneyDonationsVisibility = Visibility.Visible;
+    private const long MonthlySilverDonationGoalValue = 27_000_000;
+    private const double MonthlyRealMoneyDonationGoalValue = 100d;
+
+    private List<Donation> _donations = [];
 
     public DonationViewModel()
     {
@@ -42,48 +35,78 @@ public class DonationViewModel : BaseViewModel
         var currentUtc = DateTime.UtcNow;
 
         TopDonationsAllTime = _donations?
-            .Where(x => x.IsDonationRealMoney == false)
-            .GroupBy(x => new { x?.Contributor, x?.Server })
+            .Where(x => !x.IsDonationRealMoney)
+            .GroupBy(x => new { x.Contributor, x.Server })
             .Select(arg => new Donation
             {
-                Contributor = arg?.Key?.Contributor,
-                Server = arg?.Key?.Server,
-                IsDonationRealMoney = arg?.FirstOrDefault()?.IsDonationRealMoney ?? false,
-                Timestamp = arg?.FirstOrDefault()?.Timestamp ?? new DateTime(),
-                Amount = arg?.Sum(x => x?.Amount ?? 0L) is not null ? arg.Sum(x => x?.Amount ?? 0L) : 0L
+                Contributor = arg.Key?.Contributor,
+                Server = arg.Key?.Server,
+                IsDonationRealMoney = arg.FirstOrDefault()?.IsDonationRealMoney ?? false,
+                Timestamp = arg.FirstOrDefault()?.Timestamp ?? new DateTime(),
+                Amount = arg.Sum(x => x?.Amount ?? 0L)
             })
             .OrderByDescending(x => x.Amount)
             .ToList();
+        SetPlacements(TopDonationsAllTime);
 
         TopDonationsThisMonth = _donations?
             .Where(x => x?.IsDonationRealMoney == false && x.Timestamp.Year == currentUtc.Year && x.Timestamp.Month == currentUtc.Month)
-            .GroupBy(x => new { x?.Contributor, x?.Server })
+            .GroupBy(x => new { x.Contributor, x.Server })
             .Select(arg => new Donation
             {
-                Contributor = arg?.Key?.Contributor,
-                Server = arg?.Key?.Server,
-                IsDonationRealMoney = arg?.FirstOrDefault()?.IsDonationRealMoney ?? false,
-                Timestamp = arg?.FirstOrDefault()?.Timestamp ?? new DateTime(),
-                Amount = arg?.Sum(x => x?.Amount ?? 0L) is not null ? arg.Sum(x => x?.Amount ?? 0L) : 0L
+                Contributor = arg.Key?.Contributor,
+                Server = arg.Key?.Server,
+                IsDonationRealMoney = arg.FirstOrDefault()?.IsDonationRealMoney ?? false,
+                Timestamp = arg.FirstOrDefault()?.Timestamp ?? new DateTime(),
+                Amount = arg.Sum(x => x?.Amount ?? 0L)
             })
             .OrderByDescending(x => x.Amount)
             .ToList();
+        SetPlacements(TopDonationsThisMonth);
 
         TopRealMoneyDonations = _donations?
             .Where(x => x.IsDonationRealMoney)
-            .GroupBy(x => new { x?.Contributor, x?.Server })
+            .GroupBy(x => new { x.Contributor, x.Server })
             .Select(arg => new Donation
             {
-                Contributor = arg?.Key?.Contributor,
-                Server = arg?.Key?.Server,
-                IsDonationRealMoney = arg?.FirstOrDefault()?.IsDonationRealMoney ?? false,
-                Timestamp = arg?.FirstOrDefault()?.Timestamp ?? new DateTime(),
-                RealMoneyAmount = arg?.Sum(x => x?.RealMoneyAmount ?? 0d) is not null ? arg.Sum(x => x?.RealMoneyAmount ?? 0d) : 0d
+                Contributor = arg.Key?.Contributor,
+                Server = arg.Key?.Server,
+                IsDonationRealMoney = arg.FirstOrDefault()?.IsDonationRealMoney ?? false,
+                Timestamp = arg.FirstOrDefault()?.Timestamp ?? new DateTime(),
+                RealMoneyAmount = arg.Sum(x => x?.RealMoneyAmount ?? 0d)
             })
-            .OrderByDescending(x => x.RealMoneyAmount)
+            .OrderBy(x => IsAnonymousDonationContributor(x.Contributor))
+            .ThenByDescending(x => x.RealMoneyAmount)
             .ToList();
+        SetPlacements(TopRealMoneyDonations);
+
+        MonthlySilverDonationAmount = _donations?
+            .Where(x => x?.IsDonationRealMoney == false && x.Timestamp.Year == currentUtc.Year && x.Timestamp.Month == currentUtc.Month)
+            .Sum(x => x.Amount) ?? 0L;
+
+        MonthlyRealMoneyDonationAmount = _donations?
+            .Where(x => x?.IsDonationRealMoney == true && x.Timestamp.Year == currentUtc.Year && x.Timestamp.Month == currentUtc.Month)
+            .Sum(x => x.RealMoneyAmount) ?? 0d;
 
         SetDonationListVisibility();
+    }
+
+    private static bool IsAnonymousDonationContributor(string contributor)
+    {
+        return contributor?.StartsWith("Anonymously", StringComparison.OrdinalIgnoreCase) == true;
+    }
+
+    private static void SetPlacements(IReadOnlyList<Donation> donations)
+    {
+        if (donations is null)
+        {
+            return;
+        }
+
+        for (var i = 0; i < donations.Count; i++)
+        {
+            donations[i].Placement = i + 1;
+        }
     }
 
     private void SetDonationListVisibility()
@@ -109,105 +132,133 @@ public class DonationViewModel : BaseViewModel
 
     public List<Donation> TopDonationsAllTime
     {
-        get => _topDonationsAllTime;
+        get;
         set
         {
-            _topDonationsAllTime = value;
+            field = value;
             OnPropertyChanged();
         }
     }
 
     public List<Donation> TopDonationsThisMonth
     {
-        get => _topDonationsThisMonth;
+        get;
         set
         {
-            _topDonationsThisMonth = value;
+            field = value;
             OnPropertyChanged();
         }
     }
 
     public List<Donation> TopRealMoneyDonations
     {
-        get => _topRealMoneyDonations;
+        get;
         set
         {
-            _topRealMoneyDonations = value;
+            field = value;
             OnPropertyChanged();
         }
     }
 
     public Visibility DonationsAllTimeVisibility
     {
-        get => _donationsAllTimeVisibility;
+        get;
         set
         {
-            _donationsAllTimeVisibility = value;
+            field = value;
             OnPropertyChanged();
         }
-    }
+    } = Visibility.Collapsed;
 
     public Visibility NoTopDonationsVisibility
     {
-        get => _noTopDonationsVisibility;
+        get;
         set
         {
-            _noTopDonationsVisibility = value;
+            field = value;
             OnPropertyChanged();
         }
-    }
+    } = Visibility.Visible;
 
     public Visibility DonationsThisMonthVisibility
     {
-        get => _donationsThisMonthVisibility;
+        get;
         set
         {
-            _donationsThisMonthVisibility = value;
+            field = value;
             OnPropertyChanged();
         }
-    }
+    } = Visibility.Collapsed;
 
     public Visibility NoDonationsThisMonthVisibility
     {
-        get => _noDonationsThisMonthVisibility;
+        get;
         set
         {
-            _noDonationsThisMonthVisibility = value;
+            field = value;
             OnPropertyChanged();
         }
-    }
+    } = Visibility.Visible;
 
     public Visibility TopRealMoneyDonationsVisibility
     {
-        get => _topRealMoneyDonationsVisibility;
+        get;
         set
         {
-            _topRealMoneyDonationsVisibility = value;
+            field = value;
             OnPropertyChanged();
         }
-    }
+    } = Visibility.Collapsed;
 
     public Visibility NoTopRealMoneyDonationsVisibility
     {
-        get => _noTopRealMoneyDonationsVisibility;
+        get;
         set
         {
-            _noTopRealMoneyDonationsVisibility = value;
+            field = value;
             OnPropertyChanged();
         }
-    }
+    } = Visibility.Visible;
 
     public DonationTranslation Translation
     {
-        get => _translation;
+        get;
         set
         {
-            _translation = value;
+            field = value;
             OnPropertyChanged();
         }
     }
 
+    public long MonthlySilverDonationAmount
+    {
+        get;
+        set
+        {
+            field = value;
+            OnPropertyChanged();
+            OnPropertyChanged(nameof(MonthlySilverDonationProgressText));
+        }
+    }
+
+    public double MonthlyRealMoneyDonationAmount
+    {
+        get;
+        set
+        {
+            field = value;
+            OnPropertyChanged();
+            OnPropertyChanged(nameof(MonthlyRealMoneyDonationProgressText));
+        }
+    }
+
+    public long MonthlySilverDonationGoal => MonthlySilverDonationGoalValue;
+    public double MonthlyRealMoneyDonationGoal => MonthlyRealMoneyDonationGoalValue;
+    public string MonthlySilverDonationProgressText => $"{MonthlySilverDonationAmount:N0} / {MonthlySilverDonationGoal:N0}";
+    public string MonthlyRealMoneyDonationProgressText => $"{MonthlyRealMoneyDonationAmount:N2}\u20AC / {MonthlyRealMoneyDonationGoal:N0}\u20AC";
+
     public static string PatreonUrl => Settings.Default.PatreonUrl;
+    public static string KofiDonationUrl => Settings.Default.KofiDonationUrl;
     public static string DonateUrl => Settings.Default.DonateUrl;
     public static string GitHubSponsorsUrl => Settings.Default.GitHubSponsorsUrl;
 }

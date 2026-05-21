@@ -15,6 +15,9 @@ public class Donation
     public bool IsDonationRealMoney { get; set; } = false;
     public string Server { get; set; } = "US";
 
+    [JsonIgnore]
+    public int Placement { get; set; }
+
     [JsonIgnore] 
     public Visibility DonationRealMoneyVisibility => (IsDonationRealMoney) ? Visibility.Visible : Visibility.Collapsed;
     [JsonIgnore] 
