@@ -123,6 +123,7 @@ public class MainWindowViewModel : BaseViewModel
     private Visibility _dungeonsTabVisibility = Visibility.Visible;
     private Visibility _damageMeterTabVisibility = Visibility.Visible;
     private Visibility _tradeMonitoringTabVisibility = Visibility.Visible;
+    private Visibility _openWorldTabVisibility = Visibility.Visible;
     private Visibility _gatheringTabVisibility = Visibility.Visible;
     private Visibility _craftingTabVisibility = Visibility.Visible;
     private Visibility _partyTabVisibility = Visibility.Visible;
@@ -1447,6 +1448,16 @@ public class MainWindowViewModel : BaseViewModel
         set
         {
             _tradeMonitoringTabVisibility = value;
+            OnPropertyChanged();
+        }
+    }
+
+    public Visibility OpenWorldTabVisibility
+    {
+        get => _openWorldTabVisibility;
+        set
+        {
+            _openWorldTabVisibility = value;
             OnPropertyChanged();
         }
     }

@@ -197,6 +197,11 @@
                     <userControls:TradeMonitoringControl DataContext="{Binding RelativeSource={RelativeSource AncestorType=Window}, Path=DataContext}" />
                 </Grid>
             </TabItem>
+            <TabItem Visibility="{Binding OpenWorldTabVisibility, Mode=OneWay}" Header="{Binding Translation.OpenWorld, FallbackValue=OPEN__WORLD}" Tag="pack://application:,,,/Assets/Navigation/open-world.png">
+                <Grid Style="{StaticResource TabItemGridStyle}">
+                    <userControls:OpenWorldControl DataContext="{Binding RelativeSource={RelativeSource AncestorType=Window}, Path=DataContext}" />
+                </Grid>
+            </TabItem>
             <TabItem Visibility="{Binding GatheringTabVisibility, Mode=OneWay}" Header="{Binding Translation.Gathering, FallbackValue=GATHERING}" Tag="pack://application:,,,/Assets/Navigation/pickaxe.png">
                 <Grid Style="{StaticResource TabItemGridStyle}">
                     <userControls:GatheringControl DataContext="{Binding RelativeSource={RelativeSource AncestorType=Window}, Path=DataContext}" />
