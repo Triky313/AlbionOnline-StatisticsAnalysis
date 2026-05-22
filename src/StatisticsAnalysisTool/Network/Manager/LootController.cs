@@ -358,13 +358,7 @@ public class LootController : ILootController
 
     public async Task AddNewLocalPlayerLootAsync(int containerSlot, Guid containerGuid, Guid userInteractGuid)
     {
-        if (_trackingController.EntityController.LocalUserData.InteractGuid != userInteractGuid)
-        {
-            return;
-        }
-
-        var identifiedBody = _identifiedBodies.FirstOrDefault(x => x.ObjectId == _currentItemContainer?.ObjectId);
-        if (_currentItemContainer?.ContainerGuid != containerGuid || _currentItemContainer?.ObjectId != identifiedBody.ObjectId)
+        if (!TryGetLocalPlayerCurrentBodyLoot(containerGuid, userInteractGuid, out var identifiedBody))
         {
             return;
         }
@@ -391,6 +385,72 @@ public class LootController : ILootController
             LootedFromName = MobController.IsMob(identifiedBody.Name) ? LocalizationController.Translation("MOB") : identifiedBody.Name,
             Quantity = lootedItem.Quantity,
         });
+    }
+
+    public async Task AddNewLocalPlayerLootAsync(IReadOnlyCollection<long> itemObjectIds, Guid containerGuid, Guid userInteractGuid)
+    {
+        if (itemObjectIds?.Count <= 0 || !TryGetLocalPlayerCurrentBodyLoot(containerGuid, userInteractGuid, out var identifiedBody))
+        {
+            return;
+        }
+
+        if (string.IsNullOrEmpty(_trackingController?.EntityController?.LocalUserData?.Username) || string.IsNullOrEmpty(identifiedBody.Name))
+        {
+            return;
+        }
+
+        var currentContainerItemIds = GetCurrentContainerItemObjectIds();
+        foreach (var itemObjectId in itemObjectIds.Distinct())
+        {
+            if (!currentContainerItemIds.Contains(itemObjectId))
+            {
+                continue;
+            }
+
+            var lootedItem = _discoveredLoot.FirstOrDefault(x => x.ObjectId == itemObjectId);
+            if (lootedItem == null)
+            {
+                continue;
+            }
+
+            await AddLootAsync(new Loot()
+            {
+                IsSilver = false,
+                IsTrash = false,
+                ItemIndex = lootedItem.ItemIndex,
+                LootedByName = _trackingController?.EntityController?.LocalUserData?.Username,
+                LootedFromName = MobController.IsMob(identifiedBody.Name) ? LocalizationController.Translation("MOB") : identifiedBody.Name,
+                Quantity = lootedItem.Quantity,
+            });
+        }
+    }
+
+    private bool TryGetLocalPlayerCurrentBodyLoot(Guid containerGuid, Guid userInteractGuid, out IdentifiedBody identifiedBody)
+    {
+        identifiedBody = default;
+
+        if (_trackingController.EntityController.LocalUserData.InteractGuid != userInteractGuid)
+        {
+            return false;
+        }
+
+        identifiedBody = _identifiedBodies.FirstOrDefault(x => x.ObjectId == _currentItemContainer?.ObjectId);
+        if (_currentItemContainer?.ContainerGuid != containerGuid || _currentItemContainer?.ObjectId != identifiedBody.ObjectId)
+        {
+            return false;
+        }
+
+        return true;
+    }
+
+    private HashSet<long> GetCurrentContainerItemObjectIds()
+    {
+        if (_currentItemContainer?.SlotItemIds?.Count is null or <= 0)
+        {
+            return [];
+        }
+
+        return _currentItemContainer.SlotItemIds.ToHashSet();
     }
 
     private long GetItemObjectIdFromContainer(int containerSlot)
