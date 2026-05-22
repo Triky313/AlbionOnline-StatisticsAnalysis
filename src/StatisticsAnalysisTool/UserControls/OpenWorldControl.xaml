@@ -43,33 +43,27 @@
             <ItemsControl ItemsSource="{Binding MammothKillStatsEntries}">
                 <ItemsControl.ItemTemplate>
                     <DataTemplate DataType="{x:Type openWorld:OpenWorldMobKillStatsEntry}">
-                        <Border BorderBrush="{StaticResource SolidColorBrush.Background.3}" BorderThickness="0,0,0,1" Padding="0,0">
-                            <Grid MinHeight="54">
-                                <Grid.ColumnDefinitions>
-                                    <ColumnDefinition Width="54" />
-                                    <ColumnDefinition Width="*" />
-                                    <ColumnDefinition Width="120" />
-                                    <ColumnDefinition Width="140" />
-                                </Grid.ColumnDefinitions>
-                                <Image Grid.Column="0" Source="{Binding AvatarSource}" Width="80" Height="80" Stretch="Uniform" VerticalAlignment="Center" HorizontalAlignment="Center" />
-                                <StackPanel Grid.Column="1" Orientation="Vertical" VerticalAlignment="Center">
+                        <Border BorderBrush="{StaticResource SolidColorBrush.Background.4}" BorderThickness="0,0,0,1">
+                            <StackPanel Orientation="Horizontal">
+                                <Image Source="{Binding AvatarSource}" Width="100" Height="100" VerticalAlignment="Center" HorizontalAlignment="Left" Margin="-15, -18" />
+                                <StackPanel MinWidth="300" Margin="5,0,0,0">
                                     <TextBlock Text="{Binding MobName}" Foreground="{StaticResource SolidColorBrush.Text.1}" 
-                                               FontSize="16" FontWeight="Bold" TextTrimming="CharacterEllipsis" />
-                                    <!--<TextBlock Text="{Binding MobUniqueName}" Foreground="{StaticResource SolidColorBrush.Text.4}" FontSize="12" TextTrimming="CharacterEllipsis" />-->
+                                               HorizontalAlignment="Left" VerticalAlignment="Center" FontSize="16" FontWeight="Bold" Margin="0,0" />
+                                    <StackPanel Orientation="Horizontal">
+                                        <StackPanel Orientation="Vertical" MinWidth="70">
+                                            <TextBlock Text="{Binding DataContext.TranslationKills, RelativeSource={RelativeSource AncestorType={x:Type ItemsControl}}, FallbackValue=KILLS}"
+                                                       Foreground="{StaticResource SolidColorBrush.Accent.Blue.3}" FontSize="12" />
+                                            <TextBlock Text="{Binding Kills, StringFormat='{}{0:N0}'}" Foreground="{StaticResource SolidColorBrush.Text.1}" FontSize="18" FontWeight="Bold" />
+                                        </StackPanel>
+                                        <StackPanel Orientation="Vertical" MinWidth="70">
+                                            <TextBlock Text="{Binding DataContext.TranslationPerHour, RelativeSource={RelativeSource AncestorType={x:Type ItemsControl}}, FallbackValue=PER__HOUR}"
+                                                       Foreground="{StaticResource SolidColorBrush.Accent.Blue.3}" FontSize="12" />
+                                            <TextBlock Text="{Binding KillsPerHour, Converter={StaticResource ValuePerHourConverter}}"
+                                                       Foreground="{StaticResource SolidColorBrush.Text.1}" FontSize="18" FontWeight="Bold" />
+                                        </StackPanel>
+                                    </StackPanel>
                                 </StackPanel>
-                                <StackPanel Grid.Column="2" Orientation="Vertical" VerticalAlignment="Center">
-                                    <TextBlock Text="{Binding DataContext.TranslationKills, RelativeSource={RelativeSource AncestorType={x:Type ItemsControl}}, FallbackValue=KILLS}"
-                                               Foreground="{StaticResource SolidColorBrush.Accent.Blue.3}"
-                                               FontSize="12" />
-                                    <TextBlock Text="{Binding Kills, StringFormat='{}{0:N0}'}" Foreground="{StaticResource SolidColorBrush.Text.1}" FontSize="18" FontWeight="Bold" />
-                                </StackPanel>
-                                <StackPanel Grid.Column="3" Orientation="Vertical" VerticalAlignment="Center">
-                                    <TextBlock Text="{Binding DataContext.TranslationPerHour, RelativeSource={RelativeSource AncestorType={x:Type ItemsControl}}, FallbackValue=PER__HOUR}"
-                                               Foreground="{StaticResource SolidColorBrush.Accent.Blue.3}" FontSize="12" />
-                                    <TextBlock Text="{Binding KillsPerHour, Converter={StaticResource ValuePerHourConverter}}"
-                                               Foreground="{StaticResource SolidColorBrush.Text.1}" FontSize="18" FontWeight="Bold" />
-                                </StackPanel>
-                            </Grid>
+                            </StackPanel>
                         </Border>
                     </DataTemplate>
                 </ItemsControl.ItemTemplate>
