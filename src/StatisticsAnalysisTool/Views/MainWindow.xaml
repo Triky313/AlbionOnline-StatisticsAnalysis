@@ -166,25 +166,6 @@
             </Border>
         </Grid>
 
-        <!--<Grid ZIndex="3" Height="100" Width="250" Margin="0,90,5,0" HorizontalAlignment="Right" VerticalAlignment="Top"
-              Background="{StaticResource SolidColorBrush.Background.3}" Visibility="{Binding ToolTasksVisibility, FallbackValue=Visible}">
-            <Border BorderBrush="{StaticResource SolidColorBrush.Text.7}" BorderThickness="1">
-                <Grid>
-                    <StackPanel Orientation="Vertical" Height="24" VerticalAlignment="Top">
-                        <Grid Height="20">
-                            <Label Content="{Binding Translation.ToolTasks, FallbackValue=TOOL__TASKS}" />
-                            <Button Style="{StaticResource WindowButtonStyle}" Content="r" Margin="0,-2,-2,0" Click="ToolTasksCloseButton_OnClick" />
-                        </Grid>
-                        <Separator Background="{StaticResource SolidColorBrush.Text.3}" />
-                    </StackPanel>
-                    <ScrollViewer VerticalAlignment="Top" Margin="0,25,0,0" HorizontalScrollBarVisibility="Hidden">
-                        <ItemsControl ItemsSource="{Binding ToolTaskBindings.ToolTaskObjects}" d:ItemsSource="{d:SampleData ItemCount=3}"
-                                      ItemTemplate="{StaticResource TaskTextObjectDataTemplate}" />
-                    </ScrollViewer>
-                </Grid>
-            </Border>
-        </Grid>-->
-
         <TabControl Style="{DynamicResource TabControlStyle}">
             <TabItem Visibility="{Binding DashboardTabVisibility, Mode=OneWay}" Header="{Binding Translation.Dashboard, FallbackValue=DASHBOARD}" Tag="pack://application:,,,/Assets/Navigation/dashboard.png">
                 <Grid Style="{StaticResource TabItemGridStyle}">
