@@ -1,5 +1,6 @@
 using StatisticsAnalysisTool.Common;
 using StatisticsAnalysisTool.Common.UserSettings;
+using StatisticsAnalysisTool.GameFileData;
 using StatisticsAnalysisTool.Localization;
 using StatisticsAnalysisTool.ViewModels;
 using System;
@@ -91,7 +92,7 @@ public class OpenWorldBindings : BaseViewModel
             {
                 MobUniqueName = x.Key,
                 MobName = x.FirstOrDefault()?.MobName ?? x.Key,
-                Avatar = x.FirstOrDefault()?.Avatar ?? string.Empty,
+                Avatar = GetAvatarFileName(x),
                 Kills = x.Count(),
                 KillsPerHour = CalculateKillsPerHour(x)
             })
@@ -163,10 +164,11 @@ public class OpenWorldBindings : BaseViewModel
         }
     }
 
-    public static string TranslationOpenWorldActive => LocalizationController.Translation("OPEN_WORLD_ACTIVE");
-    public static string TranslationMob => LocalizationController.Translation("MOB");
-    public static string TranslationKills => LocalizationController.Translation("KILLS");
-    public static string TranslationPerHour => LocalizationController.Translation("PER_HOUR");
+    public string TranslationKilledMammoths => LocalizationController.Translation("KILLED_MAMMOTHS");
+    public string TranslationOpenWorldActive => LocalizationController.Translation("OPEN_WORLD_ACTIVE");
+    public string TranslationMob => LocalizationController.Translation("MOB");
+    public string TranslationKills => LocalizationController.Translation("KILLS");
+    public string TranslationPerHour => LocalizationController.Translation("PER_HOUR");
 
     private static double CalculateKillsPerHour(IEnumerable<OpenWorldMobKill> kills)
     {
@@ -181,6 +183,17 @@ public class OpenWorldBindings : BaseViewModel
 
         var durationInSeconds = Math.Max(3600d, (killList[^1].TimestampDateTimeUtc - killList[0].TimestampDateTimeUtc).TotalSeconds);
         return ((double) killList.Count).GetValuePerHour(durationInSeconds);
+    }
+
+    private static string GetAvatarFileName(IGrouping<string, OpenWorldMobKill> kills)
+    {
+        var savedAvatar = kills.FirstOrDefault(x => !string.IsNullOrWhiteSpace(x.Avatar))?.Avatar;
+        if (!string.IsNullOrWhiteSpace(savedAvatar))
+        {
+            return savedAvatar;
+        }
+
+        return MobsData.GetAvatarFileName(MobsData.GetMobByUniqueNameOrDefault(kills.Key));
     }
 
     private static DateTime GetStartOfIsoWeek(DateTime dateTime)

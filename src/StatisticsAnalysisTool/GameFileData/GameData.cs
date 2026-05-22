@@ -98,7 +98,9 @@ public static class GameData
                 extractionTaskFactories.Add(() => extractor.ExtractGameDataFromXmlAsync(gameFilesDirPath, ["spells"]));
             }
 
-            if (Extractor.IsBinFileNewer(Path.Combine(gameFilesDirPath, "mobs-modified.json"), mainGameFolderPath, serverType, "mobs"))
+            var mobsModifiedFilePath = Path.Combine(gameFilesDirPath, "mobs-modified.json");
+            if (Extractor.IsBinFileNewer(mobsModifiedFilePath, mainGameFolderPath, serverType, "mobs")
+                || IsMobDataMissingAvatarData(mobsModifiedFilePath))
             {
                 fileNamesToLoad.Add("mobs");
             }
@@ -326,5 +328,32 @@ public static class GameData
             FileShare.Read,
             FileBufferSize,
             FileOptions.Asynchronous | FileOptions.SequentialScan);
+    }
+
+    private static bool IsMobDataMissingAvatarData(string mobDataFilePath)
+    {
+        if (!File.Exists(mobDataFilePath))
+        {
+            return false;
+        }
+
+        try
+        {
+            using var stream = File.OpenRead(mobDataFilePath);
+            using var document = JsonDocument.Parse(stream);
+            if (document.RootElement.ValueKind != JsonValueKind.Array)
+            {
+                return false;
+            }
+
+            return !document.RootElement.EnumerateArray()
+                .Any(x => x.TryGetProperty("@avatar", out _));
+        }
+        catch (Exception e)
+        {
+            DebugConsole.WriteError(MethodBase.GetCurrentMethod()?.DeclaringType, e);
+            Log.Error(e, "{message}", MethodBase.GetCurrentMethod()?.DeclaringType);
+            return false;
+        }
     }
 }

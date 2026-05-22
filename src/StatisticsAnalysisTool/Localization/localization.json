@@ -27849,6 +27849,55 @@
       ]
     },
     {
+      "tuid": "KILLED_MAMMOTHS",
+      "tuv": [
+        {
+          "lang": "de-DE",
+          "seg": "Getötete Mammuts"
+        },
+        {
+          "lang": "en-US",
+          "seg": "Killed Mammoths"
+        },
+        {
+          "lang": "es-ES",
+          "seg": "Killed Mammoths"
+        },
+        {
+          "lang": "fr-FR",
+          "seg": "Killed Mammoths"
+        },
+        {
+          "lang": "ja-JP",
+          "seg": "Killed Mammoths"
+        },
+        {
+          "lang": "ko-KR",
+          "seg": "Killed Mammoths"
+        },
+        {
+          "lang": "pl-PL",
+          "seg": "Killed Mammoths"
+        },
+        {
+          "lang": "pt-BR",
+          "seg": "Killed Mammoths"
+        },
+        {
+          "lang": "ru-RU",
+          "seg": "Killed Mammoths"
+        },
+        {
+          "lang": "zh-CN",
+          "seg": "Killed Mammoths"
+        },
+        {
+          "lang": "zh-TW",
+          "seg": "Killed Mammoths"
+        }
+      ]
+    },
+    {
       "tuid": "LAST_7_DAYS",
       "tuv": [
         {
