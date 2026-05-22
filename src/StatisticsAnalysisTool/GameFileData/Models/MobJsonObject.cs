@@ -1,4 +1,4 @@
-﻿using System.Text.Json.Serialization;
+using System.Text.Json.Serialization;
 
 namespace StatisticsAnalysisTool.GameFileData.Models;
 
@@ -10,4 +10,6 @@ public class MobJsonObject
     public short Tier { get; set; }
     [JsonPropertyName("@hitpointsmax")]
     public double HitPointsMax { get; set; }
+    [JsonPropertyName("@avatar")]
+    public string Avatar { get; set; } = string.Empty;
 }

@@ -20,6 +20,7 @@ using StatisticsAnalysisTool.Models.BindingModel;
 using StatisticsAnalysisTool.Models.NetworkModel;
 using StatisticsAnalysisTool.Models.TranslationModel;
 using StatisticsAnalysisTool.Network.Manager;
+using StatisticsAnalysisTool.OpenWorld;
 using StatisticsAnalysisTool.Party;
 using StatisticsAnalysisTool.Properties;
 using StatisticsAnalysisTool.StorageHistory;
@@ -116,6 +117,7 @@ public class MainWindowViewModel : BaseViewModel
     private LoggingBindings _loggingBindings = new();
     private PlayerInformationBindings _playerInformationBindings = new();
     private GatheringBindings _gatheringBindings = new();
+    private OpenWorldBindings _openWorldBindings = new();
     private CraftingBindings _craftingBindings = new();
     private Visibility _dashboardTabVisibility = Visibility.Visible;
     private Visibility _itemSearchTabVisibility = Visibility.Visible;
@@ -163,6 +165,7 @@ public class MainWindowViewModel : BaseViewModel
         RefreshDashboardChartTranslations();
         RefreshItemCategoryTranslations();
         TradeMonitoringBindings.RefreshLocalization();
+        OpenWorldBindings.UpdateStats();
         RefreshTrackingActivityText();
     }
 
@@ -735,6 +738,16 @@ public class MainWindowViewModel : BaseViewModel
         set
         {
             _gatheringBindings = value;
+            OnPropertyChanged();
+        }
+    }
+
+    public OpenWorldBindings OpenWorldBindings
+    {
+        get => _openWorldBindings;
+        set
+        {
+            _openWorldBindings = value;
             OnPropertyChanged();
         }
     }

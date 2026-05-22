@@ -56,7 +56,6 @@ public static class EventValidationRules
             return parameters.ContainsKey(0)
                    && parameters.ContainsKey(1)
                    && parameters.ContainsKey(2)
-                   && parameters.ContainsKey(3)
                    && parameters.ContainsKey(4)
                    && parameters.ContainsKey(5)
                    && parameters.ContainsKey(6)

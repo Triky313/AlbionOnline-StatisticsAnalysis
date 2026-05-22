@@ -1,6 +1,7 @@
 using StatisticsAnalysisTool.Common;
 using StatisticsAnalysisTool.Enumerations;
 using StatisticsAnalysisTool.GameFileData.Models;
+using StatisticsAnalysisTool.Localization;
 using StatisticsAnalysisTool.Properties;
 using System;
 using System.Collections.Generic;
@@ -68,6 +69,33 @@ public static class MobsData
 
         return _mobs?.FirstOrDefault(x => Math.Abs(x.HitPointsMax - hitPointsMax) < 0.01)
                ?? new MobJsonObject();
+    }
+
+    public static string GetAvatarFileName(MobJsonObject mob)
+    {
+        if (mob == null)
+        {
+            return string.Empty;
+        }
+
+        return NormalizeAvatarFileName(mob.Avatar);
+    }
+
+    public static string GetLocalizedMobName(MobJsonObject mob)
+    {
+        if (string.IsNullOrWhiteSpace(mob?.UniqueName))
+        {
+            return string.Empty;
+        }
+
+        var localizationKey = mob.UniqueName.StartsWith("@MOB_", StringComparison.OrdinalIgnoreCase)
+            ? mob.UniqueName
+            : $"@MOB_{mob.UniqueName}";
+        var localizedName = LocalizationController.Translation(localizationKey);
+
+        return string.Equals(localizedName, localizationKey, StringComparison.Ordinal)
+            ? mob.UniqueName
+            : localizedName;
     }
 
     public static int GetRandomDungeonMobLevelByIndex(int index, double inGameHitPointsMax)
@@ -153,5 +181,17 @@ public static class MobsData
 
         _mobs = mobs;
         return mobs.Count >= 0;
+    }
+
+    private static string NormalizeAvatarFileName(string avatar)
+    {
+        if (string.IsNullOrWhiteSpace(avatar))
+        {
+            return string.Empty;
+        }
+
+        return avatar.EndsWith(".png", StringComparison.OrdinalIgnoreCase)
+            ? avatar
+            : $"{avatar}.png";
     }
 }

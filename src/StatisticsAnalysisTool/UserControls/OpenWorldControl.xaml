@@ -4,8 +4,121 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:viewModels="clr-namespace:StatisticsAnalysisTool.ViewModels"
+             xmlns:openWorld="clr-namespace:StatisticsAnalysisTool.OpenWorld"
+             xmlns:fa5="http://schemas.fontawesome.com/icons/"
              mc:Ignorable="d"
              d:DesignHeight="800" d:DesignWidth="800"
              d:DataContext="{d:DesignInstance Type=viewModels:MainWindowViewModel}">
-    <Grid Style="{StaticResource TabItemGridStyle}" />
+    <Grid Style="{StaticResource TabItemGridStyle}">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="4" />
+            <RowDefinition Height="*" />
+        </Grid.RowDefinitions>
+
+        <StackPanel Grid.Row="0" Orientation="Vertical" HorizontalAlignment="Left" MaxWidth="580">
+            <StackPanel Orientation="Horizontal">
+                <fa5:ImageAwesome Icon="Solid_UserCog"
+                                  Foreground="{StaticResource SolidColorBrush.Text.1}"
+                                  Width="20"
+                                  Height="20"
+                                  Margin="5,5,5,5" />
+                <CheckBox IsChecked="{Binding OpenWorldBindings.IsOpenWorldTrackingActive, FallbackValue=true}"
+                          Content="{Binding OpenWorldBindings.TranslationOpenWorldActive, FallbackValue=OPEN__WORLD__ACTIVE}"
+                          HorizontalAlignment="Left"
+                          VerticalAlignment="Center"
+                          Width="180"
+                          Margin="5,0,0,0" />
+                <ComboBox Width="180"
+                          Height="26"
+                          Margin="5,5"
+                          HorizontalAlignment="Left"
+                          VerticalAlignment="Top"
+                          ItemsSource="{Binding OpenWorldBindings.AutoDeleteStats}"
+                          SelectedValue="{Binding OpenWorldBindings.AutoDeleteStatsSelection}"
+                          IsSynchronizedWithCurrentItem="True"
+                          DisplayMemberPath="Name"
+                          SelectedValuePath="AutoDeleteStats" />
+            </StackPanel>
+            <StackPanel Orientation="Horizontal">
+                <TextBlock Text="{Binding OpenWorldBindings.TranslationMob, FallbackValue=MOB}"
+                           Foreground="{StaticResource SolidColorBrush.Accent.Blue.2}"
+                           FontSize="18"
+                           FontWeight="Bold"
+                           VerticalAlignment="Center"
+                           Width="180"
+                           Margin="5,5,5,5" />
+                <ComboBox Width="180"
+                          Height="26"
+                          Margin="5,5"
+                          HorizontalAlignment="Left"
+                          VerticalAlignment="Top"
+                          ItemsSource="{Binding OpenWorldBindings.StatsTimeTypes}"
+                          SelectedValue="{Binding OpenWorldBindings.StatsTimeTypeSelection}"
+                          IsSynchronizedWithCurrentItem="True"
+                          DisplayMemberPath="Name"
+                          SelectedValuePath="StatsTimeType" />
+            </StackPanel>
+        </StackPanel>
+
+        <Separator Grid.Row="1" Background="{StaticResource SolidColorBrush.Background.3}" Height="4" Margin="0" />
+
+        <ListView Grid.Row="2"
+                  ItemsSource="{Binding OpenWorldBindings.MammothKillStatsEntries}"
+                  Margin="0,8,0,0"
+                  Background="Transparent"
+                  BorderThickness="0"
+                  VirtualizingPanel.IsVirtualizing="True"
+                  VirtualizingPanel.VirtualizationMode="Recycling"
+                  ScrollViewer.CanContentScroll="True">
+            <ListView.ItemTemplate>
+                <DataTemplate DataType="{x:Type openWorld:OpenWorldMobKillStatsEntry}">
+                    <Grid Height="54" Margin="4,2">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="54" />
+                            <ColumnDefinition Width="*" />
+                            <ColumnDefinition Width="120" />
+                            <ColumnDefinition Width="140" />
+                        </Grid.ColumnDefinitions>
+                        <Image Grid.Column="0"
+                               Source="{Binding AvatarPath}"
+                               Width="42"
+                               Height="42"
+                               Stretch="Uniform"
+                               VerticalAlignment="Center"
+                               HorizontalAlignment="Center" />
+                        <StackPanel Grid.Column="1" Orientation="Vertical" VerticalAlignment="Center">
+                            <TextBlock Text="{Binding MobName}"
+                                       Foreground="{StaticResource SolidColorBrush.Text.1}"
+                                       FontSize="15"
+                                       FontWeight="Bold"
+                                       TextTrimming="CharacterEllipsis" />
+                            <TextBlock Text="{Binding MobUniqueName}"
+                                       Foreground="{StaticResource SolidColorBrush.Text.4}"
+                                       FontSize="12"
+                                       TextTrimming="CharacterEllipsis" />
+                        </StackPanel>
+                        <StackPanel Grid.Column="2" Orientation="Vertical" VerticalAlignment="Center">
+                            <TextBlock Text="{Binding DataContext.OpenWorldBindings.TranslationKills, RelativeSource={RelativeSource AncestorType={x:Type ListView}}, FallbackValue=KILLS}"
+                                       Foreground="{StaticResource SolidColorBrush.Accent.Blue.3}"
+                                       FontSize="12" />
+                            <TextBlock Text="{Binding Kills, StringFormat='{}{0:N0}'}"
+                                       Foreground="{StaticResource SolidColorBrush.Text.1}"
+                                       FontSize="18"
+                                       FontWeight="Bold" />
+                        </StackPanel>
+                        <StackPanel Grid.Column="3" Orientation="Vertical" VerticalAlignment="Center">
+                            <TextBlock Text="{Binding DataContext.OpenWorldBindings.TranslationPerHour, RelativeSource={RelativeSource AncestorType={x:Type ListView}}, FallbackValue=PER__HOUR}"
+                                       Foreground="{StaticResource SolidColorBrush.Accent.Blue.3}"
+                                       FontSize="12" />
+                            <TextBlock Text="{Binding KillsPerHour, Converter={StaticResource ValuePerHourConverter}}"
+                                       Foreground="{StaticResource SolidColorBrush.Text.1}"
+                                       FontSize="18"
+                                       FontWeight="Bold" />
+                        </StackPanel>
+                    </Grid>
+                </DataTemplate>
+            </ListView.ItemTemplate>
+        </ListView>
+    </Grid>
 </UserControl>

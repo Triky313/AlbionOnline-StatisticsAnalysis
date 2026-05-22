@@ -27800,6 +27800,55 @@
       ]
     },
     {
+      "tuid": "OPEN_WORLD_ACTIVE",
+      "tuv": [
+        {
+          "lang": "de-DE",
+          "seg": "Offene Welt aktiv"
+        },
+        {
+          "lang": "en-US",
+          "seg": "Open World active"
+        },
+        {
+          "lang": "es-ES",
+          "seg": "Open World active"
+        },
+        {
+          "lang": "fr-FR",
+          "seg": "Open World active"
+        },
+        {
+          "lang": "ja-JP",
+          "seg": "Open World active"
+        },
+        {
+          "lang": "ko-KR",
+          "seg": "Open World active"
+        },
+        {
+          "lang": "pl-PL",
+          "seg": "Open World active"
+        },
+        {
+          "lang": "pt-BR",
+          "seg": "Open World active"
+        },
+        {
+          "lang": "ru-RU",
+          "seg": "Open World active"
+        },
+        {
+          "lang": "zh-CN",
+          "seg": "Open World active"
+        },
+        {
+          "lang": "zh-TW",
+          "seg": "Open World active"
+        }
+      ]
+    },
+    {
       "tuid": "LAST_7_DAYS",
       "tuv": [
         {

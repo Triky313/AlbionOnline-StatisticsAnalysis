@@ -1,4 +1,4 @@
-﻿using Serilog;
+using Serilog;
 using StatisticsAnalysisTool.Common;
 using StatisticsAnalysisTool.Enumerations;
 using StatisticsAnalysisTool.EventValidations;
@@ -18,6 +18,7 @@ public class HealthUpdateEvent
     public EffectType EffectType;
     public double HealthChange;
     public double NewHealthValue;
+    public bool HasNewHealthValue;
 
     public long AffectedObjectId;
     public GameTimeStamp TimeStamp;
@@ -25,7 +26,7 @@ public class HealthUpdateEvent
     public HealthUpdateEvent(Dictionary<byte, object> parameters)
     {
         EventValidator.IsEventValid(EventCodes.HealthUpdate, parameters);
-        
+
         try
         {
             if (parameters.TryGetValue(0, out object affectedObjectId))
@@ -46,6 +47,7 @@ public class HealthUpdateEvent
             if (parameters.TryGetValue(3, out object newHealthValue))
             {
                 NewHealthValue = newHealthValue.ObjectToDouble();
+                HasNewHealthValue = true;
             }
 
             if (parameters.TryGetValue(4, out object effectType))
