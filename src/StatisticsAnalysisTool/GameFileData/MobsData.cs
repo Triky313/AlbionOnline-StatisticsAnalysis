@@ -88,14 +88,16 @@ public static class MobsData
             return string.Empty;
         }
 
-        var localizationKey = mob.UniqueName.StartsWith("@MOB_", StringComparison.OrdinalIgnoreCase)
-            ? mob.UniqueName
-            : $"@MOB_{mob.UniqueName}";
-        var localizedName = LocalizationController.Translation(localizationKey);
+        foreach (var localizationKey in GetMobLocalizationKeys(mob.UniqueName))
+        {
+            var localizedName = LocalizationController.Translation(localizationKey);
+            if (!string.Equals(localizedName, localizationKey, StringComparison.Ordinal))
+            {
+                return localizedName;
+            }
+        }
 
-        return string.Equals(localizedName, localizationKey, StringComparison.Ordinal)
-            ? mob.UniqueName
-            : localizedName;
+        return mob.UniqueName;
     }
 
     public static int GetRandomDungeonMobLevelByIndex(int index, double inGameHitPointsMax)
@@ -193,5 +195,20 @@ public static class MobsData
         return avatar.EndsWith(".png", StringComparison.OrdinalIgnoreCase)
             ? avatar
             : $"{avatar}.png";
+    }
+
+    private static IEnumerable<string> GetMobLocalizationKeys(string uniqueName)
+    {
+        var normalizedUniqueName = uniqueName.StartsWith("@MOB_", StringComparison.OrdinalIgnoreCase)
+            ? uniqueName[5..]
+            : uniqueName;
+
+        yield return $"@MOB_{normalizedUniqueName}";
+
+        var staticUniqueName = normalizedUniqueName.Replace("_MOB_DYNAMIC_", "_MOB_", StringComparison.OrdinalIgnoreCase);
+        if (!string.Equals(staticUniqueName, normalizedUniqueName, StringComparison.OrdinalIgnoreCase))
+        {
+            yield return $"@MOB_{staticUniqueName}";
+        }
     }
 }

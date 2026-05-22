@@ -91,7 +91,7 @@ public class OpenWorldBindings : BaseViewModel
             .Select(x => new OpenWorldMobKillStatsEntry
             {
                 MobUniqueName = x.Key,
-                MobName = x.FirstOrDefault()?.MobName ?? x.Key,
+                MobName = GetMobName(x),
                 Avatar = GetAvatarFileName(x),
                 Kills = x.Count(),
                 KillsPerHour = CalculateKillsPerHour(x)
@@ -183,6 +183,21 @@ public class OpenWorldBindings : BaseViewModel
 
         var durationInSeconds = Math.Max(3600d, (killList[^1].TimestampDateTimeUtc - killList[0].TimestampDateTimeUtc).TotalSeconds);
         return ((double) killList.Count).GetValuePerHour(durationInSeconds);
+    }
+
+    private static string GetMobName(IGrouping<string, OpenWorldMobKill> kills)
+    {
+        var mobData = MobsData.GetMobByUniqueNameOrDefault(kills.Key);
+        var localizedName = MobsData.GetLocalizedMobName(mobData);
+        if (!string.IsNullOrWhiteSpace(localizedName)
+            && !string.Equals(localizedName, kills.Key, StringComparison.OrdinalIgnoreCase))
+        {
+            return localizedName;
+        }
+
+        var savedName = kills.FirstOrDefault(x => !string.IsNullOrWhiteSpace(x.MobName)
+                                                  && !string.Equals(x.MobName, x.MobUniqueName, StringComparison.OrdinalIgnoreCase))?.MobName;
+        return string.IsNullOrWhiteSpace(savedName) ? kills.Key : savedName;
     }
 
     private static string GetAvatarFileName(IGrouping<string, OpenWorldMobKill> kills)
