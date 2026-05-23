@@ -63,8 +63,7 @@ public static class MobsData
             return new MobJsonObject();
         }
 
-        return _mobs?.FirstOrDefault(x => string.Equals(x.UniqueName, uniqueName, StringComparison.OrdinalIgnoreCase))
-               ?? new MobJsonObject();
+        return _mobs?.FirstOrDefault(x => string.Equals(x.UniqueName, uniqueName, StringComparison.OrdinalIgnoreCase)) ?? new MobJsonObject();
     }
 
     public static MobJsonObject GetMobByHitPointsMaxOrDefault(double hitPointsMax)
@@ -74,8 +73,7 @@ public static class MobsData
             return new MobJsonObject();
         }
 
-        return _mobs?.FirstOrDefault(x => Math.Abs(x.HitPointsMax - hitPointsMax) < 0.01)
-               ?? new MobJsonObject();
+        return _mobs?.FirstOrDefault(x => Math.Abs(x.HitPointsMax - hitPointsMax) < 0.01) ?? new MobJsonObject();
     }
 
     public static string GetAvatarFileName(MobJsonObject mob)
@@ -110,7 +108,7 @@ public static class MobsData
             return string.Empty;
         }
 
-        foreach (var localizationKey in GetMobLocalizationKeys(mob.UniqueName))
+        foreach (var localizationKey in GetMobLocalizationKeys(mob))
         {
             var localizedName = LocalizationController.Translation(localizationKey);
             if (!string.Equals(localizedName, localizationKey, StringComparison.Ordinal))
@@ -119,7 +117,7 @@ public static class MobsData
             }
         }
 
-        return mob.UniqueName;
+        return GetReadableMobName(mob);
     }
 
     public static int GetRandomDungeonMobLevelByIndex(int index, double inGameHitPointsMax)
@@ -214,16 +212,14 @@ public static class MobsData
             return string.Empty;
         }
 
-        return avatar.EndsWith(".png", StringComparison.OrdinalIgnoreCase)
-            ? avatar
-            : $"{avatar}.png";
+        return avatar.EndsWith(".png", StringComparison.OrdinalIgnoreCase) ? avatar : $"{avatar}.png";
     }
 
-    private static IEnumerable<string> GetMobLocalizationKeys(string uniqueName)
+    private static IEnumerable<string> GetMobLocalizationKeys(MobJsonObject mob)
     {
-        var normalizedUniqueName = uniqueName.StartsWith("@MOB_", StringComparison.OrdinalIgnoreCase)
-            ? uniqueName[5..]
-            : uniqueName;
+        var normalizedUniqueName = mob.UniqueName.StartsWith("@MOB_", StringComparison.OrdinalIgnoreCase)
+            ? mob.UniqueName[5..]
+            : mob.UniqueName;
 
         var candidates = new List<string>();
         var queuedCandidates = new Queue<string>();
@@ -234,13 +230,11 @@ public static class MobsData
         {
             var candidate = queuedCandidates.Dequeue();
 
-            AddMobLocalizationCandidate(
-                candidate.Replace("_MOB_DYNAMIC_", "_MOB_", StringComparison.OrdinalIgnoreCase),
-                candidates,
-                queuedCandidates);
+            AddMobLocalizationCandidate(candidate.Replace("_MOB_DYNAMIC_", "_MOB_", StringComparison.OrdinalIgnoreCase), candidates, queuedCandidates);
             AddMobLocalizationCandidate(RemoveTierPrefix(candidate), candidates, queuedCandidates);
             AddMobLocalizationCandidate(RemoveLeadingMobPrefix(candidate), candidates, queuedCandidates);
             AddMobLocalizationCandidate(RemoveLocalizationDescriptorTokens(candidate), candidates, queuedCandidates);
+            AddMobLocalizationCandidate(RemoveFactionTokens(candidate, mob.Faction), candidates, queuedCandidates);
         }
 
         foreach (var candidate in candidates)
@@ -278,16 +272,12 @@ public static class MobsData
             index++;
         }
 
-        return index > 1 && index < uniqueName.Length && uniqueName[index] == '_'
-            ? uniqueName[(index + 1)..]
-            : uniqueName;
+        return index > 1 && index < uniqueName.Length && uniqueName[index] == '_' ? uniqueName[(index + 1)..] : uniqueName;
     }
 
     private static string RemoveLeadingMobPrefix(string uniqueName)
     {
-        return uniqueName.StartsWith("MOB_", StringComparison.OrdinalIgnoreCase)
-            ? uniqueName[4..]
-            : uniqueName;
+        return uniqueName.StartsWith("MOB_", StringComparison.OrdinalIgnoreCase) ? uniqueName[4..] : uniqueName;
     }
 
     private static string RemoveLocalizationDescriptorTokens(string uniqueName)
@@ -303,5 +293,51 @@ public static class MobsData
             .ToList();
 
         return tokens.Count == 0 ? uniqueName : string.Join('_', tokens);
+    }
+
+    private static string RemoveFactionTokens(string uniqueName, string faction)
+    {
+        if (string.IsNullOrWhiteSpace(uniqueName) || string.IsNullOrWhiteSpace(faction))
+        {
+            return uniqueName;
+        }
+
+        var factionTokens = faction.Split('_', StringSplitOptions.RemoveEmptyEntries);
+        if (factionTokens.Length == 0)
+        {
+            return uniqueName;
+        }
+
+        var tokens = uniqueName
+            .Split('_', StringSplitOptions.RemoveEmptyEntries)
+            .Where(x => !factionTokens.Contains(x, StringComparer.OrdinalIgnoreCase))
+            .ToList();
+
+        return tokens.Count == 0 ? uniqueName : string.Join('_', tokens);
+    }
+
+    private static string GetReadableMobName(MobJsonObject mob)
+    {
+        var uniqueName = mob.UniqueName.StartsWith("@MOB_", StringComparison.OrdinalIgnoreCase) ? mob.UniqueName[5..] : mob.UniqueName;
+
+        uniqueName = RemoveTierPrefix(uniqueName);
+        uniqueName = RemoveLeadingMobPrefix(uniqueName);
+        uniqueName = RemoveLocalizationDescriptorTokens(uniqueName);
+        uniqueName = RemoveFactionTokens(uniqueName, mob.Faction);
+
+        var tokens = uniqueName.Split('_', StringSplitOptions.RemoveEmptyEntries);
+        return tokens.Length == 0
+            ? mob.UniqueName
+            : string.Join(' ', tokens.Select(ToTitleCase));
+    }
+
+    private static string ToTitleCase(string value)
+    {
+        if (string.IsNullOrWhiteSpace(value))
+        {
+            return string.Empty;
+        }
+
+        return value.Length == 1 ? value.ToUpperInvariant() : $"{char.ToUpperInvariant(value[0])}{value[1..].ToLowerInvariant()}";
     }
 }
