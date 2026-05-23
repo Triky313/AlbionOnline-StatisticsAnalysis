@@ -12,6 +12,8 @@ namespace StatisticsAnalysisTool.OpenWorld;
 
 public class OpenWorldBindings : BaseViewModel
 {
+    private ObservableCollection<OpenWorldMobKillStatsEntry> _mammothKillStatsEntries = [];
+
     public OpenWorldBindings()
     {
         IsOpenWorldTrackingActive = SettingsController.CurrentSettings.IsOpenWorldTrackingActive;
@@ -19,7 +21,15 @@ public class OpenWorldBindings : BaseViewModel
     }
 
     public ObservableCollection<OpenWorldMobKill> MobKills { get; } = [];
-    public ObservableCollection<OpenWorldMobKillStatsEntry> MammothKillStatsEntries { get; } = [];
+    public ObservableCollection<OpenWorldMobKillStatsEntry> MammothKillStatsEntries
+    {
+        get => _mammothKillStatsEntries;
+        private set
+        {
+            _mammothKillStatsEntries = value;
+            OnPropertyChanged();
+        }
+    }
 
     public IReadOnlyList<OpenWorldStatsTimeFilter> StatsTimeTypes { get; } =
     [
@@ -100,11 +110,7 @@ public class OpenWorldBindings : BaseViewModel
             .ThenBy(x => x.MobName)
             .ToList();
 
-        MammothKillStatsEntries.Clear();
-        foreach (var entry in entries)
-        {
-            MammothKillStatsEntries.Add(entry);
-        }
+        MammothKillStatsEntries = new ObservableCollection<OpenWorldMobKillStatsEntry>(entries);
     }
 
     public static OpenWorldTimeRange GetTimeRange(OpenWorldStatsTimeType statsTimeType)

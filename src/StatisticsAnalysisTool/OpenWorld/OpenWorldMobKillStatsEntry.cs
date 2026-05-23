@@ -2,12 +2,14 @@ using StatisticsAnalysisTool.ViewModels;
 using System;
 using System.Collections.Concurrent;
 using System.Reflection;
+using System.Windows;
 using System.Windows.Media.Imaging;
 
 namespace StatisticsAnalysisTool.OpenWorld;
 
 public class OpenWorldMobKillStatsEntry : BaseViewModel
 {
+    private const string DefaultAvatarFileName = "p_questgiver_client.png";
     private static readonly string AvatarResourceBasePath = $"pack://application:,,,/{Assembly.GetExecutingAssembly().GetName().Name};component/Assets/MobAvatars/";
     private static readonly ConcurrentDictionary<string, BitmapImage> AvatarCache = new(StringComparer.OrdinalIgnoreCase);
     private int _kills;
@@ -40,23 +42,42 @@ public class OpenWorldMobKillStatsEntry : BaseViewModel
 
     private static BitmapImage GetAvatarSource(string avatar)
     {
-        if (string.IsNullOrWhiteSpace(avatar))
-        {
-            return null;
-        }
+        var avatarFileName = GetExistingAvatarFileName(avatar);
 
-        if (AvatarCache.TryGetValue(avatar, out var cachedAvatar))
+        if (AvatarCache.TryGetValue(avatarFileName, out var cachedAvatar))
         {
             return cachedAvatar;
         }
 
-        var avatarSource = CreateAvatarSource(avatar);
+        var avatarSource = CreateAvatarSource(avatarFileName);
         if (avatarSource != null)
         {
-            AvatarCache.TryAdd(avatar, avatarSource);
+            AvatarCache.TryAdd(avatarFileName, avatarSource);
         }
 
         return avatarSource;
+    }
+
+    private static string GetExistingAvatarFileName(string avatar)
+    {
+        if (!string.IsNullOrWhiteSpace(avatar) && AvatarResourceExists(avatar))
+        {
+            return avatar;
+        }
+
+        return DefaultAvatarFileName;
+    }
+
+    private static bool AvatarResourceExists(string avatar)
+    {
+        try
+        {
+            return Application.GetResourceStream(CreateAvatarUri(avatar)) != null;
+        }
+        catch
+        {
+            return false;
+        }
     }
 
     private static BitmapImage CreateAvatarSource(string avatar)
@@ -67,7 +88,7 @@ public class OpenWorldMobKillStatsEntry : BaseViewModel
             bitmapImage.BeginInit();
             bitmapImage.CacheOption = BitmapCacheOption.OnLoad;
             bitmapImage.CreateOptions = BitmapCreateOptions.IgnoreImageCache;
-            bitmapImage.UriSource = new Uri($"{AvatarResourceBasePath}{avatar}", UriKind.Absolute);
+            bitmapImage.UriSource = CreateAvatarUri(avatar);
             bitmapImage.EndInit();
             bitmapImage.Freeze();
             return bitmapImage;
@@ -76,5 +97,10 @@ public class OpenWorldMobKillStatsEntry : BaseViewModel
         {
             return null;
         }
+    }
+
+    private static Uri CreateAvatarUri(string avatar)
+    {
+        return new Uri($"{AvatarResourceBasePath}{avatar}", UriKind.Absolute);
     }
 }
