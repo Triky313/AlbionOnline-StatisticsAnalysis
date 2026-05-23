@@ -58,11 +58,6 @@ public static class MobsData
         return GetMobJsonObjectByIndex(index);
     }
 
-    public static MobJsonObject GetMobByUnshiftedIndexOrDefault(int index)
-    {
-        return GetMobJsonObjectByUnshiftedIndex(index);
-    }
-
     public static MobJsonObject GetMobByUniqueNameOrDefault(string uniqueName)
     {
         if (string.IsNullOrWhiteSpace(uniqueName))
@@ -80,19 +75,7 @@ public static class MobsData
             return new MobJsonObject();
         }
 
-        return GetMobsByHitPointsMax(hitPointsMax).FirstOrDefault() ?? new MobJsonObject();
-    }
-
-    public static IReadOnlyList<MobJsonObject> GetMobsByHitPointsMax(double hitPointsMax)
-    {
-        if (hitPointsMax <= 0)
-        {
-            return [];
-        }
-
-        return _mobs?
-            .Where(x => Math.Abs(x.HitPointsMax - hitPointsMax) < 0.01)
-            .ToList() ?? [];
+        return _mobs?.FirstOrDefault(x => Math.Abs(x.HitPointsMax - hitPointsMax) < 0.01) ?? new MobJsonObject();
     }
 
     public static string GetAvatarFileName(MobJsonObject mob)
@@ -129,7 +112,7 @@ public static class MobsData
 
         foreach (var localizationKey in GetMobLocalizationKeys(mob))
         {
-            var localizedName = LocalizationController.Translation(localizationKey);
+            var localizedName = LocalizationController.GameTranslation(localizationKey);
             if (!string.Equals(localizedName, localizationKey, StringComparison.Ordinal))
             {
                 return localizedName;
@@ -186,11 +169,6 @@ public static class MobsData
             index = (int) unsignedIndex;
         }
 
-        return _mobs.IsInBounds(index) ? _mobs?.ElementAt(index) : new MobJsonObject();
-    }
-
-    private static MobJsonObject GetMobJsonObjectByUnshiftedIndex(int index)
-    {
         return _mobs.IsInBounds(index) ? _mobs?.ElementAt(index) : new MobJsonObject();
     }
 

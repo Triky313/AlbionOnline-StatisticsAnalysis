@@ -132,6 +132,14 @@ public class OpenWorldController(TrackingController trackingController, MainWind
             Faction = MobsData.GetFaction(mob.MobData)
         };
 
+        Log.Debug(
+            "Open World mob kill counted | ObjectId={ObjectId} | MobIndex={MobIndex} | UniqueName={UniqueName} | MobName={MobName} | Faction={Faction}",
+            mobObjectId,
+            mob.MobIndex,
+            mobKill.MobUniqueName,
+            mobKill.MobName,
+            mobKill.Faction);
+
         await Application.Current.Dispatcher.InvokeAsync(() =>
         {
             mainWindowViewModel.OpenWorldBindings.MobKills.Add(mobKill);
