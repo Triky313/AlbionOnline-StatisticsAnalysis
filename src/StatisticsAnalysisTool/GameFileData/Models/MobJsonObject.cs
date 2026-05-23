@@ -12,4 +12,6 @@ public class MobJsonObject
     public double HitPointsMax { get; set; }
     [JsonPropertyName("@avatar")]
     public string Avatar { get; set; } = string.Empty;
+    [JsonPropertyName("@faction")]
+    public string Faction { get; set; } = string.Empty;
 }

@@ -18,6 +18,8 @@ public class OpenWorldMobKillStatsEntry : BaseViewModel
     public string MobUniqueName { get; init; } = string.Empty;
     public string MobName { get; init; } = string.Empty;
     public string Avatar { get; init; } = string.Empty;
+    public string Faction { get; init; } = string.Empty;
+    public long LastKillTimestampUtc { get; init; }
     public BitmapImage AvatarSource => GetAvatarSource(Avatar);
 
     public int Kills

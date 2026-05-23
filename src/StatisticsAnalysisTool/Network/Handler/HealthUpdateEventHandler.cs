@@ -11,6 +11,7 @@ public class HealthUpdateEventHandler(TrackingController trackingController) : E
         if (value.HealthChange < 0 && !value.HasNewHealthValue)
         {
             await trackingController.OpenWorldController.TryAddMobKillAsync(
+                value.AffectedObjectId,
                 trackingController.CombatController.CombatEventTracker.GetKnownMobOrDefault(value.AffectedObjectId),
                 value.HealthChange,
                 value.HasNewHealthValue);

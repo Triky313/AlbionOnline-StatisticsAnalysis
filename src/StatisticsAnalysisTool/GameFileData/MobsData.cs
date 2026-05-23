@@ -19,6 +19,13 @@ public static class MobsData
     private const double LevelTwoUpperHpPercent = 125;
     private const double LevelThreeUpperHpPercent = 146;
     private const double LevelFourUpperHpPercent = 220;
+    private static readonly HashSet<string> LocalizationDescriptorTokens = new(StringComparer.OrdinalIgnoreCase)
+    {
+        "CRITTER",
+        "DYNAMIC",
+        "HIDE",
+        "ROAMING"
+    };
     private static IEnumerable<MobJsonObject> _mobs;
 
     public static int GetMobTierByIndex(int index)
@@ -79,6 +86,21 @@ public static class MobsData
         }
 
         return NormalizeAvatarFileName(mob.Avatar);
+    }
+
+    public static string GetFaction(MobJsonObject mob)
+    {
+        return mob?.Faction ?? string.Empty;
+    }
+
+    public static IReadOnlyList<string> GetFactions()
+    {
+        return _mobs?
+            .Select(x => x.Faction)
+            .Where(x => !string.IsNullOrWhiteSpace(x))
+            .Distinct(StringComparer.OrdinalIgnoreCase)
+            .OrderBy(x => x, StringComparer.OrdinalIgnoreCase)
+            .ToList() ?? [];
     }
 
     public static string GetLocalizedMobName(MobJsonObject mob)
@@ -203,12 +225,83 @@ public static class MobsData
             ? uniqueName[5..]
             : uniqueName;
 
-        yield return $"@MOB_{normalizedUniqueName}";
+        var candidates = new List<string>();
+        var queuedCandidates = new Queue<string>();
 
-        var staticUniqueName = normalizedUniqueName.Replace("_MOB_DYNAMIC_", "_MOB_", StringComparison.OrdinalIgnoreCase);
-        if (!string.Equals(staticUniqueName, normalizedUniqueName, StringComparison.OrdinalIgnoreCase))
+        AddMobLocalizationCandidate(normalizedUniqueName, candidates, queuedCandidates);
+
+        while (queuedCandidates.Count > 0)
         {
-            yield return $"@MOB_{staticUniqueName}";
+            var candidate = queuedCandidates.Dequeue();
+
+            AddMobLocalizationCandidate(
+                candidate.Replace("_MOB_DYNAMIC_", "_MOB_", StringComparison.OrdinalIgnoreCase),
+                candidates,
+                queuedCandidates);
+            AddMobLocalizationCandidate(RemoveTierPrefix(candidate), candidates, queuedCandidates);
+            AddMobLocalizationCandidate(RemoveLeadingMobPrefix(candidate), candidates, queuedCandidates);
+            AddMobLocalizationCandidate(RemoveLocalizationDescriptorTokens(candidate), candidates, queuedCandidates);
         }
+
+        foreach (var candidate in candidates)
+        {
+            yield return $"@MOB_{candidate}";
+        }
+    }
+
+    private static void AddMobLocalizationCandidate(string candidate, ICollection<string> candidates, Queue<string> queuedCandidates)
+    {
+        if (string.IsNullOrWhiteSpace(candidate))
+        {
+            return;
+        }
+
+        if (candidates.Contains(candidate, StringComparer.OrdinalIgnoreCase))
+        {
+            return;
+        }
+
+        candidates.Add(candidate);
+        queuedCandidates.Enqueue(candidate);
+    }
+
+    private static string RemoveTierPrefix(string uniqueName)
+    {
+        if (string.IsNullOrWhiteSpace(uniqueName) || uniqueName.Length < 3 || uniqueName[0] != 'T')
+        {
+            return uniqueName;
+        }
+
+        var index = 1;
+        while (index < uniqueName.Length && char.IsDigit(uniqueName[index]))
+        {
+            index++;
+        }
+
+        return index > 1 && index < uniqueName.Length && uniqueName[index] == '_'
+            ? uniqueName[(index + 1)..]
+            : uniqueName;
+    }
+
+    private static string RemoveLeadingMobPrefix(string uniqueName)
+    {
+        return uniqueName.StartsWith("MOB_", StringComparison.OrdinalIgnoreCase)
+            ? uniqueName[4..]
+            : uniqueName;
+    }
+
+    private static string RemoveLocalizationDescriptorTokens(string uniqueName)
+    {
+        if (string.IsNullOrWhiteSpace(uniqueName))
+        {
+            return uniqueName;
+        }
+
+        var tokens = uniqueName
+            .Split('_', StringSplitOptions.RemoveEmptyEntries)
+            .Where(x => !LocalizationDescriptorTokens.Contains(x))
+            .ToList();
+
+        return tokens.Count == 0 ? uniqueName : string.Join('_', tokens);
     }
 }

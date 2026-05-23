@@ -23,32 +23,37 @@
         <StackPanel Grid.Row="1" Orientation="Horizontal" HorizontalAlignment="Left" Margin="5,5,5,0">
             <fa5:ImageAwesome Icon="Solid_UserCog" Foreground="{StaticResource SolidColorBrush.Text.1}"
                               Width="20" Height="20" Margin="0,3,5,0" VerticalAlignment="Top" />
-            <CheckBox IsChecked="{Binding IsOpenWorldTrackingActive, FallbackValue=true}" Content="{Binding TranslationOpenWorldActive, FallbackValue=OPEN__WORLD__ACTIVE}" 
+            <CheckBox IsChecked="{Binding IsOpenWorldTrackingActive, FallbackValue=true}" Content="{Binding TranslationOpenWorldActive, FallbackValue=OPEN__WORLD__ACTIVE}"
                       HorizontalAlignment="Left" VerticalAlignment="Center" Width="180" Margin="5,0,10,0" />
         </StackPanel>
 
         <Separator Grid.Row="2" Background="{StaticResource SolidColorBrush.Background.3}" Height="4" Margin="0,5" />
 
-        <TextBlock Grid.Row="3" Text="{Binding TranslationKilledMammoths, FallbackValue=KILLED__MAMMOTHS}" Foreground="{StaticResource SolidColorBrush.Accent.Blue.3}" FontSize="18" />
+        <TextBlock Grid.Row="3" Text="{Binding TranslationKilledMobs, FallbackValue=KILLED__MOBS}" Foreground="{StaticResource SolidColorBrush.Accent.Blue.3}" FontSize="18" />
 
         <StackPanel Grid.Row="4" Orientation="Horizontal" HorizontalAlignment="Left">
+            <TextBox Width="220" Height="26" Margin="0,0,10,0" HorizontalAlignment="Left" VerticalAlignment="Top" Text="{Binding MobSearchText, UpdateSourceTrigger=PropertyChanged}"
+                     ToolTip="{Binding TranslationSearchMobs, FallbackValue=SEARCH__MOBS}" />
+            <ComboBox Width="180" Height="26" Margin="0,0,10,0" HorizontalAlignment="Left" VerticalAlignment="Top" ItemsSource="{Binding FactionFilters}"
+                      SelectedValue="{Binding SelectedFaction}" DisplayMemberPath="Name" SelectedValuePath="Faction" />
             <ComboBox Width="180" Height="26" Margin="0,0,10,0" HorizontalAlignment="Left" VerticalAlignment="Top" ItemsSource="{Binding StatsTimeTypes}"
                       SelectedValue="{Binding StatsTimeTypeSelection}" IsSynchronizedWithCurrentItem="True" DisplayMemberPath="Name" SelectedValuePath="StatsTimeType" />
             <ComboBox Width="180" Height="26" HorizontalAlignment="Left" VerticalAlignment="Top" ItemsSource="{Binding AutoDeleteStats}"
                       SelectedValue="{Binding AutoDeleteStatsSelection}" IsSynchronizedWithCurrentItem="True" DisplayMemberPath="Name" SelectedValuePath="AutoDeleteStats" />
         </StackPanel>
         <Separator Grid.Row="5" Background="{StaticResource SolidColorBrush.Background.3}" Height="4" Margin="0,5" />
-        
+
         <ScrollViewer Grid.Row="6" HorizontalScrollBarVisibility="Disabled" VerticalScrollBarVisibility="Auto">
-            <ItemsControl ItemsSource="{Binding MammothKillStatsEntries}">
+            <ItemsControl ItemsSource="{Binding MobKillStatsEntries}">
                 <ItemsControl.ItemTemplate>
                     <DataTemplate DataType="{x:Type openWorld:OpenWorldMobKillStatsEntry}">
                         <Border BorderBrush="{StaticResource SolidColorBrush.Background.4}" BorderThickness="0,0,0,1">
                             <StackPanel Orientation="Horizontal">
                                 <Image Source="{Binding AvatarSource}" Width="100" Height="100" VerticalAlignment="Center" HorizontalAlignment="Left" Margin="-15, -18" />
                                 <StackPanel MinWidth="300" Margin="5,0,0,0">
-                                    <TextBlock Text="{Binding MobName}" Foreground="{StaticResource SolidColorBrush.Text.1}" 
+                                    <TextBlock Text="{Binding MobName}" Foreground="{StaticResource SolidColorBrush.Text.1}"
                                                HorizontalAlignment="Left" VerticalAlignment="Center" FontSize="16" FontWeight="Bold" Margin="0,0" />
+                                    <TextBlock Text="{Binding Faction}" Foreground="{StaticResource SolidColorBrush.Text.4}" FontSize="12" Margin="0,0,0,4" />
                                     <StackPanel Orientation="Horizontal">
                                         <StackPanel Orientation="Vertical" MinWidth="70">
                                             <TextBlock Text="{Binding DataContext.TranslationKills, RelativeSource={RelativeSource AncestorType={x:Type ItemsControl}}, FallbackValue=KILLS}"

@@ -17,19 +17,13 @@ namespace StatisticsAnalysisTool.OpenWorld;
 public class OpenWorldController(MainWindowViewModel mainWindowViewModel)
 {
     private const string MobKillsFileName = "OpenWorldMobKills.json";
-    private static readonly HashSet<string> MammothMobUniqueNames = new(StringComparer.OrdinalIgnoreCase)
-    {
-        "T8_MOB_HIDE_STEPPE_MAMMOTH", 
-        "T8_MOB_DYNAMIC_HIDE_STEPPE_MAMMOTH", 
-        "T8_MOB_HIDE_STEPPE_ANCIENTMAMMOTH", 
-        "T8_MOB_TREASURE_ANCIENTMAMMOTH", 
-        "T6_MOB_GUARDIAN_STEPPE_MAMMOTH", 
-        "T6_MOB_MINIGUARDIAN_STEPPE_MAMMOTH"
-    };
+    private const string UnknownMobUniqueName = "UNKNOWN_MOB";
+    private static readonly TimeSpan PendingMobKillRetention = TimeSpan.FromSeconds(2);
 
     private readonly ConcurrentDictionary<long, byte> _recordedKilledMobs = new();
+    private readonly ConcurrentDictionary<long, DateTime> _pendingKilledMobs = new();
 
-    public async Task TryAddMobKillAsync(CombatMobCacheEntry mob, double healthChange, bool hasNewHealthValue)
+    public async Task TryAddMobKillAsync(long mobObjectId, CombatMobCacheEntry mob, double healthChange, bool hasNewHealthValue)
     {
         if (!SettingsController.CurrentSettings.IsOpenWorldTrackingActive)
         {
@@ -41,14 +35,59 @@ public class OpenWorldController(MainWindowViewModel mainWindowViewModel)
             return;
         }
 
-        if (mob?.MobData == null || !IsTrackedMammoth(mob.MobData.UniqueName))
+        if (mob == null)
         {
+            AddPendingMobKill(mobObjectId);
             return;
         }
 
-        if (!_recordedKilledMobs.TryAdd(mob.MobObjectId, 0))
+        await TryAddMobKillAsync(mobObjectId, mob);
+    }
+
+    public async Task<bool> TryAddPendingMobKillAsync(long mobObjectId, CombatMobCacheEntry mob)
+    {
+        if (!SettingsController.CurrentSettings.IsOpenWorldTrackingActive || mob == null)
         {
-            return;
+            return false;
+        }
+
+        RemoveExpiredPendingMobKills();
+
+        if (!_pendingKilledMobs.TryGetValue(mobObjectId, out var pendingKillTimestamp)
+            || DateTime.UtcNow - pendingKillTimestamp > PendingMobKillRetention)
+        {
+            _pendingKilledMobs.TryRemove(mobObjectId, out _);
+            return false;
+        }
+
+        if (!_pendingKilledMobs.TryRemove(mobObjectId, out _))
+        {
+            return false;
+        }
+
+        return await TryAddMobKillAsync(mobObjectId, mob);
+    }
+
+    public void ResetRecordedMobKill(long mobObjectId)
+    {
+        _recordedKilledMobs.TryRemove(mobObjectId, out _);
+    }
+
+    private async Task<bool> TryAddMobKillAsync(long mobObjectId, CombatMobCacheEntry mob)
+    {
+        if (mob?.MobData == null || string.IsNullOrWhiteSpace(mob.MobData.UniqueName))
+        {
+            return false;
+        }
+
+        if (string.Equals(mob.MobData.UniqueName, UnknownMobUniqueName, StringComparison.OrdinalIgnoreCase))
+        {
+            return false;
+        }
+
+        if (!_recordedKilledMobs.TryAdd(mobObjectId, 0))
+        {
+            return false;
         }
 
         await RemoveEntriesByAutoDeleteDateAsync();
@@ -60,7 +99,8 @@ public class OpenWorldController(MainWindowViewModel mainWindowViewModel)
             TimestampUtc = DateTime.UtcNow.Ticks,
             MobUniqueName = mobUniqueName,
             MobName = string.IsNullOrWhiteSpace(mobName) ? mobUniqueName : mobName,
-            Avatar = MobsData.GetAvatarFileName(mob.MobData)
+            Avatar = MobsData.GetAvatarFileName(mob.MobData),
+            Faction = MobsData.GetFaction(mob.MobData)
         };
 
         await Application.Current.Dispatcher.InvokeAsync(() =>
@@ -68,6 +108,8 @@ public class OpenWorldController(MainWindowViewModel mainWindowViewModel)
             mainWindowViewModel.OpenWorldBindings.MobKills.Add(mobKill);
             mainWindowViewModel.OpenWorldBindings.UpdateStats();
         });
+
+        return true;
     }
 
     public async Task RemoveEntriesByAutoDeleteDateAsync()
@@ -130,17 +172,25 @@ public class OpenWorldController(MainWindowViewModel mainWindowViewModel)
     {
         await SaveInFileAsync();
         _recordedKilledMobs.Clear();
+        _pendingKilledMobs.Clear();
     }
 
-    private static bool IsTrackedMammoth(string uniqueName)
+    private void AddPendingMobKill(long mobObjectId)
     {
-        if (string.IsNullOrWhiteSpace(uniqueName))
+        RemoveExpiredPendingMobKills();
+        _pendingKilledMobs[mobObjectId] = DateTime.UtcNow;
+        Log.Debug("Open World mob kill pending until mob data is available | ObjectId={ObjectId}", mobObjectId);
+    }
+
+    private void RemoveExpiredPendingMobKills()
+    {
+        var currentUtc = DateTime.UtcNow;
+        foreach (var pendingKilledMob in _pendingKilledMobs.ToArray())
         {
-            return false;
+            if (currentUtc - pendingKilledMob.Value > PendingMobKillRetention)
+            {
+                _pendingKilledMobs.TryRemove(pendingKilledMob.Key, out _);
+            }
         }
-
-        var normalizedUniqueName = uniqueName.StartsWith("@MOB_", StringComparison.OrdinalIgnoreCase) ? uniqueName[5..] : uniqueName;
-
-        return MammothMobUniqueNames.Contains(normalizedUniqueName);
     }
 }

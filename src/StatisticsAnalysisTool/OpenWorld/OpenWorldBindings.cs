@@ -12,21 +12,27 @@ namespace StatisticsAnalysisTool.OpenWorld;
 
 public class OpenWorldBindings : BaseViewModel
 {
-    private ObservableCollection<OpenWorldMobKillStatsEntry> _mammothKillStatsEntries = [];
+    private const int MaxDisplayedMobStatsEntries = 10;
+    private const string AllFactionsValue = "";
+    private ObservableCollection<OpenWorldMobKillStatsEntry> _mobKillStatsEntries = [];
+    private IReadOnlyList<OpenWorldFactionFilter> _factionFilters = [];
+    private string _selectedFaction = AllFactionsValue;
+    private string _mobSearchText = string.Empty;
 
     public OpenWorldBindings()
     {
         IsOpenWorldTrackingActive = SettingsController.CurrentSettings.IsOpenWorldTrackingActive;
         AutoDeleteStatsSelection = SettingsController.CurrentSettings.OpenWorldAutoDeleteStats;
+        FactionFilters = CreateFactionFilters();
     }
 
     public ObservableCollection<OpenWorldMobKill> MobKills { get; } = [];
-    public ObservableCollection<OpenWorldMobKillStatsEntry> MammothKillStatsEntries
+    public ObservableCollection<OpenWorldMobKillStatsEntry> MobKillStatsEntries
     {
-        get => _mammothKillStatsEntries;
+        get => _mobKillStatsEntries;
         private set
         {
-            _mammothKillStatsEntries = value;
+            _mobKillStatsEntries = value;
             OnPropertyChanged();
         }
     }
@@ -89,10 +95,23 @@ public class OpenWorldBindings : BaseViewModel
         }
     ];
 
+    public IReadOnlyList<OpenWorldFactionFilter> FactionFilters
+    {
+        get => _factionFilters;
+        private set
+        {
+            _factionFilters = value;
+            OnPropertyChanged();
+        }
+    }
+
     public void UpdateStats()
     {
+        RefreshFactionFilters();
+
         var timeRange = GetTimeRange(StatsTimeTypeSelection);
         var filteredKills = MobKills
+            .Where(x => !string.IsNullOrWhiteSpace(x.MobUniqueName))
             .Where(x => timeRange.Contains(x.TimestampDateTimeUtc))
             .ToList();
 
@@ -103,14 +122,19 @@ public class OpenWorldBindings : BaseViewModel
                 MobUniqueName = x.Key,
                 MobName = GetMobName(x),
                 Avatar = GetAvatarFileName(x),
+                Faction = GetFaction(x),
+                LastKillTimestampUtc = x.Max(y => y.TimestampUtc),
                 Kills = x.Count(),
                 KillsPerHour = CalculateKillsPerHour(x)
             })
-            .OrderByDescending(x => x.Kills)
+            .Where(MatchesFactionFilter)
+            .Where(MatchesSearchText)
+            .OrderByDescending(x => x.LastKillTimestampUtc)
             .ThenBy(x => x.MobName)
+            .Take(MaxDisplayedMobStatsEntries)
             .ToList();
 
-        MammothKillStatsEntries = new ObservableCollection<OpenWorldMobKillStatsEntry>(entries);
+        MobKillStatsEntries = new ObservableCollection<OpenWorldMobKillStatsEntry>(entries);
     }
 
     public static OpenWorldTimeRange GetTimeRange(OpenWorldStatsTimeType statsTimeType)
@@ -170,11 +194,46 @@ public class OpenWorldBindings : BaseViewModel
         }
     }
 
-    public string TranslationKilledMammoths => LocalizationController.Translation("KILLED_MAMMOTHS");
+    public string SelectedFaction
+    {
+        get => _selectedFaction;
+        set
+        {
+            var faction = value ?? AllFactionsValue;
+            if (string.Equals(_selectedFaction, faction, StringComparison.OrdinalIgnoreCase))
+            {
+                return;
+            }
+
+            _selectedFaction = faction;
+            UpdateStats();
+            OnPropertyChanged();
+        }
+    }
+
+    public string MobSearchText
+    {
+        get => _mobSearchText;
+        set
+        {
+            var searchText = value ?? string.Empty;
+            if (string.Equals(_mobSearchText, searchText, StringComparison.Ordinal))
+            {
+                return;
+            }
+
+            _mobSearchText = searchText;
+            UpdateStats();
+            OnPropertyChanged();
+        }
+    }
+
+    public string TranslationKilledMobs => LocalizationController.Translation("KILLED_MOBS");
     public string TranslationOpenWorldActive => LocalizationController.Translation("OPEN_WORLD_ACTIVE");
     public string TranslationMob => LocalizationController.Translation("MOB");
     public string TranslationKills => LocalizationController.Translation("KILLS");
     public string TranslationPerHour => LocalizationController.Translation("PER_HOUR");
+    public string TranslationSearchMobs => LocalizationController.Translation("SEARCH_MOBS");
 
     private static double CalculateKillsPerHour(IEnumerable<OpenWorldMobKill> kills)
     {
@@ -215,6 +274,92 @@ public class OpenWorldBindings : BaseViewModel
         }
 
         return MobsData.GetAvatarFileName(MobsData.GetMobByUniqueNameOrDefault(kills.Key));
+    }
+
+    private static string GetFaction(IGrouping<string, OpenWorldMobKill> kills)
+    {
+        var savedFaction = kills.FirstOrDefault(x => !string.IsNullOrWhiteSpace(x.Faction))?.Faction;
+        if (!string.IsNullOrWhiteSpace(savedFaction))
+        {
+            return savedFaction;
+        }
+
+        return MobsData.GetFaction(MobsData.GetMobByUniqueNameOrDefault(kills.Key));
+    }
+
+    private bool MatchesFactionFilter(OpenWorldMobKillStatsEntry entry)
+    {
+        return string.IsNullOrWhiteSpace(SelectedFaction)
+               || string.Equals(entry.Faction, SelectedFaction, StringComparison.OrdinalIgnoreCase);
+    }
+
+    private bool MatchesSearchText(OpenWorldMobKillStatsEntry entry)
+    {
+        if (string.IsNullOrWhiteSpace(MobSearchText))
+        {
+            return true;
+        }
+
+        return entry.MobName.Contains(MobSearchText, StringComparison.OrdinalIgnoreCase)
+               || entry.MobUniqueName.Contains(MobSearchText, StringComparison.OrdinalIgnoreCase);
+    }
+
+    private void RefreshFactionFilters()
+    {
+        var selectedFaction = SelectedFaction;
+        var filters = CreateFactionFilters();
+        if (!AreFactionFiltersEqual(FactionFilters, filters))
+        {
+            FactionFilters = filters;
+        }
+
+        if (string.IsNullOrWhiteSpace(selectedFaction)
+            || filters.Any(x => string.Equals(x.Faction, selectedFaction, StringComparison.OrdinalIgnoreCase)))
+        {
+            return;
+        }
+
+        _selectedFaction = AllFactionsValue;
+        OnPropertyChanged(nameof(SelectedFaction));
+    }
+
+    private static IReadOnlyList<OpenWorldFactionFilter> CreateFactionFilters()
+    {
+        var filters = new List<OpenWorldFactionFilter>
+        {
+            new()
+            {
+                Name = LocalizationController.Translation("ALL_FACTIONS"),
+                Faction = AllFactionsValue
+            }
+        };
+
+        filters.AddRange(MobsData.GetFactions().Select(x => new OpenWorldFactionFilter
+        {
+            Name = x,
+            Faction = x
+        }));
+
+        return filters;
+    }
+
+    private static bool AreFactionFiltersEqual(IReadOnlyList<OpenWorldFactionFilter> currentFilters, IReadOnlyList<OpenWorldFactionFilter> nextFilters)
+    {
+        if (currentFilters.Count != nextFilters.Count)
+        {
+            return false;
+        }
+
+        for (var i = 0; i < currentFilters.Count; i++)
+        {
+            if (!string.Equals(currentFilters[i].Faction, nextFilters[i].Faction, StringComparison.OrdinalIgnoreCase)
+                || !string.Equals(currentFilters[i].Name, nextFilters[i].Name, StringComparison.Ordinal))
+            {
+                return false;
+            }
+        }
+
+        return true;
     }
 
     private static DateTime GetStartOfIsoWeek(DateTime dateTime)

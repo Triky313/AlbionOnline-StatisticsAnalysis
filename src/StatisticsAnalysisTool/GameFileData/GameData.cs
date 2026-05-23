@@ -100,7 +100,7 @@ public static class GameData
 
             var mobsModifiedFilePath = Path.Combine(gameFilesDirPath, "mobs-modified.json");
             if (Extractor.IsBinFileNewer(mobsModifiedFilePath, mainGameFolderPath, serverType, "mobs")
-                || IsMobDataMissingAvatarData(mobsModifiedFilePath))
+                || IsMobDataMissingOpenWorldFields(mobsModifiedFilePath))
             {
                 fileNamesToLoad.Add("mobs");
             }
@@ -330,7 +330,7 @@ public static class GameData
             FileOptions.Asynchronous | FileOptions.SequentialScan);
     }
 
-    private static bool IsMobDataMissingAvatarData(string mobDataFilePath)
+    private static bool IsMobDataMissingOpenWorldFields(string mobDataFilePath)
     {
         if (!File.Exists(mobDataFilePath))
         {
@@ -346,8 +346,21 @@ public static class GameData
                 return false;
             }
 
-            return !document.RootElement.EnumerateArray()
-                .Any(x => x.TryGetProperty("@avatar", out _));
+            var hasAvatar = false;
+            var hasFaction = false;
+
+            foreach (var mob in document.RootElement.EnumerateArray())
+            {
+                hasAvatar |= mob.TryGetProperty("@avatar", out _);
+                hasFaction |= mob.TryGetProperty("@faction", out _);
+
+                if (hasAvatar && hasFaction)
+                {
+                    return false;
+                }
+            }
+
+            return true;
         }
         catch (Exception e)
         {

@@ -27898,6 +27898,153 @@
       ]
     },
     {
+      "tuid": "KILLED_MOBS",
+      "tuv": [
+        {
+          "lang": "de-DE",
+          "seg": "Get\u00f6tete Mobs"
+        },
+        {
+          "lang": "en-US",
+          "seg": "Killed Mobs"
+        },
+        {
+          "lang": "es-ES",
+          "seg": "Killed Mobs"
+        },
+        {
+          "lang": "fr-FR",
+          "seg": "Killed Mobs"
+        },
+        {
+          "lang": "ja-JP",
+          "seg": "Killed Mobs"
+        },
+        {
+          "lang": "ko-KR",
+          "seg": "Killed Mobs"
+        },
+        {
+          "lang": "pl-PL",
+          "seg": "Killed Mobs"
+        },
+        {
+          "lang": "pt-BR",
+          "seg": "Killed Mobs"
+        },
+        {
+          "lang": "ru-RU",
+          "seg": "Killed Mobs"
+        },
+        {
+          "lang": "zh-CN",
+          "seg": "Killed Mobs"
+        },
+        {
+          "lang": "zh-TW",
+          "seg": "Killed Mobs"
+        }
+      ]
+    },
+    {
+      "tuid": "ALL_FACTIONS",
+      "tuv": [
+        {
+          "lang": "de-DE",
+          "seg": "Alle Fraktionen"
+        },
+        {
+          "lang": "en-US",
+          "seg": "All factions"
+        },
+        {
+          "lang": "es-ES",
+          "seg": "All factions"
+        },
+        {
+          "lang": "fr-FR",
+          "seg": "All factions"
+        },
+        {
+          "lang": "ja-JP",
+          "seg": "All factions"
+        },
+        {
+          "lang": "ko-KR",
+          "seg": "All factions"
+        },
+        {
+          "lang": "pl-PL",
+          "seg": "All factions"
+        },
+        {
+          "lang": "pt-BR",
+          "seg": "All factions"
+        },
+        {
+          "lang": "ru-RU",
+          "seg": "All factions"
+        },
+        {
+          "lang": "zh-CN",
+          "seg": "All factions"
+        },
+        {
+          "lang": "zh-TW",
+          "seg": "All factions"
+        }
+      ]
+    },
+    {
+      "tuid": "SEARCH_MOBS",
+      "tuv": [
+        {
+          "lang": "de-DE",
+          "seg": "Mobs suchen"
+        },
+        {
+          "lang": "en-US",
+          "seg": "Search mobs"
+        },
+        {
+          "lang": "es-ES",
+          "seg": "Search mobs"
+        },
+        {
+          "lang": "fr-FR",
+          "seg": "Search mobs"
+        },
+        {
+          "lang": "ja-JP",
+          "seg": "Search mobs"
+        },
+        {
+          "lang": "ko-KR",
+          "seg": "Search mobs"
+        },
+        {
+          "lang": "pl-PL",
+          "seg": "Search mobs"
+        },
+        {
+          "lang": "pt-BR",
+          "seg": "Search mobs"
+        },
+        {
+          "lang": "ru-RU",
+          "seg": "Search mobs"
+        },
+        {
+          "lang": "zh-CN",
+          "seg": "Search mobs"
+        },
+        {
+          "lang": "zh-TW",
+          "seg": "Search mobs"
+        }
+      ]
+    },
+    {
       "tuid": "LAST_7_DAYS",
       "tuv": [
         {
