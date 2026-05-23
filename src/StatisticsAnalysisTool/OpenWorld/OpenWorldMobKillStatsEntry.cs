@@ -1,3 +1,4 @@
+using StatisticsAnalysisTool.Common;
 using StatisticsAnalysisTool.ViewModels;
 using System;
 using System.Collections.Concurrent;
@@ -19,7 +20,25 @@ public class OpenWorldMobKillStatsEntry : BaseViewModel
     public string MobName { get; init; } = string.Empty;
     public string Avatar { get; init; } = string.Empty;
     public string Faction { get; init; } = string.Empty;
+    public string FactionDisplay
+    {
+        get
+        {
+#if DEBUG
+            if (string.IsNullOrWhiteSpace(MobUniqueName))
+            {
+                return Faction;
+            }
+
+            return string.IsNullOrWhiteSpace(Faction) ? MobUniqueName : $"{Faction} | {MobUniqueName}";
+#else
+            return Faction;
+#endif
+        }
+    }
     public long LastKillTimestampUtc { get; init; }
+    public string LastKillDate => new DateTime(LastKillTimestampUtc, DateTimeKind.Utc).CurrentDateTimeFormat();
+    public string LastKillDateSeparator => string.IsNullOrWhiteSpace(FactionDisplay) ? string.Empty : " | ";
     public BitmapImage AvatarSource => GetAvatarSource(Avatar);
 
     public int Kills

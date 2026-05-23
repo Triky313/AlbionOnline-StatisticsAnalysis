@@ -27,7 +27,12 @@ public class OpenWorldController(TrackingController trackingController, MainWind
 
     public void TrackLocalPlayerMobDamage(long mobObjectId, long causerId, double healthChange)
     {
-        if (!SettingsController.CurrentSettings.IsOpenWorldTrackingActive || healthChange >= 0 || !IsLocalPlayer(causerId))
+        if (!SettingsController.CurrentSettings.IsOpenWorldTrackingActive || healthChange >= 0 || _localPlayerDamagedMobs.ContainsKey(mobObjectId))
+        {
+            return;
+        }
+
+        if (!IsLocalPlayer(causerId))
         {
             return;
         }
@@ -49,7 +54,11 @@ public class OpenWorldController(TrackingController trackingController, MainWind
 
         if (mob == null)
         {
-            AddPendingMobKill(mobObjectId);
+            if (_localPlayerDamagedMobs.ContainsKey(mobObjectId))
+            {
+                AddPendingMobKill(mobObjectId);
+            }
+
             return;
         }
 
@@ -194,6 +203,20 @@ public class OpenWorldController(TrackingController trackingController, MainWind
         _recordedKilledMobs.Clear();
         _pendingKilledMobs.Clear();
         _localPlayerDamagedMobs.Clear();
+    }
+
+    public async Task ResetStatsAsync()
+    {
+        _recordedKilledMobs.Clear();
+        _pendingKilledMobs.Clear();
+        _localPlayerDamagedMobs.Clear();
+
+        await Application.Current.Dispatcher.InvokeAsync(() =>
+        {
+            mainWindowViewModel.OpenWorldBindings.ResetStats();
+        });
+
+        await SaveInFileAsync();
     }
 
     private void AddPendingMobKill(long mobObjectId)

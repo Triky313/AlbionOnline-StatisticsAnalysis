@@ -28045,6 +28045,202 @@
       ]
     },
     {
+      "tuid": "LAST_KILL",
+      "tuv": [
+        {
+          "lang": "de-DE",
+          "seg": "Letzter Kill"
+        },
+        {
+          "lang": "en-US",
+          "seg": "Last kill"
+        },
+        {
+          "lang": "es-ES",
+          "seg": "Last kill"
+        },
+        {
+          "lang": "fr-FR",
+          "seg": "Last kill"
+        },
+        {
+          "lang": "ja-JP",
+          "seg": "Last kill"
+        },
+        {
+          "lang": "ko-KR",
+          "seg": "Last kill"
+        },
+        {
+          "lang": "pl-PL",
+          "seg": "Last kill"
+        },
+        {
+          "lang": "pt-BR",
+          "seg": "Last kill"
+        },
+        {
+          "lang": "ru-RU",
+          "seg": "Last kill"
+        },
+        {
+          "lang": "zh-CN",
+          "seg": "Last kill"
+        },
+        {
+          "lang": "zh-TW",
+          "seg": "Last kill"
+        }
+      ]
+    },
+    {
+      "tuid": "RESET_OPEN_WORLD_STATS",
+      "tuv": [
+        {
+          "lang": "de-DE",
+          "seg": "Open World Statistik zurücksetzen"
+        },
+        {
+          "lang": "en-US",
+          "seg": "Reset Open World stats"
+        },
+        {
+          "lang": "es-ES",
+          "seg": "Reset Open World stats"
+        },
+        {
+          "lang": "fr-FR",
+          "seg": "Reset Open World stats"
+        },
+        {
+          "lang": "ja-JP",
+          "seg": "Reset Open World stats"
+        },
+        {
+          "lang": "ko-KR",
+          "seg": "Reset Open World stats"
+        },
+        {
+          "lang": "pl-PL",
+          "seg": "Reset Open World stats"
+        },
+        {
+          "lang": "pt-BR",
+          "seg": "Reset Open World stats"
+        },
+        {
+          "lang": "ru-RU",
+          "seg": "Reset Open World stats"
+        },
+        {
+          "lang": "zh-CN",
+          "seg": "Reset Open World stats"
+        },
+        {
+          "lang": "zh-TW",
+          "seg": "Reset Open World stats"
+        }
+      ]
+    },
+    {
+      "tuid": "RESET_ALL",
+      "tuv": [
+        {
+          "lang": "de-DE",
+          "seg": "Alles zurücksetzen"
+        },
+        {
+          "lang": "en-US",
+          "seg": "Reset all"
+        },
+        {
+          "lang": "es-ES",
+          "seg": "Reset all"
+        },
+        {
+          "lang": "fr-FR",
+          "seg": "Reset all"
+        },
+        {
+          "lang": "ja-JP",
+          "seg": "Reset all"
+        },
+        {
+          "lang": "ko-KR",
+          "seg": "Reset all"
+        },
+        {
+          "lang": "pl-PL",
+          "seg": "Reset all"
+        },
+        {
+          "lang": "pt-BR",
+          "seg": "Reset all"
+        },
+        {
+          "lang": "ru-RU",
+          "seg": "Reset all"
+        },
+        {
+          "lang": "zh-CN",
+          "seg": "Reset all"
+        },
+        {
+          "lang": "zh-TW",
+          "seg": "Reset all"
+        }
+      ]
+    },
+    {
+      "tuid": "SURE_YOU_WANT_TO_RESET_OPEN_WORLD_STATS",
+      "tuv": [
+        {
+          "lang": "de-DE",
+          "seg": "Möchtest du die Open World Statistik wirklich zurücksetzen?"
+        },
+        {
+          "lang": "en-US",
+          "seg": "Are you sure you want to reset the Open World stats?"
+        },
+        {
+          "lang": "es-ES",
+          "seg": "Are you sure you want to reset the Open World stats?"
+        },
+        {
+          "lang": "fr-FR",
+          "seg": "Are you sure you want to reset the Open World stats?"
+        },
+        {
+          "lang": "ja-JP",
+          "seg": "Are you sure you want to reset the Open World stats?"
+        },
+        {
+          "lang": "ko-KR",
+          "seg": "Are you sure you want to reset the Open World stats?"
+        },
+        {
+          "lang": "pl-PL",
+          "seg": "Are you sure you want to reset the Open World stats?"
+        },
+        {
+          "lang": "pt-BR",
+          "seg": "Are you sure you want to reset the Open World stats?"
+        },
+        {
+          "lang": "ru-RU",
+          "seg": "Are you sure you want to reset the Open World stats?"
+        },
+        {
+          "lang": "zh-CN",
+          "seg": "Are you sure you want to reset the Open World stats?"
+        },
+        {
+          "lang": "zh-TW",
+          "seg": "Are you sure you want to reset the Open World stats?"
+        }
+      ]
+    },
+    {
       "tuid": "LAST_7_DAYS",
       "tuv": [
         {

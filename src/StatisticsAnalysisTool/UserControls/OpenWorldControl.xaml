@@ -38,41 +38,61 @@
                       SelectedValue="{Binding SelectedFaction}" DisplayMemberPath="Name" SelectedValuePath="Faction" />
             <ComboBox Width="180" Height="26" Margin="0,0,10,0" HorizontalAlignment="Left" VerticalAlignment="Top" ItemsSource="{Binding StatsTimeTypes}"
                       SelectedValue="{Binding StatsTimeTypeSelection}" IsSynchronizedWithCurrentItem="True" DisplayMemberPath="Name" SelectedValuePath="StatsTimeType" />
-            <ComboBox Width="180" Height="26" HorizontalAlignment="Left" VerticalAlignment="Top" ItemsSource="{Binding AutoDeleteStats}"
+            <ComboBox Width="180" Height="26" Margin="0,0,10,0" HorizontalAlignment="Left" VerticalAlignment="Top" ItemsSource="{Binding AutoDeleteStats}"
                       SelectedValue="{Binding AutoDeleteStatsSelection}" IsSynchronizedWithCurrentItem="True" DisplayMemberPath="Name" SelectedValuePath="AutoDeleteStats" />
+            <Button Content="{Binding TranslationResetAll, FallbackValue=RESET__ALL}" Height="26" Width="100" Style="{StaticResource Style.Button.Danger}"
+                    HorizontalAlignment="Left" VerticalAlignment="Top" Click="BtnResetOpenWorldStats_Click" />
         </StackPanel>
         <Separator Grid.Row="5" Background="{StaticResource SolidColorBrush.Background.3}" Height="4" Margin="0,5" />
 
-        <ScrollViewer Grid.Row="6" HorizontalScrollBarVisibility="Disabled" VerticalScrollBarVisibility="Auto">
-            <ItemsControl ItemsSource="{Binding MobKillStatsEntries}">
-                <ItemsControl.ItemTemplate>
-                    <DataTemplate DataType="{x:Type openWorld:OpenWorldMobKillStatsEntry}">
-                        <Border BorderBrush="{StaticResource SolidColorBrush.Background.4}" BorderThickness="0,0,0,1">
-                            <StackPanel Orientation="Horizontal">
-                                <Image Source="{Binding AvatarSource}" Width="100" Height="100" VerticalAlignment="Center" HorizontalAlignment="Left" Margin="-15, -18" />
-                                <StackPanel MinWidth="300" Margin="5,0,0,0">
-                                    <TextBlock Text="{Binding MobName}" Foreground="{StaticResource SolidColorBrush.Text.1}"
-                                               HorizontalAlignment="Left" VerticalAlignment="Center" FontSize="16" FontWeight="Bold" Margin="0,0" />
-                                    <TextBlock Text="{Binding Faction}" Foreground="{StaticResource SolidColorBrush.Text.4}" FontSize="12" Margin="0,0,0,4" />
-                                    <StackPanel Orientation="Horizontal">
-                                        <StackPanel Orientation="Vertical" MinWidth="70">
-                                            <TextBlock Text="{Binding DataContext.TranslationKills, RelativeSource={RelativeSource AncestorType={x:Type ItemsControl}}, FallbackValue=KILLS}"
-                                                       Foreground="{StaticResource SolidColorBrush.Accent.Blue.3}" FontSize="12" />
-                                            <TextBlock Text="{Binding Kills, StringFormat='{}{0:N0}'}" Foreground="{StaticResource SolidColorBrush.Text.1}" FontSize="18" FontWeight="Bold" />
-                                        </StackPanel>
-                                        <StackPanel Orientation="Vertical" MinWidth="70">
-                                            <TextBlock Text="{Binding DataContext.TranslationPerHour, RelativeSource={RelativeSource AncestorType={x:Type ItemsControl}}, FallbackValue=PER__HOUR}"
-                                                       Foreground="{StaticResource SolidColorBrush.Accent.Blue.3}" FontSize="12" />
-                                            <TextBlock Text="{Binding KillsPerHour, Converter={StaticResource ValuePerHourConverter}}"
-                                                       Foreground="{StaticResource SolidColorBrush.Text.1}" FontSize="18" FontWeight="Bold" />
-                                        </StackPanel>
+        <ListBox Grid.Row="6" ItemsSource="{Binding MobKillStatsEntries}" BorderThickness="0" Background="Transparent"
+                 ScrollViewer.HorizontalScrollBarVisibility="Disabled" ScrollViewer.VerticalScrollBarVisibility="Auto"
+                 ScrollViewer.CanContentScroll="True" VirtualizingPanel.IsVirtualizing="True" VirtualizingPanel.VirtualizationMode="Recycling">
+            <ListBox.ItemsPanel>
+                <ItemsPanelTemplate>
+                    <VirtualizingStackPanel />
+                </ItemsPanelTemplate>
+            </ListBox.ItemsPanel>
+            <ListBox.ItemContainerStyle>
+                <Style TargetType="{x:Type ListBoxItem}">
+                    <Setter Property="Padding" Value="0" />
+                    <Setter Property="Margin" Value="0" />
+                    <Setter Property="Focusable" Value="False" />
+                    <Setter Property="HorizontalContentAlignment" Value="Stretch" />
+                </Style>
+            </ListBox.ItemContainerStyle>
+            <ListBox.ItemTemplate>
+                <DataTemplate DataType="{x:Type openWorld:OpenWorldMobKillStatsEntry}">
+                    <Border BorderBrush="{StaticResource SolidColorBrush.Background.4}" BorderThickness="0,0,0,1">
+                        <StackPanel Orientation="Horizontal">
+                            <Image Source="{Binding AvatarSource}" Width="100" Height="100" VerticalAlignment="Center" HorizontalAlignment="Left" Margin="-15, -18" />
+                            <StackPanel MinWidth="300" Margin="5,0,0,0">
+                                <TextBlock Text="{Binding MobName}" Foreground="{StaticResource SolidColorBrush.Text.1}"
+                                           HorizontalAlignment="Left" VerticalAlignment="Center" FontSize="16" FontWeight="Bold" Margin="0,0" />
+                                <StackPanel Orientation="Horizontal" Margin="0,0,0,4">
+                                    <TextBlock Text="{Binding FactionDisplay}" Foreground="{StaticResource SolidColorBrush.Text.4}" FontSize="12" />
+                                    <TextBlock Text="{Binding LastKillDateSeparator}" Foreground="{StaticResource SolidColorBrush.Text.4}" FontSize="12" />
+                                    <TextBlock Text="{Binding LastKillDate}" Foreground="{StaticResource SolidColorBrush.Text.4}" FontSize="12"
+                                               ToolTip="{Binding DataContext.TranslationLastKill, RelativeSource={RelativeSource AncestorType={x:Type ListBox}}, FallbackValue=LAST__KILL}" />
+                                </StackPanel>
+                                <StackPanel Orientation="Horizontal">
+                                    <StackPanel Orientation="Vertical" MinWidth="70">
+                                        <TextBlock Text="{Binding DataContext.TranslationKills, RelativeSource={RelativeSource AncestorType={x:Type ListBox}}, FallbackValue=KILLS}"
+                                                   Foreground="{StaticResource SolidColorBrush.Accent.Blue.3}" FontSize="12" />
+                                        <TextBlock Text="{Binding Kills, StringFormat='{}{0:N0}'}" Foreground="{StaticResource SolidColorBrush.Text.1}" FontSize="18" FontWeight="Bold" />
+                                    </StackPanel>
+                                    <StackPanel Orientation="Vertical" MinWidth="70">
+                                        <TextBlock Text="{Binding DataContext.TranslationPerHour, RelativeSource={RelativeSource AncestorType={x:Type ListBox}}, FallbackValue=PER__HOUR}"
+                                                   Foreground="{StaticResource SolidColorBrush.Accent.Blue.3}" FontSize="12" />
+                                        <TextBlock Text="{Binding KillsPerHour, Converter={StaticResource ValuePerHourConverter}}"
+                                                   Foreground="{StaticResource SolidColorBrush.Text.1}" FontSize="18" FontWeight="Bold" />
                                     </StackPanel>
                                 </StackPanel>
                             </StackPanel>
-                        </Border>
-                    </DataTemplate>
-                </ItemsControl.ItemTemplate>
-            </ItemsControl>
-        </ScrollViewer>
+                        </StackPanel>
+                    </Border>
+                </DataTemplate>
+            </ListBox.ItemTemplate>
+        </ListBox>
     </Grid>
 </UserControl>

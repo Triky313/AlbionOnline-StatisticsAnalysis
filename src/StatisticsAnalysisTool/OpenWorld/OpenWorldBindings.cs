@@ -12,7 +12,6 @@ namespace StatisticsAnalysisTool.OpenWorld;
 
 public class OpenWorldBindings : BaseViewModel
 {
-    private const int MaxDisplayedMobStatsEntries = 10;
     private const string AllFactionsValue = "";
     private ObservableCollection<OpenWorldMobKillStatsEntry> _mobKillStatsEntries = [];
     private IReadOnlyList<OpenWorldFactionFilter> _factionFilters = [];
@@ -131,7 +130,6 @@ public class OpenWorldBindings : BaseViewModel
             .Where(MatchesSearchText)
             .OrderByDescending(x => x.LastKillTimestampUtc)
             .ThenBy(x => x.MobName)
-            .Take(MaxDisplayedMobStatsEntries)
             .ToList();
 
         MobKillStatsEntries = new ObservableCollection<OpenWorldMobKillStatsEntry>(entries);
@@ -234,6 +232,15 @@ public class OpenWorldBindings : BaseViewModel
     public string TranslationKills => LocalizationController.Translation("KILLS");
     public string TranslationPerHour => LocalizationController.Translation("PER_HOUR");
     public string TranslationSearchMobs => LocalizationController.Translation("SEARCH_MOBS");
+    public string TranslationLastKill => LocalizationController.Translation("LAST_KILL");
+    public string TranslationResetAll => LocalizationController.Translation("RESET_ALL");
+
+    public void ResetStats()
+    {
+        MobKills.Clear();
+        MobKillStatsEntries.Clear();
+        UpdateStats();
+    }
 
     private static double CalculateKillsPerHour(IEnumerable<OpenWorldMobKill> kills)
     {

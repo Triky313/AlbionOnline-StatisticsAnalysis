@@ -24,7 +24,9 @@ public static class MobsData
         "CRITTER",
         "DYNAMIC",
         "HIDE",
-        "ROAMING"
+        "RD",
+        "ROAMING",
+        "TN"
     };
     private static IEnumerable<MobJsonObject> _mobs;
 
@@ -56,6 +58,11 @@ public static class MobsData
         return GetMobJsonObjectByIndex(index);
     }
 
+    public static MobJsonObject GetMobByUnshiftedIndexOrDefault(int index)
+    {
+        return GetMobJsonObjectByUnshiftedIndex(index);
+    }
+
     public static MobJsonObject GetMobByUniqueNameOrDefault(string uniqueName)
     {
         if (string.IsNullOrWhiteSpace(uniqueName))
@@ -73,7 +80,19 @@ public static class MobsData
             return new MobJsonObject();
         }
 
-        return _mobs?.FirstOrDefault(x => Math.Abs(x.HitPointsMax - hitPointsMax) < 0.01) ?? new MobJsonObject();
+        return GetMobsByHitPointsMax(hitPointsMax).FirstOrDefault() ?? new MobJsonObject();
+    }
+
+    public static IReadOnlyList<MobJsonObject> GetMobsByHitPointsMax(double hitPointsMax)
+    {
+        if (hitPointsMax <= 0)
+        {
+            return [];
+        }
+
+        return _mobs?
+            .Where(x => Math.Abs(x.HitPointsMax - hitPointsMax) < 0.01)
+            .ToList() ?? [];
     }
 
     public static string GetAvatarFileName(MobJsonObject mob)
@@ -167,6 +186,11 @@ public static class MobsData
             index = (int) unsignedIndex;
         }
 
+        return _mobs.IsInBounds(index) ? _mobs?.ElementAt(index) : new MobJsonObject();
+    }
+
+    private static MobJsonObject GetMobJsonObjectByUnshiftedIndex(int index)
+    {
         return _mobs.IsInBounds(index) ? _mobs?.ElementAt(index) : new MobJsonObject();
     }
 
