@@ -73,7 +73,7 @@ public class TrackingController : ITrackingController
         TradeController = new TradeController(this, mainWindowViewModel);
         VaultController = new VaultController(mainWindowViewModel);
         GatheringController = new GatheringController(this, mainWindowViewModel);
-        OpenWorldController = new OpenWorldController(mainWindowViewModel);
+        OpenWorldController = new OpenWorldController(this, mainWindowViewModel);
         PartyController = new PartyController(this, mainWindowViewModel);
         GuildController = new GuildController(this, mainWindowViewModel);
         LiveStatsTracker = new LiveStatsTracker(this, mainWindowViewModel);

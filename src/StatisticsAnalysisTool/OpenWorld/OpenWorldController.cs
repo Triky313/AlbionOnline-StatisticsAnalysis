@@ -3,6 +3,7 @@ using StatisticsAnalysisTool.Common;
 using StatisticsAnalysisTool.Common.UserSettings;
 using StatisticsAnalysisTool.DamageMeter;
 using StatisticsAnalysisTool.GameFileData;
+using StatisticsAnalysisTool.Network.Manager;
 using StatisticsAnalysisTool.ViewModels;
 using System;
 using System.Collections.Concurrent;
@@ -14,7 +15,7 @@ using System.Windows.Threading;
 
 namespace StatisticsAnalysisTool.OpenWorld;
 
-public class OpenWorldController(MainWindowViewModel mainWindowViewModel)
+public class OpenWorldController(TrackingController trackingController, MainWindowViewModel mainWindowViewModel)
 {
     private const string MobKillsFileName = "OpenWorldMobKills.json";
     private const string UnknownMobUniqueName = "UNKNOWN_MOB";
@@ -22,6 +23,17 @@ public class OpenWorldController(MainWindowViewModel mainWindowViewModel)
 
     private readonly ConcurrentDictionary<long, byte> _recordedKilledMobs = new();
     private readonly ConcurrentDictionary<long, DateTime> _pendingKilledMobs = new();
+    private readonly ConcurrentDictionary<long, byte> _localPlayerDamagedMobs = new();
+
+    public void TrackLocalPlayerMobDamage(long mobObjectId, long causerId, double healthChange)
+    {
+        if (!SettingsController.CurrentSettings.IsOpenWorldTrackingActive || healthChange >= 0 || !IsLocalPlayer(causerId))
+        {
+            return;
+        }
+
+        _localPlayerDamagedMobs.TryAdd(mobObjectId, 0);
+    }
 
     public async Task TryAddMobKillAsync(long mobObjectId, CombatMobCacheEntry mob, double healthChange, bool hasNewHealthValue)
     {
@@ -71,6 +83,7 @@ public class OpenWorldController(MainWindowViewModel mainWindowViewModel)
     public void ResetRecordedMobKill(long mobObjectId)
     {
         _recordedKilledMobs.TryRemove(mobObjectId, out _);
+        _localPlayerDamagedMobs.TryRemove(mobObjectId, out _);
     }
 
     private async Task<bool> TryAddMobKillAsync(long mobObjectId, CombatMobCacheEntry mob)
@@ -85,10 +98,17 @@ public class OpenWorldController(MainWindowViewModel mainWindowViewModel)
             return false;
         }
 
+        if (!_localPlayerDamagedMobs.ContainsKey(mobObjectId))
+        {
+            return false;
+        }
+
         if (!_recordedKilledMobs.TryAdd(mobObjectId, 0))
         {
             return false;
         }
+
+        _localPlayerDamagedMobs.TryRemove(mobObjectId, out _);
 
         await RemoveEntriesByAutoDeleteDateAsync();
 
@@ -173,6 +193,7 @@ public class OpenWorldController(MainWindowViewModel mainWindowViewModel)
         await SaveInFileAsync();
         _recordedKilledMobs.Clear();
         _pendingKilledMobs.Clear();
+        _localPlayerDamagedMobs.Clear();
     }
 
     private void AddPendingMobKill(long mobObjectId)
@@ -192,5 +213,16 @@ public class OpenWorldController(MainWindowViewModel mainWindowViewModel)
                 _pendingKilledMobs.TryRemove(pendingKilledMob.Key, out _);
             }
         }
+    }
+
+    private bool IsLocalPlayer(long objectId)
+    {
+        if (trackingController.EntityController.LocalUserData.UserObjectId == objectId)
+        {
+            return true;
+        }
+
+        var localEntity = trackingController.EntityController.GetLocalEntity();
+        return localEntity?.Value?.ObjectId == objectId;
     }
 }
