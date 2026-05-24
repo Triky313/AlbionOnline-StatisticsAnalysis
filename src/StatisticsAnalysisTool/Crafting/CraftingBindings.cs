@@ -1461,6 +1461,7 @@ public class CraftingBindings : BaseViewModel
             TotalCosts = Calculation.TotalCosts,
             Profit = Calculation.Profit,
             ProfitPerItem = Calculation.ProfitPerItem,
+            RoiPercent = Calculation.RoiPercent,
             BreakEvenPrice = Calculation.BreakEvenPrice,
             Icon = SelectedItem?.Icon
         }
@@ -1782,6 +1783,7 @@ public class CraftingBindings : BaseViewModel
         crafting.TotalCosts = result.TotalCosts;
         crafting.Profit = result.Profit;
         crafting.ProfitPerItem = result.ProfitPerItem;
+        crafting.RoiPercent = result.RoiPercent;
         crafting.BreakEvenPrice = result.BreakEvenPrice;
     }
 

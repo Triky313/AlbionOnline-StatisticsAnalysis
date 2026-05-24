@@ -118,6 +118,16 @@
                 </DataTrigger>
             </Style.Triggers>
         </Style>
+        <Style x:Key="SavedCraftingRoiText" TargetType="{x:Type TextBlock}" BasedOn="{StaticResource SavedCraftingCellText}">
+            <Style.Triggers>
+                <DataTrigger Binding="{Binding IsRoiPositive}" Value="True">
+                    <Setter Property="Foreground" Value="{StaticResource SolidColorBrush.Accent.Green.2}" />
+                </DataTrigger>
+                <DataTrigger Binding="{Binding IsRoiNegative}" Value="True">
+                    <Setter Property="Foreground" Value="{StaticResource SolidColorBrush.Accent.Red.2}" />
+                </DataTrigger>
+            </Style.Triggers>
+        </Style>
         <Style x:Key="SavedCraftingBreakEvenText" TargetType="{x:Type TextBlock}" BasedOn="{StaticResource SavedCraftingCellText}">
             <Setter Property="Foreground" Value="{StaticResource SolidColorBrush.Accent.Yellow.1}" />
         </Style>
@@ -843,6 +853,13 @@
                             <GridViewColumn.CellTemplate>
                                 <DataTemplate>
                                     <TextBlock Text="{Binding ProfitPerItem, StringFormat={}{0:N0}}" Style="{StaticResource SavedCraftingProfitPerItemText}" />
+                                </DataTemplate>
+                            </GridViewColumn.CellTemplate>
+                        </GridViewColumn>
+                        <GridViewColumn Header="{x:Static crafting:CraftingBindings.TranslationRoi}" Width="90">
+                            <GridViewColumn.CellTemplate>
+                                <DataTemplate>
+                                    <TextBlock Text="{Binding RoiPercent, StringFormat={}{0:N2}%}" Style="{StaticResource SavedCraftingRoiText}" />
                                 </DataTemplate>
                             </GridViewColumn.CellTemplate>
                         </GridViewColumn>
