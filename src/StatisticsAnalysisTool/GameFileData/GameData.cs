@@ -348,13 +348,15 @@ public static class GameData
 
             var hasAvatar = false;
             var hasFaction = false;
+            var hasNameLocatag = false;
 
             foreach (var mob in document.RootElement.EnumerateArray())
             {
                 hasAvatar |= mob.TryGetProperty("@avatar", out _);
                 hasFaction |= mob.TryGetProperty("@faction", out _);
+                hasNameLocatag |= mob.TryGetProperty("@namelocatag", out _);
 
-                if (hasAvatar && hasFaction)
+                if (hasAvatar && hasFaction && hasNameLocatag)
                 {
                     return false;
                 }
