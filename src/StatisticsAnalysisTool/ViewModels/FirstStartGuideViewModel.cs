@@ -6,6 +6,7 @@ using StatisticsAnalysisTool.Enumerations;
 using StatisticsAnalysisTool.Localization;
 using StatisticsAnalysisTool.Models.TranslationModel;
 using StatisticsAnalysisTool.Network.PacketProviders;
+using StatisticsAnalysisTool.Properties;
 using System;
 using System.Collections.ObjectModel;
 using System.Linq;
@@ -21,7 +22,8 @@ public class FirstStartGuideViewModel : BaseViewModel
     private const int GameFolderStepIndex = 2;
     private const int TrackingModeStepIndex = 3;
     private const int NavigationTabsStepIndex = 4;
-    private const int TotalStepCount = 5;
+    private const int DonationStepIndex = 5;
+    private const int TotalStepCount = 6;
 
     private FirstStartGuideLanguageOption _selectedLanguageOption;
     private ServerLocationSelectionWindowViewModel.ServerInfo _selectedServerLocation;
@@ -80,6 +82,12 @@ public class FirstStartGuideViewModel : BaseViewModel
     public string NpcapDownloadLinkText => LocalizationController.Translation("FIRST_START_GUIDE_NPCAP_DOWNLOAD_LINK");
     public string TrackingModeDifferenceText { get; private set; }
     public string NavigationTabsStepDescription { get; private set; }
+    public string DonationHintTitle => LocalizationController.Translation("WHY_DONATE");
+    public string DonationHintDescription => LocalizationController.Translation("WHY_DONATE_DESCRIPTION");
+    public static string DonateUrl => Settings.Default.DonateUrl;
+    public static string PatreonUrl => Settings.Default.PatreonUrl;
+    public static string KofiDonationUrl => Settings.Default.KofiDonationUrl;
+    public static string GitHubSponsorsUrl => Settings.Default.GitHubSponsorsUrl;
     public string TrackingModeInstructionText => SelectedPacketProvider switch
     {
         PacketProviderKind.Npcap => LocalizationController.Translation("FIRST_START_GUIDE_NPCAP_INSTRUCTION"),
@@ -193,8 +201,9 @@ public class FirstStartGuideViewModel : BaseViewModel
     public Visibility GameFolderStepVisibility => CurrentStepIndex == GameFolderStepIndex ? Visibility.Visible : Visibility.Collapsed;
     public Visibility TrackingModeStepVisibility => CurrentStepIndex == TrackingModeStepIndex ? Visibility.Visible : Visibility.Collapsed;
     public Visibility NavigationTabsStepVisibility => CurrentStepIndex == NavigationTabsStepIndex ? Visibility.Visible : Visibility.Collapsed;
-    public Visibility NextButtonVisibility => CurrentStepIndex < NavigationTabsStepIndex ? Visibility.Visible : Visibility.Collapsed;
-    public Visibility FinishButtonVisibility => CurrentStepIndex == NavigationTabsStepIndex ? Visibility.Visible : Visibility.Collapsed;
+    public Visibility DonationStepVisibility => CurrentStepIndex == DonationStepIndex ? Visibility.Visible : Visibility.Collapsed;
+    public Visibility NextButtonVisibility => CurrentStepIndex < DonationStepIndex ? Visibility.Visible : Visibility.Collapsed;
+    public Visibility FinishButtonVisibility => CurrentStepIndex == DonationStepIndex ? Visibility.Visible : Visibility.Collapsed;
     public Visibility ErrorVisibility => string.IsNullOrWhiteSpace(ErrorMessage) ? Visibility.Collapsed : Visibility.Visible;
     public Visibility NpcapWarningVisibility => IsNpcapSelected && !string.IsNullOrWhiteSpace(NpcapWarningText) ? Visibility.Visible : Visibility.Collapsed;
     public Visibility NpcapDownloadLinkVisibility => IsNpcapSelected ? Visibility.Visible : Visibility.Collapsed;
@@ -206,7 +215,7 @@ public class FirstStartGuideViewModel : BaseViewModel
             return false;
         }
 
-        CurrentStepIndex = Math.Min(CurrentStepIndex + 1, NavigationTabsStepIndex);
+        CurrentStepIndex = Math.Min(CurrentStepIndex + 1, DonationStepIndex);
         ErrorMessage = string.Empty;
         return true;
     }
@@ -283,6 +292,7 @@ public class FirstStartGuideViewModel : BaseViewModel
             GameFolderStepIndex => await SaveGameFolderStepAsync().ConfigureAwait(true),
             TrackingModeStepIndex => await SaveTrackingModeStepAsync().ConfigureAwait(true),
             NavigationTabsStepIndex => await SaveNavigationTabsStepAsync().ConfigureAwait(true),
+            DonationStepIndex => true,
             _ => false
         };
     }
@@ -353,6 +363,7 @@ public class FirstStartGuideViewModel : BaseViewModel
         SettingsController.CurrentSettings.IsDungeonsNaviTabActive = IsNavigationTabVisible(NavigationTabFilterType.Dungeons);
         SettingsController.CurrentSettings.IsDamageMeterNaviTabActive = IsNavigationTabVisible(NavigationTabFilterType.DamageMeter);
         SettingsController.CurrentSettings.IsTradeMonitoringNaviTabActive = IsNavigationTabVisible(NavigationTabFilterType.TradeMonitoring);
+        SettingsController.CurrentSettings.IsOpenWorldNaviTabActive = IsNavigationTabVisible(NavigationTabFilterType.OpenWorld);
         SettingsController.CurrentSettings.IsGatheringNaviTabActive = IsNavigationTabVisible(NavigationTabFilterType.Gathering);
         SettingsController.CurrentSettings.IsCraftingNaviTabActive = IsNavigationTabVisible(NavigationTabFilterType.Crafting);
         SettingsController.CurrentSettings.IsPartyNaviTabActive = IsNavigationTabVisible(NavigationTabFilterType.Party);
@@ -410,6 +421,7 @@ public class FirstStartGuideViewModel : BaseViewModel
             GameFolderStepIndex => LocalizationController.Translation("SELECT_ALBION_ONLINE_MAIN_GAME_FOLDER"),
             TrackingModeStepIndex => LocalizationController.Translation("FIRST_START_GUIDE_TRACKING_MODE_TITLE"),
             NavigationTabsStepIndex => LocalizationController.Translation("NAVIGATION_TAB_VISIBILITY"),
+            DonationStepIndex => DonationHintTitle,
             _ => WindowTitle
         };
 
@@ -420,6 +432,7 @@ public class FirstStartGuideViewModel : BaseViewModel
             GameFolderStepIndex => GameFolderStepDescription,
             TrackingModeStepIndex => LocalizationController.Translation("FIRST_START_GUIDE_TRACKING_MODE_DESCRIPTION"),
             NavigationTabsStepIndex => NavigationTabsStepDescription,
+            DonationStepIndex => string.Empty,
             _ => string.Empty
         };
 
@@ -435,6 +448,8 @@ public class FirstStartGuideViewModel : BaseViewModel
         OnPropertyChanged(nameof(GameFolderStepDescription));
         OnPropertyChanged(nameof(TrackingModeDifferenceText));
         OnPropertyChanged(nameof(NavigationTabsStepDescription));
+        OnPropertyChanged(nameof(DonationHintTitle));
+        OnPropertyChanged(nameof(DonationHintDescription));
         OnPropertyChanged(nameof(TrackingModeInstructionText));
         OnPropertyChanged(nameof(NpcapWarningText));
         OnPropertyChanged(nameof(StandaloneLauncherTitle));
@@ -497,6 +512,7 @@ public class FirstStartGuideViewModel : BaseViewModel
         OnPropertyChanged(nameof(GameFolderStepVisibility));
         OnPropertyChanged(nameof(TrackingModeStepVisibility));
         OnPropertyChanged(nameof(NavigationTabsStepVisibility));
+        OnPropertyChanged(nameof(DonationStepVisibility));
         OnPropertyChanged(nameof(NextButtonVisibility));
         OnPropertyChanged(nameof(FinishButtonVisibility));
     }
@@ -510,6 +526,7 @@ public class FirstStartGuideViewModel : BaseViewModel
         NavigationTabOptions.Add(CreateNavigationTabOption(NavigationTabFilterType.Dungeons, SettingsController.CurrentSettings.IsDungeonsNaviTabActive));
         NavigationTabOptions.Add(CreateNavigationTabOption(NavigationTabFilterType.DamageMeter, SettingsController.CurrentSettings.IsDamageMeterNaviTabActive));
         NavigationTabOptions.Add(CreateNavigationTabOption(NavigationTabFilterType.TradeMonitoring, SettingsController.CurrentSettings.IsTradeMonitoringNaviTabActive));
+        NavigationTabOptions.Add(CreateNavigationTabOption(NavigationTabFilterType.OpenWorld, SettingsController.CurrentSettings.IsOpenWorldNaviTabActive));
         NavigationTabOptions.Add(CreateNavigationTabOption(NavigationTabFilterType.Gathering, SettingsController.CurrentSettings.IsGatheringNaviTabActive));
         NavigationTabOptions.Add(CreateNavigationTabOption(NavigationTabFilterType.Crafting, SettingsController.CurrentSettings.IsCraftingNaviTabActive));
         NavigationTabOptions.Add(CreateNavigationTabOption(NavigationTabFilterType.Party, SettingsController.CurrentSettings.IsPartyNaviTabActive));
@@ -551,6 +568,7 @@ public class FirstStartGuideViewModel : BaseViewModel
             NavigationTabFilterType.Dungeons => MainWindowTranslation.Dungeons,
             NavigationTabFilterType.DamageMeter => MainWindowTranslation.DamageMeter,
             NavigationTabFilterType.TradeMonitoring => MainWindowTranslation.TradeMonitoring,
+            NavigationTabFilterType.OpenWorld => MainWindowTranslation.OpenWorld,
             NavigationTabFilterType.Gathering => MainWindowTranslation.Gathering,
             NavigationTabFilterType.Crafting => MainWindowTranslation.Crafting,
             NavigationTabFilterType.Party => MainWindowTranslation.Party,

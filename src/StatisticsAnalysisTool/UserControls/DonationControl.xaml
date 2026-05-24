@@ -6,7 +6,7 @@
              xmlns:viewModels="clr-namespace:StatisticsAnalysisTool.ViewModels"
              xmlns:fa5="http://schemas.fontawesome.com/icons/"
              mc:Ignorable="d" 
-             d:DesignHeight="950" d:DesignWidth="800"
+             d:DesignHeight="950" d:DesignWidth="1000"
              d:DataContext="{d:DesignInstance Type=viewModels:DonationViewModel}">
     <Grid>
         <ScrollViewer HorizontalScrollBarVisibility="Disabled" VerticalScrollBarVisibility="Auto">
@@ -23,22 +23,24 @@
 
                 <!-- Donation links -->
                 <StackPanel Orientation="Horizontal" Height="30" VerticalAlignment="Top" Margin="0,20,0,0">
-                    <TextBlock Text="Patreon" FontSize="16" FontWeight="Light" Width="200"
+                    <TextBlock Text="Patreon" FontSize="16" FontWeight="Light" Width="230"
                                Foreground="{StaticResource SolidColorBrush.Accent.Yellow.1}" VerticalAlignment="Center" />
-                    <TextBlock Text="PayPal" FontSize="16" FontWeight="Light" Width="200"
+                    <TextBlock Text="PayPal" FontSize="16" FontWeight="Light" Width="230"
                                Foreground="{StaticResource SolidColorBrush.Accent.Yellow.1}" VerticalAlignment="Center" />
-                    <TextBlock Text="GitHub Sponsors" FontSize="16" FontWeight="Light" Width="200"
+                    <TextBlock Text="Ko-Fi" FontSize="16" FontWeight="Light" Width="230"
+                               Foreground="{StaticResource SolidColorBrush.Accent.Yellow.1}" VerticalAlignment="Center" />
+                    <TextBlock Text="GitHub Sponsors" FontSize="16" FontWeight="Light" Width="230"
                                Foreground="{StaticResource SolidColorBrush.Accent.Yellow.1}" VerticalAlignment="Center" />
                 </StackPanel>
                 <StackPanel Orientation="Horizontal">
-                    <Grid Margin="0" HorizontalAlignment="Left" VerticalAlignment="Center" Width="200" Height="72">
+                    <Grid Margin="0" HorizontalAlignment="Left" VerticalAlignment="Center" Width="230" Height="72">
                         <TextBlock>
                             <Hyperlink NavigateUri="{Binding PatreonUrl}" RequestNavigate="Hyperlink_RequestNavigate" TextDecorations="{x:Null}">
                                 <fa5:ImageAwesome Icon="Brands_Patreon" Foreground="{StaticResource Solid.Color.Patreon}" />
                             </Hyperlink>
                         </TextBlock>
                     </Grid>
-                    <Grid Margin="0" HorizontalAlignment="Left" Width="200" Height="72" VerticalAlignment="Bottom">
+                    <Grid Margin="0" HorizontalAlignment="Left" Width="230" Height="72" VerticalAlignment="Bottom">
                         <TextBlock>
                             <Hyperlink NavigateUri="{Binding DonateUrl}" RequestNavigate="Hyperlink_RequestNavigate" TextDecorations="{x:Null}">
                                 <fa5:ImageAwesome Icon="Brands_Paypal" Foreground="{StaticResource SolidColorBrush.Text.1}" />
@@ -46,7 +48,17 @@
                         </TextBlock>
                         <Image Source="../Assets/paypal-QR-Code.png" Height="72" Width="72" Margin="20,0,0,0" />
                     </Grid>
-                    <Grid Margin="0" HorizontalAlignment="Left" Width="200" Height="72" VerticalAlignment="Bottom">
+                    <Grid Margin="0" HorizontalAlignment="Left" Width="230" Height="72" VerticalAlignment="Bottom">
+                        <TextBlock>
+                            <Hyperlink NavigateUri="{Binding KofiDonationUrl}" RequestNavigate="Hyperlink_RequestNavigate" TextDecorations="{x:Null}">
+                                <InlineUIContainer BaselineAlignment="Center">
+                                    <Image Source="../Assets/ko-fi-icon.png" Width="72" Height="72" Stretch="Uniform" />
+                                </InlineUIContainer>
+                            </Hyperlink>
+                        </TextBlock>
+                        <Image Source="../Assets/ko-fi-qrcode.png" Height="72" Width="72" Margin="20,0,0,0" />
+                    </Grid>
+                    <Grid Margin="0" HorizontalAlignment="Left" Width="230" Height="72" VerticalAlignment="Bottom">
                         <TextBlock>
                             <Hyperlink NavigateUri="{Binding GitHubSponsorsUrl}" RequestNavigate="Hyperlink_RequestNavigate" TextDecorations="{x:Null}">
                                 <fa5:ImageAwesome Icon="Regular_Heart" Foreground="{StaticResource Solid.Color.GitHubSponsors}" />
@@ -55,24 +67,73 @@
                     </Grid>
                 </StackPanel>
 
+                <StackPanel Width="640" HorizontalAlignment="Left" Margin="0,22,0,0">
+                    <Grid Margin="0,0,0,4">
+                        <TextBlock Text="Monthly real money goal" FontSize="14" FontWeight="Light"
+                                   Foreground="{StaticResource SolidColorBrush.Accent.Green.3}" HorizontalAlignment="Left" />
+                        <TextBlock Text="{Binding MonthlyRealMoneyDonationProgressText}" FontSize="14" FontWeight="Light"
+                                   Foreground="{StaticResource SolidColorBrush.Text.1}" HorizontalAlignment="Right" />
+                    </Grid>
+                    <Grid Width="640" Height="18">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="10*" />
+                            <ColumnDefinition Width="15*" />
+                            <ColumnDefinition Width="25*" />
+                            <ColumnDefinition Width="50*" />
+                        </Grid.ColumnDefinitions>
+                        <TextBlock Grid.Column="0" Text="10&#x20AC;" FontSize="11" Foreground="{StaticResource SolidColorBrush.Text.5}"
+                                   HorizontalAlignment="Right" Margin="0,0,-12,0" VerticalAlignment="Top" />
+                        <TextBlock Grid.Column="1" Text="25&#x20AC;" FontSize="11" Foreground="{StaticResource SolidColorBrush.Text.5}"
+                                   HorizontalAlignment="Right" Margin="0,0,-12,0" VerticalAlignment="Top" />
+                        <TextBlock Grid.Column="2" Text="50&#x20AC;" FontSize="11" Foreground="{StaticResource SolidColorBrush.Text.5}"
+                                   HorizontalAlignment="Right" Margin="0,0,-12,0" VerticalAlignment="Top" />
+                    </Grid>
+                    <Grid Width="640" Height="18">
+                        <ProgressBar Style="{StaticResource Donation.ProgressBar.Goal.Style}"
+                                     Foreground="{StaticResource SolidColorBrush.Accent.Green.3}"
+                                     Maximum="{Binding MonthlyRealMoneyDonationGoal}"
+                                     Value="{Binding MonthlyRealMoneyDonationAmount}" />
+                        <Grid IsHitTestVisible="False" Margin="1">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="10*" />
+                                <ColumnDefinition Width="15*" />
+                                <ColumnDefinition Width="25*" />
+                                <ColumnDefinition Width="50*" />
+                            </Grid.ColumnDefinitions>
+                            <Border Grid.Column="1" Width="1" Background="{StaticResource SolidColorBrush.Text.1}" Opacity="0.6" HorizontalAlignment="Left" />
+                            <Border Grid.Column="2" Width="1" Background="{StaticResource SolidColorBrush.Text.1}" Opacity="0.6" HorizontalAlignment="Left" />
+                            <Border Grid.Column="3" Width="1" Background="{StaticResource SolidColorBrush.Text.1}" Opacity="0.6" HorizontalAlignment="Left" />
+                        </Grid>
+                    </Grid>
+
+                    <Grid Margin="0,16,0,4">
+                        <TextBlock Text="Monthly silver goal" FontSize="14" FontWeight="Light"
+                                   Foreground="{StaticResource SolidColorBrush.Accent.Yellow.1}" HorizontalAlignment="Left" />
+                        <TextBlock Text="{Binding MonthlySilverDonationProgressText}" FontSize="14" FontWeight="Light"
+                                   Foreground="{StaticResource SolidColorBrush.Text.1}" HorizontalAlignment="Right" />
+                    </Grid>
+                    <Grid Width="640" Height="18">
+                        <TextBlock Text="27M" FontSize="11" Foreground="{StaticResource SolidColorBrush.Text.5}"
+                                   HorizontalAlignment="Right" VerticalAlignment="Top" />
+                    </Grid>
+                    <Grid Width="640" Height="18">
+                        <ProgressBar Style="{StaticResource Donation.ProgressBar.Goal.Style}"
+                                     Foreground="{StaticResource SolidColorBrush.Accent.Yellow.1}"
+                                     Maximum="{Binding MonthlySilverDonationGoal}"
+                                     Value="{Binding MonthlySilverDonationAmount}" />
+                        <Border Width="1" Background="{StaticResource SolidColorBrush.Text.1}" Opacity="0.6"
+                                HorizontalAlignment="Right" Margin="0,1,1,1" IsHitTestVisible="False" />
+                    </Grid>
+                </StackPanel>
+
                 <!-- Silver month donation -->
                 <StackPanel Orientation="Horizontal" Height="30" VerticalAlignment="Top" Margin="0,20,0,0">
                     <TextBlock Text="{Binding Translation.TopDonationsThisMonth, FallbackValue=TOP_DONATIONS_THIS_MONTH}" FontSize="16" FontWeight="Light" 
                                Foreground="{StaticResource SolidColorBrush.Accent.Yellow.1}" VerticalAlignment="Center" />
                 </StackPanel>
-                <ItemsControl ItemsSource="{Binding TopDonationsThisMonth, IsAsync=True, Mode=OneWay}" ItemTemplate="{StaticResource Donation}" />
+                <ItemsControl ItemsSource="{Binding TopDonationsThisMonth, IsAsync=True, Mode=OneWay}" ItemTemplate="{StaticResource Donation}"
+                              Style="{StaticResource Donation.ItemsControl.TwoColumns.Style}" />
                 <TextBlock Visibility="{Binding NoDonationsThisMonthVisibility, FallbackValue=Visible}" Text="{Binding Translation.NoDonationsYet, FallbackValue=NO_DONATIONS_YET}" FontSize="12" 
-                           Foreground="{StaticResource SolidColorBrush.Text.1}" VerticalAlignment="Center" />
-                <TextBlock Text="{Binding Translation.ItemsAreConvertedToSilver, FallbackValue=ITEMS_ARE_CONVERTED_TO_SILVER}" 
-                           FontSize="12" Foreground="{StaticResource SolidColorBrush.Text.6}" VerticalAlignment="Center" />
-
-                <!-- Silver total donation -->
-                <StackPanel Orientation="Horizontal" Height="30" VerticalAlignment="Top" Margin="0,20,0,0">
-                    <TextBlock Text="{Binding Translation.TopDonationsAllTime, FallbackValue=TOP_DONATIONS_ALL_TIME}" FontSize="16" FontWeight="Light" 
-                               Foreground="{StaticResource SolidColorBrush.Accent.Yellow.1}" VerticalAlignment="Center" />
-                </StackPanel>
-                <ItemsControl ItemsSource="{Binding TopDonationsAllTime, IsAsync=True, Mode=OneWay}" ItemTemplate="{StaticResource Donation}" />
-                <TextBlock Visibility="{Binding NoTopDonationsVisibility, FallbackValue=Visible}" Text="{Binding Translation.NoDonationsYet, FallbackValue=NO_DONATIONS_YET}" FontSize="12" 
                            Foreground="{StaticResource SolidColorBrush.Text.1}" VerticalAlignment="Center" />
                 <TextBlock Text="{Binding Translation.ItemsAreConvertedToSilver, FallbackValue=ITEMS_ARE_CONVERTED_TO_SILVER}" 
                            FontSize="12" Foreground="{StaticResource SolidColorBrush.Text.6}" VerticalAlignment="Center" />
@@ -83,10 +144,23 @@
                                Foreground="{StaticResource SolidColorBrush.Accent.Yellow.1}" VerticalAlignment="Center" />
                 </StackPanel>
                 <Grid Visibility="{Binding TopRealMoneyDonationsVisibility, FallbackValue='Collapsed'}">
-                    <ItemsControl ItemsSource="{Binding TopRealMoneyDonations, IsAsync=True, Mode=OneWay}" ItemTemplate="{StaticResource Donation}" />
+                    <ItemsControl ItemsSource="{Binding TopRealMoneyDonations, IsAsync=True, Mode=OneWay}" ItemTemplate="{StaticResource Donation}"
+                                  Style="{StaticResource Donation.ItemsControl.TwoColumns.Style}" />
                 </Grid>
                 <TextBlock Visibility="{Binding NoTopRealMoneyDonationsVisibility, FallbackValue=Visible}" Text="{Binding Translation.NoDonationsYet, FallbackValue=NO_DONATIONS_YET}" FontSize="12" 
                            Foreground="{StaticResource SolidColorBrush.Text.1}" VerticalAlignment="Center" />
+
+                <!-- Silver total donation -->
+                <StackPanel Orientation="Horizontal" Height="30" VerticalAlignment="Top" Margin="0,20,0,0">
+                    <TextBlock Text="{Binding Translation.TopDonationsAllTime, FallbackValue=TOP_DONATIONS_ALL_TIME}" FontSize="16" FontWeight="Light" 
+                               Foreground="{StaticResource SolidColorBrush.Accent.Yellow.1}" VerticalAlignment="Center" />
+                </StackPanel>
+                <ItemsControl ItemsSource="{Binding TopDonationsAllTime, IsAsync=True, Mode=OneWay}" ItemTemplate="{StaticResource Donation}"
+                              Style="{StaticResource Donation.ItemsControl.TwoColumns.Style}" />
+                <TextBlock Visibility="{Binding NoTopDonationsVisibility, FallbackValue=Visible}" Text="{Binding Translation.NoDonationsYet, FallbackValue=NO_DONATIONS_YET}" FontSize="12" 
+                           Foreground="{StaticResource SolidColorBrush.Text.1}" VerticalAlignment="Center" />
+                <TextBlock Text="{Binding Translation.ItemsAreConvertedToSilver, FallbackValue=ITEMS_ARE_CONVERTED_TO_SILVER}" 
+                           FontSize="12" Foreground="{StaticResource SolidColorBrush.Text.6}" VerticalAlignment="Center" />
             </StackPanel>
         </ScrollViewer>
     </Grid>

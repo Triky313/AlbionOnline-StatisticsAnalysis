@@ -224,6 +224,12 @@
     <Resource Include="Assets\heart.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Resource>
+    <Resource Include="Assets\ko-fi-icon.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Assets\ko-fi-qrcode.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Resource>
     <Resource Include="Assets\loggingcomparator_description01.jpg">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Resource>
@@ -357,6 +363,9 @@
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Resource>
     <Resource Include="Assets\static_chest.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Assets\Navigation\*.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Resource>
     <Resource Include="Resources\abyssal_depths_banner.png">
@@ -698,6 +707,8 @@
     <None Remove="Assets\gold_glow.png" />
     <None Remove="Assets\green_glow.png" />
     <None Remove="Assets\heart.png" />
+    <None Remove="Assets\ko-fi-icon.png" />
+    <None Remove="Assets\ko-fi-qrcode.png" />
     <None Remove="Assets\loggingcomparator_description01.jpg" />
     <None Remove="Assets\loot_cpmparator_slot_blue.png" />
     <None Remove="Assets\loot_cpmparator_slot_gray.png" />
@@ -743,6 +754,7 @@
     <None Remove="Assets\skull_green.png" />
     <None Remove="Assets\skull_red.png" />
     <None Remove="Assets\static_chest.png" />
+    <None Remove="Assets\Navigation\*.png" />
     <None Remove="Localization\localization.json" />
     <None Remove="Resources\abyssal_depths_banner.png" />
     <None Remove="Resources\DonationIcon\ALLIGATOR1.png" />
@@ -926,5 +938,11 @@
       <Generator>PublicResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
     </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Assets\MobAvatars\*.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Resource>
+    <None Remove="Assets\MobAvatars\*.png" />
   </ItemGroup>
 </Project>

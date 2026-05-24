@@ -166,102 +166,88 @@
             </Border>
         </Grid>
 
-        <!--<Grid ZIndex="3" Height="100" Width="250" Margin="0,90,5,0" HorizontalAlignment="Right" VerticalAlignment="Top"
-              Background="{StaticResource SolidColorBrush.Background.3}" Visibility="{Binding ToolTasksVisibility, FallbackValue=Visible}">
-            <Border BorderBrush="{StaticResource SolidColorBrush.Text.7}" BorderThickness="1">
-                <Grid>
-                    <StackPanel Orientation="Vertical" Height="24" VerticalAlignment="Top">
-                        <Grid Height="20">
-                            <Label Content="{Binding Translation.ToolTasks, FallbackValue=TOOL__TASKS}" />
-                            <Button Style="{StaticResource WindowButtonStyle}" Content="r" Margin="0,-2,-2,0" Click="ToolTasksCloseButton_OnClick" />
-                        </Grid>
-                        <Separator Background="{StaticResource SolidColorBrush.Text.3}" />
-                    </StackPanel>
-                    <ScrollViewer VerticalAlignment="Top" Margin="0,25,0,0" HorizontalScrollBarVisibility="Hidden">
-                        <ItemsControl ItemsSource="{Binding ToolTaskBindings.ToolTaskObjects}" d:ItemsSource="{d:SampleData ItemCount=3}"
-                                      ItemTemplate="{StaticResource TaskTextObjectDataTemplate}" />
-                    </ScrollViewer>
-                </Grid>
-            </Border>
-        </Grid>-->
-
         <TabControl Style="{DynamicResource TabControlStyle}">
-            <TabItem Visibility="{Binding DashboardTabVisibility, Mode=OneWay}" Header="{Binding Translation.Dashboard, FallbackValue=DASHBOARD}">
+            <TabItem Visibility="{Binding DashboardTabVisibility, Mode=OneWay}" Header="{Binding Translation.Dashboard, FallbackValue=DASHBOARD}" Tag="pack://application:,,,/Assets/Navigation/dashboard.png">
                 <Grid Style="{StaticResource TabItemGridStyle}">
                     <userControls:DashboardControl DataContext="{Binding RelativeSource={RelativeSource AncestorType=Window}, Path=DataContext}" />
                 </Grid>
             </TabItem>
-            <TabItem Visibility="{Binding ItemSearchTabVisibility, Mode=OneWay}" Header="{Binding Translation.ItemSearch, FallbackValue=ITEM__SEARCH}">
+            <TabItem Visibility="{Binding ItemSearchTabVisibility, Mode=OneWay}" Header="{Binding Translation.ItemSearch, FallbackValue=ITEM__SEARCH}" Tag="pack://application:,,,/Assets/Navigation/magnifying-glass.png">
                 <Grid Style="{StaticResource TabItemGridStyle}">
                     <userControls:ItemSearchControl DataContext="{Binding RelativeSource={RelativeSource AncestorType=Window}, Path=DataContext}" />
                 </Grid>
             </TabItem>
-            <TabItem Visibility="{Binding LoggingTabVisibility, Mode=OneWay}" Header="{Binding Translation.Logging, FallbackValue=LOGGING}">
+            <TabItem Visibility="{Binding LoggingTabVisibility, Mode=OneWay}" Header="{Binding Translation.Logging, FallbackValue=LOGGING}" Tag="pack://application:,,,/Assets/Navigation/log.png">
                 <Grid Style="{StaticResource TabItemGridStyle}">
                     <userControls:LoggingControl DataContext="{Binding RelativeSource={RelativeSource AncestorType=Window}, Path=DataContext}" />
                 </Grid>
             </TabItem>
-            <TabItem Visibility="{Binding GuildTabVisibility, Mode=OneWay}" Header="{Binding Translation.Guild, FallbackValue=GUILD}">
-                <Grid Style="{StaticResource TabItemGridStyle}">
-                    <userControls:GuildControl DataContext="{Binding RelativeSource={RelativeSource AncestorType=Window}, Path=DataContext}" />
-                </Grid>
-            </TabItem>
-            <TabItem Visibility="{Binding DungeonsTabVisibility, Mode=OneWay}" Header="{Binding Translation.Dungeons, FallbackValue=DUNGEONS}">
+            <TabItem Visibility="{Binding DungeonsTabVisibility, Mode=OneWay}" Header="{Binding Translation.Dungeons, FallbackValue=DUNGEONS}" Tag="pack://application:,,,/Assets/Navigation/dark.png">
                 <Grid Style="{StaticResource TabItemGridStyle}">
                     <userControls:DungeonControl DataContext="{Binding RelativeSource={RelativeSource AncestorType=Window}, Path=DataContext}" />
                 </Grid>
             </TabItem>
-            <TabItem Visibility="{Binding DamageMeterTabVisibility, Mode=OneWay}" Header="{Binding Translation.DamageMeter, FallbackValue=DAMAGE__METER}">
+            <TabItem Visibility="{Binding DamageMeterTabVisibility, Mode=OneWay}" Header="{Binding Translation.DamageMeter, FallbackValue=DAMAGE__METER}" Tag="pack://application:,,,/Assets/Navigation/bar-chart-rotated.png">
                 <Grid Style="{StaticResource TabItemGridStyle}">
                     <userControls:DamageMeterControl DataContext="{Binding RelativeSource={RelativeSource AncestorType=Window}, Path=DataContext}" />
                 </Grid>
             </TabItem>
-            <TabItem Visibility="{Binding TradeMonitoringTabVisibility, Mode=OneWay}" Header="{Binding Translation.TradeMonitoring, FallbackValue=TRADE__MONITORING}">
+            <TabItem Visibility="{Binding TradeMonitoringTabVisibility, Mode=OneWay}" Header="{Binding Translation.TradeMonitoring, FallbackValue=TRADE__MONITORING}" Tag="pack://application:,,,/Assets/Navigation/market.png">
                 <Grid Style="{StaticResource TabItemGridStyle}">
                     <userControls:TradeMonitoringControl DataContext="{Binding RelativeSource={RelativeSource AncestorType=Window}, Path=DataContext}" />
                 </Grid>
             </TabItem>
-            <TabItem Visibility="{Binding GatheringTabVisibility, Mode=OneWay}" Header="{Binding Translation.Gathering, FallbackValue=GATHERING}">
+            <TabItem Visibility="{Binding OpenWorldTabVisibility, Mode=OneWay}" Header="{Binding Translation.OpenWorld, FallbackValue=OPEN__WORLD}" Tag="pack://application:,,,/Assets/Navigation/open-world.png">
+                <Grid Style="{StaticResource TabItemGridStyle}">
+                    <userControls:OpenWorldControl DataContext="{Binding RelativeSource={RelativeSource AncestorType=Window}, Path=DataContext}" />
+                </Grid>
+            </TabItem>
+            <TabItem Visibility="{Binding GatheringTabVisibility, Mode=OneWay}" Header="{Binding Translation.Gathering, FallbackValue=GATHERING}" Tag="pack://application:,,,/Assets/Navigation/pickaxe.png">
                 <Grid Style="{StaticResource TabItemGridStyle}">
                     <userControls:GatheringControl DataContext="{Binding RelativeSource={RelativeSource AncestorType=Window}, Path=DataContext}" />
                 </Grid>
             </TabItem>
-            <TabItem Visibility="{Binding CraftingTabVisibility, Mode=OneWay}" Header="{Binding Translation.Crafting, FallbackValue=CRAFTING}">
+            <TabItem Visibility="{Binding CraftingTabVisibility, Mode=OneWay}" Header="{Binding Translation.Crafting, FallbackValue=CRAFTING}" Tag="pack://application:,,,/Assets/Navigation/anvil.png">
                 <Grid Style="{StaticResource TabItemGridStyle}">
                     <userControls:CraftingControl DataContext="{Binding RelativeSource={RelativeSource AncestorType=Window}, Path=DataContext}" />
                 </Grid>
             </TabItem>
-            <TabItem Visibility="{Binding PartyTabVisibility, Mode=OneWay}" Header="{Binding Translation.Party, FallbackValue=PARTY}">
+            <TabItem Visibility="{Binding PartyTabVisibility, Mode=OneWay}" Header="{Binding Translation.Party, FallbackValue=PARTY}" Tag="pack://application:,,,/Assets/Navigation/teamwork.png">
                 <Grid Style="{StaticResource TabItemGridStyle}">
                     <userControls:PartyControl DataContext="{Binding RelativeSource={RelativeSource AncestorType=Window}, Path=DataContext}" />
                 </Grid>
             </TabItem>
-            <TabItem Visibility="{Binding StorageHistoryTabVisibility, Mode=OneWay}" Header="{Binding Translation.StorageHistory, FallbackValue=STORAGE_HISTORY}">
+            <TabItem Visibility="{Binding GuildTabVisibility, Mode=OneWay}" Header="{Binding Translation.Guild, FallbackValue=GUILD}" Tag="pack://application:,,,/Assets/Navigation/shield.png">
+                <Grid Style="{StaticResource TabItemGridStyle}">
+                    <userControls:GuildControl DataContext="{Binding RelativeSource={RelativeSource AncestorType=Window}, Path=DataContext}" />
+                </Grid>
+            </TabItem>
+            <TabItem Visibility="{Binding StorageHistoryTabVisibility, Mode=OneWay}" Header="{Binding Translation.StorageHistory, FallbackValue=STORAGE_HISTORY}" Tag="pack://application:,,,/Assets/Navigation/treasure.png">
                 <Grid Style="{StaticResource TabItemGridStyle}">
                     <userControls:StorageHistoryControl DataContext="{Binding RelativeSource={RelativeSource AncestorType=Window}, Path=DataContext}" />
                 </Grid>
             </TabItem>
-            <TabItem Visibility="{Binding MapHistoryTabVisibility, Mode=OneWay}" Header="{Binding Translation.MapHistory, FallbackValue=MAP__HISTORY}">
+            <TabItem Visibility="{Binding MapHistoryTabVisibility, Mode=OneWay}" Header="{Binding Translation.MapHistory, FallbackValue=MAP__HISTORY}" Tag="pack://application:,,,/Assets/Navigation/location.png">
                 <Grid Style="{StaticResource TabItemGridStyle}">
                     <userControls:MapHistoryControl DataContext="{Binding RelativeSource={RelativeSource AncestorType=Window}, Path=DataContext}" />
                 </Grid>
             </TabItem>
-            <TabItem Visibility="{Binding PlayerInformationTabVisibility, Mode=OneWay}" Header="{Binding Translation.PlayerInformation, FallbackValue=PLAYER__INFORMATION}">
+            <TabItem Visibility="{Binding PlayerInformationTabVisibility, Mode=OneWay}" Header="{Binding Translation.PlayerInformation, FallbackValue=PLAYER__INFORMATION}" Tag="pack://application:,,,/Assets/Navigation/baseball-player.png">
                 <Grid Style="{StaticResource TabItemGridStyle}">
                     <userControls:PlayerInformationControl />
                 </Grid>
             </TabItem>
-            <TabItem Style="{StaticResource ItemContainerDonationStyle}" Header="{Binding Translation.Donations, FallbackValue=DONATIONS}">
+            <TabItem Style="{StaticResource ItemContainerDonationStyle}" Header="{Binding Translation.Donations, FallbackValue=DONATIONS}" Tag="pack://application:,,,/Assets/Navigation/money.png">
                 <Grid Style="{StaticResource TabItemGridStyle}">
                     <userControls:DonationControl />
                 </Grid>
             </TabItem>
-            <TabItem Style="{StaticResource ItemContainerThanksStyle}" Header="{Binding Translation.Thanks, FallbackValue=THANKS}">
+            <TabItem Style="{StaticResource ItemContainerThanksStyle}" Header="{Binding Translation.Thanks, FallbackValue=THANKS}" Tag="pack://application:,,,/Assets/heart.png">
                 <Grid Style="{StaticResource TabItemGridStyle}">
                     <userControls:ThanksControl />
                 </Grid>
             </TabItem>
-            <TabItem Header="{Binding Translation.Settings, FallbackValue=SETTINGS}">
+            <TabItem Header="{Binding Translation.Settings, FallbackValue=SETTINGS}" Tag="pack://application:,,,/Assets/Navigation/setting.png">
                 <Grid Style="{StaticResource TabItemGridStyle}">
                     <userControls:SettingsControl />
                 </Grid>

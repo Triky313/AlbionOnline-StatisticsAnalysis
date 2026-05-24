@@ -20,6 +20,7 @@ using StatisticsAnalysisTool.Models.BindingModel;
 using StatisticsAnalysisTool.Models.NetworkModel;
 using StatisticsAnalysisTool.Models.TranslationModel;
 using StatisticsAnalysisTool.Network.Manager;
+using StatisticsAnalysisTool.OpenWorld;
 using StatisticsAnalysisTool.Party;
 using StatisticsAnalysisTool.Properties;
 using StatisticsAnalysisTool.StorageHistory;
@@ -116,6 +117,7 @@ public class MainWindowViewModel : BaseViewModel
     private LoggingBindings _loggingBindings = new();
     private PlayerInformationBindings _playerInformationBindings = new();
     private GatheringBindings _gatheringBindings = new();
+    private OpenWorldBindings _openWorldBindings = new();
     private CraftingBindings _craftingBindings = new();
     private Visibility _dashboardTabVisibility = Visibility.Visible;
     private Visibility _itemSearchTabVisibility = Visibility.Visible;
@@ -123,6 +125,7 @@ public class MainWindowViewModel : BaseViewModel
     private Visibility _dungeonsTabVisibility = Visibility.Visible;
     private Visibility _damageMeterTabVisibility = Visibility.Visible;
     private Visibility _tradeMonitoringTabVisibility = Visibility.Visible;
+    private Visibility _openWorldTabVisibility = Visibility.Visible;
     private Visibility _gatheringTabVisibility = Visibility.Visible;
     private Visibility _craftingTabVisibility = Visibility.Visible;
     private Visibility _partyTabVisibility = Visibility.Visible;
@@ -130,6 +133,7 @@ public class MainWindowViewModel : BaseViewModel
     private Visibility _mapHistoryTabVisibility = Visibility.Visible;
     private Visibility _playerInformationTabVisibility = Visibility.Visible;
     private Visibility _guildTabVisibility = Visibility.Visible;
+    private bool _isNavigationMenuOpen = true;
     private Visibility _toolTaskFrontViewVisibility = Visibility.Collapsed;
     private Visibility _statsDropDownVisibility = Visibility.Collapsed;
     private double _toolTaskProgressBarValue;
@@ -161,6 +165,7 @@ public class MainWindowViewModel : BaseViewModel
         RefreshDashboardChartTranslations();
         RefreshItemCategoryTranslations();
         TradeMonitoringBindings.RefreshLocalization();
+        OpenWorldBindings.UpdateStats();
         RefreshTrackingActivityText();
     }
 
@@ -260,6 +265,7 @@ public class MainWindowViewModel : BaseViewModel
         UserTrackingBindings.AllianceInformationVisibility = Visibility.Hidden;
         UserTrackingBindings.CurrentMapInfoBinding.CurrentMapInformationVisibility = Visibility.Hidden;
 
+        IsNavigationMenuOpen = SettingsController.CurrentSettings.IsNavigationMenuOpen;
         IsTrackingResetByMapChangeActive = SettingsController.CurrentSettings.IsTrackingResetByMapChangeActive;
 
         // Dungeons
@@ -732,6 +738,16 @@ public class MainWindowViewModel : BaseViewModel
         set
         {
             _gatheringBindings = value;
+            OnPropertyChanged();
+        }
+    }
+
+    public OpenWorldBindings OpenWorldBindings
+    {
+        get => _openWorldBindings;
+        set
+        {
+            _openWorldBindings = value;
             OnPropertyChanged();
         }
     }
@@ -1449,6 +1465,16 @@ public class MainWindowViewModel : BaseViewModel
         }
     }
 
+    public Visibility OpenWorldTabVisibility
+    {
+        get => _openWorldTabVisibility;
+        set
+        {
+            _openWorldTabVisibility = value;
+            OnPropertyChanged();
+        }
+    }
+
     public Visibility GatheringTabVisibility
     {
         get => _gatheringTabVisibility;
@@ -1506,6 +1532,31 @@ public class MainWindowViewModel : BaseViewModel
         {
             _playerInformationTabVisibility = value;
             OnPropertyChanged();
+        }
+    }
+
+    public bool IsNavigationMenuOpen
+    {
+        get => _isNavigationMenuOpen;
+        set
+        {
+            if (_isNavigationMenuOpen == value)
+            {
+                return;
+            }
+
+            _isNavigationMenuOpen = value;
+            SettingsController.CurrentSettings.IsNavigationMenuOpen = _isNavigationMenuOpen;
+            OnPropertyChanged();
+            OnPropertyChanged(nameof(NavigationMenuWidth));
+        }
+    }
+
+    public double NavigationMenuWidth
+    {
+        get
+        {
+            return IsNavigationMenuOpen ? 190 : 64;
         }
     }
 

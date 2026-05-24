@@ -19,17 +19,11 @@ public sealed class MobDataResolver
         }
 
         var mobDataByIndex = MobsData.GetMobByIndexOrDefault(newMobEvent.MobIndex);
-        if (!string.IsNullOrWhiteSpace(mobDataByIndex.UniqueName))
-        {
-            return mobDataByIndex;
-        }
+        return HasUniqueName(mobDataByIndex) ? mobDataByIndex : UnknownMobData;
+    }
 
-        var mobDataByHealth = MobsData.GetMobByHitPointsMaxOrDefault(newMobEvent.HitPointsMax);
-        if (!string.IsNullOrWhiteSpace(mobDataByHealth.UniqueName))
-        {
-            return mobDataByHealth;
-        }
-
-        return UnknownMobData;
+    private static bool HasUniqueName(MobJsonObject mobData)
+    {
+        return !string.IsNullOrWhiteSpace(mobData?.UniqueName);
     }
 }

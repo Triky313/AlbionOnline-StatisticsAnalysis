@@ -15,6 +15,7 @@ public class FooterViewModel : BaseViewModel
     }
 
     public static string DonateUrl => Settings.Default.DonateUrl;
+    public static string PatreonUrl => Settings.Default.PatreonUrl;
     public static string DiscordUrl => Settings.Default.DiscordUrl;
     public static string GitHubRepoUrl => Settings.Default.GitHubRepoUrl;
 

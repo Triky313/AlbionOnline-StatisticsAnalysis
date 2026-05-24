@@ -5,7 +5,7 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:viewModels="clr-namespace:StatisticsAnalysisTool.ViewModels"
              mc:Ignorable="d" 
-             d:DesignHeight="650" d:DesignWidth="800"
+             d:DesignHeight="850" d:DesignWidth="800"
              d:DataContext="{d:DesignInstance Type=viewModels:ThanksViewModel}">
     <Grid>
         <ScrollViewer HorizontalScrollBarVisibility="Disabled" VerticalScrollBarVisibility="Auto">
@@ -46,6 +46,9 @@
                 <TextBlock />
                 <TextBlock Text="SeoheeKhang" Style="{StaticResource Thanks.TextBlock.Name.Style}" />
                 <TextBlock Text="Thank you for your Korean translations." Style="{StaticResource Thanks.TextBlock.Text.Style}" />
+                <TextBlock />
+                <TextBlock Text="Draxhut" Style="{StaticResource Thanks.TextBlock.Name.Style}" />
+                <TextBlock Text="Thank you for your well-organized French translations." Style="{StaticResource Thanks.TextBlock.Text.Style}" />
                 <TextBlock />
                 <TextBlock />
                 <StackPanel Orientation="Horizontal">

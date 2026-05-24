@@ -9,10 +9,8 @@ public sealed class CombatMobCacheEntry
     public string ClusterName { get; init; }
     public long MobObjectId { get; init; }
     public int MobIndex { get; set; }
-    public string MobName { get; set; }
     public string UniqueName { get; set; }
     public string TypeId { get; set; }
-    public string Identifier { get; set; }
     public double Health { get; set; }
     public double MaxHealth { get; set; }
     public DateTime FirstSeen { get; init; }

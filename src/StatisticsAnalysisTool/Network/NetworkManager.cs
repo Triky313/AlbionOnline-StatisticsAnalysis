@@ -56,6 +56,7 @@ public class NetworkManager
         builder.AddEventHandler(new NewLootChestEventHandler(trackingController));
         builder.AddEventHandler(new UpdateLootChestEventHandler(trackingController));
         //builder.AddEventHandler(new LootChestOpenedEventHandler(trackingController));
+        builder.AddEventHandler(new LeaveEventHandler(trackingController));
         builder.AddEventHandler(new InCombatStateUpdateEventHandler(trackingController));
         builder.AddEventHandler(new NewShrineEventHandler(trackingController));
         builder.AddEventHandler(new HealthUpdateEventHandler(trackingController));
@@ -91,6 +92,7 @@ public class NetworkManager
 
         // Request
         builder.AddRequestHandler(new InventoryMoveItemRequestHandler(trackingController));
+        builder.AddRequestHandler(new InventoryMoveGivenItemsRequestHandler(trackingController));
         builder.AddRequestHandler(new UseShrineRequestHandler(trackingController));
         builder.AddRequestHandler(new ClaimPaymentTransactionRequestHandler(trackingController));
         builder.AddRequestHandler(new ActionOnBuildingStartRequestHandler(trackingController));

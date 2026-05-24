@@ -658,12 +658,7 @@ public sealed class DungeonController
 
     public async Task AddNewLocalPlayerLootOnCurrentDungeonAsync(int containerSlot, Guid containerGuid, Guid userInteractGuid)
     {
-        if (_trackingController.EntityController.LocalUserData.InteractGuid != userInteractGuid)
-        {
-            return;
-        }
-
-        if (_currentItemContainer?.ContainerGuid != containerGuid)
+        if (!IsLocalPlayerCurrentContainerLoot(containerGuid, userInteractGuid))
         {
             return;
         }
@@ -677,6 +672,56 @@ public sealed class DungeonController
         }
 
         await AddLocalPlayerLootedItemToCurrentDungeonAsync(lootedItem);
+    }
+
+    public async Task AddNewLocalPlayerLootOnCurrentDungeonAsync(IReadOnlyCollection<long> itemObjectIds, Guid containerGuid, Guid userInteractGuid)
+    {
+        if (itemObjectIds?.Count <= 0 || !IsLocalPlayerCurrentContainerLoot(containerGuid, userInteractGuid))
+        {
+            return;
+        }
+
+        var currentContainerItemIds = GetCurrentContainerItemObjectIds();
+        foreach (var itemObjectId in itemObjectIds.Distinct())
+        {
+            if (!currentContainerItemIds.Contains(itemObjectId))
+            {
+                continue;
+            }
+
+            var lootedItem = _discoveredLoot.FirstOrDefault(x => x.ObjectId == itemObjectId);
+            if (lootedItem == null)
+            {
+                continue;
+            }
+
+            await AddLocalPlayerLootedItemToCurrentDungeonAsync(lootedItem);
+        }
+    }
+
+    private bool IsLocalPlayerCurrentContainerLoot(Guid containerGuid, Guid userInteractGuid)
+    {
+        if (_trackingController.EntityController.LocalUserData.InteractGuid != userInteractGuid)
+        {
+            return false;
+        }
+
+        if (_currentItemContainer?.ContainerGuid != containerGuid)
+        {
+            return false;
+        }
+
+        return true;
+    }
+
+    private HashSet<long> GetCurrentContainerItemObjectIds()
+    {
+        if (_currentItemContainer?.SlotItemIds?.Count is null or <= 0)
+        {
+            return [];
+        }
+
+        return _currentItemContainer.SlotItemIds.ToHashSet();
     }
 
     private long GetItemObjectIdFromContainer(int containerSlot)

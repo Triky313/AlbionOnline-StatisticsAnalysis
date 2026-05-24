@@ -1,6 +1,7 @@
 using StatisticsAnalysisTool.Common;
 using StatisticsAnalysisTool.Enumerations;
 using StatisticsAnalysisTool.GameFileData.Models;
+using StatisticsAnalysisTool.Localization;
 using StatisticsAnalysisTool.Properties;
 using System;
 using System.Collections.Generic;
@@ -13,12 +14,14 @@ namespace StatisticsAnalysisTool.GameFileData;
 
 public static class MobsData
 {
+    private const int InGameMobIndexOffset = 16;
     private const double LevelZeroUpperHpPercent = 93;
     private const double LevelOneUpperHpPercent = 109;
     private const double LevelTwoUpperHpPercent = 125;
     private const double LevelThreeUpperHpPercent = 146;
     private const double LevelFourUpperHpPercent = 220;
     private static IEnumerable<MobJsonObject> _mobs;
+    private static IReadOnlyDictionary<MobVisualIdentity, string> _nameLocatagByVisualIdentity = new Dictionary<MobVisualIdentity, string>();
 
     public static int GetMobTierByIndex(int index)
     {
@@ -55,8 +58,7 @@ public static class MobsData
             return new MobJsonObject();
         }
 
-        return _mobs?.FirstOrDefault(x => string.Equals(x.UniqueName, uniqueName, StringComparison.OrdinalIgnoreCase))
-               ?? new MobJsonObject();
+        return _mobs?.FirstOrDefault(x => string.Equals(x.UniqueName, uniqueName, StringComparison.OrdinalIgnoreCase)) ?? new MobJsonObject();
     }
 
     public static MobJsonObject GetMobByHitPointsMaxOrDefault(double hitPointsMax)
@@ -66,8 +68,58 @@ public static class MobsData
             return new MobJsonObject();
         }
 
-        return _mobs?.FirstOrDefault(x => Math.Abs(x.HitPointsMax - hitPointsMax) < 0.01)
-               ?? new MobJsonObject();
+        return _mobs?.FirstOrDefault(x => Math.Abs(x.HitPointsMax - hitPointsMax) < 0.01) ?? new MobJsonObject();
+    }
+
+    public static string GetAvatarFileName(MobJsonObject mob)
+    {
+        if (mob == null)
+        {
+            return string.Empty;
+        }
+
+        return NormalizeAvatarFileName(mob.Avatar);
+    }
+
+    public static string GetFaction(MobJsonObject mob)
+    {
+        return mob?.Faction ?? string.Empty;
+    }
+
+    public static IReadOnlyList<string> GetFactions()
+    {
+        return _mobs?
+            .Select(x => x.Faction)
+            .Where(x => !string.IsNullOrWhiteSpace(x))
+            .Distinct(StringComparer.OrdinalIgnoreCase)
+            .OrderBy(x => x, StringComparer.OrdinalIgnoreCase)
+            .ToList() ?? [];
+    }
+
+    public static string GetLocalizedMobName(MobJsonObject mob)
+    {
+        if (mob == null)
+        {
+            return string.Empty;
+        }
+
+        if (TryGetLocalizedMobName(mob.NameLocatag, out var localizedName))
+        {
+            return localizedName;
+        }
+
+        if (TryGetLocalizedMobName(GetDirectMobNameLocatag(mob), out localizedName))
+        {
+            return localizedName;
+        }
+
+        if (_nameLocatagByVisualIdentity.TryGetValue(GetVisualIdentity(mob), out var visualIdentityNameLocatag)
+            && TryGetLocalizedMobName(visualIdentityNameLocatag, out localizedName))
+        {
+            return localizedName;
+        }
+
+        return mob.UniqueName ?? string.Empty;
     }
 
     public static int GetRandomDungeonMobLevelByIndex(int index, double inGameHitPointsMax)
@@ -107,17 +159,8 @@ public static class MobsData
 
     private static MobJsonObject GetMobJsonObjectByIndex(int index)
     {
-        // From July 18, 2025, the in-game index will start counting from 15.
-        // The ID's were decreased by 15
-        index -= 15;
-
-        if (index < 0)
-        {
-            uint unsignedIndex = Convert.ToUInt32(index);
-            index = (int) unsignedIndex;
-        }
-
-        return _mobs.IsInBounds(index) ? _mobs?.ElementAt(index) : new MobJsonObject();
+        var mobDataIndex = index - InGameMobIndexOffset;
+        return _mobs.IsInBounds(mobDataIndex) ? _mobs?.ElementAt(mobDataIndex) : new MobJsonObject();
     }
 
     private static bool IsReliableRandomDungeonTierMob(MobJsonObject mob)
@@ -152,6 +195,93 @@ public static class MobsData
             }).ConfigureAwait(false);
 
         _mobs = mobs;
+        EnrichMissingNameLocatags(mobs);
+        _nameLocatagByVisualIdentity = BuildNameLocatagByVisualIdentity(mobs);
         return mobs.Count >= 0;
+    }
+
+    public static List<MobJsonObject> EnrichMissingNameLocatags(List<MobJsonObject> mobs)
+    {
+        if (mobs == null || mobs.Count == 0)
+        {
+            return mobs ?? [];
+        }
+
+        var nameLocatagByVisualIdentity = BuildNameLocatagByVisualIdentity(mobs);
+        foreach (var mob in mobs.Where(x => string.IsNullOrWhiteSpace(x.NameLocatag)))
+        {
+            if (nameLocatagByVisualIdentity.TryGetValue(GetVisualIdentity(mob), out var nameLocatag))
+            {
+                mob.NameLocatag = nameLocatag;
+            }
+        }
+
+        return mobs;
+    }
+
+    private static string NormalizeAvatarFileName(string avatar)
+    {
+        if (string.IsNullOrWhiteSpace(avatar))
+        {
+            return string.Empty;
+        }
+
+        return avatar.EndsWith(".png", StringComparison.OrdinalIgnoreCase) ? avatar : $"{avatar}.png";
+    }
+
+    private static bool TryGetLocalizedMobName(string nameLocatag, out string localizedName)
+    {
+        localizedName = string.Empty;
+        if (string.IsNullOrWhiteSpace(nameLocatag))
+        {
+            return false;
+        }
+
+        var translatedName = LocalizationController.GameTranslation(nameLocatag);
+        if (string.Equals(translatedName, nameLocatag, StringComparison.Ordinal))
+        {
+            return false;
+        }
+
+        localizedName = translatedName;
+        return true;
+    }
+
+    private static string GetDirectMobNameLocatag(MobJsonObject mob)
+    {
+        return string.IsNullOrWhiteSpace(mob?.UniqueName) ? string.Empty : $"@MOB_{mob.UniqueName}";
+    }
+
+    private static IReadOnlyDictionary<MobVisualIdentity, string> BuildNameLocatagByVisualIdentity(IEnumerable<MobJsonObject> mobs)
+    {
+        return mobs?
+            .Where(x => !string.IsNullOrWhiteSpace(x.NameLocatag))
+            .GroupBy(GetVisualIdentity)
+            .Select(x => new
+            {
+                VisualIdentity = x.Key,
+                NameLocatags = x
+                    .Select(mob => mob.NameLocatag)
+                    .Where(nameLocatag => !string.IsNullOrWhiteSpace(nameLocatag))
+                    .Distinct(StringComparer.OrdinalIgnoreCase)
+                    .ToList()
+            })
+            .Where(x => !x.VisualIdentity.IsEmpty && x.NameLocatags.Count == 1)
+            .ToDictionary(x => x.VisualIdentity, x => x.NameLocatags[0]) ?? new Dictionary<MobVisualIdentity, string>();
+    }
+
+    private static MobVisualIdentity GetVisualIdentity(MobJsonObject mob)
+    {
+        return new MobVisualIdentity(NormalizeVisualIdentityValue(mob?.Faction), NormalizeVisualIdentityValue(mob?.Avatar));
+    }
+
+    private static string NormalizeVisualIdentityValue(string value)
+    {
+        return string.IsNullOrWhiteSpace(value) ? string.Empty : value.ToUpperInvariant();
+    }
+
+    private readonly record struct MobVisualIdentity(string Faction, string Avatar)
+    {
+        public bool IsEmpty => string.IsNullOrWhiteSpace(Faction) || string.IsNullOrWhiteSpace(Avatar);
     }
 }

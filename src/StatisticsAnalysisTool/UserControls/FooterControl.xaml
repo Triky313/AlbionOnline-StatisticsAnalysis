@@ -65,6 +65,13 @@
                     </Hyperlink>
                 </TextBlock>
             </Grid>
+            <Grid ZIndex="10" Margin="5,0" HorizontalAlignment="Left" Width="22" Height="22" VerticalAlignment="Bottom">
+                <TextBlock>
+                    <Hyperlink NavigateUri="{Binding PatreonUrl}" RequestNavigate="Hyperlink_RequestNavigate" TextDecorations="{x:Null}">
+                        <fa5:ImageAwesome Icon="Brands_Patreon" Foreground="{StaticResource SolidColorBrush.Text.1}" />
+                    </Hyperlink>
+                </TextBlock>
+            </Grid>
         </StackPanel>
     </Grid>
 </UserControl>
