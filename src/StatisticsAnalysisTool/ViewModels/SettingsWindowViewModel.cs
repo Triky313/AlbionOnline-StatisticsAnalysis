@@ -179,6 +179,7 @@ public class SettingsWindowViewModel : BaseViewModel
         SetNaviTabVisibilityName(NavigationTabFilterType.Dungeons, MainWindowTranslation.Dungeons);
         SetNaviTabVisibilityName(NavigationTabFilterType.DamageMeter, MainWindowTranslation.DamageMeter);
         SetNaviTabVisibilityName(NavigationTabFilterType.TradeMonitoring, MainWindowTranslation.TradeMonitoring);
+        SetNaviTabVisibilityName(NavigationTabFilterType.OpenWorld, MainWindowTranslation.OpenWorld);
         SetNaviTabVisibilityName(NavigationTabFilterType.Gathering, MainWindowTranslation.Gathering);
         SetNaviTabVisibilityName(NavigationTabFilterType.Crafting, MainWindowTranslation.Crafting);
         SetNaviTabVisibilityName(NavigationTabFilterType.Party, MainWindowTranslation.Party);
@@ -220,6 +221,7 @@ public class SettingsWindowViewModel : BaseViewModel
         SettingsController.CurrentSettings.IsDungeonsNaviTabActive = TabVisibilities?.FirstOrDefault(x => x?.NavigationTabFilterType == NavigationTabFilterType.Dungeons)?.IsSelected ?? true;
         SettingsController.CurrentSettings.IsDamageMeterNaviTabActive = TabVisibilities?.FirstOrDefault(x => x?.NavigationTabFilterType == NavigationTabFilterType.DamageMeter)?.IsSelected ?? true;
         SettingsController.CurrentSettings.IsTradeMonitoringNaviTabActive = TabVisibilities?.FirstOrDefault(x => x?.NavigationTabFilterType == NavigationTabFilterType.TradeMonitoring)?.IsSelected ?? true;
+        SettingsController.CurrentSettings.IsOpenWorldNaviTabActive = TabVisibilities?.FirstOrDefault(x => x?.NavigationTabFilterType == NavigationTabFilterType.OpenWorld)?.IsSelected ?? true;
         SettingsController.CurrentSettings.IsGatheringNaviTabActive = TabVisibilities?.FirstOrDefault(x => x?.NavigationTabFilterType == NavigationTabFilterType.Gathering)?.IsSelected ?? true;
         SettingsController.CurrentSettings.IsCraftingNaviTabActive = TabVisibilities?.FirstOrDefault(x => x?.NavigationTabFilterType == NavigationTabFilterType.Crafting)?.IsSelected ?? true;
         SettingsController.CurrentSettings.IsPartyNaviTabActive = TabVisibilities?.FirstOrDefault(x => x?.NavigationTabFilterType == NavigationTabFilterType.Party)?.IsSelected ?? true;
@@ -233,6 +235,7 @@ public class SettingsWindowViewModel : BaseViewModel
         mainWindowViewModel.DungeonsTabVisibility = SettingsController.CurrentSettings.IsDungeonsNaviTabActive.BoolToVisibility();
         mainWindowViewModel.DamageMeterTabVisibility = SettingsController.CurrentSettings.IsDamageMeterNaviTabActive.BoolToVisibility();
         mainWindowViewModel.TradeMonitoringTabVisibility = SettingsController.CurrentSettings.IsTradeMonitoringNaviTabActive.BoolToVisibility();
+        mainWindowViewModel.OpenWorldTabVisibility = SettingsController.CurrentSettings.IsOpenWorldNaviTabActive.BoolToVisibility();
         mainWindowViewModel.GatheringTabVisibility = SettingsController.CurrentSettings.IsGatheringNaviTabActive.BoolToVisibility();
         mainWindowViewModel.CraftingTabVisibility = SettingsController.CurrentSettings.IsCraftingNaviTabActive.BoolToVisibility();
         mainWindowViewModel.PartyTabVisibility = SettingsController.CurrentSettings.IsPartyNaviTabActive.BoolToVisibility();
@@ -475,6 +478,11 @@ public class SettingsWindowViewModel : BaseViewModel
             IsSelected = SettingsController.CurrentSettings.IsTradeMonitoringNaviTabActive,
             Name = MainWindowTranslation.TradeMonitoring
         });
+        TabVisibilities.Add(new TabVisibilityFilter(NavigationTabFilterType.OpenWorld)
+        {
+            IsSelected = SettingsController.CurrentSettings.IsOpenWorldNaviTabActive,
+            Name = MainWindowTranslation.OpenWorld
+        });
         TabVisibilities.Add(new TabVisibilityFilter(NavigationTabFilterType.Gathering)
         {
             IsSelected = SettingsController.CurrentSettings.IsGatheringNaviTabActive,
@@ -513,6 +521,7 @@ public class SettingsWindowViewModel : BaseViewModel
         mainWindowViewModel.DungeonsTabVisibility = SettingsController.CurrentSettings.IsDungeonsNaviTabActive.BoolToVisibility();
         mainWindowViewModel.DamageMeterTabVisibility = SettingsController.CurrentSettings.IsDamageMeterNaviTabActive.BoolToVisibility();
         mainWindowViewModel.TradeMonitoringTabVisibility = SettingsController.CurrentSettings.IsTradeMonitoringNaviTabActive.BoolToVisibility();
+        mainWindowViewModel.OpenWorldTabVisibility = SettingsController.CurrentSettings.IsOpenWorldNaviTabActive.BoolToVisibility();
         mainWindowViewModel.GatheringTabVisibility = SettingsController.CurrentSettings.IsGatheringNaviTabActive.BoolToVisibility();
         mainWindowViewModel.CraftingTabVisibility = SettingsController.CurrentSettings.IsCraftingNaviTabActive.BoolToVisibility();
         mainWindowViewModel.PartyTabVisibility = SettingsController.CurrentSettings.IsPartyNaviTabActive.BoolToVisibility();

@@ -27759,7 +27759,7 @@
         },
         {
           "lang": "en-US",
-          "seg": "Open world"
+          "seg": "Open World"
         },
         {
           "lang": "es-ES",
@@ -27796,6 +27796,447 @@
         {
           "lang": "zh-TW",
           "seg": "開放世界"
+        }
+      ]
+    },
+    {
+      "tuid": "OPEN_WORLD_ACTIVE",
+      "tuv": [
+        {
+          "lang": "de-DE",
+          "seg": "Offene Welt aktiv"
+        },
+        {
+          "lang": "en-US",
+          "seg": "Open World active"
+        },
+        {
+          "lang": "es-ES",
+          "seg": "Open World active"
+        },
+        {
+          "lang": "fr-FR",
+          "seg": "Open World active"
+        },
+        {
+          "lang": "ja-JP",
+          "seg": "Open World active"
+        },
+        {
+          "lang": "ko-KR",
+          "seg": "Open World active"
+        },
+        {
+          "lang": "pl-PL",
+          "seg": "Open World active"
+        },
+        {
+          "lang": "pt-BR",
+          "seg": "Open World active"
+        },
+        {
+          "lang": "ru-RU",
+          "seg": "Open World active"
+        },
+        {
+          "lang": "zh-CN",
+          "seg": "Open World active"
+        },
+        {
+          "lang": "zh-TW",
+          "seg": "Open World active"
+        }
+      ]
+    },
+    {
+      "tuid": "KILLED_MAMMOTHS",
+      "tuv": [
+        {
+          "lang": "de-DE",
+          "seg": "Getötete Mammuts"
+        },
+        {
+          "lang": "en-US",
+          "seg": "Killed Mammoths"
+        },
+        {
+          "lang": "es-ES",
+          "seg": "Killed Mammoths"
+        },
+        {
+          "lang": "fr-FR",
+          "seg": "Killed Mammoths"
+        },
+        {
+          "lang": "ja-JP",
+          "seg": "Killed Mammoths"
+        },
+        {
+          "lang": "ko-KR",
+          "seg": "Killed Mammoths"
+        },
+        {
+          "lang": "pl-PL",
+          "seg": "Killed Mammoths"
+        },
+        {
+          "lang": "pt-BR",
+          "seg": "Killed Mammoths"
+        },
+        {
+          "lang": "ru-RU",
+          "seg": "Killed Mammoths"
+        },
+        {
+          "lang": "zh-CN",
+          "seg": "Killed Mammoths"
+        },
+        {
+          "lang": "zh-TW",
+          "seg": "Killed Mammoths"
+        }
+      ]
+    },
+    {
+      "tuid": "KILLED_MOBS",
+      "tuv": [
+        {
+          "lang": "de-DE",
+          "seg": "Get\u00f6tete Mobs"
+        },
+        {
+          "lang": "en-US",
+          "seg": "Killed Mobs"
+        },
+        {
+          "lang": "es-ES",
+          "seg": "Killed Mobs"
+        },
+        {
+          "lang": "fr-FR",
+          "seg": "Killed Mobs"
+        },
+        {
+          "lang": "ja-JP",
+          "seg": "Killed Mobs"
+        },
+        {
+          "lang": "ko-KR",
+          "seg": "Killed Mobs"
+        },
+        {
+          "lang": "pl-PL",
+          "seg": "Killed Mobs"
+        },
+        {
+          "lang": "pt-BR",
+          "seg": "Killed Mobs"
+        },
+        {
+          "lang": "ru-RU",
+          "seg": "Killed Mobs"
+        },
+        {
+          "lang": "zh-CN",
+          "seg": "Killed Mobs"
+        },
+        {
+          "lang": "zh-TW",
+          "seg": "Killed Mobs"
+        }
+      ]
+    },
+    {
+      "tuid": "ALL_FACTIONS",
+      "tuv": [
+        {
+          "lang": "de-DE",
+          "seg": "Alle Fraktionen"
+        },
+        {
+          "lang": "en-US",
+          "seg": "All factions"
+        },
+        {
+          "lang": "es-ES",
+          "seg": "All factions"
+        },
+        {
+          "lang": "fr-FR",
+          "seg": "All factions"
+        },
+        {
+          "lang": "ja-JP",
+          "seg": "All factions"
+        },
+        {
+          "lang": "ko-KR",
+          "seg": "All factions"
+        },
+        {
+          "lang": "pl-PL",
+          "seg": "All factions"
+        },
+        {
+          "lang": "pt-BR",
+          "seg": "All factions"
+        },
+        {
+          "lang": "ru-RU",
+          "seg": "All factions"
+        },
+        {
+          "lang": "zh-CN",
+          "seg": "All factions"
+        },
+        {
+          "lang": "zh-TW",
+          "seg": "All factions"
+        }
+      ]
+    },
+    {
+      "tuid": "SEARCH_MOBS",
+      "tuv": [
+        {
+          "lang": "de-DE",
+          "seg": "Mobs suchen"
+        },
+        {
+          "lang": "en-US",
+          "seg": "Search mobs"
+        },
+        {
+          "lang": "es-ES",
+          "seg": "Search mobs"
+        },
+        {
+          "lang": "fr-FR",
+          "seg": "Search mobs"
+        },
+        {
+          "lang": "ja-JP",
+          "seg": "Search mobs"
+        },
+        {
+          "lang": "ko-KR",
+          "seg": "Search mobs"
+        },
+        {
+          "lang": "pl-PL",
+          "seg": "Search mobs"
+        },
+        {
+          "lang": "pt-BR",
+          "seg": "Search mobs"
+        },
+        {
+          "lang": "ru-RU",
+          "seg": "Search mobs"
+        },
+        {
+          "lang": "zh-CN",
+          "seg": "Search mobs"
+        },
+        {
+          "lang": "zh-TW",
+          "seg": "Search mobs"
+        }
+      ]
+    },
+    {
+      "tuid": "LAST_KILL",
+      "tuv": [
+        {
+          "lang": "de-DE",
+          "seg": "Letzter Kill"
+        },
+        {
+          "lang": "en-US",
+          "seg": "Last kill"
+        },
+        {
+          "lang": "es-ES",
+          "seg": "Last kill"
+        },
+        {
+          "lang": "fr-FR",
+          "seg": "Last kill"
+        },
+        {
+          "lang": "ja-JP",
+          "seg": "Last kill"
+        },
+        {
+          "lang": "ko-KR",
+          "seg": "Last kill"
+        },
+        {
+          "lang": "pl-PL",
+          "seg": "Last kill"
+        },
+        {
+          "lang": "pt-BR",
+          "seg": "Last kill"
+        },
+        {
+          "lang": "ru-RU",
+          "seg": "Last kill"
+        },
+        {
+          "lang": "zh-CN",
+          "seg": "Last kill"
+        },
+        {
+          "lang": "zh-TW",
+          "seg": "Last kill"
+        }
+      ]
+    },
+    {
+      "tuid": "RESET_OPEN_WORLD_STATS",
+      "tuv": [
+        {
+          "lang": "de-DE",
+          "seg": "Open World Statistik zurücksetzen"
+        },
+        {
+          "lang": "en-US",
+          "seg": "Reset Open World stats"
+        },
+        {
+          "lang": "es-ES",
+          "seg": "Reset Open World stats"
+        },
+        {
+          "lang": "fr-FR",
+          "seg": "Reset Open World stats"
+        },
+        {
+          "lang": "ja-JP",
+          "seg": "Reset Open World stats"
+        },
+        {
+          "lang": "ko-KR",
+          "seg": "Reset Open World stats"
+        },
+        {
+          "lang": "pl-PL",
+          "seg": "Reset Open World stats"
+        },
+        {
+          "lang": "pt-BR",
+          "seg": "Reset Open World stats"
+        },
+        {
+          "lang": "ru-RU",
+          "seg": "Reset Open World stats"
+        },
+        {
+          "lang": "zh-CN",
+          "seg": "Reset Open World stats"
+        },
+        {
+          "lang": "zh-TW",
+          "seg": "Reset Open World stats"
+        }
+      ]
+    },
+    {
+      "tuid": "RESET_ALL",
+      "tuv": [
+        {
+          "lang": "de-DE",
+          "seg": "Alles zurücksetzen"
+        },
+        {
+          "lang": "en-US",
+          "seg": "Reset all"
+        },
+        {
+          "lang": "es-ES",
+          "seg": "Reset all"
+        },
+        {
+          "lang": "fr-FR",
+          "seg": "Reset all"
+        },
+        {
+          "lang": "ja-JP",
+          "seg": "Reset all"
+        },
+        {
+          "lang": "ko-KR",
+          "seg": "Reset all"
+        },
+        {
+          "lang": "pl-PL",
+          "seg": "Reset all"
+        },
+        {
+          "lang": "pt-BR",
+          "seg": "Reset all"
+        },
+        {
+          "lang": "ru-RU",
+          "seg": "Reset all"
+        },
+        {
+          "lang": "zh-CN",
+          "seg": "Reset all"
+        },
+        {
+          "lang": "zh-TW",
+          "seg": "Reset all"
+        }
+      ]
+    },
+    {
+      "tuid": "SURE_YOU_WANT_TO_RESET_OPEN_WORLD_STATS",
+      "tuv": [
+        {
+          "lang": "de-DE",
+          "seg": "Möchtest du die Open World Statistik wirklich zurücksetzen?"
+        },
+        {
+          "lang": "en-US",
+          "seg": "Are you sure you want to reset the Open World stats?"
+        },
+        {
+          "lang": "es-ES",
+          "seg": "Are you sure you want to reset the Open World stats?"
+        },
+        {
+          "lang": "fr-FR",
+          "seg": "Are you sure you want to reset the Open World stats?"
+        },
+        {
+          "lang": "ja-JP",
+          "seg": "Are you sure you want to reset the Open World stats?"
+        },
+        {
+          "lang": "ko-KR",
+          "seg": "Are you sure you want to reset the Open World stats?"
+        },
+        {
+          "lang": "pl-PL",
+          "seg": "Are you sure you want to reset the Open World stats?"
+        },
+        {
+          "lang": "pt-BR",
+          "seg": "Are you sure you want to reset the Open World stats?"
+        },
+        {
+          "lang": "ru-RU",
+          "seg": "Are you sure you want to reset the Open World stats?"
+        },
+        {
+          "lang": "zh-CN",
+          "seg": "Are you sure you want to reset the Open World stats?"
+        },
+        {
+          "lang": "zh-TW",
+          "seg": "Are you sure you want to reset the Open World stats?"
         }
       ]
     },

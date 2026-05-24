@@ -53,6 +53,7 @@ public sealed class ClusterController(TrackingController trackingController, Mai
         CurrentCluster.SetJoinClusterInfo(index, sourceClusterIndex, mapGuid, mapType);
         CurrentCluster.Entered = DateTime.UtcNow;
         CurrentCluster.ClusterInfoFullyAvailable = true;
+        trackingController.CombatController.CombatEventTracker.OnClusterChanged();
 
         if (trackingController.IsTrackingAllowedByMainCharacter())
         {
@@ -64,7 +65,6 @@ public sealed class ClusterController(TrackingController trackingController, Mai
 
     public void SetAndResetValues(ClusterInfo currentCluster)
     {
-        trackingController.CombatController.CombatEventTracker.OnClusterChanged();
         trackingController.TradeController.ResetCraftingBuildingInfo();
         mainWindowViewModel.DamageMeterBindings.GetSnapshot(
             mainWindowViewModel.DamageMeterBindings.IsSnapshotAfterMapChangeActive,
@@ -78,6 +78,7 @@ public sealed class ClusterController(TrackingController trackingController, Mai
         trackingController.TreasureController.UpdateLootedChestsDashboardUi();
         trackingController.LootController.ResetLocalPlayerDiscoveredLoot();
         trackingController.LootController.ResetIdentifiedBodies();
+        _ = trackingController.OpenWorldController.SaveOnClusterChangedAsync();
         _ = trackingController.TradeController.RemoveTradesByDaysInSettingsAsync();
         _ = trackingController.GatheringController.SetGatheredResourcesClosedAsync();
         trackingController.PartyController.UpdateIsPlayerInspectedToFalse();

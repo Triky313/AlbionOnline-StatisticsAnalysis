@@ -98,7 +98,9 @@ public static class GameData
                 extractionTaskFactories.Add(() => extractor.ExtractGameDataFromXmlAsync(gameFilesDirPath, ["spells"]));
             }
 
-            if (Extractor.IsBinFileNewer(Path.Combine(gameFilesDirPath, "mobs-modified.json"), mainGameFolderPath, serverType, "mobs"))
+            var mobsModifiedFilePath = Path.Combine(gameFilesDirPath, "mobs-modified.json");
+            if (Extractor.IsBinFileNewer(mobsModifiedFilePath, mainGameFolderPath, serverType, "mobs")
+                || IsMobDataMissingOpenWorldFields(mobsModifiedFilePath))
             {
                 fileNamesToLoad.Add("mobs");
             }
@@ -294,7 +296,7 @@ public static class GameData
 
             return rootObject switch
             {
-                MobJsonRootObject mobRootObject => mobRootObject.Mobs?.Mob as List<T> ?? [],
+                MobJsonRootObject mobRootObject => MobsData.EnrichMissingNameLocatags(mobRootObject.Mobs?.Mob ?? []) as List<T> ?? [],
                 LootChestRoot lootChestRoot => lootChestRoot.LootChests?.LootChest as List<T> ?? [],
                 WorldJsonRootObject worldJsonRoot => worldJsonRoot.World?.Clusters?.Cluster as List<T> ?? [],
                 CraftingModifiersRootObject craftingModifiersRootObject => craftingModifiersRootObject.CraftingModifiers?.CraftingLocation as List<T> ?? [],
@@ -326,5 +328,47 @@ public static class GameData
             FileShare.Read,
             FileBufferSize,
             FileOptions.Asynchronous | FileOptions.SequentialScan);
+    }
+
+    private static bool IsMobDataMissingOpenWorldFields(string mobDataFilePath)
+    {
+        if (!File.Exists(mobDataFilePath))
+        {
+            return false;
+        }
+
+        try
+        {
+            using var stream = File.OpenRead(mobDataFilePath);
+            using var document = JsonDocument.Parse(stream);
+            if (document.RootElement.ValueKind != JsonValueKind.Array)
+            {
+                return false;
+            }
+
+            var hasAvatar = false;
+            var hasFaction = false;
+            var hasNameLocatag = false;
+
+            foreach (var mob in document.RootElement.EnumerateArray())
+            {
+                hasAvatar |= mob.TryGetProperty("@avatar", out _);
+                hasFaction |= mob.TryGetProperty("@faction", out _);
+                hasNameLocatag |= mob.TryGetProperty("@namelocatag", out _);
+
+                if (hasAvatar && hasFaction && hasNameLocatag)
+                {
+                    return false;
+                }
+            }
+
+            return true;
+        }
+        catch (Exception e)
+        {
+            DebugConsole.WriteError(MethodBase.GetCurrentMethod()?.DeclaringType, e);
+            Log.Error(e, "{message}", MethodBase.GetCurrentMethod()?.DeclaringType);
+            return false;
+        }
     }
 }

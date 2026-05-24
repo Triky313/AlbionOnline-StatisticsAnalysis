@@ -12,6 +12,7 @@ using StatisticsAnalysisTool.Gathering;
 using StatisticsAnalysisTool.Guild;
 using StatisticsAnalysisTool.Localization;
 using StatisticsAnalysisTool.Network.PacketProviders;
+using StatisticsAnalysisTool.OpenWorld;
 using StatisticsAnalysisTool.Party;
 using StatisticsAnalysisTool.StorageHistory;
 using StatisticsAnalysisTool.Trade;
@@ -52,6 +53,7 @@ public class TrackingController : ITrackingController
     public readonly TradeController TradeController;
     public readonly VaultController VaultController;
     public readonly GatheringController GatheringController;
+    public readonly OpenWorldController OpenWorldController;
     public readonly PartyController PartyController;
     public readonly GuildController GuildController;
     private readonly List<LoggingFilterType> _notificationTypesFilters = [];
@@ -71,6 +73,7 @@ public class TrackingController : ITrackingController
         TradeController = new TradeController(this, mainWindowViewModel);
         VaultController = new VaultController(mainWindowViewModel);
         GatheringController = new GatheringController(this, mainWindowViewModel);
+        OpenWorldController = new OpenWorldController(this, mainWindowViewModel);
         PartyController = new PartyController(this, mainWindowViewModel);
         GuildController = new GuildController(this, mainWindowViewModel);
         LiveStatsTracker = new LiveStatsTracker(this, mainWindowViewModel);
@@ -238,6 +241,7 @@ public class TrackingController : ITrackingController
             StatisticController.SaveInFileAsync(),
             DungeonController.SaveInFileAsync(),
             GatheringController.SaveInFileAsync(true),
+            OpenWorldController.SaveInFileAsync(),
             GuildController.SaveInFileAsync(),
             CombatController.SaveInFileAsync(),
             MarketController.SaveInFileAsync(),
@@ -255,6 +259,7 @@ public class TrackingController : ITrackingController
             TreasureController.LoadFromFileAsync(),
             DungeonController.LoadDungeonFromFileAsync(),
             GatheringController.LoadFromFileAsync(),
+            OpenWorldController.LoadFromFileAsync(),
             VaultController.LoadFromFileAsync(),
             GuildController.LoadFromFileAsync(),
             CombatController.LoadFromFileAsync(),
@@ -486,6 +491,17 @@ public class TrackingController : ITrackingController
     public bool IsLootFromMobShown { get; set; }
 
     public bool IsKillTrackingEnabled => _mainWindowViewModel?.LoggingBindings?.IsTrackingKill ?? false;
+
+    public bool IsLocalOrPartyEntity(long objectId)
+    {
+        var localEntity = EntityController.GetLocalEntity();
+        if (localEntity?.Value?.ObjectId == objectId)
+        {
+            return true;
+        }
+
+        return EntityController.IsEntityInParty(objectId);
+    }
 
     private static bool _isRemovesUnnecessaryNotificationsActive;
     private DateTime _lastRemovesUnnecessaryNotifications;

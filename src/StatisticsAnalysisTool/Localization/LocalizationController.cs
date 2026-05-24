@@ -21,6 +21,7 @@ namespace StatisticsAnalysisTool.Localization;
 
 public class LocalizationController
 {
+    private const string EnglishCultureName = "en-US";
     private static readonly Dictionary<string, Dictionary<string, string>> Translations = new(StringComparer.OrdinalIgnoreCase);
     private static ImmutableDictionary<string, ImmutableDictionary<string, string>> _gameLocalizations = ImmutableDictionary<string, ImmutableDictionary<string, string>>.Empty;
 
@@ -140,6 +141,28 @@ public class LocalizationController
         return key;
     }
 
+    public static string GameTranslation(string key)
+    {
+        if (string.IsNullOrEmpty(key))
+        {
+            return key;
+        }
+
+        var culture = SettingsController.CurrentSettings.CurrentCultureIetfLanguageTag ?? string.Empty;
+        if (TryGetGameTranslationText(culture, key, out var translationText))
+        {
+            return translationText;
+        }
+
+        if (!string.Equals(culture, EnglishCultureName, StringComparison.OrdinalIgnoreCase)
+            && TryGetGameTranslationText(EnglishCultureName, key, out translationText))
+        {
+            return translationText;
+        }
+
+        return key;
+    }
+
     private static bool TryGetTranslationText(string culture, string key, out string translationText)
     {
         translationText = string.Empty;
@@ -160,6 +183,23 @@ public class LocalizationController
         return false;
     }
 
+    private static bool TryGetGameTranslationText(string culture, string key, out string translationText)
+    {
+        translationText = string.Empty;
+
+        var gameLoc = Volatile.Read(ref _gameLocalizations);
+        if (gameLoc != null
+            && gameLoc.TryGetValue(key, out var languageTranslations)
+            && languageTranslations.TryGetValue(culture, out var gameTranslation)
+            && !string.IsNullOrEmpty(gameTranslation))
+        {
+            translationText = gameTranslation;
+            return true;
+        }
+
+        return false;
+    }
+
     private static bool TryGetConfiguredTranslationText(string culture, string key, out string translationText)
     {
         translationText = string.Empty;
@@ -172,13 +212,8 @@ public class LocalizationController
             return true;
         }
 
-        var gameLoc = Volatile.Read(ref _gameLocalizations);
-        if (gameLoc != null
-            && gameLoc.TryGetValue(key, out var languageTranslations)
-            && languageTranslations.TryGetValue(culture, out var gameTranslation)
-            && !string.IsNullOrEmpty(gameTranslation))
+        if (TryGetGameTranslationText(culture, key, out translationText))
         {
-            translationText = gameTranslation;
             return true;
         }
 

@@ -1,24 +1,18 @@
-﻿using StatisticsAnalysisTool.Network.Events;
+using StatisticsAnalysisTool.Network.Events;
 using StatisticsAnalysisTool.Network.Manager;
 using System.Threading.Tasks;
 
 namespace StatisticsAnalysisTool.Network.Handler;
 
-public class LeaveEventHandler
+public class LeaveEventHandler(TrackingController trackingController) : EventPacketHandler<LeaveEvent>((int) EventCodes.Leave)
 {
-    private readonly TrackingController _trackingController;
-
-    public LeaveEventHandler(TrackingController trackingController)
+    protected override Task OnActionAsync(LeaveEvent value)
     {
-        _trackingController = trackingController;
-    }
+        if (value.ObjectId is { } objectId)
+        {
+            trackingController.CombatController.CombatEventTracker.RemoveKnownMob(objectId);
+        }
 
-    public async Task OnActionAsync(LeaveEvent value)
-    {
-        //if (value.ObjectId != null)
-        //{
-        //    TrackingController.EntityController.RemoveEntity((long)value.ObjectId);
-        //}
-        await Task.CompletedTask;
+        return Task.CompletedTask;
     }
 }

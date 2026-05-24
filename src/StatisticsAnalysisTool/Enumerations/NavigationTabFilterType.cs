@@ -10,6 +10,7 @@ public enum NavigationTabFilterType
     Dungeons,
     DamageMeter,
     TradeMonitoring,
+    OpenWorld,
     Gathering,
     Crafting,
     Party,

@@ -1,21 +1,22 @@
-﻿using StatisticsAnalysisTool.Network.Events;
+using StatisticsAnalysisTool.Network.Events;
 using StatisticsAnalysisTool.Network.Manager;
 using System.Threading.Tasks;
 
 namespace StatisticsAnalysisTool.Network.Handler;
 
-public class HealthUpdateEventHandler : EventPacketHandler<HealthUpdateEvent>
+public class HealthUpdateEventHandler(TrackingController trackingController) : EventPacketHandler<HealthUpdateEvent>((int) EventCodes.HealthUpdate)
 {
-    private readonly TrackingController _trackingController;
-
-    public HealthUpdateEventHandler(TrackingController trackingController) : base((int) EventCodes.HealthUpdate)
-    {
-        _trackingController = trackingController;
-    }
-
     protected override async Task OnActionAsync(HealthUpdateEvent value)
     {
-        await _trackingController.CombatController.AddDamage(value.AffectedObjectId, value.CauserId, value.HealthChange, value.NewHealthValue, value.CausingSpellIndex);
-        await _trackingController.CombatController.AddTakenDamage(value.AffectedObjectId, value.CauserId, value.HealthChange, value.NewHealthValue, value.CausingSpellIndex);
+        var mob = trackingController.CombatController.CombatEventTracker.GetKnownMobOrDefault(value.AffectedObjectId);
+        trackingController.OpenWorldController.TrackLocalPlayerMobDamage(value.AffectedObjectId, value.CauserId, value.HealthChange);
+
+        if (value.HealthChange < 0 && !value.HasNewHealthValue)
+        {
+            await trackingController.OpenWorldController.TryAddMobKillAsync(value.AffectedObjectId, mob, value.HealthChange, value.HasNewHealthValue);
+        }
+
+        await trackingController.CombatController.AddDamage(value.AffectedObjectId, value.CauserId, value.HealthChange, value.NewHealthValue, value.CausingSpellIndex);
+        await trackingController.CombatController.AddTakenDamage(value.AffectedObjectId, value.CauserId, value.HealthChange, value.NewHealthValue, value.CausingSpellIndex);
     }
 }

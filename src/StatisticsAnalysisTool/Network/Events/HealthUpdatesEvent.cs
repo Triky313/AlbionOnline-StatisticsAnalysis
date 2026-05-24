@@ -1,4 +1,4 @@
-﻿using Serilog;
+using Serilog;
 using StatisticsAnalysisTool.Common;
 using StatisticsAnalysisTool.Common.Converters;
 using StatisticsAnalysisTool.Enumerations;
@@ -14,7 +14,7 @@ namespace StatisticsAnalysisTool.Network.Events;
 public class HealthUpdatesEvent
 {
     public long AffectedObjectId;
-    public List<HealthUpdate> HealthUpdates { get; } = new();
+    public List<HealthUpdate> HealthUpdates { get; } = [];
 
     public HealthUpdatesEvent(Dictionary<byte, object> parameters)
     {
@@ -72,12 +72,13 @@ public class HealthUpdatesEvent
                 HealthUpdate healthUpdate = new HealthUpdate
                 {
                     AffectedObjectId = AffectedObjectId,
-                    HealthChange = i < healthChanges.Count ? healthChanges[i] : 0,
-                    NewHealthValue = i < newHealthValues.Count ? newHealthValues[i] : 0,
-                    EffectType = i < effectTypes.Count ? (EffectType) effectTypes[i] : EffectType.None,
-                    EffectOrigin = i < effectOrigins.Count ? (EffectOrigin) effectOrigins[i] : EffectOrigin.Unknown,
-                    CauserId = i < causerIds.Count ? causerIds[i] : 0,
-                    CausingSpellIndex = i < causingSpellIndices.Count ? causingSpellIndices[i] : 0
+                    HealthChange = healthChanges.GetValueOrDefault(i),
+                    NewHealthValue = newHealthValues.GetValueOrDefault(i),
+                    HasNewHealthValue = newHealthValues.ContainsKey(i),
+                    EffectType = effectTypes.TryGetValue(i, out var effectType) ? (EffectType) effectType : EffectType.None,
+                    EffectOrigin = effectOrigins.TryGetValue(i, out var effectOrigin) ? (EffectOrigin) effectOrigin : EffectOrigin.Unknown,
+                    CauserId = causerIds.GetValueOrDefault(i),
+                    CausingSpellIndex = causingSpellIndices.GetValueOrDefault(i)
                 };
 
                 HealthUpdates.Add(healthUpdate);

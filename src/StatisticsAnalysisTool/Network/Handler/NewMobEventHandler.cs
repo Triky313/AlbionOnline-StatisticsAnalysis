@@ -9,6 +9,19 @@ public class NewMobEventHandler(TrackingController trackingController) : EventPa
     protected override async Task OnActionAsync(NewMobEvent value)
     {
         trackingController.CombatController.CombatEventTracker.TrackNewMob(value);
+
+        if (value.ObjectId is { } pendingMobObjectId)
+        {
+            var pendingKillRecorded = await trackingController.OpenWorldController.TryAddPendingMobKillAsync(
+                pendingMobObjectId,
+                trackingController.CombatController.CombatEventTracker.GetKnownMobOrDefault(pendingMobObjectId));
+
+            if (!pendingKillRecorded)
+            {
+                trackingController.OpenWorldController.ResetRecordedMobKill(pendingMobObjectId);
+            }
+        }
+
         await trackingController.DungeonController.AddTierToCurrentDungeonAsync(value.MobIndex);
         trackingController.DungeonController.UpdateCurrentDungeonLevel(value.MobIndex, value.HitPointsMax);
     }

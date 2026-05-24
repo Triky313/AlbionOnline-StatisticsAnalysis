@@ -1,6 +1,7 @@
 using Serilog;
 using StatisticsAnalysisTool.Cluster;
 using StatisticsAnalysisTool.Enumerations;
+using StatisticsAnalysisTool.GameFileData;
 using StatisticsAnalysisTool.GameFileData.Models;
 using StatisticsAnalysisTool.Network.Events;
 using StatisticsAnalysisTool.Network.Manager;
@@ -15,14 +16,45 @@ namespace StatisticsAnalysisTool.DamageMeter;
 public sealed class CombatEventTracker(TrackingController trackingController)
 {
     private static readonly TimeSpan ImplicitCombatEventTimeout = TimeSpan.FromSeconds(10);
+    private static readonly TimeSpan RecentlyLeftMobRetention = TimeSpan.FromSeconds(10);
     private readonly Lock _syncLock = new();
-    private readonly ConcurrentDictionary<CombatMobKey, CombatMobCacheEntry> _knownMobs = new();
+    private readonly ConcurrentDictionary<long, CombatMobCacheEntry> _knownMobs = new();
+    private readonly ConcurrentDictionary<long, CombatMobCacheEntry> _recentlyLeftMobs = new();
     private readonly List<CombatEvent> _combatEvents = [];
     private readonly HashSet<long> _partyPlayersInCombat = [];
     private readonly MobDataResolver _mobDataResolver = new();
     private CombatEvent _activeCombatEvent;
 
     public IReadOnlyCollection<CombatMobCacheEntry> KnownMobs => _knownMobs.Values.ToList();
+
+    public CombatMobCacheEntry GetKnownMobOrDefault(long objectId)
+    {
+        if (_knownMobs.TryGetValue(objectId, out var knownMob))
+        {
+            return knownMob;
+        }
+
+        if (_recentlyLeftMobs.TryGetValue(objectId, out var recentlyLeftMob) && IsRecentlyLeftMobValid(recentlyLeftMob))
+        {
+            return recentlyLeftMob;
+        }
+
+        _recentlyLeftMobs.TryRemove(objectId, out _);
+        return null;
+    }
+
+    public void RemoveKnownMob(long objectId)
+    {
+        if (!_knownMobs.TryRemove(objectId, out var removedMob))
+        {
+            return;
+        }
+
+        removedMob.LastUpdated = DateTime.UtcNow;
+        _recentlyLeftMobs[objectId] = removedMob;
+        RemoveExpiredRecentlyLeftMobs();
+    }
+
     public IReadOnlyCollection<CombatEvent> CombatEvents
     {
         get
@@ -44,11 +76,11 @@ public sealed class CombatEventTracker(TrackingController trackingController)
         var now = DateTime.UtcNow;
         var clusterKey = GetCurrentClusterKey();
         var mobData = _mobDataResolver.Resolve(newMobEvent);
-        var key = new CombatMobKey(clusterKey, mobObjectId);
         var isNewMobEntry = false;
 
+        _recentlyLeftMobs.TryRemove(mobObjectId, out _);
         _knownMobs.AddOrUpdate(
-            key,
+            mobObjectId,
             _ =>
             {
                 isNewMobEntry = true;
@@ -63,7 +95,6 @@ public sealed class CombatEventTracker(TrackingController trackingController)
                 existingEntry.MobData = mobData;
                 existingEntry.UniqueName = mobData.UniqueName;
                 existingEntry.TypeId = newMobEvent.MobIndex.ToString();
-                existingEntry.Identifier = mobData.UniqueName;
                 return existingEntry;
             });
 
@@ -130,6 +161,7 @@ public sealed class CombatEventTracker(TrackingController trackingController)
             EndActiveCombatEvent();
             _partyPlayersInCombat.Clear();
             _knownMobs.Clear();
+            _recentlyLeftMobs.Clear();
         }
     }
 
@@ -140,6 +172,7 @@ public sealed class CombatEventTracker(TrackingController trackingController)
             EndActiveCombatEvent();
             _combatEvents.Clear();
             _partyPlayersInCombat.Clear();
+            _recentlyLeftMobs.Clear();
         }
     }
 
@@ -153,7 +186,6 @@ public sealed class CombatEventTracker(TrackingController trackingController)
             MobIndex = newMobEvent.MobIndex,
             UniqueName = mobData.UniqueName,
             TypeId = newMobEvent.MobIndex.ToString(),
-            Identifier = mobData.UniqueName,
             Health = newMobEvent.HitPoints,
             MaxHealth = newMobEvent.HitPointsMax,
             FirstSeen = now,
@@ -256,7 +288,7 @@ public sealed class CombatEventTracker(TrackingController trackingController)
             return new CombatEventParticipant
             {
                 ObjectId = participantObjectId,
-                Name = mob.MobName ?? mob.UniqueName,
+                Name = MobsData.GetLocalizedMobName(mob.MobData),
                 IsMob = true
             };
         }
@@ -266,8 +298,23 @@ public sealed class CombatEventTracker(TrackingController trackingController)
 
     private CombatMobCacheEntry GetKnownMob(long objectId)
     {
-        var key = new CombatMobKey(GetCurrentClusterKey(), objectId);
-        return _knownMobs.GetValueOrDefault(key);
+        return GetKnownMobOrDefault(objectId);
+    }
+
+    private static bool IsRecentlyLeftMobValid(CombatMobCacheEntry mob)
+    {
+        return DateTime.UtcNow - mob.LastUpdated <= RecentlyLeftMobRetention;
+    }
+
+    private void RemoveExpiredRecentlyLeftMobs()
+    {
+        foreach (var mob in _recentlyLeftMobs.ToArray())
+        {
+            if (!IsRecentlyLeftMobValid(mob.Value))
+            {
+                _recentlyLeftMobs.TryRemove(mob.Key, out _);
+            }
+        }
     }
 
     private static string GetCurrentClusterKey()

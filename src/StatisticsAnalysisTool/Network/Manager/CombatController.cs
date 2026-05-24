@@ -589,7 +589,7 @@ public class CombatController
         var mob = CombatEventTracker.KnownMobs.FirstOrDefault(x => x.MobObjectId == objectId);
         if (mob != null)
         {
-            return mob.MobName ?? mob.UniqueName;
+            return MobsData.GetLocalizedMobName(mob.MobData);
         }
 
         return objectId.ToString();
