@@ -7,7 +7,7 @@
              xmlns:openWorld="clr-namespace:StatisticsAnalysisTool.OpenWorld"
              xmlns:fa5="http://schemas.fontawesome.com/icons/"
              mc:Ignorable="d"
-             d:DesignHeight="800" d:DesignWidth="800"
+             d:DesignHeight="800" d:DesignWidth="1000"
              d:DataContext="{d:DesignInstance Type=viewModels:MainWindowViewModel}">
     <Grid Style="{StaticResource TabItemGridStyle}" DataContext="{Binding OpenWorldBindings}">
         <Grid.RowDefinitions>
@@ -40,7 +40,7 @@
                       SelectedValue="{Binding StatsTimeTypeSelection}" IsSynchronizedWithCurrentItem="True" DisplayMemberPath="Name" SelectedValuePath="StatsTimeType" />
             <ComboBox Width="180" Height="26" Margin="0,0,10,0" HorizontalAlignment="Left" VerticalAlignment="Top" ItemsSource="{Binding AutoDeleteStats}"
                       SelectedValue="{Binding AutoDeleteStatsSelection}" IsSynchronizedWithCurrentItem="True" DisplayMemberPath="Name" SelectedValuePath="AutoDeleteStats" />
-            <Button Content="{Binding TranslationResetAll, FallbackValue=RESET__ALL}" Height="26" Width="100" Style="{StaticResource Style.Button.Danger}"
+            <Button Content="{Binding TranslationResetAll, FallbackValue=RESET__ALL}" Height="26" MinWidth="120" Padding="5,0,5,0" Style="{StaticResource Style.Button.Danger}"
                     HorizontalAlignment="Left" VerticalAlignment="Top" Click="BtnResetOpenWorldStats_Click" />
         </StackPanel>
         <Separator Grid.Row="5" Background="{StaticResource SolidColorBrush.Background.3}" Height="4" Margin="0,5" />

@@ -1,4 +1,5 @@
 using System;
+using System.Text.Json.Serialization;
 
 namespace StatisticsAnalysisTool.OpenWorld;
 
@@ -11,5 +12,6 @@ public class OpenWorldMobKill
     public string Avatar { get; set; } = string.Empty;
     public string Faction { get; set; } = string.Empty;
 
+    [JsonIgnore]
     public DateTime TimestampDateTimeUtc => new(TimestampUtc, DateTimeKind.Utc);
 }
