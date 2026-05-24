@@ -296,7 +296,7 @@ public static class GameData
 
             return rootObject switch
             {
-                MobJsonRootObject mobRootObject => mobRootObject.Mobs?.Mob as List<T> ?? [],
+                MobJsonRootObject mobRootObject => MobsData.EnrichMissingNameLocatags(mobRootObject.Mobs?.Mob ?? []) as List<T> ?? [],
                 LootChestRoot lootChestRoot => lootChestRoot.LootChests?.LootChest as List<T> ?? [],
                 WorldJsonRootObject worldJsonRoot => worldJsonRoot.World?.Clusters?.Cluster as List<T> ?? [],
                 CraftingModifiersRootObject craftingModifiersRootObject => craftingModifiersRootObject.CraftingModifiers?.CraftingLocation as List<T> ?? [],

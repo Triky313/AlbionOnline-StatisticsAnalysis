@@ -21,6 +21,7 @@ public static class MobsData
     private const double LevelThreeUpperHpPercent = 146;
     private const double LevelFourUpperHpPercent = 220;
     private static IEnumerable<MobJsonObject> _mobs;
+    private static IReadOnlyDictionary<MobVisualIdentity, string> _nameLocatagByVisualIdentity = new Dictionary<MobVisualIdentity, string>();
 
     public static int GetMobTierByIndex(int index)
     {
@@ -102,13 +103,20 @@ public static class MobsData
             return string.Empty;
         }
 
-        if (!string.IsNullOrWhiteSpace(mob.NameLocatag))
+        if (TryGetLocalizedMobName(mob.NameLocatag, out var localizedName))
         {
-            var localizedName = LocalizationController.GameTranslation(mob.NameLocatag);
-            if (!string.Equals(localizedName, mob.NameLocatag, StringComparison.Ordinal))
-            {
-                return localizedName;
-            }
+            return localizedName;
+        }
+
+        if (TryGetLocalizedMobName(GetDirectMobNameLocatag(mob), out localizedName))
+        {
+            return localizedName;
+        }
+
+        if (_nameLocatagByVisualIdentity.TryGetValue(GetVisualIdentity(mob), out var visualIdentityNameLocatag)
+            && TryGetLocalizedMobName(visualIdentityNameLocatag, out localizedName))
+        {
+            return localizedName;
         }
 
         return mob.UniqueName ?? string.Empty;
@@ -187,7 +195,28 @@ public static class MobsData
             }).ConfigureAwait(false);
 
         _mobs = mobs;
+        EnrichMissingNameLocatags(mobs);
+        _nameLocatagByVisualIdentity = BuildNameLocatagByVisualIdentity(mobs);
         return mobs.Count >= 0;
+    }
+
+    public static List<MobJsonObject> EnrichMissingNameLocatags(List<MobJsonObject> mobs)
+    {
+        if (mobs == null || mobs.Count == 0)
+        {
+            return mobs ?? [];
+        }
+
+        var nameLocatagByVisualIdentity = BuildNameLocatagByVisualIdentity(mobs);
+        foreach (var mob in mobs.Where(x => string.IsNullOrWhiteSpace(x.NameLocatag)))
+        {
+            if (nameLocatagByVisualIdentity.TryGetValue(GetVisualIdentity(mob), out var nameLocatag))
+            {
+                mob.NameLocatag = nameLocatag;
+            }
+        }
+
+        return mobs;
     }
 
     private static string NormalizeAvatarFileName(string avatar)
@@ -200,4 +229,59 @@ public static class MobsData
         return avatar.EndsWith(".png", StringComparison.OrdinalIgnoreCase) ? avatar : $"{avatar}.png";
     }
 
+    private static bool TryGetLocalizedMobName(string nameLocatag, out string localizedName)
+    {
+        localizedName = string.Empty;
+        if (string.IsNullOrWhiteSpace(nameLocatag))
+        {
+            return false;
+        }
+
+        var translatedName = LocalizationController.GameTranslation(nameLocatag);
+        if (string.Equals(translatedName, nameLocatag, StringComparison.Ordinal))
+        {
+            return false;
+        }
+
+        localizedName = translatedName;
+        return true;
+    }
+
+    private static string GetDirectMobNameLocatag(MobJsonObject mob)
+    {
+        return string.IsNullOrWhiteSpace(mob?.UniqueName) ? string.Empty : $"@MOB_{mob.UniqueName}";
+    }
+
+    private static IReadOnlyDictionary<MobVisualIdentity, string> BuildNameLocatagByVisualIdentity(IEnumerable<MobJsonObject> mobs)
+    {
+        return mobs?
+            .Where(x => !string.IsNullOrWhiteSpace(x.NameLocatag))
+            .GroupBy(GetVisualIdentity)
+            .Select(x => new
+            {
+                VisualIdentity = x.Key,
+                NameLocatags = x
+                    .Select(mob => mob.NameLocatag)
+                    .Where(nameLocatag => !string.IsNullOrWhiteSpace(nameLocatag))
+                    .Distinct(StringComparer.OrdinalIgnoreCase)
+                    .ToList()
+            })
+            .Where(x => !x.VisualIdentity.IsEmpty && x.NameLocatags.Count == 1)
+            .ToDictionary(x => x.VisualIdentity, x => x.NameLocatags[0]) ?? new Dictionary<MobVisualIdentity, string>();
+    }
+
+    private static MobVisualIdentity GetVisualIdentity(MobJsonObject mob)
+    {
+        return new MobVisualIdentity(NormalizeVisualIdentityValue(mob?.Faction), NormalizeVisualIdentityValue(mob?.Avatar));
+    }
+
+    private static string NormalizeVisualIdentityValue(string value)
+    {
+        return string.IsNullOrWhiteSpace(value) ? string.Empty : value.ToUpperInvariant();
+    }
+
+    private readonly record struct MobVisualIdentity(string Faction, string Avatar)
+    {
+        public bool IsEmpty => string.IsNullOrWhiteSpace(Faction) || string.IsNullOrWhiteSpace(Avatar);
+    }
 }
