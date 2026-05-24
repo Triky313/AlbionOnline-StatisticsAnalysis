@@ -14,6 +14,7 @@ namespace StatisticsAnalysisTool.GameFileData;
 
 public static class MobsData
 {
+    private const int InGameMobIndexOffset = 16;
     private const double LevelZeroUpperHpPercent = 93;
     private const double LevelOneUpperHpPercent = 109;
     private const double LevelTwoUpperHpPercent = 125;
@@ -150,17 +151,8 @@ public static class MobsData
 
     private static MobJsonObject GetMobJsonObjectByIndex(int index)
     {
-        // From July 18, 2025, the in-game index will start counting from 15.
-        // The ID's were decreased by 15
-        index -= 15;
-
-        if (index < 0)
-        {
-            uint unsignedIndex = Convert.ToUInt32(index);
-            index = (int) unsignedIndex;
-        }
-
-        return _mobs.IsInBounds(index) ? _mobs?.ElementAt(index) : new MobJsonObject();
+        var mobDataIndex = index - InGameMobIndexOffset;
+        return _mobs.IsInBounds(mobDataIndex) ? _mobs?.ElementAt(mobDataIndex) : new MobJsonObject();
     }
 
     private static bool IsReliableRandomDungeonTierMob(MobJsonObject mob)
