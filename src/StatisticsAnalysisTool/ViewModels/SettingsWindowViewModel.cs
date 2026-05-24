@@ -262,7 +262,7 @@ public class SettingsWindowViewModel : BaseViewModel
             return;
         }
 
-        SettingsController.CurrentSettings.NetworkDevices = NetworkDevices
+        var networkDevices = NetworkDevices
             .Where(x => !string.IsNullOrWhiteSpace(x.Identifier))
             .Select(x => new NetworkDeviceSettingsObject
             {
@@ -271,12 +271,24 @@ public class SettingsWindowViewModel : BaseViewModel
                 IsSelected = x.IsSelected == true
             })
             .ToList();
+
+        SettingsController.CurrentSettings.NetworkDevices = networkDevices.All(x => x.IsSelected)
+            ? []
+            : networkDevices;
     }
 
     private static string GetNetworkDeviceSettingsSnapshot(IEnumerable<NetworkDeviceSettingsObject> networkDevices)
     {
-        return string.Join("|", (networkDevices ?? [])
+        var persistedDevices = (networkDevices ?? [])
             .Where(x => !string.IsNullOrWhiteSpace(x?.Identifier))
+            .ToList();
+
+        if (persistedDevices.All(x => x.IsSelected))
+        {
+            return string.Empty;
+        }
+
+        return string.Join("|", persistedDevices
             .OrderBy(x => x.Identifier, StringComparer.OrdinalIgnoreCase)
             .Select(x => $"{x.Identifier}:{x.IsSelected}"));
     }
@@ -573,41 +585,20 @@ public class SettingsWindowViewModel : BaseViewModel
         {
             var availableDevices = LibpcapPacketProvider.GetAvailableNetworkDevices();
             var configuredDevices = SettingsController.CurrentSettings.NetworkDevices ?? new List<NetworkDeviceSettingsObject>();
-            var configuredByIdentifier = configuredDevices
-                .Where(x => !string.IsNullOrWhiteSpace(x?.Identifier))
-                .GroupBy(x => x.Identifier, StringComparer.OrdinalIgnoreCase)
-                .ToDictionary(x => x.Key, x => x.First(), StringComparer.OrdinalIgnoreCase);
-
-            bool hasConfiguredDevices = configuredByIdentifier.Count > 0;
-            int legacyNetworkDeviceIndex = SettingsController.CurrentSettings.NetworkDevice;
 
             foreach (var availableDevice in availableDevices)
             {
-                bool isSelected;
-
-                if (hasConfiguredDevices && configuredByIdentifier.TryGetValue(availableDevice.Identifier, out var configuredDevice))
-                {
-                    isSelected = configuredDevice.IsSelected;
-                }
-                else if (!hasConfiguredDevices && legacyNetworkDeviceIndex >= 0)
-                {
-                    isSelected = availableDevice.Index == legacyNetworkDeviceIndex;
-                }
-                else
-                {
-                    isSelected = true;
-                }
+                var configuredDevice = configuredDevices
+                    .FirstOrDefault(x => string.Equals(x?.Identifier, availableDevice.Identifier, StringComparison.OrdinalIgnoreCase));
 
                 NetworkDevices.Add(new NetworkDeviceFilter
                 {
                     Identifier = availableDevice.Identifier,
                     Index = availableDevice.Index,
-                    IsSelected = isSelected,
+                    IsSelected = configuredDevice?.IsSelected ?? true,
                     Name = availableDevice.Name
                 });
             }
-
-            SetNetworkDevices();
         }
         catch (Exception e)
         {

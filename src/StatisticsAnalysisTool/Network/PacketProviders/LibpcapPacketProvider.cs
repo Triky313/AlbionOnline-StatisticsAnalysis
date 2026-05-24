@@ -125,21 +125,22 @@ public class LibpcapPacketProvider : PacketProvider
         var filter = GetEffectiveFilter();
         bool hasFilter = !string.IsNullOrWhiteSpace(filter);
 
-        int configuredIndex = SettingsController.CurrentSettings.NetworkDevice;
         var configuredDevices = SettingsController.CurrentSettings.NetworkDevices ?? new List<NetworkDeviceSettingsObject>();
-        bool hasConfiguredDevices = configuredDevices.Count > 0;
-        var selectedDeviceIdentifiers = configuredDevices
-            .Where(x => x?.IsSelected == true && !string.IsNullOrWhiteSpace(x.Identifier))
-            .Select(x => x.Identifier)
-            .ToHashSet(StringComparer.OrdinalIgnoreCase);
 
         int opened = 0;
         for (int i = 0; i < devices.Count; i++)
         {
             var device = devices[i];
+            var configuredDevice = configuredDevices
+                .FirstOrDefault(x => string.Equals(x?.Identifier, device.Name, StringComparison.OrdinalIgnoreCase));
 
-            if (!hasConfiguredDevices && configuredIndex >= 0 && i != configuredIndex)
+            if (configuredDevice?.IsSelected == false)
             {
+                if (logDeviceDetails)
+                {
+                    Log.Information("Npcap[ID:{Index}]: skip disabled {Name}:{Desc}", i, device.Name, device.Description);
+                }
+
                 continue;
             }
 
@@ -158,16 +159,6 @@ public class LibpcapPacketProvider : PacketProvider
                 if (logDeviceDetails)
                 {
                     Log.Information("Npcap[ID:{Index}]: skip down {Name}:{Desc}", i, device.Name, device.Description);
-                }
-
-                continue;
-            }
-
-            if (hasConfiguredDevices && !selectedDeviceIdentifiers.Contains(device.Name))
-            {
-                if (logDeviceDetails)
-                {
-                    Log.Information("Npcap[ID:{Index}]: skip disabled {Name}:{Desc}", i, device.Name, device.Description);
                 }
 
                 continue;
@@ -203,11 +194,6 @@ public class LibpcapPacketProvider : PacketProvider
                 }
 
                 opened++;
-
-                if (!hasConfiguredDevices && configuredIndex >= 0)
-                {
-                    break;
-                }
             }
             catch (Exception ex)
             {
