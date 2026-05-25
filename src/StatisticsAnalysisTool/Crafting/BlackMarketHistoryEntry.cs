@@ -6,6 +6,8 @@ namespace StatisticsAnalysisTool.Crafting;
 
 public class BlackMarketHistoryEntry
 {
+    public int FormatVersion { get; set; }
+
     public string ItemUniqueName { get; set; }
 
     public int ItemIndex { get; set; }

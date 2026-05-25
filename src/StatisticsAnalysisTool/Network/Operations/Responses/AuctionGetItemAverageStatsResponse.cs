@@ -71,7 +71,7 @@ public sealed class AuctionGetItemAverageStatsResponse
             {
                 Date = timestamp.Date,
                 ItemCount = Math.Max(0, counts[i]),
-                AveragePrice = ConvertSilverPrice(averagePrices[i]),
+                AveragePrice = ConvertSilverTotalToUnitAveragePrice(averagePrices[i], counts[i]),
                 LastUpdatedUtc = DateTime.UtcNow
             });
         }
@@ -79,14 +79,15 @@ public sealed class AuctionGetItemAverageStatsResponse
         return result;
     }
 
-    private static long ConvertSilverPrice(long averagePriceInternal)
+    private static long ConvertSilverTotalToUnitAveragePrice(long totalPriceInternal, int itemCount)
     {
-        if (averagePriceInternal <= 0)
+        if (totalPriceInternal <= 0 || itemCount <= 0)
         {
             return 0;
         }
 
-        return Math.Max(0, FixPoint.FromInternalValue(averagePriceInternal).IntegerValue);
+        var averagePrice = (decimal) totalPriceInternal / FixPoint.InternalFactor / itemCount;
+        return Math.Max(0, (long) Math.Round(averagePrice, MidpointRounding.AwayFromZero));
     }
 
     private static IReadOnlyList<int> ConvertCounts(object value)
