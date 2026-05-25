@@ -31,6 +31,10 @@ public sealed class BlackMarketItemRow : BaseViewModel
 
     public string TierLevelString => Item?.TierLevelString ?? string.Empty;
 
+    public string TierText => Tier is >= 1 and <= 8 ? $"{Tier}" : "T?";
+
+    public string EnchantmentLevelText => EnchantmentLevel.ToString(CultureInfo.InvariantCulture);
+
     public int QualityLevel { get; }
 
     public string QualityName => ItemController.GetQuality(QualityLevel) switch
@@ -53,9 +57,7 @@ public sealed class BlackMarketItemRow : BaseViewModel
 
     public int SoldLast365Days => _history?.SoldLast365Days ?? 0;
 
-    public string LastUpdatedText => _history?.LastUpdatedUtc > DateTime.MinValue
-        ? _history.LastUpdatedUtc.ToLocalTime().ToString("g", CultureInfo.CurrentCulture)
-        : string.Empty;
+    public string LastUpdatedText => _history?.LastUpdatedUtc > DateTime.MinValue ? _history.LastUpdatedUtc.ToLocalTime().ToString("g", CultureInfo.CurrentCulture) : string.Empty;
 
     public void Refresh(BlackMarketHistoryEntry history)
     {

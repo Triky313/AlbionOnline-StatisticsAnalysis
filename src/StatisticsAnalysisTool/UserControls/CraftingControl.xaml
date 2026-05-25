@@ -996,7 +996,72 @@
                                         </DataTemplate>
                                     </GridViewColumn.CellTemplate>
                                 </GridViewColumn>
-                                <GridViewColumn Header="{x:Static crafting:CraftingBindings.TranslationTier}" Width="70" DisplayMemberBinding="{Binding TierLevelString}" />
+                                <GridViewColumn Header="{x:Static crafting:CraftingBindings.TranslationTier}" Width="70">
+                                    <GridViewColumn.CellTemplate>
+                                        <DataTemplate>
+                                            <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
+                                                <TextBlock Text="{Binding TierText}" FontWeight="Bold">
+                                                    <TextBlock.Style>
+                                                        <Style TargetType="TextBlock">
+                                                            <Setter Property="Foreground" Value="{StaticResource SolidColorBrush.Text.1}" />
+                                                            <Style.Triggers>
+                                                                <DataTrigger Binding="{Binding Tier}" Value="1">
+                                                                    <Setter Property="Foreground" Value="{StaticResource SolidColorBrush.Item.Tier.Color.1}" />
+                                                                </DataTrigger>
+                                                                <DataTrigger Binding="{Binding Tier}" Value="2">
+                                                                    <Setter Property="Foreground" Value="{StaticResource SolidColorBrush.Item.Tier.Color.2}" />
+                                                                </DataTrigger>
+                                                                <DataTrigger Binding="{Binding Tier}" Value="3">
+                                                                    <Setter Property="Foreground" Value="{StaticResource SolidColorBrush.Item.Tier.Color.3}" />
+                                                                </DataTrigger>
+                                                                <DataTrigger Binding="{Binding Tier}" Value="4">
+                                                                    <Setter Property="Foreground" Value="{StaticResource SolidColorBrush.Item.Tier.Color.4}" />
+                                                                </DataTrigger>
+                                                                <DataTrigger Binding="{Binding Tier}" Value="5">
+                                                                    <Setter Property="Foreground" Value="{StaticResource SolidColorBrush.Item.Tier.Color.5}" />
+                                                                </DataTrigger>
+                                                                <DataTrigger Binding="{Binding Tier}" Value="6">
+                                                                    <Setter Property="Foreground" Value="{StaticResource SolidColorBrush.Item.Tier.Color.6}" />
+                                                                </DataTrigger>
+                                                                <DataTrigger Binding="{Binding Tier}" Value="7">
+                                                                    <Setter Property="Foreground" Value="{StaticResource SolidColorBrush.Item.Tier.Color.7}" />
+                                                                </DataTrigger>
+                                                                <DataTrigger Binding="{Binding Tier}" Value="8">
+                                                                    <Setter Property="Foreground" Value="{StaticResource SolidColorBrush.Item.Tier.Color.8}" />
+                                                                </DataTrigger>
+                                                            </Style.Triggers>
+                                                        </Style>
+                                                    </TextBlock.Style>
+                                                </TextBlock>
+                                                <TextBlock Text="." FontWeight="Bold" Foreground="{StaticResource SolidColorBrush.Text.1}" />
+                                                <TextBlock Text="{Binding EnchantmentLevelText}" FontWeight="Bold">
+                                                    <TextBlock.Style>
+                                                        <Style TargetType="TextBlock">
+                                                            <Setter Property="Foreground" Value="{StaticResource SolidColorBrush.Text.1}" />
+                                                            <Style.Triggers>
+                                                                <DataTrigger Binding="{Binding EnchantmentLevel}" Value="0">
+                                                                    <Setter Property="Foreground" Value="{StaticResource SolidColorBrush.Item.Level.Color.0}" />
+                                                                </DataTrigger>
+                                                                <DataTrigger Binding="{Binding EnchantmentLevel}" Value="1">
+                                                                    <Setter Property="Foreground" Value="{StaticResource SolidColorBrush.Item.Level.Color.1}" />
+                                                                </DataTrigger>
+                                                                <DataTrigger Binding="{Binding EnchantmentLevel}" Value="2">
+                                                                    <Setter Property="Foreground" Value="{StaticResource SolidColorBrush.Item.Level.Color.2}" />
+                                                                </DataTrigger>
+                                                                <DataTrigger Binding="{Binding EnchantmentLevel}" Value="3">
+                                                                    <Setter Property="Foreground" Value="{StaticResource SolidColorBrush.Item.Level.Color.3}" />
+                                                                </DataTrigger>
+                                                                <DataTrigger Binding="{Binding EnchantmentLevel}" Value="4">
+                                                                    <Setter Property="Foreground" Value="{StaticResource SolidColorBrush.Item.Level.Color.4}" />
+                                                                </DataTrigger>
+                                                            </Style.Triggers>
+                                                        </Style>
+                                                    </TextBlock.Style>
+                                                </TextBlock>
+                                            </StackPanel>
+                                        </DataTemplate>
+                                    </GridViewColumn.CellTemplate>
+                                </GridViewColumn>
                                 <GridViewColumn Header="{x:Static crafting:BlackMarketBindings.TranslationQuality}" Width="120" DisplayMemberBinding="{Binding QualityName}" />
                                 <GridViewColumn Header="{x:Static crafting:BlackMarketBindings.TranslationCurrentBuyPrice}" Width="130">
                                     <GridViewColumn.CellTemplate>
@@ -1074,7 +1139,7 @@
                                 <TextBlock Text="{Binding SelectedItem.LatestAveragePrice, StringFormat={}{0:N0}, FallbackValue=0}" Foreground="{StaticResource SolidColorBrush.Text.1}" Margin="0,0,12,0" />
                                 <TextBlock Text="{x:Static crafting:BlackMarketBindings.TranslationAverageItemsPerDay}" Foreground="{StaticResource SolidColorBrush.Text.2}" />
                                 <TextBlock Text=": " Foreground="{StaticResource SolidColorBrush.Text.2}" />
-                                <TextBlock Text="{Binding SelectedItemAverageItemsPerDay, StringFormat={}{0:N2}, FallbackValue=0}" Foreground="{StaticResource SolidColorBrush.Text.1}" Margin="0,0,12,0" />
+                                <TextBlock Text="{Binding SelectedItemAverageItemsPerDayText, FallbackValue=0}" Foreground="{StaticResource SolidColorBrush.Text.1}" Margin="0,0,12,0" />
                                 <TextBlock Text="{x:Static crafting:BlackMarketBindings.TranslationBoughtLast30Days}" Foreground="{StaticResource SolidColorBrush.Text.2}" />
                                 <TextBlock Text=": " Foreground="{StaticResource SolidColorBrush.Text.2}" />
                                 <TextBlock Text="{Binding SelectedItem.SoldLast30Days, StringFormat={}{0:N0}, FallbackValue=0}" Foreground="{StaticResource SolidColorBrush.Text.1}" Margin="0,0,12,0" />

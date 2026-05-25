@@ -68,98 +68,46 @@ public class CraftingBindings : BaseViewModel
         _ = LoadAsync();
     }
 
-    public ObservableCollection<Item> CraftableItems
-    {
-        get;
-    }
-    = [];
+    public ObservableCollection<Item> CraftableItems { get; }
 
-    public ICollectionView CraftableItemsView
-    {
-        get;
-    }
+    public ICollectionView CraftableItemsView { get; }
 
-    public ObservableCollection<CraftingResourceEntry> Resources
-    {
-        get;
-    }
-    = [];
+    public ObservableCollection<CraftingResourceEntry> Resources { get; } = [];
 
-    public ObservableCollection<SavedCrafting> SavedCraftings
-    {
-        get;
-    }
-    = [];
+    public ObservableCollection<SavedCrafting> SavedCraftings { get; } = [];
 
-    public ObservableCollection<CraftingItemSearchResult> ListBoxItemSearchItems
-    {
-        get;
-    }
-    = [];
+    public ObservableCollection<CraftingItemSearchResult> ListBoxItemSearchItems { get; } = [];
 
-    public ObservableCollection<CraftingLocationOption> CraftingLocations
-    {
-        get;
-    }
-    = [];
+    public ObservableCollection<CraftingLocationOption> CraftingLocations { get; } = [];
 
-    public ObservableCollection<CraftingLocationOption> ListBoxCraftingLocationItems
-    {
-        get;
-    }
-    = [];
+    public ObservableCollection<CraftingLocationOption> ListBoxCraftingLocationItems { get; } = [];
 
-    public ObservableCollection<CraftingSellPriceOption> SellPriceOptions
-    {
-        get;
-    }
-    = [];
+    public ObservableCollection<CraftingSellPriceOption> SellPriceOptions { get; } = [];
 
-    public BlackMarketBindings BlackMarket
-    {
-        get;
-    }
-    = new();
+    public BlackMarketBindings BlackMarket { get; } = new();
 
-    public CraftingDailyBonusOption[] DailyBonusOptions
-    {
-        get;
-    }
-    =
+    public CraftingDailyBonusOption[] DailyBonusOptions { get; } =
     [
-        new CraftingDailyBonusOption
+        new()
         {
             Name = TranslationNone,
             BonusPercent = 0m
-        }
-        ,
-        new CraftingDailyBonusOption
+        },
+        new()
         {
             Name = "10%",
             BonusPercent = 10m
-        }
-        ,
-        new CraftingDailyBonusOption
+        },
+        new()
         {
             Name = "20%",
             BonusPercent = 20m
         }
     ];
 
-    public CraftingHideoutBonusOption[] HideoutBonusOptions
-    {
-        get;
-    }
-    = HideoutData.GetHideoutBonusOptions();
+    public CraftingHideoutBonusOption[] HideoutBonusOptions { get; } = HideoutData.GetHideoutBonusOptions();
 
-    public KeyValuePair<MarketLocation, string>[] MarketLocations
-    {
-        get;
-    }
-    =
-    [
-        .. Locations.OnceMarketLocations
-    ];
+    public KeyValuePair<MarketLocation, string>[] MarketLocations { get; } = [.. Locations.OnceMarketLocations];
 
     public Dictionary<ItemTier, string> ItemTiers => FrequentlyValues.ItemTiers;
 
@@ -488,17 +436,11 @@ public class CraftingBindings : BaseViewModel
         get;
         set
         {
-            if (field != null)
-            {
-                field.ValuesChanged = null;
-            }
+            field?.ValuesChanged = null;
 
             field = value;
 
-            if (field != null)
-            {
-                field.ValuesChanged = Recalculate;
-            }
+            field?.ValuesChanged = Recalculate;
 
             Recalculate();
             OnPropertyChanged();

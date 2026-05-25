@@ -279,8 +279,11 @@ public sealed class BlackMarketBindings : BaseViewModel
         {
             _selectedItemAverageItemsPerDay = value;
             OnPropertyChanged();
+            OnPropertyChanged(nameof(SelectedItemAverageItemsPerDayText));
         }
     }
+
+    public string SelectedItemAverageItemsPerDayText => SelectedItemAverageItemsPerDay.ToString("N0", CultureInfo.CurrentCulture);
 
     public string MarketStatusText
     {
@@ -609,7 +612,7 @@ public sealed class BlackMarketBindings : BaseViewModel
             pricePoints.Add(new ObservablePoint(index, (double) (priceTotals[index] / priceWeights[index])));
         }
 
-        SelectedItemAverageItemsPerDay = chartDays > 0 ? (double) totalItemCount / chartDays : 0;
+        SelectedItemAverageItemsPerDay = chartDays > 0 ? Math.Floor((double) totalItemCount / chartDays) : 0;
 
         ChartSeries =
         [

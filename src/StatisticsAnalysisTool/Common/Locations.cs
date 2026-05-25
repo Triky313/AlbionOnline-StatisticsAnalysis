@@ -174,7 +174,7 @@ public static class Locations
             "3301" or "Martlock Portal" => MarketLocation.MartlockPortal,
             "4301" or "Fort Sterling Portal" => MarketLocation.FortSterlingPortal,
             "5003" or "Brecilien" => MarketLocation.BrecilienMarket,
-            "3005" or "Caerleon" => MarketLocation.CaerleonMarket,
+            "3005" or "Caerleon" or "3013-Auction2" => MarketLocation.CaerleonMarket,
             "0004" or "Swamp Cross" => MarketLocation.SwampCross,
             "1006" or "Forest Cross" => MarketLocation.ForestCross,
             "2002" or "Steppe Cross" => MarketLocation.SteppeCross,
