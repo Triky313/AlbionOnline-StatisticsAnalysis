@@ -271,11 +271,13 @@ public class MarketController(TrackingController trackingController, MainWindowV
 
     public void UpdateBuyOrderMarketData(IEnumerable<AuctionEntry> auctionOrders)
     {
-        foreach (var offer in auctionOrders)
-        {
-            string locationIndex = ClusterController.CurrentCluster.Index;
-            MarketLocation marketLocation = locationIndex.GetMarketLocationByLocationNameOrId();
+        var auctionOrderList = auctionOrders?.ToList() ?? [];
+        string locationIndex = ClusterController.CurrentCluster.Index;
+        MarketLocation marketLocation = locationIndex.GetMarketLocationByLocationNameOrId();
+        mainWindowViewModel.CraftingBindings.BlackMarket.RecordCurrentBuyOrders(auctionOrderList, marketLocation);
 
+        foreach (var offer in auctionOrderList)
+        {
             if (marketLocation == MarketLocation.Unknown)
             {
                 continue;

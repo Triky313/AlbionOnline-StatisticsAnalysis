@@ -1,7 +1,8 @@
-﻿using System.Collections.Generic;
+using System.Collections.Generic;
 using System.Text.Json.Serialization;
 using StatisticsAnalysisTool.Common;
 using StatisticsAnalysisTool.Common.Converters;
+using StatisticsAnalysisTool.Crafting;
 using StatisticsAnalysisTool.Enumerations;
 
 namespace StatisticsAnalysisTool.Models.ItemsJsonModel;
@@ -114,7 +115,7 @@ public class TransformationWeapon : ItemJsonObject
     public string CraftingCategory { get; set; }
 
     [JsonIgnore]
-    public CraftingJournalType CraftingJournalType => CraftingController.GetCraftingJournalType(UniqueName, CraftingCategory);
+    public CraftingJournalType CraftingJournalType => CraftingJournalService.GetCraftingJournalType(UniqueName, CraftingCategory);
 
     [JsonPropertyName("@physicalattackdamagebonus")]
     public string PhysicAttackDamageBonus { get; set; }
