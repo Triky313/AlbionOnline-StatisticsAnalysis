@@ -31,18 +31,50 @@ jobs:
           global-json-file: src/global.json
 
       - name: "🚧 Prepare release variables"
+        id: release_variables
         shell: pwsh
         run: |
           $tagName = "${{ github.ref_name }}"
-          $version = $tagName.TrimStart("v")
-          $isPreRelease = $version.Contains("-")
-          $appCastFile = if ($isPreRelease) { "ao-netsparkle-pre-release-update-check.xml" } else { "ao-netsparkle-update-check.xml" }
+          $rawVersion = $tagName.TrimStart("v")
+          $version = ($rawVersion -split "\+", 2)[0]
+          $metadata = if ($rawVersion.Contains("+")) { ($rawVersion -split "\+", 2)[1] } else { "" }
+          $isBothAppCast = $metadata.Split(".", [System.StringSplitOptions]::RemoveEmptyEntries) -contains "both"
+          $isPreRelease = $version -match "-(alpha|beta|rc)([.-].*)?$"
+          if ($version.Contains("-") -and !$isPreRelease)
+          {
+              throw "Pre-release tags must use an alpha, beta, or rc suffix. Invalid tag: '$tagName'."
+          }
+
+          $appCastMode = if ($isBothAppCast) { "both" } elseif ($isPreRelease) { "pre-release" } else { "release" }
+          $artifactTagName = "v$version"
           $branchSafeTag = $tagName -replace "[^A-Za-z0-9._-]", "-"
+          $versionInfoMatch = [regex]::Match($version, "^\d+(?:\.\d+){0,3}")
+          if (!$versionInfoMatch.Success)
+          {
+              throw "Tag '$tagName' does not start with a valid numeric version."
+          }
+
+          $versionInfoParts = $versionInfoMatch.Value.Split(".")
+          while ($versionInfoParts.Count -lt 4)
+          {
+              $versionInfoParts += "0"
+          }
+
+          $versionInfo = [string]::Join(".", $versionInfoParts[0..3])
 
           "TAG_NAME=$tagName" | Out-File -FilePath $env:GITHUB_ENV -Encoding utf8 -Append
           "APP_VERSION=$version" | Out-File -FilePath $env:GITHUB_ENV -Encoding utf8 -Append
-          "APPCAST_FILE=$appCastFile" | Out-File -FilePath $env:GITHUB_ENV -Encoding utf8 -Append
+          "APP_VERSION_INFO=$versionInfo" | Out-File -FilePath $env:GITHUB_ENV -Encoding utf8 -Append
+          "APPCAST_MODE=$appCastMode" | Out-File -FilePath $env:GITHUB_ENV -Encoding utf8 -Append
+          "APP_ARTIFACT_TAG_NAME=$artifactTagName" | Out-File -FilePath $env:GITHUB_ENV -Encoding utf8 -Append
           "APPCAST_BRANCH=release/appcast-$branchSafeTag" | Out-File -FilePath $env:GITHUB_ENV -Encoding utf8 -Append
+
+          "tag-name=$tagName" | Out-File -FilePath $env:GITHUB_OUTPUT -Encoding utf8 -Append
+          "app-version=$version" | Out-File -FilePath $env:GITHUB_OUTPUT -Encoding utf8 -Append
+          "app-version-info=$versionInfo" | Out-File -FilePath $env:GITHUB_OUTPUT -Encoding utf8 -Append
+          "appcast-mode=$appCastMode" | Out-File -FilePath $env:GITHUB_OUTPUT -Encoding utf8 -Append
+          "artifact-tag-name=$artifactTagName" | Out-File -FilePath $env:GITHUB_OUTPUT -Encoding utf8 -Append
+          "appcast-branch=release/appcast-$branchSafeTag" | Out-File -FilePath $env:GITHUB_OUTPUT -Encoding utf8 -Append
 
       - name: "🔐 Validate NetSparkle signing configuration"
         shell: pwsh
@@ -83,13 +115,13 @@ jobs:
         uses: vimtor/action-zip@v1
         with:
           files: src\StatisticsAnalysisTool\bin\Release\publish
-          dest: StatisticsAnalysis-AlbionOnline-${{ github.ref_name }}-windows-x64.zip
+          dest: StatisticsAnalysis-AlbionOnline-${{ steps.release_variables.outputs.artifact-tag-name }}-windows-x64.zip
 
       - name: "🧱 Build release setup file"
         uses: Minionguyjpro/Inno-Setup-Action@v1.2.5
         with:
           path: .github/installers/release-installer.iss
-          options: /DMyAppVersion=${{ env.APP_VERSION }}
+          options: /DMyAppVersion=${{ steps.release_variables.outputs.app-version }} /DMyAppVersionInfo=${{ steps.release_variables.outputs.app-version-info }}
 
       - name: "🚀 Upload release files to newest tag"
         uses: softprops/action-gh-release@v2
@@ -97,13 +129,13 @@ jobs:
         with:
           prerelease: ${{ contains(github.ref_name, '-') }}
           files: |
-            StatisticsAnalysis-AlbionOnline-${{ github.ref_name }}-windows-x64.zip
-            StatisticsAnalysis-AlbionOnline-${{ github.ref_name }}-windows-x64.exe
+            StatisticsAnalysis-AlbionOnline-${{ steps.release_variables.outputs.artifact-tag-name }}-windows-x64.zip
+            StatisticsAnalysis-AlbionOnline-${{ steps.release_variables.outputs.artifact-tag-name }}-windows-x64.exe
 
       - name: "💾 Preserve installer for appcast signing"
         shell: pwsh
         run: |
-          $installerName = "StatisticsAnalysis-AlbionOnline-$env:TAG_NAME-windows-x64.exe"
+          $installerName = "StatisticsAnalysis-AlbionOnline-$env:APP_ARTIFACT_TAG_NAME-windows-x64.exe"
           $targetPath = Join-Path $env:RUNNER_TEMP $installerName
 
           Copy-Item -LiteralPath $installerName -Destination $targetPath -Force
@@ -127,27 +159,41 @@ jobs:
         shell: pwsh
         run: |
           Set-ExecutionPolicy -ExecutionPolicy Bypass -Scope Process -Force
-          .\.github\scripts\New-NetSparkleAppCast.ps1 `
-            -TagName $env:TAG_NAME `
-            -Version $env:APP_VERSION `
-            -InstallerPath $env:APPCAST_INSTALLER_PATH `
-            -Repository "${{ github.repository }}" `
-            -OutputDirectory src\StatisticsAnalysisTool `
-            -AppCastFileName $env:APPCAST_FILE `
-            -ToolPath .tools\netsparkle-generate-appcast.exe
+          $appCastFiles = switch ($env:APPCAST_MODE)
+          {
+              "both" { @("ao-netsparkle-update-check.xml", "ao-netsparkle-pre-release-update-check.xml") }
+              "pre-release" { @("ao-netsparkle-pre-release-update-check.xml") }
+              default { @("ao-netsparkle-update-check.xml") }
+          }
+
+          foreach ($appCastFile in $appCastFiles)
+          {
+              .\.github\scripts\New-NetSparkleAppCast.ps1 `
+                -TagName $env:TAG_NAME `
+                -Version $env:APP_VERSION `
+                -InstallerPath $env:APPCAST_INSTALLER_PATH `
+                -Repository "${{ github.repository }}" `
+                -OutputDirectory src\StatisticsAnalysisTool `
+                -AppCastFileName $appCastFile `
+                -ToolPath .tools\netsparkle-generate-appcast.exe
+          }
 
       - name: "🔃 Create appcast update pull request"
         uses: peter-evans/create-pull-request@v7
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
-          branch: ${{ env.APPCAST_BRANCH }}
+          branch: ${{ steps.release_variables.outputs.appcast-branch }}
           delete-branch: true
-          commit-message: Update NetSparkle appcast for ${{ env.TAG_NAME }}
-          title: Update NetSparkle appcast for ${{ env.TAG_NAME }}
+          commit-message: Update NetSparkle appcast for ${{ steps.release_variables.outputs.tag-name }}
+          title: Update NetSparkle appcast for ${{ steps.release_variables.outputs.tag-name }}
           body: |
-            Updates the NetSparkle appcast for `${{ env.TAG_NAME }}`.
+            Updates the NetSparkle appcast for `${{ steps.release_variables.outputs.tag-name }}`.
+
+            Appcast mode: `${{ steps.release_variables.outputs.appcast-mode }}`.
 
             The GitHub release assets have already been uploaded. Merging this PR makes the update visible to the in-app updater.
           add-paths: |
-            src/StatisticsAnalysisTool/${{ env.APPCAST_FILE }}
-            src/StatisticsAnalysisTool/${{ env.APPCAST_FILE }}.signature
+            src/StatisticsAnalysisTool/ao-netsparkle-update-check.xml
+            src/StatisticsAnalysisTool/ao-netsparkle-update-check.xml.signature
+            src/StatisticsAnalysisTool/ao-netsparkle-pre-release-update-check.xml
+            src/StatisticsAnalysisTool/ao-netsparkle-pre-release-update-check.xml.signature

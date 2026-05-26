@@ -7,6 +7,10 @@
   #define MyAppVersion "0.0.0"
 #endif
 
+#ifndef MyAppVersionInfo
+  #define MyAppVersionInfo "0.0.0.0"
+#endif
+
 [Setup]
 AppId={#MyAppId}
 AppName={#MyAppName}
@@ -30,8 +34,8 @@ RestartApplications=no
 OutputDir=..\..
 OutputBaseFilename=StatisticsAnalysis-AlbionOnline-v{#MyAppVersion}-windows-x64
 SetupIconFile=..\..\src\StatisticsAnalysisTool\sat-icon.ico
-VersionInfoVersion={#MyAppVersion}
-VersionInfoProductVersion={#MyAppVersion}
+VersionInfoVersion={#MyAppVersionInfo}
+VersionInfoProductVersion={#MyAppVersionInfo}
 
 [Languages]
 Name: "english"; MessagesFile: "compiler:Default.isl"
