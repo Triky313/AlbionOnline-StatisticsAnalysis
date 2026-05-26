@@ -10,10 +10,7 @@ namespace StatisticsAnalysisTool.Views
     {
         private readonly Func<Task<bool>> _downloadInstallAction;
 
-        public UpdateWindowViewModel UpdateWindowViewModel
-        {
-            get;
-        }
+        public UpdateWindowViewModel UpdateWindowViewModel { get; }
 
         public UpdateWindow(UpdateWindowViewModel viewModel, Func<Task<bool>> downloadInstallAction)
         {

@@ -1,5 +1,5 @@
-using StatisticsAnalysisTool.Common;
 using StatisticsAnalysisTool.Properties;
+using StatisticsAnalysisTool.Updater;
 using System.Reflection;
 using System.Threading.Tasks;
 
@@ -7,8 +7,6 @@ namespace StatisticsAnalysisTool.ViewModels;
 
 public class FooterViewModel : BaseViewModel
 {
-    private bool _isUpdateAvailable = AutoUpdateController.IsUpdateAvailable;
-
     public FooterViewModel()
     {
         AutoUpdateController.UpdateAvailabilityChanged += OnUpdateAvailabilityChanged;
@@ -31,18 +29,18 @@ public class FooterViewModel : BaseViewModel
 
     public bool IsUpdateAvailable
     {
-        get => _isUpdateAvailable;
+        get;
         private set
         {
-            if (_isUpdateAvailable == value)
+            if (field == value)
             {
                 return;
             }
 
-            _isUpdateAvailable = value;
+            field = value;
             OnPropertyChanged();
         }
-    }
+    } = AutoUpdateController.IsUpdateAvailable;
 
     public async Task OpenUpdateWindowAsync()
     {
