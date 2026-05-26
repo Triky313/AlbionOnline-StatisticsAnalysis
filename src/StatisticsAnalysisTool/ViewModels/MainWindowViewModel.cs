@@ -19,6 +19,7 @@ using StatisticsAnalysisTool.Models;
 using StatisticsAnalysisTool.Models.BindingModel;
 using StatisticsAnalysisTool.Models.NetworkModel;
 using StatisticsAnalysisTool.Models.TranslationModel;
+using StatisticsAnalysisTool.Network;
 using StatisticsAnalysisTool.Network.Manager;
 using StatisticsAnalysisTool.OpenWorld;
 using StatisticsAnalysisTool.Party;
@@ -148,6 +149,7 @@ public class MainWindowViewModel : BaseViewModel
     public MainWindowViewModel()
     {
         UpgradeSettings();
+        RegisterServerDetectionEvents();
         SetUiElements();
         InitDashboardChart();
         Translation = new MainWindowTranslation();
@@ -441,13 +443,44 @@ public class MainWindowViewModel : BaseViewModel
 
     public void UpdateServerTypeLabel()
     {
-        ServerTypeText = SettingsController.CurrentSettings.ServerLocation switch
+        ServerTypeText = GetCurrentServerLocation() switch
         {
             ServerLocation.Asia => LocalizationController.Translation("ASIA_SERVER"),
             ServerLocation.America => LocalizationController.Translation("AMERICA_SERVER"),
             ServerLocation.Europe => LocalizationController.Translation("EUROPE_SERVER"),
             _ => LocalizationController.Translation("UNKNOWN_SERVER")
         };
+    }
+
+    private void RegisterServerDetectionEvents()
+    {
+        if (!ServiceLocator.IsServiceInDictionary<AlbionServerDetectionService>())
+        {
+            return;
+        }
+
+        ServiceLocator.Resolve<AlbionServerDetectionService>().ServerChanged += AlbionServerDetectionService_ServerChanged;
+    }
+
+    private void AlbionServerDetectionService_ServerChanged(object sender, AlbionServerChangedEventArgs e)
+    {
+        if (Application.Current?.Dispatcher?.CheckAccess() == true)
+        {
+            UpdateServerTypeLabel();
+            return;
+        }
+
+        _ = Application.Current?.Dispatcher?.BeginInvoke(UpdateServerTypeLabel);
+    }
+
+    private static ServerLocation GetCurrentServerLocation()
+    {
+        if (!ServiceLocator.IsServiceInDictionary<AlbionServerDetectionService>())
+        {
+            return ServerLocation.Unknown;
+        }
+
+        return ServiceLocator.Resolve<AlbionServerDetectionService>().CurrentServerLocation;
     }
 
     public static void OpenItemWindow(Item item)

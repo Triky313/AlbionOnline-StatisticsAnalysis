@@ -8,7 +8,6 @@ public class SettingsWindowTranslation
     public static string Language => $"{LocalizationController.Translation("LANGUAGE")} ({LocalizationController.Translation("RESTART_REQUIRED")})";
     public static string CheckForUpdate => LocalizationController.Translation("CHECK_FOR_UPDATE");
     public static string RefreshRate => LocalizationController.Translation("REFRESH_RATE");
-    public static string SetServer => LocalizationController.Translation("SET_SERVER");
     public static string NetworkFiltering => LocalizationController.Translation("NETWORK_FILTERING");
     public static string OpenItemWindowInNewWindow => LocalizationController.Translation("OPEN_ITEM_WINDOW_IN_NEW_WINDOW");
     public static string ShowInfoWindowOnStart => LocalizationController.Translation("SHOW_INFO_WINDOW_ON_START");
@@ -39,9 +38,6 @@ public class SettingsWindowTranslation
     public static string CharacterNameToTrack => LocalizationController.Translation("CHARACTER_NAME_TO_TRACK");
     public static string NavigationTabVisibility => LocalizationController.Translation("NAVIGATION_TAB_VISIBILITY");
     public static string Automatically => LocalizationController.Translation("AUTOMATICALLY");
-    public static string WestServer => LocalizationController.Translation("AMERICA_SERVER");
-    public static string EastServer => LocalizationController.Translation("ASIA_SERVER");
-    public static string EuropeServer => LocalizationController.Translation("EUROPE_SERVER");
     public static string Activated => LocalizationController.Translation("ACTIVATED");
     public static string Disabled => LocalizationController.Translation("DISABLED");
     public static string Notifications => LocalizationController.Translation("NOTIFICATIONS");

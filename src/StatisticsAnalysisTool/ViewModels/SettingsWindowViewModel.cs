@@ -46,8 +46,6 @@ public class SettingsWindowViewModel : BaseViewModel
         InitRefreshRate();
         InitPacketProvider();
         InitNetworkDevices();
-        InitServer();
-
         MainTrackingCharacterName = SettingsController.CurrentSettings.MainTrackingCharacterName;
 
         // Debug console filter
@@ -108,7 +106,6 @@ public class SettingsWindowViewModel : BaseViewModel
         SettingsController.CurrentSettings.RefreshRate = RefreshRatesSelection.Value;
 
         SettingsController.CurrentSettings.PacketProvider = (PacketProviderKind) PacketProviderSelection.Value;
-        SettingsController.CurrentSettings.ServerLocation = (ServerLocation) ServerSelection.Value;
         SetPacketFilter();
         SetNetworkDevices();
 
@@ -164,7 +161,6 @@ public class SettingsWindowViewModel : BaseViewModel
         RefreshNotificationFilterNames();
         InitRefreshRate();
         InitPacketProvider();
-        InitServer();
         InitDropDownDownByDays(BackupIntervalByDays);
         BackupIntervalByDaysSelection = BackupIntervalByDays.FirstOrDefault(x => x.Value == SettingsController.CurrentSettings.BackupIntervalByDays);
         mainWindowViewModel.RefreshLocalization();
@@ -606,15 +602,6 @@ public class SettingsWindowViewModel : BaseViewModel
         }
     }
 
-    private void InitServer()
-    {
-        Server.Clear();
-        Server.Add(new SettingDataInformation { Name = SettingsWindowTranslation.WestServer, Value = 1 });
-        Server.Add(new SettingDataInformation { Name = SettingsWindowTranslation.EastServer, Value = 2 });
-        Server.Add(new SettingDataInformation { Name = SettingsWindowTranslation.EuropeServer, Value = 3 });
-        ServerSelection = Server.FirstOrDefault(x => x.Value == (int) SettingsController.CurrentSettings.ServerLocation);
-    }
-
     private void InitMaxAmountOfBackups(ICollection<SettingDataInformation> amountOfBackups)
     {
         amountOfBackups.Clear();
@@ -837,26 +824,6 @@ public class SettingsWindowViewModel : BaseViewModel
     } = Visibility.Collapsed;
 
     public ObservableCollection<NetworkDeviceFilter> NetworkDevices
-    {
-        get;
-        set
-        {
-            field = value;
-            OnPropertyChanged();
-        }
-    } = new();
-
-    public SettingDataInformation ServerSelection
-    {
-        get;
-        set
-        {
-            field = value;
-            OnPropertyChanged();
-        }
-    }
-
-    public ObservableCollection<SettingDataInformation> Server
     {
         get;
         set

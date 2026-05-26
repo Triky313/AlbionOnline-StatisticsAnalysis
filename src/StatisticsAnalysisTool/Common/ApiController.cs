@@ -1,10 +1,11 @@
-﻿using Serilog;
+using Serilog;
 using StatisticsAnalysisTool.Common.UserSettings;
 using StatisticsAnalysisTool.Diagnostics;
 using StatisticsAnalysisTool.Enumerations;
 using StatisticsAnalysisTool.Exceptions;
 using StatisticsAnalysisTool.Models;
 using StatisticsAnalysisTool.Models.ApiModel;
+using StatisticsAnalysisTool.Network;
 using StatisticsAnalysisTool.Properties;
 using System;
 using System.Collections.Generic;
@@ -647,7 +648,7 @@ public static class ApiController
 
     private static string GetAoDataProjectServerBaseUrlByCurrentServer()
     {
-        return SettingsController.CurrentSettings.ServerLocation switch
+        return GetCurrentServerLocation() switch
         {
             ServerLocation.America => SettingsController.CurrentSettings.AlbionDataProjectBaseUrlWest,
             ServerLocation.Asia => SettingsController.CurrentSettings.AlbionDataProjectBaseUrlEast,
@@ -658,13 +659,23 @@ public static class ApiController
 
     private static string GetServerBaseUrlByCurrentServer()
     {
-        return SettingsController.CurrentSettings.ServerLocation switch
+        return GetCurrentServerLocation() switch
         {
             ServerLocation.America => SettingsController.CurrentSettings.AlbionOnlineApiBaseUrlWest,
             ServerLocation.Asia => SettingsController.CurrentSettings.AlbionOnlineApiBaseUrlEast,
             ServerLocation.Europe => SettingsController.CurrentSettings.AlbionOnlineApiBaseUrlEurope,
             _ => SettingsController.CurrentSettings.AlbionOnlineApiBaseUrlWest
         };
+    }
+
+    private static ServerLocation GetCurrentServerLocation()
+    {
+        if (!ServiceLocator.IsServiceInDictionary<AlbionServerDetectionService>())
+        {
+            return ServerLocation.Unknown;
+        }
+
+        return ServiceLocator.Resolve<AlbionServerDetectionService>().CurrentServerLocation;
     }
 
     private static string GetApiMarketLocation(MarketLocation marketLocation)

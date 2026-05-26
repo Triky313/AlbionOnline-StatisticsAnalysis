@@ -19,15 +19,23 @@ public class NetworkManager
     public NetworkManager(TrackingController trackingController)
     {
         IPhotonReceiver photonReceiver = Build(trackingController);
+        var albionServerDetectionService = ServiceLocator.IsServiceInDictionary<AlbionServerDetectionService>()
+            ? ServiceLocator.Resolve<AlbionServerDetectionService>()
+            : new AlbionServerDetectionService();
+
+        if (!ServiceLocator.IsServiceInDictionary<AlbionServerDetectionService>())
+        {
+            ServiceLocator.Register<AlbionServerDetectionService>(albionServerDetectionService);
+        }
 
         if (SettingsController.CurrentSettings.PacketProvider == PacketProviderKind.Npcap)
         {
-            _packetProvider = new LibpcapPacketProvider(photonReceiver);
+            _packetProvider = new LibpcapPacketProvider(photonReceiver, albionServerDetectionService);
             Log.Information("Used packet provider: {PacketProviderKind}", PacketProviderKind.Npcap);
         }
         else
         {
-            _packetProvider = new SocketsPacketProvider(photonReceiver);
+            _packetProvider = new SocketsPacketProvider(photonReceiver, albionServerDetectionService);
             Log.Information("Used packet provider: {PacketProviderKind}", PacketProviderKind.Sockets);
         }
     }

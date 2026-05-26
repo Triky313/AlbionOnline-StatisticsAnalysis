@@ -74,13 +74,6 @@ public partial class App
                 return;
             }
 
-            if (SettingsController.CurrentSettings.ServerLocation != ServerLocation.America
-                && SettingsController.CurrentSettings.ServerLocation != ServerLocation.Asia
-                && SettingsController.CurrentSettings.ServerLocation != ServerLocation.Europe)
-            {
-                Server.SetServerLocationWithDialogAsync();
-            }
-
             if (!await GameData.InitializeMainGameDataFilesAsync(SettingsController.CurrentSettings.ServerType))
             {
                 _isEarlyShutdown = true;
@@ -184,6 +177,8 @@ public partial class App
 
     private void RegisterServicesEarly()
     {
+        ServiceLocator.Register<AlbionServerDetectionService>(new AlbionServerDetectionService());
+
         _mainWindowViewModel = new MainWindowViewModel();
         ServiceLocator.Register<MainWindowViewModel>(_mainWindowViewModel);
 

@@ -130,11 +130,6 @@
                         <Label MinWidth="300"/>
                         <Button Content="{Binding Translation.RestartNetworkTracking, FallbackValue=RESTART__NETWORK__TRACKING}" Height="24" VerticalAlignment="Bottom" Click="RestartNetworkTracking_Click" />
                     </DockPanel>
-                    <DockPanel Margin="0,20,0,0">
-                        <Label Content="{Binding Translation.SetServer, FallbackValue=SET__SERVER}" MinWidth="300" VerticalAlignment="Top" />
-                        <ComboBox ItemsSource="{Binding Server}" SelectedItem="{Binding ServerSelection}" IsSynchronizedWithCurrentItem="True" DisplayMemberPath="Name"
-                                  SelectedValuePath="Value" HorizontalAlignment="Left" VerticalAlignment="Top" Width="200" Height="26" />
-                    </DockPanel>
                     <DockPanel Margin="0,5,0,0">
                         <Label Content="{Binding Translation.AlbionDataProjectBaseUrlWest, FallbackValue=ALBION_DATA_PROJECT_BASE_URL_WEST}" MinWidth="300" VerticalAlignment="Top" />
                         <TextBox Text="{Binding AlbionDataProjectBaseUrlWest}" Height="40" TextWrapping="Wrap" VerticalAlignment="Top" Margin="0,0,5,0" />

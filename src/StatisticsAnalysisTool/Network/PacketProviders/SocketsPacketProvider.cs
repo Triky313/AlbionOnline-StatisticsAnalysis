@@ -14,9 +14,10 @@ using System.Threading.Tasks;
 
 namespace StatisticsAnalysisTool.Network.PacketProviders;
 
-public class SocketsPacketProvider(IPhotonReceiver photonReceiver) : PacketProvider
+public class SocketsPacketProvider(IPhotonReceiver photonReceiver, AlbionServerDetectionService albionServerDetectionService) : PacketProvider
 {
     private readonly IPhotonReceiver _photonReceiver = photonReceiver ?? throw new ArgumentNullException(nameof(photonReceiver));
+    private readonly AlbionServerDetectionService _albionServerDetectionService = albionServerDetectionService ?? throw new ArgumentNullException(nameof(albionServerDetectionService));
 
     private readonly List<Socket> _socketsV4 = [];
     private readonly List<Socket> _socketsV6 = [];
@@ -223,6 +224,8 @@ public class SocketsPacketProvider(IPhotonReceiver photonReceiver) : PacketProvi
             return;
         }
 
+        var sourceIp = new IPAddress(frame.Slice(12, 4).ToArray()).ToString();
+
         if (frame.Length < ihl + 8)
         {
             return;
@@ -255,7 +258,7 @@ public class SocketsPacketProvider(IPhotonReceiver photonReceiver) : PacketProvi
             }
 
             var payload = frame.Slice(payloadOffset, payloadLen);
-            Deliver(payload);
+            Deliver(payload, sourceIp);
             return;
         }
 
@@ -268,7 +271,7 @@ public class SocketsPacketProvider(IPhotonReceiver photonReceiver) : PacketProvi
             return;
         }
 
-        Deliver(frame.Slice(po, len));
+        Deliver(frame.Slice(po, len), sourceIp);
     }
 
     private void ProcessIPv6(ReadOnlySpan<byte> frame)
@@ -292,6 +295,8 @@ public class SocketsPacketProvider(IPhotonReceiver photonReceiver) : PacketProvi
         {
             return;
         }
+
+        var sourceIp = new IPAddress(frame.Slice(8, 16).ToArray()).ToString();
 
         if (frame.Length < l3HeaderLen + 8)
         {
@@ -327,15 +332,17 @@ public class SocketsPacketProvider(IPhotonReceiver photonReceiver) : PacketProvi
             }
         }
 
-        Deliver(payload);
+        Deliver(payload, sourceIp);
     }
 
-    private void Deliver(ReadOnlySpan<byte> payload)
+    private void Deliver(ReadOnlySpan<byte> payload, string sourceIp)
     {
         if (payload.Length == 0)
         {
             return;
         }
+
+        _albionServerDetectionService.DetectFromSourceIp(sourceIp);
 
         try
         {

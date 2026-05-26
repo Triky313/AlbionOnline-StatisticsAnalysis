@@ -18,15 +18,13 @@ namespace StatisticsAnalysisTool.ViewModels;
 public class FirstStartGuideViewModel : BaseViewModel
 {
     private const int LanguageStepIndex = 0;
-    private const int ServerStepIndex = 1;
-    private const int GameFolderStepIndex = 2;
-    private const int TrackingModeStepIndex = 3;
-    private const int NavigationTabsStepIndex = 4;
-    private const int DonationStepIndex = 5;
-    private const int TotalStepCount = 6;
+    private const int GameFolderStepIndex = 1;
+    private const int TrackingModeStepIndex = 2;
+    private const int NavigationTabsStepIndex = 3;
+    private const int DonationStepIndex = 4;
+    private const int TotalStepCount = 5;
 
     private FirstStartGuideLanguageOption _selectedLanguageOption;
-    private ServerLocationSelectionWindowViewModel.ServerInfo _selectedServerLocation;
     private string _mainGameFolderPath;
     private string _errorMessage;
     private int _currentStepIndex;
@@ -40,7 +38,6 @@ public class FirstStartGuideViewModel : BaseViewModel
                 .OrderBy(x => GetLanguageSortOrder(x.FileName))
                 .ThenBy(x => x.FileName, StringComparer.OrdinalIgnoreCase)
                 .Select((x, index) => new FirstStartGuideLanguageOption(x, LocalizationController.TranslationForCulture("LANGUAGE", x.FileName), index % 5)));
-        ServerLocations = new ObservableCollection<ServerLocationSelectionWindowViewModel.ServerInfo>();
         NavigationTabOptions = new ObservableCollection<FirstStartGuideNavigationTabOption>();
         StepIndicators = new ObservableCollection<FirstStartGuideStepIndicator>(
             Enumerable.Range(0, TotalStepCount).Select(x => new FirstStartGuideStepIndicator(x)));
@@ -57,7 +54,6 @@ public class FirstStartGuideViewModel : BaseViewModel
     public event EventHandler Completed;
 
     public ObservableCollection<FirstStartGuideLanguageOption> LanguageOptions { get; }
-    public ObservableCollection<ServerLocationSelectionWindowViewModel.ServerInfo> ServerLocations { get; }
     public ObservableCollection<FirstStartGuideNavigationTabOption> NavigationTabOptions { get; }
     public ObservableCollection<FirstStartGuideStepIndicator> StepIndicators { get; }
 
@@ -70,7 +66,6 @@ public class FirstStartGuideViewModel : BaseViewModel
     public string CurrentStepTitle { get; private set; }
     public string CurrentStepDescription { get; private set; }
     public string LanguageStepDescription { get; private set; }
-    public string ServerStepDescription { get; private set; }
     public string GameFolderStepDescription { get; private set; }
     public string NpcapWarningText { get; private set; }
     public string StandaloneLauncherTitle { get; private set; }
@@ -118,16 +113,6 @@ public class FirstStartGuideViewModel : BaseViewModel
 
             _selectedLanguageOption = value;
             RefreshLanguageSelectionState();
-            OnPropertyChanged();
-        }
-    }
-
-    public ServerLocationSelectionWindowViewModel.ServerInfo SelectedServerLocation
-    {
-        get => _selectedServerLocation;
-        set
-        {
-            _selectedServerLocation = value;
             OnPropertyChanged();
         }
     }
@@ -197,7 +182,6 @@ public class FirstStartGuideViewModel : BaseViewModel
     public bool IsBackEnabled => CurrentStepIndex > 0;
     public bool IsNextEnabled => CurrentStepIndex != GameFolderStepIndex || _isMainGameFolderValid;
     public Visibility LanguageStepVisibility => CurrentStepIndex == LanguageStepIndex ? Visibility.Visible : Visibility.Collapsed;
-    public Visibility ServerStepVisibility => CurrentStepIndex == ServerStepIndex ? Visibility.Visible : Visibility.Collapsed;
     public Visibility GameFolderStepVisibility => CurrentStepIndex == GameFolderStepIndex ? Visibility.Visible : Visibility.Collapsed;
     public Visibility TrackingModeStepVisibility => CurrentStepIndex == TrackingModeStepIndex ? Visibility.Visible : Visibility.Collapsed;
     public Visibility NavigationTabsStepVisibility => CurrentStepIndex == NavigationTabsStepIndex ? Visibility.Visible : Visibility.Collapsed;
@@ -288,7 +272,6 @@ public class FirstStartGuideViewModel : BaseViewModel
         return CurrentStepIndex switch
         {
             LanguageStepIndex => await SaveLanguageStepAsync().ConfigureAwait(true),
-            ServerStepIndex => await SaveServerStepAsync().ConfigureAwait(true),
             GameFolderStepIndex => await SaveGameFolderStepAsync().ConfigureAwait(true),
             TrackingModeStepIndex => await SaveTrackingModeStepAsync().ConfigureAwait(true),
             NavigationTabsStepIndex => await SaveNavigationTabsStepAsync().ConfigureAwait(true),
@@ -308,20 +291,6 @@ public class FirstStartGuideViewModel : BaseViewModel
 
         Culture.SetCulture(Culture.GetCultureByIetfLanguageTag(SelectedLanguageOption.Language.FileName));
         RefreshLocalizedContent();
-        await SettingsController.SaveSettingsAsync().ConfigureAwait(true);
-        return true;
-    }
-
-    private async Task<bool> SaveServerStepAsync()
-    {
-        if (SelectedServerLocation.ServerLocation is not (ServerLocation.America or ServerLocation.Asia or ServerLocation.Europe))
-        {
-            ErrorMessage = LocalizationController.Translation("PLEASE_SELECT_A_SERVER_LOCATION");
-            Log.Warning("First start guide step validation failed. Step={Step}", "Server");
-            return false;
-        }
-
-        SettingsController.CurrentSettings.ServerLocation = SelectedServerLocation.ServerLocation;
         await SettingsController.SaveSettingsAsync().ConfigureAwait(true);
         return true;
     }
@@ -400,10 +369,7 @@ public class FirstStartGuideViewModel : BaseViewModel
 
     private void RefreshLocalizedContent()
     {
-        RefreshServerLocations();
-
         LanguageStepDescription = LocalizationController.Translation("FIRST_START_GUIDE_LANGUAGE_DESCRIPTION");
-        ServerStepDescription = LocalizationController.Translation("PLEASE_SELECT_A_SERVER_LOCATION");
         GameFolderStepDescription = LocalizationController.Translation("PLEASE_SELECT_A_CORRECT_ALBION_ONLINE_MAIN_GAME_FOLDER");
         TrackingModeDifferenceText = LocalizationController.Translation("FIRST_START_GUIDE_TRACKING_MODE_DIFFERENCE");
         NavigationTabsStepDescription = LocalizationController.Translation("FIRST_START_GUIDE_NAVIGATION_TABS_DESCRIPTION");
@@ -417,7 +383,6 @@ public class FirstStartGuideViewModel : BaseViewModel
         CurrentStepTitle = CurrentStepIndex switch
         {
             LanguageStepIndex => LocalizationController.Translation("LANGUAGE"),
-            ServerStepIndex => LocalizationController.Translation("SELECT_SERVER_LOCATION"),
             GameFolderStepIndex => LocalizationController.Translation("SELECT_ALBION_ONLINE_MAIN_GAME_FOLDER"),
             TrackingModeStepIndex => LocalizationController.Translation("FIRST_START_GUIDE_TRACKING_MODE_TITLE"),
             NavigationTabsStepIndex => LocalizationController.Translation("NAVIGATION_TAB_VISIBILITY"),
@@ -428,7 +393,6 @@ public class FirstStartGuideViewModel : BaseViewModel
         CurrentStepDescription = CurrentStepIndex switch
         {
             LanguageStepIndex => LanguageStepDescription,
-            ServerStepIndex => ServerStepDescription,
             GameFolderStepIndex => GameFolderStepDescription,
             TrackingModeStepIndex => LocalizationController.Translation("FIRST_START_GUIDE_TRACKING_MODE_DESCRIPTION"),
             NavigationTabsStepIndex => NavigationTabsStepDescription,
@@ -444,7 +408,6 @@ public class FirstStartGuideViewModel : BaseViewModel
         OnPropertyChanged(nameof(CurrentStepTitle));
         OnPropertyChanged(nameof(CurrentStepDescription));
         OnPropertyChanged(nameof(LanguageStepDescription));
-        OnPropertyChanged(nameof(ServerStepDescription));
         OnPropertyChanged(nameof(GameFolderStepDescription));
         OnPropertyChanged(nameof(TrackingModeDifferenceText));
         OnPropertyChanged(nameof(NavigationTabsStepDescription));
@@ -463,38 +426,6 @@ public class FirstStartGuideViewModel : BaseViewModel
         OnPropertyChanged(nameof(NpcapDownloadLinkVisibility));
     }
 
-    private void RefreshServerLocations()
-    {
-        var selectedServerLocation = SelectedServerLocation.ServerLocation;
-
-        ServerLocations.Clear();
-        ServerLocations.Add(new ServerLocationSelectionWindowViewModel.ServerInfo
-        {
-            Name = LocalizationController.Translation("AMERICA_SERVER"),
-            ServerLocation = ServerLocation.America
-        });
-        ServerLocations.Add(new ServerLocationSelectionWindowViewModel.ServerInfo
-        {
-            Name = LocalizationController.Translation("ASIA_SERVER"),
-            ServerLocation = ServerLocation.Asia
-        });
-        ServerLocations.Add(new ServerLocationSelectionWindowViewModel.ServerInfo
-        {
-            Name = LocalizationController.Translation("EUROPE_SERVER"),
-            ServerLocation = ServerLocation.Europe
-        });
-
-        var currentServerLocation = selectedServerLocation is ServerLocation.America or ServerLocation.Asia or ServerLocation.Europe
-            ? selectedServerLocation
-            : SettingsController.CurrentSettings.ServerLocation;
-        SelectedServerLocation = ServerLocations.FirstOrDefault(x => x.ServerLocation == currentServerLocation);
-
-        if (SelectedServerLocation.ServerLocation is not (ServerLocation.America or ServerLocation.Asia or ServerLocation.Europe))
-        {
-            SelectedServerLocation = ServerLocations.FirstOrDefault();
-        }
-    }
-
     private void RefreshStepState()
     {
         foreach (var stepIndicator in StepIndicators)
@@ -508,7 +439,6 @@ public class FirstStartGuideViewModel : BaseViewModel
         OnPropertyChanged(nameof(IsBackEnabled));
         OnPropertyChanged(nameof(IsNextEnabled));
         OnPropertyChanged(nameof(LanguageStepVisibility));
-        OnPropertyChanged(nameof(ServerStepVisibility));
         OnPropertyChanged(nameof(GameFolderStepVisibility));
         OnPropertyChanged(nameof(TrackingModeStepVisibility));
         OnPropertyChanged(nameof(NavigationTabsStepVisibility));
