@@ -150,12 +150,17 @@ jobs:
       - name: "✨ Install NetSparkle appcast tool"
         shell: pwsh
         run: |
+          $netSparkleToolDirectory = Join-Path $env:RUNNER_TEMP "netsparkle-appcast-tool"
           dotnet tool install `
-            --tool-path .tools `
+            --tool-path $netSparkleToolDirectory `
             NetSparkleUpdater.Tools.AppCastGenerator `
             --version 2.9.0
 
+          $netSparkleToolPath = Join-Path $netSparkleToolDirectory "netsparkle-generate-appcast.exe"
+          "NETSPARKLE_APPCAST_TOOL=$netSparkleToolPath" | Out-File -FilePath $env:GITHUB_ENV -Encoding utf8 -Append
+
       - name: "🖊 Generate signed NetSparkle appcast"
+        id: generate_appcast
         shell: pwsh
         run: |
           Set-ExecutionPolicy -ExecutionPolicy Bypass -Scope Process -Force
@@ -165,6 +170,7 @@ jobs:
               "pre-release" { @("ao-netsparkle-pre-release-update-check.xml") }
               default { @("ao-netsparkle-update-check.xml") }
           }
+          $appCastAddPaths = [System.Collections.Generic.List[string]]::new()
 
           foreach ($appCastFile in $appCastFiles)
           {
@@ -175,8 +181,15 @@ jobs:
                 -Repository "${{ github.repository }}" `
                 -OutputDirectory src\StatisticsAnalysisTool `
                 -AppCastFileName $appCastFile `
-                -ToolPath .tools\netsparkle-generate-appcast.exe
+                -ToolPath $env:NETSPARKLE_APPCAST_TOOL
+
+              $appCastAddPaths.Add("src/StatisticsAnalysisTool/$appCastFile")
+              $appCastAddPaths.Add("src/StatisticsAnalysisTool/$appCastFile.signature")
           }
+
+          "add-paths<<EOF" | Out-File -FilePath $env:GITHUB_OUTPUT -Encoding utf8 -Append
+          $appCastAddPaths | Out-File -FilePath $env:GITHUB_OUTPUT -Encoding utf8 -Append
+          "EOF" | Out-File -FilePath $env:GITHUB_OUTPUT -Encoding utf8 -Append
 
       - name: "🔃 Create appcast update pull request"
         uses: peter-evans/create-pull-request@v7
@@ -192,8 +205,4 @@ jobs:
             Appcast mode: `${{ steps.release_variables.outputs.appcast-mode }}`.
 
             The GitHub release assets have already been uploaded. Merging this PR makes the update visible to the in-app updater.
-          add-paths: |
-            src/StatisticsAnalysisTool/ao-netsparkle-update-check.xml
-            src/StatisticsAnalysisTool/ao-netsparkle-update-check.xml.signature
-            src/StatisticsAnalysisTool/ao-netsparkle-pre-release-update-check.xml
-            src/StatisticsAnalysisTool/ao-netsparkle-pre-release-update-check.xml.signature
+          add-paths: ${{ steps.generate_appcast.outputs.add-paths }}
