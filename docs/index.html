@@ -10,27 +10,29 @@
             color: #E9EDF1;
             background-color: #1E2126;
         }
+
         .container {
             width: 70%;
             margin: auto;
             padding: 10px;
         }
+
         .download-button {
             display: inline-block;
-            background-color: #3498DB; 
+            background-color: #3498DB;
             border-style: solid;
             border-width: 1px;
             border-color: #63B0E3;
             color: #E9EDF1;
-            padding: 15px 32px; 
-            text-align: center; 
-            text-decoration: none; 
-            display: inline-block; 
+            padding: 15px 32px;
+            text-align: center;
+            text-decoration: none;
             font-size: 18px;
-            font-weight:bold; 
-            margin: 4px 2px; 
-            cursor: pointer; 
+            font-weight: bold;
+            margin: 4px 2px;
+            cursor: pointer;
         }
+
         .download-button:hover {
             background-color: #2280BF;
             color: #E9EDF1;
@@ -40,6 +42,7 @@
             margin: 3px 1px;
             padding: 16px 33px 16px 32px;
         }
+
         .download-button:active {
             background-color: #2280BF;
             color: #E9EDF1;
@@ -49,10 +52,12 @@
             margin: 4px 2px;
             padding: 15px 32px;
         }
+
         h2 {
             color: #CBD4DC;
             margin: 10px 0px 0px 0px;
         }
+
         p {
             color: #677683;
             font-size: small;
@@ -64,19 +69,22 @@
 
 <body>
     <div class="container">
-    
+
         <div style="display: flex; justify-content: left; align-items: center;">
             <img src="https://github.com/Triky313/AlbionOnline-StatisticsAnalysis/raw/main/docs/images/sat-icon.png" height="50" style="margin-right: 0px;" />
             <h1>Albion Online Statistics Analysis</h1>
         </div>
-        <p>A tool to easily read auction house data with a loot logger, damage meter, dungeon tracker, dungeon entry timer, crafting calculator, map history and player information</p>
-        <p>Designed and programmed by Triky313</p>
+
+        <p>A tool for easily reading auction house data, with a loot logger, damage meter, dungeon tracker, dungeon entry timer, crafting calculator, map history, and player information.</p>
+        <p>Designed and developed by Triky313.</p>
+
         <a href="" class="download-button">Statistics Analysis Tool - Download</a>
+
         <ul>
-            <li>You need <b>Windows 10</b> or higher</li>
-            <li>Install .NET 10.0 Desktop Runtime (v10.0.0 or higher) <a href="https://dotnet.microsoft.com/en-us/download/dotnet/thank-you/runtime-desktop-10.0.7-windows-x64-installer">here</a> (To start the tool)</li>
-            <li><strong>Tracking via Socket</strong>: If tracking is used via socket, the tool only needs to be started as an administrator for it to work fully.</li>
-                <li><strong>Tracking via NPCap</strong>: As an alternative there is the Npcap variant, for this Npcap must be installed.<br>In addition, a filtering is available for VPN users that allows IP and port filtering. <a href="https://npcap.com/">Download Npcap</a></li>
+            <li>You need <b>Windows 10</b> or higher.</li>
+            <li>Install the .NET 10.0 Desktop Runtime v10.0.0 or higher <a href="https://dotnet.microsoft.com/en-us/download/dotnet/thank-you/runtime-desktop-10.0.7-windows-x64-installer">here</a> to start the tool.</li>
+            <li><strong>Tracking via Socket</strong>: If socket tracking is used, the tool only needs to be started as an administrator to work properly.</li>
+            <li><strong>Tracking via Npcap</strong>: As an alternative, you can use the Npcap version. For this, Npcap must be installed.<br>Additional filtering is available for VPN users, allowing IP and port filtering. <a href="https://npcap.com/">Download Npcap</a></li>
         </ul>
     </div>
 
@@ -84,68 +92,73 @@
         <h1>Features</h1>
 
         <h2>Header</h2>
-        <p>Next to the name of the tool, the selected server is displayed and whether the tool is completely active in tracking or not.</p>
-        <p>Additionally, there is information about the character you are playing with.</p>
-        <p>Below that the player himself and if available the party members are listed. The small icon next to the number of players can be clicked and you get a coma separated list of all players in the party in your clipboard.</p>
-        <p>On the right side you can see how long the tracking has been running.</p>
+        <p>Next to the tool name, the selected server is displayed, along with whether tracking is fully active.</p>
+        <p>Additional information about your current character is also displayed.</p>
+        <p>Below that, your player character and, if available, your party members are listed. The small icon next to the player count can be clicked to copy a comma-separated list of all party members to your clipboard.</p>
+        <p>On the right side, you can see how long tracking has been running.</p>
         <img src="https://github.com/Triky313/AlbionOnline-StatisticsAnalysis/raw/main/docs/images/header.png">
         <br>
         <br>
-        <h2>Item search</h2>
-        <p>In the item search all items of the game are displayed. With a double click you can open the window of the item and get more information.</p>
+        <h2>Item Search</h2>
+        <p>The item search displays all items in the game. Double-click an item to open its window and view more information.</p>
         <img src="https://github.com/Triky313/AlbionOnline-StatisticsAnalysis/raw/main/docs/images/itemsearch.png">
         <br>
         <br>
         <h2>Logging</h2>
-        <p>In the logging tab, items collected by nearby players can be displayed. Fame, Silver and Faction Points can also be displayed here.</p>
+        <p>The Logging tab displays items collected by nearby players. Fame, Silver, and Faction Points can also be displayed here.</p>
         <img src="https://github.com/Triky313/AlbionOnline-StatisticsAnalysis/raw/main/docs/images/logging.png">
         <br>
         <br>
         <h2>Dungeons</h2>
-        <p>The Dungeon Tab displays Solo Dungeons, Group Dungeons, Avas, Mists, Mist Dungeons, Hellgates, Corrupted Dungeons and HCEs with lots of information. </p>
+        <p>The Dungeons tab displays Solo Dungeons, Group Dungeons, Avalonian Dungeons, Mists, Mist Dungeons, Hellgates, Corrupted Dungeons, and HCEs with detailed information.</p>
         <img src="https://github.com/Triky313/AlbionOnline-StatisticsAnalysis/raw/main/docs/images/dungeons.png">
         <br>
         <br>
         <h2>Damage Meter</h2>
-        <p>The Damage Meter shows the damage and healing of you and players in your party. You can also take snapshots of your damage meter so you don't lose them.</p>
+        <p>The Damage Meter shows the damage and healing done by you and the players in your party. You can also create snapshots of your damage meter so you do not lose them.</p>
         <img src="https://github.com/Triky313/AlbionOnline-StatisticsAnalysis/raw/main/docs/images/damage_meter.png">
         <br>
         <br>
         <h2>Trade Monitoring</h2>
-        <p>The Trade Monitoring tab shows you sold and bought items that you have received by mail in the game or traded directly in the market. Additionally, statistics about the trades are displayed. You can also create manual entries.</p>
+        <p>The Trade Monitoring tab shows sold and purchased items that you received by in-game mail or traded directly on the market. It also displays trade statistics. You can also create manual entries.</p>
         <img src="https://github.com/Triky313/AlbionOnline-StatisticsAnalysis/raw/main/docs/images/trade_monitoring.png">
         <br>
         <br>
         <h2>Gathering</h2>
-        <p>The Gathering Tab shows you information about your gathered resources. Fishing is also displayed.</p>
+        <p>The Gathering tab shows information about your gathered resources. Fishing is also displayed.</p>
         <img src="https://github.com/Triky313/AlbionOnline-StatisticsAnalysis/raw/main/docs/images/gathering.png">
         <br>
         <br>
         <h2>Party Builder</h2>
-        <p>The Party Builder shows you the IP of your character and your party members. Items of party members can be updated when you call the values of the player.</p>
+        <p>The Party Builder shows the item power of your character and your party members. Party member items can be updated when you retrieve the player's values.</p>
         <img src="https://github.com/Triky313/AlbionOnline-StatisticsAnalysis/raw/main/docs/images/party_builder.png">
         <br>
         <br>
         <h2>Storage History</h2>
-        <p>When you open the chests in the bank, in the hideout or on your islands, the contents that were present at that time are saved and displayed in the history.</p>
+        <p>When you open chests in the bank, in a hideout, or on your islands, the contents present at that time are saved and displayed in the history.</p>
         <img src="https://github.com/Triky313/AlbionOnline-StatisticsAnalysis/raw/main/docs/images/storage_history.png">
         <br>
         <br>
         <h2>Map History</h2>
-        <p>In the Map History you can see the maps you have entered. Sorted from top to bottom they are displayed.</p>
+        <p>The Map History tab shows the maps you have entered, sorted from newest to oldest.</p>
         <img src="https://github.com/Triky313/AlbionOnline-StatisticsAnalysis/raw/main/docs/images/map_history.png">
         <br>
         <br>
+        <h2>Open World</h2>
+        <p>This tab tracks mobs and how often they have been killed.</p>
+        <img src="https://github.com/Triky313/AlbionOnline-StatisticsAnalysis/raw/main/docs/images/open_world.png">
+        <br>
+        <br>
         <h2>Player Information</h2>
-        <p>Here player information can be loaded from the Albion Online servers.</p>
+        <p>Player information can be loaded from the Albion Online servers here.</p>
         <img src="https://github.com/Triky313/AlbionOnline-StatisticsAnalysis/raw/main/docs/images/player_info.png">
         <br>
         <br>
-        <h3>The features mentioned above are the most important ones, but there are a lot of other features just waiting to be tried out.</h3>
+        <h3>The features mentioned above are the most important ones, but there are many more waiting to be tried out.</h3>
     </div>
 
     <div class="container">
-        <a href="https://github.com/Triky313/AlbionOnline-StatisticsAnalysis"><h2>Github Repository</h2></a>
+        <a href="https://github.com/Triky313/AlbionOnline-StatisticsAnalysis"><h2>GitHub Repository</h2></a>
     </div>
 </body>
 </html>
@@ -158,11 +171,13 @@
             if (zipAsset) {
                 let downloadButton = document.querySelector('.download-button');
                 downloadButton.href = zipAsset.browser_download_url;
-                // Extrahieren Sie die Version aus dem Namen der Asset-Datei
+
+                // Extract the version from the asset file name.
                 let version = zipAsset.name.match(/v(\d+\.\d+\.\d+)-x64/)[1];
-                // Aktualisieren Sie den Text des Buttons, um die Version anzuzeigen
+
+                // Update the button text to display the version.
                 downloadButton.textContent = 'Statistics Analysis Tool v' + version + ' - Download';
             }
         })
-    .catch(error => console.error(error));
+        .catch(error => console.error(error));
 </script>
