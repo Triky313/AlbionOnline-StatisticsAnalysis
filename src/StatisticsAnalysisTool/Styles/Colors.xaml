@@ -121,6 +121,16 @@
     <Color x:Key="Color.Text.ToOldThird">#FF616172</Color>
     <Color x:Key="Color.Text.NoValue">#FF4B4B59</Color>
 
+    <!-- Item tier colors -->
+    <Color x:Key="Item.Tier.Color.1">#FF8A8A8A</Color>
+    <Color x:Key="Item.Tier.Color.2">#FFA87545</Color>
+    <Color x:Key="Item.Tier.Color.3">#FF4CAF50</Color>
+    <Color x:Key="Item.Tier.Color.4">#FF3F7FD8</Color>
+    <Color x:Key="Item.Tier.Color.5">#FFC84040</Color>
+    <Color x:Key="Item.Tier.Color.6">#FFD9822B</Color>
+    <Color x:Key="Item.Tier.Color.7">#FFD8B637</Color>
+    <Color x:Key="Item.Tier.Color.8">#FFE6E6E6</Color>
+
     <!-- Item level colors -->
     <Color x:Key="Item.Level.Color.0">#FFb1b0ae</Color>
     <Color x:Key="Item.Level.Color.1">#FF6bff91</Color>
@@ -299,6 +309,16 @@
     <SolidColorBrush x:Key="SolidColorBrush.Dungeon.Mode.Avalon.1" Color="{StaticResource Dungeon.Mode.Avalon.1}"/>
     <SolidColorBrush x:Key="SolidColorBrush.Dungeon.Mode.Unknown" Color="{StaticResource Dungeon.Mode.Unknown}"/>
 
+    <SolidColorBrush x:Key="SolidColorBrush.Item.Tier.Color.1" Color="{StaticResource Item.Tier.Color.1}"/>
+    <SolidColorBrush x:Key="SolidColorBrush.Item.Tier.Color.2" Color="{StaticResource Item.Tier.Color.2}"/>
+    <SolidColorBrush x:Key="SolidColorBrush.Item.Tier.Color.3" Color="{StaticResource Item.Tier.Color.3}"/>
+    <SolidColorBrush x:Key="SolidColorBrush.Item.Tier.Color.4" Color="{StaticResource Item.Tier.Color.4}"/>
+    <SolidColorBrush x:Key="SolidColorBrush.Item.Tier.Color.5" Color="{StaticResource Item.Tier.Color.5}"/>
+    <SolidColorBrush x:Key="SolidColorBrush.Item.Tier.Color.6" Color="{StaticResource Item.Tier.Color.6}"/>
+    <SolidColorBrush x:Key="SolidColorBrush.Item.Tier.Color.7" Color="{StaticResource Item.Tier.Color.7}"/>
+    <SolidColorBrush x:Key="SolidColorBrush.Item.Tier.Color.8" Color="{StaticResource Item.Tier.Color.8}"/>
+
+    <SolidColorBrush x:Key="SolidColorBrush.Item.Level.Color.0" Color="{StaticResource Item.Level.Color.0}"/>
     <SolidColorBrush x:Key="SolidColorBrush.Item.Level.Color.1" Color="{StaticResource Item.Level.Color.1}"/>
     <SolidColorBrush x:Key="SolidColorBrush.Item.Level.Color.2" Color="{StaticResource Item.Level.Color.2}"/>
     <SolidColorBrush x:Key="SolidColorBrush.Item.Level.Color.3" Color="{StaticResource Item.Level.Color.3}"/>

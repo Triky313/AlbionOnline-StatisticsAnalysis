@@ -118,4 +118,5 @@ public class SettingsObject
     public int NetworkDevice { get; set; } = -1;
     public List<NetworkDeviceSettingsObject> NetworkDevices { get; set; } = new();
     public bool IsNpcapInfoDialogShownOnStart { get; set; } = true;
+    public bool Bm { get; set; } = false;
 }

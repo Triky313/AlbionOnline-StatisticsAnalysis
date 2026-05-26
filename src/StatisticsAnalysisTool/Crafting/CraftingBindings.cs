@@ -1,5 +1,6 @@
 using Serilog;
 using StatisticsAnalysisTool.Common;
+using StatisticsAnalysisTool.Common.UserSettings;
 using StatisticsAnalysisTool.Diagnostics;
 using StatisticsAnalysisTool.Enumerations;
 using StatisticsAnalysisTool.GameFileData;
@@ -14,6 +15,7 @@ using System.Globalization;
 using System.Linq;
 using System.Reflection;
 using System.Threading.Tasks;
+using System.Windows;
 using System.Windows.Data;
 using System.Windows.Input;
 
@@ -52,6 +54,7 @@ public class CraftingBindings : BaseViewModel
     private string _returnRatePercentText = FormatPercentInput(0m);
     private string _salesTaxPercentText = FormatPercentInput(4m);
     private string _setupFeePercentText = FormatPercentInput(2.5m);
+    private BlackMarketBindings _blackMarket;
 
     public CraftingBindings()
     {
@@ -68,92 +71,50 @@ public class CraftingBindings : BaseViewModel
         _ = LoadAsync();
     }
 
-    public ObservableCollection<Item> CraftableItems
-    {
-        get;
-    }
-    = [];
+    public ObservableCollection<Item> CraftableItems { get; }
 
-    public ICollectionView CraftableItemsView
-    {
-        get;
-    }
+    public ICollectionView CraftableItemsView { get; }
 
-    public ObservableCollection<CraftingResourceEntry> Resources
-    {
-        get;
-    }
-    = [];
+    public ObservableCollection<CraftingResourceEntry> Resources { get; } = [];
 
-    public ObservableCollection<SavedCrafting> SavedCraftings
-    {
-        get;
-    }
-    = [];
+    public ObservableCollection<SavedCrafting> SavedCraftings { get; } = [];
 
-    public ObservableCollection<CraftingItemSearchResult> ListBoxItemSearchItems
-    {
-        get;
-    }
-    = [];
+    public ObservableCollection<CraftingItemSearchResult> ListBoxItemSearchItems { get; } = [];
 
-    public ObservableCollection<CraftingLocationOption> CraftingLocations
-    {
-        get;
-    }
-    = [];
+    public ObservableCollection<CraftingLocationOption> CraftingLocations { get; } = [];
 
-    public ObservableCollection<CraftingLocationOption> ListBoxCraftingLocationItems
-    {
-        get;
-    }
-    = [];
+    public ObservableCollection<CraftingLocationOption> ListBoxCraftingLocationItems { get; } = [];
 
-    public ObservableCollection<CraftingSellPriceOption> SellPriceOptions
-    {
-        get;
-    }
-    = [];
+    public ObservableCollection<CraftingSellPriceOption> SellPriceOptions { get; } = [];
 
-    public CraftingDailyBonusOption[] DailyBonusOptions
-    {
-        get;
-    }
-    =
+    public BlackMarketBindings BlackMarket => IsBlackMarketEnabled ? _blackMarket ??= new BlackMarketBindings() : null;
+
+    public bool IsBlackMarketEnabled => SettingsController.CurrentSettings.Bm;
+
+    public Visibility BlackMarketTabVisibility => IsBlackMarketEnabled.BoolToVisibility();
+
+    public CraftingDailyBonusOption[] DailyBonusOptions { get; } =
     [
-        new CraftingDailyBonusOption
+        new()
         {
             Name = TranslationNone,
             BonusPercent = 0m
-        }
-        ,
-        new CraftingDailyBonusOption
+        },
+        new()
         {
             Name = "10%",
             BonusPercent = 10m
-        }
-        ,
-        new CraftingDailyBonusOption
+        },
+        new()
         {
             Name = "20%",
             BonusPercent = 20m
         }
     ];
 
-    public CraftingHideoutBonusOption[] HideoutBonusOptions
-    {
-        get;
-    }
-    = HideoutData.GetHideoutBonusOptions();
+    public CraftingHideoutBonusOption[] HideoutBonusOptions { get; } = HideoutData.GetHideoutBonusOptions();
 
-    public KeyValuePair<MarketLocation, string>[] MarketLocations
-    {
-        get;
-    }
-    =
-    [
-        .. Locations.OnceMarketLocations
-    ];
+    public KeyValuePair<MarketLocation, string>[] MarketLocations { get; } = [.. Locations.OnceMarketLocations];
 
     public Dictionary<ItemTier, string> ItemTiers => FrequentlyValues.ItemTiers;
 
@@ -482,17 +443,11 @@ public class CraftingBindings : BaseViewModel
         get;
         set
         {
-            if (field != null)
-            {
-                field.ValuesChanged = null;
-            }
+            field?.ValuesChanged = null;
 
             field = value;
 
-            if (field != null)
-            {
-                field.ValuesChanged = Recalculate;
-            }
+            field?.ValuesChanged = Recalculate;
 
             Recalculate();
             OnPropertyChanged();
@@ -532,6 +487,7 @@ public class CraftingBindings : BaseViewModel
     public ICommand LoadPricesCommand => field ??= new CommandHandler(_ => LoadPricesAsync(), true);
 
     public static string TranslationBreakEven => LocalizationController.Translation("BREAK_EVEN_PRICE");
+    public static string TranslationBlackMarket => LocalizationController.Translation("BLACK_MARKET");
     public static string TranslationBonus => LocalizationController.Translation("BONUS");
     public static string TranslationChanged => LocalizationController.Translation("CHANGED");
     public static string TranslationCosts => LocalizationController.Translation("COSTS");
@@ -552,6 +508,7 @@ public class CraftingBindings : BaseViewModel
     public static string TranslationHideoutBonus => LocalizationController.Translation("HIDEOUT_BONUS");
     public static string TranslationIcon => LocalizationController.Translation("ICON");
     public static string TranslationItem => LocalizationController.Translation("ITEM");
+    public static string TranslationItemCrafting => TranslationItem + " " + TranslationCrafting;
     public static string TranslationJournalCosts => LocalizationController.Translation("JOURNAL_COSTS");
     public static string TranslationJournalRevenue => LocalizationController.Translation("JOURNAL_REVENUE");
     public static string TranslationJournals => LocalizationController.Translation("JOURNALS");
@@ -590,6 +547,7 @@ public class CraftingBindings : BaseViewModel
     public static string TranslationStation => LocalizationController.Translation("STATION");
     public static string TranslationStationFee => LocalizationController.Translation("STATION_FEE");
     public static string TranslationStationFeeTooltip => LocalizationController.Translation("CRAFTING_STATION_FEE_TOOLTIP");
+    public static string TranslationTier => "Tier";
     public static string TranslationTotalCosts => LocalizationController.Translation("TOTAL_COSTS");
     public static string TranslationType => LocalizationController.Translation("TYPE");
     public static string TranslationWeightAfter => LocalizationController.Translation("WEIGHT_AFTER");
@@ -833,6 +791,21 @@ public class CraftingBindings : BaseViewModel
             PrepareSavedCrafting(crafting);
             SavedCraftings.Add(crafting);
         }
+    }
+
+    public async Task SaveInFileAsync()
+    {
+        var saveTasks = new List<Task>
+        {
+            _controller.SaveAsync(SavedCraftings)
+        };
+
+        if (IsBlackMarketEnabled && _blackMarket != null)
+        {
+            saveTasks.Add(_blackMarket.SaveInFileAsync());
+        }
+
+        await Task.WhenAll(saveTasks);
     }
 
     private bool FilterCraftableItem(object value)
