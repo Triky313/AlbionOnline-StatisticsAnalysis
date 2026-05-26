@@ -1,26 +1,14 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<rss xmlns:dc="http://purl.org/dc/elements/1.1/"
-     xmlns:sparkle="http://www.andymatuschak.org/xml-namespaces/sparkle"
-     version="2.0">
-	<channel>
-		<title>Statistics Analysis Tool</title>
-		<description>Most recent changes with link to updates.</description>
-		<language>en</language>
-
-		<item>
-			<title>Statistics Analysis Tool v9.3.0</title>
-			<description>
-				<![CDATA[
-				<a href="https://github.com/Triky313/AlbionOnline-StatisticsAnalysis/releases/tag/v9.3.0"> View full patch notes on GitHub </a>
-				]]>
-			</description>
-			<pubDate>Sun, 24 May 2026 00:00:00 +0000</pubDate>
-			<enclosure url="https://github.com/Triky313/AlbionOnline-StatisticsAnalysis/releases/download/v9.3.0/StatisticsAnalysis-AlbionOnline-v9.3.0-windows-x64.exe"
-					   sparkle:version="9.3.0"
-					   sparkle:shortVersionString="9.3.0"
-					   sparkle:os="windows-x64"
-					   length="0"
-					   type="application/octet-stream" />
-		</item>
-	</channel>
+<?xml version="1.0" encoding="utf-8"?>
+<rss xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:sparkle="http://www.andymatuschak.org/xml-namespaces/sparkle" version="2.0">
+  <channel>
+    <title>Statistics Analysis Tool</title>
+    <description>Most recent changes with link to updates.</description>
+    <language>en</language>
+    <item>
+      <title>Statistics Analysis Tool v9.3.1-beta.1</title>
+      <description><![CDATA[<a href="https://github.com/Triky313/AlbionOnline-StatisticsAnalysis/releases/tag/v9.3.1-beta.1">View full patch notes on GitHub</a>]]></description>
+      <pubDate>Tue, 26 May 2026 18:07:56 +0000</pubDate>
+      <enclosure url="https://github.com/Triky313/AlbionOnline-StatisticsAnalysis/releases/download/v9.3.1-beta.1/StatisticsAnalysis-AlbionOnline-v9.3.1-beta.1-windows-x64.exe" sparkle:version="9.3.1-beta.1" sparkle:shortVersionString="9.3.1-beta.1" sparkle:os="windows-x64" length="42849149" type="application/octet-stream" sparkle:signature="sBumJkvOvuRhy2h9i5Cwjg40Yzg7TfKxu0lkl/mgFzWR6KwifubKI0fRnLz68UIn0BF/hKrrOBuzJNADkYYqBg==" />
+    </item>
+  </channel>
 </rss>
