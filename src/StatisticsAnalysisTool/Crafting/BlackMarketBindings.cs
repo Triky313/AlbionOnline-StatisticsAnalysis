@@ -6,6 +6,7 @@ using Serilog;
 using SkiaSharp;
 using StatisticsAnalysisTool.Cluster;
 using StatisticsAnalysisTool.Common;
+using StatisticsAnalysisTool.Common.UserSettings;
 using StatisticsAnalysisTool.Diagnostics;
 using StatisticsAnalysisTool.Enumerations;
 using StatisticsAnalysisTool.Localization;
@@ -56,6 +57,11 @@ public sealed class BlackMarketBindings : BaseViewModel
 
     public BlackMarketBindings()
     {
+        if (!SettingsController.CurrentSettings.Bm)
+        {
+            return;
+        }
+
         LoadCategoriesToDropdown();
         ItemTiers = FrequentlyValues.ItemTiers;
         ItemLevels = FrequentlyValues.ItemLevels;
@@ -319,6 +325,11 @@ public sealed class BlackMarketBindings : BaseViewModel
 
     public void CacheAverageStatsRequest(BlackMarketAverageStatsRequestContext context)
     {
+        if (!SettingsController.CurrentSettings.Bm)
+        {
+            return;
+        }
+
         if (context?.RequestId <= 0 || string.IsNullOrWhiteSpace(context.ItemUniqueName))
         {
             return;
@@ -335,6 +346,11 @@ public sealed class BlackMarketBindings : BaseViewModel
 
     public void RecordCurrentBuyOrders(IEnumerable<AuctionEntry> auctionOrders, MarketLocation marketLocation)
     {
+        if (!SettingsController.CurrentSettings.Bm)
+        {
+            return;
+        }
+
         if (marketLocation != MarketLocation.BlackMarket || auctionOrders == null)
         {
             return;
@@ -388,6 +404,11 @@ public sealed class BlackMarketBindings : BaseViewModel
 
     public async Task RecordAverageStatsResponseAsync(int requestId, IReadOnlyList<BlackMarketHistoryPoint> points)
     {
+        if (!SettingsController.CurrentSettings.Bm)
+        {
+            return;
+        }
+
         if (!_requestContexts.TryRemove(requestId, out var context))
         {
             return;
@@ -426,6 +447,11 @@ public sealed class BlackMarketBindings : BaseViewModel
 
     public async Task LoadAsync()
     {
+        if (!SettingsController.CurrentSettings.Bm)
+        {
+            return;
+        }
+
         var entries = await FileController.LoadAsync<List<BlackMarketHistoryEntry>>(AppDataPaths.UserDataFile(HistoryFileName)).ConfigureAwait(true);
         lock (_historyLock)
         {
@@ -447,6 +473,11 @@ public sealed class BlackMarketBindings : BaseViewModel
 
     public async Task SaveInFileAsync()
     {
+        if (!SettingsController.CurrentSettings.Bm)
+        {
+            return;
+        }
+
         List<BlackMarketHistoryEntry> entries;
         lock (_historyLock)
         {

@@ -1,4 +1,5 @@
 using StatisticsAnalysisTool.Common;
+using StatisticsAnalysisTool.Common.UserSettings;
 using StatisticsAnalysisTool.Crafting;
 using StatisticsAnalysisTool.Network.Manager;
 using StatisticsAnalysisTool.Network.Operations.Responses;
@@ -16,6 +17,11 @@ public sealed class AuctionGetItemAverageStatsRequestHandler : RequestPacketHand
 
     protected override Task OnActionAsync(AuctionGetItemAverageStatsRequest value)
     {
+        if (!SettingsController.CurrentSettings.Bm)
+        {
+            return Task.CompletedTask;
+        }
+
         var item = ItemController.GetItemByIndex(value.ItemIndex);
         if (item == null)
         {
@@ -27,7 +33,7 @@ public sealed class AuctionGetItemAverageStatsRequestHandler : RequestPacketHand
                              ?? MarketLocation.Unknown;
 
         var mainWindowViewModel = ServiceLocator.Resolve<MainWindowViewModel>();
-        mainWindowViewModel?.CraftingBindings?.BlackMarket.CacheAverageStatsRequest(new BlackMarketAverageStatsRequestContext
+        mainWindowViewModel?.CraftingBindings?.BlackMarket?.CacheAverageStatsRequest(new BlackMarketAverageStatsRequestContext
         {
             RequestId = value.RequestId,
             ItemUniqueName = item.UniqueName,

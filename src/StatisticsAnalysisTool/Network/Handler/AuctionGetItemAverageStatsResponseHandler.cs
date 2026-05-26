@@ -1,4 +1,5 @@
 using StatisticsAnalysisTool.Common;
+using StatisticsAnalysisTool.Common.UserSettings;
 using StatisticsAnalysisTool.Network.Manager;
 using StatisticsAnalysisTool.Network.Operations.Responses;
 using StatisticsAnalysisTool.ViewModels;
@@ -15,7 +16,16 @@ public sealed class AuctionGetItemAverageStatsResponseHandler : ResponsePacketHa
 
     protected override async Task OnActionAsync(AuctionGetItemAverageStatsResponse value)
     {
+        if (!SettingsController.CurrentSettings.Bm)
+        {
+            return;
+        }
+
         var mainWindowViewModel = ServiceLocator.Resolve<MainWindowViewModel>();
-        await mainWindowViewModel.CraftingBindings.BlackMarket.RecordAverageStatsResponseAsync(value.RequestId, value.Points);
+        var blackMarket = mainWindowViewModel.CraftingBindings.BlackMarket;
+        if (blackMarket != null)
+        {
+            await blackMarket.RecordAverageStatsResponseAsync(value.RequestId, value.Points);
+        }
     }
 }

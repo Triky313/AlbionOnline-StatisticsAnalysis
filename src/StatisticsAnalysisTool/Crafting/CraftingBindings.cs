@@ -54,6 +54,7 @@ public class CraftingBindings : BaseViewModel
     private string _returnRatePercentText = FormatPercentInput(0m);
     private string _salesTaxPercentText = FormatPercentInput(4m);
     private string _setupFeePercentText = FormatPercentInput(2.5m);
+    private BlackMarketBindings _blackMarket;
 
     public CraftingBindings()
     {
@@ -86,9 +87,11 @@ public class CraftingBindings : BaseViewModel
 
     public ObservableCollection<CraftingSellPriceOption> SellPriceOptions { get; } = [];
 
-    public BlackMarketBindings BlackMarket { get; } = new();
+    public BlackMarketBindings BlackMarket => IsBlackMarketEnabled ? _blackMarket ??= new BlackMarketBindings() : null;
 
-    public Visibility BlackMarketTabVisibility => SettingsController.CurrentSettings.Bm.BoolToVisibility();
+    public bool IsBlackMarketEnabled => SettingsController.CurrentSettings.Bm;
+
+    public Visibility BlackMarketTabVisibility => IsBlackMarketEnabled.BoolToVisibility();
 
     public CraftingDailyBonusOption[] DailyBonusOptions { get; } =
     [
@@ -792,10 +795,17 @@ public class CraftingBindings : BaseViewModel
 
     public async Task SaveInFileAsync()
     {
-        await Task.WhenAll(
-            _controller.SaveAsync(SavedCraftings),
-            BlackMarket.SaveInFileAsync()
-        );
+        var saveTasks = new List<Task>
+        {
+            _controller.SaveAsync(SavedCraftings)
+        };
+
+        if (IsBlackMarketEnabled && _blackMarket != null)
+        {
+            saveTasks.Add(_blackMarket.SaveInFileAsync());
+        }
+
+        await Task.WhenAll(saveTasks);
     }
 
     private bool FilterCraftableItem(object value)

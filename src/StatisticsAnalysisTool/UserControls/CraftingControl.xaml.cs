@@ -307,7 +307,7 @@ public partial class CraftingControl
             return;
         }
 
-        mainWindowViewModel.CraftingBindings.BlackMarket.ResetFilters();
+        mainWindowViewModel.CraftingBindings.BlackMarket?.ResetFilters();
     }
 
     private void OpenResourcePriceOptions(object sender)

@@ -274,7 +274,10 @@ public class MarketController(TrackingController trackingController, MainWindowV
         var auctionOrderList = auctionOrders?.ToList() ?? [];
         string locationIndex = ClusterController.CurrentCluster.Index;
         MarketLocation marketLocation = locationIndex.GetMarketLocationByLocationNameOrId();
-        mainWindowViewModel.CraftingBindings.BlackMarket.RecordCurrentBuyOrders(auctionOrderList, marketLocation);
+        if (SettingsController.CurrentSettings.Bm)
+        {
+            mainWindowViewModel.CraftingBindings.BlackMarket?.RecordCurrentBuyOrders(auctionOrderList, marketLocation);
+        }
 
         foreach (var offer in auctionOrderList)
         {
