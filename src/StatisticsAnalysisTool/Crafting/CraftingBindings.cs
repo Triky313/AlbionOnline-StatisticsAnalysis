@@ -1,5 +1,6 @@
 using Serilog;
 using StatisticsAnalysisTool.Common;
+using StatisticsAnalysisTool.Common.UserSettings;
 using StatisticsAnalysisTool.Diagnostics;
 using StatisticsAnalysisTool.Enumerations;
 using StatisticsAnalysisTool.GameFileData;
@@ -14,6 +15,7 @@ using System.Globalization;
 using System.Linq;
 using System.Reflection;
 using System.Threading.Tasks;
+using System.Windows;
 using System.Windows.Data;
 using System.Windows.Input;
 
@@ -85,6 +87,8 @@ public class CraftingBindings : BaseViewModel
     public ObservableCollection<CraftingSellPriceOption> SellPriceOptions { get; } = [];
 
     public BlackMarketBindings BlackMarket { get; } = new();
+
+    public Visibility BlackMarketTabVisibility => SettingsController.CurrentSettings.Bm.BoolToVisibility();
 
     public CraftingDailyBonusOption[] DailyBonusOptions { get; } =
     [

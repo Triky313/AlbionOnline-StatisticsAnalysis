@@ -888,7 +888,8 @@
         </Grid>
     </Grid>
         </TabItem>
-        <TabItem Header="{x:Static crafting:CraftingBindings.TranslationBlackMarket}">
+        <TabItem Header="{x:Static crafting:CraftingBindings.TranslationBlackMarket}"
+                 Visibility="{Binding CraftingBindings.BlackMarketTabVisibility}">
             <Grid DataContext="{Binding CraftingBindings.BlackMarket}" Margin="10">
                 <Grid.RowDefinitions>
                     <RowDefinition Height="2*" />
