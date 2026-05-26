@@ -6,6 +6,7 @@ using StatisticsAnalysisTool.Common.Shortcut;
 using StatisticsAnalysisTool.Diagnostics;
 using StatisticsAnalysisTool.Localization;
 using StatisticsAnalysisTool.PhotonPackageParser;
+using StatisticsAnalysisTool.Updater;
 using StatisticsAnalysisTool.ViewModels;
 using System;
 using System.Diagnostics;

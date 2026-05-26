@@ -11,6 +11,7 @@ using StatisticsAnalysisTool.Localization;
 using StatisticsAnalysisTool.Network;
 using StatisticsAnalysisTool.Network.Manager;
 using StatisticsAnalysisTool.Notification;
+using StatisticsAnalysisTool.Updater;
 using StatisticsAnalysisTool.ViewModels;
 using StatisticsAnalysisTool.Views;
 using System;

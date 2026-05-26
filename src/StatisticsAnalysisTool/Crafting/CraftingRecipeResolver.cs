@@ -53,10 +53,10 @@ public class CraftingRecipeResolver
 
         var journalItem = item.FullItemInformation switch
         {
-            Weapon weapon => CraftingController.GetCraftingJournalItem(item.Tier, weapon.CraftingJournalType),
-            TransformationWeapon transformationWeapon => CraftingController.GetCraftingJournalItem(item.Tier, transformationWeapon.CraftingJournalType),
-            EquipmentItem equipmentItem => CraftingController.GetCraftingJournalItem(item.Tier, equipmentItem.CraftingJournalType),
-            TrackingItem trackingItem => CraftingController.GetCraftingJournalItem(item.Tier, trackingItem.CraftingJournalType),
+            Weapon weapon => CraftingJournalService.GetCraftingJournalItem(item.Tier, weapon.CraftingJournalType),
+            TransformationWeapon transformationWeapon => CraftingJournalService.GetCraftingJournalItem(item.Tier, transformationWeapon.CraftingJournalType),
+            EquipmentItem equipmentItem => CraftingJournalService.GetCraftingJournalItem(item.Tier, equipmentItem.CraftingJournalType),
+            TrackingItem trackingItem => CraftingJournalService.GetCraftingJournalItem(item.Tier, trackingItem.CraftingJournalType),
             _ => null
         }
         ;
@@ -69,8 +69,8 @@ public class CraftingRecipeResolver
         var generalJournalName = ItemController.GetGeneralJournalName(journalItem.UniqueName);
         var fullJournalUniqueName = journalItem.UniqueName.Replace("_EMPTY", "_FULL", StringComparison.Ordinal);
         var generalJournalItem = ItemController.GetItemByUniqueName(generalJournalName);
-        var resources = CraftingController.GetTotalAmountResources([GetCraftingRequirements(item)]);
-        var famePerRun = CraftingController.GetTotalBaseFame(resources, (ItemTier) item.Tier, (ItemLevel) item.Level);
+        var resources = CraftingJournalService.GetTotalAmountResources([GetCraftingRequirements(item)]);
+        var famePerRun = CraftingJournalService.GetTotalBaseFame(resources, (ItemTier) item.Tier, (ItemLevel) item.Level);
         var maxFamePerJournal = GetMaxJournalFame(item.Tier);
 
         if (famePerRun <= 0d || maxFamePerJournal <= 0m)

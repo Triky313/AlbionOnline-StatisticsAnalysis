@@ -3,6 +3,8 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:fa5="http://schemas.fontawesome.com/icons/"
+             xmlns:wpf="clr-namespace:LiveChartsCore.SkiaSharpView.WPF;assembly=LiveChartsCore.SkiaSharpView.WPF"
              xmlns:viewModels="clr-namespace:StatisticsAnalysisTool.ViewModels"
              xmlns:common="clr-namespace:StatisticsAnalysisTool.Common"
              xmlns:crafting="clr-namespace:StatisticsAnalysisTool.Crafting"
@@ -118,6 +120,16 @@
                 </DataTrigger>
             </Style.Triggers>
         </Style>
+        <Style x:Key="SavedCraftingRoiText" TargetType="{x:Type TextBlock}" BasedOn="{StaticResource SavedCraftingCellText}">
+            <Style.Triggers>
+                <DataTrigger Binding="{Binding IsRoiPositive}" Value="True">
+                    <Setter Property="Foreground" Value="{StaticResource SolidColorBrush.Accent.Green.2}" />
+                </DataTrigger>
+                <DataTrigger Binding="{Binding IsRoiNegative}" Value="True">
+                    <Setter Property="Foreground" Value="{StaticResource SolidColorBrush.Accent.Red.2}" />
+                </DataTrigger>
+            </Style.Triggers>
+        </Style>
         <Style x:Key="SavedCraftingBreakEvenText" TargetType="{x:Type TextBlock}" BasedOn="{StaticResource SavedCraftingCellText}">
             <Setter Property="Foreground" Value="{StaticResource SolidColorBrush.Accent.Yellow.1}" />
         </Style>
@@ -158,7 +170,9 @@
             <Setter Property="VerticalContentAlignment" Value="Center" />
         </Style>
     </UserControl.Resources>
-    <Grid PreviewMouseDown="CraftingControl_OnPreviewMouseDown">
+    <TabControl Background="Transparent" BorderThickness="0" PreviewMouseDown="CraftingControl_OnPreviewMouseDown">
+        <TabItem Header="{x:Static crafting:CraftingBindings.TranslationItemCrafting}">
+    <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="2*" />
             <RowDefinition Height="5" />
@@ -846,6 +860,13 @@
                                 </DataTemplate>
                             </GridViewColumn.CellTemplate>
                         </GridViewColumn>
+                        <GridViewColumn Header="{x:Static crafting:CraftingBindings.TranslationRoi}" Width="90">
+                            <GridViewColumn.CellTemplate>
+                                <DataTemplate>
+                                    <TextBlock Text="{Binding RoiPercent, StringFormat={}{0:N2}%}" Style="{StaticResource SavedCraftingRoiText}" />
+                                </DataTemplate>
+                            </GridViewColumn.CellTemplate>
+                        </GridViewColumn>
                         <GridViewColumn Header="{x:Static crafting:CraftingBindings.TranslationBreakEven}" Width="120">
                             <GridViewColumn.CellTemplate>
                                 <DataTemplate>
@@ -866,4 +887,281 @@
             </ListView>
         </Grid>
     </Grid>
+        </TabItem>
+        <TabItem Header="{x:Static crafting:CraftingBindings.TranslationBlackMarket}"
+                 Visibility="{Binding CraftingBindings.BlackMarketTabVisibility}">
+            <Grid DataContext="{Binding CraftingBindings.BlackMarket}" Margin="10">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="2*" />
+                    <RowDefinition Height="5" />
+                    <RowDefinition Height="{Binding GridSplitterPosition, Mode=TwoWay, FallbackValue=*}" />
+                </Grid.RowDefinitions>
+
+                <Grid Grid.Row="0">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="*" />
+                    </Grid.RowDefinitions>
+
+                    <Grid Grid.Row="0">
+                        <StackPanel Orientation="Vertical">
+                            <Grid>
+                                <TextBox Text="{Binding SearchText, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Style="{StaticResource ItemSearchTextBoxStyle}" />
+
+                                <Grid Width="24" Height="22" Margin="235,10,0,0" HorizontalAlignment="Left" VerticalAlignment="Top">
+                                    <fa5:ImageAwesome Icon="Solid_Redo" Foreground="{StaticResource SolidColorBrush.Text.1}" MouseUp="FilterReset_MouseUp" />
+                                </Grid>
+                            </Grid>
+                            <StackPanel Orientation="Horizontal">
+                                <ComboBox ItemsSource="{Binding ItemShopCategories}"
+                                          SelectedItem="{Binding SelectedItemShopCategory, Mode=TwoWay}"
+                                          SelectedValuePath="Id"
+                                          DisplayMemberPath="DisplayName"
+                                          HorizontalAlignment="Left"
+                                          Margin="10,5,5,5"
+                                          VerticalAlignment="Top"
+                                          Width="150" />
+                                <ComboBox ItemsSource="{Binding ItemSubCategories1}"
+                                          SelectedItem="{Binding SelectedItemShopSubCategory1, Mode=TwoWay}"
+                                          SelectedValuePath="Id"
+                                          DisplayMemberPath="DisplayName"
+                                          HorizontalAlignment="Left"
+                                          Margin="5,5"
+                                          VerticalAlignment="Top"
+                                          Width="150" />
+                                <ComboBox ItemsSource="{Binding ItemSubCategories2}"
+                                          SelectedItem="{Binding SelectedItemShopSubCategory2, Mode=TwoWay}"
+                                          SelectedValuePath="Id"
+                                          DisplayMemberPath="DisplayName"
+                                          HorizontalAlignment="Left"
+                                          Margin="5,5"
+                                          VerticalAlignment="Top"
+                                          Width="150" />
+                                <ComboBox ItemsSource="{Binding ItemSubCategories3}"
+                                          SelectedItem="{Binding SelectedItemShopSubCategory3, Mode=TwoWay}"
+                                          SelectedValuePath="Id"
+                                          DisplayMemberPath="DisplayName"
+                                          HorizontalAlignment="Left"
+                                          Margin="5,5"
+                                          VerticalAlignment="Top"
+                                          Width="150" />
+                                <ComboBox ItemsSource="{Binding ItemTiers}"
+                                          SelectedValue="{Binding SelectedItemTier, Mode=TwoWay}"
+                                          SelectedValuePath="Key"
+                                          DisplayMemberPath="Value"
+                                          HorizontalAlignment="Left"
+                                          Margin="5,5"
+                                          MinWidth="70" />
+                                <ComboBox ItemsSource="{Binding ItemLevels}"
+                                          SelectedValue="{Binding SelectedItemLevel, Mode=TwoWay}"
+                                          SelectedValuePath="Key"
+                                          DisplayMemberPath="Value"
+                                          HorizontalAlignment="Left"
+                                          Margin="5,5"
+                                          MinWidth="70" />
+                                <ComboBox ItemsSource="{Binding ItemQualities}"
+                                          SelectedValue="{Binding SelectedQualityLevel, Mode=TwoWay}"
+                                          SelectedValuePath="Key"
+                                          DisplayMemberPath="Value"
+                                          HorizontalAlignment="Left"
+                                          Margin="5,5"
+                                          MinWidth="120" />
+                            </StackPanel>
+                            <DockPanel Margin="10,0,0,5">
+                                <TextBlock Text="{Binding MarketStatusText}" Foreground="{StaticResource SolidColorBrush.Text.3}" />
+                                <TextBlock Text="{Binding ItemCounterText}" Foreground="{StaticResource SolidColorBrush.Text.3}" HorizontalAlignment="Right" DockPanel.Dock="Right" />
+                            </DockPanel>
+                        </StackPanel>
+                    </Grid>
+
+                    <ListView Grid.Row="1"
+                              ItemsSource="{Binding ItemsView}"
+                              SelectedItem="{Binding SelectedItem, Mode=TwoWay}"
+                              ScrollViewer.CanContentScroll="True"
+                              VirtualizingPanel.IsVirtualizing="True"
+                              VirtualizingPanel.VirtualizationMode="Recycling"
+                              SelectionMode="Single">
+                        <ListView.View>
+                            <GridView>
+                                <GridViewColumn Header="{x:Static crafting:CraftingBindings.TranslationIcon}" Width="65">
+                                    <GridViewColumn.CellTemplate>
+                                        <DataTemplate>
+                                            <Image Source="{Binding Icon, IsAsync=True}" Width="50" Height="50" />
+                                        </DataTemplate>
+                                    </GridViewColumn.CellTemplate>
+                                </GridViewColumn>
+                                <GridViewColumn Header="{x:Static crafting:CraftingBindings.TranslationItem}" Width="330">
+                                    <GridViewColumn.CellTemplate>
+                                        <DataTemplate>
+                                            <TextBlock Text="{Binding ItemName}" Style="{StaticResource SavedCraftingCellText}" MaxHeight="42" />
+                                        </DataTemplate>
+                                    </GridViewColumn.CellTemplate>
+                                </GridViewColumn>
+                                <GridViewColumn Header="{x:Static crafting:CraftingBindings.TranslationTier}" Width="70">
+                                    <GridViewColumn.CellTemplate>
+                                        <DataTemplate>
+                                            <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
+                                                <TextBlock Text="{Binding TierText}" FontWeight="Bold">
+                                                    <TextBlock.Style>
+                                                        <Style TargetType="TextBlock">
+                                                            <Setter Property="Foreground" Value="{StaticResource SolidColorBrush.Text.1}" />
+                                                            <Style.Triggers>
+                                                                <DataTrigger Binding="{Binding Tier}" Value="1">
+                                                                    <Setter Property="Foreground" Value="{StaticResource SolidColorBrush.Item.Tier.Color.1}" />
+                                                                </DataTrigger>
+                                                                <DataTrigger Binding="{Binding Tier}" Value="2">
+                                                                    <Setter Property="Foreground" Value="{StaticResource SolidColorBrush.Item.Tier.Color.2}" />
+                                                                </DataTrigger>
+                                                                <DataTrigger Binding="{Binding Tier}" Value="3">
+                                                                    <Setter Property="Foreground" Value="{StaticResource SolidColorBrush.Item.Tier.Color.3}" />
+                                                                </DataTrigger>
+                                                                <DataTrigger Binding="{Binding Tier}" Value="4">
+                                                                    <Setter Property="Foreground" Value="{StaticResource SolidColorBrush.Item.Tier.Color.4}" />
+                                                                </DataTrigger>
+                                                                <DataTrigger Binding="{Binding Tier}" Value="5">
+                                                                    <Setter Property="Foreground" Value="{StaticResource SolidColorBrush.Item.Tier.Color.5}" />
+                                                                </DataTrigger>
+                                                                <DataTrigger Binding="{Binding Tier}" Value="6">
+                                                                    <Setter Property="Foreground" Value="{StaticResource SolidColorBrush.Item.Tier.Color.6}" />
+                                                                </DataTrigger>
+                                                                <DataTrigger Binding="{Binding Tier}" Value="7">
+                                                                    <Setter Property="Foreground" Value="{StaticResource SolidColorBrush.Item.Tier.Color.7}" />
+                                                                </DataTrigger>
+                                                                <DataTrigger Binding="{Binding Tier}" Value="8">
+                                                                    <Setter Property="Foreground" Value="{StaticResource SolidColorBrush.Item.Tier.Color.8}" />
+                                                                </DataTrigger>
+                                                            </Style.Triggers>
+                                                        </Style>
+                                                    </TextBlock.Style>
+                                                </TextBlock>
+                                                <TextBlock Text="." FontWeight="Bold" Foreground="{StaticResource SolidColorBrush.Text.1}" />
+                                                <TextBlock Text="{Binding EnchantmentLevelText}" FontWeight="Bold">
+                                                    <TextBlock.Style>
+                                                        <Style TargetType="TextBlock">
+                                                            <Setter Property="Foreground" Value="{StaticResource SolidColorBrush.Text.1}" />
+                                                            <Style.Triggers>
+                                                                <DataTrigger Binding="{Binding EnchantmentLevel}" Value="0">
+                                                                    <Setter Property="Foreground" Value="{StaticResource SolidColorBrush.Item.Level.Color.0}" />
+                                                                </DataTrigger>
+                                                                <DataTrigger Binding="{Binding EnchantmentLevel}" Value="1">
+                                                                    <Setter Property="Foreground" Value="{StaticResource SolidColorBrush.Item.Level.Color.1}" />
+                                                                </DataTrigger>
+                                                                <DataTrigger Binding="{Binding EnchantmentLevel}" Value="2">
+                                                                    <Setter Property="Foreground" Value="{StaticResource SolidColorBrush.Item.Level.Color.2}" />
+                                                                </DataTrigger>
+                                                                <DataTrigger Binding="{Binding EnchantmentLevel}" Value="3">
+                                                                    <Setter Property="Foreground" Value="{StaticResource SolidColorBrush.Item.Level.Color.3}" />
+                                                                </DataTrigger>
+                                                                <DataTrigger Binding="{Binding EnchantmentLevel}" Value="4">
+                                                                    <Setter Property="Foreground" Value="{StaticResource SolidColorBrush.Item.Level.Color.4}" />
+                                                                </DataTrigger>
+                                                            </Style.Triggers>
+                                                        </Style>
+                                                    </TextBlock.Style>
+                                                </TextBlock>
+                                            </StackPanel>
+                                        </DataTemplate>
+                                    </GridViewColumn.CellTemplate>
+                                </GridViewColumn>
+                                <GridViewColumn Header="{x:Static crafting:BlackMarketBindings.TranslationQuality}" Width="120" DisplayMemberBinding="{Binding QualityName}" />
+                                <GridViewColumn Header="{x:Static crafting:BlackMarketBindings.TranslationCurrentBuyPrice}" Width="130">
+                                    <GridViewColumn.CellTemplate>
+                                        <DataTemplate>
+                                            <TextBlock Text="{Binding CurrentBuyPrice, StringFormat={}{0:N0}}" Style="{StaticResource SavedCraftingCellText}" />
+                                        </DataTemplate>
+                                    </GridViewColumn.CellTemplate>
+                                </GridViewColumn>
+                                <GridViewColumn Header="{x:Static crafting:BlackMarketBindings.TranslationAverageBoughtPrice}" Width="150">
+                                    <GridViewColumn.CellTemplate>
+                                        <DataTemplate>
+                                            <TextBlock Text="{Binding LatestAveragePrice, StringFormat={}{0:N0}}" Style="{StaticResource SavedCraftingCellText}" />
+                                        </DataTemplate>
+                                    </GridViewColumn.CellTemplate>
+                                </GridViewColumn>
+                                <GridViewColumn Header="{x:Static crafting:BlackMarketBindings.TranslationBoughtLast30Days}" Width="140">
+                                    <GridViewColumn.CellTemplate>
+                                        <DataTemplate>
+                                            <TextBlock Text="{Binding SoldLast30Days, StringFormat={}{0:N0}}" Style="{StaticResource SavedCraftingCellText}" />
+                                        </DataTemplate>
+                                    </GridViewColumn.CellTemplate>
+                                </GridViewColumn>
+                                <GridViewColumn Header="{x:Static crafting:BlackMarketBindings.TranslationBoughtLast365Days}" Width="150">
+                                    <GridViewColumn.CellTemplate>
+                                        <DataTemplate>
+                                            <TextBlock Text="{Binding SoldLast365Days, StringFormat={}{0:N0}}" Style="{StaticResource SavedCraftingCellText}" />
+                                        </DataTemplate>
+                                    </GridViewColumn.CellTemplate>
+                                </GridViewColumn>
+                                <GridViewColumn Header="{x:Static crafting:CraftingBindings.TranslationChanged}" Width="135" DisplayMemberBinding="{Binding LastUpdatedText}" />
+                            </GridView>
+                        </ListView.View>
+                    </ListView>
+                </Grid>
+
+                <GridSplitter Grid.Row="1"
+                              ResizeDirection="Rows"
+                              ResizeBehavior="PreviousAndNext"
+                              HorizontalAlignment="Stretch"
+                              Background="{StaticResource SolidColorBrush.Accent.Blue.4}" />
+
+                <Grid Grid.Row="2" Margin="0,10,0,0">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="*" />
+                    </Grid.RowDefinitions>
+
+                    <DockPanel Grid.Row="0" Margin="0,0,0,8" LastChildFill="True">
+                        <StackPanel DockPanel.Dock="Right"
+                                    Orientation="Horizontal"
+                                    VerticalAlignment="Top"
+                                    Margin="12,0,0,0">
+                            <TextBlock Text="{x:Static crafting:BlackMarketBindings.TranslationChartRange}"
+                                       Foreground="{StaticResource SolidColorBrush.Text.2}"
+                                       VerticalAlignment="Center"
+                                       Margin="0,0,6,0" />
+                            <ComboBox ItemsSource="{Binding ChartDayFilters}"
+                                      DisplayMemberPath="Value"
+                                      SelectedValuePath="Key"
+                                      SelectedValue="{Binding SelectedChartDays, Mode=TwoWay}"
+                                      MinWidth="96"
+                                      Height="24" />
+                        </StackPanel>
+                        <StackPanel Orientation="Vertical">
+                            <TextBlock Text="{Binding SelectedItemTitle, FallbackValue=BLACK_MARKET}"
+                                       Foreground="{StaticResource SolidColorBrush.Accent.Blue.2}"
+                                       FontSize="16"
+                                       FontWeight="SemiBold" />
+                            <StackPanel Orientation="Horizontal" Margin="0,5,0,0">
+                                <TextBlock Text="{x:Static crafting:BlackMarketBindings.TranslationCurrentBuyPrice}" Foreground="{StaticResource SolidColorBrush.Text.2}" />
+                                <TextBlock Text=": " Foreground="{StaticResource SolidColorBrush.Text.2}" />
+                                <TextBlock Text="{Binding SelectedItem.CurrentBuyPrice, StringFormat={}{0:N0}, FallbackValue=0}" Foreground="{StaticResource SolidColorBrush.Accent.Green.2}" Margin="0,0,12,0" />
+                                <TextBlock Text="{x:Static crafting:BlackMarketBindings.TranslationAverageBoughtPrice}" Foreground="{StaticResource SolidColorBrush.Text.2}" />
+                                <TextBlock Text=": " Foreground="{StaticResource SolidColorBrush.Text.2}" />
+                                <TextBlock Text="{Binding SelectedItem.LatestAveragePrice, StringFormat={}{0:N0}, FallbackValue=0}" Foreground="{StaticResource SolidColorBrush.Text.1}" Margin="0,0,12,0" />
+                                <TextBlock Text="{x:Static crafting:BlackMarketBindings.TranslationAverageItemsPerDay}" Foreground="{StaticResource SolidColorBrush.Text.2}" />
+                                <TextBlock Text=": " Foreground="{StaticResource SolidColorBrush.Text.2}" />
+                                <TextBlock Text="{Binding SelectedItemAverageItemsPerDayText, FallbackValue=0}" Foreground="{StaticResource SolidColorBrush.Text.1}" Margin="0,0,12,0" />
+                                <TextBlock Text="{x:Static crafting:BlackMarketBindings.TranslationBoughtLast30Days}" Foreground="{StaticResource SolidColorBrush.Text.2}" />
+                                <TextBlock Text=": " Foreground="{StaticResource SolidColorBrush.Text.2}" />
+                                <TextBlock Text="{Binding SelectedItem.SoldLast30Days, StringFormat={}{0:N0}, FallbackValue=0}" Foreground="{StaticResource SolidColorBrush.Text.1}" Margin="0,0,12,0" />
+                                <TextBlock Text="{x:Static crafting:BlackMarketBindings.TranslationBoughtLast365Days}" Foreground="{StaticResource SolidColorBrush.Text.2}" />
+                                <TextBlock Text=": " Foreground="{StaticResource SolidColorBrush.Text.2}" />
+                                <TextBlock Text="{Binding SelectedItem.SoldLast365Days, StringFormat={}{0:N0}, FallbackValue=0}" Foreground="{StaticResource SolidColorBrush.Text.1}" />
+                            </StackPanel>
+                        </StackPanel>
+                    </DockPanel>
+
+                    <wpf:CartesianChart Grid.Row="1"
+                                        Series="{Binding ChartSeries}"
+                                        XAxes="{Binding ChartXAxes}"
+                                        YAxes="{Binding ChartYAxes}"
+                                        TooltipPosition="Center"
+                                        FindingStrategy="ExactMatchTakeClosest"
+                                        LegendPosition="Top"
+                                        Background="Transparent"
+                                        DrawMarginFrame="{x:Null}" />
+                </Grid>
+            </Grid>
+        </TabItem>
+    </TabControl>
 </UserControl>

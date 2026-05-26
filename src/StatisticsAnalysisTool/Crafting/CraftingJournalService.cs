@@ -1,12 +1,13 @@
+using StatisticsAnalysisTool.Common;
 using StatisticsAnalysisTool.Enumerations;
 using StatisticsAnalysisTool.Models;
 using StatisticsAnalysisTool.Models.ItemsJsonModel;
 using System.Collections.Generic;
 using System.Linq;
 
-namespace StatisticsAnalysisTool.Common;
+namespace StatisticsAnalysisTool.Crafting;
 
-public static class CraftingController
+public static class CraftingJournalService
 {
     public static int GetTotalAmountResources(List<CraftingRequirements> craftingRequirements)
     {

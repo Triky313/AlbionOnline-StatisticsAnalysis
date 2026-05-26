@@ -1,4 +1,4 @@
-name: "🔥 Create Release Assets By Newest Tag"
+name: "🔥 Create release assets by newest tag"
 
 on:
   push:
@@ -7,6 +7,7 @@ on:
 
 permissions:
   contents: write
+  pull-requests: write
 
 jobs:
   build-application:
@@ -14,12 +15,16 @@ jobs:
     runs-on: windows-latest
     env:
       Project_File_Path: src\StatisticsAnalysisTool\StatisticsAnalysisTool.csproj
+      SPARKLE_PRIVATE_KEY: ${{ secrets.SPARKLE_PRIVATE_KEY }}
+      SPARKLE_PUBLIC_KEY: ${{ vars.SPARKLE_PUBLIC_KEY || secrets.SPARKLE_PUBLIC_KEY }}
 
     steps:
       - name: "🛒 Checkout tagged commit"
         uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
 
-      - name: Setup .NET 10 SDK
+      - name: "🧰 Setup .NET 10 SDK"
         uses: actions/setup-dotnet@v5
         with:
           dotnet-version: 10.0.x
@@ -30,9 +35,35 @@ jobs:
         run: |
           $tagName = "${{ github.ref_name }}"
           $version = $tagName.TrimStart("v")
+          $isPreRelease = $version.Contains("-")
+          $appCastFile = if ($isPreRelease) { "ao-netsparkle-pre-release-update-check.xml" } else { "ao-netsparkle-update-check.xml" }
+          $branchSafeTag = $tagName -replace "[^A-Za-z0-9._-]", "-"
 
           "TAG_NAME=$tagName" | Out-File -FilePath $env:GITHUB_ENV -Encoding utf8 -Append
           "APP_VERSION=$version" | Out-File -FilePath $env:GITHUB_ENV -Encoding utf8 -Append
+          "APPCAST_FILE=$appCastFile" | Out-File -FilePath $env:GITHUB_ENV -Encoding utf8 -Append
+          "APPCAST_BRANCH=release/appcast-$branchSafeTag" | Out-File -FilePath $env:GITHUB_ENV -Encoding utf8 -Append
+
+      - name: "🔐 Validate NetSparkle signing configuration"
+        shell: pwsh
+        run: |
+          if ([string]::IsNullOrWhiteSpace($env:SPARKLE_PUBLIC_KEY))
+          {
+              throw "SPARKLE_PUBLIC_KEY is required as a repository variable or secret."
+          }
+
+          if ([string]::IsNullOrWhiteSpace($env:SPARKLE_PRIVATE_KEY))
+          {
+              throw "SPARKLE_PRIVATE_KEY is required as a repository secret."
+          }
+
+      - name: "🔑 Embed NetSparkle public key"
+        shell: pwsh
+        run: |
+          Set-ExecutionPolicy -ExecutionPolicy Bypass -Scope Process -Force
+          .\.github\scripts\Set-NetSparklePublicKey.ps1 `
+            -SourceFile src\StatisticsAnalysisTool\Updater\AutoUpdateSecurity.cs `
+            -PublicKey $env:SPARKLE_PUBLIC_KEY
 
       - name: "🛠 Publish StatisticsAnalysisTool application"
         shell: pwsh
@@ -48,22 +79,75 @@ jobs:
             -p:PublishSingleFile=true `
             -p:PublishReadyToRun=false
 
-      - name: "🛠 Create release zip file"
+      - name: "📦 Create release zip file"
         uses: vimtor/action-zip@v1
         with:
           files: src\StatisticsAnalysisTool\bin\Release\publish
           dest: StatisticsAnalysis-AlbionOnline-${{ github.ref_name }}-windows-x64.zip
 
-      - name: "🛠 Build release setup file"
+      - name: "🧱 Build release setup file"
         uses: Minionguyjpro/Inno-Setup-Action@v1.2.5
         with:
           path: .github/installers/release-installer.iss
           options: /DMyAppVersion=${{ env.APP_VERSION }}
 
       - name: "🚀 Upload release files to newest tag"
-        uses: softprops/action-gh-release@v1
+        uses: softprops/action-gh-release@v2
         if: startsWith(github.ref, 'refs/tags/')
         with:
+          prerelease: ${{ contains(github.ref_name, '-') }}
           files: |
             StatisticsAnalysis-AlbionOnline-${{ github.ref_name }}-windows-x64.zip
             StatisticsAnalysis-AlbionOnline-${{ github.ref_name }}-windows-x64.exe
+
+      - name: "💾 Preserve installer for appcast signing"
+        shell: pwsh
+        run: |
+          $installerName = "StatisticsAnalysis-AlbionOnline-$env:TAG_NAME-windows-x64.exe"
+          $targetPath = Join-Path $env:RUNNER_TEMP $installerName
+
+          Copy-Item -LiteralPath $installerName -Destination $targetPath -Force
+          "APPCAST_INSTALLER_PATH=$targetPath" | Out-File -FilePath $env:GITHUB_ENV -Encoding utf8 -Append
+
+      - name: "🔁 Checkout main for appcast pull request"
+        uses: actions/checkout@v4
+        with:
+          ref: main
+          fetch-depth: 0
+
+      - name: "✨ Install NetSparkle appcast tool"
+        shell: pwsh
+        run: |
+          dotnet tool install `
+            --tool-path .tools `
+            NetSparkleUpdater.Tools.AppCastGenerator `
+            --version 2.9.0
+
+      - name: "🖊 Generate signed NetSparkle appcast"
+        shell: pwsh
+        run: |
+          Set-ExecutionPolicy -ExecutionPolicy Bypass -Scope Process -Force
+          .\.github\scripts\New-NetSparkleAppCast.ps1 `
+            -TagName $env:TAG_NAME `
+            -Version $env:APP_VERSION `
+            -InstallerPath $env:APPCAST_INSTALLER_PATH `
+            -Repository "${{ github.repository }}" `
+            -OutputDirectory src\StatisticsAnalysisTool `
+            -AppCastFileName $env:APPCAST_FILE `
+            -ToolPath .tools\netsparkle-generate-appcast.exe
+
+      - name: "🔃 Create appcast update pull request"
+        uses: peter-evans/create-pull-request@v7
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          branch: ${{ env.APPCAST_BRANCH }}
+          delete-branch: true
+          commit-message: Update NetSparkle appcast for ${{ env.TAG_NAME }}
+          title: Update NetSparkle appcast for ${{ env.TAG_NAME }}
+          body: |
+            Updates the NetSparkle appcast for `${{ env.TAG_NAME }}`.
+
+            The GitHub release assets have already been uploaded. Merging this PR makes the update visible to the in-app updater.
+          add-paths: |
+            src/StatisticsAnalysisTool/${{ env.APPCAST_FILE }}
+            src/StatisticsAnalysisTool/${{ env.APPCAST_FILE }}.signature

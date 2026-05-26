@@ -3,6 +3,7 @@ using StatisticsAnalysisTool.Cluster;
 using StatisticsAnalysisTool.Common;
 using StatisticsAnalysisTool.Common.UserSettings;
 using StatisticsAnalysisTool.Core;
+using StatisticsAnalysisTool.Crafting;
 using StatisticsAnalysisTool.Dungeon;
 using StatisticsAnalysisTool.EstimatedMarketValue;
 using StatisticsAnalysisTool.EventLogging;
@@ -56,6 +57,7 @@ public class TrackingController : ITrackingController
     public readonly OpenWorldController OpenWorldController;
     public readonly PartyController PartyController;
     public readonly GuildController GuildController;
+    public readonly CraftingController CraftingController;
     private readonly List<LoggingFilterType> _notificationTypesFilters = [];
 
     public TrackingController(MainWindowViewModel mainWindowViewModel)
@@ -76,6 +78,7 @@ public class TrackingController : ITrackingController
         OpenWorldController = new OpenWorldController(this, mainWindowViewModel);
         PartyController = new PartyController(this, mainWindowViewModel);
         GuildController = new GuildController(this, mainWindowViewModel);
+        CraftingController = new CraftingController(this, mainWindowViewModel);
         LiveStatsTracker = new LiveStatsTracker(this, mainWindowViewModel);
 
         _ = InitTrackingAsync();
@@ -245,6 +248,7 @@ public class TrackingController : ITrackingController
             GuildController.SaveInFileAsync(),
             CombatController.SaveInFileAsync(),
             MarketController.SaveInFileAsync(),
+            CraftingController.SaveInFileAsync(),
             ClusterController.SaveInFileAsync(),
             EstimatedMarketValueController.SaveInFileAsync()
         );
@@ -278,7 +282,7 @@ public class TrackingController : ITrackingController
     {
         if (string.IsNullOrWhiteSpace(item.ClusterName))
         {
-            item.SetClusterName(StatisticsAnalysisTool.Cluster.ClusterController.GetCurrentClusterDisplayName());
+            item.SetClusterName(ClusterController.GetCurrentClusterDisplayName());
         }
 
         item.SetType();

@@ -300,6 +300,16 @@ public partial class CraftingControl
         CloseSellPriceOptions();
     }
 
+    private void FilterReset_MouseUp(object sender, MouseButtonEventArgs e)
+    {
+        if (DataContext is not MainWindowViewModel mainWindowViewModel)
+        {
+            return;
+        }
+
+        mainWindowViewModel.CraftingBindings.BlackMarket?.ResetFilters();
+    }
+
     private void OpenResourcePriceOptions(object sender)
     {
         if (DataContext is not MainWindowViewModel mainWindowViewModel)

@@ -3,6 +3,7 @@ using NetSparkleUpdater.Downloaders;
 using NetSparkleUpdater.Enums;
 using NetSparkleUpdater.SignatureVerifiers;
 using Serilog;
+using StatisticsAnalysisTool.Common;
 using StatisticsAnalysisTool.Common.UserSettings;
 using StatisticsAnalysisTool.Diagnostics;
 using StatisticsAnalysisTool.Localization;
@@ -27,7 +28,7 @@ using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Media;
 
-namespace StatisticsAnalysisTool.Common;
+namespace StatisticsAnalysisTool.Updater;
 
 public static class AutoUpdateController
 {
@@ -890,7 +891,13 @@ public static class AutoUpdateController
 
     private static Ed25519Checker CreateSignatureVerifier()
     {
-        return new Ed25519Checker(SecurityMode.Unsafe, string.Empty, string.Empty, false, 32768);
+        if (!AutoUpdateSecurity.IsEd25519PublicKeyConfigured())
+        {
+            Log.Warning("Auto update signature verification is not configured; falling back to unsafe update verification.");
+            return new Ed25519Checker(SecurityMode.Unsafe, string.Empty, string.Empty, false, 32768);
+        }
+
+        return new Ed25519Checker(SecurityMode.Strict, AutoUpdateSecurity.Ed25519PublicKey);
     }
 
     private static string CreateInstallerArguments()

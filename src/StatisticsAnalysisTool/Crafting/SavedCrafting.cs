@@ -42,6 +42,7 @@ public class SavedCrafting : BaseViewModel
     public decimal TotalCosts { get; set; }
     public decimal Profit { get; set; }
     public decimal ProfitPerItem { get; set; }
+    public decimal RoiPercent { get; set; }
     public decimal BreakEvenPrice { get; set; }
     [JsonIgnore]
     public BitmapImage Icon { get; set; }
@@ -57,6 +58,12 @@ public class SavedCrafting : BaseViewModel
 
     [JsonIgnore]
     public bool IsProfitPerItemNegative => ProfitPerItem < 0m;
+
+    [JsonIgnore]
+    public bool IsRoiPositive => RoiPercent > 0m;
+
+    [JsonIgnore]
+    public bool IsRoiNegative => RoiPercent < 0m;
 
     [JsonIgnore]
     public bool IsBreakEvenPricePositive => BreakEvenPrice > 0m;
