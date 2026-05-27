@@ -23,7 +23,7 @@
             <Button x:Name="MaximizedButton" Style="{StaticResource WindowButtonStyle}" Content="1" Margin="0,0,28,0" Click="MaximizeButton_Click" />
             <Button x:Name="MinimizeButton" Style="{StaticResource WindowButtonStyle}" Content="0" Margin="0,0,58,0" Click="MinimizeButton_Click" />
 
-            <Grid HorizontalAlignment="Right" VerticalAlignment="Top" Margin="0,4,100,0" Width="170" Height="82">
+            <Grid HorizontalAlignment="Right" VerticalAlignment="Top" Margin="0,4,90,0" MinWidth="170" Height="82">
                 <StackPanel Orientation="Vertical">
                     <TextBlock Text="{Binding Translation.Status, FallbackValue=STATUS}" Style="{StaticResource MainHeaderStatus.Title}" />
                     <StackPanel Style="{StaticResource MainHeaderStatus.Row}" Tag="{Binding MainStatusBindings.IsInGame}">
