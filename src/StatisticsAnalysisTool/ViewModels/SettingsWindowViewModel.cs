@@ -316,7 +316,7 @@ public class SettingsWindowViewModel : BaseViewModel
 
     public void ResetPacketFilter()
     {
-        const string defaultFilter = "(ip or ip6) and (udp and (port 5055 or port 5056 or port 5058))";
+        const string defaultFilter = LibpcapPacketProvider.DefaultPacketFilter;
 
         if (PacketFilter == defaultFilter)
         {
