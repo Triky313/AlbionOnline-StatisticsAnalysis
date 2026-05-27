@@ -43,7 +43,9 @@ public static class AppDataMigration
 
         var sourcePath = AppDataPaths.LegacyRuntimeUserDataDirectory;
         var targetPath = AppDataPaths.GetUserDataDirectory(serverLocation);
-        var tempTargetPath = $"{targetPath}.migration";
+        var migrationId = DateTime.UtcNow.ToString("yyyyMMddHHmmssfff");
+        var tempTargetPath = $"{targetPath}.migration-{migrationId}";
+        var backupTargetPath = $"{targetPath}.before-migration-{migrationId}";
 
         try
         {
@@ -52,16 +54,14 @@ public static class AppDataMigration
                 return false;
             }
 
-            if (Directory.Exists(tempTargetPath))
-            {
-                Directory.Delete(tempTargetPath, true);
-            }
+            Log.Information("Migrating legacy user data. Server={Server}, Source={Source}, Target={Target}", serverLocation, sourcePath, targetPath);
 
             CopyDirectory(sourcePath, tempTargetPath, true);
 
             if (Directory.Exists(targetPath))
             {
-                Directory.Delete(targetPath, true);
+                Directory.Move(targetPath, backupTargetPath);
+                Log.Information("Existing server user data directory moved before legacy migration. Source={Source}, Target={Target}", targetPath, backupTargetPath);
             }
 
             Directory.Move(tempTargetPath, targetPath);
@@ -72,6 +72,7 @@ public static class AppDataMigration
         catch (Exception ex)
         {
             SafeDeleteDirectory(tempTargetPath);
+            TryRestoreBackupDirectory(backupTargetPath, targetPath);
             migrationMessages.Add(AppDataMigrationMessage.Error(sourcePath, targetPath, ex));
             return false;
         }
@@ -186,7 +187,7 @@ public static class AppDataMigration
     {
         try
         {
-            if (Directory.Exists(path))
+            if (!string.IsNullOrWhiteSpace(path) && Directory.Exists(path))
             {
                 Directory.Delete(path, true);
             }
@@ -194,6 +195,23 @@ public static class AppDataMigration
         catch
         {
             // ignored
+        }
+    }
+
+    private static void TryRestoreBackupDirectory(string backupPath, string targetPath)
+    {
+        try
+        {
+            if (string.IsNullOrWhiteSpace(backupPath) || !Directory.Exists(backupPath) || Directory.Exists(targetPath))
+            {
+                return;
+            }
+
+            Directory.Move(backupPath, targetPath);
+        }
+        catch (Exception ex)
+        {
+            Log.Warning(ex, "Could not restore server user data backup after failed migration. Backup={Backup}, Target={Target}", backupPath, targetPath);
         }
     }
 

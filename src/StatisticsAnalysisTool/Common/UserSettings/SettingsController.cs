@@ -64,7 +64,7 @@ public static class SettingsController
 
             CurrentSettings = loaded;
             NormalizeRuntimePaths();
-            MigrateLegacyUserDataIfNeeded();
+            await MigrateLegacyUserDataIfNeededAsync().ConfigureAwait(false);
             _haveSettingsAlreadyBeenLoaded = true;
 
             if (File.Exists(SettingsFilePath) && !IsFileEmpty(SettingsFilePath))
@@ -85,7 +85,7 @@ public static class SettingsController
 
             CurrentSettings = new SettingsObject();
             NormalizeRuntimePaths();
-            MigrateLegacyUserDataIfNeeded();
+            await MigrateLegacyUserDataIfNeededAsync().ConfigureAwait(false);
             _haveSettingsAlreadyBeenLoaded = true;
 
             TrySaveDefault();
@@ -96,7 +96,7 @@ public static class SettingsController
 
             CurrentSettings ??= new SettingsObject();
             NormalizeRuntimePaths();
-            MigrateLegacyUserDataIfNeeded();
+            await MigrateLegacyUserDataIfNeededAsync().ConfigureAwait(false);
             _haveSettingsAlreadyBeenLoaded = true;
 
             TrySaveDefault();
@@ -129,21 +129,34 @@ public static class SettingsController
         }
     }
 
-    private static void MigrateLegacyUserDataIfNeeded()
+    private static async Task MigrateLegacyUserDataIfNeededAsync()
     {
         if (!TryReadLegacyServerLocation(out var serverLocation))
         {
             return;
         }
 
-        var hasMigrated = AppDataMigration.TryMigrateLegacyUserDataToServerDirectory(serverLocation, out var migrationMessages);
-        AppDataMigration.LogMessages(migrationMessages);
+        CurrentSettings.StartupUserDataServerLocation = serverLocation;
 
-        if (hasMigrated)
+        if (Directory.Exists(AppDataPaths.LegacyRuntimeUserDataDirectory))
         {
-            CurrentSettings.StartupUserDataServerLocation = serverLocation;
-            _ = FileController.SaveAsync(CurrentSettings, SettingsFilePath, ValidateSettings).ConfigureAwait(false).GetAwaiter().GetResult();
+            var hasMigrated = AppDataMigration.TryMigrateLegacyUserDataToServerDirectory(serverLocation, out var migrationMessages);
+            AppDataMigration.LogMessages(migrationMessages);
+
+            if (!hasMigrated)
+            {
+                return;
+            }
         }
+        else
+        {
+            Log.Information(
+                "Legacy ServerLocation found but legacy UserData directory is missing. Settings will be updated only. Server={Server}, Directory={Directory}",
+                serverLocation,
+                AppDataPaths.LegacyRuntimeUserDataDirectory);
+        }
+
+        await FileController.SaveAsync(CurrentSettings, SettingsFilePath, ValidateSettings).ConfigureAwait(false);
     }
 
     private static bool TryReadLegacyServerLocation(out ServerLocation serverLocation)
