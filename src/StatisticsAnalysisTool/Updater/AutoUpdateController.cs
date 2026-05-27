@@ -1,6 +1,7 @@
 using NetSparkleUpdater;
 using NetSparkleUpdater.Downloaders;
 using NetSparkleUpdater.Enums;
+using NetSparkleUpdater.Interfaces;
 using NetSparkleUpdater.SignatureVerifiers;
 using Serilog;
 using StatisticsAnalysisTool.Common;
@@ -168,14 +169,27 @@ public static class AutoUpdateController
                 return;
             }
 
+            var configuration = GetCurrentConfiguration();
+            if (!await IsAppCastSignatureTrustedAsync(configuration, sparkleUpdater.SignatureVerifier))
+            {
+                ClearAvailableUpdate();
+                if (checkSource == UpdateCheckSource.Manual)
+                {
+                    ShowUpdateCheckFailedMessage();
+                }
+
+                return;
+            }
+
             var updateInfo = await sparkleUpdater.CheckForUpdatesQuietly();
             switch (updateInfo.Status)
             {
                 case UpdateStatus.UpdateAvailable:
                     {
                         var updateItem = SelectUpdate(updateInfo.Updates);
-                        if (updateItem == null)
+                        if (updateItem == null || !IsUpdateItemSignatureTrusted(updateItem, sparkleUpdater.SignatureVerifier))
                         {
+                            ClearAvailableUpdate();
                             if (checkSource == UpdateCheckSource.Manual)
                             {
                                 ShowNoUpdateAvailableMessage();
@@ -546,6 +560,79 @@ public static class AutoUpdateController
         return false;
     }
 
+    private static async Task<bool> IsAppCastSignatureTrustedAsync(AutoUpdateConfiguration configuration, ISignatureVerifier signatureVerifier)
+    {
+        if (!IsAppCastSignatureRequired(signatureVerifier))
+        {
+            return true;
+        }
+
+        if (configuration == null)
+        {
+            Log.Warning("Auto update appcast signature verification failed because no update configuration is available.");
+            return false;
+        }
+
+        if (!signatureVerifier.HasValidKeyInformation())
+        {
+            Log.Warning("Auto update appcast signature verification failed because the NetSparkle public key is missing or invalid.");
+            return false;
+        }
+
+        try
+        {
+            using var httpClient = CreateAppCastHttpClient(configuration.ProxyUrl);
+            var appCastData = await httpClient.GetByteArrayAsync(configuration.AppCastUrl);
+            var signature = (await httpClient.GetStringAsync($"{configuration.AppCastUrl}.signature")).Trim();
+
+            if (string.IsNullOrWhiteSpace(signature))
+            {
+                Log.Warning("Auto update appcast signature verification failed because the signature file is empty.");
+                return false;
+            }
+
+            if (signatureVerifier.VerifySignature(signature, appCastData) == ValidationResult.Valid)
+            {
+                return true;
+            }
+
+            Log.Warning("Auto update appcast signature verification failed. The update will not be offered.");
+            return false;
+        }
+        catch (Exception e) when (e is HttpRequestException or TaskCanceledException or InvalidOperationException or FormatException)
+        {
+            DebugConsole.WriteError(MethodBase.GetCurrentMethod()?.DeclaringType, e);
+            Log.Warning(e, "Auto update appcast signature verification failed. The update will not be offered.");
+            return false;
+        }
+    }
+
+    private static bool IsUpdateItemSignatureTrusted(AppCastItem updateItem, ISignatureVerifier signatureVerifier)
+    {
+        if (!IsDownloadSignatureRequired(signatureVerifier))
+        {
+            return true;
+        }
+
+        if (!string.IsNullOrWhiteSpace(updateItem?.DownloadSignature))
+        {
+            return true;
+        }
+
+        Log.Warning("Auto update item {Version} is missing a download signature and will not be offered.", updateItem?.Version);
+        return false;
+    }
+
+    private static bool IsAppCastSignatureRequired(ISignatureVerifier signatureVerifier)
+    {
+        return signatureVerifier?.SecurityMode is SecurityMode.Strict or SecurityMode.UseIfPossible;
+    }
+
+    private static bool IsDownloadSignatureRequired(ISignatureVerifier signatureVerifier)
+    {
+        return signatureVerifier?.SecurityMode is SecurityMode.Strict or SecurityMode.UseIfPossible or SecurityMode.OnlyVerifySoftwareDownloads;
+    }
+
     private static AppCastItem SelectUpdate(IReadOnlyList<AppCastItem> updates)
     {
         if (updates == null || updates.Count == 0)
@@ -702,6 +789,14 @@ public static class AutoUpdateController
         return httpClient;
     }
 
+    private static HttpClient CreateAppCastHttpClient(string proxyUrl)
+    {
+        var handler = CreateHttpClientHandler(proxyUrl);
+        var httpClient = new HttpClient(handler, disposeHandler: true);
+        httpClient.DefaultRequestHeaders.UserAgent.ParseAdd($"{GetProductTitle().Replace(" ", string.Empty, StringComparison.Ordinal)}/{GetCurrentFileVersion()}");
+        return httpClient;
+    }
+
     private static string GetCurrentFileVersion()
     {
         return GetCurrentAssemblyVersion()?.ToString() ?? "0.0.0.0";
@@ -832,6 +927,14 @@ public static class AutoUpdateController
         }
     }
 
+    private static AutoUpdateConfiguration GetCurrentConfiguration()
+    {
+        lock (SyncRoot)
+        {
+            return _currentConfiguration;
+        }
+    }
+
     private static SparkleUpdater CreateSparkleUpdater(AutoUpdateConfiguration configuration)
     {
         var executablePath = ResolveExecutablePath();
@@ -850,6 +953,16 @@ public static class AutoUpdateController
             {
                 Application.Current.Shutdown();
             });
+        };
+        sparkleUpdater.InstallUpdateFailed += (failureReason, installPath) =>
+        {
+            if (failureReason == InstallUpdateFailureReason.InvalidSignature)
+            {
+                ClearAvailableUpdate();
+                Log.Warning("Downloaded auto update failed signature verification and will not be installed. Installer path: {InstallerPath}", installPath);
+            }
+
+            return true;
         };
 
         if (configuration.IsProxyEnabled)
