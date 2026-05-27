@@ -9,6 +9,7 @@ using Serilog;
 using StatisticsAnalysisTool.Abstractions;
 using StatisticsAnalysisTool.Common.UserSettings;
 using System;
+using System.Buffers.Binary;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net;
@@ -27,15 +28,22 @@ public class LibpcapPacketProvider : PacketProvider
     private volatile Pcap? _activePcap;
     private readonly Lock _lockObj = new();
     private readonly Lock _dispatcherLock = new();
+    private readonly Lock _ipv4FragmentsLock = new();
     private readonly Dictionary<Pcap, int> _pcapScores = new();
+    private readonly Dictionary<IPv4FragmentKey, IPv4FragmentBuffer> _ipv4Fragments = new();
     private DateTime _lastValidPacketUtc = DateTime.MinValue;
     private DateTime _lastRecoveryFailureLogUtc = DateTime.MinValue;
 
+    public const string DefaultPacketFilter = "((ip and ((udp and (port 5055 or port 5056 or port 5058)) or (ip[6:2] & 0x3fff != 0))) or (ip6 and (udp and (port 5055 or port 5056 or port 5058))))";
+    private const string LegacyDefaultPacketFilter = "(ip or ip6) and (udp and (port 5055 or port 5056 or port 5058))";
+    private const int MaxIPv4PayloadLength = 65535;
+    private const int MaxPendingIPv4FragmentPackages = 256;
     private const int ScoreToLock = 1;
     private static readonly TimeSpan LockIdleTimeout = TimeSpan.FromSeconds(20);
     private static readonly TimeSpan DispatchErrorBackoff = TimeSpan.FromMilliseconds(250);
     private static readonly TimeSpan CaptureRecoveryBackoff = TimeSpan.FromSeconds(2);
     private static readonly TimeSpan RecoveryFailureLogInterval = TimeSpan.FromSeconds(30);
+    private static readonly TimeSpan IPv4FragmentTimeout = TimeSpan.FromSeconds(15);
     private static readonly TimeSpan StopThreadJoinTimeout = TimeSpan.FromSeconds(2);
     private const int ConsecutiveDispatchErrorsBeforeEscalation = 20;
     private const int ConsecutiveDispatchErrorsBeforeRecovery = ConsecutiveDispatchErrorsBeforeEscalation;
@@ -237,7 +245,7 @@ public class LibpcapPacketProvider : PacketProvider
 
         if (etherType == 0x0800) // IPv4
         {
-            if (IsFragmentedIPv4(l3))
+            if (TryHandleIPv4Fragment(l3, pcap))
             {
                 return;
             }
@@ -281,18 +289,175 @@ public class LibpcapPacketProvider : PacketProvider
         }
     }
 
-    private static bool IsFragmentedIPv4(ReadOnlySpan<byte> bytes)
+    private bool TryHandleIPv4Fragment(ReadOnlySpan<byte> bytes, Pcap pcap)
     {
-        if (bytes.Length < 8)
+        if (!TryReadIPv4Header(bytes, out var header))
         {
             return true;
         }
 
-        ushort flagsAndFragmentOffset = (ushort) ((bytes[6] << 8) | bytes[7]);
-        bool hasMoreFragments = (flagsAndFragmentOffset & 0x2000) != 0;
-        int fragmentOffset = (flagsAndFragmentOffset & 0x1FFF) * 8;
+        if (!header.IsFragmented)
+        {
+            return false;
+        }
 
-        return hasMoreFragments || fragmentOffset != 0;
+        var sourceIp = new IPAddress(bytes.Slice(12, 4).ToArray()).ToString();
+        var destinationIp = new IPAddress(bytes.Slice(16, 4).ToArray()).ToString();
+        var fragmentPayload = bytes.Slice(header.HeaderLength, header.PayloadLength);
+        var reassembledPayload = AddIPv4Fragment(new IPv4FragmentKey(sourceIp, destinationIp, header.Identification, header.Protocol), header, fragmentPayload);
+
+        if (reassembledPayload == null)
+        {
+            return true;
+        }
+
+        HandleReassembledIPv4Payload(header.Protocol, reassembledPayload, pcap, sourceIp);
+        return true;
+    }
+
+    private byte[]? AddIPv4Fragment(IPv4FragmentKey key, IPv4HeaderInfo header, ReadOnlySpan<byte> fragmentPayload)
+    {
+        if (header.FragmentOffset < 0
+            || fragmentPayload.Length <= 0
+            || fragmentPayload.Length > MaxIPv4PayloadLength - header.FragmentOffset)
+        {
+            return null;
+        }
+
+        lock (_ipv4FragmentsLock)
+        {
+            RemoveExpiredIPv4Fragments();
+
+            if (!_ipv4Fragments.TryGetValue(key, out var fragmentBuffer))
+            {
+                fragmentBuffer = new IPv4FragmentBuffer();
+                _ipv4Fragments[key] = fragmentBuffer;
+            }
+
+            fragmentBuffer.LastSeenUtc = DateTime.UtcNow;
+
+            if (!header.HasMoreFragments)
+            {
+                fragmentBuffer.TotalLength = header.FragmentOffset + fragmentPayload.Length;
+            }
+
+            fragmentPayload.CopyTo(fragmentBuffer.Payload.AsSpan(header.FragmentOffset));
+
+            var fragmentEnd = header.FragmentOffset + fragmentPayload.Length;
+            for (var index = header.FragmentOffset; index < fragmentEnd; index++)
+            {
+                if (fragmentBuffer.ReceivedBytes[index])
+                {
+                    continue;
+                }
+
+                fragmentBuffer.ReceivedBytes[index] = true;
+                fragmentBuffer.ReceivedBytesCount++;
+            }
+
+            if (fragmentBuffer.TotalLength is not { } totalLength
+                || fragmentBuffer.ReceivedBytesCount < totalLength)
+            {
+                TrimIPv4FragmentCache();
+                return null;
+            }
+
+            var reassembledPayload = fragmentBuffer.Payload.AsSpan(0, totalLength).ToArray();
+            _ipv4Fragments.Remove(key);
+            return reassembledPayload;
+        }
+    }
+
+    private void HandleReassembledIPv4Payload(byte protocol, byte[] payload, Pcap pcap, string sourceIp)
+    {
+        switch ((ProtocolType) protocol)
+        {
+            case ProtocolType.Udp:
+                HandleUdp(payload, pcap, sourceIp);
+                return;
+
+            case ProtocolType.Tcp:
+                return;
+
+            default:
+                return;
+        }
+    }
+
+    private void RemoveExpiredIPv4Fragments()
+    {
+        var expirationUtc = DateTime.UtcNow - IPv4FragmentTimeout;
+        var expiredKeys = _ipv4Fragments
+            .Where(x => x.Value.LastSeenUtc < expirationUtc)
+            .Select(x => x.Key)
+            .ToList();
+
+        foreach (var expiredKey in expiredKeys)
+        {
+            _ipv4Fragments.Remove(expiredKey);
+        }
+    }
+
+    private void TrimIPv4FragmentCache()
+    {
+        if (_ipv4Fragments.Count <= MaxPendingIPv4FragmentPackages)
+        {
+            return;
+        }
+
+        var keysToRemove = _ipv4Fragments
+            .OrderBy(x => x.Value.LastSeenUtc)
+            .Take(_ipv4Fragments.Count - MaxPendingIPv4FragmentPackages)
+            .Select(x => x.Key)
+            .ToList();
+
+        foreach (var key in keysToRemove)
+        {
+            _ipv4Fragments.Remove(key);
+        }
+    }
+
+    private static bool TryReadIPv4Header(ReadOnlySpan<byte> bytes, out IPv4HeaderInfo header)
+    {
+        header = default;
+
+        if (bytes.Length < 20)
+        {
+            return false;
+        }
+
+        var version = bytes[0] >> 4;
+        if (version != 4)
+        {
+            return false;
+        }
+
+        var headerLength = (bytes[0] & 0x0F) * 4;
+        if (headerLength < 20 || bytes.Length < headerLength)
+        {
+            return false;
+        }
+
+        var totalLength = BinaryPrimitives.ReadUInt16BigEndian(bytes.Slice(2, 2));
+        if (totalLength < headerLength || bytes.Length < totalLength)
+        {
+            return false;
+        }
+
+        var identification = BinaryPrimitives.ReadUInt16BigEndian(bytes.Slice(4, 2));
+        var flagsAndFragmentOffset = BinaryPrimitives.ReadUInt16BigEndian(bytes.Slice(6, 2));
+        var hasMoreFragments = (flagsAndFragmentOffset & 0x2000) != 0;
+        var fragmentOffset = (flagsAndFragmentOffset & 0x1FFF) * 8;
+
+        header = new IPv4HeaderInfo(
+            bytes[9],
+            identification,
+            headerLength,
+            totalLength - headerLength,
+            hasMoreFragments,
+            fragmentOffset);
+
+        return true;
     }
 
     private static string GetIPv4SourceAddress(ReadOnlySpan<byte> bytes)
@@ -590,6 +755,11 @@ public class LibpcapPacketProvider : PacketProvider
             _pcapScores.Clear();
             _lastValidPacketUtc = DateTime.MinValue;
         }
+
+        lock (_ipv4FragmentsLock)
+        {
+            _ipv4Fragments.Clear();
+        }
     }
 
     private static void LogDispatchError(PcapException ex, int consecutiveDispatchErrors)
@@ -674,7 +844,38 @@ public class LibpcapPacketProvider : PacketProvider
 
     private static string? GetEffectiveFilter()
     {
-        var user = SettingsController.CurrentSettings.PacketFilter;
-        return string.IsNullOrWhiteSpace(user) ? null : user;
+        var user = SettingsController.CurrentSettings.PacketFilter?.Trim();
+        return string.IsNullOrWhiteSpace(user)
+            ? null
+            : NormalizePacketFilter(user);
+    }
+
+    private static string NormalizePacketFilter(string packetFilter)
+    {
+        return string.Equals(packetFilter, LegacyDefaultPacketFilter, StringComparison.OrdinalIgnoreCase)
+            ? DefaultPacketFilter
+            : packetFilter;
+    }
+
+    private readonly record struct IPv4FragmentKey(string SourceIp, string DestinationIp, ushort Identification, byte Protocol);
+
+    private readonly record struct IPv4HeaderInfo(
+        byte Protocol,
+        ushort Identification,
+        int HeaderLength,
+        int PayloadLength,
+        bool HasMoreFragments,
+        int FragmentOffset)
+    {
+        public bool IsFragmented => HasMoreFragments || FragmentOffset != 0;
+    }
+
+    private sealed class IPv4FragmentBuffer
+    {
+        public byte[] Payload { get; } = new byte[MaxIPv4PayloadLength];
+        public bool[] ReceivedBytes { get; } = new bool[MaxIPv4PayloadLength];
+        public int ReceivedBytesCount { get; set; }
+        public int? TotalLength { get; set; }
+        public DateTime LastSeenUtc { get; set; } = DateTime.UtcNow;
     }
 }
