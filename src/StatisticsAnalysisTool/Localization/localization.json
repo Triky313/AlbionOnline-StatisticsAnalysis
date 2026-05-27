@@ -18783,7 +18783,7 @@
         },
         {
           "lang": "fr-FR",
-          "seg": "Voulez-vous vraiment réinitialiser le compteur de dégâts\u00A0?"
+          "seg": "Voulez-vous vraiment réinitialiser le compteur de dégâts ?"
         },
         {
           "lang": "ja-JP",
@@ -19824,7 +19824,7 @@
         },
         {
           "lang": "fr-FR",
-          "seg": "Voulez-vous vraiment réinitialiser les notifications de Traqueur\u00A0?"
+          "seg": "Voulez-vous vraiment réinitialiser les notifications de Traqueur ?"
         },
         {
           "lang": "ja-JP",
@@ -20678,7 +20678,7 @@
         },
         {
           "lang": "fr-FR",
-          "seg": "Que dois-je faire pour pouvoir suivre mon jeu\u00A0?"
+          "seg": "Que dois-je faire pour pouvoir suivre mon jeu ?"
         },
         {
           "lang": "ja-JP",
@@ -21070,7 +21070,7 @@
         },
         {
           "lang": "fr-FR",
-          "seg": "8. Si l'icône Wi-Fi est verte et que le nom de votre personnage est visible, le Traqueur est entièrement fonctionnel - Terminé\u00A0!"
+          "seg": "8. Si l'icône Wi-Fi est verte et que le nom de votre personnage est visible, le Traqueur est entièrement fonctionnel - Terminé !"
         },
         {
           "lang": "ja-JP",
@@ -21119,7 +21119,7 @@
         },
         {
           "lang": "fr-FR",
-          "seg": "Comment puis-je mettre à jour moi-même les prix des objets\u00A0?"
+          "seg": "Comment puis-je mettre à jour moi-même les prix des objets ?"
         },
         {
           "lang": "ja-JP",
@@ -27902,7 +27902,7 @@
       "tuv": [
         {
           "lang": "de-DE",
-          "seg": "Get\u00f6tete Mobs"
+          "seg": "Getötete Mobs"
         },
         {
           "lang": "en-US",
@@ -38807,7 +38807,7 @@
       "tuv": [
         {
           "lang": "de-DE",
-          "seg": "{COUNT} ausgew\u00e4hlt"
+          "seg": "{COUNT} ausgewählt"
         },
         {
           "lang": "en-US",
@@ -39443,7 +39443,7 @@
       "tuv": [
         {
           "lang": "de-DE",
-          "seg": "Loot-Log-Dateien k\u00f6nnen im Logging-Tab \u00fcber den gr\u00fcnen CSV-Button gespeichert werden. Diese Datei kann anschlie\u00dfend in einem anderen Tool hinzugef\u00fcgt werden."
+          "seg": "Loot-Log-Dateien können im Logging-Tab über den grünen CSV-Button gespeichert werden. Diese Datei kann anschließend in einem anderen Tool hinzugefügt werden."
         },
         {
           "lang": "en-US",
@@ -44488,7 +44488,7 @@
       "tuv": [
         {
           "lang": "de-DE",
-          "seg": "Startserver f\u00fcr App Benutzerdaten"
+          "seg": "Startserver für App Benutzerdaten"
         },
         {
           "lang": "en-US",
@@ -44514,7 +44514,7 @@
       "tuv": [
         {
           "lang": "de-DE",
-          "seg": "Startserver f\u00fcr Daten"
+          "seg": "Startserver für Daten"
         },
         {
           "lang": "en-US",
@@ -44545,6 +44545,930 @@
         {
           "lang": "en-US",
           "seg": "Please select a startup data server."
+        }
+      ]
+    },
+    {
+      "tuid": "STATUS",
+      "tuv": [
+        {
+          "lang": "de-DE",
+          "seg": "STATUS"
+        },
+        {
+          "lang": "en-US",
+          "seg": "STATUS"
+        },
+        {
+          "lang": "es-ES",
+          "seg": "ESTADO"
+        },
+        {
+          "lang": "fr-FR",
+          "seg": "STATUT"
+        },
+        {
+          "lang": "hi-HI",
+          "seg": "स्थिति"
+        },
+        {
+          "lang": "id-ID",
+          "seg": "STATUS"
+        },
+        {
+          "lang": "it-IT",
+          "seg": "STATO"
+        },
+        {
+          "lang": "ja-JA",
+          "seg": "ステータス"
+        },
+        {
+          "lang": "ja-JP",
+          "seg": "ステータス"
+        },
+        {
+          "lang": "ko-KO",
+          "seg": "상태"
+        },
+        {
+          "lang": "ko-KR",
+          "seg": "상태"
+        },
+        {
+          "lang": "pl-PL",
+          "seg": "STATUS"
+        },
+        {
+          "lang": "pt-BR",
+          "seg": "ESTADO"
+        },
+        {
+          "lang": "pt-PT",
+          "seg": "ESTADO"
+        },
+        {
+          "lang": "ru-RU",
+          "seg": "СТАТУС"
+        },
+        {
+          "lang": "tr-TR",
+          "seg": "DURUM"
+        },
+        {
+          "lang": "zh-CN",
+          "seg": "状态"
+        },
+        {
+          "lang": "zh-TW",
+          "seg": "狀態"
+        }
+      ]
+    },
+    {
+      "tuid": "STATUS_IN_GAME",
+      "tuv": [
+        {
+          "lang": "de-DE",
+          "seg": "Im Spiel"
+        },
+        {
+          "lang": "en-US",
+          "seg": "In Game"
+        },
+        {
+          "lang": "es-ES",
+          "seg": "En juego"
+        },
+        {
+          "lang": "fr-FR",
+          "seg": "En jeu"
+        },
+        {
+          "lang": "hi-HI",
+          "seg": "गेम में"
+        },
+        {
+          "lang": "id-ID",
+          "seg": "Dalam Game"
+        },
+        {
+          "lang": "it-IT",
+          "seg": "In gioco"
+        },
+        {
+          "lang": "ja-JA",
+          "seg": "ゲーム内"
+        },
+        {
+          "lang": "ja-JP",
+          "seg": "ゲーム内"
+        },
+        {
+          "lang": "ko-KO",
+          "seg": "게임 중"
+        },
+        {
+          "lang": "ko-KR",
+          "seg": "게임 중"
+        },
+        {
+          "lang": "pl-PL",
+          "seg": "W grze"
+        },
+        {
+          "lang": "pt-BR",
+          "seg": "Em jogo"
+        },
+        {
+          "lang": "pt-PT",
+          "seg": "Em jogo"
+        },
+        {
+          "lang": "ru-RU",
+          "seg": "В игре"
+        },
+        {
+          "lang": "tr-TR",
+          "seg": "Oyunda"
+        },
+        {
+          "lang": "zh-CN",
+          "seg": "游戏中"
+        },
+        {
+          "lang": "zh-TW",
+          "seg": "遊戲中"
+        }
+      ]
+    },
+    {
+      "tuid": "STATUS_LOGGED_OUT",
+      "tuv": [
+        {
+          "lang": "de-DE",
+          "seg": "Ausgeloggt"
+        },
+        {
+          "lang": "en-US",
+          "seg": "Logged Out"
+        },
+        {
+          "lang": "es-ES",
+          "seg": "Desconectado"
+        },
+        {
+          "lang": "fr-FR",
+          "seg": "Déconnecté"
+        },
+        {
+          "lang": "hi-HI",
+          "seg": "लॉग आउट"
+        },
+        {
+          "lang": "id-ID",
+          "seg": "Keluar"
+        },
+        {
+          "lang": "it-IT",
+          "seg": "Disconnesso"
+        },
+        {
+          "lang": "ja-JA",
+          "seg": "ログアウト"
+        },
+        {
+          "lang": "ja-JP",
+          "seg": "ログアウト"
+        },
+        {
+          "lang": "ko-KO",
+          "seg": "로그아웃됨"
+        },
+        {
+          "lang": "ko-KR",
+          "seg": "로그아웃됨"
+        },
+        {
+          "lang": "pl-PL",
+          "seg": "Wylogowano"
+        },
+        {
+          "lang": "pt-BR",
+          "seg": "Desconectado"
+        },
+        {
+          "lang": "pt-PT",
+          "seg": "Desligado"
+        },
+        {
+          "lang": "ru-RU",
+          "seg": "Не в игре"
+        },
+        {
+          "lang": "tr-TR",
+          "seg": "Çıkış yapıldı"
+        },
+        {
+          "lang": "zh-CN",
+          "seg": "已登出"
+        },
+        {
+          "lang": "zh-TW",
+          "seg": "已登出"
+        }
+      ]
+    },
+    {
+      "tuid": "STATUS_SERVER_UNDETECTED",
+      "tuv": [
+        {
+          "lang": "de-DE",
+          "seg": "Server nicht erkannt"
+        },
+        {
+          "lang": "en-US",
+          "seg": "Server Undetected"
+        },
+        {
+          "lang": "es-ES",
+          "seg": "Servidor no detectado"
+        },
+        {
+          "lang": "fr-FR",
+          "seg": "Serveur non détecté"
+        },
+        {
+          "lang": "hi-HI",
+          "seg": "सर्वर नहीं मिला"
+        },
+        {
+          "lang": "id-ID",
+          "seg": "Server Tidak Terdeteksi"
+        },
+        {
+          "lang": "it-IT",
+          "seg": "Server non rilevato"
+        },
+        {
+          "lang": "ja-JA",
+          "seg": "サーバー未検出"
+        },
+        {
+          "lang": "ja-JP",
+          "seg": "サーバー未検出"
+        },
+        {
+          "lang": "ko-KO",
+          "seg": "서버 감지 안 됨"
+        },
+        {
+          "lang": "ko-KR",
+          "seg": "서버 감지 안 됨"
+        },
+        {
+          "lang": "pl-PL",
+          "seg": "Nie wykryto serwera"
+        },
+        {
+          "lang": "pt-BR",
+          "seg": "Servidor não detectado"
+        },
+        {
+          "lang": "pt-PT",
+          "seg": "Servidor não detetado"
+        },
+        {
+          "lang": "ru-RU",
+          "seg": "Сервер не обнаружен"
+        },
+        {
+          "lang": "tr-TR",
+          "seg": "Sunucu algılanmadı"
+        },
+        {
+          "lang": "zh-CN",
+          "seg": "未检测到服务器"
+        },
+        {
+          "lang": "zh-TW",
+          "seg": "未偵測到伺服器"
+        }
+      ]
+    },
+    {
+      "tuid": "STATUS_SERVER_DETECTED_FORMAT",
+      "tuv": [
+        {
+          "lang": "de-DE",
+          "seg": "Server {0}"
+        },
+        {
+          "lang": "en-US",
+          "seg": "Server {0}"
+        },
+        {
+          "lang": "es-ES",
+          "seg": "Servidor {0}"
+        },
+        {
+          "lang": "fr-FR",
+          "seg": "Serveur {0}"
+        },
+        {
+          "lang": "hi-HI",
+          "seg": "सर्वर {0}"
+        },
+        {
+          "lang": "id-ID",
+          "seg": "Server {0}"
+        },
+        {
+          "lang": "it-IT",
+          "seg": "Server {0}"
+        },
+        {
+          "lang": "ja-JA",
+          "seg": "{0}サーバー"
+        },
+        {
+          "lang": "ja-JP",
+          "seg": "{0}サーバー"
+        },
+        {
+          "lang": "ko-KO",
+          "seg": "{0} 서버"
+        },
+        {
+          "lang": "ko-KR",
+          "seg": "{0} 서버"
+        },
+        {
+          "lang": "pl-PL",
+          "seg": "Serwer {0}"
+        },
+        {
+          "lang": "pt-BR",
+          "seg": "Servidor {0}"
+        },
+        {
+          "lang": "pt-PT",
+          "seg": "Servidor {0}"
+        },
+        {
+          "lang": "ru-RU",
+          "seg": "Сервер {0}"
+        },
+        {
+          "lang": "tr-TR",
+          "seg": "Sunucu {0}"
+        },
+        {
+          "lang": "zh-CN",
+          "seg": "服务器 {0}"
+        },
+        {
+          "lang": "zh-TW",
+          "seg": "伺服器 {0}"
+        }
+      ]
+    },
+    {
+      "tuid": "STATUS_SERVER_AMERICA",
+      "tuv": [
+        {
+          "lang": "de-DE",
+          "seg": "Amerika"
+        },
+        {
+          "lang": "en-US",
+          "seg": "Americas"
+        },
+        {
+          "lang": "es-ES",
+          "seg": "Américas"
+        },
+        {
+          "lang": "fr-FR",
+          "seg": "Amériques"
+        },
+        {
+          "lang": "hi-HI",
+          "seg": "अमेरिका"
+        },
+        {
+          "lang": "id-ID",
+          "seg": "Amerika"
+        },
+        {
+          "lang": "it-IT",
+          "seg": "Americhe"
+        },
+        {
+          "lang": "ja-JA",
+          "seg": "アメリカ"
+        },
+        {
+          "lang": "ja-JP",
+          "seg": "アメリカ"
+        },
+        {
+          "lang": "ko-KO",
+          "seg": "아메리카"
+        },
+        {
+          "lang": "ko-KR",
+          "seg": "아메리카"
+        },
+        {
+          "lang": "pl-PL",
+          "seg": "Ameryka"
+        },
+        {
+          "lang": "pt-BR",
+          "seg": "Américas"
+        },
+        {
+          "lang": "pt-PT",
+          "seg": "Américas"
+        },
+        {
+          "lang": "ru-RU",
+          "seg": "Америка"
+        },
+        {
+          "lang": "tr-TR",
+          "seg": "Amerika"
+        },
+        {
+          "lang": "zh-CN",
+          "seg": "美洲"
+        },
+        {
+          "lang": "zh-TW",
+          "seg": "美洲"
+        }
+      ]
+    },
+    {
+      "tuid": "STATUS_SERVER_ASIA",
+      "tuv": [
+        {
+          "lang": "de-DE",
+          "seg": "Asien"
+        },
+        {
+          "lang": "en-US",
+          "seg": "Asia"
+        },
+        {
+          "lang": "es-ES",
+          "seg": "Asia"
+        },
+        {
+          "lang": "fr-FR",
+          "seg": "Asie"
+        },
+        {
+          "lang": "hi-HI",
+          "seg": "एशिया"
+        },
+        {
+          "lang": "id-ID",
+          "seg": "Asia"
+        },
+        {
+          "lang": "it-IT",
+          "seg": "Asia"
+        },
+        {
+          "lang": "ja-JA",
+          "seg": "アジア"
+        },
+        {
+          "lang": "ja-JP",
+          "seg": "アジア"
+        },
+        {
+          "lang": "ko-KO",
+          "seg": "아시아"
+        },
+        {
+          "lang": "ko-KR",
+          "seg": "아시아"
+        },
+        {
+          "lang": "pl-PL",
+          "seg": "Azja"
+        },
+        {
+          "lang": "pt-BR",
+          "seg": "Ásia"
+        },
+        {
+          "lang": "pt-PT",
+          "seg": "Ásia"
+        },
+        {
+          "lang": "ru-RU",
+          "seg": "Азия"
+        },
+        {
+          "lang": "tr-TR",
+          "seg": "Asya"
+        },
+        {
+          "lang": "zh-CN",
+          "seg": "亚洲"
+        },
+        {
+          "lang": "zh-TW",
+          "seg": "亞洲"
+        }
+      ]
+    },
+    {
+      "tuid": "STATUS_SERVER_EUROPE",
+      "tuv": [
+        {
+          "lang": "de-DE",
+          "seg": "Europa"
+        },
+        {
+          "lang": "en-US",
+          "seg": "Europe"
+        },
+        {
+          "lang": "es-ES",
+          "seg": "Europa"
+        },
+        {
+          "lang": "fr-FR",
+          "seg": "Europe"
+        },
+        {
+          "lang": "hi-HI",
+          "seg": "यूरोप"
+        },
+        {
+          "lang": "id-ID",
+          "seg": "Eropa"
+        },
+        {
+          "lang": "it-IT",
+          "seg": "Europa"
+        },
+        {
+          "lang": "ja-JA",
+          "seg": "ヨーロッパ"
+        },
+        {
+          "lang": "ja-JP",
+          "seg": "ヨーロッパ"
+        },
+        {
+          "lang": "ko-KO",
+          "seg": "유럽"
+        },
+        {
+          "lang": "ko-KR",
+          "seg": "유럽"
+        },
+        {
+          "lang": "pl-PL",
+          "seg": "Europa"
+        },
+        {
+          "lang": "pt-BR",
+          "seg": "Europa"
+        },
+        {
+          "lang": "pt-PT",
+          "seg": "Europa"
+        },
+        {
+          "lang": "ru-RU",
+          "seg": "Европа"
+        },
+        {
+          "lang": "tr-TR",
+          "seg": "Avrupa"
+        },
+        {
+          "lang": "zh-CN",
+          "seg": "欧洲"
+        },
+        {
+          "lang": "zh-TW",
+          "seg": "歐洲"
+        }
+      ]
+    },
+    {
+      "tuid": "STATUS_CHARACTER_UNDETECTED",
+      "tuv": [
+        {
+          "lang": "de-DE",
+          "seg": "Charakter nicht erkannt"
+        },
+        {
+          "lang": "en-US",
+          "seg": "Character Undetected"
+        },
+        {
+          "lang": "es-ES",
+          "seg": "Personaje no detectado"
+        },
+        {
+          "lang": "fr-FR",
+          "seg": "Personnage non détecté"
+        },
+        {
+          "lang": "hi-HI",
+          "seg": "चरित्र नहीं मिला"
+        },
+        {
+          "lang": "id-ID",
+          "seg": "Karakter Tidak Terdeteksi"
+        },
+        {
+          "lang": "it-IT",
+          "seg": "Personaggio non rilevato"
+        },
+        {
+          "lang": "ja-JA",
+          "seg": "キャラクター未検出"
+        },
+        {
+          "lang": "ja-JP",
+          "seg": "キャラクター未検出"
+        },
+        {
+          "lang": "ko-KO",
+          "seg": "캐릭터 감지 안 됨"
+        },
+        {
+          "lang": "ko-KR",
+          "seg": "캐릭터 감지 안 됨"
+        },
+        {
+          "lang": "pl-PL",
+          "seg": "Nie wykryto postaci"
+        },
+        {
+          "lang": "pt-BR",
+          "seg": "Personagem não detectado"
+        },
+        {
+          "lang": "pt-PT",
+          "seg": "Personagem não detetado"
+        },
+        {
+          "lang": "ru-RU",
+          "seg": "Персонаж не обнаружен"
+        },
+        {
+          "lang": "tr-TR",
+          "seg": "Karakter algılanmadı"
+        },
+        {
+          "lang": "zh-CN",
+          "seg": "未检测到角色"
+        },
+        {
+          "lang": "zh-TW",
+          "seg": "未偵測到角色"
+        }
+      ]
+    },
+    {
+      "tuid": "STATUS_CHARACTER_DETECTED_FORMAT",
+      "tuv": [
+        {
+          "lang": "de-DE",
+          "seg": "Charakter {0}"
+        },
+        {
+          "lang": "en-US",
+          "seg": "Character {0}"
+        },
+        {
+          "lang": "es-ES",
+          "seg": "Personaje {0}"
+        },
+        {
+          "lang": "fr-FR",
+          "seg": "Personnage {0}"
+        },
+        {
+          "lang": "hi-HI",
+          "seg": "चरित्र {0}"
+        },
+        {
+          "lang": "id-ID",
+          "seg": "Karakter {0}"
+        },
+        {
+          "lang": "it-IT",
+          "seg": "Personaggio {0}"
+        },
+        {
+          "lang": "ja-JA",
+          "seg": "キャラクター {0}"
+        },
+        {
+          "lang": "ja-JP",
+          "seg": "キャラクター {0}"
+        },
+        {
+          "lang": "ko-KO",
+          "seg": "캐릭터 {0}"
+        },
+        {
+          "lang": "ko-KR",
+          "seg": "캐릭터 {0}"
+        },
+        {
+          "lang": "pl-PL",
+          "seg": "Postać {0}"
+        },
+        {
+          "lang": "pt-BR",
+          "seg": "Personagem {0}"
+        },
+        {
+          "lang": "pt-PT",
+          "seg": "Personagem {0}"
+        },
+        {
+          "lang": "ru-RU",
+          "seg": "Персонаж {0}"
+        },
+        {
+          "lang": "tr-TR",
+          "seg": "Karakter {0}"
+        },
+        {
+          "lang": "zh-CN",
+          "seg": "角色 {0}"
+        },
+        {
+          "lang": "zh-TW",
+          "seg": "角色 {0}"
+        }
+      ]
+    },
+    {
+      "tuid": "STATUS_LOCATION_UNDETECTED",
+      "tuv": [
+        {
+          "lang": "de-DE",
+          "seg": "Location nicht erkannt"
+        },
+        {
+          "lang": "en-US",
+          "seg": "Location Undetected"
+        },
+        {
+          "lang": "es-ES",
+          "seg": "Ubicación no detectada"
+        },
+        {
+          "lang": "fr-FR",
+          "seg": "Emplacement non détecté"
+        },
+        {
+          "lang": "hi-HI",
+          "seg": "स्थान नहीं मिला"
+        },
+        {
+          "lang": "id-ID",
+          "seg": "Lokasi Tidak Terdeteksi"
+        },
+        {
+          "lang": "it-IT",
+          "seg": "Posizione non rilevata"
+        },
+        {
+          "lang": "ja-JA",
+          "seg": "ロケーション未検出"
+        },
+        {
+          "lang": "ja-JP",
+          "seg": "ロケーション未検出"
+        },
+        {
+          "lang": "ko-KO",
+          "seg": "위치 감지 안 됨"
+        },
+        {
+          "lang": "ko-KR",
+          "seg": "위치 감지 안 됨"
+        },
+        {
+          "lang": "pl-PL",
+          "seg": "Nie wykryto lokalizacji"
+        },
+        {
+          "lang": "pt-BR",
+          "seg": "Localização não detectada"
+        },
+        {
+          "lang": "pt-PT",
+          "seg": "Localização não detetada"
+        },
+        {
+          "lang": "ru-RU",
+          "seg": "Локация не обнаружена"
+        },
+        {
+          "lang": "tr-TR",
+          "seg": "Konum algılanmadı"
+        },
+        {
+          "lang": "zh-CN",
+          "seg": "未检测到位置"
+        },
+        {
+          "lang": "zh-TW",
+          "seg": "未偵測到位置"
+        }
+      ]
+    },
+    {
+      "tuid": "STATUS_LOCATION_DETECTED",
+      "tuv": [
+        {
+          "lang": "de-DE",
+          "seg": "Location erkannt"
+        },
+        {
+          "lang": "en-US",
+          "seg": "Location Detected"
+        },
+        {
+          "lang": "es-ES",
+          "seg": "Ubicación detectada"
+        },
+        {
+          "lang": "fr-FR",
+          "seg": "Emplacement détecté"
+        },
+        {
+          "lang": "hi-HI",
+          "seg": "स्थान मिला"
+        },
+        {
+          "lang": "id-ID",
+          "seg": "Lokasi Terdeteksi"
+        },
+        {
+          "lang": "it-IT",
+          "seg": "Posizione rilevata"
+        },
+        {
+          "lang": "ja-JA",
+          "seg": "ロケーション検出済み"
+        },
+        {
+          "lang": "ja-JP",
+          "seg": "ロケーション検出済み"
+        },
+        {
+          "lang": "ko-KO",
+          "seg": "위치 감지됨"
+        },
+        {
+          "lang": "ko-KR",
+          "seg": "위치 감지됨"
+        },
+        {
+          "lang": "pl-PL",
+          "seg": "Wykryto lokalizację"
+        },
+        {
+          "lang": "pt-BR",
+          "seg": "Localização detectada"
+        },
+        {
+          "lang": "pt-PT",
+          "seg": "Localização detetada"
+        },
+        {
+          "lang": "ru-RU",
+          "seg": "Локация обнаружена"
+        },
+        {
+          "lang": "tr-TR",
+          "seg": "Konum algılandı"
+        },
+        {
+          "lang": "zh-CN",
+          "seg": "已检测到位置"
+        },
+        {
+          "lang": "zh-TW",
+          "seg": "已偵測到位置"
         }
       ]
     }

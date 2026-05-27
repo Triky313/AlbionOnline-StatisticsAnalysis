@@ -111,6 +111,7 @@ public class MainWindowViewModel : BaseViewModel
     private UserTrackingBindings _userTrackingBindings = new();
     private Visibility _debugModeVisibility = Visibility.Collapsed;
     private TrackingActivityBindings _trackingActivityBindings = new();
+    private MainStatusBindings _mainStatusBindings = new();
     private TradeMonitoringBindings _tradeMonitoringBindings = new();
     private DungeonBindings _dungeonBindings = new();
     private DamageMeterBindings _damageMeterBindings = new();
@@ -141,7 +142,6 @@ public class MainWindowViewModel : BaseViewModel
     private string _toolTaskCurrentTaskName;
     private GuildBindings _guildBindings = new();
     private PartyBindings _partyBindings = new();
-    private string _serverTypeText;
     private bool _isDataLoaded;
     private bool _isCloseButtonActive;
     private Visibility _loadIconVisibility = Visibility.Collapsed;
@@ -163,12 +163,13 @@ public class MainWindowViewModel : BaseViewModel
     public void RefreshLocalization()
     {
         Translation = new MainWindowTranslation();
-        UpdateServerTypeLabel();
+        UpdateServerStatus();
         RefreshDashboardChartTranslations();
         RefreshItemCategoryTranslations();
         TradeMonitoringBindings.RefreshLocalization();
         OpenWorldBindings.UpdateStats();
         RefreshTrackingActivityText();
+        MainStatusBindings.RefreshLocalization();
     }
 
     private void RefreshDashboardChartTranslations()
@@ -379,7 +380,7 @@ public class MainWindowViewModel : BaseViewModel
         IsItemSearchCheckboxesEnabled = false;
         IsFilterResetEnabled = false;
 
-        UpdateServerTypeLabel();
+        UpdateServerStatus();
 
         ItemsView = new ListCollectionView(ItemController.Items);
         InitAlerts();
@@ -439,15 +440,10 @@ public class MainWindowViewModel : BaseViewModel
 
     #region Ui utility methods
 
-    public void UpdateServerTypeLabel()
+    public void UpdateServerStatus()
     {
-        ServerTypeText = GetCurrentServerLocation() switch
-        {
-            ServerLocation.Asia => LocalizationController.Translation("ASIA_SERVER"),
-            ServerLocation.America => LocalizationController.Translation("AMERICA_SERVER"),
-            ServerLocation.Europe => LocalizationController.Translation("EUROPE_SERVER"),
-            _ => LocalizationController.Translation("UNKNOWN_SERVER")
-        };
+        var currentServerLocation = GetCurrentServerLocation();
+        MainStatusBindings.SetServerLocation(currentServerLocation);
     }
 
     public async Task LoadUserDataForActiveServerAsync()
@@ -500,11 +496,11 @@ public class MainWindowViewModel : BaseViewModel
     {
         if (Application.Current?.Dispatcher?.CheckAccess() == true)
         {
-            UpdateServerTypeLabel();
+            UpdateServerStatus();
             return;
         }
 
-        _ = Application.Current?.Dispatcher?.BeginInvoke(UpdateServerTypeLabel);
+        _ = Application.Current?.Dispatcher?.BeginInvoke(UpdateServerStatus);
     }
 
     private static ServerLocation GetCurrentServerLocation()
@@ -953,6 +949,7 @@ public class MainWindowViewModel : BaseViewModel
                 case false:
                     TrackingActivityBindings.TrackingActiveText = MainWindowTranslation.TrackingIsNotActive;
                     TrackingActivityBindings.TrackingActivityType = TrackingIconType.Off;
+                    MainStatusBindings.ResetGameSession();
                     break;
             }
 
@@ -966,6 +963,16 @@ public class MainWindowViewModel : BaseViewModel
         set
         {
             _trackingActivityBindings = value;
+            OnPropertyChanged();
+        }
+    }
+
+    public MainStatusBindings MainStatusBindings
+    {
+        get => _mainStatusBindings;
+        set
+        {
+            _mainStatusBindings = value;
             OnPropertyChanged();
         }
     }
@@ -1755,16 +1762,6 @@ public class MainWindowViewModel : BaseViewModel
         set
         {
             _informationBarVisibility = value;
-            OnPropertyChanged();
-        }
-    }
-
-    public string ServerTypeText
-    {
-        get => _serverTypeText;
-        set
-        {
-            _serverTypeText = value;
             OnPropertyChanged();
         }
     }

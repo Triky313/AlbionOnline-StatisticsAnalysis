@@ -23,6 +23,7 @@ public class MainWindowTranslation
     public static string Name => LocalizationController.Translation("NAME");
     public static string Type => LocalizationController.Translation("TYPE");
     public static string Note => LocalizationController.Translation("NOTE");
+    public static string Status => LocalizationController.Translation("STATUS");
     public static string ShowOnlyItemsWithAlertOn => LocalizationController.Translation("SHOW_ONLY_ITEMS_WITH_ALERT_ON");
     public static string ShowOnlyFavorites => LocalizationController.Translation("SHOW_ONLY_FAVORITES");
     public static string IsAlertActive => LocalizationController.Translation("IS_ALERT_ACTIVATE");

@@ -8,7 +8,7 @@
         xmlns:viewModels="clr-namespace:StatisticsAnalysisTool.ViewModels"
         xmlns:glob="clr-namespace:System.Globalization;assembly=System.Runtime"
         mc:Ignorable="d"
-        d:DesignHeight="650" d:DesignWidth="1000"
+        d:DesignHeight="850" d:DesignWidth="1100"
         Title="AlbionOnline - StatisticsAnalysisTool"
         Closing="MainWindow_OnClosing"
         d:DataContext="{d:DesignInstance Type=viewModels:MainWindowViewModel}"
@@ -23,33 +23,38 @@
             <Button x:Name="MaximizedButton" Style="{StaticResource WindowButtonStyle}" Content="1" Margin="0,0,28,0" Click="MaximizeButton_Click" />
             <Button x:Name="MinimizeButton" Style="{StaticResource WindowButtonStyle}" Content="0" Margin="0,0,58,0" Click="MinimizeButton_Click" />
 
+            <Grid HorizontalAlignment="Right" VerticalAlignment="Top" Margin="0,4,100,0" Width="170" Height="82">
+                <StackPanel Orientation="Vertical">
+                    <TextBlock Text="{Binding Translation.Status, FallbackValue=STATUS}" Style="{StaticResource MainHeaderStatus.Title}" />
+                    <StackPanel Style="{StaticResource MainHeaderStatus.Row}" Tag="{Binding MainStatusBindings.IsInGame}">
+                        <Ellipse Style="{StaticResource MainHeaderStatus.Dot}" />
+                        <TextBlock Text="{Binding MainStatusBindings.InGameStatusText, FallbackValue=LOGGED__OUT}" Style="{StaticResource MainHeaderStatus.Text}" />
+                    </StackPanel>
+                    <StackPanel Style="{StaticResource MainHeaderStatus.Row}" Tag="{Binding MainStatusBindings.IsServerDetected}">
+                        <Ellipse Style="{StaticResource MainHeaderStatus.Dot}" />
+                        <TextBlock Text="{Binding MainStatusBindings.ServerStatusText, FallbackValue=SERVER__UNDETECTED}" Style="{StaticResource MainHeaderStatus.Text}" />
+                    </StackPanel>
+                    <StackPanel Style="{StaticResource MainHeaderStatus.Row}" Tag="{Binding MainStatusBindings.IsCharacterDetected}">
+                        <Ellipse Style="{StaticResource MainHeaderStatus.Dot}" />
+                        <TextBlock Text="{Binding MainStatusBindings.CharacterStatusText, FallbackValue=CHARACTER__UNDETECTED}" Style="{StaticResource MainHeaderStatus.Text}" />
+                    </StackPanel>
+                    <StackPanel Style="{StaticResource MainHeaderStatus.Row}" Tag="{Binding MainStatusBindings.IsLocationDetected}">
+                        <Ellipse Style="{StaticResource MainHeaderStatus.Dot}" />
+                        <TextBlock Text="{Binding MainStatusBindings.LocationStatusText, FallbackValue=LOCATION__UNDETECTED}" Style="{StaticResource MainHeaderStatus.Text}" />
+                    </StackPanel>
+                </StackPanel>
+            </Grid>
+
             <StackPanel Orientation="Vertical" Margin="0">
                 <Grid>
-                    <StackPanel Orientation="Horizontal"  Height="38" VerticalAlignment="Top" Margin="35,0,90,0">
+                    <StackPanel Orientation="Horizontal"  Height="38" VerticalAlignment="Top" Margin="35,0,280,0">
                         <Label Content="AlbionOnline - STATISTICS ANALYSIS TOOL" Style="{StaticResource MainWindow.Title}" />
                         <Grid Visibility="{Binding UnsupportedOsVisibility, FallbackValue=Collapsed}" 
                               Height="20" Width="20" VerticalAlignment="Center" ToolTip="{Binding Translation.UnsupportedOs, FallbackValue='UNSUPPORTED_OS'}">
                             <fa5:ImageAwesome Icon="Solid_ExclamationTriangle" Foreground="{StaticResource SolidColorBrush.Accent.Red.3}" />
                         </Grid>
-                        <Label Content="- DEBUG -" Style="{StaticResource MainWindow.Title}" Foreground="{StaticResource SolidColorBrush.Accent.Red.3}" 
+                        <Label Content="- DEBUG -" Style="{StaticResource MainWindow.Title}" Foreground="{StaticResource SolidColorBrush.Accent.Red.3}"
                                Visibility="{Binding DebugModeVisibility}" />
-                        <Label Content="{Binding ServerTypeText, FallbackValue=(SEVER__TYPE)}" Style="{StaticResource HeaderStyle.Tracking.Content}" 
-                               ContentStringFormat="{}({0})" Foreground="{StaticResource SolidColorBrush.Accent.Blue.4}" />
-                        <Label Content="{Binding TrackingActivityBindings.TrackingActiveText, FallbackValue=TRACKING__IS__NOT__ACTIVE}" VerticalAlignment="Center">
-                            <Label.Style>
-                                <Style TargetType="{x:Type Label}">
-                                    <Setter Property="Foreground" Value="{StaticResource SolidColorBrush.Text.6}"/>
-                                    <Style.Triggers>
-                                        <DataTrigger Binding="{Binding TrackingActivityBindings.TrackingActivityType}" Value="Partially">
-                                            <Setter Property="Foreground" Value="{StaticResource SolidColorBrush.Accent.Yellow.1}"/>
-                                        </DataTrigger>
-                                        <DataTrigger Binding="{Binding TrackingActivityBindings.TrackingActivityType}" Value="On">
-                                            <Setter Property="Foreground" Value="{StaticResource SolidColorBrush.Accent.Green.4}"/>
-                                        </DataTrigger>
-                                    </Style.Triggers>
-                                </Style>
-                            </Label.Style>
-                        </Label>
                         <Grid Style="{StaticResource LoadingIconGridStyle}">
                             <fa5:ImageAwesome Visibility="{Binding LoadIconVisibility}" Style="{StaticResource LoadingIconStyle}" />
                         </Grid>
