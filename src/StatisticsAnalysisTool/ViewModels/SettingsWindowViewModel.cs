@@ -1015,7 +1015,9 @@ public class SettingsWindowViewModel : BaseViewModel
 
     public string ToolDirectory => AppDataPaths.InstallationDirectory;
 
-    public string UserDataDirectory => AppDataPaths.UserDataDirectory;
+    public string UserDataDirectory => AppDataPaths.IsUserDataAvailable
+        ? AppDataPaths.UserDataDirectory
+        : AppDataPaths.RuntimeBaseDirectory;
 
     #endregion Bindings
 }

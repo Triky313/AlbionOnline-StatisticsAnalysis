@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.IO;
+using StatisticsAnalysisTool.Enumerations;
 
 namespace StatisticsAnalysisTool.Common;
 
@@ -11,6 +12,9 @@ public static class AppDataPaths
     private const string LegacyDefaultDirectoryName = "Default";
     private const string BackupsDirectoryName = "Backups";
     private const string UserDataDirectoryName = "UserData";
+    private const string UserDataAmericaDirectoryName = "UserData-AMERICA";
+    private const string UserDataAsiaDirectoryName = "UserData-ASIA";
+    private const string UserDataEuropeDirectoryName = "UserData-EUROPE";
     private const string TempDirectoryName = "temp";
     private const string SpellImageResourcesDirectoryName = "SpellImageResources";
     private const string LogsDirectoryName = "logs";
@@ -25,6 +29,7 @@ public static class AppDataPaths
     private static string _runtimeBaseDirectoryOverride;
     private static string _installationDirectoryOverride;
     private static string _legacyDefaultDirectoryOverride;
+    private static ServerLocation _activeUserDataServerLocation = ServerLocation.Unknown;
 
     public static string BaseDirectory { get; } = Path.Combine(
         Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData),
@@ -44,7 +49,9 @@ public static class AppDataPaths
 
     public static string Backups => Path.Combine(RuntimeBaseDirectory, BackupsDirectoryName);
 
-    public static string UserData => Path.Combine(RuntimeBaseDirectory, UserDataDirectoryName);
+    public static string LegacyRuntimeUserData => Path.Combine(RuntimeBaseDirectory, UserDataDirectoryName);
+
+    public static string UserData => GetUserDataDirectory(_activeUserDataServerLocation);
 
     public static string Temp => Path.Combine(RuntimeBaseDirectory, TempDirectoryName);
 
@@ -60,7 +67,13 @@ public static class AppDataPaths
 
     public static string BackupsDirectory => Backups;
 
+    public static string LegacyRuntimeUserDataDirectory => LegacyRuntimeUserData;
+
     public static string UserDataDirectory => UserData;
+
+    public static ServerLocation ActiveUserDataServerLocation => _activeUserDataServerLocation;
+
+    public static bool IsUserDataAvailable => _activeUserDataServerLocation is ServerLocation.America or ServerLocation.Asia or ServerLocation.Europe;
 
     public static string TempDirectory => Temp;
 
@@ -87,7 +100,6 @@ public static class AppDataPaths
     public static IReadOnlyCollection<string> RuntimeDirectories =>
     [
         BackupsDirectory,
-        UserDataDirectory,
         TempDirectory,
         SpellImageResourcesDirectory,
         LogsDirectory,
@@ -95,9 +107,57 @@ public static class AppDataPaths
         GameFilesDirectory
     ];
 
+    public static IReadOnlyCollection<string> ServerUserDataDirectories =>
+    [
+        GetUserDataDirectory(ServerLocation.America),
+        GetUserDataDirectory(ServerLocation.Asia),
+        GetUserDataDirectory(ServerLocation.Europe)
+    ];
+
+    public static void SetActiveUserDataServer(ServerLocation serverLocation)
+    {
+        _activeUserDataServerLocation = serverLocation is ServerLocation.America or ServerLocation.Asia or ServerLocation.Europe
+            ? serverLocation
+            : ServerLocation.Unknown;
+    }
+
+    public static bool TryEnsureUserDataDirectory()
+    {
+        if (!IsUserDataAvailable)
+        {
+            return false;
+        }
+
+        Directory.CreateDirectory(UserDataDirectory);
+        return true;
+    }
+
+    public static string GetUserDataDirectory(ServerLocation serverLocation)
+    {
+        return serverLocation switch
+        {
+            ServerLocation.America => Path.Combine(RuntimeBaseDirectory, UserDataAmericaDirectoryName),
+            ServerLocation.Asia => Path.Combine(RuntimeBaseDirectory, UserDataAsiaDirectoryName),
+            ServerLocation.Europe => Path.Combine(RuntimeBaseDirectory, UserDataEuropeDirectoryName),
+            _ => LegacyRuntimeUserDataDirectory
+        };
+    }
+
     public static string UserDataFile(string fileName)
     {
         return Path.Combine(UserDataDirectory, fileName);
+    }
+
+    public static bool IsDisabledUserDataPath(string path)
+    {
+        if (IsUserDataAvailable || string.IsNullOrWhiteSpace(path))
+        {
+            return false;
+        }
+
+        var fullPath = Path.GetFullPath(path);
+        var legacyUserDataPath = Path.GetFullPath(LegacyRuntimeUserDataDirectory);
+        return fullPath.StartsWith(legacyUserDataPath, StringComparison.OrdinalIgnoreCase);
     }
 
     public static string GameFile(string fileName)
@@ -160,8 +220,10 @@ public static class AppDataPaths
     internal static IDisposable UseRuntimeBaseDirectoryForTests(string runtimeBaseDirectory)
     {
         var previousRuntimeBaseDirectoryOverride = _runtimeBaseDirectoryOverride;
+        var previousActiveUserDataServerLocation = _activeUserDataServerLocation;
         _runtimeBaseDirectoryOverride = runtimeBaseDirectory;
-        return new RuntimeBaseDirectoryOverrideScope(previousRuntimeBaseDirectoryOverride);
+        _activeUserDataServerLocation = ServerLocation.Unknown;
+        return new RuntimeBaseDirectoryOverrideScope(previousRuntimeBaseDirectoryOverride, previousActiveUserDataServerLocation);
     }
 
     internal static IDisposable UsePathOverridesForTests(
@@ -172,15 +234,18 @@ public static class AppDataPaths
         var previousRuntimeBaseDirectoryOverride = _runtimeBaseDirectoryOverride;
         var previousInstallationDirectoryOverride = _installationDirectoryOverride;
         var previousLegacyDefaultDirectoryOverride = _legacyDefaultDirectoryOverride;
+        var previousActiveUserDataServerLocation = _activeUserDataServerLocation;
 
         _runtimeBaseDirectoryOverride = runtimeBaseDirectory;
         _installationDirectoryOverride = installationDirectory;
         _legacyDefaultDirectoryOverride = legacyDefaultDirectory;
+        _activeUserDataServerLocation = ServerLocation.Unknown;
 
         return new PathOverrideScope(
             previousRuntimeBaseDirectoryOverride,
             previousInstallationDirectoryOverride,
-            previousLegacyDefaultDirectoryOverride);
+            previousLegacyDefaultDirectoryOverride,
+            previousActiveUserDataServerLocation);
     }
 
     public static void EnsureBaseDirectory()
@@ -201,11 +266,13 @@ public static class AppDataPaths
     private sealed class RuntimeBaseDirectoryOverrideScope : IDisposable
     {
         private readonly string _previousRuntimeBaseDirectoryOverride;
+        private readonly ServerLocation _previousActiveUserDataServerLocation;
         private bool _isDisposed;
 
-        public RuntimeBaseDirectoryOverrideScope(string previousRuntimeBaseDirectoryOverride)
+        public RuntimeBaseDirectoryOverrideScope(string previousRuntimeBaseDirectoryOverride, ServerLocation previousActiveUserDataServerLocation)
         {
             _previousRuntimeBaseDirectoryOverride = previousRuntimeBaseDirectoryOverride;
+            _previousActiveUserDataServerLocation = previousActiveUserDataServerLocation;
         }
 
         public void Dispose()
@@ -216,6 +283,7 @@ public static class AppDataPaths
             }
 
             _runtimeBaseDirectoryOverride = _previousRuntimeBaseDirectoryOverride;
+            _activeUserDataServerLocation = _previousActiveUserDataServerLocation;
             _isDisposed = true;
         }
     }
@@ -225,16 +293,19 @@ public static class AppDataPaths
         private readonly string _previousRuntimeBaseDirectoryOverride;
         private readonly string _previousInstallationDirectoryOverride;
         private readonly string _previousLegacyDefaultDirectoryOverride;
+        private readonly ServerLocation _previousActiveUserDataServerLocation;
         private bool _isDisposed;
 
         public PathOverrideScope(
             string previousRuntimeBaseDirectoryOverride,
             string previousInstallationDirectoryOverride,
-            string previousLegacyDefaultDirectoryOverride)
+            string previousLegacyDefaultDirectoryOverride,
+            ServerLocation previousActiveUserDataServerLocation)
         {
             _previousRuntimeBaseDirectoryOverride = previousRuntimeBaseDirectoryOverride;
             _previousInstallationDirectoryOverride = previousInstallationDirectoryOverride;
             _previousLegacyDefaultDirectoryOverride = previousLegacyDefaultDirectoryOverride;
+            _previousActiveUserDataServerLocation = previousActiveUserDataServerLocation;
         }
 
         public void Dispose()
@@ -247,6 +318,7 @@ public static class AppDataPaths
             _runtimeBaseDirectoryOverride = _previousRuntimeBaseDirectoryOverride;
             _installationDirectoryOverride = _previousInstallationDirectoryOverride;
             _legacyDefaultDirectoryOverride = _previousLegacyDefaultDirectoryOverride;
+            _activeUserDataServerLocation = _previousActiveUserDataServerLocation;
             _isDisposed = true;
         }
     }

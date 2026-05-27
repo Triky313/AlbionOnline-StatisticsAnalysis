@@ -180,13 +180,18 @@ public class GuildController
             AppDataPaths.UserDataFile(Settings.Default.GuildFileName));
         var guild = GuildMapping.Mapping(dto);
 
+        _mainWindowViewModel.GuildBindings.SiphonedEnergyList.Clear();
         _mainWindowViewModel.GuildBindings.SiphonedEnergyList.AddRange(guild.SiphonedEnergies);
         UpdateSiphonedEnergyOverview();
     }
 
     public async Task SaveInFileAsync()
     {
-        DirectoryController.CreateDirectoryWhenNotExists(AppDataPaths.UserDataDirectory);
+        if (!AppDataPaths.TryEnsureUserDataDirectory())
+        {
+            return;
+        }
+
         await FileController.SaveAsync(new GuildDto()
         {
             SiphonedEnergies = _mainWindowViewModel.GuildBindings.SiphonedEnergyList.Select(GuildMapping.Mapping).ToList()

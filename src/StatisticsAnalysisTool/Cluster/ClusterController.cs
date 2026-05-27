@@ -210,7 +210,10 @@ public sealed class ClusterController(TrackingController trackingController, Mai
 
     public async Task SaveInFileAsync()
     {
-        DirectoryController.CreateDirectoryWhenNotExists(AppDataPaths.UserDataDirectory);
+        if (!AppDataPaths.TryEnsureUserDataDirectory())
+        {
+            return;
+        }
 
         var clusterHistoryToSave = mainWindowViewModel.EnteredCluster
             .Take(MaxEnteredCluster)

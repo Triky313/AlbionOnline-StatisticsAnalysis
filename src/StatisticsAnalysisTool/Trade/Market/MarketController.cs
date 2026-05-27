@@ -351,7 +351,10 @@ public class MarketController(TrackingController trackingController, MainWindowV
 
     public async Task SaveInFileAsync()
     {
-        DirectoryController.CreateDirectoryWhenNotExists(AppDataPaths.UserDataDirectory);
+        if (!AppDataPaths.TryEnsureUserDataDirectory())
+        {
+            return;
+        }
 
         DateTime now = DateTime.UtcNow;
 

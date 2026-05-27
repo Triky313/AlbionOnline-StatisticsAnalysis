@@ -381,11 +381,9 @@ public class MainWindowViewModel : BaseViewModel
 
         UpdateServerTypeLabel();
 
-        await ItemController.SetFavoriteItemsFromLocalFileAsync();
-
         ItemsView = new ListCollectionView(ItemController.Items);
         InitAlerts();
-        await EstimatedMarketValueController.SetAllEstimatedMarketValuesToItemsAsync();
+        await LoadUserDataForActiveServerAsync();
         LoggingBindings.Init();
 
         LoadIconVisibility = Visibility.Hidden;
@@ -450,6 +448,38 @@ public class MainWindowViewModel : BaseViewModel
             ServerLocation.Europe => LocalizationController.Translation("EUROPE_SERVER"),
             _ => LocalizationController.Translation("UNKNOWN_SERVER")
         };
+    }
+
+    public async Task LoadUserDataForActiveServerAsync()
+    {
+        if (!AppDataPaths.IsUserDataAvailable)
+        {
+            return;
+        }
+
+        ResetItemUserDataState();
+        CraftingTabController.ResetCache();
+        await ItemController.SetFavoriteItemsFromLocalFileAsync();
+
+        AlertManager?.StopAllAlerts();
+        InitAlerts();
+
+        if (ServiceLocator.IsServiceInDictionary<TrackingController>())
+        {
+            await ServiceLocator.Resolve<TrackingController>().LoadDataAsync();
+        }
+
+        await EstimatedMarketValueController.SetAllEstimatedMarketValuesToItemsAsync();
+        ItemsView?.Refresh();
+    }
+
+    private void ResetItemUserDataState()
+    {
+        foreach (var item in ItemController.Items ?? [])
+        {
+            item.IsFavorite = false;
+            item.IsAlertActive = false;
+        }
     }
 
     private void RegisterServerDetectionEvents()
@@ -902,7 +932,9 @@ public class MainWindowViewModel : BaseViewModel
         set
         {
             _isTrackingActive = value;
-            var trackingController = ServiceLocator.Resolve<TrackingController>();
+            var trackingController = ServiceLocator.IsServiceInDictionary<TrackingController>()
+                ? ServiceLocator.Resolve<TrackingController>()
+                : null;
 
             switch (_isTrackingActive)
             {

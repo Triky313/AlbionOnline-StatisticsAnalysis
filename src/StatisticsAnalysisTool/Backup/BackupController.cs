@@ -29,22 +29,35 @@ public static class BackupController
 
         if (!CreateBackupDirWhenNotExist())
         {
+            _isBackupRunning = false;
             return false;
         }
 
-        var sourceFolderPath = AppDataPaths.UserDataDirectory;
         var backupDirPath = AppDataPaths.BackupsDirectory;
         var backupFilePath = Path.Combine(backupDirPath, GetBackupFileName());
 
         try
         {
-            string[] filesToZip = Directory.GetFiles(sourceFolderPath, "*.json", SearchOption.AllDirectories);
+            var sourceFolderPaths = AppDataPaths.ServerUserDataDirectories
+                .Where(Directory.Exists)
+                .ToList();
+
+            if (sourceFolderPaths.Count == 0)
+            {
+                _isBackupRunning = false;
+                return false;
+            }
 
             using var zipArchive = ZipFile.Open(backupFilePath, ZipArchiveMode.Create);
-            foreach (string file in filesToZip)
+            foreach (var sourceFolderPath in sourceFolderPaths)
             {
-                var entryName = file.Replace(sourceFolderPath, "").TrimStart(Path.DirectorySeparatorChar);
-                zipArchive.CreateEntryFromFile(file, entryName);
+                foreach (var file in Directory.GetFiles(sourceFolderPath, "*.json", SearchOption.AllDirectories))
+                {
+                    var serverDirectoryName = Path.GetFileName(sourceFolderPath);
+                    var relativeFilePath = Path.GetRelativePath(sourceFolderPath, file);
+                    var entryName = Path.Combine(serverDirectoryName, relativeFilePath).Replace(Path.DirectorySeparatorChar, '/');
+                    zipArchive.CreateEntryFromFile(file, entryName);
+                }
             }
 
             DebugConsole.WriteInfo(MethodBase.GetCurrentMethod()?.DeclaringType, LocalizationController.Translation("BACKUP_CREATED"));

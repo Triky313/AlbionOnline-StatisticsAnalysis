@@ -22,6 +22,12 @@ public static class FileController
 
     public static async Task<T> LoadAsync<T>(string path, Func<T, bool> validate = null) where T : new()
     {
+        if (AppDataPaths.IsDisabledUserDataPath(path))
+        {
+            Log.Debug("Skipped user data load because no Albion server is active. File={file}", path);
+            return new T();
+        }
+
         var fileLock = GetFileLock(path);
         await fileLock.WaitAsync().ConfigureAwait(false);
 
@@ -66,6 +72,12 @@ public static class FileController
 
     public static async Task<bool> SaveAsync<T>(T value, string path, Func<T, bool> validate = null)
     {
+        if (AppDataPaths.IsDisabledUserDataPath(path))
+        {
+            Log.Debug("Skipped user data save because no Albion server is active. File={file}", path);
+            return false;
+        }
+
         var fileLock = GetFileLock(path);
         await fileLock.WaitAsync().ConfigureAwait(false);
 

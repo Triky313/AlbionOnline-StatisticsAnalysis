@@ -267,7 +267,10 @@ public class GatheringController
 
     public async Task SaveInFileAsync(bool safeMoreThan356Days = false)
     {
-        DirectoryController.CreateDirectoryWhenNotExists(AppDataPaths.UserDataDirectory);
+        if (!AppDataPaths.TryEnsureUserDataDirectory())
+        {
+            return;
+        }
 
         var gatheredToSave = _mainWindowViewModel.GatheringBindings?.GatheredCollection
             .Where(x => !safeMoreThan356Days && x.TimestampDateTimeUtc > DateTime.UtcNow.AddDays(-365) || safeMoreThan356Days)
@@ -299,7 +302,11 @@ public class GatheringController
             return;
         }
 
-        DirectoryController.CreateDirectoryWhenNotExists(AppDataPaths.UserDataDirectory);
+        if (!AppDataPaths.TryEnsureUserDataDirectory())
+        {
+            return;
+        }
+
         await FileController.SaveAsync(gatheredDtos, AppDataPaths.UserDataFile(Settings.Default.GatheringFileName));
         _gatheredCounter = 0;
     }
@@ -309,6 +316,7 @@ public class GatheringController
         await Application.Current.Dispatcher.InvokeAsync(() =>
         {
             var enumerable = gathered as Gathered[] ?? gathered.ToArray();
+            _mainWindowViewModel?.GatheringBindings?.GatheredCollection?.Clear();
             _mainWindowViewModel?.GatheringBindings?.GatheredCollection?.AddRange(enumerable.AsEnumerable());
             _mainWindowViewModel?.GatheringBindings?.GatheredCollectionView?.Refresh();
         }, DispatcherPriority.Loaded, CancellationToken.None);

@@ -324,7 +324,11 @@ public class StatisticController
 
     public async System.Threading.Tasks.Task SaveInFileAsync()
     {
-        DirectoryController.CreateDirectoryWhenNotExists(AppDataPaths.UserDataDirectory);
+        if (!AppDataPaths.TryEnsureUserDataDirectory())
+        {
+            return;
+        }
+
         await FileController.SaveAsync(_dashboardStatistics, AppDataPaths.UserDataFile(Settings.Default.StatsFileName));
         Log.Information("Statistics saved");
     }

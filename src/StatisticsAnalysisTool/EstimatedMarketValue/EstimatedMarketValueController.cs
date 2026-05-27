@@ -132,7 +132,11 @@ public static class EstimatedMarketValueController
 
     public static async Task SaveInFileAsync()
     {
-        DirectoryController.CreateDirectoryWhenNotExists(AppDataPaths.UserDataDirectory);
+        if (!AppDataPaths.TryEnsureUserDataDirectory())
+        {
+            return;
+        }
+
         await FileController.SaveAsync(_estimatedMarketValueObjects.ToList().Select(EstimatesMarketValueMapping.Mapping),
             AppDataPaths.UserDataFile(Settings.Default.EstimatedMarketValueFileName));
         Log.Information("Estimated market values saved");

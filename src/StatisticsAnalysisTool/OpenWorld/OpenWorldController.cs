@@ -191,7 +191,11 @@ public class OpenWorldController(TrackingController trackingController, MainWind
 
     public async Task SaveInFileAsync()
     {
-        DirectoryController.CreateDirectoryWhenNotExists(AppDataPaths.UserDataDirectory);
+        if (!AppDataPaths.TryEnsureUserDataDirectory())
+        {
+            return;
+        }
+
         var mobKills = mainWindowViewModel.OpenWorldBindings.MobKills.ToList();
         await FileController.SaveAsync(mobKills, AppDataPaths.UserDataFile(MobKillsFileName));
         Log.Information("Open World mob kills saved");

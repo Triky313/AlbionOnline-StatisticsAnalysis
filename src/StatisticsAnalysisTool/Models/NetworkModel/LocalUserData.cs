@@ -166,6 +166,11 @@ public class LocalUserData
 
     private async Task SaveInFileAsync()
     {
+        if (!AppDataPaths.TryEnsureUserDataDirectory())
+        {
+            return;
+        }
+
         var localFilePath = AppDataPaths.UserDataFile(Settings.Default.PlayerKillsDeathsFileName);
 
         try
