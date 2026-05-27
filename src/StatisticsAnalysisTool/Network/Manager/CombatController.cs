@@ -956,7 +956,11 @@ public class CombatController
 
     public async Task SaveInFileAsync()
     {
-        DirectoryController.CreateDirectoryWhenNotExists(AppDataPaths.UserDataDirectory);
+        if (!AppDataPaths.TryEnsureUserDataDirectory())
+        {
+            return;
+        }
+
         await FileController.SaveAsync(_mainWindowViewModel.DamageMeterBindings?.DamageMeterSnapshots?.Select(SnapshotMapping.Mapping),
             AppDataPaths.UserDataFile(Settings.Default.DamageMeterSnapshotsFileName));
         Log.Information("Damage Meter snapshots saved");

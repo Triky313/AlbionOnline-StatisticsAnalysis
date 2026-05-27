@@ -53,6 +53,7 @@ public sealed class ClusterController(TrackingController trackingController, Mai
         CurrentCluster.SetJoinClusterInfo(index, sourceClusterIndex, mapGuid, mapType);
         CurrentCluster.Entered = DateTime.UtcNow;
         CurrentCluster.ClusterInfoFullyAvailable = true;
+        mainWindowViewModel.MainStatusBindings.SetLocation(GetClusterDisplayName(CurrentCluster));
         trackingController.CombatController.CombatEventTracker.OnClusterChanged();
 
         if (trackingController.IsTrackingAllowedByMainCharacter())
@@ -210,7 +211,10 @@ public sealed class ClusterController(TrackingController trackingController, Mai
 
     public async Task SaveInFileAsync()
     {
-        DirectoryController.CreateDirectoryWhenNotExists(AppDataPaths.UserDataDirectory);
+        if (!AppDataPaths.TryEnsureUserDataDirectory())
+        {
+            return;
+        }
 
         var clusterHistoryToSave = mainWindowViewModel.EnteredCluster
             .Take(MaxEnteredCluster)

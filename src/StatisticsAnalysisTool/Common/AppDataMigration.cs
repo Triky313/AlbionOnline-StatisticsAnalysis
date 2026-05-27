@@ -2,6 +2,7 @@ using Serilog;
 using System;
 using System.Collections.Generic;
 using System.IO;
+using StatisticsAnalysisTool.Enumerations;
 
 namespace StatisticsAnalysisTool.Common;
 
@@ -17,7 +18,7 @@ public static class AppDataMigration
         }
 
         TryMigrateDirectory(source.BackupsDirectory, AppDataPaths.BackupsDirectory, messages);
-        TryMigrateDirectory(source.UserDataDirectory, AppDataPaths.UserDataDirectory, messages);
+        TryMigrateDirectory(source.UserDataDirectory, AppDataPaths.LegacyRuntimeUserDataDirectory, messages);
         TryMigrateDirectory(source.TempDirectory, AppDataPaths.TempDirectory, messages);
         TryMigrateDirectory(source.SpellImageResourcesDirectory, AppDataPaths.SpellImageResourcesDirectory, messages);
         TryMigrateDirectory(source.LogsDirectory, AppDataPaths.LogsDirectory, messages);
@@ -26,6 +27,55 @@ public static class AppDataMigration
         TryMigrateFile(source.SettingsFile, AppDataPaths.SettingsFile, messages);
 
         return messages;
+    }
+
+    public static bool TryMigrateLegacyUserDataToServerDirectory(
+        ServerLocation serverLocation,
+        out IReadOnlyCollection<AppDataMigrationMessage> messages)
+    {
+        var migrationMessages = new List<AppDataMigrationMessage>();
+        messages = migrationMessages;
+
+        if (serverLocation is not (ServerLocation.America or ServerLocation.Asia or ServerLocation.Europe))
+        {
+            return false;
+        }
+
+        var sourcePath = AppDataPaths.LegacyRuntimeUserDataDirectory;
+        var targetPath = AppDataPaths.GetUserDataDirectory(serverLocation);
+        var migrationId = DateTime.UtcNow.ToString("yyyyMMddHHmmssfff");
+        var tempTargetPath = $"{targetPath}.migration-{migrationId}";
+        var backupTargetPath = $"{targetPath}.before-migration-{migrationId}";
+
+        try
+        {
+            if (!Directory.Exists(sourcePath))
+            {
+                return false;
+            }
+
+            Log.Information("Migrating legacy user data. Server={Server}, Source={Source}, Target={Target}", serverLocation, sourcePath, targetPath);
+
+            CopyDirectory(sourcePath, tempTargetPath, true);
+
+            if (Directory.Exists(targetPath))
+            {
+                Directory.Move(targetPath, backupTargetPath);
+                Log.Information("Existing server user data directory moved before legacy migration. Source={Source}, Target={Target}", targetPath, backupTargetPath);
+            }
+
+            Directory.Move(tempTargetPath, targetPath);
+            Directory.Delete(sourcePath, true);
+            migrationMessages.Add(AppDataMigrationMessage.Success(sourcePath, targetPath));
+            return true;
+        }
+        catch (Exception ex)
+        {
+            SafeDeleteDirectory(tempTargetPath);
+            TryRestoreBackupDirectory(backupTargetPath, targetPath);
+            migrationMessages.Add(AppDataMigrationMessage.Error(sourcePath, targetPath, ex));
+            return false;
+        }
     }
 
     public static void LogMessages(IEnumerable<AppDataMigrationMessage> messages)
@@ -83,7 +133,7 @@ public static class AppDataMigration
                 return;
             }
 
-            CopyDirectory(sourcePath, targetPath);
+            CopyDirectory(sourcePath, targetPath, false);
             messages.Add(AppDataMigrationMessage.Success(sourcePath, targetPath));
         }
         catch (Exception ex)
@@ -116,20 +166,52 @@ public static class AppDataMigration
         }
     }
 
-    private static void CopyDirectory(string sourcePath, string targetPath)
+    private static void CopyDirectory(string sourcePath, string targetPath, bool overwrite)
     {
         Directory.CreateDirectory(targetPath);
 
         foreach (var sourceFilePath in Directory.GetFiles(sourcePath))
         {
             var targetFilePath = Path.Combine(targetPath, Path.GetFileName(sourceFilePath));
-            File.Copy(sourceFilePath, targetFilePath, overwrite: false);
+            File.Copy(sourceFilePath, targetFilePath, overwrite);
         }
 
         foreach (var sourceDirectoryPath in Directory.GetDirectories(sourcePath))
         {
             var targetDirectoryPath = Path.Combine(targetPath, Path.GetFileName(sourceDirectoryPath));
-            CopyDirectory(sourceDirectoryPath, targetDirectoryPath);
+            CopyDirectory(sourceDirectoryPath, targetDirectoryPath, overwrite);
+        }
+    }
+
+    private static void SafeDeleteDirectory(string path)
+    {
+        try
+        {
+            if (!string.IsNullOrWhiteSpace(path) && Directory.Exists(path))
+            {
+                Directory.Delete(path, true);
+            }
+        }
+        catch
+        {
+            // ignored
+        }
+    }
+
+    private static void TryRestoreBackupDirectory(string backupPath, string targetPath)
+    {
+        try
+        {
+            if (string.IsNullOrWhiteSpace(backupPath) || !Directory.Exists(backupPath) || Directory.Exists(targetPath))
+            {
+                return;
+            }
+
+            Directory.Move(backupPath, targetPath);
+        }
+        catch (Exception ex)
+        {
+            Log.Warning(ex, "Could not restore server user data backup after failed migration. Backup={Backup}, Target={Target}", backupPath, targetPath);
         }
     }
 

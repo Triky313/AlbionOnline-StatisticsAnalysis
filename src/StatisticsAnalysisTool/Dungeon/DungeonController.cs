@@ -874,13 +874,18 @@ public sealed class DungeonController
             }
         }
 
+        _mainWindowViewModel.DungeonBindings.Dungeons.Clear();
         _mainWindowViewModel.DungeonBindings.Dungeons.AddRange(dungeonsToAdd.OrderBy(x => x?.EnterDungeonFirstTime).ToList());
         _mainWindowViewModel.DungeonBindings.InitListCollectionView();
     }
 
     public async Task SaveInFileAsync()
     {
-        DirectoryController.CreateDirectoryWhenNotExists(AppDataPaths.UserDataDirectory);
+        if (!AppDataPaths.TryEnsureUserDataDirectory())
+        {
+            return;
+        }
+
         var toSaveDungeons = _mainWindowViewModel.DungeonBindings.Dungeons.Select(DungeonMapping.Mapping).ToList();
         await FileController.SaveAsync(toSaveDungeons, AppDataPaths.UserDataFile(Settings.Default.DungeonRunsFileName));
         Log.Information("Dungeons saved");

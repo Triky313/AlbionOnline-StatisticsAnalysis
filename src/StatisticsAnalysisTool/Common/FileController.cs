@@ -22,6 +22,12 @@ public static class FileController
 
     public static async Task<T> LoadAsync<T>(string path, Func<T, bool> validate = null) where T : new()
     {
+        if (AppDataPaths.IsDisabledUserDataPath(path))
+        {
+            Log.Debug("Skipped user data load because no Albion server is active. Server={Server}, File={File}", AppDataPaths.ActiveUserDataServerLocation, path);
+            return new T();
+        }
+
         var fileLock = GetFileLock(path);
         await fileLock.WaitAsync().ConfigureAwait(false);
 
@@ -51,8 +57,15 @@ public static class FileController
                 var (ok, value) = await TryLoad<T>(path).ConfigureAwait(false);
                 if (ok && PassesValidation(value, validate))
                 {
+                    LogUserDataLoaded(path);
                     return value!;
                 }
+            }
+
+            if (AppDataPaths.TryGetUserDataServerLocation(path, out var serverLocation))
+            {
+                Log.Debug("User data file was not loaded. Returning default. Server={Server}, File={File}", serverLocation, path);
+                return new T();
             }
 
             Log.Warning("Load failed for {file}. Returning default.", path);
@@ -66,6 +79,12 @@ public static class FileController
 
     public static async Task<bool> SaveAsync<T>(T value, string path, Func<T, bool> validate = null)
     {
+        if (AppDataPaths.IsDisabledUserDataPath(path))
+        {
+            Log.Debug("Skipped user data save because no Albion server is active. File={file}", path);
+            return false;
+        }
+
         var fileLock = GetFileLock(path);
         await fileLock.WaitAsync().ConfigureAwait(false);
 
@@ -153,6 +172,14 @@ public static class FileController
         if (!string.IsNullOrEmpty(dir))
         {
             Directory.CreateDirectory(dir);
+        }
+    }
+
+    private static void LogUserDataLoaded(string path)
+    {
+        if (AppDataPaths.TryGetUserDataServerLocation(path, out var serverLocation))
+        {
+            Log.Information("Loaded user data file. Server={Server}, File={File}", serverLocation, path);
         }
     }
 

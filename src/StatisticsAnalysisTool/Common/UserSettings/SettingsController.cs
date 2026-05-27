@@ -1,4 +1,5 @@
 ﻿using Serilog;
+using StatisticsAnalysisTool.Enumerations;
 using System;
 using System.IO;
 using System.Text.Json;
@@ -63,6 +64,7 @@ public static class SettingsController
 
             CurrentSettings = loaded;
             NormalizeRuntimePaths();
+            await MigrateLegacyUserDataIfNeededAsync().ConfigureAwait(false);
             _haveSettingsAlreadyBeenLoaded = true;
 
             if (File.Exists(SettingsFilePath) && !IsFileEmpty(SettingsFilePath))
@@ -83,6 +85,7 @@ public static class SettingsController
 
             CurrentSettings = new SettingsObject();
             NormalizeRuntimePaths();
+            await MigrateLegacyUserDataIfNeededAsync().ConfigureAwait(false);
             _haveSettingsAlreadyBeenLoaded = true;
 
             TrySaveDefault();
@@ -93,6 +96,7 @@ public static class SettingsController
 
             CurrentSettings ??= new SettingsObject();
             NormalizeRuntimePaths();
+            await MigrateLegacyUserDataIfNeededAsync().ConfigureAwait(false);
             _haveSettingsAlreadyBeenLoaded = true;
 
             TrySaveDefault();
@@ -118,6 +122,97 @@ public static class SettingsController
     private static void NormalizeRuntimePaths()
     {
         CurrentSettings.BackupStorageDirectoryPath = AppDataPaths.BackupsDirectory;
+
+        if (CurrentSettings.StartupUserDataServerLocation is not (ServerLocation.America or ServerLocation.Asia or ServerLocation.Europe))
+        {
+            CurrentSettings.StartupUserDataServerLocation = ServerLocation.Europe;
+        }
+    }
+
+    private static async Task MigrateLegacyUserDataIfNeededAsync()
+    {
+        if (!TryReadLegacyServerLocation(out var serverLocation))
+        {
+            return;
+        }
+
+        CurrentSettings.StartupUserDataServerLocation = serverLocation;
+
+        if (Directory.Exists(AppDataPaths.LegacyRuntimeUserDataDirectory))
+        {
+            var hasMigrated = AppDataMigration.TryMigrateLegacyUserDataToServerDirectory(serverLocation, out var migrationMessages);
+            AppDataMigration.LogMessages(migrationMessages);
+
+            if (!hasMigrated)
+            {
+                return;
+            }
+        }
+        else
+        {
+            Log.Information(
+                "Legacy ServerLocation found but legacy UserData directory is missing. Settings will be updated only. Server={Server}, Directory={Directory}",
+                serverLocation,
+                AppDataPaths.LegacyRuntimeUserDataDirectory);
+        }
+
+        await FileController.SaveAsync(CurrentSettings, SettingsFilePath, ValidateSettings).ConfigureAwait(false);
+    }
+
+    private static bool TryReadLegacyServerLocation(out ServerLocation serverLocation)
+    {
+        serverLocation = ServerLocation.Unknown;
+
+        try
+        {
+            if (!File.Exists(SettingsFilePath))
+            {
+                return false;
+            }
+
+            using var document = JsonDocument.Parse(File.ReadAllText(SettingsFilePath));
+            if (!document.RootElement.TryGetProperty("ServerLocation", out var serverLocationElement))
+            {
+                return false;
+            }
+
+            serverLocation = serverLocationElement.ValueKind switch
+            {
+                JsonValueKind.Number when serverLocationElement.TryGetInt32(out var value) => ToServerLocation(value),
+                JsonValueKind.String => ToServerLocation(serverLocationElement.GetString()),
+                _ => ServerLocation.Unknown
+            };
+
+            return serverLocation is ServerLocation.America or ServerLocation.Asia or ServerLocation.Europe;
+        }
+        catch (Exception ex)
+        {
+            Log.Warning(ex, "Legacy ServerLocation could not be read from settings.");
+            return false;
+        }
+    }
+
+    private static ServerLocation ToServerLocation(int value)
+    {
+        return Enum.IsDefined(typeof(ServerLocation), value)
+            ? (ServerLocation) value
+            : ServerLocation.Unknown;
+    }
+
+    private static ServerLocation ToServerLocation(string value)
+    {
+        if (Enum.TryParse<ServerLocation>(value, true, out var serverLocation))
+        {
+            return serverLocation;
+        }
+
+        return value?.ToUpperInvariant() switch
+        {
+            "AMERICA" or "AMERICAS" or "US" or "WEST" => ServerLocation.America,
+            "ASIA" or "EAST" => ServerLocation.Asia,
+            "EUROPE" or "EU" => ServerLocation.Europe,
+            _ => ServerLocation.Unknown
+        };
     }
 
     private static bool IsFileEmpty(string path)

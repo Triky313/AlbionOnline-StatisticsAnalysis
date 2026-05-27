@@ -30,13 +30,10 @@ public class CriticalData
 
         try
         {
-            var trackingController = ServiceLocator.Resolve<TrackingController>();
-
             var tasks = new List<Task>
             {
                 Task.Run(SettingsController.SaveSettings),
-                Task.Run(async () => { await trackingController?.SaveDataAsync()!; }),
-                Task.Run(ItemController.SaveFavoriteItemsToLocalFile)
+                SaveUserDataAsync()
             };
 
             await Task.WhenAll(tasks);
@@ -51,6 +48,20 @@ public class CriticalData
         {
             _saveOnClosing = SaveOnClosing.Done;
         }
+    }
+
+    public static async Task SaveUserDataAsync()
+    {
+        if (!AppDataPaths.IsUserDataAvailable)
+        {
+            Log.Information("Skipped user data save because no Albion server is active.");
+            return;
+        }
+
+        var trackingController = ServiceLocator.Resolve<TrackingController>();
+        await Task.WhenAll(
+            trackingController.SaveDataAsync(),
+            Task.Run(ItemController.SaveFavoriteItemsToLocalFile));
     }
 
     public static SaveOnClosing GetStatus()

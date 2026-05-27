@@ -19,6 +19,7 @@ using StatisticsAnalysisTool.Models;
 using StatisticsAnalysisTool.Models.BindingModel;
 using StatisticsAnalysisTool.Models.NetworkModel;
 using StatisticsAnalysisTool.Models.TranslationModel;
+using StatisticsAnalysisTool.Network;
 using StatisticsAnalysisTool.Network.Manager;
 using StatisticsAnalysisTool.OpenWorld;
 using StatisticsAnalysisTool.Party;
@@ -110,6 +111,7 @@ public class MainWindowViewModel : BaseViewModel
     private UserTrackingBindings _userTrackingBindings = new();
     private Visibility _debugModeVisibility = Visibility.Collapsed;
     private TrackingActivityBindings _trackingActivityBindings = new();
+    private MainStatusBindings _mainStatusBindings = new();
     private TradeMonitoringBindings _tradeMonitoringBindings = new();
     private DungeonBindings _dungeonBindings = new();
     private DamageMeterBindings _damageMeterBindings = new();
@@ -140,7 +142,6 @@ public class MainWindowViewModel : BaseViewModel
     private string _toolTaskCurrentTaskName;
     private GuildBindings _guildBindings = new();
     private PartyBindings _partyBindings = new();
-    private string _serverTypeText;
     private bool _isDataLoaded;
     private bool _isCloseButtonActive;
     private Visibility _loadIconVisibility = Visibility.Collapsed;
@@ -148,6 +149,7 @@ public class MainWindowViewModel : BaseViewModel
     public MainWindowViewModel()
     {
         UpgradeSettings();
+        RegisterServerDetectionEvents();
         SetUiElements();
         InitDashboardChart();
         Translation = new MainWindowTranslation();
@@ -161,12 +163,13 @@ public class MainWindowViewModel : BaseViewModel
     public void RefreshLocalization()
     {
         Translation = new MainWindowTranslation();
-        UpdateServerTypeLabel();
+        UpdateServerStatus();
         RefreshDashboardChartTranslations();
         RefreshItemCategoryTranslations();
         TradeMonitoringBindings.RefreshLocalization();
         OpenWorldBindings.UpdateStats();
         RefreshTrackingActivityText();
+        MainStatusBindings.RefreshLocalization();
     }
 
     private void RefreshDashboardChartTranslations()
@@ -377,13 +380,11 @@ public class MainWindowViewModel : BaseViewModel
         IsItemSearchCheckboxesEnabled = false;
         IsFilterResetEnabled = false;
 
-        UpdateServerTypeLabel();
-
-        await ItemController.SetFavoriteItemsFromLocalFileAsync();
+        UpdateServerStatus();
 
         ItemsView = new ListCollectionView(ItemController.Items);
         InitAlerts();
-        await EstimatedMarketValueController.SetAllEstimatedMarketValuesToItemsAsync();
+        await LoadUserDataForActiveServerAsync();
         LoggingBindings.Init();
 
         LoadIconVisibility = Visibility.Hidden;
@@ -439,15 +440,77 @@ public class MainWindowViewModel : BaseViewModel
 
     #region Ui utility methods
 
-    public void UpdateServerTypeLabel()
+    public void UpdateServerStatus()
     {
-        ServerTypeText = SettingsController.CurrentSettings.ServerLocation switch
+        var currentServerLocation = GetCurrentServerLocation();
+        MainStatusBindings.SetServerLocation(currentServerLocation);
+    }
+
+    public async Task LoadUserDataForActiveServerAsync()
+    {
+        if (!AppDataPaths.IsUserDataAvailable)
         {
-            ServerLocation.Asia => LocalizationController.Translation("ASIA_SERVER"),
-            ServerLocation.America => LocalizationController.Translation("AMERICA_SERVER"),
-            ServerLocation.Europe => LocalizationController.Translation("EUROPE_SERVER"),
-            _ => LocalizationController.Translation("UNKNOWN_SERVER")
-        };
+            Log.Debug("Skipped Albion user data load because no Albion server is active. Server={Server}, Directory={Directory}", AppDataPaths.ActiveUserDataServerLocation, AppDataPaths.UserDataDirectory);
+            return;
+        }
+
+        Log.Information("Loading Albion user data. Server={Server}, Directory={Directory}", AppDataPaths.ActiveUserDataServerLocation, AppDataPaths.UserDataDirectory);
+
+        ResetItemUserDataState();
+        CraftingTabController.ResetCache();
+        await ItemController.SetFavoriteItemsFromLocalFileAsync();
+
+        AlertManager?.StopAllAlerts();
+        InitAlerts();
+
+        if (ServiceLocator.IsServiceInDictionary<TrackingController>())
+        {
+            await ServiceLocator.Resolve<TrackingController>().LoadDataAsync();
+        }
+
+        await EstimatedMarketValueController.SetAllEstimatedMarketValuesToItemsAsync();
+        ItemsView?.Refresh();
+        Log.Information("Albion user data loaded. Server={Server}, Directory={Directory}", AppDataPaths.ActiveUserDataServerLocation, AppDataPaths.UserDataDirectory);
+    }
+
+    private void ResetItemUserDataState()
+    {
+        foreach (var item in ItemController.Items ?? [])
+        {
+            item.IsFavorite = false;
+            item.IsAlertActive = false;
+        }
+    }
+
+    private void RegisterServerDetectionEvents()
+    {
+        if (!ServiceLocator.IsServiceInDictionary<AlbionServerDetectionService>())
+        {
+            return;
+        }
+
+        ServiceLocator.Resolve<AlbionServerDetectionService>().ServerChanged += AlbionServerDetectionService_ServerChanged;
+    }
+
+    private void AlbionServerDetectionService_ServerChanged(object sender, AlbionServerChangedEventArgs e)
+    {
+        if (Application.Current?.Dispatcher?.CheckAccess() == true)
+        {
+            UpdateServerStatus();
+            return;
+        }
+
+        _ = Application.Current?.Dispatcher?.BeginInvoke(UpdateServerStatus);
+    }
+
+    private static ServerLocation GetCurrentServerLocation()
+    {
+        if (!ServiceLocator.IsServiceInDictionary<AlbionServerDetectionService>())
+        {
+            return ServerLocation.Unknown;
+        }
+
+        return ServiceLocator.Resolve<AlbionServerDetectionService>().CurrentServerLocation;
     }
 
     public static void OpenItemWindow(Item item)
@@ -869,7 +932,9 @@ public class MainWindowViewModel : BaseViewModel
         set
         {
             _isTrackingActive = value;
-            var trackingController = ServiceLocator.Resolve<TrackingController>();
+            var trackingController = ServiceLocator.IsServiceInDictionary<TrackingController>()
+                ? ServiceLocator.Resolve<TrackingController>()
+                : null;
 
             switch (_isTrackingActive)
             {
@@ -884,6 +949,7 @@ public class MainWindowViewModel : BaseViewModel
                 case false:
                     TrackingActivityBindings.TrackingActiveText = MainWindowTranslation.TrackingIsNotActive;
                     TrackingActivityBindings.TrackingActivityType = TrackingIconType.Off;
+                    MainStatusBindings.ResetGameSession();
                     break;
             }
 
@@ -897,6 +963,16 @@ public class MainWindowViewModel : BaseViewModel
         set
         {
             _trackingActivityBindings = value;
+            OnPropertyChanged();
+        }
+    }
+
+    public MainStatusBindings MainStatusBindings
+    {
+        get => _mainStatusBindings;
+        set
+        {
+            _mainStatusBindings = value;
             OnPropertyChanged();
         }
     }
@@ -1686,16 +1762,6 @@ public class MainWindowViewModel : BaseViewModel
         set
         {
             _informationBarVisibility = value;
-            OnPropertyChanged();
-        }
-    }
-
-    public string ServerTypeText
-    {
-        get => _serverTypeText;
-        set
-        {
-            _serverTypeText = value;
             OnPropertyChanged();
         }
     }

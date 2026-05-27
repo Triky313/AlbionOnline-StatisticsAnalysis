@@ -80,8 +80,6 @@ public class TrackingController : ITrackingController
         GuildController = new GuildController(this, mainWindowViewModel);
         CraftingController = new CraftingController(this, mainWindowViewModel);
         LiveStatsTracker = new LiveStatsTracker(this, mainWindowViewModel);
-
-        _ = InitTrackingAsync();
     }
 
     #region Tracking
@@ -124,8 +122,6 @@ public class TrackingController : ITrackingController
 
         try
         {
-            await LoadDataAsync();
-
             ClusterController?.RegisterEvents();
             LootController?.RegisterEvents();
             TreasureController?.RegisterEvents();
@@ -203,12 +199,13 @@ public class TrackingController : ITrackingController
 
     public void StopTracking()
     {
-        if (!_mainWindowViewModel.IsTrackingActive)
+        if (!_mainWindowViewModel.IsTrackingActive && _networkManager is null)
         {
             return;
         }
 
-        _networkManager.Stop();
+        _networkManager?.Stop();
+        _networkManager = null;
 
         LiveStatsTracker?.Stop();
 
@@ -254,7 +251,7 @@ public class TrackingController : ITrackingController
         );
     }
 
-    private async Task LoadDataAsync()
+    public async Task LoadDataAsync()
     {
         await Task.WhenAll(
             EstimatedMarketValueController.LoadFromFileAsync(),
@@ -268,7 +265,8 @@ public class TrackingController : ITrackingController
             GuildController.LoadFromFileAsync(),
             CombatController.LoadFromFileAsync(),
             MarketController.LoadFromFileAsync(),
-            ClusterController.LoadMapHistoryFromFileAsync()
+            ClusterController.LoadMapHistoryFromFileAsync(),
+            CraftingController.LoadFromFileAsync()
         );
     }
 

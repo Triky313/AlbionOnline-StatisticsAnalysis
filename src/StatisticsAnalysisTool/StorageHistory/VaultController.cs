@@ -422,7 +422,10 @@ public class VaultController
 
     public async Task SaveInFileAsync()
     {
-        DirectoryController.CreateDirectoryWhenNotExists(AppDataPaths.UserDataDirectory);
+        if (!AppDataPaths.TryEnsureUserDataDirectory())
+        {
+            return;
+        }
 
         var vaultDtosToSave = _vaultBindings.Vaults
             ?.ToList()

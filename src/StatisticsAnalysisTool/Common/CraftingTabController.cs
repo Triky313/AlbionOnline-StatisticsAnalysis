@@ -71,6 +71,12 @@ public static class CraftingTabController
 
     public static void SaveInFile()
     {
+        if (!AppDataPaths.TryEnsureUserDataDirectory())
+        {
+            Log.Debug("Skipped crafting note save because no Albion server is active.");
+            return;
+        }
+
         if (_isSaving)
         {
             return;
@@ -95,4 +101,9 @@ public static class CraftingTabController
     }
 
     #endregion
+
+    public static void ResetCache()
+    {
+        CraftingNotes = null;
+    }
 }

@@ -570,7 +570,11 @@ public class TradeController
 
     public async Task SaveInFileAsync()
     {
-        DirectoryController.CreateDirectoryWhenNotExists(AppDataPaths.UserDataDirectory);
+        if (!AppDataPaths.TryEnsureUserDataDirectory())
+        {
+            return;
+        }
+
         await FileController.SaveAsync(_mainWindowViewModel.TradeMonitoringBindings?.Trades?.Select(TradeMapping.Mapping),
             AppDataPaths.UserDataFile(Settings.Default.TradesFileName));
         Log.Information("Trades saved");
@@ -596,7 +600,11 @@ public class TradeController
             return;
         }
 
-        DirectoryController.CreateDirectoryWhenNotExists(AppDataPaths.UserDataDirectory);
+        if (!AppDataPaths.TryEnsureUserDataDirectory())
+        {
+            return;
+        }
+
         await FileController.SaveAsync(tradeDtos,
             AppDataPaths.UserDataFile(Settings.Default.TradesFileName));
         _tradeCounter = 0;
@@ -607,6 +615,7 @@ public class TradeController
         await Application.Current.Dispatcher.InvokeAsync(() =>
         {
             var enumerable = trades as Trade[] ?? trades.ToArray();
+            _mainWindowViewModel?.TradeMonitoringBindings?.Trades?.Clear();
             _mainWindowViewModel?.TradeMonitoringBindings?.Trades?.AddRange(enumerable.AsEnumerable());
             _mainWindowViewModel?.TradeMonitoringBindings?.TradeCollectionView?.Refresh();
             _mainWindowViewModel?.TradeMonitoringBindings?.TradeStatsObject?.SetTradeStats(enumerable);

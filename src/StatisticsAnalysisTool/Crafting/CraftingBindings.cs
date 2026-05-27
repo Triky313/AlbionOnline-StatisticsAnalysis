@@ -791,6 +791,11 @@ public class CraftingBindings : BaseViewModel
             PrepareSavedCrafting(crafting);
             SavedCraftings.Add(crafting);
         }
+
+        if (IsBlackMarketEnabled && _blackMarket != null)
+        {
+            await _blackMarket.LoadAsync();
+        }
     }
 
     public async Task SaveInFileAsync()

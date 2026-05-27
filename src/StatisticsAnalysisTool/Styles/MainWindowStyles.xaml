@@ -84,6 +84,43 @@
         <Setter Property="Margin" Value="0"/>
     </Style>
 
+    <Style x:Key="MainHeaderStatus.Title" TargetType="{x:Type TextBlock}">
+        <Setter Property="Foreground" Value="{StaticResource SolidColorBrush.Text.3}"/>
+        <Setter Property="FontSize" Value="10"/>
+        <Setter Property="FontWeight" Value="Bold"/>
+        <Setter Property="Margin" Value="0,0,0,1"/>
+    </Style>
+
+    <Style x:Key="MainHeaderStatus.Row" TargetType="{x:Type StackPanel}">
+        <Setter Property="Orientation" Value="Horizontal"/>
+        <Setter Property="Height" Value="14"/>
+    </Style>
+
+    <Style x:Key="MainHeaderStatus.Dot" TargetType="{x:Type Ellipse}">
+        <Setter Property="Width" Value="8"/>
+        <Setter Property="Height" Value="8"/>
+        <Setter Property="Margin" Value="0,3,5,0"/>
+        <Setter Property="Fill" Value="{StaticResource SolidColorBrush.Accent.Yellow.1}"/>
+        <Style.Triggers>
+            <DataTrigger Binding="{Binding Tag, RelativeSource={RelativeSource AncestorType={x:Type StackPanel}}}" Value="True">
+                <Setter Property="Fill" Value="{StaticResource SolidColorBrush.Accent.Green.3}"/>
+            </DataTrigger>
+        </Style.Triggers>
+    </Style>
+
+    <Style x:Key="MainHeaderStatus.Text" TargetType="{x:Type TextBlock}">
+        <Setter Property="Foreground" Value="{StaticResource SolidColorBrush.Accent.Yellow.1}"/>
+        <Setter Property="FontSize" Value="11"/>
+        <Setter Property="FontWeight" Value="Bold"/>
+        <Setter Property="TextTrimming" Value="CharacterEllipsis"/>
+        <Setter Property="VerticalAlignment" Value="Center"/>
+        <Style.Triggers>
+            <DataTrigger Binding="{Binding Tag, RelativeSource={RelativeSource AncestorType={x:Type StackPanel}}}" Value="True">
+                <Setter Property="Foreground" Value="{StaticResource SolidColorBrush.Accent.Green.3}"/>
+            </DataTrigger>
+        </Style.Triggers>
+    </Style>
+
     <Style TargetType="ItemsControl" x:Key="ToolTask.TaskObject">
         <Setter Property="Margin" Value="0,2,0,2"/>
     </Style>
