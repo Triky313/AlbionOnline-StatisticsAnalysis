@@ -9,7 +9,7 @@ Create these values in `Settings` -> `Secrets and variables` -> `Actions`:
 - Repository secret `SPARKLE_PRIVATE_KEY`
 - Repository variable `SPARKLE_PUBLIC_KEY`
 
-The private key signs update files and appcast files in GitHub Actions. The public key is embedded into the release build so the app can verify updates.
+The private key signs update files and appcast files in GitHub Actions. The public key is embedded into the release build through MSBuild so the app can verify updates.
 
 ## Tag Modes
 
@@ -68,7 +68,7 @@ The release assets use the version before `+both` in their file names. For examp
 ## What Happens in the Workflow
 
 1. GitHub Actions checks out the tagged commit.
-2. The NetSparkle public key is embedded into `AutoUpdateSecurity.cs` for the release build only.
+2. The NetSparkle public key is embedded into the published application through the `NetSparkleEd25519PublicKey` MSBuild property.
 3. The app is published for `win-x64`.
 4. A ZIP file and Inno Setup installer are created.
 5. The ZIP and installer are uploaded to the GitHub release.

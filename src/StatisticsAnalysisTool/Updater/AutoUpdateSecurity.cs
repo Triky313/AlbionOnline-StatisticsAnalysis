@@ -1,16 +1,12 @@
-using System;
-
 namespace StatisticsAnalysisTool.Updater;
 
 internal static class AutoUpdateSecurity
 {
-    private const string PublicKeyPlaceholder = "__SPARKLE_ED25519_PUBLIC_KEY__";
+    public static bool IsSignatureVerificationRequired => AutoUpdateSecurityBuildSettings.IsSignatureVerificationRequired;
 
-    public const string Ed25519PublicKey = PublicKeyPlaceholder;
-
-    public static bool IsEd25519PublicKeyConfigured()
+    public static bool TryGetEd25519PublicKey(out string publicKey)
     {
-        return !string.IsNullOrWhiteSpace(Ed25519PublicKey)
-               && !string.Equals(Ed25519PublicKey, PublicKeyPlaceholder, StringComparison.Ordinal);
+        publicKey = AutoUpdateSecurityBuildSettings.Ed25519PublicKey.Trim();
+        return !string.IsNullOrWhiteSpace(publicKey);
     }
 }

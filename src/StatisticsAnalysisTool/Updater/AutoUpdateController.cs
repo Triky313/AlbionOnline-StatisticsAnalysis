@@ -891,13 +891,18 @@ public static class AutoUpdateController
 
     private static Ed25519Checker CreateSignatureVerifier()
     {
-        if (!AutoUpdateSecurity.IsEd25519PublicKeyConfigured())
+        if (AutoUpdateSecurity.TryGetEd25519PublicKey(out var publicKey))
         {
-            Log.Warning("Auto update signature verification is not configured; falling back to unsafe update verification.");
-            return new Ed25519Checker(SecurityMode.Unsafe, string.Empty, string.Empty, false, 32768);
+            return new Ed25519Checker(SecurityMode.Strict, publicKey);
         }
 
-        return new Ed25519Checker(SecurityMode.Strict, AutoUpdateSecurity.Ed25519PublicKey);
+        if (AutoUpdateSecurity.IsSignatureVerificationRequired)
+        {
+            throw new InvalidOperationException("Auto update signature verification is required, but no NetSparkle public key was embedded.");
+        }
+
+        Log.Warning("Auto update signature verification is not configured; using unsafe update verification for this development build.");
+        return new Ed25519Checker(SecurityMode.Unsafe, string.Empty, string.Empty, false, 32768);
     }
 
     private static string CreateInstallerArguments()

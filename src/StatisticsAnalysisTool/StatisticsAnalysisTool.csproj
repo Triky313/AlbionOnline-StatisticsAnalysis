@@ -37,6 +37,13 @@
     <StartupObject>StatisticsAnalysisTool.App</StartupObject>
   </PropertyGroup>
   <PropertyGroup>
+    <NetSparkleEd25519PublicKey Condition="'$(NetSparkleEd25519PublicKey)' == ''">$(SPARKLE_PUBLIC_KEY)</NetSparkleEd25519PublicKey>
+    <RequireNetSparkleEd25519PublicKey Condition="'$(RequireNetSparkleEd25519PublicKey)' == ''">false</RequireNetSparkleEd25519PublicKey>
+    <NetSparkleSignatureVerificationRequiredLiteral>false</NetSparkleSignatureVerificationRequiredLiteral>
+    <NetSparkleSignatureVerificationRequiredLiteral Condition="'$(RequireNetSparkleEd25519PublicKey)' == 'true'">true</NetSparkleSignatureVerificationRequiredLiteral>
+    <NetSparkleGeneratedSecurityFile>$(MSBuildProjectDirectory)\obj\$(Platform)\$(Configuration)\Generated\AutoUpdateSecurityBuildSettings.g.cs</NetSparkleGeneratedSecurityFile>
+  </PropertyGroup>
+  <PropertyGroup>
     <ApplicationIcon>sat-icon.ico</ApplicationIcon>
     <RepositoryUrl>https://github.com/Triky313/AlbionOnline-StatisticsAnalysis</RepositoryUrl>
     <ApplicationManifest>app.manifest</ApplicationManifest>
@@ -942,4 +949,23 @@
     </Resource>
     <None Remove="Assets\MobAvatars\*.png" />
   </ItemGroup>
+  <Target Name="ValidateNetSparklePublicKey" BeforeTargets="CoreCompile" Condition="'$(RequireNetSparkleEd25519PublicKey)' == 'true' And '$(NetSparkleEd25519PublicKey)' == ''">
+    <Error Text="NetSparkleEd25519PublicKey is required for signed release builds. Pass -p:NetSparkleEd25519PublicKey=... or set SPARKLE_PUBLIC_KEY." />
+  </Target>
+  <Target Name="GenerateNetSparkleSecuritySource" BeforeTargets="CoreCompile">
+    <ItemGroup>
+      <NetSparkleSecuritySourceLine Include="// &lt;auto-generated /&gt;" />
+      <NetSparkleSecuritySourceLine Include="namespace StatisticsAnalysisTool.Updater%3B" />
+      <NetSparkleSecuritySourceLine Include="internal static class AutoUpdateSecurityBuildSettings" />
+      <NetSparkleSecuritySourceLine Include="{" />
+      <NetSparkleSecuritySourceLine Include="    public const string Ed25519PublicKey = &quot;$(NetSparkleEd25519PublicKey)&quot;%3B" />
+      <NetSparkleSecuritySourceLine Include="    public const bool IsSignatureVerificationRequired = $(NetSparkleSignatureVerificationRequiredLiteral)%3B" />
+      <NetSparkleSecuritySourceLine Include="}" />
+    </ItemGroup>
+    <MakeDir Directories="$([System.IO.Path]::GetDirectoryName('$(NetSparkleGeneratedSecurityFile)'))" />
+    <WriteLinesToFile File="$(NetSparkleGeneratedSecurityFile)" Lines="@(NetSparkleSecuritySourceLine)" Overwrite="true" Encoding="UTF-8" />
+    <ItemGroup>
+      <Compile Include="$(NetSparkleGeneratedSecurityFile)" Link="Updater\AutoUpdateSecurityBuildSettings.g.cs" />
+    </ItemGroup>
+  </Target>
 </Project>
