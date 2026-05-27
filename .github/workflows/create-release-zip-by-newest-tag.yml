@@ -89,14 +89,6 @@ jobs:
               throw "SPARKLE_PRIVATE_KEY is required as a repository secret."
           }
 
-      - name: "🔑 Embed NetSparkle public key"
-        shell: pwsh
-        run: |
-          Set-ExecutionPolicy -ExecutionPolicy Bypass -Scope Process -Force
-          .\.github\scripts\Set-NetSparklePublicKey.ps1 `
-            -SourceFile src\StatisticsAnalysisTool\Updater\AutoUpdateSecurity.cs `
-            -PublicKey $env:SPARKLE_PUBLIC_KEY
-
       - name: "🛠 Publish StatisticsAnalysisTool application"
         shell: pwsh
         run: |
@@ -109,7 +101,9 @@ jobs:
             -p:RuntimeIdentifier=win-x64 `
             -p:SelfContained=false `
             -p:PublishSingleFile=true `
-            -p:PublishReadyToRun=false
+            -p:PublishReadyToRun=false `
+            -p:RequireNetSparkleEd25519PublicKey=true `
+            -p:NetSparkleEd25519PublicKey=$env:SPARKLE_PUBLIC_KEY
 
       - name: "📦 Create release zip file"
         uses: vimtor/action-zip@v1

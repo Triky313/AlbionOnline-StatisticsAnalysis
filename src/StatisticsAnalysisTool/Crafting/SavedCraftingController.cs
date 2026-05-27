@@ -32,6 +32,12 @@ public class SavedCraftingController
 
     public async Task SaveAsync(IEnumerable<SavedCrafting> craftings)
     {
+        if (!AppDataPaths.TryEnsureUserDataDirectory())
+        {
+            Log.Debug("Skipped craftings save because no Albion server is active.");
+            return;
+        }
+
         try
         {
             var craftingsToSave = craftings?.OrderByDescending(x => x.LastChangedUtc).ToList() ?? [];

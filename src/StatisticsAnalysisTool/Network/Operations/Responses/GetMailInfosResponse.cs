@@ -21,25 +21,19 @@ public class GetMailInfosResponse
                 !parameters.ContainsKey(3) || parameters[3] == null ||
                 !parameters.ContainsKey(7) || parameters[7] == null ||
                 !parameters.ContainsKey(11) || parameters[11] == null ||
-                !parameters[3].GetType().IsArray ||
-                (typeof(long[]).Name != parameters[3].GetType().Name &&
-                 typeof(int[]).Name != parameters[3].GetType().Name))
+                !parameters.ContainsKey(12) || parameters[12] == null)
             {
                 return;
             }
 
             var guid = parameters[0].ObjectToGuid();
 
-            long[] mailIdArray = [];
-
-            // If the mails ID's are ever below 32.767, an error will appear here, but this should not happen on the current west and east servers, since the mail ID is above it and can never come below it again.
-            if (typeof(int[]).Name == parameters[3].GetType().Name)
+            if (!TryGetLongArray(parameters[3], out var mailIdArray)
+                || !TryGetStringArray(parameters[7], out var subjectArray)
+                || !TryGetStringArray(parameters[11], out var mailTypeTextArray)
+                || !TryGetLongArray(parameters[12], out var timeStampArray))
             {
-                mailIdArray = Array.ConvertAll((int[]) parameters[3], x => (long) x);
-            }
-            else if (typeof(long[]).Name == parameters[3].GetType().Name)
-            {
-                mailIdArray = ((long[]) parameters[3]).ToArray();
+                return;
             }
 
             if (mailIdArray is not { Length: > 0 })
@@ -47,11 +41,7 @@ public class GetMailInfosResponse
                 return;
             }
 
-            var subjectArray = ((string[]) parameters[7]).ToArray();
-            var mailTypeTextArray = ((string[]) parameters[11]).ToArray();
-            var timeStampArray = ((long[]) parameters[12]).ToArray();
-
-            var length = Utilities.GetHighestLength(mailIdArray, subjectArray, mailTypeTextArray);
+            var length = new[] { mailIdArray.Length, subjectArray.Length, mailTypeTextArray.Length, timeStampArray.Length }.Min();
 
             for (var i = 0; i < length; i++)
             {
@@ -65,7 +55,25 @@ public class GetMailInfosResponse
         }
         catch (Exception e)
         {
-            Log.Error(nameof(GetMailInfosResponse), e);
+            Log.Error(e, "{message}", nameof(GetMailInfosResponse));
         }
+    }
+
+    private static bool TryGetLongArray(object value, out long[] result)
+    {
+        result = value switch
+        {
+            long[] longArray => longArray,
+            int[] intArray => Array.ConvertAll(intArray, x => (long) x),
+            _ => []
+        };
+
+        return result.Length > 0;
+    }
+
+    private static bool TryGetStringArray(object value, out string[] result)
+    {
+        result = value as string[] ?? [];
+        return result.Length > 0;
     }
 }

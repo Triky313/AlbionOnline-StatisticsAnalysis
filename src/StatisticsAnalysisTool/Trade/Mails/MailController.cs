@@ -5,7 +5,9 @@ using StatisticsAnalysisTool.Network.Manager;
 using StatisticsAnalysisTool.ViewModels;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading;
 using System.Threading.Tasks;
+using Serilog;
 
 namespace StatisticsAnalysisTool.Trade.Mails;
 
@@ -13,6 +15,8 @@ public class MailController
 {
     private readonly TrackingController _trackingController;
     private readonly MainWindowViewModel _mainWindowViewModel;
+    private readonly Dictionary<long, MailNetworkObject> _mailInfoById = new();
+    private readonly SemaphoreSlim _mailProcessingLock = new(1, 1);
 
     public readonly List<MailNetworkObject> CurrentMailInfos = new();
 
@@ -24,8 +28,21 @@ public class MailController
 
     public void SetMailInfos(IEnumerable<MailNetworkObject> currentMailInfos)
     {
-        CurrentMailInfos.Clear();
-        CurrentMailInfos.AddRange(currentMailInfos);
+        if (currentMailInfos == null)
+        {
+            return;
+        }
+
+        lock (_mailInfoById)
+        {
+            foreach (var mailInfo in currentMailInfos.Where(x => x?.MailId > 0))
+            {
+                _mailInfoById[mailInfo.MailId] = mailInfo;
+            }
+
+            CurrentMailInfos.Clear();
+            CurrentMailInfos.AddRange(_mailInfoById.Values.OrderByDescending(x => x.Tick));
+        }
     }
 
     public async Task AddMailAsync(long mailId, string content)
@@ -35,52 +52,71 @@ public class MailController
             return;
         }
 
-        var mailArray = _mainWindowViewModel.TradeMonitoringBindings.Trades.ToArray();
-        if (mailArray.Any(mailObject => mailObject.Id == mailId))
+        if (mailId <= 0)
         {
             return;
         }
 
-        if (_mainWindowViewModel.TradeMonitoringBindings.Trades.ToArray().Any(x => x.Id == mailId))
+        await _mailProcessingLock.WaitAsync();
+        try
         {
-            return;
+            var mailArray = _mainWindowViewModel.TradeMonitoringBindings.Trades.ToArray();
+            if (mailArray.Any(mailObject => mailObject.Type == TradeType.Mail && mailObject.Id == mailId))
+            {
+                return;
+            }
+
+            var mailInfo = GetMailInfo(mailId);
+
+            if (mailInfo == null)
+            {
+                Log.Warning("Mail content was received without matching mail metadata. MailId: {mailId}", mailId);
+                return;
+            }
+
+            var mailContent = ContentToObject(mailInfo.MailType, content, SettingsController.CurrentSettings.TradeMonitoringMarketTaxRate, SettingsController.CurrentSettings.TradeMonitoringMarketTaxSetupRate);
+
+            if (SettingsController.CurrentSettings.IgnoreMailsWithZeroValues && mailContent.IsMailWithoutValues)
+            {
+                return;
+            }
+
+            var trade = new Trade()
+            {
+                Ticks = mailInfo.Tick,
+                Type = TradeType.Mail,
+                Guid = mailInfo.Guid ?? default,
+                Id = mailId,
+                ClusterIndex = mailInfo.Subject,
+                MailTypeText = mailInfo.MailTypeText,
+                MailContent = mailContent
+            };
+
+            if (trade.MailType == MailType.Unknown)
+            {
+                return;
+            }
+
+            if (await _trackingController.TradeController.AddTradeToBindingCollectionAsync(trade))
+            {
+                await _trackingController.TradeController.SaveInFileAfterExceedingLimit(10);
+            }
         }
-
-        var mailInfo = CurrentMailInfos.FirstOrDefault(x => x.MailId == mailId);
-
-        if (mailInfo == null)
+        finally
         {
-            return;
+            _mailProcessingLock.Release();
         }
-
-        var mailContent = ContentToObject(mailInfo.MailType, content, SettingsController.CurrentSettings.TradeMonitoringMarketTaxRate, SettingsController.CurrentSettings.TradeMonitoringMarketTaxSetupRate);
-
-        if (SettingsController.CurrentSettings.IgnoreMailsWithZeroValues && mailContent.IsMailWithoutValues)
-        {
-            return;
-        }
-
-        var trade = new Trade()
-        {
-            Ticks = mailInfo.Tick,
-            Type = TradeType.Mail,
-            Guid = mailInfo.Guid ?? default,
-            Id = mailId,
-            ClusterIndex = mailInfo.Subject,
-            MailTypeText = mailInfo.MailTypeText,
-            MailContent = mailContent
-        };
-
-        if (trade.MailType == MailType.Unknown)
-        {
-            return;
-        }
-
-        _ = _trackingController.TradeController.AddTradeToBindingCollectionAsync(trade);
-        await _trackingController.TradeController.SaveInFileAfterExceedingLimit(10);
     }
 
-    private static MailContent ContentToObject(MailType type, string content, double taxRate, double taxSetupRate)
+    private MailNetworkObject GetMailInfo(long mailId)
+    {
+        lock (_mailInfoById)
+        {
+            return _mailInfoById.GetValueOrDefault(mailId);
+        }
+    }
+
+    internal static MailContent ContentToObject(MailType type, string content, double taxRate, double taxSetupRate)
     {
         switch (type)
         {
@@ -102,9 +138,9 @@ public class MailController
 
     private static MailContent MarketplaceBuyOrderFinishedToMailContent(string content, double taxSetupRate)
     {
-        var contentObject = content.Split("|");
+        var contentObject = SplitMailContent(content);
 
-        if (contentObject.Length < 3)
+        if (contentObject.Length < 4)
         {
             return new MailContent();
         }
@@ -113,7 +149,7 @@ public class MailController
         var uniqueItemName = contentObject[1];
         _ = long.TryParse(contentObject[2], out var totalPriceWithoutTaxLong);
         _ = long.TryParse(contentObject[3], out var unitPricePaidWithOverpaymentLong);
-        _ = long.TryParse(contentObject[4], out var totalDistanceFeeLong);
+        var totalDistanceFeeLong = ParseOptionalLong(contentObject, 4);
 
         return new MailContent()
         {
@@ -129,9 +165,9 @@ public class MailController
 
     private static MailContent MarketplaceSellOrderFinishedToMailContent(string content, double taxRate, double taxSetupRate)
     {
-        var contentObject = content.Split("|");
+        var contentObject = SplitMailContent(content);
 
-        if (contentObject.Length < 3)
+        if (contentObject.Length < 4)
         {
             return new MailContent();
         }
@@ -155,7 +191,7 @@ public class MailController
 
     private static MailContent MarketplaceSellOrderExpiredToMailContent(string content, double taxRate, double taxSetupRate)
     {
-        var contentObject = content.Split("|");
+        var contentObject = SplitMailContent(content);
 
         if (contentObject.Length < 4)
         {
@@ -181,7 +217,7 @@ public class MailController
 
     private static MailContent MarketplaceBuyOrderExpiredToMailContent(string content, double taxSetupRate)
     {
-        var contentExpiredObject = content.Split("|");
+        var contentExpiredObject = SplitMailContent(content);
 
         if (contentExpiredObject.Length < 4)
         {
@@ -191,13 +227,17 @@ public class MailController
         _ = int.TryParse(contentExpiredObject[0], out var usedExpiredQuantity);
         _ = int.TryParse(contentExpiredObject[1], out var expiredQuantity);
         _ = long.TryParse(contentExpiredObject[2], out var totalRecoveredSilverLong);
-        _ = long.TryParse(contentExpiredObject[4], out var totalDistanceFeeLong);
+        var totalDistanceFeeLong = ParseOptionalLong(contentExpiredObject, 4);
         var uniqueItemExpiredName = contentExpiredObject[3];
 
         var totalRecoveredSilver = FixPoint.FromInternalValue(totalRecoveredSilverLong);
 
         // Calculation of costs
         var totalNotPurchased = expiredQuantity - usedExpiredQuantity;
+        if (totalNotPurchased <= 0)
+        {
+            return new MailContent();
+        }
 
         var unitPrice = FixPoint.FromFloatingPointValue(totalRecoveredSilver.DoubleValue / totalNotPurchased);
         var totalPrice = FixPoint.FromFloatingPointValue(unitPrice.DoubleValue * usedExpiredQuantity);
@@ -224,6 +264,20 @@ public class MailController
             "MARKETPLACE_BUYORDER_EXPIRED_SUMMARY" => MailType.MarketplaceBuyOrderExpired,
             _ => MailType.Unknown
         };
+    }
+
+    private static long ParseOptionalLong(IReadOnlyList<string> values, int index)
+    {
+        return values.Count > index && long.TryParse(values[index], out var value)
+            ? value
+            : 0;
+    }
+
+    private static string[] SplitMailContent(string content)
+    {
+        return string.IsNullOrEmpty(content)
+            ? []
+            : content.Split("|");
     }
 
     #endregion

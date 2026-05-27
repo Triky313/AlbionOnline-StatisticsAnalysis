@@ -376,6 +376,11 @@ public static class ItemController
 
     public static async Task SetFavoriteItemsFromLocalFileAsync()
     {
+        foreach (var item in Items ?? [])
+        {
+            item.IsFavorite = false;
+        }
+
         var favoriteItemList = await FileController.LoadAsync<List<string>>(AppDataPaths.UserDataFile(Settings.Default.FavoriteItemsFileName));
         if (favoriteItemList != null)
         {
@@ -390,7 +395,17 @@ public static class ItemController
 
     public static void SaveFavoriteItemsToLocalFile()
     {
-        DirectoryController.CreateDirectoryWhenNotExists(AppDataPaths.UserDataDirectory);
+        if (!AppDataPaths.IsUserDataAvailable)
+        {
+            Log.Debug("Skipped favorite item save because no Albion server is active.");
+            return;
+        }
+
+        if (!AppDataPaths.TryEnsureUserDataDirectory())
+        {
+            return;
+        }
+
         var localFilePath = AppDataPaths.UserDataFile(Settings.Default.FavoriteItemsFileName);
         var favoriteItems = Items?.Where(x => x.IsFavorite);
         var toSaveFavoriteItems = favoriteItems?.Select(x => x.UniqueName);

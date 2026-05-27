@@ -45,9 +45,8 @@ public class SettingsWindowViewModel : BaseViewModel
         InitNotificationAreas();
         InitRefreshRate();
         InitPacketProvider();
+        InitStartupUserDataServers();
         InitNetworkDevices();
-        InitServer();
-
         MainTrackingCharacterName = SettingsController.CurrentSettings.MainTrackingCharacterName;
 
         // Debug console filter
@@ -108,7 +107,6 @@ public class SettingsWindowViewModel : BaseViewModel
         SettingsController.CurrentSettings.RefreshRate = RefreshRatesSelection.Value;
 
         SettingsController.CurrentSettings.PacketProvider = (PacketProviderKind) PacketProviderSelection.Value;
-        SettingsController.CurrentSettings.ServerLocation = (ServerLocation) ServerSelection.Value;
         SetPacketFilter();
         SetNetworkDevices();
 
@@ -129,6 +127,8 @@ public class SettingsWindowViewModel : BaseViewModel
 
         SettingsController.CurrentSettings.AlbionDataProjectBaseUrlWest = AlbionDataProjectBaseUrlWest;
         SettingsController.CurrentSettings.AlbionDataProjectBaseUrlEast = AlbionDataProjectBaseUrlEast;
+        SettingsController.CurrentSettings.AlbionDataProjectBaseUrlEurope = AlbionDataProjectBaseUrlEurope;
+        SettingsController.CurrentSettings.StartupUserDataServerLocation = GetSelectedStartupUserDataServerLocation();
 
         SettingsController.CurrentSettings.IsSuggestPreReleaseUpdatesActive = IsSuggestPreReleaseUpdatesActive;
         SettingsController.CurrentSettings.ExactMatchPlayerNamesLineNumber = PlayerSelectionWithSameNameInDb;
@@ -164,7 +164,7 @@ public class SettingsWindowViewModel : BaseViewModel
         RefreshNotificationFilterNames();
         InitRefreshRate();
         InitPacketProvider();
-        InitServer();
+        InitStartupUserDataServers();
         InitDropDownDownByDays(BackupIntervalByDays);
         BackupIntervalByDaysSelection = BackupIntervalByDays.FirstOrDefault(x => x.Value == SettingsController.CurrentSettings.BackupIntervalByDays);
         mainWindowViewModel.RefreshLocalization();
@@ -577,6 +577,35 @@ public class SettingsWindowViewModel : BaseViewModel
         PacketProviderSelection = PacketProvider.FirstOrDefault(x => x.Value == (int) SettingsController.CurrentSettings.PacketProvider);
     }
 
+    private void InitStartupUserDataServers()
+    {
+        StartupUserDataServers.Clear();
+        StartupUserDataServers.Add(new SettingDataInformation { Name = LocalizationController.Translation("AMERICA_SERVER"), Value = (int) ServerLocation.America });
+        StartupUserDataServers.Add(new SettingDataInformation { Name = LocalizationController.Translation("ASIA_SERVER"), Value = (int) ServerLocation.Asia });
+        StartupUserDataServers.Add(new SettingDataInformation { Name = LocalizationController.Translation("EUROPE_SERVER"), Value = (int) ServerLocation.Europe });
+
+        var selectedServer = StartupUserDataServers.FirstOrDefault(x => x.Value == (int) SettingsController.CurrentSettings.StartupUserDataServerLocation);
+        StartupUserDataServerSelection = IsKnownStartupUserDataServerValue(selectedServer.Value)
+            ? selectedServer
+            : StartupUserDataServers.First(x => x.Value == (int) ServerLocation.Europe);
+    }
+
+    private ServerLocation GetSelectedStartupUserDataServerLocation()
+    {
+        return StartupUserDataServerSelection.Value switch
+        {
+            (int) ServerLocation.America => ServerLocation.America,
+            (int) ServerLocation.Asia => ServerLocation.Asia,
+            (int) ServerLocation.Europe => ServerLocation.Europe,
+            _ => ServerLocation.Europe
+        };
+    }
+
+    private static bool IsKnownStartupUserDataServerValue(int serverLocation)
+    {
+        return serverLocation is (int) ServerLocation.America or (int) ServerLocation.Asia or (int) ServerLocation.Europe;
+    }
+
     private void InitNetworkDevices()
     {
         NetworkDevices.Clear();
@@ -604,15 +633,6 @@ public class SettingsWindowViewModel : BaseViewModel
         {
             Log.Warning(e, "Network devices could not be loaded from Npcap");
         }
-    }
-
-    private void InitServer()
-    {
-        Server.Clear();
-        Server.Add(new SettingDataInformation { Name = SettingsWindowTranslation.WestServer, Value = 1 });
-        Server.Add(new SettingDataInformation { Name = SettingsWindowTranslation.EastServer, Value = 2 });
-        Server.Add(new SettingDataInformation { Name = SettingsWindowTranslation.EuropeServer, Value = 3 });
-        ServerSelection = Server.FirstOrDefault(x => x.Value == (int) SettingsController.CurrentSettings.ServerLocation);
     }
 
     private void InitMaxAmountOfBackups(ICollection<SettingDataInformation> amountOfBackups)
@@ -816,6 +836,26 @@ public class SettingsWindowViewModel : BaseViewModel
         }
     } = new();
 
+    public SettingDataInformation StartupUserDataServerSelection
+    {
+        get;
+        set
+        {
+            field = value;
+            OnPropertyChanged();
+        }
+    }
+
+    public ObservableCollection<SettingDataInformation> StartupUserDataServers
+    {
+        get;
+        set
+        {
+            field = value;
+            OnPropertyChanged();
+        }
+    } = new();
+
     public Visibility PacketFilterVisibility
     {
         get;
@@ -837,26 +877,6 @@ public class SettingsWindowViewModel : BaseViewModel
     } = Visibility.Collapsed;
 
     public ObservableCollection<NetworkDeviceFilter> NetworkDevices
-    {
-        get;
-        set
-        {
-            field = value;
-            OnPropertyChanged();
-        }
-    } = new();
-
-    public SettingDataInformation ServerSelection
-    {
-        get;
-        set
-        {
-            field = value;
-            OnPropertyChanged();
-        }
-    }
-
-    public ObservableCollection<SettingDataInformation> Server
     {
         get;
         set
@@ -1048,7 +1068,9 @@ public class SettingsWindowViewModel : BaseViewModel
 
     public string ToolDirectory => AppDataPaths.InstallationDirectory;
 
-    public string UserDataDirectory => AppDataPaths.UserDataDirectory;
+    public string UserDataDirectory => AppDataPaths.IsUserDataAvailable
+        ? AppDataPaths.UserDataDirectory
+        : AppDataPaths.RuntimeBaseDirectory;
 
     #endregion Bindings
 }

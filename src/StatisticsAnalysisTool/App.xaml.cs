@@ -28,6 +28,7 @@ public partial class App
 {
     private MainWindowViewModel _mainWindowViewModel;
     private TrackingController _trackingController;
+    private ServerUserDataCoordinator _serverUserDataCoordinator;
     private bool _isEarlyShutdown;
 
     protected override async void OnStartup(StartupEventArgs e)
@@ -74,13 +75,6 @@ public partial class App
                 return;
             }
 
-            if (SettingsController.CurrentSettings.ServerLocation != ServerLocation.America
-                && SettingsController.CurrentSettings.ServerLocation != ServerLocation.Asia
-                && SettingsController.CurrentSettings.ServerLocation != ServerLocation.Europe)
-            {
-                Server.SetServerLocationWithDialogAsync();
-            }
-
             if (!await GameData.InitializeMainGameDataFilesAsync(SettingsController.CurrentSettings.ServerType))
             {
                 _isEarlyShutdown = true;
@@ -93,12 +87,15 @@ public partial class App
             await BackupController.DeleteOldestBackupsIfNeededAsync();
 
             Current.ShutdownMode = ShutdownMode.OnMainWindowClose;
+            AppDataPaths.SetActiveUserDataServer(SettingsController.CurrentSettings.StartupUserDataServerLocation);
 
             RegisterServicesEarly();
             Current.MainWindow = new MainWindow(_mainWindowViewModel);
             RegisterServicesLate();
 
             await _mainWindowViewModel.InitMainWindowDataAsync();
+            await _serverUserDataCoordinator.SyncCurrentServerAsync();
+            await _trackingController.InitTrackingAsync();
             Current.MainWindow.Show();
 
             await AutoUpdateController.StartBackgroundUpdateLoopAsync();
@@ -184,6 +181,8 @@ public partial class App
 
     private void RegisterServicesEarly()
     {
+        ServiceLocator.Register<AlbionServerDetectionService>(new AlbionServerDetectionService());
+
         _mainWindowViewModel = new MainWindowViewModel();
         ServiceLocator.Register<MainWindowViewModel>(_mainWindowViewModel);
 
@@ -195,6 +194,12 @@ public partial class App
     {
         _trackingController = new TrackingController(_mainWindowViewModel);
         ServiceLocator.Register<TrackingController>(_trackingController);
+
+        _serverUserDataCoordinator = new ServerUserDataCoordinator(
+            ServiceLocator.Resolve<AlbionServerDetectionService>(),
+            _mainWindowViewModel,
+            _trackingController);
+        ServiceLocator.Register<ServerUserDataCoordinator>(_serverUserDataCoordinator);
     }
 
     private static void CurrentDomain_UnhandledException(object sender, UnhandledExceptionEventArgs e)

@@ -155,6 +155,16 @@ public sealed class AlertController
         return _alerts.Count < TicksMaxAlertsAtSameTime;
     }
 
+    public void StopAllAlerts()
+    {
+        foreach (var alert in _alerts.ToArray())
+        {
+            alert.StopEvent();
+        }
+
+        _alerts.Clear();
+    }
+
     #region Load / Save local file data
 
     private async Task LoadFromFileAsync()
@@ -173,6 +183,12 @@ public sealed class AlertController
 
     private void SaveActiveAlertsToLocalFile()
     {
+        if (!AppDataPaths.TryEnsureUserDataDirectory())
+        {
+            Log.Debug("Skipped active alert save because no Albion server is active.");
+            return;
+        }
+
         var localFilePath = AppDataPaths.UserDataFile(Settings.Default.ActiveAlertsFileName);
         var activeItemAlerts = _alerts.Select(alert => new AlertSaveObject
         { UniqueName = alert.Item.UniqueName, MinSellUndercutPrice = alert.AlertModeMinSellPriceIsUndercutPrice }).ToList();

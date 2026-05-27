@@ -23,4 +23,14 @@ public class CraftingController
 
         await _mainWindowViewModel.CraftingBindings.SaveInFileAsync().ConfigureAwait(false);
     }
+
+    public async Task LoadFromFileAsync()
+    {
+        if (_mainWindowViewModel?.CraftingBindings == null)
+        {
+            return;
+        }
+
+        await _mainWindowViewModel.CraftingBindings.LoadAsync().ConfigureAwait(false);
+    }
 }

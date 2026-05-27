@@ -11,6 +11,7 @@ using StatisticsAnalysisTool.Common.UserSettings;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net;
 using System.Net.Sockets;
 using System.Threading;
 
@@ -19,6 +20,7 @@ namespace StatisticsAnalysisTool.Network.PacketProviders;
 public class LibpcapPacketProvider : PacketProvider
 {
     private readonly IPhotonReceiver _photonReceiver;
+    private readonly AlbionServerDetectionService _albionServerDetectionService;
     private PcapDispatcher? _dispatcher;
     private CancellationTokenSource? _cts;
     private Thread? _thread;
@@ -46,9 +48,10 @@ public class LibpcapPacketProvider : PacketProvider
         }
     }
 
-    public LibpcapPacketProvider(IPhotonReceiver photonReceiver)
+    public LibpcapPacketProvider(IPhotonReceiver photonReceiver, AlbionServerDetectionService albionServerDetectionService)
     {
         _photonReceiver = photonReceiver ?? throw new ArgumentNullException(nameof(photonReceiver));
+        _albionServerDetectionService = albionServerDetectionService ?? throw new ArgumentNullException(nameof(albionServerDetectionService));
     }
 
     public override void Start()
@@ -247,7 +250,7 @@ public class LibpcapPacketProvider : PacketProvider
             switch ((ProtocolType) ip4.Protocol)
             {
                 case ProtocolType.Udp:
-                    HandleUdp(ip4.Payload, pcap);
+                    HandleUdp(ip4.Payload, pcap, GetIPv4SourceAddress(l3));
                     return;
 
                 case ProtocolType.Tcp:
@@ -266,7 +269,7 @@ public class LibpcapPacketProvider : PacketProvider
             switch ((ProtocolType) nextHeader)
             {
                 case ProtocolType.Udp:
-                    HandleUdp(ip6Payload, pcap);
+                    HandleUdp(ip6Payload, pcap, GetIPv6SourceAddress(l3));
                     return;
 
                 case ProtocolType.Tcp:
@@ -292,6 +295,26 @@ public class LibpcapPacketProvider : PacketProvider
         return hasMoreFragments || fragmentOffset != 0;
     }
 
+    private static string GetIPv4SourceAddress(ReadOnlySpan<byte> bytes)
+    {
+        if (bytes.Length < 16)
+        {
+            return string.Empty;
+        }
+
+        return new IPAddress(bytes.Slice(12, 4).ToArray()).ToString();
+    }
+
+    private static string GetIPv6SourceAddress(ReadOnlySpan<byte> bytes)
+    {
+        if (bytes.Length < 24)
+        {
+            return string.Empty;
+        }
+
+        return new IPAddress(bytes.Slice(8, 16).ToArray()).ToString();
+    }
+
     private static bool TryReadIPv6(ReadOnlySpan<byte> bytes, out byte nextHeader, out ReadOnlySpan<byte> payload)
     {
         nextHeader = 0;
@@ -311,7 +334,7 @@ public class LibpcapPacketProvider : PacketProvider
         return true;
     }
 
-    private void HandleUdp(ReadOnlySpan<byte> l4Payload, Pcap pcap)
+    private void HandleUdp(ReadOnlySpan<byte> l4Payload, Pcap pcap, string sourceIp)
     {
         var udpReader = new BinaryFormatReader(l4Payload);
         var udp = new UdpPacketShape();
@@ -326,6 +349,8 @@ public class LibpcapPacketProvider : PacketProvider
         {
             return;
         }
+
+        _albionServerDetectionService.DetectFromSourceIp(sourceIp);
 
         SelectAndMaybeLockAdapter(pcap);
 
