@@ -87,6 +87,7 @@ public partial class App
             await BackupController.DeleteOldestBackupsIfNeededAsync();
 
             Current.ShutdownMode = ShutdownMode.OnMainWindowClose;
+            AppDataPaths.SetActiveUserDataServer(SettingsController.CurrentSettings.StartupUserDataServerLocation);
 
             RegisterServicesEarly();
             Current.MainWindow = new MainWindow(_mainWindowViewModel);

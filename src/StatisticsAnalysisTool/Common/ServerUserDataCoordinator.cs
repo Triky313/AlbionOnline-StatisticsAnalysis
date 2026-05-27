@@ -31,6 +31,11 @@ public sealed class ServerUserDataCoordinator
 
     public async Task SyncCurrentServerAsync()
     {
+        if (_albionServerDetectionService.CurrentServerLocation is not (ServerLocation.America or ServerLocation.Asia or ServerLocation.Europe))
+        {
+            return;
+        }
+
         await ApplyServerChangeAsync(
             AppDataPaths.ActiveUserDataServerLocation,
             _albionServerDetectionService.CurrentServerLocation,
@@ -39,7 +44,7 @@ public sealed class ServerUserDataCoordinator
 
     private async void AlbionServerDetectionService_ServerChanged(object sender, AlbionServerChangedEventArgs e)
     {
-        await ApplyServerChangeAsync(e.PreviousServer.ServerLocation, e.CurrentServer.ServerLocation).ConfigureAwait(false);
+        await ApplyServerChangeAsync(AppDataPaths.ActiveUserDataServerLocation, e.CurrentServer.ServerLocation).ConfigureAwait(false);
     }
 
     private async Task ApplyServerChangeAsync(ServerLocation previousServerLocation, ServerLocation currentServerLocation, bool forceLoadCurrentServer = false)
@@ -52,6 +57,7 @@ public sealed class ServerUserDataCoordinator
                 && previousServerLocation != currentServerLocation)
             {
                 AppDataPaths.SetActiveUserDataServer(previousServerLocation);
+                Log.Information("Saving Albion user data before server switch. Server={Server}, Directory={Directory}", previousServerLocation, AppDataPaths.UserDataDirectory);
                 await CriticalData.SaveUserDataAsync().ConfigureAwait(false);
             }
 

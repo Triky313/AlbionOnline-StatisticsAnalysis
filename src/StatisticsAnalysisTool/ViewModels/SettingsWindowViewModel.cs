@@ -45,6 +45,7 @@ public class SettingsWindowViewModel : BaseViewModel
         InitNotificationAreas();
         InitRefreshRate();
         InitPacketProvider();
+        InitStartupUserDataServers();
         InitNetworkDevices();
         MainTrackingCharacterName = SettingsController.CurrentSettings.MainTrackingCharacterName;
 
@@ -126,6 +127,8 @@ public class SettingsWindowViewModel : BaseViewModel
 
         SettingsController.CurrentSettings.AlbionDataProjectBaseUrlWest = AlbionDataProjectBaseUrlWest;
         SettingsController.CurrentSettings.AlbionDataProjectBaseUrlEast = AlbionDataProjectBaseUrlEast;
+        SettingsController.CurrentSettings.AlbionDataProjectBaseUrlEurope = AlbionDataProjectBaseUrlEurope;
+        SettingsController.CurrentSettings.StartupUserDataServerLocation = GetSelectedStartupUserDataServerLocation();
 
         SettingsController.CurrentSettings.IsSuggestPreReleaseUpdatesActive = IsSuggestPreReleaseUpdatesActive;
         SettingsController.CurrentSettings.ExactMatchPlayerNamesLineNumber = PlayerSelectionWithSameNameInDb;
@@ -161,6 +164,7 @@ public class SettingsWindowViewModel : BaseViewModel
         RefreshNotificationFilterNames();
         InitRefreshRate();
         InitPacketProvider();
+        InitStartupUserDataServers();
         InitDropDownDownByDays(BackupIntervalByDays);
         BackupIntervalByDaysSelection = BackupIntervalByDays.FirstOrDefault(x => x.Value == SettingsController.CurrentSettings.BackupIntervalByDays);
         mainWindowViewModel.RefreshLocalization();
@@ -573,6 +577,35 @@ public class SettingsWindowViewModel : BaseViewModel
         PacketProviderSelection = PacketProvider.FirstOrDefault(x => x.Value == (int) SettingsController.CurrentSettings.PacketProvider);
     }
 
+    private void InitStartupUserDataServers()
+    {
+        StartupUserDataServers.Clear();
+        StartupUserDataServers.Add(new SettingDataInformation { Name = LocalizationController.Translation("AMERICA_SERVER"), Value = (int) ServerLocation.America });
+        StartupUserDataServers.Add(new SettingDataInformation { Name = LocalizationController.Translation("ASIA_SERVER"), Value = (int) ServerLocation.Asia });
+        StartupUserDataServers.Add(new SettingDataInformation { Name = LocalizationController.Translation("EUROPE_SERVER"), Value = (int) ServerLocation.Europe });
+
+        var selectedServer = StartupUserDataServers.FirstOrDefault(x => x.Value == (int) SettingsController.CurrentSettings.StartupUserDataServerLocation);
+        StartupUserDataServerSelection = IsKnownStartupUserDataServerValue(selectedServer.Value)
+            ? selectedServer
+            : StartupUserDataServers.First(x => x.Value == (int) ServerLocation.Europe);
+    }
+
+    private ServerLocation GetSelectedStartupUserDataServerLocation()
+    {
+        return StartupUserDataServerSelection.Value switch
+        {
+            (int) ServerLocation.America => ServerLocation.America,
+            (int) ServerLocation.Asia => ServerLocation.Asia,
+            (int) ServerLocation.Europe => ServerLocation.Europe,
+            _ => ServerLocation.Europe
+        };
+    }
+
+    private static bool IsKnownStartupUserDataServerValue(int serverLocation)
+    {
+        return serverLocation is (int) ServerLocation.America or (int) ServerLocation.Asia or (int) ServerLocation.Europe;
+    }
+
     private void InitNetworkDevices()
     {
         NetworkDevices.Clear();
@@ -794,6 +827,26 @@ public class SettingsWindowViewModel : BaseViewModel
     }
 
     public ObservableCollection<SettingDataInformation> PacketProvider
+    {
+        get;
+        set
+        {
+            field = value;
+            OnPropertyChanged();
+        }
+    } = new();
+
+    public SettingDataInformation StartupUserDataServerSelection
+    {
+        get;
+        set
+        {
+            field = value;
+            OnPropertyChanged();
+        }
+    }
+
+    public ObservableCollection<SettingDataInformation> StartupUserDataServers
     {
         get;
         set

@@ -122,6 +122,11 @@ public static class SettingsController
     private static void NormalizeRuntimePaths()
     {
         CurrentSettings.BackupStorageDirectoryPath = AppDataPaths.BackupsDirectory;
+
+        if (CurrentSettings.StartupUserDataServerLocation is not (ServerLocation.America or ServerLocation.Asia or ServerLocation.Europe))
+        {
+            CurrentSettings.StartupUserDataServerLocation = ServerLocation.Europe;
+        }
     }
 
     private static void MigrateLegacyUserDataIfNeeded()
@@ -136,6 +141,7 @@ public static class SettingsController
 
         if (hasMigrated)
         {
+            CurrentSettings.StartupUserDataServerLocation = serverLocation;
             _ = FileController.SaveAsync(CurrentSettings, SettingsFilePath, ValidateSettings).ConfigureAwait(false).GetAwaiter().GetResult();
         }
     }

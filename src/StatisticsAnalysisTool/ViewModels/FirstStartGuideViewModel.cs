@@ -19,12 +19,14 @@ public class FirstStartGuideViewModel : BaseViewModel
 {
     private const int LanguageStepIndex = 0;
     private const int GameFolderStepIndex = 1;
-    private const int TrackingModeStepIndex = 2;
-    private const int NavigationTabsStepIndex = 3;
-    private const int DonationStepIndex = 4;
-    private const int TotalStepCount = 5;
+    private const int ServerStepIndex = 2;
+    private const int TrackingModeStepIndex = 3;
+    private const int NavigationTabsStepIndex = 4;
+    private const int DonationStepIndex = 5;
+    private const int TotalStepCount = 6;
 
     private FirstStartGuideLanguageOption _selectedLanguageOption;
+    private FirstStartGuideServerOption _selectedStartupUserDataServerOption;
     private string _mainGameFolderPath;
     private string _errorMessage;
     private int _currentStepIndex;
@@ -38,11 +40,14 @@ public class FirstStartGuideViewModel : BaseViewModel
                 .OrderBy(x => GetLanguageSortOrder(x.FileName))
                 .ThenBy(x => x.FileName, StringComparer.OrdinalIgnoreCase)
                 .Select((x, index) => new FirstStartGuideLanguageOption(x, LocalizationController.TranslationForCulture("LANGUAGE", x.FileName), index % 5)));
+        StartupUserDataServerOptions = new ObservableCollection<FirstStartGuideServerOption>();
         NavigationTabOptions = new ObservableCollection<FirstStartGuideNavigationTabOption>();
         StepIndicators = new ObservableCollection<FirstStartGuideStepIndicator>(
             Enumerable.Range(0, TotalStepCount).Select(x => new FirstStartGuideStepIndicator(x)));
 
+        InitStartupUserDataServerOptions();
         SelectedLanguageOption = GetInitialLanguageOption();
+        SelectedStartupUserDataServerOption = GetInitialStartupUserDataServerOption();
         MainGameFolderPath = SettingsController.CurrentSettings.MainGameFolderPath ?? string.Empty;
         SelectedPacketProvider = SettingsController.CurrentSettings.PacketProvider;
         InitNavigationTabOptions();
@@ -54,6 +59,7 @@ public class FirstStartGuideViewModel : BaseViewModel
     public event EventHandler Completed;
 
     public ObservableCollection<FirstStartGuideLanguageOption> LanguageOptions { get; }
+    public ObservableCollection<FirstStartGuideServerOption> StartupUserDataServerOptions { get; }
     public ObservableCollection<FirstStartGuideNavigationTabOption> NavigationTabOptions { get; }
     public ObservableCollection<FirstStartGuideStepIndicator> StepIndicators { get; }
 
@@ -114,6 +120,23 @@ public class FirstStartGuideViewModel : BaseViewModel
             _selectedLanguageOption = value;
             RefreshLanguageSelectionState();
             OnPropertyChanged();
+        }
+    }
+
+    public FirstStartGuideServerOption SelectedStartupUserDataServerOption
+    {
+        get => _selectedStartupUserDataServerOption;
+        set
+        {
+            if (_selectedStartupUserDataServerOption == value)
+            {
+                return;
+            }
+
+            _selectedStartupUserDataServerOption = value;
+            RefreshStartupUserDataServerSelectionState();
+            OnPropertyChanged();
+            OnPropertyChanged(nameof(IsNextEnabled));
         }
     }
 
@@ -180,9 +203,15 @@ public class FirstStartGuideViewModel : BaseViewModel
     }
 
     public bool IsBackEnabled => CurrentStepIndex > 0;
-    public bool IsNextEnabled => CurrentStepIndex != GameFolderStepIndex || _isMainGameFolderValid;
+    public bool IsNextEnabled => CurrentStepIndex switch
+    {
+        GameFolderStepIndex => _isMainGameFolderValid,
+        ServerStepIndex => IsKnownUserDataServer(SelectedStartupUserDataServerOption?.ServerLocation ?? ServerLocation.Unknown),
+        _ => true
+    };
     public Visibility LanguageStepVisibility => CurrentStepIndex == LanguageStepIndex ? Visibility.Visible : Visibility.Collapsed;
     public Visibility GameFolderStepVisibility => CurrentStepIndex == GameFolderStepIndex ? Visibility.Visible : Visibility.Collapsed;
+    public Visibility ServerStepVisibility => CurrentStepIndex == ServerStepIndex ? Visibility.Visible : Visibility.Collapsed;
     public Visibility TrackingModeStepVisibility => CurrentStepIndex == TrackingModeStepIndex ? Visibility.Visible : Visibility.Collapsed;
     public Visibility NavigationTabsStepVisibility => CurrentStepIndex == NavigationTabsStepIndex ? Visibility.Visible : Visibility.Collapsed;
     public Visibility DonationStepVisibility => CurrentStepIndex == DonationStepIndex ? Visibility.Visible : Visibility.Collapsed;
@@ -273,6 +302,7 @@ public class FirstStartGuideViewModel : BaseViewModel
         {
             LanguageStepIndex => await SaveLanguageStepAsync().ConfigureAwait(true),
             GameFolderStepIndex => await SaveGameFolderStepAsync().ConfigureAwait(true),
+            ServerStepIndex => await SaveServerStepAsync().ConfigureAwait(true),
             TrackingModeStepIndex => await SaveTrackingModeStepAsync().ConfigureAwait(true),
             NavigationTabsStepIndex => await SaveNavigationTabsStepAsync().ConfigureAwait(true),
             DonationStepIndex => true,
@@ -305,6 +335,21 @@ public class FirstStartGuideViewModel : BaseViewModel
         }
 
         SettingsController.CurrentSettings.MainGameFolderPath = MainGameFolderPath;
+        await SettingsController.SaveSettingsAsync().ConfigureAwait(true);
+        return true;
+    }
+
+    private async Task<bool> SaveServerStepAsync()
+    {
+        var selectedServerLocation = SelectedStartupUserDataServerOption?.ServerLocation ?? ServerLocation.Unknown;
+        if (!IsKnownUserDataServer(selectedServerLocation))
+        {
+            ErrorMessage = LocalizationController.Translation("FIRST_START_GUIDE_SELECT_START_SERVER_VALIDATION");
+            Log.Warning("First start guide step validation failed. Step={Step}", "StartupUserDataServer");
+            return false;
+        }
+
+        SettingsController.CurrentSettings.StartupUserDataServerLocation = selectedServerLocation;
         await SettingsController.SaveSettingsAsync().ConfigureAwait(true);
         return true;
     }
@@ -352,6 +397,14 @@ public class FirstStartGuideViewModel : BaseViewModel
                ?? LanguageOptions.FirstOrDefault();
     }
 
+    private FirstStartGuideServerOption GetInitialStartupUserDataServerOption()
+    {
+        var startupServerLocation = NormalizeStartupUserDataServerLocation(SettingsController.CurrentSettings.StartupUserDataServerLocation);
+        return StartupUserDataServerOptions.FirstOrDefault(x => x.ServerLocation == startupServerLocation)
+               ?? StartupUserDataServerOptions.FirstOrDefault(x => x.ServerLocation == ServerLocation.Europe)
+               ?? StartupUserDataServerOptions.FirstOrDefault();
+    }
+
     private static int GetLanguageSortOrder(string ietfLanguageTag)
     {
         if (string.Equals(ietfLanguageTag, "en-US", StringComparison.OrdinalIgnoreCase))
@@ -378,12 +431,14 @@ public class FirstStartGuideViewModel : BaseViewModel
         StandaloneLauncherMessage = GameDataPreparationWindowViewModel.TranslationStandaloneLauncherMessage;
         SteamLauncherTitle = GameDataPreparationWindowViewModel.TranslationSteamLauncher;
         SteamLauncherMessage = GameDataPreparationWindowViewModel.TranslationSteamLauncherMessage;
+        RefreshStartupUserDataServerOptionNames();
         RefreshNavigationTabNames();
 
         CurrentStepTitle = CurrentStepIndex switch
         {
             LanguageStepIndex => LocalizationController.Translation("LANGUAGE"),
             GameFolderStepIndex => LocalizationController.Translation("SELECT_ALBION_ONLINE_MAIN_GAME_FOLDER"),
+            ServerStepIndex => LocalizationController.Translation("FIRST_START_GUIDE_START_SERVER_TITLE"),
             TrackingModeStepIndex => LocalizationController.Translation("FIRST_START_GUIDE_TRACKING_MODE_TITLE"),
             NavigationTabsStepIndex => LocalizationController.Translation("NAVIGATION_TAB_VISIBILITY"),
             DonationStepIndex => DonationHintTitle,
@@ -394,6 +449,7 @@ public class FirstStartGuideViewModel : BaseViewModel
         {
             LanguageStepIndex => LanguageStepDescription,
             GameFolderStepIndex => GameFolderStepDescription,
+            ServerStepIndex => LocalizationController.Translation("FIRST_START_GUIDE_START_SERVER_DESCRIPTION"),
             TrackingModeStepIndex => LocalizationController.Translation("FIRST_START_GUIDE_TRACKING_MODE_DESCRIPTION"),
             NavigationTabsStepIndex => NavigationTabsStepDescription,
             DonationStepIndex => string.Empty,
@@ -407,6 +463,7 @@ public class FirstStartGuideViewModel : BaseViewModel
         OnPropertyChanged(nameof(SelectFolderButtonText));
         OnPropertyChanged(nameof(CurrentStepTitle));
         OnPropertyChanged(nameof(CurrentStepDescription));
+        OnPropertyChanged(nameof(StartupUserDataServerOptions));
         OnPropertyChanged(nameof(LanguageStepDescription));
         OnPropertyChanged(nameof(GameFolderStepDescription));
         OnPropertyChanged(nameof(TrackingModeDifferenceText));
@@ -440,11 +497,35 @@ public class FirstStartGuideViewModel : BaseViewModel
         OnPropertyChanged(nameof(IsNextEnabled));
         OnPropertyChanged(nameof(LanguageStepVisibility));
         OnPropertyChanged(nameof(GameFolderStepVisibility));
+        OnPropertyChanged(nameof(ServerStepVisibility));
         OnPropertyChanged(nameof(TrackingModeStepVisibility));
         OnPropertyChanged(nameof(NavigationTabsStepVisibility));
         OnPropertyChanged(nameof(DonationStepVisibility));
         OnPropertyChanged(nameof(NextButtonVisibility));
         OnPropertyChanged(nameof(FinishButtonVisibility));
+    }
+
+    private void InitStartupUserDataServerOptions()
+    {
+        StartupUserDataServerOptions.Add(CreateStartupUserDataServerOption(ServerLocation.America));
+        StartupUserDataServerOptions.Add(CreateStartupUserDataServerOption(ServerLocation.Asia));
+        StartupUserDataServerOptions.Add(CreateStartupUserDataServerOption(ServerLocation.Europe));
+    }
+
+    private FirstStartGuideServerOption CreateStartupUserDataServerOption(ServerLocation serverLocation)
+    {
+        return new FirstStartGuideServerOption(serverLocation)
+        {
+            Name = GetServerName(serverLocation)
+        };
+    }
+
+    private void RefreshStartupUserDataServerOptionNames()
+    {
+        foreach (var serverOption in StartupUserDataServerOptions)
+        {
+            serverOption.Name = GetServerName(serverOption.ServerLocation);
+        }
     }
 
     private void InitNavigationTabOptions()
@@ -509,12 +590,41 @@ public class FirstStartGuideViewModel : BaseViewModel
         };
     }
 
+    private static string GetServerName(ServerLocation serverLocation)
+    {
+        return serverLocation switch
+        {
+            ServerLocation.America => LocalizationController.Translation("AMERICA_SERVER"),
+            ServerLocation.Asia => LocalizationController.Translation("ASIA_SERVER"),
+            ServerLocation.Europe => LocalizationController.Translation("EUROPE_SERVER"),
+            _ => LocalizationController.Translation("UNKNOWN_SERVER")
+        };
+    }
+
     private void RefreshLanguageSelectionState()
     {
         foreach (var languageOption in LanguageOptions)
         {
             languageOption.IsSelected = ReferenceEquals(languageOption, SelectedLanguageOption);
         }
+    }
+
+    private void RefreshStartupUserDataServerSelectionState()
+    {
+        foreach (var serverOption in StartupUserDataServerOptions)
+        {
+            serverOption.IsSelected = ReferenceEquals(serverOption, SelectedStartupUserDataServerOption);
+        }
+    }
+
+    private static ServerLocation NormalizeStartupUserDataServerLocation(ServerLocation serverLocation)
+    {
+        return IsKnownUserDataServer(serverLocation) ? serverLocation : ServerLocation.Europe;
+    }
+
+    private static bool IsKnownUserDataServer(ServerLocation serverLocation)
+    {
+        return serverLocation is ServerLocation.America or ServerLocation.Asia or ServerLocation.Europe;
     }
 
     private static bool IsValidMainGameFolder(string path)

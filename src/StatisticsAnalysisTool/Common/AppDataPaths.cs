@@ -160,6 +160,31 @@ public static class AppDataPaths
         return fullPath.StartsWith(legacyUserDataPath, StringComparison.OrdinalIgnoreCase);
     }
 
+    public static bool TryGetUserDataServerLocation(string path, out ServerLocation serverLocation)
+    {
+        serverLocation = ServerLocation.Unknown;
+
+        if (string.IsNullOrWhiteSpace(path))
+        {
+            return false;
+        }
+
+        var fullPath = Path.GetFullPath(path);
+        foreach (var knownServerLocation in new[] { ServerLocation.America, ServerLocation.Asia, ServerLocation.Europe })
+        {
+            var userDataPath = Path.GetFullPath(GetUserDataDirectory(knownServerLocation));
+            var userDataPathWithSeparator = Path.TrimEndingDirectorySeparator(userDataPath) + Path.DirectorySeparatorChar;
+            if (fullPath.Equals(userDataPath, StringComparison.OrdinalIgnoreCase)
+                || fullPath.StartsWith(userDataPathWithSeparator, StringComparison.OrdinalIgnoreCase))
+            {
+                serverLocation = knownServerLocation;
+                return true;
+            }
+        }
+
+        return false;
+    }
+
     public static string GameFile(string fileName)
     {
         return Path.Combine(GameFilesDirectory, fileName);

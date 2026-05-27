@@ -454,8 +454,11 @@ public class MainWindowViewModel : BaseViewModel
     {
         if (!AppDataPaths.IsUserDataAvailable)
         {
+            Log.Debug("Skipped Albion user data load because no Albion server is active. Server={Server}, Directory={Directory}", AppDataPaths.ActiveUserDataServerLocation, AppDataPaths.UserDataDirectory);
             return;
         }
+
+        Log.Information("Loading Albion user data. Server={Server}, Directory={Directory}", AppDataPaths.ActiveUserDataServerLocation, AppDataPaths.UserDataDirectory);
 
         ResetItemUserDataState();
         CraftingTabController.ResetCache();
@@ -471,6 +474,7 @@ public class MainWindowViewModel : BaseViewModel
 
         await EstimatedMarketValueController.SetAllEstimatedMarketValuesToItemsAsync();
         ItemsView?.Refresh();
+        Log.Information("Albion user data loaded. Server={Server}, Directory={Directory}", AppDataPaths.ActiveUserDataServerLocation, AppDataPaths.UserDataDirectory);
     }
 
     private void ResetItemUserDataState()

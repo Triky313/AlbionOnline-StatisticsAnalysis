@@ -44467,7 +44467,7 @@
       "tuv": [
         {
           "lang": "de-DE",
-          "seg": "Noch keine Loot Logger Stats verfuegbar."
+          "seg": "Noch keine Loot Logger Stats verfügbar."
         },
         {
           "lang": "en-US",
@@ -44480,6 +44480,71 @@
         {
           "lang": "ru-RU",
           "seg": "Статистика Логгера лута пока недоступна."
+        }
+      ]
+    },
+    {
+      "tuid": "STARTUP_USER_DATA_SERVER",
+      "tuv": [
+        {
+          "lang": "de-DE",
+          "seg": "Startserver f\u00fcr App Benutzerdaten"
+        },
+        {
+          "lang": "en-US",
+          "seg": "Startup server for app user data"
+        }
+      ]
+    },
+    {
+      "tuid": "STARTUP_USER_DATA_SERVER_DESCRIPTION",
+      "tuv": [
+        {
+          "lang": "de-DE",
+          "seg": "Diese Auswahl legt fest, welche Serverdaten beim App-Start geladen werden, solange Albion Online noch keinen Server über Netzwerkpakete erkannt hat. Beim Spielen wird der Server automatisch erkannt; bei einem Serverwechsel werden die aktuellen Daten zuerst gespeichert und danach die passenden Serverdaten geladen."
+        },
+        {
+          "lang": "en-US",
+          "seg": "This selection controls which server data is loaded when the app starts before Albion Online has been detected from network packets. While playing, the server is detected automatically; when the server changes, the current data is saved first and then the matching server data is loaded."
+        }
+      ]
+    },
+    {
+      "tuid": "FIRST_START_GUIDE_START_SERVER_TITLE",
+      "tuv": [
+        {
+          "lang": "de-DE",
+          "seg": "Startserver f\u00fcr Daten"
+        },
+        {
+          "lang": "en-US",
+          "seg": "Startup data server"
+        }
+      ]
+    },
+    {
+      "tuid": "FIRST_START_GUIDE_START_SERVER_DESCRIPTION",
+      "tuv": [
+        {
+          "lang": "de-DE",
+          "seg": "Wähle aus, welche Serverdaten direkt beim App-Start geladen werden sollen, wenn Albion Online noch nicht aktiv ist. Sobald du spielst, erkennt das Tool den Albion-Server automatisch über Netzwerkpakete und wechselt die Datensätze automatisch, falls du den Server wechselst. Vor jedem Wechsel werden die aktuell geladenen Daten gespeichert."
+        },
+        {
+          "lang": "en-US",
+          "seg": "Choose which server data should be loaded when the app starts and Albion Online is not active yet. Once you play, the tool detects the Albion server automatically from network packets and switches datasets automatically if you change servers. The currently loaded data is saved before every switch."
+        }
+      ]
+    },
+    {
+      "tuid": "FIRST_START_GUIDE_SELECT_START_SERVER_VALIDATION",
+      "tuv": [
+        {
+          "lang": "de-DE",
+          "seg": "Bitte wähle einen Startserver für die Daten aus."
+        },
+        {
+          "lang": "en-US",
+          "seg": "Please select a startup data server."
         }
       ]
     }

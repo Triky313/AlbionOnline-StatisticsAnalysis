@@ -95,6 +95,39 @@
                         <TextBox Text="{Binding ProxyUrlWithPort}" Height="26" TextWrapping="NoWrap" MaxLength="50" VerticalAlignment="Top" Margin="0,0,5,0" />
                     </DockPanel>
 
+                    <!-- Server -->
+                    <DockPanel Margin="0,20,0,0">
+                        <Label Content="{Binding Translation.Server, FallbackValue='SERVER'}" FontSize="14" Foreground="{StaticResource SolidColorBrush.Accent.Blue.2}" />
+                    </DockPanel>
+                    <DockPanel Margin="0,5,0,0">
+                        <Label Content="{Binding Translation.StartupUserDataServer, FallbackValue=STARTUP__USER_DATA__SERVER}"
+                               ToolTip="{Binding Translation.StartupUserDataServerDescription}"
+                               MinWidth="300"
+                               VerticalAlignment="Top" />
+                        <ComboBox ItemsSource="{Binding StartupUserDataServers}"
+                                  SelectedItem="{Binding StartupUserDataServerSelection}"
+                                  IsSynchronizedWithCurrentItem="True"
+                                  DisplayMemberPath="Name"
+                                  SelectedValuePath="Value"
+                                  ToolTip="{Binding Translation.StartupUserDataServerDescription}"
+                                  HorizontalAlignment="Left"
+                                  VerticalAlignment="Top"
+                                  Width="200"
+                                  Height="26" />
+                    </DockPanel>
+                    <DockPanel Margin="0,5,0,0">
+                        <Label Content="{Binding Translation.AlbionDataProjectBaseUrlWest, FallbackValue=ALBION_DATA_PROJECT_BASE_URL_WEST}" MinWidth="300" VerticalAlignment="Top" />
+                        <TextBox Text="{Binding AlbionDataProjectBaseUrlWest}" Height="40" TextWrapping="Wrap" VerticalAlignment="Top" Margin="0,0,5,0" />
+                    </DockPanel>
+                    <DockPanel Margin="0,5,0,0">
+                        <Label Content="{Binding Translation.AlbionDataProjectBaseUrlEast, FallbackValue=ALBION_DATA_PROJECT_BASE_URL_EAST}" MinWidth="300" VerticalAlignment="Top" />
+                        <TextBox Text="{Binding AlbionDataProjectBaseUrlEast}" Height="40" TextWrapping="Wrap" VerticalAlignment="Top" Margin="0,0,5,0" />
+                    </DockPanel>
+                    <DockPanel Margin="0,5,0,0">
+                        <Label Content="{Binding Translation.AlbionDataProjectBaseUrlEurope, FallbackValue=ALBION_DATA_PROJECT_BASE_URL_EUROPE}" MinWidth="300" VerticalAlignment="Top" />
+                        <TextBox Text="{Binding AlbionDataProjectBaseUrlEurope}" Height="40" TextWrapping="Wrap" VerticalAlignment="Top" Margin="0,0,5,0" />
+                    </DockPanel>
+
                     <!-- Tracking -->
                     <DockPanel Margin="0,20,0,0">
                         <Label Content="{Binding Translation.Tracking, FallbackValue='TRACKING'}" FontSize="14" Foreground="{StaticResource SolidColorBrush.Accent.Blue.2}" />
@@ -129,18 +162,6 @@
                     <DockPanel Margin="0,0,5,0">
                         <Label MinWidth="300"/>
                         <Button Content="{Binding Translation.RestartNetworkTracking, FallbackValue=RESTART__NETWORK__TRACKING}" Height="24" VerticalAlignment="Bottom" Click="RestartNetworkTracking_Click" />
-                    </DockPanel>
-                    <DockPanel Margin="0,5,0,0">
-                        <Label Content="{Binding Translation.AlbionDataProjectBaseUrlWest, FallbackValue=ALBION_DATA_PROJECT_BASE_URL_WEST}" MinWidth="300" VerticalAlignment="Top" />
-                        <TextBox Text="{Binding AlbionDataProjectBaseUrlWest}" Height="40" TextWrapping="Wrap" VerticalAlignment="Top" Margin="0,0,5,0" />
-                    </DockPanel>
-                    <DockPanel Margin="0,5,0,0">
-                        <Label Content="{Binding Translation.AlbionDataProjectBaseUrlEast, FallbackValue=ALBION_DATA_PROJECT_BASE_URL_EAST}" MinWidth="300" VerticalAlignment="Top" />
-                        <TextBox Text="{Binding AlbionDataProjectBaseUrlEast}" Height="40" TextWrapping="Wrap" VerticalAlignment="Top" Margin="0,0,5,0" />
-                    </DockPanel>
-                    <DockPanel Margin="0,5,0,0">
-                        <Label Content="{Binding Translation.AlbionDataProjectBaseUrlEurope, FallbackValue=ALBION_DATA_PROJECT_BASE_URL_EUROPE}" MinWidth="300" VerticalAlignment="Top" />
-                        <TextBox Text="{Binding AlbionDataProjectBaseUrlEurope}" Height="40" TextWrapping="Wrap" VerticalAlignment="Top" Margin="0,0,5,0" />
                     </DockPanel>
 
                     <!-- Item window -->

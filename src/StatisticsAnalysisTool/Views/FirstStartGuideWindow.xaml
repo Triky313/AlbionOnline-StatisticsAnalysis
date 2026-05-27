@@ -180,6 +180,44 @@
                     </StackPanel>
                 </ScrollViewer>
 
+                <Grid Visibility="{Binding ServerStepVisibility}">
+                    <StackPanel Orientation="Vertical" VerticalAlignment="Center" HorizontalAlignment="Center" Width="650">
+                        <ComboBox ItemsSource="{Binding StartupUserDataServerOptions}"
+                                  SelectedItem="{Binding SelectedStartupUserDataServerOption, Mode=TwoWay}"
+                                  SelectedValuePath="ServerLocation"
+                                  DisplayMemberPath="Name"
+                                  FontSize="18"
+                                  FontWeight="Bold"
+                                  Height="34"
+                                  Width="320"
+                                  Margin="0,0,0,18" />
+                        <ItemsControl ItemsSource="{Binding StartupUserDataServerOptions}" Width="520">
+                            <ItemsControl.ItemsPanel>
+                                <ItemsPanelTemplate>
+                                    <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" />
+                                </ItemsPanelTemplate>
+                            </ItemsControl.ItemsPanel>
+                            <ItemsControl.ItemTemplate>
+                                <DataTemplate>
+                                    <Border Width="160"
+                                            Margin="5"
+                                            Padding="10"
+                                            BorderBrush="{StaticResource SolidColorBrush.Background.4}"
+                                            BorderThickness="1"
+                                            Background="{StaticResource SolidColorBrush.Background.3}">
+                                        <TextBlock Text="{Binding Name}"
+                                                   Foreground="{StaticResource SolidColorBrush.Text.1}"
+                                                   FontSize="14"
+                                                   FontWeight="Bold"
+                                                   TextAlignment="Center"
+                                                   TextWrapping="Wrap" />
+                                    </Border>
+                                </DataTemplate>
+                            </ItemsControl.ItemTemplate>
+                        </ItemsControl>
+                    </StackPanel>
+                </Grid>
+
                 <Grid Visibility="{Binding TrackingModeStepVisibility}">
                     <StackPanel Orientation="Vertical" VerticalAlignment="Center" HorizontalAlignment="Center" Width="650">
                         <TextBlock Text="{Binding TrackingModeDifferenceText}"
