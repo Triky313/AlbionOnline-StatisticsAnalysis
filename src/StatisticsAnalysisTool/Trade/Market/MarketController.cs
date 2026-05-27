@@ -79,8 +79,10 @@ public class MarketController(TrackingController trackingController, MainWindowV
                 InstantBuySellContent = instantBuySellContent
             };
 
-            _ = trackingController.TradeController.AddTradeToBindingCollectionAsync(trade);
-            await trackingController.TradeController.SaveInFileAfterExceedingLimit(20);
+            if (await trackingController.TradeController.AddTradeToBindingCollectionAsync(trade))
+            {
+                await trackingController.TradeController.SaveInFileAfterExceedingLimit(20);
+            }
         }
         else if (!_hasEncryptionInfoBeenShownYet)
         {
@@ -97,6 +99,8 @@ public class MarketController(TrackingController trackingController, MainWindowV
         {
             return;
         }
+
+        var hasAddedTrade = false;
 
         foreach (long purchaseId in purchaseIds)
         {
@@ -143,10 +147,13 @@ public class MarketController(TrackingController trackingController, MainWindowV
                 InstantBuySellContent = instantBuySellContent
             };
 
-            _ = trackingController.TradeController.AddTradeToBindingCollectionAsync(trade);
+            hasAddedTrade |= await trackingController.TradeController.AddTradeToBindingCollectionAsync(trade);
         }
 
-        await trackingController.TradeController.SaveInFileAfterExceedingLimit(20);
+        if (hasAddedTrade)
+        {
+            await trackingController.TradeController.SaveInFileAfterExceedingLimit(20);
+        }
     }
 
     private int GetQuantityOfTempNumberToBuyList(IList<long> purchaseIds, long currentPurchaseId)
@@ -216,8 +223,10 @@ public class MarketController(TrackingController trackingController, MainWindowV
                 InstantBuySellContent = instantBuySellContent
             };
 
-            _ = trackingController.TradeController.AddTradeToBindingCollectionAsync(trade);
-            await trackingController.TradeController.SaveInFileAfterExceedingLimit(10);
+            if (await trackingController.TradeController.AddTradeToBindingCollectionAsync(trade))
+            {
+                await trackingController.TradeController.SaveInFileAfterExceedingLimit(10);
+            }
         }
     }
 

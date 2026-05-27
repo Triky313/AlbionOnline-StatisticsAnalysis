@@ -29,6 +29,7 @@ public class TradeController
     private readonly TrackingController _trackingController;
     private readonly MainWindowViewModel _mainWindowViewModel;
     private readonly Dictionary<long, PlayerTradeSession> _playerTradeSessions = new();
+    private readonly SemaphoreSlim _tradeCollectionLock = new(1, 1);
     private int _tradeCounter;
 
     public TradeController(TrackingController trackingController, MainWindowViewModel mainWindowViewModel)
@@ -47,24 +48,83 @@ public class TradeController
         _mainWindowViewModel?.TradeMonitoringBindings?.TradeStatsObject.SetTradeStats(_mainWindowViewModel?.TradeMonitoringBindings?.TradeCollectionView?.Cast<Trade>().ToList());
     }
 
-    public async Task AddTradeToBindingCollectionAsync(Trade trade)
+    public async Task<bool> AddTradeToBindingCollectionAsync(Trade trade)
     {
-        if (IsLastTradeTheSame(trade))
+        if (trade == null)
         {
-            return;
+            return false;
         }
 
-        await Application.Current.Dispatcher.InvokeAsync(() =>
+        var wasAdded = false;
+        await _tradeCollectionLock.WaitAsync();
+        try
         {
-            _mainWindowViewModel?.TradeMonitoringBindings?.Trades.Add(trade);
-        });
+            await Application.Current.Dispatcher.InvokeAsync(() =>
+            {
+                var trades = _mainWindowViewModel?.TradeMonitoringBindings?.Trades;
+                if (trades == null || ContainsEquivalentTrade(trades, trade) || IsLastTradeTheSame(trade))
+                {
+                    return;
+                }
+
+                trades.Add(trade);
+                wasAdded = true;
+            });
+        }
+        finally
+        {
+            _tradeCollectionLock.Release();
+        }
+
+        if (!wasAdded)
+        {
+            return false;
+        }
 
         if (_mainWindowViewModel?.TradeMonitoringBindings != null)
         {
             await _mainWindowViewModel.TradeMonitoringBindings.UpdateFilteredTradesAsync();
         }
 
-        await ServiceLocator.Resolve<SatNotificationManager>().ShowTradeAsync(trade);
+        if (ServiceLocator.IsServiceInDictionary<SatNotificationManager>())
+        {
+            await ServiceLocator.Resolve<SatNotificationManager>().ShowTradeAsync(trade);
+        }
+
+        return true;
+    }
+
+    private static bool ContainsEquivalentTrade(IEnumerable<Trade> trades, Trade trade)
+    {
+        return trades.Any(existingTrade => IsEquivalentTrade(existingTrade, trade));
+    }
+
+    private static bool IsEquivalentTrade(Trade existingTrade, Trade trade)
+    {
+        if (existingTrade == null)
+        {
+            return false;
+        }
+
+        if (existingTrade.Type != trade.Type)
+        {
+            return false;
+        }
+
+        if (existingTrade.Id != trade.Id)
+        {
+            return false;
+        }
+
+        return trade.Type switch
+        {
+            TradeType.Mail => existingTrade.Id > 0,
+            TradeType.PlayerTradeIncoming or TradeType.PlayerTradeOutgoing => existingTrade.ItemIndex == trade.ItemIndex
+                                                                               && existingTrade.PlayerTradeContent?.Direction == trade.PlayerTradeContent?.Direction
+                                                                               && existingTrade.PlayerTradeContent?.IsSilver == trade.PlayerTradeContent?.IsSilver,
+            _ => existingTrade.ItemIndex == trade.ItemIndex
+                 && existingTrade.Ticks == trade.Ticks
+        };
     }
 
     private Trade _lastAddedTrade;
@@ -81,7 +141,7 @@ public class TradeController
 
         if (ticksDifference > 500 * TimeSpan.TicksPerMillisecond)
         {
-            _lastAddedTrade = null;
+            _lastAddedTrade = trade;
             return false;
         }
 
@@ -698,7 +758,47 @@ public class TradeController
             }
         }
 
-        return trades;
+        return RemoveDuplicateTrades(trades);
+    }
+
+    private static List<Trade> RemoveDuplicateTrades(IEnumerable<Trade> trades)
+    {
+        var uniqueTrades = new List<Trade>();
+        var tradeKeys = new HashSet<string>();
+        var duplicateCount = 0;
+
+        foreach (var trade in trades)
+        {
+            if (trade == null)
+            {
+                continue;
+            }
+
+            if (tradeKeys.Add(CreateTradeIdentityKey(trade)))
+            {
+                uniqueTrades.Add(trade);
+                continue;
+            }
+
+            duplicateCount++;
+        }
+
+        if (duplicateCount > 0)
+        {
+            Log.Warning("{count} duplicate trade entries were ignored while loading {file}.", duplicateCount, Settings.Default.TradesFileName);
+        }
+
+        return uniqueTrades;
+    }
+
+    private static string CreateTradeIdentityKey(Trade trade)
+    {
+        return trade.Type switch
+        {
+            TradeType.Mail => $"{trade.Type}|{trade.Id}",
+            TradeType.PlayerTradeIncoming or TradeType.PlayerTradeOutgoing => $"{trade.Type}|{trade.Id}|{trade.ItemIndex}|{trade.PlayerTradeContent?.Direction}|{trade.PlayerTradeContent?.IsSilver}",
+            _ => $"{trade.Type}|{trade.Id}|{trade.ItemIndex}|{trade.Ticks}"
+        };
     }
 
     #endregion
