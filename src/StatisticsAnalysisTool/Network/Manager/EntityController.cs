@@ -86,7 +86,7 @@ public class EntityController
 
             if (gameObject.ObjectSubType == GameObjectSubType.LocalPlayer)
             {
-                RemoveLocalEntityFromPartyAsync().GetAwaiter();
+                RemoveStaleLocalEntities(gameObject.UserGuid);
             }
         }
 
@@ -140,7 +140,7 @@ public class EntityController
 
     public List<KeyValuePair<Guid, PlayerGameObject>> GetAllEntities(bool onlyInParty = false)
     {
-        return new List<KeyValuePair<Guid, PlayerGameObject>>(onlyInParty ? _knownEntities.ToArray().Where(x => IsEntityInParty(x.Value.Name)) : _knownEntities.ToArray());
+        return new List<KeyValuePair<Guid, PlayerGameObject>>(onlyInParty ? _knownEntities.ToArray().Where(x => x.Value.IsInParty) : _knownEntities.ToArray());
     }
 
     public List<KeyValuePair<Guid, PlayerGameObject>> GetAllEntitiesWithDamageOrHealAndInParty()
@@ -191,6 +191,19 @@ public class EntityController
         if (entity?.Value is not null)
         {
             await RemoveFromPartyAsync(entity.Value.Key);
+        }
+    }
+
+    private void RemoveStaleLocalEntities(Guid currentLocalUserGuid)
+    {
+        foreach (var staleLocalEntity in _knownEntities
+                     .Where(x => x.Key != currentLocalUserGuid && x.Value.ObjectSubType == GameObjectSubType.LocalPlayer)
+                     .ToList())
+        {
+            if (_knownEntities.TryRemove(staleLocalEntity.Key, out _))
+            {
+                Log.Information("Removed stale local entity after local player changed. RemovedGuid={RemovedGuid}, CurrentGuid={CurrentGuid}, Name={Name}", staleLocalEntity.Key, currentLocalUserGuid, staleLocalEntity.Value.Name);
+            }
         }
     }
 
@@ -305,7 +318,7 @@ public class EntityController
     public bool IsEntityInParty(long objectId)
     {
         var entity = _knownEntities?.FirstOrDefault(x => x.Value.ObjectId == objectId);
-        return IsEntityInParty(entity?.Value?.Name);
+        return entity?.Value?.IsInParty ?? false;
     }
 
     public bool IsEntityInParty(Guid guid)

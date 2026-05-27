@@ -1,6 +1,7 @@
 using Serilog;
 using StatisticsAnalysisTool.Enumerations;
 using StatisticsAnalysisTool.Network;
+using StatisticsAnalysisTool.Network.Manager;
 using StatisticsAnalysisTool.ViewModels;
 using System;
 using System.IO;
@@ -14,11 +15,16 @@ public sealed class ServerUserDataCoordinator
 {
     private readonly AlbionServerDetectionService _albionServerDetectionService;
     private readonly MainWindowViewModel _mainWindowViewModel;
+    private readonly TrackingController _trackingController;
     private readonly SemaphoreSlim _syncLock = new(1, 1);
 
-    public ServerUserDataCoordinator(AlbionServerDetectionService albionServerDetectionService, MainWindowViewModel mainWindowViewModel)
+    public ServerUserDataCoordinator(
+        AlbionServerDetectionService albionServerDetectionService,
+        MainWindowViewModel mainWindowViewModel,
+        TrackingController trackingController)
     {
         _mainWindowViewModel = mainWindowViewModel ?? throw new ArgumentNullException(nameof(mainWindowViewModel));
+        _trackingController = trackingController ?? throw new ArgumentNullException(nameof(trackingController));
 
         if (albionServerDetectionService == null)
         {
@@ -44,10 +50,17 @@ public sealed class ServerUserDataCoordinator
 
     private async void AlbionServerDetectionService_ServerChanged(object sender, AlbionServerChangedEventArgs e)
     {
-        await ApplyServerChangeAsync(AppDataPaths.ActiveUserDataServerLocation, e.CurrentServer.ServerLocation).ConfigureAwait(false);
+        await ApplyServerChangeAsync(
+            AppDataPaths.ActiveUserDataServerLocation,
+            e.CurrentServer.ServerLocation,
+            resetPartyAfterConfirmedServerDetection: IsKnownServerLocation(e.CurrentServer.ServerLocation)).ConfigureAwait(false);
     }
 
-    private async Task ApplyServerChangeAsync(ServerLocation previousServerLocation, ServerLocation currentServerLocation, bool forceLoadCurrentServer = false)
+    private async Task ApplyServerChangeAsync(
+        ServerLocation previousServerLocation,
+        ServerLocation currentServerLocation,
+        bool forceLoadCurrentServer = false,
+        bool resetPartyAfterConfirmedServerDetection = false)
     {
         await _syncLock.WaitAsync().ConfigureAwait(false);
 
@@ -73,6 +86,11 @@ public sealed class ServerUserDataCoordinator
             {
                 await LoadCurrentServerUserDataAsync().ConfigureAwait(false);
             }
+
+            if (resetPartyAfterConfirmedServerDetection)
+            {
+                await ResetPartyAfterConfirmedServerDetectionAsync(currentServerLocation).ConfigureAwait(false);
+            }
         }
         catch (Exception ex)
         {
@@ -94,5 +112,23 @@ public sealed class ServerUserDataCoordinator
 
         var operation = Application.Current.Dispatcher.InvokeAsync(() => _mainWindowViewModel.LoadUserDataForActiveServerAsync());
         await operation.Task.Unwrap().ConfigureAwait(false);
+    }
+
+    private async Task ResetPartyAfterConfirmedServerDetectionAsync(ServerLocation currentServerLocation)
+    {
+        if (!IsKnownServerLocation(currentServerLocation))
+        {
+            Log.Debug("Skipped party reset after Albion server update. Current={CurrentServer}", currentServerLocation);
+            return;
+        }
+
+        Log.Information("Resetting party after confirmed Albion server detection. Current={CurrentServer}", currentServerLocation);
+        await _trackingController.EntityController.ResetPartyMemberAsync().ConfigureAwait(false);
+        await _trackingController.EntityController.AddLocalEntityToPartyAsync().ConfigureAwait(false);
+    }
+
+    private static bool IsKnownServerLocation(ServerLocation serverLocation)
+    {
+        return serverLocation is ServerLocation.America or ServerLocation.Asia or ServerLocation.Europe;
     }
 }

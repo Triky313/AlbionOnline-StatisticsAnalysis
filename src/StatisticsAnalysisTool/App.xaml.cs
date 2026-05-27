@@ -197,7 +197,8 @@ public partial class App
 
         _serverUserDataCoordinator = new ServerUserDataCoordinator(
             ServiceLocator.Resolve<AlbionServerDetectionService>(),
-            _mainWindowViewModel);
+            _mainWindowViewModel,
+            _trackingController);
         ServiceLocator.Register<ServerUserDataCoordinator>(_serverUserDataCoordinator);
     }
 
