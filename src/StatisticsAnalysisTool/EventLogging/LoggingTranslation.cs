@@ -51,6 +51,7 @@ public class LoggingTranslation
     public static string FilterStatus => LocalizationController.Translation("LOOT_FILTER_STATUS");
     public static string FilterTier => LocalizationController.Translation("LOOT_FILTER_TIER");
     public static string FilterType => LocalizationController.Translation("LOOT_FILTER_TYPE");
+    public static string Guild => LocalizationController.Translation("GUILD");
     public static string FilterAll => LocalizationController.Translation("LOOT_FILTER_ALL");
     public static string FilterNone => LocalizationController.Translation("LOOT_FILTER_NONE");
     public static string UploadChestFiles => LocalizationController.Translation("UPLOAD_CHEST_FILES");

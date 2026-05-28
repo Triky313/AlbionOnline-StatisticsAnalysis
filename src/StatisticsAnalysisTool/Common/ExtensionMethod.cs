@@ -152,7 +152,7 @@ public static class ExtensionMethod
         {
             byte byteValue => byteValue,
             short shortValue => shortValue,
-            ushort ushortValue when ushortValue <= int.MaxValue => ushortValue,
+            ushort ushortValue => ushortValue,
             int intValue => intValue,
             uint uintValue when uintValue <= int.MaxValue => (int) uintValue,
             long longValue when longValue is >= int.MinValue and <= int.MaxValue => (int) longValue,

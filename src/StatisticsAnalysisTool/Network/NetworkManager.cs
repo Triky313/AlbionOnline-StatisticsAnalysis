@@ -113,7 +113,6 @@ public class NetworkManager
         builder.AddRequestHandler(new FishingFinishRequestHandler(trackingController));
         builder.AddRequestHandler(new FishingCancelRequestHandler(trackingController));
         builder.AddRequestHandler(new GetGuildAccountLogsRequestHandler(trackingController));
-        builder.AddRequestHandler(new ChangeClusterRequestHandler(trackingController));
 
         // Response
         builder.AddResponseHandler(new ChangeClusterResponseHandler(trackingController));

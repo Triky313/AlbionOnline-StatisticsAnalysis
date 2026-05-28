@@ -10,6 +10,7 @@ using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Collections.Specialized;
 using System.ComponentModel;
 using System.Diagnostics;
 using System.Globalization;
@@ -27,6 +28,8 @@ namespace StatisticsAnalysisTool.EventLogging;
 public class LoggingBindings : BaseViewModel
 {
     private CancellationTokenSource _cancellationTokenSource = new();
+    private ObservableCollection<LootingPlayer> _lootingPlayers = new();
+    private readonly HashSet<LootingPlayer> _subscribedLootingPlayers = [];
     private bool _isShowingLost = true;
     private bool _isShowingResolved = true;
     private bool _isShowingDonated = true;
@@ -61,6 +64,11 @@ public class LoggingBindings : BaseViewModel
     ];
     private int _chestLogSourceCount;
     private int _lootLogFileCount;
+
+    public LoggingBindings()
+    {
+        SubscribeLootingPlayers(_lootingPlayers);
+    }
 
     public void Init()
     {
@@ -151,6 +159,83 @@ public class LoggingBindings : BaseViewModel
         if (args.PropertyName == nameof(LoggingFilterObject.IsSelected))
         {
             OnPropertyChanged(nameof(NotificationFilterSummary));
+        }
+    }
+
+    private void SubscribeLootingPlayers(ObservableCollection<LootingPlayer> lootingPlayers)
+    {
+        lootingPlayers.CollectionChanged += LootingPlayersCollectionChanged;
+
+        foreach (var lootingPlayer in lootingPlayers)
+        {
+            SubscribeLootingPlayer(lootingPlayer);
+        }
+    }
+
+    private void UnsubscribeLootingPlayers(ObservableCollection<LootingPlayer> lootingPlayers)
+    {
+        lootingPlayers.CollectionChanged -= LootingPlayersCollectionChanged;
+
+        foreach (var lootingPlayer in lootingPlayers)
+        {
+            UnsubscribeLootingPlayer(lootingPlayer);
+        }
+    }
+
+    private void LootingPlayersCollectionChanged(object sender, NotifyCollectionChangedEventArgs args)
+    {
+        if (args.Action == NotifyCollectionChangedAction.Reset)
+        {
+            foreach (var lootingPlayer in _subscribedLootingPlayers.Except(LootingPlayers).ToList())
+            {
+                UnsubscribeLootingPlayer(lootingPlayer);
+            }
+        }
+
+        if (args.OldItems is not null)
+        {
+            foreach (LootingPlayer oldPlayer in args.OldItems)
+            {
+                UnsubscribeLootingPlayer(oldPlayer);
+            }
+        }
+
+        if (args.NewItems is not null)
+        {
+            foreach (LootingPlayer newPlayer in args.NewItems)
+            {
+                SubscribeLootingPlayer(newPlayer);
+            }
+        }
+
+        RefreshLootComparatorGuildFilters();
+    }
+
+    private void SubscribeLootingPlayer(LootingPlayer lootingPlayer)
+    {
+        if (!_subscribedLootingPlayers.Add(lootingPlayer))
+        {
+            return;
+        }
+
+        lootingPlayer.PropertyChanged += LootingPlayerPropertyChanged;
+    }
+
+    private void UnsubscribeLootingPlayer(LootingPlayer lootingPlayer)
+    {
+        if (!_subscribedLootingPlayers.Remove(lootingPlayer))
+        {
+            return;
+        }
+
+        lootingPlayer.PropertyChanged -= LootingPlayerPropertyChanged;
+    }
+
+    private void LootingPlayerPropertyChanged(object sender, PropertyChangedEventArgs args)
+    {
+        if (args.PropertyName == nameof(LootingPlayer.PlayerGuild))
+        {
+            RefreshLootComparatorGuildFilters();
         }
     }
 
@@ -954,6 +1039,9 @@ public class LoggingBindings : BaseViewModel
     public string StatusFilterSummary => BuildFilterSummary(LoggingTranslation.FilterStatus, CountSelectedFilters(IsShowingLost, IsShowingResolved, IsShowingDonated, IsShowingTrash), 4);
     public string TierFilterSummary => BuildFilterSummary(LoggingTranslation.FilterTier, CountSelectedFilters(IsShowingT1ToT3, IsShowingT4, IsShowingT5, IsShowingT6, IsShowingT7, IsShowingT8), 6);
     public string TypeFilterSummary => BuildFilterSummary(LoggingTranslation.FilterType, CountSelectedFilters(IsShowingFood, IsShowingPotion, IsShowingBag, IsShowingCape, IsShowingWeapon, IsShowingArmor, IsShowingMount, IsShowingOthers), 8);
+    public string GuildFilterSummary => LootComparatorGuildFilters.Count <= 0
+        ? $"{LoggingTranslation.Guild}: {LoggingTranslation.FilterAll}"
+        : BuildFilterSummary(LoggingTranslation.Guild, LootComparatorGuildFilters.Count(filter => filter.IsSelected), LootComparatorGuildFilters.Count);
     public string NotificationFilterSummary => BuildFilterSummary(LoggingTranslation.Filter, Filters.Count(filter => filter.IsSelected == true), Filters.Count);
     public string TrackingSummary => BuildFilterSummary(LoggingTranslation.Tracking, CountSelectedFilters(IsTrackingPartyLootOnly, IsTrackingSilver, IsTrackingFame, IsTrackingMobLoot, IsTrackingKill), 5);
     public int ChestLogCount => _chestLogSourceCount;
@@ -1009,6 +1097,47 @@ public class LoggingBindings : BaseViewModel
         return values.Count(value => value);
     }
 
+    private void RefreshLootComparatorGuildFilters()
+    {
+        var previousSelections = LootComparatorGuildFilters
+            .GroupBy(filter => filter.GuildName, StringComparer.OrdinalIgnoreCase)
+            .ToDictionary(group => group.Key, group => group.Last().IsSelected, StringComparer.OrdinalIgnoreCase);
+
+        foreach (var filter in LootComparatorGuildFilters)
+        {
+            filter.PropertyChanged -= LootComparatorGuildFilterPropertyChanged;
+        }
+
+        LootComparatorGuildFilters.Clear();
+
+        var guildNames = LootingPlayers
+            .Select(player => player.PlayerGuild)
+            .Where(guildName => !string.IsNullOrWhiteSpace(guildName))
+            .Distinct(StringComparer.OrdinalIgnoreCase)
+            .OrderBy(guildName => guildName, StringComparer.OrdinalIgnoreCase);
+
+        foreach (var guildName in guildNames)
+        {
+            var filter = new LootComparatorGuildFilter(guildName)
+            {
+                IsSelected = !previousSelections.TryGetValue(guildName, out var wasSelected) || wasSelected
+            };
+
+            filter.PropertyChanged += LootComparatorGuildFilterPropertyChanged;
+            LootComparatorGuildFilters.Add(filter);
+        }
+
+        OnPropertyChanged(nameof(GuildFilterSummary));
+    }
+
+    private void LootComparatorGuildFilterPropertyChanged(object sender, PropertyChangedEventArgs args)
+    {
+        if (args.PropertyName == nameof(LootComparatorGuildFilter.IsSelected))
+        {
+            NotifyGuildFilterChanged();
+        }
+    }
+
     private void NotifyStatusFilterChanged()
     {
         _ = UpdateFilteredLootedItemsAsync();
@@ -1025,6 +1154,12 @@ public class LoggingBindings : BaseViewModel
     {
         _ = UpdateFilteredLootedItemsAsync();
         OnPropertyChanged(nameof(TypeFilterSummary));
+    }
+
+    private void NotifyGuildFilterChanged()
+    {
+        _ = UpdateFilteredLootedItemsAsync();
+        OnPropertyChanged(nameof(GuildFilterSummary));
     }
 
     private static readonly string[] SupportedFormats =
@@ -1054,13 +1189,16 @@ public class LoggingBindings : BaseViewModel
 
     public ObservableCollection<LootingPlayer> LootingPlayers
     {
-        get;
+        get => _lootingPlayers;
         set
         {
-            field = value;
+            UnsubscribeLootingPlayers(_lootingPlayers);
+            _lootingPlayers = value ?? [];
+            SubscribeLootingPlayers(_lootingPlayers);
             OnPropertyChanged();
+            RefreshLootComparatorGuildFilters();
         }
-    } = new();
+    }
 
     public ListCollectionView LootingPlayersCollectionView
     {
@@ -1227,6 +1365,17 @@ public class LoggingBindings : BaseViewModel
         {
             field = value;
             OnPropertyChanged();
+        }
+    } = new();
+
+    public ObservableCollection<LootComparatorGuildFilter> LootComparatorGuildFilters
+    {
+        get;
+        set
+        {
+            field = value;
+            OnPropertyChanged();
+            OnPropertyChanged(nameof(GuildFilterSummary));
         }
     } = new();
 
@@ -1510,6 +1659,12 @@ public class LoggingBindings : BaseViewModel
     public void ParallelLootedItemsFilterProcess()
     {
         var partitioner = Partitioner.Create(LootingPlayers, EnumerablePartitionerOptions.NoBuffering);
+        var guildFilters = LootComparatorGuildFilters.ToList();
+        var selectedGuilds = guildFilters
+            .Where(filter => filter.IsSelected)
+            .Select(filter => filter.GuildName)
+            .ToHashSet(StringComparer.OrdinalIgnoreCase);
+        var isGuildFilterRestricted = guildFilters.Count > 0 && selectedGuilds.Count < guildFilters.Count;
 
         Parallel.ForEach(partitioner, (lootingPlayer, state) =>
         {
@@ -1522,7 +1677,7 @@ public class LoggingBindings : BaseViewModel
 
             foreach (var lootedItem in itemsToProcess)
             {
-                lootedItem.Visibility = Filter(lootedItem) ? Visibility.Visible : Visibility.Collapsed;
+                lootedItem.Visibility = Filter(lootedItem, lootingPlayer, isGuildFilterRestricted, selectedGuilds) ? Visibility.Visible : Visibility.Collapsed;
             }
 
             var hasVisibleItems = itemsToProcess.Any(item => item.Visibility == Visibility.Visible);
@@ -1550,9 +1705,12 @@ public class LoggingBindings : BaseViewModel
         }
     }
 
-    private bool Filter(LootedItem lootedItem)
+    private bool Filter(LootedItem lootedItem, LootingPlayer lootingPlayer, bool isGuildFilterRestricted, IReadOnlySet<string> selectedGuilds)
     {
-        return IsStatusOkay(lootedItem) && IsTierOkay(lootedItem) && IsTypeOkay(lootedItem);
+        return IsStatusOkay(lootedItem)
+               && IsTierOkay(lootedItem)
+               && IsTypeOkay(lootedItem)
+               && IsGuildOkay(lootingPlayer, isGuildFilterRestricted, selectedGuilds);
     }
 
     private bool IsStatusOkay(LootedItem lootedItem)
@@ -1662,6 +1820,17 @@ public class LoggingBindings : BaseViewModel
         }
 
         return false;
+    }
+
+    private static bool IsGuildOkay(LootingPlayer lootingPlayer, bool isGuildFilterRestricted, IReadOnlySet<string> selectedGuilds)
+    {
+        if (!isGuildFilterRestricted)
+        {
+            return true;
+        }
+
+        return !string.IsNullOrWhiteSpace(lootingPlayer.PlayerGuild)
+               && selectedGuilds.Contains(lootingPlayer.PlayerGuild);
     }
 
     #endregion
