@@ -55,4 +55,4 @@ using System.Runtime.CompilerServices;
 // [assembly: AssemblyVersion("1.0.*")]
 [assembly: AssemblyVersion("9.0.0.0")]
 [assembly: AssemblyFileVersion("9.3.3.0")]
-[assembly: AssemblyInformationalVersion("9.3.3-beta2")]
+[assembly: AssemblyInformationalVersion("9.3.3-beta.2")]
