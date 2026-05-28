@@ -204,16 +204,19 @@ public class OpenWorldController(TrackingController trackingController, MainWind
     public async Task SaveOnClusterChangedAsync()
     {
         await SaveInFileAsync();
-        _recordedKilledMobs.Clear();
-        _pendingKilledMobs.Clear();
-        _localPlayerDamagedMobs.Clear();
     }
 
-    public async Task ResetStatsAsync()
+    public void ResetRuntimeTracking()
     {
         _recordedKilledMobs.Clear();
         _pendingKilledMobs.Clear();
         _localPlayerDamagedMobs.Clear();
+        Log.Debug("Open World runtime tracking reset");
+    }
+
+    public async Task ResetStatsAsync()
+    {
+        ResetRuntimeTracking();
 
         await Application.Current.Dispatcher.InvokeAsync(() =>
         {

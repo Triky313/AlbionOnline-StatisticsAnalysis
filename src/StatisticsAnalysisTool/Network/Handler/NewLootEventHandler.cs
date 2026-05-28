@@ -1,4 +1,4 @@
-﻿using StatisticsAnalysisTool.Network.Events;
+using StatisticsAnalysisTool.Network.Events;
 using StatisticsAnalysisTool.Network.Manager;
 using System.Threading.Tasks;
 
@@ -12,6 +12,7 @@ public class NewLootEventHandler(TrackingController trackingController) : EventP
         {
             trackingController.LootController.SetIdentifiedBody((long) value.ObjectId, value.LootBody);
         }
+
         await Task.CompletedTask;
     }
 }

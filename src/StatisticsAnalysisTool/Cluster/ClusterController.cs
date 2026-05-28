@@ -41,6 +41,13 @@ public sealed class ClusterController(TrackingController trackingController, Mai
 
     public event Action<ClusterInfo> OnChangeCluster;
 
+    public void BeginClusterChange()
+    {
+        trackingController.CombatController.CombatEventTracker.OnClusterChanged();
+        trackingController.OpenWorldController.ResetRuntimeTracking();
+        Log.Debug("Cluster change started; combat mob cache and Open World runtime tracking reset");
+    }
+
     public void ChangeClusterInformation(MapType mapType, Guid? mapGuid, string clusterIndex, string instanceName, string worldMapDataType, byte[] dungeonInformation, string mainClusterIndex)
     {
         CurrentCluster.ClusterInfoFullyAvailable = false;
@@ -54,7 +61,6 @@ public sealed class ClusterController(TrackingController trackingController, Mai
         CurrentCluster.Entered = DateTime.UtcNow;
         CurrentCluster.ClusterInfoFullyAvailable = true;
         mainWindowViewModel.MainStatusBindings.SetLocation(GetClusterDisplayName(CurrentCluster));
-        trackingController.CombatController.CombatEventTracker.OnClusterChanged();
 
         if (trackingController.IsTrackingAllowedByMainCharacter())
         {
