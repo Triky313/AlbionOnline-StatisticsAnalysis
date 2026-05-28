@@ -38,6 +38,7 @@
   </PropertyGroup>
   <PropertyGroup>
     <NetSparkleEd25519PublicKey Condition="'$(NetSparkleEd25519PublicKey)' == ''">$(SPARKLE_PUBLIC_KEY)</NetSparkleEd25519PublicKey>
+    <AuthenticodePublisherThumbprint Condition="'$(AuthenticodePublisherThumbprint)' == ''">$(AUTHENTICODE_PUBLISHER_THUMBPRINT)</AuthenticodePublisherThumbprint>
     <RequireNetSparkleEd25519PublicKey Condition="'$(RequireNetSparkleEd25519PublicKey)' == ''">false</RequireNetSparkleEd25519PublicKey>
     <NetSparkleSignatureVerificationRequiredLiteral>false</NetSparkleSignatureVerificationRequiredLiteral>
     <NetSparkleSignatureVerificationRequiredLiteral Condition="'$(RequireNetSparkleEd25519PublicKey)' == 'true'">true</NetSparkleSignatureVerificationRequiredLiteral>
@@ -959,6 +960,7 @@
       <NetSparkleSecuritySourceLine Include="internal static class AutoUpdateSecurityBuildSettings" />
       <NetSparkleSecuritySourceLine Include="{" />
       <NetSparkleSecuritySourceLine Include="    public const string Ed25519PublicKey = &quot;$(NetSparkleEd25519PublicKey)&quot;%3B" />
+      <NetSparkleSecuritySourceLine Include="    public const string AuthenticodePublisherThumbprint = &quot;$(AuthenticodePublisherThumbprint)&quot;%3B" />
       <NetSparkleSecuritySourceLine Include="    public const bool IsSignatureVerificationRequired = $(NetSparkleSignatureVerificationRequiredLiteral)%3B" />
       <NetSparkleSecuritySourceLine Include="}" />
     </ItemGroup>

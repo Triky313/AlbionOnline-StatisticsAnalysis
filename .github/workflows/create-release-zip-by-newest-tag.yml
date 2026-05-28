@@ -17,6 +17,7 @@ jobs:
       Project_File_Path: src\StatisticsAnalysisTool\StatisticsAnalysisTool.csproj
       SPARKLE_PRIVATE_KEY: ${{ secrets.SPARKLE_PRIVATE_KEY }}
       SPARKLE_PUBLIC_KEY: ${{ vars.SPARKLE_PUBLIC_KEY || secrets.SPARKLE_PUBLIC_KEY }}
+      AUTHENTICODE_PUBLISHER_THUMBPRINT: ${{ vars.AUTHENTICODE_PUBLISHER_THUMBPRINT || secrets.AUTHENTICODE_PUBLISHER_THUMBPRINT }}
 
     steps:
       - name: "🛒 Checkout tagged commit"
