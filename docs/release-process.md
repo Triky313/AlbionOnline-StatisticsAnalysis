@@ -44,12 +44,8 @@ The workflow decides which appcast files to update from the tag name.
 | `v9.4.0-beta.1` | Pre-release | `ao-netsparkle-pre-release-update-check.xml` |
 | `v9.4.0-rc.1` | Pre-release | `ao-netsparkle-pre-release-update-check.xml` |
 | `v9.4.0-alpha.1` | Pre-release | `ao-netsparkle-pre-release-update-check.xml` |
-| `v9.4.0+both` | Both | Both appcast files |
-| `v9.4.0-both` | Both | Both appcast files |
-| `v9.4.0-rc.1+both` | Both | Both appcast files |
-| `v9.4.0-rc.1-both` | Both | Both appcast files |
 
-The `+both` or `-both` suffix is release metadata. It is used only by the workflow and is not written into the appcast version. For example, `v9.4.0-both` is published to NetSparkle as version `9.4.0`.
+The workflow does not support publishing the same tag to both appcast files. Tags with release metadata such as `+both` or custom hyphen suffixes such as `-both` are rejected.
 
 ## Stable Release
 
@@ -68,7 +64,7 @@ The `+both` or `-both` suffix is release metadata. It is used only by the workfl
 
 ## Pre-release
 
-Use a pre-release suffix such as `-alpha`, `-beta`, or `-rc`. Tags with other hyphen suffixes are rejected by the workflow so accidental release channels do not update an appcast.
+Use a pre-release suffix such as `-alpha`, `-beta`, or `-rc`. Optional numeric suffixes are supported, for example `v9.4.0-beta`, `v9.4.0-beta.1`, or `v9.4.0-rc1`. Tags with other hyphen suffixes are rejected by the workflow so accidental release channels do not update an appcast.
 
 ```powershell
 git tag v9.4.0-beta.1
@@ -77,20 +73,7 @@ git push origin v9.4.0-beta.1
 
 The workflow marks the GitHub release as a pre-release and opens a pull request for `ao-netsparkle-pre-release-update-check.xml`.
 
-Installed pre-release builds automatically check the pre-release appcast, even if the user has not enabled pre-release suggestions. This keeps beta, alpha, and rc builds on the channel that contains their signed appcast metadata.
-
-## Both Appcasts
-
-Use `+both` or `-both` when the same artifact should be offered to stable users and pre-release users.
-
-```powershell
-git tag v9.4.0-both
-git push origin v9.4.0-both
-```
-
-The workflow opens one pull request that updates both appcast files and both appcast signature files.
-
-The release assets use the version before `+both` in their file names. For example, `v9.4.0+both` creates artifacts named like `StatisticsAnalysis-AlbionOnline-v9.4.0-windows-x64.exe` under the `v9.4.0+both` GitHub release.
+Installed pre-release builds automatically check the stable and pre-release appcasts, even if the user has not enabled pre-release suggestions. Users who enable pre-release suggestions in settings also check both appcasts. When a stable release and a pre-release share the same numeric version, the stable release is preferred.
 
 ## What Happens in the Workflow
 

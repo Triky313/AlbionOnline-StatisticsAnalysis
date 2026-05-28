@@ -24,6 +24,7 @@ using System.Net.Http.Headers;
 using System.Reflection;
 using System.Text.Json;
 using System.Text.Json.Serialization;
+using System.Text.RegularExpressions;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
@@ -40,9 +41,11 @@ public static class AutoUpdateController
     private static readonly Lock SyncRoot = new();
     private static readonly JsonSerializerOptions JsonSerializerOptions = new() { PropertyNameCaseInsensitive = true };
     private static readonly IComparer<string> AppCastVersionComparer = Comparer<string>.Create(CompareAppCastVersions);
+    private static readonly Regex PreReleaseVersionRegex = new(
+        "^\\d+(?:\\.\\d+){0,3}-(alpha|beta|rc)(?:[.-]?\\d+(?:[.-]\\d+)*)?$",
+        RegexOptions.IgnoreCase | RegexOptions.CultureInvariant);
 
-    private static SparkleUpdater _sparkleUpdater;
-    private static AutoUpdateConfiguration _currentConfiguration;
+    private static IReadOnlyList<SparkleUpdaterContext> _sparkleUpdaterContexts = [];
     private static bool _isStartupCheckCompleted;
     private static bool _isUpdateCheckRunning;
     private static bool _hasLoggedAuthenticodeVerificationNotConfigured;
@@ -99,24 +102,24 @@ public static class AutoUpdateController
             return;
         }
 
-        var sparkleUpdater = await EnsureSparkleUpdaterAsync();
-        if (sparkleUpdater == null)
+        var sparkleUpdaterContexts = await EnsureSparkleUpdaterContextsAsync();
+        var pendingUpdateContext = sparkleUpdaterContexts.FirstOrDefault(context => context.Configuration.IsSameAs(pendingUpdateInfo.Configuration));
+        if (pendingUpdateContext == null)
         {
             ClearAvailableUpdate();
             ShowUpdateCheckFailedMessage();
             return;
         }
 
-        var configuration = GetCurrentConfiguration();
-        if (!await IsAppCastSignatureTrustedAsync(configuration, sparkleUpdater.SignatureVerifier)
-            || !IsUpdateItemSignatureTrusted(pendingUpdateInfo.UpdateItem, sparkleUpdater.SignatureVerifier))
+        if (!await IsAppCastSignatureTrustedAsync(pendingUpdateContext.Configuration, pendingUpdateContext.SparkleUpdater.SignatureVerifier)
+            || !IsUpdateItemSignatureTrusted(pendingUpdateInfo.UpdateItem, pendingUpdateContext.SparkleUpdater.SignatureVerifier))
         {
             ClearAvailableUpdate();
             return;
         }
 
         await ShowUpdateWindowAsync(
-            sparkleUpdater,
+            pendingUpdateContext.SparkleUpdater,
             pendingUpdateInfo.UpdateItem,
             pendingUpdateInfo.ReleaseInfos,
             pendingUpdateInfo.CurrentVersion);
@@ -169,8 +172,8 @@ public static class AutoUpdateController
 
         try
         {
-            var sparkleUpdater = await EnsureSparkleUpdaterAsync();
-            if (sparkleUpdater == null)
+            var sparkleUpdaterContexts = await EnsureSparkleUpdaterContextsAsync();
+            if (sparkleUpdaterContexts.Count == 0)
             {
                 if (checkSource == UpdateCheckSource.Manual)
                 {
@@ -180,72 +183,68 @@ public static class AutoUpdateController
                 return;
             }
 
-            var configuration = GetCurrentConfiguration();
-            if (!await IsAppCastSignatureTrustedAsync(configuration, sparkleUpdater.SignatureVerifier))
+            var currentVersion = GetCurrentUpdateVersion();
+            var currentVersionText = GetCurrentUpdateVersionText();
+            var updateCandidates = new List<AppCastUpdateCandidate>();
+            var completedUpdateChecks = 0;
+
+            foreach (var sparkleUpdaterContext in sparkleUpdaterContexts)
+            {
+                if (!await IsAppCastSignatureTrustedAsync(sparkleUpdaterContext.Configuration, sparkleUpdaterContext.SparkleUpdater.SignatureVerifier))
+                {
+                    continue;
+                }
+
+                try
+                {
+                    var updateInfo = await sparkleUpdaterContext.SparkleUpdater.CheckForUpdatesQuietly();
+                    if (updateInfo.Status == UpdateStatus.UpdateAvailable)
+                    {
+                        var selectedUpdateItem = SelectUpdate(updateInfo.Updates, currentVersionText);
+                        if (selectedUpdateItem != null && IsUpdateItemSignatureTrusted(selectedUpdateItem, sparkleUpdaterContext.SparkleUpdater.SignatureVerifier))
+                        {
+                            updateCandidates.Add(new AppCastUpdateCandidate(selectedUpdateItem, sparkleUpdaterContext));
+                        }
+                    }
+
+                    if (updateInfo.Status != UpdateStatus.CouldNotDetermine)
+                    {
+                        completedUpdateChecks++;
+                    }
+                }
+                catch (Exception e) when (e is HttpRequestException or TaskCanceledException or InvalidOperationException)
+                {
+                    DebugConsole.WriteError(MethodBase.GetCurrentMethod()?.DeclaringType, e);
+                    Log.Warning(e, "Failed to check auto update appcast. Appcast URL: {AppCastUrl}", sparkleUpdaterContext.Configuration.AppCastUrl);
+                }
+            }
+
+            var selectedUpdate = SelectUpdateCandidate(updateCandidates, currentVersionText);
+            if (selectedUpdate == null)
             {
                 ClearAvailableUpdate();
+
                 if (checkSource == UpdateCheckSource.Manual)
                 {
-                    ShowUpdateCheckFailedMessage();
-                }
-
-                return;
-            }
-
-            var updateInfo = await sparkleUpdater.CheckForUpdatesQuietly();
-            switch (updateInfo.Status)
-            {
-                case UpdateStatus.UpdateAvailable:
-                    {
-                        var currentVersion = GetCurrentUpdateVersion();
-                        var currentVersionText = GetCurrentUpdateVersionText();
-                        var updateItem = SelectUpdate(updateInfo.Updates, currentVersionText);
-                        if (updateItem == null || !IsUpdateItemSignatureTrusted(updateItem, sparkleUpdater.SignatureVerifier))
-                        {
-                            ClearAvailableUpdate();
-                            if (checkSource == UpdateCheckSource.Manual)
-                            {
-                                ShowNoUpdateAvailableMessage();
-                            }
-
-                            return;
-                        }
-
-                        var releaseInfos = await LoadGitHubReleaseInfosAsync(updateItem, currentVersion);
-                        SetAvailableUpdate(new PendingUpdateInfo(updateItem, releaseInfos, currentVersion));
-
-                        if (checkSource == UpdateCheckSource.Manual)
-                        {
-                            await ShowUpdateWindowAsync(sparkleUpdater, updateItem, releaseInfos, currentVersion);
-                        }
-
-                        return;
-                    }
-                case UpdateStatus.UpdateNotAvailable:
-                    ClearAvailableUpdate();
-
-                    if (checkSource == UpdateCheckSource.Manual)
+                    if (completedUpdateChecks > 0)
                     {
                         ShowNoUpdateAvailableMessage();
                     }
-
-                    return;
-                case UpdateStatus.UserSkipped:
-                    return;
-                case UpdateStatus.CouldNotDetermine:
-                    if (checkSource == UpdateCheckSource.Manual)
+                    else
                     {
                         ShowUpdateCheckFailedMessage();
                     }
+                }
 
-                    return;
-                default:
-                    if (checkSource == UpdateCheckSource.Manual)
-                    {
-                        ShowUpdateCheckFailedMessage();
-                    }
+                return;
+            }
 
-                    return;
+            var releaseInfos = await LoadGitHubReleaseInfosAsync(selectedUpdate.UpdateItem, currentVersion, selectedUpdate.Context.Configuration);
+            SetAvailableUpdate(new PendingUpdateInfo(selectedUpdate.UpdateItem, releaseInfos, currentVersion, selectedUpdate.Context.Configuration));
+
+            if (checkSource == UpdateCheckSource.Manual)
+            {
+                await ShowUpdateWindowAsync(selectedUpdate.Context.SparkleUpdater, selectedUpdate.UpdateItem, releaseInfos, currentVersion);
             }
         }
         catch (HttpRequestException e)
@@ -667,27 +666,45 @@ public static class AutoUpdateController
             .FirstOrDefault();
     }
 
-    private static async Task<IReadOnlyList<GitHubReleaseInfo>> LoadGitHubReleaseInfosAsync(AppCastItem selectedUpdateItem, Version currentVersion)
+    private static AppCastUpdateCandidate SelectUpdateCandidate(IReadOnlyList<AppCastUpdateCandidate> updateCandidates, string currentVersionText)
+    {
+        if (updateCandidates == null || updateCandidates.Count == 0)
+        {
+            return null;
+        }
+
+        return updateCandidates
+            .Where(candidate => CompareAppCastVersions(candidate.UpdateItem.Version, currentVersionText) > 0)
+            .OrderByDescending(candidate => candidate.UpdateItem.Version, AppCastVersionComparer)
+            .FirstOrDefault();
+    }
+
+    private static async Task<IReadOnlyList<GitHubReleaseInfo>> LoadGitHubReleaseInfosAsync(
+        AppCastItem selectedUpdateItem,
+        Version currentVersion,
+        AutoUpdateConfiguration configuration)
     {
         var selectedUpdateVersion = ParseAppCastVersion(selectedUpdateItem?.Version);
         if (selectedUpdateVersion != null)
         {
-            var releaseInfos = await TryLoadGitHubReleaseInfosAsync(currentVersion, selectedUpdateVersion);
+            var releaseInfos = await TryLoadGitHubReleaseInfosAsync(currentVersion, selectedUpdateVersion, configuration);
             if (releaseInfos?.Count > 0)
             {
                 return releaseInfos;
             }
         }
 
-        var fallbackReleaseInfo = await TryLoadGitHubReleaseInfoAsync(selectedUpdateItem);
+        var fallbackReleaseInfo = await TryLoadGitHubReleaseInfoAsync(selectedUpdateItem, configuration);
         return fallbackReleaseInfo != null
             ? [fallbackReleaseInfo]
             : [];
     }
 
-    private static async Task<IReadOnlyList<GitHubReleaseInfo>> TryLoadGitHubReleaseInfosAsync(Version currentVersion, Version selectedUpdateVersion)
+    private static async Task<IReadOnlyList<GitHubReleaseInfo>> TryLoadGitHubReleaseInfosAsync(
+        Version currentVersion,
+        Version selectedUpdateVersion,
+        AutoUpdateConfiguration configuration)
     {
-        var configuration = _currentConfiguration;
         if (configuration == null)
         {
             return [];
@@ -734,9 +751,8 @@ public static class AutoUpdateController
             .First();
     }
 
-    private static async Task<GitHubReleaseInfo> TryLoadGitHubReleaseInfoAsync(AppCastItem updateItem)
+    private static async Task<GitHubReleaseInfo> TryLoadGitHubReleaseInfoAsync(AppCastItem updateItem, AutoUpdateConfiguration configuration)
     {
-        var configuration = _currentConfiguration;
         if (configuration == null)
         {
             return null;
@@ -862,17 +878,8 @@ public static class AutoUpdateController
             return false;
         }
 
-        var normalizedText = versionText.Trim().TrimStart('v').ToLowerInvariant();
-        var suffixIndex = normalizedText.IndexOf('-', StringComparison.Ordinal);
-        if (suffixIndex < 0)
-        {
-            return false;
-        }
-
-        var suffix = normalizedText[(suffixIndex + 1)..];
-        return suffix.StartsWith("alpha", StringComparison.Ordinal)
-               || suffix.StartsWith("beta", StringComparison.Ordinal)
-               || suffix.StartsWith("rc", StringComparison.Ordinal);
+        var normalizedText = versionText.Trim().TrimStart('v', 'V').Split('+')[0];
+        return PreReleaseVersionRegex.IsMatch(normalizedText);
     }
 
     private static string GetTagVersion(string versionText)
@@ -1095,38 +1102,49 @@ public static class AutoUpdateController
         return LocalizationController.Translation("UPDATE_DOWNLOADING_BUTTON");
     }
 
-    private static async Task<SparkleUpdater> EnsureSparkleUpdaterAsync()
+    private static async Task<IReadOnlyList<SparkleUpdaterContext>> EnsureSparkleUpdaterContextsAsync()
     {
-        var configuration = await CreateConfigurationAsync();
-        if (configuration == null)
+        var configurations = await CreateConfigurationsAsync();
+        if (configurations.Count == 0)
         {
-            return null;
+            return [];
         }
 
         lock (SyncRoot)
         {
-            if (_sparkleUpdater != null
-                && _currentConfiguration != null
-                && _currentConfiguration.IsSameAs(configuration))
+            if (AreSameConfigurations(_sparkleUpdaterContexts, configurations))
             {
-                return _sparkleUpdater;
+                return _sparkleUpdaterContexts;
             }
 
             DisposeUpdater();
 
-            _sparkleUpdater = CreateSparkleUpdater(configuration);
-            _currentConfiguration = configuration;
+            _sparkleUpdaterContexts = configurations
+                .Select(configuration => new SparkleUpdaterContext(configuration, CreateSparkleUpdater(configuration)))
+                .ToList();
 
-            return _sparkleUpdater;
+            return _sparkleUpdaterContexts;
         }
     }
 
-    private static AutoUpdateConfiguration GetCurrentConfiguration()
+    private static bool AreSameConfigurations(
+        IReadOnlyList<SparkleUpdaterContext> currentContexts,
+        IReadOnlyList<AutoUpdateConfiguration> configurations)
     {
-        lock (SyncRoot)
+        if (currentContexts == null || currentContexts.Count != configurations.Count)
         {
-            return _currentConfiguration;
+            return false;
         }
+
+        for (var i = 0; i < configurations.Count; i++)
+        {
+            if (!currentContexts[i].Configuration.IsSameAs(configurations[i]))
+            {
+                return false;
+            }
+        }
+
+        return true;
     }
 
     private static SparkleUpdater CreateSparkleUpdater(AutoUpdateConfiguration configuration)
@@ -1243,40 +1261,52 @@ public static class AutoUpdateController
         return $"/VERYSILENT /SUPPRESSMSGBOXES /NORESTART /SP- /DIR=\"{toolDirectory}\"";
     }
 
-    private static async Task<AutoUpdateConfiguration> CreateConfigurationAsync()
+    private static async Task<IReadOnlyList<AutoUpdateConfiguration>> CreateConfigurationsAsync()
     {
-        var shouldUsePreReleaseAppCast = SettingsController.CurrentSettings.IsSuggestPreReleaseUpdatesActive || IsCurrentBuildPreRelease();
-        var appCastUrl = shouldUsePreReleaseAppCast
-            ? Settings.Default.AutoUpdatePreReleaseConfigUrl
-            : Settings.Default.AutoUpdateConfigUrl;
+        var shouldIncludePreReleaseAppCast = SettingsController.CurrentSettings.IsSuggestPreReleaseUpdatesActive || IsCurrentBuildPreRelease();
+        var appCastUrls = new List<string> { Settings.Default.AutoUpdateConfigUrl };
 
-        if (shouldUsePreReleaseAppCast && !SettingsController.CurrentSettings.IsSuggestPreReleaseUpdatesActive)
+        if (shouldIncludePreReleaseAppCast)
         {
-            Log.Information("Current application version is a pre-release; using the pre-release auto update appcast.");
+            appCastUrls.Add(Settings.Default.AutoUpdatePreReleaseConfigUrl);
         }
 
-        var accessibilityResult = await HttpClientUtils.IsUrlAccessible(appCastUrl);
-        if (!accessibilityResult.IsAccessible)
+        if (shouldIncludePreReleaseAppCast && !SettingsController.CurrentSettings.IsSuggestPreReleaseUpdatesActive)
         {
-            return null;
+            Log.Information("Current application version is a pre-release; including the pre-release auto update appcast.");
         }
 
-        return new AutoUpdateConfiguration(
-            appCastUrl,
-            accessibilityResult.IsProxyActive ? SettingsController.CurrentSettings.ProxyUrlWithPort : string.Empty);
+        var configurations = new List<AutoUpdateConfiguration>();
+        foreach (var appCastUrl in appCastUrls.Distinct(StringComparer.OrdinalIgnoreCase))
+        {
+            var accessibilityResult = await HttpClientUtils.IsUrlAccessible(appCastUrl);
+            if (!accessibilityResult.IsAccessible)
+            {
+                continue;
+            }
+
+            configurations.Add(new AutoUpdateConfiguration(
+                appCastUrl,
+                accessibilityResult.IsProxyActive ? SettingsController.CurrentSettings.ProxyUrlWithPort : string.Empty));
+        }
+
+        return configurations;
     }
 
     private static void DisposeUpdater()
     {
-        if (_sparkleUpdater == null)
+        if (_sparkleUpdaterContexts == null || _sparkleUpdaterContexts.Count == 0)
         {
-            _currentConfiguration = null;
+            _sparkleUpdaterContexts = [];
             return;
         }
 
-        _sparkleUpdater.Dispose();
-        _sparkleUpdater = null;
-        _currentConfiguration = null;
+        foreach (var sparkleUpdaterContext in _sparkleUpdaterContexts)
+        {
+            sparkleUpdaterContext.SparkleUpdater.Dispose();
+        }
+
+        _sparkleUpdaterContexts = [];
     }
 
     private static void ShowNoUpdateAvailableMessage()
@@ -1351,6 +1381,20 @@ public static class AutoUpdateController
         }
     }
 
+    private sealed class SparkleUpdaterContext(AutoUpdateConfiguration configuration, SparkleUpdater sparkleUpdater)
+    {
+        public AutoUpdateConfiguration Configuration { get; } = configuration;
+
+        public SparkleUpdater SparkleUpdater { get; } = sparkleUpdater;
+    }
+
+    private sealed class AppCastUpdateCandidate(AppCastItem updateItem, SparkleUpdaterContext context)
+    {
+        public AppCastItem UpdateItem { get; } = updateItem;
+
+        public SparkleUpdaterContext Context { get; } = context;
+    }
+
     private sealed class ProxyAwareAppCastDataDownloader(string proxyUrl) : WebRequestAppCastDataDownloader
     {
         protected override HttpClient CreateHttpClient()
@@ -1392,11 +1436,16 @@ public static class AutoUpdateController
 
     private sealed class PendingUpdateInfo
     {
-        public PendingUpdateInfo(AppCastItem updateItem, IReadOnlyList<GitHubReleaseInfo> releaseInfos, Version currentVersion)
+        public PendingUpdateInfo(
+            AppCastItem updateItem,
+            IReadOnlyList<GitHubReleaseInfo> releaseInfos,
+            Version currentVersion,
+            AutoUpdateConfiguration configuration)
         {
             UpdateItem = updateItem;
             ReleaseInfos = releaseInfos ?? [];
             CurrentVersion = currentVersion;
+            Configuration = configuration;
         }
 
         public AppCastItem UpdateItem
@@ -1410,6 +1459,11 @@ public static class AutoUpdateController
         }
 
         public Version CurrentVersion
+        {
+            get;
+        }
+
+        public AutoUpdateConfiguration Configuration
         {
             get;
         }

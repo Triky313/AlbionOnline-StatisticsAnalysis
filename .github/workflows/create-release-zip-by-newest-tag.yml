@@ -37,32 +37,20 @@ jobs:
         run: |
           $tagName = "${{ github.ref_name }}"
           $rawVersion = $tagName.TrimStart("v")
-          $versionAndMetadata = $rawVersion -split "\+", 2
-          $version = $versionAndMetadata[0]
-          $metadataParts = [System.Collections.Generic.List[string]]::new()
-
-          if ($versionAndMetadata.Count -gt 1)
+          if ($rawVersion.Contains("+"))
           {
-              foreach ($metadataPart in $versionAndMetadata[1].Split(".", [System.StringSplitOptions]::RemoveEmptyEntries))
-              {
-                  $metadataParts.Add($metadataPart)
-              }
+              throw "Release tag metadata is not supported. Use a plain release tag or an alpha, beta, or rc pre-release tag. Invalid tag: '$tagName'."
           }
 
-          if ($version -match "^(?<version>.+)-both$")
+          $version = $rawVersion
+          $isStableRelease = $version -match "^\d+(?:\.\d+){0,3}$"
+          $isPreRelease = $version -match "^\d+(?:\.\d+){0,3}-(alpha|beta|rc)(?:[.-]?\d+(?:[.-]\d+)*)?$"
+          if (!$isStableRelease -and !$isPreRelease)
           {
-              $version = $Matches["version"]
-              $metadataParts.Add("both")
+              throw "Tags must use a numeric release version or an alpha, beta, or rc pre-release suffix. Invalid tag: '$tagName'."
           }
 
-          $isBothAppCast = $metadataParts -contains "both"
-          $isPreRelease = $version -match "-(alpha|beta|rc)([.-].*)?$"
-          if ($version.Contains("-") -and !$isPreRelease)
-          {
-              throw "Pre-release tags must use an alpha, beta, or rc suffix. Invalid tag: '$tagName'."
-          }
-
-          $appCastMode = if ($isBothAppCast) { "both" } elseif ($isPreRelease) { "pre-release" } else { "release" }
+          $appCastMode = if ($isPreRelease) { "pre-release" } else { "release" }
           $artifactTagName = "v$version"
           $branchSafeTag = $tagName -replace "[^A-Za-z0-9._-]", "-"
           $versionInfoMatch = [regex]::Match($version, "^\d+(?:\.\d+){0,3}")
@@ -90,6 +78,7 @@ jobs:
           "app-version=$version" | Out-File -FilePath $env:GITHUB_OUTPUT -Encoding utf8 -Append
           "app-version-info=$versionInfo" | Out-File -FilePath $env:GITHUB_OUTPUT -Encoding utf8 -Append
           "appcast-mode=$appCastMode" | Out-File -FilePath $env:GITHUB_OUTPUT -Encoding utf8 -Append
+          "is-pre-release=$($isPreRelease.ToString().ToLowerInvariant())" | Out-File -FilePath $env:GITHUB_OUTPUT -Encoding utf8 -Append
           "artifact-tag-name=$artifactTagName" | Out-File -FilePath $env:GITHUB_OUTPUT -Encoding utf8 -Append
           "appcast-branch=release/appcast-$branchSafeTag" | Out-File -FilePath $env:GITHUB_OUTPUT -Encoding utf8 -Append
 
@@ -158,7 +147,7 @@ jobs:
         uses: softprops/action-gh-release@v2
         if: startsWith(github.ref, 'refs/tags/')
         with:
-          prerelease: ${{ contains(github.ref_name, '-') }}
+          prerelease: ${{ steps.release_variables.outputs.is-pre-release }}
           files: |
             StatisticsAnalysis-AlbionOnline-${{ steps.release_variables.outputs.artifact-tag-name }}-windows-x64.zip
             StatisticsAnalysis-AlbionOnline-${{ steps.release_variables.outputs.artifact-tag-name }}-windows-x64.exe
@@ -197,7 +186,6 @@ jobs:
           Set-ExecutionPolicy -ExecutionPolicy Bypass -Scope Process -Force
           $appCastFiles = switch ($env:APPCAST_MODE)
           {
-              "both" { @("ao-netsparkle-update-check.xml", "ao-netsparkle-pre-release-update-check.xml") }
               "pre-release" { @("ao-netsparkle-pre-release-update-check.xml") }
               default { @("ao-netsparkle-update-check.xml") }
           }
