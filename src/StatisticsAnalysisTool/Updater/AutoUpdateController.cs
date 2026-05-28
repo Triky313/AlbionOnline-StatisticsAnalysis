@@ -44,6 +44,7 @@ public static class AutoUpdateController
     private static AutoUpdateConfiguration _currentConfiguration;
     private static bool _isStartupCheckCompleted;
     private static bool _isUpdateCheckRunning;
+    private static bool _hasLoggedAuthenticodeVerificationNotConfigured;
     private static CancellationTokenSource _backgroundUpdateCancellationTokenSource;
     private static Task _backgroundUpdateTask;
     private static PendingUpdateInfo _pendingUpdateInfo;
@@ -964,6 +965,7 @@ public static class AutoUpdateController
 
             return true;
         };
+        sparkleUpdater.InstallerProcessAboutToStart += (_, downloadFilePath) => CanStartDownloadedInstaller(downloadFilePath);
 
         if (configuration.IsProxyEnabled)
         {
@@ -1000,6 +1002,30 @@ public static class AutoUpdateController
         }
 
         throw new InvalidOperationException("Unable to resolve the current executable path for auto update.");
+    }
+
+    private static bool CanStartDownloadedInstaller(string downloadFilePath)
+    {
+        if (!AutoUpdateSecurity.TryGetAuthenticodePublisherThumbprint(out var expectedThumbprint))
+        {
+            if (!_hasLoggedAuthenticodeVerificationNotConfigured)
+            {
+                Log.Information("Authenticode verification for auto update installers is not configured; relying on NetSparkle Ed25519 verification.");
+                _hasLoggedAuthenticodeVerificationNotConfigured = true;
+            }
+
+            return true;
+        }
+
+        var verificationResult = AuthenticodeSignatureVerifier.VerifyFile(downloadFilePath, expectedThumbprint);
+        if (verificationResult == AuthenticodeVerificationResult.Valid)
+        {
+            return true;
+        }
+
+        ClearAvailableUpdate();
+        Log.Warning("Downloaded auto update installer failed Authenticode verification and will not be started. Installer path: {InstallerPath}", downloadFilePath);
+        return false;
     }
 
     private static Ed25519Checker CreateSignatureVerifier()

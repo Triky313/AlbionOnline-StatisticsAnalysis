@@ -7,9 +7,13 @@ This project releases Windows artifacts from Git tags. Pushing a tag creates the
 Create these values in `Settings` -> `Secrets and variables` -> `Actions`:
 
 - Repository secret `SPARKLE_PRIVATE_KEY`
-- Repository variable `SPARKLE_PUBLIC_KEY`
+- Repository secret `SPARKLE_PUBLIC_KEY`
 
 The private key signs update files and appcast files in GitHub Actions. The public key is embedded into the release build through MSBuild so the app can verify updates.
+
+`SPARKLE_PUBLIC_KEY` can also be provided as a repository variable because it is not secret material, but the workflow also accepts the existing repository secret.
+
+When Authenticode signing is added, also provide the expected publisher certificate thumbprint as `AUTHENTICODE_PUBLISHER_THUMBPRINT`. Until that value is configured, the integrated updater relies on NetSparkle Ed25519 verification only. Manual user downloads from the GitHub release are not blocked by the app.
 
 ## Tag Modes
 
@@ -74,8 +78,16 @@ The release assets use the version before `+both` in their file names. For examp
 5. The ZIP and installer are uploaded to the GitHub release.
 6. The workflow checks out `main`.
 7. The installer is signed with the NetSparkle private key.
-8. The appcast XML file or files are generated.
+8. The appcast XML file or files are generated with real file length values and Ed25519 download signatures.
 9. The appcast `.signature` file or files are generated.
 10. A pull request is opened against `main`.
 
 The GitHub release is available before the appcast pull request is merged. Merging the pull request activates the update for the in-app updater.
+
+## Updater Verification
+
+Release builds require an embedded NetSparkle public key. If the key is missing, the release build fails before publishing artifacts.
+
+The integrated updater verifies the appcast signature before offering an update and requires a download signature on the selected update item. Invalid or missing updater signatures prevent the in-app update prompt, but users can still manually download and install ZIP or installer assets from GitHub.
+
+If `AUTHENTICODE_PUBLISHER_THUMBPRINT` is configured in a future Authenticode signing setup, the integrated updater also verifies the downloaded installer before starting it. If the Authenticode signature is invalid or signed by a different certificate, the integrated updater does not start the installer. This check is intentionally scoped to the integrated updater and does not block manual installation.

@@ -116,6 +116,7 @@ function Write-AppCast
         $writer.WriteAttributeString("sparkle", "os", $sparkleNamespace, "windows-x64")
         $writer.WriteAttributeString("length", $Length.ToString([Globalization.CultureInfo]::InvariantCulture))
         $writer.WriteAttributeString("type", "application/octet-stream")
+        $writer.WriteAttributeString("sparkle", "edSignature", $sparkleNamespace, $Signature)
         $writer.WriteAttributeString("sparkle", "signature", $sparkleNamespace, $Signature)
         $writer.WriteEndElement()
         $writer.WriteEndElement()
