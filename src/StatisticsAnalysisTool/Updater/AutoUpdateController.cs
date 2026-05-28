@@ -583,12 +583,13 @@ public static class AutoUpdateController
         try
         {
             using var httpClient = CreateAppCastHttpClient(configuration.ProxyUrl);
+            var signatureUrl = $"{configuration.AppCastUrl}.signature";
             var appCastData = await httpClient.GetByteArrayAsync(configuration.AppCastUrl);
-            var signature = (await httpClient.GetStringAsync($"{configuration.AppCastUrl}.signature")).Trim();
+            var signature = (await httpClient.GetStringAsync(signatureUrl)).Trim();
 
             if (string.IsNullOrWhiteSpace(signature))
             {
-                Log.Warning("Auto update appcast signature verification failed because the signature file is empty.");
+                Log.Warning("Auto update appcast signature verification failed because the signature file is empty. Signature URL: {SignatureUrl}", signatureUrl);
                 return false;
             }
 
@@ -598,6 +599,13 @@ public static class AutoUpdateController
             }
 
             Log.Warning("Auto update appcast signature verification failed. The update will not be offered.");
+            return false;
+        }
+        catch (HttpRequestException e) when (e.StatusCode == HttpStatusCode.NotFound)
+        {
+            var signatureUrl = $"{configuration.AppCastUrl}.signature";
+            DebugConsole.WriteError(MethodBase.GetCurrentMethod()?.DeclaringType, e);
+            Log.Warning(e, "Auto update appcast signature file was not found. The update will not be offered. Signature URL: {SignatureUrl}", signatureUrl);
             return false;
         }
         catch (Exception e) when (e is HttpRequestException or TaskCanceledException or InvalidOperationException or FormatException)
@@ -803,9 +811,42 @@ public static class AutoUpdateController
         return GetCurrentAssemblyVersion()?.ToString() ?? "0.0.0.0";
     }
 
+    private static string GetCurrentInformationalVersion()
+    {
+        return Assembly.GetExecutingAssembly()
+                   .GetCustomAttribute<AssemblyInformationalVersionAttribute>()
+                   ?.InformationalVersion
+               ?? string.Empty;
+    }
+
     private static Version GetCurrentAssemblyVersion()
     {
         return Assembly.GetExecutingAssembly().GetName().Version ?? new Version(0, 0, 0, 0);
+    }
+
+    private static bool IsCurrentBuildPreRelease()
+    {
+        return IsPreReleaseVersion(GetCurrentInformationalVersion());
+    }
+
+    private static bool IsPreReleaseVersion(string versionText)
+    {
+        if (string.IsNullOrWhiteSpace(versionText))
+        {
+            return false;
+        }
+
+        var normalizedText = versionText.Trim().TrimStart('v').ToLowerInvariant();
+        var suffixIndex = normalizedText.IndexOf('-', StringComparison.Ordinal);
+        if (suffixIndex < 0)
+        {
+            return false;
+        }
+
+        var suffix = normalizedText[(suffixIndex + 1)..];
+        return suffix.StartsWith("alpha", StringComparison.Ordinal)
+               || suffix.StartsWith("beta", StringComparison.Ordinal)
+               || suffix.StartsWith("rc", StringComparison.Ordinal);
     }
 
     private static string GetTagVersion(string versionText)
@@ -1052,9 +1093,15 @@ public static class AutoUpdateController
 
     private static async Task<AutoUpdateConfiguration> CreateConfigurationAsync()
     {
-        var appCastUrl = SettingsController.CurrentSettings.IsSuggestPreReleaseUpdatesActive
+        var shouldUsePreReleaseAppCast = SettingsController.CurrentSettings.IsSuggestPreReleaseUpdatesActive || IsCurrentBuildPreRelease();
+        var appCastUrl = shouldUsePreReleaseAppCast
             ? Settings.Default.AutoUpdatePreReleaseConfigUrl
             : Settings.Default.AutoUpdateConfigUrl;
+
+        if (shouldUsePreReleaseAppCast && !SettingsController.CurrentSettings.IsSuggestPreReleaseUpdatesActive)
+        {
+            Log.Information("Current application version is a pre-release; using the pre-release auto update appcast.");
+        }
 
         var accessibilityResult = await HttpClientUtils.IsUrlAccessible(appCastUrl);
         if (!accessibilityResult.IsAccessible)

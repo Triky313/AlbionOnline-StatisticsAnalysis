@@ -24,7 +24,7 @@ A tool to easily read auction house data with a loot logger, damage meter, dunge
 - Install **.NET 10.0 Desktop Runtime** (v10.0.0 or higher) [here](https://dotnet.microsoft.com/en-us/download/dotnet/10.0) (To start the tool)
 
 **Download the Statistics Analysis Tool**
-[**DOWNLOAD**](https://github.com/Triky313/AlbionOnline-StatisticsAnalysis/releases/download/v8.5.4/StatisticsAnalysis-AlbionOnline-v8.5.4-x64.zip)
+[**DOWNLOAD**](https://github.com/Triky313/AlbionOnline-StatisticsAnalysis/releases/download/v9.1.2/StatisticsAnalysis-AlbionOnline-v9.1.2-windows-x64.exe)
 Unzip the `.zip` file and start `StatisticsAnalysisTool.exe` with a double click. You may not be able to see the `.exe`. Don't worry, usually it's the file with the icon.  
 [Latest release](https://github.com/Triky313/AlbionOnline-StatisticsAnalysis/releases/latest)
 

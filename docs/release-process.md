@@ -15,6 +15,25 @@ The private key signs update files and appcast files in GitHub Actions. The publ
 
 When Authenticode signing is added, also provide the expected publisher certificate thumbprint as `AUTHENTICODE_PUBLISHER_THUMBPRINT`. Until that value is configured, the integrated updater relies on NetSparkle Ed25519 verification only. Manual user downloads from the GitHub release are not blocked by the app.
 
+## Local Release Publishes
+
+Local `Release` publishes also need the NetSparkle public key. Without it, the app cannot verify signed appcasts and would start with unsafe update verification, so the project fails the publish instead of producing a broken updater build.
+
+Use one of these options before publishing locally:
+
+```powershell
+$env:SPARKLE_PUBLIC_KEY = "<public key>"
+dotnet publish src\StatisticsAnalysisTool\StatisticsAnalysisTool.csproj -c Release -p:Platform=x64
+```
+
+or pass the key directly:
+
+```powershell
+dotnet publish src\StatisticsAnalysisTool\StatisticsAnalysisTool.csproj -c Release -p:Platform=x64 -p:NetSparkleEd25519PublicKey="<public key>"
+```
+
+The private key is only needed by GitHub Actions for signing appcasts and download assets. Do not store or commit the private key locally.
+
 ## Tag Modes
 
 The workflow decides which appcast files to update from the tag name.
@@ -55,6 +74,8 @@ git push origin v9.4.0-beta.1
 ```
 
 The workflow marks the GitHub release as a pre-release and opens a pull request for `ao-netsparkle-pre-release-update-check.xml`.
+
+Installed pre-release builds automatically check the pre-release appcast, even if the user has not enabled pre-release suggestions. This keeps beta, alpha, and rc builds on the channel that contains their signed appcast metadata.
 
 ## Both Appcasts
 
