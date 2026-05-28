@@ -1,26 +1,14 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<rss xmlns:dc="http://purl.org/dc/elements/1.1/"
-     xmlns:sparkle="http://www.andymatuschak.org/xml-namespaces/sparkle"
-     version="2.0">
-	<channel>
-		<title>Statistics Analysis Tool</title>
-		<description>Most recent changes with link to updates.</description>
-		<language>en</language>
-
-		<item>
-			<title>Statistics Analysis Tool v9.2.2</title>
-			<description>
-				<![CDATA[
-				<a href="https://github.com/Triky313/AlbionOnline-StatisticsAnalysis/releases/tag/v9.2.2"> View full patch notes on GitHub </a>
-				]]>
-			</description>
-			<pubDate>Tue, 19 May 2026 00:00:00 +0000</pubDate>
-			<enclosure url="https://github.com/Triky313/AlbionOnline-StatisticsAnalysis/releases/download/v9.2.2/StatisticsAnalysis-AlbionOnline-v9.2.2-windows-x64.exe"
-					   sparkle:version="9.2.2"
-					   sparkle:shortVersionString="9.2.2"
-					   sparkle:os="windows-x64"
-					   length="0"
-					   type="application/octet-stream" />
-		</item>
-	</channel>
+<?xml version="1.0" encoding="utf-8"?>
+<rss xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:sparkle="http://www.andymatuschak.org/xml-namespaces/sparkle" version="2.0">
+  <channel>
+    <title>Statistics Analysis Tool</title>
+    <description>Most recent changes with link to updates.</description>
+    <language>en</language>
+    <item>
+      <title>Statistics Analysis Tool v9.3.5</title>
+      <description><![CDATA[<a href="https://github.com/Triky313/AlbionOnline-StatisticsAnalysis/releases/tag/v9.3.5">View full patch notes on GitHub</a>]]></description>
+      <pubDate>Thu, 28 May 2026 14:47:06 +0000</pubDate>
+      <enclosure url="https://github.com/Triky313/AlbionOnline-StatisticsAnalysis/releases/download/v9.3.5/StatisticsAnalysis-AlbionOnline-v9.3.5-windows-x64.exe" sparkle:version="9.3.5" sparkle:shortVersionString="9.3.5" sparkle:os="windows-x64" length="42864373" type="application/octet-stream" sparkle:edSignature="i1i4/LeJmGSoHUVNK3x6W84odD12bG1TYeCThXMKqQcehiFhzWBKOLqQKn1heDFjQc+PY2uH/7AHYpLFBbbiBg==" sparkle:signature="i1i4/LeJmGSoHUVNK3x6W84odD12bG1TYeCThXMKqQcehiFhzWBKOLqQKn1heDFjQc+PY2uH/7AHYpLFBbbiBg==" />
+    </item>
+  </channel>
 </rss>
