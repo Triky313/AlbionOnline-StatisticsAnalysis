@@ -106,6 +106,26 @@ jobs:
             -p:RequireNetSparkleEd25519PublicKey=true `
             -p:NetSparkleEd25519PublicKey=$env:SPARKLE_PUBLIC_KEY
 
+      - name: "🔎 Verify embedded NetSparkle public key"
+        shell: pwsh
+        run: |
+          $generatedSecurityFile = "src\StatisticsAnalysisTool\obj\x64\Release\Generated\AutoUpdateSecurityBuildSettings.g.cs"
+          if (!(Test-Path -LiteralPath $generatedSecurityFile))
+          {
+              throw "Generated NetSparkle security settings file was not created."
+          }
+
+          $content = Get-Content -LiteralPath $generatedSecurityFile -Raw
+          if ($content -match 'Ed25519PublicKey\s*=\s*""')
+          {
+              throw "NetSparkle public key was not embedded into the release build."
+          }
+
+          if ($content -notmatch 'IsSignatureVerificationRequired\s*=\s*true')
+          {
+              throw "NetSparkle signature verification is not required in the release build."
+          }
+
       - name: "📦 Create release zip file"
         uses: vimtor/action-zip@v1
         with:
