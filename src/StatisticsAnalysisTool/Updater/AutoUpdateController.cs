@@ -39,6 +39,7 @@ public static class AutoUpdateController
 
     private static readonly Lock SyncRoot = new();
     private static readonly JsonSerializerOptions JsonSerializerOptions = new() { PropertyNameCaseInsensitive = true };
+    private static readonly IComparer<string> AppCastVersionComparer = Comparer<string>.Create(CompareAppCastVersions);
 
     private static SparkleUpdater _sparkleUpdater;
     private static AutoUpdateConfiguration _currentConfiguration;
@@ -197,7 +198,8 @@ public static class AutoUpdateController
                 case UpdateStatus.UpdateAvailable:
                     {
                         var currentVersion = GetCurrentUpdateVersion();
-                        var updateItem = SelectUpdate(updateInfo.Updates, currentVersion);
+                        var currentVersionText = GetCurrentUpdateVersionText();
+                        var updateItem = SelectUpdate(updateInfo.Updates, currentVersionText);
                         if (updateItem == null || !IsUpdateItemSignatureTrusted(updateItem, sparkleUpdater.SignatureVerifier))
                         {
                             ClearAvailableUpdate();
@@ -652,7 +654,7 @@ public static class AutoUpdateController
         return signatureVerifier?.SecurityMode is SecurityMode.Strict or SecurityMode.UseIfPossible or SecurityMode.OnlyVerifySoftwareDownloads;
     }
 
-    private static AppCastItem SelectUpdate(IReadOnlyList<AppCastItem> updates, Version currentVersion)
+    private static AppCastItem SelectUpdate(IReadOnlyList<AppCastItem> updates, string currentVersionText)
     {
         if (updates == null || updates.Count == 0)
         {
@@ -660,13 +662,8 @@ public static class AutoUpdateController
         }
 
         return updates
-            .Where(update =>
-            {
-                var updateVersion = ParseAppCastVersion(update.Version);
-                return updateVersion != null && updateVersion > currentVersion;
-            })
-            .OrderByDescending(update => ParseAppCastVersion(update.Version))
-            .ThenByDescending(update => update.Version)
+            .Where(update => CompareAppCastVersions(update.Version, currentVersionText) > 0)
+            .OrderByDescending(update => update.Version, AppCastVersionComparer)
             .FirstOrDefault();
     }
 
@@ -676,7 +673,7 @@ public static class AutoUpdateController
         if (selectedUpdateVersion != null)
         {
             var releaseInfos = await TryLoadGitHubReleaseInfosAsync(currentVersion, selectedUpdateVersion);
-            if (releaseInfos != null)
+            if (releaseInfos?.Count > 0)
             {
                 return releaseInfos;
             }
@@ -845,6 +842,14 @@ public static class AutoUpdateController
                ?? GetCurrentAssemblyVersion();
     }
 
+    private static string GetCurrentUpdateVersionText()
+    {
+        var informationalVersion = GetCurrentInformationalVersion();
+        return string.IsNullOrWhiteSpace(informationalVersion)
+            ? GetCurrentFileVersion()
+            : informationalVersion;
+    }
+
     private static bool IsCurrentBuildPreRelease()
     {
         return IsPreReleaseVersion(GetCurrentInformationalVersion());
@@ -872,10 +877,21 @@ public static class AutoUpdateController
 
     private static string GetTagVersion(string versionText)
     {
+        var normalizedText = NormalizeAppCastVersionText(versionText);
+        if (string.IsNullOrWhiteSpace(normalizedText))
+        {
+            return string.Empty;
+        }
+
+        if (IsPreReleaseVersion(normalizedText))
+        {
+            return normalizedText;
+        }
+
         var version = ParseAppCastVersion(versionText);
         if (version == null)
         {
-            return versionText?.Trim().TrimStart('v') ?? string.Empty;
+            return normalizedText;
         }
 
         var parts = new List<int>
@@ -899,6 +915,11 @@ public static class AutoUpdateController
 
     private static string GetDisplayVersion(string versionText, bool includeRevision)
     {
+        if (IsPreReleaseVersion(versionText))
+        {
+            return NormalizeAppCastVersionText(versionText);
+        }
+
         var version = ParseAppCastVersion(versionText);
         if (version == null)
         {
@@ -937,10 +958,120 @@ public static class AutoUpdateController
             return null;
         }
 
-        var normalizedText = versionText.Trim().TrimStart('v');
+        var normalizedText = NormalizeAppCastVersionText(versionText);
         var versionCore = normalizedText.Split('-', '+')[0];
 
         return Version.TryParse(versionCore, out var version) ? version : null;
+    }
+
+    private static int CompareAppCastVersions(string left, string right)
+    {
+        var leftVersion = ParseAppCastVersion(left);
+        var rightVersion = ParseAppCastVersion(right);
+
+        if (leftVersion == null && rightVersion == null)
+        {
+            return string.Compare(NormalizeAppCastVersionText(left), NormalizeAppCastVersionText(right), StringComparison.OrdinalIgnoreCase);
+        }
+
+        if (leftVersion == null)
+        {
+            return -1;
+        }
+
+        if (rightVersion == null)
+        {
+            return 1;
+        }
+
+        var versionComparison = leftVersion.CompareTo(rightVersion);
+        return versionComparison != 0
+            ? versionComparison
+            : ComparePreReleaseLabels(GetPreReleaseLabel(left), GetPreReleaseLabel(right));
+    }
+
+    private static int ComparePreReleaseLabels(string left, string right)
+    {
+        var isLeftStable = string.IsNullOrWhiteSpace(left);
+        var isRightStable = string.IsNullOrWhiteSpace(right);
+
+        if (isLeftStable && isRightStable)
+        {
+            return 0;
+        }
+
+        if (isLeftStable)
+        {
+            return 1;
+        }
+
+        if (isRightStable)
+        {
+            return -1;
+        }
+
+        var leftIdentifiers = left.Split(['.', '-'], StringSplitOptions.RemoveEmptyEntries);
+        var rightIdentifiers = right.Split(['.', '-'], StringSplitOptions.RemoveEmptyEntries);
+        var identifierCount = Math.Max(leftIdentifiers.Length, rightIdentifiers.Length);
+
+        for (var i = 0; i < identifierCount; i++)
+        {
+            if (i >= leftIdentifiers.Length)
+            {
+                return -1;
+            }
+
+            if (i >= rightIdentifiers.Length)
+            {
+                return 1;
+            }
+
+            var identifierComparison = ComparePreReleaseIdentifier(leftIdentifiers[i], rightIdentifiers[i]);
+            if (identifierComparison != 0)
+            {
+                return identifierComparison;
+            }
+        }
+
+        return 0;
+    }
+
+    private static int ComparePreReleaseIdentifier(string left, string right)
+    {
+        var isLeftNumeric = int.TryParse(left, NumberStyles.None, CultureInfo.InvariantCulture, out var leftNumber);
+        var isRightNumeric = int.TryParse(right, NumberStyles.None, CultureInfo.InvariantCulture, out var rightNumber);
+
+        if (isLeftNumeric && isRightNumeric)
+        {
+            return leftNumber.CompareTo(rightNumber);
+        }
+
+        if (isLeftNumeric)
+        {
+            return -1;
+        }
+
+        if (isRightNumeric)
+        {
+            return 1;
+        }
+
+        return string.Compare(left, right, StringComparison.OrdinalIgnoreCase);
+    }
+
+    private static string GetPreReleaseLabel(string versionText)
+    {
+        var normalizedText = NormalizeAppCastVersionText(versionText);
+        var suffixIndex = normalizedText.IndexOf('-', StringComparison.Ordinal);
+        return suffixIndex < 0 ? string.Empty : normalizedText[(suffixIndex + 1)..];
+    }
+
+    private static string NormalizeAppCastVersionText(string versionText)
+    {
+        return (versionText ?? string.Empty)
+            .Trim()
+            .TrimStart('v', 'V')
+            .Split('+')[0];
     }
 
     private static string GetProductTitle()
