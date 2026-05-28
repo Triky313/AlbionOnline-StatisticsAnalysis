@@ -408,7 +408,7 @@
                                     </Popup>
                                 </StackPanel>
 
-                                <StackPanel>
+                                <StackPanel Margin="0,0,6,0">
                                     <ToggleButton x:Name="TypeFilterButton" Style="{StaticResource Logging.DropdownButton}" 
                                                   Content="{Binding LoggingBindings.TypeFilterSummary, FallbackValue='Type: All'}" />
                                     <Popup PlacementTarget="{Binding ElementName=TypeFilterButton}" IsOpen="{Binding IsChecked, ElementName=TypeFilterButton, Mode=TwoWay}" 
@@ -434,6 +434,22 @@
                                                 <CheckBox IsChecked="{Binding LoggingBindings.IsShowingOthers, FallbackValue=true}" 
                                                           Content="{Binding LoggingBindings.Translation.Others, FallbackValue=OTHERS}" />
                                             </StackPanel>
+                                        </Border>
+                                    </Popup>
+                                </StackPanel>
+
+                                <StackPanel>
+                                    <ToggleButton x:Name="GuildFilterButton" Style="{StaticResource Logging.DropdownButton}"
+                                                  Content="{Binding LoggingBindings.GuildFilterSummary, FallbackValue='Guild: All'}" />
+                                    <Popup PlacementTarget="{Binding ElementName=GuildFilterButton}"
+                                           IsOpen="{Binding IsChecked, ElementName=GuildFilterButton, Mode=TwoWay}"
+                                           Placement="Bottom" StaysOpen="False" AllowsTransparency="True" PopupAnimation="Fade">
+                                        <Border DataContext="{Binding PlacementTarget.DataContext, RelativeSource={RelativeSource AncestorType={x:Type Popup}}}"
+                                                Background="{StaticResource SolidColorBrush.Background.2}" BorderBrush="{StaticResource SolidColorBrush.Accent.Blue.4}"
+                                                BorderThickness="1" Padding="8">
+                                            <ScrollViewer MinWidth="130" MaxHeight="260" VerticalScrollBarVisibility="Auto">
+                                                <ItemsControl ItemsSource="{Binding LoggingBindings.LootComparatorGuildFilters}" ItemTemplate="{StaticResource LoggingFilterObject}" />
+                                            </ScrollViewer>
                                         </Border>
                                     </Popup>
                                 </StackPanel>

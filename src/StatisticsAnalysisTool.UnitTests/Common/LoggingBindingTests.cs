@@ -445,6 +445,88 @@ public class LoggingBindingsTests
     }
 
     [Test]
+    public void LootComparatorGuildFilters_WithDuplicateGuilds_ShowsGuildOnce()
+    {
+        var bindings = new LoggingBindings()
+        {
+            LootingPlayers = new ObservableCollection<LootingPlayer>()
+            {
+                CreateLootingPlayer("Bob", "Knights", CreateLootedItem(1)),
+                CreateLootingPlayer("Alice", "Knights", CreateLootedItem(2)),
+                CreateLootingPlayer("Eve", "Mages", CreateLootedItem(3))
+            }
+        };
+
+        bindings.LootComparatorGuildFilters.Should().HaveCount(2);
+        bindings.LootComparatorGuildFilters[0].GuildName.Should().Be("Knights");
+        bindings.LootComparatorGuildFilters[1].GuildName.Should().Be("Mages");
+        bindings.LootComparatorGuildFilters.Should().OnlyContain(filter => filter.IsSelected);
+    }
+
+    [Test]
+    public void ParallelLootedItemsFilterProcess_WithGuildFilterDisabled_HidesMatchingGuildPlayersOnly()
+    {
+        var knightsItem = CreateLootedItem(1);
+        var magesItem = CreateLootedItem(2);
+        var bindings = new LoggingBindings()
+        {
+            LootingPlayers = new ObservableCollection<LootingPlayer>()
+            {
+                CreateLootingPlayer("Bob", "Knights", knightsItem),
+                CreateLootingPlayer("Eve", "Mages", magesItem)
+            }
+        };
+
+        ItemController.Items = new ObservableCollection<Item>()
+        {
+            CreateItem(1, "T4_KNIGHTS_TEST", "other", "misc"),
+            CreateItem(2, "T4_MAGES_TEST", "other", "misc")
+        };
+
+        bindings.LootComparatorGuildFilters[0].IsSelected = false;
+        bindings.ParallelLootedItemsFilterProcess();
+
+        knightsItem.Visibility.Should().Be(Visibility.Collapsed);
+        magesItem.Visibility.Should().Be(Visibility.Visible);
+        bindings.LootingPlayers[0].LootingPlayerVisibility.Should().Be(Visibility.Collapsed);
+        bindings.LootingPlayers[1].LootingPlayerVisibility.Should().Be(Visibility.Visible);
+    }
+
+    [Test]
+    public void RemoveLootingPlayer_WithLastPlayerInGuild_RemovesGuildFilter()
+    {
+        var bindings = new LoggingBindings()
+        {
+            LootingPlayers = new ObservableCollection<LootingPlayer>()
+            {
+                CreateLootingPlayer("Bob", "Knights", CreateLootedItem(1)),
+                CreateLootingPlayer("Eve", "Mages", CreateLootedItem(2))
+            }
+        };
+
+        bindings.RemoveLootingPlayer(bindings.LootingPlayers[1]);
+
+        bindings.LootComparatorGuildFilters.Should().ContainSingle();
+        bindings.LootComparatorGuildFilters[0].GuildName.Should().Be("Knights");
+    }
+
+    [Test]
+    public void ClearLootLogs_RemovesGuildFilters()
+    {
+        var bindings = new LoggingBindings()
+        {
+            LootingPlayers = new ObservableCollection<LootingPlayer>()
+            {
+                CreateLootingPlayer("Bob", "Knights", CreateLootedItem(1))
+            }
+        };
+
+        bindings.ClearLootLogs();
+
+        bindings.LootComparatorGuildFilters.Should().BeEmpty();
+    }
+
+    [Test]
     public void AddVaultLogText_WithPastedChestLog_LoadsPositiveQuantityItems()
     {
         var bindings = new LoggingBindings();
@@ -639,6 +721,16 @@ public class LoggingBindingsTests
                 PlayerName = "Bob",
                 LootedItems = new ObservableCollection<LootedItem>(lootedItems)
             }
+        };
+    }
+
+    private static LootingPlayer CreateLootingPlayer(string playerName, string playerGuild, params LootedItem[] lootedItems)
+    {
+        return new LootingPlayer()
+        {
+            PlayerName = playerName,
+            PlayerGuild = playerGuild,
+            LootedItems = new ObservableCollection<LootedItem>(lootedItems)
         };
     }
 

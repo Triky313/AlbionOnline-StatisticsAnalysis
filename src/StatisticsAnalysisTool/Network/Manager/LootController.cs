@@ -2,6 +2,7 @@ using Serilog;
 using StatisticsAnalysisTool.Cluster;
 using StatisticsAnalysisTool.Common;
 using StatisticsAnalysisTool.Diagnostics;
+using StatisticsAnalysisTool.Enumerations;
 using StatisticsAnalysisTool.EventLogging;
 using StatisticsAnalysisTool.EventLogging.Notification;
 using StatisticsAnalysisTool.Localization;
@@ -526,6 +527,9 @@ public class LootController : ILootController
     private async Task AddTestLootNotificationsAsync(int notificationCounter, int delay = 5000)
     {
         await Task.Delay(delay);
+        var testPlayers = CreateTestLootPlayers();
+        RegisterTestLootPlayers(testPlayers);
+
         for (var i = 0; i < notificationCounter; i++)
         {
             var randomItem = ItemController.GetItemByIndex(Random.Next(1, 7000));
@@ -535,27 +539,82 @@ public class LootController : ILootController
                 continue;
             }
 
+            var lootedByPlayer = GetRandomTestLootPlayer(testPlayers);
+            var lootedFromPlayer = GetRandomTestLootPlayer(testPlayers);
             await AddLootAsync(new Loot()
             {
-                LootedFromName = TestMethods.GenerateName(4),
+                LootedFromName = lootedFromPlayer.Name,
                 IsTrash = ItemController.IsTrash(randomItem.Index),
                 ItemIndex = randomItem.Index,
-                LootedByName = TestMethods.GenerateName(3),
+                LootedByName = lootedByPlayer.Name,
                 IsSilver = false,
                 Quantity = Random.Next(1, 250)
             });
 
+            lootedByPlayer = GetRandomTestLootPlayer(testPlayers);
+            lootedFromPlayer = GetRandomTestLootPlayer(testPlayers);
             await AddLootedItemAsync(new Loot()
             {
-                LootedFromName = TestMethods.GenerateName(4),
+                LootedFromName = lootedFromPlayer.Name,
                 IsTrash = ItemController.IsTrash(randomItem.Index),
                 ItemIndex = randomItem.Index,
-                LootedByName = TestMethods.GenerateName(1),
+                LootedByName = lootedByPlayer.Name,
                 IsSilver = false,
                 Quantity = Random.Next(1, 250)
             });
             await Task.Delay(100);
         }
+    }
+
+    private static IReadOnlyList<TestLootPlayer> CreateTestLootPlayers()
+    {
+        return
+        [
+            new TestLootPlayer("DebugLooterOne", "Crimson Market", "CM"),
+            new TestLootPlayer("DebugLooterTwo", "Crimson Market", "CM"),
+            new TestLootPlayer("DebugLooterThree", "Azure Vault", "AV"),
+            new TestLootPlayer("DebugLooterFour", string.Empty, string.Empty),
+            new TestLootPlayer("DebugLooterFive", "Iron Ledger", string.Empty),
+            new TestLootPlayer("DebugLooterSix", string.Empty, string.Empty)
+        ];
+    }
+
+    private void RegisterTestLootPlayers(IReadOnlyList<TestLootPlayer> testPlayers)
+    {
+        for (var i = 0; i < testPlayers.Count; i++)
+        {
+            var testPlayer = testPlayers[i];
+            _trackingController.EntityController.AddEntity(new Entity
+            {
+                ObjectId = 900000 + i,
+                UserGuid = Guid.NewGuid(),
+                InteractGuid = Guid.NewGuid(),
+                Name = testPlayer.Name,
+                Guild = testPlayer.Guild,
+                Alliance = testPlayer.Alliance,
+                ObjectType = GameObjectType.Player,
+                ObjectSubType = GameObjectSubType.Player
+            });
+        }
+    }
+
+    private static TestLootPlayer GetRandomTestLootPlayer(IReadOnlyList<TestLootPlayer> testPlayers)
+    {
+        return testPlayers[Random.Next(testPlayers.Count)];
+    }
+
+    private sealed class TestLootPlayer
+    {
+        public TestLootPlayer(string name, string guild, string alliance)
+        {
+            Name = name;
+            Guild = guild;
+            Alliance = alliance;
+        }
+
+        public string Name { get; }
+        public string Guild { get; }
+        public string Alliance { get; }
     }
 
     #endregion
