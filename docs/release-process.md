@@ -45,9 +45,11 @@ The workflow decides which appcast files to update from the tag name.
 | `v9.4.0-rc.1` | Pre-release | `ao-netsparkle-pre-release-update-check.xml` |
 | `v9.4.0-alpha.1` | Pre-release | `ao-netsparkle-pre-release-update-check.xml` |
 | `v9.4.0+both` | Both | Both appcast files |
+| `v9.4.0-both` | Both | Both appcast files |
 | `v9.4.0-rc.1+both` | Both | Both appcast files |
+| `v9.4.0-rc.1-both` | Both | Both appcast files |
 
-The `+both` suffix is release metadata. It is used only by the workflow and is not written into the appcast version. For example, `v9.4.0+both` is published to NetSparkle as version `9.4.0`.
+The `+both` or `-both` suffix is release metadata. It is used only by the workflow and is not written into the appcast version. For example, `v9.4.0-both` is published to NetSparkle as version `9.4.0`.
 
 ## Stable Release
 
@@ -79,11 +81,11 @@ Installed pre-release builds automatically check the pre-release appcast, even i
 
 ## Both Appcasts
 
-Use `+both` when the same artifact should be offered to stable users and pre-release users.
+Use `+both` or `-both` when the same artifact should be offered to stable users and pre-release users.
 
 ```powershell
-git tag v9.4.0+both
-git push origin v9.4.0+both
+git tag v9.4.0-both
+git push origin v9.4.0-both
 ```
 
 The workflow opens one pull request that updates both appcast files and both appcast signature files.
