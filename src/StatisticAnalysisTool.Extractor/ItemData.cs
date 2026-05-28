@@ -143,12 +143,12 @@ internal class ItemData : IDisposable
 
     private static void SetLocalization(LocalizationData data, ItemContainer item)
     {
-        if (data.ItemLocalizedDescriptions.TryGetValue(item.LocalizationDescriptionVariable, out var descriptions))
+        if (item.LocalizationDescriptionVariable != null && data.ItemLocalizedDescriptions.TryGetValue(item.LocalizationDescriptionVariable, out var descriptions))
         {
             item.LocalizedDescriptions = descriptions;
         }
 
-        if (data.ItemLocalizedNames.TryGetValue(item.LocalizationNameVariable, out var names))
+        if (item.LocalizationNameVariable != null && data.ItemLocalizedNames.TryGetValue(item.LocalizationNameVariable, out var names))
         {
             item.LocalizedNames = names;
         }
