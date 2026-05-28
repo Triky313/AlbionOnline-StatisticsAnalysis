@@ -1,4 +1,4 @@
-﻿using StatisticsAnalysisTool.Network.Manager;
+using StatisticsAnalysisTool.Network.Manager;
 using StatisticsAnalysisTool.Network.Operations.Responses;
 using System.Threading.Tasks;
 
@@ -8,6 +8,7 @@ public class ChangeClusterResponseHandler(TrackingController trackingController)
 {
     protected override async Task OnActionAsync(ChangeClusterResponse value)
     {
+        trackingController.ClusterController.BeginClusterChange();
         trackingController.ClusterController.ChangeClusterInformation(
             value.MapType, value.Guid, value.Index, value.IslandName, value.WorldMapDataType, value.DungeonInformation, value.MainClusterIndex);
         trackingController.EntityController.RemoveEntitiesByLastUpdate(2);
