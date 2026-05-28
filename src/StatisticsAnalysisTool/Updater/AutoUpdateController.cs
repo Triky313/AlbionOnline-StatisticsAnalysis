@@ -101,7 +101,16 @@ public static class AutoUpdateController
         var sparkleUpdater = await EnsureSparkleUpdaterAsync();
         if (sparkleUpdater == null)
         {
+            ClearAvailableUpdate();
             ShowUpdateCheckFailedMessage();
+            return;
+        }
+
+        var configuration = GetCurrentConfiguration();
+        if (!await IsAppCastSignatureTrustedAsync(configuration, sparkleUpdater.SignatureVerifier)
+            || !IsUpdateItemSignatureTrusted(pendingUpdateInfo.UpdateItem, sparkleUpdater.SignatureVerifier))
+        {
+            ClearAvailableUpdate();
             return;
         }
 
@@ -187,7 +196,8 @@ public static class AutoUpdateController
             {
                 case UpdateStatus.UpdateAvailable:
                     {
-                        var updateItem = SelectUpdate(updateInfo.Updates);
+                        var currentVersion = GetCurrentUpdateVersion();
+                        var updateItem = SelectUpdate(updateInfo.Updates, currentVersion);
                         if (updateItem == null || !IsUpdateItemSignatureTrusted(updateItem, sparkleUpdater.SignatureVerifier))
                         {
                             ClearAvailableUpdate();
@@ -199,7 +209,6 @@ public static class AutoUpdateController
                             return;
                         }
 
-                        var currentVersion = GetCurrentAssemblyVersion();
                         var releaseInfos = await LoadGitHubReleaseInfosAsync(updateItem, currentVersion);
                         SetAvailableUpdate(new PendingUpdateInfo(updateItem, releaseInfos, currentVersion));
 
@@ -556,6 +565,7 @@ public static class AutoUpdateController
             viewModel.StatusText = e.Message;
         }
 
+        ClearAvailableUpdate();
         viewModel.IsBusy = false;
         viewModel.ActionButtonText = LocalizationController.Translation("UPDATE_NOW");
         return false;
@@ -642,7 +652,7 @@ public static class AutoUpdateController
         return signatureVerifier?.SecurityMode is SecurityMode.Strict or SecurityMode.UseIfPossible or SecurityMode.OnlyVerifySoftwareDownloads;
     }
 
-    private static AppCastItem SelectUpdate(IReadOnlyList<AppCastItem> updates)
+    private static AppCastItem SelectUpdate(IReadOnlyList<AppCastItem> updates, Version currentVersion)
     {
         if (updates == null || updates.Count == 0)
         {
@@ -650,6 +660,11 @@ public static class AutoUpdateController
         }
 
         return updates
+            .Where(update =>
+            {
+                var updateVersion = ParseAppCastVersion(update.Version);
+                return updateVersion != null && updateVersion > currentVersion;
+            })
             .OrderByDescending(update => ParseAppCastVersion(update.Version))
             .ThenByDescending(update => update.Version)
             .FirstOrDefault();
@@ -822,6 +837,12 @@ public static class AutoUpdateController
     private static Version GetCurrentAssemblyVersion()
     {
         return Assembly.GetExecutingAssembly().GetName().Version ?? new Version(0, 0, 0, 0);
+    }
+
+    private static Version GetCurrentUpdateVersion()
+    {
+        return ParseAppCastVersion(GetCurrentInformationalVersion())
+               ?? GetCurrentAssemblyVersion();
     }
 
     private static bool IsCurrentBuildPreRelease()
