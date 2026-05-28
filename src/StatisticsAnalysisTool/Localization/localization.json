@@ -27767,7 +27767,7 @@
         },
         {
           "lang": "fr-FR",
-          "seg": "Monde ouvert"
+          "seg": "Monde Ouvert"
         },
         {
           "lang": "ja-JP",
@@ -27811,40 +27811,8 @@
           "seg": "Open World active"
         },
         {
-          "lang": "es-ES",
-          "seg": "Open World active"
-        },
-        {
           "lang": "fr-FR",
-          "seg": "Open World active"
-        },
-        {
-          "lang": "ja-JP",
-          "seg": "Open World active"
-        },
-        {
-          "lang": "ko-KR",
-          "seg": "Open World active"
-        },
-        {
-          "lang": "pl-PL",
-          "seg": "Open World active"
-        },
-        {
-          "lang": "pt-BR",
-          "seg": "Open World active"
-        },
-        {
-          "lang": "ru-RU",
-          "seg": "Open World active"
-        },
-        {
-          "lang": "zh-CN",
-          "seg": "Open World active"
-        },
-        {
-          "lang": "zh-TW",
-          "seg": "Open World active"
+          "seg": "Monde Ouvert actif"
         }
       ]
     },
@@ -27865,7 +27833,7 @@
         },
         {
           "lang": "fr-FR",
-          "seg": "Killed Mammoths"
+          "seg": "Mammouths tués"
         },
         {
           "lang": "ja-JP",
@@ -27914,7 +27882,7 @@
         },
         {
           "lang": "fr-FR",
-          "seg": "Killed Mobs"
+          "seg": "Monstres tués"
         },
         {
           "lang": "ja-JP",
@@ -27963,7 +27931,7 @@
         },
         {
           "lang": "fr-FR",
-          "seg": "All factions"
+          "seg": "Toutes les factions"
         },
         {
           "lang": "ja-JP",
@@ -28012,7 +27980,7 @@
         },
         {
           "lang": "fr-FR",
-          "seg": "Search mobs"
+          "seg": "Rechercher des monstres"
         },
         {
           "lang": "ja-JP",
@@ -28061,7 +28029,7 @@
         },
         {
           "lang": "fr-FR",
-          "seg": "Last kill"
+          "seg": "Dernière victime"
         },
         {
           "lang": "ja-JP",
@@ -28110,7 +28078,7 @@
         },
         {
           "lang": "fr-FR",
-          "seg": "Reset Open World stats"
+          "seg": "Réinitialiser les statistiques du Monde Ouvert"
         },
         {
           "lang": "ja-JP",
@@ -28159,7 +28127,7 @@
         },
         {
           "lang": "fr-FR",
-          "seg": "Reset all"
+          "seg": "Tout réinitialiser"
         },
         {
           "lang": "ja-JP",
@@ -28196,47 +28164,47 @@
       "tuv": [
         {
           "lang": "de-DE",
-          "seg": "Möchtest du die Open World Statistik wirklich zurücksetzen?"
+          "seg": "Möchtest du die Open World Statistik wirklich zurücksetzen ?"
         },
         {
           "lang": "en-US",
-          "seg": "Are you sure you want to reset the Open World stats?"
+          "seg": "Are you sure you want to reset the Open World stats ?"
         },
         {
           "lang": "es-ES",
-          "seg": "Are you sure you want to reset the Open World stats?"
+          "seg": "Are you sure you want to reset the Open World stats ?"
         },
         {
           "lang": "fr-FR",
-          "seg": "Are you sure you want to reset the Open World stats?"
+          "seg": "Veux-tu vraiment réinitialiser les statistiques du monde ouvert ?"
         },
         {
           "lang": "ja-JP",
-          "seg": "Are you sure you want to reset the Open World stats?"
+          "seg": "Are you sure you want to reset the Open World stats ?"
         },
         {
           "lang": "ko-KR",
-          "seg": "Are you sure you want to reset the Open World stats?"
+          "seg": "Are you sure you want to reset the Open World stats ?"
         },
         {
           "lang": "pl-PL",
-          "seg": "Are you sure you want to reset the Open World stats?"
+          "seg": "Are you sure you want to reset the Open World stats ?"
         },
         {
           "lang": "pt-BR",
-          "seg": "Are you sure you want to reset the Open World stats?"
+          "seg": "Are you sure you want to reset the Open World stats ?"
         },
         {
           "lang": "ru-RU",
-          "seg": "Are you sure you want to reset the Open World stats?"
+          "seg": "Are you sure you want to reset the Open World stats ?"
         },
         {
           "lang": "zh-CN",
-          "seg": "Are you sure you want to reset the Open World stats?"
+          "seg": "Are you sure you want to reset the Open World stats ?"
         },
         {
           "lang": "zh-TW",
-          "seg": "Are you sure you want to reset the Open World stats?"
+          "seg": "Are you sure you want to reset the Open World stats ?"
         }
       ]
     },
@@ -38815,7 +38783,7 @@
         },
         {
           "lang": "fr-FR",
-          "seg": "{COUNT} sélectionné"
+          "seg": "{COUNT} sélectionné(s)"
         },
         {
           "lang": "ru-RU",
@@ -44493,6 +44461,10 @@
         {
           "lang": "en-US",
           "seg": "Startup server for app user data"
+        },
+        {
+          "lang": "fr-FR",
+          "seg": "Serveur de démarrage pour les données utilisateur de l'application"
         }
       ]
     },
@@ -44506,6 +44478,10 @@
         {
           "lang": "en-US",
           "seg": "This selection controls which server data is loaded when the app starts before Albion Online has been detected from network packets. While playing, the server is detected automatically; when the server changes, the current data is saved first and then the matching server data is loaded."
+        },
+        {
+          "lang": "fr-FR",
+          "seg": "Cette option permet de choisir quelles données de serveur sont chargées au démarrage de l'application, avant qu'Albion Online ne soit détecté à partir des paquets réseau. Pendant le jeu, le serveur est détecté automatiquement ; en cas de changement de serveur, les données actuelles sont d'abord enregistrées, puis les données du serveur correspondant sont chargées."
         }
       ]
     },
@@ -44519,6 +44495,10 @@
         {
           "lang": "en-US",
           "seg": "Startup data server"
+        },
+        {
+          "lang": "fr-FR",
+          "seg": "Démarrage du serveur de données"
         }
       ]
     },
@@ -44532,6 +44512,10 @@
         {
           "lang": "en-US",
           "seg": "Choose which server data should be loaded when the app starts and Albion Online is not active yet. Once you play, the tool detects the Albion server automatically from network packets and switches datasets automatically if you change servers. The currently loaded data is saved before every switch."
+        },
+        {
+          "lang": "fr-FR",
+          "seg": "Choisissez les données de serveur à charger au démarrage de l'application, avant qu'Albion Online ne soit actif. Une fois que vous jouez, l'outil détecte automatiquement le serveur Albion à partir des paquets réseau et bascule automatiquement entre les ensembles de données si vous changez de serveur. Les données actuellement chargées sont enregistrées avant chaque changement."
         }
       ]
     },
@@ -44545,6 +44529,10 @@
         {
           "lang": "en-US",
           "seg": "Please select a startup data server."
+        },
+        {
+          "lang": "fr-FR",
+          "seg": "Veuillez sélectionner un serveur de données de démarrage."
         }
       ]
     },
