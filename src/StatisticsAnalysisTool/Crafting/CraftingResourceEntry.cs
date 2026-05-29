@@ -1,3 +1,4 @@
+using StatisticsAnalysisTool.Common;
 using StatisticsAnalysisTool.Localization;
 using StatisticsAnalysisTool.ViewModels;
 using System;
@@ -12,7 +13,10 @@ public class CraftingResourceEntry : BaseViewModel
     [JsonIgnore]
     public Action ValuesChanged { get; set; }
     public string UniqueName { get; set; }
-    public string DisplayName { get; set; }
+
+    [JsonIgnore]
+    public string DisplayName => ItemController.GetItemByUniqueName(UniqueName)?.LocalizedName ?? UniqueName ?? string.Empty;
+
     public decimal QuantityPerRun { get; set; }
     public double UnitWeight { get; set; }
     public bool IsReturnable { get; set; }

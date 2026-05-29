@@ -1,3 +1,4 @@
+using StatisticsAnalysisTool.Common;
 using StatisticsAnalysisTool.Localization;
 using StatisticsAnalysisTool.ViewModels;
 using System;
@@ -17,7 +18,10 @@ public class SavedCrafting : BaseViewModel
     = Guid.NewGuid();
 
     public string ItemUniqueName { get; set; }
-    public string ItemName { get; set; }
+
+    [JsonIgnore]
+    public string ItemName => ItemController.GetItemByUniqueName(ItemUniqueName)?.LocalizedName ?? ItemUniqueName ?? string.Empty;
+
     public int CraftingRuns { get; set; } = 1;
     public int AmountCrafted { get; set; } = 1;
     public bool UsesFocus { get; set; }

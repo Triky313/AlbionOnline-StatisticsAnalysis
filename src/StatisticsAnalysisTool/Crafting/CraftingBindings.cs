@@ -1275,7 +1275,6 @@ public class CraftingBindings : BaseViewModel
         return new CraftingCalculationInput
         {
             ItemUniqueName = SelectedItem?.UniqueName,
-            ItemName = SelectedItem?.LocalizedName,
             CraftingRuns = Math.Max(1, CraftingRuns),
             AmountCrafted = Math.Max(1, _amountCrafted),
             ReturnRatePercent = ReturnRatePercent,
@@ -1293,7 +1292,6 @@ public class CraftingBindings : BaseViewModel
                     return new CraftingResourceInput
                     {
                         UniqueName = x.UniqueName,
-                        DisplayName = x.DisplayName,
                         QuantityPerRun = x.QuantityPerRun,
                         UnitPrice = x.UnitPrice,
                         UnitWeight = x.UnitWeight,
@@ -1311,7 +1309,6 @@ public class CraftingBindings : BaseViewModel
                 {
                     EmptyJournalUniqueName = Journal.EmptyJournalUniqueName,
                     FullJournalUniqueName = Journal.FullJournalUniqueName,
-                    DisplayName = Journal.DisplayName,
                     FamePerRun = Journal.FamePerRun,
                     MaxFamePerJournal = Journal.MaxFamePerJournal,
                     EmptyJournalPrice = Journal.EmptyJournalPrice,
@@ -1560,7 +1557,6 @@ public class CraftingBindings : BaseViewModel
         {
             Id = id,
             ItemUniqueName = SelectedItem?.UniqueName,
-            ItemName = SelectedItem?.LocalizedName,
             CraftingRuns = Math.Max(1, Calculation.CraftingRuns),
             AmountCrafted = Math.Max(1, _amountCrafted),
             UsesFocus = UsesFocus,
@@ -1635,7 +1631,7 @@ public class CraftingBindings : BaseViewModel
         _isLoading = true;
 
         SelectedItem = ItemController.GetItemByUniqueName(savedCrafting.ItemUniqueName);
-        _itemSearchText = SelectedItem?.LocalizedName ?? savedCrafting.ItemName ?? string.Empty;
+        _itemSearchText = SelectedItem?.LocalizedName ?? savedCrafting.ItemUniqueName ?? string.Empty;
         OnPropertyChanged(nameof(ItemSearchText));
         IsItemSearchPopupOpen = false;
         ListBoxItemSearchItems.Clear();
@@ -1798,7 +1794,6 @@ public class CraftingBindings : BaseViewModel
         return new CraftingResourceEntry
         {
             UniqueName = resource.UniqueName,
-            DisplayName = resource.DisplayName,
             QuantityPerRun = resource.QuantityPerRun,
             UnitPrice = resource.UnitPrice,
             UnitWeight = resource.UnitWeight,
@@ -1821,7 +1816,6 @@ public class CraftingBindings : BaseViewModel
         {
             EmptyJournalUniqueName = journal.EmptyJournalUniqueName,
             FullJournalUniqueName = journal.FullJournalUniqueName,
-            DisplayName = journal.DisplayName,
             FamePerRun = journal.FamePerRun,
             MaxFamePerJournal = journal.MaxFamePerJournal,
             EmptyJournalPrice = journal.EmptyJournalPrice,
@@ -1836,7 +1830,6 @@ public class CraftingBindings : BaseViewModel
     {
         var item = ItemController.GetItemByUniqueName(crafting.ItemUniqueName);
         crafting.Icon = item?.Icon;
-        crafting.ItemName = string.IsNullOrWhiteSpace(crafting.ItemName) ? item?.LocalizedName : crafting.ItemName;
 
         foreach (var resource in crafting.Resources ?? [])
         {
@@ -1857,7 +1850,6 @@ public class CraftingBindings : BaseViewModel
         var result = _calculator.Calculate(new CraftingCalculationInput
         {
             ItemUniqueName = crafting.ItemUniqueName,
-            ItemName = crafting.ItemName,
             CraftingRuns = Math.Max(1, crafting.CraftingRuns),
             AmountCrafted = Math.Max(1, crafting.AmountCrafted),
             ReturnRatePercent = crafting.ReturnRatePercent,
@@ -1875,7 +1867,6 @@ public class CraftingBindings : BaseViewModel
                     return new CraftingResourceInput
                     {
                         UniqueName = x.UniqueName,
-                        DisplayName = x.DisplayName,
                         QuantityPerRun = x.QuantityPerRun,
                         UnitPrice = x.UnitPrice,
                         UnitWeight = x.UnitWeight,
@@ -1893,7 +1884,6 @@ public class CraftingBindings : BaseViewModel
                 {
                     EmptyJournalUniqueName = crafting.Journal.EmptyJournalUniqueName,
                     FullJournalUniqueName = crafting.Journal.FullJournalUniqueName,
-                    DisplayName = crafting.Journal.DisplayName,
                     FamePerRun = crafting.Journal.FamePerRun,
                     MaxFamePerJournal = crafting.Journal.MaxFamePerJournal,
                     EmptyJournalPrice = crafting.Journal.EmptyJournalPrice,
@@ -1920,7 +1910,6 @@ public class CraftingBindings : BaseViewModel
 
         var item = ItemController.GetItemByUniqueName(resource.UniqueName);
         resource.Icon = item?.Icon;
-        resource.DisplayName = string.IsNullOrWhiteSpace(resource.DisplayName) ? item?.LocalizedName : resource.DisplayName;
     }
 
     private static void PrepareJournal(CraftingJournalEntry journal)
@@ -1932,6 +1921,5 @@ public class CraftingBindings : BaseViewModel
 
         var item = ItemController.GetItemByUniqueName(journal.EmptyJournalUniqueName);
         journal.Icon = item?.Icon;
-        journal.DisplayName = string.IsNullOrWhiteSpace(journal.DisplayName) ? item?.LocalizedName : journal.DisplayName;
     }
 }
