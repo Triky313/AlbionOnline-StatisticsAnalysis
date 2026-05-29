@@ -154,7 +154,7 @@ public class CraftingBindings : BaseViewModel
             field = value;
             OnPropertyChanged();
             ClearSellPriceOptions();
-            _ = ApplySelectedItemAsync(value);
+            ApplySelectedItem(value);
         }
     }
 
@@ -492,6 +492,14 @@ public class CraftingBindings : BaseViewModel
         set
         {
             field = value;
+
+            if (!_isLoading
+                && SelectedSavedCrafting != null
+                && string.Equals(SelectedSavedCrafting.ItemUniqueName, SelectedItem?.UniqueName, StringComparison.Ordinal))
+            {
+                SelectedSavedCrafting.Notes = value;
+            }
+
             OnPropertyChanged();
         }
     }
@@ -1048,7 +1056,7 @@ public class CraftingBindings : BaseViewModel
         return categoryMatch && subCategory1Match && subCategory2Match && tierMatch && levelMatch;
     }
 
-    private async Task ApplySelectedItemAsync(Item item)
+    private void ApplySelectedItem(Item item)
     {
         if (_isLoading)
         {
@@ -1071,7 +1079,7 @@ public class CraftingBindings : BaseViewModel
         }
 
         Journal = _recipeResolver.GetJournal(item);
-        Notes = await Common.CraftingTabController.GetNoteAsync(item.UniqueName);
+        Notes = string.Empty;
         Recalculate();
     }
 
@@ -1719,6 +1727,7 @@ public class CraftingBindings : BaseViewModel
         OnPropertyChanged(nameof(CraftingLocationSearchText));
         SelectedCraftingLocation = null;
         _amountCrafted = 1;
+        Notes = string.Empty;
         Calculation = new CraftingCalculationResult();
     }
 

@@ -457,7 +457,6 @@ public class MainWindowViewModel : BaseViewModel
         Log.Information("Loading Albion user data. Server={Server}, Directory={Directory}", AppDataPaths.ActiveUserDataServerLocation, AppDataPaths.UserDataDirectory);
 
         ResetItemUserDataState();
-        CraftingTabController.ResetCache();
         await ItemController.SetFavoriteItemsFromLocalFileAsync();
 
         AlertManager?.StopAllAlerts();

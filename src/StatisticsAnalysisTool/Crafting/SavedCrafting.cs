@@ -38,7 +38,15 @@ public class SavedCrafting : BaseViewModel
     public decimal SetupFeePercent { get; set; } = 2.5m;
     public decimal OtherCosts { get; set; }
     public decimal OutputUnitPrice { get; set; }
-    public string Notes { get; set; }
+    public string Notes
+    {
+        get;
+        set
+        {
+            field = value;
+            OnPropertyChanged();
+        }
+    }
     public List<CraftingResourceEntry> Resources { get; set; } = [];
     public CraftingJournalEntry Journal { get; set; }
     public DateTime LastChangedUtc { get; set; } = DateTime.UtcNow;
