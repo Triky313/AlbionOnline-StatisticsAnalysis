@@ -80,10 +80,6 @@ public class SavedCrafting : BaseViewModel
                              + " "
                              + LocalizationController.Translation("RUNS")
                              + " | "
-                             + (UsesFocus
-                                 ? LocalizationController.Translation("FOCUS")
-                                 : LocalizationController.Translation("NO_FOCUS"))
-                             + " | "
                              + ReturnRatePercent.ToString("N2")
                              + "% RRR"
                              + (DailyBonusPercent <= 0m

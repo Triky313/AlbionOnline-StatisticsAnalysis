@@ -885,6 +885,26 @@
                                 </DataTemplate>
                             </GridViewColumn.CellTemplate>
                         </GridViewColumn>
+                        <GridViewColumn Header="{x:Static crafting:CraftingBindings.TranslationFocus}" Width="70">
+                            <GridViewColumn.CellTemplate>
+                                <DataTemplate>
+                                    <fa5:ImageAwesome Width="16" Height="16" HorizontalAlignment="Center" VerticalAlignment="Center">
+                                        <fa5:ImageAwesome.Style>
+                                            <Style TargetType="{x:Type fa5:ImageAwesome}">
+                                                <Setter Property="Icon" Value="Solid_Times" />
+                                                <Setter Property="Foreground" Value="{StaticResource SolidColorBrush.Accent.Red.4}" />
+                                                <Style.Triggers>
+                                                    <DataTrigger Binding="{Binding UsesFocus}" Value="True">
+                                                        <Setter Property="Icon" Value="Solid_Check" />
+                                                        <Setter Property="Foreground" Value="{StaticResource SolidColorBrush.Accent.Green.4}" />
+                                                    </DataTrigger>
+                                                </Style.Triggers>
+                                            </Style>
+                                        </fa5:ImageAwesome.Style>
+                                    </fa5:ImageAwesome>
+                                </DataTemplate>
+                            </GridViewColumn.CellTemplate>
+                        </GridViewColumn>
                         <GridViewColumn Header="{x:Static crafting:CraftingBindings.TranslationTotalCosts}" Width="110">
                             <GridViewColumn.CellTemplate>
                                 <DataTemplate>
