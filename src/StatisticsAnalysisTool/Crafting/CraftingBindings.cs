@@ -48,6 +48,10 @@ public class CraftingBindings : BaseViewModel
     private string _itemSearchText;
     private string _craftingLocationSearchText;
     private string _sellPriceOptionsItemUniqueName = string.Empty;
+    private CategoryDropdownItem _selectedItemShopCategory;
+    private CategoryDropdownItem _selectedItemShopSubCategory1;
+    private CategoryDropdownItem _selectedItemShopSubCategory2;
+    private CategoryDropdownItem _selectedItemShopSubCategory3;
     private int _amountCrafted = 1;
     private bool _isLoading;
     private bool _isUpdatingPercentInputText;
@@ -58,6 +62,7 @@ public class CraftingBindings : BaseViewModel
 
     public CraftingBindings()
     {
+        LoadCategoriesToDropdown();
         CraftableItems = new ObservableCollection<Item>(ItemController.Items
             .Where(_recipeResolver.IsCraftable)
             .OrderBy(x => x.LocalizedName)
@@ -86,6 +91,14 @@ public class CraftingBindings : BaseViewModel
     public ObservableCollection<CraftingLocationOption> ListBoxCraftingLocationItems { get; } = [];
 
     public ObservableCollection<CraftingSellPriceOption> SellPriceOptions { get; } = [];
+
+    public ObservableCollection<CategoryDropdownItem> ItemShopCategories { get; } = [];
+
+    public ObservableCollection<CategoryDropdownItem> ItemSubCategories1 { get; private set; } = [];
+
+    public ObservableCollection<CategoryDropdownItem> ItemSubCategories2 { get; private set; } = [];
+
+    public ObservableCollection<CategoryDropdownItem> ItemSubCategories3 { get; private set; } = [];
 
     public BlackMarketBindings BlackMarket => IsBlackMarketEnabled ? _blackMarket ??= new BlackMarketBindings() : null;
 
@@ -160,7 +173,7 @@ public class CraftingBindings : BaseViewModel
             }
 
             CraftableItemsView?.Refresh();
-            UpdateItemSearchListBox(value);
+            UpdateItemSearchListBox(value, true);
             OnPropertyChanged();
         }
     }
@@ -206,14 +219,66 @@ public class CraftingBindings : BaseViewModel
         }
     }
 
+    public CategoryDropdownItem SelectedItemShopCategory
+    {
+        get => _selectedItemShopCategory;
+        set
+        {
+            _selectedItemShopCategory = value;
+            ItemSubCategories1 = ToCategoryDropdownItems(ItemController.GetSubCategories1(value?.Id));
+            SelectedItemShopSubCategory1 = null;
+            RefreshItemSearchFilters();
+            OnPropertyChanged();
+            OnPropertyChanged(nameof(ItemSubCategories1));
+        }
+    }
+
+    public CategoryDropdownItem SelectedItemShopSubCategory1
+    {
+        get => _selectedItemShopSubCategory1;
+        set
+        {
+            _selectedItemShopSubCategory1 = value;
+            ItemSubCategories2 = ToCategoryDropdownItems(ItemController.GetSubCategories2(SelectedItemShopCategory?.Id, value?.Id));
+            SelectedItemShopSubCategory2 = null;
+            RefreshItemSearchFilters();
+            OnPropertyChanged();
+            OnPropertyChanged(nameof(ItemSubCategories2));
+        }
+    }
+
+    public CategoryDropdownItem SelectedItemShopSubCategory2
+    {
+        get => _selectedItemShopSubCategory2;
+        set
+        {
+            _selectedItemShopSubCategory2 = value;
+            ItemSubCategories3 = ToCategoryDropdownItems(ItemController.GetSubCategories3(SelectedItemShopCategory?.Id, SelectedItemShopSubCategory1?.Id, value?.Id));
+            SelectedItemShopSubCategory3 = null;
+            RefreshItemSearchFilters();
+            OnPropertyChanged();
+            OnPropertyChanged(nameof(ItemSubCategories3));
+        }
+    }
+
+    public CategoryDropdownItem SelectedItemShopSubCategory3
+    {
+        get => _selectedItemShopSubCategory3;
+        set
+        {
+            _selectedItemShopSubCategory3 = value;
+            RefreshItemSearchFilters();
+            OnPropertyChanged();
+        }
+    }
+
     public ItemTier SelectedItemTier
     {
         get;
         set
         {
             field = value;
-            CraftableItemsView?.Refresh();
-            UpdateItemSearchListBox(ItemSearchText);
+            RefreshItemSearchFilters();
             OnPropertyChanged();
         }
     }
@@ -225,8 +290,7 @@ public class CraftingBindings : BaseViewModel
         set
         {
             field = value;
-            CraftableItemsView?.Refresh();
-            UpdateItemSearchListBox(ItemSearchText);
+            RefreshItemSearchFilters();
             OnPropertyChanged();
         }
     }
@@ -596,6 +660,16 @@ public class CraftingBindings : BaseViewModel
         IsItemSearchPopupOpen = false;
     }
 
+    public void OpenItemSearch()
+    {
+        UpdateItemSearchListBox(ItemSearchText, true);
+    }
+
+    public void CloseItemSearch()
+    {
+        IsItemSearchPopupOpen = false;
+    }
+
     public void OpenCraftingLocationSearch()
     {
         UpdateCraftingLocationListBox(CraftingLocationSearchText);
@@ -813,6 +887,17 @@ public class CraftingBindings : BaseViewModel
         await Task.WhenAll(saveTasks);
     }
 
+    public void ResetItemFilters()
+    {
+        ItemSearchText = string.Empty;
+        SelectedItemShopCategory = null;
+        SelectedItemShopSubCategory1 = null;
+        SelectedItemShopSubCategory2 = null;
+        SelectedItemShopSubCategory3 = null;
+        SelectedItemTier = ItemTier.Unknown;
+        SelectedItemLevel = ItemLevel.Unknown;
+    }
+
     private bool FilterCraftableItem(object value)
     {
         if (value is not Item item)
@@ -820,28 +905,20 @@ public class CraftingBindings : BaseViewModel
             return false;
         }
 
-        if (string.IsNullOrWhiteSpace(ItemSearchText))
-        {
-            return true;
-        }
-
         return ItemMatchesFilter(item)
-               && ItemMatchesSearchText(item, ItemSearchText);
+               && (string.IsNullOrWhiteSpace(ItemSearchText) || ItemMatchesSearchText(item, ItemSearchText));
     }
 
-    private void UpdateItemSearchListBox(string searchText)
+    private void UpdateItemSearchListBox(string searchText, bool shouldOpenPopup)
     {
         ListBoxItemSearchItems.Clear();
 
-        if (string.IsNullOrWhiteSpace(searchText))
-        {
-            IsItemSearchPopupOpen = false;
-            return;
-        }
+        var filteredItems = CraftableItems
+            .Where(x => ItemMatchesFilter(x)
+                        && (string.IsNullOrWhiteSpace(searchText) || ItemMatchesSearchText(x, searchText)))
+            .Take(50);
 
-        foreach (var item in CraftableItems
-                     .Where(x => ItemMatchesFilter(x) && ItemMatchesSearchText(x, searchText))
-                     .Take(30))
+        foreach (var item in filteredItems)
         {
             ListBoxItemSearchItems.Add(new CraftingItemSearchResult
             {
@@ -852,7 +929,7 @@ public class CraftingBindings : BaseViewModel
             );
         }
 
-        IsItemSearchPopupOpen = ListBoxItemSearchItems.Count > 0;
+        IsItemSearchPopupOpen = shouldOpenPopup && ListBoxItemSearchItems.Count > 0;
     }
 
     private void UpdateCraftingLocationListBox(string searchText)
@@ -870,6 +947,72 @@ public class CraftingBindings : BaseViewModel
         }
 
         IsCraftingLocationPopupOpen = ListBoxCraftingLocationItems.Count > 0;
+    }
+
+    private void RefreshItemSearchFilters()
+    {
+        CraftableItemsView?.Refresh();
+        UpdateItemSearchListBox(ItemSearchText, false);
+    }
+
+    private void LoadCategoriesToDropdown()
+    {
+        var categories = ItemController.GetRootCategories()
+            .OrderBy(x => x.Value, StringComparer.Ordinal)
+            .Select(x => new CategoryDropdownItem
+            {
+                Id = x.Id,
+                Value = x.Value,
+                DisplayName = LocalizationController.Translation("@MARKETPLACEGUI_ROLLOUT_SHOPCATEGORY_" + x.Id.ToUpperInvariant())
+            });
+
+        ItemShopCategories.Clear();
+        ItemShopCategories.Add(CreateEmptyCategoryDropdownItem());
+
+        foreach (var item in categories)
+        {
+            ItemShopCategories.Add(item);
+        }
+    }
+
+    private static ObservableCollection<CategoryDropdownItem> ToCategoryDropdownItems(IEnumerable<(string Id, string Value)> source)
+    {
+        var items = new ObservableCollection<CategoryDropdownItem>
+        {
+            CreateEmptyCategoryDropdownItem()
+        };
+
+        if (source == null)
+        {
+            return items;
+        }
+
+        foreach (var item in source.Select(x =>
+                 {
+                     var id = x.Id ?? string.Empty;
+                     var translationKey = string.IsNullOrWhiteSpace(id) ? "UNKNOWN" : id.ToUpperInvariant();
+                     return new CategoryDropdownItem
+                     {
+                         Id = id,
+                         Value = x.Value ?? string.Empty,
+                         DisplayName = LocalizationController.Translation("@MARKETPLACEGUI_ROLLOUT_SHOPSUBCATEGORY_" + translationKey) ?? translationKey
+                     };
+                 }))
+        {
+            items.Add(item);
+        }
+
+        return items;
+    }
+
+    private static CategoryDropdownItem CreateEmptyCategoryDropdownItem()
+    {
+        return new CategoryDropdownItem
+        {
+            Id = string.Empty,
+            Value = string.Empty,
+            DisplayName = string.Empty
+        };
     }
 
     private static bool ItemMatchesSearchText(Item item, string searchText)
@@ -896,10 +1039,14 @@ public class CraftingBindings : BaseViewModel
 
     private bool ItemMatchesFilter(Item item)
     {
+        var categoryMatch = SelectedItemShopCategory == null || string.IsNullOrWhiteSpace(SelectedItemShopCategory.Id) || item.FullItemInformation?.ShopCategory == SelectedItemShopCategory.Id;
+        var subCategory1Match = SelectedItemShopSubCategory1 == null || string.IsNullOrWhiteSpace(SelectedItemShopSubCategory1.Id) || item.FullItemInformation?.ShopSubCategory1 == SelectedItemShopSubCategory1.Id;
+        var subCategory2Match = SelectedItemShopSubCategory2 == null || string.IsNullOrWhiteSpace(SelectedItemShopSubCategory2.Id) || item.FullItemInformation?.ShopSubCategory2 == SelectedItemShopSubCategory2.Id;
+        var subCategory3Match = SelectedItemShopSubCategory3 == null || string.IsNullOrWhiteSpace(SelectedItemShopSubCategory3.Id) || item.FullItemInformation?.ShopSubCategory3 == SelectedItemShopSubCategory3.Id;
         var tierMatch = SelectedItemTier == ItemTier.Unknown || (ItemTier) item.Tier == SelectedItemTier;
         var levelMatch = SelectedItemLevel == ItemLevel.Unknown || (ItemLevel) item.Level == SelectedItemLevel;
 
-        return tierMatch && levelMatch;
+        return categoryMatch && subCategory1Match && subCategory2Match && subCategory3Match && tierMatch && levelMatch;
     }
 
     private async Task ApplySelectedItemAsync(Item item)
