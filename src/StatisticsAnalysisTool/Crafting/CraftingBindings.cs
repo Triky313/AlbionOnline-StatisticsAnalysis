@@ -23,6 +23,16 @@ namespace StatisticsAnalysisTool.Crafting;
 
 public class CraftingBindings : BaseViewModel
 {
+    private static readonly HashSet<string> ExcludedCraftingItemShopCategoryIds = new(StringComparer.OrdinalIgnoreCase)
+    {
+        "artefact",
+        "artefacts",
+        "crafting",
+        "farmable",
+        "farming",
+        "furniture"
+    };
+
     private static readonly MarketLocation[] SellPriceMarketLocations =
     [
         MarketLocation.BlackMarket,
@@ -51,7 +61,6 @@ public class CraftingBindings : BaseViewModel
     private CategoryDropdownItem _selectedItemShopCategory;
     private CategoryDropdownItem _selectedItemShopSubCategory1;
     private CategoryDropdownItem _selectedItemShopSubCategory2;
-    private CategoryDropdownItem _selectedItemShopSubCategory3;
     private int _amountCrafted = 1;
     private bool _isLoading;
     private bool _isUpdatingPercentInputText;
@@ -62,11 +71,12 @@ public class CraftingBindings : BaseViewModel
 
     public CraftingBindings()
     {
-        LoadCategoriesToDropdown();
-        CraftableItems = new ObservableCollection<Item>(ItemController.Items
+        var craftableItems = ItemController.Items
             .Where(_recipeResolver.IsCraftable)
             .OrderBy(x => x.LocalizedName)
-            .ToList());
+            .ToList();
+        CraftableItems = new ObservableCollection<Item>(craftableItems);
+        LoadCategoriesToDropdown(craftableItems);
         CraftableItemsView = CollectionViewSource.GetDefaultView(CraftableItems);
         CraftableItemsView.Filter = FilterCraftableItem;
         SelectedDailyBonus = DailyBonusOptions.First();
@@ -97,8 +107,6 @@ public class CraftingBindings : BaseViewModel
     public ObservableCollection<CategoryDropdownItem> ItemSubCategories1 { get; private set; } = [];
 
     public ObservableCollection<CategoryDropdownItem> ItemSubCategories2 { get; private set; } = [];
-
-    public ObservableCollection<CategoryDropdownItem> ItemSubCategories3 { get; private set; } = [];
 
     public BlackMarketBindings BlackMarket => IsBlackMarketEnabled ? _blackMarket ??= new BlackMarketBindings() : null;
 
@@ -253,20 +261,6 @@ public class CraftingBindings : BaseViewModel
         set
         {
             _selectedItemShopSubCategory2 = value;
-            ItemSubCategories3 = ToCategoryDropdownItems(ItemController.GetSubCategories3(SelectedItemShopCategory?.Id, SelectedItemShopSubCategory1?.Id, value?.Id));
-            SelectedItemShopSubCategory3 = null;
-            RefreshItemSearchFilters();
-            OnPropertyChanged();
-            OnPropertyChanged(nameof(ItemSubCategories3));
-        }
-    }
-
-    public CategoryDropdownItem SelectedItemShopSubCategory3
-    {
-        get => _selectedItemShopSubCategory3;
-        set
-        {
-            _selectedItemShopSubCategory3 = value;
             RefreshItemSearchFilters();
             OnPropertyChanged();
         }
@@ -893,7 +887,6 @@ public class CraftingBindings : BaseViewModel
         SelectedItemShopCategory = null;
         SelectedItemShopSubCategory1 = null;
         SelectedItemShopSubCategory2 = null;
-        SelectedItemShopSubCategory3 = null;
         SelectedItemTier = ItemTier.Unknown;
         SelectedItemLevel = ItemLevel.Unknown;
     }
@@ -955,9 +948,16 @@ public class CraftingBindings : BaseViewModel
         UpdateItemSearchListBox(ItemSearchText, false);
     }
 
-    private void LoadCategoriesToDropdown()
+    private void LoadCategoriesToDropdown(IEnumerable<Item> craftableItems)
     {
+        var craftableCategoryIds = craftableItems
+            .Select(x => x.FullItemInformation?.ShopCategory)
+            .Where(x => !string.IsNullOrWhiteSpace(x))
+            .ToHashSet(StringComparer.OrdinalIgnoreCase);
+
         var categories = ItemController.GetRootCategories()
+            .Where(x => craftableCategoryIds.Contains(x.Id ?? string.Empty)
+                        && !ExcludedCraftingItemShopCategoryIds.Contains(x.Id ?? string.Empty))
             .OrderBy(x => x.Value, StringComparer.Ordinal)
             .Select(x => new CategoryDropdownItem
             {
@@ -1042,11 +1042,10 @@ public class CraftingBindings : BaseViewModel
         var categoryMatch = SelectedItemShopCategory == null || string.IsNullOrWhiteSpace(SelectedItemShopCategory.Id) || item.FullItemInformation?.ShopCategory == SelectedItemShopCategory.Id;
         var subCategory1Match = SelectedItemShopSubCategory1 == null || string.IsNullOrWhiteSpace(SelectedItemShopSubCategory1.Id) || item.FullItemInformation?.ShopSubCategory1 == SelectedItemShopSubCategory1.Id;
         var subCategory2Match = SelectedItemShopSubCategory2 == null || string.IsNullOrWhiteSpace(SelectedItemShopSubCategory2.Id) || item.FullItemInformation?.ShopSubCategory2 == SelectedItemShopSubCategory2.Id;
-        var subCategory3Match = SelectedItemShopSubCategory3 == null || string.IsNullOrWhiteSpace(SelectedItemShopSubCategory3.Id) || item.FullItemInformation?.ShopSubCategory3 == SelectedItemShopSubCategory3.Id;
         var tierMatch = SelectedItemTier == ItemTier.Unknown || (ItemTier) item.Tier == SelectedItemTier;
         var levelMatch = SelectedItemLevel == ItemLevel.Unknown || (ItemLevel) item.Level == SelectedItemLevel;
 
-        return categoryMatch && subCategory1Match && subCategory2Match && subCategory3Match && tierMatch && levelMatch;
+        return categoryMatch && subCategory1Match && subCategory2Match && tierMatch && levelMatch;
     }
 
     private async Task ApplySelectedItemAsync(Item item)

@@ -228,14 +228,6 @@
                                       Margin="5,5"
                                       VerticalAlignment="Top"
                                       Width="150" />
-                            <ComboBox ItemsSource="{Binding CraftingBindings.ItemSubCategories3}"
-                                      SelectedItem="{Binding CraftingBindings.SelectedItemShopSubCategory3, Mode=TwoWay}"
-                                      SelectedValuePath="Id"
-                                      DisplayMemberPath="DisplayName"
-                                      HorizontalAlignment="Left"
-                                      Margin="5,5"
-                                      VerticalAlignment="Top"
-                                      Width="150" />
                             <ComboBox ItemsSource="{Binding CraftingBindings.ItemTiers}"
                                       SelectedValue="{Binding CraftingBindings.SelectedItemTier, Mode=TwoWay}"
                                       SelectedValuePath="Key"
