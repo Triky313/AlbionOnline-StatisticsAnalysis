@@ -201,6 +201,18 @@ public partial class CraftingControl
         listBox.SelectedItem = null;
     }
 
+    private void CopyTextBlockTextToClipboard_OnMouseLeftButtonUp(object sender, MouseButtonEventArgs e)
+    {
+        if (sender is not TextBlock { Text: { } textBlockText }
+            || string.IsNullOrWhiteSpace(textBlockText))
+        {
+            return;
+        }
+
+        Clipboard.SetText(textBlockText);
+        e.Handled = true;
+    }
+
     private void CraftingLocationSearch_OnGotKeyboardFocus(object sender, System.Windows.Input.KeyboardFocusChangedEventArgs e)
     {
         if (DataContext is not MainWindowViewModel mainWindowViewModel)

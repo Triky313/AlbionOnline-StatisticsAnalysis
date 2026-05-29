@@ -446,12 +446,22 @@
                                         </DataTemplate>
                                     </GridViewColumn.CellTemplate>
                                 </GridViewColumn>
-                                <GridViewColumn Header="{x:Static crafting:CraftingBindings.TranslationResource}" Width="250" DisplayMemberBinding="{Binding DisplayName}">
+                                <GridViewColumn Header="{x:Static crafting:CraftingBindings.TranslationResource}" Width="250">
                                     <GridViewColumn.HeaderContainerStyle>
                                         <Style TargetType="{x:Type GridViewColumnHeader}" BasedOn="{StaticResource {x:Type GridViewColumnHeader}}">
                                             <Setter Property="ToolTip" Value="{x:Static crafting:CraftingBindings.TranslationResourceNameColumnTooltip}" />
                                         </Style>
                                     </GridViewColumn.HeaderContainerStyle>
+                                    <GridViewColumn.CellTemplate>
+                                        <DataTemplate>
+                                            <TextBlock Text="{Binding DisplayName}"
+                                                       Foreground="{StaticResource SolidColorBrush.Text.1}"
+                                                       Cursor="Hand"
+                                                       TextTrimming="CharacterEllipsis"
+                                                       VerticalAlignment="Center"
+                                                       MouseLeftButtonUp="CopyTextBlockTextToClipboard_OnMouseLeftButtonUp" />
+                                        </DataTemplate>
+                                    </GridViewColumn.CellTemplate>
                                 </GridViewColumn>
                                 <GridViewColumn Header="{x:Static crafting:CraftingBindings.TranslationType}" Width="125" DisplayMemberBinding="{Binding ResourceKindText}">
                                     <GridViewColumn.HeaderContainerStyle>
@@ -588,8 +598,11 @@
                             <StackPanel Orientation="Horizontal">
                                 <Image Source="{Binding CraftingBindings.Journal.Icon}" Width="36" Height="36" />
                                 <StackPanel Orientation="Vertical" Margin="10,0,0,0" >
-                                    <TextBlock Text="{Binding CraftingBindings.Journal.DisplayName}" Foreground="{StaticResource SolidColorBrush.Text.1}" 
-                                               VerticalAlignment="Top" TextWrapping="Wrap" />
+                                    <TextBlock Text="{Binding CraftingBindings.Journal.DisplayName}" Foreground="{StaticResource SolidColorBrush.Text.1}"
+                                               Cursor="Hand"
+                                               VerticalAlignment="Top"
+                                               TextWrapping="Wrap"
+                                               MouseLeftButtonUp="CopyTextBlockTextToClipboard_OnMouseLeftButtonUp" />
                                     <StackPanel Orientation="Horizontal">
                                         <StackPanel Orientation="Horizontal" MinWidth="80">
                                             <TextBlock Text="{Binding CraftingBindings.TranslationEmpty, Mode=OneWay, FallbackValue=EMPTY}" 
