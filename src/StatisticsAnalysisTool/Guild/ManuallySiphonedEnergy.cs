@@ -5,7 +5,6 @@ using StatisticsAnalysisTool.Localization;
 using StatisticsAnalysisTool.Network.Manager;
 using StatisticsAnalysisTool.ViewModels;
 using System;
-using System.IO;
 using System.Reflection;
 using System.Windows.Input;
 using StatisticsAnalysisTool.Diagnostics;
@@ -93,7 +92,9 @@ public class ManuallySiphonedEnergy : BaseViewModel
             try
             {
                 var trackingController = ServiceLocator.Resolve<TrackingController>();
-                File.WriteAllText(dialog.FileName, trackingController?.GuildController?.GetSiphonedEnergyListAsCsv());
+                ExportFileWriter.WriteText(
+                    dialog.FileName,
+                    trackingController?.GuildController?.GetSiphonedEnergyListAsCsv());
             }
             catch (Exception e)
             {
