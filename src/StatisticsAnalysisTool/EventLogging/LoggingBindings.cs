@@ -597,6 +597,8 @@ public class LoggingBindings : BaseViewModel
                 return false;
             }
 
+            TrimDelimitedValues(values);
+
             if (isHeaderLine)
             {
                 if (!IsLootLogHeader(values))
@@ -704,6 +706,16 @@ public class LoggingBindings : BaseViewModel
         if (item is not null)
         {
             return item;
+        }
+
+        var cleanItemIdentifier = ItemController.GetCleanUniqueName(itemIdentifier);
+        if (!string.Equals(cleanItemIdentifier, itemIdentifier, StringComparison.Ordinal))
+        {
+            item = ItemController.GetItemByUniqueName(cleanItemIdentifier);
+            if (item is not null)
+            {
+                return item;
+            }
         }
 
         var enchantment = ItemController.GetItemLevel(itemIdentifier);
@@ -831,9 +843,12 @@ public class LoggingBindings : BaseViewModel
     {
         var values = SplitVaultLogLine(line);
         return values.Length >= 6
-               && string.Equals(values[0], "Datum", StringComparison.OrdinalIgnoreCase)
-               && string.Equals(values[1], "Spieler", StringComparison.OrdinalIgnoreCase)
-               && string.Equals(values[2], "Gegenstand", StringComparison.OrdinalIgnoreCase);
+               && IsAnyVaultLogColumn(values[0], "Datum", "Date")
+               && IsAnyVaultLogColumn(values[1], "Spieler", "Player")
+               && IsAnyVaultLogColumn(values[2], "Gegenstand", "Item")
+               && IsAnyVaultLogColumn(values[3], "Verzauberung", "Enchantment")
+               && IsAnyVaultLogColumn(values[4], "Qualit\u00E4t", "Qualitat", "Quality")
+               && IsAnyVaultLogColumn(values[5], "Anzahl", "Amount");
     }
 
     private static bool TryParseVaultLogLine(string line, out VaultContainerLogItem item)
@@ -909,14 +924,27 @@ public class LoggingBindings : BaseViewModel
 
     private static string[] SplitVaultLogLine(string line)
     {
-        var values = line.Split('\t');
-
-        for (int i = 0; i < values.Length; i++)
+        var delimiter = line.Contains('\t') ? '\t' : ',';
+        if (!TrySplitDelimitedLine(line, delimiter, out var values))
         {
-            values[i] = values[i].Trim().Trim('"');
+            return [];
         }
 
+        TrimDelimitedValues(values);
         return values;
+    }
+
+    private static bool IsAnyVaultLogColumn(string value, params string[] expectedColumnNames)
+    {
+        return expectedColumnNames.Any(expectedColumnName => string.Equals(value, expectedColumnName, StringComparison.OrdinalIgnoreCase));
+    }
+
+    private static void TrimDelimitedValues(string[] values)
+    {
+        for (var i = 0; i < values.Length; i++)
+        {
+            values[i] = values[i].Trim().TrimStart('\uFEFF');
+        }
     }
 
     private static bool TrySplitDelimitedLine(string line, char delimiter, out string[] values)

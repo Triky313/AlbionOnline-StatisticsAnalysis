@@ -549,6 +549,29 @@ public class LoggingBindingsTests
     }
 
     [Test]
+    public void AddVaultLogText_WithCommaSeparatedEnglishChestLog_LoadsPositiveQuantityItems()
+    {
+        var bindings = new LoggingBindings();
+        var chestLogText = string.Join(Environment.NewLine,
+            "Date,Player,Item,Enchantment,Quality,Amount",
+            "05/30/2026 15:13:05,Kiiiro,Master's Graveguard Boots,2,4,1",
+            "05/30/2026 15:13:04,Kiiiro,Expert's Assassin Hood,3,4,1",
+            "05/30/2026 15:13:03,Kiiiro,Master's Dawnsong,3,3,-1");
+
+        var loadedItems = bindings.AddVaultLogText(chestLogText);
+
+        loadedItems.Should().Be(2);
+        bindings.VaultLogItems.Should().HaveCount(2);
+        bindings.VaultLogItems[0].PlayerName.Should().Be("Kiiiro");
+        bindings.VaultLogItems[0].LocalizedName.Should().Be("Master's Graveguard Boots");
+        bindings.VaultLogItems[0].Enchantment.Should().Be(2);
+        bindings.VaultLogItems[0].Quality.Should().Be(4);
+        bindings.VaultLogItems[0].Quantity.Should().Be(1);
+        bindings.VaultLogItems[1].LocalizedName.Should().Be("Expert's Assassin Hood");
+        bindings.ChestLogCount.Should().Be(1);
+    }
+
+    [Test]
     public void AddVaultLogText_WithMultiplePastedChestLogs_AppendsItems()
     {
         var bindings = new LoggingBindings();
@@ -595,6 +618,54 @@ public class LoggingBindingsTests
             bindings.ChestLogCount.Should().Be(0);
             bindings.LootComparatorImportEventLine.Should().Contain(Path.GetFileName(filePath));
             bindings.LootComparatorImportEventLineVisibility.Should().Be(Visibility.Visible);
+        }
+        finally
+        {
+            File.Delete(filePath);
+        }
+    }
+
+    [Test]
+    public void AddLootLogFiles_WithEnchantedItemIdAndBaseUniqueName_LoadsEntries()
+    {
+        ItemController.Items = new ObservableCollection<Item>()
+        {
+            new()
+            {
+                Index = 42,
+                UniqueName = "T5_ARMOR_CLOTH_KEEPER",
+                LocalizedNames = new LocalizedNames()
+                {
+                    EnUs = "Expert's Druid Robe"
+                },
+                FullItemInformation = new SimpleItem()
+                {
+                    UniqueName = "T5_ARMOR_CLOTH_KEEPER",
+                    ShopCategory = "armors",
+                    ShopSubCategory1 = "cloth_armor"
+                }
+            }
+        };
+
+        var bindings = new LoggingBindings();
+        var filePath = Path.GetTempFileName();
+        var lootLogText = string.Join(Environment.NewLine,
+            "timestamp_utc;looted_by__alliance;looted_by__guild;looted_by__name;item_id;item_name;quantity;looted_from__alliance;looted_from__guild;looted_from__name;died;died_player_guild;killed_by;killed_by_guild;average_est_market_value;cluster",
+            "2026-05-30T14:31:03.7413919Z;;COALITION;Darkblue0511;T5_ARMOR_CLOTH_KEEPER@2;Expert's Druid Robe;1;;I Check Mate I;onetaste;;;;;0;Unknown");
+
+        try
+        {
+            File.WriteAllText(filePath, lootLogText);
+
+            bindings.AddLootLogFiles([filePath]).Should().Be(1);
+
+            bindings.LootLogCount.Should().Be(1);
+            bindings.LootingPlayers.Should().ContainSingle();
+            bindings.LootingPlayers[0].PlayerName.Should().Be("Darkblue0511");
+            bindings.LootingPlayers[0].PlayerGuild.Should().Be("COALITION");
+            bindings.LootingPlayers[0].LootedItems.Should().ContainSingle();
+            bindings.LootingPlayers[0].LootedItems[0].ItemIndex.Should().Be(42);
+            bindings.LootingPlayers[0].LootedItems[0].Quantity.Should().Be(1);
         }
         finally
         {
