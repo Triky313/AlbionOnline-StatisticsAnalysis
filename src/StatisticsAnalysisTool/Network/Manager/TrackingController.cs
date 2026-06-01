@@ -26,6 +26,7 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Diagnostics;
 using System.Net.Sockets;
+using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Data;
@@ -36,10 +37,14 @@ namespace StatisticsAnalysisTool.Network.Manager;
 public class TrackingController : ITrackingController
 {
     private const int MaxNotifications = 4000;
+    private static readonly TimeSpan LogoutMinimumDuration = TimeSpan.FromSeconds(8);
+    private static readonly TimeSpan LogoutServerSilenceDuration = TimeSpan.FromSeconds(5);
+    private static readonly TimeSpan LogoutMaximumWaitDuration = TimeSpan.FromSeconds(35);
 
     private NetworkManager _networkManager;
     private readonly MainWindowViewModel _mainWindowViewModel;
     private string _currentNotificationSearchText = string.Empty;
+    private CancellationTokenSource _logoutDetectionCancellationTokenSource;
 
     public readonly LiveStatsTracker LiveStatsTracker;
     public readonly CombatController CombatController;
@@ -216,6 +221,81 @@ public class TrackingController : ITrackingController
         _mainWindowViewModel.IsTrackingActive = false;
 
         Debug.Print("Stopped tracking");
+    }
+
+    public void BeginLogoutDetection()
+    {
+        CancelLogoutDetection();
+
+        var cancellationTokenSource = new CancellationTokenSource();
+        _logoutDetectionCancellationTokenSource = cancellationTokenSource;
+
+        _ = DetectLogoutAsync(DateTime.UtcNow, cancellationTokenSource);
+    }
+
+    public void CancelLogoutDetection()
+    {
+        var cancellationTokenSource = _logoutDetectionCancellationTokenSource;
+        _logoutDetectionCancellationTokenSource = null;
+
+        if (cancellationTokenSource is null)
+        {
+            return;
+        }
+
+        cancellationTokenSource.Cancel();
+    }
+
+    private async Task DetectLogoutAsync(DateTime logoutStartUtc, CancellationTokenSource cancellationTokenSource)
+    {
+        var cancellationToken = cancellationTokenSource.Token;
+
+        try
+        {
+            while (!cancellationToken.IsCancellationRequested)
+            {
+                var now = DateTime.UtcNow;
+                var logoutDuration = now - logoutStartUtc;
+
+                if (logoutDuration >= LogoutMaximumWaitDuration || IsLogoutConfirmedByServerSilence(now, logoutStartUtc, logoutDuration))
+                {
+                    _mainWindowViewModel.MainStatusBindings.SetInGame(false);
+                    if (ReferenceEquals(_logoutDetectionCancellationTokenSource, cancellationTokenSource))
+                    {
+                        _logoutDetectionCancellationTokenSource = null;
+                    }
+                    return;
+                }
+
+                await Task.Delay(TimeSpan.FromSeconds(1), cancellationToken);
+            }
+        }
+        catch (OperationCanceledException)
+        {
+        }
+    }
+
+    private static bool IsLogoutConfirmedByServerSilence(DateTime now, DateTime logoutStartUtc, TimeSpan logoutDuration)
+    {
+        if (logoutDuration < LogoutMinimumDuration)
+        {
+            return false;
+        }
+
+        var lastServerPacketReceivedUtc = GetLastServerPacketReceivedUtc();
+
+        return lastServerPacketReceivedUtc <= logoutStartUtc
+               || now - lastServerPacketReceivedUtc >= LogoutServerSilenceDuration;
+    }
+
+    private static DateTime GetLastServerPacketReceivedUtc()
+    {
+        if (!ServiceLocator.IsServiceInDictionary<AlbionServerDetectionService>())
+        {
+            return DateTime.MinValue;
+        }
+
+        return ServiceLocator.Resolve<AlbionServerDetectionService>().LastServerPacketReceivedUtc;
     }
 
     public async Task RestartTrackingAsync()

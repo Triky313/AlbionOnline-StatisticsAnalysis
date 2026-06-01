@@ -19,6 +19,8 @@ public class JoinResponseHandler(TrackingController trackingController) : Respon
 
     protected override async Task OnActionAsync(JoinResponse value)
     {
+        trackingController.CancelLogoutDetection();
+
         SetLocalUserData(value);
         _ = SetApiUserData(value);
 
