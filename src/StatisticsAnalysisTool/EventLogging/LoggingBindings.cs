@@ -993,20 +993,52 @@ public class LoggingBindings : BaseViewModel
 
     private void ReplaceVaultLogItems(IEnumerable<VaultContainerLogItem> items, int sourceCount)
     {
-        VaultLogItems = new ObservableCollection<VaultContainerLogItem>(items.Where(x => x.Quantity > 0));
+        VaultLogItems = new ObservableCollection<VaultContainerLogItem>(GetUniquePositiveVaultLogItems(items));
         _chestLogSourceCount = sourceCount;
         RefreshLootComparatorLogCounts();
     }
 
     private int AddVaultLogItems(IEnumerable<VaultContainerLogItem> items)
     {
-        var validItems = items.Where(x => x.Quantity > 0).ToList();
-        foreach (var item in validItems)
+        var addedItems = 0;
+        foreach (var item in items.Where(x => x.Quantity > 0))
         {
+            if (VaultLogItems.Any(existingItem => IsSameVaultLogItem(existingItem, item)))
+            {
+                continue;
+            }
+
             VaultLogItems.Add(item);
+            addedItems++;
         }
 
-        return validItems.Count;
+        return addedItems;
+    }
+
+    private static List<VaultContainerLogItem> GetUniquePositiveVaultLogItems(IEnumerable<VaultContainerLogItem> items)
+    {
+        var uniqueItems = new List<VaultContainerLogItem>();
+        foreach (var item in items.Where(x => x.Quantity > 0))
+        {
+            if (uniqueItems.Any(existingItem => IsSameVaultLogItem(existingItem, item)))
+            {
+                continue;
+            }
+
+            uniqueItems.Add(item);
+        }
+
+        return uniqueItems;
+    }
+
+    private static bool IsSameVaultLogItem(VaultContainerLogItem firstItem, VaultContainerLogItem secondItem)
+    {
+        return ToUtc(firstItem.Timestamp) == ToUtc(secondItem.Timestamp)
+               && string.Equals(firstItem.PlayerName, secondItem.PlayerName, StringComparison.OrdinalIgnoreCase)
+               && string.Equals(firstItem.LocalizedName, secondItem.LocalizedName, StringComparison.OrdinalIgnoreCase)
+               && firstItem.Enchantment == secondItem.Enchantment
+               && firstItem.Quality == secondItem.Quality
+               && firstItem.Quantity == secondItem.Quantity;
     }
 
     public Visibility IsLootComparatorInfoPopupVisible

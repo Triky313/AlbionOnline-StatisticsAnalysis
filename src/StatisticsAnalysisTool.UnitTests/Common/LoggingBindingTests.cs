@@ -590,6 +590,22 @@ public class LoggingBindingsTests
     }
 
     [Test]
+    public void AddVaultLogText_WithDuplicateChestLogEntries_IgnoresDuplicates()
+    {
+        var bindings = new LoggingBindings();
+        var chestLogText = string.Join(Environment.NewLine,
+            "\"Datum\"\t\"Spieler\"\t\"Gegenstand\"\t\"Verzauberung\"\t\"Qualitat\"\t\"Anzahl\"",
+            "\"05/17/2026 23:31:19\"\t\"Triky313\"\t\"Seltenes robustes Fell\"\t\"2\"\t\"1\"\t\"1\"",
+            "\"05/17/2026 23:31:19\"\t\"Triky313\"\t\"Seltenes robustes Fell\"\t\"2\"\t\"1\"\t\"1\"");
+
+        bindings.AddVaultLogText(chestLogText).Should().Be(1);
+        bindings.AddVaultLogText(chestLogText).Should().Be(0);
+
+        bindings.VaultLogItems.Should().ContainSingle();
+        bindings.ChestLogCount.Should().Be(1);
+    }
+
+    [Test]
     public void AddVaultLogText_WithInvalidFormat_SkipsTextAndSetsImportEventLine()
     {
         var bindings = new LoggingBindings();
@@ -622,6 +638,35 @@ public class LoggingBindingsTests
         finally
         {
             File.Delete(filePath);
+        }
+    }
+
+    [Test]
+    public void LoadVaultLogFiles_WithDuplicateEntriesAcrossFiles_IgnoresDuplicates()
+    {
+        var bindings = new LoggingBindings();
+        var firstFilePath = Path.GetTempFileName();
+        var secondFilePath = Path.GetTempFileName();
+        var chestLogText = string.Join(Environment.NewLine,
+            "Date,Player,Item,Enchantment,Quality,Amount",
+            "05/30/2026 15:13:05,Kiiiro,Master's Graveguard Boots,2,4,1");
+
+        try
+        {
+            File.WriteAllText(firstFilePath, chestLogText);
+            File.WriteAllText(secondFilePath, chestLogText);
+
+            bindings.LoadVaultLogFiles([firstFilePath, secondFilePath]).Should().Be(2);
+
+            bindings.VaultLogItems.Should().ContainSingle();
+            bindings.VaultLogItems[0].PlayerName.Should().Be("Kiiiro");
+            bindings.VaultLogItems[0].LocalizedName.Should().Be("Master's Graveguard Boots");
+            bindings.ChestLogCount.Should().Be(2);
+        }
+        finally
+        {
+            File.Delete(firstFilePath);
+            File.Delete(secondFilePath);
         }
     }
 
