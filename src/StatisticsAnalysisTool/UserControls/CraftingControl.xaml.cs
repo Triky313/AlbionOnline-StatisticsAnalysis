@@ -58,6 +58,39 @@ public partial class CraftingControl
         listBox.SelectedItem = null;
     }
 
+    private void CraftingItemSearch_OnGotKeyboardFocus(object sender, KeyboardFocusChangedEventArgs e)
+    {
+        OpenItemSearch();
+    }
+
+    private void CraftingItemSearch_OnPreviewMouseLeftButtonUp(object sender, MouseButtonEventArgs e)
+    {
+        OpenItemSearch();
+    }
+
+    private void OpenItemSearch()
+    {
+        if (DataContext is not MainWindowViewModel mainWindowViewModel)
+        {
+            return;
+        }
+
+        mainWindowViewModel.CraftingBindings.OpenItemSearch();
+    }
+
+    private void CraftingItemSearch_OnLostKeyboardFocus(object sender, KeyboardFocusChangedEventArgs e)
+    {
+        var newFocus = e.NewFocus as DependencyObject;
+
+        if (IsElementOrChildOf(newFocus, CraftingItemSearchTextBox)
+            || IsElementOrChildOf(newFocus, CraftingItemSearchListBox))
+        {
+            return;
+        }
+
+        CloseItemSearch();
+    }
+
     private void ListBoxCraftingLocation_OnSelectionChanged(object sender, SelectionChangedEventArgs e)
     {
         if (DataContext is not MainWindowViewModel mainWindowViewModel)
@@ -166,6 +199,18 @@ public partial class CraftingControl
 
         mainWindowViewModel.CraftingBindings.SelectJournalFullPriceOption(priceOption);
         listBox.SelectedItem = null;
+    }
+
+    private void CopyTextBlockTextToClipboard_OnMouseLeftButtonUp(object sender, MouseButtonEventArgs e)
+    {
+        if (sender is not TextBlock { Text: { } textBlockText }
+            || string.IsNullOrWhiteSpace(textBlockText))
+        {
+            return;
+        }
+
+        Clipboard.SetText(textBlockText);
+        e.Handled = true;
     }
 
     private void CraftingLocationSearch_OnGotKeyboardFocus(object sender, System.Windows.Input.KeyboardFocusChangedEventArgs e)
@@ -291,6 +336,12 @@ public partial class CraftingControl
     {
         var source = e.OriginalSource as DependencyObject;
 
+        if (!IsElementOrChildOf(source, CraftingItemSearchTextBox)
+            && !IsItemSearchPopupClick(source))
+        {
+            CloseItemSearch();
+        }
+
         if (IsElementOrChildOf(source, OutputUnitPriceTextBox)
             || IsPriceOptionPopupClick(source))
         {
@@ -308,6 +359,16 @@ public partial class CraftingControl
         }
 
         mainWindowViewModel.CraftingBindings.BlackMarket?.ResetFilters();
+    }
+
+    private void CraftingItemFilterReset_MouseUp(object sender, MouseButtonEventArgs e)
+    {
+        if (DataContext is not MainWindowViewModel mainWindowViewModel)
+        {
+            return;
+        }
+
+        mainWindowViewModel.CraftingBindings.ResetItemFilters();
     }
 
     private void OpenResourcePriceOptions(object sender)
@@ -351,11 +412,43 @@ public partial class CraftingControl
         mainWindowViewModel.CraftingBindings.CloseAllPriceOptionPopups();
     }
 
+    private void CloseItemSearch()
+    {
+        if (DataContext is not MainWindowViewModel mainWindowViewModel)
+        {
+            return;
+        }
+
+        mainWindowViewModel.CraftingBindings.CloseItemSearch();
+    }
+
     private static bool IsElementOrChildOf(DependencyObject source, DependencyObject parent)
     {
         while (source != null)
         {
             if (ReferenceEquals(source, parent))
+            {
+                return true;
+            }
+
+            source = GetParent(source);
+        }
+
+        return false;
+    }
+
+    private static bool IsItemSearchPopupClick(DependencyObject source)
+    {
+        while (source != null)
+        {
+            if (source is FrameworkElement { DataContext: CraftingItemSearchResult })
+            {
+                return true;
+            }
+
+            if (source is ListBox listBox
+                && listBox.Items.Count > 0
+                && listBox.Items[0] is CraftingItemSearchResult)
             {
                 return true;
             }

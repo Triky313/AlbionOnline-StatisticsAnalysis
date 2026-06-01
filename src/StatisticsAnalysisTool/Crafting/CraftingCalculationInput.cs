@@ -10,12 +10,6 @@ public class CraftingCalculationInput
         set;
     }
 
-    public string ItemName
-    {
-        get;
-        set;
-    }
-
     public int CraftingRuns
     {
         get;

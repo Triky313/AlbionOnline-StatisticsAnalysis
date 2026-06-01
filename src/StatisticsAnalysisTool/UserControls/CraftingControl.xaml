@@ -191,33 +191,66 @@
                     <ColumnDefinition Width="*" />
                 </Grid.ColumnDefinitions>
 
-                <Grid Grid.Row="0" Grid.ColumnSpan="2" Height="29" Margin="0,0,0,8" Panel.ZIndex="20">
-                    <StackPanel Orientation="Horizontal">
-                        <TextBox x:Name="CraftingItemSearchTextBox" Text="{Binding CraftingBindings.ItemSearchText, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                                 Width="360" Height="24" Margin="0,0,5,0" TextWrapping="NoWrap" />
-                        <ComboBox ItemsSource="{Binding CraftingBindings.ItemTiers}"
-                                  SelectedValue="{Binding CraftingBindings.SelectedItemTier, Mode=TwoWay}"
-                                  SelectedValuePath="Key"
-                                  DisplayMemberPath="Value"
-                                  HorizontalAlignment="Left"
-                                  Margin="5,0"
-                                  Width="85"
-                                  Height="24" />
-                        <ComboBox ItemsSource="{Binding CraftingBindings.ItemLevels}"
-                                  SelectedValue="{Binding CraftingBindings.SelectedItemLevel, Mode=TwoWay}"
-                                  SelectedValuePath="Key"
-                                  DisplayMemberPath="Value"
-                                  HorizontalAlignment="Left"
-                                  Margin="5,0"
-                                  Width="85"
-                                  Height="24" />
+                <Grid Grid.Row="0" Grid.ColumnSpan="2" Margin="0,0,0,8" Panel.ZIndex="20">
+                    <StackPanel Orientation="Vertical">
+                        <StackPanel Width="360" Height="24" Orientation="Horizontal" HorizontalAlignment="Left">
+                            <TextBox x:Name="CraftingItemSearchTextBox" Text="{Binding CraftingBindings.ItemSearchText, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                     GotKeyboardFocus="CraftingItemSearch_OnGotKeyboardFocus"
+                                     LostKeyboardFocus="CraftingItemSearch_OnLostKeyboardFocus"
+                                     PreviewMouseLeftButtonUp="CraftingItemSearch_OnPreviewMouseLeftButtonUp"
+                                     Width="300" Height="24" TextWrapping="NoWrap" />
+                            <Grid Width="22" Height="22" Margin="5,1,0,0" HorizontalAlignment="Left">
+                                <fa5:ImageAwesome Icon="Solid_Redo" Foreground="{StaticResource SolidColorBrush.Text.1}" MouseUp="CraftingItemFilterReset_MouseUp" />
+                            </Grid>
+                        </StackPanel>
+                        <StackPanel Orientation="Horizontal">
+                            <ComboBox ItemsSource="{Binding CraftingBindings.ItemShopCategories}"
+                                      SelectedItem="{Binding CraftingBindings.SelectedItemShopCategory, Mode=TwoWay}"
+                                      SelectedValuePath="Id"
+                                      DisplayMemberPath="DisplayName"
+                                      HorizontalAlignment="Left"
+                                      Margin="0,5,5,5"
+                                      VerticalAlignment="Top"
+                                      Width="150" />
+                            <ComboBox ItemsSource="{Binding CraftingBindings.ItemSubCategories1}"
+                                      SelectedItem="{Binding CraftingBindings.SelectedItemShopSubCategory1, Mode=TwoWay}"
+                                      SelectedValuePath="Id"
+                                      DisplayMemberPath="DisplayName"
+                                      HorizontalAlignment="Left"
+                                      Margin="5,5"
+                                      VerticalAlignment="Top"
+                                      Width="150" />
+                            <ComboBox ItemsSource="{Binding CraftingBindings.ItemSubCategories2}"
+                                      SelectedItem="{Binding CraftingBindings.SelectedItemShopSubCategory2, Mode=TwoWay}"
+                                      SelectedValuePath="Id"
+                                      DisplayMemberPath="DisplayName"
+                                      HorizontalAlignment="Left"
+                                      Margin="5,5"
+                                      VerticalAlignment="Top"
+                                      Width="150" />
+                            <ComboBox ItemsSource="{Binding CraftingBindings.ItemTiers}"
+                                      SelectedValue="{Binding CraftingBindings.SelectedItemTier, Mode=TwoWay}"
+                                      SelectedValuePath="Key"
+                                      DisplayMemberPath="Value"
+                                      HorizontalAlignment="Left"
+                                      Margin="5,5"
+                                      MinWidth="70" />
+                            <ComboBox ItemsSource="{Binding CraftingBindings.ItemLevels}"
+                                      SelectedValue="{Binding CraftingBindings.SelectedItemLevel, Mode=TwoWay}"
+                                      SelectedValuePath="Key"
+                                      DisplayMemberPath="Value"
+                                      HorizontalAlignment="Left"
+                                      Margin="5,5"
+                                      MinWidth="70" />
+                        </StackPanel>
                     </StackPanel>
                     <Popup PlacementTarget="{Binding ElementName=CraftingItemSearchTextBox}" Placement="Bottom"
                            IsOpen="{Binding CraftingBindings.IsItemSearchPopupOpen, Mode=TwoWay}" StaysOpen="False" AllowsTransparency="True" PopupAnimation="Slide">
                             <Border DataContext="{Binding PlacementTarget.DataContext, RelativeSource={RelativeSource AncestorType={x:Type Popup}}}"
                                     Background="{StaticResource SolidColorBrush.Background.2}" BorderBrush="{StaticResource SolidColorBrush.Accent.Blue.4}"
                                     BorderThickness="1" Width="420" MaxHeight="520">
-                                <ListBox SelectionMode="Single"
+                                <ListBox x:Name="CraftingItemSearchListBox"
+                                         SelectionMode="Single"
                                          SelectionChanged="ListBoxItemSearch_OnSelectionChanged"
                                          ItemsSource="{Binding CraftingBindings.ListBoxItemSearchItems}"
                                          Width="420"
@@ -413,12 +446,22 @@
                                         </DataTemplate>
                                     </GridViewColumn.CellTemplate>
                                 </GridViewColumn>
-                                <GridViewColumn Header="{x:Static crafting:CraftingBindings.TranslationResource}" Width="250" DisplayMemberBinding="{Binding DisplayName}">
+                                <GridViewColumn Header="{x:Static crafting:CraftingBindings.TranslationResource}" Width="250">
                                     <GridViewColumn.HeaderContainerStyle>
                                         <Style TargetType="{x:Type GridViewColumnHeader}" BasedOn="{StaticResource {x:Type GridViewColumnHeader}}">
                                             <Setter Property="ToolTip" Value="{x:Static crafting:CraftingBindings.TranslationResourceNameColumnTooltip}" />
                                         </Style>
                                     </GridViewColumn.HeaderContainerStyle>
+                                    <GridViewColumn.CellTemplate>
+                                        <DataTemplate>
+                                            <TextBlock Text="{Binding DisplayName}"
+                                                       Foreground="{StaticResource SolidColorBrush.Text.1}"
+                                                       Cursor="Hand"
+                                                       TextTrimming="CharacterEllipsis"
+                                                       VerticalAlignment="Center"
+                                                       MouseLeftButtonUp="CopyTextBlockTextToClipboard_OnMouseLeftButtonUp" />
+                                        </DataTemplate>
+                                    </GridViewColumn.CellTemplate>
                                 </GridViewColumn>
                                 <GridViewColumn Header="{x:Static crafting:CraftingBindings.TranslationType}" Width="125" DisplayMemberBinding="{Binding ResourceKindText}">
                                     <GridViewColumn.HeaderContainerStyle>
@@ -555,8 +598,11 @@
                             <StackPanel Orientation="Horizontal">
                                 <Image Source="{Binding CraftingBindings.Journal.Icon}" Width="36" Height="36" />
                                 <StackPanel Orientation="Vertical" Margin="10,0,0,0" >
-                                    <TextBlock Text="{Binding CraftingBindings.Journal.DisplayName}" Foreground="{StaticResource SolidColorBrush.Text.1}" 
-                                               VerticalAlignment="Top" TextWrapping="Wrap" />
+                                    <TextBlock Text="{Binding CraftingBindings.Journal.DisplayName}" Foreground="{StaticResource SolidColorBrush.Text.1}"
+                                               Cursor="Hand"
+                                               VerticalAlignment="Top"
+                                               TextWrapping="Wrap"
+                                               MouseLeftButtonUp="CopyTextBlockTextToClipboard_OnMouseLeftButtonUp" />
                                     <StackPanel Orientation="Horizontal">
                                         <StackPanel Orientation="Horizontal" MinWidth="80">
                                             <TextBlock Text="{Binding CraftingBindings.TranslationEmpty, Mode=OneWay, FallbackValue=EMPTY}" 
@@ -836,6 +882,26 @@
                             <GridViewColumn.CellTemplate>
                                 <DataTemplate>
                                     <TextBlock Text="{Binding Summary}" Style="{StaticResource SavedCraftingCellText}" MaxHeight="40" />
+                                </DataTemplate>
+                            </GridViewColumn.CellTemplate>
+                        </GridViewColumn>
+                        <GridViewColumn Header="{x:Static crafting:CraftingBindings.TranslationFocus}" Width="70">
+                            <GridViewColumn.CellTemplate>
+                                <DataTemplate>
+                                    <fa5:ImageAwesome Width="16" Height="16" HorizontalAlignment="Center" VerticalAlignment="Center">
+                                        <fa5:ImageAwesome.Style>
+                                            <Style TargetType="{x:Type fa5:ImageAwesome}">
+                                                <Setter Property="Icon" Value="Solid_Times" />
+                                                <Setter Property="Foreground" Value="{StaticResource SolidColorBrush.Accent.Red.4}" />
+                                                <Style.Triggers>
+                                                    <DataTrigger Binding="{Binding UsesFocus}" Value="True">
+                                                        <Setter Property="Icon" Value="Solid_Check" />
+                                                        <Setter Property="Foreground" Value="{StaticResource SolidColorBrush.Accent.Green.4}" />
+                                                    </DataTrigger>
+                                                </Style.Triggers>
+                                            </Style>
+                                        </fa5:ImageAwesome.Style>
+                                    </fa5:ImageAwesome>
                                 </DataTemplate>
                             </GridViewColumn.CellTemplate>
                         </GridViewColumn>

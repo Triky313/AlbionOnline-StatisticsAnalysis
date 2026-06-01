@@ -463,7 +463,6 @@ public class LoggingBindings : BaseViewModel
 
     internal int LoadVaultLogFiles(IEnumerable<string> filePaths)
     {
-        List<VaultContainerLogItem> items = new List<VaultContainerLogItem>();
         var loadedFiles = 0;
         ClearLootComparatorImportEventLine();
 
@@ -477,12 +476,11 @@ public class LoggingBindings : BaseViewModel
                     continue;
                 }
 
-                if (fileItems.Any(item => item.Quantity > 0))
+                var addedItems = AddVaultLogItems(fileItems);
+                if (addedItems > 0)
                 {
                     loadedFiles++;
                 }
-
-                items.AddRange(fileItems);
             }
             catch (Exception ex)
             {
@@ -491,7 +489,12 @@ public class LoggingBindings : BaseViewModel
             }
         }
 
-        ReplaceVaultLogItems(items, loadedFiles);
+        if (loadedFiles > 0)
+        {
+            _chestLogSourceCount += loadedFiles;
+            RefreshLootComparatorLogCounts();
+        }
+
         return loadedFiles;
     }
 
@@ -596,6 +599,8 @@ public class LoggingBindings : BaseViewModel
             {
                 return false;
             }
+
+            TrimDelimitedValues(values);
 
             if (isHeaderLine)
             {
@@ -704,6 +709,16 @@ public class LoggingBindings : BaseViewModel
         if (item is not null)
         {
             return item;
+        }
+
+        var cleanItemIdentifier = ItemController.GetCleanUniqueName(itemIdentifier);
+        if (!string.Equals(cleanItemIdentifier, itemIdentifier, StringComparison.Ordinal))
+        {
+            item = ItemController.GetItemByUniqueName(cleanItemIdentifier);
+            if (item is not null)
+            {
+                return item;
+            }
         }
 
         var enchantment = ItemController.GetItemLevel(itemIdentifier);
@@ -831,9 +846,12 @@ public class LoggingBindings : BaseViewModel
     {
         var values = SplitVaultLogLine(line);
         return values.Length >= 6
-               && string.Equals(values[0], "Datum", StringComparison.OrdinalIgnoreCase)
-               && string.Equals(values[1], "Spieler", StringComparison.OrdinalIgnoreCase)
-               && string.Equals(values[2], "Gegenstand", StringComparison.OrdinalIgnoreCase);
+               && IsAnyVaultLogColumn(values[0], "Datum", "Date")
+               && IsAnyVaultLogColumn(values[1], "Spieler", "Player")
+               && IsAnyVaultLogColumn(values[2], "Gegenstand", "Item")
+               && IsAnyVaultLogColumn(values[3], "Verzauberung", "Enchantment")
+               && IsAnyVaultLogColumn(values[4], "Qualit\u00E4t", "Qualitat", "Quality")
+               && IsAnyVaultLogColumn(values[5], "Anzahl", "Amount");
     }
 
     private static bool TryParseVaultLogLine(string line, out VaultContainerLogItem item)
@@ -909,14 +927,27 @@ public class LoggingBindings : BaseViewModel
 
     private static string[] SplitVaultLogLine(string line)
     {
-        var values = line.Split('\t');
-
-        for (int i = 0; i < values.Length; i++)
+        var delimiter = line.Contains('\t') ? '\t' : ',';
+        if (!TrySplitDelimitedLine(line, delimiter, out var values))
         {
-            values[i] = values[i].Trim().Trim('"');
+            return [];
         }
 
+        TrimDelimitedValues(values);
         return values;
+    }
+
+    private static bool IsAnyVaultLogColumn(string value, params string[] expectedColumnNames)
+    {
+        return expectedColumnNames.Any(expectedColumnName => string.Equals(value, expectedColumnName, StringComparison.OrdinalIgnoreCase));
+    }
+
+    private static void TrimDelimitedValues(string[] values)
+    {
+        for (var i = 0; i < values.Length; i++)
+        {
+            values[i] = values[i].Trim().TrimStart('\uFEFF');
+        }
     }
 
     private static bool TrySplitDelimitedLine(string line, char delimiter, out string[] values)
@@ -963,22 +994,31 @@ public class LoggingBindings : BaseViewModel
         return true;
     }
 
-    private void ReplaceVaultLogItems(IEnumerable<VaultContainerLogItem> items, int sourceCount)
-    {
-        VaultLogItems = new ObservableCollection<VaultContainerLogItem>(items.Where(x => x.Quantity > 0));
-        _chestLogSourceCount = sourceCount;
-        RefreshLootComparatorLogCounts();
-    }
-
     private int AddVaultLogItems(IEnumerable<VaultContainerLogItem> items)
     {
-        var validItems = items.Where(x => x.Quantity > 0).ToList();
-        foreach (var item in validItems)
+        var addedItems = 0;
+        foreach (var item in items.Where(x => x.Quantity > 0))
         {
+            if (VaultLogItems.Any(existingItem => IsSameVaultLogItem(existingItem, item)))
+            {
+                continue;
+            }
+
             VaultLogItems.Add(item);
+            addedItems++;
         }
 
-        return validItems.Count;
+        return addedItems;
+    }
+
+    private static bool IsSameVaultLogItem(VaultContainerLogItem firstItem, VaultContainerLogItem secondItem)
+    {
+        return ToUtc(firstItem.Timestamp) == ToUtc(secondItem.Timestamp)
+               && string.Equals(firstItem.PlayerName, secondItem.PlayerName, StringComparison.OrdinalIgnoreCase)
+               && string.Equals(firstItem.LocalizedName, secondItem.LocalizedName, StringComparison.OrdinalIgnoreCase)
+               && firstItem.Enchantment == secondItem.Enchantment
+               && firstItem.Quality == secondItem.Quality
+               && firstItem.Quantity == secondItem.Quantity;
     }
 
     public Visibility IsLootComparatorInfoPopupVisible

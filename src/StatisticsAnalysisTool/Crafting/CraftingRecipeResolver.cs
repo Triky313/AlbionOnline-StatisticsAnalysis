@@ -82,7 +82,6 @@ public class CraftingRecipeResolver
         {
             EmptyJournalUniqueName = journalItem.UniqueName,
             FullJournalUniqueName = fullJournalUniqueName,
-            DisplayName = journalItem.LocalizedName,
             FamePerRun = (decimal) famePerRun,
             MaxFamePerJournal = maxFamePerJournal,
             UnitWeight = ItemController.GetWeight(generalJournalItem?.FullItemInformation),
@@ -143,7 +142,6 @@ public class CraftingRecipeResolver
         return new CraftingResourceEntry
         {
             UniqueName = item.UniqueName,
-            DisplayName = item.LocalizedName,
             QuantityPerRun = quantityPerRun,
             UnitWeight = ItemController.GetWeight(item.FullItemInformation),
             ResourceKind = resourceKind,

@@ -3,7 +3,6 @@ namespace StatisticsAnalysisTool.Crafting;
 public class CraftingResourceResult
 {
     public string UniqueName { get; set; }
-    public string DisplayName { get; set; }
     public CraftingResourceKind ResourceKind { get; set; }
     public bool IsReturnable { get; set; }
     public decimal QuantityPerRun { get; set; }

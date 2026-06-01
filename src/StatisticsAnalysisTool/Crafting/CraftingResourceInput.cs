@@ -3,7 +3,6 @@ namespace StatisticsAnalysisTool.Crafting;
 public class CraftingResourceInput
 {
     public string UniqueName { get; set; }
-    public string DisplayName { get; set; }
     public decimal QuantityPerRun { get; set; }
     public decimal UnitPrice { get; set; }
     public double UnitWeight { get; set; }

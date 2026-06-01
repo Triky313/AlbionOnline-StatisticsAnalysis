@@ -4,7 +4,6 @@ public class CraftingJournalResult
 {
     public string EmptyJournalUniqueName { get; set; }
     public string FullJournalUniqueName { get; set; }
-    public string DisplayName { get; set; }
     public decimal TotalFame { get; set; }
     public decimal MaxFamePerJournal { get; set; }
     public int RequiredEmptyJournals { get; set; }

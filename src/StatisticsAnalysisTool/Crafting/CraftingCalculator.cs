@@ -41,7 +41,6 @@ public class CraftingCalculator
             var resourceResult = new CraftingResourceResult
             {
                 UniqueName = resource.UniqueName,
-                DisplayName = resource.DisplayName,
                 ResourceKind = resource.ResourceKind,
                 IsReturnable = resource.IsReturnable,
                 QuantityPerRun = resource.QuantityPerRun,
@@ -129,7 +128,6 @@ public class CraftingCalculator
         {
             EmptyJournalUniqueName = journal.EmptyJournalUniqueName,
             FullJournalUniqueName = journal.FullJournalUniqueName,
-            DisplayName = journal.DisplayName,
             TotalFame = RoundQuantity(totalFame),
             MaxFamePerJournal = RoundQuantity(journal.MaxFamePerJournal),
             RequiredEmptyJournals = requiredEmptyJournals,

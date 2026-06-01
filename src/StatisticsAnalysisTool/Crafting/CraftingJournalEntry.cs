@@ -1,3 +1,4 @@
+using StatisticsAnalysisTool.Common;
 using StatisticsAnalysisTool.ViewModels;
 using System;
 using System.Collections.ObjectModel;
@@ -12,7 +13,10 @@ public class CraftingJournalEntry : BaseViewModel
     public Action ValuesChanged { get; set; }
     public string EmptyJournalUniqueName { get; set; }
     public string FullJournalUniqueName { get; set; }
-    public string DisplayName { get; set; }
+
+    [JsonIgnore]
+    public string DisplayName => ItemController.GetItemByUniqueName(EmptyJournalUniqueName)?.LocalizedName ?? EmptyJournalUniqueName ?? string.Empty;
+
     public decimal FamePerRun { get; set; }
     public decimal MaxFamePerJournal { get; set; }
     public double UnitWeight { get; set; }
