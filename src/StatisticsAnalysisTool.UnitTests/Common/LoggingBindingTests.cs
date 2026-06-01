@@ -656,11 +656,44 @@ public class LoggingBindingsTests
             File.WriteAllText(firstFilePath, chestLogText);
             File.WriteAllText(secondFilePath, chestLogText);
 
-            bindings.LoadVaultLogFiles([firstFilePath, secondFilePath]).Should().Be(2);
+            bindings.LoadVaultLogFiles([firstFilePath, secondFilePath]).Should().Be(1);
 
             bindings.VaultLogItems.Should().ContainSingle();
             bindings.VaultLogItems[0].PlayerName.Should().Be("Kiiiro");
             bindings.VaultLogItems[0].LocalizedName.Should().Be("Master's Graveguard Boots");
+            bindings.ChestLogCount.Should().Be(1);
+        }
+        finally
+        {
+            File.Delete(firstFilePath);
+            File.Delete(secondFilePath);
+        }
+    }
+
+    [Test]
+    public void LoadVaultLogFiles_WithMultipleCalls_AppendsFilesAndUpdatesCounter()
+    {
+        var bindings = new LoggingBindings();
+        var firstFilePath = Path.GetTempFileName();
+        var secondFilePath = Path.GetTempFileName();
+        var firstChestLogText = string.Join(Environment.NewLine,
+            "Date,Player,Item,Enchantment,Quality,Amount",
+            "05/30/2026 15:13:05,Kiiiro,Master's Graveguard Boots,2,4,1");
+        var secondChestLogText = string.Join(Environment.NewLine,
+            "Date,Player,Item,Enchantment,Quality,Amount",
+            "05/30/2026 15:13:04,Kiiiro,Expert's Assassin Hood,3,4,1");
+
+        try
+        {
+            File.WriteAllText(firstFilePath, firstChestLogText);
+            File.WriteAllText(secondFilePath, secondChestLogText);
+
+            bindings.LoadVaultLogFiles([firstFilePath]).Should().Be(1);
+            bindings.LoadVaultLogFiles([secondFilePath]).Should().Be(1);
+
+            bindings.VaultLogItems.Should().HaveCount(2);
+            bindings.VaultLogItems[0].LocalizedName.Should().Be("Master's Graveguard Boots");
+            bindings.VaultLogItems[1].LocalizedName.Should().Be("Expert's Assassin Hood");
             bindings.ChestLogCount.Should().Be(2);
         }
         finally

@@ -463,7 +463,6 @@ public class LoggingBindings : BaseViewModel
 
     internal int LoadVaultLogFiles(IEnumerable<string> filePaths)
     {
-        List<VaultContainerLogItem> items = new List<VaultContainerLogItem>();
         var loadedFiles = 0;
         ClearLootComparatorImportEventLine();
 
@@ -477,12 +476,11 @@ public class LoggingBindings : BaseViewModel
                     continue;
                 }
 
-                if (fileItems.Any(item => item.Quantity > 0))
+                var addedItems = AddVaultLogItems(fileItems);
+                if (addedItems > 0)
                 {
                     loadedFiles++;
                 }
-
-                items.AddRange(fileItems);
             }
             catch (Exception ex)
             {
@@ -491,7 +489,12 @@ public class LoggingBindings : BaseViewModel
             }
         }
 
-        ReplaceVaultLogItems(items, loadedFiles);
+        if (loadedFiles > 0)
+        {
+            _chestLogSourceCount += loadedFiles;
+            RefreshLootComparatorLogCounts();
+        }
+
         return loadedFiles;
     }
 
@@ -991,13 +994,6 @@ public class LoggingBindings : BaseViewModel
         return true;
     }
 
-    private void ReplaceVaultLogItems(IEnumerable<VaultContainerLogItem> items, int sourceCount)
-    {
-        VaultLogItems = new ObservableCollection<VaultContainerLogItem>(GetUniquePositiveVaultLogItems(items));
-        _chestLogSourceCount = sourceCount;
-        RefreshLootComparatorLogCounts();
-    }
-
     private int AddVaultLogItems(IEnumerable<VaultContainerLogItem> items)
     {
         var addedItems = 0;
@@ -1013,22 +1009,6 @@ public class LoggingBindings : BaseViewModel
         }
 
         return addedItems;
-    }
-
-    private static List<VaultContainerLogItem> GetUniquePositiveVaultLogItems(IEnumerable<VaultContainerLogItem> items)
-    {
-        var uniqueItems = new List<VaultContainerLogItem>();
-        foreach (var item in items.Where(x => x.Quantity > 0))
-        {
-            if (uniqueItems.Any(existingItem => IsSameVaultLogItem(existingItem, item)))
-            {
-                continue;
-            }
-
-            uniqueItems.Add(item);
-        }
-
-        return uniqueItems;
     }
 
     private static bool IsSameVaultLogItem(VaultContainerLogItem firstItem, VaultContainerLogItem secondItem)
