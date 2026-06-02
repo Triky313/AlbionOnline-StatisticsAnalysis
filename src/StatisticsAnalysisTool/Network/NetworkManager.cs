@@ -112,6 +112,8 @@ public class NetworkManager
         builder.AddRequestHandler(new FishingStartEventRequestHandler(trackingController));
         builder.AddRequestHandler(new FishingFinishRequestHandler(trackingController));
         builder.AddRequestHandler(new FishingCancelRequestHandler(trackingController));
+        builder.AddRequestHandler(new LogoutStartRequestHandler(trackingController));
+        builder.AddRequestHandler(new LogoutCancelRequestHandler(trackingController));
         builder.AddRequestHandler(new GetGuildAccountLogsRequestHandler(trackingController));
 
         // Response

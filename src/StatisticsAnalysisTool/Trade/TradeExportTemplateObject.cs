@@ -3,7 +3,6 @@ using StatisticsAnalysisTool.Localization;
 using StatisticsAnalysisTool.Network.Manager;
 using System.Reflection;
 using System;
-using System.IO;
 using System.Windows.Input;
 using Microsoft.Win32;
 using Serilog;
@@ -32,7 +31,9 @@ public class TradeExportTemplateObject : BaseViewModel
             try
             {
                 var trackingController = ServiceLocator.Resolve<TrackingController>();
-                File.WriteAllText(dialog.FileName, trackingController?.TradeController?.GetTradesAsCsv());
+                ExportFileWriter.WriteText(
+                    dialog.FileName,
+                    trackingController?.TradeController?.GetTradesAsCsv());
             }
             catch (Exception e)
             {

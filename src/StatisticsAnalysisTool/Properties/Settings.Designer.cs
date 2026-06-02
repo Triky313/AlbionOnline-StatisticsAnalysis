@@ -273,18 +273,6 @@ namespace StatisticsAnalysisTool.Properties {
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("CraftingNotes.json")]
-        public string CraftingNotesFileName {
-            get {
-                return ((string)(this["CraftingNotesFileName"]));
-            }
-            set {
-                this["CraftingNotesFileName"] = value;
-            }
-        }
-        
-        [global::System.Configuration.UserScopedSettingAttribute()]
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.DefaultSettingValueAttribute("PlayerKillsDeaths.json")]
         public string PlayerKillsDeathsFileName {
             get {

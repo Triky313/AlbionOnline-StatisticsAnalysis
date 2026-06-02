@@ -1,3 +1,4 @@
+using StatisticsAnalysisTool.Common;
 using StatisticsAnalysisTool.Localization;
 using StatisticsAnalysisTool.ViewModels;
 using System;
@@ -17,7 +18,10 @@ public class SavedCrafting : BaseViewModel
     = Guid.NewGuid();
 
     public string ItemUniqueName { get; set; }
-    public string ItemName { get; set; }
+
+    [JsonIgnore]
+    public string ItemName => ItemController.GetItemByUniqueName(ItemUniqueName)?.LocalizedName ?? ItemUniqueName ?? string.Empty;
+
     public int CraftingRuns { get; set; } = 1;
     public int AmountCrafted { get; set; } = 1;
     public bool UsesFocus { get; set; }
@@ -34,7 +38,15 @@ public class SavedCrafting : BaseViewModel
     public decimal SetupFeePercent { get; set; } = 2.5m;
     public decimal OtherCosts { get; set; }
     public decimal OutputUnitPrice { get; set; }
-    public string Notes { get; set; }
+    public string Notes
+    {
+        get;
+        set
+        {
+            field = value;
+            OnPropertyChanged();
+        }
+    }
     public List<CraftingResourceEntry> Resources { get; set; } = [];
     public CraftingJournalEntry Journal { get; set; }
     public DateTime LastChangedUtc { get; set; } = DateTime.UtcNow;
@@ -75,10 +87,6 @@ public class SavedCrafting : BaseViewModel
     public string Summary => CraftingRuns
                              + " "
                              + LocalizationController.Translation("RUNS")
-                             + " | "
-                             + (UsesFocus
-                                 ? LocalizationController.Translation("FOCUS")
-                                 : LocalizationController.Translation("NO_FOCUS"))
                              + " | "
                              + ReturnRatePercent.ToString("N2")
                              + "% RRR"

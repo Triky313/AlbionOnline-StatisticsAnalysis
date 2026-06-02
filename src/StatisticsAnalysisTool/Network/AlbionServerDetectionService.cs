@@ -17,6 +17,8 @@ public class AlbionServerDetectionService
 
     public ServerLocation CurrentServerLocation => CurrentServer.ServerLocation;
 
+    public DateTime LastServerPacketReceivedUtc { get; private set; } = DateTime.MinValue;
+
     public void DetectFromSourceIp(string sourceIp)
     {
         var detectedServer = AlbionServerRegistry.GetBySourceIp(sourceIp);
@@ -26,6 +28,7 @@ public class AlbionServerDetectionService
             return;
         }
 
+        LastServerPacketReceivedUtc = DateTime.UtcNow;
         SetCurrentServer(detectedServer);
     }
 
