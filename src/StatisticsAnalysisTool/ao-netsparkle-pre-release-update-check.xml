@@ -5,10 +5,10 @@
     <description>Most recent changes with link to updates.</description>
     <language>en</language>
     <item>
-      <title>Statistics Analysis Tool v9.3.5-rc</title>
-      <description><![CDATA[<a href="https://github.com/Triky313/AlbionOnline-StatisticsAnalysis/releases/tag/v9.3.5-rc">View full patch notes on GitHub</a>]]></description>
-      <pubDate>Thu, 28 May 2026 18:17:05 +0000</pubDate>
-      <enclosure url="https://github.com/Triky313/AlbionOnline-StatisticsAnalysis/releases/download/v9.3.5-rc/StatisticsAnalysis-AlbionOnline-v9.3.5-rc-windows-x64.exe" sparkle:version="9.3.5-rc" sparkle:shortVersionString="9.3.5-rc" sparkle:os="windows-x64" length="42864556" type="application/octet-stream" sparkle:edSignature="SjqU4OlReO1/oyHULxMUR+ma+wm2l+epvmhRj65IkUHIOpgc+X/DTGRipgI04eCujCVzJR75kVDSMjQcX4HwAw==" sparkle:signature="SjqU4OlReO1/oyHULxMUR+ma+wm2l+epvmhRj65IkUHIOpgc+X/DTGRipgI04eCujCVzJR75kVDSMjQcX4HwAw==" />
+      <title>Statistics Analysis Tool v9.3.4-beta.1</title>
+      <description><![CDATA[<a href="https://github.com/Triky313/AlbionOnline-StatisticsAnalysis/releases/tag/v9.3.4-beta.1">View full patch notes on GitHub</a>]]></description>
+      <pubDate>Thu, 28 May 2026 12:32:15 +0000</pubDate>
+      <enclosure url="https://github.com/Triky313/AlbionOnline-StatisticsAnalysis/releases/download/v9.3.4-beta.1/StatisticsAnalysis-AlbionOnline-v9.3.4-beta.1-windows-x64.exe" sparkle:version="9.3.4-beta.1" sparkle:shortVersionString="9.3.4-beta.1" sparkle:os="windows-x64" length="42860951" type="application/octet-stream" sparkle:edSignature="J3IgtY9Cr5C8iIkyySiILQPqAulesRY+B+CiYlDiKWJHhVz+81ngcqg0kLsWHZ39jMKrAjRZlLv2A5C2AXwSAQ==" sparkle:signature="J3IgtY9Cr5C8iIkyySiILQPqAulesRY+B+CiYlDiKWJHhVz+81ngcqg0kLsWHZ39jMKrAjRZlLv2A5C2AXwSAQ==" />
     </item>
   </channel>
 </rss>
