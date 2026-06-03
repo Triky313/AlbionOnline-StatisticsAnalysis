@@ -299,7 +299,7 @@ public class LoggingBindings : BaseViewModel
                 UtcPickupTime = ToUtc(logItem.Timestamp),
                 ItemIndex = vaultLogLocalizedItem.Index,
                 IsItemFromVaultLog = true,
-                IsTrash = string.Equals(vaultLogLocalizedItem.FullItemInformation?.ShopSubCategory1, "trash", StringComparison.OrdinalIgnoreCase),
+                IsTrash = IsTrashItem(vaultLogLocalizedItem),
                 LootedByName = logItem.PlayerName,
                 Quantity = logItem.Quantity
             }));
@@ -350,7 +350,7 @@ public class LoggingBindings : BaseViewModel
             UtcPickupTime = ToUtc(logItem.Timestamp),
             ItemIndex = vaultLogLocalizedItem.Index,
             IsItemFromVaultLog = true,
-            IsTrash = vaultLogLocalizedItem.FullItemInformation?.ShopSubCategory1 == "trash",
+            IsTrash = IsTrashItem(vaultLogLocalizedItem),
             LootedByName = logItem.PlayerName,
             Quantity = logItem.Quantity,
             Status = status
@@ -370,7 +370,7 @@ public class LoggingBindings : BaseViewModel
                     UtcPickupTime = ToUtc(logItem.Timestamp),
                     ItemIndex = vaultLogLocalizedItem.Index,
                     IsItemFromVaultLog = true,
-                    IsTrash = vaultLogLocalizedItem.FullItemInformation?.ShopSubCategory1 == "trash",
+                    IsTrash = IsTrashItem(vaultLogLocalizedItem),
                     LootedByName = logItem.PlayerName,
                     Quantity = logItem.Quantity,
                     Status = status
@@ -805,8 +805,15 @@ public class LoggingBindings : BaseViewModel
             LootedByName = lootLogItem.LootedByName,
             LootedFromName = lootLogItem.LootedFromName,
             LootedFromGuild = lootLogItem.LootedFromGuild,
-            IsTrash = string.Equals(lootLogItem.Item.FullItemInformation?.ShopSubCategory1, "trash", StringComparison.OrdinalIgnoreCase)
+            IsTrash = IsTrashItem(lootLogItem.Item)
         };
+    }
+
+    private static bool IsTrashItem(Item item)
+    {
+        return item is null
+               || item.UniqueName?.Contains("TRASH", StringComparison.OrdinalIgnoreCase) == true
+               || string.Equals(item.FullItemInformation?.ShopSubCategory1, "trash", StringComparison.OrdinalIgnoreCase);
     }
 
     private static void UpdateLootingPlayerAffiliations(LootingPlayer lootingPlayer, ImportedLootLogItem lootLogItem)

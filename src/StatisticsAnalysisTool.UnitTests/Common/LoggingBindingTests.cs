@@ -589,6 +589,45 @@ public class LoggingBindingsTests
     }
 
     [Test]
+    public void AddLootLogFiles_WithTrashUniqueName_MarksImportedItemAsTrash()
+    {
+        ItemController.Items = new ObservableCollection<Item>()
+        {
+            new()
+            {
+                Index = 42,
+                UniqueName = "T5_TRASH"
+            }
+        };
+
+        var bindings = new LoggingBindings()
+        {
+            IsShowingTrash = false
+        };
+        var filePath = Path.GetTempFileName();
+        var lootLogText = string.Join(Environment.NewLine,
+            "timestamp_utc;looted_by__alliance;looted_by__guild;looted_by__name;item_id;item_name;quantity;looted_from__alliance;looted_from__guild;looted_from__name;died;died_player_guild;killed_by;killed_by_guild;average_est_market_value;cluster",
+            "2026-05-20T13:30:00.9945920Z;;;Shogun26;T5_TRASH;Trash;1;;;Mob;;;;;0;Unknown");
+
+        try
+        {
+            File.WriteAllText(filePath, lootLogText);
+
+            bindings.AddLootLogFiles([filePath]).Should().Be(1);
+            bindings.ParallelLootedItemsFilterProcess();
+
+            var item = bindings.LootingPlayers.Single().LootedItems.Single();
+            item.IsTrash.Should().BeTrue();
+            item.Visibility.Should().Be(Visibility.Collapsed);
+            bindings.LootingPlayers.Single().LootingPlayerVisibility.Should().Be(Visibility.Collapsed);
+        }
+        finally
+        {
+            File.Delete(filePath);
+        }
+    }
+
+    [Test]
     public void ParallelLootedItemsFilterProcess_WithResolvedStatusDisabled_KeepsLostItemsVisible()
     {
         var lostItem = new LootedItem()
