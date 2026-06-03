@@ -78,6 +78,11 @@ public class LootingPlayer : BaseViewModel
         get => _lootingPlayerVisibility;
         set
         {
+            if (_lootingPlayerVisibility == value)
+            {
+                return;
+            }
+
             _lootingPlayerVisibility = value;
             OnPropertyChanged();
         }

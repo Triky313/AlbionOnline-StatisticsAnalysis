@@ -1,4 +1,4 @@
-﻿using StatisticsAnalysisTool.Common;
+using StatisticsAnalysisTool.Common;
 using StatisticsAnalysisTool.Models;
 using StatisticsAnalysisTool.ViewModels;
 using System;
@@ -119,6 +119,11 @@ public class LootedItem : BaseViewModel
         get => _visibility;
         set
         {
+            if (_visibility == value)
+            {
+                return;
+            }
+
             _visibility = value;
             OnPropertyChanged();
         }

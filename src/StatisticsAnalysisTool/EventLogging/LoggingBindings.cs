@@ -1680,11 +1680,18 @@ public class LoggingBindings : BaseViewModel
             return;
         }
 
-        _cancellationTokenSource = new CancellationTokenSource();
+        _cancellationTokenSource.Cancel();
+        var cancellationTokenSource = new CancellationTokenSource();
+        _cancellationTokenSource = cancellationTokenSource;
 
         try
         {
-            await Task.Run(ParallelLootedItemsFilterProcess, _cancellationTokenSource.Token);
+            await Task.Run(() => ParallelLootedItemsFilterProcess(cancellationTokenSource.Token), cancellationTokenSource.Token);
+            if (cancellationTokenSource.IsCancellationRequested)
+            {
+                return;
+            }
+
             ApplyLootingPlayersCollectionViewFilter();
         }
         catch (TaskCanceledException)
@@ -1700,6 +1707,7 @@ public class LoggingBindings : BaseViewModel
             return;
         }
 
+        _cancellationTokenSource.Cancel();
         _cancellationTokenSource = new CancellationTokenSource();
         ParallelLootedItemsFilterProcess();
         ApplyLootingPlayersCollectionViewFilter();
@@ -1728,6 +1736,11 @@ public class LoggingBindings : BaseViewModel
 
     public void ParallelLootedItemsFilterProcess()
     {
+        ParallelLootedItemsFilterProcess(_cancellationTokenSource.Token);
+    }
+
+    private void ParallelLootedItemsFilterProcess(CancellationToken cancellationToken)
+    {
         var partitioner = Partitioner.Create(LootingPlayers, EnumerablePartitionerOptions.NoBuffering);
         var guildFilters = LootComparatorGuildFilters.ToList();
         var selectedGuilds = guildFilters
@@ -1738,19 +1751,31 @@ public class LoggingBindings : BaseViewModel
 
         Parallel.ForEach(partitioner, (lootingPlayer, state) =>
         {
-            if (_cancellationTokenSource.Token.IsCancellationRequested)
+            if (cancellationToken.IsCancellationRequested)
             {
                 state.Stop();
+                return;
             }
 
             var itemsToProcess = lootingPlayer.GetLootedItemsSnapshot();
+            var hasVisibleItems = false;
 
             foreach (var lootedItem in itemsToProcess)
             {
-                lootedItem.Visibility = Filter(lootedItem, lootingPlayer, isGuildFilterRestricted, selectedGuilds) ? Visibility.Visible : Visibility.Collapsed;
+                if (cancellationToken.IsCancellationRequested)
+                {
+                    state.Stop();
+                    return;
+                }
+
+                var visibility = Filter(lootedItem, lootingPlayer, isGuildFilterRestricted, selectedGuilds)
+                    ? Visibility.Visible
+                    : Visibility.Collapsed;
+
+                lootedItem.Visibility = visibility;
+                hasVisibleItems |= visibility == Visibility.Visible;
             }
 
-            var hasVisibleItems = itemsToProcess.Any(item => item.Visibility == Visibility.Visible);
             lootingPlayer.LootingPlayerVisibility = hasVisibleItems ? Visibility.Visible : Visibility.Collapsed;
         });
     }
@@ -1777,9 +1802,10 @@ public class LoggingBindings : BaseViewModel
 
     private bool Filter(LootedItem lootedItem, LootingPlayer lootingPlayer, bool isGuildFilterRestricted, IReadOnlySet<string> selectedGuilds)
     {
+        var item = lootedItem.Item;
         return IsStatusOkay(lootedItem)
-               && IsTierOkay(lootedItem)
-               && IsTypeOkay(lootedItem)
+               && IsTierOkay(item)
+               && IsTypeOkay(item)
                && IsGuildOkay(lootingPlayer, isGuildFilterRestricted, selectedGuilds);
     }
 
@@ -1801,34 +1827,39 @@ public class LoggingBindings : BaseViewModel
         };
     }
 
-    private bool IsTierOkay(LootedItem lootedItem)
+    private bool IsTierOkay(Item item)
     {
-        if (_isShowingT1ToT3 && lootedItem.Item.Tier is >= 1 and <= 3)
+        if (item is null)
+        {
+            return _isShowingOthers;
+        }
+
+        if (_isShowingT1ToT3 && item.Tier is >= 1 and <= 3)
         {
             return true;
         }
 
-        if (_isShowingT4 && lootedItem.Item.Tier == 4)
+        if (_isShowingT4 && item.Tier == 4)
         {
             return true;
         }
 
-        if (_isShowingT5 && lootedItem.Item.Tier == 5)
+        if (_isShowingT5 && item.Tier == 5)
         {
             return true;
         }
 
-        if (_isShowingT6 && lootedItem.Item.Tier == 6)
+        if (_isShowingT6 && item.Tier == 6)
         {
             return true;
         }
 
-        if (_isShowingT7 && lootedItem.Item.Tier == 7)
+        if (_isShowingT7 && item.Tier == 7)
         {
             return true;
         }
 
-        if (_isShowingT8 && lootedItem.Item.Tier == 8)
+        if (_isShowingT8 && item.Tier == 8)
         {
             return true;
         }
@@ -1836,9 +1867,9 @@ public class LoggingBindings : BaseViewModel
         return false;
     }
 
-    private bool IsTypeOkay(LootedItem lootedItem)
+    private bool IsTypeOkay(Item item)
     {
-        var itemInformation = lootedItem.Item.FullItemInformation;
+        var itemInformation = item?.FullItemInformation;
         if (itemInformation == null)
         {
             return _isShowingOthers;
