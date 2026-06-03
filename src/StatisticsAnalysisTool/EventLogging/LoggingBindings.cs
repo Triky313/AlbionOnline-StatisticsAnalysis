@@ -246,34 +246,24 @@ public class LoggingBindings : BaseViewModel
         RemoveAllVaultItems();
         ResetLootLogItemStatuses();
 
-        foreach (var logItem in VaultLogItems.ToList())
+        var vaultLogItems = CreateVaultLogItems(VaultLogItems.ToList());
+        var lastLootLogTime = GetLastLootLogTime(LootingPlayers);
+
+        foreach (var (logItem, vaultLogLocalizedItem, vaultLogItem) in vaultLogItems)
         {
             var lootingPlayer = LootingPlayers.FirstOrDefault(x => string.Equals(x.PlayerName, logItem.PlayerName, StringComparison.OrdinalIgnoreCase));
 
-            var vaultLogLocalizedItem = ItemController.GetItemByLocalizedName(logItem.LocalizedName, logItem.Enchantment);
-            if (vaultLogLocalizedItem is null)
-            {
-                continue;
-            }
-
-            var utcTimestamp = ToUtc(logItem.Timestamp);
-
-            var vaultLogItem = new LootedItem
-            {
-                UtcPickupTime = utcTimestamp,
-                ItemIndex = vaultLogLocalizedItem.Index,
-                IsItemFromVaultLog = true,
-                IsTrash = string.Equals(vaultLogLocalizedItem.FullItemInformation?.ShopSubCategory1, "trash", StringComparison.OrdinalIgnoreCase),
-                LootedByName = logItem.PlayerName, Quantity = logItem.Quantity
-            };
+            var status = IsAfterLastLootLog(vaultLogItem, lastLootLogTime)
+                ? LootedItemStatus.Donated
+                : LootedItemStatus.Ignored;
 
             if (lootingPlayer is not null)
             {
                 var newItems = new List<LootedItem>();
 
-                if (lootingPlayer.LootedItemCount <= 0 || !MatchLootedItem(lootingPlayer, vaultLogItem))
+                if (!MatchLootedItem(lootingPlayer, vaultLogItem))
                 {
-                    AddNewLootedItem(newItems, logItem, vaultLogLocalizedItem, LootedItemStatus.Donated);
+                    AddNewLootedItem(newItems, logItem, vaultLogLocalizedItem, status);
                 }
 
                 foreach (var newItem in newItems)
@@ -283,13 +273,53 @@ public class LoggingBindings : BaseViewModel
             }
             else
             {
-                AddNewPlayerToLootingPlayers(logItem, vaultLogLocalizedItem, LootedItemStatus.Donated);
+                AddNewPlayerToLootingPlayers(logItem, vaultLogLocalizedItem, status);
             }
         }
 
         MarkLostItems(LootingPlayers);
         ApplyLootComparatorFilters();
         RefreshLootComparatorLogCounts();
+    }
+
+    private static List<(VaultContainerLogItem LogItem, Item Item, LootedItem LootedItem)> CreateVaultLogItems(IEnumerable<VaultContainerLogItem> logItems)
+    {
+        var vaultLogItems = new List<(VaultContainerLogItem, Item, LootedItem)>();
+
+        foreach (var logItem in logItems)
+        {
+            var vaultLogLocalizedItem = ItemController.GetItemByLocalizedName(logItem.LocalizedName, logItem.Enchantment);
+            if (vaultLogLocalizedItem is null)
+            {
+                continue;
+            }
+
+            vaultLogItems.Add((logItem, vaultLogLocalizedItem, new LootedItem
+            {
+                UtcPickupTime = ToUtc(logItem.Timestamp),
+                ItemIndex = vaultLogLocalizedItem.Index,
+                IsItemFromVaultLog = true,
+                IsTrash = string.Equals(vaultLogLocalizedItem.FullItemInformation?.ShopSubCategory1, "trash", StringComparison.OrdinalIgnoreCase),
+                LootedByName = logItem.PlayerName,
+                Quantity = logItem.Quantity
+            }));
+        }
+
+        return vaultLogItems;
+    }
+
+    private static DateTime? GetLastLootLogTime(IEnumerable<LootingPlayer> lootingPlayers)
+    {
+        return lootingPlayers
+            .SelectMany(player => player.GetLootedItemsSnapshot())
+            .Where(item => !item.IsItemFromVaultLog)
+            .Select(item => (DateTime?) ToUtc(item.UtcPickupTime))
+            .Max();
+    }
+
+    private static bool IsAfterLastLootLog(LootedItem vaultLogItem, DateTime? lastLootLogTime)
+    {
+        return lastLootLogTime is null || vaultLogItem.UtcPickupTime > lastLootLogTime.Value;
     }
 
     private static bool MatchLootedItem(LootingPlayer lootingPlayer, LootedItem vaultLogItem)
@@ -300,7 +330,7 @@ public class LoggingBindings : BaseViewModel
             .Where(lootedItem => lootedItem.ItemIndex == vaultLogItem.ItemIndex)
             .Where(lootedItem => string.Equals(lootedItem.LootedByName, vaultLogItem.LootedByName, StringComparison.OrdinalIgnoreCase))
             .Where(lootedItem => lootedItem.Quantity == vaultLogItem.Quantity)
-            .Where(lootedItem => ToUtc(lootedItem.UtcPickupTime) <= vaultLogItem.UtcPickupTime)
+            .Where(lootedItem => ToUtc(lootedItem.UtcPickupTime) < vaultLogItem.UtcPickupTime)
             .OrderByDescending(lootedItem => ToUtc(lootedItem.UtcPickupTime))
             .FirstOrDefault();
 
@@ -399,44 +429,38 @@ public class LoggingBindings : BaseViewModel
         RefreshLootComparatorLogCounts();
     }
 
-    private void MarkLostItems(ObservableCollection<LootingPlayer> lootingPlayers)
+    private static void MarkLostItems(ObservableCollection<LootingPlayer> lootingPlayers)
     {
-        var itemLootHistory = new Dictionary<int, List<(LootingPlayer Player, DateTime Timestamp)>>();
+        var lootLogItems = lootingPlayers
+            .SelectMany(player => player.GetLootedItemsSnapshot())
+            .Where(item => !item.IsItemFromVaultLog)
+            .ToList();
 
         foreach (var player in lootingPlayers)
         {
             foreach (var item in player.GetLootedItemsSnapshot())
             {
-                if (!itemLootHistory.ContainsKey(item.ItemIndex))
+                if (item.IsItemFromVaultLog || item.Status != LootedItemStatus.Unknown)
                 {
-                    itemLootHistory[item.ItemIndex] = new List<(LootingPlayer, DateTime)>();
+                    continue;
                 }
 
-                itemLootHistory[item.ItemIndex].Add((player, item.UtcPickupTime));
+                var lootTime = ToUtc(item.UtcPickupTime);
+                item.Status = HasLaterLootFromPlayer(lootLogItems, item, lootTime)
+                    ? LootedItemStatus.Lost
+                    : LootedItemStatus.Unknown;
             }
         }
+    }
 
-        foreach (var player in lootingPlayers)
-        {
-            foreach (var item in player.GetLootedItemsSnapshot())
-            {
-                if (itemLootHistory.TryGetValue(item.ItemIndex, out var history))
-                {
-                    var sortedHistory = history.OrderBy(h => h.Timestamp).ToList();
-
-                    var playerIndex = sortedHistory.FindIndex(h => h.Player == player);
-
-                    if (playerIndex >= 0 && playerIndex < sortedHistory.Count - 1)
-                    {
-                        var nextEntry = sortedHistory[playerIndex + 1];
-                        if (nextEntry.Player != player)
-                        {
-                            item.Status = LootedItemStatus.Lost;
-                        }
-                    }
-                }
-            }
-        }
+    private static bool HasLaterLootFromPlayer(IEnumerable<LootedItem> lootLogItems, LootedItem lootLogItem, DateTime lootTime)
+    {
+        return lootLogItems.Any(item =>
+            !ReferenceEquals(item, lootLogItem)
+            && item.ItemIndex == lootLogItem.ItemIndex
+            && item.Quantity == lootLogItem.Quantity
+            && string.Equals(item.LootedFromName, lootLogItem.LootedByName, StringComparison.OrdinalIgnoreCase)
+            && ToUtc(item.UtcPickupTime) > lootTime);
     }
 
     public void OpenVaultFilePathSelection()
@@ -906,12 +930,11 @@ public class LoggingBindings : BaseViewModel
     {
         utcTimestamp = DateTime.MinValue;
 
-        if (!DateTime.TryParseExact(value, SupportedFormats, CultureInfo.InvariantCulture, DateTimeStyles.AssumeLocal, out var localTimestamp))
+        if (!DateTime.TryParseExact(value, SupportedFormats, CultureInfo.InvariantCulture, DateTimeStyles.AssumeUniversal | DateTimeStyles.AdjustToUniversal, out utcTimestamp))
         {
             return false;
         }
 
-        utcTimestamp = ToUtc(localTimestamp);
         return true;
     }
 
@@ -1766,6 +1789,7 @@ public class LoggingBindings : BaseViewModel
             LootedItemStatus.Resolved => _isShowingResolved,
             LootedItemStatus.Donated => _isShowingDonated,
             LootedItemStatus.Unknown => true,
+            LootedItemStatus.Ignored => true,
             _ => true
         };
     }

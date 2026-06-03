@@ -836,6 +836,11 @@
                                 <Setter Property="Fill" Value="{StaticResource SolidColorBrush.Accent.Red.4}" />
                                 <Setter Property="Visibility" Value="Visible" />
                             </DataTrigger>
+                            <DataTrigger Binding="{Binding Status}" Value="{x:Static eventLogging:LootedItemStatus.Ignored}">
+                                <Setter Property="Opacity" Value="0.6" />
+                                <Setter Property="Fill" Value="{StaticResource SolidColorBrush.Text.6}" />
+                                <Setter Property="Visibility" Value="Visible" />
+                            </DataTrigger>
                             <Trigger Property="IsMouseOver" Value="True">
                                 <Setter Property="Opacity" Value="0" />
                                 <Setter Property="Visibility" Value="Visible" />
