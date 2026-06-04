@@ -176,6 +176,70 @@ public class LoggingBindingsTests
     }
 
     [Test]
+    public void UpdateItemsStatus_WithLaterSameItemLootedByOtherPlayer_KeepsResolvedItem()
+    {
+        var lootTime = new DateTime(2026, 5, 19, 8, 48, 13, DateTimeKind.Utc);
+        var bindings = new LoggingBindings()
+        {
+            VaultLogItems = new ObservableCollection<VaultContainerLogItem>
+            {
+                new()
+                {
+                    Timestamp = lootTime.AddMinutes(10),
+                    PlayerName = "Triky313",
+                    LocalizedName = "T4_WOOD",
+                    Enchantment = 0,
+                    Quality = 1,
+                    Quantity = 8
+                }
+            },
+            LootingPlayers = new ObservableCollection<LootingPlayer>
+            {
+                new()
+                {
+                    PlayerName = "Triky313",
+                    LootedItems = new ObservableCollection<LootedItem>
+                    {
+                        new()
+                        {
+                            UtcPickupTime = lootTime,
+                            ItemIndex = 4,
+                            Quantity = 8,
+                            LootedByName = "Triky313",
+                            IsTrash = false
+                        }
+                    }
+                },
+                new()
+                {
+                    PlayerName = "OtherPlayer",
+                    LootedItems = new ObservableCollection<LootedItem>
+                    {
+                        new()
+                        {
+                            UtcPickupTime = lootTime.AddMinutes(20),
+                            ItemIndex = 4,
+                            Quantity = 8,
+                            LootedByName = "OtherPlayer",
+                            IsTrash = false
+                        }
+                    }
+                }
+            }
+        };
+
+        ItemController.Items = new ObservableCollection<Item>()
+        {
+            CreateItem(4, "T4_WOOD", "resources", "wood")
+        };
+
+        bindings.UpdateItemsStatus();
+
+        bindings.LootingPlayers[0].LootedItems[0].Status.Should().Be(LootedItemStatus.Resolved);
+        bindings.LootingPlayers[1].LootedItems[0].Status.Should().Be(LootedItemStatus.Unknown);
+    }
+
+    [Test]
     public void UpdateItemsStatus_WithChestLogBeforeLootTime_DoesNotResolveItem()
     {
         var lootTime = new DateTime(2026, 5, 19, 8, 48, 13, DateTimeKind.Utc);
@@ -228,7 +292,275 @@ public class LoggingBindingsTests
         var lootedItems = bindings.LootingPlayers[0].LootedItems;
         lootedItems.Should().HaveCount(2);
         lootedItems[0].Status.Should().Be(LootedItemStatus.Unknown);
-        lootedItems[1].Status.Should().Be(LootedItemStatus.Donated);
+        lootedItems[1].Status.Should().Be(LootedItemStatus.Ignored);
+    }
+
+    [Test]
+    public void UpdateItemsStatus_WithUnmatchedChestLogAfterLastLootLog_AddsDonatedItem()
+    {
+        var lootTime = new DateTime(2026, 5, 19, 8, 48, 13, DateTimeKind.Utc);
+        var bindings = new LoggingBindings()
+        {
+            VaultLogItems = new ObservableCollection<VaultContainerLogItem>
+            {
+                new()
+                {
+                    Timestamp = lootTime.AddMinutes(10),
+                    PlayerName = "Triky313",
+                    LocalizedName = "T4_WOOD",
+                    Enchantment = 0,
+                    Quality = 1,
+                    Quantity = 8
+                }
+            },
+            LootingPlayers = new ObservableCollection<LootingPlayer>
+            {
+                new()
+                {
+                    PlayerName = "OtherPlayer",
+                    LootedItems = new ObservableCollection<LootedItem>
+                    {
+                        new()
+                        {
+                            UtcPickupTime = lootTime,
+                            ItemIndex = 5,
+                            Quantity = 1,
+                            LootedByName = "OtherPlayer",
+                            IsTrash = false
+                        }
+                    }
+                }
+            }
+        };
+
+        ItemController.Items = new ObservableCollection<Item>()
+        {
+            CreateItem(4, "T4_WOOD", "resources", "wood"),
+            CreateItem(5, "T4_STONE", "resources", "rock")
+        };
+
+        bindings.UpdateItemsStatus();
+
+        bindings.LootingPlayers.Should().HaveCount(2);
+        bindings.LootingPlayers[1].LootedItems.Should().ContainSingle();
+        bindings.LootingPlayers[1].LootedItems[0].Status.Should().Be(LootedItemStatus.Donated);
+    }
+
+    [Test]
+    public void UpdateItemsStatus_WithMultipleUnmatchedChestLogsForNewPlayer_AddsPlayerOnlyOnce()
+    {
+        var lootTime = new DateTime(2026, 5, 19, 8, 48, 13, DateTimeKind.Utc);
+        var bindings = new LoggingBindings()
+        {
+            VaultLogItems = new ObservableCollection<VaultContainerLogItem>
+            {
+                new()
+                {
+                    Timestamp = lootTime.AddMinutes(10),
+                    PlayerName = "Triky313",
+                    LocalizedName = "T4_WOOD",
+                    Enchantment = 0,
+                    Quality = 1,
+                    Quantity = 8
+                },
+                new()
+                {
+                    Timestamp = lootTime.AddMinutes(11),
+                    PlayerName = "Triky313",
+                    LocalizedName = "T4_STONE",
+                    Enchantment = 0,
+                    Quality = 1,
+                    Quantity = 4
+                }
+            }
+        };
+
+        ItemController.Items = new ObservableCollection<Item>()
+        {
+            CreateItem(4, "T4_WOOD", "resources", "wood"),
+            CreateItem(5, "T4_STONE", "resources", "rock")
+        };
+
+        bindings.UpdateItemsStatus();
+
+        bindings.LootingPlayers.Should().ContainSingle(player => player.PlayerName == "Triky313");
+
+        var lootedItems = bindings.LootingPlayers.Single(player => player.PlayerName == "Triky313").LootedItems;
+        lootedItems.Should().HaveCount(2);
+        lootedItems.Should().OnlyContain(item => item.Status == LootedItemStatus.Donated);
+    }
+
+    [Test]
+    public void UpdateItemsStatus_WithUnresolvedLootAndLaterChestLog_KeepsLootUnknown()
+    {
+        var lootTime = new DateTime(2026, 5, 19, 8, 48, 13, DateTimeKind.Utc);
+        var bindings = new LoggingBindings()
+        {
+            VaultLogItems = new ObservableCollection<VaultContainerLogItem>
+            {
+                new()
+                {
+                    Timestamp = lootTime.AddMinutes(10),
+                    PlayerName = "OtherPlayer",
+                    LocalizedName = "T4_STONE",
+                    Enchantment = 0,
+                    Quality = 1,
+                    Quantity = 1
+                }
+            },
+            LootingPlayers = new ObservableCollection<LootingPlayer>
+            {
+                new()
+                {
+                    PlayerName = "Triky313",
+                    LootedItems = new ObservableCollection<LootedItem>
+                    {
+                        new()
+                        {
+                            UtcPickupTime = lootTime,
+                            ItemIndex = 4,
+                            Quantity = 8,
+                            LootedByName = "Triky313",
+                            IsTrash = false
+                        }
+                    }
+                }
+            }
+        };
+
+        ItemController.Items = new ObservableCollection<Item>()
+        {
+            CreateItem(4, "T4_WOOD", "resources", "wood"),
+            CreateItem(5, "T4_STONE", "resources", "rock")
+        };
+
+        bindings.UpdateItemsStatus();
+
+        bindings.LootingPlayers[0].LootedItems[0].Status.Should().Be(LootedItemStatus.Unknown);
+    }
+
+    [Test]
+    public void UpdateItemsStatus_WithLaterLootFromPlayer_MarksEarlierLootLost()
+    {
+        var lootTime = new DateTime(2026, 5, 19, 8, 48, 13, DateTimeKind.Utc);
+        var bindings = new LoggingBindings()
+        {
+            VaultLogItems = new ObservableCollection<VaultContainerLogItem>
+            {
+                new()
+                {
+                    Timestamp = lootTime.AddMinutes(20),
+                    PlayerName = "OtherPlayer",
+                    LocalizedName = "T4_STONE",
+                    Enchantment = 0,
+                    Quality = 1,
+                    Quantity = 1
+                }
+            },
+            LootingPlayers = new ObservableCollection<LootingPlayer>
+            {
+                new()
+                {
+                    PlayerName = "Triky313",
+                    LootedItems = new ObservableCollection<LootedItem>
+                    {
+                        new()
+                        {
+                            UtcPickupTime = lootTime,
+                            ItemIndex = 4,
+                            Quantity = 8,
+                            LootedByName = "Triky313",
+                            IsTrash = false
+                        }
+                    }
+                },
+                new()
+                {
+                    PlayerName = "OtherPlayer",
+                    LootedItems = new ObservableCollection<LootedItem>
+                    {
+                        new()
+                        {
+                            UtcPickupTime = lootTime.AddMinutes(10),
+                            ItemIndex = 4,
+                            Quantity = 8,
+                            LootedByName = "OtherPlayer",
+                            LootedFromName = "Triky313",
+                            IsTrash = false
+                        }
+                    }
+                }
+            }
+        };
+
+        ItemController.Items = new ObservableCollection<Item>()
+        {
+            CreateItem(4, "T4_WOOD", "resources", "wood"),
+            CreateItem(5, "T4_STONE", "resources", "rock")
+        };
+
+        bindings.UpdateItemsStatus();
+
+        bindings.LootingPlayers[0].LootedItems[0].Status.Should().Be(LootedItemStatus.Lost);
+        bindings.LootingPlayers[1].LootedItems[0].Status.Should().Be(LootedItemStatus.Unknown);
+    }
+
+    [Test]
+    public void UpdateItemsStatus_WithUtcChestLogBeforeLootLog_AddsIgnoredChestItem()
+    {
+        ItemController.Items = new ObservableCollection<Item>()
+        {
+            new()
+            {
+                Index = 4,
+                UniqueName = "T4_WOOD",
+                LocalizedNames = new LocalizedNames { EnUs = "Pine Logs", DeDe = "Kiefernholz" }
+            },
+            new()
+            {
+                Index = 5,
+                UniqueName = "T5_WOOD",
+                LocalizedNames = new LocalizedNames { EnUs = "Cedar Logs" }
+            },
+            new()
+            {
+                Index = 6,
+                UniqueName = "T8_MOUNT_MAMMOTH_TRANSPORT",
+                LocalizedNames = new LocalizedNames { DeDe = "Transportmammut des Ältesten" }
+            }
+        };
+
+        var bindings = new LoggingBindings();
+        var chestLogText = string.Join(Environment.NewLine,
+            "\"Datum\"\t\"Spieler\"\t\"Gegenstand\"\t\"Verzauberung\"\t\"Qualität\"\t\"Anzahl\"",
+            "\"05/20/2026 14:30:00\"\t\"Triky313\"\t\"Kiefernholz\"\t\"0\"\t\"1\"\t\"8\"",
+            "\"05/20/2026 10:31:00\"\t\"faxerix\"\t\"Transportmammut des Ältesten\"\t\"0\"\t\"4\"\t\"1\"");
+        var lootLogText = string.Join(Environment.NewLine,
+            "timestamp_utc;looted_by__alliance;looted_by__guild;looted_by__name;item_id;item_name;quantity;looted_from__alliance;looted_from__guild;looted_from__name;died;died_player_guild;killed_by;killed_by_guild;average_est_market_value;cluster",
+            "2026-05-20T13:30:00.9945920Z;;;Triky313;T4_WOOD;Pine Logs;8;;;Hans;;;;;91;Unknown",
+            "2026-05-20T13:48:13.9945920Z;;;Triky313;T5_WOOD;Cedar Logs;8;;;Dicky;;;;;91;Unknown",
+            "2026-05-20T13:49:13.9945920Z;;;faxerix;T5_WOOD;Cedar Logs;8;;;Triky313;;;;;91;Unknown",
+            "2026-05-20T13:51:13.9945920Z;;;Peter;T5_WOOD;Cedar Logs;8;;;faxerix;;;;;91;Unknown");
+        var lootLogFilePath = Path.GetTempFileName();
+
+        try
+        {
+            File.WriteAllText(lootLogFilePath, lootLogText);
+
+            bindings.AddVaultLogText(chestLogText).Should().Be(2);
+            bindings.AddLootLogFiles([lootLogFilePath]).Should().Be(4);
+            bindings.UpdateItemsStatus();
+
+            var trikyItems = bindings.LootingPlayers.Single(player => player.PlayerName == "Triky313").LootedItems;
+            var faxerixItems = bindings.LootingPlayers.Single(player => player.PlayerName == "faxerix").LootedItems;
+
+            trikyItems.Single(item => item.ItemIndex == 4).Status.Should().Be(LootedItemStatus.Resolved);
+            faxerixItems.Single(item => item.ItemIndex == 6).Status.Should().Be(LootedItemStatus.Ignored);
+        }
+        finally
+        {
+            File.Delete(lootLogFilePath);
+        }
     }
 
     [Test]
@@ -298,6 +630,76 @@ public class LoggingBindingsTests
         regularItem.Visibility.Should().Be(Visibility.Visible);
         lostItem.Visibility.Should().Be(Visibility.Visible);
         bindings.LootingPlayers[0].LootingPlayerVisibility.Should().Be(Visibility.Visible);
+    }
+
+    [Test]
+    public void AddLootLogFiles_WithTrashUniqueName_MarksImportedItemAsTrash()
+    {
+        ItemController.Items = new ObservableCollection<Item>()
+        {
+            new()
+            {
+                Index = 42,
+                UniqueName = "T5_TRASH"
+            }
+        };
+
+        var bindings = new LoggingBindings()
+        {
+            IsShowingTrash = false
+        };
+        var filePath = Path.GetTempFileName();
+        var lootLogText = string.Join(Environment.NewLine,
+            "timestamp_utc;looted_by__alliance;looted_by__guild;looted_by__name;item_id;item_name;quantity;looted_from__alliance;looted_from__guild;looted_from__name;died;died_player_guild;killed_by;killed_by_guild;average_est_market_value;cluster",
+            "2026-05-20T13:30:00.9945920Z;;;Shogun26;T5_TRASH;Trash;1;;;Mob;;;;;0;Unknown");
+
+        try
+        {
+            File.WriteAllText(filePath, lootLogText);
+
+            bindings.AddLootLogFiles([filePath]).Should().Be(1);
+            bindings.ParallelLootedItemsFilterProcess();
+
+            var item = bindings.LootingPlayers.Single().LootedItems.Single();
+            item.IsTrash.Should().BeTrue();
+            item.Visibility.Should().Be(Visibility.Collapsed);
+            bindings.LootingPlayers.Single().LootingPlayerVisibility.Should().Be(Visibility.Collapsed);
+        }
+        finally
+        {
+            File.Delete(filePath);
+        }
+    }
+
+    [Test]
+    public void AddLootLogFiles_WithNonLootEventRows_SkipsRowsAndImportsLootItems()
+    {
+        ItemController.Items = new ObservableCollection<Item>()
+        {
+            CreateItem(4, "T4_WOOD", "resources", "wood")
+        };
+
+        var bindings = new LoggingBindings();
+        var filePath = Path.GetTempFileName();
+        var lootLogText = string.Join(Environment.NewLine,
+            "timestamp_utc;looted_by__alliance;looted_by__guild;looted_by__name;item_id;item_name;quantity;looted_from__alliance;looted_from__guild;looted_from__name;died;died_player_guild;killed_by;killed_by_guild;average_est_market_value;cluster",
+            "2026-06-03T00:12:08.8511423Z;;;;;;;;;;Donnaoom;DEDO NO OLHO;Donnaoom;DEDO NO OLHO;;Lymhurst",
+            "2026-06-03T00:39:53.0971431Z;;Avalon_Fury;Josmiel16;T4_WOOD;Pine Logs;8;;;Mob;;;;;4281;Longtimber Glen");
+
+        try
+        {
+            File.WriteAllText(filePath, lootLogText);
+
+            bindings.AddLootLogFiles([filePath]).Should().Be(1);
+
+            var player = bindings.LootingPlayers.Should().ContainSingle().Subject;
+            player.PlayerName.Should().Be("Josmiel16");
+            player.LootedItems.Should().ContainSingle(item => item.ItemIndex == 4 && item.Quantity == 8);
+        }
+        finally
+        {
+            File.Delete(filePath);
+        }
     }
 
     [Test]

@@ -65,12 +65,10 @@ public partial class LoggingControl
         mainWindowViewModel.LoggingBindings.IsAllButtonsEnabled = true;
     }
 
-    private void BtnLogCompare_Click(object sender, RoutedEventArgs e)
+    private async void BtnLogCompare_Click(object sender, RoutedEventArgs e)
     {
         var mainWindowViewModel = ServiceLocator.Resolve<MainWindowViewModel>();
-        mainWindowViewModel.LoggingBindings.IsAllButtonsEnabled = false;
-        mainWindowViewModel.LoggingBindings.UpdateItemsStatus();
-        mainWindowViewModel.LoggingBindings.IsAllButtonsEnabled = true;
+        await mainWindowViewModel.LoggingBindings.CompareLootLogsAsync();
     }
 
     private void BtnClearVaultLogItems_Click(object sender, RoutedEventArgs e)

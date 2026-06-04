@@ -31,7 +31,6 @@ using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
-using System.IO;
 using System.Linq;
 using System.Reflection;
 using System.Threading.Tasks;
@@ -554,7 +553,9 @@ public class MainWindowViewModel : BaseViewModel
             try
             {
                 var trackingController = ServiceLocator.Resolve<TrackingController>();
-                File.WriteAllText(dialog.FileName, trackingController?.LootController?.GetLootLoggerObjectsAsCsv());
+                ExportFileWriter.WriteText(
+                    dialog.FileName,
+                    trackingController?.LootController?.GetLootLoggerObjectsAsCsv());
             }
             catch (Exception e)
             {
@@ -578,7 +579,9 @@ public class MainWindowViewModel : BaseViewModel
             try
             {
                 var trackingController = ServiceLocator.Resolve<TrackingController>();
-                File.WriteAllText(dialog.FileName, trackingController?.LootController?.GetLootLoggerObjectsAsJson());
+                ExportFileWriter.WriteText(
+                    dialog.FileName,
+                    trackingController?.LootController?.GetLootLoggerObjectsAsJson());
             }
             catch (Exception e)
             {
