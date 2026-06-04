@@ -729,6 +729,11 @@ public class LoggingBindings : BaseViewModel
                 continue;
             }
 
+            if (IsNonLootEventRow(values))
+            {
+                continue;
+            }
+
             if (!TryParseLootLogFields(values, out var lootLogItem))
             {
                 return false;
@@ -746,6 +751,15 @@ public class LoggingBindings : BaseViewModel
                && LootLogHeaderColumns
                    .Select((columnName, index) => string.Equals(values[index], columnName, StringComparison.OrdinalIgnoreCase))
                    .All(isMatchingColumn => isMatchingColumn);
+    }
+
+    private static bool IsNonLootEventRow(string[] values)
+    {
+        return values.Length >= LootLogHeaderColumns.Length
+               && string.IsNullOrWhiteSpace(values[3])
+               && string.IsNullOrWhiteSpace(values[4])
+               && string.IsNullOrWhiteSpace(values[5])
+               && string.IsNullOrWhiteSpace(values[6]);
     }
 
     private static bool TryParseLootLogFields(string[] values, out ImportedLootLogItem lootLogItem)

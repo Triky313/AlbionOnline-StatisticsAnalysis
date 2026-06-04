@@ -672,6 +672,37 @@ public class LoggingBindingsTests
     }
 
     [Test]
+    public void AddLootLogFiles_WithNonLootEventRows_SkipsRowsAndImportsLootItems()
+    {
+        ItemController.Items = new ObservableCollection<Item>()
+        {
+            CreateItem(4, "T4_WOOD", "resources", "wood")
+        };
+
+        var bindings = new LoggingBindings();
+        var filePath = Path.GetTempFileName();
+        var lootLogText = string.Join(Environment.NewLine,
+            "timestamp_utc;looted_by__alliance;looted_by__guild;looted_by__name;item_id;item_name;quantity;looted_from__alliance;looted_from__guild;looted_from__name;died;died_player_guild;killed_by;killed_by_guild;average_est_market_value;cluster",
+            "2026-06-03T00:12:08.8511423Z;;;;;;;;;;Donnaoom;DEDO NO OLHO;Donnaoom;DEDO NO OLHO;;Lymhurst",
+            "2026-06-03T00:39:53.0971431Z;;Avalon_Fury;Josmiel16;T4_WOOD;Pine Logs;8;;;Mob;;;;;4281;Longtimber Glen");
+
+        try
+        {
+            File.WriteAllText(filePath, lootLogText);
+
+            bindings.AddLootLogFiles([filePath]).Should().Be(1);
+
+            var player = bindings.LootingPlayers.Should().ContainSingle().Subject;
+            player.PlayerName.Should().Be("Josmiel16");
+            player.LootedItems.Should().ContainSingle(item => item.ItemIndex == 4 && item.Quantity == 8);
+        }
+        finally
+        {
+            File.Delete(filePath);
+        }
+    }
+
+    [Test]
     public void ParallelLootedItemsFilterProcess_WithResolvedStatusDisabled_KeepsLostItemsVisible()
     {
         var lostItem = new LootedItem()
