@@ -99,6 +99,11 @@ public class LootedItem : BaseViewModel
         get => _status;
         set
         {
+            if (_status == value)
+            {
+                return;
+            }
+
             _status = value;
             OnPropertyChanged();
         }

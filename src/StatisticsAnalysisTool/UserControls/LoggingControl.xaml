@@ -518,6 +518,7 @@
                                 </Grid>
                             </StackPanel>
                             <Button MinWidth="150" Height="50" Margin="0,0,30,0" 
+                                    IsEnabled="{Binding LoggingBindings.IsCompareButtonEnabled, FallbackValue=true}"
                                     Content="{Binding LoggingBindings.Translation.CompareLogs, FallbackValue=COMPARE__LOGS}" FontSize="20" Click="BtnLogCompare_Click" />
                         </StackPanel>
                     </StackPanel>

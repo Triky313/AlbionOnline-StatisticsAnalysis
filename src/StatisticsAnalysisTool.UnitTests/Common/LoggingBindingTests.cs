@@ -347,6 +347,50 @@ public class LoggingBindingsTests
     }
 
     [Test]
+    public void UpdateItemsStatus_WithMultipleUnmatchedChestLogsForNewPlayer_AddsPlayerOnlyOnce()
+    {
+        var lootTime = new DateTime(2026, 5, 19, 8, 48, 13, DateTimeKind.Utc);
+        var bindings = new LoggingBindings()
+        {
+            VaultLogItems = new ObservableCollection<VaultContainerLogItem>
+            {
+                new()
+                {
+                    Timestamp = lootTime.AddMinutes(10),
+                    PlayerName = "Triky313",
+                    LocalizedName = "T4_WOOD",
+                    Enchantment = 0,
+                    Quality = 1,
+                    Quantity = 8
+                },
+                new()
+                {
+                    Timestamp = lootTime.AddMinutes(11),
+                    PlayerName = "Triky313",
+                    LocalizedName = "T4_STONE",
+                    Enchantment = 0,
+                    Quality = 1,
+                    Quantity = 4
+                }
+            }
+        };
+
+        ItemController.Items = new ObservableCollection<Item>()
+        {
+            CreateItem(4, "T4_WOOD", "resources", "wood"),
+            CreateItem(5, "T4_STONE", "resources", "rock")
+        };
+
+        bindings.UpdateItemsStatus();
+
+        bindings.LootingPlayers.Should().ContainSingle(player => player.PlayerName == "Triky313");
+
+        var lootedItems = bindings.LootingPlayers.Single(player => player.PlayerName == "Triky313").LootedItems;
+        lootedItems.Should().HaveCount(2);
+        lootedItems.Should().OnlyContain(item => item.Status == LootedItemStatus.Donated);
+    }
+
+    [Test]
     public void UpdateItemsStatus_WithUnresolvedLootAndLaterChestLog_KeepsLootUnknown()
     {
         var lootTime = new DateTime(2026, 5, 19, 8, 48, 13, DateTimeKind.Utc);

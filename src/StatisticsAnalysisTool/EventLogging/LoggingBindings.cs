@@ -48,6 +48,7 @@ public class LoggingBindings : BaseViewModel
     private bool _isShowingPotion = true;
     private bool _isShowingMount = true;
     private bool _isShowingOthers = true;
+    private bool _isCompareButtonEnabled = true;
     private const int LootLogTimeToleranceSeconds = 2;
     private static readonly string[] LootLogHeaderColumns =
     [
@@ -241,45 +242,175 @@ public class LoggingBindings : BaseViewModel
 
     #region Loot comparator
 
+    public async Task CompareLootLogsAsync()
+    {
+        if (!IsCompareButtonEnabled)
+        {
+            return;
+        }
+
+        IsCompareButtonEnabled = false;
+
+        try
+        {
+            await UpdateItemsStatusAsync();
+        }
+        finally
+        {
+            IsCompareButtonEnabled = true;
+        }
+    }
+
+    public async Task UpdateItemsStatusAsync()
+    {
+        RemoveAllVaultItems();
+
+        var lootingPlayerSnapshots = CreateLootingPlayerSnapshots(LootingPlayers);
+        var vaultLogSnapshot = VaultLogItems.ToList();
+        var vaultLogItems = await Task.Run(() => CreateVaultLogItems(vaultLogSnapshot));
+        var comparisonResult = await Task.Run(() => BuildLootComparisonResult(lootingPlayerSnapshots, vaultLogItems));
+
+        ApplyLootComparisonResult(comparisonResult);
+        await UpdateFilteredLootedItemsAsync();
+        RefreshLootComparatorLogCounts();
+    }
+
     public void UpdateItemsStatus()
     {
         RemoveAllVaultItems();
-        ResetLootLogItemStatuses();
 
+        var lootingPlayerSnapshots = CreateLootingPlayerSnapshots(LootingPlayers);
         var vaultLogItems = CreateVaultLogItems(VaultLogItems.ToList());
-        var lastLootLogTime = GetLastLootLogTime(LootingPlayers);
+        var comparisonResult = BuildLootComparisonResult(lootingPlayerSnapshots, vaultLogItems);
 
-        foreach (var (logItem, vaultLogLocalizedItem, vaultLogItem) in vaultLogItems)
+        ApplyLootComparisonResult(comparisonResult);
+        ApplyLootComparatorFilters();
+        RefreshLootComparatorLogCounts();
+    }
+
+    private static List<LootingPlayerSnapshot> CreateLootingPlayerSnapshots(IEnumerable<LootingPlayer> lootingPlayers)
+    {
+        return lootingPlayers
+            .Select(lootingPlayer => new LootingPlayerSnapshot(lootingPlayer, lootingPlayer.PlayerName, lootingPlayer.GetLootedItemsSnapshot()))
+            .ToList();
+    }
+
+    private static LootComparisonResult BuildLootComparisonResult(
+        IReadOnlyCollection<LootingPlayerSnapshot> lootingPlayerSnapshots,
+        IReadOnlyCollection<(VaultContainerLogItem LogItem, Item Item, LootedItem LootedItem)> vaultLogItems)
+    {
+        var result = new LootComparisonResult();
+        var keyComparer = new LootItemKeyComparer();
+        var lootingPlayersByName = lootingPlayerSnapshots
+            .Where(snapshot => !string.IsNullOrWhiteSpace(snapshot.PlayerName))
+            .GroupBy(snapshot => snapshot.PlayerName, StringComparer.OrdinalIgnoreCase)
+            .ToDictionary(group => group.Key, group => group.First(), StringComparer.OrdinalIgnoreCase);
+        var lootLogItems = lootingPlayerSnapshots
+            .SelectMany(snapshot => snapshot.LootedItems)
+            .Where(item => !item.IsItemFromVaultLog)
+            .ToList();
+        var lootCandidatesByKey = lootLogItems
+            .GroupBy(item => new LootItemKey(item.LootedByName, item.ItemIndex, item.Quantity), keyComparer)
+            .ToDictionary(
+                group => group.Key,
+                group => group.OrderByDescending(item => ToUtc(item.UtcPickupTime)).ToList(),
+                keyComparer);
+        var matchedItems = new HashSet<LootedItem>();
+        var lastLootLogTime = GetLastLootLogTime(lootLogItems);
+
+        foreach (var lootLogItem in lootLogItems)
         {
-            var lootingPlayer = LootingPlayers.FirstOrDefault(x => string.Equals(x.PlayerName, logItem.PlayerName, StringComparison.OrdinalIgnoreCase));
+            result.Statuses[lootLogItem] = LootedItemStatus.Unknown;
+        }
+
+        foreach (var (logItem, vaultLogLocalizedItem, vaultLogItem) in vaultLogItems.OrderBy(item => ToUtc(item.LootedItem.UtcPickupTime)))
+        {
+            lootingPlayersByName.TryGetValue(logItem.PlayerName, out var lootingPlayerSnapshot);
 
             var status = IsAfterLastLootLog(vaultLogItem, lastLootLogTime)
                 ? LootedItemStatus.Donated
                 : LootedItemStatus.Ignored;
 
-            if (lootingPlayer is not null)
+            if (TryMatchLootedItem(lootCandidatesByKey, matchedItems, vaultLogItem, out var matchedItem))
             {
-                var newItems = new List<LootedItem>();
-
-                if (!MatchLootedItem(lootingPlayer, vaultLogItem))
-                {
-                    AddNewLootedItem(newItems, logItem, vaultLogLocalizedItem, status);
-                }
-
-                foreach (var newItem in newItems)
-                {
-                    lootingPlayer.AddLootedItem(newItem);
-                }
+                result.Statuses[matchedItem] = LootedItemStatus.Resolved;
+                continue;
             }
-            else
-            {
-                AddNewPlayerToLootingPlayers(logItem, vaultLogLocalizedItem, status);
-            }
+
+            result.Additions.Add(new LootComparisonAddition(lootingPlayerSnapshot?.Player, CreateVaultLogLootedItem(logItem, vaultLogLocalizedItem, status), logItem.PlayerName));
         }
 
-        MarkLostItems(LootingPlayers);
-        ApplyLootComparatorFilters();
-        RefreshLootComparatorLogCounts();
+        MarkLostItems(result.Statuses, lootLogItems);
+
+        return result;
+    }
+
+    private static bool TryMatchLootedItem(
+        IReadOnlyDictionary<LootItemKey, List<LootedItem>> lootCandidatesByKey,
+        ISet<LootedItem> matchedItems,
+        LootedItem vaultLogItem,
+        out LootedItem matchedItem)
+    {
+        matchedItem = null;
+        var key = new LootItemKey(vaultLogItem.LootedByName, vaultLogItem.ItemIndex, vaultLogItem.Quantity);
+
+        if (!lootCandidatesByKey.TryGetValue(key, out var candidates))
+        {
+            return false;
+        }
+
+        matchedItem = candidates.FirstOrDefault(candidate =>
+            !matchedItems.Contains(candidate)
+            && ToUtc(candidate.UtcPickupTime) < ToUtc(vaultLogItem.UtcPickupTime));
+
+        if (matchedItem is null)
+        {
+            return false;
+        }
+
+        matchedItems.Add(matchedItem);
+        return true;
+    }
+
+    private void ApplyLootComparisonResult(LootComparisonResult comparisonResult)
+    {
+        var lootingPlayersByName = LootingPlayers
+            .Where(player => !string.IsNullOrWhiteSpace(player.PlayerName))
+            .GroupBy(player => player.PlayerName, StringComparer.OrdinalIgnoreCase)
+            .ToDictionary(group => group.Key, group => group.First(), StringComparer.OrdinalIgnoreCase);
+
+        foreach (var (item, status) in comparisonResult.Statuses)
+        {
+            item.Status = status;
+        }
+
+        foreach (var addition in comparisonResult.Additions)
+        {
+            if (addition.LootingPlayer is not null)
+            {
+                addition.LootingPlayer.AddLootedItem(addition.LootedItem);
+                continue;
+            }
+
+            if (lootingPlayersByName.TryGetValue(addition.PlayerName, out var existingPlayer))
+            {
+                existingPlayer.AddLootedItem(addition.LootedItem);
+                continue;
+            }
+
+            var newPlayer = AddNewPlayerToLootingPlayers(addition.PlayerName, addition.LootedItem);
+            if (!string.IsNullOrWhiteSpace(newPlayer.PlayerName))
+            {
+                lootingPlayersByName[newPlayer.PlayerName] = newPlayer;
+            }
+        }
+    }
+
+    private static DateTime? GetLastLootLogTime(IEnumerable<LootedItem> lootLogItems)
+    {
+        return lootLogItems
+            .Select(item => (DateTime?) ToUtc(item.UtcPickupTime))
+            .Max();
     }
 
     private static List<(VaultContainerLogItem LogItem, Item Item, LootedItem LootedItem)> CreateVaultLogItems(IEnumerable<VaultContainerLogItem> logItems)
@@ -308,44 +439,14 @@ public class LoggingBindings : BaseViewModel
         return vaultLogItems;
     }
 
-    private static DateTime? GetLastLootLogTime(IEnumerable<LootingPlayer> lootingPlayers)
-    {
-        return lootingPlayers
-            .SelectMany(player => player.GetLootedItemsSnapshot())
-            .Where(item => !item.IsItemFromVaultLog)
-            .Select(item => (DateTime?) ToUtc(item.UtcPickupTime))
-            .Max();
-    }
-
     private static bool IsAfterLastLootLog(LootedItem vaultLogItem, DateTime? lastLootLogTime)
     {
         return lastLootLogTime is null || vaultLogItem.UtcPickupTime > lastLootLogTime.Value;
     }
 
-    private static bool MatchLootedItem(LootingPlayer lootingPlayer, LootedItem vaultLogItem)
+    private static LootedItem CreateVaultLogLootedItem(VaultContainerLogItem logItem, Item vaultLogLocalizedItem, LootedItemStatus status)
     {
-        var matchedItem = lootingPlayer.GetLootedItemsSnapshot()
-            .Where(lootedItem => !lootedItem.IsItemFromVaultLog)
-            .Where(lootedItem => lootedItem.Status != LootedItemStatus.Resolved)
-            .Where(lootedItem => lootedItem.ItemIndex == vaultLogItem.ItemIndex)
-            .Where(lootedItem => string.Equals(lootedItem.LootedByName, vaultLogItem.LootedByName, StringComparison.OrdinalIgnoreCase))
-            .Where(lootedItem => lootedItem.Quantity == vaultLogItem.Quantity)
-            .Where(lootedItem => ToUtc(lootedItem.UtcPickupTime) < vaultLogItem.UtcPickupTime)
-            .OrderByDescending(lootedItem => ToUtc(lootedItem.UtcPickupTime))
-            .FirstOrDefault();
-
-        if (matchedItem is null)
-        {
-            return false;
-        }
-
-        matchedItem.Status = LootedItemStatus.Resolved;
-        return true;
-    }
-
-    private static void AddNewLootedItem(List<LootedItem> newItems, VaultContainerLogItem logItem, Item vaultLogLocalizedItem, LootedItemStatus status)
-    {
-        newItems.Add(new LootedItem
+        return new LootedItem
         {
             UtcPickupTime = ToUtc(logItem.Timestamp),
             ItemIndex = vaultLogLocalizedItem.Index,
@@ -354,29 +455,23 @@ public class LoggingBindings : BaseViewModel
             LootedByName = logItem.PlayerName,
             Quantity = logItem.Quantity,
             Status = status
-        });
+        };
     }
 
-    private void AddNewPlayerToLootingPlayers(VaultContainerLogItem logItem, Item vaultLogLocalizedItem, LootedItemStatus status)
+    private LootingPlayer AddNewPlayerToLootingPlayers(string playerName, LootedItem lootedItem)
     {
-        LootingPlayers.Add(new LootingPlayer()
+        var lootingPlayer = new LootingPlayer()
         {
-            PlayerName = logItem.PlayerName,
+            PlayerName = playerName,
             LootingPlayerVisibility = Visibility.Visible,
             LootedItems =
             [
-                new LootedItem
-                {
-                    UtcPickupTime = ToUtc(logItem.Timestamp),
-                    ItemIndex = vaultLogLocalizedItem.Index,
-                    IsItemFromVaultLog = true,
-                    IsTrash = IsTrashItem(vaultLogLocalizedItem),
-                    LootedByName = logItem.PlayerName,
-                    Quantity = logItem.Quantity,
-                    Status = status
-                }
+                lootedItem
             ]
-        });
+        };
+
+        LootingPlayers.Add(lootingPlayer);
+        return lootingPlayer;
     }
 
     public void RemoveAllVaultItems()
@@ -429,38 +524,35 @@ public class LoggingBindings : BaseViewModel
         RefreshLootComparatorLogCounts();
     }
 
-    private static void MarkLostItems(ObservableCollection<LootingPlayer> lootingPlayers)
+    private static void MarkLostItems(IDictionary<LootedItem, LootedItemStatus> statuses, IEnumerable<LootedItem> lootLogItems)
     {
-        var lootLogItems = lootingPlayers
-            .SelectMany(player => player.GetLootedItemsSnapshot())
-            .Where(item => !item.IsItemFromVaultLog)
-            .ToList();
+        var lootLogItemsBySource = lootLogItems
+            .Where(item => !string.IsNullOrWhiteSpace(item.LootedFromName))
+            .GroupBy(item => new LootItemKey(item.LootedFromName, item.ItemIndex, item.Quantity), new LootItemKeyComparer())
+            .ToDictionary(
+                group => group.Key,
+                group => group.OrderBy(item => ToUtc(item.UtcPickupTime)).ToList(),
+                new LootItemKeyComparer());
 
-        foreach (var player in lootingPlayers)
+        foreach (var (item, status) in statuses.ToList())
         {
-            foreach (var item in player.GetLootedItemsSnapshot())
+            if (status != LootedItemStatus.Unknown)
             {
-                if (item.IsItemFromVaultLog || item.Status != LootedItemStatus.Unknown)
-                {
-                    continue;
-                }
+                continue;
+            }
 
-                var lootTime = ToUtc(item.UtcPickupTime);
-                item.Status = HasLaterLootFromPlayer(lootLogItems, item, lootTime)
-                    ? LootedItemStatus.Lost
-                    : LootedItemStatus.Unknown;
+            var key = new LootItemKey(item.LootedByName, item.ItemIndex, item.Quantity);
+            if (!lootLogItemsBySource.TryGetValue(key, out var laterLoots))
+            {
+                continue;
+            }
+
+            var lootTime = ToUtc(item.UtcPickupTime);
+            if (laterLoots.Any(laterLoot => !ReferenceEquals(laterLoot, item) && ToUtc(laterLoot.UtcPickupTime) > lootTime))
+            {
+                statuses[item] = LootedItemStatus.Lost;
             }
         }
-    }
-
-    private static bool HasLaterLootFromPlayer(IEnumerable<LootedItem> lootLogItems, LootedItem lootLogItem, DateTime lootTime)
-    {
-        return lootLogItems.Any(item =>
-            !ReferenceEquals(item, lootLogItem)
-            && item.ItemIndex == lootLogItem.ItemIndex
-            && item.Quantity == lootLogItem.Quantity
-            && string.Equals(item.LootedFromName, lootLogItem.LootedByName, StringComparison.OrdinalIgnoreCase)
-            && ToUtc(item.UtcPickupTime) > lootTime);
     }
 
     public void OpenVaultFilePathSelection()
@@ -1240,6 +1332,60 @@ public class LoggingBindings : BaseViewModel
         "dd.MM.yyyy HH:mm:ss"
     ];
 
+    private sealed class LootComparisonResult
+    {
+        public Dictionary<LootedItem, LootedItemStatus> Statuses { get; } = [];
+        public List<LootComparisonAddition> Additions { get; } = [];
+    }
+
+    private sealed class LootComparisonAddition
+    {
+        public LootComparisonAddition(LootingPlayer lootingPlayer, LootedItem lootedItem, string playerName)
+        {
+            LootingPlayer = lootingPlayer;
+            LootedItem = lootedItem;
+            PlayerName = playerName;
+        }
+
+        public LootingPlayer LootingPlayer { get; }
+        public LootedItem LootedItem { get; }
+        public string PlayerName { get; }
+    }
+
+    private sealed class LootingPlayerSnapshot
+    {
+        public LootingPlayerSnapshot(LootingPlayer player, string playerName, List<LootedItem> lootedItems)
+        {
+            Player = player;
+            PlayerName = playerName;
+            LootedItems = lootedItems;
+        }
+
+        public LootingPlayer Player { get; }
+        public string PlayerName { get; }
+        public List<LootedItem> LootedItems { get; }
+    }
+
+    private readonly record struct LootItemKey(string PlayerName, int ItemIndex, int Quantity);
+
+    private sealed class LootItemKeyComparer : IEqualityComparer<LootItemKey>
+    {
+        public bool Equals(LootItemKey x, LootItemKey y)
+        {
+            return x.ItemIndex == y.ItemIndex
+                   && x.Quantity == y.Quantity
+                   && string.Equals(x.PlayerName, y.PlayerName, StringComparison.OrdinalIgnoreCase);
+        }
+
+        public int GetHashCode(LootItemKey obj)
+        {
+            return HashCode.Combine(
+                StringComparer.OrdinalIgnoreCase.GetHashCode(obj.PlayerName ?? string.Empty),
+                obj.ItemIndex,
+                obj.Quantity);
+        }
+    }
+
     private sealed class ImportedLootLogItem
     {
         public DateTime UtcPickupTime { get; init; }
@@ -1656,6 +1802,21 @@ public class LoggingBindings : BaseViewModel
             OnPropertyChanged();
         }
     } = true;
+
+    public bool IsCompareButtonEnabled
+    {
+        get => _isCompareButtonEnabled;
+        set
+        {
+            if (_isCompareButtonEnabled == value)
+            {
+                return;
+            }
+
+            _isCompareButtonEnabled = value;
+            OnPropertyChanged();
+        }
+    }
 
     public LoggingTranslation Translation
     {
