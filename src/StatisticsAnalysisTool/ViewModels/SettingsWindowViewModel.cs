@@ -1,4 +1,6 @@
+using Ookii.Dialogs.Wpf;
 using Serilog;
+using StatisticAnalysisTool.Extractor;
 using StatisticsAnalysisTool.Common;
 using StatisticsAnalysisTool.Common.UserSettings;
 using StatisticsAnalysisTool.Diagnostics;
@@ -9,7 +11,6 @@ using StatisticsAnalysisTool.Models.TranslationModel;
 using StatisticsAnalysisTool.Network.Manager;
 using StatisticsAnalysisTool.Network.PacketProviders;
 using StatisticsAnalysisTool.Notification;
-using StatisticsAnalysisTool.Properties;
 using StatisticsAnalysisTool.Views;
 using System;
 using System.Collections.Generic;
@@ -70,6 +71,9 @@ public class SettingsWindowViewModel : BaseViewModel
         // Another app to start path
         AnotherAppToStartPath = SettingsController.CurrentSettings.AnotherAppToStartPath;
 
+        // Main game folder path
+        MainGameFolderPath = SettingsController.CurrentSettings.MainGameFolderPath ?? string.Empty;
+
         // Alert sounds
         InitAlertSounds();
 
@@ -116,6 +120,7 @@ public class SettingsWindowViewModel : BaseViewModel
         SettingsController.CurrentSettings.IsOpenDebugConsoleWhenStartingTheToolChecked = IsOpenDebugConsoleWhenStartingTheToolChecked;
         SettingsController.CurrentSettings.ProxyUrlWithPort = ProxyUrlWithPort;
         SettingsController.CurrentSettings.MainTrackingCharacterName = MainTrackingCharacterName;
+        SettingsController.CurrentSettings.MainGameFolderPath = MainGameFolderPath ?? string.Empty;
         SettingsController.CurrentSettings.BackupIntervalByDays = BackupIntervalByDaysSelection.Value;
         SettingsController.CurrentSettings.MaximumNumberOfBackups = MaximumNumberOfBackupsSelection.Value;
         SettingsController.CurrentSettings.IsOpenItemWindowInNewWindowChecked = IsOpenItemWindowInNewWindowChecked;
@@ -155,6 +160,7 @@ public class SettingsWindowViewModel : BaseViewModel
     public void ReloadSettings()
     {
         MainTrackingCharacterName = SettingsController.CurrentSettings.MainTrackingCharacterName;
+        MainGameFolderPath = SettingsController.CurrentSettings.MainGameFolderPath;
     }
 
     private void RefreshLocalization(MainWindowViewModel mainWindowViewModel)
@@ -342,6 +348,42 @@ public class SettingsWindowViewModel : BaseViewModel
         }
 
         PlayerSelectionWithSameNameInDb = defaultValue;
+    }
+
+    public void OpenMainGameFolderPathSelection()
+    {
+        var dialog = new VistaFolderBrowserDialog
+        {
+            Description = LocalizationController.Translation("SELECT_ALBION_ONLINE_MAIN_GAME_FOLDER"),
+            RootFolder = Environment.SpecialFolder.Desktop,
+            ShowNewFolderButton = false,
+            UseDescriptionForTitle = true,
+            Multiselect = false
+        };
+
+        if (Directory.Exists(MainGameFolderPath))
+        {
+            dialog.SelectedPath = MainGameFolderPath;
+        }
+
+        var result = dialog.ShowDialog();
+
+        if (result is not true)
+        {
+            return;
+        }
+
+        var selectedPath = dialog.SelectedPath ?? string.Empty;
+        if (Extractor.IsValidMainGameFolder(selectedPath, SettingsController.CurrentSettings.ServerType))
+        {
+            MainGameFolderPath = selectedPath;
+            return;
+        }
+
+        _ = MessageBox.Show(
+            LocalizationController.Translation("PLEASE_SELECT_A_CORRECT_FOLDER"),
+            LocalizationController.Translation("ERROR"));
+        Log.Warning("Settings validation failed. Setting={Setting}", nameof(MainGameFolderPath));
     }
 
     private void SetIconSourceToAnotherAppToStart()
@@ -784,6 +826,16 @@ public class SettingsWindowViewModel : BaseViewModel
     } = new();
 
     public string BackupStorageDirectoryPath
+    {
+        get;
+        set
+        {
+            field = value;
+            OnPropertyChanged();
+        }
+    }
+
+    public string MainGameFolderPath
     {
         get;
         set

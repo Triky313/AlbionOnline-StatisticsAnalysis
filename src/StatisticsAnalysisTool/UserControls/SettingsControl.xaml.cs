@@ -14,6 +14,7 @@ using System.IO;
 using System.Reflection;
 using System.Threading.Tasks;
 using System.Windows;
+using System.Windows.Input;
 
 namespace StatisticsAnalysisTool.UserControls;
 
@@ -111,6 +112,12 @@ public partial class SettingsControl
     private void ResetPacketFilter_Click(object sender, RoutedEventArgs e)
     {
         _settingsWindowViewModel.ResetPacketFilter();
+    }
+
+    private void MainGameFolderPathTextBox_PreviewMouseLeftButtonDown(object sender, MouseButtonEventArgs e)
+    {
+        e.Handled = true;
+        _settingsWindowViewModel.OpenMainGameFolderPathSelection();
     }
 
     private async void RestartNetworkTracking_Click(object sender, RoutedEventArgs e)
