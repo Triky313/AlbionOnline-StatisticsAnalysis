@@ -163,6 +163,25 @@ public class LocalizationController
         return key;
     }
 
+    public static IReadOnlyCollection<string> GameTranslations(string key)
+    {
+        if (string.IsNullOrEmpty(key))
+        {
+            return [];
+        }
+
+        var gameLoc = Volatile.Read(ref _gameLocalizations);
+        if (gameLoc == null || !gameLoc.TryGetValue(key, out var languageTranslations))
+        {
+            return [];
+        }
+
+        return languageTranslations.Values
+            .Where(translation => !string.IsNullOrWhiteSpace(translation))
+            .Distinct(StringComparer.OrdinalIgnoreCase)
+            .ToArray();
+    }
+
     private static bool TryGetTranslationText(string culture, string key, out string translationText)
     {
         translationText = string.Empty;

@@ -3,13 +3,14 @@ using StatisticsAnalysisTool.Common.Converters;
 using StatisticsAnalysisTool.Diagnostics;
 using StatisticsAnalysisTool.Enumerations;
 using StatisticsAnalysisTool.EstimatedMarketValue;
+using StatisticsAnalysisTool.Localization;
 using StatisticsAnalysisTool.Models;
 using StatisticsAnalysisTool.Models.ItemsJsonModel;
 using StatisticsAnalysisTool.Properties;
 using System;
 using System.Collections.Generic;
-using System.Collections.Specialized;
 using System.Collections.ObjectModel;
+using System.Collections.Specialized;
 using System.Globalization;
 using System.IO;
 using System.Linq;
@@ -18,8 +19,6 @@ using System.Text;
 using System.Text.Json;
 using System.Text.Json.Serialization;
 using System.Threading.Tasks;
-using JsonSerializer = System.Text.Json.JsonSerializer;
-using Mount = StatisticsAnalysisTool.Models.ItemsJsonModel.Mount;
 
 namespace StatisticsAnalysisTool.Common;
 
@@ -89,16 +88,41 @@ public static class ItemController
 
     public static Item GetItemByLocalizedName(string itemName, int enchantment)
     {
-        var matchingItems = Items.Where(item =>
-            item.LocalizedNames != null &&
-            typeof(LocalizedNames).GetProperties().Any(property =>
-            {
-                var value = property.GetValue(item.LocalizedNames) as string;
-                return string.Equals(value, itemName, StringComparison.OrdinalIgnoreCase);
-            })
-        ).ToList();
+        if (string.IsNullOrWhiteSpace(itemName))
+        {
+            return null;
+        }
 
-        return matchingItems.FirstOrDefault(item => item.Level == enchantment);
+        return Items.FirstOrDefault(item =>
+            item != null
+            && item.Level == enchantment
+            && IsLocalizedItemName(item, itemName));
+    }
+
+    private static bool IsLocalizedItemName(Item item, string itemName)
+    {
+        return GetLocalizedItemNames(item)
+            .Any(localizedName => string.Equals(localizedName, itemName, StringComparison.OrdinalIgnoreCase));
+    }
+
+    private static IEnumerable<string> GetLocalizedItemNames(Item item)
+    {
+        if (item.LocalizedNames != null)
+        {
+            foreach (var property in typeof(LocalizedNames).GetProperties())
+            {
+                if (property.GetValue(item.LocalizedNames) is string localizedName
+                    && !string.IsNullOrWhiteSpace(localizedName))
+                {
+                    yield return localizedName;
+                }
+            }
+        }
+
+        foreach (var localizedName in LocalizationController.GameTranslations(item.LocalizationNameVariable))
+        {
+            yield return localizedName;
+        }
     }
 
     #endregion
