@@ -542,5 +542,9 @@ public enum OperationCodes
     GetZergDebuffInfo,
     RequestLoreSnippetStates,
     RetrieveCarriableObjectStart,
-    RetrieveCarriableObjectCancel
+    RetrieveCarriableObjectCancel,
+    ForfeitCustomMatch,
+    GetPartyMemberCluster,
+    SetPartyNavigation,
+    EndPartyNavigation
 }
