@@ -36209,6 +36209,43 @@
       ]
     },
     {
+      "tuid": "MAIN_GAME_FOLDER_PATH",
+      "tuv": [
+        {
+          "lang": "de-DE",
+          "seg": "Game-Ordnerpfad"
+        },
+        {
+          "lang": "en-US",
+          "seg": "Game folder path"
+        },
+        {
+          "lang": "fr-FR",
+          "seg": "Game folder path"
+        },
+        {
+          "lang": "ko-KR",
+          "seg": "Game folder path"
+        },
+        {
+          "lang": "pl-PL",
+          "seg": "Game folder path"
+        },
+        {
+          "lang": "pt-BR",
+          "seg": "Game folder path"
+        },
+        {
+          "lang": "ru-RU",
+          "seg": "Game folder path"
+        },
+        {
+          "lang": "zh-CN",
+          "seg": "Game folder path"
+        }
+      ]
+    },
+    {
       "tuid": "CONFIRM",
       "tuv": [
         {

@@ -983,12 +983,12 @@ public class LoggingBindings : BaseViewModel
     {
         var values = SplitVaultLogLine(line);
         return values.Length >= 6
-               && IsAnyVaultLogColumn(values[0], "Datum", "Date")
-               && IsAnyVaultLogColumn(values[1], "Spieler", "Player")
-               && IsAnyVaultLogColumn(values[2], "Gegenstand", "Item")
-               && IsAnyVaultLogColumn(values[3], "Verzauberung", "Enchantment")
-               && IsAnyVaultLogColumn(values[4], "Qualit\u00E4t", "Qualitat", "Quality")
-               && IsAnyVaultLogColumn(values[5], "Anzahl", "Amount");
+               && IsAnyVaultLogColumn(values[0], ["Datum", "Date"], "@TERRITORYUI_EVENTDATE")
+               && IsAnyVaultLogColumn(values[1], ["Spieler", "Player"], "@ACCESS_RIGHTS_TYPE_PLAYER", "@GUILDLOGS_PLAYER")
+               && IsAnyVaultLogColumn(values[2], ["Gegenstand", "Item"], "@GOLDMARKET_LIST_HEADER_ITEM", "MARKETPLACEGUI_CATEGORY_COLUMN_ITEM")
+               && IsAnyVaultLogColumn(values[3], ["Verzauberung", "Enchantment"], "@CRAFTBUILDING_TITLE_ENCHANTMENT", "@ITEMDETAILS_STATS_BONUS_ENCHANTMENT")
+               && IsAnyVaultLogColumn(values[4], ["Qualität", "Quality"], "@LOADOUTS_UI_MAIN_SETTING_QUALITY")
+               && IsAnyVaultLogColumn(values[5], ["Anzahl", "Amount"], "@GENERIC_QUANTITY");
     }
 
     private static bool TryParseVaultLogLine(string line, out VaultContainerLogItem item)
@@ -1073,9 +1073,12 @@ public class LoggingBindings : BaseViewModel
         return values;
     }
 
-    private static bool IsAnyVaultLogColumn(string value, params string[] expectedColumnNames)
+    private static bool IsAnyVaultLogColumn(string value, IReadOnlyCollection<string> expectedColumnNames, params string[] gameTranslationKeys)
     {
-        return expectedColumnNames.Any(expectedColumnName => string.Equals(value, expectedColumnName, StringComparison.OrdinalIgnoreCase));
+        return expectedColumnNames.Any(expectedColumnName => string.Equals(value, expectedColumnName, StringComparison.OrdinalIgnoreCase))
+               || gameTranslationKeys
+                   .SelectMany(LocalizationController.GameTranslations)
+                   .Any(expectedColumnName => string.Equals(value, expectedColumnName, StringComparison.OrdinalIgnoreCase));
     }
 
     private static void TrimDelimitedValues(string[] values)

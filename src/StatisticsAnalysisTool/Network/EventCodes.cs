@@ -251,6 +251,8 @@ public enum EventCodes
     PartyInviteOrJoinPlayerEquipmentInfo,
     PartyReadyCheckUpdate,
     PartyFactionWarfareReinforcementSettingChangedPlayer,
+    SetPartyNavigation,
+    EndPartyNavigation,
     SpellCooldownUpdate,
     NewHellgateExitPortal,
     NewExpeditionExit,
@@ -685,5 +687,6 @@ public enum EventCodes
     RetrieveCarriableObjectReset,
     RetrieveCarriableObjectFinished,
     LosingCarriableObjectStart,
-    LosingCarriableObjectFinished
+    LosingCarriableObjectFinished,
+    NotifyPlatformAccountConfirmed
 }

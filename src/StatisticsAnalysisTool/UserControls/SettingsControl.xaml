@@ -58,17 +58,10 @@
                                   HorizontalAlignment="Left" VerticalAlignment="Top" Width="200" Height="26" />
                     </DockPanel>
                     <DockPanel Margin="0,5,0,0">
-                        <Label Content="{Binding Translation.CharacterNameToTrack, FallbackValue=CHARACTER_NAME_TO_TRACK}" MinWidth="300" VerticalAlignment="Top" />
-                        <TextBox Text="{Binding MainTrackingCharacterName}" Height="26" TextWrapping="NoWrap" MaxLength="50" VerticalAlignment="Top" Margin="0,0,5,0" />
-                    </DockPanel>
-                    <DockPanel Margin="0,5,0,0">
-                        <Label Content="{Binding Translation.PlayerSelectionWithSameNameInDb, FallbackValue=PLAYER_SELECTION_WITH_SAME_NAME_IN_DB}" MinWidth="300" VerticalAlignment="Top" />
-                        <StackPanel Orientation="Horizontal">
-                            <TextBox Text="{Binding PlayerSelectionWithSameNameInDb}" Height="26" MinWidth="100" TextWrapping="NoWrap" VerticalAlignment="Center"
-                                     Margin="0,0,5,0" MaxLength="2" common:TextBoxHelper.OnlyNumeric="Double" />
-                            <Button Content="{Binding Translation.Reset, FallbackValue=RESET}" Height="24" MaxWidth="100" VerticalAlignment="Center"
-                                    Click="ResetPlayerSelectionWithSameNameInDb_Click" />
-                        </StackPanel>
+                        <Label Content="{Binding Translation.MainGameFolderPath, FallbackValue=MAIN_GAME_FOLDER_PATH}" MinWidth="300" VerticalAlignment="Top" />
+                        <TextBox Text="{Binding MainGameFolderPath, Mode=OneWay}"
+                                 TextWrapping="Wrap" VerticalAlignment="Top" Height="26" Margin="0,0,5,0" Cursor="Hand"
+                                 IsReadOnly="True" ToolTip="{Binding MainGameFolderPath}" PreviewMouseLeftButtonDown="MainGameFolderPathTextBox_PreviewMouseLeftButtonDown" />
                     </DockPanel>
                     <DockPanel Margin="0,5,5,0">
                         <Label MinWidth="300"/>
@@ -162,6 +155,19 @@
                     <DockPanel Margin="0,0,5,0">
                         <Label MinWidth="300"/>
                         <Button Content="{Binding Translation.RestartNetworkTracking, FallbackValue=RESTART__NETWORK__TRACKING}" Height="24" VerticalAlignment="Bottom" Click="RestartNetworkTracking_Click" />
+                    </DockPanel>
+                    <DockPanel Margin="0,5,0,0">
+                        <Label Content="{Binding Translation.CharacterNameToTrack, FallbackValue=CHARACTER_NAME_TO_TRACK}" MinWidth="300" VerticalAlignment="Top" />
+                        <TextBox Text="{Binding MainTrackingCharacterName}" Height="26" TextWrapping="NoWrap" MaxLength="50" VerticalAlignment="Top" Margin="0,0,5,0" />
+                    </DockPanel>
+                    <DockPanel Margin="0,5,0,0">
+                        <Label Content="{Binding Translation.PlayerSelectionWithSameNameInDb, FallbackValue=PLAYER_SELECTION_WITH_SAME_NAME_IN_DB}" MinWidth="300" VerticalAlignment="Top" />
+                        <StackPanel Orientation="Horizontal">
+                            <TextBox Text="{Binding PlayerSelectionWithSameNameInDb}" Height="26" MinWidth="100" TextWrapping="NoWrap" VerticalAlignment="Center"
+                                     Margin="0,0,5,0" MaxLength="2" common:TextBoxHelper.OnlyNumeric="Double" />
+                            <Button Content="{Binding Translation.Reset, FallbackValue=RESET}" Height="24" MaxWidth="100" VerticalAlignment="Center"
+                                    Click="ResetPlayerSelectionWithSameNameInDb_Click" />
+                        </StackPanel>
                     </DockPanel>
 
                     <!-- Item window -->

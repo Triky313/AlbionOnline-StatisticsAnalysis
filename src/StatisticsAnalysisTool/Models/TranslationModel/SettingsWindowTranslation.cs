@@ -41,6 +41,7 @@ public class SettingsWindowTranslation
     public static string Activated => LocalizationController.Translation("ACTIVATED");
     public static string Disabled => LocalizationController.Translation("DISABLED");
     public static string Notifications => LocalizationController.Translation("NOTIFICATIONS");
+    public static string MainGameFolderPath => LocalizationController.Translation("MAIN_GAME_FOLDER_PATH");
     public static string PacketFilter => LocalizationController.Translation("PACKET_FILTER");
     public static string PacketProvider => LocalizationController.Translation("PACKET_PROVIDER");
     public static string NetworkAdapters => LocalizationController.Translation("NETWORK_ADAPTERS");
