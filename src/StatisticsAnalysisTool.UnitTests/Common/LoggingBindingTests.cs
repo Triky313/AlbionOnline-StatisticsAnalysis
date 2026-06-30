@@ -2,9 +2,9 @@ using FluentAssertions;
 using NUnit.Framework;
 using StatisticsAnalysisTool.Common;
 using StatisticsAnalysisTool.EstimatedMarketValue;
+using StatisticsAnalysisTool.EventLogging;
 using StatisticsAnalysisTool.Models;
 using StatisticsAnalysisTool.Models.ItemsJsonModel;
-using StatisticsAnalysisTool.EventLogging;
 using System.Collections.ObjectModel;
 using System.Windows;
 
@@ -15,14 +15,6 @@ namespace StatisticsAnalysisTool.UnitTests.Common;
 public class LoggingBindingsTests
 {
     [Test]
-
-    /**
-     * ISSUE-576
-     *
-     * Test for the scenario where a looted item is found in the vault log.
-     * No additional looted item should be created if the item is already
-     * present in the vault log.
-     */
     public void UpdateItemsStatus_WithValidValue()
     {
         var bindings = new LoggingBindings();
@@ -92,27 +84,15 @@ public class LoggingBindingsTests
             receivedItem3,
         };
 
-        /**
-         * Setup
-         */
-        bindings.VaultLogItems = new ObservableCollection<VaultContainerLogItem>
-        {
-            vaultLogItem
-        };
-        bindings.LootingPlayers = new ObservableCollection<LootingPlayer>
-        {
-            lootingPlayer1
-        };
+        // Setup
+        bindings.VaultLogItems = [vaultLogItem];
+        bindings.LootingPlayers = [lootingPlayer1];
         ItemController.Items = itemList;
 
-        /**
-         * Execute
-         */
+        //  Execute
         bindings.UpdateItemsStatus();
 
-        /**
-         * Validate
-         */
+        // Validate
         bindings.LootingPlayers.Count.Should().Be(1);
         var lootedItems = bindings.LootingPlayers[0].LootedItems;
         // The item count should remain 3.
@@ -138,8 +118,8 @@ public class LoggingBindingsTests
                     Quantity = 8
                 }
             },
-            LootingPlayers = new ObservableCollection<LootingPlayer>
-            {
+            LootingPlayers =
+            [
                 new()
                 {
                     PlayerName = "Triky313",
@@ -155,7 +135,7 @@ public class LoggingBindingsTests
                         }
                     }
                 }
-            }
+            ]
         };
 
         ItemController.Items = new ObservableCollection<Item>

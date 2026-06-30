@@ -23,7 +23,7 @@ public class PartyJoinedEventTests
         var parameters = new Dictionary<byte, object>
         {
             {
-                5,
+                8,
                 new byte[]
                 {
                     138, 61, 186, 72, 17, 149, 121, 72, 154, 110, 20, 231, 64, 20, 106, 2,
@@ -31,7 +31,7 @@ public class PartyJoinedEventTests
                 }
             },
             {
-                6,
+                9,
                 new[]
                 {
                     "Bruno313",
@@ -63,7 +63,7 @@ public class PartyJoinedEventTests
         var parameters = new Dictionary<byte, object>
         {
             {
-                5,
+                8,
                 new object[]
                 {
                     firstGuidBytes,
@@ -71,7 +71,7 @@ public class PartyJoinedEventTests
                 }
             },
             {
-                6,
+                9,
                 new object[]
                 {
                     "Bruno313",
