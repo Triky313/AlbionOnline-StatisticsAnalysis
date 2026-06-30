@@ -1,4 +1,4 @@
-using Ookii.Dialogs.Wpf;
+﻿using Ookii.Dialogs.Wpf;
 using StatisticsAnalysisTool.Common;
 using StatisticsAnalysisTool.Common.UserSettings;
 using StatisticsAnalysisTool.EventLogging.Notification;
@@ -987,7 +987,7 @@ public class LoggingBindings : BaseViewModel
                && IsAnyVaultLogColumn(values[1], ["Spieler", "Player"], "@ACCESS_RIGHTS_TYPE_PLAYER", "@GUILDLOGS_PLAYER")
                && IsAnyVaultLogColumn(values[2], ["Gegenstand", "Item"], "@GOLDMARKET_LIST_HEADER_ITEM", "MARKETPLACEGUI_CATEGORY_COLUMN_ITEM")
                && IsAnyVaultLogColumn(values[3], ["Verzauberung", "Enchantment"], "@CRAFTBUILDING_TITLE_ENCHANTMENT", "@ITEMDETAILS_STATS_BONUS_ENCHANTMENT")
-               && IsAnyVaultLogColumn(values[4], ["Qualit�t", "Quality"], "@LOADOUTS_UI_MAIN_SETTING_QUALITY")
+               && IsAnyVaultLogColumn(values[4], ["Qualität", "Qualitat", "Quality"], "@LOADOUTS_UI_MAIN_SETTING_QUALITY")
                && IsAnyVaultLogColumn(values[5], ["Anzahl", "Amount"], "@GENERIC_QUANTITY");
     }
 
