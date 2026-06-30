@@ -1,85 +1,108 @@
 ﻿using StatisticsAnalysisTool.Common;
+using StatisticsAnalysisTool.Diagnostics;
 using System;
 using System.Collections.Generic;
 using System.Reflection;
-using StatisticsAnalysisTool.Diagnostics;
 
 namespace StatisticsAnalysisTool.Network.Events;
 
-public class PartyJoinedEvent
+public sealed class PartyJoinedEvent
 {
     private const int GuidByteLength = 16;
 
-    public readonly Dictionary<Guid, string> PartyUsers = new();
+    public Dictionary<Guid, string> PartyUsers { get; } = new();
 
     public PartyJoinedEvent(Dictionary<byte, object> parameters)
     {
-        // Info: parameters[4] is the party lead, parameters[5] contains party user GUIDs and parameters[6] contains names.
+        ArgumentNullException.ThrowIfNull(parameters);
+
         try
         {
-            if (parameters.TryGetValue(5, out object partyUserGuids) && parameters.TryGetValue(6, out object partyUserNames))
+            if (!parameters.TryGetValue(8, out var partyUserGuidsParameter))
             {
-                var partyUsers = GetPartyUserGuids(partyUserGuids);
-                var partyUserNameArray = GetPartyUserNames(partyUserNames);
-                var maxPartyUsers = Math.Min(partyUsers.Count, partyUserNameArray.Count);
-
-                for (var i = 0; i < maxPartyUsers; i++)
-                {
-                    var name = partyUserNameArray[i];
-                    if (partyUsers[i] != Guid.Empty && !string.IsNullOrEmpty(name))
-                    {
-                        PartyUsers[partyUsers[i]] = name;
-                    }
-                }
+                return;
             }
+
+            if (!parameters.TryGetValue(9, out var partyUserNamesParameter))
+            {
+                return;
+            }
+
+            AddPartyUsers(
+                partyUserGuidsParameter,
+                partyUserNamesParameter);
         }
-        catch (Exception e)
+        catch (Exception exception)
         {
-            DebugConsole.WriteError(MethodBase.GetCurrentMethod()?.DeclaringType, e);
+            DebugConsole.WriteError(
+                MethodBase.GetCurrentMethod()?.DeclaringType,
+                exception);
+        }
+    }
+
+    private void AddPartyUsers(object partyUserGuidsParameter, object partyUserNamesParameter)
+    {
+        var partyUserGuids = GetPartyUserGuids(partyUserGuidsParameter);
+        var partyUserNames = GetPartyUserNames(partyUserNamesParameter);
+        var partyUserCount = Math.Min(partyUserGuids.Count, partyUserNames.Count);
+
+        for (var index = 0; index < partyUserCount; index++)
+        {
+            var partyUserGuid = partyUserGuids[index];
+            var partyUserName = partyUserNames[index];
+
+            if (partyUserGuid == Guid.Empty)
+            {
+                continue;
+            }
+
+            if (string.IsNullOrWhiteSpace(partyUserName))
+            {
+                continue;
+            }
+
+            PartyUsers[partyUserGuid] = partyUserName;
         }
     }
 
     private static List<Guid> GetPartyUserGuids(object parameter)
     {
-        if (parameter is byte[] partyUserGuidBytes)
+        return parameter switch
         {
-            return GetPartyUserGuidsFromBytes(partyUserGuidBytes);
-        }
-
-        if (parameter is object[] partyUserGuidArray)
-        {
-            return GetPartyUserGuidsFromObjects(partyUserGuidArray);
-        }
-
-        return new List<Guid>();
+            byte[] guidBytes => GetPartyUserGuidsFromBytes(guidBytes),
+            object[] guidObjects => GetPartyUserGuidsFromObjects(guidObjects),
+            _ => []
+        };
     }
 
-    private static List<Guid> GetPartyUserGuidsFromBytes(byte[] partyUserGuidBytes)
+    private static List<Guid> GetPartyUserGuidsFromBytes(byte[] guidBytes)
     {
-        var partyUserGuids = new List<Guid>();
-        var partyUserCount = partyUserGuidBytes.Length / GuidByteLength;
+        var partyUserCount = guidBytes.Length / GuidByteLength;
+        var partyUserGuids = new List<Guid>(partyUserCount);
 
-        for (var i = 0; i < partyUserCount; i++)
+        for (var index = 0; index < partyUserCount; index++)
         {
-            var guidBytes = new byte[GuidByteLength];
-            Array.Copy(partyUserGuidBytes, i * GuidByteLength, guidBytes, 0, GuidByteLength);
-            partyUserGuids.Add(new Guid(guidBytes));
+            var guidByteOffset = index * GuidByteLength;
+            var partyUserGuid = new Guid(
+                guidBytes.AsSpan(guidByteOffset, GuidByteLength));
+
+            partyUserGuids.Add(partyUserGuid);
         }
 
         return partyUserGuids;
     }
 
-    private static List<Guid> GetPartyUserGuidsFromObjects(object[] partyUserGuidArray)
+    private static List<Guid> GetPartyUserGuidsFromObjects(object[] guidObjects)
     {
-        var partyUserGuids = new List<Guid>();
+        var partyUserGuids = new List<Guid>(guidObjects.Length);
 
-        foreach (var partyUserGuid in partyUserGuidArray)
+        foreach (var guidObject in guidObjects)
         {
-            var guid = partyUserGuid.ObjectToGuid();
+            var partyUserGuid = guidObject.ObjectToGuid();
 
-            if (guid != null)
+            if (partyUserGuid.HasValue)
             {
-                partyUserGuids.Add((Guid) guid);
+                partyUserGuids.Add(partyUserGuid.Value);
             }
         }
 
@@ -88,23 +111,25 @@ public class PartyJoinedEvent
 
     private static List<string> GetPartyUserNames(object parameter)
     {
-        if (parameter is string[] partyUserNameArray)
+        if (parameter is string[] partyUserNames)
         {
-            return new List<string>(partyUserNameArray);
+            return [.. partyUserNames];
         }
 
-        if (parameter is object[] partyUserNameObjectArray)
+        if (parameter is not object[] partyUserNameObjects)
         {
-            var partyUserNames = new List<string>();
-
-            foreach (var partyUserName in partyUserNameObjectArray)
-            {
-                partyUserNames.Add(partyUserName?.ToString() ?? string.Empty);
-            }
-
-            return partyUserNames;
+            return [];
         }
 
-        return new List<string>();
+        var partyUserNamesFromObjects =
+            new List<string>(partyUserNameObjects.Length);
+
+        foreach (var partyUserNameObject in partyUserNameObjects)
+        {
+            partyUserNamesFromObjects.Add(
+                partyUserNameObject?.ToString() ?? string.Empty);
+        }
+
+        return partyUserNamesFromObjects;
     }
 }
