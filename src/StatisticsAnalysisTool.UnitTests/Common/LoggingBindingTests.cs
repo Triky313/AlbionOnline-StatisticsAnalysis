@@ -954,6 +954,25 @@ public class LoggingBindingsTests
     }
 
     [Test]
+    public void AddVaultLogText_WithRepeatedHeaderRows_IgnoresRepeatedHeaders()
+    {
+        var bindings = new LoggingBindings();
+        var chestLogText = string.Join(Environment.NewLine,
+            "\"Date\"\t\"Player\"\t\"Item\"\t\"Enchantment\"\t\"Quality\"\t\"Amount\"",
+            "\"05/30/2026 15:13:05\"\t\"Kiiiro\"\t\"Master's Graveguard Boots\"\t\"2\"\t\"4\"\t\"1\"",
+            "\"Date\"\t\"Player\"\t\"Item\"\t\"Enchantment\"\t\"Quality\"\t\"Amount\"",
+            "\"05/30/2026 15:13:04\"\t\"Kiiiro\"\t\"Expert's Assassin Hood\"\t\"3\"\t\"4\"\t\"1\"");
+
+        var loadedItems = bindings.AddVaultLogText(chestLogText);
+
+        loadedItems.Should().Be(2);
+        bindings.VaultLogItems.Should().HaveCount(2);
+        bindings.VaultLogItems[0].LocalizedName.Should().Be("Master's Graveguard Boots");
+        bindings.VaultLogItems[1].LocalizedName.Should().Be("Expert's Assassin Hood");
+        bindings.ChestLogCount.Should().Be(1);
+    }
+
+    [Test]
     public void AddVaultLogText_WithMultiplePastedChestLogs_AppendsItems()
     {
         var bindings = new LoggingBindings();
@@ -1016,6 +1035,32 @@ public class LoggingBindingsTests
             bindings.ChestLogCount.Should().Be(0);
             bindings.LootComparatorImportEventLine.Should().Contain(Path.GetFileName(filePath));
             bindings.LootComparatorImportEventLineVisibility.Should().Be(Visibility.Visible);
+        }
+        finally
+        {
+            File.Delete(filePath);
+        }
+    }
+
+    [Test]
+    public void LoadVaultLogFiles_WithRepeatedHeaderRows_IgnoresRepeatedHeaders()
+    {
+        var bindings = new LoggingBindings();
+        var filePath = Path.GetTempFileName();
+        var chestLogText = string.Join(Environment.NewLine,
+            "\"Date\"\t\"Player\"\t\"Item\"\t\"Enchantment\"\t\"Quality\"\t\"Amount\"",
+            "\"05/30/2026 15:13:05\"\t\"Kiiiro\"\t\"Master's Graveguard Boots\"\t\"2\"\t\"4\"\t\"1\"",
+            "\"Date\"\t\"Player\"\t\"Item\"\t\"Enchantment\"\t\"Quality\"\t\"Amount\"",
+            "\"05/30/2026 15:13:04\"\t\"Kiiiro\"\t\"Expert's Assassin Hood\"\t\"3\"\t\"4\"\t\"1\"");
+
+        try
+        {
+            File.WriteAllText(filePath, chestLogText);
+
+            bindings.LoadVaultLogFiles([filePath]).Should().Be(1);
+
+            bindings.VaultLogItems.Should().HaveCount(2);
+            bindings.ChestLogCount.Should().Be(1);
         }
         finally
         {
