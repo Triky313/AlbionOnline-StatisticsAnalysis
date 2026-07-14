@@ -26,27 +26,11 @@ namespace StatisticsAnalysisTool.Models.BindingModel;
 
 public class GatheringBindings : BaseViewModel
 {
-    private bool _isGatheringActive = true;
-    private GatheringStats _gatheringStats = new();
-    private ObservableRangeCollection<Gathered> _gatheredCollection = new();
-    private readonly ListCollectionView _gatheredCollectionView;
-    private GridLength _gridSplitterPosition = GridLength.Auto;
-    private Dictionary<GatheringFilterType, string> _gatheringFilter = new()
-    {
-        { GatheringFilterType.Generally, LocalizationController.Translation("GENERALLY") },
-        { GatheringFilterType.Wood, LocalizationController.Translation("WOOD") },
-        { GatheringFilterType.Fiber, LocalizationController.Translation("FIBER") },
-        { GatheringFilterType.Hide, LocalizationController.Translation("HIDE") },
-        { GatheringFilterType.Ore, LocalizationController.Translation("ORE") },
-        { GatheringFilterType.Rock, LocalizationController.Translation("ROCK") },
-        { GatheringFilterType.Fishing, LocalizationController.Translation("FISHING") }
-    };
-    private GatheringFilterType _selectedGatheringFilter = GatheringFilterType.Generally;
-    private GatheringStatsTimeType _gatheringStatsTimeTypeSelection = GatheringStatsTimeType.Today;
-    private AutoDeleteGatheringStats _autoDeleteStatsByDateSelection;
+    private GatheringStatsTimeType _gatheringStatsTimeTypeSelection;
 
     public GatheringBindings()
     {
+        _gatheringStatsTimeTypeSelection = GatheringStatsTimeType.Today;
         IsGatheringActive = SettingsController.CurrentSettings.IsGatheringActive;
         AutoDeleteStatsByDateSelection = SettingsController.CurrentSettings.AutoDeleteGatheringStats;
 
@@ -571,81 +555,90 @@ public class GatheringBindings : BaseViewModel
 
     public ListCollectionView GatheredCollectionView
     {
-        get => _gatheredCollectionView;
+        get;
         init
         {
-            _gatheredCollectionView = value;
+            field = value;
             OnPropertyChanged();
         }
     }
 
     public ObservableRangeCollection<Gathered> GatheredCollection
     {
-        get => _gatheredCollection;
+        get;
         set
         {
-            _gatheredCollection = value;
+            field = value;
             OnPropertyChanged();
         }
-    }
+    } = new();
 
     public GridLength GridSplitterPosition
     {
-        get => _gridSplitterPosition;
+        get;
         set
         {
-            _gridSplitterPosition = value;
-            SettingsController.CurrentSettings.GatheringGridSplitterPosition = _gridSplitterPosition.Value;
+            field = value;
+            SettingsController.CurrentSettings.GatheringGridSplitterPosition = field.Value;
             OnPropertyChanged();
         }
-    }
+    } = GridLength.Auto;
 
     public GatheringStats GatheringStats
     {
-        get => _gatheringStats;
+        get;
         set
         {
-            _gatheringStats = value;
+            field = value;
             OnPropertyChanged();
         }
-    }
+    } = new();
 
     public bool IsGatheringActive
     {
-        get => _isGatheringActive;
+        get;
         set
         {
-            _isGatheringActive = value;
-            SettingsController.CurrentSettings.IsGatheringActive = _isGatheringActive;
+            field = value;
+            SettingsController.CurrentSettings.IsGatheringActive = field;
             OnPropertyChanged();
         }
-    }
+    } = true;
 
     public Dictionary<GatheringFilterType, string> GatheringFilter
     {
-        get => _gatheringFilter;
+        get;
         set
         {
-            _gatheringFilter = value;
+            field = value;
             OnPropertyChanged();
         }
-    }
+    } = new()
+    {
+        {GatheringFilterType.Generally, LocalizationController.Translation("GENERALLY")},
+        {GatheringFilterType.Wood, LocalizationController.Translation("WOOD")},
+        {GatheringFilterType.Fiber, LocalizationController.Translation("FIBER")},
+        {GatheringFilterType.Hide, LocalizationController.Translation("HIDE")},
+        {GatheringFilterType.Ore, LocalizationController.Translation("ORE")},
+        {GatheringFilterType.Rock, LocalizationController.Translation("ROCK")},
+        {GatheringFilterType.Fishing, LocalizationController.Translation("FISHING")}
+    };
 
     public GatheringFilterType SelectedGatheringFilter
     {
-        get => _selectedGatheringFilter;
+        get;
         set
         {
-            if (_selectedGatheringFilter == value)
+            if (field == value)
             {
                 return;
             }
 
-            _selectedGatheringFilter = value;
+            field = value;
             GatheringStats.GatheringFilterType = value;
             OnPropertyChanged();
         }
-    }
+    } = GatheringFilterType.Generally;
 
     public List<GatheringStatsFilterStruct> GatheringStatsTimeTypes { get; } = new()
     {
@@ -728,11 +721,11 @@ public class GatheringBindings : BaseViewModel
 
     public AutoDeleteGatheringStats AutoDeleteStatsByDateSelection
     {
-        get => _autoDeleteStatsByDateSelection;
+        get;
         set
         {
-            _autoDeleteStatsByDateSelection = value;
-            SettingsController.CurrentSettings.AutoDeleteGatheringStats = _autoDeleteStatsByDateSelection;
+            field = value;
+            SettingsController.CurrentSettings.AutoDeleteGatheringStats = field;
             OnPropertyChanged();
         }
     }

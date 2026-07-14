@@ -650,7 +650,6 @@
     <Resource Include="Resources\Trash.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Resource>
-    <Resource Include="ao-update-check.xml" />
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="BinaryFormat.EthernetFrame" Version="0.1.5" />

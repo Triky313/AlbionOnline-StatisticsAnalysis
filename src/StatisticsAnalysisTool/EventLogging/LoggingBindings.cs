@@ -950,7 +950,6 @@ public class LoggingBindings : BaseViewModel
         }
 
         using var reader = new StringReader(chestLogText);
-        var isFirstDataLine = true;
         var hasDataLine = false;
 
         while (reader.ReadLine() is { } line)
@@ -960,13 +959,11 @@ public class LoggingBindings : BaseViewModel
                 continue;
             }
 
-            if (isFirstDataLine && IsVaultLogHeader(line))
+            if (IsVaultLogHeader(line))
             {
-                isFirstDataLine = false;
                 continue;
             }
 
-            isFirstDataLine = false;
             hasDataLine = true;
             if (!TryParseVaultLogLine(line, out var item))
             {

@@ -1,20 +1,12 @@
 ﻿using StatisticsAnalysisTool.Network.Events;
-using StatisticsAnalysisTool.Network.Manager;
 using System.Threading.Tasks;
 
 namespace StatisticsAnalysisTool.Network.Handler;
 
-public class HarvestFinishedEventHandler : EventPacketHandler<HarvestFinishedEvent>
+public class HarvestFinishedEventHandler() : EventPacketHandler<HarvestFinishedEvent>((int) EventCodes.HarvestFinished)
 {
-    private readonly TrackingController _trackingController;
-
-    public HarvestFinishedEventHandler(TrackingController trackingController) : base((int) EventCodes.HarvestFinished)
+    protected override Task OnActionAsync(HarvestFinishedEvent value)
     {
-        _trackingController = trackingController;
-    }
-
-    protected override async Task OnActionAsync(HarvestFinishedEvent value)
-    {
-        await _trackingController.GatheringController.AddOrUpdateAsync(value.HarvestFinishedObject);
+        return Task.CompletedTask;
     }
 }

@@ -6,16 +6,12 @@ namespace StatisticsAnalysisTool.Network.Handler;
 
 public class FishingFinishResponseHandler : ResponsePacketHandler<FishingFinishResponse>
 {
-    private readonly TrackingController _trackingController;
-
-    public FishingFinishResponseHandler(TrackingController trackingController) : base((int) OperationCodes.FishingFinish)
+    public FishingFinishResponseHandler() : base((int) OperationCodes.FishingFinish)
     {
-        _trackingController = trackingController;
     }
 
-    protected override async Task OnActionAsync(FishingFinishResponse value)
+    protected override Task OnActionAsync(FishingFinishResponse value)
     {
-        _trackingController.GatheringController.CloseFishingEvent();
-        await Task.CompletedTask;
+        return Task.CompletedTask;
     }
 }
