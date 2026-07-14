@@ -86,7 +86,7 @@ public class NetworkManager
         builder.AddEventHandler(new GuildVaultInfoEventHandler(trackingController));
         builder.AddEventHandler(new NewLootEventHandler(trackingController));
         builder.AddEventHandler(new AttachItemContainerEventHandler(trackingController));
-        builder.AddEventHandler(new HarvestFinishedEventHandler(trackingController));
+        builder.AddEventHandler(new HarvestFinishedEventHandler());
         builder.AddEventHandler(new RewardGrantedEventHandler(trackingController));
         builder.AddEventHandler(new NewExpeditionCheckPointHandler(trackingController));
         builder.AddEventHandler(new UpdateStandingEventHandler(trackingController));
@@ -110,6 +110,7 @@ public class NetworkManager
         builder.AddRequestHandler(new AuctionSellSpecificItemRequestHandler(trackingController));
         builder.AddRequestHandler(new AuctionGetItemAverageStatsRequestHandler(trackingController));
         builder.AddRequestHandler(new FishingStartEventRequestHandler(trackingController));
+        builder.AddRequestHandler(new FishingCatchRequestHandler(trackingController));
         builder.AddRequestHandler(new FishingFinishRequestHandler(trackingController));
         builder.AddRequestHandler(new FishingCancelRequestHandler(trackingController));
         builder.AddRequestHandler(new LogoutStartRequestHandler(trackingController));
@@ -126,7 +127,7 @@ public class NetworkManager
         builder.AddResponseHandler(new AuctionGetRequestsResponseHandler(trackingController));
         builder.AddResponseHandler(new AuctionGetItemAverageStatsResponseHandler(trackingController));
         builder.AddResponseHandler(new GetCharacterEquipmentResponseHandler(trackingController));
-        builder.AddResponseHandler(new FishingFinishResponseHandler(trackingController));
+        builder.AddResponseHandler(new FishingFinishResponseHandler());
         builder.AddResponseHandler(new AuctionGetLoadoutOffersResponseHandler(trackingController));
         builder.AddResponseHandler(new AuctionBuyLoadoutOfferResponseHandler(trackingController));
         builder.AddResponseHandler(new GetGuildAccountLogsResponseHandler(trackingController));

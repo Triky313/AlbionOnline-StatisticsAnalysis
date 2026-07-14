@@ -10,7 +10,6 @@ using StatisticsAnalysisTool.Properties;
 using StatisticsAnalysisTool.ViewModels;
 using System;
 using System.Collections.Generic;
-using System.Collections.ObjectModel;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
@@ -146,22 +145,25 @@ public class GatheringController(TrackingController trackingController, MainWind
         }
     }
 
-    public void CloseFishingEvent()
+    public void FishingCatchStarted(long actionId)
     {
         if (_activeFishingEvent is { } fishingEvent)
         {
-            fishingEvent.IsClosedForEvents = true;
+            fishingEvent.HasFishBitten = true;
+            fishingEvent.CatchActionId = actionId;
+            fishingEvent.DiscoveredFishingItems.Clear();
+            fishingEvent.ConfirmedFishingItems.Clear();
         }
     }
 
     public void AddRewardItem(int itemIndex, int quantity)
     {
-        if (_activeFishingEvent is not { IsClosedForEvents: false } fishingEvent)
+        if (_activeFishingEvent is not { HasFishBitten: true } fishingEvent)
         {
             return;
         }
 
-        var itemToAdd = fishingEvent.DiscoveredFishingItems?.FirstOrDefault(x => x?.ItemIndex == itemIndex);
+        var itemToAdd = fishingEvent.DiscoveredFishingItems.FirstOrDefault(x => x.ItemIndex == itemIndex);
         if (itemToAdd == null)
         {
             return;
@@ -169,16 +171,17 @@ public class GatheringController(TrackingController trackingController, MainWind
 
         itemToAdd.Quantity = quantity;
         fishingEvent.ConfirmedFishingItems.Add(itemToAdd);
+        fishingEvent.DiscoveredFishingItems.Remove(itemToAdd);
     }
 
     public void AddFishedItem(DiscoveredItem item)
     {
-        if (_activeFishingEvent is { IsClosedForEvents: true } || _activeFishingEvent?.UsedFishingRod == item?.ObjectId)
+        if (item == null || _activeFishingEvent is not { HasFishBitten: true } fishingEvent || fishingEvent.UsedFishingRod == item.ItemIndex)
         {
             return;
         }
 
-        _activeFishingEvent?.DiscoveredFishingItems?.Add(item);
+        fishingEvent.DiscoveredFishingItems.Add(item);
     }
 
     public async Task FishingFinishedAsync()
@@ -189,10 +192,11 @@ public class GatheringController(TrackingController trackingController, MainWind
             return;
         }
 
+        var trackingEventId = fishingEvent.CatchActionId > 0 ? fishingEvent.CatchActionId : fishingEvent.EventId;
         var itemCount = 0;
         foreach (DiscoveredItem confirmedDiscoveredItem in fishingEvent.ConfirmedFishingItems)
         {
-            var fishedItem = ItemController.GetItemByIndex(confirmedDiscoveredItem?.ItemIndex);
+            var fishedItem = ItemController.GetItemByIndex(confirmedDiscoveredItem.ItemIndex);
             if (fishedItem == null)
             {
                 _activeFishingEvent = null;
@@ -201,12 +205,12 @@ public class GatheringController(TrackingController trackingController, MainWind
 
             var gathered = new Gathered()
             {
-                TimestampUtc = _activeFishingEvent.CreateAt.Ticks,
+                TimestampUtc = fishingEvent.CreateAt.Ticks,
                 UniqueName = fishedItem.UniqueName,
                 UserObjectId = -1,
-                ObjectId = fishingEvent.EventId + itemCount,
+                ObjectId = trackingEventId + itemCount,
                 EstimatedMarketValue = EstimatedMarketValueController.CalculateNearestToAverage(fishedItem.EstimatedMarketValues).MarketValue,
-                GainedStandardAmount = confirmedDiscoveredItem?.Quantity ?? 0,
+                GainedStandardAmount = confirmedDiscoveredItem.Quantity,
                 GainedBonusAmount = 0,
                 GainedPremiumBonusAmount = 0,
                 ClusterIndex = ClusterController.CurrentCluster.Index,
@@ -220,7 +224,7 @@ public class GatheringController(TrackingController trackingController, MainWind
             itemCount++;
         }
 
-        _activeFishingEvent.DiscoveredFishingItems.Clear();
+        fishingEvent.DiscoveredFishingItems.Clear();
         _activeFishingEvent = null;
 
         await RemoveEntriesByAutoDeleteDateAsync();
@@ -233,11 +237,12 @@ public class GatheringController(TrackingController trackingController, MainWind
         public DateTime CreateAt { get; init; }
         public long EventId { get; init; }
         public int UsedFishingRod { get; set; }
+        public long CatchActionId { get; set; }
         public Item UsedFishingRodItem => ItemController.GetItemByIndex(UsedFishingRod);
+        public bool HasFishBitten { get; set; }
         public bool IsFishingSucceeded { get; set; }
-        public bool IsClosedForEvents { get; set; }
-        public ObservableCollection<DiscoveredItem> DiscoveredFishingItems = new();
-        public ObservableCollection<DiscoveredItem> ConfirmedFishingItems = new();
+        public List<DiscoveredItem> DiscoveredFishingItems { get; } = [];
+        public List<DiscoveredItem> ConfirmedFishingItems { get; } = [];
 
         public FishingEvent()
         {
