@@ -86,7 +86,7 @@ public class NetworkManager
         builder.AddEventHandler(new GuildVaultInfoEventHandler(trackingController));
         builder.AddEventHandler(new NewLootEventHandler(trackingController));
         builder.AddEventHandler(new AttachItemContainerEventHandler(trackingController));
-        builder.AddEventHandler(new HarvestFinishedEventHandler());
+        builder.AddEventHandler(new HarvestFinishedEventHandler(trackingController));
         builder.AddEventHandler(new RewardGrantedEventHandler(trackingController));
         builder.AddEventHandler(new NewExpeditionCheckPointHandler(trackingController));
         builder.AddEventHandler(new UpdateStandingEventHandler(trackingController));
