@@ -61,9 +61,9 @@ public enum EventCodes
     LaborerObjectInfo,
     LaborerObjectJobInfo,
     MarketPlaceBuildingInfo,
-    HarvestStart, // map[0:5270 1:637926215956544319 2:637926215956544319 3:4250 4:16 5:1.6169999 6:5287 7:2195 252:52] - 0 = UserId, 3 = ObjectId, 5: Abbauzeit 7: Abbau-Tool (T8_2H_TOOL_SICKLE), 
-    HarvestCancel,
-    HarvestFinished, // map[0:5270 1:637926215956544319 2:637926215972723131 3:4250 4:1 5:1 7:28 8:[] 9:[] 252:54] - 0: UserId, 3: ObjectId, 4:ItemId 5: Res Standard Quantity 6: Sammelbonus Res, 6: Premium Bonus Res, 8: Inhalt in der Ressource
+    HarvestStart, // 59 - 0: UserObjectId, 1: ActionId, 2: StartTime, 3: ObjectId, 4: HarvestingMode, 5: Duration, 6: InventoryObjectId, 7: ToolItemId
+    HarvestCancel, // 60
+    HarvestFinished, // 61 - 0: UserObjectId, 1: ActionId, 2: FinishTime, 3: ObjectId, 4: ItemId, 5: StandardAmount, 6: CollectorBonusAmount, 7: PremiumBonusAmount, 8: CurrentPossibleDegradationProcesses
     TakeSilver, // map[0:-57 1:2178162 2:-57 3:10000000 8:10000 252:55]
     RemoveSilver,
     ActionOnBuildingStart,
