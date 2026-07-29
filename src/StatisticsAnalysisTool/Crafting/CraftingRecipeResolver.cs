@@ -133,10 +133,7 @@ public class CraftingRecipeResolver
         }
 
         var quantityPerRun = resources.Sum(x => x.Count);
-        var maxReturnQuantityPerRun = resources
-            .Select(ParseNullableDecimal)
-            .Where(x => x is > 0m)
-            .Sum();
+        var returnPolicy = GetReturnPolicy(resources);
         var resourceKind = GetResourceKind(item);
 
         return new CraftingResourceEntry
@@ -145,11 +142,34 @@ public class CraftingRecipeResolver
             QuantityPerRun = quantityPerRun,
             UnitWeight = ItemController.GetWeight(item.FullItemInformation),
             ResourceKind = resourceKind,
-            IsReturnable = IsReturnable(resourceKind),
-            MaxReturnQuantityPerRun = maxReturnQuantityPerRun > 0m ? maxReturnQuantityPerRun : null,
+            IsReturnable = returnPolicy.IsReturnable,
+            MaxReturnQuantityPerRun = returnPolicy.MaxReturnQuantityPerRun,
             Icon = item.Icon
         }
         ;
+    }
+
+    internal static (bool IsReturnable, decimal? MaxReturnQuantityPerRun) GetReturnPolicy(IEnumerable<CraftResource> resources)
+    {
+        var maxReturnQuantityPerRun = 0m;
+
+        foreach (var resource in resources ?? [])
+        {
+            if (string.IsNullOrWhiteSpace(resource?.MaxReturnAmount))
+            {
+                return (true, null);
+            }
+
+            var maxReturnQuantity = ParseNullableDecimal(resource);
+            if (maxReturnQuantity is > 0m)
+            {
+                maxReturnQuantityPerRun += maxReturnQuantity.Value;
+            }
+        }
+
+        return maxReturnQuantityPerRun > 0m
+            ? (true, maxReturnQuantityPerRun)
+            : (false, null);
     }
 
     private static decimal? ParseNullableDecimal(CraftResource craftResource)
@@ -248,11 +268,6 @@ public class CraftingRecipeResolver
         }
 
         return CraftingResourceKind.Standard;
-    }
-
-    private static bool IsReturnable(CraftingResourceKind resourceKind)
-    {
-        return resourceKind == CraftingResourceKind.Standard;
     }
 
     private static decimal GetMaxJournalFame(int tier)
