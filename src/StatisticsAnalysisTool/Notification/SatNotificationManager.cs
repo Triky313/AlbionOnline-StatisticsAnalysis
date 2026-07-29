@@ -1,4 +1,5 @@
-﻿using Notification.Wpf;
+﻿using Notification.Core;
+using Notification.Wpf;
 using StatisticsAnalysisTool.Common.UserSettings;
 using System;
 using System.Threading.Tasks;
