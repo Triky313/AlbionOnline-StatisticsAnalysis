@@ -5,6 +5,63 @@
                     xmlns:converters="clr-namespace:StatisticsAnalysisTool.Common.Converters">
 
     <system:Double x:Key="BaseFontSize">12</system:Double>
+    <Style x:Key="App.FilterDropdownButton" TargetType="{x:Type ToggleButton}">
+        <Setter Property="SnapsToDevicePixels" Value="True" />
+        <Setter Property="OverridesDefaultStyle" Value="True" />
+        <Setter Property="FocusVisualStyle" Value="{StaticResource ButtonFocusVisual}" />
+        <Setter Property="MinHeight" Value="25" />
+        <Setter Property="MinWidth" Value="115" />
+        <Setter Property="Foreground" Value="{StaticResource SolidColorBrush.Text.1}" />
+        <Setter Property="Background" Value="{StaticResource SolidColorBrush.Background.2}" />
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="{x:Type ToggleButton}">
+                    <Border x:Name="Border"
+                            Background="{TemplateBinding Background}"
+                            BorderBrush="{StaticResource SolidColorBrush.Background.4}"
+                            BorderThickness="1"
+                            CornerRadius="3"
+                            TextBlock.Foreground="{TemplateBinding Foreground}">
+                        <DockPanel Margin="9,3">
+                            <TextBlock Text="&#xE70D;"
+                                       FontFamily="Segoe MDL2 Assets"
+                                       FontSize="8"
+                                       Margin="8,0,0,0"
+                                       VerticalAlignment="Center"
+                                       DockPanel.Dock="Right" />
+                            <ContentPresenter HorizontalAlignment="Left"
+                                              VerticalAlignment="Center"
+                                              RecognizesAccessKey="True" />
+                        </DockPanel>
+                    </Border>
+                    <ControlTemplate.Triggers>
+                        <Trigger Property="IsMouseOver" Value="True">
+                            <Setter TargetName="Border" Property="Background" Value="{StaticResource SolidColorBrush.Background.3}" />
+                            <Setter TargetName="Border" Property="BorderBrush" Value="{StaticResource SolidColorBrush.Accent.Blue.2}" />
+                        </Trigger>
+                        <Trigger Property="IsChecked" Value="True">
+                            <Setter TargetName="Border" Property="Background" Value="{StaticResource SolidColorBrush.Background.3}" />
+                            <Setter TargetName="Border" Property="BorderBrush" Value="{StaticResource SolidColorBrush.Accent.Blue.2}" />
+                        </Trigger>
+                        <Trigger Property="IsEnabled" Value="False">
+                            <Setter TargetName="Border" Property="Background" Value="{StaticResource SolidColorBrush.Text.6}" />
+                            <Setter TargetName="Border" Property="BorderBrush" Value="{StaticResource SolidColorBrush.Text.4}" />
+                            <Setter Property="Foreground" Value="{StaticResource SolidColorBrush.Text.4}" />
+                        </Trigger>
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+    <Style x:Key="App.FilterDropdownPopup" TargetType="{x:Type Border}">
+        <Setter Property="Background" Value="{StaticResource SolidColorBrush.Background.2}" />
+        <Setter Property="BorderBrush" Value="{StaticResource SolidColorBrush.Accent.Blue.4}" />
+        <Setter Property="BorderThickness" Value="1" />
+        <Setter Property="CornerRadius" Value="3" />
+        <Setter Property="Padding" Value="8" />
+        <Setter Property="SnapsToDevicePixels" Value="True" />
+    </Style>
     <converters:ValidationErrorConverter x:Key="ValidationErrorConverter" />
 
     <Style x:Key="WindowChrome" TargetType="{x:Type Window}">

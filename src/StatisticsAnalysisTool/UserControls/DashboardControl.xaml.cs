@@ -19,6 +19,18 @@ namespace StatisticsAnalysisTool.UserControls;
 /// </summary>
 public partial class DashboardControl
 {
+    public static readonly DependencyProperty ShowOpenWindowButtonProperty = DependencyProperty.Register(
+        nameof(ShowOpenWindowButton),
+        typeof(bool),
+        typeof(DashboardControl),
+        new PropertyMetadata(true));
+
+    public bool ShowOpenWindowButton
+    {
+        get => (bool) GetValue(ShowOpenWindowButtonProperty);
+        set => SetValue(ShowOpenWindowButtonProperty, value);
+    }
+
     public DashboardControl()
     {
         InitializeComponent();
@@ -49,7 +61,6 @@ public partial class DashboardControl
 
     private void BtnTrackingReset_Click(object sender, RoutedEventArgs e)
     {
-        Log.Error("{Message}", MethodBase.GetCurrentMethod()?.DeclaringType);
         var trackingController = ServiceLocator.Resolve<TrackingController>();
         trackingController?.LiveStatsTracker?.Reset();
     }
@@ -131,7 +142,6 @@ public partial class DashboardControl
         {
             vm.DashboardBindings.ActivityChartVisibility = Visibility.Visible;
             vm.DashboardBindings.ActivityChartToggleIcon = EFontAwesomeIcon.Solid_Minus;
-            RefreshDailyChart();
         }
     }
 

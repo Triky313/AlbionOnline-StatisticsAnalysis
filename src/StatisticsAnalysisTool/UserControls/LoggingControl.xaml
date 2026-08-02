@@ -11,46 +11,6 @@
              d:DesignHeight="500" d:DesignWidth="1000"
              d:DataContext="{d:DesignInstance Type=viewModels:MainWindowViewModel}">
     <UserControl.Resources>
-        <Style x:Key="Logging.DropdownButton" TargetType="{x:Type ToggleButton}">
-            <Setter Property="SnapsToDevicePixels" Value="true" />
-            <Setter Property="OverridesDefaultStyle" Value="true" />
-            <Setter Property="FocusVisualStyle" Value="{StaticResource ButtonFocusVisual}" />
-            <Setter Property="MinHeight" Value="25" />
-            <Setter Property="MinWidth" Value="115" />
-            <Setter Property="Foreground" Value="{StaticResource SolidColorBrush.Text.1}" />
-            <Setter Property="Background" Value="{StaticResource SolidColorBrush.Background.2}" />
-            <Setter Property="Template">
-                <Setter.Value>
-                    <ControlTemplate TargetType="{x:Type ToggleButton}">
-                        <Border x:Name="Border" Background="{TemplateBinding Background}"
-                                BorderBrush="{StaticResource SolidColorBrush.Background.4}" BorderThickness="1"
-                                TextBlock.Foreground="{TemplateBinding Foreground}">
-                            <DockPanel Margin="7,2">
-                                <TextBlock Text="&#xE70D;" FontFamily="Segoe MDL2 Assets" FontSize="8" Margin="8,0,0,0"
-                                           VerticalAlignment="Center" DockPanel.Dock="Right" />
-                                <ContentPresenter HorizontalAlignment="Left" VerticalAlignment="Center" RecognizesAccessKey="True" />
-                            </DockPanel>
-                        </Border>
-                        <ControlTemplate.Triggers>
-                            <Trigger Property="IsMouseOver" Value="True">
-                                <Setter TargetName="Border" Property="Background" Value="{StaticResource SolidColorBrush.Background.3}" />
-                                <Setter TargetName="Border" Property="BorderBrush" Value="{StaticResource SolidColorBrush.Accent.Blue.2}" />
-                            </Trigger>
-                            <Trigger Property="IsChecked" Value="True">
-                                <Setter TargetName="Border" Property="Background" Value="{StaticResource SolidColorBrush.Background.3}" />
-                                <Setter TargetName="Border" Property="BorderBrush" Value="{StaticResource SolidColorBrush.Accent.Blue.2}" />
-                            </Trigger>
-                            <Trigger Property="IsEnabled" Value="False">
-                                <Setter TargetName="Border" Property="Background" Value="{StaticResource SolidColorBrush.Text.6}" />
-                                <Setter TargetName="Border" Property="BorderBrush" Value="{StaticResource SolidColorBrush.Text.4}" />
-                                <Setter Property="Foreground" Value="{StaticResource SolidColorBrush.Text.4}" />
-                            </Trigger>
-                        </ControlTemplate.Triggers>
-                    </ControlTemplate>
-                </Setter.Value>
-            </Setter>
-        </Style>
-
         <Style x:Key="Logging.ImportButton" TargetType="{x:Type Button}">
             <Setter Property="SnapsToDevicePixels" Value="true" />
             <Setter Property="OverridesDefaultStyle" Value="true" />
@@ -272,28 +232,26 @@
                                      Width="240" Height="25" Margin="0,0,6,0" />
 
                             <StackPanel Margin="0,0,6,0">
-                                <ToggleButton x:Name="NotificationFilterButton" Style="{StaticResource Logging.DropdownButton}"
+                                <ToggleButton x:Name="NotificationFilterButton" Style="{StaticResource App.FilterDropdownButton}"
                                               Content="{Binding LoggingBindings.NotificationFilterSummary, FallbackValue='Filter: All'}" />
                                 <Popup PlacementTarget="{Binding ElementName=NotificationFilterButton}"
                                        IsOpen="{Binding IsChecked, ElementName=NotificationFilterButton, Mode=TwoWay}"
                                        Placement="Bottom" StaysOpen="False" AllowsTransparency="True" PopupAnimation="Fade">
                                     <Border DataContext="{Binding PlacementTarget.DataContext, RelativeSource={RelativeSource AncestorType={x:Type Popup}}}"
-                                            Background="{StaticResource SolidColorBrush.Background.2}" BorderBrush="{StaticResource SolidColorBrush.Accent.Blue.4}"
-                                            BorderThickness="1" Padding="8">
+                                            Style="{StaticResource App.FilterDropdownPopup}">
                                         <ItemsControl MinWidth="190" ItemsSource="{Binding LoggingBindings.Filters}" ItemTemplate="{StaticResource LoggingFilterObject}" />
                                     </Border>
                                 </Popup>
                             </StackPanel>
 
                             <StackPanel Margin="0,0,6,0" Orientation="Horizontal">
-                                <ToggleButton x:Name="TrackingSettingsButton" Style="{StaticResource Logging.DropdownButton}"
+                                <ToggleButton x:Name="TrackingSettingsButton" Style="{StaticResource App.FilterDropdownButton}"
                                               Content="{Binding LoggingBindings.TrackingSummary, FallbackValue='Tracking: All'}" />
                                 <Popup PlacementTarget="{Binding ElementName=TrackingSettingsButton}"
                                        IsOpen="{Binding IsChecked, ElementName=TrackingSettingsButton, Mode=TwoWay}"
                                        Placement="Bottom" StaysOpen="False" AllowsTransparency="True" PopupAnimation="Fade">
                                     <Border DataContext="{Binding PlacementTarget.DataContext, RelativeSource={RelativeSource AncestorType={x:Type Popup}}}"
-                                            Background="{StaticResource SolidColorBrush.Background.2}" BorderBrush="{StaticResource SolidColorBrush.Accent.Blue.4}"
-                                            BorderThickness="1" Padding="8">
+                                            Style="{StaticResource App.FilterDropdownPopup}">
                                         <StackPanel MinWidth="180">
                                             <CheckBox IsChecked="{Binding LoggingBindings.IsTrackingPartyLootOnly, FallbackValue=true}"
                                                       Content="{Binding Translation.TrackPartyLootOnly, FallbackValue=TRACK__PARTY__LOOT__ONLY}" />
@@ -401,14 +359,13 @@
 
                             <UniformGrid Grid.Row="1" Columns="4" Margin="-6,12,-6,0">
                                 <StackPanel Margin="6,0">
-                                    <ToggleButton x:Name="StatusFilterButton" Style="{StaticResource Logging.DropdownButton}" Height="36"
+                                    <ToggleButton x:Name="StatusFilterButton" Style="{StaticResource App.FilterDropdownButton}" Height="36"
                                                   Content="{Binding LoggingBindings.StatusFilterSummary, FallbackValue='Status: All'}" />
                                     <Popup PlacementTarget="{Binding ElementName=StatusFilterButton}"
                                            IsOpen="{Binding IsChecked, ElementName=StatusFilterButton, Mode=TwoWay}"
                                            Placement="Bottom" StaysOpen="False" AllowsTransparency="True" PopupAnimation="Fade">
                                         <Border DataContext="{Binding PlacementTarget.DataContext, RelativeSource={RelativeSource AncestorType={x:Type Popup}}}"
-                                                Background="{StaticResource SolidColorBrush.Background.2}" BorderBrush="{StaticResource SolidColorBrush.Accent.Blue.4}"
-                                                BorderThickness="1" Padding="8">
+                                                Style="{StaticResource App.FilterDropdownPopup}">
                                             <StackPanel MinWidth="130">
                                                 <CheckBox IsChecked="{Binding LoggingBindings.IsShowingLost, FallbackValue=true}"
                                                           Content="{Binding LoggingBindings.Translation.Lost, FallbackValue=LOST}" />
@@ -424,14 +381,13 @@
                                 </StackPanel>
 
                                 <StackPanel Margin="6,0">
-                                    <ToggleButton x:Name="TierFilterButton" Style="{StaticResource Logging.DropdownButton}" Height="36"
+                                    <ToggleButton x:Name="TierFilterButton" Style="{StaticResource App.FilterDropdownButton}" Height="36"
                                                   Content="{Binding LoggingBindings.TierFilterSummary, FallbackValue='Tier: All'}" />
                                     <Popup PlacementTarget="{Binding ElementName=TierFilterButton}"
                                            IsOpen="{Binding IsChecked, ElementName=TierFilterButton, Mode=TwoWay}"
                                            Placement="Bottom" StaysOpen="False" AllowsTransparency="True" PopupAnimation="Fade">
                                         <Border DataContext="{Binding PlacementTarget.DataContext, RelativeSource={RelativeSource AncestorType={x:Type Popup}}}"
-                                                Background="{StaticResource SolidColorBrush.Background.2}" BorderBrush="{StaticResource SolidColorBrush.Accent.Blue.4}"
-                                                BorderThickness="1" Padding="8">
+                                                Style="{StaticResource App.FilterDropdownPopup}">
                                             <StackPanel MinWidth="130">
                                                 <CheckBox IsChecked="{Binding LoggingBindings.IsShowingT1ToT3, FallbackValue=true}"
                                                           Content="{Binding LoggingBindings.Translation.T1ToT3, FallbackValue=T1-T3}" />
@@ -451,14 +407,13 @@
                                 </StackPanel>
 
                                 <StackPanel Margin="6,0">
-                                    <ToggleButton x:Name="TypeFilterButton" Style="{StaticResource Logging.DropdownButton}" Height="36"
+                                    <ToggleButton x:Name="TypeFilterButton" Style="{StaticResource App.FilterDropdownButton}" Height="36"
                                                   Content="{Binding LoggingBindings.TypeFilterSummary, FallbackValue='Type: All'}" />
                                     <Popup PlacementTarget="{Binding ElementName=TypeFilterButton}"
                                            IsOpen="{Binding IsChecked, ElementName=TypeFilterButton, Mode=TwoWay}"
                                            Placement="Bottom" StaysOpen="False" AllowsTransparency="True" PopupAnimation="Fade">
                                         <Border DataContext="{Binding PlacementTarget.DataContext, RelativeSource={RelativeSource AncestorType={x:Type Popup}}}"
-                                                Background="{StaticResource SolidColorBrush.Background.2}" BorderBrush="{StaticResource SolidColorBrush.Accent.Blue.4}"
-                                                BorderThickness="1" Padding="8">
+                                                Style="{StaticResource App.FilterDropdownPopup}">
                                             <StackPanel MinWidth="130">
                                                 <CheckBox IsChecked="{Binding LoggingBindings.IsShowingFood, FallbackValue=true}"
                                                           Content="{Binding LoggingBindings.Translation.Food, FallbackValue=FOOD}" />
@@ -482,14 +437,13 @@
                                 </StackPanel>
 
                                 <StackPanel Margin="6,0">
-                                    <ToggleButton x:Name="GuildFilterButton" Style="{StaticResource Logging.DropdownButton}" Height="36"
+                                    <ToggleButton x:Name="GuildFilterButton" Style="{StaticResource App.FilterDropdownButton}" Height="36"
                                                   Content="{Binding LoggingBindings.GuildFilterSummary, FallbackValue='Guild: All'}" />
                                     <Popup PlacementTarget="{Binding ElementName=GuildFilterButton}"
                                            IsOpen="{Binding IsChecked, ElementName=GuildFilterButton, Mode=TwoWay}"
                                            Placement="Bottom" StaysOpen="False" AllowsTransparency="True" PopupAnimation="Fade">
                                         <Border DataContext="{Binding PlacementTarget.DataContext, RelativeSource={RelativeSource AncestorType={x:Type Popup}}}"
-                                                Background="{StaticResource SolidColorBrush.Background.2}" BorderBrush="{StaticResource SolidColorBrush.Accent.Blue.4}"
-                                                BorderThickness="1" Padding="8">
+                                                Style="{StaticResource App.FilterDropdownPopup}">
                                             <ScrollViewer MinWidth="130" MaxHeight="260" VerticalScrollBarVisibility="Auto">
                                                 <ItemsControl ItemsSource="{Binding LoggingBindings.LootComparatorGuildFilters}" ItemTemplate="{StaticResource LoggingFilterObject}" />
                                             </ScrollViewer>

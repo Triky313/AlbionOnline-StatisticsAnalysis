@@ -59,6 +59,11 @@ public class DashboardBindings : BaseViewModel
     private EFontAwesomeIcon _repairCostsStatsToggleIcon;
     private Visibility _activityChartVisibility;
     private EFontAwesomeIcon _activityChartToggleIcon;
+    private bool _isKillDeathDashboardCategoryVisible;
+    private bool _isLootedChestsDashboardCategoryVisible;
+    private bool _isReSpecDashboardCategoryVisible;
+    private bool _isRepairCostsDashboardCategoryVisible;
+    private bool _isActivityChartDashboardCategoryVisible;
     private string _translationKillsDeaths = TranslationKillsDeaths;
 
     public DashboardBindings()
@@ -79,6 +84,12 @@ public class DashboardBindings : BaseViewModel
 
         ActivityChartVisibility = SettingsController.CurrentSettings.IsActivityChartVisible ? Visibility.Visible : Visibility.Collapsed;
         ActivityChartToggleIcon = SettingsController.CurrentSettings.IsActivityChartVisible ? EFontAwesomeIcon.Solid_Minus : EFontAwesomeIcon.Solid_Plus;
+
+        IsKillDeathDashboardCategoryVisible = SettingsController.CurrentSettings.IsKillDeathDashboardCategoryVisible;
+        IsLootedChestsDashboardCategoryVisible = SettingsController.CurrentSettings.IsLootedChestsDashboardCategoryVisible;
+        IsReSpecDashboardCategoryVisible = SettingsController.CurrentSettings.IsReSpecDashboardCategoryVisible;
+        IsRepairCostsDashboardCategoryVisible = SettingsController.CurrentSettings.IsRepairCostsDashboardCategoryVisible;
+        IsActivityChartDashboardCategoryVisible = SettingsController.CurrentSettings.IsActivityChartDashboardCategoryVisible;
     }
 
     #region Toggle
@@ -184,6 +195,61 @@ public class DashboardBindings : BaseViewModel
         set
         {
             _activityChartToggleIcon = value;
+            OnPropertyChanged();
+        }
+    }
+
+    public bool IsKillDeathDashboardCategoryVisible
+    {
+        get => _isKillDeathDashboardCategoryVisible;
+        set
+        {
+            _isKillDeathDashboardCategoryVisible = value;
+            SettingsController.CurrentSettings.IsKillDeathDashboardCategoryVisible = value;
+            OnPropertyChanged();
+        }
+    }
+
+    public bool IsLootedChestsDashboardCategoryVisible
+    {
+        get => _isLootedChestsDashboardCategoryVisible;
+        set
+        {
+            _isLootedChestsDashboardCategoryVisible = value;
+            SettingsController.CurrentSettings.IsLootedChestsDashboardCategoryVisible = value;
+            OnPropertyChanged();
+        }
+    }
+
+    public bool IsReSpecDashboardCategoryVisible
+    {
+        get => _isReSpecDashboardCategoryVisible;
+        set
+        {
+            _isReSpecDashboardCategoryVisible = value;
+            SettingsController.CurrentSettings.IsReSpecDashboardCategoryVisible = value;
+            OnPropertyChanged();
+        }
+    }
+
+    public bool IsRepairCostsDashboardCategoryVisible
+    {
+        get => _isRepairCostsDashboardCategoryVisible;
+        set
+        {
+            _isRepairCostsDashboardCategoryVisible = value;
+            SettingsController.CurrentSettings.IsRepairCostsDashboardCategoryVisible = value;
+            OnPropertyChanged();
+        }
+    }
+
+    public bool IsActivityChartDashboardCategoryVisible
+    {
+        get => _isActivityChartDashboardCategoryVisible;
+        set
+        {
+            _isActivityChartDashboardCategoryVisible = value;
+            SettingsController.CurrentSettings.IsActivityChartDashboardCategoryVisible = value;
             OnPropertyChanged();
         }
     }
@@ -647,6 +713,7 @@ public class DashboardBindings : BaseViewModel
     public static string TranslationMight => LocalizationController.Translation("MIGHT");
     public static string TranslationFavor => LocalizationController.Translation("FAVOR");
     public static string TranslationResetTrackingCounter => LocalizationController.Translation("RESET_TRACKING_COUNTER");
+    public static string TranslationCategory => LocalizationController.Translation("CATEGORY");
     public static string TranslationToday => LocalizationController.Translation("TODAY").ToLower();
     public static string TranslationWeek => LocalizationController.Translation("WEEK").ToLower();
     public static string TranslationMonth => LocalizationController.Translation("MONTH").ToLower();
