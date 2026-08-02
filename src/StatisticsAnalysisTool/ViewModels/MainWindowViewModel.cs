@@ -468,6 +468,7 @@ public class MainWindowViewModel : BaseViewModel
 
         await EstimatedMarketValueController.SetAllEstimatedMarketValuesToItemsAsync();
         ItemsView?.Refresh();
+        LoggingBindings.RefreshLootComparatorSaves();
         Log.Information("Albion user data loaded. Server={Server}, Directory={Directory}", AppDataPaths.ActiveUserDataServerLocation, AppDataPaths.UserDataDirectory);
     }
 

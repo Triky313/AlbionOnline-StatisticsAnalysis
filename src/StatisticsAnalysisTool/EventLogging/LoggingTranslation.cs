@@ -61,5 +61,13 @@ public class LoggingTranslation
     public static string CompareLogs => LocalizationController.Translation("COMPARE_LOGS");
     public static string DeleteChestLogs => LocalizationController.Translation("DELETE_CHEST_LOGS");
     public static string DeleteAllLogs => LocalizationController.Translation("DELETE_ALL_LOGS");
+    public static string SaveLootComparatorState => LocalizationController.Translation("SAVE_LOOT_COMPARATOR_STATE");
+    public static string LoadLootComparatorState => LocalizationController.Translation("LOAD_LOOT_COMPARATOR_STATE");
+    public static string DeleteLootComparatorState => LocalizationController.Translation("DELETE_LOOT_COMPARATOR_STATE");
+    public static string LootComparatorFilters => LocalizationController.Translation("LOOT_COMPARATOR_FILTERS");
+    public static string LootComparatorChestLogInput => LocalizationController.Translation("LOOT_COMPARATOR_CHEST_LOG_INPUT");
+    public static string LootComparatorComparison => LocalizationController.Translation("LOOT_COMPARATOR_COMPARISON");
+    public static string LootComparatorActions => LocalizationController.Translation("LOOT_COMPARATOR_ACTIONS");
+    public static string LootComparatorSavedState => LocalizationController.Translation("LOOT_COMPARATOR_SAVED_STATE");
     public static string RemovePlayerFromLootComparator => LocalizationController.Translation("REMOVE_PLAYER_FROM_LOOT_COMPARATOR");
 }
