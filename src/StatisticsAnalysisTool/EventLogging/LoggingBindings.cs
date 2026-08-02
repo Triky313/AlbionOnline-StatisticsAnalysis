@@ -29,6 +29,7 @@ public class LoggingBindings : BaseViewModel
 {
     private CancellationTokenSource _cancellationTokenSource = new();
     private ObservableCollection<LootingPlayer> _lootingPlayers = new();
+    private readonly LootComparatorSaveService _lootComparatorSaveService = new();
     private readonly HashSet<LootingPlayer> _subscribedLootingPlayers = [];
     private bool _isShowingLost = true;
     private bool _isShowingResolved = true;
@@ -73,6 +74,7 @@ public class LoggingBindings : BaseViewModel
 
     public void Init()
     {
+        RefreshLootComparatorSaves();
         LootingPlayersCollectionView = CollectionViewSource.GetDefaultView(LootingPlayers) as ListCollectionView;
 
         TopLootersCollectionView = CollectionViewSource.GetDefaultView(TopLooters) as ListCollectionView;
@@ -522,6 +524,116 @@ public class LoggingBindings : BaseViewModel
         LootingPlayers.Clear();
         _lootLogFileCount = 0;
         RefreshLootComparatorLogCounts();
+    }
+
+    public void ClearAllLootComparatorLogs()
+    {
+        VaultLogItems.Clear();
+        LootingPlayers.Clear();
+        _chestLogSourceCount = 0;
+        _lootLogFileCount = 0;
+        ClearLootComparatorImportEventLine();
+        RefreshLootComparatorLogCounts();
+    }
+
+    public LootComparatorSave SaveLootComparator(string name)
+    {
+        if (!CanSaveLootComparator)
+        {
+            throw new InvalidOperationException("At least one chest or loot log must be loaded before creating a loot comparator save.");
+        }
+
+        var createdSave = _lootComparatorSaveService.Save(name, VaultLogItems.ToList(), LootingPlayers.ToList());
+        RefreshLootComparatorSaves();
+        SelectedLootComparatorSave = LootComparatorSaves.FirstOrDefault(save =>
+            string.Equals(save.DirectoryPath, createdSave.DirectoryPath, StringComparison.OrdinalIgnoreCase));
+        return createdSave;
+    }
+
+    public bool LoadSelectedLootComparatorSave()
+    {
+        var save = SelectedLootComparatorSave;
+        if (save is null)
+        {
+            return false;
+        }
+
+        try
+        {
+            List<VaultContainerLogItem> chestLogItems = [];
+            List<ImportedLootLogItem> lootLogItems = [];
+
+            if (save.ChestLogEntryCount > 0
+                && (!TryReadVaultLogText(File.ReadAllText(save.ChestLogFilePath), out chestLogItems)
+                    || chestLogItems.Count != save.ChestLogEntryCount))
+            {
+                SetLootComparatorImportEventLine(LocalizationController.Translation("LOOT_COMPARATOR_SAVE_LOAD_FAILED"));
+                return false;
+            }
+
+            if (save.LootLogEntryCount > 0
+                && (!TryReadLootLogFile(save.LootLogFilePath, out lootLogItems)
+                    || lootLogItems.Count != save.LootLogEntryCount))
+            {
+                SetLootComparatorImportEventLine(LocalizationController.Translation("LOOT_COMPARATOR_SAVE_LOAD_FAILED"));
+                return false;
+            }
+
+            ClearAllLootComparatorLogs();
+
+            var addedChestLogItems = AddVaultLogItems(chestLogItems);
+            var addedLootLogItems = lootLogItems.Count(TryAddLootLogItem);
+            _chestLogSourceCount = addedChestLogItems > 0 ? 1 : 0;
+            _lootLogFileCount = addedLootLogItems > 0 ? 1 : 0;
+
+            ClearLootComparatorImportEventLine();
+            RefreshLootComparatorLogCounts();
+            _ = UpdateFilteredLootedItemsAsync();
+
+            Debug.Print($"Loaded loot comparator save '{save.Name}' with {addedChestLogItems} chest entries and {addedLootLogItems} loot entries.");
+            return true;
+        }
+        catch (Exception ex)
+        {
+            Debug.Print($"Error loading loot comparator save '{save.Name}': {ex.Message}");
+            SetLootComparatorImportEventLine(LocalizationController.Translation("LOOT_COMPARATOR_SAVE_LOAD_FAILED"));
+            return false;
+        }
+    }
+
+    public bool DeleteSelectedLootComparatorSave()
+    {
+        var save = SelectedLootComparatorSave;
+        if (save is null)
+        {
+            return false;
+        }
+
+        var deleted = _lootComparatorSaveService.Delete(save);
+        RefreshLootComparatorSaves();
+        return deleted;
+    }
+
+    public void RefreshLootComparatorSaves()
+    {
+        var selectedDirectoryPath = SelectedLootComparatorSave?.DirectoryPath;
+        LootComparatorSaves.Clear();
+
+        try
+        {
+            foreach (var save in _lootComparatorSaveService.GetAll())
+            {
+                LootComparatorSaves.Add(save);
+            }
+        }
+        catch (Exception ex)
+        {
+            Debug.Print($"Error loading loot comparator save list: {ex.Message}");
+        }
+
+        SelectedLootComparatorSave = LootComparatorSaves.FirstOrDefault(save =>
+            string.Equals(save.DirectoryPath, selectedDirectoryPath, StringComparison.OrdinalIgnoreCase));
+        OnPropertyChanged(nameof(CanSaveLootComparator));
     }
 
     private static void MarkLostItems(IDictionary<LootedItem, LootedItemStatus> statuses, IEnumerable<LootedItem> lootLogItems)
@@ -1222,6 +1334,11 @@ public class LoggingBindings : BaseViewModel
     public string TrackingSummary => BuildFilterSummary(LoggingTranslation.Tracking, CountSelectedFilters(IsTrackingPartyLootOnly, IsTrackingSilver, IsTrackingFame, IsTrackingMobLoot, IsTrackingKill), 5);
     public int ChestLogCount => _chestLogSourceCount;
     public int LootLogCount => _lootLogFileCount;
+    public bool HasLootComparatorLogs => VaultLogItems.Count > 0
+                                         || LootingPlayers.SelectMany(player => player.GetLootedItemsSnapshot()).Any(item => !item.IsItemFromVaultLog);
+    public bool CanSaveLootComparator => AppDataPaths.IsUserDataAvailable && HasLootComparatorLogs;
+    public bool CanLoadLootComparatorSave => SelectedLootComparatorSave is not null;
+    public bool CanDeleteLootComparatorSave => SelectedLootComparatorSave is not null;
     public string LootComparatorLogCountSummary => LocalizationController.Translation("LOOT_COMPARATOR_LOG_COUNT_SUMMARY",
         ["CHEST_COUNT", "LOOT_COUNT"],
         [ChestLogCount.ToString(CultureInfo.InvariantCulture), LootLogCount.ToString(CultureInfo.InvariantCulture)]);
@@ -1247,6 +1364,8 @@ public class LoggingBindings : BaseViewModel
         OnPropertyChanged(nameof(LootLogCount));
         OnPropertyChanged(nameof(LootComparatorLogCountSummary));
         OnPropertyChanged(nameof(LootComparatorLogCountTooltip));
+        OnPropertyChanged(nameof(HasLootComparatorLogs));
+        OnPropertyChanged(nameof(CanSaveLootComparator));
     }
 
     private void ClearLootComparatorImportEventLine()
@@ -1472,6 +1591,20 @@ public class LoggingBindings : BaseViewModel
     } = string.Empty;
 
     public Visibility LootComparatorImportEventLineVisibility => string.IsNullOrWhiteSpace(LootComparatorImportEventLine) ? Visibility.Collapsed : Visibility.Visible;
+
+    public ObservableCollection<LootComparatorSave> LootComparatorSaves { get; } = [];
+
+    public LootComparatorSave SelectedLootComparatorSave
+    {
+        get;
+        set
+        {
+            field = value;
+            OnPropertyChanged();
+            OnPropertyChanged(nameof(CanLoadLootComparatorSave));
+            OnPropertyChanged(nameof(CanDeleteLootComparatorSave));
+        }
+    }
 
     public ListCollectionView GameLoggingCollectionView
     {

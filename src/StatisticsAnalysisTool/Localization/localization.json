@@ -38873,6 +38873,31 @@
       ]
     },
     {
+      "tuid": "SELECT_CHEST_LOG_FILES",
+      "tuv": [
+        {
+          "lang": "de-DE",
+          "seg": "Chest-Log-Dateien auswählen"
+        },
+        {
+          "lang": "en-US",
+          "seg": "Select chest log files"
+        },
+        {
+          "lang": "fr-FR",
+          "seg": "Sélectionner les fichiers journaux de coffre"
+        },
+        {
+          "lang": "ru-RU",
+          "seg": "Выберите файлы журнала сундука"
+        },
+        {
+          "lang": "zh-CN",
+          "seg": "选择宝箱日志文件"
+        }
+      ]
+    },
+    {
       "tuid": "SELECT_LOOT_LOG_FILES",
       "tuv": [
         {
@@ -39119,6 +39144,214 @@
         {
           "lang": "zh-CN",
           "seg": "删除全部日志"
+        }
+      ]
+    },
+    {
+      "tuid": "SAVE_LOOT_COMPARATOR_STATE",
+      "tuv": [
+        {
+          "lang": "de-DE",
+          "seg": "Comparator-Speicherstand speichern"
+        },
+        {
+          "lang": "en-US",
+          "seg": "Save comparator state"
+        }
+      ]
+    },
+    {
+      "tuid": "LOAD_LOOT_COMPARATOR_STATE",
+      "tuv": [
+        {
+          "lang": "de-DE",
+          "seg": "Comparator-Speicherstand laden"
+        },
+        {
+          "lang": "en-US",
+          "seg": "Load comparator state"
+        }
+      ]
+    },
+    {
+      "tuid": "LOOT_COMPARATOR_SAVE_NAME_PROMPT",
+      "tuv": [
+        {
+          "lang": "de-DE",
+          "seg": "Name für den Comparator-Speicherstand:"
+        },
+        {
+          "lang": "en-US",
+          "seg": "Name for the comparator state:"
+        }
+      ]
+    },
+    {
+      "tuid": "LOOT_COMPARATOR_LOAD_CONFIRMATION",
+      "tuv": [
+        {
+          "lang": "de-DE",
+          "seg": "Aktuell geladene Logs werden entfernt. Möchtest du den ausgewählten Speicherstand laden?"
+        },
+        {
+          "lang": "en-US",
+          "seg": "The currently loaded logs will be removed. Do you want to load the selected state?"
+        }
+      ]
+    },
+    {
+      "tuid": "LOOT_COMPARATOR_SAVE_FAILED",
+      "tuv": [
+        {
+          "lang": "de-DE",
+          "seg": "Der Comparator-Speicherstand konnte nicht gespeichert werden."
+        },
+        {
+          "lang": "en-US",
+          "seg": "The comparator state could not be saved."
+        }
+      ]
+    },
+    {
+      "tuid": "LOOT_COMPARATOR_SAVE_LOAD_FAILED",
+      "tuv": [
+        {
+          "lang": "de-DE",
+          "seg": "Der Comparator-Speicherstand konnte nicht geladen werden. Die gespeicherten Dateien sind möglicherweise beschädigt."
+        },
+        {
+          "lang": "en-US",
+          "seg": "The comparator state could not be loaded. The saved files may be corrupted."
+        }
+      ]
+    },
+    {
+      "tuid": "SAVE",
+      "tuv": [
+        {
+          "lang": "de-DE",
+          "seg": "Speichern"
+        },
+        {
+          "lang": "en-US",
+          "seg": "Save"
+        }
+      ]
+    },
+    {
+      "tuid": "CANCEL",
+      "tuv": [
+        {
+          "lang": "de-DE",
+          "seg": "Abbrechen"
+        },
+        {
+          "lang": "en-US",
+          "seg": "Cancel"
+        }
+      ]
+    },
+    {
+      "tuid": "DELETE_LOOT_COMPARATOR_STATE",
+      "tuv": [
+        {
+          "lang": "de-DE",
+          "seg": "Ausgewählten Speicherstand löschen"
+        },
+        {
+          "lang": "en-US",
+          "seg": "Delete selected comparator state"
+        }
+      ]
+    },
+    {
+      "tuid": "LOOT_COMPARATOR_DELETE_CONFIRMATION",
+      "tuv": [
+        {
+          "lang": "de-DE",
+          "seg": "Möchtest du den Comparator-Speicherstand „{SAVE_NAME}“ wirklich löschen? Diese Aktion kann nicht rückgängig gemacht werden."
+        },
+        {
+          "lang": "en-US",
+          "seg": "Do you really want to delete the comparator state \"{SAVE_NAME}\"? This action cannot be undone."
+        }
+      ]
+    },
+    {
+      "tuid": "LOOT_COMPARATOR_SAVE_DELETE_FAILED",
+      "tuv": [
+        {
+          "lang": "de-DE",
+          "seg": "Der Comparator-Speicherstand konnte nicht gelöscht werden."
+        },
+        {
+          "lang": "en-US",
+          "seg": "The comparator state could not be deleted."
+        }
+      ]
+    },
+    {
+      "tuid": "LOOT_COMPARATOR_FILTERS",
+      "tuv": [
+        {
+          "lang": "de-DE",
+          "seg": "Filter"
+        },
+        {
+          "lang": "en-US",
+          "seg": "Filters"
+        }
+      ]
+    },
+    {
+      "tuid": "LOOT_COMPARATOR_CHEST_LOG_INPUT",
+      "tuv": [
+        {
+          "lang": "de-DE",
+          "seg": "Chest-Log-Eingabe"
+        },
+        {
+          "lang": "en-US",
+          "seg": "Chest log input"
+        }
+      ]
+    },
+    {
+      "tuid": "LOOT_COMPARATOR_COMPARISON",
+      "tuv": [
+        {
+          "lang": "de-DE",
+          "seg": "Vergleich"
+        },
+        {
+          "lang": "en-US",
+          "seg": "Comparison"
+        }
+      ]
+    },
+    {
+      "tuid": "LOOT_COMPARATOR_ACTIONS",
+      "tuv": [
+        {
+          "lang": "de-DE",
+          "seg": "Aktionen"
+        },
+        {
+          "lang": "en-US",
+          "seg": "Actions"
+        }
+      ]
+    },
+    {
+      "tuid": "LOOT_COMPARATOR_SAVED_STATE",
+      "tuv": [
+        {
+          "lang": "de-DE",
+          "seg": "Gespeicherter Comparator:"
+        },
+        {
+          "lang": "en-US",
+          "seg": "Saved comparator:"
         }
       ]
     },
