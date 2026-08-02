@@ -511,8 +511,8 @@
                             <Grid>
                                 <Grid.RowDefinitions>
                                     <RowDefinition Height="Auto" />
-                                    <RowDefinition Height="Auto" />
                                     <RowDefinition Height="65" />
+                                    <RowDefinition Height="Auto" />
                                     <RowDefinition Height="40" />
                                     <RowDefinition Height="40" />
                                     <RowDefinition Height="Auto" />
@@ -523,11 +523,7 @@
                                     <TextBlock Style="{StaticResource Logging.ComparatorSectionTitle}"
                                                Text="{Binding LoggingBindings.Translation.LootComparatorChestLogInput, FallbackValue=CHEST__LOG__INPUT}" />
                                 </StackPanel>
-                                <TextBlock Grid.Row="1" Margin="0,10,0,6"
-                                           Text="{Binding LoggingBindings.LootComparatorLogCountSummary, FallbackValue='0 chest files | 0 loot log files'}"
-                                           ToolTip="{Binding LoggingBindings.LootComparatorLogCountTooltip}"
-                                           Foreground="{StaticResource SolidColorBrush.Text.3}" />
-                                <Grid Grid.Row="2">
+                                <Grid Grid.Row="1" Margin="0,12,0,0">
                                     <TextBox Text="{Binding LoggingBindings.ChestLogText, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                              AcceptsReturn="True" AcceptsTab="True" TextWrapping="NoWrap"
                                              VerticalContentAlignment="Top" HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Auto" />
@@ -546,6 +542,10 @@
                                         </TextBlock.Style>
                                     </TextBlock>
                                 </Grid>
+                                <TextBlock Grid.Row="2" Margin="0,2,0,6"
+                                           Text="{Binding LoggingBindings.LootComparatorLogCountSummary, FallbackValue='0 chest files | 0 loot log files'}"
+                                           ToolTip="{Binding LoggingBindings.LootComparatorLogCountTooltip}"
+                                           Foreground="{StaticResource SolidColorBrush.Text.3}" />
                                 <Grid Grid.Row="3" Margin="0,8,0,0">
                                     <Grid.ColumnDefinitions>
                                         <ColumnDefinition Width="*" />
@@ -586,7 +586,7 @@
                                     <RowDefinition Height="Auto" />
                                     <RowDefinition Height="48" />
                                     <RowDefinition Height="Auto" />
-                                    <RowDefinition Height="36" />
+                                    <RowDefinition Height="32" />
                                     <RowDefinition Height="42" />
                                     <RowDefinition Height="42" />
                                 </Grid.RowDefinitions>

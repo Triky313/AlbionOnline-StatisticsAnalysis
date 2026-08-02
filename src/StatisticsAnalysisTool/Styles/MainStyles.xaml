@@ -749,10 +749,7 @@
                                 </VisualState>
                             </VisualStateGroup>
                         </VisualStateManager.VisualStateGroups>
-                        <ContentPresenter Margin="2"
-                            HorizontalAlignment="Center"
-                            VerticalAlignment="Center"
-                            RecognizesAccessKey="True" />
+                        <ContentPresenter Margin="2" HorizontalAlignment="Center" VerticalAlignment="Center" RecognizesAccessKey="True" />
                     </Border>
                 </ControlTemplate>
             </Setter.Value>
@@ -767,7 +764,7 @@
         <Setter Property="FocusVisualStyle" Value="{StaticResource ButtonFocusVisual}" />
         <Setter Property="MinHeight" Value="18px" />
         <Setter Property="MinWidth" Value="40px" />
-        <Setter Property="Background" Value="#3b4753" />
+        <Setter Property="Background" Value="{StaticResource SolidColorBrush.Text.5}" />
         <Setter Property="Foreground" Value="{StaticResource SolidColorBrush.Text.1}" />
         <Setter Property="Template">
             <Setter.Value>
@@ -775,10 +772,7 @@
                     <Border x:Name="Border"
                             Background="{TemplateBinding Background}"
                             TextBlock.Foreground="{TemplateBinding Foreground}">
-                        <ContentPresenter Margin="2"
-                                          HorizontalAlignment="Center"
-                                          VerticalAlignment="Center"
-                                          RecognizesAccessKey="True" />
+                        <ContentPresenter Margin="2" HorizontalAlignment="Center" VerticalAlignment="Center" RecognizesAccessKey="True" />
                     </Border>
                     <ControlTemplate.Triggers>
                         <Trigger Property="IsMouseOver" Value="True">
@@ -788,7 +782,7 @@
                             <Setter TargetName="Border" Property="Opacity" Value="0.72" />
                         </Trigger>
                         <Trigger Property="IsEnabled" Value="False">
-                            <Setter TargetName="Border" Property="Background" Value="#3b4753" />
+                            <Setter TargetName="Border" Property="Background" Value="{StaticResource SolidColorBrush.Text.6}" />
                             <Setter TargetName="Border" Property="Opacity" Value="1" />
                             <Setter Property="Foreground" Value="{StaticResource SolidColorBrush.Text.4}" />
                         </Trigger>
