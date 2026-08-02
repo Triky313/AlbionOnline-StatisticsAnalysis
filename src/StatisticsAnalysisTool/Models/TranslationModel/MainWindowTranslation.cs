@@ -31,7 +31,6 @@ public class MainWindowTranslation
     public static string Username => LocalizationController.Translation("USERNAME");
     public static string GuildCap => LocalizationController.Translation("GUILD_CAP");
     public static string Alliance => LocalizationController.Translation("ALLIANCE");
-    public static string ResetTrackingCounter => LocalizationController.Translation("RESET_TRACKING_COUNTER");
     public static string MakeSureYouHaveInstalledNpcap => LocalizationController.Translation("MAKE_SURE_YOU_HAVE_INSTALLED_NPCAP");
     public static string MapChangeReset => LocalizationController.Translation("MAP_CHANGE_RESET");
     public static string ResetBeforeCombat => LocalizationController.Translation("RESET_BEFORE_COMBAT");

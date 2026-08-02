@@ -59,10 +59,10 @@ public partial class DashboardControl
         }
     }
 
-    private void BtnTrackingReset_Click(object sender, RoutedEventArgs e)
+    private async void BtnSessionReset_Click(object sender, RoutedEventArgs e)
     {
         var trackingController = ServiceLocator.Resolve<TrackingController>();
-        trackingController?.LiveStatsTracker?.Reset();
+        await trackingController.StatisticController.ResetSessionAsync();
     }
 
     private void OpenDashboardWindow_MouseUp(object sender, MouseButtonEventArgs e)

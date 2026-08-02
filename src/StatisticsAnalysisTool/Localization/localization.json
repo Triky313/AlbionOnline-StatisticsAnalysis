@@ -47049,6 +47049,45 @@
           "seg": "Corrupted Dungeon"
         }
       ]
+    },
+    {
+      "tuid": "TIME_RANGE",
+      "tuv": [
+        {
+          "lang": "de-DE",
+          "seg": "Zeitraum"
+        },
+        {
+          "lang": "en-US",
+          "seg": "Time range"
+        }
+      ]
+    },
+    {
+      "tuid": "RESET_SESSION",
+      "tuv": [
+        {
+          "lang": "de-DE",
+          "seg": "Sitzung zurücksetzen"
+        },
+        {
+          "lang": "en-US",
+          "seg": "Reset session"
+        }
+      ]
+    },
+    {
+      "tuid": "RESET_SESSION_ON_MAP_CHANGE",
+      "tuv": [
+        {
+          "lang": "de-DE",
+          "seg": "Sitzung bei Map-Wechsel zurücksetzen"
+        },
+        {
+          "lang": "en-US",
+          "seg": "Reset session on map change"
+        }
+      ]
     }
   ]
 }

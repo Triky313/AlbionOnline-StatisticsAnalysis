@@ -56,6 +56,12 @@ public sealed class DashboardChartRangeOption
                 Name = LocalizationController.Translation("LAST_30_DAYS"),
                 BucketCount = 30,
                 UseHourlyValues = false
+            },
+            new DashboardChartRangeOption()
+            {
+                Name = LocalizationController.Translation("LAST_365_DAYS"),
+                BucketCount = 365,
+                UseHourlyValues = false
             }
         ];
     }

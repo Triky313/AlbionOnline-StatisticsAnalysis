@@ -62,6 +62,29 @@
         <Setter Property="Padding" Value="8" />
         <Setter Property="SnapsToDevicePixels" Value="True" />
     </Style>
+
+    <Style x:Key="App.FilterCard" TargetType="{x:Type Border}">
+        <Setter Property="Background" Value="{StaticResource SolidColorBrush.Background.2}" />
+        <Setter Property="BorderBrush" Value="{StaticResource SolidColorBrush.Background.4}" />
+        <Setter Property="BorderThickness" Value="1" />
+        <Setter Property="CornerRadius" Value="5" />
+        <Setter Property="Padding" Value="12,10" />
+        <Setter Property="SnapsToDevicePixels" Value="True" />
+    </Style>
+
+    <Style x:Key="App.FilterGroup" TargetType="{x:Type Border}">
+        <Setter Property="BorderBrush" Value="{StaticResource SolidColorBrush.Background.4}" />
+        <Setter Property="BorderThickness" Value="0,0,1,0" />
+        <Setter Property="Padding" Value="0,0,12,0" />
+        <Setter Property="Margin" Value="0,0,12,0" />
+    </Style>
+
+    <Style x:Key="App.FilterLabel" TargetType="{x:Type TextBlock}">
+        <Setter Property="FontSize" Value="11" />
+        <Setter Property="Foreground" Value="{StaticResource SolidColorBrush.Text.2}" />
+        <Setter Property="Margin" Value="0,0,0,5" />
+    </Style>
+
     <converters:ValidationErrorConverter x:Key="ValidationErrorConverter" />
 
     <Style x:Key="WindowChrome" TargetType="{x:Type Window}">
@@ -707,6 +730,12 @@
         </Setter>
         <!--<Style.Triggers>
             </Style.Triggers>-->
+    </Style>
+
+    <Style x:Key="App.FilterComboBox" TargetType="{x:Type ComboBox}" BasedOn="{StaticResource {x:Type ComboBox}}">
+        <Setter Property="Height" Value="32" />
+        <Setter Property="MinWidth" Value="150" />
+        <Setter Property="VerticalContentAlignment" Value="Center" />
     </Style>
 
     <Style TargetType="{x:Type ProgressBar}">

@@ -20,6 +20,7 @@ public class JoinResponseHandler(TrackingController trackingController) : Respon
     protected override async Task OnActionAsync(JoinResponse value)
     {
         trackingController.CancelLogoutDetection();
+        var hadActiveStatisticsSession = trackingController.StatisticController.HasActiveSession;
 
         SetLocalUserData(value);
         trackingController.StatisticController.StartSession(value.Username);
@@ -52,7 +53,7 @@ public class JoinResponseHandler(TrackingController trackingController) : Respon
 
         trackingController.DungeonController?.AddDungeonAsync(value.MapType, value.MapGuid, value.SourceClusterIndex, value.SourceExitPosition).ConfigureAwait(false);
 
-        ResetFameCounterByMapChangeIfActive();
+        await ResetSessionByMapChangeIfActiveAsync(hadActiveStatisticsSession);
         SetTrackingActivityText();
 
         await _mainWindowViewModel?.PlayerInformationBindings?.LoadLocalPlayerDataAsync(value.Username)!;
@@ -109,12 +110,11 @@ public class JoinResponseHandler(TrackingController trackingController) : Respon
         }
     }
 
-    private void ResetFameCounterByMapChangeIfActive()
+    private async Task ResetSessionByMapChangeIfActiveAsync(bool hadActiveStatisticsSession)
     {
-        if (_mainWindowViewModel.IsTrackingResetByMapChangeActive)
+        if (_mainWindowViewModel.IsTrackingResetByMapChangeActive && hadActiveStatisticsSession)
         {
-            var trackingController = ServiceLocator.Resolve<TrackingController>();
-            trackingController?.LiveStatsTracker?.Reset();
+            await trackingController.StatisticController.ResetSessionAsync();
         }
     }
 

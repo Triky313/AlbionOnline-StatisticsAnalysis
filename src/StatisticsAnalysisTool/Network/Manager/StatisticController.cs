@@ -52,6 +52,17 @@ public class StatisticController
 
     #region Dashboard
 
+    public bool HasActiveSession
+    {
+        get
+        {
+            lock (_syncRoot)
+            {
+                return _dashboardStatistics.GetActiveSession() != null;
+            }
+        }
+    }
+
     public void AddValue(ValueType valueType, double gainedValue, CityFaction cityFaction = CityFaction.Unknown)
     {
         if (!_trackingController.IsTrackingAllowedByMainCharacter())
@@ -166,6 +177,31 @@ public class StatisticController
         RefreshDashboardSessionFilters();
         UpdateDailyChart(true);
         Log.Information("Statistics session ended");
+        return true;
+    }
+
+    public async System.Threading.Tasks.Task<bool> ResetSessionAsync()
+    {
+        string characterName;
+        lock (_syncRoot)
+        {
+            var activeSession = _dashboardStatistics.GetActiveSession();
+            if (activeSession == null)
+            {
+                return false;
+            }
+
+            characterName = activeSession.CharacterName;
+        }
+
+        if (!EndSession(DateTime.UtcNow))
+        {
+            return false;
+        }
+
+        await SaveInFileAsync();
+        StartSession(characterName);
+        Log.Information("Statistics session reset");
         return true;
     }
 

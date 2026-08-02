@@ -93,17 +93,10 @@
                                     </Border>
                                 </Popup>
                             </Grid>
-                            <Button Height="36" MinWidth="220" IsEnabled="{Binding IsTrackingActive, FallbackValue=false}" Click="BtnTrackingReset_Click">
-                                <StackPanel Orientation="Horizontal" Margin="8,0">
-                                    <fa5:ImageAwesome Icon="Solid_Sync" Width="14" Height="14" Margin="0,0,8,0" Foreground="{StaticResource SolidColorBrush.Text.1}" />
-                                    <TextBlock Text="{Binding Translation.ResetTrackingCounter, FallbackValue=RESET_TRACKING_COUNTER}" VerticalAlignment="Center" Foreground="{StaticResource SolidColorBrush.Text.1}" />
-                                </StackPanel>
-                            </Button>
-                            <Border Width="38" Height="36" Margin="8,0,0,0" Cursor="Hand" CornerRadius="4" Background="{StaticResource SolidColorBrush.Background.2}" BorderBrush="{StaticResource SolidColorBrush.Background.4}" BorderThickness="1" Visibility="{Binding ShowOpenWindowButton, ElementName=DashboardRoot, Converter={StaticResource BooleanToVisibilityConverter}}" ToolTip="{Binding Translation.OpenExtendedDashboardWindow, FallbackValue=OPEN_EXTENDED_DASHBOARD_WINDOW}" MouseUp="OpenDashboardWindow_MouseUp">
+                            <Border Width="38" Height="36" Cursor="Hand" CornerRadius="4" Background="{StaticResource SolidColorBrush.Background.2}" BorderBrush="{StaticResource SolidColorBrush.Background.4}" BorderThickness="1" Visibility="{Binding ShowOpenWindowButton, ElementName=DashboardRoot, Converter={StaticResource BooleanToVisibilityConverter}}" ToolTip="{Binding Translation.OpenExtendedDashboardWindow, FallbackValue=OPEN_EXTENDED_DASHBOARD_WINDOW}" MouseUp="OpenDashboardWindow_MouseUp">
                                 <fa5:ImageAwesome Icon="Solid_Expand" Width="16" Height="16" Foreground="{StaticResource SolidColorBrush.Text.1}" />
                             </Border>
                         </StackPanel>
-                        <CheckBox IsChecked="{Binding IsTrackingResetByMapChangeActive}" IsEnabled="{Binding IsTrackingActive, FallbackValue=false}" Content="{Binding Translation.MapChangeReset, FallbackValue=MAP_CHANGE_RESET}" HorizontalAlignment="Right" Margin="0,9,0,0" />
                     </StackPanel>
                 </Grid>
 
@@ -113,6 +106,48 @@
                             SelectedIndex="0">
                     <TabItem Header="{Binding DashboardBindings.TranslationTitle, FallbackValue=DASHBOARD}">
                         <StackPanel Margin="0,8,0,0">
+                            <Border Style="{StaticResource App.FilterCard}" Margin="0,0,0,8">
+                                <Grid>
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="Auto" />
+                                        <ColumnDefinition Width="Auto" />
+                                        <ColumnDefinition Width="*" MinWidth="230" />
+                                        <ColumnDefinition Width="Auto" />
+                                        <ColumnDefinition Width="Auto" />
+                                    </Grid.ColumnDefinitions>
+
+                                    <Border Grid.Column="0" Style="{StaticResource App.FilterGroup}">
+                                        <StackPanel>
+                                            <TextBlock Text="{Binding DashboardBindings.TranslationTimeRange, FallbackValue=TIME_RANGE}" Style="{StaticResource App.FilterLabel}" />
+                                            <ComboBox Width="155" Style="{StaticResource App.FilterComboBox}" ItemsSource="{Binding DashboardChartRanges}" SelectedItem="{Binding SelectedDashboardChartRange, Mode=TwoWay}" DisplayMemberPath="Name" SelectionChanged="DashboardChartRange_SelectionChanged" />
+                                        </StackPanel>
+                                    </Border>
+
+                                    <Border Grid.Column="1" Style="{StaticResource App.FilterGroup}">
+                                        <StackPanel>
+                                            <TextBlock Text="{Binding DashboardBindings.TranslationContent, FallbackValue=CONTENT}" Style="{StaticResource App.FilterLabel}" />
+                                            <ComboBox Width="165" Style="{StaticResource App.FilterComboBox}" ItemsSource="{Binding DashboardContentFilters}" SelectedItem="{Binding SelectedDashboardContentFilter, Mode=TwoWay}" DisplayMemberPath="Name" SelectionChanged="DashboardMetadataFilter_SelectionChanged" />
+                                        </StackPanel>
+                                    </Border>
+
+                                    <Border Grid.Column="2" Style="{StaticResource App.FilterGroup}">
+                                        <StackPanel>
+                                            <TextBlock Text="{Binding DashboardBindings.TranslationSession, FallbackValue=SESSION}" Style="{StaticResource App.FilterLabel}" />
+                                            <ComboBox MinWidth="220" Style="{StaticResource App.FilterComboBox}" ItemsSource="{Binding DashboardSessionFilters}" SelectedItem="{Binding SelectedDashboardSessionFilter, Mode=TwoWay}" DisplayMemberPath="Name" SelectionChanged="DashboardMetadataFilter_SelectionChanged" />
+                                        </StackPanel>
+                                    </Border>
+
+                                    <CheckBox Grid.Column="3" IsChecked="{Binding IsTrackingResetByMapChangeActive}" IsEnabled="{Binding IsTrackingActive, FallbackValue=false}" Content="{Binding DashboardBindings.TranslationResetSessionOnMapChange, FallbackValue=RESET_SESSION_ON_MAP_CHANGE}" VerticalAlignment="Bottom" Margin="0,0,14,8" />
+
+                                    <Button Grid.Column="4" Height="32" MinWidth="150" VerticalAlignment="Bottom" IsEnabled="{Binding IsTrackingActive, FallbackValue=false}" Click="BtnSessionReset_Click">
+                                        <StackPanel Orientation="Horizontal" Margin="8,0">
+                                            <fa5:ImageAwesome Icon="Solid_Sync" Width="14" Height="14" Margin="0,0,8,0" Foreground="{StaticResource SolidColorBrush.Text.1}" />
+                                            <TextBlock Text="{Binding DashboardBindings.TranslationResetSession, FallbackValue=RESET_SESSION}" VerticalAlignment="Center" Foreground="{StaticResource SolidColorBrush.Text.1}" />
+                                        </StackPanel>
+                                    </Button>
+                                </Grid>
+                            </Border>
+
                             <Border Style="{StaticResource Dashboard.Section}" Margin="0,0,0,8" Visibility="{Binding DashboardBindings.IsKillDeathDashboardCategoryVisible, Converter={StaticResource BooleanToVisibilityConverter}}">
                                 <DockPanel LastChildFill="True">
                                     <Grid DockPanel.Dock="Top" Height="40" Cursor="Hand" MouseLeftButtonDown="KillDeathToggle_OnMouseLeftButtonDown">
@@ -165,20 +200,9 @@
                                         <Grid Margin="12,10,12,12">
                                             <Grid.RowDefinitions>
                                                 <RowDefinition Height="Auto" />
-                                                <RowDefinition Height="Auto" />
                                                 <RowDefinition Height="320" />
                                             </Grid.RowDefinitions>
-                                            <WrapPanel Grid.Row="0" HorizontalAlignment="Left" VerticalAlignment="Center">
-                                                <TextBlock Text="{Binding DashboardBindings.TranslationActivityChart, FallbackValue=HISTORY}" Foreground="{StaticResource SolidColorBrush.Text.1}" VerticalAlignment="Center" Margin="0,0,8,0" />
-                                                <ComboBox Width="165" Height="26" Margin="0,0,14,0" ItemsSource="{Binding DashboardChartRanges}" SelectedItem="{Binding SelectedDashboardChartRange, Mode=TwoWay}" DisplayMemberPath="Name" SelectionChanged="DashboardChartRange_SelectionChanged" />
-
-                                                <TextBlock Text="{Binding DashboardBindings.TranslationContent, FallbackValue=CONTENT}" Foreground="{StaticResource SolidColorBrush.Text.1}" VerticalAlignment="Center" Margin="0,0,8,0" />
-                                                <ComboBox Width="160" Height="26" Margin="0,0,14,0" ItemsSource="{Binding DashboardContentFilters}" SelectedItem="{Binding SelectedDashboardContentFilter, Mode=TwoWay}" DisplayMemberPath="Name" SelectionChanged="DashboardMetadataFilter_SelectionChanged" />
-
-                                                <TextBlock Text="{Binding DashboardBindings.TranslationSession, FallbackValue=SESSION}" Foreground="{StaticResource SolidColorBrush.Text.1}" VerticalAlignment="Center" Margin="0,0,8,0" />
-                                                <ComboBox Width="280" Height="26" ItemsSource="{Binding DashboardSessionFilters}" SelectedItem="{Binding SelectedDashboardSessionFilter, Mode=TwoWay}" DisplayMemberPath="Name" SelectionChanged="DashboardMetadataFilter_SelectionChanged" />
-                                            </WrapPanel>
-                                            <ItemsControl Grid.Row="1" Margin="0,8,0,4" ItemsSource="{Binding DashboardChartSeriesFilters}">
+                                            <ItemsControl Grid.Row="0" Margin="0,0,0,4" ItemsSource="{Binding DashboardChartSeriesFilters}">
                                                 <ItemsControl.ItemsPanel>
                                                     <ItemsPanelTemplate>
                                                         <WrapPanel />
@@ -195,7 +219,7 @@
                                                     </DataTemplate>
                                                 </ItemsControl.ItemTemplate>
                                             </ItemsControl>
-                                            <wpf:CartesianChart Grid.Row="2" Series="{Binding SeriesDashboardHourValues}" XAxes="{Binding XAxesDashboardHourValues}" TooltipPosition="Center" FindingStrategy="ExactMatchTakeClosest" LegendPosition="Hidden" Background="Transparent" DrawMarginFrame="{x:Null}" />
+                                            <wpf:CartesianChart Grid.Row="1" Series="{Binding SeriesDashboardHourValues}" XAxes="{Binding XAxesDashboardHourValues}" TooltipPosition="Center" FindingStrategy="ExactMatchTakeClosest" LegendPosition="Hidden" Background="Transparent" DrawMarginFrame="{x:Null}" />
                                         </Grid>
                                     </Border>
                                 </DockPanel>
