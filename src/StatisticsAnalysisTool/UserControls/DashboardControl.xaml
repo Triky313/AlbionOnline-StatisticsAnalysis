@@ -168,10 +168,16 @@
                                                 <RowDefinition Height="Auto" />
                                                 <RowDefinition Height="320" />
                                             </Grid.RowDefinitions>
-                                            <StackPanel Grid.Row="0" Orientation="Horizontal" HorizontalAlignment="Left">
+                                            <WrapPanel Grid.Row="0" HorizontalAlignment="Left" VerticalAlignment="Center">
                                                 <TextBlock Text="{Binding DashboardBindings.TranslationActivityChart, FallbackValue=HISTORY}" Foreground="{StaticResource SolidColorBrush.Text.1}" VerticalAlignment="Center" Margin="0,0,8,0" />
-                                                <ComboBox Width="170" Height="26" ItemsSource="{Binding DashboardChartRanges}" SelectedItem="{Binding SelectedDashboardChartRange, Mode=TwoWay}" DisplayMemberPath="Name" SelectionChanged="DashboardChartRange_SelectionChanged" />
-                                            </StackPanel>
+                                                <ComboBox Width="165" Height="26" Margin="0,0,14,0" ItemsSource="{Binding DashboardChartRanges}" SelectedItem="{Binding SelectedDashboardChartRange, Mode=TwoWay}" DisplayMemberPath="Name" SelectionChanged="DashboardChartRange_SelectionChanged" />
+
+                                                <TextBlock Text="{Binding DashboardBindings.TranslationContent, FallbackValue=CONTENT}" Foreground="{StaticResource SolidColorBrush.Text.1}" VerticalAlignment="Center" Margin="0,0,8,0" />
+                                                <ComboBox Width="160" Height="26" Margin="0,0,14,0" ItemsSource="{Binding DashboardContentFilters}" SelectedItem="{Binding SelectedDashboardContentFilter, Mode=TwoWay}" DisplayMemberPath="Name" SelectionChanged="DashboardMetadataFilter_SelectionChanged" />
+
+                                                <TextBlock Text="{Binding DashboardBindings.TranslationSession, FallbackValue=SESSION}" Foreground="{StaticResource SolidColorBrush.Text.1}" VerticalAlignment="Center" Margin="0,0,8,0" />
+                                                <ComboBox Width="280" Height="26" ItemsSource="{Binding DashboardSessionFilters}" SelectedItem="{Binding SelectedDashboardSessionFilter, Mode=TwoWay}" DisplayMemberPath="Name" SelectionChanged="DashboardMetadataFilter_SelectionChanged" />
+                                            </WrapPanel>
                                             <ItemsControl Grid.Row="1" Margin="0,8,0,4" ItemsSource="{Binding DashboardChartSeriesFilters}">
                                                 <ItemsControl.ItemsPanel>
                                                     <ItemsPanelTemplate>

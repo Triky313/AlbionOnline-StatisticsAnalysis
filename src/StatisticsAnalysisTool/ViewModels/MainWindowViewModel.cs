@@ -98,6 +98,10 @@ public class MainWindowViewModel : BaseViewModel
     private ObservableCollection<DashboardChartRangeOption> _dashboardChartRanges = [];
     private DashboardChartRangeOption _selectedDashboardChartRange;
     private ObservableCollection<DashboardChartSeriesFilter> _dashboardChartSeriesFilters = [];
+    private ObservableCollection<DashboardContentFilterOption> _dashboardContentFilters = [];
+    private DashboardContentFilterOption _selectedDashboardContentFilter;
+    private ObservableCollection<DashboardSessionFilterOption> _dashboardSessionFilters = [];
+    private DashboardSessionFilterOption _selectedDashboardSessionFilter;
     private DashboardBindings _dashboardBindings = new();
     private string _loggingSearchText;
     private Visibility _toolTasksVisibility = Visibility.Collapsed;
@@ -184,6 +188,7 @@ public class MainWindowViewModel : BaseViewModel
               ?? DashboardChartRanges.FirstOrDefault();
 
         DashboardChartSeriesFilters = new ObservableCollection<DashboardChartSeriesFilter>(CreateDashboardChartSeriesFilters(selectedDashboardChartSeriesFilters));
+        RefreshDashboardMetadataFilters();
     }
 
     private static IEnumerable<DashboardChartSeriesFilter> CreateDashboardChartSeriesFilters(IReadOnlyDictionary<ValueType, bool> selectedFilters)
@@ -209,6 +214,39 @@ public class MainWindowViewModel : BaseViewModel
             Brush = DashboardChartSeriesFilter.GetBrush(valueType),
             IsSelected = !selectedFilters.TryGetValue(valueType, out var isSelected) || isSelected
         };
+    }
+
+    private void RefreshDashboardMetadataFilters()
+    {
+        var selectedMapType = SelectedDashboardContentFilter?.MapType;
+
+        DashboardContentFilters = new ObservableCollection<DashboardContentFilterOption>
+        {
+            new(null, LocalizationController.Translation("ALL_CONTENT_TYPES")),
+            new(MapType.Unknown, LocalizationController.Translation("OPEN_WORLD")),
+            new(MapType.RandomDungeon, LocalizationController.Translation("DUNGEON")),
+            new(MapType.HellGate, LocalizationController.Translation("HELLGATE")),
+            new(MapType.CorruptedDungeon, LocalizationController.Translation("CORRUPTED_DUNGEON")),
+            new(MapType.Island, LocalizationController.Translation("ISLAND")),
+            new(MapType.Hideout, LocalizationController.Translation("HIDEOUT")),
+            new(MapType.Expedition, LocalizationController.Translation("EXPEDITION")),
+            new(MapType.Arena, LocalizationController.Translation("ARENA")),
+            new(MapType.Mists, LocalizationController.Translation("MISTS")),
+            new(MapType.MistsDungeon, LocalizationController.Translation("MISTS_DUNGEON")),
+            new(MapType.AbyssalDepths, LocalizationController.Translation("ABYSSALDEPTHS"))
+        };
+        SelectedDashboardContentFilter = DashboardContentFilters
+            .FirstOrDefault(x => x.MapType == selectedMapType)
+            ?? DashboardContentFilters[0];
+
+        if (DashboardSessionFilters.Count == 0)
+        {
+            DashboardSessionFilters =
+            [
+                new DashboardSessionFilterOption(null, LocalizationController.Translation("ALL_SESSIONS"))
+            ];
+            SelectedDashboardSessionFilter = DashboardSessionFilters[0];
+        }
     }
 
     private void RefreshItemCategoryTranslations()
@@ -1400,6 +1438,46 @@ public class MainWindowViewModel : BaseViewModel
         set
         {
             _dashboardChartSeriesFilters = value;
+            OnPropertyChanged();
+        }
+    }
+
+    public ObservableCollection<DashboardContentFilterOption> DashboardContentFilters
+    {
+        get => _dashboardContentFilters;
+        set
+        {
+            _dashboardContentFilters = value;
+            OnPropertyChanged();
+        }
+    }
+
+    public DashboardContentFilterOption SelectedDashboardContentFilter
+    {
+        get => _selectedDashboardContentFilter;
+        set
+        {
+            _selectedDashboardContentFilter = value;
+            OnPropertyChanged();
+        }
+    }
+
+    public ObservableCollection<DashboardSessionFilterOption> DashboardSessionFilters
+    {
+        get => _dashboardSessionFilters;
+        set
+        {
+            _dashboardSessionFilters = value;
+            OnPropertyChanged();
+        }
+    }
+
+    public DashboardSessionFilterOption SelectedDashboardSessionFilter
+    {
+        get => _selectedDashboardSessionFilter;
+        set
+        {
+            _selectedDashboardSessionFilter = value;
             OnPropertyChanged();
         }
     }

@@ -4,15 +4,17 @@ using LiveChartsCore.SkiaSharpView;
 using LiveChartsCore.SkiaSharpView.Painting;
 using Serilog;
 using SkiaSharp;
+using StatisticsAnalysisTool.Cluster;
 using StatisticsAnalysisTool.Common;
+using StatisticsAnalysisTool.Dungeon;
+using StatisticsAnalysisTool.Enumerations;
+using StatisticsAnalysisTool.Localization;
 using StatisticsAnalysisTool.Models;
-using StatisticsAnalysisTool.Properties;
 using StatisticsAnalysisTool.ViewModels;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Globalization;
-using System.IO;
 using System.Linq;
 using System.Windows;
 using System.Windows.Media;
@@ -24,7 +26,10 @@ public class StatisticController
 {
     private readonly TrackingController _trackingController;
     private readonly MainWindowViewModel _mainWindowViewModel;
-    private readonly List<ValueType> _chartValueTypes =
+    private readonly object _syncRoot = new();
+    private readonly StatisticSessionStorage _sessionStorage = new();
+    private readonly Dictionary<Guid, long> _dirtySessionVersions = [];
+    private readonly HashSet<ValueType> _chartValueTypes =
     [
         ValueType.Fame,
         ValueType.Silver,
@@ -37,37 +42,131 @@ public class StatisticController
 
     private DateTime _lastChartUpdate;
     private DashboardStatistics _dashboardStatistics = new();
-
-    public event Action OnAddValue;
+    private DashboardStatisticsAggregator _statisticsAggregator = new(new DashboardStatistics());
 
     public StatisticController(TrackingController trackingController, MainWindowViewModel mainWindowViewModel)
     {
         _trackingController = trackingController;
         _mainWindowViewModel = mainWindowViewModel;
-
-        OnAddValue += UpdateRepairCostsUi;
     }
 
     #region Dashboard
 
-    public void AddValue(ValueType valueType, double gainedValue)
+    public void AddValue(ValueType valueType, double gainedValue, CityFaction cityFaction = CityFaction.Unknown)
     {
         if (!_trackingController.IsTrackingAllowedByMainCharacter())
         {
             return;
         }
 
-        var now = DateTime.Now;
+        var nowUtc = DateTime.UtcNow;
+        var mapType = ClusterController.CurrentCluster.MapType;
+        var dungeonMode = ResolveDungeonMode(mapType);
 
-        _dashboardStatistics.Add(new DailyValues(valueType, gainedValue, now));
+        lock (_syncRoot)
+        {
+            var session = _dashboardStatistics.GetActiveSession();
+            if (session == null)
+            {
+                Log.Debug(
+                    "Statistics value discarded because no active session exists. ValueType={ValueType}",
+                    valueType);
+                return;
+            }
+
+            var statisticEntry = new StatisticEntry
+            {
+                SessionId = session.Id,
+                OccurredAtUtc = nowUtc,
+                ValueType = valueType,
+                Value = gainedValue,
+                MapType = mapType,
+                DungeonMode = dungeonMode,
+                CityFaction = cityFaction
+            };
+
+            _dashboardStatistics.Add(statisticEntry);
+            _statisticsAggregator.Add(statisticEntry);
+            MarkSessionDirtyInternal(session.Id);
+        }
 
         if (_chartValueTypes.Contains(valueType))
         {
-            _dashboardStatistics.Add(new HourlyValues(valueType, gainedValue, now));
             UpdateDailyChart();
         }
 
-        OnAddValue?.Invoke();
+        if (valueType == ValueType.RepairCosts)
+        {
+            UpdateRepairCostsUi();
+        }
+    }
+
+    public void StartSession(string characterName)
+    {
+        if (string.IsNullOrWhiteSpace(characterName) || !AppDataPaths.IsUserDataAvailable)
+        {
+            Log.Warning(
+                "Statistics session was not started because login metadata is incomplete. Character={Character}, Server={Server}",
+                characterName,
+                AppDataPaths.ActiveUserDataServerLocation);
+            return;
+        }
+
+        var nowUtc = DateTime.UtcNow;
+        var isNewSession = false;
+
+        lock (_syncRoot)
+        {
+            var previousSessionId = _dashboardStatistics.GetActiveSession()?.Id;
+            var session = _dashboardStatistics.StartSession(
+                characterName,
+                AppDataPaths.ActiveUserDataServerLocation,
+                nowUtc);
+            isNewSession = previousSessionId != session.Id;
+
+            if (isNewSession)
+            {
+                MarkSessionDirtyInternal(session.Id);
+            }
+        }
+
+        if (isNewSession)
+        {
+            _trackingController.LiveStatsTracker?.Reset();
+            _trackingController.LiveStatsTracker?.Start();
+            Log.Information(
+                "Statistics session started. Character={Character}, Server={Server}",
+                characterName,
+                AppDataPaths.ActiveUserDataServerLocation);
+        }
+
+        RefreshDashboardSessionFilters();
+    }
+
+    public bool EndSession(DateTime endedAtUtc)
+    {
+        bool wasEnded;
+        lock (_syncRoot)
+        {
+            var activeSessionId = _dashboardStatistics.GetActiveSession()?.Id;
+            wasEnded = _dashboardStatistics.EndActiveSession(endedAtUtc);
+
+            if (wasEnded && activeSessionId.HasValue)
+            {
+                MarkSessionDirtyInternal(activeSessionId.Value);
+            }
+        }
+
+        if (!wasEnded)
+        {
+            return false;
+        }
+
+        _trackingController.LiveStatsTracker?.Stop();
+        RefreshDashboardSessionFilters();
+        UpdateDailyChart(true);
+        Log.Information("Statistics session ended");
+        return true;
     }
 
     public void UpdateDailyChart(bool forceUpdate = false)
@@ -93,7 +192,7 @@ public class StatisticController
 
         var xAxes = new[]
         {
-            new Axis()
+            new Axis
             {
                 LabelsRotation = 15,
                 Labels = chartBuckets.Select(x => x.Label).ToArray()
@@ -108,20 +207,23 @@ public class StatisticController
             return;
         }
 
+        var aggregatedValues = _statisticsAggregator.AggregateChartValues(
+            chartBuckets.Select(x => x.Start).ToArray(),
+            selectedRange.UseHourlyValues,
+            _mainWindowViewModel.SelectedDashboardSessionFilter?.SessionId,
+            _mainWindowViewModel.SelectedDashboardContentFilter?.MapType,
+            null);
+
         var seriesCollection = new ObservableCollection<ISeries>();
 
         foreach (var selectedSeriesFilter in selectedSeriesFilters)
         {
-            var valuesLookup = selectedRange.UseHourlyValues
-                ? GetHourlyValuesLookup(selectedSeriesFilter.ValueType)
-                : GetDailyValuesLookup(selectedSeriesFilter.ValueType);
-
+            var valuesLookup = aggregatedValues.GetValueOrDefault(selectedSeriesFilter.ValueType) ?? [];
             var points = new ObservableCollection<ObservablePoint>();
 
             for (var i = 0; i < chartBuckets.Count; i++)
             {
-                var chartBucket = chartBuckets[i];
-                var value = valuesLookup.GetValueOrDefault(chartBucket.Start);
+                var value = valuesLookup.GetValueOrDefault(chartBuckets[i].Start);
                 points.Add(new ObservablePoint(i, value));
             }
 
@@ -142,8 +244,28 @@ public class StatisticController
 
         _mainWindowViewModel.XAxesDashboardHourValues = xAxes;
         _mainWindowViewModel.SeriesDashboardHourValues = seriesCollection;
-
         _lastChartUpdate = DateTime.Now;
+    }
+
+    private void MarkSessionDirtyInternal(Guid sessionId)
+    {
+        _dirtySessionVersions[sessionId] =
+            _dirtySessionVersions.GetValueOrDefault(sessionId) + 1;
+    }
+
+    private static DungeonMode ResolveDungeonMode(MapType mapType)
+    {
+        return mapType switch
+        {
+            MapType.RandomDungeon => DungeonData.GetDungeonMode(ClusterController.CurrentCluster.SourceClusterIndex),
+            MapType.HellGate => DungeonMode.HellGate,
+            MapType.CorruptedDungeon => DungeonMode.Corrupted,
+            MapType.Expedition => DungeonMode.Expedition,
+            MapType.Mists => DungeonMode.Mists,
+            MapType.MistsDungeon => DungeonMode.MistsDungeon,
+            MapType.AbyssalDepths => DungeonMode.AbyssalDepths,
+            _ => DungeonMode.Unknown
+        };
     }
 
     private static List<ChartBucket> CreateHourlyBuckets(int bucketCount)
@@ -175,30 +297,9 @@ public class StatisticController
         return buckets;
     }
 
-    private Dictionary<DateTime, double> GetHourlyValuesLookup(ValueType valueType)
-    {
-        return (_dashboardStatistics.HourlyValues ?? [])
-            .Where(x => x.ValueType == valueType)
-            .GroupBy(x => x.Date)
-            .ToDictionary(x => x.Key, x => x.Sum(v => v.Value));
-    }
-
-    private Dictionary<DateTime, double> GetDailyValuesLookup(ValueType valueType)
-    {
-        return (_dashboardStatistics.DailyValues ?? [])
-            .Where(x => x.ValueType == valueType)
-            .GroupBy(x => x.Date.Date)
-            .ToDictionary(x => x.Key, x => x.Sum(v => v.Value));
-    }
-
     private bool IsUpdateChartAllowed(bool forceUpdate)
     {
-        if (forceUpdate)
-        {
-            return true;
-        }
-
-        return DateTime.Now > _lastChartUpdate.AddSeconds(20);
+        return forceUpdate || DateTime.Now > _lastChartUpdate.AddSeconds(20);
     }
 
     public static SolidColorPaint GetValueTypeBrush(ValueType valueType, bool transparent)
@@ -237,15 +338,8 @@ public class StatisticController
             Label = label;
         }
 
-        public DateTime Start
-        {
-            get;
-        }
-
-        public string Label
-        {
-            get;
-        }
+        public DateTime Start { get; }
+        public string Label { get; }
     }
 
     #endregion
@@ -267,7 +361,6 @@ public class StatisticController
         _mainWindowViewModel.DashboardBindings.AverageItemPowerWhenKilling = _trackingController.EntityController.LocalUserData.AverageItemPowerWhenKilling;
         _mainWindowViewModel.DashboardBindings.AverageItemPowerOfTheKilledEnemies = _trackingController.EntityController.LocalUserData.AverageItemPowerOfTheKilledEnemies;
         _mainWindowViewModel.DashboardBindings.AverageItemPowerWhenDying = _trackingController.EntityController.LocalUserData.AverageItemPowerWhenDying;
-
         _mainWindowViewModel.DashboardBindings.LastUpdate = _trackingController.EntityController.LocalUserData.LastUpdate;
     }
 
@@ -277,32 +370,16 @@ public class StatisticController
 
     public void UpdateRepairCostsUi()
     {
-        var currentDate = DateTime.Now;
+        var now = DateTime.Now;
+        var endExclusive = now.AddTicks(1);
+        var statisticsAggregator = _statisticsAggregator;
 
-        if (_dashboardStatistics?.DailyValues == null)
-        {
-            _mainWindowViewModel.DashboardBindings.RepairCostsToday = 0;
-            _mainWindowViewModel.DashboardBindings.RepairCostsLast7Days = 0;
-            _mainWindowViewModel.DashboardBindings.RepairCostsLast30Days = 0;
-            return;
-        }
-
-        _mainWindowViewModel.DashboardBindings.RepairCostsToday = _dashboardStatistics.DailyValues
-            .Where(x => x is { ValueType: ValueType.RepairCosts }
-                        && x.Date.Year == currentDate.Year
-                        && x.Date.Month == currentDate.Month
-                        && x.Date.Day == currentDate.Day)
-            .Sum(x => FixPoint.FromFloatingPointValue(x.Value).IntegerValue);
-
-        _mainWindowViewModel.DashboardBindings.RepairCostsLast7Days = _dashboardStatistics.DailyValues
-            .Where(x => x is { ValueType: ValueType.RepairCosts }
-                        && x.Date.Ticks > currentDate.AddDays(-7).Ticks)
-            .Sum(x => FixPoint.FromFloatingPointValue(x.Value).IntegerValue);
-
-        _mainWindowViewModel.DashboardBindings.RepairCostsLast30Days = _dashboardStatistics.DailyValues
-            .Where(x => x is { ValueType: ValueType.RepairCosts }
-                        && x.Date.Ticks > currentDate.AddDays(-30).Ticks)
-            .Sum(x => FixPoint.FromFloatingPointValue(x.Value).IntegerValue);
+        _mainWindowViewModel.DashboardBindings.RepairCostsToday = FixPoint.FromFloatingPointValue(
+            statisticsAggregator.SumRepairCosts(now.Date, endExclusive)).IntegerValue;
+        _mainWindowViewModel.DashboardBindings.RepairCostsLast7Days = FixPoint.FromFloatingPointValue(
+            statisticsAggregator.SumRepairCosts(now.AddDays(-7), endExclusive)).IntegerValue;
+        _mainWindowViewModel.DashboardBindings.RepairCostsLast30Days = FixPoint.FromFloatingPointValue(
+            statisticsAggregator.SumRepairCosts(now.AddDays(-30), endExclusive)).IntegerValue;
     }
 
     #endregion
@@ -311,12 +388,23 @@ public class StatisticController
 
     public async System.Threading.Tasks.Task LoadFromFileAsync()
     {
-        _dashboardStatistics = await FileController.LoadAsync<DashboardStatistics>(
-            AppDataPaths.UserDataFile(Settings.Default.StatsFileName));
+        var loadedStatistics = await _sessionStorage.LoadAsync(DateTime.UtcNow);
 
-        _dashboardStatistics ??= new DashboardStatistics();
-        _dashboardStatistics.DailyValues ??= [];
-        _dashboardStatistics.HourlyValues ??= [];
+        lock (_syncRoot)
+        {
+            _dashboardStatistics = loadedStatistics;
+            _statisticsAggregator = new DashboardStatisticsAggregator(loadedStatistics);
+            _dirtySessionVersions.Clear();
+        }
+
+        if (_mainWindowViewModel.MainStatusBindings.IsInGame)
+        {
+            StartSession(_trackingController.EntityController.LocalUserData.Username ?? string.Empty);
+        }
+        else
+        {
+            RefreshDashboardSessionFilters();
+        }
 
         UpdateRepairCostsUi();
         UpdateDailyChart(true);
@@ -324,13 +412,84 @@ public class StatisticController
 
     public async System.Threading.Tasks.Task SaveInFileAsync()
     {
-        if (!AppDataPaths.TryEnsureUserDataDirectory())
+        DashboardStatistics statisticsSnapshot;
+        Dictionary<Guid, long> dirtySessionVersions;
+        lock (_syncRoot)
+        {
+            statisticsSnapshot = _dashboardStatistics.CreateSnapshot();
+            dirtySessionVersions = new Dictionary<Guid, long>(_dirtySessionVersions);
+        }
+
+        if (dirtySessionVersions.Count == 0)
         {
             return;
         }
 
-        await FileController.SaveAsync(_dashboardStatistics, AppDataPaths.UserDataFile(Settings.Default.StatsFileName));
-        Log.Information("Statistics saved");
+        var wasSaved = await _sessionStorage.SaveSessionsAsync(
+            statisticsSnapshot,
+            dirtySessionVersions.Keys.ToArray());
+        if (!wasSaved)
+        {
+            Log.Warning("Statistics session save was incomplete. Sessions={SessionCount}", dirtySessionVersions.Count);
+            return;
+        }
+
+        lock (_syncRoot)
+        {
+            foreach (var savedSession in dirtySessionVersions)
+            {
+                if (_dirtySessionVersions.TryGetValue(savedSession.Key, out var currentVersion)
+                    && currentVersion == savedSession.Value)
+                {
+                    _dirtySessionVersions.Remove(savedSession.Key);
+                }
+            }
+        }
+
+        Log.Information("Statistics sessions saved. Sessions={SessionCount}", dirtySessionVersions.Count);
+    }
+
+    private void RefreshDashboardSessionFilters()
+    {
+        IReadOnlyCollection<StatisticSession> sessionsSnapshot;
+        lock (_syncRoot)
+        {
+            sessionsSnapshot = _dashboardStatistics.CreateSessionSnapshot();
+        }
+
+        void ApplyFilters()
+        {
+            var selectedSessionId = _mainWindowViewModel.SelectedDashboardSessionFilter?.SessionId;
+            var filters = new List<DashboardSessionFilterOption>
+            {
+                new(null, LocalizationController.Translation("ALL_SESSIONS"))
+            };
+
+            filters.AddRange(sessionsSnapshot
+                .OrderByDescending(x => x.StartedAtUtc)
+                .Select(x => new DashboardSessionFilterOption(x.Id, CreateSessionFilterName(x))));
+
+            _mainWindowViewModel.DashboardSessionFilters = new ObservableCollection<DashboardSessionFilterOption>(filters);
+            _mainWindowViewModel.SelectedDashboardSessionFilter = filters
+                .FirstOrDefault(x => x.SessionId == selectedSessionId)
+                ?? filters[0];
+        }
+
+        var dispatcher = Application.Current?.Dispatcher;
+        if (dispatcher == null || dispatcher.CheckAccess())
+        {
+            ApplyFilters();
+            return;
+        }
+
+        _ = dispatcher.InvokeAsync(ApplyFilters);
+    }
+
+    private static string CreateSessionFilterName(StatisticSession session)
+    {
+        var activeMarker = session.EndedAtUtc.HasValue ? string.Empty : "* ";
+        var characterName = string.IsNullOrWhiteSpace(session.CharacterName) ? "?" : session.CharacterName;
+        return $"{activeMarker}{session.StartedAtUtc.ToLocalTime():g} | {characterName} | {session.ServerLocation}";
     }
 
     #endregion

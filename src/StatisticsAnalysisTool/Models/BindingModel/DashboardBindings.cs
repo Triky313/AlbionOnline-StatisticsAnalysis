@@ -714,6 +714,8 @@ public class DashboardBindings : BaseViewModel
     public static string TranslationFavor => LocalizationController.Translation("FAVOR");
     public static string TranslationResetTrackingCounter => LocalizationController.Translation("RESET_TRACKING_COUNTER");
     public static string TranslationCategory => LocalizationController.Translation("CATEGORY");
+    public static string TranslationContent => LocalizationController.Translation("CONTENT");
+    public static string TranslationSession => LocalizationController.Translation("SESSION");
     public static string TranslationToday => LocalizationController.Translation("TODAY").ToLower();
     public static string TranslationWeek => LocalizationController.Translation("WEEK").ToLower();
     public static string TranslationMonth => LocalizationController.Translation("MONTH").ToLower();

@@ -15,6 +15,7 @@ public static class AppDataPaths
     private const string UserDataAmericaDirectoryName = "UserData-AMERICA";
     private const string UserDataAsiaDirectoryName = "UserData-ASIA";
     private const string UserDataEuropeDirectoryName = "UserData-EUROPE";
+    private const string StatisticsDataDirectoryName = "Data";
     private const string TempDirectoryName = "temp";
     private const string SpellImageResourcesDirectoryName = "SpellImageResources";
     private const string LogsDirectoryName = "logs";
@@ -70,6 +71,8 @@ public static class AppDataPaths
     public static string LegacyRuntimeUserDataDirectory => LegacyRuntimeUserData;
 
     public static string UserDataDirectory => UserData;
+
+    public static string StatisticsDataDirectory => Path.Combine(UserDataDirectory, StatisticsDataDirectoryName);
 
     public static ServerLocation ActiveUserDataServerLocation => _activeUserDataServerLocation;
 
@@ -129,6 +132,17 @@ public static class AppDataPaths
         }
 
         Directory.CreateDirectory(UserDataDirectory);
+        return true;
+    }
+
+    public static bool TryEnsureStatisticsDataDirectory()
+    {
+        if (!TryEnsureUserDataDirectory())
+        {
+            return false;
+        }
+
+        Directory.CreateDirectory(StatisticsDataDirectory);
         return true;
     }
 

@@ -22,6 +22,7 @@ public class JoinResponseHandler(TrackingController trackingController) : Respon
         trackingController.CancelLogoutDetection();
 
         SetLocalUserData(value);
+        trackingController.StatisticController.StartSession(value.Username);
         _ = SetApiUserData(value);
 
         _mainWindowViewModel.MainStatusBindings.SetInGame(true);

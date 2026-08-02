@@ -150,6 +150,11 @@ public partial class DashboardControl
         RefreshDailyChart();
     }
 
+    private void DashboardMetadataFilter_SelectionChanged(object sender, SelectionChangedEventArgs e)
+    {
+        RefreshDailyChart();
+    }
+
     private void DashboardChartSeriesVisibility_Changed(object sender, RoutedEventArgs e)
     {
         RefreshDailyChart();

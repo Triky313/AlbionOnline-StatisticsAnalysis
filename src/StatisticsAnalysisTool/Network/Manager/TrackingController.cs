@@ -260,10 +260,17 @@ public class TrackingController : ITrackingController
                 if (logoutDuration >= LogoutMaximumWaitDuration || IsLogoutConfirmedByServerSilence(now, logoutStartUtc, logoutDuration))
                 {
                     _mainWindowViewModel.MainStatusBindings.SetInGame(false);
+                    var statisticsSessionEnded = StatisticController.EndSession(now);
                     if (ReferenceEquals(_logoutDetectionCancellationTokenSource, cancellationTokenSource))
                     {
                         _logoutDetectionCancellationTokenSource = null;
                     }
+
+                    if (statisticsSessionEnded)
+                    {
+                        await StatisticController.SaveInFileAsync();
+                    }
+
                     return;
                 }
 
@@ -681,7 +688,6 @@ public class TrackingController : ITrackingController
         }
 
         StatisticController?.AddValue(ValueType.RepairCosts, FixPoint.FromInternalValue(_upcomingRepairCosts).DoubleValue);
-        StatisticController?.UpdateRepairCostsUi();
     }
 
     #endregion

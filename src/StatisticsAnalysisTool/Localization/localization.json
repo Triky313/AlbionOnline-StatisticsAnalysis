@@ -46984,6 +46984,71 @@
           "seg": "已偵測到位置"
         }
       ]
+    },
+    {
+      "tuid": "CONTENT",
+      "tuv": [
+        {
+          "lang": "de-DE",
+          "seg": "Inhalt"
+        },
+        {
+          "lang": "en-US",
+          "seg": "Content"
+        }
+      ]
+    },
+    {
+      "tuid": "SESSION",
+      "tuv": [
+        {
+          "lang": "de-DE",
+          "seg": "Sitzung"
+        },
+        {
+          "lang": "en-US",
+          "seg": "Session"
+        }
+      ]
+    },
+    {
+      "tuid": "ALL_CONTENT_TYPES",
+      "tuv": [
+        {
+          "lang": "de-DE",
+          "seg": "Alle Inhalte"
+        },
+        {
+          "lang": "en-US",
+          "seg": "All content"
+        }
+      ]
+    },
+    {
+      "tuid": "ALL_SESSIONS",
+      "tuv": [
+        {
+          "lang": "de-DE",
+          "seg": "Alle Sitzungen"
+        },
+        {
+          "lang": "en-US",
+          "seg": "All sessions"
+        }
+      ]
+    },
+    {
+      "tuid": "CORRUPTED_DUNGEON",
+      "tuv": [
+        {
+          "lang": "de-DE",
+          "seg": "Korrumpierter Dungeon"
+        },
+        {
+          "lang": "en-US",
+          "seg": "Corrupted Dungeon"
+        }
+      ]
     }
   ]
 }
