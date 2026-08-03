@@ -17,19 +17,25 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Globalization;
 using System.Linq;
+using System.Threading;
 using System.Windows;
 using System.Windows.Media;
+using System.Windows.Threading;
 using ValueType = StatisticsAnalysisTool.Enumerations.ValueType;
 
 namespace StatisticsAnalysisTool.Network.Manager;
 
 public class StatisticController
 {
+    private static readonly TimeSpan DashboardChartRefreshDelay = TimeSpan.FromMilliseconds(500);
+
     private readonly TrackingController _trackingController;
     private readonly MainWindowViewModel _mainWindowViewModel;
     private readonly object _syncRoot = new();
     private readonly StatisticSessionStorage _sessionStorage = new();
     private readonly Dictionary<Guid, long> _dirtySessionVersions = [];
+    private readonly Dispatcher _uiDispatcher;
+    private readonly DispatcherTimer _dashboardChartRefreshTimer;
     private readonly HashSet<ValueType> _chartValueTypes =
     [
         ValueType.Fame,
@@ -41,7 +47,7 @@ public class StatisticController
         ValueType.Favor
     ];
 
-    private DateTime _lastChartUpdate;
+    private int _isDashboardChartRefreshSchedulingPending;
     private DashboardStatistics _dashboardStatistics = new();
     private DashboardStatisticsAggregator _statisticsAggregator = new(new DashboardStatistics());
 
@@ -49,6 +55,13 @@ public class StatisticController
     {
         _trackingController = trackingController;
         _mainWindowViewModel = mainWindowViewModel;
+        _uiDispatcher = Application.Current?.Dispatcher ?? Dispatcher.CurrentDispatcher;
+        _dashboardChartRefreshTimer = new DispatcherTimer(
+            DashboardChartRefreshDelay,
+            DispatcherPriority.Background,
+            OnDashboardChartRefreshTimerTick,
+            _uiDispatcher);
+        _dashboardChartRefreshTimer.Stop();
     }
 
     #region Dashboard
@@ -208,10 +221,21 @@ public class StatisticController
 
     public void UpdateDailyChart(bool forceUpdate = false)
     {
-        if (!IsUpdateChartAllowed(forceUpdate))
+        if (!forceUpdate)
         {
+            ScheduleDashboardChartRefresh();
             return;
         }
+
+        if (!_uiDispatcher.CheckAccess())
+        {
+            _ = _uiDispatcher.InvokeAsync(
+                () => UpdateDailyChart(true),
+                DispatcherPriority.Background);
+            return;
+        }
+
+        _dashboardChartRefreshTimer.Stop();
 
         var selectedRange = _mainWindowViewModel.SelectedDashboardChartRange;
         if (selectedRange == null)
@@ -251,7 +275,6 @@ public class StatisticController
         {
             _mainWindowViewModel.XAxesDashboardHourValues = xAxes;
             _mainWindowViewModel.SeriesDashboardHourValues = [];
-            _lastChartUpdate = DateTime.Now;
             return;
         }
 
@@ -285,7 +308,40 @@ public class StatisticController
 
         _mainWindowViewModel.XAxesDashboardHourValues = xAxes;
         _mainWindowViewModel.SeriesDashboardHourValues = seriesCollection;
-        _lastChartUpdate = DateTime.Now;
+    }
+
+    private void ScheduleDashboardChartRefresh()
+    {
+        if (_uiDispatcher.CheckAccess())
+        {
+            StartDashboardChartRefreshTimer();
+            return;
+        }
+
+        if (Interlocked.Exchange(ref _isDashboardChartRefreshSchedulingPending, 1) == 1)
+        {
+            return;
+        }
+
+        _ = _uiDispatcher.InvokeAsync(() =>
+        {
+            Interlocked.Exchange(ref _isDashboardChartRefreshSchedulingPending, 0);
+            StartDashboardChartRefreshTimer();
+        }, DispatcherPriority.Background);
+    }
+
+    private void StartDashboardChartRefreshTimer()
+    {
+        if (!_dashboardChartRefreshTimer.IsEnabled)
+        {
+            _dashboardChartRefreshTimer.Start();
+        }
+    }
+
+    private void OnDashboardChartRefreshTimerTick(object sender, EventArgs e)
+    {
+        _dashboardChartRefreshTimer.Stop();
+        UpdateDailyChart(true);
     }
 
     public void UpdateDashboardSessionTime(DateTime nowUtc)
@@ -480,11 +536,6 @@ public class StatisticController
         }
 
         return buckets;
-    }
-
-    private bool IsUpdateChartAllowed(bool forceUpdate)
-    {
-        return forceUpdate || DateTime.Now > _lastChartUpdate.AddSeconds(20);
     }
 
     public static SolidColorPaint GetValueTypeBrush(ValueType valueType, bool transparent)
