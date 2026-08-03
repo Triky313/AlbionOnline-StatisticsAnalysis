@@ -76,7 +76,7 @@
                 </Grid>
 
                 <TabControl Style="{StaticResource Dashboard.ContentTabControl}" ItemContainerStyle="{StaticResource Dashboard.ContentTabItem}" SelectedIndex="0">
-                    <TabItem Header="{Binding DashboardBindings.TranslationTitle, FallbackValue=DASHBOARD}">
+                    <TabItem Header="{Binding DashboardBindings.TranslationDashboardTitle, FallbackValue=DASHBOARD}">
                         <StackPanel Margin="0,8,0,0">
                             <UniformGrid Rows="1" Columns="6" Margin="0,0,0,8">
                                 <Border Style="{StaticResource Dashboard.SummaryCard}">
@@ -244,7 +244,7 @@
                         </StackPanel>
                     </TabItem>
 
-                    <TabItem Header="Wirtschaft">
+                    <TabItem Header="{Binding DashboardBindings.TranslationEconomyTitle, FallbackValue=ECONOMY}">
                         <Grid Margin="0,8,0,0">
                             <Grid.ColumnDefinitions>
                                 <ColumnDefinition Width="*" />
