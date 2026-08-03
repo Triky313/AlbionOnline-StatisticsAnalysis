@@ -8,6 +8,7 @@
              xmlns:fa5="http://schemas.fontawesome.com/icons/"
              xmlns:models="clr-namespace:StatisticsAnalysisTool.Models"
              xmlns:wpf="clr-namespace:LiveChartsCore.SkiaSharpView.WPF;assembly=LiveChartsCore.SkiaSharpView.WPF"
+             xmlns:glob="clr-namespace:System.Globalization;assembly=System.Runtime"
              mc:Ignorable="d"
              d:DesignHeight="1000"
              d:DesignWidth="1100"
@@ -182,6 +183,104 @@
                                     </Border>
                                 </DockPanel>
                             </Border>
+
+                            <Grid Margin="0,0,0,8">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="*" />
+                                    <ColumnDefinition Width="8" />
+                                    <ColumnDefinition Width="*" />
+                                </Grid.ColumnDefinitions>
+
+                                <Border Grid.Column="0" Style="{StaticResource Dashboard.ContentRankingCard}">
+                                    <Grid>
+                                        <Grid.RowDefinitions>
+                                            <RowDefinition Height="Auto" />
+                                            <RowDefinition Height="*" />
+                                            <RowDefinition Height="Auto" />
+                                        </Grid.RowDefinitions>
+                                        <Grid Cursor="Hand" MouseLeftButtonDown="FameContentRankingToggle_OnMouseLeftButtonDown">
+                                            <Grid.ColumnDefinitions>
+                                                <ColumnDefinition Width="Auto" />
+                                                <ColumnDefinition Width="*" />
+                                                <ColumnDefinition Width="Auto" />
+                                            </Grid.ColumnDefinitions>
+                                            <Image Source="../Resources/fame.png" Width="22" Height="22" Margin="0,0,9,0" />
+                                            <TextBlock Grid.Column="1"
+                                                       Text="{Binding DashboardBindings.TranslationTopFameSources, FallbackValue=TOP_FAME_SOURCES}"
+                                                       Style="{StaticResource Dashboard.ContentRankingTitle}" />
+                                            <fa5:ImageAwesome Grid.Column="2" Icon="{Binding DashboardBindings.FameContentRankingToggleIcon, FallbackValue=Solid_Minus}" Style="{StaticResource Dashboard.SectionToggleIcon}" />
+                                        </Grid>
+                                        <ItemsControl Grid.Row="1"
+                                                      Margin="0,10,0,0"
+                                                      Visibility="{Binding DashboardBindings.FameContentRankingVisibility}"
+                                                      ItemsSource="{Binding DashboardBindings.FameContentRanking}"
+                                                      ItemTemplate="{StaticResource Dashboard.ContentRankingItemTemplate}" />
+                                        <Border Grid.Row="2"
+                                                Margin="0,8,0,0"
+                                                Padding="0,9,0,0"
+                                                BorderBrush="{StaticResource SolidColorBrush.Background.4}"
+                                                Visibility="{Binding DashboardBindings.FameContentRankingVisibility}"
+                                                BorderThickness="0,1,0,0">
+                                            <Grid>
+                                                <Grid.ColumnDefinitions>
+                                                    <ColumnDefinition Width="*" />
+                                                    <ColumnDefinition Width="Auto" />
+                                                </Grid.ColumnDefinitions>
+                                                <TextBlock Text="{Binding DashboardBindings.TranslationTotalFame, FallbackValue=TOTAL_FAME}"
+                                                           Style="{StaticResource Dashboard.ContentRankingTotalLabel}" />
+                                                <TextBlock Grid.Column="1"
+                                                           Text="{Binding DashboardBindings.TotalFameByContent, Converter={StaticResource ShortNumberConverter}, ConverterCulture={x:Static glob:CultureInfo.CurrentCulture}, FallbackValue=0}"
+                                                           Style="{StaticResource Dashboard.ContentRankingTotalValue}" />
+                                            </Grid>
+                                        </Border>
+                                    </Grid>
+                                </Border>
+
+                                <Border Grid.Column="2" Style="{StaticResource Dashboard.ContentRankingCard}">
+                                    <Grid>
+                                        <Grid.RowDefinitions>
+                                            <RowDefinition Height="Auto" />
+                                            <RowDefinition Height="*" />
+                                            <RowDefinition Height="Auto" />
+                                        </Grid.RowDefinitions>
+                                        <Grid Cursor="Hand" MouseLeftButtonDown="SilverContentRankingToggle_OnMouseLeftButtonDown">
+                                            <Grid.ColumnDefinitions>
+                                                <ColumnDefinition Width="Auto" />
+                                                <ColumnDefinition Width="*" />
+                                                <ColumnDefinition Width="Auto" />
+                                            </Grid.ColumnDefinitions>
+                                            <Image Source="../Resources/silver.png" Width="22" Height="22" Margin="0,0,9,0" />
+                                            <TextBlock Grid.Column="1"
+                                                       Text="{Binding DashboardBindings.TranslationTopSilverSources, FallbackValue=TOP_SILVER_SOURCES}"
+                                                       Style="{StaticResource Dashboard.ContentRankingTitle}" />
+                                            <fa5:ImageAwesome Grid.Column="2" Icon="{Binding DashboardBindings.SilverContentRankingToggleIcon, FallbackValue=Solid_Minus}" Style="{StaticResource Dashboard.SectionToggleIcon}" />
+                                        </Grid>
+                                        <ItemsControl Grid.Row="1"
+                                                      Margin="0,10,0,0"
+                                                      Visibility="{Binding DashboardBindings.SilverContentRankingVisibility}"
+                                                      ItemsSource="{Binding DashboardBindings.SilverContentRanking}"
+                                                      ItemTemplate="{StaticResource Dashboard.ContentRankingItemTemplate}" />
+                                        <Border Grid.Row="2"
+                                                Margin="0,8,0,0"
+                                                Padding="0,9,0,0"
+                                                BorderBrush="{StaticResource SolidColorBrush.Background.4}"
+                                                Visibility="{Binding DashboardBindings.SilverContentRankingVisibility}"
+                                                BorderThickness="0,1,0,0">
+                                            <Grid>
+                                                <Grid.ColumnDefinitions>
+                                                    <ColumnDefinition Width="*" />
+                                                    <ColumnDefinition Width="Auto" />
+                                                </Grid.ColumnDefinitions>
+                                                <TextBlock Text="{Binding DashboardBindings.TranslationTotalSilver, FallbackValue=TOTAL_SILVER}"
+                                                           Style="{StaticResource Dashboard.ContentRankingTotalLabel}" />
+                                                <TextBlock Grid.Column="1"
+                                                           Text="{Binding DashboardBindings.TotalSilverByContent, Converter={StaticResource ShortNumberConverter}, ConverterCulture={x:Static glob:CultureInfo.CurrentCulture}, FallbackValue=0}"
+                                                           Style="{StaticResource Dashboard.ContentRankingTotalValue}" />
+                                            </Grid>
+                                        </Border>
+                                    </Grid>
+                                </Border>
+                            </Grid>
 
                             <Border Style="{StaticResource Dashboard.Section}" Margin="0,0,0,8">
                                 <DockPanel LastChildFill="True">

@@ -14,5 +14,6 @@ public sealed class StatisticEntry
     public double Value { get; set; }
     public MapType MapType { get; set; }
     public DungeonMode DungeonMode { get; set; }
+    public ClusterMode ClusterMode { get; set; }
     public CityFaction CityFaction { get; set; }
 }

@@ -3,6 +3,7 @@ using StatisticsAnalysisTool.Properties;
 using StatisticsAnalysisTool.ViewModels;
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Linq;
 using System.Windows;
 using FontAwesome5;
@@ -51,6 +52,10 @@ public class DashboardBindings : BaseViewModel
     private Visibility _repairCostsChestVisibility;
     private Visibility _killDeathStatsVisibility;
     private EFontAwesomeIcon _killDeathStatsToggleIcon;
+    private Visibility _fameContentRankingVisibility;
+    private EFontAwesomeIcon _fameContentRankingToggleIcon;
+    private Visibility _silverContentRankingVisibility;
+    private EFontAwesomeIcon _silverContentRankingToggleIcon;
     private Visibility _lootedChestsStatsVisibility;
     private EFontAwesomeIcon _lootedChestsStatsToggleIcon;
     private Visibility _reSpecStatsVisibility;
@@ -61,6 +66,8 @@ public class DashboardBindings : BaseViewModel
     private EFontAwesomeIcon _activityChartToggleIcon;
     private string _translationKillsDeaths = TranslationKillsDeaths;
     private string _summaryComparisonText = TranslationVsPreviousHour;
+    private double _totalFameByContent;
+    private double _totalSilverByContent;
 
     public DashboardBindings()
     {
@@ -68,6 +75,12 @@ public class DashboardBindings : BaseViewModel
 
         KillDeathStatsVisibility = SettingsController.CurrentSettings.IsKillDeathStatsVisible ? Visibility.Visible : Visibility.Collapsed;
         KillDeathStatsToggleIcon = SettingsController.CurrentSettings.IsKillDeathStatsVisible ? EFontAwesomeIcon.Solid_Minus : EFontAwesomeIcon.Solid_Plus;
+
+        FameContentRankingVisibility = SettingsController.CurrentSettings.IsFameContentRankingVisible ? Visibility.Visible : Visibility.Collapsed;
+        FameContentRankingToggleIcon = SettingsController.CurrentSettings.IsFameContentRankingVisible ? EFontAwesomeIcon.Solid_Minus : EFontAwesomeIcon.Solid_Plus;
+
+        SilverContentRankingVisibility = SettingsController.CurrentSettings.IsSilverContentRankingVisible ? Visibility.Visible : Visibility.Collapsed;
+        SilverContentRankingToggleIcon = SettingsController.CurrentSettings.IsSilverContentRankingVisible ? EFontAwesomeIcon.Solid_Minus : EFontAwesomeIcon.Solid_Plus;
 
         LootedChestsStatsVisibility = SettingsController.CurrentSettings.IsLootedChestsStatsVisible ? Visibility.Visible : Visibility.Collapsed;
         LootedChestsStatsToggleIcon = SettingsController.CurrentSettings.IsLootedChestsStatsVisible ? EFontAwesomeIcon.Solid_Minus : EFontAwesomeIcon.Solid_Plus;
@@ -80,7 +93,6 @@ public class DashboardBindings : BaseViewModel
 
         ActivityChartVisibility = SettingsController.CurrentSettings.IsActivityChartVisible ? Visibility.Visible : Visibility.Collapsed;
         ActivityChartToggleIcon = SettingsController.CurrentSettings.IsActivityChartVisible ? EFontAwesomeIcon.Solid_Minus : EFontAwesomeIcon.Solid_Plus;
-
     }
 
     #region Summary
@@ -91,6 +103,29 @@ public class DashboardBindings : BaseViewModel
     public DashboardSummaryMetric MightSummary { get; } = new();
     public DashboardSummaryMetric FavorSummary { get; } = new();
     public DashboardSummaryMetric SessionTimeSummary { get; } = new();
+
+    public ObservableCollection<DashboardContentRankingItem> FameContentRanking { get; } = [];
+    public ObservableCollection<DashboardContentRankingItem> SilverContentRanking { get; } = [];
+
+    public double TotalFameByContent
+    {
+        get => _totalFameByContent;
+        set
+        {
+            _totalFameByContent = value;
+            OnPropertyChanged();
+        }
+    }
+
+    public double TotalSilverByContent
+    {
+        get => _totalSilverByContent;
+        set
+        {
+            _totalSilverByContent = value;
+            OnPropertyChanged();
+        }
+    }
 
     public string SummaryComparisonText
     {
@@ -123,6 +158,48 @@ public class DashboardBindings : BaseViewModel
         set
         {
             _killDeathStatsToggleIcon = value;
+            OnPropertyChanged();
+        }
+    }
+
+    public Visibility FameContentRankingVisibility
+    {
+        get => _fameContentRankingVisibility;
+        set
+        {
+            _fameContentRankingVisibility = value;
+            SettingsController.CurrentSettings.IsFameContentRankingVisible = value == Visibility.Visible;
+            OnPropertyChanged();
+        }
+    }
+
+    public EFontAwesomeIcon FameContentRankingToggleIcon
+    {
+        get => _fameContentRankingToggleIcon;
+        set
+        {
+            _fameContentRankingToggleIcon = value;
+            OnPropertyChanged();
+        }
+    }
+
+    public Visibility SilverContentRankingVisibility
+    {
+        get => _silverContentRankingVisibility;
+        set
+        {
+            _silverContentRankingVisibility = value;
+            SettingsController.CurrentSettings.IsSilverContentRankingVisible = value == Visibility.Visible;
+            OnPropertyChanged();
+        }
+    }
+
+    public EFontAwesomeIcon SilverContentRankingToggleIcon
+    {
+        get => _silverContentRankingToggleIcon;
+        set
+        {
+            _silverContentRankingToggleIcon = value;
             OnPropertyChanged();
         }
     }
@@ -676,6 +753,10 @@ public class DashboardBindings : BaseViewModel
     public static string TranslationSession => LocalizationController.Translation("SESSION");
     public static string TranslationResetSession => LocalizationController.Translation("RESET_SESSION");
     public static string TranslationResetSessionOnMapChange => LocalizationController.Translation("RESET_SESSION_ON_MAP_CHANGE");
+    public static string TranslationTopFameSources => LocalizationController.Translation("TOP_FAME_SOURCES");
+    public static string TranslationTopSilverSources => LocalizationController.Translation("TOP_SILVER_SOURCES");
+    public static string TranslationTotalFame => LocalizationController.Translation("TOTAL_FAME");
+    public static string TranslationTotalSilver => LocalizationController.Translation("TOTAL_SILVER");
     public static string TranslationVsPreviousMinutes => LocalizationController.Translation("VS_PREVIOUS_MINUTES");
     public static string TranslationVsPreviousHour => LocalizationController.Translation("VS_PREVIOUS_HOUR");
     public static string TranslationVsPreviousHours => LocalizationController.Translation("VS_PREVIOUS_HOURS");

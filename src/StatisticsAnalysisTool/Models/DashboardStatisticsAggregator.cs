@@ -11,9 +11,9 @@ namespace StatisticsAnalysisTool.Models;
 public sealed class DashboardStatisticsAggregator
 {
     private readonly object _syncRoot = new();
-    private readonly Dictionary<(ValueType ValueType, DateTime Bucket, Guid SessionId, MapType MapType, DungeonMode DungeonMode), double> _minuteValues = new();
-    private readonly Dictionary<(ValueType ValueType, DateTime Bucket, Guid SessionId, MapType MapType, DungeonMode DungeonMode), double> _hourlyValues = new();
-    private readonly Dictionary<(ValueType ValueType, DateTime Bucket, Guid SessionId, MapType MapType, DungeonMode DungeonMode), double> _dailyValues = new();
+    private readonly Dictionary<(ValueType ValueType, DateTime Bucket, Guid SessionId, MapType MapType, DungeonMode DungeonMode, ClusterMode ClusterMode), double> _minuteValues = new();
+    private readonly Dictionary<(ValueType ValueType, DateTime Bucket, Guid SessionId, MapType MapType, DungeonMode DungeonMode, ClusterMode ClusterMode), double> _hourlyValues = new();
+    private readonly Dictionary<(ValueType ValueType, DateTime Bucket, Guid SessionId, MapType MapType, DungeonMode DungeonMode, ClusterMode ClusterMode), double> _dailyValues = new();
     private readonly List<(DateTime OccurredAtUtc, double Value)> _repairCostEntries = [];
 
     public DashboardStatisticsAggregator(DashboardStatistics statistics)
@@ -43,8 +43,7 @@ public sealed class DashboardStatisticsAggregator
         IReadOnlyCollection<DateTime> bucketStarts,
         DashboardChartRangeUnit unit,
         Guid? sessionId,
-        MapType? mapType,
-        DungeonMode? dungeonMode)
+        DashboardContentType? contentType)
     {
         var result = new Dictionary<ValueType, Dictionary<DateTime, double>>();
         if (bucketStarts == null || bucketStarts.Count == 0)
@@ -68,8 +67,7 @@ public sealed class DashboardStatisticsAggregator
             {
                 if (!validBuckets.Contains(key.Bucket)
                     || sessionId.HasValue && key.SessionId != sessionId.Value
-                    || mapType.HasValue && key.MapType != mapType.Value
-                    || dungeonMode.HasValue && key.DungeonMode != dungeonMode.Value)
+                    || !MatchesContentFilter(contentType, key.MapType, key.DungeonMode, key.ClusterMode))
                 {
                     continue;
                 }
@@ -79,6 +77,70 @@ public sealed class DashboardStatisticsAggregator
         }
 
         return result;
+    }
+
+    public Dictionary<(MapType MapType, DungeonMode DungeonMode, ClusterMode ClusterMode), double> AggregateContentValues(
+        IReadOnlyCollection<DateTime> bucketStarts,
+        DashboardChartRangeUnit unit,
+        Guid? sessionId,
+        ValueType valueType,
+        DashboardContentType? contentType = null)
+    {
+        var result = new Dictionary<(MapType MapType, DungeonMode DungeonMode, ClusterMode ClusterMode), double>();
+        if (bucketStarts == null || bucketStarts.Count == 0)
+        {
+            return result;
+        }
+
+        var validBuckets = bucketStarts.ToHashSet();
+
+        lock (_syncRoot)
+        {
+            var indexedValues = unit switch
+            {
+                DashboardChartRangeUnit.Minute => _minuteValues,
+                DashboardChartRangeUnit.Hour => _hourlyValues,
+                DashboardChartRangeUnit.Day => _dailyValues,
+                _ => _dailyValues
+            };
+
+            foreach (var (key, value) in indexedValues)
+            {
+                if (key.ValueType != valueType
+                    || !validBuckets.Contains(key.Bucket)
+                    || sessionId.HasValue && key.SessionId != sessionId.Value
+                    || !MatchesContentFilter(contentType, key.MapType, key.DungeonMode, key.ClusterMode))
+                {
+                    continue;
+                }
+
+                var contentKey = (
+                    key.MapType,
+                    key.MapType == MapType.RandomDungeon
+                        ? key.DungeonMode
+                        : DungeonMode.Unknown,
+                    key.MapType == MapType.Unknown
+                        ? key.ClusterMode
+                        : ClusterMode.Unknown);
+                result[contentKey] = result.GetValueOrDefault(contentKey) + value;
+            }
+        }
+
+        return result;
+    }
+
+    private static bool MatchesContentFilter(
+        DashboardContentType? selectedContentType,
+        MapType mapType,
+        DungeonMode dungeonMode,
+        ClusterMode clusterMode)
+    {
+        if (!selectedContentType.HasValue)
+        {
+            return true;
+        }
+
+        return DashboardContentTypeResolver.Resolve(mapType, dungeonMode, clusterMode) == selectedContentType.Value;
     }
 
     public double SumRepairCosts(DateTime localStartInclusive, DateTime localEndExclusive)
@@ -117,11 +179,11 @@ public sealed class DashboardStatisticsAggregator
     }
 
     private static void AddIndexedValue(
-        IDictionary<(ValueType ValueType, DateTime Bucket, Guid SessionId, MapType MapType, DungeonMode DungeonMode), double> values,
+        IDictionary<(ValueType ValueType, DateTime Bucket, Guid SessionId, MapType MapType, DungeonMode DungeonMode, ClusterMode ClusterMode), double> values,
         StatisticEntry entry,
         DateTime bucket)
     {
-        var key = (entry.ValueType, bucket, entry.SessionId, entry.MapType, entry.DungeonMode);
+        var key = (entry.ValueType, bucket, entry.SessionId, entry.MapType, entry.DungeonMode, entry.ClusterMode);
         var currentValue = values.TryGetValue(key, out var existingValue) ? existingValue : 0;
         values[key] = currentValue + entry.Value;
     }

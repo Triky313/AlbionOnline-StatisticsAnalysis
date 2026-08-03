@@ -214,27 +214,35 @@ public class MainWindowViewModel : BaseViewModel
         };
     }
 
+    private static DashboardContentFilterOption CreateDashboardContentFilterOption(DashboardContentType contentType)
+    {
+        return new DashboardContentFilterOption(
+            contentType,
+            LocalizationController.Translation(DashboardContentTypeResolver.GetTranslationKey(contentType)));
+    }
+
     private void RefreshDashboardMetadataFilters()
     {
-        var selectedMapType = SelectedDashboardContentFilter?.MapType;
+        var selectedContentType = SelectedDashboardContentFilter?.ContentType;
 
         DashboardContentFilters = new ObservableCollection<DashboardContentFilterOption>
         {
             new(null, LocalizationController.Translation("ALL_CONTENT_TYPES")),
-            new(MapType.Unknown, LocalizationController.Translation("OPEN_WORLD")),
-            new(MapType.RandomDungeon, LocalizationController.Translation("DUNGEON")),
-            new(MapType.HellGate, LocalizationController.Translation("HELLGATE")),
-            new(MapType.CorruptedDungeon, LocalizationController.Translation("CORRUPTED_DUNGEON")),
-            new(MapType.Island, LocalizationController.Translation("ISLAND")),
-            new(MapType.Hideout, LocalizationController.Translation("HIDEOUT")),
-            new(MapType.Expedition, LocalizationController.Translation("EXPEDITION")),
-            new(MapType.Arena, LocalizationController.Translation("ARENA")),
-            new(MapType.Mists, LocalizationController.Translation("MISTS")),
-            new(MapType.MistsDungeon, LocalizationController.Translation("MISTS_DUNGEON")),
-            new(MapType.AbyssalDepths, LocalizationController.Translation("ABYSSALDEPTHS"))
+            CreateDashboardContentFilterOption(DashboardContentType.SoloDungeon),
+            CreateDashboardContentFilterOption(DashboardContentType.StandardDungeon),
+            CreateDashboardContentFilterOption(DashboardContentType.AvalonDungeon),
+            CreateDashboardContentFilterOption(DashboardContentType.HellGate),
+            CreateDashboardContentFilterOption(DashboardContentType.CorruptedDungeon),
+            CreateDashboardContentFilterOption(DashboardContentType.Expedition),
+            CreateDashboardContentFilterOption(DashboardContentType.Mists),
+            CreateDashboardContentFilterOption(DashboardContentType.MistsDungeon),
+            CreateDashboardContentFilterOption(DashboardContentType.AbyssalDepths),
+            CreateDashboardContentFilterOption(DashboardContentType.OpenWorld),
+            CreateDashboardContentFilterOption(DashboardContentType.Arena),
+            CreateDashboardContentFilterOption(DashboardContentType.Others)
         };
         SelectedDashboardContentFilter = DashboardContentFilters
-            .FirstOrDefault(x => x.MapType == selectedMapType)
+            .FirstOrDefault(x => x.ContentType == selectedContentType)
             ?? DashboardContentFilters[0];
 
         if (DashboardSessionFilters.Count == 0)

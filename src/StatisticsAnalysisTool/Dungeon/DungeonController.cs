@@ -142,7 +142,12 @@ public sealed class DungeonController
         switch (mapType)
         {
             case MapType.RandomDungeon:
-                var dungeonMode = DungeonData.GetDungeonMode(mainMapIndex);
+                var dungeonMode = DungeonData.GetDungeonMode(
+                    mainMapIndex,
+                    ClusterController.CurrentCluster.SourceClusterIndex,
+                    ClusterController.CurrentCluster.Index,
+                    ClusterController.CurrentCluster.UniqueName,
+                    ClusterController.CurrentCluster.UniqueClusterName);
                 newDungeon = new RandomDungeonFragment((Guid) guid, mapType, dungeonMode, mainMapIndex);
                 break;
             case MapType.CorruptedDungeon:
@@ -371,6 +376,23 @@ public sealed class DungeonController
         {
             DebugConsole.WriteError(MethodBase.GetCurrentMethod()?.DeclaringType, e);
             Log.Error(e, "{message}", MethodBase.GetCurrentMethod()?.DeclaringType);
+        }
+    }
+
+    public DungeonMode GetCurrentDungeonMode()
+    {
+        var dungeons = _mainWindowViewModel.DungeonBindings.Dungeons;
+        if (dungeons is null || _currentGuid is null)
+        {
+            return DungeonMode.Unknown;
+        }
+
+        lock (dungeons)
+        {
+            var currentDungeon = dungeons.FirstOrDefault(x =>
+                x.GuidList.Contains(_currentGuid.Value)
+                && x.Status == DungeonStatus.Active);
+            return currentDungeon?.Mode ?? DungeonMode.Unknown;
         }
     }
 

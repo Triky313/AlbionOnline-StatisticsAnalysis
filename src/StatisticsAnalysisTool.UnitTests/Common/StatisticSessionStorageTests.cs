@@ -39,6 +39,7 @@ public class StatisticSessionStorageTests
 
             loadedStatistics.Sessions.Should().HaveCount(2);
             loadedStatistics.Entries.Should().HaveCount(2);
+            loadedStatistics.Entries.Should().OnlyContain(x => x.ClusterMode == ClusterMode.AvalonTunnel);
         }
         finally
         {
@@ -144,7 +145,8 @@ public class StatisticSessionStorageTests
                 ValueType = ValueType.Fame,
                 Value = 100 + i,
                 MapType = MapType.RandomDungeon,
-                DungeonMode = DungeonMode.Solo
+                DungeonMode = DungeonMode.Solo,
+                ClusterMode = ClusterMode.AvalonTunnel
             });
             statistics.EndActiveSession(start.AddHours(i).AddMinutes(30));
         }

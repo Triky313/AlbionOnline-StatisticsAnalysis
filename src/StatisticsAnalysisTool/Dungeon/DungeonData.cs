@@ -49,6 +49,20 @@ public static class DungeonData
         return DungeonMode.Unknown;
     }
 
+    public static DungeonMode GetDungeonMode(params string[] values)
+    {
+        foreach (var value in values ?? [])
+        {
+            var dungeonMode = GetDungeonMode(value);
+            if (dungeonMode != DungeonMode.Unknown)
+            {
+                return dungeonMode;
+            }
+        }
+
+        return DungeonMode.Unknown;
+    }
+
     public static Faction GetFaction(string value)
     {
         if (value.Contains("HIGHLAND_DEAD_DNG_HELL_BUFFSHRINE"))

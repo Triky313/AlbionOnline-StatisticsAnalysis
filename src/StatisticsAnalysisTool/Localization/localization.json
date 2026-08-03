@@ -47166,6 +47166,32 @@
           "seg": "vs previous days"
         }
       ]
+    },
+    {
+      "tuid": "TOP_FAME_SOURCES",
+      "tuv": [
+        {
+          "lang": "de-DE",
+          "seg": "Top-Ruhmquellen"
+        },
+        {
+          "lang": "en-US",
+          "seg": "Top Fame Sources"
+        }
+      ]
+    },
+    {
+      "tuid": "TOP_SILVER_SOURCES",
+      "tuv": [
+        {
+          "lang": "de-DE",
+          "seg": "Top-Silberquellen"
+        },
+        {
+          "lang": "en-US",
+          "seg": "Top Silver Sources"
+        }
+      ]
     }
   ]
 }

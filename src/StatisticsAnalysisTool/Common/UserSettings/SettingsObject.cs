@@ -108,6 +108,8 @@ public class SettingsObject
     public string AnotherAppToStartPath { get; set; }
     public string MainGameFolderPath { get; set; } = string.Empty;
     public bool IsKillDeathStatsVisible { get; set; } = true;
+    public bool IsFameContentRankingVisible { get; set; } = true;
+    public bool IsSilverContentRankingVisible { get; set; } = true;
     public bool IsLootedChestsStatsVisible { get; set; } = true;
     public bool IsReSpecStatsVisible { get; set; } = true;
     public bool IsRepairCostsStatsVisible { get; set; } = true;

@@ -115,6 +115,7 @@ public class DashboardStatistics
                         Value = x.Value,
                         MapType = x.MapType,
                         DungeonMode = x.DungeonMode,
+                        ClusterMode = x.ClusterMode,
                         CityFaction = x.CityFaction
                     })
                     .ToList(),

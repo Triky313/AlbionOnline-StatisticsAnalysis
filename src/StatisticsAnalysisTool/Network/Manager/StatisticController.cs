@@ -28,6 +28,7 @@ namespace StatisticsAnalysisTool.Network.Manager;
 public class StatisticController
 {
     private static readonly TimeSpan DashboardChartRefreshDelay = TimeSpan.FromMilliseconds(500);
+    private const int DashboardContentRankingLimit = 8;
 
     private readonly TrackingController _trackingController;
     private readonly MainWindowViewModel _mainWindowViewModel;
@@ -107,6 +108,7 @@ public class StatisticController
                 Value = gainedValue,
                 MapType = mapType,
                 DungeonMode = dungeonMode,
+                ClusterMode = ClusterController.CurrentCluster.ClusterMode,
                 CityFaction = cityFaction
             };
 
@@ -267,9 +269,9 @@ public class StatisticController
             aggregationBucketStarts,
             selectedRange.Unit,
             _mainWindowViewModel.SelectedDashboardSessionFilter?.SessionId,
-            _mainWindowViewModel.SelectedDashboardContentFilter?.MapType,
-            null);
+            _mainWindowViewModel.SelectedDashboardContentFilter?.ContentType);
         UpdateDashboardSummary(selectedRange, chartBuckets, aggregatedValues);
+        UpdateDashboardContentRankings(selectedRange, currentRangeBucketStarts);
 
         if (selectedSeriesFilters.Count == 0)
         {
@@ -412,6 +414,76 @@ public class StatisticController
         UpdateDashboardSessionTime(selectedRange, chartBuckets[0].Start, DateTime.UtcNow);
     }
 
+    private void UpdateDashboardContentRankings(
+        DashboardChartRangeOption selectedRange,
+        IReadOnlyCollection<DateTime> currentRangeBucketStarts)
+    {
+        var sessionId = _mainWindowViewModel.SelectedDashboardSessionFilter?.SessionId;
+        var contentType = _mainWindowViewModel.SelectedDashboardContentFilter?.ContentType;
+        var fameValues = _statisticsAggregator.AggregateContentValues(
+            currentRangeBucketStarts,
+            selectedRange.Unit,
+            sessionId,
+            ValueType.Fame,
+            contentType);
+        var silverValues = _statisticsAggregator.AggregateContentValues(
+            currentRangeBucketStarts,
+            selectedRange.Unit,
+            sessionId,
+            ValueType.Silver,
+            contentType);
+
+        UpdateDashboardContentRanking(
+            _mainWindowViewModel.DashboardBindings.FameContentRanking,
+            fameValues,
+            value => _mainWindowViewModel.DashboardBindings.TotalFameByContent = value);
+        UpdateDashboardContentRanking(
+            _mainWindowViewModel.DashboardBindings.SilverContentRanking,
+            silverValues,
+            value => _mainWindowViewModel.DashboardBindings.TotalSilverByContent = value);
+    }
+
+    private static void UpdateDashboardContentRanking(
+        ObservableCollection<DashboardContentRankingItem> ranking,
+        IReadOnlyDictionary<(MapType MapType, DungeonMode DungeonMode, ClusterMode ClusterMode), double> contentValues,
+        Action<double> updateTotal)
+    {
+        var valuesByContent = contentValues
+            .Where(x => x.Value > 0)
+            .GroupBy(x => DashboardContentTypeResolver.Resolve(
+                x.Key.MapType,
+                x.Key.DungeonMode,
+                x.Key.ClusterMode))
+            .ToDictionary(x => x.Key, x => x.Sum(value => value.Value));
+        var total = valuesByContent.Values.Sum();
+        var topValues = valuesByContent
+            .OrderByDescending(x => x.Value)
+            .Take(DashboardContentRankingLimit)
+            .ToList();
+        var highestValue = topValues.FirstOrDefault().Value;
+
+        ranking.Clear();
+        updateTotal(total);
+
+        foreach (var (contentType, value) in topValues)
+        {
+            var sharePercentage = total > 0 ? value / total * 100 : 0;
+            var barPercentage = highestValue > 0 ? value / highestValue * 100 : 0;
+            ranking.Add(new DashboardContentRankingItem(
+                LocalizationController.Translation(DashboardContentTypeResolver.GetTranslationKey(contentType)),
+                value,
+                sharePercentage,
+                barPercentage,
+                ResolveContentBrush(contentType)));
+        }
+    }
+
+    private static Brush ResolveContentBrush(DashboardContentType contentType)
+    {
+        var resourceKey = DashboardContentTypeResolver.GetBrushResourceKey(contentType);
+        return Application.Current?.TryFindResource(resourceKey) as Brush ?? Brushes.Gray;
+    }
+
     private static void UpdateDashboardSummaryMetric(
         DashboardSummaryMetric metric,
         IReadOnlyDictionary<ValueType, Dictionary<DateTime, double>> aggregatedValues,
@@ -501,19 +573,37 @@ public class StatisticController
             _dirtySessionVersions.GetValueOrDefault(sessionId) + 1;
     }
 
-    private static DungeonMode ResolveDungeonMode(MapType mapType)
+    private DungeonMode ResolveDungeonMode(MapType mapType)
     {
-        return mapType switch
+        if (mapType != MapType.RandomDungeon)
         {
-            MapType.RandomDungeon => DungeonData.GetDungeonMode(ClusterController.CurrentCluster.SourceClusterIndex),
-            MapType.HellGate => DungeonMode.HellGate,
-            MapType.CorruptedDungeon => DungeonMode.Corrupted,
-            MapType.Expedition => DungeonMode.Expedition,
-            MapType.Mists => DungeonMode.Mists,
-            MapType.MistsDungeon => DungeonMode.MistsDungeon,
-            MapType.AbyssalDepths => DungeonMode.AbyssalDepths,
-            _ => DungeonMode.Unknown
-        };
+            return mapType switch
+            {
+                MapType.HellGate => DungeonMode.HellGate,
+                MapType.CorruptedDungeon => DungeonMode.Corrupted,
+                MapType.Expedition => DungeonMode.Expedition,
+                MapType.Mists => DungeonMode.Mists,
+                MapType.MistsDungeon => DungeonMode.MistsDungeon,
+                MapType.AbyssalDepths => DungeonMode.AbyssalDepths,
+                _ => DungeonMode.Unknown
+            };
+        }
+
+        var currentDungeonMode = _trackingController.DungeonController.GetCurrentDungeonMode();
+        if (currentDungeonMode is DungeonMode.Solo or DungeonMode.Standard or DungeonMode.Avalon)
+        {
+            return currentDungeonMode;
+        }
+
+        var detectedDungeonMode = DungeonData.GetDungeonMode(
+            ClusterController.CurrentCluster.SourceClusterIndex,
+            ClusterController.CurrentCluster.Index,
+            ClusterController.CurrentCluster.UniqueName,
+            ClusterController.CurrentCluster.UniqueClusterName);
+
+        return detectedDungeonMode is DungeonMode.Solo or DungeonMode.Standard or DungeonMode.Avalon
+            ? detectedDungeonMode
+            : DungeonMode.Unknown;
     }
 
     private static List<ChartBucket> CreateChartBuckets(DashboardChartRangeOption selectedRange)

@@ -208,6 +208,93 @@
         <Setter Property="VerticalAlignment" Value="Center" />
     </Style>
 
+    <Style x:Key="Dashboard.ContentRankingCard" TargetType="{x:Type Border}" BasedOn="{StaticResource Dashboard.Section}">
+        <Setter Property="Padding" Value="13,11,13,12" />
+    </Style>
+
+    <Style x:Key="Dashboard.ContentRankingTitle" TargetType="{x:Type TextBlock}">
+        <Setter Property="FontSize" Value="16" />
+        <Setter Property="FontWeight" Value="SemiBold" />
+        <Setter Property="Foreground" Value="{StaticResource SolidColorBrush.Text.1}" />
+        <Setter Property="VerticalAlignment" Value="Center" />
+        <Setter Property="TextTrimming" Value="CharacterEllipsis" />
+    </Style>
+
+    <Style x:Key="Dashboard.ContentRankingName" TargetType="{x:Type TextBlock}">
+        <Setter Property="FontSize" Value="12" />
+        <Setter Property="Foreground" Value="{StaticResource SolidColorBrush.Text.3}" />
+        <Setter Property="VerticalAlignment" Value="Center" />
+        <Setter Property="TextTrimming" Value="CharacterEllipsis" />
+    </Style>
+
+    <Style x:Key="Dashboard.ContentRankingValue" TargetType="{x:Type TextBlock}">
+        <Setter Property="FontSize" Value="12" />
+        <Setter Property="Foreground" Value="{StaticResource SolidColorBrush.Text.2}" />
+        <Setter Property="VerticalAlignment" Value="Center" />
+    </Style>
+
+    <Style x:Key="Dashboard.ContentRankingBar" TargetType="{x:Type ProgressBar}">
+        <Setter Property="Height" Value="5" />
+        <Setter Property="Minimum" Value="0" />
+        <Setter Property="Maximum" Value="100" />
+        <Setter Property="Background" Value="{StaticResource SolidColorBrush.Background.4}" />
+        <Setter Property="SnapsToDevicePixels" Value="True" />
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="{x:Type ProgressBar}">
+                    <Grid x:Name="TemplateRoot">
+                        <Border x:Name="PART_Track"
+                                Background="{TemplateBinding Background}"
+                                CornerRadius="2" />
+                        <Border x:Name="PART_Indicator"
+                                HorizontalAlignment="Left"
+                                Background="{TemplateBinding Foreground}"
+                                CornerRadius="2" />
+                    </Grid>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+    <Style x:Key="Dashboard.ContentRankingTotalLabel" TargetType="{x:Type TextBlock}">
+        <Setter Property="FontSize" Value="13" />
+        <Setter Property="Foreground" Value="{StaticResource SolidColorBrush.Text.2}" />
+        <Setter Property="VerticalAlignment" Value="Center" />
+    </Style>
+
+    <Style x:Key="Dashboard.ContentRankingTotalValue" TargetType="{x:Type TextBlock}">
+        <Setter Property="FontSize" Value="20" />
+        <Setter Property="FontWeight" Value="SemiBold" />
+        <Setter Property="Foreground" Value="{StaticResource SolidColorBrush.Accent.Blue.2}" />
+        <Setter Property="HorizontalAlignment" Value="Right" />
+        <Setter Property="VerticalAlignment" Value="Center" />
+    </Style>
+
+    <DataTemplate x:Key="Dashboard.ContentRankingItemTemplate" DataType="{x:Type models:DashboardContentRankingItem}">
+        <Grid Height="36">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="21" />
+                <RowDefinition Height="7" />
+            </Grid.RowDefinitions>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="3*" />
+                <ColumnDefinition Width="2*" />
+            </Grid.ColumnDefinitions>
+            <TextBlock Text="{Binding Name}" Style="{StaticResource Dashboard.ContentRankingName}" />
+            <StackPanel Grid.Column="1" Orientation="Horizontal" HorizontalAlignment="Right">
+                <TextBlock Text="{Binding Value, Converter={StaticResource ShortNumberConverter}, ConverterCulture={x:Static gl:CultureInfo.CurrentCulture}, FallbackValue=0}" Style="{StaticResource Dashboard.ContentRankingValue}" />
+                <TextBlock Text=" (" Style="{StaticResource Dashboard.ContentRankingValue}" />
+                <TextBlock Text="{Binding SharePercentage, StringFormat='{}{0:N1}%'}" Style="{StaticResource Dashboard.ContentRankingValue}" />
+                <TextBlock Text=")" Style="{StaticResource Dashboard.ContentRankingValue}" />
+            </StackPanel>
+            <ProgressBar Grid.Row="1"
+                         Grid.ColumnSpan="2"
+                         Value="{Binding BarPercentage, Mode=OneWay}"
+                         Foreground="{Binding Brush}"
+                         Style="{StaticResource Dashboard.ContentRankingBar}" />
+        </Grid>
+    </DataTemplate>
+
     <DataTemplate x:Key="KillDeathStatsTemplate" DataType="{x:Type bindingModel:DashboardBindings}">
         <Grid>
             <Grid.RowDefinitions>
