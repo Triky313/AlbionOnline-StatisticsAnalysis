@@ -115,6 +115,8 @@ public class DashboardBindings : BaseViewModel
     public DashboardSummaryMetric SessionTimeSummary { get; } = new();
     public DashboardSummaryMetric FactionPointsSummary { get; } = new();
     public DashboardSummaryMetric FactionStandingSummary { get; } = new();
+    public DashboardSummaryMetric EconomyReSpecSummary { get; } = new();
+    public DashboardSummaryMetric RepairCostsSummary { get; } = new();
 
     public IReadOnlyList<DashboardFactionOption> FactionOptions { get; } =
     [
@@ -746,6 +748,76 @@ public class DashboardBindings : BaseViewModel
 
     #region Repair costs
 
+    public double ReSpecSilverCost
+    {
+        get;
+        set
+        {
+            field = value;
+            OnPropertyChanged();
+        }
+    }
+
+    public double AverageReSpecSilverCostPerSession
+    {
+        get;
+        set
+        {
+            field = value;
+            OnPropertyChanged();
+        }
+    }
+
+    public double SpentReSpec
+    {
+        get;
+        set
+        {
+            field = value;
+            OnPropertyChanged();
+        }
+    }
+
+    public Visibility SpentReSpecVisibility
+    {
+        get;
+        set
+        {
+            field = value;
+            OnPropertyChanged();
+        }
+    } = Visibility.Collapsed;
+
+    public int ReSpecDetailColumnCount
+    {
+        get;
+        set
+        {
+            field = value;
+            OnPropertyChanged();
+        }
+    } = 2;
+
+    public double AverageRepairCostPerSession
+    {
+        get;
+        set
+        {
+            field = value;
+            OnPropertyChanged();
+        }
+    }
+
+    public double HighestRepairCost
+    {
+        get;
+        set
+        {
+            field = value;
+            OnPropertyChanged();
+        }
+    }
+
     public long RepairCostsToday
     {
         get => _repairCostsToday;
@@ -845,5 +917,10 @@ public class DashboardBindings : BaseViewModel
     public static string TranslationRepairCosts => LocalizationController.Translation("REPAIR_COSTS");
     public static string TranslationActivityChart => LocalizationController.Translation("HISTORY");
     public static string TranslationFactionPoints => LocalizationController.Translation("FACTION_POINTS");
+    public static string TranslationSilverSpentOnReSpec => LocalizationController.Translation("SILVER_SPENT_ON_RESPEC");
+    public static string TranslationAverageReSpecSilverCostPerSession => LocalizationController.Translation("AVERAGE_RESPEC_SILVER_COST_PER_SESSION");
+    public static string TranslationSpentReSpec => LocalizationController.Translation("SPENT_RESPEC");
+    public static string TranslationAverageRepairCostPerSession => LocalizationController.Translation("AVERAGE_REPAIR_COST_PER_SESSION");
+    public static string TranslationHighestRepairCost => LocalizationController.Translation("HIGHEST_REPAIR_COST");
     public static string TranslationFactionStanding => LocalizationController.Translation("FACTION_STANDING");
 }

@@ -230,6 +230,19 @@
         <Setter Property="VerticalAlignment" Value="Center" />
     </Style>
 
+    <Style x:Key="Dashboard.EconomySummaryCard" TargetType="{x:Type Border}" BasedOn="{StaticResource Dashboard.SummaryCard}">
+        <Setter Property="MinWidth" Value="0" />
+        <Setter Property="Margin" Value="0,0,0,8" />
+        <Setter Property="Background" Value="{StaticResource SolidColorBrush.Background.3}" />
+    </Style>
+
+    <Style x:Key="Dashboard.EconomyDetailCard" TargetType="{x:Type Border}" BasedOn="{StaticResource Dashboard.Card}">
+        <Setter Property="MinHeight" Value="62" />
+        <Setter Property="Margin" Value="0,0,6,0" />
+        <Setter Property="Padding" Value="9,7" />
+        <Setter Property="Background" Value="{StaticResource SolidColorBrush.Background.3}" />
+    </Style>
+
     <Style x:Key="Dashboard.SessionDeleteButton"
            TargetType="{x:Type Button}"
            BasedOn="{StaticResource Style.Button.Base}">
@@ -465,84 +478,99 @@
     </DataTemplate>
 
     <DataTemplate x:Key="SilverCostForReSpecTemplate" DataType="{x:Type bindingModel:DashboardBindings}">
-        <Grid>
-            <Grid.RowDefinitions>
-                <RowDefinition Height="Auto" />
-                <RowDefinition Height="Auto" />
-                <RowDefinition Height="Auto" />
-            </Grid.RowDefinitions>
-            <Grid Grid.Row="0" Margin="2,6">
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="*" />
-                    <ColumnDefinition Width="Auto" />
-                </Grid.ColumnDefinitions>
-                <TextBlock Text="{Binding TranslationPaidSilverForReSpecThisSession, FallbackValue=PAID_SILVER_FOR_RESPEC_THIS_SESSION}" Style="{StaticResource Dashboard.CostLabel}" Margin="0,0,8,0" />
-                <StackPanel Grid.Column="1" Orientation="Horizontal" VerticalAlignment="Center">
-                    <Image Source="../Resources/silver.png" Height="16" Width="16" Margin="0,0,5,0" />
-                    <TextBlock Text="{Binding TotalSilverCostForReSpecInSession, StringFormat='{}-{0:N0}', FallbackValue='-0'}" Style="{StaticResource Dashboard.CostValue}" />
-                </StackPanel>
-            </Grid>
-            <Separator Grid.Row="1" Margin="0,4" Background="{StaticResource SolidColorBrush.Background.4}" />
-            <Grid Grid.Row="2" Margin="2,6">
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="*" />
-                    <ColumnDefinition Width="Auto" />
-                </Grid.ColumnDefinitions>
-                <TextBlock Text="{Binding TranslationPaidSilverForReSpecPerHour, FallbackValue=PAID_SILVER_FOR_RESPEC_PER_HOUR}" Style="{StaticResource Dashboard.CostLabel}" Margin="0,0,8,0" />
-                <StackPanel Grid.Column="1" Orientation="Horizontal" VerticalAlignment="Center">
-                    <Image Source="../Resources/silver.png" Height="16" Width="16" Margin="0,0,5,0" />
-                    <TextBlock Text="-" Style="{StaticResource Dashboard.CostValue}" />
-                    <TextBlock Text="{Binding SilverCostForReSpecHour, Converter={StaticResource ValuePerHourConverter}, FallbackValue='0/h'}" Style="{StaticResource Dashboard.CostValue}" />
-                </StackPanel>
-            </Grid>
-        </Grid>
+        <StackPanel>
+            <Border Style="{StaticResource Dashboard.EconomySummaryCard}">
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="Auto" />
+                        <ColumnDefinition Width="*" />
+                    </Grid.ColumnDefinitions>
+                    <Image Source="../Resources/respec.png" Width="24" Height="24" Style="{StaticResource Dashboard.SummaryImage}" />
+                    <StackPanel Grid.Column="1">
+                        <TextBlock Text="{Binding TranslationReSpec, FallbackValue=RESPEC}" Style="{StaticResource Dashboard.SummaryTitle}" />
+                        <ContentControl Content="{Binding EconomyReSpecSummary}"
+                                        ContentTemplate="{StaticResource Dashboard.SummaryMetricTemplate}"
+                                        HorizontalContentAlignment="Stretch" />
+                    </StackPanel>
+                </Grid>
+            </Border>
+
+            <UniformGrid Columns="{Binding ReSpecDetailColumnCount}">
+                <Border Style="{StaticResource Dashboard.EconomyDetailCard}">
+                    <StackPanel>
+                        <TextBlock Text="{Binding TranslationSilverSpentOnReSpec, FallbackValue=SILVER_SPENT_ON_RESPEC}" Style="{StaticResource Dashboard.CostLabel}" />
+                        <StackPanel Orientation="Horizontal" Margin="0,4,0,0">
+                            <Image Source="../Resources/silver.png" Width="16" Height="16" Margin="0,0,5,0" />
+                            <TextBlock Text="{Binding ReSpecSilverCost, Converter={StaticResource ShortNumberConverter}, ConverterCulture={x:Static gl:CultureInfo.CurrentCulture}, FallbackValue=0}"
+                                       Style="{StaticResource Dashboard.CostValue}" />
+                        </StackPanel>
+                    </StackPanel>
+                </Border>
+                <Border Style="{StaticResource Dashboard.EconomyDetailCard}">
+                    <StackPanel>
+                        <TextBlock Text="{Binding TranslationAverageReSpecSilverCostPerSession, FallbackValue=AVERAGE_RESPEC_SILVER_COST_PER_SESSION}" Style="{StaticResource Dashboard.CostLabel}" />
+                        <StackPanel Orientation="Horizontal" Margin="0,4,0,0">
+                            <Image Source="../Resources/silver.png" Width="16" Height="16" Margin="0,0,5,0" />
+                            <TextBlock Text="{Binding AverageReSpecSilverCostPerSession, Converter={StaticResource ShortNumberConverter}, ConverterCulture={x:Static gl:CultureInfo.CurrentCulture}, FallbackValue=0}"
+                                       Style="{StaticResource Dashboard.CostValue}" />
+                        </StackPanel>
+                    </StackPanel>
+                </Border>
+                <Border Style="{StaticResource Dashboard.EconomyDetailCard}" Visibility="{Binding SpentReSpecVisibility}">
+                    <StackPanel>
+                        <TextBlock Text="{Binding TranslationSpentReSpec, FallbackValue=SPENT_RESPEC}" Style="{StaticResource Dashboard.CostLabel}" />
+                        <StackPanel Orientation="Horizontal" Margin="0,4,0,0">
+                            <Image Source="../Resources/respec.png" Width="16" Height="16" Margin="0,0,5,0" />
+                            <TextBlock Text="{Binding SpentReSpec, Converter={StaticResource ShortNumberConverter}, ConverterCulture={x:Static gl:CultureInfo.CurrentCulture}, FallbackValue=0}"
+                                       Style="{StaticResource Dashboard.CostValue}" />
+                        </StackPanel>
+                    </StackPanel>
+                </Border>
+            </UniformGrid>
+        </StackPanel>
     </DataTemplate>
 
     <DataTemplate x:Key="RepairCostsTemplate" DataType="{x:Type bindingModel:DashboardBindings}">
-        <Grid>
-            <Grid.RowDefinitions>
-                <RowDefinition Height="Auto" />
-                <RowDefinition Height="Auto" />
-                <RowDefinition Height="Auto" />
-                <RowDefinition Height="Auto" />
-                <RowDefinition Height="Auto" />
-            </Grid.RowDefinitions>
-            <Grid Grid.Row="0" Margin="2,6">
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="*" />
-                    <ColumnDefinition Width="Auto" />
-                </Grid.ColumnDefinitions>
-                <TextBlock Text="{Binding TranslationRepairCostsToday, FallbackValue=REPAIR_COSTS_TODAY}" Style="{StaticResource Dashboard.CostLabel}" Margin="0,0,8,0" />
-                <StackPanel Grid.Column="1" Orientation="Horizontal" VerticalAlignment="Center">
-                    <Image Source="../Resources/silver.png" Height="16" Width="16" Margin="0,0,5,0" />
-                    <TextBlock Text="{Binding RepairCostsToday, Converter={StaticResource ShortNumberConverter}, ConverterCulture={x:Static gl:CultureInfo.CurrentCulture}, StringFormat='{}-{0}', FallbackValue='-0'}" Style="{StaticResource Dashboard.CostValue}" />
-                </StackPanel>
-            </Grid>
-            <Separator Grid.Row="1" Margin="0,4" Background="{StaticResource SolidColorBrush.Background.4}" />
-            <Grid Grid.Row="2" Margin="2,6">
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="*" />
-                    <ColumnDefinition Width="Auto" />
-                </Grid.ColumnDefinitions>
-                <TextBlock Text="{Binding TranslationRepairCostsLast7Days, FallbackValue=REPAIR_COSTS_LAST_7_DAYS}" Style="{StaticResource Dashboard.CostLabel}" Margin="0,0,8,0" />
-                <StackPanel Grid.Column="1" Orientation="Horizontal" VerticalAlignment="Center">
-                    <Image Source="../Resources/silver.png" Height="16" Width="16" Margin="0,0,5,0" />
-                    <TextBlock Text="{Binding RepairCostsLast7Days, Converter={StaticResource ShortNumberConverter}, ConverterCulture={x:Static gl:CultureInfo.CurrentCulture}, StringFormat='{}-{0}', FallbackValue='-0'}" Style="{StaticResource Dashboard.CostValue}" />
-                </StackPanel>
-            </Grid>
-            <Separator Grid.Row="3" Margin="0,4" Background="{StaticResource SolidColorBrush.Background.4}" />
-            <Grid Grid.Row="4" Margin="2,6">
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="*" />
-                    <ColumnDefinition Width="Auto" />
-                </Grid.ColumnDefinitions>
-                <TextBlock Text="{Binding TranslationRepairCostsLast30Days, FallbackValue=REPAIR_COSTS_LAST_30_DAYS}" Style="{StaticResource Dashboard.CostLabel}" Margin="0,0,8,0" />
-                <StackPanel Grid.Column="1" Orientation="Horizontal" VerticalAlignment="Center">
-                    <Image Source="../Resources/silver.png" Height="16" Width="16" Margin="0,0,5,0" />
-                    <TextBlock Text="{Binding RepairCostsLast30Days, Converter={StaticResource ShortNumberConverter}, ConverterCulture={x:Static gl:CultureInfo.CurrentCulture}, StringFormat='{}-{0}', FallbackValue='-0'}" Style="{StaticResource Dashboard.CostValue}" />
-                </StackPanel>
-            </Grid>
-        </Grid>
+        <StackPanel>
+            <Border Style="{StaticResource Dashboard.EconomySummaryCard}">
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="Auto" />
+                        <ColumnDefinition Width="*" />
+                    </Grid.ColumnDefinitions>
+                    <Image Source="/Assets/repair_cross.png" Width="26" Height="26" Style="{StaticResource Dashboard.SummaryImage}" />
+                    <StackPanel Grid.Column="1">
+                        <TextBlock Text="{Binding TranslationRepairCosts, FallbackValue=REPAIR_COSTS}" Style="{StaticResource Dashboard.SummaryTitle}" />
+                        <ContentControl Content="{Binding RepairCostsSummary}"
+                                        ContentTemplate="{StaticResource Dashboard.SummaryMetricTemplate}"
+                                        HorizontalContentAlignment="Stretch" />
+                    </StackPanel>
+                </Grid>
+            </Border>
+
+            <UniformGrid Columns="2">
+                <Border Style="{StaticResource Dashboard.EconomyDetailCard}">
+                    <StackPanel>
+                        <TextBlock Text="{Binding TranslationAverageRepairCostPerSession, FallbackValue=AVERAGE_REPAIR_COST_PER_SESSION}" Style="{StaticResource Dashboard.CostLabel}" />
+                        <StackPanel Orientation="Horizontal" Margin="0,4,0,0">
+                            <Image Source="../Resources/silver.png" Width="16" Height="16" Margin="0,0,5,0" />
+                            <TextBlock Text="{Binding AverageRepairCostPerSession, Converter={StaticResource ShortNumberConverter}, ConverterCulture={x:Static gl:CultureInfo.CurrentCulture}, FallbackValue=0}"
+                                       Style="{StaticResource Dashboard.CostValue}" />
+                        </StackPanel>
+                    </StackPanel>
+                </Border>
+                <Border Style="{StaticResource Dashboard.EconomyDetailCard}">
+                    <StackPanel>
+                        <TextBlock Text="{Binding TranslationHighestRepairCost, FallbackValue=HIGHEST_REPAIR_COST}" Style="{StaticResource Dashboard.CostLabel}" />
+                        <StackPanel Orientation="Horizontal" Margin="0,4,0,0">
+                            <Image Source="../Resources/silver.png" Width="16" Height="16" Margin="0,0,5,0" />
+                            <TextBlock Text="{Binding HighestRepairCost, Converter={StaticResource ShortNumberConverter}, ConverterCulture={x:Static gl:CultureInfo.CurrentCulture}, FallbackValue=0}"
+                                       Style="{StaticResource Dashboard.CostValue}" />
+                        </StackPanel>
+                    </StackPanel>
+                </Border>
+            </UniformGrid>
+        </StackPanel>
     </DataTemplate>
 
     <Style x:Key="Dashboard.ChestCard" TargetType="{x:Type Border}" BasedOn="{StaticResource Dashboard.Card}">

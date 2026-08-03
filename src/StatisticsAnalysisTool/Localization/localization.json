@@ -47257,6 +47257,71 @@
           "seg": "Top Silver Sources"
         }
       ]
+    },
+    {
+      "tuid": "SILVER_SPENT_ON_RESPEC",
+      "tuv": [
+        {
+          "lang": "de-DE",
+          "seg": "F?r Respec ausgegebenes Silber"
+        },
+        {
+          "lang": "en-US",
+          "seg": "Silver spent on Respec"
+        }
+      ]
+    },
+    {
+      "tuid": "AVERAGE_RESPEC_SILVER_COST_PER_SESSION",
+      "tuv": [
+        {
+          "lang": "de-DE",
+          "seg": "Durchschnittliche Respec-Silberkosten pro Session"
+        },
+        {
+          "lang": "en-US",
+          "seg": "Average Respec silver cost per session"
+        }
+      ]
+    },
+    {
+      "tuid": "SPENT_RESPEC",
+      "tuv": [
+        {
+          "lang": "de-DE",
+          "seg": "Ausgegebene Respec-Punkte"
+        },
+        {
+          "lang": "en-US",
+          "seg": "Respec points spent"
+        }
+      ]
+    },
+    {
+      "tuid": "AVERAGE_REPAIR_COST_PER_SESSION",
+      "tuv": [
+        {
+          "lang": "de-DE",
+          "seg": "Durchschnittliche Reparaturkosten pro Session"
+        },
+        {
+          "lang": "en-US",
+          "seg": "Average repair cost per session"
+        }
+      ]
+    },
+    {
+      "tuid": "HIGHEST_REPAIR_COST",
+      "tuv": [
+        {
+          "lang": "de-DE",
+          "seg": "H?chste Reparaturkosten"
+        },
+        {
+          "lang": "en-US",
+          "seg": "Highest repair cost"
+        }
+      ]
     }
   ]
 }

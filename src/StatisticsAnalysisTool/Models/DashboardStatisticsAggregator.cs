@@ -15,6 +15,7 @@ public sealed class DashboardStatisticsAggregator
     private readonly Dictionary<(ValueType ValueType, DateTime Bucket, Guid SessionId, MapType MapType, DungeonMode DungeonMode, ClusterMode ClusterMode, CityFaction CityFaction), double> _hourlyValues = new();
     private readonly Dictionary<(ValueType ValueType, DateTime Bucket, Guid SessionId, MapType MapType, DungeonMode DungeonMode, ClusterMode ClusterMode, CityFaction CityFaction), double> _dailyValues = new();
     private readonly List<(DateTime OccurredAtUtc, double Value)> _repairCostEntries = [];
+    private readonly List<(Guid SessionId, DateTime OccurredAtUtc, ValueType ValueType, double Value)> _economyEntries = [];
 
     public DashboardStatisticsAggregator(DashboardStatistics statistics)
     {
@@ -131,6 +132,53 @@ public sealed class DashboardStatisticsAggregator
         return result;
     }
 
+    public DashboardEconomyStatistics AggregateEconomyValues(
+        IReadOnlyCollection<DateTime> bucketStarts,
+        DashboardChartRangeUnit unit,
+        Guid? sessionId)
+    {
+        var result = new DashboardEconomyStatistics();
+        if (bucketStarts == null || bucketStarts.Count == 0)
+        {
+            return result;
+        }
+
+        var validBuckets = bucketStarts.ToHashSet();
+
+        lock (_syncRoot)
+        {
+            foreach (var entry in _economyEntries)
+            {
+                if (sessionId.HasValue && entry.SessionId != sessionId.Value
+                    || !validBuckets.Contains(GetBucketStart(entry.OccurredAtUtc, unit)))
+                {
+                    continue;
+                }
+
+                var absoluteValue = Math.Abs(entry.Value);
+                switch (entry.ValueType)
+                {
+                    case ValueType.ReSpec:
+                        result.ReSpec += entry.Value;
+                        if (entry.Value < 0)
+                        {
+                            result.SpentReSpec += absoluteValue;
+                        }
+                        break;
+                    case ValueType.PaidSilverForReSpec:
+                        result.ReSpecSilverCost += absoluteValue;
+                        break;
+                    case ValueType.RepairCosts:
+                        result.RepairCosts += absoluteValue;
+                        result.HighestRepairCost = Math.Max(result.HighestRepairCost, absoluteValue);
+                        break;
+                }
+            }
+        }
+
+        return result;
+    }
+
     private static bool MatchesContentFilter(
         DashboardContentType? selectedContentType,
         MapType mapType,
@@ -174,10 +222,27 @@ public sealed class DashboardStatisticsAggregator
         AddIndexedValue(_hourlyValues, entry, hourBucket);
         AddIndexedValue(_dailyValues, entry, dayBucket);
 
+        if (entry.ValueType is ValueType.ReSpec or ValueType.PaidSilverForReSpec or ValueType.RepairCosts)
+        {
+            _economyEntries.Add((entry.SessionId, entry.OccurredAtUtc, entry.ValueType, entry.Value));
+        }
+
         if (entry.ValueType == ValueType.RepairCosts)
         {
             _repairCostEntries.Add((entry.OccurredAtUtc, entry.Value));
         }
+    }
+
+    private static DateTime GetBucketStart(DateTime occurredAtUtc, DashboardChartRangeUnit unit)
+    {
+        var localDate = occurredAtUtc.ToLocalTime();
+        return unit switch
+        {
+            DashboardChartRangeUnit.Minute => new DateTime(localDate.Year, localDate.Month, localDate.Day, localDate.Hour, localDate.Minute, 0),
+            DashboardChartRangeUnit.Hour => new DateTime(localDate.Year, localDate.Month, localDate.Day, localDate.Hour, 0, 0),
+            DashboardChartRangeUnit.Day => localDate.Date,
+            _ => localDate.Date
+        };
     }
 
     private static void AddIndexedValue(

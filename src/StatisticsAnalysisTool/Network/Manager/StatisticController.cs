@@ -43,6 +43,8 @@ public class StatisticController
         ValueType.Fame,
         ValueType.Silver,
         ValueType.ReSpec,
+        ValueType.PaidSilverForReSpec,
+        ValueType.RepairCosts,
         ValueType.FactionStanding,
         ValueType.FactionPoints,
         ValueType.Might,
@@ -318,7 +320,8 @@ public class StatisticController
         var chartBuckets = CreateChartBuckets(selectedRange);
         var currentRangeBucketStarts = chartBuckets.Select(x => x.Start).ToArray();
         var previousRangeBucketStarts = currentRangeBucketStarts
-            .Select(x => AddBuckets(x, -selectedRange.BucketCount, selectedRange.Unit));
+            .Select(x => AddBuckets(x, -selectedRange.BucketCount, selectedRange.Unit))
+            .ToArray();
         var aggregationBucketStarts = currentRangeBucketStarts
             .Concat(previousRangeBucketStarts).Distinct().ToArray();
 
@@ -338,6 +341,12 @@ public class StatisticController
             _mainWindowViewModel.SelectedDashboardContentFilter?.ContentType);
         UpdateDashboardSummary(selectedRange, chartBuckets, aggregatedValues);
         UpdateDashboardContentRankings(selectedRange, currentRangeBucketStarts);
+        UpdateDashboardEconomyStatistics(
+            selectedRange,
+            currentRangeBucketStarts,
+            previousRangeBucketStarts,
+            chartBuckets[0].Start,
+            DateTime.UtcNow);
 
         if (selectedSeriesFilters.Count == 0)
         {
@@ -508,6 +517,65 @@ public class StatisticController
             ValueType.FactionStanding,
             currentRangeBucketStarts,
             previousRangeBucketStarts);
+    }
+
+    private void UpdateDashboardEconomyStatistics(
+        DashboardChartRangeOption selectedRange,
+        IReadOnlyCollection<DateTime> currentRangeBucketStarts,
+        IReadOnlyCollection<DateTime> previousRangeBucketStarts,
+        DateTime currentRangeStart,
+        DateTime nowUtc)
+    {
+        var sessionId = _mainWindowViewModel.SelectedDashboardSessionFilter?.SessionId;
+        var currentValues = _statisticsAggregator.AggregateEconomyValues(
+            currentRangeBucketStarts,
+            selectedRange.Unit,
+            sessionId);
+        var previousValues = _statisticsAggregator.AggregateEconomyValues(
+            previousRangeBucketStarts,
+            selectedRange.Unit,
+            sessionId);
+        var sessionCount = CountFilteredSessions(currentRangeStart, nowUtc, sessionId);
+        var bindings = _mainWindowViewModel.DashboardBindings;
+
+        bindings.EconomyReSpecSummary.Update(
+            currentValues.ReSpec,
+            currentValues.ReSpec,
+            previousValues.ReSpec);
+        bindings.RepairCostsSummary.Update(
+            currentValues.RepairCosts,
+            currentValues.RepairCosts,
+            previousValues.RepairCosts);
+        bindings.ReSpecSilverCost = currentValues.ReSpecSilverCost;
+        bindings.AverageReSpecSilverCostPerSession = sessionCount > 0
+            ? currentValues.ReSpecSilverCost / sessionCount
+            : 0;
+        bindings.SpentReSpec = currentValues.SpentReSpec;
+        bindings.SpentReSpecVisibility = currentValues.SpentReSpec > 0
+            ? Visibility.Visible
+            : Visibility.Collapsed;
+        bindings.ReSpecDetailColumnCount = currentValues.SpentReSpec > 0
+            ? 3
+            : 2;
+        bindings.AverageRepairCostPerSession = sessionCount > 0
+            ? currentValues.RepairCosts / sessionCount
+            : 0;
+        bindings.HighestRepairCost = currentValues.HighestRepairCost;
+    }
+
+    private int CountFilteredSessions(DateTime localRangeStart, DateTime nowUtc, Guid? selectedSessionId)
+    {
+        List<StatisticSession> sessions;
+        lock (_syncRoot)
+        {
+            sessions = _dashboardStatistics.CreateSessionSnapshot();
+        }
+
+        var rangeStartUtc = localRangeStart.ToUniversalTime();
+        return sessions.Count(session =>
+            (!selectedSessionId.HasValue || session.Id == selectedSessionId.Value)
+            && session.StartedAtUtc < nowUtc
+            && (session.EndedAtUtc ?? nowUtc) > rangeStartUtc);
     }
 
     private void UpdateDashboardContentRankings(
