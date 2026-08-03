@@ -21,17 +21,13 @@
         <ScrollViewer x:Name="DashboardScrollViewer" Padding="12,10,12,18" HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Auto" HorizontalContentAlignment="Stretch">
             <StackPanel MinWidth="1050" Width="{Binding ViewportWidth, ElementName=DashboardScrollViewer, Mode=OneWay}">
                 <Grid Margin="0,0,0,10">
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="*" />
-                        <ColumnDefinition Width="Auto" />
-                    </Grid.ColumnDefinitions>
-
-                    <Border Grid.Column="0" Style="{StaticResource App.FilterCard}" Margin="0,0,0,8">
+                    <Border Style="{StaticResource App.FilterCard}" Margin="0,0,0,8">
                         <Grid>
                             <Grid.ColumnDefinitions>
                                 <ColumnDefinition Width="Auto" />
                                 <ColumnDefinition Width="Auto" />
-                                <ColumnDefinition Width="*" MinWidth="230" />
+                                <ColumnDefinition Width="*" MinWidth="250" />
+                                <ColumnDefinition Width="Auto" />
                                 <ColumnDefinition Width="Auto" />
                                 <ColumnDefinition Width="Auto" />
                             </Grid.ColumnDefinitions>
@@ -83,7 +79,13 @@
                                 </StackPanel>
                             </Border>
 
-                            <CheckBox Grid.Column="3" IsChecked="{Binding IsTrackingResetByMapChangeActive}" IsEnabled="{Binding IsTrackingActive, FallbackValue=false}" Content="{Binding DashboardBindings.TranslationResetSessionOnMapChange, FallbackValue=RESET_SESSION_ON_MAP_CHANGE}" VerticalAlignment="Bottom" Margin="0,0,14,8" />
+                            <Border Grid.Column="3" Style="{StaticResource App.FilterGroup}">
+                                <StackPanel>
+                                    <TextBlock Text="{Binding DashboardBindings.TranslationResetSessionOnMapChange, FallbackValue=RESET_SESSION_ON_MAP_CHANGE}" Style="{StaticResource App.FilterLabel}" />
+                                    <CheckBox Width="190" IsChecked="{Binding IsTrackingResetByMapChangeActive}" IsEnabled="{Binding IsTrackingActive, FallbackValue=false}" 
+                                              VerticalAlignment="Bottom" Margin="0,5,0,0" />
+                                </StackPanel>
+                            </Border>
 
                             <Button Grid.Column="4" Height="32" MinWidth="150" VerticalAlignment="Bottom" IsEnabled="{Binding IsTrackingActive, FallbackValue=false}" Click="BtnSessionReset_Click">
                                 <StackPanel Orientation="Horizontal" Margin="8,0">
@@ -91,16 +93,15 @@
                                     <TextBlock Text="{Binding DashboardBindings.TranslationResetSession, FallbackValue=RESET_SESSION}" VerticalAlignment="Center" Foreground="{StaticResource SolidColorBrush.Text.1}" />
                                 </StackPanel>
                             </Button>
+
+                            <StackPanel Grid.Column="5" Orientation="Horizontal" VerticalAlignment="Bottom">
+                                <Border Width="32" Height="32" Margin="8,0,0,0" Cursor="Hand" CornerRadius="4" Background="{StaticResource SolidColorBrush.Background.2}" 
+                                        BorderBrush="{StaticResource SolidColorBrush.Text.6}" BorderThickness="1" Visibility="{Binding ShowOpenWindowButton, ElementName=DashboardRoot, Converter={StaticResource BooleanToVisibilityConverter}}" ToolTip="{Binding Translation.OpenExtendedDashboardWindow, FallbackValue=OPEN_EXTENDED_DASHBOARD_WINDOW}" MouseUp="OpenDashboardWindow_MouseUp">
+                                    <fa5:ImageAwesome Icon="Solid_Expand" Width="16" Height="16" Foreground="{StaticResource SolidColorBrush.Text.1}" />
+                                </Border>
+                            </StackPanel>
                         </Grid>
                     </Border>
-
-                    <StackPanel Grid.Column="1" HorizontalAlignment="Right" VerticalAlignment="Top">
-                        <StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
-                            <Border Width="38" Height="36" Cursor="Hand" CornerRadius="4" Background="{StaticResource SolidColorBrush.Background.2}" BorderBrush="{StaticResource SolidColorBrush.Background.4}" BorderThickness="1" Visibility="{Binding ShowOpenWindowButton, ElementName=DashboardRoot, Converter={StaticResource BooleanToVisibilityConverter}}" ToolTip="{Binding Translation.OpenExtendedDashboardWindow, FallbackValue=OPEN_EXTENDED_DASHBOARD_WINDOW}" MouseUp="OpenDashboardWindow_MouseUp">
-                                <fa5:ImageAwesome Icon="Solid_Expand" Width="16" Height="16" Foreground="{StaticResource SolidColorBrush.Text.1}" />
-                            </Border>
-                        </StackPanel>
-                    </StackPanel>
                 </Grid>
 
                 <TabControl Style="{StaticResource Dashboard.ContentTabControl}" ItemContainerStyle="{StaticResource Dashboard.ContentTabItem}" SelectedIndex="0">
