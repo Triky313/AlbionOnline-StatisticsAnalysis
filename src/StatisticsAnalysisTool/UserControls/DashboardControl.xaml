@@ -85,7 +85,7 @@
                                             <ColumnDefinition Width="Auto" />
                                             <ColumnDefinition Width="*" />
                                         </Grid.ColumnDefinitions>
-                                        <Image Source="../Resources/fame.png" Style="{StaticResource Dashboard.SummaryImage}" />
+                                        <Image Source="../Resources/fame.png" Style="{StaticResource Dashboard.SummaryImage}" Height="22" Width="22" />
                                         <StackPanel Grid.Column="1">
                                             <TextBlock Text="{Binding DashboardBindings.TranslationFame, FallbackValue=FAME}" Style="{StaticResource Dashboard.SummaryTitle}" />
                                             <ContentControl Content="{Binding DashboardBindings.FameSummary}" 
@@ -100,7 +100,7 @@
                                             <ColumnDefinition Width="Auto" />
                                             <ColumnDefinition Width="*" />
                                         </Grid.ColumnDefinitions>
-                                        <Image Source="../Resources/respec.png" Style="{StaticResource Dashboard.SummaryImage}" />
+                                        <Image Source="../Resources/respec.png" Style="{StaticResource Dashboard.SummaryImage}" Height="22" Width="22" />
                                         <StackPanel Grid.Column="1">
                                             <TextBlock Text="{Binding DashboardBindings.TranslationReSpec, FallbackValue=RESPEC}" Style="{StaticResource Dashboard.SummaryTitle}" />
                                             <ContentControl Content="{Binding DashboardBindings.ReSpecSummary}" ContentTemplate="{StaticResource Dashboard.SummaryMetricTemplate}" HorizontalContentAlignment="Stretch" />
@@ -114,7 +114,7 @@
                                             <ColumnDefinition Width="Auto" />
                                             <ColumnDefinition Width="*" />
                                         </Grid.ColumnDefinitions>
-                                        <Image Source="../Resources/silver.png" Style="{StaticResource Dashboard.SummaryImage}" />
+                                        <Image Source="../Resources/silver.png" Style="{StaticResource Dashboard.SummaryImage}" Height="22" Width="22" />
                                         <StackPanel Grid.Column="1">
                                             <TextBlock Text="{Binding DashboardBindings.TranslationSilver, FallbackValue=SILVER}" Style="{StaticResource Dashboard.SummaryTitle}" />
                                             <ContentControl Content="{Binding DashboardBindings.SilverSummary}" ContentTemplate="{StaticResource Dashboard.SummaryMetricTemplate}" HorizontalContentAlignment="Stretch" />
@@ -128,7 +128,7 @@
                                             <ColumnDefinition Width="Auto" />
                                             <ColumnDefinition Width="*" />
                                         </Grid.ColumnDefinitions>
-                                        <Image Source="../Resources/might.png" Style="{StaticResource Dashboard.SummaryImage}" />
+                                        <Image Source="../Resources/might.png" Style="{StaticResource Dashboard.SummaryImage}" Margin="0,-2,5,0" Height="24" Width="24" />
                                         <StackPanel Grid.Column="1">
                                             <TextBlock Text="{Binding DashboardBindings.TranslationMight, FallbackValue=MIGHT}" Style="{StaticResource Dashboard.SummaryTitle}" />
                                             <ContentControl Content="{Binding DashboardBindings.MightSummary}" ContentTemplate="{StaticResource Dashboard.SummaryMetricTemplate}" HorizontalContentAlignment="Stretch" />
@@ -142,7 +142,7 @@
                                             <ColumnDefinition Width="Auto" />
                                             <ColumnDefinition Width="*" />
                                         </Grid.ColumnDefinitions>
-                                        <Image Source="../Resources/favor.png" Style="{StaticResource Dashboard.SummaryImage}" />
+                                        <Image Source="../Resources/favor.png" Style="{StaticResource Dashboard.SummaryImage}" Margin="0,-2,5,0" Height="24" Width="24" />
                                         <StackPanel Grid.Column="1">
                                             <TextBlock Text="{Binding DashboardBindings.TranslationFavor, FallbackValue=FAVOR}" Style="{StaticResource Dashboard.SummaryTitle}" />
                                             <ContentControl Content="{Binding DashboardBindings.FavorSummary}" ContentTemplate="{StaticResource Dashboard.SummaryMetricTemplate}" HorizontalContentAlignment="Stretch" />
@@ -156,7 +156,7 @@
                                             <ColumnDefinition Width="Auto" />
                                             <ColumnDefinition Width="*" />
                                         </Grid.ColumnDefinitions>
-                                        <fa5:ImageAwesome Icon="Regular_Clock" Width="18" Height="18" Margin="0,2,9,0" VerticalAlignment="Top" Foreground="{StaticResource SolidColorBrush.Text.2}" />
+                                        <fa5:ImageAwesome Icon="Regular_Clock" Width="20" Height="20" Margin="0,0,9,0" VerticalAlignment="Top" Foreground="{StaticResource SolidColorBrush.Text.2}" />
                                         <StackPanel Grid.Column="1">
                                             <TextBlock Text="{Binding DashboardBindings.TranslationSessionTime, FallbackValue=SESSION_TIME}" Style="{StaticResource Dashboard.SummaryTitle}" />
                                             <ContentControl Content="{Binding DashboardBindings.SessionTimeSummary}" ContentTemplate="{StaticResource Dashboard.SummarySessionTimeTemplate}" HorizontalContentAlignment="Stretch" />
