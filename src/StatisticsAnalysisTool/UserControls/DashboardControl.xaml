@@ -7,6 +7,7 @@
              xmlns:viewModels="clr-namespace:StatisticsAnalysisTool.ViewModels"
              xmlns:fa5="http://schemas.fontawesome.com/icons/"
              xmlns:models="clr-namespace:StatisticsAnalysisTool.Models"
+             xmlns:bindingModels="clr-namespace:StatisticsAnalysisTool.Models.BindingModel"
              xmlns:wpf="clr-namespace:LiveChartsCore.SkiaSharpView.WPF;assembly=LiveChartsCore.SkiaSharpView.WPF"
              xmlns:glob="clr-namespace:System.Globalization;assembly=System.Runtime"
              mc:Ignorable="d"
@@ -17,8 +18,8 @@
     <Grid Style="{StaticResource TabItemGridStyle}">
         <Grid Style="{StaticResource BackgroundImageGridStyle}" />
 
-        <ScrollViewer HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Auto">
-            <StackPanel MinWidth="1050" Margin="12,10,12,18">
+        <ScrollViewer x:Name="DashboardScrollViewer" Padding="12,10,12,18" HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Auto" HorizontalContentAlignment="Stretch">
+            <StackPanel MinWidth="1050" Width="{Binding ViewportWidth, ElementName=DashboardScrollViewer, Mode=OneWay}">
                 <Grid Margin="0,0,0,10">
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="*" />
@@ -52,7 +53,33 @@
                             <Border Grid.Column="2" Style="{StaticResource App.FilterGroup}">
                                 <StackPanel>
                                     <TextBlock Text="{Binding DashboardBindings.TranslationSession, FallbackValue=SESSION}" Style="{StaticResource App.FilterLabel}" />
-                                    <ComboBox MinWidth="220" Style="{StaticResource App.FilterComboBox}" ItemsSource="{Binding DashboardSessionFilters}" SelectedItem="{Binding SelectedDashboardSessionFilter, Mode=TwoWay}" DisplayMemberPath="Name" SelectionChanged="DashboardMetadataFilter_SelectionChanged" />
+                                    <ComboBox MinWidth="220"
+                                              Style="{StaticResource App.FilterComboBox}"
+                                              HorizontalContentAlignment="Stretch"
+                                              ItemsSource="{Binding DashboardSessionFilters}"
+                                              SelectedItem="{Binding SelectedDashboardSessionFilter, Mode=TwoWay}"
+                                              SelectionChanged="DashboardMetadataFilter_SelectionChanged">
+                                        <ComboBox.ItemTemplate>
+                                            <DataTemplate DataType="{x:Type models:DashboardSessionFilterOption}">
+                                                <Grid MinWidth="200">
+                                                    <Grid.ColumnDefinitions>
+                                                        <ColumnDefinition Width="*" />
+                                                        <ColumnDefinition Width="Auto" />
+                                                    </Grid.ColumnDefinitions>
+                                                    <TextBlock VerticalAlignment="Center" Text="{Binding Name}" TextTrimming="CharacterEllipsis" />
+                                                    <Button Grid.Column="1"
+                                                            Style="{StaticResource Dashboard.SessionDeleteButton}"
+                                                            ToolTip="{x:Static bindingModels:DashboardBindings.TranslationDeleteSession}"
+                                                            Click="DeleteDashboardSession_Click">
+                                                        <fa5:ImageAwesome Width="10"
+                                                                          Height="10"
+                                                                          Icon="Solid_Times"
+                                                                          Foreground="{Binding Foreground, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type Button}}}" />
+                                                    </Button>
+                                                </Grid>
+                                            </DataTemplate>
+                                        </ComboBox.ItemTemplate>
+                                    </ComboBox>
                                 </StackPanel>
                             </Border>
 
@@ -165,24 +192,6 @@
                                     </Grid>
                                 </Border>
                             </UniformGrid>
-
-                            <Border Style="{StaticResource Dashboard.Section}" Margin="0,0,0,8">
-                                <DockPanel LastChildFill="True">
-                                    <Grid DockPanel.Dock="Top" Height="40" Cursor="Hand" MouseLeftButtonDown="KillDeathToggle_OnMouseLeftButtonDown">
-                                        <Grid.ColumnDefinitions>
-                                            <ColumnDefinition Width="Auto" />
-                                            <ColumnDefinition Width="*" />
-                                            <ColumnDefinition Width="Auto" />
-                                        </Grid.ColumnDefinitions>
-                                        <Image Source="/Assets/skull.png" Width="22" Height="22" Margin="12,0,10,0" />
-                                        <TextBlock Grid.Column="1" Text="{Binding DashboardBindings.KillsDeathsText, FallbackValue=KILLS_DEATHS}" Style="{StaticResource Dashboard.SectionTitle}" />
-                                        <fa5:ImageAwesome Grid.Column="2" Icon="{Binding DashboardBindings.KillDeathStatsToggleIcon, FallbackValue=Solid_Minus}" Style="{StaticResource Dashboard.SectionToggleIcon}" />
-                                    </Grid>
-                                    <Border BorderBrush="{StaticResource SolidColorBrush.Background.4}" BorderThickness="0,1,0,0" Visibility="{Binding DashboardBindings.KillDeathStatsVisibility}">
-                                        <ContentControl Margin="10" Content="{Binding DashboardBindings}" ContentTemplate="{StaticResource KillDeathStatsTemplate}" />
-                                    </Border>
-                                </DockPanel>
-                            </Border>
 
                             <Grid Margin="0,0,0,8">
                                 <Grid.ColumnDefinitions>
@@ -337,6 +346,28 @@
                                             </ItemsControl>
                                             <wpf:CartesianChart Grid.Row="1" Series="{Binding SeriesDashboardHourValues}" XAxes="{Binding XAxesDashboardHourValues}" TooltipPosition="Center" FindingStrategy="ExactMatchTakeClosest" LegendPosition="Hidden" Background="Transparent" DrawMarginFrame="{x:Null}" />
                                         </Grid>
+                                    </Border>
+                                </DockPanel>
+                            </Border>
+                        </StackPanel>
+                    </TabItem>
+
+                    <TabItem Header="{Binding DashboardBindings.TranslationCombatTitle, FallbackValue=COMBAT}">
+                        <StackPanel Margin="0,8,0,0">
+                            <Border Style="{StaticResource Dashboard.Section}" Margin="0,0,0,8">
+                                <DockPanel LastChildFill="True">
+                                    <Grid DockPanel.Dock="Top" Height="40" Cursor="Hand" MouseLeftButtonDown="KillDeathToggle_OnMouseLeftButtonDown">
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="Auto" />
+                                            <ColumnDefinition Width="*" />
+                                            <ColumnDefinition Width="Auto" />
+                                        </Grid.ColumnDefinitions>
+                                        <Image Source="/Assets/skull.png" Width="22" Height="22" Margin="12,0,10,0" />
+                                        <TextBlock Grid.Column="1" Text="{Binding DashboardBindings.KillsDeathsText, FallbackValue=KILLS_DEATHS}" Style="{StaticResource Dashboard.SectionTitle}" />
+                                        <fa5:ImageAwesome Grid.Column="2" Icon="{Binding DashboardBindings.KillDeathStatsToggleIcon, FallbackValue=Solid_Minus}" Style="{StaticResource Dashboard.SectionToggleIcon}" />
+                                    </Grid>
+                                    <Border BorderBrush="{StaticResource SolidColorBrush.Background.4}" BorderThickness="0,1,0,0" Visibility="{Binding DashboardBindings.KillDeathStatsVisibility}">
+                                        <ContentControl Margin="10" Content="{Binding DashboardBindings}" ContentTemplate="{StaticResource KillDeathStatsTemplate}" />
                                     </Border>
                                 </DockPanel>
                             </Border>

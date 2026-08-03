@@ -740,7 +740,9 @@ public class DashboardBindings : BaseViewModel
     #endregion
 
     public static string TranslationDashboardTitle => $"{LocalizationController.Translation("DASHBOARD")}";
+    public static string TranslationCombatTitle => LocalizationController.Translation("COMBAT");
     public static string TranslationEconomyTitle => $"{LocalizationController.Translation("ECONOMY")}";
+    public static string TranslationDeleteSession => LocalizationController.Translation("DELETE_SESSION");
     public static string TranslationFame => LocalizationController.Translation("FAME");
     public static string TranslationSilver => LocalizationController.Translation("SILVER");
     public static string TranslationReSpec => LocalizationController.Translation("RESPEC");

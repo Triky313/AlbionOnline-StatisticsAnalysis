@@ -47168,6 +47168,71 @@
       ]
     },
     {
+      "tuid": "COMBAT",
+      "tuv": [
+        {
+          "lang": "de-DE",
+          "seg": "Kampf"
+        },
+        {
+          "lang": "en-US",
+          "seg": "Combat"
+        }
+      ]
+    },
+    {
+      "tuid": "ECONOMY",
+      "tuv": [
+        {
+          "lang": "de-DE",
+          "seg": "Wirtschaft"
+        },
+        {
+          "lang": "en-US",
+          "seg": "Economy"
+        }
+      ]
+    },
+    {
+      "tuid": "DELETE_SESSION",
+      "tuv": [
+        {
+          "lang": "de-DE",
+          "seg": "Session l\u00f6schen"
+        },
+        {
+          "lang": "en-US",
+          "seg": "Delete Session"
+        }
+      ]
+    },
+    {
+      "tuid": "DELETE_SESSION_CONFIRMATION",
+      "tuv": [
+        {
+          "lang": "de-DE",
+          "seg": "Soll die Session \"{0}\" dauerhaft gel\u00f6scht werden?"
+        },
+        {
+          "lang": "en-US",
+          "seg": "Do you want to permanently delete the session \"{0}\"?"
+        }
+      ]
+    },
+    {
+      "tuid": "DELETE_SESSION_FAILED",
+      "tuv": [
+        {
+          "lang": "de-DE",
+          "seg": "Die Session konnte nicht gel\u00f6scht werden."
+        },
+        {
+          "lang": "en-US",
+          "seg": "The session could not be deleted."
+        }
+      ]
+    },
+    {
       "tuid": "TOP_FAME_SOURCES",
       "tuv": [
         {

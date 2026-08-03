@@ -35,6 +35,7 @@ public class StatisticController
     private readonly object _syncRoot = new();
     private readonly StatisticSessionStorage _sessionStorage = new();
     private readonly Dictionary<Guid, long> _dirtySessionVersions = [];
+    private readonly SemaphoreSlim _sessionPersistenceSemaphore = new(1, 1);
     private readonly Dispatcher _uiDispatcher;
     private readonly DispatcherTimer _dashboardChartRefreshTimer;
     private readonly HashSet<ValueType> _chartValueTypes =
@@ -218,6 +219,71 @@ public class StatisticController
         await SaveInFileAsync();
         StartSession(characterName);
         Log.Information("Statistics session reset");
+        return true;
+    }
+
+    public async System.Threading.Tasks.Task<bool> DeleteSessionAsync(Guid sessionId)
+    {
+        if (sessionId == Guid.Empty)
+        {
+            return false;
+        }
+
+        StatisticSession session;
+        lock (_syncRoot)
+        {
+            session = _dashboardStatistics
+                .CreateSessionSnapshot()
+                .FirstOrDefault(x => x.Id == sessionId);
+        }
+
+        if (session == null)
+        {
+            return false;
+        }
+
+        var wasActive = false;
+        await _sessionPersistenceSemaphore.WaitAsync();
+
+        try
+        {
+            if (!_sessionStorage.DeleteSession(sessionId))
+            {
+                return false;
+            }
+
+            lock (_syncRoot)
+            {
+                wasActive = _dashboardStatistics.GetActiveSession()?.Id == sessionId;
+                _dashboardStatistics.RemoveSession(sessionId);
+                _dirtySessionVersions.Remove(sessionId);
+            }
+        }
+        finally
+        {
+            _sessionPersistenceSemaphore.Release();
+        }
+
+        if (wasActive)
+        {
+            _trackingController.LiveStatsTracker?.Stop();
+        }
+
+        if (wasActive && _mainWindowViewModel.MainStatusBindings.IsInGame)
+        {
+            StartSession(session.CharacterName);
+        }
+        else
+        {
+            RefreshDashboardSessionFilters();
+        }
+
+        UpdateRepairCostsUi();
+        UpdateDailyChart(true);
+        Log.Information(
+            "Statistics session deleted. SessionId={SessionId}, WasActive={WasActive}",
+            sessionId,
+            wasActive);
         return true;
     }
 
@@ -738,41 +804,50 @@ public class StatisticController
 
     public async System.Threading.Tasks.Task SaveInFileAsync()
     {
-        DashboardStatistics statisticsSnapshot;
-        Dictionary<Guid, long> dirtySessionVersions;
-        lock (_syncRoot)
-        {
-            statisticsSnapshot = _dashboardStatistics.CreateSnapshot();
-            dirtySessionVersions = new Dictionary<Guid, long>(_dirtySessionVersions);
-        }
+        await _sessionPersistenceSemaphore.WaitAsync();
 
-        if (dirtySessionVersions.Count == 0)
+        try
         {
-            return;
-        }
-
-        var wasSaved = await _sessionStorage.SaveSessionsAsync(
-            statisticsSnapshot,
-            dirtySessionVersions.Keys.ToArray());
-        if (!wasSaved)
-        {
-            Log.Warning("Statistics session save was incomplete. Sessions={SessionCount}", dirtySessionVersions.Count);
-            return;
-        }
-
-        lock (_syncRoot)
-        {
-            foreach (var savedSession in dirtySessionVersions)
+            DashboardStatistics statisticsSnapshot;
+            Dictionary<Guid, long> dirtySessionVersions;
+            lock (_syncRoot)
             {
-                if (_dirtySessionVersions.TryGetValue(savedSession.Key, out var currentVersion)
-                    && currentVersion == savedSession.Value)
+                statisticsSnapshot = _dashboardStatistics.CreateSnapshot();
+                dirtySessionVersions = new Dictionary<Guid, long>(_dirtySessionVersions);
+            }
+
+            if (dirtySessionVersions.Count == 0)
+            {
+                return;
+            }
+
+            var wasSaved = await _sessionStorage.SaveSessionsAsync(
+                statisticsSnapshot,
+                dirtySessionVersions.Keys.ToArray());
+            if (!wasSaved)
+            {
+                Log.Warning("Statistics session save was incomplete. Sessions={SessionCount}", dirtySessionVersions.Count);
+                return;
+            }
+
+            lock (_syncRoot)
+            {
+                foreach (var savedSession in dirtySessionVersions)
                 {
-                    _dirtySessionVersions.Remove(savedSession.Key);
+                    if (_dirtySessionVersions.TryGetValue(savedSession.Key, out var currentVersion)
+                        && currentVersion == savedSession.Value)
+                    {
+                        _dirtySessionVersions.Remove(savedSession.Key);
+                    }
                 }
             }
-        }
 
-        Log.Information("Statistics sessions saved. Sessions={SessionCount}", dirtySessionVersions.Count);
+            Log.Information("Statistics sessions saved. Sessions={SessionCount}", dirtySessionVersions.Count);
+        }
+        finally
+        {
+            _sessionPersistenceSemaphore.Release();
+        }
     }
 
     private void RefreshDashboardSessionFilters()

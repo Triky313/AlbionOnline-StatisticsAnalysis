@@ -1,10 +1,14 @@
 ﻿using FontAwesome5;
 using Serilog;
 using StatisticsAnalysisTool.Common;
+using StatisticsAnalysisTool.Enumerations;
 using StatisticsAnalysisTool.Network.Manager;
 using StatisticsAnalysisTool.ViewModels;
 using StatisticsAnalysisTool.Views;
+using StatisticsAnalysisTool.Localization;
+using StatisticsAnalysisTool.Models;
 using System;
+using System.Globalization;
 using System.Linq;
 using System.Reflection;
 using System.Windows;
@@ -63,6 +67,67 @@ public partial class DashboardControl
     {
         var trackingController = ServiceLocator.Resolve<TrackingController>();
         await trackingController.StatisticController.ResetSessionAsync();
+    }
+
+    private async void DeleteDashboardSession_Click(object sender, RoutedEventArgs e)
+    {
+        e.Handled = true;
+
+        if (sender is not Button
+            {
+                DataContext: DashboardSessionFilterOption
+                {
+                    SessionId: Guid sessionId,
+                    CanDelete: true
+                } sessionFilter
+            } deleteButton)
+        {
+            return;
+        }
+
+        var confirmationMessage = string.Format(
+            CultureInfo.CurrentCulture,
+            LocalizationController.Translation("DELETE_SESSION_CONFIRMATION"),
+            sessionFilter.Name);
+        var confirmationWindow = new DialogWindow(
+            LocalizationController.Translation("DELETE_SESSION"),
+            confirmationMessage);
+
+        if (confirmationWindow.ShowDialog() is not true)
+        {
+            return;
+        }
+
+        deleteButton.IsEnabled = false;
+
+        try
+        {
+            var trackingController = ServiceLocator.Resolve<TrackingController>();
+            var wasDeleted = await trackingController.StatisticController.DeleteSessionAsync(sessionId);
+            if (!wasDeleted)
+            {
+                ShowSessionDeletionFailedMessage();
+            }
+        }
+        catch (Exception exception)
+        {
+            DebugConsole.WriteError(MethodBase.GetCurrentMethod()?.DeclaringType, exception);
+            Log.Error(exception, "Statistics session deletion failed. SessionId={SessionId}", sessionId);
+            ShowSessionDeletionFailedMessage();
+        }
+        finally
+        {
+            deleteButton.IsEnabled = true;
+        }
+    }
+
+    private void ShowSessionDeletionFailedMessage()
+    {
+        var errorWindow = new DialogWindow(
+            LocalizationController.Translation("DELETE_SESSION"),
+            LocalizationController.Translation("DELETE_SESSION_FAILED"),
+            DialogType.Error);
+        _ = errorWindow.ShowDialog();
     }
 
     private void OpenDashboardWindow_MouseUp(object sender, MouseButtonEventArgs e)

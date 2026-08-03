@@ -208,8 +208,48 @@
         <Setter Property="VerticalAlignment" Value="Center" />
     </Style>
 
+    <Style x:Key="Dashboard.SessionDeleteButton"
+           TargetType="{x:Type Button}"
+           BasedOn="{StaticResource Style.Button.Base}">
+        <Setter Property="Width" Value="20" />
+        <Setter Property="Height" Value="20" />
+        <Setter Property="MinWidth" Value="20" />
+        <Setter Property="MinHeight" Value="20" />
+        <Setter Property="Margin" Value="8,0,0,0" />
+        <Setter Property="Padding" Value="0" />
+        <Setter Property="Cursor" Value="Hand" />
+        <Setter Property="FocusVisualStyle" Value="{x:Null}" />
+        <Setter Property="Background" Value="Transparent" />
+        <Setter Property="BorderBrush" Value="Transparent" />
+        <Setter Property="BorderThickness" Value="0" />
+        <Setter Property="Foreground" Value="{StaticResource SolidColorBrush.Accent.Red.2}" />
+        <Setter Property="Visibility" Value="Collapsed" />
+        <Style.Triggers>
+            <Trigger Property="IsMouseOver" Value="True">
+                <Setter Property="Background" Value="{StaticResource SolidColorBrush.Accent.Red.7}" />
+                <Setter Property="Foreground" Value="{StaticResource SolidColorBrush.Accent.Red.4}" />
+            </Trigger>
+            <Trigger Property="IsPressed" Value="True">
+                <Setter Property="Background" Value="{StaticResource SolidColorBrush.Button.Danger.Pressed}" />
+                <Setter Property="Foreground" Value="{StaticResource SolidColorBrush.Accent.Red.1}" />
+            </Trigger>
+            <Trigger Property="IsEnabled" Value="False">
+                <Setter Property="Background" Value="Transparent" />
+                <Setter Property="Foreground" Value="{StaticResource SolidColorBrush.Accent.Red.7}" />
+            </Trigger>
+            <MultiDataTrigger>
+                <MultiDataTrigger.Conditions>
+                    <Condition Binding="{Binding CanDelete}" Value="True" />
+                    <Condition Binding="{Binding IsVisible, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type ComboBoxItem}}}" Value="True" />
+                </MultiDataTrigger.Conditions>
+                <Setter Property="Visibility" Value="Visible" />
+            </MultiDataTrigger>
+        </Style.Triggers>
+    </Style>
+
     <Style x:Key="Dashboard.ContentRankingCard" TargetType="{x:Type Border}" BasedOn="{StaticResource Dashboard.Section}">
         <Setter Property="Padding" Value="13,11,13,12" />
+        <Setter Property="MinWidth" Value="350" />
     </Style>
 
     <Style x:Key="Dashboard.ContentRankingTitle" TargetType="{x:Type TextBlock}">

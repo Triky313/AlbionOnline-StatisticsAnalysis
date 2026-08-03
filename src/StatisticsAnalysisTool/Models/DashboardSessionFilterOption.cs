@@ -12,4 +12,5 @@ public sealed class DashboardSessionFilterOption
 
     public Guid? SessionId { get; }
     public string Name { get; }
+    public bool CanDelete => SessionId.HasValue;
 }

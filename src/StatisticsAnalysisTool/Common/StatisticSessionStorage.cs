@@ -92,6 +92,50 @@ public sealed class StatisticSessionStorage
         return sessionFiles.Length == requestedSessionIds.Count && saveResults.All(x => x);
     }
 
+    public bool DeleteSession(Guid sessionId)
+    {
+        if (sessionId == Guid.Empty)
+        {
+            return false;
+        }
+
+        if (!Directory.Exists(AppDataPaths.StatisticsDataDirectory))
+        {
+            return true;
+        }
+
+        var sessionFilePrefix = $"statistics-{sessionId:N}-";
+
+        try
+        {
+            var sessionFilePaths = Directory
+                .EnumerateFiles(
+                    AppDataPaths.StatisticsDataDirectory,
+                    SessionFileSearchPattern,
+                    SearchOption.TopDirectoryOnly)
+                .Where(x => Path.GetFileName(x).StartsWith(
+                    sessionFilePrefix,
+                    StringComparison.OrdinalIgnoreCase))
+                .ToArray();
+
+            foreach (var sessionFilePath in sessionFilePaths)
+            {
+                File.Delete(sessionFilePath);
+            }
+
+            Log.Information(
+                "Statistics session files deleted. SessionId={SessionId}, Files={FileCount}",
+                sessionId,
+                sessionFilePaths.Length);
+            return true;
+        }
+        catch (Exception exception)
+        {
+            Log.Error(exception, "Statistics session files could not be deleted. SessionId={SessionId}", sessionId);
+            return false;
+        }
+    }
+
     public static string GetSessionFileName(StatisticSession session)
     {
         if (session == null)

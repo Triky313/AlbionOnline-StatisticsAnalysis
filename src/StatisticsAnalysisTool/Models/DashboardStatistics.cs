@@ -100,6 +100,21 @@ public class DashboardStatistics
         }
     }
 
+    public bool RemoveSession(Guid sessionId)
+    {
+        lock (_syncRoot)
+        {
+            var wasRemoved = Sessions.RemoveAll(x => x.Id == sessionId) > 0;
+            if (!wasRemoved)
+            {
+                return false;
+            }
+
+            Entries.RemoveAll(x => x.SessionId == sessionId);
+            return true;
+        }
+    }
+
     public DashboardStatistics CreateSnapshot()
     {
         lock (_syncRoot)

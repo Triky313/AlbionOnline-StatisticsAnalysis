@@ -115,6 +115,41 @@ public class StatisticSessionStorageTests
     }
 
     [Test]
+    public async Task DeleteSession_WithSavedSessions_DeletesOnlyRequestedSession()
+    {
+        var testDirectory = CreateTestDirectory();
+
+        try
+        {
+            using var _ = AppDataPaths.UseRuntimeBaseDirectoryForTests(testDirectory);
+            AppDataPaths.SetActiveUserDataServer(ServerLocation.Europe);
+            var statistics = CreateStatisticsWithSessions(2);
+            var deletedSessionId = statistics.Sessions[0].Id;
+            var retainedSessionId = statistics.Sessions[1].Id;
+            var storage = new StatisticSessionStorage();
+            await storage.SaveSessionsAsync(
+                statistics,
+                statistics.Sessions.Select(x => x.Id).ToArray());
+
+            var wasDeleted = storage.DeleteSession(deletedSessionId);
+
+            wasDeleted.Should().BeTrue();
+            Directory.GetFiles(AppDataPaths.StatisticsDataDirectory, "statistics-*.json")
+                .Should().ContainSingle();
+
+            var loadedStatistics = await storage.LoadAsync(DateTime.UtcNow);
+
+            loadedStatistics.Sessions.Select(x => x.Id)
+                .Should().Equal(retainedSessionId);
+            loadedStatistics.Entries.Should().OnlyContain(x => x.SessionId == retainedSessionId);
+        }
+        finally
+        {
+            Directory.Delete(testDirectory, true);
+        }
+    }
+
+    [Test]
     public void GetSessionFileName_WithSession_ContainsIdAndUtcStartTime()
     {
         var session = new StatisticSession
