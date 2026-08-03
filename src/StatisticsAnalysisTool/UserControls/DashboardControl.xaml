@@ -6,12 +6,11 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:viewModels="clr-namespace:StatisticsAnalysisTool.ViewModels"
              xmlns:fa5="http://schemas.fontawesome.com/icons/"
-             xmlns:glob="clr-namespace:System.Globalization;assembly=System.Runtime"
              xmlns:models="clr-namespace:StatisticsAnalysisTool.Models"
              xmlns:wpf="clr-namespace:LiveChartsCore.SkiaSharpView.WPF;assembly=LiveChartsCore.SkiaSharpView.WPF"
              mc:Ignorable="d"
              d:DesignHeight="1000"
-             d:DesignWidth="1400"
+             d:DesignWidth="1100"
              d:DataContext="{d:DesignInstance Type=viewModels:MainWindowViewModel}">
 
     <Grid Style="{StaticResource TabItemGridStyle}">
@@ -25,74 +24,50 @@
                         <ColumnDefinition Width="Auto" />
                     </Grid.ColumnDefinitions>
 
-                    <StackPanel Grid.Column="0" Orientation="Horizontal" HorizontalAlignment="Left">
-                        <Border Style="{StaticResource Dashboard.TopStatCard}">
-                            <StackPanel VerticalAlignment="Center">
-                                <Image Source="../Resources/fame.png" Width="30" Height="30" ToolTip="{Binding Translation.Fame, FallbackValue=FAME}" />
-                                <TextBlock Text="{Binding DashboardBindings.TotalGainedFameInSession, Converter={StaticResource ShortNumberConverter}, ConverterCulture={x:Static glob:CultureInfo.CurrentCulture}, FallbackValue=0}" Style="{StaticResource Dashboard.TopStatValue}" />
-                                <TextBlock Text="{Binding DashboardBindings.FamePerHour, Converter={StaticResource ValuePerHourConverter}, FallbackValue=0 /h}" Style="{StaticResource Dashboard.TopStatRate}" />
-                            </StackPanel>
-                        </Border>
-                        <Border Style="{StaticResource Dashboard.TopStatCard}">
-                            <StackPanel VerticalAlignment="Center">
-                                <Image Source="../Resources/silver.png" Width="30" Height="30" ToolTip="{Binding Translation.Silver, FallbackValue=SILVER}" />
-                                <TextBlock Text="{Binding DashboardBindings.TotalGainedSilverInSession, Converter={StaticResource ShortNumberConverter}, ConverterCulture={x:Static glob:CultureInfo.CurrentCulture}, FallbackValue=0}" Style="{StaticResource Dashboard.TopStatValue}" />
-                                <TextBlock Text="{Binding DashboardBindings.SilverPerHour, Converter={StaticResource ValuePerHourConverter}, FallbackValue=0 /h}" Style="{StaticResource Dashboard.TopStatRate}" />
-                            </StackPanel>
-                        </Border>
-                        <Border Style="{StaticResource Dashboard.TopStatCard}">
-                            <StackPanel VerticalAlignment="Center">
-                                <Image Source="../Resources/respec.png" Width="30" Height="30" ToolTip="{Binding Translation.ReSpec, FallbackValue=RESPEC}" />
-                                <TextBlock Text="{Binding DashboardBindings.TotalGainedReSpecPointsInSession, Converter={StaticResource ShortNumberConverter}, ConverterCulture={x:Static glob:CultureInfo.CurrentCulture}, FallbackValue=0}" Style="{StaticResource Dashboard.TopStatValue}" />
-                                <TextBlock Text="{Binding DashboardBindings.ReSpecPointsPerHour, Converter={StaticResource ValuePerHourConverter}, FallbackValue=0 /h}" Style="{StaticResource Dashboard.TopStatRate}" />
-                            </StackPanel>
-                        </Border>
-                        <Border Style="{StaticResource Dashboard.TopStatCard}">
-                            <StackPanel VerticalAlignment="Center">
-                                <Image Source="../Resources/might.png" Width="30" Height="30" ToolTip="{Binding Translation.Might, FallbackValue=MIGHT}" />
-                                <TextBlock Text="{Binding DashboardBindings.TotalGainedMightInSession, Converter={StaticResource ShortNumberConverter}, ConverterCulture={x:Static glob:CultureInfo.CurrentCulture}, FallbackValue=0}" Style="{StaticResource Dashboard.TopStatValue}" />
-                                <TextBlock Text="{Binding DashboardBindings.MightPerHour, Converter={StaticResource ValuePerHourConverter}, FallbackValue=0 /h}" Style="{StaticResource Dashboard.TopStatRate}" />
-                            </StackPanel>
-                        </Border>
-                        <Border Style="{StaticResource Dashboard.TopStatCard}">
-                            <StackPanel VerticalAlignment="Center">
-                                <Image Source="../Resources/favor.png" Width="30" Height="30" ToolTip="{Binding Translation.Favor, FallbackValue=FAVOR}" />
-                                <TextBlock Text="{Binding DashboardBindings.TotalGainedFavorInSession, Converter={StaticResource ShortNumberConverter}, ConverterCulture={x:Static glob:CultureInfo.CurrentCulture}, FallbackValue=0}" Style="{StaticResource Dashboard.TopStatValue}" />
-                                <TextBlock Text="{Binding DashboardBindings.FavorPerHour, Converter={StaticResource ValuePerHourConverter}, FallbackValue=0 /h}" Style="{StaticResource Dashboard.TopStatRate}" />
-                            </StackPanel>
-                        </Border>
-                        <ItemsControl ItemsSource="{Binding FactionPointStats}" ItemTemplate="{StaticResource DashboardFactionPointStatsTemplate}">
-                            <ItemsControl.ItemsPanel>
-                                <ItemsPanelTemplate>
-                                    <StackPanel Orientation="Horizontal" />
-                                </ItemsPanelTemplate>
-                            </ItemsControl.ItemsPanel>
-                        </ItemsControl>
-                    </StackPanel>
+                    <Border Grid.Column="0" Style="{StaticResource App.FilterCard}" Margin="0,0,0,8">
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="Auto" />
+                                <ColumnDefinition Width="Auto" />
+                                <ColumnDefinition Width="*" MinWidth="230" />
+                                <ColumnDefinition Width="Auto" />
+                                <ColumnDefinition Width="Auto" />
+                            </Grid.ColumnDefinitions>
+
+                            <Border Grid.Column="0" Style="{StaticResource App.FilterGroup}">
+                                <StackPanel>
+                                    <TextBlock Text="{Binding DashboardBindings.TranslationTimeRange, FallbackValue=TIME_RANGE}" Style="{StaticResource App.FilterLabel}" />
+                                    <ComboBox Width="155" Style="{StaticResource App.FilterComboBox}" ItemsSource="{Binding DashboardChartRanges}" SelectedItem="{Binding SelectedDashboardChartRange, Mode=TwoWay}" DisplayMemberPath="Name" SelectionChanged="DashboardChartRange_SelectionChanged" />
+                                </StackPanel>
+                            </Border>
+
+                            <Border Grid.Column="1" Style="{StaticResource App.FilterGroup}">
+                                <StackPanel>
+                                    <TextBlock Text="{Binding DashboardBindings.TranslationContent, FallbackValue=CONTENT}" Style="{StaticResource App.FilterLabel}" />
+                                    <ComboBox Width="165" Style="{StaticResource App.FilterComboBox}" ItemsSource="{Binding DashboardContentFilters}" SelectedItem="{Binding SelectedDashboardContentFilter, Mode=TwoWay}" DisplayMemberPath="Name" SelectionChanged="DashboardMetadataFilter_SelectionChanged" />
+                                </StackPanel>
+                            </Border>
+
+                            <Border Grid.Column="2" Style="{StaticResource App.FilterGroup}">
+                                <StackPanel>
+                                    <TextBlock Text="{Binding DashboardBindings.TranslationSession, FallbackValue=SESSION}" Style="{StaticResource App.FilterLabel}" />
+                                    <ComboBox MinWidth="220" Style="{StaticResource App.FilterComboBox}" ItemsSource="{Binding DashboardSessionFilters}" SelectedItem="{Binding SelectedDashboardSessionFilter, Mode=TwoWay}" DisplayMemberPath="Name" SelectionChanged="DashboardMetadataFilter_SelectionChanged" />
+                                </StackPanel>
+                            </Border>
+
+                            <CheckBox Grid.Column="3" IsChecked="{Binding IsTrackingResetByMapChangeActive}" IsEnabled="{Binding IsTrackingActive, FallbackValue=false}" Content="{Binding DashboardBindings.TranslationResetSessionOnMapChange, FallbackValue=RESET_SESSION_ON_MAP_CHANGE}" VerticalAlignment="Bottom" Margin="0,0,14,8" />
+
+                            <Button Grid.Column="4" Height="32" MinWidth="150" VerticalAlignment="Bottom" IsEnabled="{Binding IsTrackingActive, FallbackValue=false}" Click="BtnSessionReset_Click">
+                                <StackPanel Orientation="Horizontal" Margin="8,0">
+                                    <fa5:ImageAwesome Icon="Solid_Sync" Width="14" Height="14" Margin="0,0,8,0" Foreground="{StaticResource SolidColorBrush.Text.1}" />
+                                    <TextBlock Text="{Binding DashboardBindings.TranslationResetSession, FallbackValue=RESET_SESSION}" VerticalAlignment="Center" Foreground="{StaticResource SolidColorBrush.Text.1}" />
+                                </StackPanel>
+                            </Button>
+                        </Grid>
+                    </Border>
 
                     <StackPanel Grid.Column="1" HorizontalAlignment="Right" VerticalAlignment="Top">
                         <StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
-                            <Grid Margin="0,0,8,0">
-                                <ToggleButton x:Name="DashboardCategoryButton" Style="{StaticResource App.FilterDropdownButton}" MinWidth="150" Height="36">
-                                    <StackPanel Orientation="Horizontal">
-                                        <fa5:ImageAwesome Icon="Solid_Filter" Width="14" Height="14" Margin="0,0,8,0" Foreground="{StaticResource SolidColorBrush.Text.1}" />
-                                        <TextBlock Text="{Binding DashboardBindings.TranslationCategory, FallbackValue=CATEGORY}" VerticalAlignment="Center" Foreground="{StaticResource SolidColorBrush.Text.1}" />
-                                    </StackPanel>
-                                </ToggleButton>
-                                <Popup PlacementTarget="{Binding ElementName=DashboardCategoryButton}" Placement="Bottom" IsOpen="{Binding IsChecked, ElementName=DashboardCategoryButton, Mode=TwoWay}" StaysOpen="False" AllowsTransparency="True" PopupAnimation="Fade">
-                                    <Border DataContext="{Binding PlacementTarget.DataContext, RelativeSource={RelativeSource AncestorType={x:Type Popup}}}" Style="{StaticResource App.FilterDropdownPopup}" Width="250" Margin="0,4,0,0">
-                                        <StackPanel>
-                                            <TextBlock Text="{Binding DashboardBindings.TranslationCategory, FallbackValue=CATEGORY}" Margin="2,0,0,8" FontSize="14" FontWeight="Bold" Foreground="{StaticResource SolidColorBrush.Text.1}" />
-                                            <Separator Margin="0,0,0,6" />
-                                            <CheckBox Content="{Binding DashboardBindings.TranslationKillsDeaths, FallbackValue=KILLS_DEATHS}" IsChecked="{Binding DashboardBindings.IsKillDeathDashboardCategoryVisible, Mode=TwoWay}" Margin="2,4" />
-                                            <CheckBox Content="{Binding DashboardBindings.TranslationLootedChests, FallbackValue=LOOTED_CHESTS}" IsChecked="{Binding DashboardBindings.IsLootedChestsDashboardCategoryVisible, Mode=TwoWay}" Margin="2,4" />
-                                            <CheckBox Content="{Binding DashboardBindings.TranslationReSpec, FallbackValue=RESPEC}" IsChecked="{Binding DashboardBindings.IsReSpecDashboardCategoryVisible, Mode=TwoWay}" Margin="2,4" />
-                                            <CheckBox Content="{Binding DashboardBindings.TranslationRepairCosts, FallbackValue=REPAIR_COSTS}" IsChecked="{Binding DashboardBindings.IsRepairCostsDashboardCategoryVisible, Mode=TwoWay}" Margin="2,4" />
-                                            <CheckBox Content="{Binding DashboardBindings.TranslationActivityChart, FallbackValue=HISTORY}" IsChecked="{Binding DashboardBindings.IsActivityChartDashboardCategoryVisible, Mode=TwoWay}" Margin="2,4" />
-                                        </StackPanel>
-                                    </Border>
-                                </Popup>
-                            </Grid>
                             <Border Width="38" Height="36" Cursor="Hand" CornerRadius="4" Background="{StaticResource SolidColorBrush.Background.2}" BorderBrush="{StaticResource SolidColorBrush.Background.4}" BorderThickness="1" Visibility="{Binding ShowOpenWindowButton, ElementName=DashboardRoot, Converter={StaticResource BooleanToVisibilityConverter}}" ToolTip="{Binding Translation.OpenExtendedDashboardWindow, FallbackValue=OPEN_EXTENDED_DASHBOARD_WINDOW}" MouseUp="OpenDashboardWindow_MouseUp">
                                 <fa5:ImageAwesome Icon="Solid_Expand" Width="16" Height="16" Foreground="{StaticResource SolidColorBrush.Text.1}" />
                             </Border>
@@ -100,55 +75,97 @@
                     </StackPanel>
                 </Grid>
 
-
-                <TabControl Style="{StaticResource Dashboard.ContentTabControl}"
-                            ItemContainerStyle="{StaticResource Dashboard.ContentTabItem}"
-                            SelectedIndex="0">
+                <TabControl Style="{StaticResource Dashboard.ContentTabControl}" ItemContainerStyle="{StaticResource Dashboard.ContentTabItem}" SelectedIndex="0">
                     <TabItem Header="{Binding DashboardBindings.TranslationTitle, FallbackValue=DASHBOARD}">
                         <StackPanel Margin="0,8,0,0">
-                            <Border Style="{StaticResource App.FilterCard}" Margin="0,0,0,8">
-                                <Grid>
-                                    <Grid.ColumnDefinitions>
-                                        <ColumnDefinition Width="Auto" />
-                                        <ColumnDefinition Width="Auto" />
-                                        <ColumnDefinition Width="*" MinWidth="230" />
-                                        <ColumnDefinition Width="Auto" />
-                                        <ColumnDefinition Width="Auto" />
-                                    </Grid.ColumnDefinitions>
-
-                                    <Border Grid.Column="0" Style="{StaticResource App.FilterGroup}">
-                                        <StackPanel>
-                                            <TextBlock Text="{Binding DashboardBindings.TranslationTimeRange, FallbackValue=TIME_RANGE}" Style="{StaticResource App.FilterLabel}" />
-                                            <ComboBox Width="155" Style="{StaticResource App.FilterComboBox}" ItemsSource="{Binding DashboardChartRanges}" SelectedItem="{Binding SelectedDashboardChartRange, Mode=TwoWay}" DisplayMemberPath="Name" SelectionChanged="DashboardChartRange_SelectionChanged" />
+                            <UniformGrid Rows="1" Columns="6" Margin="0,0,0,8">
+                                <Border Style="{StaticResource Dashboard.SummaryCard}">
+                                    <Grid>
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="Auto" />
+                                            <ColumnDefinition Width="*" />
+                                        </Grid.ColumnDefinitions>
+                                        <Image Source="../Resources/fame.png" Style="{StaticResource Dashboard.SummaryImage}" />
+                                        <StackPanel Grid.Column="1">
+                                            <TextBlock Text="{Binding DashboardBindings.TranslationFame, FallbackValue=FAME}" Style="{StaticResource Dashboard.SummaryTitle}" />
+                                            <ContentControl Content="{Binding DashboardBindings.FameSummary}" 
+                                                            ContentTemplate="{StaticResource Dashboard.SummaryMetricTemplate}" HorizontalContentAlignment="Stretch" />
                                         </StackPanel>
-                                    </Border>
+                                    </Grid>
+                                </Border>
 
-                                    <Border Grid.Column="1" Style="{StaticResource App.FilterGroup}">
-                                        <StackPanel>
-                                            <TextBlock Text="{Binding DashboardBindings.TranslationContent, FallbackValue=CONTENT}" Style="{StaticResource App.FilterLabel}" />
-                                            <ComboBox Width="165" Style="{StaticResource App.FilterComboBox}" ItemsSource="{Binding DashboardContentFilters}" SelectedItem="{Binding SelectedDashboardContentFilter, Mode=TwoWay}" DisplayMemberPath="Name" SelectionChanged="DashboardMetadataFilter_SelectionChanged" />
+                                <Border Style="{StaticResource Dashboard.SummaryCard}">
+                                    <Grid>
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="Auto" />
+                                            <ColumnDefinition Width="*" />
+                                        </Grid.ColumnDefinitions>
+                                        <Image Source="../Resources/respec.png" Style="{StaticResource Dashboard.SummaryImage}" />
+                                        <StackPanel Grid.Column="1">
+                                            <TextBlock Text="{Binding DashboardBindings.TranslationReSpec, FallbackValue=RESPEC}" Style="{StaticResource Dashboard.SummaryTitle}" />
+                                            <ContentControl Content="{Binding DashboardBindings.ReSpecSummary}" ContentTemplate="{StaticResource Dashboard.SummaryMetricTemplate}" HorizontalContentAlignment="Stretch" />
                                         </StackPanel>
-                                    </Border>
+                                    </Grid>
+                                </Border>
 
-                                    <Border Grid.Column="2" Style="{StaticResource App.FilterGroup}">
-                                        <StackPanel>
-                                            <TextBlock Text="{Binding DashboardBindings.TranslationSession, FallbackValue=SESSION}" Style="{StaticResource App.FilterLabel}" />
-                                            <ComboBox MinWidth="220" Style="{StaticResource App.FilterComboBox}" ItemsSource="{Binding DashboardSessionFilters}" SelectedItem="{Binding SelectedDashboardSessionFilter, Mode=TwoWay}" DisplayMemberPath="Name" SelectionChanged="DashboardMetadataFilter_SelectionChanged" />
+                                <Border Style="{StaticResource Dashboard.SummaryCard}">
+                                    <Grid>
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="Auto" />
+                                            <ColumnDefinition Width="*" />
+                                        </Grid.ColumnDefinitions>
+                                        <Image Source="../Resources/silver.png" Style="{StaticResource Dashboard.SummaryImage}" />
+                                        <StackPanel Grid.Column="1">
+                                            <TextBlock Text="{Binding DashboardBindings.TranslationSilver, FallbackValue=SILVER}" Style="{StaticResource Dashboard.SummaryTitle}" />
+                                            <ContentControl Content="{Binding DashboardBindings.SilverSummary}" ContentTemplate="{StaticResource Dashboard.SummaryMetricTemplate}" HorizontalContentAlignment="Stretch" />
                                         </StackPanel>
-                                    </Border>
+                                    </Grid>
+                                </Border>
 
-                                    <CheckBox Grid.Column="3" IsChecked="{Binding IsTrackingResetByMapChangeActive}" IsEnabled="{Binding IsTrackingActive, FallbackValue=false}" Content="{Binding DashboardBindings.TranslationResetSessionOnMapChange, FallbackValue=RESET_SESSION_ON_MAP_CHANGE}" VerticalAlignment="Bottom" Margin="0,0,14,8" />
-
-                                    <Button Grid.Column="4" Height="32" MinWidth="150" VerticalAlignment="Bottom" IsEnabled="{Binding IsTrackingActive, FallbackValue=false}" Click="BtnSessionReset_Click">
-                                        <StackPanel Orientation="Horizontal" Margin="8,0">
-                                            <fa5:ImageAwesome Icon="Solid_Sync" Width="14" Height="14" Margin="0,0,8,0" Foreground="{StaticResource SolidColorBrush.Text.1}" />
-                                            <TextBlock Text="{Binding DashboardBindings.TranslationResetSession, FallbackValue=RESET_SESSION}" VerticalAlignment="Center" Foreground="{StaticResource SolidColorBrush.Text.1}" />
+                                <Border Style="{StaticResource Dashboard.SummaryCard}">
+                                    <Grid>
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="Auto" />
+                                            <ColumnDefinition Width="*" />
+                                        </Grid.ColumnDefinitions>
+                                        <Image Source="../Resources/might.png" Style="{StaticResource Dashboard.SummaryImage}" />
+                                        <StackPanel Grid.Column="1">
+                                            <TextBlock Text="{Binding DashboardBindings.TranslationMight, FallbackValue=MIGHT}" Style="{StaticResource Dashboard.SummaryTitle}" />
+                                            <ContentControl Content="{Binding DashboardBindings.MightSummary}" ContentTemplate="{StaticResource Dashboard.SummaryMetricTemplate}" HorizontalContentAlignment="Stretch" />
                                         </StackPanel>
-                                    </Button>
-                                </Grid>
-                            </Border>
+                                    </Grid>
+                                </Border>
 
-                            <Border Style="{StaticResource Dashboard.Section}" Margin="0,0,0,8" Visibility="{Binding DashboardBindings.IsKillDeathDashboardCategoryVisible, Converter={StaticResource BooleanToVisibilityConverter}}">
+                                <Border Style="{StaticResource Dashboard.SummaryCard}">
+                                    <Grid>
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="Auto" />
+                                            <ColumnDefinition Width="*" />
+                                        </Grid.ColumnDefinitions>
+                                        <Image Source="../Resources/favor.png" Style="{StaticResource Dashboard.SummaryImage}" />
+                                        <StackPanel Grid.Column="1">
+                                            <TextBlock Text="{Binding DashboardBindings.TranslationFavor, FallbackValue=FAVOR}" Style="{StaticResource Dashboard.SummaryTitle}" />
+                                            <ContentControl Content="{Binding DashboardBindings.FavorSummary}" ContentTemplate="{StaticResource Dashboard.SummaryMetricTemplate}" HorizontalContentAlignment="Stretch" />
+                                        </StackPanel>
+                                    </Grid>
+                                </Border>
+
+                                <Border Style="{StaticResource Dashboard.SummaryCard}">
+                                    <Grid>
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="Auto" />
+                                            <ColumnDefinition Width="*" />
+                                        </Grid.ColumnDefinitions>
+                                        <fa5:ImageAwesome Icon="Regular_Clock" Width="18" Height="18" Margin="0,2,9,0" VerticalAlignment="Top" Foreground="{StaticResource SolidColorBrush.Text.2}" />
+                                        <StackPanel Grid.Column="1">
+                                            <TextBlock Text="{Binding DashboardBindings.TranslationSessionTime, FallbackValue=SESSION_TIME}" Style="{StaticResource Dashboard.SummaryTitle}" />
+                                            <ContentControl Content="{Binding DashboardBindings.SessionTimeSummary}" ContentTemplate="{StaticResource Dashboard.SummarySessionTimeTemplate}" HorizontalContentAlignment="Stretch" />
+                                        </StackPanel>
+                                    </Grid>
+                                </Border>
+                            </UniformGrid>
+
+                            <Border Style="{StaticResource Dashboard.Section}" Margin="0,0,0,8">
                                 <DockPanel LastChildFill="True">
                                     <Grid DockPanel.Dock="Top" Height="40" Cursor="Hand" MouseLeftButtonDown="KillDeathToggle_OnMouseLeftButtonDown">
                                         <Grid.ColumnDefinitions>
@@ -166,7 +183,7 @@
                                 </DockPanel>
                             </Border>
 
-                            <Border Style="{StaticResource Dashboard.Section}" Margin="0,0,0,8" Visibility="{Binding DashboardBindings.IsLootedChestsDashboardCategoryVisible, Converter={StaticResource BooleanToVisibilityConverter}}">
+                            <Border Style="{StaticResource Dashboard.Section}" Margin="0,0,0,8">
                                 <DockPanel LastChildFill="True">
                                     <Grid DockPanel.Dock="Top" Height="40" Cursor="Hand" MouseLeftButtonDown="LootedChestsToggle_OnMouseLeftButtonDown">
                                         <Grid.ColumnDefinitions>
@@ -184,7 +201,7 @@
                                 </DockPanel>
                             </Border>
 
-                            <Border Style="{StaticResource Dashboard.Section}" Visibility="{Binding DashboardBindings.IsActivityChartDashboardCategoryVisible, Converter={StaticResource BooleanToVisibilityConverter}}">
+                            <Border Style="{StaticResource Dashboard.Section}">
                                 <DockPanel LastChildFill="True">
                                     <Grid DockPanel.Dock="Top" Height="40" Cursor="Hand" MouseLeftButtonDown="ActivityChartToggle_OnMouseLeftButtonDown">
                                         <Grid.ColumnDefinitions>
@@ -234,19 +251,7 @@
                                 <ColumnDefinition Width="*" />
                             </Grid.ColumnDefinitions>
 
-                            <Border Grid.Column="0"
-                                    Visibility="{Binding DashboardBindings.IsReSpecDashboardCategoryVisible, Converter={StaticResource BooleanToVisibilityConverter}}">
-                                <Border.Style>
-                                    <Style TargetType="{x:Type Border}" BasedOn="{StaticResource Dashboard.Section}">
-                                        <Setter Property="Margin" Value="0,0,4,0" />
-                                        <Style.Triggers>
-                                            <DataTrigger Binding="{Binding DashboardBindings.IsRepairCostsDashboardCategoryVisible}" Value="False">
-                                                <Setter Property="Grid.ColumnSpan" Value="2" />
-                                                <Setter Property="Margin" Value="0" />
-                                            </DataTrigger>
-                                        </Style.Triggers>
-                                    </Style>
-                                </Border.Style>
+                            <Border Grid.Column="0" Style="{StaticResource Dashboard.Section}" Margin="0,0,4,0">
                                 <DockPanel LastChildFill="True">
                                     <Grid DockPanel.Dock="Top" Height="40" Cursor="Hand" MouseLeftButtonDown="ReSpecStatsToggle_OnMouseLeftButtonDown">
                                         <Grid.ColumnDefinitions>
@@ -264,20 +269,7 @@
                                 </DockPanel>
                             </Border>
 
-                            <Border Grid.Column="1"
-                                    Visibility="{Binding DashboardBindings.IsRepairCostsDashboardCategoryVisible, Converter={StaticResource BooleanToVisibilityConverter}}">
-                                <Border.Style>
-                                    <Style TargetType="{x:Type Border}" BasedOn="{StaticResource Dashboard.Section}">
-                                        <Setter Property="Margin" Value="4,0,0,0" />
-                                        <Style.Triggers>
-                                            <DataTrigger Binding="{Binding DashboardBindings.IsReSpecDashboardCategoryVisible}" Value="False">
-                                                <Setter Property="Grid.Column" Value="0" />
-                                                <Setter Property="Grid.ColumnSpan" Value="2" />
-                                                <Setter Property="Margin" Value="0" />
-                                            </DataTrigger>
-                                        </Style.Triggers>
-                                    </Style>
-                                </Border.Style>
+                            <Border Grid.Column="1" Style="{StaticResource Dashboard.Section}" Margin="4,0,0,0">
                                 <DockPanel LastChildFill="True">
                                     <Grid DockPanel.Dock="Top" Height="40" Cursor="Hand" MouseLeftButtonDown="RepairCostsStatsToggle_OnMouseLeftButtonDown">
                                         <Grid.ColumnDefinitions>

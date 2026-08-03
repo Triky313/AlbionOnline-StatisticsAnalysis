@@ -10,6 +10,7 @@
                     mc:Ignorable="d">
 
     <converters:ShortNumberConverter x:Key="ShortNumberConverter" />
+    <converters:DurationSecondsToCompactStringConverter x:Key="DurationSecondsToCompactStringConverter" />
 
     <Style x:Key="Dashboard.Section" TargetType="{x:Type Border}">
         <Setter Property="Background" Value="{StaticResource SolidColorBrush.Background.2}" />
@@ -26,29 +27,81 @@
         <Setter Property="CornerRadius" Value="4" />
     </Style>
 
-    <Style x:Key="Dashboard.TopStatCard" TargetType="{x:Type Border}">
-        <Setter Property="Width" Value="86" />
-        <Setter Property="Height" Value="88" />
-        <Setter Property="Margin" Value="0,0,8,0" />
-        <Setter Property="Padding" Value="6" />
+    <Style x:Key="Dashboard.SummaryCard" TargetType="{x:Type Border}">
+        <Setter Property="Height" Value="106" />
+        <Setter Property="Margin" Value="0,0,6,0" />
+        <Setter Property="Padding" Value="10,10" />
         <Setter Property="Background" Value="{StaticResource SolidColorBrush.Background.2}" />
         <Setter Property="BorderBrush" Value="{StaticResource SolidColorBrush.Background.4}" />
         <Setter Property="BorderThickness" Value="1" />
         <Setter Property="CornerRadius" Value="5" />
     </Style>
 
-    <Style x:Key="Dashboard.TopStatValue" TargetType="{x:Type TextBlock}">
-        <Setter Property="FontSize" Value="19" />
-        <Setter Property="Foreground" Value="{StaticResource SolidColorBrush.Text.1}" />
-        <Setter Property="HorizontalAlignment" Value="Center" />
-        <Setter Property="LineHeight" Value="22" />
+    <Style x:Key="Dashboard.SummaryTitle" TargetType="{x:Type TextBlock}">
+        <Setter Property="FontSize" Value="11" />
+        <Setter Property="Foreground" Value="{StaticResource SolidColorBrush.Text.2}" />
+        <Setter Property="TextTrimming" Value="CharacterEllipsis" />
     </Style>
 
-    <Style x:Key="Dashboard.TopStatRate" TargetType="{x:Type TextBlock}">
-        <Setter Property="FontSize" Value="12" />
-        <Setter Property="Foreground" Value="{StaticResource SolidColorBrush.Text.2}" />
-        <Setter Property="HorizontalAlignment" Value="Center" />
+    <Style x:Key="Dashboard.SummaryValue" TargetType="{x:Type TextBlock}">
+        <Setter Property="FontSize" Value="20" />
+        <Setter Property="FontWeight" Value="SemiBold" />
+        <Setter Property="Foreground" Value="{StaticResource SolidColorBrush.Text.1}" />
+        <Setter Property="Margin" Value="0,1,0,1" />
     </Style>
+
+    <Style x:Key="Dashboard.SummaryDeltaText" TargetType="{x:Type TextBlock}">
+        <Setter Property="FontSize" Value="10.5" />
+        <Setter Property="Foreground" Value="{StaticResource SolidColorBrush.Text.2}" />
+        <Style.Triggers>
+            <DataTrigger Binding="{Binding IsIncrease}" Value="True">
+                <Setter Property="Foreground" Value="{StaticResource SolidColorBrush.Accent.Green.3}" />
+            </DataTrigger>
+            <DataTrigger Binding="{Binding IsDecrease}" Value="True">
+                <Setter Property="Foreground" Value="{StaticResource SolidColorBrush.Accent.Red.3}" />
+            </DataTrigger>
+        </Style.Triggers>
+    </Style>
+
+    <Style x:Key="Dashboard.SummaryComparison" TargetType="{x:Type TextBlock}">
+        <Setter Property="FontSize" Value="10" />
+        <Setter Property="Foreground" Value="{StaticResource SolidColorBrush.Text.5}" />
+        <Setter Property="Margin" Value="0,2,0,0" />
+    </Style>
+
+    <Style x:Key="Dashboard.SummaryImage" TargetType="{x:Type Image}">
+        <Setter Property="Width" Value="24" />
+        <Setter Property="Height" Value="24" />
+        <Setter Property="Margin" Value="0,0,5,0" />
+        <Setter Property="VerticalAlignment" Value="Top" />
+    </Style>
+
+    <DataTemplate x:Key="Dashboard.SummaryMetricTemplate" DataType="{x:Type models:DashboardSummaryMetric}">
+        <StackPanel>
+            <TextBlock Text="{Binding Value, Converter={StaticResource ShortNumberConverter}, ConverterCulture={x:Static gl:CultureInfo.CurrentCulture}, FallbackValue=0}" Style="{StaticResource Dashboard.SummaryValue}" />
+            <StackPanel Orientation="Horizontal">
+                <TextBlock Text="{Binding ChangeIndicator}" Style="{StaticResource Dashboard.SummaryDeltaText}" />
+                <TextBlock Text=" " Style="{StaticResource Dashboard.SummaryDeltaText}" />
+                <TextBlock Text="{Binding ChangeAmount, Converter={StaticResource ShortNumberConverter}, ConverterCulture={x:Static gl:CultureInfo.CurrentCulture}, FallbackValue=0}" Style="{StaticResource Dashboard.SummaryDeltaText}" />
+                <TextBlock Text=" (" Style="{StaticResource Dashboard.SummaryDeltaText}" />
+                <TextBlock Text="{Binding ChangePercentageText}" Style="{StaticResource Dashboard.SummaryDeltaText}" />
+                <TextBlock Text=")" Style="{StaticResource Dashboard.SummaryDeltaText}" />
+            </StackPanel>
+            <TextBlock Text="{Binding DataContext.DashboardBindings.SummaryComparisonText, RelativeSource={RelativeSource AncestorType={x:Type UserControl}}, FallbackValue=VS_PREVIOUS_HOUR}" Style="{StaticResource Dashboard.SummaryComparison}" />
+        </StackPanel>
+    </DataTemplate>
+
+    <DataTemplate x:Key="Dashboard.SummarySessionTimeTemplate" DataType="{x:Type models:DashboardSummaryMetric}">
+        <StackPanel>
+            <TextBlock Text="{Binding Value, Converter={StaticResource DurationSecondsToCompactStringConverter}, FallbackValue=0m}" Style="{StaticResource Dashboard.SummaryValue}" />
+            <StackPanel Orientation="Horizontal">
+                <TextBlock Text="{Binding ChangeIndicator}" Style="{StaticResource Dashboard.SummaryDeltaText}" />
+                <TextBlock Text=" " Style="{StaticResource Dashboard.SummaryDeltaText}" />
+                <TextBlock Text="{Binding ChangePercentageText}" Style="{StaticResource Dashboard.SummaryDeltaText}" />
+            </StackPanel>
+            <TextBlock Text="{Binding DataContext.DashboardBindings.SummaryComparisonText, RelativeSource={RelativeSource AncestorType={x:Type UserControl}}, FallbackValue=VS_PREVIOUS_HOUR}" Style="{StaticResource Dashboard.SummaryComparison}" />
+        </StackPanel>
+    </DataTemplate>
 
     <Style x:Key="Dashboard.SectionTitle" TargetType="{x:Type TextBlock}">
         <Setter Property="FontSize" Value="17" />
@@ -161,21 +214,6 @@
         <Setter Property="Foreground" Value="{StaticResource SolidColorBrush.Accent.Red.3}" />
         <Setter Property="VerticalAlignment" Value="Center" />
     </Style>
-
-    <DataTemplate x:Key="DashboardFactionPointStatsTemplate" DataType="{x:Type models:MainStatObject}">
-        <Border Style="{StaticResource Dashboard.TopStatCard}" Visibility="{Binding Visibility}">
-            <StackPanel VerticalAlignment="Center">
-                <Image Style="{StaticResource Tracker.Fraction.Coin.Icon}"
-                       ToolTip="{Binding TranslationTotalFactionPoints, FallbackValue=TOTAL_FACTION_POINTS}"
-                       Width="30"
-                       Height="30" />
-                <TextBlock Text="{Binding Value, Converter={StaticResource ShortNumberConverter}, ConverterCulture={x:Static gl:CultureInfo.CurrentCulture}, FallbackValue=0}"
-                           Style="{StaticResource Dashboard.TopStatValue}" />
-                <TextBlock Text="{Binding ValuePerHour, Converter={StaticResource ValuePerHourConverter}, FallbackValue=0 /h}"
-                           Style="{StaticResource Dashboard.TopStatRate}" />
-            </StackPanel>
-        </Border>
-    </DataTemplate>
 
     <DataTemplate x:Key="KillDeathStatsTemplate" DataType="{x:Type bindingModel:DashboardBindings}">
         <Grid>

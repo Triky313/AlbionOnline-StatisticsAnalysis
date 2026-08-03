@@ -181,10 +181,8 @@ public class MainWindowViewModel : BaseViewModel
         var selectedDashboardChartSeriesFilters = DashboardChartSeriesFilters.ToDictionary(x => x.ValueType, x => x.IsSelected);
 
         DashboardChartRanges = new ObservableCollection<DashboardChartRangeOption>(DashboardChartRangeOption.CreateDefault());
-        SelectedDashboardChartRange = selectedDashboardChartRange is null
-            ? DashboardChartRanges.FirstOrDefault()
-            : DashboardChartRanges.FirstOrDefault(x => x.BucketCount == selectedDashboardChartRange.BucketCount
-                                                       && x.UseHourlyValues == selectedDashboardChartRange.UseHourlyValues)
+        SelectedDashboardChartRange = selectedDashboardChartRange is null ? DashboardChartRanges.FirstOrDefault()
+            : DashboardChartRanges.FirstOrDefault(x => x.BucketCount == selectedDashboardChartRange.BucketCount && x.Unit == selectedDashboardChartRange.Unit)
               ?? DashboardChartRanges.FirstOrDefault();
 
         DashboardChartSeriesFilters = new ObservableCollection<DashboardChartSeriesFilter>(CreateDashboardChartSeriesFilters(selectedDashboardChartSeriesFilters));

@@ -252,5 +252,6 @@ public class LiveStatsTracker
         // Session-Timer
         var duration = now - _sessionStartUtc;
         _mainWindowViewModel.MainTrackerTimer = duration.ToTimerString();
+        _trackingController.StatisticController.UpdateDashboardSessionTime(now);
     }
 }

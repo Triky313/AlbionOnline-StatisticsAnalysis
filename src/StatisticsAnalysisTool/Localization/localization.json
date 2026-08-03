@@ -47088,6 +47088,84 @@
           "seg": "Reset session on map change"
         }
       ]
+    },
+    {
+      "tuid": "SESSION_TIME",
+      "tuv": [
+        {
+          "lang": "de-DE",
+          "seg": "Sitzungszeit"
+        },
+        {
+          "lang": "en-US",
+          "seg": "Session time"
+        }
+      ]
+    },
+    {
+      "tuid": "VS_PREVIOUS_HOUR",
+      "tuv": [
+        {
+          "lang": "de-DE",
+          "seg": "gegenüber der vorherigen Stunde"
+        },
+        {
+          "lang": "en-US",
+          "seg": "vs previous hour"
+        }
+      ]
+    },
+    {
+      "tuid": "VS_PREVIOUS_DAY",
+      "tuv": [
+        {
+          "lang": "de-DE",
+          "seg": "gegenüber dem Vortag"
+        },
+        {
+          "lang": "en-US",
+          "seg": "vs previous day"
+        }
+      ]
+    },
+    {
+      "tuid": "VS_PREVIOUS_MINUTES",
+      "tuv": [
+        {
+          "lang": "de-DE",
+          "seg": "gegenüber den vorherigen Minuten"
+        },
+        {
+          "lang": "en-US",
+          "seg": "vs previous minutes"
+        }
+      ]
+    },
+    {
+      "tuid": "VS_PREVIOUS_HOURS",
+      "tuv": [
+        {
+          "lang": "de-DE",
+          "seg": "gegenüber den vorherigen Stunden"
+        },
+        {
+          "lang": "en-US",
+          "seg": "vs previous hours"
+        }
+      ]
+    },
+    {
+      "tuid": "VS_PREVIOUS_DAYS",
+      "tuv": [
+        {
+          "lang": "de-DE",
+          "seg": "gegenüber den vorherigen Tagen"
+        },
+        {
+          "lang": "en-US",
+          "seg": "vs previous days"
+        }
+      ]
     }
   ]
 }

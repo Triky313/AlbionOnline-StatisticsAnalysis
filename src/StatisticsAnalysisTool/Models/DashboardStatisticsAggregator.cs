@@ -1,5 +1,6 @@
 using StatisticsAnalysisTool.Cluster;
 using StatisticsAnalysisTool.Dungeon;
+using StatisticsAnalysisTool.Enumerations;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -10,6 +11,7 @@ namespace StatisticsAnalysisTool.Models;
 public sealed class DashboardStatisticsAggregator
 {
     private readonly object _syncRoot = new();
+    private readonly Dictionary<(ValueType ValueType, DateTime Bucket, Guid SessionId, MapType MapType, DungeonMode DungeonMode), double> _minuteValues = new();
     private readonly Dictionary<(ValueType ValueType, DateTime Bucket, Guid SessionId, MapType MapType, DungeonMode DungeonMode), double> _hourlyValues = new();
     private readonly Dictionary<(ValueType ValueType, DateTime Bucket, Guid SessionId, MapType MapType, DungeonMode DungeonMode), double> _dailyValues = new();
     private readonly List<(DateTime OccurredAtUtc, double Value)> _repairCostEntries = [];
@@ -39,7 +41,7 @@ public sealed class DashboardStatisticsAggregator
 
     public Dictionary<ValueType, Dictionary<DateTime, double>> AggregateChartValues(
         IReadOnlyCollection<DateTime> bucketStarts,
-        bool useHourlyValues,
+        DashboardChartRangeUnit unit,
         Guid? sessionId,
         MapType? mapType,
         DungeonMode? dungeonMode)
@@ -54,7 +56,14 @@ public sealed class DashboardStatisticsAggregator
 
         lock (_syncRoot)
         {
-            var indexedValues = useHourlyValues ? _hourlyValues : _dailyValues;
+            var indexedValues = unit switch
+            {
+                DashboardChartRangeUnit.Minute => _minuteValues,
+                DashboardChartRangeUnit.Hour => _hourlyValues,
+                DashboardChartRangeUnit.Day => _dailyValues,
+                _ => _dailyValues
+            };
+
             foreach (var (key, value) in indexedValues)
             {
                 if (!validBuckets.Contains(key.Bucket)
@@ -93,9 +102,11 @@ public sealed class DashboardStatisticsAggregator
         }
 
         var localDate = entry.OccurredAtUtc.ToLocalTime();
+        var minuteBucket = new DateTime(localDate.Year, localDate.Month, localDate.Day, localDate.Hour, localDate.Minute, 0);
         var hourBucket = new DateTime(localDate.Year, localDate.Month, localDate.Day, localDate.Hour, 0, 0);
         var dayBucket = localDate.Date;
 
+        AddIndexedValue(_minuteValues, entry, minuteBucket);
         AddIndexedValue(_hourlyValues, entry, hourBucket);
         AddIndexedValue(_dailyValues, entry, dayBucket);
 

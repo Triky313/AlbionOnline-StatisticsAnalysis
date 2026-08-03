@@ -10,6 +10,7 @@ using StatisticsAnalysisTool.Dungeon;
 using StatisticsAnalysisTool.Enumerations;
 using StatisticsAnalysisTool.Localization;
 using StatisticsAnalysisTool.Models;
+using StatisticsAnalysisTool.Models.BindingModel;
 using StatisticsAnalysisTool.ViewModels;
 using System;
 using System.Collections.Generic;
@@ -222,9 +223,12 @@ public class StatisticController
             .Where(x => x.IsSelected)
             .ToList();
 
-        var chartBuckets = selectedRange.UseHourlyValues
-            ? CreateHourlyBuckets(selectedRange.BucketCount)
-            : CreateDailyBuckets(selectedRange.BucketCount);
+        var chartBuckets = CreateChartBuckets(selectedRange);
+        var currentRangeBucketStarts = chartBuckets.Select(x => x.Start).ToArray();
+        var previousRangeBucketStarts = currentRangeBucketStarts
+            .Select(x => AddBuckets(x, -selectedRange.BucketCount, selectedRange.Unit));
+        var aggregationBucketStarts = currentRangeBucketStarts
+            .Concat(previousRangeBucketStarts).Distinct().ToArray();
 
         var xAxes = new[]
         {
@@ -235,6 +239,14 @@ public class StatisticController
             }
         };
 
+        var aggregatedValues = _statisticsAggregator.AggregateChartValues(
+            aggregationBucketStarts,
+            selectedRange.Unit,
+            _mainWindowViewModel.SelectedDashboardSessionFilter?.SessionId,
+            _mainWindowViewModel.SelectedDashboardContentFilter?.MapType,
+            null);
+        UpdateDashboardSummary(selectedRange, chartBuckets, aggregatedValues);
+
         if (selectedSeriesFilters.Count == 0)
         {
             _mainWindowViewModel.XAxesDashboardHourValues = xAxes;
@@ -242,13 +254,6 @@ public class StatisticController
             _lastChartUpdate = DateTime.Now;
             return;
         }
-
-        var aggregatedValues = _statisticsAggregator.AggregateChartValues(
-            chartBuckets.Select(x => x.Start).ToArray(),
-            selectedRange.UseHourlyValues,
-            _mainWindowViewModel.SelectedDashboardSessionFilter?.SessionId,
-            _mainWindowViewModel.SelectedDashboardContentFilter?.MapType,
-            null);
 
         var seriesCollection = new ObservableCollection<ISeries>();
 
@@ -283,6 +288,157 @@ public class StatisticController
         _lastChartUpdate = DateTime.Now;
     }
 
+    public void UpdateDashboardSessionTime(DateTime nowUtc)
+    {
+        var selectedRange = _mainWindowViewModel.SelectedDashboardChartRange;
+        if (selectedRange == null)
+        {
+            return;
+        }
+
+        var currentPeriodStart = AlignToBucketStart(nowUtc.ToLocalTime(), selectedRange.Unit);
+        var rangeStart = AddBuckets(currentPeriodStart, -(selectedRange.BucketCount - 1), selectedRange.Unit);
+
+        UpdateDashboardSessionTime(selectedRange, rangeStart, nowUtc);
+    }
+
+    private void UpdateDashboardSummary(
+        DashboardChartRangeOption selectedRange,
+        IReadOnlyList<ChartBucket> chartBuckets,
+        IReadOnlyDictionary<ValueType, Dictionary<DateTime, double>> aggregatedValues)
+    {
+        var currentRangeBucketStarts = chartBuckets.Select(x => x.Start).ToHashSet();
+        var previousRangeBucketStarts = currentRangeBucketStarts
+            .Select(x => AddBuckets(x, -selectedRange.BucketCount, selectedRange.Unit))
+            .ToHashSet();
+
+        UpdateDashboardSummaryMetric(
+            _mainWindowViewModel.DashboardBindings.FameSummary,
+            aggregatedValues,
+            ValueType.Fame,
+            currentRangeBucketStarts,
+            previousRangeBucketStarts);
+        UpdateDashboardSummaryMetric(
+            _mainWindowViewModel.DashboardBindings.ReSpecSummary,
+            aggregatedValues,
+            ValueType.ReSpec,
+            currentRangeBucketStarts,
+            previousRangeBucketStarts);
+        UpdateDashboardSummaryMetric(
+            _mainWindowViewModel.DashboardBindings.SilverSummary,
+            aggregatedValues,
+            ValueType.Silver,
+            currentRangeBucketStarts,
+            previousRangeBucketStarts);
+        UpdateDashboardSummaryMetric(
+            _mainWindowViewModel.DashboardBindings.MightSummary,
+            aggregatedValues,
+            ValueType.Might,
+            currentRangeBucketStarts,
+            previousRangeBucketStarts);
+        UpdateDashboardSummaryMetric(
+            _mainWindowViewModel.DashboardBindings.FavorSummary,
+            aggregatedValues,
+            ValueType.Favor,
+            currentRangeBucketStarts,
+            previousRangeBucketStarts);
+
+        _mainWindowViewModel.DashboardBindings.SummaryComparisonText = selectedRange.Unit switch
+        {
+            DashboardChartRangeUnit.Minute => DashboardBindings.TranslationVsPreviousMinutes,
+            DashboardChartRangeUnit.Hour when selectedRange.BucketCount == 1 => DashboardBindings.TranslationVsPreviousHour,
+            DashboardChartRangeUnit.Hour => DashboardBindings.TranslationVsPreviousHours,
+            DashboardChartRangeUnit.Day when selectedRange.BucketCount == 1 => DashboardBindings.TranslationVsPreviousDay,
+            DashboardChartRangeUnit.Day => DashboardBindings.TranslationVsPreviousDays,
+            _ => DashboardBindings.TranslationVsPreviousDay
+        };
+
+        UpdateDashboardSessionTime(selectedRange, chartBuckets[0].Start, DateTime.UtcNow);
+    }
+
+    private static void UpdateDashboardSummaryMetric(
+        DashboardSummaryMetric metric,
+        IReadOnlyDictionary<ValueType, Dictionary<DateTime, double>> aggregatedValues,
+        ValueType valueType,
+        IReadOnlySet<DateTime> currentRangeBucketStarts,
+        IReadOnlySet<DateTime> previousRangeBucketStarts)
+    {
+        var values = aggregatedValues.GetValueOrDefault(valueType) ?? [];
+        var currentRangeValue = values.Where(x => currentRangeBucketStarts.Contains(x.Key)).Sum(x => x.Value);
+        var previousRangeValue = values.Where(x => previousRangeBucketStarts.Contains(x.Key)).Sum(x => x.Value);
+
+        metric.Update(currentRangeValue, currentRangeValue, previousRangeValue);
+    }
+
+    private void UpdateDashboardSessionTime(
+        DashboardChartRangeOption selectedRange,
+        DateTime rangeStart,
+        DateTime nowUtc)
+    {
+        List<StatisticSession> sessions;
+        lock (_syncRoot)
+        {
+            sessions = _dashboardStatistics.CreateSessionSnapshot();
+        }
+
+        var selectedSessionId = _mainWindowViewModel.SelectedDashboardSessionFilter?.SessionId;
+        var selectedSessions = selectedSessionId.HasValue
+            ? sessions.Where(x => x.Id == selectedSessionId.Value).ToArray()
+            : sessions.ToArray();
+        var previousRangeStart = AddBuckets(rangeStart, -selectedRange.BucketCount, selectedRange.Unit);
+
+        var currentRangeSeconds = SumSessionDurationSeconds(selectedSessions, rangeStart.ToUniversalTime(), nowUtc, nowUtc);
+        var previousRangeSeconds = SumSessionDurationSeconds(
+            selectedSessions,
+            previousRangeStart.ToUniversalTime(),
+            rangeStart.ToUniversalTime(),
+            nowUtc);
+
+        _mainWindowViewModel.DashboardBindings.SessionTimeSummary.Update(
+            currentRangeSeconds,
+            currentRangeSeconds,
+            previousRangeSeconds);
+    }
+
+    private static double SumSessionDurationSeconds(
+        IEnumerable<StatisticSession> sessions,
+        DateTime periodStartUtc,
+        DateTime periodEndUtc,
+        DateTime nowUtc)
+    {
+        return sessions.Sum(session =>
+        {
+            var sessionEndUtc = session.EndedAtUtc ?? nowUtc;
+            var overlapStartUtc = session.StartedAtUtc > periodStartUtc ? session.StartedAtUtc : periodStartUtc;
+            var overlapEndUtc = sessionEndUtc < periodEndUtc ? sessionEndUtc : periodEndUtc;
+            return overlapEndUtc > overlapStartUtc
+                ? (overlapEndUtc - overlapStartUtc).TotalSeconds
+                : 0;
+        });
+    }
+
+    private static DateTime AlignToBucketStart(DateTime localDateTime, DashboardChartRangeUnit unit)
+    {
+        return unit switch
+        {
+            DashboardChartRangeUnit.Minute => new DateTime(localDateTime.Year, localDateTime.Month, localDateTime.Day, localDateTime.Hour, localDateTime.Minute, 0),
+            DashboardChartRangeUnit.Hour => new DateTime(localDateTime.Year, localDateTime.Month, localDateTime.Day, localDateTime.Hour, 0, 0),
+            DashboardChartRangeUnit.Day => localDateTime.Date,
+            _ => localDateTime.Date
+        };
+    }
+
+    private static DateTime AddBuckets(DateTime bucketStart, int bucketCount, DashboardChartRangeUnit unit)
+    {
+        return unit switch
+        {
+            DashboardChartRangeUnit.Minute => bucketStart.AddMinutes(bucketCount),
+            DashboardChartRangeUnit.Hour => bucketStart.AddHours(bucketCount),
+            DashboardChartRangeUnit.Day => bucketStart.AddDays(bucketCount),
+            _ => bucketStart.AddDays(bucketCount)
+        };
+    }
+
     private void MarkSessionDirtyInternal(Guid sessionId)
     {
         _dirtySessionVersions[sessionId] =
@@ -304,30 +460,23 @@ public class StatisticController
         };
     }
 
-    private static List<ChartBucket> CreateHourlyBuckets(int bucketCount)
+    private static List<ChartBucket> CreateChartBuckets(DashboardChartRangeOption selectedRange)
     {
-        var buckets = new List<ChartBucket>(bucketCount);
-        var currentHour = DateTime.Now;
-        currentHour = new DateTime(currentHour.Year, currentHour.Month, currentHour.Day, currentHour.Hour, 0, 0);
+        var buckets = new List<ChartBucket>(selectedRange.BucketCount);
+        var currentBucketStart = AlignToBucketStart(DateTime.Now, selectedRange.Unit);
 
-        for (var i = bucketCount - 1; i >= 0; i--)
+        for (var i = selectedRange.BucketCount - 1; i >= 0; i--)
         {
-            var start = currentHour.AddHours(-i);
-            buckets.Add(new ChartBucket(start, start.ToString("dd.MM HH:mm", CultureInfo.CurrentCulture)));
-        }
+            var start = AddBuckets(currentBucketStart, -i, selectedRange.Unit);
+            var label = selectedRange.Unit switch
+            {
+                DashboardChartRangeUnit.Minute => start.ToString("HH:mm", CultureInfo.CurrentCulture),
+                DashboardChartRangeUnit.Hour => start.ToString("dd.MM HH:mm", CultureInfo.CurrentCulture),
+                DashboardChartRangeUnit.Day => start.ToString("d", CultureInfo.CurrentCulture),
+                _ => start.ToString("d", CultureInfo.CurrentCulture)
+            };
 
-        return buckets;
-    }
-
-    private static List<ChartBucket> CreateDailyBuckets(int bucketCount)
-    {
-        var buckets = new List<ChartBucket>(bucketCount);
-        var currentDay = DateTime.Now.Date;
-
-        for (var i = bucketCount - 1; i >= 0; i--)
-        {
-            var start = currentDay.AddDays(-i);
-            buckets.Add(new ChartBucket(start, start.ToString("d", CultureInfo.CurrentCulture)));
+            buckets.Add(new ChartBucket(start, label));
         }
 
         return buckets;

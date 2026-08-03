@@ -112,12 +112,7 @@ public class SettingsObject
     public bool IsReSpecStatsVisible { get; set; } = true;
     public bool IsRepairCostsStatsVisible { get; set; } = true;
     public bool IsActivityChartVisible { get; set; } = true;
-    public bool IsKillDeathDashboardCategoryVisible { get; set; } = true;
-    public bool IsLootedChestsDashboardCategoryVisible { get; set; } = true;
-    public bool IsReSpecDashboardCategoryVisible { get; set; } = true;
-    public bool IsRepairCostsDashboardCategoryVisible { get; set; } = true;
     public string ProxyUrlWithPort { get; set; }
-    public bool IsActivityChartDashboardCategoryVisible { get; set; } = true;
     public string DebugConsoleFilter { get; set; }
     public bool IsOpenDebugConsoleWhenStartingTheToolChecked { get; set; } = false;
     public int NetworkDevice { get; set; } = -1;
