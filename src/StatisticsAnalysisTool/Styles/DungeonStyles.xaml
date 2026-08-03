@@ -2924,17 +2924,17 @@
                                                            Foreground="{StaticResource SolidColorBrush.Text.1}" TextAlignment="Left" />
                                             </DockPanel>
                                         </DockPanel>
-                                        <!-- Faction flags -->
+                                        <!-- Faction standing -->
                                         <DockPanel Height="16" Visibility="{Binding FactionPointsVisibility, IsAsync=True, FallbackValue=Collapsed}">
-                                            <Grid HorizontalAlignment="Center" Width="16" Margin="0,0,2,0" VerticalAlignment="Center" ToolTip="{Binding TranslationFactionFlags, FallbackValue=FACTION__FLAGS}">
+                                            <Grid HorizontalAlignment="Center" Width="16" Margin="0,0,2,0" VerticalAlignment="Center" ToolTip="{Binding TranslationFactionStanding, FallbackValue=FACTION_STANDING}">
                                                 <Image Style="{StaticResource Tracker.Fraction.Flag.Icon}" />
                                             </Grid>
                                             <DockPanel>
-                                                <TextBlock Text="{Binding FactionFlags, Converter={StaticResource ShortNumberConverter}, 
+                                                <TextBlock Text="{Binding FactionStanding, Converter={StaticResource ShortNumberConverter},
                                                         ConverterCulture={x:Static glob:CultureInfo.CurrentCulture}, IsAsync=True, Mode=OneWay, FallbackValue=-}" 
                                                            Foreground="{StaticResource SolidColorBrush.Text.1}" TextAlignment="Right" />
                                                 <TextBlock Text="/" Foreground="{StaticResource SolidColorBrush.Accent.Blue.2}" FontWeight="Bold" Margin="2,0,2,0" />
-                                                <TextBlock Text="{Binding FactionFlagsPerHour, Converter={StaticResource ShortNumberConverter}, 
+                                                <TextBlock Text="{Binding FactionStandingPerHour, Converter={StaticResource ShortNumberConverter},
                                                         ConverterCulture={x:Static glob:CultureInfo.CurrentCulture}, IsAsync=True, Mode=OneWay, StringFormat='{}{0:N0}/h', FallbackValue='-/h'}" 
                                                            Foreground="{StaticResource SolidColorBrush.Text.1}" TextAlignment="Left" />
                                             </DockPanel>

@@ -24508,15 +24508,15 @@
       ]
     },
     {
-      "tuid": "FACTION_FLAGS",
+      "tuid": "FACTION_STANDING",
       "tuv": [
         {
           "lang": "de-DE",
-          "seg": "Fraktions-Flaggen"
+          "seg": "Fraktionsansehen"
         },
         {
           "lang": "en-US",
-          "seg": "Faction flags"
+          "seg": "Faction Standing"
         },
         {
           "lang": "es-ES",
@@ -24557,15 +24557,15 @@
       ]
     },
     {
-      "tuid": "FACTION_FLAGS_PER_HOUR",
+      "tuid": "FACTION_STANDING_PER_HOUR",
       "tuv": [
         {
           "lang": "de-DE",
-          "seg": "Fraktions-Flaggen pro Stunde"
+          "seg": "Fraktionsansehen pro Stunde"
         },
         {
           "lang": "en-US",
-          "seg": "Faction flags per hour"
+          "seg": "Faction Standing per hour"
         },
         {
           "lang": "es-ES",

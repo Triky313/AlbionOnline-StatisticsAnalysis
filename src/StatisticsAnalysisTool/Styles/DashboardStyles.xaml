@@ -38,6 +38,16 @@
         <Setter Property="CornerRadius" Value="5" />
     </Style>
 
+    <Style x:Key="Dashboard.FactionSummaryCard" TargetType="{x:Type Border}" BasedOn="{StaticResource Dashboard.Section}">
+        <Setter Property="CornerRadius" Value="5" />
+    </Style>
+
+    <Style x:Key="Dashboard.FactionMetricCard" TargetType="{x:Type Border}" BasedOn="{StaticResource Dashboard.SummaryCard}">
+        <Setter Property="MinWidth" Value="180" />
+        <Setter Property="Background" Value="{StaticResource SolidColorBrush.Background.3}" />
+        <Setter Property="Margin" Value="0,0,8,0" />
+    </Style>
+
     <Style x:Key="Dashboard.SummaryTitle" TargetType="{x:Type TextBlock}">
         <Setter Property="FontSize" Value="11" />
         <Setter Property="Foreground" Value="{StaticResource SolidColorBrush.Text.2}" />

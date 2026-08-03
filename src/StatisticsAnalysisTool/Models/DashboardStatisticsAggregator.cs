@@ -11,9 +11,9 @@ namespace StatisticsAnalysisTool.Models;
 public sealed class DashboardStatisticsAggregator
 {
     private readonly object _syncRoot = new();
-    private readonly Dictionary<(ValueType ValueType, DateTime Bucket, Guid SessionId, MapType MapType, DungeonMode DungeonMode, ClusterMode ClusterMode), double> _minuteValues = new();
-    private readonly Dictionary<(ValueType ValueType, DateTime Bucket, Guid SessionId, MapType MapType, DungeonMode DungeonMode, ClusterMode ClusterMode), double> _hourlyValues = new();
-    private readonly Dictionary<(ValueType ValueType, DateTime Bucket, Guid SessionId, MapType MapType, DungeonMode DungeonMode, ClusterMode ClusterMode), double> _dailyValues = new();
+    private readonly Dictionary<(ValueType ValueType, DateTime Bucket, Guid SessionId, MapType MapType, DungeonMode DungeonMode, ClusterMode ClusterMode, CityFaction CityFaction), double> _minuteValues = new();
+    private readonly Dictionary<(ValueType ValueType, DateTime Bucket, Guid SessionId, MapType MapType, DungeonMode DungeonMode, ClusterMode ClusterMode, CityFaction CityFaction), double> _hourlyValues = new();
+    private readonly Dictionary<(ValueType ValueType, DateTime Bucket, Guid SessionId, MapType MapType, DungeonMode DungeonMode, ClusterMode ClusterMode, CityFaction CityFaction), double> _dailyValues = new();
     private readonly List<(DateTime OccurredAtUtc, double Value)> _repairCostEntries = [];
 
     public DashboardStatisticsAggregator(DashboardStatistics statistics)
@@ -43,7 +43,8 @@ public sealed class DashboardStatisticsAggregator
         IReadOnlyCollection<DateTime> bucketStarts,
         DashboardChartRangeUnit unit,
         Guid? sessionId,
-        DashboardContentType? contentType)
+        DashboardContentType? contentType,
+        CityFaction? cityFaction = null)
     {
         var result = new Dictionary<ValueType, Dictionary<DateTime, double>>();
         if (bucketStarts == null || bucketStarts.Count == 0)
@@ -67,7 +68,8 @@ public sealed class DashboardStatisticsAggregator
             {
                 if (!validBuckets.Contains(key.Bucket)
                     || sessionId.HasValue && key.SessionId != sessionId.Value
-                    || !MatchesContentFilter(contentType, key.MapType, key.DungeonMode, key.ClusterMode))
+                    || !MatchesContentFilter(contentType, key.MapType, key.DungeonMode, key.ClusterMode)
+                    || cityFaction.HasValue && key.CityFaction != cityFaction.Value)
                 {
                     continue;
                 }
@@ -179,11 +181,11 @@ public sealed class DashboardStatisticsAggregator
     }
 
     private static void AddIndexedValue(
-        IDictionary<(ValueType ValueType, DateTime Bucket, Guid SessionId, MapType MapType, DungeonMode DungeonMode, ClusterMode ClusterMode), double> values,
+        IDictionary<(ValueType ValueType, DateTime Bucket, Guid SessionId, MapType MapType, DungeonMode DungeonMode, ClusterMode ClusterMode, CityFaction CityFaction), double> values,
         StatisticEntry entry,
         DateTime bucket)
     {
-        var key = (entry.ValueType, bucket, entry.SessionId, entry.MapType, entry.DungeonMode, entry.ClusterMode);
+        var key = (entry.ValueType, bucket, entry.SessionId, entry.MapType, entry.DungeonMode, entry.ClusterMode, entry.CityFaction);
         var currentValue = values.TryGetValue(key, out var existingValue) ? existingValue : 0;
         values[key] = currentValue + entry.Value;
     }

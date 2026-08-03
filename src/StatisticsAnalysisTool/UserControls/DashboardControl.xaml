@@ -194,6 +194,118 @@
                                 </Border>
                             </UniformGrid>
 
+                            <Border Style="{StaticResource Dashboard.FactionSummaryCard}" Margin="0,0,0,8">
+                                <Grid>
+                                    <Grid.RowDefinitions>
+                                        <RowDefinition Height="Auto" />
+                                        <RowDefinition Height="Auto" />
+                                    </Grid.RowDefinitions>
+
+                                    <Grid Height="44" Cursor="Hand" MouseLeftButtonDown="FactionSummaryToggle_OnMouseLeftButtonDown">
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="Auto" />
+                                            <ColumnDefinition Width="*" />
+                                            <ColumnDefinition Width="Auto" />
+                                        </Grid.ColumnDefinitions>
+                                        <Image Source="{Binding DashboardBindings.SelectedFactionOption.SealIconSource}"
+                                               Width="28"
+                                               Height="28"
+                                               Margin="12,0,9,0"
+                                               Stretch="Uniform" />
+                                        <TextBlock Grid.Column="1"
+                                                   Text="{Binding DashboardBindings.TranslationFaction, FallbackValue=FACTION}"
+                                                   Style="{StaticResource Dashboard.ContentRankingTitle}" />
+                                        <fa5:ImageAwesome Grid.Column="2"
+                                                          Icon="{Binding DashboardBindings.FactionSummaryToggleIcon, FallbackValue=Solid_Minus}"
+                                                          Style="{StaticResource Dashboard.SectionToggleIcon}" />
+                                    </Grid>
+
+                                    <Border Grid.Row="1"
+                                            BorderBrush="{StaticResource SolidColorBrush.Background.4}"
+                                            BorderThickness="0,1,0,0"
+                                            Visibility="{Binding DashboardBindings.FactionSummaryVisibility}">
+                                        <Grid Margin="14,10">
+                                            <Grid.ColumnDefinitions>
+                                                <ColumnDefinition Width="Auto" />
+                                                <ColumnDefinition Width="Auto" />
+                                                <ColumnDefinition Width="Auto" />
+                                                <ColumnDefinition Width="*" />
+                                                <ColumnDefinition Width="220" />
+                                            </Grid.ColumnDefinitions>
+
+                                            <Image Source="{Binding DashboardBindings.SelectedFactionOption.SealIconSource}"
+                                                   Width="74"
+                                                   Height="74"
+                                                   Margin="0,0,16,0"
+                                                   VerticalAlignment="Center"
+                                                   Stretch="Uniform" />
+
+                                            <Border Grid.Column="1" Style="{StaticResource Dashboard.FactionMetricCard}">
+                                                <Grid>
+                                                    <Grid.ColumnDefinitions>
+                                                        <ColumnDefinition Width="Auto" />
+                                                        <ColumnDefinition Width="*" />
+                                                    </Grid.ColumnDefinitions>
+                                                    <Image Source="{Binding DashboardBindings.SelectedFactionOption.CoinIconSource}"
+                                                           Width="24"
+                                                           Height="24"
+                                                           Style="{StaticResource Dashboard.SummaryImage}" />
+                                                    <StackPanel Grid.Column="1">
+                                                        <TextBlock Text="{Binding DashboardBindings.TranslationFactionPoints, FallbackValue=FACTION_POINTS}"
+                                                                   Style="{StaticResource Dashboard.SummaryTitle}" />
+                                                        <ContentControl Content="{Binding DashboardBindings.FactionPointsSummary}"
+                                                                        ContentTemplate="{StaticResource Dashboard.SummaryMetricTemplate}"
+                                                                        HorizontalContentAlignment="Stretch" />
+                                                    </StackPanel>
+                                                </Grid>
+                                            </Border>
+
+                                            <Border Grid.Column="2" Style="{StaticResource Dashboard.FactionMetricCard}" Margin="0,0,20,0">
+                                                <Grid>
+                                                    <Grid.ColumnDefinitions>
+                                                        <ColumnDefinition Width="Auto" />
+                                                        <ColumnDefinition Width="*" />
+                                                    </Grid.ColumnDefinitions>
+                                                    <Image Source="{Binding DashboardBindings.SelectedFactionOption.StandingIconSource}"
+                                                           Width="24"
+                                                           Height="24"
+                                                           Style="{StaticResource Dashboard.SummaryImage}" />
+                                                    <StackPanel Grid.Column="1">
+                                                        <TextBlock Text="{Binding DashboardBindings.TranslationFactionStanding, FallbackValue=FACTION_STANDING}"
+                                                                   Style="{StaticResource Dashboard.SummaryTitle}" />
+                                                        <ContentControl Content="{Binding DashboardBindings.FactionStandingSummary}"
+                                                                        ContentTemplate="{StaticResource Dashboard.SummaryMetricTemplate}"
+                                                                        HorizontalContentAlignment="Stretch" />
+                                                    </StackPanel>
+                                                </Grid>
+                                            </Border>
+
+                                            <StackPanel Grid.Column="4" VerticalAlignment="Center">
+                                                <TextBlock Text="{Binding DashboardBindings.TranslationFaction, FallbackValue=FACTION}"
+                                                           Style="{StaticResource App.FilterLabel}" />
+                                                <ComboBox Style="{StaticResource App.FilterComboBox}"
+                                                          ItemsSource="{Binding DashboardBindings.FactionOptions}"
+                                                          SelectedItem="{Binding DashboardBindings.SelectedFactionOption, Mode=TwoWay}"
+                                                          SelectionChanged="DashboardMetadataFilter_SelectionChanged">
+                                                    <ComboBox.ItemTemplate>
+                                                        <DataTemplate>
+                                                            <Grid>
+                                                                <Grid.ColumnDefinitions>
+                                                                    <ColumnDefinition Width="26" />
+                                                                    <ColumnDefinition Width="*" />
+                                                                </Grid.ColumnDefinitions>
+                                                                <Image Source="{Binding SealIconSource}" Width="20" Height="20" Stretch="Uniform" />
+                                                                <TextBlock Grid.Column="1" Text="{Binding Name}" Margin="4,0,0,0" VerticalAlignment="Center" />
+                                                            </Grid>
+                                                        </DataTemplate>
+                                                    </ComboBox.ItemTemplate>
+                                                </ComboBox>
+                                            </StackPanel>
+                                        </Grid>
+                                    </Border>
+                                </Grid>
+                            </Border>
+
                             <Grid Margin="0,0,0,8">
                                 <Grid.ColumnDefinitions>
                                     <ColumnDefinition Width="*" />

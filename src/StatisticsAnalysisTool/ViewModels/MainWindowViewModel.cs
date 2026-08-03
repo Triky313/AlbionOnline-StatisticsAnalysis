@@ -196,7 +196,7 @@ public class MainWindowViewModel : BaseViewModel
             CreateDashboardChartSeriesFilter(ValueType.Fame, DashboardBindings.TranslationFame, selectedFilters),
             CreateDashboardChartSeriesFilter(ValueType.Silver, DashboardBindings.TranslationSilver, selectedFilters),
             CreateDashboardChartSeriesFilter(ValueType.ReSpec, DashboardBindings.TranslationReSpec, selectedFilters),
-            CreateDashboardChartSeriesFilter(ValueType.FactionFame, $"{DashboardBindings.TranslationFaction} {DashboardBindings.TranslationFame}", selectedFilters),
+            CreateDashboardChartSeriesFilter(ValueType.FactionStanding, DashboardBindings.TranslationFactionStanding, selectedFilters),
             CreateDashboardChartSeriesFilter(ValueType.FactionPoints, DashboardBindings.TranslationFactionPoints, selectedFilters),
             CreateDashboardChartSeriesFilter(ValueType.Might, DashboardBindings.TranslationMight, selectedFilters),
             CreateDashboardChartSeriesFilter(ValueType.Favor, DashboardBindings.TranslationFavor, selectedFilters)

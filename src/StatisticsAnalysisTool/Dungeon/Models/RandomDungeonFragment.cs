@@ -24,7 +24,7 @@ public class RandomDungeonFragment : DungeonBaseFragment
         Might = dto.Might;
         Favor = dto.Favor;
         FactionCoins = dto.FactionCoins;
-        FactionFlags = dto.FactionFlags;
+        FactionStanding = dto.FactionStanding;
         CityFaction = dto.CityFaction;
         UpdateNumberOfFloors(null, null);
         UpdateValueVisibility();
@@ -85,13 +85,13 @@ public class RandomDungeonFragment : DungeonBaseFragment
         }
     }
 
-    public double FactionFlags
+    public double FactionStanding
     {
         get;
         set
         {
             field = value;
-            FactionFlagsPerHour = value.GetValuePerHour(TotalRunTimeInSeconds <= 0
+            FactionStandingPerHour = value.GetValuePerHour(TotalRunTimeInSeconds <= 0
                 ? (DateTime.UtcNow - EnterDungeonFirstTime).Seconds
                 : TotalRunTimeInSeconds);
             OnPropertyChanged();
@@ -170,7 +170,7 @@ public class RandomDungeonFragment : DungeonBaseFragment
         }
     }
 
-    public double FactionFlagsPerHour
+    public double FactionStandingPerHour
     {
         get => double.IsNaN(field) ? 0 : field;
         private set
@@ -239,10 +239,10 @@ public class RandomDungeonFragment : DungeonBaseFragment
             case ValueType.Silver:
                 Silver += value;
                 return;
-            case ValueType.FactionFame:
+            case ValueType.FactionStanding:
                 if (cityFaction != CityFaction.Unknown)
                 {
-                    FactionFlags += value;
+                    FactionStanding += value;
                 }
                 return;
             case ValueType.FactionPoints:

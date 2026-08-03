@@ -43,7 +43,7 @@ public class StatisticController
         ValueType.Fame,
         ValueType.Silver,
         ValueType.ReSpec,
-        ValueType.FactionFame,
+        ValueType.FactionStanding,
         ValueType.FactionPoints,
         ValueType.Might,
         ValueType.Favor
@@ -466,6 +466,10 @@ public class StatisticController
             ValueType.Favor,
             currentRangeBucketStarts,
             previousRangeBucketStarts);
+        UpdateDashboardFactionSummary(
+            selectedRange,
+            currentRangeBucketStarts,
+            previousRangeBucketStarts);
 
         _mainWindowViewModel.DashboardBindings.SummaryComparisonText = selectedRange.Unit switch
         {
@@ -478,6 +482,32 @@ public class StatisticController
         };
 
         UpdateDashboardSessionTime(selectedRange, chartBuckets[0].Start, DateTime.UtcNow);
+    }
+
+    private void UpdateDashboardFactionSummary(
+        DashboardChartRangeOption selectedRange,
+        IReadOnlySet<DateTime> currentRangeBucketStarts,
+        IReadOnlySet<DateTime> previousRangeBucketStarts)
+    {
+        var factionValues = _statisticsAggregator.AggregateChartValues(
+            currentRangeBucketStarts.Concat(previousRangeBucketStarts).ToArray(),
+            selectedRange.Unit,
+            _mainWindowViewModel.SelectedDashboardSessionFilter?.SessionId,
+            _mainWindowViewModel.SelectedDashboardContentFilter?.ContentType,
+            _mainWindowViewModel.DashboardBindings.SelectedFactionOption.Faction);
+
+        UpdateDashboardSummaryMetric(
+            _mainWindowViewModel.DashboardBindings.FactionPointsSummary,
+            factionValues,
+            ValueType.FactionPoints,
+            currentRangeBucketStarts,
+            previousRangeBucketStarts);
+        UpdateDashboardSummaryMetric(
+            _mainWindowViewModel.DashboardBindings.FactionStandingSummary,
+            factionValues,
+            ValueType.FactionStanding,
+            currentRangeBucketStarts,
+            previousRangeBucketStarts);
     }
 
     private void UpdateDashboardContentRankings(

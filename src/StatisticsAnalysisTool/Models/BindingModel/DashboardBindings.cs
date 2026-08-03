@@ -8,6 +8,7 @@ using System.Linq;
 using System.Windows;
 using FontAwesome5;
 using StatisticsAnalysisTool.Common.UserSettings;
+using StatisticsAnalysisTool.Enumerations;
 
 namespace StatisticsAnalysisTool.Models.BindingModel;
 
@@ -51,6 +52,8 @@ public class DashboardBindings : BaseViewModel
     private long _repairCostsChest;
     private Visibility _repairCostsChestVisibility;
     private Visibility _killDeathStatsVisibility;
+    private Visibility _factionSummaryVisibility;
+    private EFontAwesomeIcon _factionSummaryToggleIcon;
     private EFontAwesomeIcon _killDeathStatsToggleIcon;
     private Visibility _fameContentRankingVisibility;
     private EFontAwesomeIcon _fameContentRankingToggleIcon;
@@ -68,13 +71,20 @@ public class DashboardBindings : BaseViewModel
     private string _summaryComparisonText = TranslationVsPreviousHour;
     private double _totalFameByContent;
     private double _totalSilverByContent;
+    private DashboardFactionOption _selectedFactionOption;
 
     public DashboardBindings()
     {
+        _selectedFactionOption = FactionOptions.FirstOrDefault(x => x.Faction == SettingsController.CurrentSettings.SelectedDashboardFaction)
+                                 ?? FactionOptions[0];
+
         RepairCostsChestVisibility = Settings.Default.IsContainerRepairCostsVisible ? Visibility.Visible : Visibility.Collapsed;
 
         KillDeathStatsVisibility = SettingsController.CurrentSettings.IsKillDeathStatsVisible ? Visibility.Visible : Visibility.Collapsed;
         KillDeathStatsToggleIcon = SettingsController.CurrentSettings.IsKillDeathStatsVisible ? EFontAwesomeIcon.Solid_Minus : EFontAwesomeIcon.Solid_Plus;
+
+        FactionSummaryVisibility = SettingsController.CurrentSettings.IsFactionSummaryVisible ? Visibility.Visible : Visibility.Collapsed;
+        FactionSummaryToggleIcon = SettingsController.CurrentSettings.IsFactionSummaryVisible ? EFontAwesomeIcon.Solid_Minus : EFontAwesomeIcon.Solid_Plus;
 
         FameContentRankingVisibility = SettingsController.CurrentSettings.IsFameContentRankingVisible ? Visibility.Visible : Visibility.Collapsed;
         FameContentRankingToggleIcon = SettingsController.CurrentSettings.IsFameContentRankingVisible ? EFontAwesomeIcon.Solid_Minus : EFontAwesomeIcon.Solid_Plus;
@@ -103,6 +113,34 @@ public class DashboardBindings : BaseViewModel
     public DashboardSummaryMetric MightSummary { get; } = new();
     public DashboardSummaryMetric FavorSummary { get; } = new();
     public DashboardSummaryMetric SessionTimeSummary { get; } = new();
+    public DashboardSummaryMetric FactionPointsSummary { get; } = new();
+    public DashboardSummaryMetric FactionStandingSummary { get; } = new();
+
+    public IReadOnlyList<DashboardFactionOption> FactionOptions { get; } =
+    [
+        new(CityFaction.Caerleon, "Caerleon", "caerleon"),
+        new(CityFaction.FortSterling, "Fort Sterling", "fortsterling"),
+        new(CityFaction.Thetford, "Thetford", "thetford"),
+        new(CityFaction.Lymhurst, "Lymhurst", "lymhurst"),
+        new(CityFaction.Bridgewatch, "Bridgewatch", "bridgewatch"),
+        new(CityFaction.Martlock, "Martlock", "martlock")
+    ];
+
+    public DashboardFactionOption SelectedFactionOption
+    {
+        get => _selectedFactionOption;
+        set
+        {
+            if (value == null || ReferenceEquals(_selectedFactionOption, value))
+            {
+                return;
+            }
+
+            _selectedFactionOption = value;
+            SettingsController.CurrentSettings.SelectedDashboardFaction = value.Faction;
+            OnPropertyChanged();
+        }
+    }
 
     public ObservableCollection<DashboardContentRankingItem> FameContentRanking { get; } = [];
     public ObservableCollection<DashboardContentRankingItem> SilverContentRanking { get; } = [];
@@ -140,6 +178,27 @@ public class DashboardBindings : BaseViewModel
     #endregion
 
     #region Toggle
+
+    public Visibility FactionSummaryVisibility
+    {
+        get => _factionSummaryVisibility;
+        set
+        {
+            _factionSummaryVisibility = value;
+            SettingsController.CurrentSettings.IsFactionSummaryVisible = value == Visibility.Visible;
+            OnPropertyChanged();
+        }
+    }
+
+    public EFontAwesomeIcon FactionSummaryToggleIcon
+    {
+        get => _factionSummaryToggleIcon;
+        set
+        {
+            _factionSummaryToggleIcon = value;
+            OnPropertyChanged();
+        }
+    }
 
     public Visibility KillDeathStatsVisibility
     {
@@ -786,4 +845,5 @@ public class DashboardBindings : BaseViewModel
     public static string TranslationRepairCosts => LocalizationController.Translation("REPAIR_COSTS");
     public static string TranslationActivityChart => LocalizationController.Translation("HISTORY");
     public static string TranslationFactionPoints => LocalizationController.Translation("FACTION_POINTS");
+    public static string TranslationFactionStanding => LocalizationController.Translation("FACTION_STANDING");
 }

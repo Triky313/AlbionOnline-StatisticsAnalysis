@@ -216,7 +216,7 @@
     <Color x:Key="Color.Value.Fame">#FFCF2026</Color>
     <Color x:Key="Color.Value.Silver">#B7B7B7</Color>
     <Color x:Key="Color.Value.ReSpec">#FFFBBA00</Color>
-    <Color x:Key="Color.Value.FactionFame">#FFA1434F</Color>
+    <Color x:Key="Color.Value.FactionStanding">#FFA1434F</Color>
     <Color x:Key="Color.Value.FactionPoints">#FF80436C</Color>
     <Color x:Key="Color.Value.Might">#FF60AEE2</Color>
     <Color x:Key="Color.Value.Favor">#FF1D70A2</Color>
@@ -224,7 +224,7 @@
     <Color x:Key="Color.Value.Fame.Transparent">#33CF2026</Color>
     <Color x:Key="Color.Value.Silver.Transparent">#33787878</Color>
     <Color x:Key="Color.Value.ReSpec.Transparent">#33FBBA00</Color>
-    <Color x:Key="Color.Value.FactionFame.Transparent">#33A1434F</Color>
+    <Color x:Key="Color.Value.FactionStanding.Transparent">#33A1434F</Color>
     <Color x:Key="Color.Value.FactionPoints.Transparent">#3380436C</Color>
     <Color x:Key="Color.Value.Might.Transparent">#3360AEE2</Color>
     <Color x:Key="Color.Value.Favor.Transparent">#331D70A2</Color>
@@ -442,7 +442,7 @@
     <SolidColorBrush x:Key="SolidColorBrush.Value.Fame" Color="{StaticResource Color.Value.Fame}"/>
     <SolidColorBrush x:Key="SolidColorBrush.Value.Silver" Color="{StaticResource Color.Value.Silver}"/>
     <SolidColorBrush x:Key="SolidColorBrush.Value.ReSpec" Color="{StaticResource Color.Value.ReSpec}"/>
-    <SolidColorBrush x:Key="SolidColorBrush.Value.FactionFame" Color="{StaticResource Color.Value.FactionFame}"/>
+    <SolidColorBrush x:Key="SolidColorBrush.Value.FactionStanding" Color="{StaticResource Color.Value.FactionStanding}"/>
     <SolidColorBrush x:Key="SolidColorBrush.Value.FactionPoints" Color="{StaticResource Color.Value.FactionPoints}"/>
     <SolidColorBrush x:Key="SolidColorBrush.Value.Might" Color="{StaticResource Color.Value.Might}"/>
     <SolidColorBrush x:Key="SolidColorBrush.Value.Favor" Color="{StaticResource Color.Value.Favor}"/>
@@ -450,7 +450,7 @@
     <SolidColorBrush x:Key="SolidColorBrush.Value.Fame.Transparent" Color="{StaticResource Color.Value.Fame.Transparent}"/>
     <SolidColorBrush x:Key="SolidColorBrush.Value.Silver.Transparent" Color="{StaticResource Color.Value.Silver.Transparent}"/>
     <SolidColorBrush x:Key="SolidColorBrush.Value.ReSpec.Transparent" Color="{StaticResource Color.Value.ReSpec.Transparent}"/>
-    <SolidColorBrush x:Key="SolidColorBrush.Value.FactionFame.Transparent" Color="{StaticResource Color.Value.FactionFame.Transparent}"/>
+    <SolidColorBrush x:Key="SolidColorBrush.Value.FactionStanding.Transparent" Color="{StaticResource Color.Value.FactionStanding.Transparent}"/>
     <SolidColorBrush x:Key="SolidColorBrush.Value.FactionPoints.Transparent" Color="{StaticResource Color.Value.FactionPoints.Transparent}"/>
     <SolidColorBrush x:Key="SolidColorBrush.Value.Might.Transparent" Color="{StaticResource Color.Value.Might.Transparent}"/>
     <SolidColorBrush x:Key="SolidColorBrush.Value.Favor.Transparent" Color="{StaticResource Color.Value.Favor.Transparent}"/>

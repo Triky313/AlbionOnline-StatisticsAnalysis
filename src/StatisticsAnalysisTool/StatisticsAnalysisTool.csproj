@@ -340,6 +340,24 @@
     <Resource Include="Assets\sat-icon.png">
       <CopyToOutputDirectory>Never</CopyToOutputDirectory>
     </Resource>
+    <Resource Include="Assets\seal_bridgewatch.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Assets\seal_caerleon.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Assets\seal_fortsterling.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Assets\seal_lymhurst.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Assets\seal_martlock.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Assets\seal_thetford.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Resource>
     <Resource Include="Assets\shiny_common.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Resource>
@@ -749,6 +767,12 @@
     <None Remove="Assets\purple_glow.png" />
     <None Remove="Assets\repair_cross.png" />
     <None Remove="Assets\sat-icon.png" />
+    <None Remove="Assets\seal_bridgewatch.png" />
+    <None Remove="Assets\seal_caerleon.png" />
+    <None Remove="Assets\seal_fortsterling.png" />
+    <None Remove="Assets\seal_lymhurst.png" />
+    <None Remove="Assets\seal_martlock.png" />
+    <None Remove="Assets\seal_thetford.png" />
     <None Remove="Assets\shiny_common.png" />
     <None Remove="Assets\shiny_epic.png" />
     <None Remove="Assets\shiny_legendary.png" />

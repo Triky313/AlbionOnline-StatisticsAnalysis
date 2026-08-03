@@ -5,7 +5,7 @@ public enum ValueType
     Fame,
     ReSpec,
     Silver,
-    FactionFame,
+    FactionStanding,
     FactionPoints,
     Might,
     Favor,

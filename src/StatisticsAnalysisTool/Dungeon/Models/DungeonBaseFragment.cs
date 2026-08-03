@@ -574,8 +574,8 @@ public abstract class DungeonBaseFragment : BaseViewModel
     public static string TranslationStandard => LocalizationController.Translation("STANDARD");
     public static string TranslationAvalon => LocalizationController.Translation("AVALON");
     public static string TranslationUnknown => LocalizationController.Translation("UNKNOWN");
-    public static string TranslationFactionFlags => LocalizationController.Translation("FACTION_FLAGS");
-    public static string TranslationFactionFlagsPerHour => LocalizationController.Translation("FACTION_FLAGS_PER_HOUR");
+    public static string TranslationFactionStanding => LocalizationController.Translation("FACTION_STANDING");
+    public static string TranslationFactionStandingPerHour => LocalizationController.Translation("FACTION_STANDING_PER_HOUR");
     public static string TranslationFactionCoins => LocalizationController.Translation("FACTION_COINS");
     public static string TranslationFactionCoinsPerHour => LocalizationController.Translation("FACTION_COINS_PER_HOUR");
     public static string TranslationMight => LocalizationController.Translation("MIGHT");

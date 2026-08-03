@@ -35,7 +35,7 @@ public class DungeonMapping
             dto.Level = randomDungeon.Level;
             dto.CityFaction = randomDungeon.CityFaction;
             dto.FactionCoins = randomDungeon.FactionCoins;
-            dto.FactionFlags = randomDungeon.FactionFlags;
+            dto.FactionStanding = randomDungeon.FactionStanding;
             dto.Might = randomDungeon.Might;
             dto.Favor = randomDungeon.Favor;
         }

@@ -150,6 +150,21 @@ public partial class DashboardControl
         }
     }
 
+    private void FactionSummaryToggle_OnMouseLeftButtonDown(object sender, MouseButtonEventArgs e)
+    {
+        var vm = (MainWindowViewModel) DataContext;
+        if (vm.DashboardBindings.FactionSummaryVisibility == Visibility.Visible)
+        {
+            vm.DashboardBindings.FactionSummaryVisibility = Visibility.Collapsed;
+            vm.DashboardBindings.FactionSummaryToggleIcon = EFontAwesomeIcon.Solid_Plus;
+        }
+        else
+        {
+            vm.DashboardBindings.FactionSummaryVisibility = Visibility.Visible;
+            vm.DashboardBindings.FactionSummaryToggleIcon = EFontAwesomeIcon.Solid_Minus;
+        }
+    }
+
     private void FameContentRankingToggle_OnMouseLeftButtonDown(object sender, MouseButtonEventArgs e)
     {
         var vm = (MainWindowViewModel) DataContext;
