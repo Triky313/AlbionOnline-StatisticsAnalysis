@@ -201,7 +201,7 @@
                                         <RowDefinition Height="Auto" />
                                     </Grid.RowDefinitions>
 
-                                    <Grid Height="44" Cursor="Hand" MouseLeftButtonDown="FactionSummaryToggle_OnMouseLeftButtonDown">
+                                    <Grid Style="{StaticResource Dashboard.SectionHeader}" MouseLeftButtonDown="FactionSummaryToggle_OnMouseLeftButtonDown">
                                         <Grid.ColumnDefinitions>
                                             <ColumnDefinition Width="Auto" />
                                             <ColumnDefinition Width="*" />
@@ -320,25 +320,25 @@
                                             <RowDefinition Height="*" />
                                             <RowDefinition Height="Auto" />
                                         </Grid.RowDefinitions>
-                                        <Grid Cursor="Hand" MouseLeftButtonDown="FameContentRankingToggle_OnMouseLeftButtonDown">
+                                        <Grid Style="{StaticResource Dashboard.SectionHeader}" MouseLeftButtonDown="FameContentRankingToggle_OnMouseLeftButtonDown">
                                             <Grid.ColumnDefinitions>
                                                 <ColumnDefinition Width="Auto" />
                                                 <ColumnDefinition Width="*" />
                                                 <ColumnDefinition Width="Auto" />
                                             </Grid.ColumnDefinitions>
-                                            <Image Source="../Resources/fame.png" Width="22" Height="22" Margin="0,0,9,0" />
+                                            <Image Source="../Resources/fame.png" Width="22" Height="22" Margin="13,0,9,0" />
                                             <TextBlock Grid.Column="1"
                                                        Text="{Binding DashboardBindings.TranslationTopFameSources, FallbackValue=TOP_FAME_SOURCES}"
                                                        Style="{StaticResource Dashboard.ContentRankingTitle}" />
                                             <fa5:ImageAwesome Grid.Column="2" Icon="{Binding DashboardBindings.FameContentRankingToggleIcon, FallbackValue=Solid_Minus}" Style="{StaticResource Dashboard.SectionToggleIcon}" />
                                         </Grid>
                                         <ItemsControl Grid.Row="1"
-                                                      Margin="0,10,0,0"
+                                                      Margin="13,10,13,0"
                                                       Visibility="{Binding DashboardBindings.FameContentRankingVisibility}"
                                                       ItemsSource="{Binding DashboardBindings.FameContentRanking}"
                                                       ItemTemplate="{StaticResource Dashboard.ContentRankingItemTemplate}" />
                                         <Border Grid.Row="2"
-                                                Margin="0,8,0,0"
+                                                Margin="13,8,13,12"
                                                 Padding="0,9,0,0"
                                                 BorderBrush="{StaticResource SolidColorBrush.Background.4}"
                                                 Visibility="{Binding DashboardBindings.FameContentRankingVisibility}"
@@ -365,25 +365,25 @@
                                             <RowDefinition Height="*" />
                                             <RowDefinition Height="Auto" />
                                         </Grid.RowDefinitions>
-                                        <Grid Cursor="Hand" MouseLeftButtonDown="SilverContentRankingToggle_OnMouseLeftButtonDown">
+                                        <Grid Style="{StaticResource Dashboard.SectionHeader}" MouseLeftButtonDown="SilverContentRankingToggle_OnMouseLeftButtonDown">
                                             <Grid.ColumnDefinitions>
                                                 <ColumnDefinition Width="Auto" />
                                                 <ColumnDefinition Width="*" />
                                                 <ColumnDefinition Width="Auto" />
                                             </Grid.ColumnDefinitions>
-                                            <Image Source="../Resources/silver.png" Width="22" Height="22" Margin="0,0,9,0" />
+                                            <Image Source="../Resources/silver.png" Width="22" Height="22" Margin="13,0,9,0" />
                                             <TextBlock Grid.Column="1"
                                                        Text="{Binding DashboardBindings.TranslationTopSilverSources, FallbackValue=TOP_SILVER_SOURCES}"
                                                        Style="{StaticResource Dashboard.ContentRankingTitle}" />
                                             <fa5:ImageAwesome Grid.Column="2" Icon="{Binding DashboardBindings.SilverContentRankingToggleIcon, FallbackValue=Solid_Minus}" Style="{StaticResource Dashboard.SectionToggleIcon}" />
                                         </Grid>
                                         <ItemsControl Grid.Row="1"
-                                                      Margin="0,10,0,0"
+                                                      Margin="13,10,13,0"
                                                       Visibility="{Binding DashboardBindings.SilverContentRankingVisibility}"
                                                       ItemsSource="{Binding DashboardBindings.SilverContentRanking}"
                                                       ItemTemplate="{StaticResource Dashboard.ContentRankingItemTemplate}" />
                                         <Border Grid.Row="2"
-                                                Margin="0,8,0,0"
+                                                Margin="13,8,13,12"
                                                 Padding="0,9,0,0"
                                                 BorderBrush="{StaticResource SolidColorBrush.Background.4}"
                                                 Visibility="{Binding DashboardBindings.SilverContentRankingVisibility}"
@@ -406,7 +406,7 @@
 
                             <Border Style="{StaticResource Dashboard.Section}" Margin="0,0,0,8">
                                 <DockPanel LastChildFill="True">
-                                    <Grid DockPanel.Dock="Top" Height="40" Cursor="Hand" MouseLeftButtonDown="LootedChestsToggle_OnMouseLeftButtonDown">
+                                    <Grid DockPanel.Dock="Top" Style="{StaticResource Dashboard.SectionHeader}" MouseLeftButtonDown="LootedChestsToggle_OnMouseLeftButtonDown">
                                         <Grid.ColumnDefinitions>
                                             <ColumnDefinition Width="Auto" />
                                             <ColumnDefinition Width="*" />
@@ -424,7 +424,7 @@
 
                             <Border Style="{StaticResource Dashboard.Section}">
                                 <DockPanel LastChildFill="True">
-                                    <Grid DockPanel.Dock="Top" Height="40" Cursor="Hand" MouseLeftButtonDown="ActivityChartToggle_OnMouseLeftButtonDown">
+                                    <Grid DockPanel.Dock="Top" Style="{StaticResource Dashboard.SectionHeader}" MouseLeftButtonDown="ActivityChartToggle_OnMouseLeftButtonDown">
                                         <Grid.ColumnDefinitions>
                                             <ColumnDefinition Width="Auto" />
                                             <ColumnDefinition Width="*" />
@@ -469,7 +469,7 @@
                         <StackPanel Margin="0,8,0,0">
                             <Border Style="{StaticResource Dashboard.Section}" Margin="0,0,0,8">
                                 <DockPanel LastChildFill="True">
-                                    <Grid DockPanel.Dock="Top" Height="40" Cursor="Hand" MouseLeftButtonDown="KillDeathToggle_OnMouseLeftButtonDown">
+                                    <Grid DockPanel.Dock="Top" Style="{StaticResource Dashboard.SectionHeader}" MouseLeftButtonDown="KillDeathToggle_OnMouseLeftButtonDown">
                                         <Grid.ColumnDefinitions>
                                             <ColumnDefinition Width="Auto" />
                                             <ColumnDefinition Width="*" />
@@ -496,7 +496,7 @@
 
                             <Border Grid.Column="0" Style="{StaticResource Dashboard.Section}" Margin="0,0,4,0">
                                 <DockPanel LastChildFill="True">
-                                    <Grid DockPanel.Dock="Top" Height="40" Cursor="Hand" MouseLeftButtonDown="ReSpecStatsToggle_OnMouseLeftButtonDown">
+                                    <Grid DockPanel.Dock="Top" Style="{StaticResource Dashboard.SectionHeader}" MouseLeftButtonDown="ReSpecStatsToggle_OnMouseLeftButtonDown">
                                         <Grid.ColumnDefinitions>
                                             <ColumnDefinition Width="Auto" />
                                             <ColumnDefinition Width="*" />
@@ -514,7 +514,7 @@
 
                             <Border Grid.Column="1" Style="{StaticResource Dashboard.Section}" Margin="4,0,0,0">
                                 <DockPanel LastChildFill="True">
-                                    <Grid DockPanel.Dock="Top" Height="40" Cursor="Hand" MouseLeftButtonDown="RepairCostsStatsToggle_OnMouseLeftButtonDown">
+                                    <Grid DockPanel.Dock="Top" Style="{StaticResource Dashboard.SectionHeader}" MouseLeftButtonDown="RepairCostsStatsToggle_OnMouseLeftButtonDown">
                                         <Grid.ColumnDefinitions>
                                             <ColumnDefinition Width="Auto" />
                                             <ColumnDefinition Width="*" />

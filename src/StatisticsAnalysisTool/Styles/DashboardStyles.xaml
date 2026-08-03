@@ -106,6 +106,12 @@
         </StackPanel>
     </DataTemplate>
 
+    <Style x:Key="Dashboard.SectionHeader" TargetType="{x:Type Grid}">
+        <Setter Property="Height" Value="44" />
+        <Setter Property="Cursor" Value="Hand" />
+        <Setter Property="SnapsToDevicePixels" Value="True" />
+    </Style>
+
     <Style x:Key="Dashboard.SectionTitle" TargetType="{x:Type TextBlock}">
         <Setter Property="FontSize" Value="17" />
         <Setter Property="FontWeight" Value="SemiBold" />
@@ -264,7 +270,6 @@
     </Style>
 
     <Style x:Key="Dashboard.ContentRankingCard" TargetType="{x:Type Border}" BasedOn="{StaticResource Dashboard.Section}">
-        <Setter Property="Padding" Value="13,11,13,12" />
         <Setter Property="MinWidth" Value="350" />
     </Style>
 
