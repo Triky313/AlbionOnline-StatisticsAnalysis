@@ -2,7 +2,8 @@
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
                     xmlns:system="clr-namespace:System;assembly=System.Runtime"
                     xmlns:controls="clr-namespace:StatisticsAnalysisTool.Common.Controls"
-                    xmlns:converters="clr-namespace:StatisticsAnalysisTool.Common.Converters">
+                    xmlns:converters="clr-namespace:StatisticsAnalysisTool.Common.Converters"
+                    xmlns:fa5="http://schemas.fontawesome.com/icons/">
 
     <system:Double x:Key="BaseFontSize">12</system:Double>
     <Style x:Key="App.FilterDropdownButton" TargetType="{x:Type ToggleButton}">
@@ -126,6 +127,24 @@
                 </ControlTemplate>
             </Setter.Value>
         </Setter>
+    </Style>
+
+    <Style x:Key="Style.Button.Icon.White" TargetType="{x:Type fa5:ImageAwesome}">
+        <Setter Property="Foreground" Value="{StaticResource SolidColorBrush.Button.Text.Normal}" />
+        <Style.Triggers>
+            <DataTrigger Binding="{Binding IsEnabled, RelativeSource={RelativeSource AncestorType={x:Type Button}}}" Value="False">
+                <Setter Property="Foreground" Value="{StaticResource SolidColorBrush.Button.Text.Disabled}" />
+            </DataTrigger>
+        </Style.Triggers>
+    </Style>
+
+    <Style x:Key="Style.Button.Icon.Black" TargetType="{x:Type fa5:ImageAwesome}">
+        <Setter Property="Foreground" Value="{StaticResource SolidColorBrush.Button.Icon.Black}" />
+        <Style.Triggers>
+            <DataTrigger Binding="{Binding IsEnabled, RelativeSource={RelativeSource AncestorType={x:Type Button}}}" Value="False">
+                <Setter Property="Foreground" Value="{StaticResource SolidColorBrush.Button.Text.Disabled}" />
+            </DataTrigger>
+        </Style.Triggers>
     </Style>
 
     <Style x:Key="Style.Button.Base" TargetType="{x:Type Button}">
@@ -782,6 +801,7 @@
             </Trigger>
             <Trigger Property="IsPressed" Value="True">
                 <Setter Property="Background" Value="{StaticResource SolidColorBrush.Button.Danger.Pressed}" />
+                <Setter Property="BorderBrush" Value="{StaticResource SolidColorBrush.Button.Danger.Border.Pressed}" />
             </Trigger>
             <Trigger Property="IsEnabled" Value="False">
                 <Setter Property="Background" Value="{StaticResource SolidColorBrush.Button.Danger.Disabled}" />
@@ -807,9 +827,32 @@
             </Trigger>
             <Trigger Property="IsPressed" Value="True">
                 <Setter Property="Background" Value="{StaticResource SolidColorBrush.Button.Warning.Pressed}" />
+                <Setter Property="BorderBrush" Value="{StaticResource SolidColorBrush.Button.Warning.Border.Pressed}" />
             </Trigger>
             <Trigger Property="IsEnabled" Value="False">
                 <Setter Property="Background" Value="{StaticResource SolidColorBrush.Button.Warning.Disabled}" />
+                <Setter Property="BorderBrush" Value="{StaticResource SolidColorBrush.Button.Border.Disabled}" />
+                <Setter Property="Foreground" Value="{StaticResource SolidColorBrush.Button.Text.Disabled}" />
+            </Trigger>
+        </Style.Triggers>
+    </Style>
+
+    <Style x:Key="Style.Button.Orange"
+           TargetType="{x:Type Button}"
+           BasedOn="{StaticResource Style.Button.Base}">
+        <Setter Property="Background" Value="{StaticResource SolidColorBrush.Button.Orange.Normal}" />
+        <Setter Property="BorderBrush" Value="{StaticResource SolidColorBrush.Button.Orange.Border.Normal}" />
+        <Style.Triggers>
+            <Trigger Property="IsMouseOver" Value="True">
+                <Setter Property="Background" Value="{StaticResource SolidColorBrush.Button.Orange.MouseOver}" />
+                <Setter Property="BorderBrush" Value="{StaticResource SolidColorBrush.Button.Orange.Border.MouseOver}" />
+            </Trigger>
+            <Trigger Property="IsPressed" Value="True">
+                <Setter Property="Background" Value="{StaticResource SolidColorBrush.Button.Orange.Pressed}" />
+                <Setter Property="BorderBrush" Value="{StaticResource SolidColorBrush.Button.Orange.Border.Pressed}" />
+            </Trigger>
+            <Trigger Property="IsEnabled" Value="False">
+                <Setter Property="Background" Value="{StaticResource SolidColorBrush.Button.Orange.Disabled}" />
                 <Setter Property="BorderBrush" Value="{StaticResource SolidColorBrush.Button.Border.Disabled}" />
                 <Setter Property="Foreground" Value="{StaticResource SolidColorBrush.Button.Text.Disabled}" />
             </Trigger>

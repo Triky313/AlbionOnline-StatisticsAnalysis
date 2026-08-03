@@ -45,14 +45,25 @@
     <Color x:Key="Color.Button.Danger.Disabled">#FF2F2227</Color>
     <Color x:Key="Color.Button.Danger.Border.Normal">#FFD04A5A</Color>
     <Color x:Key="Color.Button.Danger.Border.MouseOver">#FFE05A69</Color>
+    <Color x:Key="Color.Button.Danger.Border.Pressed">#FF9B2C3A</Color>
 
     <!-- Warning button colors -->
-    <Color x:Key="Color.Button.Warning.Normal">#FF76510C</Color>
-    <Color x:Key="Color.Button.Warning.MouseOver">#FF8A6110</Color>
-    <Color x:Key="Color.Button.Warning.Pressed">#FF5F420A</Color>
+    <Color x:Key="Color.Button.Warning.Normal">#FF946712</Color>
+    <Color x:Key="Color.Button.Warning.MouseOver">#FFAE7B1B</Color>
+    <Color x:Key="Color.Button.Warning.Pressed">#FF76500C</Color>
     <Color x:Key="Color.Button.Warning.Disabled">#FF29261F</Color>
-    <Color x:Key="Color.Button.Warning.Border.Normal">#FF9B751E</Color>
-    <Color x:Key="Color.Button.Warning.Border.MouseOver">#FFC39735</Color>
+    <Color x:Key="Color.Button.Warning.Border.Normal">#FFB78A29</Color>
+    <Color x:Key="Color.Button.Warning.Border.MouseOver">#FFD3A745</Color>
+    <Color x:Key="Color.Button.Warning.Border.Pressed">#FF855F14</Color>
+
+    <!-- Orange button colors -->
+    <Color x:Key="Color.Button.Orange.Normal">#FFB65C1F</Color>
+    <Color x:Key="Color.Button.Orange.MouseOver">#FFCF6D2A</Color>
+    <Color x:Key="Color.Button.Orange.Pressed">#FF8E4516</Color>
+    <Color x:Key="Color.Button.Orange.Disabled">#FF2E241F</Color>
+    <Color x:Key="Color.Button.Orange.Border.Normal">#FFD77734</Color>
+    <Color x:Key="Color.Button.Orange.Border.MouseOver">#FFF08E4B</Color>
+    <Color x:Key="Color.Button.Orange.Border.Pressed">#FFA55221</Color>
 
     <Color x:Key="Color.Button.Secondary.Normal">#FF1F262D</Color>
     <Color x:Key="Color.Button.Secondary.MouseOver">#FF29323A</Color>
@@ -64,6 +75,7 @@
     <Color x:Key="Color.Button.Border.Disabled">#FF282F36</Color>
     <Color x:Key="Color.Button.Text.Normal">#FFF4F7F9</Color>
     <Color x:Key="Color.Button.Text.Disabled">#FF75818C</Color>
+    <Color x:Key="Color.Button.Icon.Black">#FF0A0D10</Color>
 
     <!-- Accent colors -->
     <Color x:Key="Color.Accent.Blue.1">#FFA9D8F5</Color>
@@ -106,12 +118,6 @@
     <Color x:Key="Color.Accent.Blue.Transparent.3">#333AA6E8</Color>
     <Color x:Key="Color.Accent.Blue.Transparent.4">#332389C8</Color>
     <Color x:Key="Color.Accent.Blue.Transparent.5">#3317628F</Color>
-
-    <!-- Legacy attention button colors -->
-    <!-- Kept for compatibility with existing views. -->
-    <Color x:Key="Button.Attention.Color.Normal">#FFA92E3E</Color>
-    <Color x:Key="Button.Attention.Color.MouseOver">#FFC23A4B</Color>
-    <Color x:Key="Button.Attention.Color.Pressed">#FF842432</Color>
 
     <!-- City colors -->
     <Color x:Key="Color.City.Default">#FF444F5A</Color>
@@ -300,6 +306,7 @@
     <SolidColorBrush x:Key="SolidColorBrush.Button.Danger.Disabled" Color="{StaticResource Color.Button.Danger.Disabled}"/>
     <SolidColorBrush x:Key="SolidColorBrush.Button.Danger.Border.Normal" Color="{StaticResource Color.Button.Danger.Border.Normal}"/>
     <SolidColorBrush x:Key="SolidColorBrush.Button.Danger.Border.MouseOver" Color="{StaticResource Color.Button.Danger.Border.MouseOver}"/>
+    <SolidColorBrush x:Key="SolidColorBrush.Button.Danger.Border.Pressed" Color="{StaticResource Color.Button.Danger.Border.Pressed}"/>
 
     <SolidColorBrush x:Key="SolidColorBrush.Button.Warning.Normal" Color="{StaticResource Color.Button.Warning.Normal}"/>
     <SolidColorBrush x:Key="SolidColorBrush.Button.Warning.MouseOver" Color="{StaticResource Color.Button.Warning.MouseOver}"/>
@@ -307,6 +314,15 @@
     <SolidColorBrush x:Key="SolidColorBrush.Button.Warning.Disabled" Color="{StaticResource Color.Button.Warning.Disabled}"/>
     <SolidColorBrush x:Key="SolidColorBrush.Button.Warning.Border.Normal" Color="{StaticResource Color.Button.Warning.Border.Normal}"/>
     <SolidColorBrush x:Key="SolidColorBrush.Button.Warning.Border.MouseOver" Color="{StaticResource Color.Button.Warning.Border.MouseOver}"/>
+    <SolidColorBrush x:Key="SolidColorBrush.Button.Warning.Border.Pressed" Color="{StaticResource Color.Button.Warning.Border.Pressed}"/>
+
+    <SolidColorBrush x:Key="SolidColorBrush.Button.Orange.Normal" Color="{StaticResource Color.Button.Orange.Normal}"/>
+    <SolidColorBrush x:Key="SolidColorBrush.Button.Orange.MouseOver" Color="{StaticResource Color.Button.Orange.MouseOver}"/>
+    <SolidColorBrush x:Key="SolidColorBrush.Button.Orange.Pressed" Color="{StaticResource Color.Button.Orange.Pressed}"/>
+    <SolidColorBrush x:Key="SolidColorBrush.Button.Orange.Disabled" Color="{StaticResource Color.Button.Orange.Disabled}"/>
+    <SolidColorBrush x:Key="SolidColorBrush.Button.Orange.Border.Normal" Color="{StaticResource Color.Button.Orange.Border.Normal}"/>
+    <SolidColorBrush x:Key="SolidColorBrush.Button.Orange.Border.MouseOver" Color="{StaticResource Color.Button.Orange.Border.MouseOver}"/>
+    <SolidColorBrush x:Key="SolidColorBrush.Button.Orange.Border.Pressed" Color="{StaticResource Color.Button.Orange.Border.Pressed}"/>
 
     <SolidColorBrush x:Key="SolidColorBrush.Button.Secondary.Normal" Color="{StaticResource Color.Button.Secondary.Normal}"/>
     <SolidColorBrush x:Key="SolidColorBrush.Button.Secondary.MouseOver" Color="{StaticResource Color.Button.Secondary.MouseOver}"/>
@@ -318,6 +334,7 @@
     <SolidColorBrush x:Key="SolidColorBrush.Button.Border.Disabled" Color="{StaticResource Color.Button.Border.Disabled}"/>
     <SolidColorBrush x:Key="SolidColorBrush.Button.Text.Normal" Color="{StaticResource Color.Button.Text.Normal}"/>
     <SolidColorBrush x:Key="SolidColorBrush.Button.Text.Disabled" Color="{StaticResource Color.Button.Text.Disabled}"/>
+    <SolidColorBrush x:Key="SolidColorBrush.Button.Icon.Black" Color="{StaticResource Color.Button.Icon.Black}"/>
 
     <SolidColorBrush x:Key="SolidColorBrush.Accent.Blue.1" Color="{StaticResource Color.Accent.Blue.1}"/>
     <SolidColorBrush x:Key="SolidColorBrush.Accent.Blue.2" Color="{StaticResource Color.Accent.Blue.2}"/>
