@@ -128,65 +128,51 @@
         </Setter>
     </Style>
 
-    <Style TargetType="{x:Type Button}">
-        <Setter Property="SnapsToDevicePixels" Value="true" />
-        <Setter Property="OverridesDefaultStyle" Value="true" />
+    <Style x:Key="Style.Button.Base" TargetType="{x:Type Button}">
+        <Setter Property="SnapsToDevicePixels" Value="True" />
+        <Setter Property="OverridesDefaultStyle" Value="True" />
         <Setter Property="FocusVisualStyle" Value="{StaticResource ButtonFocusVisual}" />
-        <Setter Property="MinHeight" Value="18px" />
-        <Setter Property="MinWidth"  Value="40px" />
-        <Setter Property="Foreground" Value="{StaticResource SolidColorBrush.Text.1}" />
+        <Setter Property="MinHeight" Value="18" />
+        <Setter Property="MinWidth" Value="40" />
+        <Setter Property="Foreground" Value="{StaticResource SolidColorBrush.Button.Text.Normal}" />
+        <Setter Property="BorderThickness" Value="1" />
         <Setter Property="Template">
             <Setter.Value>
-                <ControlTemplate TargetType="Button">
-                    <Border TextBlock.Foreground="{TemplateBinding Foreground}" x:Name="Border">
-                        <Border.Background>
-                            <SolidColorBrush  Color="{DynamicResource Color.Accent.Blue.5}" />
-                        </Border.Background>
-                        <VisualStateManager.VisualStateGroups>
-                            <VisualStateGroup x:Name="CommonStates">
-                                <VisualStateGroup.Transitions>
-                                    <VisualTransition GeneratedDuration="0:0:0.1" />
-                                    <VisualTransition GeneratedDuration="0" To="Pressed" />
-                                </VisualStateGroup.Transitions>
-                                <VisualState x:Name="Normal" />
-                                <VisualState x:Name="MouseOver">
-                                    <Storyboard>
-                                        <ColorAnimationUsingKeyFrames Storyboard.TargetProperty="(Panel.Background).(SolidColorBrush.Color)"
-                                                Storyboard.TargetName="Border">
-                                            <EasingColorKeyFrame KeyTime="0" Value="{StaticResource Color.Accent.Blue.3}" />
-                                        </ColorAnimationUsingKeyFrames>
-                                    </Storyboard>
-                                </VisualState>
-                                <VisualState x:Name="Pressed">
-                                    <Storyboard>
-                                        <ColorAnimationUsingKeyFrames Storyboard.TargetProperty="(Panel.Background).(SolidColorBrush.Color)"
-                                                Storyboard.TargetName="Border">
-                                            <EasingColorKeyFrame KeyTime="0" Value="{StaticResource Color.Accent.Blue.2}" />
-                                        </ColorAnimationUsingKeyFrames>
-                                    </Storyboard>
-                                </VisualState>
-                                <VisualState x:Name="Disabled">
-                                    <Storyboard>
-                                        <ColorAnimationUsingKeyFrames Storyboard.TargetProperty="(Panel.Background).(SolidColorBrush.Color)"
-                                                Storyboard.TargetName="Border">
-                                            <EasingColorKeyFrame KeyTime="0" Value="{StaticResource Color.Text.6}" />
-                                        </ColorAnimationUsingKeyFrames>
-                                        <ColorAnimationUsingKeyFrames Storyboard.TargetProperty="(TextBlock.Foreground).(SolidColorBrush.Color)"
-                                                Storyboard.TargetName="Border">
-                                            <EasingColorKeyFrame KeyTime="0" Value="{StaticResource Color.Text.4}" />
-                                        </ColorAnimationUsingKeyFrames>
-                                    </Storyboard>
-                                </VisualState>
-                            </VisualStateGroup>
-                        </VisualStateManager.VisualStateGroups>
+                <ControlTemplate TargetType="{x:Type Button}">
+                    <Border Background="{TemplateBinding Background}"
+                            BorderBrush="{TemplateBinding BorderBrush}"
+                            BorderThickness="{TemplateBinding BorderThickness}"
+                            CornerRadius="3"
+                            SnapsToDevicePixels="True"
+                            TextBlock.Foreground="{TemplateBinding Foreground}">
                         <ContentPresenter Margin="2"
-                            HorizontalAlignment="Center"
-                            VerticalAlignment="Center"
-                            RecognizesAccessKey="True" />
+                                          HorizontalAlignment="Center"
+                                          VerticalAlignment="Center"
+                                          RecognizesAccessKey="True" />
                     </Border>
                 </ControlTemplate>
             </Setter.Value>
         </Setter>
+    </Style>
+
+    <Style TargetType="{x:Type Button}" BasedOn="{StaticResource Style.Button.Base}">
+        <Setter Property="Background" Value="{StaticResource SolidColorBrush.Button.Primary.Normal}" />
+        <Setter Property="BorderBrush" Value="{StaticResource SolidColorBrush.Button.Primary.Border.Normal}" />
+        <Style.Triggers>
+            <Trigger Property="IsMouseOver" Value="True">
+                <Setter Property="Background" Value="{StaticResource SolidColorBrush.Button.Primary.MouseOver}" />
+                <Setter Property="BorderBrush" Value="{StaticResource SolidColorBrush.Button.Primary.Border.MouseOver}" />
+            </Trigger>
+            <Trigger Property="IsPressed" Value="True">
+                <Setter Property="Background" Value="{StaticResource SolidColorBrush.Button.Primary.Pressed}" />
+                <Setter Property="BorderBrush" Value="{StaticResource SolidColorBrush.Button.Primary.Border.Pressed}" />
+            </Trigger>
+            <Trigger Property="IsEnabled" Value="False">
+                <Setter Property="Background" Value="{StaticResource SolidColorBrush.Button.Primary.Disabled}" />
+                <Setter Property="BorderBrush" Value="{StaticResource SolidColorBrush.Button.Primary.Border.Disabled}" />
+                <Setter Property="Foreground" Value="{StaticResource SolidColorBrush.Button.Text.Disabled}" />
+            </Trigger>
+        </Style.Triggers>
     </Style>
 
     <Style x:Key="WindowButtonStyle" TargetType="{x:Type Button}">
@@ -665,7 +651,7 @@
                             Focusable="false"
                             IsChecked="{Binding Path=IsDropDownOpen,Mode=TwoWay,RelativeSource={RelativeSource TemplatedParent}}"
                             ClickMode="Press"/>
-                            <ContentPresenter Name="ContentSite" IsHitTestVisible="False"  Content="{TemplateBinding SelectionBoxItem}"
+                        <ContentPresenter Name="ContentSite" IsHitTestVisible="False"  Content="{TemplateBinding SelectionBoxItem}"
                             ContentTemplate="{TemplateBinding SelectionBoxItemTemplate}"
                             ContentTemplateSelector="{TemplateBinding ItemTemplateSelector}"
                             Margin="3,3,23,3"
@@ -784,98 +770,71 @@
         </Setter>
     </Style>
 
-    <Style TargetType="{x:Type Button}" x:Key="Style.Button.Attention">
-        <Setter Property="SnapsToDevicePixels" Value="true" />
-        <Setter Property="OverridesDefaultStyle" Value="true" />
-        <Setter Property="FocusVisualStyle" Value="{StaticResource ButtonFocusVisual}" />
-        <Setter Property="MinHeight" Value="18px" />
-        <Setter Property="MinWidth"  Value="40px" />
-        <Setter Property="Foreground" Value="{StaticResource SolidColorBrush.Text.1}" />
-        <Setter Property="Template">
-            <Setter.Value>
-                <ControlTemplate TargetType="Button">
-                    <Border TextBlock.Foreground="{TemplateBinding Foreground}" x:Name="Border">
-                        <Border.Background>
-                            <SolidColorBrush  Color="{DynamicResource Button.Attention.Color.Normal}" />
-                        </Border.Background>
-                        <VisualStateManager.VisualStateGroups>
-                            <VisualStateGroup x:Name="CommonStates">
-                                <VisualStateGroup.Transitions>
-                                    <VisualTransition GeneratedDuration="0:0:0.1" />
-                                    <VisualTransition GeneratedDuration="0" To="Pressed" />
-                                </VisualStateGroup.Transitions>
-                                <VisualState x:Name="Normal" />
-                                <VisualState x:Name="MouseOver">
-                                    <Storyboard>
-                                        <ColorAnimationUsingKeyFrames Storyboard.TargetProperty="(Panel.Background).(SolidColorBrush.Color)"
-                                                Storyboard.TargetName="Border">
-                                            <EasingColorKeyFrame KeyTime="0" Value="{StaticResource Button.Attention.Color.MouseOver}" />
-                                        </ColorAnimationUsingKeyFrames>
-                                    </Storyboard>
-                                </VisualState>
-                                <VisualState x:Name="Pressed">
-                                    <Storyboard>
-                                        <ColorAnimationUsingKeyFrames Storyboard.TargetProperty="(Panel.Background).(SolidColorBrush.Color)"
-                                                Storyboard.TargetName="Border">
-                                            <EasingColorKeyFrame KeyTime="0" Value="{StaticResource Button.Attention.Color.Pressed}" />
-                                        </ColorAnimationUsingKeyFrames>
-                                    </Storyboard>
-                                </VisualState>
-                                <VisualState x:Name="Disabled">
-                                    <Storyboard>
-                                        <ColorAnimationUsingKeyFrames Storyboard.TargetProperty="(Panel.Background).(SolidColorBrush.Color)"
-                                                Storyboard.TargetName="Border">
-                                            <EasingColorKeyFrame KeyTime="0" Value="{StaticResource Color.Text.6}" />
-                                        </ColorAnimationUsingKeyFrames>
-                                        <ColorAnimationUsingKeyFrames Storyboard.TargetProperty="(TextBlock.Foreground).(SolidColorBrush.Color)"
-                                                Storyboard.TargetName="Border">
-                                            <EasingColorKeyFrame KeyTime="0" Value="{StaticResource Color.Text.5}" />
-                                        </ColorAnimationUsingKeyFrames>
-                                    </Storyboard>
-                                </VisualState>
-                            </VisualStateGroup>
-                        </VisualStateManager.VisualStateGroups>
-                        <ContentPresenter Margin="2" HorizontalAlignment="Center" VerticalAlignment="Center" RecognizesAccessKey="True" />
-                    </Border>
-                </ControlTemplate>
-            </Setter.Value>
-        </Setter>
+    <Style x:Key="Style.Button.Danger"
+           TargetType="{x:Type Button}"
+           BasedOn="{StaticResource Style.Button.Base}">
+        <Setter Property="Background" Value="{StaticResource SolidColorBrush.Button.Danger.Normal}" />
+        <Setter Property="BorderBrush" Value="{StaticResource SolidColorBrush.Button.Danger.Border.Normal}" />
+        <Style.Triggers>
+            <Trigger Property="IsMouseOver" Value="True">
+                <Setter Property="Background" Value="{StaticResource SolidColorBrush.Button.Danger.MouseOver}" />
+                <Setter Property="BorderBrush" Value="{StaticResource SolidColorBrush.Button.Danger.Border.MouseOver}" />
+            </Trigger>
+            <Trigger Property="IsPressed" Value="True">
+                <Setter Property="Background" Value="{StaticResource SolidColorBrush.Button.Danger.Pressed}" />
+            </Trigger>
+            <Trigger Property="IsEnabled" Value="False">
+                <Setter Property="Background" Value="{StaticResource SolidColorBrush.Button.Danger.Disabled}" />
+                <Setter Property="BorderBrush" Value="{StaticResource SolidColorBrush.Button.Border.Disabled}" />
+                <Setter Property="Foreground" Value="{StaticResource SolidColorBrush.Button.Text.Disabled}" />
+            </Trigger>
+        </Style.Triggers>
     </Style>
 
-    <Style TargetType="{x:Type Button}" x:Key="Style.Button.Danger" BasedOn="{StaticResource Style.Button.Attention}" />
+    <Style x:Key="Style.Button.Attention"
+           TargetType="{x:Type Button}"
+           BasedOn="{StaticResource Style.Button.Danger}" />
 
-    <Style TargetType="{x:Type Button}" x:Key="Style.Button.Neutral">
-        <Setter Property="SnapsToDevicePixels" Value="true" />
-        <Setter Property="OverridesDefaultStyle" Value="true" />
-        <Setter Property="FocusVisualStyle" Value="{StaticResource ButtonFocusVisual}" />
-        <Setter Property="MinHeight" Value="18px" />
-        <Setter Property="MinWidth" Value="40px" />
-        <Setter Property="Background" Value="{StaticResource SolidColorBrush.Text.5}" />
-        <Setter Property="Foreground" Value="{StaticResource SolidColorBrush.Text.1}" />
-        <Setter Property="Template">
-            <Setter.Value>
-                <ControlTemplate TargetType="{x:Type Button}">
-                    <Border x:Name="Border"
-                            Background="{TemplateBinding Background}"
-                            TextBlock.Foreground="{TemplateBinding Foreground}">
-                        <ContentPresenter Margin="2" HorizontalAlignment="Center" VerticalAlignment="Center" RecognizesAccessKey="True" />
-                    </Border>
-                    <ControlTemplate.Triggers>
-                        <Trigger Property="IsMouseOver" Value="True">
-                            <Setter TargetName="Border" Property="Opacity" Value="0.88" />
-                        </Trigger>
-                        <Trigger Property="IsPressed" Value="True">
-                            <Setter TargetName="Border" Property="Opacity" Value="0.72" />
-                        </Trigger>
-                        <Trigger Property="IsEnabled" Value="False">
-                            <Setter TargetName="Border" Property="Background" Value="{StaticResource SolidColorBrush.Text.6}" />
-                            <Setter TargetName="Border" Property="Opacity" Value="1" />
-                            <Setter Property="Foreground" Value="{StaticResource SolidColorBrush.Text.4}" />
-                        </Trigger>
-                    </ControlTemplate.Triggers>
-                </ControlTemplate>
-            </Setter.Value>
-        </Setter>
+    <Style x:Key="Style.Button.Warning"
+           TargetType="{x:Type Button}"
+           BasedOn="{StaticResource Style.Button.Base}">
+        <Setter Property="Background" Value="{StaticResource SolidColorBrush.Button.Warning.Normal}" />
+        <Setter Property="BorderBrush" Value="{StaticResource SolidColorBrush.Button.Warning.Border.Normal}" />
+        <Style.Triggers>
+            <Trigger Property="IsMouseOver" Value="True">
+                <Setter Property="Background" Value="{StaticResource SolidColorBrush.Button.Warning.MouseOver}" />
+                <Setter Property="BorderBrush" Value="{StaticResource SolidColorBrush.Button.Warning.Border.MouseOver}" />
+            </Trigger>
+            <Trigger Property="IsPressed" Value="True">
+                <Setter Property="Background" Value="{StaticResource SolidColorBrush.Button.Warning.Pressed}" />
+            </Trigger>
+            <Trigger Property="IsEnabled" Value="False">
+                <Setter Property="Background" Value="{StaticResource SolidColorBrush.Button.Warning.Disabled}" />
+                <Setter Property="BorderBrush" Value="{StaticResource SolidColorBrush.Button.Border.Disabled}" />
+                <Setter Property="Foreground" Value="{StaticResource SolidColorBrush.Button.Text.Disabled}" />
+            </Trigger>
+        </Style.Triggers>
+    </Style>
+
+    <Style x:Key="Style.Button.Neutral"
+           TargetType="{x:Type Button}"
+           BasedOn="{StaticResource Style.Button.Base}">
+        <Setter Property="Background" Value="{StaticResource SolidColorBrush.Button.Secondary.Normal}" />
+        <Setter Property="BorderBrush" Value="{StaticResource SolidColorBrush.Button.Border.Normal}" />
+        <Style.Triggers>
+            <Trigger Property="IsMouseOver" Value="True">
+                <Setter Property="Background" Value="{StaticResource SolidColorBrush.Button.Secondary.MouseOver}" />
+                <Setter Property="BorderBrush" Value="{StaticResource SolidColorBrush.Button.Border.MouseOver}" />
+            </Trigger>
+            <Trigger Property="IsPressed" Value="True">
+                <Setter Property="Background" Value="{StaticResource SolidColorBrush.Button.Secondary.Pressed}" />
+            </Trigger>
+            <Trigger Property="IsEnabled" Value="False">
+                <Setter Property="Background" Value="{StaticResource SolidColorBrush.Button.Secondary.Disabled}" />
+                <Setter Property="BorderBrush" Value="{StaticResource SolidColorBrush.Button.Border.Disabled}" />
+                <Setter Property="Foreground" Value="{StaticResource SolidColorBrush.Button.Text.Disabled}" />
+            </Trigger>
+        </Style.Triggers>
     </Style>
 
     <Style TargetType="Border" x:Key="Container.Border">
