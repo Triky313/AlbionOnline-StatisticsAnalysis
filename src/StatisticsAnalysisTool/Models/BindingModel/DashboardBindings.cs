@@ -1,4 +1,7 @@
-﻿using StatisticsAnalysisTool.Localization;
+﻿using FontAwesome5;
+using StatisticsAnalysisTool.Common.UserSettings;
+using StatisticsAnalysisTool.Enumerations;
+using StatisticsAnalysisTool.Localization;
 using StatisticsAnalysisTool.Properties;
 using StatisticsAnalysisTool.ViewModels;
 using System;
@@ -6,71 +9,11 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
 using System.Windows;
-using FontAwesome5;
-using StatisticsAnalysisTool.Common.UserSettings;
-using StatisticsAnalysisTool.Enumerations;
 
 namespace StatisticsAnalysisTool.Models.BindingModel;
 
 public class DashboardBindings : BaseViewModel
 {
-    private double _famePerHour;
-    private double _reSpecPointsPerHour;
-    private double _silverPerHour;
-    private double _mightPerHour;
-    private double _favorPerHour;
-    private double _silverCostForReSpecHour;
-    private double _totalGainedFameInSessionInSession;
-    private double _totalGainedReSpecPointsInSessionInSession;
-    private double _totalGainedSilverInSessionInSession;
-    private double _totalGainedMightInSession;
-    private double _totalGainedFavorInSession;
-    private double _totalSilverCostForReSpecInSession;
-    private double _highestValue;
-    private double _fameInPercent;
-    private double _silverInPercent;
-    private double _reSpecPointsInPercent;
-    private double _mightInPercent;
-    private double _favorInPercent;
-    private int _killsToday;
-    private int _deathsToday;
-    private int _killsThisWeek;
-    private int _deathsThisWeek;
-    private DateTime? _lastUpdate;
-    private double _averageItemPowerWhenKilling;
-    private double _averageItemPowerOfTheKilledEnemies;
-    private double _averageItemPowerWhenDying;
-    private int _killsThisMonth;
-    private int _deathsThisMonth;
-    private int _soloKillsToday;
-    private int _soloKillsThisWeek;
-    private int _soloKillsThisMonth;
-    private LootedChests _lootedChests = new();
-    private long _repairCostsToday;
-    private long _repairCostsLast7Days;
-    private long _repairCostsLast30Days;
-    private long _repairCostsChest;
-    private Visibility _repairCostsChestVisibility;
-    private Visibility _killDeathStatsVisibility;
-    private Visibility _factionSummaryVisibility;
-    private EFontAwesomeIcon _factionSummaryToggleIcon;
-    private EFontAwesomeIcon _killDeathStatsToggleIcon;
-    private Visibility _fameContentRankingVisibility;
-    private EFontAwesomeIcon _fameContentRankingToggleIcon;
-    private Visibility _silverContentRankingVisibility;
-    private EFontAwesomeIcon _silverContentRankingToggleIcon;
-    private Visibility _lootedChestsStatsVisibility;
-    private EFontAwesomeIcon _lootedChestsStatsToggleIcon;
-    private Visibility _reSpecStatsVisibility;
-    private EFontAwesomeIcon _reSpecStatsToggleIcon;
-    private Visibility _repairCostsStatsVisibility;
-    private EFontAwesomeIcon _repairCostsStatsToggleIcon;
-    private Visibility _activityChartVisibility;
-    private EFontAwesomeIcon _activityChartToggleIcon;
-    private string _translationKillsDeaths = TranslationKillsDeaths;
-    private string _summaryComparisonText = TranslationVsPreviousHour;
-    private double _totalFameByContent;
-    private double _totalSilverByContent;
     private DashboardFactionOption _selectedFactionOption;
 
     public DashboardBindings()
@@ -149,33 +92,33 @@ public class DashboardBindings : BaseViewModel
 
     public double TotalFameByContent
     {
-        get => _totalFameByContent;
+        get;
         set
         {
-            _totalFameByContent = value;
+            field = value;
             OnPropertyChanged();
         }
     }
 
     public double TotalSilverByContent
     {
-        get => _totalSilverByContent;
+        get;
         set
         {
-            _totalSilverByContent = value;
+            field = value;
             OnPropertyChanged();
         }
     }
 
     public string SummaryComparisonText
     {
-        get => _summaryComparisonText;
+        get;
         set
         {
-            _summaryComparisonText = value;
+            field = value;
             OnPropertyChanged();
         }
-    }
+    } = TranslationVsPreviousHour;
 
     #endregion
 
@@ -183,10 +126,10 @@ public class DashboardBindings : BaseViewModel
 
     public Visibility FactionSummaryVisibility
     {
-        get => _factionSummaryVisibility;
+        get;
         set
         {
-            _factionSummaryVisibility = value;
+            field = value;
             SettingsController.CurrentSettings.IsFactionSummaryVisible = value == Visibility.Visible;
             OnPropertyChanged();
         }
@@ -194,20 +137,20 @@ public class DashboardBindings : BaseViewModel
 
     public EFontAwesomeIcon FactionSummaryToggleIcon
     {
-        get => _factionSummaryToggleIcon;
+        get;
         set
         {
-            _factionSummaryToggleIcon = value;
+            field = value;
             OnPropertyChanged();
         }
     }
 
     public Visibility KillDeathStatsVisibility
     {
-        get => _killDeathStatsVisibility;
+        get;
         set
         {
-            _killDeathStatsVisibility = value;
+            field = value;
             SettingsController.CurrentSettings.IsKillDeathStatsVisible = value == Visibility.Visible;
             OnPropertyChanged();
         }
@@ -215,20 +158,20 @@ public class DashboardBindings : BaseViewModel
 
     public EFontAwesomeIcon KillDeathStatsToggleIcon
     {
-        get => _killDeathStatsToggleIcon;
+        get;
         set
         {
-            _killDeathStatsToggleIcon = value;
+            field = value;
             OnPropertyChanged();
         }
     }
 
     public Visibility FameContentRankingVisibility
     {
-        get => _fameContentRankingVisibility;
+        get;
         set
         {
-            _fameContentRankingVisibility = value;
+            field = value;
             SettingsController.CurrentSettings.IsFameContentRankingVisible = value == Visibility.Visible;
             OnPropertyChanged();
         }
@@ -236,20 +179,20 @@ public class DashboardBindings : BaseViewModel
 
     public EFontAwesomeIcon FameContentRankingToggleIcon
     {
-        get => _fameContentRankingToggleIcon;
+        get;
         set
         {
-            _fameContentRankingToggleIcon = value;
+            field = value;
             OnPropertyChanged();
         }
     }
 
     public Visibility SilverContentRankingVisibility
     {
-        get => _silverContentRankingVisibility;
+        get;
         set
         {
-            _silverContentRankingVisibility = value;
+            field = value;
             SettingsController.CurrentSettings.IsSilverContentRankingVisible = value == Visibility.Visible;
             OnPropertyChanged();
         }
@@ -257,20 +200,20 @@ public class DashboardBindings : BaseViewModel
 
     public EFontAwesomeIcon SilverContentRankingToggleIcon
     {
-        get => _silverContentRankingToggleIcon;
+        get;
         set
         {
-            _silverContentRankingToggleIcon = value;
+            field = value;
             OnPropertyChanged();
         }
     }
 
     public Visibility LootedChestsStatsVisibility
     {
-        get => _lootedChestsStatsVisibility;
+        get;
         set
         {
-            _lootedChestsStatsVisibility = value;
+            field = value;
             SettingsController.CurrentSettings.IsLootedChestsStatsVisible = value == Visibility.Visible;
             OnPropertyChanged();
         }
@@ -278,20 +221,20 @@ public class DashboardBindings : BaseViewModel
 
     public EFontAwesomeIcon LootedChestsStatsToggleIcon
     {
-        get => _lootedChestsStatsToggleIcon;
+        get;
         set
         {
-            _lootedChestsStatsToggleIcon = value;
+            field = value;
             OnPropertyChanged();
         }
     }
 
     public Visibility ReSpecStatsVisibility
     {
-        get => _reSpecStatsVisibility;
+        get;
         set
         {
-            _reSpecStatsVisibility = value;
+            field = value;
             SettingsController.CurrentSettings.IsReSpecStatsVisible = value == Visibility.Visible;
             OnPropertyChanged();
         }
@@ -299,20 +242,20 @@ public class DashboardBindings : BaseViewModel
 
     public EFontAwesomeIcon ReSpecStatsToggleIcon
     {
-        get => _reSpecStatsToggleIcon;
+        get;
         set
         {
-            _reSpecStatsToggleIcon = value;
+            field = value;
             OnPropertyChanged();
         }
     }
 
     public Visibility RepairCostsStatsVisibility
     {
-        get => _repairCostsStatsVisibility;
+        get;
         set
         {
-            _repairCostsStatsVisibility = value;
+            field = value;
             SettingsController.CurrentSettings.IsRepairCostsStatsVisible = value == Visibility.Visible;
             OnPropertyChanged();
         }
@@ -320,20 +263,20 @@ public class DashboardBindings : BaseViewModel
 
     public EFontAwesomeIcon RepairCostsStatsToggleIcon
     {
-        get => _repairCostsStatsToggleIcon;
+        get;
         set
         {
-            _repairCostsStatsToggleIcon = value;
+            field = value;
             OnPropertyChanged();
         }
     }
 
     public Visibility ActivityChartVisibility
     {
-        get => _activityChartVisibility;
+        get;
         set
         {
-            _activityChartVisibility = value;
+            field = value;
             SettingsController.CurrentSettings.IsActivityChartVisible = value == Visibility.Visible;
             OnPropertyChanged();
         }
@@ -341,10 +284,10 @@ public class DashboardBindings : BaseViewModel
 
     public EFontAwesomeIcon ActivityChartToggleIcon
     {
-        get => _activityChartToggleIcon;
+        get;
         set
         {
-            _activityChartToggleIcon = value;
+            field = value;
             OnPropertyChanged();
         }
     }
@@ -388,70 +331,70 @@ public class DashboardBindings : BaseViewModel
 
     public double HighestValue
     {
-        get => _highestValue;
+        get;
         set
         {
-            _highestValue = value;
+            field = value;
             OnPropertyChanged();
         }
     }
 
     public double FamePerHour
     {
-        get => _famePerHour;
+        get;
         set
         {
-            _famePerHour = value;
+            field = value;
             OnPropertyChanged();
         }
     }
 
     public double SilverPerHour
     {
-        get => _silverPerHour;
+        get;
         set
         {
-            _silverPerHour = value;
+            field = value;
             OnPropertyChanged();
         }
     }
 
     public double ReSpecPointsPerHour
     {
-        get => _reSpecPointsPerHour;
+        get;
         set
         {
-            _reSpecPointsPerHour = value;
+            field = value;
             OnPropertyChanged();
         }
     }
 
     public double MightPerHour
     {
-        get => _mightPerHour;
+        get;
         set
         {
-            _mightPerHour = value;
+            field = value;
             OnPropertyChanged();
         }
     }
 
     public double FavorPerHour
     {
-        get => _favorPerHour;
+        get;
         set
         {
-            _favorPerHour = value;
+            field = value;
             OnPropertyChanged();
         }
     }
 
     public double SilverCostForReSpecHour
     {
-        get => _silverCostForReSpecHour;
+        get;
         set
         {
-            _silverCostForReSpecHour = value;
+            field = value;
             OnPropertyChanged();
         }
     }
@@ -462,50 +405,50 @@ public class DashboardBindings : BaseViewModel
 
     public double FameInPercent
     {
-        get => _fameInPercent;
+        get;
         set
         {
-            _fameInPercent = value;
+            field = value;
             OnPropertyChanged();
         }
     }
 
     public double SilverInPercent
     {
-        get => _silverInPercent;
+        get;
         set
         {
-            _silverInPercent = value;
+            field = value;
             OnPropertyChanged();
         }
     }
 
     public double ReSpecPointsInPercent
     {
-        get => _reSpecPointsInPercent;
+        get;
         set
         {
-            _reSpecPointsInPercent = value;
+            field = value;
             OnPropertyChanged();
         }
     }
 
     public double MightInPercent
     {
-        get => _mightInPercent;
+        get;
         set
         {
-            _mightInPercent = value;
+            field = value;
             OnPropertyChanged();
         }
     }
 
     public double FavorInPercent
     {
-        get => _favorInPercent;
+        get;
         set
         {
-            _favorInPercent = value;
+            field = value;
             OnPropertyChanged();
         }
     }
@@ -516,70 +459,70 @@ public class DashboardBindings : BaseViewModel
 
     public double TotalGainedFameInSession
     {
-        get => _totalGainedFameInSessionInSession;
+        get;
         set
         {
-            _totalGainedFameInSessionInSession = value;
+            field = value;
             HighestValue = GetHighestValue();
-            FameInPercent = _totalGainedFameInSessionInSession / HighestValue * 100;
+            FameInPercent = field / HighestValue * 100;
             OnPropertyChanged();
         }
     }
 
     public double TotalGainedSilverInSession
     {
-        get => _totalGainedSilverInSessionInSession;
+        get;
         set
         {
-            _totalGainedSilverInSessionInSession = value;
+            field = value;
             HighestValue = GetHighestValue();
-            SilverInPercent = _totalGainedSilverInSessionInSession / HighestValue * 100;
+            SilverInPercent = field / HighestValue * 100;
             OnPropertyChanged();
         }
     }
 
     public double TotalGainedReSpecPointsInSession
     {
-        get => _totalGainedReSpecPointsInSessionInSession;
+        get;
         set
         {
-            _totalGainedReSpecPointsInSessionInSession = value;
+            field = value;
             HighestValue = GetHighestValue();
-            ReSpecPointsInPercent = _totalGainedReSpecPointsInSessionInSession / HighestValue * 100;
+            ReSpecPointsInPercent = field / HighestValue * 100;
             OnPropertyChanged();
         }
     }
 
     public double TotalGainedMightInSession
     {
-        get => _totalGainedMightInSession;
+        get;
         set
         {
-            _totalGainedMightInSession = value;
+            field = value;
             HighestValue = GetHighestValue();
-            MightInPercent = _totalGainedMightInSession / HighestValue * 100;
+            MightInPercent = field / HighestValue * 100;
             OnPropertyChanged();
         }
     }
 
     public double TotalGainedFavorInSession
     {
-        get => _totalGainedFavorInSession;
+        get;
         set
         {
-            _totalGainedFavorInSession = value;
+            field = value;
             HighestValue = GetHighestValue();
-            FavorInPercent = _totalGainedFavorInSession / HighestValue * 100;
+            FavorInPercent = field / HighestValue * 100;
             OnPropertyChanged();
         }
     }
 
     public double TotalSilverCostForReSpecInSession
     {
-        get => _totalSilverCostForReSpecInSession;
+        get;
         set
         {
-            _totalSilverCostForReSpecInSession = value;
+            field = value;
             OnPropertyChanged();
         }
     }
@@ -592,140 +535,140 @@ public class DashboardBindings : BaseViewModel
 
     public string KillsDeathsText
     {
-        get => _translationKillsDeaths;
+        get;
         set
         {
-            _translationKillsDeaths = value;
+            field = value;
             OnPropertyChanged();
         }
-    }
+    } = TranslationKillsDeaths;
 
     public int SoloKillsToday
     {
-        get => _soloKillsToday;
+        get;
         set
         {
-            _soloKillsToday = value;
+            field = value;
             OnPropertyChanged();
         }
     }
 
     public int SoloKillsThisWeek
     {
-        get => _soloKillsThisWeek;
+        get;
         set
         {
-            _soloKillsThisWeek = value;
+            field = value;
             OnPropertyChanged();
         }
     }
 
     public int SoloKillsThisMonth
     {
-        get => _soloKillsThisMonth;
+        get;
         set
         {
-            _soloKillsThisMonth = value;
+            field = value;
             OnPropertyChanged();
         }
     }
 
     public int KillsToday
     {
-        get => _killsToday;
+        get;
         set
         {
-            _killsToday = value;
+            field = value;
             OnPropertyChanged();
         }
     }
 
     public int KillsThisWeek
     {
-        get => _killsThisWeek;
+        get;
         set
         {
-            _killsThisWeek = value;
+            field = value;
             OnPropertyChanged();
         }
     }
 
     public int KillsThisMonth
     {
-        get => _killsThisMonth;
+        get;
         set
         {
-            _killsThisMonth = value;
+            field = value;
             OnPropertyChanged();
         }
     }
 
     public int DeathsToday
     {
-        get => _deathsToday;
+        get;
         set
         {
-            _deathsToday = value;
+            field = value;
             OnPropertyChanged();
         }
     }
 
     public int DeathsThisWeek
     {
-        get => _deathsThisWeek;
+        get;
         set
         {
-            _deathsThisWeek = value;
+            field = value;
             OnPropertyChanged();
         }
     }
 
     public int DeathsThisMonth
     {
-        get => _deathsThisMonth;
+        get;
         set
         {
-            _deathsThisMonth = value;
+            field = value;
             OnPropertyChanged();
         }
     }
 
     public double AverageItemPowerWhenKilling
     {
-        get => _averageItemPowerWhenKilling;
+        get;
         set
         {
-            _averageItemPowerWhenKilling = value;
+            field = value;
             OnPropertyChanged();
         }
     }
 
     public double AverageItemPowerOfTheKilledEnemies
     {
-        get => _averageItemPowerOfTheKilledEnemies;
+        get;
         set
         {
-            _averageItemPowerOfTheKilledEnemies = value;
+            field = value;
             OnPropertyChanged();
         }
     }
 
     public double AverageItemPowerWhenDying
     {
-        get => _averageItemPowerWhenDying;
+        get;
         set
         {
-            _averageItemPowerWhenDying = value;
+            field = value;
             OnPropertyChanged();
         }
     }
 
     public DateTime? LastUpdate
     {
-        get => _lastUpdate;
+        get;
         set
         {
-            _lastUpdate = value;
+            field = value;
             OnPropertyChanged();
         }
     }
@@ -736,13 +679,13 @@ public class DashboardBindings : BaseViewModel
 
     public LootedChests LootedChests
     {
-        get => _lootedChests;
+        get;
         set
         {
-            _lootedChests = value;
+            field = value;
             OnPropertyChanged();
         }
-    }
+    } = new();
 
     #endregion
 
@@ -820,50 +763,50 @@ public class DashboardBindings : BaseViewModel
 
     public long RepairCostsToday
     {
-        get => _repairCostsToday;
+        get;
         set
         {
-            _repairCostsToday = value;
+            field = value;
             OnPropertyChanged();
         }
     }
 
     public long RepairCostsLast7Days
     {
-        get => _repairCostsLast7Days;
+        get;
         set
         {
-            _repairCostsLast7Days = value;
+            field = value;
             OnPropertyChanged();
         }
     }
 
     public long RepairCostsLast30Days
     {
-        get => _repairCostsLast30Days;
+        get;
         set
         {
-            _repairCostsLast30Days = value;
+            field = value;
             OnPropertyChanged();
         }
     }
 
     public long RepairCostsChest
     {
-        get => _repairCostsChest;
+        get;
         set
         {
-            _repairCostsChest = value;
+            field = value;
             OnPropertyChanged();
         }
     }
 
     public Visibility RepairCostsChestVisibility
     {
-        get => _repairCostsChestVisibility;
+        get;
         set
         {
-            _repairCostsChestVisibility = value;
+            field = value;
             OnPropertyChanged();
         }
     }

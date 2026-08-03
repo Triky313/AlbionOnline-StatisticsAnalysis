@@ -73,10 +73,7 @@ public sealed class ClusterController(TrackingController trackingController, Mai
     public void SetAndResetValues(ClusterInfo currentCluster)
     {
         trackingController.TradeController.ResetCraftingBuildingInfo();
-        mainWindowViewModel.DamageMeterBindings.GetSnapshot(
-            mainWindowViewModel.DamageMeterBindings.IsSnapshotAfterMapChangeActive,
-            _snapshotLocationBeforeClusterChange,
-            true);
+        mainWindowViewModel.DamageMeterBindings.GetSnapshot(mainWindowViewModel.DamageMeterBindings.IsSnapshotAfterMapChangeActive, _snapshotLocationBeforeClusterChange, true);
         trackingController.CombatController.ResetDamageMeterByClusterChange();
         trackingController.VaultController.ResetDiscoveredItems();
         trackingController.VaultController.ResetInternalVaultContainer();
