@@ -4,6 +4,7 @@ using LiveChartsCore.SkiaSharpView;
 using Serilog;
 using StatisticsAnalysisTool.Common;
 using StatisticsAnalysisTool.Common.UserSettings;
+using StatisticsAnalysisTool.Diagnostics;
 using StatisticsAnalysisTool.Exceptions;
 using StatisticsAnalysisTool.GameFileData;
 using StatisticsAnalysisTool.Localization;
@@ -25,39 +26,14 @@ using System.Timers;
 using System.Windows;
 using System.Windows.Markup;
 using System.Windows.Media.Imaging;
-using StatisticsAnalysisTool.Diagnostics;
 
 namespace StatisticsAnalysisTool.ViewModels;
 
 public class ItemWindowViewModel : BaseViewModel
 {
     private readonly ItemWindow _itemWindow;
-    private Item _item;
-    private string _titleName;
-    private string _itemTierLevel;
-    private BitmapImage _icon;
-    private Visibility _errorBarVisibility;
-    private ItemWindowTranslation _translation = new();
-    private bool _refreshSpin;
-    private bool _isAutoUpdateActive;
     private readonly Timer _timer = new();
-    private double _taskProgressbarMinimum;
-    private double _taskProgressbarMaximum = 100;
-    private double _taskProgressbarValue;
-    private bool _isTaskProgressbarIndeterminate;
-    private XmlLanguage _itemListViewLanguage = XmlLanguage.GetLanguage(CultureInfo.DefaultThreadCurrentCulture?.IetfLanguageTag ?? string.Empty);
     private double _refreshRateInMilliseconds = 10;
-    private List<MarketResponse> _currentItemPrices = new();
-    private ExtraItemInformation _extraItemInformation = new();
-    private string _errorBarText;
-    private Exception _errorBarException;
-    private string _refreshIconTooltipText;
-    private ObservableCollection<MainTabLocationFilterObject> _locationFilters;
-    private int _tabControlSelectedIndex = -1;
-    private ItemWindowMainTabBindings _mainTabBindings;
-    private ItemWindowQualityTabBindings _qualityTabBindings;
-    private ItemWindowHistoryTabBindings _historyTabBindings;
-    private ItemWindowRealMoneyTabBindings _realMoneyTabBindings;
 
     public enum Error
     {
@@ -800,253 +776,253 @@ public class ItemWindowViewModel : BaseViewModel
 
     public Item Item
     {
-        get => _item;
+        get;
         set
         {
-            _item = value;
+            field = value;
             OnPropertyChanged();
         }
     }
 
     public string TitleName
     {
-        get => _titleName;
+        get;
         set
         {
-            _titleName = value;
+            field = value;
             OnPropertyChanged();
         }
     }
 
     public string ItemTierLevel
     {
-        get => _itemTierLevel;
+        get;
         set
         {
-            _itemTierLevel = value;
+            field = value;
             OnPropertyChanged();
         }
     }
 
     public BitmapImage Icon
     {
-        get => _icon;
+        get;
         set
         {
-            _icon = value;
+            field = value;
             OnPropertyChanged();
         }
     }
 
     public bool RefreshSpin
     {
-        get => _refreshSpin;
+        get;
         set
         {
-            _refreshSpin = value;
+            field = value;
             OnPropertyChanged();
         }
     }
 
     public XmlLanguage ItemListViewLanguage
     {
-        get => _itemListViewLanguage;
+        get;
         set
         {
-            _itemListViewLanguage = value;
+            field = value;
             OnPropertyChanged();
         }
-    }
+    } = XmlLanguage.GetLanguage(CultureInfo.DefaultThreadCurrentCulture?.IetfLanguageTag ?? string.Empty);
 
     public ItemWindowMainTabBindings MainTabBindings
     {
-        get => _mainTabBindings;
+        get;
         set
         {
-            _mainTabBindings = value;
+            field = value;
             OnPropertyChanged();
         }
     }
 
     public ItemWindowQualityTabBindings QualityTabBindings
     {
-        get => _qualityTabBindings;
+        get;
         set
         {
-            _qualityTabBindings = value;
+            field = value;
             OnPropertyChanged();
         }
     }
 
     public ItemWindowHistoryTabBindings HistoryTabBindings
     {
-        get => _historyTabBindings;
+        get;
         set
         {
-            _historyTabBindings = value;
+            field = value;
             OnPropertyChanged();
         }
     }
 
     public ItemWindowRealMoneyTabBindings RealMoneyTabBindings
     {
-        get => _realMoneyTabBindings;
+        get;
         set
         {
-            _realMoneyTabBindings = value;
+            field = value;
             OnPropertyChanged();
         }
     }
 
     public Visibility ErrorBarVisibility
     {
-        get => _errorBarVisibility;
+        get;
         set
         {
-            _errorBarVisibility = value;
+            field = value;
             OnPropertyChanged();
         }
     }
 
     public string ErrorBarText
     {
-        get => _errorBarText;
+        get;
         set
         {
-            _errorBarText = value;
+            field = value;
             OnPropertyChanged();
         }
     }
 
     public Exception ErrorBarException
     {
-        get => _errorBarException;
+        get;
         set
         {
-            _errorBarException = value;
+            field = value;
             OnPropertyChanged();
         }
     }
 
     public List<MarketResponse> CurrentItemPrices
     {
-        get => _currentItemPrices;
+        get;
         set
         {
-            _currentItemPrices = value;
+            field = value;
             OnPropertyChanged();
         }
-    }
+    } = new();
 
     public bool IsAutoUpdateActive
     {
-        get => _isAutoUpdateActive;
+        get;
         set
         {
-            _isAutoUpdateActive = value;
+            field = value;
 
-            _timer.Enabled = _isAutoUpdateActive;
-            RefreshSpin = _isAutoUpdateActive;
+            _timer.Enabled = field;
+            RefreshSpin = field;
             OnPropertyChanged();
         }
     }
 
     public double TaskProgressbarMinimum
     {
-        get => _taskProgressbarMinimum;
+        get;
         set
         {
-            _taskProgressbarMinimum = value;
+            field = value;
             OnPropertyChanged();
         }
     }
 
     public double TaskProgressbarMaximum
     {
-        get => _taskProgressbarMaximum;
+        get;
         set
         {
-            _taskProgressbarMaximum = value;
+            field = value;
             OnPropertyChanged();
         }
-    }
+    } = 100;
 
     public double TaskProgressbarValue
     {
-        get => _taskProgressbarValue;
+        get;
         set
         {
-            _taskProgressbarValue = value;
+            field = value;
             OnPropertyChanged();
         }
     }
 
     public bool IsTaskProgressbarIndeterminate
     {
-        get => _isTaskProgressbarIndeterminate;
+        get;
         set
         {
-            _isTaskProgressbarIndeterminate = value;
+            field = value;
             OnPropertyChanged();
         }
     }
 
     public string RefreshIconTooltipText
     {
-        get => _refreshIconTooltipText;
+        get;
         set
         {
-            _refreshIconTooltipText = value;
+            field = value;
             OnPropertyChanged();
         }
     }
 
     public int TabControlSelectedIndex
     {
-        get => _tabControlSelectedIndex;
+        get;
         set
         {
-            _tabControlSelectedIndex = value;
+            field = value;
 
             // 2 is History tab
-            if (_tabControlSelectedIndex == 2)
+            if (field == 2)
             {
                 UpdateHistoryTabChartPricesAsync();
             }
 
             OnPropertyChanged();
         }
-    }
+    } = -1;
 
     public ObservableCollection<MainTabLocationFilterObject> LocationFilters
     {
-        get => _locationFilters;
+        get;
         set
         {
-            _locationFilters = value;
+            field = value;
             OnPropertyChanged();
         }
     }
 
     public ExtraItemInformation ExtraItemInformation
     {
-        get => _extraItemInformation;
+        get;
         set
         {
-            _extraItemInformation = value;
+            field = value;
             OnPropertyChanged();
         }
-    }
+    } = new();
 
     public ItemWindowTranslation Translation
     {
-        get => _translation;
+        get;
         set
         {
-            _translation = value;
+            field = value;
             OnPropertyChanged();
         }
-    }
+    } = new();
 
     #endregion
 

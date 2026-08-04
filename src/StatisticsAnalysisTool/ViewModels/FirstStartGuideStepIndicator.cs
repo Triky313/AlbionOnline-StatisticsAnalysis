@@ -1,33 +1,25 @@
 namespace StatisticsAnalysisTool.ViewModels;
 
-public class FirstStartGuideStepIndicator : BaseViewModel
+public class FirstStartGuideStepIndicator(int stepIndex) : BaseViewModel
 {
-    private bool _isActive;
-    private bool _isCompleted;
-
-    public FirstStartGuideStepIndicator(int stepIndex)
-    {
-        StepIndex = stepIndex;
-    }
-
-    public int StepIndex { get; }
+    public int StepIndex { get; } = stepIndex;
 
     public bool IsActive
     {
-        get => _isActive;
+        get;
         set
         {
-            _isActive = value;
+            field = value;
             OnPropertyChanged();
         }
     }
 
     public bool IsCompleted
     {
-        get => _isCompleted;
+        get;
         set
         {
-            _isCompleted = value;
+            field = value;
             OnPropertyChanged();
         }
     }

@@ -9,11 +9,6 @@ namespace StatisticsAnalysisTool.ViewModels;
 public class ItemAlertWindowViewModel : BaseViewModel
 {
     private readonly AlertInfos _alertInfos;
-    private Color _cityColor;
-    private string _cityName;
-    private BitmapImage _icon;
-    private string _itemName;
-    private ItemAlertWindowTranslation _translation;
 
     public ItemAlertWindowViewModel(AlertInfos alertInfos)
     {
@@ -34,50 +29,50 @@ public class ItemAlertWindowViewModel : BaseViewModel
 
     public string ItemName
     {
-        get => _itemName;
+        get;
         set
         {
-            _itemName = value;
+            field = value;
             OnPropertyChanged();
         }
     }
 
     public string CityName
     {
-        get => _cityName;
+        get;
         set
         {
-            _cityName = value;
+            field = value;
             OnPropertyChanged();
         }
     }
 
     public BitmapImage Icon
     {
-        get => _icon;
+        get;
         set
         {
-            _icon = value;
+            field = value;
             OnPropertyChanged();
         }
     }
 
     public Color CityColor
     {
-        get => _cityColor;
+        get;
         set
         {
-            _cityColor = value;
+            field = value;
             OnPropertyChanged();
         }
     }
 
     public ItemAlertWindowTranslation Translation
     {
-        get => _translation;
+        get;
         set
         {
-            _translation = value;
+            field = value;
             OnPropertyChanged();
         }
     }

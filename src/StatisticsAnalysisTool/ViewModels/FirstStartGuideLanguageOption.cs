@@ -2,27 +2,18 @@ using StatisticsAnalysisTool.Models;
 
 namespace StatisticsAnalysisTool.ViewModels;
 
-public class FirstStartGuideLanguageOption : BaseViewModel
+public class FirstStartGuideLanguageOption(FileInformation language, string displayText, int colorIndex) : BaseViewModel
 {
-    private bool _isSelected;
-
-    public FirstStartGuideLanguageOption(FileInformation language, string displayText, int colorIndex)
-    {
-        Language = language;
-        DisplayText = displayText;
-        ColorIndex = colorIndex;
-    }
-
-    public FileInformation Language { get; }
-    public string DisplayText { get; }
-    public int ColorIndex { get; }
+    public FileInformation Language { get; } = language;
+    public string DisplayText { get; } = displayText;
+    public int ColorIndex { get; } = colorIndex;
 
     public bool IsSelected
     {
-        get => _isSelected;
+        get;
         set
         {
-            _isSelected = value;
+            field = value;
             OnPropertyChanged();
         }
     }
