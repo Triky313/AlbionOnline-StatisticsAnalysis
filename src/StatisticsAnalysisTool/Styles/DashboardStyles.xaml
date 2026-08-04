@@ -396,11 +396,22 @@
                                TextTrimming="CharacterEllipsis"
                                ToolTip="{Binding Item.LocalizedName}" />
                     <StackPanel Orientation="Horizontal">
-                        <TextBlock Text="x" Foreground="{StaticResource SolidColorBrush.Text.4}" FontSize="11" />
-                        <TextBlock Text="{Binding Quantity, StringFormat='{}{0:N0}', ConverterCulture={x:Static gl:CultureInfo.CurrentCulture}}"
-                                   Foreground="{StaticResource SolidColorBrush.Text.4}"
-                                   FontSize="11" />
-                        <TextBlock Text="  |  " Foreground="{StaticResource SolidColorBrush.Text.5}" FontSize="11" />
+                        <StackPanel Orientation="Horizontal">
+                            <StackPanel.Style>
+                                <Style TargetType="StackPanel">
+                                    <Style.Triggers>
+                                        <DataTrigger Binding="{Binding ShowQuantity}" Value="False">
+                                            <Setter Property="Visibility" Value="Collapsed" />
+                                        </DataTrigger>
+                                    </Style.Triggers>
+                                </Style>
+                            </StackPanel.Style>
+                            <TextBlock Text="x" Foreground="{StaticResource SolidColorBrush.Text.4}" FontSize="11" />
+                            <TextBlock Text="{Binding Quantity, StringFormat='{}{0:N0}', ConverterCulture={x:Static gl:CultureInfo.CurrentCulture}}"
+                                       Foreground="{StaticResource SolidColorBrush.Text.4}"
+                                       FontSize="11" />
+                            <TextBlock Text="  |  " Foreground="{StaticResource SolidColorBrush.Text.5}" FontSize="11" />
+                        </StackPanel>
                         <TextBlock Text="{Binding LootedAtLocal, StringFormat='{}{0:g}'}"
                                    Foreground="{StaticResource SolidColorBrush.Text.4}"
                                    FontSize="11" />

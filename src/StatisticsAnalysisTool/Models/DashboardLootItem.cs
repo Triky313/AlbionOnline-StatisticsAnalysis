@@ -11,6 +11,7 @@ public sealed class DashboardLootItem
         TotalValue = totalValue;
         UnitValue = quantity > 0 ? totalValue / quantity : 0;
         DisplayValue = displayUnitValue ? UnitValue : totalValue;
+        ShowQuantity = !displayUnitValue;
         LootedAtLocal = occurredAtUtc.ToLocalTime();
     }
 
@@ -19,5 +20,6 @@ public sealed class DashboardLootItem
     public double TotalValue { get; }
     public double UnitValue { get; }
     public double DisplayValue { get; }
+    public bool ShowQuantity { get; }
     public DateTime LootedAtLocal { get; }
 }
