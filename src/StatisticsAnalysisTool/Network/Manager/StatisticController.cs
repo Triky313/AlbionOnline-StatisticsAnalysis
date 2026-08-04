@@ -8,6 +8,7 @@ using StatisticsAnalysisTool.Cluster;
 using StatisticsAnalysisTool.Common;
 using StatisticsAnalysisTool.Dungeon;
 using StatisticsAnalysisTool.Enumerations;
+using StatisticsAnalysisTool.GameFileData;
 using StatisticsAnalysisTool.Localization;
 using StatisticsAnalysisTool.Models;
 using StatisticsAnalysisTool.Models.BindingModel;
@@ -148,6 +149,10 @@ public class StatisticController
         var nowUtc = DateTime.UtcNow;
         var mapType = ClusterController.CurrentCluster.MapType;
         var dungeonMode = ResolveDungeonMode(mapType);
+        var lootAreaIndex = ResolveLootAreaIndex(mapType, dungeonMode);
+        var lootAreaClusterType = string.IsNullOrWhiteSpace(lootAreaIndex)
+            ? ClusterType.Unknown
+            : WorldData.GetClusterTypeByIndex(lootAreaIndex);
         var totalValue = Math.Max(0, unitValue) * quantity;
 
         lock (_syncRoot)
@@ -170,7 +175,9 @@ public class StatisticController
                 ClusterMode = ClusterController.CurrentCluster.ClusterMode,
                 CityFaction = CityFaction.Unknown,
                 ItemIndex = itemIndex,
-                ItemQuantity = quantity
+                ItemQuantity = quantity,
+                LootAreaIndex = lootAreaIndex,
+                LootAreaClusterType = lootAreaClusterType
             };
 
             _dashboardStatistics.Add(statisticEntry);
@@ -658,12 +665,12 @@ public class StatisticController
                 entry.OccurredAtUtc));
         }
 
-        ReplaceDashboardLootItems(
+        ReplaceDashboardItems(
             lootStatistics.RecentItems,
             lootItems
                 .OrderByDescending(x => x.LootedAtLocal)
                 .Take(10));
-        ReplaceDashboardLootItems(
+        ReplaceDashboardItems(
             lootStatistics.MostValuableItems,
             lootItems
                 .OrderByDescending(x => x.UnitValue)
@@ -675,17 +682,79 @@ public class StatisticController
                     x.TotalValue,
                     x.LootedAtLocal,
                     displayUnitValue: true)));
+        ReplaceDashboardItems(lootStatistics.TopAreas, CreateTopLootAreas(entries));
     }
 
-    private static void ReplaceDashboardLootItems(
-        ObservableCollection<DashboardLootItem> target,
-        IEnumerable<DashboardLootItem> items)
+    private static void ReplaceDashboardItems<T>(
+        ObservableCollection<T> target,
+        IEnumerable<T> items)
     {
         target.Clear();
         foreach (var item in items)
         {
             target.Add(item);
         }
+    }
+
+    private static IReadOnlyCollection<DashboardLootAreaItem> CreateTopLootAreas(IReadOnlyCollection<StatisticEntry> entries)
+    {
+        return entries
+            .Where(HasKnownLootArea)
+            .GroupBy(GetLootAreaKey)
+            .Select(group => new
+            {
+                group.Key,
+                ItemCount = group.Sum(entry => (long) entry.ItemQuantity),
+                TotalValue = group.Sum(entry => entry.Value),
+                ClusterType = group.First().LootAreaClusterType
+            })
+            .OrderByDescending(area => area.TotalValue)
+            .ThenBy(area => area.Key.AreaIndex, StringComparer.OrdinalIgnoreCase)
+            .ThenBy(area => area.Key.DungeonMode)
+            .Take(5)
+            .Select(area => new DashboardLootAreaItem(
+                ResolveLootAreaName(area.Key.DungeonMode, area.Key.AreaIndex),
+                area.ItemCount,
+                area.TotalValue,
+                area.ClusterType,
+                area.Key.DungeonMode))
+            .ToArray();
+    }
+
+    private static bool HasKnownLootArea(StatisticEntry entry)
+    {
+        return IsStandaloneLootArea(entry.DungeonMode)
+               || !string.IsNullOrWhiteSpace(entry.LootAreaIndex);
+    }
+
+    private static (DungeonMode DungeonMode, string AreaIndex) GetLootAreaKey(StatisticEntry entry)
+    {
+        return IsStandaloneLootArea(entry.DungeonMode)
+            ? (entry.DungeonMode, string.Empty)
+            : (DungeonMode.Unknown, entry.LootAreaIndex ?? string.Empty);
+    }
+
+    private static string ResolveLootAreaName(DungeonMode dungeonMode, string areaIndex)
+    {
+        if (!IsStandaloneLootArea(dungeonMode))
+        {
+            var mapName = WorldData.GetUniqueNameOrDefault(areaIndex);
+            return string.IsNullOrWhiteSpace(mapName) ? areaIndex : mapName;
+        }
+
+        var translationKey = dungeonMode switch
+        {
+            DungeonMode.HellGate => "HELLGATE",
+            DungeonMode.Corrupted => "CORRUPTED",
+            DungeonMode.Expedition => "EXPEDITION",
+            DungeonMode.Mists => "MISTS",
+            DungeonMode.MistsDungeon => "MISTS_DUNGEON",
+            DungeonMode.AbyssalDepths => "ABYSSALDEPTHS",
+            DungeonMode.DragonArea => "DRAGONAREA",
+            _ => "UNKNOWN"
+        };
+
+        return LocalizationController.Translation(translationKey);
     }
 
     private int CountFilteredSessions(DateTime localRangeStart, DateTime nowUtc, Guid? selectedSessionId)
@@ -894,6 +963,34 @@ public class StatisticController
         return detectedDungeonMode is DungeonMode.Solo or DungeonMode.Standard or DungeonMode.Avalon
             ? detectedDungeonMode
             : DungeonMode.Unknown;
+    }
+
+    private static string ResolveLootAreaIndex(MapType mapType, DungeonMode dungeonMode)
+    {
+        if (IsStandaloneLootArea(dungeonMode))
+        {
+            return string.Empty;
+        }
+
+        var currentCluster = ClusterController.CurrentCluster;
+        if (mapType == MapType.RandomDungeon
+            && !string.IsNullOrWhiteSpace(currentCluster.SourceClusterIndex))
+        {
+            return currentCluster.SourceClusterIndex;
+        }
+
+        return currentCluster.Index ?? string.Empty;
+    }
+
+    private static bool IsStandaloneLootArea(DungeonMode dungeonMode)
+    {
+        return dungeonMode is DungeonMode.HellGate
+            or DungeonMode.Corrupted
+            or DungeonMode.Expedition
+            or DungeonMode.Mists
+            or DungeonMode.MistsDungeon
+            or DungeonMode.AbyssalDepths
+            or DungeonMode.DragonArea;
     }
 
     private static List<ChartBucket> CreateChartBuckets(DashboardChartRangeOption selectedRange)

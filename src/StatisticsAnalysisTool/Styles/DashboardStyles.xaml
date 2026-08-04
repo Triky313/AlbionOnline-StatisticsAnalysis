@@ -3,6 +3,7 @@
                     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
                     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
                     xmlns:models="clr-namespace:StatisticsAnalysisTool.Models"
+                    xmlns:dungeon="clr-namespace:StatisticsAnalysisTool.Dungeon"
                     xmlns:gl="clr-namespace:System.Globalization;assembly=System.Runtime"
                     xmlns:bindingModel="clr-namespace:StatisticsAnalysisTool.Models.BindingModel"
                     xmlns:converters="clr-namespace:StatisticsAnalysisTool.Common.Converters"
@@ -408,6 +409,74 @@
                 <StackPanel Grid.Column="2" Orientation="Horizontal" VerticalAlignment="Center">
                     <Image Source="/Resources/silver.png" Width="14" Height="14" Margin="0,0,5,0" />
                     <TextBlock Text="{Binding DisplayValue, Converter={StaticResource ShortNumberConverter}, ConverterCulture={x:Static gl:CultureInfo.CurrentCulture}, FallbackValue=0}"
+                               Foreground="{StaticResource SolidColorBrush.Text.2}"
+                               FontSize="12"
+                               FontWeight="SemiBold"
+                               VerticalAlignment="Center" />
+                </StackPanel>
+            </Grid>
+        </Border>
+    </DataTemplate>
+
+    <DataTemplate x:Key="Dashboard.LootAreaTemplate" DataType="{x:Type models:DashboardLootAreaItem}">
+        <Border MinHeight="40"
+                Margin="0,0,0,5"
+                Padding="8,5"
+                Background="{StaticResource SolidColorBrush.Background.2}"
+                BorderBrush="{StaticResource SolidColorBrush.Background.4}"
+                BorderThickness="1"
+                CornerRadius="3">
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="34" />
+                    <ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="100" />
+                    <ColumnDefinition Width="140" />
+                </Grid.ColumnDefinitions>
+                <Grid Width="26" Height="26" VerticalAlignment="Center">
+                    <Image Source="{Binding IconSource}" Stretch="Uniform">
+                        <Image.Style>
+                            <Style TargetType="Image">
+                                <Setter Property="Visibility" Value="Visible" />
+                                <Style.Triggers>
+                                    <DataTrigger Binding="{Binding DungeonMode}" Value="{x:Static dungeon:DungeonMode.DragonArea}">
+                                        <Setter Property="Visibility" Value="Collapsed" />
+                                    </DataTrigger>
+                                </Style.Triggers>
+                            </Style>
+                        </Image.Style>
+                    </Image>
+                    <fa5:ImageAwesome Icon="Solid_Dungeon" Foreground="{StaticResource SolidColorBrush.Dungeon.Mode.DragonArea.1}">
+                        <fa5:ImageAwesome.Style>
+                            <Style TargetType="fa5:ImageAwesome">
+                                <Setter Property="Visibility" Value="Collapsed" />
+                                <Style.Triggers>
+                                    <DataTrigger Binding="{Binding DungeonMode}" Value="{x:Static dungeon:DungeonMode.DragonArea}">
+                                        <Setter Property="Visibility" Value="Visible" />
+                                    </DataTrigger>
+                                </Style.Triggers>
+                            </Style>
+                        </fa5:ImageAwesome.Style>
+                    </fa5:ImageAwesome>
+                </Grid>
+                <TextBlock Grid.Column="1"
+                           Margin="7,0,10,0"
+                           Text="{Binding Name}"
+                           Foreground="{StaticResource SolidColorBrush.Text.2}"
+                           FontSize="12"
+                           FontWeight="SemiBold"
+                           TextTrimming="CharacterEllipsis"
+                           VerticalAlignment="Center"
+                           ToolTip="{Binding Name}" />
+                <TextBlock Grid.Column="2"
+                           Text="{Binding ItemCount, StringFormat='{}{0:N0}', ConverterCulture={x:Static gl:CultureInfo.CurrentCulture}}"
+                           Foreground="{StaticResource SolidColorBrush.Text.2}"
+                           FontSize="12"
+                           TextAlignment="Right"
+                           VerticalAlignment="Center" />
+                <StackPanel Grid.Column="3" Orientation="Horizontal" HorizontalAlignment="Right" VerticalAlignment="Center">
+                    <Image Source="/Resources/silver.png" Width="14" Height="14" Margin="0,0,5,0" />
+                    <TextBlock Text="{Binding TotalValue, Converter={StaticResource ShortNumberConverter}, ConverterCulture={x:Static gl:CultureInfo.CurrentCulture}, FallbackValue=0}"
                                Foreground="{StaticResource SolidColorBrush.Text.2}"
                                FontSize="12"
                                FontWeight="SemiBold"

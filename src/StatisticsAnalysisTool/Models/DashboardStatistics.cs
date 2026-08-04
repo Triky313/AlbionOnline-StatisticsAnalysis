@@ -133,7 +133,9 @@ public class DashboardStatistics
                         ClusterMode = x.ClusterMode,
                         CityFaction = x.CityFaction,
                         ItemIndex = x.ItemIndex,
-                        ItemQuantity = x.ItemQuantity
+                        ItemQuantity = x.ItemQuantity,
+                        LootAreaIndex = x.LootAreaIndex,
+                        LootAreaClusterType = x.LootAreaClusterType
                     })
                     .ToList(),
                 Sessions = Sessions.Select(CloneSession).ToList()

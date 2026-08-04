@@ -889,6 +889,9 @@ public class DashboardBindings : BaseViewModel
     public static string TranslationMostValuableLoot => LocalizationController.Translation("MOST_VALUABLE_LOOT");
     public static string TranslationTotalLootValue => LocalizationController.Translation("TOTAL_LOOT_VALUE");
     public static string TranslationAverageLootValue => LocalizationController.Translation("AVERAGE_LOOT_VALUE");
+    public static string TranslationTopLootAreas => LocalizationController.Translation("TOP_LOOT_AREAS");
+    public static string TranslationMaps => LocalizationController.Translation("MAPS");
+    public static string TranslationItemQuantity => LocalizationController.Translation("ITEM_QUANTITY");
     public static string TranslationRepairCosts => LocalizationController.Translation("REPAIR_COSTS");
     public static string TranslationActivityChart => LocalizationController.Translation("HISTORY");
     public static string TranslationFactionPoints => LocalizationController.Translation("FACTION_POINTS");

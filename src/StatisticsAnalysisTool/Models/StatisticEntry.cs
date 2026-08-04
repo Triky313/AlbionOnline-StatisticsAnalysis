@@ -18,4 +18,6 @@ public sealed class StatisticEntry
     public CityFaction CityFaction { get; set; }
     public int ItemIndex { get; set; }
     public int ItemQuantity { get; set; }
+    public string LootAreaIndex { get; set; } = string.Empty;
+    public ClusterType LootAreaClusterType { get; set; }
 }

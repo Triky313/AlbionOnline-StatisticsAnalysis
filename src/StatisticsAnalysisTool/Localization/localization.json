@@ -47413,6 +47413,19 @@
           "seg": "Average loot value"
         }
       ]
+    },
+    {
+      "tuid": "TOP_LOOT_AREAS",
+      "tuv": [
+        {
+          "lang": "de-DE",
+          "seg": "Top-Maps und -Bereiche nach Lootwert"
+        },
+        {
+          "lang": "en-US",
+          "seg": "Top maps and areas by loot value"
+        }
+      ]
     }
   ]
 }

@@ -209,7 +209,9 @@ public sealed class StatisticSessionStorage
             ClusterMode = entry.ClusterMode,
             CityFaction = entry.CityFaction,
             ItemIndex = entry.ItemIndex,
-            ItemQuantity = entry.ItemQuantity
+            ItemQuantity = entry.ItemQuantity,
+            LootAreaIndex = entry.LootAreaIndex,
+            LootAreaClusterType = entry.LootAreaClusterType
         };
     }
 }

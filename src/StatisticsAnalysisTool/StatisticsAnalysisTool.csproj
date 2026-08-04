@@ -196,6 +196,9 @@
     <Resource Include="Assets\crafting_description_image002.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Resource>
+    <Resource Include="Assets\currupted_dungeon.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Resource>
     <Resource Include="Assets\dungeon.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Resource>
@@ -227,6 +230,9 @@
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Resource>
     <Resource Include="Assets\heart.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Assets\hellgate.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Resource>
     <Resource Include="Assets\ko-fi-icon.png">
@@ -719,6 +725,7 @@
     <None Remove="Assets\chest_locked.png" />
     <None Remove="Assets\crafting_description_image001.png" />
     <None Remove="Assets\crafting_description_image002.png" />
+    <None Remove="Assets\currupted_dungeon.png" />
     <None Remove="Assets\dungeon.png" />
     <None Remove="Assets\empty_icon.png" />
     <None Remove="Assets\fishing_lure_box.png" />
@@ -730,6 +737,7 @@
     <None Remove="Assets\gold_glow.png" />
     <None Remove="Assets\green_glow.png" />
     <None Remove="Assets\heart.png" />
+    <None Remove="Assets\hellgate.png" />
     <None Remove="Assets\ko-fi-icon.png" />
     <None Remove="Assets\ko-fi-qrcode.png" />
     <None Remove="Assets\loggingcomparator_description01.jpg" />

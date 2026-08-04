@@ -8,6 +8,7 @@ public sealed class DashboardLootStatistics : BaseViewModel
     public DashboardSummaryMetric TotalValueSummary { get; } = new();
     public ObservableCollection<DashboardLootItem> RecentItems { get; } = [];
     public ObservableCollection<DashboardLootItem> MostValuableItems { get; } = [];
+    public ObservableCollection<DashboardLootAreaItem> TopAreas { get; } = [];
 
     public double AverageValue
     {
