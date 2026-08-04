@@ -207,7 +207,9 @@ public sealed class StatisticSessionStorage
             MapType = entry.MapType,
             DungeonMode = entry.DungeonMode,
             ClusterMode = entry.ClusterMode,
-            CityFaction = entry.CityFaction
+            CityFaction = entry.CityFaction,
+            ItemIndex = entry.ItemIndex,
+            ItemQuantity = entry.ItemQuantity
         };
     }
 }

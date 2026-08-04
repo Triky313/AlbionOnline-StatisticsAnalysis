@@ -47387,6 +47387,32 @@
           "seg": "Highest repair cost"
         }
       ]
+    },
+    {
+      "tuid": "RECENT_LOOT_ITEMS",
+      "tuv": [
+        {
+          "lang": "de-DE",
+          "seg": "Zuletzt gelootete Items"
+        },
+        {
+          "lang": "en-US",
+          "seg": "Recently looted items"
+        }
+      ]
+    },
+    {
+      "tuid": "AVERAGE_LOOT_VALUE",
+      "tuv": [
+        {
+          "lang": "de-DE",
+          "seg": "Durchschnittlicher Lootwert"
+        },
+        {
+          "lang": "en-US",
+          "seg": "Average loot value"
+        }
+      ]
     }
   ]
 }

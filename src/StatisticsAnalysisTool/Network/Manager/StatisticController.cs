@@ -131,14 +131,61 @@ public class StatisticController
         }
     }
 
+    public void AddLootValue(int itemIndex, int quantity, double unitValue)
+    {
+        if (itemIndex <= 0
+            || quantity <= 0
+            || !double.IsFinite(unitValue))
+        {
+            return;
+        }
+
+        if (!_trackingController.IsTrackingAllowedByMainCharacter())
+        {
+            return;
+        }
+
+        var nowUtc = DateTime.UtcNow;
+        var mapType = ClusterController.CurrentCluster.MapType;
+        var dungeonMode = ResolveDungeonMode(mapType);
+        var totalValue = Math.Max(0, unitValue) * quantity;
+
+        lock (_syncRoot)
+        {
+            var session = _dashboardStatistics.GetActiveSession();
+            if (session == null)
+            {
+                Log.Debug("Statistics value discarded because no active session exists. ValueType={ValueType}", ValueType.LootValue);
+                return;
+            }
+
+            var statisticEntry = new StatisticEntry
+            {
+                SessionId = session.Id,
+                OccurredAtUtc = nowUtc,
+                ValueType = ValueType.LootValue,
+                Value = totalValue,
+                MapType = mapType,
+                DungeonMode = dungeonMode,
+                ClusterMode = ClusterController.CurrentCluster.ClusterMode,
+                CityFaction = CityFaction.Unknown,
+                ItemIndex = itemIndex,
+                ItemQuantity = quantity
+            };
+
+            _dashboardStatistics.Add(statisticEntry);
+            _statisticsAggregator.Add(statisticEntry);
+            MarkSessionDirtyInternal(session.Id);
+        }
+
+        UpdateDailyChart();
+    }
+
     public void StartSession(string characterName)
     {
         if (string.IsNullOrWhiteSpace(characterName) || !AppDataPaths.IsUserDataAvailable)
         {
-            Log.Warning(
-                "Statistics session was not started because login metadata is incomplete. Character={Character}, Server={Server}",
-                characterName,
-                AppDataPaths.ActiveUserDataServerLocation);
+            Log.Warning("Statistics session was not started because login metadata is incomplete. Character={Character}, Server={Server}", characterName, AppDataPaths.ActiveUserDataServerLocation);
             return;
         }
 
@@ -164,10 +211,7 @@ public class StatisticController
         {
             _trackingController.LiveStatsTracker?.Reset();
             _trackingController.LiveStatsTracker?.Start();
-            Log.Information(
-                "Statistics session started. Character={Character}, Server={Server}",
-                characterName,
-                AppDataPaths.ActiveUserDataServerLocation);
+            Log.Information("Statistics session started. Character={Character}, Server={Server}", characterName, AppDataPaths.ActiveUserDataServerLocation);
         }
 
         RefreshDashboardSessionFilters();
@@ -340,6 +384,11 @@ public class StatisticController
             _mainWindowViewModel.SelectedDashboardSessionFilter?.SessionId,
             _mainWindowViewModel.SelectedDashboardContentFilter?.ContentType);
         UpdateDashboardSummary(selectedRange, chartBuckets, aggregatedValues);
+        UpdateDashboardLootStatistics(
+            selectedRange,
+            currentRangeBucketStarts,
+            previousRangeBucketStarts,
+            aggregatedValues);
         UpdateDashboardContentRankings(selectedRange, currentRangeBucketStarts);
         UpdateDashboardEconomyStatistics(
             selectedRange,
@@ -561,6 +610,82 @@ public class StatisticController
             ? currentValues.RepairCosts / sessionCount
             : 0;
         bindings.HighestRepairCost = currentValues.HighestRepairCost;
+    }
+
+    private void UpdateDashboardLootStatistics(
+        DashboardChartRangeOption selectedRange,
+        IReadOnlyCollection<DateTime> currentRangeBucketStarts,
+        IReadOnlyCollection<DateTime> previousRangeBucketStarts,
+        IReadOnlyDictionary<ValueType, Dictionary<DateTime, double>> aggregatedValues)
+    {
+        var sessionId = _mainWindowViewModel.SelectedDashboardSessionFilter?.SessionId;
+        var contentType = _mainWindowViewModel.SelectedDashboardContentFilter?.ContentType;
+        var entries = _statisticsAggregator.GetLootEntries(
+            currentRangeBucketStarts,
+            selectedRange.Unit,
+            sessionId,
+            contentType);
+        var values = aggregatedValues.GetValueOrDefault(ValueType.LootValue) ?? [];
+        var currentValue = values
+            .Where(x => currentRangeBucketStarts.Contains(x.Key))
+            .Sum(x => x.Value);
+        var previousValue = values
+            .Where(x => previousRangeBucketStarts.Contains(x.Key))
+            .Sum(x => x.Value);
+        var lootStatistics = _mainWindowViewModel.DashboardBindings.LootStatistics;
+
+        lootStatistics.TotalValueSummary.Update(
+            currentValue,
+            currentValue,
+            previousValue);
+        lootStatistics.AverageValue = entries.Count > 0
+            ? currentValue / entries.Count
+            : 0;
+
+        var lootItems = new List<DashboardLootItem>(entries.Count);
+        foreach (var entry in entries)
+        {
+            var item = ItemController.GetItemByIndex(entry.ItemIndex);
+            if (item == null)
+            {
+                continue;
+            }
+
+            lootItems.Add(new DashboardLootItem(
+                item,
+                entry.ItemQuantity,
+                entry.Value,
+                entry.OccurredAtUtc));
+        }
+
+        ReplaceDashboardLootItems(
+            lootStatistics.RecentItems,
+            lootItems
+                .OrderByDescending(x => x.LootedAtLocal)
+                .Take(10));
+        ReplaceDashboardLootItems(
+            lootStatistics.MostValuableItems,
+            lootItems
+                .OrderByDescending(x => x.UnitValue)
+                .ThenByDescending(x => x.LootedAtLocal)
+                .Take(10)
+                .Select(x => new DashboardLootItem(
+                    x.Item,
+                    x.Quantity,
+                    x.TotalValue,
+                    x.LootedAtLocal,
+                    displayUnitValue: true)));
+    }
+
+    private static void ReplaceDashboardLootItems(
+        ObservableCollection<DashboardLootItem> target,
+        IEnumerable<DashboardLootItem> items)
+    {
+        target.Clear();
+        foreach (var item in items)
+        {
+            target.Add(item);
+        }
     }
 
     private int CountFilteredSessions(DateTime localRangeStart, DateTime nowUtc, Guid? selectedSessionId)

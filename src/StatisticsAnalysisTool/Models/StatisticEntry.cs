@@ -16,4 +16,6 @@ public sealed class StatisticEntry
     public DungeonMode DungeonMode { get; set; }
     public ClusterMode ClusterMode { get; set; }
     public CityFaction CityFaction { get; set; }
+    public int ItemIndex { get; set; }
+    public int ItemQuantity { get; set; }
 }

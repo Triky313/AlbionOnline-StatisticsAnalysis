@@ -131,7 +131,9 @@ public class DashboardStatistics
                         MapType = x.MapType,
                         DungeonMode = x.DungeonMode,
                         ClusterMode = x.ClusterMode,
-                        CityFaction = x.CityFaction
+                        CityFaction = x.CityFaction,
+                        ItemIndex = x.ItemIndex,
+                        ItemQuantity = x.ItemQuantity
                     })
                     .ToList(),
                 Sessions = Sessions.Select(CloneSession).ToList()

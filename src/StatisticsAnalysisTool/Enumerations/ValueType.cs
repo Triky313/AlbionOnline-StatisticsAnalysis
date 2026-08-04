@@ -11,5 +11,6 @@ public enum ValueType
     Favor,
     RepairCosts,
     PaidSilverForReSpec,
-    BrecilianStanding
+    BrecilianStanding,
+    LootValue
 }

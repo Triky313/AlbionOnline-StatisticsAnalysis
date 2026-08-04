@@ -38,6 +38,9 @@ public class DashboardBindings : BaseViewModel
         LootedChestsStatsVisibility = SettingsController.CurrentSettings.IsLootedChestsStatsVisible ? Visibility.Visible : Visibility.Collapsed;
         LootedChestsStatsToggleIcon = SettingsController.CurrentSettings.IsLootedChestsStatsVisible ? EFontAwesomeIcon.Solid_Minus : EFontAwesomeIcon.Solid_Plus;
 
+        LootStatsVisibility = SettingsController.CurrentSettings.IsLootStatsVisible ? Visibility.Visible : Visibility.Collapsed;
+        LootStatsToggleIcon = SettingsController.CurrentSettings.IsLootStatsVisible ? EFontAwesomeIcon.Solid_Minus : EFontAwesomeIcon.Solid_Plus;
+
         ReSpecStatsVisibility = SettingsController.CurrentSettings.IsReSpecStatsVisible ? Visibility.Visible : Visibility.Collapsed;
         ReSpecStatsToggleIcon = SettingsController.CurrentSettings.IsReSpecStatsVisible ? EFontAwesomeIcon.Solid_Minus : EFontAwesomeIcon.Solid_Plus;
 
@@ -220,6 +223,27 @@ public class DashboardBindings : BaseViewModel
     }
 
     public EFontAwesomeIcon LootedChestsStatsToggleIcon
+    {
+        get;
+        set
+        {
+            field = value;
+            OnPropertyChanged();
+        }
+    }
+
+    public Visibility LootStatsVisibility
+    {
+        get;
+        set
+        {
+            field = value;
+            SettingsController.CurrentSettings.IsLootStatsVisible = value == Visibility.Visible;
+            OnPropertyChanged();
+        }
+    }
+
+    public EFontAwesomeIcon LootStatsToggleIcon
     {
         get;
         set
@@ -687,6 +711,8 @@ public class DashboardBindings : BaseViewModel
         }
     } = new();
 
+    public DashboardLootStatistics LootStatistics { get; } = new();
+
     #endregion
 
     #region Repair costs
@@ -857,6 +883,12 @@ public class DashboardBindings : BaseViewModel
     public static string TranslationKillsDeaths => LocalizationController.Translation("KILLS_DEATHS");
     public static string TranslationKillsDeathsLoading => LocalizationController.Translation("KILLS_DEATHS_LOADING");
     public static string TranslationLootedChests => LocalizationController.Translation("LOOTED_CHESTS");
+
+    public static string TranslationLoot => LocalizationController.Translation("LOOT");
+    public static string TranslationRecentLootItems => LocalizationController.Translation("RECENT_LOOT_ITEMS");
+    public static string TranslationMostValuableLoot => LocalizationController.Translation("MOST_VALUABLE_LOOT");
+    public static string TranslationTotalLootValue => LocalizationController.Translation("TOTAL_LOOT_VALUE");
+    public static string TranslationAverageLootValue => LocalizationController.Translation("AVERAGE_LOOT_VALUE");
     public static string TranslationRepairCosts => LocalizationController.Translation("REPAIR_COSTS");
     public static string TranslationActivityChart => LocalizationController.Translation("HISTORY");
     public static string TranslationFactionPoints => LocalizationController.Translation("FACTION_POINTS");

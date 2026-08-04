@@ -369,6 +369,54 @@
         </Grid>
     </DataTemplate>
 
+    <DataTemplate x:Key="Dashboard.LootItemTemplate" DataType="{x:Type models:DashboardLootItem}">
+        <Border MinHeight="52"
+                Margin="0,0,0,5"
+                Padding="6,4"
+                Background="{StaticResource SolidColorBrush.Background.2}"
+                BorderBrush="{StaticResource SolidColorBrush.Background.4}"
+                BorderThickness="1"
+                CornerRadius="3">
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="44" />
+                    <ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="Auto" />
+                </Grid.ColumnDefinitions>
+                <Image Width="40"
+                       Height="40"
+                       Source="{Binding Item.Icon, IsAsync=True, Mode=OneWay}"
+                       Stretch="Uniform" />
+                <StackPanel Grid.Column="1" Margin="7,0,10,0" VerticalAlignment="Center">
+                    <TextBlock Text="{Binding Item.LocalizedName}"
+                               Foreground="{StaticResource SolidColorBrush.Text.2}"
+                               FontSize="12"
+                               FontWeight="SemiBold"
+                               TextTrimming="CharacterEllipsis"
+                               ToolTip="{Binding Item.LocalizedName}" />
+                    <StackPanel Orientation="Horizontal">
+                        <TextBlock Text="x" Foreground="{StaticResource SolidColorBrush.Text.4}" FontSize="11" />
+                        <TextBlock Text="{Binding Quantity, StringFormat='{}{0:N0}', ConverterCulture={x:Static gl:CultureInfo.CurrentCulture}}"
+                                   Foreground="{StaticResource SolidColorBrush.Text.4}"
+                                   FontSize="11" />
+                        <TextBlock Text="  |  " Foreground="{StaticResource SolidColorBrush.Text.5}" FontSize="11" />
+                        <TextBlock Text="{Binding LootedAtLocal, StringFormat='{}{0:g}'}"
+                                   Foreground="{StaticResource SolidColorBrush.Text.4}"
+                                   FontSize="11" />
+                    </StackPanel>
+                </StackPanel>
+                <StackPanel Grid.Column="2" Orientation="Horizontal" VerticalAlignment="Center">
+                    <Image Source="/Resources/silver.png" Width="14" Height="14" Margin="0,0,5,0" />
+                    <TextBlock Text="{Binding DisplayValue, Converter={StaticResource ShortNumberConverter}, ConverterCulture={x:Static gl:CultureInfo.CurrentCulture}, FallbackValue=0}"
+                               Foreground="{StaticResource SolidColorBrush.Text.2}"
+                               FontSize="12"
+                               FontWeight="SemiBold"
+                               VerticalAlignment="Center" />
+                </StackPanel>
+            </Grid>
+        </Border>
+    </DataTemplate>
+
     <DataTemplate x:Key="KillDeathStatsTemplate" DataType="{x:Type bindingModel:DashboardBindings}">
         <Grid>
             <Grid.RowDefinitions>

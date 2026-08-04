@@ -16,6 +16,7 @@ public sealed class DashboardStatisticsAggregator
     private readonly Dictionary<(ValueType ValueType, DateTime Bucket, Guid SessionId, MapType MapType, DungeonMode DungeonMode, ClusterMode ClusterMode, CityFaction CityFaction), double> _dailyValues = new();
     private readonly List<(DateTime OccurredAtUtc, double Value)> _repairCostEntries = [];
     private readonly List<(Guid SessionId, DateTime OccurredAtUtc, ValueType ValueType, double Value)> _economyEntries = [];
+    private readonly List<StatisticEntry> _lootEntries = [];
 
     public DashboardStatisticsAggregator(DashboardStatistics statistics)
     {
@@ -179,6 +180,29 @@ public sealed class DashboardStatisticsAggregator
         return result;
     }
 
+    public IReadOnlyList<StatisticEntry> GetLootEntries(
+        IReadOnlyCollection<DateTime> bucketStarts,
+        DashboardChartRangeUnit unit,
+        Guid? sessionId,
+        DashboardContentType? contentType)
+    {
+        if (bucketStarts == null || bucketStarts.Count == 0)
+        {
+            return [];
+        }
+
+        var validBuckets = bucketStarts.ToHashSet();
+
+        lock (_syncRoot)
+        {
+            return _lootEntries
+                .Where(entry => (!sessionId.HasValue || entry.SessionId == sessionId.Value)
+                                && validBuckets.Contains(GetBucketStart(entry.OccurredAtUtc, unit))
+                                && MatchesContentFilter(contentType, entry.MapType, entry.DungeonMode, entry.ClusterMode))
+                .ToList();
+        }
+    }
+
     private static bool MatchesContentFilter(
         DashboardContentType? selectedContentType,
         MapType mapType,
@@ -230,6 +254,13 @@ public sealed class DashboardStatisticsAggregator
         if (entry.ValueType == ValueType.RepairCosts)
         {
             _repairCostEntries.Add((entry.OccurredAtUtc, entry.Value));
+        }
+
+        if (entry.ValueType == ValueType.LootValue
+            && entry.ItemIndex > 0
+            && entry.ItemQuantity > 0)
+        {
+            _lootEntries.Add(entry);
         }
     }
 

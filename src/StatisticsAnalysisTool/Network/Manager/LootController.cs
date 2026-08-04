@@ -27,6 +27,7 @@ public class LootController : ILootController
     private readonly List<LootLoggerObject> _lootLoggerObjects = [];
     private ItemContainerObject _currentItemContainer;
     private readonly List<DiscoveredItem> _discoveredLoot = [];
+    private readonly HashSet<long> _recordedLocalLootObjectIds = [];
     private Loot _lastLootedItem;
     private Loot _lastComparedLootedItem;
 
@@ -377,6 +378,7 @@ public class LootController : ILootController
             return;
         }
 
+        RecordDashboardLoot(itemObjectId, lootedItem);
         await AddLootAsync(new Loot()
         {
             IsSilver = false,
@@ -414,6 +416,7 @@ public class LootController : ILootController
                 continue;
             }
 
+            RecordDashboardLoot(itemObjectId, lootedItem);
             await AddLootAsync(new Loot()
             {
                 IsSilver = false,
@@ -424,6 +427,29 @@ public class LootController : ILootController
                 Quantity = lootedItem.Quantity,
             });
         }
+    }
+
+    private void RecordDashboardLoot(long itemObjectId, DiscoveredItem lootedItem)
+    {
+        if (itemObjectId <= 0
+            || lootedItem == null
+            || !_recordedLocalLootObjectIds.Add(itemObjectId))
+        {
+            return;
+        }
+
+        var unitValue = FixPoint
+            .FromInternalValue(lootedItem.EstimatedMarketValueInternal)
+            .DoubleValue;
+        if (unitValue <= 0)
+        {
+            unitValue = ItemController.GetItemByIndex(lootedItem.ItemIndex)?.AverageEstMarketValue ?? 0;
+        }
+
+        _trackingController.StatisticController.AddLootValue(
+            lootedItem.ItemIndex,
+            lootedItem.Quantity,
+            unitValue);
     }
 
     private bool TryGetLocalPlayerCurrentBodyLoot(Guid containerGuid, Guid userInteractGuid, out IdentifiedBody identifiedBody)
@@ -467,6 +493,7 @@ public class LootController : ILootController
     public void ResetLocalPlayerDiscoveredLoot()
     {
         _discoveredLoot.Clear();
+        _recordedLocalLootObjectIds.Clear();
     }
 
     public void ResetIdentifiedBodies()

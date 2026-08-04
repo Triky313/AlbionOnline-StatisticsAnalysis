@@ -210,6 +210,21 @@ public partial class DashboardControl
         }
     }
 
+    private void LootStatsToggle_OnMouseLeftButtonDown(object sender, MouseButtonEventArgs e)
+    {
+        var vm = (MainWindowViewModel) DataContext;
+        if (vm.DashboardBindings.LootStatsVisibility == Visibility.Visible)
+        {
+            vm.DashboardBindings.LootStatsVisibility = Visibility.Collapsed;
+            vm.DashboardBindings.LootStatsToggleIcon = EFontAwesomeIcon.Solid_Plus;
+        }
+        else
+        {
+            vm.DashboardBindings.LootStatsVisibility = Visibility.Visible;
+            vm.DashboardBindings.LootStatsToggleIcon = EFontAwesomeIcon.Solid_Minus;
+        }
+    }
+
     private void ReSpecStatsToggle_OnMouseLeftButtonDown(object sender, MouseButtonEventArgs e)
     {
         var vm = (MainWindowViewModel) DataContext;

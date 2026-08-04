@@ -112,6 +112,7 @@ public class SettingsObject
     public bool IsFameContentRankingVisible { get; set; } = true;
     public bool IsSilverContentRankingVisible { get; set; } = true;
     public bool IsLootedChestsStatsVisible { get; set; } = true;
+    public bool IsLootStatsVisible { get; set; } = true;
     public bool IsReSpecStatsVisible { get; set; } = true;
     public bool IsRepairCostsStatsVisible { get; set; } = true;
     public bool IsActivityChartVisible { get; set; } = true;
