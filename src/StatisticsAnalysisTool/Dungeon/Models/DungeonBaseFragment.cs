@@ -541,6 +541,10 @@ public abstract class DungeonBaseFragment : BaseViewModel
                 Faction = Faction.Mists;
                 Mode = DungeonMode.Mists;
                 break;
+            case MapType.DragonArea:
+                Faction = Faction.DragonArea;
+                Mode = DungeonMode.DragonArea;
+                break;
             case MapType.Unknown:
             default:
                 return;
@@ -592,4 +596,5 @@ public abstract class DungeonBaseFragment : BaseViewModel
     public static string TranslationMistsDungeon => LocalizationController.Translation("MISTS_DUNGEON");
     public static string TranslationKilledBy => LocalizationController.Translation("KILLED_BY");
     public static string TranslationAbyssalDepths => LocalizationController.Translation("ABYSSALDEPTHS");
+    public static string TranslationDragonArea => LocalizationController.Translation("DRAGONAREA");
 }

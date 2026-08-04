@@ -749,6 +749,7 @@ public class StatisticController
                 MapType.Mists => DungeonMode.Mists,
                 MapType.MistsDungeon => DungeonMode.MistsDungeon,
                 MapType.AbyssalDepths => DungeonMode.AbyssalDepths,
+                MapType.DragonArea => DungeonMode.DragonArea,
                 _ => DungeonMode.Unknown
             };
         }

@@ -13,6 +13,7 @@ public class DungeonDataTemplateSelector : DataTemplateSelector
     public DataTemplate MistsTemplate { get; set; }
     public DataTemplate MistsDungeonTemplate { get; set; }
     public DataTemplate AbyssalDepthsTemplate { get; set; }
+    public DataTemplate DragonAreaTemplate { get; set; }
 
     public override DataTemplate SelectTemplate(object item, DependencyObject container)
     {
@@ -30,6 +31,7 @@ public class DungeonDataTemplateSelector : DataTemplateSelector
             MistsFragment => MistsTemplate,
             MistsDungeonFragment => MistsDungeonTemplate,
             AbyssalDepthsFragment => AbyssalDepthsTemplate,
+            DragonAreaFragment => DragonAreaTemplate,
             _ => base.SelectTemplate(dungeon, container)
         };
     }

@@ -149,6 +149,8 @@
     <Color x:Key="Color.City.SmugglersDen.Transparent">#33b4273a</Color>
 
     <!-- Content colors -->
+    <Color x:Key="Dungeon.Mode.DragonArea.1">#FF27D3C2</Color>
+    <Color x:Key="Dungeon.Mode.DragonArea.2">#FF087F78</Color>
     <Color x:Key="Dungeon.Mode.AbyssalDepths.1">#FFE13A8B</Color>
     <Color x:Key="Dungeon.Mode.AbyssalDepths.2">#FFA91F62</Color>
     <Color x:Key="Dungeon.Mode.Mists.1">#FF7C4DFF</Color>
@@ -407,6 +409,7 @@
     <SolidColorBrush x:Key="SolidColorBrush.City.BlackMarket.Transparent" Color="{StaticResource Color.City.BlackMarket.Transparent}"/>
     <SolidColorBrush x:Key="SolidColorBrush.City.SmugglersDen.Transparent" Color="{StaticResource Color.City.SmugglersDen.Transparent}"/>
 
+    <SolidColorBrush x:Key="SolidColorBrush.Dungeon.Mode.DragonArea.1" Color="{StaticResource Dungeon.Mode.DragonArea.1}"/>
     <SolidColorBrush x:Key="SolidColorBrush.Dungeon.Mode.AbyssalDepths.1" Color="{StaticResource Dungeon.Mode.AbyssalDepths.1}"/>
     <SolidColorBrush x:Key="SolidColorBrush.Dungeon.Mode.Mists.1" Color="{StaticResource Dungeon.Mode.Mists.1}"/>
     <SolidColorBrush x:Key="SolidColorBrush.Dungeon.Mode.MistsDungeon.1" Color="{StaticResource Dungeon.Mode.MistsDungeon.1}"/>

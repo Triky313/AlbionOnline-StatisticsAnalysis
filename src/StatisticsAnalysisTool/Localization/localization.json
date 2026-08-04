@@ -39650,6 +39650,71 @@
       ]
     },
     {
+      "tuid": "DRAGONAREA",
+      "tuv": [
+        {
+          "lang": "de-DE",
+          "seg": "Ancient Lands"
+        },
+        {
+          "lang": "en-US",
+          "seg": "Ancient Lands"
+        },
+        {
+          "lang": "pl-PL",
+          "seg": "Ancient Lands"
+        },
+        {
+          "lang": "ru-RU",
+          "seg": "Ancient Lands"
+        },
+        {
+          "lang": "fr-FR",
+          "seg": "Ancient Lands"
+        },
+        {
+          "lang": "pt-PT",
+          "seg": "Ancient Lands"
+        },
+        {
+          "lang": "es-ES",
+          "seg": "Ancient Lands"
+        },
+        {
+          "lang": "it-IT",
+          "seg": "Ancient Lands"
+        },
+        {
+          "lang": "ko-KO",
+          "seg": "Ancient Lands"
+        },
+        {
+          "lang": "ja-JA",
+          "seg": "Ancient Lands"
+        },
+        {
+          "lang": "id-ID",
+          "seg": "Ancient Lands"
+        },
+        {
+          "lang": "zh-CN",
+          "seg": "Ancient Lands"
+        },
+        {
+          "lang": "zh-TW",
+          "seg": "Ancient Lands"
+        },
+        {
+          "lang": "hi-HI",
+          "seg": "Ancient Lands"
+        },
+        {
+          "lang": "tr-TR",
+          "seg": "Ancient Lands"
+        }
+      ]
+    },
+    {
       "tuid": "OPERATOR",
       "tuv": [
         {

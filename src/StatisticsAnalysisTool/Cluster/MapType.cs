@@ -12,5 +12,6 @@ public enum MapType
     Arena,
     Mists,
     MistsDungeon,
-    AbyssalDepths
+    AbyssalDepths,
+    DragonArea
 }

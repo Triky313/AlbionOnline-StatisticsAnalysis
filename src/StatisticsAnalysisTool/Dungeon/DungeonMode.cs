@@ -11,5 +11,6 @@ public enum DungeonMode
     Expedition,
     Mists,
     MistsDungeon,
-    AbyssalDepths
+    AbyssalDepths,
+    DragonArea
 }

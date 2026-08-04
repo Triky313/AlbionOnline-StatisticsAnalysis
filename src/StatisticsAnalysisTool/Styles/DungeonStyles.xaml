@@ -96,12 +96,33 @@
                     </Setter.Value>
                 </Setter>
             </DataTrigger>
+            <DataTrigger Binding="{Binding Faction, IsAsync=True}" Value="{x:Static dungeon:Faction.DragonArea}">
+                <Setter Property="Background">
+                    <Setter.Value>
+                        <LinearGradientBrush StartPoint="0,0" EndPoint="1,0" Opacity="0.18">
+                            <GradientStop Color="{StaticResource Dungeon.Mode.DragonArea.1}" Offset="0.0" />
+                            <GradientStop Color="{StaticResource Dungeon.Mode.DragonArea.2}" Offset="1.0" />
+                        </LinearGradientBrush>
+                    </Setter.Value>
+                </Setter>
+            </DataTrigger>
         </Style.Triggers>
     </Style>
 
     <Style x:Key="DungeonFragment.Grid.DungeonMode" TargetType="Grid">
         <Setter Property="Width" Value="5"/>
         <Style.Triggers>
+            <DataTrigger Binding="{Binding Mode, IsAsync=True}" Value="{x:Static dungeon:DungeonMode.DragonArea}">
+                <Setter Property="ToolTip" Value="{Binding TranslationDragonArea, IsAsync=True}"/>
+                <Setter Property="Background">
+                    <Setter.Value>
+                        <LinearGradientBrush StartPoint="0,0" EndPoint="1,1">
+                            <GradientStop Color="{StaticResource Dungeon.Mode.DragonArea.1}" Offset="0.0" />
+                            <GradientStop Color="{StaticResource Dungeon.Mode.DragonArea.2}" Offset="1.0" />
+                        </LinearGradientBrush>
+                    </Setter.Value>
+                </Setter>
+            </DataTrigger>
             <DataTrigger Binding="{Binding Mode, IsAsync=True}" Value="{x:Static dungeon:DungeonMode.AbyssalDepths}">
                 <Setter Property="ToolTip" Value="{Binding TranslationAbyssalDepths, IsAsync=True}"/>
                 <Setter Property="Background">
@@ -216,6 +237,10 @@
         <Setter Property="HorizontalContentAlignment" Value="Center"/>
         <Setter Property="VerticalContentAlignment" Value="Center"/>
         <Style.Triggers>
+            <DataTrigger Binding="{Binding Mode, IsAsync=True}" Value="{x:Static dungeon:DungeonMode.DragonArea}">
+                <Setter Property="ToolTip" Value="{Binding TranslationDragonArea, IsAsync=True}"/>
+                <Setter Property="Foreground" Value="{StaticResource SolidColorBrush.Dungeon.Mode.DragonArea.1}" />
+            </DataTrigger>
             <DataTrigger Binding="{Binding Mode, IsAsync=True}" Value="{x:Static dungeon:DungeonMode.AbyssalDepths}">
                 <Setter Property="ToolTip" Value="{Binding TranslationAbyssalDepths, IsAsync=True}"/>
                 <Setter Property="Foreground" Value="{StaticResource SolidColorBrush.Dungeon.Mode.AbyssalDepths.1}" />
@@ -3788,7 +3813,34 @@
                     <DockPanel>
                         <Grid HorizontalAlignment="Left" Style="{StaticResource DungeonFragment.Grid.DungeonMode}" />
                         <StackPanel Orientation="Vertical" VerticalAlignment="Center" HorizontalAlignment="Center">
-                            <Image Source="../Assets/abyssal_depths.png" Height="28" Width="32" Margin="3,0,3,0"/>
+                            <Grid Height="28" Width="32" Margin="3,0,3,0">
+                                <Grid>
+                                    <Grid.Style>
+                                        <Style TargetType="Grid">
+                                            <Setter Property="Visibility" Value="Visible" />
+                                            <Style.Triggers>
+                                                <DataTrigger Binding="{Binding Mode}" Value="{x:Static dungeon:DungeonMode.DragonArea}">
+                                                    <Setter Property="Visibility" Value="Collapsed" />
+                                                </DataTrigger>
+                                            </Style.Triggers>
+                                        </Style>
+                                    </Grid.Style>
+                                    <Image Source="../Assets/abyssal_depths.png" />
+                                </Grid>
+                                <Grid>
+                                    <Grid.Style>
+                                        <Style TargetType="Grid">
+                                            <Setter Property="Visibility" Value="Collapsed" />
+                                            <Style.Triggers>
+                                                <DataTrigger Binding="{Binding Mode}" Value="{x:Static dungeon:DungeonMode.DragonArea}">
+                                                    <Setter Property="Visibility" Value="Visible" />
+                                                </DataTrigger>
+                                            </Style.Triggers>
+                                        </Style>
+                                    </Grid.Style>
+                                    <fa5:ImageAwesome Icon="Solid_Dungeon" Foreground="{StaticResource SolidColorBrush.Dungeon.Mode.DragonArea.1}" />
+                                </Grid>
+                            </Grid>
                         </StackPanel>
                         <Grid Height="96">
                             <StackPanel Orientation="Vertical" HorizontalAlignment="Right" VerticalAlignment="Top">
@@ -3933,6 +3985,10 @@
                 </StackPanel>
             </Grid>
         </Border>
+    </DataTemplate>
+
+    <DataTemplate x:Key="DragonAreaTemplate" DataType="{x:Type dungeonModels:DragonAreaFragment}">
+        <ContentPresenter Content="{Binding}" ContentTemplate="{StaticResource AbyssalDepthsTemplate}" />
     </DataTemplate>
 
     <DataTemplate x:Key="DungeonCloseTimerTemplate" DataType="{x:Type dungeon:DungeonCloseTimer}">

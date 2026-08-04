@@ -543,6 +543,7 @@ public sealed class ClusterInfo : BaseViewModel
             MapType.MistsDungeon => LocalizationController.Translation("MISTS_DUNGEON"),
             MapType.Mists => LocalizationController.Translation("MISTS"),
             MapType.AbyssalDepths => LocalizationController.Translation("ABYSSALDEPTHS"),
+            MapType.DragonArea => LocalizationController.Translation("DRAGONAREA"),
             _ => ""
         };
     }
@@ -555,7 +556,8 @@ public sealed class ClusterInfo : BaseViewModel
             or MapType.HellGate
             or MapType.Mists
             or MapType.MistsDungeon
-            or MapType.AbyssalDepths;
+            or MapType.AbyssalDepths
+            or MapType.DragonArea;
     }
 
     private string GetMainClusterName()
@@ -578,6 +580,7 @@ public sealed class ClusterInfo : BaseViewModel
             MapType.CorruptedDungeon => ComposeInstanceClipboardName("Corrupted Dungeon"),
             MapType.HellGate => ComposeInstanceClipboardName("HellGate"),
             MapType.AbyssalDepths => ComposeInstanceClipboardName("AbyssalDepths"),
+            MapType.DragonArea => ComposeInstanceClipboardName("Ancient Lands"),
             _ => string.Empty
         };
     }

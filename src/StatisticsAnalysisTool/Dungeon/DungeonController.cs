@@ -71,7 +71,8 @@ public sealed class DungeonController
             && mapType is not MapType.CorruptedDungeon
             && mapType is not MapType.HellGate
             && mapType is not MapType.Mists
-            && mapType is not MapType.MistsDungeon)
+            && mapType is not MapType.MistsDungeon
+            && mapType is not MapType.DragonArea)
         {
             if (AddClusterToExistDungeon(mapGuid, _lastMapGuid, out var currentDungeon))
             {
@@ -83,11 +84,11 @@ public sealed class DungeonController
                  && !ExistDungeon(_lastMapGuid)
                  && !ExistDungeon(_currentGuid)
                  || (IsDungeonCluster(mapType, mapGuid)
-                 && mapType is MapType.CorruptedDungeon or MapType.HellGate or MapType.Mists or MapType.MistsDungeon or MapType.AbyssalDepths))
+                 && mapType is MapType.CorruptedDungeon or MapType.HellGate or MapType.Mists or MapType.MistsDungeon or MapType.AbyssalDepths or MapType.DragonArea))
         {
             UpdateDungeonSaveTimerUi(mapType);
 
-            if (mapType is MapType.CorruptedDungeon or MapType.HellGate or MapType.Mists or MapType.MistsDungeon or MapType.AbyssalDepths)
+            if (mapType is MapType.CorruptedDungeon or MapType.HellGate or MapType.Mists or MapType.MistsDungeon or MapType.AbyssalDepths or MapType.DragonArea)
             {
                 var lastDungeon = GetDungeon(_lastMapGuid);
                 lastDungeon?.EndTimer();
@@ -107,7 +108,7 @@ public sealed class DungeonController
                  && !ExistDungeon(_lastMapGuid)
                  && ExistDungeon(_currentGuid)
                  || IsDungeonCluster(mapType, mapGuid)
-                 && mapType is MapType.CorruptedDungeon or MapType.HellGate or MapType.Mists or MapType.MistsDungeon or MapType.AbyssalDepths)
+                 && mapType is MapType.CorruptedDungeon or MapType.HellGate or MapType.Mists or MapType.MistsDungeon or MapType.AbyssalDepths or MapType.DragonArea)
         {
             UpdateDungeonSaveTimerUi(mapType);
 
@@ -168,6 +169,9 @@ public sealed class DungeonController
                 break;
             case MapType.AbyssalDepths:
                 newDungeon = new AbyssalDepthsFragment((Guid) guid, mapType, DungeonMode.AbyssalDepths, mainMapIndex);
+                break;
+            case MapType.DragonArea:
+                newDungeon = new DragonAreaFragment((Guid) guid, mapType, DungeonMode.DragonArea, mainMapIndex);
                 break;
             default:
                 newDungeon = null;
@@ -426,6 +430,9 @@ public sealed class DungeonController
                         break;
                     case AbyssalDepthsFragment abyssalDepths:
                         abyssalDepths.Add(value, valueType);
+                        break;
+                    case DragonAreaFragment dragonArea:
+                        dragonArea.Add(value, valueType);
                         break;
                 }
             }
@@ -870,7 +877,7 @@ public sealed class DungeonController
 
     private static bool IsDungeonCluster(MapType mapType, Guid? mapGuid)
     {
-        return mapGuid != null && mapType is MapType.RandomDungeon or MapType.CorruptedDungeon or MapType.HellGate or MapType.Expedition or MapType.Mists or MapType.MistsDungeon or MapType.AbyssalDepths;
+        return mapGuid != null && mapType is MapType.RandomDungeon or MapType.CorruptedDungeon or MapType.HellGate or MapType.Expedition or MapType.Mists or MapType.MistsDungeon or MapType.AbyssalDepths or MapType.DragonArea;
     }
 
     #endregion

@@ -1,5 +1,4 @@
 using StatisticsAnalysisTool.Cluster;
-using StatisticsAnalysisTool.Common;
 using StatisticsAnalysisTool.Enumerations;
 using StatisticsAnalysisTool.GameFileData.Models;
 using StatisticsAnalysisTool.Localization;
@@ -7,10 +6,8 @@ using StatisticsAnalysisTool.Properties;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Reflection;
 using System.Text.Json;
 using System.Threading.Tasks;
-using StatisticsAnalysisTool.Diagnostics;
 
 namespace StatisticsAnalysisTool.GameFileData;
 
@@ -95,9 +92,9 @@ public static class WorldData
             if (splitName.Length > 1 && index.ToLower().Contains('@'))
             {
                 var mapType = GetMapType(splitName[0]);
-                if (mapType is MapType.RandomDungeon or MapType.CorruptedDungeon or MapType.HellGate 
-                        or MapType.Expedition or MapType.MistsDungeon or MapType.Mists 
-                        or MapType.AbyssalDepths && !string.IsNullOrEmpty(splitName[1]))
+                if (mapType is MapType.RandomDungeon or MapType.CorruptedDungeon or MapType.HellGate
+                        or MapType.Expedition or MapType.MistsDungeon or MapType.Mists
+                        or MapType.AbyssalDepths or MapType.DragonArea && !string.IsNullOrEmpty(splitName[1]))
                 {
                     var mapGuid = new Guid(splitName[1]);
                     return mapGuid;
@@ -126,31 +123,67 @@ public static class WorldData
             MapType.MistsDungeon => LocalizationController.Translation("MISTS_DUNGEON"),
             MapType.Mists => LocalizationController.Translation("MISTS"),
             MapType.AbyssalDepths => LocalizationController.Translation("ABYSSALDEPTHS"),
+            MapType.DragonArea => LocalizationController.Translation("DRAGONAREA"),
             _ => LocalizationController.Translation("UNKNOWN")
         };
     }
 
     public static MapType GetMapType(string index)
     {
-        if (index.ToUpper().Contains("HELLCLUSTER")) return MapType.HellGate;
+        if (index.ToUpper().Contains("HELLCLUSTER"))
+        {
+            return MapType.HellGate;
+        }
 
-        if (index.ToUpper().Contains("RANDOMDUNGEON")) return MapType.RandomDungeon;
+        if (index.ToUpper().Contains("RANDOMDUNGEON"))
+        {
+            return MapType.RandomDungeon;
+        }
 
-        if (index.ToUpper().Contains("CORRUPTEDDUNGEON")) return MapType.CorruptedDungeon;
+        if (index.ToUpper().Contains("CORRUPTEDDUNGEON"))
+        {
+            return MapType.CorruptedDungeon;
+        }
 
-        if (index.ToUpper().Contains("ISLAND")) return MapType.Island;
+        if (index.ToUpper().Contains("ISLAND"))
+        {
+            return MapType.Island;
+        }
 
-        if (index.ToUpper().Contains("HIDEOUT")) return MapType.Hideout;
+        if (index.ToUpper().Contains("HIDEOUT"))
+        {
+            return MapType.Hideout;
+        }
 
-        if (index.ToUpper().Contains("EXPEDITION")) return MapType.Expedition;
+        if (index.ToUpper().Contains("EXPEDITION"))
+        {
+            return MapType.Expedition;
+        }
 
-        if (index.ToUpper().Contains("ARENA")) return MapType.Arena;
+        if (index.ToUpper().Contains("ARENA"))
+        {
+            return MapType.Arena;
+        }
 
-        if (index.ToUpper().Contains("MISTSDUNGEON")) return MapType.MistsDungeon;
+        if (index.ToUpper().Contains("MISTSDUNGEON"))
+        {
+            return MapType.MistsDungeon;
+        }
 
-        if (index.ToUpper().Contains("MISTS")) return MapType.Mists;
+        if (index.ToUpper().Contains("MISTS"))
+        {
+            return MapType.Mists;
+        }
 
-        if (index.ToUpper().Contains("HELLDUNGEON")) return MapType.AbyssalDepths;
+        if (index.ToUpper().Contains("HELLDUNGEON"))
+        {
+            return MapType.AbyssalDepths;
+        }
+
+        if (index.ToUpper().Contains("DRAGONAREA"))
+        {
+            return MapType.DragonArea;
+        }
 
         return MapType.Unknown;
     }
@@ -204,7 +237,7 @@ public static class WorldData
             return null;
         }
 
-        var splitName = index.Split(new[] { "@" }, StringSplitOptions.RemoveEmptyEntries);
+        var splitName = index.Split(["@"], StringSplitOptions.RemoveEmptyEntries);
         if (index.ToLower().Contains('@') && splitName.Length > 0 && !string.IsNullOrEmpty(splitName[0]))
         {
             return splitName[0];

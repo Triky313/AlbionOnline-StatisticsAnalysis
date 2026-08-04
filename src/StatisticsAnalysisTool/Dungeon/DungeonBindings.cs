@@ -123,6 +123,12 @@ public class DungeonBindings : BaseViewModel
             {
                 Name = LocalizationController.Translation("ABYSSALDEPTHS"),
                 StatsViewType = DungeonMode.AbyssalDepths
+            },
+
+            new()
+            {
+                Name = LocalizationController.Translation("DRAGONAREA"),
+                StatsViewType = DungeonMode.DragonArea
             }
         ];
 
@@ -515,6 +521,11 @@ public class DungeonBindings : BaseViewModel
             return true;
         }
 
+        if (SelectedDungeonStatsType.StatsViewType == DungeonMode.DragonArea && dungeon.Mode == DungeonMode.DragonArea)
+        {
+            return true;
+        }
+
         if (SelectedDungeonStatsType.StatsViewType == DungeonMode.Unknown)
         {
             return true;
@@ -565,6 +576,11 @@ public class DungeonBindings : BaseViewModel
             return true;
         }
 
+        if (SelectedDungeonStatsType.StatsViewType == DungeonMode.DragonArea && dungeon.MapType == MapType.DragonArea)
+        {
+            return true;
+        }
+
         if (SelectedDungeonStatsType.StatsViewType == DungeonMode.Unknown || dungeon.MapType == MapType.Unknown)
         {
             return true;
@@ -580,6 +596,12 @@ public class DungeonBindings : BaseViewModel
         SetAllStatViewsToCollapsed();
 
         if (SelectedDungeonStatsType.StatsViewType == DungeonMode.Unknown)
+        {
+            Stats.StatsTotal.Visibility = Visibility.Visible;
+            return;
+        }
+
+        if (SelectedDungeonStatsType.StatsViewType == DungeonMode.DragonArea)
         {
             Stats.StatsTotal.Visibility = Visibility.Visible;
             return;
