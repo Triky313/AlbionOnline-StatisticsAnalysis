@@ -6,6 +6,7 @@ using StatisticsAnalysisTool.EventLogging;
 using StatisticsAnalysisTool.Models;
 using StatisticsAnalysisTool.Models.ItemsJsonModel;
 using System.Collections.ObjectModel;
+using System.Globalization;
 using System.Windows;
 
 
@@ -683,6 +684,148 @@ public class LoggingBindingsTests
     }
 
     [Test]
+    public void AddLootLogFiles_WithClockOffsetAndLocalizedItemNames_IgnoresDuplicate()
+    {
+        ItemController.Items =
+        [
+            CreateItem(42, "T6_MOUNT_ARMORED_HORSE", "mounts", "horse")
+        ];
+
+        var bindings = new LoggingBindings();
+        var firstFilePath = Path.GetTempFileName();
+        var secondFilePath = Path.GetTempFileName();
+        var firstLootLog = CreateLootLogText(
+            "2026-08-05T20:50:07.5469036Z;;;Dragon9x9;T6_MOUNT_ARMORED_HORSE;Gepanzertes Pferd des Meisters;1;;;Licquid;;;;;257229;Drownfield Course");
+        var secondLootLog = CreateLootLogText(
+            "2026-08-05T20:50:10.6881342Z;;;Dragon9x9;T6_MOUNT_ARMORED_HORSE;Master's Armored Horse;1;;;Licquid;;;;;257229;Drownfield Course");
+
+        try
+        {
+            File.WriteAllText(firstFilePath, firstLootLog);
+            File.WriteAllText(secondFilePath, secondLootLog);
+
+            bindings.AddLootLogFiles([firstFilePath]).Should().Be(1);
+            bindings.AddLootLogFiles([secondFilePath]).Should().Be(0);
+
+            var lootItem = bindings.LootingPlayers.Should().ContainSingle().Subject.LootedItems.Should().ContainSingle().Subject;
+            lootItem.UniqueItemName.Should().Be("T6_MOUNT_ARMORED_HORSE");
+            lootItem.LootedFromName.Should().Be("Licquid");
+        }
+        finally
+        {
+            File.Delete(firstFilePath);
+            File.Delete(secondFilePath);
+        }
+    }
+
+    [Test]
+    public void AddLootLogFiles_WithDifferentLootSourceOrCluster_PreservesEntries()
+    {
+        ItemController.Items =
+        [
+            CreateItem(42, "T6_MOUNT_ARMORED_HORSE", "mounts", "horse")
+        ];
+
+        var bindings = new LoggingBindings();
+        var firstFilePath = Path.GetTempFileName();
+        var secondFilePath = Path.GetTempFileName();
+        var thirdFilePath = Path.GetTempFileName();
+
+        try
+        {
+            File.WriteAllText(firstFilePath, CreateLootLogText(
+                "2026-08-05T20:50:07.5469036Z;;;Dragon9x9;T6_MOUNT_ARMORED_HORSE;Horse;1;;;Licquid;;;;;0;Drownfield Course"));
+            File.WriteAllText(secondFilePath, CreateLootLogText(
+                "2026-08-05T20:50:10.6881342Z;;;Dragon9x9;T6_MOUNT_ARMORED_HORSE;Horse;1;;;OtherPlayer;;;;;0;Drownfield Course"));
+            File.WriteAllText(thirdFilePath, CreateLootLogText(
+                "2026-08-05T20:50:10.6881342Z;;;Dragon9x9;T6_MOUNT_ARMORED_HORSE;Horse;1;;;Licquid;;;;;0;Other Cluster"));
+
+            bindings.AddLootLogFiles([firstFilePath, secondFilePath, thirdFilePath]).Should().Be(3);
+
+            bindings.LootingPlayers.Should().ContainSingle().Which.LootedItems.Should().HaveCount(3);
+        }
+        finally
+        {
+            File.Delete(firstFilePath);
+            File.Delete(secondFilePath);
+            File.Delete(thirdFilePath);
+        }
+    }
+
+    [Test]
+    public void AddLootLogFiles_WithDifferentEnchantedItemIds_PreservesEntries()
+    {
+        ItemController.Items =
+        [
+            CreateItem(42, "T5_ARMOR_CLOTH_KEEPER", "armors", "cloth_armor")
+        ];
+
+        var bindings = new LoggingBindings();
+        var firstFilePath = Path.GetTempFileName();
+        var secondFilePath = Path.GetTempFileName();
+
+        try
+        {
+            File.WriteAllText(firstFilePath, CreateLootLogText(
+                "2026-08-05T20:50:07.5469036Z;;;Player;T5_ARMOR_CLOTH_KEEPER@2;Robe;1;;;LootSource;;;;;0;Drownfield Course"));
+            File.WriteAllText(secondFilePath, CreateLootLogText(
+                "2026-08-05T20:50:07.7469036Z;;;Player;T5_ARMOR_CLOTH_KEEPER@3;Robe;1;;;LootSource;;;;;0;Drownfield Course"));
+
+            bindings.AddLootLogFiles([firstFilePath, secondFilePath]).Should().Be(2);
+
+            bindings.LootingPlayers.Single().LootedItems
+                .Select(item => item.UniqueItemName)
+                .Should()
+                .BeEquivalentTo("T5_ARMOR_CLOTH_KEEPER@2", "T5_ARMOR_CLOTH_KEEPER@3");
+        }
+        finally
+        {
+            File.Delete(firstFilePath);
+            File.Delete(secondFilePath);
+        }
+    }
+
+    [Test]
+    public void AddLootLogFiles_WithTwoMatchingRows_UsesExistingEntryOnlyOnce()
+    {
+        ItemController.Items =
+        [
+            CreateItem(42, "T6_MOUNT_ARMORED_HORSE", "mounts", "horse")
+        ];
+
+        var bindings = new LoggingBindings();
+        var firstFilePath = Path.GetTempFileName();
+        var secondFilePath = Path.GetTempFileName();
+        var firstPickupTime = DateTime.Parse(
+            "2026-08-05T20:50:07.5469036Z",
+            CultureInfo.InvariantCulture,
+            DateTimeStyles.AdjustToUniversal);
+
+        try
+        {
+            File.WriteAllText(firstFilePath, CreateLootLogText(
+                "2026-08-05T20:50:07.5469036Z;;;Dragon9x9;T6_MOUNT_ARMORED_HORSE;Horse;1;;;Licquid;;;;;0;Drownfield Course"));
+            File.WriteAllText(secondFilePath, CreateLootLogText(
+                "2026-08-05T20:50:10.6881342Z;;;Dragon9x9;T6_MOUNT_ARMORED_HORSE;Horse;1;;;Licquid;;;;;0;Drownfield Course",
+                "2026-08-05T20:50:12.6881342Z;;;Dragon9x9;T6_MOUNT_ARMORED_HORSE;Horse;1;;;Licquid;;;;;0;Drownfield Course"));
+
+            bindings.AddLootLogFiles([firstFilePath]).Should().Be(1);
+            bindings.AddLootLogFiles([secondFilePath]).Should().Be(1);
+
+            var lootItems = bindings.LootingPlayers.Single().LootedItems;
+            lootItems.Should().HaveCount(2);
+            lootItems.Max(item => item.UtcPickupTime)
+                .Should()
+                .BeCloseTo(firstPickupTime.AddSeconds(2), TimeSpan.FromMilliseconds(1));
+        }
+        finally
+        {
+            File.Delete(firstFilePath);
+            File.Delete(secondFilePath);
+        }
+    }
+
+    [Test]
     public void ParallelLootedItemsFilterProcess_WithResolvedStatusDisabled_KeepsLostItemsVisible()
     {
         var lostItem = new LootedItem()
@@ -1242,6 +1385,12 @@ public class LoggingBindingsTests
         lootingPlayer.TotalEstimatedMarketValue.Should().Be(250);
         lootingPlayer.TotalEstimatedMarketValueVisibility.Should().Be(Visibility.Visible);
     }
+    private static string CreateLootLogText(params string[] rows)
+    {
+        const string header = "timestamp_utc;looted_by__alliance;looted_by__guild;looted_by__name;item_id;item_name;quantity;looted_from__alliance;looted_from__guild;looted_from__name;died;died_player_guild;killed_by;killed_by_guild;average_est_market_value;cluster";
+        return string.Join(Environment.NewLine, [header, .. rows]);
+    }
+
 
     private static Item CreateItem(int index, string uniqueName, string shopCategory, string shopSubCategory1)
     {
