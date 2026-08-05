@@ -665,6 +665,7 @@
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="Auto" />
                         <ColumnDefinition Width="*" />
+                        <ColumnDefinition Width="Auto" />
                     </Grid.ColumnDefinitions>
                     <Image Source="/Resources/silver.png" Width="26" Height="26" Style="{StaticResource Dashboard.SummaryImage}" />
                     <StackPanel Grid.Column="1">
@@ -674,26 +675,17 @@
                                         ContentTemplate="{StaticResource Dashboard.SummaryMetricTemplate}"
                                         HorizontalContentAlignment="Stretch" />
                     </StackPanel>
+                    <StackPanel Grid.Column="2" Margin="24,0,8,0" HorizontalAlignment="Right">
+                        <TextBlock Text="{Binding TranslationItemsUpgraded, FallbackValue=ITEMS_UPGRADED}"
+                                   Style="{StaticResource Dashboard.SummaryTitle}" HorizontalAlignment="Right" />
+                        <TextBlock Text="{Binding TotalItemQualityRerollCount, Converter={StaticResource ShortNumberConverter}, ConverterCulture={x:Static gl:CultureInfo.CurrentCulture}, FallbackValue=0}"
+                                   Style="{StaticResource Dashboard.SummaryValue}" HorizontalAlignment="Right" />
+                    </StackPanel>
                 </Grid>
             </Border>
 
             <Border Style="{StaticResource Dashboard.EconomyDetailCard}" Margin="0">
-                <UniformGrid Columns="5">
-                    <StackPanel ToolTip="{Binding TranslationNormal}" HorizontalAlignment="Center">
-                        <Grid Width="64" Height="64">
-                            <Image Source="/Assets/quality_border_normal.png" Stretch="Uniform" />
-                            <StackPanel HorizontalAlignment="Center" VerticalAlignment="Center">
-                                <TextBlock Text="{Binding NormalItemQualityRerollCount, StringFormat='{}{0:N0}', FallbackValue=0}"
-                                           FontSize="17" FontWeight="Bold" Foreground="{StaticResource SolidColorBrush.Text.1}"
-                                           HorizontalAlignment="Center" />
-                                <TextBlock Text="{Binding NormalItemQualityRerollPercentage, StringFormat='{}{0:N1}%', FallbackValue=0}"
-                                           FontSize="10" Foreground="{StaticResource SolidColorBrush.Text.3}"
-                                           HorizontalAlignment="Center" />
-                            </StackPanel>
-                        </Grid>
-                        <TextBlock Text="{Binding TranslationNormal}" FontSize="11" Foreground="{StaticResource SolidColorBrush.Text.2}"
-                                   HorizontalAlignment="Center" TextTrimming="CharacterEllipsis" />
-                    </StackPanel>
+                <UniformGrid Columns="4">
                     <StackPanel ToolTip="{Binding TranslationGood}" HorizontalAlignment="Center">
                         <Grid Width="64" Height="64">
                             <Image Source="/Assets/quality_border_good.png" Stretch="Uniform" />

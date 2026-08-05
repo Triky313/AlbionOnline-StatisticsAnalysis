@@ -808,16 +808,6 @@ public class DashboardBindings : BaseViewModel
         }
     } = 2;
 
-    public int NormalItemQualityRerollCount
-    {
-        get;
-        set
-        {
-            field = value;
-            OnPropertyChanged();
-        }
-    }
-
     public int GoodItemQualityRerollCount
     {
         get;
@@ -858,7 +848,7 @@ public class DashboardBindings : BaseViewModel
         }
     }
 
-    public double NormalItemQualityRerollPercentage
+    public long TotalItemQualityRerollCount
     {
         get;
         set
@@ -1041,7 +1031,7 @@ public class DashboardBindings : BaseViewModel
     public static string TranslationSpentReSpec => LocalizationController.Translation("SPENT_RESPEC");
     public static string TranslationRefineItemQuality => LocalizationController.Translation("REFINE_ITEM_QUALITY");
     public static string TranslationSilverSpentOnRefiningItemQuality => LocalizationController.Translation("SILVER_SPENT_ON_REFINING_ITEM_QUALITY");
-    public static string TranslationNormal => LocalizationController.Translation("NORMAL");
+    public static string TranslationItemsUpgraded => LocalizationController.Translation("ITEMS_UPGRADED");
     public static string TranslationGood => LocalizationController.Translation("GOOD");
     public static string TranslationOutstanding => LocalizationController.Translation("OUTSTANDING");
     public static string TranslationExcellent => LocalizationController.Translation("EXCELLENT");

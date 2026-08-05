@@ -325,9 +325,6 @@ public sealed class DashboardStatisticsAggregator
         var quantity = itemQuantity > 0 ? itemQuantity : 1;
         switch (itemQuality)
         {
-            case ItemQuality.Normal:
-                statistics.NormalItemCount += quantity;
-                break;
             case ItemQuality.Good:
                 statistics.GoodItemCount += quantity;
                 break;

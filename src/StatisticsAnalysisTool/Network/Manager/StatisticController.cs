@@ -770,12 +770,15 @@ public class StatisticController
             ? currentValues.RepairCosts / sessionCount
             : 0;
         bindings.HighestRepairCost = currentValues.HighestRepairCost;
-        bindings.NormalItemQualityRerollCount = currentValues.NormalItemCount;
         bindings.GoodItemQualityRerollCount = currentValues.GoodItemCount;
         bindings.OutstandingItemQualityRerollCount = currentValues.OutstandingItemCount;
         bindings.ExcellentItemQualityRerollCount = currentValues.ExcellentItemCount;
         bindings.MasterpieceItemQualityRerollCount = currentValues.MasterpieceItemCount;
-        bindings.NormalItemQualityRerollPercentage = 0;
+        bindings.TotalItemQualityRerollCount =
+            (long) currentValues.GoodItemCount
+            + currentValues.OutstandingItemCount
+            + currentValues.ExcellentItemCount
+            + currentValues.MasterpieceItemCount;
         bindings.GoodItemQualityRerollPercentage = CalculateItemQualityRerollPercentage(
             currentValues.GoodItemSuccessfulRerollCount,
             currentValues.GoodItemEligibleRerollCount);

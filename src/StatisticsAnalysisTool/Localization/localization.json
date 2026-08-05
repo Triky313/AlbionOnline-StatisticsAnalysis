@@ -47452,6 +47452,19 @@
           "seg": "Silver spent on refining item quality"
         }
       ]
+    },
+    {
+      "tuid": "ITEMS_UPGRADED",
+      "tuv": [
+        {
+          "lang": "de-DE",
+          "seg": "Aufgewertete Items"
+        },
+        {
+          "lang": "en-US",
+          "seg": "Upgraded items"
+        }
+      ]
     }
   ]
 }
