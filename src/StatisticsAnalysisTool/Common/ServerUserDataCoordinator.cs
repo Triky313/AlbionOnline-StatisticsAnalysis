@@ -66,6 +66,14 @@ public sealed class ServerUserDataCoordinator
 
         try
         {
+            if (!IsKnownServerLocation(currentServerLocation))
+            {
+                Log.Debug(
+                    "Keeping the active user data server while Albion server detection is unavailable. Active={ActiveServer}",
+                    AppDataPaths.ActiveUserDataServerLocation);
+                return;
+            }
+
             if (previousServerLocation is ServerLocation.America or ServerLocation.Asia or ServerLocation.Europe
                 && previousServerLocation != currentServerLocation)
             {
@@ -75,11 +83,6 @@ public sealed class ServerUserDataCoordinator
             }
 
             AppDataPaths.SetActiveUserDataServer(currentServerLocation);
-
-            if (currentServerLocation is not (ServerLocation.America or ServerLocation.Asia or ServerLocation.Europe))
-            {
-                return;
-            }
 
             Directory.CreateDirectory(AppDataPaths.UserDataDirectory);
             if (forceLoadCurrentServer || previousServerLocation != currentServerLocation)

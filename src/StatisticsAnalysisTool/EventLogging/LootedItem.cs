@@ -34,6 +34,10 @@ public class LootedItem : BaseViewModel
         }
     }
 
+    public string UniqueItemName { get; set; }
+
+    public string ClusterName { get; set; }
+
     public DateTime UtcPickupTime
     {
         get => _utcPickupTime;

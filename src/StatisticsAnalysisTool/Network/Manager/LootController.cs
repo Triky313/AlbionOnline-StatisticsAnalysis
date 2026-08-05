@@ -84,6 +84,8 @@ public class LootController : ILootController
 
         var lootedByUser = _trackingController.EntityController.GetEntity(loot.LootedByName);
         var lootedFromUser = _trackingController.EntityController.GetEntity(loot.LootedFromName);
+        var uniqueItemName = ItemController.GetItemByIndex(loot.ItemIndex)?.UniqueName;
+        var clusterName = ClusterController.GetCurrentClusterDisplayName();
 
         await Application.Current.Dispatcher.InvokeAsync(() =>
         {
@@ -96,10 +98,12 @@ public class LootController : ILootController
                 player.AddLootedItem(new LootedItem()
                 {
                     ItemIndex = loot.ItemIndex,
+                    UniqueItemName = uniqueItemName,
                     Quantity = loot.Quantity,
                     LootedByName = loot.LootedByName,
                     LootedFromName = loot.LootedFromName,
                     LootedFromGuild = lootedFromUser?.Value?.Guild,
+                    ClusterName = clusterName,
                     IsTrash = loot.IsTrash
                 });
             }
@@ -115,10 +119,12 @@ public class LootController : ILootController
                         new()
                         {
                             ItemIndex = loot.ItemIndex,
+                            UniqueItemName = uniqueItemName,
                             Quantity = loot.Quantity,
                             LootedByName = loot.LootedByName,
                             LootedFromName = loot.LootedFromName,
                             LootedFromGuild = lootedFromUser?.Value?.Guild,
+                            ClusterName = clusterName,
                             IsTrash = loot.IsTrash
                         }
                     }

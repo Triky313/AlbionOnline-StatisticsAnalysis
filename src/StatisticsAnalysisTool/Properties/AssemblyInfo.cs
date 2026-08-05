@@ -54,5 +54,5 @@ using System.Runtime.CompilerServices;
 // indem Sie "*" wie unten gezeigt eingeben:
 // [assembly: AssemblyVersion("1.0.*")]
 [assembly: AssemblyVersion("9.0.0.0")]
-[assembly: AssemblyFileVersion("9.3.12.0")]
-[assembly: AssemblyInformationalVersion("9.3.12")]
+[assembly: AssemblyFileVersion("9.3.13.0")]
+[assembly: AssemblyInformationalVersion("9.3.13")]

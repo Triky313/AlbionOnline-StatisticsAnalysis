@@ -50,7 +50,12 @@ public class LoggingBindings : BaseViewModel
     private bool _isShowingMount = true;
     private bool _isShowingOthers = true;
     private bool _isCompareButtonEnabled = true;
-    private const int LootLogTimeToleranceSeconds = 2;
+    // Clock-offset detection searches up to five minutes and trusts a single sample only up to ten seconds.
+    // Samples within one second form the dominant offset; after normalization, timestamps may differ by one second.
+    private const double LootLogResidualTimeToleranceSeconds = 1;
+    private const double LootLogOffsetGroupingToleranceSeconds = 1;
+    private const double LootLogSingleMatchOffsetLimitSeconds = 10;
+    private const double LootLogOffsetSearchLimitSeconds = 300;
     private static readonly string[] LootLogHeaderColumns =
     [
         "timestamp_utc",
@@ -582,7 +587,7 @@ public class LoggingBindings : BaseViewModel
             ClearAllLootComparatorLogs();
 
             var addedChestLogItems = AddVaultLogItems(chestLogItems);
-            var addedLootLogItems = lootLogItems.Count(TryAddLootLogItem);
+            var addedLootLogItems = AddLootLogItems(lootLogItems);
             _chestLogSourceCount = addedChestLogItems > 0 ? 1 : 0;
             _lootLogFileCount = addedLootLogItems > 0 ? 1 : 0;
 
@@ -779,21 +784,14 @@ public class LoggingBindings : BaseViewModel
         {
             try
             {
-                var fileAddedItems = 0;
                 if (!TryReadLootLogFile(filePath, out var lootLogItems))
                 {
                     SetLootComparatorImportEventLine("LOOT_COMPARATOR_INVALID_LOOT_LOG_FILE", Path.GetFileName(filePath));
                     continue;
                 }
 
-                foreach (var lootLogItem in lootLogItems)
-                {
-                    if (TryAddLootLogItem(lootLogItem))
-                    {
-                        addedItems++;
-                        fileAddedItems++;
-                    }
-                }
+                var fileAddedItems = AddLootLogItems(lootLogItems);
+                addedItems += fileAddedItems;
 
                 if (fileAddedItems > 0)
                 {
@@ -906,10 +904,12 @@ public class LoggingBindings : BaseViewModel
             LootedByGuild = values[2],
             LootedByName = values[3],
             Item = item,
+            ItemIdentifier = string.IsNullOrWhiteSpace(values[4]) ? item.UniqueName : values[4],
             Quantity = quantity,
             LootedFromAlliance = values[7],
             LootedFromGuild = values[8],
-            LootedFromName = values[9]
+            LootedFromName = values[9],
+            ClusterName = values.Length > 15 ? values[15] : string.Empty
         };
 
         return !string.IsNullOrWhiteSpace(lootLogItem.LootedByName);
@@ -967,19 +967,215 @@ public class LoggingBindings : BaseViewModel
         return ItemController.GetItemByLocalizedName(itemName, enchantment);
     }
 
-    private bool TryAddLootLogItem(ImportedLootLogItem lootLogItem)
+    private int AddLootLogItems(IReadOnlyCollection<ImportedLootLogItem> lootLogItems)
     {
-        if (IsDuplicateLootLogItem(lootLogItem))
+        if (lootLogItems.Count <= 0)
+        {
+            return 0;
+        }
+
+        var keyComparer = new LootLogDuplicateKeyComparer();
+        var existingItemsByKey = LootingPlayers
+            .SelectMany(player => player.GetLootedItemsSnapshot())
+            .Where(item => !item.IsItemFromVaultLog)
+            .GroupBy(CreateLootLogDuplicateKey, keyComparer)
+            .ToDictionary(group => group.Key, group => group.ToList(), keyComparer);
+        var timeOffset = EstimateLootLogTimeOffset(lootLogItems, existingItemsByKey, keyComparer);
+        var matchedExistingItems = new HashSet<LootedItem>();
+        var addedItems = 0;
+
+        foreach (var lootLogItem in lootLogItems)
+        {
+            if (TryFindDuplicateLootLogItem(lootLogItem, timeOffset, existingItemsByKey, matchedExistingItems))
+            {
+                continue;
+            }
+
+            AddLootLogItem(lootLogItem, timeOffset);
+            addedItems++;
+        }
+
+        return addedItems;
+    }
+
+    private static TimeSpan EstimateLootLogTimeOffset(
+        IReadOnlyCollection<ImportedLootLogItem> lootLogItems,
+        IReadOnlyDictionary<LootLogDuplicateKey, List<LootedItem>> existingItemsByKey,
+        IEqualityComparer<LootLogDuplicateKey> keyComparer)
+    {
+        if (existingItemsByKey.Count <= 0)
+        {
+            return TimeSpan.Zero;
+        }
+
+        var offsetCandidates = new List<double>();
+        var importedItemsByKey = lootLogItems
+            .GroupBy(CreateLootLogDuplicateKey, keyComparer)
+            .ToList();
+
+        foreach (var importedItemsGroup in importedItemsByKey)
+        {
+            var importedItems = importedItemsGroup.ToList();
+            if (importedItems.Count != 1
+                || !existingItemsByKey.TryGetValue(importedItemsGroup.Key, out var existingItems))
+            {
+                continue;
+            }
+
+            var matchingExistingItems = existingItems
+                .Where(item => AreLootLogClustersMatching(item.ClusterName, importedItems[0].ClusterName))
+                .ToList();
+            if (matchingExistingItems.Count != 1)
+            {
+                continue;
+            }
+
+            AddOffsetCandidate(offsetCandidates, matchingExistingItems[0], importedItems[0]);
+        }
+
+        if (offsetCandidates.Count <= 0)
+        {
+            foreach (var lootLogItem in lootLogItems)
+            {
+                if (!existingItemsByKey.TryGetValue(CreateLootLogDuplicateKey(lootLogItem), out var existingItems))
+                {
+                    continue;
+                }
+
+                var nearestOffset = existingItems
+                    .Where(item => AreLootLogClustersMatching(item.ClusterName, lootLogItem.ClusterName))
+                    .Select(item => (double?)(ToUtc(item.UtcPickupTime) - lootLogItem.UtcPickupTime).TotalSeconds)
+                    .Where(offset => Math.Abs(offset.GetValueOrDefault()) <= LootLogOffsetSearchLimitSeconds)
+                    .OrderBy(offset => Math.Abs(offset.GetValueOrDefault()))
+                    .FirstOrDefault();
+                if (nearestOffset.HasValue)
+                {
+                    offsetCandidates.Add(nearestOffset.Value);
+                }
+            }
+        }
+
+        if (offsetCandidates.Count <= 0)
+        {
+            return TimeSpan.Zero;
+        }
+
+        var dominantOffsets = offsetCandidates
+            .Select(offset => offsetCandidates
+                .Where(candidate => Math.Abs(candidate - offset) <= LootLogOffsetGroupingToleranceSeconds)
+                .ToList())
+            .OrderByDescending(offsets => offsets.Count)
+            .ThenBy(offsets => offsets.Max() - offsets.Min())
+            .First();
+        var offsetSeconds = GetMedian(dominantOffsets);
+        if (dominantOffsets.Count == 1 && Math.Abs(offsetSeconds) > LootLogSingleMatchOffsetLimitSeconds)
+        {
+            return TimeSpan.Zero;
+        }
+
+        return TimeSpan.FromSeconds(offsetSeconds);
+    }
+
+    private static void AddOffsetCandidate(
+        ICollection<double> offsetCandidates,
+        LootedItem existingItem,
+        ImportedLootLogItem importedItem)
+    {
+        var offsetSeconds = (ToUtc(existingItem.UtcPickupTime) - importedItem.UtcPickupTime).TotalSeconds;
+        if (Math.Abs(offsetSeconds) <= LootLogOffsetSearchLimitSeconds)
+        {
+            offsetCandidates.Add(offsetSeconds);
+        }
+    }
+
+    private static double GetMedian(IReadOnlyCollection<double> values)
+    {
+        var orderedValues = values.OrderBy(value => value).ToList();
+        var middleIndex = orderedValues.Count / 2;
+        return orderedValues.Count % 2 == 0
+            ? (orderedValues[middleIndex - 1] + orderedValues[middleIndex]) / 2
+            : orderedValues[middleIndex];
+    }
+
+    private static bool TryFindDuplicateLootLogItem(
+        ImportedLootLogItem lootLogItem,
+        TimeSpan timeOffset,
+        IReadOnlyDictionary<LootLogDuplicateKey, List<LootedItem>> existingItemsByKey,
+        ISet<LootedItem> matchedExistingItems)
+    {
+        if (!existingItemsByKey.TryGetValue(CreateLootLogDuplicateKey(lootLogItem), out var existingItems))
         {
             return false;
         }
 
+        var adjustedPickupTime = lootLogItem.UtcPickupTime.Add(timeOffset);
+        var match = existingItems
+            .Where(item => !matchedExistingItems.Contains(item)
+                           && AreLootLogClustersMatching(item.ClusterName, lootLogItem.ClusterName))
+            .Select(item => new
+            {
+                Item = item,
+                TimeDifference = Math.Abs((ToUtc(item.UtcPickupTime) - adjustedPickupTime).TotalSeconds)
+            })
+            .Where(candidate => candidate.TimeDifference <= LootLogResidualTimeToleranceSeconds)
+            .OrderBy(candidate => candidate.TimeDifference)
+            .FirstOrDefault();
+        if (match is null)
+        {
+            return false;
+        }
+
+        matchedExistingItems.Add(match.Item);
+        return true;
+    }
+
+    private static LootLogDuplicateKey CreateLootLogDuplicateKey(LootedItem lootLogItem)
+    {
+        var itemIdentifier = string.IsNullOrWhiteSpace(lootLogItem.UniqueItemName)
+            ? lootLogItem.Item?.UniqueName ?? lootLogItem.ItemIndex.ToString(CultureInfo.InvariantCulture)
+            : lootLogItem.UniqueItemName;
+
+        return new LootLogDuplicateKey(
+            itemIdentifier,
+            lootLogItem.Quantity,
+            lootLogItem.LootedByName,
+            lootLogItem.LootedFromName);
+    }
+
+    private static LootLogDuplicateKey CreateLootLogDuplicateKey(ImportedLootLogItem lootLogItem)
+    {
+        var itemIdentifier = string.IsNullOrWhiteSpace(lootLogItem.ItemIdentifier)
+            ? lootLogItem.Item.UniqueName
+            : lootLogItem.ItemIdentifier;
+
+        return new LootLogDuplicateKey(
+            itemIdentifier,
+            lootLogItem.Quantity,
+            lootLogItem.LootedByName,
+            lootLogItem.LootedFromName);
+    }
+
+    private static bool AreLootLogClustersMatching(string firstClusterName, string secondClusterName)
+    {
+        return IsUnknownLootLogCluster(firstClusterName)
+               || IsUnknownLootLogCluster(secondClusterName)
+               || string.Equals(firstClusterName.Trim(), secondClusterName.Trim(), StringComparison.OrdinalIgnoreCase);
+    }
+
+    private static bool IsUnknownLootLogCluster(string clusterName)
+    {
+        return string.IsNullOrWhiteSpace(clusterName)
+               || string.Equals(clusterName.Trim(), "Unknown", StringComparison.OrdinalIgnoreCase);
+    }
+
+    private void AddLootLogItem(ImportedLootLogItem lootLogItem, TimeSpan timeOffset)
+    {
         var lootingPlayer = LootingPlayers.FirstOrDefault(x => string.Equals(x.PlayerName, lootLogItem.LootedByName, StringComparison.OrdinalIgnoreCase));
         if (lootingPlayer is not null)
         {
             UpdateLootingPlayerAffiliations(lootingPlayer, lootLogItem);
-            lootingPlayer.AddLootedItem(CreateLootedItem(lootLogItem));
-            return true;
+            lootingPlayer.AddLootedItem(CreateLootedItem(lootLogItem, timeOffset));
+            return;
         }
 
         LootingPlayers.Add(new LootingPlayer()
@@ -990,39 +1186,23 @@ public class LoggingBindings : BaseViewModel
             LootingPlayerVisibility = Visibility.Visible,
             LootedItems =
             [
-                CreateLootedItem(lootLogItem)
+                CreateLootedItem(lootLogItem, timeOffset)
             ]
         });
-
-        return true;
     }
 
-    private bool IsDuplicateLootLogItem(ImportedLootLogItem lootLogItem)
-    {
-        return LootingPlayers
-            .SelectMany(player => player.GetLootedItemsSnapshot())
-            .Where(item => !item.IsItemFromVaultLog)
-            .Any(item => IsSameLootLogItem(item, lootLogItem));
-    }
-
-    private static bool IsSameLootLogItem(LootedItem lootedItem, ImportedLootLogItem lootLogItem)
-    {
-        return lootedItem.ItemIndex == lootLogItem.Item.Index
-               && lootedItem.Quantity == lootLogItem.Quantity
-               && string.Equals(lootedItem.LootedByName, lootLogItem.LootedByName, StringComparison.OrdinalIgnoreCase)
-               && Math.Abs((lootedItem.UtcPickupTime - lootLogItem.UtcPickupTime).TotalSeconds) <= LootLogTimeToleranceSeconds;
-    }
-
-    private static LootedItem CreateLootedItem(ImportedLootLogItem lootLogItem)
+    private static LootedItem CreateLootedItem(ImportedLootLogItem lootLogItem, TimeSpan timeOffset)
     {
         return new LootedItem
         {
-            UtcPickupTime = lootLogItem.UtcPickupTime,
+            UtcPickupTime = lootLogItem.UtcPickupTime.Add(timeOffset),
             ItemIndex = lootLogItem.Item.Index,
+            UniqueItemName = lootLogItem.ItemIdentifier,
             Quantity = lootLogItem.Quantity,
             LootedByName = lootLogItem.LootedByName,
             LootedFromName = lootLogItem.LootedFromName,
             LootedFromGuild = lootLogItem.LootedFromGuild,
+            ClusterName = lootLogItem.ClusterName,
             IsTrash = IsTrashItem(lootLogItem.Item)
         };
     }
@@ -1519,6 +1699,45 @@ public class LoggingBindings : BaseViewModel
         }
     }
 
+    private readonly record struct LootLogDuplicateKey(
+        string ItemIdentifier,
+        int Quantity,
+        string LootedByName,
+        string LootedFromName);
+
+    private sealed class LootLogDuplicateKeyComparer : IEqualityComparer<LootLogDuplicateKey>
+    {
+        public bool Equals(LootLogDuplicateKey x, LootLogDuplicateKey y)
+        {
+            return x.Quantity == y.Quantity
+                   && AreEqual(x.ItemIdentifier, y.ItemIdentifier)
+                   && AreEqual(x.LootedByName, y.LootedByName)
+                   && AreEqual(x.LootedFromName, y.LootedFromName);
+        }
+
+        public int GetHashCode(LootLogDuplicateKey obj)
+        {
+            return HashCode.Combine(
+                GetStringHashCode(obj.ItemIdentifier),
+                obj.Quantity,
+                GetStringHashCode(obj.LootedByName),
+                GetStringHashCode(obj.LootedFromName));
+        }
+
+        private static bool AreEqual(string firstValue, string secondValue)
+        {
+            return string.Equals(
+                firstValue?.Trim(),
+                secondValue?.Trim(),
+                StringComparison.OrdinalIgnoreCase);
+        }
+
+        private static int GetStringHashCode(string value)
+        {
+            return StringComparer.OrdinalIgnoreCase.GetHashCode(value?.Trim() ?? string.Empty);
+        }
+    }
+
     private sealed class ImportedLootLogItem
     {
         public DateTime UtcPickupTime { get; init; }
@@ -1526,10 +1745,12 @@ public class LoggingBindings : BaseViewModel
         public string LootedByGuild { get; init; }
         public string LootedByName { get; init; }
         public Item Item { get; init; }
+        public string ItemIdentifier { get; init; }
         public int Quantity { get; init; }
         public string LootedFromAlliance { get; init; }
         public string LootedFromGuild { get; init; }
         public string LootedFromName { get; init; }
+        public string ClusterName { get; init; }
     }
 
     #endregion

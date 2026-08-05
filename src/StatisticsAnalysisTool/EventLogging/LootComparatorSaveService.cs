@@ -17,7 +17,7 @@ public sealed class LootComparatorSaveService
     private const string LootLogFileName = "loot-logs.csv";
     private const string MetadataFileName = "meta.json";
     private const string ChestLogHeader = "Date,Player,Item,Enchantment,Quality,Amount";
-    private const string LootLogHeader = "timestamp_utc;looted_by__alliance;looted_by__guild;looted_by__name;item_id;item_name;quantity;looted_from__alliance;looted_from__guild;looted_from__name";
+    private const string LootLogHeader = "timestamp_utc;looted_by__alliance;looted_by__guild;looted_by__name;item_id;item_name;quantity;looted_from__alliance;looted_from__guild;looted_from__name;died;died_player_guild;killed_by;killed_by_guild;average_est_market_value;cluster";
     private static readonly UTF8Encoding Utf8Encoding = new(false);
     private static readonly JsonSerializerOptions JsonOptions = new()
     {
@@ -220,11 +220,12 @@ public sealed class LootComparatorSaveService
                     LootedByAlliance = player.PlayerAlliance ?? string.Empty,
                     LootedByGuild = player.PlayerGuild ?? string.Empty,
                     LootedByName = item.LootedByName ?? player.PlayerName ?? string.Empty,
-                    ItemIdentifier = item.Item?.UniqueName ?? item.ItemIndex.ToString(CultureInfo.InvariantCulture),
+                    ItemIdentifier = item.UniqueItemName ?? item.Item?.UniqueName ?? item.ItemIndex.ToString(CultureInfo.InvariantCulture),
                     ItemName = item.Item?.LocalizedName ?? string.Empty,
                     Quantity = item.Quantity,
                     LootedFromGuild = item.LootedFromGuild ?? string.Empty,
-                    LootedFromName = item.LootedFromName ?? string.Empty
+                    LootedFromName = item.LootedFromName ?? string.Empty,
+                    ClusterName = item.ClusterName ?? string.Empty
                 }))
             .ToList();
     }
@@ -256,7 +257,13 @@ public sealed class LootComparatorSaveService
             item.Quantity.ToString(CultureInfo.InvariantCulture),
             string.Empty,
             EscapeDelimitedValue(item.LootedFromGuild, ';'),
-            EscapeDelimitedValue(item.LootedFromName, ';'))));
+            EscapeDelimitedValue(item.LootedFromName, ';'),
+            string.Empty,
+            string.Empty,
+            string.Empty,
+            string.Empty,
+            string.Empty,
+            EscapeDelimitedValue(item.ClusterName, ';'))));
 
         return string.Join(Environment.NewLine, lines);
     }
@@ -317,5 +324,6 @@ public sealed class LootComparatorSaveService
         public int Quantity { get; init; }
         public string LootedFromGuild { get; init; } = string.Empty;
         public string LootedFromName { get; init; } = string.Empty;
+        public string ClusterName { get; init; } = string.Empty;
     }
 }
