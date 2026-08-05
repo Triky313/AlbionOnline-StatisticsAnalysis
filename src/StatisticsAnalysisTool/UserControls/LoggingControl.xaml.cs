@@ -1,5 +1,6 @@
 using StatisticsAnalysisTool.Common;
 using StatisticsAnalysisTool.Enumerations;
+using StatisticsAnalysisTool.EventLogging;
 using StatisticsAnalysisTool.Localization;
 using StatisticsAnalysisTool.Network.Manager;
 using StatisticsAnalysisTool.ViewModels;
@@ -43,53 +44,48 @@ public partial class LoggingControl
 
     private void BtnLoadVaultLogFiles_Click(object sender, RoutedEventArgs e)
     {
-        var mainWindowViewModel = ServiceLocator.Resolve<MainWindowViewModel>();
-        mainWindowViewModel.LoggingBindings.IsAllButtonsEnabled = false;
-        mainWindowViewModel.LoggingBindings.OpenVaultFilePathSelection();
-        mainWindowViewModel.LoggingBindings.IsAllButtonsEnabled = true;
+        ExecuteLootComparatorAction(loggingBindings => loggingBindings.OpenVaultFilePathSelection());
     }
 
     private void BtnLoadVaultLogText_Click(object sender, RoutedEventArgs e)
     {
-        var mainWindowViewModel = ServiceLocator.Resolve<MainWindowViewModel>();
-        mainWindowViewModel.LoggingBindings.IsAllButtonsEnabled = false;
-        var addedItems = mainWindowViewModel.LoggingBindings.AddVaultLogText(mainWindowViewModel.LoggingBindings.ChestLogText);
-        if (addedItems > 0)
+        ExecuteLootComparatorAction(loggingBindings =>
         {
-            mainWindowViewModel.LoggingBindings.ChestLogText = string.Empty;
-        }
-
-        mainWindowViewModel.LoggingBindings.IsAllButtonsEnabled = true;
+            var addedItems = loggingBindings.AddVaultLogText(loggingBindings.ChestLogText);
+            if (addedItems > 0)
+            {
+                loggingBindings.ChestLogText = string.Empty;
+            }
+        });
     }
 
     private void BtnAddLootLogFiles_Click(object sender, RoutedEventArgs e)
     {
-        var mainWindowViewModel = ServiceLocator.Resolve<MainWindowViewModel>();
-        mainWindowViewModel.LoggingBindings.IsAllButtonsEnabled = false;
-        mainWindowViewModel.LoggingBindings.OpenLootLogFilePathSelection();
-        mainWindowViewModel.LoggingBindings.IsAllButtonsEnabled = true;
+        ExecuteLootComparatorAction(loggingBindings => loggingBindings.OpenLootLogFilePathSelection());
     }
 
     private async void BtnLogCompare_Click(object sender, RoutedEventArgs e)
     {
-        var mainWindowViewModel = ServiceLocator.Resolve<MainWindowViewModel>();
-        await mainWindowViewModel.LoggingBindings.CompareLootLogsAsync();
+        try
+        {
+            var mainWindowViewModel = ServiceLocator.Resolve<MainWindowViewModel>();
+            await mainWindowViewModel.LoggingBindings.CompareLootLogsAsync();
+        }
+        catch (Exception ex)
+        {
+            Debug.Print($"Error comparing loot logs: {ex.Message}");
+            ShowLootComparatorError("ERROR_GENERAL_ERROR");
+        }
     }
 
     private void BtnClearVaultLogItems_Click(object sender, RoutedEventArgs e)
     {
-        var mainWindowViewModel = ServiceLocator.Resolve<MainWindowViewModel>();
-        mainWindowViewModel.LoggingBindings.IsAllButtonsEnabled = false;
-        mainWindowViewModel.LoggingBindings.ClearVaultLogs();
-        mainWindowViewModel.LoggingBindings.IsAllButtonsEnabled = true;
+        ExecuteLootComparatorAction(loggingBindings => loggingBindings.ClearVaultLogs());
     }
 
     private void BtnClearLootLogs_Click(object sender, RoutedEventArgs e)
     {
-        var mainWindowViewModel = ServiceLocator.Resolve<MainWindowViewModel>();
-        mainWindowViewModel.LoggingBindings.IsAllButtonsEnabled = false;
-        mainWindowViewModel.LoggingBindings.ClearAllLootComparatorLogs();
-        mainWindowViewModel.LoggingBindings.IsAllButtonsEnabled = true;
+        ExecuteLootComparatorAction(loggingBindings => loggingBindings.ClearAllLootComparatorLogs());
     }
 
     private void BtnSaveLootComparator_Click(object sender, RoutedEventArgs e)
@@ -198,11 +194,42 @@ public partial class LoggingControl
 
     private static void ShowLootComparatorError(string messageTranslationKey)
     {
-        var errorWindow = new DialogWindow(
-            LocalizationController.Translation("ERROR"),
-            LocalizationController.Translation(messageTranslationKey),
-            DialogType.Error);
-        _ = errorWindow.ShowDialog();
+        try
+        {
+            var errorWindow = new DialogWindow(
+                LocalizationController.Translation("ERROR"),
+                LocalizationController.Translation(messageTranslationKey),
+                DialogType.Error);
+            _ = errorWindow.ShowDialog();
+        }
+        catch (Exception ex)
+        {
+            Debug.Print($"Error showing loot comparator error dialog: {ex.Message}");
+        }
+    }
+
+    private static void ExecuteLootComparatorAction(Action<LoggingBindings> action)
+    {
+        try
+        {
+            var mainWindowViewModel = ServiceLocator.Resolve<MainWindowViewModel>();
+            var loggingBindings = mainWindowViewModel.LoggingBindings;
+            loggingBindings.IsAllButtonsEnabled = false;
+
+            try
+            {
+                action(loggingBindings);
+            }
+            finally
+            {
+                loggingBindings.IsAllButtonsEnabled = true;
+            }
+        }
+        catch (Exception ex)
+        {
+            Debug.Print($"Error executing loot comparator action: {ex.Message}");
+            ShowLootComparatorError("ERROR_GENERAL_ERROR");
+        }
     }
 
     private void ToggleLootComparatorInfoPopup_MouseUp(object sender, MouseButtonEventArgs e)

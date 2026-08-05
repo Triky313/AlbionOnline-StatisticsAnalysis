@@ -56,6 +56,40 @@ public class LootComparatorSaveTests
     }
 
     [Test]
+    public void SaveAfterComparison_WithChestAndLootLogs_PreservesBothLogTypes()
+    {
+        var testDirectory = CreateTestDirectory();
+        var previousItems = ItemController.Items;
+
+        try
+        {
+            using var _ = AppDataPaths.UseRuntimeBaseDirectoryForTests(testDirectory);
+            AppDataPaths.SetActiveUserDataServer(ServerLocation.Europe);
+            ItemController.Items = CreateItems();
+
+            var bindings = new LoggingBindings
+            {
+                VaultLogItems = [CreateChestLogItem()],
+                LootingPlayers = [CreateLootingPlayer("SavedPlayer")]
+            };
+
+            bindings.UpdateItemsStatus();
+            bindings.CanSaveLootComparator.Should().BeTrue();
+            var save = bindings.SaveLootComparator("Compared logs");
+
+            save.ChestLogEntryCount.Should().Be(1);
+            save.LootLogEntryCount.Should().Be(1);
+            File.ReadAllText(save.ChestLogFilePath).Should().Contain("SavedPlayer").And.Contain("Pine Logs");
+            File.ReadAllText(save.LootLogFilePath).Should().Contain("T4_WOOD").And.Contain("LootedPlayer");
+        }
+        finally
+        {
+            ItemController.Items = previousItems;
+            Directory.Delete(testDirectory, true);
+        }
+    }
+
+    [Test]
     public void LoadSelectedLootComparatorSave_WithExistingLogs_ReplacesBothLogTypes()
     {
         var testDirectory = CreateTestDirectory();
