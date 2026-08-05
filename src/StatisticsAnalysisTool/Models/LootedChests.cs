@@ -1,5 +1,6 @@
 ﻿using StatisticsAnalysisTool.Localization;
 using StatisticsAnalysisTool.ViewModels;
+using System.Collections.Generic;
 
 namespace StatisticsAnalysisTool.Models;
 
@@ -89,6 +90,16 @@ public class LootedChests : BaseViewModel
     private int _randomSoloDungeonLegendaryWeek;
     private int _randomSoloDungeonLegendaryMonth;
     private int _randomSoloDungeonLegendaryYear;
+
+    public IReadOnlyList<DashboardLootedChestContentStatistics> ContentStatistics { get; } =
+    [
+        new(DashboardContentType.SoloDungeon),
+        new(DashboardContentType.StandardDungeon),
+        new(DashboardContentType.AvalonDungeon),
+        new(DashboardContentType.OpenWorld),
+        new(DashboardContentType.HellGate),
+        new(DashboardContentType.CorruptedDungeon)
+    ];
 
     #region OpenWorld bindings
 

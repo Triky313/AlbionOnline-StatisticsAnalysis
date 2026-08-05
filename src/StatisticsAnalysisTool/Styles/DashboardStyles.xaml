@@ -701,358 +701,161 @@
         </StackPanel>
     </DataTemplate>
 
-    <Style x:Key="Dashboard.ChestCard" TargetType="{x:Type Border}" BasedOn="{StaticResource Dashboard.Card}">
-        <Setter Property="Margin" Value="5" />
-        <Setter Property="Padding" Value="12,8" />
+    <Style x:Key="Dashboard.LootedChestTitle" TargetType="{x:Type TextBlock}">
+        <Setter Property="FontSize" Value="13" />
+        <Setter Property="FontWeight" Value="SemiBold" />
+        <Setter Property="Foreground" Value="{StaticResource SolidColorBrush.Text.1}" />
+        <Setter Property="VerticalAlignment" Value="Center" />
+        <Setter Property="TextTrimming" Value="CharacterEllipsis" />
     </Style>
 
-    <Style x:Key="Dashboard.ChestTitle" TargetType="{x:Type TextBlock}">
+    <Style x:Key="Dashboard.LootedChestTotalValue" TargetType="{x:Type TextBlock}">
+        <Setter Property="FontSize" Value="25" />
+        <Setter Property="FontWeight" Value="SemiBold" />
+        <Setter Property="Foreground" Value="{StaticResource SolidColorBrush.Text.1}" />
+    </Style>
+
+    <Style x:Key="Dashboard.LootedChestRarityValue" TargetType="{x:Type TextBlock}">
+        <Setter Property="Margin" Value="0,3,0,0" />
         <Setter Property="FontSize" Value="13" />
         <Setter Property="FontWeight" Value="SemiBold" />
         <Setter Property="Foreground" Value="{StaticResource SolidColorBrush.Text.1}" />
         <Setter Property="HorizontalAlignment" Value="Center" />
-        <Setter Property="Margin" Value="0,0,0,5" />
     </Style>
 
-    <Style x:Key="Dashboard.ChestRow" TargetType="{x:Type Border}">
-        <Setter Property="BorderBrush" Value="{StaticResource SolidColorBrush.Background.4}" />
-        <Setter Property="BorderThickness" Value="0,1,0,0" />
-    </Style>
+    <DataTemplate x:Key="Dashboard.LootedChestContentTemplate" DataType="{x:Type models:DashboardLootedChestContentStatistics}">
+        <Border MinHeight="150" Margin="5" Padding="12,9,12,8" Style="{StaticResource Dashboard.Card}">
+            <Grid>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="27" />
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="11" />
+                    <RowDefinition Height="25" />
+                </Grid.RowDefinitions>
 
-    <Style x:Key="Dashboard.ChestLabel" TargetType="{x:Type TextBlock}">
-        <Setter Property="FontSize" Value="11" />
-        <Setter Property="Foreground" Value="{StaticResource SolidColorBrush.Text.2}" />
-        <Setter Property="VerticalAlignment" Value="Center" />
-        <Setter Property="Margin" Value="3,0,6,0" />
-    </Style>
+                <DockPanel>
+                    <Grid Width="22" Height="22" Margin="0,0,7,0">
+                        <Image Source="{Binding ContentIconSource}" Stretch="Uniform">
+                            <Image.Style>
+                                <Style TargetType="{x:Type Image}">
+                                    <Style.Triggers>
+                                        <DataTrigger Binding="{Binding ContentType}" Value="{x:Static models:DashboardContentType.OpenWorld}">
+                                            <Setter Property="Visibility" Value="Collapsed" />
+                                        </DataTrigger>
+                                    </Style.Triggers>
+                                </Style>
+                            </Image.Style>
+                        </Image>
+                        <fa5:ImageAwesome Icon="Solid_GlobeEurope"
+                                          Foreground="{StaticResource SolidColorBrush.Accent.Blue.3}">
+                            <fa5:ImageAwesome.Style>
+                                <Style TargetType="{x:Type fa5:ImageAwesome}">
+                                    <Setter Property="Visibility" Value="Collapsed" />
+                                    <Style.Triggers>
+                                        <DataTrigger Binding="{Binding ContentType}" Value="{x:Static models:DashboardContentType.OpenWorld}">
+                                            <Setter Property="Visibility" Value="Visible" />
+                                        </DataTrigger>
+                                    </Style.Triggers>
+                                </Style>
+                            </fa5:ImageAwesome.Style>
+                        </fa5:ImageAwesome>
+                    </Grid>
+                    <TextBlock Text="{Binding Name}" Style="{StaticResource Dashboard.LootedChestTitle}" />
+                </DockPanel>
 
-    <Style x:Key="Dashboard.ChestValue" TargetType="{x:Type TextBlock}">
-        <Setter Property="FontSize" Value="12" />
-        <Setter Property="Foreground" Value="{StaticResource SolidColorBrush.Text.1}" />
-        <Setter Property="HorizontalAlignment" Value="Center" />
-        <Setter Property="VerticalAlignment" Value="Center" />
-    </Style>
+                <Grid Grid.Row="1"
+                      Margin="0,6,0,0">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="1.35*" />
+                        <ColumnDefinition Width="18" />
+                        <ColumnDefinition Width="*" />
+                        <ColumnDefinition Width="*" />
+                        <ColumnDefinition Width="*" />
+                        <ColumnDefinition Width="*" />
+                    </Grid.ColumnDefinitions>
+
+                    <StackPanel Margin="3,0,3,0"
+                                VerticalAlignment="Center">
+                        <TextBlock Text="{Binding TotalSummary.Value, Converter={StaticResource ShortNumberConverter}, ConverterCulture={x:Static gl:CultureInfo.CurrentCulture}, FallbackValue=0}"
+                                   Style="{StaticResource Dashboard.LootedChestTotalValue}" />
+                        <StackPanel DataContext="{Binding TotalSummary}" Orientation="Horizontal">
+                            <TextBlock Text="{Binding ChangeIndicator}" Style="{StaticResource Dashboard.SummaryDeltaText}" />
+                            <TextBlock Text=" " Style="{StaticResource Dashboard.SummaryDeltaText}" />
+                            <TextBlock Text="{Binding ChangeAmount, Converter={StaticResource ShortNumberConverter}, ConverterCulture={x:Static gl:CultureInfo.CurrentCulture}, FallbackValue=0}"
+                                       Style="{StaticResource Dashboard.SummaryDeltaText}" />
+                            <TextBlock Text=" (" Style="{StaticResource Dashboard.SummaryDeltaText}" />
+                            <TextBlock Text="{Binding ChangePercentageText}" Style="{StaticResource Dashboard.SummaryDeltaText}" />
+                            <TextBlock Text=")" Style="{StaticResource Dashboard.SummaryDeltaText}" />
+                        </StackPanel>
+                    </StackPanel>
+
+                    <Border Grid.Column="1" Width="1" Margin="8,3" Background="{StaticResource SolidColorBrush.Background.4}" />
+
+                    <StackPanel Grid.Column="2" HorizontalAlignment="Center" ToolTip="{Binding TranslationOpenedStandardChests}">
+                        <Grid Width="36" Height="36">
+                            <Image Width="{Binding ChestIconSize}"
+                                   Height="{Binding ChestIconSize}"
+                                   Source="{Binding ChestIconSource}"
+                                   Stretch="Uniform" />
+                            <Image Width="36" Height="36" Source="/Assets/green_glow.png" Opacity="0.65" />
+                        </Grid>
+                        <TextBlock Text="{Binding Common, StringFormat='{}{0:N0}', FallbackValue=0}"
+                                   Style="{StaticResource Dashboard.LootedChestRarityValue}" />
+                    </StackPanel>
+                    <StackPanel Grid.Column="3" HorizontalAlignment="Center" ToolTip="{Binding TranslationOpenedUncommonChests}">
+                        <Grid Width="36" Height="36">
+                            <Image Width="{Binding ChestIconSize}"
+                                   Height="{Binding ChestIconSize}"
+                                   Source="{Binding ChestIconSource}"
+                                   Stretch="Uniform" />
+                            <Image Width="36" Height="36" Source="/Assets/blue_glow.png" Opacity="0.65" />
+                        </Grid>
+                        <TextBlock Text="{Binding Uncommon, StringFormat='{}{0:N0}', FallbackValue=0}"
+                                   Style="{StaticResource Dashboard.LootedChestRarityValue}" />
+                    </StackPanel>
+                    <StackPanel Grid.Column="4" HorizontalAlignment="Center" ToolTip="{Binding TranslationOpenedRareChests}">
+                        <Grid Width="36" Height="36">
+                            <Image Width="{Binding ChestIconSize}"
+                                   Height="{Binding ChestIconSize}"
+                                   Source="{Binding ChestIconSource}"
+                                   Stretch="Uniform" />
+                            <Image Width="36" Height="36" Source="/Assets/purple_glow.png" Opacity="0.65" />
+                        </Grid>
+                        <TextBlock Text="{Binding Rare, StringFormat='{}{0:N0}', FallbackValue=0}"
+                                   Style="{StaticResource Dashboard.LootedChestRarityValue}" />
+                    </StackPanel>
+                    <StackPanel Grid.Column="5" HorizontalAlignment="Center" ToolTip="{Binding TranslationOpenedLegendaryChests}">
+                        <Grid Width="36" Height="36">
+                            <Image Width="{Binding ChestIconSize}"
+                                   Height="{Binding ChestIconSize}"
+                                   Source="{Binding ChestIconSource}"
+                                   Stretch="Uniform" />
+                            <Image Width="36" Height="36" Source="/Assets/gold_glow.png" Opacity="0.65" />
+                        </Grid>
+                        <TextBlock Text="{Binding Legendary, StringFormat='{}{0:N0}', FallbackValue=0}" Style="{StaticResource Dashboard.LootedChestRarityValue}" />
+                    </StackPanel>
+                </Grid>
+
+                <Border Grid.Row="2" Height="1" Margin="2,9,2,0" Background="{StaticResource SolidColorBrush.Background.4}" />
+
+                <StackPanel Grid.Row="3" Margin="3,5,3,0" Orientation="Horizontal">
+                    <TextBlock FontSize="11.5" Foreground="{StaticResource SolidColorBrush.Text.2}" Text="{Binding TranslationAverage}" />
+                    <TextBlock FontSize="11.5" Foreground="{StaticResource SolidColorBrush.Text.2}" Text=" / " />
+                    <TextBlock FontSize="11.5" Foreground="{StaticResource SolidColorBrush.Text.2}" Text="{Binding TranslationMaps}" />
+                    <TextBlock Margin="7,0,0,0" FontSize="12" FontWeight="SemiBold" Foreground="{StaticResource SolidColorBrush.Accent.Blue.3}"
+                               Text="{Binding AveragePerMap, StringFormat='{}{0:N2}', FallbackValue=0}" />
+                </StackPanel>
+            </Grid>
+        </Border>
+    </DataTemplate>
 
     <DataTemplate x:Key="LootedChestsTemplate" DataType="{x:Type models:LootedChests}">
-        <UniformGrid Columns="3" Rows="2">
-            <Border Style="{StaticResource Dashboard.ChestCard}">
-                <Grid>
-                    <Grid.RowDefinitions>
-                        <RowDefinition Height="Auto" />
-                        <RowDefinition Height="38" />
-                        <RowDefinition Height="26" />
-                        <RowDefinition Height="26" />
-                        <RowDefinition Height="26" />
-                    </Grid.RowDefinitions>
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="1.45*" />
-                        <ColumnDefinition Width="*" />
-                        <ColumnDefinition Width="*" />
-                        <ColumnDefinition Width="*" />
-                        <ColumnDefinition Width="*" />
-                    </Grid.ColumnDefinitions>
-                    <TextBlock Grid.ColumnSpan="5" Text="{Binding TranslationRandomSoloDungeons, FallbackValue=RANDOM_SOLO_DUNGEONS}" Style="{StaticResource Dashboard.ChestTitle}" />
-                        <Grid Grid.Row="1" Grid.Column="1" Width="34" Height="34" HorizontalAlignment="Center">
-                            <Image Source="/Assets/static_chest.png" Width="23" Height="23" />
-                            <Image Source="/Assets/green_glow.png" Width="34" Height="34" Opacity="0.65" />
-                        </Grid>
-                        <Grid Grid.Row="1" Grid.Column="2" Width="34" Height="34" HorizontalAlignment="Center">
-                            <Image Source="/Assets/static_chest.png" Width="23" Height="23" />
-                            <Image Source="/Assets/blue_glow.png" Width="34" Height="34" Opacity="0.65" />
-                        </Grid>
-                        <Grid Grid.Row="1" Grid.Column="3" Width="34" Height="34" HorizontalAlignment="Center">
-                            <Image Source="/Assets/static_chest.png" Width="23" Height="23" />
-                            <Image Source="/Assets/purple_glow.png" Width="34" Height="34" Opacity="0.65" />
-                        </Grid>
-                        <Grid Grid.Row="1" Grid.Column="4" Width="34" Height="34" HorizontalAlignment="Center">
-                            <Image Source="/Assets/static_chest.png" Width="23" Height="23" />
-                            <Image Source="/Assets/gold_glow.png" Width="34" Height="34" Opacity="0.65" />
-                        </Grid>
-                        <Border Grid.Row="2" Grid.ColumnSpan="5" Style="{StaticResource Dashboard.ChestRow}" />
-                        <TextBlock Grid.Row="2" Text="{Binding TranslationLast7Days, FallbackValue=LAST_7_DAYS}" Style="{StaticResource Dashboard.ChestLabel}" />
-                        <TextBlock Grid.Row="2" Grid.Column="1" Text="{Binding RandomSoloDungeonCommonWeek, StringFormat='{}{0:N0}', FallbackValue=0}" Style="{StaticResource Dashboard.ChestValue}" />
-                        <TextBlock Grid.Row="2" Grid.Column="2" Text="{Binding RandomSoloDungeonUncommonWeek, StringFormat='{}{0:N0}', FallbackValue=0}" Style="{StaticResource Dashboard.ChestValue}" />
-                        <TextBlock Grid.Row="2" Grid.Column="3" Text="{Binding RandomSoloDungeonEpicWeek, StringFormat='{}{0:N0}', FallbackValue=0}" Style="{StaticResource Dashboard.ChestValue}" />
-                        <TextBlock Grid.Row="2" Grid.Column="4" Text="{Binding RandomSoloDungeonLegendaryWeek, StringFormat='{}{0:N0}', FallbackValue=0}" Style="{StaticResource Dashboard.ChestValue}" />
-                        <Border Grid.Row="3" Grid.ColumnSpan="5" Style="{StaticResource Dashboard.ChestRow}" />
-                        <TextBlock Grid.Row="3" Text="{Binding TranslationLast30Days, FallbackValue=LAST_30_DAYS}" Style="{StaticResource Dashboard.ChestLabel}" />
-                        <TextBlock Grid.Row="3" Grid.Column="1" Text="{Binding RandomSoloDungeonCommonMonth, StringFormat='{}{0:N0}', FallbackValue=0}" Style="{StaticResource Dashboard.ChestValue}" />
-                        <TextBlock Grid.Row="3" Grid.Column="2" Text="{Binding RandomSoloDungeonUncommonMonth, StringFormat='{}{0:N0}', FallbackValue=0}" Style="{StaticResource Dashboard.ChestValue}" />
-                        <TextBlock Grid.Row="3" Grid.Column="3" Text="{Binding RandomSoloDungeonEpicMonth, StringFormat='{}{0:N0}', FallbackValue=0}" Style="{StaticResource Dashboard.ChestValue}" />
-                        <TextBlock Grid.Row="3" Grid.Column="4" Text="{Binding RandomSoloDungeonLegendaryMonth, StringFormat='{}{0:N0}', FallbackValue=0}" Style="{StaticResource Dashboard.ChestValue}" />
-                        <Border Grid.Row="4" Grid.ColumnSpan="5" Style="{StaticResource Dashboard.ChestRow}" />
-                        <TextBlock Grid.Row="4" Text="{Binding TranslationLast365Days, FallbackValue=LAST_365_DAYS}" Style="{StaticResource Dashboard.ChestLabel}" />
-                        <TextBlock Grid.Row="4" Grid.Column="1" Text="{Binding RandomSoloDungeonCommonYear, StringFormat='{}{0:N0}', FallbackValue=0}" Style="{StaticResource Dashboard.ChestValue}" />
-                        <TextBlock Grid.Row="4" Grid.Column="2" Text="{Binding RandomSoloDungeonUncommonYear, StringFormat='{}{0:N0}', FallbackValue=0}" Style="{StaticResource Dashboard.ChestValue}" />
-                        <TextBlock Grid.Row="4" Grid.Column="3" Text="{Binding RandomSoloDungeonEpicYear, StringFormat='{}{0:N0}', FallbackValue=0}" Style="{StaticResource Dashboard.ChestValue}" />
-                        <TextBlock Grid.Row="4" Grid.Column="4" Text="{Binding RandomSoloDungeonLegendaryYear, StringFormat='{}{0:N0}', FallbackValue=0}" Style="{StaticResource Dashboard.ChestValue}" />
-                </Grid>
-            </Border>
-            <Border Style="{StaticResource Dashboard.ChestCard}">
-                <Grid>
-                    <Grid.RowDefinitions>
-                        <RowDefinition Height="Auto" />
-                        <RowDefinition Height="38" />
-                        <RowDefinition Height="26" />
-                        <RowDefinition Height="26" />
-                        <RowDefinition Height="26" />
-                    </Grid.RowDefinitions>
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="1.45*" />
-                        <ColumnDefinition Width="*" />
-                        <ColumnDefinition Width="*" />
-                        <ColumnDefinition Width="*" />
-                        <ColumnDefinition Width="*" />
-                    </Grid.ColumnDefinitions>
-                    <TextBlock Grid.ColumnSpan="5" Text="{Binding TranslationRandomGroupDungeons, FallbackValue=RANDOM_GROUP_DUNGEONS}" Style="{StaticResource Dashboard.ChestTitle}" />
-                        <Grid Grid.Row="1" Grid.Column="1" Width="34" Height="34" HorizontalAlignment="Center">
-                            <Image Source="/Assets/static_chest.png" Width="23" Height="23" />
-                            <Image Source="/Assets/green_glow.png" Width="34" Height="34" Opacity="0.65" />
-                        </Grid>
-                        <Grid Grid.Row="1" Grid.Column="2" Width="34" Height="34" HorizontalAlignment="Center">
-                            <Image Source="/Assets/static_chest.png" Width="23" Height="23" />
-                            <Image Source="/Assets/blue_glow.png" Width="34" Height="34" Opacity="0.65" />
-                        </Grid>
-                        <Grid Grid.Row="1" Grid.Column="3" Width="34" Height="34" HorizontalAlignment="Center">
-                            <Image Source="/Assets/static_chest.png" Width="23" Height="23" />
-                            <Image Source="/Assets/purple_glow.png" Width="34" Height="34" Opacity="0.65" />
-                        </Grid>
-                        <Grid Grid.Row="1" Grid.Column="4" Width="34" Height="34" HorizontalAlignment="Center">
-                            <Image Source="/Assets/static_chest.png" Width="23" Height="23" />
-                            <Image Source="/Assets/gold_glow.png" Width="34" Height="34" Opacity="0.65" />
-                        </Grid>
-                        <Border Grid.Row="2" Grid.ColumnSpan="5" Style="{StaticResource Dashboard.ChestRow}" />
-                        <TextBlock Grid.Row="2" Text="{Binding TranslationLast7Days, FallbackValue=LAST_7_DAYS}" Style="{StaticResource Dashboard.ChestLabel}" />
-                        <TextBlock Grid.Row="2" Grid.Column="1" Text="{Binding RandomGroupDungeonCommonWeek, StringFormat='{}{0:N0}', FallbackValue=0}" Style="{StaticResource Dashboard.ChestValue}" />
-                        <TextBlock Grid.Row="2" Grid.Column="2" Text="{Binding RandomGroupDungeonUncommonWeek, StringFormat='{}{0:N0}', FallbackValue=0}" Style="{StaticResource Dashboard.ChestValue}" />
-                        <TextBlock Grid.Row="2" Grid.Column="3" Text="{Binding RandomGroupDungeonEpicWeek, StringFormat='{}{0:N0}', FallbackValue=0}" Style="{StaticResource Dashboard.ChestValue}" />
-                        <TextBlock Grid.Row="2" Grid.Column="4" Text="{Binding RandomGroupDungeonLegendaryWeek, StringFormat='{}{0:N0}', FallbackValue=0}" Style="{StaticResource Dashboard.ChestValue}" />
-                        <Border Grid.Row="3" Grid.ColumnSpan="5" Style="{StaticResource Dashboard.ChestRow}" />
-                        <TextBlock Grid.Row="3" Text="{Binding TranslationLast30Days, FallbackValue=LAST_30_DAYS}" Style="{StaticResource Dashboard.ChestLabel}" />
-                        <TextBlock Grid.Row="3" Grid.Column="1" Text="{Binding RandomGroupDungeonCommonMonth, StringFormat='{}{0:N0}', FallbackValue=0}" Style="{StaticResource Dashboard.ChestValue}" />
-                        <TextBlock Grid.Row="3" Grid.Column="2" Text="{Binding RandomGroupDungeonUncommonMonth, StringFormat='{}{0:N0}', FallbackValue=0}" Style="{StaticResource Dashboard.ChestValue}" />
-                        <TextBlock Grid.Row="3" Grid.Column="3" Text="{Binding RandomGroupDungeonEpicMonth, StringFormat='{}{0:N0}', FallbackValue=0}" Style="{StaticResource Dashboard.ChestValue}" />
-                        <TextBlock Grid.Row="3" Grid.Column="4" Text="{Binding RandomGroupDungeonLegendaryMonth, StringFormat='{}{0:N0}', FallbackValue=0}" Style="{StaticResource Dashboard.ChestValue}" />
-                        <Border Grid.Row="4" Grid.ColumnSpan="5" Style="{StaticResource Dashboard.ChestRow}" />
-                        <TextBlock Grid.Row="4" Text="{Binding TranslationLast365Days, FallbackValue=LAST_365_DAYS}" Style="{StaticResource Dashboard.ChestLabel}" />
-                        <TextBlock Grid.Row="4" Grid.Column="1" Text="{Binding RandomGroupDungeonCommonYear, StringFormat='{}{0:N0}', FallbackValue=0}" Style="{StaticResource Dashboard.ChestValue}" />
-                        <TextBlock Grid.Row="4" Grid.Column="2" Text="{Binding RandomGroupDungeonUncommonYear, StringFormat='{}{0:N0}', FallbackValue=0}" Style="{StaticResource Dashboard.ChestValue}" />
-                        <TextBlock Grid.Row="4" Grid.Column="3" Text="{Binding RandomGroupDungeonEpicYear, StringFormat='{}{0:N0}', FallbackValue=0}" Style="{StaticResource Dashboard.ChestValue}" />
-                        <TextBlock Grid.Row="4" Grid.Column="4" Text="{Binding RandomGroupDungeonLegendaryYear, StringFormat='{}{0:N0}', FallbackValue=0}" Style="{StaticResource Dashboard.ChestValue}" />
-                </Grid>
-            </Border>
-            <Border Style="{StaticResource Dashboard.ChestCard}">
-                <Grid>
-                    <Grid.RowDefinitions>
-                        <RowDefinition Height="Auto" />
-                        <RowDefinition Height="38" />
-                        <RowDefinition Height="26" />
-                        <RowDefinition Height="26" />
-                        <RowDefinition Height="26" />
-                    </Grid.RowDefinitions>
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="1.45*" />
-                        <ColumnDefinition Width="*" />
-                        <ColumnDefinition Width="*" />
-                        <ColumnDefinition Width="*" />
-                        <ColumnDefinition Width="*" />
-                    </Grid.ColumnDefinitions>
-                    <TextBlock Grid.ColumnSpan="5" Text="{Binding TranslationAvalonianRoads, FallbackValue=AVALONIAN_ROADS}" Style="{StaticResource Dashboard.ChestTitle}" />
-                        <Grid Grid.Row="1" Grid.Column="1" Width="34" Height="34" HorizontalAlignment="Center">
-                            <Image Source="/Assets/ava_chest.png" Width="31" Height="31" />
-                            <Image Source="/Assets/green_glow.png" Width="34" Height="34" Opacity="0.65" />
-                        </Grid>
-                        <Grid Grid.Row="1" Grid.Column="2" Width="34" Height="34" HorizontalAlignment="Center">
-                            <Image Source="/Assets/ava_chest.png" Width="31" Height="31" />
-                            <Image Source="/Assets/blue_glow.png" Width="34" Height="34" Opacity="0.65" />
-                        </Grid>
-                        <Grid Grid.Row="1" Grid.Column="3" Width="34" Height="34" HorizontalAlignment="Center">
-                            <Image Source="/Assets/ava_chest.png" Width="31" Height="31" />
-                            <Image Source="/Assets/purple_glow.png" Width="34" Height="34" Opacity="0.65" />
-                        </Grid>
-                        <Grid Grid.Row="1" Grid.Column="4" Width="34" Height="34" HorizontalAlignment="Center">
-                            <Image Source="/Assets/ava_chest.png" Width="31" Height="31" />
-                            <Image Source="/Assets/gold_glow.png" Width="34" Height="34" Opacity="0.65" />
-                        </Grid>
-                        <Border Grid.Row="2" Grid.ColumnSpan="5" Style="{StaticResource Dashboard.ChestRow}" />
-                        <TextBlock Grid.Row="2" Text="{Binding TranslationLast7Days, FallbackValue=LAST_7_DAYS}" Style="{StaticResource Dashboard.ChestLabel}" />
-                        <TextBlock Grid.Row="2" Grid.Column="1" Text="{Binding AvalonianRoadCommonWeek, StringFormat='{}{0:N0}', FallbackValue=0}" Style="{StaticResource Dashboard.ChestValue}" />
-                        <TextBlock Grid.Row="2" Grid.Column="2" Text="{Binding AvalonianRoadUncommonWeek, StringFormat='{}{0:N0}', FallbackValue=0}" Style="{StaticResource Dashboard.ChestValue}" />
-                        <TextBlock Grid.Row="2" Grid.Column="3" Text="{Binding AvalonianRoadEpicWeek, StringFormat='{}{0:N0}', FallbackValue=0}" Style="{StaticResource Dashboard.ChestValue}" />
-                        <TextBlock Grid.Row="2" Grid.Column="4" Text="{Binding AvalonianRoadLegendaryWeek, StringFormat='{}{0:N0}', FallbackValue=0}" Style="{StaticResource Dashboard.ChestValue}" />
-                        <Border Grid.Row="3" Grid.ColumnSpan="5" Style="{StaticResource Dashboard.ChestRow}" />
-                        <TextBlock Grid.Row="3" Text="{Binding TranslationLast30Days, FallbackValue=LAST_30_DAYS}" Style="{StaticResource Dashboard.ChestLabel}" />
-                        <TextBlock Grid.Row="3" Grid.Column="1" Text="{Binding AvalonianRoadCommonMonth, StringFormat='{}{0:N0}', FallbackValue=0}" Style="{StaticResource Dashboard.ChestValue}" />
-                        <TextBlock Grid.Row="3" Grid.Column="2" Text="{Binding AvalonianRoadUncommonMonth, StringFormat='{}{0:N0}', FallbackValue=0}" Style="{StaticResource Dashboard.ChestValue}" />
-                        <TextBlock Grid.Row="3" Grid.Column="3" Text="{Binding AvalonianRoadEpicMonth, StringFormat='{}{0:N0}', FallbackValue=0}" Style="{StaticResource Dashboard.ChestValue}" />
-                        <TextBlock Grid.Row="3" Grid.Column="4" Text="{Binding AvalonianRoadLegendaryMonth, StringFormat='{}{0:N0}', FallbackValue=0}" Style="{StaticResource Dashboard.ChestValue}" />
-                        <Border Grid.Row="4" Grid.ColumnSpan="5" Style="{StaticResource Dashboard.ChestRow}" />
-                        <TextBlock Grid.Row="4" Text="{Binding TranslationLast365Days, FallbackValue=LAST_365_DAYS}" Style="{StaticResource Dashboard.ChestLabel}" />
-                        <TextBlock Grid.Row="4" Grid.Column="1" Text="{Binding AvalonianRoadCommonYear, StringFormat='{}{0:N0}', FallbackValue=0}" Style="{StaticResource Dashboard.ChestValue}" />
-                        <TextBlock Grid.Row="4" Grid.Column="2" Text="{Binding AvalonianRoadUncommonYear, StringFormat='{}{0:N0}', FallbackValue=0}" Style="{StaticResource Dashboard.ChestValue}" />
-                        <TextBlock Grid.Row="4" Grid.Column="3" Text="{Binding AvalonianRoadEpicYear, StringFormat='{}{0:N0}', FallbackValue=0}" Style="{StaticResource Dashboard.ChestValue}" />
-                        <TextBlock Grid.Row="4" Grid.Column="4" Text="{Binding AvalonianRoadLegendaryYear, StringFormat='{}{0:N0}', FallbackValue=0}" Style="{StaticResource Dashboard.ChestValue}" />
-                </Grid>
-            </Border>
-            <Border Style="{StaticResource Dashboard.ChestCard}">
-                <Grid>
-                    <Grid.RowDefinitions>
-                        <RowDefinition Height="Auto" />
-                        <RowDefinition Height="38" />
-                        <RowDefinition Height="26" />
-                        <RowDefinition Height="26" />
-                        <RowDefinition Height="26" />
-                    </Grid.RowDefinitions>
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="1.45*" />
-                        <ColumnDefinition Width="*" />
-                        <ColumnDefinition Width="*" />
-                        <ColumnDefinition Width="*" />
-                        <ColumnDefinition Width="*" />
-                    </Grid.ColumnDefinitions>
-                    <TextBlock Grid.ColumnSpan="5" Text="{Binding TranslationOpenWorld, FallbackValue=OPEN_WORLD}" Style="{StaticResource Dashboard.ChestTitle}" />
-                        <Grid Grid.Row="1" Grid.Column="1" Width="34" Height="34" HorizontalAlignment="Center">
-                            <Image Source="/Assets/static_chest.png" Width="23" Height="23" />
-                            <Image Source="/Assets/green_glow.png" Width="34" Height="34" Opacity="0.65" />
-                        </Grid>
-                        <Grid Grid.Row="1" Grid.Column="2" Width="34" Height="34" HorizontalAlignment="Center">
-                            <Image Source="/Assets/static_chest.png" Width="23" Height="23" />
-                            <Image Source="/Assets/blue_glow.png" Width="34" Height="34" Opacity="0.65" />
-                        </Grid>
-                        <Grid Grid.Row="1" Grid.Column="3" Width="34" Height="34" HorizontalAlignment="Center">
-                            <Image Source="/Assets/static_chest.png" Width="23" Height="23" />
-                            <Image Source="/Assets/purple_glow.png" Width="34" Height="34" Opacity="0.65" />
-                        </Grid>
-                        <Grid Grid.Row="1" Grid.Column="4" Width="34" Height="34" HorizontalAlignment="Center">
-                            <Image Source="/Assets/static_chest.png" Width="23" Height="23" />
-                            <Image Source="/Assets/gold_glow.png" Width="34" Height="34" Opacity="0.65" />
-                        </Grid>
-                        <Border Grid.Row="2" Grid.ColumnSpan="5" Style="{StaticResource Dashboard.ChestRow}" />
-                        <TextBlock Grid.Row="2" Text="{Binding TranslationLast7Days, FallbackValue=LAST_7_DAYS}" Style="{StaticResource Dashboard.ChestLabel}" />
-                        <TextBlock Grid.Row="2" Grid.Column="1" Text="{Binding OpenWorldCommonWeek, StringFormat='{}{0:N0}', FallbackValue=0}" Style="{StaticResource Dashboard.ChestValue}" />
-                        <TextBlock Grid.Row="2" Grid.Column="2" Text="{Binding OpenWorldUncommonWeek, StringFormat='{}{0:N0}', FallbackValue=0}" Style="{StaticResource Dashboard.ChestValue}" />
-                        <TextBlock Grid.Row="2" Grid.Column="3" Text="{Binding OpenWorldEpicWeek, StringFormat='{}{0:N0}', FallbackValue=0}" Style="{StaticResource Dashboard.ChestValue}" />
-                        <TextBlock Grid.Row="2" Grid.Column="4" Text="{Binding OpenWorldLegendaryWeek, StringFormat='{}{0:N0}', FallbackValue=0}" Style="{StaticResource Dashboard.ChestValue}" />
-                        <Border Grid.Row="3" Grid.ColumnSpan="5" Style="{StaticResource Dashboard.ChestRow}" />
-                        <TextBlock Grid.Row="3" Text="{Binding TranslationLast30Days, FallbackValue=LAST_30_DAYS}" Style="{StaticResource Dashboard.ChestLabel}" />
-                        <TextBlock Grid.Row="3" Grid.Column="1" Text="{Binding OpenWorldCommonMonth, StringFormat='{}{0:N0}', FallbackValue=0}" Style="{StaticResource Dashboard.ChestValue}" />
-                        <TextBlock Grid.Row="3" Grid.Column="2" Text="{Binding OpenWorldUncommonMonth, StringFormat='{}{0:N0}', FallbackValue=0}" Style="{StaticResource Dashboard.ChestValue}" />
-                        <TextBlock Grid.Row="3" Grid.Column="3" Text="{Binding OpenWorldEpicMonth, StringFormat='{}{0:N0}', FallbackValue=0}" Style="{StaticResource Dashboard.ChestValue}" />
-                        <TextBlock Grid.Row="3" Grid.Column="4" Text="{Binding OpenWorldLegendaryMonth, StringFormat='{}{0:N0}', FallbackValue=0}" Style="{StaticResource Dashboard.ChestValue}" />
-                        <Border Grid.Row="4" Grid.ColumnSpan="5" Style="{StaticResource Dashboard.ChestRow}" />
-                        <TextBlock Grid.Row="4" Text="{Binding TranslationLast365Days, FallbackValue=LAST_365_DAYS}" Style="{StaticResource Dashboard.ChestLabel}" />
-                        <TextBlock Grid.Row="4" Grid.Column="1" Text="{Binding OpenWorldCommonYear, StringFormat='{}{0:N0}', FallbackValue=0}" Style="{StaticResource Dashboard.ChestValue}" />
-                        <TextBlock Grid.Row="4" Grid.Column="2" Text="{Binding OpenWorldUncommonYear, StringFormat='{}{0:N0}', FallbackValue=0}" Style="{StaticResource Dashboard.ChestValue}" />
-                        <TextBlock Grid.Row="4" Grid.Column="3" Text="{Binding OpenWorldEpicYear, StringFormat='{}{0:N0}', FallbackValue=0}" Style="{StaticResource Dashboard.ChestValue}" />
-                        <TextBlock Grid.Row="4" Grid.Column="4" Text="{Binding OpenWorldLegendaryYear, StringFormat='{}{0:N0}', FallbackValue=0}" Style="{StaticResource Dashboard.ChestValue}" />
-                </Grid>
-            </Border>
-            <Border Style="{StaticResource Dashboard.ChestCard}">
-                <Grid>
-                    <Grid.RowDefinitions>
-                        <RowDefinition Height="Auto" />
-                        <RowDefinition Height="38" />
-                        <RowDefinition Height="26" />
-                        <RowDefinition Height="26" />
-                        <RowDefinition Height="26" />
-                    </Grid.RowDefinitions>
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="1.45*" />
-                        <ColumnDefinition Width="*" />
-                        <ColumnDefinition Width="*" />
-                        <ColumnDefinition Width="*" />
-                        <ColumnDefinition Width="*" />
-                    </Grid.ColumnDefinitions>
-                    <TextBlock Grid.ColumnSpan="5" Text="{Binding TranslationHellGates, FallbackValue=HELLGATES}" Style="{StaticResource Dashboard.ChestTitle}" />
-                        <Grid Grid.Row="1" Grid.Column="1" Width="34" Height="34" HorizontalAlignment="Center">
-                            <Image Source="/Assets/static_chest.png" Width="23" Height="23" />
-                            <Image Source="/Assets/green_glow.png" Width="34" Height="34" Opacity="0.65" />
-                        </Grid>
-                        <Grid Grid.Row="1" Grid.Column="2" Width="34" Height="34" HorizontalAlignment="Center">
-                            <Image Source="/Assets/static_chest.png" Width="23" Height="23" />
-                            <Image Source="/Assets/blue_glow.png" Width="34" Height="34" Opacity="0.65" />
-                        </Grid>
-                        <Grid Grid.Row="1" Grid.Column="3" Width="34" Height="34" HorizontalAlignment="Center">
-                            <Image Source="/Assets/static_chest.png" Width="23" Height="23" />
-                            <Image Source="/Assets/purple_glow.png" Width="34" Height="34" Opacity="0.65" />
-                        </Grid>
-                        <Grid Grid.Row="1" Grid.Column="4" Width="34" Height="34" HorizontalAlignment="Center">
-                            <Image Source="/Assets/static_chest.png" Width="23" Height="23" />
-                            <Image Source="/Assets/gold_glow.png" Width="34" Height="34" Opacity="0.65" />
-                        </Grid>
-                        <Border Grid.Row="2" Grid.ColumnSpan="5" Style="{StaticResource Dashboard.ChestRow}" />
-                        <TextBlock Grid.Row="2" Text="{Binding TranslationLast7Days, FallbackValue=LAST_7_DAYS}" Style="{StaticResource Dashboard.ChestLabel}" />
-                        <TextBlock Grid.Row="2" Grid.Column="1" Text="{Binding HellGateCommonWeek, StringFormat='{}{0:N0}', FallbackValue=0}" Style="{StaticResource Dashboard.ChestValue}" />
-                        <TextBlock Grid.Row="2" Grid.Column="2" Text="{Binding HellGateUncommonWeek, StringFormat='{}{0:N0}', FallbackValue=0}" Style="{StaticResource Dashboard.ChestValue}" />
-                        <TextBlock Grid.Row="2" Grid.Column="3" Text="{Binding HellGateEpicWeek, StringFormat='{}{0:N0}', FallbackValue=0}" Style="{StaticResource Dashboard.ChestValue}" />
-                        <TextBlock Grid.Row="2" Grid.Column="4" Text="{Binding HellGateLegendaryWeek, StringFormat='{}{0:N0}', FallbackValue=0}" Style="{StaticResource Dashboard.ChestValue}" />
-                        <Border Grid.Row="3" Grid.ColumnSpan="5" Style="{StaticResource Dashboard.ChestRow}" />
-                        <TextBlock Grid.Row="3" Text="{Binding TranslationLast30Days, FallbackValue=LAST_30_DAYS}" Style="{StaticResource Dashboard.ChestLabel}" />
-                        <TextBlock Grid.Row="3" Grid.Column="1" Text="{Binding HellGateCommonMonth, StringFormat='{}{0:N0}', FallbackValue=0}" Style="{StaticResource Dashboard.ChestValue}" />
-                        <TextBlock Grid.Row="3" Grid.Column="2" Text="{Binding HellGateUncommonMonth, StringFormat='{}{0:N0}', FallbackValue=0}" Style="{StaticResource Dashboard.ChestValue}" />
-                        <TextBlock Grid.Row="3" Grid.Column="3" Text="{Binding HellGateEpicMonth, StringFormat='{}{0:N0}', FallbackValue=0}" Style="{StaticResource Dashboard.ChestValue}" />
-                        <TextBlock Grid.Row="3" Grid.Column="4" Text="{Binding HellGateLegendaryMonth, StringFormat='{}{0:N0}', FallbackValue=0}" Style="{StaticResource Dashboard.ChestValue}" />
-                        <Border Grid.Row="4" Grid.ColumnSpan="5" Style="{StaticResource Dashboard.ChestRow}" />
-                        <TextBlock Grid.Row="4" Text="{Binding TranslationLast365Days, FallbackValue=LAST_365_DAYS}" Style="{StaticResource Dashboard.ChestLabel}" />
-                        <TextBlock Grid.Row="4" Grid.Column="1" Text="{Binding HellGateCommonYear, StringFormat='{}{0:N0}', FallbackValue=0}" Style="{StaticResource Dashboard.ChestValue}" />
-                        <TextBlock Grid.Row="4" Grid.Column="2" Text="{Binding HellGateUncommonYear, StringFormat='{}{0:N0}', FallbackValue=0}" Style="{StaticResource Dashboard.ChestValue}" />
-                        <TextBlock Grid.Row="4" Grid.Column="3" Text="{Binding HellGateEpicYear, StringFormat='{}{0:N0}', FallbackValue=0}" Style="{StaticResource Dashboard.ChestValue}" />
-                        <TextBlock Grid.Row="4" Grid.Column="4" Text="{Binding HellGateLegendaryYear, StringFormat='{}{0:N0}', FallbackValue=0}" Style="{StaticResource Dashboard.ChestValue}" />
-                </Grid>
-            </Border>
-            <Border Style="{StaticResource Dashboard.ChestCard}">
-                <Grid>
-                    <Grid.RowDefinitions>
-                        <RowDefinition Height="Auto" />
-                        <RowDefinition Height="38" />
-                        <RowDefinition Height="26" />
-                        <RowDefinition Height="26" />
-                        <RowDefinition Height="26" />
-                    </Grid.RowDefinitions>
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="1.45*" />
-                        <ColumnDefinition Width="*" />
-                        <ColumnDefinition Width="*" />
-                        <ColumnDefinition Width="*" />
-                        <ColumnDefinition Width="*" />
-                    </Grid.ColumnDefinitions>
-                    <TextBlock Grid.ColumnSpan="5" Text="{Binding TranslationCorruptedDungeons, FallbackValue=CORRUPTED_DUNGEONS}" Style="{StaticResource Dashboard.ChestTitle}" />
-                        <Grid Grid.Row="1" Grid.Column="1" Width="34" Height="34" HorizontalAlignment="Center">
-                            <Image Source="/Assets/static_chest.png" Width="23" Height="23" />
-                            <Image Source="/Assets/green_glow.png" Width="34" Height="34" Opacity="0.65" />
-                        </Grid>
-                        <Grid Grid.Row="1" Grid.Column="2" Width="34" Height="34" HorizontalAlignment="Center">
-                            <Image Source="/Assets/static_chest.png" Width="23" Height="23" />
-                            <Image Source="/Assets/blue_glow.png" Width="34" Height="34" Opacity="0.65" />
-                        </Grid>
-                        <Grid Grid.Row="1" Grid.Column="3" Width="34" Height="34" HorizontalAlignment="Center">
-                            <Image Source="/Assets/static_chest.png" Width="23" Height="23" />
-                            <Image Source="/Assets/purple_glow.png" Width="34" Height="34" Opacity="0.65" />
-                        </Grid>
-                        <Grid Grid.Row="1" Grid.Column="4" Width="34" Height="34" HorizontalAlignment="Center">
-                            <Image Source="/Assets/static_chest.png" Width="23" Height="23" />
-                            <Image Source="/Assets/gold_glow.png" Width="34" Height="34" Opacity="0.65" />
-                        </Grid>
-                        <Border Grid.Row="2" Grid.ColumnSpan="5" Style="{StaticResource Dashboard.ChestRow}" />
-                        <TextBlock Grid.Row="2" Text="{Binding TranslationLast7Days, FallbackValue=LAST_7_DAYS}" Style="{StaticResource Dashboard.ChestLabel}" />
-                        <TextBlock Grid.Row="2" Grid.Column="1" Text="{Binding CorruptedCommonWeek, StringFormat='{}{0:N0}', FallbackValue=0}" Style="{StaticResource Dashboard.ChestValue}" />
-                        <TextBlock Grid.Row="2" Grid.Column="2" Text="{Binding CorruptedUncommonWeek, StringFormat='{}{0:N0}', FallbackValue=0}" Style="{StaticResource Dashboard.ChestValue}" />
-                        <TextBlock Grid.Row="2" Grid.Column="3" Text="{Binding CorruptedEpicWeek, StringFormat='{}{0:N0}', FallbackValue=0}" Style="{StaticResource Dashboard.ChestValue}" />
-                        <TextBlock Grid.Row="2" Grid.Column="4" Text="{Binding CorruptedLegendaryWeek, StringFormat='{}{0:N0}', FallbackValue=0}" Style="{StaticResource Dashboard.ChestValue}" />
-                        <Border Grid.Row="3" Grid.ColumnSpan="5" Style="{StaticResource Dashboard.ChestRow}" />
-                        <TextBlock Grid.Row="3" Text="{Binding TranslationLast30Days, FallbackValue=LAST_30_DAYS}" Style="{StaticResource Dashboard.ChestLabel}" />
-                        <TextBlock Grid.Row="3" Grid.Column="1" Text="{Binding CorruptedCommonMonth, StringFormat='{}{0:N0}', FallbackValue=0}" Style="{StaticResource Dashboard.ChestValue}" />
-                        <TextBlock Grid.Row="3" Grid.Column="2" Text="{Binding CorruptedUncommonMonth, StringFormat='{}{0:N0}', FallbackValue=0}" Style="{StaticResource Dashboard.ChestValue}" />
-                        <TextBlock Grid.Row="3" Grid.Column="3" Text="{Binding CorruptedEpicMonth, StringFormat='{}{0:N0}', FallbackValue=0}" Style="{StaticResource Dashboard.ChestValue}" />
-                        <TextBlock Grid.Row="3" Grid.Column="4" Text="{Binding CorruptedLegendaryMonth, StringFormat='{}{0:N0}', FallbackValue=0}" Style="{StaticResource Dashboard.ChestValue}" />
-                        <Border Grid.Row="4" Grid.ColumnSpan="5" Style="{StaticResource Dashboard.ChestRow}" />
-                        <TextBlock Grid.Row="4" Text="{Binding TranslationLast365Days, FallbackValue=LAST_365_DAYS}" Style="{StaticResource Dashboard.ChestLabel}" />
-                        <TextBlock Grid.Row="4" Grid.Column="1" Text="{Binding CorruptedCommonYear, StringFormat='{}{0:N0}', FallbackValue=0}" Style="{StaticResource Dashboard.ChestValue}" />
-                        <TextBlock Grid.Row="4" Grid.Column="2" Text="{Binding CorruptedUncommonYear, StringFormat='{}{0:N0}', FallbackValue=0}" Style="{StaticResource Dashboard.ChestValue}" />
-                        <TextBlock Grid.Row="4" Grid.Column="3" Text="{Binding CorruptedEpicYear, StringFormat='{}{0:N0}', FallbackValue=0}" Style="{StaticResource Dashboard.ChestValue}" />
-                        <TextBlock Grid.Row="4" Grid.Column="4" Text="{Binding CorruptedLegendaryYear, StringFormat='{}{0:N0}', FallbackValue=0}" Style="{StaticResource Dashboard.ChestValue}" />
-                </Grid>
-            </Border>
-        </UniformGrid>
+        <ItemsControl ItemsSource="{Binding ContentStatistics}" ItemTemplate="{StaticResource Dashboard.LootedChestContentTemplate}">
+            <ItemsControl.ItemsPanel>
+                <ItemsPanelTemplate>
+                    <UniformGrid Columns="3" Rows="2" />
+                </ItemsPanelTemplate>
+            </ItemsControl.ItemsPanel>
+        </ItemsControl>
     </DataTemplate>
 </ResourceDictionary>

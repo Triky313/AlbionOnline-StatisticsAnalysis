@@ -68,6 +68,12 @@ public class TreasureController
         };
 
         _treasures.Add(treasure);
+        if (_trackingController.EntityController.LocalUserData.Guid is { } localPlayerGuid
+            && openedBy.Contains(localPlayerGuid))
+        {
+            _trackingController.StatisticController.AddLootedChest(treasure.TreasureRarity);
+        }
+
         temporaryTreasure.AlreadyScanned = true;
     }
 

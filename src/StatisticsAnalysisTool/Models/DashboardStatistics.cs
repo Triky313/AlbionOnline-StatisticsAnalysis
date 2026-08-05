@@ -135,7 +135,8 @@ public class DashboardStatistics
                         ItemIndex = x.ItemIndex,
                         ItemQuantity = x.ItemQuantity,
                         LootAreaIndex = x.LootAreaIndex,
-                        LootAreaClusterType = x.LootAreaClusterType
+                        LootAreaClusterType = x.LootAreaClusterType,
+                        TreasureRarity = x.TreasureRarity
                     })
                     .ToList(),
                 Sessions = Sessions.Select(CloneSession).ToList()

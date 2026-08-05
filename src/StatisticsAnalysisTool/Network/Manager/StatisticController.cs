@@ -188,6 +188,54 @@ public class StatisticController
         UpdateDailyChart();
     }
 
+    public void AddLootedChest(TreasureRarity treasureRarity)
+    {
+        if (treasureRarity == TreasureRarity.Unknown
+            || !_trackingController.IsTrackingAllowedByMainCharacter())
+        {
+            return;
+        }
+
+        var nowUtc = DateTime.UtcNow;
+        var mapType = ClusterController.CurrentCluster.MapType;
+        var dungeonMode = ResolveDungeonMode(mapType);
+        var lootAreaIndex = ResolveLootAreaIndex(mapType, dungeonMode);
+        var lootAreaClusterType = string.IsNullOrWhiteSpace(lootAreaIndex)
+            ? ClusterType.Unknown
+            : WorldData.GetClusterTypeByIndex(lootAreaIndex);
+
+        lock (_syncRoot)
+        {
+            var session = _dashboardStatistics.GetActiveSession();
+            if (session == null)
+            {
+                Log.Debug("Statistics value discarded because no active session exists. ValueType={ValueType}", ValueType.LootedChest);
+                return;
+            }
+
+            var statisticEntry = new StatisticEntry
+            {
+                SessionId = session.Id,
+                OccurredAtUtc = nowUtc,
+                ValueType = ValueType.LootedChest,
+                Value = 1,
+                MapType = mapType,
+                DungeonMode = dungeonMode,
+                ClusterMode = ClusterController.CurrentCluster.ClusterMode,
+                CityFaction = CityFaction.Unknown,
+                LootAreaIndex = lootAreaIndex,
+                LootAreaClusterType = lootAreaClusterType,
+                TreasureRarity = treasureRarity
+            };
+
+            _dashboardStatistics.Add(statisticEntry);
+            _statisticsAggregator.Add(statisticEntry);
+            MarkSessionDirtyInternal(session.Id);
+        }
+
+        UpdateDailyChart();
+    }
+
     public void StartSession(string characterName)
     {
         if (string.IsNullOrWhiteSpace(characterName) || !AppDataPaths.IsUserDataAvailable)
@@ -396,6 +444,10 @@ public class StatisticController
             currentRangeBucketStarts,
             previousRangeBucketStarts,
             aggregatedValues);
+        UpdateDashboardLootedChestStatistics(
+            selectedRange,
+            currentRangeBucketStarts,
+            previousRangeBucketStarts);
         UpdateDashboardContentRankings(selectedRange, currentRangeBucketStarts);
         UpdateDashboardEconomyStatistics(
             selectedRange,
@@ -685,6 +737,107 @@ public class StatisticController
         ReplaceDashboardItems(lootStatistics.TopAreas, CreateTopLootAreas(entries));
     }
 
+    private void UpdateDashboardLootedChestStatistics(
+        DashboardChartRangeOption selectedRange,
+        IReadOnlyCollection<DateTime> currentRangeBucketStarts,
+        IReadOnlyCollection<DateTime> previousRangeBucketStarts)
+    {
+        var sessionId = _mainWindowViewModel.SelectedDashboardSessionFilter?.SessionId;
+        var contentType = _mainWindowViewModel.SelectedDashboardContentFilter?.ContentType;
+        var currentEntries = _statisticsAggregator.GetLootedChestEntries(
+            currentRangeBucketStarts,
+            selectedRange.Unit,
+            sessionId,
+            contentType);
+        var previousEntries = _statisticsAggregator.GetLootedChestEntries(
+            previousRangeBucketStarts,
+            selectedRange.Unit,
+            sessionId,
+            contentType);
+        var currentEntriesByContent = currentEntries
+            .GroupBy(ResolveLootedChestContentType)
+            .ToDictionary(group => group.Key, group => group.ToArray());
+        var previousTotalsByContent = previousEntries
+            .GroupBy(ResolveLootedChestContentType)
+            .ToDictionary(group => group.Key, group => group.Count());
+
+        foreach (var contentStatistics in _mainWindowViewModel.DashboardBindings.LootedChests.ContentStatistics)
+        {
+            var contentEntries = currentEntriesByContent.GetValueOrDefault(contentStatistics.ContentType) ?? [];
+            UpdateDashboardLootedChestContentStatistics(
+                contentStatistics,
+                contentEntries,
+                previousTotalsByContent.GetValueOrDefault(contentStatistics.ContentType));
+        }
+    }
+
+    private static void UpdateDashboardLootedChestContentStatistics(
+        DashboardLootedChestContentStatistics contentStatistics,
+        IReadOnlyCollection<StatisticEntry> currentEntries,
+        int previousTotal)
+    {
+        var common = 0;
+        var uncommon = 0;
+        var rare = 0;
+        var legendary = 0;
+
+        foreach (var entry in currentEntries)
+        {
+            switch (entry.TreasureRarity)
+            {
+                case TreasureRarity.Common:
+                    common++;
+                    break;
+                case TreasureRarity.Uncommon:
+                    uncommon++;
+                    break;
+                case TreasureRarity.Rare:
+                    rare++;
+                    break;
+                case TreasureRarity.Legendary:
+                    legendary++;
+                    break;
+            }
+        }
+
+        var total = currentEntries.Count;
+        var mapCount = currentEntries
+            .Select(CreateLootedChestAreaKey)
+            .Distinct(StringComparer.Ordinal)
+            .Count();
+        var averagePerMap = mapCount > 0
+            ? (double) total / mapCount
+            : 0;
+
+        contentStatistics.Update(
+            total,
+            previousTotal,
+            common,
+            uncommon,
+            rare,
+            legendary,
+            averagePerMap);
+    }
+
+    private static DashboardContentType ResolveLootedChestContentType(StatisticEntry entry)
+    {
+        return DashboardContentTypeResolver.Resolve(
+            entry.MapType,
+            entry.DungeonMode,
+            entry.ClusterMode);
+    }
+
+    private static string CreateLootedChestAreaKey(StatisticEntry entry)
+    {
+        if (!string.IsNullOrWhiteSpace(entry.LootAreaIndex))
+        {
+            return $"map:{entry.LootAreaIndex}";
+        }
+
+        return entry.DungeonMode != DungeonMode.Unknown
+            ? $"content:{entry.DungeonMode}"
+            : $"content:{entry.MapType}:{entry.ClusterMode}";
+    }
     private static void ReplaceDashboardItems<T>(
         ObservableCollection<T> target,
         IEnumerable<T> items)

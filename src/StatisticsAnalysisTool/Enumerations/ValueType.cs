@@ -12,5 +12,6 @@ public enum ValueType
     RepairCosts,
     PaidSilverForReSpec,
     BrecilianStanding,
-    LootValue
+    LootValue,
+    LootedChest
 }
