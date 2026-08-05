@@ -270,18 +270,18 @@ public partial class DashboardControl
         }
     }
 
-    private void SecondaryEconomyStatsToggle_OnMouseLeftButtonDown(object sender, MouseButtonEventArgs e)
+    private void AwakenedWeaponStatsToggle_OnMouseLeftButtonDown(object sender, MouseButtonEventArgs e)
     {
         var vm = (MainWindowViewModel) DataContext;
-        if (vm.DashboardBindings.SecondaryEconomyStatsVisibility == Visibility.Visible)
+        if (vm.DashboardBindings.AwakenedWeaponStatsVisibility == Visibility.Visible)
         {
-            vm.DashboardBindings.SecondaryEconomyStatsVisibility = Visibility.Collapsed;
-            vm.DashboardBindings.SecondaryEconomyStatsToggleIcon = EFontAwesomeIcon.Solid_Plus;
+            vm.DashboardBindings.AwakenedWeaponStatsVisibility = Visibility.Collapsed;
+            vm.DashboardBindings.AwakenedWeaponStatsToggleIcon = EFontAwesomeIcon.Solid_Plus;
         }
         else
         {
-            vm.DashboardBindings.SecondaryEconomyStatsVisibility = Visibility.Visible;
-            vm.DashboardBindings.SecondaryEconomyStatsToggleIcon = EFontAwesomeIcon.Solid_Minus;
+            vm.DashboardBindings.AwakenedWeaponStatsVisibility = Visibility.Visible;
+            vm.DashboardBindings.AwakenedWeaponStatsToggleIcon = EFontAwesomeIcon.Solid_Minus;
         }
     }
 

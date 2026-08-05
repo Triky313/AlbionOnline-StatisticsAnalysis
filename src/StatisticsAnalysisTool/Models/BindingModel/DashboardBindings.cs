@@ -64,6 +64,7 @@ public class DashboardBindings : BaseViewModel
     public DashboardSummaryMetric EconomyReSpecSummary { get; } = new();
     public DashboardSummaryMetric RepairCostsSummary { get; } = new();
     public DashboardSummaryMetric ItemQualityRerollCostsSummary { get; } = new();
+    public DashboardSummaryMetric AwakenedWeaponCostsSummary { get; } = new();
 
     public IReadOnlyList<DashboardFactionOption> FactionOptions { get; } =
     [
@@ -316,7 +317,7 @@ public class DashboardBindings : BaseViewModel
         }
     } = EFontAwesomeIcon.Solid_Minus;
 
-    public Visibility SecondaryEconomyStatsVisibility
+    public Visibility AwakenedWeaponStatsVisibility
     {
         get;
         set
@@ -326,7 +327,7 @@ public class DashboardBindings : BaseViewModel
         }
     } = Visibility.Visible;
 
-    public EFontAwesomeIcon SecondaryEconomyStatsToggleIcon
+    public EFontAwesomeIcon AwakenedWeaponStatsToggleIcon
     {
         get;
         set
@@ -818,6 +819,26 @@ public class DashboardBindings : BaseViewModel
         }
     }
 
+    public int AwakenedWeaponTraitUpgradeCount
+    {
+        get;
+        set
+        {
+            field = value;
+            OnPropertyChanged();
+        }
+    }
+
+    public int AwakenedWeaponTraitUpgradeProcCount
+    {
+        get;
+        set
+        {
+            field = value;
+            OnPropertyChanged();
+        }
+    }
+
     public int OutstandingItemQualityRerollCount
     {
         get;
@@ -1032,6 +1053,10 @@ public class DashboardBindings : BaseViewModel
     public static string TranslationRefineItemQuality => LocalizationController.Translation("REFINE_ITEM_QUALITY");
     public static string TranslationSilverSpentOnRefiningItemQuality => LocalizationController.Translation("SILVER_SPENT_ON_REFINING_ITEM_QUALITY");
     public static string TranslationItemsUpgraded => LocalizationController.Translation("ITEMS_UPGRADED");
+    public static string TranslationAwakenWeapon => LocalizationController.Translation("AWAKEN_WEAPON");
+    public static string TranslationSilverSpentOnAwakenedWeapons => LocalizationController.Translation("SILVER_SPENT_ON_AWAKENED_WEAPONS");
+    public static string TranslationTraitsUpgraded => LocalizationController.Translation("TRAITS_UPGRADED");
+    public static string TranslationTraitUpgradeProcs => LocalizationController.Translation("TRAIT_UPGRADE_PROCS");
     public static string TranslationGood => LocalizationController.Translation("GOOD");
     public static string TranslationOutstanding => LocalizationController.Translation("OUTSTANDING");
     public static string TranslationExcellent => LocalizationController.Translation("EXCELLENT");

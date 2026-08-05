@@ -667,7 +667,7 @@
                                 </DockPanel>
                             </Border>
 
-                            <Border Grid.Row="1" Grid.Column="0" Style="{StaticResource Dashboard.Section}" Margin="0,8,4,0" VerticalAlignment="Top">
+                            <Border Grid.Row="1" Grid.Column="0" Style="{StaticResource Dashboard.Section}" Margin="0,8,4,0">
                                 <DockPanel LastChildFill="True">
                                     <Grid DockPanel.Dock="Top" Style="{StaticResource Dashboard.SectionHeader}"
                                           MouseLeftButtonDown="ItemQualityRerollStatsToggle_OnMouseLeftButtonDown">
@@ -691,22 +691,29 @@
                                 </DockPanel>
                             </Border>
 
-                            <Border Grid.Row="1" Grid.Column="1" Style="{StaticResource Dashboard.Section}" Margin="4,8,0,0" VerticalAlignment="Top">
+                            <Border Grid.Row="1" Grid.Column="1" Style="{StaticResource Dashboard.Section}" Margin="4,8,0,0">
                                 <DockPanel LastChildFill="True">
                                     <Grid DockPanel.Dock="Top" Style="{StaticResource Dashboard.SectionHeader}"
-                                          MouseLeftButtonDown="SecondaryEconomyStatsToggle_OnMouseLeftButtonDown">
+                                          MouseLeftButtonDown="AwakenedWeaponStatsToggle_OnMouseLeftButtonDown">
                                         <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="Auto" />
                                             <ColumnDefinition Width="*" />
                                             <ColumnDefinition Width="Auto" />
                                         </Grid.ColumnDefinitions>
-                                        <fa5:ImageAwesome Grid.Column="1"
-                                                          Icon="{Binding DashboardBindings.SecondaryEconomyStatsToggleIcon, FallbackValue=Solid_Minus}"
+                                        <fa5:ImageAwesome Icon="Solid_Bolt" Width="24" Height="24" Margin="12,0,10,0"
+                                                          Foreground="{StaticResource SolidColorBrush.Text.1}" />
+                                        <TextBlock Grid.Column="1"
+                                                   Text="{Binding DashboardBindings.TranslationAwakenWeapon, FallbackValue=AWAKEN_WEAPON}"
+                                                   Style="{StaticResource Dashboard.SectionTitle}" />
+                                        <fa5:ImageAwesome Grid.Column="2"
+                                                          Icon="{Binding DashboardBindings.AwakenedWeaponStatsToggleIcon, FallbackValue=Solid_Minus}"
                                                           Style="{StaticResource Dashboard.SectionToggleIcon}" />
                                     </Grid>
-                                    <Border MinHeight="170"
-                                            BorderBrush="{StaticResource SolidColorBrush.Background.4}"
+                                    <Border BorderBrush="{StaticResource SolidColorBrush.Background.4}"
                                             BorderThickness="0,1,0,0"
-                                            Visibility="{Binding DashboardBindings.SecondaryEconomyStatsVisibility}" />
+                                            Visibility="{Binding DashboardBindings.AwakenedWeaponStatsVisibility}">
+                                        <ContentControl Margin="10" Content="{Binding DashboardBindings}" ContentTemplate="{StaticResource AwakenedWeaponTemplate}" />
+                                    </Border>
                                 </DockPanel>
                             </Border>
                         </Grid>

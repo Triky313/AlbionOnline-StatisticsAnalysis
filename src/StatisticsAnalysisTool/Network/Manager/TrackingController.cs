@@ -651,6 +651,98 @@ public class TrackingController : ITrackingController
 
     #endregion
 
+    #region Awakened weapon
+
+    private readonly object _awakenedWeaponSyncRoot = new();
+    private long _upcomingAwakenedWeaponActionTicks;
+    private long _upcomingAwakenedWeaponBuildingObjectId = -1;
+    private long _upcomingAwakenedWeaponCosts;
+    private bool _upcomingAwakenedWeaponTraitUpgrade;
+    private long _upcomingAwakenedWeaponTraitUpgradeUserObjectId = -1;
+    private bool _upcomingAwakenedWeaponTraitUpgradeProc;
+
+    public void SetUpcomingAwakenedWeaponAction(long buildingObjectId, long actionTicks, long costs)
+    {
+        if (buildingObjectId <= 0
+            || actionTicks <= 0
+            || costs <= 0)
+        {
+            return;
+        }
+
+        lock (_awakenedWeaponSyncRoot)
+        {
+            if (_upcomingAwakenedWeaponActionTicks == actionTicks
+                && _upcomingAwakenedWeaponBuildingObjectId == buildingObjectId)
+            {
+                return;
+            }
+
+            _upcomingAwakenedWeaponActionTicks = actionTicks;
+            _upcomingAwakenedWeaponBuildingObjectId = buildingObjectId;
+            _upcomingAwakenedWeaponCosts = costs;
+            _upcomingAwakenedWeaponTraitUpgrade = false;
+            _upcomingAwakenedWeaponTraitUpgradeUserObjectId = -1;
+            _upcomingAwakenedWeaponTraitUpgradeProc = false;
+        }
+    }
+
+    public void RerollItemTraitValueFinished(long userObjectId, long buildingObjectId, bool isProc)
+    {
+        lock (_awakenedWeaponSyncRoot)
+        {
+            if (userObjectId <= 0
+                || _upcomingAwakenedWeaponCosts <= 0
+                || _upcomingAwakenedWeaponBuildingObjectId != buildingObjectId)
+            {
+                return;
+            }
+
+            _upcomingAwakenedWeaponTraitUpgrade = true;
+            _upcomingAwakenedWeaponTraitUpgradeUserObjectId = userObjectId;
+            _upcomingAwakenedWeaponTraitUpgradeProc |= isProc;
+        }
+    }
+
+    public void AwakenedWeaponActionFinished(long userObjectId, long buildingObjectId)
+    {
+        long costs;
+        bool traitUpgraded;
+        bool traitUpgradeProcced;
+
+        lock (_awakenedWeaponSyncRoot)
+        {
+            if (_upcomingAwakenedWeaponCosts <= 0
+                || _upcomingAwakenedWeaponBuildingObjectId != buildingObjectId)
+            {
+                return;
+            }
+
+            costs = _upcomingAwakenedWeaponCosts;
+            traitUpgraded = _upcomingAwakenedWeaponTraitUpgrade
+                            && _upcomingAwakenedWeaponTraitUpgradeUserObjectId == userObjectId;
+            traitUpgradeProcced = traitUpgraded && _upcomingAwakenedWeaponTraitUpgradeProc;
+            ResetUpcomingAwakenedWeaponAction();
+        }
+
+        StatisticController.AddAwakenedWeaponAction(
+            FixPoint.FromInternalValue(costs).DoubleValue,
+            traitUpgraded,
+            traitUpgradeProcced);
+    }
+
+    private void ResetUpcomingAwakenedWeaponAction()
+    {
+        _upcomingAwakenedWeaponActionTicks = 0;
+        _upcomingAwakenedWeaponBuildingObjectId = -1;
+        _upcomingAwakenedWeaponCosts = 0;
+        _upcomingAwakenedWeaponTraitUpgrade = false;
+        _upcomingAwakenedWeaponTraitUpgradeUserObjectId = -1;
+        _upcomingAwakenedWeaponTraitUpgradeProc = false;
+    }
+
+    #endregion
+
     #region Item quality reroll
 
     private readonly object _qualityRerollSyncRoot = new();

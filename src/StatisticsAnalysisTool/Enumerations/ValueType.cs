@@ -16,5 +16,8 @@ public enum ValueType
     LootedChest,
     ItemQualityRerollCosts,
     ItemQualityRerollResult,
-    ItemQualityRerollAttempt
+    ItemQualityRerollAttempt,
+    AwakenedWeaponCosts,
+    AwakenedWeaponTraitUpgrade,
+    AwakenedWeaponTraitUpgradeProc
 }

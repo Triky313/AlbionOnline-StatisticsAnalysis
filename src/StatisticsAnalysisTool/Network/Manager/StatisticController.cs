@@ -227,6 +227,85 @@ public class StatisticController
         UpdateDailyChart();
     }
 
+    public void AddAwakenedWeaponAction(double costs, bool traitUpgraded, bool traitUpgradeProcced)
+    {
+        if (!double.IsFinite(costs)
+            || costs <= 0
+            || !_trackingController.IsTrackingAllowedByMainCharacter())
+        {
+            return;
+        }
+
+        var nowUtc = DateTime.UtcNow;
+        var mapType = ClusterController.CurrentCluster.MapType;
+        var dungeonMode = ResolveDungeonMode(mapType);
+        var clusterMode = ClusterController.CurrentCluster.ClusterMode;
+
+        lock (_syncRoot)
+        {
+            var session = _dashboardStatistics.GetActiveSession();
+            if (session == null)
+            {
+                Log.Debug(
+                    "Statistics value discarded because no active session exists. ValueType={ValueType}",
+                    ValueType.AwakenedWeaponCosts);
+                return;
+            }
+
+            var entries = new List<StatisticEntry>
+            {
+                new()
+                {
+                    SessionId = session.Id,
+                    OccurredAtUtc = nowUtc,
+                    ValueType = ValueType.AwakenedWeaponCosts,
+                    Value = costs,
+                    MapType = mapType,
+                    DungeonMode = dungeonMode,
+                    ClusterMode = clusterMode
+                }
+            };
+
+            if (traitUpgraded)
+            {
+                entries.Add(new StatisticEntry
+                {
+                    SessionId = session.Id,
+                    OccurredAtUtc = nowUtc,
+                    ValueType = ValueType.AwakenedWeaponTraitUpgrade,
+                    MapType = mapType,
+                    DungeonMode = dungeonMode,
+                    ClusterMode = clusterMode,
+                    ItemQuantity = 1
+                });
+            }
+
+            if (traitUpgradeProcced)
+            {
+                entries.Add(new StatisticEntry
+                {
+                    SessionId = session.Id,
+                    OccurredAtUtc = nowUtc,
+                    ValueType = ValueType.AwakenedWeaponTraitUpgradeProc,
+                    MapType = mapType,
+                    DungeonMode = dungeonMode,
+                    ClusterMode = clusterMode,
+                    ItemQuantity = 1
+                });
+            }
+
+            foreach (var entry in entries)
+            {
+                _dashboardStatistics.Add(entry);
+                _statisticsAggregator.Add(entry);
+            }
+
+            MarkSessionDirtyInternal(session.Id);
+        }
+
+        UpdateDailyChart();
+    }
+
     public void AddLootValue(int itemIndex, int quantity, double unitValue)
     {
         if (itemIndex <= 0
@@ -755,6 +834,12 @@ public class StatisticController
             currentValues.ItemQualityRerollCosts,
             currentValues.ItemQualityRerollCosts,
             previousValues.ItemQualityRerollCosts);
+        bindings.AwakenedWeaponCostsSummary.Update(
+            currentValues.AwakenedWeaponCosts,
+            currentValues.AwakenedWeaponCosts,
+            previousValues.AwakenedWeaponCosts);
+        bindings.AwakenedWeaponTraitUpgradeCount = currentValues.AwakenedWeaponTraitUpgradeCount;
+        bindings.AwakenedWeaponTraitUpgradeProcCount = currentValues.AwakenedWeaponTraitUpgradeProcCount;
         bindings.ReSpecSilverCost = currentValues.ReSpecSilverCost;
         bindings.AverageReSpecSilverCostPerSession = sessionCount > 0
             ? currentValues.ReSpecSilverCost / sessionCount

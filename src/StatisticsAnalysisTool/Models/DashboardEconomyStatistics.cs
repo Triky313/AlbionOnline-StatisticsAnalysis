@@ -8,6 +8,9 @@ public sealed class DashboardEconomyStatistics
     public double RepairCosts { get; internal set; }
     public double HighestRepairCost { get; internal set; }
     public double ItemQualityRerollCosts { get; internal set; }
+    public double AwakenedWeaponCosts { get; internal set; }
+    public int AwakenedWeaponTraitUpgradeCount { get; internal set; }
+    public int AwakenedWeaponTraitUpgradeProcCount { get; internal set; }
     public int GoodItemCount { get; internal set; }
     public int OutstandingItemCount { get; internal set; }
     public int ExcellentItemCount { get; internal set; }

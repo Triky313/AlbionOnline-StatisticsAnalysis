@@ -24,6 +24,13 @@ public class ActionOnBuildingStartRequestHandler : RequestPacketHandler<ActionOn
                 value.ItemQualities,
                 value.Costs);
         }
+        else if (value.ActionType == Enumerations.ActionOnBuildingType.AwakenedWeapon)
+        {
+            _trackingController.SetUpcomingAwakenedWeaponAction(
+                value.BuildingObjectId,
+                value.Ticks,
+                value.AwakenedWeaponSilverCosts);
+        }
 
         _trackingController.TradeController.SetUpcomingTrade(value.BuildingObjectId, value.Ticks, value.Costs, value.Quantity, value.ItemIndex);
         await Task.CompletedTask;

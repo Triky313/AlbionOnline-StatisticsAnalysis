@@ -13,6 +13,7 @@ public class ActionOnBuildingStartRequest
     public readonly long BuildingObjectId;
     public readonly ActionOnBuildingType ActionType;
     public readonly long Costs;
+    public readonly long AwakenedWeaponSilverCosts;
     public readonly int ItemIndex;
     public readonly int Quantity;
     public readonly IReadOnlyList<long> ItemObjectIds = [];
@@ -42,6 +43,11 @@ public class ActionOnBuildingStartRequest
             if (parameters.TryGetValue(4, out object costs))
             {
                 Costs = costs.ObjectToLong() ?? 0;
+            }
+
+            if (parameters.TryGetValue(17, out object awakenedWeaponSilverCosts))
+            {
+                AwakenedWeaponSilverCosts = awakenedWeaponSilverCosts.ObjectToLong() ?? 0;
             }
 
             if (parameters.TryGetValue(5, out object itemObjectIds))

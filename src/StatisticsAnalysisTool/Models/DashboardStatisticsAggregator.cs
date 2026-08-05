@@ -186,6 +186,15 @@ public sealed class DashboardStatisticsAggregator
                     case ValueType.ItemQualityRerollAttempt:
                         AddEligibleItemQualityRerollCounts(result, entry.ItemQuality, entry.ItemQuantity);
                         break;
+                    case ValueType.AwakenedWeaponCosts:
+                        result.AwakenedWeaponCosts += absoluteValue;
+                        break;
+                    case ValueType.AwakenedWeaponTraitUpgrade:
+                        result.AwakenedWeaponTraitUpgradeCount += entry.ItemQuantity;
+                        break;
+                    case ValueType.AwakenedWeaponTraitUpgradeProc:
+                        result.AwakenedWeaponTraitUpgradeProcCount += entry.ItemQuantity;
+                        break;
                 }
             }
         }
@@ -287,7 +296,10 @@ public sealed class DashboardStatisticsAggregator
             or ValueType.RepairCosts
             or ValueType.ItemQualityRerollCosts
             or ValueType.ItemQualityRerollResult
-            or ValueType.ItemQualityRerollAttempt)
+            or ValueType.ItemQualityRerollAttempt
+            or ValueType.AwakenedWeaponCosts
+            or ValueType.AwakenedWeaponTraitUpgrade
+            or ValueType.AwakenedWeaponTraitUpgradeProc)
         {
             _economyEntries.Add((
                 entry.SessionId,

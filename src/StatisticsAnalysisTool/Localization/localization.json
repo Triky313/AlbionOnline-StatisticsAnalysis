@@ -47465,6 +47465,58 @@
           "seg": "Upgraded items"
         }
       ]
+    },
+    {
+      "tuid": "AWAKEN_WEAPON",
+      "tuv": [
+        {
+          "lang": "de-DE",
+          "seg": "Waffe erwecken"
+        },
+        {
+          "lang": "en-US",
+          "seg": "Awaken weapon"
+        }
+      ]
+    },
+    {
+      "tuid": "SILVER_SPENT_ON_AWAKENED_WEAPONS",
+      "tuv": [
+        {
+          "lang": "de-DE",
+          "seg": "Für erweckte Waffen ausgegebenes Silber"
+        },
+        {
+          "lang": "en-US",
+          "seg": "Silver spent on awakened weapons"
+        }
+      ]
+    },
+    {
+      "tuid": "TRAITS_UPGRADED",
+      "tuv": [
+        {
+          "lang": "de-DE",
+          "seg": "Eigenschaften aufgewertet"
+        },
+        {
+          "lang": "en-US",
+          "seg": "Traits upgraded"
+        }
+      ]
+    },
+    {
+      "tuid": "TRAIT_UPGRADE_PROCS",
+      "tuv": [
+        {
+          "lang": "de-DE",
+          "seg": "Aufwertungs-Procs"
+        },
+        {
+          "lang": "en-US",
+          "seg": "Upgrade procs"
+        }
+      ]
     }
   ]
 }
