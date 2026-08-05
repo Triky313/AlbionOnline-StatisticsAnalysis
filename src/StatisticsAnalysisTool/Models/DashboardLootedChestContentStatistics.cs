@@ -11,9 +11,9 @@ public sealed class DashboardLootedChestContentStatistics(DashboardContentType c
 
     public string ContentIconSource => ContentType switch
     {
-        DashboardContentType.SoloDungeon => "/Assets/dungeon.png",
-        DashboardContentType.StandardDungeon => "/Assets/dungeon.png",
-        DashboardContentType.AvalonDungeon => "/Assets/dungeon.png",
+        DashboardContentType.SoloDungeon => "/Assets/MiniMapMarker/solo_dungeon.png",
+        DashboardContentType.StandardDungeon => "/Assets/MiniMapMarker/group_dungeon.png",
+        DashboardContentType.AvalonDungeon => "/Assets/MiniMapMarker/raid_dungeon.png",
         DashboardContentType.OpenWorld => string.Empty,
         DashboardContentType.HellGate => "/Assets/hellgate.png",
         DashboardContentType.CorruptedDungeon => "/Assets/currupted_dungeon.png",
