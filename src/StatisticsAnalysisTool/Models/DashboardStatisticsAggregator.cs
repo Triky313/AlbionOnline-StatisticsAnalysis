@@ -1,3 +1,4 @@
+using StatisticsAnalysisTool.Common;
 using StatisticsAnalysisTool.Cluster;
 using StatisticsAnalysisTool.Dungeon;
 using StatisticsAnalysisTool.Enumerations;
@@ -15,7 +16,7 @@ public sealed class DashboardStatisticsAggregator
     private readonly Dictionary<(ValueType ValueType, DateTime Bucket, Guid SessionId, MapType MapType, DungeonMode DungeonMode, ClusterMode ClusterMode, CityFaction CityFaction), double> _hourlyValues = new();
     private readonly Dictionary<(ValueType ValueType, DateTime Bucket, Guid SessionId, MapType MapType, DungeonMode DungeonMode, ClusterMode ClusterMode, CityFaction CityFaction), double> _dailyValues = new();
     private readonly List<(DateTime OccurredAtUtc, double Value)> _repairCostEntries = [];
-    private readonly List<(Guid SessionId, DateTime OccurredAtUtc, ValueType ValueType, double Value)> _economyEntries = [];
+    private readonly List<(Guid SessionId, DateTime OccurredAtUtc, ValueType ValueType, double Value, ItemQuality ItemQuality, int ItemQuantity)> _economyEntries = [];
     private readonly List<StatisticEntry> _lootEntries = [];
     private readonly List<StatisticEntry> _lootedChestEntries = [];
 
@@ -174,6 +175,17 @@ public sealed class DashboardStatisticsAggregator
                         result.RepairCosts += absoluteValue;
                         result.HighestRepairCost = Math.Max(result.HighestRepairCost, absoluteValue);
                         break;
+                    case ValueType.ItemQualityRerollCosts:
+                        result.ItemQualityRerollCosts += absoluteValue;
+                        AddItemQualityCount(result, entry.ItemQuality, entry.ItemQuantity);
+                        break;
+                    case ValueType.ItemQualityRerollResult:
+                        AddItemQualityCount(result, entry.ItemQuality, entry.ItemQuantity);
+                        AddSuccessfulItemQualityRerollCount(result, entry.ItemQuality, entry.ItemQuantity);
+                        break;
+                    case ValueType.ItemQualityRerollAttempt:
+                        AddEligibleItemQualityRerollCounts(result, entry.ItemQuality, entry.ItemQuantity);
+                        break;
                 }
             }
         }
@@ -270,9 +282,20 @@ public sealed class DashboardStatisticsAggregator
         AddIndexedValue(_hourlyValues, entry, hourBucket);
         AddIndexedValue(_dailyValues, entry, dayBucket);
 
-        if (entry.ValueType is ValueType.ReSpec or ValueType.PaidSilverForReSpec or ValueType.RepairCosts)
+        if (entry.ValueType is ValueType.ReSpec
+            or ValueType.PaidSilverForReSpec
+            or ValueType.RepairCosts
+            or ValueType.ItemQualityRerollCosts
+            or ValueType.ItemQualityRerollResult
+            or ValueType.ItemQualityRerollAttempt)
         {
-            _economyEntries.Add((entry.SessionId, entry.OccurredAtUtc, entry.ValueType, entry.Value));
+            _economyEntries.Add((
+                entry.SessionId,
+                entry.OccurredAtUtc,
+                entry.ValueType,
+                entry.Value,
+                entry.ItemQuality,
+                entry.ItemQuantity));
         }
 
         if (entry.ValueType == ValueType.RepairCosts)
@@ -291,6 +314,91 @@ public sealed class DashboardStatisticsAggregator
             && entry.TreasureRarity != TreasureRarity.Unknown)
         {
             _lootedChestEntries.Add(entry);
+        }
+    }
+
+    private static void AddItemQualityCount(
+        DashboardEconomyStatistics statistics,
+        ItemQuality itemQuality,
+        int itemQuantity)
+    {
+        var quantity = itemQuantity > 0 ? itemQuantity : 1;
+        switch (itemQuality)
+        {
+            case ItemQuality.Normal:
+                statistics.NormalItemCount += quantity;
+                break;
+            case ItemQuality.Good:
+                statistics.GoodItemCount += quantity;
+                break;
+            case ItemQuality.Outstanding:
+                statistics.OutstandingItemCount += quantity;
+                break;
+            case ItemQuality.Excellent:
+                statistics.ExcellentItemCount += quantity;
+                break;
+            case ItemQuality.Masterpiece:
+                statistics.MasterpieceItemCount += quantity;
+                break;
+        }
+    }
+
+    private static void AddSuccessfulItemQualityRerollCount(
+        DashboardEconomyStatistics statistics,
+        ItemQuality itemQuality,
+        int itemQuantity)
+    {
+        if (itemQuantity <= 0)
+        {
+            return;
+        }
+
+        switch (itemQuality)
+        {
+            case ItemQuality.Good:
+                statistics.GoodItemSuccessfulRerollCount += itemQuantity;
+                break;
+            case ItemQuality.Outstanding:
+                statistics.OutstandingItemSuccessfulRerollCount += itemQuantity;
+                break;
+            case ItemQuality.Excellent:
+                statistics.ExcellentItemSuccessfulRerollCount += itemQuantity;
+                break;
+            case ItemQuality.Masterpiece:
+                statistics.MasterpieceItemSuccessfulRerollCount += itemQuantity;
+                break;
+        }
+    }
+
+    private static void AddEligibleItemQualityRerollCounts(
+        DashboardEconomyStatistics statistics,
+        ItemQuality sourceItemQuality,
+        int itemQuantity)
+    {
+        if (sourceItemQuality is < ItemQuality.Normal or >= ItemQuality.Masterpiece
+            || itemQuantity <= 0)
+        {
+            return;
+        }
+
+        if (sourceItemQuality < ItemQuality.Good)
+        {
+            statistics.GoodItemEligibleRerollCount += itemQuantity;
+        }
+
+        if (sourceItemQuality < ItemQuality.Outstanding)
+        {
+            statistics.OutstandingItemEligibleRerollCount += itemQuantity;
+        }
+
+        if (sourceItemQuality < ItemQuality.Excellent)
+        {
+            statistics.ExcellentItemEligibleRerollCount += itemQuantity;
+        }
+
+        if (sourceItemQuality < ItemQuality.Masterpiece)
+        {
+            statistics.MasterpieceItemEligibleRerollCount += itemQuantity;
         }
     }
 

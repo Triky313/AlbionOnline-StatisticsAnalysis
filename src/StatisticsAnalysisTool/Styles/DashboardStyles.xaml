@@ -658,6 +658,107 @@
         </StackPanel>
     </DataTemplate>
 
+    <DataTemplate x:Key="ItemQualityRerollTemplate" DataType="{x:Type bindingModel:DashboardBindings}">
+        <StackPanel>
+            <Border Style="{StaticResource Dashboard.EconomySummaryCard}">
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="Auto" />
+                        <ColumnDefinition Width="*" />
+                    </Grid.ColumnDefinitions>
+                    <Image Source="/Resources/silver.png" Width="26" Height="26" Style="{StaticResource Dashboard.SummaryImage}" />
+                    <StackPanel Grid.Column="1">
+                        <TextBlock Text="{Binding TranslationSilverSpentOnRefiningItemQuality, FallbackValue=SILVER_SPENT_ON_REFINING_ITEM_QUALITY}"
+                                   Style="{StaticResource Dashboard.SummaryTitle}" />
+                        <ContentControl Content="{Binding ItemQualityRerollCostsSummary}"
+                                        ContentTemplate="{StaticResource Dashboard.SummaryMetricTemplate}"
+                                        HorizontalContentAlignment="Stretch" />
+                    </StackPanel>
+                </Grid>
+            </Border>
+
+            <Border Style="{StaticResource Dashboard.EconomyDetailCard}" Margin="0">
+                <UniformGrid Columns="5">
+                    <StackPanel ToolTip="{Binding TranslationNormal}" HorizontalAlignment="Center">
+                        <Grid Width="64" Height="64">
+                            <Image Source="/Assets/quality_border_normal.png" Stretch="Uniform" />
+                            <StackPanel HorizontalAlignment="Center" VerticalAlignment="Center">
+                                <TextBlock Text="{Binding NormalItemQualityRerollCount, StringFormat='{}{0:N0}', FallbackValue=0}"
+                                           FontSize="17" FontWeight="Bold" Foreground="{StaticResource SolidColorBrush.Text.1}"
+                                           HorizontalAlignment="Center" />
+                                <TextBlock Text="{Binding NormalItemQualityRerollPercentage, StringFormat='{}{0:N1}%', FallbackValue=0}"
+                                           FontSize="10" Foreground="{StaticResource SolidColorBrush.Text.3}"
+                                           HorizontalAlignment="Center" />
+                            </StackPanel>
+                        </Grid>
+                        <TextBlock Text="{Binding TranslationNormal}" FontSize="11" Foreground="{StaticResource SolidColorBrush.Text.2}"
+                                   HorizontalAlignment="Center" TextTrimming="CharacterEllipsis" />
+                    </StackPanel>
+                    <StackPanel ToolTip="{Binding TranslationGood}" HorizontalAlignment="Center">
+                        <Grid Width="64" Height="64">
+                            <Image Source="/Assets/quality_border_good.png" Stretch="Uniform" />
+                            <StackPanel HorizontalAlignment="Center" VerticalAlignment="Center">
+                                <TextBlock Text="{Binding GoodItemQualityRerollCount, StringFormat='{}{0:N0}', FallbackValue=0}"
+                                           FontSize="17" FontWeight="Bold" Foreground="{StaticResource SolidColorBrush.Text.1}"
+                                           HorizontalAlignment="Center" />
+                                <TextBlock Text="{Binding GoodItemQualityRerollPercentage, StringFormat='{}{0:N1}%', FallbackValue=0}"
+                                           FontSize="10" Foreground="{StaticResource SolidColorBrush.Text.3}"
+                                           HorizontalAlignment="Center" />
+                            </StackPanel>
+                        </Grid>
+                        <TextBlock Text="{Binding TranslationGood}" FontSize="11" Foreground="{StaticResource SolidColorBrush.Text.2}"
+                                   HorizontalAlignment="Center" TextTrimming="CharacterEllipsis" />
+                    </StackPanel>
+                    <StackPanel ToolTip="{Binding TranslationOutstanding}" HorizontalAlignment="Center">
+                        <Grid Width="64" Height="64">
+                            <Image Source="/Assets/quality_border_outstanding.png" Stretch="Uniform" />
+                            <StackPanel HorizontalAlignment="Center" VerticalAlignment="Center">
+                                <TextBlock Text="{Binding OutstandingItemQualityRerollCount, StringFormat='{}{0:N0}', FallbackValue=0}"
+                                           FontSize="17" FontWeight="Bold" Foreground="{StaticResource SolidColorBrush.Text.1}"
+                                           HorizontalAlignment="Center" />
+                                <TextBlock Text="{Binding OutstandingItemQualityRerollPercentage, StringFormat='{}{0:N1}%', FallbackValue=0}"
+                                           FontSize="10" Foreground="{StaticResource SolidColorBrush.Text.3}"
+                                           HorizontalAlignment="Center" />
+                            </StackPanel>
+                        </Grid>
+                        <TextBlock Text="{Binding TranslationOutstanding}" FontSize="11" Foreground="{StaticResource SolidColorBrush.Text.2}"
+                                   HorizontalAlignment="Center" TextTrimming="CharacterEllipsis" />
+                    </StackPanel>
+                    <StackPanel ToolTip="{Binding TranslationExcellent}" HorizontalAlignment="Center">
+                        <Grid Width="64" Height="64">
+                            <Image Source="/Assets/quality_border_excellent.png" Stretch="Uniform" />
+                            <StackPanel HorizontalAlignment="Center" VerticalAlignment="Center">
+                                <TextBlock Text="{Binding ExcellentItemQualityRerollCount, StringFormat='{}{0:N0}', FallbackValue=0}"
+                                           FontSize="17" FontWeight="Bold" Foreground="{StaticResource SolidColorBrush.Text.1}"
+                                           HorizontalAlignment="Center" />
+                                <TextBlock Text="{Binding ExcellentItemQualityRerollPercentage, StringFormat='{}{0:N1}%', FallbackValue=0}"
+                                           FontSize="10" Foreground="{StaticResource SolidColorBrush.Text.3}"
+                                           HorizontalAlignment="Center" />
+                            </StackPanel>
+                        </Grid>
+                        <TextBlock Text="{Binding TranslationExcellent}" FontSize="11" Foreground="{StaticResource SolidColorBrush.Text.2}"
+                                   HorizontalAlignment="Center" TextTrimming="CharacterEllipsis" />
+                    </StackPanel>
+                    <StackPanel ToolTip="{Binding TranslationMasterpiece}" HorizontalAlignment="Center">
+                        <Grid Width="64" Height="64">
+                            <Image Source="/Assets/quality_border_masterpiece.png" Stretch="Uniform" />
+                            <StackPanel HorizontalAlignment="Center" VerticalAlignment="Center">
+                                <TextBlock Text="{Binding MasterpieceItemQualityRerollCount, StringFormat='{}{0:N0}', FallbackValue=0}"
+                                           FontSize="17" FontWeight="Bold" Foreground="{StaticResource SolidColorBrush.Text.1}"
+                                           HorizontalAlignment="Center" />
+                                <TextBlock Text="{Binding MasterpieceItemQualityRerollPercentage, StringFormat='{}{0:N1}%', FallbackValue=0}"
+                                           FontSize="10" Foreground="{StaticResource SolidColorBrush.Text.3}"
+                                           HorizontalAlignment="Center" />
+                            </StackPanel>
+                        </Grid>
+                        <TextBlock Text="{Binding TranslationMasterpiece}" FontSize="11" Foreground="{StaticResource SolidColorBrush.Text.2}"
+                                   HorizontalAlignment="Center" TextTrimming="CharacterEllipsis" />
+                    </StackPanel>
+                </UniformGrid>
+            </Border>
+        </StackPanel>
+    </DataTemplate>
+
     <DataTemplate x:Key="RepairCostsTemplate" DataType="{x:Type bindingModel:DashboardBindings}">
         <StackPanel>
             <Border Style="{StaticResource Dashboard.EconomySummaryCard}">

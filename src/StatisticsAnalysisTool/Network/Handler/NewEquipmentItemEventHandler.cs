@@ -22,6 +22,7 @@ public class NewEquipmentItemEventHandler(TrackingController trackingController)
         });
 
         EstimatedMarketValueController.Add(value.Item.ItemIndex, value.Item.EstimatedMarketValueInternal, value.Item.Quality);
+        trackingController.TrackEquipmentItem(value.Item);
 
         trackingController.LootController.AddDiscoveredItem(value.Item);
         trackingController.DungeonController.AddDiscoveredItem(value.Item);

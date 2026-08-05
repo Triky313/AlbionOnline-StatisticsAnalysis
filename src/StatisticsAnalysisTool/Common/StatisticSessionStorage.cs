@@ -211,7 +211,8 @@ public sealed class StatisticSessionStorage
             ItemIndex = entry.ItemIndex,
             ItemQuantity = entry.ItemQuantity,
             LootAreaIndex = entry.LootAreaIndex,
-            LootAreaClusterType = entry.LootAreaClusterType
+            LootAreaClusterType = entry.LootAreaClusterType,
+            ItemQuality = entry.ItemQuality
         };
     }
 }

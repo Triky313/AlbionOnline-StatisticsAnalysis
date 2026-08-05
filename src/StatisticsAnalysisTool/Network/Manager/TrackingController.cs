@@ -12,6 +12,7 @@ using StatisticsAnalysisTool.Exceptions;
 using StatisticsAnalysisTool.Gathering;
 using StatisticsAnalysisTool.Guild;
 using StatisticsAnalysisTool.Localization;
+using StatisticsAnalysisTool.Models.NetworkModel;
 using StatisticsAnalysisTool.Network.PacketProviders;
 using StatisticsAnalysisTool.OpenWorld;
 using StatisticsAnalysisTool.Party;
@@ -25,6 +26,7 @@ using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Diagnostics;
+using System.Linq;
 using System.Net.Sockets;
 using System.Threading;
 using System.Threading.Tasks;
@@ -645,6 +647,254 @@ public class TrackingController : ITrackingController
         }
 
         return true;
+    }
+
+    #endregion
+
+    #region Item quality reroll
+
+    private readonly object _qualityRerollSyncRoot = new();
+    private readonly HashSet<long> _upcomingQualityRerollItemObjectIds = [];
+    private readonly Dictionary<long, (int Quantity, ItemQuality Quality)> _equipmentItemStates = [];
+    private readonly Dictionary<long, QualityRerollItemUpdate> _upcomingQualityRerollItemUpdates = [];
+    private readonly Dictionary<ItemQuality, int> _upcomingQualityRerollSourceItemCounts = [];
+    private long _upcomingQualityRerollCosts;
+    private int _upcomingQualityRerollQuantity;
+
+    public void SetUpcomingQualityReroll(
+        IReadOnlyList<long> itemObjectIds,
+        IReadOnlyList<int> itemQuantities,
+        IReadOnlyList<ItemQuality> itemQualities,
+        long costs)
+    {
+        if (itemObjectIds == null
+            || itemObjectIds.Count == 0
+            || costs <= 0)
+        {
+            return;
+        }
+
+        lock (_qualityRerollSyncRoot)
+        {
+            _upcomingQualityRerollItemObjectIds.Clear();
+            foreach (var itemObjectId in itemObjectIds)
+            {
+                _upcomingQualityRerollItemObjectIds.Add(itemObjectId);
+            }
+
+            _upcomingQualityRerollSourceItemCounts.Clear();
+            long totalQuantity = 0;
+            var itemCount = Math.Min(itemObjectIds.Count, itemQuantities.Count);
+            for (var itemIndex = 0; itemIndex < itemCount; itemIndex++)
+            {
+                var quantity = itemQuantities[itemIndex];
+                if (quantity <= 0)
+                {
+                    continue;
+                }
+
+                totalQuantity += quantity;
+                var itemQuality = itemQualities.Count == 1
+                    ? itemQualities[0]
+                    : itemIndex < itemQualities.Count
+                        ? itemQualities[itemIndex]
+                        : ItemQuality.Unknown;
+                if (itemQuality is >= ItemQuality.Normal and < ItemQuality.Masterpiece)
+                {
+                    var currentQuantity = _upcomingQualityRerollSourceItemCounts.GetValueOrDefault(itemQuality);
+                    _upcomingQualityRerollSourceItemCounts[itemQuality] = (int) Math.Min(
+                        (long) currentQuantity + quantity,
+                        int.MaxValue);
+                }
+            }
+
+            _upcomingQualityRerollCosts = costs;
+            _upcomingQualityRerollQuantity = (int) Math.Min(totalQuantity, int.MaxValue);
+            _upcomingQualityRerollItemUpdates.Clear();
+        }
+    }
+
+    public void TrackEquipmentItem(DiscoveredItem item)
+    {
+        if (item == null
+            || item.ObjectId <= 0
+            || item.Quality == ItemQuality.Unknown)
+        {
+            return;
+        }
+
+        lock (_qualityRerollSyncRoot)
+        {
+            var hasPreviousState = _equipmentItemStates.TryGetValue(item.ObjectId, out var previousState);
+            if (_upcomingQualityRerollCosts > 0)
+            {
+                if (!_upcomingQualityRerollItemUpdates.TryGetValue(item.ObjectId, out var itemUpdate))
+                {
+                    itemUpdate = new QualityRerollItemUpdate(hasPreviousState);
+                    _upcomingQualityRerollItemUpdates[item.ObjectId] = itemUpdate;
+                }
+
+                itemUpdate.AddObservation(
+                    item,
+                    hasPreviousState ? previousState : null);
+            }
+
+            _equipmentItemStates[item.ObjectId] = (item.Quantity, item.Quality);
+        }
+    }
+
+    public void RemoveEquipmentItem(long itemObjectId)
+    {
+        lock (_qualityRerollSyncRoot)
+        {
+            _equipmentItemStates.Remove(itemObjectId);
+        }
+    }
+
+    public void QualityRerollFinished(
+        IReadOnlyCollection<long> resultItemObjectIds,
+        IReadOnlyCollection<long> sourceItemObjectIds)
+    {
+        long costs;
+        IReadOnlyDictionary<ItemQuality, int> improvedItemCounts;
+        IReadOnlyDictionary<ItemQuality, int> sourceItemCounts;
+
+        lock (_qualityRerollSyncRoot)
+        {
+            if (_upcomingQualityRerollCosts <= 0
+                || resultItemObjectIds == null
+                || sourceItemObjectIds == null
+                || (!resultItemObjectIds.Any(_upcomingQualityRerollItemObjectIds.Contains)
+                    && !sourceItemObjectIds.Any(_upcomingQualityRerollItemObjectIds.Contains)))
+            {
+                return;
+            }
+
+            costs = _upcomingQualityRerollCosts;
+            improvedItemCounts = GetImprovedQualityRerollItemCounts(resultItemObjectIds);
+            sourceItemCounts = new Dictionary<ItemQuality, int>(_upcomingQualityRerollSourceItemCounts);
+            ResetUpcomingQualityReroll();
+        }
+
+        StatisticController.AddItemQualityReroll(
+            FixPoint.FromInternalValue(costs).DoubleValue,
+            improvedItemCounts,
+            sourceItemCounts);
+    }
+
+    private IReadOnlyDictionary<ItemQuality, int> GetImprovedQualityRerollItemCounts(
+        IReadOnlyCollection<long> resultItemObjectIds)
+    {
+        var result = new Dictionary<ItemQuality, int>();
+        var remainingQuantity = _upcomingQualityRerollQuantity > 0
+            ? _upcomingQualityRerollQuantity
+            : int.MaxValue;
+
+        foreach (var itemObjectId in resultItemObjectIds.Distinct())
+        {
+            if (remainingQuantity <= 0
+                || !_upcomingQualityRerollItemUpdates.TryGetValue(itemObjectId, out var itemUpdate)
+                || itemUpdate.LatestQuality <= ItemQuality.Normal)
+            {
+                continue;
+            }
+
+            var alreadyCounted = result.GetValueOrDefault(itemUpdate.LatestQuality);
+            var eligibleQuantity = GetEligibleQualityRerollQuantity(itemUpdate.LatestQuality);
+            var improvedQuantity = Math.Min(
+                itemUpdate.GetImprovedQuantity(),
+                Math.Min(remainingQuantity, eligibleQuantity - alreadyCounted));
+            if (improvedQuantity <= 0)
+            {
+                continue;
+            }
+
+            result[itemUpdate.LatestQuality] = alreadyCounted + improvedQuantity;
+            remainingQuantity -= improvedQuantity;
+        }
+
+        return result;
+    }
+
+    private int GetEligibleQualityRerollQuantity(ItemQuality resultQuality)
+    {
+        if (_upcomingQualityRerollSourceItemCounts.Count == 0)
+        {
+            return _upcomingQualityRerollQuantity > 0
+                ? _upcomingQualityRerollQuantity
+                : int.MaxValue;
+        }
+
+        long eligibleQuantity = 0;
+        foreach (var sourceItemCount in _upcomingQualityRerollSourceItemCounts)
+        {
+            if (sourceItemCount.Key >= ItemQuality.Normal
+                && sourceItemCount.Key < resultQuality)
+            {
+                eligibleQuantity += sourceItemCount.Value;
+            }
+        }
+
+        return (int) Math.Min(eligibleQuantity, int.MaxValue);
+    }
+
+    private void ResetUpcomingQualityReroll()
+    {
+        _upcomingQualityRerollItemObjectIds.Clear();
+        _upcomingQualityRerollItemUpdates.Clear();
+        _upcomingQualityRerollSourceItemCounts.Clear();
+        _upcomingQualityRerollCosts = 0;
+        _upcomingQualityRerollQuantity = 0;
+    }
+
+    private sealed class QualityRerollItemUpdate
+    {
+        private readonly bool _hadKnownState;
+        private int _observationCount;
+        private int _addedQuantity;
+        private int _latestQuantity;
+
+        public QualityRerollItemUpdate(bool hadKnownState)
+        {
+            _hadKnownState = hadKnownState;
+        }
+
+        public ItemQuality LatestQuality { get; private set; } = ItemQuality.Unknown;
+
+        public void AddObservation(
+            DiscoveredItem item,
+            (int Quantity, ItemQuality Quality)? previousState)
+        {
+            _observationCount++;
+            _latestQuantity = item.Quantity;
+            LatestQuality = item.Quality;
+
+            if (!previousState.HasValue)
+            {
+                return;
+            }
+
+            var quantityAdded = item.Quality switch
+            {
+                _ when item.Quality > previousState.Value.Quality => item.Quantity,
+                _ when item.Quality == previousState.Value.Quality
+                       && item.Quantity > previousState.Value.Quantity => item.Quantity - previousState.Value.Quantity,
+                _ => 0
+            };
+            _addedQuantity = (int) Math.Min((long) _addedQuantity + quantityAdded, int.MaxValue);
+        }
+
+        public int GetImprovedQuantity()
+        {
+            if (_addedQuantity > 0)
+            {
+                return _addedQuantity;
+            }
+
+            return !_hadKnownState && _observationCount == 1
+                ? Math.Max(0, _latestQuantity)
+                : 0;
+        }
     }
 
     #endregion

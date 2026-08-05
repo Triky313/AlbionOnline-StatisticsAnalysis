@@ -63,6 +63,7 @@ public class DashboardBindings : BaseViewModel
     public DashboardSummaryMetric FactionStandingSummary { get; } = new();
     public DashboardSummaryMetric EconomyReSpecSummary { get; } = new();
     public DashboardSummaryMetric RepairCostsSummary { get; } = new();
+    public DashboardSummaryMetric ItemQualityRerollCostsSummary { get; } = new();
 
     public IReadOnlyList<DashboardFactionOption> FactionOptions { get; } =
     [
@@ -294,6 +295,46 @@ public class DashboardBindings : BaseViewModel
             OnPropertyChanged();
         }
     }
+
+    public Visibility ItemQualityRerollStatsVisibility
+    {
+        get;
+        set
+        {
+            field = value;
+            OnPropertyChanged();
+        }
+    } = Visibility.Visible;
+
+    public EFontAwesomeIcon ItemQualityRerollStatsToggleIcon
+    {
+        get;
+        set
+        {
+            field = value;
+            OnPropertyChanged();
+        }
+    } = EFontAwesomeIcon.Solid_Minus;
+
+    public Visibility SecondaryEconomyStatsVisibility
+    {
+        get;
+        set
+        {
+            field = value;
+            OnPropertyChanged();
+        }
+    } = Visibility.Visible;
+
+    public EFontAwesomeIcon SecondaryEconomyStatsToggleIcon
+    {
+        get;
+        set
+        {
+            field = value;
+            OnPropertyChanged();
+        }
+    } = EFontAwesomeIcon.Solid_Minus;
 
     public Visibility ActivityChartVisibility
     {
@@ -767,6 +808,106 @@ public class DashboardBindings : BaseViewModel
         }
     } = 2;
 
+    public int NormalItemQualityRerollCount
+    {
+        get;
+        set
+        {
+            field = value;
+            OnPropertyChanged();
+        }
+    }
+
+    public int GoodItemQualityRerollCount
+    {
+        get;
+        set
+        {
+            field = value;
+            OnPropertyChanged();
+        }
+    }
+
+    public int OutstandingItemQualityRerollCount
+    {
+        get;
+        set
+        {
+            field = value;
+            OnPropertyChanged();
+        }
+    }
+
+    public int ExcellentItemQualityRerollCount
+    {
+        get;
+        set
+        {
+            field = value;
+            OnPropertyChanged();
+        }
+    }
+
+    public int MasterpieceItemQualityRerollCount
+    {
+        get;
+        set
+        {
+            field = value;
+            OnPropertyChanged();
+        }
+    }
+
+    public double NormalItemQualityRerollPercentage
+    {
+        get;
+        set
+        {
+            field = value;
+            OnPropertyChanged();
+        }
+    }
+
+    public double GoodItemQualityRerollPercentage
+    {
+        get;
+        set
+        {
+            field = value;
+            OnPropertyChanged();
+        }
+    }
+
+    public double OutstandingItemQualityRerollPercentage
+    {
+        get;
+        set
+        {
+            field = value;
+            OnPropertyChanged();
+        }
+    }
+
+    public double ExcellentItemQualityRerollPercentage
+    {
+        get;
+        set
+        {
+            field = value;
+            OnPropertyChanged();
+        }
+    }
+
+    public double MasterpieceItemQualityRerollPercentage
+    {
+        get;
+        set
+        {
+            field = value;
+            OnPropertyChanged();
+        }
+    }
+
     public double AverageRepairCostPerSession
     {
         get;
@@ -898,6 +1039,13 @@ public class DashboardBindings : BaseViewModel
     public static string TranslationSilverSpentOnReSpec => LocalizationController.Translation("SILVER_SPENT_ON_RESPEC");
     public static string TranslationAverageReSpecSilverCostPerSession => LocalizationController.Translation("AVERAGE_RESPEC_SILVER_COST_PER_SESSION");
     public static string TranslationSpentReSpec => LocalizationController.Translation("SPENT_RESPEC");
+    public static string TranslationRefineItemQuality => LocalizationController.Translation("REFINE_ITEM_QUALITY");
+    public static string TranslationSilverSpentOnRefiningItemQuality => LocalizationController.Translation("SILVER_SPENT_ON_REFINING_ITEM_QUALITY");
+    public static string TranslationNormal => LocalizationController.Translation("NORMAL");
+    public static string TranslationGood => LocalizationController.Translation("GOOD");
+    public static string TranslationOutstanding => LocalizationController.Translation("OUTSTANDING");
+    public static string TranslationExcellent => LocalizationController.Translation("EXCELLENT");
+    public static string TranslationMasterpiece => LocalizationController.Translation("MASTERPIECE");
     public static string TranslationAverageRepairCostPerSession => LocalizationController.Translation("AVERAGE_REPAIR_COST_PER_SESSION");
     public static string TranslationHighestRepairCost => LocalizationController.Translation("HIGHEST_REPAIR_COST");
     public static string TranslationFactionStanding => LocalizationController.Translation("FACTION_STANDING");

@@ -1,3 +1,4 @@
+using StatisticsAnalysisTool.Common;
 using StatisticsAnalysisTool.Cluster;
 using StatisticsAnalysisTool.Dungeon;
 using StatisticsAnalysisTool.Enumerations;
@@ -21,4 +22,5 @@ public sealed class StatisticEntry
     public string LootAreaIndex { get; set; } = string.Empty;
     public ClusterType LootAreaClusterType { get; set; }
     public TreasureRarity TreasureRarity { get; set; }
+    public ItemQuality ItemQuality { get; set; } = ItemQuality.Unknown;
 }

@@ -56,6 +56,7 @@ public class NetworkManager
         //builder.AddEventHandler(new InventoryPutItemEventHandler(trackingController));
         builder.AddEventHandler(new TakeSilverEventHandler(trackingController));
         builder.AddEventHandler(new ActionOnBuildingFinishedEventHandler(trackingController));
+        builder.AddEventHandler(new ItemRerollQualityFinishedEventHandler(trackingController));
         builder.AddEventHandler(new UpdateFameEventHandler(trackingController));
         builder.AddEventHandler(new UpdateMoneyEventHandler(trackingController));
         builder.AddEventHandler(new UpdateReSpecPointsEventHandler(trackingController));

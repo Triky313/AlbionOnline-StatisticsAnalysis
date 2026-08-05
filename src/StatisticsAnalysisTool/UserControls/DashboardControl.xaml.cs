@@ -255,6 +255,36 @@ public partial class DashboardControl
         }
     }
 
+    private void ItemQualityRerollStatsToggle_OnMouseLeftButtonDown(object sender, MouseButtonEventArgs e)
+    {
+        var vm = (MainWindowViewModel) DataContext;
+        if (vm.DashboardBindings.ItemQualityRerollStatsVisibility == Visibility.Visible)
+        {
+            vm.DashboardBindings.ItemQualityRerollStatsVisibility = Visibility.Collapsed;
+            vm.DashboardBindings.ItemQualityRerollStatsToggleIcon = EFontAwesomeIcon.Solid_Plus;
+        }
+        else
+        {
+            vm.DashboardBindings.ItemQualityRerollStatsVisibility = Visibility.Visible;
+            vm.DashboardBindings.ItemQualityRerollStatsToggleIcon = EFontAwesomeIcon.Solid_Minus;
+        }
+    }
+
+    private void SecondaryEconomyStatsToggle_OnMouseLeftButtonDown(object sender, MouseButtonEventArgs e)
+    {
+        var vm = (MainWindowViewModel) DataContext;
+        if (vm.DashboardBindings.SecondaryEconomyStatsVisibility == Visibility.Visible)
+        {
+            vm.DashboardBindings.SecondaryEconomyStatsVisibility = Visibility.Collapsed;
+            vm.DashboardBindings.SecondaryEconomyStatsToggleIcon = EFontAwesomeIcon.Solid_Plus;
+        }
+        else
+        {
+            vm.DashboardBindings.SecondaryEconomyStatsVisibility = Visibility.Visible;
+            vm.DashboardBindings.SecondaryEconomyStatsToggleIcon = EFontAwesomeIcon.Solid_Minus;
+        }
+    }
+
     private void ActivityChartToggle_OnMouseLeftButtonDown(object sender, MouseButtonEventArgs e)
     {
         var vm = (MainWindowViewModel) DataContext;

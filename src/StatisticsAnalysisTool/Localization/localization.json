@@ -47426,6 +47426,32 @@
           "seg": "Top maps and areas by loot value"
         }
       ]
+    },
+    {
+      "tuid": "REFINE_ITEM_QUALITY",
+      "tuv": [
+        {
+          "lang": "de-DE",
+          "seg": "Qualität veredeln"
+        },
+        {
+          "lang": "en-US",
+          "seg": "Refine quality"
+        }
+      ]
+    },
+    {
+      "tuid": "SILVER_SPENT_ON_REFINING_ITEM_QUALITY",
+      "tuv": [
+        {
+          "lang": "de-DE",
+          "seg": "Für Qualitätsveredelung ausgegebenes Silber"
+        },
+        {
+          "lang": "en-US",
+          "seg": "Silver spent on refining item quality"
+        }
+      ]
     }
   ]
 }

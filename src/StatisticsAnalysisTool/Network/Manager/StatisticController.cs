@@ -46,6 +46,7 @@ public class StatisticController
         ValueType.ReSpec,
         ValueType.PaidSilverForReSpec,
         ValueType.RepairCosts,
+        ValueType.ItemQualityRerollCosts,
         ValueType.FactionStanding,
         ValueType.FactionPoints,
         ValueType.Might,
@@ -130,6 +131,100 @@ public class StatisticController
         {
             UpdateRepairCostsUi();
         }
+    }
+
+    public void AddItemQualityReroll(
+        double costs,
+        IReadOnlyDictionary<ItemQuality, int> improvedItemCounts,
+        IReadOnlyDictionary<ItemQuality, int> sourceItemCounts)
+    {
+        if (!double.IsFinite(costs)
+            || costs < 0
+            || !_trackingController.IsTrackingAllowedByMainCharacter())
+        {
+            return;
+        }
+
+        var resultItemCounts = improvedItemCounts
+            .Where(itemCount => itemCount.Key != ItemQuality.Unknown && itemCount.Value > 0)
+            .ToArray();
+        var attemptedItemCounts = sourceItemCounts
+            .Where(itemCount => itemCount.Key is >= ItemQuality.Normal and < ItemQuality.Masterpiece
+                                && itemCount.Value > 0)
+            .ToArray();
+        var nowUtc = DateTime.UtcNow;
+        var mapType = ClusterController.CurrentCluster.MapType;
+        var dungeonMode = ResolveDungeonMode(mapType);
+        var clusterMode = ClusterController.CurrentCluster.ClusterMode;
+
+        lock (_syncRoot)
+        {
+            var session = _dashboardStatistics.GetActiveSession();
+            if (session == null)
+            {
+                Log.Debug(
+                    "Statistics value discarded because no active session exists. ValueType={ValueType}",
+                    ValueType.ItemQualityRerollCosts);
+                return;
+            }
+
+            var entries = new List<StatisticEntry>(resultItemCounts.Length + attemptedItemCounts.Length + 1)
+            {
+                new()
+                {
+                    SessionId = session.Id,
+                    OccurredAtUtc = nowUtc,
+                    ValueType = ValueType.ItemQualityRerollCosts,
+                    Value = costs,
+                    MapType = mapType,
+                    DungeonMode = dungeonMode,
+                    ClusterMode = clusterMode,
+                    ItemQuality = ItemQuality.Unknown
+                }
+            };
+
+            foreach (var itemCount in resultItemCounts)
+            {
+                entries.Add(new StatisticEntry
+                {
+                    SessionId = session.Id,
+                    OccurredAtUtc = nowUtc,
+                    ValueType = ValueType.ItemQualityRerollResult,
+                    Value = 0,
+                    MapType = mapType,
+                    DungeonMode = dungeonMode,
+                    ClusterMode = clusterMode,
+                    ItemQuality = itemCount.Key,
+                    ItemQuantity = itemCount.Value
+                });
+            }
+
+            foreach (var itemCount in attemptedItemCounts)
+            {
+                entries.Add(new StatisticEntry
+                {
+                    SessionId = session.Id,
+                    OccurredAtUtc = nowUtc,
+                    ValueType = ValueType.ItemQualityRerollAttempt,
+                    Value = 0,
+                    MapType = mapType,
+                    DungeonMode = dungeonMode,
+                    ClusterMode = clusterMode,
+                    ItemQuality = itemCount.Key,
+                    ItemQuantity = itemCount.Value
+                });
+            }
+
+            foreach (var entry in entries)
+            {
+                _dashboardStatistics.Add(entry);
+                _statisticsAggregator.Add(entry);
+            }
+
+            MarkSessionDirtyInternal(session.Id);
+        }
+
+        UpdateDailyChart();
     }
 
     public void AddLootValue(int itemIndex, int quantity, double unitValue)
@@ -300,6 +395,7 @@ public class StatisticController
 
     public async System.Threading.Tasks.Task<bool> ResetSessionAsync()
     {
+        Guid sessionId;
         string characterName;
         lock (_syncRoot)
         {
@@ -309,16 +405,19 @@ public class StatisticController
                 return false;
             }
 
+            sessionId = activeSession.Id;
             characterName = activeSession.CharacterName;
         }
 
-        if (!EndSession(DateTime.UtcNow))
+        if (!await RemoveSessionAsync(sessionId, true))
         {
             return false;
         }
 
-        await SaveInFileAsync();
+        _trackingController.LiveStatsTracker?.Stop();
         StartSession(characterName);
+        UpdateRepairCostsUi();
+        UpdateDailyChart(true);
         Log.Information("Statistics session reset");
         return true;
     }
@@ -330,24 +429,38 @@ public class StatisticController
             return false;
         }
 
-        StatisticSession session;
-        lock (_syncRoot)
-        {
-            session = _dashboardStatistics
-                .CreateSessionSnapshot()
-                .FirstOrDefault(x => x.Id == sessionId);
-        }
-
-        if (session == null)
+        if (!await RemoveSessionAsync(sessionId, false))
         {
             return false;
         }
 
-        var wasActive = false;
+        RefreshDashboardSessionFilters();
+        UpdateRepairCostsUi();
+        UpdateDailyChart(true);
+        Log.Information("Statistics session deleted. SessionId={SessionId}", sessionId);
+        return true;
+    }
+
+    private async System.Threading.Tasks.Task<bool> RemoveSessionAsync(
+        Guid sessionId,
+        bool canRemoveActiveSession)
+    {
         await _sessionPersistenceSemaphore.WaitAsync();
 
         try
         {
+            lock (_syncRoot)
+            {
+                var sessionExists = _dashboardStatistics
+                    .CreateSessionSnapshot()
+                    .Any(x => x.Id == sessionId);
+                var isActiveSession = _dashboardStatistics.GetActiveSession()?.Id == sessionId;
+                if (!sessionExists || (isActiveSession && !canRemoveActiveSession))
+                {
+                    return false;
+                }
+            }
+
             if (!_sessionStorage.DeleteSession(sessionId))
             {
                 return false;
@@ -355,37 +468,21 @@ public class StatisticController
 
             lock (_syncRoot)
             {
-                wasActive = _dashboardStatistics.GetActiveSession()?.Id == sessionId;
-                _dashboardStatistics.RemoveSession(sessionId);
+                if (!_dashboardStatistics.RemoveSession(sessionId))
+                {
+                    return false;
+                }
+
                 _dirtySessionVersions.Remove(sessionId);
+                _statisticsAggregator = new DashboardStatisticsAggregator(_dashboardStatistics);
             }
+
+            return true;
         }
         finally
         {
             _sessionPersistenceSemaphore.Release();
         }
-
-        if (wasActive)
-        {
-            _trackingController.LiveStatsTracker?.Stop();
-        }
-
-        if (wasActive && _mainWindowViewModel.MainStatusBindings.IsInGame)
-        {
-            StartSession(session.CharacterName);
-        }
-        else
-        {
-            RefreshDashboardSessionFilters();
-        }
-
-        UpdateRepairCostsUi();
-        UpdateDailyChart(true);
-        Log.Information(
-            "Statistics session deleted. SessionId={SessionId}, WasActive={WasActive}",
-            sessionId,
-            wasActive);
-        return true;
     }
 
     public void UpdateDailyChart(bool forceUpdate = false)
@@ -654,6 +751,10 @@ public class StatisticController
             currentValues.RepairCosts,
             currentValues.RepairCosts,
             previousValues.RepairCosts);
+        bindings.ItemQualityRerollCostsSummary.Update(
+            currentValues.ItemQualityRerollCosts,
+            currentValues.ItemQualityRerollCosts,
+            previousValues.ItemQualityRerollCosts);
         bindings.ReSpecSilverCost = currentValues.ReSpecSilverCost;
         bindings.AverageReSpecSilverCostPerSession = sessionCount > 0
             ? currentValues.ReSpecSilverCost / sessionCount
@@ -669,6 +770,31 @@ public class StatisticController
             ? currentValues.RepairCosts / sessionCount
             : 0;
         bindings.HighestRepairCost = currentValues.HighestRepairCost;
+        bindings.NormalItemQualityRerollCount = currentValues.NormalItemCount;
+        bindings.GoodItemQualityRerollCount = currentValues.GoodItemCount;
+        bindings.OutstandingItemQualityRerollCount = currentValues.OutstandingItemCount;
+        bindings.ExcellentItemQualityRerollCount = currentValues.ExcellentItemCount;
+        bindings.MasterpieceItemQualityRerollCount = currentValues.MasterpieceItemCount;
+        bindings.NormalItemQualityRerollPercentage = 0;
+        bindings.GoodItemQualityRerollPercentage = CalculateItemQualityRerollPercentage(
+            currentValues.GoodItemSuccessfulRerollCount,
+            currentValues.GoodItemEligibleRerollCount);
+        bindings.OutstandingItemQualityRerollPercentage = CalculateItemQualityRerollPercentage(
+            currentValues.OutstandingItemSuccessfulRerollCount,
+            currentValues.OutstandingItemEligibleRerollCount);
+        bindings.ExcellentItemQualityRerollPercentage = CalculateItemQualityRerollPercentage(
+            currentValues.ExcellentItemSuccessfulRerollCount,
+            currentValues.ExcellentItemEligibleRerollCount);
+        bindings.MasterpieceItemQualityRerollPercentage = CalculateItemQualityRerollPercentage(
+            currentValues.MasterpieceItemSuccessfulRerollCount,
+            currentValues.MasterpieceItemEligibleRerollCount);
+    }
+
+    private static double CalculateItemQualityRerollPercentage(int successfulItemCount, int eligibleItemCount)
+    {
+        return eligibleItemCount > 0
+            ? successfulItemCount * 100d / eligibleItemCount
+            : 0;
     }
 
     private void UpdateDashboardLootStatistics(
@@ -1342,7 +1468,10 @@ public class StatisticController
 
             filters.AddRange(sessionsSnapshot
                 .OrderByDescending(x => x.StartedAtUtc)
-                .Select(x => new DashboardSessionFilterOption(x.Id, CreateSessionFilterName(x))));
+                .Select(x => new DashboardSessionFilterOption(
+                    x.Id,
+                    CreateSessionFilterName(x),
+                    x.EndedAtUtc.HasValue)));
 
             _mainWindowViewModel.DashboardSessionFilters = new ObservableCollection<DashboardSessionFilterOption>(filters);
             _mainWindowViewModel.SelectedDashboardSessionFilter = filters

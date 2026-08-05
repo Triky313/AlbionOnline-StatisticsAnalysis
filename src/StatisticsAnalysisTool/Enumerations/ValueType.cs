@@ -13,5 +13,8 @@ public enum ValueType
     PaidSilverForReSpec,
     BrecilianStanding,
     LootValue,
-    LootedChest
+    LootedChest,
+    ItemQualityRerollCosts,
+    ItemQualityRerollResult,
+    ItemQualityRerollAttempt
 }

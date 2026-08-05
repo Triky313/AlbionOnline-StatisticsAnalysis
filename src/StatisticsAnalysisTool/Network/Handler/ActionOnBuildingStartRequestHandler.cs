@@ -16,6 +16,15 @@ public class ActionOnBuildingStartRequestHandler : RequestPacketHandler<ActionOn
     protected override async Task OnActionAsync(ActionOnBuildingStartRequest value)
     {
         _trackingController.SetUpcomingRepair(value.BuildingObjectId, value.Costs);
+        if (value.ActionType == Enumerations.ActionOnBuildingType.RerollQuality)
+        {
+            _trackingController.SetUpcomingQualityReroll(
+                value.ItemObjectIds,
+                value.ItemQuantities,
+                value.ItemQualities,
+                value.Costs);
+        }
+
         _trackingController.TradeController.SetUpcomingTrade(value.BuildingObjectId, value.Ticks, value.Costs, value.Quantity, value.ItemIndex);
         await Task.CompletedTask;
     }
