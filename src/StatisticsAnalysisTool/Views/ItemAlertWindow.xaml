@@ -66,8 +66,7 @@
                        Foreground="{StaticResource SolidColorBrush.Text.1}" TextAlignment="Center" Margin="0,3,0,7" />
             <StackPanel Grid.Row="6" Orientation="Horizontal" HorizontalAlignment="Center">
                 <Image Source="/Resources/silver.png" Width="16" Height="16" Margin="0,1,6,0" />
-                <TextBlock Text="{Binding Price, StringFormat={}{0:N0}}" FontSize="15" FontWeight="Bold"
-                           Foreground="{StaticResource SolidColorBrush.Text.1}" />
+                <TextBlock Text="{Binding Price, StringFormat={}{0:N0}, FallbackValue=0}" FontSize="15" FontWeight="Bold" VerticalAlignment="Center" Foreground="{StaticResource SolidColorBrush.Text.1}" />
             </StackPanel>
         </Grid>
     </Grid>

@@ -2,7 +2,8 @@
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
                     xmlns:models="clr-namespace:StatisticsAnalysisTool.Models"
                     xmlns:enum="clr-namespace:StatisticsAnalysisTool.Enumerations"
-                    xmlns:glob="clr-namespace:System.Globalization;assembly=System.Runtime">
+                    xmlns:glob="clr-namespace:System.Globalization;assembly=System.Runtime"
+                    xmlns:fa5="http://schemas.fontawesome.com/icons/">
 
     <Style x:Key="ItemSearchTextBoxStyle" BasedOn="{StaticResource {x:Type TextBox}}" TargetType="TextBox">
         <Setter Property="HorizontalAlignment" Value="Left" />
@@ -22,7 +23,23 @@
     <DataTemplate x:Key="ItemSearch.GridViewColumnNameTemplate" DataType="{x:Type models:Item}">
         <Grid Width="400">
             <StackPanel Orientation="Vertical">
-                <TextBlock TextWrapping="Wrap" Text="{Binding LocalizedNameAndEnglish}" />
+                <TextBlock TextWrapping="Wrap">
+                    <InlineUIContainer BaselineAlignment="Center">
+                        <fa5:ImageAwesome Icon="Solid_Bell" Width="14" Height="14" Margin="0,0,4,0"
+                                          Foreground="{StaticResource SolidColorBrush.Accent.Yellow.1}">
+                            <fa5:ImageAwesome.Style>
+                                <Style TargetType="{x:Type fa5:ImageAwesome}">
+                                    <Setter Property="Visibility" Value="Collapsed" />
+                                    <Style.Triggers>
+                                        <DataTrigger Binding="{Binding IsAlertActive}" Value="True">
+                                            <Setter Property="Visibility" Value="Visible" />
+                                        </DataTrigger>
+                                    </Style.Triggers>
+                                </Style>
+                            </fa5:ImageAwesome.Style>
+                        </fa5:ImageAwesome>
+                    </InlineUIContainer><Run Text="{Binding LocalizedNameAndEnglish, Mode=OneWay}" />
+                </TextBlock>
                 <StackPanel Orientation="Horizontal">
                     <Image Source="../Resources/silver.png" Width="12" Height="12" ToolTip="{Binding TranslationEstMarketValue, IsAsync=True, Mode=OneWay}" />
                     <TextBlock Text="{Binding AverageEstMarketValue, IsAsync=True, Mode=OneWay, StringFormat='{}{0:N0}', ConverterCulture={x:Static glob:CultureInfo.CurrentCulture}}" 

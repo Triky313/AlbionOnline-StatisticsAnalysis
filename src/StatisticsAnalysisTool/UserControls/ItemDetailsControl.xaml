@@ -276,8 +276,12 @@
                                     <RowDefinition Height="Auto" />
                                 </Grid.RowDefinitions>
 
-                                <TextBlock Text="{Binding Translation.PriceMonitoring, FallbackValue=PRICE_MONITORING}"
-                                           Foreground="{StaticResource SolidColorBrush.Text.1}" FontWeight="Bold" FontSize="14" />
+                                <StackPanel Orientation="Horizontal">
+                                    <fa5:ImageAwesome Icon="Solid_Tag" Width="16" Height="16" Margin="0,0,8,0"
+                                                      Foreground="{StaticResource SolidColorBrush.Accent.Yellow.1}" />
+                                    <TextBlock Text="{Binding Translation.PriceMonitoring, FallbackValue=PRICE_MONITORING}"
+                                               Foreground="{StaticResource SolidColorBrush.Text.1}" FontWeight="Bold" FontSize="14" />
+                                </StackPanel>
                                 <TextBlock Grid.Row="1"
                                            Text="{Binding Translation.PriceMonitoringDescription, FallbackValue=PRICE_MONITORING_DESCRIPTION}"
                                            Foreground="{StaticResource SolidColorBrush.Text.2}" TextWrapping="Wrap" Margin="0,5,0,10" />
@@ -310,8 +314,12 @@
                                     <RowDefinition Height="Auto" />
                                 </Grid.RowDefinitions>
 
-                                <TextBlock Text="{Binding Translation.MarketAvailability, FallbackValue=MARKET_AVAILABILITY}"
-                                           Foreground="{StaticResource SolidColorBrush.Text.1}" FontWeight="Bold" FontSize="14" />
+                                <StackPanel Orientation="Horizontal">
+                                    <fa5:ImageAwesome Icon="Solid_Search" Width="16" Height="16" Margin="0,0,8,0"
+                                                      Foreground="{StaticResource SolidColorBrush.Accent.Blue.3}" />
+                                    <TextBlock Text="{Binding Translation.MarketAvailability, FallbackValue=MARKET_AVAILABILITY}"
+                                               Foreground="{StaticResource SolidColorBrush.Text.1}" FontWeight="Bold" FontSize="14" />
+                                </StackPanel>
                                 <TextBlock Grid.Row="1"
                                            Text="{Binding Translation.MarketAvailabilityDescription, FallbackValue=MARKET_AVAILABILITY_DESCRIPTION}"
                                            Foreground="{StaticResource SolidColorBrush.Text.2}" TextWrapping="Wrap" Margin="0,5,0,10" />
@@ -340,8 +348,12 @@
                                     <RowDefinition Height="Auto" />
                                 </Grid.RowDefinitions>
 
-                                <TextBlock Text="{Binding Translation.BlackMarketBuyOrderMonitoring, FallbackValue=BLACK_MARKET_BUY_ORDER_MONITORING}"
-                                           Foreground="{StaticResource SolidColorBrush.Text.1}" FontWeight="Bold" FontSize="14" />
+                                <StackPanel Orientation="Horizontal">
+                                    <Image Source="/Assets/flag_blackmarket.png" Width="20" Height="16" Margin="0,0,8,0"
+                                           Stretch="Uniform" />
+                                    <TextBlock Text="{Binding Translation.BlackMarketBuyOrderMonitoring, FallbackValue=BLACK_MARKET_BUY_ORDER_MONITORING}"
+                                               Foreground="{StaticResource SolidColorBrush.Text.1}" FontWeight="Bold" FontSize="14" />
+                                </StackPanel>
                                 <TextBlock Grid.Row="1"
                                            Text="{Binding Translation.BlackMarketBuyOrderMonitoringDescription, FallbackValue=BLACK_MARKET_BUY_ORDER_MONITORING_DESCRIPTION}"
                                            Foreground="{StaticResource SolidColorBrush.Text.2}" TextWrapping="Wrap" Margin="0,5,0,10" />
