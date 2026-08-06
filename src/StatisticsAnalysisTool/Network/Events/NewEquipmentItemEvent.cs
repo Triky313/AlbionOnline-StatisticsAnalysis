@@ -1,4 +1,4 @@
-﻿using StatisticsAnalysisTool.Common;
+using StatisticsAnalysisTool.Common;
 using StatisticsAnalysisTool.Models.NetworkModel;
 using System;
 using System.Collections.Generic;
@@ -10,6 +10,8 @@ namespace StatisticsAnalysisTool.Network.Events;
 public class NewEquipmentItemEvent
 {
     public readonly DiscoveredItem Item;
+
+    public long EstimatedBlackMarketValueInternal { get; }
 
     private readonly long? _objectId;
     private readonly int _itemId;
@@ -47,6 +49,11 @@ public class NewEquipmentItemEvent
             if (parameters.TryGetValue(4, out object estimatedMarketValue))
             {
                 _estimatedMarketValue = estimatedMarketValue.ObjectToLong() ?? 0;
+            }
+
+            if (parameters.TryGetValue(5, out object estimatedBlackMarketValue))
+            {
+                EstimatedBlackMarketValueInternal = estimatedBlackMarketValue.ObjectToLong() ?? 0;
             }
 
             if (parameters.TryGetValue(qualityParameterKey, out object qualityLevel))

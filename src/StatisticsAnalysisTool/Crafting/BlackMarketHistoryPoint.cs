@@ -10,5 +10,7 @@ public class BlackMarketHistoryPoint
 
     public long AveragePrice { get; set; }
 
+    public bool IsEstimatedPrice { get; set; }
+
     public DateTime LastUpdatedUtc { get; set; }
 }

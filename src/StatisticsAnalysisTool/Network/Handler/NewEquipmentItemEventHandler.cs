@@ -1,7 +1,9 @@
 ﻿using StatisticsAnalysisTool.EstimatedMarketValue;
+using StatisticsAnalysisTool.Common;
 using StatisticsAnalysisTool.Models;
 using StatisticsAnalysisTool.Network.Events;
 using StatisticsAnalysisTool.Network.Manager;
+using StatisticsAnalysisTool.ViewModels;
 using System.Threading.Tasks;
 
 namespace StatisticsAnalysisTool.Network.Handler;
@@ -22,6 +24,14 @@ public class NewEquipmentItemEventHandler(TrackingController trackingController)
         });
 
         EstimatedMarketValueController.Add(value.Item.ItemIndex, value.Item.EstimatedMarketValueInternal, value.Item.Quality);
+
+        var mainWindowViewModel = ServiceLocator.Resolve<MainWindowViewModel>();
+        mainWindowViewModel?.CraftingBindings?.BlackMarket?.RecordEstimatedDailyPrice(
+            value.Item.ItemIndex,
+            (int) value.Item.Quality + 1,
+            value.EstimatedBlackMarketValueInternal,
+            value.Item.UtcDiscoveryTime);
+
         trackingController.TrackEquipmentItem(value.Item);
 
         trackingController.LootController.AddDiscoveredItem(value.Item);

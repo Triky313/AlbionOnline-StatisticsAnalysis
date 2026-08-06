@@ -35,7 +35,6 @@ public sealed class BlackMarketBindings : BaseViewModel
     private const int FourWeeksTimeRange = 2;
     private const int SevenDaysWindowDays = 7;
     private const int FourWeeksWindowDays = 28;
-    private const int CurrentHistoryFormatVersion = 1;
     private readonly object _historyLock = new();
     private readonly Dictionary<(string ItemUniqueName, int QualityLevel), BlackMarketHistoryEntry> _history = new();
     private readonly Dictionary<(string ItemUniqueName, int QualityLevel), BlackMarketItemRow> _rowsByKey = new();
@@ -402,6 +401,75 @@ public sealed class BlackMarketBindings : BaseViewModel
         });
     }
 
+    public void RecordEstimatedDailyPrice(int itemIndex, int qualityLevel, long estimatedPriceInternal, DateTime observedUtc)
+    {
+        if (!SettingsController.CurrentSettings.Bm || estimatedPriceInternal <= 0 || qualityLevel is < 1 or > 5)
+        {
+            return;
+        }
+
+        var item = ItemController.GetItemByIndex(itemIndex);
+        if (!IsBlackMarketSellableItem(item))
+        {
+            return;
+        }
+
+        var estimatedPrice = Math.Max(0, (long) Math.Round(
+            (decimal) estimatedPriceInternal / FixPoint.InternalFactor,
+            MidpointRounding.AwayFromZero));
+        if (estimatedPrice <= 0)
+        {
+            return;
+        }
+
+        var normalizedObservedUtc = observedUtc.Kind == DateTimeKind.Utc
+            ? observedUtc
+            : observedUtc.ToUniversalTime();
+        BlackMarketHistoryEntry entry;
+        lock (_historyLock)
+        {
+            var key = (item.UniqueName, qualityLevel);
+            if (!_history.TryGetValue(key, out entry))
+            {
+                entry = CreateHistoryEntry(item.UniqueName, itemIndex, qualityLevel);
+                _history[key] = entry;
+            }
+
+            var date = normalizedObservedUtc.Date;
+            var dailyPoint = entry.Points.FirstOrDefault(x => x.Date.Date == date);
+            if (dailyPoint is { IsEstimatedPrice: false, AveragePrice: > 0 })
+            {
+                return;
+            }
+
+            if (dailyPoint == null)
+            {
+                dailyPoint = new BlackMarketHistoryPoint
+                {
+                    Date = date,
+                    ItemCount = 0
+                };
+                entry.Points.Add(dailyPoint);
+            }
+            else if (dailyPoint.LastUpdatedUtc > normalizedObservedUtc)
+            {
+                return;
+            }
+
+            dailyPoint.AveragePrice = estimatedPrice;
+            dailyPoint.IsEstimatedPrice = true;
+            dailyPoint.LastUpdatedUtc = normalizedObservedUtc;
+            entry.LastUpdatedUtc = normalizedObservedUtc;
+            TrimHistory(entry);
+        }
+
+        _ = Application.Current.Dispatcher.InvokeAsync(() =>
+        {
+            RefreshRow(entry);
+            RefreshSelectedItemDetails();
+        });
+    }
+
     public async Task RecordAverageStatsResponseAsync(int requestId, IReadOnlyList<BlackMarketHistoryPoint> points)
     {
         if (!SettingsController.CurrentSettings.Bm)
@@ -463,7 +531,7 @@ public sealed class BlackMarketBindings : BaseViewModel
                     continue;
                 }
 
-                MigrateHistoryEntry(entry);
+                TrimHistory(entry);
                 _history[(entry.ItemUniqueName, entry.QualityLevel)] = entry;
             }
         }
@@ -781,7 +849,6 @@ public sealed class BlackMarketBindings : BaseViewModel
         return new BlackMarketHistoryEntry
         {
             ItemUniqueName = itemUniqueName,
-            FormatVersion = CurrentHistoryFormatVersion,
             ItemIndex = itemIndex,
             Tier = ItemController.GetItemTier(itemUniqueName),
             EnchantmentLevel = ItemController.GetItemLevel(itemUniqueName),
@@ -793,19 +860,41 @@ public sealed class BlackMarketBindings : BaseViewModel
     {
         var now = DateTime.UtcNow;
         var fromDate = now.Date.AddDays(-(windowDays - 1));
+        var estimatedPointsByDate = entry.Points
+            .Where(x => x.Date.Date >= fromDate && x.IsEstimatedPrice && x.AveragePrice > 0)
+            .GroupBy(x => x.Date.Date)
+            .ToDictionary(x => x.Key, x => x.OrderByDescending(point => point.LastUpdatedUtc).First());
         var normalizedPoints = points
             .Where(x => x.Date.Date >= fromDate)
             .GroupBy(x => x.Date.Date)
             .Select(x => CreateDailyHistoryPoint(x.Key, x, now))
             .ToList();
 
+        foreach (var point in normalizedPoints.Where(x => x.AveragePrice <= 0))
+        {
+            if (!estimatedPointsByDate.TryGetValue(point.Date.Date, out var estimatedPoint))
+            {
+                continue;
+            }
+
+            point.AveragePrice = estimatedPoint.AveragePrice;
+            point.IsEstimatedPrice = true;
+        }
+
+        var normalizedDates = normalizedPoints
+            .Select(x => x.Date.Date)
+            .ToHashSet();
+        var estimatedFallbackPoints = estimatedPointsByDate
+            .Where(x => !normalizedDates.Contains(x.Key))
+            .Select(x => x.Value);
+
         entry.Points = entry.Points
             .Where(x => x.Date.Date < fromDate)
             .Concat(normalizedPoints)
+            .Concat(estimatedFallbackPoints)
             .OrderBy(x => x.Date)
             .ToList();
 
-        entry.FormatVersion = CurrentHistoryFormatVersion;
         entry.LastUpdatedUtc = now;
         TrimHistory(entry);
     }
@@ -840,6 +929,7 @@ public sealed class BlackMarketBindings : BaseViewModel
             Date = date.Date,
             ItemCount = itemCount,
             AveragePrice = averagePrice,
+            IsEstimatedPrice = false,
             LastUpdatedUtc = lastUpdatedUtc
         };
     }
@@ -863,36 +953,11 @@ public sealed class BlackMarketBindings : BaseViewModel
         return totalItems > 0 ? (long) Math.Round(totalPrice / totalItems) : 0;
     }
 
-    private static void MigrateHistoryEntry(BlackMarketHistoryEntry entry)
-    {
-        if (entry.FormatVersion < CurrentHistoryFormatVersion)
-        {
-            foreach (var point in entry.Points)
-            {
-                point.AveragePrice = ConvertSilverTotalToUnitAveragePrice(point.AveragePrice, point.ItemCount);
-            }
-        }
-
-        entry.FormatVersion = CurrentHistoryFormatVersion;
-        TrimHistory(entry);
-    }
-
-    private static long ConvertSilverTotalToUnitAveragePrice(long totalPrice, int itemCount)
-    {
-        if (totalPrice <= 0 || itemCount <= 0)
-        {
-            return 0;
-        }
-
-        return (long) Math.Round((decimal) totalPrice / itemCount, MidpointRounding.AwayFromZero);
-    }
-
     private static BlackMarketHistoryEntry CloneAndTrim(BlackMarketHistoryEntry source)
     {
         var clone = new BlackMarketHistoryEntry
         {
             ItemUniqueName = source.ItemUniqueName,
-            FormatVersion = CurrentHistoryFormatVersion,
             ItemIndex = source.ItemIndex,
             Tier = source.Tier,
             EnchantmentLevel = source.EnchantmentLevel,
@@ -906,6 +971,7 @@ public sealed class BlackMarketBindings : BaseViewModel
                     Date = x.Date,
                     ItemCount = x.ItemCount,
                     AveragePrice = x.AveragePrice,
+                    IsEstimatedPrice = x.IsEstimatedPrice,
                     LastUpdatedUtc = x.LastUpdatedUtc
                 })
                 .ToList()
