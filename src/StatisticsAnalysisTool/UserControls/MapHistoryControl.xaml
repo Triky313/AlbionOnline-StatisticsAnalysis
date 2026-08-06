@@ -29,25 +29,26 @@
         <Border Grid.Row="2" Background="{StaticResource SolidColorBrush.Background.3}">
             <Grid>
                 <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="24" />
                     <ColumnDefinition Width="140" />
                     <ColumnDefinition Width="35" />
-                    <ColumnDefinition Width="155" />
-                    <ColumnDefinition Width="155" />
-                    <ColumnDefinition Width="155" />
-                    <ColumnDefinition Width="155" />
+                    <ColumnDefinition Width="149" />
+                    <ColumnDefinition Width="149" />
+                    <ColumnDefinition Width="149" />
+                    <ColumnDefinition Width="149" />
                 </Grid.ColumnDefinitions>
 
-                <TextBlock Grid.Column="0" Text="{Binding Translation.Time, FallbackValue=TIME}" Margin="5,0,0,0" VerticalAlignment="Center" FontSize="12" FontWeight="Bold"
+                <TextBlock Grid.Column="1" Text="{Binding Translation.Time, FallbackValue=TIME}" Margin="5,0,0,0" VerticalAlignment="Center" FontSize="12" FontWeight="Bold"
                            Foreground="{StaticResource SolidColorBrush.Text.1}" />
-                <TextBlock Grid.Column="1" Text="{Binding Translation.Tier, FallbackValue=TIER}" VerticalAlignment="Center" FontSize="12" FontWeight="Bold"
+                <TextBlock Grid.Column="2" Text="{Binding Translation.Tier, FallbackValue=TIER}" VerticalAlignment="Center" FontSize="12" FontWeight="Bold"
                            Foreground="{StaticResource SolidColorBrush.Text.1}" />
-                <TextBlock Grid.Column="2" Text="{Binding Translation.Zone, FallbackValue=ZONE}" VerticalAlignment="Center" FontSize="12" FontWeight="Bold"
+                <TextBlock Grid.Column="3" Text="{Binding Translation.Zone, FallbackValue=ZONE}" VerticalAlignment="Center" FontSize="12" FontWeight="Bold"
                            Foreground="{StaticResource SolidColorBrush.Text.1}" />
-                <TextBlock Grid.Column="3" Text="{Binding Translation.Name, FallbackValue=NAME}" VerticalAlignment="Center" FontSize="12" FontWeight="Bold" 
+                <TextBlock Grid.Column="4" Text="{Binding Translation.Name, FallbackValue=NAME}" VerticalAlignment="Center" FontSize="12" FontWeight="Bold"
                            Foreground="{StaticResource SolidColorBrush.Text.1}" />
-                <TextBlock Grid.Column="4" Text="{Binding Translation.Type, FallbackValue=TYPE}" VerticalAlignment="Center" FontSize="12" FontWeight="Bold"
+                <TextBlock Grid.Column="5" Text="{Binding Translation.Type, FallbackValue=TYPE}" VerticalAlignment="Center" FontSize="12" FontWeight="Bold"
                            Foreground="{StaticResource SolidColorBrush.Text.1}" />
-                <TextBlock Grid.Column="5" Text="{Binding Translation.Note, FallbackValue=NOTE}" VerticalAlignment="Center" FontSize="12" FontWeight="Bold"
+                <TextBlock Grid.Column="6" Text="{Binding Translation.Note, FallbackValue=NOTE}" VerticalAlignment="Center" FontSize="12" FontWeight="Bold"
                            Foreground="{StaticResource SolidColorBrush.Text.1}" />
             </Grid>
         </Border>

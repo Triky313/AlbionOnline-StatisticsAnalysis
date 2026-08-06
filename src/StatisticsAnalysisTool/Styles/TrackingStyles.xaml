@@ -582,6 +582,30 @@
         </Image>
     </DataTemplate>
 
+    <DataTemplate x:Key="MapHistory.ClusterModeIcon.Template" DataType="{x:Type cluster:ClusterInfo}">
+        <Image Height="20" Width="20" VerticalAlignment="Center">
+            <Image.Style>
+                <Style TargetType="{x:Type Image}">
+                    <Setter Property="Source" Value="../Assets/map_white_icon.png" />
+                    <Style.Triggers>
+                        <DataTrigger Binding="{Binding ClusterMode}" Value="{x:Static enumerations:ClusterMode.SafeArea}">
+                            <Setter Property="Source" Value="../Assets/map_blue_icon.png" />
+                        </DataTrigger>
+                        <DataTrigger Binding="{Binding ClusterMode}" Value="{x:Static enumerations:ClusterMode.Yellow}">
+                            <Setter Property="Source" Value="../Assets/map_yellow_icon.png" />
+                        </DataTrigger>
+                        <DataTrigger Binding="{Binding ClusterMode}" Value="{x:Static enumerations:ClusterMode.Red}">
+                            <Setter Property="Source" Value="../Assets/map_red_icon.png" />
+                        </DataTrigger>
+                        <DataTrigger Binding="{Binding ClusterMode}" Value="{x:Static enumerations:ClusterMode.Black}">
+                            <Setter Property="Source" Value="../Assets/map_black_icon.png" />
+                        </DataTrigger>
+                    </Style.Triggers>
+                </Style>
+            </Image.Style>
+        </Image>
+    </DataTemplate>
+
     <!-- ClusterInfo -->
     <DataTemplate x:Key="ClusterInfoTemplate" DataType="{x:Type cluster:ClusterInfo}">
         <Border Margin="0,0,0,1" BorderBrush="{StaticResource SolidColorBrush.Accent.Blue.3}">
@@ -688,6 +712,7 @@
                             <StackPanel.InputBindings>
                                 <MouseBinding MouseAction="LeftClick" Command="{Binding ToggleMapHistorySelectionCommand}" />
                             </StackPanel.InputBindings>
+                            <ContentPresenter Content="{Binding}" ContentTemplate="{StaticResource MapHistory.ClusterModeIcon.Template}" Width="24" />
                             <Label Width="140" VerticalAlignment="Center" FontSize="12" Foreground="{StaticResource SolidColorBrush.Text.1}">
                                 <Label.Content>
                                     <TextBlock>
@@ -699,8 +724,8 @@
                                     </TextBlock>
                                 </Label.Content>
                             </Label>
-                            <Label Content="{Binding TierRomanString}" FontSize="12" Foreground="{StaticResource SolidColorBrush.Text.1}" Width="30" />
-                            <StackPanel Orientation="Horizontal" Width="155">
+                            <Label Content="{Binding TierRomanString}" FontSize="12" Foreground="{StaticResource SolidColorBrush.Text.1}" Width="35" />
+                            <StackPanel Orientation="Horizontal" Width="149">
                                 <Label Content="{Binding ClusterHistoryString1}" FontSize="12" Foreground="{StaticResource SolidColorBrush.Text.1}" />
                                 <Image Height="18" Width="16" ToolTip="{Binding RandomDungeonTierLevelToolTip}">
                                     <Image.Style>
@@ -730,10 +755,10 @@
                                     </Image.Style>
                                 </Image>
                             </StackPanel>
-                            <Label Content="{Binding ClusterHistoryString2}" FontSize="12" Foreground="{StaticResource SolidColorBrush.Text.1}" Width="155" />
-                            <Label Content="{Binding ClusterHistoryString3}" FontSize="12" Foreground="{StaticResource SolidColorBrush.Text.1}" Width="155" />
+                            <Label Content="{Binding ClusterHistoryString2}" FontSize="12" Foreground="{StaticResource SolidColorBrush.Text.1}" Width="149" />
+                            <Label Content="{Binding ClusterHistoryString3}" FontSize="12" Foreground="{StaticResource SolidColorBrush.Text.1}" Width="149" />
                         </StackPanel>
-                        <TextBox Text="{Binding MapHistoryNote, UpdateSourceTrigger=PropertyChanged}" Width="155" Background="{StaticResource SolidColorBrush.Value.Silver.Transparent}" BorderThickness="0" />
+                        <TextBox Text="{Binding MapHistoryNote, UpdateSourceTrigger=PropertyChanged}" Width="149" Background="{StaticResource SolidColorBrush.Value.Silver.Transparent}" BorderThickness="0" />
                     </StackPanel>
                     <ItemsControl ItemsSource="{Binding MapMarkers, IsAsync=True}" ItemTemplate="{StaticResource MapMarkerIconTemplate}">
                         <ItemsControl.ItemsPanel>
