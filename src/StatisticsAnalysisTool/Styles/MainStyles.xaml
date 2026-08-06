@@ -463,7 +463,7 @@
         <Setter Property="BorderBrush" Value="{StaticResource SolidColorBrush.Border.2}" />
         <Setter Property="BorderThickness" Value="1" />
         <Setter Property="FontWeight" Value="Normal" />
-        <Setter Property="Padding" Value="17,8" />
+        <Setter Property="Padding" Value="15,6" />
         <Setter Property="Margin" Value="0" />
         <Setter Property="Template">
             <Setter.Value>
