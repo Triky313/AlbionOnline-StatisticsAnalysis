@@ -31,29 +31,6 @@ public sealed class ItemRefreshCooldownTracker
         }
     }
 
-    public TimeSpan GetRemainingCooldown(string itemUniqueName)
-    {
-        ArgumentException.ThrowIfNullOrWhiteSpace(itemUniqueName);
-
-        lock (_syncRoot)
-        {
-            var now = DateTimeOffset.UtcNow;
-
-            if (!_cooldownEndTimes.TryGetValue(itemUniqueName, out var cooldownEndTime))
-            {
-                return TimeSpan.Zero;
-            }
-
-            if (cooldownEndTime <= now)
-            {
-                _cooldownEndTimes.Remove(itemUniqueName);
-                return TimeSpan.Zero;
-            }
-
-            return cooldownEndTime - now;
-        }
-    }
-
     private void RemoveExpiredCooldowns(DateTimeOffset now)
     {
         foreach (var itemUniqueName in _cooldownEndTimes.Where(x => x.Value <= now).Select(x => x.Key).ToList())

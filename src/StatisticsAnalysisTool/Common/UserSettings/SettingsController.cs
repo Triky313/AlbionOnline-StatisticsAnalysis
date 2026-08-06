@@ -114,9 +114,19 @@ public static class SettingsController
             return false;
         }
 
+        if (InvalidColumnWidth(s.ItemSearchIconColumnWidth)
+            || InvalidColumnWidth(s.ItemSearchNameColumnWidth)
+            || InvalidColumnWidth(s.ItemSearchAlertColumnWidth)
+            || InvalidColumnWidth(s.ItemSearchUndercuttingPriceColumnWidth)
+            || InvalidColumnWidth(s.ItemSearchFavoriteColumnWidth))
+        {
+            return false;
+        }
+
         return true;
 
         bool Invalid(double v) => double.IsNaN(v) || double.IsInfinity(v);
+        bool InvalidColumnWidth(double v) => Invalid(v) || v < 0;
     }
 
     private static void NormalizeRuntimePaths()

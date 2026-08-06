@@ -67,12 +67,11 @@
                       Margin="0,145,0,0" SelectionMode="Single" SelectedItem="{Binding SelectedSearchItem, Mode=TwoWay}" d:ItemsSource="{d:SampleData ItemCount=5}">
                 <ListView.View>
                     <GridView>
-                        <GridViewColumn Header="{Binding Translation.Icon, FallbackValue=ICON}" Width="65" CellTemplate="{StaticResource ItemSearch.GridViewColumnIconTemplate}"/>
-                        <GridViewColumn Header="{Binding Translation.Name, FallbackValue=NAME}" Width="215" CellTemplate="{StaticResource ItemSearch.GridViewColumnNameTemplate}" />
-                        <GridViewColumn Header="{Binding Translation.IsAlertActive, FallbackValue=IS_ALERT_ACTIVE}" Width="70">
+                        <GridViewColumn x:Name="ItemIconColumn" Header="{Binding Translation.Icon, FallbackValue=ICON}" Width="75" CellTemplate="{StaticResource ItemSearch.GridViewColumnIconTemplate}"/>
+                        <GridViewColumn x:Name="ItemNameColumn" Header="{Binding Translation.Name, FallbackValue=NAME}" Width="215" CellTemplate="{StaticResource ItemSearch.GridViewColumnNameTemplate}" />
+                        <GridViewColumn x:Name="ItemAlertColumn" Header="{Binding Translation.IsAlertActive, FallbackValue=IS_ALERT_ACTIVE}" Width="70">
                             <GridViewColumn.CellTemplate>
                                 <DataTemplate>
-                                    <!--TODO: Rework alert toggles and without style in this file!-->
                                     <Grid Height="24" Width="24">
                                         <fa5:ImageAwesome Visibility="Visible" MouseUp="AlertModeAlertActiveToggle_MouseUp">
                                             <fa5:ImageAwesome.Style>
@@ -94,9 +93,9 @@
                                 </DataTemplate>
                             </GridViewColumn.CellTemplate>
                         </GridViewColumn>
-                        <GridViewColumn Header="{Binding Translation.UndercuttingPrice, FallbackValue=UNDERCUTTING_PRICE}" Width="85"
+                        <GridViewColumn x:Name="ItemUndercuttingPriceColumn" Header="{Binding Translation.UndercuttingPrice, FallbackValue=UNDERCUTTING_PRICE}" Width="85"
                                         CellTemplate="{StaticResource ItemSearch.GridViewColumnAlertMinSellPriceTemplate}" />
-                        <GridViewColumn Header="{Binding Translation.Favorite, FallbackValue=FAVORITE}" Width="55" CellTemplate="{StaticResource ItemSearch.GridViewColumnFavoriteTemplate}" />
+                        <GridViewColumn x:Name="ItemFavoriteColumn" Header="{Binding Translation.Favorite, FallbackValue=FAVORITE}" Width="55" CellTemplate="{StaticResource ItemSearch.GridViewColumnFavoriteTemplate}" />
                     </GridView>
                 </ListView.View>
             </ListView>
