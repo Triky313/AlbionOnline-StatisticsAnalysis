@@ -47,4 +47,19 @@ public class ItemDetailsTranslation
     public static string ShopCategory => LocalizationController.Translation("SHOP_CATEGORY");
     public static string ShopSubCategory => LocalizationController.Translation("SHOP_SUB_CATEGORY");
     public static string CanBeOvercharged => LocalizationController.Translation("CAN_BE_OVERCHARGED");
+    public static string Monitoring => LocalizationController.Translation("ITEM_MONITORING");
+    public static string MonitoringDescription => LocalizationController.Translation("ITEM_MONITORING_DESCRIPTION");
+    public static string MaximumPriceAge => LocalizationController.Translation("MAXIMUM_PRICE_AGE");
+    public static string MaximumPriceAgeDescription => LocalizationController.Translation("MAXIMUM_PRICE_AGE_DESCRIPTION");
+    public static string Minutes => LocalizationController.Translation("MINUTES");
+    public static string PriceMonitoring => LocalizationController.Translation("PRICE_MONITORING");
+    public static string PriceMonitoringDescription => LocalizationController.Translation("PRICE_MONITORING_DESCRIPTION");
+    public static string PriceLimit => LocalizationController.Translation("PRICE_LIMIT");
+    public static string MarketAvailability => LocalizationController.Translation("MARKET_AVAILABILITY");
+    public static string MarketAvailabilityDescription => LocalizationController.Translation("MARKET_AVAILABILITY_DESCRIPTION");
+    public static string BlackMarketBuyOrderMonitoring => LocalizationController.Translation("BLACK_MARKET_BUY_ORDER_MONITORING");
+    public static string BlackMarketBuyOrderMonitoringDescription => LocalizationController.Translation("BLACK_MARKET_BUY_ORDER_MONITORING_DESCRIPTION");
+    public static string MinimumBuyOrderPrice => LocalizationController.Translation("MINIMUM_BUY_ORDER_PRICE");
+    public static string PlayAlertSound => LocalizationController.Translation("PLAY_ALERT_SOUND");
+    public static string IsAlertActive => LocalizationController.Translation("IS_ALERT_ACTIVATE");
 }

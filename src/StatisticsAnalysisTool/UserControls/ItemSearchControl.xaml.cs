@@ -17,8 +17,6 @@ public partial class ItemSearchControl
 {
     private const double DefaultIconColumnWidth = 75;
     private const double DefaultNameColumnWidth = 215;
-    private const double DefaultAlertColumnWidth = 70;
-    private const double DefaultUndercuttingPriceColumnWidth = 85;
     private const double DefaultFavoriteColumnWidth = 55;
     private static readonly DependencyPropertyDescriptor ColumnWidthDescriptor =
         DependencyPropertyDescriptor.FromProperty(GridViewColumn.WidthProperty, typeof(GridViewColumn));
@@ -69,8 +67,6 @@ public partial class ItemSearchControl
         var settings = SettingsController.CurrentSettings;
         ItemIconColumn.Width = GetValidColumnWidth(settings.ItemSearchIconColumnWidth, DefaultIconColumnWidth);
         ItemNameColumn.Width = GetValidColumnWidth(settings.ItemSearchNameColumnWidth, DefaultNameColumnWidth);
-        ItemAlertColumn.Width = GetValidColumnWidth(settings.ItemSearchAlertColumnWidth, DefaultAlertColumnWidth);
-        ItemUndercuttingPriceColumn.Width = GetValidColumnWidth(settings.ItemSearchUndercuttingPriceColumnWidth, DefaultUndercuttingPriceColumnWidth);
         ItemFavoriteColumn.Width = GetValidColumnWidth(settings.ItemSearchFavoriteColumnWidth, DefaultFavoriteColumnWidth);
     }
 
@@ -80,8 +76,6 @@ public partial class ItemSearchControl
         {
             ItemIconColumn,
             ItemNameColumn,
-            ItemAlertColumn,
-            ItemUndercuttingPriceColumn,
             ItemFavoriteColumn
         };
 
@@ -103,8 +97,6 @@ public partial class ItemSearchControl
         var settings = SettingsController.CurrentSettings;
         settings.ItemSearchIconColumnWidth = GetPersistableColumnWidth(ItemIconColumn, DefaultIconColumnWidth);
         settings.ItemSearchNameColumnWidth = GetPersistableColumnWidth(ItemNameColumn, DefaultNameColumnWidth);
-        settings.ItemSearchAlertColumnWidth = GetPersistableColumnWidth(ItemAlertColumn, DefaultAlertColumnWidth);
-        settings.ItemSearchUndercuttingPriceColumnWidth = GetPersistableColumnWidth(ItemUndercuttingPriceColumn, DefaultUndercuttingPriceColumnWidth);
         settings.ItemSearchFavoriteColumnWidth = GetPersistableColumnWidth(ItemFavoriteColumn, DefaultFavoriteColumnWidth);
     }
 
@@ -170,12 +162,6 @@ public partial class ItemSearchControl
     {
         var vm = (MainWindowViewModel) DataContext;
         vm?.ItemFilterReset();
-    }
-
-    private void AlertModeAlertActiveToggle_MouseUp(object sender, MouseButtonEventArgs e)
-    {
-        var vm = (MainWindowViewModel) DataContext;
-        vm?.ToggleAlertSender(sender);
     }
 
     private void OpenItemSearchInfoPopup_MouseEnter(object sender, MouseEventArgs e)

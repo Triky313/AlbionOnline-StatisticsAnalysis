@@ -183,7 +183,7 @@ public static class Locations
             "4300" or "Arthurs Rest" => MarketLocation.ArthursRest,
             "1012" or "Merlyns Rest" => MarketLocation.MerlynsRest,
             "0008" or "Morganas Rest" => MarketLocation.MorganasRest,
-            "3003" or "Black Market" or "@BLACK_MARKET" => MarketLocation.BlackMarket,
+            "3003" or "Black Market" or "BlackMarket" or "@BLACK_MARKET" => MarketLocation.BlackMarket,
             _ => MarketLocation.Unknown,
         };
     }
@@ -230,14 +230,34 @@ public static class Locations
 
     public static Color GetLocationColor(MarketLocation location)
     {
-        try
+        var colorName = location switch
         {
-            return (Color) Application.Current.Resources[$"Color.City.{location}"];
-        }
-        catch
+            MarketLocation.ThetfordMarket or MarketLocation.ThetfordPortal or MarketLocation.SwampCross => "Thetford",
+            MarketLocation.LymhurstMarket or MarketLocation.LymhurstPortal or MarketLocation.ForestCross => "Lymhurst",
+            MarketLocation.BridgewatchMarket or MarketLocation.BridgewatchPortal or MarketLocation.SteppeCross => "Bridgewatch",
+            MarketLocation.MartlockMarket or MarketLocation.MartlockPortal or MarketLocation.HighlandCross => "Martlock",
+            MarketLocation.FortSterlingMarket or MarketLocation.FortSterlingPortal or MarketLocation.MountainCross => "FortSterling",
+            MarketLocation.CaerleonMarket => "Caerleon",
+            MarketLocation.BrecilienMarket => "Brecilien",
+            MarketLocation.ArthursRest => "ArthursRest",
+            MarketLocation.MerlynsRest => "MerlynsRest",
+            MarketLocation.MorganasRest => "MorganasRest",
+            MarketLocation.BlackMarket => "BlackMarket",
+            MarketLocation.SmugglersDen => "SmugglersDen",
+            _ => "Default"
+        };
+
+        if (Application.Current?.TryFindResource($"Color.City.{colorName}") is Color locationColor)
         {
-            return (Color) Application.Current.Resources["Color.City.Default"];
+            return locationColor;
         }
+
+        if (Application.Current?.TryFindResource("Color.City.Default") is Color defaultColor)
+        {
+            return defaultColor;
+        }
+
+        return Color.FromRgb(68, 79, 90);
     }
 
     public static KeyValuePair<MarketLocation, string>[] OnceMarketLocations { get; } =

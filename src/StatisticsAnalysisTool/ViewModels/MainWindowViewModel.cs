@@ -46,6 +46,7 @@ namespace StatisticsAnalysisTool.ViewModels;
 public class MainWindowViewModel : BaseViewModel
 {
     private readonly ItemRefreshCooldownTracker _itemRefreshCooldownTracker = new();
+    private readonly Dictionary<string, ItemDetailsViewModel> _itemDetailsCache = new(StringComparer.Ordinal);
 
     public AlertController AlertManager;
 
@@ -236,36 +237,6 @@ public class MainWindowViewModel : BaseViewModel
         GuildBindings.GridSplitterPosition = new GridLength(SettingsController.CurrentSettings.GuildGridSplitterPosition);
     }
 
-    #region Alert
-
-    public void ToggleAlertSender(object sender)
-    {
-        if (sender == null)
-        {
-            return;
-        }
-
-        try
-        {
-            var imageAwesome = (ImageAwesome) sender;
-            var item = (Item) imageAwesome.DataContext;
-
-            if (item.AlertModeMinSellPriceIsUndercutPrice <= 0)
-            {
-                return;
-            }
-
-            item.IsAlertActive = AlertManager.ToggleAlert(ref item);
-        }
-        catch (Exception e)
-        {
-            DebugConsole.WriteError(MethodBase.GetCurrentMethod()?.DeclaringType, e);
-            Log.Error(e, "{message}", MethodBase.GetCurrentMethod()?.DeclaringType);
-        }
-    }
-
-    #endregion
-
     #region Item list
 
     public void ItemFilterReset()
@@ -296,6 +267,11 @@ public class MainWindowViewModel : BaseViewModel
 
     private void InitAlerts()
     {
+        if (AlertManager != null)
+        {
+            return;
+        }
+
         SoundController.InitializeSoundFilesFromDirectory();
         AlertManager = new AlertController(ItemsView);
     }
@@ -402,8 +378,8 @@ public class MainWindowViewModel : BaseViewModel
         ResetItemUserDataState();
         await ItemController.SetFavoriteItemsFromLocalFileAsync();
 
-        AlertManager?.StopAllAlerts();
-        InitAlerts();
+        AlertManager.StopAllAlerts();
+        await AlertManager.LoadFromFileAsync();
 
         if (ServiceLocator.IsServiceInDictionary<TrackingController>())
         {
@@ -422,6 +398,15 @@ public class MainWindowViewModel : BaseViewModel
         {
             item.IsFavorite = false;
             item.IsAlertActive = false;
+            item.IsPriceAlertActive = false;
+            item.IsAvailabilityAlertActive = false;
+            item.IsBlackMarketBuyOrderAlertActive = false;
+            item.IsAlertSoundEnabled = true;
+            item.AlertModeMinSellPriceIsUndercutPrice = 0;
+            item.PriceAlertMaximumPriceAgeMinutes = AlertOptions.DefaultMaximumPriceAgeMinutes;
+            item.AvailabilityAlertMaximumPriceAgeMinutes = AlertOptions.DefaultMaximumPriceAgeMinutes;
+            item.BlackMarketBuyOrderAlertThreshold = 0;
+            item.BlackMarketAlertMaximumPriceAgeMinutes = AlertOptions.DefaultMaximumPriceAgeMinutes;
         }
     }
 
@@ -583,11 +568,6 @@ public class MainWindowViewModel : BaseViewModel
             bool tierMatch = SelectedItemTier == ItemTier.Unknown || (ItemTier) item.Tier == SelectedItemTier;
             bool levelMatch = SelectedItemLevel == ItemLevel.Unknown || (ItemLevel) item.Level == SelectedItemLevel;
 
-            if (IsShowOnlyItemsWithAlertOnActive)
-            {
-                return nameMatch && catMatch && sub1Match && sub2Match && sub3Match && tierMatch && levelMatch && item.IsAlertActive;
-            }
-
             if (IsShowOnlyFavoritesActive)
             {
                 return nameMatch && catMatch && sub1Match && sub2Match && sub3Match && tierMatch && levelMatch && item.IsFavorite;
@@ -651,9 +631,19 @@ public class MainWindowViewModel : BaseViewModel
                 return;
             }
 
-            SelectedItemDetails?.Dispose();
+            var previousItemDetails = SelectedItemDetails;
+            if (previousItemDetails != null)
+            {
+                previousItemDetails.Deactivate();
+
+                if (!previousItemDetails.HasActiveRefreshCooldown)
+                {
+                    ReleaseItemDetails(previousItemDetails);
+                }
+            }
+
             field = value;
-            SelectedItemDetails = field == null ? null : new ItemDetailsViewModel(field, _itemRefreshCooldownTracker);
+            SelectedItemDetails = field == null ? null : GetOrCreateItemDetails(field);
             OnPropertyChanged();
         }
     }
@@ -671,9 +661,72 @@ public class MainWindowViewModel : BaseViewModel
 
     public bool IsItemDetailsSelected => SelectedItemDetails != null;
 
+    public async Task RefreshSelectedItemOnOpeningAsync(Item item)
+    {
+        if (item == null
+            || SelectedItemDetails?.Item == null
+            || !string.Equals(SelectedItemDetails.Item.UniqueName, item.UniqueName, StringComparison.Ordinal))
+        {
+            return;
+        }
+
+        await SelectedItemDetails.RefreshOnOpeningAsync();
+    }
+
+    private ItemDetailsViewModel GetOrCreateItemDetails(Item item)
+    {
+        if (!string.IsNullOrWhiteSpace(item?.UniqueName)
+            && _itemDetailsCache.TryGetValue(item.UniqueName, out var cachedItemDetails))
+        {
+            cachedItemDetails.Activate();
+            _ = cachedItemDetails.RefreshOnOpeningAsync();
+            return cachedItemDetails;
+        }
+
+        var itemDetails = new ItemDetailsViewModel(item, _itemRefreshCooldownTracker, AlertManager);
+        itemDetails.RefreshCooldownExpired += ItemDetails_RefreshCooldownExpired;
+        itemDetails.Activate();
+
+        if (!string.IsNullOrWhiteSpace(item?.UniqueName))
+        {
+            _itemDetailsCache[item.UniqueName] = itemDetails;
+        }
+
+        return itemDetails;
+    }
+
+    private void ItemDetails_RefreshCooldownExpired(object sender, EventArgs e)
+    {
+        if (sender is ItemDetailsViewModel itemDetails && !itemDetails.IsActive)
+        {
+            ReleaseItemDetails(itemDetails);
+        }
+    }
+
+    private void ReleaseItemDetails(ItemDetailsViewModel itemDetails)
+    {
+        itemDetails.RefreshCooldownExpired -= ItemDetails_RefreshCooldownExpired;
+
+        if (!string.IsNullOrWhiteSpace(itemDetails.Item?.UniqueName)
+            && _itemDetailsCache.TryGetValue(itemDetails.Item.UniqueName, out var cachedItemDetails)
+            && ReferenceEquals(cachedItemDetails, itemDetails))
+        {
+            _itemDetailsCache.Remove(itemDetails.Item.UniqueName);
+        }
+
+        itemDetails.Dispose();
+    }
+
     public void DisposeItemDetails()
     {
         SelectedSearchItem = null;
+
+        foreach (var itemDetails in _itemDetailsCache.Values.ToList())
+        {
+            ReleaseItemDetails(itemDetails);
+        }
+
+        _itemDetailsCache.Clear();
     }
 
     public Visibility IsDamageMeterPopupVisible
@@ -951,24 +1004,6 @@ public class MainWindowViewModel : BaseViewModel
         }
     }
 
-    public bool IsShowOnlyItemsWithAlertOnActive
-    {
-        get;
-        set
-        {
-            field = value;
-
-            if (value)
-            {
-                IsShowOnlyFavoritesActive = false;
-            }
-
-            ItemsViewFilter();
-            ItemsView?.Refresh();
-            OnPropertyChanged();
-        }
-    }
-
     public Visibility IsItemSearchPopupVisible
     {
         get;
@@ -985,11 +1020,6 @@ public class MainWindowViewModel : BaseViewModel
         set
         {
             field = value;
-
-            if (value)
-            {
-                IsShowOnlyItemsWithAlertOnActive = false;
-            }
 
             ItemsViewFilter();
             ItemsView?.Refresh();

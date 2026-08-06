@@ -1,4 +1,5 @@
-﻿using StatisticsAnalysisTool.Common;
+using StatisticsAnalysisTool.Alert;
+using StatisticsAnalysisTool.Common;
 using StatisticsAnalysisTool.Enumerations;
 using StatisticsAnalysisTool.EstimatedMarketValue;
 using StatisticsAnalysisTool.Localization;
@@ -42,8 +43,16 @@ public class Item
     public BitmapImage Icon => Application.Current.Dispatcher.Invoke(() => ImageController.GetItemImage(UniqueName));
 
     public ItemJsonObject FullItemInformation { get; set; }
-    public int AlertModeMinSellPriceIsUndercutPrice { get; set; }
+    public ulong AlertModeMinSellPriceIsUndercutPrice { get; set; }
+    public uint PriceAlertMaximumPriceAgeMinutes { get; set; } = AlertOptions.DefaultMaximumPriceAgeMinutes;
+    public uint AvailabilityAlertMaximumPriceAgeMinutes { get; set; } = AlertOptions.DefaultMaximumPriceAgeMinutes;
+    public ulong BlackMarketBuyOrderAlertThreshold { get; set; }
+    public uint BlackMarketAlertMaximumPriceAgeMinutes { get; set; } = AlertOptions.DefaultMaximumPriceAgeMinutes;
     public bool IsAlertActive { get; set; }
+    public bool IsPriceAlertActive { get; set; }
+    public bool IsAvailabilityAlertActive { get; set; }
+    public bool IsBlackMarketBuyOrderAlertActive { get; set; }
+    public bool IsAlertSoundEnabled { get; set; } = true;
     public bool IsFavorite { get; set; }
 
     [JsonIgnore]

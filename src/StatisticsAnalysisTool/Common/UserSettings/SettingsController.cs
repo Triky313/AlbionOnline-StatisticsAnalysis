@@ -116,8 +116,6 @@ public static class SettingsController
 
         if (InvalidColumnWidth(s.ItemSearchIconColumnWidth)
             || InvalidColumnWidth(s.ItemSearchNameColumnWidth)
-            || InvalidColumnWidth(s.ItemSearchAlertColumnWidth)
-            || InvalidColumnWidth(s.ItemSearchUndercuttingPriceColumnWidth)
             || InvalidColumnWidth(s.ItemSearchFavoriteColumnWidth))
         {
             return false;

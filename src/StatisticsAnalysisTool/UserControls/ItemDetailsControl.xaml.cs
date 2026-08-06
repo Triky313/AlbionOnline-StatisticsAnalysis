@@ -29,6 +29,30 @@ public partial class ItemDetailsControl
         }
     }
 
+    private void PriceAlert_Click(object sender, RoutedEventArgs e)
+    {
+        if (DataContext is ItemDetailsViewModel viewModel)
+        {
+            viewModel.TogglePriceAlert();
+        }
+    }
+
+    private void AvailabilityAlert_Click(object sender, RoutedEventArgs e)
+    {
+        if (DataContext is ItemDetailsViewModel viewModel)
+        {
+            viewModel.ToggleAvailabilityAlert();
+        }
+    }
+
+    private void BlackMarketBuyOrderAlert_Click(object sender, RoutedEventArgs e)
+    {
+        if (DataContext is ItemDetailsViewModel viewModel)
+        {
+            viewModel.ToggleBlackMarketBuyOrderAlert();
+        }
+    }
+
     private void GridViewColumnHeader_Click(object sender, RoutedEventArgs e)
     {
         if (sender is not GridViewColumnHeader column

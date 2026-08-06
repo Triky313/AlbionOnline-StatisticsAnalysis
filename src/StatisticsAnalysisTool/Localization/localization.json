@@ -47751,6 +47751,318 @@
           "seg": "Important Loot"
         }
       ]
+    },
+    {
+      "tuid": "ITEM_MONITORING",
+      "tuv": [
+        {
+          "lang": "de-DE",
+          "seg": "Monitoring"
+        },
+        {
+          "lang": "en-US",
+          "seg": "Monitoring"
+        }
+      ]
+    },
+    {
+      "tuid": "ITEM_MONITORING_DESCRIPTION",
+      "tuv": [
+        {
+          "lang": "de-DE",
+          "seg": "\u00dcberwache dieses Item und erhalte eine einmalige Benachrichtigung, sobald eine Bedingung erf\u00fcllt ist."
+        },
+        {
+          "lang": "en-US",
+          "seg": "Monitor this item and receive a one-time notification when a condition is met."
+        }
+      ]
+    },
+    {
+      "tuid": "PRICE_MONITORING",
+      "tuv": [
+        {
+          "lang": "de-DE",
+          "seg": "Preis\u00fcberwachung"
+        },
+        {
+          "lang": "en-US",
+          "seg": "Price monitoring"
+        }
+      ]
+    },
+    {
+      "tuid": "PRICE_MONITORING_DESCRIPTION",
+      "tuv": [
+        {
+          "lang": "de-DE",
+          "seg": "Benachrichtigt dich, wenn ein aktuelles Verkaufsangebot den eingetragenen Preis erreicht oder unterschreitet."
+        },
+        {
+          "lang": "en-US",
+          "seg": "Notifies you when a current sell offer reaches or falls below the configured price."
+        }
+      ]
+    },
+    {
+      "tuid": "PRICE_LIMIT",
+      "tuv": [
+        {
+          "lang": "de-DE",
+          "seg": "Preisgrenze"
+        },
+        {
+          "lang": "en-US",
+          "seg": "Price limit"
+        }
+      ]
+    },
+    {
+      "tuid": "MARKET_AVAILABILITY",
+      "tuv": [
+        {
+          "lang": "de-DE",
+          "seg": "Marktverf\u00fcgbarkeit"
+        },
+        {
+          "lang": "en-US",
+          "seg": "Market availability"
+        }
+      ]
+    },
+    {
+      "tuid": "MARKET_AVAILABILITY_DESCRIPTION",
+      "tuv": [
+        {
+          "lang": "de-DE",
+          "seg": "Benachrichtigt dich, sobald ein aktuelles Verkaufsangebot f\u00fcr dieses Item gemeldet wird."
+        },
+        {
+          "lang": "en-US",
+          "seg": "Notifies you as soon as a current sell offer for this item is reported."
+        }
+      ]
+    },
+    {
+      "tuid": "PLAY_ALERT_SOUND",
+      "tuv": [
+        {
+          "lang": "de-DE",
+          "seg": "Alarmton abspielen"
+        },
+        {
+          "lang": "en-US",
+          "seg": "Play alert sound"
+        }
+      ]
+    },
+    {
+      "tuid": "ENTER_VALID_PRICE_LIMIT",
+      "tuv": [
+        {
+          "lang": "de-DE",
+          "seg": "Gib eine g\u00fcltige Preisgrenze gr\u00f6\u00dfer als 0 ein."
+        },
+        {
+          "lang": "en-US",
+          "seg": "Enter a valid price limit greater than 0."
+        }
+      ]
+    },
+    {
+      "tuid": "MAXIMUM_ACTIVE_ITEM_ALERTS_REACHED",
+      "tuv": [
+        {
+          "lang": "de-DE",
+          "seg": "Es k\u00f6nnen h\u00f6chstens 10 Items gleichzeitig \u00fcberwacht werden."
+        },
+        {
+          "lang": "en-US",
+          "seg": "A maximum of 10 items can be monitored at the same time."
+        }
+      ]
+    },
+    {
+      "tuid": "ITEM_ALERT_COULD_NOT_BE_ACTIVATED",
+      "tuv": [
+        {
+          "lang": "de-DE",
+          "seg": "Die \u00dcberwachung f\u00fcr dieses Item konnte nicht aktiviert werden."
+        },
+        {
+          "lang": "en-US",
+          "seg": "Monitoring could not be activated for this item."
+        }
+      ]
+    },
+    {
+      "tuid": "ITEM_MARKET_OFFER_FOUND",
+      "tuv": [
+        {
+          "lang": "de-DE",
+          "seg": "Marktangebot gefunden"
+        },
+        {
+          "lang": "en-US",
+          "seg": "Market offer found"
+        }
+      ]
+    },
+    {
+      "tuid": "A_MARKET_OFFER_FOR",
+      "tuv": [
+        {
+          "lang": "de-DE",
+          "seg": "Ein Marktangebot f\u00fcr"
+        },
+        {
+          "lang": "en-US",
+          "seg": "A market offer for"
+        }
+      ]
+    },
+    {
+      "tuid": "WAS_FOUND",
+      "tuv": [
+        {
+          "lang": "de-DE",
+          "seg": "wurde gefunden."
+        },
+        {
+          "lang": "en-US",
+          "seg": "was found."
+        }
+      ]
+    },
+    {
+      "tuid": "MAXIMUM_PRICE_AGE",
+      "tuv": [
+        {
+          "lang": "de-DE",
+          "seg": "Maximales Preisalter"
+        },
+        {
+          "lang": "en-US",
+          "seg": "Maximum price age"
+        }
+      ]
+    },
+    {
+      "tuid": "MAXIMUM_PRICE_AGE_DESCRIPTION",
+      "tuv": [
+        {
+          "lang": "de-DE",
+          "seg": "Nur Preise, deren letzte Meldung h\u00f6chstens so viele Minuten zur\u00fcckliegt, k\u00f6nnen einen Alarm ausl\u00f6sen."
+        },
+        {
+          "lang": "en-US",
+          "seg": "Only prices reported within this many minutes can trigger an alert."
+        }
+      ]
+    },
+    {
+      "tuid": "ENTER_VALID_MAXIMUM_PRICE_AGE",
+      "tuv": [
+        {
+          "lang": "de-DE",
+          "seg": "Gib ein maximales Preisalter von mindestens einer Minute ein."
+        },
+        {
+          "lang": "en-US",
+          "seg": "Enter a maximum price age of at least one minute."
+        }
+      ]
+    },
+    {
+      "tuid": "BLACK_MARKET_BUY_ORDER_MONITORING",
+      "tuv": [
+        {
+          "lang": "de-DE",
+          "seg": "Black-Market-Kauforder \u00fcberwachen"
+        },
+        {
+          "lang": "en-US",
+          "seg": "Monitor Black Market buy order"
+        }
+      ]
+    },
+    {
+      "tuid": "BLACK_MARKET_BUY_ORDER_MONITORING_DESCRIPTION",
+      "tuv": [
+        {
+          "lang": "de-DE",
+          "seg": "Benachrichtigt dich, sobald die h\u00f6chste gemeldete Kauforder im Black Market den angegebenen Mindestpreis erreicht oder \u00fcberschreitet."
+        },
+        {
+          "lang": "en-US",
+          "seg": "Notifies you when the highest reported Black Market buy order reaches or exceeds the specified minimum price."
+        }
+      ]
+    },
+    {
+      "tuid": "MINIMUM_BUY_ORDER_PRICE",
+      "tuv": [
+        {
+          "lang": "de-DE",
+          "seg": "Mindestpreis der Kauforder"
+        },
+        {
+          "lang": "en-US",
+          "seg": "Minimum buy order price"
+        }
+      ]
+    },
+    {
+      "tuid": "ITEM_NOT_BLACK_MARKET_ELIGIBLE",
+      "tuv": [
+        {
+          "lang": "de-DE",
+          "seg": "Dieses Item kann nicht im Black Market verkauft werden."
+        },
+        {
+          "lang": "en-US",
+          "seg": "This item cannot be sold on the Black Market."
+        }
+      ]
+    },
+    {
+      "tuid": "BLACK_MARKET_BUY_ORDER_ALERT_TITLE",
+      "tuv": [
+        {
+          "lang": "de-DE",
+          "seg": "Black-Market-Kauforder erreicht"
+        },
+        {
+          "lang": "en-US",
+          "seg": "Black Market buy order reached"
+        }
+      ]
+    },
+    {
+      "tuid": "HIGHEST_BLACK_MARKET_BUY_ORDER_FOR",
+      "tuv": [
+        {
+          "lang": "de-DE",
+          "seg": "Die h\u00f6chste Black-Market-Kauforder f\u00fcr"
+        },
+        {
+          "lang": "en-US",
+          "seg": "The highest Black Market buy order for"
+        }
+      ]
+    },
+    {
+      "tuid": "REACHED_MINIMUM_PRICE",
+      "tuv": [
+        {
+          "lang": "de-DE",
+          "seg": "hat deinen Mindestpreis erreicht."
+        },
+        {
+          "lang": "en-US",
+          "seg": "has reached your minimum price."
+        }
+      ]
     }
   ]
 }

@@ -11,7 +11,6 @@ using StatisticsAnalysisTool.Diagnostics;
 using StatisticsAnalysisTool.Enumerations;
 using StatisticsAnalysisTool.Localization;
 using StatisticsAnalysisTool.Models;
-using StatisticsAnalysisTool.Models.ItemsJsonModel;
 using StatisticsAnalysisTool.Trade.Market;
 using StatisticsAnalysisTool.ViewModels;
 using System;
@@ -409,7 +408,7 @@ public sealed class BlackMarketBindings : BaseViewModel
         }
 
         var item = ItemController.GetItemByIndex(itemIndex);
-        if (!IsBlackMarketSellableItem(item))
+        if (!BlackMarketItemEligibility.IsEligible(item))
         {
             return;
         }
@@ -550,7 +549,7 @@ public sealed class BlackMarketBindings : BaseViewModel
         lock (_historyLock)
         {
             entries = _history.Values
-                .Where(x => IsBlackMarketSellableItem(ItemController.GetItemByUniqueName(x.ItemUniqueName)))
+                .Where(x => BlackMarketItemEligibility.IsEligible(ItemController.GetItemByUniqueName(x.ItemUniqueName)))
                 .Select(CloneAndTrim)
                 .OrderBy(x => x.ItemUniqueName, StringComparer.Ordinal)
                 .ThenBy(x => x.QualityLevel)
@@ -565,7 +564,7 @@ public sealed class BlackMarketBindings : BaseViewModel
         Items.Clear();
         _rowsByKey.Clear();
 
-        foreach (var item in ItemController.Items.Where(IsBlackMarketSellableItem).OrderBy(x => x.LocalizedName))
+        foreach (var item in ItemController.Items.Where(BlackMarketItemEligibility.IsEligible).OrderBy(x => x.LocalizedName))
         {
             for (var qualityLevel = 1; qualityLevel <= 5; qualityLevel++)
             {
@@ -577,17 +576,6 @@ public sealed class BlackMarketBindings : BaseViewModel
         }
 
         ItemCounterText = $"{Items.Count:N0}";
-    }
-
-    private static bool IsBlackMarketSellableItem(Item item)
-    {
-        return item?.FullItemInformation switch
-        {
-            Weapon weapon => weapon.SlotTypeEnum == SlotType.MainHand && weapon.CanHarvest == null,
-            TransformationWeapon transformationWeapon => transformationWeapon.SlotTypeEnum == SlotType.MainHand,
-            EquipmentItem equipmentItem => equipmentItem.SlotTypeEnum is SlotType.OffHand or SlotType.Armor or SlotType.Head or SlotType.Shoes or SlotType.Cape or SlotType.Bag,
-            _ => false
-        };
     }
 
     public string ItemCounterText

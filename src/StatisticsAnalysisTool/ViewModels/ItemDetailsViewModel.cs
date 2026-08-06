@@ -2,19 +2,20 @@ using LiveChartsCore;
 using LiveChartsCore.Defaults;
 using LiveChartsCore.SkiaSharpView;
 using LiveChartsCore.SkiaSharpView.Painting;
-using SkiaSharp;
 using Serilog;
+using SkiaSharp;
+using StatisticsAnalysisTool.Alert;
 using StatisticsAnalysisTool.Common;
 using StatisticsAnalysisTool.Common.UserSettings;
 using StatisticsAnalysisTool.Diagnostics;
-using StatisticsAnalysisTool.Exceptions;
 using StatisticsAnalysisTool.Enumerations;
+using StatisticsAnalysisTool.Exceptions;
 using StatisticsAnalysisTool.GameFileData;
 using StatisticsAnalysisTool.Localization;
 using StatisticsAnalysisTool.Models;
 using StatisticsAnalysisTool.Models.BindingModel;
-using StatisticsAnalysisTool.Models.ItemsJsonModel;
 using StatisticsAnalysisTool.Models.ItemDetailsModel;
+using StatisticsAnalysisTool.Models.ItemsJsonModel;
 using StatisticsAnalysisTool.Models.TranslationModel;
 using StatisticsAnalysisTool.Network.Manager;
 using System;
@@ -23,23 +24,24 @@ using System.Collections.ObjectModel;
 using System.Globalization;
 using System.Linq;
 using System.Reflection;
-using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Data;
 using System.Windows.Markup;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
+using System.Windows.Threading;
 
 namespace StatisticsAnalysisTool.ViewModels;
 
 public class ItemDetailsViewModel : BaseViewModel, IDisposable
 {
     private readonly ItemRefreshCooldownTracker _itemRefreshCooldownTracker;
-    private CancellationTokenSource _manualRefreshCooldownCancellationTokenSource = new();
+    private readonly DispatcherTimer _refreshCooldownTimer = new();
+    private readonly AlertController _alertController;
     private bool _isRefreshInProgress;
     private bool _isInitialized;
-    private bool _isManualRefreshCooldownActive;
+    private bool _isRefreshCooldownActive;
     private int _historyRequestVersion;
     private volatile bool _isDisposed;
 
@@ -51,13 +53,17 @@ public class ItemDetailsViewModel : BaseViewModel, IDisposable
         ToManyRequests
     }
 
-    public ItemDetailsViewModel(Item item, ItemRefreshCooldownTracker itemRefreshCooldownTracker)
+    public event EventHandler RefreshCooldownExpired;
+
+    public ItemDetailsViewModel(Item item, ItemRefreshCooldownTracker itemRefreshCooldownTracker, AlertController alertController)
     {
         _itemRefreshCooldownTracker = itemRefreshCooldownTracker ?? throw new ArgumentNullException(nameof(itemRefreshCooldownTracker));
+        _alertController = alertController ?? throw new ArgumentNullException(nameof(alertController));
+        _alertController.AlertStateChanged += AlertController_AlertStateChanged;
+        _refreshCooldownTimer.Tick += RefreshCooldownTimer_Tick;
         ErrorBarVisibility = Visibility.Hidden;
 
         Item = item;
-        ApplyExistingManualRefreshCooldown();
 
         Translation = new ItemDetailsTranslation();
         _ = InitAsync(item);
@@ -100,7 +106,7 @@ public class ItemDetailsViewModel : BaseViewModel, IDisposable
 
         ChangeHeaderValues(item);
 
-        await RefreshAsync();
+        await RefreshOnOpeningAsync();
 
         if (!_isDisposed)
         {
@@ -364,7 +370,121 @@ public class ItemDetailsViewModel : BaseViewModel, IDisposable
 
     #endregion
 
+    #region Monitoring
+
+    public void TogglePriceAlert()
+    {
+        var result = _alertController.SetPriceAlert(
+            Item,
+            !IsPriceAlertActive,
+            PriceAlertThreshold,
+            PriceAlertMaximumPriceAgeMinutes,
+            IsAlertSoundEnabled);
+
+        SetMonitoringActivationResult(result);
+    }
+
+    public void ToggleAvailabilityAlert()
+    {
+        var result = _alertController.SetAvailabilityAlert(
+            Item,
+            !IsAvailabilityAlertActive,
+            AvailabilityAlertMaximumPriceAgeMinutes,
+            IsAlertSoundEnabled);
+
+        SetMonitoringActivationResult(result);
+    }
+
+    public void ToggleBlackMarketBuyOrderAlert()
+    {
+        var result = _alertController.SetBlackMarketBuyOrderAlert(
+            Item,
+            !IsBlackMarketBuyOrderAlertActive,
+            BlackMarketBuyOrderAlertThreshold,
+            BlackMarketAlertMaximumPriceAgeMinutes,
+            IsAlertSoundEnabled);
+
+        SetMonitoringActivationResult(result);
+    }
+
+    private void AlertController_AlertStateChanged(object sender, AlertStateChangedEventArgs e)
+    {
+        if (!string.Equals(Item?.UniqueName, e.ItemUniqueName, StringComparison.Ordinal))
+        {
+            return;
+        }
+
+        OnPropertyChanged(nameof(PriceAlertThreshold));
+        OnPropertyChanged(nameof(PriceAlertThresholdText));
+        OnPropertyChanged(nameof(PriceAlertMaximumPriceAgeMinutes));
+        OnPropertyChanged(nameof(PriceAlertMaximumPriceAgeMinutesText));
+        OnPropertyChanged(nameof(AvailabilityAlertMaximumPriceAgeMinutes));
+        OnPropertyChanged(nameof(AvailabilityAlertMaximumPriceAgeMinutesText));
+        OnPropertyChanged(nameof(BlackMarketBuyOrderAlertThreshold));
+        OnPropertyChanged(nameof(BlackMarketBuyOrderAlertThresholdText));
+        OnPropertyChanged(nameof(BlackMarketAlertMaximumPriceAgeMinutes));
+        OnPropertyChanged(nameof(BlackMarketAlertMaximumPriceAgeMinutesText));
+        OnPropertyChanged(nameof(IsPriceAlertActive));
+        OnPropertyChanged(nameof(IsPriceAlertInactive));
+        OnPropertyChanged(nameof(IsAvailabilityAlertActive));
+        OnPropertyChanged(nameof(IsAvailabilityAlertInactive));
+        OnPropertyChanged(nameof(IsBlackMarketBuyOrderAlertActive));
+        OnPropertyChanged(nameof(IsBlackMarketBuyOrderAlertInactive));
+    }
+
+    private void SetMonitoringActivationResult(AlertActivationResult result)
+    {
+        MonitoringErrorText = result switch
+        {
+            AlertActivationResult.InvalidPriceThreshold => LocalizationController.Translation("ENTER_VALID_PRICE_LIMIT"),
+            AlertActivationResult.InvalidMaximumPriceAge => LocalizationController.Translation("ENTER_VALID_MAXIMUM_PRICE_AGE"),
+            AlertActivationResult.MaximumActiveAlertsReached => LocalizationController.Translation("MAXIMUM_ACTIVE_ITEM_ALERTS_REACHED"),
+            AlertActivationResult.ItemNotFound => LocalizationController.Translation("ITEM_ALERT_COULD_NOT_BE_ACTIVATED"),
+            AlertActivationResult.ItemNotBlackMarketEligible => LocalizationController.Translation("ITEM_NOT_BLACK_MARKET_ELIGIBLE"),
+            _ => string.Empty
+        };
+
+        MonitoringErrorVisibility = string.IsNullOrEmpty(MonitoringErrorText)
+            ? Visibility.Collapsed
+            : Visibility.Visible;
+
+        OnPropertyChanged(nameof(IsPriceAlertActive));
+        OnPropertyChanged(nameof(IsPriceAlertInactive));
+        OnPropertyChanged(nameof(IsAvailabilityAlertActive));
+        OnPropertyChanged(nameof(IsAvailabilityAlertInactive));
+        OnPropertyChanged(nameof(IsBlackMarketBuyOrderAlertActive));
+        OnPropertyChanged(nameof(IsBlackMarketBuyOrderAlertInactive));
+    }
+
+    #endregion
+
     #region Refresh
+
+    public void Activate()
+    {
+        IsActive = true;
+    }
+
+    public void Deactivate()
+    {
+        if (!IsActive)
+        {
+            return;
+        }
+
+        SaveSettings();
+        IsActive = false;
+    }
+
+    public async Task RefreshOnOpeningAsync()
+    {
+        if (_isDisposed || _isRefreshInProgress || string.IsNullOrWhiteSpace(Item?.UniqueName))
+        {
+            return;
+        }
+
+        await RefreshWithCooldownAsync();
+    }
 
     public async Task RefreshManuallyAsync()
     {
@@ -373,13 +493,18 @@ public class ItemDetailsViewModel : BaseViewModel, IDisposable
             return;
         }
 
+        await RefreshWithCooldownAsync();
+    }
+
+    private async Task RefreshWithCooldownAsync()
+    {
         if (!_itemRefreshCooldownTracker.TryStart(Item.UniqueName, out var remainingCooldown))
         {
-            StartManualRefreshCooldown(remainingCooldown);
+            StartRefreshCooldown(remainingCooldown);
             return;
         }
 
-        StartManualRefreshCooldown(remainingCooldown);
+        StartRefreshCooldown(remainingCooldown);
         await RefreshAsync();
     }
 
@@ -447,59 +572,46 @@ public class ItemDetailsViewModel : BaseViewModel, IDisposable
             return;
         }
 
+        if (IsActive)
+        {
+            SaveSettings();
+        }
+
         _isDisposed = true;
-        _manualRefreshCooldownCancellationTokenSource.Cancel();
-        _manualRefreshCooldownCancellationTokenSource.Dispose();
+        _refreshCooldownTimer.Stop();
+        _refreshCooldownTimer.Tick -= RefreshCooldownTimer_Tick;
+        _alertController.AlertStateChanged -= AlertController_AlertStateChanged;
         RemoveLocationFiltersEvents();
-        SaveSettings();
     }
 
     #endregion
 
-    private void ApplyExistingManualRefreshCooldown()
-    {
-        if (string.IsNullOrWhiteSpace(Item?.UniqueName))
-        {
-            return;
-        }
-
-        StartManualRefreshCooldown(_itemRefreshCooldownTracker.GetRemainingCooldown(Item.UniqueName));
-    }
-
-    private void StartManualRefreshCooldown(TimeSpan remainingCooldown)
+    private void StartRefreshCooldown(TimeSpan remainingCooldown)
     {
         if (remainingCooldown <= TimeSpan.Zero)
         {
             return;
         }
 
-        _manualRefreshCooldownCancellationTokenSource.Cancel();
-        _manualRefreshCooldownCancellationTokenSource.Dispose();
-        _manualRefreshCooldownCancellationTokenSource = new CancellationTokenSource();
-
-        _isManualRefreshCooldownActive = true;
+        _refreshCooldownTimer.Stop();
+        _refreshCooldownTimer.Interval = remainingCooldown;
+        _isRefreshCooldownActive = true;
         OnPropertyChanged(nameof(CanRefreshManually));
-        _ = CompleteManualRefreshCooldownAsync(remainingCooldown, _manualRefreshCooldownCancellationTokenSource.Token);
+        _refreshCooldownTimer.Start();
     }
 
-    private async Task CompleteManualRefreshCooldownAsync(TimeSpan remainingCooldown, CancellationToken cancellationToken)
+    private void RefreshCooldownTimer_Tick(object sender, EventArgs e)
     {
-        try
-        {
-            await Task.Delay(remainingCooldown, cancellationToken);
-        }
-        catch (OperationCanceledException)
-        {
-            return;
-        }
+        _refreshCooldownTimer.Stop();
 
         if (_isDisposed)
         {
             return;
         }
 
-        _isManualRefreshCooldownActive = false;
+        _isRefreshCooldownActive = false;
         OnPropertyChanged(nameof(CanRefreshManually));
+        RefreshCooldownExpired?.Invoke(this, EventArgs.Empty);
     }
 
     #region Error methods
@@ -956,6 +1068,192 @@ public class ItemDetailsViewModel : BaseViewModel, IDisposable
         }
     }
 
+    public ulong PriceAlertThreshold => Item?.AlertModeMinSellPriceIsUndercutPrice ?? 0;
+
+    public string PriceAlertThresholdText
+    {
+        get => PriceAlertThreshold == 0
+            ? string.Empty
+            : PriceAlertThreshold.ToString(CultureInfo.InvariantCulture);
+        set
+        {
+            if (Item == null)
+            {
+                return;
+            }
+
+            Item.AlertModeMinSellPriceIsUndercutPrice = ulong.TryParse(
+                value,
+                NumberStyles.None,
+                CultureInfo.InvariantCulture,
+                out var priceThreshold)
+                    ? priceThreshold
+                    : 0;
+            OnPropertyChanged();
+            OnPropertyChanged(nameof(PriceAlertThreshold));
+        }
+    }
+
+    public uint PriceAlertMaximumPriceAgeMinutes => Item?.PriceAlertMaximumPriceAgeMinutes
+        ?? AlertOptions.DefaultMaximumPriceAgeMinutes;
+
+    public string PriceAlertMaximumPriceAgeMinutesText
+    {
+        get => PriceAlertMaximumPriceAgeMinutes == 0
+            ? string.Empty
+            : PriceAlertMaximumPriceAgeMinutes.ToString(CultureInfo.InvariantCulture);
+        set
+        {
+            if (Item == null)
+            {
+                return;
+            }
+
+            Item.PriceAlertMaximumPriceAgeMinutes = uint.TryParse(
+                value,
+                NumberStyles.None,
+                CultureInfo.InvariantCulture,
+                out var maximumPriceAgeMinutes)
+                    ? maximumPriceAgeMinutes
+                    : 0;
+            OnPropertyChanged();
+            OnPropertyChanged(nameof(PriceAlertMaximumPriceAgeMinutes));
+        }
+    }
+
+    public bool IsPriceAlertActive => _alertController.IsPriceAlertActive(Item?.UniqueName);
+
+    public bool IsPriceAlertInactive => !IsPriceAlertActive;
+
+    public uint AvailabilityAlertMaximumPriceAgeMinutes => Item?.AvailabilityAlertMaximumPriceAgeMinutes
+        ?? AlertOptions.DefaultMaximumPriceAgeMinutes;
+
+    public string AvailabilityAlertMaximumPriceAgeMinutesText
+    {
+        get => AvailabilityAlertMaximumPriceAgeMinutes == 0
+            ? string.Empty
+            : AvailabilityAlertMaximumPriceAgeMinutes.ToString(CultureInfo.InvariantCulture);
+        set
+        {
+            if (Item == null)
+            {
+                return;
+            }
+
+            Item.AvailabilityAlertMaximumPriceAgeMinutes = uint.TryParse(
+                value,
+                NumberStyles.None,
+                CultureInfo.InvariantCulture,
+                out var maximumPriceAgeMinutes)
+                    ? maximumPriceAgeMinutes
+                    : 0;
+            OnPropertyChanged();
+            OnPropertyChanged(nameof(AvailabilityAlertMaximumPriceAgeMinutes));
+        }
+    }
+
+    public bool IsAvailabilityAlertActive => _alertController.IsAvailabilityAlertActive(Item?.UniqueName);
+
+    public bool IsAvailabilityAlertInactive => !IsAvailabilityAlertActive;
+
+    public Visibility BlackMarketMonitoringVisibility => BlackMarketItemEligibility.IsEligible(Item)
+        ? Visibility.Visible
+        : Visibility.Collapsed;
+
+    public ulong BlackMarketBuyOrderAlertThreshold => Item?.BlackMarketBuyOrderAlertThreshold ?? 0;
+
+    public string BlackMarketBuyOrderAlertThresholdText
+    {
+        get => BlackMarketBuyOrderAlertThreshold == 0
+            ? string.Empty
+            : BlackMarketBuyOrderAlertThreshold.ToString(CultureInfo.InvariantCulture);
+        set
+        {
+            if (Item == null)
+            {
+                return;
+            }
+
+            Item.BlackMarketBuyOrderAlertThreshold = ulong.TryParse(
+                value,
+                NumberStyles.None,
+                CultureInfo.InvariantCulture,
+                out var priceThreshold)
+                    ? priceThreshold
+                    : 0;
+            OnPropertyChanged();
+            OnPropertyChanged(nameof(BlackMarketBuyOrderAlertThreshold));
+        }
+    }
+
+    public uint BlackMarketAlertMaximumPriceAgeMinutes => Item?.BlackMarketAlertMaximumPriceAgeMinutes
+        ?? AlertOptions.DefaultMaximumPriceAgeMinutes;
+
+    public string BlackMarketAlertMaximumPriceAgeMinutesText
+    {
+        get => BlackMarketAlertMaximumPriceAgeMinutes == 0
+            ? string.Empty
+            : BlackMarketAlertMaximumPriceAgeMinutes.ToString(CultureInfo.InvariantCulture);
+        set
+        {
+            if (Item == null)
+            {
+                return;
+            }
+
+            Item.BlackMarketAlertMaximumPriceAgeMinutes = uint.TryParse(
+                value,
+                NumberStyles.None,
+                CultureInfo.InvariantCulture,
+                out var maximumPriceAgeMinutes)
+                    ? maximumPriceAgeMinutes
+                    : 0;
+            OnPropertyChanged();
+            OnPropertyChanged(nameof(BlackMarketAlertMaximumPriceAgeMinutes));
+        }
+    }
+
+    public bool IsBlackMarketBuyOrderAlertActive => _alertController
+        .IsBlackMarketBuyOrderAlertActive(Item?.UniqueName);
+
+    public bool IsBlackMarketBuyOrderAlertInactive => !IsBlackMarketBuyOrderAlertActive;
+
+    public bool IsAlertSoundEnabled
+    {
+        get => Item?.IsAlertSoundEnabled ?? true;
+        set
+        {
+            if (Item == null || Item.IsAlertSoundEnabled == value)
+            {
+                return;
+            }
+
+            Item.IsAlertSoundEnabled = value;
+            _alertController.UpdateSoundPreference(Item, value);
+            OnPropertyChanged();
+        }
+    }
+
+    public string MonitoringErrorText
+    {
+        get;
+        set
+        {
+            field = value;
+            OnPropertyChanged();
+        }
+    } = string.Empty;
+
+    public Visibility MonitoringErrorVisibility
+    {
+        get;
+        set
+        {
+            field = value;
+            OnPropertyChanged();
+        }
+    } = Visibility.Collapsed;
+
     public string TitleName
     {
         get;
@@ -1158,7 +1456,11 @@ public class ItemDetailsViewModel : BaseViewModel, IDisposable
         }
     }
 
-    public bool CanRefreshManually => !_isDisposed && !_isRefreshInProgress && !_isManualRefreshCooldownActive;
+    public bool CanRefreshManually => !_isDisposed && !_isRefreshInProgress && !_isRefreshCooldownActive;
+
+    public bool HasActiveRefreshCooldown => _isRefreshCooldownActive;
+
+    public bool IsActive { get; private set; }
 
     public string LastUpdatedText
     {

@@ -6,6 +6,7 @@
              xmlns:fa5="http://schemas.fontawesome.com/icons/"
              xmlns:viewModels="clr-namespace:StatisticsAnalysisTool.ViewModels"
              xmlns:userControls="clr-namespace:StatisticsAnalysisTool.UserControls"
+             xmlns:controls="clr-namespace:StatisticsAnalysisTool.Common.Controls"
              xmlns:wpf="clr-namespace:LiveChartsCore.SkiaSharpView.WPF;assembly=LiveChartsCore.SkiaSharpView.WPF"
              d:DataContext="{d:DesignInstance Type=viewModels:ItemDetailsViewModel}"
              d:DesignHeight="700" d:DesignWidth="1000" mc:Ignorable="d">
@@ -259,6 +260,123 @@
                     </ListView>
                 </Grid>
             </TabItem>
+            <TabItem Header="{Binding Translation.Monitoring, FallbackValue=MONITORING}">
+                <ScrollViewer HorizontalScrollBarVisibility="Disabled" VerticalScrollBarVisibility="Auto">
+                    <StackPanel Margin="14">
+                        <TextBlock Text="{Binding Translation.MonitoringDescription, FallbackValue=ITEM_MONITORING_DESCRIPTION}"
+                                   Foreground="{StaticResource SolidColorBrush.Text.2}" TextWrapping="Wrap" Margin="0,0,0,12" />
+
+                        <Border Style="{StaticResource ItemDetails.Section.Border}" Margin="0,0,0,10">
+                            <Grid Margin="14">
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="Auto" />
+                                    <RowDefinition Height="Auto" />
+                                    <RowDefinition Height="Auto" />
+                                    <RowDefinition Height="Auto" />
+                                    <RowDefinition Height="Auto" />
+                                </Grid.RowDefinitions>
+
+                                <TextBlock Text="{Binding Translation.PriceMonitoring, FallbackValue=PRICE_MONITORING}"
+                                           Foreground="{StaticResource SolidColorBrush.Text.1}" FontWeight="Bold" FontSize="14" />
+                                <TextBlock Grid.Row="1"
+                                           Text="{Binding Translation.PriceMonitoringDescription, FallbackValue=PRICE_MONITORING_DESCRIPTION}"
+                                           Foreground="{StaticResource SolidColorBrush.Text.2}" TextWrapping="Wrap" Margin="0,5,0,10" />
+                                <StackPanel Grid.Row="2" Orientation="Horizontal">
+                                    <TextBlock Text="{Binding Translation.PriceLimit, FallbackValue=PRICE_LIMIT}"
+                                               Foreground="{StaticResource SolidColorBrush.Text.1}" VerticalAlignment="Center" Margin="0,0,8,0" />
+                                    <controls:DigitsTextBox Text="{Binding PriceAlertThresholdText, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                                            IsEnabled="{Binding IsPriceAlertInactive}" MaxLength="20" Width="150" Height="26" />
+                                </StackPanel>
+                                <StackPanel Grid.Row="3" Orientation="Horizontal" Margin="0,8,0,0">
+                                    <TextBlock Text="{Binding Translation.MaximumPriceAge, FallbackValue=MAXIMUM_PRICE_AGE}"
+                                               Foreground="{StaticResource SolidColorBrush.Text.1}" VerticalAlignment="Center" Margin="0,0,8,0" />
+                                    <controls:DigitsTextBox Text="{Binding PriceAlertMaximumPriceAgeMinutesText, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                                            IsEnabled="{Binding IsPriceAlertInactive}" MaxLength="10" Width="100" Height="26" />
+                                    <TextBlock Text="{Binding Translation.Minutes, FallbackValue=MINUTES}"
+                                               Foreground="{StaticResource SolidColorBrush.Text.1}" VerticalAlignment="Center" Margin="8,0,0,0" />
+                                </StackPanel>
+                                <CheckBox Grid.Row="4" Content="{Binding Translation.IsAlertActive, FallbackValue=IS_ALERT_ACTIVE}"
+                                          IsChecked="{Binding IsPriceAlertActive, Mode=OneWay}" Click="PriceAlert_Click"
+                                          Margin="0,12,0,0" />
+                            </Grid>
+                        </Border>
+
+                        <Border Style="{StaticResource ItemDetails.Section.Border}" Margin="0,0,0,10">
+                            <Grid Margin="14">
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="Auto" />
+                                    <RowDefinition Height="Auto" />
+                                    <RowDefinition Height="Auto" />
+                                    <RowDefinition Height="Auto" />
+                                </Grid.RowDefinitions>
+
+                                <TextBlock Text="{Binding Translation.MarketAvailability, FallbackValue=MARKET_AVAILABILITY}"
+                                           Foreground="{StaticResource SolidColorBrush.Text.1}" FontWeight="Bold" FontSize="14" />
+                                <TextBlock Grid.Row="1"
+                                           Text="{Binding Translation.MarketAvailabilityDescription, FallbackValue=MARKET_AVAILABILITY_DESCRIPTION}"
+                                           Foreground="{StaticResource SolidColorBrush.Text.2}" TextWrapping="Wrap" Margin="0,5,0,10" />
+                                <StackPanel Grid.Row="2" Orientation="Horizontal">
+                                    <TextBlock Text="{Binding Translation.MaximumPriceAge, FallbackValue=MAXIMUM_PRICE_AGE}"
+                                               Foreground="{StaticResource SolidColorBrush.Text.1}" VerticalAlignment="Center" Margin="0,0,8,0" />
+                                    <controls:DigitsTextBox Text="{Binding AvailabilityAlertMaximumPriceAgeMinutesText, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                                            IsEnabled="{Binding IsAvailabilityAlertInactive}" MaxLength="10" Width="100" Height="26" />
+                                    <TextBlock Text="{Binding Translation.Minutes, FallbackValue=MINUTES}"
+                                               Foreground="{StaticResource SolidColorBrush.Text.1}" VerticalAlignment="Center" Margin="8,0,0,0" />
+                                </StackPanel>
+                                <CheckBox Grid.Row="3" Content="{Binding Translation.IsAlertActive, FallbackValue=IS_ALERT_ACTIVE}"
+                                          IsChecked="{Binding IsAvailabilityAlertActive, Mode=OneWay}" Click="AvailabilityAlert_Click"
+                                          Margin="0,12,0,0" />
+                            </Grid>
+                        </Border>
+
+                        <Border Style="{StaticResource ItemDetails.Section.Border}" Margin="0,0,0,10"
+                                Visibility="{Binding BlackMarketMonitoringVisibility}">
+                            <Grid Margin="14">
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="Auto" />
+                                    <RowDefinition Height="Auto" />
+                                    <RowDefinition Height="Auto" />
+                                    <RowDefinition Height="Auto" />
+                                    <RowDefinition Height="Auto" />
+                                </Grid.RowDefinitions>
+
+                                <TextBlock Text="{Binding Translation.BlackMarketBuyOrderMonitoring, FallbackValue=BLACK_MARKET_BUY_ORDER_MONITORING}"
+                                           Foreground="{StaticResource SolidColorBrush.Text.1}" FontWeight="Bold" FontSize="14" />
+                                <TextBlock Grid.Row="1"
+                                           Text="{Binding Translation.BlackMarketBuyOrderMonitoringDescription, FallbackValue=BLACK_MARKET_BUY_ORDER_MONITORING_DESCRIPTION}"
+                                           Foreground="{StaticResource SolidColorBrush.Text.2}" TextWrapping="Wrap" Margin="0,5,0,10" />
+                                <StackPanel Grid.Row="2" Orientation="Horizontal">
+                                    <TextBlock Text="{Binding Translation.MinimumBuyOrderPrice, FallbackValue=MINIMUM_BUY_ORDER_PRICE}"
+                                               Foreground="{StaticResource SolidColorBrush.Text.1}" VerticalAlignment="Center" Margin="0,0,8,0" />
+                                    <controls:DigitsTextBox Text="{Binding BlackMarketBuyOrderAlertThresholdText, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                                            IsEnabled="{Binding IsBlackMarketBuyOrderAlertInactive}" MaxLength="20" Width="150" Height="26" />
+                                </StackPanel>
+                                <StackPanel Grid.Row="3" Orientation="Horizontal" Margin="0,8,0,0">
+                                    <TextBlock Text="{Binding Translation.MaximumPriceAge, FallbackValue=MAXIMUM_PRICE_AGE}"
+                                               Foreground="{StaticResource SolidColorBrush.Text.1}" VerticalAlignment="Center" Margin="0,0,8,0" />
+                                    <controls:DigitsTextBox Text="{Binding BlackMarketAlertMaximumPriceAgeMinutesText, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                                            IsEnabled="{Binding IsBlackMarketBuyOrderAlertInactive}" MaxLength="10" Width="100" Height="26" />
+                                    <TextBlock Text="{Binding Translation.Minutes, FallbackValue=MINUTES}"
+                                               Foreground="{StaticResource SolidColorBrush.Text.1}" VerticalAlignment="Center" Margin="8,0,0,0" />
+                                </StackPanel>
+                                <CheckBox Grid.Row="4" Content="{Binding Translation.IsAlertActive, FallbackValue=IS_ALERT_ACTIVE}"
+                                          IsChecked="{Binding IsBlackMarketBuyOrderAlertActive, Mode=OneWay}" Click="BlackMarketBuyOrderAlert_Click"
+                                          Margin="0,12,0,0" />
+                            </Grid>
+                        </Border>
+
+                        <CheckBox Content="{Binding Translation.PlayAlertSound, FallbackValue=PLAY_ALERT_SOUND}"
+                                  IsChecked="{Binding IsAlertSoundEnabled, Mode=TwoWay}" Margin="2,2,0,8" />
+
+                        <Border Visibility="{Binding MonitoringErrorVisibility}"
+                                Background="{StaticResource SolidColorBrush.Background.2}" Padding="10" Margin="0,4,0,0">
+                            <TextBlock Text="{Binding MonitoringErrorText}" Foreground="{StaticResource SolidColorBrush.Accent.Red.1}"
+                                       TextWrapping="Wrap" />
+                        </Border>
+                    </StackPanel>
+                </ScrollViewer>
+            </TabItem>
+
             <TabItem Header="{Binding Translation.Information, FallbackValue=INFORMATION}">
                 <ScrollViewer HorizontalScrollBarVisibility="Hidden">
                     <Grid>

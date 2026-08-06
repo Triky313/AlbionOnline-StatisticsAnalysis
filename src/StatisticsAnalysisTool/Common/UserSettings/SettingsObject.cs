@@ -82,8 +82,6 @@ public class SettingsObject
     public bool IsItemSearchNaviTabActive { get; set; } = true;
     public double ItemSearchIconColumnWidth { get; set; } = 75;
     public double ItemSearchNameColumnWidth { get; set; } = 215;
-    public double ItemSearchAlertColumnWidth { get; set; } = 70;
-    public double ItemSearchUndercuttingPriceColumnWidth { get; set; } = 85;
     public double ItemSearchFavoriteColumnWidth { get; set; } = 55;
     public bool IsLoggingNaviTabActive { get; set; } = true;
     public bool IsDungeonsNaviTabActive { get; set; } = true;

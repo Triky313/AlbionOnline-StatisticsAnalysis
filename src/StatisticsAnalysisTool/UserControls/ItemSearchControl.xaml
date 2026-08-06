@@ -5,7 +5,6 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:fa5="http://schemas.fontawesome.com/icons/"
              xmlns:viewModels="clr-namespace:StatisticsAnalysisTool.ViewModels"
-             xmlns:models="clr-namespace:StatisticsAnalysisTool.Models"
              xmlns:userControls="clr-namespace:StatisticsAnalysisTool.UserControls"
              mc:Ignorable="d"
              d:DesignHeight="400" d:DesignWidth="900"
@@ -44,8 +43,6 @@
                               SelectedValuePath="Key" DisplayMemberPath="Value" HorizontalAlignment="Left" Margin="5,5" MinWidth="70" />
                 </WrapPanel>
                 <StackPanel Orientation="Horizontal" IsEnabled="{Binding IsItemSearchCheckboxesEnabled}">
-                    <CheckBox Content="{Binding Translation.ShowOnlyItemsWithAlertOn, FallbackValue=SHOW__ONLY__ITEMS__WITH__ALERT__ON}"
-                              IsChecked="{Binding IsShowOnlyItemsWithAlertOnActive, FallbackValue=false}" HorizontalAlignment="Left" Margin="10,0,5,0" />
                     <CheckBox Content="{Binding Translation.ShowOnlyFavorites, FallbackValue=SHOW__ONLY__FAVORITES}"
                               IsChecked="{Binding IsShowOnlyFavoritesActive, FallbackValue=false}" HorizontalAlignment="Left" Margin="5,0,5,0" />
                 </StackPanel>
@@ -64,37 +61,12 @@
                       ScrollViewer.CanContentScroll="True"
                       VirtualizingPanel.IsVirtualizing="True"
                       VirtualizingPanel.VirtualizationMode="Recycling"
-                      Margin="0,145,0,0" SelectionMode="Single" SelectedItem="{Binding SelectedSearchItem, Mode=TwoWay}" d:ItemsSource="{d:SampleData ItemCount=5}">
+                      Margin="0,145,0,0" SelectionMode="Single" SelectedItem="{Binding SelectedSearchItem, Mode=TwoWay}"
+                      PreviewMouseLeftButtonDown="ItemSearchList_PreviewMouseLeftButtonDown" d:ItemsSource="{d:SampleData ItemCount=5}">
                 <ListView.View>
                     <GridView>
                         <GridViewColumn x:Name="ItemIconColumn" Header="{Binding Translation.Icon, FallbackValue=ICON}" Width="75" CellTemplate="{StaticResource ItemSearch.GridViewColumnIconTemplate}"/>
                         <GridViewColumn x:Name="ItemNameColumn" Header="{Binding Translation.Name, FallbackValue=NAME}" Width="215" CellTemplate="{StaticResource ItemSearch.GridViewColumnNameTemplate}" />
-                        <GridViewColumn x:Name="ItemAlertColumn" Header="{Binding Translation.IsAlertActive, FallbackValue=IS_ALERT_ACTIVE}" Width="70">
-                            <GridViewColumn.CellTemplate>
-                                <DataTemplate>
-                                    <Grid Height="24" Width="24">
-                                        <fa5:ImageAwesome Visibility="Visible" MouseUp="AlertModeAlertActiveToggle_MouseUp">
-                                            <fa5:ImageAwesome.Style>
-                                                <Style TargetType="{x:Type fa5:ImageAwesome}">
-                                                    <Style.Triggers>
-                                                        <DataTrigger Binding="{Binding (models:Item.IsAlertActive)}" Value="True">
-                                                            <Setter Property="Icon" Value="Solid_ToggleOn"/>
-                                                            <Setter Property="Foreground" Value="{StaticResource SolidColorBrush.Accent.Blue.2}"/>
-                                                        </DataTrigger>
-                                                        <DataTrigger Binding="{Binding (models:Item.IsAlertActive)}" Value="False">
-                                                            <Setter Property="Icon" Value="Solid_ToggleOff"/>
-                                                            <Setter Property="Foreground" Value="{StaticResource SolidColorBrush.Text.1}"/>
-                                                        </DataTrigger>
-                                                    </Style.Triggers>
-                                                </Style>
-                                            </fa5:ImageAwesome.Style>
-                                        </fa5:ImageAwesome>
-                                    </Grid>
-                                </DataTemplate>
-                            </GridViewColumn.CellTemplate>
-                        </GridViewColumn>
-                        <GridViewColumn x:Name="ItemUndercuttingPriceColumn" Header="{Binding Translation.UndercuttingPrice, FallbackValue=UNDERCUTTING_PRICE}" Width="85"
-                                        CellTemplate="{StaticResource ItemSearch.GridViewColumnAlertMinSellPriceTemplate}" />
                         <GridViewColumn x:Name="ItemFavoriteColumn" Header="{Binding Translation.Favorite, FallbackValue=FAVORITE}" Width="55" CellTemplate="{StaticResource ItemSearch.GridViewColumnFavoriteTemplate}" />
                     </GridView>
                 </ListView.View>
@@ -102,14 +74,6 @@
 
             <Grid Visibility="{Binding IsItemSearchPopupVisible, FallbackValue=Hidden}" Margin="0,145,0,0" Background="{StaticResource SolidColorBrush.Background.2}">
                 <StackPanel CanHorizontallyScroll="False" CanVerticallyScroll="True" Margin="10,0">
-                    <DockPanel Margin="0,0,0,16">
-                        <Grid Height="16" Width="16" Margin="0,3,10,0" VerticalAlignment="Top">
-                            <fa5:ImageAwesome Icon="Regular_DotCircle" Foreground="{StaticResource SolidColorBrush.Accent.Blue.3}" />
-                        </Grid>
-                        <TextBlock Text="{Binding Translation.ItemSearchDescription2, FallbackValue='Item Alarm: Trage einen Wert in der Unterbieten Spalte ein und aktiviere den Alarm dann in der Ist Alarm aktiv Spalte.'}"
-                                   Foreground="{StaticResource SolidColorBrush.Text.1}"
-                                   FontSize="16" TextWrapping="Wrap" Width="auto" />
-                    </DockPanel>
                     <DockPanel Margin="0,0,0,16">
                         <Grid Height="16" Width="16" Margin="0,3,10,0" VerticalAlignment="Top">
                             <fa5:ImageAwesome Icon="Regular_DotCircle" Foreground="{StaticResource SolidColorBrush.Accent.Blue.3}" />
