@@ -81,6 +81,81 @@
         <Setter Property="VerticalAlignment" Value="Top" />
     </Style>
 
+    <Style x:Key="Dashboard.LootBreakdownName" TargetType="{x:Type TextBlock}">
+        <Setter Property="Foreground" Value="{StaticResource SolidColorBrush.Text.3}" />
+        <Setter Property="FontSize" Value="12" />
+        <Setter Property="TextTrimming" Value="CharacterEllipsis" />
+        <Setter Property="VerticalAlignment" Value="Center" />
+    </Style>
+
+    <Style x:Key="Dashboard.LootBreakdownValue" TargetType="{x:Type TextBlock}">
+        <Setter Property="Foreground" Value="{StaticResource SolidColorBrush.Text.2}" />
+        <Setter Property="FontSize" Value="12" />
+        <Setter Property="VerticalAlignment" Value="Center" />
+    </Style>
+
+    <DataTemplate x:Key="Dashboard.LootSummaryMetricTemplate" DataType="{x:Type models:DashboardLootStatistics}">
+        <StackPanel>
+            <StackPanel Orientation="Horizontal">
+                <TextBlock Text="{Binding TotalValueSummary.Value, Converter={StaticResource ShortNumberConverter}, ConverterCulture={x:Static gl:CultureInfo.CurrentCulture}, FallbackValue=0}"
+                           Style="{StaticResource Dashboard.SummaryValue}" />
+                <TextBlock Margin="5,2,0,0"
+                           VerticalAlignment="Center"
+                           FontSize="13"
+                           FontWeight="SemiBold"
+                           Foreground="{StaticResource SolidColorBrush.Text.4}">
+                    <Run Text="(" />
+                    <Run Text="{Binding LootPerHour, Converter={StaticResource ShortNumberConverter}, ConverterCulture={x:Static gl:CultureInfo.CurrentCulture}, FallbackValue=0}" />
+                    <Run Text="/h)" />
+                </TextBlock>
+            </StackPanel>
+            <StackPanel DataContext="{Binding TotalValueSummary}" Orientation="Horizontal">
+                <TextBlock Text="{Binding ChangeIndicator}" Style="{StaticResource Dashboard.SummaryDeltaText}" />
+                <TextBlock Text=" " Style="{StaticResource Dashboard.SummaryDeltaText}" />
+                <TextBlock Text="{Binding ChangeAmount, Converter={StaticResource ShortNumberConverter}, ConverterCulture={x:Static gl:CultureInfo.CurrentCulture}, FallbackValue=0}" Style="{StaticResource Dashboard.SummaryDeltaText}" />
+                <TextBlock Text=" (" Style="{StaticResource Dashboard.SummaryDeltaText}" />
+                <TextBlock Text="{Binding ChangePercentageText}" Style="{StaticResource Dashboard.SummaryDeltaText}" />
+                <TextBlock Text=")" Style="{StaticResource Dashboard.SummaryDeltaText}" />
+            </StackPanel>
+        </StackPanel>
+    </DataTemplate>
+
+    <DataTemplate x:Key="Dashboard.LootValueBreakdownItemTemplate" DataType="{x:Type models:DashboardLootBreakdownItem}">
+        <Grid Height="28">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="85" />
+                <ColumnDefinition Width="135" />
+            </Grid.ColumnDefinitions>
+            <StackPanel Orientation="Horizontal">
+                <TextBlock Text="{Binding Name}" Style="{StaticResource Dashboard.LootBreakdownName}" />
+                <Image Source="/Resources/silver.png" Width="14" Height="14" Margin="5,0,0,0" VerticalAlignment="Center" />
+            </StackPanel>
+            <TextBlock Grid.Column="1"
+                       Text="{Binding ItemCount, StringFormat='{}{0:N0}', ConverterCulture={x:Static gl:CultureInfo.CurrentCulture}}"
+                       TextAlignment="Right"
+                       Style="{StaticResource Dashboard.LootBreakdownValue}" />
+            <TextBlock Grid.Column="2"
+                       Text="{Binding SharePercentage, StringFormat='{}{0:N1} %', ConverterCulture={x:Static gl:CultureInfo.CurrentCulture}}"
+                       TextAlignment="Right"
+                       Style="{StaticResource Dashboard.LootBreakdownValue}" />
+        </Grid>
+    </DataTemplate>
+
+    <DataTemplate x:Key="Dashboard.LootShareBreakdownItemTemplate" DataType="{x:Type models:DashboardLootBreakdownItem}">
+        <Grid Height="28">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="80" />
+            </Grid.ColumnDefinitions>
+            <TextBlock Text="{Binding Name}" Style="{StaticResource Dashboard.LootBreakdownName}" />
+            <TextBlock Grid.Column="1"
+                       Text="{Binding SharePercentage, StringFormat='{}{0:N1} %', ConverterCulture={x:Static gl:CultureInfo.CurrentCulture}}"
+                       TextAlignment="Right"
+                       Style="{StaticResource Dashboard.LootBreakdownValue}" />
+        </Grid>
+    </DataTemplate>
+
     <DataTemplate x:Key="Dashboard.SummaryMetricTemplate" DataType="{x:Type models:DashboardSummaryMetric}">
         <StackPanel>
             <TextBlock Text="{Binding Value, Converter={StaticResource ShortNumberConverter}, ConverterCulture={x:Static gl:CultureInfo.CurrentCulture}, FallbackValue=0}" 
@@ -441,8 +516,12 @@
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="34" />
                     <ColumnDefinition Width="*" />
-                    <ColumnDefinition Width="100" />
-                    <ColumnDefinition Width="140" />
+                    <ColumnDefinition Width="90" />
+                    <ColumnDefinition Width="90" />
+                    <ColumnDefinition Width="90" />
+                    <ColumnDefinition Width="70" />
+                    <ColumnDefinition Width="70" />
+                    <ColumnDefinition Width="70" />
                 </Grid.ColumnDefinitions>
                 <Grid Width="26" Height="26" VerticalAlignment="Center">
                     <Image Source="{Binding IconSource}" Stretch="Uniform">
@@ -479,13 +558,13 @@
                            TextTrimming="CharacterEllipsis"
                            VerticalAlignment="Center"
                            ToolTip="{Binding Name}" />
-                <TextBlock Grid.Column="2"
+                <TextBlock Grid.Column="5"
                            Text="{Binding ItemCount, StringFormat='{}{0:N0}', ConverterCulture={x:Static gl:CultureInfo.CurrentCulture}}"
                            Foreground="{StaticResource SolidColorBrush.Text.2}"
                            FontSize="12"
                            TextAlignment="Right"
                            VerticalAlignment="Center" />
-                <StackPanel Grid.Column="3" Orientation="Horizontal" HorizontalAlignment="Right" VerticalAlignment="Center">
+                <StackPanel Grid.Column="2" Orientation="Horizontal" HorizontalAlignment="Right" VerticalAlignment="Center">
                     <Image Source="/Resources/silver.png" Width="14" Height="14" Margin="0,0,5,0" />
                     <TextBlock Text="{Binding TotalValue, Converter={StaticResource ShortNumberConverter}, ConverterCulture={x:Static gl:CultureInfo.CurrentCulture}, FallbackValue=0}"
                                Foreground="{StaticResource SolidColorBrush.Text.2}"
@@ -493,6 +572,32 @@
                                FontWeight="SemiBold"
                                VerticalAlignment="Center" />
                 </StackPanel>
+                <StackPanel Grid.Column="3" Orientation="Horizontal" HorizontalAlignment="Right" VerticalAlignment="Center">
+                    <Image Source="/Resources/silver.png" Width="14" Height="14" Margin="0,0,5,0" />
+                    <TextBlock Text="{Binding LootPerHour, Converter={StaticResource ShortNumberConverter}, ConverterCulture={x:Static gl:CultureInfo.CurrentCulture}, FallbackValue=0}"
+                               Foreground="{StaticResource SolidColorBrush.Text.2}"
+                               FontSize="12"
+                               VerticalAlignment="Center" />
+                </StackPanel>
+                <StackPanel Grid.Column="4" Orientation="Horizontal" HorizontalAlignment="Right" VerticalAlignment="Center">
+                    <Image Source="/Resources/silver.png" Width="14" Height="14" Margin="0,0,5,0" />
+                    <TextBlock Text="{Binding LootPerMap, Converter={StaticResource ShortNumberConverter}, ConverterCulture={x:Static gl:CultureInfo.CurrentCulture}, FallbackValue=0}"
+                               Foreground="{StaticResource SolidColorBrush.Text.2}"
+                               FontSize="12"
+                               VerticalAlignment="Center" />
+                </StackPanel>
+                <TextBlock Grid.Column="6"
+                           Text="{Binding VisitCount, StringFormat='{}{0:N0}', ConverterCulture={x:Static gl:CultureInfo.CurrentCulture}}"
+                           Foreground="{StaticResource SolidColorBrush.Text.2}"
+                           FontSize="12"
+                           TextAlignment="Right"
+                           VerticalAlignment="Center" />
+                <TextBlock Grid.Column="7"
+                           Text="{Binding SharePercentage, StringFormat='{}{0:N1} %', ConverterCulture={x:Static gl:CultureInfo.CurrentCulture}}"
+                           Foreground="{StaticResource SolidColorBrush.Text.2}"
+                           FontSize="12"
+                           TextAlignment="Right"
+                           VerticalAlignment="Center" />
             </Grid>
         </Border>
     </DataTemplate>

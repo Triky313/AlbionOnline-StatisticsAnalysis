@@ -5,11 +5,24 @@ namespace StatisticsAnalysisTool.Models;
 
 public sealed class DashboardLootAreaItem
 {
-    public DashboardLootAreaItem(string name, long itemCount, double totalValue, ClusterType clusterType, DungeonMode dungeonMode)
+    public DashboardLootAreaItem(
+        string name,
+        long itemCount,
+        double totalValue,
+        double lootPerHour,
+        double lootPerMap,
+        long visitCount,
+        double sharePercentage,
+        ClusterType clusterType,
+        DungeonMode dungeonMode)
     {
         Name = name;
         ItemCount = itemCount;
         TotalValue = totalValue;
+        LootPerHour = lootPerHour;
+        LootPerMap = lootPerMap;
+        VisitCount = visitCount;
+        SharePercentage = sharePercentage;
         ClusterType = clusterType;
         DungeonMode = dungeonMode;
     }
@@ -17,6 +30,10 @@ public sealed class DashboardLootAreaItem
     public string Name { get; }
     public long ItemCount { get; }
     public double TotalValue { get; }
+    public double LootPerHour { get; }
+    public double LootPerMap { get; }
+    public long VisitCount { get; }
+    public double SharePercentage { get; }
     public ClusterType ClusterType { get; }
     public DungeonMode DungeonMode { get; }
 

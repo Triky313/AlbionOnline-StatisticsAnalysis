@@ -23,6 +23,7 @@ using System.Windows;
 using System.Windows.Media;
 using System.Windows.Threading;
 using ValueType = StatisticsAnalysisTool.Enumerations.ValueType;
+using static StatisticsAnalysisTool.Models.DashboardLootStatisticsCalculator;
 
 namespace StatisticsAnalysisTool.Network.Manager;
 
@@ -351,7 +352,8 @@ public class StatisticController
                 ItemIndex = itemIndex,
                 ItemQuantity = quantity,
                 LootAreaIndex = lootAreaIndex,
-                LootAreaClusterType = lootAreaClusterType
+                LootAreaClusterType = lootAreaClusterType,
+                LootAreaEnteredAtUtc = ClusterController.CurrentCluster.Entered
             };
 
             _dashboardStatistics.Add(statisticEntry);
@@ -906,6 +908,7 @@ public class StatisticController
             .Where(x => previousRangeBucketStarts.Contains(x.Key))
             .Sum(x => x.Value);
         var lootStatistics = _mainWindowViewModel.DashboardBindings.LootStatistics;
+        var rangeHours = GetRangeHours(selectedRange);
 
         lootStatistics.TotalValueSummary.Update(
             currentValue,
@@ -914,14 +917,37 @@ public class StatisticController
         lootStatistics.AverageValue = entries.Count > 0
             ? currentValue / entries.Count
             : 0;
+        lootStatistics.LootPerHour = rangeHours > 0
+            ? currentValue / rangeHours
+            : 0;
+
+        var valueClassItemCounts = new long[4];
+        var valueClassTotals = new double[4];
+        var tierItemCounts = new long[5];
+        var enchantmentItemCounts = new long[5];
 
         var lootItems = new List<DashboardLootItem>(entries.Count);
         foreach (var entry in entries)
         {
+            var unitValue = entry.ItemQuantity > 0 ? entry.Value / entry.ItemQuantity : 0;
+            var valueClassIndex = GetValueClassIndex(unitValue);
+            valueClassItemCounts[valueClassIndex] += entry.ItemQuantity;
+            valueClassTotals[valueClassIndex] += entry.Value;
+
             var item = ItemController.GetItemByIndex(entry.ItemIndex);
             if (item == null)
             {
                 continue;
+            }
+
+            if (item.Tier is >= 4 and <= 8)
+            {
+                tierItemCounts[item.Tier - 4] += entry.ItemQuantity;
+            }
+
+            if (item.Level is >= 0 and <= 4)
+            {
+                enchantmentItemCounts[item.Level] += entry.ItemQuantity;
             }
 
             lootItems.Add(new DashboardLootItem(
@@ -948,7 +974,18 @@ public class StatisticController
                     x.TotalValue,
                     x.LootedAtLocal,
                     displayUnitValue: true)));
-        ReplaceDashboardItems(lootStatistics.TopAreas, CreateTopLootAreas(entries));
+        ReplaceDashboardItems(
+            lootStatistics.ValueDistribution,
+            CreateValueDistribution(valueClassItemCounts, valueClassTotals, currentValue));
+        ReplaceDashboardItems(
+            lootStatistics.TierDistribution,
+            CreateCountDistribution(["T4", "T5", "T6", "T7", "T8"], tierItemCounts));
+        ReplaceDashboardItems(
+            lootStatistics.EnchantmentDistribution,
+            CreateCountDistribution([".0", ".1", ".2", ".3", ".4"], enchantmentItemCounts));
+        ReplaceDashboardItems(
+            lootStatistics.TopAreas,
+            CreateTopLootAreas(entries, rangeHours, currentValue));
     }
 
     private void UpdateDashboardLootedChestStatistics(
@@ -1063,7 +1100,10 @@ public class StatisticController
         }
     }
 
-    private static IReadOnlyCollection<DashboardLootAreaItem> CreateTopLootAreas(IReadOnlyCollection<StatisticEntry> entries)
+    private static IReadOnlyCollection<DashboardLootAreaItem> CreateTopLootAreas(
+        IReadOnlyCollection<StatisticEntry> entries,
+        double rangeHours,
+        double totalLootValue)
     {
         return entries
             .Where(HasKnownLootArea)
@@ -1073,7 +1113,8 @@ public class StatisticController
                 group.Key,
                 ItemCount = group.Sum(entry => (long) entry.ItemQuantity),
                 TotalValue = group.Sum(entry => entry.Value),
-                ClusterType = group.First().LootAreaClusterType
+                ClusterType = group.First().LootAreaClusterType,
+                VisitCount = group.Select(GetLootAreaVisitKey).Distinct().LongCount()
             })
             .OrderByDescending(area => area.TotalValue)
             .ThenBy(area => area.Key.AreaIndex, StringComparer.OrdinalIgnoreCase)
@@ -1083,9 +1124,18 @@ public class StatisticController
                 ResolveLootAreaName(area.Key.DungeonMode, area.Key.AreaIndex),
                 area.ItemCount,
                 area.TotalValue,
+                rangeHours > 0 ? area.TotalValue / rangeHours : 0,
+                area.VisitCount > 0 ? area.TotalValue / area.VisitCount : 0,
+                area.VisitCount,
+                CalculateSharePercentage(area.TotalValue, totalLootValue),
                 area.ClusterType,
                 area.Key.DungeonMode))
             .ToArray();
+    }
+
+    private static (Guid SessionId, DateTime EnteredAtUtc) GetLootAreaVisitKey(StatisticEntry entry)
+    {
+        return (entry.SessionId, entry.LootAreaEnteredAtUtc);
     }
 
     private static bool HasKnownLootArea(StatisticEntry entry)

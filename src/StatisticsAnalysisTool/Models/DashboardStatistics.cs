@@ -136,6 +136,7 @@ public class DashboardStatistics
                         ItemQuantity = x.ItemQuantity,
                         LootAreaIndex = x.LootAreaIndex,
                         LootAreaClusterType = x.LootAreaClusterType,
+                        LootAreaEnteredAtUtc = x.LootAreaEnteredAtUtc,
                         TreasureRarity = x.TreasureRarity,
                         ItemQuality = x.ItemQuality
                     })

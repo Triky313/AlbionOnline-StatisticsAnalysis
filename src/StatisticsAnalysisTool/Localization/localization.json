@@ -47419,11 +47419,11 @@
       "tuv": [
         {
           "lang": "de-DE",
-          "seg": "Top-Maps und -Bereiche nach Lootwert"
+          "seg": "Top-Maps und Loot-Bereiche nach Lootwert"
         },
         {
           "lang": "en-US",
-          "seg": "Top maps and areas by loot value"
+          "seg": "Top maps and loot areas by loot value"
         }
       ]
     },
@@ -47515,6 +47515,240 @@
         {
           "lang": "en-US",
           "seg": "Upgrade procs"
+        }
+      ]
+    },
+    {
+      "tuid": "LOOT_VALUE_DISTRIBUTION",
+      "tuv": [
+        {
+          "lang": "de-DE",
+          "seg": "Loot-Verteilung nach Itemwert"
+        },
+        {
+          "lang": "en-US",
+          "seg": "Loot distribution by item value"
+        }
+      ]
+    },
+    {
+      "tuid": "LOOT_BY_TIER_AND_ENCHANTMENT",
+      "tuv": [
+        {
+          "lang": "de-DE",
+          "seg": "Loot nach Tier und Verzauberung"
+        },
+        {
+          "lang": "en-US",
+          "seg": "Loot by tier and enchantment"
+        }
+      ]
+    },
+    {
+      "tuid": "VALUE_CLASS",
+      "tuv": [
+        {
+          "lang": "de-DE",
+          "seg": "Wertklasse (Silber)"
+        },
+        {
+          "lang": "en-US",
+          "seg": "Value class (silver)"
+        }
+      ]
+    },
+    {
+      "tuid": "ITEMS",
+      "tuv": [
+        {
+          "lang": "de-DE",
+          "seg": "Items"
+        },
+        {
+          "lang": "en-US",
+          "seg": "Items"
+        }
+      ]
+    },
+    {
+      "tuid": "SHARE_OF_TOTAL_VALUE",
+      "tuv": [
+        {
+          "lang": "de-DE",
+          "seg": "Anteil am Gesamtwert"
+        },
+        {
+          "lang": "en-US",
+          "seg": "Share of total value"
+        }
+      ]
+    },
+    {
+      "tuid": "TIER_DISTRIBUTION",
+      "tuv": [
+        {
+          "lang": "de-DE",
+          "seg": "Tier-Verteilung"
+        },
+        {
+          "lang": "en-US",
+          "seg": "Tier distribution"
+        }
+      ]
+    },
+    {
+      "tuid": "ENCHANTMENT",
+      "tuv": [
+        {
+          "lang": "de-DE",
+          "seg": "Verzauberung"
+        },
+        {
+          "lang": "en-US",
+          "seg": "Enchantment"
+        }
+      ]
+    },
+    {
+      "tuid": "MAP_AREA",
+      "tuv": [
+        {
+          "lang": "de-DE",
+          "seg": "Map/Gebiet"
+        },
+        {
+          "lang": "en-US",
+          "seg": "Map/area"
+        }
+      ]
+    },
+    {
+      "tuid": "LOOT_VALUE",
+      "tuv": [
+        {
+          "lang": "de-DE",
+          "seg": "Lootwert"
+        },
+        {
+          "lang": "en-US",
+          "seg": "Loot value"
+        }
+      ]
+    },
+    {
+      "tuid": "LOOT_PER_HOUR_SHORT",
+      "tuv": [
+        {
+          "lang": "de-DE",
+          "seg": "Loot/h"
+        },
+        {
+          "lang": "en-US",
+          "seg": "Loot/h"
+        }
+      ]
+    },
+    {
+      "tuid": "LOOT_PER_MAP",
+      "tuv": [
+        {
+          "lang": "de-DE",
+          "seg": "Loot/Map"
+        },
+        {
+          "lang": "en-US",
+          "seg": "Loot/map"
+        }
+      ]
+    },
+    {
+      "tuid": "VISITS",
+      "tuv": [
+        {
+          "lang": "de-DE",
+          "seg": "Besuche"
+        },
+        {
+          "lang": "en-US",
+          "seg": "Visits"
+        }
+      ]
+    },
+    {
+      "tuid": "SHARE",
+      "tuv": [
+        {
+          "lang": "de-DE",
+          "seg": "Anteil"
+        },
+        {
+          "lang": "en-US",
+          "seg": "Share"
+        }
+      ]
+    },
+    {
+      "tuid": "LOOT_VALUE_UNDER_10000",
+      "tuv": [
+        {
+          "lang": "de-DE",
+          "seg": "Unter {0:N0}"
+        },
+        {
+          "lang": "en-US",
+          "seg": "Under {0:N0}"
+        }
+      ]
+    },
+    {
+      "tuid": "LOOT_VALUE_10000_TO_100000",
+      "tuv": [
+        {
+          "lang": "de-DE",
+          "seg": "{0:N0} - {1:N0}"
+        },
+        {
+          "lang": "en-US",
+          "seg": "{0:N0} - {1:N0}"
+        }
+      ]
+    },
+    {
+      "tuid": "LOOT_VALUE_100000_TO_500000",
+      "tuv": [
+        {
+          "lang": "de-DE",
+          "seg": "{0:N0} - {1:N0}"
+        },
+        {
+          "lang": "en-US",
+          "seg": "{0:N0} - {1:N0}"
+        }
+      ]
+    },
+    {
+      "tuid": "LOOT_VALUE_OVER_500000",
+      "tuv": [
+        {
+          "lang": "de-DE",
+          "seg": "Über {0:N0}"
+        },
+        {
+          "lang": "en-US",
+          "seg": "Over {0:N0}"
+        }
+      ]
+    },
+    {
+      "tuid": "IMPORTANT_LOOT",
+      "tuv": [
+        {
+          "lang": "de-DE",
+          "seg": "Wichtiger Loot"
+        },
+        {
+          "lang": "en-US",
+          "seg": "Important Loot"
         }
       ]
     }

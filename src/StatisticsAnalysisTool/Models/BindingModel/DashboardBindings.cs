@@ -255,6 +255,66 @@ public class DashboardBindings : BaseViewModel
         }
     }
 
+    public Visibility LootValueDistributionVisibility
+    {
+        get;
+        set
+        {
+            field = value;
+            OnPropertyChanged();
+        }
+    } = Visibility.Visible;
+
+    public EFontAwesomeIcon LootValueDistributionToggleIcon
+    {
+        get;
+        set
+        {
+            field = value;
+            OnPropertyChanged();
+        }
+    } = EFontAwesomeIcon.Solid_Minus;
+
+    public Visibility LootTierEnchantmentVisibility
+    {
+        get;
+        set
+        {
+            field = value;
+            OnPropertyChanged();
+        }
+    } = Visibility.Visible;
+
+    public EFontAwesomeIcon LootTierEnchantmentToggleIcon
+    {
+        get;
+        set
+        {
+            field = value;
+            OnPropertyChanged();
+        }
+    } = EFontAwesomeIcon.Solid_Minus;
+
+    public Visibility TopLootAreasVisibility
+    {
+        get;
+        set
+        {
+            field = value;
+            OnPropertyChanged();
+        }
+    } = Visibility.Visible;
+
+    public EFontAwesomeIcon TopLootAreasToggleIcon
+    {
+        get;
+        set
+        {
+            field = value;
+            OnPropertyChanged();
+        }
+    } = EFontAwesomeIcon.Solid_Minus;
+
     public Visibility ReSpecStatsVisibility
     {
         get;
@@ -1037,11 +1097,25 @@ public class DashboardBindings : BaseViewModel
     public static string TranslationLootedChests => LocalizationController.Translation("LOOTED_CHESTS");
 
     public static string TranslationLoot => LocalizationController.Translation("LOOT");
+    public static string TranslationImportantLoot => LocalizationController.Translation("IMPORTANT_LOOT");
     public static string TranslationRecentLootItems => LocalizationController.Translation("RECENT_LOOT_ITEMS");
     public static string TranslationMostValuableLoot => LocalizationController.Translation("MOST_VALUABLE_LOOT");
     public static string TranslationTotalLootValue => LocalizationController.Translation("TOTAL_LOOT_VALUE");
     public static string TranslationAverageLootValue => LocalizationController.Translation("AVERAGE_LOOT_VALUE");
     public static string TranslationTopLootAreas => LocalizationController.Translation("TOP_LOOT_AREAS");
+    public static string TranslationLootValueDistribution => LocalizationController.Translation("LOOT_VALUE_DISTRIBUTION");
+    public static string TranslationLootByTierAndEnchantment => LocalizationController.Translation("LOOT_BY_TIER_AND_ENCHANTMENT");
+    public static string TranslationValueClass => LocalizationController.Translation("VALUE_CLASS");
+    public static string TranslationItems => LocalizationController.Translation("ITEMS");
+    public static string TranslationShareOfTotalValue => LocalizationController.Translation("SHARE_OF_TOTAL_VALUE");
+    public static string TranslationTierDistribution => LocalizationController.Translation("TIER_DISTRIBUTION");
+    public static string TranslationEnchantment => LocalizationController.Translation("ENCHANTMENT");
+    public static string TranslationMapArea => LocalizationController.Translation("MAP_AREA");
+    public static string TranslationLootValue => LocalizationController.Translation("LOOT_VALUE");
+    public static string TranslationLootPerHour => LocalizationController.Translation("LOOT_PER_HOUR_SHORT");
+    public static string TranslationLootPerMap => LocalizationController.Translation("LOOT_PER_MAP");
+    public static string TranslationVisits => LocalizationController.Translation("VISITS");
+    public static string TranslationShare => LocalizationController.Translation("SHARE");
     public static string TranslationMaps => LocalizationController.Translation("MAPS");
     public static string TranslationItemQuantity => LocalizationController.Translation("ITEM_QUANTITY");
     public static string TranslationRepairCosts => LocalizationController.Translation("REPAIR_COSTS");

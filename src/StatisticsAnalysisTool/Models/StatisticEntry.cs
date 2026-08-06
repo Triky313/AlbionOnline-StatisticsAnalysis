@@ -21,6 +21,7 @@ public sealed class StatisticEntry
     public int ItemQuantity { get; set; }
     public string LootAreaIndex { get; set; } = string.Empty;
     public ClusterType LootAreaClusterType { get; set; }
+    public DateTime LootAreaEnteredAtUtc { get; set; }
     public TreasureRarity TreasureRarity { get; set; }
     public ItemQuality ItemQuality { get; set; } = ItemQuality.Unknown;
 }
