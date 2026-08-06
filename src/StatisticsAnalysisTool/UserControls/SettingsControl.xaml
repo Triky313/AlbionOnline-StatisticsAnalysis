@@ -170,28 +170,15 @@
                         </StackPanel>
                     </DockPanel>
 
-                    <!-- Item window -->
+                    <!-- Item search -->
                     <DockPanel Margin="0,20,0,0">
-                        <Label Content="{Binding Translation.ItemWindow, FallbackValue='ITEM__WINDOW'}" FontSize="14" Foreground="{StaticResource SolidColorBrush.Accent.Blue.2}" />
-                    </DockPanel>
-                    <DockPanel Margin="0,5,0,0">
-                        <Label Content="{Binding Translation.RefreshRate, FallbackValue=REFRESH__RATE}" MinWidth="300" VerticalAlignment="Top" />
-                        <ComboBox ItemsSource="{Binding RefreshRates}" SelectedItem="{Binding RefreshRatesSelection}" IsSynchronizedWithCurrentItem="True" DisplayMemberPath="Name"
-                                  SelectedValuePath="Value" HorizontalAlignment="Left" VerticalAlignment="Top" Width="200" Height="26" />
-                    </DockPanel>
-                    <DockPanel Margin="0,5,0,0">
-                        <Label Content="{Binding Translation.OpenItemWindowInNewWindow, FallbackValue=OPEN__ITEM__WINDOW__IN__NEW__WINDOW}" MinWidth="300" VerticalAlignment="Top" />
-                        <CheckBox IsChecked="{Binding IsOpenItemWindowInNewWindowChecked}" Height="21" VerticalContentAlignment="Center" />
+                        <Label Content="{Binding Translation.ItemSearch, FallbackValue='ITEM__SEARCH'}" FontSize="14" Foreground="{StaticResource SolidColorBrush.Accent.Blue.2}" />
                     </DockPanel>
                     <!--<DockPanel Margin="0,5,0,0">
                         <Label Content="{Binding Translation.ShowInfoWindowOnStart, FallbackValue=SHOW__INFO__WINDOW__ON__START}" MinWidth="300" VerticalAlignment="Top" />
                         <CheckBox IsChecked="{Binding ShowInfoWindowOnStartChecked}" Height="21" VerticalContentAlignment="Center"  />
                     </DockPanel>-->
 
-                    <!-- Item search -->
-                    <DockPanel Margin="0,20,0,0">
-                        <Label Content="{Binding Translation.ItemSearch, FallbackValue='ITEM__SEARCH'}" FontSize="14" Foreground="{StaticResource SolidColorBrush.Accent.Blue.2}" />
-                    </DockPanel>
                     <DockPanel Margin="0,5,0,0">
                         <Label Content="{Binding Translation.AlarmSoundUsed, FallbackValue=ALERT__SOUND__USED}" MinWidth="300" VerticalAlignment="Top" />
                         <ComboBox ItemsSource="{Binding AlertSounds}" SelectedItem="{Binding AlertSoundSelection}" IsSynchronizedWithCurrentItem="True"

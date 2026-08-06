@@ -6,6 +6,7 @@ using StatisticsAnalysisTool.Network.PacketProviders;
 using StatisticsAnalysisTool.OpenWorld;
 using System;
 using System.Collections.Generic;
+using System.Text.Json.Serialization;
 
 namespace StatisticsAnalysisTool.Common.UserSettings;
 
@@ -13,7 +14,6 @@ public class SettingsObject
 {
     public string CurrentCultureIetfLanguageTag { get; set; }
     public bool HasCompletedFirstStartGuide { get; set; } = false;
-    public int RefreshRate { get; set; } = 10000;
     public string PacketFilter { get; set; } = LibpcapPacketProvider.DefaultPacketFilter;
     public PacketProviderKind PacketProvider { get; set; } = PacketProviderKind.Npcap;
     public ServerType ServerType { get; set; } = ServerType.Live; // 0: Live, 1: Staging, 2: Playground
@@ -22,7 +22,6 @@ public class SettingsObject
     public int BackupIntervalByDays { get; set; } = 1;
     public int MaximumNumberOfBackups { get; set; } = 10;
     public string BackupStorageDirectoryPath { get; set; }
-    public bool IsOpenItemWindowInNewWindowChecked { get; set; } = true;
     public bool IsInfoWindowShownOnStart { get; set; } = true;
     public string SelectedAlertSound { get; set; }
     public string SelectedDeathAlertSound { get; set; }
@@ -74,9 +73,8 @@ public class SettingsObject
     public double TradeMonitoringMarketTaxRate { get; set; } = 4;
     public double TradeMonitoringMarketTaxSetupRate { get; set; } = 2.5;
     public bool IsDungeonClosedSoundActive { get; set; } = false;
-    public int ItemWindowMainTabQualitySelection { get; set; }
-    public int ItemWindowHistoryTabQualitySelection { get; set; }
-    public List<MainTabLocationFilterSettingsObject> ItemWindowMainTabLocationFilters { get; set; } = new();
+    [JsonPropertyName("ItemWindowMainTabLocationFilters")]
+    public List<MainTabLocationFilterSettingsObject> ItemDetailsLocationFilters { get; set; } = new();
     public double GatheringGridSplitterPosition { get; set; } = 125;
     public bool IsGatheringActive { get; set; }
     public bool IsOpenWorldTrackingActive { get; set; } = true;

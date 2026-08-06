@@ -560,9 +560,6 @@
 
     <DataTemplate x:Key="MailMarketplaceBuyOrderExpiredTemplate" DataType="{x:Type trade:Trade}">
         <Grid Height="50">
-            <Grid.InputBindings>
-                <MouseBinding MouseAction="LeftDoubleClick" Command="{Binding OpenItemWindowCommand}" />
-            </Grid.InputBindings>
             <Grid Style="{StaticResource Mail.Type.Colors}" />
             <Border Style="{StaticResource Container.Border}">
                 <DockPanel VerticalAlignment="Top" HorizontalAlignment="Stretch" Margin="5,0,10,0">
@@ -684,9 +681,6 @@
     
     <DataTemplate x:Key="MailMarketplaceBuyOrderFinishedTemplate" DataType="{x:Type trade:Trade}">
         <Grid Height="50">
-            <Grid.InputBindings>
-                <MouseBinding MouseAction="LeftDoubleClick" Command="{Binding OpenItemWindowCommand}" />
-            </Grid.InputBindings>
             <Grid Style="{StaticResource Mail.Type.Colors}" />
             <Border Style="{StaticResource Container.Border}">
                 <DockPanel VerticalAlignment="Top" HorizontalAlignment="Stretch" Margin="5,0,10,0">
@@ -806,9 +800,6 @@
 
     <DataTemplate x:Key="MailMarketplaceSellOrderExpiredTemplate" DataType="{x:Type trade:Trade}">
         <Grid Height="50">
-            <Grid.InputBindings>
-                <MouseBinding MouseAction="LeftDoubleClick" Command="{Binding OpenItemWindowCommand}" />
-            </Grid.InputBindings>
             <Grid Style="{StaticResource Mail.Type.Colors}" />
             <Border Style="{StaticResource Container.Border}">
                 <DockPanel VerticalAlignment="Top" HorizontalAlignment="Stretch" Margin="5,0,10,0">
@@ -930,9 +921,6 @@
 
     <DataTemplate x:Key="MailMarketplaceSellOrderFinishedTemplate" DataType="{x:Type trade:Trade}">
         <Grid Height="50">
-            <Grid.InputBindings>
-                <MouseBinding MouseAction="LeftDoubleClick" Command="{Binding OpenItemWindowCommand}" />
-            </Grid.InputBindings>
             <Grid Style="{StaticResource Mail.Type.Colors}" />
             <Border Style="{StaticResource Container.Border}">
                 <DockPanel VerticalAlignment="Top" HorizontalAlignment="Stretch" Margin="5,0,10,0">
@@ -1051,9 +1039,6 @@
 
     <DataTemplate x:Key="InstantSellTemplate" DataType="{x:Type trade:Trade}">
         <Grid Height="50">
-            <Grid.InputBindings>
-                <MouseBinding MouseAction="LeftDoubleClick" Command="{Binding OpenItemWindowCommand}" />
-            </Grid.InputBindings>
             <Grid Style="{StaticResource InstantSell.Type.Colors}" />
             <Border Style="{StaticResource Container.Border}">
                 <DockPanel VerticalAlignment="Top" HorizontalAlignment="Stretch" Margin="5,0,10,0">
@@ -1126,9 +1111,6 @@
 
     <DataTemplate x:Key="InstantBuyTemplate" DataType="{x:Type trade:Trade}">
         <Grid Height="50">
-            <Grid.InputBindings>
-                <MouseBinding MouseAction="LeftDoubleClick" Command="{Binding OpenItemWindowCommand}" />
-            </Grid.InputBindings>
             <Grid Style="{StaticResource InstantBuy.Type.Colors}" />
             <Border Style="{StaticResource Container.Border}">
                 <DockPanel VerticalAlignment="Top" HorizontalAlignment="Stretch" Margin="5,0,10,0">
@@ -1195,9 +1177,6 @@
 
     <DataTemplate x:Key="ManualSellTemplate" DataType="{x:Type trade:Trade}">
         <Grid Height="50">
-            <Grid.InputBindings>
-                <MouseBinding MouseAction="LeftDoubleClick" Command="{Binding OpenItemWindowCommand}" />
-            </Grid.InputBindings>
             <Grid Style="{StaticResource InstantSell.Type.Colors}" />
             <Border Style="{StaticResource Container.Border}">
                 <DockPanel VerticalAlignment="Top" HorizontalAlignment="Stretch" Margin="5,0,10,0">
@@ -1268,9 +1247,6 @@
 
     <DataTemplate x:Key="ManualBuyTemplate" DataType="{x:Type trade:Trade}">
         <Grid Height="50">
-            <Grid.InputBindings>
-                <MouseBinding MouseAction="LeftDoubleClick" Command="{Binding OpenItemWindowCommand}" />
-            </Grid.InputBindings>
             <Grid Style="{StaticResource InstantBuy.Type.Colors}" />
             <Border Style="{StaticResource Container.Border}">
                 <DockPanel VerticalAlignment="Top" HorizontalAlignment="Stretch" Margin="5,0,10,0">
@@ -1328,9 +1304,6 @@
 
     <DataTemplate x:Key="PlayerTradeTemplate" DataType="{x:Type trade:Trade}">
         <Grid Height="50">
-            <Grid.InputBindings>
-                <MouseBinding MouseAction="LeftDoubleClick" Command="{Binding OpenItemWindowCommand}" />
-            </Grid.InputBindings>
             <Grid Style="{StaticResource PlayerTrade.Type.Colors}" />
             <Border Style="{StaticResource Container.Border}">
                 <DockPanel VerticalAlignment="Top" HorizontalAlignment="Stretch" Margin="5,0,10,0">
@@ -1377,9 +1350,6 @@
 
     <DataTemplate x:Key="CraftingTemplate" DataType="{x:Type trade:Trade}">
         <Grid Height="50">
-            <Grid.InputBindings>
-                <MouseBinding MouseAction="LeftDoubleClick" Command="{Binding OpenItemWindowCommand}" />
-            </Grid.InputBindings>
             <Grid Style="{StaticResource Crafting.Type.Colors}" />
             <Border Style="{StaticResource Container.Border}">
                 <DockPanel VerticalAlignment="Top" HorizontalAlignment="Stretch" Margin="5,0,10,0">

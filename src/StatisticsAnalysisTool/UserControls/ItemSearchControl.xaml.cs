@@ -1,7 +1,5 @@
-using StatisticsAnalysisTool.Models;
 using StatisticsAnalysisTool.ViewModels;
 using System.Windows;
-using System.Windows.Controls;
 using System.Windows.Input;
 
 namespace StatisticsAnalysisTool.UserControls;
@@ -16,13 +14,17 @@ public partial class ItemSearchControl
         InitializeComponent();
     }
 
-    #region Ui events
-
-    private void LvItems_MouseDoubleClick(object sender, MouseButtonEventArgs e)
+    protected override void OnRenderSizeChanged(SizeChangedInfo sizeInfo)
     {
-        var item = (Item) ((ListView) sender).SelectedValue;
-        MainWindowViewModel.OpenItemWindow(item);
+        base.OnRenderSizeChanged(sizeInfo);
+
+        var maximumItemListWidth = ItemSearchLayoutGrid.ActualWidth - ItemSearchSplitterColumn.ActualWidth - ItemDetailsColumn.MinWidth;
+        ItemListColumn.MaxWidth = maximumItemListWidth >= ItemListColumn.MinWidth
+            ? maximumItemListWidth
+            : ItemListColumn.MinWidth;
     }
+
+    #region Ui events
 
     private void FilterReset_MouseUp(object sender, MouseButtonEventArgs e)
     {

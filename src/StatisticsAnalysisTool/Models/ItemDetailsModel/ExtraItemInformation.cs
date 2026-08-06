@@ -2,7 +2,7 @@
 using System.Runtime.CompilerServices;
 using StatisticsAnalysisTool.Localization;
 
-namespace StatisticsAnalysisTool.Models.ItemWindowModel;
+namespace StatisticsAnalysisTool.Models.ItemDetailsModel;
 
 public class ExtraItemInformation
 {

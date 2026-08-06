@@ -59,6 +59,7 @@ public partial class MainWindow
 
     private void MainWindow_OnClosing(object sender, EventArgs eventArgs)
     {
+        _mainWindowViewModel.DisposeItemDetails();
         SettingsController.SetWindowSettings(WindowState, Height, Width, Left, Top);
     }
 

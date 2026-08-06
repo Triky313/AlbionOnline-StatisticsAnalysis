@@ -1,39 +1,47 @@
 using LiveChartsCore;
 using LiveChartsCore.Defaults;
 using LiveChartsCore.SkiaSharpView;
+using LiveChartsCore.SkiaSharpView.Painting;
+using SkiaSharp;
 using Serilog;
 using StatisticsAnalysisTool.Common;
 using StatisticsAnalysisTool.Common.UserSettings;
 using StatisticsAnalysisTool.Diagnostics;
 using StatisticsAnalysisTool.Exceptions;
+using StatisticsAnalysisTool.Enumerations;
 using StatisticsAnalysisTool.GameFileData;
 using StatisticsAnalysisTool.Localization;
 using StatisticsAnalysisTool.Models;
 using StatisticsAnalysisTool.Models.BindingModel;
 using StatisticsAnalysisTool.Models.ItemsJsonModel;
-using StatisticsAnalysisTool.Models.ItemWindowModel;
+using StatisticsAnalysisTool.Models.ItemDetailsModel;
 using StatisticsAnalysisTool.Models.TranslationModel;
 using StatisticsAnalysisTool.Network.Manager;
-using StatisticsAnalysisTool.Views;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Globalization;
 using System.Linq;
 using System.Reflection;
+using System.Threading;
 using System.Threading.Tasks;
-using System.Timers;
 using System.Windows;
+using System.Windows.Data;
 using System.Windows.Markup;
+using System.Windows.Media;
 using System.Windows.Media.Imaging;
 
 namespace StatisticsAnalysisTool.ViewModels;
 
-public class ItemWindowViewModel : BaseViewModel
+public class ItemDetailsViewModel : BaseViewModel, IDisposable
 {
-    private readonly ItemWindow _itemWindow;
-    private readonly Timer _timer = new();
-    private double _refreshRateInMilliseconds = 10;
+    private readonly ItemRefreshCooldownTracker _itemRefreshCooldownTracker;
+    private CancellationTokenSource _manualRefreshCooldownCancellationTokenSource = new();
+    private bool _isRefreshInProgress;
+    private bool _isInitialized;
+    private bool _isManualRefreshCooldownActive;
+    private int _historyRequestVersion;
+    private volatile bool _isDisposed;
 
     public enum Error
     {
@@ -43,15 +51,15 @@ public class ItemWindowViewModel : BaseViewModel
         ToManyRequests
     }
 
-    public ItemWindowViewModel(ItemWindow itemWindow, Item item)
+    public ItemDetailsViewModel(Item item, ItemRefreshCooldownTracker itemRefreshCooldownTracker)
     {
-        _itemWindow = itemWindow;
-
+        _itemRefreshCooldownTracker = itemRefreshCooldownTracker ?? throw new ArgumentNullException(nameof(itemRefreshCooldownTracker));
         ErrorBarVisibility = Visibility.Hidden;
 
         Item = item;
+        ApplyExistingManualRefreshCooldown();
 
-        Translation = new ItemWindowTranslation();
+        Translation = new ItemDetailsTranslation();
         _ = InitAsync(item);
 
         ItemListViewLanguage = XmlLanguage.GetLanguage(CultureInfo.DefaultThreadCurrentCulture?.IetfLanguageTag ?? string.Empty);
@@ -65,7 +73,11 @@ public class ItemWindowViewModel : BaseViewModel
         Icon = null;
         TitleName = "-";
         ItemTierLevel = string.Empty;
-        TabControlSelectedIndex = 0;
+        ItemTier = "-";
+        ItemCategoryName = "-";
+        ItemTypeName = "-";
+        ItemUniqueName = "-";
+        LastUpdatedText = $"{LocalizationController.Translation("LAST_UPDATE")}: -";
 
         Item = item;
 
@@ -87,20 +99,21 @@ public class ItemWindowViewModel : BaseViewModel
         }
 
         ChangeHeaderValues(item);
-        ChangeWindowValuesAsync(item);
 
-        await InitTimerAsync();
-        IsAutoUpdateActive = true;
+        await RefreshAsync();
 
-        IsTaskProgressbarIndeterminate = false;
+        if (!_isDisposed)
+        {
+            _isInitialized = true;
+        }
     }
 
     private void InitBindings()
     {
-        MainTabBindings = new ItemWindowMainTabBindings(this);
-        QualityTabBindings = new ItemWindowQualityTabBindings();
-        HistoryTabBindings = new ItemWindowHistoryTabBindings(this);
-        RealMoneyTabBindings = new ItemWindowRealMoneyTabBindings(this);
+        MainTabBindings = new ItemDetailsMainTabBindings(this);
+        QualityTabBindings = new ItemDetailsQualityTabBindings();
+        HistoryBindings = new ItemDetailsHistoryBindings(this);
+        RealMoneyTabBindings = new ItemDetailsRealMoneyTabBindings(this);
     }
 
     private void InitMainTabLocationFiltering()
@@ -123,12 +136,12 @@ public class ItemWindowViewModel : BaseViewModel
             new (MarketLocation.SmugglersDen, Locations.GetParameterName(MarketLocation.SmugglersDen), true)
         };
 
-        foreach (var itemWindowMainTabLocationFilter in SettingsController.CurrentSettings.ItemWindowMainTabLocationFilters)
+        foreach (var itemDetailsLocationFilter in SettingsController.CurrentSettings.ItemDetailsLocationFilters)
         {
-            var filter = locationFilters.FirstOrDefault(x => x.Location == itemWindowMainTabLocationFilter?.Location);
+            var filter = locationFilters.FirstOrDefault(x => x.Location == itemDetailsLocationFilter?.Location);
             if (filter != null)
             {
-                filter.IsChecked = itemWindowMainTabLocationFilter.IsChecked;
+                filter.IsChecked = itemDetailsLocationFilter.IsChecked;
             }
         }
 
@@ -143,7 +156,7 @@ public class ItemWindowViewModel : BaseViewModel
         {
             cityFilterObject.OnCheckedChanged += UpdateMainTabItemPrices;
             cityFilterObject.OnCheckedChanged += UpdateQualityTabItemPrices;
-            cityFilterObject.OnCheckedChanged += UpdateHistoryTabChartPricesAsync;
+            cityFilterObject.OnCheckedChanged += UpdateHistoryChartPricesAsync;
         }
     }
 
@@ -153,17 +166,17 @@ public class ItemWindowViewModel : BaseViewModel
         {
             cityFilterObject.OnCheckedChanged -= UpdateMainTabItemPrices;
             cityFilterObject.OnCheckedChanged -= UpdateQualityTabItemPrices;
-            cityFilterObject.OnCheckedChanged -= UpdateHistoryTabChartPricesAsync;
+            cityFilterObject.OnCheckedChanged -= UpdateHistoryChartPricesAsync;
         }
     }
 
     private void InitQualityFiltering()
     {
-        var normalQuality = new ItemWindowMainTabBindings.QualityStruct() { Name = LocalizationController.Translation("NORMAL"), Quality = 1 };
-        var goodQuality = new ItemWindowMainTabBindings.QualityStruct() { Name = LocalizationController.Translation("GOOD"), Quality = 2 };
-        var outstandingQuality = new ItemWindowMainTabBindings.QualityStruct() { Name = LocalizationController.Translation("OUTSTANDING"), Quality = 3 };
-        var excellentQuality = new ItemWindowMainTabBindings.QualityStruct() { Name = LocalizationController.Translation("EXCELLENT"), Quality = 4 };
-        var masterpieceQuality = new ItemWindowMainTabBindings.QualityStruct() { Name = LocalizationController.Translation("MASTERPIECE"), Quality = 5 };
+        var normalQuality = new ItemDetailsMainTabBindings.QualityStruct() { Name = LocalizationController.Translation("NORMAL"), Quality = 1 };
+        var goodQuality = new ItemDetailsMainTabBindings.QualityStruct() { Name = LocalizationController.Translation("GOOD"), Quality = 2 };
+        var outstandingQuality = new ItemDetailsMainTabBindings.QualityStruct() { Name = LocalizationController.Translation("OUTSTANDING"), Quality = 3 };
+        var excellentQuality = new ItemDetailsMainTabBindings.QualityStruct() { Name = LocalizationController.Translation("EXCELLENT"), Quality = 4 };
+        var masterpieceQuality = new ItemDetailsMainTabBindings.QualityStruct() { Name = LocalizationController.Translation("MASTERPIECE"), Quality = 5 };
 
         MainTabBindings.Qualities.Add(normalQuality);
         MainTabBindings.Qualities.Add(goodQuality);
@@ -176,16 +189,6 @@ public class ItemWindowViewModel : BaseViewModel
             MainTabBindings.QualitiesSelection = MainTabBindings.Qualities.FirstOrDefault();
         }
 
-        HistoryTabBindings.Qualities.Add(normalQuality);
-        HistoryTabBindings.Qualities.Add(goodQuality);
-        HistoryTabBindings.Qualities.Add(outstandingQuality);
-        HistoryTabBindings.Qualities.Add(excellentQuality);
-        HistoryTabBindings.Qualities.Add(masterpieceQuality);
-
-        if (HistoryTabBindings.Qualities != null)
-        {
-            HistoryTabBindings.QualitiesSelection = HistoryTabBindings.Qualities.FirstOrDefault();
-        }
     }
 
     private void InitExtraItemInformation()
@@ -287,7 +290,7 @@ public class ItemWindowViewModel : BaseViewModel
 
     public void SaveSettings()
     {
-        SettingsController.CurrentSettings.ItemWindowMainTabLocationFilters = LocationFilters?.Select(x => new MainTabLocationFilterSettingsObject()
+        SettingsController.CurrentSettings.ItemDetailsLocationFilters = LocationFilters?.Select(x => new MainTabLocationFilterSettingsObject()
         {
             IsChecked = x.IsChecked ?? false,
             Location = x.Location
@@ -298,69 +301,206 @@ public class ItemWindowViewModel : BaseViewModel
 
     #region Ui
 
-    private async void ChangeWindowValuesAsync(Item item)
-    {
-        var localizedName = ItemController.LocalizedName(item?.LocalizedNames, null, item?.UniqueName);
-
-        await Application.Current.Dispatcher.InvokeAsync(() =>
-        {
-            _itemWindow.Icon = item?.Icon;
-            _itemWindow.Title = $"{localizedName} (T{item?.Tier})";
-        });
-    }
-
     private void ChangeHeaderValues(Item item)
     {
-        var localizedName = ItemController.LocalizedName(item?.LocalizedNames, null, item?.UniqueName);
+        var localizedName = ItemController.LocalizedName(item.LocalizedNames, null, item.UniqueName);
+        var isTierKnown = item.Tier is >= 1 and <= 8;
+        var isEnchantmentKnown = item.Level is >= 0 and <= 4;
 
-        Icon = item?.Icon;
+        Icon = item.Icon;
         TitleName = localizedName;
-        ItemTierLevel = item?.Tier != -1 && item?.Level != -1 ? $"T{item?.Tier}.{item?.Level}" : string.Empty;
+        ItemTierLevel = isTierKnown && isEnchantmentKnown ? $"T{item.Tier}.{item.Level}" : string.Empty;
+        ItemTier = isTierKnown ? $"T{item.Tier}" : "-";
+        ItemCategoryName = GetShopSubCategoryDisplayName(item.FullItemInformation?.ShopSubCategory1);
+        ItemTypeName = GetItemTypeDisplayName(item.FullItemInformation?.ItemType ?? ItemType.Unknown);
+        ItemUniqueName = string.IsNullOrWhiteSpace(item.UniqueName) ? "-" : item.UniqueName;
+    }
+
+    private static string GetShopSubCategoryDisplayName(string shopSubCategory)
+    {
+        if (string.IsNullOrWhiteSpace(shopSubCategory))
+        {
+            return "-";
+        }
+
+        var translationKey = "@MARKETPLACEGUI_ROLLOUT_SHOPSUBCATEGORY_" + shopSubCategory.ToUpperInvariant();
+        var localizedName = LocalizationController.GameTranslation(translationKey);
+
+        return string.Equals(localizedName, translationKey, StringComparison.OrdinalIgnoreCase)
+            ? FormatIdentifier(shopSubCategory)
+            : localizedName;
+    }
+
+    private static string GetItemTypeDisplayName(ItemType itemType)
+    {
+        if (itemType == ItemType.Unknown)
+        {
+            return "-";
+        }
+
+        var translationKey = itemType.ToString().ToUpperInvariant();
+        var localizedName = LocalizationController.Translation(translationKey);
+
+        return string.Equals(localizedName, translationKey, StringComparison.OrdinalIgnoreCase)
+            ? FormatIdentifier(itemType.ToString())
+            : localizedName;
+    }
+
+    private static string FormatIdentifier(string value)
+    {
+        var words = string.Concat(value.Select((character, index) =>
+            index > 0 && char.IsUpper(character) ? $" {character}" : character.ToString()));
+
+        return CultureInfo.InvariantCulture.TextInfo.ToTitleCase(words.Replace('_', ' ').ToLowerInvariant());
+    }
+
+    private static SolidColorPaint CreateChartTextPaint()
+    {
+        var textBrush = Application.Current?.TryFindResource("SolidColorBrush.Text.1") as SolidColorBrush;
+        var color = textBrush?.Color ?? Colors.White;
+
+        return new SolidColorPaint(new SKColor(color.R, color.G, color.B, color.A));
     }
 
     #endregion
 
-    #region Timer
+    #region Refresh
 
-    private async Task InitTimerAsync()
+    public async Task RefreshManuallyAsync()
     {
-        await UpdateMarketPricesAsync();
-        UpdateMainTabItemPrices(null, null);
-        UpdateQualityTabItemPrices(null, null);
-        UpdateHistoryTabChartPrices(null, null);
-
-        _timer.Interval = SettingsController.CurrentSettings.RefreshRate;
-        _timer.Elapsed += UpdateInterval;
-        _timer.Elapsed += UpdateMarketPricesAsync;
-        _timer.Elapsed += UpdateMainTabItemPrices;
-        _timer.Elapsed += UpdateQualityTabItemPrices;
-    }
-
-    public void RemoveTimerAsync()
-    {
-        _timer.Elapsed -= UpdateInterval;
-        _timer.Elapsed -= UpdateMarketPricesAsync;
-        _timer.Elapsed -= UpdateMainTabItemPrices;
-        _timer.Elapsed -= UpdateQualityTabItemPrices;
-    }
-
-    private void UpdateInterval(object sender, EventArgs e)
-    {
-        if (Math.Abs(_refreshRateInMilliseconds - SettingsController.CurrentSettings.RefreshRate) <= 0)
+        if (!CanRefreshManually || string.IsNullOrWhiteSpace(Item?.UniqueName))
         {
             return;
         }
 
-        _refreshRateInMilliseconds = SettingsController.CurrentSettings.RefreshRate;
-        _timer.Interval = _refreshRateInMilliseconds;
+        if (!_itemRefreshCooldownTracker.TryStart(Item.UniqueName, out var remainingCooldown))
+        {
+            StartManualRefreshCooldown(remainingCooldown);
+            return;
+        }
+
+        StartManualRefreshCooldown(remainingCooldown);
+        await RefreshAsync();
     }
 
-    public void AutoUpdateSwitcher()
+    public async Task RefreshAsync()
     {
-        IsAutoUpdateActive = !IsAutoUpdateActive;
+        if (_isDisposed || _isRefreshInProgress)
+        {
+            return;
+        }
+
+        _isRefreshInProgress = true;
+        OnPropertyChanged(nameof(CanRefreshManually));
+        IsTaskProgressbarIndeterminate = true;
+
+        try
+        {
+            await UpdateMarketPricesAsync();
+
+            if (_isDisposed)
+            {
+                return;
+            }
+
+            UpdateMainTabItemPrices();
+            UpdateQualityTabItemPrices();
+            UpdateHistoryChartPricesAsync();
+        }
+        finally
+        {
+            _isRefreshInProgress = false;
+            OnPropertyChanged(nameof(CanRefreshManually));
+
+            if (!_isDisposed)
+            {
+                IsTaskProgressbarIndeterminate = false;
+            }
+        }
+    }
+
+    public void ApplySelectedQualityFilter()
+    {
+        if (!_isInitialized || _isDisposed)
+        {
+            return;
+        }
+
+        UpdateMainTabItemPrices();
+        UpdateHistoryChartPricesAsync();
+    }
+
+    public void ApplyHistoryTimeRangeFilter()
+    {
+        if (!_isInitialized || _isDisposed)
+        {
+            return;
+        }
+
+        UpdateHistoryChartPricesAsync();
+    }
+
+    public void Dispose()
+    {
+        if (_isDisposed)
+        {
+            return;
+        }
+
+        _isDisposed = true;
+        _manualRefreshCooldownCancellationTokenSource.Cancel();
+        _manualRefreshCooldownCancellationTokenSource.Dispose();
+        RemoveLocationFiltersEvents();
+        SaveSettings();
     }
 
     #endregion
+
+    private void ApplyExistingManualRefreshCooldown()
+    {
+        if (string.IsNullOrWhiteSpace(Item?.UniqueName))
+        {
+            return;
+        }
+
+        StartManualRefreshCooldown(_itemRefreshCooldownTracker.GetRemainingCooldown(Item.UniqueName));
+    }
+
+    private void StartManualRefreshCooldown(TimeSpan remainingCooldown)
+    {
+        if (remainingCooldown <= TimeSpan.Zero)
+        {
+            return;
+        }
+
+        _manualRefreshCooldownCancellationTokenSource.Cancel();
+        _manualRefreshCooldownCancellationTokenSource.Dispose();
+        _manualRefreshCooldownCancellationTokenSource = new CancellationTokenSource();
+
+        _isManualRefreshCooldownActive = true;
+        OnPropertyChanged(nameof(CanRefreshManually));
+        _ = CompleteManualRefreshCooldownAsync(remainingCooldown, _manualRefreshCooldownCancellationTokenSource.Token);
+    }
+
+    private async Task CompleteManualRefreshCooldownAsync(TimeSpan remainingCooldown, CancellationToken cancellationToken)
+    {
+        try
+        {
+            await Task.Delay(remainingCooldown, cancellationToken);
+        }
+        catch (OperationCanceledException)
+        {
+            return;
+        }
+
+        if (_isDisposed)
+        {
+            return;
+        }
+
+        _isManualRefreshCooldownActive = false;
+        OnPropertyChanged(nameof(CanRefreshManually));
+    }
 
     #region Error methods
 
@@ -420,22 +560,33 @@ public class ItemWindowViewModel : BaseViewModel
 
     #region Prices
 
-    public async void UpdateMarketPricesAsync(object sender, ElapsedEventArgs e)
-    {
-        await UpdateMarketPricesAsync();
-    }
-
     public async Task UpdateMarketPricesAsync()
     {
+        if (_isDisposed)
+        {
+            return;
+        }
+
         try
         {
             var trackingController = ServiceLocator.Resolve<TrackingController>();
             var localList = await trackingController.MarketController.GetResponsesForItem(Item?.UniqueName);
+
+            if (_isDisposed)
+            {
+                return;
+            }
+
             var apiList = await ApiController.GetCityItemPricesFromJsonAsync(Item?.UniqueName);
+
+            if (_isDisposed)
+            {
+                return;
+            }
 
             CurrentItemPrices = MergeMarketResponses(localList, apiList);
 
-            RefreshIconTooltipText = $"{LocalizationController.Translation("LAST_UPDATE")}: {DateTime.UtcNow.CurrentDateTimeFormat()}";
+            LastUpdatedText = $"{LocalizationController.Translation("LAST_UPDATE")}: {DateTime.UtcNow.CurrentDateTimeFormat()}";
             ErrorBarReset();
         }
         catch (TooManyRequestsException ex)
@@ -544,16 +695,16 @@ public class ItemWindowViewModel : BaseViewModel
 
     #region Main tab
 
-    public void UpdateMainTabItemPrices(object sender, ElapsedEventArgs e)
-    {
-        UpdateMainTabItemPrices();
-    }
-
     public void UpdateMainTabItemPrices()
     {
+        if (_isDisposed)
+        {
+            return;
+        }
+
         var currentItemPrices = CurrentItemPrices?.Select(x => new ItemPricesObject(x)).ToList();
         UpdateMainTabItemPricesObjects(currentItemPrices);
-        SetItemPricesObjectVisibility(MainTabBindings.ItemPrices);
+        FilterMainTabItemPrices(MainTabBindings.ItemPrices);
     }
 
     private void UpdateMainTabItemPricesObjects(List<ItemPricesObject> newPrices)
@@ -604,11 +755,13 @@ public class ItemWindowViewModel : BaseViewModel
         }
     }
 
-    private void SetItemPricesObjectVisibility(ObservableCollection<ItemPricesObject> prices)
+    private void FilterMainTabItemPrices(ObservableCollection<ItemPricesObject> prices)
     {
+        var checkedLocations = GetCheckedLocations();
+
         foreach (var currentItemPricesObject in prices?.ToList() ?? new List<ItemPricesObject>())
         {
-            if (GetCheckedLocations().Contains(currentItemPricesObject.MarketLocation) && currentItemPricesObject.QualityLevel == MainTabBindings.QualitiesSelection.Quality)
+            if (checkedLocations.Contains(currentItemPricesObject.MarketLocation) && currentItemPricesObject.QualityLevel == MainTabBindings.QualitiesSelection.Quality)
             {
                 currentItemPricesObject.Visibility = Visibility.Visible;
             }
@@ -618,7 +771,11 @@ public class ItemWindowViewModel : BaseViewModel
             }
         }
 
-        FindBestPrice(prices?.Where(x => GetCheckedLocations().Contains(x.MarketLocation)).ToList());
+        var itemPricesView = CollectionViewSource.GetDefaultView(prices);
+        itemPricesView.Filter = item => item is ItemPricesObject itemPricesObject && itemPricesObject.Visibility == Visibility.Visible;
+        itemPricesView.Refresh();
+
+        FindBestPrice(prices?.Where(x => x.Visibility == Visibility.Visible).ToList());
     }
 
     private List<MarketLocation> GetCheckedLocations()
@@ -630,13 +787,13 @@ public class ItemWindowViewModel : BaseViewModel
 
     #region Quality tab / Real money tab
 
-    private void UpdateQualityTabItemPrices(object sender, ElapsedEventArgs e)
-    {
-        UpdateQualityTabItemPrices();
-    }
-
     public void UpdateQualityTabItemPrices()
     {
+        if (_isDisposed)
+        {
+            return;
+        }
+
         var marketResponse = CurrentItemPrices?.ToList();
         UpdateQualityTabItemPricesObjects(marketResponse);
         SetMarketQualityObjectVisibility(QualityTabBindings?.Prices);
@@ -687,29 +844,44 @@ public class ItemWindowViewModel : BaseViewModel
 
     #endregion
 
-    #region History tab
+    #region History
 
-    public void UpdateHistoryTabChartPrices(object sender, ElapsedEventArgs e)
+    public async void UpdateHistoryChartPricesAsync()
     {
-        UpdateHistoryTabChartPricesAsync();
-    }
+        if (_isDisposed)
+        {
+            return;
+        }
 
-    public async void UpdateHistoryTabChartPricesAsync()
-    {
+        var requestVersion = ++_historyRequestVersion;
         List<MarketHistoriesResponse> historyItemPrices;
 
         try
         {
             var locations = GetCheckedLocations();
-            historyItemPrices = await ApiController.GetHistoryItemPricesFromJsonAsync(Item.UniqueName, locations, DateTime.Now.AddDays(-30), HistoryTabBindings.QualitiesSelection.Quality).ConfigureAwait(true);
+            var selectedTimeRangeDays = HistoryBindings.SelectedTimeRange?.Days ?? 30;
+            DateTime? startDate = selectedTimeRangeDays > 0
+                ? DateTime.UtcNow.AddDays(-selectedTimeRangeDays)
+                : null;
 
-            if (historyItemPrices == null)
+            historyItemPrices = await ApiController.GetHistoryItemPricesFromJsonAsync(
+                Item.UniqueName,
+                locations,
+                startDate,
+                MainTabBindings.QualitiesSelection.Quality).ConfigureAwait(true);
+
+            if (_isDisposed || historyItemPrices == null || requestVersion != _historyRequestVersion)
             {
                 return;
             }
         }
         catch (TooManyRequestsException)
         {
+            if (requestVersion != _historyRequestVersion)
+            {
+                return;
+            }
+
             DebugConsole.WriteWarn(MethodBase.GetCurrentMethod()?.DeclaringType, new TooManyRequestsException());
             SetErrorValues(Error.ToManyRequests);
             return;
@@ -766,8 +938,8 @@ public class ItemWindowViewModel : BaseViewModel
             UnitWidth = TimeSpan.FromDays(1).Ticks
         });
 
-        HistoryTabBindings.XAxesHistory = xAxes.ToArray();
-        HistoryTabBindings.SeriesHistory = seriesCollectionHistory;
+        HistoryBindings.XAxesHistory = xAxes.ToArray();
+        HistoryBindings.SeriesHistory = seriesCollectionHistory;
     }
 
     #endregion
@@ -804,7 +976,7 @@ public class ItemWindowViewModel : BaseViewModel
         }
     }
 
-    public BitmapImage Icon
+    public string ItemTier
     {
         get;
         set
@@ -814,7 +986,37 @@ public class ItemWindowViewModel : BaseViewModel
         }
     }
 
-    public bool RefreshSpin
+    public string ItemCategoryName
+    {
+        get;
+        set
+        {
+            field = value;
+            OnPropertyChanged();
+        }
+    }
+
+    public string ItemTypeName
+    {
+        get;
+        set
+        {
+            field = value;
+            OnPropertyChanged();
+        }
+    }
+
+    public string ItemUniqueName
+    {
+        get;
+        set
+        {
+            field = value;
+            OnPropertyChanged();
+        }
+    }
+
+    public BitmapImage Icon
     {
         get;
         set
@@ -834,7 +1036,7 @@ public class ItemWindowViewModel : BaseViewModel
         }
     } = XmlLanguage.GetLanguage(CultureInfo.DefaultThreadCurrentCulture?.IetfLanguageTag ?? string.Empty);
 
-    public ItemWindowMainTabBindings MainTabBindings
+    public ItemDetailsMainTabBindings MainTabBindings
     {
         get;
         set
@@ -844,7 +1046,7 @@ public class ItemWindowViewModel : BaseViewModel
         }
     }
 
-    public ItemWindowQualityTabBindings QualityTabBindings
+    public ItemDetailsQualityTabBindings QualityTabBindings
     {
         get;
         set
@@ -854,7 +1056,7 @@ public class ItemWindowViewModel : BaseViewModel
         }
     }
 
-    public ItemWindowHistoryTabBindings HistoryTabBindings
+    public ItemDetailsHistoryBindings HistoryBindings
     {
         get;
         set
@@ -864,7 +1066,9 @@ public class ItemWindowViewModel : BaseViewModel
         }
     }
 
-    public ItemWindowRealMoneyTabBindings RealMoneyTabBindings
+    public SolidColorPaint HistoryLegendTextPaint { get; } = CreateChartTextPaint();
+
+    public ItemDetailsRealMoneyTabBindings RealMoneyTabBindings
     {
         get;
         set
@@ -914,19 +1118,6 @@ public class ItemWindowViewModel : BaseViewModel
         }
     } = new();
 
-    public bool IsAutoUpdateActive
-    {
-        get;
-        set
-        {
-            field = value;
-
-            _timer.Enabled = field;
-            RefreshSpin = field;
-            OnPropertyChanged();
-        }
-    }
-
     public double TaskProgressbarMinimum
     {
         get;
@@ -967,7 +1158,9 @@ public class ItemWindowViewModel : BaseViewModel
         }
     }
 
-    public string RefreshIconTooltipText
+    public bool CanRefreshManually => !_isDisposed && !_isRefreshInProgress && !_isManualRefreshCooldownActive;
+
+    public string LastUpdatedText
     {
         get;
         set
@@ -976,23 +1169,6 @@ public class ItemWindowViewModel : BaseViewModel
             OnPropertyChanged();
         }
     }
-
-    public int TabControlSelectedIndex
-    {
-        get;
-        set
-        {
-            field = value;
-
-            // 2 is History tab
-            if (field == 2)
-            {
-                UpdateHistoryTabChartPricesAsync();
-            }
-
-            OnPropertyChanged();
-        }
-    } = -1;
 
     public ObservableCollection<MainTabLocationFilterObject> LocationFilters
     {
@@ -1014,7 +1190,7 @@ public class ItemWindowViewModel : BaseViewModel
         }
     } = new();
 
-    public ItemWindowTranslation Translation
+    public ItemDetailsTranslation Translation
     {
         get;
         set

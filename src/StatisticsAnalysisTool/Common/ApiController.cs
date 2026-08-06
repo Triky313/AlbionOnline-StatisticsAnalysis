@@ -105,7 +105,10 @@ public static class ApiController
         var url = Path.Combine(GetAoDataProjectServerBaseUrlByCurrentServer(), "stats/history/");
         url += uniqueName;
         url += $"?locations={locationsString}";
-        url += $"&date={date:yyyy-M-d}";
+        if (date.HasValue)
+        {
+            url += $"&date={date.Value:yyyy-M-d}";
+        }
         url += $"&qualities={qualitiesString}";
         url += $"&time-scale={timeScale}";
 
@@ -124,6 +127,7 @@ public static class ApiController
             if (response.StatusCode == (HttpStatusCode) 429)
             {
                 throw new TooManyRequestsException();
+
             }
 
             response.EnsureSuccessStatusCode();

@@ -30,8 +30,6 @@ public class SettingsWindowViewModel : BaseViewModel
 {
     private static ObservableCollection<FileInformation> _languages = [];
     private static FileInformation _languagesSelection;
-    private static ObservableCollection<SettingDataInformation> _refreshRates = [];
-    private static SettingDataInformation _refreshRatesSelection;
 
     public SettingsWindowViewModel()
     {
@@ -44,7 +42,6 @@ public class SettingsWindowViewModel : BaseViewModel
         InitLanguageFiles();
         InitNaviTabVisibilities();
         InitNotificationAreas();
-        InitRefreshRate();
         InitPacketProvider();
         InitStartupUserDataServers();
         InitNetworkDevices();
@@ -85,9 +82,6 @@ public class SettingsWindowViewModel : BaseViewModel
         // Auto update
         IsSuggestPreReleaseUpdatesActive = SettingsController.CurrentSettings.IsSuggestPreReleaseUpdatesActive;
 
-        // Item window
-        IsOpenItemWindowInNewWindowChecked = SettingsController.CurrentSettings.IsOpenItemWindowInNewWindowChecked;
-
         // Info window
         ShowInfoWindowOnStartChecked = SettingsController.CurrentSettings.IsInfoWindowShownOnStart;
 
@@ -108,7 +102,6 @@ public class SettingsWindowViewModel : BaseViewModel
         var oldPacketFilter = SettingsController.CurrentSettings.PacketFilter;
         var oldNetworkDevices = GetNetworkDeviceSettingsSnapshot(SettingsController.CurrentSettings.NetworkDevices);
 
-        SettingsController.CurrentSettings.RefreshRate = RefreshRatesSelection.Value;
 
         SettingsController.CurrentSettings.PacketProvider = (PacketProviderKind) PacketProviderSelection.Value;
         SetPacketFilter();
@@ -123,7 +116,6 @@ public class SettingsWindowViewModel : BaseViewModel
         SettingsController.CurrentSettings.MainGameFolderPath = MainGameFolderPath ?? string.Empty;
         SettingsController.CurrentSettings.BackupIntervalByDays = BackupIntervalByDaysSelection.Value;
         SettingsController.CurrentSettings.MaximumNumberOfBackups = MaximumNumberOfBackupsSelection.Value;
-        SettingsController.CurrentSettings.IsOpenItemWindowInNewWindowChecked = IsOpenItemWindowInNewWindowChecked;
         SettingsController.CurrentSettings.IsInfoWindowShownOnStart = ShowInfoWindowOnStartChecked;
         SettingsController.CurrentSettings.SelectedAlertSound = AlertSoundSelection?.FileName ?? string.Empty;
         SettingsController.CurrentSettings.SelectedDeathAlertSound = DeathAlertSoundSelection?.FileName ?? string.Empty;
@@ -168,7 +160,6 @@ public class SettingsWindowViewModel : BaseViewModel
         Translation = new SettingsWindowTranslation();
         RefreshNaviTabVisibilityNames();
         RefreshNotificationFilterNames();
-        InitRefreshRate();
         InitPacketProvider();
         InitStartupUserDataServers();
         InitDropDownDownByDays(BackupIntervalByDays);
@@ -600,17 +591,6 @@ public class SettingsWindowViewModel : BaseViewModel
         });
     }
 
-    private void InitRefreshRate()
-    {
-        RefreshRates.Clear();
-        RefreshRates.Add(new SettingDataInformation { Name = SettingsWindowTranslation.FiveSeconds, Value = 5000 });
-        RefreshRates.Add(new SettingDataInformation { Name = SettingsWindowTranslation.TenSeconds, Value = 10000 });
-        RefreshRates.Add(new SettingDataInformation { Name = SettingsWindowTranslation.ThirtySeconds, Value = 30000 });
-        RefreshRates.Add(new SettingDataInformation { Name = SettingsWindowTranslation.SixtySeconds, Value = 60000 });
-        RefreshRates.Add(new SettingDataInformation { Name = SettingsWindowTranslation.FiveMinutes, Value = 300000 });
-        RefreshRatesSelection = RefreshRates.FirstOrDefault(x => x.Value == SettingsController.CurrentSettings.RefreshRate);
-    }
-
     private void InitPacketProvider()
     {
         PacketProvider.Clear();
@@ -846,26 +826,6 @@ public class SettingsWindowViewModel : BaseViewModel
     }
 
 
-    public SettingDataInformation RefreshRatesSelection
-    {
-        get => _refreshRatesSelection;
-        set
-        {
-            _refreshRatesSelection = value;
-            OnPropertyChanged();
-        }
-    }
-
-    public ObservableCollection<SettingDataInformation> RefreshRates
-    {
-        get => _refreshRates;
-        set
-        {
-            _refreshRates = value;
-            OnPropertyChanged();
-        }
-    }
-
     public SettingDataInformation PacketProviderSelection
     {
         get;
@@ -1019,16 +979,6 @@ public class SettingsWindowViewModel : BaseViewModel
     }
 
     public SettingsWindowTranslation Translation
-    {
-        get;
-        set
-        {
-            field = value;
-            OnPropertyChanged();
-        }
-    }
-
-    public bool IsOpenItemWindowInNewWindowChecked
     {
         get;
         set

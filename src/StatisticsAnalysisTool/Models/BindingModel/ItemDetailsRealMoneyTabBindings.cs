@@ -4,16 +4,16 @@ using System.Collections.ObjectModel;
 
 namespace StatisticsAnalysisTool.Models.BindingModel;
 
-public class ItemWindowRealMoneyTabBindings : BaseViewModel
+public class ItemDetailsRealMoneyTabBindings : BaseViewModel
 {
-    private readonly ItemWindowViewModel _itemWindowViewModel;
+    private readonly ItemDetailsViewModel _itemDetailsViewModel;
     private List<QualityStruct> _qualities = new();
     private QualityStruct _qualitiesSelection;
     private ObservableCollection<ItemPricesObject> _prices = new();
 
-    public ItemWindowRealMoneyTabBindings(ItemWindowViewModel itemWindowViewModel)
+    public ItemDetailsRealMoneyTabBindings(ItemDetailsViewModel itemDetailsViewModel)
     {
-        _itemWindowViewModel = itemWindowViewModel;
+        _itemDetailsViewModel = itemDetailsViewModel;
     }
 
     #region Bindings
@@ -34,7 +34,7 @@ public class ItemWindowRealMoneyTabBindings : BaseViewModel
         set
         {
             _qualitiesSelection = value;
-            _itemWindowViewModel.UpdateMainTabItemPrices(null, null);
+            _itemDetailsViewModel.UpdateMainTabItemPrices();
             OnPropertyChanged();
         }
     }

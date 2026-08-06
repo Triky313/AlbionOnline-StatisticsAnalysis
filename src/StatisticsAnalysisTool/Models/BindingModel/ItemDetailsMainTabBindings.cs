@@ -1,20 +1,19 @@
-﻿using StatisticsAnalysisTool.Common.UserSettings;
-using StatisticsAnalysisTool.ViewModels;
+﻿using StatisticsAnalysisTool.ViewModels;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 
 namespace StatisticsAnalysisTool.Models.BindingModel;
 
-public class ItemWindowMainTabBindings : BaseViewModel
+public class ItemDetailsMainTabBindings : BaseViewModel
 {
-    private readonly ItemWindowViewModel _itemWindowViewModel;
+    private readonly ItemDetailsViewModel _itemDetailsViewModel;
     private List<QualityStruct> _qualities = new();
     private QualityStruct _qualitiesSelection;
     private ObservableCollection<ItemPricesObject> _itemPrices = new();
 
-    public ItemWindowMainTabBindings(ItemWindowViewModel itemWindowViewModel)
+    public ItemDetailsMainTabBindings(ItemDetailsViewModel itemDetailsViewModel)
     {
-        _itemWindowViewModel = itemWindowViewModel;
+        _itemDetailsViewModel = itemDetailsViewModel;
     }
 
     #region Bindings
@@ -34,10 +33,14 @@ public class ItemWindowMainTabBindings : BaseViewModel
         get => _qualitiesSelection;
         set
         {
+            if (_qualitiesSelection.Quality == value.Quality)
+            {
+                return;
+            }
+
             _qualitiesSelection = value;
-            SettingsController.CurrentSettings.ItemWindowMainTabQualitySelection = _qualitiesSelection.Quality;
-            _itemWindowViewModel.UpdateMainTabItemPrices(null, null);
             OnPropertyChanged();
+            _itemDetailsViewModel.ApplySelectedQualityFilter();
         }
     }
 

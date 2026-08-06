@@ -7,9 +7,7 @@ public class SettingsWindowTranslation
     public static string Settings => LocalizationController.Translation("SETTINGS");
     public static string Language => $"{LocalizationController.Translation("LANGUAGE")} ({LocalizationController.Translation("RESTART_REQUIRED")})";
     public static string CheckForUpdate => LocalizationController.Translation("CHECK_FOR_UPDATE");
-    public static string RefreshRate => LocalizationController.Translation("REFRESH_RATE");
     public static string NetworkFiltering => LocalizationController.Translation("NETWORK_FILTERING");
-    public static string OpenItemWindowInNewWindow => LocalizationController.Translation("OPEN_ITEM_WINDOW_IN_NEW_WINDOW");
     public static string ShowInfoWindowOnStart => LocalizationController.Translation("SHOW_INFO_WINDOW_ON_START");
     public static string Save => LocalizationController.Translation("SAVE");
     public static string AlarmSoundUsed => LocalizationController.Translation("ALARM_SOUND_USED");
@@ -28,11 +26,6 @@ public class SettingsWindowTranslation
     public static string GoldStatsApiUrl => LocalizationController.Translation("GOLD_STATS_API_URL");
     public static string IsLootLoggerSaveReminderActive => LocalizationController.Translation("IS_LOOT_LOGGER_SAVE_REMINDER_ACTIVE");
     public static string ExportLootLoggingFileWithRealItemName => LocalizationController.Translation("EXPORT_LOOT_LOGGING_FILE_WITH_REAL_ITEM_NAME");
-    public static string FiveSeconds => LocalizationController.Translation("5_SECONDS");
-    public static string TenSeconds => LocalizationController.Translation("10_SECONDS");
-    public static string ThirtySeconds => LocalizationController.Translation("30_SECONDS");
-    public static string SixtySeconds => LocalizationController.Translation("60_SECONDS");
-    public static string FiveMinutes => LocalizationController.Translation("5_MINUTES");
     public static string SuggestPreReleaseUpdates => LocalizationController.Translation("SUGGEST_PRE_RELEASE_UPDATES");
     public static string AttentionTheseVersionsAreStillBeingTested => LocalizationController.Translation("ATTENTION_THESE_VERSION_ARE_STILL_BEING_TESTED");
     public static string CharacterNameToTrack => LocalizationController.Translation("CHARACTER_NAME_TO_TRACK");
@@ -61,7 +54,6 @@ public class SettingsWindowTranslation
     public static string Server => LocalizationController.Translation("SERVER");
     public static string StartupUserDataServer => LocalizationController.Translation("STARTUP_USER_DATA_SERVER");
     public static string StartupUserDataServerDescription => LocalizationController.Translation("STARTUP_USER_DATA_SERVER_DESCRIPTION");
-    public static string ItemWindow => LocalizationController.Translation("ITEM_WINDOW");
     public static string ItemSearch => LocalizationController.Translation("ITEM_SEARCH");
     public static string LootLogger => LocalizationController.Translation("LOOT_LOGGER");
     public static string DamageMeter => LocalizationController.Translation("DAMAGE_METER");

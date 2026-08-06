@@ -2,7 +2,7 @@ using StatisticsAnalysisTool.Localization;
 
 namespace StatisticsAnalysisTool.Models.TranslationModel;
 
-public class ItemWindowTranslation
+public class ItemDetailsTranslation
 {
     public static string Normal => LocalizationController.Translation("NORMAL");
     public static string Good => LocalizationController.Translation("GOOD");
@@ -11,7 +11,6 @@ public class ItemWindowTranslation
     public static string Masterpiece => LocalizationController.Translation("MASTERPIECE");
     public static string ShowBlackzoneOutposts => LocalizationController.Translation("SHOW_BLACKZONE_OUTPOSTS");
     public static string ShowVillages => LocalizationController.Translation("SHOW_VILLAGES");
-    public static string AutoUpdateData => LocalizationController.Translation("AUTO_UPDATE_DATA");
     public static string LastUpdate => LocalizationController.Translation("LAST_UPDATE");
     public static string City => LocalizationController.Translation("CITY");
     public static string Location => LocalizationController.Translation("LOCATION");

@@ -27,7 +27,6 @@ using StatisticsAnalysisTool.Party;
 using StatisticsAnalysisTool.Properties;
 using StatisticsAnalysisTool.StorageHistory;
 using StatisticsAnalysisTool.Trade;
-using StatisticsAnalysisTool.Views;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -46,6 +45,8 @@ namespace StatisticsAnalysisTool.ViewModels;
 
 public class MainWindowViewModel : BaseViewModel
 {
+    private readonly ItemRefreshCooldownTracker _itemRefreshCooldownTracker = new();
+
     public AlertController AlertManager;
 
     public MainWindowViewModel()
@@ -455,33 +456,6 @@ public class MainWindowViewModel : BaseViewModel
         return ServiceLocator.Resolve<AlbionServerDetectionService>().CurrentServerLocation;
     }
 
-    public static void OpenItemWindow(Item item)
-    {
-        if (string.IsNullOrEmpty(item?.UniqueName))
-            return;
-
-        try
-        {
-            if (!SettingsController.CurrentSettings.IsOpenItemWindowInNewWindowChecked && Utilities.IsWindowOpen<ItemWindow>())
-            {
-                var existItemWindow = Application.Current.Windows.OfType<ItemWindow>().FirstOrDefault();
-                //existItemWindow?.Init(item);
-                existItemWindow?.Activate();
-            }
-            else
-            {
-                var itemWindow = new ItemWindow(item);
-                itemWindow.Show();
-            }
-        }
-        catch (ArgumentNullException e)
-        {
-            Log.Error(e, "{message}", MethodBase.GetCurrentMethod()?.DeclaringType);
-            var catchItemWindow = new ItemWindow(item);
-            catchItemWindow.Show();
-        }
-    }
-
     public void ExportLootToFile()
     {
         var dialog = new SaveFileDialog
@@ -665,6 +639,41 @@ public class MainWindowViewModel : BaseViewModel
             field = value;
             OnPropertyChanged();
         }
+    }
+
+    public Item SelectedSearchItem
+    {
+        get;
+        set
+        {
+            if (ReferenceEquals(field, value))
+            {
+                return;
+            }
+
+            SelectedItemDetails?.Dispose();
+            field = value;
+            SelectedItemDetails = field == null ? null : new ItemDetailsViewModel(field, _itemRefreshCooldownTracker);
+            OnPropertyChanged();
+        }
+    }
+
+    public ItemDetailsViewModel SelectedItemDetails
+    {
+        get;
+        private set
+        {
+            field = value;
+            OnPropertyChanged();
+            OnPropertyChanged(nameof(IsItemDetailsSelected));
+        }
+    }
+
+    public bool IsItemDetailsSelected => SelectedItemDetails != null;
+
+    public void DisposeItemDetails()
+    {
+        SelectedSearchItem = null;
     }
 
     public Visibility IsDamageMeterPopupVisible

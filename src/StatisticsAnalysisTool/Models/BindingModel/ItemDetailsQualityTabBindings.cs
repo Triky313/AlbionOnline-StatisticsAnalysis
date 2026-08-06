@@ -4,7 +4,7 @@ using System.Collections.ObjectModel;
 
 namespace StatisticsAnalysisTool.Models.BindingModel;
 
-public class ItemWindowQualityTabBindings : BaseViewModel
+public class ItemDetailsQualityTabBindings : BaseViewModel
 {
     private ObservableCollection<MainTabLocationFilterObject> _locationFilters;
     private List<MarketQualityObject> _prices = new();

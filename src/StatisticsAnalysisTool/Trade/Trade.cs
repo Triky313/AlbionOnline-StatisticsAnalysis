@@ -9,7 +9,6 @@ using StatisticsAnalysisTool.Trade.Market;
 using StatisticsAnalysisTool.Trade.PlayerTrades;
 using StatisticsAnalysisTool.ViewModels;
 using System;
-using System.Windows.Input;
 
 namespace StatisticsAnalysisTool.Trade;
 
@@ -296,16 +295,4 @@ public class Trade : BaseViewModel
     public static string TranslationTotalIncomeWithoutTaxDeductions => LocalizationController.Translation("TOTAL_INCOME_WITHOUT_TAX_DEDUCTIONS");
     public static string TranslationTotalCostWithoutAddedTaxes => LocalizationController.Translation("TOTAL_COST_WITHOUT_ADDED_TAXES");
 
-    #region Commands
-
-    public void OpenItemWindow(object value)
-    {
-        MainWindowViewModel.OpenItemWindow(Item);
-    }
-
-    private ICommand _openItemWindowCommand;
-
-    public ICommand OpenItemWindowCommand => _openItemWindowCommand ??= new CommandHandler(OpenItemWindow, true);
-
-    #endregion
 }
