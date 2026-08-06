@@ -219,7 +219,7 @@ namespace StatisticsAnalysisTool.Properties {
         
         [global::System.Configuration.ApplicationScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("-90")]
+        [global::System.Configuration.DefaultSettingValueAttribute("-365")]
         public int KeepDashboardStatisticsForDays {
             get {
                 return ((int)(this["KeepDashboardStatisticsForDays"]));

@@ -1,6 +1,6 @@
 using Serilog;
-using StatisticsAnalysisTool.Models;
 using StatisticsAnalysisTool.Enumerations;
+using StatisticsAnalysisTool.Models;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -11,6 +11,7 @@ namespace StatisticsAnalysisTool.Common;
 
 public sealed class StatisticSessionStorage
 {
+    private const int MaxConcurrentSessionFileLoads = 10;
     private const string SessionFileSearchPattern = "statistics-*.json";
     private const string ObsoleteStatisticsFileName = "Stats.json";
 
@@ -26,10 +27,15 @@ public sealed class StatisticSessionStorage
             .EnumerateFiles(AppDataPaths.StatisticsDataDirectory, SessionFileSearchPattern, SearchOption.TopDirectoryOnly)
             .OrderBy(x => x, StringComparer.OrdinalIgnoreCase)
             .ToArray();
-        var sessionFiles = await Task.WhenAll(sessionFilePaths.Select(LoadSessionFileAsync)).ConfigureAwait(false);
-        var validSessionFiles = sessionFiles
-            .Where(IsValidSessionFile)
-            .ToArray();
+        var sessionFiles = new StatisticSessionFile[sessionFilePaths.Length];
+        await Parallel.ForEachAsync(
+            sessionFilePaths.Select((path, index) => (Path: path, Index: index)),
+            new ParallelOptions { MaxDegreeOfParallelism = MaxConcurrentSessionFileLoads },
+            async (sessionFile, _) =>
+            {
+                sessionFiles[sessionFile.Index] = await LoadSessionFileAsync(sessionFile.Path).ConfigureAwait(false);
+            }).ConfigureAwait(false);
+        var validSessionFiles = sessionFiles.Where(IsValidSessionFile).ToArray();
         var statistics = new DashboardStatistics();
 
         foreach (var sessionFile in validSessionFiles)
@@ -40,10 +46,7 @@ public sealed class StatisticSessionStorage
             statistics.Entries.AddRange(sessionFile.Entries.Select(CloneEntry));
         }
 
-        var recoveredOpenSessionIds = statistics.Sessions
-            .Where(x => !x.EndedAtUtc.HasValue)
-            .Select(x => x.Id)
-            .ToArray();
+        var recoveredOpenSessionIds = statistics.Sessions.Where(x => !x.EndedAtUtc.HasValue).Select(x => x.Id).ToArray();
         statistics.InitializeAfterLoad(nowUtc);
 
         if (recoveredOpenSessionIds.Length > 0)
@@ -51,11 +54,7 @@ public sealed class StatisticSessionStorage
             await SaveSessionsAsync(statistics, recoveredOpenSessionIds).ConfigureAwait(false);
         }
 
-        Log.Information(
-            "Statistics session files loaded. Files={FileCount}, Sessions={SessionCount}, Entries={EntryCount}",
-            validSessionFiles.Length,
-            statistics.Sessions.Count,
-            statistics.Entries.Count);
+        Log.Information("Statistics session files loaded. Files={FileCount}, Sessions={SessionCount}, Entries={EntryCount}", validSessionFiles.Length, statistics.Sessions.Count, statistics.Entries.Count);
         return statistics;
     }
 
@@ -63,9 +62,7 @@ public sealed class StatisticSessionStorage
         DashboardStatistics statistics,
         IReadOnlyCollection<Guid> sessionIds)
     {
-        if (statistics == null
-            || sessionIds == null
-            || sessionIds.Count == 0)
+        if (statistics == null || sessionIds == null || sessionIds.Count == 0)
         {
             return true;
         }
@@ -81,11 +78,7 @@ public sealed class StatisticSessionStorage
             .Select(session => new StatisticSessionFile
             {
                 Session = CloneSession(session),
-                Entries = statistics.Entries
-                    .Where(x => x.SessionId == session.Id)
-                    .Select(CloneEntry)
-                    .OrderBy(x => x.OccurredAtUtc)
-                    .ToList()
+                Entries = statistics.Entries.Where(x => x.SessionId == session.Id).Select(CloneEntry).OrderBy(x => x.OccurredAtUtc).ToList()
             })
             .ToArray();
         var saveResults = await Task.WhenAll(sessionFiles.Select(SaveSessionFileAsync)).ConfigureAwait(false);
@@ -109,24 +102,15 @@ public sealed class StatisticSessionStorage
         try
         {
             var sessionFilePaths = Directory
-                .EnumerateFiles(
-                    AppDataPaths.StatisticsDataDirectory,
-                    SessionFileSearchPattern,
-                    SearchOption.TopDirectoryOnly)
-                .Where(x => Path.GetFileName(x).StartsWith(
-                    sessionFilePrefix,
-                    StringComparison.OrdinalIgnoreCase))
-                .ToArray();
+                .EnumerateFiles(AppDataPaths.StatisticsDataDirectory, SessionFileSearchPattern, SearchOption.TopDirectoryOnly)
+                .Where(x => Path.GetFileName(x).StartsWith(sessionFilePrefix, StringComparison.OrdinalIgnoreCase)).ToArray();
 
             foreach (var sessionFilePath in sessionFilePaths)
             {
                 File.Delete(sessionFilePath);
             }
 
-            Log.Information(
-                "Statistics session files deleted. SessionId={SessionId}, Files={FileCount}",
-                sessionId,
-                sessionFilePaths.Length);
+            Log.Information("Statistics session files deleted. SessionId={SessionId}, Files={FileCount}", sessionId, sessionFilePaths.Length);
             return true;
         }
         catch (Exception exception)
@@ -168,9 +152,7 @@ public sealed class StatisticSessionStorage
 
     private static async Task<bool> SaveSessionFileAsync(StatisticSessionFile sessionFile)
     {
-        var filePath = Path.Combine(
-            AppDataPaths.StatisticsDataDirectory,
-            GetSessionFileName(sessionFile.Session));
+        var filePath = Path.Combine(AppDataPaths.StatisticsDataDirectory, GetSessionFileName(sessionFile.Session));
         return await FileController.SaveAsync(sessionFile, filePath, IsValidSessionFile).ConfigureAwait(false);
     }
 
