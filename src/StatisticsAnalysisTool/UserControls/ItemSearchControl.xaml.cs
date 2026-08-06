@@ -7,6 +7,7 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
 using System.Windows.Media;
+using System.Windows.Media.Media3D;
 
 namespace StatisticsAnalysisTool.UserControls;
 
@@ -141,7 +142,7 @@ public partial class ItemSearchControl
         }
     }
 
-    private static T FindVisualParent<T>(DependencyObject source) where T : DependencyObject
+    internal static T FindVisualParent<T>(DependencyObject source) where T : DependencyObject
     {
         var current = source;
 
@@ -152,10 +153,26 @@ public partial class ItemSearchControl
                 return parent;
             }
 
-            current = VisualTreeHelper.GetParent(current);
+            current = GetParent(current);
         }
 
         return null;
+    }
+
+    private static DependencyObject GetParent(DependencyObject source)
+    {
+        if (source is ContentElement contentElement)
+        {
+            return ContentOperations.GetParent(contentElement)
+                ?? (contentElement as FrameworkContentElement)?.Parent;
+        }
+
+        if (source is Visual or Visual3D)
+        {
+            return VisualTreeHelper.GetParent(source);
+        }
+
+        return LogicalTreeHelper.GetParent(source);
     }
 
     private void FilterReset_MouseUp(object sender, MouseButtonEventArgs e)
