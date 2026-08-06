@@ -14863,11 +14863,11 @@
       "tuv": [
         {
           "lang": "de-DE",
-          "seg": "Nur Items mit Alarm AN zeigen"
+          "seg": "Nur mit aktivem Alarm"
         },
         {
           "lang": "en-US",
-          "seg": "Show only items with alert on"
+          "seg": "Only with active alert"
         },
         {
           "lang": "es-ES",

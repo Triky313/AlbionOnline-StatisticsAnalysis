@@ -568,12 +568,11 @@ public class MainWindowViewModel : BaseViewModel
             bool tierMatch = SelectedItemTier == ItemTier.Unknown || (ItemTier) item.Tier == SelectedItemTier;
             bool levelMatch = SelectedItemLevel == ItemLevel.Unknown || (ItemLevel) item.Level == SelectedItemLevel;
 
-            if (IsShowOnlyFavoritesActive)
-            {
-                return nameMatch && catMatch && sub1Match && sub2Match && sub3Match && tierMatch && levelMatch && item.IsFavorite;
-            }
+            var commonFiltersMatch = nameMatch && catMatch && sub1Match && sub2Match && sub3Match && tierMatch && levelMatch;
+            var favoriteFilterMatch = !IsShowOnlyFavoritesActive || item.IsFavorite;
+            var alertFilterMatch = !IsShowOnlyItemsWithAlertOnActive || item.IsAlertActive;
 
-            return nameMatch && catMatch && sub1Match && sub2Match && sub3Match && tierMatch && levelMatch;
+            return commonFiltersMatch && favoriteFilterMatch && alertFilterMatch;
         };
 
         SetItemCounterAsync();
@@ -1015,6 +1014,19 @@ public class MainWindowViewModel : BaseViewModel
     } = Visibility.Hidden;
 
     public bool IsShowOnlyFavoritesActive
+    {
+        get;
+        set
+        {
+            field = value;
+
+            ItemsViewFilter();
+            ItemsView?.Refresh();
+            OnPropertyChanged();
+        }
+    }
+
+    public bool IsShowOnlyItemsWithAlertOnActive
     {
         get;
         set
