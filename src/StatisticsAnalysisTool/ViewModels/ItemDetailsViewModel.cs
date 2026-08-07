@@ -939,7 +939,7 @@ public class ItemDetailsViewModel : BaseViewModel, IDisposable
         }
     }
 
-    private void SetMarketQualityObjectVisibility(List<MarketQualityObject> prices)
+    private void SetMarketQualityObjectVisibility(IEnumerable<MarketQualityObject> prices)
     {
         foreach (var currentItemPricesObject in prices?.ToList() ?? new List<MarketQualityObject>())
         {

@@ -1,5 +1,4 @@
 ﻿using StatisticsAnalysisTool.ViewModels;
-using System.Collections.Generic;
 using System.Collections.ObjectModel;
 
 namespace StatisticsAnalysisTool.Models.BindingModel;
@@ -7,7 +6,7 @@ namespace StatisticsAnalysisTool.Models.BindingModel;
 public class ItemDetailsQualityTabBindings : BaseViewModel
 {
     private ObservableCollection<MainTabLocationFilterObject> _locationFilters;
-    private List<MarketQualityObject> _prices = new();
+    private ObservableCollection<MarketQualityObject> _prices = new();
 
     #region Bindings
 
@@ -21,7 +20,7 @@ public class ItemDetailsQualityTabBindings : BaseViewModel
         }
     }
 
-    public List<MarketQualityObject> Prices
+    public ObservableCollection<MarketQualityObject> Prices
     {
         get => _prices;
         set
