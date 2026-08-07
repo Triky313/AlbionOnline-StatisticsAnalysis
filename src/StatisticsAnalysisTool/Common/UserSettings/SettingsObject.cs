@@ -23,8 +23,10 @@ public class SettingsObject
     public int MaximumNumberOfBackups { get; set; } = 10;
     public string BackupStorageDirectoryPath { get; set; }
     public bool IsInfoWindowShownOnStart { get; set; } = true;
-    public string SelectedAlertSound { get; set; }
-    public string SelectedDeathAlertSound { get; set; }
+    public string SelectedAlertSound { get; set; } = string.Empty;
+    public string SelectedDeathAlertSound { get; set; } = string.Empty;
+    public double AlertSoundVolumePercentage { get; set; } = 100;
+    public double DeathAlertSoundVolumePercentage { get; set; } = 100;
     public string AlbionDataProjectBaseUrlWest { get; set; } = "https://west.albion-online-data.com/api/v2/";
     public string AlbionDataProjectBaseUrlEast { get; set; } = "https://east.albion-online-data.com/api/v2/";
     public string AlbionDataProjectBaseUrlEurope { get; set; } = "https://europe.albion-online-data.com/api/v2/";

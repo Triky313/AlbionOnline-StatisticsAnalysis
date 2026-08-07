@@ -182,7 +182,15 @@
                     <DockPanel Margin="0,5,0,0">
                         <Label Content="{Binding Translation.AlarmSoundUsed, FallbackValue=ALERT__SOUND__USED}" MinWidth="300" VerticalAlignment="Top" />
                         <ComboBox ItemsSource="{Binding AlertSounds}" SelectedItem="{Binding AlertSoundSelection}" IsSynchronizedWithCurrentItem="True"
-                                  DisplayMemberPath="FileName" SelectedValuePath="FilePath" HorizontalAlignment="Left" VerticalAlignment="Top" Width="200" Height="26" />
+                                  DisplayMemberPath="DisplayName" SelectedValuePath="Identifier" HorizontalAlignment="Left" VerticalAlignment="Top" Width="200" Height="26" />
+                    </DockPanel>
+                    <DockPanel Margin="0,5,0,0">
+                        <Label Content="{Binding Translation.Volume, FallbackValue=VOLUME}" MinWidth="300" VerticalAlignment="Center" />
+                        <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
+                            <Slider Value="{Binding AlertSoundVolumePercentage}" Minimum="0" Maximum="100" TickFrequency="1"
+                                    IsSnapToTickEnabled="True" Width="160" VerticalAlignment="Center" />
+                            <TextBlock Text="{Binding AlertSoundVolumePercentage, StringFormat={}{0:N0}%}" Foreground="{StaticResource SolidColorBrush.Text.1}" Width="40" Margin="8,0,0,0" VerticalAlignment="Center" TextAlignment="Right" />
+                        </StackPanel>
                     </DockPanel>
 
                     <!-- Item search -->
@@ -192,7 +200,15 @@
                     <DockPanel Margin="0,5,0,0">
                         <Label Content="{Binding Translation.DeathAlarmSoundUsed, FallbackValue=DEATH_ALERT__SOUND__USED}" MinWidth="300" VerticalAlignment="Top" />
                         <ComboBox ItemsSource="{Binding DeathAlertSounds}" SelectedItem="{Binding DeathAlertSoundSelection}" IsSynchronizedWithCurrentItem="True"
-                                  DisplayMemberPath="FileName" SelectedValuePath="FilePath" HorizontalAlignment="Left" VerticalAlignment="Top" Width="200" Height="26" />
+                                  DisplayMemberPath="DisplayName" SelectedValuePath="Identifier" HorizontalAlignment="Left" VerticalAlignment="Top" Width="200" Height="26" />
+                    </DockPanel>
+                    <DockPanel Margin="0,5,0,0">
+                        <Label Content="{Binding Translation.Volume, FallbackValue=VOLUME}" MinWidth="300" VerticalAlignment="Center" />
+                        <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
+                            <Slider Value="{Binding DeathAlertSoundVolumePercentage}" Minimum="0" Maximum="100" TickFrequency="1"
+                                    IsSnapToTickEnabled="True" Width="160" VerticalAlignment="Center" />
+                            <TextBlock Text="{Binding DeathAlertSoundVolumePercentage, StringFormat={}{0:N0}%}" Foreground="{StaticResource SolidColorBrush.Text.1}" Width="40" Margin="8,0,0,0" VerticalAlignment="Center" TextAlignment="Right" />
+                        </StackPanel>
                     </DockPanel>
 
                     <!-- Backup -->

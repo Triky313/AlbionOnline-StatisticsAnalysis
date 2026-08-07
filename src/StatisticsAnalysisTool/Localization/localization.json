@@ -44049,6 +44049,19 @@
       ]
     },
     {
+      "tuid": "VOLUME",
+      "tuv": [
+        {
+          "lang": "de-DE",
+          "seg": "Lautstärke"
+        },
+        {
+          "lang": "en-US",
+          "seg": "Volume"
+        }
+      ]
+    },
+    {
       "tuid": "EXPECTED_RRR",
       "tuv": [
         {

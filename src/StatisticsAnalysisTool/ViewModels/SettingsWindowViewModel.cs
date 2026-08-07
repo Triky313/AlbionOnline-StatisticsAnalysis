@@ -28,6 +28,8 @@ namespace StatisticsAnalysisTool.ViewModels;
 
 public class SettingsWindowViewModel : BaseViewModel
 {
+    private const double DefaultSoundVolumePercentage = 100;
+
     private static ObservableCollection<FileInformation> _languages = [];
     private static FileInformation _languagesSelection;
 
@@ -73,6 +75,8 @@ public class SettingsWindowViewModel : BaseViewModel
 
         // Alert sounds
         InitAlertSounds();
+        AlertSoundVolumePercentage = NormalizeSoundVolume(SettingsController.CurrentSettings.AlertSoundVolumePercentage);
+        DeathAlertSoundVolumePercentage = NormalizeSoundVolume(SettingsController.CurrentSettings.DeathAlertSoundVolumePercentage);
 
         // Api urls
         AlbionDataProjectBaseUrlWest = SettingsController.CurrentSettings.AlbionDataProjectBaseUrlWest;
@@ -117,8 +121,10 @@ public class SettingsWindowViewModel : BaseViewModel
         SettingsController.CurrentSettings.BackupIntervalByDays = BackupIntervalByDaysSelection.Value;
         SettingsController.CurrentSettings.MaximumNumberOfBackups = MaximumNumberOfBackupsSelection.Value;
         SettingsController.CurrentSettings.IsInfoWindowShownOnStart = ShowInfoWindowOnStartChecked;
-        SettingsController.CurrentSettings.SelectedAlertSound = AlertSoundSelection?.FileName ?? string.Empty;
-        SettingsController.CurrentSettings.SelectedDeathAlertSound = DeathAlertSoundSelection?.FileName ?? string.Empty;
+        SettingsController.CurrentSettings.SelectedAlertSound = AlertSoundSelection?.Identifier ?? string.Empty;
+        SettingsController.CurrentSettings.SelectedDeathAlertSound = DeathAlertSoundSelection?.Identifier ?? string.Empty;
+        SettingsController.CurrentSettings.AlertSoundVolumePercentage = AlertSoundVolumePercentage;
+        SettingsController.CurrentSettings.DeathAlertSoundVolumePercentage = DeathAlertSoundVolumePercentage;
 
         Culture.SetCulture(Culture.GetCultureByIetfLanguageTag(LanguagesSelection.FileName));
 
@@ -684,21 +690,37 @@ public class SettingsWindowViewModel : BaseViewModel
 
         // Item alert sounds
         AlertSounds.Clear();
+        AlertSounds.Add(CreateNoSoundOption());
         foreach (var sound in SoundController.Sounds.Where(x => x.FileName.Contains("alert") && !x.FileName.Contains("deathalert")))
         {
-            AlertSounds.Add(new FileInformation(sound.FileName, sound.FilePath));
+            AlertSounds.Add(new SoundOption(sound.FileName, sound.FileName, sound.FilePath));
         }
 
-        AlertSoundSelection = AlertSounds.FirstOrDefault(x => x.FileName == SettingsController.CurrentSettings.SelectedAlertSound);
+        AlertSoundSelection = AlertSounds.FirstOrDefault(x => x.Identifier == SettingsController.CurrentSettings.SelectedAlertSound)
+            ?? AlertSounds[0];
 
         // Death alert sounds
         DeathAlertSounds.Clear();
+        DeathAlertSounds.Add(CreateNoSoundOption());
         foreach (var sound in SoundController.Sounds.Where(x => x.FileName.Contains("deathalert")))
         {
-            DeathAlertSounds.Add(new FileInformation(sound.FileName, sound.FilePath));
+            DeathAlertSounds.Add(new SoundOption(sound.FileName, sound.FileName, sound.FilePath));
         }
 
-        DeathAlertSoundSelection = DeathAlertSounds.FirstOrDefault(x => x.FileName == SettingsController.CurrentSettings.SelectedDeathAlertSound);
+        DeathAlertSoundSelection = DeathAlertSounds.FirstOrDefault(x => x.Identifier == SettingsController.CurrentSettings.SelectedDeathAlertSound)
+            ?? DeathAlertSounds[0];
+    }
+
+    private static SoundOption CreateNoSoundOption()
+    {
+        return new SoundOption(string.Empty, LocalizationController.Translation("NONE"), string.Empty);
+    }
+
+    private static double NormalizeSoundVolume(double volumePercentage)
+    {
+        return double.IsFinite(volumePercentage)
+            ? Math.Clamp(volumePercentage, 0, 100)
+            : DefaultSoundVolumePercentage;
     }
 
     #endregion
@@ -725,7 +747,7 @@ public class SettingsWindowViewModel : BaseViewModel
         }
     } = new();
 
-    public ObservableCollection<FileInformation> AlertSounds
+    public ObservableCollection<SoundOption> AlertSounds
     {
         get;
         set
@@ -735,7 +757,7 @@ public class SettingsWindowViewModel : BaseViewModel
         }
     } = new();
 
-    public ObservableCollection<FileInformation> DeathAlertSounds
+    public ObservableCollection<SoundOption> DeathAlertSounds
     {
         get;
         set
@@ -745,7 +767,7 @@ public class SettingsWindowViewModel : BaseViewModel
         }
     } = new();
 
-    public FileInformation AlertSoundSelection
+    public SoundOption AlertSoundSelection
     {
         get;
         set
@@ -755,7 +777,7 @@ public class SettingsWindowViewModel : BaseViewModel
         }
     }
 
-    public FileInformation DeathAlertSoundSelection
+    public SoundOption DeathAlertSoundSelection
     {
         get;
         set
@@ -764,6 +786,26 @@ public class SettingsWindowViewModel : BaseViewModel
             OnPropertyChanged();
         }
     }
+
+    public double AlertSoundVolumePercentage
+    {
+        get;
+        set
+        {
+            field = NormalizeSoundVolume(value);
+            OnPropertyChanged();
+        }
+    } = DefaultSoundVolumePercentage;
+
+    public double DeathAlertSoundVolumePercentage
+    {
+        get;
+        set
+        {
+            field = NormalizeSoundVolume(value);
+            OnPropertyChanged();
+        }
+    } = DefaultSoundVolumePercentage;
 
     public SettingDataInformation BackupIntervalByDaysSelection
     {

@@ -286,7 +286,8 @@ public sealed class AlertController
         if (alert.PlaySound)
         {
             SoundController.PlayAlertSound(
-                SoundController.GetCurrentSoundPath(SettingsController.CurrentSettings.SelectedAlertSound));
+                SoundController.GetCurrentSoundPath(SettingsController.CurrentSettings.SelectedAlertSound),
+                SettingsController.CurrentSettings.AlertSoundVolumePercentage);
         }
 
         Application.Current?.MainWindow?.FlashWindow(12);
