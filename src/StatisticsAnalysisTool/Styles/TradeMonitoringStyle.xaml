@@ -457,104 +457,178 @@
     </DataTemplate>
 
     <DataTemplate x:Key="MailOptionsObjectTemplate" DataType="{x:Type trade:TradeOptionsObject}">
-        <Grid>
-            <StackPanel Orientation="Vertical" Margin="0,0,0,0">
-                <Separator Background="{StaticResource SolidColorBrush.Background.2}" Height="4" Margin="0,0,0,0" VerticalAlignment="Top"/>
-                <StackPanel Orientation="Vertical" Margin="10,0,0,0">
-                    <Label Content="{Binding TranslationSettings, FallbackValue=SETTINGS}" Style="{StaticResource HeaderStyle.Tracking.Title}" Margin="0,5,0,0"
-                           Foreground="{StaticResource SolidColorBrush.Accent.Blue.2}" />
-                    <StackPanel Orientation="Horizontal" Margin="-3,0,0,0">
-                        <StackPanel Orientation="Vertical" Margin="0,5,5,5">
-                            <CheckBox IsChecked="{Binding IsTradeMonitoringActive}" 
-                              Content="{Binding TranslationTradeMonitoringActive, FallbackValue=MAIL__MONITORING__ACTIVE}" 
-                              HorizontalContentAlignment="Left" Margin="0,0,0,5" VerticalAlignment="Top" HorizontalAlignment="Left" MinWidth="220"/>
+        <Border Padding="12" Style="{StaticResource Dashboard.Section}">
+            <Grid>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
+                </Grid.RowDefinitions>
 
-                            <CheckBox IsChecked="{Binding IgnoreMailsWithZeroValues}" 
-                              Content="{Binding TranslationIgnoreMailsWithZeroValues, FallbackValue=IGNORE__MAILS__WITH__ZERO__VALUES}" 
-                              HorizontalContentAlignment="Left" Margin="0,5,0,0" VerticalAlignment="Top" HorizontalAlignment="Left" MinWidth="220"/>
-                        </StackPanel>
-                        <StackPanel Orientation="Vertical" Margin="5,0,0,5">
-                            <StackPanel Orientation="Horizontal" Margin="0,0,0,5">
-                                <TextBox Text="{Binding MarketTaxRate}" Width="25" Height="20" common:TextBoxHelper.OnlyNumeric="Double" />
-                                <Label Content="{Binding TranslationMarketTaxRate, FallbackValue=MARKET__TAX__RATE}" MinWidth="100" VerticalAlignment="Top" />
-                            </StackPanel>
+                <TextBlock Text="{Binding TranslationSettings, FallbackValue=SETTINGS}"
+                           Style="{StaticResource Dashboard.SectionTitle}" />
 
-                            <StackPanel Orientation="Horizontal">
-                                <TextBox Text="{Binding MarketTaxSetupRate}" Width="25" Height="20" Margin="0,-2,0,0" common:TextBoxHelper.OnlyNumeric="Double" />
-                                <Label Content="{Binding TranslationMarketTaxSetupRate, FallbackValue=MARKET__TAX__SETUP__RATE}" MinWidth="100" VerticalAlignment="Top" />
-                            </StackPanel>
+                <UniformGrid Grid.Row="1"
+                             Margin="0,12,0,0"
+                             Columns="3">
+                    <Border Margin="0,0,4,0"
+                            Padding="12"
+                            Style="{StaticResource Dashboard.Card}">
+                        <StackPanel VerticalAlignment="Center">
+                            <CheckBox MinWidth="240"
+                                      Margin="0,0,0,12"
+                                      HorizontalAlignment="Left"
+                                      HorizontalContentAlignment="Left"
+                                      Content="{Binding TranslationTradeMonitoringActive, FallbackValue=MAIL__MONITORING__ACTIVE}"
+                                      IsChecked="{Binding IsTradeMonitoringActive}" />
+                            <CheckBox MinWidth="240"
+                                      HorizontalAlignment="Left"
+                                      HorizontalContentAlignment="Left"
+                                      Content="{Binding TranslationIgnoreMailsWithZeroValues, FallbackValue=IGNORE__MAILS__WITH__ZERO__VALUES}"
+                                      IsChecked="{Binding IgnoreMailsWithZeroValues}" />
                         </StackPanel>
-                    </StackPanel>
-                    
-                    <StackPanel Orientation="Horizontal" Margin="0,5,0,5">
-                        <ComboBox Width="200" Height="26" ItemsSource="{Binding DeleteTradesOlderThanSpecifiedDays}"
-                                  SelectedItem="{Binding DeleteTradesOlderThanSpecifiedDaysSelection, IsAsync=true}"
-                                  HorizontalAlignment="Left" DisplayMemberPath="Name" SelectedValuePath="Days" />
-                        <CheckBox IsChecked="{Binding IsPlayerTradeMonitoringActive}"
-                                  Content="{Binding TranslationPlayerTradeMonitoringActive, FallbackValue=PERSONAL__TRADES__ACTIVE}"
-                                  HorizontalContentAlignment="Left" Margin="15,4,0,0" VerticalAlignment="Top" HorizontalAlignment="Left" MinWidth="180"/>
-                    </StackPanel>
-                    <Grid Height="25"/>
-                </StackPanel>
-            </StackPanel>
-        </Grid>
+                    </Border>
+
+                    <Border Margin="4,0"
+                            Padding="12"
+                            Style="{StaticResource Dashboard.Card}">
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*" />
+                                <ColumnDefinition Width="90" />
+                            </Grid.ColumnDefinitions>
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="Auto" />
+                                <RowDefinition Height="12" />
+                                <RowDefinition Height="Auto" />
+                            </Grid.RowDefinitions>
+
+                            <TextBlock VerticalAlignment="Center"
+                                       Text="{Binding TranslationMarketTaxRate, FallbackValue=MARKET__TAX__RATE}"
+                                       Style="{StaticResource App.FilterLabel}" />
+                            <TextBox Grid.Column="1"
+                                     Height="32"
+                                     VerticalContentAlignment="Center"
+                                     Text="{Binding MarketTaxRate}"
+                                     common:TextBoxHelper.OnlyNumeric="Double" />
+
+                            <TextBlock Grid.Row="2"
+                                       VerticalAlignment="Center"
+                                       Text="{Binding TranslationMarketTaxSetupRate, FallbackValue=MARKET__TAX__SETUP__RATE}"
+                                       Style="{StaticResource App.FilterLabel}" />
+                            <TextBox Grid.Row="2"
+                                     Grid.Column="1"
+                                     Height="32"
+                                     VerticalContentAlignment="Center"
+                                     Text="{Binding MarketTaxSetupRate}"
+                                     common:TextBoxHelper.OnlyNumeric="Double" />
+                        </Grid>
+                    </Border>
+
+                    <Border Margin="4,0,0,0"
+                            Padding="12"
+                            Style="{StaticResource Dashboard.Card}">
+                        <StackPanel VerticalAlignment="Center">
+                            <ComboBox MinWidth="240"
+                                      Margin="0,0,0,12"
+                                      HorizontalAlignment="Left"
+                                      DisplayMemberPath="Name"
+                                      ItemsSource="{Binding DeleteTradesOlderThanSpecifiedDays}"
+                                      SelectedItem="{Binding DeleteTradesOlderThanSpecifiedDaysSelection, IsAsync=true}"
+                                      SelectedValuePath="Days"
+                                      Style="{StaticResource App.FilterComboBox}" />
+                            <CheckBox MinWidth="240"
+                                      HorizontalAlignment="Left"
+                                      HorizontalContentAlignment="Left"
+                                      Content="{Binding TranslationPlayerTradeMonitoringActive, FallbackValue=PERSONAL__TRADES__ACTIVE}"
+                                      IsChecked="{Binding IsPlayerTradeMonitoringActive}" />
+                        </StackPanel>
+                    </Border>
+                </UniformGrid>
+            </Grid>
+        </Border>
     </DataTemplate>
 
     <DataTemplate x:Key="ManuallyMailMenuTemplate" DataType="{x:Type trade:ManuallyTradeMenuObject}">
         <Grid>
-            <StackPanel Orientation="Vertical" Margin="10,0,0,0">
-                <Separator Background="{StaticResource SolidColorBrush.Background.2}" Height="4" Margin="0,0,0,0" VerticalAlignment="Top"/>
-                <StackPanel>
-                    <Label Content="{Binding TranslationAddTradeManually, FallbackValue=ADD_TRADE_MANUALLY}" Style="{StaticResource HeaderStyle.Tracking.Title}" Margin="2,5,0,0"
-                           Foreground="{StaticResource SolidColorBrush.Accent.Blue.2}" />
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
+            </Grid.RowDefinitions>
 
-                    <ComboBox Width="200" Height="26" Margin="0,5,0,5" ItemsSource="{Binding ManuallyTradeTypes}" 
-                              SelectedItem="{Binding ManuallyTradeTypeSelection, IsAsync=true}" 
-                              HorizontalAlignment="Left" DisplayMemberPath="Name" SelectedValuePath="Type" />
+            <TextBlock Text="{Binding TranslationAddTradeManually, FallbackValue=ADD_TRADE_MANUALLY}"
+                       Style="{StaticResource Dashboard.SectionTitle}" />
 
-                    <StackPanel Orientation="Horizontal">
-                        <StackPanel Orientation="Vertical" Width="300" Margin="0,0,5,0">
-                            <Label Content="{Binding TranslationDescription, FallbackValue=DESCRIPTION}" Width="auto" VerticalAlignment="Top" />
-                            <TextBox Text="{Binding Description, UpdateSourceTrigger=PropertyChanged}" Width="auto" Height="40" VerticalContentAlignment="Top" TextWrapping="Wrap" />
-                        </StackPanel>
+            <ComboBox Grid.Row="1"
+                      Width="200"
+                      Margin="0,12,0,10"
+                      HorizontalAlignment="Left"
+                      DisplayMemberPath="Name"
+                      ItemsSource="{Binding ManuallyTradeTypes}"
+                      SelectedItem="{Binding ManuallyTradeTypeSelection, IsAsync=true}"
+                      SelectedValuePath="Type"
+                      Style="{StaticResource App.FilterComboBox}" />
 
-                        <StackPanel Orientation="Vertical" Width="120" Margin="5,0">
-                            <Label Content="{Binding TranslationValue, FallbackValue=VALUE}" Width="auto" VerticalAlignment="Top" />
-                            <TextBox Text="{Binding Value, UpdateSourceTrigger=PropertyChanged}" common:TextBoxHelper.OnlyNumeric="Double" />
-                        </StackPanel>
-                    </StackPanel>
+            <Grid Grid.Row="2">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="120" />
+                </Grid.ColumnDefinitions>
 
-                    <Button Content="{Binding TranslationAddTrade, FallbackValue=ADD__TRADE}" HorizontalAlignment="Left" 
-                            Margin="0,10" Height="24" Width="200" MaxWidth="300" MinWidth="200">
-                        <Button.InputBindings>
-                            <MouseBinding MouseAction="LeftClick" Command="{Binding AddTradeCommand}" />
-                        </Button.InputBindings>
-                    </Button>
-
-                    <Grid Height="25"/>
+                <StackPanel Margin="0,0,10,0">
+                    <TextBlock Text="{Binding TranslationDescription, FallbackValue=DESCRIPTION}"
+                               Style="{StaticResource App.FilterLabel}" />
+                    <TextBox Height="64"
+                             Padding="6"
+                             VerticalContentAlignment="Top"
+                             Text="{Binding Description, UpdateSourceTrigger=PropertyChanged}"
+                             TextWrapping="Wrap" />
                 </StackPanel>
-            </StackPanel>
+
+                <StackPanel Grid.Column="1">
+                    <TextBlock Text="{Binding TranslationValue, FallbackValue=VALUE}"
+                               Style="{StaticResource App.FilterLabel}" />
+                    <TextBox Height="32"
+                             VerticalContentAlignment="Center"
+                             Text="{Binding Value, UpdateSourceTrigger=PropertyChanged}"
+                             common:TextBoxHelper.OnlyNumeric="Double" />
+                </StackPanel>
+            </Grid>
+
+            <Button Grid.Row="3"
+                    Width="200"
+                    Height="32"
+                    Margin="0,12,0,0"
+                    HorizontalAlignment="Left"
+                    Content="{Binding TranslationAddTrade, FallbackValue=ADD__TRADE}">
+                <Button.InputBindings>
+                    <MouseBinding MouseAction="LeftClick" Command="{Binding AddTradeCommand}" />
+                </Button.InputBindings>
+            </Button>
         </Grid>
     </DataTemplate>
 
     <DataTemplate x:Key="TradeExportTemplate" DataType="{x:Type trade:TradeExportTemplateObject}">
         <Grid>
-            <StackPanel Orientation="Vertical" Margin="10,0,0,0">
-                <Separator Background="{StaticResource SolidColorBrush.Background.2}" Height="4" Margin="0,0,0,0" VerticalAlignment="Top"/>
-                <StackPanel>
-                    <Label Content="{Binding TranslationExport, FallbackValue=EXPORT}" Style="{StaticResource HeaderStyle.Tracking.Title}" Margin="2,5,0,0"
-                           Foreground="{StaticResource SolidColorBrush.Accent.Blue.2}" />
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
+            </Grid.RowDefinitions>
 
-                    <Button Content="{Binding TranslationExportTradesAsCsv, FallbackValue=EXPORT__TRADES__TO__CSV}" HorizontalAlignment="Left" 
-                            Margin="0,10" Height="24" Width="200" MaxWidth="300" MinWidth="200">
-                        <Button.InputBindings>
-                            <MouseBinding MouseAction="LeftClick" Command="{Binding TradeExportCommand}" />
-                        </Button.InputBindings>
-                    </Button>
+            <TextBlock Text="{Binding TranslationExport, FallbackValue=EXPORT}"
+                       Style="{StaticResource Dashboard.SectionTitle}" />
 
-                    <Grid Height="25"/>
-                </StackPanel>
-            </StackPanel>
+            <Button Grid.Row="1"
+                    Width="220"
+                    Height="32"
+                    Margin="0,12,0,0"
+                    HorizontalAlignment="Left"
+                    Content="{Binding TranslationExportTradesAsCsv, FallbackValue=EXPORT__TRADES__TO__CSV}">
+                <Button.InputBindings>
+                    <MouseBinding MouseAction="LeftClick" Command="{Binding TradeExportCommand}" />
+                </Button.InputBindings>
+            </Button>
         </Grid>
     </DataTemplate>
 

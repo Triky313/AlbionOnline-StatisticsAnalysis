@@ -6,11 +6,16 @@ public class MainWindowTranslation
 {
     public static string Update => LocalizationController.Translation("UPDATE");
     public static string NumberOfValues => LocalizationController.Translation("NUMBER_OF_VALUES");
+    public static string Search => LocalizationController.Translation("SEARCH");
+    public static string TimeRange => LocalizationController.Translation("TIME_RANGE");
+
     public static string Load => LocalizationController.Translation("LOAD");
     public static string Icon => LocalizationController.Translation("ICON");
     public static string Time => LocalizationController.Translation("TIME");
     public static string Aggregation => LocalizationController.Translation("AGGREGATION");
     public static string Auto => LocalizationController.Translation("AUTO");
+    public static string Enchantment => LocalizationController.Translation("ENCHANTMENT");
+
     public static string Hour => LocalizationController.Translation("HOUR");
     public static string Tier => LocalizationController.Translation("TIER");
     public static string Level => LocalizationController.Translation("LEVEL");
@@ -121,6 +126,18 @@ public class MainWindowTranslation
     public static string TrackingMobLoot => LocalizationController.Translation("TRACKING_MOB_LOOT");
     public static string TopLooters => LocalizationController.Translation("TOP_LOOTERS");
     public static string ToolTasks => LocalizationController.Translation("TOOL_TASKS");
+    public static string Locations => LocalizationController.Translation("LOCATIONS");
+    public static string TradingActivityByLocation => LocalizationController.Translation("TRADING_ACTIVITY_BY_LOCATION");
+    public static string City => LocalizationController.Translation("CITY");
+    public static string Sales => LocalizationController.Translation("SALES");
+    public static string Purchases => LocalizationController.Translation("PURCHASES");
+    public static string Count => LocalizationController.Translation("COUNT");
+    public static string Value => LocalizationController.Translation("VALUE");
+    public static string Margin => LocalizationController.Translation("MARGIN");
+    public static string TaxPaid => LocalizationController.Translation("TAX_PAID");
+    public static string MostTradedCategory => LocalizationController.Translation("MOST_TRADED_CATEGORY");
+    public static string ResetFilters => LocalizationController.Translation("RESET_FILTERS");
+
     public static string ThisCharacterIsNotTracked => LocalizationController.Translation("THIS_CHARACTER_IS_NOT_TRACKED");
     public static string Today => LocalizationController.Translation("TODAY").ToLower();
     public static string Week => LocalizationController.Translation("WEEK").ToLower();

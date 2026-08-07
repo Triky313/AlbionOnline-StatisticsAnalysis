@@ -48076,6 +48076,136 @@
           "seg": "has reached your minimum price."
         }
       ]
+    },
+    {
+      "tuid": "SEARCH",
+      "tuv": [
+        {
+          "lang": "de-DE",
+          "seg": "Suche"
+        },
+        {
+          "lang": "en-US",
+          "seg": "Search"
+        }
+      ]
+    },
+    {
+      "tuid": "LOCATIONS",
+      "tuv": [
+        {
+          "lang": "de-DE",
+          "seg": "Standorte"
+        },
+        {
+          "lang": "en-US",
+          "seg": "Locations"
+        }
+      ]
+    },
+    {
+      "tuid": "TRADING_ACTIVITY_BY_LOCATION",
+      "tuv": [
+        {
+          "lang": "de-DE",
+          "seg": "Handelsaktivit\u00e4t nach Standort"
+        },
+        {
+          "lang": "en-US",
+          "seg": "Trading Activity by Location"
+        }
+      ]
+    },
+    {
+      "tuid": "SALES",
+      "tuv": [
+        {
+          "lang": "de-DE",
+          "seg": "Verk\u00e4ufe"
+        },
+        {
+          "lang": "en-US",
+          "seg": "Sales"
+        }
+      ]
+    },
+    {
+      "tuid": "PURCHASES",
+      "tuv": [
+        {
+          "lang": "de-DE",
+          "seg": "K\u00e4ufe"
+        },
+        {
+          "lang": "en-US",
+          "seg": "Purchases"
+        }
+      ]
+    },
+    {
+      "tuid": "COUNT",
+      "tuv": [
+        {
+          "lang": "de-DE",
+          "seg": "Anzahl"
+        },
+        {
+          "lang": "en-US",
+          "seg": "Count"
+        }
+      ]
+    },
+    {
+      "tuid": "MARGIN",
+      "tuv": [
+        {
+          "lang": "de-DE",
+          "seg": "Marge"
+        },
+        {
+          "lang": "en-US",
+          "seg": "Margin"
+        }
+      ]
+    },
+    {
+      "tuid": "TAX_PAID",
+      "tuv": [
+        {
+          "lang": "de-DE",
+          "seg": "Gezahlte Steuern"
+        },
+        {
+          "lang": "en-US",
+          "seg": "Tax paid"
+        }
+      ]
+    },
+    {
+      "tuid": "MOST_TRADED_CATEGORY",
+      "tuv": [
+        {
+          "lang": "de-DE",
+          "seg": "Meistgehandelte Kategorie"
+        },
+        {
+          "lang": "en-US",
+          "seg": "Most traded category"
+        }
+      ]
+    },
+    {
+      "tuid": "RESET_FILTERS",
+      "tuv": [
+        {
+          "lang": "de-DE",
+          "seg": "Filter zur\u00fccksetzen"
+        },
+        {
+          "lang": "en-US",
+          "seg": "Reset filters"
+        }
+      ]
     }
   ]
 }

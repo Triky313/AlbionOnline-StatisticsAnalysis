@@ -26,11 +26,12 @@ public class TradeMonitoringBindings : BaseViewModel
     private const int TargetVisibleProfitOverTimeLabels = 10;
     private const int ProfitByTimeOfDayHourCount = 24;
     private const int TopItemRankingLimit = 10;
-    private readonly record struct TradeFilterContext(long FromTicks, long ToTicks, string SearchText, long? SearchNumber, int Tier, int Level, MarketLocation Location);
+    private readonly record struct TradeFilterContext(long FromTicks, long ToTicks, string SearchText, long? SearchNumber, int TierMask, int EnchantmentMask, IReadOnlySet<MarketLocation> Locations);
     private readonly record struct TradeFilterExecutionContext(List<Trade> TradesSnapshot, TradeFilterContext FilterContext);
     private readonly TradeProfitTimeSeriesService _tradeProfitTimeSeriesService = new();
     private readonly TradeProfitTimeOfDayService _tradeProfitTimeOfDayService = new();
     private readonly TradeItemRankingService _tradeItemRankingService = new();
+    private readonly TradeLocationStatisticsService _tradeLocationStatisticsService = new();
     private IReadOnlyList<TradeProfitTimeSeriesPoint> _profitOverTimePoints = [];
     private IReadOnlyList<TradeProfitTimeOfDayPoint> _profitByTimeOfDayHourlyPoints = [];
     private TradeProfitTimeOfDayResult _profitByTimeOfDayResult = new();
@@ -39,8 +40,9 @@ public class TradeMonitoringBindings : BaseViewModel
     public TradeMonitoringBindings()
     {
         TierFilters = BuildTierFilters();
-        LevelFilters = BuildLevelFilters();
+        EnchantmentFilters = BuildEnchantmentFilters();
         LocationFilters = BuildLocationFilters();
+        TimeRangeFilters = BuildTimeRangeFilters();
         ProfitOverTimeAggregationFilters = BuildProfitOverTimeAggregationFilters();
         ProfitByTimeOfDayChartModeFilters = BuildProfitByTimeOfDayChartModeFilters();
         ProfitByTimeOfDayMetricFilters = BuildProfitByTimeOfDayMetricFilters();
@@ -48,29 +50,33 @@ public class TradeMonitoringBindings : BaseViewModel
         EnsureTradeCollectionViewInitialized();
 
         DatePickerTradeFrom = SettingsController.CurrentSettings.TradeMonitoringDatePickerTradeFrom;
-        DatePickerTradeTo = DateTime.UtcNow.AddDays(1);
+        DatePickerTradeTo = DateTime.Today.AddDays(1);
+        SynchronizeTimeRangeFilterSelection();
         UpdateProfitByTimeOfDayModeVisibility();
     }
 
     public void RefreshLocalization()
     {
-        var selectedTierFilter = SelectedTierFilter;
-        var selectedLevelFilter = SelectedLevelFilter;
-        var selectedLocationFilter = SelectedLocationFilter;
+        var selectedTierFilters = GetSelectedFilterValues(TierFilters);
+        var selectedEnchantmentFilters = GetSelectedFilterValues(EnchantmentFilters);
+        var selectedLocationFilters = GetSelectedLocationFilterValues(LocationFilters);
+        var selectedTimeRangePreset = TimeRangeFilters.FirstOrDefault(option => option.IsSelected)?.Preset;
         var selectedProfitOverTimeAggregation = SelectedProfitOverTimeAggregation;
         var selectedProfitByTimeOfDayChartMode = SelectedProfitByTimeOfDayChartMode;
         var selectedProfitByTimeOfDayMetric = SelectedProfitByTimeOfDayMetric;
 
         TierFilters = BuildTierFilters();
-        LevelFilters = BuildLevelFilters();
+        EnchantmentFilters = BuildEnchantmentFilters();
         LocationFilters = BuildLocationFilters();
+        TimeRangeFilters = BuildTimeRangeFilters();
         ProfitOverTimeAggregationFilters = BuildProfitOverTimeAggregationFilters();
         ProfitByTimeOfDayChartModeFilters = BuildProfitByTimeOfDayChartModeFilters();
         ProfitByTimeOfDayMetricFilters = BuildProfitByTimeOfDayMetricFilters();
 
-        SelectedTierFilter = selectedTierFilter;
-        SelectedLevelFilter = selectedLevelFilter;
-        SelectedLocationFilter = selectedLocationFilter;
+        RestoreFilterSelection(TierFilters, selectedTierFilters);
+        RestoreFilterSelection(EnchantmentFilters, selectedEnchantmentFilters);
+        RestoreLocationFilterSelection(LocationFilters, selectedLocationFilters);
+        RestoreTimeRangeFilterSelection(selectedTimeRangePreset);
         SelectedProfitOverTimeAggregation = selectedProfitOverTimeAggregation;
         SelectedProfitByTimeOfDayChartMode = selectedProfitByTimeOfDayChartMode;
         SelectedProfitByTimeOfDayMetric = selectedProfitByTimeOfDayMetric;
@@ -84,16 +90,16 @@ public class TradeMonitoringBindings : BaseViewModel
         ProfitByTimeOfDayChartTitle = LocalizationController.Translation("PROFIT_BY_TIME_OF_DAY");
         RefreshProfitOverTimeAxisLabels();
         RefreshProfitByTimeOfDayPresentation();
+        _ = UpdateLocationStatisticsAsync();
     }
 
     public void ItemFilterReset()
     {
-        DatePickerTradeFrom = new DateTime(2017, 1, 1);
-        DatePickerTradeTo = DateTime.UtcNow.AddDays(1);
+        ApplyTimeRangeFilter(TimeRangeFilters.First(option => option.Preset == TradeTimeRangePreset.All));
         TradesSearchText = string.Empty;
-        SelectedTierFilter = 0;
-        SelectedLevelFilter = -1;
-        SelectedLocationFilter = MarketLocation.Unknown;
+        SelectAllFilterOptions(TierFilters);
+        SelectAllFilterOptions(EnchantmentFilters);
+        SelectAllLocationFilterOptions(LocationFilters);
 
         EnsureTradeCollectionViewInitialized();
 
@@ -139,7 +145,7 @@ public class TradeMonitoringBindings : BaseViewModel
         }
     }
 
-    public IReadOnlyList<KeyValuePair<int, string>> TierFilters
+    public ObservableCollection<TradeNumericFilterOption> TierFilters
     {
         get;
         private set
@@ -149,17 +155,7 @@ public class TradeMonitoringBindings : BaseViewModel
         }
     }
 
-    public int SelectedTierFilter
-    {
-        get;
-        set
-        {
-            field = value;
-            OnPropertyChanged();
-        }
-    }
-
-    public IReadOnlyList<KeyValuePair<int, string>> LevelFilters
+    public ObservableCollection<TradeNumericFilterOption> EnchantmentFilters
     {
         get;
         private set
@@ -169,17 +165,7 @@ public class TradeMonitoringBindings : BaseViewModel
         }
     }
 
-    public int SelectedLevelFilter
-    {
-        get;
-        set
-        {
-            field = value;
-            OnPropertyChanged();
-        }
-    } = -1;
-
-    public IReadOnlyList<KeyValuePair<MarketLocation, string>> LocationFilters
+    public ObservableCollection<TradeLocationFilterOption> LocationFilters
     {
         get;
         private set
@@ -189,15 +175,15 @@ public class TradeMonitoringBindings : BaseViewModel
         }
     }
 
-    public MarketLocation SelectedLocationFilter
+    public ObservableCollection<TradeTimeRangeFilterOption> TimeRangeFilters
     {
         get;
-        set
+        private set
         {
             field = value;
             OnPropertyChanged();
         }
-    } = MarketLocation.Unknown;
+    }
 
     public IReadOnlyList<KeyValuePair<TradeProfitTimeAggregation, string>> ProfitOverTimeAggregationFilters
     {
@@ -355,6 +341,16 @@ public class TradeMonitoringBindings : BaseViewModel
         }
     } = [];
 
+    public ObservableCollection<TradeLocationStatisticsEntry> LocationStatistics
+    {
+        get;
+        set
+        {
+            field = value;
+            OnPropertyChanged();
+        }
+    } = [];
+
     public Axis[] ProfitOverTimeXAxes
     {
         get;
@@ -463,6 +459,11 @@ public class TradeMonitoringBindings : BaseViewModel
         get;
         set
         {
+            if (field == value)
+            {
+                return;
+            }
+
             field = value;
             SettingsController.CurrentSettings.TradeMonitoringDatePickerTradeFrom = field;
             OnPropertyChanged();
@@ -474,11 +475,16 @@ public class TradeMonitoringBindings : BaseViewModel
         get;
         set
         {
+            if (field == value)
+            {
+                return;
+            }
+
             field = value;
             SettingsController.CurrentSettings.TradeMonitoringDatePickerTradeTo = field;
             OnPropertyChanged();
         }
-    } = DateTime.UtcNow.AddDays(1);
+    } = DateTime.Today.AddDays(1);
 
     public bool IsDeleteTradesButtonEnabled
     {
@@ -588,6 +594,12 @@ public class TradeMonitoringBindings : BaseViewModel
         Application.Current.Dispatcher.InvokeAsync(() =>
         {
             TotalTradeCounts = Trades.Count;
+
+            var allTimeRangeOption = TimeRangeFilters.First(option => option.Preset == TradeTimeRangePreset.All);
+            if (allTimeRangeOption.IsSelected)
+            {
+                ApplyTimeRangeFilter(allTimeRangeOption);
+            }
         });
     }
 
@@ -604,6 +616,48 @@ public class TradeMonitoringBindings : BaseViewModel
     #region Filter
 
     private CancellationTokenSource _cancellationTokenSource;
+
+    public void UpdateTierFilterSelection(TradeNumericFilterOption selectedOption, bool isSelected)
+    {
+        UpdateFilterSelection(TierFilters, selectedOption, isSelected);
+    }
+
+    public void UpdateEnchantmentFilterSelection(TradeNumericFilterOption selectedOption, bool isSelected)
+    {
+        UpdateFilterSelection(EnchantmentFilters, selectedOption, isSelected);
+    }
+
+    public void UpdateLocationFilterSelection(TradeLocationFilterOption selectedOption, bool isSelected)
+    {
+        UpdateLocationFilterSelection(LocationFilters, selectedOption, isSelected);
+    }
+
+    public void ApplyTimeRangeFilter(TradeTimeRangeFilterOption selectedOption)
+    {
+        if (selectedOption == null || !TimeRangeFilters.Contains(selectedOption))
+        {
+            return;
+        }
+
+        var timeRange = GetTimeRange(selectedOption.Preset);
+        DatePickerTradeFrom = timeRange.From;
+        DatePickerTradeTo = timeRange.To;
+
+        foreach (var option in TimeRangeFilters)
+        {
+            option.IsSelected = ReferenceEquals(option, selectedOption);
+        }
+    }
+
+    public void SynchronizeTimeRangeFilterSelection()
+    {
+        foreach (var option in TimeRangeFilters)
+        {
+            var timeRange = GetTimeRange(option.Preset);
+            var isMatch = DatePickerTradeFrom.Date == timeRange.From && DatePickerTradeTo.Date == timeRange.To;
+            option.IsSelected = isMatch;
+        }
+    }
 
     public async Task UpdateFilteredTradesAsync()
     {
@@ -808,6 +862,18 @@ public class TradeMonitoringBindings : BaseViewModel
         });
     }
 
+    public async Task UpdateLocationStatisticsAsync(IEnumerable<Trade> filteredTrades = null)
+    {
+        var tradeSnapshot = filteredTrades?.ToList() ?? await GetFilteredTradeSnapshotAsync();
+        var selectedLocations = GetSelectedLocationFilterValues(LocationFilters);
+        var statistics = await Task.Run(() => _tradeLocationStatisticsService.Build(tradeSnapshot, selectedLocations));
+
+        await Application.Current.Dispatcher.InvokeAsync(() =>
+        {
+            LocationStatistics = [.. statistics];
+        });
+    }
+
     private async Task UpdateStatisticViewsAsync(IEnumerable<Trade> filteredTrades = null)
     {
         var tradeSnapshot = filteredTrades?.ToList() ?? await GetFilteredTradeSnapshotAsync();
@@ -815,7 +881,8 @@ public class TradeMonitoringBindings : BaseViewModel
         await Task.WhenAll(
             UpdateProfitOverTimeChartAsync(tradeSnapshot),
             UpdateProfitByTimeOfDayChartAsync(tradeSnapshot),
-            UpdateTopItemRankingsAsync(tradeSnapshot));
+            UpdateTopItemRankingsAsync(tradeSnapshot),
+            UpdateLocationStatisticsAsync(tradeSnapshot));
     }
 
     private TradeFilterContext BuildFilterContext()
@@ -826,13 +893,13 @@ public class TradeMonitoringBindings : BaseViewModel
         var toTicks = toDate == DateTime.MaxValue.Date ? DateTime.MaxValue.Ticks : toDate.AddDays(1).AddTicks(-1).Ticks;
 
         return new TradeFilterContext(
-            DatePickerTradeFrom.Ticks,
+            DatePickerTradeFrom.Date.Ticks,
             toTicks,
             searchText,
             hasNumericSearch ? searchNumber : null,
-            SelectedTierFilter,
-            SelectedLevelFilter,
-            SelectedLocationFilter);
+            BuildSelectionMask(TierFilters),
+            BuildSelectionMask(EnchantmentFilters),
+            GetSelectedLocationFilterValues(LocationFilters));
     }
 
     private static bool Filter(object obj, TradeFilterContext context)
@@ -847,17 +914,17 @@ public class TradeMonitoringBindings : BaseViewModel
             return false;
         }
 
-        if (!MatchesTierFilter(trade, context.Tier))
+        if (!MatchesTierFilter(trade, context.TierMask))
         {
             return false;
         }
 
-        if (!MatchesLevelFilter(trade, context.Level))
+        if (!MatchesLevelFilter(trade, context.EnchantmentMask))
         {
             return false;
         }
 
-        if (!MatchesLocationFilter(trade, context.Location))
+        if (!MatchesLocationFilter(trade, context.Locations))
         {
             return false;
         }
@@ -890,47 +957,242 @@ public class TradeMonitoringBindings : BaseViewModel
                (trade.Description?.IndexOf(context.SearchText, StringComparison.OrdinalIgnoreCase) >= 0);
     }
 
-    private static IReadOnlyList<KeyValuePair<int, string>> BuildTierFilters()
+    private static ObservableCollection<TradeNumericFilterOption> BuildTierFilters()
     {
-        return new List<KeyValuePair<int, string>>
-        {
-            new(0, LocalizationController.Translation("ALL")),
-            new(1, "T1"),
-            new(2, "T2"),
-            new(3, "T3"),
-            new(4, "T4"),
-            new(5, "T5"),
-            new(6, "T6"),
-            new(7, "T7"),
-            new(8, "T8")
-        };
+        return
+        [
+            new(0, LocalizationController.Translation("ALL"), true, true),
+            new(1, "T1", false),
+            new(2, "T2", false),
+            new(3, "T3", false),
+            new(4, "T4", false),
+            new(5, "T5", false),
+            new(6, "T6", false),
+            new(7, "T7", false),
+            new(8, "T8", false)
+        ];
     }
 
-    private static IReadOnlyList<KeyValuePair<int, string>> BuildLevelFilters()
+    private static ObservableCollection<TradeNumericFilterOption> BuildEnchantmentFilters()
     {
-        var levelText = LocalizationController.Translation("LEVEL");
-
-        return new List<KeyValuePair<int, string>>
-        {
-            new(-1, LocalizationController.Translation("ALL")),
-            new(0, $"{levelText} 0"),
-            new(1, $"{levelText} 1"),
-            new(2, $"{levelText} 2"),
-            new(3, $"{levelText} 3"),
-            new(4, $"{levelText} 4")
-        };
+        return
+        [
+            new(-1, LocalizationController.Translation("ALL"), true, true),
+            new(0, "0", false),
+            new(1, "1", false),
+            new(2, "2", false),
+            new(3, "3", false),
+            new(4, "4", false)
+        ];
     }
 
-    private static IReadOnlyList<KeyValuePair<MarketLocation, string>> BuildLocationFilters()
+    private static HashSet<int> GetSelectedFilterValues(IEnumerable<TradeNumericFilterOption> options)
     {
-        var filters = new List<KeyValuePair<MarketLocation, string>>
+        return options
+            .Where(option => !option.IsAllOption && option.IsSelected)
+            .Select(option => option.Value)
+            .ToHashSet();
+    }
+
+    private static void RestoreFilterSelection(IReadOnlyList<TradeNumericFilterOption> options, IReadOnlySet<int> selectedValues)
+    {
+        var hasSpecificSelection = options.Any(option => !option.IsAllOption && selectedValues.Contains(option.Value));
+
+        foreach (var option in options)
         {
-            new(MarketLocation.Unknown, LocalizationController.Translation("ALL"))
+            option.IsSelected = option.IsAllOption
+                ? !hasSpecificSelection
+                : selectedValues.Contains(option.Value);
+        }
+    }
+
+    private static void SelectAllFilterOptions(IEnumerable<TradeNumericFilterOption> options)
+    {
+        foreach (var option in options)
+        {
+            option.IsSelected = option.IsAllOption;
+        }
+    }
+
+    private static void UpdateFilterSelection(
+        IReadOnlyList<TradeNumericFilterOption> options,
+        TradeNumericFilterOption selectedOption,
+        bool isSelected)
+    {
+        if (selectedOption == null || !options.Contains(selectedOption))
+        {
+            return;
+        }
+
+        selectedOption.IsSelected = isSelected;
+        var allOption = options.First(option => option.IsAllOption);
+
+        if (selectedOption.IsAllOption)
+        {
+            if (isSelected)
+            {
+                foreach (var option in options.Where(option => !option.IsAllOption))
+                {
+                    option.IsSelected = false;
+                }
+            }
+            else if (!options.Any(option => !option.IsAllOption && option.IsSelected))
+            {
+                allOption.IsSelected = true;
+            }
+
+            return;
+        }
+
+        if (isSelected)
+        {
+            allOption.IsSelected = false;
+        }
+        else if (!options.Any(option => !option.IsAllOption && option.IsSelected))
+        {
+            allOption.IsSelected = true;
+        }
+    }
+
+    private static int BuildSelectionMask(IEnumerable<TradeNumericFilterOption> options)
+    {
+        return options
+            .Where(option => !option.IsAllOption && option.IsSelected)
+            .Aggregate(0, (mask, option) => mask | (1 << option.Value));
+    }
+
+    private static ObservableCollection<TradeLocationFilterOption> BuildLocationFilters()
+    {
+        var filters = new ObservableCollection<TradeLocationFilterOption>
+        {
+            new(MarketLocation.Unknown, LocalizationController.Translation("ALL"), true, true)
         };
 
-        filters.AddRange(Locations.OnceMarketLocations.Select(location => new KeyValuePair<MarketLocation, string>(location.Key, location.Value)));
+        foreach (var location in TradeLocationStatisticsService.SupportedMarketLocations)
+        {
+            filters.Add(new TradeLocationFilterOption(location.Key, location.Value, false));
+        }
 
         return filters;
+    }
+
+    private static ObservableCollection<TradeTimeRangeFilterOption> BuildTimeRangeFilters()
+    {
+        var days = LocalizationController.Translation("DAYS");
+        var year = LocalizationController.Translation("YEAR");
+
+        return
+        [
+            new(TradeTimeRangePreset.All, LocalizationController.Translation("ALL")),
+            new(TradeTimeRangePreset.Today, LocalizationController.Translation("TODAY")),
+            new(TradeTimeRangePreset.Last7Days, $"7 {days}"),
+            new(TradeTimeRangePreset.Last30Days, $"30 {days}"),
+            new(TradeTimeRangePreset.Last90Days, $"90 {days}"),
+            new(TradeTimeRangePreset.LastYear, $"1 {year}")
+        ];
+    }
+
+    private static HashSet<MarketLocation> GetSelectedLocationFilterValues(IEnumerable<TradeLocationFilterOption> options)
+    {
+        return options
+            .Where(option => !option.IsAllOption && option.IsSelected)
+            .Select(option => option.Location)
+            .ToHashSet();
+    }
+
+    private static void RestoreLocationFilterSelection(
+        IReadOnlyList<TradeLocationFilterOption> options,
+        IReadOnlySet<MarketLocation> selectedLocations)
+    {
+        var hasSpecificSelection = options.Any(option => !option.IsAllOption && selectedLocations.Contains(option.Location));
+
+        foreach (var option in options)
+        {
+            option.IsSelected = option.IsAllOption
+                ? !hasSpecificSelection
+                : selectedLocations.Contains(option.Location);
+        }
+    }
+
+    private static void SelectAllLocationFilterOptions(IEnumerable<TradeLocationFilterOption> options)
+    {
+        foreach (var option in options)
+        {
+            option.IsSelected = option.IsAllOption;
+        }
+    }
+
+    private static void UpdateLocationFilterSelection(
+        IReadOnlyList<TradeLocationFilterOption> options,
+        TradeLocationFilterOption selectedOption,
+        bool isSelected)
+    {
+        if (selectedOption == null || !options.Contains(selectedOption))
+        {
+            return;
+        }
+
+        selectedOption.IsSelected = isSelected;
+        var allOption = options.First(option => option.IsAllOption);
+
+        if (selectedOption.IsAllOption)
+        {
+            if (isSelected)
+            {
+                foreach (var option in options.Where(option => !option.IsAllOption))
+                {
+                    option.IsSelected = false;
+                }
+            }
+            else if (!options.Any(option => !option.IsAllOption && option.IsSelected))
+            {
+                allOption.IsSelected = true;
+            }
+
+            return;
+        }
+
+        if (isSelected)
+        {
+            allOption.IsSelected = false;
+        }
+        else if (!options.Any(option => !option.IsAllOption && option.IsSelected))
+        {
+            allOption.IsSelected = true;
+        }
+    }
+
+    private void RestoreTimeRangeFilterSelection(TradeTimeRangePreset? selectedPreset)
+    {
+        foreach (var option in TimeRangeFilters)
+        {
+            option.IsSelected = selectedPreset.HasValue && option.Preset == selectedPreset.Value;
+        }
+    }
+
+    private (DateTime From, DateTime To) GetTimeRange(TradeTimeRangePreset preset)
+    {
+        var today = DateTime.Today;
+
+        return preset switch
+        {
+            TradeTimeRangePreset.All => (GetOldestTradeDate(), today.AddDays(1)),
+            TradeTimeRangePreset.Today => (today, today),
+            TradeTimeRangePreset.Last7Days => (today.AddDays(-7), today),
+            TradeTimeRangePreset.Last30Days => (today.AddDays(-30), today),
+            TradeTimeRangePreset.Last90Days => (today.AddDays(-90), today),
+            TradeTimeRangePreset.LastYear => (today.AddYears(-1), today),
+            _ => (today, today)
+        };
+    }
+
+    private DateTime GetOldestTradeDate()
+    {
+        return Trades
+            .Where(trade => trade != null && trade.Ticks > 0 && trade.Ticks <= DateTime.MaxValue.Ticks)
+            .Select(trade => new DateTime(trade.Ticks).Date)
+            .DefaultIfEmpty(new DateTime(2017, 1, 1))
+            .Min();
     }
 
     private static IReadOnlyList<KeyValuePair<TradeProfitTimeAggregation, string>> BuildProfitOverTimeAggregationFilters()
@@ -964,35 +1226,36 @@ public class TradeMonitoringBindings : BaseViewModel
         };
     }
 
-    private static bool MatchesTierFilter(Trade trade, int selectedTier)
+    private static bool MatchesTierFilter(Trade trade, int tierMask)
     {
-        if (selectedTier <= 0)
+        if (tierMask == 0)
         {
             return true;
         }
 
         var itemTier = trade.Item?.Tier ?? 0;
-        return itemTier == selectedTier;
+        return itemTier is >= 1 and <= 8 && (tierMask & (1 << itemTier)) != 0;
     }
 
-    private static bool MatchesLevelFilter(Trade trade, int selectedLevel)
+    private static bool MatchesLevelFilter(Trade trade, int enchantmentMask)
     {
-        if (selectedLevel < 0)
+        if (enchantmentMask == 0)
         {
             return true;
         }
 
-        return trade.Item?.Level == selectedLevel;
+        var itemLevel = trade.Item?.Level;
+        return itemLevel is >= 0 and <= 4 && (enchantmentMask & (1 << itemLevel.Value)) != 0;
     }
 
-    private static bool MatchesLocationFilter(Trade trade, MarketLocation selectedLocation)
+    private static bool MatchesLocationFilter(Trade trade, IReadOnlySet<MarketLocation> selectedLocations)
     {
-        if (selectedLocation == MarketLocation.Unknown)
+        if (selectedLocations.Count == 0)
         {
             return true;
         }
 
-        return trade.Location == selectedLocation;
+        return selectedLocations.Contains(trade.Location);
     }
 
     private Task<List<Trade>> GetFilteredTradeSnapshotAsync()
