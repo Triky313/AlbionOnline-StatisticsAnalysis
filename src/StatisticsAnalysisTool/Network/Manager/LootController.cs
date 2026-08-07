@@ -169,7 +169,9 @@ public class LootController : ILootController
         var lootedFromUser = _trackingController.EntityController.GetEntity(loot.LootedFromName);
         var clusterName = ClusterController.GetCurrentClusterDisplayName();
 
-        var notification = SetNotificationAsync(loot.LootedByName, loot.LootedFromName, lootedByUser?.Value?.Guild, lootedFromUser?.Value?.Guild, item, loot.Quantity);
+        var notification = SetNotificationAsync(loot.LootedByName, loot.LootedFromName,
+            lootedByUser?.Value?.Guild, lootedByUser?.Value?.Alliance,
+            lootedFromUser?.Value?.Guild, lootedFromUser?.Value?.Alliance, item, loot.Quantity);
         notification.SetClusterName(clusterName);
         await _trackingController.AddNotificationAsync(notification);
 
@@ -319,10 +321,12 @@ public class LootController : ILootController
         }
     }
 
-    private static TrackingNotification SetNotificationAsync(string lootedByName, string lootedFromName, string lootedByGuild, string lootedFromGuild, Item item, int quantity)
+    private static TrackingNotification SetNotificationAsync(string lootedByName, string lootedFromName, string lootedByGuild, string lootedByAlliance,
+        string lootedFromGuild, string lootedFromAlliance, Item item, int quantity)
     {
         return new TrackingNotification(DateTime.Now,
-            new OtherGrabbedLootNotificationFragment(lootedByName, lootedFromName, lootedByGuild, lootedFromGuild, item, quantity), item.Index);
+            new OtherGrabbedLootNotificationFragment(lootedByName, lootedFromName, lootedByGuild, lootedByAlliance,
+                lootedFromGuild, lootedFromAlliance, item, quantity), item.Index);
     }
 
     #region Loot tracking

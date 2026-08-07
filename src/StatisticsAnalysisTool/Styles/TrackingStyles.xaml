@@ -385,15 +385,15 @@
     <DataTemplate DataType="{x:Type notification:OtherGrabbedLootNotificationFragment}">
         <VirtualizingStackPanel VirtualizationMode="Recycling" Orientation="Horizontal">
             <TextBlock Text="{Binding LootedByName, IsAsync=True, StringFormat='{}{0} '}" Foreground="{StaticResource SolidColorBrush.Accent.Blue.3}"/>
-            <TextBlock Text="{Binding LootedByGuild, IsAsync=True, StringFormat='{}({0}) '}" Foreground="{StaticResource SolidColorBrush.Accent.Blue.3}"
-                       ToolTip="{Binding TranslationGuild}">
+            <TextBlock Text="{Binding LootedByAffiliations, IsAsync=True, StringFormat='{}({0}) '}" Foreground="{StaticResource SolidColorBrush.Accent.Blue.3}"
+                       ToolTip="{Binding TranslationAffiliations}">
                 <TextBlock.Style>
                     <Style TargetType="TextBlock">
                         <Style.Triggers>
-                            <DataTrigger Binding="{Binding IsLootedByGuildEmpty}" Value="false">
+                            <DataTrigger Binding="{Binding IsLootedByAffiliationsEmpty}" Value="false">
                                 <Setter Property="Visibility" Value="Visible" />
                             </DataTrigger>
-                            <DataTrigger Binding="{Binding IsLootedByGuildEmpty}" Value="true">
+                            <DataTrigger Binding="{Binding IsLootedByAffiliationsEmpty}" Value="true">
                                 <Setter Property="Visibility" Value="Collapsed" />
                                 <Setter Property="Width" Value="0" />
                             </DataTrigger>
@@ -413,15 +413,15 @@
                 <Image Source="../Resources/silver.png" Height="14" Width="14" Margin="10,-10,5,0" ToolTip="{Binding TranslationAverageEstMarketValue}" />
                 <TextBlock Text="{Binding EstimatedMarketValueDisplayString, IsAsync=True, StringFormat='{}{0}'}" Foreground="{StaticResource SolidColorBrush.Text.1}"/>
             </StackPanel>
-            <TextBlock Text="{Binding LootedFromGuild, IsAsync=True, StringFormat='{}({0}) '}" Foreground="{StaticResource SolidColorBrush.Accent.Red.3}"
-                       ToolTip="{Binding TranslationGuild}">
+            <TextBlock Text="{Binding LootedFromAffiliations, IsAsync=True, StringFormat='{}({0}) '}" Foreground="{StaticResource SolidColorBrush.Accent.Red.3}"
+                       ToolTip="{Binding TranslationAffiliations}">
                 <TextBlock.Style>
                     <Style TargetType="TextBlock">
                         <Style.Triggers>
-                            <DataTrigger Binding="{Binding IsLootedFromGuildEmpty}" Value="false">
+                            <DataTrigger Binding="{Binding IsLootedFromAffiliationsEmpty}" Value="false">
                                 <Setter Property="Visibility" Value="Visible" />
                             </DataTrigger>
-                            <DataTrigger Binding="{Binding IsLootedFromGuildEmpty}" Value="true">
+                            <DataTrigger Binding="{Binding IsLootedFromAffiliationsEmpty}" Value="true">
                                 <Setter Property="Visibility" Value="Collapsed" />
                                 <Setter Property="Width" Value="0" />
                             </DataTrigger>
