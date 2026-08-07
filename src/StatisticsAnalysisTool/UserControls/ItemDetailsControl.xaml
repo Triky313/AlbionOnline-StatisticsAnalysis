@@ -10,7 +10,7 @@
              xmlns:wpf="clr-namespace:LiveChartsCore.SkiaSharpView.WPF;assembly=LiveChartsCore.SkiaSharpView.WPF"
              d:DataContext="{d:DesignInstance Type=viewModels:ItemDetailsViewModel}"
              d:DesignHeight="700" d:DesignWidth="1000" mc:Ignorable="d">
-    <Grid Background="{StaticResource SolidColorBrush.Background.1}">
+    <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="105" />
             <RowDefinition Height="*" />
@@ -18,8 +18,7 @@
 
         <Border Grid.RowSpan="2" Style="{StaticResource ItemDetails.BorderColor.ItemLevel.Style}" DataContext="{Binding Item}" />
 
-        <Grid Grid.Row="0" Background="{StaticResource SolidColorBrush.Background.1}">
-            <Border BorderThickness="0,0,0,1" BorderBrush="{StaticResource SolidColorBrush.Background.2}" VerticalAlignment="Bottom" />
+        <Grid Grid.Row="0">
             <Image Source="{Binding Icon}" HorizontalAlignment="Left" Height="88" Margin="10,8,0,0" VerticalAlignment="Top" Width="88" />
             <StackPanel Margin="108,6,10,4">
                 <StackPanel Orientation="Horizontal" Height="24">
@@ -67,7 +66,7 @@
                     </fa5:ImageAwesome>
                 </StackPanel>
             </StackPanel>
-            <ProgressBar Margin="0,1,0,0" Height="1" Minimum="{Binding TaskProgressbarMinimum}" Maximum="{Binding TaskProgressbarMaximum}"
+            <ProgressBar Margin="0,0,0,0" Height="1" Minimum="{Binding TaskProgressbarMinimum}" Maximum="{Binding TaskProgressbarMaximum}"
                          Value="{Binding TaskProgressbarValue}" IsIndeterminate="{Binding IsTaskProgressbarIndeterminate}" VerticalAlignment="Top" />
         </Grid>
 
@@ -106,8 +105,7 @@
                         <ListView ItemsSource="{Binding MainTabBindings.ItemPrices}" Language="{Binding ItemListViewLanguage}"
                                   SnapsToDevicePixels="True" BorderThickness="0" SelectionMode="Single"
                                   Foreground="{StaticResource SolidColorBrush.Text.1}" Background="Transparent"
-                                  ScrollViewer.HorizontalScrollBarVisibility="Auto"
-                                  d:ItemsSource="{d:SampleData ItemCount=10}">
+                                  ScrollViewer.HorizontalScrollBarVisibility="Auto" d:ItemsSource="{d:SampleData ItemCount=10}">
                             <ListView.View>
                                 <GridView>
                                     <GridViewColumn CellTemplate="{StaticResource GridViewColumnCityTemplate}">
@@ -160,8 +158,7 @@
                         </ListView>
                     </Border>
 
-                    <GridSplitter Grid.Row="2" Height="6" HorizontalAlignment="Stretch" VerticalAlignment="Center"
-                                  Background="Transparent" ResizeDirection="Rows" ResizeBehavior="PreviousAndNext" />
+                    <GridSplitter Grid.Row="2" Height="6" HorizontalAlignment="Stretch" VerticalAlignment="Center" Background="Transparent" ResizeDirection="Rows" ResizeBehavior="PreviousAndNext" />
 
                     <Border Grid.Row="3" Style="{StaticResource ItemDetails.Section.Border}" Margin="0,6,0,0">
                         <Grid>

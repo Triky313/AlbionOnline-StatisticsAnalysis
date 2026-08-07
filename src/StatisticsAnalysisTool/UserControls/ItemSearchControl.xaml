@@ -7,7 +7,7 @@
              xmlns:viewModels="clr-namespace:StatisticsAnalysisTool.ViewModels"
              xmlns:userControls="clr-namespace:StatisticsAnalysisTool.UserControls"
              mc:Ignorable="d"
-             d:DesignHeight="400" d:DesignWidth="900"
+             d:DesignHeight="500" d:DesignWidth="1100"
              d:DataContext="{d:DesignInstance Type=viewModels:MainWindowViewModel}">
 
     <Grid x:Name="ItemSearchLayoutGrid" Style="{StaticResource TabItemGridStyle}" Visibility="Visible">
