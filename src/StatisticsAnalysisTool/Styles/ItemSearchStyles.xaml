@@ -6,12 +6,23 @@
                     xmlns:fa5="http://schemas.fontawesome.com/icons/">
 
     <Style x:Key="ItemSearchTextBoxStyle" BasedOn="{StaticResource {x:Type TextBox}}" TargetType="TextBox">
-        <Setter Property="HorizontalAlignment" Value="Left" />
-        <Setter Property="Height" Value="22" />
-        <Setter Property="Margin" Value="10,10,0,0" />
-        <Setter Property="TextWrapping" Value="Wrap" />
-        <Setter Property="VerticalAlignment" Value="Top" />
-        <Setter Property="Width" Value="220" />
+        <Setter Property="HorizontalAlignment" Value="Stretch" />
+        <Setter Property="Height" Value="32" />
+        <Setter Property="Margin" Value="0" />
+        <Setter Property="Padding" Value="8,0" />
+        <Setter Property="TextWrapping" Value="NoWrap" />
+        <Setter Property="VerticalContentAlignment" Value="Center" />
+        <Setter Property="Width" Value="Auto" />
+    </Style>
+
+    <Style x:Key="ItemSearch.FilterComboBox" TargetType="{x:Type ComboBox}"
+           BasedOn="{StaticResource App.FilterComboBox}">
+        <Setter Property="HorizontalAlignment" Value="Stretch" />
+        <Setter Property="MinWidth" Value="0" />
+    </Style>
+
+    <Style x:Key="ItemSearch.FilterField" TargetType="{x:Type StackPanel}">
+        <Setter Property="Margin" Value="4,0,4,6" />
     </Style>
 
     <DataTemplate x:Key="ItemSearch.GridViewColumnIconTemplate"  DataType="{x:Type models:Item}">

@@ -24,79 +24,157 @@
                 <RowDefinition Height="0" />
             </Grid.RowDefinitions>
 
-            <StackPanel Orientation="Vertical">
-                <Grid>
-                    <TextBox x:Name="TxtSearch" Text="{Binding SearchText, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                             IsEnabled="{Binding IsTxtSearchEnabled, FallbackValue=false}" Style="{StaticResource ItemSearchTextBoxStyle}" />
+            <Grid Grid.Row="0">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="*" />
+                </Grid.RowDefinitions>
 
-                    <Grid Margin="235,11,0,0" Height="20" Width="20" VerticalAlignment="Top" HorizontalAlignment="Left" IsEnabled="{Binding IsFilterResetEnabled, FallbackValue=false}">
-                        <fa5:ImageAwesome Icon="Solid_Redo" Foreground="{StaticResource SolidColorBrush.Text.1}" MouseUp="FilterReset_MouseUp" />
-                    </Grid>
-                </Grid>
-                <WrapPanel>
-                    <ComboBox ItemsSource="{Binding ItemShopCategories}" SelectedItem="{Binding SelectedItemShopCategory, Mode=TwoWay}"
-                              SelectedValuePath="Id" DisplayMemberPath="DisplayName" HorizontalAlignment="Left" Margin="10,5,5,5" VerticalAlignment="Top" Width="150" />
-                    <ComboBox ItemsSource="{Binding ItemSubCategories1}" SelectedItem="{Binding SelectedItemShopSubCategory1, Mode=TwoWay}"
-                              SelectedValuePath="Id" DisplayMemberPath="DisplayName" HorizontalAlignment="Left" Margin="5,5" VerticalAlignment="Top" Width="150" />
-                    <ComboBox ItemsSource="{Binding ItemSubCategories2}" SelectedItem="{Binding SelectedItemShopSubCategory2, Mode=TwoWay}"
-                              SelectedValuePath="Id" DisplayMemberPath="DisplayName" HorizontalAlignment="Left" Margin="5,5" VerticalAlignment="Top" Width="150" />
-                    <ComboBox ItemsSource="{Binding ItemSubCategories3}" SelectedItem="{Binding SelectedItemShopSubCategory3, Mode=TwoWay}"
-                              SelectedValuePath="Id" DisplayMemberPath="DisplayName" HorizontalAlignment="Left" Margin="5,5" VerticalAlignment="Top" Width="150" />
+                <Border Grid.Row="0" Style="{StaticResource App.FilterCard}" Margin="8">
+                    <Grid>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="Auto" />
+                            <RowDefinition Height="Auto" />
+                            <RowDefinition Height="Auto" />
+                        </Grid.RowDefinitions>
 
-                    <ComboBox ItemsSource="{Binding ItemTiers}" SelectedValue="{Binding SelectedItemTier}"
-                              SelectedValuePath="Key" DisplayMemberPath="Value" HorizontalAlignment="Left" Margin="5,5" MinWidth="70" />
-                    <ComboBox ItemsSource="{Binding ItemLevels}" SelectedValue="{Binding SelectedItemLevel}"
-                              SelectedValuePath="Key" DisplayMemberPath="Value" HorizontalAlignment="Left" Margin="5,5" MinWidth="70" />
-                </WrapPanel>
-                <StackPanel Orientation="Horizontal" IsEnabled="{Binding IsItemSearchCheckboxesEnabled}">
-                    <CheckBox Content="{Binding Translation.ShowOnlyFavorites, FallbackValue=SHOW__ONLY__FAVORITES}"
-                              IsChecked="{Binding IsShowOnlyFavoritesActive, FallbackValue=false}" HorizontalAlignment="Left" Margin="5,0,5,0" />
-                    <CheckBox Content="{Binding Translation.ShowOnlyItemsWithAlertOn, FallbackValue=SHOW_ONLY_ITEMS_WITH_ALERT_ON}"
-                              IsChecked="{Binding IsShowOnlyItemsWithAlertOnActive, FallbackValue=false}"
-                              HorizontalAlignment="Left" Margin="10,0,5,0" />
-                </StackPanel>
-            </StackPanel>
+                        <Grid Grid.Row="0">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="Auto" />
+                                <ColumnDefinition Width="*" />
+                                <ColumnDefinition Width="Auto" />
+                                <ColumnDefinition Width="Auto" />
+                            </Grid.ColumnDefinitions>
 
-            <StackPanel Grid.Row="0" Orientation="Vertical" VerticalAlignment="Top" HorizontalAlignment="Right">
-                <Grid Height="20" Width="20" Margin="0,4,10,0" HorizontalAlignment="Right" VerticalAlignment="Top"
-                      MouseEnter="OpenItemSearchInfoPopup_MouseEnter" MouseLeave="CloseItemSearchInfoPopup_MouseLeave">
-                    <fa5:ImageAwesome Icon="Solid_InfoCircle" Foreground="{StaticResource SolidColorBrush.Text.1}" />
-                </Grid>
-            </StackPanel>
-
-            <ListView Grid.Row="0" SnapsToDevicePixels="True" ItemsSource="{Binding ItemsView}" ItemContainerStyle="{StaticResource {x:Type ListViewItem}}"
-                      ScrollViewer.CanContentScroll="True" VirtualizingPanel.IsVirtualizing="True" VirtualizingPanel.VirtualizationMode="Recycling"
-                      Margin="0,145,0,0" SelectionMode="Single" SelectedItem="{Binding SelectedSearchItem, Mode=TwoWay}"
-                      PreviewMouseLeftButtonDown="ItemSearchList_PreviewMouseLeftButtonDown" d:ItemsSource="{d:SampleData ItemCount=5}">
-                <ListView.View>
-                    <GridView>
-                        <GridViewColumn x:Name="ItemIconColumn" Header="{Binding Translation.Icon, FallbackValue=ICON}" Width="75" CellTemplate="{StaticResource ItemSearch.GridViewColumnIconTemplate}"/>
-                        <GridViewColumn x:Name="ItemNameColumn" Header="{Binding Translation.Name, FallbackValue=NAME}" Width="215" CellTemplate="{StaticResource ItemSearch.GridViewColumnNameTemplate}" />
-                        <GridViewColumn x:Name="ItemFavoriteColumn" Header="{Binding Translation.Favorite, FallbackValue=FAVORITE}" Width="55" CellTemplate="{StaticResource ItemSearch.GridViewColumnFavoriteTemplate}" />
-                    </GridView>
-                </ListView.View>
-            </ListView>
-
-            <Grid Grid.Row="0" Visibility="{Binding IsItemSearchPopupVisible, FallbackValue=Collapsed}" Margin="0,145,0,0" Background="{StaticResource SolidColorBrush.Background.2}">
-                <StackPanel CanHorizontallyScroll="False" CanVerticallyScroll="True" Margin="10,0">
-                    <DockPanel Margin="0,0,0,16">
-                        <Grid Height="16" Width="16" Margin="0,3,10,0" VerticalAlignment="Top">
-                            <fa5:ImageAwesome Icon="Regular_DotCircle" Foreground="{StaticResource SolidColorBrush.Accent.Blue.3}" />
+                            <fa5:ImageAwesome Grid.Column="0" Icon="Solid_Search" Width="16" Height="16" Margin="0,0,9,0"
+                                              VerticalAlignment="Center" Foreground="{StaticResource SolidColorBrush.Text.2}" />
+                            <TextBox x:Name="TxtSearch" Grid.Column="1"
+                                     Text="{Binding SearchText, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                     IsEnabled="{Binding IsTxtSearchEnabled, FallbackValue=false}"
+                                     Style="{StaticResource ItemSearchTextBoxStyle}" />
+                            <Button Grid.Column="2" Width="32" Height="32" Margin="6,0,0,0" Padding="0"
+                                    Style="{StaticResource Style.Button.Neutral}"
+                                    IsEnabled="{Binding IsFilterResetEnabled, FallbackValue=false}"
+                                    Click="FilterReset_Click">
+                                <fa5:ImageAwesome Icon="Solid_Redo" Width="14" Height="14" IsHitTestVisible="False"
+                                                  Foreground="{StaticResource SolidColorBrush.Text.1}" />
+                            </Button>
+                            <Grid Grid.Column="3" Height="20" Width="20" Margin="10,0,0,0"
+                                  HorizontalAlignment="Right" VerticalAlignment="Center"
+                                  MouseEnter="OpenItemSearchInfoPopup_MouseEnter"
+                                  MouseLeave="CloseItemSearchInfoPopup_MouseLeave">
+                                <fa5:ImageAwesome Icon="Solid_InfoCircle" Foreground="{StaticResource SolidColorBrush.Text.1}" />
+                            </Grid>
                         </Grid>
-                        <TextBlock Text="{Binding Translation.ItemSearchDescription3, FallbackValue='Item Prices: The prices listed under the item names in the list are averages taken directly from the game and update automatically when items are viewed in-game.'}"
-                                   Foreground="{StaticResource SolidColorBrush.Text.1}"
-                                   FontSize="16" TextWrapping="Wrap" Width="auto" />
-                    </DockPanel>
-                </StackPanel>
+
+                        <UniformGrid Grid.Row="1" Columns="3" Margin="-4,10,-4,0">
+                            <StackPanel Style="{StaticResource ItemSearch.FilterField}">
+                                <TextBlock Text="{Binding Translation.ShopCategory, FallbackValue=SHOP_CATEGORY}"
+                                           Style="{StaticResource App.FilterLabel}" />
+                                <ComboBox ItemsSource="{Binding ItemShopCategories}"
+                                          SelectedItem="{Binding SelectedItemShopCategory, Mode=TwoWay}"
+                                          SelectedValuePath="Id" DisplayMemberPath="DisplayName"
+                                          Style="{StaticResource ItemSearch.FilterComboBox}" />
+                            </StackPanel>
+                            <StackPanel Style="{StaticResource ItemSearch.FilterField}">
+                                <TextBlock Text="{Binding Translation.ShopSubCategory1, FallbackValue='SUBCATEGORY 1'}"
+                                           Style="{StaticResource App.FilterLabel}" />
+                                <ComboBox ItemsSource="{Binding ItemSubCategories1}"
+                                          SelectedItem="{Binding SelectedItemShopSubCategory1, Mode=TwoWay}"
+                                          SelectedValuePath="Id" DisplayMemberPath="DisplayName"
+                                          Style="{StaticResource ItemSearch.FilterComboBox}" />
+                            </StackPanel>
+                            <StackPanel Style="{StaticResource ItemSearch.FilterField}">
+                                <TextBlock Text="{Binding Translation.ShopSubCategory2, FallbackValue='SUBCATEGORY 2'}"
+                                           Style="{StaticResource App.FilterLabel}" />
+                                <ComboBox ItemsSource="{Binding ItemSubCategories2}"
+                                          SelectedItem="{Binding SelectedItemShopSubCategory2, Mode=TwoWay}"
+                                          SelectedValuePath="Id" DisplayMemberPath="DisplayName"
+                                          Style="{StaticResource ItemSearch.FilterComboBox}" />
+                            </StackPanel>
+                            <StackPanel Style="{StaticResource ItemSearch.FilterField}">
+                                <TextBlock Text="{Binding Translation.ShopSubCategory3, FallbackValue='SUBCATEGORY 3'}"
+                                           Style="{StaticResource App.FilterLabel}" />
+                                <ComboBox ItemsSource="{Binding ItemSubCategories3}"
+                                          SelectedItem="{Binding SelectedItemShopSubCategory3, Mode=TwoWay}"
+                                          SelectedValuePath="Id" DisplayMemberPath="DisplayName"
+                                          Style="{StaticResource ItemSearch.FilterComboBox}" />
+                            </StackPanel>
+                            <StackPanel Style="{StaticResource ItemSearch.FilterField}">
+                                <TextBlock Text="{Binding Translation.Tier, FallbackValue=TIER}"
+                                           Style="{StaticResource App.FilterLabel}" />
+                                <ComboBox ItemsSource="{Binding ItemTiers}" SelectedValue="{Binding SelectedItemTier}"
+                                          SelectedValuePath="Key" DisplayMemberPath="Value"
+                                          Style="{StaticResource ItemSearch.FilterComboBox}" />
+                            </StackPanel>
+                            <StackPanel Style="{StaticResource ItemSearch.FilterField}">
+                                <TextBlock Text="{Binding Translation.Level, FallbackValue=LEVEL}"
+                                           Style="{StaticResource App.FilterLabel}" />
+                                <ComboBox ItemsSource="{Binding ItemLevels}" SelectedValue="{Binding SelectedItemLevel}"
+                                          SelectedValuePath="Key" DisplayMemberPath="Value"
+                                          Style="{StaticResource ItemSearch.FilterComboBox}" />
+                            </StackPanel>
+                        </UniformGrid>
+
+                        <Border Grid.Row="2" BorderBrush="{StaticResource SolidColorBrush.Background.4}"
+                                BorderThickness="0,1,0,0" Padding="0,8,0,0">
+                            <WrapPanel IsEnabled="{Binding IsItemSearchCheckboxesEnabled}">
+                                <CheckBox Content="{Binding Translation.ShowOnlyFavorites, FallbackValue=SHOW__ONLY__FAVORITES}"
+                                          IsChecked="{Binding IsShowOnlyFavoritesActive, FallbackValue=false}"
+                                          Margin="0,0,18,0" />
+                                <CheckBox Content="{Binding Translation.ShowOnlyItemsWithAlertOn, FallbackValue=SHOW_ONLY_ITEMS_WITH_ALERT_ON}"
+                                          IsChecked="{Binding IsShowOnlyItemsWithAlertOnActive, FallbackValue=false}"
+                                          Margin="0,0,5,0" />
+                            </WrapPanel>
+                        </Border>
+                    </Grid>
+                </Border>
+
+                <ListView Grid.Row="1" SnapsToDevicePixels="True" ItemsSource="{Binding ItemsView}"
+                          ItemContainerStyle="{StaticResource {x:Type ListViewItem}}"
+                          ScrollViewer.CanContentScroll="True" VirtualizingPanel.IsVirtualizing="True"
+                          VirtualizingPanel.VirtualizationMode="Recycling" SelectionMode="Single"
+                          SelectedItem="{Binding SelectedSearchItem, Mode=TwoWay}"
+                          PreviewMouseLeftButtonDown="ItemSearchList_PreviewMouseLeftButtonDown"
+                          d:ItemsSource="{d:SampleData ItemCount=5}">
+                    <ListView.View>
+                        <GridView>
+                            <GridViewColumn x:Name="ItemIconColumn" Header="{Binding Translation.Icon, FallbackValue=ICON}"
+                                            Width="75" CellTemplate="{StaticResource ItemSearch.GridViewColumnIconTemplate}" />
+                            <GridViewColumn x:Name="ItemNameColumn" Header="{Binding Translation.Name, FallbackValue=NAME}"
+                                            Width="215" CellTemplate="{StaticResource ItemSearch.GridViewColumnNameTemplate}" />
+                            <GridViewColumn x:Name="ItemFavoriteColumn" Header="{Binding Translation.Favorite, FallbackValue=FAVORITE}"
+                                            Width="55" CellTemplate="{StaticResource ItemSearch.GridViewColumnFavoriteTemplate}" />
+                        </GridView>
+                    </ListView.View>
+                </ListView>
+
+                <Grid Grid.Row="1" Panel.ZIndex="2"
+                      Visibility="{Binding IsItemSearchPopupVisible, FallbackValue=Collapsed}"
+                      Background="{StaticResource SolidColorBrush.Background.2}">
+                    <StackPanel CanHorizontallyScroll="False" CanVerticallyScroll="True" Margin="10,8">
+                        <DockPanel Margin="0,0,0,16">
+                            <Grid Height="16" Width="16" Margin="0,3,10,0" VerticalAlignment="Top">
+                                <fa5:ImageAwesome Icon="Regular_DotCircle"
+                                                  Foreground="{StaticResource SolidColorBrush.Accent.Blue.3}" />
+                            </Grid>
+                            <TextBlock Text="{Binding Translation.ItemSearchDescription3, FallbackValue='Item Prices: The prices listed under the item names in the list are averages taken directly from the game and update automatically when items are viewed in-game.'}"
+                                       Foreground="{StaticResource SolidColorBrush.Text.1}"
+                                       FontSize="16" TextWrapping="Wrap" />
+                        </DockPanel>
+                    </StackPanel>
+                </Grid>
             </Grid>
 
             <Border Grid.Row="1" Background="{StaticResource SolidColorBrush.Background.2}"
                     BorderBrush="{StaticResource SolidColorBrush.Background.4}" BorderThickness="0,1,0,0">
-                <userControls:ItemSearchImageCounterControl LocalImageCounter="{Binding LocalImageCounter}" ItemCounterString="{Binding ItemCounterString}" />
+                <userControls:ItemSearchImageCounterControl LocalImageCounter="{Binding LocalImageCounter}"
+                                                            ItemCounterString="{Binding ItemCounterString}" />
             </Border>
         </Grid>
 
-        <GridSplitter Grid.Column="1" HorizontalAlignment="Stretch" Background="{StaticResource SolidColorBrush.Background.2}"
+        <GridSplitter Grid.Column="1" HorizontalAlignment="Stretch"
+                      Background="{StaticResource SolidColorBrush.Background.2}"
                       ResizeDirection="Columns" ResizeBehavior="PreviousAndNext" />
 
         <userControls:ItemDetailsControl Grid.Column="2" DataContext="{Binding SelectedItemDetails}"

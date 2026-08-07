@@ -14,6 +14,10 @@ public class MainWindowTranslation
     public static string Hour => LocalizationController.Translation("HOUR");
     public static string Tier => LocalizationController.Translation("TIER");
     public static string Level => LocalizationController.Translation("LEVEL");
+    public static string ShopCategory => LocalizationController.Translation("SHOP_CATEGORY");
+    public static string ShopSubCategory1 => $"{LocalizationController.Translation("SHOP_SUB_CATEGORY")} 1";
+    public static string ShopSubCategory2 => $"{LocalizationController.Translation("SHOP_SUB_CATEGORY")} 2";
+    public static string ShopSubCategory3 => $"{LocalizationController.Translation("SHOP_SUB_CATEGORY")} 3";
     public static string Location => LocalizationController.Translation("LOCATION");
     public static string Display => LocalizationController.Translation("DISPLAY");
     public static string Metric => LocalizationController.Translation("METRIC");

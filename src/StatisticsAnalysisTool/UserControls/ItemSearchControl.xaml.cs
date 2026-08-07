@@ -175,7 +175,7 @@ public partial class ItemSearchControl
         return LogicalTreeHelper.GetParent(source);
     }
 
-    private void FilterReset_MouseUp(object sender, MouseButtonEventArgs e)
+    private void FilterReset_Click(object sender, RoutedEventArgs e)
     {
         var vm = (MainWindowViewModel) DataContext;
         vm?.ItemFilterReset();
