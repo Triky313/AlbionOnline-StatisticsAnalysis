@@ -27,7 +27,10 @@ public class TradeMonitoringBindings : BaseViewModel
     private const int ProfitByTimeOfDayHourCount = 24;
     private const int TopItemRankingLimit = 10;
     private readonly record struct TradeFilterContext(long FromTicks, long ToTicks, string SearchText, long? SearchNumber, int TierMask, int EnchantmentMask, IReadOnlySet<MarketLocation> Locations);
-    private readonly record struct TradeFilterExecutionContext(List<Trade> TradesSnapshot, TradeFilterContext FilterContext);
+    private readonly record struct TradeFilterExecutionContext(
+        List<Trade> TradesSnapshot,
+        TradeFilterContext CurrentFilterContext,
+        TradeFilterContext PreviousFilterContext);
     private readonly TradeProfitTimeSeriesService _tradeProfitTimeSeriesService = new();
     private readonly TradeProfitTimeOfDayService _tradeProfitTimeOfDayService = new();
     private readonly TradeItemRankingService _tradeItemRankingService = new();
@@ -678,7 +681,10 @@ public class TradeMonitoringBindings : BaseViewModel
             currentCancellationTokenSource = new CancellationTokenSource();
             currentCancellationToken = currentCancellationTokenSource.Token;
             _cancellationTokenSource = currentCancellationTokenSource;
-            executionContext = new TradeFilterExecutionContext(Trades.ToList(), BuildFilterContext());
+            executionContext = new TradeFilterExecutionContext(
+                Trades.ToList(),
+                BuildFilterContext(),
+                BuildPreviousPeriodFilterContext());
         });
 
         if (executionContext == null || currentCancellationTokenSource == null)
@@ -704,7 +710,14 @@ public class TradeMonitoringBindings : BaseViewModel
                 ? []
                 : await Task.Run(() => ParallelTradeFilterProcess(
                     executionContext.Value.TradesSnapshot,
-                    executionContext.Value.FilterContext,
+                    executionContext.Value.CurrentFilterContext,
+                    currentCancellationToken), CancellationToken.None);
+
+            var previousPeriodTrades = executionContext.Value.TradesSnapshot.Count <= 0
+                ? []
+                : await Task.Run(() => ParallelTradeFilterProcess(
+                    executionContext.Value.TradesSnapshot,
+                    executionContext.Value.PreviousFilterContext,
                     currentCancellationToken), CancellationToken.None);
 
             if (currentCancellationToken.IsCancellationRequested)
@@ -721,9 +734,9 @@ public class TradeMonitoringBindings : BaseViewModel
                     return;
                 }
 
-                var filterContext = executionContext.Value.FilterContext;
+                var filterContext = executionContext.Value.CurrentFilterContext;
                 TradeCollectionView.Filter = obj => Filter(obj, filterContext);
-                TradeStatsObject?.SetTradeStats(TradeCollectionView.Cast<Trade>().ToList());
+                TradeStatsObject?.SetTradeStats(filteredTrades, previousPeriodTrades);
                 CurrentTradeCounts = TradeCollectionView.Count;
             });
 
@@ -887,13 +900,29 @@ public class TradeMonitoringBindings : BaseViewModel
 
     private TradeFilterContext BuildFilterContext()
     {
+        return BuildFilterContext(DatePickerTradeFrom.Date, DatePickerTradeTo.Date);
+    }
+
+    private TradeFilterContext BuildPreviousPeriodFilterContext()
+    {
+        var currentFrom = DatePickerTradeFrom.Date;
+        var currentTo = DatePickerTradeTo.Date;
+        var periodDays = Math.Max(1, (currentTo - currentFrom).Days + 1);
+        var previousTo = currentFrom.AddDays(-1);
+        var previousFrom = currentFrom.AddDays(-periodDays);
+
+        return BuildFilterContext(previousFrom, previousTo);
+    }
+
+    private TradeFilterContext BuildFilterContext(DateTime fromDateInclusive, DateTime toDateInclusive)
+    {
         var searchText = TradesSearchText?.Trim() ?? string.Empty;
         var hasNumericSearch = long.TryParse(searchText, NumberStyles.Any, CultureInfo.CurrentCulture, out var searchNumber);
-        var toDate = DatePickerTradeTo.Date;
+        var toDate = toDateInclusive.Date;
         var toTicks = toDate == DateTime.MaxValue.Date ? DateTime.MaxValue.Ticks : toDate.AddDays(1).AddTicks(-1).Ticks;
 
         return new TradeFilterContext(
-            DatePickerTradeFrom.Date.Ticks,
+            fromDateInclusive.Date.Ticks,
             toTicks,
             searchText,
             hasNumericSearch ? searchNumber : null,

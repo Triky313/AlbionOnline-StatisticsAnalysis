@@ -11,7 +11,7 @@
              xmlns:wpf="clr-namespace:LiveChartsCore.SkiaSharpView.WPF;assembly=LiveChartsCore.SkiaSharpView.WPF"
              xmlns:primitives="clr-namespace:System.Windows.Controls.Primitives;assembly=PresentationFramework"
              mc:Ignorable="d" 
-             d:DesignHeight="1950" d:DesignWidth="800"
+             d:DesignHeight="1050" d:DesignWidth="1100"
              d:DataContext="{d:DesignInstance Type=viewModels:MainWindowViewModel}">
     <UserControl.Resources>
         <trade:TradeDataTemplateSelector x:Key="TradeDataTemplateSelector"
@@ -293,20 +293,20 @@
                         <fa5:ImageAwesome Icon="Solid_Redo" Width="14" Height="14" Foreground="{StaticResource SolidColorBrush.Text.1}" />
                     </Button>
 
-                    <fa5:ImageAwesome Width="20" Height="20" Margin="0,23,12,0"
+                    <fa5:ImageAwesome Width="20" Height="20" Margin="0,10,12,0"
                                       Visibility="{Binding TradeMonitoringBindings.FilteringIsRunningIconVisibility}"
                                       Style="{StaticResource LoadingIconStyle}" />
 
-                    <Button Height="32" MinWidth="190" Margin="0,17,8,8"
+                    <Button Height="32" MinWidth="190" Margin="0,20,8,8"
                             Content="{Binding Translation.DeleteSelectedTrades, FallbackValue=DELETE__SELECTED__TRADES}"
                             Style="{StaticResource Style.Button.Danger}"
                             IsEnabled="{Binding TradeMonitoringBindings.IsDeleteTradesButtonEnabled}"
                             Click="BtnDeleteSelectedMails_Click" />
-                    <Button Height="32" MinWidth="190" Margin="0,17,8,8"
+                    <Button Height="32" MinWidth="190" Margin="0,20,8,8"
                             Content="{Binding Translation.SelectDeselectAll, FallbackValue=SELECT__DESELECT__ALL}"
                             Style="{StaticResource Style.Button.Neutral}"
                             Click="BtnSelectSwitchAllMails_Click" />
-                    <Grid Width="20" Height="20" Margin="0,23,0,0" VerticalAlignment="Top"
+                    <Grid Width="20" Height="20" Margin="0,26,0,0" VerticalAlignment="Top"
                           MouseEnter="OpenMailMonitoringPopup_MouseEnter"
                           MouseLeave="CloseMailMonitoringPopup_MouseLeave">
                         <fa5:ImageAwesome Icon="Solid_InfoCircle" Foreground="{StaticResource SolidColorBrush.Text.1}" />
@@ -384,20 +384,12 @@
             </Grid>
         </Border>
 
-        <TabControl Grid.Row="1"
-                    Margin="0"
-                    Style="{StaticResource Dashboard.ContentTabControl}"
-                    ItemContainerStyle="{StaticResource Dashboard.ContentTabItem}">
+        <TabControl Grid.Row="1" Margin="0" Style="{StaticResource Dashboard.ContentTabControl}" ItemContainerStyle="{StaticResource Dashboard.ContentTabItem}">
             <TabItem Header="{Binding Translation.TradeOverview, FallbackValue=TRADE_OVERVIEW}">
-                <ScrollViewer Margin="8"
-                              HorizontalScrollBarVisibility="Auto"
-                              VerticalScrollBarVisibility="Auto">
+                <ScrollViewer Margin="8,8,8,0" HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Auto">
                     <StackPanel MinWidth="1025">
-                        <Border Padding="12"
-                                Style="{StaticResource Dashboard.Section}">
-                            <ContentControl ContentTemplate="{StaticResource MailStatsObjectTemplate}"
-                                            Content="{Binding TradeMonitoringBindings.TradeStatsObject}" />
-                        </Border>
+                        <ContentControl ContentTemplate="{StaticResource MailStatsObjectTemplate}"
+                                        Content="{Binding TradeMonitoringBindings.TradeStatsObject}" />
 
                         <Grid Margin="0,8,0,0">
                             <Grid.ColumnDefinitions>
@@ -923,26 +915,26 @@
 
         </TabControl>
 
-        <GridSplitter Grid.Row="2"
-                      Margin="8,0"
-                      HorizontalAlignment="Stretch"
-                      ResizeDirection="Rows"
-                      ResizeBehavior="PreviousAndNext"
-                      Background="{StaticResource SolidColorBrush.Background.4}" />
+        <GridSplitter Grid.Row="2" Margin="8,0" HorizontalAlignment="Stretch" ResizeDirection="Rows" ResizeBehavior="PreviousAndNext" Background="{StaticResource SolidColorBrush.Background.4}" />
 
-        <Border Grid.Row="3"
-                Margin="8,0,8,8"
-                Padding="0"
-                Style="{StaticResource Dashboard.Section}">
+        <Border Grid.Row="3" Margin="8,0,8,4" Padding="0" Style="{StaticResource Dashboard.Section}">
             <Grid>
                 <Grid.RowDefinitions>
-                    <RowDefinition Height="32" />
                     <RowDefinition Height="*" />
+                    <RowDefinition Height="32" />
                 </Grid.RowDefinitions>
 
-                <Border Padding="10,0"
-                        Background="{StaticResource SolidColorBrush.Background.3}"
-                        BorderBrush="{StaticResource SolidColorBrush.Background.4}"
+                <vwp:VirtualizingItemsControl Grid.Row="0"
+                                              ItemsSource="{Binding TradeMonitoringBindings.TradeCollectionView, IsAsync=True, Mode=OneWay}"
+                                              ItemTemplateSelector="{StaticResource TradeDataTemplateSelector}"
+                                              VirtualizingPanel.CacheLengthUnit="Item"
+                                              VirtualizingPanel.CacheLength="10,10"
+                                              VirtualizingPanel.ScrollUnit="Pixel"
+                                              VirtualizingPanel.VirtualizationMode="Recycling"
+                                              ScrollViewer.HorizontalScrollBarVisibility="Disabled"
+                                              ScrollViewer.VerticalScrollBarVisibility="Visible" />
+
+                <Border Grid.Row="1" Padding="10,0" Background="{StaticResource SolidColorBrush.Background.3}" BorderBrush="{StaticResource SolidColorBrush.Background.4}"
                         BorderThickness="0,0,0,1">
                     <StackPanel HorizontalAlignment="Right" Orientation="Horizontal">
                         <TextBlock Margin="0,0,8,0"
@@ -962,22 +954,12 @@
                                           Foreground="{StaticResource SolidColorBrush.Text.3}" />
                     </StackPanel>
                 </Border>
-
-                <vwp:VirtualizingItemsControl Grid.Row="1"
-                                              ItemsSource="{Binding TradeMonitoringBindings.TradeCollectionView, IsAsync=True, Mode=OneWay}"
-                                              ItemTemplateSelector="{StaticResource TradeDataTemplateSelector}"
-                                              VirtualizingPanel.CacheLengthUnit="Item"
-                                              VirtualizingPanel.CacheLength="10,10"
-                                              VirtualizingPanel.ScrollUnit="Pixel"
-                                              VirtualizingPanel.VirtualizationMode="Recycling"
-                                              ScrollViewer.HorizontalScrollBarVisibility="Disabled"
-                                              ScrollViewer.VerticalScrollBarVisibility="Visible" />
             </Grid>
         </Border>
 
-        <Grid Grid.RowSpan="4" Panel.ZIndex="10"
-              Visibility="{Binding TradeMonitoringBindings.IsTradeMonitoringPopupVisible, FallbackValue=Hidden}"
-              Margin="8" Background="{StaticResource SolidColorBrush.Background.2}">
+        <Grid Grid.Row="0" Grid.RowSpan="4" Panel.ZIndex="10"
+              Visibility="{Binding TradeMonitoringBindings.IsTradeMonitoringPopupVisible, FallbackValue=Visible}"
+              Margin="8,80,8,0" Background="{StaticResource SolidColorBrush.Background.2}">
             <StackPanel CanHorizontallyScroll="False" CanVerticallyScroll="True" Margin="10,0">
                 <DockPanel Margin="0,0,0,16">
                     <Grid Height="16" Width="16" Margin="0,3,10,0" VerticalAlignment="Top">

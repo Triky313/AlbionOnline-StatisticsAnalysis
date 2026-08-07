@@ -48206,6 +48206,71 @@
           "seg": "Reset filters"
         }
       ]
+    },
+    {
+      "tuid": "TOTAL_SALES",
+      "tuv": [
+        {
+          "lang": "de-DE",
+          "seg": "Gesamtverk\u00e4ufe"
+        },
+        {
+          "lang": "en-US",
+          "seg": "Total sales"
+        }
+      ]
+    },
+    {
+      "tuid": "TOTAL_PURCHASES",
+      "tuv": [
+        {
+          "lang": "de-DE",
+          "seg": "Gesamteink\u00e4ufe"
+        },
+        {
+          "lang": "en-US",
+          "seg": "Total purchases"
+        }
+      ]
+    },
+    {
+      "tuid": "TRADE_VOLUME",
+      "tuv": [
+        {
+          "lang": "de-DE",
+          "seg": "Handelsvolumen"
+        },
+        {
+          "lang": "en-US",
+          "seg": "Trade volume"
+        }
+      ]
+    },
+    {
+      "tuid": "TRADE_STATISTICS",
+      "tuv": [
+        {
+          "lang": "de-DE",
+          "seg": "Handelsstatistiken"
+        },
+        {
+          "lang": "en-US",
+          "seg": "Trade statistics"
+        }
+      ]
+    },
+    {
+      "tuid": "VS_PREVIOUS_PERIOD",
+      "tuv": [
+        {
+          "lang": "de-DE",
+          "seg": "Im Vergleich zum vorherigen Zeitraum"
+        },
+        {
+          "lang": "en-US",
+          "seg": "Compared with the previous period"
+        }
+      ]
     }
   ]
 }

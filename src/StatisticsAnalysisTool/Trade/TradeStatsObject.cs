@@ -2,6 +2,7 @@ using StatisticsAnalysisTool.Common;
 using StatisticsAnalysisTool.Enumerations;
 using StatisticsAnalysisTool.Localization;
 using StatisticsAnalysisTool.ViewModels;
+using StatisticsAnalysisTool.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -108,6 +109,15 @@ public class TradeStatsObject : BaseViewModel
                     _ => 0
                 };
             });
+
+        PeriodStatistics = BuildPeriodStatistics();
+        UpdateSummaryMetrics([]);
+    }
+
+    public void SetTradeStats(List<Trade> trades, List<Trade> previousPeriodTrades)
+    {
+        SetTradeStats(trades);
+        UpdateSummaryMetrics(previousPeriodTrades);
     }
 
     public void RefreshLocalization()
@@ -126,9 +136,45 @@ public class TradeStatsObject : BaseViewModel
         OnPropertyChanged(nameof(TranslationMostExpensiveSale));
         OnPropertyChanged(nameof(TranslationMostExpensivePurchase));
         OnPropertyChanged(nameof(TranslationSilver));
+        OnPropertyChanged(nameof(TranslationTotalSales));
+        OnPropertyChanged(nameof(TranslationTotalPurchases));
+        OnPropertyChanged(nameof(TranslationTradeVolume));
+        OnPropertyChanged(nameof(TranslationProfit));
+        OnPropertyChanged(nameof(TranslationTradeStatistics));
+        OnPropertyChanged(nameof(TranslationPreviousPeriod));
+        PeriodStatistics = BuildPeriodStatistics();
     }
 
+    private void UpdateSummaryMetrics(List<Trade> previousPeriodTrades)
+    {
+        var currentUtc = DateTime.UtcNow;
+        var previousSold = GetStatByType(previousPeriodTrades, currentUtc, TradeStatType.SoldTotal);
+        var previousBought = GetStatByType(previousPeriodTrades, currentUtc, TradeStatType.BoughtTotal);
+        var previousTaxes = GetStatByType(previousPeriodTrades, currentUtc, TradeStatType.TaxesTotal);
+        var previousVolume = previousSold + previousBought;
+        var previousProfit = previousSold - previousBought - previousTaxes;
+
+        TotalSalesSummary.Update(SoldTotal, SoldTotal, previousSold);
+        TotalPurchasesSummary.Update(BoughtTotal, BoughtTotal, previousBought);
+        TradeVolumeSummary.Update(SoldTotal + BoughtTotal, SoldTotal + BoughtTotal, previousVolume);
+        ProfitSummary.Update(SalesTotal, SalesTotal, previousProfit);
+    }
+
+    private IReadOnlyList<TradePeriodStatisticsEntry> BuildPeriodStatistics()
+    {
+        return
+        [
+            new(TranslationToday, SoldToday, BoughtToday, TaxesToday, SalesToday),
+            new(TranslationThisWeek, SoldThisWeek, BoughtThisWeek, TaxesThisWeek, SalesThisWeek),
+            new(TranslationLastWeek, SoldLastWeek, BoughtLastWeek, TaxesLastWeek, SalesLastWeek),
+            new(TranslationMonth, SoldMonth, BoughtMonth, TaxesMonth, SalesMonth),
+            new(TranslationLastMonth, SoldLastMonth, BoughtLastMonth, TaxesLastMonth, SalesLastMonth),
+            new(TranslationYear, SoldYear, BoughtYear, TaxesYear, SalesYear),
+            new(TranslationTotal, SoldTotal, BoughtTotal, TaxesTotal, SalesTotal, true)
+        ];
+    }
     private static long GetStatByType(IEnumerable<Trade> trades, DateTime datetime, TradeStatType type)
+
     {
         return trades.Where(trade =>
             {
@@ -547,6 +593,21 @@ public class TradeStatsObject : BaseViewModel
         }
     }
 
+    public DashboardSummaryMetric TotalSalesSummary { get; } = new();
+    public DashboardSummaryMetric TotalPurchasesSummary { get; } = new();
+    public DashboardSummaryMetric TradeVolumeSummary { get; } = new();
+    public DashboardSummaryMetric ProfitSummary { get; } = new();
+
+    public IReadOnlyList<TradePeriodStatisticsEntry> PeriodStatistics
+    {
+        get;
+        private set
+        {
+            field = value;
+            OnPropertyChanged();
+        }
+    } = [];
+
     public string TranslationSold => LocalizationController.Translation("SOLD");
     public string TranslationToday => LocalizationController.Translation("TODAY");
     public string TranslationThisWeek => LocalizationController.Translation("THIS_WEEK");
@@ -562,4 +623,10 @@ public class TradeStatsObject : BaseViewModel
     public string TranslationMostExpensivePurchase => LocalizationController.Translation("MOST_EXPENSIVE_PURCHASE");
 
     public string TranslationSilver => LocalizationController.Translation("SILVER");
+    public string TranslationTotalSales => LocalizationController.Translation("TOTAL_SALES");
+    public string TranslationTotalPurchases => LocalizationController.Translation("TOTAL_PURCHASES");
+    public string TranslationTradeVolume => LocalizationController.Translation("TRADE_VOLUME");
+    public string TranslationProfit => LocalizationController.Translation("PROFIT");
+    public string TranslationTradeStatistics => LocalizationController.Translation("TRADE_STATISTICS");
+    public string TranslationPreviousPeriod => LocalizationController.Translation("VS_PREVIOUS_PERIOD");
 }
