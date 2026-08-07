@@ -107,6 +107,13 @@
         <Setter Property="Source" Value="../Resources/silver.png"/>
     </Style>
 
+    <Style TargetType="fa5:ImageAwesome" x:Key="ListView.Grid.StackPanel.Icon.Price.RealMoney">
+        <Setter Property="Height" Value="20" />
+        <Setter Property="Width" Value="20" />
+        <Setter Property="Icon" Value="Solid_DollarSign" />
+        <Setter Property="Foreground" Value="{StaticResource SolidColorBrush.Accent.Green.3}" />
+    </Style>
+
     <Style TargetType="TextBlock" x:Key="InfoDescription.TextBlock" >
         <Setter Property="Foreground" Value="{StaticResource SolidColorBrush.Text.1}"/>
         <Setter Property="FontSize" Value="16"/>
@@ -854,7 +861,7 @@
                 </Label>
             </StackPanel>
             <StackPanel Style="{StaticResource ListView.Grid.StackPanel.Item.Icon}">
-                <Image Style="{StaticResource ListView.Grid.StackPanel.Image.Price.Silver}" />
+                <fa5:ImageAwesome Style="{StaticResource ListView.Grid.StackPanel.Icon.Price.RealMoney}" />
             </StackPanel>
         </Grid>
     </DataTemplate>
@@ -892,7 +899,7 @@
                 </Label>
             </StackPanel>
             <StackPanel Style="{StaticResource ListView.Grid.StackPanel.Item.Icon}">
-                <Image Style="{StaticResource ListView.Grid.StackPanel.Image.Price.Silver}" />
+                <fa5:ImageAwesome Style="{StaticResource ListView.Grid.StackPanel.Icon.Price.RealMoney}" />
             </StackPanel>
         </Grid>
     </DataTemplate>
@@ -930,7 +937,7 @@
                 </Label>
             </StackPanel>
             <StackPanel Style="{StaticResource ListView.Grid.StackPanel.Item.Icon}">
-                <Image Style="{StaticResource ListView.Grid.StackPanel.Image.Price.Silver}" />
+                <fa5:ImageAwesome Style="{StaticResource ListView.Grid.StackPanel.Icon.Price.RealMoney}" />
             </StackPanel>
         </Grid>
     </DataTemplate>
@@ -968,7 +975,7 @@
                 </Label>
             </StackPanel>
             <StackPanel Style="{StaticResource ListView.Grid.StackPanel.Item.Icon}">
-                <Image Style="{StaticResource ListView.Grid.StackPanel.Image.Price.Silver}" />
+                <fa5:ImageAwesome Style="{StaticResource ListView.Grid.StackPanel.Icon.Price.RealMoney}" />
             </StackPanel>
         </Grid>
     </DataTemplate>
@@ -1006,7 +1013,7 @@
                 </Label>
             </StackPanel>
             <StackPanel Style="{StaticResource ListView.Grid.StackPanel.Item.Icon}">
-                <Image Style="{StaticResource ListView.Grid.StackPanel.Image.Price.Silver}" />
+                <fa5:ImageAwesome Style="{StaticResource ListView.Grid.StackPanel.Icon.Price.RealMoney}" />
             </StackPanel>
         </Grid>
     </DataTemplate>
