@@ -28,6 +28,10 @@ public class ItemDetailsTranslation
     public static string Quality => LocalizationController.Translation("QUALITY");
     public static string History => LocalizationController.Translation("HISTORY");
     public static string Information => LocalizationController.Translation("INFORMATION");
+    public static string Stats => LocalizationController.GameTranslation("@ITEMDETAILS_BUTTON_STATS");
+    public static string Spells => LocalizationController.GameTranslation("@ITEMDETAILS_BUTTON_SPELLS");
+    public static string ActiveSpells => LocalizationController.GameTranslation("@OPTIONS_GENERIC_ACTIVE");
+    public static string PassiveSpells => LocalizationController.GameTranslation("@ITEMDETAILS_STATS_INFO_PASSIVE").Trim('(', ')');
     public static string Equipable => LocalizationController.Translation("EQUIPABLE");
     public static string Stackable => LocalizationController.Translation("STACKABLE");
     public static string ShowInMarketplace => LocalizationController.Translation("SHOW_IN_MARKET_PLACE");

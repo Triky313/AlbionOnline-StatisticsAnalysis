@@ -78,6 +78,11 @@ public class EnchantmentToEnchantmentList : JsonConverter<List<Enchantment>>
                     reader.Read();
                     enchantment.AbilityPower = reader.GetString();
                 }
+                else if (propertyName == "@itempower")
+                {
+                    reader.Read();
+                    enchantment.ItemPower = reader.GetString();
+                }
                 else if (propertyName == "@dummyitempower")
                 {
                     reader.Read();
@@ -148,6 +153,10 @@ public class EnchantmentToEnchantmentList : JsonConverter<List<Enchantment>>
                     case "@abilitypower":
                         reader.Read();
                         enchantment.AbilityPower = reader.GetString();
+                        break;
+                    case "@itempower":
+                        reader.Read();
+                        enchantment.ItemPower = reader.GetString();
                         break;
                     case "@dummyitempower":
                         reader.Read();

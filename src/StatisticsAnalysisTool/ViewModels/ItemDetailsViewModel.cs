@@ -97,6 +97,7 @@ public class ItemDetailsViewModel : BaseViewModel, IDisposable
         InitMainTabLocationFiltering();
         InitQualityFiltering();
         InitExtraItemInformation();
+        InitItemInformation();
 
         if (Application.Current.Dispatcher == null)
         {
@@ -288,6 +289,15 @@ public class ItemDetailsViewModel : BaseViewModel, IDisposable
                 ExtraItemInformation.Weight = killTrophyItem.Weight;
                 break;
         }
+    }
+
+    private void InitItemInformation()
+    {
+        ItemStats = new ObservableCollection<ItemStat>(ItemInformationService.GetStats(Item));
+
+        var spells = ItemInformationService.GetSpells(Item.FullItemInformation, Item.Level);
+        ActiveSpells = new ObservableCollection<ItemSpellInformation>(spells.ActiveSpells);
+        PassiveSpells = new ObservableCollection<ItemSpellInformation>(spells.PassiveSpells);
     }
 
     #endregion
@@ -1481,6 +1491,17 @@ public class ItemDetailsViewModel : BaseViewModel, IDisposable
             OnPropertyChanged();
         }
     }
+
+    public ObservableCollection<ItemStat> ItemStats { get; private set; } = [];
+    public ObservableCollection<ItemSpellInformation> ActiveSpells { get; private set; } = [];
+    public ObservableCollection<ItemSpellInformation> PassiveSpells { get; private set; } = [];
+
+    public Visibility ItemStatsCardVisibility => ItemStats.Count > 0 ? Visibility.Visible : Visibility.Collapsed;
+    public Visibility ItemSpellsCardVisibility => ActiveSpells.Count > 0 || PassiveSpells.Count > 0
+        ? Visibility.Visible
+        : Visibility.Collapsed;
+    public Visibility ActiveSpellsVisibility => ActiveSpells.Count > 0 ? Visibility.Visible : Visibility.Collapsed;
+    public Visibility PassiveSpellsVisibility => PassiveSpells.Count > 0 ? Visibility.Visible : Visibility.Collapsed;
 
     public ExtraItemInformation ExtraItemInformation
     {

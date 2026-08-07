@@ -534,9 +534,11 @@ public static class ItemController
         if (!IsItemsJsonLoaded())
         {
             ShopCategories = null;
+            ItemInformationService.Initialize(null);
             return false;
         }
 
+        ItemInformationService.Initialize(_itemsJson.Items);
         SetFullItemInfoToItems();
 
         SetCategories(_itemsJson);

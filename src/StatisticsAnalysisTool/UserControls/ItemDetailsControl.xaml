@@ -387,25 +387,145 @@
             </TabItem>
 
             <TabItem Header="{Binding Translation.Information, FallbackValue=INFORMATION}">
-                <ScrollViewer HorizontalScrollBarVisibility="Hidden">
-                    <Grid>
-                        <StackPanel Margin="10,10,0,10" HorizontalAlignment="Left" Width="250">
-                            <Label Content="{Binding Translation.ShopCategory, FallbackValue=SHOP_CATEGORY}" ContentStringFormat="{}{0:N2}:" Style="{StaticResource ItemDetails.Information.FullInfoValue}" />
-                            <Label Content="{Binding Translation.ShopSubCategory, FallbackValue=SHOP_SUB_CATEGORY_1}" Style="{StaticResource ItemDetails.Information.FullInfoValue}" />
-                            <Label Content="{Binding Translation.Durability, FallbackValue=DURABILITY}" Style="{StaticResource ItemDetails.Information.FullInfoValue}" />
-                            <Label Content="{Binding Translation.CanBeOvercharged, FallbackValue=CAN_BE_OVERCHARGED}" Style="{StaticResource ItemDetails.Information.FullInfoValue}" />
-                            <Label Content="{Binding Translation.ShowInMarketplace, FallbackValue=SHOW_IN_MARKETPLACE}" Style="{StaticResource ItemDetails.Information.FullInfoValue}" />
-                            <Label Content="{Binding Translation.Weight, FallbackValue=WEIGHT}" Style="{StaticResource ItemDetails.Information.FullInfoValue}" />
-                        </StackPanel>
-                        <StackPanel Margin="265,10,0,10">
-                            <Label Content="{Binding ExtraItemInformation.ShopCategory, FallbackValue=-, IsAsync=True, TargetNullValue=-}" Style="{StaticResource ItemDetails.Information.FullInfoValue}" />
-                            <Label Content="{Binding ExtraItemInformation.ShopSubCategory1, FallbackValue=-, IsAsync=True, TargetNullValue=-}" Style="{StaticResource ItemDetails.Information.FullInfoValue}" />
-                            <Label Content="{Binding ExtraItemInformation.Durability, FallbackValue=-, IsAsync=True, TargetNullValue=-}" Style="{StaticResource ItemDetails.Information.FullInfoValue}" />
-                            <Label Content="{Binding ExtraItemInformation.CanBeOvercharged, FallbackValue=-, IsAsync=True, TargetNullValue=-}" Style="{StaticResource ItemDetails.Information.FullInfoValue}" />
-                            <Label Content="{Binding ExtraItemInformation.ShowInMarketPlace, FallbackValue=-, IsAsync=True, TargetNullValue=-}" Style="{StaticResource ItemDetails.Information.FullInfoValue}" />
-                            <Label Content="{Binding ExtraItemInformation.Weight, FallbackValue=-, IsAsync=true, TargetNullValue=-}" Style="{StaticResource ItemDetails.Information.FullInfoValue}" />
-                        </StackPanel>
-                    </Grid>
+                <ScrollViewer HorizontalScrollBarVisibility="Disabled" VerticalScrollBarVisibility="Auto">
+                    <StackPanel Margin="10">
+                        <Border Style="{StaticResource ItemDetails.Information.Card}">
+                            <Grid>
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="Auto" />
+                                    <RowDefinition Height="Auto" />
+                                </Grid.RowDefinitions>
+                                <StackPanel Orientation="Horizontal">
+                                    <fa5:ImageAwesome Icon="Solid_InfoCircle"
+                                                      Width="16"
+                                                      Height="16"
+                                                      Margin="0,0,8,0"
+                                                      Foreground="{StaticResource SolidColorBrush.Accent.Blue.3}" />
+                                    <TextBlock Text="{Binding Translation.Information, FallbackValue=INFORMATION}"
+                                               Style="{StaticResource ItemDetails.Information.CardHeader}" />
+                                </StackPanel>
+                                <Grid Grid.Row="1" Margin="0,9,0,0">
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="2*" />
+                                        <ColumnDefinition Width="3*" />
+                                    </Grid.ColumnDefinitions>
+                                    <Grid.RowDefinitions>
+                                        <RowDefinition Height="29" />
+                                        <RowDefinition Height="29" />
+                                        <RowDefinition Height="29" />
+                                        <RowDefinition Height="29" />
+                                        <RowDefinition Height="29" />
+                                        <RowDefinition Height="29" />
+                                    </Grid.RowDefinitions>
+                                    <TextBlock Text="{Binding Translation.ShopCategory, FallbackValue=SHOP_CATEGORY}"
+                                               Foreground="{StaticResource SolidColorBrush.Text.3}"
+                                               VerticalAlignment="Center" />
+                                    <TextBlock Grid.Column="1"
+                                               Text="{Binding ExtraItemInformation.ShopCategory, FallbackValue=-, TargetNullValue=-}"
+                                               Foreground="{StaticResource SolidColorBrush.Text.1}"
+                                               VerticalAlignment="Center" />
+                                    <TextBlock Grid.Row="1"
+                                               Text="{Binding Translation.ShopSubCategory, FallbackValue=SHOP_SUB_CATEGORY_1}"
+                                               Foreground="{StaticResource SolidColorBrush.Text.3}"
+                                               VerticalAlignment="Center" />
+                                    <TextBlock Grid.Row="1" Grid.Column="1"
+                                               Text="{Binding ExtraItemInformation.ShopSubCategory1, FallbackValue=-, TargetNullValue=-}"
+                                               Foreground="{StaticResource SolidColorBrush.Text.1}"
+                                               VerticalAlignment="Center" />
+                                    <TextBlock Grid.Row="2"
+                                               Text="{Binding Translation.Durability, FallbackValue=DURABILITY}"
+                                               Foreground="{StaticResource SolidColorBrush.Text.3}"
+                                               VerticalAlignment="Center" />
+                                    <TextBlock Grid.Row="2" Grid.Column="1"
+                                               Text="{Binding ExtraItemInformation.Durability, FallbackValue=-, TargetNullValue=-}"
+                                               Foreground="{StaticResource SolidColorBrush.Text.1}"
+                                               VerticalAlignment="Center" />
+                                    <TextBlock Grid.Row="3"
+                                               Text="{Binding Translation.CanBeOvercharged, FallbackValue=CAN_BE_OVERCHARGED}"
+                                               Foreground="{StaticResource SolidColorBrush.Text.3}"
+                                               VerticalAlignment="Center" />
+                                    <TextBlock Grid.Row="3" Grid.Column="1"
+                                               Text="{Binding ExtraItemInformation.CanBeOvercharged, FallbackValue=-, TargetNullValue=-}"
+                                               Foreground="{StaticResource SolidColorBrush.Text.1}"
+                                               VerticalAlignment="Center" />
+                                    <TextBlock Grid.Row="4"
+                                               Text="{Binding Translation.ShowInMarketplace, FallbackValue=SHOW_IN_MARKETPLACE}"
+                                               Foreground="{StaticResource SolidColorBrush.Text.3}"
+                                               VerticalAlignment="Center" />
+                                    <TextBlock Grid.Row="4" Grid.Column="1"
+                                               Text="{Binding ExtraItemInformation.ShowInMarketPlace, FallbackValue=-, TargetNullValue=-}"
+                                               Foreground="{StaticResource SolidColorBrush.Text.1}"
+                                               VerticalAlignment="Center" />
+                                    <TextBlock Grid.Row="5"
+                                               Text="{Binding Translation.Weight, FallbackValue=WEIGHT}"
+                                               Foreground="{StaticResource SolidColorBrush.Text.3}"
+                                               VerticalAlignment="Center" />
+                                    <TextBlock Grid.Row="5" Grid.Column="1"
+                                               Text="{Binding ExtraItemInformation.Weight, FallbackValue=-, TargetNullValue=-}"
+                                               Foreground="{StaticResource SolidColorBrush.Text.1}"
+                                               VerticalAlignment="Center" />
+                                </Grid>
+                            </Grid>
+                        </Border>
+
+                        <Border Style="{StaticResource ItemDetails.Information.Card}"
+                                Visibility="{Binding ItemStatsCardVisibility}">
+                            <StackPanel>
+                                <StackPanel Orientation="Horizontal" Margin="0,0,0,5">
+                                    <fa5:ImageAwesome Icon="Solid_TachometerAlt"
+                                                      Width="16"
+                                                      Height="16"
+                                                      Margin="0,0,8,0"
+                                                      Foreground="{StaticResource SolidColorBrush.Accent.Blue.3}" />
+                                    <TextBlock Text="{Binding Translation.Stats, FallbackValue=STATS}"
+                                               Style="{StaticResource ItemDetails.Information.CardHeader}" />
+                                </StackPanel>
+                                <ItemsControl ItemsSource="{Binding ItemStats}"
+                                              ItemTemplate="{StaticResource ItemDetails.Information.StatTemplate}" />
+                            </StackPanel>
+                        </Border>
+
+                        <Border Style="{StaticResource ItemDetails.Information.Card}"
+                                Visibility="{Binding ItemSpellsCardVisibility}">
+                            <StackPanel>
+                                <StackPanel Orientation="Horizontal">
+                                    <fa5:ImageAwesome Icon="Solid_Magic"
+                                                      Width="16"
+                                                      Height="16"
+                                                      Margin="0,0,8,0"
+                                                      Foreground="{StaticResource SolidColorBrush.Accent.Blue.3}" />
+                                    <TextBlock Text="{Binding Translation.Spells, FallbackValue=SPELLS}"
+                                               Style="{StaticResource ItemDetails.Information.CardHeader}" />
+                                </StackPanel>
+
+                                <StackPanel Visibility="{Binding ActiveSpellsVisibility}">
+                                    <TextBlock Text="{Binding Translation.ActiveSpells, FallbackValue=ACTIVE}"
+                                               Style="{StaticResource ItemDetails.Information.GroupHeader}" />
+                                    <ItemsControl ItemsSource="{Binding ActiveSpells}"
+                                                  ItemTemplate="{StaticResource ItemDetails.Information.SpellTemplate}">
+                                        <ItemsControl.ItemsPanel>
+                                            <ItemsPanelTemplate>
+                                                <WrapPanel />
+                                            </ItemsPanelTemplate>
+                                        </ItemsControl.ItemsPanel>
+                                    </ItemsControl>
+                                </StackPanel>
+
+                                <StackPanel Visibility="{Binding PassiveSpellsVisibility}">
+                                    <TextBlock Text="{Binding Translation.PassiveSpells, FallbackValue=PASSIVE}"
+                                               Style="{StaticResource ItemDetails.Information.GroupHeader}" />
+                                    <ItemsControl ItemsSource="{Binding PassiveSpells}"
+                                                  ItemTemplate="{StaticResource ItemDetails.Information.SpellTemplate}">
+                                        <ItemsControl.ItemsPanel>
+                                            <ItemsPanelTemplate>
+                                                <WrapPanel />
+                                            </ItemsPanelTemplate>
+                                        </ItemsControl.ItemsPanel>
+                                    </ItemsControl>
+                                </StackPanel>
+                            </StackPanel>
+                        </Border>
+                    </StackPanel>
                 </ScrollViewer>
             </TabItem>
         </TabControl>
