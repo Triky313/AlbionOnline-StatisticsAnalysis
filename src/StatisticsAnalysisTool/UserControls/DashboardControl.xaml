@@ -22,7 +22,7 @@
         <ScrollViewer x:Name="DashboardScrollViewer" Padding="12,10,12,18" HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Auto" HorizontalContentAlignment="Stretch">
             <StackPanel MinWidth="1050" Width="{Binding ViewportWidth, ElementName=DashboardScrollViewer, Mode=OneWay}">
                 <Grid Margin="0,0,0,10">
-                    <Border Style="{StaticResource App.FilterCard}" Margin="0,0,0,8">
+                    <Border Style="{StaticResource App.TopFilterCard}" Margin="0,0,0,8">
                         <Grid>
                             <Grid.ColumnDefinitions>
                                 <ColumnDefinition Width="Auto" />
@@ -36,14 +36,14 @@
                             <Border Grid.Column="0" Style="{StaticResource App.FilterGroup}">
                                 <StackPanel>
                                     <TextBlock Text="{Binding DashboardBindings.TranslationTimeRange, FallbackValue=TIME_RANGE}" Style="{StaticResource App.FilterLabel}" />
-                                    <ComboBox Width="155" Style="{StaticResource App.FilterComboBox}" ItemsSource="{Binding DashboardChartRanges}" SelectedItem="{Binding SelectedDashboardChartRange, Mode=TwoWay}" DisplayMemberPath="Name" SelectionChanged="DashboardChartRange_SelectionChanged" />
+                                    <ComboBox Width="155" ItemsSource="{Binding DashboardChartRanges}" SelectedItem="{Binding SelectedDashboardChartRange, Mode=TwoWay}" DisplayMemberPath="Name" SelectionChanged="DashboardChartRange_SelectionChanged" />
                                 </StackPanel>
                             </Border>
 
                             <Border Grid.Column="1" Style="{StaticResource App.FilterGroup}">
                                 <StackPanel>
                                     <TextBlock Text="{Binding DashboardBindings.TranslationContent, FallbackValue=CONTENT}" Style="{StaticResource App.FilterLabel}" />
-                                    <ComboBox Width="165" Style="{StaticResource App.FilterComboBox}" ItemsSource="{Binding DashboardContentFilters}" SelectedItem="{Binding SelectedDashboardContentFilter, Mode=TwoWay}" DisplayMemberPath="Name" SelectionChanged="DashboardMetadataFilter_SelectionChanged" />
+                                    <ComboBox Width="165" ItemsSource="{Binding DashboardContentFilters}" SelectedItem="{Binding SelectedDashboardContentFilter, Mode=TwoWay}" DisplayMemberPath="Name" SelectionChanged="DashboardMetadataFilter_SelectionChanged" />
                                 </StackPanel>
                             </Border>
 
@@ -51,7 +51,6 @@
                                 <StackPanel>
                                     <TextBlock Text="{Binding DashboardBindings.TranslationSession, FallbackValue=SESSION}" Style="{StaticResource App.FilterLabel}" />
                                     <ComboBox MinWidth="220"
-                                              Style="{StaticResource App.FilterComboBox}"
                                               HorizontalContentAlignment="Stretch"
                                               ItemsSource="{Binding DashboardSessionFilters}"
                                               SelectedItem="{Binding SelectedDashboardSessionFilter, Mode=TwoWay}"
@@ -284,8 +283,7 @@
                                             <StackPanel Grid.Column="4" VerticalAlignment="Center">
                                                 <TextBlock Text="{Binding DashboardBindings.TranslationFaction, FallbackValue=FACTION}"
                                                            Style="{StaticResource App.FilterLabel}" />
-                                                <ComboBox Style="{StaticResource App.FilterComboBox}"
-                                                          ItemsSource="{Binding DashboardBindings.FactionOptions}"
+                                                <ComboBox ItemsSource="{Binding DashboardBindings.FactionOptions}"
                                                           SelectedItem="{Binding DashboardBindings.SelectedFactionOption, Mode=TwoWay}"
                                                           SelectionChanged="DashboardMetadataFilter_SelectionChanged">
                                                     <ComboBox.ItemTemplate>

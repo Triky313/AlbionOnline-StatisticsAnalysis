@@ -30,7 +30,7 @@
                     <RowDefinition Height="*" />
                 </Grid.RowDefinitions>
 
-                <Border Grid.Row="0" Style="{StaticResource App.FilterCard}" Margin="8">
+                <Border Grid.Row="0" Style="{StaticResource App.TopFilterCard}">
                     <Grid>
                         <Grid.RowDefinitions>
                             <RowDefinition Height="Auto" />

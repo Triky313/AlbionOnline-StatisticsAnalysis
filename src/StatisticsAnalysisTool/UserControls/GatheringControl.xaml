@@ -9,60 +9,59 @@
              xmlns:wpf="clr-namespace:LiveChartsCore.SkiaSharpView.WPF;assembly=LiveChartsCore.SkiaSharpView.WPF"
              xmlns:fa5="http://schemas.fontawesome.com/icons/"
              mc:Ignorable="d" 
-             d:DesignHeight="800" d:DesignWidth="800"
+             d:DesignHeight="800" d:DesignWidth="1000"
              d:DataContext="{d:DesignInstance Type=viewModels:MainWindowViewModel}">
     <Grid>
-        <StackPanel Orientation="Vertical">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="*" />
+        </Grid.RowDefinitions>
+
+        <Border Grid.Row="0" Style="{StaticResource App.TopFilterCard}">
             <Grid>
                 <StackPanel Orientation="Vertical" HorizontalAlignment="Left" MaxWidth="580">
                     <StackPanel Orientation="Horizontal">
-                        <fa5:ImageAwesome Icon="Solid_Filter" Foreground="{StaticResource SolidColorBrush.Text.1}" 
-                                          Width="20" Height="20" Margin="5,8,5,0" VerticalAlignment="Top" />
-                        <ComboBox Width="180" Height="26" Margin="0,5,5,5" HorizontalAlignment="Left" VerticalAlignment="Top"
-                                  ItemsSource="{Binding GatheringBindings.GatheringFilter}" 
+                        <fa5:ImageAwesome Icon="Solid_Filter" Foreground="{StaticResource SolidColorBrush.Text.1}" Width="20" Height="20" Margin="5,8,5,0" VerticalAlignment="Top" />
+                        <ComboBox Width="180" Margin="0,5,5,5" HorizontalAlignment="Left" VerticalAlignment="Top"
+                                  ItemsSource="{Binding GatheringBindings.GatheringFilter}"
                                   SelectedValue="{Binding GatheringBindings.SelectedGatheringFilter}"
                                   IsSynchronizedWithCurrentItem="True" SelectedValuePath="Key" DisplayMemberPath="Value" />
-                        <ComboBox Width="180" Height="26" Margin="5,5" HorizontalAlignment="Left" VerticalAlignment="Top"
-                                  ItemsSource="{Binding GatheringBindings.GatheringStatsTimeTypes}" 
-                                  SelectedValue="{Binding GatheringBindings.GatheringStatsTimeTypeSelection}" 
+                        <ComboBox Width="180" Margin="5,5" HorizontalAlignment="Left" VerticalAlignment="Top"
+                                  ItemsSource="{Binding GatheringBindings.GatheringStatsTimeTypes}"
+                                  SelectedValue="{Binding GatheringBindings.GatheringStatsTimeTypeSelection}"
                                   IsSynchronizedWithCurrentItem="True" DisplayMemberPath="Name" SelectedValuePath="GatheringStatsTimeType" />
                     </StackPanel>
                     <StackPanel Orientation="Horizontal">
-                        <fa5:ImageAwesome Icon="Solid_UserCog" Foreground="{StaticResource SolidColorBrush.Text.1}" 
-                                          Width="20" Height="20" Margin="5,5,5,5" />
-                        <CheckBox IsChecked="{Binding GatheringBindings.IsGatheringActive, FallbackValue=true}" 
-                                  Content="{Binding GatheringBindings.TranslationGatheringActive, FallbackValue=GATHERING__ACTIVE}"  
+                        <fa5:ImageAwesome Icon="Solid_UserCog" Foreground="{StaticResource SolidColorBrush.Text.1}"
+                                          Width="20" Margin="5,5,5,5" />
+                        <CheckBox IsChecked="{Binding GatheringBindings.IsGatheringActive, FallbackValue=true}"
+                                  Content="{Binding GatheringBindings.TranslationGatheringActive, FallbackValue=GATHERING__ACTIVE}"
                                   HorizontalAlignment="Left" VerticalAlignment="Center" Width="180" Margin="5,0,0,0" />
-                        <ComboBox Width="180" Height="26" Margin="5,5" HorizontalAlignment="Left" VerticalAlignment="Top"
-                                  ItemsSource="{Binding GatheringBindings.AutoDeleteStatsByDate}" 
-                                  SelectedValue="{Binding GatheringBindings.AutoDeleteStatsByDateSelection}" 
+                        <ComboBox Width="180" Margin="5,5" HorizontalAlignment="Left" VerticalAlignment="Top"
+                                  ItemsSource="{Binding GatheringBindings.AutoDeleteStatsByDate}"
+                                  SelectedValue="{Binding GatheringBindings.AutoDeleteStatsByDateSelection}"
                                   IsSynchronizedWithCurrentItem="True" DisplayMemberPath="Name" SelectedValuePath="AutoDeleteGatheringStats" />
                     </StackPanel>
                 </StackPanel>
-                <StackPanel Orientation="Vertical" Height="60" HorizontalAlignment="Right" VerticalAlignment="Top" MaxWidth="280" Margin="0,0,5,0">
-                    <StackPanel Orientation="Horizontal" MaxWidth="300" Height="30" HorizontalAlignment="Right" VerticalAlignment="Top">
-                        <Button Content="{Binding Translation.DeleteSelectedResources, FallbackValue=DELETE__SELECTED__RESOURCES}" Margin="5,0,0,0"
-                                Style="{StaticResource Style.Button.Danger}" Height="24" Width="200" MaxWidth="300" MinWidth="200" Click="BtnDeleteSelectedGathered_Click" />
-                    </StackPanel>
-                    <StackPanel Orientation="Horizontal" Height="30" HorizontalAlignment="Right" VerticalAlignment="Top">
-                        <Button Content="{Binding Translation.SelectDeselectAll, FallbackValue=SELECT__DESELECT__ALL}" Margin="5,0,0,0"
-                            Height="24" Width="200" MaxWidth="300" MinWidth="200" Click="BtnSelectSwitchAllGathered_Click" />
-                    </StackPanel>
+                <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" VerticalAlignment="Top" Margin="0,4,0,0">
+                    <Button Content="{Binding Translation.DeleteSelectedResources, FallbackValue=DELETE__SELECTED__RESOURCES}" Margin="5,0,5,0"
+                            Style="{StaticResource Style.Button.Danger}" Height="32" Width="200" MaxWidth="300" MinWidth="200" Click="BtnDeleteSelectedGathered_Click" />
+                    <Button Content="{Binding Translation.SelectDeselectAll, FallbackValue=SELECT__DESELECT__ALL}" Margin="5,0,5,0"
+                            Height="32" Width="200" MaxWidth="300" MinWidth="200" Click="BtnSelectSwitchAllGathered_Click" />
                 </StackPanel>
             </Grid>
-            <Separator Background="{StaticResource SolidColorBrush.Background.3}" Height="4" Margin="0" />
-        </StackPanel>
+        </Border>
 
-        <Grid Margin="0,42,0,0">
+        <Grid Grid.Row="1">
             <Grid.RowDefinitions>
-                <RowDefinition Height="*"/>
-                <RowDefinition Height="5"/>
-                <RowDefinition Height="{Binding GatheringBindings.GridSplitterPosition ,Mode=TwoWay, FallbackValue=*}"/>
+                <RowDefinition Height="*" />
+                <RowDefinition Height="5" />
+                <RowDefinition Height="{Binding GatheringBindings.GridSplitterPosition, Mode=TwoWay, FallbackValue=*}" />
             </Grid.RowDefinitions>
 
-            <GridSplitter Grid.Row="1" ResizeDirection="Rows" ResizeBehavior="PreviousAndNext" HorizontalAlignment="Stretch" Margin="0,0,1,1" Background="{StaticResource SolidColorBrush.Accent.Blue.4}" />
+            <GridSplitter Grid.Row="1" ResizeDirection="Rows" ResizeBehavior="PreviousAndNext" HorizontalAlignment="Stretch" Margin="12,0,13,1" Background="{StaticResource SolidColorBrush.Accent.Blue.4}" />
 
-            <Grid Row="0" Margin="0,22,0,6" Grid.RowSpan="2">
+            <Grid Grid.Row="0" Margin="12,0,12,6" Grid.RowSpan="2">
                 <ScrollViewer>
                     <Grid>
                         <StackPanel>
@@ -205,9 +204,9 @@
                 </ScrollViewer>
             </Grid>
 
-            <Grid Row="2">
+            <Grid Grid.Row="2" Margin="12,0,12,0">
                 <controls:VirtualizingItemsControl ItemsSource="{Binding GatheringBindings.GatheredCollectionView, IsAsync=True, Mode=OneWay}"
-                                                   ItemTemplate="{StaticResource GatheredItemTemplate}" 
+                                                   ItemTemplate="{StaticResource GatheredItemTemplate}"
                                                    VirtualizingPanel.CacheLengthUnit="Item"
                                                    VirtualizingPanel.CacheLength="10,10"
                                                    VirtualizingPanel.ScrollUnit="Pixel"

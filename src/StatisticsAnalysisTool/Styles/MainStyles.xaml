@@ -6,6 +6,7 @@
                     xmlns:fa5="http://schemas.fontawesome.com/icons/">
 
     <system:Double x:Key="BaseFontSize">12</system:Double>
+    <system:Double x:Key="App.ControlHeight">32</system:Double>
     <Style x:Key="App.FilterDropdownButton" TargetType="{x:Type ToggleButton}">
         <Setter Property="SnapsToDevicePixels" Value="True" />
         <Setter Property="OverridesDefaultStyle" Value="True" />
@@ -71,6 +72,10 @@
         <Setter Property="CornerRadius" Value="5" />
         <Setter Property="Padding" Value="12,10" />
         <Setter Property="SnapsToDevicePixels" Value="True" />
+    </Style>
+
+    <Style x:Key="App.TopFilterCard" TargetType="{x:Type Border}" BasedOn="{StaticResource App.FilterCard}">
+        <Setter Property="Margin" Value="12,10,12,8" />
     </Style>
 
     <Style x:Key="App.FilterGroup" TargetType="{x:Type Border}">
@@ -151,7 +156,7 @@
         <Setter Property="SnapsToDevicePixels" Value="True" />
         <Setter Property="OverridesDefaultStyle" Value="True" />
         <Setter Property="FocusVisualStyle" Value="{StaticResource ButtonFocusVisual}" />
-        <Setter Property="MinHeight" Value="18" />
+        <Setter Property="Height" Value="{StaticResource App.ControlHeight}" />
         <Setter Property="MinWidth" Value="40" />
         <Setter Property="Foreground" Value="{StaticResource SolidColorBrush.Button.Text.Normal}" />
         <Setter Property="BorderThickness" Value="1" />
@@ -236,6 +241,7 @@
     </Style>
 
     <Style TargetType="{x:Type TextBox}">
+        <Setter Property="Height" Value="{StaticResource App.ControlHeight}" />
         <Setter Property="Foreground" Value="{StaticResource SolidColorBrush.Text.1}" />
         <Setter Property="Background" Value="{StaticResource SolidColorBrush.Background.7}" />
         <Setter Property="BorderBrush" Value="{StaticResource SolidColorBrush.Text.5}" />
@@ -250,6 +256,7 @@
     </Style>
 
     <Style TargetType="{x:Type controls:DigitsTextBox}">
+        <Setter Property="Height" Value="{StaticResource App.ControlHeight}" />
         <Setter Property="Foreground" Value="{StaticResource SolidColorBrush.Text.1}" />
         <Setter Property="Background" Value="{StaticResource SolidColorBrush.Background.7}" />
         <Setter Property="BorderBrush" Value="{StaticResource SolidColorBrush.Text.5}" />
@@ -680,8 +687,9 @@
         <Setter Property="ScrollViewer.HorizontalScrollBarVisibility" Value="Auto"/>
         <Setter Property="ScrollViewer.VerticalScrollBarVisibility" Value="Auto"/>
         <Setter Property="ScrollViewer.CanContentScroll" Value="true"/>
-        <Setter Property="MinWidth" Value="120"/>
-        <Setter Property="MinHeight" Value="20"/>
+        <Setter Property="Height" Value="{StaticResource App.ControlHeight}"/>
+        <Setter Property="MinWidth" Value="150"/>
+        <Setter Property="VerticalContentAlignment" Value="Center"/>
         <Setter Property="Foreground" Value="{StaticResource SolidColorBrush.Text.1}"/>
         <Setter Property="Template">
             <Setter.Value>
@@ -758,12 +766,6 @@
         </Setter>
         <!--<Style.Triggers>
             </Style.Triggers>-->
-    </Style>
-
-    <Style x:Key="App.FilterComboBox" TargetType="{x:Type ComboBox}" BasedOn="{StaticResource {x:Type ComboBox}}">
-        <Setter Property="Height" Value="32" />
-        <Setter Property="MinWidth" Value="150" />
-        <Setter Property="VerticalContentAlignment" Value="Center" />
     </Style>
 
     <Style TargetType="{x:Type ProgressBar}">

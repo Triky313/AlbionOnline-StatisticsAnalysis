@@ -231,7 +231,7 @@
             <RowDefinition Height="5" />
             <RowDefinition Height="{Binding TradeMonitoringBindings.GridSplitterPosition, Mode=TwoWay, FallbackValue=125}" />
         </Grid.RowDefinitions>
-        <Border Grid.Row="0" Margin="8,8,8,6" Style="{StaticResource App.FilterCard}">
+        <Border Grid.Row="0" Style="{StaticResource App.TopFilterCard}">
             <Grid>
                 <Grid.RowDefinitions>
                     <RowDefinition Height="Auto" />
@@ -443,7 +443,6 @@
                                             Margin="0,10,0,10"
                                             Orientation="Horizontal">
                                     <ComboBox Width="160"
-                                              Style="{StaticResource App.FilterComboBox}"
                                               ItemsSource="{Binding TradeMonitoringBindings.ProfitOverTimeAggregationFilters}"
                                               SelectedValue="{Binding TradeMonitoringBindings.SelectedProfitOverTimeAggregation, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                               SelectedValuePath="Key"
@@ -485,7 +484,6 @@
                                             Margin="0,10,0,10"
                                             Orientation="Horizontal">
                                     <ComboBox Width="140"
-                                              Style="{StaticResource App.FilterComboBox}"
                                               ItemsSource="{Binding TradeMonitoringBindings.ProfitByTimeOfDayChartModeFilters}"
                                               SelectedValue="{Binding TradeMonitoringBindings.SelectedProfitByTimeOfDayChartMode, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                               SelectedValuePath="Key"
@@ -493,7 +491,6 @@
                                               SelectionChanged="ProfitByTimeOfDayChartMode_OnSelectionChanged" />
                                     <ComboBox Width="210"
                                               Margin="10,0,0,0"
-                                              Style="{StaticResource App.FilterComboBox}"
                                               ItemsSource="{Binding TradeMonitoringBindings.ProfitByTimeOfDayMetricFilters}"
                                               SelectedValue="{Binding TradeMonitoringBindings.SelectedProfitByTimeOfDayMetric, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                               SelectedValuePath="Key"
@@ -958,7 +955,7 @@
         </Border>
 
         <Grid Grid.Row="0" Grid.RowSpan="4" Panel.ZIndex="10"
-              Visibility="{Binding TradeMonitoringBindings.IsTradeMonitoringPopupVisible, FallbackValue=Visible}"
+              Visibility="{Binding TradeMonitoringBindings.IsTradeMonitoringPopupVisible, FallbackValue=Collapsed}"
               Margin="8,80,8,0" Background="{StaticResource SolidColorBrush.Background.2}">
             <StackPanel CanHorizontallyScroll="False" CanVerticallyScroll="True" Margin="10,0">
                 <DockPanel Margin="0,0,0,16">

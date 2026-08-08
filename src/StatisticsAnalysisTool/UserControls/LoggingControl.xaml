@@ -175,69 +175,71 @@
                         <RowDefinition Height="*" />
                     </Grid.RowDefinitions>
 
-                    <Grid Grid.Row="0" Margin="0,5,0,5">
-                        <WrapPanel Orientation="Horizontal" VerticalAlignment="Top" Margin="0,0,285,0">
-                            <TextBox Text="{Binding LoggingSearchText, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                                     Width="240" Height="32" Margin="0,0,6,0" VerticalContentAlignment="Center" />
+                    <Border Grid.Row="0" Style="{StaticResource App.TopFilterCard}">
+                        <Grid>
+                            <WrapPanel Orientation="Horizontal" VerticalAlignment="Top" Margin="0,0,285,0">
+                                <TextBox Text="{Binding LoggingSearchText, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                         Width="240" Height="32" Margin="0,0,6,0" VerticalContentAlignment="Center" />
 
-                            <StackPanel Margin="0,0,6,0">
-                                <ToggleButton x:Name="NotificationFilterButton" Style="{StaticResource App.FilterDropdownButton}"
-                                              Height="32"
-                                              Content="{Binding LoggingBindings.NotificationFilterSummary, FallbackValue='Filter: All'}" />
-                                <Popup PlacementTarget="{Binding ElementName=NotificationFilterButton}"
-                                       IsOpen="{Binding IsChecked, ElementName=NotificationFilterButton, Mode=TwoWay}"
-                                       Placement="Bottom" StaysOpen="False" AllowsTransparency="True" PopupAnimation="Fade">
-                                    <Border DataContext="{Binding PlacementTarget.DataContext, RelativeSource={RelativeSource AncestorType={x:Type Popup}}}"
-                                            Style="{StaticResource App.FilterDropdownPopup}">
-                                        <ItemsControl MinWidth="190" ItemsSource="{Binding LoggingBindings.Filters}" ItemTemplate="{StaticResource LoggingFilterObject}" />
-                                    </Border>
-                                </Popup>
+                                <StackPanel Margin="0,0,6,0">
+                                    <ToggleButton x:Name="NotificationFilterButton" Style="{StaticResource App.FilterDropdownButton}"
+                                                  Height="32"
+                                                  Content="{Binding LoggingBindings.NotificationFilterSummary, FallbackValue='Filter: All'}" />
+                                    <Popup PlacementTarget="{Binding ElementName=NotificationFilterButton}"
+                                           IsOpen="{Binding IsChecked, ElementName=NotificationFilterButton, Mode=TwoWay}"
+                                           Placement="Bottom" StaysOpen="False" AllowsTransparency="True" PopupAnimation="Fade">
+                                        <Border DataContext="{Binding PlacementTarget.DataContext, RelativeSource={RelativeSource AncestorType={x:Type Popup}}}"
+                                                Style="{StaticResource App.FilterDropdownPopup}">
+                                            <ItemsControl MinWidth="190" ItemsSource="{Binding LoggingBindings.Filters}" ItemTemplate="{StaticResource LoggingFilterObject}" />
+                                        </Border>
+                                    </Popup>
+                                </StackPanel>
+
+                                <StackPanel Margin="0,0,6,0" Orientation="Horizontal">
+                                    <ToggleButton x:Name="TrackingSettingsButton" Style="{StaticResource App.FilterDropdownButton}"
+                                                  Height="32"
+                                                  Content="{Binding LoggingBindings.TrackingSummary, FallbackValue='Tracking: All'}" />
+                                    <Popup PlacementTarget="{Binding ElementName=TrackingSettingsButton}"
+                                           IsOpen="{Binding IsChecked, ElementName=TrackingSettingsButton, Mode=TwoWay}"
+                                           Placement="Bottom" StaysOpen="False" AllowsTransparency="True" PopupAnimation="Fade">
+                                        <Border DataContext="{Binding PlacementTarget.DataContext, RelativeSource={RelativeSource AncestorType={x:Type Popup}}}"
+                                                Style="{StaticResource App.FilterDropdownPopup}">
+                                            <StackPanel MinWidth="180">
+                                                <CheckBox IsChecked="{Binding LoggingBindings.IsTrackingPartyLootOnly, FallbackValue=true}"
+                                                          Content="{Binding Translation.TrackPartyLootOnly, FallbackValue=TRACK__PARTY__LOOT__ONLY}" />
+                                                <CheckBox IsChecked="{Binding LoggingBindings.IsTrackingSilver, FallbackValue=true}"
+                                                          Content="{Binding Translation.TrackingSilver, FallbackValue=TRACKING__SILVER}" />
+                                                <CheckBox IsChecked="{Binding LoggingBindings.IsTrackingFame, FallbackValue=true}"
+                                                          Content="{Binding Translation.TrackingFame, FallbackValue=TRACKING__FAME}" />
+                                                <CheckBox IsChecked="{Binding LoggingBindings.IsTrackingMobLoot, FallbackValue=true}"
+                                                          Content="{Binding Translation.TrackingMobLoot, FallbackValue=TRACKING__MOB__LOOT}" />
+                                                <CheckBox IsChecked="{Binding LoggingBindings.IsTrackingKill, FallbackValue=true}"
+                                                          Content="{Binding Translation.ShowKills, FallbackValue=KILL__TRACKING}" />
+                                            </StackPanel>
+                                        </Border>
+                                    </Popup>
+
+                                    <Grid Height="32" Width="32" Margin="5,0,5,0" VerticalAlignment="Center">
+                                        <fa5:ImageAwesome Icon="Solid_FileCsv" ToolTip="{Binding Translation.ExportLootToFile}"
+                                                          Width="30" Height="30" Foreground="{StaticResource SolidColorBrush.Accent.Green.4}"
+                                                          MouseUp="BtnExportLootToFile_MouseUp" />
+                                    </Grid>
+                                    <Grid Height="32" Width="32" Margin="5,0,0,0" VerticalAlignment="Center">
+                                        <fa5:ImageAwesome Icon="Solid_FileCode" ToolTip="{Binding Translation.ExportLootToJsonFile}"
+                                                          Width="30" Height="30" Foreground="{StaticResource SolidColorBrush.Accent.Green.4}"
+                                                          MouseUp="BtnExportLootToJsonFile_MouseUp" />
+                                    </Grid>
+                                </StackPanel>
+                            </WrapPanel>
+
+                            <StackPanel VerticalAlignment="Center" HorizontalAlignment="Right" Orientation="Horizontal">
+                                <Button Content="{Binding Translation.ResetTrackingNotifications, FallbackValue=RESET__TRACKING__NOTIFICATIONS}"
+                                        Height="32" MaxWidth="500" MinWidth="210"
+                                        Width="Auto" VerticalAlignment="Center" Style="{StaticResource Style.Button.Danger}"
+                                        Click="BtnTrackingNotificationsReset_Click" />
                             </StackPanel>
-
-                            <StackPanel Margin="0,0,6,0" Orientation="Horizontal">
-                                <ToggleButton x:Name="TrackingSettingsButton" Style="{StaticResource App.FilterDropdownButton}"
-                                              Height="32"
-                                              Content="{Binding LoggingBindings.TrackingSummary, FallbackValue='Tracking: All'}" />
-                                <Popup PlacementTarget="{Binding ElementName=TrackingSettingsButton}"
-                                       IsOpen="{Binding IsChecked, ElementName=TrackingSettingsButton, Mode=TwoWay}"
-                                       Placement="Bottom" StaysOpen="False" AllowsTransparency="True" PopupAnimation="Fade">
-                                    <Border DataContext="{Binding PlacementTarget.DataContext, RelativeSource={RelativeSource AncestorType={x:Type Popup}}}"
-                                            Style="{StaticResource App.FilterDropdownPopup}">
-                                        <StackPanel MinWidth="180">
-                                            <CheckBox IsChecked="{Binding LoggingBindings.IsTrackingPartyLootOnly, FallbackValue=true}"
-                                                      Content="{Binding Translation.TrackPartyLootOnly, FallbackValue=TRACK__PARTY__LOOT__ONLY}" />
-                                            <CheckBox IsChecked="{Binding LoggingBindings.IsTrackingSilver, FallbackValue=true}"
-                                                      Content="{Binding Translation.TrackingSilver, FallbackValue=TRACKING__SILVER}" />
-                                            <CheckBox IsChecked="{Binding LoggingBindings.IsTrackingFame, FallbackValue=true}"
-                                                      Content="{Binding Translation.TrackingFame, FallbackValue=TRACKING__FAME}" />
-                                            <CheckBox IsChecked="{Binding LoggingBindings.IsTrackingMobLoot, FallbackValue=true}"
-                                                      Content="{Binding Translation.TrackingMobLoot, FallbackValue=TRACKING__MOB__LOOT}" />
-                                            <CheckBox IsChecked="{Binding LoggingBindings.IsTrackingKill, FallbackValue=true}"
-                                                      Content="{Binding Translation.ShowKills, FallbackValue=KILL__TRACKING}" />
-                                        </StackPanel>
-                                    </Border>
-                                </Popup>
-
-                                <Grid Height="32" Width="32" Margin="5,0,5,0" VerticalAlignment="Center">
-                                    <fa5:ImageAwesome Icon="Solid_FileCsv" ToolTip="{Binding Translation.ExportLootToFile}"
-                                                      Width="30" Height="30" Foreground="{StaticResource SolidColorBrush.Accent.Green.4}"
-                                                      MouseUp="BtnExportLootToFile_MouseUp" />
-                                </Grid>
-                                <Grid Height="32" Width="32" Margin="5,0,0,0" VerticalAlignment="Center">
-                                    <fa5:ImageAwesome Icon="Solid_FileCode" ToolTip="{Binding Translation.ExportLootToJsonFile}"
-                                                      Width="30" Height="30" Foreground="{StaticResource SolidColorBrush.Accent.Green.4}"
-                                                      MouseUp="BtnExportLootToJsonFile_MouseUp" />
-                                </Grid>
-                            </StackPanel>
-                        </WrapPanel>
-
-                        <StackPanel VerticalAlignment="Center" HorizontalAlignment="Right" Orientation="Horizontal" Margin="0,0,5,0">
-                            <Button Content="{Binding Translation.ResetTrackingNotifications, FallbackValue=RESET__TRACKING__NOTIFICATIONS}"
-                                    Height="32" MaxWidth="500" MinWidth="210"
-                                    Width="Auto" VerticalAlignment="Center" Style="{StaticResource Style.Button.Danger}"
-                                    Click="BtnTrackingNotificationsReset_Click" />
-                        </StackPanel>
-                    </Grid>
+                        </Grid>
+                    </Border>
 
                     <TabControl Grid.Row="1" Background="Transparent" BorderThickness="0">
                         <TabItem Header="{Binding LoggingBindings.Translation.Notifications, FallbackValue=NOTIFICATIONS}">

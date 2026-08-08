@@ -10,22 +10,29 @@
              d:DesignHeight="850" d:DesignWidth="800"
              d:DataContext="{d:DesignInstance Type=viewModels:MainWindowViewModel}">
     <Grid>
-        <Grid ZIndex="2">
-            <StackPanel Orientation="Vertical" Margin="10,10,0,0">
-                <TextBox HorizontalAlignment="Left" Height="25" TextWrapping="Wrap" VerticalAlignment="Top" Width="200" TextChanged="TextBoxPlayerSearch_OnTextChanged" />
-                <ProgressBar Visibility="{Binding PlayerInformationBindings.LoadBarVisibility}" IsIndeterminate="true" Margin="0,0,0,0" Height="2" Width="200" HorizontalAlignment="Left" />
-            </StackPanel>
-            <ListBox SelectionMode="Single" SelectionChanged="ListBoxUserSearch_OnSelectionChanged" 
-                     Visibility="{Binding PlayerInformationBindings.ListBoxUserSearchVisibility, FallbackValue=Collapsed}" 
-                     ItemsSource="{Binding PlayerInformationBindings.ListBoxUserSearchItems}" 
-                     SelectedValuePath="Value" DisplayMemberPath="Name" Margin="10,35,0,0" HorizontalAlignment="Left" Width="200" MinHeight="50" MaxHeight="100" VerticalAlignment="Top"  />
-            <Grid Style="{StaticResource LoadingIconGridStyle}" Margin="215,10,0,0">
-                <fa5:ImageAwesome Visibility="{Binding PlayerInformationBindings.LoadIconVisibility}" Style="{StaticResource LoadingIconStyle}" />
-            </Grid>
-        </Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="*" />
+        </Grid.RowDefinitions>
 
-        <ScrollViewer  Margin="0,60,0,20" HorizontalScrollBarVisibility="Disabled">
-            <StackPanel Margin="10,5,10,10">
+        <Border Grid.Row="0" Panel.ZIndex="2" Style="{StaticResource App.TopFilterCard}">
+            <Grid>
+                <StackPanel Orientation="Vertical">
+                    <TextBox HorizontalAlignment="Left" TextWrapping="Wrap" VerticalAlignment="Top" Width="200" TextChanged="TextBoxPlayerSearch_OnTextChanged" />
+                    <ProgressBar Visibility="{Binding PlayerInformationBindings.LoadBarVisibility}" IsIndeterminate="true" Height="2" Width="200" HorizontalAlignment="Left" />
+                </StackPanel>
+                <Grid Style="{StaticResource LoadingIconGridStyle}" Margin="205,0,0,0" VerticalAlignment="Center">
+                    <fa5:ImageAwesome Visibility="{Binding PlayerInformationBindings.LoadIconVisibility}" Style="{StaticResource LoadingIconStyle}" />
+                </Grid>
+            </Grid>
+        </Border>
+        <ListBox Grid.RowSpan="2" Panel.ZIndex="3" SelectionMode="Single" SelectionChanged="ListBoxUserSearch_OnSelectionChanged"
+                 Visibility="{Binding PlayerInformationBindings.ListBoxUserSearchVisibility, FallbackValue=Collapsed}"
+                 ItemsSource="{Binding PlayerInformationBindings.ListBoxUserSearchItems}"
+                 SelectedValuePath="Value" DisplayMemberPath="Name" Margin="24,45,0,0" HorizontalAlignment="Left" Width="200" MinHeight="50" MaxHeight="100" VerticalAlignment="Top" />
+
+        <ScrollViewer Grid.Row="1" Margin="0,0,0,20" HorizontalScrollBarVisibility="Disabled">
+            <StackPanel Margin="12,5,12,10">
 
                 <StackPanel Margin="0,0,0,20">
                     <StackPanel Orientation="Horizontal">

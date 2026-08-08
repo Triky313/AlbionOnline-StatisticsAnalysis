@@ -14,38 +14,36 @@
             <RowDefinition Height="Auto" />
             <RowDefinition Height="Auto" />
             <RowDefinition Height="Auto" />
-            <RowDefinition Height="Auto" />
-            <RowDefinition Height="Auto" />
-            <RowDefinition Height="Auto" />
             <RowDefinition Height="*" />
         </Grid.RowDefinitions>
 
-        <StackPanel Grid.Row="1" Orientation="Horizontal" HorizontalAlignment="Left" Margin="5,5,5,0">
-            <fa5:ImageAwesome Icon="Solid_UserCog" Foreground="{StaticResource SolidColorBrush.Text.1}"
-                              Width="20" Height="20" Margin="0,3,5,0" VerticalAlignment="Top" />
-            <CheckBox IsChecked="{Binding IsOpenWorldTrackingActive, FallbackValue=true}" Content="{Binding TranslationOpenWorldActive, FallbackValue=OPEN__WORLD__ACTIVE}"
-                      HorizontalAlignment="Left" VerticalAlignment="Center" Width="180" Margin="5,0,10,0" />
-        </StackPanel>
+        <Border Grid.Row="0" Style="{StaticResource App.TopFilterCard}">
+            <StackPanel>
+                <StackPanel Orientation="Horizontal" HorizontalAlignment="Left">
+                    <fa5:ImageAwesome Icon="Solid_UserCog" Foreground="{StaticResource SolidColorBrush.Text.1}"
+                                      Width="20" Height="20" Margin="0,3,5,0" VerticalAlignment="Top" />
+                    <CheckBox IsChecked="{Binding IsOpenWorldTrackingActive, FallbackValue=true}" Content="{Binding TranslationOpenWorldActive, FallbackValue=OPEN__WORLD__ACTIVE}"
+                              HorizontalAlignment="Left" VerticalAlignment="Center" Width="180" Margin="5,0,10,0" />
+                </StackPanel>
+                <StackPanel Orientation="Horizontal" HorizontalAlignment="Left" Margin="0,8,0,0">
+                    <TextBox Width="220" Margin="0,0,10,0" HorizontalAlignment="Left" VerticalAlignment="Top" Text="{Binding MobSearchText, UpdateSourceTrigger=PropertyChanged}"
+                             ToolTip="{Binding TranslationSearchMobs, FallbackValue=SEARCH__MOBS}" />
+                    <ComboBox ItemsSource="{Binding FactionFilters}" Margin="0,0,10,0"
+                              SelectedValue="{Binding SelectedFaction}" DisplayMemberPath="Name" SelectedValuePath="Faction" />
+                    <ComboBox ItemsSource="{Binding StatsTimeTypes}" Margin="0,0,10,0"
+                              SelectedValue="{Binding StatsTimeTypeSelection}" IsSynchronizedWithCurrentItem="True" DisplayMemberPath="Name" SelectedValuePath="StatsTimeType" />
+                    <ComboBox ItemsSource="{Binding AutoDeleteStats}" Margin="0,0,10,0"
+                              SelectedValue="{Binding AutoDeleteStatsSelection}" IsSynchronizedWithCurrentItem="True" DisplayMemberPath="Name" SelectedValuePath="AutoDeleteStats" />
+                    <Button Content="{Binding TranslationResetAll, FallbackValue=RESET__ALL}" MinWidth="120" Padding="5,0,5,0" Style="{StaticResource Style.Button.Danger}"
+                            HorizontalAlignment="Left" VerticalAlignment="Top" Click="BtnResetOpenWorldStats_Click" />
+                </StackPanel>
+            </StackPanel>
+        </Border>
 
-        <Separator Grid.Row="2" Background="{StaticResource SolidColorBrush.Background.3}" Height="4" Margin="0,5" />
+        <TextBlock Grid.Row="1" Margin="12,0" Text="{Binding TranslationKilledMobs, FallbackValue=KILLED__MOBS}" Foreground="{StaticResource SolidColorBrush.Accent.Blue.3}" FontSize="18" />
+        <Separator Grid.Row="2" Background="{StaticResource SolidColorBrush.Background.3}" Height="4" Margin="12,5" />
 
-        <TextBlock Grid.Row="3" Text="{Binding TranslationKilledMobs, FallbackValue=KILLED__MOBS}" Foreground="{StaticResource SolidColorBrush.Accent.Blue.3}" FontSize="18" />
-
-        <StackPanel Grid.Row="4" Orientation="Horizontal" HorizontalAlignment="Left">
-            <TextBox Width="220" Height="26" Margin="0,0,10,0" HorizontalAlignment="Left" VerticalAlignment="Top" Text="{Binding MobSearchText, UpdateSourceTrigger=PropertyChanged}"
-                     ToolTip="{Binding TranslationSearchMobs, FallbackValue=SEARCH__MOBS}" />
-            <ComboBox Width="180" Height="26" Margin="0,0,10,0" HorizontalAlignment="Left" VerticalAlignment="Top" ItemsSource="{Binding FactionFilters}"
-                      SelectedValue="{Binding SelectedFaction}" DisplayMemberPath="Name" SelectedValuePath="Faction" />
-            <ComboBox Width="180" Height="26" Margin="0,0,10,0" HorizontalAlignment="Left" VerticalAlignment="Top" ItemsSource="{Binding StatsTimeTypes}"
-                      SelectedValue="{Binding StatsTimeTypeSelection}" IsSynchronizedWithCurrentItem="True" DisplayMemberPath="Name" SelectedValuePath="StatsTimeType" />
-            <ComboBox Width="180" Height="26" Margin="0,0,10,0" HorizontalAlignment="Left" VerticalAlignment="Top" ItemsSource="{Binding AutoDeleteStats}"
-                      SelectedValue="{Binding AutoDeleteStatsSelection}" IsSynchronizedWithCurrentItem="True" DisplayMemberPath="Name" SelectedValuePath="AutoDeleteStats" />
-            <Button Content="{Binding TranslationResetAll, FallbackValue=RESET__ALL}" Height="26" MinWidth="120" Padding="5,0,5,0" Style="{StaticResource Style.Button.Danger}"
-                    HorizontalAlignment="Left" VerticalAlignment="Top" Click="BtnResetOpenWorldStats_Click" />
-        </StackPanel>
-        <Separator Grid.Row="5" Background="{StaticResource SolidColorBrush.Background.3}" Height="4" Margin="0,5" />
-
-        <ListBox Grid.Row="6" ItemsSource="{Binding MobKillStatsEntries}" BorderThickness="0" Background="Transparent"
+        <ListBox Grid.Row="3" ItemsSource="{Binding MobKillStatsEntries}" BorderThickness="0" Background="Transparent"
                  ScrollViewer.HorizontalScrollBarVisibility="Disabled" ScrollViewer.VerticalScrollBarVisibility="Auto"
                  ScrollViewer.CanContentScroll="True" VirtualizingPanel.IsVirtualizing="True" VirtualizingPanel.VirtualizationMode="Recycling">
             <ListBox.ItemsPanel>

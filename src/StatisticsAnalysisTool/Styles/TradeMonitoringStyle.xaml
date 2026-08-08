@@ -628,8 +628,7 @@
                                       DisplayMemberPath="Name"
                                       ItemsSource="{Binding DeleteTradesOlderThanSpecifiedDays}"
                                       SelectedItem="{Binding DeleteTradesOlderThanSpecifiedDaysSelection, IsAsync=true}"
-                                      SelectedValuePath="Days"
-                                      Style="{StaticResource App.FilterComboBox}" />
+                                      SelectedValuePath="Days" />
                             <CheckBox MinWidth="240"
                                       HorizontalAlignment="Left"
                                       HorizontalContentAlignment="Left"
@@ -661,8 +660,7 @@
                       DisplayMemberPath="Name"
                       ItemsSource="{Binding ManuallyTradeTypes}"
                       SelectedItem="{Binding ManuallyTradeTypeSelection, IsAsync=true}"
-                      SelectedValuePath="Type"
-                      Style="{StaticResource App.FilterComboBox}" />
+                      SelectedValuePath="Type" />
 
             <Grid Grid.Row="2">
                 <Grid.ColumnDefinitions>

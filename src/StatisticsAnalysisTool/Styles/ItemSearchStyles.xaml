@@ -7,7 +7,6 @@
 
     <Style x:Key="ItemSearchTextBoxStyle" BasedOn="{StaticResource {x:Type TextBox}}" TargetType="TextBox">
         <Setter Property="HorizontalAlignment" Value="Stretch" />
-        <Setter Property="Height" Value="32" />
         <Setter Property="Margin" Value="0" />
         <Setter Property="Padding" Value="8,0" />
         <Setter Property="TextWrapping" Value="NoWrap" />
@@ -16,7 +15,7 @@
     </Style>
 
     <Style x:Key="ItemSearch.FilterComboBox" TargetType="{x:Type ComboBox}"
-           BasedOn="{StaticResource App.FilterComboBox}">
+           BasedOn="{StaticResource {x:Type ComboBox}}">
         <Setter Property="HorizontalAlignment" Value="Stretch" />
         <Setter Property="MinWidth" Value="0" />
     </Style>

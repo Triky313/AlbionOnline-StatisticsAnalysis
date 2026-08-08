@@ -24,18 +24,16 @@
         <Setter Property="TextWrapping" Value="Wrap" />
     </Style>
 
-    <Style x:Key="Settings.ComboBox" TargetType="{x:Type ComboBox}" BasedOn="{StaticResource App.FilterComboBox}">
+    <Style x:Key="Settings.ComboBox" TargetType="{x:Type ComboBox}" BasedOn="{StaticResource {x:Type ComboBox}}">
         <Setter Property="MinWidth" Value="0" />
         <Setter Property="HorizontalAlignment" Value="Stretch" />
     </Style>
 
     <Style x:Key="Settings.TextBox" TargetType="{x:Type TextBox}" BasedOn="{StaticResource {x:Type TextBox}}">
-        <Setter Property="Height" Value="32" />
         <Setter Property="VerticalContentAlignment" Value="Center" />
     </Style>
 
     <Style x:Key="Settings.Button" TargetType="{x:Type Button}" BasedOn="{StaticResource {x:Type Button}}">
-        <Setter Property="Height" Value="32" />
         <Setter Property="MinWidth" Value="120" />
         <Setter Property="Padding" Value="10,0" />
     </Style>
