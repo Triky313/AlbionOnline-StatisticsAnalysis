@@ -134,7 +134,7 @@
     <Style TargetType="TextBlock" x:Key="Trade.Text.Tier">
         <Setter Property="Foreground" Value="{StaticResource SolidColorBrush.Text.1}" />
         <Setter Property="Margin" Value="0,0,3,0" />
-        <Setter Property="Text" Value="{Binding Item.TierLevelString, IsAsync=True, StringFormat='{}{0}', FallbackValue='T?'}" />
+        <Setter Property="Text" Value="{Binding DisplayItemTier, IsAsync=True, StringFormat='{}{0}', FallbackValue='T?'}" />
     </Style>
 
     <Style TargetType="Grid" x:Key="Crafting.Type.Colors">
@@ -461,15 +461,15 @@
                                 <ColumnDefinition Width="*" />
                             </Grid.ColumnDefinitions>
                             <Image Width="64" Height="64" VerticalAlignment="Center"
-                                   Source="{Binding MostExpensiveSaleItem.Item.Icon, IsAsync=True, Mode=OneWay}" />
+                                   Source="{Binding MostExpensiveSaleItem.DisplayItemIcon, IsAsync=True, Mode=OneWay}" />
                             <StackPanel Grid.Column="1" VerticalAlignment="Center">
                                 <TextBlock Foreground="{StaticResource SolidColorBrush.Accent.Green.3}"
                                            Text="{Binding TranslationMostExpensiveSale, FallbackValue=MOST_EXPENSIVE_SALE}" />
                                 <StackPanel Margin="0,8,0,0" Orientation="Horizontal">
                                     <TextBlock Margin="0,0,4,0" FontSize="14" Foreground="{StaticResource SolidColorBrush.Text.1}"
-                                               Text="{Binding MostExpensiveSaleItem.Item.TierLevelString, IsAsync=True, FallbackValue='T?'}" />
+                                               Text="{Binding MostExpensiveSaleItem.DisplayItemTier, IsAsync=True, FallbackValue='T?'}" />
                                     <TextBlock FontSize="14" Foreground="{StaticResource SolidColorBrush.Text.1}"
-                                               Text="{Binding MostExpensiveSaleItem.Item.LocalizedName, IsAsync=True}"
+                                               Text="{Binding MostExpensiveSaleItem.DisplayItemName, IsAsync=True}"
                                                TextTrimming="CharacterEllipsis" />
                                 </StackPanel>
                                 <StackPanel Margin="0,7,0,0" Orientation="Horizontal">
@@ -513,15 +513,15 @@
                                 <ColumnDefinition Width="*" />
                             </Grid.ColumnDefinitions>
                             <Image Width="64" Height="64" VerticalAlignment="Center"
-                                   Source="{Binding MostExpensivePurchasedItem.Item.Icon, IsAsync=True, Mode=OneWay}" />
+                                   Source="{Binding MostExpensivePurchasedItem.DisplayItemIcon, IsAsync=True, Mode=OneWay}" />
                             <StackPanel Grid.Column="1" VerticalAlignment="Center">
                                 <TextBlock Foreground="{StaticResource SolidColorBrush.Accent.Red.3}"
                                            Text="{Binding TranslationMostExpensivePurchase, FallbackValue=MOST_EXPENSIVE_PURCHASE}" />
                                 <StackPanel Margin="0,8,0,0" Orientation="Horizontal">
                                     <TextBlock Margin="0,0,4,0" FontSize="14" Foreground="{StaticResource SolidColorBrush.Text.1}"
-                                               Text="{Binding MostExpensivePurchasedItem.Item.TierLevelString, IsAsync=True, FallbackValue='T?'}" />
+                                               Text="{Binding MostExpensivePurchasedItem.DisplayItemTier, IsAsync=True, FallbackValue='T?'}" />
                                     <TextBlock FontSize="14" Foreground="{StaticResource SolidColorBrush.Text.1}"
-                                               Text="{Binding MostExpensivePurchasedItem.Item.LocalizedName, IsAsync=True}"
+                                               Text="{Binding MostExpensivePurchasedItem.DisplayItemName, IsAsync=True}"
                                                TextTrimming="CharacterEllipsis" />
                                 </StackPanel>
                                 <StackPanel Margin="0,7,0,0" Orientation="Horizontal">
@@ -1209,7 +1209,7 @@
             <Border Style="{StaticResource Container.Border}">
                 <DockPanel VerticalAlignment="Top" HorizontalAlignment="Stretch" Margin="5,0,10,0">
                     <Grid Margin="0,0, 5, 0" HorizontalAlignment="Center" VerticalAlignment="Center">
-                        <Image Source="{Binding Item.Icon, IsAsync=True, Mode=OneWay}" Style="{StaticResource Trade.Icon}" />
+                        <Image Source="{Binding DisplayItemIcon, IsAsync=True, Mode=OneWay}" Style="{StaticResource Trade.Icon}" />
                     </Grid>
                     <StackPanel Orientation="Vertical">
                         <DockPanel>
@@ -1217,7 +1217,7 @@
                                 <TextBlock Text="{Binding TypeDescription, IsAsync=True, StringFormat='{}{0}: ', FallbackValue=INSTANT_SELL}" Style="{StaticResource Instant.Text.Color.Green}" />
                                 <TextBlock Text="{Binding InstantBuySellContent.Quantity, IsAsync=True, StringFormat='{}{0}x', FallbackValue=0}" FontWeight="Bold" Margin="0,0,3,0" Foreground="{StaticResource SolidColorBrush.Text.1}" />
                                 <TextBlock Style="{StaticResource Trade.Text.Tier}" />
-                                <TextBlock Text="{Binding Item.LocalizedName, IsAsync=True}" Foreground="{StaticResource SolidColorBrush.Text.1}" />
+                                <TextBlock Text="{Binding DisplayItemName, IsAsync=True}" Foreground="{StaticResource SolidColorBrush.Text.1}" />
                             </StackPanel>
                             <TextBlock Text="{Binding Timestamp, IsAsync=True, StringFormat='{}{0}'}" TextAlignment="Right" Foreground="{StaticResource SolidColorBrush.Text.1}"/>
                         </DockPanel>
@@ -1281,7 +1281,7 @@
             <Border Style="{StaticResource Container.Border}">
                 <DockPanel VerticalAlignment="Top" HorizontalAlignment="Stretch" Margin="5,0,10,0">
                     <Grid Margin="0,0, 5, 0" HorizontalAlignment="Center" VerticalAlignment="Center">
-                        <Image Source="{Binding Item.Icon, IsAsync=True, Mode=OneWay}" Style="{StaticResource Trade.Icon}" />
+                        <Image Source="{Binding DisplayItemIcon, IsAsync=True, Mode=OneWay}" Style="{StaticResource Trade.Icon}" />
                     </Grid>
                     <StackPanel Orientation="Vertical">
                         <DockPanel>
@@ -1289,7 +1289,7 @@
                                 <TextBlock Text="{Binding TypeDescription, IsAsync=True, StringFormat='{}{0}: ', FallbackValue=INSTANT_BUY}" Style="{StaticResource Instant.Text.Color.Red}" />
                                 <TextBlock Text="{Binding InstantBuySellContent.Quantity, IsAsync=True, StringFormat='{}{0}x', FallbackValue=0}" FontWeight="Bold" Margin="0,0,3,0" Foreground="{StaticResource SolidColorBrush.Text.1}" />
                                 <TextBlock Style="{StaticResource Trade.Text.Tier}" />
-                                <TextBlock Text="{Binding Item.LocalizedName, IsAsync=True}" Foreground="{StaticResource SolidColorBrush.Text.1}" />
+                                <TextBlock Text="{Binding DisplayItemName, IsAsync=True}" Foreground="{StaticResource SolidColorBrush.Text.1}" />
                             </StackPanel>
                             <TextBlock Text="{Binding Timestamp, IsAsync=True, StringFormat='{}{0}'}" TextAlignment="Right" Foreground="{StaticResource SolidColorBrush.Text.1}"/>
                         </DockPanel>

@@ -1,4 +1,5 @@
 using StatisticsAnalysisTool.Common;
+using StatisticsAnalysisTool.Trade.Market;
 using System.Globalization;
 using System.Windows;
 using System.Windows.Media.Imaging;
@@ -19,7 +20,7 @@ public sealed class TradeItemRankingEntry
     public int TradeCount { get; init; }
     public double HighlightValue { get; init; }
     public string RankDisplay => $"{Rank}.";
-    public BitmapImage ItemIcon => Application.Current.Dispatcher.Invoke(() => ImageController.GetItemImage(ItemUniqueName, 48, 48));
+    public BitmapImage ItemIcon => Application.Current.Dispatcher.Invoke(() => ItemUniqueName == GoldMarketTrade.ItemTypeId ? ImageController.GetGoldImage() : ImageController.GetItemImage(ItemUniqueName, 48, 48));
     public string NetProfitDisplay => NetProfit.ToChartTooltipNumberString();
     public string RoiDisplay => $"{Roi.ToString("N2", CultureInfo.CurrentCulture)} %";
     public string SoldQuantityDisplay => SoldQuantity.ToString("N0", CultureInfo.CurrentCulture);

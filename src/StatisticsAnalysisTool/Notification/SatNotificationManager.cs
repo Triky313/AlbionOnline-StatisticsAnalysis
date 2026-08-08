@@ -68,7 +68,7 @@ public class SatNotificationManager
             return;
         }
 
-        await ShowNotificationAsync(trade.TradeNotificationTitleText, $"{trade.LocationName} - {trade.Item?.LocalizedName}", NotificationType.Success, 2, "SolidColorBrush.Notification.Background.Green");
+        await ShowNotificationAsync(trade.TradeNotificationTitleText, $"{trade.LocationName} - {trade.DisplayItemName}", NotificationType.Success, 2, "SolidColorBrush.Notification.Background.Green");
     }
 
     public void StopShowingNotifications()

@@ -182,6 +182,11 @@ public class MarketController(TrackingController trackingController, MainWindowV
         _tempNumberToBuyList.Clear();
     }
 
+    public async Task AddGoldBuyAsync(GoldMarketTrade goldMarketTrade)
+    {
+        await AddGoldTradeAsync(goldMarketTrade, TradeType.InstantBuy, 20);
+    }
+
     #endregion
 
     #region Sell tracking
@@ -235,7 +240,48 @@ public class MarketController(TrackingController trackingController, MainWindowV
         _tempBuyOrders.Clear();
     }
 
+    public async Task AddGoldSaleAsync(GoldMarketTrade goldMarketTrade)
+    {
+        await AddGoldTradeAsync(goldMarketTrade, TradeType.InstantSell, 10);
+    }
+
     #endregion
+
+    private async Task AddGoldTradeAsync(GoldMarketTrade goldMarketTrade, TradeType tradeType, int saveLimit)
+    {
+        if (!SettingsController.CurrentSettings.IsTradeMonitoringActive || goldMarketTrade?.IsValid != true)
+        {
+            return;
+        }
+
+        var ticks = DateTime.UtcNow.Ticks;
+        var auctionEntry = new AuctionEntry
+        {
+            Id = ticks,
+            UnitPriceSilver = goldMarketTrade.InternalUnitPrice,
+            TotalPriceSilver = goldMarketTrade.InternalTotalPrice,
+            Amount = goldMarketTrade.Quantity,
+            ItemTypeId = GoldMarketTrade.ItemTypeId
+        };
+        var trade = new Trade
+        {
+            Ticks = ticks,
+            Type = tradeType,
+            Id = ticks,
+            ClusterIndex = ClusterController.CurrentCluster.SourceClusterIndex ?? ClusterController.CurrentCluster.Index,
+            AuctionEntry = auctionEntry,
+            InstantBuySellContent = new InstantBuySellContent
+            {
+                Quantity = goldMarketTrade.Quantity,
+                InternalUnitPrice = goldMarketTrade.InternalUnitPrice
+            }
+        };
+
+        if (await trackingController.TradeController.AddTradeToBindingCollectionAsync(trade))
+        {
+            await trackingController.TradeController.SaveInFileAfterExceedingLimit(saveLimit);
+        }
+    }
 
     #region Market data
 

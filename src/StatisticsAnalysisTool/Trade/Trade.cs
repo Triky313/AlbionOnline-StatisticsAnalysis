@@ -9,6 +9,7 @@ using StatisticsAnalysisTool.Trade.Market;
 using StatisticsAnalysisTool.Trade.PlayerTrades;
 using StatisticsAnalysisTool.ViewModels;
 using System;
+using System.Windows.Media.Imaging;
 
 namespace StatisticsAnalysisTool.Trade;
 
@@ -39,6 +40,10 @@ public class Trade : BaseViewModel
     } = false;
 
     public Item Item => ItemController.GetItemByIndex(ItemIndex) ?? ItemController.GetItemByUniqueName(MailContent?.UniqueItemName) ?? ItemController.GetItemByUniqueName(AuctionEntry?.ItemTypeId);
+    public bool IsGoldMarketTrade => string.Equals(AuctionEntry?.ItemTypeId, GoldMarketTrade.ItemTypeId, StringComparison.Ordinal);
+    public string DisplayItemName => IsGoldMarketTrade ? LocalizationController.Translation("GOLD") : Item?.LocalizedName ?? string.Empty;
+    public string DisplayItemTier => IsGoldMarketTrade ? string.Empty : Item?.TierLevelString ?? string.Empty;
+    public BitmapImage DisplayItemIcon => IsGoldMarketTrade ? ImageController.GetGoldImage() : Item?.Icon;
 
     #region Mail
 

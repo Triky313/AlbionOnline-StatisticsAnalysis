@@ -134,6 +134,8 @@ public class NetworkManager
         builder.AddResponseHandler(new AuctionBuyLoadoutOfferResponseHandler(trackingController));
         builder.AddResponseHandler(new GetGuildAccountLogsResponseHandler(trackingController));
         builder.AddResponseHandler(new InviteToPlayerTradeResponseHandler(trackingController));
+        builder.AddResponseHandler(new GoldMarketBuyGoldResponseHandler(trackingController));
+        builder.AddResponseHandler(new GoldMarketSellGoldResponseHandler(trackingController));
 
         return builder.Build();
     }
