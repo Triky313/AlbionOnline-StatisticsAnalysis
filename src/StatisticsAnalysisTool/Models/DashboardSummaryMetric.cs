@@ -17,6 +17,16 @@ public sealed class DashboardSummaryMetric : BaseViewModel
         }
     }
 
+    public double ValuePerHour
+    {
+        get;
+        private set
+        {
+            field = value;
+            OnPropertyChanged();
+        }
+    }
+
     public double ChangeAmount
     {
         get;
@@ -52,6 +62,11 @@ public sealed class DashboardSummaryMetric : BaseViewModel
         OnPropertyChanged(nameof(IsDecrease));
         OnPropertyChanged(nameof(ChangeIndicator));
         OnPropertyChanged(nameof(ChangePercentageText));
+    }
+
+    public void UpdateValuePerHour(double valuePerHour)
+    {
+        ValuePerHour = valuePerHour;
     }
 
     private static double CalculateChangePercentage(double currentValue, double previousValue)

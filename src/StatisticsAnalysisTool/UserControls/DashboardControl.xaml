@@ -118,7 +118,7 @@
                                         <StackPanel Grid.Column="1">
                                             <TextBlock Text="{Binding DashboardBindings.TranslationFame, FallbackValue=FAME}" Style="{StaticResource Dashboard.SummaryTitle}" />
                                             <ContentControl Content="{Binding DashboardBindings.FameSummary}" 
-                                                            ContentTemplate="{StaticResource Dashboard.SummaryMetricTemplate}" HorizontalContentAlignment="Stretch" />
+                                                            ContentTemplate="{StaticResource Dashboard.SummaryMetricWithPerHourTemplate}" HorizontalContentAlignment="Stretch" />
                                         </StackPanel>
                                     </Grid>
                                 </Border>
@@ -132,7 +132,7 @@
                                         <Image Source="../Resources/respec.png" Style="{StaticResource Dashboard.SummaryImage}" Height="22" Width="22" />
                                         <StackPanel Grid.Column="1">
                                             <TextBlock Text="{Binding DashboardBindings.TranslationReSpec, FallbackValue=RESPEC}" Style="{StaticResource Dashboard.SummaryTitle}" />
-                                            <ContentControl Content="{Binding DashboardBindings.ReSpecSummary}" ContentTemplate="{StaticResource Dashboard.SummaryMetricTemplate}" HorizontalContentAlignment="Stretch" />
+                                            <ContentControl Content="{Binding DashboardBindings.ReSpecSummary}" ContentTemplate="{StaticResource Dashboard.SummaryMetricWithPerHourTemplate}" HorizontalContentAlignment="Stretch" />
                                         </StackPanel>
                                     </Grid>
                                 </Border>
@@ -146,7 +146,7 @@
                                         <Image Source="../Resources/silver.png" Style="{StaticResource Dashboard.SummaryImage}" Height="22" Width="22" />
                                         <StackPanel Grid.Column="1">
                                             <TextBlock Text="{Binding DashboardBindings.TranslationSilver, FallbackValue=SILVER}" Style="{StaticResource Dashboard.SummaryTitle}" />
-                                            <ContentControl Content="{Binding DashboardBindings.SilverSummary}" ContentTemplate="{StaticResource Dashboard.SummaryMetricTemplate}" HorizontalContentAlignment="Stretch" />
+                                            <ContentControl Content="{Binding DashboardBindings.SilverSummary}" ContentTemplate="{StaticResource Dashboard.SummaryMetricWithPerHourTemplate}" HorizontalContentAlignment="Stretch" />
                                         </StackPanel>
                                     </Grid>
                                 </Border>
@@ -160,7 +160,7 @@
                                         <Image Source="../Resources/might.png" Style="{StaticResource Dashboard.SummaryImage}" Margin="0,-2,5,0" Height="24" Width="24" />
                                         <StackPanel Grid.Column="1">
                                             <TextBlock Text="{Binding DashboardBindings.TranslationMight, FallbackValue=MIGHT}" Style="{StaticResource Dashboard.SummaryTitle}" />
-                                            <ContentControl Content="{Binding DashboardBindings.MightSummary}" ContentTemplate="{StaticResource Dashboard.SummaryMetricTemplate}" HorizontalContentAlignment="Stretch" />
+                                            <ContentControl Content="{Binding DashboardBindings.MightSummary}" ContentTemplate="{StaticResource Dashboard.SummaryMetricWithPerHourTemplate}" HorizontalContentAlignment="Stretch" />
                                         </StackPanel>
                                     </Grid>
                                 </Border>
@@ -174,7 +174,7 @@
                                         <Image Source="../Resources/favor.png" Style="{StaticResource Dashboard.SummaryImage}" Margin="0,-2,5,0" Height="24" Width="24" />
                                         <StackPanel Grid.Column="1">
                                             <TextBlock Text="{Binding DashboardBindings.TranslationFavor, FallbackValue=FAVOR}" Style="{StaticResource Dashboard.SummaryTitle}" />
-                                            <ContentControl Content="{Binding DashboardBindings.FavorSummary}" ContentTemplate="{StaticResource Dashboard.SummaryMetricTemplate}" HorizontalContentAlignment="Stretch" />
+                                            <ContentControl Content="{Binding DashboardBindings.FavorSummary}" ContentTemplate="{StaticResource Dashboard.SummaryMetricWithPerHourTemplate}" HorizontalContentAlignment="Stretch" />
                                         </StackPanel>
                                     </Grid>
                                 </Border>
@@ -254,7 +254,7 @@
                                                         <TextBlock Text="{Binding DashboardBindings.TranslationFactionPoints, FallbackValue=FACTION_POINTS}"
                                                                    Style="{StaticResource Dashboard.SummaryTitle}" />
                                                         <ContentControl Content="{Binding DashboardBindings.FactionPointsSummary}"
-                                                                        ContentTemplate="{StaticResource Dashboard.SummaryMetricTemplate}"
+                                                                        ContentTemplate="{StaticResource Dashboard.SummaryMetricWithPerHourTemplate}"
                                                                         HorizontalContentAlignment="Stretch" />
                                                     </StackPanel>
                                                 </Grid>
@@ -274,7 +274,7 @@
                                                         <TextBlock Text="{Binding DashboardBindings.TranslationFactionStanding, FallbackValue=FACTION_STANDING}"
                                                                    Style="{StaticResource Dashboard.SummaryTitle}" />
                                                         <ContentControl Content="{Binding DashboardBindings.FactionStandingSummary}"
-                                                                        ContentTemplate="{StaticResource Dashboard.SummaryMetricTemplate}"
+                                                                        ContentTemplate="{StaticResource Dashboard.SummaryMetricWithPerHourTemplate}"
                                                                         HorizontalContentAlignment="Stretch" />
                                                     </StackPanel>
                                                 </Grid>

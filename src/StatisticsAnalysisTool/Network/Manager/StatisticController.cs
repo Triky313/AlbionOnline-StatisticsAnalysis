@@ -765,6 +765,7 @@ public class StatisticController
             selectedRange,
             currentRangeBucketStarts,
             previousRangeBucketStarts);
+        UpdateDashboardSummaryValuesPerHour(GetRangeHours(selectedRange));
 
         _mainWindowViewModel.DashboardBindings.SummaryComparisonText = selectedRange.Unit switch
         {
@@ -1301,6 +1302,27 @@ public class StatisticController
             currentRangeSeconds,
             currentRangeSeconds,
             previousRangeSeconds);
+    }
+
+    private void UpdateDashboardSummaryValuesPerHour(double rangeHours)
+    {
+        var bindings = _mainWindowViewModel.DashboardBindings;
+
+        UpdateValuePerHour(bindings.FameSummary, rangeHours);
+        UpdateValuePerHour(bindings.ReSpecSummary, rangeHours);
+        UpdateValuePerHour(bindings.SilverSummary, rangeHours);
+        UpdateValuePerHour(bindings.MightSummary, rangeHours);
+        UpdateValuePerHour(bindings.FavorSummary, rangeHours);
+        UpdateValuePerHour(bindings.FactionPointsSummary, rangeHours);
+        UpdateValuePerHour(bindings.FactionStandingSummary, rangeHours);
+    }
+
+    private static void UpdateValuePerHour(DashboardSummaryMetric metric, double rangeHours)
+    {
+        var valuePerHour = rangeHours > 0
+            ? metric.Value / rangeHours
+            : 0;
+        metric.UpdateValuePerHour(valuePerHour);
     }
 
     private static double SumSessionDurationSeconds(

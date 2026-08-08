@@ -108,10 +108,7 @@ public partial class App
             try
             {
                 Log.Fatal(ex, "An unexpected fatal error has occurred.");
-                MessageBox.Show("An unexpected error has occurred.",
-                    "Statistics Analysis Tool",
-                    MessageBoxButton.OK,
-                    MessageBoxImage.Error);
+                MessageBox.Show("An unexpected error has occurred.", "Statistics Analysis Tool", MessageBoxButton.OK, MessageBoxImage.Error);
             }
             finally
             {
