@@ -291,11 +291,9 @@ public static class ApiController
 
         var url = $"{GetServerBaseUrlByCurrentServer()}/api/gameinfo/players/{userid}/topkills?range={unitOfTimeString}&offset=0";
 
-        using var clientHandler = new HttpClientHandler
-        {
-            SslProtocols = System.Security.Authentication.SslProtocols.Tls13 | System.Security.Authentication.SslProtocols.Tls12,
-            ServerCertificateCustomValidationCallback = (_, _, _, _) => true
-        };
+        using var clientHandler = new HttpClientHandler();
+        clientHandler.SslProtocols = System.Security.Authentication.SslProtocols.Tls13 | System.Security.Authentication.SslProtocols.Tls12;
+        clientHandler.ServerCertificateCustomValidationCallback = (_, _, _, _) => true;
 
         using var client = new HttpClient(clientHandler)
         {

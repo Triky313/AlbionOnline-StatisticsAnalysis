@@ -14,7 +14,7 @@
         <Grid.RowDefinitions>
             <RowDefinition Height="*"/>
             <RowDefinition Height="5"/>
-            <RowDefinition Height="{Binding VaultBindings.GridSplitterPosition ,Mode=TwoWay, FallbackValue=*}"/>
+            <RowDefinition Height="{Binding VaultBindings.GridSplitterPosition, Mode=TwoWay, FallbackValue=125}" MinHeight="120"/>
         </Grid.RowDefinitions>
 
         <Grid Grid.Row="0" Margin="0,0,0,6">
@@ -95,12 +95,20 @@
         <GridSplitter Grid.Row="1" ResizeDirection="Rows" ResizeBehavior="PreviousAndNext" HorizontalAlignment="Stretch" Margin="0,0,1,1" Background="{StaticResource SolidColorBrush.Accent.Blue.4}" />
 
         <Grid Grid.Row="2">
-            <StackPanel Orientation="Horizontal" Height="40" HorizontalAlignment="Left" VerticalAlignment="Top">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="4" />
+                <RowDefinition Height="*" />
+            </Grid.RowDefinitions>
+
+            <StackPanel Grid.Row="0" Orientation="Horizontal" Margin="0,0,0,6" HorizontalAlignment="Left">
                 <fa5:ImageAwesome Icon="Solid_Filter" Foreground="{StaticResource SolidColorBrush.Text.1}" Width="20" Height="20" Margin="0,0,5,0" />
                 <TextBox Text="{Binding VaultBindings.SearchText, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Width="200" HorizontalAlignment="Left" />
             </StackPanel>
-            <Separator Background="{StaticResource SolidColorBrush.Background.2}" Height="4" Margin="0,38,0,0" VerticalAlignment="Top"/>
-            <vwp:VirtualizingItemsControl Margin="0,40,0,0" ItemsSource="{Binding VaultBindings.VaultSearchCollectionView, IsAsync=True, Mode=OneWay}" 
+            <Separator Grid.Row="1" Height="4" Background="{StaticResource SolidColorBrush.Background.2}" />
+            <vwp:VirtualizingItemsControl Grid.Row="2"
+                                          Margin="0,8,0,0"
+                                          ItemsSource="{Binding VaultBindings.VaultSearchCollectionView, IsAsync=True, Mode=OneWay}"
                                           ItemTemplate="{StaticResource VaultSearchItemTemplate}" 
                                           VirtualizingPanel.CacheLengthUnit="Item"
                                           VirtualizingPanel.CacheLength="10,10"
