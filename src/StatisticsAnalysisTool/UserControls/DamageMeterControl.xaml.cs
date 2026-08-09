@@ -135,13 +135,13 @@ public partial class DamageMeterControl
 
     #region Ui events
 
-    private void DamageMeterModeActiveToggle_MouseUp(object sender, MouseButtonEventArgs e)
+    private void DamageMeterActivationToggle_Click(object sender, RoutedEventArgs e)
     {
         var mainWindowViewModel = ServiceLocator.Resolve<MainWindowViewModel>();
         mainWindowViewModel.IsDamageMeterTrackingActive = !mainWindowViewModel.IsDamageMeterTrackingActive;
     }
 
-    private void BtnDamageMeterReset_Click(object sender, RoutedEventArgs e)
+    private void ResetDamageMeter_Click(object sender, RoutedEventArgs e)
     {
         ResetDamageMeter();
     }
@@ -158,34 +158,34 @@ public partial class DamageMeterControl
         vm.IsDamageMeterPopupVisible = Visibility.Hidden;
     }
 
-    private void OpenDamageMeterWindow_MouseUp(object sender, MouseButtonEventArgs e)
+    private void OpenDamageMeterWindow_Click(object sender, RoutedEventArgs e)
     {
         OpenDamageMeterWindow();
     }
 
-    private void CopyDamageMeterToClipboard_MouseUp(object sender, MouseButtonEventArgs e)
+    private void CopyDamageMeterToClipboard_Click(object sender, RoutedEventArgs e)
     {
         CopyDamageMeterToClipboard();
     }
 
-    private void CopyDamageMeterSnapshotToClipboard_MouseUp(object sender, MouseButtonEventArgs e)
+    private void CopySnapshotToClipboard_Click(object sender, RoutedEventArgs e)
     {
         CopyDamageMeterToClipboard(true);
     }
 
-    private void DeleteAllDamageMeterSnapshots_MouseUp(object sender, MouseButtonEventArgs e)
+    private void DeleteAllSnapshots_Click(object sender, RoutedEventArgs e)
     {
         var vm = (MainWindowViewModel) DataContext;
         vm?.DamageMeterBindings?.DeleteAllSnapshots();
     }
 
-    private void TakeASnapShot_MouseUp(object sender, MouseButtonEventArgs e)
+    private void TakeSnapshot_Click(object sender, RoutedEventArgs e)
     {
         var vm = (MainWindowViewModel) DataContext;
         vm?.DamageMeterBindings?.GetSnapshot();
     }
 
-    private void BtnDeleteSelectedSnapshot_Click(object sender, RoutedEventArgs e)
+    private void DeleteSelectedSnapshot_Click(object sender, RoutedEventArgs e)
     {
         var vm = (MainWindowViewModel) DataContext;
         vm?.DamageMeterBindings?.DeleteSelectedSnapshot();
