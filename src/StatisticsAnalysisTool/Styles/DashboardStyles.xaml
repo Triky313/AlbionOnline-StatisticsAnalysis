@@ -30,7 +30,7 @@
 
     <Style x:Key="Dashboard.SummaryCard" TargetType="{x:Type Border}">
         <Setter Property="MinWidth" Value="164" />
-        <Setter Property="Height" Value="82" />
+        <Setter Property="MinHeight" Value="82" />
         <Setter Property="Margin" Value="0,0,6,0" />
         <Setter Property="Padding" Value="9,8" />
         <Setter Property="Background" Value="{StaticResource SolidColorBrush.Background.2}" />
@@ -181,15 +181,12 @@
 
     <DataTemplate x:Key="Dashboard.SummaryMetricWithPerHourTemplate" DataType="{x:Type models:DashboardSummaryMetric}">
         <StackPanel>
-            <StackPanel Orientation="Horizontal">
+            <WrapPanel>
                 <TextBlock Text="{Binding Value, Converter={StaticResource ShortNumberConverter}, ConverterCulture={x:Static gl:CultureInfo.CurrentCulture}, FallbackValue=0}"
                            Style="{StaticResource Dashboard.SummaryValue}" />
-                <TextBlock Style="{StaticResource Dashboard.SummaryPerHourText}">
-                    <Run Text="(" />
-                    <Run Text="{Binding ValuePerHour, Mode=OneWay, Converter={StaticResource ShortNumberConverter}, ConverterCulture={x:Static gl:CultureInfo.CurrentCulture}, FallbackValue=0}" />
-                    <Run Text=" /h)" />
-                </TextBlock>
-            </StackPanel>
+                <TextBlock Text="{Binding ValuePerHour, Mode=OneWay, Converter={StaticResource ShortNumberConverter}, ConverterCulture={x:Static gl:CultureInfo.CurrentCulture}, StringFormat='{}({0} /h)', FallbackValue=0}"
+                           Style="{StaticResource Dashboard.SummaryPerHourText}" />
+            </WrapPanel>
             <StackPanel Orientation="Horizontal">
                 <TextBlock Text="{Binding ChangeIndicator}" Style="{StaticResource Dashboard.SummaryDeltaText}" />
                 <TextBlock Text=" " Style="{StaticResource Dashboard.SummaryDeltaText}" />

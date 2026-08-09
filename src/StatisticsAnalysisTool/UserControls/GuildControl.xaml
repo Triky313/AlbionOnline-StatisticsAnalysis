@@ -137,13 +137,13 @@
                                                Style="{StaticResource Dashboard.SectionTitle}" />
                                     <StackPanel Grid.Row="1" Margin="0,8,0,0" Orientation="Horizontal" HorizontalAlignment="Right">
                                         <Button Content="{Binding GuildBindings.TranslationDeleteSelectedEntries, FallbackValue=DELETE__SELECTED__ENTRIES}"
-                                                Padding="5,0"
+                                                ContentTemplate="{StaticResource Template.Button.Content.Spacious}"
                                                 IsEnabled="{Binding TradeMonitoringBindings.IsDeleteTradesButtonEnabled}"
                                                 Style="{StaticResource Style.Button.Danger}"
                                                 Click="BtnDeleteSelectedSiphonedEnergyEntries_Click" />
                                         <Button Content="{Binding GuildBindings.TranslationSelectDeselectAll, FallbackValue=SELECT__DESELECT__ALL}"
+                                                ContentTemplate="{StaticResource Template.Button.Content.Spacious}"
                                                 Margin="8,0,0,0"
-                                                Padding="5,0"
                                                 MaxWidth="300"
                                                 Click="BtnSelectSwitchAllSiphonedEnergyEntries_Click" />
                                         <Grid Width="20"

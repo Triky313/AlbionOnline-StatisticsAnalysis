@@ -6,23 +6,6 @@
                     xmlns:enumerations="clr-namespace:StatisticsAnalysisTool.Enumerations">
 
     <!-- Damage meter icon -->
-    <Style x:Key="DamageMeter.CompactCard" TargetType="{x:Type Border}" BasedOn="{StaticResource Dashboard.Section}">
-        <Setter Property="MinWidth" Value="190" />
-        <Setter Property="Margin" Value="0,0,8,0" />
-    </Style>
-
-    <Style x:Key="DamageMeter.CardHeader" TargetType="{x:Type Border}" BasedOn="{StaticResource Settings.CardHeader}">
-        <Setter Property="Padding" Value="10,7" />
-    </Style>
-
-    <Style x:Key="DamageMeter.CardTitle" TargetType="{x:Type TextBlock}" BasedOn="{StaticResource Settings.CardTitle}">
-        <Setter Property="FontSize" Value="13" />
-    </Style>
-
-    <Style x:Key="DamageMeter.CardContent" TargetType="{x:Type Border}">
-        <Setter Property="Padding" Value="10,8" />
-    </Style>
-
     <Style x:Key="DamageMeter.ActionButton" TargetType="{x:Type Button}" BasedOn="{StaticResource Style.Button.Neutral}">
         <Setter Property="Width" Value="32" />
         <Setter Property="MinWidth" Value="32" />

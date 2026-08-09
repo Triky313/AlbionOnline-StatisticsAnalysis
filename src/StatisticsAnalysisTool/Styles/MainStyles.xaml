@@ -134,6 +134,10 @@
         </Setter>
     </Style>
 
+    <DataTemplate x:Key="Template.Button.Content.Spacious">
+        <TextBlock Margin="8,0" Text="{Binding}" />
+    </DataTemplate>
+
     <Style x:Key="Style.Button.Icon.White" TargetType="{x:Type fa5:ImageAwesome}">
         <Setter Property="Foreground" Value="{StaticResource SolidColorBrush.Button.Text.Normal}" />
         <Style.Triggers>

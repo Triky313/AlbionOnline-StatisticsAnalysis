@@ -19,10 +19,16 @@
 
         <StackPanel Grid.Row="0" Orientation="Horizontal" HorizontalAlignment="Right" VerticalAlignment="Top" Height="40">
             <Button x:Name="BtnCopySelectedMapHistoryToClipboard"
-                    Content="{Binding Translation.CopyToClipboard, FallbackValue=COPY__TO__CLIPBOARD}" Margin="5,0,5,0" IsEnabled="False"
+                    Content="{Binding Translation.CopyToClipboard, FallbackValue=COPY__TO__CLIPBOARD}"
+                    ContentTemplate="{StaticResource Template.Button.Content.Spacious}"
+                    Margin="5,0"
+                    IsEnabled="False"
                     Click="BtnCopySelectedMapHistoryToClipboard_Click" />
-            <Button Content="{Binding Translation.DeleteAllMapHistoryEntries, FallbackValue=DELETE__ALL__MAP__HISTORY__ENTRIES}" Margin="5,0,5,0" 
-                    Style="{StaticResource Style.Button.Danger}" Click="BtnDeleteAllMapHistoryEntries_Click" />
+            <Button Content="{Binding Translation.DeleteAllMapHistoryEntries, FallbackValue=DELETE__ALL__MAP__HISTORY__ENTRIES}"
+                    ContentTemplate="{StaticResource Template.Button.Content.Spacious}"
+                    Margin="5,0"
+                    Style="{StaticResource Style.Button.Danger}"
+                    Click="BtnDeleteAllMapHistoryEntries_Click" />
         </StackPanel>
 
         <Border Grid.Row="2" Background="{StaticResource SolidColorBrush.Background.3}">
